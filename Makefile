@@ -1,16 +1,28 @@
 PROFILE = -g #-pg
-CFLAGS = $(PROFILE) -O3 `pkg-config --cflags gtk+-2.0` -Wall -Werror
-LDFLAGS = $(PROFILE) -O3 `pkg-config --libs gtk+-2.0` -Wall -Werror
+CFLAGS = $(PROFILE) -O1 `pkg-config --cflags gtk+-2.0 pygtk-2.0` -Wall -Werror -I/usr/include/python2.3/ -I.
+LDFLAGS = $(PROFILE) -O1 `pkg-config --libs gtk+-2.0 pygtk-2.0` -Wall -Werror
+DEFSDIR = `pkg-config --variable=defsdir pygtk-2.0`
 
-all:	mypaint
+all:	mydrawwidget.so
 
-mypaint:	surface.o mypaint.o brush_dab.o brush.o helpers.o mydrawwidget.o
-
-brush_settings.inc:	brush.h generate.py
+gtkmybrush_settings.inc:	gtkmybrush.h generate.py
 	./generate.py
 
-brush.o:	brush_settings.inc brush.c
-	cc $(CFLAGS) -c -o brush.o brush.c
+gtkmybrush.o:	gtkmybrush_settings.inc gtkmybrush.c
+	cc $(CFLAGS) -c -o $@ gtkmybrush.c
 
 clean:
-	rm *.o mypaint brush_settings.inc
+	rm *.o *.so gtkmybrush_settings.inc mydrawwidget.defs mydrawwidget.defs.c
+
+mydrawwidget.defs.c: mydrawwidget.defs mydrawwidget.override
+	pygtk-codegen-2.0 --prefix mydrawwidget \
+	--register $(DEFSDIR)/gdk-types.defs \
+	--register $(DEFSDIR)/gtk-types.defs \
+	--override mydrawwidget.override \
+	mydrawwidget.defs > mydrawwidget.defs.c
+
+mydrawwidget.defs: gtkmydrawwidget.h gtkmybrush.h surface.h
+	/usr/share/pygtk/2.0/codegen/h2def.py gtkmydrawwidget.h gtkmybrush.h > mydrawwidget.defs
+
+mydrawwidget.so: mydrawwidget.defs.c mydrawwidgetmodule.c gtkmydrawwidget.o surface.o gtkmybrush.o brush_dab.o helpers.o
+	$(CC) $(LDFLAGS) $(CFLAGS) -shared $^ -o $@

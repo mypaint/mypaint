@@ -1,0 +1,15 @@
+%%
+headers
+#include <Python.h>
+#include "pygobject.h"
+#include "gtkmydrawwidget.h"
+#include "gtkmybrush.h"
+%%
+modulename mydrawwidget
+%%
+import gtk.DrawingArea as PyGtkDrawingArea_Type
+import gobject.GObject as PyGObject_Type
+%%
+ignore-glob
+  *_get_type
+%%

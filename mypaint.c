@@ -4,7 +4,7 @@
 #include <math.h>
 #include "surface.h"
 #include "brush.h"
-#include "mydrawwidget.h"
+#include "gtkmydrawwidget.h"
 
 Brush * global_brush;
 GtkWidget * main_mdw;
@@ -65,7 +65,7 @@ invert_colors (GtkAction *action, GtkWidget *window)
 static void
 clear_image (GtkAction *action, GtkWidget *window)
 {
-  mydrawwidget_clear (MYDRAWWIDGET (main_mdw));
+  gtk_my_draw_widget_clear (GTK_MY_DRAW_WIDGET (main_mdw));
 }
 
 static void
@@ -239,8 +239,8 @@ main (int argc, char **argv)
 
   // main drawing widget (main_mdw)
   global_brush = brush_create ();
-  main_mdw = mydrawwidget_new ();
-  mydrawwidget_set_brush (MYDRAWWIDGET (main_mdw), global_brush); 
+  main_mdw = gtk_my_draw_widget_new ();
+  gtk_my_draw_widget_set_brush (GTK_MY_DRAW_WIDGET (main_mdw), global_brush); 
   gtk_box_pack_start (GTK_BOX (v), main_mdw, TRUE, TRUE, 0);
 
   statusline = gtk_label_new ("hello world");
