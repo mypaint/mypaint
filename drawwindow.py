@@ -48,6 +48,8 @@ class Window(gtk.Window):
               <menuitem action='Darker'/>
             </menu>
             <menu action='ContextMenu'>
+              <menuitem action='ContextStore'/>
+              <separator/>
               <menuitem action='Context00'/>
               <menuitem action='Context00s'/>
               <menuitem action='Context01'/>
@@ -106,7 +108,8 @@ class Window(gtk.Window):
             ('Context08s',   None, 'set Context 8', None, None, self.context_cb),
             ('Context09',    None, 'Context 9', None, None, self.context_cb),
             ('Context09s',   None, 'set Context 9', None, None, self.context_cb),
-            ('ContextHelp', None, 'How to use this?', None, None, self.context_help_cb),
+            ('ContextStore', None, 'set Context last selected', None, None, self.context_cb),
+            ('ContextHelp',  None, 'How to use this?', None, None, self.context_help_cb),
             ]
         ag.add_actions(actions)
         self.ui = gtk.UIManager()
@@ -206,16 +209,23 @@ class Window(gtk.Window):
         # - think about other stuff... brush history, only those actually used, etc...
         name = action.get_name()
         store = False
-        if name.endswith('s'):
+        if name == 'ContextStore':
+            context = self.app.selected_context
+            if not context:
+                print 'No context was selected, ignoring store command.'
+                return
             store = True
-            name = name[:-1]
-        i = int(name[-2:])
-        context = self.app.contexts[i]
+        else:
+            if name.endswith('s'):
+                store = True
+                name = name[:-1]
+            i = int(name[-2:])
+            context = self.app.contexts[i]
+        self.app.selected_context = context
         if store:
             context.copy_settings_from(self.app.brush)
             preview = self.app.brushselection_window.get_preview_pixbuf()
             context.update_preview(preview)
-            context.name = 'context%02d' % i
             context.save(self.app.brushpath)
         else: # restore
             self.app.select_brush(context)

@@ -13,8 +13,12 @@ class Application: # singleton
         self.brushes = []
         self.selected_brush = None
         self.brush_selected_callbacks = [self.brush_selected_cb]
-        self.contexts = [brush.Brush() for i in range(10)] # 10 for now...
-        #self.selected_context = None
+        self.contexts = []
+        for i in range(10):
+            c = brush.Brush()
+            c.name = 'context%02d' % i
+            self.contexts.append(c)
+        self.selected_context = None
 
         # load brushes
         loadnames = []
