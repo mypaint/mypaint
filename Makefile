@@ -1,13 +1,13 @@
 PROFILE = -g -pg
-CFLAGS = $(PROFILE) -O3 `pkg-config --cflags gtk+-2.0` -Wall -Werror -ansi
-LDFLAGS = $(PROFILE) -O3 `pkg-config --libs gtk+-2.0` -Wall -Werror -ansi -lfann
+CFLAGS = $(PROFILE) -O1 `pkg-config --cflags gtk+-2.0` -Wall -Werror
+LDFLAGS = $(PROFILE) -O1 `pkg-config --libs gtk+-2.0` -Wall -Werror -lfann
 
 all:	drawmain
 
-drawmain:	surfacepaint.o drawmain.o neural.o nntrainer.c
+drawmain:	surface.o drawmain.o brush.o nntrainer.c
 
 clean:
-	rm *.o drawmain trainertest
+	rm *.o drawmain #trainertest
 
 trainertest: nntrainer.c
 	gcc $(CFLAGS) $(LDFLAGS) -Dtest_nntrainer=main nntrainer.c -o trainertest

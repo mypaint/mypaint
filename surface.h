@@ -1,13 +1,14 @@
-/* A drawing surface with limited undo functionality.
+/* A drawing surface (planned: with limited undo functionality)
    Copyright 2004 Martin Renold <martinxyz@gmx.ch>
-   Released under GPL.
+   Released as public domain.
 */
 
-#define sqr(x) ((x)*(x))
+#ifndef __surface_h__
+#define __surface_h__
 
-typedef unsigned char byte;
-typedef unsigned short u16;
-typedef unsigned int u32;
+#include <gtk/gtk.h>
+
+#define sqr(x) ((x)*(x))
 
 #define SIZE 512
 
@@ -35,19 +36,14 @@ typedef unsigned int u32;
 
 typedef struct {
   int w, h; /* fixed to SIZE*SIZE for now */
-  /* memory not linear (see above) */
-  byte * rgb;
+  guchar * rgb; /* data, memory not linear (see above) */
+  GtkWidget * widget; /* where to queue draws when changed */
 } Surface;
-
-typedef struct {
-  double radius;
-  byte color[3];
-  double opaque;
-} Brush;
 
 Surface * new_surface (int w, int h);
 void free_surface (Surface * s);
 void surface_clear (Surface * s);
-void surface_draw (Surface * s, double x, double y, Brush * b);
 void surface_renderpattern (Surface * s);
-void surface_render (Surface * s, byte * dst, int rowstride, int x0, int y0, int w, int h);
+void surface_render (Surface * s, guchar * dst, int rowstride, int x0, int y0, int w, int h);
+
+#endif
