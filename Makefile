@@ -1,4 +1,4 @@
-PROFILE = -g -pg
+PROFILE = -g #-pg
 CFLAGS = $(PROFILE) -O1 `pkg-config --cflags gtk+-2.0` -Wall -Werror
 LDFLAGS = $(PROFILE) -O1 `pkg-config --libs gtk+-2.0` -Wall -Werror
 
@@ -6,7 +6,7 @@ all:	drawmain
 
 drawmain:	surface.o drawmain.o brush.o
 
-brush_settings.inc:	brush.c generate.py
+brush_settings.inc:	brush.h generate.py
 	./generate.py
 
 brush.o:	brush_settings.inc brush.c

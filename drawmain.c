@@ -27,14 +27,12 @@ my_motion (GtkWidget *widget, GdkEventMotion *event)
 {
   double pressure;
 
-  gdk_event_get_axis ((GdkEvent *)event, GDK_AXIS_PRESSURE, &pressure);
-  /* g_print ("motion %f %f %f %d\n", event->x, event->y, pressure, event->state); */
-
-  /* no button pressed */
-  /* don't care, always paint - FIXME: breaks mouse support (always pressure set)
-  if (!(event->state & 256))
-    return TRUE;
-  */
+  if (!gdk_event_get_axis ((GdkEvent *)event, GDK_AXIS_PRESSURE, &pressure)) {
+    // no pressure information
+    pressure = (event->state & 256) ? 0.5 : 0;
+  }
+  //g_print ("motion %f %f %f %d\n", event->x, event->y, pressure, event->state);
+  g_assert (pressure >= 0 && pressure <= 1);
 
   global_brush->queue_draw_widget = widget;
   brush_stroke_to (global_brush, global_surface, event->x, event->y, pressure, 
@@ -188,8 +186,12 @@ create_brushsettings_window ()
   GtkWidget *table1;
   GtkWidget *hscale;
   GtkWidget *label;
+  GtkWidget *eventbox;
   int num_settings, i;
   BrushSettingInfo * setting;
+  GtkTooltips *tooltips;
+
+  tooltips = gtk_tooltips_new ();
 
   for (i=0; brush_setting_infos[i].cname; i++) ;
   num_settings = i;
@@ -206,20 +208,28 @@ create_brushsettings_window ()
   for (i=0; i<num_settings; i++) {
     setting = &brush_setting_infos[i];
     hscale = gtk_hscale_new (GTK_ADJUSTMENT (gtk_adjustment_new (setting->default_value, setting->min, setting->max, 0, 0, 0)));
+    gtk_widget_set_size_request (hscale, 80, -1);
     gtk_table_attach (GTK_TABLE (table1), hscale, 1, 2, i, i+1,
                       (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                       (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
-    label = gtk_label_new (setting->name);
-    gtk_table_attach (GTK_TABLE (table1), label, 0, 1, i, i+1,
+
+    eventbox = gtk_event_box_new ();
+    gtk_table_attach (GTK_TABLE (table1), eventbox, 0, 1, i, i+1,
                       (GtkAttachOptions) (GTK_FILL),
-                      (GtkAttachOptions) (0), 0, 0);
+                      (GtkAttachOptions) (GTK_FILL), 0, 0);
+    gtk_tooltips_set_tip (tooltips, eventbox, setting->helptext, NULL);
+
+    label = gtk_label_new (setting->name);
     gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
+    gtk_container_add (GTK_CONTAINER (eventbox), label);
     
     g_signal_connect ((gpointer) hscale, "value_changed",
                       G_CALLBACK (on_hscale_brushoption_value_changed),
                       GINT_TO_POINTER (i) );
+
   }
 
+  gtk_window_set_default_size (GTK_WINDOW (window_brushoptions), 400, -1);
   gtk_widget_show_all (window_brushoptions);
 }
 

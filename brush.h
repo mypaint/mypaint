@@ -3,34 +3,42 @@
 
 #include "surface.h"
 
+// brush setting flags (not yet used)
+#define BSF_NONE 0
+#define BSF_LOGARITHMIC 1
+
+// only accessed inside brush.c
 typedef struct {
   // lowlevevel stuff
   float x, y, pressure, time;
   float dx, dy, dpressure, dtime;
   float dist;
-  float tmp_one_over_radius;
+  float actual_radius;
   
   GtkWidget * queue_draw_widget;
 
-  // user settings
-  float radius_logarithmic; // log(radius)
-  float opaque; // 1 - transparency
   guchar color[3];
 
-  float dabs_per_radius; // 1/spacing
+  // User settings, input for generate.py:
+  // name % flags % min % default % max % tooltip
+  //% opaque % BSF_NONE % 0.0 % 1.0 % 1.0 % 0 means brush is transparent, 1 fully visible
+  float opaque;
+  //% radius % BSF_LOGARITHMIC % -0.5 % 2.0 % 5.0 % basic brush radius
+  float radius_logarithmic;
+  //% dabs per basic radius % BSF_NONE % 0.0 % 0.0 % 30.0 % dabs to draw while the pointer moves one brush radius
+  float dabs_per_basic_radius;
+  //% dabs per actual radius % BSF_NONE % 0.0 % 2.0 % 30.0 % same as above, but the radius actually drawn is used, which might change dynamically
+  float dabs_per_actual_radius;
+  //% dabs per second % BSF_NONE % 0.0 % 0.0 % 80.0 % dabs to draw each second, no matter how far the pointer moves
   float dabs_per_second;
 } Brush;
-
-// brush setting flags
-#define BSF_NONE 0
-#define BSF_LOGARITHMIC 1
 
 typedef struct {
   char * cname;
   char * name;
   int flags;
   float min;
-  float default_value; // "default" seems to be a keyword...
+  float default_value;
   float max;
   char * helptext;
 } BrushSettingInfo;

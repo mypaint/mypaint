@@ -4,14 +4,6 @@
 #include <math.h>
 #include "brush.h"
 
-BrushSettingInfo brush_setting_infos[] = {
-  // cname, name, flags, min, default_value, max, helptext
-  { "radius_logarithmic", "Radius", BSF_LOGARITHMIC, -0.5, 2.0, 5.0, "basic brush radius" },
-  { "opaque", "Opaque", BSF_NONE, 0.0, 1.0, 1.0, "0 means brush is transparent, 1 fully visible" },
-  { "dabs_per_radius", "Dabs per Radius", BSF_NONE, 0.0, 2.0, 50.0, "number of brushdabs to do while the mouse moves a distance of one radius (1/spacing)" },
-  { "dabs_per_second", "Dabs per Second", BSF_NONE, 0.0, 0.0, 50.0, "number of brushdabs to each second, no matter whether the mouse moved" },
-  { 0, 0, 0, 0, 0, 0, 0 }
-};
 
 #include "brush_settings.inc"
 
@@ -127,6 +119,8 @@ void brush_prepare_and_draw_dab (Brush * b, Surface * s)
   float speed;
   float noise;
 
+  g_assert (b->pressure >= 0 && b->pressure <= 1);
+
   x = b->x; y = b->y;
   radius_log = b->radius_logarithmic;
   opaque = b->opaque;
@@ -161,7 +155,7 @@ void brush_prepare_and_draw_dab (Brush * b, Surface * s)
   g_assert(opaque <= 1);
 
   // used for interpolation later
-  b->tmp_one_over_radius = 1/radius;
+  b->actual_radius = radius;
   
   draw_brush_dab (s, b->queue_draw_widget,
                   x, y, radius, opaque, b->color);
@@ -170,18 +164,21 @@ void brush_prepare_and_draw_dab (Brush * b, Surface * s)
 float brush_count_dabs_to (Brush * b, float x, float y, float pressure, float time)
 {
   float dx, dy, dt;
-  float res1, res2;
-  if (b->tmp_one_over_radius == 0) b->tmp_one_over_radius = 1.0/exp(b->radius_logarithmic);
-  if (b->tmp_one_over_radius > 2) b->tmp_one_over_radius = 2;
-  if (b->tmp_one_over_radius < 1/500.0) b->tmp_one_over_radius = 1/500.0;
+  float res1, res2, res3;
+  float dist;
+  if (b->actual_radius == 0) b->actual_radius = exp(b->radius_logarithmic);
+  if (b->actual_radius < 0.5) b->actual_radius = 0.5;
+  if (b->actual_radius > 500.0) b->actual_radius = 500.0;
   dx = x - b->x;
   dy = y - b->y;
   //dp = pressure - b->pressure; // Not useful?
   dt = time - b->time;
 
-  res1 = sqrt (dx*dx + dy*dy) * b->tmp_one_over_radius * b->dabs_per_radius;
-  res2 = dt * b->dabs_per_second;
-  return res1 + res2;
+  dist = sqrt (dx*dx + dy*dy);
+  res1 = dist / b->actual_radius * b->dabs_per_actual_radius;
+  res2 = dist / exp(b->radius_logarithmic) * b->dabs_per_basic_radius;
+  res3 = dt * b->dabs_per_second;
+  return res1 + res2 + res3;
 }
 
 void brush_stroke_to (Brush * b, Surface * s, float x, float y, float pressure, float time)
