@@ -1,8 +1,18 @@
 #!/usr/bin/env python
 "MyDraw main"
-import gtk
+
+import gtk, sys
 gdk = gtk.gdk
-import drawwindow
+
+try: # just for a nice error message
+    import mydrawwidget
+    del mydrawwidget
+except ImportError, detail:
+    print 'ImportError:', detail
+    print "\nYou need to 'make' the C modules first.\n"
+    sys.exit(1)
+
+import application
 
 def init_input():
     "make those pressure sensitive devices working"
@@ -20,12 +30,9 @@ def init_input():
 
 def main():
     init_input()
-
-    #window = gtk.Window(gtk.WINDOW_TOPLEVEL)
-    window = drawwindow.Window()
-    window.show_all()
-
+    app = application.Application()
     gtk.main()
 
 if __name__ == '__main__':
     main()
+

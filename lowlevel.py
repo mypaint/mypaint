@@ -1,11 +1,7 @@
 "interface to DrawWidget etc. hiding some C implementation details"
 # FIXME: bad file name, saying nothing about what's in here
-try:
-    import mydrawwidget
-    from brushsettings import settings as brushsettings
-except ImportError:
-    print "\nYou need to 'make' the C modules first.\n"
-    raise
+import mydrawwidget
+from brushsettings import settings as brushsettings
 
 class Brush(mydrawwidget.MyBrush):
     def __init__(self):

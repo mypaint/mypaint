@@ -4,8 +4,10 @@ import lowlevel
 
 
 class Window(gtk.Window):
-    def __init__(self):
+    def __init__(self, app):
         gtk.Window.__init__(self)
+        self.app = app
+
         self.set_title('MyPaint')
         self.connect('delete-event', self.delete_event_cb)
         self.set_size_request(600, 400)
@@ -16,8 +18,8 @@ class Window(gtk.Window):
         vbox.pack_start(self.ui.get_widget('/Menubar'), expand=False)
 
         self.mdw = mdw = lowlevel.DrawWidget()
-        self.brush = lowlevel.Brush()
-        mdw.set_brush(self.brush)
+        #self.brush = lowlevel.Brush()
+        mdw.set_brush(self.app.brush)
         vbox.pack_start(mdw)
 
         self.staturbar = sb = gtk.Statusbar()
@@ -38,17 +40,30 @@ class Window(gtk.Window):
             <menu action='BrushMenu'>
               <menuitem action='InvertColor'/>
             </menu>
+            <menu action='ContextMenu'>
+              <menuitem action='Context1'/>
+              <menuitem action='Context2'/>
+              <menuitem action='Context3'/>
+              <menuitem action='Context4'/>
+              <menuitem action='ContextHelp'/>
+            </menu>
           </menubar>
         </ui>"""
         actions = [
-            ('FileMenu', None, 'File'),
-            ('Clear',    None, 'Clear', '3', 'blank everything', self.clear_cb),
-            ('NewWindow',None, 'New Window', '<control>N', None, self.new_window_cb),
-            ('Open',     gtk.STOCK_OPEN, 'Open', '<control>O', None, self.open_cb),
-            ('Save',     gtk.STOCK_SAVE, 'Save', '<control>S', None, self.save_cb),
-            ('Quit',     gtk.STOCK_QUIT, 'Quit', None, None, self.quit_cb),
-            ('BrushMenu', None, 'Brush'),
+            ('FileMenu',    None, 'File'),
+            ('Clear',       None, 'Clear', '3', 'blank everything', self.clear_cb),
+            ('NewWindow',   None, 'New Window', '<control>N', None, self.new_window_cb),
+            ('Open',        None, 'Open', '<control>O', None, self.open_cb),
+            ('Save',        None, 'Save', '<control>S', None, self.save_cb),
+            ('Quit',        None, 'Quit', '<control>Q', None, self.quit_cb),
+            ('BrushMenu',   None, 'Brush'),
             ('InvertColor', None, 'Invert Color', None, None, self.invert_color_cb),
+            ('ContextMenu', None, 'Context'),
+            ('Context1',    None, 'Context 1', 'a', None, self.save_cb),
+            ('Context2',    None, 'Context 2', 's', None, self.save_cb),
+            ('Context3',    None, 'Context 3', 'd', None, self.save_cb),
+            ('Context4',    None, 'Context 4', 'f', None, self.save_cb),
+            ('ContextHelp', None, 'How to use this?', None, None, self.save_cb),
             ]
         ag.add_actions(actions)
         self.ui = gtk.UIManager()
@@ -66,7 +81,7 @@ class Window(gtk.Window):
         self.mdw.clear()
         
     def invert_color_cb(self, action):
-        self.brush.invert_color()
+        self.app.brush.invert_color()
         
     def open_cb(self, action):
         dialog = gtk.FileChooserDialog("Open..", self,
