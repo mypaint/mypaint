@@ -26,8 +26,9 @@ mydrawwidget.defs.c: mydrawwidget.defs mydrawwidget.override
 	--override mydrawwidget.override \
 	mydrawwidget.defs > mydrawwidget.defs.c
 
-mydrawwidget.defs: gtkmydrawwidget.h gtkmybrush.h surface.h
+mydrawwidget.defs: gtkmydrawwidget.h gtkmybrush.h surface.h Makefile
 	/usr/share/pygtk/2.0/codegen/h2def.py gtkmydrawwidget.h gtkmybrush.h > mydrawwidget.defs
+	./caller_owns_return.py mydrawwidget.defs get_nonwhite_as_pixbuf get_as_pixbuf
 
 mydrawwidget.so: mydrawwidget.defs.c mydrawwidgetmodule.c gtkmydrawwidget.o surface.o gtkmybrush.o brush_dab.o helpers.o
 	$(CC) $(LDFLAGS) $(CFLAGS) -shared $^ -o $@

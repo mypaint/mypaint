@@ -13,4 +13,3 @@ import gtk.gdk.Pixbuf as PyGdkPixbuf_Type
 %%
 ignore-glob
   *_get_type
-%%

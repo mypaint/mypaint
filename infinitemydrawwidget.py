@@ -82,15 +82,5 @@ class InfiniteMyDrawWidget(MyDrawWidget):
         self.set_viewport(self.viewport_x, self.viewport_y)
 
         # free that huge memory again
-        ## help! old_pixbuf does not get collected (new_pixbuf frees fine)
-        gc.set_debug(gc.DEBUG_LEAK)
-        #print old_pixbuf, new_pixbuf
-        #print gc.get_referrers(new_pixbuf), gc.get_referents(new_pixbuf)
-        del new_pixbuf
+        del new_pixbuf, old_pixbuf
         gc.collect()
-        gc.collect()
-        #print gc.get_referrers(old_pixbuf), gc.get_referents(old_pixbuf)
-        del old_pixbuf
-        gc.collect()
-        gc.collect()
-        #print '---'
