@@ -29,7 +29,7 @@ class Brush(mydrawwidget.MyBrush):
         for s in brushsettings:
             self.set_setting(s.index, s.default)
         self.color = [0, 0, 0]
-        self.set_color(self.color[0], self.color[1], self.color[2])
+        self.set_color(self.color)
         self.preview = None
         self.preview_thumb = None
         self.name = ''
@@ -93,19 +93,20 @@ class Brush(mydrawwidget.MyBrush):
         for s in brushsettings:
             self.set_setting(s.index, other.get_setting(s.index))
         self.color = other.color[:] # copy
-        self.set_color(self.color[0], self.color[1], self.color[2])
+        self.set_color(self.color)
 
     def get_color(self):
         return self.color[:] # copy
 
-    def set_color(self, r, g, b):
-        self.color[:] = r, g, b
-        mydrawwidget.MyBrush.set_color(self, self.color[0], self.color[1], self.color[2])
+    def set_color(self, rgb):
+        r, g, b = rgb
+        self.color = rgb[:] # copy
+        mydrawwidget.MyBrush.set_color(self, r, g, b)
 
     def invert_color(self):
         for i in range(3):
             self.color[i] = 255 - self.color[i]
-        self.set_color(self.color[0], self.color[1], self.color[2])
+        self.set_color(self.color)
 
     def update_preview(self, pixbuf):
         self.preview = pixbuf

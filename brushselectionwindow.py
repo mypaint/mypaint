@@ -160,7 +160,10 @@ class BrushList(gtk.DrawingArea):
         if i >= self.tiles_w: return
         i = i + self.tiles_w * (y / preview_total_h)
         if i >= len(self.app.brushes): return
+        # keep the color setting
+        color = self.app.brush.get_color()
         self.app.select_brush(self.app.brushes[i])
+        self.app.brush.set_color(color)
 
     def brush_selected_cb(self, brush):
         self.queue_draw()

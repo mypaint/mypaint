@@ -83,6 +83,18 @@ struct _GtkMyBrush
   float position_T;
   //% slow position 2 % BSF_NONE % 0.0 % 0.0 % 10.0 % Similar as above but at brushdab level (ignoring how much time has past, if brushdabs do not depend on time)
   float position_T2;
+  //% color brightness by pressure % BSF_NONE % -2.0 % 0.0 % 2.0 % change the color brightness (also known as intensity or value) depending on pressure\n-1.0 high pressure: darker\n 0.0 disable\n 1.0 high pressure: brigher
+  float color_value_by_pressure;
+  //% color brightness by random % BSF_NONE % 0.0 % 0.0 % 1.0 % noisify the color brightness (also known as intensity or value)
+  float color_value_by_random;
+  //% color saturation by pressure % BSF_NONE % -2.0 % 0.0 % 2.0 % change the color saturation depending on pressure\n-1.0 high pressure: grayish\n 0.0 disable\n 1.0 high pressure: saturated
+  float color_saturation_by_pressure;
+  //% color saturation by random % BSF_NONE % 0.0 % 0.0 % 1.0 % noisify the color saturation
+  float color_saturation_by_random;
+  //% color hue by pressure % BSF_NONE % -2.0 % 0.0 % 2.0 % change color hue depending on pressure\n-1.0 high pressure: clockwise color hue shift\n 0.0 disable\n 1.0 high pressure: counterclockwise hue shift
+  float color_hue_by_pressure;
+  //% color hue by random % BSF_NONE % 0.0 % 0.0 % 1.0 % noisify the color hue
+  float color_hue_by_random;
 };
 
 struct _GtkMyBrushClass

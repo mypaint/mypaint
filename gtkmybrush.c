@@ -123,8 +123,11 @@ void brush_reset (GtkMyBrush * b)
 // high-level part of before each dab
 void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s)
 {
-  float x, y, radius_log, radius, opaque;
+  float x, y, radius_log, opaque;
   float speed;
+  int i;
+  gint color[3];
+  int color_is_hsv;
 
   // FIXME: does happen (interpolation problem?)
   if (b->pressure < 0) b->pressure = 0;
@@ -141,6 +144,18 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s)
   //x = b->x; y = b->y;
   radius_log = b->radius_logarithmic;
   opaque = b->opaque;
+  for (i=0; i<3; i++) color[i] = b->color[i];
+  color_is_hsv = 0;
+
+  if (b->color_value_by_random ||
+      b->color_value_by_pressure ||
+      b->color_saturation_by_random ||
+      b->color_saturation_by_pressure ||
+      b->color_hue_by_random ||
+      b->color_hue_by_pressure) {
+    color_is_hsv = 1;
+    gimp_rgb_to_hsv_int (color + 0, color + 1, color + 2);
+  }
   
   speed = sqrt(sqr(b->dx) + sqr(b->dy))/b->dtime;
 
@@ -198,19 +213,59 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s)
   g_assert (i == F_WEIGHTS);
 #endif
 
-  radius = expf(radius_log);
+  if (b->color_hue_by_random) {
+    g_assert (color_is_hsv);
+    color[0] = ROUND ((float)(color[0]) + gauss_noise () * b->color_hue_by_random * 64.0);
+  }
+  if (b->color_hue_by_pressure) {
+    g_assert (color_is_hsv);
+    color[0] += ROUND (b->pressure * b->color_hue_by_pressure * 128.0);
+  }
+  if (b->color_saturation_by_random) {
+    g_assert (color_is_hsv);
+    color[1] = ROUND ((float)(color[1]) + gauss_noise () * b->color_saturation_by_random * 64.0);
+  }
+  if (b->color_saturation_by_pressure) {
+    g_assert (color_is_hsv);
+    color[1] += ROUND (b->pressure * b->color_saturation_by_pressure * 128.0);
+  }
+  if (b->color_value_by_random) {
+    g_assert (color_is_hsv);
+    color[2] = ROUND ((float)(color[2]) + gauss_noise () * b->color_value_by_random * 64.0);
+  }
+  if (b->color_value_by_pressure) {
+    g_assert (color_is_hsv);
+    color[2] += ROUND (b->pressure * b->color_value_by_pressure * 128.0);
+  }
 
-  g_assert(radius > 0);
-  //FIXME: performance problem acutally depending on CPU
-  if (radius > 100) radius = 100;
-  g_assert(opaque >= 0);
-  g_assert(opaque <= 1);
+  { // final calculations
+    float radius;
+    guchar c[3];
+    radius = expf(radius_log);
+    
+    g_assert(radius > 0);
+    //FIXME: performance problem acutally depending on CPU
+    if (radius > 100) radius = 100;
+    g_assert(opaque >= 0);
+    g_assert(opaque <= 1);
+    
+    // used for interpolation later
+    b->actual_radius = radius;
+    
+    if (color_is_hsv) {
+      while (color[0] < 0) color[0] += 360;
+      while (color[0] > 360) color[0] -= 360;
+      if (color[1] < 0) color[1] = 0;
+      if (color[1] > 255) color[1] = 255;
+      if (color[2] < 0) color[2] = 0;
+      if (color[2] > 255) color[2] = 255;
+      gimp_hsv_to_rgb_int (color + 0, color + 1, color + 2);
+    }
+    for (i=0; i<3; i++) c[i] = color[i];
 
-  // used for interpolation later
-  b->actual_radius = radius;
-  
-  draw_brush_dab (s, b->queue_draw_widget,
-                  x, y, radius, opaque, b->hardness, b->color, b->saturation_slowdown);
+    draw_brush_dab (s, b->queue_draw_widget,
+                    x, y, radius, opaque, b->hardness, c, b->saturation_slowdown);
+  }
 }
 
 float brush_count_dabs_to (GtkMyBrush * b, float x, float y, float pressure, float time)

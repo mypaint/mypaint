@@ -21,6 +21,5 @@ class Window(gtk.Window):
         r = float(c.red  ) * 255 / 65535
         g = float(c.green) * 255 / 65535
         b = float(c.blue ) * 255 / 65535
-        #print r, g, b
-        self.app.brush.set_color(int(r), int(g), int(b))
+        self.app.brush.set_color([int(r), int(g), int(b)])
 
