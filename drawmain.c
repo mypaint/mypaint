@@ -2,11 +2,11 @@
 #include <gdk/gdkkeysyms.h>
 #include <stdlib.h>
 #include <math.h>
-#include "surfacepaint.h"
-#include "neural.h"
+#include "surface.h"
+#include "brush.h"
 
 Surface * screen; /* the global bitmap */
-Brush brush; /* global brush */
+Brush * brush; /* global brush */
 
 double lastx, lasty;
 guint32 lastt = 0;
@@ -37,8 +37,6 @@ static gint
 my_motion (GtkWidget *widget, GdkEventMotion *event)
 {
   double pressure;
-  double dx, dy, dt;
-  double d_dist;
 
   gdk_event_get_axis ((GdkEvent *)event, GDK_AXIS_PRESSURE, &pressure);
   /* g_print ("motion %f %f %f %d\n", event->x, event->y, pressure, event->state); */
@@ -49,46 +47,9 @@ my_motion (GtkWidget *widget, GdkEventMotion *event)
     return TRUE;
   */
 
-  dx = event->x - lastx;
-  dy = event->y - lasty;
-  dt = (double)(event->time - lastt) / 1000.0; /* in seconds */
+  brush_stroke_to (brush, event->x, event->y, pressure, 
+                   event->time / 1000.0 /* in seconds */ );
 
-  d_dist = sqrt(dx*dx + dy*dy);
-  dist += d_dist;
-
-  neural_process_movement (dt, event->x, event->y, pressure, d_dist);
-  brush.radius = neural_get_suggested_brushsize ();
-  if (brush.radius < 1.2) {
-    brush.radius = 1.2;
-    neural_set_current_brushsize (brush.radius);
-  }
-
-  while (dist >= spacing*brush.radius)
-    {
-      /* interpolate position and presssure (a bit wrong probably, but works great so far) */
-      lastpaintx = lastpaintx + (event->x - lastpaintx) * spacing*brush.radius / dist;
-      lastpainty = lastpainty + (event->y - lastpainty) * spacing*brush.radius / dist;
-      lastpaintpress = lastpaintpress + (pressure - lastpaintpress) * spacing*brush.radius / dist;
-      dist -= spacing*brush.radius;
-
-      brush.opaque = lastpaintpress / 8.0;
-      surface_draw (screen,
-                    lastpaintx,
-                    lastpainty,
-                    &brush);
-
-      gtk_widget_queue_draw_area (widget, 
-                                  floor(lastpaintx-(brush.radius+1)),
-                                  floor(lastpainty-(brush.radius+1)),
-                                  /* FIXME: think about it exactly */
-                                  ceil (2*(brush.radius+1)),
-                                  ceil (2*(brush.radius+1))
-                                  );
-    }
-
-  lastx = event->x;
-  lasty = event->y;
-  lastt = event->time;
 
   return TRUE;
 }
@@ -96,13 +57,14 @@ my_motion (GtkWidget *widget, GdkEventMotion *event)
 static gint
 my_expose (GtkWidget *widget, GdkEventExpose *event, Surface *s)
 {
-  byte *rgb;
+  guchar *rgb;
   int rowstride;
 
   rowstride = event->area.width * 3;
   rowstride = (rowstride + 3) & -4; /* align to 4-byte boundary */
-  rgb = g_new (byte, event->area.height * rowstride);
+  rgb = g_new (guchar, event->area.height * rowstride);
 
+  s->widget = GTK_WIDGET (widget);
   surface_render (s,
                   rgb, rowstride,
                   event->area.x, event->area.y,
@@ -150,23 +112,21 @@ init_input (void)
 static void
 brush_bigger (GtkAction *action, GtkWidget *window)
 {
-  brush.radius *= 1.4;
-  neural_set_current_brushsize (brush.radius);
+  brush->radius *= 1.4;
 }
 
 static void
 brush_smaller (GtkAction *action, GtkWidget *window)
 {
-  brush.radius /= 1.4;
-  neural_set_current_brushsize (brush.radius);
+  brush->radius /= 1.4;
 }
 
 static void
 invert_colors (GtkAction *action, GtkWidget *window)
 {
-  brush.color[0] = 255 - brush.color[0];
-  brush.color[1] = 255 - brush.color[1];
-  brush.color[2] = 255 - brush.color[2];
+  brush->color[0] = 255 - brush->color[0];
+  brush->color[1] = 255 - brush->color[1];
+  brush->color[2] = 255 - brush->color[2];
 }
 
 static void
@@ -174,13 +134,12 @@ clear_image (GtkAction *action, GtkWidget *window)
 {
   surface_clear (screen);
   gtk_widget_draw (window, NULL);
-  neural_notice_clear_image ();
 }
 
 static void
 train_nn (GtkAction *action, GtkWidget *window)
 {
-  neural_train ();
+  //neural_train ();
 }
 
 static GtkActionEntry my_actions[] = {
@@ -246,7 +205,6 @@ main (int argc, char **argv)
     }
 
   init_input ();
-  neural_init ();
 
   gdk_rgb_init ();
 
@@ -256,13 +214,8 @@ main (int argc, char **argv)
   screen = new_surface (xs, ys);
 
   surface_clear (screen);
-  neural_notice_clear_image ();
 
-  brush.radius = 8.0;
-  brush.color[0] = 0;
-  brush.color[1] = 0;
-  brush.color[2] = 0;
-
+  brush = brush_create (screen);
 
   w = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_signal_connect (GTK_OBJECT (w), "destroy",
@@ -347,7 +300,6 @@ main (int argc, char **argv)
   gtk_main ();
 
   gtk_accel_map_save ("accelmap.conf");
-  neural_finish ();
 
   return 0;
 }

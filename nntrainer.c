@@ -45,6 +45,23 @@ void trainer_save(struct trainer * t, const char *filename)
   fclose(f);
 }
 
+void trainer_save_textdata(struct trainer * t, const char *filename)
+{
+  FILE * f;
+  int i, j;
+  f = fopen(filename, "w");
+  fprintf(f, "# %d inputs, %d outputs, %d datapoints (random order)\n", t->ni, t->no, t->data_used);
+
+  for (i=0; i < t->data_used; i++) {
+    /*fprintf(f, "%d ", i);*/
+    for (j=0; j < IOs(t); j++) {
+      fprintf(f, "% e ", (double)(t->data[i*IOs(t) + j]));
+    }
+    fprintf(f, "\n");
+  }
+  fclose(f);
+}
+
 struct trainer * trainer_create_from_file(const char *filename)
 {
   FILE * f;
@@ -72,7 +89,12 @@ struct trainer * trainer_create_from_file(const char *filename)
     strcpy(newname, filename);
     strcat(newname, ".nn0");
     t->ann = fann_create_from_file(newname);
-    assert(t->ann);
+    if (!t->ann) {
+      printf("Warning: saved .nn0 file unuseable, retraining will be required\n");
+      t->ann = NULL;
+      free(t->mean); t->mean = NULL;
+      free(t->std); t->std = NULL;
+    }
     free(newname);
   }
   fread(&check, sizeof(int), 1, f);
