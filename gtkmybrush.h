@@ -27,8 +27,8 @@ typedef struct _GtkMyBrushClass  GtkMyBrushClass;
 
 typedef struct {
   // a set of control points (stepwise linear)
-  float xvalues[6]; // > 0 because all inputs are > 0
-  float yvalues[6]; // range: -oo  .. +oo (added to base_value)
+  float xvalues[4]; // > 0 because all inputs are > 0
+  float yvalues[4]; // range: -oo  .. +oo (added to base_value)
   // xvalues can be zero to indicate that this point is not used.
   // the first point (0, 0) is implicit, would have index -1
 } Mapping;
@@ -73,12 +73,13 @@ struct _GtkMyBrushClass
 GType       gtk_my_brush_get_type   (void) G_GNUC_CONST;
 GtkMyBrush* gtk_my_brush_new        (void);
 
-void gtk_my_brush_set_setting (GtkMyBrush * b, int id, float value);
-float gtk_my_brush_get_setting (GtkMyBrush * b, int id);
-
+/* no getter functions since values are remembered in python code */
+void gtk_my_brush_set_base_value (GtkMyBrush * b, int id, float value);
+void gtk_my_brush_set_mapping (GtkMyBrush * b, int id, int input, int index, float value);
+void gtk_my_brush_remove_mapping (GtkMyBrush * b, int id, int input);
 void gtk_my_brush_set_color (GtkMyBrush * b, int red, int green, int blue);
 
-// only for mydrawwidget (not exported to python):
+/* only for mydrawwidget (not exported to python): */
 void brush_stroke_to (GtkMyBrush * b, Surface * s, float x, float y, float pressure, float time);
 void brush_reset (GtkMyBrush * b);
 

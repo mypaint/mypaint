@@ -1,7 +1,7 @@
 "interface to MyBrush; hiding some C implementation details"
 # FIXME: bad file name, saying nothing about what's in here
 import mydrawwidget
-from brushsettings import settings as brushsettings
+import brushsettings
 import gtk, string, os
 
 thumb_w = 64 #128
@@ -23,11 +23,50 @@ def pixbuf_scale_nostretch_centered(src, dst):
               offset_x, offset_y, scale, scale,
               gtk.gdk.INTERP_BILINEAR)
 
+class Setting:
+    "a specific setting for a specific brush"
+    def __init__(self, setting, parent_brush):
+        self.setting = setting
+        self.brush = parent_brush
+        self.set_base_value(setting.default)
+        self.points = len(brushsettings.inputs) * [None]
+    def set_base_value(self, value):
+        self.base_value = value
+        self.brush.set_base_value(self.setting.index, value)
+    def set_points(self, input, points):
+        if points is None:
+            self.points[input.index] = None
+            self.brush.remove_mapping(self.setting.index, input.index)
+        else:
+            self.points[input.index] = points[:] # copy
+            for j in xrange(8):
+                self.brush.set_mapping(self.setting.index, input.index, j, points[j])
+    def copy_from(self, other):
+        self.load_from_string(other.save_to_string())
+    def save_to_string(self):
+        s = '%f' % self.base_value
+        for i in brushsettings.inputs:
+            points = self.points[i.index]
+            if points:
+                s += ' | ' + i.name + ' ' + ' '.join([str(f) for f in points])
+        return s
+    def load_from_string(self, s):
+        parts = s.split('|')
+        self.set_base_value(float(parts[0]))
+        for part in parts[1:]:
+            subparts = part.split()
+            command, args = subparts[0], subparts[1:]
+            for i in brushsettings.inputs:
+                if command == i.name:
+                    points = [float(f) for f in args]
+                    self.set_points(i, points)
+
 class Brush(mydrawwidget.MyBrush):
     def __init__(self):
         mydrawwidget.MyBrush.__init__(self)
-        for s in brushsettings:
-            self.set_setting(s.index, s.default)
+        self.settings = []
+        for s in brushsettings.settings:
+            self.settings.append(Setting(s, self))
         self.color = [0, 0, 0]
         self.set_color(self.color)
         self.preview = None
@@ -52,8 +91,8 @@ class Brush(mydrawwidget.MyBrush):
         f.write('# mypaint brush file\n')
         r, g, b = self.get_color()
         f.write('color %d %d %d\n' % (r, g, b))
-        for s in brushsettings:
-            f.write('%s %f\n' % (s.cname, self.get_setting(s.index)))
+        for s in brushsettings.settings:
+            f.write(s.cname + self.settings[s.index].save_to_string() + '\n')
         f.close()
 
     def load(self, path, name):
@@ -66,18 +105,16 @@ class Brush(mydrawwidget.MyBrush):
             line = line.strip()
             if line.startswith('#'): continue
             try:
-                parts = line.split()
-                command = parts[0]
-                args = parts[1:]
+                command, rest = line.split(' ', 1)
                 if command == 'color':
-                    self.set_color([int(s) for s in args])
+                    self.set_color([int(s) for s in rest.split()])
                 else:
                     found = False
-                    for s in brushsettings:
+                    for s in brushsettings.settings:
                         if command == s.cname:
                             assert not found
                             found = True
-                            self.set_setting(s.index, float(args[0]))
+                            self.settings[s.index].load_from_string(rest)
                     assert found, 'invalid setting'
             except e:
                 print e
@@ -95,8 +132,8 @@ class Brush(mydrawwidget.MyBrush):
         os.remove(prefix + '.myb')
 
     def copy_settings_from(self, other):
-        for s in brushsettings:
-            self.set_setting(s.index, other.get_setting(s.index))
+        for s in brushsettings.settings:
+            self.settings[s.index].copy_from(other.settings[s.index])
         self.color = other.color[:] # copy
         self.set_color(self.color)
 

@@ -46,10 +46,6 @@ class Window(gtk.Window):
 
     def brush_selected_cb(self, brush_selected):
         pass
-        #for s in brush.brushsettings:
-        #    self.adj[s.index].set_value(self.app.brush.get_setting(s.index))
-
-
 
 RADIUS = 4
 class CurveWidget(gtk.DrawingArea):

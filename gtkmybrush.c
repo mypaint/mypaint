@@ -9,26 +9,41 @@
 ;  // ; needed
 
 void
-gtk_my_brush_set_setting (GtkMyBrush * b, int id, float value)
+gtk_my_brush_set_base_value (GtkMyBrush * b, int id, float value)
 {
-  if (id >= 0 && id < BRUSH_SETTINGS_COUNT) {
-    b->settings[id].base_value = value;
+  g_assert (id >= 0 && id < BRUSH_SETTINGS_COUNT);
+  b->settings[id].base_value = value;
+}
+
+void gtk_my_brush_set_mapping (GtkMyBrush * b, int id, int input, int index, float value)
+{
+  int i;
+  g_assert (id >= 0 && id < BRUSH_SETTINGS_COUNT);
+  g_assert (input >= 0 && input < INPUT_COUNT);
+  g_assert (index >= 0 && index < 8);
+
+  Mapping * m = b->settings[id].mapping[input];
+  if (!m) {
+    m = b->settings[id].mapping[input] = g_malloc(sizeof(Mapping));
+    for (i=0; i<4; i++) {
+      m->xvalues[i] = 0;
+      m->yvalues[i] = 0;
+    }
+  }
+  if (index % 2 == 0) {
+    m->xvalues[index/2] = value;
   } else {
-    g_print ("brush_set_setting() with invalid id %d\n", id);
-    g_assert (0);
+    m->yvalues[index/2] = value;
   }
 }
 
-float
-gtk_my_brush_get_setting (GtkMyBrush * b, int id)
+void gtk_my_brush_remove_mapping (GtkMyBrush * b, int id, int input)
 {
-  if (id >= 0 && id < BRUSH_SETTINGS_COUNT) {
-    return b->settings[id].base_value;
-  } else {
-    g_print ("brush_get_setting() with invalid id %d\n", id);
-    g_assert (0);
-    return 0;
-  }
+  g_assert (id >= 0 && id < BRUSH_SETTINGS_COUNT);
+  g_assert (input >= 0 && input < INPUT_COUNT);
+
+  g_free(b->settings[id].mapping[input]);
+  b->settings[id].mapping[input] = NULL;
 }
 
 void

@@ -1,6 +1,6 @@
 "tune brush window"
 import gtk
-import brush
+import brush, brushsettings
 
 
 class Window(gtk.Window):
@@ -18,7 +18,7 @@ class Window(gtk.Window):
 
         # FIXME: why does the scrolledwindow not work any more?
 
-        table = gtk.Table(3, len(brush.brushsettings))
+        table = gtk.Table(3, len(brushsettings.settings))
         #table.set_border_width(4)
         #table.set_col_spacings(15)
         scroll.add_with_viewport(table)
@@ -29,10 +29,10 @@ class Window(gtk.Window):
         def default_clicked_cb(window, adj, default):
             adj.set_value(default)
         def value_changed_cb(adj, index, app):
-            app.brush.set_setting(index, adj.get_value())
+            app.brush.settings[index].set_base_value(adj.get_value())
         self.adj = []
         self.app.brush_adjustment = {}
-        for s in brush.brushsettings:
+        for s in brushsettings.settings:
             eb = gtk.EventBox()
             l = gtk.Label(s.name)
             l.set_alignment(0, 0.5)
@@ -59,8 +59,8 @@ class Window(gtk.Window):
         self.set_size_request(450, 500)
 
     def brush_selected_cb(self, brush_selected):
-        for s in brush.brushsettings:
-            self.adj[s.index].set_value(self.app.brush.get_setting(s.index))
+        for s in brushsettings.settings:
+            self.adj[s.index].set_value(self.app.brush.settings[s.index].base_value)
 
 
 
