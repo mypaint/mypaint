@@ -4,7 +4,7 @@ LDFLAGS = $(PROFILE) -O1 `pkg-config --libs gtk+-2.0` -Wall -Werror
 
 all:	drawmain
 
-drawmain:	surface.o drawmain.o brush.o
+drawmain:	surface.o drawmain.o brush.o helpers.o
 
 brush_settings.inc:	brush.h generate.py
 	./generate.py

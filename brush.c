@@ -3,7 +3,7 @@
 #include <glib.h>
 #include <math.h>
 #include "brush.h"
-
+#include "helpers.h"
 
 #include "brush_settings.inc"
 
@@ -117,7 +117,6 @@ void brush_prepare_and_draw_dab (Brush * b, Surface * s)
 {
   float x, y, radius_log, radius, opaque;
   float speed;
-  float noise;
 
   g_assert (b->pressure >= 0 && b->pressure <= 1);
 
@@ -125,12 +124,26 @@ void brush_prepare_and_draw_dab (Brush * b, Surface * s)
   radius_log = b->radius_logarithmic;
   opaque = b->opaque;
   
-  noise = g_random_double () - 0.5; // [-0.5..0.5)
   speed = sqrt(sqr(b->dx) + sqr(b->dy))/b->dtime;
-  opaque *= b->pressure / 8.0; // TODO: make configurable
+  // TODO: think about it: is this setting enough?
+  opaque *= (b->opaque_by_pressure * b->pressure + (1-b->opaque_by_pressure));
   //b->radius = 2.0 + sqrt(sqrt(speed));
-  radius_log += 0.1 * b->pressure; // TODO: make configurable
-  radius_log += noise; // TODO: make configurable
+  radius_log += b->pressure * b->radius_by_pressure;
+
+  if (b->radius_by_random) {
+    radius_log += (g_random_double () - 0.5) * b->radius_by_random;
+  }
+
+  if (b->offset_by_random) {
+    x += gauss_noise () * b->offset_by_random;
+    y += gauss_noise () * b->offset_by_random;
+  }
+
+  if (b->offset_by_speed) {
+    x += b->dx * b->offset_by_speed; // * radius?
+    y += b->dy * b->offset_by_speed;
+  }
+
 
 #if 0
   i = 0;
