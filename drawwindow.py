@@ -42,6 +42,8 @@ class Window(gtk.Window):
             </menu>
             <menu action='BrushMenu'>
               <menuitem action='InvertColor'/>
+              <menuitem action='Bigger'/>
+              <menuitem action='Smaller'/>
             </menu>
             <menu action='ContextMenu'>
               <menuitem action='Context00'/>
@@ -67,6 +69,8 @@ class Window(gtk.Window):
             ('Quit',        None, 'Quit', '<control>Q', None, self.quit_cb),
             ('BrushMenu',   None, 'Brush'),
             ('InvertColor', None, 'Invert Color', None, None, self.invert_color_cb),
+            ('Bigger', None, 'Bigger', None, None, self.brush_bigger_cb),
+            ('Smaller', None, 'Smaller', None, None, self.brush_smaller_cb),
             ('ContextMenu', None, 'Context'),
             ('Context00',    None, 'Context 0', 'a', None, self.context_cb),
             ('Context01',    None, 'Context 1', 's', None, self.context_cb),
@@ -97,6 +101,14 @@ class Window(gtk.Window):
         
     def invert_color_cb(self, action):
         self.app.brush.invert_color()
+        
+    def brush_bigger_cb(self, action):
+        adj = self.app.brush_adjustment['radius_logarithmic']
+        adj.set_value(adj.get_value() + 0.3)
+        
+    def brush_smaller_cb(self, action):
+        adj = self.app.brush_adjustment['radius_logarithmic']
+        adj.set_value(adj.get_value() - 0.3)
         
     def open_cb(self, action):
         dialog = gtk.FileChooserDialog("Open..", self,

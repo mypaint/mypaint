@@ -30,6 +30,7 @@ class Window(gtk.Window):
         def value_changed_cb(adj, index, app):
             app.brush.set_setting(index, adj.get_value())
         self.adj = []
+        self.app.brush_adjustment = {}
         for s in brush.brushsettings:
             eb = gtk.EventBox()
             l = gtk.Label(s.name)
@@ -40,6 +41,7 @@ class Window(gtk.Window):
             adj = gtk.Adjustment(value=s.default, lower=s.min, upper=s.max, step_incr=0.01, page_incr=0.1)
             adj.connect('value-changed', value_changed_cb, s.index, self.app)
             self.adj.append(adj)
+            self.app.brush_adjustment[s.cname] = adj
             h = gtk.HScale(adj)
             h.set_digits(2)
             h.set_draw_value(True)
