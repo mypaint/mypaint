@@ -20,6 +20,7 @@ struct trainer {
 struct trainer * trainer_create(int num_inputs, int num_outputs);
 struct trainer * trainer_create_from_file(const char *filename);
 void trainer_save(struct trainer * t, const char *filename);
+void trainer_save_textdata(struct trainer * t, const char *filename);
 void trainer_destroy(struct trainer * t);
 
 /* once max_data is reached, this replaces a random old data piece */

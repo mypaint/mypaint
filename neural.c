@@ -73,11 +73,12 @@ neural_process_movement (float dt, float x, float y, float z, float d_dist)
     d_dist = sqrt(dx*dx + dy*dy);
     update_avg (avg_speed, speed_measure_time, (d_dist/speed_measure_time)*avg_pressure[1]);
     /*printf ("avg_speed = %3.3f %3.3f %3.3f %3.3f %3.3f\n", avg_speed[4], avg_speed[3], avg_speed[2], avg_speed[1], avg_speed[0]);*/
-    speed_measure_time = 0;
     if (clear_dist > 0) {
       /* forget that the image was cleared as drawing goes on    (T=30.0) */
-      clear_dist *= exp(-(speed_measure_time*avg_pressure[1])*M_LN2/30.0);
+      /*ENABLE, needs re-recording:
+        clear_dist *= exp(-(speed_measure_time*avg_pressure[1])*M_LN2/30.0);*/
     }
+    speed_measure_time = 0;
   }
 
   nn_datapoint_time += dt;
@@ -168,6 +169,8 @@ neural_finish (void)
 {
   trainer_save(ann, "nntrainer.dat");
   g_print ("Saved ANN to file\n");
+  trainer_save_textdata(ann, "nntrainer.textdata");
+  g_print ("Saved textdata to file\n");
   trainer_destroy(ann);
 }
 
