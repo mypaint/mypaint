@@ -101,13 +101,13 @@ init_input (void)
 static void
 brush_bigger (GtkAction *action, GtkWidget *window)
 {
-  global_brush->radius *= 1.4;
+  //global_brush->radius *= 1.4;
 }
 
 static void
 brush_smaller (GtkAction *action, GtkWidget *window)
 {
-  global_brush->radius /= 1.4;
+  //global_brush->radius /= 1.4;
 }
 
 static void
@@ -172,6 +172,56 @@ static const char * ui_description =
 "  </menubar>"
 "</ui>"
 ;
+
+static void
+on_hscale_brushoption_value_changed (GtkRange *range, gpointer user_data)
+{
+  int id;
+  id = GPOINTER_TO_INT (user_data);
+  brush_set_setting (global_brush, id, gtk_range_get_value (range));
+}
+
+void
+create_brushsettings_window ()
+{
+  GtkWidget *window_brushoptions;
+  GtkWidget *table1;
+  GtkWidget *hscale;
+  GtkWidget *label;
+  int num_settings, i;
+  BrushSettingInfo * setting;
+
+  for (i=0; brush_setting_infos[i].cname; i++) ;
+  num_settings = i;
+
+  window_brushoptions = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  gtk_window_set_title (GTK_WINDOW (window_brushoptions), "Brush settings");
+
+  table1 = gtk_table_new (i, 2, FALSE);
+
+  gtk_container_add (GTK_CONTAINER (window_brushoptions), table1);
+  gtk_container_set_border_width (GTK_CONTAINER (table1), 4);
+  gtk_table_set_col_spacings (GTK_TABLE (table1), 15);
+
+  for (i=0; i<num_settings; i++) {
+    setting = &brush_setting_infos[i];
+    hscale = gtk_hscale_new (GTK_ADJUSTMENT (gtk_adjustment_new (setting->default_value, setting->min, setting->max, 0, 0, 0)));
+    gtk_table_attach (GTK_TABLE (table1), hscale, 1, 2, i, i+1,
+                      (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
+                      (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
+    label = gtk_label_new (setting->name);
+    gtk_table_attach (GTK_TABLE (table1), label, 0, 1, i, i+1,
+                      (GtkAttachOptions) (GTK_FILL),
+                      (GtkAttachOptions) (0), 0, 0);
+    gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
+    
+    g_signal_connect ((gpointer) hscale, "value_changed",
+                      G_CALLBACK (on_hscale_brushoption_value_changed),
+                      GINT_TO_POINTER (i) );
+  }
+
+  gtk_widget_show_all (window_brushoptions);
+}
 
 int
 main (int argc, char **argv)
@@ -280,6 +330,8 @@ main (int argc, char **argv)
   gtk_container_add (GTK_CONTAINER (v), statusline);
 
   gtk_widget_show_all (w);
+
+  create_brushsettings_window ();
 
   /*
   gtk_timeout_add (50, (GtkFunction) dry_timer, da);

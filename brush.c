@@ -4,15 +4,60 @@
 #include <math.h>
 #include "brush.h"
 
+BrushSettingInfo brush_setting_infos[] = {
+  // cname, name, flags, min, default_value, max, helptext
+  { "radius_logarithmic", "Radius", BSF_LOGARITHMIC, -0.5, 2.0, 5.0, "basic brush radius" },
+  { "opaque", "Opaque", BSF_NONE, 0.0, 1.0, 1.0, "0 means brush is transparent, 1 fully visible" },
+  { "dabs_per_radius", "Dabs per Radius", BSF_NONE, 0.0, 2.0, 50.0, "number of brushdabs to do while the mouse moves a distance of one radius (1/spacing)" },
+  { "dabs_per_second", "Dabs per Second", BSF_NONE, 0.0, 0.0, 50.0, "number of brushdabs to each second, no matter whether the mouse moved" },
+  { 0, 0, 0, 0, 0, 0, 0 }
+};
+
 Brush * brush_create ()
 {
+  int i;
   Brush * b;
   b = g_new0 (Brush, 1);
-  b->radius = 4.0;
-  b->spacing = 0.5;
-  b->opaque = 1.0;
   b->queue_draw_widget = NULL;
+  for (i=0; brush_setting_infos[i].cname; i++) {
+    brush_set_setting (b, i, brush_setting_infos[i].default_value);
+  }
   return b;
+}
+
+void brush_set_setting (Brush * b, int id, float value)
+{
+  // FIXME: scirpt to generate this code
+  if (id == 0) {
+    b->radius_logarithmic = value;
+  } else if (id == 1) {
+    b->opaque = value;
+  } else if (id == 2) {
+    b->dabs_per_radius = value;
+  } else if (id == 3) {
+    b->dabs_per_second = value;
+  } else {
+    g_print ("brush_set_setting() with invalid id %d\n", id);
+    g_assert (0);
+  }
+}
+
+float brush_get_setting (Brush * b, int id)
+{
+  // FIXME: scirpt to generate this code
+  if (id == 0) {
+    return b->radius_logarithmic;
+  } else if (id == 1) {
+    return b->opaque;
+  } else if (id == 2) {
+    return b->dabs_per_radius;
+  } else if (id == 3) {
+    return b->dabs_per_second;
+  } else {
+    g_print ("brush_get_setting() with invalid id %d\n", id);
+    g_assert (0);
+    return 0;
+  }
 }
 
 Brush * brush_create_copy (Brush * old_b)
@@ -35,6 +80,7 @@ void brush_reset (Brush * b)
 
 void brush_mutate (Brush * b)
 {
+#if 0
   int i;
   for (i=0; i<F_WEIGHTS; i++) {
     /*
@@ -43,43 +89,47 @@ void brush_mutate (Brush * b)
       }*/
     b->weights[i] += g_random_double_range(-b->variations[i], b->variations[i]);
   }
+#endif
 }
 
-void brush_dab (Brush * b, Surface * s) {
-  double r_fringe;
+void draw_brush_dab (Surface * s, GtkWidget * queue_draw_widget, 
+                     float x, float y, 
+                     float radius, float opaque_float,
+                     guchar * color) {
+  float r_fringe;
   int x0, y0;
   int x1, y1;
   int xp, yp;
   guchar *rgb;
-  double xx, yy, rr;
-  double radius2;
+  float xx, yy, rr;
+  float radius2;
   int opaque;
   guchar c[3];
   if (!s) return;
 
-  r_fringe = b->radius + 1;
-  x0 = floor (b->x - r_fringe);
-  y0 = floor (b->y - r_fringe);
-  x1 = ceil (b->x + r_fringe);
-  y1 = ceil (b->y + r_fringe);
+  r_fringe = radius + 1;
+  x0 = floor (x - r_fringe);
+  y0 = floor (y - r_fringe);
+  x1 = ceil (x + r_fringe);
+  y1 = ceil (y + r_fringe);
   if (x0 < 0) x0 = 0;
   if (y0 < 0) y0 = 0;
   if (x1 > s->w) x1 = s->w;
   if (y1 > s->h) y1 = s->h;
-  rr = sqr(b->radius);
-  opaque = floor(b->opaque * 256 + 0.5);
+  rr = sqr(radius);
+  opaque = floor(opaque_float * 256 + 0.5);
   if (opaque <= 0) return;
   if (opaque > 256) opaque = 256;
-  c[0] = b->color[0];
-  c[1] = b->color[1];
-  c[2] = b->color[2];
-  radius2 = sqr(b->radius);
+  c[0] = color[0];
+  c[1] = color[1];
+  c[2] = color[2];
+  radius2 = sqr(radius);
 
   for (yp = y0; yp < y1; yp++) {
-    yy = (yp + 0.5 - b->y);
+    yy = (yp + 0.5 - y);
     yy *= yy;
     for (xp = x0; xp < x1; xp++) {
-      xx = (xp + 0.5 - b->x);
+      xx = (xp + 0.5 - x);
       xx *= xx;
       rr = yy + xx;
       rgb = PixelXY(s, xp, yp);
@@ -92,31 +142,35 @@ void brush_dab (Brush * b, Surface * s) {
     }
   }
   
-  if (b->queue_draw_widget) {
-    gtk_widget_queue_draw_area (b->queue_draw_widget,
-                                floor(b->x - (b->radius+1)),
-                                floor(b->y - (b->radius+1)),
+  if (queue_draw_widget) {
+    gtk_widget_queue_draw_area (queue_draw_widget,
+                                floor(x - (radius+1)),
+                                floor(y - (radius+1)),
                                 /* FIXME: think about it exactly */
-                                ceil (2*(b->radius+1)),
-                                ceil (2*(b->radius+1))
+                                ceil (2*(radius+1)),
+                                ceil (2*(radius+1))
                                 );
   }
 }
 
 // high-level part of before each dab
-void brush_prepare_dab (Brush * b)
+void brush_prepare_and_draw_dab (Brush * b, Surface * s)
 {
+  float x, y, radius_log, radius, opaque;
   float speed;
   float noise;
-  float sum;
-  noise = g_random_double (); /* [0..1) */
+
+  x = b->x; y = b->y;
+  radius_log = b->radius_logarithmic;
+  opaque = b->opaque;
+  
+  noise = g_random_double () - 0.5; // [-0.5..0.5)
   speed = sqrt(sqr(b->dx) + sqr(b->dy))/b->dtime;
-  b->opaque = b->pressure / 8.0;
-  //b->radius = 0.1 + 60 * b->pressure;
+  opaque *= b->pressure / 8.0; // TODO: make configurable
   //b->radius = 2.0 + sqrt(sqrt(speed));
-  sum = 0;
-  b->radius = 7*noise + 4.0 + b->pressure / 2.0;
-  b->radius = b->radius * b->pressure + 0.01;
+  radius_log += 0.1 * b->pressure; // TODO: make configurable
+  radius_log += noise; // TODO: make configurable
+
 #if 0
   i = 0;
   b->opaque  = 0;
@@ -132,36 +186,48 @@ void brush_prepare_dab (Brush * b)
   g_assert (i == F_WEIGHTS);
 #endif
 
-  if (b->radius > 200) b->radius = 200;
-  if (b->radius < 0) b->radius = 0;
-  if (b->opaque < 0) b->opaque = 0;
-  if (b->opaque > 1) b->opaque = 1;
+  radius = exp(radius_log);
+
+  g_assert(radius > 0);
+  if (radius > 200) radius = 200;
+  g_assert(opaque >= 0);
+  g_assert(opaque <= 1);
+
+  // used for interpolation later
+  b->tmp_one_over_radius = 1/radius;
+  
+  draw_brush_dab (s, b->queue_draw_widget,
+                  x, y, radius, opaque, b->color);
 }
 
 float brush_count_dabs_to (Brush * b, float x, float y, float pressure, float time)
 {
-  float dx, dy;
-  float d_dist;
-  if (b->radius  < 1.2) b->radius = 1.2;
-  if (b->spacing < 0.01) b->spacing = 0.01;
+  float dx, dy, dt;
+  float res1, res2;
+  if (b->tmp_one_over_radius == 0) b->tmp_one_over_radius = 1.0/exp(b->radius_logarithmic);
+  if (b->tmp_one_over_radius > 2) b->tmp_one_over_radius = 2;
+  if (b->tmp_one_over_radius < 1/500.0) b->tmp_one_over_radius = 1/500.0;
   dx = x - b->x;
   dy = y - b->y;
-  // FIXME: could count time a bit, too...
-  d_dist = sqrt (dx*dx + dy*dy);
-  return d_dist / (b->spacing*b->radius);
+  //dp = pressure - b->pressure; // Not useful?
+  dt = time - b->time;
+
+  res1 = sqrt (dx*dx + dy*dy) * b->tmp_one_over_radius * b->dabs_per_radius;
+  res2 = dt * b->dabs_per_second;
+  return res1 + res2;
 }
 
 void brush_stroke_to (Brush * b, Surface * s, float x, float y, float pressure, float time)
 {
   if (time <= b->time) return;
 
-  if (b->time == 0) {
+  if (b->time == 0 || time - b->time > 10) {
     // reset
     b->x = x;
     b->y = y;
     b->pressure = pressure;
     b->time = time;
-    brush_dab (b, s);
+    //brush_dab (b, s);
     return;
   }
 
@@ -182,8 +248,7 @@ void brush_stroke_to (Brush * b, Surface * s, float x, float y, float pressure, 
 
     b->dist     -= 1.0;
     
-    brush_prepare_dab (b);
-    brush_dab (b, s);
+    brush_prepare_and_draw_dab (b, s);
   }
 }
 
