@@ -25,13 +25,15 @@ typedef struct {
   float opaque;
   //% radius % BSF_LOGARITHMIC % -0.5 % 2.0 % 5.0 % basic brush radius (logarithmic)\n 0.7 means 2 pixels\n 3.0 means 20 pixels
   float radius_logarithmic;
-  //% dabs per basic radius % BSF_NONE % 0.0 % 0.0 % 20.0 % dabs to draw while the pointer moves one brush radius
+  //% hardness % BSF_NONE % 0.0 % 1.0 % 1.0 % 0 hard brush-circle borders, 1 fuzzy borders
+  float hardness;
+  //% dabs per basic radius % BSF_NONE % 0.0 % 0.0 % 5.0 % dabs to draw while the pointer moves one brush radius
   float dabs_per_basic_radius;
-  //% dabs per actual radius % BSF_NONE % 0.0 % 2.0 % 20.0 % same as above, but the radius actually drawn is used, which might change dynamically
+  //% dabs per actual radius % BSF_NONE % 0.0 % 2.0 % 5.0 % same as above, but the radius actually drawn is used, which might change dynamically
   float dabs_per_actual_radius;
   //% dabs per second % BSF_NONE % 0.0 % 0.0 % 80.0 % dabs to draw each second, no matter how far the pointer moves
   float dabs_per_second;
-  //% opaque by pressure % BSF_NONE % 0.0 % 1.0 % 1.0 % 0.0 means oppaque stays as given above\n1.0 means opaque is multiplied by pressure
+  //% opaque by pressure % BSF_NONE % 0.0 % 1.0 % 1.0 % 0.0 means opaque stays as given above\n1.0 means opaque is multiplied by pressure
   float opaque_by_pressure;
   //% radius by pressure % BSF_NONE % -10.0 % 0.1 % 10.0 % how much more pressure will increase the radius\nwithout pressure, the radius is unchanged\n 0.0 disable\n 0.7 double radius at full pressure\n-0.7 half radius at full pressure\n3.0 20 times radius at full pressure
   float radius_by_pressure;
@@ -41,6 +43,8 @@ typedef struct {
   float offset_by_random;
   //% offset by speed % BSF_NONE % -30.0 % 0.0 % 30.0 % change position depending on pointer speed\n= 0 disable\n> 0 draw where the pointer moves to\n< 0 draw where the pointer comes from
   float offset_by_speed;
+  //% saturation slowdown % BSF_NONE % -1.0 % 0.0 % 1.0 % when painting black, it soon gets black completely; this setting controls how fast the final brush color is taken\n 1.0 slowly\n 0.0 disable\n-1.0 even faster
+  float saturation_slowdown;
 } Brush;
 
 typedef struct {

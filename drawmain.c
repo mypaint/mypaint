@@ -132,6 +132,12 @@ invert_colors (GtkAction *action, GtkWidget *window)
   global_brush->color[0] = 255 - global_brush->color[0];
   global_brush->color[1] = 255 - global_brush->color[1];
   global_brush->color[2] = 255 - global_brush->color[2];
+
+  /*
+  global_brush->color[0] = g_random_int_range (0, 256);
+  global_brush->color[1] = g_random_int_range (0, 256);
+  global_brush->color[2] = g_random_int_range (0, 256);
+  */
 }
 
 static void
