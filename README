@@ -9,6 +9,10 @@ There is no 'make install' yet.
 Required: pygtk, python, gtk
 Recommended: a pressure sensitive input device (graphic tablet)
 
+To use my brushes in dot-mypaint/ directory, copy the contents
+to ~/.mypaint/
+
 - Martin Renold <martinxyz@gmx.ch>
 svn://old.homeip.net/code/mypaint
 http://old.homeip.net/martin/drawing
+
