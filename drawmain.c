@@ -10,36 +10,54 @@ Brush * global_brush;
 
 GtkWidget *statusline;
 
+
 static gint
-my_button_press (GtkWidget *widget, GdkEventButton *event)
+my_button_updown (GtkWidget *widget, GdkEventButton *event)
 {
-  /*
-  double pressure;
-  gdk_event_get_axis ((GdkEvent *)event, GDK_AXIS_PRESSURE, &pressure);
-  g_print ("button press %f %f %f\n", event->x, event->y, pressure);
+  { // WARNING: code duplication, forced by different GdkEvent* structs.
+    double pressure;
+    if (!gdk_event_get_axis ((GdkEvent *)event, GDK_AXIS_PRESSURE, &pressure)) {
+      pressure = (event->state & 256) ? 0.5 : 0;
+    }
+    //g_print ("motion %f %f %f %d\n", event->x, event->y, pressure, event->state);
+    g_assert (pressure >= 0 && pressure <= 1);
+    
+    global_brush->queue_draw_widget = widget;
+    brush_stroke_to (global_brush, global_surface, event->x, event->y, pressure, 
+                     event->time / 1000.0 /* in seconds */ );
+  } // END of duplicated code
+  // TODO: actually react on button, if it was not triggered by pressure treshold
   return TRUE;
-  */
-  return FALSE;
 }
 
 static gint
 my_motion (GtkWidget *widget, GdkEventMotion *event)
 {
-  double pressure;
-
-  if (!gdk_event_get_axis ((GdkEvent *)event, GDK_AXIS_PRESSURE, &pressure)) {
-    // no pressure information
-    pressure = (event->state & 256) ? 0.5 : 0;
-  }
-  //g_print ("motion %f %f %f %d\n", event->x, event->y, pressure, event->state);
-  g_assert (pressure >= 0 && pressure <= 1);
-
-  global_brush->queue_draw_widget = widget;
-  brush_stroke_to (global_brush, global_surface, event->x, event->y, pressure, 
-                   event->time / 1000.0 /* in seconds */ );
-
-
+  { // WARNING: code duplication, forced by different GdkEvent* structs.
+    double pressure;
+    if (!gdk_event_get_axis ((GdkEvent *)event, GDK_AXIS_PRESSURE, &pressure)) {
+      pressure = (event->state & 256) ? 0.5 : 0;
+    }
+    //g_print ("motion %f %f %f %d\n", event->x, event->y, pressure, event->state);
+    g_assert (pressure >= 0 && pressure <= 1);
+    
+    global_brush->queue_draw_widget = widget;
+    brush_stroke_to (global_brush, global_surface, event->x, event->y, pressure, 
+                     event->time / 1000.0 /* in seconds */ );
+  } // END of duplicated code
   return TRUE;
+}
+
+gboolean
+my_proximity_inout (GtkWidget *widget, GdkEventProximity *event)
+{
+  g_print ("Proximity in/out: %s.\n", event->device->name);
+  // TODO: change brush...
+  // note, event is not received if it does not happen in our window,
+  // so the motion event might actually be the first one to see a new device
+  // Stroke certainly finished now.
+  brush_reset (global_brush);
+  return FALSE;
 }
 
 static gint
@@ -238,7 +256,6 @@ main (int argc, char **argv)
 {
   GtkWidget *w;
   GtkWidget *v;
-  GtkWidget *eb;
   GtkWidget *da;
   int xs = SIZE;
   int ys = SIZE;
@@ -310,31 +327,36 @@ main (int argc, char **argv)
     gtk_accel_map_load ("accelmap.conf");
   }
 
-  eb = gtk_event_box_new ();
-  gtk_container_add (GTK_CONTAINER (v), eb);
-
-  gtk_widget_set_extension_events (eb, GDK_EXTENSION_EVENTS_ALL);
-
-  gtk_widget_set_events (eb, GDK_EXPOSURE_MASK
-			 | GDK_LEAVE_NOTIFY_MASK
-			 | GDK_BUTTON_PRESS_MASK
-			 | GDK_KEY_PRESS_MASK
-			 | GDK_POINTER_MOTION_MASK
-			 | GDK_PROXIMITY_OUT_MASK);
-
-  GTK_WIDGET_SET_FLAGS(eb, GTK_CAN_FOCUS); /* for key events */
-
-  gtk_signal_connect (GTK_OBJECT (eb), "button_press_event",
-		      (GtkSignalFunc) my_button_press, NULL);
-  gtk_signal_connect (GTK_OBJECT (eb), "motion_notify_event",
-		      (GtkSignalFunc) my_motion, NULL);
-
   da = gtk_drawing_area_new ();
   gtk_drawing_area_size (GTK_DRAWING_AREA (da), xs, ys);
-  gtk_container_add (GTK_CONTAINER (eb), da);
-
   gtk_signal_connect (GTK_OBJECT (da), "expose_event",
 		      (GtkSignalFunc) my_expose, global_surface);
+
+  gtk_container_add (GTK_CONTAINER (v), da);
+
+  gtk_widget_set_extension_events (da, GDK_EXTENSION_EVENTS_ALL);
+
+  gtk_widget_set_events (da, GDK_EXPOSURE_MASK
+			 | GDK_LEAVE_NOTIFY_MASK
+			 | GDK_BUTTON_PRESS_MASK
+                         | GDK_BUTTON_RELEASE
+			 | GDK_POINTER_MOTION_MASK
+			 | GDK_PROXIMITY_IN_MASK
+			 | GDK_PROXIMITY_OUT_MASK
+                         );
+
+  GTK_WIDGET_SET_FLAGS(da, GTK_CAN_FOCUS); /* for key events */
+
+  gtk_signal_connect (GTK_OBJECT (da), "motion_notify_event",
+		      (GtkSignalFunc) my_motion, NULL);
+  gtk_signal_connect (GTK_OBJECT (da), "button_press_event",
+		      (GtkSignalFunc) my_button_updown, NULL);
+  gtk_signal_connect (GTK_OBJECT (da), "button_release_event",
+		      (GtkSignalFunc) my_button_updown, NULL);
+  gtk_signal_connect (GTK_OBJECT (da), "proximity_in_event",
+		      (GtkSignalFunc) my_proximity_inout, NULL);
+  gtk_signal_connect (GTK_OBJECT (da), "proximity_out_event",
+		      (GtkSignalFunc) my_proximity_inout, NULL);
 
   statusline = gtk_label_new ("hello world");
   gtk_container_add (GTK_CONTAINER (v), statusline);
