@@ -124,7 +124,7 @@ surface_render (Surface * s,
                 int x0, int y0,
                 int w, int h)
 {
-  /* could be optimized much, but probably not necessary */
+  /* could be optimized much, important if big brush is used */
   int x, y;
   /*g_print("%d %d\n", w, h);*/
   byte * rgb_line = dst;

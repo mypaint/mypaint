@@ -1,4 +1,5 @@
 #include <gtk/gtk.h>
+#include <gdk/gdkkeysyms.h>
 #include <stdlib.h>
 #include <math.h>
 #include "surfacepaint.h"
@@ -33,9 +34,9 @@ my_button_press (GtkWidget *widget, GdkEventButton *event)
   lastx = event->x;
   lasty = event->y;
   dist = 0;
-  */
 
   gtk_widget_queue_draw (widget);
+  */
   return TRUE;
 }
 
@@ -62,14 +63,8 @@ my_motion (GtkWidget *widget, GdkEventMotion *event)
       lastpainty = lastpainty + (event->y - lastpainty) * spacing*brush.radius / dist;
       lastpaintpress = lastpaintpress + (event->pressure - lastpaintpress) * spacing*brush.radius / dist;
       dist -= spacing*brush.radius;
-      /*
-      if (lastpaintpress > 0.7) brush.radius *= 1.0 + (lastpaintpress-0.7)*0.03;
-      if (lastpaintpress < 0.3 && lastpaintpress > 0.0) brush.radius /= 1.0 + (0.3-lastpaintpress)*0.03;
-      if (brush.radius < 0.6) brush.radius = 0.6;
-      if (brush.radius > 60) brush.radius = 60;
-      */
 
-      brush.opaque = lastpaintpress / 4.0;
+      brush.opaque = lastpaintpress / 8.0;
       surface_draw (screen,
                     lastpaintx,
                     lastpainty,
@@ -88,6 +83,18 @@ my_motion (GtkWidget *widget, GdkEventMotion *event)
   lasty = event->y;
 
   return TRUE;
+}
+
+static gint
+my_keypress (GtkWidget *widget, GdkEventKey *event)
+{
+  g_print("my_keypress\n");
+  if (event->keyval == GDK_a) 
+    {
+      g_print("A pressed\n");
+      return TRUE;
+    }
+  return FALSE;
 }
 
 static gint
@@ -184,7 +191,7 @@ main (int argc, char **argv)
 
   screen = new_surface (xs, ys);
 
-  brush.radius = 8.0;
+  brush.radius = 3.0;
   brush.color[0] = 0;
   brush.color[1] = 0;
   brush.color[2] = 0;
@@ -210,10 +217,14 @@ main (int argc, char **argv)
 			 | GDK_POINTER_MOTION_MASK
 			 | GDK_PROXIMITY_OUT_MASK);
 
+  GTK_WIDGET_SET_FLAGS(eb, GTK_CAN_FOCUS); /* for key events */
+
   gtk_signal_connect (GTK_OBJECT (eb), "button_press_event",
 		      (GtkSignalFunc) my_button_press, NULL);
   gtk_signal_connect (GTK_OBJECT (eb), "motion_notify_event",
 		      (GtkSignalFunc) my_motion, NULL);
+  gtk_signal_connect (GTK_OBJECT (eb), "key_press_event",
+		      (GtkSignalFunc) my_keypress, NULL);
 
   da = gtk_drawing_area_new ();
   gtk_drawing_area_size (GTK_DRAWING_AREA (da), xs, ys);
