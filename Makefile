@@ -7,14 +7,14 @@ DEFSDIR = `pkg-config --variable=defsdir pygtk-2.0`
 
 all:	mydrawwidget.so
 
-gtkmybrush_settings.inc:	gtkmybrush.h generate.py
+brushsettings.h:	generate.py
 	./generate.py
 
-gtkmybrush.o:	gtkmybrush_settings.inc gtkmybrush.c
+gtkmybrush.o:	brushsettings.h gtkmybrush.c
 	cc $(CFLAGS) -c -o $@ gtkmybrush.c
 
 clean:
-	rm *.o *.so gtkmybrush_settings.inc mydrawwidget.defs mydrawwidget.defs.c brushsettings.py
+	rm *.o *.so brushsettings.h mydrawwidget.defs mydrawwidget.defs.c
 
 mydrawwidget.defs.c: mydrawwidget.defs mydrawwidget.override
 	pygtk-codegen-2.0 --prefix mydrawwidget \

@@ -12,21 +12,35 @@ class Window(gtk.Window):
         self.set_title('Curves')
 
         inputs = ['pressure', 'speed', 'speed2']
-        table = gtk.Table(1, 2*len(inputs))
+        table = gtk.Table(1, len(inputs))
         self.add(table)
 
         self.tooltips = gtk.Tooltips()
 
         pos = 0
         for input in inputs:
+            expander = gtk.Expander(label=input)
+            expander.set_expanded(False)
+
+            t = gtk.Table(3, 4)
             c =  CurveWidget()
+            t.attach(c, 0, 2, 0, 3, gtk.EXPAND | gtk.FILL, gtk.EXPAND | gtk.FILL, 5, 0)
+            l1 = gtk.Label('+3.0')
+            l2 = gtk.Label(' 0.0')
+            l3 = gtk.Label('-3.0')
+            t.attach(l1, 2, 3, 0, 1, gtk.FILL, gtk.FILL, 5, 0)
+            t.attach(l2, 2, 3, 1, 2, gtk.FILL, gtk.FILL, 5, 0)
+            t.attach(l3, 2, 3, 2, 3, gtk.FILL, gtk.FILL, 5, 0)
+            l4 = gtk.Label('0.0')
+            l5 = gtk.Label('1.0')
+            t.attach(l4, 0, 1, 3, 4, gtk.FILL, gtk.FILL, 5, 0)
+            t.attach(l5, 1, 2, 3, 4, gtk.FILL, gtk.FILL, 5, 0)
+            expander.add(t)
 
-            l = gtk.Label(input)
-            table.attach(l, 0, 1, pos, pos+1, gtk.FILL, gtk.FILL, 5, 0)
+            table.attach(expander, 0, 1, pos, pos+1, gtk.EXPAND | gtk.FILL, gtk.EXPAND | gtk.FILL, 5, 0)
             pos += 1
-            table.attach(c, 0, 1, pos, pos+1, gtk.EXPAND | gtk.FILL, gtk.EXPAND | gtk.FILL, 5, 0)
-            pos += 1
-
+        #filler = ...
+        #table.attach(filler, 0, 1, pos, pos+1, gtk.EXPAND | gtk.FILL, gtk.EXPAND | gtk.FILL, 5, 0)
 
         self.set_size_request(450, 500)
 
