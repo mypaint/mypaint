@@ -6,7 +6,6 @@
 #ifndef __surface_h__
 #define __surface_h__
 
-#include <gtk/gtk.h>
 #include "helpers.h"
 
 #define sqr(x) ((x)*(x))

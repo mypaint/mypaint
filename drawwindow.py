@@ -1,16 +1,11 @@
 "the main drawing window"
-import gtk
-import mydrawwidget
-import os
-
+import gtk, os
+import infinitemydrawwidget
 
 class Window(gtk.Window):
     def __init__(self, app):
         gtk.Window.__init__(self)
         self.app = app
-
-        self.viewport_x = 0
-        self.viewport_y = 0
 
         self.set_title('MyPaint')
         def delete_event_cb(window, event, app): app.quit()
@@ -22,9 +17,7 @@ class Window(gtk.Window):
         self.create_ui()
         vbox.pack_start(self.ui.get_widget('/Menubar'), expand=False)
 
-        # maximum useful size
-        # FIXME: that's /my/ screen resolution
-        self.mdw = mydrawwidget.MyDrawWidget(1280, 1024);
+        self.mdw = infinitemydrawwidget.InfiniteMyDrawWidget()
         self.mdw.clear()
         self.mdw.set_brush(self.app.brush)
         vbox.pack_start(self.mdw)
@@ -203,16 +196,12 @@ class Window(gtk.Window):
         v -= 0.08
         cs.set_color_hsv((h, s, v))
         
-
     def open_file(self, filename):
-        pixbuf = gtk.gdk.pixbuf_new_from_file(filename)
-        self.mdw.set_from_pixbuf (pixbuf)
+        self.mdw.load(filename)
         self.statusbar.push(1, 'Loaded from' + filename)
 
     def save_file(self, filename):
-        #pixbuf = self.mdw.get_as_pixbuf()
-        pixbuf = self.mdw.get_nonwhite_as_pixbuf()
-        pixbuf.save(filename, 'png')
+        self.mdw.save(filename)
         self.statusbar.push(1, 'Saved to' + filename)
 
     def open_cb(self, action):
@@ -271,16 +260,15 @@ class Window(gtk.Window):
         step = 20
         name = action.get_name()
         if name == 'MoveLeft':
-            self.viewport_x -= step
+            self.mdw.scroll(-step, 0)
         elif name == 'MoveRight':
-            self.viewport_x += step
+            self.mdw.scroll(+step, 0)
         elif name == 'MoveUp':
-            self.viewport_y -= step
+            self.mdw.scroll(0, -step)
         elif name == 'MoveDown':
-            self.viewport_y += step
+            self.mdw.scroll(0, +step)
         else:
             assert 0
-        self.mdw.set_viewport(self.viewport_x, self.viewport_y)
 
     def context_cb(self, action):
         # TODO: this context-thing is not very useful like that, is it?

@@ -124,10 +124,15 @@ gtk_my_draw_widget_new        (int width, int height)
 {
   GtkMyDrawWidget * mdw;
   mdw = g_object_new (gtk_my_draw_widget_get_type (), NULL);
-  mdw->surface = new_surface (width, height);
-  // might load an image afterwards, so better don't.
-  //surface_clear (mdw->surface);
+  mdw->surface = NULL;
+  gtk_my_draw_widget_discard_and_resize (mdw, width, height);
   return mdw;
+}
+
+void gtk_my_draw_widget_discard_and_resize (GtkMyDrawWidget *mdw, int width, int height)
+{
+  g_free(mdw->surface);
+  mdw->surface = new_surface (width, height);
 }
 
 static gint
@@ -306,12 +311,6 @@ void gtk_my_draw_widget_set_from_pixbuf (GtkMyDrawWidget *mdw, GdkPixbuf* pixbuf
 
   w = gdk_pixbuf_get_width (pixbuf);
   h = gdk_pixbuf_get_height (pixbuf);
-
-  if (w < mdw->surface->w || h < mdw->surface->h) {
-    surface_clear (mdw->surface);
-  }
-  if (w > mdw->surface->w) w = mdw->surface->w;
-  if (h > mdw->surface->h) h = mdw->surface->h;
 
   surface_load (mdw->surface,
                 gdk_pixbuf_get_pixels (pixbuf),

@@ -2,7 +2,6 @@
    Released as public domain.
 */
 
-#include <gtk/gtk.h>
 #include <string.h>
 #include <math.h>
 #include "surface.h"

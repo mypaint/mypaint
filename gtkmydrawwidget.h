@@ -52,6 +52,7 @@ void gtk_my_draw_widget_set_viewport (GtkMyDrawWidget *mdw, int x, int y);
 GdkPixbuf* gtk_my_draw_widget_get_as_pixbuf (GtkMyDrawWidget *mdw);
 GdkPixbuf* gtk_my_draw_widget_get_nonwhite_as_pixbuf (GtkMyDrawWidget *mdw);
 void gtk_my_draw_widget_set_from_pixbuf (GtkMyDrawWidget *mdw, GdkPixbuf* pixbuf);
+void gtk_my_draw_widget_discard_and_resize (GtkMyDrawWidget *mdw, int width, int height);
 
 #ifdef __cplusplus
 }
