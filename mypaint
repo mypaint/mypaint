@@ -1,23 +1,24 @@
 #!/usr/bin/env python
 "MyDraw main"
-
 import gtk
 from lowlevel import DrawWidget, Brush
 
-def destroy(*args):
-    window.hide()
+def destroy(widget):
     gtk.main_quit()
 
-window = gtk.Window(gtk.WINDOW_TOPLEVEL)
-window.connect("destroy", destroy)
-window.set_border_width(10)
+def main():
+    window = gtk.Window(gtk.WINDOW_TOPLEVEL)
+    window.connect("destroy", destroy)
+    window.set_border_width(10)
 
-mdw = DrawWidget()
-mdw.set_brush(Brush())
-mdw.set_size_request(100, 100)
-window.add(mdw)
+    mdw = DrawWidget()
+    mdw.set_brush(Brush())
+    mdw.set_size_request(100, 100)
+    window.add(mdw)
 
-window.show_all()
+    window.show_all()
 
-gtk.main()
+    gtk.main()
 
+if __name__ == '__main__':
+    main()

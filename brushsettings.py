@@ -179,7 +179,7 @@ s.flags   = "BSF_NONE"
 s.min     = -1.0
 s.default = 0.0
 s.max     = 1.0
-s.tooltip = "When painting black, it soon gets black completely. This setting controls how fast the final brush color is taken:\n 1.0 slowly\n 0.0 disable\n-1.0 even faster\nThis is nolinear and causes strange effects when it happens too fast. Set occupacy low enough to avoid this.\nFor example, a full-occupacy black stroke might get brighter over grey areas than over white ones."
+s.tooltip = "When painting black, it soon gets black completely. This setting controls how fast the final brush color is taken:\n 1.0 slowly\n 0.0 disable\n-1.0 even faster\nThis is nolinear and causes strange effects when it happens too fast. Set occupancy low enough to avoid this.\nFor example, a full-occupancy black stroke might get brighter over grey areas than over white ones."
 settings.append(s)
 
 s = BrushSetting()

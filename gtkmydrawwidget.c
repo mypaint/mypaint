@@ -104,7 +104,7 @@ static void
 gtk_my_draw_widget_init (GtkMyDrawWidget *mdw)
 {
   mdw->brush = NULL;
-  mdw->surface = new_surface (SIZE, SIZE);
+  mdw->surface = new_surface (160, 180);
   surface_clear (mdw->surface);
 }
 
@@ -213,7 +213,8 @@ gtk_my_draw_widget_expose (GtkWidget *widget, GdkEventExpose *event)
   surface_render (mdw->surface,
                   rgb, rowstride,
                   event->area.x, event->area.y,
-                  event->area.width, event->area.height);
+                  event->area.width, event->area.height,
+                  /*bpp*/3*8);
 
   gdk_draw_rgb_image (widget->window,
 		      widget->style->black_gc,

@@ -19,8 +19,6 @@
   
   g_assert (hardness <= 1.0 && hardness >= 0.0);
   if (hardness == 0) return; // infintly small point, rest transparent
-  if (hardness != 1) {
-  }
 
   r_fringe = radius + 1;
   x0 = floor (x - r_fringe);
@@ -47,16 +45,6 @@
   g_assert (opaque >= 0 && opaque <= 1);
   if (opaque == 0) return;
 
-  /* TODO
-  /// hardness precalculations
-  // m1 : steepness first sector  (q1 = 1)
-  // m2 : steepness second sector (q2 = -m2)
-  m1 = hardness_float / (hardnes_float + 1)
-  m2 = hardness_float / (hardnes_float + 1)
-  hardness = floor(hardness_float * 256 + 0.5);
-  if (hardness < 0) hardness = 0; if (hardness > 256) hardness = 256;
-  */
-
   a = floor(saturation_slowdown * 256 + 0.5);
   if (a < -256) a = -256; if (a > 256) a = 256;
 
@@ -69,13 +57,6 @@
       rr = (yy + xx) * one_over_radius2;
       // rr is in range 0.0..1.0*sqrt(2)
       rgb = PixelXY(s, xp, yp);
-      //opa_float = hardness*1.0 + (1-hardness)*(1.0 - rr / radius2);
-      /* TODO
-      opa = opa * (hardness*256 + (256-hardness)*(256 - floor(256.0 * rr / radius2)));
-      // opa is in range 0..256*256*256 (FIXME: sure? avoid ^ float ops and division)
-      opa /= 256*256;
-      if (opa > 256) opa = 256;
-      */
 
       if (rr <= 1.0) {
         int opa;

@@ -11,21 +11,21 @@ Surface *
 new_surface (int w, int h)
 {
   Surface * s;
-  if (w != SIZE || h != SIZE) {
-    g_print ("Only %d*%d supported right now\n", SIZE, SIZE);
-    return NULL;
-  }
   s = g_new0 (Surface, 1);
-
-  /*
-  s->rowstride = w * 3;
-  s->rowstride = (s->rowstride + 3) & -4; */ /* align to 4-byte boundary */
-  /* s->rgb = g_new(guchar, h*s->rowstride); */
-
-  s->rgb = g_new0 (guchar, 3*w*h);
 
   s->w = w;
   s->h = h;
+
+  s->block_h = (h-1) / BLOCKSIZE + 1;
+  
+  s->xsize_shl = 1;
+  while ((1 << s->xsize_shl) < w) s->xsize_shl++;
+  s->block_w = 1 << s->xsize_shl;
+
+  g_assert (s->block_w * BLOCKSIZE >= w);
+  g_assert (s->block_h * BLOCKSIZE >= h);
+
+  s->rgb = g_new0 (guchar, 3*s->block_w*BLOCKSIZE*s->block_h*BLOCKSIZE);
   return s;
 }
 
@@ -59,18 +59,26 @@ void
 surface_clear (Surface * s)
 {
   // clear rgb buffer to white
-  memset (s->rgb, 255, s->w*s->h*3);
+  memset (s->rgb, 255, s->block_w*BLOCKSIZE*s->block_h*BLOCKSIZE*3);
 }
 
 void
 surface_render (Surface * s,
                 guchar * dst, int rowstride,
                 int x0, int y0,
-                int w, int h)
+                int w, int h, int bpp)
 {
   // could be optimized much, important if big brush is used
-  int x, y;
-  //g_print("%d %d\n", w, h);
+  int x, y, add;
+  if (bpp == 3*8) {
+    add = 3;
+  } else if (bpp == 4*8) {
+    add = 4;
+  } else {
+    g_assert (0);
+    return;
+  }
+
   guchar * rgb_line = dst;
   guchar * rgb_dst;
   guchar * rgb_src;
@@ -81,9 +89,42 @@ surface_render (Surface * s,
       rgb_dst[0] = rgb_src[0];
       rgb_dst[1] = rgb_src[1];
       rgb_dst[2] = rgb_src[2];
-      rgb_dst += 3;
+      rgb_dst += add;
     }
     rgb_line += rowstride;
   }
 }
 
+
+void
+surface_load (Surface * s, guchar * src,
+              int rowstride, int w, int h, int bpp)
+{
+  int x, y, add;
+  if (bpp == 3*8) {
+    add = 3;
+  } else if (bpp == 4*8) {
+    add = 4;
+  } else {
+    g_assert (0);
+    return;
+  }
+
+  if (w > s->w) w = s->w;
+  if (h > s->h) h = s->h;
+
+  guchar * rgb_line = src;
+  guchar * rgb_dst;
+  guchar * rgb_src;
+  for (y = 0; y < 0 + h; y++) {
+    rgb_src = rgb_line;
+    for (x = 0; x < 0 + w; x++) {
+      rgb_dst = PixelXY(s, x, y);
+      rgb_dst[0] = rgb_src[0];
+      rgb_dst[1] = rgb_src[1];
+      rgb_dst[2] = rgb_src[2];
+      rgb_src += add;
+    }
+    rgb_line += rowstride;
+  }
+}

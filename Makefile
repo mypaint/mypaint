@@ -1,3 +1,5 @@
+# not all dependencies are in here, you need to 'make clean' sometimes.
+
 PROFILE = -g #-pg
 CFLAGS = $(PROFILE) -O1 `pkg-config --cflags gtk+-2.0 pygtk-2.0` -Wall -Werror -I/usr/include/python2.3/ -I.
 LDFLAGS = $(PROFILE) -O1 `pkg-config --libs gtk+-2.0 pygtk-2.0` -Wall -Werror
