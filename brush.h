@@ -19,6 +19,13 @@ typedef struct {
 
   guchar color[3];
 
+  // misc helpers
+  float x_slow, y_slow;
+  float dx_slow, dy_slow;
+  float last_time;
+  float obs__speedabs_slow;
+  float rbs__speedabs_slow;
+
   // User settings, input for generate.py:
   // name % flags % min % default % max % tooltip
   //% opaque % BSF_NONE % 0.0 % 1.0 % 1.0 % 0 means brush is transparent, 1 fully visible
@@ -39,14 +46,24 @@ typedef struct {
   float radius_by_pressure;
   //% radius by random % BSF_NONE % 0.0 % 0.0 % 10.0 % alter the radius randomly each dab\n 0.0 disable\n 0.7 biggest radius is twice as large as smallest\n 3.0 biggest radius 20 times as large as smallest
   float radius_by_random;
+  //% radius by speed % BSF_NONE % -10.0 % 0.0 % 10.0 % alter the radius depending on current speed; this is also affected by 'speed abs slowness' below, but not by 'speed slowness'
+  float radius_by_speed;
+  //% radius by speed: speed abs slowness % BSF_NONE % 0.0 % 0.0 % 10.0 % how slow to update the speed value\n0.0 change the radius immediatly as your speed changes
+  float rbs__speedabs_slowness;
   //% offset by random % BSF_NONE % 0.0 % 0.0 % 10.0 % add randomness to the position where the dab is drawn\n 0.0 disabled\n 1.0 standard derivation is one radius away (as set above, not the actual radius)
   float offset_by_random;
   //% offset by speed % BSF_NONE % -30.0 % 0.0 % 30.0 % change position depending on pointer speed\n= 0 disable\n> 0 draw where the pointer moves to\n< 0 draw where the pointer comes from
   float offset_by_speed;
+  //% offset by speed: speed slowness % BSF_NONE % 0.0 % 0.0 % 10.0 % use a short-term speed (0) or a long time average speed (big) for above
+  float obs__speed_slowness;
+  //% offset by speed: speed abs slowness % BSF_NONE % 0.0 % 0.0 % 10.0 % how fast to adapt the absolut value of the speed (in contrast to the direction)
+  float obs__speedabs_slowness;
   //% saturation slowdown % BSF_NONE % -1.0 % 0.0 % 1.0 % When painting black, it soon gets black completely. This setting controls how fast the final brush color is taken:\n 1.0 slowly\n 0.0 disable\n-1.0 even faster\nThis is nolinear and causes strange effects when it happens too fast. Set occupacy low enough to avoid this.\nFor example, a full-occupacy black stroke might get brighter over grey areas than over white ones.
   float saturation_slowdown;
   //% slow position % BSF_NONE % 0.0 % 0.0 % 10.0 % Slowdown pointer tracking speed. 0 disables it, higher values remove more jitter in cursor movements. Useful for drawing smooth, comic-like outlines.
   float position_T;
+  //% slow position 2 % BSF_NONE % 0.0 % 0.0 % 10.0 % Similar as above but at brushdab level (ignoring how much time has past, if brushdabs do not depend on time)
+  float position_T2;
 } Brush;
 
 typedef struct {

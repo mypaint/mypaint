@@ -53,6 +53,16 @@ void brush_mutate (Brush * b)
 #endif
 }
 
+float exp_decay (float T_const, float t)
+{
+  // FIXME: think about whether the argument make mathematical sense
+  if (T_const <= 0.001) {
+    return 1.0;
+  } else {
+    return 1.0-exp(- t / T_const);
+  }
+}
+
 // high-level part of before each dab
 void brush_prepare_and_draw_dab (Brush * b, Surface * s)
 {
@@ -61,11 +71,32 @@ void brush_prepare_and_draw_dab (Brush * b, Surface * s)
 
   g_assert (b->pressure >= 0 && b->pressure <= 1);
 
-  x = b->x; y = b->y;
+  { // slow position 2
+    float fac = exp_decay (b->position_T2, 0.4);
+    b->x_slow += (b->x - b->x_slow) * fac;
+    b->y_slow += (b->y - b->y_slow) * fac;
+    x = b->x_slow;
+    y = b->y_slow;
+  }
+
+  //x = b->x; y = b->y;
   radius_log = b->radius_logarithmic;
   opaque = b->opaque;
   
   speed = sqrt(sqr(b->dx) + sqr(b->dy))/b->dtime;
+
+  { // slow speed
+    float fac = exp_decay (b->obs__speed_slowness * 0.01, 0.1 * b->dtime);
+    b->dx_slow += (b->dx - b->dx_slow) * fac;
+    b->dy_slow += (b->dy - b->dy_slow) * fac;
+
+    fac = exp_decay (b->obs__speedabs_slowness, 0.1 * b->dtime);
+    b->obs__speedabs_slow += (speed - b->obs__speedabs_slow) * fac;
+
+    fac = exp_decay (b->rbs__speedabs_slowness * 0.001, 0.1 * b->dtime);
+    b->rbs__speedabs_slow += (speed - b->rbs__speedabs_slow) * fac;
+  }
+
   // TODO: think about it: is this setting enough?
   opaque *= (b->opaque_by_pressure * b->pressure + (1-b->opaque_by_pressure));
   //b->radius = 2.0 + sqrt(sqrt(speed));
@@ -75,14 +106,20 @@ void brush_prepare_and_draw_dab (Brush * b, Surface * s)
     radius_log += (g_random_double () - 0.5) * b->radius_by_random;
   }
 
+  if (b->radius_by_speed) {
+    radius_log += 0.001 * b->rbs__speedabs_slow * b->radius_by_speed;
+  }
+
   if (b->offset_by_random) {
     x += gauss_noise () * b->offset_by_random;
     y += gauss_noise () * b->offset_by_random;
   }
 
   if (b->offset_by_speed) {
-    x += b->dx * b->offset_by_speed; // * radius?
-    y += b->dy * b->offset_by_speed;
+    //x += b->dx_slow * b->offset_by_speed; // * radius?
+    //y += b->dy_slow * b->offset_by_speed;
+    x += b->dx_slow * 0.01*b->obs__speedabs_slow * b->offset_by_speed; // * radius?
+    y += b->dy_slow * 0.01*b->obs__speedabs_slow * b->offset_by_speed;
   }
 
 #if 0
@@ -145,39 +182,48 @@ void brush_stroke_to (Brush * b, Surface * s, float x, float y, float pressure, 
     b->y = y;
     b->pressure = pressure;
     b->time = time;
+
+    b->last_time = b->time;
+    b->x_slow = b->x;
+    b->y_slow = b->y;
+    b->dx_slow = 0.0;
+    b->dy_slow = 0.0;
     return;
   }
 
   { // calculate the actual "virtual" cursor position
-    float fac;
-    if (b->position_T <= 0.001) {
-      fac = 1.0;
-    } else {
-      //fac = 1.0-exp(- b->dtime / b->position_T);
-      fac = 1.0-exp(- 1.0 / b->position_T);
-    }
+    float fac = exp_decay (b->position_T, 100.0*(time - b->last_time));
     x = b->x + (x - b->x) * fac;
     y = b->y + (y - b->y) * fac;
   }
   // draw many (or zero) dabs to the next position
   dist = brush_count_dabs_to (b, x, y, pressure, time);
   //g_print("dist = %f\n", dist);
+  // Not going to recalculate dist each step.
+
   while (dist >= 1.0) {
-    float step; // percent of distance between current and next position
-    step = 1 / dist;
-    // linear interpolation
-    b->dx        = step * (x - b->x);
-    b->dy        = step * (y - b->y);
-    b->dpressure = step * (pressure - b->pressure);
-    b->dtime     = step * (time - b->time);
+    { // linear interpolation
+      // Inside the loop because outside it produces numerical errors
+      // resulting in b->pressure being small negative and such effects.
+      float step;
+      step = 1 / dist;
+      b->dx        = step * (x - b->x);
+      b->dy        = step * (y - b->y);
+      b->dpressure = step * (pressure - b->pressure);
+      b->dtime     = step * (time - b->time);
+    }
+    
     b->x        += b->dx;
     b->y        += b->dy;
     b->pressure += b->dpressure;
     b->time     += b->dtime;
 
-    dist     -= 1.0;
+    dist -= 1.0;
     
     brush_prepare_and_draw_dab (b, s);
   }
+
+  // not equal to b_time now unless dist == 0
+  b->last_time = time;
 }
 
