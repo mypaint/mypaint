@@ -50,7 +50,7 @@ class Window(gtk.Window):
                 b2 = gtk.Label("=")
                 b2.set_alignment(0.5, 0.5)
             else:
-                b2 = gtk.Button("...")
+                b2 = gtk.Button("...") # TODO: in red if some details are set
                 b2.connect('clicked', self.details_clicked_cb, adj, s)
 
             table.attach(eb, 0, 1, s.index, s.index+1, gtk.FILL, gtk.FILL, 5, 0)

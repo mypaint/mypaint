@@ -77,6 +77,10 @@ class Window(gtk.Window):
               <menuitem action='BrushSettingsWindow'/>
               <menuitem action='ColorSelectionWindow'/>
             </menu>
+            <menu action='DebugMenu'>
+              <menuitem action='PrintInputs'/>
+              <menuitem action='DontPrintInputs'/>
+            </menu>
           </menubar>
         </ui>"""
         actions = [
@@ -119,6 +123,9 @@ class Window(gtk.Window):
             ('BrushSelectionWindow',  None, 'brush list', None, None, self.toggleBrushSelectionWindow_cb),
             ('BrushSettingsWindow',   None, 'brush settings', None, None, self.toggleBrushSettingsWindow_cb),
             ('ColorSelectionWindow',  None, 'color', None, None, self.toggleColorSelectionWindow_cb),
+            ('DebugMenu',  None, 'Debug'),
+            ('PrintInputs', None, 'Print brush input values to stdout', None, None, self.print_inputs_cb),
+            ('DontPrintInputs', None, 'Stop printing them', None, None, self.dont_print_inputs_cb),
             ]
         ag.add_actions(actions)
         self.ui = gtk.UIManager()
@@ -139,6 +146,11 @@ class Window(gtk.Window):
         self.toggleWindow(self.app.brushSettingsWindow)
     def toggleColorSelectionWindow_cb(self, action):
         self.toggleWindow(self.app.colorSelectionWindow)
+
+    def print_inputs_cb(self, action):
+        self.app.brush.set_print_inputs(1)
+    def dont_print_inputs_cb(self, action):
+        self.app.brush.set_print_inputs(0)
 
     def new_window_cb(self, action):
         # FIXME: is it really done like that?
@@ -162,14 +174,14 @@ class Window(gtk.Window):
         adj.set_value(adj.get_value() - 0.3)
 
     def brighter_cb(self, action):
-        cs = self.app.colorselectionwindow 
+        cs = self.app.colorSelectionWindow 
         cs.update()
         h, s, v = cs.get_color_hsv()
         v += 0.08
         cs.set_color_hsv((h, s, v))
         
     def darker_cb(self, action):
-        cs = self.app.colorselectionwindow 
+        cs = self.app.colorSelectionWindow 
         cs.update()
         h, s, v = cs.get_color_hsv()
         v -= 0.08

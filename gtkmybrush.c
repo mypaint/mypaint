@@ -22,6 +22,7 @@ void gtk_my_brush_set_mapping (GtkMyBrush * b, int id, int input, int index, flo
   g_assert (input >= 0 && input < INPUT_COUNT);
   g_assert (index >= 0 && index < 8);
 
+  //g_print("set mapping: id=%d, input=%d, index=%d, value=%f\n", id, input, index, value);
   Mapping * m = b->settings[id].mapping[input];
   if (!m) {
     m = b->settings[id].mapping[input] = g_malloc(sizeof(Mapping));
@@ -42,6 +43,8 @@ void gtk_my_brush_remove_mapping (GtkMyBrush * b, int id, int input)
   g_assert (id >= 0 && id < BRUSH_SETTINGS_COUNT);
   g_assert (input >= 0 && input < INPUT_COUNT);
 
+  //g_print("remove mapping: id=%d, input=%d\n", id, input);
+
   g_free(b->settings[id].mapping[input]);
   b->settings[id].mapping[input] = NULL;
 }
@@ -57,6 +60,11 @@ gtk_my_brush_set_color (GtkMyBrush * b, int red, int green, int blue)
   b->color[2] = blue;
 }
 
+void
+gtk_my_brush_set_print_inputs (GtkMyBrush * b, int value)
+{
+  b->print_inputs = value;
+}
 
 static void gtk_my_brush_class_init    (GtkMyBrushClass *klass);
 static void gtk_my_brush_init          (GtkMyBrush      *b);
@@ -169,14 +177,18 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s)
   g_assert (b->pressure >= 0.0 && b->pressure <= 1.0);
   pressure = b->pressure; // could distort it here
 
-  float norm_dx, norm_dy;
+  float norm_dx, norm_dy, norm_speed;
   norm_dx = b->dx / b->dtime / base_radius_pixels;
   norm_dy = b->dy / b->dtime / base_radius_pixels;
+  norm_speed = sqrt(sqr(norm_dx) + sqr(norm_dy));
 
   inputs[INPUT_PRESSURE] = pressure;
-  inputs[INPUT_SPEED] = sqrt(sqr(norm_dx) + sqr(norm_dy)) * 0.001;
-  inputs[INPUT_SPEED2] = sqrt(sqr(b->norm_dx_slow) + sqr(b->norm_dy_slow)) * 0.1;
+  inputs[INPUT_SPEED]  = b->norm_speed_slow1 * 0.002;
+  inputs[INPUT_SPEED2] = b->norm_speed_slow2 * 0.005;
   inputs[INPUT_RANDOM] = 0.5; // actually unused
+  if (b->print_inputs) {
+    g_print("press=% 4.3f, speed=% 4.4f\tspeed2=% 4.4f\n", inputs[INPUT_PRESSURE], inputs[INPUT_SPEED], inputs[INPUT_SPEED2]);
+  }
 
   for (i=0; i<BRUSH_SETTINGS_COUNT; i++) {
     settings[i] = b->settings[i].base_value;
@@ -197,15 +209,18 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s)
         float x, y;
         if (j == INPUT_RANDOM) {
           x = g_random_double ();
-          //x = gauss_noise ();
-          //if (x < 0) x = -x;
         } else {
           x = inputs[j];
         }
-        int p0 = -1;
+        //if (i == 2 && j == 3) g_print("x = %f ", x);
+        int p0;
         float x0, y0, x1, y1;
         // decide what region to use
-        while (p0 < 2 && m->xvalues[p0+1] > 0 && x > m->xvalues[p0+1]) p0++;
+        p0 = -1; // left point of the linear region (-1 is the implicit x=0,y=0 point)
+        while (p0+1 < 4 // not in the last region already
+               && x > m->xvalues[p0+1] // x position is further right than the current region
+               && m->xvalues[p0+2] > 0 // next enpoint does exists (points with x=0 are disabled)
+               ) p0++;
         x0 = (p0 == -1) ? 0 : m->xvalues[p0];
         y0 = (p0 == -1) ? 0 : m->yvalues[p0];
         x1 = m->xvalues[p0+1];
@@ -216,6 +231,7 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s)
         q = y0 - m*x0;
         y = m*x + q;
         settings[i] += y;
+        //if (i == 2 && j == 3) g_print("y = %f (p0=%d, %f %f %f %f)\n", y, p0, x0, y0, x1, y1);
       }
     }
   }
@@ -235,6 +251,14 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s)
   if (opaque <= 0.0) opaque = 0.0;
 
   { // slow speed
+    float fac;
+    fac = exp_decay (settings[BRUSH_SPEED1_SLOWNESS], b->dtime);
+    b->norm_speed_slow1 += (norm_speed - b->norm_speed_slow1) * fac;
+    fac = exp_decay (settings[BRUSH_SPEED2_SLOWNESS], b->dtime);
+    b->norm_speed_slow2 += (norm_speed - b->norm_speed_slow2) * fac;
+  }
+
+  { // <strike>slow speed</strike>
     float fac = exp_decay (settings[BRUSH_SPEED2_SLOWNESS] * 0.01, 0.1 * b->dtime);
     b->norm_dx_slow += (norm_dx - b->norm_dx_slow) * fac;
     b->norm_dy_slow += (norm_dy - b->norm_dy_slow) * fac;
@@ -250,6 +274,9 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s)
     x += b->norm_dx_slow * settings[BRUSH_OFFSET_BY_SPEED] * 0.01 * base_radius_pixels;
     y += b->norm_dy_slow * settings[BRUSH_OFFSET_BY_SPEED] * 0.01 * base_radius_pixels;
   }
+
+  // change base radius
+  b->settings[BRUSH_RADIUS_LOGARITHMIC].base_value += settings[BRUSH_CHANGE_RADIUS] * 0.01;
 
   // color part
   

@@ -7,14 +7,13 @@ DEFSDIR = `pkg-config --variable=defsdir pygtk-2.0`
 
 all:	mydrawwidget.so
 
-brushsettings.h:	generate.py
+brushsettings.h:	generate.py brushsettings.py
 	./generate.py
 
-gtkmydrawwidget.o:	brushsettings.h gtkmydrawwidget.c
+gtkmydrawwidget.o:	brushsettings.h gtkmydrawwidget.c gtkmydrawwidget.h
 	cc $(CFLAGS) -c -o $@ gtkmydrawwidget.c
 
-gtkmybrush.o:	brushsettings.h gtkmybrush.c
-	./generate.py # FIXME dependency should do this
+gtkmybrush.o:	brushsettings.h gtkmybrush.c gtkmybrush.h
 	cc $(CFLAGS) -c -o $@ gtkmybrush.c
 
 clean:

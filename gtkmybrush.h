@@ -43,20 +43,23 @@ struct _GtkMyBrush
 {
   GObject parent;
 
-  // lowlevevel stuff
+  // lowlevevel stuff (almost raw input)
   float x, y, pressure, time;
   float dx, dy, dpressure, dtime;
   float dist;
   float actual_radius;
 
-  GtkWidget * queue_draw_widget;
-
   guchar color[3];
 
-  // misc helpers
-  float x_slow, y_slow;
+  GtkWidget * queue_draw_widget;
+  int print_inputs;
+
+  // misc high-level helper variables
+  float x_slow, y_slow; // for slow position
   float norm_dx_slow, norm_dy_slow;
   float last_time;
+  float norm_speed_slow1;
+  float norm_speed_slow2;
 
   Setting settings[BRUSH_SETTINGS_COUNT];
 
@@ -76,6 +79,7 @@ void gtk_my_brush_set_base_value (GtkMyBrush * b, int id, float value);
 void gtk_my_brush_set_mapping (GtkMyBrush * b, int id, int input, int index, float value);
 void gtk_my_brush_remove_mapping (GtkMyBrush * b, int id, int input);
 void gtk_my_brush_set_color (GtkMyBrush * b, int red, int green, int blue);
+void gtk_my_brush_set_print_inputs (GtkMyBrush * b, int value);
 
 /* only for mydrawwidget (not exported to python): */
 void brush_stroke_to (GtkMyBrush * b, Surface * s, float x, float y, float pressure, float time);
