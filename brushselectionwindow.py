@@ -58,12 +58,21 @@ class Window(gtk.Window):
 
         self.set_size_request(450, 500)
 
+    def set_preview_pixbuf(self, pixbuf):
+        if pixbuf is None:
+            self.mdw.clear()
+        else:
+            self.mdw.set_from_pixbuf(pixbuf)
+
+    def get_preview_pixbuf(self):
+        pixbuf = self.mdw.get_as_pixbuf()
+        # TODO: cut only painted area, please
+        return pixbuf
+
     def add_as_new_cb(self, window):
         b = brush.Brush()
         b.copy_settings_from(self.app.brush)
-        pixbuf = self.mdw.get_as_pixbuf()
-        # TODO: cut only painted area, please
-        b.update_preview(pixbuf)
+        b.update_preview(self.get_preview_pixbuf())
         self.app.brushes.insert(0, b)
         self.brushlist.redraw_thumbnails()
         self.app.select_brush(b)
@@ -94,8 +103,7 @@ class Window(gtk.Window):
         if brush is None: return
         if brush is self.app.selected_brush:
             # selected same brush twice: load pixmap
-            self.mdw.set_from_pixbuf(brush.preview)
-
+            self.set_preview_pixbuf(brush.preview)
 
 preview_spacing_outside = 0
 preview_border_visible = 1

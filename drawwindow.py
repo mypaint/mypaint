@@ -44,10 +44,16 @@ class Window(gtk.Window):
               <menuitem action='InvertColor'/>
             </menu>
             <menu action='ContextMenu'>
-              <menuitem action='Context1'/>
-              <menuitem action='Context2'/>
-              <menuitem action='Context3'/>
-              <menuitem action='Context4'/>
+              <menuitem action='Context00'/>
+              <menuitem action='Context01'/>
+              <menuitem action='Context02'/>
+              <menuitem action='Context03'/>
+              <menuitem action='Context04'/>
+              <menuitem action='Context05'/>
+              <menuitem action='Context06'/>
+              <menuitem action='Context07'/>
+              <menuitem action='Context08'/>
+              <menuitem action='Context09'/>
               <menuitem action='ContextHelp'/>
             </menu>
           </menubar>
@@ -62,11 +68,17 @@ class Window(gtk.Window):
             ('BrushMenu',   None, 'Brush'),
             ('InvertColor', None, 'Invert Color', None, None, self.invert_color_cb),
             ('ContextMenu', None, 'Context'),
-            ('Context1',    None, 'Context 1', 'a', None, self.save_cb),
-            ('Context2',    None, 'Context 2', 's', None, self.save_cb),
-            ('Context3',    None, 'Context 3', 'd', None, self.save_cb),
-            ('Context4',    None, 'Context 4', 'f', None, self.save_cb),
-            ('ContextHelp', None, 'How to use this?', None, None, self.save_cb),
+            ('Context00',    None, 'Context 0', 'a', None, self.context_cb),
+            ('Context01',    None, 'Context 1', 's', None, self.context_cb),
+            ('Context02',    None, 'Context 2', 'd', None, self.context_cb),
+            ('Context03',    None, 'Context 3', 'f', None, self.context_cb),
+            ('Context04',    None, 'Context 4', None, None, self.context_cb),
+            ('Context05',    None, 'Context 5', None, None, self.context_cb),
+            ('Context06',    None, 'Context 6', None, None, self.context_cb),
+            ('Context07',    None, 'Context 7', None, None, self.context_cb),
+            ('Context08',    None, 'Context 8', None, None, self.context_cb),
+            ('Context09',    None, 'Context 9', None, None, self.context_cb),
+            ('ContextHelp', None, 'How to use this?', None, None, self.context_help_cb),
             ]
         ag.add_actions(actions)
         self.ui = gtk.UIManager()
@@ -135,3 +147,27 @@ class Window(gtk.Window):
     def quit_cb(self, action):
         self.app.quit()
 
+    def context_cb(self, action):
+        # TODO: this context-thing is not very useful like that, is it?
+        #       You overwrite your settings too easy by accident.
+        # - seperate set/restore commands?
+        # - not storing settings under certain circumstances?
+        # - think about other stuff... brush history, only those actually used, etc...
+        i = int(action.get_name()[-2:])
+        context = self.app.contexts[i]
+        if self.app.selected_context is not None:
+            if context is not self.app.selected_context:
+                # save current settings to old context
+                b = self.app.selected_context
+                b.copy_settings_from(self.app.brush)
+                # OPTIMIZE: this scales the bitmap down as thumbnail, which will never be used
+                preview = self.app.brushselection_window.get_preview_pixbuf()
+                b.update_preview(preview)
+                b.name = 'context%02d' % i
+                b.save(self.app.brushpath) # OPTIMIZE: later?
+        self.app.selected_context = context
+        self.app.select_brush(context)
+        self.app.brushselection_window.set_preview_pixbuf(context.preview)
+
+    def context_help_cb(self, action):
+        print "TODO"

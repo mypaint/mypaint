@@ -13,7 +13,10 @@ class Application: # singleton
         self.brushes = []
         self.selected_brush = None
         self.brush_selected_callbacks = [self.brush_selected_cb]
+        self.contexts = [brush.Brush() for i in range(10)] # 10 for now...
+        self.selected_context = None
 
+        # load brushes
         loadnames = []
         filename = self.confpath + 'brush_order.conf'
         if os.path.isfile(filename):
@@ -31,7 +34,12 @@ class Application: # singleton
             # load brushes from disk
             b = brush.Brush()
             b.load(self.brushpath, name)
-            self.brushes.append(b)
+            if name.startswith('context'):
+                i = int(name[-2:])
+                assert i >= 0 and i < 10 # 10 for now...
+                self.contexts[i] = b
+            else:
+                self.brushes.append(b)
 
         self.image_windows = []
 
@@ -50,7 +58,7 @@ class Application: # singleton
         if brush in self.brushes:
             self.selected_brush = brush
         else:
-            print 'Warning, you have selected a brush not in the list.'
+            #print 'Warning, you have selected a brush not in the list.'
             # TODO: maybe find out parent and set this as selected_brush
             self.selected_brush = None
         if brush is not None:
