@@ -37,7 +37,6 @@
 typedef struct {
   int w, h; /* fixed to SIZE*SIZE for now */
   guchar * rgb; /* data, memory not linear (see above) */
-  GtkWidget * widget; /* where to queue draws when changed */
 } Surface;
 
 Surface * new_surface (int w, int h);

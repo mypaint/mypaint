@@ -20,8 +20,8 @@ new_surface (int w, int h)
   /*
   s->rowstride = w * 3;
   s->rowstride = (s->rowstride + 3) & -4; */ /* align to 4-byte boundary */
-
   /* s->rgb = g_new(guchar, h*s->rowstride); */
+
   s->rgb = g_new0 (guchar, 3*w*h);
 
   s->w = w;
@@ -60,7 +60,6 @@ surface_clear (Surface * s)
 {
   // clear rgb buffer to white
   memset (s->rgb, 255, s->w*s->h*3);
-  if (s->widget) gtk_widget_queue_draw (s->widget);
 }
 
 void

@@ -1,16 +1,25 @@
 #include <stdio.h>
+#include <string.h>
 #include <glib.h>
 #include <math.h>
 #include "brush.h"
 
-Brush * brush_create (Surface * surface)
+Brush * brush_create ()
 {
   Brush * b;
   b = g_new0 (Brush, 1);
-  b->surface = surface;
   b->radius = 4.0;
   b->spacing = 0.5;
   b->opaque = 1.0;
+  b->queue_draw_widget = NULL;
+  return b;
+}
+
+Brush * brush_create_copy (Brush * old_b)
+{
+  Brush * b;
+  b = g_new0 (Brush, 1);
+  memcpy (b, old_b, sizeof(Brush));
   return b;
 }
 
@@ -19,7 +28,24 @@ void brush_free (Brush * b)
   g_free (b);
 }
 
-void brush_dab (Brush * b) {
+void brush_reset (Brush * b)
+{
+  b->time = 0;
+}
+
+void brush_mutate (Brush * b)
+{
+  int i;
+  for (i=0; i<F_WEIGHTS; i++) {
+    /*
+    if (g_random_int_range(0, 10) == 0) {
+      b->variations[i] *= g_random_double_range(0.5, 1.0/0.5);
+      }*/
+    b->weights[i] += g_random_double_range(-b->variations[i], b->variations[i]);
+  }
+}
+
+void brush_dab (Brush * b, Surface * s) {
   double r_fringe;
   int x0, y0;
   int x1, y1;
@@ -29,8 +55,7 @@ void brush_dab (Brush * b) {
   double radius2;
   int opaque;
   guchar c[3];
-  Surface * s;
-  s = b->surface;
+  if (!s) return;
 
   r_fringe = b->radius + 1;
   x0 = floor (b->x - r_fringe);
@@ -67,8 +92,8 @@ void brush_dab (Brush * b) {
     }
   }
   
-  if (s->widget) {
-    gtk_widget_queue_draw_area (s->widget,
+  if (b->queue_draw_widget) {
+    gtk_widget_queue_draw_area (b->queue_draw_widget,
                                 floor(b->x - (b->radius+1)),
                                 floor(b->y - (b->radius+1)),
                                 /* FIXME: think about it exactly */
@@ -82,10 +107,35 @@ void brush_dab (Brush * b) {
 void brush_prepare_dab (Brush * b)
 {
   float speed;
-  speed = (sqr(b->dx) + sqr(b->dy))/b->dtime;
+  float noise;
+  float sum;
+  noise = g_random_double (); /* [0..1) */
+  speed = sqrt(sqr(b->dx) + sqr(b->dy))/b->dtime;
   b->opaque = b->pressure / 8.0;
   //b->radius = 0.1 + 60 * b->pressure;
-  b->radius = 2.0 + sqrt(sqrt(speed));
+  //b->radius = 2.0 + sqrt(sqrt(speed));
+  sum = 0;
+  b->radius = 7*noise + 4.0 + b->pressure / 2.0;
+  b->radius = b->radius * b->pressure + 0.01;
+#if 0
+  i = 0;
+  b->opaque  = 0;
+  b->opaque += b->weights[i++] * b->pressure;
+  b->opaque += b->weights[i++] * speed;
+  b->opaque += b->weights[i++] * 1.0;
+  b->opaque += b->weights[i++] * noise;
+  b->radius  = 0;
+  b->radius += b->weights[i++] * b->pressure;
+  b->radius += b->weights[i++] * speed;
+  b->radius += b->weights[i++] * 1.0;
+  b->radius += b->weights[i++] * noise;
+  g_assert (i == F_WEIGHTS);
+#endif
+
+  if (b->radius > 200) b->radius = 200;
+  if (b->radius < 0) b->radius = 0;
+  if (b->opaque < 0) b->opaque = 0;
+  if (b->opaque > 1) b->opaque = 1;
 }
 
 float brush_count_dabs_to (Brush * b, float x, float y, float pressure, float time)
@@ -101,9 +151,9 @@ float brush_count_dabs_to (Brush * b, float x, float y, float pressure, float ti
   return d_dist / (b->spacing*b->radius);
 }
 
-void brush_stroke_to (Brush * b, float x, float y, float pressure, float time)
+void brush_stroke_to (Brush * b, Surface * s, float x, float y, float pressure, float time)
 {
-  if (time == b->time) return;
+  if (time <= b->time) return;
 
   if (b->time == 0) {
     // reset
@@ -111,7 +161,7 @@ void brush_stroke_to (Brush * b, float x, float y, float pressure, float time)
     b->y = y;
     b->pressure = pressure;
     b->time = time;
-    brush_dab (b);
+    brush_dab (b, s);
     return;
   }
 
@@ -133,6 +183,7 @@ void brush_stroke_to (Brush * b, float x, float y, float pressure, float time)
     b->dist     -= 1.0;
     
     brush_prepare_dab (b);
-    brush_dab (b);
+    brush_dab (b, s);
   }
 }
+

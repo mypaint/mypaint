@@ -5,21 +5,10 @@
 #include "surface.h"
 #include "brush.h"
 
-Surface * screen; /* the global bitmap */
-Brush * brush; /* global brush */
-
-double lastx, lasty;
-guint32 lastt = 0;
-double lastpaintx, lastpainty, lastpaintpress;
-double dist;
-double spacing = 0.2;
-double vx10;
+Surface * global_surface;
+Brush * global_brush;
 
 GtkWidget *statusline;
-/*
-GtkCheckMenuItem *recorddata;
-GtkCheckMenuItem *suggestsize;
-*/
 
 static gint
 my_button_press (GtkWidget *widget, GdkEventButton *event)
@@ -47,7 +36,8 @@ my_motion (GtkWidget *widget, GdkEventMotion *event)
     return TRUE;
   */
 
-  brush_stroke_to (brush, event->x, event->y, pressure, 
+  global_brush->queue_draw_widget = widget;
+  brush_stroke_to (global_brush, global_surface, event->x, event->y, pressure, 
                    event->time / 1000.0 /* in seconds */ );
 
 
@@ -64,7 +54,6 @@ my_expose (GtkWidget *widget, GdkEventExpose *event, Surface *s)
   rowstride = (rowstride + 3) & -4; /* align to 4-byte boundary */
   rgb = g_new (guchar, event->area.height * rowstride);
 
-  s->widget = GTK_WIDGET (widget);
   surface_render (s,
                   rgb, rowstride,
                   event->area.x, event->area.y,
@@ -112,27 +101,27 @@ init_input (void)
 static void
 brush_bigger (GtkAction *action, GtkWidget *window)
 {
-  brush->radius *= 1.4;
+  global_brush->radius *= 1.4;
 }
 
 static void
 brush_smaller (GtkAction *action, GtkWidget *window)
 {
-  brush->radius /= 1.4;
+  global_brush->radius /= 1.4;
 }
 
 static void
 invert_colors (GtkAction *action, GtkWidget *window)
 {
-  brush->color[0] = 255 - brush->color[0];
-  brush->color[1] = 255 - brush->color[1];
-  brush->color[2] = 255 - brush->color[2];
+  global_brush->color[0] = 255 - global_brush->color[0];
+  global_brush->color[1] = 255 - global_brush->color[1];
+  global_brush->color[2] = 255 - global_brush->color[2];
 }
 
 static void
 clear_image (GtkAction *action, GtkWidget *window)
 {
-  surface_clear (screen);
+  surface_clear (global_surface);
   gtk_widget_draw (window, NULL);
 }
 
@@ -211,11 +200,10 @@ main (int argc, char **argv)
   gtk_widget_set_default_colormap (gdk_rgb_get_cmap ());
   gtk_widget_set_default_visual (gdk_rgb_get_visual ());
 
-  screen = new_surface (xs, ys);
+  global_surface = new_surface (xs, ys);
+  surface_clear (global_surface);
 
-  surface_clear (screen);
-
-  brush = brush_create (screen);
+  global_brush = brush_create ();
 
   w = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_signal_connect (GTK_OBJECT (w), "destroy",
@@ -286,7 +274,7 @@ main (int argc, char **argv)
   gtk_container_add (GTK_CONTAINER (eb), da);
 
   gtk_signal_connect (GTK_OBJECT (da), "expose_event",
-		      (GtkSignalFunc) my_expose, screen);
+		      (GtkSignalFunc) my_expose, global_surface);
 
   statusline = gtk_label_new ("hello world");
   gtk_container_add (GTK_CONTAINER (v), statusline);
