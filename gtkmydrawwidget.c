@@ -131,7 +131,7 @@ gtk_my_draw_widget_new        (int width, int height)
 
 void gtk_my_draw_widget_discard_and_resize (GtkMyDrawWidget *mdw, int width, int height)
 {
-  g_free(mdw->surface);
+  if (mdw->surface) free_surface (mdw->surface);
   mdw->surface = new_surface (width, height);
 }
 

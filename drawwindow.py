@@ -257,7 +257,8 @@ class Window(gtk.Window):
         self.app.quit()
 
     def move_cb(self, action):
-        step = 20
+        #step = 20
+        step = min(self.mdw.window.get_size()) / 5
         name = action.get_name()
         if name == 'MoveLeft':
             self.mdw.scroll(-step, 0)

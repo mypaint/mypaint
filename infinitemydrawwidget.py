@@ -1,5 +1,5 @@
 "extending the C myDrawWidget a bit, eg with infinite canvas"
-import gtk
+import gtk, gc
 from mydrawwidget import MyDrawWidget
 from helpers import Rect
 
@@ -56,7 +56,7 @@ class InfiniteMyDrawWidget(MyDrawWidget):
         if old_pixbuf is None:
             old_pixbuf = self.get_as_pixbuf()
         # let's see what size we need it.
-        expanded.expand(4*border) # expand even further to avoid too frequent resizing
+        expanded.expand(1*border) # expand even further to avoid too frequent resizing
         # now, combine the (possibly already painted) rect with the (visible) viewport
         newCanvas = oldCanvas.copy()
         newCanvas.expandToIncludeRect(expanded)
@@ -71,7 +71,6 @@ class InfiniteMyDrawWidget(MyDrawWidget):
         w, h = newCanvas.w, newCanvas.h
         new_pixbuf = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, False, 8, w, h)
         new_pixbuf.fill(0xffffffff) # white
-        #new_pixbuf.draw_pixbuf(None, old_pixbuf, src_x=0, src_y=0, dst_x=translate_x, dst_y=translate_y)
         old_pixbuf.copy_area(src_x=0, src_y=0,
                              width=old_pixbuf.get_width(), height=old_pixbuf.get_height(),
                              dest_pixbuf=new_pixbuf,
@@ -82,3 +81,16 @@ class InfiniteMyDrawWidget(MyDrawWidget):
         self.viewport_y += translate_y
         self.set_viewport(self.viewport_x, self.viewport_y)
 
+        # free that huge memory again
+        ## help! old_pixbuf does not get collected (new_pixbuf frees fine)
+        gc.set_debug(gc.DEBUG_LEAK)
+        #print old_pixbuf, new_pixbuf
+        #print gc.get_referrers(new_pixbuf), gc.get_referents(new_pixbuf)
+        del new_pixbuf
+        gc.collect()
+        gc.collect()
+        #print gc.get_referrers(old_pixbuf), gc.get_referents(old_pixbuf)
+        del old_pixbuf
+        gc.collect()
+        gc.collect()
+        #print '---'
