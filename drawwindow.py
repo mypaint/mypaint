@@ -1,6 +1,6 @@
 "the main drawing window"
 import gtk
-import lowlevel
+import mydrawwidget
 
 
 class Window(gtk.Window):
@@ -9,7 +9,8 @@ class Window(gtk.Window):
         self.app = app
 
         self.set_title('MyPaint')
-        self.connect('delete-event', self.delete_event_cb)
+        def delete_event_cb(window, event, app): app.quit()
+        self.connect('delete-event', delete_event_cb, self.app)
         self.set_size_request(600, 400)
         vbox = gtk.VBox()
         self.add(vbox)
@@ -17,12 +18,14 @@ class Window(gtk.Window):
         self.create_ui()
         vbox.pack_start(self.ui.get_widget('/Menubar'), expand=False)
 
-        self.mdw = mdw = lowlevel.DrawWidget()
-        #self.brush = lowlevel.Brush()
-        mdw.set_brush(self.app.brush)
-        vbox.pack_start(mdw)
+        # maximum useful size
+        # FIXME: that's /my/ screen resolution
+        self.mdw = mydrawwidget.MyDrawWidget(1280, 1024);
+        self.mdw.clear()
+        self.mdw.set_brush(self.app.brush)
+        vbox.pack_start(self.mdw)
 
-        self.staturbar = sb = gtk.Statusbar()
+        self.statusbar = sb = gtk.Statusbar()
         vbox.pack_end(sb, expand=False)
         sb.push(0, "hello world")
         
@@ -99,20 +102,36 @@ class Window(gtk.Window):
 
         if dialog.run() == gtk.RESPONSE_OK:
             filename = dialog.get_filename()
-            self.statusbar.push(1, 'TODO: now open ' + filename)
+
+            pixbuf = gtk.gdk.pixbuf_new_from_file(filename)
+            self.mdw.set_from_pixbuf (pixbuf)
+            self.statusbar.push(1, 'Loaded from' + filename)
 
         dialog.destroy()
         
     def save_cb(self, action):
-        self.statusbar.push(1, 'TODO: save dialog')
+        dialog = gtk.FileChooserDialog("Save..", self,
+                                       gtk.FILE_CHOOSER_ACTION_SAVE,
+                                       (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
+                                        gtk.STOCK_SAVE, gtk.RESPONSE_OK))
+        dialog.set_default_response(gtk.RESPONSE_OK)
 
-    def close_cb(self, action):
-        self.hide()
-        gtk.main_quit()
+        filter = gtk.FileFilter()
+        filter.set_name("png")
+        filter.add_pattern("*.png")
+        dialog.add_filter(filter)
+
+        dialog.hide()
+
+        if dialog.run() == gtk.RESPONSE_OK:
+            filename = dialog.get_filename()
+
+            pixbuf = self.mdw.get_as_pixbuf()
+            pixbuf.save(filename, 'png')
+            self.statusbar.push(1, 'Saved to' + filename)
+
+        dialog.destroy()
 
     def quit_cb(self, action):
-        raise SystemExit
-
-    def delete_event_cb(self, window, event):
-        gtk.main_quit()
+        self.app.quit()
 

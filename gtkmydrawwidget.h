@@ -4,6 +4,7 @@
 #include <gdk/gdk.h>
 #include <gtk/gtkwidget.h>
 #include <gtk/gtkdrawingarea.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include "surface.h"
 #include "gtkmybrush.h"
@@ -39,10 +40,14 @@ struct _GtkMyDrawWidgetClass
 
 
 GType      gtk_my_draw_widget_get_type   (void) G_GNUC_CONST;
-GtkWidget* gtk_my_draw_widget_new        (void);
+
+GtkMyDrawWidget* gtk_my_draw_widget_new        (int width, int height);
 
 void gtk_my_draw_widget_clear (GtkMyDrawWidget *mdw);
 void gtk_my_draw_widget_set_brush (GtkMyDrawWidget *mdw, GtkMyBrush * brush);
+
+GdkPixbuf* gtk_my_draw_widget_get_as_pixbuf (GtkMyDrawWidget *mdw);
+void gtk_my_draw_widget_set_from_pixbuf (GtkMyDrawWidget *mdw, GdkPixbuf* pixbuf);
 
 #ifdef __cplusplus
 }

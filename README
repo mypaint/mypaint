@@ -1,0 +1,14 @@
+MyPaint - a small drawing program with dynamic brushes
+
+Compile and run:
+make
+./mypaint
+
+There is no 'make install' yet.
+
+Required: pygtk, python, gtk
+Recommended: a pressure sensitive input device (graphic tablet)
+
+- Martin Renold <martinxyz@gmx.ch>
+svn://old.homeip.net/code/mypaint
+http://old.homeip.net/martin/drawing

@@ -117,6 +117,7 @@
           reminder = rgbdiff[i] % 256;
           rgbdiff[i] /= 256;
           // use randomness to fake more precision
+          // - ah, I just learned that this is called "dither". I hope I've done it right.
           random_pos = (random_pos + 1 + rgbdiff[i] % 1 /* hope that's slightly random */) % 8;
           if (reminder > randoms[random_pos] /* 0..255 */) {
             rgbdiff[i]++;

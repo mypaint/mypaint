@@ -1,13 +1,13 @@
 "tune brush window"
 import gtk
-import lowlevel
+import brush
 
 
 class Window(gtk.Window):
     def __init__(self, app):
         gtk.Window.__init__(self)
         self.app = app
-        app.brush = lowlevel.Brush()
+        self.app.brush_selected_callbacks.append(self.brush_selected_cb)
 
         self.set_title('Brush settings')
 
@@ -17,7 +17,7 @@ class Window(gtk.Window):
 
         # FIXME: why does the scrolledwindow not work any more?
 
-        table = gtk.Table(3, len(lowlevel.brushsettings))
+        table = gtk.Table(3, len(brush.brushsettings))
         #table.set_border_width(4)
         #table.set_col_spacings(15)
         scroll.add_with_viewport(table)
@@ -29,8 +29,8 @@ class Window(gtk.Window):
             adj.set_value(default)
         def value_changed_cb(adj, index, app):
             app.brush.set_setting(index, adj.get_value())
-
-        for s in lowlevel.brushsettings:
+        self.adj = []
+        for s in brush.brushsettings:
             eb = gtk.EventBox()
             l = gtk.Label(s.name)
             l.set_alignment(0, 0.5)
@@ -39,6 +39,7 @@ class Window(gtk.Window):
 
             adj = gtk.Adjustment(value=s.default, lower=s.min, upper=s.max, step_incr=0.01, page_incr=0.1)
             adj.connect('value-changed', value_changed_cb, s.index, self.app)
+            self.adj.append(adj)
             h = gtk.HScale(adj)
             h.set_digits(2)
             h.set_draw_value(True)
@@ -53,6 +54,10 @@ class Window(gtk.Window):
             table.attach(b, 2, 3, s.index, s.index+1, gtk.FILL, gtk.FILL)
 
         self.set_size_request(450, 500)
+
+    def brush_selected_cb(self, brush_selected):
+        for s in brush.brushsettings:
+            self.adj[s.index].set_value(self.app.brush.get_setting(s.index))
 
 
 

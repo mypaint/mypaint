@@ -2,7 +2,6 @@
 #include "gtkmydrawwidget.h"
 
 static void gtk_my_draw_widget_class_init    (GtkMyDrawWidgetClass *klass);
-static void gtk_my_draw_widget_init          (GtkMyDrawWidget      *mdw);
 static void gtk_my_draw_widget_finalize (GObject *object);
 static void gtk_my_draw_widget_realize (GtkWidget *widget);
 static gint gtk_my_draw_widget_button_updown (GtkWidget *widget, GdkEventButton *event);
@@ -29,7 +28,7 @@ gtk_my_draw_widget_get_type (void)
 	NULL,		/* class_data */
 	sizeof (GtkMyDrawWidget),
 	0,		/* n_preallocs */
-	(GInstanceInitFunc) gtk_my_draw_widget_init,
+	NULL, /* instance init */
       };
 
       my_draw_widget_type =
@@ -106,15 +105,6 @@ gtk_my_draw_widget_realize (GtkWidget *widget)
 }
 
 static void
-gtk_my_draw_widget_init (GtkMyDrawWidget *mdw)
-{
-  mdw->brush = NULL;
-  // FIXME: that's my screen resolution... maybe add size as window is resized...
-  mdw->surface = new_surface (1280, 1024);
-  surface_clear (mdw->surface);
-}
-
-static void
 gtk_my_draw_widget_finalize (GObject *object)
 {
   GtkMyDrawWidget * mdw;
@@ -129,11 +119,15 @@ gtk_my_draw_widget_finalize (GObject *object)
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
-GtkWidget*
-gtk_my_draw_widget_new (void)
+GtkMyDrawWidget*
+gtk_my_draw_widget_new        (int width, int height)
 {
-  g_print ("This gets never called... but is needed. Strange.\n");
-  return GTK_WIDGET (g_object_new (gtk_my_draw_widget_get_type (), NULL));
+  GtkMyDrawWidget * mdw;
+  mdw = g_object_new (gtk_my_draw_widget_get_type (), NULL);
+  mdw->surface = new_surface (width, height);
+  // might load an image afterwards, so better don't.
+  //surface_clear (mdw->surface);
+  return mdw;
 }
 
 static gint
@@ -249,3 +243,47 @@ gtk_my_draw_widget_set_brush (GtkMyDrawWidget *mdw, GtkMyBrush * brush)
   if (mdw->brush) g_object_unref (mdw->brush);
   mdw->brush = brush;
 }
+
+GdkPixbuf* gtk_my_draw_widget_get_as_pixbuf (GtkMyDrawWidget *mdw)
+{
+  GdkPixbuf* pixbuf;
+  pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB, /*has_alpha*/0, /*bits_per_sample*/8,
+			   mdw->surface->w, mdw->surface->h);
+
+  surface_render (mdw->surface, 
+                  gdk_pixbuf_get_pixels (pixbuf), 
+                  gdk_pixbuf_get_rowstride (pixbuf),
+                  0, 0, mdw->surface->w, mdw->surface->h,
+                  /*bpp*/3*8);
+
+  return pixbuf;
+}
+
+void gtk_my_draw_widget_set_from_pixbuf (GtkMyDrawWidget *mdw, GdkPixbuf* pixbuf)
+{
+  int w, h, n_channels;
+
+  n_channels = gdk_pixbuf_get_n_channels (pixbuf);
+
+  g_assert (gdk_pixbuf_get_colorspace (pixbuf) == GDK_COLORSPACE_RGB);
+  g_assert (gdk_pixbuf_get_bits_per_sample (pixbuf) == 8);
+  //ignore - g_assert (gdk_pixbuf_get_has_alpha (pixbuf));
+  g_assert (n_channels == 4 || n_channels == 3);
+
+  w = gdk_pixbuf_get_width (pixbuf);
+  h = gdk_pixbuf_get_height (pixbuf);
+
+  if (w < mdw->surface->w || h < mdw->surface->h) {
+    surface_clear (mdw->surface);
+  }
+  if (w > mdw->surface->w) w = mdw->surface->w;
+  if (h > mdw->surface->h) h = mdw->surface->h;
+
+  surface_load (mdw->surface,
+                gdk_pixbuf_get_pixels (pixbuf),
+                gdk_pixbuf_get_rowstride (pixbuf),
+                w, h,
+                /*bpp*/n_channels*8);
+  gtk_widget_draw (GTK_WIDGET (mdw), NULL);
+}
+
