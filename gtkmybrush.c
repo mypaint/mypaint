@@ -126,6 +126,8 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s)
   float x, y, radius_log, radius, opaque;
   float speed;
 
+  // FIXME: does happen (interpolation problem?)
+  if (b->pressure < 0) b->pressure = 0;
   g_assert (b->pressure >= 0 && b->pressure <= 1);
 
   { // slow position 2
@@ -199,7 +201,8 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s)
   radius = expf(radius_log);
 
   g_assert(radius > 0);
-  if (radius > 200) radius = 200;
+  //FIXME: performance problem acutally depending on CPU
+  if (radius > 100) radius = 100;
   g_assert(opaque >= 0);
   g_assert(opaque <= 1);
 
