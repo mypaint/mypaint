@@ -3,6 +3,8 @@
    Released under GPL.
 */
 
+#define sqr(x) ((x)*(x))
+
 typedef unsigned char byte;
 typedef unsigned short u16;
 typedef unsigned int u32;
@@ -16,7 +18,7 @@ typedef struct {
 typedef struct {
   double radius;
   byte color[3];
-  double alpha;
+  double opaque;
 } Brush;
 
 Surface * new_surface (int w, int h);

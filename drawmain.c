@@ -4,6 +4,7 @@
 #include "surfacepaint.h"
 
 Surface * screen; /* the global bitmap */
+Brush brush; /* global brush */
 
 double lastx, lasty;
 double dist;
@@ -14,59 +15,62 @@ GtkWidget *statusline;
 static gint
 my_button_press (GtkWidget *widget, GdkEventButton *event)
 {
-#define VERBOSE
+#define noVERBOSE
 #ifdef VERBOSE
   g_print ("button press %f %f %f\n", event->x, event->y, event->pressure);
 #endif
 
-  brush_dab (surface,
-             &paint,
-             event->x,
-             event->y,
-             ((GtkAdjustment *)brushsize_adjust)->value * event->pressure,
-             0.75 + 0.25 * event->pressure,
+  /*
+  brush.opaque = event->pressure;
+  brush.radius = 3.0;
+  brush.color[0] = 0;
+  brush.color[1] = 0;
+  brush.color[2] = 0;
+  surface_draw (screen,
+                event->x,
+                event->y,
+                &brush);
 
   lastx = event->x;
   lasty = event->y;
   dist = 0;
-
-  stop_drying ();
+  */
 
   gtk_widget_queue_draw (widget);
   return TRUE;
 }
 
 static gint
-wet_motion (GtkWidget *widget, GdkEventMotion *event)
+my_motion (GtkWidget *widget, GdkEventMotion *event)
 {
   double delta;
 #ifdef VERBOSE
   g_print ("motion %f %f %f %d\n", event->x, event->y, event->pressure, event->state);
-
 #endif
-  stop_drying ();
 
   /* no button pressed */
   if (!(event->state & 256))
     return TRUE;
 
-  delta = sqrt ((event->x - lastx) * (event->x - lastx) +
-		 (event->y - lasty) * (event->y - lasty));
+
+  delta = sqrt(sqr(event->x - lastx) + sqr(event->y - lasty));
 
   dist += delta;
   /* maybe if (dist > 10*spacing) dist = 0; */
 
-  while (dist >= spacing)
+  if (dist >= spacing)
     {
       /* todo: interpolate position and pressure of the dab */
-      wet_dab (pack->layers[1],
-	       &paint,
-	       event->x,
-	       event->y,
-	       ((GtkAdjustment *)brushsize_adjust)->value * event->pressure, /* radius */
-	       0.75 + 0.25 * event->pressure, /* pressure */
-	       strength_func (((GtkAdjustment *)strength_adjust)->value,
-			      event->pressure));
+      brush.opaque = event->pressure / 8.0;
+      brush.radius = 4.0;
+      brush.color[0] = 0;
+      brush.color[1] = 0;
+      brush.color[2] = 0;
+      surface_draw (screen,
+                    event->x,
+                    event->y,
+                    &brush);
+
       gtk_widget_queue_draw (widget);
       dist -= spacing;
     }
@@ -77,109 +81,32 @@ wet_motion (GtkWidget *widget, GdkEventMotion *event)
   return TRUE;
 }
 
-static void
-dry (GtkWidget *da)
-{
-  g_print ("drying...");
-  gtk_label_set_text (GTK_LABEL (statusline), "drying...");
-  gtk_widget_draw (statusline, NULL);
-  gdk_flush ();
-  wet_flow (pack->layers[1]);
-  adsorb_cnt++;
-  if (adsorb_cnt == 2)
-    {
-      wet_adsorb (pack->layers[1], pack->layers[0]);
-      wet_dry (pack->layers[1]);
-      adsorb_cnt = 0;
-    }
-
-  gtk_widget_draw (da, NULL);
-#if 0
-  gtk_label_set_text (GTK_LABEL (statusline), paintstr);
-#endif
-  g_print ("done\n");
-}
-
 static gint
-wet_dry_button_press (GtkWidget *widget, GtkWidget *da)
+my_expose (GtkWidget *widget, GdkEventExpose *event, Surface *s)
 {
-  dry(da);
+#ifdef VERBOSE
+  g_print ("expose\n");
+#endif
 
-  timo = 0;
-
-  return TRUE;
+  gdk_draw_rgb_image (widget->window,
+                      widget->style->black_gc,
+                      event->area.x, event->area.y,
+                      event->area.width, event->area.height,
+		      GDK_RGB_DITHER_MAX,
+                      s->rgb + event->area.y*s->rowstride + event->area.x*3,
+                      s->rowstride);
+  
+  return FALSE;
 }
+
 
 static gint
 clear_button_press (GtkWidget *widget, GtkWidget *da)
 {
-  wet_layer_clear (pack->layers[0]);
-  wet_layer_clone_texture (pack->layers[0], pack->layers[1]);
-  wet_layer_clear (pack->layers[1]);
-  wet_layer_clone_texture (pack->layers[1], pack->layers[0]);
-
+  surface_clear (screen);
   gtk_widget_draw (da, NULL);
-
-  stop_drying ();
-
   return TRUE;
 }
-
-static gint
-dry_timer (gpointer *dummy)
-{
-  GtkWidget *da = (GtkWidget *)dummy;
-
-  timo++;
-  if (timo >= 10)
-    {
-      if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (autodryb)))
-	{
-	  dry (da);
-	}
-
-      timo -= 2;
-    }
-  return TRUE;
-}
-
-static gint
-wet_expose (GtkWidget *widget, GdkEventExpose *event, Surface *pixels)
-{
-  byte *rgb;
-  int rowstride;
-
-#ifdef VERBOSE
-  g_print ("expose: %d layers\n", pack->n_layers);
-#endif
-
-  rowstride = event->area.width * 3;
-  rowstride = (rowstride + 3) & -4; /* align to 4-byte boundary */
-  rgb = g_new (byte, event->area.height * rowstride);
-
-  my_render (rgb, rowstride,
-             event->area.x, event->area.y,
-             event->area.width, event->area.height);
-
-  /*
-  wet_pack_render (rgb, rowstride,
-		   pack,
-		   event->area.x, event->area.y,
-		   event->area.width, event->area.height);
-  */
-
-  gdk_draw_rgb_image (widget->window,
-		      widget->style->black_gc,
-		      event->area.x, event->area.y,
-		      event->area.width, event->area.height,
-		      GDK_RGB_DITHER_MAX,
-		      rgb,
-		      rowstride);
-
-  g_free (rgb);
-  return FALSE;
-}
-
 
 static void
 init_input (void)
@@ -207,93 +134,6 @@ init_input (void)
   if (!info) return;
 }
 
-static gint
-pselect_expose (GtkWidget *widget, GdkEventExpose *event, WetPack *pack)
-{
-  byte *rgb;
-  int x;
-  int paint_quad, paint_num;
-  int last_pn;
-  int bg;
-  byte mask = 1;
-
-#ifdef VERBOSE
-  g_print ("expose: %d layers\n", pack->n_layers);
-#endif
-
-  rgb = g_new (byte, pack->layers[0]->width * 3);
-
-  last_pn = 0;
-  for (x = 0; x < pack->layers[0]->width; x++)
-    {
-      paint_quad = floor (4 * x * n_paints / pack->layers[0]->width + 0.5);
-      paint_num = paint_quad >> 2;
-      if (last_pn != paint_num)
-	{
-	  rgb[x * 3] = 255;
-	  rgb[x * 3 + 1] = 255;
-	  rgb[x * 3 + 2] = 255;
-	  last_pn = paint_num;
-	}
-      else 
-	{
-	  if ((paint_quad & 3) > 0 && (paint_quad & 3) < 3)
-	    bg = 0;
-	  else
-	    bg = 255;
-	  rgb[x * 3] = bg;
-	  rgb[x * 3 + 1] = bg;
-	  rgb[x * 3 + 2] = bg;
-	  wet_composite (&rgb[x * 3], 0, &paintbox[paint_num], 0, 1, 1,
-			 &mask);
-	}
-    }
-
-  gdk_draw_rgb_image (widget->window,
-		      widget->style->black_gc,
-		      event->area.x, event->area.y,
-		      event->area.width, event->area.height,
-		      GDK_RGB_DITHER_MAX,
-		      rgb + (event->area.x) * 3,
-		      0);
-
-  g_free (rgb);
-  return FALSE;
-}
-
-static gint
-pselect_button_press (GtkWidget *widget, GdkEventButton *event)
-{
-  int paint_num;
-  int wet;
-
-#ifdef VERBOSE
-  g_print ("pselect button press %f %f %f\n", event->x, event->y, event->pressure);
-
-#endif
-  paint_num = floor ((event->x * n_paints) / pack->layers[0]->width);
-
-  /* preserve wetness */
-  wet = paint.w;
-  paint = paintbox[paint_num];
-  paint.w = wet;
-  paintstr = statuslines[paint_num];
-  /*
-  gtk_adjustment_set_value (GTK_ADJUSTMENT (wetness_adjust), paint.w);
-  */
-  gtk_label_set_text (GTK_LABEL (statusline), paintstr);
-
-  stop_drying ();
-
-  return TRUE;
-}
-
-static void
-wetness_update (GtkAdjustment *adj, gpointer data)
-{
-  paint.w = floor (15 * adj->value + 0.5);
-}
-
 int
 main (int argc, char **argv)
 {
@@ -301,16 +141,8 @@ main (int argc, char **argv)
   GtkWidget *v;
   GtkWidget *eb;
   GtkWidget *da;
-  GtkWidget *peb;
-  GtkWidget *pda;
   GtkWidget *h;
-  GtkWidget *b;
   GtkWidget *db;
-  GtkWidget *h2;
-  GtkWidget *l;
-  GtkWidget *brushsize;
-  GtkWidget *wetness;
-  GtkWidget *strength;
   int xs = 256;
   int ys = 256;
 
@@ -334,9 +166,7 @@ main (int argc, char **argv)
   gtk_widget_set_default_colormap (gdk_rgb_get_cmap ());
   gtk_widget_set_default_visual (gdk_rgb_get_visual ());
 
-  pack = wet_pack_new (xs, ys);
-
-  wet_pack_maketexture (pack, 1, 0.7, 0.5);
+  screen = new_surface (xs, ys);
 
   w = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_signal_connect (GTK_OBJECT (w), "destroy",
@@ -360,9 +190,9 @@ main (int argc, char **argv)
 			 | GDK_PROXIMITY_OUT_MASK);
 
   gtk_signal_connect (GTK_OBJECT (eb), "button_press_event",
-		      (GtkSignalFunc) wet_button_press, NULL);
+		      (GtkSignalFunc) my_button_press, NULL);
   gtk_signal_connect (GTK_OBJECT (eb), "motion_notify_event",
-		      (GtkSignalFunc) wet_motion, NULL);
+		      (GtkSignalFunc) my_motion, NULL);
 
   da = gtk_drawing_area_new ();
   gtk_drawing_area_size (GTK_DRAWING_AREA (da), xs, ys);
@@ -370,32 +200,9 @@ main (int argc, char **argv)
   gtk_widget_show (da);
 
   gtk_signal_connect (GTK_OBJECT (da), "expose_event",
-		      (GtkSignalFunc) wet_expose, pack);
+		      (GtkSignalFunc) my_expose, screen);
 
-  peb = gtk_event_box_new ();
-  gtk_container_add (GTK_CONTAINER (v), peb);
-  gtk_widget_show (peb);
-
-  gtk_widget_set_extension_events (peb, GDK_EXTENSION_EVENTS_ALL);
-
-  gtk_widget_set_events (peb, GDK_EXPOSURE_MASK
-			 | GDK_LEAVE_NOTIFY_MASK
-			 | GDK_BUTTON_PRESS_MASK
-			 | GDK_KEY_PRESS_MASK
-			 | GDK_PROXIMITY_OUT_MASK);
-
-  gtk_signal_connect (GTK_OBJECT (peb), "button_press_event",
-		      (GtkSignalFunc) pselect_button_press, NULL);
-
-  pda = gtk_drawing_area_new ();
-  gtk_drawing_area_size (GTK_DRAWING_AREA (pda), xs, 16);
-  gtk_container_add (GTK_CONTAINER (peb), pda);
-  gtk_widget_show (pda);
-
-  gtk_signal_connect (GTK_OBJECT (pda), "expose_event",
-		      (GtkSignalFunc) pselect_expose, pack);
-
-  statusline = gtk_label_new (paintstr);
+  statusline = gtk_label_new ("hello world");
   gtk_container_add (GTK_CONTAINER (v), statusline);
   gtk_widget_show (statusline);
 
@@ -403,70 +210,17 @@ main (int argc, char **argv)
   gtk_container_add (GTK_CONTAINER (v), h);
   gtk_widget_show (h);
 
-  b = gtk_button_new_with_label ("Dry");
-  gtk_container_add (GTK_CONTAINER (h), b);
-  gtk_widget_show (b);
-
-  gtk_signal_connect (GTK_OBJECT (b), "clicked",
-		      (GtkSignalFunc) wet_dry_button_press, da);
-
-  autodryb = gtk_toggle_button_new_with_label ("Auto Dry");
-  gtk_container_add (GTK_CONTAINER (h), autodryb);
-  gtk_widget_show (autodryb);
-
   db = gtk_button_new_with_label ("Clear");
   gtk_container_add (GTK_CONTAINER (h), db);
   gtk_widget_show (db);
-
   gtk_signal_connect (GTK_OBJECT (db), "clicked",
 		      (GtkSignalFunc) clear_button_press, da);
 
-  h2 = gtk_hbox_new (FALSE, 5);
-  gtk_container_add (GTK_CONTAINER (v), h2);
-  gtk_widget_show (h2);
-
-  l = gtk_label_new ("Brush size: ");
-  gtk_container_add (GTK_CONTAINER (h2), l);
-  gtk_widget_show (l);
-
-  brushsize_adjust = gtk_adjustment_new (10, 0, 32, 0.1, 0.1, 0);
-  brushsize = gtk_hscale_new (GTK_ADJUSTMENT (brushsize_adjust));
-  gtk_container_add (GTK_CONTAINER (h2), brushsize);
-  gtk_widget_show (brushsize);
-
-  h2 = gtk_hbox_new (FALSE, 5);
-  gtk_container_add (GTK_CONTAINER (v), h2);
-  gtk_widget_show (h2);
-
-  l = gtk_label_new ("Wetness: ");
-  gtk_container_add (GTK_CONTAINER (h2), l);
-  gtk_widget_show (l);
-
-  wetness_adjust = gtk_adjustment_new (16, 0, 16, 1.0, 1.0, 0);
-  wetness = gtk_hscale_new (GTK_ADJUSTMENT (wetness_adjust));
-  gtk_container_add (GTK_CONTAINER (h2), wetness);
-  gtk_widget_show (wetness);
-  gtk_signal_connect (GTK_OBJECT (wetness_adjust), "value_changed",
-		      (GtkSignalFunc) wetness_update,
-		      NULL);
-
-  h2 = gtk_hbox_new (FALSE, 5);
-  gtk_container_add (GTK_CONTAINER (v), h2);
-  gtk_widget_show (h2);
-
-  l = gtk_label_new ("Strength: ");
-  gtk_container_add (GTK_CONTAINER (h2), l);
-  gtk_widget_show (l);
-
-  strength_adjust = gtk_adjustment_new (1, 0, 2, 0.1, 0.1, 0);
-  strength = gtk_hscale_new (GTK_ADJUSTMENT (strength_adjust));
-  gtk_scale_set_digits (GTK_SCALE (strength), 2);
-  gtk_container_add (GTK_CONTAINER (h2), strength);
-  gtk_widget_show (strength);
-
   gtk_widget_show (w);
 
+  /*
   gtk_timeout_add (50, (GtkFunction) dry_timer, da);
+  */
 
   gtk_main ();
   

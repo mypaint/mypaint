@@ -5,7 +5,29 @@
 #include <gtk/gtk.h>
 #include <string.h>
 #include <math.h>
-#include "wetpix.h"
+#include "surfacepaint.h"
+
+Surface *
+new_surface (int w, int h)
+{
+  Surface * s;
+  s = g_new (Surface, 1);
+
+  s->rowstride = w * 3;
+  s->rowstride = (s->rowstride + 3) & -4; /* align to 4-byte boundary */
+
+  s->rgb = g_new(byte, h*s->rowstride);
+  s->w = w;
+  s->h = h;
+  return s;
+}
+
+void
+free_surface (Surface * s)
+{
+  g_free (s->rgb);
+  g_free (s);
+}
 
 void 
 surface_renderpattern (Surface * s)
@@ -22,16 +44,16 @@ surface_renderpattern (Surface * s)
           r = x % 256;
           g = y % 256;
           b = (x*x+y*y) % 256;
-          rgb_line[3*(x-x0) + 0] = r;
-          rgb_line[3*(x-x0) + 1] = g;
-          rgb_line[3*(x-x0) + 2] = b;
+          rgb_line[3*x + 0] = r;
+          rgb_line[3*x + 1] = g;
+          rgb_line[3*x + 2] = b;
         }
       rgb_line += s->rowstride;
     }
 }
 
 void
-surface_clear (Surface * s);
+surface_clear (Surface * s)
 {
   int y;
   byte *rgb_line = s->rgb;
@@ -39,8 +61,8 @@ surface_clear (Surface * s);
   /* clear rgb buffer to white */
   for (y = 0; y < s->h; y++)
     {
-      memset (rgb_line, 255, width * 3);
-      rgb_line += rgb_rowstride;
+      memset (rgb_line, 255, s->w * 3);
+      rgb_line += s->rowstride;
     }
 }
 
@@ -54,7 +76,11 @@ surface_draw (Surface * s,
   int x1, y1;
   int xp, yp;
   byte *rgb_line;
+  byte *rgb;
   double xx, yy, rr;
+  double radius2;
+  int opaque;
+  byte c[3];
 
   r_fringe = b->radius + 1;
   x0 = floor (x - r_fringe);
@@ -65,88 +91,34 @@ surface_draw (Surface * s,
   if (y0 < 0) y0 = 0;
   if (x1 > s->w) x1 = s->w;
   if (y1 > s->h) y1 = s->h;
+  rr = sqr(b->radius);
+  opaque = floor(b->opaque * 256 + 0.5);
+  if (opaque < 0) opaque = 0;
+  if (opaque > 256) opaque = 256;
+  c[0] = b->color[0];
+  c[1] = b->color[1];
+  c[2] = b->color[2];
+  radius2 = sqr(b->radius);
 
   rgb_line = s->rgb + y0 * s->rowstride;
   for (yp = y0; yp < y1; yp++)
     {
       yy = (yp + 0.5 - y);
       yy *= yy;
+      rgb = rgb_line + 3*x0;
       for (xp = x0; xp < x1; xp++)
 	{
 	  xx = (xp + 0.5 - x);
 	  xx *= xx;
 	  rr = yy + xx;
-	  if (rr < r * r)
-	    press = pressure * 0.25;
-	  else
-	    press = -1;
-}
-
-void
-brush_dab (byte *rgb,
-           WetPix *paint,
-           double x, double y,
-           double r, double pressure,
-           double strength)
-{
-  double r_fringe;
-  int x0, y0;
-  int x1, y1;
-  WetPix *wet_line;
-  int xp, yp;
-  double xx, yy, rr;
-  double eff_height;
-  double press, contact;
-  WetPixDbl wet_tmp, wet_tmp2;
-  int maskstride = (layer->width + 3) >> 2;
-
-  r_fringe = r + 1;
-  x0 = floor (x - r_fringe);
-  y0 = floor (y - r_fringe);
-  x1 = ceil (x + r_fringe);
-  y1 = ceil (y + r_fringe);
-
-  wet_line = layer->buf + y0 * layer->rowstride;
-  for (yp = y0; yp < y1; yp++)
-    {
-      yy = (yp + 0.5 - y);
-      yy *= yy;
-      for (xp = x0; xp < x1; xp++)
-	{
-	  xx = (xp + 0.5 - x);
-	  xx *= xx;
-	  rr = yy + xx;
-	  if (rr < r * r)
-	    press = pressure * 0.25;
-	  else
-	    press = -1;
-	  eff_height = (wet_line[xp].h + wet_line[xp].w - 192) * (1.0 / 255);
-	  contact = (press + eff_height) * 0.2;
-	  if (contact > 0.5)
-	    contact = 1 - 0.5 * exp (-2.0 * contact - 1);
-	  if (contact > 0.0001)
-	    {
-	      int v;
-	      double rnd = rand () * (1.0 / RAND_MAX);
-
-	      v = wet_line[xp].rd;
-	      wet_line[xp].rd = floor (v + (paint->rd * strength - v) * contact + rnd);
-	      v = wet_line[xp].rw;
-	      wet_line[xp].rw = floor (v + (paint->rw * strength - v) * contact + rnd);
-	      v = wet_line[xp].gd;
-	      wet_line[xp].gd = floor (v + (paint->gd * strength - v) * contact + rnd);
-	      v = wet_line[xp].gw;
-	      wet_line[xp].gw = floor (v + (paint->gw * strength - v) * contact + rnd);
-	      v = wet_line[xp].bd;
-	      wet_line[xp].bd = floor (v + (paint->bd * strength - v) * contact + rnd);
-	      v = wet_line[xp].bw;
-	      wet_line[xp].bw = floor (v + (paint->bw * strength - v) * contact + rnd);
-	      v = wet_line[xp].w;
-	      wet_line[xp].w = floor (v + (paint->w - v) * contact + rnd);
-
-	      layer->mask[(yp >> 2) * maskstride + (xp >> 2)] = 1;
-	    }
-	}
-      wet_line += layer->rowstride;
+	  if (rr < radius2) {
+            rgb[0] = (opaque*c[0] + (256-opaque)*rgb[0]) / 256;
+            rgb[1] = (opaque*c[1] + (256-opaque)*rgb[1]) / 256;
+            rgb[2] = (opaque*c[2] + (256-opaque)*rgb[2]) / 256;
+          }
+          rgb += 3;
+        }
+      rgb_line += s->rowstride;
     }
 }
+
