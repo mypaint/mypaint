@@ -53,6 +53,8 @@ class Setting:
     def load_from_string(self, s):
         parts = s.split('|')
         self.set_base_value(float(parts[0]))
+        for i in brushsettings.inputs:
+            self.set_points(i, None)
         for part in parts[1:]:
             subparts = part.split()
             command, args = subparts[0], subparts[1:]
@@ -60,6 +62,7 @@ class Setting:
                 if command == i.name:
                     points = [float(f) for f in args]
                     self.set_points(i, points)
+                    print 'loaded point data'
 
 class Brush(mydrawwidget.MyBrush):
     def __init__(self):
@@ -92,7 +95,7 @@ class Brush(mydrawwidget.MyBrush):
         r, g, b = self.get_color()
         f.write('color %d %d %d\n' % (r, g, b))
         for s in brushsettings.settings:
-            f.write(s.cname + self.settings[s.index].save_to_string() + '\n')
+            f.write(s.cname + ' ' + self.settings[s.index].save_to_string() + '\n')
         f.close()
 
     def load(self, path, name):
@@ -101,6 +104,7 @@ class Brush(mydrawwidget.MyBrush):
         pixbuf = gtk.gdk.pixbuf_new_from_file(prefix + '_prev.png')
         self.update_preview(pixbuf)
         num_found = 0
+        print 'parsing', prefix
         for line in open(prefix + '.myb').readlines():
             line = line.strip()
             if line.startswith('#'): continue
@@ -116,7 +120,7 @@ class Brush(mydrawwidget.MyBrush):
                             found = True
                             self.settings[s.index].load_from_string(rest)
                     assert found, 'invalid setting'
-            except e:
+            except None, e:
                 print e
                 print 'ignored line:'
                 print line

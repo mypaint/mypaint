@@ -1,60 +1,175 @@
 "window to model a single brush property function"
 import gtk
-import brush
+import brush, brushsettings
 
 class Window(gtk.Window):
-    def __init__(self, app):
+    def __init__(self, app, setting, adj):
         gtk.Window.__init__(self)
         self.app = app
         self.app.brush_selected_callbacks.append(self.brush_selected_cb)
         self.add_accel_group(self.app.accel_group)
 
-        self.set_title('Curves')
+        self.set_title(setting.name)
 
-        inputs = ['pressure', 'speed', 'speed2']
-        table = gtk.Table(1, len(inputs))
-        self.add(table)
+        scroll = gtk.ScrolledWindow()
+        scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
+        self.add(scroll)
 
-        self.tooltips = gtk.Tooltips()
+        vbox = gtk.VBox()
+        vbox.set_spacing(5)
+        scroll.add_with_viewport(vbox)
+        vbox.set_border_width(5)
 
-        pos = 0
-        for input in inputs:
-            expander = gtk.Expander(label=input)
-            expander.set_expanded(False)
+        l = gtk.Label()
+        l.set_alignment(0.0, 0.0)
+        l.set_markup('<b><span size="large">%s</span></b>' % setting.name.title())
+        vbox.pack_start(l, expand=False)
+        
+        l = gtk.Label()
+        l.set_markup('Base Value')
+        l.set_alignment(0.0, 0.0)
+        l.xpad = 5
+        vbox.pack_start(l, expand=False)
 
-            t = gtk.Table(3, 4)
-            c =  CurveWidget()
-            t.attach(c, 0, 2, 0, 3, gtk.EXPAND | gtk.FILL, gtk.EXPAND | gtk.FILL, 5, 0)
-            l1 = gtk.Label('+3.0')
-            l2 = gtk.Label(' 0.0')
-            l3 = gtk.Label('-3.0')
-            t.attach(l1, 2, 3, 0, 1, gtk.FILL, gtk.FILL, 5, 0)
-            t.attach(l2, 2, 3, 1, 2, gtk.FILL, gtk.FILL, 5, 0)
-            t.attach(l3, 2, 3, 2, 3, gtk.FILL, gtk.FILL, 5, 0)
-            l4 = gtk.Label('0.0')
-            l5 = gtk.Label('1.0')
-            t.attach(l4, 0, 1, 3, 4, gtk.FILL, gtk.FILL, 5, 0)
-            t.attach(l5, 1, 2, 3, 4, gtk.FILL, gtk.FILL, 5, 0)
-            expander.add(t)
+        scale = self.base_value_hscale = gtk.HScale(adj)
+        scale.set_digits(2)
+        scale.set_draw_value(True)
+        scale.set_value_pos(gtk.POS_LEFT)
+        vbox.pack_start(scale, expand=False)
 
-            table.attach(expander, 0, 1, pos, pos+1, gtk.EXPAND | gtk.FILL, gtk.EXPAND | gtk.FILL, 5, 0)
-            pos += 1
-        #filler = ...
-        #table.attach(filler, 0, 1, pos, pos+1, gtk.EXPAND | gtk.FILL, gtk.EXPAND | gtk.FILL, 5, 0)
+        vbox.pack_start(gtk.HSeparator(), expand=False)
+
+        self.byinputwidgets = []
+        for i in brushsettings.inputs:
+            w = ByInputWidget(self.app, i, setting)
+            self.byinputwidgets.append(w)
+            vbox.pack_start(w, expand=False)
+            vbox.pack_start(gtk.HSeparator(), expand=False)
 
         self.set_size_request(450, 500)
 
     def brush_selected_cb(self, brush_selected):
-        pass
+        print 'Updating everyting'
+        # update curves
+        for w in self.byinputwidgets:
+            w.reread()
+
+class ByInputWidget(gtk.VBox):
+    "the gui elements that change the response to one input"
+    def __init__(self, app, input, setting):
+        gtk.VBox.__init__(self)
+
+        self.set_spacing(5)
+
+        self.app = app
+        self.input = input
+        self.setting = setting
+
+        self.scale_x_adj = gtk.Adjustment(value=1.0, lower=0.01, upper=20.0, step_incr=0.01, page_incr=0.1)
+        diff = setting.max - setting.min
+        self.scale_y_adj = gtk.Adjustment(value=diff/4.0, lower=-diff, upper=+diff, step_incr=0.01, page_incr=0.1)
+
+        self.scale_x_adj.connect('value-changed', self.user_changes_cb)
+        self.scale_y_adj.connect('value-changed', self.user_changes_cb)
+
+        l = gtk.Label()
+        l.set_markup('By <b>%s</b>' % input.name)
+        l.set_alignment(0.0, 0.0)
+        self.pack_start(l, expand=False)
+        
+        hbox = gtk.HBox()
+        self.pack_start(hbox, expand=False)
+        #hbox.pack_start(gtk.Label('by ' + input.name), expand=False)
+        scale = self.base_value_hscale = gtk.HScale(self.scale_y_adj)
+        scale.set_digits(2)
+        scale.set_draw_value(True)
+        scale.set_value_pos(gtk.POS_LEFT)
+        hbox.pack_start(scale, expand=True)
+
+        t = gtk.Table(4, 4)
+        c = self.curve_widget = CurveWidget(self.user_changes_cb)
+        t.attach(c, 0, 3, 0, 3, gtk.EXPAND | gtk.FILL, gtk.EXPAND | gtk.FILL, 5, 0)
+        l1 = gtk.SpinButton(self.scale_y_adj); l1.set_digits(2)
+        l2 = gtk.Label(' 0.0')
+        l3 = gtk.Label('') # actually -l1; FIXME: maybe implement this later
+        t.attach(l1, 3, 4, 0, 1, 0, 0, 5, 0)
+        t.attach(l2, 3, 4, 1, 2, 0, gtk.EXPAND, 5, 0)
+        t.attach(l3, 3, 4, 2, 3, 0, 0, 5, 0)
+        l4 = gtk.Label('0.0')
+        l5 = gtk.Label('')
+        l6 = gtk.SpinButton(self.scale_x_adj); l6.set_digits(2)
+        t.attach(l4, 0, 1, 3, 4, 0, 0, 5, 0)
+        t.attach(l5, 1, 2, 3, 4, gtk.EXPAND, 0, 5, 0)
+        t.attach(l6, 2, 3, 3, 4, 0, 0, 5, 0)
+
+        expander = gtk.Expander(label='Details')
+        expander.add(t)
+        expander.set_expanded(False)
+
+        self.pack_start(expander, expand=False)
+
+        self.reread()
+
+    def user_changes_cb(self, widget):
+        scale_x, scale_y = self.scale_x_adj.get_value(), self.scale_y_adj.get_value()
+        curve_points = self.curve_widget.points[1:]
+        if scale_y:
+            brush_points = []
+            for p in curve_points:
+                x, y = p
+                x = x * scale_x
+                y = (0.5-y) * 2.0 * scale_y
+                brush_points += [x, y]
+            while len(brush_points) < 8:
+                brush_points += [0.0, 0.0]
+        else:
+            brush_points = None
+        self.app.brush.settings[self.setting.index].set_points(self.input, brush_points)
+
+    def reread(self):
+        brush_points = self.app.brush.settings[self.setting.index].points[self.input.index]
+        print brush_points
+        curve_points = []
+
+        scale_y = 0.0
+        scale_x = 1.0
+        if brush_points is None:
+            self.curve_widget.points = [(0.0, 0.5), (1.0, 0.0)]
+        else:
+            for i in range(4):
+                x, y = brush_points[2*i], brush_points[2*i+1]
+                if x == 0.0:
+                    break
+                if scale_y < abs(y):
+                    scale_y = abs(y)
+                curve_points.append((x, y))
+            scale_x = curve_points[-1][0]
+            assert scale_x > 0
+            assert scale_y > 0
+
+            final_curve_points = [(0.0, 0.5)]
+            for p in curve_points:
+                x, y = p
+                x = x / scale_x
+                y = -y / 2.0 / scale_y + 0.5
+                final_curve_points.append((x, y))
+
+            self.curve_widget.points = final_curve_points
+        self.curve_widget.queue_draw()
+
+        #print 'scale:', scale_x, scale_y
+        self.scale_x_adj.set_value(scale_x)
+        self.scale_y_adj.set_value(scale_y)
 
 RADIUS = 4
 class CurveWidget(gtk.DrawingArea):
-    "modify a nonlinear curve"
-    def __init__(self):
+    "modify a (restricted) nonlinear curve"
+    def __init__(self, changed_cb):
         gtk.DrawingArea.__init__(self)
-        self.points = [(0.0, 0.5), (1.0, 1.0)]
+        self.points = [(0.0, 0.5), (1.0, 0.0)]
         self.maxpoints = 5
         self.grabbed = None
+        self.changed_cb = changed_cb
 
         self.connect("expose-event", self.expose_cb)
         self.connect("button-press-event", self.button_press_cb)
@@ -65,6 +180,7 @@ class CurveWidget(gtk.DrawingArea):
                         gtk.gdk.BUTTON_RELEASE_MASK |
                         gtk.gdk.POINTER_MOTION_MASK
                         )
+        self.set_size_request(300, 200)
 
     def eventpoint(self, event_x, event_y):
         # FIXME: very ugly; and code duplication, see expose_cb
@@ -115,6 +231,8 @@ class CurveWidget(gtk.DrawingArea):
             if self.points[i] is None:
                 self.points.pop(i)
         self.grabbed = None
+        # notify user of the widget
+        self.changed_cb(self)
             
     def motion_notify_cb(self, widget, event):
         if self.grabbed is None: return

@@ -156,17 +156,25 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s)
 {
   float x, y, radius_log, opaque;
   float speed;
-  int i;
+  int i, j;
   gint color[3];
   int color_is_hsv;
   float pressure;
   float settings[BRUSH_SETTINGS_COUNT];
+  float inputs[INPUT_COUNT];
+  float base_radius_pixels = expf(b->settings[BRUSH_RADIUS_LOGARITHMIC].base_value);
 
   // FIXME: does happen (interpolation problem?)
   if (b->pressure < 0.0) b->pressure = 0.0;
   if (b->pressure > 1.0) b->pressure = 1.0;
   g_assert (b->pressure >= 0.0 && b->pressure <= 1.0);
   pressure = b->pressure; // could distort it here
+
+  // FIXME: see below, badly placed
+  speed = sqrt(sqr(b->dx) + sqr(b->dy))/base_radius_pixels/b->dtime;
+
+  inputs[INPUT_PRESSURE] = pressure;
+  inputs[INPUT_SPEED] = speed;
 
   for (i=0; i<BRUSH_SETTINGS_COUNT; i++) {
     settings[i] = b->settings[i].base_value;
@@ -178,12 +186,31 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s)
     // two strokes (speed for example) this might be fatal.
 
     // ==> the inputs should be updated above, and the settings needed
-    // to do so should have been cached from the last step... argh,
-    // I'm complaining about bugs in code that is not even written.
+    // to do so should have been cached from the last step...
 
-    // TODO: add function mapping code here.
+    for (j=0; j<INPUT_COUNT; j++) {
+      Mapping * m = b->settings[i].mapping[j];
+      // OPTIMIZE
+      if (m) {
+        int p0 = -1;
+        float x0, y0, x1, y1, x, y;
+        // decide what region to use
+        while (p0 < 2 && m->xvalues[p0+1] > 0 && inputs[j] > m->xvalues[p0+1]) p0++;
+        x0 = (p0 == -1) ? 0 : m->xvalues[p0];
+        y0 = (p0 == -1) ? 0 : m->yvalues[p0];
+        x1 = m->xvalues[p0+1];
+        y1 = m->yvalues[p0+1];
+        // linear interpolation
+        x = inputs[j];
+        float m, q;
+        m = (y1-y0)/(x1-x0);
+        q = y0 - m*x0;
+        y = m*x + q;
+        settings[i] += y;
+      }
+    }
   }
-
+    
 
   { // slow position 2
     float fac = exp_decay (settings[BRUSH_POSITION_T2], 0.4);
@@ -196,8 +223,6 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s)
   //x = b->x; y = b->y;
   radius_log = settings[BRUSH_RADIUS_LOGARITHMIC];
   opaque = settings[BRUSH_OPAQUE];
-
-  speed = sqrt(sqr(b->dx) + sqr(b->dy))/b->dtime;
 
   { // slow speed
     float fac = exp_decay (settings[BRUSH_OBS__SPEED_SLOWNESS] * 0.01, 0.1 * b->dtime);
