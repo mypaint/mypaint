@@ -216,6 +216,7 @@ fann_type trainer_test_step(struct trainer * t)
 void trainer_train(struct trainer * t)
 {
   int i;
+  float eta;
   fann_type mse, old_mse;
   assert(t->data);
   assert(t->data_used > 8);
@@ -223,14 +224,20 @@ void trainer_train(struct trainer * t)
   i = 0;
   mse = -1;
   /* train until overfitting */
-  fann_set_learning_rate(t->ann, 0.01); 
+  eta = 3.0;
   do {
+    fann_set_learning_rate(t->ann, eta); 
     old_mse = mse;
     mse = trainer_test_step(t);
-    printf("%d %f\n", i, mse);
+    printf("%d %f, %f\n", i, mse, eta);
     trainer_train_step(t);
     i++;
-  } while (old_mse == -1 || mse < old_mse);
+    if (old_mse == -1 || mse < old_mse) {
+      eta *= 1.02;
+    } else {
+      eta *= 0.5;
+    }
+  } while (eta > 0.01);
 }
 
 fann_type * trainer_run(struct trainer * t, fann_type * original_inputs)
@@ -267,10 +274,11 @@ int test_nntrainer()
   fann_type inputs[2];
   fann_type outputs[1];
   t = trainer_create(2, 1);
-  for (i=0; i<500; i++) {
+  for (i=0; i<5000; i++) {
     inputs[0] = (rand() % 500)*0.002;
     inputs[1] = (rand() % 500)*0.0001 - 1000;
     outputs[0] = test_func(inputs[0], inputs[1]);
+    if (rand() % 3 == 0) outputs[0] += ((rand() % 100)-50) / 5000.0; /* noise */
     trainer_add_data(t, inputs, outputs);
   }
   trainer_train(t);
