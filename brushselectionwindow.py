@@ -10,6 +10,7 @@ class Window(gtk.Window):
         self.add_accel_group(self.app.accel_group)
 
         self.set_title('Brush selection')
+        self.connect('delete-event', self.app.hide_window_cb)
 
         # TODO: load available brushes
         # bad idea - self.brushes.append(brush.Brush())
@@ -108,6 +109,7 @@ class Window(gtk.Window):
         if brush is self.app.selected_brush:
             # selected same brush twice: load pixmap
             self.set_preview_pixbuf(brush.preview)
+
 
 preview_spacing_outside = 0
 preview_border_visible = 1

@@ -50,17 +50,18 @@ class Application: # singleton
 
         self.new_image_window()
 
-        self.brushsettings_window = brushsettingswindow.Window(self)
-        self.brushsettings_window.show_all()
+        w = self.brushSettingsWindow = brushsettingswindow.Window(self)
+        w.show_all()
 
-        self.function_window = functionwindow.Window(self)
-        self.function_window.show_all()
+        w = self.functionWindow = functionwindow.Window(self)
+        #w.show_all()
+        #w.hide()
 
-        self.brushselection_window = brushselectionwindow.Window(self)
-        self.brushselection_window.show_all()
+        w = self.brushSelectionWindow = brushselectionwindow.Window(self)
+        w.show_all()
 
-        self.colorselectionwindow = colorselectionwindow.Window(self)
-        self.colorselectionwindow.show_all()
+        w = self.colorSelectionWindow = colorselectionwindow.Window(self)
+        w.show_all()
 
         gtk.accel_map_load(self.confpath + 'accelmap.conf')
 
@@ -79,6 +80,11 @@ class Application: # singleton
     def select_brush(self, brush):
         for callback in self.brush_selected_callbacks:
             callback(brush)
+
+    def hide_window_cb(self, window, event):
+        # used by some of the windows
+        window.hide()
+        return True
 
     def quit(self):
         print 'save'

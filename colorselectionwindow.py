@@ -9,6 +9,7 @@ class Window(gtk.Window):
         self.add_accel_group(self.app.accel_group)
 
         self.set_title('Color')
+        self.connect('delete-event', self.app.hide_window_cb)
 
         vbox = gtk.VBox()
         self.add(vbox)

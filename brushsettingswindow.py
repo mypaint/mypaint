@@ -11,6 +11,7 @@ class Window(gtk.Window):
         self.add_accel_group(self.app.accel_group)
 
         self.set_title('Brush settings')
+        self.connect('delete-event', self.app.hide_window_cb)
 
         scroll = gtk.ScrolledWindow()
         scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)

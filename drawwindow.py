@@ -72,6 +72,11 @@ class Window(gtk.Window):
               <menuitem action='Context09s'/>
               <menuitem action='ContextHelp'/>
             </menu>
+            <menu action='DialogMenu'>
+              <menuitem action='BrushSelectionWindow'/>
+              <menuitem action='BrushSettingsWindow'/>
+              <menuitem action='ColorSelectionWindow'/>
+            </menu>
           </menubar>
         </ui>"""
         actions = [
@@ -110,6 +115,10 @@ class Window(gtk.Window):
             ('Context09s',   None, 'set Context 9', None, None, self.context_cb),
             ('ContextStore', None, 'set Context last selected', None, None, self.context_cb),
             ('ContextHelp',  None, 'How to use this?', None, None, self.context_help_cb),
+            ('DialogMenu',  None, 'Dialogs'),
+            ('BrushSelectionWindow',  None, 'brush list', None, None, self.toggleBrushSelectionWindow_cb),
+            ('BrushSettingsWindow',   None, 'brush settings', None, None, self.toggleBrushSettingsWindow_cb),
+            ('ColorSelectionWindow',  None, 'color', None, None, self.toggleColorSelectionWindow_cb),
             ]
         ag.add_actions(actions)
         self.ui = gtk.UIManager()
@@ -118,11 +127,25 @@ class Window(gtk.Window):
         self.app.accel_group = self.ui.get_accel_group()
         self.add_accel_group(self.app.accel_group)
 
+
+    def toggleWindow(self, w):
+        if w.get_property('visible'):
+            w.hide()
+        else:
+            w.show()
+    def toggleBrushSelectionWindow_cb(self, action):
+        self.toggleWindow(self.app.brushSelectionWindow)
+    def toggleBrushSettingsWindow_cb(self, action):
+        self.toggleWindow(self.app.brushSettingsWindow)
+    def toggleColorSelectionWindow_cb(self, action):
+        self.toggleWindow(self.app.colorSelectionWindow)
+
     def new_window_cb(self, action):
         # FIXME: is it really done like that?
-        w = Window()
-        w.show_all()
+        #w = Window()
+        #w.show_all()
         #gtk.main()
+        pass
 
     def clear_cb(self, action):
         self.mdw.clear()
@@ -224,12 +247,12 @@ class Window(gtk.Window):
         self.app.selected_context = context
         if store:
             context.copy_settings_from(self.app.brush)
-            preview = self.app.brushselection_window.get_preview_pixbuf()
+            preview = self.app.brushSelectionWindow.get_preview_pixbuf()
             context.update_preview(preview)
             context.save(self.app.brushpath)
         else: # restore
             self.app.select_brush(context)
-            self.app.brushselection_window.set_preview_pixbuf(context.preview)
+            self.app.brushSelectionWindow.set_preview_pixbuf(context.preview)
 
     def context_help_cb(self, action):
         print "TODO"

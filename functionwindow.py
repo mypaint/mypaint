@@ -140,7 +140,6 @@ class CurveWidget(gtk.DrawingArea):
             self.points[i] = (x, y)
         self.queue_draw()
 
-
     def expose_cb(self, widget, event):
         window = widget.window
         state = gtk.STATE_NORMAL
