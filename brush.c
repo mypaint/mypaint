@@ -13,6 +13,8 @@ BrushSettingInfo brush_setting_infos[] = {
   { 0, 0, 0, 0, 0, 0, 0 }
 };
 
+#include "brush_settings.inc"
+
 Brush * brush_create ()
 {
   int i;
@@ -23,41 +25,6 @@ Brush * brush_create ()
     brush_set_setting (b, i, brush_setting_infos[i].default_value);
   }
   return b;
-}
-
-void brush_set_setting (Brush * b, int id, float value)
-{
-  // FIXME: scirpt to generate this code
-  if (id == 0) {
-    b->radius_logarithmic = value;
-  } else if (id == 1) {
-    b->opaque = value;
-  } else if (id == 2) {
-    b->dabs_per_radius = value;
-  } else if (id == 3) {
-    b->dabs_per_second = value;
-  } else {
-    g_print ("brush_set_setting() with invalid id %d\n", id);
-    g_assert (0);
-  }
-}
-
-float brush_get_setting (Brush * b, int id)
-{
-  // FIXME: scirpt to generate this code
-  if (id == 0) {
-    return b->radius_logarithmic;
-  } else if (id == 1) {
-    return b->opaque;
-  } else if (id == 2) {
-    return b->dabs_per_radius;
-  } else if (id == 3) {
-    return b->dabs_per_second;
-  } else {
-    g_print ("brush_get_setting() with invalid id %d\n", id);
-    g_assert (0);
-    return 0;
-  }
 }
 
 Brush * brush_create_copy (Brush * old_b)

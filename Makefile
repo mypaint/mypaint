@@ -6,5 +6,11 @@ all:	drawmain
 
 drawmain:	surface.o drawmain.o brush.o
 
+brush_settings.inc:	brush.c generate.py
+	./generate.py
+
+brush.o:	brush_settings.inc brush.c
+	cc $(CFLAGS) -c -o brush.o brush.c
+
 clean:
-	rm *.o drawmain
+	rm *.o drawmain brush_settings.inc
