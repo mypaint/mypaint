@@ -1,5 +1,6 @@
 import gtk, os
-import drawwindow, brushsettingswindow, brushselectionwindow, colorselectionwindow
+import drawwindow, brushsettingswindow, brushselectionwindow
+import colorselectionwindow, functionwindow
 import brush
 
 class Application: # singleton
@@ -51,6 +52,9 @@ class Application: # singleton
 
         self.brushsettings_window = brushsettingswindow.Window(self)
         self.brushsettings_window.show_all()
+
+        self.function_window = functionwindow.Window(self)
+        self.function_window.show_all()
 
         self.brushselection_window = brushselectionwindow.Window(self)
         self.brushselection_window.show_all()
