@@ -144,19 +144,7 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s)
   //x = b->x; y = b->y;
   radius_log = b->radius_logarithmic;
   opaque = b->opaque;
-  for (i=0; i<3; i++) color[i] = b->color[i];
-  color_is_hsv = 0;
 
-  if (b->color_value_by_random ||
-      b->color_value_by_pressure ||
-      b->color_saturation_by_random ||
-      b->color_saturation_by_pressure ||
-      b->color_hue_by_random ||
-      b->color_hue_by_pressure) {
-    color_is_hsv = 1;
-    gimp_rgb_to_hsv_int (color + 0, color + 1, color + 2);
-  }
-  
   speed = sqrt(sqr(b->dx) + sqr(b->dy))/b->dtime;
 
   { // slow speed
@@ -212,6 +200,41 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s)
   b->radius += b->weights[i++] * noise;
   g_assert (i == F_WEIGHTS);
 #endif
+
+  // color part
+  
+  for (i=0; i<3; i++) color[i] = b->color[i];
+  color_is_hsv = 0;
+
+  if (b->adapt_color_from_image) {
+    int px, py;
+    guchar *rgb;
+    float v = b->adapt_color_from_image;
+    px = ROUND(x);
+    py = ROUND(y);
+    if (px < 0) px = 0;
+    if (py < 0) py = 0;
+    if (px > s->w-1) px = s->w - 1;
+    if (py > s->h-1) py = s->h - 1;
+    rgb = PixelXY(s, px, py);
+    for (i=0; i<3; i++) {
+      color[i] = ROUND((1.0-v)*color[i] + v*rgb[i]);
+      if (color[i] < 0) color[i] = 0;
+      if (color[i] > 255) color[i] = 255;
+      b->color[i] = color[i];
+    }
+  }
+
+  if (b->color_value_by_random ||
+      b->color_value_by_pressure ||
+      b->color_saturation_by_random ||
+      b->color_saturation_by_pressure ||
+      b->color_hue_by_random ||
+      b->color_hue_by_pressure) {
+    color_is_hsv = 1;
+    gimp_rgb_to_hsv_int (color + 0, color + 1, color + 2);
+  }
+  
 
   if (b->color_hue_by_random) {
     g_assert (color_is_hsv);

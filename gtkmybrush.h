@@ -95,6 +95,15 @@ struct _GtkMyBrush
   float color_hue_by_pressure;
   //% color hue by random % BSF_NONE % 0.0 % 0.0 % 1.0 % noisify the color hue
   float color_hue_by_random;
+  //% adapt color from image % BSF_NONE % 0.0 % 0.0 % 1.0 % slowly change the color to the one you're painting on (some kind of smudge tool)\nNote that this happens /before/ the hue/saturation/brighness adjustment below: you can get very different effects (eg brighten image) by combining with them.
+  float adapt_color_from_image;
+  //TODO second dab % BSF_NONE % 0.0 % 0.0 % 1.0 % whether to draw a second brusdab next to the normal one, see options below
+  float second_dab;
+  //TODO second dab angle % BSF_NONE % 0.0 % 180.0 % 360.0 % angle in degree where the second dab is placed
+  float second_dab_angle;
+  //TODO second dab offset % BSF_NONE % -5.0 % 1.0 % 5.0 % how far away (multiplied by actual brush radius) the second dab is from the first dab
+  float second_dab_offset;
+  //TODO: second dab value adjustment..., change angle by speed angle...
 };
 
 struct _GtkMyBrushClass
