@@ -25,7 +25,7 @@ typedef struct {
   float opaque;
   //% radius % BSF_LOGARITHMIC % -0.5 % 2.0 % 5.0 % basic brush radius (logarithmic)\n 0.7 means 2 pixels\n 3.0 means 20 pixels
   float radius_logarithmic;
-  //% hardness % BSF_NONE % 0.0 % 1.0 % 1.0 % 0 hard brush-circle borders, 1 fuzzy borders
+  //% hardness % BSF_NONE % 0.0 % 1.0 % 1.0 % hard brush-circle borders (setting to zero will draw nothing; it's not implemented like in GIMP, I haven't figured out yet)
   float hardness;
   //% dabs per basic radius % BSF_NONE % 0.0 % 0.0 % 5.0 % dabs to draw while the pointer moves one brush radius
   float dabs_per_basic_radius;

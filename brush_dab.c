@@ -7,8 +7,8 @@
   int xp, yp;
   guchar *rgb;
   float xx, yy, rr;
-  float radius2;
-  int opaque; //TODO: , hardness;
+  float radius2, one_over_radius2;
+  //float precalc1, precalc2;
   int a;
   //int m1, m2; 
   guchar randoms[8];
@@ -16,6 +16,11 @@
 
   guchar c[3];
   if (!s) return;
+  
+  g_assert (hardness <= 1.0 && hardness >= 0.0);
+  if (hardness == 0) return; // infintly small point, rest transparent
+  if (hardness != 1) {
+  }
 
   r_fringe = radius + 1;
   x0 = floor (x - r_fringe);
@@ -32,14 +37,14 @@
   c[1] = color[1];
   c[2] = color[2];
   radius2 = sqr(radius);
+  one_over_radius2 = 1.0/radius2;
   
   // precalculate randomness
   ((guint32*)randoms)[0] = g_random_int ();
   ((guint32*)randoms)[1] = g_random_int ();
   random_pos = 0;
 
-  opaque = floor(opaque_float * 256 + 0.5);
-  if (opaque < 0) opaque = 0; if (opaque > 256) opaque = 256;
+  g_assert (opaque >= 0 && opaque <= 1);
   if (opaque == 0) return;
 
   /* TODO
@@ -61,11 +66,10 @@
     for (xp = x0; xp < x1; xp++) {
       xx = (xp + 0.5 - x);
       xx *= xx;
-      rr = yy + xx;
+      rr = (yy + xx) * one_over_radius2;
+      // rr is in range 0.0..1.0*sqrt(2)
       rgb = PixelXY(s, xp, yp);
-      // TODO: (but without division...)
       //opa_float = hardness*1.0 + (1-hardness)*(1.0 - rr / radius2);
-      int opa = opaque;
       /* TODO
       opa = opa * (hardness*256 + (256-hardness)*(256 - floor(256.0 * rr / radius2)));
       // opa is in range 0..256*256*256 (FIXME: sure? avoid ^ float ops and division)
@@ -73,7 +77,24 @@
       if (opa > 256) opa = 256;
       */
 
-      if (rr < radius2) {
+      if (rr <= 1.0) {
+        int opa;
+        { // hardness
+          float o;
+          if (hardness == 1) {
+            o = 1.0;
+          } else if (rr < hardness) {
+            o = rr + 1-(rr/hardness);
+            // hardness == 0 is nonsense, excluded above
+          } else {
+            o = hardness/(hardness-1)*(rr-1);
+            // hardness == 1 ?
+          }
+          opa = floor(opaque * o * 256 + 0.5);
+          g_assert (opa >= 0 && opa <= 256);
+          // opa is in range 0..256
+        }
+        
         int rgbdiff[3];
         int diff_sum;
         diff_sum = 0;

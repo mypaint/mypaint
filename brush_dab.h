@@ -3,7 +3,7 @@
 
 void draw_brush_dab (Surface * s, GtkWidget * queue_draw_widget, 
                      float x, float y, 
-                     float radius, float opaque_float, float hardness_float,
+                     float radius, float opaque, float hardness,
                      guchar * color,
                      float saturation_slowdown
                      )
