@@ -14,6 +14,7 @@ gtkmydrawwidget.o:	brushsettings.h gtkmydrawwidget.c
 	cc $(CFLAGS) -c -o $@ gtkmydrawwidget.c
 
 gtkmybrush.o:	brushsettings.h gtkmybrush.c
+	./generate.py # FIXME dependency should do this
 	cc $(CFLAGS) -c -o $@ gtkmybrush.c
 
 clean:

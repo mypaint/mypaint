@@ -44,7 +44,7 @@ class Window(gtk.Window):
 
             #sb = gtk.SpinButton(adj, climb_rate=0.1, digits=2)
             b = gtk.Button("%.1f" % s.default)
-            b.connect('clicked', self.default_clicked_cb, adj, s)
+            b.connect('clicked', self.set_fixed_value_clicked_cb, adj, s.default)
 
             b2 = gtk.Button("...")
             b2.connect('clicked', self.details_clicked_cb, adj, s)
@@ -58,8 +58,8 @@ class Window(gtk.Window):
 
         self.set_size_request(450, 500)
 
-    def default_clicked_cb(self, window, adj, setting):
-        adj.set_value(setting.default)
+    def set_fixed_value_clicked_cb(self, widget, adj, value):
+        adj.set_value(value);
 
     def details_clicked_cb(self, window, adj, setting):
         # FIXME: should the old window get closed automatically?
@@ -69,6 +69,7 @@ class Window(gtk.Window):
             w = functionwindow.Window(self.app, setting, adj)
             self.functionWindows[setting.index] = w
             w.show_all()
+        w.hide() # maybe this helps to get it in front?
         w.show()
 
     def value_changed_cb(self, adj, index, app):

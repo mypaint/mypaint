@@ -10,6 +10,7 @@ class Window(gtk.Window):
         self.add_accel_group(self.app.accel_group)
 
         self.set_title(setting.name)
+        self.connect('delete-event', self.app.hide_window_cb)
 
         scroll = gtk.ScrolledWindow()
         scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
@@ -31,11 +32,16 @@ class Window(gtk.Window):
         l.xpad = 5
         vbox.pack_start(l, expand=False)
 
+        hbox = gtk.HBox()
+        vbox.pack_start(hbox, expand=False)
         scale = self.base_value_hscale = gtk.HScale(adj)
         scale.set_digits(2)
         scale.set_draw_value(True)
         scale.set_value_pos(gtk.POS_LEFT)
-        vbox.pack_start(scale, expand=False)
+        hbox.pack_start(scale, expand=True)
+        b = gtk.Button("%.1f" % setting.default)
+        b.connect('clicked', self.set_fixed_value_clicked_cb, adj, setting.default)
+        hbox.pack_start(b, expand=False)
 
         vbox.pack_start(gtk.HSeparator(), expand=False)
 
@@ -48,8 +54,10 @@ class Window(gtk.Window):
 
         self.set_size_request(450, 500)
 
+    def set_fixed_value_clicked_cb(self, widget, adj, value):
+        adj.set_value(value);
+
     def brush_selected_cb(self, brush_selected):
-        print 'Updating everyting'
         # update curves
         for w in self.byinputwidgets:
             w.reread()
@@ -85,6 +93,9 @@ class ByInputWidget(gtk.VBox):
         scale.set_draw_value(True)
         scale.set_value_pos(gtk.POS_LEFT)
         hbox.pack_start(scale, expand=True)
+        b = gtk.Button("0.0")
+        b.connect('clicked', self.set_fixed_value_clicked_cb, self.scale_y_adj, 0.0)
+        hbox.pack_start(b, expand=False)
 
         t = gtk.Table(4, 4)
         c = self.curve_widget = CurveWidget(self.user_changes_cb)
@@ -110,25 +121,32 @@ class ByInputWidget(gtk.VBox):
 
         self.reread()
 
+    def set_fixed_value_clicked_cb(self, widget, adj, value):
+        adj.set_value(value);
+
     def user_changes_cb(self, widget):
         scale_x, scale_y = self.scale_x_adj.get_value(), self.scale_y_adj.get_value()
         curve_points = self.curve_widget.points[1:]
         if scale_y:
+            allzero = True
             brush_points = []
             for p in curve_points:
                 x, y = p
                 x = x * scale_x
                 y = (0.5-y) * 2.0 * scale_y
                 brush_points += [x, y]
+                if y != 0:
+                    allzero = False
             while len(brush_points) < 8:
                 brush_points += [0.0, 0.0]
+            if allzero:
+                brush_points = None
         else:
             brush_points = None
         self.app.brush.settings[self.setting.index].set_points(self.input, brush_points)
 
     def reread(self):
         brush_points = self.app.brush.settings[self.setting.index].points[self.input.index]
-        print brush_points
         curve_points = []
 
         scale_y = 0.0
@@ -146,6 +164,8 @@ class ByInputWidget(gtk.VBox):
             scale_x = curve_points[-1][0]
             assert scale_x > 0
             assert scale_y > 0
+            if curve_points[0][1] < 0:
+                scale_y = - scale_y # make the first line always go upwards
 
             final_curve_points = [(0.0, 0.5)]
             for p in curve_points:

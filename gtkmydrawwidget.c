@@ -184,8 +184,9 @@ gtk_my_draw_widget_proximity_inout (GtkWidget *widget, GdkEventProximity *event)
   g_return_val_if_fail (GTK_IS_MY_DRAW_WIDGET (widget), FALSE);
   mdw = GTK_MY_DRAW_WIDGET (widget);
 
-  g_print ("Proximity in/out: %s.\n", event->device->name);
-  // TODO: change brush...
+  //g_print ("Proximity in/out: %s.\n", event->device->name);
+
+  // TODO: change brush?
   // note, event is not received if it does not happen in our window,
   // so the motion event might actually be the first one to see a new device
   // Stroke certainly finished now.

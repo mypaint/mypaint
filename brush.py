@@ -30,6 +30,11 @@ class Setting:
         self.brush = parent_brush
         self.set_base_value(setting.default)
         self.points = len(brushsettings.inputs) * [None]
+        if setting.cname == 'opaque_multiply':
+            # make opaque depend on pressure by default
+            for i in brushsettings.inputs:
+                if i.name == 'pressure': break
+            self.set_points(i, [1.0, 1.0] + 3*[0.0, 0.0])
     def set_base_value(self, value):
         self.base_value = value
         self.brush.set_base_value(self.setting.index, value)
@@ -62,7 +67,6 @@ class Setting:
                 if command == i.name:
                     points = [float(f) for f in args]
                     self.set_points(i, points)
-                    print 'loaded point data'
 
 class Brush(mydrawwidget.MyBrush):
     def __init__(self):
@@ -104,8 +108,8 @@ class Brush(mydrawwidget.MyBrush):
         pixbuf = gtk.gdk.pixbuf_new_from_file(prefix + '_prev.png')
         self.update_preview(pixbuf)
         num_found = 0
-        print 'parsing', prefix
-        for line in open(prefix + '.myb').readlines():
+        filename = prefix + '.myb'
+        for line in open(filename).readlines():
             line = line.strip()
             if line.startswith('#'): continue
             try:
@@ -119,10 +123,12 @@ class Brush(mydrawwidget.MyBrush):
                             assert not found
                             found = True
                             self.settings[s.index].load_from_string(rest)
-                    assert found, 'invalid setting'
-            except None, e:
+                    if not found:
+                        print filename, '- ignoring line:'
+                        print line
+            except Exception, e:
                 print e
-                print 'ignored line:'
+                print filename, '- ignoring line:'
                 print line
             else:
                 num_found += 1

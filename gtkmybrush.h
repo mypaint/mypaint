@@ -55,10 +55,8 @@ struct _GtkMyBrush
 
   // misc helpers
   float x_slow, y_slow;
-  float dx_slow, dy_slow;
+  float norm_dx_slow, norm_dy_slow;
   float last_time;
-  float obs__speedabs_slow;
-  float rbs__speedabs_slow;
 
   Setting settings[BRUSH_SETTINGS_COUNT];
 

@@ -155,7 +155,6 @@ void brush_reset (GtkMyBrush * b)
 void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s)
 {
   float x, y, radius_log, opaque;
-  float speed;
   int i, j;
   gint color[3];
   int color_is_hsv;
@@ -170,11 +169,15 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s)
   g_assert (b->pressure >= 0.0 && b->pressure <= 1.0);
   pressure = b->pressure; // could distort it here
 
-  // FIXME: see below, badly placed
-  speed = sqrt(sqr(b->dx) + sqr(b->dy))/base_radius_pixels/b->dtime;
+  float norm_dx, norm_dy;
+  norm_dx = b->dx / b->dtime / base_radius_pixels;
+  norm_dy = b->dy / b->dtime / base_radius_pixels;
 
   inputs[INPUT_PRESSURE] = pressure;
-  inputs[INPUT_SPEED] = speed;
+  inputs[INPUT_SPEED] = sqrt(sqr(norm_dx) + sqr(norm_dy)) * 0.001;
+  inputs[INPUT_SPEED2] = sqrt(sqr(b->norm_dx_slow) + sqr(b->norm_dy_slow)) * 0.001;
+  inputs[INPUT_RANDOM] = 0.5; /*g_random_double (); acutally unused */
+  //gauss_noise () ?
 
   for (i=0; i<BRUSH_SETTINGS_COUNT; i++) {
     settings[i] = b->settings[i].base_value;
@@ -190,18 +193,23 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s)
 
     for (j=0; j<INPUT_COUNT; j++) {
       Mapping * m = b->settings[i].mapping[j];
-      // OPTIMIZE
+      // OPTIMIZE?
       if (m) {
+        float x, y;
+        if (j == INPUT_RANDOM) {
+          x = g_random_double ();
+        } else {
+          x = inputs[j];
+        }
         int p0 = -1;
-        float x0, y0, x1, y1, x, y;
+        float x0, y0, x1, y1;
         // decide what region to use
-        while (p0 < 2 && m->xvalues[p0+1] > 0 && inputs[j] > m->xvalues[p0+1]) p0++;
+        while (p0 < 2 && m->xvalues[p0+1] > 0 && x > m->xvalues[p0+1]) p0++;
         x0 = (p0 == -1) ? 0 : m->xvalues[p0];
         y0 = (p0 == -1) ? 0 : m->yvalues[p0];
         x1 = m->xvalues[p0+1];
         y1 = m->yvalues[p0+1];
         // linear interpolation
-        x = inputs[j];
         float m, q;
         m = (y1-y0)/(x1-x0);
         q = y0 - m*x0;
@@ -214,41 +222,21 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s)
 
   { // slow position 2
     float fac = exp_decay (settings[BRUSH_POSITION_T2], 0.4);
-    b->x_slow += (b->x - b->x_slow) * fac;
+    b->x_slow += (b->x - b->x_slow) * fac; // FIXME: should depend on base radius?
     b->y_slow += (b->y - b->y_slow) * fac;
     x = b->x_slow;
     y = b->y_slow;
   }
 
-  //x = b->x; y = b->y;
   radius_log = settings[BRUSH_RADIUS_LOGARITHMIC];
-  opaque = settings[BRUSH_OPAQUE];
+  opaque = settings[BRUSH_OPAQUE] * settings[BRUSH_OPAQUE_MULTIPLY];
+  if (opaque >= 1.0) opaque = 1.0;
+  if (opaque <= 0.0) opaque = 0.0;
 
   { // slow speed
-    float fac = exp_decay (settings[BRUSH_OBS__SPEED_SLOWNESS] * 0.01, 0.1 * b->dtime);
-    b->dx_slow += (b->dx - b->dx_slow) * fac;
-    b->dy_slow += (b->dy - b->dy_slow) * fac;
-
-    fac = exp_decay (settings[BRUSH_OBS__SPEEDABS_SLOWNESS], 0.1 * b->dtime);
-    b->obs__speedabs_slow += (speed - b->obs__speedabs_slow) * fac;
-
-    fac = exp_decay (settings[BRUSH_RBS__SPEEDABS_SLOWNESS] * 0.001, 0.1 * b->dtime);
-    b->rbs__speedabs_slow += (speed - b->rbs__speedabs_slow) * fac;
-  }
-
-  // TODO: think about it: is this setting enough?
-  //opaque *= (settings[BRUSH_OPAQUE_BY_PRESSURE] * b->pressure + (1-settings[BRUSH_OPAQUE_BY_PRESSURE]));
-  opaque *= settings[BRUSH_OPAQUE_BY_PRESSURE] * pressure;
-  if (opaque >= 1.0) opaque = 1.0;
-  //b->radius = 2.0 + sqrt(sqrt(speed));
-  radius_log += pressure * settings[BRUSH_RADIUS_BY_PRESSURE];
-
-  if (settings[BRUSH_RADIUS_BY_RANDOM]) {
-    radius_log += (g_random_double () - 0.5) * settings[BRUSH_RADIUS_BY_RANDOM];
-  }
-
-  if (settings[BRUSH_RADIUS_BY_SPEED]) {
-    radius_log += 0.001 * b->rbs__speedabs_slow * settings[BRUSH_RADIUS_BY_SPEED];
+    float fac = exp_decay (settings[BRUSH_SPEED2_SLOWNESS] * 0.01, 0.1 * b->dtime);
+    b->norm_dx_slow += (norm_dx - b->norm_dx_slow) * fac;
+    b->norm_dy_slow += (norm_dy - b->norm_dy_slow) * fac;
   }
 
   if (settings[BRUSH_OFFSET_BY_RANDOM]) {
@@ -257,10 +245,9 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s)
   }
 
   if (settings[BRUSH_OFFSET_BY_SPEED]) {
-    //x += b->dx_slow * b->offset_by_speed; // * radius?
-    //y += b->dy_slow * b->offset_by_speed;
-    x += b->dx_slow * 0.01*b->obs__speedabs_slow * settings[BRUSH_OFFSET_BY_SPEED]; // * radius?
-    y += b->dy_slow * 0.01*b->obs__speedabs_slow * settings[BRUSH_OFFSET_BY_SPEED];
+    // FIXME: with or without radius? With, I think.
+    x += b->norm_dx_slow * settings[BRUSH_OFFSET_BY_SPEED] * 0.01 * base_radius_pixels;
+    y += b->norm_dy_slow * settings[BRUSH_OFFSET_BY_SPEED] * 0.01 * base_radius_pixels;
   }
 
   // color part
@@ -287,40 +274,25 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s)
     }
   }
 
-  if (settings[BRUSH_COLOR_VALUE_BY_RANDOM] ||
-      settings[BRUSH_COLOR_VALUE_BY_PRESSURE] ||
-      settings[BRUSH_COLOR_SATURATION_BY_RANDOM] ||
-      settings[BRUSH_COLOR_SATURATION_BY_PRESSURE] ||
-      settings[BRUSH_COLOR_HUE_BY_RANDOM] ||
-      settings[BRUSH_COLOR_HUE_BY_PRESSURE]) {
+  if (settings[BRUSH_COLOR_VALUE] ||
+      settings[BRUSH_COLOR_SATURATION] ||
+      settings[BRUSH_COLOR_HUE]) {
     color_is_hsv = 1;
     gimp_rgb_to_hsv_int (color + 0, color + 1, color + 2);
   }
   
 
-  if (settings[BRUSH_COLOR_HUE_BY_RANDOM]) {
+  if (settings[BRUSH_COLOR_HUE]) {
     g_assert (color_is_hsv);
-    color[0] = ROUND ((float)(color[0]) + gauss_noise () * settings[BRUSH_COLOR_HUE_BY_RANDOM] * 64.0);
+    color[0] += ROUND (settings[BRUSH_COLOR_HUE] * 64.0);
   }
-  if (settings[BRUSH_COLOR_HUE_BY_PRESSURE]) {
+  if (settings[BRUSH_COLOR_SATURATION]) {
     g_assert (color_is_hsv);
-    color[0] += ROUND (pressure * settings[BRUSH_COLOR_HUE_BY_PRESSURE] * 128.0);
+    color[1] += ROUND (settings[BRUSH_COLOR_SATURATION] * 128.0);
   }
-  if (settings[BRUSH_COLOR_SATURATION_BY_RANDOM]) {
+  if (settings[BRUSH_COLOR_VALUE]) {
     g_assert (color_is_hsv);
-    color[1] = ROUND ((float)(color[1]) + gauss_noise () * settings[BRUSH_COLOR_SATURATION_BY_RANDOM] * 64.0);
-  }
-  if (settings[BRUSH_COLOR_SATURATION_BY_PRESSURE]) {
-    g_assert (color_is_hsv);
-    color[1] += ROUND (pressure * settings[BRUSH_COLOR_SATURATION_BY_PRESSURE] * 128.0);
-  }
-  if (settings[BRUSH_COLOR_VALUE_BY_RANDOM]) {
-    g_assert (color_is_hsv);
-    color[2] = ROUND ((float)(color[2]) + gauss_noise () * settings[BRUSH_COLOR_VALUE_BY_RANDOM] * 64.0);
-  }
-  if (settings[BRUSH_COLOR_VALUE_BY_PRESSURE]) {
-    g_assert (color_is_hsv);
-    color[2] += ROUND (pressure * settings[BRUSH_COLOR_VALUE_BY_PRESSURE] * 128.0);
+    color[2] += ROUND (settings[BRUSH_COLOR_VALUE] * 128.0);
   }
 
   { // final calculations
@@ -328,14 +300,14 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s)
     guchar c[3];
     radius = expf(radius_log);
     
-    g_assert(radius > 0);
+    if (radius < 0) radius = 0; // don't ask me why this happens
     //FIXME: performance problem acutally depending on CPU
     if (radius > 100) radius = 100;
     g_assert(opaque >= 0);
     g_assert(opaque <= 1);
     
     // used for interpolation later
-    b->actual_radius = radius;
+    b->actual_radius = radius < 0.1 ? 0.1 : radius;
     
     if (color_is_hsv) {
       while (color[0] < 0) color[0] += 360;
@@ -348,8 +320,15 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s)
     }
     for (i=0; i<3; i++) c[i] = color[i];
 
+    float hardness = settings[BRUSH_HARDNESS];
+    if (hardness > 1.0) hardness = 1.0;
+    if (hardness < 0.0) hardness = 0.0;
+    float sat_slowdown = settings[BRUSH_SATURATION_SLOWDOWN];
+    if (sat_slowdown > 1.0) sat_slowdown = 1.0;
+    if (sat_slowdown < 0.0) sat_slowdown = 0.0;
+
     draw_brush_dab (s, b->queue_draw_widget,
-                    x, y, radius, opaque, settings[BRUSH_HARDNESS], c, settings[BRUSH_SATURATION_SLOWDOWN]);
+                    x, y, radius, opaque, hardness, c, sat_slowdown);
   }
 }
 
@@ -358,7 +337,7 @@ float brush_count_dabs_to (GtkMyBrush * b, float x, float y, float pressure, flo
   float dx, dy, dt;
   float res1, res2, res3;
   float dist;
-  if (b->actual_radius == 0) b->actual_radius = expf(b->settings[BRUSH_RADIUS_LOGARITHMIC].base_value);
+  if (b->actual_radius == 0.0) b->actual_radius = expf(b->settings[BRUSH_RADIUS_LOGARITHMIC].base_value);
   if (b->actual_radius < 0.5) b->actual_radius = 0.5;
   if (b->actual_radius > 500.0) b->actual_radius = 500.0;
   dx = x - b->x;
@@ -388,8 +367,8 @@ void brush_stroke_to (GtkMyBrush * b, Surface * s, float x, float y, float press
     b->last_time = b->time;
     b->x_slow = b->x;
     b->y_slow = b->y;
-    b->dx_slow = 0.0;
-    b->dy_slow = 0.0;
+    b->norm_dx_slow = 0.0;
+    b->norm_dy_slow = 0.0;
     return;
   }
 
