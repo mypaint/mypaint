@@ -10,7 +10,8 @@
 
 #define sqr(x) ((x)*(x))
 
-#define SIZE 512
+//#define SIZE 512
+#define SIZE 2048
 
 #define BLOCKBITS 7
 #define BLOCKSIZE (1 << BLOCKBITS)

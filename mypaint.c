@@ -4,89 +4,11 @@
 #include <math.h>
 #include "surface.h"
 #include "brush.h"
+#include "mydrawwidget.h"
 
-Surface * global_surface;
 Brush * global_brush;
-
-GtkWidget *statusline;
-
-
-static gint
-my_button_updown (GtkWidget *widget, GdkEventButton *event)
-{
-  { // WARNING: code duplication, forced by different GdkEvent* structs.
-    double pressure;
-    if (!gdk_event_get_axis ((GdkEvent *)event, GDK_AXIS_PRESSURE, &pressure)) {
-      pressure = (event->state & 256) ? 0.5 : 0;
-    }
-    //g_print ("motion %f %f %f %d\n", event->x, event->y, pressure, event->state);
-    g_assert (pressure >= 0 && pressure <= 1);
-    
-    global_brush->queue_draw_widget = widget;
-    brush_stroke_to (global_brush, global_surface, event->x, event->y, pressure, 
-                     event->time / 1000.0 /* in seconds */ );
-  } // END of duplicated code
-  // TODO: actually react on button, if it was not triggered by pressure treshold
-  return TRUE;
-}
-
-static gint
-my_motion (GtkWidget *widget, GdkEventMotion *event)
-{
-  { // WARNING: code duplication, forced by different GdkEvent* structs.
-    double pressure;
-    if (!gdk_event_get_axis ((GdkEvent *)event, GDK_AXIS_PRESSURE, &pressure)) {
-      pressure = (event->state & 256) ? 0.5 : 0;
-    }
-    //g_print ("motion %f %f %f %d\n", event->x, event->y, pressure, event->state);
-    g_assert (pressure >= 0 && pressure <= 1);
-    
-    global_brush->queue_draw_widget = widget;
-    brush_stroke_to (global_brush, global_surface, event->x, event->y, pressure, 
-                     event->time / 1000.0 /* in seconds */ );
-  } // END of duplicated code
-  return TRUE;
-}
-
-gboolean
-my_proximity_inout (GtkWidget *widget, GdkEventProximity *event)
-{
-  g_print ("Proximity in/out: %s.\n", event->device->name);
-  // TODO: change brush...
-  // note, event is not received if it does not happen in our window,
-  // so the motion event might actually be the first one to see a new device
-  // Stroke certainly finished now.
-  brush_reset (global_brush);
-  return FALSE;
-}
-
-static gint
-my_expose (GtkWidget *widget, GdkEventExpose *event, Surface *s)
-{
-  guchar *rgb;
-  int rowstride;
-
-  rowstride = event->area.width * 3;
-  rowstride = (rowstride + 3) & -4; /* align to 4-byte boundary */
-  rgb = g_new (guchar, event->area.height * rowstride);
-
-  surface_render (s,
-                  rgb, rowstride,
-                  event->area.x, event->area.y,
-                  event->area.width, event->area.height);
-
-  gdk_draw_rgb_image (widget->window,
-		      widget->style->black_gc,
-		      event->area.x, event->area.y,
-		      event->area.width, event->area.height,
-		      GDK_RGB_DITHER_MAX,
-		      rgb,
-		      rowstride);
-
-  g_free (rgb);
-  return FALSE;
-}
-
+GtkWidget * main_mdw;
+GtkWidget * statusline;
 
 static void
 init_input (void)
@@ -143,8 +65,7 @@ invert_colors (GtkAction *action, GtkWidget *window)
 static void
 clear_image (GtkAction *action, GtkWidget *window)
 {
-  surface_clear (global_surface);
-  gtk_widget_draw (window, NULL);
+  mydrawwidget_clear (MYDRAWWIDGET (main_mdw));
 }
 
 static void
@@ -262,19 +183,8 @@ main (int argc, char **argv)
 {
   GtkWidget *w;
   GtkWidget *v;
-  GtkWidget *da;
-  int xs = SIZE;
-  int ys = SIZE;
 
   gtk_init (&argc, &argv);
-
-  if (argc >= 3)
-    {
-      xs = atoi (argv[1]);
-      ys = atoi (argv[2]);
-      if (xs == 0) xs = SIZE;
-      if (ys == 0) ys = SIZE;
-    }
 
   init_input ();
 
@@ -282,11 +192,6 @@ main (int argc, char **argv)
 
   gtk_widget_set_default_colormap (gdk_rgb_get_cmap ());
   gtk_widget_set_default_visual (gdk_rgb_get_visual ());
-
-  global_surface = new_surface (xs, ys);
-  surface_clear (global_surface);
-
-  global_brush = brush_create ();
 
   w = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_signal_connect (GTK_OBJECT (w), "destroy",
@@ -327,45 +232,19 @@ main (int argc, char **argv)
     recorddata = GTK_CHECK_MENU_ITEM (gtk_ui_manager_get_widget (uim, "/MainMenu/LearnMenu/RecordData"));
     suggestsize = GTK_CHECK_MENU_ITEM (gtk_ui_manager_get_widget (uim, "/MainMenu/LearnMenu/SuggestSize"));
     */
-    gtk_container_add (GTK_CONTAINER (v), menu_bar);
-    gtk_widget_show (menu_bar);
+    gtk_box_pack_start (GTK_BOX (v), menu_bar, FALSE, FALSE, 0);
 
     gtk_accel_map_load ("accelmap.conf");
   }
 
-  da = gtk_drawing_area_new ();
-  gtk_drawing_area_size (GTK_DRAWING_AREA (da), xs, ys);
-  gtk_signal_connect (GTK_OBJECT (da), "expose_event",
-		      (GtkSignalFunc) my_expose, global_surface);
-
-  gtk_container_add (GTK_CONTAINER (v), da);
-
-  gtk_widget_set_extension_events (da, GDK_EXTENSION_EVENTS_ALL);
-
-  gtk_widget_set_events (da, GDK_EXPOSURE_MASK
-			 | GDK_LEAVE_NOTIFY_MASK
-			 | GDK_BUTTON_PRESS_MASK
-                         | GDK_BUTTON_RELEASE
-			 | GDK_POINTER_MOTION_MASK
-			 | GDK_PROXIMITY_IN_MASK
-			 | GDK_PROXIMITY_OUT_MASK
-                         );
-
-  GTK_WIDGET_SET_FLAGS(da, GTK_CAN_FOCUS); /* for key events */
-
-  gtk_signal_connect (GTK_OBJECT (da), "motion_notify_event",
-		      (GtkSignalFunc) my_motion, NULL);
-  gtk_signal_connect (GTK_OBJECT (da), "button_press_event",
-		      (GtkSignalFunc) my_button_updown, NULL);
-  gtk_signal_connect (GTK_OBJECT (da), "button_release_event",
-		      (GtkSignalFunc) my_button_updown, NULL);
-  gtk_signal_connect (GTK_OBJECT (da), "proximity_in_event",
-		      (GtkSignalFunc) my_proximity_inout, NULL);
-  gtk_signal_connect (GTK_OBJECT (da), "proximity_out_event",
-		      (GtkSignalFunc) my_proximity_inout, NULL);
+  // main drawing widget (main_mdw)
+  global_brush = brush_create ();
+  main_mdw = mydrawwidget_new ();
+  mydrawwidget_set_brush (MYDRAWWIDGET (main_mdw), global_brush); 
+  gtk_box_pack_start (GTK_BOX (v), main_mdw, TRUE, TRUE, 0);
 
   statusline = gtk_label_new ("hello world");
-  gtk_container_add (GTK_CONTAINER (v), statusline);
+  gtk_box_pack_start (GTK_BOX (v), statusline, FALSE, FALSE, 0);
 
   gtk_widget_show_all (w);
 
