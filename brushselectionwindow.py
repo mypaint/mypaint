@@ -16,13 +16,14 @@ class Window(gtk.Window):
         vbox = gtk.VBox()
         self.add(vbox)
 
-        #scroll = gtk.ScrolledWindow()
-        #scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
-        #vbox.pack_start(scroll)
-        #scroll.add_with_viewport(self.brushlist)
-
         self.brushlist = BrushList(self.app)
-        vbox.pack_start(self.brushlist, expand=True, fill=True)
+        scroll = gtk.ScrolledWindow()
+        scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
+        scroll.add_with_viewport(self.brushlist)
+        vbox.pack_start(scroll)
+        #scroll.resize_children() # whyever
+
+        #vbox.pack_start(self.brushlist, expand=True, fill=True)
 
         vbox.pack_start(gtk.HSeparator(), expand=False)
 
@@ -58,7 +59,7 @@ class Window(gtk.Window):
         b.connect('clicked', self.delete_selected_cb)
         vbox.pack_start(b, expand=False)
 
-        self.set_size_request(450, 500)
+        self.resize(350, 500)
 
     def set_preview_pixbuf(self, pixbuf):
         if pixbuf is None:
@@ -129,7 +130,7 @@ class BrushList(gtk.DrawingArea):
         self.connect("configure-event", self.configure_event_cb)
 	self.set_events(gtk.gdk.EXPOSURE_MASK |
                         gtk.gdk.BUTTON_PRESS_MASK)
-        self.set_size_request(preview_total_w, preview_total_h)
+        self.redraw_thumbnails()
 
     def redraw_thumbnails(self, width = None, height = None):
         if width is None:
@@ -138,7 +139,8 @@ class BrushList(gtk.DrawingArea):
             height = self.pixbuf.get_height()
         self.tiles_w = (width / preview_total_w) or 1
         self.tiles_h = len(self.app.brushes)/self.tiles_w + 1
-        height = max(height, self.tiles_h * preview_total_h)
+        height = self.tiles_h * preview_total_h
+        self.set_size_request(0, height)
         self.pixbuf = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, False, 8, width, height)
         self.pixbuf.fill(0xffffffff) # white
         i = 0
@@ -149,8 +151,6 @@ class BrushList(gtk.DrawingArea):
             y += preview_total_border
             b.preview_thumb.copy_area(0, 0, brush.thumb_w, brush.thumb_h, self.pixbuf, x, y)
             i += 1
-        #self.set_size_request(self.pixbuf.get_width(), self.pixbuf.get_height())
-        #print self.pixbuf.get_width(), self.pixbuf.get_height()
         self.queue_draw()
 
     def button_press_cb(self, widget, event):
@@ -167,15 +167,13 @@ class BrushList(gtk.DrawingArea):
     #def size_request_cb(self, widget, size):
     def configure_event_cb(self, widget, size):
         if self.pixbuf and self.pixbuf.get_width() == size.width:
-            if self.pixbuf.get_height() >= size.height:
+            if self.pixbuf.get_height() == size.height:
                 return
         self.redraw_thumbnails(size.width, size.height)
 
     def expose_cb(self, widget, event):
         rowstride = self.pixbuf.get_rowstride()
         pixels = self.pixbuf.get_pixels()
-        #def draw_rgb_image_dithalign(gc, x, y, width, height, dith, rgb_buf, rowstride=-1, xdith=0, ydith=0)
-        #def draw_rgb_image(gc, x, y, width, height, dith, rgb_buf, rowstride=-1, xdith=0, ydith=0)
         
         # cut to maximal size
         e_x, e_y = event.area.x, event.area.y
@@ -184,10 +182,9 @@ class BrushList(gtk.DrawingArea):
 
         widget.window.draw_rgb_image(
             widget.style.black_gc,
-            e_x, e_y, e_w, e_h,
+            0, 0, p_w, p_h,
             'normal',
-            pixels, rowstride,
-            e_x, e_y)
+            pixels, rowstride)
 
         # draw borders
         i = 0
