@@ -18,7 +18,8 @@ float clear_dist;
 #define n_inputs 15
 #define n_outputs 1
 
-float brushsize_user, brushsize_suggested;
+float brushsize;
+float hold_brushsize;
 
 /* time in seconds it takes to half the (old) average value */
 /*      T0 0 */
@@ -46,14 +47,15 @@ update_avg (float * avg, float dt, float value)
   UPDATE(4);
 }
 
-void neural_datapoint (int record_data, int guess_size);
+void neural_datapoint ();
 
 float speed_measure_time;
 float nn_datapoint_time;
+float nn_guess_time;
 float old_x, old_y;
 
 void 
-neural_process_movement (float dt, float x, float y, float z, float d_dist, int record_data, int guess_size)
+neural_process_movement (float dt, float x, float y, float z, float d_dist)
 {
   if (dt <= 0) return;
   update_avg (avg_x, dt, x);
@@ -78,20 +80,20 @@ neural_process_movement (float dt, float x, float y, float z, float d_dist, int 
     }
   }
 
-  if (record_data || guess_size) {
-    nn_datapoint_time += dt;
-    if (nn_datapoint_time > 1.0) {
-      nn_datapoint_time = 0;
-      neural_datapoint (record_data, guess_size);
-    }
+  nn_datapoint_time += dt;
+  if (nn_datapoint_time > 0.1) {
+    nn_datapoint_time = 0;
+    neural_datapoint ();
   }
 }
 
 void 
-neural_datapoint (int record_data, int guess_size)
+neural_datapoint ()
 {
   float inputs[n_inputs];
   float outputs[n_outputs];
+  static int calls = 0;
+  calls++;
 
   inputs[ 0] = avg_speed[1];
   inputs[ 1] = avg_speed[2];
@@ -113,17 +115,16 @@ neural_datapoint (int record_data, int guess_size)
 
   inputs[14] = clear_dist;
 
-  if (record_data) {
-    outputs[0] = brushsize_user;
+  if (calls % 10 == 0) {
+    outputs[0] = brushsize;
     trainer_add_data(ann, inputs, outputs);
   }
-  if (guess_size) {
+  {
     float * o;
     o = trainer_run(ann, inputs);
-    brushsize_suggested = o[0];
-    g_print ("r=%f\n", brushsize_suggested);
-  } else {
-    brushsize_suggested = brushsize_user;
+    hold_brushsize *= 0.9999;
+    brushsize = hold_brushsize * brushsize + (1-hold_brushsize) * o[0];
+    g_print ("nn=%f real=%f (hold %f)\n", o[0], brushsize, hold_brushsize);
   }
 }
 
@@ -131,17 +132,20 @@ void
 neural_notice_clear_image (void)
 {
   clear_dist = 10.0;
+  brushsize = 8.0;
+  hold_brushsize = 0.0;
 }
 
 void
 neural_set_current_brushsize (float size)
 {
-  brushsize_user = size;
+  brushsize = size;
+  hold_brushsize = 1.0;
 }
 
 float neural_get_suggested_brushsize ()
 {
-  return brushsize_suggested;
+  return brushsize;
 }
 
 void

@@ -16,8 +16,10 @@ double spacing = 0.2;
 double vx10;
 
 GtkWidget *statusline;
+/*
 GtkCheckMenuItem *recorddata;
 GtkCheckMenuItem *suggestsize;
+*/
 
 static gint
 my_button_press (GtkWidget *widget, GdkEventButton *event)
@@ -54,12 +56,11 @@ my_motion (GtkWidget *widget, GdkEventMotion *event)
   d_dist = sqrt(dx*dx + dy*dy);
   dist += d_dist;
 
-  neural_process_movement (dt, event->x, event->y, pressure, d_dist, 
-                           gtk_check_menu_item_get_active (recorddata),
-                           gtk_check_menu_item_get_active (suggestsize) );
-  if (gtk_check_menu_item_get_active (suggestsize) ) {
-    brush.radius = neural_get_suggested_brushsize ();
-    if (brush.radius <= 1.0) brush.radius = 1.0;
+  neural_process_movement (dt, event->x, event->y, pressure, d_dist);
+  brush.radius = neural_get_suggested_brushsize ();
+  if (brush.radius < 1.2) {
+    brush.radius = 1.2;
+    neural_set_current_brushsize (brush.radius);
   }
 
   while (dist >= spacing*brush.radius)
@@ -149,14 +150,14 @@ init_input (void)
 static void
 brush_bigger (GtkAction *action, GtkWidget *window)
 {
-  brush.radius *= 1.2;
+  brush.radius *= 1.4;
   neural_set_current_brushsize (brush.radius);
 }
 
 static void
 brush_smaller (GtkAction *action, GtkWidget *window)
 {
-  brush.radius /= 1.2;
+  brush.radius /= 1.4;
   neural_set_current_brushsize (brush.radius);
 }
 
@@ -182,12 +183,6 @@ train_nn (GtkAction *action, GtkWidget *window)
   neural_train ();
 }
 
-static void
-nothing (GtkAction *action, GtkWidget *window)
-{
-  return;
-}
-
 static GtkActionEntry my_actions[] = {
   { "ImageMenu", NULL, "Image" },
   { "BrushMenu", NULL, "Brush" },
@@ -200,10 +195,12 @@ static GtkActionEntry my_actions[] = {
   { "TrainNN", NULL, "Train", "<control>T", NULL, G_CALLBACK (train_nn) },
 };
 
+/*
 static GtkToggleActionEntry my_toggle_actions[] = {
   { "RecordData", NULL, "Record Data", "F11", "Record your inputs for later training", G_CALLBACK (nothing), TRUE },
   { "SuggestSize", NULL, "Suggest Size", "F12", "Foobar", G_CALLBACK (nothing), FALSE },
 };
+*/
 
 static const char * ui_description = 
 "<ui>"
@@ -218,8 +215,10 @@ static const char * ui_description =
 "      <menuitem action='InvertColor' />"
 "    </menu>"
 "    <menu action='LearnMenu'>"
+/*
 "      <menuitem action='RecordData' />"
 "      <menuitem action='SuggestSize' />"
+*/
 "      <menuitem action='TrainNN' />"
 "    </menu>"
 "  </menubar>"
@@ -259,8 +258,7 @@ main (int argc, char **argv)
   surface_clear (screen);
   neural_notice_clear_image ();
 
-  brush.radius = 3.0;
-  neural_set_current_brushsize (brush.radius);
+  brush.radius = 8.0;
   brush.color[0] = 0;
   brush.color[1] = 0;
   brush.color[2] = 0;
@@ -293,14 +291,18 @@ main (int argc, char **argv)
 
     action_group = gtk_action_group_new ("myactiongroup");
     gtk_action_group_add_actions (action_group, my_actions, G_N_ELEMENTS (my_actions), w);
+    /*
     gtk_action_group_add_toggle_actions (action_group, my_toggle_actions, G_N_ELEMENTS (my_toggle_actions), w);
+    */
     gtk_ui_manager_insert_action_group (uim, action_group, 0);
     accel_group = gtk_ui_manager_get_accel_group (uim);
     gtk_window_add_accel_group (GTK_WINDOW (w), accel_group);
 
     menu_bar = gtk_ui_manager_get_widget (uim, "/MainMenu");
+    /*
     recorddata = GTK_CHECK_MENU_ITEM (gtk_ui_manager_get_widget (uim, "/MainMenu/LearnMenu/RecordData"));
     suggestsize = GTK_CHECK_MENU_ITEM (gtk_ui_manager_get_widget (uim, "/MainMenu/LearnMenu/SuggestSize"));
+    */
     gtk_container_add (GTK_CONTAINER (v), menu_bar);
     gtk_widget_show (menu_bar);
 

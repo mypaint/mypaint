@@ -224,7 +224,8 @@ void trainer_train(struct trainer * t)
   i = 0;
   mse = -1;
   /* train until overfitting */
-  eta = 3.0;
+  /*eta = 3.0;*/
+  eta = 0.001;
   do {
     fann_set_learning_rate(t->ann, eta); 
     old_mse = mse;
