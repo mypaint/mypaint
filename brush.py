@@ -50,10 +50,11 @@ class Brush(mydrawwidget.MyBrush):
         self.preview.save(prefix + '_prev.png', 'png')
         f = open(prefix + '.myb', 'w')
         f.write('# mypaint brush file\n')
+        r, g, b = self.get_color()
+        f.write('color %d %d %d\n' % (r, g, b))
         for s in brushsettings:
             f.write('%s %f\n' % (s.cname, self.get_setting(s.index)))
         f.close()
-        #TODO: save color
 
     def load(self, path, name):
         self.name = name
@@ -65,21 +66,25 @@ class Brush(mydrawwidget.MyBrush):
             line = line.strip()
             if line.startswith('#'): continue
             try:
-                cname, value = line.split()
-                value = float(value)
-            except:
-                print 'ignored a line\n'
-                continue
-            found = False
-            for s in brushsettings:
-                if s.cname == cname:
-                    assert not found
-                    found = True
-                    self.set_setting(s.index, value)
-            if found:
-                num_found += 1
+                parts = line.split()
+                command = parts[0]
+                args = parts[1:]
+                if command == 'color':
+                    self.set_color([int(s) for s in args])
+                else:
+                    found = False
+                    for s in brushsettings:
+                        if command == s.cname:
+                            assert not found
+                            found = True
+                            self.set_setting(s.index, float(args[0]))
+                    assert found, 'invalid setting'
+            except e:
+                print e
+                print 'ignored line:'
+                print line
             else:
-                print 'failed to set a setting\n'
+                num_found += 1
         if num_found == 0:
             print 'there was only garbage in this file, using defaults'
         #TODO: load color

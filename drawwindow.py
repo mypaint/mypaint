@@ -44,44 +44,68 @@ class Window(gtk.Window):
               <menuitem action='InvertColor'/>
               <menuitem action='Bigger'/>
               <menuitem action='Smaller'/>
+              <menuitem action='Brighter'/>
+              <menuitem action='Darker'/>
             </menu>
             <menu action='ContextMenu'>
               <menuitem action='Context00'/>
+              <menuitem action='Context00s'/>
               <menuitem action='Context01'/>
+              <menuitem action='Context01s'/>
               <menuitem action='Context02'/>
+              <menuitem action='Context02s'/>
               <menuitem action='Context03'/>
+              <menuitem action='Context03s'/>
               <menuitem action='Context04'/>
+              <menuitem action='Context04s'/>
               <menuitem action='Context05'/>
+              <menuitem action='Context05s'/>
               <menuitem action='Context06'/>
+              <menuitem action='Context06s'/>
               <menuitem action='Context07'/>
+              <menuitem action='Context07s'/>
               <menuitem action='Context08'/>
+              <menuitem action='Context08s'/>
               <menuitem action='Context09'/>
+              <menuitem action='Context09s'/>
               <menuitem action='ContextHelp'/>
             </menu>
           </menubar>
         </ui>"""
         actions = [
-            ('FileMenu',    None, 'File'),
-            ('Clear',       None, 'Clear', '3', 'blank everything', self.clear_cb),
-            ('NewWindow',   None, 'New Window', '<control>N', None, self.new_window_cb),
-            ('Open',        None, 'Open', '<control>O', None, self.open_cb),
-            ('Save',        None, 'Save', '<control>S', None, self.save_cb),
-            ('Quit',        None, 'Quit', '<control>Q', None, self.quit_cb),
-            ('BrushMenu',   None, 'Brush'),
-            ('InvertColor', None, 'Invert Color', None, None, self.invert_color_cb),
-            ('Bigger', None, 'Bigger', None, None, self.brush_bigger_cb),
-            ('Smaller', None, 'Smaller', None, None, self.brush_smaller_cb),
-            ('ContextMenu', None, 'Context'),
-            ('Context00',    None, 'Context 0', 'a', None, self.context_cb),
-            ('Context01',    None, 'Context 1', 's', None, self.context_cb),
-            ('Context02',    None, 'Context 2', 'd', None, self.context_cb),
-            ('Context03',    None, 'Context 3', 'f', None, self.context_cb),
+            ('FileMenu',     None, 'File'),
+            ('Clear',        None, 'Clear', '3', 'blank everything', self.clear_cb),
+            ('NewWindow',    None, 'New Window', '<control>N', None, self.new_window_cb),
+            ('Open',         None, 'Open', '<control>O', None, self.open_cb),
+            ('Save',         None, 'Save', '<control>S', None, self.save_cb),
+            ('Quit',         None, 'Quit', '<control>Q', None, self.quit_cb),
+            ('BrushMenu',    None, 'Brush'),
+            ('InvertColor',  None, 'Invert Color', None, None, self.invert_color_cb),
+            ('Brighter',     None, 'Brighter', None, None, self.brighter_cb),
+            ('Darker',       None, 'Darker', None, None, self.darker_cb),
+            ('Bigger',       None, 'Bigger', None, None, self.brush_bigger_cb),
+            ('Smaller',      None, 'Smaller', None, None, self.brush_smaller_cb),
+            ('ContextMenu',  None, 'Context'),
+            ('Context00',    None, 'Context 0', None, None, self.context_cb),
+            ('Context00s',   None, 'set Context 0', None, None, self.context_cb),
+            ('Context01',    None, 'Context 1', None, None, self.context_cb),
+            ('Context01s',   None, 'set Context 1', None, None, self.context_cb),
+            ('Context02',    None, 'Context 2', None, None, self.context_cb),
+            ('Context02s',   None, 'set Context 2', None, None, self.context_cb),
+            ('Context03',    None, 'Context 3', None, None, self.context_cb),
+            ('Context03s',   None, 'set Context 3', None, None, self.context_cb),
             ('Context04',    None, 'Context 4', None, None, self.context_cb),
+            ('Context04s',   None, 'set Context 4', None, None, self.context_cb),
             ('Context05',    None, 'Context 5', None, None, self.context_cb),
+            ('Context05s',   None, 'set Context 5', None, None, self.context_cb),
             ('Context06',    None, 'Context 6', None, None, self.context_cb),
+            ('Context06s',   None, 'set Context 6', None, None, self.context_cb),
             ('Context07',    None, 'Context 7', None, None, self.context_cb),
+            ('Context07s',   None, 'set Context 7', None, None, self.context_cb),
             ('Context08',    None, 'Context 8', None, None, self.context_cb),
+            ('Context08s',   None, 'set Context 8', None, None, self.context_cb),
             ('Context09',    None, 'Context 9', None, None, self.context_cb),
+            ('Context09s',   None, 'set Context 9', None, None, self.context_cb),
             ('ContextHelp', None, 'How to use this?', None, None, self.context_help_cb),
             ]
         ag.add_actions(actions)
@@ -110,6 +134,20 @@ class Window(gtk.Window):
     def brush_smaller_cb(self, action):
         adj = self.app.brush_adjustment['radius_logarithmic']
         adj.set_value(adj.get_value() - 0.3)
+
+    def brighter_cb(self, action):
+        cs = self.app.colorselectionwindow 
+        cs.update()
+        h, s, v = cs.get_color_hsv()
+        v += 0.08
+        cs.set_color_hsv((h, s, v))
+        
+    def darker_cb(self, action):
+        cs = self.app.colorselectionwindow 
+        cs.update()
+        h, s, v = cs.get_color_hsv()
+        v -= 0.08
+        cs.set_color_hsv((h, s, v))
         
     def open_cb(self, action):
         dialog = gtk.FileChooserDialog("Open..", self,
@@ -166,21 +204,22 @@ class Window(gtk.Window):
         # - seperate set/restore commands?
         # - not storing settings under certain circumstances?
         # - think about other stuff... brush history, only those actually used, etc...
-        i = int(action.get_name()[-2:])
+        name = action.get_name()
+        store = False
+        if name.endswith('s'):
+            store = True
+            name = name[:-1]
+        i = int(name[-2:])
         context = self.app.contexts[i]
-        if self.app.selected_context is not None:
-            if context is not self.app.selected_context:
-                # save current settings to old context
-                b = self.app.selected_context
-                b.copy_settings_from(self.app.brush)
-                # OPTIMIZE: this scales the bitmap down as thumbnail, which will never be used
-                preview = self.app.brushselection_window.get_preview_pixbuf()
-                b.update_preview(preview)
-                b.name = 'context%02d' % i
-                b.save(self.app.brushpath) # OPTIMIZE: later?
-        self.app.selected_context = context
-        self.app.select_brush(context)
-        self.app.brushselection_window.set_preview_pixbuf(context.preview)
+        if store:
+            context.copy_settings_from(self.app.brush)
+            preview = self.app.brushselection_window.get_preview_pixbuf()
+            context.update_preview(preview)
+            context.name = 'context%02d' % i
+            context.save(self.app.brushpath)
+        else: # restore
+            self.app.select_brush(context)
+            self.app.brushselection_window.set_preview_pixbuf(context.preview)
 
     def context_help_cb(self, action):
         print "TODO"

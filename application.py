@@ -14,7 +14,7 @@ class Application: # singleton
         self.selected_brush = None
         self.brush_selected_callbacks = [self.brush_selected_cb]
         self.contexts = [brush.Brush() for i in range(10)] # 10 for now...
-        self.selected_context = None
+        #self.selected_context = None
 
         # load brushes
         loadnames = []
