@@ -175,9 +175,8 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s)
 
   inputs[INPUT_PRESSURE] = pressure;
   inputs[INPUT_SPEED] = sqrt(sqr(norm_dx) + sqr(norm_dy)) * 0.001;
-  inputs[INPUT_SPEED2] = sqrt(sqr(b->norm_dx_slow) + sqr(b->norm_dy_slow)) * 0.001;
-  inputs[INPUT_RANDOM] = 0.5; /*g_random_double (); acutally unused */
-  //gauss_noise () ?
+  inputs[INPUT_SPEED2] = sqrt(sqr(b->norm_dx_slow) + sqr(b->norm_dy_slow)) * 0.1;
+  inputs[INPUT_RANDOM] = 0.5; // actually unused
 
   for (i=0; i<BRUSH_SETTINGS_COUNT; i++) {
     settings[i] = b->settings[i].base_value;
@@ -198,6 +197,8 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s)
         float x, y;
         if (j == INPUT_RANDOM) {
           x = g_random_double ();
+          //x = gauss_noise ();
+          //if (x < 0) x = -x;
         } else {
           x = inputs[j];
         }
@@ -240,8 +241,8 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s)
   }
 
   if (settings[BRUSH_OFFSET_BY_RANDOM]) {
-    x += gauss_noise () * settings[BRUSH_OFFSET_BY_RANDOM];
-    y += gauss_noise () * settings[BRUSH_OFFSET_BY_RANDOM];
+    x += gauss_noise () * settings[BRUSH_OFFSET_BY_RANDOM] * base_radius_pixels;
+    y += gauss_noise () * settings[BRUSH_OFFSET_BY_RANDOM] * base_radius_pixels;
   }
 
   if (settings[BRUSH_OFFSET_BY_SPEED]) {

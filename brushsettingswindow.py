@@ -46,8 +46,12 @@ class Window(gtk.Window):
             b = gtk.Button("%.1f" % s.default)
             b.connect('clicked', self.set_fixed_value_clicked_cb, adj, s.default)
 
-            b2 = gtk.Button("...")
-            b2.connect('clicked', self.details_clicked_cb, adj, s)
+            if s.constant:
+                b2 = gtk.Label("=")
+                b2.set_alignment(0.5, 0.5)
+            else:
+                b2 = gtk.Button("...")
+                b2.connect('clicked', self.details_clicked_cb, adj, s)
 
             table.attach(eb, 0, 1, s.index, s.index+1, gtk.FILL, gtk.FILL, 5, 0)
             table.attach(h, 1, 2, s.index, s.index+1, gtk.EXPAND | gtk.FILL, gtk.EXPAND | gtk.FILL)
@@ -69,8 +73,7 @@ class Window(gtk.Window):
             w = functionwindow.Window(self.app, setting, adj)
             self.functionWindows[setting.index] = w
             w.show_all()
-        w.hide() # maybe this helps to get it in front?
-        w.show()
+        w.present() # get to the front
 
     def value_changed_cb(self, adj, index, app):
         app.brush.settings[index].set_base_value(adj.get_value())

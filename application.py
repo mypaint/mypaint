@@ -3,8 +3,8 @@ import drawwindow, brushsettingswindow, brushselectionwindow, colorselectionwind
 import brush
 
 class Application: # singleton
-    def __init__(self):
-        self.confpath = os.getenv('HOME') + '/.mypaint/'
+    def __init__(self, confpath, loadimage):
+        self.confpath = confpath
         if not os.path.isdir(self.confpath): os.mkdir(self.confpath)
         self.brushpath = self.confpath + 'brushes/'
         if not os.path.isdir(self.brushpath): os.mkdir(self.brushpath)
@@ -59,6 +59,9 @@ class Application: # singleton
         w.show_all()
 
         gtk.accel_map_load(self.confpath + 'accelmap.conf')
+
+        if loadimage:
+            self.image_windows[0].open_file(loadimage)
 
     def brush_selected_cb(self, brush):
         "actually set the new brush"

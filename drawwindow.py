@@ -175,6 +175,17 @@ class Window(gtk.Window):
         v -= 0.08
         cs.set_color_hsv((h, s, v))
         
+
+    def open_file(self, filename):
+        pixbuf = gtk.gdk.pixbuf_new_from_file(filename)
+        self.mdw.set_from_pixbuf (pixbuf)
+        self.statusbar.push(1, 'Loaded from' + filename)
+
+    def save_file(self, filename):
+        pixbuf = self.mdw.get_as_pixbuf()
+        pixbuf.save(filename, 'png')
+        self.statusbar.push(1, 'Saved to' + filename)
+
     def open_cb(self, action):
         dialog = gtk.FileChooserDialog("Open..", self,
                                        gtk.FILE_CHOOSER_ACTION_OPEN,
@@ -190,11 +201,7 @@ class Window(gtk.Window):
         dialog.hide()
 
         if dialog.run() == gtk.RESPONSE_OK:
-            filename = dialog.get_filename()
-
-            pixbuf = gtk.gdk.pixbuf_new_from_file(filename)
-            self.mdw.set_from_pixbuf (pixbuf)
-            self.statusbar.push(1, 'Loaded from' + filename)
+            self.open_file(dialog.get_filename())
 
         dialog.destroy()
         
@@ -213,11 +220,7 @@ class Window(gtk.Window):
         dialog.hide()
 
         if dialog.run() == gtk.RESPONSE_OK:
-            filename = dialog.get_filename()
-
-            pixbuf = self.mdw.get_as_pixbuf()
-            pixbuf.save(filename, 'png')
-            self.statusbar.push(1, 'Saved to' + filename)
+            self.save_file(dialog.get_filename())
 
         dialog.destroy()
 

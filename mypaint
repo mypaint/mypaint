@@ -4,7 +4,7 @@
 #import psyco
 #psyco.full()
 
-import gtk, sys
+import gtk, sys, os
 gdk = gtk.gdk
 
 try: # just for a nice error message
@@ -31,9 +31,34 @@ def init_input():
     else:
         print 'No pressure sensitive devices found.'
 
+
 def main():
+
+    def usage_exit():
+        print sys.argv[0], '[OPTION]... [FILENAME]'
+        print 'Options:'
+        print '  -c /path/to/config   use this directory instead of ~/.mypaint/'
+        sys.exit(1)
+
+    confpath = os.getenv('HOME') + '/.mypaint/'
+    filename = None
+
+    args = sys.argv[1:]
+    while args:
+        if args[0] == '-c':
+            confpath = args[1]
+            args = args[2:]
+        elif args[0].startswith('-'):
+            usage_exit()
+        elif len(args) == 1:
+            filename = args[0]
+            if not os.path.isfile(filename):
+                print 'File', filename, 'does not exist.'
+                filename = None
+            args = []
+
     init_input()
-    app = application.Application()
+    app = application.Application(confpath, filename)
     gtk.main()
 
 if __name__ == '__main__':
