@@ -16,6 +16,8 @@ double spacing = 0.2;
 double vx10;
 
 GtkWidget *statusline;
+GtkWidget *recorddata;
+GtkWidget *guesssize;
 
 static gint
 my_button_press (GtkWidget *widget, GdkEventButton *event)
@@ -52,7 +54,9 @@ my_motion (GtkWidget *widget, GdkEventMotion *event)
   d_dist = sqrt(dx*dx + dy*dy);
   dist += d_dist;
 
-  neural_process_movement (dt, event->x, event->y, pressure, d_dist);
+  neural_process_movement (dt, event->x, event->y, pressure, d_dist, 
+                           gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (recorddata)),
+                           gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (guesssize)) );
 
   while (dist >= spacing*brush.radius)
     {
@@ -142,12 +146,14 @@ static void
 brush_bigger (GtkAction *action, GtkWidget *window)
 {
   brush.radius *= 1.2;
+  neural_set_current_brushsize (brush.radius);
 }
 
 static void
 brush_smaller (GtkAction *action, GtkWidget *window)
 {
   brush.radius /= 1.2;
+  neural_set_current_brushsize (brush.radius);
 }
 
 static void
@@ -176,6 +182,11 @@ static GtkActionEntry my_actions[] = {
   { "InvertColor", NULL, "Invert Color", "X", NULL, G_CALLBACK (invert_colors) },
 };
 
+static GtkToggleActionEntry my_toggle_actions[] = {
+  { "RecordData", NULL, "Record Data", NULL, "Record your inputs for later training", NULL, TRUE }
+  { "GuessSize", NULL, "Guess Size", NULL, NULL, NULL, FALSE }
+};
+
 static const char * ui_description = 
 "<ui>"
 "  <menubar name='MainMenu'>"
@@ -187,6 +198,10 @@ static const char * ui_description =
 "      <menuitem action='BrushBigger' />"
 "      <menuitem action='BrushSmaller' />"
 "      <menuitem action='InvertColor' />"
+"    </menu>"
+"    <menu action='Learn'>"
+"      <menuitem action='RecordData' />"
+"      <menuitem action='GuessSize' />"
 "    </menu>"
 "  </menubar>"
 "</ui>"
@@ -213,6 +228,7 @@ main (int argc, char **argv)
     }
 
   init_input ();
+  neural_init ();
 
   gdk_rgb_init ();
 
@@ -225,6 +241,7 @@ main (int argc, char **argv)
   neural_notice_clear_image ();
 
   brush.radius = 3.0;
+  neural_set_current_brushsize (brush.radius);
   brush.color[0] = 0;
   brush.color[1] = 0;
   brush.color[2] = 0;
@@ -257,11 +274,14 @@ main (int argc, char **argv)
 
     action_group = gtk_action_group_new ("myactiongroup");
     gtk_action_group_add_actions (action_group, my_actions, G_N_ELEMENTS (my_actions), w);
+    gtk_action_group_add_toggle_actions (action_group, my_toggle_actions, G_N_ELEMENTS (my_toggle_actions), w);
     gtk_ui_manager_insert_action_group (uim, action_group, 0);
     accel_group = gtk_ui_manager_get_accel_group (uim);
     gtk_window_add_accel_group (GTK_WINDOW (w), accel_group);
 
     menu_bar = gtk_ui_manager_get_widget (uim, "/MainMenu");
+    recorddata = gtk_ui_manager_get_widget (uim, "/Learn/RecordData");
+    guesssize = gtk_ui_manager_get_widget (uim, "/Learn/GuessSize");
     gtk_container_add (GTK_CONTAINER (v), menu_bar);
     gtk_widget_show (menu_bar);
 
@@ -306,6 +326,7 @@ main (int argc, char **argv)
   gtk_main ();
 
   gtk_accel_map_save ("accelmap.conf");
+  neural_finish ();
 
   return 0;
 }
