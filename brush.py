@@ -95,6 +95,13 @@ class Brush(mydrawwidget.MyBrush):
         self.color = other.color[:] # copy
         self.set_color(self.color[0], self.color[1], self.color[2])
 
+    def get_color(self):
+        return self.color[:] # copy
+
+    def set_color(self, r, g, b):
+        self.color[:] = r, g, b
+        mydrawwidget.MyBrush.set_color(self, self.color[0], self.color[1], self.color[2])
+
     def invert_color(self):
         for i in range(3):
             self.color[i] = 255 - self.color[i]

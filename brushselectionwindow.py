@@ -26,13 +26,15 @@ class Window(gtk.Window):
 
         vbox.pack_start(gtk.HSeparator(), expand=False)
 
+        hbox = gtk.HBox()
+        vbox.pack_start(hbox, expand=False, fill=False)
         # FIXME: bad, fixed maximal size
         self.mdw = mydrawwidget.MyDrawWidget(128, 128)
         #self.mdw = mydrawwidget.MyDrawWidget(512, 512)
         self.mdw.clear()
         self.mdw.set_brush(self.app.brush)
         self.mdw.set_size_request(128, 128)
-        vbox.pack_start(self.mdw, expand=False, fill=False)
+        hbox.pack_start(self.mdw, expand=False, fill=False)
 
         b = gtk.Button('Clear')
         def clear_cb(window, mdw):
