@@ -4,4 +4,4 @@ LDFLAGS = $(PROFILE) -O3 `pkg-config --libs gtk+-2.0` -Wall -Werror -ansi
 
 all:	drawmain
 
-drawmain:	surfacepaint.o drawmain.o
+drawmain:	surfacepaint.o drawmain.o neural.o

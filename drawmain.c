@@ -3,14 +3,17 @@
 #include <stdlib.h>
 #include <math.h>
 #include "surfacepaint.h"
+#include "neural.h"
 
 Surface * screen; /* the global bitmap */
 Brush brush; /* global brush */
 
 double lastx, lasty;
+guint32 lastt = 0;
 double lastpaintx, lastpainty, lastpaintpress;
 double dist;
 double spacing = 0.2;
+double vx10;
 
 GtkWidget *statusline;
 
@@ -29,8 +32,10 @@ my_button_press (GtkWidget *widget, GdkEventButton *event)
 static gint
 my_motion (GtkWidget *widget, GdkEventMotion *event)
 {
-  double delta;
   double pressure;
+  double dx, dy, dt;
+  double d_dist;
+
   gdk_event_get_axis ((GdkEvent *)event, GDK_AXIS_PRESSURE, &pressure);
   /* g_print ("motion %f %f %f %d\n", event->x, event->y, pressure, event->state); */
 
@@ -40,9 +45,14 @@ my_motion (GtkWidget *widget, GdkEventMotion *event)
     return TRUE;
   */
 
-  delta = sqrt(sqr(event->x - lastx) + sqr(event->y - lasty));
+  dx = event->x - lastx;
+  dy = event->y - lasty;
+  dt = (double)(event->time - lastt) / 1000.0; /* in seconds */
 
-  dist += delta;
+  d_dist = sqrt(dx*dx + dy*dy);
+  dist += d_dist;
+
+  neural_process_movement (dt, event->x, event->y, pressure, d_dist);
 
   while (dist >= spacing*brush.radius)
     {
@@ -69,6 +79,7 @@ my_motion (GtkWidget *widget, GdkEventMotion *event)
 
   lastx = event->x;
   lasty = event->y;
+  lastt = event->time;
 
   return TRUE;
 }
@@ -152,6 +163,7 @@ clear_image (GtkAction *action, GtkWidget *window)
 {
   surface_clear (screen);
   gtk_widget_draw (window, NULL);
+  neural_notice_clear_image ();
 }
 
 static GtkActionEntry my_actions[] = {
@@ -209,10 +221,14 @@ main (int argc, char **argv)
 
   screen = new_surface (xs, ys);
 
+  surface_clear (screen);
+  neural_notice_clear_image ();
+
   brush.radius = 3.0;
   brush.color[0] = 0;
   brush.color[1] = 0;
   brush.color[2] = 0;
+
 
   w = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_signal_connect (GTK_OBJECT (w), "destroy",
