@@ -10,6 +10,9 @@ all:	mydrawwidget.so
 brushsettings.h:	generate.py
 	./generate.py
 
+gtkmydrawwidget.o:	brushsettings.h gtkmydrawwidget.c
+	cc $(CFLAGS) -c -o $@ gtkmydrawwidget.c
+
 gtkmybrush.o:	brushsettings.h gtkmybrush.c
 	cc $(CFLAGS) -c -o $@ gtkmybrush.c
 
