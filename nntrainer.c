@@ -232,12 +232,12 @@ void trainer_train(struct trainer * t)
     printf("%d %f, %f\n", i, mse, eta);
     trainer_train_step(t);
     i++;
-    if (old_mse == -1 || mse < old_mse) {
+    if (old_mse == -1 || mse < old_mse*0.99 /* more than 1% better is considered progress */) {
       eta *= 1.02;
     } else {
       eta *= 0.5;
     }
-  } while (eta > 0.01);
+  } while (eta > 0.001);
 }
 
 fann_type * trainer_run(struct trainer * t, fann_type * original_inputs)
