@@ -77,7 +77,7 @@ struct _GtkMyBrush
   float obs__speed_slowness;
   //% offset by speed: speed abs slowness % BSF_NONE % 0.0 % 0.0 % 10.0 % how fast to adapt the absolut value of the speed (in contrast to the direction)
   float obs__speedabs_slowness;
-  //% saturation slowdown % BSF_NONE % -1.0 % 0.0 % 1.0 % When painting black, it soon gets black completely. This setting controls how fast the final brush color is taken:\n 1.0 slowly\n 0.0 disable\n-1.0 even faster\nThis is nolinear and causes strange effects when it happens too fast. Set occupancy low enough to avoid this.\nFor example, a full-occupancy black stroke might get brighter over grey areas than over white ones.
+  //% saturation slowdown % BSF_NONE % -1.0 % 0.0 % 1.0 % When painting black, it soon gets black completely. This setting controls how fast the final brush color is taken:\n 1.0 slowly\n 0.0 disable\n-1.0 even faster\nThis is nolinear and causes strange effects when it happens too fast. Set occupancy low enough to avoid this.\nFor example, a full-occupancy black stroke might get brighter over grey areas than over white ones.\nFIXME: this setting seems not to work as I expected. I reccomend to set it to zero for anything else than black/white drawing.
   float saturation_slowdown;
   //% slow position % BSF_NONE % 0.0 % 0.0 % 10.0 % Slowdown pointer tracking speed. 0 disables it, higher values remove more jitter in cursor movements. Useful for drawing smooth, comic-like outlines.
   float position_T;

@@ -22,7 +22,7 @@ class Window(gtk.Window):
         #table.set_col_spacings(15)
         scroll.add_with_viewport(table)
 
-        tt = gtk.Tooltips()
+        self.tooltips = gtk.Tooltips()
 
         # common callbacks
         def default_clicked_cb(window, adj, default):
@@ -35,7 +35,7 @@ class Window(gtk.Window):
             eb = gtk.EventBox()
             l = gtk.Label(s.name)
             l.set_alignment(0, 0.5)
-            tt.set_tip(eb, s.tooltip)
+            self.tooltips.set_tip(eb, s.tooltip)
             eb.add(l)
 
             adj = gtk.Adjustment(value=s.default, lower=s.min, upper=s.max, step_incr=0.01, page_incr=0.1)
