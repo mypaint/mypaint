@@ -2,10 +2,7 @@
 "MyDraw main"
 import gtk
 gdk = gtk.gdk
-from lowlevel import DrawWidget, Brush
-
-def destroy(widget):
-    gtk.main_quit()
+import drawwindow
 
 def init_input():
     "make those pressure sensitive devices working"
@@ -24,18 +21,9 @@ def init_input():
 def main():
     init_input()
 
-    window = gtk.Window(gtk.WINDOW_TOPLEVEL)
-    window.connect("destroy", destroy)
-    window.set_border_width(10)
-
-    mdw = DrawWidget()
-    mdw.set_brush(Brush())
-    mdw.set_size_request(100, 100)
-    window.add(mdw)
-
+    #window = gtk.Window(gtk.WINDOW_TOPLEVEL)
+    window = drawwindow.Window()
     window.show_all()
-
-    #gtk.InputDialog().show()
 
     gtk.main()
 

@@ -12,8 +12,12 @@ class Brush(mydrawwidget.MyBrush):
         mydrawwidget.MyBrush.__init__(self)
         for s in brushsettings:
             self.set_setting(s.index, s.default)
-    def foo(self):
-        print "blah - just an inheritance test"
+        self.color = [0, 0, 0]
+        self.set_color(self.color[0], self.color[1], self.color[2])
+    def invert_color(self):
+        for i in range(3):
+            self.color[i] = 255 - self.color[i]
+        self.set_color(self.color[0], self.color[1], self.color[2])
     # TODO: save/load to/from file
 
 DrawWidget = mydrawwidget.MyDrawWidget

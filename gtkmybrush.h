@@ -97,6 +97,8 @@ GtkMyBrush* gtk_my_brush_new        (void);
 void gtk_my_brush_set_setting (GtkMyBrush * b, int id, float value);
 float gtk_my_brush_get_setting (GtkMyBrush * b, int id);
 
+void gtk_my_brush_set_color (GtkMyBrush * b, int red, int green, int blue);
+
 // only for mydrawwidget (not exported to python):
 void brush_stroke_to (GtkMyBrush * b, Surface * s, float x, float y, float pressure, float time);
 void brush_reset (GtkMyBrush * b);
