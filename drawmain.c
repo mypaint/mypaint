@@ -7,19 +7,18 @@ Surface * screen; /* the global bitmap */
 Brush brush; /* global brush */
 
 double lastx, lasty;
+double lastpaintx, lastpainty, lastpaintpress;
 double dist;
-double spacing = 2;
+double spacing = 0.2;
 
 GtkWidget *statusline;
 
 static gint
 my_button_press (GtkWidget *widget, GdkEventButton *event)
 {
-#define noVERBOSE
-#ifdef VERBOSE
   g_print ("button press %f %f %f\n", event->x, event->y, event->pressure);
-#endif
 
+  /*brush.radius = 3.0;*/
   /*
   brush.opaque = event->pressure;
   brush.radius = 3.0;
@@ -44,35 +43,45 @@ static gint
 my_motion (GtkWidget *widget, GdkEventMotion *event)
 {
   double delta;
-#ifdef VERBOSE
-  g_print ("motion %f %f %f %d\n", event->x, event->y, event->pressure, event->state);
-#endif
+  /* g_print ("motion %f %f %f %d\n", event->x, event->y, event->pressure, event->state); */
 
   /* no button pressed */
+  /* don't care, always paint - FIXME: breaks mouse support (always pressure set)
   if (!(event->state & 256))
     return TRUE;
-
+  */
 
   delta = sqrt(sqr(event->x - lastx) + sqr(event->y - lasty));
 
   dist += delta;
-  /* maybe if (dist > 10*spacing) dist = 0; */
 
-  if (dist >= spacing)
+  while (dist >= spacing*brush.radius)
     {
-      /* todo: interpolate position and pressure of the dab */
-      brush.opaque = event->pressure / 8.0;
-      brush.radius = 4.0;
-      brush.color[0] = 0;
-      brush.color[1] = 0;
-      brush.color[2] = 0;
+      /* interpolate position and presssure (a bit wrong probably, but works great so far) */
+      lastpaintx = lastpaintx + (event->x - lastpaintx) * spacing*brush.radius / dist;
+      lastpainty = lastpainty + (event->y - lastpainty) * spacing*brush.radius / dist;
+      lastpaintpress = lastpaintpress + (event->pressure - lastpaintpress) * spacing*brush.radius / dist;
+      dist -= spacing*brush.radius;
+      /*
+      if (lastpaintpress > 0.7) brush.radius *= 1.0 + (lastpaintpress-0.7)*0.03;
+      if (lastpaintpress < 0.3 && lastpaintpress > 0.0) brush.radius /= 1.0 + (0.3-lastpaintpress)*0.03;
+      if (brush.radius < 0.6) brush.radius = 0.6;
+      if (brush.radius > 60) brush.radius = 60;
+      */
+
+      brush.opaque = lastpaintpress / 4.0;
       surface_draw (screen,
-                    event->x,
-                    event->y,
+                    lastpaintx,
+                    lastpainty,
                     &brush);
 
-      gtk_widget_queue_draw (widget);
-      dist -= spacing;
+      gtk_widget_queue_draw_area (widget, 
+                                  floor(lastpaintx-(brush.radius+1)),
+                                  floor(lastpainty-(brush.radius+1)),
+                                  /* FIXME: think about it exactly */
+                                  ceil (2*(brush.radius+1)),
+                                  ceil (2*(brush.radius+1))
+                                  );
     }
 
   lastx = event->x;
@@ -84,18 +93,27 @@ my_motion (GtkWidget *widget, GdkEventMotion *event)
 static gint
 my_expose (GtkWidget *widget, GdkEventExpose *event, Surface *s)
 {
-#ifdef VERBOSE
-  g_print ("expose\n");
-#endif
+  byte *rgb;
+  int rowstride;
+
+  rowstride = event->area.width * 3;
+  rowstride = (rowstride + 3) & -4; /* align to 4-byte boundary */
+  rgb = g_new (byte, event->area.height * rowstride);
+
+  surface_render (s,
+                  rgb, rowstride,
+                  event->area.x, event->area.y,
+                  event->area.width, event->area.height);
 
   gdk_draw_rgb_image (widget->window,
-                      widget->style->black_gc,
-                      event->area.x, event->area.y,
-                      event->area.width, event->area.height,
+		      widget->style->black_gc,
+		      event->area.x, event->area.y,
+		      event->area.width, event->area.height,
 		      GDK_RGB_DITHER_MAX,
-                      s->rgb + event->area.y*s->rowstride + event->area.x*3,
-                      s->rowstride);
-  
+		      rgb,
+		      rowstride);
+
+  g_free (rgb);
   return FALSE;
 }
 
@@ -120,9 +138,9 @@ init_input (void)
   while (tmp_list)
     {
       info = (GdkDeviceInfo *)tmp_list->data;
-#ifdef VERBOSE
+      /*
       g_print ("device: %s\n", info->name);
-#endif
+      */
       if (!g_strcasecmp (info->name, "wacom") ||
 	  !g_strcasecmp (info->name, "stylus") ||
 	  !g_strcasecmp (info->name, "eraser"))
@@ -143,8 +161,8 @@ main (int argc, char **argv)
   GtkWidget *da;
   GtkWidget *h;
   GtkWidget *db;
-  int xs = 256;
-  int ys = 256;
+  int xs = SIZE;
+  int ys = SIZE;
 
   gtk_init (&argc, &argv);
 
@@ -152,10 +170,8 @@ main (int argc, char **argv)
     {
       xs = atoi (argv[1]);
       ys = atoi (argv[2]);
-      if (xs == 0)
-      xs = 256;
-      if (ys == 0)
-      ys = 256;
+      if (xs == 0) xs = SIZE;
+      if (ys == 0) ys = SIZE;
     }
 
 
@@ -167,6 +183,11 @@ main (int argc, char **argv)
   gtk_widget_set_default_visual (gdk_rgb_get_visual ());
 
   screen = new_surface (xs, ys);
+
+  brush.radius = 8.0;
+  brush.color[0] = 0;
+  brush.color[1] = 0;
+  brush.color[2] = 0;
 
   w = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_signal_connect (GTK_OBJECT (w), "destroy",

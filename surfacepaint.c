@@ -11,12 +11,20 @@ Surface *
 new_surface (int w, int h)
 {
   Surface * s;
+  if (w != SIZE || h != SIZE) 
+    {
+      g_print ("Only %d*%d supported right now\n", SIZE, SIZE);
+      return NULL;
+    }
   s = g_new (Surface, 1);
 
+  /*
   s->rowstride = w * 3;
-  s->rowstride = (s->rowstride + 3) & -4; /* align to 4-byte boundary */
+  s->rowstride = (s->rowstride + 3) & -4; */ /* align to 4-byte boundary */
 
-  s->rgb = g_new(byte, h*s->rowstride);
+  /* s->rgb = g_new(byte, h*s->rowstride); */
+  s->rgb = g_new(byte, 3*w*h);
+
   s->w = w;
   s->h = h;
   return s;
@@ -32,38 +40,29 @@ free_surface (Surface * s)
 void 
 surface_renderpattern (Surface * s)
 {
-  int x, y;
-  byte *rgb_line;
+  int x, y, r, g, b;
+  byte *rgb;
 
-  rgb_line = s->rgb;
   for (y = 0; y < s->h; y++)
     {
       for (x = 0; x < s->w; x++) 
         {
-          int r, g, b;
+          rgb = PixelXY(s, x, y);
           r = x % 256;
           g = y % 256;
           b = (x*x+y*y) % 256;
-          rgb_line[3*x + 0] = r;
-          rgb_line[3*x + 1] = g;
-          rgb_line[3*x + 2] = b;
+          rgb[3*x + 0] = r;
+          rgb[3*x + 1] = g;
+          rgb[3*x + 2] = b;
         }
-      rgb_line += s->rowstride;
     }
 }
 
 void
 surface_clear (Surface * s)
 {
-  int y;
-  byte *rgb_line = s->rgb;
-
   /* clear rgb buffer to white */
-  for (y = 0; y < s->h; y++)
-    {
-      memset (rgb_line, 255, s->w * 3);
-      rgb_line += s->rowstride;
-    }
+  memset (s->rgb, 255, s->w*s->h*3);
 }
 
 void
@@ -75,7 +74,6 @@ surface_draw (Surface * s,
   int x0, y0;
   int x1, y1;
   int xp, yp;
-  byte *rgb_line;
   byte *rgb;
   double xx, yy, rr;
   double radius2;
@@ -93,24 +91,23 @@ surface_draw (Surface * s,
   if (y1 > s->h) y1 = s->h;
   rr = sqr(b->radius);
   opaque = floor(b->opaque * 256 + 0.5);
-  if (opaque < 0) opaque = 0;
+  if (opaque <= 0) return;
   if (opaque > 256) opaque = 256;
   c[0] = b->color[0];
   c[1] = b->color[1];
   c[2] = b->color[2];
   radius2 = sqr(b->radius);
 
-  rgb_line = s->rgb + y0 * s->rowstride;
   for (yp = y0; yp < y1; yp++)
     {
       yy = (yp + 0.5 - y);
       yy *= yy;
-      rgb = rgb_line + 3*x0;
       for (xp = x0; xp < x1; xp++)
 	{
 	  xx = (xp + 0.5 - x);
 	  xx *= xx;
 	  rr = yy + xx;
+          rgb = PixelXY(s, xp, yp);
 	  if (rr < radius2) {
             rgb[0] = (opaque*c[0] + (256-opaque)*rgb[0]) / 256;
             rgb[1] = (opaque*c[1] + (256-opaque)*rgb[1]) / 256;
@@ -118,7 +115,33 @@ surface_draw (Surface * s,
           }
           rgb += 3;
         }
-      rgb_line += s->rowstride;
+    }
+}
+
+void
+surface_render (Surface * s,
+                byte * dst, int rowstride,
+                int x0, int y0,
+                int w, int h)
+{
+  /* could be optimized much, but probably not necessary */
+  int x, y;
+  /*g_print("%d %d\n", w, h);*/
+  byte * rgb_line = dst;
+  byte * rgb_dst;
+  byte * rgb_src;
+  for (y = y0; y < y0 + h; y++) 
+    {
+      rgb_dst = rgb_line;
+      for (x = x0; x < x0 + w; x++)
+        {
+          rgb_src = PixelXY(s, x, y);
+          rgb_dst[0] = rgb_src[0];
+          rgb_dst[1] = rgb_src[1];
+          rgb_dst[2] = rgb_src[2];
+          rgb_dst += 3;
+        }
+      rgb_line += rowstride;
     }
 }
 
