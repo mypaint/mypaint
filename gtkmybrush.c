@@ -144,13 +144,14 @@ gtk_my_brush_new (void)
   return g_object_new (GTK_TYPE_MY_BRUSH, NULL);
 }
 
+// returns the fraction still left after t seconds
 float exp_decay (float T_const, float t)
 {
   // FIXME: think about whether the argument make mathematical sense
   if (T_const <= 0.001) {
-    return 1.0;
+    return 0.0;
   } else {
-    return 1.0-exp(- t / T_const);
+    return exp(- t / T_const);
   }
 }
 
@@ -237,8 +238,8 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s)
   }
     
 
-  { // slow position 2
-    float fac = exp_decay (settings[BRUSH_POSITION_T2], 0.4);
+  {
+    float fac = 1.0 - exp_decay (settings[BRUSH_SLOW_TRACKING_PER_DAB], 1.0);
     b->x_slow += (b->x - b->x_slow) * fac; // FIXME: should depend on base radius?
     b->y_slow += (b->y - b->y_slow) * fac;
     x = b->x_slow;
@@ -252,27 +253,26 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s)
 
   { // slow speed
     float fac;
-    fac = exp_decay (settings[BRUSH_SPEED1_SLOWNESS], b->dtime);
+    fac = 1.0 - exp_decay (settings[BRUSH_SPEED1_SLOWNESS], b->dtime);
     b->norm_speed_slow1 += (norm_speed - b->norm_speed_slow1) * fac;
-    fac = exp_decay (settings[BRUSH_SPEED2_SLOWNESS], b->dtime);
+    fac = 1.0 - exp_decay (settings[BRUSH_SPEED2_SLOWNESS], b->dtime);
     b->norm_speed_slow2 += (norm_speed - b->norm_speed_slow2) * fac;
   }
 
-  { // <strike>slow speed</strike>
-    float fac = exp_decay (settings[BRUSH_SPEED2_SLOWNESS] * 0.01, 0.1 * b->dtime);
+  { // slow speed, but as vector this time
+    float fac = 1.0 - exp_decay (exp(settings[BRUSH_OFFSET_BY_SPEED_SLOWNESS]*0.01)-1.0, b->dtime);
     b->norm_dx_slow += (norm_dx - b->norm_dx_slow) * fac;
     b->norm_dy_slow += (norm_dy - b->norm_dy_slow) * fac;
+  }
+
+  if (settings[BRUSH_OFFSET_BY_SPEED]) {
+    x += b->norm_dx_slow * settings[BRUSH_OFFSET_BY_SPEED] * 0.1 * base_radius_pixels;
+    y += b->norm_dy_slow * settings[BRUSH_OFFSET_BY_SPEED] * 0.1 * base_radius_pixels;
   }
 
   if (settings[BRUSH_OFFSET_BY_RANDOM]) {
     x += gauss_noise () * settings[BRUSH_OFFSET_BY_RANDOM] * base_radius_pixels;
     y += gauss_noise () * settings[BRUSH_OFFSET_BY_RANDOM] * base_radius_pixels;
-  }
-
-  if (settings[BRUSH_OFFSET_BY_SPEED]) {
-    // FIXME: with or without radius? With, I think.
-    x += b->norm_dx_slow * settings[BRUSH_OFFSET_BY_SPEED] * 0.01 * base_radius_pixels;
-    y += b->norm_dy_slow * settings[BRUSH_OFFSET_BY_SPEED] * 0.01 * base_radius_pixels;
   }
 
   // change base radius
@@ -401,7 +401,7 @@ void brush_stroke_to (GtkMyBrush * b, Surface * s, float x, float y, float press
   }
 
   { // calculate the actual "virtual" cursor position
-    float fac = exp_decay (b->settings[BRUSH_POSITION_T].base_value, 100.0*(time - b->last_time));
+    float fac = 1.0 - exp_decay (b->settings[BRUSH_SLOW_TRACKING].base_value, 100.0*(time - b->last_time));
     x = b->x + (x - b->x) * fac;
     y = b->y + (y - b->y) * fac;
   }

@@ -48,17 +48,18 @@ struct _GtkMyBrush
   float dx, dy, dpressure, dtime;
   float dist;
   float actual_radius;
+  float last_time;
 
   guchar color[3];
 
   GtkWidget * queue_draw_widget;
   int print_inputs;
 
-  // misc high-level helper variables
+  // misc higher-level helper variables
   float x_slow, y_slow; // for slow position
   float norm_dx_slow, norm_dy_slow;
-  float last_time;
-  float norm_speed_slow1;
+
+  float norm_speed_slow1; 
   float norm_speed_slow2;
 
   Setting settings[BRUSH_SETTINGS_COUNT];
