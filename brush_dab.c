@@ -133,14 +133,16 @@
     }
   }
   
-  if (queue_draw_widget) {
-    gtk_widget_queue_draw_area (queue_draw_widget,
-                                floor(x - (radius+1)),
-                                floor(y - (radius+1)),
-                                /* FIXME: think about it exactly */
-                                ceil (2*(radius+1)),
-                                ceil (2*(radius+1))
-                                );
+  if (bbox) {
+    int bb_x, bb_y, bb_w, bb_h;
+    bb_x = floor(x - (radius+1));
+    bb_y = floor(y - (radius+1));
+    /* FIXME: think about it exactly */
+    bb_w = ceil (2*(radius+1));
+    bb_h = ceil (2*(radius+1));
+
+    ExpandRectToIncludePoint(bbox, bb_x, bb_y);
+    ExpandRectToIncludePoint(bbox, bb_x+bb_w-1, bb_y+bb_h-1);
   }
 }
 

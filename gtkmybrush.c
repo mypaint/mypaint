@@ -124,7 +124,6 @@ static void
 gtk_my_brush_init (GtkMyBrush *b)
 {
   int i, j;
-  b->queue_draw_widget = NULL;
   for (i=0; i<BRUSH_SETTINGS_COUNT; i++) {
     for (j=0; j<INPUT_COUNT; j++) {
       b->settings[i].mapping[j] = NULL;
@@ -174,7 +173,7 @@ void brush_reset (GtkMyBrush * b)
 }
 
 // high-level part of before each dab
-void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s)
+void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s, Rect * bbox)
 {
   float x, y, radius_log, opaque;
   int i, j;
@@ -368,7 +367,7 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s)
     if (sat_slowdown > 1.0) sat_slowdown = 1.0;
     if (sat_slowdown < 0.0) sat_slowdown = 0.0;
 
-    draw_brush_dab (s, b->queue_draw_widget,
+    draw_brush_dab (s, bbox,
                     x, y, radius, opaque, hardness, c, sat_slowdown);
   }
 }
@@ -393,7 +392,7 @@ float brush_count_dabs_to (GtkMyBrush * b, float x, float y, float pressure, flo
   return res1 + res2 + res3;
 }
 
-void brush_stroke_to (GtkMyBrush * b, Surface * s, float x, float y, float pressure, float time)
+void brush_stroke_to (GtkMyBrush * b, Surface * s, float x, float y, float pressure, float time, Rect * bbox)
 {
   float dist;
   if (time <= b->time) return;
@@ -452,7 +451,7 @@ void brush_stroke_to (GtkMyBrush * b, Surface * s, float x, float y, float press
 
     dist -= 1.0;
     
-    brush_prepare_and_draw_dab (b, s);
+    brush_prepare_and_draw_dab (b, s, bbox);
   }
 
   // not equal to b_time now unless dist == 0

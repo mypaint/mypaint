@@ -52,7 +52,6 @@ struct _GtkMyBrush
 
   guchar color[3];
 
-  GtkWidget * queue_draw_widget;
   int print_inputs;
 
   // misc higher-level helper variables
@@ -87,7 +86,7 @@ float gtk_my_brush_get_painting_time (GtkMyBrush * b);
 void gtk_my_brush_set_painting_time (GtkMyBrush * b, float value);
 
 /* only for mydrawwidget (not exported to python): */
-void brush_stroke_to (GtkMyBrush * b, Surface * s, float x, float y, float pressure, float time);
+void brush_stroke_to (GtkMyBrush * b, Surface * s, float x, float y, float pressure, float time, Rect * bbox);
 void brush_reset (GtkMyBrush * b);
 
 #ifdef __cplusplus

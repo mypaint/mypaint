@@ -71,6 +71,31 @@ surface_clear (Surface * s)
 }
 
 void
+surface_get_nonwhite_region (Surface * s, Rect * r)
+{
+  int x, y;
+  r->w = 0;
+
+  for (y = 0; y < s->h; y++) {
+    for (x = 0; x < s->w; x++) {
+      guchar * rgb;
+      rgb = PixelXY(s, x, y);
+      if (rgb[0] != 255 || rgb[1] != 255 || rgb[2] != 255) {
+        ExpandRectToIncludePoint(r, x, y);
+      }
+    }
+  }
+
+  if (r->w == 0) {
+    // all empty; make it easy for the other code
+    r->x = 0;
+    r->y = 0;
+    r->w = 1;
+    r->h = 1;
+  }
+}
+
+void
 surface_render (Surface * s,
                 guchar * dst, int rowstride,
                 int x0, int y0,
@@ -87,13 +112,22 @@ surface_render (Surface * s,
     return;
   }
 
+  guchar white[3];
+  white[0] = 255;
+  white[1] = 255;
+  white[2] = 255;
+
   guchar * rgb_line = dst;
   guchar * rgb_dst;
   guchar * rgb_src;
   for (y = y0; y < y0 + h; y++) {
     rgb_dst = rgb_line;
     for (x = x0; x < x0 + w; x++) {
-      rgb_src = PixelXY(s, x, y);
+      if (x < 0 || y < 0 || x >= s->w || y >= s->h) {
+        rgb_src = white;
+      } else {
+        rgb_src = PixelXY(s, x, y);
+      }
       rgb_dst[0] = rgb_src[0];
       rgb_dst[1] = rgb_src[1];
       rgb_dst[2] = rgb_src[2];

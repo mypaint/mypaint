@@ -1,3 +1,6 @@
+#ifndef __helpers_h__
+#define __helpers_h__
+
 #include <glib.h>
 // gaussian noise, mean 0 variance 1
 extern gdouble gauss_noise (void);
@@ -18,3 +21,8 @@ void    gimp_hsv_to_rgb_int	(gint    *hue         /* returns red        */,
 				 gint    *saturation  /* returns green      */,
 				 gint    *value       /* returns blue       */);
 
+typedef struct { int x, y, w, h; } Rect;
+void ExpandRectToIncludePoint(Rect * r, int x, int y);
+
+
+#endif

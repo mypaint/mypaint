@@ -7,6 +7,7 @@
 #define __surface_h__
 
 #include <gtk/gtk.h>
+#include "helpers.h"
 
 #define sqr(x) ((x)*(x))
 
@@ -49,5 +50,6 @@ void surface_clear (Surface * s);
 void surface_renderpattern (Surface * s);
 void surface_render (Surface * s, guchar * dst, int rowstride, int x0, int y0, int w, int h, int bpp);
 void surface_load (Surface * s, guchar * src, int rowstride, int w, int h, int bpp);
+void surface_get_nonwhite_region (Surface * s, Rect * r);
 
 #endif

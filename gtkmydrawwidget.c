@@ -145,9 +145,13 @@ gtk_my_draw_widget_button_updown (GtkWidget *widget, GdkEventButton *event)
     //g_print ("motion %f %f %f %d\n", event->x, event->y, pressure, event->state);
     g_assert (pressure >= 0 && pressure <= 1);
     
-    mdw->brush->queue_draw_widget = widget;
-    brush_stroke_to (mdw->brush, mdw->surface, event->x, event->y, pressure, 
-                     event->time / 1000.0 /* in seconds */ );
+    Rect bbox;
+    bbox.w = 0;
+    brush_stroke_to (mdw->brush, mdw->surface,
+                     event->x + mdw->viewport_x, event->y + mdw->viewport_y,
+                     pressure, event->time / 1000.0 /* in seconds */, &bbox);
+    gtk_widget_queue_draw_area (widget, bbox.x - mdw->viewport_x, bbox.y - mdw->viewport_y, bbox.w, bbox.h);
+
   } // END of duplicated code
   // TODO: actually react on button, if it was not triggered by pressure treshold
   return TRUE;
@@ -168,9 +172,13 @@ gtk_my_draw_widget_motion_notify (GtkWidget *widget, GdkEventMotion *event)
     //g_print ("motion %f %f %f %d\n", event->x, event->y, pressure, event->state);
     g_assert (pressure >= 0 && pressure <= 1);
     
-    mdw->brush->queue_draw_widget = widget;
-    brush_stroke_to (mdw->brush, mdw->surface, event->x, event->y, pressure, 
-                     event->time / 1000.0 /* in seconds */ );
+    Rect bbox;
+    bbox.w = 0;
+    brush_stroke_to (mdw->brush, mdw->surface,
+                     event->x + mdw->viewport_x, event->y + mdw->viewport_y,
+                     pressure, event->time / 1000.0 /* in seconds */, &bbox );
+    gtk_widget_queue_draw_area (widget, bbox.x - mdw->viewport_x, bbox.y - mdw->viewport_y, bbox.w, bbox.h);
+
   } // END of duplicated code
   return TRUE;
 }
@@ -213,7 +221,7 @@ gtk_my_draw_widget_expose (GtkWidget *widget, GdkEventExpose *event)
 
   surface_render (mdw->surface,
                   rgb, rowstride,
-                  event->area.x, event->area.y,
+                  event->area.x + mdw->viewport_x, event->area.y + mdw->viewport_y,
                   event->area.width, event->area.height,
                   /*bpp*/3*8);
 
@@ -245,6 +253,13 @@ gtk_my_draw_widget_set_brush (GtkMyDrawWidget *mdw, GtkMyBrush * brush)
   mdw->brush = brush;
 }
 
+void gtk_my_draw_widget_set_viewport (GtkMyDrawWidget *mdw, int x, int y)
+{
+  mdw->viewport_x = x;
+  mdw->viewport_y = y;
+  gtk_widget_draw (GTK_WIDGET (mdw), NULL);
+}
+
 GdkPixbuf* gtk_my_draw_widget_get_as_pixbuf (GtkMyDrawWidget *mdw)
 {
   GdkPixbuf* pixbuf;
@@ -255,6 +270,24 @@ GdkPixbuf* gtk_my_draw_widget_get_as_pixbuf (GtkMyDrawWidget *mdw)
                   gdk_pixbuf_get_pixels (pixbuf), 
                   gdk_pixbuf_get_rowstride (pixbuf),
                   0, 0, mdw->surface->w, mdw->surface->h,
+                  /*bpp*/3*8);
+
+  return pixbuf;
+}
+
+GdkPixbuf* gtk_my_draw_widget_get_nonwhite_as_pixbuf (GtkMyDrawWidget *mdw)
+{
+  Rect r;
+  GdkPixbuf* pixbuf;
+  surface_get_nonwhite_region (mdw->surface, &r);
+
+  pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB, /*has_alpha*/0, /*bits_per_sample*/8,
+			   r.w, r.h);
+
+  surface_render (mdw->surface, 
+                  gdk_pixbuf_get_pixels (pixbuf), 
+                  gdk_pixbuf_get_rowstride (pixbuf),
+                  r.x, r.y, r.w, r.h,
                   /*bpp*/3*8);
 
   return pixbuf;

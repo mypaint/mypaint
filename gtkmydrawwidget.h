@@ -31,6 +31,8 @@ struct _GtkMyDrawWidget
 
   Surface * surface;
   GtkMyBrush * brush;
+  
+  int viewport_x, viewport_y;
 };
 
 struct _GtkMyDrawWidgetClass
@@ -45,8 +47,10 @@ GtkMyDrawWidget* gtk_my_draw_widget_new        (int width, int height);
 
 void gtk_my_draw_widget_clear (GtkMyDrawWidget *mdw);
 void gtk_my_draw_widget_set_brush (GtkMyDrawWidget *mdw, GtkMyBrush * brush);
+void gtk_my_draw_widget_set_viewport (GtkMyDrawWidget *mdw, int x, int y);
 
 GdkPixbuf* gtk_my_draw_widget_get_as_pixbuf (GtkMyDrawWidget *mdw);
+GdkPixbuf* gtk_my_draw_widget_get_nonwhite_as_pixbuf (GtkMyDrawWidget *mdw);
 void gtk_my_draw_widget_set_from_pixbuf (GtkMyDrawWidget *mdw, GdkPixbuf* pixbuf);
 
 #ifdef __cplusplus

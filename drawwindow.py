@@ -1,12 +1,16 @@
 "the main drawing window"
 import gtk
 import mydrawwidget
+import os
 
 
 class Window(gtk.Window):
     def __init__(self, app):
         gtk.Window.__init__(self)
         self.app = app
+
+        self.viewport_x = 0
+        self.viewport_y = 0
 
         self.set_title('MyPaint')
         def delete_event_cb(window, event, app): app.quit()
@@ -28,16 +32,23 @@ class Window(gtk.Window):
         self.statusbar = sb = gtk.Statusbar()
         vbox.pack_end(sb, expand=False)
         sb.push(0, "hello world")
+
         
     def create_ui(self):
         ag = gtk.ActionGroup('WindowActions')
+        # FIXME: this xml menu ony creates unneeded information duplication, I think.
         ui_string = """<ui>
           <menubar name='Menubar'>
             <menu action='FileMenu'>
               <menuitem action='Clear'/>
-              <menuitem action='NewWindow'/>
+              <menuitem action='MoveLeft'/>
+              <menuitem action='MoveRight'/>
+              <menuitem action='MoveUp'/>
+              <menuitem action='MoveDown'/>
+              <separator/>
               <menuitem action='Open'/>
               <menuitem action='Save'/>
+              <separator/>
               <menuitem action='Quit'/>
             </menu>
             <menu action='BrushMenu'>
@@ -86,7 +97,11 @@ class Window(gtk.Window):
         actions = [
             ('FileMenu',     None, 'File'),
             ('Clear',        None, 'Clear', '3', 'blank everything', self.clear_cb),
-            ('NewWindow',    None, 'New Window', '<control>N', None, self.new_window_cb),
+            ('MoveLeft',     None, 'Move left', 'h', None, self.move_cb),
+            ('MoveRight',    None, 'Move right', 'l', None, self.move_cb),
+            ('MoveUp',       None, 'Move up', 'k', None, self.move_cb),
+            ('MoveDown',     None, 'Move down', 'j', None, self.move_cb),
+            #('NewWindow',    None, 'New Window', '<control>N', None, self.new_window_cb),
             ('Open',         None, 'Open', '<control>O', None, self.open_cb),
             ('Save',         None, 'Save', '<control>S', None, self.save_cb),
             ('Quit',         None, 'Quit', '<control>Q', None, self.quit_cb),
@@ -157,7 +172,8 @@ class Window(gtk.Window):
         #w = Window()
         #w.show_all()
         #gtk.main()
-        pass
+        print "Not really implemented."
+        #pass
 
     def clear_cb(self, action):
         self.mdw.clear()
@@ -194,7 +210,8 @@ class Window(gtk.Window):
         self.statusbar.push(1, 'Loaded from' + filename)
 
     def save_file(self, filename):
-        pixbuf = self.mdw.get_as_pixbuf()
+        #pixbuf = self.mdw.get_as_pixbuf()
+        pixbuf = self.mdw.get_nonwhite_as_pixbuf()
         pixbuf.save(filename, 'png')
         self.statusbar.push(1, 'Saved to' + filename)
 
@@ -232,12 +249,38 @@ class Window(gtk.Window):
         dialog.hide()
 
         if dialog.run() == gtk.RESPONSE_OK:
-            self.save_file(dialog.get_filename())
+            filename = dialog.get_filename()
+            if os.path.exists(filename):
+                d2 = gtk.Dialog("Overwrite?",
+                     self,
+                     gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                     (gtk.STOCK_YES, gtk.RESPONSE_ACCEPT,
+                      gtk.STOCK_NO, gtk.RESPONSE_REJECT))
+                if d2.run() != gtk.RESPONSE_ACCEPT:
+                    filename = None
+                d2.destroy()
+            if filename:
+                self.save_file(dialog.get_filename())
 
         dialog.destroy()
 
     def quit_cb(self, action):
         self.app.quit()
+
+    def move_cb(self, action):
+        step = 20
+        name = action.get_name()
+        if name == 'MoveLeft':
+            self.viewport_x -= step
+        elif name == 'MoveRight':
+            self.viewport_x += step
+        elif name == 'MoveUp':
+            self.viewport_y -= step
+        elif name == 'MoveDown':
+            self.viewport_y += step
+        else:
+            assert 0
+        self.mdw.set_viewport(self.viewport_x, self.viewport_y)
 
     def context_cb(self, action):
         # TODO: this context-thing is not very useful like that, is it?
