@@ -139,18 +139,29 @@ void brush_stroke_to (Brush * b, Surface * s, float x, float y, float pressure, 
   float dist;
   if (time <= b->time) return;
 
-  if (b->time == 0 || time - b->time > 10) {
+  if (b->time == 0 || time - b->time > 5) {
     // reset
     b->x = x;
     b->y = y;
     b->pressure = pressure;
     b->time = time;
-    //brush_dab (b, s);
     return;
   }
 
+  { // calculate the actual "virtual" cursor position
+    float fac;
+    if (b->position_T <= 0.001) {
+      fac = 1.0;
+    } else {
+      //fac = 1.0-exp(- b->dtime / b->position_T);
+      fac = 1.0-exp(- 1.0 / b->position_T);
+    }
+    x = b->x + (x - b->x) * fac;
+    y = b->y + (y - b->y) * fac;
+  }
   // draw many (or zero) dabs to the next position
   dist = brush_count_dabs_to (b, x, y, pressure, time);
+  //g_print("dist = %f\n", dist);
   while (dist >= 1.0) {
     float step; // percent of distance between current and next position
     step = 1 / dist;

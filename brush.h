@@ -14,7 +14,7 @@ typedef struct {
   float dx, dy, dpressure, dtime;
   float dist;
   float actual_radius;
-  
+
   GtkWidget * queue_draw_widget;
 
   guchar color[3];
@@ -45,6 +45,8 @@ typedef struct {
   float offset_by_speed;
   //% saturation slowdown % BSF_NONE % -1.0 % 0.0 % 1.0 % When painting black, it soon gets black completely. This setting controls how fast the final brush color is taken:\n 1.0 slowly\n 0.0 disable\n-1.0 even faster\nThis is nolinear and causes strange effects when it happens too fast. Set occupacy low enough to avoid this.\nFor example, a full-occupacy black stroke might get brighter over grey areas than over white ones.
   float saturation_slowdown;
+  //% slow position % BSF_NONE % 0.0 % 0.0 % 10.0 % Slowdown pointer tracking speed. 0 disables it, higher values remove more jitter in cursor movements. Useful for drawing smooth, comic-like outlines.
+  float position_T;
 } Brush;
 
 typedef struct {
