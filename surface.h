@@ -10,8 +10,12 @@
 
 #define sqr(x) ((x)*(x))
 
+// FIXME: big waste of memory... however since it's arranged so near
+// things stay together, it should not matter much - even if the OS
+// would swap some parts out. Bad idea, anyway.
+
 //#define SIZE 512
-#define SIZE 2048
+#define SIZE 2048 // that's 12MB
 
 #define BLOCKBITS 7
 #define BLOCKSIZE (1 << BLOCKBITS)

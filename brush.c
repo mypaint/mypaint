@@ -98,7 +98,9 @@ void brush_prepare_and_draw_dab (Brush * b, Surface * s)
   }
 
   // TODO: think about it: is this setting enough?
-  opaque *= (b->opaque_by_pressure * b->pressure + (1-b->opaque_by_pressure));
+  //opaque *= (b->opaque_by_pressure * b->pressure + (1-b->opaque_by_pressure));
+  opaque *= b->opaque_by_pressure * b->pressure;
+  if (opaque >= 1.0) opaque = 1.0;
   //b->radius = 2.0 + sqrt(sqrt(speed));
   radius_log += b->pressure * b->radius_by_pressure;
 

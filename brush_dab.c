@@ -104,16 +104,19 @@
         // rgbdiff[] is in range -255..+255
         // dif_sum is in range 0..3*255
 
-        int a_times_diff_sum;
-        a_times_diff_sum = a*diff_sum / 256;
-        // a_times_diff_sum is in range 0..3*255/256
+        if (saturation_slowdown) {
+          // FIXME: still buggy at high diff_sum, even if saturation_slowdown == 0
+          int a_times_diff_sum;
+          a_times_diff_sum = a*diff_sum / 256;
+          // a_times_diff_sum is in range 0..3*255/256
 
-        // Formula: o = o * ( a*d*d + d - a*d )  all ranges 0..1, d=diff_sum
-        opa = opa * (a_times_diff_sum*diff_sum + diff_sum*3*255 - a_times_diff_sum*3*255);
-        // opa is in range 0..256*3*3*255*255, which is way too much precision
-        opa /= 3*3*255*255;
-        //if (opa == 0) opa = 1; // give it a chance to make the final step
-        // opa is in range 1..256
+          // Formula: o = o * ( a*d*d + d - a*d )  all ranges 0..1, d=diff_sum
+          opa = opa * (a_times_diff_sum*diff_sum + diff_sum*3*255 - a_times_diff_sum*3*255);
+          // opa is in range 0..256*3*3*255*255, which is way too much precision
+          opa /= 3*3*255*255;
+          //if (opa == 0) opa = 1; // give it a chance to make the final step
+          // opa is in range 1..256
+        }
 
         rgbdiff[0] *= opa;
         rgbdiff[1] *= opa;

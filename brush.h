@@ -40,7 +40,7 @@ typedef struct {
   float dabs_per_actual_radius;
   //% dabs per second % BSF_NONE % 0.0 % 0.0 % 80.0 % dabs to draw each second, no matter how far the pointer moves
   float dabs_per_second;
-  //% opaque by pressure % BSF_NONE % 0.0 % 1.0 % 1.0 % 0.0 means opaque stays as given above\n1.0 means opaque is multiplied by pressure
+  //% opaque by pressure % BSF_NONE % 0.0 % 1.0 % 5.0 % opaque above will get multiplyed by pressure times this value\nFIXME: this is really useless and has the same effect as oppaque.
   float opaque_by_pressure;
   //% radius by pressure % BSF_NONE % -10.0 % 0.1 % 10.0 % how much more pressure will increase the radius\nwithout pressure, the radius is unchanged\n 0.0 disable\n 0.7 double radius at full pressure\n-0.7 half radius at full pressure\n3.0 20 times radius at full pressure
   float radius_by_pressure;
