@@ -130,8 +130,9 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s)
   int color_is_hsv;
 
   // FIXME: does happen (interpolation problem?)
-  if (b->pressure < 0) b->pressure = 0;
-  g_assert (b->pressure >= 0 && b->pressure <= 1);
+  if (b->pressure < 0.0) b->pressure = 0.0;
+  if (b->pressure > 1.0) b->pressure = 1.0;
+  g_assert (b->pressure >= 0.0 && b->pressure <= 1.0);
 
   { // slow position 2
     float fac = exp_decay (b->position_T2, 0.4);
