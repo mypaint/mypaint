@@ -17,34 +17,22 @@ GtkWidget *statusline;
 static gint
 my_button_press (GtkWidget *widget, GdkEventButton *event)
 {
-  g_print ("button press %f %f %f\n", event->x, event->y, event->pressure);
-
-  /*brush.radius = 3.0;*/
   /*
-  brush.opaque = event->pressure;
-  brush.radius = 3.0;
-  brush.color[0] = 0;
-  brush.color[1] = 0;
-  brush.color[2] = 0;
-  surface_draw (screen,
-                event->x,
-                event->y,
-                &brush);
-
-  lastx = event->x;
-  lasty = event->y;
-  dist = 0;
-
-  gtk_widget_queue_draw (widget);
-  */
+  double pressure;
+  gdk_event_get_axis ((GdkEvent *)event, GDK_AXIS_PRESSURE, &pressure);
+  g_print ("button press %f %f %f\n", event->x, event->y, pressure);
   return TRUE;
+  */
+  return FALSE;
 }
 
 static gint
 my_motion (GtkWidget *widget, GdkEventMotion *event)
 {
   double delta;
-  /* g_print ("motion %f %f %f %d\n", event->x, event->y, event->pressure, event->state); */
+  double pressure;
+  gdk_event_get_axis ((GdkEvent *)event, GDK_AXIS_PRESSURE, &pressure);
+  /* g_print ("motion %f %f %f %d\n", event->x, event->y, pressure, event->state); */
 
   /* no button pressed */
   /* don't care, always paint - FIXME: breaks mouse support (always pressure set)
@@ -61,7 +49,7 @@ my_motion (GtkWidget *widget, GdkEventMotion *event)
       /* interpolate position and presssure (a bit wrong probably, but works great so far) */
       lastpaintx = lastpaintx + (event->x - lastpaintx) * spacing*brush.radius / dist;
       lastpainty = lastpainty + (event->y - lastpainty) * spacing*brush.radius / dist;
-      lastpaintpress = lastpaintpress + (event->pressure - lastpaintpress) * spacing*brush.radius / dist;
+      lastpaintpress = lastpaintpress + (pressure - lastpaintpress) * spacing*brush.radius / dist;
       dist -= spacing*brush.radius;
 
       brush.opaque = lastpaintpress / 8.0;
@@ -83,18 +71,6 @@ my_motion (GtkWidget *widget, GdkEventMotion *event)
   lasty = event->y;
 
   return TRUE;
-}
-
-static gint
-my_keypress (GtkWidget *widget, GdkEventKey *event)
-{
-  g_print("my_keypress\n");
-  if (event->keyval == GDK_a) 
-    {
-      g_print("A pressed\n");
-      return TRUE;
-    }
-  return FALSE;
 }
 
 static gint
@@ -125,26 +101,18 @@ my_expose (GtkWidget *widget, GdkEventExpose *event, Surface *s)
 }
 
 
-static gint
-clear_button_press (GtkWidget *widget, GtkWidget *da)
-{
-  surface_clear (screen);
-  gtk_widget_draw (da, NULL);
-  return TRUE;
-}
-
 static void
 init_input (void)
 {
   GList *tmp_list;
-  GdkDeviceInfo *info;
+  GdkDevice *info;
 
-  tmp_list = gdk_input_list_devices();
+  tmp_list = gdk_devices_list();
 
   info = NULL;
   while (tmp_list)
     {
-      info = (GdkDeviceInfo *)tmp_list->data;
+      info = (GdkDevice *)tmp_list->data;
       /*
       g_print ("device: %s\n", info->name);
       */
@@ -152,12 +120,65 @@ init_input (void)
 	  !g_strcasecmp (info->name, "stylus") ||
 	  !g_strcasecmp (info->name, "eraser"))
 	  {
-	    gdk_input_set_mode (info->deviceid, GDK_MODE_SCREEN);
+	    gdk_device_set_mode (info, GDK_MODE_SCREEN);
 	  }
       tmp_list = tmp_list->next;
     }
   if (!info) return;
 }
+
+static void
+brush_bigger (GtkAction *action, GtkWidget *window)
+{
+  brush.radius *= 1.2;
+}
+
+static void
+brush_smaller (GtkAction *action, GtkWidget *window)
+{
+  brush.radius /= 1.2;
+}
+
+static void
+invert_colors (GtkAction *action, GtkWidget *window)
+{
+  brush.color[0] = 255 - brush.color[0];
+  brush.color[1] = 255 - brush.color[1];
+  brush.color[2] = 255 - brush.color[2];
+}
+
+static void
+clear_image (GtkAction *action, GtkWidget *window)
+{
+  surface_clear (screen);
+  gtk_widget_draw (window, NULL);
+}
+
+static GtkActionEntry my_actions[] = {
+  { "ImageMenu", NULL, "Image" },
+  { "BrushMenu", NULL, "Brush" },
+  { "ClearImage", NULL, "Clear", "<control>E", "Clear the image", G_CALLBACK (clear_image) },
+  /*  { "Quit", NULL, "Quit", "<control>Q", "XXXX", G_CALLBACK (quit) }, */
+  { "BrushBigger", NULL, "Bigger", "F", NULL, G_CALLBACK (brush_bigger) },
+  { "BrushSmaller", NULL, "Smaller", "D", NULL, G_CALLBACK (brush_smaller) },
+  { "InvertColor", NULL, "Invert Color", "X", NULL, G_CALLBACK (invert_colors) },
+};
+
+static const char * ui_description = 
+"<ui>"
+"  <menubar name='MainMenu'>"
+"    <menu action='ImageMenu'>"
+"      <menuitem action='ClearImage' />"
+"      <menuitem action='Quit' />"
+"    </menu>"
+"    <menu action='BrushMenu'>"
+"      <menuitem action='BrushBigger' />"
+"      <menuitem action='BrushSmaller' />"
+"      <menuitem action='InvertColor' />"
+"    </menu>"
+"  </menubar>"
+"</ui>"
+;
 
 int
 main (int argc, char **argv)
@@ -166,8 +187,6 @@ main (int argc, char **argv)
   GtkWidget *v;
   GtkWidget *eb;
   GtkWidget *da;
-  GtkWidget *h;
-  GtkWidget *db;
   int xs = SIZE;
   int ys = SIZE;
 
@@ -180,7 +199,6 @@ main (int argc, char **argv)
       if (xs == 0) xs = SIZE;
       if (ys == 0) ys = SIZE;
     }
-
 
   init_input ();
 
@@ -204,9 +222,36 @@ main (int argc, char **argv)
   gtk_container_add (GTK_CONTAINER (w), v);
   gtk_widget_show (v);
 
+  { /* Menu */
+    GtkUIManager *uim;
+    GError * error;
+    GtkAccelGroup *accel_group;
+    GtkActionGroup *action_group;
+    GtkWidget *menu_bar;
+
+    uim = gtk_ui_manager_new ();
+    error = NULL;
+    gtk_ui_manager_add_ui_from_string (uim, ui_description, -1, &error);
+    if (error) 
+      {
+        g_print ("ERROR: %s\n", error->message);
+        g_clear_error (&error);
+        exit (1);
+      }
+
+    action_group = gtk_action_group_new ("myactiongroup");
+    gtk_action_group_add_actions (action_group, my_actions, G_N_ELEMENTS (my_actions), w);
+    gtk_ui_manager_insert_action_group (uim, action_group, 0);
+    accel_group = gtk_ui_manager_get_accel_group (uim);
+    gtk_window_add_accel_group (GTK_WINDOW (w), accel_group);
+
+    menu_bar = gtk_ui_manager_get_widget (uim, "/MainMenu");
+    gtk_container_add (GTK_CONTAINER (v), menu_bar);
+    gtk_widget_show (menu_bar);
+  }
+
   eb = gtk_event_box_new ();
   gtk_container_add (GTK_CONTAINER (v), eb);
-  gtk_widget_show (eb);
 
   gtk_widget_set_extension_events (eb, GDK_EXTENSION_EVENTS_ALL);
 
@@ -223,38 +268,24 @@ main (int argc, char **argv)
 		      (GtkSignalFunc) my_button_press, NULL);
   gtk_signal_connect (GTK_OBJECT (eb), "motion_notify_event",
 		      (GtkSignalFunc) my_motion, NULL);
-  gtk_signal_connect (GTK_OBJECT (eb), "key_press_event",
-		      (GtkSignalFunc) my_keypress, NULL);
 
   da = gtk_drawing_area_new ();
   gtk_drawing_area_size (GTK_DRAWING_AREA (da), xs, ys);
   gtk_container_add (GTK_CONTAINER (eb), da);
-  gtk_widget_show (da);
 
   gtk_signal_connect (GTK_OBJECT (da), "expose_event",
 		      (GtkSignalFunc) my_expose, screen);
 
   statusline = gtk_label_new ("hello world");
   gtk_container_add (GTK_CONTAINER (v), statusline);
-  gtk_widget_show (statusline);
 
-  h = gtk_hbox_new (TRUE, 5);
-  gtk_container_add (GTK_CONTAINER (v), h);
-  gtk_widget_show (h);
-
-  db = gtk_button_new_with_label ("Clear");
-  gtk_container_add (GTK_CONTAINER (h), db);
-  gtk_widget_show (db);
-  gtk_signal_connect (GTK_OBJECT (db), "clicked",
-		      (GtkSignalFunc) clear_button_press, da);
-
-  gtk_widget_show (w);
+  gtk_widget_show_all (w);
 
   /*
   gtk_timeout_add (50, (GtkFunction) dry_timer, da);
   */
 
   gtk_main ();
-  
+
   return 0;
 }
