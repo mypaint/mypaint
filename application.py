@@ -43,9 +43,10 @@ class Application: # singleton
 
         self.image_windows = []
 
+        self.new_image_window()
+
         self.brushsettings_window = brushsettingswindow.Window(self)
         self.brushsettings_window.show_all()
-        self.new_image_window()
 
         self.brushselection_window = brushselectionwindow.Window(self)
         self.brushselection_window.show_all()

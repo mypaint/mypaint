@@ -88,7 +88,8 @@ class Window(gtk.Window):
         self.ui = gtk.UIManager()
         self.ui.insert_action_group(ag, 0)
         self.ui.add_ui_from_string(ui_string)
-        self.add_accel_group(self.ui.get_accel_group())
+        self.app.accel_group = self.ui.get_accel_group()
+        self.add_accel_group(self.app.accel_group)
 
     def new_window_cb(self, action):
         # FIXME: is it really done like that?
