@@ -1,12 +1,29 @@
 #!/usr/bin/env python
 "MyDraw main"
 import gtk
+gdk = gtk.gdk
 from lowlevel import DrawWidget, Brush
 
 def destroy(widget):
     gtk.main_quit()
 
+def init_input():
+    "make those pressure sensitive devices working"
+    pressure_devices = []
+    for device in gdk.devices_list():
+        if device.source in [gdk.SOURCE_PEN, gdk.SOURCE_ERASER]:
+            pressure_devices.append(device)
+    if pressure_devices:
+        print 'Setting "screen mode" for pressure_sensitive devices:'
+        for device in pressure_devices:
+            print device.name
+            device.set_mode(gdk.MODE_SCREEN)
+    else:
+        print 'No pressure sensitive devices found.'
+
 def main():
+    init_input()
+
     window = gtk.Window(gtk.WINDOW_TOPLEVEL)
     window.connect("destroy", destroy)
     window.set_border_width(10)
@@ -17,6 +34,8 @@ def main():
     window.add(mdw)
 
     window.show_all()
+
+    #gtk.InputDialog().show()
 
     gtk.main()
 

@@ -14,7 +14,7 @@ gtkmybrush.o:	gtkmybrush_settings.inc gtkmybrush.c
 	cc $(CFLAGS) -c -o $@ gtkmybrush.c
 
 clean:
-	rm *.o *.so gtkmybrush_settings.inc mydrawwidget.defs mydrawwidget.defs.c
+	rm *.o *.so gtkmybrush_settings.inc mydrawwidget.defs mydrawwidget.defs.c brushsettings.py
 
 mydrawwidget.defs.c: mydrawwidget.defs mydrawwidget.override
 	pygtk-codegen-2.0 --prefix mydrawwidget \

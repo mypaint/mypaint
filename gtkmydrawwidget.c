@@ -79,12 +79,12 @@ gtk_my_draw_widget_realize (GtkWidget *widget)
   attributes.wclass = GDK_INPUT_OUTPUT;
   attributes.visual = gtk_widget_get_visual (widget);
   attributes.colormap = gtk_widget_get_colormap (widget);
+
   attributes.event_mask = gtk_widget_get_events (widget);
   attributes.event_mask |= (GDK_EXPOSURE_MASK |
-                            GDK_EXTENSION_EVENTS_ALL |
                             GDK_LEAVE_NOTIFY_MASK |
                             GDK_BUTTON_PRESS_MASK |
-                            GDK_BUTTON_RELEASE |
+                            GDK_BUTTON_RELEASE_MASK |
                             GDK_POINTER_MOTION_MASK |
                             GDK_PROXIMITY_IN_MASK |
                             GDK_PROXIMITY_OUT_MASK);
@@ -97,6 +97,11 @@ gtk_my_draw_widget_realize (GtkWidget *widget)
   widget->style = gtk_style_attach (widget->style, widget->window);
   gtk_style_set_background (widget->style, widget->window, GTK_STATE_NORMAL);
 
+  // needed for some unknown reason
+  gtk_widget_add_events (widget, attributes.event_mask);
+  // needed for known reason
+  gtk_widget_set_extension_events (widget, GDK_EXTENSION_EVENTS_ALL);
+
   //gtk_drawing_area_send_configure (GTK_DRAWING_AREA (widget));
 }
 
@@ -104,7 +109,8 @@ static void
 gtk_my_draw_widget_init (GtkMyDrawWidget *mdw)
 {
   mdw->brush = NULL;
-  mdw->surface = new_surface (160, 180);
+  // FIXME: that's my screen resolution... maybe add size as window is resized...
+  mdw->surface = new_surface (1280, 1024);
   surface_clear (mdw->surface);
 }
 
