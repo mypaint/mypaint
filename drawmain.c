@@ -248,6 +248,8 @@ main (int argc, char **argv)
     menu_bar = gtk_ui_manager_get_widget (uim, "/MainMenu");
     gtk_container_add (GTK_CONTAINER (v), menu_bar);
     gtk_widget_show (menu_bar);
+
+    gtk_accel_map_load ("accelmap.conf");
   }
 
   eb = gtk_event_box_new ();
@@ -286,6 +288,8 @@ main (int argc, char **argv)
   */
 
   gtk_main ();
+
+  gtk_accel_map_save ("accelmap.conf");
 
   return 0;
 }
