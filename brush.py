@@ -47,7 +47,8 @@ class Setting:
             for j in xrange(8):
                 self.brush.set_mapping(self.setting.index, input.index, j, points[j])
     def copy_from(self, other):
-        self.load_from_string(other.save_to_string())
+        error = self.load_from_string(other.save_to_string())
+        assert not error
     def save_to_string(self):
         s = '%f' % self.base_value
         for i in brushsettings.inputs:
@@ -56,6 +57,7 @@ class Setting:
                 s += ' | ' + i.name + ' ' + ' '.join([str(f) for f in points])
         return s
     def load_from_string(self, s):
+        error = None
         parts = s.split('|')
         self.set_base_value(float(parts[0]))
         for i in brushsettings.inputs:
@@ -63,10 +65,15 @@ class Setting:
         for part in parts[1:]:
             subparts = part.split()
             command, args = subparts[0], subparts[1:]
+            found = False
             for i in brushsettings.inputs:
                 if command == i.name:
+                    found = True
                     points = [float(f) for f in args]
                     self.set_points(i, points)
+            if not found:
+                error = 'unknown command "%s"' % command
+        return error
 
 class Brush(mydrawwidget.MyBrush):
     def __init__(self):
@@ -122,7 +129,11 @@ class Brush(mydrawwidget.MyBrush):
                         if command == s.cname:
                             assert not found
                             found = True
-                            self.settings[s.index].load_from_string(rest)
+                            error = self.settings[s.index].load_from_string(rest)
+                            if error:
+                                print filename, '- ignoring error:'
+                                print line
+                                print error
                     if not found:
                         print filename, '- ignoring line:'
                         print line
