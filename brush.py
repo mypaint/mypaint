@@ -50,7 +50,7 @@ class Setting:
         error = self.load_from_string(other.save_to_string())
         assert not error
     def save_to_string(self):
-        s = '%f' % self.base_value
+        s = str(self.base_value)
         for i in brushsettings.inputs:
             points = self.points[i.index]
             if points:
@@ -86,6 +86,8 @@ class Brush(mydrawwidget.MyBrush):
         self.preview = None
         self.preview_thumb = None
         self.name = ''
+        self.preview_changed = True
+        self.painting_time = 0.0
 
     def get_fileprefix(self, path):
         if not os.path.isdir(path): os.mkdir(path)
@@ -100,11 +102,14 @@ class Brush(mydrawwidget.MyBrush):
         
     def save(self, path):
         prefix = self.get_fileprefix(path)
-        self.preview.save(prefix + '_prev.png', 'png')
+        if self.preview_changed:
+            self.preview.save(prefix + '_prev.png', 'png')
+            self.preview_changed = False
         f = open(prefix + '.myb', 'w')
         f.write('# mypaint brush file\n')
         r, g, b = self.get_color()
         f.write('color %d %d %d\n' % (r, g, b))
+        f.write('painting_time %s\n' % self.painting_time)
         for s in brushsettings.settings:
             f.write(s.cname + ' ' + self.settings[s.index].save_to_string() + '\n')
         f.close()
@@ -114,6 +119,7 @@ class Brush(mydrawwidget.MyBrush):
         prefix = self.get_fileprefix(path)
         pixbuf = gtk.gdk.pixbuf_new_from_file(prefix + '_prev.png')
         self.update_preview(pixbuf)
+        self.preview_changed = False
         num_found = 0
         filename = prefix + '.myb'
         for line in open(filename).readlines():
@@ -123,6 +129,8 @@ class Brush(mydrawwidget.MyBrush):
                 command, rest = line.split(' ', 1)
                 if command == 'color':
                     self.set_color([int(s) for s in rest.split()])
+                elif command == 'painting_time':
+                    self.painting_time = float(rest)
                 else:
                     found = False
                     for s in brushsettings.settings:
@@ -175,5 +183,6 @@ class Brush(mydrawwidget.MyBrush):
         self.preview = pixbuf
         self.preview_thumb = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, False, 8, thumb_w, thumb_h)
         pixbuf_scale_nostretch_centered(src=pixbuf, dst=self.preview_thumb)
+        self.preview_changed = True
 
 DrawWidget = mydrawwidget.MyDrawWidget

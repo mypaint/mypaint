@@ -22,11 +22,6 @@ class Application: # singleton
 
         # load brushes
         loadnames = []
-        filename = self.confpath + 'brush_order.conf'
-        if os.path.isfile(filename):
-            for line in open(filename).readlines():
-                # FIXME: security problem?
-                loadnames.append(line.strip())
         for filename in os.listdir(self.brushpath):
             if filename.endswith('.myb'):
                 loadnames.append(filename[:-4])
@@ -44,6 +39,18 @@ class Application: # singleton
                 self.contexts[i] = b
             else:
                 self.brushes.append(b)
+
+        # sort them by painting time
+        def cmp_brushes(a, b):
+            return cmp(a.painting_time, b.painting_time)
+        self.brushes.sort(cmp_brushes)
+        self.brushes.reverse()
+        # scale to a fixed maximal painting_time
+        painting_time_limit = 6*60*60 # 6 hours drawing with any single brush brings it to the first position
+        max_painting_time = max([b.painting_time for b in self.brushes])
+        if max_painting_time > painting_time_limit:
+            for b in self.brushes:
+                b.painting_time *= 1.0 / max_painting_time
 
         self.image_windows = []
 
@@ -63,9 +70,17 @@ class Application: # singleton
         if loadimage:
             self.image_windows[0].open_file(loadimage)
 
+    def update_statistics(self):
+        # permanently update painting_time of selected brush
+        if self.selected_brush:
+            self.selected_brush.painting_time += self.brush.get_painting_time()
+            self.selected_brush.save(self.brushpath)
+        self.brush.set_painting_time(0)
+
     def brush_selected_cb(self, brush):
         "actually set the new brush"
-        assert brush is not self.brush
+        assert brush is not self.brush # self.brush never gets exchanged
+        self.update_statistics()
         if brush in self.brushes:
             self.selected_brush = brush
         else:
@@ -85,7 +100,7 @@ class Application: # singleton
         return True
 
     def quit(self):
-        print 'save'
+        self.update_statistics()
         gtk.accel_map_save(self.confpath + 'accelmap.conf')
         gtk.main_quit()
         

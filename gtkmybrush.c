@@ -66,6 +66,18 @@ gtk_my_brush_set_print_inputs (GtkMyBrush * b, int value)
   b->print_inputs = value;
 }
 
+float
+gtk_my_brush_get_painting_time (GtkMyBrush * b)
+{
+  return b->painting_time;
+}
+
+void
+gtk_my_brush_set_painting_time (GtkMyBrush * b, float value)
+{
+  b->painting_time = value;
+}
+
 static void gtk_my_brush_class_init    (GtkMyBrushClass *klass);
 static void gtk_my_brush_init          (GtkMyBrush      *b);
 static void gtk_my_brush_finalize (GObject *object);
@@ -118,6 +130,7 @@ gtk_my_brush_init (GtkMyBrush *b)
       b->settings[i].mapping[j] = NULL;
     }
   }
+  b->painting_time = 0;
   // defaults will be set from python
 }
 
@@ -157,7 +170,7 @@ float exp_decay (float T_const, float t)
 
 void brush_reset (GtkMyBrush * b)
 {
-  b->time = 0;
+  b->time = 0; // triggers the real reset below in brush_stroke_to
 }
 
 // high-level part of before each dab
@@ -400,13 +413,23 @@ void brush_stroke_to (GtkMyBrush * b, Surface * s, float x, float y, float press
     return;
   }
 
+  if (pressure > 0) {
+    b->painting_time += time - b->last_time;
+  }
+
   { // calculate the actual "virtual" cursor position
-    float fac = 1.0 - exp_decay (b->settings[BRUSH_SLOW_TRACKING].base_value, 100.0*(time - b->last_time));
+    float fac = 1.0 - exp_decay (b->settings[BRUSH_SLOW_TRACKING].base_value, 100.0*(time - b->time));
     x = b->x + (x - b->x) * fac;
     y = b->y + (y - b->y) * fac;
   }
   // draw many (or zero) dabs to the next position
   dist = brush_count_dabs_to (b, x, y, pressure, time);
+  if (dist > 300) {
+    g_print ("Warning: NOT drawing %f dabs, resetting brush instead.\n", dist);
+    b->time = 0; // reset
+    return;
+  }
+
   //g_print("dist = %f\n", dist);
   // Not going to recalculate dist each step.
 

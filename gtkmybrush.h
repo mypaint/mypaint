@@ -62,6 +62,8 @@ struct _GtkMyBrush
   float norm_speed_slow1; 
   float norm_speed_slow2;
 
+  float painting_time;
+
   Setting settings[BRUSH_SETTINGS_COUNT];
 
 };
@@ -81,6 +83,8 @@ void gtk_my_brush_set_mapping (GtkMyBrush * b, int id, int input, int index, flo
 void gtk_my_brush_remove_mapping (GtkMyBrush * b, int id, int input);
 void gtk_my_brush_set_color (GtkMyBrush * b, int red, int green, int blue);
 void gtk_my_brush_set_print_inputs (GtkMyBrush * b, int value);
+float gtk_my_brush_get_painting_time (GtkMyBrush * b);
+void gtk_my_brush_set_painting_time (GtkMyBrush * b, float value);
 
 /* only for mydrawwidget (not exported to python): */
 void brush_stroke_to (GtkMyBrush * b, Surface * s, float x, float y, float pressure, float time);
