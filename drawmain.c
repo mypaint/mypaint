@@ -16,8 +16,8 @@ double spacing = 0.2;
 double vx10;
 
 GtkWidget *statusline;
-GtkWidget *recorddata;
-GtkWidget *guesssize;
+GtkCheckMenuItem *recorddata;
+GtkCheckMenuItem *suggestsize;
 
 static gint
 my_button_press (GtkWidget *widget, GdkEventButton *event)
@@ -55,8 +55,12 @@ my_motion (GtkWidget *widget, GdkEventMotion *event)
   dist += d_dist;
 
   neural_process_movement (dt, event->x, event->y, pressure, d_dist, 
-                           gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (recorddata)),
-                           gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (guesssize)) );
+                           gtk_check_menu_item_get_active (recorddata),
+                           gtk_check_menu_item_get_active (suggestsize) );
+  if (gtk_check_menu_item_get_active (suggestsize) ) {
+    brush.radius = neural_get_suggested_brushsize ();
+    if (brush.radius <= 1.0) brush.radius = 1.0;
+  }
 
   while (dist >= spacing*brush.radius)
     {
@@ -172,19 +176,33 @@ clear_image (GtkAction *action, GtkWidget *window)
   neural_notice_clear_image ();
 }
 
+static void
+train_nn (GtkAction *action, GtkWidget *window)
+{
+  neural_train ();
+}
+
+static void
+nothing (GtkAction *action, GtkWidget *window)
+{
+  return;
+}
+
 static GtkActionEntry my_actions[] = {
   { "ImageMenu", NULL, "Image" },
   { "BrushMenu", NULL, "Brush" },
+  { "LearnMenu", NULL, "Learn" },
   { "ClearImage", NULL, "Clear", "<control>E", "Clear the image", G_CALLBACK (clear_image) },
   /*  { "Quit", NULL, "Quit", "<control>Q", "XXXX", G_CALLBACK (quit) }, */
   { "BrushBigger", NULL, "Bigger", "F", NULL, G_CALLBACK (brush_bigger) },
   { "BrushSmaller", NULL, "Smaller", "D", NULL, G_CALLBACK (brush_smaller) },
   { "InvertColor", NULL, "Invert Color", "X", NULL, G_CALLBACK (invert_colors) },
+  { "TrainNN", NULL, "Train", "<control>T", NULL, G_CALLBACK (train_nn) },
 };
 
 static GtkToggleActionEntry my_toggle_actions[] = {
-  { "RecordData", NULL, "Record Data", NULL, "Record your inputs for later training", NULL, TRUE }
-  { "GuessSize", NULL, "Guess Size", NULL, NULL, NULL, FALSE }
+  { "RecordData", NULL, "Record Data", "F11", "Record your inputs for later training", G_CALLBACK (nothing), TRUE },
+  { "SuggestSize", NULL, "Suggest Size", "F12", "Foobar", G_CALLBACK (nothing), FALSE },
 };
 
 static const char * ui_description = 
@@ -199,9 +217,10 @@ static const char * ui_description =
 "      <menuitem action='BrushSmaller' />"
 "      <menuitem action='InvertColor' />"
 "    </menu>"
-"    <menu action='Learn'>"
+"    <menu action='LearnMenu'>"
 "      <menuitem action='RecordData' />"
-"      <menuitem action='GuessSize' />"
+"      <menuitem action='SuggestSize' />"
+"      <menuitem action='TrainNN' />"
 "    </menu>"
 "  </menubar>"
 "</ui>"
@@ -280,8 +299,8 @@ main (int argc, char **argv)
     gtk_window_add_accel_group (GTK_WINDOW (w), accel_group);
 
     menu_bar = gtk_ui_manager_get_widget (uim, "/MainMenu");
-    recorddata = gtk_ui_manager_get_widget (uim, "/Learn/RecordData");
-    guesssize = gtk_ui_manager_get_widget (uim, "/Learn/GuessSize");
+    recorddata = GTK_CHECK_MENU_ITEM (gtk_ui_manager_get_widget (uim, "/MainMenu/LearnMenu/RecordData"));
+    suggestsize = GTK_CHECK_MENU_ITEM (gtk_ui_manager_get_widget (uim, "/MainMenu/LearnMenu/SuggestSize"));
     gtk_container_add (GTK_CONTAINER (v), menu_bar);
     gtk_widget_show (menu_bar);
 

@@ -18,6 +18,8 @@ float clear_dist;
 #define n_inputs 15
 #define n_outputs 1
 
+float brushsize_user, brushsize_suggested;
+
 /* time in seconds it takes to half the (old) average value */
 /*      T0 0 */
 #define T1 0.5
@@ -44,7 +46,7 @@ update_avg (float * avg, float dt, float value)
   UPDATE(4);
 }
 
-void neural_datapoint (void);
+void neural_datapoint (int record_data, int guess_size);
 
 float speed_measure_time;
 float nn_datapoint_time;
@@ -76,21 +78,20 @@ neural_process_movement (float dt, float x, float y, float z, float d_dist, int 
     }
   }
 
-  if (record_data) {
+  if (record_data || guess_size) {
     nn_datapoint_time += dt;
-    if (nn_datapoint_time > 5.0) {
+    if (nn_datapoint_time > 1.0) {
       nn_datapoint_time = 0;
-      neural_datapoint ();
+      neural_datapoint (record_data, guess_size);
     }
   }
 }
 
 void 
-neural_datapoint ()
+neural_datapoint (int record_data, int guess_size)
 {
-  float * outputs;
   float inputs[n_inputs];
-  int i;
+  float outputs[n_outputs];
 
   inputs[ 0] = avg_speed[1];
   inputs[ 1] = avg_speed[2];
@@ -112,13 +113,35 @@ neural_datapoint ()
 
   inputs[14] = clear_dist;
 
-  outputs = trainer_run(ann, inputs);
+  if (record_data) {
+    outputs[0] = brushsize_user;
+    trainer_add_data(ann, inputs, outputs);
+  }
+  if (guess_size) {
+    float * o;
+    o = trainer_run(ann, inputs);
+    brushsize_suggested = o[0];
+    g_print ("r=%f\n", brushsize_suggested);
+  } else {
+    brushsize_suggested = brushsize_user;
+  }
 }
 
 void
 neural_notice_clear_image (void)
 {
   clear_dist = 10.0;
+}
+
+void
+neural_set_current_brushsize (float size)
+{
+  brushsize_user = size;
+}
+
+float neural_get_suggested_brushsize ()
+{
+  return brushsize_suggested;
 }
 
 void
@@ -142,4 +165,12 @@ neural_finish (void)
   trainer_save(ann, "nntrainer.dat");
   g_print ("Saved ANN to file\n");
   trainer_destroy(ann);
+}
+
+void
+neural_train (void)
+{
+  g_print ("Training ANN...\n");
+  trainer_train(ann);
+  g_print ("Training finished.\n");
 }

@@ -237,7 +237,7 @@ void trainer_train(struct trainer * t)
     } else {
       eta *= 0.5;
     }
-  } while (eta > 0.001);
+  } while (eta > 0.00001);
 }
 
 fann_type * trainer_run(struct trainer * t, fann_type * original_inputs)
