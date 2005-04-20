@@ -26,6 +26,8 @@ class Window(gtk.Window):
         vbox.pack_end(sb, expand=False)
         sb.push(0, "hello world")
 
+        self.init_child_dialogs()
+
         
     def create_ui(self):
         ag = gtk.ActionGroup('WindowActions')
@@ -204,7 +206,7 @@ class Window(gtk.Window):
         self.mdw.save(filename)
         self.statusbar.push(1, 'Saved to' + filename)
 
-    def open_cb(self, action):
+    def init_child_dialogs(self):
         dialog = gtk.FileChooserDialog("Open..", self,
                                        gtk.FILE_CHOOSER_ACTION_OPEN,
                                        (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
@@ -215,15 +217,8 @@ class Window(gtk.Window):
         filter.set_name("png")
         filter.add_pattern("*.png")
         dialog.add_filter(filter)
+        self.opendialog = dialog
 
-        dialog.hide()
-
-        if dialog.run() == gtk.RESPONSE_OK:
-            self.open_file(dialog.get_filename())
-
-        dialog.destroy()
-        
-    def save_cb(self, action):
         dialog = gtk.FileChooserDialog("Save..", self,
                                        gtk.FILE_CHOOSER_ACTION_SAVE,
                                        (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
@@ -234,9 +229,16 @@ class Window(gtk.Window):
         filter.set_name("png")
         filter.add_pattern("*.png")
         dialog.add_filter(filter)
+        self.savedialog = dialog
 
+    def open_cb(self, action):
+        dialog = self.opendialog
+        if dialog.run() == gtk.RESPONSE_OK:
+            self.open_file(dialog.get_filename())
         dialog.hide()
-
+        
+    def save_cb(self, action):
+        dialog = self.savedialog
         if dialog.run() == gtk.RESPONSE_OK:
             filename = dialog.get_filename()
             if os.path.exists(filename):
@@ -250,8 +252,7 @@ class Window(gtk.Window):
                 d2.destroy()
             if filename:
                 self.save_file(dialog.get_filename())
-
-        dialog.destroy()
+        dialog.hide()
 
     def quit_cb(self, action):
         self.app.quit()

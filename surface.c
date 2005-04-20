@@ -23,9 +23,11 @@ new_surface (int w, int h)
 
   s->block_w = 1 << (s->xsize_shl - BLOCKBITS);
 
+  /*
   g_print ("requested: %d %d\n", s->w, s->h);
   g_print ("blocksize: %d %d\n", s->block_w, s->block_h);
   g_print ("finally  : %d %d\n", s->block_w*BLOCKSIZE, s->block_h*BLOCKSIZE);
+  */
 
   g_assert (s->block_w * BLOCKSIZE >= w);
   g_assert (s->block_h * BLOCKSIZE >= h);
