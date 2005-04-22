@@ -203,6 +203,14 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s, Rect * bbox)
     g_print("press=% 4.3f, speed=% 4.4f\tspeed2=% 4.4f\n", inputs[INPUT_PRESSURE], inputs[INPUT_SPEED], inputs[INPUT_SPEED2]);
   }
 
+  { // logfile for debugging
+    static FILE * logfile = NULL;
+    if (!logfile) {
+      logfile = fopen("dabinput.log", "w");
+    }
+    fprintf(logfile, "%f %99.99f %f %f %f %f %f %f\n", b->time, b->dtime, b->x, b->y, b->pressure, b->dx, b->dy, norm_speed);
+  }
+
   for (i=0; i<BRUSH_SETTINGS_COUNT; i++) {
     settings[i] = b->settings[i].base_value;
 
@@ -270,7 +278,7 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s, Rect * bbox)
     fac = 1.0 - exp_decay (settings[BRUSH_SPEED2_SLOWNESS], b->dtime);
     b->norm_speed_slow2 += (norm_speed - b->norm_speed_slow2) * fac;
   }
-
+  
   { // slow speed, but as vector this time
     float fac = 1.0 - exp_decay (exp(settings[BRUSH_OFFSET_BY_SPEED_SLOWNESS]*0.01)-1.0, b->dtime);
     b->norm_dx_slow += (norm_dx - b->norm_dx_slow) * fac;
@@ -395,6 +403,13 @@ float brush_count_dabs_to (GtkMyBrush * b, float x, float y, float pressure, flo
 void brush_stroke_to (GtkMyBrush * b, Surface * s, float x, float y, float pressure, float time, Rect * bbox)
 {
   float dist;
+  { // logfile for debugging
+    static FILE * logfile = NULL;
+    if (!logfile) {
+      logfile = fopen("rawinput.log", "w");
+    }
+    fprintf(logfile, "%f %f %f %f\n", time, x, y, pressure);
+  }
   if (time <= b->time) return;
 
   if (b->time == 0 || time - b->time > 5) {
