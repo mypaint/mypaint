@@ -5,7 +5,19 @@ import brush
 class Application: # singleton
     def __init__(self, confpath, loadimage):
         self.confpath = confpath
-        if not os.path.isdir(self.confpath): os.mkdir(self.confpath)
+        if not os.path.isdir(self.confpath):
+            if os.path.isdir('dot-mypaint'):
+                print "Copying default configuration and brush collection:"
+                command = "cp -a dot-mypaint " + self.confpath
+                print command
+                os.system(command)
+                print "Done."
+            else:
+                print "Default config file and brush collection not found."
+            if not os.path.isdir(self.confpath):
+                print "WARNING: creating new empty configuration in ", self.confpath
+                print "You want to copy some brushes there unless you want to start from scratch"
+                os.mkdir(self.confpath)
         self.brushpath = self.confpath + 'brushes/'
         if not os.path.isdir(self.brushpath): os.mkdir(self.brushpath)
 
@@ -40,17 +52,18 @@ class Application: # singleton
             else:
                 self.brushes.append(b)
 
-        # sort them by painting time
-        def cmp_brushes(a, b):
-            return cmp(a.painting_time, b.painting_time)
-        self.brushes.sort(cmp_brushes)
-        self.brushes.reverse()
-        # scale to a fixed maximal painting_time
-        painting_time_limit = 6*60*60 # 6 hours drawing with any single brush brings it to the first position
-        max_painting_time = max([b.painting_time for b in self.brushes])
-        if max_painting_time > painting_time_limit:
-            for b in self.brushes:
-                b.painting_time *= 1.0 / max_painting_time
+        if self.brushes:
+            # sort them by painting time
+            def cmp_brushes(a, b):
+                return cmp(a.painting_time, b.painting_time)
+            self.brushes.sort(cmp_brushes)
+            self.brushes.reverse()
+            # scale to a fixed maximal painting_time
+            painting_time_limit = 6*60*60 # 6 hours drawing with any single brush brings it to the first position
+            max_painting_time = max([b.painting_time for b in self.brushes])
+            if max_painting_time > painting_time_limit:
+                for b in self.brushes:
+                    b.painting_time *= 1.0 / max_painting_time
 
         self.image_windows = []
 
