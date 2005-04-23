@@ -99,6 +99,16 @@ class Window(gtk.Window):
     def delete_selected_cb(self, window):
         b = self.app.selected_brush
         if b is None: return
+
+        d = gtk.Dialog("Really delete this brush?",
+             self,
+             gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+             (gtk.STOCK_YES, gtk.RESPONSE_ACCEPT,
+              gtk.STOCK_NO, gtk.RESPONSE_REJECT))
+        response = d.run()
+        d.destroy()
+        if response != gtk.RESPONSE_ACCEPT: return
+
         self.app.select_brush(None)
         self.app.brushes.remove(b)
         b.delete(self.app.brushpath)

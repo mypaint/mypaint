@@ -76,6 +76,7 @@ class Window(gtk.Window):
               <menuitem action='Context08s'/>
               <menuitem action='Context09'/>
               <menuitem action='Context09s'/>
+              <separator/>
               <menuitem action='ContextHelp'/>
             </menu>
             <menu action='DialogMenu'>
@@ -106,29 +107,29 @@ class Window(gtk.Window):
             ('Darker',       None, 'Darker', None, None, self.darker_cb),
             ('Bigger',       None, 'Bigger', None, None, self.brush_bigger_cb),
             ('Smaller',      None, 'Smaller', None, None, self.brush_smaller_cb),
-            ('ContextMenu',  None, 'Context'),
-            ('Context00',    None, 'Context 0', None, None, self.context_cb),
-            ('Context00s',   None, 'set Context 0', None, None, self.context_cb),
-            ('Context01',    None, 'Context 1', None, None, self.context_cb),
-            ('Context01s',   None, 'set Context 1', None, None, self.context_cb),
-            ('Context02',    None, 'Context 2', None, None, self.context_cb),
-            ('Context02s',   None, 'set Context 2', None, None, self.context_cb),
-            ('Context03',    None, 'Context 3', None, None, self.context_cb),
-            ('Context03s',   None, 'set Context 3', None, None, self.context_cb),
-            ('Context04',    None, 'Context 4', None, None, self.context_cb),
-            ('Context04s',   None, 'set Context 4', None, None, self.context_cb),
-            ('Context05',    None, 'Context 5', None, None, self.context_cb),
-            ('Context05s',   None, 'set Context 5', None, None, self.context_cb),
-            ('Context06',    None, 'Context 6', None, None, self.context_cb),
-            ('Context06s',   None, 'set Context 6', None, None, self.context_cb),
-            ('Context07',    None, 'Context 7', None, None, self.context_cb),
-            ('Context07s',   None, 'set Context 7', None, None, self.context_cb),
-            ('Context08',    None, 'Context 8', None, None, self.context_cb),
-            ('Context08s',   None, 'set Context 8', None, None, self.context_cb),
-            ('Context09',    None, 'Context 9', None, None, self.context_cb),
-            ('Context09s',   None, 'set Context 9', None, None, self.context_cb),
-            ('ContextStore', None, 'set Context last selected', None, None, self.context_cb),
-            ('ContextHelp',  None, 'How to use this?', None, None, self.context_help_cb),
+            ('ContextMenu',  None, 'Brushkeys'),
+            ('Context00',    None, 'restore brush 0', None, None, self.context_cb),
+            ('Context00s',   None, 'save to brush 0', None, None, self.context_cb),
+            ('Context01',    None, 'restore 1', None, None, self.context_cb),
+            ('Context01s',   None, 'save 1', None, None, self.context_cb),
+            ('Context02',    None, 'restore 2', None, None, self.context_cb),
+            ('Context02s',   None, 'save 2', None, None, self.context_cb),
+            ('Context03',    None, 'restore 3', None, None, self.context_cb),
+            ('Context03s',   None, 'save 3', None, None, self.context_cb),
+            ('Context04',    None, 'restore 4', None, None, self.context_cb),
+            ('Context04s',   None, 'save 4', None, None, self.context_cb),
+            ('Context05',    None, 'restore 5', None, None, self.context_cb),
+            ('Context05s',   None, 'save 5', None, None, self.context_cb),
+            ('Context06',    None, 'restore 6', None, None, self.context_cb),
+            ('Context06s',   None, 'save 6', None, None, self.context_cb),
+            ('Context07',    None, 'restore 7', None, None, self.context_cb),
+            ('Context07s',   None, 'save 7', None, None, self.context_cb),
+            ('Context08',    None, 'restore 8', None, None, self.context_cb),
+            ('Context08s',   None, 'save 8', None, None, self.context_cb),
+            ('Context09',    None, 'restore 9', None, None, self.context_cb),
+            ('Context09s',   None, 'save 9', None, None, self.context_cb),
+            ('ContextStore', None, 'save to most recently restored', None, None, self.context_cb),
+            ('ContextHelp',  None, 'Help!', None, None, self.context_help_cb),
             ('DialogMenu',  None, 'Dialogs'),
             ('BrushSelectionWindow',  None, 'brush list', None, None, self.toggleBrushSelectionWindow_cb),
             ('BrushSettingsWindow',   None, 'brush settings', None, None, self.toggleBrushSettingsWindow_cb),
@@ -303,4 +304,19 @@ class Window(gtk.Window):
             self.app.brushSelectionWindow.set_preview_pixbuf(context.preview)
 
     def context_help_cb(self, action):
-        print "TODO"
+        d = gtk.MessageDialog(self, buttons=gtk.BUTTONS_OK)
+        d.set_markup("This is used to quickly save/restore brush settings "
+                     "using keyboard shortcuts. You can paint with one hand and "
+                     "change brushes with the other without interrupting."
+                     "\n\n"
+                     "To assign such a shortcut, move "
+                     "your mouse over the menu entry and press the key you want to assign. "
+                     "There are 10 memory slots to hold brush settings.\n"
+                     "Those are annonymous "
+                     "brushes, they are not visible in the brush selector list. "
+                     "But they will stay even if you quit. "
+                     "They will also remember the selected color. In contrast, selecting a "
+                     "normal brush never changes the color. "
+                     )
+        d.run()
+        d.destroy()
