@@ -45,7 +45,7 @@ struct _GtkMyBrush
 
   // lowlevevel stuff (almost raw input)
   float x, y, pressure, time;
-  float dx, dy, dpressure, dtime;
+  float dx, dy, dpressure, dtime; // note: this is dx/ddab, ..., dtime/ddab (dab number, 5.0 = 5th dab)
   float dist;
   float actual_radius;
   float last_time;
@@ -56,7 +56,7 @@ struct _GtkMyBrush
 
   // misc higher-level helper variables
   float x_slow, y_slow; // for slow position
-  float norm_dx_slow, norm_dy_slow;
+  float norm_dx_slow, norm_dy_slow; // note: now this is dx/dt * (1/radius)
 
   float norm_speed_slow1; 
   float norm_speed_slow2;

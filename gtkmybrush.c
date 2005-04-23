@@ -8,6 +8,9 @@
 #include "brush_dab.h" 
 ;  // ; needed
 
+#define DEBUGLOG 0
+#define LINEAR_INTERPOLATION 1
+
 void
 gtk_my_brush_set_base_value (GtkMyBrush * b, int id, float value)
 {
@@ -203,14 +206,6 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s, Rect * bbox)
     g_print("press=% 4.3f, speed=% 4.4f\tspeed2=% 4.4f\n", inputs[INPUT_PRESSURE], inputs[INPUT_SPEED], inputs[INPUT_SPEED2]);
   }
 
-  { // logfile for debugging
-    static FILE * logfile = NULL;
-    if (!logfile) {
-      logfile = fopen("dabinput.log", "w");
-    }
-    fprintf(logfile, "%f %99.99f %f %f %f %f %f %f\n", b->time, b->dtime, b->x, b->y, b->pressure, b->dx, b->dy, norm_speed);
-  }
-
   for (i=0; i<BRUSH_SETTINGS_COUNT; i++) {
     settings[i] = b->settings[i].base_value;
 
@@ -283,6 +278,14 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s, Rect * bbox)
     float fac = 1.0 - exp_decay (exp(settings[BRUSH_OFFSET_BY_SPEED_SLOWNESS]*0.01)-1.0, b->dtime);
     b->norm_dx_slow += (norm_dx - b->norm_dx_slow) * fac;
     b->norm_dy_slow += (norm_dy - b->norm_dy_slow) * fac;
+  }
+
+  if (DEBUGLOG) {
+    static FILE * logfile = NULL;
+    if (!logfile) {
+      logfile = fopen("dabinput.log", "w");
+    }
+    fprintf(logfile, "%f %f %f %f %f\n", b->time, b->dtime, b->x, b->dx, b->norm_dx_slow);
   }
 
   if (settings[BRUSH_OFFSET_BY_SPEED]) {
@@ -403,14 +406,17 @@ float brush_count_dabs_to (GtkMyBrush * b, float x, float y, float pressure, flo
 void brush_stroke_to (GtkMyBrush * b, Surface * s, float x, float y, float pressure, float time, Rect * bbox)
 {
   float dist;
-  { // logfile for debugging
+  if (DEBUGLOG) { // logfile for debugging
     static FILE * logfile = NULL;
     if (!logfile) {
       logfile = fopen("rawinput.log", "w");
     }
     fprintf(logfile, "%f %f %f %f\n", time, x, y, pressure);
   }
-  if (time <= b->time) return;
+  if (time <= b->time) {
+    //g_print("timeskip\n");
+    return;
+  }
 
   if (b->time == 0 || time - b->time > 5) {
     // reset
@@ -447,26 +453,57 @@ void brush_stroke_to (GtkMyBrush * b, Surface * s, float x, float y, float press
   //g_print("dist = %f\n", dist);
   // Not going to recalculate dist each step.
 
-  while (dist >= 1.0) {
-    { // linear interpolation
-      // Inside the loop because outside it produces numerical errors
-      // resulting in b->pressure being small negative and such effects.
-      float step;
-      step = 1 / dist;
-      b->dx        = step * (x - b->x);
-      b->dy        = step * (y - b->y);
-      b->dpressure = step * (pressure - b->pressure);
-      b->dtime     = step * (time - b->time);
+  if (LINEAR_INTERPOLATION) {
+    while (dist >= 1.0) {
+      { // linear interpolation
+        // Inside the loop because outside it produces numerical errors
+        // resulting in b->pressure being small negative and such effects.
+        float step;
+        step = 1 / dist;
+        b->dx        = step * (x - b->x);
+        b->dy        = step * (y - b->y);
+        b->dpressure = step * (pressure - b->pressure);
+        b->dtime     = step * (time - b->time);
+      }
+      
+      b->x        += b->dx;
+      b->y        += b->dy;
+      b->pressure += b->dpressure;
+      b->time     += b->dtime;
+      
+      dist -= 1.0;
+      
+      brush_prepare_and_draw_dab (b, s, bbox);
     }
-    
-    b->x        += b->dx;
-    b->y        += b->dy;
-    b->pressure += b->dpressure;
-    b->time     += b->dtime;
-
-    dist -= 1.0;
-    
-    brush_prepare_and_draw_dab (b, s, bbox);
+  } else {
+    // cubic interpolation (so b->dx does not jump between dabs)
+    // constant accelerations (the "time" variable is the step, here called dist):
+    float ax, ay, ap, at;
+    float step, stepstep;
+    step = 1 / dist;
+    stepstep = step*step;
+    ax = (x        - b->x)        *stepstep  - b->dx       *step;
+    ay = (y        - b->y)        *stepstep  - b->dy       *step;
+    ap = (pressure - b->pressure) *stepstep  - b->dpressure*step;
+    at = (time     - b->time)     *stepstep  - b->dtime    *step;
+    //g_print("%f %f %f %f\n", ax, ay, ap, at);
+    while (dist >= 1.0) {
+      // This is probably not what my numeric teacher told me about solving
+      // differential equations. I can't recall right now, so never mind ;-)
+      b->dx        += ax;
+      b->dy        += ay;
+      b->dpressure += ap;
+      b->dtime     += at;
+      
+      b->x        += b->dx;
+      b->y        += b->dy;
+      b->pressure += b->dpressure;
+      b->time     += b->dtime;
+      
+      dist -= 1.0;
+      
+      brush_prepare_and_draw_dab (b, s, bbox);
+    }
   }
 
   // not equal to b_time now unless dist == 0
