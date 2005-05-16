@@ -64,6 +64,7 @@ class Application: # singleton
             if max_painting_time > painting_time_limit:
                 for b in self.brushes:
                     b.painting_time *= 1.0 / max_painting_time
+            self.select_brush(self.brushes[0])
 
         self.image_windows = []
 
