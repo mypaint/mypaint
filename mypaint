@@ -8,11 +8,15 @@ import gtk, sys, os
 gdk = gtk.gdk
 
 try: # just for a nice error message
-    import mydrawwidget
-    del mydrawwidget
+    from mydrawwidget import MyDrawWidget
+    del MyDrawWidget
 except ImportError, detail:
     print 'ImportError:', detail
-    print "\nYou need to 'make' the C modules first.\n"
+    if 'cannot import name' in str(detail).lower():
+        print "\nOops! Maybe something went wrong during 'make'."
+        print "More likely try 'python mypaint' instead of './mypaint'.\n"
+    else:
+        print "\nYou need to 'make' the C modules first.\n"
     sys.exit(1)
 
 import application
