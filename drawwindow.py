@@ -52,6 +52,7 @@ class Window(gtk.Window):
               <menuitem action='Smaller'/>
               <menuitem action='Brighter'/>
               <menuitem action='Darker'/>
+              <menuitem action='PickColor'/>
             </menu>
             <menu action='ContextMenu'>
               <menuitem action='ContextStore'/>
@@ -107,6 +108,7 @@ class Window(gtk.Window):
             ('Darker',       None, 'Darker', None, None, self.darker_cb),
             ('Bigger',       None, 'Bigger', None, None, self.brush_bigger_cb),
             ('Smaller',      None, 'Smaller', None, None, self.brush_smaller_cb),
+            ('PickColor',    None, 'Pick Color', None, None, self.pick_color_cb),
             ('ContextMenu',  None, 'Brushkeys'),
             ('Context00',    None, 'restore brush 0', None, None, self.context_cb),
             ('Context00s',   None, 'save to brush 0', None, None, self.context_cb),
@@ -177,6 +179,9 @@ class Window(gtk.Window):
     def invert_color_cb(self, action):
         self.app.brush.invert_color()
         
+    def pick_color_cb(self, action):
+        self.app.colorSelectionWindow.pick_color_at_pointer()
+
     def brush_bigger_cb(self, action):
         adj = self.app.brush_adjustment['radius_logarithmic']
         adj.set_value(adj.get_value() + 0.3)

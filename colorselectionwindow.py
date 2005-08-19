@@ -24,6 +24,20 @@ class Window(gtk.Window):
     def update(self):
         self.set_color_rgb(self.app.brush.get_color())
 
+    def pick_color_at_pointer(self):
+        # grab screen color at cursor
+        # inspired by gtkcolorsel.c function grab_color_at_mouse()
+        screen = self.get_screen()
+        colormap = screen.get_system_colormap()
+        root = screen.get_root_window()
+        display = self.get_display()
+        screen_trash, x_root, y_root, modifiermask_trash = display.get_pointer()
+        image = root.get_image(x_root, y_root, 1, 1)
+        pixel = image.get_pixel(0, 0)
+        color = colormap.query_color(pixel)
+        #print color.red, color.green, color.blue
+        self.cs.set_current_color(color)
+        
     def get_color_rgb(self):
         c = self.cs.get_current_color()
         r = float(c.red  ) * 255 / 65535
