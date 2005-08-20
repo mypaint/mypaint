@@ -22,8 +22,8 @@ class Window(gtk.Window):
 
     def show_change_color_window(self):
         if self.alternative:
-            # second press: pick color and remove the window
-            self.pick_color_at_pointer()
+            # second press: <strike>pick color</strike> cancel and remove the window
+            #self.pick_color_at_pointer()
             self.alternative.remove_cleanly()
         else:
             self.alternative = AlternativeColorSelectorWindow(self)
@@ -112,16 +112,10 @@ class AlternativeColorSelectorWindow(gtk.Window):
 
 
 	self.set_events(gtk.gdk.BUTTON_PRESS_MASK |
-                        gtk.gdk.BUTTON_RELEASE_MASK |
-                        gtk.gdk.ENTER_NOTIFY |
-                        gtk.gdk.LEAVE_NOTIFY
-                        )
-        self.connect("enter-notify-event", self.enter_notify_cb)
-        self.connect("leave-notify-event", self.leave_notify_cb)
+                        gtk.gdk.BUTTON_RELEASE_MASK)
         self.connect("button-release-event", self.button_release_cb)
         self.connect("button-press-event", self.button_press_cb)
 
-        self.first_enter_time = None
         self.button_pressed = False
 
         # window manager stuff
@@ -154,13 +148,3 @@ class AlternativeColorSelectorWindow(gtk.Window):
         if self.button_pressed:
             self.remove_cleanly()
 
-    def enter_notify_cb(self, widget, event):
-        if not self.first_enter_time:
-            self.first_enter_time = event.time
-
-    def leave_notify_cb(self, widget, event):
-        # when creating the window, we sometimes get leave&enter notifications
-        # without evident reason; block them out.
-        if not self.first_enter_time: return
-        if self.first_enter_time - event.time < 200: return
-        self.remove_cleanly()
