@@ -85,6 +85,8 @@ void gtk_my_brush_set_print_inputs (GtkMyBrush * b, int value);
 float gtk_my_brush_get_painting_time (GtkMyBrush * b);
 void gtk_my_brush_set_painting_time (GtkMyBrush * b, float value);
 
+GdkPixbuf* gtk_my_brush_get_colorselection_pixbuf (GtkMyBrush * b);
+
 /* only for mydrawwidget (not exported to python): */
 void brush_stroke_to (GtkMyBrush * b, Surface * s, float x, float y, float pressure, float time, Rect * bbox);
 void brush_reset (GtkMyBrush * b);

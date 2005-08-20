@@ -11,6 +11,8 @@
 #define DEBUGLOG 0
 #define LINEAR_INTERPOLATION 1
 
+#define abs(x) (((x)>0)?(x):(-(x)))
+
 void
 gtk_my_brush_set_base_value (GtkMyBrush * b, int id, float value)
 {
@@ -508,4 +510,143 @@ void brush_stroke_to (GtkMyBrush * b, Surface * s, float x, float y, float press
 
   // not equal to b_time now unless dist == 0
   b->last_time = time;
+}
+
+GdkPixbuf* gtk_my_brush_get_colorselection_pixbuf (GtkMyBrush * b)
+{
+  GdkPixbuf* pixbuf;
+  int width, height, n_channels, rowstride;
+  int x, y;
+  int base_h, base_s, base_v;
+  guchar * pixels;
+  float phase0;
+
+  width = 256;
+  height = 256;
+  pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB, /*has_alpha*/0, /*bits_per_sample*/8, width, height);
+
+  n_channels = gdk_pixbuf_get_n_channels (pixbuf);
+  g_assert (!gdk_pixbuf_get_has_alpha (pixbuf));
+  g_assert (n_channels == 3);
+
+  rowstride = gdk_pixbuf_get_rowstride (pixbuf);
+  pixels = gdk_pixbuf_get_pixels (pixbuf);
+
+
+  base_h = b->color[0];
+  base_s = b->color[1];
+  base_v = b->color[2];
+  gimp_rgb_to_hsv_int (&base_h, &base_s, &base_v);
+
+  phase0 = g_random_double () * 2*M_PI;
+
+  for (y=0; y<height; y++) {
+    for (x=0; x<width; x++) {
+      guchar * p;
+      int r, g, b;
+      int h, s, v;
+      int dx, dy;
+      float v_factor = 2.0;
+      float s_factor = 2.0;
+      
+      h = 0;
+      s = 0;
+      v = 0;
+
+      dx = x-width/2;
+      dy = y-height/2;
+
+      // basically, its x-axis = value, y-axis = saturation
+      v = dx*v_factor;
+      s = dy*s_factor;
+
+
+      // overlay sine waves to color hue, not visible at center, ampilfying near the border
+      {
+        float amplitude, phase;
+        float dist, dist2;
+        float dx_norm, dy_norm;
+        float angle;
+        dx_norm = (float)dx/width;
+        dy_norm = (float)dy/height;
+
+        dist2 = dx_norm*dx_norm + dy_norm*dy_norm;
+        dist = sqrtf(dist2);
+        angle = atan2f(dy_norm, dx_norm);
+        //amplitude = dist * 200;// + abs(dx_norm)*abs(dy_norm)*20;
+        //amplitude = 80 + dist * 100;// + abs(dx_norm)*abs(dy_norm)*20;
+        //amplitude = 90 + dist * 30;// + abs(dx_norm)*abs(dy_norm)*20;
+        amplitude = 50 + dist2*dist2*dist2*100;
+        phase = phase0 + 2*M_PI* (dist*0 + dx_norm*dx_norm*dy_norm*dy_norm*50) + angle*7;
+        //printf("phase=%f, amp=%f, dist=%f", phase, amplitude, dist);
+        h = sinf(phase) * amplitude;
+        //h += amplitude * 5;
+
+        // calcualte angle to next 45-degree-line
+        angle = abs(angle)/M_PI;
+        if (angle > 0.5) angle -= 0.5;
+        angle -= 0.25;
+        angle = abs(angle) * 4;
+        // angle is now in range 0..1
+        // 0 = on a 45 degree line, 1 = on a horizontal or vertical line
+
+        v = 0.6*v*angle + 0.4*v;
+        //h = h * angle * -0.2;
+        h = h * angle * 1.5;
+        s = s * angle * 1.0;
+        //if (angle < 0.1) {
+        //  h = 0; s = 0; v = 0;
+        //}
+        //v = v * angle * 1.5;
+        //h = h * angle * 1.0;
+        //s = s * angle * 1.5;
+
+        //v = v * angle * 1.5;
+
+        //if (dist < 0.3) h = h/2;
+        //if (dist < 0.1) h = 0;
+      }
+
+      {
+        // undo that funky stuff on horizontal and vertical lines
+        int min = abs(dx);
+        if (abs(dy) < min) min = abs(dy);
+        if (min < 30) {
+          float mul;
+          min -= 6;
+          if (min < 0) min = 0;
+          mul = min / (30.0-1.0-6.0);
+          h = mul*h + (1-mul)*0;
+          v = mul*v + (1-mul)*dx*v_factor;
+          s = mul*s + (1-mul)*dy*s_factor;
+        }
+      }
+
+      //if (abs(dx) < 6 && abs(dy) < 6) {
+      //  h = 0;
+      //  s = 0;
+      //  v = 0;
+      //}
+
+      h += base_h;
+      s += base_s;
+      v += base_v;
+
+
+      if (s < 0) { if (s < -50) { s = - (s + 50); } else { s = 0; } } 
+      if (s > 255) { if (s > 255 + 50) { s = 255 - ((s-50)-255); } else { s = 255; } }
+      if (v < 0) { if (v < -50) { v = - (v + 50); } else { v = 0; } }
+      if (v > 255) { if (v > 255 + 50) { v = 255 - ((v-50)-255); } else { v = 255; } }
+
+      s = s%256; if (s<0) s += 256;
+      v = v%256; if (v<0) v += 256;
+      h = h%360; if (h<0) h += 360;
+
+      p = pixels + y * rowstride + x * n_channels;
+      r = h; g = s; b = v;
+      gimp_hsv_to_rgb_int (&r, &g, &b);
+      p[0] = r; p[1] = g; p[2] = b;
+    }
+  }
+  return pixbuf;
 }
