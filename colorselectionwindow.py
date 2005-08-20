@@ -1,7 +1,6 @@
 "select color window"
 import gtk
 import colorsys
-from time import time
 
 class Window(gtk.Window):
     def __init__(self, app):
@@ -90,7 +89,6 @@ class Window(gtk.Window):
 
 class AlternativeColorSelectorWindow(gtk.Window):
     def __init__(self, colorselectionwindow):
-        start = time()
         gtk.Window.__init__(self)
         self.colorselectionwindow = colorselectionwindow
         self.app = colorselectionwindow.app
@@ -110,9 +108,7 @@ class AlternativeColorSelectorWindow(gtk.Window):
         #label.set_alignment(0.5, 0.5)
         #vbox.pack_start(label)
 
-        t = time(); print t - start; start = t
         self.image.set_from_pixbuf(self.app.brush.get_colorselection_pixbuf())
-        t = time(); print t - start; start = t
 
 
 	self.set_events(gtk.gdk.BUTTON_PRESS_MASK |
@@ -144,7 +140,6 @@ class AlternativeColorSelectorWindow(gtk.Window):
         self.show_all()
         self.move(x_root - width/2, y_root - height/2)
         #self.present()
-        t = time(); print t - start; start = t
         
     def button_press_cb(self, widget, event):
         if event.button == 1:
