@@ -1,5 +1,5 @@
 "select color window"
-import gtk
+import gtk, gobject
 import colorsys
 
 class Window(gtk.Window):
@@ -112,9 +112,16 @@ class AlternativeColorSelectorWindow(gtk.Window):
 
 
 	self.set_events(gtk.gdk.BUTTON_PRESS_MASK |
-                        gtk.gdk.BUTTON_RELEASE_MASK)
+                        gtk.gdk.BUTTON_RELEASE_MASK |
+                        gtk.gdk.ENTER_NOTIFY |
+                        gtk.gdk.LEAVE_NOTIFY
+                        )
+        self.connect("enter-notify-event", self.enter_notify_cb)
+        self.connect("leave-notify-event", self.leave_notify_cb)
         self.connect("button-release-event", self.button_release_cb)
         self.connect("button-press-event", self.button_press_cb)
+
+        self.destroy_timer = None
 
         self.button_pressed = False
 
@@ -142,9 +149,23 @@ class AlternativeColorSelectorWindow(gtk.Window):
 
     def remove_cleanly(self):
         self.colorselectionwindow.alternative = None
+        if self.destroy_timer is not None:
+            gobject.source_remove(self.destroy_timer)
+            self.destroy_timer = None
         self.destroy()
 
     def button_release_cb(self, widget, event):
         if self.button_pressed:
             self.remove_cleanly()
 
+    def enter_notify_cb(self, widget, event):
+        if self.destroy_timer is not None:
+            gobject.source_remove(self.destroy_timer)
+            self.destroy_timer = None
+
+    def leave_notify_cb(self, widget, event):
+        # when creating the window, we sometimes get leave&enter notifications
+        # without evident reason; block them out with timer
+        if self.destroy_timer is not None:
+            gobject.source_remove(self.destroy_timer)
+        self.destroy_timer = gobject.timeout_add(200, self.remove_cleanly)
