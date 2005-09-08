@@ -35,16 +35,22 @@ class Window(gtk.Window):
         ui_string = """<ui>
           <menubar name='Menubar'>
             <menu action='FileMenu'>
-              <menuitem action='Clear'/>
+              <menuitem action='Open'/>
+              <menuitem action='Save'/>
+              <separator/>
               <menuitem action='MoveLeft'/>
               <menuitem action='MoveRight'/>
               <menuitem action='MoveUp'/>
               <menuitem action='MoveDown'/>
               <separator/>
-              <menuitem action='Open'/>
-              <menuitem action='Save'/>
+              <menuitem action='Clear'/>
               <separator/>
               <menuitem action='Quit'/>
+            </menu>
+            <menu action='DialogMenu'>
+              <menuitem action='BrushSelectionWindow'/>
+              <menuitem action='BrushSettingsWindow'/>
+              <menuitem action='ColorSelectionWindow'/>
             </menu>
             <menu action='BrushMenu'>
               <menuitem action='InvertColor'/>
@@ -81,11 +87,6 @@ class Window(gtk.Window):
               <separator/>
               <menuitem action='ContextHelp'/>
             </menu>
-            <menu action='DialogMenu'>
-              <menuitem action='BrushSelectionWindow'/>
-              <menuitem action='BrushSettingsWindow'/>
-              <menuitem action='ColorSelectionWindow'/>
-            </menu>
             <menu action='DebugMenu'>
               <menuitem action='PrintInputs'/>
               <menuitem action='DontPrintInputs'/>
@@ -94,7 +95,7 @@ class Window(gtk.Window):
         </ui>"""
         actions = [
             ('FileMenu',     None, 'File'),
-            ('Clear',        None, 'Clear', '3', 'blank everything', self.clear_cb),
+            ('Clear',        None, 'Clear', None, 'blank everything', self.clear_cb),
             ('MoveLeft',     None, 'Move left', 'h', None, self.move_cb),
             ('MoveRight',    None, 'Move right', 'l', None, self.move_cb),
             ('MoveUp',       None, 'Move up', 'k', None, self.move_cb),
@@ -102,42 +103,42 @@ class Window(gtk.Window):
             #('NewWindow',    None, 'New Window', '<control>N', None, self.new_window_cb),
             ('Open',         None, 'Open', '<control>O', None, self.open_cb),
             ('Save',         None, 'Save', '<control>S', None, self.save_cb),
-            ('Quit',         None, 'Quit', '<control>Q', None, self.quit_cb),
+            ('Quit',         None, 'Quit', None, None, self.quit_cb),
             ('BrushMenu',    None, 'Brush'),
-            ('InvertColor',  None, 'Invert Color', None, None, self.invert_color_cb),
+            ('InvertColor',  None, 'Invert Color', 'x', None, self.invert_color_cb),
             ('Brighter',     None, 'Brighter', None, None, self.brighter_cb),
             ('Darker',       None, 'Darker', None, None, self.darker_cb),
-            ('Bigger',       None, 'Bigger', None, None, self.brush_bigger_cb),
-            ('Smaller',      None, 'Smaller', None, None, self.brush_smaller_cb),
-            ('PickColor',    None, 'Pick Color', None, None, self.pick_color_cb),
-            ('ChangeColor',  None, 'Change Color', None, None, self.change_color_cb),
+            ('Bigger',       None, 'Bigger', 'f', None, self.brush_bigger_cb),
+            ('Smaller',      None, 'Smaller', 'd', None, self.brush_smaller_cb),
+            ('PickColor',    None, 'Pick Color', 'r', None, self.pick_color_cb),
+            ('ChangeColor',  None, 'Change Color', 'v', None, self.change_color_cb),
             ('ContextMenu',  None, 'Brushkeys'),
-            ('Context00',    None, 'restore brush 0', None, None, self.context_cb),
-            ('Context00s',   None, 'save to brush 0', None, None, self.context_cb),
-            ('Context01',    None, 'restore 1', None, None, self.context_cb),
-            ('Context01s',   None, 'save 1', None, None, self.context_cb),
-            ('Context02',    None, 'restore 2', None, None, self.context_cb),
-            ('Context02s',   None, 'save 2', None, None, self.context_cb),
-            ('Context03',    None, 'restore 3', None, None, self.context_cb),
-            ('Context03s',   None, 'save 3', None, None, self.context_cb),
-            ('Context04',    None, 'restore 4', None, None, self.context_cb),
-            ('Context04s',   None, 'save 4', None, None, self.context_cb),
-            ('Context05',    None, 'restore 5', None, None, self.context_cb),
-            ('Context05s',   None, 'save 5', None, None, self.context_cb),
-            ('Context06',    None, 'restore 6', None, None, self.context_cb),
-            ('Context06s',   None, 'save 6', None, None, self.context_cb),
-            ('Context07',    None, 'restore 7', None, None, self.context_cb),
-            ('Context07s',   None, 'save 7', None, None, self.context_cb),
-            ('Context08',    None, 'restore 8', None, None, self.context_cb),
-            ('Context08s',   None, 'save 8', None, None, self.context_cb),
-            ('Context09',    None, 'restore 9', None, None, self.context_cb),
-            ('Context09s',   None, 'save 9', None, None, self.context_cb),
-            ('ContextStore', None, 'save to most recently restored', None, None, self.context_cb),
+            ('Context00',    None, 'restore brush 0', '0', None, self.context_cb),
+            ('Context00s',   None, 'save to brush 0', '<control>0', None, self.context_cb),
+            ('Context01',    None, 'restore 1', '1', None, self.context_cb),
+            ('Context01s',   None, 'save 1', '<control>1', None, self.context_cb),
+            ('Context02',    None, 'restore 2', '2', None, self.context_cb),
+            ('Context02s',   None, 'save 2', '<control>2', None, self.context_cb),
+            ('Context03',    None, 'restore 3', '3', None, self.context_cb),
+            ('Context03s',   None, 'save 3', '<control>3', None, self.context_cb),
+            ('Context04',    None, 'restore 4', '4', None, self.context_cb),
+            ('Context04s',   None, 'save 4', '<control>4', None, self.context_cb),
+            ('Context05',    None, 'restore 5', '5', None, self.context_cb),
+            ('Context05s',   None, 'save 5', '<control>5', None, self.context_cb),
+            ('Context06',    None, 'restore 6', '6', None, self.context_cb),
+            ('Context06s',   None, 'save 6', '<control>6', None, self.context_cb),
+            ('Context07',    None, 'restore 7', '7', None, self.context_cb),
+            ('Context07s',   None, 'save 7', '<control>7', None, self.context_cb),
+            ('Context08',    None, 'restore 8', '8', None, self.context_cb),
+            ('Context08s',   None, 'save 8', '<control>8', None, self.context_cb),
+            ('Context09',    None, 'restore 9', '9', None, self.context_cb),
+            ('Context09s',   None, 'save 9', '<control>9', None, self.context_cb),
+            ('ContextStore', None, 'save to most recently restored', 'q', None, self.context_cb),
             ('ContextHelp',  None, 'Help!', None, None, self.context_help_cb),
             ('DialogMenu',  None, 'Dialogs'),
-            ('BrushSelectionWindow',  None, 'brush list', None, None, self.toggleBrushSelectionWindow_cb),
+            ('BrushSelectionWindow',  None, 'brush list', 'b', None, self.toggleBrushSelectionWindow_cb),
             ('BrushSettingsWindow',   None, 'brush settings', None, None, self.toggleBrushSettingsWindow_cb),
-            ('ColorSelectionWindow',  None, 'color', None, None, self.toggleColorSelectionWindow_cb),
+            ('ColorSelectionWindow',  None, 'color', 'c', None, self.toggleColorSelectionWindow_cb),
             ('DebugMenu',  None, 'Debug'),
             ('PrintInputs', None, 'Print brush input values to stdout', None, None, self.print_inputs_cb),
             ('DontPrintInputs', None, 'Stop printing them', None, None, self.dont_print_inputs_cb),
@@ -154,7 +155,8 @@ class Window(gtk.Window):
         if w.get_property('visible'):
             w.hide()
         else:
-            w.show()
+            #w.show()
+            w.show_all() # might be for the first time
     def toggleBrushSelectionWindow_cb(self, action):
         self.toggleWindow(self.app.brushSelectionWindow)
     def toggleBrushSettingsWindow_cb(self, action):
@@ -173,7 +175,6 @@ class Window(gtk.Window):
         #w.show_all()
         #gtk.main()
         print "Not really implemented."
-        #pass
 
     def clear_cb(self, action):
         self.mdw.clear()

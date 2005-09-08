@@ -71,13 +71,15 @@ class Application: # singleton
         self.new_image_window()
 
         w = self.brushSettingsWindow = brushsettingswindow.Window(self)
-        w.show_all()
+        #w.show_all()
+        #w.hide()
 
         w = self.brushSelectionWindow = brushselectionwindow.Window(self)
         w.show_all()
 
         w = self.colorSelectionWindow = colorselectionwindow.Window(self)
-        w.show_all()
+        #w.show_all()
+        #w.hide()
 
         gtk.accel_map_load(self.confpath + 'accelmap.conf')
 

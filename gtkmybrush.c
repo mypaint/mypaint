@@ -447,7 +447,7 @@ void brush_stroke_to (GtkMyBrush * b, Surface * s, float x, float y, float press
   // draw many (or zero) dabs to the next position
   dist = brush_count_dabs_to (b, x, y, pressure, time);
   if (dist > 300) {
-    g_print ("Warning: NOT drawing %f dabs, resetting brush instead.\n", dist);
+    //g_print ("Warning: NOT drawing %f dabs, resetting brush instead.\n", dist);
     b->time = 0; // reset
     return;
   }

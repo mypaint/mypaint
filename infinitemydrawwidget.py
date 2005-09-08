@@ -15,6 +15,17 @@ class InfiniteMyDrawWidget(MyDrawWidget):
 
     def load(self, filename):
         pixbuf = gtk.gdk.pixbuf_new_from_file(filename)
+        if pixbuf.get_has_alpha():
+            print 'Loaded file has an alpha channel. Rendering it on white instead.'
+            print 'NOT IMPLEMENTED'
+            return
+            TODO
+            w, h = pixbuf.get_width(), pixbuf.get_height()
+            new_pixbuf = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, False, 8, w, h)
+            new_pixbuf.fill(0xffffffff) # white
+
+            pixbuf = new_pixbuf
+            print 'got pixbuf from file.'
         self.canvas_w = pixbuf.get_width()
         self.canvas_h = pixbuf.get_height()
         self.viewport_x = 0
