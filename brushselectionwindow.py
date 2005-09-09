@@ -30,8 +30,9 @@ class Window(gtk.Window):
         vbox.pack_start(gtk.HSeparator(), expand=False)
 
         hbox = gtk.HBox()
+        hbox.set_border_width(8)
         vbox.pack_start(hbox, expand=False, fill=False)
-        # FIXME: bad, fixed maximal size
+        # bad, fixed maximal size -- No, that's actually good!
         self.mdw = mydrawwidget.MyDrawWidget(128, 128)
         #self.mdw = mydrawwidget.MyDrawWidget(512, 512)
         self.mdw.clear()
@@ -39,29 +40,34 @@ class Window(gtk.Window):
         self.mdw.set_size_request(128, 128)
         hbox.pack_start(self.mdw, expand=False, fill=False)
 
+        vbox2 = gtk.VBox()
+        hbox.pack_end(vbox2, expand=False, fill=False)
+        #hbox.properties.padding = 10
+        #hbox.set_spacing(10)
+
         b = gtk.Button('Clear')
         def clear_cb(window, mdw):
             mdw.clear()
         b.connect('clicked', clear_cb, self.mdw)
-        vbox.pack_start(b, expand=False)
+        vbox2.pack_start(b, expand=False)
 
         b = gtk.Button('add as new')
         b.connect('clicked', self.add_as_new_cb)
-        vbox.pack_start(b, expand=False)
+        vbox2.pack_start(b, expand=False)
 
         b = gtk.Button('update preview')
         b.connect('clicked', self.update_preview_cb)
-        vbox.pack_start(b, expand=False)
+        vbox2.pack_start(b, expand=False)
 
         b = gtk.Button('update settings')
         b.connect('clicked', self.update_settings_cb)
-        vbox.pack_start(b, expand=False)
+        vbox2.pack_start(b, expand=False)
 
         b = gtk.Button('delete selected')
         b.connect('clicked', self.delete_selected_cb)
-        vbox.pack_start(b, expand=False)
+        vbox2.pack_start(b, expand=False)
 
-        self.resize(350, 500)
+        self.resize(300, 500)
 
     def set_preview_pixbuf(self, pixbuf):
         if pixbuf is None:

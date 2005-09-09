@@ -9,6 +9,9 @@ There is no 'make install' yet.
 Required: pygtk, python, gtk
 Recommended: a pressure sensitive input device (graphic tablet)
 
+Debian users: apt-get install python-gtk2-dev
+
 - Martin Renold <martinxyz@gmx.ch>
 http://people.ee.ethz.ch/~mrenold/mypaint/
 http://old.homeip.net/martin/painting/
+
