@@ -253,6 +253,9 @@ class Window(gtk.Window):
         dialog = self.savedialog
         if dialog.run() == gtk.RESPONSE_OK:
             filename = dialog.get_filename()
+            trash, ext = os.path.splitext(filename)
+            if not ext:
+                filename += '.png'
             if os.path.exists(filename):
                 d2 = gtk.Dialog("Overwrite?",
                      self,
@@ -263,7 +266,7 @@ class Window(gtk.Window):
                     filename = None
                 d2.destroy()
             if filename:
-                self.save_file(dialog.get_filename())
+                self.save_file(filename)
         dialog.hide()
 
     def quit_cb(self, action):
