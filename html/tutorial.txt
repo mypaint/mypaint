@@ -3,8 +3,9 @@ Here I want to explain you how I use my program. My goal for mypaint
 was "scribble without thinking". I want as little distraction as
 possible from the painting process.
 
-Mypaint can save/load .jpg only (without alpha). Use the GIMP for
-final touch up, cropping and all the "manipulation" stuff.
+Mypaint can save/load .png only (without alpha). Use the
+[http://www.gimp.org GIMP] for final touch up, cropping and all the
+"manipulation" stuff.
 
 ==Keybindings==
 [[shortcut.jpg|right|border]]
@@ -47,14 +48,12 @@ the color at the cursor - no mouse click is needed. This is even
 faster, but you get no color variation.
 
 ==Infinite Canvas==
-
 The border of the screen is not the end. The canvas is always a little
 bit bigger than this and will grow when you resize the window, or move
 around. The keys are in the '''File''' menu. Try them now. Memory usage
 will increase, moving around will get slower, but not painting.
 
 ==The Brush Dialog==
-
 The white space at the bottom of the graphical brush list is for
 trying out your brush. Use it a bit. But if you press the '''3''' key
 your main image will get cleared - you have to use the clear
@@ -74,7 +73,6 @@ the brightness changes. It will always draw with a color a bit
 darker than what you selected.
 
 ==Create your own brush==
-
 Let's say you like this brush, but not the fact that the color gets
 darker. Open the '''brush settings''' window from the '''Dialogs'''
 menu. So many settings! I have to admit that I don't remember what
@@ -112,12 +110,11 @@ brush. Remember: click once to select a brush, click again to load its
 image.
 
 ==Share your brush==
-
 This goes manually, sorry about that. Look at the directory
 ~/.mypaint/brushes/, use the png images to find the number of your
 brush. You can rename those files, as long as you keep the .myb
 extension mypaint will find them. Only the b???.myb file is important,
-but you better get the _prev.jpg too for a nice preview.  Wow,
+but you better get the _prev.png too for a nice preview.  Wow,
 somebody is actually reading all this stuff! Well, if you ever come up
 with an own brush (or a whole collection) that you like and use often,
 please drop me an email. I will publish it on the homepage and maybe
