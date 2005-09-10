@@ -1,0 +1,124 @@
+==Tutorial==
+Here I want to explain you how I use my program. My goal for mypaint
+was "scribble without thinking". I want as little distraction as
+possible from the painting process.
+
+Mypaint can save/load .jpg only (without alpha). Use the GIMP for
+final touch up, cropping and all the "manipulation" stuff.
+
+==Keybindings==
+[[shortcut.jpg|right|border]]
+I paint with my left hand on the left half of the keyboard. That's how
+the shortcuts are arranged. If you have changed them already, move
+~/.mypaint/accelmap.conf out of the way and restart.
+
+Now open the '''File''' menu and move your mouse over the
+'''Clear''' entry. Press the '''3''' key. That was easy! Now you
+can get rid of your image quickly. Why '''3''', you might ask? Because
+it is easily reachable with your left hand, and most other keys are in
+use already. In fact, '''3''' was in use too, if you look at the
+'''Brushkeys''' menu.
+
+==Brush Size==
+To increase the size of the brush, press the '''F''' key a few times
+while drawing. Press the '''D''' key to make it smaller.  Try to use
+those keys instinctively.
+
+Note that many brushes alter their settings depending on how fast you
+move. Because "fast" is relative to the brush radius, you might notice
+other changes than a different size. And many brushes get bigger when
+you move faster. Try to use this effect instead.
+
+==Change the Color==
+[[color.jpg|right]]
+Press the '''C''' key to open the GTK color dialog. Choose your
+color. Press '''C''' again to get rid of it.
+
+Scribble around a bit with your new color, then press '''V'''.  The
+color at the center is your current color. The horizontal stripe
+changes the brightness only, the vertical one saturation only. The
+colors around will look different every time. This is a very fast way
+to get shades of one color. I prefer it over the GTK dialog.
+Sometimes I even it, choose a color, open it again, until I end up
+with a completely different color.
+
+Finally, point at your painting and press the '''R''' key. This picks
+the color at the cursor - no mouse click is needed. This is even
+faster, but you get no color variation.
+
+==Infinite Canvas==
+
+The border of the screen is not the end. The canvas is always a little
+bit bigger than this and will grow when you resize the window, or move
+around. The keys are in the '''File''' menu. Try them now. Memory usage
+will increase, moving around will get slower, but not painting.
+
+==The Brush Dialog==
+
+The white space at the bottom of the graphical brush list is for
+trying out your brush. Use it a bit. But if you press the '''3''' key
+your main image will get cleared - you have to use the clear
+button at the right. 
+
+[[redbrush.jpg|right|border]]
+
+Now it's time to change your brush. Choose the red one at the
+top. When you start mypaint, the brush list gets sorted by how often
+you use them. This must be one of my favourites. Click on it once more
+- this will show you a bigger preview image. Try it a bit, I think it
+is a good one.
+
+The first thing to notice is that it gets more randomness when you
+increase pressure. Also, it will grow when you move around faster. And
+the brightness changes. It will always draw with a color a bit
+darker than what you selected.
+
+==Create your own brush==
+
+Let's say you like this brush, but not the fact that the color gets
+darker. Open the '''brush settings''' window from the '''Dialogs'''
+menu. So many settings! I have to admit that I don't remember what
+some of them do myself. Look at the tooltip info for '''color
+brightness''' at the bottom. That must be it! But why is it at zero?
+Well what you see here is the '''base value''', independent of speed,
+pressure, whatever. Change it until it shows '''2.0'''. Use the GTK
+Color dialog to switch to black and draw a bit.
+
+[[byrandom.jpg|right|border]]
+OK, that was too much, and it still does change with speed! Click on
+the red brush again to restore the original settings. Click on the two
+dots '''...''' right to the '''color brightness''' slider. Move the
+'''by random''' slider to the maximum, just for fun, and try your
+brush. Open the details for '''by pressure''', to see how this
+works. You could increase the base value a bit to make the brush
+brighter on average. But now press all the zero buttons to get rid of
+this stuff completely. Try it, it did actually work. 
+
+(There is no need to alter the curve you see at '''by random'''
+because its y-range now goes from zero to zero. This curve will not be
+saved any more with your brush because it has no effect.)
+
+==Save your new brush==
+Easy. In the brush dialog, click on '''add as new'''.
+Your new brush is at the upper left corner (the position will change
+the next time you start). But it needs a different image! Press
+'''clear''' and draw something that both shows your brush and is easy
+to recognize. Then press '''update preview'''. If you improve the
+brush settings even more, remember to '''update settings''' before you
+switch to another brush or quit.
+
+It is also possible to draw the preview image with a different
+brush. Remember: click once to select a brush, click again to load its
+image.
+
+==Share your brush==
+
+This goes manually, sorry about that. Look at the directory
+~/.mypaint/brushes/, use the png images to find the number of your
+brush. You can rename those files, as long as you keep the .myb
+extension mypaint will find them. Only the b???.myb file is important,
+but you better get the _prev.jpg too for a nice preview.  Wow,
+somebody is actually reading all this stuff! Well, if you ever come up
+with an own brush (or a whole collection) that you like and use often,
+please drop me an email. I will publish it on the homepage and maybe
+include it into the next version.
