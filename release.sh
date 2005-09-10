@@ -5,10 +5,11 @@ version=0.3
 
 cd ~/tmp
 rm -rf mypaint-$version
-svn co svn://old.homeip.net/code/mypaint mypaint-$version
+svn export svn://old.homeip.net/code/mypaint mypaint-$version
 
 cd mypaint-$version/html
 ./generate.py
+rm *.pyc
 cd ..
 rm release.sh # :-)
 cd ..
