@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import htmlhelper
+from wiki2html import wiki2html, make_narrow
 
 html = '''
 <html>
@@ -7,8 +7,8 @@ html = '''
 '''
 
 text = open('tutorial.txt').read()
-content = htmlhelper.wiki2html(text)
-content = htmlhelper.make_narrow(content)
+content = wiki2html(text)
+content = make_narrow(content)
 html += content
 
 html += '''

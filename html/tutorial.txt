@@ -40,7 +40,7 @@ color at the center is your current color. The horizontal stripe
 changes the brightness only, the vertical one saturation only. The
 colors around will look different every time. This is a very fast way
 to get shades of one color. I prefer it over the GTK dialog.
-Sometimes I even it, choose a color, open it again, until I end up
+Sometimes I even open it, choose a color, open it again, until I end up
 with a completely different color.
 
 Finally, point at your painting and press the '''R''' key. This picks
