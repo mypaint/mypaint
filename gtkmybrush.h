@@ -61,6 +61,9 @@ struct _GtkMyBrush
   float norm_speed_slow1; 
   float norm_speed_slow2;
 
+  float stroke_length;
+  int stroke_started;
+
   float painting_time;
 
   Setting settings[BRUSH_SETTINGS_COUNT];

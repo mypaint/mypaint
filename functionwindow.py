@@ -7,7 +7,6 @@ class Window(gtk.Window):
         gtk.Window.__init__(self)
         self.app = app
         self.app.brush_selected_callbacks.append(self.brush_selected_cb)
-        self.add_accel_group(self.app.accel_group)
 
         self.set_title(setting.name)
         self.connect('delete-event', self.app.hide_window_cb)

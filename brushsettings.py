@@ -1,4 +1,8 @@
-"Brush Settings (source for generated code, but also imported at runtime)"
+"""Brush Settings
+
+This is used to generate brushsettings.h
+It is also imported at runtime.
+"""
 
 inputs_list = [
     # name, default maximum, hard maximum, tooltip (TODO)
@@ -6,7 +10,7 @@ inputs_list = [
     ['speed', 5.0, False, "How fast you currently move. This can change very quickly."],
     ['speed2', 5.0, False, "Same as speed, but changes slower. Also look at the 'speed2 slowness' setting."],
     ['random', 1.0, False, "Random noise, changing at each evaluation."],
-    # ...
+    ['stroke_length', 50.0, False, "Relative length of the current stroke. It will reset to zero whenever a new stroke starts."],
     ]
 
 settings_list = [
@@ -32,6 +36,7 @@ settings_list = [
     ['color_hue', 'color hue', False, -2.0, 0.0, 2.0, "change color hue\n-1.0 clockwise color hue shift\n 0.0 disable\n 1.0 counterclockwise hue shift"],
     ['adapt_color_from_image', 'adapt color from image', False, 0.0, 0.0, 1.0, "slowly change the color to the one you're painting on (some kind of smudge tool)\nNote that this happens /before/ the hue/saturation/brighness adjustment below: you can get very different effects (eg brighten image) by combining with them."],
     ['change_radius', 'change radius', False, -1.0, 0.0, 1.0, "Modify the basic radius (the one above) permanently each dab. This will slowly increment/decrement its actual value, with all the consequences. The slider above will not change, but it should - FIXME: this is a small bug; also, the changed radius will never be saved."],
+    ['stroke_treshold', 'stroke treshold', True, 0.0, 0.0, 0.5, "How much pressure is needed to start a stroke. This affects the stroke_length input only. Mypaint does not need a minimal pressure to start drawing."],
     ]
 
 class BrushInput:

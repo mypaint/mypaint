@@ -195,15 +195,17 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s, Rect * bbox)
   g_assert (b->pressure >= 0.0 && b->pressure <= 1.0);
   pressure = b->pressure; // could distort it here
 
-  float norm_dx, norm_dy, norm_speed;
+  float norm_dx, norm_dy, norm_dist, norm_speed;
   norm_dx = b->dx / b->dtime / base_radius_pixels;
   norm_dy = b->dy / b->dtime / base_radius_pixels;
   norm_speed = sqrt(sqr(norm_dx) + sqr(norm_dy));
+  norm_dist = norm_speed * b->dtime;
 
   inputs[INPUT_PRESSURE] = pressure;
   inputs[INPUT_SPEED]  = b->norm_speed_slow1 * 0.002;
   inputs[INPUT_SPEED2] = b->norm_speed_slow2 * 0.005;
   inputs[INPUT_RANDOM] = 0.5; // actually unused
+  inputs[INPUT_STROKE_LENGTH] = b->stroke_length * 0.05;
   if (b->print_inputs) {
     g_print("press=% 4.3f, speed=% 4.4f\tspeed2=% 4.4f\n", inputs[INPUT_PRESSURE], inputs[INPUT_SPEED], inputs[INPUT_SPEED2]);
   }
@@ -280,6 +282,22 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s, Rect * bbox)
     float fac = 1.0 - exp_decay (exp(settings[BRUSH_OFFSET_BY_SPEED_SLOWNESS]*0.01)-1.0, b->dtime);
     b->norm_dx_slow += (norm_dx - b->norm_dx_slow) * fac;
     b->norm_dy_slow += (norm_dy - b->norm_dy_slow) * fac;
+  }
+
+  { // stroke length
+    b->stroke_length += norm_dist;
+    if (!b->stroke_started) {
+      if (b->pressure > settings[BRUSH_STROKE_TRESHOLD]) {
+        // start new stroke
+        b->stroke_started = 1;
+        b->stroke_length = 0.0;
+      }
+    } else {
+      if (b->pressure <= settings[BRUSH_STROKE_TRESHOLD] * 0.9) {
+        // end stroke
+        b->stroke_started = 0;
+      }
+    }
   }
 
   if (DEBUGLOG) {
@@ -432,6 +450,8 @@ void brush_stroke_to (GtkMyBrush * b, Surface * s, float x, float y, float press
     b->y_slow = b->y;
     b->norm_dx_slow = 0.0;
     b->norm_dy_slow = 0.0;
+    b->stroke_started = 0;
+    b->stroke_length = 100.0; // start in a state as if the stroke was long finished
     return;
   }
 
@@ -510,6 +530,12 @@ void brush_stroke_to (GtkMyBrush * b, Surface * s, float x, float y, float press
 
   // not equal to b_time now unless dist == 0
   b->last_time = time;
+
+
+  if (pressure == 0) {
+    // stroke is certainly finished now (interpolation issue)
+    b->stroke_started = 0;
+  }
 }
 
 #define SIZE 256
