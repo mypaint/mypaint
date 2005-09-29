@@ -77,7 +77,8 @@ Let's say you like this brush, but not the fact that the color gets
 darker. Open the '''brush settings''' window from the '''Dialogs'''
 menu. So many settings! I have to admit that I don't remember what
 some of them do myself. Look at the tooltip info for '''color
-brightness''' at the bottom. That must be it! But why is it at zero?
+brightness''' at the bottom. A text will appear when your mouse rests
+over the label. That must be it! But why is it at zero?
 Well what you see here is the '''base value''', independent of speed,
 pressure, whatever. Change it until it shows '''2.0'''. Use the GTK
 Color dialog to switch to black and draw a bit.

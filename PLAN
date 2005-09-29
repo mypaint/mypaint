@@ -1,0 +1,13 @@
+- zoom (2x / 4x / 0.5x / 0.25x)
+- dragging the canvas with side-button
+
+- easy updating of standard brushes (no copy to ~/.mypaint ?)
+- remove drawing time from brushfile
+- save brush order elsewhere (manual sorting only?)
+
+- updating of brushes and previews from files without restarting
+? ability to snap curve points (would need a finer grid)
+
+- brushsettings: mark "..." buttons red where something was changed
+- "phase" input which changes periodically while drawing (dotted lines, etc.)
+

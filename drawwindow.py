@@ -212,11 +212,11 @@ class Window(gtk.Window):
         
     def open_file(self, filename):
         self.mdw.load(filename)
-        self.statusbar.push(1, 'Loaded from' + filename)
+        self.statusbar.push(1, 'Loaded from ' + filename)
 
     def save_file(self, filename):
         self.mdw.save(filename)
-        self.statusbar.push(1, 'Saved to' + filename)
+        self.statusbar.push(1, 'Saved to ' + filename)
 
     def init_child_dialogs(self):
         dialog = gtk.FileChooserDialog("Open..", self,
