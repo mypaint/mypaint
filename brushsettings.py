@@ -11,6 +11,7 @@ inputs_list = [
     ['speed2', 5.0, False, "Same as speed, but changes slower. Also look at the 'speed2 slowness' setting."],
     ['random', 1.0, False, "Random noise, changing at each evaluation."],
     ['stroke_length', 50.0, False, "Relative length of the current stroke. It will reset to zero whenever a new stroke starts."],
+    ['cycle', 1.0, True, "This input will periodically go from 0 to 1 and jump back to 0 while you move."],
     ]
 
 settings_list = [
@@ -37,6 +38,7 @@ settings_list = [
     ['adapt_color_from_image', 'adapt color from image', False, 0.0, 0.0, 1.0, "slowly change the color to the one you're painting on (some kind of smudge tool)\nNote that this happens /before/ the hue/saturation/brighness adjustment below: you can get very different effects (eg brighten image) by combining with them."],
     ['change_radius', 'change radius', False, -1.0, 0.0, 1.0, "Modify the basic radius (the one above) permanently each dab. This will slowly increment/decrement its actual value, with all the consequences. The slider above will not change, but it should - FIXME: this is a small bug; also, the changed radius will never be saved."],
     ['stroke_treshold', 'stroke treshold', True, 0.0, 0.0, 0.5, "How much pressure is needed to start a stroke. This affects the stroke_length input only. Mypaint does not need a minimal pressure to start drawing."],
+    ['cycle_speed', 'cycle speed', False, -6.0, 0.5, 6.0, "How fast the cycle input changes when you move.\n2.0 means the cycle input will go from 0 to 1 and jump back to 0 twice per basic brush radius"],
     ]
 
 class BrushInput:

@@ -206,6 +206,7 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s, Rect * bbox)
   inputs[INPUT_SPEED2] = b->norm_speed_slow2 * 0.005;
   inputs[INPUT_RANDOM] = 0.5; // actually unused
   inputs[INPUT_STROKE_LENGTH] = b->stroke_length * 0.05;
+  inputs[INPUT_CYCLE] = b->cycle;
   if (b->print_inputs) {
     g_print("press=% 4.3f, speed=% 4.4f\tspeed2=% 4.4f\n", inputs[INPUT_PRESSURE], inputs[INPUT_SPEED], inputs[INPUT_SPEED2]);
   }
@@ -299,6 +300,9 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s, Rect * bbox)
       }
     }
   }
+  b->cycle += norm_dist * settings[BRUSH_CYCLE_SPEED];
+  while (b->cycle > 1.0) b->cycle -= 1.0;
+  while (b->cycle < 0.0) b->cycle += 1.0;
 
   if (DEBUGLOG) {
     static FILE * logfile = NULL;
@@ -452,6 +456,7 @@ void brush_stroke_to (GtkMyBrush * b, Surface * s, float x, float y, float press
     b->norm_dy_slow = 0.0;
     b->stroke_started = 0;
     b->stroke_length = 100.0; // start in a state as if the stroke was long finished
+    b->cycle = 0.0;
     return;
   }
 
