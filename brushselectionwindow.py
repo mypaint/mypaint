@@ -92,12 +92,22 @@ class Window(gtk.Window):
     def update_preview_cb(self, window):
         pixbuf = self.mdw.get_as_pixbuf()
         b = self.app.selected_brush
+        if b is None:
+            # no brush selected
+            display = gtk.gdk.display_get_default()
+            display.beep()
+            return
         b.update_preview(pixbuf)
         b.save(self.app.brushpath)
         self.brushlist.redraw_thumbnails()
 
     def update_settings_cb(self, window):
         b = self.app.selected_brush
+        if b is None:
+            # no brush selected
+            display = gtk.gdk.display_get_default()
+            display.beep()
+            return
         b.copy_settings_from(self.app.brush)
         b.save(self.app.brushpath)
         # TODO: .. maybe some feedback for the user that it has been saved ..
