@@ -88,6 +88,8 @@ class Brush(mydrawwidget.MyBrush):
         self.name = ''
         self.preview_changed = True
         self.painting_time = 0.0
+        self.settings_mtime = None
+        self.preview_mtime = None
 
     def get_fileprefix(self, path):
         if not os.path.isdir(path): os.mkdir(path)
@@ -100,6 +102,15 @@ class Brush(mydrawwidget.MyBrush):
                 i += 1
         return path + self.name
         
+    def remember_mtimes(self, prefix):
+        self.preview_mtime = os.path.getmtime(prefix + '_prev.png')
+        self.settings_mtime = os.path.getmtime(prefix + '.myb')
+
+    def has_changed_on_disk(self, prefix):
+        if self.preview_mtime != os.path.getmtime(prefix + '_prev.png'): return True
+        if self.settings_mtime != os.path.getmtime(prefix + '.myb'): return True
+        return False
+
     def save(self, path):
         prefix = self.get_fileprefix(path)
         if self.preview_changed:
@@ -113,11 +124,14 @@ class Brush(mydrawwidget.MyBrush):
         for s in brushsettings.settings:
             f.write(s.cname + ' ' + self.settings[s.index].save_to_string() + '\n')
         f.close()
+        self.remember_mtimes(prefix)
 
-    def load(self, path, name):
+    def load(self, path, name, prefix=None):
         self.name = name
-        prefix = self.get_fileprefix(path)
-        pixbuf = gtk.gdk.pixbuf_new_from_file(prefix + '_prev.png')
+        if prefix is None:
+            prefix = self.get_fileprefix(path)
+        filename = prefix + '_prev.png'
+        pixbuf = gtk.gdk.pixbuf_new_from_file(filename)
         self.update_preview(pixbuf)
         self.preview_changed = False
         num_found = 0
@@ -153,7 +167,17 @@ class Brush(mydrawwidget.MyBrush):
                 num_found += 1
         if num_found == 0:
             print 'there was only garbage in this file, using defaults'
-        #TODO: load color
+        self.remember_mtimes(prefix)
+
+    def reload_if_changed(self, path):
+        if self.settings_mtime is None: return
+        if self.preview_mtime is None: return
+        if not self.name: return
+        prefix = self.get_fileprefix(path)
+        if not self.has_changed_on_disk(prefix): return False
+        print 'Brush "' + self.name + '" has changed on disk, reloading it.'
+        self.load(path=None, name=self.name, prefix=prefix)
+        return True
 
     def delete(self, path):
         prefix = self.get_fileprefix(path)

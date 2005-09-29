@@ -55,11 +55,11 @@ class Window(gtk.Window):
         b.connect('clicked', self.add_as_new_cb)
         vbox2.pack_start(b, expand=False)
 
-        b = gtk.Button('update preview')
+        b = gtk.Button('save preview')
         b.connect('clicked', self.update_preview_cb)
         vbox2.pack_start(b, expand=False)
 
-        b = gtk.Button('update settings')
+        b = gtk.Button('save settings')
         b.connect('clicked', self.update_settings_cb)
         vbox2.pack_start(b, expand=False)
 
@@ -110,7 +110,6 @@ class Window(gtk.Window):
             return
         b.copy_settings_from(self.app.brush)
         b.save(self.app.brushpath)
-        # TODO: .. maybe some feedback for the user that it has been saved ..
 
     def delete_selected_cb(self, window):
         b = self.app.selected_brush
@@ -190,7 +189,15 @@ class BrushList(gtk.DrawingArea):
         if i >= len(self.app.brushes): return
         # keep the color setting
         color = self.app.brush.get_color()
-        self.app.select_brush(self.app.brushes[i])
+        brush = self.app.brushes[i]
+
+        # brush changed on harddisk?
+        # (selecting another one might save over it because of drawing time update)
+        changed = brush.reload_if_changed(self.app.brushpath)
+        if changed:
+            self.redraw_thumbnails()
+
+        self.app.select_brush(brush)
         self.app.brush.set_color(color)
 
     def brush_selected_cb(self, brush):

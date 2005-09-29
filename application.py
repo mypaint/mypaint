@@ -90,7 +90,9 @@ class Application: # singleton
         # permanently update painting_time of selected brush
         if self.selected_brush:
             self.selected_brush.painting_time += self.brush.get_painting_time()
-            self.selected_brush.save(self.brushpath)
+            # FIXME: save statistics elsewhere (brushes must not be saved unless modified)
+            #self.selected_brush.save(self.brushpath)
+            # just don't save the statistic for now...
         self.brush.set_painting_time(0)
 
     def brush_selected_cb(self, brush):

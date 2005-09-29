@@ -98,13 +98,13 @@ because its y-range now goes from zero to zero. This curve will not be
 saved any more with your brush because it has no effect.)
 
 ==Save your new brush==
-Easy. In the brush dialog, click on '''add as new'''.
-Your new brush is at the upper left corner (the position will change
-the next time you start). But it needs a different image! Press
-'''clear''' and draw something that both shows your brush and is easy
-to recognize. Then press '''update preview'''. If you improve the
-brush settings even more, remember to '''update settings''' before you
-switch to another brush or quit.
+Easy. In the brush dialog, click on '''add as new'''.  Your new brush
+is at the upper left corner (the position will change the next time
+you start). But it needs a different image! Press '''clear''' and draw
+something that both shows your brush and is easy to recognize. Then
+press '''save preview'''. If you improve the brush settings even more,
+remember to '''save settings''' before you switch to another brush or
+quit.
 
 It is also possible to draw the preview image with a different
 brush. Remember: click once to select a brush, click again to load its
