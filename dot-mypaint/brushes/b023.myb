@@ -1,6 +1,5 @@
 # mypaint brush file
 color 0 0 0
-painting_time 25.9731445312
 opaque 0.11
 opaque_multiply 0.0 | pressure 1.0 1.0 0.0 0.0 0.0 0.0 0.0 0.0
 radius_logarithmic 1.16

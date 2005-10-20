@@ -1,6 +1,5 @@
 # mypaint brush file
 color 207 35 35
-painting_time 81.3889083862
 opaque 0.28 | cycle 0.246913580247 0.0 0.5 1.0 0.682098765432 0.0 1.0 0.0
 opaque_multiply 0.0 | pressure 1.0 1.0 0.0 0.0 0.0 0.0 0.0 0.0
 radius_logarithmic 1.7 | cycle 0.231481481481 -1.20552083333 0.506172839506 -1.63 0.793209876543 -1.23947916667 1.0 -0.0
