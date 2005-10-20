@@ -312,7 +312,7 @@ class Window(gtk.Window):
             context.copy_settings_from(self.app.brush)
             preview = self.app.brushSelectionWindow.get_preview_pixbuf()
             context.update_preview(preview)
-            context.save(self.app.brushpath)
+            context.save()
         else: # restore
             self.app.select_brush(context)
             self.app.brushSelectionWindow.set_preview_pixbuf(context.preview)

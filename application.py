@@ -5,46 +5,82 @@ import brush
 class Application: # singleton
     def __init__(self, confpath, loadimage):
         self.confpath = confpath
-        if not os.path.isdir(self.confpath):
-            if os.path.isdir('dot-mypaint'):
-                print "Copying default configuration and brush collection:"
-                command = "cp -a dot-mypaint " + self.confpath
-                print command
-                os.system(command)
-                print "Done."
-            else:
-                print "Default config file and brush collection not found."
-            if not os.path.isdir(self.confpath):
-                print "WARNING: creating new empty configuration in ", self.confpath
-                print "You want to copy some brushes there unless you want to start from scratch"
-                os.mkdir(self.confpath)
-        self.brushpath = self.confpath + 'brushes/'
-        if not os.path.isdir(self.brushpath): os.mkdir(self.brushpath)
+        self.datapath = './' # FIXME: make this configurable for system-wide installation
+        self.user_brushpath = self.confpath + 'brushes/'
+        self.stock_brushpath = self.datapath + 'brushes/'
 
-        self.brush = brush.Brush()
+        if not os.path.isdir(self.stock_brushpath):
+            print 'Default brush collection not found! (tried in %s)' % self.stock_brushpath
+            raise SystemExit
+        if not os.path.isdir(self.confpath):
+            os.mkdir(self.confpath)
+            print 'Created', self.confpath
+        if not os.path.isdir(self.user_brushpath):
+            os.mkdir(self.user_brushpath)
+
+        self.init_brushes()
+
+        self.image_windows = []
+        self.new_image_window()
+
+        w = self.brushSettingsWindow = brushsettingswindow.Window(self)
+
+        w = self.brushSelectionWindow = brushselectionwindow.Window(self)
+        w.show_all()
+
+        w = self.colorSelectionWindow = colorselectionwindow.Window(self)
+
+        gtk.accel_map_load(self.confpath + 'accelmap.conf')
+
+        if loadimage:
+            self.image_windows[0].open_file(loadimage)
+
+    def init_brushes(self):
+        self.brush = brush.Brush(self)
         self.brushes = []
         self.selected_brush = None
         self.brush_selected_callbacks = [self.brush_selected_cb]
         self.contexts = []
         for i in range(10):
-            c = brush.Brush()
+            c = brush.Brush(self)
             c.name = 'context%02d' % i
             self.contexts.append(c)
         self.selected_context = None
 
-        # load brushes
-        loadnames = []
-        for filename in os.listdir(self.brushpath):
-            if filename.endswith('.myb'):
-                loadnames.append(filename[:-4])
+        # find all brush names to load
+        deleted = []
+        filename = self.user_brushpath + 'deleted.conf'
+        if os.path.exists(filename): 
+            for name in open(filename).readlines():
+                deleted.append(name.strip())
+        def listbrushes(path):
+            return [filename[:-4] for filename in os.listdir(path) if filename.endswith('.myb')]
+        stock_names = listbrushes(self.stock_brushpath)
+        user_names =  listbrushes(self.user_brushpath)
+        stock_names = [name for name in stock_names if name not in deleted and name not in user_names]
+        loadnames_unsorted = user_names + stock_names
+        loadnames_sorted = []
+
+        # sort them
+        for path in [self.user_brushpath, self.stock_brushpath]:
+            filename = path + 'order.conf'
+            if not os.path.exists(filename): continue
+            for name in open(filename).readlines():
+                name = name.strip()
+                if name in loadnames_sorted: continue
+                if name not in loadnames_unsorted: continue
+                loadnames_unsorted.remove(name)
+                loadnames_sorted.append(name)
+        if len(loadnames_unsorted) > 3: 
+            # many new brushes, do not disturb user's order
+            loadnames = loadnames_sorted + loadnames_unsorted
+        else:
+            loadnames = loadnames_unsorted + loadnames_sorted
+
         for name in loadnames:
-            filename = self.brushpath + name + '.myb'
-            if not os.path.isfile(filename):
-                print 'ignoring non-existing brush:', filename
-                continue
             # load brushes from disk
-            b = brush.Brush()
-            b.load(self.brushpath, name)
+            b = brush.Brush(self)
+            b.load(name)
             if name.startswith('context'):
                 i = int(name[-2:])
                 assert i >= 0 and i < 10 # 10 for now...
@@ -53,45 +89,22 @@ class Application: # singleton
                 self.brushes.append(b)
 
         if self.brushes:
-            # sort them by painting time
-            def cmp_brushes(a, b):
-                return cmp(a.painting_time, b.painting_time)
-            self.brushes.sort(cmp_brushes)
-            self.brushes.reverse()
-            # scale to a fixed maximal painting_time
-            painting_time_limit = 6*60*60 # 6 hours drawing with any single brush brings it to the first position
-            max_painting_time = max([b.painting_time for b in self.brushes])
-            if max_painting_time > painting_time_limit:
-                for b in self.brushes:
-                    b.painting_time *= 1.0 / max_painting_time
             self.select_brush(self.brushes[0])
 
-        self.image_windows = []
-
-        self.new_image_window()
-
-        w = self.brushSettingsWindow = brushsettingswindow.Window(self)
-        #w.show_all()
-        #w.hide()
-
-        w = self.brushSelectionWindow = brushselectionwindow.Window(self)
-        w.show_all()
-
-        w = self.colorSelectionWindow = colorselectionwindow.Window(self)
-        #w.show_all()
-        #w.hide()
-
-        gtk.accel_map_load(self.confpath + 'accelmap.conf')
-
-        if loadimage:
-            self.image_windows[0].open_file(loadimage)
+    def save_brushorder(self):
+        f = open(self.user_brushpath + 'order.conf', 'w')
+        f.write('# this file saves brushorder\n')
+        f.write('# the first one (upper left) will be selected at startup\n')
+        for b in self.brushes:
+            f.write(b.name + '\n')
+        f.close()
 
     def update_statistics(self):
         # permanently update painting_time of selected brush
         if self.selected_brush:
             self.selected_brush.painting_time += self.brush.get_painting_time()
             # FIXME: save statistics elsewhere (brushes must not be saved unless modified)
-            #self.selected_brush.save(self.brushpath)
+            #self.selected_brush.save(self.user_brushpath)
             # just don't save the statistic for now...
         self.brush.set_painting_time(0)
 

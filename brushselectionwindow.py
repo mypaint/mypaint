@@ -13,7 +13,7 @@ class Window(gtk.Window):
         self.connect('delete-event', self.app.hide_window_cb)
 
         # TODO: load available brushes
-        # bad idea - self.brushes.append(brush.Brush())
+        # bad idea - self.brushes.append(brush.Brush(self.app))
 
         vbox = gtk.VBox()
         self.add(vbox)
@@ -81,13 +81,14 @@ class Window(gtk.Window):
         return pixbuf
 
     def add_as_new_cb(self, window):
-        b = brush.Brush()
+        b = brush.Brush(self.app)
         b.copy_settings_from(self.app.brush)
         b.update_preview(self.get_preview_pixbuf())
         self.app.brushes.insert(0, b)
         self.brushlist.redraw_thumbnails()
         self.app.select_brush(b)
-        b.save(self.app.brushpath)
+        b.save()
+        self.app.save_brushorder()
 
     def update_preview_cb(self, window):
         pixbuf = self.mdw.get_as_pixbuf()
@@ -98,7 +99,7 @@ class Window(gtk.Window):
             display.beep()
             return
         b.update_preview(pixbuf)
-        b.save(self.app.brushpath)
+        b.save()
         self.brushlist.redraw_thumbnails()
 
     def update_settings_cb(self, window):
@@ -109,7 +110,7 @@ class Window(gtk.Window):
             display.beep()
             return
         b.copy_settings_from(self.app.brush)
-        b.save(self.app.brushpath)
+        b.save()
 
     def delete_selected_cb(self, window):
         b = self.app.selected_brush
@@ -126,7 +127,7 @@ class Window(gtk.Window):
 
         self.app.select_brush(None)
         self.app.brushes.remove(b)
-        b.delete(self.app.brushpath)
+        b.delete_from_disk()
         self.brushlist.redraw_thumbnails()
 
     def brush_selected_cb(self, brush):
@@ -152,12 +153,18 @@ class BrushList(gtk.DrawingArea):
         self.app.brush_selected_callbacks.append(self.brush_selected_cb)
 
         self.tiles_w = 4
+        self.grabbed = None
+        self.must_save_order = False
 
         self.connect("expose-event", self.expose_cb)
         self.connect("button-press-event", self.button_press_cb)
+        self.connect("button-release-event", self.button_release_cb)
+        self.connect("motion-notify-event", self.motion_notify_cb)
         self.connect("configure-event", self.configure_event_cb)
-	self.set_events(gtk.gdk.EXPOSURE_MASK |
-                        gtk.gdk.BUTTON_PRESS_MASK)
+        self.set_events(gtk.gdk.EXPOSURE_MASK |
+                        gtk.gdk.BUTTON_PRESS_MASK |
+                        gtk.gdk.BUTTON_RELEASE_MASK |
+                        gtk.gdk.POINTER_MOTION_MASK)
         self.redraw_thumbnails()
 
     def redraw_thumbnails(self, width = None, height = None):
@@ -181,24 +188,48 @@ class BrushList(gtk.DrawingArea):
             i += 1
         self.queue_draw()
 
-    def button_press_cb(self, widget, event):
+    def brushindex(self, event):
         x, y = int(event.x), int(event.y)
         i = x / preview_total_w
-        if i >= self.tiles_w: return
+        if i >= self.tiles_w: i = self.tiles_w - 1
+        if i < 0: i = 0
         i = i + self.tiles_w * (y / preview_total_h)
+        if i < 0: i = 0
+        return i
+
+    def button_press_cb(self, widget, event):
+        i = self.brushindex(event)
         if i >= len(self.app.brushes): return
+
         # keep the color setting
         color = self.app.brush.get_color()
         brush = self.app.brushes[i]
 
         # brush changed on harddisk?
-        # (selecting another one might save over it because of drawing time update)
-        changed = brush.reload_if_changed(self.app.brushpath)
+        changed = brush.reload_if_changed()
         if changed:
             self.redraw_thumbnails()
 
         self.app.select_brush(brush)
         self.app.brush.set_color(color)
+
+        self.grabbed = brush
+
+    def button_release_cb(self, widget, event):
+        self.grabbed = None
+        if self.must_save_order:
+            self.app.save_brushorder()
+            self.must_save_order = False
+
+    def motion_notify_cb(self, widget, event):
+        if not self.grabbed: return
+        i = self.brushindex(event)
+        if i >= len(self.app.brushes): return
+        if self.app.brushes[i] is not self.grabbed:
+            self.app.brushes.remove(self.grabbed)
+            self.app.brushes.insert(i, self.grabbed)
+            self.must_save_order = True
+            self.redraw_thumbnails()
 
     def brush_selected_cb(self, brush):
         self.queue_draw()

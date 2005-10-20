@@ -75,7 +75,7 @@ class Setting:
                 error = 'unknown command "%s"' % command
         return error
 
-class Brush(mydrawwidget.MyBrush):
+class Brush_Lowlevel(mydrawwidget.MyBrush):
     def __init__(self):
         mydrawwidget.MyBrush.__init__(self)
         self.settings = []
@@ -83,68 +83,29 @@ class Brush(mydrawwidget.MyBrush):
             self.settings.append(Setting(s, self))
         self.color = [0, 0, 0]
         self.set_color(self.color)
-        self.preview = None
-        self.preview_thumb = None
-        self.name = ''
-        self.preview_changed = True
         self.painting_time = 0.0
-        self.settings_mtime = None
-        self.preview_mtime = None
 
-    def get_fileprefix(self, path):
-        if not os.path.isdir(path): os.mkdir(path)
-        if not self.name:
-            i = 0
-            while 1:
-                self.name = 'b%03d' % i
-                if not os.path.isfile(path + self.name + '.myb'):
-                    break
-                i += 1
-        return path + self.name
-        
-    def remember_mtimes(self, prefix):
-        self.preview_mtime = os.path.getmtime(prefix + '_prev.png')
-        self.settings_mtime = os.path.getmtime(prefix + '.myb')
-
-    def has_changed_on_disk(self, prefix):
-        if self.preview_mtime != os.path.getmtime(prefix + '_prev.png'): return True
-        if self.settings_mtime != os.path.getmtime(prefix + '.myb'): return True
-        return False
-
-    def save(self, path):
-        prefix = self.get_fileprefix(path)
-        if self.preview_changed:
-            self.preview.save(prefix + '_prev.png', 'png')
-            self.preview_changed = False
-        f = open(prefix + '.myb', 'w')
-        f.write('# mypaint brush file\n')
+    def save_to_string(self):
+        res  = '# mypaint brush file\n'
         r, g, b = self.get_color()
-        f.write('color %d %d %d\n' % (r, g, b))
-        f.write('painting_time %s\n' % self.painting_time)
+        res += 'color %d %d %d\n' % (r, g, b)
         for s in brushsettings.settings:
-            f.write(s.cname + ' ' + self.settings[s.index].save_to_string() + '\n')
-        f.close()
-        self.remember_mtimes(prefix)
+            res += s.cname + ' ' + self.settings[s.index].save_to_string() + '\n'
+        return res
 
-    def load(self, path, name, prefix=None):
-        self.name = name
-        if prefix is None:
-            prefix = self.get_fileprefix(path)
-        filename = prefix + '_prev.png'
-        pixbuf = gtk.gdk.pixbuf_new_from_file(filename)
-        self.update_preview(pixbuf)
-        self.preview_changed = False
+    def load_from_string(self, s):
         num_found = 0
-        filename = prefix + '.myb'
-        for line in open(filename).readlines():
+        errors = []
+        for line in s.split('\n'):
             line = line.strip()
             if line.startswith('#'): continue
+            if not line: continue
             try:
                 command, rest = line.split(' ', 1)
                 if command == 'color':
                     self.set_color([int(s) for s in rest.split()])
                 elif command == 'painting_time':
-                    self.painting_time = float(rest)
+                    pass # old relict, save to ignore
                 else:
                     found = False
                     for s in brushsettings.settings:
@@ -152,37 +113,16 @@ class Brush(mydrawwidget.MyBrush):
                             assert not found
                             found = True
                             error = self.settings[s.index].load_from_string(rest)
-                            if error:
-                                print filename, '- ignoring error:'
-                                print line
-                                print error
+                            if error: errors.append((line, error))
                     if not found:
-                        print filename, '- ignoring line:'
-                        print line
+                        errors.append((line, 'unknown command, line ignored'))
             except Exception, e:
-                print e
-                print filename, '- ignoring line:'
-                print line
+                errors.append((line, str(e)))
             else:
                 num_found += 1
         if num_found == 0:
-            print 'there was only garbage in this file, using defaults'
-        self.remember_mtimes(prefix)
-
-    def reload_if_changed(self, path):
-        if self.settings_mtime is None: return
-        if self.preview_mtime is None: return
-        if not self.name: return
-        prefix = self.get_fileprefix(path)
-        if not self.has_changed_on_disk(prefix): return False
-        print 'Brush "' + self.name + '" has changed on disk, reloading it.'
-        self.load(path=None, name=self.name, prefix=prefix)
-        return True
-
-    def delete(self, path):
-        prefix = self.get_fileprefix(path)
-        os.remove(prefix + '_prev.png')
-        os.remove(prefix + '.myb')
+            errors.append(('', 'there was only garbage in this file, using defaults'))
+        return errors
 
     def copy_settings_from(self, other):
         for s in brushsettings.settings:
@@ -202,6 +142,110 @@ class Brush(mydrawwidget.MyBrush):
         for i in range(3):
             self.color[i] = 255 - self.color[i]
         self.set_color(self.color)
+
+
+class Brush(Brush_Lowlevel):
+    def __init__(self, app):
+        Brush_Lowlevel.__init__(self)
+        self.app = app
+        self.preview = None
+        self.preview_thumb = None
+        self.name = None
+        self.preview_changed = True
+
+        self.settings_mtime = None
+        self.preview_mtime = None
+
+    def get_fileprefix(self, saving=False):
+        if not self.name:
+            i = 0
+            while 1:
+                self.name = 'b%03d' % i
+                a = self.app.user_brushpath  + self.name + '.myb'
+                b = self.app.stock_brushpath + self.name + '.myb'
+                if not os.path.isfile(a) and not os.path.isfile(b):
+                    break
+                i += 1
+        prefix = self.app.user_brushpath + self.name
+        if saving: 
+            return prefix
+        if not os.path.isfile(prefix + '.myb'):
+            prefix = self.app.stock_brushpath + self.name
+        assert os.path.isfile(prefix + '.myb'), 'brush "' + self.name + '" not found'
+        return prefix
+
+    def delete_from_disk(self):
+        prefix = self.app.user_brushpath + self.name
+        if os.path.isfile(prefix + '.myb'):
+            os.remove(prefix + '_prev.png')
+            os.remove(prefix + '.myb')
+
+        prefix = self.app.stock_brushpath + self.name
+        if os.path.isfile(prefix + '.myb'):
+            # user wants to delete a stock brush
+            # cannot remove the file, manage blacklist instead
+            filename = self.app.user_brushpath + 'deleted.conf'
+            new = not os.path.isfile(filename)
+            f = open(filename, 'a')
+            if new:
+                f.write('# list of stock brush names which you have deleted\n')
+                f.write('# you can remove this file to get all of them back\n')
+            f.write(self.name + '\n')
+            f.close()
+
+    def remember_mtimes(self):
+        prefix = self.get_fileprefix()
+        self.preview_mtime = os.path.getmtime(prefix + '_prev.png')
+        self.settings_mtime = os.path.getmtime(prefix + '.myb')
+
+    def has_changed_on_disk(self):
+        prefix = self.get_fileprefix()
+        if self.preview_mtime != os.path.getmtime(prefix + '_prev.png'): return True
+        if self.settings_mtime != os.path.getmtime(prefix + '.myb'): return True
+        return False
+
+    def save(self):
+        prefix = self.get_fileprefix(saving=True)
+        if self.preview_changed:
+            self.preview.save(prefix + '_prev.png', 'png')
+            self.preview_changed = False
+        open(prefix + '.myb', 'w').write(self.save_to_string())
+        self.remember_mtimes()
+
+    def load(self, name):
+        self.name = name
+        prefix = self.get_fileprefix()
+
+        filename = prefix + '_prev.png'
+        pixbuf = gtk.gdk.pixbuf_new_from_file(filename)
+        self.update_preview(pixbuf)
+
+        if prefix.startswith(self.app.user_brushpath):
+            self.preview_changed = False
+        else:
+            # for saving, create the preview file even if not changed
+            self.preview_changed = True
+
+        filename = prefix + '.myb'
+        errors = self.load_from_string(open(filename).read())
+        if errors:
+            print '%s:' % filename
+            for line, reason in errors:
+                print line
+                print '==>', reason
+            print
+
+        self.remember_mtimes()
+
+    def reload_if_changed(self):
+        if self.settings_mtime is None: return
+        if self.preview_mtime is None: return
+        if not self.name: return
+        prefix = self.get_fileprefix()
+        if not self.has_changed_on_disk(): return False
+        print 'Brush "' + self.name + '" has changed on disk, reloading it.'
+        self.load(self.name)
+        return True
 
     def update_preview(self, pixbuf):
         self.preview = pixbuf

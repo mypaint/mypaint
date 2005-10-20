@@ -1,11 +1,8 @@
 - zoom (2x / 4x / 0.5x / 0.25x)
 - dragging the canvas with side-button
 
-- easy updating of standard brushes (no copy to ~/.mypaint ?)
-- remove drawing time from brushfile
-- save brush order elsewhere (manual sorting only?)
-
 ? ability to snap curve points (would need a finer grid)
+  - instead: a function "copy curve shape from..." / copy/paste
 
 - brushsettings: mark "..." buttons red where something was changed
 
