@@ -21,3 +21,5 @@ color_saturation 0.0
 color_hue 0.0
 adapt_color_from_image 0.0
 change_radius 0.0
+stroke_treshold 0.0
+cycle_speed 0.5
