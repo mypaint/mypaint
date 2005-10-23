@@ -10,8 +10,7 @@ inputs_list = [
     ['speed', 5.0, False, "How fast you currently move. This can change very quickly."],
     ['speed2', 5.0, False, "Same as speed, but changes slower. Also look at the 'speed2 slowness' setting."],
     ['random', 1.0, False, "Random noise, changing at each evaluation."],
-    ['stroke_length', 50.0, False, "Relative length of the current stroke. It will reset to zero whenever a new stroke starts."],
-    ['cycle', 1.0, True, "This input will periodically go from 0 to 1 and jump back to 0 while you move."],
+    ['stroke', 1.0, True, "This input slowly goes from zero to one while you draw a stroke. It can also be configured to jump back to zero periodically while you move."],
     ]
 
 settings_list = [
@@ -37,8 +36,9 @@ settings_list = [
     ['color_hue', 'color hue', False, -2.0, 0.0, 2.0, "change color hue\n-1.0 clockwise color hue shift\n 0.0 disable\n 1.0 counterclockwise hue shift"],
     ['adapt_color_from_image', 'adapt color from image', False, 0.0, 0.0, 1.0, "slowly change the color to the one you're painting on (some kind of smudge tool)\nNote that this happens /before/ the hue/saturation/brighness adjustment below: you can get very different effects (eg brighten image) by combining with them."],
     ['change_radius', 'change radius', False, -1.0, 0.0, 1.0, "Modify the basic radius (the one above) permanently each dab. This will slowly increment/decrement its actual value, with all the consequences. The slider above will not change, but it should - FIXME: this is a small bug; also, the changed radius will never be saved."],
-    ['stroke_treshold', 'stroke treshold', True, 0.0, 0.0, 0.5, "How much pressure is needed to start a stroke. This affects the stroke_length input only. Mypaint does not need a minimal pressure to start drawing."],
-    ['cycle_speed', 'cycle speed', False, -6.0, 0.5, 6.0, "How fast the cycle input changes when you move.\n2.0 means the cycle input will go from 0 to 1 and jump back to 0 twice per basic brush radius"],
+    ['stroke_treshold', 'stroke treshold', True, 0.0, 0.0, 0.5, "How much pressure is needed to start a stroke. This affects the stroke input only. Mypaint does not need a minimal pressure to start drawing."],
+    ['stroke_duration_logarithmic', 'stroke duration', False, -1.0, 4.0, 7.0, "How far you have to move until the stroke input reaches 1.0. This value is logarithmic (negative values will not inverse the process)."],
+    ['stroke_holdtime', 'stroke hold time', False, 0.0, 0.0, 10.0, "This defines how long the stroke input stays at 1.0. After that it will reset to 0.0 and start growing again, even if the stroke is not yet finished.\n2.0 means twice as long as it takes to go from 0.0 to 1.0\n9.9 and bigger stands for infinite"],
     ]
 
 class BrushInput:

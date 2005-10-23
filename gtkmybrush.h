@@ -61,8 +61,7 @@ struct _GtkMyBrush
   float norm_speed_slow1; 
   float norm_speed_slow2;
 
-  float cycle;
-  float stroke_length;
+  float stroke;
   int stroke_started;
 
   float painting_time;

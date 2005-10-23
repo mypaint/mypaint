@@ -2,6 +2,7 @@
 #define __helpers_h__
 
 #include <glib.h>
+#include <assert.h>
 // gaussian noise, mean 0 variance 1
 extern gdouble gauss_noise (void);
 

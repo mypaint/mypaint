@@ -195,6 +195,23 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s, Rect * bbox)
   g_assert (b->pressure >= 0.0 && b->pressure <= 1.0);
   pressure = b->pressure; // could distort it here
 
+  { // start / end stroke (for "stroke" input only)
+    if (!b->stroke_started) {
+      if (pressure > b->settings[BRUSH_STROKE_TRESHOLD].base_value) {
+        // start new stroke
+        b->stroke_started = 1;
+        b->stroke = 0.0;
+      }
+    } else {
+      if (pressure <= b->settings[BRUSH_STROKE_TRESHOLD].base_value * 0.9) {
+        // end stroke
+        b->stroke_started = 0;
+      }
+    }
+  }
+
+  // now follows input handling
+
   float norm_dx, norm_dy, norm_dist, norm_speed;
   norm_dx = b->dx / b->dtime / base_radius_pixels;
   norm_dy = b->dy / b->dtime / base_radius_pixels;
@@ -205,8 +222,7 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s, Rect * bbox)
   inputs[INPUT_SPEED]  = b->norm_speed_slow1 * 0.002;
   inputs[INPUT_SPEED2] = b->norm_speed_slow2 * 0.005;
   inputs[INPUT_RANDOM] = 0.5; // actually unused
-  inputs[INPUT_STROKE_LENGTH] = b->stroke_length * 0.05;
-  inputs[INPUT_CYCLE] = b->cycle;
+  inputs[INPUT_STROKE] = MIN(b->stroke, 1.0);
   if (b->print_inputs) {
     g_print("press=% 4.3f, speed=% 4.4f\tspeed2=% 4.4f\n", inputs[INPUT_PRESSURE], inputs[INPUT_SPEED], inputs[INPUT_SPEED2]);
   }
@@ -286,23 +302,24 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s, Rect * bbox)
   }
 
   { // stroke length
-    b->stroke_length += norm_dist;
-    if (!b->stroke_started) {
-      if (b->pressure > settings[BRUSH_STROKE_TRESHOLD]) {
-        // start new stroke
-        b->stroke_started = 1;
-        b->stroke_length = 0.0;
-      }
-    } else {
-      if (b->pressure <= settings[BRUSH_STROKE_TRESHOLD] * 0.9) {
-        // end stroke
-        b->stroke_started = 0;
+    float frequency;
+    float wrap;
+    frequency = expf(-settings[BRUSH_STROKE_DURATION_LOGARITHMIC]);
+    b->stroke += norm_dist * frequency;
+    assert(b->stroke >= 0);
+    wrap = 1.0 + settings[BRUSH_STROKE_HOLDTIME];
+    if (b->stroke > wrap) {
+      if (wrap > 9.9 + 1.0) {
+        // "inifinity", just hold b->stroke somewhere >= 1.0
+        b->stroke = 1.0;
+      } else {
+        //printf("fmodf(%f, %f) = ", (double)b->stroke, (double)wrap);
+        b->stroke = fmodf(b->stroke, wrap);
+        //printf("%f\n", (double)b->stroke);
+        assert(b->stroke >= 0);
       }
     }
   }
-  b->cycle += norm_dist * settings[BRUSH_CYCLE_SPEED];
-  while (b->cycle > 1.0) b->cycle -= 1.0;
-  while (b->cycle < 0.0) b->cycle += 1.0;
 
   if (DEBUGLOG) {
     static FILE * logfile = NULL;
@@ -455,8 +472,8 @@ void brush_stroke_to (GtkMyBrush * b, Surface * s, float x, float y, float press
     b->norm_dx_slow = 0.0;
     b->norm_dy_slow = 0.0;
     b->stroke_started = 0;
-    b->stroke_length = 100.0; // start in a state as if the stroke was long finished
-    b->cycle = 0.0;
+    // FIXME: is this The Right Thing (tm)? same thing below
+    b->stroke = 1.0; // start in a state as if the stroke was long finished
     return;
   }
 
@@ -540,6 +557,8 @@ void brush_stroke_to (GtkMyBrush * b, Surface * s, float x, float y, float press
   if (pressure == 0) {
     // stroke is certainly finished now (interpolation issue)
     b->stroke_started = 0;
+    // FIXME: is this The Right Thing (tm)? same thing above
+    b->stroke = 1.0; // start in a state as if the stroke was long finished
   }
 }
 
