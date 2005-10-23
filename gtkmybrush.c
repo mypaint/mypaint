@@ -557,6 +557,10 @@ int precalcDataIndex;
 
 PrecalcData * precalc_data(float phase0)
 {
+  // Hint to the casual reader: some of the calculation here do not
+  // what I originally intended. Not everything here will make sense.
+  // It does not matter in the end, as long as the result looks good.
+
   int width, height;
   float width_inv, height_inv;
   int x, y, i;
@@ -574,10 +578,10 @@ PrecalcData * precalc_data(float phase0)
   i = 0;
   for (y=0; y<height; y++) {
     for (x=0; x<width; x++) {
-      int h, s, v;
+      float h, s, v;
       int dx, dy;
-      float v_factor = 2.0;
-      float s_factor = 2.0;
+      float v_factor = 1.5;
+      float s_factor = 1.5;
       
       h = 0;
       s = 0;
@@ -594,7 +598,7 @@ PrecalcData * precalc_data(float phase0)
       // overlay sine waves to color hue, not visible at center, ampilfying near the border
       if (1) {
         float amplitude, phase;
-        float dist, dist2;
+        float dist, dist2, borderdist;
         float dx_norm, dy_norm;
         float angle;
         dx_norm = dx*width_inv;
@@ -602,10 +606,14 @@ PrecalcData * precalc_data(float phase0)
 
         dist2 = dx_norm*dx_norm + dy_norm*dy_norm;
         dist = sqrtf(dist2);
+        borderdist = 0.5 - MAX(abs(dx_norm), abs(dy_norm));
         angle = atan2f(dy_norm, dx_norm);
         amplitude = 50 + dist2*dist2*dist2*100;
         phase = phase0 + 2*M_PI* (dist*0 + dx_norm*dx_norm*dy_norm*dy_norm*50) + angle*7;
-        h = sinf(phase) * amplitude;
+        //h = sinf(phase) * amplitude;
+        h = sinf(phase);
+        h = (h>0)?h*h:-h*h;
+        h *= amplitude;
 
         // calcualte angle to next 45-degree-line
         angle = abs(angle)/M_PI;
@@ -618,6 +626,22 @@ PrecalcData * precalc_data(float phase0)
         v = 0.6*v*angle + 0.4*v;
         h = h * angle * 1.5;
         s = s * angle * 1.0;
+
+        // this part is for strong color variations at the borders
+        if (borderdist < 0.3) {
+          float fac;
+          float h_new;
+          fac = (1 - borderdist/0.3);
+          // fac is 1 at the outermost pixels
+          v = (1-fac)*v + fac*0;
+          s = (1-fac)*s + fac*0;
+          fac = fac*fac*0.6;
+          h_new = (angle+phase0+M_PI/4)*360/(2*M_PI) * 8;
+          while (h_new > h + 360/2) h_new -= 360;
+          while (h_new < h - 360/2) h_new += 360;
+          h = (1-fac)*h + fac*h_new;
+          //h = (angle+M_PI/4)*360/(2*M_PI) * 4;
+        }
       }
 
       {
@@ -635,9 +659,9 @@ PrecalcData * precalc_data(float phase0)
         }
       }
 
-      result[i].h = h;
-      result[i].v = v;
-      result[i].s = s;
+      result[i].h = (int)h;
+      result[i].v = (int)v;
+      result[i].s = (int)s;
       i++;
     }
   }
