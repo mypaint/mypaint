@@ -177,17 +177,23 @@ void brush_reset (GtkMyBrush * b)
   b->time = 0; // triggers the real reset below in brush_stroke_to
 }
 
-// high-level part of before each dab
-void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s, Rect * bbox)
+// Update all settings.
+//
+// This has to be done more often than each dab, because of
+// interpolation. For example if the radius is very big and suddenly
+// changes to very small, then lots of time might pass until a dab
+// would happen. But with the updated smaller radius, much more dabs
+// should have been painted already.
+
+void brush_update_settings_values (GtkMyBrush * b)
 {
-  float x, y, radius_log, opaque;
+  float radius_log;
   int i, j;
-  gint color[3];
-  int color_is_hsv;
   float pressure;
-  float settings[BRUSH_SETTINGS_COUNT];
+  float * settings = b->settings_value;
   float inputs[INPUT_COUNT];
-  float base_radius_pixels = expf(b->settings[BRUSH_RADIUS_LOGARITHMIC].base_value);
+
+  b->base_radius = expf(b->settings[BRUSH_RADIUS_LOGARITHMIC].base_value);
 
   // FIXME: does happen (interpolation problem?)
   if (b->pressure < 0.0) b->pressure = 0.0;
@@ -197,14 +203,16 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s, Rect * bbox)
 
   { // start / end stroke (for "stroke" input only)
     if (!b->stroke_started) {
-      if (pressure > b->settings[BRUSH_STROKE_TRESHOLD].base_value) {
+      if (pressure > b->settings[BRUSH_STROKE_TRESHOLD].base_value + 0.0001) {
         // start new stroke
+        printf("stroke start %f\n", pressure);
         b->stroke_started = 1;
         b->stroke = 0.0;
       }
     } else {
-      if (pressure <= b->settings[BRUSH_STROKE_TRESHOLD].base_value * 0.9) {
+      if (pressure <= b->settings[BRUSH_STROKE_TRESHOLD].base_value * 0.9 + 0.0001) {
         // end stroke
+        printf("stroke end\n");
         b->stroke_started = 0;
       }
     }
@@ -213,8 +221,8 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s, Rect * bbox)
   // now follows input handling
 
   float norm_dx, norm_dy, norm_dist, norm_speed;
-  norm_dx = b->dx / b->dtime / base_radius_pixels;
-  norm_dy = b->dy / b->dtime / base_radius_pixels;
+  norm_dx = b->dx / b->dtime / b->base_radius;
+  norm_dy = b->dy / b->dtime / b->base_radius;
   norm_speed = sqrt(sqr(norm_dx) + sqr(norm_dy));
   norm_dist = norm_speed * b->dtime;
 
@@ -276,16 +284,11 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s, Rect * bbox)
 
   {
     float fac = 1.0 - exp_decay (settings[BRUSH_SLOW_TRACKING_PER_DAB], 1.0);
-    b->x_slow += (b->x - b->x_slow) * fac; // FIXME: should depend on base radius?
+    b->x_slow += (b->x - b->x_slow) * fac; // FIXME: should this depend on base radius?
     b->y_slow += (b->y - b->y_slow) * fac;
-    x = b->x_slow;
-    y = b->y_slow;
   }
 
   radius_log = settings[BRUSH_RADIUS_LOGARITHMIC];
-  opaque = settings[BRUSH_OPAQUE] * settings[BRUSH_OPAQUE_MULTIPLY];
-  if (opaque >= 1.0) opaque = 1.0;
-  if (opaque <= 0.0) opaque = 0.0;
 
   { // slow speed
     float fac;
@@ -321,6 +324,28 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s, Rect * bbox)
     }
   }
 
+  // change base radius (a rarely used feature)
+  b->settings[BRUSH_RADIUS_LOGARITHMIC].base_value += settings[BRUSH_CHANGE_RADIUS] * 0.01;
+
+  // calculate final radius
+  b->actual_radius = expf(radius_log);
+    
+  if (b->actual_radius < 0) b->actual_radius = 0; // don't ask me why this happens
+  //FIXME: performance problem acutally depending on CPU
+  if (b->actual_radius > 100) b->actual_radius = 100;
+}
+
+// high-level part of before each dab
+void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s, Rect * bbox)
+{
+  float * settings = b->settings_value;
+  float x, y, opaque;
+  int i;
+  gint color[3];
+  int color_is_hsv;
+
+  brush_update_settings_values (b);
+
   if (DEBUGLOG) {
     static FILE * logfile = NULL;
     if (!logfile) {
@@ -329,18 +354,24 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s, Rect * bbox)
     fprintf(logfile, "%f %f %f %f %f\n", b->time, b->dtime, b->x, b->dx, b->norm_dx_slow);
   }
 
+  // FIXME: rename to x_final, y_final?
+  // or better actual_x, actual_y (like actual_radius)
+  x = b->x_slow;
+  y = b->y_slow;
+
   if (settings[BRUSH_OFFSET_BY_SPEED]) {
-    x += b->norm_dx_slow * settings[BRUSH_OFFSET_BY_SPEED] * 0.1 * base_radius_pixels;
-    y += b->norm_dy_slow * settings[BRUSH_OFFSET_BY_SPEED] * 0.1 * base_radius_pixels;
+    x += b->norm_dx_slow * settings[BRUSH_OFFSET_BY_SPEED] * 0.1 * b->base_radius;
+    y += b->norm_dy_slow * settings[BRUSH_OFFSET_BY_SPEED] * 0.1 * b->base_radius;
   }
 
   if (settings[BRUSH_OFFSET_BY_RANDOM]) {
-    x += gauss_noise () * settings[BRUSH_OFFSET_BY_RANDOM] * base_radius_pixels;
-    y += gauss_noise () * settings[BRUSH_OFFSET_BY_RANDOM] * base_radius_pixels;
+    x += gauss_noise () * settings[BRUSH_OFFSET_BY_RANDOM] * b->base_radius;
+    y += gauss_noise () * settings[BRUSH_OFFSET_BY_RANDOM] * b->base_radius;
   }
 
-  // change base radius
-  b->settings[BRUSH_RADIUS_LOGARITHMIC].base_value += settings[BRUSH_CHANGE_RADIUS] * 0.01;
+  opaque = settings[BRUSH_OPAQUE] * settings[BRUSH_OPAQUE_MULTIPLY];
+  if (opaque >= 1.0) opaque = 1.0;
+  if (opaque <= 0.0) opaque = 0.0;
 
   // color part
   
@@ -390,11 +421,8 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s, Rect * bbox)
   { // final calculations
     float radius;
     guchar c[3];
-    radius = expf(radius_log);
-    
-    if (radius < 0) radius = 0; // don't ask me why this happens
-    //FIXME: performance problem acutally depending on CPU
-    if (radius > 100) radius = 100;
+    radius = b->actual_radius;
+
     g_assert(opaque >= 0);
     g_assert(opaque <= 1);
     
@@ -429,18 +457,27 @@ float brush_count_dabs_to (GtkMyBrush * b, float x, float y, float pressure, flo
   float dx, dy, dt;
   float res1, res2, res3;
   float dist;
+
   if (b->actual_radius == 0.0) b->actual_radius = expf(b->settings[BRUSH_RADIUS_LOGARITHMIC].base_value);
   if (b->actual_radius < 0.5) b->actual_radius = 0.5;
   if (b->actual_radius > 500.0) b->actual_radius = 500.0;
+
+  if (b->base_radius == 0.0) b->base_radius = expf(b->settings[BRUSH_RADIUS_LOGARITHMIC].base_value);
+  if (b->base_radius < 0.5) b->base_radius = 0.5;
+  if (b->base_radius > 500.0) b->base_radius = 500.0;
+
   dx = x - b->x;
   dy = y - b->y;
   //dp = pressure - b->pressure; // Not useful?
   dt = time - b->time;
 
+  // OPTIMIZE
   dist = sqrtf (dx*dx + dy*dy);
-  res1 = dist / b->actual_radius * b->settings[BRUSH_DABS_PER_ACTUAL_RADIUS].base_value /*FIXME?*/;
-  res2 = dist / expf(b->settings[BRUSH_RADIUS_LOGARITHMIC].base_value) * b->settings[BRUSH_DABS_PER_BASIC_RADIUS].base_value /*FIXME?*/;
-  res3 = dt * b->settings[BRUSH_DABS_PER_SECOND].base_value /*FIXME?*/;
+  // FIXME: no need for base_value or for the range checks above IF always the interpolation
+  //        function will be called before this one
+  res1 = dist / b->actual_radius * b->settings[BRUSH_DABS_PER_ACTUAL_RADIUS].base_value;
+  res2 = dist / b->base_radius   * b->settings[BRUSH_DABS_PER_BASIC_RADIUS].base_value;
+  res3 = dt * b->settings[BRUSH_DABS_PER_SECOND].base_value;
   return res1 + res2 + res3;
 }
 
@@ -487,6 +524,7 @@ void brush_stroke_to (GtkMyBrush * b, Surface * s, float x, float y, float press
     y = b->y + (y - b->y) * fac;
   }
   // draw many (or zero) dabs to the next position
+  // FIXME: maybe run one interpolation step here, whatever happens?
   dist = brush_count_dabs_to (b, x, y, pressure, time);
   if (dist > 300) {
     //g_print ("Warning: NOT drawing %f dabs, resetting brush instead.\n", dist);
@@ -554,12 +592,15 @@ void brush_stroke_to (GtkMyBrush * b, Surface * s, float x, float y, float press
   b->last_time = time;
 
 
-  if (pressure == 0) {
+  /*
+  if (pressure == 0 && b->stroke_started) {
     // stroke is certainly finished now (interpolation issue)
     b->stroke_started = 0;
+    printf("stroke_stop 2\n");
     // FIXME: is this The Right Thing (tm)? same thing above
     b->stroke = 1.0; // start in a state as if the stroke was long finished
   }
+  */
 }
 
 #define SIZE 256

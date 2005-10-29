@@ -47,6 +47,7 @@ struct _GtkMyBrush
   float x, y, pressure, time;
   float dx, dy, dpressure, dtime; // note: this is dx/ddab, ..., dtime/ddab (dab number, 5.0 = 5th dab)
   float dist;
+  float base_radius;
   float actual_radius;
   float last_time;
 
@@ -66,7 +67,10 @@ struct _GtkMyBrush
 
   float painting_time;
 
+  // description how to calculate the values
   Setting settings[BRUSH_SETTINGS_COUNT];
+  // the resulting values
+  float settings_value[BRUSH_SETTINGS_COUNT];
 
 };
 
