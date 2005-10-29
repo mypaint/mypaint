@@ -10,6 +10,7 @@ class Window(gtk.Window):
 
         self.set_title(setting.name)
         self.connect('delete-event', self.app.hide_window_cb)
+        self.tooltips = gtk.Tooltips()
 
         scroll = gtk.ScrolledWindow()
         scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
@@ -20,10 +21,14 @@ class Window(gtk.Window):
         scroll.add_with_viewport(vbox)
         vbox.set_border_width(5)
 
+        eb = gtk.EventBox()
         l = gtk.Label()
         l.set_alignment(0.0, 0.0)
         l.set_markup('<b><span size="large">%s</span></b>' % setting.name.title())
-        vbox.pack_start(l, expand=False)
+        self.tooltips.set_tip(eb, setting.tooltip)
+        eb.add(l)
+        vbox.pack_start(eb, expand=False)
+
         
         l = gtk.Label()
         l.set_markup('Base Value')
@@ -65,6 +70,7 @@ class ByInputWidget(gtk.VBox):
     "the gui elements that change the response to one input"
     def __init__(self, app, input, setting):
         gtk.VBox.__init__(self)
+        self.tooltips = gtk.Tooltips()
 
         self.set_spacing(5)
 
@@ -79,10 +85,13 @@ class ByInputWidget(gtk.VBox):
         self.scale_x_adj.connect('value-changed', self.user_changes_cb)
         self.scale_y_adj.connect('value-changed', self.user_changes_cb)
 
+        eb = gtk.EventBox()
         l = gtk.Label()
         l.set_markup('By <b>%s</b>' % input.name)
         l.set_alignment(0.0, 0.0)
-        self.pack_start(l, expand=False)
+        self.tooltips.set_tip(eb, input.tooltip)
+        eb.add(l)
+        self.pack_start(eb, expand=False)
         
         hbox = gtk.HBox()
         self.pack_start(hbox, expand=False)

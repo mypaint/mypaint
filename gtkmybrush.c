@@ -232,7 +232,7 @@ void brush_update_settings_values (GtkMyBrush * b)
   inputs[INPUT_RANDOM] = 0.5; // actually unused
   inputs[INPUT_STROKE] = MIN(b->stroke, 1.0);
   if (b->print_inputs) {
-    g_print("press=% 4.3f, speed=% 4.4f\tspeed2=% 4.4f\n", inputs[INPUT_PRESSURE], inputs[INPUT_SPEED], inputs[INPUT_SPEED2]);
+    g_print("press=% 4.3f, speed=% 4.4f\tspeed2=% 4.4f\tstroke=% 4.3f\n", inputs[INPUT_PRESSURE], inputs[INPUT_SPEED], inputs[INPUT_SPEED2], inputs[INPUT_STROKE]);
   }
 
   for (i=0; i<BRUSH_SETTINGS_COUNT; i++) {
