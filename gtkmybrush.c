@@ -164,7 +164,7 @@ gtk_my_brush_new (void)
 // returns the fraction still left after t seconds
 float exp_decay (float T_const, float t)
 {
-  // FIXME: think about whether the argument make mathematical sense
+  // the argument might not make mathematical sense (whatever.)
   if (T_const <= 0.001) {
     return 0.0;
   } else {
@@ -205,14 +205,14 @@ void brush_update_settings_values (GtkMyBrush * b)
     if (!b->stroke_started) {
       if (pressure > b->settings[BRUSH_STROKE_TRESHOLD].base_value + 0.0001) {
         // start new stroke
-        printf("stroke start %f\n", pressure);
+        //printf("stroke start %f\n", pressure);
         b->stroke_started = 1;
         b->stroke = 0.0;
       }
     } else {
       if (pressure <= b->settings[BRUSH_STROKE_TRESHOLD].base_value * 0.9 + 0.0001) {
         // end stroke
-        printf("stroke end\n");
+        //printf("stroke end\n");
         b->stroke_started = 0;
       }
     }
@@ -284,8 +284,8 @@ void brush_update_settings_values (GtkMyBrush * b)
 
   {
     float fac = 1.0 - exp_decay (settings[BRUSH_SLOW_TRACKING_PER_DAB], 1.0);
-    b->x_slow += (b->x - b->x_slow) * fac; // FIXME: should this depend on base radius?
-    b->y_slow += (b->y - b->y_slow) * fac;
+    b->actual_x += (b->x - b->actual_x) * fac; // FIXME: should this depend on base radius?
+    b->actual_y += (b->y - b->actual_y) * fac;
   }
 
   radius_log = settings[BRUSH_RADIUS_LOGARITHMIC];
@@ -336,6 +336,8 @@ void brush_update_settings_values (GtkMyBrush * b)
 }
 
 // high-level part of before each dab
+//
+// this is always called after brush_update_settings_values
 void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s, Rect * bbox)
 {
   float * settings = b->settings_value;
@@ -352,10 +354,8 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s, Rect * bbox)
     fprintf(logfile, "%f %f %f %f %f\n", b->time, b->dtime, b->x, b->dx, b->norm_dx_slow);
   }
 
-  // FIXME: rename to x_final, y_final?
-  // or better actual_x, actual_y (like actual_radius)
-  x = b->x_slow;
-  y = b->y_slow;
+  x = b->actual_x;
+  y = b->actual_y;
 
   if (settings[BRUSH_OFFSET_BY_SPEED]) {
     x += b->norm_dx_slow * settings[BRUSH_OFFSET_BY_SPEED] * 0.1 * b->base_radius;
@@ -502,12 +502,11 @@ void brush_stroke_to (GtkMyBrush * b, Surface * s, float x, float y, float press
     b->time = time;
 
     b->last_time = b->time;
-    b->x_slow = b->x;
-    b->y_slow = b->y;
+    b->actual_x = b->x;
+    b->actual_y = b->y;
     b->norm_dx_slow = 0.0;
     b->norm_dy_slow = 0.0;
     b->stroke_started = 0;
-    // FIXME: is this The Right Thing (tm)? same thing below
     b->stroke = 1.0; // start in a state as if the stroke was long finished
     return;
   }
@@ -610,17 +609,6 @@ void brush_stroke_to (GtkMyBrush * b, Surface * s, float x, float y, float press
 
   // not equal to b_time now unless b->dist == 0
   b->last_time = time;
-
-
-  /*
-  if (pressure == 0 && b->stroke_started) {
-    // stroke is certainly finished now (interpolation issue)
-    b->stroke_started = 0;
-    printf("stroke_stop 2\n");
-    // FIXME: is this The Right Thing (tm)? same thing above
-    b->stroke = 1.0; // start in a state as if the stroke was long finished
-  }
-  */
 }
 
 #define SIZE 256

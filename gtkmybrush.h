@@ -56,7 +56,7 @@ struct _GtkMyBrush
   int print_inputs;
 
   // misc higher-level helper variables
-  float x_slow, y_slow; // for slow position
+  float actual_x, actual_y; // for slow position
   float norm_dx_slow, norm_dy_slow; // note: now this is dx/dt * (1/radius)
 
   float norm_speed_slow1; 

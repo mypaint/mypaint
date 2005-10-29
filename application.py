@@ -91,6 +91,8 @@ class Application: # singleton
         if self.brushes:
             self.select_brush(self.brushes[0])
 
+        self.brush.set_color((0, 0, 0))
+
     def save_brushorder(self):
         f = open(self.user_brushpath + 'order.conf', 'w')
         f.write('# this file saves brushorder\n')
