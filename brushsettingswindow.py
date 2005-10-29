@@ -48,9 +48,11 @@ class Window(gtk.Window):
             if s.constant:
                 b2 = gtk.Label("=")
                 b2.set_alignment(0.5, 0.5)
+                adj.three_dots_button = None
             else:
                 b2 = gtk.Button("...") # TODO: in red if some details are set
                 b2.connect('clicked', self.details_clicked_cb, adj, s)
+                adj.three_dots_button = b2
 
             table.attach(eb, 0, 1, s.index, s.index+1, gtk.FILL, gtk.FILL, 5, 0)
             table.attach(h, 1, 2, s.index, s.index+1, gtk.EXPAND | gtk.FILL, gtk.EXPAND | gtk.FILL)
@@ -79,7 +81,17 @@ class Window(gtk.Window):
 
     def brush_selected_cb(self, brush_selected):
         for s in brushsettings.settings:
-            self.adj[s.index].set_value(self.app.brush.settings[s.index].base_value)
+            adj = self.adj[s.index]
+            s = self.app.brush.settings[s.index]
+            adj.set_value(s.base_value)
+            if adj.three_dots_button:
+                def set_label(s):
+                    if adj.three_dots_button.get_label() == s: return
+                    adj.three_dots_button.set_label(s)
+                if s.has_only_base_value():
+                    set_label("...")
+                else:
+                    set_label("X")
 
 
 

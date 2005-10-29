@@ -121,7 +121,7 @@ class ByInputWidget(gtk.VBox):
         t.attach(l5, 1, 2, 3, 4, gtk.EXPAND, 0, 5, 0)
         t.attach(l6, 2, 3, 3, 4, 0, 0, 5, 0)
 
-        expander = gtk.Expander(label='Details')
+        expander = self.expander = gtk.Expander(label='Details')
         expander.add(t)
         expander.set_expanded(False)
 
@@ -152,6 +152,13 @@ class ByInputWidget(gtk.VBox):
         else:
             brush_points = None
         self.app.brush.settings[self.setting.index].set_points(self.input, brush_points)
+
+    def reconsider_details(self):
+        s = self.app.brush.settings[self.setting.index]
+        if s.has_input_nonlinear(self.input):
+            self.expander.set_expanded(True)
+        else:
+            self.expander.set_expanded(False)
 
     def reread(self):
         brush_points = self.app.brush.settings[self.setting.index].points[self.input.index]
@@ -188,6 +195,8 @@ class ByInputWidget(gtk.VBox):
         #print 'scale:', scale_x, scale_y
         self.scale_x_adj.set_value(scale_x)
         self.scale_y_adj.set_value(scale_y)
+
+        self.reconsider_details()
 
 RADIUS = 4
 class CurveWidget(gtk.DrawingArea):

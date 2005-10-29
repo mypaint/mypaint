@@ -238,15 +238,6 @@ void brush_update_settings_values (GtkMyBrush * b)
   for (i=0; i<BRUSH_SETTINGS_COUNT; i++) {
     settings[i] = b->settings[i].base_value;
 
-    // FIXME: each setting might depend on any input however, some
-    // inputs need the value of a setting to be updated. Using the old
-    // value here, this results in a small lag that would be avoidable
-    // in most cases. -- however if one of the inputs jumps between
-    // two strokes (speed for example) this might be fatal.
-
-    // ==> the inputs should be updated above, and the settings needed
-    // to do so should have been cached from the last step...
-
     for (j=0; j<INPUT_COUNT; j++) {
       Mapping * m = b->settings[i].mapping[j];
       // OPTIMIZE?

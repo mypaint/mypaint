@@ -10,6 +10,7 @@ def rename(old, new):
     except:
         pass
 
+order = open('order.conf').read()
 existing = [name[:-4] for name in os.listdir('.') if name.endswith('.myb')]
 for name in existing:
     if not name.startswith('b') or name[1] not in '0123456789': continue
@@ -19,4 +20,6 @@ for name in existing:
     print oldname, '==>', name
     rename(oldname + '.myb', name + '.myb')
     rename(oldname + '_prev.png', name + '_prev.png')
-    
+    order = order.replace(oldname, name)
+
+open('order.conf', 'w').write(order)

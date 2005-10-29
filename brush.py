@@ -23,6 +23,9 @@ def pixbuf_scale_nostretch_centered(src, dst):
               offset_x, offset_y, scale, scale,
               gtk.gdk.INTERP_BILINEAR)
 
+# What do the points[] mean?
+# Points = [x1, y1, x2, y2, x3, y3, x4, y4]
+# with x_scale = max(x_i) and y_scale = max(y_i)
 class Setting:
     "a specific setting for a specific brush"
     def __init__(self, setting, parent_brush):
@@ -38,6 +41,27 @@ class Setting:
     def set_base_value(self, value):
         self.base_value = value
         self.brush.set_base_value(self.setting.index, value)
+    def has_only_base_value(self):
+        for i in brushsettings.inputs:
+            if self.has_input(i):
+                return False
+        return True
+    def has_input(self, input):
+        points = self.points[input.index]
+        if points is None:
+            return False
+        #print points
+        return True
+    def has_input_nonlinear(self, input):
+        points = self.points[input.index]
+        if points is None:
+            return False
+        # also if it is linear but the x-axis was changed
+        if points[0] != 1.0: return True
+        # having one additional point is sufficient
+        if points[2] == 0.0 and points[3] == 0.0: return False
+        return True
+
     def set_points(self, input, points):
         if points is None:
             self.points[input.index] = None
@@ -157,10 +181,15 @@ class Brush(Brush_Lowlevel):
         self.preview_mtime = None
 
     def get_fileprefix(self, saving=False):
+        prefix = 'b'
+        if os.path.samefile(self.app.user_brushpath, self.app.stock_brushpath):
+            # working directly on brush collection, use different prefix
+            prefix = 's'
+
         if not self.name:
             i = 0
             while 1:
-                self.name = 'b%03d' % i
+                self.name = '%s%03d' % (prefix, i)
                 a = self.app.user_brushpath  + self.name + '.myb'
                 b = self.app.stock_brushpath + self.name + '.myb'
                 if not os.path.isfile(a) and not os.path.isfile(b):
