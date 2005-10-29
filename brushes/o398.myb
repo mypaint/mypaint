@@ -1,10 +1,10 @@
 # mypaint brush file
 color 0 0 0
-opaque 0.0 | stroke_length 0.364197530864 1.0 1.0 1.0 0.0 0.0 0.0 0.0
+opaque 1.0
 opaque_multiply 0.0 | pressure 1.0 1.0 0.0 0.0 0.0 0.0 0.0 0.0
-radius_logarithmic 1.1 | random 1.0 0.11 0.0 0.0 0.0 0.0 0.0 0.0 | stroke_length 0.00925925925926 -0.72 0.351851851852 0.15 0.87037037037 -0.0 1.0 -0.0 | cycle 0.135802469136 0.737083333333 0.354938271605 1.22 0.756172839506 0.673541666667 1.0 0.0
+radius_logarithmic -0.1 | stroke 1.0 1.74 0.0 0.0 0.0 0.0 0.0 0.0
 hardness 0.8
-dabs_per_basic_radius 1.14
+dabs_per_basic_radius 0.0
 dabs_per_actual_radius 2.0
 dabs_per_second 0.0
 radius_by_random 0.0
@@ -22,4 +22,5 @@ color_hue 0.0
 adapt_color_from_image 0.0
 change_radius 0.0
 stroke_treshold 0.0
-cycle_speed -0.04 | pressure 0.443037974684 0.0975 1.0 0.12 0.0 0.0 0.0 0.0
+stroke_duration_logarithmic 4.0
+stroke_holdtime 10.0
