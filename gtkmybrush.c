@@ -344,8 +344,6 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s, Rect * bbox)
   gint color[3];
   int color_is_hsv;
 
-  brush_update_settings_values (b);
-
   if (DEBUGLOG) {
     static FILE * logfile = NULL;
     if (!logfile) {
@@ -483,7 +481,6 @@ float brush_count_dabs_to (GtkMyBrush * b, float x, float y, float pressure, flo
 
 void brush_stroke_to (GtkMyBrush * b, Surface * s, float x, float y, float pressure, float time, Rect * bbox)
 {
-  float dist;
   if (DEBUGLOG) { // logfile for debugging
     static FILE * logfile = NULL;
     if (!logfile) {
@@ -498,6 +495,7 @@ void brush_stroke_to (GtkMyBrush * b, Surface * s, float x, float y, float press
 
   if (b->time == 0 || time - b->time > 5) {
     // reset
+    b->dist = 0;
     b->x = x;
     b->y = y;
     b->pressure = pressure;
@@ -524,24 +522,44 @@ void brush_stroke_to (GtkMyBrush * b, Surface * s, float x, float y, float press
     y = b->y + (y - b->y) * fac;
   }
   // draw many (or zero) dabs to the next position
-  // FIXME: maybe run one interpolation step here, whatever happens?
-  dist = brush_count_dabs_to (b, x, y, pressure, time);
-  if (dist > 300) {
-    //g_print ("Warning: NOT drawing %f dabs, resetting brush instead.\n", dist);
+  b->dist += brush_count_dabs_to (b, x, y, pressure, time);
+  if (b->dist > 300) {
+    // this happens quite often, eg when moving the cursor back into the window
+    //g_print ("Warning: NOT drawing %f dabs, resetting brush instead.\n", b->dist);
     b->time = 0; // reset
     return;
   }
 
-  //g_print("dist = %f\n", dist);
+  //g_print("dist = %f\n", b->dist);
   // Not going to recalculate dist each step.
 
+  if (b->dist < 1.0 && b->dtime > 0.01) {
+    // "move" the brush anyway, but draw no dab
+
+    // Important to do this often, because brush_count_dabs_to depends
+    // on the radius and the radius can depend on something that
+    // changes much faster than only every dab.
+
+    b->dx        = x - b->x;
+    b->dy        = y - b->y;
+    b->dpressure = pressure - b->pressure;
+    b->dtime     = time - b->time;
+      
+    b->x        += b->dx;
+    b->y        += b->dy;
+    b->pressure += b->dpressure;
+    b->time     += b->dtime;
+      
+    brush_update_settings_values (b);
+  }
+
   if (LINEAR_INTERPOLATION) {
-    while (dist >= 1.0) {
+    while (b->dist >= 1.0) {
       { // linear interpolation
         // Inside the loop because outside it produces numerical errors
         // resulting in b->pressure being small negative and such effects.
         float step;
-        step = 1 / dist;
+        step = 1 / b->dist;
         b->dx        = step * (x - b->x);
         b->dy        = step * (y - b->y);
         b->dpressure = step * (pressure - b->pressure);
@@ -553,23 +571,24 @@ void brush_stroke_to (GtkMyBrush * b, Surface * s, float x, float y, float press
       b->pressure += b->dpressure;
       b->time     += b->dtime;
       
-      dist -= 1.0;
+      b->dist -= 1.0;
       
+      brush_update_settings_values (b);
       brush_prepare_and_draw_dab (b, s, bbox);
     }
-  } else {
+  } else { //(disabled, too slow)
     // cubic interpolation (so b->dx does not jump between dabs)
     // constant accelerations (the "time" variable is the step, here called dist):
     float ax, ay, ap, at;
     float step, stepstep;
-    step = 1 / dist;
+    step = 1 / b->dist;
     stepstep = step*step;
     ax = (x        - b->x)        *stepstep  - b->dx       *step;
     ay = (y        - b->y)        *stepstep  - b->dy       *step;
     ap = (pressure - b->pressure) *stepstep  - b->dpressure*step;
     at = (time     - b->time)     *stepstep  - b->dtime    *step;
     //g_print("%f %f %f %f\n", ax, ay, ap, at);
-    while (dist >= 1.0) {
+    while (b->dist >= 1.0) {
       // This is probably not what my numeric teacher told me about solving
       // differential equations. I can't recall right now, so never mind ;-)
       b->dx        += ax;
@@ -582,13 +601,14 @@ void brush_stroke_to (GtkMyBrush * b, Surface * s, float x, float y, float press
       b->pressure += b->dpressure;
       b->time     += b->dtime;
       
-      dist -= 1.0;
+      b->dist -= 1.0;
       
+      brush_update_settings_values (b);
       brush_prepare_and_draw_dab (b, s, bbox);
     }
   }
 
-  // not equal to b_time now unless dist == 0
+  // not equal to b_time now unless b->dist == 0
   b->last_time = time;
 
 
