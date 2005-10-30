@@ -91,6 +91,10 @@ class Window(gtk.Window):
               <menuitem action='PrintInputs'/>
               <menuitem action='DontPrintInputs'/>
             </menu>
+            <menu action='HelpMenu'>
+              <menuitem action='Docu'/>
+              <menuitem action='About'/>
+            </menu>
           </menubar>
         </ui>"""
         actions = [
@@ -137,11 +141,14 @@ class Window(gtk.Window):
             ('ContextHelp',  None, 'Help!', None, None, self.context_help_cb),
             ('DialogMenu',  None, 'Dialogs'),
             ('BrushSelectionWindow',  None, 'brush list', 'b', None, self.toggleBrushSelectionWindow_cb),
-            ('BrushSettingsWindow',   None, 'brush settings', None, None, self.toggleBrushSettingsWindow_cb),
+            ('BrushSettingsWindow',   None, 'brush settings', '<control>b', None, self.toggleBrushSettingsWindow_cb),
             ('ColorSelectionWindow',  None, 'color', 'c', None, self.toggleColorSelectionWindow_cb),
             ('DebugMenu',  None, 'Debug'),
             ('PrintInputs', None, 'Print brush input values to stdout', None, None, self.print_inputs_cb),
             ('DontPrintInputs', None, 'Stop printing them', None, None, self.dont_print_inputs_cb),
+            ('Docu', None, 'Where is the documentation?', None, None, self.show_docu_cb),
+            ('HelpMenu',     None, 'Help'),
+            ('About', None, 'About MyPaint', None, None, self.show_about_cb),
             ]
         ag.add_actions(actions)
         self.ui = gtk.UIManager()
@@ -168,6 +175,34 @@ class Window(gtk.Window):
         self.app.brush.set_print_inputs(1)
     def dont_print_inputs_cb(self, action):
         self.app.brush.set_print_inputs(0)
+
+    def show_about_cb(self, action):
+        d = gtk.MessageDialog(self, buttons=gtk.BUTTONS_OK)
+        d.set_markup("MyPaint - pressure sensitive painting application\n"
+                     "Copyright (C) 2005 Martin Renold &lt;martinxyz@gmx.ch&gt;\n\n"
+                     "Contributors:\n"
+                     "Artis Rozentals\n"
+                     "\n"
+                     "This program is free software; you can redistribute it and/or modify"
+                     "it under the terms of the GNU General Public License as published by"
+                     "the Free Software Foundation; either version 2 of the License, or"
+                     "(at your option) any later version."
+                     )
+        d.run()
+        d.destroy()
+
+    def show_docu_cb(self, action):
+        d = gtk.MessageDialog(self, buttons=gtk.BUTTONS_OK)
+        d.set_markup("There is a tutorial in the html directory, also available "
+                     "on the MyPaint homepage. It explains the features which are "
+                     "hard to discover yourself.\n\n"
+                     "Comments about the brush settings are available as tooltips. "
+                     " Just put your mouse over the name of a setting to see it. "
+                     "The same thing works for the input names (pressure, speed, etc.)\n"
+                     "\n"
+                     )
+        d.run()
+        d.destroy()
 
     def new_window_cb(self, action):
         # FIXME: is it really done like that?

@@ -300,7 +300,9 @@ void brush_update_settings_values (GtkMyBrush * b)
     float wrap;
     frequency = expf(-settings[BRUSH_STROKE_DURATION_LOGARITHMIC]);
     b->stroke += norm_dist * frequency;
-    assert(b->stroke >= 0);
+    //FIXME: why can this happen?
+    if (b->stroke < 0) b->stroke = 0;
+    //assert(b->stroke >= 0);
     wrap = 1.0 + settings[BRUSH_STROKE_HOLDTIME];
     if (b->stroke > wrap) {
       if (wrap > 9.9 + 1.0) {
@@ -345,6 +347,11 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s, Rect * bbox)
     fprintf(logfile, "%f %f %f %f %f\n", b->time, b->dtime, b->x, b->dx, b->norm_dx_slow);
   }
 
+  opaque = settings[BRUSH_OPAQUE] * settings[BRUSH_OPAQUE_MULTIPLY];
+  if (opaque >= 1.0) opaque = 1.0;
+  //if (opaque <= 0.0) opaque = 0.0;
+  if (opaque <= 0.0) return;
+
   x = b->actual_x;
   y = b->actual_y;
 
@@ -357,10 +364,6 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s, Rect * bbox)
     x += gauss_noise () * settings[BRUSH_OFFSET_BY_RANDOM] * b->base_radius;
     y += gauss_noise () * settings[BRUSH_OFFSET_BY_RANDOM] * b->base_radius;
   }
-
-  opaque = settings[BRUSH_OPAQUE] * settings[BRUSH_OPAQUE_MULTIPLY];
-  if (opaque >= 1.0) opaque = 1.0;
-  if (opaque <= 0.0) opaque = 0.0;
 
   // color part
   
