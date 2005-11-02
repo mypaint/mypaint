@@ -18,6 +18,7 @@ class Window(gtk.Window):
         vbox.pack_start(self.ui.get_widget('/Menubar'), expand=False)
 
         self.mdw = infinitemydrawwidget.InfiniteMyDrawWidget()
+        self.mdw.allow_dragging()
         self.mdw.clear()
         self.mdw.set_brush(self.app.brush)
         vbox.pack_start(self.mdw)
@@ -25,6 +26,10 @@ class Window(gtk.Window):
         self.statusbar = sb = gtk.Statusbar()
         vbox.pack_end(sb, expand=False)
         sb.push(0, "hello world")
+
+        self.zoomlevel_values = [0.09, 0.12, 0.18, 0.25, 0.33, 0.50, 0.66, 1.0, 1.5, 2.0, 3.0, 4.0, 5.5, 8.0]
+        #self.zoomlevel_values = [0.09, 0.12, 0.18, 0.25, 0.33, 0.50, 0.66, 0.9, 1.0, 1.1, 1.5, 2.0, 3.0, 4.0, 5.5, 8.0]
+        self.zoomlevel = self.zoomlevel_values.index(1.0)
 
         self.init_child_dialogs()
 
@@ -38,10 +43,9 @@ class Window(gtk.Window):
               <menuitem action='Open'/>
               <menuitem action='Save'/>
               <separator/>
-              <menuitem action='MoveLeft'/>
-              <menuitem action='MoveRight'/>
-              <menuitem action='MoveUp'/>
-              <menuitem action='MoveDown'/>
+              <menuitem action='Zoom1'/>
+              <menuitem action='ZoomIn'/>
+              <menuitem action='ZoomOut'/>
               <separator/>
               <menuitem action='Clear'/>
               <separator/>
@@ -100,10 +104,9 @@ class Window(gtk.Window):
         actions = [
             ('FileMenu',     None, 'File'),
             ('Clear',        None, 'Clear', None, 'blank everything', self.clear_cb),
-            ('MoveLeft',     None, 'Move left', 'h', None, self.move_cb),
-            ('MoveRight',    None, 'Move right', 'l', None, self.move_cb),
-            ('MoveUp',       None, 'Move up', 'k', None, self.move_cb),
-            ('MoveDown',     None, 'Move down', 'j', None, self.move_cb),
+            ('Zoom1',        None, 'Zoom 1:1', None, None, self.zoom_cb),
+            ('ZoomIn',       None, 'Zoom in', 'KP_Add', None, self.zoom_cb),
+            ('ZoomOut',      None, 'Zoom out', 'KP_Subtract', None, self.zoom_cb),
             #('NewWindow',    None, 'New Window', '<control>N', None, self.new_window_cb),
             ('Open',         None, 'Open', '<control>O', None, self.open_cb),
             ('Save',         None, 'Save', '<control>S', None, self.save_cb),
@@ -308,6 +311,7 @@ class Window(gtk.Window):
         self.app.quit()
 
     def move_cb(self, action):
+        assert False, "this function is not used any more"
         #step = 20
         step = min(self.mdw.window.get_size()) / 5
         name = action.get_name()
@@ -321,6 +325,20 @@ class Window(gtk.Window):
             self.mdw.scroll(0, +step)
         else:
             assert 0
+
+    def zoom_cb(self, action):
+        name = action.get_name()
+        if name == 'ZoomIn':
+            self.zoomlevel += 1
+        elif name == 'ZoomOut':
+            self.zoomlevel -= 1
+        elif name == 'Zoom1':
+            self.zoomlevel = self.zoomlevel_values.index(1.0)
+        else:
+            assert 0
+        if self.zoomlevel < 0: self.zoomlevel = 0
+        if self.zoomlevel >= len(self.zoomlevel_values): self.zoomlevel = len(self.zoomlevel_values) - 1
+        self.mdw.zoom(self.zoomlevel_values[self.zoomlevel])
 
     def context_cb(self, action):
         # TODO: this context-thing is not very useful like that, is it?

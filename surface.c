@@ -100,6 +100,7 @@ surface_render (Surface * s,
                 int x0, int y0,
                 int w, int h, int bpp)
 {
+  // WARNING: Code duplication with surface_render_zoom below
   // could be optimized much, important if big brush is used
   int x, y, add;
   if (bpp == 3*8) {
@@ -126,6 +127,52 @@ surface_render (Surface * s,
         rgb_src = white;
       } else {
         rgb_src = PixelXY(s, x, y);
+      }
+      rgb_dst[0] = rgb_src[0];
+      rgb_dst[1] = rgb_src[1];
+      rgb_dst[2] = rgb_src[2];
+      rgb_dst += add;
+    }
+    rgb_line += rowstride;
+  }
+}
+
+void
+surface_render_zoom (Surface * s,
+                     guchar * dst, int rowstride,
+                     float x0, float y0,
+                     int w, int h, int bpp, float one_over_zoom)
+{
+  // WARNING: Code duplication with surface_render above
+  // could be optimized much, important if big brush is used
+  int x, y, add;
+  int x_final, y_final;
+  if (bpp == 3*8) {
+    add = 3;
+  } else if (bpp == 4*8) {
+    add = 4;
+  } else {
+    g_assert (0);
+    return;
+  }
+
+  guchar white[3];
+  white[0] = 255;
+  white[1] = 255;
+  white[2] = 255;
+
+  guchar * rgb_line = dst;
+  guchar * rgb_dst;
+  guchar * rgb_src;
+  for (y = 0; y < h; y++) {
+    rgb_dst = rgb_line;
+    for (x = 0; x < w; x++) {
+      x_final = (x0+x) * one_over_zoom + 0.5;
+      y_final = (y0+y) * one_over_zoom + 0.5;
+      if (x_final < 0 || y_final < 0 || x_final >= s->w || y_final >= s->h) {
+        rgb_src = white;
+      } else {
+        rgb_src = PixelXY(s, x_final, y_final);
       }
       rgb_dst[0] = rgb_src[0];
       rgb_dst[1] = rgb_src[1];

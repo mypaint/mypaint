@@ -48,6 +48,7 @@ void free_surface (Surface * s);
 void surface_clear (Surface * s);
 void surface_renderpattern (Surface * s);
 void surface_render (Surface * s, guchar * dst, int rowstride, int x0, int y0, int w, int h, int bpp);
+void surface_render_zoom (Surface * s, guchar * dst, int rowstride, float x0, float y0, int w, int h, int bpp, float one_over_zoom);
 void surface_load (Surface * s, guchar * src, int rowstride, int w, int h, int bpp);
 void surface_get_nonwhite_region (Surface * s, Rect * r);
 

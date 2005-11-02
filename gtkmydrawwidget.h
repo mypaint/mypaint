@@ -31,13 +31,20 @@ struct _GtkMyDrawWidget
 
   Surface * surface;
   GtkMyBrush * brush;
-  
-  int viewport_x, viewport_y;
+
+  float viewport_x, viewport_y;
+  float zoom, one_over_zoom;
+
+  int allow_dragging;
+  int dragging;
+  float dragging_last_x, dragging_last_y;
 };
 
 struct _GtkMyDrawWidgetClass
 {
   GtkDrawingAreaClass parent_class;
+
+  void (*dragging_finished) (GtkMyDrawWidget *mdw);
 };
 
 
@@ -47,7 +54,12 @@ GtkMyDrawWidget* gtk_my_draw_widget_new        (int width, int height);
 
 void gtk_my_draw_widget_clear (GtkMyDrawWidget *mdw);
 void gtk_my_draw_widget_set_brush (GtkMyDrawWidget *mdw, GtkMyBrush * brush);
-void gtk_my_draw_widget_set_viewport (GtkMyDrawWidget *mdw, int x, int y);
+void gtk_my_draw_widget_set_viewport (GtkMyDrawWidget *mdw, float x, float y);
+float gtk_my_draw_widget_get_viewport_x (GtkMyDrawWidget *mdw);
+float gtk_my_draw_widget_get_viewport_y (GtkMyDrawWidget *mdw);
+void gtk_my_draw_widget_allow_dragging (GtkMyDrawWidget *mdw, int allow);
+void gtk_my_draw_widget_set_zoom (GtkMyDrawWidget *mdw, float zoom);
+float gtk_my_draw_widget_get_zoom (GtkMyDrawWidget *mdw);
 
 GdkPixbuf* gtk_my_draw_widget_get_as_pixbuf (GtkMyDrawWidget *mdw);
 GdkPixbuf* gtk_my_draw_widget_get_nonwhite_as_pixbuf (GtkMyDrawWidget *mdw);
