@@ -1,7 +1,8 @@
-"select color window"
+"select color window (GTK and an own window)"
 import gtk, gobject
 import colorsys
 
+# GTK selector
 class Window(gtk.Window):
     def __init__(self, app):
         gtk.Window.__init__(self)
@@ -87,29 +88,25 @@ class Window(gtk.Window):
         self.cs.set_current_color(c)
 
 
+# own color selector
+# see also get_colorselection_pixbuf in gtkmybrush.c
 class AlternativeColorSelectorWindow(gtk.Window):
     def __init__(self, colorselectionwindow):
-        gtk.Window.__init__(self)
+        gtk.Window.__init__(self, gtk.WINDOW_POPUP)
+        self.set_gravity(gtk.gdk.GRAVITY_CENTER)
+        self.set_position(gtk.WIN_POS_MOUSE)
+        
         self.colorselectionwindow = colorselectionwindow
         self.app = colorselectionwindow.app
         self.add_accel_group(self.app.accel_group)
 
-        self.set_title('Similar Color')
+        #self.set_title('Color')
         self.connect('delete-event', self.app.hide_window_cb)
 
         self.image = image = gtk.Image()
-        #image.set_from_pixbuf(self.app.brush.get_colorselection_pixbuf())
-        vbox = gtk.VBox()
-        self.add(vbox)
-
-        vbox.pack_start(image)
-
-        #label = gtk.Label("press any key to select, move mouse outside to cancel")
-        #label.set_alignment(0.5, 0.5)
-        #vbox.pack_start(label)
+        self.add(image)
 
         self.image.set_from_pixbuf(self.app.brush.get_colorselection_pixbuf())
-
 
 	self.set_events(gtk.gdk.BUTTON_PRESS_MASK |
                         gtk.gdk.BUTTON_RELEASE_MASK |
@@ -122,25 +119,9 @@ class AlternativeColorSelectorWindow(gtk.Window):
         self.connect("button-press-event", self.button_press_cb)
 
         self.destroy_timer = None
-
         self.button_pressed = False
 
-        # window manager stuff
-        #self.set_transient_for(self.application.??)
-        self.set_decorated(False)
-        self.set_resizable(False)
-        #self.set_gravity(gtk.gdk.GRAVITY_CENTER)
-
-        # place window center at pointer
-        screen_trash, x_root, y_root, modifiermask_trash = self.get_display().get_pointer()
-        width, height = 256, 256
-        # carefully avoid drawing before the window is placed correctly :)
-        self.move(x_root - width/2, y_root - height/2)
-        self.show()
-        self.move(x_root - width/2, y_root - height/2)
         self.show_all()
-        self.move(x_root - width/2, y_root - height/2)
-        #self.present()
         
     def button_press_cb(self, widget, event):
         if event.button == 1:

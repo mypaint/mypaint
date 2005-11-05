@@ -1,5 +1,12 @@
-- zoom (2x / 4x / 0.5x / 0.25x)
-- dragging the canvas with side-button
+- add a preferences dialog
+  - set maximum brush radius
+  - set canvas memory limit
+  - set canvas border outside visible window (in percent)
+  - set "reallocate how much in advance" maybe?
+
+- zoom-out only for viewing somehow?
+  - do not resize canvas when zooming, only when moving?
+  - must be changeable
 
 ? ability to snap curve points (would need a finer grid)
   - instead: a function "copy curve shape from..." / copy/paste

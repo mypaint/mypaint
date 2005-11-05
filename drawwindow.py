@@ -26,9 +26,8 @@ class Window(gtk.Window):
         self.statusbar = sb = gtk.Statusbar()
         vbox.pack_end(sb, expand=False)
 
-        self.zoomlevel_values = [0.09, 0.12,  0.18,   0.25, 0.33,  0.50, 0.66,  1.0, 1.5, 2.0, 3.0, 4.0, 5.5, 8.0]
-        self.zoomlevel_values = [      1.0/8, 2.0/11, 0.25, 1.0/3, 0.50, 2.0/3, 1.0, 1.5, 2.0, 3.0, 4.0, 5.5, 8.0, 16.0]
-        #self.zoomlevel_values = [0.09, 0.12, 0.18, 0.25, 0.33, 0.50, 0.66, 0.9, 1.0, 1.1, 1.5, 2.0, 3.0, 4.0, 5.5, 8.0]
+        #self.zoomlevel_values = [0.09, 0.12,  0.18, 0.25, 0.33,  0.50, 0.66,  1.0, 1.5, 2.0, 3.0, 4.0, 5.5, 8.0]
+        self.zoomlevel_values = [            2.0/11, 0.25, 1.0/3, 0.50, 2.0/3, 1.0, 1.5, 2.0, 3.0, 4.0, 5.5, 8.0, 16.0]
         self.zoomlevel = self.zoomlevel_values.index(1.0)
 
         self.init_child_dialogs()
