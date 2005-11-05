@@ -50,7 +50,7 @@ class Window(gtk.Window):
                 b2.set_alignment(0.5, 0.5)
                 adj.three_dots_button = None
             else:
-                b2 = gtk.Button("...") # TODO: in red if some details are set
+                b2 = gtk.Button("...")
                 b2.connect('clicked', self.details_clicked_cb, adj, s)
                 adj.three_dots_button = b2
 
@@ -62,6 +62,8 @@ class Window(gtk.Window):
         self.functionWindows = len(brushsettings.settings) * [None]
 
         self.set_size_request(450, 500)
+
+        self.relabel_buttons()
 
     def set_fixed_value_clicked_cb(self, widget, adj, value):
         adj.set_value(value);
@@ -79,7 +81,7 @@ class Window(gtk.Window):
     def value_changed_cb(self, adj, index, app):
         app.brush.settings[index].set_base_value(adj.get_value())
 
-    def brush_selected_cb(self, brush_selected):
+    def relabel_buttons(self):
         for s in brushsettings.settings:
             adj = self.adj[s.index]
             s = self.app.brush.settings[s.index]
@@ -93,5 +95,7 @@ class Window(gtk.Window):
                 else:
                     set_label("X")
 
+    def brush_selected_cb(self, brush_selected):
+        self.relabel_buttons()
 
 

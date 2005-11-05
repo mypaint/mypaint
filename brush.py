@@ -159,7 +159,7 @@ class Brush_Lowlevel(mydrawwidget.MyBrush):
 
     def set_color(self, rgb):
         r, g, b = rgb
-        self.color = rgb[:] # copy
+        self.color = list(rgb) # copy
         mydrawwidget.MyBrush.set_color(self, r, g, b)
 
     def invert_color(self):

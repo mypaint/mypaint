@@ -25,9 +25,9 @@ class Window(gtk.Window):
 
         self.statusbar = sb = gtk.Statusbar()
         vbox.pack_end(sb, expand=False)
-        sb.push(0, "hello world")
 
-        self.zoomlevel_values = [0.09, 0.12, 0.18, 0.25, 0.33, 0.50, 0.66, 1.0, 1.5, 2.0, 3.0, 4.0, 5.5, 8.0]
+        self.zoomlevel_values = [0.09, 0.12,  0.18,   0.25, 0.33,  0.50, 0.66,  1.0, 1.5, 2.0, 3.0, 4.0, 5.5, 8.0]
+        self.zoomlevel_values = [      1.0/8, 2.0/11, 0.25, 1.0/3, 0.50, 2.0/3, 1.0, 1.5, 2.0, 3.0, 4.0, 5.5, 8.0, 16.0]
         #self.zoomlevel_values = [0.09, 0.12, 0.18, 0.25, 0.33, 0.50, 0.66, 0.9, 1.0, 1.1, 1.5, 2.0, 3.0, 4.0, 5.5, 8.0]
         self.zoomlevel = self.zoomlevel_values.index(1.0)
 
@@ -43,13 +43,25 @@ class Window(gtk.Window):
               <menuitem action='Open'/>
               <menuitem action='Save'/>
               <separator/>
+              <menuitem action='Clear'/>
+              <separator/>
+              <menuitem action='Quit'/>
+            </menu>
+            <menu action='ViewMenu'>
+              <separator/>
               <menuitem action='Zoom1'/>
               <menuitem action='ZoomIn'/>
               <menuitem action='ZoomOut'/>
               <separator/>
-              <menuitem action='Clear'/>
+              <menuitem action='ZoomIn_alternate'/>
+              <menuitem action='ZoomOut_alternate'/>
               <separator/>
-              <menuitem action='Quit'/>
+              <menuitem action='MoveLeft'/>
+              <menuitem action='MoveRight'/>
+              <menuitem action='MoveUp'/>
+              <menuitem action='MoveDown'/>
+              <separator/>
+              <menuitem action='ViewHelp'/>
             </menu>
             <menu action='DialogMenu'>
               <menuitem action='BrushSelectionWindow'/>
@@ -57,46 +69,49 @@ class Window(gtk.Window):
               <menuitem action='ColorSelectionWindow'/>
             </menu>
             <menu action='BrushMenu'>
-              <menuitem action='InvertColor'/>
+              <menu action='ContextMenu'>
+                <menuitem action='ContextStore'/>
+                <separator/>
+                <menuitem action='Context00'/>
+                <menuitem action='Context00s'/>
+                <menuitem action='Context01'/>
+                <menuitem action='Context01s'/>
+                <menuitem action='Context02'/>
+                <menuitem action='Context02s'/>
+                <menuitem action='Context03'/>
+                <menuitem action='Context03s'/>
+                <menuitem action='Context04'/>
+                <menuitem action='Context04s'/>
+                <menuitem action='Context05'/>
+                <menuitem action='Context05s'/>
+                <menuitem action='Context06'/>
+                <menuitem action='Context06s'/>
+                <menuitem action='Context07'/>
+                <menuitem action='Context07s'/>
+                <menuitem action='Context08'/>
+                <menuitem action='Context08s'/>
+                <menuitem action='Context09'/>
+                <menuitem action='Context09s'/>
+                <separator/>
+                <menuitem action='ContextHelp'/>
+              </menu>
               <menuitem action='Bigger'/>
               <menuitem action='Smaller'/>
               <menuitem action='Brighter'/>
               <menuitem action='Darker'/>
+              <separator/>
+              <menuitem action='InvertColor'/>
               <menuitem action='PickColor'/>
               <menuitem action='ChangeColor'/>
-            </menu>
-            <menu action='ContextMenu'>
-              <menuitem action='ContextStore'/>
-              <separator/>
-              <menuitem action='Context00'/>
-              <menuitem action='Context00s'/>
-              <menuitem action='Context01'/>
-              <menuitem action='Context01s'/>
-              <menuitem action='Context02'/>
-              <menuitem action='Context02s'/>
-              <menuitem action='Context03'/>
-              <menuitem action='Context03s'/>
-              <menuitem action='Context04'/>
-              <menuitem action='Context04s'/>
-              <menuitem action='Context05'/>
-              <menuitem action='Context05s'/>
-              <menuitem action='Context06'/>
-              <menuitem action='Context06s'/>
-              <menuitem action='Context07'/>
-              <menuitem action='Context07s'/>
-              <menuitem action='Context08'/>
-              <menuitem action='Context08s'/>
-              <menuitem action='Context09'/>
-              <menuitem action='Context09s'/>
-              <separator/>
-              <menuitem action='ContextHelp'/>
-            </menu>
-            <menu action='DebugMenu'>
-              <menuitem action='PrintInputs'/>
-              <menuitem action='DontPrintInputs'/>
+              <menuitem action='ColorSelectionWindow'/>
             </menu>
             <menu action='HelpMenu'>
               <menuitem action='Docu'/>
+              <menuitem action='ShortcutHelp'/>
+              <separator/>
+              <menuitem action='PrintInputs'/>
+              <menuitem action='DontPrintInputs'/>
+              <separator/>
               <menuitem action='About'/>
             </menu>
           </menubar>
@@ -104,13 +119,11 @@ class Window(gtk.Window):
         actions = [
             ('FileMenu',     None, 'File'),
             ('Clear',        None, 'Clear', None, 'blank everything', self.clear_cb),
-            ('Zoom1',        None, 'Zoom 1:1', None, None, self.zoom_cb),
-            ('ZoomIn',       None, 'Zoom in', 'KP_Add', None, self.zoom_cb),
-            ('ZoomOut',      None, 'Zoom out', 'KP_Subtract', None, self.zoom_cb),
             #('NewWindow',    None, 'New Window', '<control>N', None, self.new_window_cb),
             ('Open',         None, 'Open', '<control>O', None, self.open_cb),
             ('Save',         None, 'Save', '<control>S', None, self.save_cb),
             ('Quit',         None, 'Quit', None, None, self.quit_cb),
+
             ('BrushMenu',    None, 'Brush'),
             ('InvertColor',  None, 'Invert Color', 'x', None, self.invert_color_cb),
             ('Brighter',     None, 'Brighter', None, None, self.brighter_cb),
@@ -119,11 +132,12 @@ class Window(gtk.Window):
             ('Smaller',      None, 'Smaller', 'd', None, self.brush_smaller_cb),
             ('PickColor',    None, 'Pick Color', 'r', None, self.pick_color_cb),
             ('ChangeColor',  None, 'Change Color', 'v', None, self.change_color_cb),
+
             ('ContextMenu',  None, 'Brushkeys'),
             ('Context00',    None, 'restore brush 0', '0', None, self.context_cb),
             ('Context00s',   None, 'save to brush 0', '<control>0', None, self.context_cb),
-            ('Context01',    None, 'restore 1', '1', None, self.context_cb),
-            ('Context01s',   None, 'save 1', '<control>1', None, self.context_cb),
+            ('Context01',    None, 'restore 1', None, None, self.context_cb),
+            ('Context01s',   None, 'save 1', None, None, self.context_cb),
             ('Context02',    None, 'restore 2', '2', None, self.context_cb),
             ('Context02s',   None, 'save 2', '<control>2', None, self.context_cb),
             ('Context03',    None, 'restore 3', '3', None, self.context_cb),
@@ -145,13 +159,29 @@ class Window(gtk.Window):
             ('DialogMenu',  None, 'Dialogs'),
             ('BrushSelectionWindow',  None, 'brush list', 'b', None, self.toggleBrushSelectionWindow_cb),
             ('BrushSettingsWindow',   None, 'brush settings', '<control>b', None, self.toggleBrushSettingsWindow_cb),
-            ('ColorSelectionWindow',  None, 'color', 'c', None, self.toggleColorSelectionWindow_cb),
-            ('DebugMenu',  None, 'Debug'),
+            ('ColorSelectionWindow',  None, 'gtk color dialog', 'g', None, self.toggleColorSelectionWindow_cb),
+
+            ('HelpMenu',     None, 'Help'),
+            ('Docu', None, 'Where is the documentation?', None, None, self.show_docu_cb),
+            ('ShortcutHelp',  None, 'Change the keyboard shortcuts?', None, None, self.shortcut_help_cb),
+            ('About', None, 'About MyPaint', None, None, self.show_about_cb),
             ('PrintInputs', None, 'Print brush input values to stdout', None, None, self.print_inputs_cb),
             ('DontPrintInputs', None, 'Stop printing them', None, None, self.dont_print_inputs_cb),
-            ('Docu', None, 'Where is the documentation?', None, None, self.show_docu_cb),
-            ('HelpMenu',     None, 'Help'),
-            ('About', None, 'About MyPaint', None, None, self.show_about_cb),
+
+
+            ('ShortcutsMenu', None, 'Shortcuts'),
+
+            ('ViewMenu', None, 'View'),
+            ('Zoom1',        None, 'Zoom 1:1', '1', None, self.zoom_cb),
+            ('ZoomIn',       None, 'Zoom in', 'plus', None, self.zoom_cb),
+            ('ZoomOut',      None, 'Zoom out', 'minus', None, self.zoom_cb),
+            ('ZoomIn_alternate',  None, 'Zoom in (alternate shortcut)', 'KP_Add', None, self.zoom_cb),
+            ('ZoomOut_alternate', None, 'Zoom out (alternate shortcut)', 'KP_Subtract', None, self.zoom_cb),
+            ('MoveLeft',     None, 'Move left', 'h', None, self.move_cb),
+            ('MoveRight',    None, 'Move right', 'l', None, self.move_cb),
+            ('MoveUp',       None, 'Move up', 'k', None, self.move_cb),
+            ('MoveDown',     None, 'Move down', 'j', None, self.move_cb),
+            ('ViewHelp',     None, 'Help', None, None, self.view_help_cb),
             ]
         ag.add_actions(actions)
         self.ui = gtk.UIManager()
@@ -186,9 +216,9 @@ class Window(gtk.Window):
                      "Contributors:\n"
                      "Artis Rozentals\n"
                      "\n"
-                     "This program is free software; you can redistribute it and/or modify"
-                     "it under the terms of the GNU General Public License as published by"
-                     "the Free Software Foundation; either version 2 of the License, or"
+                     "This program is free software; you can redistribute it and/or modify "
+                     "it under the terms of the GNU General Public License as published by "
+                     "the Free Software Foundation; either version 2 of the License, or "
                      "(at your option) any later version."
                      )
         d.run()
@@ -199,9 +229,9 @@ class Window(gtk.Window):
         d.set_markup("There is a tutorial in the html directory, also available "
                      "on the MyPaint homepage. It explains the features which are "
                      "hard to discover yourself.\n\n"
-                     "Comments about the brush settings are available as tooltips. "
+                     "Comments about the brush settings (opaque, hardness, etc.) are available as tooltips. "
                      " Just put your mouse over the name of a setting to see it. "
-                     "The same thing works for the input names (pressure, speed, etc.)\n"
+                     "This also works for the input names (pressure, speed, etc.)\n"
                      "\n"
                      )
         d.run()
@@ -216,6 +246,7 @@ class Window(gtk.Window):
 
     def clear_cb(self, action):
         self.mdw.clear()
+        self.statusbar.pop(1)
         
     def invert_color_cb(self, action):
         self.app.brush.invert_color()
@@ -250,10 +281,12 @@ class Window(gtk.Window):
         
     def open_file(self, filename):
         self.mdw.load(filename)
+        self.statusbar.pop(1)
         self.statusbar.push(1, 'Loaded from ' + filename)
 
     def save_file(self, filename):
         self.mdw.save(filename)
+        self.statusbar.pop(1)
         self.statusbar.push(1, 'Saved to ' + filename)
 
     def init_child_dialogs(self):
@@ -311,7 +344,6 @@ class Window(gtk.Window):
         self.app.quit()
 
     def move_cb(self, action):
-        assert False, "this function is not used any more"
         #step = 20
         step = min(self.mdw.window.get_size()) / 5
         name = action.get_name()
@@ -328,9 +360,9 @@ class Window(gtk.Window):
 
     def zoom_cb(self, action):
         name = action.get_name()
-        if name == 'ZoomIn':
+        if name.startswith('ZoomIn'):
             self.zoomlevel += 1
-        elif name == 'ZoomOut':
+        elif name.startswith('ZoomOut'):
             self.zoomlevel -= 1
         elif name == 'Zoom1':
             self.zoomlevel = self.zoomlevel_values.index(1.0)
@@ -338,7 +370,10 @@ class Window(gtk.Window):
             assert 0
         if self.zoomlevel < 0: self.zoomlevel = 0
         if self.zoomlevel >= len(self.zoomlevel_values): self.zoomlevel = len(self.zoomlevel_values) - 1
-        self.mdw.zoom(self.zoomlevel_values[self.zoomlevel])
+        z = self.zoomlevel_values[self.zoomlevel]
+        #self.statusbar.push(2, 'Zoom %.2f' % z)
+        print 'Zoom %.2f' % z
+        self.mdw.zoom(z)
 
     def context_cb(self, action):
         # TODO: this context-thing is not very useful like that, is it?
@@ -376,8 +411,6 @@ class Window(gtk.Window):
                      "using keyboard shortcuts. You can paint with one hand and "
                      "change brushes with the other without interrupting."
                      "\n\n"
-                     "To assign such a shortcut, move "
-                     "your mouse over the menu entry and press the key you want to assign. "
                      "There are 10 memory slots to hold brush settings.\n"
                      "Those are annonymous "
                      "brushes, they are not visible in the brush selector list. "
@@ -385,5 +418,22 @@ class Window(gtk.Window):
                      "They will also remember the selected color. In contrast, selecting a "
                      "normal brush never changes the color. "
                      )
+        d.run()
+        d.destroy()
+
+    def shortcut_help_cb(self, action):
+        d = gtk.MessageDialog(self, buttons=gtk.BUTTONS_OK)
+        d.set_markup("Move your mouse over a menu entry and press the key to "
+                     "assign.")
+        d.run()
+        d.destroy()
+
+    def view_help_cb(self, action):
+        d = gtk.MessageDialog(self, buttons=gtk.BUTTONS_OK)
+        d.set_markup(
+            "You can also drag the canvas with the middle mouse button.\n\n"
+            "Beware! You might have an infinite canvas, but not infinite memory. "
+            "Whenever you scroll away or zoom away, more memory needs to be allocated."
+            )
         d.run()
         d.destroy()
