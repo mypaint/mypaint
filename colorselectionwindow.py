@@ -122,6 +122,8 @@ class AlternativeColorSelectorWindow(gtk.Window):
         self.button_pressed = False
 
         self.show_all()
+
+        self.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.CROSSHAIR))
         
     def button_press_cb(self, widget, event):
         if event.button == 1:
