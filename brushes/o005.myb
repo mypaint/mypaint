@@ -1,8 +1,8 @@
 # mypaint brush file
-color 29 186 67
+color 0 0 0
 opaque 1.0
 opaque_multiply 0.0 | pressure 0.0185185185185 0.0 0.0246913580247 1.0 1.0 1.0 0.0 0.0
-radius_logarithmic 1.7 | pressure 1.0 0.61 0.0 0.0 0.0 0.0 0.0 0.0 | speed 0.234259259259 -1.54166666667 0.481296296296 -2.405 0.843333333333 -2.74416666667 1.38 -2.96
+radius_logarithmic 1.4 | pressure 1.0 0.61 0.0 0.0 0.0 0.0 0.0 0.0 | speed 0.234259259259 -1.54166666667 0.481296296296 -2.405 0.843333333333 -2.74416666667 1.38 -2.96
 hardness 0.81
 dabs_per_basic_radius 0.0
 dabs_per_actual_radius 2.0
@@ -21,3 +21,6 @@ color_saturation 0.0
 color_hue 0.0
 adapt_color_from_image 0.0
 change_radius 0.0
+stroke_treshold 0.0
+stroke_duration_logarithmic 4.0
+stroke_holdtime 0.0
