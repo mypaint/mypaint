@@ -208,34 +208,6 @@ class Window(gtk.Window):
     def dont_print_inputs_cb(self, action):
         self.app.brush.set_print_inputs(0)
 
-    def show_about_cb(self, action):
-        d = gtk.MessageDialog(self, buttons=gtk.BUTTONS_OK)
-        d.set_markup("MyPaint - pressure sensitive painting application\n"
-                     "Copyright (C) 2005 Martin Renold &lt;martinxyz@gmx.ch&gt;\n\n"
-                     "Contributors:\n"
-                     "Artis Rozentals\n"
-                     "\n"
-                     "This program is free software; you can redistribute it and/or modify "
-                     "it under the terms of the GNU General Public License as published by "
-                     "the Free Software Foundation; either version 2 of the License, or "
-                     "(at your option) any later version."
-                     )
-        d.run()
-        d.destroy()
-
-    def show_docu_cb(self, action):
-        d = gtk.MessageDialog(self, buttons=gtk.BUTTONS_OK)
-        d.set_markup("There is a tutorial in the html directory, also available "
-                     "on the MyPaint homepage. It explains the features which are "
-                     "hard to discover yourself.\n\n"
-                     "Comments about the brush settings (opaque, hardness, etc.) are available as tooltips. "
-                     " Just put your mouse over the name of a setting to see it. "
-                     "This also works for the input names (pressure, speed, etc.)\n"
-                     "\n"
-                     )
-        d.run()
-        d.destroy()
-
     def new_window_cb(self, action):
         # FIXME: is it really done like that?
         #w = Window()
@@ -404,6 +376,34 @@ class Window(gtk.Window):
             self.app.select_brush(context)
             self.app.brushSelectionWindow.set_preview_pixbuf(context.preview)
 
+    def show_about_cb(self, action):
+        d = gtk.MessageDialog(self, buttons=gtk.BUTTONS_OK)
+        d.set_markup("MyPaint - pressure sensitive painting application\n"
+                     "Copyright (C) 2005 Martin Renold &lt;martinxyz@gmx.ch&gt;\n\n"
+                     "Contributors:\n"
+                     "Artis Rozentals\n"
+                     "\n"
+                     "This program is free software; you can redistribute it and/or modify "
+                     "it under the terms of the GNU General Public License as published by "
+                     "the Free Software Foundation; either version 2 of the License, or "
+                     "(at your option) any later version."
+                     )
+        d.run()
+        d.destroy()
+
+    def show_docu_cb(self, action):
+        d = gtk.MessageDialog(self, buttons=gtk.BUTTONS_OK)
+        d.set_markup("There is a tutorial in the html directory, also available "
+                     "on the MyPaint homepage. It explains the features which are "
+                     "hard to discover yourself.\n\n"
+                     "Comments about the brush settings (opaque, hardness, etc.) are available as tooltips. "
+                     " Just put your mouse over the name of a setting to see it. "
+                     "This also works for the input names (pressure, speed, etc.)\n"
+                     "\n"
+                     )
+        d.run()
+        d.destroy()
+
     def context_help_cb(self, action):
         d = gtk.MessageDialog(self, buttons=gtk.BUTTONS_OK)
         d.set_markup("This is used to quickly save/restore brush settings "
@@ -422,7 +422,7 @@ class Window(gtk.Window):
 
     def shortcut_help_cb(self, action):
         d = gtk.MessageDialog(self, buttons=gtk.BUTTONS_OK)
-        d.set_markup("Move your mouse over a menu entry and press the key to "
+        d.set_markup("Move your mouse over a menu entry, then press the key to "
                      "assign.")
         d.run()
         d.destroy()

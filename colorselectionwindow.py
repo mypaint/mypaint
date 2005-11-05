@@ -145,8 +145,7 @@ class AlternativeColorSelectorWindow(gtk.Window):
             self.destroy_timer = None
 
     def leave_notify_cb(self, widget, event):
-        # when creating the window, we sometimes get leave&enter notifications
-        # without evident reason; block them out with timer
+        # allow to leave the window for a short time
         if self.destroy_timer is not None:
             gobject.source_remove(self.destroy_timer)
-        self.destroy_timer = gobject.timeout_add(200, self.remove_cleanly)
+        self.destroy_timer = gobject.timeout_add(80, self.remove_cleanly)
