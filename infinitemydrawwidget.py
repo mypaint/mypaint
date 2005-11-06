@@ -6,13 +6,23 @@ from helpers import Rect
 class InfiniteMyDrawWidget(MyDrawWidget):
     def __init__(self):
         MyDrawWidget.__init__(self, 1, 1)
+        self.init_canvas()
+        MyDrawWidget.clear(self)
+        self.connect("size-allocate", self.size_allocate_event_cb)
+        self.connect("dragging_finished", self.dragging_finished_cb)
+
+    def init_canvas(self):
         self.canvas_w = 1
         self.canvas_h = 1
         self.viewport_x = 0.0
         self.viewport_y = 0.0
-        self.clear()
-        self.connect("size-allocate", self.size_allocate_event_cb)
-        self.connect("dragging_finished", self.dragging_finished_cb)
+
+    def clear(self):
+        self.discard_and_resize(1, 1)
+        self.init_canvas()
+        MyDrawWidget.clear(self)
+        if self.window: 
+            self.resize_if_needed()
 
     def allow_dragging(self, allow=True):
         if allow:
@@ -84,7 +94,7 @@ class InfiniteMyDrawWidget(MyDrawWidget):
         # calculation is done in canvas coordinates
         oldCanvas = Rect(0, 0, self.canvas_w, self.canvas_h)
         viewport  = Rect(int(self.viewport_x+0.5), int(self.viewport_y+0.5), vp_w, vp_h)
-
+        
         # add space; needed to draw into the non-visible part at the border
         expanded = viewport.copy()
         border = max(30, min(vp_w/4, vp_h/4)) # quite arbitrary

@@ -356,7 +356,7 @@ class Window(gtk.Window):
         if self.zoomlevel >= len(self.zoomlevel_values): self.zoomlevel = len(self.zoomlevel_values) - 1
         z = self.zoomlevel_values[self.zoomlevel]
         #self.statusbar.push(2, 'Zoom %.2f' % z)
-        print 'Zoom %.2f' % z
+        #print 'Zoom %.2f' % z
         self.mdw.zoom(z)
 
     def context_cb(self, action):
