@@ -164,6 +164,7 @@ gtk_my_draw_widget_button_updown (GtkWidget *widget, GdkEventButton *event)
   g_return_val_if_fail (widget != NULL, FALSE);
   g_return_val_if_fail (GTK_IS_MY_DRAW_WIDGET (widget), FALSE);
   mdw = GTK_MY_DRAW_WIDGET (widget);
+  printf("button up/down\n");
 
   { // WARNING: code duplication, forced by different GdkEvent* structs.
     double pressure;

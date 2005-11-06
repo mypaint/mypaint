@@ -8,8 +8,9 @@ class Window(gtk.Window):
         self.app = app
 
         self.set_title('MyPaint')
-        def delete_event_cb(window, event, app): app.quit()
+        def delete_event_cb(window, event, app): return app.quit()
         self.connect('delete-event', delete_event_cb, self.app)
+        self.connect('key-press-event', self.key_press_event_cb)
         self.set_size_request(600, 400)
         vbox = gtk.VBox()
         self.add(vbox)
@@ -42,7 +43,9 @@ class Window(gtk.Window):
               <menuitem action='Open'/>
               <menuitem action='Save'/>
               <separator/>
-              <menuitem action='Clear'/>
+              <menu action='ClearMenu'>
+                <menuitem action='Clear'/>
+              </menu>
               <separator/>
               <menuitem action='Quit'/>
             </menu>
@@ -51,9 +54,6 @@ class Window(gtk.Window):
               <menuitem action='Zoom1'/>
               <menuitem action='ZoomIn'/>
               <menuitem action='ZoomOut'/>
-              <separator/>
-              <menuitem action='ZoomIn_alternate'/>
-              <menuitem action='ZoomOut_alternate'/>
               <separator/>
               <menuitem action='MoveLeft'/>
               <menuitem action='MoveRight'/>
@@ -117,7 +117,8 @@ class Window(gtk.Window):
         </ui>"""
         actions = [
             ('FileMenu',     None, 'File'),
-            ('Clear',        None, 'Clear', None, 'blank everything', self.clear_cb),
+            ('ClearMenu',    None, 'Clear'),
+            ('Clear',        None, 'Confirm Clear', None, None, self.clear_cb),
             #('NewWindow',    None, 'New Window', '<control>N', None, self.new_window_cb),
             ('Open',         None, 'Open', '<control>O', None, self.open_cb),
             ('Save',         None, 'Save', '<control>S', None, self.save_cb),
@@ -174,8 +175,6 @@ class Window(gtk.Window):
             ('Zoom1',        None, 'Zoom 1:1', '1', None, self.zoom_cb),
             ('ZoomIn',       None, 'Zoom in', 'plus', None, self.zoom_cb),
             ('ZoomOut',      None, 'Zoom out', 'minus', None, self.zoom_cb),
-            ('ZoomIn_alternate',  None, 'Zoom in (alternate shortcut)', 'KP_Add', None, self.zoom_cb),
-            ('ZoomOut_alternate', None, 'Zoom out (alternate shortcut)', 'KP_Subtract', None, self.zoom_cb),
             ('MoveLeft',     None, 'Move left', 'h', None, self.move_cb),
             ('MoveRight',    None, 'Move right', 'l', None, self.move_cb),
             ('MoveUp',       None, 'Move up', 'k', None, self.move_cb),
@@ -214,6 +213,18 @@ class Window(gtk.Window):
         #w.show_all()
         #gtk.main()
         print "Not really implemented."
+
+    def key_press_event_cb(self, win, event):
+        #print event.keyval, event.state
+        pressed = event.keyval
+        keys = gtk.keysyms
+        if event.state == 0: # no modifiers
+            if pressed == keys.KP_Add: self.zoom('ZoomIn')
+            elif pressed == keys.KP_Subtract: self.zoom('ZoomOut')
+            elif pressed == keys.Left: self.move('MoveLeft')
+            elif pressed == keys.Right: self.move('MoveRight')
+            elif pressed == keys.Up: self.move('MoveUp')
+            elif pressed == keys.Down: self.move('MoveDown')
 
     def clear_cb(self, action):
         self.mdw.clear()
@@ -312,30 +323,32 @@ class Window(gtk.Window):
         dialog.hide()
 
     def quit_cb(self, action):
-        self.app.quit()
+        return self.app.quit()
 
     def move_cb(self, action):
-        #step = 20
+        self.move(action.get_name())
+    def zoom_cb(self, action):
+        self.zoom(action.get_name())
+
+    def move(self, command):
         step = min(self.mdw.window.get_size()) / 5
-        name = action.get_name()
-        if name == 'MoveLeft':
+        if command == 'MoveLeft':
             self.mdw.scroll(-step, 0)
-        elif name == 'MoveRight':
+        elif command == 'MoveRight':
             self.mdw.scroll(+step, 0)
-        elif name == 'MoveUp':
+        elif command == 'MoveUp':
             self.mdw.scroll(0, -step)
-        elif name == 'MoveDown':
+        elif command == 'MoveDown':
             self.mdw.scroll(0, +step)
         else:
             assert 0
 
-    def zoom_cb(self, action):
-        name = action.get_name()
-        if name.startswith('ZoomIn'):
+    def zoom(self, command):
+        if command == 'ZoomIn':
             self.zoomlevel += 1
-        elif name.startswith('ZoomOut'):
+        elif command == 'ZoomOut':
             self.zoomlevel -= 1
-        elif name == 'Zoom1':
+        elif command == 'Zoom1':
             self.zoomlevel = self.zoomlevel_values.index(1.0)
         else:
             assert 0
@@ -349,7 +362,6 @@ class Window(gtk.Window):
     def context_cb(self, action):
         # TODO: this context-thing is not very useful like that, is it?
         #       You overwrite your settings too easy by accident.
-        # - seperate set/restore commands?
         # - not storing settings under certain circumstances?
         # - think about other stuff... brush history, only those actually used, etc...
         name = action.get_name()
@@ -430,7 +442,7 @@ class Window(gtk.Window):
     def view_help_cb(self, action):
         d = gtk.MessageDialog(self, buttons=gtk.BUTTONS_OK)
         d.set_markup(
-            "You can also drag the canvas with the middle mouse button.\n\n"
+            "You can also drag the canvas with the middle mouse button or with the arrow keys.\n\n"
             "Beware! You might have an infinite canvas, but not infinite memory. "
             "Whenever you scroll away or zoom away, more memory needs to be allocated."
             )

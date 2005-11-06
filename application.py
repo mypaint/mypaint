@@ -135,7 +135,16 @@ class Application: # singleton
     def quit(self):
         self.update_statistics()
         gtk.accel_map_save(self.confpath + 'accelmap.conf')
-        gtk.main_quit()
+        d = gtk.Dialog("Really quit?",
+             None,
+             gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+             (gtk.STOCK_YES, gtk.RESPONSE_ACCEPT,
+              gtk.STOCK_NO, gtk.RESPONSE_REJECT))
+        if d.run() == gtk.RESPONSE_ACCEPT:
+            gtk.main_quit()
+            return False
+        d.destroy()
+        return True
         
     def new_image_window(self):
         w = drawwindow.Window(self)
