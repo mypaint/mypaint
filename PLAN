@@ -1,15 +1,5 @@
 - update the tutorial
 
-- problem: no drawing possible after startup
-  - seems to be a new problem, happens about 1 out of 10 times
-    - roughly since I introduced zoom
-  - both in the brush and main area at the same time
-  - happens sometimes, neither mouse nor tablet will work
-  - no input values are printed to stdout
-  - load/clear works fine
-  ==> looks like there are no (extended?) input events received
-      - but stroke input, and mouse-down should still work then?
-
 - add a preferences dialog
   - set maximum brush radius
   - set canvas memory limit

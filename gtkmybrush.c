@@ -193,6 +193,13 @@ void brush_update_settings_values (GtkMyBrush * b)
   float * settings = b->settings_value;
   float inputs[INPUT_COUNT];
 
+  if (b->dtime < 0.0) {
+    printf("Time is running backwards!\n");
+  } else if (b->dtime == 0.0) {
+    printf("Warning, b->dtime == 0.0, should never happen (using workaround).\n");
+    b->dtime = 0.00001;
+  }
+
   b->base_radius = expf(b->settings[BRUSH_RADIUS_LOGARITHMIC].base_value);
 
   // FIXME: does happen (interpolation problem?)
@@ -502,8 +509,12 @@ void brush_stroke_to (GtkMyBrush * b, Surface * s, float x, float y, float press
     b->norm_dy_slow = 0.0;
     b->stroke_started = 0;
     b->stroke = 1.0; // start in a state as if the stroke was long finished
+
+    b->dtime = 0.0001; // not sure if it this is needed
     return;
   }
+
+  if (time == b->last_time) return;
 
   if (pressure > 0) {
     b->painting_time += time - b->last_time;
@@ -526,7 +537,7 @@ void brush_stroke_to (GtkMyBrush * b, Surface * s, float x, float y, float press
   //g_print("dist = %f\n", b->dist);
   // Not going to recalculate dist each step.
 
-  if (b->dist < 1.0 && b->dtime > 0.01) {
+  if (b->dist < 1.0 && time - b->dtime > 0.001) {
     // "move" the brush anyway, but draw no dab
 
     // Important to do this often, because brush_count_dabs_to depends
