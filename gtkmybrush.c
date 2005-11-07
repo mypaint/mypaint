@@ -195,8 +195,9 @@ void brush_update_settings_values (GtkMyBrush * b)
 
   if (b->dtime < 0.0) {
     printf("Time is running backwards!\n");
+    b->dtime = 0.00001;
   } else if (b->dtime == 0.0) {
-    printf("Warning, b->dtime == 0.0, should never happen (using workaround).\n");
+    // FIXME: happens about every 10th start, workaround (against division by zero)
     b->dtime = 0.00001;
   }
 

@@ -10,7 +10,8 @@ class Window(gtk.Window):
         self.set_title('MyPaint')
         def delete_event_cb(window, event, app): return app.quit()
         self.connect('delete-event', delete_event_cb, self.app)
-        self.connect('key-press-event', self.key_press_event_cb)
+        self.connect('key-press-event', self.key_press_event_cb_before)
+        self.connect_after('key-press-event', self.key_press_event_cb_after)
         self.set_size_request(600, 400)
         vbox = gtk.VBox()
         self.add(vbox)
@@ -214,17 +215,25 @@ class Window(gtk.Window):
         #gtk.main()
         print "Not really implemented."
 
-    def key_press_event_cb(self, win, event):
-        #print event.keyval, event.state
-        pressed = event.keyval
-        keys = gtk.keysyms
-        if event.state == 0: # no modifiers
-            if pressed == keys.KP_Add: self.zoom('ZoomIn')
-            elif pressed == keys.KP_Subtract: self.zoom('ZoomOut')
-            elif pressed == keys.Left: self.move('MoveLeft')
-            elif pressed == keys.Right: self.move('MoveRight')
-            elif pressed == keys.Up: self.move('MoveUp')
-            elif pressed == keys.Down: self.move('MoveDown')
+    def key_press_event_cb_before(self, win, event):
+        ANY_MODIFIER = gtk.gdk.SHIFT_MASK | gtk.gdk.MOD1_MASK | gtk.gdk.CONTROL_MASK
+        if event.state & ANY_MODIFIER:
+            # allow user shortcuts with modifiers
+            return False
+        if event.keyval == gtk.keysyms.Left: self.move('MoveLeft')
+        elif event.keyval == gtk.keysyms.Right: self.move('MoveRight')
+        elif event.keyval == gtk.keysyms.Up: self.move('MoveUp')
+        elif event.keyval == gtk.keysyms.Down: self.move('MoveDown')
+        else: return False
+        return True
+
+    def key_press_event_cb_after(self, win, event):
+        # Not checking modifiers because this function gets only 
+        # called if no user keybinding accepted the event.
+        if event.keyval == gtk.keysyms.KP_Add: self.zoom('ZoomIn')
+        elif event.keyval == gtk.keysyms.KP_Subtract: self.zoom('ZoomOut')
+        else: return False
+        return True
 
     def clear_cb(self, action):
         self.mdw.clear()
