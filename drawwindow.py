@@ -119,7 +119,7 @@ class Window(gtk.Window):
         actions = [
             ('FileMenu',     None, 'File'),
             ('ClearMenu',    None, 'Clear'),
-            ('Clear',        None, 'Confirm Clear', None, None, self.clear_cb),
+            ('Clear',        None, 'Confirm Clear', '<control>period', None, self.clear_cb),
             #('NewWindow',    None, 'New Window', '<control>N', None, self.new_window_cb),
             ('Open',         None, 'Open', '<control>O', None, self.open_cb),
             ('Save',         None, 'Save', '<control>S', None, self.save_cb),
@@ -230,6 +230,7 @@ class Window(gtk.Window):
     def key_press_event_cb_after(self, win, event):
         # Not checking modifiers because this function gets only 
         # called if no user keybinding accepted the event.
+        print event.keyval
         if event.keyval == gtk.keysyms.KP_Add: self.zoom('ZoomIn')
         elif event.keyval == gtk.keysyms.KP_Subtract: self.zoom('ZoomOut')
         else: return False
@@ -417,9 +418,9 @@ class Window(gtk.Window):
         d.set_markup("There is a tutorial in the html directory, also available "
                      "on the MyPaint homepage. It explains the features which are "
                      "hard to discover yourself.\n\n"
-                     "Comments about the brush settings (opaque, hardness, etc.) are available as tooltips. "
-                     " Just put your mouse over the name of a setting to see it. "
-                     "This also works for the input names (pressure, speed, etc.)\n"
+                     "Comments about the brush settings (opaque, hardness, etc.) and "
+                     "inputs (pressure, speed, etc.) are available as tooltips. "
+                     "Put your mouse over a label to see it. "
                      "\n"
                      )
         d.run()
