@@ -11,7 +11,7 @@ Recommended: a pressure sensitive input device (graphic tablet)
 
 Debian users: aptitude install python-gtk2-dev libgtk2.0-dev python2.3-dev
 
-- Martin Renold <martinxyz@gmx.ch>
+Project homepage:
 http://people.ee.ethz.ch/~mrenold/mypaint/
 http://old.homeip.net/martin/painting/
 
