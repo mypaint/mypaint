@@ -1,4 +1,4 @@
-MyPaint - a small drawing program with dynamic brushes
+MyPaint - drawing program with dynamic brushes for graphic tablets
 
 Compile and run:
 make
@@ -9,12 +9,9 @@ There is no 'make install' yet.
 Required: pygtk, python, gtk
 Recommended: a pressure sensitive input device (graphic tablet)
 
-Debian users: apt-get install python-gtk2-dev
+Debian users: aptitude install python-gtk2-dev libgtk2.0-dev python2.3-dev
 
 - Martin Renold <martinxyz@gmx.ch>
 http://people.ee.ethz.ch/~mrenold/mypaint/
 http://old.homeip.net/martin/painting/
-
-Brush contributors:
-Artis Rozentals
 
