@@ -230,7 +230,6 @@ class Window(gtk.Window):
     def key_press_event_cb_after(self, win, event):
         # Not checking modifiers because this function gets only 
         # called if no user keybinding accepted the event.
-        print event.keyval
         if event.keyval == gtk.keysyms.KP_Add: self.zoom('ZoomIn')
         elif event.keyval == gtk.keysyms.KP_Subtract: self.zoom('ZoomOut')
         else: return False

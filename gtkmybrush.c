@@ -652,11 +652,17 @@ PrecalcData * precalc_data(float phase0)
   i = 0;
   for (y=0; y<height; y++) {
     for (x=0; x<width; x++) {
-      float h, s, v;
+      float h, s, v, s_original, v_original;
       int dx, dy;
-      float v_factor = 1.5;
-      float s_factor = 1.5;
-      
+      float v_factor = 0.8;
+      float s_factor = 0.8;
+      float h_factor = 0.05;
+
+#define factor2_func(x) ((x)*(x)*SIGN(x))
+      float v_factor2 = 0.01;
+      float s_factor2 = 0.01;
+
+
       h = 0;
       s = 0;
       v = 0;
@@ -665,9 +671,10 @@ PrecalcData * precalc_data(float phase0)
       dy = y-height/2;
 
       // basically, its x-axis = value, y-axis = saturation
-      v = dx*v_factor;
-      s = dy*s_factor;
+      v = dx*v_factor + factor2_func(dx)*v_factor2;
+      s = dy*s_factor + factor2_func(dy)*s_factor2;
 
+      v_original = v; s_original = s;
 
       // overlay sine waves to color hue, not visible at center, ampilfying near the border
       if (1) {
@@ -728,10 +735,13 @@ PrecalcData * precalc_data(float phase0)
           if (min < 0) min = 0;
           mul = min / (30.0-1.0-6.0);
           h = mul*h; //+ (1-mul)*0;
-          v = mul*v + (1-mul)*dx*v_factor;
-          s = mul*s + (1-mul)*dy*s_factor;
+
+          v = mul*v + (1-mul)*v_original;
+          s = mul*s + (1-mul)*s_original;
         }
       }
+
+      h -= h*h_factor;
 
       result[i].h = (int)h;
       result[i].v = (int)v;
