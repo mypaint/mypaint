@@ -402,7 +402,7 @@ class Window(gtk.Window):
         d.set_markup("MyPaint - pressure sensitive painting application\n"
                      "Copyright (C) 2005 Martin Renold &lt;martinxyz@gmx.ch&gt;\n\n"
                      "Contributors:\n"
-                     "Artis Rozent\xc4\x81ls\n"
+                     "Artis Rozent\xc4\x81ls &lt;artis@aaa.apollo.lv&gt;\n"
                      #"UTF-8 Test: \xE2\x82\xAC (should be euro), \xc3\xa3 \xc4\x81\n"
                      "\n"
                      "This program is free software; you can redistribute it and/or modify "
