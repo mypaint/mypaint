@@ -9,7 +9,6 @@ between the strokes. Mypaint is not really optimized for the mouse. If
 you paint often I really reccomend a graphic tablet. 
 
 ==General==
-
 [[shortcut.jpg|right|border]] 
 Mypaint can save/load .png only (without alpha). Use the
 [http://www.gimp.org GIMP] for final touch up, cropping and all the
@@ -39,18 +38,24 @@ Scribble around a bit with your new color, then press '''V'''.  The
 color at the center is your current color. The horizontal stripe
 changes the brightness only, the vertical one saturation only. The
 colors around will look different every time. This is a very fast way
-to get shades of one color. I prefer it over the GTK dialog.
+to get shades of one color. I prefer it over the GTK dialog except for
+the very dark shades (you can hardly see what color is present in the
+choosen black before you draw).
 
 Finally, point at your painting and press the '''R''' key. This picks
 the color at the cursor - no mouse click is needed. This is even
 faster, but you get no color variation.
 
-==Infinite Canvas==
-The border of the screen is not the end. The canvas is always a little
-bit bigger than this and will grow when you resize the window, or move
-around. In the '''View''' menu, read the '''Help''' text now. Try it.
+==Infinite Canvas== 
 
-==The Brush Dialog== 
+The border of the screen is not the end. The canvas is always a little
+bit bigger than this and will grow when you resize the window or move
+around. In the '''View''' menu, read the '''Help''' text now. The
+thing to remember is that zooming out can be dangerous. You will
+probably notice a heavy slowdown before you run out of memory. Anyway,
+try it while you have nothing to loose.
+
+==The Brush Dialog==
 The white space at the bottom of the graphical brush list is for
 trying out your brush. Use it a bit. But if you press '''Ctrl-.'''
 your main image will get cleared - you have to use the clear button at
@@ -58,8 +63,8 @@ the right.
 
 [[redbrush.jpg|right|border]]
 
-You can drag the brushes around in the list to reorder them. When you
-start mypaint, the upper left brush will be selected.
+You can drag the brushes around in the list to reorder them. On
+startup the upper left brush will be selected.
 
 Now choose the redish brush at the top. Click on it once more to show
 the bigger preview image. Try it a bit, I think it is a good one.
@@ -67,19 +72,19 @@ the bigger preview image. Try it a bit, I think it is a good one.
 The first thing to notice is that it gets more randomness when you
 increase pressure. Also, it will grow when you move around faster. And
 the brightness changes. You have to get a feeling for this brush to
-before you can use it productively. Especially, try to change the size
-and also see what happens when you draw very slowly. (On the
-scribbling at the right the size was never changed.)
+before you can use it productively. Especially, try to change the
+size, and see what happens when you draw very slowly. (On the
+screenshot here the size was never changed.)
 
 ==Create your own brush==
-The rest of this tutorial is about making brushes.
+The rest of this tutorial is about making and changing brushes.
 
-Let's say you like this brush, but not the fact that the color gets
-changed. Open the '''brush settings''' window from the '''Dialogs'''
-menu. So many settings! I have to admit that I don't remember what
-some of them do myself. Look at the tooltip info for '''color
-brightness''' at the bottom. A text will appear when your mouse rests
-over the label. That must be it! But why is it at zero?
+Let's say you like this brush, but not the fact that the brightness
+gets changed. Open the '''brush settings''' window from the
+'''Dialogs''' menu. So many settings! I have to admit that I don't
+remember what some of them do myself. Look at the tooltip info for
+'''color brightness''' at the bottom. A text will appear when your
+mouse rests over the label. That must be it! But why is it at zero?
 Well what you see here is the '''base value''', independent of speed,
 pressure, whatever. Change it until it shows '''2.0'''. Change your
 Color to black and draw a bit.
@@ -89,8 +94,8 @@ Color to black and draw a bit.
 OK, that was a bad idea, and it still does change with speed! Click on
 the red brush again to restore the original settings. Click on the
 '''X''' button right to the '''color brightness''' slider. The '''X'''
-indicates that something interesting was changed there, in contrast to
-the buttons labeled with three dots '''...'''.
+indicates that something interesting was changed here, in contrast to
+the buttons labeled with '''...''' three dots.
 
 Move the '''by random''' slider to the maximum, just for fun, and try
 your brush. You could increase the base value a bit to make the brush
@@ -103,6 +108,7 @@ saved any more with your brush because it has no effect.)
 
 ==Save your new brush==
 
+[[brushdialog.jpg|right]]
 Easy. In the brush dialog, click on '''add as new'''.  Your new brush
 is at the upper left corner (remember, you can drag it around). But it
 needs a different image! Press '''clear''' and draw something that
@@ -111,19 +117,20 @@ preview'''. If you improve the brush settings even more, remember to
 '''save settings''' before you switch to another brush or quit.
 
 It is also possible to draw the preview image with a different
-brush. Remember: click once to select a brush, click again to load its
-image. You can also change the preview (actually the .myb brush file
-too) with an external program. Just click on the brush any mypaint
-will notice the changes.  And maybe you want our
+brush. Remember: click once to load the brush settings, click again to
+load its image. You can also change the preview (actually the settings
+file too) with an external program. Mypaint will notice the changes
+when you select the brush (again). Maybe you want our
 [[prev-template.xcf.gz|GIMP template for the labels]].
 
 
 ==Share your brush==
+
 This goes manually, sorry about that. Look at the directory
 ~/.mypaint/brushes/, use the png images to find the number of your
 brush. You can rename those files, as long as you keep the .myb
-extension mypaint will find them. Only the b???.myb file is important,
-but you better get the _prev.png too for a nice preview.  Wow,
-somebody is actually reading all this stuff! Well, if you ever come up
-with an own brush (or a whole collection) that you like and use often,
-please drop me an email so I can include it into the next release.
+extension mypaint will find them. The file b???.myb is most important,
+but you better get the _prev.png too for a nice preview. Wow, somebody
+is actually reading all this stuff! Well, if you ever come up with an
+own brush (or a whole collection) that you like and use often, please
+drop me an email so I can include it into the next release.
