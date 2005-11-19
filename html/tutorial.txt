@@ -39,8 +39,8 @@ color at the center is your current color. The horizontal stripe
 changes the brightness only, the vertical one saturation only. The
 colors around will look different every time. This is a very fast way
 to get shades of one color. I prefer it over the GTK dialog except for
-the very dark shades (you can hardly see what color is present in the
-choosen black before you draw).
+the very dark shades. It is hard to distinguish those dark colors from
+each other before they cover a big area.
 
 Finally, point at your painting and press the '''R''' key. This picks
 the color at the cursor - no mouse click is needed. This is even
@@ -71,7 +71,7 @@ the bigger preview image. Try it a bit, I think it is a good one.
 
 The first thing to notice is that it gets more randomness when you
 increase pressure. Also, it will grow when you move around faster. And
-the brightness changes. You have to get a feeling for this brush to
+the brightness changes. You have to get a feeling for this brush
 before you can use it productively. Especially, try to change the
 size, and see what happens when you draw very slowly. (On the
 screenshot here the size was never changed.)
