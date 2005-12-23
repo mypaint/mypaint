@@ -1,3 +1,5 @@
+[[..|back to the MyPaint homepage]]
+
 ==Tutorial==
 
 Here I want to explain you how I use my program. My goal for mypaint
