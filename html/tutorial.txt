@@ -6,7 +6,7 @@ Here I want to explain you how I use my program. My goal for mypaint
 was "scribble without thinking". I want as little distraction as
 possible from the painting process.
 
-If you are drawing with the mouse you will notice small problems
+If you are drawing with the mouse you might notice small problems
 between the strokes. Mypaint is not really optimized for the mouse. If
 you paint often I really reccomend a graphic tablet. 
 
