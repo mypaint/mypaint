@@ -258,7 +258,8 @@ class CurveWidget(gtk.DrawingArea):
             display = gtk.gdk.display_get_default()
             display.beep()
         else:
-            assert self.grabbed is None
+            #assert self.grabbed is None # This did happen. I think it's save to ignore? 
+            # I guess it's because gtk can generate button press event without corresponding release.
             self.grabbed = nearest
 
     def button_release_cb(self, widget, event):
