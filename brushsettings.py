@@ -7,10 +7,11 @@ It is also imported at runtime.
 inputs_list = [
     # name, default maximum, hard maximum, tooltip
     ['pressure', 1.0, True, "The pressure reported by the tablet, between 0.0 and 1.0. If you use the mouse, it will be 0.5 when a button is pressed and 0.0 otherwise."],
-    ['speed', 5.0, False, "How fast you currently move. This can change very quickly. Try 'print input values' from the 'debug' menu to get a feeling for the range."],
+    ['speed', 5.0, False, "How fast you currently move. This can change very quickly. Try 'print input values' from the 'help' menu to get a feeling for the range."],
     ['speed2', 5.0, False, "Same as speed, but changes slower. Also look at the 'speed2 slowness' setting."],
     ['random', 1.0, False, "Random noise, changing at each evaluation. Equally distributed between 0 and 1."],
     ['stroke', 1.0, True, "This input slowly goes from zero to one while you draw a stroke. It can also be configured to jump back to zero periodically while you move. Look at the 'stroke duration' and 'stroke hold time' settings."],
+    ['custom', 1.0, True, "This is a user defined input. See '' "],
     ]
 
 settings_list = [
@@ -39,6 +40,8 @@ settings_list = [
     ['stroke_treshold', 'stroke treshold', True, 0.0, 0.0, 0.5, "How much pressure is needed to start a stroke. This affects the stroke input only. Mypaint does not need a minimal pressure to start drawing."],
     ['stroke_duration_logarithmic', 'stroke duration', False, -1.0, 4.0, 7.0, "How far you have to move until the stroke input reaches 1.0. This value is logarithmic (negative values will not inverse the process)."],
     ['stroke_holdtime', 'stroke hold time', False, 0.0, 0.0, 10.0, "This defines how long the stroke input stays at 1.0. After that it will reset to 0.0 and start growing again, even if the stroke is not yet finished.\n2.0 means twice as long as it takes to go from 0.0 to 1.0\n9.9 and bigger stands for infinite"],
+    ['custom_input', 'custom input', False, -5.0, 0.0, 5.0, "Set the custom input to this value. If it is slowed down, move it towards this value (see below)."],
+    ['custom_input_slowness', 'custom input slowness', False, 0.0, 0.0, 10.0, "How slow the custom input follows the wanted value. This happens at brushdab level (ignoring how much time has past, if brushdabs do not depend on time).\n0.0 no slowdown, the custom input changes instantly"],
     ]
 
 class BrushInput:

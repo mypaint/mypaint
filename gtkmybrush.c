@@ -239,8 +239,9 @@ void brush_update_settings_values (GtkMyBrush * b)
   inputs[INPUT_SPEED2] = b->norm_speed_slow2 * 0.005;
   inputs[INPUT_RANDOM] = 0.5; // actually unused
   inputs[INPUT_STROKE] = MIN(b->stroke, 1.0);
+  inputs[INPUT_CUSTOM] = b->custom_input;
   if (b->print_inputs) {
-    g_print("press=% 4.3f, speed=% 4.4f\tspeed2=% 4.4f\tstroke=% 4.3f\n", inputs[INPUT_PRESSURE], inputs[INPUT_SPEED], inputs[INPUT_SPEED2], inputs[INPUT_STROKE]);
+    g_print("press=% 4.3f, speed=% 4.4f\tspeed2=% 4.4f\tstroke=% 4.3f\tcustom=% 4.3f\n", inputs[INPUT_PRESSURE], inputs[INPUT_SPEED], inputs[INPUT_SPEED2], inputs[INPUT_STROKE], inputs[INPUT_CUSTOM]);
   }
 
   for (i=0; i<BRUSH_SETTINGS_COUNT; i++) {
@@ -301,6 +302,12 @@ void brush_update_settings_values (GtkMyBrush * b)
     float fac = 1.0 - exp_decay (exp(settings[BRUSH_OFFSET_BY_SPEED_SLOWNESS]*0.01)-1.0, b->dtime);
     b->norm_dx_slow += (norm_dx - b->norm_dx_slow) * fac;
     b->norm_dy_slow += (norm_dy - b->norm_dy_slow) * fac;
+  }
+
+  { // custom input
+    float fac;
+    fac = 1.0 - exp_decay (settings[BRUSH_CUSTOM_INPUT_SLOWNESS], 0.1);
+    b->custom_input += (settings[BRUSH_CUSTOM_INPUT] - b->custom_input) * fac;
   }
 
   { // stroke length
@@ -510,6 +517,7 @@ void brush_stroke_to (GtkMyBrush * b, Surface * s, float x, float y, float press
     b->norm_dy_slow = 0.0;
     b->stroke_started = 0;
     b->stroke = 1.0; // start in a state as if the stroke was long finished
+    b->custom_input = 0.0;
 
     b->dtime = 0.0001; // not sure if it this is needed
     return;

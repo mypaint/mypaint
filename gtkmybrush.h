@@ -65,6 +65,8 @@ struct _GtkMyBrush
   float stroke;
   int stroke_started;
 
+  float custom_input;
+
   float painting_time;
 
   // description how to calculate the values
