@@ -1,5 +1,5 @@
 /* Copyright 2004 Martin Renold <martinxyz@gmx.ch>
-   Released as public domain.
+   I place this file into the public domain. Do with it whatever you want.
 */
 
 #include <string.h>

@@ -11,3 +11,11 @@
 ? ability to snap curve points (would need a finer grid)
   - instead: copy/paste buttons next to curve shapes.
 
+- allow non-circle brush shapes
+
+- infinite canvas is awful (? why ?)
+
+- button for fast GIMP in- and export
+  - also a GIMP plugin, if needed.
+
+- a visual border, so you can "simulate" a non-infinite canvas

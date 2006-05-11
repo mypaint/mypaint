@@ -1,5 +1,8 @@
 #include <math.h>
 #include "brush_dab.h"
+// This actually draws every pixel of the dab.
+// Called from brush_prepare_and_draw_dab.
+// The parameters are only in the header file to avoid duplication.
 {
   float r_fringe;
   int x0, y0;
@@ -134,6 +137,7 @@
   }
   
   if (bbox) {
+    // expand the bounding box to include the region we just drawed
     int bb_x, bb_y, bb_w, bb_h;
     bb_x = floor(x - (radius+1));
     bb_y = floor(y - (radius+1));

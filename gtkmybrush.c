@@ -177,7 +177,7 @@ void brush_reset (GtkMyBrush * b)
   b->time = 0; // triggers the real reset below in brush_stroke_to
 }
 
-// Update all settings.
+// Update the "important" settings. (eg. actual radius, velocity)
 //
 // This has to be done more often than each dab, because of
 // interpolation. For example if the radius is very big and suddenly
@@ -343,9 +343,11 @@ void brush_update_settings_values (GtkMyBrush * b)
   if (b->actual_radius > 100) b->actual_radius = 100;
 }
 
-// high-level part of before each dab
+// Called only from brush_stroke_to(). Calculate everything needed to
+// draw the dab, then let draw_brush_dab() do the actual drawing.
 //
-// this is always called after brush_update_settings_values
+// This is always called "directly" after brush_update_settings_values.
+// The bbox parameter is a return value XXX
 void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s, Rect * bbox)
 {
   float * settings = b->settings_value;
@@ -459,6 +461,7 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s, Rect * bbox)
   }
 }
 
+// How many dabs will be drawn between the current and the next (x, y, pressure, time) position?
 float brush_count_dabs_to (GtkMyBrush * b, float x, float y, float pressure, float time)
 {
   float dx, dy, dt;
@@ -488,6 +491,8 @@ float brush_count_dabs_to (GtkMyBrush * b, float x, float y, float pressure, flo
   return res1 + res2 + res3;
 }
 
+// Called from gtkmydrawwidget.c when a GTK event was received, with the new pointer position.
+// The bbox, unless NULL, is the bounding box of the modified region. It will be expanded.
 void brush_stroke_to (GtkMyBrush * b, Surface * s, float x, float y, float pressure, float time, Rect * bbox)
 {
   if (DEBUGLOG) { // logfile for debugging
