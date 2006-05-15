@@ -6,16 +6,16 @@
 
 ? zoom-out only for viewing somehow?
   - do not resize canvas when zooming, only when moving?
-  - must be changeable
 
-? ability to snap curve points (would need a finer grid)
-  - instead: copy/paste buttons next to curve shapes.
+- edit global pressure nonlinearity curve
+  - maybe wacom tool? maybe for each brush?
+
+- copy/paste buttons curve shapes 
+  - buttons next to shape? shared "symlinked" shape?
 
 - allow non-circle brush shapes
 
-- infinite canvas is awful (? why ?)
-
-- button for fast GIMP in- and export
-  - also a GIMP plugin, if needed.
+- button for fast GIMP in- and export, also a GIMP plugin if needed
 
 - a visual border, so you can "simulate" a non-infinite canvas
+  - because infinite canvas alone is awful for artists
