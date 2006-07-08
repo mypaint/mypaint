@@ -44,12 +44,12 @@ struct _GtkMyBrush
   GObject parent;
 
   // lowlevevel stuff (almost raw input)
-  float x, y, pressure, time;
+  float x, y, pressure; double time;
   float dx, dy, dpressure, dtime; // note: this is dx/ddab, ..., dtime/ddab (dab number, 5.0 = 5th dab)
   float dist;
   float base_radius;
   float actual_radius;
-  float last_time;
+  double last_time;
 
   guchar color[3];
 
@@ -97,7 +97,7 @@ void gtk_my_brush_set_painting_time (GtkMyBrush * b, float value);
 GdkPixbuf* gtk_my_brush_get_colorselection_pixbuf (GtkMyBrush * b);
 
 /* only for mydrawwidget (not exported to python): */
-void brush_stroke_to (GtkMyBrush * b, Surface * s, float x, float y, float pressure, float time, Rect * bbox);
+void brush_stroke_to (GtkMyBrush * b, Surface * s, float x, float y, float pressure, double time, Rect * bbox);
 void brush_reset (GtkMyBrush * b);
 
 #ifdef __cplusplus

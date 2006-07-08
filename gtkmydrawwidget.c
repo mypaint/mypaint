@@ -177,7 +177,7 @@ gtk_my_draw_widget_button_updown (GtkWidget *widget, GdkEventButton *event)
     bbox.w = 0;
     brush_stroke_to (mdw->brush, mdw->surface,
                      event->x*mdw->one_over_zoom + mdw->viewport_x, event->y*mdw->one_over_zoom + mdw->viewport_y,
-                     pressure, event->time / 1000.0 /* in seconds */, &bbox);
+                     pressure, (double)event->time / 1000.0 /* in seconds */, &bbox);
     bbox.x -= (int)(mdw->viewport_x+0.5);
     bbox.y -= (int)(mdw->viewport_y+0.5);
     if (mdw->zoom != 1.0) {
@@ -233,14 +233,14 @@ gtk_my_draw_widget_motion_notify (GtkWidget *widget, GdkEventMotion *event)
     if (!gdk_event_get_axis ((GdkEvent *)event, GDK_AXIS_PRESSURE, &pressure)) {
       pressure = (event->state & GDK_BUTTON1_MASK) ? 0.5 : 0;
     }
-    //g_print ("motion %f %f %f %d\n", event->x, event->y, pressure, event->state);
+    //g_print ("motion %d %f %f %f %d\n", event->time, event->x, event->y, pressure, event->state);
     g_assert (pressure >= 0 && pressure <= 1);
     
     Rect bbox;
     bbox.w = 0;
     brush_stroke_to (mdw->brush, mdw->surface,
                      event->x*mdw->one_over_zoom + mdw->viewport_x, event->y*mdw->one_over_zoom + mdw->viewport_y,
-                     pressure, event->time / 1000.0 /* in seconds */, &bbox);
+                     pressure, (double)event->time / 1000.0 /* in seconds */, &bbox);
     bbox.x -= (int)(mdw->viewport_x+0.5);
     bbox.y -= (int)(mdw->viewport_y+0.5);
     if (mdw->zoom != 1.0) {
