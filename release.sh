@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-version=0.4
+version=0.4.1
 
 cd ~/tmp
 rm -rf mypaint-$version

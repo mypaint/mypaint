@@ -5,13 +5,21 @@ import brush
 class Application: # singleton
     def __init__(self, confpath, loadimage):
         self.confpath = confpath
-        self.datapath = './' # FIXME: make this configurable for system-wide installation
+
+        paths = ['./', '/usr/share/mypaint/', '/usr/local/share/mypaint/']
+        self.datapath = None
+        for p in paths:
+            if os.path.isdir(p + 'brushes/'):
+                self.datapath = p
+                break
+        if not self.datapath:
+            print 'Default brush collection not found! Searched:'
+            print ' '.join(paths)
+            raise SystemExit
+
         self.user_brushpath = self.confpath + 'brushes/'
         self.stock_brushpath = self.datapath + 'brushes/'
 
-        if not os.path.isdir(self.stock_brushpath):
-            print 'Default brush collection not found! (tried in %s)' % self.stock_brushpath
-            raise SystemExit
         if not os.path.isdir(self.confpath):
             os.mkdir(self.confpath)
             print 'Created', self.confpath
