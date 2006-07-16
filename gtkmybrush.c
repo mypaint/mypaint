@@ -503,7 +503,7 @@ void brush_stroke_to (GtkMyBrush * b, Surface * s, float x, float y, float press
     fprintf(logfile, "%f %f %f %f\n", time, x, y, pressure);
   }
   if (time <= b->time) {
-    g_print("timeskip  (time=%f, b->time=%f)\n", time, b->time);
+    //g_print("timeskip  (time=%f, b->time=%f)\n", time, b->time);
     return;
   }
 
