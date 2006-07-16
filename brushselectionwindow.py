@@ -32,9 +32,9 @@ class Window(gtk.Window):
         hbox = gtk.HBox()
         hbox.set_border_width(8)
         vbox.pack_start(hbox, expand=False, fill=False)
+        self.mdw = mydrawwidget.MyDrawWidget()
         # bad, fixed maximal size -- No, that's actually good!
-        self.mdw = mydrawwidget.MyDrawWidget(128, 128)
-        #self.mdw = mydrawwidget.MyDrawWidget(512, 512)
+        self.mdw.discard_and_resize(128, 128)
         self.mdw.clear()
         self.mdw.set_brush(self.app.brush)
         self.mdw.set_size_request(128, 128)

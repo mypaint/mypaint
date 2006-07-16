@@ -13,3 +13,5 @@ import gtk.gdk.Pixbuf as PyGdkPixbuf_Type
 %%
 ignore-glob
   *_get_type
+ignore brush_stroke_to 
+ignore brush_reset 

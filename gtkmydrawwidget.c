@@ -2,12 +2,17 @@
 #include "gtkmydrawwidget.h"
 
 static void gtk_my_draw_widget_class_init    (GtkMyDrawWidgetClass *klass);
+static void gtk_my_draw_widget_init          (GtkMyDrawWidget      *mdw);
 static void gtk_my_draw_widget_finalize (GObject *object);
 static void gtk_my_draw_widget_realize (GtkWidget *widget);
 static gint gtk_my_draw_widget_button_updown (GtkWidget *widget, GdkEventButton *event);
 static gint gtk_my_draw_widget_motion_notify (GtkWidget *widget, GdkEventMotion *event);
 static gint gtk_my_draw_widget_proximity_inout (GtkWidget *widget, GdkEventProximity *event);
 static gint gtk_my_draw_widget_expose (GtkWidget *widget, GdkEventExpose *event);
+
+
+
+
 
 static gpointer parent_class;
 
@@ -34,7 +39,7 @@ gtk_my_draw_widget_get_type (void)
 	NULL,		/* class_data */
 	sizeof (GtkMyDrawWidget),
 	0,		/* n_preallocs */
-	NULL, /* instance init */
+	(GInstanceInitFunc) gtk_my_draw_widget_init,
       };
 
       my_draw_widget_type =
@@ -136,19 +141,23 @@ gtk_my_draw_widget_finalize (GObject *object)
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
-GtkMyDrawWidget*
-gtk_my_draw_widget_new        (int width, int height)
+GtkWidget*
+gtk_my_draw_widget_new (void)
 {
-  GtkMyDrawWidget * mdw;
-  mdw = g_object_new (gtk_my_draw_widget_get_type (), NULL);
+  return g_object_new (GTK_TYPE_MY_DRAW_WIDGET, NULL);
+}
+
+void gtk_my_draw_widget_init (GtkMyDrawWidget *mdw)
+{
   mdw->surface = NULL;
-  gtk_my_draw_widget_discard_and_resize (mdw, width, height);
+  // Dummy width, must be set later using discard_and_resize. 
+  // I decided for an empty constructor because [complicated excuse
+  // removed] since http://live.gnome.org/PyGTK/WhatsNew28
+  gtk_my_draw_widget_discard_and_resize (mdw, 1, 1);
 
   mdw->zoom = 1.0;
   mdw->one_over_zoom = 1.0;
   mdw->dragging = 0;
-
-  return mdw;
 }
 
 void gtk_my_draw_widget_discard_and_resize (GtkMyDrawWidget *mdw, int width, int height)

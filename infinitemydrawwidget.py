@@ -5,7 +5,7 @@ from helpers import Rect
 
 class InfiniteMyDrawWidget(MyDrawWidget):
     def __init__(self):
-        MyDrawWidget.__init__(self, 1, 1)
+        MyDrawWidget.__init__(self)
         self.init_canvas()
         MyDrawWidget.clear(self)
         self.connect("size-allocate", self.size_allocate_event_cb)

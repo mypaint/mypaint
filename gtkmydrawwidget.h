@@ -50,7 +50,7 @@ struct _GtkMyDrawWidgetClass
 
 GType      gtk_my_draw_widget_get_type   (void) G_GNUC_CONST;
 
-GtkMyDrawWidget* gtk_my_draw_widget_new        (int width, int height);
+GtkWidget* gtk_my_draw_widget_new        (void);
 
 void gtk_my_draw_widget_clear (GtkMyDrawWidget *mdw);
 void gtk_my_draw_widget_set_brush (GtkMyDrawWidget *mdw, GtkMyBrush * brush);
