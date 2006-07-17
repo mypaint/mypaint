@@ -1,7 +1,8 @@
 #!/usr/bin/env python
-"Rename b003.myb and similar stuff to avoid conflict with user brushes"
+"Rename brushes/b003.myb and similar stuff to avoid conflict with user brushes"
 
 import os, random
+os.chdir('brushes')
 
 def rename(old, new):
     os.system('svn mv "%s" "%s"' % (old, new))
@@ -23,3 +24,4 @@ for name in existing:
     order = order.replace(oldname, name)
 
 open('order.conf', 'w').write(order)
+

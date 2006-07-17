@@ -4,7 +4,7 @@ Compile and run:
 make
 ./mypaint
 
-There is no 'make install' yet.
+Optionally, 'make install' or 'make install PREFIX=/your/prefix' should work.
 
 Required: pygtk, python, gtk
 Recommended: a pressure sensitive input device (graphic tablet)

@@ -33,3 +33,14 @@ mydrawwidget.defs: gtkmydrawwidget.h gtkmybrush.h surface.h Makefile
 
 mydrawwidget.so: mydrawwidget.defs.c mydrawwidgetmodule.c gtkmydrawwidget.o surface.o gtkmybrush.o brush_dab.o helpers.o
 	$(CC) $(LDFLAGS) $(CFLAGS) -shared $^ -o $@
+
+PREFIX=/home/martin/testprefix
+install: all
+	install -d $(PREFIX)/lib/mypaint
+	install *.py $(PREFIX)/lib/mypaint/
+	install mydrawwidget.so $(PREFIX)/lib/mypaint/
+	install -d $(PREFIX)/share/mypaint
+	install -d $(PREFIX)/share/mypaint/brushes
+	install brushes/*  $(PREFIX)/share/mypaint/brushes/
+	install mypaint $(PREFIX)/bin/
+	python -c "f = '$(PREFIX)/bin/mypaint'; s = open(f).read().replace('prefix = None', 'prefix = \"$(PREFIX)\"') ; open(f, 'w').write(s)"

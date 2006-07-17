@@ -1,11 +1,17 @@
 #!/usr/bin/env python
-"MyDraw main"
 
 #import psyco
 #psyco.full()
 
 import gtk, sys, os
 gdk = gtk.gdk
+
+# this line gets changed by the install script
+prefix = None
+
+if prefix:
+    if not prefix.endswith('/'): prefix = prefix + '/'
+    sys.path.append(prefix + 'lib/mypaint/')
 
 try: # just for a nice error message
     from mydrawwidget import MyDrawWidget
@@ -62,7 +68,7 @@ def main():
             args = []
 
     init_input()
-    app = application.Application(confpath, filename)
+    app = application.Application(prefix, confpath, filename)
 
     # Recent gtk versions don't allow changing those menu shortcuts by
     # default. <rant>Sigh. This very useful feature used to be the

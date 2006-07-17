@@ -3,18 +3,20 @@ import drawwindow, brushsettingswindow, brushselectionwindow, colorselectionwind
 import brush
 
 class Application: # singleton
-    def __init__(self, confpath, loadimage):
+    def __init__(self, prefix, confpath, loadimage):
         self.confpath = confpath
 
-        paths = ['./', '/usr/share/mypaint/', '/usr/local/share/mypaint/']
+        datapaths = ['./', '/share/mypaint/', '/usr/local/share/mypaint/']
+        if prefix:
+            datapaths.append(prefix + 'share/mypaint/')
         self.datapath = None
-        for p in paths:
+        for p in datapaths:
             if os.path.isdir(p + 'brushes/'):
                 self.datapath = p
                 break
         if not self.datapath:
             print 'Default brush collection not found! Searched:'
-            print ' '.join(paths)
+            print ' '.join(datapaths)
             raise SystemExit
 
         self.user_brushpath = self.confpath + 'brushes/'
