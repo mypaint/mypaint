@@ -10,6 +10,12 @@ gdk = gtk.gdk
 prefix = None
 
 if prefix:
+    if not prefix.startswith('/') or not os.path.exists(prefix + 'lib/mypaint/'):
+        # start to guess the prefix
+        if os.path.exists('/usr/lib/mypaint'):
+            prefix = '/usr/'
+        elif os.path.exists('/usr/local/lib/mypaint'):
+            prefix = '/usr/local/'
     if not prefix.endswith('/'): prefix = prefix + '/'
     sys.path.append(prefix + 'lib/mypaint/')
 

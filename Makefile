@@ -34,7 +34,7 @@ mydrawwidget.defs: gtkmydrawwidget.h gtkmybrush.h surface.h Makefile
 mydrawwidget.so: mydrawwidget.defs.c mydrawwidgetmodule.c gtkmydrawwidget.o surface.o gtkmybrush.o brush_dab.o helpers.o
 	$(CC) $(LDFLAGS) $(CFLAGS) -shared $^ -o $@
 
-PREFIX=/home/martin/testprefix
+PREFIX=/usr/local
 install: all
 	install -d $(PREFIX)/lib/mypaint
 	install *.py $(PREFIX)/lib/mypaint/
