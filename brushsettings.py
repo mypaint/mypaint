@@ -11,7 +11,7 @@ inputs_list = [
     ['speed2', 5.0, False, "Same as speed, but changes slower. Also look at the 'speed2 slowness' setting."],
     ['random', 1.0, False, "Random noise, changing at each evaluation. Equally distributed between 0 and 1."],
     ['stroke', 1.0, True, "This input slowly goes from zero to one while you draw a stroke. It can also be configured to jump back to zero periodically while you move. Look at the 'stroke duration' and 'stroke hold time' settings."],
-    ['custom', 1.0, True, "This is a user defined input. See '' "],
+    ['custom', 1.0, True, "This is a user defined input. Look at the 'custom input' setting for details."],
     ]
 
 settings_list = [

@@ -19,3 +19,6 @@
 
 - a visual border, so you can "simulate" a non-infinite canvas
   - because infinite canvas alone is awful for artists
+
+- maybe should use log(speed) instead of speed - I think it reacts
+  "too strong" to fast moves. Maybe make this an option.
