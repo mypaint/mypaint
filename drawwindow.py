@@ -137,8 +137,8 @@ class Window(gtk.Window):
             ('ContextMenu',  None, 'Brushkeys'),
             ('Context00',    None, 'restore brush 0', '0', None, self.context_cb),
             ('Context00s',   None, 'save to brush 0', '<control>0', None, self.context_cb),
-            ('Context01',    None, 'restore 1', None, None, self.context_cb),
-            ('Context01s',   None, 'save 1', None, None, self.context_cb),
+            ('Context01',    None, 'restore 1', '1', None, self.context_cb),
+            ('Context01s',   None, 'save 1', '<control>1', None, self.context_cb),
             ('Context02',    None, 'restore 2', '2', None, self.context_cb),
             ('Context02s',   None, 'save 2', '<control>2', None, self.context_cb),
             ('Context03',    None, 'restore 3', '3', None, self.context_cb),
@@ -173,7 +173,7 @@ class Window(gtk.Window):
             ('ShortcutsMenu', None, 'Shortcuts'),
 
             ('ViewMenu', None, 'View'),
-            ('Zoom1',        None, 'Zoom 1:1', '1', None, self.zoom_cb),
+            ('Zoom1',        None, 'Zoom 1:1', 'z', None, self.zoom_cb),
             ('ZoomIn',       None, 'Zoom in', 'plus', None, self.zoom_cb),
             ('ZoomOut',      None, 'Zoom out', 'minus', None, self.zoom_cb),
             ('MoveLeft',     None, 'Move left', 'h', None, self.move_cb),
@@ -188,7 +188,6 @@ class Window(gtk.Window):
         self.ui.add_ui_from_string(ui_string)
         self.app.accel_group = self.ui.get_accel_group()
         self.add_accel_group(self.app.accel_group)
-
 
     def toggleWindow(self, w):
         if w.get_property('visible'):

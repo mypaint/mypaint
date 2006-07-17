@@ -63,6 +63,16 @@ def main():
 
     init_input()
     app = application.Application(confpath, filename)
+
+    # Recent gtk versions don't allow changing those menu shortcuts by
+    # default. <rant>Sigh. This very useful feature used to be the
+    # default behaviour even in the GIMP some time ago. I guess
+    # assigning a keyboard shortcut without a complicated dialog
+    # clicking marathon must have totally upset the people coming from
+    # windows.</rant>
+    gtksettings = gtk.settings_get_default()
+    gtksettings.set_property('gtk-can-change-accels', True)
+
     gtk.main()
 
 if __name__ == '__main__':
