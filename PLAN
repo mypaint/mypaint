@@ -4,6 +4,8 @@
   - set canvas border outside visible window (in percent)
   - set "reallocate how much in advance" maybe?
 
+- undo. (probably the most wanted feature, even if only one stroke)
+
 ? zoom-out only for viewing somehow?
   - do not resize canvas when zooming, only when moving?
 
@@ -22,3 +24,6 @@
 
 - maybe should use log(speed) instead of speed - I think it reacts
   "too strong" to fast moves. Maybe make this an option.
+
+- maybe avoid gaps when using the "offset by speed"
+  - and add a setting to intentinally do such gaps
