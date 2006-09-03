@@ -175,6 +175,7 @@ gtk_my_draw_widget_button_updown (GtkWidget *widget, GdkEventButton *event)
   mdw = GTK_MY_DRAW_WIDGET (widget);
 
   { // WARNING: code duplication, forced by different GdkEvent* structs.
+    // FIXME: maybe just remove this part here? would this hurt?
     double pressure;
     if (!gdk_event_get_axis ((GdkEvent *)event, GDK_AXIS_PRESSURE, &pressure)) {
       pressure = (event->state & GDK_BUTTON1_MASK) ? 0.5 : 0;

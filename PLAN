@@ -1,29 +1,44 @@
+- layers.
+  - alpha support (for both rendering and brush strokes)
+  - rewrite the rendering code
+  - layer dialog (select / set occupancy)
+  - own image file format (instead of png)
+
+- undo.
+  - (probably the most wanted feature, even if only one stroke)
+  - should be a lot easier together with layers
+
+- frame.
+  - ("simulates" a finite canvas; infinite canvas alone is awful for artists)
+  - visual only (do strokes outside anyway, might enlarge later)
+  - enable/disable/move/resize
+
 - add a preferences dialog
   - set maximum brush radius
   - set canvas memory limit
   - set canvas border outside visible window (in percent)
   - set "reallocate how much in advance" maybe?
 
-- undo. (probably the most wanted feature, even if only one stroke)
+- dedicated "slow random" input
+
+- maybe should use log(speed) instead of speed - I think it reacts
+  "too strong" to fast moves. Maybe make this an option. (or another input)
 
 ? zoom-out only for viewing somehow?
   - do not resize canvas when zooming, only when moving?
+  - better do it right: do not allocate memory for white canvas areas.
 
 - edit global pressure nonlinearity curve
   - maybe wacom tool? maybe for each brush?
 
 - copy/paste buttons curve shapes 
   - buttons next to shape? shared "symlinked" shape?
+  - the "custom" input partially solves this problem now.
 
 - allow non-circle brush shapes
 
 - button for fast GIMP in- and export, also a GIMP plugin if needed
 
-- a visual border, so you can "simulate" a non-infinite canvas
-  - because infinite canvas alone is awful for artists
-
-- maybe should use log(speed) instead of speed - I think it reacts
-  "too strong" to fast moves. Maybe make this an option.
-
 - maybe avoid gaps when using the "offset by speed"
   - and add a setting to intentinally do such gaps
+
