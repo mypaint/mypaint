@@ -9,10 +9,6 @@
 #include "surface.h"
 #include "gtkmybrush.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
 
 #define GTK_TYPE_MY_DRAW_WIDGET            (gtk_my_draw_widget_get_type ())
 #define GTK_MY_DRAW_WIDGET(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_MY_DRAW_WIDGET, GtkMyDrawWidget))
@@ -65,9 +61,5 @@ GdkPixbuf* gtk_my_draw_widget_get_as_pixbuf (GtkMyDrawWidget *mdw);
 GdkPixbuf* gtk_my_draw_widget_get_nonwhite_as_pixbuf (GtkMyDrawWidget *mdw);
 void gtk_my_draw_widget_set_from_pixbuf (GtkMyDrawWidget *mdw, GdkPixbuf* pixbuf);
 void gtk_my_draw_widget_discard_and_resize (GtkMyDrawWidget *mdw, int width, int height);
-
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
 
 #endif /* __GTK_MY_DRAW_WIDGET_H__ */

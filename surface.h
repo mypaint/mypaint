@@ -1,4 +1,4 @@
-/* A drawing surface (planned: with limited undo functionality)
+/* A drawing surface
 
    Copyright 2004 Martin Renold <martinxyz@gmx.ch>
    I place this file into the public domain. Do with it whatever you want.

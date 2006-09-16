@@ -9,10 +9,6 @@
 #include "surface.h"
 #include "brushsettings.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
 
 #define GTK_TYPE_MY_BRUSH            (gtk_my_brush_get_type ())
 #define GTK_MY_BRUSH(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_MY_BRUSH, GtkMyBrush))
@@ -113,9 +109,5 @@ GdkPixbuf* gtk_my_brush_get_colorselection_pixbuf (GtkMyBrush * b);
 /* only for mydrawwidget (not exported to python): */
 void brush_stroke_to (GtkMyBrush * b, Surface * s, float x, float y, float pressure, double time, Rect * bbox);
 void brush_reset (GtkMyBrush * b);
-
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
 
 #endif /* __GTK_MY_BRUSH_H__ */

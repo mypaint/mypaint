@@ -4,6 +4,7 @@ headers
 #include "pygobject.h"
 #include "gtkmydrawwidget.h"
 #include "gtkmybrush.h"
+#include "gtkmysurface.h"
 %%
 modulename mydrawwidget
 %%
