@@ -349,7 +349,7 @@ void brush_update_settings_values (GtkMyBrush * b)
 //
 // This is always called "directly" after brush_update_settings_values.
 // The bbox parameter is a return value XXX
-void brush_prepare_and_draw_dab (GtkMyBrush * b, Surface * s, Rect * bbox)
+void brush_prepare_and_draw_dab (GtkMyBrush * b, GtkMySurfaceOld * s, Rect * bbox)
 {
   float * settings = b->settings_value;
   float x, y, opaque;
@@ -494,7 +494,7 @@ float brush_count_dabs_to (GtkMyBrush * b, float x, float y, float pressure, flo
 
 // Called from gtkmydrawwidget.c when a GTK event was received, with the new pointer position.
 // The bbox, unless NULL, is the bounding box of the modified region. It will be expanded.
-void brush_stroke_to (GtkMyBrush * b, Surface * s, float x, float y, float pressure, double time, Rect * bbox)
+void brush_stroke_to (GtkMyBrush * b, GtkMySurfaceOld * s, float x, float y, float pressure, double time, Rect * bbox)
 {
   if (DEBUGLOG) { // logfile for debugging
     static FILE * logfile = NULL;

@@ -5,6 +5,7 @@ headers
 #include "gtkmydrawwidget.h"
 #include "gtkmybrush.h"
 #include "gtkmysurface.h"
+#include "gtkmysurfaceold.h"
 %%
 modulename mydrawwidget
 %%

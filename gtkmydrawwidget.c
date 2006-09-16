@@ -135,7 +135,7 @@ gtk_my_draw_widget_finalize (GObject *object)
   mdw = GTK_MY_DRAW_WIDGET (object);
   // seems to be called multiple times
   if (mdw->surface) {
-    free_surface (mdw->surface);
+    g_object_unref (mdw->surface);
     mdw->surface = NULL;
   }
   G_OBJECT_CLASS (parent_class)->finalize (object);
@@ -162,8 +162,8 @@ void gtk_my_draw_widget_init (GtkMyDrawWidget *mdw)
 
 void gtk_my_draw_widget_discard_and_resize (GtkMyDrawWidget *mdw, int width, int height)
 {
-  if (mdw->surface) free_surface (mdw->surface);
-  mdw->surface = new_surface (width, height);
+  if (mdw->surface) g_object_unref (mdw->surface);
+  mdw->surface = gtk_my_surface_old_new  (width, height);
 }
 
 static gint
@@ -307,14 +307,14 @@ gtk_my_draw_widget_expose (GtkWidget *widget, GdkEventExpose *event)
   //printf("Zoom = %f\n", mdw->zoom);
   if (mdw->zoom == 0.0) mdw->zoom = 1.0; // whyever.
   if (mdw->zoom == 1.0) {
-    surface_render 
+    gtk_my_surface_old_render 
       (mdw->surface,
        rgb, rowstride,
        event->area.x + (int)(mdw->viewport_x+0.5), event->area.y + (int)(mdw->viewport_y+0.5),
        event->area.width, event->area.height,
        /*bpp*/3*8);
   } else {
-    surface_render_zoom 
+    gtk_my_surface_old_render_zoom 
       (mdw->surface,
        rgb, rowstride,
        event->area.x + mdw->viewport_x*mdw->zoom, event->area.y + mdw->viewport_y*mdw->zoom,
@@ -338,7 +338,7 @@ gtk_my_draw_widget_expose (GtkWidget *widget, GdkEventExpose *event)
 void	       
 gtk_my_draw_widget_clear (GtkMyDrawWidget *mdw)
 {
-  surface_clear (mdw->surface);
+  gtk_my_surface_clear (GTK_MY_SURFACE (mdw->surface));
   gtk_widget_queue_draw (GTK_WIDGET (mdw));
 }
 
@@ -390,11 +390,11 @@ GdkPixbuf* gtk_my_draw_widget_get_as_pixbuf (GtkMyDrawWidget *mdw)
   pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB, /*has_alpha*/0, /*bits_per_sample*/8,
 			   mdw->surface->w, mdw->surface->h);
 
-  surface_render (mdw->surface, 
-                  gdk_pixbuf_get_pixels (pixbuf), 
-                  gdk_pixbuf_get_rowstride (pixbuf),
-                  0, 0, mdw->surface->w, mdw->surface->h,
-                  /*bpp*/3*8);
+  gtk_my_surface_old_render (mdw->surface, 
+                             gdk_pixbuf_get_pixels (pixbuf), 
+                             gdk_pixbuf_get_rowstride (pixbuf),
+                             0, 0, mdw->surface->w, mdw->surface->h,
+                             /*bpp*/3*8);
 
   return pixbuf;
 }
@@ -403,16 +403,16 @@ GdkPixbuf* gtk_my_draw_widget_get_nonwhite_as_pixbuf (GtkMyDrawWidget *mdw)
 {
   Rect r;
   GdkPixbuf* pixbuf;
-  surface_get_nonwhite_region (mdw->surface, &r);
+  gtk_my_surface_old_get_nonwhite_region (mdw->surface, &r);
 
   pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB, /*has_alpha*/0, /*bits_per_sample*/8,
 			   r.w, r.h);
 
-  surface_render (mdw->surface, 
-                  gdk_pixbuf_get_pixels (pixbuf), 
-                  gdk_pixbuf_get_rowstride (pixbuf),
-                  r.x, r.y, r.w, r.h,
-                  /*bpp*/3*8);
+  gtk_my_surface_old_render (mdw->surface, 
+                             gdk_pixbuf_get_pixels (pixbuf), 
+                             gdk_pixbuf_get_rowstride (pixbuf),
+                             r.x, r.y, r.w, r.h,
+                             /*bpp*/3*8);
 
   return pixbuf;
 }
@@ -431,11 +431,11 @@ void gtk_my_draw_widget_set_from_pixbuf (GtkMyDrawWidget *mdw, GdkPixbuf* pixbuf
   w = gdk_pixbuf_get_width (pixbuf);
   h = gdk_pixbuf_get_height (pixbuf);
 
-  surface_load (mdw->surface,
-                gdk_pixbuf_get_pixels (pixbuf),
-                gdk_pixbuf_get_rowstride (pixbuf),
-                w, h,
-                /*bpp*/n_channels*8);
+  gtk_my_surface_old_load (mdw->surface,
+                           gdk_pixbuf_get_pixels (pixbuf),
+                           gdk_pixbuf_get_rowstride (pixbuf),
+                           w, h,
+                           /*bpp*/n_channels*8);
   gtk_widget_queue_draw (GTK_WIDGET (mdw));
 }
 

@@ -6,7 +6,7 @@
 #include <gdk/gdk.h>
 #include <gtk/gtkwidget.h>
 
-#include "surface.h"
+#include "gtkmysurfaceold.h"
 #include "brushsettings.h"
 
 
@@ -107,7 +107,7 @@ void gtk_my_brush_set_painting_time (GtkMyBrush * b, float value);
 GdkPixbuf* gtk_my_brush_get_colorselection_pixbuf (GtkMyBrush * b);
 
 /* only for mydrawwidget (not exported to python): */
-void brush_stroke_to (GtkMyBrush * b, Surface * s, float x, float y, float pressure, double time, Rect * bbox);
+void brush_stroke_to (GtkMyBrush * b, GtkMySurfaceOld * s, float x, float y, float pressure, double time, Rect * bbox);
 void brush_reset (GtkMyBrush * b);
 
 #endif /* __GTK_MY_BRUSH_H__ */

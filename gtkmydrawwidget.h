@@ -6,7 +6,7 @@
 #include <gtk/gtkdrawingarea.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
-#include "surface.h"
+#include "gtkmysurfaceold.h"
 #include "gtkmybrush.h"
 
 
@@ -25,7 +25,7 @@ struct _GtkMyDrawWidget
 {
   GtkDrawingArea widget;
 
-  Surface * surface;
+  GtkMySurfaceOld * surface;
   GtkMyBrush * brush;
 
   float viewport_x, viewport_y;
