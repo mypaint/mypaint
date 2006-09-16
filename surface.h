@@ -9,8 +9,6 @@
 
 #include "helpers.h"
 
-#define sqr(x) ((x)*(x))
-
 // FIXME: big waste of memory... however since it's arranged so near
 // things stay together, it should not matter much - even if the OS
 // would swap some parts out. Bad idea, anyway.

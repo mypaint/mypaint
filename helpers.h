@@ -8,6 +8,7 @@ extern gdouble gauss_noise (void);
 
 #define ROUND(x) ((int) ((x) + 0.5))
 #define SIGN(x) ((x)>0?1:(-1))
+#define SQR(x) ((x)*(x))
 
 #ifndef MAX
 #define MAX(a, b) ((a) > (b) ? (a) : (b))

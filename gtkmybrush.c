@@ -231,7 +231,7 @@ void brush_update_settings_values (GtkMyBrush * b)
   float norm_dx, norm_dy, norm_dist, norm_speed;
   norm_dx = b->dx / b->dtime / b->base_radius;
   norm_dy = b->dy / b->dtime / b->base_radius;
-  norm_speed = sqrt(sqr(norm_dx) + sqr(norm_dy));
+  norm_speed = sqrt(SQR(norm_dx) + SQR(norm_dy));
   norm_dist = norm_speed * b->dtime;
 
   inputs[INPUT_PRESSURE] = pressure;
@@ -333,6 +333,7 @@ void brush_update_settings_values (GtkMyBrush * b)
   }
 
   // change base radius (a rarely used feature)
+  // FIXME: Wrong! Hack! Wrong! Use a new brush state instead!
   b->settings[BRUSH_RADIUS_LOGARITHMIC].base_value += settings[BRUSH_CHANGE_RADIUS] * 0.01;
 
   // calculate final radius

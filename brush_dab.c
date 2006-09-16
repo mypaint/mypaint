@@ -32,12 +32,12 @@
   if (y0 < 0) y0 = 0;
   if (x1 > s->w) x1 = s->w;
   if (y1 > s->h) y1 = s->h;
-  rr = sqr(radius);
+  rr = SQR(radius);
   if (radius < 0.1) return;
   c[0] = color[0];
   c[1] = color[1];
   c[2] = color[2];
-  radius2 = sqr(radius);
+  radius2 = SQR(radius);
   one_over_radius2 = 1.0/radius2;
   
   // precalculate randomness

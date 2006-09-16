@@ -39,6 +39,18 @@ typedef struct {
   Mapping * mapping[INPUT_COUNT];
 } Setting;
 
+
+/* The GtkMyBrush structure (gobject) stores two things:
+   a) the states of the cursor (velocity, color, speed)
+   b) the brush settings (as set in the GUI)
+   FIXME: Actually those are two orthogonal things. Should separate them.
+
+   In python, there are two kinds of instances from this: a "global
+   brush" which does the cursor tracking, and the "brushlist" where
+   only the settings are important. When a brush is selected, its
+   settings are copied into the global one, leaving the status intact.
+ */
+
 struct _GtkMyBrush
 {
   GObject parent;
@@ -72,6 +84,8 @@ struct _GtkMyBrush
   // description how to calculate the values
   Setting settings[BRUSH_SETTINGS_COUNT];
   // the resulting values
+  // FIXME: they could as well be passed as parameters to the dab function
+  //        (Hm. This way no malloc is needed before each dab. Think about that.)
   float settings_value[BRUSH_SETTINGS_COUNT];
 
 };
