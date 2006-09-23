@@ -11,6 +11,9 @@
 #define DEBUGLOG 0
 #define LINEAR_INTERPOLATION 1
 
+#define ACTUAL_RADIUS_MIN 0.2
+#define ACTUAL_RADIUS_MAX 100 //FIXME: performance problem acutally depending on CPU
+
 #define abs(x) (((x)>0)?(x):(-(x)))
 
 void
@@ -215,6 +218,10 @@ void brush_update_settings_values (GtkMyBrush * b)
     g_print("press=% 4.3f, speed=% 4.4f\tspeed2=% 4.4f\tstroke=% 4.3f\tcustom=% 4.3f\n", inputs[INPUT_PRESSURE], inputs[INPUT_SPEED], inputs[INPUT_SPEED2], inputs[INPUT_STROKE], inputs[INPUT_CUSTOM]);
   }
 
+  // OPTIMIZE:
+  // Could only update those settings that can influence the dabbing process here.
+  // (the ones only relevant for the actual drawing could be updated later)
+  // However, this includes about half of the settings already. So never mind.
   for (i=0; i<BRUSH_SETTINGS_COUNT; i++) {
     settings[i] = mapping_calculate (b->settings[i], inputs);
   }
@@ -276,9 +283,8 @@ void brush_update_settings_values (GtkMyBrush * b)
   // calculate final radius
   b->actual_radius = expf(radius_log);
     
-  if (b->actual_radius < 0) b->actual_radius = 0; // don't ask me why this happens
-  //FIXME: performance problem acutally depending on CPU
-  if (b->actual_radius > 100) b->actual_radius = 100;
+  if (b->actual_radius < ACTUAL_RADIUS_MIN) b->actual_radius = ACTUAL_RADIUS_MIN;
+  if (b->actual_radius > ACTUAL_RADIUS_MAX) b->actual_radius = ACTUAL_RADIUS_MAX;
 }
 
 // Called only from brush_stroke_to(). Calculate everything needed to
@@ -373,9 +379,6 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, GtkMySurfaceOld * s, Rect * bbo
     g_assert(opaque >= 0);
     g_assert(opaque <= 1);
     
-    // used for interpolation later
-    b->actual_radius = radius < 0.1 ? 0.1 : radius;
-    
     if (color_is_hsv) {
       while (color[0] < 0) color[0] += 360;
       while (color[0] > 360) color[0] -= 360;
@@ -407,8 +410,8 @@ float brush_count_dabs_to (GtkMyBrush * b, float x, float y, float pressure, flo
   float dist;
 
   if (b->actual_radius == 0.0) b->actual_radius = expf(b->settings[BRUSH_RADIUS_LOGARITHMIC]->base_value);
-  if (b->actual_radius < 0.5) b->actual_radius = 0.5;
-  if (b->actual_radius > 500.0) b->actual_radius = 500.0;
+  if (b->actual_radius < ACTUAL_RADIUS_MIN) b->actual_radius = ACTUAL_RADIUS_MIN;
+  if (b->actual_radius > ACTUAL_RADIUS_MAX) b->actual_radius = ACTUAL_RADIUS_MAX;
 
   if (b->base_radius == 0.0) b->base_radius = expf(b->settings[BRUSH_RADIUS_LOGARITHMIC]->base_value);
   if (b->base_radius < 0.5) b->base_radius = 0.5;
