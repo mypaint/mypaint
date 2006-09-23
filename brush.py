@@ -65,7 +65,8 @@ class Setting:
     def set_points(self, input, points):
         if points is None:
             self.points[input.index] = None
-            self.brush.remove_mapping(self.setting.index, input.index)
+            # set the first value to zero to disable it
+            self.brush.set_mapping(self.setting.index, input.index, 0, 0)
         else:
             self.points[input.index] = points[:] # copy
             for j in xrange(8):

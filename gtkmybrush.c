@@ -17,41 +17,16 @@ void
 gtk_my_brush_set_base_value (GtkMyBrush * b, int id, float value)
 {
   g_assert (id >= 0 && id < BRUSH_SETTINGS_COUNT);
-  b->settings[id].base_value = value;
+  Mapping * m = b->settings[id];
+  m->base_value = value;
 }
 
 void gtk_my_brush_set_mapping (GtkMyBrush * b, int id, int input, int index, float value)
 {
-  int i;
   g_assert (id >= 0 && id < BRUSH_SETTINGS_COUNT);
-  g_assert (input >= 0 && input < INPUT_COUNT);
-  g_assert (index >= 0 && index < 8);
-
   //g_print("set mapping: id=%d, input=%d, index=%d, value=%f\n", id, input, index, value);
-  Mapping * m = b->settings[id].mapping[input];
-  if (!m) {
-    m = b->settings[id].mapping[input] = g_malloc(sizeof(Mapping));
-    for (i=0; i<4; i++) {
-      m->xvalues[i] = 0;
-      m->yvalues[i] = 0;
-    }
-  }
-  if (index % 2 == 0) {
-    m->xvalues[index/2] = value;
-  } else {
-    m->yvalues[index/2] = value;
-  }
-}
-
-void gtk_my_brush_remove_mapping (GtkMyBrush * b, int id, int input)
-{
-  g_assert (id >= 0 && id < BRUSH_SETTINGS_COUNT);
-  g_assert (input >= 0 && input < INPUT_COUNT);
-
-  //g_print("remove mapping: id=%d, input=%d\n", id, input);
-
-  g_free(b->settings[id].mapping[input]);
-  b->settings[id].mapping[input] = NULL;
+  Mapping * m = b->settings[id];
+  mapping_set (m, input, index, value);
 }
 
 void
@@ -128,11 +103,9 @@ gtk_my_brush_class_init (GtkMyBrushClass *class)
 static void
 gtk_my_brush_init (GtkMyBrush *b)
 {
-  int i, j;
+  int i;
   for (i=0; i<BRUSH_SETTINGS_COUNT; i++) {
-    for (j=0; j<INPUT_COUNT; j++) {
-      b->settings[i].mapping[j] = NULL;
-    }
+    b->settings[i] = mapping_new(INPUT_COUNT);
   }
   b->painting_time = 0;
   // defaults will be set from python
@@ -142,14 +115,12 @@ static void
 gtk_my_brush_finalize (GObject *object)
 {
   GtkMyBrush * b;
-  int i, j;
+  int i;
   g_return_if_fail (object != NULL);
   g_return_if_fail (GTK_IS_MY_BRUSH (object));
   b = GTK_MY_BRUSH (object);
   for (i=0; i<BRUSH_SETTINGS_COUNT; i++) {
-    for (j=0; j<INPUT_COUNT; j++) {
-      g_free(b->settings[i].mapping[j]);
-    }
+    mapping_free(b->settings[i]);
   }
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -188,7 +159,7 @@ void brush_reset (GtkMyBrush * b)
 void brush_update_settings_values (GtkMyBrush * b)
 {
   float radius_log;
-  int i, j;
+  int i;
   float pressure;
   float * settings = b->settings_value;
   float inputs[INPUT_COUNT];
@@ -201,7 +172,7 @@ void brush_update_settings_values (GtkMyBrush * b)
     b->dtime = 0.00001;
   }
 
-  b->base_radius = expf(b->settings[BRUSH_RADIUS_LOGARITHMIC].base_value);
+  b->base_radius = expf(b->settings[BRUSH_RADIUS_LOGARITHMIC]->base_value);
 
   // FIXME: does happen (interpolation problem?)
   if (b->pressure < 0.0) b->pressure = 0.0;
@@ -211,14 +182,14 @@ void brush_update_settings_values (GtkMyBrush * b)
 
   { // start / end stroke (for "stroke" input only)
     if (!b->stroke_started) {
-      if (pressure > b->settings[BRUSH_STROKE_TRESHOLD].base_value + 0.0001) {
+      if (pressure > b->settings[BRUSH_STROKE_TRESHOLD]->base_value + 0.0001) {
         // start new stroke
         //printf("stroke start %f\n", pressure);
         b->stroke_started = 1;
         b->stroke = 0.0;
       }
     } else {
-      if (pressure <= b->settings[BRUSH_STROKE_TRESHOLD].base_value * 0.9 + 0.0001) {
+      if (pressure <= b->settings[BRUSH_STROKE_TRESHOLD]->base_value * 0.9 + 0.0001) {
         // end stroke
         //printf("stroke end\n");
         b->stroke_started = 0;
@@ -237,7 +208,7 @@ void brush_update_settings_values (GtkMyBrush * b)
   inputs[INPUT_PRESSURE] = pressure;
   inputs[INPUT_SPEED]  = b->norm_speed_slow1 * 0.002;
   inputs[INPUT_SPEED2] = b->norm_speed_slow2 * 0.005;
-  inputs[INPUT_RANDOM] = 0.5; // actually unused
+  inputs[INPUT_RANDOM] = g_random_double ();
   inputs[INPUT_STROKE] = MIN(b->stroke, 1.0);
   inputs[INPUT_CUSTOM] = b->custom_input;
   if (b->print_inputs) {
@@ -245,42 +216,8 @@ void brush_update_settings_values (GtkMyBrush * b)
   }
 
   for (i=0; i<BRUSH_SETTINGS_COUNT; i++) {
-    settings[i] = b->settings[i].base_value;
-
-    for (j=0; j<INPUT_COUNT; j++) {
-      Mapping * m = b->settings[i].mapping[j];
-      // OPTIMIZE?
-      if (m) {
-        float x, y;
-        if (j == INPUT_RANDOM) {
-          x = g_random_double ();
-        } else {
-          x = inputs[j];
-        }
-        //if (i == 2 && j == 3) g_print("x = %f ", x);
-        int p0;
-        float x0, y0, x1, y1;
-        // decide what region to use
-        p0 = -1; // left point of the linear region (-1 is the implicit x=0,y=0 point)
-        while (p0+1 < 4 // not in the last region already
-               && x > m->xvalues[p0+1] // x position is further right than the current region
-               && m->xvalues[p0+2] > 0 // next enpoint does exists (points with x=0 are disabled)
-               ) p0++;
-        x0 = (p0 == -1) ? 0 : m->xvalues[p0];
-        y0 = (p0 == -1) ? 0 : m->yvalues[p0];
-        x1 = m->xvalues[p0+1];
-        y1 = m->yvalues[p0+1];
-        // linear interpolation
-        float m, q;
-        m = (y1-y0)/(x1-x0);
-        q = y0 - m*x0;
-        y = m*x + q;
-        settings[i] += y;
-        //if (i == 2 && j == 3) g_print("y = %f (p0=%d, %f %f %f %f)\n", y, p0, x0, y0, x1, y1);
-      }
-    }
+    settings[i] = mapping_calculate (b->settings[i], inputs);
   }
-    
 
   {
     float fac = 1.0 - exp_decay (settings[BRUSH_SLOW_TRACKING_PER_DAB], 1.0);
@@ -334,7 +271,7 @@ void brush_update_settings_values (GtkMyBrush * b)
 
   // change base radius (a rarely used feature)
   // FIXME: Wrong! Hack! Wrong! Use a new brush state instead!
-  b->settings[BRUSH_RADIUS_LOGARITHMIC].base_value += settings[BRUSH_CHANGE_RADIUS] * 0.01;
+  b->settings[BRUSH_RADIUS_LOGARITHMIC]->base_value += settings[BRUSH_CHANGE_RADIUS] * 0.01;
 
   // calculate final radius
   b->actual_radius = expf(radius_log);
@@ -469,11 +406,11 @@ float brush_count_dabs_to (GtkMyBrush * b, float x, float y, float pressure, flo
   float res1, res2, res3;
   float dist;
 
-  if (b->actual_radius == 0.0) b->actual_radius = expf(b->settings[BRUSH_RADIUS_LOGARITHMIC].base_value);
+  if (b->actual_radius == 0.0) b->actual_radius = expf(b->settings[BRUSH_RADIUS_LOGARITHMIC]->base_value);
   if (b->actual_radius < 0.5) b->actual_radius = 0.5;
   if (b->actual_radius > 500.0) b->actual_radius = 500.0;
 
-  if (b->base_radius == 0.0) b->base_radius = expf(b->settings[BRUSH_RADIUS_LOGARITHMIC].base_value);
+  if (b->base_radius == 0.0) b->base_radius = expf(b->settings[BRUSH_RADIUS_LOGARITHMIC]->base_value);
   if (b->base_radius < 0.5) b->base_radius = 0.5;
   if (b->base_radius > 500.0) b->base_radius = 500.0;
 
@@ -486,9 +423,9 @@ float brush_count_dabs_to (GtkMyBrush * b, float x, float y, float pressure, flo
   dist = sqrtf (dx*dx + dy*dy);
   // FIXME: no need for base_value or for the range checks above IF always the interpolation
   //        function will be called before this one
-  res1 = dist / b->actual_radius * b->settings[BRUSH_DABS_PER_ACTUAL_RADIUS].base_value;
-  res2 = dist / b->base_radius   * b->settings[BRUSH_DABS_PER_BASIC_RADIUS].base_value;
-  res3 = dt * b->settings[BRUSH_DABS_PER_SECOND].base_value;
+  res1 = dist / b->actual_radius * b->settings[BRUSH_DABS_PER_ACTUAL_RADIUS]->base_value;
+  res2 = dist / b->base_radius   * b->settings[BRUSH_DABS_PER_BASIC_RADIUS]->base_value;
+  res3 = dt * b->settings[BRUSH_DABS_PER_SECOND]->base_value;
   return res1 + res2 + res3;
 }
 
@@ -536,7 +473,7 @@ void brush_stroke_to (GtkMyBrush * b, GtkMySurfaceOld * s, float x, float y, flo
   }
 
   { // calculate the actual "virtual" cursor position
-    float fac = 1.0 - exp_decay (b->settings[BRUSH_SLOW_TRACKING].base_value, 100.0*(time - b->time));
+    float fac = 1.0 - exp_decay (b->settings[BRUSH_SLOW_TRACKING]->base_value, 100.0*(time - b->time));
     x = b->x + (x - b->x) * fac;
     y = b->y + (y - b->y) * fac;
   }

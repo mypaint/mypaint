@@ -8,6 +8,7 @@
 
 #include "gtkmysurfaceold.h"
 #include "brushsettings.h"
+#include "mapping.h"
 
 
 #define GTK_TYPE_MY_BRUSH            (gtk_my_brush_get_type ())
@@ -20,21 +21,6 @@
 
 typedef struct _GtkMyBrush       GtkMyBrush;
 typedef struct _GtkMyBrushClass  GtkMyBrushClass;
-
-typedef struct {
-  // a set of control points (stepwise linear)
-  float xvalues[4]; // > 0 because all inputs are > 0
-  float yvalues[4]; // range: -oo  .. +oo (added to base_value)
-  // xvalues can be zero to indicate that this point is not used.
-  // the first point (0, 0) is implicit, would have index -1
-} Mapping;
-  
-typedef struct {
-  float base_value;
-  // NULL if it does not depend on this input
-  Mapping * mapping[INPUT_COUNT];
-} Setting;
-
 
 /* The GtkMyBrush structure (gobject) stores two things:
    a) the states of the cursor (velocity, color, speed)
@@ -50,6 +36,8 @@ typedef struct {
 struct _GtkMyBrush
 {
   GObject parent;
+
+  GtkMySurface * target_surface;
 
   // lowlevevel stuff (almost raw input)
   float x, y, pressure; double time;
@@ -78,8 +66,9 @@ struct _GtkMyBrush
   float painting_time;
 
   // description how to calculate the values
-  Setting settings[BRUSH_SETTINGS_COUNT];
-  // the resulting values
+  Mapping * settings[BRUSH_SETTINGS_COUNT];
+
+  // the current value of a setting
   // FIXME: they could as well be passed as parameters to the dab function
   //        (Hm. This way no malloc is needed before each dab. Think about that.)
   float settings_value[BRUSH_SETTINGS_COUNT];
@@ -98,7 +87,6 @@ GtkMyBrush* gtk_my_brush_new        (void);
 /* no getter functions since values are remembered in python code */
 void gtk_my_brush_set_base_value (GtkMyBrush * b, int id, float value);
 void gtk_my_brush_set_mapping (GtkMyBrush * b, int id, int input, int index, float value);
-void gtk_my_brush_remove_mapping (GtkMyBrush * b, int id, int input);
 void gtk_my_brush_set_color (GtkMyBrush * b, int red, int green, int blue);
 void gtk_my_brush_set_print_inputs (GtkMyBrush * b, int value);
 float gtk_my_brush_get_painting_time (GtkMyBrush * b);

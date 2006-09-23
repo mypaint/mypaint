@@ -24,6 +24,9 @@ gtkmydrawwidget.o:	brushsettings.h gtkmydrawwidget.c gtkmydrawwidget.h
 gtkmybrush.o:	brushsettings.h gtkmybrush.c gtkmybrush.h
 	cc $(CFLAGS) -c -o $@ gtkmybrush.c
 
+mapping.o:	mapping.c mapping.h
+	cc $(CFLAGS) -c -o $@ mapping.c
+
 gtkmysurface.o:	gtkmysurface.c gtkmysurface.h
 	cc $(CFLAGS) -c -o $@ gtkmysurface.c
 
@@ -44,7 +47,8 @@ mydrawwidget.defs: gtkmydrawwidget.h gtkmybrush.h gtkmysurface.h gtkmysurfaceold
 	python /usr/share/pygtk/2.0/codegen/h2def.py gtkmydrawwidget.h gtkmybrush.h gtkmysurface.h gtkmysurfaceold.h > mydrawwidget.defs
 	./caller_owns_return.py mydrawwidget.defs get_nonwhite_as_pixbuf get_as_pixbuf
 
-mydrawwidget.so: mydrawwidget.defs.c mydrawwidgetmodule.c gtkmydrawwidget.o gtkmybrush.o gtkmysurface.o gtkmysurfaceold.o brush_dab.o helpers.o
+mydrawwidget.so: mydrawwidget.defs.c mydrawwidgetmodule.c gtkmydrawwidget.o gtkmybrush.o \
+                 gtkmysurface.o gtkmysurfaceold.o brush_dab.o helpers.o mapping.o
 	$(CC) $(LDFLAGS) $(CFLAGS) -shared $^ -o $@
 
 PREFIX=/usr/local
