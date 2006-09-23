@@ -393,12 +393,9 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, GtkMySurfaceOld * s, Rect * bbo
     float hardness = settings[BRUSH_HARDNESS];
     if (hardness > 1.0) hardness = 1.0;
     if (hardness < 0.0) hardness = 0.0;
-    float sat_slowdown = settings[BRUSH_SATURATION_SLOWDOWN];
-    if (sat_slowdown > 1.0) sat_slowdown = 1.0;
-    if (sat_slowdown < 0.0) sat_slowdown = 0.0;
 
     draw_brush_dab (s, bbox,
-                    x, y, radius, opaque, hardness, c, sat_slowdown);
+                    x, y, radius, opaque, hardness, c);
   }
 }
 

@@ -7,7 +7,6 @@
 void draw_brush_dab (GtkMySurfaceOld * s, Rect * bbox,
                      float x, float y, 
                      float radius, float opaque, float hardness,
-                     guchar * color,
-                     float saturation_slowdown
+                     guchar * color
                      )
      // ; follows after #include

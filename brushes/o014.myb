@@ -13,7 +13,6 @@ speed2_slowness 0.8
 offset_by_random 0.0
 offset_by_speed 0.44
 offset_by_speed_slowness 0.0
-saturation_slowdown 0.0
 slow_tracking 0.0
 slow_tracking_per_dab 0.0
 color_value 0.0

@@ -12,7 +12,6 @@
   float xx, yy, rr;
   float radius2, one_over_radius2;
   //float precalc1, precalc2;
-  int a;
   //int m1, m2; 
   guchar randoms[8];
   guchar random_pos;
@@ -47,9 +46,6 @@
 
   g_assert (opaque >= 0 && opaque <= 1);
   if (opaque == 0) return;
-
-  a = floor(saturation_slowdown * 256 + 0.5);
-  if (a < -256) a = -256; if (a > 256) a = 256;
 
   for (yp = y0; yp < y1; yp++) {
     yy = (yp + 0.5 - y);
@@ -88,20 +84,6 @@
         // rgbdiff[] is in range -255..+255
         // dif_sum is in range 0..3*255
 
-        if (saturation_slowdown) {
-          // FIXME: still buggy at high diff_sum, even if saturation_slowdown == 0
-          int a_times_diff_sum;
-          a_times_diff_sum = a*diff_sum / 256;
-          // a_times_diff_sum is in range 0..3*255/256
-
-          // Formula: o = o * ( a*d*d + d - a*d )  all ranges 0..1, d=diff_sum
-          opa = opa * (a_times_diff_sum*diff_sum + diff_sum*3*255 - a_times_diff_sum*3*255);
-          // opa is in range 0..256*3*3*255*255, which is way too much precision
-          opa /= 3*3*255*255;
-          //if (opa == 0) opa = 1; // give it a chance to make the final step
-          // opa is in range 1..256
-        }
-
         rgbdiff[0] *= opa;
         rgbdiff[1] *= opa;
         rgbdiff[2] *= opa;
@@ -139,14 +121,14 @@
   if (bbox) {
     // expand the bounding box to include the region we just drawed
     int bb_x, bb_y, bb_w, bb_h;
-    bb_x = floor(x - (radius+1));
-    bb_y = floor(y - (radius+1));
+    bb_x = floor (x - (radius+1));
+    bb_y = floor (y - (radius+1));
     /* FIXME: think about it exactly */
     bb_w = ceil (2*(radius+1));
     bb_h = ceil (2*(radius+1));
 
-    ExpandRectToIncludePoint(bbox, bb_x, bb_y);
-    ExpandRectToIncludePoint(bbox, bb_x+bb_w-1, bb_y+bb_h-1);
+    ExpandRectToIncludePoint (bbox, bb_x, bb_y);
+    ExpandRectToIncludePoint (bbox, bb_x+bb_w-1, bb_y+bb_h-1);
   }
 }
 

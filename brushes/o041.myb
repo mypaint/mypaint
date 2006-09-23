@@ -13,7 +13,6 @@ speed2_slowness 0.8
 offset_by_random 0.0
 offset_by_speed 0.49 | pressure 0.293209876543 -0.65625 0.614197530864 -0.9625 1.0 -1.05 0.0 0.0 | speed 1.0 -0.11 0.0 0.0 0.0 0.0 0.0 0.0
 offset_by_speed_slowness 0.0
-saturation_slowdown 0.0
 slow_tracking 0.0
 slow_tracking_per_dab 0.0
 color_value 0.0
