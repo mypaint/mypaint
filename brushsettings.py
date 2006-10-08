@@ -16,8 +16,9 @@ inputs_list = [
 
 settings_list = [
     # internal name, displayed name, constant, minimum, default, maximum, tooltip
-    ['opaque', 'opaque', False, 0.0, 1.0, 1.0, "0 means brush is transparent, 1 fully visible"],
+    ['opaque', 'opaque', False, 0.0, 1.0, 1.0, "0 means brush is transparent, 1 fully visible\n(also known als alpha or opacity)"],
     ['opaque_multiply', 'opaque multiply', False, 0.0, 0.0, 1.0, "This gets multiplied with opaque. It is used for making opaque depend on pressure (or other inputs)."],
+    ['opaque_linearize', 'opaque linearize', True, 0.0, 0.9, 2.0, "Correct the nonlinearity introduced by blending multiple dabs on top of each other. This correction should get you a linear (\"natural\") pressure response when pressure is mapped to opaque_multiply, as it is usually done. 0.9 is good for standard strokes, set it smaller if your brush scatters a lot, or higher if you use dabs_per_second.\n0.0 the opaque value above is for the individual dabs\n1.0 the opaque value above is for the final brush stroke, assuming each pixel gets (dabs_per_radius*2) brushdabs on average during a stroke"],
     ['radius_logarithmic', 'radius', False, -1.0, 2.0, 5.0, "basic brush radius (logarithmic)\n 0.7 means 2 pixels\n 3.0 means 20 pixels"],
     ['hardness', 'hardness', False, 0.0, 1.0, 1.0, "hard brush-circle borders (setting to zero will draw nothing; it's not implemented like in GIMP, I haven't figured out yet)"],
     ['dabs_per_basic_radius', 'dabs per basic radius', True, 0.0, 0.0, 5.0, "how many dabs to draw while the pointer moves a distance of one brush radius (more precise: the base value of the radius)"],

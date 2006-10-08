@@ -311,6 +311,30 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, GtkMySurfaceOld * s, Rect * bbo
   if (opaque >= 1.0) opaque = 1.0;
   //if (opaque <= 0.0) opaque = 0.0;
   if (opaque <= 0.0) return;
+  if (settings[BRUSH_OPAQUE_LINEARIZE]) {
+    // OPTIMIZE: no need to recalculate this for each dab
+    float alpha, beta, alpha_dab, beta_dab;
+    float dabs_per_pixel;
+    dabs_per_pixel = (
+      b->settings[BRUSH_DABS_PER_ACTUAL_RADIUS]->base_value + 
+      b->settings[BRUSH_DABS_PER_BASIC_RADIUS]->base_value
+      ) * 2.0;
+
+    // the correction makes no sense if the dabs don't overlap
+    if (dabs_per_pixel < 1.0) dabs_per_pixel = 1.0;
+
+    // interpret the user-setting smoothly
+    dabs_per_pixel = 1.0 + b->settings[BRUSH_OPAQUE_LINEARIZE]->base_value*(dabs_per_pixel-1.0);
+
+    // see http://people.ee.ethz.ch/~mrenold/mypaint/brushdab_saturation.png
+    //      beta = beta_dab^dabs_per_pixel
+    // <==> beta_dab = beta^(1/dabs_per_pixel)
+    alpha = opaque;
+    beta = 1.0-alpha;
+    beta_dab = powf(beta, 1.0/dabs_per_pixel);
+    alpha_dab = 1.0-beta_dab;
+    opaque = alpha_dab;
+  }
 
   x = b->actual_x;
   y = b->actual_y;
