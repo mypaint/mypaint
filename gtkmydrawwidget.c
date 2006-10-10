@@ -166,6 +166,33 @@ void gtk_my_draw_widget_discard_and_resize (GtkMyDrawWidget *mdw, int width, int
   mdw->surface = gtk_my_surface_old_new  (width, height);
 }
 
+static void
+gtk_my_draw_widget_process_motion_or_button (GtkWidget *widget, guint32 time, gdouble x, gdouble y, gdouble pressure)
+{
+  GtkMyDrawWidget * mdw;
+  mdw = GTK_MY_DRAW_WIDGET (widget);
+
+  g_assert (pressure >= 0 && pressure <= 1);
+  
+  Rect bbox;
+  bbox.w = 0;
+  brush_stroke_to (mdw->brush, mdw->surface,
+                   x*mdw->one_over_zoom + mdw->viewport_x, y*mdw->one_over_zoom + mdw->viewport_y,
+                   pressure, (double)time / 1000.0 /* in seconds */, &bbox);
+  bbox.x -= (int)(mdw->viewport_x+0.5);
+  bbox.y -= (int)(mdw->viewport_y+0.5);
+  if (mdw->zoom != 1.0) {
+    bbox.x = (int)(bbox.x * mdw->zoom);
+    bbox.y = (int)(bbox.y * mdw->zoom);
+    bbox.w = (int)(bbox.w * mdw->zoom);
+    bbox.h = (int)(bbox.h * mdw->zoom);
+    // worst-case rounding problem
+    bbox.w += 2;
+    bbox.h += 2;
+  }
+  gtk_widget_queue_draw_area (widget, bbox.x, bbox.y, bbox.w, bbox.h);
+}
+
 static gint
 gtk_my_draw_widget_button_updown (GtkWidget *widget, GdkEventButton *event)
 {
@@ -174,35 +201,11 @@ gtk_my_draw_widget_button_updown (GtkWidget *widget, GdkEventButton *event)
   g_return_val_if_fail (GTK_IS_MY_DRAW_WIDGET (widget), FALSE);
   mdw = GTK_MY_DRAW_WIDGET (widget);
 
-  { // WARNING: code duplication, forced by different GdkEvent* structs.
-    // FIXME: maybe just remove this part here? would this hurt?
-    double pressure;
-    if (!gdk_event_get_axis ((GdkEvent *)event, GDK_AXIS_PRESSURE, &pressure)) {
-      pressure = (event->state & GDK_BUTTON1_MASK) ? 0.5 : 0;
-    }
-    //g_print ("motion %f %f %f %d\n", event->x, event->y, pressure, event->state);
-    g_assert (pressure >= 0 && pressure <= 1);
-    
-    Rect bbox;
-    bbox.w = 0;
-    brush_stroke_to (mdw->brush, mdw->surface,
-                     event->x*mdw->one_over_zoom + mdw->viewport_x, event->y*mdw->one_over_zoom + mdw->viewport_y,
-                     pressure, (double)event->time / 1000.0 /* in seconds */, &bbox);
-    bbox.x -= (int)(mdw->viewport_x+0.5);
-    bbox.y -= (int)(mdw->viewport_y+0.5);
-    if (mdw->zoom != 1.0) {
-      bbox.x = (int)(bbox.x * mdw->zoom);
-      bbox.y = (int)(bbox.y * mdw->zoom);
-      bbox.w = (int)(bbox.w * mdw->zoom);
-      bbox.h = (int)(bbox.h * mdw->zoom);
-      // worst-case rounding problem
-      bbox.w += 2;
-      bbox.h += 2;
-    }
-    gtk_widget_queue_draw_area (widget, bbox.x, bbox.y, bbox.w, bbox.h);
-
-  } // END of duplicated code
-  // TODO: actually react on button, if it was not triggered by pressure treshold
+  double pressure;
+  if (!gdk_event_get_axis ((GdkEvent *)event, GDK_AXIS_PRESSURE, &pressure)) {
+    pressure = (event->state & GDK_BUTTON1_MASK) ? 0.5 : 0;
+  }
+  gtk_my_draw_widget_process_motion_or_button (widget, event->time, event->x, event->y, pressure);
   return TRUE;
 }
 
@@ -238,33 +241,11 @@ gtk_my_draw_widget_motion_notify (GtkWidget *widget, GdkEventMotion *event)
     mdw->dragging = 0;
   }
 
-  { // WARNING: code duplication, forced by different GdkEvent* structs.
-    double pressure;
-    if (!gdk_event_get_axis ((GdkEvent *)event, GDK_AXIS_PRESSURE, &pressure)) {
-      pressure = (event->state & GDK_BUTTON1_MASK) ? 0.5 : 0;
-    }
-    //g_print ("motion %d %f %f %f %d\n", event->time, event->x, event->y, pressure, event->state);
-    g_assert (pressure >= 0 && pressure <= 1);
-    
-    Rect bbox;
-    bbox.w = 0;
-    brush_stroke_to (mdw->brush, mdw->surface,
-                     event->x*mdw->one_over_zoom + mdw->viewport_x, event->y*mdw->one_over_zoom + mdw->viewport_y,
-                     pressure, (double)event->time / 1000.0 /* in seconds */, &bbox);
-    bbox.x -= (int)(mdw->viewport_x+0.5);
-    bbox.y -= (int)(mdw->viewport_y+0.5);
-    if (mdw->zoom != 1.0) {
-      bbox.x = (int)(bbox.x * mdw->zoom);
-      bbox.y = (int)(bbox.y * mdw->zoom);
-      bbox.w = (int)(bbox.w * mdw->zoom);
-      bbox.h = (int)(bbox.h * mdw->zoom);
-      // worst-case rounding problem
-      bbox.w += 2;
-      bbox.h += 2;
-    }
-    gtk_widget_queue_draw_area (widget, bbox.x, bbox.y, bbox.w, bbox.h);
-
-  } // END of duplicated code
+  double pressure;
+  if (!gdk_event_get_axis ((GdkEvent *)event, GDK_AXIS_PRESSURE, &pressure)) {
+    pressure = (event->state & GDK_BUTTON1_MASK) ? 0.5 : 0;
+  }
+  gtk_my_draw_widget_process_motion_or_button (widget, event->time, event->x, event->y, pressure);
   return TRUE;
 }
 
