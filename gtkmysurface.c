@@ -4,12 +4,19 @@
 #include <math.h>
 #include "gtkmysurface.h"
 #include "helpers.h"
+#include "mymarshal.h"
 
 static void gtk_my_surface_class_init    (GtkMySurfaceClass *klass);
 static void gtk_my_surface_init          (GtkMySurface      *b);
 static void gtk_my_surface_finalize (GObject *object);
 
 static gpointer parent_class;
+
+enum {
+  MODIFIED,
+  LAST_SIGNAL
+};
+guint gtk_my_surface_signals[LAST_SIGNAL] = { 0 };
 
 GType
 gtk_my_surface_get_type (void)
@@ -47,6 +54,19 @@ gtk_my_surface_class_init (GtkMySurfaceClass *class)
   gobject_class->finalize = gtk_my_surface_finalize;
 
   class->clear = NULL; // pure virtual method
+
+  gtk_my_surface_signals[MODIFIED] = g_signal_new 
+    ("surface_modified",
+     G_TYPE_FROM_CLASS (class),
+     G_SIGNAL_RUN_LAST,
+     G_STRUCT_OFFSET (GtkMySurfaceClass, surface_modified),
+     NULL, NULL,
+     mymarshal_VOID__INT_INT_INT_INT,
+     G_TYPE_NONE, 4,
+     G_TYPE_INT,
+     G_TYPE_INT,
+     G_TYPE_INT,
+     G_TYPE_INT);
 }
 
 static void
@@ -72,4 +92,11 @@ gtk_my_surface_new (void)
 void gtk_my_surface_clear (GtkMySurface *s)
 {
   GTK_MY_SURFACE_GET_CLASS(s)->clear (s);
+}
+
+void
+gtk_my_surface_modified (GtkMySurface *s, gint x, gint y, gint w, gint h)
+{
+  g_return_if_fail (GTK_IS_MY_SURFACE (s));
+  g_signal_emit (s, gtk_my_surface_signals[MODIFIED], 0, x, y, w, h);
 }

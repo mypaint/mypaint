@@ -105,12 +105,16 @@ class Window(gtk.Window):
               <menuitem action='ChangeColor'/>
               <menuitem action='ColorSelectionWindow'/>
             </menu>
+            <menu action='DebugMenu'>
+              <menuitem action='PrintInputs'/>
+              <menuitem action='DontPrintInputs'/>
+              <separator/>
+              <menuitem action='RecordStroke'/>
+              <menuitem action='ReplayStroke'/>
+            </menu>
             <menu action='HelpMenu'>
               <menuitem action='Docu'/>
               <menuitem action='ShortcutHelp'/>
-              <separator/>
-              <menuitem action='PrintInputs'/>
-              <menuitem action='DontPrintInputs'/>
               <separator/>
               <menuitem action='About'/>
             </menu>
@@ -166,8 +170,12 @@ class Window(gtk.Window):
             ('Docu', None, 'Where is the documentation?', None, None, self.show_docu_cb),
             ('ShortcutHelp',  None, 'Change the keyboard shortcuts?', None, None, self.shortcut_help_cb),
             ('About', None, 'About MyPaint', None, None, self.show_about_cb),
+
+            ('DebugMenu',    None, 'Debug'),
             ('PrintInputs', None, 'Print brush input values to stdout', None, None, self.print_inputs_cb),
             ('DontPrintInputs', None, 'Stop printing them', None, None, self.dont_print_inputs_cb),
+            ('RecordStroke', None, 'record stroke', None, None, self.record_stroke_cb),
+            ('ReplayStroke', None, 'replay stroke', None, None, self.replay_stroke_cb),
 
 
             ('ShortcutsMenu', None, 'Shortcuts'),
@@ -206,6 +214,10 @@ class Window(gtk.Window):
         self.app.brush.set_print_inputs(1)
     def dont_print_inputs_cb(self, action):
         self.app.brush.set_print_inputs(0)
+    def record_stroke_cb(self, action):
+        pass
+    def replay_stroke_cb(self, action):
+        pass
 
     def new_window_cb(self, action):
         # FIXME: is it really done like that?

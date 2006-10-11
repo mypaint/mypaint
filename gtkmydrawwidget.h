@@ -25,6 +25,8 @@ struct _GtkMyDrawWidget
 {
   GtkDrawingArea widget;
 
+  // FIXME: view/model approach - show a surface without owning it
+  // (and delegate all image manipulations to the brush)
   GtkMySurfaceOld * surface;
   GtkMyBrush * brush;
 

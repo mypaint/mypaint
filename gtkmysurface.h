@@ -16,7 +16,8 @@
 typedef struct _GtkMySurface       GtkMySurface;
 typedef struct _GtkMySurfaceClass  GtkMySurfaceClass;
 
-// virtual class, common parent // currently does nothing.
+// virtual class, common parent of everything "renderable"
+// - eg the layer thumbnail generator is a surface, and listens to events on another surface
 struct _GtkMySurface
 {
   GObject parent;
@@ -29,8 +30,8 @@ struct _GtkMySurfaceClass
   // virtual functions:
   void (*clear) (GtkMySurface *s);
 
-  // any emitted signals? notification of change maxrects?
-  //void (*dragging_finished) (GtkMySurface *mdw);
+  // signals:
+  void (* surface_modified) (GtkMySurface *s, gint x, gint y, gint width, gint height);
 };
 
 GType      gtk_my_surface_get_type   (void) G_GNUC_CONST;
@@ -38,5 +39,6 @@ GType      gtk_my_surface_get_type   (void) G_GNUC_CONST;
 GtkMySurface* gtk_my_surface_new        (void);
 
 void gtk_my_surface_clear (GtkMySurface *s);
+void gtk_my_surface_modified (GtkMySurface *s, gint x, gint y, gint w, gint h);
 
 #endif /* __GTK_MY_SURFACE_H__ */

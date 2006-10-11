@@ -27,14 +27,23 @@ gtkmybrush.o:	brushsettings.h gtkmybrush.c gtkmybrush.h
 mapping.o:	mapping.c mapping.h
 	cc $(CFLAGS) -c -o $@ mapping.c
 
-gtkmysurface.o:	gtkmysurface.c gtkmysurface.h
+gtkmysurface.o:	gtkmysurface.c gtkmysurface.h mymarshal.h
 	cc $(CFLAGS) -c -o $@ gtkmysurface.c
 
 gtkmysurfaceold.o:	gtkmysurfaceold.c gtkmysurfaceold.h
 	cc $(CFLAGS) -c -o $@ gtkmysurfaceold.c
 
+mymarshal.h: mymarshal.list
+	glib-genmarshal --prefix=mymarshal --header mymarshal.list > mymarshal.h
+
+mymarshal.c: mymarshal.list
+	glib-genmarshal --prefix=mymarshal --body mymarshal.list > mymarshal.c
+
+mymarshal.o:	mymarshal.h mymarshal.c
+	cc $(CFLAGS) -c -o $@ mymarshal.c
+
 clean:
-	rm *.o *.so brushsettings.h mydrawwidget.defs mydrawwidget.defs.c
+	rm *.o *.so brushsettings.h mydrawwidget.defs mydrawwidget.defs.c mymarshal.c mymarshal.h
 
 mydrawwidget.defs.c: mydrawwidget.defs mydrawwidget.override
 	pygtk-codegen-2.0 --prefix mydrawwidget \
@@ -48,7 +57,7 @@ mydrawwidget.defs: gtkmydrawwidget.h gtkmybrush.h gtkmysurface.h gtkmysurfaceold
 	./caller_owns_return.py mydrawwidget.defs get_nonwhite_as_pixbuf get_as_pixbuf
 
 mydrawwidget.so: mydrawwidget.defs.c mydrawwidgetmodule.c gtkmydrawwidget.o gtkmybrush.o \
-                 gtkmysurface.o gtkmysurfaceold.o brush_dab.o helpers.o mapping.o
+                 gtkmysurface.o gtkmysurfaceold.o brush_dab.o helpers.o mapping.o mymarshal.o
 	$(CC) $(LDFLAGS) $(CFLAGS) -shared $^ -o $@
 
 PREFIX=/usr/local

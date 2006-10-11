@@ -1,5 +1,6 @@
 // gtk stock code - left gtk prefix to use the pygtk wrapper-generator easier
 #include "gtkmydrawwidget.h"
+//#include "rawinput.h"
 
 static void gtk_my_draw_widget_class_init    (GtkMyDrawWidgetClass *klass);
 static void gtk_my_draw_widget_init          (GtkMyDrawWidget      *mdw);
@@ -9,7 +10,7 @@ static gint gtk_my_draw_widget_button_updown (GtkWidget *widget, GdkEventButton 
 static gint gtk_my_draw_widget_motion_notify (GtkWidget *widget, GdkEventMotion *event);
 static gint gtk_my_draw_widget_proximity_inout (GtkWidget *widget, GdkEventProximity *event);
 static gint gtk_my_draw_widget_expose (GtkWidget *widget, GdkEventExpose *event);
-
+static void gtk_my_draw_widget_surface_modified (GtkMySurface *s, gint x, gint y, gint w, gint h, GtkMyDrawWidget *mdw);
 
 
 
@@ -133,8 +134,9 @@ gtk_my_draw_widget_finalize (GObject *object)
   g_return_if_fail (object != NULL);
   g_return_if_fail (GTK_IS_MY_DRAW_WIDGET (object));
   mdw = GTK_MY_DRAW_WIDGET (object);
-  // seems to be called multiple times
+  // can be called multiple times
   if (mdw->surface) {
+    g_signal_handlers_disconnect_by_func (mdw->surface, gtk_my_draw_widget_surface_modified, mdw);
     g_object_unref (mdw->surface);
     mdw->surface = NULL;
   }
@@ -162,35 +164,51 @@ void gtk_my_draw_widget_init (GtkMyDrawWidget *mdw)
 
 void gtk_my_draw_widget_discard_and_resize (GtkMyDrawWidget *mdw, int width, int height)
 {
-  if (mdw->surface) g_object_unref (mdw->surface);
+  if (mdw->surface) {
+    g_signal_handlers_disconnect_by_func (mdw->surface, gtk_my_draw_widget_surface_modified, mdw);
+    g_object_unref (mdw->surface);
+  }
   mdw->surface = gtk_my_surface_old_new  (width, height);
+  g_signal_connect (mdw->surface, "surface_modified", G_CALLBACK (gtk_my_draw_widget_surface_modified), mdw);
+
 }
 
 static void
 gtk_my_draw_widget_process_motion_or_button (GtkWidget *widget, guint32 time, gdouble x, gdouble y, gdouble pressure)
 {
+  //RawInput * ri;
   GtkMyDrawWidget * mdw;
   mdw = GTK_MY_DRAW_WIDGET (widget);
 
   g_assert (pressure >= 0 && pressure <= 1);
+
+  //ri = store_input(time, x, y, pressure);
   
-  Rect bbox;
-  bbox.w = 0;
+  // FIXME: emit a dirty_event in the stroke code, do not handle bbox here
   brush_stroke_to (mdw->brush, mdw->surface,
                    x*mdw->one_over_zoom + mdw->viewport_x, y*mdw->one_over_zoom + mdw->viewport_y,
-                   pressure, (double)time / 1000.0 /* in seconds */, &bbox);
-  bbox.x -= (int)(mdw->viewport_x+0.5);
-  bbox.y -= (int)(mdw->viewport_y+0.5);
+                   pressure, (double)time / 1000.0 /* in seconds */);
+
+
+
+}
+
+static void
+gtk_my_draw_widget_surface_modified (GtkMySurface *s, gint x, gint y, gint w, gint h, GtkMyDrawWidget *mdw)
+{
+  x -= (int)(mdw->viewport_x+0.5);
+  y -= (int)(mdw->viewport_y+0.5);
   if (mdw->zoom != 1.0) {
-    bbox.x = (int)(bbox.x * mdw->zoom);
-    bbox.y = (int)(bbox.y * mdw->zoom);
-    bbox.w = (int)(bbox.w * mdw->zoom);
-    bbox.h = (int)(bbox.h * mdw->zoom);
+    x = (int)(x * mdw->zoom);
+    y = (int)(y * mdw->zoom);
+    w = (int)(w * mdw->zoom);
+    h = (int)(h * mdw->zoom);
     // worst-case rounding problem
-    bbox.w += 2;
-    bbox.h += 2;
+    w += 2;
+    h += 2;
   }
-  gtk_widget_queue_draw_area (widget, bbox.x, bbox.y, bbox.w, bbox.h);
+  gtk_widget_queue_draw_area (GTK_WIDGET (mdw), x, y, w, h);
+  //printf ("queued %d %d %d %d\n", x, y, w, h);
 }
 
 static gint

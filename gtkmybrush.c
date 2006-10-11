@@ -453,9 +453,12 @@ float brush_count_dabs_to (GtkMyBrush * b, float x, float y, float pressure, flo
 }
 
 // Called from gtkmydrawwidget.c when a GTK event was received, with the new pointer position.
-// The bbox, unless NULL, is the bounding box of the modified region. It will be expanded.
-void brush_stroke_to (GtkMyBrush * b, GtkMySurfaceOld * s, float x, float y, float pressure, double time, Rect * bbox)
+void brush_stroke_to (GtkMyBrush * b, GtkMySurfaceOld * s, float x, float y, float pressure, double time)
 {
+  // bounding box of the modified region
+  Rect bbox;
+  bbox.w = 0;
+
   if (DEBUGLOG) { // logfile for debugging
     static FILE * logfile = NULL;
     if (!logfile) {
@@ -552,11 +555,16 @@ void brush_stroke_to (GtkMyBrush * b, GtkMySurfaceOld * s, float x, float y, flo
     b->dist -= 1.0;
     
     brush_update_settings_values (b);
-    brush_prepare_and_draw_dab (b, s, bbox);
+    brush_prepare_and_draw_dab (b, s, &bbox);
   }
 
   // not equal to b_time now unless b->dist == 0
   b->last_time = time;
+
+
+  if (bbox.w > 0) {
+    gtk_my_surface_modified ( GTK_MY_SURFACE (s), bbox.x, bbox.y, bbox.w, bbox.h);
+  }
 }
 
 #define SIZE 256
