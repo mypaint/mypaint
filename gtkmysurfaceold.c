@@ -15,11 +15,11 @@ static gpointer parent_class;
 GType
 gtk_my_surface_old_get_type (void)
 {
-  static GType my_surface_old_type = 0;
+  static GType type = 0;
 
-  if (!my_surface_old_type)
+  if (!type)
     {
-      static const GTypeInfo my_surface_old_info =
+      static const GTypeInfo info =
       {
 	sizeof (GtkMySurfaceOldClass),
 	NULL,		/* base_init */
@@ -32,12 +32,12 @@ gtk_my_surface_old_get_type (void)
 	(GInstanceInitFunc) gtk_my_surface_old_init,
       };
 
-      my_surface_old_type =
+      type =
 	g_type_register_static (GTK_TYPE_MY_SURFACE, "GtkMySurfaceOld",
-				&my_surface_old_info, 0);
+				&info, 0);
     }
 
-  return my_surface_old_type;
+  return type;
 }
 
 static void

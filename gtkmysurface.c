@@ -21,11 +21,11 @@ guint gtk_my_surface_signals[LAST_SIGNAL] = { 0 };
 GType
 gtk_my_surface_get_type (void)
 {
-  static GType my_surface_type = 0;
+  static GType type = 0;
 
-  if (!my_surface_type)
+  if (!type)
     {
-      static const GTypeInfo my_surface_info =
+      static const GTypeInfo info =
       {
 	sizeof (GtkMySurfaceClass),
 	NULL,		/* base_init */
@@ -38,12 +38,12 @@ gtk_my_surface_get_type (void)
 	(GInstanceInitFunc) gtk_my_surface_init,
       };
 
-      my_surface_type =
+      type =
 	g_type_register_static (G_TYPE_OBJECT, "GtkMySurface",
-				&my_surface_info, 0);
+				&info, 0);
     }
 
-  return my_surface_type;
+  return type;
 }
 
 static void

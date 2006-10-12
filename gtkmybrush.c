@@ -69,11 +69,11 @@ static gpointer parent_class;
 GType
 gtk_my_brush_get_type (void)
 {
-  static GType my_brush_type = 0;
+  static GType type = 0;
 
-  if (!my_brush_type)
+  if (!type)
     {
-      static const GTypeInfo my_brush_info =
+      static const GTypeInfo info =
       {
 	sizeof (GtkMyBrushClass),
 	NULL,		/* base_init */
@@ -86,12 +86,12 @@ gtk_my_brush_get_type (void)
 	(GInstanceInitFunc) gtk_my_brush_init,
       };
 
-      my_brush_type =
+      type =
 	g_type_register_static (G_TYPE_OBJECT, "GtkMyBrush",
-				&my_brush_info, 0);
+				&info, 0);
     }
 
-  return my_brush_type;
+  return type;
 }
 
 static void

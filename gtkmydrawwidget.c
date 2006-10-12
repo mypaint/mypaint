@@ -26,11 +26,11 @@ guint gtk_my_draw_widget_signals[LAST_SIGNAL] = { 0 };
 GType
 gtk_my_draw_widget_get_type (void)
 {
-  static GType my_draw_widget_type = 0;
+  static GType type = 0;
 
-  if (!my_draw_widget_type)
+  if (!type)
     {
-      static const GTypeInfo my_draw_widget_info =
+      static const GTypeInfo info =
       {
 	sizeof (GtkMyDrawWidgetClass),
 	NULL,		/* base_init */
@@ -43,12 +43,12 @@ gtk_my_draw_widget_get_type (void)
 	(GInstanceInitFunc) gtk_my_draw_widget_init,
       };
 
-      my_draw_widget_type =
+      type =
 	g_type_register_static (GTK_TYPE_DRAWING_AREA, "GtkMyDrawWidget",
-				&my_draw_widget_info, 0);
+				&info, 0);
     }
 
-  return my_draw_widget_type;
+  return type;
 }
 
 static void
