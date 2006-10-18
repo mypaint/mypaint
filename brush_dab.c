@@ -45,7 +45,8 @@
   random_pos = 0;
 
   g_assert (opaque >= 0 && opaque <= 1);
-  if (opaque == 0) return;
+  //if (opaque == 0) return;
+  if (opaque < 1/256.0) return;
 
   for (yp = y0; yp < y1; yp++) {
     yy = (yp + 0.5 - y);

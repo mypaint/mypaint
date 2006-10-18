@@ -160,7 +160,6 @@ void brush_reset (GtkMyBrush * b)
 
 void brush_update_settings_values (GtkMyBrush * b)
 {
-  float radius_log;
   int i;
   float pressure;
   float * settings = b->settings_value;
@@ -231,8 +230,6 @@ void brush_update_settings_values (GtkMyBrush * b)
     b->actual_y += (b->y - b->actual_y) * fac;
   }
 
-  radius_log = settings[BRUSH_RADIUS_LOGARITHMIC];
-
   { // slow speed
     float fac;
     fac = 1.0 - exp_decay (settings[BRUSH_SPEED1_SLOWNESS], b->dtime);
@@ -280,8 +277,9 @@ void brush_update_settings_values (GtkMyBrush * b)
   b->settings[BRUSH_RADIUS_LOGARITHMIC]->base_value += settings[BRUSH_CHANGE_RADIUS] * 0.01;
 
   // calculate final radius
+  float radius_log;
+  radius_log = settings[BRUSH_RADIUS_LOGARITHMIC];
   b->actual_radius = expf(radius_log);
-    
   if (b->actual_radius < ACTUAL_RADIUS_MIN) b->actual_radius = ACTUAL_RADIUS_MIN;
   if (b->actual_radius > ACTUAL_RADIUS_MAX) b->actual_radius = ACTUAL_RADIUS_MAX;
 }
@@ -295,6 +293,7 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, GtkMySurfaceOld * s, Rect * bbo
 {
   float * settings = b->settings_value;
   float x, y, opaque;
+  float radius;
   int i;
   gint color[3];
   int color_is_hsv;
@@ -315,18 +314,20 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, GtkMySurfaceOld * s, Rect * bbo
     // OPTIMIZE: no need to recalculate this for each dab
     float alpha, beta, alpha_dab, beta_dab;
     float dabs_per_pixel;
+    // dabs_per_pixel is just estimated roughly, I didn't think hard
+    // about the case when the radius changes during the stroke
     dabs_per_pixel = (
       b->settings[BRUSH_DABS_PER_ACTUAL_RADIUS]->base_value + 
       b->settings[BRUSH_DABS_PER_BASIC_RADIUS]->base_value
       ) * 2.0;
 
-    // the correction makes no sense if the dabs don't overlap
+    // the correction is probably not wanted if the dabs don't overlap
     if (dabs_per_pixel < 1.0) dabs_per_pixel = 1.0;
 
     // interpret the user-setting smoothly
     dabs_per_pixel = 1.0 + b->settings[BRUSH_OPAQUE_LINEARIZE]->base_value*(dabs_per_pixel-1.0);
 
-    // see http://people.ee.ethz.ch/~mrenold/mypaint/brushdab_saturation.png
+    // see html/brushdab_saturation.png
     //      beta = beta_dab^dabs_per_pixel
     // <==> beta_dab = beta^(1/dabs_per_pixel)
     alpha = opaque;
@@ -347,6 +348,23 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, GtkMySurfaceOld * s, Rect * bbo
   if (settings[BRUSH_OFFSET_BY_RANDOM]) {
     x += gauss_noise () * settings[BRUSH_OFFSET_BY_RANDOM] * b->base_radius;
     y += gauss_noise () * settings[BRUSH_OFFSET_BY_RANDOM] * b->base_radius;
+  }
+
+  
+  radius = b->actual_radius;
+  if (settings[BRUSH_RADIUS_BY_RANDOM]) {
+    float radius_log, alpha_correction;
+    // go back to logarithmic radius to add the noise
+    radius_log  = settings[BRUSH_RADIUS_LOGARITHMIC];
+    radius_log += gauss_noise () * settings[BRUSH_RADIUS_BY_RANDOM];
+    radius = expf(radius_log);
+    if (radius < ACTUAL_RADIUS_MIN) radius = ACTUAL_RADIUS_MIN;
+    if (radius > ACTUAL_RADIUS_MAX) radius = ACTUAL_RADIUS_MAX;
+    alpha_correction = b->actual_radius / radius;
+    alpha_correction = SQR(alpha_correction);
+    if (alpha_correction <= 1.0) {
+      opaque *= alpha_correction;
+    }
   }
 
   // color part
@@ -395,9 +413,7 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, GtkMySurfaceOld * s, Rect * bbo
   }
 
   { // final calculations
-    float radius;
     guchar c[3];
-    radius = b->actual_radius;
 
     g_assert(opaque >= 0);
     g_assert(opaque <= 1);

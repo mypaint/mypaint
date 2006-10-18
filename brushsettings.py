@@ -24,7 +24,7 @@ settings_list = [
     ['dabs_per_basic_radius', 'dabs per basic radius', True, 0.0, 0.0, 5.0, "how many dabs to draw while the pointer moves a distance of one brush radius (more precise: the base value of the radius)"],
     ['dabs_per_actual_radius', 'dabs per actual radius', True, 0.0, 2.0, 5.0, "same as above, but the radius actually drawn is used, which can change dynamically"],
     ['dabs_per_second', 'dabs per second', True, 0.0, 0.0, 80.0, "dabs to draw each second, no matter how far the pointer moves"],
-    ['radius_by_random', 'radius by random', False, 0.0, 0.0, 10.0, "alter the radius randomly each dab\n 0.0 disable\n 0.7 biggest radius is twice as large as smallest\n 3.0 biggest radius 20 times as large as smallest"],
+    ['radius_by_random', 'radius by random', False, 0.0, 0.0, 1.5, "Alter the radius randomly each dab. You can also do this with the by_random input on the radius setting. If you do it here, there are two differences:\n1) the opaque value will be corrected such that a big-radius dabs is more transparent\n2) it will not change the actual radius seen by dabs_per_actual_radius"],
     ['speed1_slowness', 'speed slowness', False, 0.0, 0.04, 0.2, "how slow the input speed is following the real speed\n0.0 change immediatly as your speed changes (not recommended, but try it)"],
     ['speed2_slowness', 'speed2 slowness', False, 0.0, 0.8, 3.0, "how slow the input speed2 is following the real speed\nsame as above, but note that the range is larger; this is supposed to be slower one of both speeds"],
     ['offset_by_random', 'offset by random', False, 0.0, 0.0, 2.0, "add randomness to the position where each dab is drawn\n 0.0 disabled\n 1.0 standard deviation is one basic radius away"],
