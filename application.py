@@ -41,8 +41,8 @@ class Application: # singleton
 
         w = self.colorSelectionWindow = colorselectionwindow.Window(self)
 
-        w = self.layersWindow = layerswindow.Window(self)
-        w.show_all()
+        #w = self.layersWindow = layerswindow.Window(self)
+        #w.show_all()
 
         gtk.accel_map_load(self.confpath + 'accelmap.conf')
 

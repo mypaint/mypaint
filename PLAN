@@ -1,12 +1,12 @@
+- undo.
+  - (probably the most wanted feature, even if only one stroke)
+  - should be a lot easier together with layers
+
 - layers.
   - alpha support (for both rendering and brush strokes)
   - rewrite the rendering code
   - layer dialog (select / set occupancy)
   - own image file format (instead of png)
-
-- undo.
-  - (probably the most wanted feature, even if only one stroke)
-  - should be a lot easier together with layers
 
 - frame.
   - ("simulates" a finite canvas; infinite canvas alone is awful for artists)
@@ -20,6 +20,9 @@
   - set "reallocate how much in advance" maybe?
 
 - dedicated "slow random" input
+
+- tilt support 
+  - I need someone with a tilt tablet willing to test it
 
 - maybe should use log(speed) instead of speed - I think it reacts
   "too strong" to fast moves. Maybe make this an option. (or another input)
@@ -35,10 +38,13 @@
   - buttons next to shape? shared "symlinked" shape?
   - the "custom" input partially solves this problem now.
 
+- change brush without changin radius?
+  - how? distinguish brush tip vs brush size vs brush dynamics?
+
 - allow non-circle brush shapes
 
 - button for fast GIMP in- and export, also a GIMP plugin if needed
 
 - maybe avoid gaps when using the "offset by speed"
-  - and add a setting to intentinally do such gaps
+  - and add a setting to intentionally do such gaps
 

@@ -70,7 +70,7 @@ GtkMySurfaceOld*
 gtk_my_surface_old_new  (int w, int h)
 {
   GtkMySurfaceOld * s = g_object_new (GTK_TYPE_MY_SURFACE_OLD, NULL);
-  g_print ("gtk_my_surface_old_new (This should get called.)\n");
+  //g_print ("gtk_my_surface_old_new (This should get called.)\n");
 
   s->w = w;
   s->h = h;

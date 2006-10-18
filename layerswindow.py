@@ -1,5 +1,5 @@
 "layer dialog"
-# TODO 
+# TODO
 
 import gtk
 import gobject

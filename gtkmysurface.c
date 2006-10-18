@@ -85,7 +85,7 @@ gtk_my_surface_finalize (GObject *object)
 GtkMySurface*
 gtk_my_surface_new (void)
 {
-  g_print ("gtk_my_surface_new (This should get called.)\n");
+  //g_print ("gtk_my_surface_new (This should get called.)\n");
   return g_object_new (GTK_TYPE_MY_SURFACE, NULL);
 }
 
