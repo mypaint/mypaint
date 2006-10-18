@@ -209,6 +209,8 @@ void brush_update_settings_values (GtkMyBrush * b)
   inputs[INPUT_PRESSURE] = pressure;
   inputs[INPUT_SPEED]  = b->norm_speed_slow1 * 0.002;
   inputs[INPUT_SPEED2] = b->norm_speed_slow2 * 0.005;
+  inputs[INPUT_SPEED_LOG] = log(1.0 + b->norm_speed_slow1 * 0.002);
+  inputs[INPUT_SPEED_SQRT] = sqrt(b->norm_speed_slow1 * 0.002);
   inputs[INPUT_RANDOM] = g_random_double ();
   inputs[INPUT_STROKE] = MIN(b->stroke, 1.0);
   inputs[INPUT_CUSTOM] = b->custom_input;

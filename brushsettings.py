@@ -9,6 +9,8 @@ inputs_list = [
     ['pressure', 1.0, True, "The pressure reported by the tablet, between 0.0 and 1.0. If you use the mouse, it will be 0.5 when a button is pressed and 0.0 otherwise."],
     ['speed', 5.0, False, "How fast you currently move. This can change very quickly. Try 'print input values' from the 'help' menu to get a feeling for the range."],
     ['speed2', 5.0, False, "Same as speed, but changes slower. Also look at the 'speed2 slowness' setting."],
+    ['speed_log', 5.0, False, "log(1.0+speed) - speed seems to react too strong FIXME:experimental"],
+    ['speed_sqrt', 5.0, False, "sqrt(speed) - speed seems to react too strong FIXME:experimental"],
     ['random', 1.0, False, "Random noise, changing at each evaluation. Equally distributed between 0 and 1."],
     ['stroke', 1.0, True, "This input slowly goes from zero to one while you draw a stroke. It can also be configured to jump back to zero periodically while you move. Look at the 'stroke duration' and 'stroke hold time' settings."],
     ['custom', 1.0, True, "This is a user defined input. Look at the 'custom input' setting for details."],
