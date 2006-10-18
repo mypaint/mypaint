@@ -20,3 +20,4 @@ color_saturation 0.0
 color_hue 0.0
 adapt_color_from_image 0.0
 change_radius 0.0
+opaque_linearize 0.0

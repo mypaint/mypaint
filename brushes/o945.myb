@@ -23,3 +23,4 @@ change_radius 0.0
 stroke_treshold 0.0
 stroke_duration_logarithmic 1.63 | pressure 1.0 -2.28 0.0 0.0 0.0 0.0 0.0 0.0
 stroke_holdtime 0.76
+opaque_linearize 0.0

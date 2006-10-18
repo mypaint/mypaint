@@ -25,3 +25,4 @@ stroke_duration_logarithmic 4.0
 stroke_holdtime 0.0
 custom_input -1.52 | random 1.0 3.51 0.0 0.0 0.0 0.0 0.0 0.0
 custom_input_slowness 6.36
+opaque_linearize 0.0
