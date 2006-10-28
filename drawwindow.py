@@ -25,6 +25,11 @@ class Window(gtk.Window):
         self.mdw.set_brush(self.app.brush)
         vbox.pack_start(self.mdw)
 
+        #REMOVE???
+        # Always start with the same random seed.
+        # The human generates enough randomness.
+        self.app.brush.srandom (0xfafa)
+
         self.statusbar = sb = gtk.Statusbar()
         vbox.pack_end(sb, expand=False)
 
@@ -224,13 +229,19 @@ class Window(gtk.Window):
             print 'Discarded', len(trash), 'bytes of stroke data.'
         self.mdw.start_recording()
         self.recording = True
+        self.app.brush.srandom (0xfafa)
         #self.mdw.set_brush(self.app.brush)
     def replay_stroke_cb(self, action):
         if self.recording:
             self.recorded_stroke = self.mdw.stop_recording()
             print 'Recorded', len(self.recorded_stroke), 'bytes.'
             self.recording = False
+        #self.app.brush.reset()
+        self.app.brush.srandom (0xfafa)
+        print self.app.brush.random_double ()
         self.mdw.replay(self.recorded_stroke)
+        print self.app.brush.random_double ()
+        print '---'
         #self.mdw.set_brush(None)
 
     def new_window_cb(self, action):

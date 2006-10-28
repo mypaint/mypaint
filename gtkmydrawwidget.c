@@ -294,7 +294,13 @@ gtk_my_draw_widget_proximity_inout (GtkWidget *widget, GdkEventProximity *event)
   // note, event is not received if it does not happen in our window,
   // so the motion event might actually be the first one to see a new device
   // Stroke certainly finished now.
-  if (mdw->brush) brush_reset (mdw->brush);
+
+  if (mdw->brush) {
+    // FIXME TODO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! either store the
+    // reset, or emit a "util changed" signal and store/do the reset
+    // from python.
+    brush_reset (mdw->brush);
+  }
   return FALSE;
 }
 
@@ -487,6 +493,7 @@ void gtk_my_draw_widget_replay (GtkMyDrawWidget *mdw, GString* data)
     g_print ("Unknown version ID\n");
     return;
   }
+  brush_reset (mdw->brush);
   while (i<data->len) {
     StrokeData * sd = (StrokeData*)(s+i);
     i += sizeof(StrokeData);

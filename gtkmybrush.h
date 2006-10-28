@@ -95,7 +95,11 @@ void gtk_my_brush_set_painting_time (GtkMyBrush * b, float value);
 GdkPixbuf* gtk_my_brush_get_colorselection_pixbuf (GtkMyBrush * b);
 
 /* only for mydrawwidget (not exported to python): */
-void brush_stroke_to (GtkMyBrush * b, GtkMySurfaceOld * s, float x, float y, float pressure, double time);
+void brush_stroke_to (GtkMyBrush * b, GtkMySurfaceOld * s, float x, float y, float pressure, double dtime);
 void brush_reset (GtkMyBrush * b);
+
+/* note: currently the random seed is global, not brush specific */
+void gtk_my_brush_srandom (GtkMyBrush * b, int value);
+double gtk_my_brush_random_double (GtkMyBrush * b); // for testing the RNG
 
 #endif /* __GTK_MY_BRUSH_H__ */

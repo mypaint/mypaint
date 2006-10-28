@@ -2,7 +2,7 @@
 #include <glib.h>
 #include <math.h>
 
-// stolen from the gimp (noisify.c)
+// stolen from the gimp (noisify.c) and modified to synced_random()
 
 /*
  * Return a Gaussian (aka normal) random variable.
@@ -15,15 +15,24 @@
  * It would probably be better to use another algorithm, such as that
  * in Knuth
  */
-gdouble gauss_noise (void)
+gdouble synced_gauss_noise (void)
 {
   gint i;
   gdouble sum = 0.0;
 
-  for (i = 0; i < 4; i++)
-    sum += g_random_int_range (0, 0x7FFF);
+  for (i = 0; i < 4; i++) {
+    //sum += g_random_int_range (0, 0x7FFF);
+    sum += synced_random() % 0x8000;
+  }
 
   return sum * 5.28596089837e-5 - 3.46410161514;
+}
+
+gdouble synced_random_double (void)
+{
+  // synced_random() gives 31bit, but 1<<31 overflows
+  return (synced_random() % (1<<30)) / ((gdouble)(1<<30));
+  // [0, 1)
 }
 
 // stolen from the gimp (gimpcolorspace.c)

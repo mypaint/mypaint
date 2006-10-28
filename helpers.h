@@ -3,8 +3,10 @@
 
 #include <glib.h>
 #include <assert.h>
-// gaussian noise, mean 0 variance 1
-extern gdouble gauss_noise (void);
+#include "random.h"
+
+gdouble synced_random_double (void);
+gdouble synced_gauss_noise (void);
 
 #define ROUND(x) ((int) ((x) + 0.5))
 #define SIGN(x) ((x)>0?1:(-1))

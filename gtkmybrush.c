@@ -211,7 +211,7 @@ void brush_update_settings_values (GtkMyBrush * b)
   inputs[INPUT_SPEED2] = b->norm_speed_slow2 * 0.005;
   inputs[INPUT_SPEED_LOG] = log(1.0 + b->norm_speed_slow1 * 0.002);
   inputs[INPUT_SPEED_SQRT] = sqrt(b->norm_speed_slow1 * 0.002);
-  inputs[INPUT_RANDOM] = g_random_double ();
+  inputs[INPUT_RANDOM] = synced_random_double ();
   inputs[INPUT_STROKE] = MIN(b->stroke, 1.0);
   inputs[INPUT_CUSTOM] = b->custom_input;
   if (b->print_inputs) {
@@ -348,8 +348,8 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, GtkMySurfaceOld * s, Rect * bbo
   }
 
   if (settings[BRUSH_OFFSET_BY_RANDOM]) {
-    x += gauss_noise () * settings[BRUSH_OFFSET_BY_RANDOM] * b->base_radius;
-    y += gauss_noise () * settings[BRUSH_OFFSET_BY_RANDOM] * b->base_radius;
+    x += synced_gauss_noise () * settings[BRUSH_OFFSET_BY_RANDOM] * b->base_radius;
+    y += synced_gauss_noise () * settings[BRUSH_OFFSET_BY_RANDOM] * b->base_radius;
   }
 
   
@@ -358,7 +358,7 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, GtkMySurfaceOld * s, Rect * bbo
     float radius_log, alpha_correction;
     // go back to logarithmic radius to add the noise
     radius_log  = settings[BRUSH_RADIUS_LOGARITHMIC];
-    radius_log += gauss_noise () * settings[BRUSH_RADIUS_BY_RANDOM];
+    radius_log += synced_gauss_noise () * settings[BRUSH_RADIUS_BY_RANDOM];
     radius = expf(radius_log);
     if (radius < ACTUAL_RADIUS_MIN) radius = ACTUAL_RADIUS_MIN;
     if (radius > ACTUAL_RADIUS_MAX) radius = ACTUAL_RADIUS_MAX;
@@ -614,7 +614,7 @@ PrecalcData * precalc_data(float phase0)
   height = SIZE;
   result = malloc(sizeof(PrecalcData)*width*height);
 
-  //phase0 = g_random_double () * 2*M_PI;
+  //phase0 = synced_random_double () * 2*M_PI;
 
   width_inv = 1.0/width;
   height_inv = 1.0/height;
@@ -778,4 +778,14 @@ GdkPixbuf* gtk_my_brush_get_colorselection_pixbuf (GtkMyBrush * b)
     }
   }
   return pixbuf;
+}
+
+double gtk_my_brush_random_double (GtkMyBrush * b)
+{
+  return synced_random_double ();
+}
+
+void gtk_my_brush_srandom (GtkMyBrush * b, int value)
+{
+  synced_srandom (value);
 }

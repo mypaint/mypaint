@@ -19,9 +19,22 @@ if prefix:
     if not prefix.endswith('/'): prefix = prefix + '/'
     sys.path.append(prefix + 'lib/mypaint/')
 
-try: # just for a nice error message
-    from mydrawwidget import MyDrawWidget
-    del MyDrawWidget
+try: # just for a nice error message, plus portability test
+    from mydrawwidget import MyBrush
+    b = MyBrush()
+    b.srandom(0xf4a1)
+    b.random_double()
+    b.random_double()
+    val = b.random_double()
+    if abs(val - 0.816066731699) > 1e-10:
+        print 'Warning: the pseudo random generator did not generate the expected sequence.'
+        print 'You should be able to use mypaint normally, but files (stroke replays) saved'
+        print 'on a different system will have a different randomness, thus look different.'
+        print 'Please report this problem together with information about your system / CPU.'
+        print
+    assert val >= 0.0
+    assert val <= 1.0
+    del MyBrush
 except ImportError, detail:
     print 'ImportError:', detail
     if 'cannot import name' in str(detail).lower():
