@@ -12,6 +12,7 @@ static gint gtk_my_draw_widget_proximity_inout (GtkWidget *widget, GdkEventProxi
 static gint gtk_my_draw_widget_expose (GtkWidget *widget, GdkEventExpose *event);
 static void gtk_my_draw_widget_surface_modified (GtkMySurface *s, gint x, gint y, gint w, gint h, GtkMyDrawWidget *mdw);
 
+static void gtk_my_draw_widget_store_motion (GtkMyDrawWidget *mdw, int dtime, float x, float y, float pressure);
 
 
 
@@ -160,6 +161,9 @@ void gtk_my_draw_widget_init (GtkMyDrawWidget *mdw)
   mdw->zoom = 1.0;
   mdw->one_over_zoom = 1.0;
   mdw->dragging = 0;
+
+  mdw->recording = NULL;
+  mdw->last_time = 0;
 }
 
 void gtk_my_draw_widget_discard_and_resize (GtkMyDrawWidget *mdw, int width, int height)
@@ -182,12 +186,21 @@ gtk_my_draw_widget_process_motion_or_button (GtkWidget *widget, guint32 time, gd
 
   g_assert (pressure >= 0 && pressure <= 1);
 
-  //ri = store_input(time, x, y, pressure);
+  int dtime;
+  if (!mdw->last_time) {
+    dtime = 100; //ms
+  } else {
+    dtime = time - mdw->last_time;
+  }
+  mdw->last_time = time;
+
+  if (mdw->recording) {
+    gtk_my_draw_widget_store_motion (mdw, dtime, x, y, pressure);
+  }
   
-  // FIXME: emit a dirty_event in the stroke code, do not handle bbox here
   brush_stroke_to (mdw->brush, mdw->surface,
                    x*mdw->one_over_zoom + mdw->viewport_x, y*mdw->one_over_zoom + mdw->viewport_y,
-                   pressure, (double)time / 1000.0 /* in seconds */);
+                   pressure, (double)dtime / 1000.0 /* in seconds */);
 
 
 
@@ -438,3 +451,58 @@ void gtk_my_draw_widget_set_from_pixbuf (GtkMyDrawWidget *mdw, GdkPixbuf* pixbuf
   gtk_widget_queue_draw (GTK_WIDGET (mdw));
 }
 
+// --------- TODO: move that into another file? --------------
+
+void gtk_my_draw_widget_start_recording (GtkMyDrawWidget *mdw)
+{
+  g_assert (!mdw->recording);
+  mdw->recording = g_string_new("1"); // version identifier
+  // (need to save current x/y/press if encoding diff.)
+}
+
+// FIXME: use compressed, endian/architecture independent format
+typedef struct {
+  int dtime;
+  float x, y, pressure;
+} StrokeData;
+
+GString* gtk_my_draw_widget_stop_recording (GtkMyDrawWidget *mdw)
+{
+  // see also mydrawwidget.override
+  GString *s;
+  s = mdw->recording;
+  mdw->recording = NULL;
+  return s;
+}
+
+void gtk_my_draw_widget_replay (GtkMyDrawWidget *mdw, GString* data)
+{
+  // see also mydrawwidget.override
+  int i = 0;
+  char * s = data->str;
+  if (s[i++] != '1') {
+    g_print ("Unknown version ID\n");
+    return;
+  }
+  while (i<data->len) {
+    StrokeData * sd = (StrokeData*)(s+i);
+    i += sizeof(StrokeData);
+    brush_stroke_to (mdw->brush, mdw->surface,
+                     sd->x*mdw->one_over_zoom + mdw->viewport_x, sd->y*mdw->one_over_zoom + mdw->viewport_y,
+                     sd->pressure, (double)(sd->dtime) / 1000.0 /* in seconds */);
+  }
+}
+
+
+void gtk_my_draw_widget_store_motion (GtkMyDrawWidget *mdw, int dtime, float x, float y, float pressure)
+{
+  StrokeData sd_on_stack;
+  StrokeData * sd = &sd_on_stack;
+
+  sd->dtime = dtime;
+  sd->x = x;
+  sd->y = y;
+  sd->pressure = pressure;
+  
+  g_string_append_len (mdw->recording, (gchar*)sd, sizeof(StrokeData));
+}

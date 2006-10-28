@@ -1,3 +1,4 @@
+/* -*- Mode: C; c-basic-offset: 4 -*- */
 %%
 headers
 #include <Python.h>
@@ -17,3 +18,35 @@ ignore-glob
   *_get_type
 ignore brush_stroke_to 
 ignore brush_reset 
+%%
+override gtk_my_draw_widget_stop_recording noargs
+static PyObject *
+_wrap_gtk_my_draw_widget_stop_recording (PyGObject *self)
+{
+    PyObject * result;
+    GString * s;
+    s = gtk_my_draw_widget_stop_recording (GTK_MY_DRAW_WIDGET(self->obj));
+    if (!s) {
+        PyErr_SetString(PyExc_ValueError, "called stop_recording before start_recording");
+        return NULL;
+    }
+    // this will memcpy() the data
+    result = PyString_FromStringAndSize((char*)s->str, s->len);
+    g_string_free(s, TRUE);
+    return result;
+}
+%%
+override gtk_my_draw_widget_replay
+static PyObject *
+_wrap_gtk_my_draw_widget_replay(PyGObject *self, PyObject *args)
+{
+    GString s;
+    if (!PyArg_ParseTuple(args, "s#:GtkMyDrawWidget.replay", &(s.str), &(s.len)))
+        return NULL;
+    // returns pointer to python memory, so it must not be free()d
+    s.allocated_len = 0; // should never get accessed
+    // s is a read-only GString now, and will be invalid after this call
+    gtk_my_draw_widget_replay(GTK_MY_DRAW_WIDGET(self->obj), &s);
+    Py_INCREF(Py_None);
+    return Py_None;
+}

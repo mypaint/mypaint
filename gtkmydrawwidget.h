@@ -36,6 +36,9 @@ struct _GtkMyDrawWidget
   int allow_dragging;
   int dragging;
   float dragging_last_x, dragging_last_y;
+
+  guint32 last_time;
+  GString * recording;
 };
 
 struct _GtkMyDrawWidgetClass
@@ -63,5 +66,9 @@ GdkPixbuf* gtk_my_draw_widget_get_as_pixbuf (GtkMyDrawWidget *mdw);
 GdkPixbuf* gtk_my_draw_widget_get_nonwhite_as_pixbuf (GtkMyDrawWidget *mdw);
 void gtk_my_draw_widget_set_from_pixbuf (GtkMyDrawWidget *mdw, GdkPixbuf* pixbuf);
 void gtk_my_draw_widget_discard_and_resize (GtkMyDrawWidget *mdw, int width, int height);
+
+void gtk_my_draw_widget_start_recording (GtkMyDrawWidget *mdw);
+GString* gtk_my_draw_widget_stop_recording (GtkMyDrawWidget *mdw);
+void gtk_my_draw_widget_replay (GtkMyDrawWidget *mdw, GString* data);
 
 #endif /* __GTK_MY_DRAW_WIDGET_H__ */

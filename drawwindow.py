@@ -32,6 +32,9 @@ class Window(gtk.Window):
         self.zoomlevel_values = [            2.0/11, 0.25, 1.0/3, 0.50, 2.0/3, 1.0, 1.5, 2.0, 3.0, 4.0, 5.5, 8.0, 16.0]
         self.zoomlevel = self.zoomlevel_values.index(1.0)
 
+        self.recorded_stroke = None
+        self.recording = False
+
         self.init_child_dialogs()
 
         
@@ -214,10 +217,19 @@ class Window(gtk.Window):
         self.app.brush.set_print_inputs(1)
     def dont_print_inputs_cb(self, action):
         self.app.brush.set_print_inputs(0)
+
     def record_stroke_cb(self, action):
-        pass
+        if self.recording:
+            trash = self.mdw.stop_recording()
+            print 'Discarded', len(trash), 'bytes of stroke data.'
+        self.mdw.start_recording()
+        self.recording = True
     def replay_stroke_cb(self, action):
-        pass
+        if self.recording:
+            self.recorded_stroke = self.mdw.stop_recording()
+            print 'Recorded', len(self.recorded_stroke), 'bytes.'
+            self.recording = False
+        self.mdw.replay(self.recorded_stroke)
 
     def new_window_cb(self, action):
         # FIXME: is it really done like that?

@@ -471,11 +471,13 @@ float brush_count_dabs_to (GtkMyBrush * b, float x, float y, float pressure, flo
 }
 
 // Called from gtkmydrawwidget.c when a GTK event was received, with the new pointer position.
-void brush_stroke_to (GtkMyBrush * b, GtkMySurfaceOld * s, float x, float y, float pressure, double time)
+void brush_stroke_to (GtkMyBrush * b, GtkMySurfaceOld * s, float x, float y, float pressure, double dtime)
 {
   // bounding box of the modified region
   Rect bbox;
   bbox.w = 0;
+
+  double time = b->time + dtime;
 
   if (DEBUGLOG) { // logfile for debugging
     static FILE * logfile = NULL;

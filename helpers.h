@@ -27,5 +27,4 @@ void    gimp_hsv_to_rgb_int	(gint    *hue         /* returns red        */,
 typedef struct { int x, y, w, h; } Rect;
 void ExpandRectToIncludePoint(Rect * r, int x, int y);
 
-
 #endif
