@@ -52,9 +52,9 @@ mydrawwidget.defs.c: mydrawwidget.defs mydrawwidget.override
 	--override mydrawwidget.override \
 	mydrawwidget.defs > mydrawwidget.defs.c
 
-mydrawwidget.defs: gtkmydrawwidget.h gtkmybrush.h gtkmysurface.h gtkmysurfaceold.h Makefile
+mydrawwidget.defs: gtkmydrawwidget.h gtkmybrush.h gtkmysurface.h gtkmysurfaceold.h Makefile fix_generated_defs.py
 	python /usr/share/pygtk/2.0/codegen/h2def.py gtkmydrawwidget.h gtkmybrush.h gtkmysurface.h gtkmysurfaceold.h > mydrawwidget.defs
-	./caller_owns_return.py mydrawwidget.defs get_nonwhite_as_pixbuf get_as_pixbuf
+	./fix_generated_defs.py
 
 mydrawwidget.so: mydrawwidget.defs.c mydrawwidgetmodule.c gtkmydrawwidget.o gtkmybrush.o \
                  gtkmysurface.o gtkmysurfaceold.o brush_dab.o helpers.o mapping.o mymarshal.o

@@ -28,7 +28,7 @@ struct _GtkMyDrawWidget
   // FIXME: view/model approach - show a surface without owning it
   // (and delegate all image manipulations to the brush)
   GtkMySurfaceOld * surface;
-  GtkMyBrush * brush;
+  GtkMyBrush * brush; // can be NULL to discard all drawing events
 
   float viewport_x, viewport_y;
   float zoom, one_over_zoom;

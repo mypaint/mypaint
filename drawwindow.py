@@ -224,12 +224,14 @@ class Window(gtk.Window):
             print 'Discarded', len(trash), 'bytes of stroke data.'
         self.mdw.start_recording()
         self.recording = True
+        #self.mdw.set_brush(self.app.brush)
     def replay_stroke_cb(self, action):
         if self.recording:
             self.recorded_stroke = self.mdw.stop_recording()
             print 'Recorded', len(self.recorded_stroke), 'bytes.'
             self.recording = False
         self.mdw.replay(self.recorded_stroke)
+        #self.mdw.set_brush(None)
 
     def new_window_cb(self, action):
         # FIXME: is it really done like that?

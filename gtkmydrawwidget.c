@@ -198,12 +198,11 @@ gtk_my_draw_widget_process_motion_or_button (GtkWidget *widget, guint32 time, gd
     gtk_my_draw_widget_store_motion (mdw, dtime, x, y, pressure);
   }
   
-  brush_stroke_to (mdw->brush, mdw->surface,
-                   x*mdw->one_over_zoom + mdw->viewport_x, y*mdw->one_over_zoom + mdw->viewport_y,
-                   pressure, (double)dtime / 1000.0 /* in seconds */);
-
-
-
+  if (mdw->brush) {
+    brush_stroke_to (mdw->brush, mdw->surface,
+                     x*mdw->one_over_zoom + mdw->viewport_x, y*mdw->one_over_zoom + mdw->viewport_y,
+                     pressure, (double)dtime / 1000.0 /* in seconds */);
+  }
 }
 
 static void
@@ -295,7 +294,7 @@ gtk_my_draw_widget_proximity_inout (GtkWidget *widget, GdkEventProximity *event)
   // note, event is not received if it does not happen in our window,
   // so the motion event might actually be the first one to see a new device
   // Stroke certainly finished now.
-  brush_reset (mdw->brush);
+  if (mdw->brush) brush_reset (mdw->brush);
   return FALSE;
 }
 
@@ -358,9 +357,9 @@ gtk_my_draw_widget_clear (GtkMyDrawWidget *mdw)
 void
 gtk_my_draw_widget_set_brush (GtkMyDrawWidget *mdw, GtkMyBrush * brush)
 {
-  g_object_ref (brush);
   if (mdw->brush) g_object_unref (mdw->brush);
   mdw->brush = brush;
+  if (mdw->brush) g_object_ref (mdw->brush); //FIXME: look up if that's correct
 }
 
 void gtk_my_draw_widget_allow_dragging (GtkMyDrawWidget *mdw, int allow)
@@ -480,6 +479,10 @@ void gtk_my_draw_widget_replay (GtkMyDrawWidget *mdw, GString* data)
   // see also mydrawwidget.override
   int i = 0;
   char * s = data->str;
+  if (!mdw->brush) {
+    g_print ("Replaying stroke without a brush!\n");
+    return;
+  }
   if (s[i++] != '1') {
     g_print ("Unknown version ID\n");
     return;
