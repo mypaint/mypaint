@@ -499,6 +499,9 @@ void brush_stroke_to (GtkMyBrush * b, GtkMySurfaceOld * s, float x, float y, flo
     b->pressure = pressure;
     b->time = time;
 
+    // not resetting, because they will get overwritten below:
+    //b->dx, dy, dpress, dtime
+
     b->last_time = b->time;
     b->actual_x = b->x;
     b->actual_y = b->y;
@@ -527,6 +530,8 @@ void brush_stroke_to (GtkMyBrush * b, GtkMySurfaceOld * s, float x, float y, flo
   b->dist += brush_count_dabs_to (b, x, y, pressure, time);
   if (b->dist > 300) {
     // this happens quite often, eg when moving the cursor back into the window
+    // FIXME: bad to hardcode a distance treshold here - might look at zoomed image
+    //        better detect leaving/entering the window and reset then.
     //g_print ("Warning: NOT drawing %f dabs, resetting brush instead.\n", b->dist);
     b->time = 0; // reset
     return;
@@ -789,3 +794,13 @@ void gtk_my_brush_srandom (GtkMyBrush * b, int value)
 {
   synced_srandom (value);
 }
+
+/*
+GString* gtk_my_brush_get_state (GtkMyBrush * b)
+{
+}
+
+void gtk_my_brush_set_state (GtkMyBrush * b, GString * data)
+{
+}
+*/

@@ -1,5 +1,5 @@
 "the main drawing window"
-import gtk, os
+import gtk, os, zlib
 import infinitemydrawwidget
 
 class Window(gtk.Window):
@@ -235,6 +235,8 @@ class Window(gtk.Window):
         if self.recording:
             self.recorded_stroke = self.mdw.stop_recording()
             print 'Recorded', len(self.recorded_stroke), 'bytes.'
+            print 'Compressed size:', len(zlib.compress(self.recorded_stroke)), 'bytes.'
+            #, repr(self.recorded_stroke)
             self.recording = False
         #self.app.brush.reset()
         self.app.brush.srandom (0xfafa)

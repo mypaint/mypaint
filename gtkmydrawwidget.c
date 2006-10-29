@@ -465,12 +465,6 @@ void gtk_my_draw_widget_start_recording (GtkMyDrawWidget *mdw)
   // (need to save current x/y/press if encoding diff.)
 }
 
-// FIXME: use compressed, endian/architecture independent format
-typedef struct {
-  int dtime;
-  float x, y, pressure;
-} StrokeData;
-
 GString* gtk_my_draw_widget_stop_recording (GtkMyDrawWidget *mdw)
 {
   // see also mydrawwidget.override
@@ -483,36 +477,36 @@ GString* gtk_my_draw_widget_stop_recording (GtkMyDrawWidget *mdw)
 void gtk_my_draw_widget_replay (GtkMyDrawWidget *mdw, GString* data)
 {
   // see also mydrawwidget.override
-  int i = 0;
-  char * s = data->str;
+  char * p = data->str;
   if (!mdw->brush) {
     g_print ("Replaying stroke without a brush!\n");
     return;
   }
-  if (s[i++] != '1') {
+  if (*p++ != '1') {
     g_print ("Unknown version ID\n");
     return;
   }
   brush_reset (mdw->brush);
-  while (i<data->len) {
-    StrokeData * sd = (StrokeData*)(s+i);
-    i += sizeof(StrokeData);
+  while (p<data->str+data->len) {
+    int dtime;
+    float x, y, pressure;
+    BS_READ_INT32 (dtime);
+    BS_READ_FLOAT (x);
+    BS_READ_FLOAT (y);
+    BS_READ_FLOAT (pressure);
     brush_stroke_to (mdw->brush, mdw->surface,
-                     sd->x*mdw->one_over_zoom + mdw->viewport_x, sd->y*mdw->one_over_zoom + mdw->viewport_y,
-                     sd->pressure, (double)(sd->dtime) / 1000.0 /* in seconds */);
+                     x*mdw->one_over_zoom + mdw->viewport_x, y*mdw->one_over_zoom + mdw->viewport_y,
+                     pressure, (double)(dtime) / 1000.0 /* in seconds */);
+    //g_print ("x=%f, dtime=%d\n", x, dtime);
   }
 }
 
 
 void gtk_my_draw_widget_store_motion (GtkMyDrawWidget *mdw, int dtime, float x, float y, float pressure)
 {
-  StrokeData sd_on_stack;
-  StrokeData * sd = &sd_on_stack;
-
-  sd->dtime = dtime;
-  sd->x = x;
-  sd->y = y;
-  sd->pressure = pressure;
-  
-  g_string_append_len (mdw->recording, (gchar*)sd, sizeof(StrokeData));
+  GString * bs = mdw->recording;
+  BS_WRITE_INT32 (dtime);
+  BS_WRITE_FLOAT (x);
+  BS_WRITE_FLOAT (y);
+  BS_WRITE_FLOAT (pressure);
 }
