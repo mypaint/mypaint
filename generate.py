@@ -21,7 +21,10 @@ content += '\n'
 for s in brushsettings.settings:
     content += '#define BRUSH_%s %d\n' % (s.cname.upper(), s.index)
 content += '#define BRUSH_SETTINGS_COUNT %d\n' % len(brushsettings.settings)
+content += '\n'
+for s in brushsettings.states:
+    content += '#define STATE_%s %d\n' % (s.cname.upper(), s.index)
+content += '#define STATE_COUNT %d\n' % len(brushsettings.states)
 
 writefile('brushsettings.h', content)
-
 

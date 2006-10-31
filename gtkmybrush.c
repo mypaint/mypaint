@@ -37,9 +37,9 @@ gtk_my_brush_set_color (GtkMyBrush * b, int red, int green, int blue)
   g_assert (red >= 0 && red <= 255);
   g_assert (green >= 0 && green <= 255);
   g_assert (blue >= 0 && blue <= 255);
-  b->color[0] = red;
-  b->color[1] = green;
-  b->color[2] = blue;
+  b->states[STATE_COLOR_R] = red / 255.0;
+  b->states[STATE_COLOR_G] = green / 255.0;
+  b->states[STATE_COLOR_B] = blue / 255.0;
 }
 
 void
@@ -147,7 +147,8 @@ float exp_decay (float T_const, float t)
 
 void brush_reset (GtkMyBrush * b)
 {
-  b->time = 0; // triggers the real reset below in brush_stroke_to
+  memset(b->states, 0, sizeof(b->states[0])*STATE_COUNT);
+  b->must_reset = 1; // triggers the real reset below in brush_stroke_to
 }
 
 // Update the "important" settings. (eg. actual radius, velocity)
@@ -176,24 +177,24 @@ void brush_update_settings_values (GtkMyBrush * b)
   b->base_radius = expf(b->settings[BRUSH_RADIUS_LOGARITHMIC]->base_value);
 
   // FIXME: does happen (interpolation problem?)
-  if (b->pressure < 0.0) b->pressure = 0.0;
-  if (b->pressure > 1.0) b->pressure = 1.0;
-  g_assert (b->pressure >= 0.0 && b->pressure <= 1.0);
-  pressure = b->pressure; // could distort it here
+  if (b->states[STATE_PRESSURE] < 0.0) b->states[STATE_PRESSURE] = 0.0;
+  if (b->states[STATE_PRESSURE] > 1.0) b->states[STATE_PRESSURE] = 1.0;
+  g_assert (b->states[STATE_PRESSURE] >= 0.0 && b->states[STATE_PRESSURE] <= 1.0);
+  pressure = b->states[STATE_PRESSURE]; // could distort it here
 
   { // start / end stroke (for "stroke" input only)
-    if (!b->stroke_started) {
+    if (!b->states[STATE_STROKE_STARTED]) {
       if (pressure > b->settings[BRUSH_STROKE_TRESHOLD]->base_value + 0.0001) {
         // start new stroke
         //printf("stroke start %f\n", pressure);
-        b->stroke_started = 1;
-        b->stroke = 0.0;
+        b->states[STATE_STROKE_STARTED] = 1;
+        b->states[STATE_STROKE] = 0.0;
       }
     } else {
       if (pressure <= b->settings[BRUSH_STROKE_TRESHOLD]->base_value * 0.9 + 0.0001) {
         // end stroke
         //printf("stroke end\n");
-        b->stroke_started = 0;
+        b->states[STATE_STROKE_STARTED] = 0;
       }
     }
   }
@@ -207,13 +208,13 @@ void brush_update_settings_values (GtkMyBrush * b)
   norm_dist = norm_speed * b->dtime;
 
   inputs[INPUT_PRESSURE] = pressure;
-  inputs[INPUT_SPEED]  = b->norm_speed_slow1 * 0.002;
-  inputs[INPUT_SPEED2] = b->norm_speed_slow2 * 0.005;
-  inputs[INPUT_SPEED_LOG] = log(1.0 + b->norm_speed_slow1 * 0.002);
-  inputs[INPUT_SPEED_SQRT] = sqrt(b->norm_speed_slow1 * 0.002);
+  inputs[INPUT_SPEED]  = b->states[STATE_NORM_SPEED_SLOW1] * 0.002;
+  inputs[INPUT_SPEED2] = b->states[STATE_NORM_SPEED_SLOW2] * 0.005;
+  inputs[INPUT_SPEED_LOG] = log(1.0 + b->states[STATE_NORM_SPEED_SLOW1] * 0.002);
+  inputs[INPUT_SPEED_SQRT] = sqrt(b->states[STATE_NORM_SPEED_SLOW1] * 0.002);
   inputs[INPUT_RANDOM] = synced_random_double ();
-  inputs[INPUT_STROKE] = MIN(b->stroke, 1.0);
-  inputs[INPUT_CUSTOM] = b->custom_input;
+  inputs[INPUT_STROKE] = MIN(b->states[STATE_STROKE], 1.0);
+  inputs[INPUT_CUSTOM] = b->states[STATE_CUSTOM_INPUT];
   if (b->print_inputs) {
     g_print("press=% 4.3f, speed=% 4.4f\tspeed2=% 4.4f\tstroke=% 4.3f\tcustom=% 4.3f\n", inputs[INPUT_PRESSURE], inputs[INPUT_SPEED], inputs[INPUT_SPEED2], inputs[INPUT_STROKE], inputs[INPUT_CUSTOM]);
   }
@@ -228,48 +229,48 @@ void brush_update_settings_values (GtkMyBrush * b)
 
   {
     float fac = 1.0 - exp_decay (settings[BRUSH_SLOW_TRACKING_PER_DAB], 1.0);
-    b->actual_x += (b->x - b->actual_x) * fac; // FIXME: should this depend on base radius?
-    b->actual_y += (b->y - b->actual_y) * fac;
+    b->states[STATE_ACTUAL_X] += (b->states[STATE_X] - b->states[STATE_ACTUAL_X]) * fac; // FIXME: should this depend on base radius?
+    b->states[STATE_ACTUAL_Y] += (b->states[STATE_Y] - b->states[STATE_ACTUAL_Y]) * fac;
   }
 
   { // slow speed
     float fac;
     fac = 1.0 - exp_decay (settings[BRUSH_SPEED1_SLOWNESS], b->dtime);
-    b->norm_speed_slow1 += (norm_speed - b->norm_speed_slow1) * fac;
+    b->states[STATE_NORM_SPEED_SLOW1] += (norm_speed - b->states[STATE_NORM_SPEED_SLOW1]) * fac;
     fac = 1.0 - exp_decay (settings[BRUSH_SPEED2_SLOWNESS], b->dtime);
-    b->norm_speed_slow2 += (norm_speed - b->norm_speed_slow2) * fac;
+    b->states[STATE_NORM_SPEED_SLOW2] += (norm_speed - b->states[STATE_NORM_SPEED_SLOW2]) * fac;
   }
   
   { // slow speed, but as vector this time
     float fac = 1.0 - exp_decay (exp(settings[BRUSH_OFFSET_BY_SPEED_SLOWNESS]*0.01)-1.0, b->dtime);
-    b->norm_dx_slow += (norm_dx - b->norm_dx_slow) * fac;
-    b->norm_dy_slow += (norm_dy - b->norm_dy_slow) * fac;
+    b->states[STATE_NORM_DX_SLOW] += (norm_dx - b->states[STATE_NORM_DX_SLOW]) * fac;
+    b->states[STATE_NORM_DY_SLOW] += (norm_dy - b->states[STATE_NORM_DY_SLOW]) * fac;
   }
 
   { // custom input
     float fac;
     fac = 1.0 - exp_decay (settings[BRUSH_CUSTOM_INPUT_SLOWNESS], 0.1);
-    b->custom_input += (settings[BRUSH_CUSTOM_INPUT] - b->custom_input) * fac;
+    b->states[STATE_CUSTOM_INPUT] += (settings[BRUSH_CUSTOM_INPUT] - b->states[STATE_CUSTOM_INPUT]) * fac;
   }
 
   { // stroke length
     float frequency;
     float wrap;
     frequency = expf(-settings[BRUSH_STROKE_DURATION_LOGARITHMIC]);
-    b->stroke += norm_dist * frequency;
+    b->states[STATE_STROKE] += norm_dist * frequency;
     //FIXME: why can this happen?
-    if (b->stroke < 0) b->stroke = 0;
+    if (b->states[STATE_STROKE] < 0) b->states[STATE_STROKE] = 0;
     //assert(b->stroke >= 0);
     wrap = 1.0 + settings[BRUSH_STROKE_HOLDTIME];
-    if (b->stroke > wrap) {
+    if (b->states[STATE_STROKE] > wrap) {
       if (wrap > 9.9 + 1.0) {
         // "inifinity", just hold b->stroke somewhere >= 1.0
-        b->stroke = 1.0;
+        b->states[STATE_STROKE] = 1.0;
       } else {
         //printf("fmodf(%f, %f) = ", (double)b->stroke, (double)wrap);
-        b->stroke = fmodf(b->stroke, wrap);
+        b->states[STATE_STROKE] = fmodf(b->states[STATE_STROKE], wrap);
         //printf("%f\n", (double)b->stroke);
-        assert(b->stroke >= 0);
+        assert(b->states[STATE_STROKE] >= 0);
       }
     }
   }
@@ -281,9 +282,9 @@ void brush_update_settings_values (GtkMyBrush * b)
   // calculate final radius
   float radius_log;
   radius_log = settings[BRUSH_RADIUS_LOGARITHMIC];
-  b->actual_radius = expf(radius_log);
-  if (b->actual_radius < ACTUAL_RADIUS_MIN) b->actual_radius = ACTUAL_RADIUS_MIN;
-  if (b->actual_radius > ACTUAL_RADIUS_MAX) b->actual_radius = ACTUAL_RADIUS_MAX;
+  b->states[STATE_ACTUAL_RADIUS] = expf(radius_log);
+  if (b->states[STATE_ACTUAL_RADIUS] < ACTUAL_RADIUS_MIN) b->states[STATE_ACTUAL_RADIUS] = ACTUAL_RADIUS_MIN;
+  if (b->states[STATE_ACTUAL_RADIUS] > ACTUAL_RADIUS_MAX) b->states[STATE_ACTUAL_RADIUS] = ACTUAL_RADIUS_MAX;
 }
 
 // Called only from brush_stroke_to(). Calculate everything needed to
@@ -302,10 +303,17 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, GtkMySurfaceOld * s, Rect * bbo
 
   if (DEBUGLOG) {
     static FILE * logfile = NULL;
+    static double global_time = 0;
+    global_time += b->dtime;
     if (!logfile) {
       logfile = fopen("dabinput.log", "w");
     }
-    fprintf(logfile, "%f %f %f %f %f\n", b->time, b->dtime, b->x, b->dx, b->norm_dx_slow);
+    fprintf(logfile, "%f %f %f %f %f\n",
+            global_time,
+            b->dtime,
+            b->states[STATE_X],
+            b->dx,
+            b->states[STATE_NORM_DX_SLOW]);
   }
 
   opaque = settings[BRUSH_OPAQUE] * settings[BRUSH_OPAQUE_MULTIPLY];
@@ -339,12 +347,12 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, GtkMySurfaceOld * s, Rect * bbo
     opaque = alpha_dab;
   }
 
-  x = b->actual_x;
-  y = b->actual_y;
+  x = b->states[STATE_ACTUAL_X];
+  y = b->states[STATE_ACTUAL_Y];
 
   if (settings[BRUSH_OFFSET_BY_SPEED]) {
-    x += b->norm_dx_slow * settings[BRUSH_OFFSET_BY_SPEED] * 0.1 * b->base_radius;
-    y += b->norm_dy_slow * settings[BRUSH_OFFSET_BY_SPEED] * 0.1 * b->base_radius;
+    x += b->states[STATE_NORM_DX_SLOW] * settings[BRUSH_OFFSET_BY_SPEED] * 0.1 * b->base_radius;
+    y += b->states[STATE_NORM_DY_SLOW] * settings[BRUSH_OFFSET_BY_SPEED] * 0.1 * b->base_radius;
   }
 
   if (settings[BRUSH_OFFSET_BY_RANDOM]) {
@@ -353,7 +361,7 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, GtkMySurfaceOld * s, Rect * bbo
   }
 
   
-  radius = b->actual_radius;
+  radius = b->states[STATE_ACTUAL_RADIUS];
   if (settings[BRUSH_RADIUS_BY_RANDOM]) {
     float radius_log, alpha_correction;
     // go back to logarithmic radius to add the noise
@@ -362,7 +370,7 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, GtkMySurfaceOld * s, Rect * bbo
     radius = expf(radius_log);
     if (radius < ACTUAL_RADIUS_MIN) radius = ACTUAL_RADIUS_MIN;
     if (radius > ACTUAL_RADIUS_MAX) radius = ACTUAL_RADIUS_MAX;
-    alpha_correction = b->actual_radius / radius;
+    alpha_correction = b->states[STATE_ACTUAL_RADIUS] / radius;
     alpha_correction = SQR(alpha_correction);
     if (alpha_correction <= 1.0) {
       opaque *= alpha_correction;
@@ -371,7 +379,7 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, GtkMySurfaceOld * s, Rect * bbo
 
   // color part
   
-  for (i=0; i<3; i++) color[i] = b->color[i];
+  for (i=0; i<3; i++) color[i] = b->states[STATE_COLOR_R+i] * 255;
   color_is_hsv = 0;
 
   if (settings[BRUSH_ADAPT_COLOR_FROM_IMAGE]) {
@@ -389,7 +397,7 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, GtkMySurfaceOld * s, Rect * bbo
       color[i] = ROUND((1.0-v)*color[i] + v*rgb[i]);
       if (color[i] < 0) color[i] = 0;
       if (color[i] > 255) color[i] = 255;
-      b->color[i] = color[i];
+      b->states[STATE_COLOR_R+i] = color[i];
     }
   }
 
@@ -440,31 +448,30 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, GtkMySurfaceOld * s, Rect * bbo
   }
 }
 
-// How many dabs will be drawn between the current and the next (x, y, pressure, time) position?
-float brush_count_dabs_to (GtkMyBrush * b, float x, float y, float pressure, float time)
+// How many dabs will be drawn between the current and the next (x, y, pressure, +dt) position?
+float brush_count_dabs_to (GtkMyBrush * b, float x, float y, float pressure, float dt)
 {
-  float dx, dy, dt;
+  float dx, dy;
   float res1, res2, res3;
   float dist;
 
-  if (b->actual_radius == 0.0) b->actual_radius = expf(b->settings[BRUSH_RADIUS_LOGARITHMIC]->base_value);
-  if (b->actual_radius < ACTUAL_RADIUS_MIN) b->actual_radius = ACTUAL_RADIUS_MIN;
-  if (b->actual_radius > ACTUAL_RADIUS_MAX) b->actual_radius = ACTUAL_RADIUS_MAX;
+  if (b->states[STATE_ACTUAL_RADIUS] == 0.0) b->states[STATE_ACTUAL_RADIUS] = expf(b->settings[BRUSH_RADIUS_LOGARITHMIC]->base_value);
+  if (b->states[STATE_ACTUAL_RADIUS] < ACTUAL_RADIUS_MIN) b->states[STATE_ACTUAL_RADIUS] = ACTUAL_RADIUS_MIN;
+  if (b->states[STATE_ACTUAL_RADIUS] > ACTUAL_RADIUS_MAX) b->states[STATE_ACTUAL_RADIUS] = ACTUAL_RADIUS_MAX;
 
   if (b->base_radius == 0.0) b->base_radius = expf(b->settings[BRUSH_RADIUS_LOGARITHMIC]->base_value);
   if (b->base_radius < 0.5) b->base_radius = 0.5;
   if (b->base_radius > 500.0) b->base_radius = 500.0;
 
-  dx = x - b->x;
-  dy = y - b->y;
+  dx = x - b->states[STATE_X];
+  dy = y - b->states[STATE_Y];
   //dp = pressure - b->pressure; // Not useful?
-  dt = time - b->time;
 
   // OPTIMIZE
   dist = sqrtf (dx*dx + dy*dy);
   // FIXME: no need for base_value or for the range checks above IF always the interpolation
   //        function will be called before this one
-  res1 = dist / b->actual_radius * b->settings[BRUSH_DABS_PER_ACTUAL_RADIUS]->base_value;
+  res1 = dist / b->states[STATE_ACTUAL_RADIUS] * b->settings[BRUSH_DABS_PER_ACTUAL_RADIUS]->base_value;
   res2 = dist / b->base_radius   * b->settings[BRUSH_DABS_PER_BASIC_RADIUS]->base_value;
   res3 = dt * b->settings[BRUSH_DABS_PER_SECOND]->base_value;
   return res1 + res2 + res3;
@@ -477,114 +484,105 @@ void brush_stroke_to (GtkMyBrush * b, GtkMySurfaceOld * s, float x, float y, flo
   Rect bbox;
   bbox.w = 0;
 
-  double time = b->time + dtime;
-
-  if (DEBUGLOG) { // logfile for debugging
+  if (DEBUGLOG) {
     static FILE * logfile = NULL;
+    static double global_time = 0;
+    global_time += dtime;
     if (!logfile) {
       logfile = fopen("rawinput.log", "w");
     }
-    fprintf(logfile, "%f %f %f %f\n", time, x, y, pressure);
+    fprintf(logfile, "%f %f %f %f\n", global_time, x, y, pressure);
   }
-  if (time <= b->time) {
-    //g_print("timeskip  (time=%f, b->time=%f)\n", time, b->time);
+  if (dtime <= 0) {
+    if (dtime < 0) g_print("Time jumped backwards by dtime=%f seconds!\n", dtime);
+    //g_print("timeskip  (dtime=%f)\n", dtime);
     return;
   }
 
-  if (b->time == 0 || time - b->time > 5) {
-    // reset
-    b->dist = 0;
-    b->x = x;
-    b->y = y;
-    b->pressure = pressure;
-    b->time = time;
+  if (b->must_reset || dtime > 5) {
+    brush_reset (b);
+    b->must_reset = 0;
+    b->states[STATE_X] = x;
+    b->states[STATE_Y] = y;
+    b->states[STATE_PRESSURE] = pressure;
 
     // not resetting, because they will get overwritten below:
     //b->dx, dy, dpress, dtime
 
-    b->last_time = b->time;
-    b->actual_x = b->x;
-    b->actual_y = b->y;
-    b->norm_dx_slow = 0.0;
-    b->norm_dy_slow = 0.0;
-    b->stroke_started = 0;
-    b->stroke = 1.0; // start in a state as if the stroke was long finished
-    b->custom_input = 0.0;
-
+    b->states[STATE_ACTUAL_X] = b->states[STATE_X];
+    b->states[STATE_ACTUAL_Y] = b->states[STATE_Y];
+    b->states[STATE_STROKE] = 1.0; // start in a state as if the stroke was long finished
     b->dtime = 0.0001; // not sure if it this is needed
-    return;
+    return; // ?no movement yet?
   }
 
-  if (time == b->last_time) return;
-
   if (pressure > 0) {
-    b->painting_time += time - b->last_time;
+    b->painting_time += dtime;
   }
 
   { // calculate the actual "virtual" cursor position
-    float fac = 1.0 - exp_decay (b->settings[BRUSH_SLOW_TRACKING]->base_value, 100.0*(time - b->time));
-    x = b->x + (x - b->x) * fac;
-    y = b->y + (y - b->y) * fac;
+    float fac = 1.0 - exp_decay (b->settings[BRUSH_SLOW_TRACKING]->base_value, 100.0*dtime);
+    x = b->states[STATE_X] + (x - b->states[STATE_X]) * fac;
+    y = b->states[STATE_Y] + (y - b->states[STATE_Y]) * fac;
   }
   // draw many (or zero) dabs to the next position
-  b->dist += brush_count_dabs_to (b, x, y, pressure, time);
-  if (b->dist > 300) {
+  b->states[STATE_DIST] += brush_count_dabs_to (b, x, y, pressure, dtime);
+  if (b->states[STATE_DIST] > 300) {
     // this happens quite often, eg when moving the cursor back into the window
     // FIXME: bad to hardcode a distance treshold here - might look at zoomed image
     //        better detect leaving/entering the window and reset then.
     //g_print ("Warning: NOT drawing %f dabs, resetting brush instead.\n", b->dist);
-    b->time = 0; // reset
+    b->must_reset = 1;
     return;
   }
 
-  //g_print("dist = %f\n", b->dist);
-  // Not going to recalculate dist each step.
+  //g_print("dist = %f\n", b->states[STATE_DIST]);
 
-  if (b->dist < 1.0 && time - b->dtime > 0.001) {
-    // "move" the brush anyway, but draw no dab
-
-    // Important to do this often, because brush_count_dabs_to depends
-    // on the radius and the radius can depend on something that
-    // changes much faster than only every dab.
-
-    b->dx        = x - b->x;
-    b->dy        = y - b->y;
-    b->dpressure = pressure - b->pressure;
-    b->dtime     = time - b->time;
-      
-    b->x        += b->dx;
-    b->y        += b->dy;
-    b->pressure += b->dpressure;
-    b->time     += b->dtime;
-      
-    brush_update_settings_values (b);
-  }
-
-  while (b->dist >= 1.0) {
+  while (b->states[STATE_DIST] >= 1.0) {
     { // linear interpolation (nonlinear variant was too slow, see SVN log)
       // Inside the loop because outside it produces numerical errors
       // resulting in b->pressure being small negative and such effects.
       float step;
-      step = 1 / b->dist;
-      b->dx        = step * (x - b->x);
-      b->dy        = step * (y - b->y);
-      b->dpressure = step * (pressure - b->pressure);
-      b->dtime     = step * (time - b->time);
+      step = 1 / b->states[STATE_DIST];
+      b->dx        = step * (x - b->states[STATE_X]);
+      b->dy        = step * (y - b->states[STATE_Y]);
+      b->dpressure = step * (pressure - b->states[STATE_PRESSURE]);
+      b->dtime     = step * (dtime - 0.0);
+      // Though it looks different, time is interpolated exactly like x/y/pressure.
     }
     
-    b->x        += b->dx;
-    b->y        += b->dy;
-    b->pressure += b->dpressure;
-    b->time     += b->dtime;
-    
-    b->dist -= 1.0;
-    
+    b->states[STATE_X]        += b->dx;
+    b->states[STATE_Y]        += b->dy;
+    b->states[STATE_PRESSURE] += b->dpressure;
+
     brush_update_settings_values (b);
     brush_prepare_and_draw_dab (b, s, &bbox);
+
+    dtime   -= b->dtime;
+    // can safely throw away old information in b->dist because the
+    // brush is exactly on a dab now
+    b->states[STATE_DIST]  = brush_count_dabs_to (b, x, y, pressure, dtime);
   }
 
-  // not equal to b_time now unless b->dist == 0
-  b->last_time = time;
+  {
+    // "move" the brush to the current time (no more dab will happen)
+    // Important to do this at least once every event, because
+    // brush_count_dabs_to depends on the radius and the radius can
+    // depend on something that changes much faster than only every
+    // dab (eg speed).
+    
+    b->dx        = x - b->states[STATE_X];
+    b->dy        = y - b->states[STATE_Y];
+    b->dpressure = pressure - b->states[STATE_PRESSURE];
+    b->dtime     = dtime;
+    
+    b->states[STATE_X] = x;
+    b->states[STATE_Y] = y;
+    b->states[STATE_PRESSURE] = pressure;
+    //dtime = 0; but that value is not used any more
+
+    brush_update_settings_values (b);
+  }
 
 
   if (bbox.w > 0) {
@@ -753,9 +751,9 @@ GdkPixbuf* gtk_my_brush_get_colorselection_pixbuf (GtkMyBrush * b)
   rowstride = gdk_pixbuf_get_rowstride (pixbuf);
   pixels = gdk_pixbuf_get_pixels (pixbuf);
 
-  base_h = b->color[0];
-  base_s = b->color[1];
-  base_v = b->color[2];
+  base_h = b->states[STATE_COLOR_R];
+  base_s = b->states[STATE_COLOR_G];
+  base_v = b->states[STATE_COLOR_B];
   gimp_rgb_to_hsv_int (&base_h, &base_s, &base_v);
 
   for (y=0; y<SIZE; y++) {
@@ -795,12 +793,32 @@ void gtk_my_brush_srandom (GtkMyBrush * b, int value)
   synced_srandom (value);
 }
 
-/*
 GString* gtk_my_brush_get_state (GtkMyBrush * b)
 {
+  // see also mydrawwidget.override
+  int i;
+  GString * bs = g_string_new ("1"); // version id
+  BS_WRITE_CHAR (STATE_COUNT);
+  for (i=0; i<STATE_COUNT; i++) {
+    BS_WRITE_FLOAT (b->states[i]);
+  }
+  return bs;
 }
 
 void gtk_my_brush_set_state (GtkMyBrush * b, GString * data)
 {
+  // see also mydrawwidget.override
+  char * p = data->str;
+  if (*p++ != '1') {
+    g_print ("Unknown state version ID\n");
+    return;
+  }
+  memset(b->states, 0, sizeof(b->states[0])*STATE_COUNT);
+  // FIXME: ???
+  //brush_reset (mdw->brush);
+  int i = 0;
+  while (p<data->str+data->len && i < STATE_COUNT) {
+    BS_READ_FLOAT (b->states[i]);
+    i++;
+  }
 }
-*/

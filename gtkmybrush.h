@@ -36,43 +36,26 @@ typedef struct _GtkMyBrushClass  GtkMyBrushClass;
 struct _GtkMyBrush
 {
   GObject parent;
-
   GtkMySurface * target_surface;
 
-  // lowlevevel stuff (almost raw input)
-  float x, y, pressure; double time;
+  // see also brushsettings.py
+
+  // those are no brush states, just convenience instead of function arguments
   float dx, dy, dpressure, dtime; // note: this is dx/ddab, ..., dtime/ddab (dab number, 5.0 = 5th dab)
-  float dist;
   float base_radius;
-  float actual_radius;
-  double last_time;
-
-  guchar color[3];
-
-  int print_inputs;
-
-  // misc higher-level helper variables
-  float actual_x, actual_y; // for slow position
-  float norm_dx_slow, norm_dy_slow; // note: now this is dx/dt * (1/radius)
-
-  float norm_speed_slow1; 
-  float norm_speed_slow2;
-
-  float stroke;
-  int stroke_started;
-
-  float custom_input;
-
-  float painting_time;
-
-  // description how to calculate the values
-  Mapping * settings[BRUSH_SETTINGS_COUNT];
-
   // the current value of a setting
   // FIXME: they could as well be passed as parameters to the dab function
   //        (Hm. This way no malloc is needed before each dab. Think about that.)
   float settings_value[BRUSH_SETTINGS_COUNT];
+  // description how to calculate the values
+  Mapping * settings[BRUSH_SETTINGS_COUNT];
+  int print_inputs; // debug menu
+  float painting_time; // total time the brush was used
 
+  int must_reset;
+
+  // The following values are brush states. (get_state, set_state, reset)
+  float states[STATE_COUNT];
 };
 
 struct _GtkMyBrushClass
@@ -92,10 +75,8 @@ void gtk_my_brush_set_print_inputs (GtkMyBrush * b, int value);
 float gtk_my_brush_get_painting_time (GtkMyBrush * b);
 void gtk_my_brush_set_painting_time (GtkMyBrush * b, float value);
 
-/*TODO
 GString* gtk_my_brush_get_state (GtkMyBrush * b);
 void gtk_my_brush_set_state (GtkMyBrush * b, GString * data);
-*/
 
 GdkPixbuf* gtk_my_brush_get_colorselection_pixbuf (GtkMyBrush * b);
 

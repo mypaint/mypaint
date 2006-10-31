@@ -1,6 +1,6 @@
-"""Brush Settings
+"""Brush Settings / States
 
-This is used to generate brushsettings.h
+This is used to generate brushsettings.h (see generate.py)
 It is also imported at runtime.
 """
 
@@ -46,6 +46,27 @@ settings_list = [
     ['custom_input_slowness', 'custom input slowness', False, 0.0, 0.0, 10.0, "How slow the custom input actually follows the desired value (the one above). This happens at brushdab level (ignoring how much time has past, if brushdabs do not depend on time).\n0.0 no slowdown (changes apply instantly)"],
     ]
 
+# the states are not (yet?) exposed to the user
+# WARNING: only append to this list, for compatibility of replay files
+states_list = '''
+# lowlevel
+x, y
+pressure
+dist              # how "near" the next dab is
+actual_radius     # used by count_dabs_to, thus a state!
+
+color_r, color_g, color_b  # can be modified while drawing
+
+actual_x, actual_y  # for slow position
+norm_dx_slow, norm_dy_slow # note: now this is dx/dt * (1/radius)
+
+norm_speed_slow1, norm_speed_slow2
+
+stroke, stroke_started # stroke_started is used as boolean
+
+custom_input
+'''
+
 class BrushInput:
     pass
 
@@ -65,3 +86,19 @@ for s_list in settings_list:
     s.cname, s.name, s.constant, s.min, s.default, s.max, s.tooltip = s_list
     s.index = len(settings)
     settings.append(s)
+
+class BrushState:
+    pass
+
+states = []
+for cname in states_list.replace(',', '\n').split('\n'):
+    cname = cname.split('#')[0]
+    cname = cname.strip()
+    if not cname: continue
+    st = BrushState()
+    st.cname = cname
+    st.index = len(states)
+    states.append(st)
+
+
+

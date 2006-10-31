@@ -50,3 +50,31 @@ _wrap_gtk_my_draw_widget_replay(PyGObject *self, PyObject *args)
     Py_INCREF(Py_None);
     return Py_None;
 }
+%%
+override gtk_my_brush_get_state noargs
+static PyObject *
+_wrap_gtk_my_brush_get_state  (PyGObject *self)
+{
+    PyObject * result;
+    GString * s;
+    s = gtk_my_brush_get_state (GTK_MY_BRUSH(self->obj));
+    // this will memcpy() the data
+    result = PyString_FromStringAndSize((char*)s->str, s->len);
+    g_string_free(s, TRUE);
+    return result;
+}
+%%
+override gtk_my_brush_set_state
+static PyObject *
+_wrap_gtk_my_brush_set_state (PyGObject *self, PyObject *args)
+{
+    GString s;
+    if (!PyArg_ParseTuple(args, "s#:GtkMyDrawWidget.replay", &(s.str), &(s.len)))
+        return NULL;
+    // returns pointer to python memory, so it must not be free()d
+    s.allocated_len = 0; // should never get accessed
+    // s is a read-only GString now, and will be invalid after this call
+    gtk_my_brush_set_state (GTK_MY_BRUSH (self->obj), &s);
+    Py_INCREF(Py_None);
+    return Py_None;
+}
