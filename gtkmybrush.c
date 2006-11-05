@@ -468,6 +468,7 @@ float brush_count_dabs_to (GtkMyBrush * b, float x, float y, float pressure, flo
   dx = x - b->states[STATE_X];
   dy = y - b->states[STATE_Y];
   //dp = pressure - b->pressure; // Not useful?
+  // TODO: control rate with pressure (dabs per pressure) (dpressure is useless)
 
   // OPTIMIZE
   dist = sqrtf (dx*dx + dy*dy);
@@ -527,9 +528,14 @@ void brush_stroke_to (GtkMyBrush * b, GtkMySurfaceOld * s, float x, float y, flo
     x = b->states[STATE_X] + (x - b->states[STATE_X]) * fac;
     y = b->states[STATE_Y] + (y - b->states[STATE_Y]) * fac;
   }
+
   // draw many (or zero) dabs to the next position
-  b->states[STATE_DIST] += brush_count_dabs_to (b, x, y, pressure, dtime);
-  if (b->states[STATE_DIST] > 300) {
+
+  // see html/stroke2dabs.png
+  float dist_moved = b->states[STATE_DIST];
+  float dist_todo = brush_count_dabs_to (b, x, y, pressure, dtime);
+
+  if (dist_todo > 300) {
     // this happens quite often, eg when moving the cursor back into the window
     // FIXME: bad to hardcode a distance treshold here - might look at zoomed image
     //        better detect leaving/entering the window and reset then.
@@ -540,16 +546,21 @@ void brush_stroke_to (GtkMyBrush * b, GtkMySurfaceOld * s, float x, float y, flo
 
   //g_print("dist = %f\n", b->states[STATE_DIST]);
 
-  while (b->states[STATE_DIST] >= 1.0) {
+  while (dist_moved + dist_todo >= 1.0) { // there are dabs pending
     { // linear interpolation (nonlinear variant was too slow, see SVN log)
-      // Inside the loop because outside it produces numerical errors
-      // resulting in b->pressure being small negative and such effects.
-      float step;
-      step = 1 / b->states[STATE_DIST];
-      b->dx        = step * (x - b->states[STATE_X]);
-      b->dy        = step * (y - b->states[STATE_Y]);
-      b->dpressure = step * (pressure - b->states[STATE_PRESSURE]);
-      b->dtime     = step * (dtime - 0.0);
+      float frac; // fraction of the remaining distance to move
+      if (dist_moved > 0) {
+        // "move" the brush exactly to the first dab (moving less than one dab)
+        frac = (1.0 - dist_moved) / dist_todo;
+        dist_moved = 0;
+      } else {
+        // "move" the brush from one dab to the next
+        frac = 1.0 / dist_todo;
+      }
+      b->dx        = frac * (x - b->states[STATE_X]);
+      b->dy        = frac * (y - b->states[STATE_Y]);
+      b->dpressure = frac * (pressure - b->states[STATE_PRESSURE]);
+      b->dtime     = frac * (dtime - 0.0);
       // Though it looks different, time is interpolated exactly like x/y/pressure.
     }
     
@@ -561,9 +572,7 @@ void brush_stroke_to (GtkMyBrush * b, GtkMySurfaceOld * s, float x, float y, flo
     brush_prepare_and_draw_dab (b, s, &bbox);
 
     dtime   -= b->dtime;
-    // can safely throw away old information in b->dist because the
-    // brush is exactly on a dab now
-    b->states[STATE_DIST]  = brush_count_dabs_to (b, x, y, pressure, dtime);
+    dist_todo  = brush_count_dabs_to (b, x, y, pressure, dtime);
   }
 
   {
@@ -586,6 +595,9 @@ void brush_stroke_to (GtkMyBrush * b, GtkMySurfaceOld * s, float x, float y, flo
     brush_update_settings_values (b);
   }
 
+  // save the fraction of a dab that is already done now
+  b->states[STATE_DIST] = dist_moved + dist_todo;
+  //g_print("dist_final = %f\n", b->states[STATE_DIST]);
 
   if (bbox.w > 0) {
     gtk_my_surface_modified ( GTK_MY_SURFACE (s), bbox.x, bbox.y, bbox.w, bbox.h);

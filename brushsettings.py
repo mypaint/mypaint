@@ -52,7 +52,7 @@ states_list = '''
 # lowlevel
 x, y
 pressure
-dist              # how "near" the next dab is
+dist              # "distance" moved since last dab, a new dab is drawn at 1.0
 actual_radius     # used by count_dabs_to, thus a state!
 
 color_r, color_g, color_b  # can be modified while drawing
