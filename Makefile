@@ -33,9 +33,6 @@ gtkmysurface.o:	gtkmysurface.c gtkmysurface.h mymarshal.h
 gtkmysurfaceold.o:	gtkmysurfaceold.c gtkmysurfaceold.h
 	cc $(CFLAGS) -c -o $@ gtkmysurfaceold.c
 
-random.o:	random.c random.h
-	cc $(CFLAGS) -c -o $@ random.c
-
 mymarshal.h: mymarshal.list
 	glib-genmarshal --prefix=mymarshal --header mymarshal.list > mymarshal.h
 
@@ -60,8 +57,7 @@ mydrawwidget.defs: gtkmydrawwidget.h gtkmybrush.h gtkmysurface.h gtkmysurfaceold
 	./fix_generated_defs.py
 
 mydrawwidget.so: mydrawwidget.defs.c mydrawwidgetmodule.c gtkmydrawwidget.o gtkmybrush.o \
-                 gtkmysurface.o gtkmysurfaceold.o brush_dab.o helpers.o mapping.o mymarshal.o \
-                 random.o
+                 gtkmysurface.o gtkmysurfaceold.o brush_dab.o helpers.o mapping.o mymarshal.o
 	$(CC) $(LDFLAGS) $(CFLAGS) -shared $^ -o $@
 
 PREFIX=/usr/local

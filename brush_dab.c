@@ -40,8 +40,8 @@
   one_over_radius2 = 1.0/radius2;
   
   // precalculate randomness
-  ((guint32*)randoms)[0] = synced_random ();
-  ((guint32*)randoms)[1] = synced_random ();
+  ((guint32*)randoms)[0] = g_rand_int (rng);
+  ((guint32*)randoms)[1] = g_rand_int (rng);
   random_pos = 0;
 
   g_assert (opaque >= 0 && opaque <= 1);

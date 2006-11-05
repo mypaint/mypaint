@@ -3,7 +3,12 @@
 
 filename = 'mydrawwidget.defs'
 
-s = open(filename).read()
+def run():
+    caller_owns_return('get_nonwhite_as_pixbuf')
+    caller_owns_return('get_as_pixbuf')
+    null_ok('set_brush', 'brush')
+
+
 
 def reset():
     global i
@@ -29,9 +34,7 @@ def null_ok(method, argname):
     find(')')
     insert(' (null-ok)')
 
-caller_owns_return('get_nonwhite_as_pixbuf')
-caller_owns_return('get_as_pixbuf')
-null_ok('set_brush', 'brush')
-
+s = open(filename).read()
+run()
 open(filename, 'w').write(s)
 print 'corrected', filename

@@ -3,10 +3,8 @@
 
 #include <glib.h>
 #include <assert.h>
-#include "random.h"
 
-gdouble synced_random_double (void);
-gdouble synced_gauss_noise (void);
+gdouble rand_gauss (GRand * rng);
 
 #define ROUND(x) ((int) ((x) + 0.5))
 #define SIGN(x) ((x)>0?1:(-1))

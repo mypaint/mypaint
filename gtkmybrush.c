@@ -109,8 +109,9 @@ gtk_my_brush_init (GtkMyBrush *b)
   for (i=0; i<BRUSH_SETTINGS_COUNT; i++) {
     b->settings[i] = mapping_new(INPUT_COUNT);
   }
-  b->painting_time = 0;
   // defaults will be set from python
+  b->painting_time = 0;
+  b->rng = g_rand_new();
 }
 
 static void
@@ -124,6 +125,7 @@ gtk_my_brush_finalize (GObject *object)
   for (i=0; i<BRUSH_SETTINGS_COUNT; i++) {
     mapping_free(b->settings[i]);
   }
+  g_rand_free (b->rng); b->rng = NULL;
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
@@ -212,7 +214,7 @@ void brush_update_settings_values (GtkMyBrush * b)
   inputs[INPUT_SPEED2] = b->states[STATE_NORM_SPEED_SLOW2] * 0.005;
   inputs[INPUT_SPEED_LOG] = log(1.0 + b->states[STATE_NORM_SPEED_SLOW1] * 0.002);
   inputs[INPUT_SPEED_SQRT] = sqrt(b->states[STATE_NORM_SPEED_SLOW1] * 0.002);
-  inputs[INPUT_RANDOM] = synced_random_double ();
+  inputs[INPUT_RANDOM] = g_rand_double (b->rng);
   inputs[INPUT_STROKE] = MIN(b->states[STATE_STROKE], 1.0);
   inputs[INPUT_CUSTOM] = b->states[STATE_CUSTOM_INPUT];
   if (b->print_inputs) {
@@ -356,8 +358,8 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, GtkMySurfaceOld * s, Rect * bbo
   }
 
   if (settings[BRUSH_OFFSET_BY_RANDOM]) {
-    x += synced_gauss_noise () * settings[BRUSH_OFFSET_BY_RANDOM] * b->base_radius;
-    y += synced_gauss_noise () * settings[BRUSH_OFFSET_BY_RANDOM] * b->base_radius;
+    x += rand_gauss (b->rng) * settings[BRUSH_OFFSET_BY_RANDOM] * b->base_radius;
+    y += rand_gauss (b->rng) * settings[BRUSH_OFFSET_BY_RANDOM] * b->base_radius;
   }
 
   
@@ -366,7 +368,7 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, GtkMySurfaceOld * s, Rect * bbo
     float radius_log, alpha_correction;
     // go back to logarithmic radius to add the noise
     radius_log  = settings[BRUSH_RADIUS_LOGARITHMIC];
-    radius_log += synced_gauss_noise () * settings[BRUSH_RADIUS_BY_RANDOM];
+    radius_log += rand_gauss (b->rng) * settings[BRUSH_RADIUS_BY_RANDOM];
     radius = expf(radius_log);
     if (radius < ACTUAL_RADIUS_MIN) radius = ACTUAL_RADIUS_MIN;
     if (radius > ACTUAL_RADIUS_MAX) radius = ACTUAL_RADIUS_MAX;
@@ -443,7 +445,7 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, GtkMySurfaceOld * s, Rect * bbo
     if (hardness > 1.0) hardness = 1.0;
     if (hardness < 0.0) hardness = 0.0;
 
-    draw_brush_dab (s, bbox,
+    draw_brush_dab (s, bbox, b->rng, 
                     x, y, radius, opaque, hardness, c);
   }
 }
@@ -617,7 +619,7 @@ PrecalcData * precalc_data(float phase0)
   height = SIZE;
   result = malloc(sizeof(PrecalcData)*width*height);
 
-  //phase0 = synced_random_double () * 2*M_PI;
+  //phase0 = rand_double (b->rng) * 2*M_PI;
 
   width_inv = 1.0/width;
   height_inv = 1.0/height;
@@ -785,12 +787,12 @@ GdkPixbuf* gtk_my_brush_get_colorselection_pixbuf (GtkMyBrush * b)
 
 double gtk_my_brush_random_double (GtkMyBrush * b)
 {
-  return synced_random_double ();
+  return g_rand_double (b->rng);
 }
 
 void gtk_my_brush_srandom (GtkMyBrush * b, int value)
 {
-  synced_srandom (value);
+  g_rand_set_seed (b->rng, value);
 }
 
 GString* gtk_my_brush_get_state (GtkMyBrush * b)
