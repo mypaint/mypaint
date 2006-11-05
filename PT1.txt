@@ -1,16 +1,21 @@
 first order low-pass filter
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-(Known as PT1-Filter, related to exponential decay) 
+(Known as PT1-Element; related to exponential decay) 
 
-fac = exp(-dt*T1);
-output = fac*output + (1-fac)*input;
+  fac = exp(-dt*T1);
+  output = fac*output + (1-fac)*input;
 
 dt: time passed since last calculation
-T1:"time constant", think "time it takes to react". After this time time,
-    2/3 of the difference between input and output is gone.
-
-if the input is a position, then
-filtered_velocity = input - output
+T1: time constant, think "time it takes to react". After this time,
+    about 2/3 of the difference between input and output is gone.
 
 (event-based calculation; in the not-event-based version, dt would be
 constant, thus fac would also be constant.)
+
+If the input is a position, then
+  filtered_velocity = input - output
+This is better than the straight-forward approach:
+  velocity = (new_input - old_input) / dt
+Because if dt is varying and very small, all kind of artefacts
+and noise are amplified.
+
