@@ -1,11 +1,12 @@
 #!/bin/sh
 set -e
 
-version=0.4.1
+version=0.4.2
 
 cd ~/tmp
 rm -rf mypaint-$version
-svn export svn://old.homeip.net/code/mypaint mypaint-$version
+#svn export svn://old.homeip.net/code/mypaint mypaint-$version
+svn export svn://old.homeip.net/code/tags/mypaint-$version
 
 cd mypaint-$version/html
 ./generate.py

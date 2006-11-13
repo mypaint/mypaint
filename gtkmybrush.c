@@ -655,7 +655,7 @@ PrecalcData * precalc_data(float phase0)
 
   width = SIZE;
   height = SIZE;
-  result = malloc(sizeof(PrecalcData)*width*height);
+  result = g_malloc(sizeof(PrecalcData)*width*height);
 
   //phase0 = g_random_double () * 2*M_PI;
 

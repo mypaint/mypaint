@@ -1,12 +1,20 @@
 # not all dependencies are in here, you need to 'make clean' sometimes.
 
+# FIXME: autodetect python version to build against
+#        Python 2.3 works too.
+PYTHON_VERSION = 2.4
 PROFILE = #-g #-pg
-# FIXME: autodetect python version to build against (instead of 2.3)
-CFLAGS = $(PROFILE) -O3 `pkg-config --cflags gtk+-2.0 pygtk-2.0` -Wall -Werror -I/usr/include/python2.3/ -I.
-LDFLAGS = $(PROFILE) -O3 `pkg-config --libs gtk+-2.0 pygtk-2.0` -Wall -Werror
+CFLAGS = $(PROFILE) `pkg-config --cflags gtk+-2.0 pygtk-2.0` -Wall -Werror -I/usr/include/python$(PYTHON_VERSION) -I.
+LDFLAGS = $(PROFILE) `pkg-config --libs gtk+-2.0 pygtk-2.0` -Wall -Werror
 DEFSDIR = `pkg-config --variable=defsdir pygtk-2.0`
 
-all:	mydrawwidget.so
+all:	checkdepend mydrawwidget.so
+
+
+# some ugly quick dependency check
+checkdepend:
+	test -r /usr/include/python$(PYTHON_VERSION)/Python.h || (echo ; echo "/usr/include/python$(PYTHON_VERSION)/Python.h does not exist. Try 'make PYTHON_VERSION=2.4', or install the python developement files." ; exit 1)
+.PHONY:	checkdepend
 
 brushsettings.h:	generate.py brushsettings.py
 	./generate.py
@@ -28,7 +36,7 @@ mydrawwidget.defs.c: mydrawwidget.defs mydrawwidget.override
 	mydrawwidget.defs > mydrawwidget.defs.c
 
 mydrawwidget.defs: gtkmydrawwidget.h gtkmybrush.h surface.h Makefile
-	/usr/share/pygtk/2.0/codegen/h2def.py gtkmydrawwidget.h gtkmybrush.h > mydrawwidget.defs
+	python /usr/share/pygtk/2.0/codegen/h2def.py gtkmydrawwidget.h gtkmybrush.h > mydrawwidget.defs
 	./caller_owns_return.py mydrawwidget.defs get_nonwhite_as_pixbuf get_as_pixbuf
 
 mydrawwidget.so: mydrawwidget.defs.c mydrawwidgetmodule.c gtkmydrawwidget.o surface.o gtkmybrush.o brush_dab.o helpers.o
