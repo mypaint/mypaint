@@ -71,8 +71,9 @@
             o = hardness/(hardness-1)*(rr-1);
             // hardness == 1 ?
           }
-          opa = floor(opaque * o * 256 + 0.5);
-          g_assert (opa >= 0 && opa <= 256);
+          opa = opaque * o * 256 + 0.5;
+          // comment out assertion: time-critical section
+          //g_assert (opa >= 0 && opa <= 256);
           // opa is in range 0..256
         }
         
