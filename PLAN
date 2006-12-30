@@ -8,6 +8,12 @@
   - layer dialog (select / set occupancy)
   - own image file format (instead of png)
 
+- show brush radius
+  - "some symbol to see the current size of the painting-tool"
+  - (mouse cursor shape, like in the GIMP? A key to show/hide it?
+    - a key to quickly blink the shape? hmm...
+    - note: shape size changes quickly!
+
 - frame.
   - ("simulates" a finite canvas; infinite canvas alone is awful for artists)
   - visual only (do strokes outside anyway, might enlarge later)
