@@ -1,7 +1,7 @@
 # not all dependencies are in here, you need to 'make clean' sometimes.
 
-# FIXME: autodetect python version to build against (instead of 2.3)
-PYTHON_VERSION = 2.3
+# FIXME: autodetect python version to build against
+PYTHON_VERSION = 2.4
 PROFILE = #-g #-pg
 CFLAGS = $(PROFILE) -O3 `pkg-config --cflags gtk+-2.0 pygtk-2.0` -Wall -Werror -I/usr/include/python$(PYTHON_VERSION) -I.
 LDFLAGS = $(PROFILE) -O3 `pkg-config --libs gtk+-2.0 pygtk-2.0` -Wall -Werror
