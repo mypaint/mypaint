@@ -1,0 +1,124 @@
+
+AC_INIT(mypaint)
+
+AM_INIT_AUTOMAKE(mypaint,0.4.2.405)
+AM_CONFIG_HEADER(config.h)
+
+AC_PROG_CC
+AC_PROG_INSTALL
+AC_LIBTOOL_WIN32_DLL
+AC_PROG_LIBTOOL
+
+AC_MSG_CHECKING([for Win32 platform in general])
+case "$host" in
+  *-*-mingw*|*-*-cygwin*)
+    platform_win32=yes
+    ;;
+  *)
+    platform_win32=no
+    ;;
+esac
+AC_MSG_RESULT($platform_win32)
+AM_CONDITIONAL(PLATFORM_WIN32, test "$platform_win32" = yes)
+
+AC_MSG_CHECKING([for glib-genmarshal])
+GLIB_GENMARSHAL=`pkg-config --variable=glib_genmarshal glib-2.0`
+AC_SUBST(GLIB_GENMARSHAL)
+AC_MSG_RESULT($GLIB_GENMARSHAL)
+
+AC_MSG_CHECKING([for glib-mkenums])
+GLIB_MKENUMS=`pkg-config --variable=glib_mkenums glib-2.0`
+AC_SUBST(GLIB_MKENUMS)
+AC_MSG_RESULT($GLIB_MKENUMS)
+
+dnl PKG_CHECK_MODULES(MYPAINT,[
+dnl         glib-2.0 >= 2.10.0
+dnl         gtk+-2.0 >= 2.8.0
+dnl         ])
+PKG_CHECK_MODULES(MYPAINT,[
+        glib-2.0 >= 2.6.0
+        gtk+-2.0 >= 2.6.0
+        ])
+
+dnl  -----------------
+dnl | Python bindings |-------------------------------------------------------
+dnl  -----------------
+
+dnl required versions of other packages
+m4_define(pygtk_required_major_version, 2)
+m4_define(pygtk_required_minor_version, 6)
+m4_define(pygtk_required_micro_version, 0)
+m4_define(pygtk_required_version, pygtk_required_major_version.pygtk_required_minor_version.pygtk_required_micro_version)
+m4_define(gtk_required_version,               2.6.0)
+
+dnl Define pygtk required version, for runtime check
+AC_DEFINE(PYGTK_REQUIRED_MAJOR_VERSION, pygtk_required_major_version, [PyGTK req
+uired major version])
+AC_DEFINE(PYGTK_REQUIRED_MINOR_VERSION, pygtk_required_minor_version, [PyGTK req
+uired minor version])
+AC_DEFINE(PYGTK_REQUIRED_MICRO_VERSION, pygtk_required_micro_version, [PyGTK req
+uired micro version])
+
+dnl check for python
+AM_PATH_PYTHON(2.2)
+dnl skip test if PYTHON_INCLUDES defined
+dnl allow cross compilation (not détected in python.m4).
+if test x$PYTHON_INCLUDES = x ; then 
+AM_CHECK_PYTHON_HEADERS([have_python="yes"],[have_python="no"])
+else
+echo "using PYTHON includes and libs from env..."
+AC_SUBST([PYTHON_INCLUDES])
+AC_SUBST([PYTHON_LIBS])
+fi
+
+if test x$have_python = xno; then
+  AC_MSG_ERROR([Python not found.])
+else
+
+ dnl check for pygtk
+ PKG_CHECK_MODULES(PYGTK, pygtk-2.0 >= pygtk_required_version,[
+                 have_python="yes"
+                 AC_MSG_RESULT(okay)
+                 ],[
+                 have_python="no"
+                 AC_MSG_RESULT(not found)
+                 ])
+
+ if test x$have_python = xyes; then
+    AC_SUBST(PYGTK_CFLAGS)
+   AC_PATH_PROG(PYGTK_CODEGEN, pygtk-codegen-2.0, no)
+   if test "x$PYGTK_CODEGEN" = xno; then
+     AC_MSG_ERROR(could not find pygtk-codegen-2.0 script)
+   fi
+
+   AC_MSG_CHECKING([for pygtk defs])
+   PYGTK_DEFSDIR=`$PKG_CONFIG --variable=defsdir pygtk-2.0`
+   AC_MSG_RESULT([$PYGTK_DEFSDIR])
+
+   AC_MSG_CHECKING([for pygtk codegen])
+   PYGTK_CODEGEN="$PYTHON `$PKG_CONFIG --variable=codegendir pygtk-2.0`/codegen.py"
+   AC_MSG_RESULT([$PYGTK_CODEGEN])
+
+   AC_MSG_CHECKING([for pygtk h2def])
+   PYGTK_H2DEF="$PYTHON `$PKG_CONFIG --variable=codegendir pygtk-2.0`/h2def.py"
+   AC_MSG_RESULT([$PYGTK_H2DEF])
+	
+   AC_SUBST([PYGTK_DEFSDIR])
+   AC_SUBST([PYGTK_CODEGEN])
+   AC_SUBST([PYGTK_H2DEF])
+
+
+ fi
+
+dnl required version substitutions for use in the spec file
+PYGTK_VERSION=pygtk_required_version
+GTK_VERSION=gtk_required_version
+
+fi
+
+if test x$have_python = xno; then
+  AC_MSG_ERROR([Pygtk dev files not found.])
+fi
+
+AC_OUTPUT(Makefile)
+

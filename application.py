@@ -4,15 +4,15 @@ import layerswindow, colorselectionwindow
 import brush
 
 class Application: # singleton
-    def __init__(self, prefix, confpath, loadimage):
+    def __init__(self, share, confpath, loadimage):
         self.confpath = confpath
 
-        datapaths = ['./', '/share/mypaint/', '/usr/local/share/mypaint/']
-        if prefix:
-            datapaths.append(prefix + 'share/mypaint/')
+        datapaths = [share]
+
         self.datapath = None
+
         for p in datapaths:
-            if os.path.isdir(p + 'brushes/'):
+            if os.path.isdir(os.path.join(p, 'brushes')):
                 self.datapath = p
                 break
         if not self.datapath:
@@ -20,8 +20,8 @@ class Application: # singleton
             print ' '.join(datapaths)
             raise SystemExit
 
-        self.user_brushpath = self.confpath + 'brushes/'
-        self.stock_brushpath = self.datapath + 'brushes/'
+        self.user_brushpath = os.path.join(self.confpath, 'brushes')
+        self.stock_brushpath = os.path.join(self.datapath, 'brushes')
 
         if not os.path.isdir(self.confpath):
             os.mkdir(self.confpath)
@@ -42,9 +42,9 @@ class Application: # singleton
         w = self.colorSelectionWindow = colorselectionwindow.Window(self)
 
         #w = self.layersWindow = layerswindow.Window(self)
-        #w.show_all()
+        w.show_all()
 
-        gtk.accel_map_load(self.confpath + 'accelmap.conf')
+        gtk.accel_map_load(os.path.join(self.confpath, 'accelmap.conf'))
 
         if loadimage:
             self.image_windows[0].open_file(loadimage)
@@ -63,7 +63,7 @@ class Application: # singleton
 
         # find all brush names to load
         deleted = []
-        filename = self.user_brushpath + 'deleted.conf'
+        filename = os.path.join(self.user_brushpath, 'deleted.conf')
         if os.path.exists(filename): 
             for name in open(filename).readlines():
                 deleted.append(name.strip())
@@ -77,7 +77,7 @@ class Application: # singleton
 
         # sort them
         for path in [self.user_brushpath, self.stock_brushpath]:
-            filename = path + 'order.conf'
+            filename = os.path.join(path, 'order.conf')
             if not os.path.exists(filename): continue
             for name in open(filename).readlines():
                 name = name.strip()
@@ -108,7 +108,7 @@ class Application: # singleton
         self.brush.set_color((0, 0, 0))
 
     def save_brushorder(self):
-        f = open(self.user_brushpath + 'order.conf', 'w')
+        f = open(os.path.join(self.user_brushpath, 'order.conf'), 'w')
         f.write('# this file saves brushorder\n')
         f.write('# the first one (upper left) will be selected at startup\n')
         for b in self.brushes:
@@ -148,7 +148,7 @@ class Application: # singleton
 
     def quit(self):
         self.update_statistics()
-        gtk.accel_map_save(self.confpath + 'accelmap.conf')
+        gtk.accel_map_save(os.path.join(self.confpath, 'accelmap.conf'))
         d = gtk.Dialog("Really quit?",
              None,
              gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,

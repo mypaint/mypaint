@@ -1,6 +1,8 @@
 #!/bin/sh
 set -e
 
+FIXME: outdated
+
 version=0.4.1
 
 cd ~/tmp

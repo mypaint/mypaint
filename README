@@ -1,10 +1,10 @@
 MyPaint - drawing program with dynamic brushes for graphic tablets
 
 Compile and run:
-make
-./mypaint
+./configure && make && ./mypaint
+If you are using svn you need ./autogen.sh first.
 
-Optionally, 'make install' or 'make install PREFIX=/your/prefix' should work.
+Optionally, 'make install'. 
 
 Required: pygtk, python, gtk
 Recommended: a pressure sensitive input device (graphic tablet)

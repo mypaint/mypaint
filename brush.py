@@ -191,30 +191,30 @@ class Brush(Brush_Lowlevel):
             i = 0
             while 1:
                 self.name = '%s%03d' % (prefix, i)
-                a = self.app.user_brushpath  + self.name + '.myb'
-                b = self.app.stock_brushpath + self.name + '.myb'
+                a = os.path.join(self.app.user_brushpath,self.name + '.myb')
+                b = os.path.join(self.app.stock_brushpath,self.name + '.myb')
                 if not os.path.isfile(a) and not os.path.isfile(b):
                     break
                 i += 1
-        prefix = self.app.user_brushpath + self.name
+        prefix = os.path.join(self.app.user_brushpath, self.name)
         if saving: 
             return prefix
         if not os.path.isfile(prefix + '.myb'):
-            prefix = self.app.stock_brushpath + self.name
+            prefix = os.path.join(self.app.stock_brushpath,self.name)
         assert os.path.isfile(prefix + '.myb'), 'brush "' + self.name + '" not found'
         return prefix
 
     def delete_from_disk(self):
-        prefix = self.app.user_brushpath + self.name
+        prefix = os.path.join(self.app.user_brushpath, self.name)
         if os.path.isfile(prefix + '.myb'):
             os.remove(prefix + '_prev.png')
             os.remove(prefix + '.myb')
 
-        prefix = self.app.stock_brushpath + self.name
+        prefix = os.path.join(self.app.stock_brushpath, self.name)
         if os.path.isfile(prefix + '.myb'):
             # user wants to delete a stock brush
             # cannot remove the file, manage blacklist instead
-            filename = self.app.user_brushpath + 'deleted.conf'
+            filename = os.path.join(self.app.user_brushpath, 'deleted.conf')
             new = not os.path.isfile(filename)
             f = open(filename, 'a')
             if new:
