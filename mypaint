@@ -87,7 +87,13 @@ def main():
         print '  -c /path/to/config   use this directory instead of ~/.mypaint/'
         sys.exit(1)
 
-    confpath = os.path.join(os.getenv('HOME'), '.mypaint/')
+    homepath =  os.path.expanduser('~')
+    if homepath == '~':
+        confpath = os.path.join(prefix, 'UserData')
+    else:
+        confpath = os.path.join(homepath, '.mypaint/')
+
+    print 'confpath = ', confpath
     filename = None
 
     args = sys.argv[1:]

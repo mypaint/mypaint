@@ -183,7 +183,8 @@ class Brush(Brush_Lowlevel):
 
     def get_fileprefix(self, saving=False):
         prefix = 'b'
-        if os.path.samefile(self.app.user_brushpath, self.app.stock_brushpath):
+        if os.path.realpath(self.app.user_brushpath) == os.path.realpath(self.app.stock_brushpath):
+        #if os.path.samefile(self.app.user_brushpath, self.app.stock_brushpath):
             # working directly on brush collection, use different prefix
             prefix = 's'
 

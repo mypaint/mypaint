@@ -13,6 +13,7 @@ AC_MSG_CHECKING([for Win32 platform in general])
 case "$host" in
   *-*-mingw*|*-*-cygwin*)
     platform_win32=yes
+    AC_DEFINE(PLATFORM_WIN32, 1, [defined if we compile for windows (declspec)])
     ;;
   *)
     platform_win32=no

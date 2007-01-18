@@ -11,15 +11,17 @@ mydrawwidget_la_CFLAGS = $(MYPAINT_CFLAGS)
 if PLATFORM_WIN32
 no_undefined = -no-undefined
 shared = -shared
+avoid_version = -avoid-version
 #windows_flags = -mno-cygwin -mms-bitfields -mwindows -mconsole
 else
 no_undefined =
 shared =
-windows_flags =
+avoid_version =
+# windows_flags =
 endif
 
 
-mydrawwidget_la_LDFLAGS = $(shared) $(no_undefined) $(common_ldflags) -module  -export-symbols-regex initmydrawwidget
+mydrawwidget_la_LDFLAGS = $(shared) $(no_undefined) $(common_ldflags) -module  -export-symbols-regex initmydrawwidget $(avoid_version)
 mydrawwidget_la_LIBADD = $(MYPAINT_LIBS) $(PYTHON_LIBS)
 
 nodist_mydrawwidget_la_CFLAGS = $(MYPAINT_CFLAGS)
