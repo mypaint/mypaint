@@ -32,7 +32,7 @@ mydrawwidget_la_SOURCES = \
 	mydrawwidgetmodule.c \
 	gtkmydrawwidget.c \
 	gtkmybrush.c \
-         gtkmysurface.c \
+	gtkmysurface.c \
 	gtkmysurfaceold.c \
 	brush_dab.c \
 	helpers.c \
@@ -53,16 +53,12 @@ mypaintlib_PYTHON = \
         brushselectionwindow.py \
         brushsettings.py \
         brushsettingswindow.py \
-        class-rename.py \
         colorselectionwindow.py \
         drawwindow.py \
-        fix_generated_defs.py \
         functionwindow.py \
-        generate.py \
         helpers.py \
         infinitemydrawwidget.py \
-        layerswindow.py \
-        rename_brushes.py 
+        layerswindow.py
 
 mypaintbrushesdir=$(pkgdatadir)/brushes
 
