@@ -149,7 +149,18 @@ float exp_decay (float T_const, float t)
 
 void brush_reset (GtkMyBrush * b)
 {
+  // FIXME!! Quick hackish workaround for keeping the color.
+  float color[3];
+  color[0] = b->states[STATE_COLOR_R];
+  color[1] = b->states[STATE_COLOR_G];
+  color[2] = b->states[STATE_COLOR_B];
+
   memset(b->states, 0, sizeof(b->states[0])*STATE_COUNT);
+
+  b->states[STATE_COLOR_R] = color[0];
+  b->states[STATE_COLOR_G] = color[1];
+  b->states[STATE_COLOR_B] = color[2];
+
   b->must_reset = 1; // triggers the real reset below in brush_stroke_to
   g_print ("brush_reset()\n");
 }
@@ -774,9 +785,9 @@ GdkPixbuf* gtk_my_brush_get_colorselection_pixbuf (GtkMyBrush * b)
   rowstride = gdk_pixbuf_get_rowstride (pixbuf);
   pixels = gdk_pixbuf_get_pixels (pixbuf);
 
-  base_h = b->states[STATE_COLOR_R];
-  base_s = b->states[STATE_COLOR_G];
-  base_v = b->states[STATE_COLOR_B];
+  base_h = b->states[STATE_COLOR_R]*255;
+  base_s = b->states[STATE_COLOR_G]*255;
+  base_v = b->states[STATE_COLOR_B]*255;
   gimp_rgb_to_hsv_int (&base_h, &base_s, &base_v);
 
   for (y=0; y<SIZE; y++) {

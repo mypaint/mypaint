@@ -91,14 +91,12 @@ class BrushState:
     pass
 
 states = []
-for cname in states_list.replace(',', '\n').split('\n'):
-    cname = cname.split('#')[0]
-    cname = cname.strip()
-    if not cname: continue
-    st = BrushState()
-    st.cname = cname
-    st.index = len(states)
-    states.append(st)
-
-
-
+for line in states_list.split('\n'):
+    line = line.split('#')[0]
+    for cname in line.split(','):
+        cname = cname.strip()
+        if not cname: continue
+        st = BrushState()
+        st.cname = cname
+        st.index = len(states)
+        states.append(st)
