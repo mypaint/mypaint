@@ -43,7 +43,6 @@ struct _GtkMyBrush
 
   // those are no brush states, just convenience instead of function arguments
   float dx, dy, dpressure, dtime; // note: this is dx/ddab, ..., dtime/ddab (dab number, 5.0 = 5th dab)
-  float base_radius;
   // the current value of a setting
   // FIXME: they could as well be passed as parameters to the dab function
   //        (Hm. This way no malloc is needed before each dab. Think about that.)

@@ -103,12 +103,15 @@ def main():
             args = args[2:]
         elif args[0].startswith('-'):
             usage_exit()
-        elif len(args) == 1:
+        else:
+            if filename:
+                print 'Cannot open more than one file!'
+                sys.exit(2)
             filename = args[0]
             if not os.path.isfile(filename):
-                print 'File', filename, 'does not exist.'
-                filename = None
-            args = []
+                print 'File', filename, 'does not exist!'
+                sys.exit(2)
+            args = args[1:]
 
     init_input()
     app = application.Application(share, confpath, filename)

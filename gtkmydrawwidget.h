@@ -38,7 +38,9 @@ struct _GtkMyDrawWidget
   float dragging_last_x, dragging_last_y;
 
   guint32 last_time;
-  GString * recording;
+  GArray * recording;
+  GArray * replaying;
+  int replaying_pos;
 };
 
 struct _GtkMyDrawWidgetClass
@@ -69,6 +71,6 @@ void gtk_my_draw_widget_discard_and_resize (GtkMyDrawWidget *mdw, int width, int
 
 void gtk_my_draw_widget_start_recording (GtkMyDrawWidget *mdw);
 GString* gtk_my_draw_widget_stop_recording (GtkMyDrawWidget *mdw);
-void gtk_my_draw_widget_replay (GtkMyDrawWidget *mdw, GString* data);
+void gtk_my_draw_widget_replay (GtkMyDrawWidget *mdw, GString* data, int immediately);
 
 #endif /* __GTK_MY_DRAW_WIDGET_H__ */

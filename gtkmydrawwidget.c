@@ -1,6 +1,6 @@
 // gtk stock code - left gtk prefix to use the pygtk wrapper-generator easier
 #include "gtkmydrawwidget.h"
-//#include "rawinput.h"
+#include "stroke_recording.h"
 
 static void gtk_my_draw_widget_class_init    (GtkMyDrawWidgetClass *klass);
 static void gtk_my_draw_widget_init          (GtkMyDrawWidget      *mdw);
@@ -11,9 +11,6 @@ static gint gtk_my_draw_widget_motion_notify (GtkWidget *widget, GdkEventMotion 
 static gint gtk_my_draw_widget_proximity_inout (GtkWidget *widget, GdkEventProximity *event);
 static gint gtk_my_draw_widget_expose (GtkWidget *widget, GdkEventExpose *event);
 static void gtk_my_draw_widget_surface_modified (GtkMySurface *s, gint x, gint y, gint w, gint h, GtkMyDrawWidget *mdw);
-
-static void gtk_my_draw_widget_store_motion (GtkMyDrawWidget *mdw, int dtime, float x, float y, float pressure);
-
 
 
 static gpointer parent_class;
@@ -141,6 +138,14 @@ gtk_my_draw_widget_finalize (GObject *object)
     g_object_unref (mdw->surface);
     mdw->surface = NULL;
   }
+  if (mdw->replaying) {
+    g_array_free (mdw->replaying, TRUE);
+    mdw->replaying = NULL;
+  }
+  if (mdw->recording) {
+    g_array_free (mdw->recording, TRUE);
+    mdw->recording = NULL;
+  }
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
@@ -163,6 +168,7 @@ void gtk_my_draw_widget_init (GtkMyDrawWidget *mdw)
   mdw->dragging = 0;
 
   mdw->recording = NULL;
+  mdw->replaying = NULL;
   mdw->last_time = 0;
 }
 
@@ -195,7 +201,12 @@ gtk_my_draw_widget_process_motion_or_button (GtkWidget *widget, guint32 time, gd
   mdw->last_time = time;
 
   if (mdw->recording) {
-    gtk_my_draw_widget_store_motion (mdw, dtime, x, y, pressure);
+    StrokeEvent e;
+    e.dtime = dtime;
+    e.x = x;
+    e.y = y;
+    e.pressure = pressure;
+    g_array_append_val (mdw->recording, e);
   }
   
   if (mdw->brush) {
@@ -456,57 +467,68 @@ void gtk_my_draw_widget_set_from_pixbuf (GtkMyDrawWidget *mdw, GdkPixbuf* pixbuf
   gtk_widget_queue_draw (GTK_WIDGET (mdw));
 }
 
-// --------- TODO: move that into another file? --------------
-
 void gtk_my_draw_widget_start_recording (GtkMyDrawWidget *mdw)
 {
   g_assert (!mdw->recording);
-  mdw->recording = g_string_new("1"); // version identifier
-  // (need to save current x/y/press if encoding diff.)
+  mdw->recording = g_array_new (FALSE, FALSE, sizeof(StrokeEvent));
 }
 
 GString* gtk_my_draw_widget_stop_recording (GtkMyDrawWidget *mdw)
 {
   // see also mydrawwidget.override
   GString *s;
-  s = mdw->recording;
-  mdw->recording = NULL;
+  s = event_array_to_string (mdw->recording);
+  g_array_free (mdw->recording, TRUE); mdw->recording = NULL;
   return s;
 }
 
-void gtk_my_draw_widget_replay (GtkMyDrawWidget *mdw, GString* data)
+void gtk_my_draw_widget_stop_replaying (GtkMyDrawWidget *mdw)
+{
+  g_print ("TODO\n");
+  g_assert (!mdw->replaying);
+  //mdw->replaying = 
+}
+
+void gtk_my_draw_widget_replay (GtkMyDrawWidget *mdw, GString* data, int immediately)
 {
   // see also mydrawwidget.override
-  char * p = data->str;
-  if (!mdw->brush) {
-    g_print ("Replaying stroke without a brush!\n");
+  if (mdw->replaying) {
+    g_print ("Attempting to start replay while replaying.\n");
     return;
   }
-  if (*p++ != '1') {
-    g_print ("Unknown version ID\n");
-    return;
-  }
-  brush_reset (mdw->brush);
-  while (p<data->str+data->len) {
-    int dtime;
-    float x, y, pressure;
-    BS_READ_INT32 (dtime);
-    BS_READ_FLOAT (x);
-    BS_READ_FLOAT (y);
-    BS_READ_FLOAT (pressure);
-    brush_stroke_to (mdw->brush, mdw->surface,
-                     x*mdw->one_over_zoom + mdw->viewport_x, y*mdw->one_over_zoom + mdw->viewport_y,
-                     pressure, (double)(dtime) / 1000.0 /* in seconds */);
-    //g_print ("x=%f, dtime=%d\n", x, dtime);
+  mdw->replaying = string_to_event_array (data);
+
+  if (immediately) {
+    int i;
+    for (i=0; i<mdw->replaying->len; i++) {
+      StrokeEvent *e;
+      e = &g_array_index (mdw->replaying, StrokeEvent, i);
+      //g_print ("Replay: dtime=%d, x=%f.\n", e->dtime, e->x);
+      brush_stroke_to (mdw->brush, mdw->surface,
+                       e->x*mdw->one_over_zoom + mdw->viewport_x, e->y*mdw->one_over_zoom + mdw->viewport_y,
+                       e->pressure, (double)(e->dtime) / 1000.0 /* in seconds */);
+    }
+    g_array_free (mdw->replaying, TRUE); mdw->replaying = NULL;
+  } else {
+    g_print ("TODO\n");
   }
 }
 
+/*
+GTimer *clock_timer;
 
-void gtk_my_draw_widget_store_motion (GtkMyDrawWidget *mdw, int dtime, float x, float y, float pressure)
+...
+    clock_timer = g_timer_new();
+    g_idle_add(continue_replay, NULL);
+    g_timer_start(clock_timer);
+...
+
+static gboolean
+update_clock(gpointer dummy)
 {
-  GString * bs = mdw->recording;
-  BS_WRITE_INT32 (dtime);
-  BS_WRITE_FLOAT (x);
-  BS_WRITE_FLOAT (y);
-  BS_WRITE_FLOAT (pressure);
+    char buf[10];
+    sprintf(buf, "%d", (int)g_timer_elapsed(clock_timer, NULL));
+    gtk_label_set_text(GTK_LABEL(clock_label), buf);
+    return(TRUE);
 }
+*/

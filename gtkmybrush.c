@@ -151,6 +151,7 @@ void brush_reset (GtkMyBrush * b)
 {
   memset(b->states, 0, sizeof(b->states[0])*STATE_COUNT);
   b->must_reset = 1; // triggers the real reset below in brush_stroke_to
+  g_print ("brush_reset()\n");
 }
 
 // Update the "important" settings. (eg. actual radius, velocity)
@@ -176,7 +177,7 @@ void brush_update_settings_values (GtkMyBrush * b)
     b->dtime = 0.00001;
   }
 
-  b->base_radius = expf(b->settings[BRUSH_RADIUS_LOGARITHMIC]->base_value);
+  float base_radius = expf(b->settings[BRUSH_RADIUS_LOGARITHMIC]->base_value);
 
   // FIXME: does happen (interpolation problem?)
   if (b->states[STATE_PRESSURE] < 0.0) b->states[STATE_PRESSURE] = 0.0;
@@ -204,8 +205,8 @@ void brush_update_settings_values (GtkMyBrush * b)
   // now follows input handling
 
   float norm_dx, norm_dy, norm_dist, norm_speed;
-  norm_dx = b->dx / b->dtime / b->base_radius;
-  norm_dy = b->dy / b->dtime / b->base_radius;
+  norm_dx = b->dx / b->dtime / base_radius;
+  norm_dy = b->dy / b->dtime / base_radius;
   norm_speed = sqrt(SQR(norm_dx) + SQR(norm_dy));
   norm_dist = norm_speed * b->dtime;
 
@@ -352,14 +353,16 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, GtkMySurfaceOld * s, Rect * bbo
   x = b->states[STATE_ACTUAL_X];
   y = b->states[STATE_ACTUAL_Y];
 
+  float base_radius = expf(b->settings[BRUSH_RADIUS_LOGARITHMIC]->base_value);
+
   if (settings[BRUSH_OFFSET_BY_SPEED]) {
-    x += b->states[STATE_NORM_DX_SLOW] * settings[BRUSH_OFFSET_BY_SPEED] * 0.1 * b->base_radius;
-    y += b->states[STATE_NORM_DY_SLOW] * settings[BRUSH_OFFSET_BY_SPEED] * 0.1 * b->base_radius;
+    x += b->states[STATE_NORM_DX_SLOW] * settings[BRUSH_OFFSET_BY_SPEED] * 0.1 * base_radius;
+    y += b->states[STATE_NORM_DY_SLOW] * settings[BRUSH_OFFSET_BY_SPEED] * 0.1 * base_radius;
   }
 
   if (settings[BRUSH_OFFSET_BY_RANDOM]) {
-    x += rand_gauss (b->rng) * settings[BRUSH_OFFSET_BY_RANDOM] * b->base_radius;
-    y += rand_gauss (b->rng) * settings[BRUSH_OFFSET_BY_RANDOM] * b->base_radius;
+    x += rand_gauss (b->rng) * settings[BRUSH_OFFSET_BY_RANDOM] * base_radius;
+    y += rand_gauss (b->rng) * settings[BRUSH_OFFSET_BY_RANDOM] * base_radius;
   }
 
   
@@ -461,9 +464,13 @@ float brush_count_dabs_to (GtkMyBrush * b, float x, float y, float pressure, flo
   if (b->states[STATE_ACTUAL_RADIUS] < ACTUAL_RADIUS_MIN) b->states[STATE_ACTUAL_RADIUS] = ACTUAL_RADIUS_MIN;
   if (b->states[STATE_ACTUAL_RADIUS] > ACTUAL_RADIUS_MAX) b->states[STATE_ACTUAL_RADIUS] = ACTUAL_RADIUS_MAX;
 
-  if (b->base_radius == 0.0) b->base_radius = expf(b->settings[BRUSH_RADIUS_LOGARITHMIC]->base_value);
-  if (b->base_radius < 0.5) b->base_radius = 0.5;
-  if (b->base_radius > 500.0) b->base_radius = 500.0;
+
+  // OPTIMIZE: expf() called too often
+  float base_radius = expf(b->settings[BRUSH_RADIUS_LOGARITHMIC]->base_value);
+  if (base_radius < ACTUAL_RADIUS_MIN) base_radius = ACTUAL_RADIUS_MIN;
+  if (base_radius > ACTUAL_RADIUS_MAX) base_radius = ACTUAL_RADIUS_MAX;
+  //if (base_radius < 0.5) b->base_radius = 0.5;
+  //if (base_radius > 500.0) b->base_radius = 500.0;
 
   dx = x - b->states[STATE_X];
   dy = y - b->states[STATE_Y];
@@ -475,7 +482,7 @@ float brush_count_dabs_to (GtkMyBrush * b, float x, float y, float pressure, flo
   // FIXME: no need for base_value or for the range checks above IF always the interpolation
   //        function will be called before this one
   res1 = dist / b->states[STATE_ACTUAL_RADIUS] * b->settings[BRUSH_DABS_PER_ACTUAL_RADIUS]->base_value;
-  res2 = dist / b->base_radius   * b->settings[BRUSH_DABS_PER_BASIC_RADIUS]->base_value;
+  res2 = dist / base_radius   * b->settings[BRUSH_DABS_PER_BASIC_RADIUS]->base_value;
   res3 = dt * b->settings[BRUSH_DABS_PER_SECOND]->base_value;
   return res1 + res2 + res3;
 }
@@ -503,6 +510,7 @@ void brush_stroke_to (GtkMyBrush * b, GtkMySurfaceOld * s, float x, float y, flo
   }
 
   if (b->must_reset || dtime > 5) {
+    printf("Brush reset now.\n");
     brush_reset (b);
     b->must_reset = 0;
     b->states[STATE_X] = x;
@@ -539,7 +547,8 @@ void brush_stroke_to (GtkMyBrush * b, GtkMySurfaceOld * s, float x, float y, flo
     // this happens quite often, eg when moving the cursor back into the window
     // FIXME: bad to hardcode a distance treshold here - might look at zoomed image
     //        better detect leaving/entering the window and reset then.
-    //g_print ("Warning: NOT drawing %f dabs, resetting brush instead.\n", b->dist);
+    g_print ("Warning: NOT drawing %f dabs, resetting brush instead.\n", dist_todo);
+    g_print ("dtime=%f, dx=%f\n", dtime, x-b->states[STATE_X]);
     b->must_reset = 1;
     return;
   }
@@ -629,7 +638,7 @@ PrecalcData * precalc_data(float phase0)
 
   width = SIZE;
   height = SIZE;
-  result = malloc(sizeof(PrecalcData)*width*height);
+  result = g_malloc(sizeof(PrecalcData)*width*height);
 
   //phase0 = rand_double (b->rng) * 2*M_PI;
 
@@ -812,10 +821,12 @@ GString* gtk_my_brush_get_state (GtkMyBrush * b)
   // see also mydrawwidget.override
   int i;
   GString * bs = g_string_new ("1"); // version id
-  BS_WRITE_CHAR (STATE_COUNT);
   for (i=0; i<STATE_COUNT; i++) {
     BS_WRITE_FLOAT (b->states[i]);
   }
+
+  //b->must_reset = 1; WTF
+
   return bs;
 }
 
@@ -823,16 +834,22 @@ void gtk_my_brush_set_state (GtkMyBrush * b, GString * data)
 {
   // see also mydrawwidget.override
   char * p = data->str;
-  if (*p++ != '1') {
+  char c;
+
+  //b->must_reset = 1; WTF
+
+  BS_READ_CHAR (c);
+  if (c != '1') {
     g_print ("Unknown state version ID\n");
     return;
   }
+
   memset(b->states, 0, sizeof(b->states[0])*STATE_COUNT);
-  // FIXME: ???
-  //brush_reset (mdw->brush);
+  // brush_reset (mdw->brush); ??
   int i = 0;
   while (p<data->str+data->len && i < STATE_COUNT) {
     BS_READ_FLOAT (b->states[i]);
     i++;
+    //g_print ("states[%d] = %f\n", i, b->states[i]);
   }
 }

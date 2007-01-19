@@ -18,6 +18,7 @@ typedef struct {
   int inputs;
   float base_value;
   ControlPoints * pointsList; // one for each input
+  int inputs_used; // optimization
 } Mapping;
 
 Mapping * mapping_new(int inputs);

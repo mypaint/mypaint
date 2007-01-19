@@ -231,7 +231,8 @@ class Window(gtk.Window):
         self.recording = True
         self.app.brush.srandom(0xfafa)
         self.recording_brushstate = self.app.brush.get_state()
-        print len(self.recording_brushstate), 'bytes of brushstate'
+        print len(self.recording_brushstate), 'bytes of brushstate:'
+        print repr(self.recording_brushstate)
         #self.mdw.set_brush(self.app.brush)
     def replay_stroke_cb(self, action):
         if self.recording:
@@ -242,10 +243,9 @@ class Window(gtk.Window):
             self.recording = False
         #self.app.brush.reset()
         self.app.brush.srandom (0xfafa)
+        #print repr(self.recording_brushstate)
         self.app.brush.set_state (self.recording_brushstate)
-        print self.app.brush.random_double ()
-        self.mdw.replay(self.recorded_stroke)
-        print self.app.brush.random_double ()
+        self.mdw.replay(self.recorded_stroke, 1)
         print '---'
         #self.mdw.set_brush(None)
 
