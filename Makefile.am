@@ -40,7 +40,7 @@ mydrawwidget_la_SOURCES = \
 	mymarshal.c \
 	stroke_recording.c
 
-CLEANFILES = mydrawwidget.c
+CLEANFILES = mydrawwidget.defs.c mydrawwidget.defs  mydrawwidget.c brushsettings.h mymarshal.h mymarshal.c
 EXTRA_DIST = mydrawwidget.override
 
 # PYTHON PART
@@ -79,15 +79,15 @@ mydrawwidget.defs.c: mydrawwidget.defs mydrawwidget.override
 brushsettings.h:	generate.py brushsettings.py
 	./generate.py
 
-gtkmydrawwidget.o:	brushsettings.h gtkmydrawwidget.c gtkmydrawwidget.h
+gtkmydrawwidget.c:	brushsettings.h gtkmydrawwidget.h
 
-gtkmybrush.o:	brushsettings.h gtkmybrush.c gtkmybrush.h
+gtkmybrush.c:	brushsettings.h gtkmybrush.h
 
-mapping.o:	mapping.c mapping.h
+mapping.c:	 mapping.h
 
-gtkmysurface.o:	gtkmysurface.c gtkmysurface.h mymarshal.h
+gtkmysurface.c:	gtkmysurface.h mymarshal.h
 
-gtkmysurfaceold.o:	gtkmysurfaceold.c gtkmysurfaceold.h
+gtkmysurfaceold.c:	gtkmysurfaceold.h
 
 mymarshal.h: mymarshal.list
 	$(GLIB_GENMARSHAL) --prefix=mymarshal --header mymarshal.list > mymarshal.h
@@ -95,4 +95,3 @@ mymarshal.h: mymarshal.list
 mymarshal.c: mymarshal.list
 	$(GLIB_GENMARSHAL) --prefix=mymarshal --body mymarshal.list > mymarshal.c
 
-mymarshal.o:	mymarshal.h mymarshal.c

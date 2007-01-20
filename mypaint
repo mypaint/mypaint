@@ -31,7 +31,7 @@ else:
     except:
         print "We are not correctly installed or at least  compiled !"
         print "Try \"./configure && make\" into %s before running %s !" % (dir_install, sys.argv[0])
-        exit
+        sys.exit(1)
     #not installed, we needs to run from compile directory
     prefix=None
     share='.'
