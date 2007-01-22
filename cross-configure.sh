@@ -5,7 +5,8 @@
 CONFIG_SHELL=/bin/sh
 export CONFIG_SHELL
 TARGET=i586-mingw32msvc
-CROSS_DEV=/home/ycombe/Win32/mypaint_win32
+CROSS_DEV=$HOME/Win32/mypaint_win32
+DLLZIP=$HOME/MyPaintDLL.zip
 PATH="$PATH:$CROSS_DEV/bin"
 export PATH
 
@@ -71,9 +72,7 @@ LDFLAGS="$LDFLAGS -L$CROSS_DEV/gettext/lib"
 cache=cross-config.cache
 CFLAGS="$CFLAGS"  LDFLAGS="$LDFLAGS" sh configure --cache-file="$cache" \
 	--target=$TARGET --host=$TARGET --build=i386-linux \
-        --enable-py-build-only \
-        --with-sdl-prefix="$CROSS_DEV/SDL/SDL-1.2.11" \
-        --disable-binreloc \
+         --enable-nsis --with-dllzip=$DLLZIP
         $*
 
 status=$?

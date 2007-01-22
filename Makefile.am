@@ -95,3 +95,16 @@ mymarshal.h: mymarshal.list
 mymarshal.c: mymarshal.list
 	$(GLIB_GENMARSHAL) --prefix=mymarshal --body mymarshal.list > mymarshal.c
 
+if NSIS_INSTALLER
+nsis: all
+	$(INSTALL) -d mingw32
+	(cd mingw32 && $(UNZIP) $(NSIS_DLL_ZIP))
+	$(MAKE) prefix=`pwd`/mingw32 install
+	$(CP) COPYING mingw32/COPYING.txt
+	$(MAKENSIS) -NOCD nsis/mypaint.nsi
+
+
+clean-local:
+	-rm -fr mingw32/
+	-rm *.exe
+endif

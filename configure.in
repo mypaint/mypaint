@@ -1,7 +1,9 @@
 
 AC_INIT(mypaint)
 
-AM_INIT_AUTOMAKE(mypaint,0.4.2.405)
+SVNVERSION=0.4.2.$(LANG=C svn info | grep Revision | sed -e 's/Revision: //')
+
+AM_INIT_AUTOMAKE(mypaint, $SVNVERSION)
 AM_CONFIG_HEADER(config.h)
 
 AC_PROG_CC
@@ -20,7 +22,7 @@ case "$host" in
     ;;
 esac
 AC_MSG_RESULT($platform_win32)
-AM_CONDITIONAL(PLATFORM_WIN32, test "$platform_win32" = yes)
+AM_CONDITIONAL(PLATFORM_WIN32, test x"$platform_win32" = xyes)
 
 AC_MSG_CHECKING([for glib-genmarshal])
 GLIB_GENMARSHAL=`pkg-config --variable=glib_genmarshal glib-2.0`
@@ -121,5 +123,33 @@ if test x$have_python = xno; then
   AC_MSG_ERROR([Pygtk dev files not found.])
 fi
 
-AC_OUTPUT(Makefile)
+AC_ARG_ENABLE(nsis,
+          AC_HELP_STRING(
+          [--enable-nsis],
+          [Enable NSIS installer for win32]),
+          nsis="$enableval", nsis="no")
+
+AC_ARG_WITH(dllzip,
+    AC_HELP_STRING(
+    [--with-dllzip=filename],
+    [set the filename for zipped win32 dll]), dllzipname=$withval, dllzipname=not)
+
+if test "x$nsis" = xyes ; then
+   AC_PATH_PROG(MAKENSIS, makensis, no, [$PATH])
+   if test "x$dllzipname" = xnot ; then
+      AC_MSG_ERROR([You must give the DLL ZIP filename with --with-dllzip=filename if you want build nsis installer])
+   fi
+   NSIS_DLL_ZIP=$dllzipname
+   AC_SUBST([NSIS_DLL_ZIP])
+   AC_PATH_PROG(UNZIP, unzip, AC_MSG_ERROR([unzip not found]), [$PATH])
+   AC_SUBST([UNZIP])
+   AC_PATH_PROG(CP, cp, AC_MSG_ERROR([cp not found]), [$PATH])
+   AC_SUBST([CP])
+fi
+
+AM_CONDITIONAL(NSIS_INSTALLER, test x"$nsis" = xyes)
+
+AC_OUTPUT([Makefile
+	  nsis/mypaint.nsi
+])
 
