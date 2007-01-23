@@ -1,0 +1,11 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=MyPaint
+Exec=mypaint %U
+Comment=Paint images
+GenericName=Painting Images
+MimeType=application/x-mypaint
+Type=Application
+Icon=mypaint_48.png
+Categories=Graphics;
+

@@ -11,7 +11,7 @@
 #define DEBUGLOG 0
 
 #define ACTUAL_RADIUS_MIN 0.2
-#define ACTUAL_RADIUS_MAX 100 //FIXME: performance problem acutally depending on CPU
+#define ACTUAL_RADIUS_MAX 100 //FIXME: performance problem actually depending on CPU
 
 #define abs(x) (((x)>0)?(x):(-(x)))
 
