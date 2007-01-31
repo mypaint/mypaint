@@ -395,6 +395,7 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, GtkMySurfaceOld * s, Rect * bbo
 
   // color part
   
+  // FIXME: don't bother with integers here already...
   for (i=0; i<3; i++) color[i] = b->states[STATE_COLOR_R+i] * 255;
   color_is_hsv = 0;
 
@@ -413,7 +414,7 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, GtkMySurfaceOld * s, Rect * bbo
       color[i] = ROUND((1.0-v)*color[i] + v*rgb[i]);
       if (color[i] < 0) color[i] = 0;
       if (color[i] > 255) color[i] = 255;
-      b->states[STATE_COLOR_R+i] = color[i];
+      b->states[STATE_COLOR_R+i] = color[i]/255.0;
     }
   }
 
