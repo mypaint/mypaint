@@ -1,4 +1,4 @@
-#include "stroke_recording.h"
+#include "stroke_recorder.h"
 
 // TODO: encode only diff; lossless compression
 

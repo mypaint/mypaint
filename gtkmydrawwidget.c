@@ -1,6 +1,6 @@
 // gtk stock code - left gtk prefix to use the pygtk wrapper-generator easier
 #include "gtkmydrawwidget.h"
-#include "stroke_recording.h"
+#include "stroke_recorder.h"
 
 static void gtk_my_draw_widget_class_init    (GtkMyDrawWidgetClass *klass);
 static void gtk_my_draw_widget_init          (GtkMyDrawWidget      *mdw);

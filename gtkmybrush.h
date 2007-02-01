@@ -84,7 +84,6 @@ GdkPixbuf* gtk_my_brush_get_colorselection_pixbuf (GtkMyBrush * b);
 void brush_stroke_to (GtkMyBrush * b, GtkMySurfaceOld * s, float x, float y, float pressure, double dtime);
 void brush_reset (GtkMyBrush * b);
 
-/* note: currently the random seed is global, not brush specific */
 void gtk_my_brush_srandom (GtkMyBrush * b, int value);
 double gtk_my_brush_random_double (GtkMyBrush * b); // for testing the RNG
 

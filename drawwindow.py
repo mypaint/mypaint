@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 "the main drawing window"
 import gtk, os, zlib
 import infinitemydrawwidget
@@ -440,17 +441,21 @@ class Window(gtk.Window):
 
     def show_about_cb(self, action):
         d = gtk.MessageDialog(self, buttons=gtk.BUTTONS_OK)
-        d.set_markup("MyPaint - pressure sensitive painting application\n"
-                     "Copyright (C) 2005-2006 Martin Renold &lt;martinxyz@gmx.ch&gt;\n\n"
-                     "Contributors:\n"
-                     "Artis Rozent\xc4\x81ls &lt;artis@aaa.apollo.lv&gt; (brushes)\n"
-                     #"UTF-8 Test: \xE2\x82\xAC (should be euro), \xc3\xa3 \xc4\x81\n"
-                     "\n"
-                     "This program is free software; you can redistribute it and/or modify "
-                     "it under the terms of the GNU General Public License as published by "
-                     "the Free Software Foundation; either version 2 of the License, or "
-                     "(at your option) any later version."
-                     )
+
+        d.set_markup(
+            u"MyPaint - pressure sensitive painting application\n"
+            u"Copyright (C) 2005-2007\n"
+            u"Martin Renold &lt;martinxyz@gmx.ch&gt;\n\n"
+            u"Contributors:\n"
+            u"Artis Rozentāls &lt;artis@aaa.apollo.lv&gt; (brushes)\n"
+            u"Yves Combe &lt;yves@ycombe.net&gt; (portability)\n"
+            u"\n"
+            u"This program is free software; you can redistribute it and/or modify "
+            u"it under the terms of the GNU General Public License as published by "
+            u"the Free Software Foundation; either version 2 of the License, or "
+            u"(at your option) any later version."
+            )
+
         d.run()
         d.destroy()
 
@@ -461,7 +466,7 @@ class Window(gtk.Window):
                      "hard to discover yourself.\n\n"
                      "Comments about the brush settings (opaque, hardness, etc.) and "
                      "inputs (pressure, speed, etc.) are available as tooltips. "
-                     "Put your mouse over a label to see it. "
+                     "Put your mouse over a label to see them. "
                      "\n"
                      )
         d.run()

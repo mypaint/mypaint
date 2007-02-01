@@ -48,10 +48,7 @@ class Setting:
         return True
     def has_input(self, input):
         points = self.points[input.index]
-        if points is None:
-            return False
-        #print points
-        return True
+        return points is not None
     def has_input_nonlinear(self, input):
         points = self.points[input.index]
         if points is None:

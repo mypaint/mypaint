@@ -32,6 +32,8 @@
 
 - maybe should use log(speed) instead of speed - I think it reacts
   "too strong" to fast moves. Maybe make this an option. (or another input)
+  Bah. Of course log(speed) should be used, since also log(radius) is used!
+  Check: speed measurment depends on basic radius, not actual radius?
 
 ? zoom-out only for viewing somehow?
   - do not resize canvas when zooming, only when moving?
@@ -39,6 +41,10 @@
 
 - edit global pressure nonlinearity curve
   - maybe wacom tool? maybe for each brush?
+
+- more brush information
+  - attach text notes to brush
+  - attach a small demo-replay
 
 - copy/paste buttons curve shapes 
   - buttons next to shape? shared "symlinked" shape?

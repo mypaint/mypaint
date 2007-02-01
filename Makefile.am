@@ -38,7 +38,7 @@ mydrawwidget_la_SOURCES = \
 	helpers.c \
 	mapping.c \
 	mymarshal.c \
-	stroke_recording.c
+	stroke_recorder.c
 
 CLEANFILES = mydrawwidget.defs.c mydrawwidget.defs  mydrawwidget.c brushsettings.h mymarshal.h mymarshal.c
 EXTRA_DIST = mydrawwidget.override

@@ -32,6 +32,7 @@ void ExpandRectToIncludePoint(Rect * r, int x, int y);
 typedef union {           gint16 i; gchar c[2]; } uni16;
 typedef union { float f;  gint32 i; gchar c[4]; } uni32;
 typedef union { double d; gint64 i; gchar c[8]; } uni64;
+
 #define BS_WRITE_INT16(value)  { uni16 u; u.i = value; u.i = GINT16_TO_BE(u.i); g_string_append_len (bs, u.c, 2); }
 #define BS_WRITE_INT32(value)  { uni32 u; u.i = value; u.i = GINT32_TO_BE(u.i); g_string_append_len (bs, u.c, 4); }
 #define BS_WRITE_INT64(value)  { uni64 u; u.i = value; u.i = GINT64_TO_BE(u.i); g_string_append_len (bs, u.c, 8); }

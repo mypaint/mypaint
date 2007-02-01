@@ -64,6 +64,8 @@ static void gtk_my_brush_class_init    (GtkMyBrushClass *klass);
 static void gtk_my_brush_init          (GtkMyBrush      *b);
 static void gtk_my_brush_finalize (GObject *object);
 
+// Maybe use G_DEFINE_TYPE to simplify below...?
+
 static gpointer parent_class;
 
 GType
