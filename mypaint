@@ -6,7 +6,7 @@
 import gtk, sys, os, os.path
 gdk = gtk.gdk
 
-#autodetect prefix
+# autodetect prefix
 # this allow relocatable version
 
 #standard values
@@ -15,7 +15,7 @@ lib='/lib/python%d.%d/site-packages/mypaint/' % (sys.version_info[0], sys.versio
 pwd=os.getcwd()
 curdir=os.path.dirname(sys.argv[0])
 
-#script is installed as $prefix/bin. I just need $prefix to continue.
+# script is installed as $prefix/bin. I just need $prefix to continue.
 dir_install=os.path.normpath(os.path.join(pwd,curdir))
 
 if os.path.basename(dir_install) == 'bin':
@@ -24,17 +24,11 @@ if os.path.basename(dir_install) == 'bin':
     sys.path.insert(0, prefix + lib)
     sys.path.insert(0, share + '/python')
 else:
-    #we are not installed. check .libs/mydrawwidget.so
+    # we are not installed, use .libs/mydrawwidget.so
     sys.path.insert(0,'.libs')
-    try:
-        import mydrawwidget
-    except:
-        print "We are not correctly installed or at least  compiled !"
-        print "Try \"./configure && make\" into %s before running %s !" % (dir_install, sys.argv[0])
-        sys.exit(1)
-    #not installed, we needs to run from compile directory
     prefix=None
     share='.'
+    # checking for import error below
 
 try: # just for a nice error message, plus portability test
     from mydrawwidget import MyBrush
@@ -55,11 +49,12 @@ try: # just for a nice error message, plus portability test
     del MyBrush
 except ImportError, detail:
     print 'ImportError:', detail
+    print "\nWe are not correctly installed or compiled!"
+    print 'script = "%s"' % sys.argv[0]
+    print 'dir_install = "%s"' % dir_install
+    print "\nYou need to './configure && make' the C modules first.\n"
     if 'cannot import name' in str(detail).lower():
-        print "\nOops! Maybe something went wrong during 'make'."
-        print "More likely try 'python mypaint' instead of './mypaint'.\n"
-    else:
-        print "\nYou need to 'make' the C modules first.\n"
+        print "Maybe try 'python mypaint' instead of './mypaint'.\n"
     sys.exit(1)
 
 import application
@@ -93,7 +88,7 @@ def main():
     else:
         confpath = os.path.join(homepath, '.mypaint/')
 
-    print 'confpath = ', confpath
+    print 'confpath =', confpath
     filename = None
 
     args = sys.argv[1:]
