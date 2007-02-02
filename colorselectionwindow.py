@@ -1,6 +1,8 @@
 "select color window (GTK and an own window)"
 import gtk, gobject
 import colorsys
+import helpers
+gdk = gtk.gdk
 
 # GTK selector
 class Window(gtk.Window):
@@ -35,19 +37,32 @@ class Window(gtk.Window):
     def update(self):
         self.set_color_rgb(self.app.brush.get_color())
 
-    def pick_color_at_pointer(self):
-        # grab screen color at cursor
+    def pick_color_at_pointer(self, size=3):
+        # grab screen color at cursor (average of size x size rectangle)
         # inspired by gtkcolorsel.c function grab_color_at_mouse()
         screen = self.get_screen()
         colormap = screen.get_system_colormap()
         root = screen.get_root_window()
+        screen_w, screen_h = screen.get_width(), screen.get_height()
         display = self.get_display()
         screen_trash, x_root, y_root, modifiermask_trash = display.get_pointer()
-        image = root.get_image(x_root, y_root, 1, 1)
-        pixel = image.get_pixel(0, 0)
-        color = colormap.query_color(pixel)
-        #print color.red, color.green, color.blue
-        self.cs.set_current_color(color)
+        image = None
+        x = x_root-size/2
+        y = y_root-size/2
+        if x < 0: x = 0
+        if y < 0: y = 0
+        if x+size > screen_w: x = screen_w-size
+        if y+size > screen_h: y = screen_h-size
+        image = root.get_image(x, y, size, size)
+        color_total = (0, 0, 0)
+        for x, y in helpers.iter_rect(0, 0, size, size):
+            pixel = image.get_pixel(x, y)
+            color = colormap.query_color(pixel)
+            color = [color.red, color.green, color.blue]
+            color_total = (color_total[0]+color[0], color_total[1]+color[1], color_total[2]+color[2])
+        N = size*size
+        color_total = (color_total[0]/N, color_total[1]/N, color_total[2]/N)
+        self.cs.set_current_color(gdk.Color(*color_total))
         
     def get_color_rgb(self):
         c = self.cs.get_current_color()
@@ -58,7 +73,7 @@ class Window(gtk.Window):
 
     def set_color_rgb(self, rgb):
         r, g, b  = rgb
-        c = gtk.gdk.Color(int(r*65535.0/255.0+0.5), int(g*65535.0/255.0+0.5), int(b*65535.0/255.0+0.5))
+        c = gdk.Color(int(r*65535.0/255.0+0.5), int(g*65535.0/255.0+0.5), int(b*65535.0/255.0+0.5))
         self.cs.set_current_color(c)
 
     def get_color_hsv(self):
@@ -84,7 +99,7 @@ class Window(gtk.Window):
         if v > 1.0: v = 1.0
         if v < 0.0: v = 0.0
         r, g, b  = colorsys.hsv_to_rgb(h, s, v)
-        c = gtk.gdk.Color(int(r*65535+0.5), int(g*65535+0.5), int(b*65535+0.5))
+        c = gdk.Color(int(r*65535+0.5), int(g*65535+0.5), int(b*65535+0.5))
         self.cs.set_current_color(c)
 
 
@@ -93,7 +108,7 @@ class Window(gtk.Window):
 class AlternativeColorSelectorWindow(gtk.Window):
     def __init__(self, colorselectionwindow):
         gtk.Window.__init__(self, gtk.WINDOW_POPUP)
-        self.set_gravity(gtk.gdk.GRAVITY_CENTER)
+        self.set_gravity(gdk.GRAVITY_CENTER)
         self.set_position(gtk.WIN_POS_MOUSE)
         
         self.colorselectionwindow = colorselectionwindow
@@ -108,10 +123,10 @@ class AlternativeColorSelectorWindow(gtk.Window):
 
         self.image.set_from_pixbuf(self.app.brush.get_colorselection_pixbuf())
 
-	self.set_events(gtk.gdk.BUTTON_PRESS_MASK |
-                        gtk.gdk.BUTTON_RELEASE_MASK |
-                        gtk.gdk.ENTER_NOTIFY |
-                        gtk.gdk.LEAVE_NOTIFY
+	self.set_events(gdk.BUTTON_PRESS_MASK |
+                        gdk.BUTTON_RELEASE_MASK |
+                        gdk.ENTER_NOTIFY |
+                        gdk.LEAVE_NOTIFY
                         )
         self.connect("enter-notify-event", self.enter_notify_cb)
         self.connect("leave-notify-event", self.leave_notify_cb)
@@ -123,11 +138,11 @@ class AlternativeColorSelectorWindow(gtk.Window):
 
         self.show_all()
 
-        self.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.CROSSHAIR))
+        self.window.set_cursor(gdk.Cursor(gdk.CROSSHAIR))
         
     def button_press_cb(self, widget, event):
         if event.button == 1:
-            self.colorselectionwindow.pick_color_at_pointer()
+            self.colorselectionwindow.pick_color_at_pointer(size=1)
         self.button_pressed = True
 
     def remove_cleanly(self):

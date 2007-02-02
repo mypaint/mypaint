@@ -39,6 +39,12 @@ class Rect:
     def __repr__(self):
         return 'Rect(%d, %d, %d, %d)' % (self.x, self.y, self.w, self.h)
 
+def iter_rect(x, y, w, h):
+    assert w>=0 and h>=0
+    for yy in xrange(y, y+h):
+        for xx in xrange(x, x+w):
+            yield (xx, yy)
+
 if __name__ == '__main__':
     big = Rect(-3, 2, 180, 222)
     a = Rect(0, 10, 5, 15)
