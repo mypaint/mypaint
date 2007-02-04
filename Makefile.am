@@ -1,5 +1,7 @@
 INCLUDES = $(PYTHON_INCLUDES) $(PYGTK_CFLAGS)
 
+SUBDIRS= desktop
+
 defsdir = $(datadir)/pygtk/2.0/defs
 #pkgpyexecdir=$(pkglibdir)/pythonlib
 
@@ -19,7 +21,6 @@ shared =
 avoid_version =
 # windows_flags =
 endif
-
 
 mydrawwidget_la_LDFLAGS = $(shared) $(no_undefined) $(common_ldflags) -module  -export-symbols-regex initmydrawwidget $(avoid_version)
 mydrawwidget_la_LIBADD = $(MYPAINT_LIBS) $(PYTHON_LIBS)

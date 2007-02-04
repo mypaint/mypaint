@@ -5,8 +5,8 @@
 CONFIG_SHELL=/bin/sh
 export CONFIG_SHELL
 TARGET=i586-mingw32msvc
-CROSS_DEV=$HOME/Win32/mypaint_win32
-DLLZIP=$HOME/MyPaintDLL.zip
+CROSS_DEV=$HOME/Dev/Win32/98/mypaint_win32
+DLLZIP=$HOME/Dev/MyPaint/MyPaintDLL.zip
 PATH="$PATH:$CROSS_DEV/bin"
 export PATH
 
