@@ -35,7 +35,7 @@ settings_list = [
     ['slow_tracking', 'slow position tracking', True, 0.0, 0.0, 10.0, "Slowdown pointer tracking speed. 0 disables it, higher values remove more jitter in cursor movements. Useful for drawing smooth, comic-like outlines."],
     ['slow_tracking_per_dab', 'slow tracking per dab', False, 0.0, 0.0, 10.0, "Similar as above but at brushdab level (ignoring how much time has past, if brushdabs do not depend on time)"],
 
-    ['color_h', 'color hue', True, 0.0, 0.0, 360.0, "color hue"],
+    ['color_h', 'color hue', True, 0.0, 0.0, 1.0, "color hue"],
     ['color_s', 'color saturation', True, -0.5, 0.0, 1.5, "color saturation"],
     ['color_v', 'color value', True, -0.5, 0.0, 1.5, "color value (brightness, intensity)"],
     ['change_color_h', 'change color hue', False, -2.0, 0.0, 2.0, "change color hue\n-1.0 clockwise color hue shift\n 0.0 disable\n 1.0 counterclockwise hue shift"],
