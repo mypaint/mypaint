@@ -75,3 +75,8 @@ if __name__ == '__main__':
     assert not r2.overlaps(r1)
 
     print 'Tests passed.'
+
+def clamp(x, lo, hi):
+    if x < lo: return lo
+    if x > hi: return hi
+    return x

@@ -1,3 +1,21 @@
+/* MyPaint - pressure sensitive painting application
+ * Copyright (C) 2005-2007 Martin Renold
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+
 // gtk stock code - left gtk prefix to use the pygtk wrapper-generator easier
 #include <stdio.h>
 #include <string.h>
@@ -13,8 +31,6 @@
 #define ACTUAL_RADIUS_MIN 0.2
 #define ACTUAL_RADIUS_MAX 100 //FIXME: performance problem actually depending on CPU
 
-#define abs(x) (((x)>0)?(x):(-(x)))
-
 void
 gtk_my_brush_set_base_value (GtkMyBrush * b, int id, float value)
 {
@@ -29,17 +45,6 @@ void gtk_my_brush_set_mapping (GtkMyBrush * b, int id, int input, int index, flo
   //g_print("set mapping: id=%d, input=%d, index=%d, value=%f\n", id, input, index, value);
   Mapping * m = b->settings[id];
   mapping_set (m, input, index, value);
-}
-
-void
-gtk_my_brush_set_color (GtkMyBrush * b, int red, int green, int blue)
-{
-  g_assert (red >= 0 && red <= 255);
-  g_assert (green >= 0 && green <= 255);
-  g_assert (blue >= 0 && blue <= 255);
-  b->states[STATE_COLOR_R] = red / 255.0;
-  b->states[STATE_COLOR_G] = green / 255.0;
-  b->states[STATE_COLOR_B] = blue / 255.0;
 }
 
 void
@@ -151,18 +156,7 @@ float exp_decay (float T_const, float t)
 
 void brush_reset (GtkMyBrush * b)
 {
-  // FIXME!! Quick hackish workaround for keeping the color.
-  float color[3];
-  color[0] = b->states[STATE_COLOR_R];
-  color[1] = b->states[STATE_COLOR_G];
-  color[2] = b->states[STATE_COLOR_B];
-
   memset(b->states, 0, sizeof(b->states[0])*STATE_COUNT);
-
-  b->states[STATE_COLOR_R] = color[0];
-  b->states[STATE_COLOR_G] = color[1];
-  b->states[STATE_COLOR_B] = color[2];
-
   b->must_reset = 1; // triggers the real reset below in brush_stroke_to
   g_print ("brush_reset()\n");
 }
@@ -291,10 +285,6 @@ void brush_update_settings_values (GtkMyBrush * b)
     }
   }
 
-  // change base radius (a rarely used feature)
-  // FIXME: Wrong! Hack! Wrong! Use a new brush state instead!
-  b->settings[BRUSH_RADIUS_LOGARITHMIC]->base_value += settings[BRUSH_CHANGE_RADIUS] * 0.01;
-
   // calculate final radius
   float radius_log;
   radius_log = settings[BRUSH_RADIUS_LOGARITHMIC];
@@ -314,8 +304,6 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, GtkMySurfaceOld * s, Rect * bbo
   float x, y, opaque;
   float radius;
   int i;
-  gint color[3];
-  int color_is_hsv;
 
   if (DEBUGLOG) {
     static FILE * logfile = NULL;
@@ -396,74 +384,58 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, GtkMySurfaceOld * s, Rect * bbo
   }
 
   // color part
-  
-  // FIXME: don't bother with integers here already...
-  for (i=0; i<3; i++) color[i] = b->states[STATE_COLOR_R+i] * 255;
-  color_is_hsv = 0;
 
-  if (settings[BRUSH_ADAPT_COLOR_FROM_IMAGE]) {
-    int px, py;
-    guchar *rgb;
-    float v = settings[BRUSH_ADAPT_COLOR_FROM_IMAGE];
-    px = ROUND(x);
-    py = ROUND(y);
-    if (px < 0) px = 0;
-    if (py < 0) py = 0;
-    if (px > s->w-1) px = s->w - 1;
-    if (py > s->h-1) py = s->h - 1;
-    rgb = PixelXY(s, px, py);
-    for (i=0; i<3; i++) {
-      color[i] = ROUND((1.0-v)*color[i] + v*rgb[i]);
-      if (color[i] < 0) color[i] = 0;
-      if (color[i] > 255) color[i] = 255;
-      b->states[STATE_COLOR_R+i] = color[i]/255.0;
+  float color_h, color_s, color_v;
+  if (!settings[BRUSH_ADAPT_COLOR_FROM_IMAGE]) {
+    // normal case
+    color_h = b->settings[BRUSH_COLOR_H]->base_value;
+    color_s = b->settings[BRUSH_COLOR_S]->base_value;
+    color_v = b->settings[BRUSH_COLOR_V]->base_value;
+  } else {
+    // ignore the brush color, only use the smudge state
+    color_h = b->states[STATE_SMUDGE_R];
+    color_s = b->states[STATE_SMUDGE_G];
+    color_v = b->states[STATE_SMUDGE_B];
+    rgb_to_hsv_float (&color_h, &color_s, &color_v);
+
+    { // update the smudge state
+      int px, py;
+      guchar *rgb;
+      float v = settings[BRUSH_ADAPT_COLOR_FROM_IMAGE];
+      px = ROUND(x); px = CLAMP(px, 0, s->w-1);
+      py = ROUND(y); py = CLAMP(py, 0, s->h-1);
+      rgb = PixelXY(s, px, py);
+      b->states[STATE_SMUDGE_R] = (1-v)*b->states[STATE_SMUDGE_R] + v*rgb[0]/255.0;
+      b->states[STATE_SMUDGE_G] = (1-v)*b->states[STATE_SMUDGE_G] + v*rgb[1]/255.0;
+      b->states[STATE_SMUDGE_B] = (1-v)*b->states[STATE_SMUDGE_B] + v*rgb[2]/255.0;
     }
   }
 
-  if (settings[BRUSH_COLOR_VALUE] ||
-      settings[BRUSH_COLOR_SATURATION] ||
-      settings[BRUSH_COLOR_HUE]) {
-    color_is_hsv = 1;
-    gimp_rgb_to_hsv_int (color + 0, color + 1, color + 2);
-  }
+  color_h += settings[BRUSH_CHANGE_COLOR_H];
+  color_s += settings[BRUSH_CHANGE_COLOR_S];
+  color_v += settings[BRUSH_CHANGE_COLOR_V];
   
-
-  if (settings[BRUSH_COLOR_HUE]) {
-    g_assert (color_is_hsv);
-    color[0] += ROUND (settings[BRUSH_COLOR_HUE] * 64.0);
-  }
-  if (settings[BRUSH_COLOR_SATURATION]) {
-    g_assert (color_is_hsv);
-    color[1] += ROUND (settings[BRUSH_COLOR_SATURATION] * 128.0);
-  }
-  if (settings[BRUSH_COLOR_VALUE]) {
-    g_assert (color_is_hsv);
-    color[2] += ROUND (settings[BRUSH_COLOR_VALUE] * 128.0);
-  }
-
   { // final calculations
-    guchar c[3];
+    gint c[3];
 
     g_assert(opaque >= 0);
     g_assert(opaque <= 1);
     
-    if (color_is_hsv) {
-      while (color[0] < 0) color[0] += 360;
-      while (color[0] > 360) color[0] -= 360;
-      if (color[1] < 0) color[1] = 0;
-      if (color[1] > 255) color[1] = 255;
-      if (color[2] < 0) color[2] = 0;
-      if (color[2] > 255) color[2] = 255;
-      gimp_hsv_to_rgb_int (color + 0, color + 1, color + 2);
-    }
-    for (i=0; i<3; i++) c[i] = color[i];
+    c[0] = ((int)(color_h*360.0)) % 360;
+    if (c[0] < 0) c[0] += 360.0;
+    g_assert(c[0] >= 0);
+    c[1] = CLAMP(ROUND(color_s*255), 0, 255);
+    c[2] = CLAMP(ROUND(color_v*255), 0, 255);
+
+    hsv_to_rgb_int (c + 0, c + 1, c + 2);
 
     float hardness = settings[BRUSH_HARDNESS];
     if (hardness > 1.0) hardness = 1.0;
     if (hardness < 0.0) hardness = 0.0;
 
     draw_brush_dab (s, bbox, b->rng, 
-                    x, y, radius, opaque, hardness, c);
+                    x, y, radius, opaque, hardness,
+                    c[0], c[1], c[2]);
   }
 }
 
@@ -697,7 +669,7 @@ PrecalcData * precalc_data(float phase0)
 
         dist2 = dx_norm*dx_norm + dy_norm*dy_norm;
         dist = sqrtf(dist2);
-        borderdist = 0.5 - MAX(abs(dx_norm), abs(dy_norm));
+        borderdist = 0.5 - MAX(ABS(dx_norm), ABS(dy_norm));
         angle = atan2f(dy_norm, dx_norm);
         amplitude = 50 + dist2*dist2*dist2*100;
         phase = phase0 + 2*M_PI* (dist*0 + dx_norm*dx_norm*dy_norm*dy_norm*50) + angle*7;
@@ -707,10 +679,10 @@ PrecalcData * precalc_data(float phase0)
         h *= amplitude;
 
         // calcualte angle to next 45-degree-line
-        angle = abs(angle)/M_PI;
+        angle = ABS(angle)/M_PI;
         if (angle > 0.5) angle -= 0.5;
         angle -= 0.25;
-        angle = abs(angle) * 4;
+        angle = ABS(angle) * 4;
         // angle is now in range 0..1
         // 0 = on a 45 degree line, 1 = on a horizontal or vertical line
 
@@ -737,8 +709,8 @@ PrecalcData * precalc_data(float phase0)
 
       {
         // undo that funky stuff on horizontal and vertical lines
-        int min = abs(dx);
-        if (abs(dy) < min) min = abs(dy);
+        int min = ABS(dx);
+        if (ABS(dy) < min) min = ABS(dy);
         if (min < 30) {
           float mul;
           min -= 6;
@@ -788,10 +760,10 @@ GdkPixbuf* gtk_my_brush_get_colorselection_pixbuf (GtkMyBrush * b)
   rowstride = gdk_pixbuf_get_rowstride (pixbuf);
   pixels = gdk_pixbuf_get_pixels (pixbuf);
 
-  base_h = b->states[STATE_COLOR_R]*255;
-  base_s = b->states[STATE_COLOR_G]*255;
-  base_v = b->states[STATE_COLOR_B]*255;
-  gimp_rgb_to_hsv_int (&base_h, &base_s, &base_v);
+  base_h = b->settings[BRUSH_COLOR_H]->base_value*360;
+  base_s = b->settings[BRUSH_COLOR_S]->base_value*255;
+  base_v = b->settings[BRUSH_COLOR_V]->base_value*255;
+  rgb_to_hsv_int (&base_h, &base_s, &base_v);
 
   for (y=0; y<SIZE; y++) {
     for (x=0; x<SIZE; x++) {
@@ -813,7 +785,7 @@ GdkPixbuf* gtk_my_brush_get_colorselection_pixbuf (GtkMyBrush * b)
       h = h%360; if (h<0) h += 360;
 
       p = pixels + y * rowstride + x * n_channels;
-      gimp_hsv_to_rgb_int (&h, &s, &v);
+      hsv_to_rgb_int (&h, &s, &v);
       p[0] = h; p[1] = s; p[2] = v;
     }
   }

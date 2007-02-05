@@ -8,6 +8,6 @@ void draw_brush_dab (GtkMySurfaceOld * s, Rect * bbox,
                      GRand * rng,
                      float x, float y, 
                      float radius, float opaque, float hardness,
-                     guchar * color
+                     int color_r, int color_g, int color_b
                      )
      // ; follows after #include

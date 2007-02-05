@@ -32,10 +32,10 @@ class Window(gtk.Window):
             self.alternative = AlternativeColorSelectorWindow(self)
 
     def color_changed_cb(self, cs):
-        self.app.brush.set_color(self.get_color_rgb())
+        self.app.brush.set_color_hsv(self.get_color_hsv())
 
     def update(self):
-        self.set_color_rgb(self.app.brush.get_color())
+        self.set_color_hsv(self.app.brush.get_color_hsv())
 
     def pick_color_at_pointer(self, size=3):
         # grab screen color at cursor (average of size x size rectangle)

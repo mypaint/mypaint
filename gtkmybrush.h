@@ -70,13 +70,12 @@ GtkMyBrush* gtk_my_brush_new        (void);
 /* no getter functions since values are remembered in python code */
 void gtk_my_brush_set_base_value (GtkMyBrush * b, int id, float value);
 void gtk_my_brush_set_mapping (GtkMyBrush * b, int id, int input, int index, float value);
-void gtk_my_brush_set_color (GtkMyBrush * b, int red, int green, int blue);
+GString* gtk_my_brush_get_state (GtkMyBrush * b);
+void gtk_my_brush_set_state (GtkMyBrush * b, GString * data);
+
 void gtk_my_brush_set_print_inputs (GtkMyBrush * b, int value);
 float gtk_my_brush_get_painting_time (GtkMyBrush * b);
 void gtk_my_brush_set_painting_time (GtkMyBrush * b, float value);
-
-GString* gtk_my_brush_get_state (GtkMyBrush * b);
-void gtk_my_brush_set_state (GtkMyBrush * b, GString * data);
 
 GdkPixbuf* gtk_my_brush_get_colorselection_pixbuf (GtkMyBrush * b);
 

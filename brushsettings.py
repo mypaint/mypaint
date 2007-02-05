@@ -34,11 +34,15 @@ settings_list = [
     ['offset_by_speed_slowness', 'offset by speed slowness', False, 0.0, 1.0, 15.0, "how slow the offset goes back to zero when the cursor stops moving; 0 means there will never be any offset left"],
     ['slow_tracking', 'slow position tracking', True, 0.0, 0.0, 10.0, "Slowdown pointer tracking speed. 0 disables it, higher values remove more jitter in cursor movements. Useful for drawing smooth, comic-like outlines."],
     ['slow_tracking_per_dab', 'slow tracking per dab', False, 0.0, 0.0, 10.0, "Similar as above but at brushdab level (ignoring how much time has past, if brushdabs do not depend on time)"],
-    ['color_value', 'color brightness', False, -2.0, 0.0, 2.0, "change the color brightness (also known as intensity or value) depending from the choosen color\n-1.0 darker\n 0.0 disable\n 1.0 brigher"],
-    ['color_saturation', 'color saturation', False, -2.0, 0.0, 2.0, "change the color saturation\n-1.0 more grayish\n 0.0 disable\n 1.0 more saturated"],
-    ['color_hue', 'color hue', False, -2.0, 0.0, 2.0, "change color hue\n-1.0 clockwise color hue shift\n 0.0 disable\n 1.0 counterclockwise hue shift"],
-    ['adapt_color_from_image', 'adapt color from image', False, 0.0, 0.0, 1.0, "slowly change the color to the one you're painting on (some kind of smudge tool)\nNote that this happens /before/ the hue/saturation/brighness adjustment below: you can get very different effects (eg brighten image) by combining with them."],
-    ['change_radius', 'change radius', False, -1.0, 0.0, 1.0, "Modify the basic radius (the one above) permanently each dab. This will slowly increment/decrement its actual value, with all the consequences. The slider above will not change, but it should - FIXME: this is a small bug; also, the changed radius will never be saved."],
+
+    ['color_h', 'color hue', True, 0.0, 0.0, 360.0, "color hue"],
+    ['color_s', 'color saturation', True, -0.5, 0.0, 1.5, "color saturation"],
+    ['color_v', 'color value', True, -0.5, 0.0, 1.5, "color value (brightness, intensity)"],
+    ['change_color_h', 'change color hue', False, -2.0, 0.0, 2.0, "change color hue\n-1.0 clockwise color hue shift\n 0.0 disable\n 1.0 counterclockwise hue shift"],
+    ['change_color_s', 'change color saturation', False, -2.0, 0.0, 2.0, "change the color saturation\n-1.0 more grayish\n 0.0 disable\n 1.0 more saturated"],
+    ['change_color_v', 'change color value', False, -2.0, 0.0, 2.0, "change the color value (brightness, intensity) from the choosen color\n-1.0 darker\n 0.0 disable\n 1.0 brigher"],
+    ['adapt_color_from_image', 'adapt color from image', False, 0.0, 0.0, 1.0, "slowly change the color to the one you're painting on (some kind of smudge tool)\nNote that this happens /before/ the hue/saturation/brighness adjustment above: you can get very different effects (eg brighten image) by combining with them."],
+
     ['stroke_treshold', 'stroke treshold', True, 0.0, 0.0, 0.5, "How much pressure is needed to start a stroke. This affects the stroke input only. Mypaint does not need a minimal pressure to start drawing."],
     ['stroke_duration_logarithmic', 'stroke duration', False, -1.0, 4.0, 7.0, "How far you have to move until the stroke input reaches 1.0. This value is logarithmic (negative values will not inverse the process)."],
     ['stroke_holdtime', 'stroke hold time', False, 0.0, 0.0, 10.0, "This defines how long the stroke input stays at 1.0. After that it will reset to 0.0 and start growing again, even if the stroke is not yet finished.\n2.0 means twice as long as it takes to go from 0.0 to 1.0\n9.9 and bigger stands for infinite"],
@@ -55,7 +59,7 @@ pressure
 dist              # "distance" moved since last dab, a new dab is drawn at 1.0
 actual_radius     # used by count_dabs_to, thus a state!
 
-color_r, color_g, color_b  # can be modified while drawing
+smudge_r, smudge_g, smudge_b  # for adapt_color_from_image
 
 actual_x, actual_y  # for slow position
 norm_dx_slow, norm_dy_slow # note: now this is dx/dt * (1/radius)
@@ -86,6 +90,7 @@ for s_list in settings_list:
     s.cname, s.name, s.constant, s.min, s.default, s.max, s.tooltip = s_list
     s.index = len(settings)
     settings.append(s)
+    globals()[s.cname] = s
 
 class BrushState:
     pass

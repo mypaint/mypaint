@@ -202,7 +202,7 @@ class BrushList(gtk.DrawingArea):
         if i >= len(self.app.brushes): return
 
         # keep the color setting
-        color = self.app.brush.get_color()
+        color = self.app.brush.get_color_hsv()
         brush = self.app.brushes[i]
 
         # brush changed on harddisk?
@@ -211,7 +211,7 @@ class BrushList(gtk.DrawingArea):
             self.redraw_thumbnails()
 
         self.app.select_brush(brush)
-        self.app.brush.set_color(color)
+        self.app.brush.set_color_hsv(color)
 
         self.grabbed = brush
 

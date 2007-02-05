@@ -33,9 +33,9 @@
   if (y1 > s->h) y1 = s->h;
   rr = SQR(radius);
   if (radius < 0.1) return;
-  c[0] = color[0];
-  c[1] = color[1];
-  c[2] = color[2];
+  c[0] = color_r;
+  c[1] = color_g;
+  c[2] = color_b;
   radius2 = SQR(radius);
   one_over_radius2 = 1.0/radius2;
   
@@ -101,10 +101,13 @@
           } else {
             negative = 0;
           }
+          // FIXME: ... 256? I think it is 255! Check this code again!
+          // (compare it to other blending implementations, like gdkpixbuf-render.c)
           reminder = rgbdiff[i] % 256;
           rgbdiff[i] /= 256;
           // use randomness to fake more precision
           // - ah, I just learned that this is called "dither". I hope I've done it right.
+          // FIXME: after the correction above, go and verify if this really helps.
           random_pos = (random_pos + 1 + rgbdiff[i] % 1 /* hope that's slightly random */) % 8;
           if (reminder > randoms[random_pos] /* 0..255 */) {
             rgbdiff[i]++;

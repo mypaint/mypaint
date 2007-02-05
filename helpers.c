@@ -1,3 +1,21 @@
+/* MyPaint - pressure sensitive painting application
+ * Copyright (C) 2006-2007 Martin Renold and others
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+
 #include "helpers.h"
 #include <glib.h>
 #include <math.h>
@@ -46,9 +64,9 @@ gdouble rand_gauss (GRand * rng)
  * ranges: H [0, 360], S [0, 255], V [0, 255].
  **/
 void
-gimp_rgb_to_hsv_int (gint *red,
-		     gint *green,
-		     gint *blue)
+rgb_to_hsv_int (gint *red,
+                gint *green,
+                gint *blue)
 {
   gdouble  r, g, b;
   gdouble  h, s, v;
@@ -112,9 +130,9 @@ gimp_rgb_to_hsv_int (gint *red,
  * corresponding, with the returned values all in the range [0, 255].
  **/
 void
-gimp_hsv_to_rgb_int (gint *hue,
-		     gint *saturation,
-		     gint *value)
+hsv_to_rgb_int (gint *hue,
+                gint *saturation,
+                gint *value)
 {
   gdouble h, s, v, h_temp;
   gdouble f, p, q, t;
@@ -183,6 +201,57 @@ gimp_hsv_to_rgb_int (gint *hue,
 	  break;
 	}
     }
+}
+
+
+// inputs and outputs are all [0,1]
+void
+rgb_to_hsv_float (float *r_, float *g_, float *b_)
+{
+  float max, min, delta;
+  float h, s, v;
+  float r, g, b;
+
+  r = *r_;
+  g = *g_;
+  b = *b_;
+
+  max = MAX3(r, g, b);
+  min = MIN3(r, g, b);
+
+  v = max;
+  delta = max - min;
+
+  if (delta > 0.0001)
+    {
+      s = delta / max;
+
+      if (r == max)
+        {
+          h = (g - b) / delta;
+          if (h < 0.0)
+            h += 6.0;
+        }
+      else if (g == max)
+        {
+          h = 2.0 + (b - r) / delta;
+        }
+      else if (b == max)
+        {
+          h = 4.0 + (r - g) / delta;
+        }
+
+      h /= 6.0;
+    }
+  else
+    {
+      s = 0.0;
+      h = 0.0;
+    }
+
+  *r_ = h;
+  *g_ = s;
+  *b_ = v;
 }
 
 

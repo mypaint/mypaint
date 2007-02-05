@@ -2,7 +2,8 @@
 # FIXME: bad file name, saying nothing about what's in here
 import mydrawwidget
 import brushsettings
-import gtk, string, os
+import gtk, string, os, colorsys
+from helpers import clamp
 
 thumb_w = 64 #128
 thumb_h = 64 #128
@@ -103,14 +104,10 @@ class Brush_Lowlevel(mydrawwidget.MyBrush):
         self.settings = []
         for s in brushsettings.settings:
             self.settings.append(Setting(s, self))
-        self.color = [0, 0, 0]
-        self.set_color(self.color)
         self.painting_time = 0.0
 
     def save_to_string(self):
         res  = '# mypaint brush file\n'
-        r, g, b = self.get_color()
-        res += 'color %d %d %d\n' % (r, g, b)
         for s in brushsettings.settings:
             res += s.cname + ' ' + self.settings[s.index].save_to_string() + '\n'
         return res
@@ -125,9 +122,11 @@ class Brush_Lowlevel(mydrawwidget.MyBrush):
             try:
                 command, rest = line.split(' ', 1)
                 if command == 'color':
-                    self.set_color([int(s) for s in rest.split()])
+                    # for backward compatibility only
+                    self.set_color_rgb([int(s)/255.0 for s in rest.split()])
                 elif command == 'painting_time':
-                    pass # old relict, save to ignore
+                    # old relict, safe to ignore
+                    pass
                 else:
                     found = False
                     for s in brushsettings.settings:
@@ -149,21 +148,32 @@ class Brush_Lowlevel(mydrawwidget.MyBrush):
     def copy_settings_from(self, other):
         for s in brushsettings.settings:
             self.settings[s.index].copy_from(other.settings[s.index])
-        self.color = other.color[:] # copy
-        self.set_color(self.color)
 
-    def get_color(self):
-        return self.color[:] # copy
+    def get_color_hsv(self):
+        h = self.settings[brushsettings.color_h.index].base_value
+        s = self.settings[brushsettings.color_s.index].base_value
+        v = self.settings[brushsettings.color_v.index].base_value
+        return (h, s, v)
 
-    def set_color(self, rgb):
-        r, g, b = rgb
-        self.color = list(rgb) # copy
-        mydrawwidget.MyBrush.set_color(self, r, g, b)
+    def set_color_hsv(self, hsv):
+        h, s, v = hsv
+        self.settings[brushsettings.color_h.index].set_base_value(h)
+        self.settings[brushsettings.color_s.index].set_base_value(s)
+        self.settings[brushsettings.color_v.index].set_base_value(v)
+
+    def set_color_rgb(self, rgb):
+        for i in range(3): assert rgb[i] <= 1.0
+        self.set_color_hsv(colorsys.rgb_to_hsv(*rgb))
+
+    def get_color_rgb(self):
+        hsv = self.get_color_hsv()
+        hsv = [clamp(x, 0.0, 1.0) for x in hsv]
+        return colorsys.hsv_to_rgb(*hsv)
 
     def invert_color(self):
-        for i in range(3):
-            self.color[i] = 255 - self.color[i]
-        self.set_color(self.color)
+        rgb = self.get_color_rgb()
+        rgb = [1-x for x in rgb]
+        self.set_color_rgb(rgb)
 
 
 class Brush(Brush_Lowlevel):

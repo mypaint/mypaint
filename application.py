@@ -65,8 +65,8 @@ class Application: # singleton
         deleted = []
         filename = os.path.join(self.user_brushpath, 'deleted.conf')
         if os.path.exists(filename): 
-            for name in open(filename).readlines():
-                deleted.append(name.strip())
+            for line in open(filename):
+                deleted.append(line.strip())
         def listbrushes(path):
             return [filename[:-4] for filename in os.listdir(path) if filename.endswith('.myb')]
         stock_names = listbrushes(self.stock_brushpath)
@@ -79,8 +79,8 @@ class Application: # singleton
         for path in [self.user_brushpath, self.stock_brushpath]:
             filename = os.path.join(path, 'order.conf')
             if not os.path.exists(filename): continue
-            for name in open(filename).readlines():
-                name = name.strip()
+            for line in open(filename):
+                name = line.strip()
                 if name in loadnames_sorted: continue
                 if name not in loadnames_unsorted: continue
                 loadnames_unsorted.remove(name)
@@ -105,7 +105,7 @@ class Application: # singleton
         if self.brushes:
             self.select_brush(self.brushes[0])
 
-        self.brush.set_color((0, 0, 0))
+        self.brush.set_color_hsv((0, 0, 0))
 
     def save_brushorder(self):
         f = open(os.path.join(self.user_brushpath, 'order.conf'), 'w')
