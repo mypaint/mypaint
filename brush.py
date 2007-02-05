@@ -95,8 +95,18 @@ class Setting:
                     points = [float(f) for f in args]
                     self.set_points(i, points)
             if not found:
-                error = 'unknown command "%s"' % command
+                error = 'unknown input "%s"' % command
         return error
+    def transform_y(self, func):
+        # useful for migration from a earlier version
+        self.set_base_value(func(self.base_value))
+        for i in brushsettings.inputs:
+            if not self.points[i.index]: continue
+            p = []
+            for j, v in enumerate(self.points[i.index]):
+                if j % 2 == 1: v = func(v)
+                p.append(v)
+            self.set_points(i, p)
 
 class Brush_Lowlevel(mydrawwidget.MyBrush):
     def __init__(self):
@@ -105,6 +115,10 @@ class Brush_Lowlevel(mydrawwidget.MyBrush):
         for s in brushsettings.settings:
             self.settings.append(Setting(s, self))
         self.painting_time = 0.0
+
+    def setting_by_cname(self, cname):
+        s = brushsettings.settings_dict[cname]
+        return self.settings[s.index]
 
     def save_to_string(self):
         res  = '# mypaint brush file\n'
@@ -121,22 +135,31 @@ class Brush_Lowlevel(mydrawwidget.MyBrush):
             if not line: continue
             try:
                 command, rest = line.split(' ', 1)
-                if command == 'color':
-                    # for backward compatibility only
+                error = None
+
+                if command in brushsettings.settings_dict:
+                    setting = self.setting_by_cname(command)
+                    error = setting.load_from_string(rest)
+                elif command in brushsettings.settings_migrate:
+                    command_new, transform_func = brushsettings.settings_migrate[command]
+                    setting = self.setting_by_cname(command_new)
+                    error = setting.load_from_string(rest)
+                    if transform_func:
+                        setting.transform_y(transform_func)
+                elif command == 'color': # obsolete
                     self.set_color_rgb([int(s)/255.0 for s in rest.split()])
-                elif command == 'painting_time':
-                    # old relict, safe to ignore
+                elif command == 'change_radius': # obsolete
+                    if rest != '0.0': error = 'change_radius is not supported any more, use radius directly'
+                #elif rest == '0.0':
+                #    pass # silently ignore unknown/obsolete settings if they are zero
+                elif command == 'painting_time': # obsolete
                     pass
                 else:
-                    found = False
-                    for s in brushsettings.settings:
-                        if command == s.cname:
-                            assert not found
-                            found = True
-                            error = self.settings[s.index].load_from_string(rest)
-                            if error: errors.append((line, error))
-                    if not found:
-                        errors.append((line, 'unknown command, line ignored'))
+                    error = 'unknown command, line ignored'
+
+                if error:
+                    errors.append((line, error))
+
             except Exception, e:
                 errors.append((line, str(e)))
             else:
@@ -146,20 +169,20 @@ class Brush_Lowlevel(mydrawwidget.MyBrush):
         return errors
 
     def copy_settings_from(self, other):
-        for s in brushsettings.settings:
-            self.settings[s.index].copy_from(other.settings[s.index])
+        for i, setting in enumerate(self.settings):
+            setting.copy_from(other.settings[i])
 
     def get_color_hsv(self):
-        h = self.settings[brushsettings.color_h.index].base_value
-        s = self.settings[brushsettings.color_s.index].base_value
-        v = self.settings[brushsettings.color_v.index].base_value
+        h = self.setting_by_cname('color_h').base_value
+        s = self.setting_by_cname('color_s').base_value
+        v = self.setting_by_cname('color_v').base_value
         return (h, s, v)
 
     def set_color_hsv(self, hsv):
         h, s, v = hsv
-        self.settings[brushsettings.color_h.index].set_base_value(h)
-        self.settings[brushsettings.color_s.index].set_base_value(s)
-        self.settings[brushsettings.color_v.index].set_base_value(v)
+        self.setting_by_cname('color_h').set_base_value(h)
+        self.setting_by_cname('color_s').set_base_value(s)
+        self.setting_by_cname('color_v').set_base_value(v)
 
     def set_color_rgb(self, rgb):
         for i in range(3): assert rgb[i] <= 1.0

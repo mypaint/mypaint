@@ -50,6 +50,14 @@ settings_list = [
     ['custom_input_slowness', 'custom input slowness', False, 0.0, 0.0, 10.0, "How slow the custom input actually follows the desired value (the one above). This happens at brushdab level (ignoring how much time has past, if brushdabs do not depend on time).\n0.0 no slowdown (changes apply instantly)"],
     ]
 
+
+settings_migrate = {
+    # old cname            new cname        scale function
+    'color_hue'        : ('change_color_h', lambda y: y*64.0/360.0),
+    'color_saturation' : ('change_color_s', lambda y: y*128.0/256.0),
+    'color_value'      : ('change_color_v', lambda y: y*128.0/256.0),
+    }
+
 # the states are not (yet?) exposed to the user
 # WARNING: only append to this list, for compatibility of replay files
 states_list = '''
@@ -85,11 +93,13 @@ class BrushSetting:
     pass
 
 settings = []
+settings_dict = {}
 for s_list in settings_list:
     s = BrushSetting()
     s.cname, s.name, s.constant, s.min, s.default, s.max, s.tooltip = s_list
     s.index = len(settings)
     settings.append(s)
+    settings_dict[s.cname] = s
     globals()[s.cname] = s
 
 class BrushState:
