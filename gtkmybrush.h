@@ -41,21 +41,27 @@ struct _GtkMyBrush
 
   // see also brushsettings.py
 
-  // those are no brush states, just convenience instead of function arguments
+  // those are not brush states, just convenience instead of function arguments
   float dx, dy, dpressure, dtime; // note: this is dx/ddab, ..., dtime/ddab (dab number, 5.0 = 5th dab)
+
   // the current value of a setting
   // FIXME: they could as well be passed as parameters to the dab function
   //        (Hm. This way no malloc is needed before each dab. Think about that.)
   float settings_value[BRUSH_SETTINGS_COUNT];
-  // description how to calculate the values
+
+  // the mappings that describe how to calculate the current value for each setting
   Mapping * settings[BRUSH_SETTINGS_COUNT];
+
   int print_inputs; // debug menu
   float painting_time; // total time the brush was used
 
   int must_reset;
 
-  // The following values are brush states. (get_state, set_state, reset)
+  // the states (get_state, set_state, reset) that change during a stroke
   float states[STATE_COUNT];
+
+  // cached calculation results
+  float speed_mapping_gamma[2], speed_mapping_m[2], speed_mapping_q[2];
 };
 
 struct _GtkMyBrushClass

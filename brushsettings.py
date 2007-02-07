@@ -7,10 +7,8 @@ It is also imported at runtime.
 inputs_list = [
     # name, default maximum, hard maximum, tooltip
     ['pressure', 1.0, True, "The pressure reported by the tablet, between 0.0 and 1.0. If you use the mouse, it will be 0.5 when a button is pressed and 0.0 otherwise."],
-    ['speed', 5.0, False, "How fast you currently move. This can change very quickly. Try 'print input values' from the 'help' menu to get a feeling for the range."],
-    ['speed2', 5.0, False, "Same as speed, but changes slower. Also look at the 'speed2 slowness' setting."],
-    ['speed_log', 5.0, False, "log(1.0+speed) - speed seems to react too strong FIXME:experimental"],
-    ['speed_sqrt', 5.0, False, "sqrt(speed) - speed seems to react too strong FIXME:experimental"],
+    ['speed1', 5.0, False, "How fast you currently move. This can change very quickly. Try 'print input values' from the 'help' menu to get a feeling for the range; negative values are possible and just stand for very low speed."],
+    ['speed2', 5.0, False, "Same as speed1, but changes slower. Also look at the 'speed2 slowness' setting."],
     ['random', 1.0, False, "Random noise, changing at each evaluation. Equally distributed between 0 and 1."],
     ['stroke', 1.0, True, "This input slowly goes from zero to one while you draw a stroke. It can also be configured to jump back to zero periodically while you move. Look at the 'stroke duration' and 'stroke hold time' settings."],
     ['custom', 1.0, True, "This is a user defined input. Look at the 'custom input' setting for details."],
@@ -21,14 +19,16 @@ settings_list = [
     ['opaque', 'opaque', False, 0.0, 1.0, 1.0, "0 means brush is transparent, 1 fully visible\n(also known als alpha or opacity)"],
     ['opaque_multiply', 'opaque multiply', False, 0.0, 0.0, 1.0, "This gets multiplied with opaque. It is used for making opaque depend on pressure (or other inputs)."],
     ['opaque_linearize', 'opaque linearize', True, 0.0, 0.9, 2.0, "Correct the nonlinearity introduced by blending multiple dabs on top of each other. This correction should get you a linear (\"natural\") pressure response when pressure is mapped to opaque_multiply, as it is usually done. 0.9 is good for standard strokes, set it smaller if your brush scatters a lot, or higher if you use dabs_per_second.\n0.0 the opaque value above is for the individual dabs\n1.0 the opaque value above is for the final brush stroke, assuming each pixel gets (dabs_per_radius*2) brushdabs on average during a stroke"],
-    ['radius_logarithmic', 'radius', False, -1.0, 2.0, 5.0, "basic brush radius (logarithmic)\n 0.7 means 2 pixels\n 3.0 means 20 pixels"],
+    ['radius_logarithmic', 'radius', False, -2.0, 2.0, 5.0, "basic brush radius (logarithmic)\n 0.7 means 2 pixels\n 3.0 means 20 pixels"],
     ['hardness', 'hardness', False, 0.0, 1.0, 1.0, "hard brush-circle borders (setting to zero will draw nothing; it's not implemented like in GIMP, I haven't figured out yet)"],
     ['dabs_per_basic_radius', 'dabs per basic radius', True, 0.0, 0.0, 5.0, "how many dabs to draw while the pointer moves a distance of one brush radius (more precise: the base value of the radius)"],
     ['dabs_per_actual_radius', 'dabs per actual radius', True, 0.0, 2.0, 5.0, "same as above, but the radius actually drawn is used, which can change dynamically"],
     ['dabs_per_second', 'dabs per second', True, 0.0, 0.0, 80.0, "dabs to draw each second, no matter how far the pointer moves"],
     ['radius_by_random', 'radius by random', False, 0.0, 0.0, 1.5, "Alter the radius randomly each dab. You can also do this with the by_random input on the radius setting. If you do it here, there are two differences:\n1) the opaque value will be corrected such that a big-radius dabs is more transparent\n2) it will not change the actual radius seen by dabs_per_actual_radius"],
-    ['speed1_slowness', 'speed slowness', False, 0.0, 0.04, 0.2, "how slow the input speed is following the real speed\n0.0 change immediatly as your speed changes (not recommended, but try it)"],
-    ['speed2_slowness', 'speed2 slowness', False, 0.0, 0.8, 3.0, "how slow the input speed2 is following the real speed\nsame as above, but note that the range is larger; this is supposed to be slower one of both speeds"],
+    ['speed1_slowness', 'speed1 slowness', False, 0.0, 0.04, 0.2, "how slow the input speed1 is following the real speed\n0.0 change immediatly as your speed changes (not recommended, but try it)"],
+    ['speed2_slowness', 'speed2 slowness', False, 0.0, 0.8, 3.0, "same as 'speed1 slowness', but note that the range is different"],
+    ['speed1_gamma', 'speed1 gamma', True, -8.0, 4.0, 8.0, "This changes the reaction of the speed1 input to extreme physical speed. You will see the difference best if speed1 is mapped to the radius.\n-8.0 very fast speed does not increase speed1 much more\n+8.0 very fast speed increases speed1 a lot\nFor very slow speed the opposite happens."],
+    ['speed2_gamma', 'speed2 gamma', True, -8.0, 4.0, 8.0, "same as 'speed1 gamma' for speed2"],
     ['offset_by_random', 'offset by random', False, 0.0, 0.0, 2.0, "add randomness to the position where each dab is drawn\n 0.0 disabled\n 1.0 standard deviation is one basic radius away"],
     ['offset_by_speed', 'offset by speed', False, -3.0, 0.0, 3.0, "change position depending on pointer speed\n= 0 disable\n> 0 draw where the pointer moves to\n< 0 draw where the pointer comes from"],
     ['offset_by_speed_slowness', 'offset by speed slowness', False, 0.0, 1.0, 15.0, "how slow the offset goes back to zero when the cursor stops moving; 0 means there will never be any offset left"],
@@ -56,6 +56,7 @@ settings_migrate = {
     'color_hue'        : ('change_color_h', lambda y: y*64.0/360.0),
     'color_saturation' : ('change_color_s', lambda y: y*128.0/256.0),
     'color_value'      : ('change_color_v', lambda y: y*128.0/256.0),
+    'speed_slowness'   : ('speed1_slowness', None),
     }
 
 # the states are not (yet?) exposed to the user
@@ -72,7 +73,7 @@ smudge_r, smudge_g, smudge_b  # for adapt_color_from_image
 actual_x, actual_y  # for slow position
 norm_dx_slow, norm_dy_slow # note: now this is dx/dt * (1/radius)
 
-norm_speed_slow1, norm_speed_slow2
+norm_speed1_slow, norm_speed2_slow
 
 stroke, stroke_started # stroke_started is used as boolean
 

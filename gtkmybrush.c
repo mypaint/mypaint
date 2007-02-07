@@ -29,7 +29,10 @@
 #define DEBUGLOG 0
 
 #define ACTUAL_RADIUS_MIN 0.2
-#define ACTUAL_RADIUS_MAX 100 //FIXME: performance problem actually depending on CPU
+#define ACTUAL_RADIUS_MAX 150 //FIXME: performance problem actually depending on CPU
+
+// prototypes
+void gtk_my_brush_settings_base_values_have_changed (GtkMyBrush * b);
 
 void
 gtk_my_brush_set_base_value (GtkMyBrush * b, int id, float value)
@@ -37,6 +40,8 @@ gtk_my_brush_set_base_value (GtkMyBrush * b, int id, float value)
   g_assert (id >= 0 && id < BRUSH_SETTINGS_COUNT);
   Mapping * m = b->settings[id];
   m->base_value = value;
+
+  gtk_my_brush_settings_base_values_have_changed (b);
 }
 
 void gtk_my_brush_set_mapping (GtkMyBrush * b, int id, int input, int index, float value)
@@ -119,6 +124,8 @@ gtk_my_brush_init (GtkMyBrush *b)
   // defaults will be set from python
   b->painting_time = 0;
   b->rng = g_rand_new();
+
+  gtk_my_brush_settings_base_values_have_changed (b);
 }
 
 static void
@@ -159,6 +166,53 @@ void brush_reset (GtkMyBrush * b)
   memset(b->states, 0, sizeof(b->states[0])*STATE_COUNT);
   b->must_reset = 1; // triggers the real reset below in brush_stroke_to
   g_print ("brush_reset()\n");
+}
+
+
+void gtk_my_brush_settings_base_values_have_changed (GtkMyBrush * b)
+{
+  // precalculate stuff that does not change dynamically
+
+  // Precalculate how the physical speed will be mapped to the speed input value.
+  // The forumla for this mapping is:
+  //
+  // y = log(gamma+x)*m + q;
+  //
+  // x: the physical speed (pixels per basic dab radius)
+  // y: the speed input that will be reported
+  // gamma: parameter set by ths user (small means a logarithmic mapping, big linear)
+  // m, q: parameters to scale and translate the curve
+  //
+  // The code below calculates m and q given gamma and two hardcoded constraints.
+  //
+  int i;
+  for (i=0; i<2; i++) {
+    float gamma;
+    gamma = b->settings[(i==0)?BRUSH_SPEED1_GAMMA:BRUSH_SPEED2_GAMMA]->base_value;
+    gamma = exp(gamma);
+
+    float fix1_x, fix1_y, fix2_x, fix2_dy;
+    fix1_x = 45.0;
+    fix1_y = 0.5;
+    fix2_x = 45.0;
+    fix2_dy = 0.015;
+    //fix1_x = 45.0;
+    //fix1_y = 0.0;
+    //fix2_x = 45.0;
+    //fix2_dy = 0.015;
+
+    float m, q;
+    float c1;
+    c1 = log(fix1_x+gamma);
+    m = fix2_dy * (fix2_x + gamma);
+    q = fix1_y - m*c1;
+    
+    //g_print("a=%f, m=%f, q=%f    c1=%f\n", a, m, q, c1);
+
+    b->speed_mapping_gamma[i] = gamma;
+    b->speed_mapping_m[i] = m;
+    b->speed_mapping_q[i] = q;
+  }
 }
 
 // Update the "important" settings. (eg. actual radius, velocity)
@@ -218,15 +272,13 @@ void brush_update_settings_values (GtkMyBrush * b)
   norm_dist = norm_speed * b->dtime;
 
   inputs[INPUT_PRESSURE] = pressure;
-  inputs[INPUT_SPEED]  = b->states[STATE_NORM_SPEED_SLOW1] * 0.002;
-  inputs[INPUT_SPEED2] = b->states[STATE_NORM_SPEED_SLOW2] * 0.005;
-  inputs[INPUT_SPEED_LOG] = log(1.0 + b->states[STATE_NORM_SPEED_SLOW1] * 0.002);
-  inputs[INPUT_SPEED_SQRT] = sqrt(b->states[STATE_NORM_SPEED_SLOW1] * 0.002);
+  inputs[INPUT_SPEED1] = log(b->speed_mapping_gamma[0] + b->states[STATE_NORM_SPEED1_SLOW])*b->speed_mapping_m[0] + b->speed_mapping_q[0];
+  inputs[INPUT_SPEED2] = log(b->speed_mapping_gamma[1] + b->states[STATE_NORM_SPEED2_SLOW])*b->speed_mapping_m[1] + b->speed_mapping_q[1];
   inputs[INPUT_RANDOM] = g_rand_double (b->rng);
   inputs[INPUT_STROKE] = MIN(b->states[STATE_STROKE], 1.0);
   inputs[INPUT_CUSTOM] = b->states[STATE_CUSTOM_INPUT];
   if (b->print_inputs) {
-    g_print("press=% 4.3f, speed=% 4.4f\tspeed2=% 4.4f\tstroke=% 4.3f\tcustom=% 4.3f\n", inputs[INPUT_PRESSURE], inputs[INPUT_SPEED], inputs[INPUT_SPEED2], inputs[INPUT_STROKE], inputs[INPUT_CUSTOM]);
+    g_print("press=% 4.3f, speed1=% 4.4f\tspeed2=% 4.4f\tstroke=% 4.3f\tcustom=% 4.3f\n", inputs[INPUT_PRESSURE], inputs[INPUT_SPEED1], inputs[INPUT_SPEED2], inputs[INPUT_STROKE], inputs[INPUT_CUSTOM]);
   }
 
   // OPTIMIZE:
@@ -246,9 +298,9 @@ void brush_update_settings_values (GtkMyBrush * b)
   { // slow speed
     float fac;
     fac = 1.0 - exp_decay (settings[BRUSH_SPEED1_SLOWNESS], b->dtime);
-    b->states[STATE_NORM_SPEED_SLOW1] += (norm_speed - b->states[STATE_NORM_SPEED_SLOW1]) * fac;
+    b->states[STATE_NORM_SPEED1_SLOW] += (norm_speed - b->states[STATE_NORM_SPEED1_SLOW]) * fac;
     fac = 1.0 - exp_decay (settings[BRUSH_SPEED2_SLOWNESS], b->dtime);
-    b->states[STATE_NORM_SPEED_SLOW2] += (norm_speed - b->states[STATE_NORM_SPEED_SLOW2]) * fac;
+    b->states[STATE_NORM_SPEED2_SLOW] += (norm_speed - b->states[STATE_NORM_SPEED2_SLOW]) * fac;
   }
   
   { // slow speed, but as vector this time

@@ -88,6 +88,7 @@ class Setting:
         for part in parts[1:]:
             subparts = part.split()
             command, args = subparts[0], subparts[1:]
+            if command == 'speed': command = 'speed1' # backwards compatibilty
             found = False
             for i in brushsettings.inputs:
                 if command == i.name:

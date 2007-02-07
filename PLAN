@@ -27,13 +27,14 @@
 
 - dedicated "slow random" input
 
-- tilt support 
-  - I need someone with a tilt tablet willing to test it
+- keyboard shortcut to change brush ocupacy
 
-- maybe should use log(speed) instead of speed - I think it reacts
-  "too strong" to fast moves. Maybe make this an option. (or another input)
-  Bah. Of course log(speed) should be used, since also log(radius) is used!
-  Check: speed measurment depends on basic radius, not actual radius?
+- canvas rotation
+  - (fast rotozoom? also would be nice to use OpenGL if available)
+
+- tilt support 
+  - what can tilt be used for?
+  - I need (someone with) a tilt tablet to test it
 
 ? zoom-out only for viewing somehow?
   - do not resize canvas when zooming, only when moving?
@@ -45,6 +46,8 @@
 - more brush information
   - attach text notes to brush
   - attach a small demo-replay
+  - make it very easy to compare two subtly different brushes
+    - redraw user stroke on switch, like I'm doing already with stroke replay
 
 - copy/paste buttons curve shapes 
   - buttons next to shape? shared "symlinked" shape?
