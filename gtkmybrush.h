@@ -75,7 +75,8 @@ GtkMyBrush* gtk_my_brush_new        (void);
 
 /* no getter functions since values are remembered in python code */
 void gtk_my_brush_set_base_value (GtkMyBrush * b, int id, float value);
-void gtk_my_brush_set_mapping (GtkMyBrush * b, int id, int input, int index, float value);
+void gtk_my_brush_set_mapping_n (GtkMyBrush * b, int id, int input, int n);
+void gtk_my_brush_set_mapping_point (GtkMyBrush * b, int id, int input, int index, float x, float y);
 GString* gtk_my_brush_get_state (GtkMyBrush * b);
 void gtk_my_brush_set_state (GtkMyBrush * b, GString * data);
 

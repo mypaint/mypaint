@@ -44,12 +44,18 @@ gtk_my_brush_set_base_value (GtkMyBrush * b, int id, float value)
   gtk_my_brush_settings_base_values_have_changed (b);
 }
 
-void gtk_my_brush_set_mapping (GtkMyBrush * b, int id, int input, int index, float value)
+void gtk_my_brush_set_mapping_n (GtkMyBrush * b, int id, int input, int n)
 {
   g_assert (id >= 0 && id < BRUSH_SETTINGS_COUNT);
-  //g_print("set mapping: id=%d, input=%d, index=%d, value=%f\n", id, input, index, value);
   Mapping * m = b->settings[id];
-  mapping_set (m, input, index, value);
+  mapping_set_n (m, input, n);
+}
+
+void gtk_my_brush_set_mapping_point (GtkMyBrush * b, int id, int input, int index, float x, float y)
+{
+  g_assert (id >= 0 && id < BRUSH_SETTINGS_COUNT);
+  Mapping * m = b->settings[id];
+  mapping_set_point (m, input, index, x, y);
 }
 
 void

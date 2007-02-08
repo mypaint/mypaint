@@ -5,14 +5,18 @@ It is also imported at runtime.
 """
 
 inputs_list = [
-    # name, default maximum, hard maximum, tooltip
-    ['pressure', 1.0, True, "The pressure reported by the tablet, between 0.0 and 1.0. If you use the mouse, it will be 0.5 when a button is pressed and 0.0 otherwise."],
-    ['speed1', 5.0, False, "How fast you currently move. This can change very quickly. Try 'print input values' from the 'help' menu to get a feeling for the range; negative values are possible and just stand for very low speed."],
-    ['speed2', 5.0, False, "Same as speed1, but changes slower. Also look at the 'speed2 slowness' setting."],
-    ['random', 1.0, False, "Random noise, changing at each evaluation. Equally distributed between 0 and 1."],
-    ['stroke', 1.0, True, "This input slowly goes from zero to one while you draw a stroke. It can also be configured to jump back to zero periodically while you move. Look at the 'stroke duration' and 'stroke hold time' settings."],
-    ['custom', 1.0, True, "This is a user defined input. Look at the 'custom input' setting for details."],
+    # name, hard minimum, soft minimum, normal[1], soft maximum, hard maximum, tooltip
+    ['pressure', 0.0,  0.0,  0.4,  1.0, 1.0,  "The pressure reported by the tablet, between 0.0 and 1.0. If you use the mouse, it will be 0.5 when a button is pressed and 0.0 otherwise."],
+    ['speed1',   None, 0.0,  0.5,  4.0, None, "How fast you currently move. This can change very quickly. Try 'print input values' from the 'help' menu to get a feeling for the range; negative values are rare but possible for very low speed."],
+    ['speed2',   None, 0.0,  0.5,  4.0, None, "Same as speed1, but changes slower. Also look at the 'speed2 slowness' setting."],
+    ['random',   0.0,  0.0,  0.5,  1.0, 1.0,  "Fast random noise, changing at each evaluation. Equally distributed between 0 and 1."],
+    ['stroke',   0.0,  0.0,  0.5,  1.0, 1.0,  "This input slowly goes from zero to one while you draw a stroke. It can also be configured to jump back to zero periodically while you move. Look at the 'stroke duration' and 'stroke hold time' settings."],
+    ['custom',   None,-2.0,  0.0, +2.0, None, "This is a user defined input. Look at the 'custom input' setting for details."],
     ]
+    # [1] If, for example, the user increases the "by pressure" slider
+    # in the "radius" control, then this should change the reaction to
+    # pressure and not the "normal" radius. To implement this, we need
+    # a guess what the user considers to be normal pressure.
 
 settings_list = [
     # internal name, displayed name, constant, minimum, default, maximum, tooltip
@@ -84,11 +88,13 @@ class BrushInput:
     pass
 
 inputs = []
+inputs_dict = {}
 for i_list in inputs_list:
     i = BrushInput()
-    i.name, i.max, i.hardmax, i.tooltip = i_list
+    i.name, i.hard_min, i.soft_min, i.normal, i.soft_max, i.hard_max, i.tooltip = i_list
     i.index = len(inputs)
     inputs.append(i)
+    inputs_dict[i.name] = i
 
 class BrushSetting:
     pass

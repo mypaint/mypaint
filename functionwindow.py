@@ -78,11 +78,20 @@ class ByInputWidget(gtk.VBox):
         self.input = input
         self.setting = setting
 
-        self.scale_x_adj = gtk.Adjustment(value=1.0, lower=0.01, upper=20.0, step_incr=0.01, page_incr=0.1)
+        self.block_user_changes_cb = True
+
+        lower = -20.0
+        upper = +20.0
+        if input.hard_min is not None: lower = input.hard_min
+        if input.hard_max is not None: upper = input.hard_max
+        self.xmin_adj = gtk.Adjustment(value=input.soft_min, lower=lower, upper=upper-0.1, step_incr=0.01, page_incr=0.1)
+        self.xmax_adj = gtk.Adjustment(value=input.soft_max, lower=lower+0.1, upper=upper, step_incr=0.01, page_incr=0.1)
+
         diff = setting.max - setting.min
         self.scale_y_adj = gtk.Adjustment(value=diff/4.0, lower=-diff, upper=+diff, step_incr=0.01, page_incr=0.1)
 
-        self.scale_x_adj.connect('value-changed', self.user_changes_cb)
+        self.xmin_adj.connect('value-changed', self.user_changes_cb)
+        self.xmax_adj.connect('value-changed', self.user_changes_cb)
         self.scale_y_adj.connect('value-changed', self.user_changes_cb)
 
         eb = gtk.EventBox()
@@ -110,13 +119,14 @@ class ByInputWidget(gtk.VBox):
         t.attach(c, 0, 3, 0, 3, gtk.EXPAND | gtk.FILL, gtk.EXPAND | gtk.FILL, 5, 0)
         l1 = gtk.SpinButton(self.scale_y_adj); l1.set_digits(2)
         l2 = gtk.Label(' 0.0')
-        l3 = gtk.Label('') # actually -l1; FIXME: maybe implement this later
+        l3 = gtk.Label('%.2f' % -self.scale_y_adj.get_value())
+        self.negative_scale_label = l3 # will have to update this one
         t.attach(l1, 3, 4, 0, 1, 0, 0, 5, 0)
         t.attach(l2, 3, 4, 1, 2, 0, gtk.EXPAND, 5, 0)
         t.attach(l3, 3, 4, 2, 3, 0, 0, 5, 0)
-        l4 = gtk.Label('0.0')
+        l4 = gtk.SpinButton(self.xmin_adj); l4.set_digits(2)
         l5 = gtk.Label('')
-        l6 = gtk.SpinButton(self.scale_x_adj); l6.set_digits(2)
+        l6 = gtk.SpinButton(self.xmax_adj); l6.set_digits(2)
         t.attach(l4, 0, 1, 3, 4, 0, 0, 5, 0)
         t.attach(l5, 1, 2, 3, 4, gtk.EXPAND, 0, 5, 0)
         t.attach(l6, 2, 3, 3, 4, 0, 0, 5, 0)
@@ -130,28 +140,49 @@ class ByInputWidget(gtk.VBox):
         self.reread()
 
     def set_fixed_value_clicked_cb(self, widget, adj, value):
-        adj.set_value(value);
+        adj.set_value(value)
 
     def user_changes_cb(self, widget):
-        scale_x, scale_y = self.scale_x_adj.get_value(), self.scale_y_adj.get_value()
-        curve_points = self.curve_widget.points[1:]
+        if self.block_user_changes_cb:
+            return
+        print 'user_changes_cb'
+
+        # 1. verify and constrain the changes
+        scale_y = self.scale_y_adj.get_value()
+        xmax = self.xmax_adj.get_value()
+        xmin = self.xmin_adj.get_value()
+        if xmax <= xmin:
+            # change the other one
+            if widget is self.xmax_adj:
+                self.xmin_adj.set_value(xmax - 0.1)
+            elif widget is self.xmin_adj:
+                self.xmax_adj.set_value(xmin + 0.1)
+            else:
+                assert False
+            return # this function caused itself to be called
+
+        assert xmax > xmin
+
+        # 2. update the brush
         if scale_y:
             allzero = True
-            brush_points = []
-            for p in curve_points:
-                x, y = p
-                x = x * scale_x
-                y = (0.5-y) * 2.0 * scale_y
-                brush_points += [x, y]
-                if y != 0:
-                    allzero = False
-            while len(brush_points) < 8:
-                brush_points += [0.0, 0.0]
-            if allzero:
-                brush_points = None
+            brush_points = [self.point_widget2real(p) for p in self.curve_widget.points]
+            nonzero = [True for x, y in brush_points if y != 0]
+            if not nonzero:
+                brush_points = []
         else:
-            brush_points = None
+            brush_points = []
         self.app.brush.settings[self.setting.index].set_points(self.input, brush_points)
+
+        # 3. update display
+        self.negative_scale_label.set_text('%.2f' % -scale_y)
+        self.update_graypoint()
+
+    def update_graypoint(self):
+        # highlight (x_normal, 0)
+        # the user should make the curve go through this point
+        self.curve_widget.graypoint = (self.get_x_normal(), 0.5)
+        self.curve_widget.queue_draw()
 
     def reconsider_details(self):
         s = self.app.brush.settings[self.setting.index]
@@ -160,42 +191,95 @@ class ByInputWidget(gtk.VBox):
         else:
             self.expander.set_expanded(False)
 
-    def reread(self):
-        brush_points = self.app.brush.settings[self.setting.index].points[self.input.index]
-        curve_points = []
+    def point_real2widget(self, (x, y)):
+        scale_y = self.scale_y_adj.get_value()
+        xmax = self.xmax_adj.get_value()
+        xmin = self.xmin_adj.get_value()
+        scale_x = xmax - xmin
 
-        scale_y = 0.0
-        scale_x = 1.0
-        if brush_points is None:
-            self.curve_widget.points = [(0.0, 0.5), (1.0, 0.0)]
+        assert scale_x
+        if scale_y == 0:
+            y = None
         else:
-            for i in range(4):
-                x, y = brush_points[2*i], brush_points[2*i+1]
-                if x == 0.0:
-                    break
-                if scale_y < abs(y):
-                    scale_y = abs(y)
-                curve_points.append((x, y))
-            scale_x = curve_points[-1][0]
-            assert scale_x > 0
-            assert scale_y > 0
-            if curve_points[0][1] < 0:
-                scale_y = - scale_y # make the first line always go upwards
+            y = -(y/scale_y/2.0)+0.5 
+        x = (x-xmin)/scale_x
+        return (x, y)
 
-            final_curve_points = [(0.0, 0.5)]
-            for p in curve_points:
-                x, y = p
-                x = x / scale_x
-                y = -y / 2.0 / scale_y + 0.5
-                final_curve_points.append((x, y))
+    def point_widget2real(self, (x, y)):
+        scale_y = self.scale_y_adj.get_value()
+        xmax = self.xmax_adj.get_value()
+        xmin = self.xmin_adj.get_value()
+        scale_x = xmax - xmin
 
-            self.curve_widget.points = final_curve_points
+        x = xmin + (x * scale_x)
+        y = (0.5-y) * 2.0 * scale_y
+        return (x, y)
+
+    def get_x_normal(self):
+        # return widget x coordinate of the "normal" input value
+        return self.point_real2widget((self.input.normal, 0.0))[0]
+
+    def reread(self):
+
+        brush_points = self.app.brush.settings[self.setting.index].points[self.input.index]
+
+        brush_points_zero = [(self.input.soft_min, 0.0), (self.input.soft_max, 0.0)]
+        if not brush_points:
+            brush_points = brush_points_zero
+
+        xmin, xmax = brush_points[0][0], brush_points[-1][0]
+        assert xmax > xmin
+        assert max([x for x, y in brush_points]) == xmax
+        assert min([x for x, y in brush_points]) == xmin
+
+        y_min = min([y for x, y in brush_points])
+        y_max = max([y for x, y in brush_points])
+        scale_y = max(abs(y_min), abs(y_max))
+        scale_x = xmax - xmin
+
+        # choose between scale_y and -scale_y (arbitrary)
+        if brush_points[0][1] > brush_points[-1][1]:
+            scale_y = -scale_y
+
+        if not scale_y:
+            brush_points = brush_points_zero
+            # if xmin/xmax were non-default, reset them
+            xmin = self.input.soft_min
+            xmax = self.input.soft_max
+            scale_x = xmax - xmin
+
+        # xmin, xmax, scale_x, scale_y are fixed now
+        self.block_user_changes_cb = True
+        self.xmax_adj.set_value(xmax)
+        self.xmin_adj.set_value(xmin)
+        self.scale_y_adj.set_value(scale_y)
+        self.block_user_changes_cb = False
+
+        curve_points = [self.point_real2widget(p) for p in brush_points]
+
+        if not scale_y:
+            # note, curve_points has undefined y values (None)
+            y0 = -1.0
+            y1 = +1.0
+            x_normal = self.get_x_normal()
+
+            # the default line should go through zero at x_normal
+            # change one of the border points to achieve this
+            if x_normal >= 0.0 and x_normal <= 1.0:
+                if x_normal < 0.5:
+                    y0 = -0.5/(x_normal-1.0)
+                    y1 = 0.0
+                else:
+                    y0 = 1.0
+                    y1 = -0.5/x_normal + 1.0
+
+            (x0, trash0), (x1, trash1) = curve_points
+            curve_points = [(x0, y0), (x1, y1)]
+
+        self.curve_widget.points = curve_points
         self.curve_widget.queue_draw()
 
-        #print 'scale:', scale_x, scale_y
-        self.scale_x_adj.set_value(scale_x)
-        self.scale_y_adj.set_value(scale_y)
-
+        self.update_graypoint()
         self.reconsider_details()
 
 RADIUS = 4
@@ -203,8 +287,8 @@ class CurveWidget(gtk.DrawingArea):
     "modify a (restricted) nonlinear curve"
     def __init__(self, changed_cb):
         gtk.DrawingArea.__init__(self)
-        self.points = [(0.0, 0.5), (1.0, 0.0)]
-        self.maxpoints = 5
+        self.points = [(0.0, 0.5), (1.0, 0.0)] # doesn't matter
+        self.maxpoints = 8
         self.grabbed = None
         self.changed_cb = changed_cb
 
@@ -218,6 +302,8 @@ class CurveWidget(gtk.DrawingArea):
                         gtk.gdk.POINTER_MOTION_MASK
                         )
         self.set_size_request(300, 200)
+
+        self.graypoint = None
 
     def eventpoint(self, event_x, event_y):
         # FIXME: very ugly; and code duplication, see expose_cb
@@ -253,14 +339,14 @@ class CurveWidget(gtk.DrawingArea):
                 nearest = insertpos
                 self.queue_draw()
 
-        if nearest == 0: 
-            # first point cannot be grabbed
-            display = gtk.gdk.display_get_default()
-            display.beep()
-        else:
-            #assert self.grabbed is None # This did happen. I think it's save to ignore? 
-            # I guess it's because gtk can generate button press event without corresponding release.
-            self.grabbed = nearest
+        #if nearest == 0: 
+        #    # first point cannot be grabbed
+        #    display = gtk.gdk.display_get_default()
+        #    display.beep()
+        #else:
+        #assert self.grabbed is None # This did happen. I think it's save to ignore? 
+        # I guess it's because gtk can generate button press event without corresponding release.
+        self.grabbed = nearest
 
     def button_release_cb(self, widget, event):
         if not event.button == 1: return
@@ -276,13 +362,12 @@ class CurveWidget(gtk.DrawingArea):
         if self.grabbed is None: return
         x, y = self.eventpoint(event.x, event.y)
         i = self.grabbed
-        assert i > 0
+        out = False # by default, the point cannot be removed by drawing it out
         if i == len(self.points)-1:
             x = 1.0 # right point stays right
-            # and cannot be moved out
-            out = False
+        elif i == 0:
+            x = 0.0 # left point stays left
         else:
-            out = False
             if y > 1.1 or y < -0.1: out = True
             leftbound  = self.points[i-1][0]
             rightbound = self.points[i+1][0]
@@ -292,7 +377,8 @@ class CurveWidget(gtk.DrawingArea):
         else:
             if y > 1.0: y = 1.0
             if y < 0.0: y = 0.0
-            if y > 0.47 and y < 0.53: y = 0.5 # snap
+            if y > 0.48 and y < 0.52: y = 0.5 # snap
+            if x > 0.48 and x < 0.52: x = 0.5 # snap
             self.points[i] = (x, y)
         self.queue_draw()
 
@@ -317,6 +403,13 @@ class CurveWidget(gtk.DrawingArea):
                              width + RADIUS, i*height/4 + RADIUS)
             window.draw_line(dark, i*width/4 + RADIUS, RADIUS,
                                     i*width/4 + RADIUS, height + RADIUS)
+
+        if self.graypoint:
+            x1, y1 = self.graypoint
+            x1 = int(x1*width) + RADIUS
+            y1 = int(y1*height) + RADIUS
+            window.draw_rectangle(dark, True, x1-RADIUS-1, y1-RADIUS-1, 2*RADIUS+1, 2*RADIUS+1)
+
         # draw points
         for p in self.points:
             if p is None: continue

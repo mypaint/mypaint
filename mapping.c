@@ -22,25 +22,34 @@ void mapping_free (Mapping * m)
   g_free(m);
 }
 
-void mapping_set (Mapping * m, int input, int index, float value)
+void mapping_set_n (Mapping * m, int input, int n)
+{
+  g_assert (input >= 0 && input < m->inputs);
+  g_assert (n >= 0 && n <= 8);
+  g_assert (n != 1); // cannot build a linear mapping with only one point
+  ControlPoints * p = m->pointsList + input;
+
+  if (n != 0 && p->n == 0) m->inputs_used++;
+  if (n == 0 && p->n != 0) m->inputs_used--;
+  g_assert(m->inputs_used >= 0);
+  g_assert(m->inputs_used <= m->inputs);
+
+  p->n = n;
+}
+
+void mapping_set_point (Mapping * m, int input, int index, float x, float y)
 {
   g_assert (input >= 0 && input < m->inputs);
   g_assert (index >= 0 && index < 8);
   ControlPoints * p = m->pointsList + input;
+  g_assert (index < p->n);
 
-  if (index == 0) {
-    float old = p->xvalues[0];
-    if (value != 0 && old == 0) m->inputs_used++;
-    if (value == 0 && old != 0) m->inputs_used--;
-    g_assert(m->inputs_used >= 0);
-    g_assert(m->inputs_used <= m->inputs);
+  if (index > 0) {
+    g_assert (x > p->xvalues[index-1]);
   }
 
-  if (index % 2 == 0) {
-    p->xvalues[index/2] = value;
-  } else {
-    p->yvalues[index/2] = value;
-  }
+  p->xvalues[index] = x;
+  p->yvalues[index] = y;
 }
 
 float mapping_calculate (Mapping * m, float * inputs)
@@ -54,29 +63,34 @@ float mapping_calculate (Mapping * m, float * inputs)
 
   for (j=0; j<m->inputs; j++) {
     ControlPoints * p = m->pointsList + j;
-    if (p->xvalues[0]) {
+
+    if (p->n) {
       float x, y;
       x = inputs[j];
-      //if (i == 2 && j == 3) g_print("x = %f ", x);
-      int p0;
+
+      // find the segment with the slope that we need to use
       float x0, y0, x1, y1;
-      // decide what region to use
-      p0 = -1; // left point of the linear region (-1 is the implicit x=0,y=0 point)
-      while (p0+1 < 4 // not in the last region already
-             && x > p->xvalues[p0+1] // x position is further right than the current region
-             && p->xvalues[p0+2] > 0 // next enpoint does exists (points with x=0 are disabled)
-             ) p0++;
-      x0 = (p0 == -1) ? 0 : p->xvalues[p0];
-      y0 = (p0 == -1) ? 0 : p->yvalues[p0];
-      x1 = p->xvalues[p0+1];
-      y1 = p->yvalues[p0+1];
+      x0 = p->xvalues[0];
+      y0 = p->yvalues[0];
+      x1 = p->xvalues[1];
+      y1 = p->yvalues[1];
+
+      int i;
+      for (i=2; i<p->n && x>x1; i++) {
+        x0 = x1;
+        y0 = y1;
+        x1 = p->xvalues[i];
+        y1 = p->yvalues[i];
+      }
+
+      //g_print ("%d/%d x0=%f,x1=%f\n", i, p->n, x0, x1);
+
       // linear interpolation
       float m, q;
       m = (y1-y0)/(x1-x0);
       q = y0 - m*x0;
       y = m*x + q;
       result += y;
-      //if (i == 2 && j == 3) g_print("y = %f (p0=%d, %f %f %f %f)\n", y, p0, x0, y0, x1, y1);
     }
   }
   return result;

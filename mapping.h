@@ -7,10 +7,9 @@
 // private
 typedef struct {
   // a set of control points (stepwise linear)
-  float xvalues[4]; // >= 0 because all inputs are >= 0
-  float yvalues[4]; // range: -oo  .. +oo (added to base_value)
-  // xvalues can be zero to indicate that this point is not used.
-  // the first point (0, 0) is implicit, would have index -1
+  float xvalues[8];
+  float yvalues[8];
+  int n;
 } ControlPoints;
 
 // only base_value is accessed from outside
@@ -24,7 +23,8 @@ typedef struct {
 Mapping * mapping_new(int inputs);
 void mapping_free (Mapping * m);
 
-void mapping_set (Mapping * m, int input, int index, float value);
+void mapping_set_n (Mapping * m, int input, int n);
+void mapping_set_point (Mapping * m, int input, int index, float x, float y);
 float mapping_calculate (Mapping * m, float * inputs);
 
 #endif

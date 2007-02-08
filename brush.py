@@ -8,6 +8,8 @@ from helpers import clamp
 thumb_w = 64 #128
 thumb_h = 64 #128
 
+current_brushfile_version = 2
+
 def pixbuf_scale_nostretch_centered(src, dst):
     scale_x = float(dst.get_width()) / src.get_width()
     scale_y = float(dst.get_height()) / src.get_height()
@@ -24,21 +26,19 @@ def pixbuf_scale_nostretch_centered(src, dst):
               offset_x, offset_y, scale, scale,
               gtk.gdk.INTERP_BILINEAR)
 
-# What do the points[] mean?
-# Points = [x1, y1, x2, y2, x3, y3, x4, y4]
-# with x_scale = max(x_i) and y_scale = max(y_i)
+# points = [(x1, y1), (x2, y2), ...] (at least two points, or None)
 class Setting:
     "a specific setting for a specific brush"
     def __init__(self, setting, parent_brush):
         self.setting = setting
         self.brush = parent_brush
         self.set_base_value(setting.default)
-        self.points = len(brushsettings.inputs) * [None]
+        self.points = [[] for i in xrange(len(brushsettings.inputs))]
         if setting.cname == 'opaque_multiply':
             # make opaque depend on pressure by default
             for i in brushsettings.inputs:
                 if i.name == 'pressure': break
-            self.set_points(i, [1.0, 1.0] + 3*[0.0, 0.0])
+            self.set_points(i, [(0.0, 0.0), (1.0, 1.0)])
     def set_base_value(self, value):
         self.base_value = value
         self.brush.set_base_value(self.setting.index, value)
@@ -48,54 +48,73 @@ class Setting:
                 return False
         return True
     def has_input(self, input):
-        points = self.points[input.index]
-        return points is not None
+        return self.points[input.index]
     def has_input_nonlinear(self, input):
         points = self.points[input.index]
-        if points is None:
-            return False
-        # also if it is linear but the x-axis was changed
-        if points[0] != 1.0: return True
-        # having one additional point is sufficient
-        if points[2] == 0.0 and points[3] == 0.0: return False
-        return True
+        if not points: return False
+        if len(points) > 2: return True
+        # also if it is linear but the x-axis was changed (hm, bad function name)
+        if abs(points[0][0] - input.soft_min) > 0.001: return True
+        if abs(points[1][0] - input.soft_max) > 0.001: return True
+        return False
 
     def set_points(self, input, points):
-        if points is None:
-            self.points[input.index] = None
-            # set the first value to zero to disable it
-            self.brush.set_mapping(self.setting.index, input.index, 0, 0)
-        else:
-            self.points[input.index] = points[:] # copy
-            for j in xrange(8):
-                self.brush.set_mapping(self.setting.index, input.index, j, points[j])
+        assert len(points) != 1
+        if len(points) > 2:
+            print 'set_points[%s](%s, %s)' % (self.setting.cname, input.name, points)
+
+        self.brush.set_mapping_n(self.setting.index, input.index, len(points))
+        for i, (x, y) in enumerate(points):
+            self.brush.set_mapping_point(self.setting.index, input.index, i, x, y)
+
+        self.points[input.index] = points[:] # copy
+
     def copy_from(self, other):
-        error = self.load_from_string(other.save_to_string())
-        assert not error
+        error = self.load_from_string(other.save_to_string(), version=current_brushfile_version)
+        assert not error, error
     def save_to_string(self):
         s = str(self.base_value)
         for i in brushsettings.inputs:
             points = self.points[i.index]
             if points:
-                s += ' | ' + i.name + ' ' + ' '.join([str(f) for f in points])
+                s += ' | ' + i.name + ' ' + ', '.join(['(%f %f)' % xy for xy in points])
         return s
-    def load_from_string(self, s):
+    def load_from_string(self, s, version):
         error = None
         parts = s.split('|')
         self.set_base_value(float(parts[0]))
         for i in brushsettings.inputs:
-            self.set_points(i, None)
+            self.set_points(i, [])
         for part in parts[1:]:
-            subparts = part.split()
-            command, args = subparts[0], subparts[1:]
-            if command == 'speed': command = 'speed1' # backwards compatibilty
-            found = False
-            for i in brushsettings.inputs:
-                if command == i.name:
-                    found = True
-                    points = [float(f) for f in args]
-                    self.set_points(i, points)
-            if not found:
+            command, args = part.strip().split(' ', 1)
+            if version <= 1 and command == 'speed': command = 'speed1'
+            i = brushsettings.inputs_dict.get(command)
+            if i:
+                if version <= 1:
+                    points_old = [float(f) for f in args.split()]
+                    points = [(0, 0)]
+                    while points_old:
+                        x = points_old.pop(0)
+                        y = points_old.pop(0)
+                        if x == 0: break
+                        assert x > points[-1][0]
+                        points.append((x, y))
+                else:
+                    points = []
+                    for s in args.split(', '):
+                        s = s.strip()
+                        if not (s.startswith('(') and s.endswith(')') and ' ' in s):
+                            return '(x y) expected, got "%s"' % s
+                        s = s[1:-1]
+                        try:
+                            x, y = [float(ss) for ss in s.split(' ')]
+                        except:
+                            print s
+                            raise
+                        points.append((x, y))
+                assert len(points) >= 2
+                self.set_points(i, points)
+            else:
                 error = 'unknown input "%s"' % command
         return error
     def transform_y(self, func):
@@ -103,11 +122,9 @@ class Setting:
         self.set_base_value(func(self.base_value))
         for i in brushsettings.inputs:
             if not self.points[i.index]: continue
-            p = []
-            for j, v in enumerate(self.points[i.index]):
-                if j % 2 == 1: v = func(v)
-                p.append(v)
-            self.set_points(i, p)
+            points = self.points[i.index]
+            points = [(x, func(y)) for x, y in points]
+            self.set_points(i, points)
 
 class Brush_Lowlevel(mydrawwidget.MyBrush):
     def __init__(self):
@@ -123,6 +140,8 @@ class Brush_Lowlevel(mydrawwidget.MyBrush):
 
     def save_to_string(self):
         res  = '# mypaint brush file\n'
+        res += '# you can edit this file and then select the brush in mypaint (again) to reload'
+        res += 'version %d\n' % current_brushfile_version
         for s in brushsettings.settings:
             res += s.cname + ' ' + self.settings[s.index].save_to_string() + '\n'
         return res
@@ -130,6 +149,7 @@ class Brush_Lowlevel(mydrawwidget.MyBrush):
     def load_from_string(self, s):
         num_found = 0
         errors = []
+        version = 1 # for files without a 'version' field
         for line in s.split('\n'):
             line = line.strip()
             if line.startswith('#'): continue
@@ -140,20 +160,22 @@ class Brush_Lowlevel(mydrawwidget.MyBrush):
 
                 if command in brushsettings.settings_dict:
                     setting = self.setting_by_cname(command)
-                    error = setting.load_from_string(rest)
+                    error = setting.load_from_string(rest, version)
                 elif command in brushsettings.settings_migrate:
                     command_new, transform_func = brushsettings.settings_migrate[command]
                     setting = self.setting_by_cname(command_new)
-                    error = setting.load_from_string(rest)
+                    error = setting.load_from_string(rest, version)
                     if transform_func:
                         setting.transform_y(transform_func)
-                elif command == 'color': # obsolete
+                elif command == 'version':
+                    version = int(rest)
+                    if version > current_brushfile_version:
+                        error = 'this brush was saved with a more recent version of mypaint'
+                elif version <= 1 and command == 'color':
                     self.set_color_rgb([int(s)/255.0 for s in rest.split()])
-                elif command == 'change_radius': # obsolete
+                elif version <= 1 and command == 'change_radius':
                     if rest != '0.0': error = 'change_radius is not supported any more, use radius directly'
-                #elif rest == '0.0':
-                #    pass # silently ignore unknown/obsolete settings if they are zero
-                elif command == 'painting_time': # obsolete
+                elif version <= 1 and command == 'painting_time':
                     pass
                 else:
                     error = 'unknown command, line ignored'
