@@ -140,7 +140,7 @@ class Brush_Lowlevel(mydrawwidget.MyBrush):
 
     def save_to_string(self):
         res  = '# mypaint brush file\n'
-        res += '# you can edit this file and then select the brush in mypaint (again) to reload'
+        res += '# you can edit this file and then select the brush in mypaint (again) to reload\n'
         res += 'version %d\n' % current_brushfile_version
         for s in brushsettings.settings:
             res += s.cname + ' ' + self.settings[s.index].save_to_string() + '\n'
