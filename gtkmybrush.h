@@ -36,7 +36,6 @@ typedef struct _GtkMyBrushClass  GtkMyBrushClass;
 struct _GtkMyBrush
 {
   GObject parent;
-  GtkMySurface * target_surface;
   GRand * rng;
 
   // see also brushsettings.py
