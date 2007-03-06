@@ -32,6 +32,10 @@
 - canvas rotation
   - (fast rotozoom? also would be nice to use OpenGL if available)
 
+- pen/eraser
+  - recognize tool and asociate brush and color, as brushkeys do
+  - default to a white sharp ink tip on the eraser
+
 - tilt support 
   - what can tilt be used for?
   - I need (someone with) a tilt tablet to test it

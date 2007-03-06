@@ -60,8 +60,8 @@ class Setting:
 
     def set_points(self, input, points):
         assert len(points) != 1
-        if len(points) > 2:
-            print 'set_points[%s](%s, %s)' % (self.setting.cname, input.name, points)
+        #if len(points) > 2:
+        #    print 'set_points[%s](%s, %s)' % (self.setting.cname, input.name, points)
 
         self.brush.set_mapping_n(self.setting.index, input.index, len(points))
         for i, (x, y) in enumerate(points):
@@ -174,7 +174,7 @@ class Brush_Lowlevel(mydrawwidget.MyBrush):
                 elif version <= 1 and command == 'color':
                     self.set_color_rgb([int(s)/255.0 for s in rest.split()])
                 elif version <= 1 and command == 'change_radius':
-                    if rest != '0.0': error = 'change_radius is not supported any more, use radius directly'
+                    if rest != '0.0': error = 'change_radius is not supported any more'
                 elif version <= 1 and command == 'painting_time':
                     pass
                 else:
