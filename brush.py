@@ -29,9 +29,10 @@ def pixbuf_scale_nostretch_centered(src, dst):
 # points = [(x1, y1), (x2, y2), ...] (at least two points, or None)
 class Setting:
     "a specific setting for a specific brush"
-    def __init__(self, setting, parent_brush):
+    def __init__(self, setting, parent_brush, observers):
         self.setting = setting
         self.brush = parent_brush
+        self.observers = observers
         self.set_base_value(setting.default)
         self.points = [[] for i in xrange(len(brushsettings.inputs))]
         if setting.cname == 'opaque_multiply':
@@ -42,6 +43,7 @@ class Setting:
     def set_base_value(self, value):
         self.base_value = value
         self.brush.set_base_value(self.setting.index, value)
+        for f in self.observers: f()
     def has_only_base_value(self):
         for i in brushsettings.inputs:
             if self.has_input(i):
@@ -68,6 +70,7 @@ class Setting:
             self.brush.set_mapping_point(self.setting.index, input.index, i, x, y)
 
         self.points[input.index] = points[:] # copy
+        for f in self.observers: f()
 
     def copy_from(self, other):
         error = self.load_from_string(other.save_to_string(), version=current_brushfile_version)
@@ -129,9 +132,10 @@ class Setting:
 class Brush_Lowlevel(mydrawwidget.MyBrush):
     def __init__(self):
         mydrawwidget.MyBrush.__init__(self)
+        self.observers = []
         self.settings = []
         for s in brushsettings.settings:
-            self.settings.append(Setting(s, self))
+            self.settings.append(Setting(s, self, self.observers))
         self.painting_time = 0.0
 
     def setting_by_cname(self, cname):

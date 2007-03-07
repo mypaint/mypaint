@@ -7,7 +7,7 @@ def run():
     caller_owns_return('get_nonwhite_as_pixbuf')
     caller_owns_return('get_as_pixbuf')
     null_ok('set_brush', 'brush')
-
+    caller_owns_return('set_brush')
 
 
 def reset():

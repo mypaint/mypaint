@@ -17,10 +17,10 @@
   guchar random_pos;
 
   guchar c[3];
-  if (!s) return;
+  if (!s) return 0;
   
   g_assert (hardness <= 1.0 && hardness >= 0.0);
-  if (hardness == 0) return; // infintly small point, rest transparent
+  if (hardness == 0) return 0; // infintly small point, rest transparent
 
   r_fringe = radius + 1;
   x0 = floor (x - r_fringe);
@@ -32,7 +32,7 @@
   if (x1 > s->w) x1 = s->w;
   if (y1 > s->h) y1 = s->h;
   rr = SQR(radius);
-  if (radius < 0.1) return;
+  if (radius < 0.1) return 0;
   c[0] = color_r;
   c[1] = color_g;
   c[2] = color_b;
@@ -45,8 +45,8 @@
   random_pos = 0;
 
   g_assert (opaque >= 0 && opaque <= 1);
-  //if (opaque == 0) return;
-  if (opaque < 1/256.0) return;
+  //if (opaque == 0) return 0;
+  if (opaque < 1/256.0) return 0;
 
   for (yp = y0; yp < y1; yp++) {
     yy = (yp + 0.5 - y);
@@ -135,5 +135,6 @@
     ExpandRectToIncludePoint (bbox, bb_x, bb_y);
     ExpandRectToIncludePoint (bbox, bb_x+bb_w-1, bb_y+bb_h-1);
   }
+  return 1;
 }
 

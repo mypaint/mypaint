@@ -389,12 +389,18 @@ gtk_my_draw_widget_clear (GtkMyDrawWidget *mdw)
 }
 
 
-void
+GtkMyBrush* 
 gtk_my_draw_widget_set_brush (GtkMyDrawWidget *mdw, GtkMyBrush * brush)
 {
-  if (mdw->brush) g_object_unref (mdw->brush);
+  GtkMyBrush* brush_old = mdw->brush;
+  if (brush) g_object_ref (brush);
   mdw->brush = brush;
-  if (mdw->brush) g_object_ref (mdw->brush); //FIXME: look up if that's correct
+
+  // The caller owns the reference now (caller-owns-return in
+  // fix_generated_defs.py) thus we don't g_object_unref here.
+  // Cannot return a borrowed reference instead because we just
+  // discarded the pointer.
+  return brush_old;
 }
 
 void gtk_my_draw_widget_allow_dragging (GtkMyDrawWidget *mdw, int allow)
@@ -489,6 +495,13 @@ void gtk_my_draw_widget_start_recording (GtkMyDrawWidget *mdw)
 {
   g_assert (!mdw->recording);
   mdw->recording = g_array_new (FALSE, FALSE, sizeof(StrokeEvent));
+  mdw->brush->painted = 0;
+}
+
+int gtk_my_draw_widget_painted_while_recording (GtkMyDrawWidget *mdw)
+{
+  g_assert (mdw->recording);
+  return mdw->brush->painted;
 }
 
 GString* gtk_my_draw_widget_stop_recording (GtkMyDrawWidget *mdw)

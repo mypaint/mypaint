@@ -491,9 +491,13 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, GtkMySurfaceOld * s, Rect * bbo
     if (hardness > 1.0) hardness = 1.0;
     if (hardness < 0.0) hardness = 0.0;
 
-    draw_brush_dab (s, bbox, b->rng, 
-                    x, y, radius, opaque, hardness,
-                    c[0], c[1], c[2]);
+    int painted;
+    painted = draw_brush_dab (s, bbox, b->rng, 
+                              x, y, radius, opaque, hardness,
+                              c[0], c[1], c[2]);
+    if (painted) {
+      b->painted = 1;
+    }
   }
 }
 

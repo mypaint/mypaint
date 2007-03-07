@@ -53,6 +53,7 @@ struct _GtkMyBrush
 
   int print_inputs; // debug menu
   float painting_time; // total time the brush was used
+  int painted; // 0 if nothing was painted; for deciding whether a stroke is empty
 
   int must_reset;
 

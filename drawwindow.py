@@ -2,11 +2,8 @@
 "the main drawing window"
 import gtk, os, zlib, random
 import infinitemydrawwidget
-import brush
-
-class Stroke:
-    def __repr__(self):
-        return 'Stroke()'
+import brush, document
+import command
 
 class Window(gtk.Window):
     def __init__(self, app):
@@ -43,8 +40,11 @@ class Window(gtk.Window):
         self.zoomlevel_values = [            2.0/11, 0.25, 1.0/3, 0.50, 2.0/3, 1.0, 1.5, 2.0, 3.0, 4.0, 5.5, 8.0, 16.0]
         self.zoomlevel = self.zoomlevel_values.index(1.0)
 
-        self.recorded_stroke = None
-        self.recording = False
+        self.layer = document.Layer(self.mdw)
+        self.command_stack = command.CommandStack()
+        self.stroke = document.Stroke()
+        self.stroke.start_recording(self.mdw, self.app.brush)
+        self.app.brush.observers.append(self.brush_modified_cb) # FIXME: should remove when this Window is destroyed
 
         self.init_child_dialogs()
 
@@ -64,8 +64,11 @@ class Window(gtk.Window):
               <separator/>
               <menuitem action='Quit'/>
             </menu>
+            <menu action='EditMenu'>
+              <menuitem action='Undo'/>
+              <menuitem action='Redo'/>
+            </menu>
             <menu action='ViewMenu'>
-              <separator/>
               <menuitem action='Zoom1'/>
               <menuitem action='ZoomIn'/>
               <menuitem action='ZoomOut'/>
@@ -142,6 +145,11 @@ class Window(gtk.Window):
             ('Open',         None, 'Open', '<control>O', None, self.open_cb),
             ('Save',         None, 'Save', '<control>S', None, self.save_cb),
             ('Quit',         None, 'Quit', None, None, self.quit_cb),
+
+
+            ('EditMenu',     None, 'Edit'),
+            ('Undo',         None, 'undo', '<control>Z', None, self.undo_cb),
+            ('Redo',         None, 'redo', '<control>Y', None, self.redo_cb),
 
             ('BrushMenu',    None, 'Brush'),
             ('InvertColor',  None, 'Invert Color', 'x', None, self.invert_color_cb),
@@ -229,37 +237,40 @@ class Window(gtk.Window):
     def dont_print_inputs_cb(self, action):
         self.app.brush.set_print_inputs(0)
 
-    def record_stroke_cb(self, action):
-        if self.recording:
-            trash = self.mdw.stop_recording()
-            print 'Discarded', trash
-        self.mdw.start_recording()
-        r = self.recording = Stroke()
-        r.brush_settings = self.app.brush.save_to_string() # OPTIMIZE
-        r.brush_state = self.app.brush.get_state()
-        r.seed = random.randrange(0x10000)
+    def undo_cb(self, action):
+        self.split_stroke()
+        self.command_stack.undo()
 
-        self.app.brush.srandom(r.seed)
+    def redo_cb(self, action):
+        self.split_stroke()
+        self.command_stack.redo()
+
+    def split_stroke(self):
+        self.stroke.stop_recording()
+        if not self.stroke.empty:
+            self.command_stack.add(command.Stroke(self.layer, self.stroke))
+        self.stroke = document.Stroke()
+        self.stroke.start_recording(self.mdw, self.app.brush)
+
+    def brush_modified_cb(self):
+        # OPTIMIZE: called at every brush setting modification, must return fast
+        self.split_stroke()
+
+    def record_stroke_cb(self, action):
+        print 'TODO'
+        #if self.recording:
+        #    trash = self.mdw.stop_recording()
+        #    print 'Discarded', trash
+        #stroke = self.recording = Stroke()
+        #stroke.start_recording(self.mdw, self.app.brush)
 
     def replay_stroke_cb(self, action):
-        if self.recording:
-            r = self.recorded_stroke = self.recording
-            r.stroke = self.mdw.stop_recording()
-            print 'Recorded', len(r.stroke), 'bytes.'
-            #print 'Compressed size:', len(zlib.compress(self.recorded_stroke)), 'bytes.'
-            self.recording = False
-        #self.app.brush.reset()
-        r = self.recorded_stroke
-        b = brush.Brush_Lowlevel() # temporary brush
-        b.load_from_string(r.brush_settings)
-        b.set_state(r.brush_state)
-        b.srandom(r.seed)
-        #b.set_print_inputs(1)
-        self.mdw.set_brush(b)
-        print 'replaying', len(r.stroke), 'bytes'
-        self.mdw.replay(r.stroke, 1)
-        self.mdw.set_brush(self.app.brush)
-        print '---'
+        print 'TODO'
+        #if self.recording:
+        #    stroke = self.recorded_stroke = self.recording
+        #    stroke.stop_recording()
+        #    self.recording = False
+        ##self.app.brush.reset()
 
     def new_window_cb(self, action):
         # FIXME: is it really done like that?
@@ -289,8 +300,10 @@ class Window(gtk.Window):
         return True
 
     def clear_cb(self, action):
-        self.mdw.clear()
-        self.statusbar.pop(1)
+        self.split_stroke()
+        cmd = command.ClearLayer(self.layer)
+        self.command_stack.add(cmd)
+        self.statusbar.pop(1) # FIXME hm? undoable?
         
     def invert_color_cb(self, action):
         self.app.brush.invert_color()

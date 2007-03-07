@@ -56,7 +56,7 @@ GType      gtk_my_draw_widget_get_type   (void) G_GNUC_CONST;
 GtkWidget* gtk_my_draw_widget_new        (void);
 
 void gtk_my_draw_widget_clear (GtkMyDrawWidget *mdw);
-void gtk_my_draw_widget_set_brush (GtkMyDrawWidget *mdw, GtkMyBrush * brush);
+GtkMyBrush* gtk_my_draw_widget_set_brush (GtkMyDrawWidget *mdw, GtkMyBrush * brush);
 void gtk_my_draw_widget_set_viewport (GtkMyDrawWidget *mdw, float x, float y);
 float gtk_my_draw_widget_get_viewport_x (GtkMyDrawWidget *mdw);
 float gtk_my_draw_widget_get_viewport_y (GtkMyDrawWidget *mdw);
@@ -70,6 +70,7 @@ void gtk_my_draw_widget_set_from_pixbuf (GtkMyDrawWidget *mdw, GdkPixbuf* pixbuf
 void gtk_my_draw_widget_discard_and_resize (GtkMyDrawWidget *mdw, int width, int height);
 
 void gtk_my_draw_widget_start_recording (GtkMyDrawWidget *mdw);
+int gtk_my_draw_widget_painted_while_recording (GtkMyDrawWidget *mdw);
 GString* gtk_my_draw_widget_stop_recording (GtkMyDrawWidget *mdw);
 void gtk_my_draw_widget_replay (GtkMyDrawWidget *mdw, GString* data, int immediately);
 
