@@ -1,7 +1,12 @@
 # -*- coding: utf8 -*-
 "the main drawing window"
-import gtk, os, zlib
+import gtk, os, zlib, random
 import infinitemydrawwidget
+import brush
+
+class Stroke:
+    def __repr__(self):
+        return 'Stroke()'
 
 class Window(gtk.Window):
     def __init__(self, app):
@@ -29,7 +34,7 @@ class Window(gtk.Window):
         #REMOVE???
         # Always start with the same random seed.
         # The human generates enough randomness.
-        self.app.brush.srandom (0xfafa)
+        self.app.brush.srandom (random.randrange(0x10000))
 
         self.statusbar = sb = gtk.Statusbar()
         vbox.pack_end(sb, expand=False)
@@ -227,28 +232,34 @@ class Window(gtk.Window):
     def record_stroke_cb(self, action):
         if self.recording:
             trash = self.mdw.stop_recording()
-            print 'Discarded', len(trash), 'bytes of stroke data.'
+            print 'Discarded', trash
         self.mdw.start_recording()
-        self.recording = True
-        self.app.brush.srandom(0xfafa)
-        self.recording_brushstate = self.app.brush.get_state()
-        print len(self.recording_brushstate), 'bytes of brushstate:'
-        print repr(self.recording_brushstate)
-        #self.mdw.set_brush(self.app.brush)
+        r = self.recording = Stroke()
+        r.brush_settings = self.app.brush.save_to_string() # OPTIMIZE
+        r.brush_state = self.app.brush.get_state()
+        r.seed = random.randrange(0x10000)
+
+        self.app.brush.srandom(r.seed)
+
     def replay_stroke_cb(self, action):
         if self.recording:
-            self.recorded_stroke = self.mdw.stop_recording()
-            print 'Recorded', len(self.recorded_stroke), 'bytes.'
-            print 'Compressed size:', len(zlib.compress(self.recorded_stroke)), 'bytes.'
-            #, repr(self.recorded_stroke)
+            r = self.recorded_stroke = self.recording
+            r.stroke = self.mdw.stop_recording()
+            print 'Recorded', len(r.stroke), 'bytes.'
+            #print 'Compressed size:', len(zlib.compress(self.recorded_stroke)), 'bytes.'
             self.recording = False
         #self.app.brush.reset()
-        self.app.brush.srandom (0xfafa)
-        #print repr(self.recording_brushstate)
-        self.app.brush.set_state (self.recording_brushstate)
-        self.mdw.replay(self.recorded_stroke, 1)
+        r = self.recorded_stroke
+        b = brush.Brush_Lowlevel() # temporary brush
+        b.load_from_string(r.brush_settings)
+        b.set_state(r.brush_state)
+        b.srandom(r.seed)
+        #b.set_print_inputs(1)
+        self.mdw.set_brush(b)
+        print 'replaying', len(r.stroke), 'bytes'
+        self.mdw.replay(r.stroke, 1)
+        self.mdw.set_brush(self.app.brush)
         print '---'
-        #self.mdw.set_brush(None)
 
     def new_window_cb(self, action):
         # FIXME: is it really done like that?
