@@ -21,6 +21,10 @@ GString* event_array_to_string (GArray * ea)
 GArray* string_to_event_array (GString * bs)
 {
   char * p = bs->str;
+  if (bs->len <= 0) {
+    g_print ("Empty event string\n");
+    return NULL;
+  }
   if (*p++ != '1') {
     g_print ("Unknown version ID\n");
     return NULL;

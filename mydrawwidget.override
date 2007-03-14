@@ -42,8 +42,10 @@ _wrap_gtk_my_draw_widget_replay(PyGObject *self, PyObject *args)
 {
     GString s;
     int immediately;
-    if (!PyArg_ParseTuple(args, "s#i:GtkMyDrawWidget.replay", &(s.str), &(s.len), &immediately))
+    int len;
+    if (!PyArg_ParseTuple(args, "s#i:GtkMyDrawWidget.replay", &(s.str), &len, &immediately))
         return NULL;
+    s.len = len; // cast int to gsize_t
     // returns pointer to python memory, so it must not be free()d
     s.allocated_len = 0; // should never get accessed
     // s is a read-only GString now, and will be invalid after this call
@@ -70,8 +72,10 @@ static PyObject *
 _wrap_gtk_my_brush_set_state (PyGObject *self, PyObject *args)
 {
     GString s;
-    if (!PyArg_ParseTuple(args, "s#:GtkMyBrush.set_state", &(s.str), &(s.len)))
+    int len;
+    if (!PyArg_ParseTuple(args, "s#:GtkMyBrush.set_state", &(s.str), &len))
         return NULL;
+    s.len = len; // cast int to gsize_t
     // returns pointer to python memory, so it must not be free()d
     s.allocated_len = 0; // should never get accessed
     // s is a read-only GString now, and will be invalid after this call
