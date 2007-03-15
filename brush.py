@@ -136,7 +136,6 @@ class Brush_Lowlevel(mydrawwidget.MyBrush):
         self.settings = []
         for s in brushsettings.settings:
             self.settings.append(Setting(s, self, self.observers))
-        self.painting_time = 0.0
 
     def setting_by_cname(self, cname):
         s = brushsettings.settings_dict[cname]

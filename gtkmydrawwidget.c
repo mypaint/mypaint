@@ -228,9 +228,9 @@ gtk_my_draw_widget_process_motion_or_button (GtkWidget *widget, guint32 time, gd
   }
   
   if (mdw->brush) {
-    brush_stroke_to (mdw->brush, mdw->surface,
-                     x*mdw->one_over_zoom + mdw->viewport_x, y*mdw->one_over_zoom + mdw->viewport_y,
-                     pressure, (double)dtime / 1000.0 /* in seconds */);
+    gtk_my_brush_stroke_to (mdw->brush, mdw->surface,
+                            x*mdw->one_over_zoom + mdw->viewport_x, y*mdw->one_over_zoom + mdw->viewport_y,
+                            pressure, (double)dtime / 1000.0 /* in seconds */);
   }
 }
 
@@ -510,9 +510,9 @@ void gtk_my_draw_widget_replay (GtkMyDrawWidget *mdw, GString* data, int immedia
       StrokeEvent *e;
       e = &g_array_index (mdw->replaying, StrokeEvent, i);
       //g_print ("Replay: dtime=%d, x=%f.\n", e->dtime, e->x);
-      brush_stroke_to (mdw->brush, mdw->surface,
-                       e->x*mdw->one_over_zoom + mdw->viewport_x, e->y*mdw->one_over_zoom + mdw->viewport_y,
-                       e->pressure, (double)(e->dtime) / 1000.0 /* in seconds */);
+      gtk_my_brush_stroke_to (mdw->brush, mdw->surface,
+                              e->x*mdw->one_over_zoom + mdw->viewport_x, e->y*mdw->one_over_zoom + mdw->viewport_y,
+                              e->pressure, (double)(e->dtime) / 1000.0 /* in seconds */);
     }
     g_array_free (mdw->replaying, TRUE); mdw->replaying = NULL;
   } else {

@@ -115,19 +115,9 @@ class Application: # singleton
             f.write(b.name + '\n')
         f.close()
 
-    def update_statistics(self):
-        # permanently update painting_time of selected brush
-        if self.selected_brush:
-            self.selected_brush.painting_time += self.brush.get_painting_time()
-            # FIXME: save statistics elsewhere (brushes must not be saved unless modified)
-            #self.selected_brush.save(self.user_brushpath)
-            # just don't save the statistic for now...
-        self.brush.set_painting_time(0)
-
     def brush_selected_cb(self, brush):
         "actually set the new brush"
         assert brush is not self.brush # self.brush never gets exchanged
-        self.update_statistics()
         if brush in self.brushes:
             self.selected_brush = brush
         else:
@@ -147,7 +137,6 @@ class Application: # singleton
         return True
 
     def quit(self):
-        self.update_statistics()
         gtk.accel_map_save(os.path.join(self.confpath, 'accelmap.conf'))
         d = gtk.Dialog("Really quit?",
              None,

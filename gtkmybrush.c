@@ -64,18 +64,6 @@ gtk_my_brush_set_print_inputs (GtkMyBrush * b, int value)
   b->print_inputs = value;
 }
 
-float
-gtk_my_brush_get_painting_time (GtkMyBrush * b)
-{
-  return b->painting_time;
-}
-
-void
-gtk_my_brush_set_painting_time (GtkMyBrush * b, float value)
-{
-  b->painting_time = value;
-}
-
 Rect gtk_my_brush_get_stroke_bbox (GtkMyBrush * b)
 {
   return b->stroke_bbox;
@@ -141,8 +129,6 @@ gtk_my_brush_init (GtkMyBrush *b)
   for (i=0; i<BRUSH_SETTINGS_COUNT; i++) {
     b->settings[i] = mapping_new(INPUT_COUNT);
   }
-  // defaults will be set from python
-  b->painting_time = 0;
   b->rng = g_rand_new();
 
   gtk_my_brush_settings_base_values_have_changed (b);
@@ -547,7 +533,7 @@ float brush_count_dabs_to (GtkMyBrush * b, float x, float y, float pressure, flo
 }
 
 // Called from gtkmydrawwidget.c when a GTK event was received, with the new pointer position.
-void brush_stroke_to (GtkMyBrush * b, GtkMySurfaceOld * s, float x, float y, float pressure, double dtime)
+void gtk_my_brush_stroke_to (GtkMyBrush * b, GtkMySurfaceOld * s, float x, float y, float pressure, double dtime)
 {
   // bounding box of the modified region
   Rect bbox;
@@ -584,10 +570,6 @@ void brush_stroke_to (GtkMyBrush * b, GtkMySurfaceOld * s, float x, float y, flo
     b->states[STATE_STROKE] = 1.0; // start in a state as if the stroke was long finished
     b->dtime = 0.0001; // not sure if it this is needed
     return; // ?no movement yet?
-  }
-
-  if (pressure > 0) {
-    b->painting_time += dtime;
   }
 
   { // calculate the actual "virtual" cursor position

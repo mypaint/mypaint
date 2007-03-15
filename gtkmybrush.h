@@ -52,7 +52,6 @@ struct _GtkMyBrush
   Mapping * settings[BRUSH_SETTINGS_COUNT];
 
   int print_inputs; // debug menu
-  float painting_time; // total time the brush was used
   Rect stroke_bbox; // track it here, get/reset it from python (eg to decide if a stroke is empty)
 
   int must_reset;
@@ -81,16 +80,13 @@ GString* gtk_my_brush_get_state (GtkMyBrush * b);
 void gtk_my_brush_set_state (GtkMyBrush * b, GString * data);
 
 void gtk_my_brush_set_print_inputs (GtkMyBrush * b, int value);
-float gtk_my_brush_get_painting_time (GtkMyBrush * b);
-void gtk_my_brush_set_painting_time (GtkMyBrush * b, float value);
 
 Rect gtk_my_brush_get_stroke_bbox (GtkMyBrush * b);
 void gtk_my_brush_reset_stroke_bbox (GtkMyBrush * b);
 
 GdkPixbuf* gtk_my_brush_get_colorselection_pixbuf (GtkMyBrush * b);
 
-/* only for mydrawwidget (not exported to python): */
-void brush_stroke_to (GtkMyBrush * b, GtkMySurfaceOld * s, float x, float y, float pressure, double dtime);
+void gtk_my_brush_stroke_to (GtkMyBrush * b, GtkMySurfaceOld * s, float x, float y, float pressure, double dtime);
 
 void gtk_my_brush_srandom (GtkMyBrush * b, int value);
 double gtk_my_brush_random_double (GtkMyBrush * b); // for testing the RNG
