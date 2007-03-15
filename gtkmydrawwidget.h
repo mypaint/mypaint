@@ -70,7 +70,6 @@ void gtk_my_draw_widget_set_from_pixbuf (GtkMyDrawWidget *mdw, GdkPixbuf* pixbuf
 void gtk_my_draw_widget_discard_and_resize (GtkMyDrawWidget *mdw, int width, int height);
 
 void gtk_my_draw_widget_start_recording (GtkMyDrawWidget *mdw);
-int gtk_my_draw_widget_painted_while_recording (GtkMyDrawWidget *mdw);
 GString* gtk_my_draw_widget_stop_recording (GtkMyDrawWidget *mdw);
 void gtk_my_draw_widget_replay (GtkMyDrawWidget *mdw, GString* data, int immediately);
 

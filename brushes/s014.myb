@@ -1,5 +1,6 @@
 # mypaint brush file
-# you can edit this file and then select the brush in mypaint (again) to reloadversion 2
+# you can edit this file and then select the brush in mypaint (again) to reload
+version 2
 opaque 1.0
 opaque_multiply 0.0 | pressure (0.000000 0.000000), (0.040123 0.604167), (1.000000 1.000000)
 opaque_linearize 0.9

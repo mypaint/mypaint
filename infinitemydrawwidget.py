@@ -10,6 +10,9 @@ class InfiniteMyDrawWidget(MyDrawWidget):
         MyDrawWidget.clear(self)
         self.connect("size-allocate", self.size_allocate_event_cb)
         self.connect("dragging_finished", self.dragging_finished_cb)
+        self.connect("proximity-in-event", self.proximity_cb)
+        self.connect("proximity-out-event", self.proximity_cb)
+        self.toolchange_observers = []
 
     def init_canvas(self):
         self.canvas_w = 1
@@ -53,6 +56,10 @@ class InfiniteMyDrawWidget(MyDrawWidget):
     def save(self, filename):
         pixbuf = self.get_nonwhite_as_pixbuf()
         pixbuf.save(filename, 'png')
+
+    def proximity_cb(self, widget, something):
+        for f in self.toolchange_observers:
+            f()
 
     def dragging_finished_cb(self, widget):
         self.viewport_x = self.get_viewport_x()

@@ -27,11 +27,7 @@ class Window(gtk.Window):
         self.mdw.clear()
         self.mdw.set_brush(self.app.brush)
         vbox.pack_start(self.mdw)
-
-        #REMOVE???
-        # Always start with the same random seed.
-        # The human generates enough randomness.
-        self.app.brush.srandom (random.randrange(0x10000))
+        self.mdw.toolchange_observers.append(self.toolchange_cb)
 
         self.statusbar = sb = gtk.Statusbar()
         vbox.pack_end(sb, expand=False)
@@ -254,6 +250,11 @@ class Window(gtk.Window):
 
     def brush_modified_cb(self):
         # OPTIMIZE: called at every brush setting modification, must return fast
+        self.split_stroke()
+
+    def toolchange_cb(self):
+        # FIXME: add argument with tool id, and remember settings
+        # also make sure proximity events outside the window are checked
         self.split_stroke()
 
     def record_stroke_cb(self, action):

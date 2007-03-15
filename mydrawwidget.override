@@ -83,3 +83,21 @@ _wrap_gtk_my_brush_set_state (PyGObject *self, PyObject *args)
     Py_INCREF(Py_None);
     return Py_None;
 }
+%%
+override gtk_my_brush_get_stroke_bbox
+static PyObject *
+_wrap_gtk_my_brush_get_stroke_bbox (PyGObject *self, PyObject *args)
+{
+    PyObject * list;
+    list = PyTuple_New((int)4);
+    
+    Rect r = gtk_my_brush_get_stroke_bbox (GTK_MY_BRUSH(self->obj));
+
+    int i = 0;
+    PyTuple_SetItem(list, i++, PyInt_FromLong(r.x));
+    PyTuple_SetItem(list, i++, PyInt_FromLong(r.y));
+    PyTuple_SetItem(list, i++, PyInt_FromLong(r.w));
+    PyTuple_SetItem(list, i++, PyInt_FromLong(r.h));
+
+    return list;
+}

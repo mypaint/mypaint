@@ -25,19 +25,23 @@ class Stroke:
         self.brush_settings = brush.save_to_string() # OPTIMIZE
         self.brush_state = brush.get_state()
         self.seed = random.randrange(0x10000)
+        self.brush = brush
         brush.srandom(self.seed)
+        brush.reset_stroke_bbox()
 
         self.mdw.start_recording()
 
     def stop_recording(self):
         assert not self.finished
-        self.empty = not self.mdw.painted_while_recording()
         self.stroke_data = self.mdw.stop_recording()
-        s = ''
-        if self.empty: s = '(empty stroke)'
-        print 'Recorded', len(self.stroke_data), 'bytes.', s
+        self.bbox = self.brush.get_stroke_bbox()
+        x, y, w, h = self.bbox
+        self.empty = w <= 0 and h <= 0
+        if not self.empty:
+            print 'Recorded', len(self.stroke_data), 'bytes.'
+            print self.bbox
         #print 'Compressed size:', len(zlib.compress(self.stroke_data)), 'bytes.'
-        del self.mdw
+        del self.mdw, self.brush
         self.finished = True
         
     def render(self, surface):

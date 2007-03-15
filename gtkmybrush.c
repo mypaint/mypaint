@@ -76,6 +76,20 @@ gtk_my_brush_set_painting_time (GtkMyBrush * b, float value)
   b->painting_time = value;
 }
 
+Rect gtk_my_brush_get_stroke_bbox (GtkMyBrush * b)
+{
+  return b->stroke_bbox;
+}
+
+void gtk_my_brush_reset_stroke_bbox (GtkMyBrush * b)
+{
+  b->stroke_bbox.w = 0;
+  b->stroke_bbox.h = 0;
+  b->stroke_bbox.x = 0;
+  b->stroke_bbox.y = 0;
+}
+
+
 static void gtk_my_brush_class_init    (GtkMyBrushClass *klass);
 static void gtk_my_brush_init          (GtkMyBrush      *b);
 static void gtk_my_brush_finalize (GObject *object);
@@ -495,9 +509,6 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, GtkMySurfaceOld * s, Rect * bbo
     painted = draw_brush_dab (s, bbox, b->rng, 
                               x, y, radius, opaque, hardness,
                               c[0], c[1], c[2]);
-    if (painted) {
-      b->painted = 1;
-    }
   }
 }
 
@@ -658,6 +669,8 @@ void brush_stroke_to (GtkMyBrush * b, GtkMySurfaceOld * s, float x, float y, flo
 
   if (bbox.w > 0) {
     gtk_my_surface_modified ( GTK_MY_SURFACE (s), bbox.x, bbox.y, bbox.w, bbox.h);
+    ExpandRectToIncludePoint(&b->stroke_bbox, bbox.x, bbox.y);
+    ExpandRectToIncludePoint(&b->stroke_bbox, bbox.x+bbox.w-1, bbox.y+bbox.h-1);
   }
 }
 

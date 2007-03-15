@@ -311,25 +311,7 @@ gtk_my_draw_widget_motion_notify (GtkWidget *widget, GdkEventMotion *event)
 static gint
 gtk_my_draw_widget_proximity_inout (GtkWidget *widget, GdkEventProximity *event)
 { 
-  GtkMyDrawWidget * mdw;
-
-  g_return_val_if_fail (widget != NULL, FALSE);
-  g_return_val_if_fail (GTK_IS_MY_DRAW_WIDGET (widget), FALSE);
-  mdw = GTK_MY_DRAW_WIDGET (widget);
-
-  //g_print ("Proximity in/out: %s.\n", event->device->name);
-
-  // TODO: change brush?
-  // note, event is not received if it does not happen in our window,
-  // so the motion event might actually be the first one to see a new device
-  // Stroke certainly finished now.
-
-  if (mdw->brush) {
-    // FIXME TODO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! either store the
-    // reset, or emit a "util changed" signal and store/do the reset
-    // from python.
-    brush_reset (mdw->brush);
-  }
+  // handled in python now
   return FALSE;
 }
 
@@ -495,13 +477,6 @@ void gtk_my_draw_widget_start_recording (GtkMyDrawWidget *mdw)
 {
   g_assert (!mdw->recording);
   mdw->recording = g_array_new (FALSE, FALSE, sizeof(StrokeEvent));
-  mdw->brush->painted = 0;
-}
-
-int gtk_my_draw_widget_painted_while_recording (GtkMyDrawWidget *mdw)
-{
-  g_assert (mdw->recording);
-  return mdw->brush->painted;
 }
 
 GString* gtk_my_draw_widget_stop_recording (GtkMyDrawWidget *mdw)
