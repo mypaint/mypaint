@@ -35,10 +35,11 @@ class Stroke:
         assert not self.finished
         self.stroke_data = self.mdw.stop_recording()
         self.bbox = self.brush.get_stroke_bbox()
+        self.total_painting_time = self.brush.get_stroke_total_painting_time()
         x, y, w, h = self.bbox
         self.empty = w <= 0 and h <= 0
         if not self.empty:
-            print 'Recorded', len(self.stroke_data), 'bytes.'
+            print 'Recorded', len(self.stroke_data), 'bytes. (painting time: %.2fs)' % self.total_painting_time
             print self.bbox
         #print 'Compressed size:', len(zlib.compress(self.stroke_data)), 'bytes.'
         del self.mdw, self.brush

@@ -52,7 +52,9 @@ struct _GtkMyBrush
   Mapping * settings[BRUSH_SETTINGS_COUNT];
 
   int print_inputs; // debug menu
-  Rect stroke_bbox; // track it here, get/reset it from python (eg to decide if a stroke is empty)
+  Rect stroke_bbox; // track it here, get/reset from python
+  double stroke_total_painting_time;
+  double stroke_idling_time; 
 
   int must_reset;
 
@@ -66,6 +68,8 @@ struct _GtkMyBrush
 struct _GtkMyBrushClass
 {
   GObjectClass parent_class;
+
+  void (*split_stroke) (GtkMyBrush *b);
 };
 
 
@@ -83,6 +87,8 @@ void gtk_my_brush_set_print_inputs (GtkMyBrush * b, int value);
 
 Rect gtk_my_brush_get_stroke_bbox (GtkMyBrush * b);
 void gtk_my_brush_reset_stroke_bbox (GtkMyBrush * b);
+void gtk_my_brush_split_stroke (GtkMyBrush * b);
+float gtk_my_brush_get_stroke_total_painting_time (GtkMyBrush * b);
 
 GdkPixbuf* gtk_my_brush_get_colorselection_pixbuf (GtkMyBrush * b);
 

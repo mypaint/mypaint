@@ -33,6 +33,7 @@
 
 // prototypes
 void gtk_my_brush_settings_base_values_have_changed (GtkMyBrush * b);
+void gtk_my_brush_split_stroke (GtkMyBrush * b);
 
 void
 gtk_my_brush_set_base_value (GtkMyBrush * b, int id, float value)
@@ -86,6 +87,12 @@ static void gtk_my_brush_finalize (GObject *object);
 
 static gpointer parent_class;
 
+enum {
+  SPLIT_STROKE,
+  LAST_SIGNAL
+};
+guint gtk_my_brush_signals[LAST_SIGNAL] = { 0 };
+
 GType
 gtk_my_brush_get_type (void)
 {
@@ -120,6 +127,15 @@ gtk_my_brush_class_init (GtkMyBrushClass *class)
   GObjectClass *gobject_class = G_OBJECT_CLASS (class);
   parent_class = g_type_class_peek_parent (class);
   gobject_class->finalize = gtk_my_brush_finalize;
+
+  gtk_my_brush_signals[SPLIT_STROKE] = g_signal_new 
+    ("split-stroke",
+     G_TYPE_FROM_CLASS (class),
+     G_SIGNAL_RUN_LAST,
+     G_STRUCT_OFFSET (GtkMyBrushClass, split_stroke),
+     NULL, NULL,
+     g_cclosure_marshal_VOID__VOID,
+     G_TYPE_NONE, 0);
 }
 
 static void
@@ -355,8 +371,8 @@ void brush_update_settings_values (GtkMyBrush * b)
 // draw the dab, then let draw_brush_dab() do the actual drawing.
 //
 // This is always called "directly" after brush_update_settings_values.
-// The bbox parameter is a return value XXX
-void brush_prepare_and_draw_dab (GtkMyBrush * b, GtkMySurfaceOld * s, Rect * bbox)
+// The bbox is enlarged so the dab fits in. Returns zero if nothing was drawn.
+int brush_prepare_and_draw_dab (GtkMyBrush * b, GtkMySurfaceOld * s, Rect * bbox)
 {
   float * settings = b->settings_value;
   float x, y, opaque;
@@ -381,7 +397,7 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, GtkMySurfaceOld * s, Rect * bbo
   opaque = settings[BRUSH_OPAQUE] * settings[BRUSH_OPAQUE_MULTIPLY];
   if (opaque >= 1.0) opaque = 1.0;
   //if (opaque <= 0.0) opaque = 0.0;
-  if (opaque <= 0.0) return;
+  if (opaque <= 0.0) return 0;
   if (settings[BRUSH_OPAQUE_LINEARIZE]) {
     // OPTIMIZE: no need to recalculate this for each dab
     float alpha, beta, alpha_dab, beta_dab;
@@ -491,10 +507,9 @@ void brush_prepare_and_draw_dab (GtkMyBrush * b, GtkMySurfaceOld * s, Rect * bbo
     if (hardness > 1.0) hardness = 1.0;
     if (hardness < 0.0) hardness = 0.0;
 
-    int painted;
-    painted = draw_brush_dab (s, bbox, b->rng, 
-                              x, y, radius, opaque, hardness,
-                              c[0], c[1], c[2]);
+    return draw_brush_dab (s, bbox, b->rng, 
+                           x, y, radius, opaque, hardness,
+                           c[0], c[1], c[2]);
   }
 }
 
@@ -595,6 +610,8 @@ void gtk_my_brush_stroke_to (GtkMyBrush * b, GtkMySurfaceOld * s, float x, float
   }
 
   //g_print("dist = %f\n", b->states[STATE_DIST]);
+  enum { UNKNOWN, YES, NO } painted = UNKNOWN;
+  double dtime_left = dtime;
 
   while (dist_moved + dist_todo >= 1.0) { // there are dabs pending
     { // linear interpolation (nonlinear variant was too slow, see SVN log)
@@ -610,7 +627,7 @@ void gtk_my_brush_stroke_to (GtkMyBrush * b, GtkMySurfaceOld * s, float x, float
       b->dx        = frac * (x - b->states[STATE_X]);
       b->dy        = frac * (y - b->states[STATE_Y]);
       b->dpressure = frac * (pressure - b->states[STATE_PRESSURE]);
-      b->dtime     = frac * (dtime - 0.0);
+      b->dtime     = frac * (dtime_left - 0.0);
       // Though it looks different, time is interpolated exactly like x/y/pressure.
     }
     
@@ -619,10 +636,15 @@ void gtk_my_brush_stroke_to (GtkMyBrush * b, GtkMySurfaceOld * s, float x, float
     b->states[STATE_PRESSURE] += b->dpressure;
 
     brush_update_settings_values (b);
-    brush_prepare_and_draw_dab (b, s, &bbox);
+    int painted_now = brush_prepare_and_draw_dab (b, s, &bbox);
+    if (painted_now) {
+      painted = YES;
+    } else if (painted == UNKNOWN) {
+      painted = NO;
+    }
 
-    dtime   -= b->dtime;
-    dist_todo  = brush_count_dabs_to (b, x, y, pressure, dtime);
+    dtime_left   -= b->dtime;
+    dist_todo  = brush_count_dabs_to (b, x, y, pressure, dtime_left);
   }
 
   {
@@ -635,12 +657,12 @@ void gtk_my_brush_stroke_to (GtkMyBrush * b, GtkMySurfaceOld * s, float x, float
     b->dx        = x - b->states[STATE_X];
     b->dy        = y - b->states[STATE_Y];
     b->dpressure = pressure - b->states[STATE_PRESSURE];
-    b->dtime     = dtime;
+    b->dtime     = dtime_left;
     
     b->states[STATE_X] = x;
     b->states[STATE_Y] = y;
     b->states[STATE_PRESSURE] = pressure;
-    //dtime = 0; but that value is not used any more
+    //dtime_left = 0; but that value is not used any more
 
     brush_update_settings_values (b);
   }
@@ -654,6 +676,60 @@ void gtk_my_brush_stroke_to (GtkMyBrush * b, GtkMySurfaceOld * s, float x, float
     ExpandRectToIncludePoint(&b->stroke_bbox, bbox.x, bbox.y);
     ExpandRectToIncludePoint(&b->stroke_bbox, bbox.x+bbox.w-1, bbox.y+bbox.h-1);
   }
+
+  // stroke separation logic
+
+  if (painted == UNKNOWN) {
+    if (b->stroke_idling_time > 0) {
+      // still idling
+      painted = NO;
+    } else {
+      // probably still painting (we get more events than brushdabs)
+      painted = YES;
+      if (pressure == 0) g_print ("info: assuming 'still painting' while there is no pressure\n");
+    }
+  }
+  if (painted == YES) {
+    if (b->stroke_idling_time > 0) g_print ("idling ==> painting\n");
+    b->stroke_total_painting_time += dtime;
+    b->stroke_idling_time = 0;
+    // force a stroke split after some time
+    if (b->stroke_total_painting_time > 5 + 10*pressure) {
+      // but only if pressure is not being released
+      if (b->dpressure >= 0) {
+        gtk_my_brush_split_stroke (b);
+      }
+    }
+  } else if (painted == NO) {
+    if (b->stroke_idling_time == 0) g_print ("painting ==> idling\n");
+    b->stroke_idling_time += dtime;
+    if (b->stroke_total_painting_time == 0) {
+      // not yet painted, split to discard the useless motion data
+      g_assert (b->stroke_bbox.w == 0);
+      if (b->stroke_idling_time > 1.0) {
+        gtk_my_brush_split_stroke (b);
+      }
+    } else {
+      // Usually we have pressure==0 here. But some brushes can paint
+      // nothing at full pressure (eg gappy lines, or a stroke that
+      // fades out). In either case this is the prefered moment to split.
+      if (b->stroke_total_painting_time+b->stroke_idling_time > 1.5 + 5*pressure) {
+        gtk_my_brush_split_stroke (b);
+      }
+    }
+  }
+}
+
+void gtk_my_brush_split_stroke (GtkMyBrush * b)
+{
+  g_signal_emit (b, gtk_my_brush_signals[SPLIT_STROKE], 0);
+  b->stroke_idling_time = 0;
+  b->stroke_total_painting_time = 0;
+}
+
+float gtk_my_brush_get_stroke_total_painting_time (GtkMyBrush * b)
+{
+  return b->stroke_total_painting_time;
 }
 
 #define SIZE 256

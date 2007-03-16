@@ -1,7 +1,3 @@
-- undo.
-  - (probably the most wanted feature, even if only one stroke)
-  - should be a lot easier together with layers
-
 - layers.
   - alpha support (for both rendering and brush strokes)
   - rewrite the rendering code
@@ -24,13 +20,20 @@
   - set canvas memory limit
   - set canvas border outside visible window (in percent)
   - set "reallocate how much in advance" maybe?
+  - zoom quality
 
 - dedicated "slow random" input
+  - or just "random slowness"?
+    - could lead to unwanted correlations
 
 - keyboard shortcut to change brush ocupacy
 
 - canvas rotation
   - (fast rotozoom? also would be nice to use OpenGL if available)
+
+- allow dots drawing
+  - a dot should draw even without motion
+  - is dabs-per-second enough, or is dabs-per-dpressure needed?
 
 - pen/eraser
   - recognize tool and asociate brush and color, as brushkeys do

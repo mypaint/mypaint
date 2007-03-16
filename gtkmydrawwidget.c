@@ -87,7 +87,7 @@ gtk_my_draw_widget_class_init (GtkMyDrawWidgetClass *class)
 
 
   gtk_my_draw_widget_signals[DRAGGING_FINISHED] = g_signal_new 
-    ("dragging_finished",
+    ("dragging-finished",
      G_TYPE_FROM_CLASS (class),
      G_SIGNAL_RUN_LAST,
      G_STRUCT_OFFSET (GtkMyDrawWidgetClass, dragging_finished),

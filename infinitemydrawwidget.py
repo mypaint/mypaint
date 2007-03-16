@@ -9,7 +9,7 @@ class InfiniteMyDrawWidget(MyDrawWidget):
         self.init_canvas()
         MyDrawWidget.clear(self)
         self.connect("size-allocate", self.size_allocate_event_cb)
-        self.connect("dragging_finished", self.dragging_finished_cb)
+        self.connect("dragging-finished", self.dragging_finished_cb)
         self.connect("proximity-in-event", self.proximity_cb)
         self.connect("proximity-out-event", self.proximity_cb)
         self.toolchange_observers = []

@@ -41,6 +41,7 @@ class Window(gtk.Window):
         self.stroke = document.Stroke()
         self.stroke.start_recording(self.mdw, self.app.brush)
         self.app.brush.observers.append(self.brush_modified_cb) # FIXME: should remove when this Window is destroyed
+        self.app.brush.connect("split-stroke", self.split_stroke_cb)
 
         self.init_child_dialogs()
 
@@ -242,11 +243,8 @@ class Window(gtk.Window):
         self.command_stack.redo()
 
     def split_stroke(self):
-        self.stroke.stop_recording()
-        if not self.stroke.empty:
-            self.command_stack.add(command.Stroke(self.layer, self.stroke))
-        self.stroke = document.Stroke()
-        self.stroke.start_recording(self.mdw, self.app.brush)
+        # let the brush emit the signal
+        self.app.brush.split_stroke()
 
     def brush_modified_cb(self):
         # OPTIMIZE: called at every brush setting modification, must return fast
@@ -256,6 +254,14 @@ class Window(gtk.Window):
         # FIXME: add argument with tool id, and remember settings
         # also make sure proximity events outside the window are checked
         self.split_stroke()
+
+    def split_stroke_cb(self, widget):
+        print 'SPLIT'
+        self.stroke.stop_recording()
+        if not self.stroke.empty:
+            self.command_stack.add(command.Stroke(self.layer, self.stroke))
+        self.stroke = document.Stroke()
+        self.stroke.start_recording(self.mdw, self.app.brush)
 
     def record_stroke_cb(self, action):
         print 'TODO'
