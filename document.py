@@ -27,7 +27,10 @@ class Stroke:
         self.seed = random.randrange(0x10000)
         self.brush = brush
         brush.srandom(self.seed)
-        brush.reset_stroke_bbox()
+        # assumptions: (no tragic consequences when violated, but...)
+        # - brush.split_stroke() has just been called, i.e.
+        #   - stroke bbox is empty
+        #   - stroke idle and painting times are empty
 
         self.mdw.start_recording()
 

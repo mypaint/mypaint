@@ -70,15 +70,6 @@ Rect gtk_my_brush_get_stroke_bbox (GtkMyBrush * b)
   return b->stroke_bbox;
 }
 
-void gtk_my_brush_reset_stroke_bbox (GtkMyBrush * b)
-{
-  b->stroke_bbox.w = 0;
-  b->stroke_bbox.h = 0;
-  b->stroke_bbox.x = 0;
-  b->stroke_bbox.y = 0;
-}
-
-
 static void gtk_my_brush_class_init    (GtkMyBrushClass *klass);
 static void gtk_my_brush_init          (GtkMyBrush      *b);
 static void gtk_my_brush_finalize (GObject *object);
@@ -723,8 +714,14 @@ void gtk_my_brush_stroke_to (GtkMyBrush * b, GtkMySurfaceOld * s, float x, float
 void gtk_my_brush_split_stroke (GtkMyBrush * b)
 {
   g_signal_emit (b, gtk_my_brush_signals[SPLIT_STROKE], 0);
+
   b->stroke_idling_time = 0;
   b->stroke_total_painting_time = 0;
+
+  b->stroke_bbox.w = 0;
+  b->stroke_bbox.h = 0;
+  b->stroke_bbox.x = 0;
+  b->stroke_bbox.y = 0;
 }
 
 float gtk_my_brush_get_stroke_total_painting_time (GtkMyBrush * b)

@@ -85,9 +85,8 @@ void gtk_my_brush_set_state (GtkMyBrush * b, GString * data);
 
 void gtk_my_brush_set_print_inputs (GtkMyBrush * b, int value);
 
-Rect gtk_my_brush_get_stroke_bbox (GtkMyBrush * b);
-void gtk_my_brush_reset_stroke_bbox (GtkMyBrush * b);
 void gtk_my_brush_split_stroke (GtkMyBrush * b);
+Rect gtk_my_brush_get_stroke_bbox (GtkMyBrush * b);
 float gtk_my_brush_get_stroke_total_painting_time (GtkMyBrush * b);
 
 GdkPixbuf* gtk_my_brush_get_colorselection_pixbuf (GtkMyBrush * b);
