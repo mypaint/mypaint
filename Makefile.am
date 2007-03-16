@@ -60,7 +60,8 @@ mypaintlib_PYTHON = \
         functionwindow.py \
         helpers.py \
         infinitemydrawwidget.py \
-        layerswindow.py
+        command.py \
+        document.py
 
 mypaintbrushesdir=$(pkgdatadir)/brushes
 
