@@ -893,7 +893,6 @@ GdkPixbuf* gtk_my_brush_get_colorselection_pixbuf (GtkMyBrush * b)
   base_h = b->settings[BRUSH_COLOR_H]->base_value*360;
   base_s = b->settings[BRUSH_COLOR_S]->base_value*255;
   base_v = b->settings[BRUSH_COLOR_V]->base_value*255;
-  rgb_to_hsv_int (&base_h, &base_s, &base_v);
 
   for (y=0; y<SIZE; y++) {
     for (x=0; x<SIZE; x++) {
