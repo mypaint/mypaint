@@ -204,6 +204,7 @@ class BrushList(gtk.DrawingArea):
         # keep the color setting
         color = self.app.brush.get_color_hsv()
         brush = self.app.brushes[i]
+        brush.set_color_hsv(color)
 
         # brush changed on harddisk?
         changed = brush.reload_if_changed()
@@ -211,7 +212,6 @@ class BrushList(gtk.DrawingArea):
             self.redraw_thumbnails()
 
         self.app.select_brush(brush)
-        self.app.brush.set_color_hsv(color)
 
         self.grabbed = brush
 

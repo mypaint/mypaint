@@ -36,11 +36,13 @@ class Window(gtk.Window):
         self.zoomlevel_values = [            2.0/11, 0.25, 1.0/3, 0.50, 2.0/3, 1.0, 1.5, 2.0, 3.0, 4.0, 5.5, 8.0, 16.0]
         self.zoomlevel = self.zoomlevel_values.index(1.0)
 
+        self.modifying = False
+
         self.layer = document.Layer(self.mdw)
         self.command_stack = command.CommandStack()
         self.stroke = document.Stroke()
         self.stroke.start_recording(self.mdw, self.app.brush)
-        self.app.brush.observers.append(self.brush_modified_cb) # FIXME: should remove when this Window is destroyed
+        self.app.brush.observers.append(self.brush_modified_cb)
         self.app.brush.connect("split-stroke", self.split_stroke_cb)
 
         self.init_child_dialogs()
@@ -55,15 +57,16 @@ class Window(gtk.Window):
               <menuitem action='Open'/>
               <menuitem action='Save'/>
               <separator/>
-              <menu action='ClearMenu'>
-                <menuitem action='Clear'/>
-              </menu>
+              <menuitem action='Clear'/>
               <separator/>
               <menuitem action='Quit'/>
             </menu>
             <menu action='EditMenu'>
               <menuitem action='Undo'/>
               <menuitem action='Redo'/>
+              <separator/>
+              <menuitem action='ModifyLastStroke'/>
+              <menuitem action='ModifyEnd'/>
             </menu>
             <menu action='ViewMenu'>
               <menuitem action='Zoom1'/>
@@ -122,9 +125,6 @@ class Window(gtk.Window):
             <menu action='DebugMenu'>
               <menuitem action='PrintInputs'/>
               <menuitem action='DontPrintInputs'/>
-              <separator/>
-              <menuitem action='RecordStroke'/>
-              <menuitem action='ReplayStroke'/>
             </menu>
             <menu action='HelpMenu'>
               <menuitem action='Docu'/>
@@ -136,9 +136,7 @@ class Window(gtk.Window):
         </ui>"""
         actions = [
             ('FileMenu',     None, 'File'),
-            ('ClearMenu',    None, 'Clear'),
-            ('Clear',        None, 'Confirm Clear', '<control>period', None, self.clear_cb),
-            #('NewWindow',    None, 'New Window', '<control>N', None, self.new_window_cb),
+            ('Clear',        None, 'Clear', '<control>period', None, self.clear_cb),
             ('Open',         None, 'Open', '<control>O', None, self.open_cb),
             ('Save',         None, 'Save', '<control>S', None, self.save_cb),
             ('Quit',         None, 'Quit', None, None, self.quit_cb),
@@ -147,6 +145,8 @@ class Window(gtk.Window):
             ('EditMenu',     None, 'Edit'),
             ('Undo',         None, 'undo', '<control>Z', None, self.undo_cb),
             ('Redo',         None, 'redo', '<control>Y', None, self.redo_cb),
+            ('ModifyLastStroke', None, 'modify last stroke', 'm', None, self.modify_last_stroke_cb),
+            ('ModifyEnd',    None, 'stop modifying', '<control>m', None, self.modify_end_cb),
 
             ('BrushMenu',    None, 'Brush'),
             ('InvertColor',  None, 'Invert Color', 'x', None, self.invert_color_cb),
@@ -193,8 +193,6 @@ class Window(gtk.Window):
             ('DebugMenu',    None, 'Debug'),
             ('PrintInputs', None, 'Print brush input values to stdout', None, None, self.print_inputs_cb),
             ('DontPrintInputs', None, 'Stop printing them', None, None, self.dont_print_inputs_cb),
-            ('RecordStroke', None, 'record stroke', None, None, self.record_stroke_cb),
-            ('ReplayStroke', None, 'replay stroke', None, None, self.replay_stroke_cb),
 
 
             ('ShortcutsMenu', None, 'Shortcuts'),
@@ -237,54 +235,82 @@ class Window(gtk.Window):
     def undo_cb(self, action):
         self.split_stroke()
         self.command_stack.undo()
+        self.layer.rerender()
+        self.end_modifying() # FIXME: hack to do this here
 
     def redo_cb(self, action):
         self.split_stroke()
         self.command_stack.redo()
+        self.layer.rerender()
+        self.end_modifying() # FIXME: hack to do this here
+
+    def modify_last_stroke_cb(self, action):
+        self.split_stroke()
+        count = 1
+        if self.modifying:
+            cmd = self.command_stack.get_last_command()
+            if isinstance(cmd, command.ModifyStrokes):
+                count = cmd.count + 1
+                if count > len(self.layer.strokes):
+                    print 'All strokes selected already!'
+                    return
+                self.command_stack.undo()
+
+        cmd = command.ModifyStrokes(self.layer, count, self.app.brush)
+        self.command_stack.add(cmd)
+
+        self.layer.rerender()
+
+        if not self.modifying:
+            self.modifying = True
+            self.statusbar.push(3, 'modifying - change brush or color now')
+        else:
+            self.statusbar.pop(3)
+            self.statusbar.push(3, 'modifying %d strokes' % count)
+
+    def end_modifying(self):
+        if not self.modifying:
+            return
+        self.statusbar.pop(3)
+        self.modifying = False
+
+    def modify_end_cb(self, action):
+        self.end_modifying()
 
     def split_stroke(self):
         # let the brush emit the signal
         self.app.brush.split_stroke()
 
+    def split_stroke_cb(self, widget):
+        self.stroke.stop_recording()
+        if not self.stroke.empty:
+            self.end_modifying() # FIXME: hack to do this here
+            self.command_stack.add(command.Stroke(self.layer, self.stroke))
+
+        self.stroke = document.Stroke()
+        self.stroke.start_recording(self.mdw, self.app.brush)
+
     def brush_modified_cb(self):
         # OPTIMIZE: called at every brush setting modification, must return fast
         self.split_stroke()
+
+        if self.modifying:
+            cmd = self.command_stack.get_last_command()
+            if isinstance(cmd, command.ModifyStrokes):
+                print 'redo', cmd.count, 'modified strokes'
+                self.command_stack.undo()
+                cmd.set_new_brush(self.app.brush)
+                self.command_stack.add(cmd)
+                self.layer.rerender()
+
+                if cmd.count == 1:
+                    self.statusbar.pop(3)
+                    self.statusbar.push(3, 'modifying one stroke (hit again to add more)')
 
     def toolchange_cb(self):
         # FIXME: add argument with tool id, and remember settings
         # also make sure proximity events outside the window are checked
         self.split_stroke()
-
-    def split_stroke_cb(self, widget):
-        print 'SPLIT'
-        self.stroke.stop_recording()
-        if not self.stroke.empty:
-            self.command_stack.add(command.Stroke(self.layer, self.stroke))
-        self.stroke = document.Stroke()
-        self.stroke.start_recording(self.mdw, self.app.brush)
-
-    def record_stroke_cb(self, action):
-        print 'TODO'
-        #if self.recording:
-        #    trash = self.mdw.stop_recording()
-        #    print 'Discarded', trash
-        #stroke = self.recording = Stroke()
-        #stroke.start_recording(self.mdw, self.app.brush)
-
-    def replay_stroke_cb(self, action):
-        print 'TODO'
-        #if self.recording:
-        #    stroke = self.recorded_stroke = self.recording
-        #    stroke.stop_recording()
-        #    self.recording = False
-        ##self.app.brush.reset()
-
-    def new_window_cb(self, action):
-        # FIXME: is it really done like that?
-        #w = Window()
-        #w.show_all()
-        #gtk.main()
-        print "Not really implemented."
 
     def key_press_event_cb_before(self, win, event):
         ANY_MODIFIER = gtk.gdk.SHIFT_MASK | gtk.gdk.MOD1_MASK | gtk.gdk.CONTROL_MASK

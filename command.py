@@ -25,6 +25,10 @@ class CommandStack:
         command = self.redo_stack.pop()
         command.redo()
         self.undo_stack.append(command)
+
+    def get_last_command(self):
+        if not self.undo_stack: return None
+        return self.undo_stack[-1]
         
 
 class Action:
@@ -32,7 +36,7 @@ class Action:
         self.doc = doc
     def execute(self):
         assert False, 'abstract method'
-    def unto(self):
+    def undo(self):
         assert False, 'abstract method'
     def redo(self):
         assert False, 'abstract method'
@@ -40,13 +44,15 @@ class Action:
 class Stroke(Action):
     def __init__(self, layer, stroke):
         self.layer = layer
-        self.stroke = stroke # stroke immutable, otherwise need to copy here
+        self.stroke = stroke # immutable
     def execute(self):
-        self.layer.add_stroke(self.stroke, must_render=False)
-    def redo(self):
-        self.layer.add_stroke(self.stroke)
+        # already rendered
+        self.layer.strokes.append(self.stroke)
+        self.layer.rendered_strokes.append(self.stroke)
     def undo(self):
-        self.layer.remove_stroke(self.stroke)
+        self.layer.strokes.remove(self.stroke)
+    def redo(self):
+        self.layer.strokes.append(self.stroke)
 
 class ClearLayer(Action):
     def __init__(self, layer):
@@ -57,3 +63,26 @@ class ClearLayer(Action):
         self.layer.unclear(self.old_data)
         del self.old_data
     redo = execute
+
+class ModifyStrokes(Action):
+    def __init__(self, layer, count, new_brush):
+        self.layer = layer
+        self.count = count
+        self.old_strokes = None
+        self.set_new_brush(new_brush)
+    def set_new_brush(self, new_brush):
+        assert not self.old_strokes
+        self.new_brush_settings = new_brush.save_to_string()
+    def execute(self):
+        assert self.count > 0 
+        assert self.count <= len(self.layer.strokes)
+        self.old_strokes = self.layer.strokes[-self.count:]
+        new_strokes = [s.copy() for s in self.old_strokes]
+        for s in new_strokes:
+            s.change_brush_settings(self.new_brush_settings)
+        self.layer.strokes[-self.count:] = new_strokes
+    def undo(self):
+        self.layer.strokes[-self.count:] = self.old_strokes
+        self.old_strokes = None
+    redo = execute
+

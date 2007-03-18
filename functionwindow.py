@@ -145,7 +145,6 @@ class ByInputWidget(gtk.VBox):
     def user_changes_cb(self, widget):
         if self.block_user_changes_cb:
             return
-        print 'user_changes_cb'
 
         # 1. verify and constrain the changes
         scale_y = self.scale_y_adj.get_value()

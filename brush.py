@@ -33,6 +33,7 @@ class Setting:
         self.setting = setting
         self.brush = parent_brush
         self.observers = observers
+        self.base_value = None
         self.set_base_value(setting.default)
         self.points = [[] for i in xrange(len(brushsettings.inputs))]
         if setting.cname == 'opaque_multiply':
@@ -41,6 +42,7 @@ class Setting:
                 if i.name == 'pressure': break
             self.set_points(i, [(0.0, 0.0), (1.0, 1.0)])
     def set_base_value(self, value):
+        if self.base_value == value: return
         self.base_value = value
         self.brush.set_base_value(self.setting.index, value)
         for f in self.observers: f()
@@ -62,6 +64,7 @@ class Setting:
 
     def set_points(self, input, points):
         assert len(points) != 1
+        if self.points[input.index] == points: return
         #if len(points) > 2:
         #    print 'set_points[%s](%s, %s)' % (self.setting.cname, input.name, points)
 
@@ -133,23 +136,41 @@ class Brush_Lowlevel(mydrawwidget.MyBrush):
     def __init__(self):
         mydrawwidget.MyBrush.__init__(self)
         self.observers = []
+        self.hidden_observers = []
         self.settings = []
         for s in brushsettings.settings:
             self.settings.append(Setting(s, self, self.observers))
+
+        self.saved_string = None
+        self.observers.append(self.invalidate_saved_string)
+
+    def invalidate_saved_string(self):
+        self.saved_string = None
+
+    def begin_atomic(self):
+        self.hidden_observers.append(self.observers[:])
+        del self.observers[:]
+
+    def end_atomic(self):
+        self.observers[:] = self.hidden_observers.pop()
+        for f in self.observers: f()
 
     def setting_by_cname(self, cname):
         s = brushsettings.settings_dict[cname]
         return self.settings[s.index]
 
     def save_to_string(self):
+        if self.saved_string: return self.saved_string
         res  = '# mypaint brush file\n'
         res += '# you can edit this file and then select the brush in mypaint (again) to reload\n'
         res += 'version %d\n' % current_brushfile_version
         for s in brushsettings.settings:
             res += s.cname + ' ' + self.settings[s.index].save_to_string() + '\n'
+        self.saved_string = res
         return res
 
     def load_from_string(self, s):
+        self.begin_atomic()
         num_found = 0
         errors = []
         version = 1 # for files without a 'version' field
@@ -192,11 +213,14 @@ class Brush_Lowlevel(mydrawwidget.MyBrush):
                 num_found += 1
         if num_found == 0:
             errors.append(('', 'there was only garbage in this file, using defaults'))
+        self.end_atomic()
         return errors
 
     def copy_settings_from(self, other):
+        self.begin_atomic()
         for i, setting in enumerate(self.settings):
             setting.copy_from(other.settings[i])
+        self.end_atomic()
 
     def get_color_hsv(self):
         h = self.setting_by_cname('color_h').base_value
@@ -205,10 +229,12 @@ class Brush_Lowlevel(mydrawwidget.MyBrush):
         return (h, s, v)
 
     def set_color_hsv(self, hsv):
+        self.begin_atomic()
         h, s, v = hsv
         self.setting_by_cname('color_h').set_base_value(h)
         self.setting_by_cname('color_s').set_base_value(s)
         self.setting_by_cname('color_v').set_base_value(v)
+        self.end_atomic()
 
     def set_color_rgb(self, rgb):
         for i in range(3): assert rgb[i] <= 1.0

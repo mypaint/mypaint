@@ -677,11 +677,11 @@ void gtk_my_brush_stroke_to (GtkMyBrush * b, GtkMySurfaceOld * s, float x, float
     } else {
       // probably still painting (we get more events than brushdabs)
       painted = YES;
-      if (pressure == 0) g_print ("info: assuming 'still painting' while there is no pressure\n");
+      //if (pressure == 0) g_print ("info: assuming 'still painting' while there is no pressure\n");
     }
   }
   if (painted == YES) {
-    if (b->stroke_idling_time > 0) g_print ("idling ==> painting\n");
+    //if (b->stroke_idling_time > 0) g_print ("idling ==> painting\n");
     b->stroke_total_painting_time += dtime;
     b->stroke_idling_time = 0;
     // force a stroke split after some time
@@ -692,7 +692,7 @@ void gtk_my_brush_stroke_to (GtkMyBrush * b, GtkMySurfaceOld * s, float x, float
       }
     }
   } else if (painted == NO) {
-    if (b->stroke_idling_time == 0) g_print ("painting ==> idling\n");
+    //if (b->stroke_idling_time == 0) g_print ("painting ==> idling\n");
     b->stroke_idling_time += dtime;
     if (b->stroke_total_painting_time == 0) {
       // not yet painted, split to discard the useless motion data
