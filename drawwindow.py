@@ -439,6 +439,7 @@ class Window(gtk.Window):
         self.zoom(action.get_name())
 
     def move(self, command):
+        self.split_stroke()
         step = min(self.mdw.window.get_size()) / 5
         if command == 'MoveLeft':
             self.mdw.scroll(-step, 0)
@@ -450,6 +451,7 @@ class Window(gtk.Window):
             self.mdw.scroll(0, +step)
         else:
             assert 0
+        self.split_stroke() # yes, twice
 
     def zoom(self, command):
         if command == 'ZoomIn':
@@ -465,7 +467,10 @@ class Window(gtk.Window):
         z = self.zoomlevel_values[self.zoomlevel]
         #self.statusbar.push(2, 'Zoom %.2f' % z)
         #print 'Zoom %.2f' % z
+
+        self.split_stroke()
         self.mdw.zoom(z)
+        self.split_stroke()
 
     def context_cb(self, action):
         # TODO: this context-thing is not very useful like that, is it?

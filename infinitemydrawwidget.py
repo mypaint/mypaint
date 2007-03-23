@@ -19,6 +19,8 @@ class InfiniteMyDrawWidget(MyDrawWidget):
         self.canvas_h = 1
         self.viewport_x = 0.0
         self.viewport_y = 0.0
+        self.original_canvas_x0 = 0
+        self.original_canvas_y0 = 0
 
     def clear(self):
         self.discard_and_resize(1, 1)
@@ -85,14 +87,27 @@ class InfiniteMyDrawWidget(MyDrawWidget):
         self.set_viewport(self.viewport_x, self.viewport_y)
         self.resize_if_needed()
 
+
+    def set_viewport(self, x, y):
+        MyDrawWidget.set_viewport(self, x, y)
+        self.viewport_x = x
+        self.viewport_y = y
+
+    # orig = coordinates relative to the original (0, 0), in contrast
+    #        to the pixbuf coordinates (which shift at every resize)
+    def get_viewport_orig(self):
+        return (self.viewport_x - self.original_canvas_x0, self.viewport_y - self.original_canvas_y0) 
+    def set_viewport_orig(self, x, y):
+        self.set_viewport(x + self.original_canvas_x0, y + self.original_canvas_y0)
+
     def scroll(self, dx, dy):
         zoom = self.get_zoom()
-        self.viewport_x += dx/zoom
-        self.viewport_y += dy/zoom
-        self.set_viewport(self.viewport_x, self.viewport_y)
+        self.set_viewport(self.viewport_x + dx/zoom, self.viewport_y + dy/zoom)
         self.resize_if_needed()
 
-    def resize_if_needed(self, old_pixbuf = None, size = None):
+    def resize_if_needed(self, old_pixbuf = None, size = None, also_include_rect = None):
+        viewport_old_orig = self.get_viewport_orig()
+
         vp_w, vp_h = size or self.window.get_size()
         zoom = self.get_zoom()
         vp_w = int(vp_w/zoom)
@@ -106,6 +121,8 @@ class InfiniteMyDrawWidget(MyDrawWidget):
         expanded = viewport.copy()
         border = max(30, min(vp_w/4, vp_h/4)) # quite arbitrary
         expanded.expand(border)
+        if also_include_rect:
+            expanded.expandToIncludeRect(Rect(*also_include_rect))
 
         if (expanded in oldCanvas) and (not old_pixbuf):
             # canvas is big enough already
@@ -137,9 +154,9 @@ class InfiniteMyDrawWidget(MyDrawWidget):
                              dest_x=translate_x, dest_y=translate_y)
         self.set_from_pixbuf(new_pixbuf)
 
-        self.viewport_x += translate_x
-        self.viewport_y += translate_y
-        self.set_viewport(self.viewport_x, self.viewport_y)
+        self.original_canvas_x0 += translate_x
+        self.original_canvas_y0 += translate_y
+        self.set_viewport_orig(*viewport_old_orig)
 
         # free that huge memory again
         del new_pixbuf, old_pixbuf

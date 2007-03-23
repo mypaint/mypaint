@@ -968,3 +968,16 @@ void gtk_my_brush_set_state (GtkMyBrush * b, GString * data)
     //g_print ("states[%d] = %f\n", i, b->states[i]);
   }
 }
+
+// Ugly workaround for bad design. Problem being solved: the
+// infinitemydrawwidget resizes, and thus replaying a stroke can have
+// a different origin than where it was recorded. The replay code
+// compensates for this when replaying the events, but the states must
+// do this too.
+void gtk_my_brush_translate_state (GtkMyBrush * b, int dx, int dy)
+{
+  b->states[STATE_X] += dx;
+  b->states[STATE_Y] += dy;
+  b->states[STATE_ACTUAL_X] += dx;
+  b->states[STATE_ACTUAL_Y] += dy;
+}

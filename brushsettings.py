@@ -82,6 +82,8 @@ norm_speed1_slow, norm_speed2_slow
 stroke, stroke_started # stroke_started is used as boolean
 
 custom_input
+
+# hack warning: new x/y states also need to be added to gtk_my_brush_translate_state()
 '''
 
 class BrushInput:

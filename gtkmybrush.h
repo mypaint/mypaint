@@ -82,6 +82,7 @@ void gtk_my_brush_set_mapping_n (GtkMyBrush * b, int id, int input, int n);
 void gtk_my_brush_set_mapping_point (GtkMyBrush * b, int id, int input, int index, float x, float y);
 GString* gtk_my_brush_get_state (GtkMyBrush * b);
 void gtk_my_brush_set_state (GtkMyBrush * b, GString * data);
+void gtk_my_brush_translate_state (GtkMyBrush * b, int dx, int dy);
 
 void gtk_my_brush_set_print_inputs (GtkMyBrush * b, int value);
 

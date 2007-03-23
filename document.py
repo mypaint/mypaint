@@ -20,12 +20,18 @@ class Stroke:
         self.rendered = False # only used for assertions
 
     def start_recording(self, mdw, brush):
-        # FIXME: must store current zoom
         assert not self.finished
         self.mdw = mdw
 
+        self.viewport_orig_x = mdw.viewport_x - mdw.original_canvas_x0
+        self.viewport_orig_y = mdw.viewport_y - mdw.original_canvas_y0
+        self.viewport_zoom = mdw.get_zoom()
         self.brush_settings = brush.save_to_string() # fast (brush caches this string)
+
+        brush.translate_state(-mdw.original_canvas_x0, -mdw.original_canvas_y0)
         self.brush_state = brush.get_state()
+        brush.translate_state(mdw.original_canvas_x0, mdw.original_canvas_y0)
+
         self.seed = random.randrange(0x10000)
         self.brush = brush
         brush.srandom(self.seed)
@@ -35,14 +41,14 @@ class Stroke:
         #   - stroke idle and painting times are empty
 
         self.mdw.start_recording()
-        self.rendered = True # being rendered right now, while recording
+        self.rendered = True # being rendered while recording
 
     def stop_recording(self):
         assert not self.finished
         self.stroke_data = self.mdw.stop_recording()
-        self.bbox = self.brush.get_stroke_bbox()
+        x, y, w, h = self.brush.get_stroke_bbox()
+        self.bbox = (x-self.mdw.original_canvas_x0, y-self.mdw.original_canvas_y0, w, h)
         self.total_painting_time = self.brush.get_stroke_total_painting_time()
-        x, y, w, h = self.bbox
         self.empty = w <= 0 and h <= 0
         if not self.empty:
             print 'Recorded', len(self.stroke_data), 'bytes. (painting time: %.2fs)' % self.total_painting_time
@@ -54,15 +60,28 @@ class Stroke:
         assert self.finished
         mdw = surface # Currently the surface can only be a MyDrawWidget.
 
+        old_viewport_zoom = mdw.get_zoom()
+        old_viewport_orig = mdw.get_viewport_orig()
+        mdw.set_zoom(self.viewport_zoom)
+        mdw.set_viewport_orig(self.viewport_orig_x, self.viewport_orig_y)
+
+        x, y, w, h = self.bbox
+        mdw.resize_if_needed(also_include_rect=(x+mdw.original_canvas_x0, y+mdw.original_canvas_y0, w, h))
+
         b = brush.Brush_Lowlevel() # temporary brush
         b.load_from_string(self.brush_settings)
         b.set_state(self.brush_state)
+        b.translate_state(mdw.original_canvas_x0, mdw.original_canvas_y0)
         b.srandom(self.seed)
         #b.set_print_inputs(1)
         original_brush = mdw.set_brush(b)
         print 'replaying', len(self.stroke_data), 'bytes'
         mdw.replay(self.stroke_data, 1)
         mdw.set_brush(original_brush)
+
+        
+        mdw.set_zoom(old_viewport_zoom)
+        mdw.set_viewport_orig(*old_viewport_orig)
 
         self.rendered = True
 
@@ -94,22 +113,30 @@ class Layer:
             print 'nothing changed'
             return
 
+        mdw = self.mdw
+
         # Only added some new strokes?
         if len(self.rendered_strokes) < len(self.strokes):
             n = len(self.rendered_strokes)
             if self.rendered_strokes == self.strokes[:n]:
                 for new_stroke in self.strokes[n:]:
-                    new_stroke.render(self.mdw)
+                    new_stroke.render(mdw)
                 self.rendered_strokes = self.strokes[:] # copy
                 print 'only add'
                 return
                 
         print 'full rerender'
+
         # TODO: check caches here
-        self.mdw.clear() # FIXME resizes the mdw, too small
+
+        old_viewport_orig = mdw.get_viewport_orig() # mdw.clear() will reset viewport
+
+        mdw.clear()
         for stroke in self.strokes:
-            stroke.render(self.mdw)
+            stroke.render(mdw)
         self.rendered_strokes = self.strokes[:] # copy
+
+        mdw.set_viewport_orig(*old_viewport_orig)
 
     def clear(self):
         data = self.strokes
