@@ -1,9 +1,3 @@
-- layers.
-  - alpha support (for both rendering and brush strokes)
-  - rewrite the rendering code
-  - layer dialog (select / set occupancy)
-  - own image file format (instead of png)
-
 - show brush radius
   - "some symbol to see the current size of the painting-tool"
   - (mouse cursor shape, like in the GIMP? A key to show/hide it?
@@ -25,8 +19,6 @@
 - dedicated "slow random" input
   - or just "random slowness"?
     - could lead to unwanted correlations
-
-- keyboard shortcut to change brush ocupacy
 
 - canvas rotation
   - (fast rotozoom? also would be nice to use OpenGL if available)
@@ -69,4 +61,10 @@
 
 - maybe avoid gaps when using the "offset by speed"
   - and add a setting to intentionally do such gaps
+
+- layers.
+  - alpha support (for both rendering and brush strokes)
+  - new infinite surface class
+  - rewrite the rendering code
+  - layer dialog (select / set occupancy)
 

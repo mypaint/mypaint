@@ -117,6 +117,8 @@ class Window(gtk.Window):
               <menuitem action='Smaller'/>
               <menuitem action='Brighter'/>
               <menuitem action='Darker'/>
+              <menuitem action='MoreOpaque'/>
+              <menuitem action='LessOpaque'/>
               <separator/>
               <menuitem action='InvertColor'/>
               <menuitem action='PickColor'/>
@@ -155,6 +157,8 @@ class Window(gtk.Window):
             ('Darker',       None, 'Darker', None, None, self.darker_cb),
             ('Bigger',       None, 'Bigger', 'f', None, self.brush_bigger_cb),
             ('Smaller',      None, 'Smaller', 'd', None, self.brush_smaller_cb),
+            ('MoreOpaque',   None, 'More Opaque', None, None, self.more_opaque_cb),
+            ('LessOpaque',   None, 'Less Opaque', None, None, self.less_opaque_cb),
             ('PickColor',    None, 'Pick Color', 'r', None, self.pick_color_cb),
             ('ChangeColor',  None, 'Change Color', 'v', None, self.change_color_cb),
 
@@ -355,10 +359,17 @@ class Window(gtk.Window):
     def brush_bigger_cb(self, action):
         adj = self.app.brush_adjustment['radius_logarithmic']
         adj.set_value(adj.get_value() + 0.3)
-        
     def brush_smaller_cb(self, action):
         adj = self.app.brush_adjustment['radius_logarithmic']
         adj.set_value(adj.get_value() - 0.3)
+
+    def more_opaque_cb(self, action):
+        # FIXME: hm, looks this slider should be logarithmic?
+        adj = self.app.brush_adjustment['opaque']
+        adj.set_value(adj.get_value() * 1.8)
+    def less_opaque_cb(self, action):
+        adj = self.app.brush_adjustment['opaque']
+        adj.set_value(adj.get_value() / 1.8)
 
     def brighter_cb(self, action):
         cs = self.app.colorSelectionWindow 
@@ -366,7 +377,6 @@ class Window(gtk.Window):
         h, s, v = cs.get_color_hsv()
         v += 0.08
         cs.set_color_hsv((h, s, v))
-        
     def darker_cb(self, action):
         cs = self.app.colorSelectionWindow 
         cs.update()
