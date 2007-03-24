@@ -12,9 +12,6 @@ class Window(gtk.Window):
         self.set_title('Brush selection')
         self.connect('delete-event', self.app.hide_window_cb)
 
-        # TODO: load available brushes
-        # bad idea - self.brushes.append(brush.Brush(self.app))
-
         vbox = gtk.VBox()
         self.add(vbox)
 
@@ -23,15 +20,16 @@ class Window(gtk.Window):
         scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
         scroll.add_with_viewport(self.brushlist)
         vbox.pack_start(scroll)
-        #scroll.resize_children() # whyever
-
-        #vbox.pack_start(self.brushlist, expand=True, fill=True)
 
         vbox.pack_start(gtk.HSeparator(), expand=False)
 
+        expander = self.expander = gtk.Expander(label='Edit')
+        expander.set_expanded(False)
+        vbox.pack_start(expander, expand=False, fill=False)
+
         hbox = gtk.HBox()
         hbox.set_border_width(8)
-        vbox.pack_start(hbox, expand=False, fill=False)
+        expander.add(hbox)
         self.mdw = mydrawwidget.MyDrawWidget()
         # bad, fixed maximal size -- No, that's actually good!
         self.mdw.discard_and_resize(128, 128)
@@ -175,7 +173,7 @@ class BrushList(gtk.DrawingArea):
         self.tiles_w = (width / preview_total_w) or 1
         self.tiles_h = len(self.app.brushes)/self.tiles_w + 1
         height = self.tiles_h * preview_total_h
-        self.set_size_request(0, height)
+        self.set_size_request(preview_total_w, height)
         self.pixbuf = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, False, 8, width, height)
         self.pixbuf.fill(0xffffffff) # white
         i = 0
