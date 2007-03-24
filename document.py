@@ -222,6 +222,7 @@ class Layer:
             self.rendered_strokes = []
             render_new_strokes()
             mdw.set_viewport_orig(*old_viewport_orig)
+            mdw.resize_if_needed()
 
         cost = len(self.strokes)
         options.append((cost, render_from_empty))
