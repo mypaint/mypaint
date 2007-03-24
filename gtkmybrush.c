@@ -174,14 +174,6 @@ float exp_decay (float T_const, float t)
   }
 }
 
-void brush_reset (GtkMyBrush * b)
-{
-  memset(b->states, 0, sizeof(b->states[0])*STATE_COUNT);
-  b->must_reset = 1; // triggers the real reset below in brush_stroke_to
-  g_print ("brush_reset()\n");
-}
-
-
 void gtk_my_brush_settings_base_values_have_changed (GtkMyBrush * b)
 {
   // precalculate stuff that does not change dynamically
@@ -560,24 +552,6 @@ void gtk_my_brush_stroke_to (GtkMyBrush * b, GtkMySurfaceOld * s, float x, float
     return;
   }
 
-  if (b->must_reset || dtime > 5) {
-    printf("Brush reset now.\n");
-    brush_reset (b);
-    b->must_reset = 0;
-    b->states[STATE_X] = x;
-    b->states[STATE_Y] = y;
-    b->states[STATE_PRESSURE] = pressure;
-
-    // not resetting, because they will get overwritten below:
-    //b->dx, dy, dpress, dtime
-
-    b->states[STATE_ACTUAL_X] = b->states[STATE_X];
-    b->states[STATE_ACTUAL_Y] = b->states[STATE_Y];
-    b->states[STATE_STROKE] = 1.0; // start in a state as if the stroke was long finished
-    b->dtime = 0.0001; // not sure if it this is needed
-    return; // ?no movement yet?
-  }
-
   { // calculate the actual "virtual" cursor position
     float fac = 1.0 - exp_decay (b->settings[BRUSH_SLOW_TRACKING]->base_value, 100.0*dtime);
     x = b->states[STATE_X] + (x - b->states[STATE_X]) * fac;
@@ -590,14 +564,34 @@ void gtk_my_brush_stroke_to (GtkMyBrush * b, GtkMySurfaceOld * s, float x, float
   float dist_moved = b->states[STATE_DIST];
   float dist_todo = brush_count_dabs_to (b, x, y, pressure, dtime);
 
-  if (dist_todo > 300) {
-    // this happens quite often, eg when moving the cursor back into the window
-    // FIXME: bad to hardcode a distance treshold here - might look at zoomed image
-    //        better detect leaving/entering the window and reset then.
-    g_print ("Warning: NOT drawing %f dabs, resetting brush instead.\n", dist_todo);
-    g_print ("dtime=%f, dx=%f\n", dtime, x-b->states[STATE_X]);
-    b->must_reset = 1;
-    return;
+  if (dtime > 5 || dist_todo > 300) {
+
+    if (dist_todo > 300) {
+      // this happens quite often, eg when moving the cursor back into the window
+      // FIXME: bad to hardcode a distance treshold here - might look at zoomed image
+      //        better detect leaving/entering the window and reset then.
+      g_print ("Warning: NOT drawing %f dabs.\n", dist_todo);
+      g_print ("dtime=%f, dx=%f\n", dtime, x-b->states[STATE_X]);
+      //b->must_reset = 1;
+    }
+
+    printf("Brush reset.\n");
+    memset(b->states, 0, sizeof(b->states[0])*STATE_COUNT);
+
+    b->states[STATE_X] = x;
+    b->states[STATE_Y] = y;
+    b->states[STATE_PRESSURE] = pressure;
+
+    // not resetting, because they will get overwritten below:
+    //b->dx, dy, dpress, dtime
+
+    b->states[STATE_ACTUAL_X] = b->states[STATE_X];
+    b->states[STATE_ACTUAL_Y] = b->states[STATE_Y];
+    b->states[STATE_STROKE] = 1.0; // start in a state as if the stroke was long finished
+    b->dtime = 0.0001; // not sure if it this is needed
+
+    gtk_my_brush_split_stroke (b);
+    return; // ?no movement yet?
   }
 
   //g_print("dist = %f\n", b->states[STATE_DIST]);
@@ -940,8 +934,6 @@ GString* gtk_my_brush_get_state (GtkMyBrush * b)
     BS_WRITE_FLOAT (b->states[i]);
   }
 
-  //b->must_reset = 1; WTF
-
   return bs;
 }
 
@@ -951,8 +943,6 @@ void gtk_my_brush_set_state (GtkMyBrush * b, GString * data)
   char * p = data->str;
   char c;
 
-  //b->must_reset = 1; WTF
-
   BS_READ_CHAR (c);
   if (c != '1') {
     g_print ("Unknown state version ID\n");
@@ -960,7 +950,6 @@ void gtk_my_brush_set_state (GtkMyBrush * b, GString * data)
   }
 
   memset(b->states, 0, sizeof(b->states[0])*STATE_COUNT);
-  // brush_reset (mdw->brush); ??
   int i = 0;
   while (p<data->str+data->len && i < STATE_COUNT) {
     BS_READ_FLOAT (b->states[i]);

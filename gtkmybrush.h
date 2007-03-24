@@ -56,8 +56,6 @@ struct _GtkMyBrush
   double stroke_total_painting_time;
   double stroke_idling_time; 
 
-  int must_reset;
-
   // the states (get_state, set_state, reset) that change during a stroke
   float states[STATE_COUNT];
 
