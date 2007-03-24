@@ -11,7 +11,7 @@ A stroke:
 - has fixed brush settings (only brush states can change during a stroke)
 """
 
-import brush, random
+import brush, random, gc
 
 class Stroke:
     # A stroke is immutable, except a freshly created/copied one.
@@ -75,7 +75,7 @@ class Stroke:
         b.srandom(self.seed)
         #b.set_print_inputs(1)
         original_brush = mdw.set_brush(b)
-        print 'replaying', len(self.stroke_data), 'bytes'
+        #print 'replaying', len(self.stroke_data), 'bytes'
         mdw.replay(self.stroke_data, 1)
         mdw.set_brush(original_brush)
 
@@ -106,25 +106,57 @@ class Layer:
         self.mdw = mdw # MyDrawWidget used as "surface" until real layers/surfaces are implemented
         self.strokes = [] # gets manipulated directly from outside
         self.rendered_strokes = []
+        self.caches = []
+        self.strokes_to_cache = 4
+
+    def cache_state(self):
+        n = 2
+        while len(self.caches) >= n:
+            self.caches.pop(0)
+        gc.collect()
+        strokes = self.rendered_strokes[:]
+        snapshot = self.mdw.save_snapshot()
+        self.caches.append((strokes, snapshot))
 
     def rerender(self):
-        print 'rerender:',
+        print 'rerender:'
         if self.rendered_strokes == self.strokes:
             print 'nothing changed'
             return
 
         mdw = self.mdw
 
-        # Only added some new strokes?
-        if len(self.rendered_strokes) < len(self.strokes):
+        def only_add(restore=None):
+            # Only added some new strokes?
             n = len(self.rendered_strokes)
-            if self.rendered_strokes == self.strokes[:n]:
-                for new_stroke in self.strokes[n:]:
-                    new_stroke.render(mdw)
-                self.rendered_strokes = self.strokes[:] # copy
-                print 'only add'
+            if n <= len(self.strokes):
+                if self.rendered_strokes == self.strokes[:n]:
+                    if restore:
+                        mdw.load_snapshot(restore)
+                    new_strokes = self.strokes[n:]
+                    print 'rendering', len(new_strokes), 'strokes'
+                    for new_stroke in new_strokes:
+                        new_stroke.render(mdw)
+                    self.rendered_strokes = self.strokes[:] # copy
+                    return True
+            return False
+
+        if only_add():
+            print 'only add'
+            return
+
+        if self.caches:
+            print 'there are', len(self.caches), 'caches'
+        # Start from cached state?
+        while self.caches:
+            self.rendered_strokes, snapshot = self.caches[-1]
+            if only_add(snapshot):
+                print 'used cache'
                 return
-                
+            self.caches.pop()
+            gc.collect()
+            print 'discarded cache'
+
         print 'full rerender'
 
         # TODO: check caches here
@@ -132,8 +164,22 @@ class Layer:
         old_viewport_orig = mdw.get_viewport_orig() # mdw.clear() will reset viewport
 
         mdw.clear()
+        # TODO: load image, if any
+        # TODO: call cache_state() at two good moments
+        self.rendered_strokes = []
+
+        cache_at = []
+        n = self.strokes_to_cache
+        if len(self.strokes) > n:
+            cache_at.append(self.strokes[-n])
+        if len(self.strokes) > 2*n:
+            cache_at.append(self.strokes[-2*n])
+
         for stroke in self.strokes:
             stroke.render(mdw)
+            self.rendered_strokes.append(stroke)
+            if stroke in cache_at:
+                self.cache_state()
         self.rendered_strokes = self.strokes[:] # copy
 
         mdw.set_viewport_orig(*old_viewport_orig)

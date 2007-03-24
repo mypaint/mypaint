@@ -210,6 +210,8 @@ gtk_my_draw_widget_process_motion_or_button (GtkWidget *widget, guint32 time, gd
 
   g_assert (pressure >= 0 && pressure <= 1);
 
+  if (mdw->dragging) return;
+
   int dtime;
   if (!mdw->last_time) {
     dtime = 100; //ms
@@ -281,6 +283,10 @@ gtk_my_draw_widget_motion_notify (GtkWidget *widget, GdkEventMotion *event)
       mdw->dragging = 1;
       mdw->dragging_last_x = (int) event->x;
       mdw->dragging_last_y = (int) event->y;
+      if (mdw->brush) {
+        // cannot record a stroke while dragging, because the brush stores event coordinates
+        gtk_my_brush_split_stroke(mdw->brush);
+      }
     } else {
       float x, y, dx, dy;
       x = event->x;
@@ -297,7 +303,13 @@ gtk_my_draw_widget_motion_notify (GtkWidget *widget, GdkEventMotion *event)
       return TRUE;
     }
   } else {
-    mdw->dragging = 0;
+    if (mdw->dragging) {
+      mdw->dragging = 0;
+      if (mdw->brush) {
+        // cannot record a stroke while dragging, because the brush stores event coordinates
+        gtk_my_brush_split_stroke(mdw->brush);
+      }
+    }
   }
 
   double pressure;

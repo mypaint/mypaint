@@ -35,6 +35,10 @@ class InfiniteMyDrawWidget(MyDrawWidget):
         else:
             MyDrawWidget.allow_dragging(self, 0)
 
+    def save(self, filename):
+        pixbuf = self.get_nonwhite_as_pixbuf()
+        pixbuf.save(filename, 'png')
+
     def load(self, filename):
         pixbuf = gtk.gdk.pixbuf_new_from_file(filename)
         if pixbuf.get_has_alpha():
@@ -48,16 +52,18 @@ class InfiniteMyDrawWidget(MyDrawWidget):
 
             pixbuf = new_pixbuf
             print 'got pixbuf from file.'
-        self.canvas_w = pixbuf.get_width()
-        self.canvas_h = pixbuf.get_height()
-        self.viewport_x = 0.0
-        self.viewport_y = 0.0
-        # will need a bigger canvas size than that
+        self.clear()
         self.resize_if_needed(old_pixbuf = pixbuf)
 
-    def save(self, filename):
-        pixbuf = self.get_nonwhite_as_pixbuf()
-        pixbuf.save(filename, 'png')
+    def save_snapshot(self):
+        return self.get_as_pixbuf(), self.original_canvas_x0, self.original_canvas_y0
+
+    def load_snapshot(self, data):
+        pixbuf, original_canvas_x0, original_canvas_y0 = data
+
+        x = self.original_canvas_x0 - original_canvas_x0
+        y = self.original_canvas_y0 - original_canvas_y0
+        self.resize_if_needed(old_pixbuf=pixbuf, old_pixbuf_pos=(x, y))
 
     def proximity_cb(self, widget, something):
         for f in self.toolchange_observers:
@@ -105,7 +111,7 @@ class InfiniteMyDrawWidget(MyDrawWidget):
         self.set_viewport(self.viewport_x + dx/zoom, self.viewport_y + dy/zoom)
         self.resize_if_needed()
 
-    def resize_if_needed(self, old_pixbuf = None, size = None, also_include_rect = None):
+    def resize_if_needed(self, old_pixbuf = None, old_pixbuf_pos = (0, 0), size = None, also_include_rect = None):
         viewport_old_orig = self.get_viewport_orig()
 
         vp_w, vp_h = size or self.window.get_size()
@@ -113,35 +119,42 @@ class InfiniteMyDrawWidget(MyDrawWidget):
         vp_w = int(vp_w/zoom)
         vp_h = int(vp_h/zoom)
 
-        # calculation is done in canvas coordinates
+        # calculation are done in oldCanvas coordinates
         oldCanvas = Rect(0, 0, self.canvas_w, self.canvas_h)
         viewport  = Rect(int(self.viewport_x+0.5), int(self.viewport_y+0.5), vp_w, vp_h)
         
         # add space; needed to draw into the non-visible part at the border
-        expanded = viewport.copy()
         border = max(30, min(vp_w/4, vp_h/4)) # quite arbitrary
-        expanded.expand(border)
+        viewport.expand(border)
+        newCanvas = viewport.copy()
+
         if also_include_rect:
-            expanded.expandToIncludeRect(Rect(*also_include_rect))
+            # relative to (0, 0) of the current pixbuf
+            newCanvas.expandToIncludeRect(Rect(*also_include_rect))
 
-        if (expanded in oldCanvas) and (not old_pixbuf):
-            # canvas is big enough already
-            return 
-
-        # need a new, bigger canvas
-        if old_pixbuf is None:
+        if old_pixbuf:
+            x, y = old_pixbuf_pos
+            old_pixbuf_rect = Rect(x, y, old_pixbuf.get_width(), old_pixbuf.get_height())
+        else:
+            if newCanvas in oldCanvas:
+                # big enough already
+                return
             old_pixbuf = self.get_as_pixbuf()
-        # let's see what size we need it.
-        expanded.expand(1*border) # expand even further to avoid too frequent resizing
+            old_pixbuf_rect = Rect(0, 0, old_pixbuf.get_width(), old_pixbuf.get_height())
+
+            # again, avoid too frequent resizing
+            viewport.expand(border)
+            newCanvas.expandToIncludeRect(viewport)
+
+        newCanvas.expandToIncludeRect(old_pixbuf_rect)
+
+
         # now, combine the (possibly already painted) rect with the (visible) viewport
-        newCanvas = oldCanvas.copy()
-        newCanvas.expandToIncludeRect(expanded)
         self.canvas_w = newCanvas.w
         self.canvas_h = newCanvas.h
         self.discard_and_resize(self.canvas_w, self.canvas_h)
         translate_x = oldCanvas.x - newCanvas.x
         translate_y = oldCanvas.y - newCanvas.y
-        assert translate_x >= 0 and translate_y >= 0 # because new canvas must include old one
 
         # paste old image back
         w, h = newCanvas.w, newCanvas.h
@@ -151,13 +164,13 @@ class InfiniteMyDrawWidget(MyDrawWidget):
         old_pixbuf.copy_area(src_x=0, src_y=0,
                              width=old_pixbuf.get_width(), height=old_pixbuf.get_height(),
                              dest_pixbuf=new_pixbuf,
-                             dest_x=translate_x, dest_y=translate_y)
+                             dest_x=old_pixbuf_rect.x+translate_x, dest_y=old_pixbuf_rect.y+translate_y)
         self.set_from_pixbuf(new_pixbuf)
 
         self.original_canvas_x0 += translate_x
         self.original_canvas_y0 += translate_y
         self.set_viewport_orig(*viewport_old_orig)
 
-        # free that huge memory again
+        # free that memory now
         del new_pixbuf, old_pixbuf
         gc.collect()

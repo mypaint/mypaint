@@ -4,6 +4,7 @@ import gtk, os, zlib, random
 import infinitemydrawwidget
 import brush, document
 import command
+from time import time
 
 class Window(gtk.Window):
     def __init__(self, app):
@@ -233,10 +234,12 @@ class Window(gtk.Window):
         self.app.brush.set_print_inputs(0)
 
     def undo_cb(self, action):
+        t = time()
         self.split_stroke()
         self.command_stack.undo()
         self.layer.rerender()
         self.end_modifying() # FIXME: hack to do this here
+        print 'undo took %.3f seconds' % (time() - t)
 
     def redo_cb(self, action):
         self.split_stroke()
