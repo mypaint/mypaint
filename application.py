@@ -1,6 +1,6 @@
 import gtk, os
 import drawwindow, brushsettingswindow, brushselectionwindow
-import layerswindow, colorselectionwindow
+import colorselectionwindow
 import brush
 
 class Application: # singleton
@@ -41,7 +41,6 @@ class Application: # singleton
 
         w = self.colorSelectionWindow = colorselectionwindow.Window(self)
 
-        #w = self.layersWindow = layerswindow.Window(self)
         w.show_all()
 
         gtk.accel_map_load(os.path.join(self.confpath, 'accelmap.conf'))
