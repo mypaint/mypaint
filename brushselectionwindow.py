@@ -34,7 +34,8 @@ class Window(gtk.Window):
         # bad, fixed maximal size -- No, that's actually good!
         self.mdw.discard_and_resize(128, 128)
         self.mdw.clear()
-        self.mdw.set_brush(self.app.brush)
+        self.mdw_brush = brush.Brush_Lowlevel()
+        self.mdw.set_brush(self.mdw_brush)
         self.mdw.set_size_request(128, 128)
         hbox.pack_start(self.mdw, expand=False, fill=False)
 
@@ -133,6 +134,7 @@ class Window(gtk.Window):
         if brush is self.app.selected_brush:
             # selected same brush twice: load pixmap
             self.set_preview_pixbuf(brush.preview)
+        self.mdw_brush.copy_settings_from(brush)
 
 
 preview_spacing_outside = 0
