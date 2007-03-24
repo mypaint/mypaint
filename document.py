@@ -3,7 +3,7 @@ Design thoughts:
 A layer:
 - is usually a container of several strokes (strokes can be removed)
 - can be rendered onto a bitmap
-- can contain cache bitmaps, so it doesn't have to rerender all the time
+- can contain cache bitmaps, so it doesn't have to rerender all strokes all the time
 
 A stroke:
 - is a list of motion events
@@ -12,6 +12,8 @@ A stroke:
 """
 
 import brush, random, gc
+from time import time
+infinity = 99999999 
 
 class Stroke:
     # A stroke is immutable, except a freshly created/copied one.
@@ -109,16 +111,39 @@ class Layer:
         self.caches = []
         self.strokes_to_cache = 4
 
-    def cache_state(self):
-        n = 2
-        while len(self.caches) >= n:
-            self.caches.pop(0)
+    def populate_cache(self):
+        # decide whether the currently rendered pixbuf should be cached
+
+        rendered = self.rendered_strokes
+        if len(rendered) < self.strokes_to_cache:
+            # no need to cache that
+            return
+        for cached, snapshot in self.caches:
+            # does this cache contain the beginning of the currently rendered strokes?
+            if cached == rendered[:len(cached)]:
+                # would it be acceptable to go from this cache into the current state?
+                if len(rendered) - len(cached) < self.strokes_to_cache:
+                    # no need to add a new cache
+                    return
+
+        print 'adding cache (%d strokes)' % len(rendered)
+
+        t = time()
+        # the last one is the most recently used one
+        max_caches = 2
+        while len(self.caches) > max_caches-1:
+            tmp = self.caches.pop(0)
+            print 'dropping a cache with', len(tmp[0]), 'strokes'
+            del tmp
         gc.collect()
+
         strokes = self.rendered_strokes[:]
         snapshot = self.mdw.save_snapshot()
         self.caches.append((strokes, snapshot))
+        print 'caching the layer bitmap took %.3f seconds' % (time() - t)
 
     def rerender(self):
+        t1 = time()
         print 'rerender:'
         if self.rendered_strokes == self.strokes:
             print 'nothing changed'
@@ -126,70 +151,95 @@ class Layer:
 
         mdw = self.mdw
 
-        def only_add(restore=None):
-            # Only added some new strokes?
-            n = len(self.rendered_strokes)
-            if n <= len(self.strokes):
-                if self.rendered_strokes == self.strokes[:n]:
-                    if restore:
-                        mdw.load_snapshot(restore)
-                    new_strokes = self.strokes[n:]
-                    print 'rendering', len(new_strokes), 'strokes'
-                    for new_stroke in new_strokes:
-                        new_stroke.render(mdw)
-                    self.rendered_strokes = self.strokes[:] # copy
-                    return True
-            return False
+        def count_strokes_from(rendered):
+            n = len(rendered)
+            if rendered == self.strokes[:n]:
+                new_strokes = self.strokes[n:]
+                return len(new_strokes)
+            return infinity
 
-        if only_add():
+        def render_new_strokes():
+            rendered = self.rendered_strokes
+            n = len(rendered)
+            assert rendered == self.strokes[:n]
+            new_strokes = self.strokes[n:]
+
+            print 'rendering', len(new_strokes), 'strokes'
+
+            caching = True
+            # when replaying a huge amount of strokes, only populate the cache towards the end
+            if len(new_strokes) > 2*self.strokes_to_cache:
+                caching = new_strokes[-2*self.strokes_to_cache]
+
+            for new_stroke in new_strokes:
+                new_stroke.render(mdw)
+                rendered.append(new_stroke)
+                if caching is new_stroke:
+                    caching = True
+                if caching is True:
+                    self.populate_cache()
+
+            assert rendered == self.strokes
+
+
+        # will contain (cost, function) pairs of all possible actions
+        options = []
+
+        def render_from_current():
             print 'only add'
+            render_new_strokes()
+
+        cost = count_strokes_from(self.rendered_strokes)
+        cost -= 3 # bonus for not having to restore a pixbuf
+        options.append((cost, render_from_current))
+
+        if cost <= 0:
+            # no need to evaluate other options
+            render_from_current()
             return
 
-        if self.caches:
-            print 'there are', len(self.caches), 'caches'
-        # Start from cached state?
-        while self.caches:
-            self.rendered_strokes, snapshot = self.caches[-1]
-            if only_add(snapshot):
-                print 'used cache'
-                return
-            self.caches.pop()
-            gc.collect()
-            print 'discarded cache'
+        for cache in self.caches:
+            rendered, snapshot = cache
+            print 'evaluating a cache containing %d strokes' % len(rendered)
+            cost = count_strokes_from(rendered)
 
-        print 'full rerender'
+            def render_cached(rendered=rendered, snapshot=snapshot, cache=cache):
+                print 'using a cache containing %d strokes' % len(rendered)
+                # least recently used caching strategy
+                self.caches.remove(cache)
+                self.caches.append(cache)
+                mdw.load_snapshot(snapshot)
+                self.rendered_strokes = rendered[:]
+                render_new_strokes()
 
-        # TODO: check caches here
+            options.append((cost, render_cached))
 
-        old_viewport_orig = mdw.get_viewport_orig() # mdw.clear() will reset viewport
+        def render_from_empty():
+            print 'full rerender'
+            old_viewport_orig = mdw.get_viewport_orig() # mdw.clear() will reset viewport
+            mdw.clear()
+            # TODO: load image, if any (maybe like a stroke?)
+            self.rendered_strokes = []
+            render_new_strokes()
+            mdw.set_viewport_orig(*old_viewport_orig)
 
-        mdw.clear()
-        # TODO: load image, if any
-        # TODO: call cache_state() at two good moments
-        self.rendered_strokes = []
+        cost = len(self.strokes)
+        options.append((cost, render_from_empty))
 
-        cache_at = []
-        n = self.strokes_to_cache
-        if len(self.strokes) > n:
-            cache_at.append(self.strokes[-n])
-        if len(self.strokes) > 2*n:
-            cache_at.append(self.strokes[-2*n])
+        cost, render = min(options)
+        del options # garbage collector might be called by render(), allow to free cache items
 
-        for stroke in self.strokes:
-            stroke.render(mdw)
-            self.rendered_strokes.append(stroke)
-            if stroke in cache_at:
-                self.cache_state()
-        self.rendered_strokes = self.strokes[:] # copy
-
-        mdw.set_viewport_orig(*old_viewport_orig)
+        t2 = time()
+        render()
+        t3 = time()
+        print 'rerender took', t3-t1, 'seconds, wasted', t2-t1, 'seconds for evaluation'
 
     def clear(self):
-        data = self.strokes
+        data = self.strokes[:] # copy
         self.strokes = []
         self.rerender()
         return data
 
     def unclear(self, data):
-        self.strokes = data
+        self.strokes = data[:] # copy
         self.rerender()

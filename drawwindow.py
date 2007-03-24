@@ -290,6 +290,7 @@ class Window(gtk.Window):
         if not self.stroke.empty:
             self.end_modifying() # FIXME: hack to do this here
             self.command_stack.add(command.Stroke(self.layer, self.stroke))
+            self.layer.populate_cache()
 
         self.stroke = document.Stroke()
         self.stroke.start_recording(self.mdw, self.app.brush)
