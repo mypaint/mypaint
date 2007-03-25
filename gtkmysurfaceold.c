@@ -249,7 +249,19 @@ gtk_my_surface_old_get_nonwhite_region (GtkMySurfaceOld * s, Rect * r)
       guchar * rgb;
       rgb = PixelXY(s, x, y);
       if (rgb[0] != 255 || rgb[1] != 255 || rgb[2] != 255) {
-        ExpandRectToIncludePoint(r, x, y);
+        //ExpandRectToIncludePoint(r, x, y);
+        { // manually inlined:
+          if (r->w == 0) {
+            r->w = 1; r->h = 1;
+            r->x = x; r->y = y;
+          } else {
+            if (x < r->x) { r->w += r->x-x; r->x = x; } else
+            if (x >= r->x+r->w) { r->w = x - r->x + 1; }
+            
+            if (y < r->y) { r->h += r->y-y; r->y = y; } else
+            if (y >= r->y+r->h) { r->h = y - r->y + 1; }
+          }
+        }
       }
     }
   }
