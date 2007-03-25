@@ -142,13 +142,8 @@ class Layer:
         self.caches.append((strokes, snapshot))
         print 'caching the layer bitmap took %.3f seconds' % (time() - t)
 
-    def rerender(self):
+    def rerender(self, only_estimate_cost=False):
         t1 = time()
-        print 'rerender:'
-        if self.rendered_strokes == self.strokes:
-            print 'nothing changed'
-            return
-
         mdw = self.mdw
 
         def count_strokes_from(rendered):
@@ -181,7 +176,6 @@ class Layer:
 
             assert rendered == self.strokes
 
-
         # will contain (cost, function) pairs of all possible actions
         options = []
 
@@ -190,18 +184,19 @@ class Layer:
             render_new_strokes()
 
         cost = count_strokes_from(self.rendered_strokes)
-        cost -= 3 # bonus for not having to restore a pixbuf
         options.append((cost, render_from_current))
 
-        if cost <= 0:
-            # no need to evaluate other options
-            render_from_current()
-            return
+        if cost <= 1:
+            # no need to evaluate more options
+            if not only_estimate_cost:
+                render_from_current()
+            return cost
 
         for cache in self.caches:
             rendered, snapshot = cache
             print 'evaluating a cache containing %d strokes' % len(rendered)
             cost = count_strokes_from(rendered)
+            cost += 3 # penalty for loading a pixbuf
 
             def render_cached(rendered=rendered, snapshot=snapshot, cache=cache):
                 print 'using a cache containing %d strokes' % len(rendered)
@@ -231,9 +226,11 @@ class Layer:
         del options # garbage collector might be called by render(), allow to free cache items
 
         t2 = time()
-        render()
+        if not only_estimate_cost:
+            render()
         t3 = time()
-        print 'rerender took', t3-t1, 'seconds, wasted', t2-t1, 'seconds for evaluation'
+        print 'rerender took', t3-t1, 'seconds, wasted', t2-t1, 'seconds for cost evaluation'
+        return cost
 
     def clear(self):
         data = self.strokes[:] # copy

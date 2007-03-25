@@ -38,6 +38,7 @@ class Window(gtk.Window):
         self.zoomlevel = self.zoomlevel_values.index(1.0)
 
         self.modifying = False
+        self.paint_below_stroke = None
 
         self.layer = document.Layer(self.mdw)
         self.command_stack = command.CommandStack()
@@ -68,6 +69,9 @@ class Window(gtk.Window):
               <separator/>
               <menuitem action='ModifyLastStroke'/>
               <menuitem action='ModifyEnd'/>
+              <separator/>
+              <menuitem action='LowerLastStroke'/>
+              <menuitem action='RaiseLastStroke'/>
             </menu>
             <menu action='ViewMenu'>
               <menuitem action='Zoom1'/>
@@ -145,11 +149,13 @@ class Window(gtk.Window):
             ('Quit',         None, 'Quit', None, None, self.quit_cb),
 
 
-            ('EditMenu',     None, 'Edit'),
-            ('Undo',         None, 'Undo', '<control>Z', None, self.undo_cb),
-            ('Redo',         None, 'Redo', '<control>Y', None, self.redo_cb),
-            ('ModifyLastStroke', None, 'Modify Last Stroke', 'm', None, self.modify_last_stroke_cb),
-            ('ModifyEnd',    None, 'Stop Modifying', '<control>m', None, self.modify_end_cb),
+            ('EditMenu',           None, 'Edit'),
+            ('Undo',               None, 'Undo', '<control>Z', None, self.undo_cb),
+            ('Redo',               None, 'Redo', '<control>Y', None, self.redo_cb),
+            ('ModifyLastStroke',   None, 'Modify Last Stroke', 'm', None, self.modify_last_stroke_cb),
+            ('ModifyEnd',          None, 'Stop Modifying', '<control>m', None, self.modify_end_cb),
+            ('LowerLastStroke',    None, 'Lower Last Stroke', 'Page_Down', None, self.lower_or_raise_last_stroke_cb),
+            ('RaiseLastStroke',    None, 'Raise Last Stroke', 'Page_Up', None, self.lower_or_raise_last_stroke_cb),
 
             ('BrushMenu',    None, 'Brush'),
             ('InvertColor',  None, 'Invert Color', 'x', None, self.invert_color_cb),
@@ -285,6 +291,44 @@ class Window(gtk.Window):
     def modify_end_cb(self, action):
         self.end_modifying()
 
+    def lower_or_raise_last_stroke_cb(self, action):
+        action = action.get_name()
+        self.split_stroke()
+        self.end_modifying() # FIXME: hack to do this here
+
+        cmd = self.command_stack.get_last_command()
+        if not isinstance(cmd, command.Stroke):
+            self.statusbar.push(4, 'last command was not a stroke')
+            return
+
+        # note: you can undo->lower->redo
+        # this history manipluation is not in the undo/redo spirit
+        # let's say it's a feature, not a bug
+        self.command_stack.undo()
+
+        if action == 'LowerLastStroke':
+            cmd.z -= 1
+        elif action == 'RaiseLastStroke':
+            cmd.z += 1
+        else:
+            assert False
+                
+        if cmd.z < 0:
+            cmd.z = 0
+        if cmd.z >= len(self.layer.strokes):
+            cmd.z = len(self.layer.strokes)
+            self.paint_below_stroke = None
+        else:
+            self.paint_below_stroke = self.layer.strokes[cmd.z]
+
+        self.command_stack.redo()
+        self.layer.rerender()
+
+        self.statusbar.push(4, '')
+
+    def raise_last_stroke_cb(self, action):
+        pass
+
     def split_stroke(self):
         # let the brush emit the signal
         self.app.brush.split_stroke()
@@ -293,7 +337,15 @@ class Window(gtk.Window):
         self.stroke.stop_recording()
         if not self.stroke.empty:
             self.end_modifying() # FIXME: hack to do this here
-            self.command_stack.add(command.Stroke(self.layer, self.stroke))
+
+            pbs = self.paint_below_stroke
+            if pbs and pbs in self.layer.strokes:
+                z = self.layer.strokes.index(pbs)
+            else:
+                z = -1
+
+            self.command_stack.add(command.Stroke(self.layer, self.stroke, z))
+            self.layer.rerender()
             self.layer.populate_cache()
 
         self.stroke = document.Stroke()

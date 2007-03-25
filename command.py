@@ -42,17 +42,22 @@ class Action:
         assert False, 'abstract method'
 
 class Stroke(Action):
-    def __init__(self, layer, stroke):
+    def __init__(self, layer, stroke, z=-1):
         self.layer = layer
         self.stroke = stroke # immutable
+        if z == -1:
+            z = len(layer.strokes)
+        self.z = z
     def execute(self):
-        # already rendered
-        self.layer.strokes.append(self.stroke)
+        # this stroke has been rendered while recording
         self.layer.rendered_strokes.append(self.stroke)
+        self.redo()
     def undo(self):
         self.layer.strokes.remove(self.stroke)
     def redo(self):
-        self.layer.strokes.append(self.stroke)
+        assert self.z >= 0
+        assert self.z <= len(self.layer.strokes)
+        self.layer.strokes.insert(self.z, self.stroke)
 
 class ClearLayer(Action):
     def __init__(self, layer):
