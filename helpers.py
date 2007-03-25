@@ -4,6 +4,8 @@ class Rect:
         self.y = y
         self.w = w
         self.h = h
+    def tuple(self):
+        return (self.x, self.y, self.w, self.h)
     def copy(self):
         return Rect(self.x, self.y, self.w, self.h)
     def expand(self, border):

@@ -307,9 +307,32 @@ class Window(gtk.Window):
         self.command_stack.undo()
 
         if action == 'LowerLastStroke':
-            cmd.z -= 1
+            # lower it such that the visible result changes
+            intersections = []
+            rect = cmd.stroke.bbox
+            for z, stroke in enumerate(self.layer.strokes):
+                stroke.z = z
+                if stroke is cmd.stroke: continue
+                if rect.overlaps(stroke.bbox):
+                    intersections.append(stroke)
+
+            below = [stroke for stroke in intersections if stroke.z < cmd.z]
+            print len(below), 'strokes are below'
+            if below:
+                def cmpfunc(a, b):
+                    return cmp(a.z, b.z)
+                below.sort(cmpfunc)
+                cmd.z = below[-1].z
+            else:
+                cmd.z = 0
+
+            # clean up
+            for stroke in self.layer.strokes:
+                del stroke.z
+
         elif action == 'RaiseLastStroke':
-            cmd.z += 1
+            # raise to top, because it is cheapest to render there
+            cmd.z = len(self.layer.strokes)
         else:
             assert False
                 

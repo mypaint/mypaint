@@ -11,7 +11,7 @@ A stroke:
 - has fixed brush settings (only brush states can change during a stroke)
 """
 
-import brush, random, gc
+import brush, helpers, random, gc
 from time import time
 infinity = 99999999 
 
@@ -49,7 +49,7 @@ class Stroke:
         assert not self.finished
         self.stroke_data = self.mdw.stop_recording()
         x, y, w, h = self.brush.get_stroke_bbox()
-        self.bbox = (x-self.mdw.original_canvas_x0, y-self.mdw.original_canvas_y0, w, h)
+        self.bbox = helpers.Rect(x-self.mdw.original_canvas_x0, y-self.mdw.original_canvas_y0, w, h)
         self.total_painting_time = self.brush.get_stroke_total_painting_time()
         self.empty = w <= 0 and h <= 0
         if not self.empty:
@@ -67,7 +67,7 @@ class Stroke:
         mdw.set_zoom(self.viewport_zoom)
         mdw.set_viewport_orig(self.viewport_orig_x, self.viewport_orig_y)
 
-        x, y, w, h = self.bbox
+        x, y, w, h = self.bbox.tuple()
         mdw.resize_if_needed(also_include_rect=(x+mdw.original_canvas_x0, y+mdw.original_canvas_y0, w, h))
 
         b = brush.Brush_Lowlevel() # temporary brush
