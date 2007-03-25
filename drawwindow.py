@@ -154,7 +154,7 @@ class Window(gtk.Window):
             ('Redo',               None, 'Redo', '<control>Y', None, self.redo_cb),
             ('ModifyLastStroke',   None, 'Modify Last Stroke', 'm', None, self.modify_last_stroke_cb),
             ('ModifyEnd',          None, 'Stop Modifying', '<control>m', None, self.modify_end_cb),
-            ('LowerLastStroke',    None, 'Lower Last Stroke', 'Page_Down', None, self.lower_or_raise_last_stroke_cb),
+            ('LowerLastStroke',    None, 'Lower Last Stroke (Slow!)', 'Page_Down', None, self.lower_or_raise_last_stroke_cb),
             ('RaiseLastStroke',    None, 'Raise Last Stroke', 'Page_Up', None, self.lower_or_raise_last_stroke_cb),
 
             ('BrushMenu',    None, 'Brush'),
@@ -258,19 +258,31 @@ class Window(gtk.Window):
         self.layer.rerender()
         self.end_modifying() # FIXME: hack to do this here
 
+    def get_recent_strokes(self, max_count):
+        result = []
+        for cmd in reversed(self.command_stack.undo_stack):
+            if isinstance(cmd, command.Stroke):
+                if cmd.stroke in self.layer.strokes:
+                    result.append(cmd.stroke)
+                    if len(result) >= max_count:
+                        return result
+        return result
+
     def modify_last_stroke_cb(self, action):
         self.split_stroke()
         count = 1
         if self.modifying:
             cmd = self.command_stack.get_last_command()
             if isinstance(cmd, command.ModifyStrokes):
-                count = cmd.count + 1
+                count = len(cmd.strokes) + 1
                 if count > len(self.layer.strokes):
                     print 'All strokes selected already!'
                     return
                 self.command_stack.undo()
 
-        cmd = command.ModifyStrokes(self.layer, count, self.app.brush)
+        
+        strokes = self.get_recent_strokes(count)
+        cmd = command.ModifyStrokes(self.layer, strokes, self.app.brush)
         self.command_stack.add(cmd)
 
         self.layer.rerender()
@@ -347,7 +359,10 @@ class Window(gtk.Window):
         self.command_stack.redo()
         self.layer.rerender()
 
-        self.statusbar.push(4, '')
+        if self.paint_below_stroke:
+            self.statusbar.push(4, 'painting below other strokes (slow)')
+        else:
+            self.statusbar.push(4, '')
 
     def raise_last_stroke_cb(self, action):
         pass
@@ -381,13 +396,14 @@ class Window(gtk.Window):
         if self.modifying:
             cmd = self.command_stack.get_last_command()
             if isinstance(cmd, command.ModifyStrokes):
-                print 'redo', cmd.count, 'modified strokes'
+                count = len(cmd.strokes)
+                print 'redo', count, 'modified strokes'
                 self.command_stack.undo()
                 cmd.set_new_brush(self.app.brush)
                 self.command_stack.add(cmd)
                 self.layer.rerender()
 
-                if cmd.count == 1:
+                if count == 1:
                     self.statusbar.pop(3)
                     self.statusbar.push(3, 'modifying one stroke (hit again to add more)')
 

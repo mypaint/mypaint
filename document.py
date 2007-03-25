@@ -229,7 +229,7 @@ class Layer:
         if not only_estimate_cost:
             render()
         t3 = time()
-        print 'rerender took', t3-t1, 'seconds, wasted', t2-t1, 'seconds for cost evaluation'
+        print 'rerender took %.3f seconds, wasted %.3f seconds for cost evaluation' % (t3-t1, t2-t1)
         return cost
 
     def clear(self):

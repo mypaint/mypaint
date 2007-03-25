@@ -70,24 +70,23 @@ class ClearLayer(Action):
     redo = execute
 
 class ModifyStrokes(Action):
-    def __init__(self, layer, count, new_brush):
+    def __init__(self, layer, strokes, new_brush):
         self.layer = layer
-        self.count = count
+        self.strokes = strokes
         self.old_strokes = None
         self.set_new_brush(new_brush)
     def set_new_brush(self, new_brush):
         assert not self.old_strokes
         self.new_brush_settings = new_brush.save_to_string()
     def execute(self):
-        assert self.count > 0 
-        assert self.count <= len(self.layer.strokes)
-        self.old_strokes = self.layer.strokes[-self.count:]
-        new_strokes = [s.copy() for s in self.old_strokes]
-        for s in new_strokes:
+        self.old_strokes = self.layer.strokes[:] # copy
+        for s in self.strokes:
+            i = self.layer.strokes.index(s)
+            s = s.copy()
             s.change_brush_settings(self.new_brush_settings)
-        self.layer.strokes[-self.count:] = new_strokes
+            self.layer.strokes[i] = s
     def undo(self):
-        self.layer.strokes[-self.count:] = self.old_strokes
+        self.layer.strokes = self.old_strokes[:] # copy
         self.old_strokes = None
     redo = execute
 
