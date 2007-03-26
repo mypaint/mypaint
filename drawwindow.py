@@ -44,6 +44,7 @@ class Window(gtk.Window):
         self.command_stack = command.CommandStack()
         self.stroke = document.Stroke()
         self.stroke.start_recording(self.mdw, self.app.brush)
+        self.pending_actions = [self.split_stroke]
         self.app.brush.observers.append(self.brush_modified_cb)
         self.app.brush.connect("split-stroke", self.split_stroke_cb)
 
@@ -244,19 +245,43 @@ class Window(gtk.Window):
     def dont_print_inputs_cb(self, action):
         self.app.brush.set_print_inputs(0)
 
+    def finish_pending_actions(self, skip=None):
+        # this function must be called before manipulation the command stack
+        for f in self.pending_actions[:]:
+            if f == skip: continue
+            if f not in self.pending_actions: continue # list modified
+            f()
+
+    def split_stroke(self):
+        # let the brush emit the signal (calls self.split_stroke_cb)
+        self.app.brush.split_stroke()
+
+    def split_stroke_cb(self, widget):
+        self.stroke.stop_recording()
+        if not self.stroke.empty:
+            self.finish_pending_actions(skip=self.split_stroke)
+            pbs = self.paint_below_stroke
+            if pbs and pbs in self.layer.strokes:
+                z = self.layer.strokes.index(pbs)
+            else:
+                z = -1
+
+            self.command_stack.add(command.Stroke(self.layer, self.stroke, z))
+            self.layer.rerender()
+            self.layer.populate_cache()
+
+        self.stroke = document.Stroke()
+        self.stroke.start_recording(self.mdw, self.app.brush)
+
     def undo_cb(self, action):
-        t = time()
-        self.split_stroke()
+        self.finish_pending_actions()
         self.command_stack.undo()
         self.layer.rerender()
-        self.end_modifying() # FIXME: hack to do this here
-        print 'undo took %.3f seconds' % (time() - t)
 
     def redo_cb(self, action):
-        self.split_stroke()
+        self.finish_pending_actions()
         self.command_stack.redo()
         self.layer.rerender()
-        self.end_modifying() # FIXME: hack to do this here
 
     def get_recent_strokes(self, max_count):
         result = []
@@ -269,9 +294,10 @@ class Window(gtk.Window):
         return result
 
     def modify_last_stroke_cb(self, action):
-        self.split_stroke()
+        self.finish_pending_actions(skip=self.end_modifying)
         count = 1
         if self.modifying:
+            assert self.end_modifying in self.pending_actions
             cmd = self.command_stack.get_last_command()
             if isinstance(cmd, command.ModifyStrokes):
                 count = len(cmd.strokes) + 1
@@ -279,8 +305,10 @@ class Window(gtk.Window):
                     print 'All strokes selected already!'
                     return
                 self.command_stack.undo()
+        else:
+            assert self.end_modifying not in self.pending_actions
+            self.pending_actions.append(self.end_modifying)
 
-        
         strokes = self.get_recent_strokes(count)
         cmd = command.ModifyStrokes(self.layer, strokes, self.app.brush)
         self.command_stack.add(cmd)
@@ -295,18 +323,18 @@ class Window(gtk.Window):
             self.statusbar.push(3, 'modifying %d strokes' % count)
 
     def end_modifying(self):
-        if not self.modifying:
-            return
+        assert self.modifying
         self.statusbar.pop(3)
         self.modifying = False
+        self.pending_actions.remove(self.end_modifying)
 
     def modify_end_cb(self, action):
-        self.end_modifying()
+        if self.modifying:
+            self.end_modifying()
 
     def lower_or_raise_last_stroke_cb(self, action):
+        self.finish_pending_actions()
         action = action.get_name()
-        self.split_stroke()
-        self.end_modifying() # FIXME: hack to do this here
 
         cmd = self.command_stack.get_last_command()
         if not isinstance(cmd, command.Stroke):
@@ -364,40 +392,16 @@ class Window(gtk.Window):
         else:
             self.statusbar.push(4, '')
 
-    def raise_last_stroke_cb(self, action):
-        pass
-
-    def split_stroke(self):
-        # let the brush emit the signal
-        self.app.brush.split_stroke()
-
-    def split_stroke_cb(self, widget):
-        self.stroke.stop_recording()
-        if not self.stroke.empty:
-            self.end_modifying() # FIXME: hack to do this here
-
-            pbs = self.paint_below_stroke
-            if pbs and pbs in self.layer.strokes:
-                z = self.layer.strokes.index(pbs)
-            else:
-                z = -1
-
-            self.command_stack.add(command.Stroke(self.layer, self.stroke, z))
-            self.layer.rerender()
-            self.layer.populate_cache()
-
-        self.stroke = document.Stroke()
-        self.stroke.start_recording(self.mdw, self.app.brush)
-
     def brush_modified_cb(self):
         # OPTIMIZE: called at every brush setting modification, must return fast
         self.split_stroke()
 
         if self.modifying:
+            self.finish_pending_actions(skip=self.end_modifying)
             cmd = self.command_stack.get_last_command()
             if isinstance(cmd, command.ModifyStrokes):
                 count = len(cmd.strokes)
-                print 'redo', count, 'modified strokes'
+                #print 'redo', count, 'modified strokes'
                 self.command_stack.undo()
                 cmd.set_new_brush(self.app.brush)
                 self.command_stack.add(cmd)
@@ -433,10 +437,11 @@ class Window(gtk.Window):
         return True
 
     def clear_cb(self, action):
-        self.split_stroke()
+        self.finish_pending_actions()
         cmd = command.ClearLayer(self.layer)
         self.command_stack.add(cmd)
         self.statusbar.pop(1) # FIXME hm? undoable?
+        self.layer.rerender()
         
     def invert_color_cb(self, action):
         self.app.brush.invert_color()
@@ -476,11 +481,17 @@ class Window(gtk.Window):
         cs.set_color_hsv((h, s, v))
         
     def open_file(self, filename):
-        self.mdw.load(filename)
+        self.finish_pending_actions()
+        pixbuf = gtk.gdk.pixbuf_new_from_file(filename)
+        cmd = command.LoadImage(self.layer, pixbuf)
+        self.command_stack.add(cmd)
+        self.layer.rerender()
+
         self.statusbar.pop(1)
         self.statusbar.push(1, 'Loaded from ' + filename)
 
     def save_file(self, filename):
+        self.finish_pending_actions()
         self.mdw.save(filename)
         self.statusbar.pop(1)
         self.statusbar.push(1, 'Saved to ' + filename)
@@ -537,6 +548,7 @@ class Window(gtk.Window):
         dialog.hide()
 
     def quit_cb(self, action):
+        self.finish_pending_actions()
         return self.app.quit()
 
     def move_cb(self, action):
@@ -557,7 +569,7 @@ class Window(gtk.Window):
             self.mdw.scroll(0, +step)
         else:
             assert 0
-        self.split_stroke() # yes, twice
+        self.split_stroke() # record new stroke with new coordinates
 
     def zoom(self, command):
         if command == 'ZoomIn':
@@ -576,7 +588,7 @@ class Window(gtk.Window):
 
         self.split_stroke()
         self.mdw.zoom(z)
-        self.split_stroke()
+        self.split_stroke() # record new stroke with new coordinates
 
     def context_cb(self, action):
         # TODO: this context-thing is not very useful like that, is it?

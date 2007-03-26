@@ -22,10 +22,13 @@ class InfiniteMyDrawWidget(MyDrawWidget):
         self.original_canvas_x0 = 0
         self.original_canvas_y0 = 0
 
-    def clear(self):
+    def clear_internal(self):
         self.discard_and_resize(1, 1)
         self.init_canvas()
         MyDrawWidget.clear(self)
+
+    def clear(self):
+        self.clear_internal()
         if self.window: 
             self.resize_if_needed()
 
@@ -39,20 +42,22 @@ class InfiniteMyDrawWidget(MyDrawWidget):
         pixbuf = self.get_nonwhite_as_pixbuf()
         pixbuf.save(filename, 'png')
 
-    def load(self, filename):
-        pixbuf = gtk.gdk.pixbuf_new_from_file(filename)
+    def load(self, filename_or_pixbuf):
+        if isinstance(filename_or_pixbuf, str):
+            pixbuf = gtk.gdk.pixbuf_new_from_file(filename)
+        else:
+            pixbuf = filename_or_pixbuf
+
+        self.clear_internal()
+
         if pixbuf.get_has_alpha():
             print 'Loaded file has an alpha channel. Rendering it on white instead.'
             print 'NOT IMPLEMENTED'
-            return
-            TODO
-            w, h = pixbuf.get_width(), pixbuf.get_height()
-            new_pixbuf = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, False, 8, w, h)
-            new_pixbuf.fill(0xffffffff) # white
-
-            pixbuf = new_pixbuf
-            print 'got pixbuf from file.'
-        self.clear()
+            #TODO
+            #w, h = pixbuf.get_width(), pixbuf.get_height()
+            #new_pixbuf = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, False, 8, w, h)
+            #new_pixbuf.fill(0xffffffff) # white
+            #pixbuf = new_pixbuf
         self.resize_if_needed(old_pixbuf = pixbuf)
 
     def save_snapshot(self):
