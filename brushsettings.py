@@ -24,7 +24,7 @@ settings_list = [
     ['opaque_multiply', 'opaque multiply', False, 0.0, 0.0, 1.0, "This gets multiplied with opaque. It is used for making opaque depend on pressure (or other inputs)."],
     ['opaque_linearize', 'opaque linearize', True, 0.0, 0.9, 2.0, "Correct the nonlinearity introduced by blending multiple dabs on top of each other. This correction should get you a linear (\"natural\") pressure response when pressure is mapped to opaque_multiply, as it is usually done. 0.9 is good for standard strokes, set it smaller if your brush scatters a lot, or higher if you use dabs_per_second.\n0.0 the opaque value above is for the individual dabs\n1.0 the opaque value above is for the final brush stroke, assuming each pixel gets (dabs_per_radius*2) brushdabs on average during a stroke"],
     ['radius_logarithmic', 'radius', False, -2.0, 2.0, 5.0, "basic brush radius (logarithmic)\n 0.7 means 2 pixels\n 3.0 means 20 pixels"],
-    ['hardness', 'hardness', False, 0.0, 1.0, 1.0, "hard brush-circle borders (setting to zero will draw nothing; it's not implemented like in GIMP, I haven't figured out yet)"],
+    ['hardness', 'hardness', False, 0.0, 0.8, 1.0, "hard brush-circle borders (setting to zero will draw nothing)"],
     ['dabs_per_basic_radius', 'dabs per basic radius', True, 0.0, 0.0, 5.0, "how many dabs to draw while the pointer moves a distance of one brush radius (more precise: the base value of the radius)"],
     ['dabs_per_actual_radius', 'dabs per actual radius', True, 0.0, 2.0, 5.0, "same as above, but the radius actually drawn is used, which can change dynamically"],
     ['dabs_per_second', 'dabs per second', True, 0.0, 0.0, 80.0, "dabs to draw each second, no matter how far the pointer moves"],
@@ -38,6 +38,7 @@ settings_list = [
     ['offset_by_speed_slowness', 'offset by speed slowness', False, 0.0, 1.0, 15.0, "how slow the offset goes back to zero when the cursor stops moving; 0 means there will never be any offset left"],
     ['slow_tracking', 'slow position tracking', True, 0.0, 0.0, 10.0, "Slowdown pointer tracking speed. 0 disables it, higher values remove more jitter in cursor movements. Useful for drawing smooth, comic-like outlines."],
     ['slow_tracking_per_dab', 'slow tracking per dab', False, 0.0, 0.0, 10.0, "Similar as above but at brushdab level (ignoring how much time has past, if brushdabs do not depend on time)"],
+    ['tracking_noise', 'tracking noise', True, 0.0, 0.0, 12.0, "add randomness to the mouse pointer; this usually generates many small lines in random directions; try this together with slow tracking for smoother noise (FIXME: does that really work?)"],
 
     ['color_h', 'color hue', True, 0.0, 0.0, 1.0, "color hue"],
     ['color_s', 'color saturation', True, -0.5, 0.0, 1.5, "color saturation"],
@@ -52,6 +53,9 @@ settings_list = [
     ['stroke_holdtime', 'stroke hold time', False, 0.0, 0.0, 10.0, "This defines how long the stroke input stays at 1.0. After that it will reset to 0.0 and start growing again, even if the stroke is not yet finished.\n2.0 means twice as long as it takes to go from 0.0 to 1.0\n9.9 and bigger stands for infinite"],
     ['custom_input', 'custom input', False, -5.0, 0.0, 5.0, "Set the custom input to this value. If it is slowed down, move it towards this value (see below). The idea is that you make this input depend on a mixture of pressure/speed/whatever, and then make other settings depend on this 'custom input' instead of repeating this combination everywhere you need it.\nIf you make it change 'by random' you can generate a slow (smooth) random input."],
     ['custom_input_slowness', 'custom input slowness', False, 0.0, 0.0, 10.0, "How slow the custom input actually follows the desired value (the one above). This happens at brushdab level (ignoring how much time has past, if brushdabs do not depend on time).\n0.0 no slowdown (changes apply instantly)"],
+
+    #['dab2_opacity_fac', 'second dab opaque', False, 0.0, 0.0, 2.0, "0.0 disable the second dab\n1.0 as opaque as the first dab\n2.0 twice as opaque as the first dab"],
+    #['dab2_position_noise', 'second position noise',
     ]
 
 
@@ -83,7 +87,7 @@ stroke, stroke_started # stroke_started is used as boolean
 
 custom_input
 
-# hack warning: new x/y states also need to be added to gtk_my_brush_translate_state()
+# hack warning: new absolute x/y states also need to be added to gtk_my_brush_translate_state()
 '''
 
 class BrushInput:

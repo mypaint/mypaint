@@ -553,6 +553,16 @@ void gtk_my_brush_stroke_to (GtkMyBrush * b, GtkMySurfaceOld * s, float x, float
   }
 
   { // calculate the actual "virtual" cursor position
+
+    // noise first
+    if (b->settings[BRUSH_TRACKING_NOISE]->base_value) {
+      // OPTIMIZE: expf() called too often
+      float base_radius = expf(b->settings[BRUSH_RADIUS_LOGARITHMIC]->base_value);
+
+      x += rand_gauss (b->rng) * b->settings[BRUSH_TRACKING_NOISE]->base_value * base_radius;
+      y += rand_gauss (b->rng) * b->settings[BRUSH_TRACKING_NOISE]->base_value * base_radius;
+    }
+
     float fac = 1.0 - exp_decay (b->settings[BRUSH_SLOW_TRACKING]->base_value, 100.0*dtime);
     x = b->states[STATE_X] + (x - b->states[STATE_X]) * fac;
     y = b->states[STATE_Y] + (y - b->states[STATE_Y]) * fac;

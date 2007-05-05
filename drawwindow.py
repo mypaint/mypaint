@@ -284,13 +284,18 @@ class Window(gtk.Window):
         self.layer.rerender()
 
     def get_recent_strokes(self, max_count):
+        #self.all_strokes
+        #FIXME: must check modified strokes too
         result = []
+        #modified = {}
         for cmd in reversed(self.command_stack.undo_stack):
             if isinstance(cmd, command.Stroke):
                 if cmd.stroke in self.layer.strokes:
                     result.append(cmd.stroke)
                     if len(result) >= max_count:
                         return result
+        #    elif isinstance(cmd, command.ModifyStrokes):
+        #        xx
         return result
 
     def modify_last_stroke_cb(self, action):
