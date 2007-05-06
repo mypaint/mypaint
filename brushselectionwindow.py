@@ -7,6 +7,7 @@ class Window(gtk.Window):
         gtk.Window.__init__(self)
         self.app = app
         self.app.brush_selected_callbacks.insert(0, self.brush_selected_cb)
+        self.app.brush.observers.append(self.brush_modified_cb)
         self.add_accel_group(self.app.accel_group)
 
         self.set_title('Brush selection')
@@ -134,7 +135,9 @@ class Window(gtk.Window):
         if brush is self.app.selected_brush:
             # selected same brush twice: load pixmap
             self.set_preview_pixbuf(brush.preview)
-        self.mdw_brush.copy_settings_from(brush)
+
+    def brush_modified_cb(self):
+        self.mdw_brush.copy_settings_from(self.app.brush)
 
 
 preview_spacing_outside = 0
