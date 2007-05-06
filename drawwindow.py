@@ -1,4 +1,4 @@
-# -*- coding: utf8 -*-
+# coding: utf8
 "the main drawing window"
 import gtk, os, zlib, random
 import infinitemydrawwidget
