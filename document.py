@@ -60,8 +60,8 @@ class Stroke:
         self.bbox = helpers.Rect(x-self.mdw.original_canvas_x0, y-self.mdw.original_canvas_y0, w, h)
         self.total_painting_time = self.brush.get_stroke_total_painting_time()
         self.empty = w <= 0 and h <= 0
-        if not self.empty:
-            print 'Recorded', len(self.stroke_data), 'bytes. (painting time: %.2fs)' % self.total_painting_time
+        #if not self.empty:
+        #    print 'Recorded', len(self.stroke_data), 'bytes. (painting time: %.2fs)' % self.total_painting_time
         #print 'Compressed size:', len(zlib.compress(self.stroke_data)), 'bytes.'
         del self.mdw, self.brush
         self.finished = True
@@ -166,7 +166,7 @@ class Layer:
         print 'caching the layer bitmap took %.3f seconds' % (time() - t)
 
     def rerender(self, only_estimate_cost=False):
-        print 'rerender'
+        #print 'rerender'
         t1 = time()
         mdw = self.mdw
 
@@ -178,7 +178,7 @@ class Layer:
 
         def render_new_strokes():
             new_strokes = strokes_from_to(self.rendered, self)
-            print 'rendering', len(new_strokes), 'strokes'
+            #print 'rendering', len(new_strokes), 'strokes'
 
             caching = True
             # when replaying a huge amount of strokes, only populate the cache towards the end
