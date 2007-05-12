@@ -1,9 +1,3 @@
-- show brush radius
-  - "some symbol to see the current size of the painting-tool"
-  - (mouse cursor shape, like in the GIMP? A key to show/hide it?
-    - a key to quickly blink the shape? hmm...
-    - note: shape size changes quickly!
-
 - frame.
   - ("simulates" a finite canvas; infinite canvas alone is awful for artists)
   - visual only (do strokes outside anyway, might enlarge later)
@@ -31,9 +25,19 @@
   - recognize tool and asociate brush and color, as brushkeys do
   - default to a white sharp ink tip on the eraser
 
+- focus on ink a bit more
+
+- try to get the smear brush described by simastrick
+
 - tilt support 
   - what can tilt be used for?
   - I need (someone with) a tilt tablet to test it
+
+- show brush radius
+  - "some symbol to see the current size of the painting-tool"
+  - (mouse cursor shape, like in the GIMP? A key to show/hide it?
+    - a key to quickly blink the shape? hmm...
+    - note: shape size changes quickly!
 
 ? zoom-out only for viewing somehow?
   - do not resize canvas when zooming, only when moving?

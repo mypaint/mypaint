@@ -435,7 +435,8 @@ int brush_prepare_and_draw_dab (GtkMyBrush * b, GtkMySurfaceOld * s, Rect * bbox
 
   float color_h, color_s, color_v;
   if (!settings[BRUSH_ADAPT_COLOR_FROM_IMAGE]) {
-    // normal case
+    // normal case (do not smudge)
+    // but to allow a smooth transition to smudging, ... FIXME: do what?
     color_h = b->settings[BRUSH_COLOR_H]->base_value;
     color_s = b->settings[BRUSH_COLOR_S]->base_value;
     color_v = b->settings[BRUSH_COLOR_V]->base_value;
