@@ -75,8 +75,6 @@ class Window(gtk.Window):
         b.connect('clicked', self.delete_selected_cb)
         vbox2.pack_start(b, expand=False)
 
-        self.resize(300, 500)
-
     def set_preview_pixbuf(self, pixbuf):
         if pixbuf is None:
             self.mdw.clear()

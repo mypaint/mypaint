@@ -7,8 +7,6 @@
 # but WITHOUT ANY WARRANTY. See the COPYING file for more details.
 
 import gtk, os
-import drawwindow, brushsettingswindow, brushselectionwindow
-import colorselectionwindow
 import brush
 
 class Application: # singleton
@@ -39,22 +37,16 @@ class Application: # singleton
 
         self.init_brushes()
 
-        self.image_windows = []
-        self.new_image_window()
-
-        w = self.brushSettingsWindow = brushsettingswindow.Window(self)
-
-        w = self.brushSelectionWindow = brushselectionwindow.Window(self)
-        w.show_all()
-
-        w = self.colorSelectionWindow = colorselectionwindow.Window(self)
-
-        w.show_all()
+        self.window_names = 'drawWindow brushSettingsWindow brushSelectionWindow colorSelectionWindow'.split()
+        for name in self.window_names:
+            module = __import__(name.lower())
+            window = self.__dict__[name] = module.Window(self)
+            self.load_window_position(name, window)
 
         gtk.accel_map_load(os.path.join(self.confpath, 'accelmap.conf'))
 
         if loadimage:
-            self.image_windows[0].open_file(loadimage)
+            self.drawWindow.open_file(loadimage)
 
     def init_brushes(self):
         self.brush = brush.Brush(self)
@@ -151,15 +143,43 @@ class Application: # singleton
              (gtk.STOCK_YES, gtk.RESPONSE_ACCEPT,
               gtk.STOCK_NO, gtk.RESPONSE_REJECT))
         if d.run() == gtk.RESPONSE_ACCEPT:
+            self.save_window_positions()
             gtk.main_quit()
             return False
         d.destroy()
         return True
         
-    def new_image_window(self):
-        w = drawwindow.Window(self)
-        w.show_all()
-        self.image_windows.append(w)
-        return w
+    def save_window_positions(self):
+        f = open(os.path.join(self.confpath, 'windowpos.conf'), 'w')
+        f.write('# name visible x y width height\n')
+        for name in self.window_names:
+            window = self.__dict__[name]
+            x, y = window.get_position()
+            w, h = window.get_size()
+            visible = window.get_property('visible')
+            f.write('%s %s %d %d %d %d\n' % (name, visible, x, y, w, h))
+
+    def load_window_position(self, name, window):
+        try:
+            for line in open(os.path.join(self.confpath, 'windowpos.conf')):
+                if line.startswith(name):
+                    parts = line.split()
+                    visible = parts[1] == 'True'
+                    x, y, w, h = [int(i) for i in parts[2:2+4]]
+                    window.parse_geometry('%dx%d+%d+%d' % (w, h, x, y))
+                    if visible or name == 'drawWindow':
+                        window.show_all()
+                    return
+        except IOError:
+            pass
+
+        if name == 'brushSelectionWindow':
+            window.parse_geometry('300x500')
+
+        # default visibility setting
+        if name in 'drawWindow brushSelectionWindow colorSelectionWindow'.split():
+            window.show_all()
+
+
 
 
