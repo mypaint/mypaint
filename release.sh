@@ -1,21 +1,28 @@
 #!/bin/sh
+# this does roughly what 'make distcheck' would do if it did work
 set -e
 
-FIXME: outdated
+version=0.5.0
 
-version=0.4.1
+orig=$(pwd)
+d=/tmp/mypaint-$version
 
-cd ~/tmp
-rm -rf mypaint-$version
-svn export svn://old.homeip.net/code/mypaint mypaint-$version
-
-cd mypaint-$version/html
+rm -rf $d
+svn export . $d
+cd $d/html
 ./generate.py
 rm *.pyc
 cd ..
-rm release.sh # :-)
+rm release.sh
+rpl "SVNVERSION=" "SVNVERSION=$version #" configure.in
+./autogen.sh
 cd ..
 
-tar -cvjf mypaint-$version.tar.bz2 mypaint-$version
-ls -sSh mypaint-$version.tar.bz2 
+filename=$orig/mypaint-$version.tar.bz2
+tar -cvjf $filename mypaint-$version
 
+cd $d
+./configure
+make
+
+ls -sSh $filename
