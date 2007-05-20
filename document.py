@@ -25,9 +25,12 @@ infinity = 99999999
 
 class Stroke:
     # A stroke is immutable, except a freshly created/copied one.
+    serial_number = 0
     def __init__(self):
         self.finished = False
         self.rendered = False # only used for assertions
+        Stroke.serial_number += 1
+        self.serial_number = Stroke.serial_number
 
     def start_recording(self, mdw, brush):
         assert not self.finished

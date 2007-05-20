@@ -262,7 +262,7 @@ class Window(gtk.Window):
             f()
 
     def split_stroke(self):
-        # let the brush emit the signal (calls self.split_stroke_cb)
+        # let the brush emit the signal (this calls self.split_stroke_cb)
         self.app.brush.split_stroke()
 
     def split_stroke_cb(self, widget):
@@ -293,19 +293,12 @@ class Window(gtk.Window):
         self.layer.rerender()
 
     def get_recent_strokes(self, max_count):
-        #self.all_strokes
-        #FIXME: must check modified strokes too
-        result = []
-        #modified = {}
-        for cmd in reversed(self.command_stack.undo_stack):
-            if isinstance(cmd, command.Stroke):
-                if cmd.stroke in self.layer.strokes:
-                    result.append(cmd.stroke)
-                    if len(result) >= max_count:
-                        return result
-        #    elif isinstance(cmd, command.ModifyStrokes):
-        #        xx
-        return result
+        assert max_count > 0
+        result = self.layer.strokes[:] # copy
+        def cmpfunc(a, b):
+            return cmp(a.serial_number, b.serial_number)
+        result.sort(cmpfunc, reverse=True)
+        return result[:max_count]
 
     def modify_last_stroke_cb(self, action):
         self.finish_pending_actions(skip=self.end_modifying)

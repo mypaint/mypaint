@@ -49,9 +49,8 @@
 
 - more brush information
   - attach text notes to brush
-  - attach a small demo-replay
-  - make it very easy to compare two subtly different brushes
-    - redraw user stroke on switch, like I'm doing already with stroke replay
+  - attach a small demo-replay / demo image
+  - brush categories - put all inky brushes into subfolder etc.
 
 - copy/paste buttons curve shapes 
   - buttons next to shape? shared "symlinked" shape?
