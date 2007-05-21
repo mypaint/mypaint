@@ -301,17 +301,17 @@ class Window(gtk.Window):
         return result[:max_count]
 
     def modify_last_stroke_cb(self, action):
+        self.start_or_continue_modifying()
+
+    def start_or_continue_modifying(self, count=1):
         self.finish_pending_actions(skip=self.end_modifying)
-        count = 1
         if self.modifying:
             assert self.end_modifying in self.pending_actions
-            cmd = self.command_stack.get_last_command()
-            if isinstance(cmd, command.ModifyStrokes):
-                count = len(cmd.strokes) + 1
-                if count > len(self.layer.strokes):
-                    print 'All strokes selected already!'
-                    return
-                self.command_stack.undo()
+            count = self.modifying + 1
+            if count > len(self.layer.strokes):
+                print 'All strokes selected already!'
+                return
+            self.command_stack.undo()
         else:
             assert self.end_modifying not in self.pending_actions
             self.pending_actions.append(self.end_modifying)
@@ -323,11 +323,14 @@ class Window(gtk.Window):
         self.layer.rerender()
 
         if not self.modifying:
-            self.modifying = True
             self.statusbar.push(3, 'modifying - change brush or color now')
         else:
             self.statusbar.pop(3)
             self.statusbar.push(3, 'modifying %d strokes' % count)
+
+        self.modifying = count
+
+        self.last_modifying_time = time()
 
     def end_modifying(self):
         assert self.modifying
@@ -407,7 +410,16 @@ class Window(gtk.Window):
             self.finish_pending_actions(skip=self.end_modifying)
             cmd = self.command_stack.get_last_command()
             if isinstance(cmd, command.ModifyStrokes):
-                count = len(cmd.strokes)
+                count = self.modifying
+
+                if time() - self.last_modifying_time > 1: #4:
+                    # split into a different undo action
+                    # (so the user can recover the previous modification if he selected a brush and forgot that he was still modifying)
+                    self.end_modifying()
+                    self.start_or_continue_modifying(count)
+                    cmd = self.command_stack.get_last_command()
+                self.last_modifying_time = time()
+
                 #print 'redo', count, 'modified strokes'
                 self.command_stack.undo()
                 cmd.set_new_brush(self.app.brush)

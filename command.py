@@ -100,21 +100,22 @@ class LoadImage(ClearLayer):
 class ModifyStrokes(Action):
     def __init__(self, layer, strokes, new_brush):
         self.layer = layer
-        self.strokes = strokes
-        self.old_strokes = None
+        for s in strokes:
+            assert s in layer.strokes
+        self.strokemap = [[s, None] for s in strokes]
         self.set_new_brush(new_brush)
     def set_new_brush(self, new_brush):
-        assert not self.old_strokes
-        self.new_brush_settings = new_brush.save_to_string()
-    def execute(self):
-        self.old_strokes = self.layer.strokes[:] # copy
-        for s in self.strokes:
-            i = self.layer.strokes.index(s)
-            s = s.copy()
-            s.change_brush_settings(self.new_brush_settings)
-            self.layer.strokes[i] = s
+        # only called when the action is not (yet/anymore) on the undo stack
+        new_brush_settings = new_brush.save_to_string()
+        for pair in self.strokemap:
+            pair[1] = pair[0].copy()
+            pair[1].change_brush_settings(new_brush_settings)
+    def execute(self, undo=False):
+        for old, new in self.strokemap:
+            if undo: old, new = new, old
+            i = self.layer.strokes.index(old)
+            self.layer.strokes[i] = new
     def undo(self):
-        self.layer.strokes = self.old_strokes[:] # copy
-        self.old_strokes = None
+        self.execute(undo=True)
     redo = execute
 
