@@ -150,14 +150,14 @@ class Layer:
             if len(new_strokes) < self.strokes_to_cache:
                 return
 
-        print 'adding cache (%d strokes)' % len(self.rendered.strokes)
+        #print 'adding cache (%d strokes)' % len(self.rendered.strokes)
 
         t = time()
         # the last one is the most recently used one
         max_caches = 2
         while len(self.caches) > max_caches-1:
             cache = self.caches.pop(0)
-            print 'dropping a cache with', len(cache.strokes), 'strokes'
+            #print 'dropping a cache with', len(cache.strokes), 'strokes'
             del cache
         gc.collect()
 
@@ -166,7 +166,7 @@ class Layer:
         cache.background = self.rendered.background
         cache.snapshot = self.mdw.save_snapshot()
         self.caches.append(cache)
-        print 'caching the layer bitmap took %.3f seconds' % (time() - t)
+        #print 'caching the layer bitmap took %.3f seconds' % (time() - t)
 
     def rerender(self, only_estimate_cost=False):
         #print 'rerender'
@@ -181,7 +181,9 @@ class Layer:
 
         def render_new_strokes():
             new_strokes = strokes_from_to(self.rendered, self)
-            #print 'rendering', len(new_strokes), 'strokes'
+            warning = len(new_strokes) > 10
+            if warning:
+                print 'rendering', len(new_strokes), 'strokes...'
 
             caching = True
             # when replaying a huge amount of strokes, only populate the cache towards the end
@@ -198,6 +200,9 @@ class Layer:
 
             assert self.rendered.strokes == self.strokes
 
+            if warning:
+                print 'done rendering.'
+
         # will contain (cost, function) pairs of all possible actions
         options = []
 
@@ -211,12 +216,12 @@ class Layer:
             return cost
 
         for cache in self.caches:
-            print 'evaluating a cache containing %d strokes' % len(cache.strokes)
+            #print 'evaluating a cache containing %d strokes' % len(cache.strokes)
             cost = count_strokes_from(cache)
             cost += 3 # penalty for loading a pixbuf
 
             def render_cached(cache=cache):
-                print 'using a cache containing %d strokes' % len(cache.strokes)
+                #print 'using a cache containing %d strokes' % len(cache.strokes)
                 # least recently used caching strategy
                 self.caches.remove(cache)
                 self.caches.append(cache)
@@ -228,7 +233,7 @@ class Layer:
             options.append((cost, render_cached))
 
         def render_from_empty():
-            print 'full rerender'
+            #print 'full rerender'
             old_viewport_orig = mdw.get_viewport_orig() # mdw.clear() will reset viewport
             if self.background:
                 mdw.load(self.background)
@@ -254,5 +259,5 @@ class Layer:
         t2 = time()
         render()
         t3 = time()
-        print 'rerender took %.3f seconds, wasted %.3f seconds for cost evaluation' % (t3-t1, t2-t1)
+        #print 'rerender took %.3f seconds, wasted %.3f seconds for cost evaluation' % (t3-t1, t2-t1)
         return cost

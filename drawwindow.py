@@ -412,7 +412,7 @@ class Window(gtk.Window):
             if isinstance(cmd, command.ModifyStrokes):
                 count = self.modifying
 
-                if time() - self.last_modifying_time > 1: #4:
+                if time() - self.last_modifying_time > 3:
                     # split into a different undo action
                     # (so the user can recover the previous modification if he selected a brush and forgot that he was still modifying)
                     self.end_modifying()

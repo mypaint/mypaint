@@ -171,7 +171,7 @@ class InfiniteMyDrawWidget(MyDrawWidget):
 
         # paste old image back
         w, h = newCanvas.w, newCanvas.h
-        print 'Resizing canvas to %dx%d = %.3fMB' % (w, h, w*h*3/1024.0/1024.0)
+        #print 'Resizing canvas to %dx%d = %.3fMB' % (w, h, w*h*3/1024.0/1024.0)
         new_pixbuf = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, False, 8, w, h)
         new_pixbuf.fill(0xffffffff) # white
         old_pixbuf.copy_area(src_x=0, src_y=0,

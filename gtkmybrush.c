@@ -568,6 +568,7 @@ void gtk_my_brush_stroke_to (GtkMyBrush * b, GtkMySurfaceOld * s, float x, float
 
   if (dtime > 5 || dist_todo > 300) {
 
+    /*
     if (dist_todo > 300) {
       // this happens quite often, eg when moving the cursor back into the window
       // FIXME: bad to hardcode a distance treshold here - might look at zoomed image
@@ -576,8 +577,9 @@ void gtk_my_brush_stroke_to (GtkMyBrush * b, GtkMySurfaceOld * s, float x, float
       g_print ("dtime=%f, dx=%f\n", dtime, x-b->states[STATE_X]);
       //b->must_reset = 1;
     }
+    */
 
-    printf("Brush reset.\n");
+    //printf("Brush reset.\n");
     memset(b->states, 0, sizeof(b->states[0])*STATE_COUNT);
 
     b->states[STATE_X] = x;
