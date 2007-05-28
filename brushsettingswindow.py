@@ -33,7 +33,7 @@ class Window(gtk.Window):
 
         self.adj = {}
         self.app.brush_adjustment = {}
-        for s in brushsettings.settings_visible:
+        for i, s in enumerate(brushsettings.settings_visible):
             eb = gtk.EventBox()
             l = gtk.Label(s.name)
             l.set_alignment(0, 0.5)
@@ -62,12 +62,12 @@ class Window(gtk.Window):
                 b2.connect('clicked', self.details_clicked_cb, adj, s)
                 adj.three_dots_button = b2
 
-            table.attach(eb, 0, 1, s.index, s.index+1, gtk.FILL, gtk.FILL, 5, 0)
-            table.attach(h, 1, 2, s.index, s.index+1, gtk.EXPAND | gtk.FILL, gtk.EXPAND | gtk.FILL)
-            table.attach(b, 2, 3, s.index, s.index+1, gtk.FILL, gtk.FILL)
-            table.attach(b2, 3, 4, s.index, s.index+1, gtk.FILL, gtk.FILL)
+            table.attach(eb, 0, 1, i, i+1, gtk.FILL, gtk.FILL, 5, 0)
+            table.attach(h, 1, 2, i, i+1, gtk.EXPAND | gtk.FILL, gtk.EXPAND | gtk.FILL)
+            table.attach(b, 2, 3, i, i+1, gtk.FILL, gtk.FILL)
+            table.attach(b2, 3, 4, i, i+1, gtk.FILL, gtk.FILL)
 
-        self.functionWindows = len(brushsettings.settings_visible) * [None]
+        self.functionWindows = {}
 
         self.set_size_request(450, 500)
 
@@ -79,10 +79,10 @@ class Window(gtk.Window):
     def details_clicked_cb(self, window, adj, setting):
         # FIXME: should the old window get closed automatically?
         #        Hm... probably not.
-        w = self.functionWindows[setting.index]
+        w = self.functionWindows.get(setting)
         if w is None:
             w = functionwindow.Window(self.app, setting, adj)
-            self.functionWindows[setting.index] = w
+            self.functionWindows[setting] = w
             w.show_all()
         w.present() # get to the front
 
