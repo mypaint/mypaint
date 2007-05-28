@@ -403,7 +403,7 @@ class Window(gtk.Window):
             self.statusbar.push(4, '')
 
     def brush_modified_cb(self):
-        # OPTIMIZE: called at every brush setting modification, must return fast
+        # called at every brush setting modification, should return fast
         self.split_stroke()
 
         if self.modifying:

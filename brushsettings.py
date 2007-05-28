@@ -123,6 +123,9 @@ for s_list in settings_list:
     settings_dict[s.cname] = s
     globals()[s.cname] = s
 
+hidden = 'color_h color_s color_v'.split()
+settings_visible = [s for s in settings if s.cname not in hidden]
+
 class BrushState:
     pass
 
