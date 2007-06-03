@@ -154,7 +154,7 @@ class Layer:
 
         t = time()
         # the last one is the most recently used one
-        max_caches = 2
+        max_caches = 3
         while len(self.caches) > max_caches-1:
             cache = self.caches.pop(0)
             #print 'dropping a cache with', len(cache.strokes), 'strokes'
