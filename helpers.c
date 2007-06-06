@@ -9,6 +9,7 @@
  * This file contains some modified code from the GIMP:
  * Copyright (C) 1995-1997 Peter Mattis and Spencer Kimball
  * Adapted 2007 by Martin Renold to fit into MyPaint.
+ * Also fixed the hue range in gimp_hsl_to_rgb_int().
  */
 
 #include "helpers.h"
@@ -197,6 +198,91 @@ hsv_to_rgb_int (gint *hue,
 	}
     }
 }
+
+
+static gint
+gimp_hsl_value_int (gdouble n1,
+                    gdouble n2,
+                    gdouble hue)
+{
+  gdouble value;
+
+  if (hue > 360)
+    hue -= 360;
+  else if (hue < 0)
+    hue += 360;
+
+  if (hue < 60.0)
+    value = n1 + (n2 - n1) * (hue / 60.0);
+  else if (hue < 180.0)
+    value = n2;
+  else if (hue < 240)
+    value = n1 + (n2 - n1) * ((240 - hue) / 60.0);
+  else
+    value = n1;
+
+  /*
+  if (hue < 1.0)
+    val = n1 + (n2 - n1) * hue;
+  else if (hue < 3.0)
+    val = n2;
+  else if (hue < 4.0)
+    val = n1 + (n2 - n1) * (4.0 - hue);
+  else
+    val = n1;
+  */
+
+  return ROUND (value * 255.0);
+}
+
+/**
+ * gimp_hsl_to_rgb_int:
+ * @hue: Hue channel, returns Red channel
+ * @saturation: Saturation channel, returns Green channel
+ * @lightness: Lightness channel, returns Blue channel
+ *
+ * The arguments are pointers to int, with the values pointed to in the
+ * following ranges:  H [0, 360], L [0, 255], S [0, 255].
+ *
+ * The function changes the arguments to point to the RGB value
+ * corresponding, with the returned values all in the range [0, 255].
+ **/
+void
+hsl_to_rgb_int (gint *hue,
+                gint *saturation,
+                gint *lightness)
+{
+  gdouble h, s, l;
+
+  h = *hue;
+  s = *saturation;
+  l = *lightness;
+
+  if (s == 0)
+    {
+      /*  achromatic case  */
+      *hue        = l;
+      *lightness  = l;
+      *saturation = l;
+    }
+  else
+    {
+      gdouble m1, m2;
+
+      if (l < 128)
+        m2 = (l * (255 + s)) / 65025.0;
+      else
+        m2 = (l + s - (l * s) / 255.0) / 255.0;
+
+      m1 = (l / 127.5) - m2;
+
+      /*  chromatic case  */
+      *hue        = gimp_hsl_value_int (m1, m2, h + 120);
+      *saturation = gimp_hsl_value_int (m1, m2, h);
+      *lightness  = gimp_hsl_value_int (m1, m2, h - 120);
+    }
+}
+
 
 
 // (from gimp_rgb_to_hsv)
