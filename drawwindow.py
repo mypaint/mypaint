@@ -163,7 +163,7 @@ class Window(gtk.Window):
             ('Undo',               None, 'Undo', '<control>Z', None, self.undo_cb),
             ('Redo',               None, 'Redo', '<control>Y', None, self.redo_cb),
             ('ModifyLastStroke',   None, 'Modify Last Stroke', 'm', None, self.modify_last_stroke_cb),
-            ('ModifyEnd',          None, 'Stop Modifying', '<control>m', None, self.modify_end_cb),
+            ('ModifyEnd',          None, 'Stop Modifying', 'n', None, self.modify_end_cb),
             ('LowerLastStroke',    None, 'Lower Last Stroke (Slow!)', 'Page_Down', None, self.lower_or_raise_last_stroke_cb),
             ('RaiseLastStroke',    None, 'Raise Last Stroke', 'Page_Up', None, self.lower_or_raise_last_stroke_cb),
 
@@ -173,8 +173,8 @@ class Window(gtk.Window):
             ('Darker',       None, 'Darker', None, None, self.darker_cb),
             ('Bigger',       None, 'Bigger', 'f', None, self.brush_bigger_cb),
             ('Smaller',      None, 'Smaller', 'd', None, self.brush_smaller_cb),
-            ('MoreOpaque',   None, 'More Opaque', None, None, self.more_opaque_cb),
-            ('LessOpaque',   None, 'Less Opaque', None, None, self.less_opaque_cb),
+            ('MoreOpaque',   None, 'More Opaque', 's', None, self.more_opaque_cb),
+            ('LessOpaque',   None, 'Less Opaque', 'a', None, self.less_opaque_cb),
             ('PickColor',    None, 'Pick Color', 'r', None, self.pick_color_cb),
             ('ChangeColor',  None, 'Change Color', 'v', None, self.change_color_cb),
 

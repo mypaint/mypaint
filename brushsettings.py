@@ -33,8 +33,8 @@ settings_list = [
     ['opaque_linearize', 'opaque linearize', True, 0.0, 0.9, 2.0, "Correct the nonlinearity introduced by blending multiple dabs on top of each other. This correction should get you a linear (\"natural\") pressure response when pressure is mapped to opaque_multiply, as it is usually done. 0.9 is good for standard strokes, set it smaller if your brush scatters a lot, or higher if you use dabs_per_second.\n0.0 the opaque value above is for the individual dabs\n1.0 the opaque value above is for the final brush stroke, assuming each pixel gets (dabs_per_radius*2) brushdabs on average during a stroke"],
     ['radius_logarithmic', 'radius', False, -2.0, 2.0, 5.0, "basic brush radius (logarithmic)\n 0.7 means 2 pixels\n 3.0 means 20 pixels"],
     ['hardness', 'hardness', False, 0.0, 0.8, 1.0, "hard brush-circle borders (setting to zero will draw nothing)"],
-    ['dabs_per_basic_radius', 'dabs per basic radius', True, 0.0, 0.0, 5.0, "how many dabs to draw while the pointer moves a distance of one brush radius (more precise: the base value of the radius)"],
-    ['dabs_per_actual_radius', 'dabs per actual radius', True, 0.0, 2.0, 5.0, "same as above, but the radius actually drawn is used, which can change dynamically"],
+    ['dabs_per_basic_radius', 'dabs per basic radius', True, 0.0, 0.0, 6.0, "how many dabs to draw while the pointer moves a distance of one brush radius (more precise: the base value of the radius)"],
+    ['dabs_per_actual_radius', 'dabs per actual radius', True, 0.0, 2.0, 6.0, "same as above, but the radius actually drawn is used, which can change dynamically"],
     ['dabs_per_second', 'dabs per second', True, 0.0, 0.0, 80.0, "dabs to draw each second, no matter how far the pointer moves"],
     ['radius_by_random', 'radius by random', False, 0.0, 0.0, 1.5, "Alter the radius randomly each dab. You can also do this with the by_random input on the radius setting. If you do it here, there are two differences:\n1) the opaque value will be corrected such that a big-radius dabs is more transparent\n2) it will not change the actual radius seen by dabs_per_actual_radius"],
     ['speed1_slowness', 'speed1 slowness', False, 0.0, 0.04, 0.2, "how slow the input speed1 is following the real speed\n0.0 change immediatly as your speed changes (not recommended, but try it)"],
@@ -51,10 +51,13 @@ settings_list = [
     ['color_h', 'color hue', True, 0.0, 0.0, 1.0, "color hue"],
     ['color_s', 'color saturation', True, -0.5, 0.0, 1.5, "color saturation"],
     ['color_v', 'color value', True, -0.5, 0.0, 1.5, "color value (brightness, intensity)"],
-    ['change_color_h', 'change color hue', False, -2.0, 0.0, 2.0, "change color hue\n-1.0 clockwise color hue shift\n 0.0 disable\n 1.0 counterclockwise hue shift"],
-    ['change_color_s', 'change color saturation', False, -2.0, 0.0, 2.0, "change the color saturation\n-1.0 more grayish\n 0.0 disable\n 1.0 more saturated"],
-    ['change_color_v', 'change color value', False, -2.0, 0.0, 2.0, "change the color value (brightness, intensity) from the choosen color\n-1.0 darker\n 0.0 disable\n 1.0 brigher"],
-    ['adapt_color_from_image', 'adapt color from image', False, 0.0, 0.0, 1.0, "slowly change the color to the one you're painting on (some kind of smudge tool)\nNote that this happens /before/ the hue/saturation/brighness adjustment above: you can get very different effects (eg brighten image) by combining with them."],
+    ['change_color_h', 'change color hue', False, -2.0, 0.0, 2.0, "Change color hue.\n-1.0 clockwise color hue shift\n 0.0 disable\n 1.0 counterclockwise hue shift"],
+    ['change_color_l', 'change color lightness (HSL)', False, -2.0, 0.0, 2.0, "Change the color lightness (luminance) using the HSL color model.\n-1.0 blacker\n 0.0 disable\n 1.0 whiter"],
+    ['change_color_hsl_s', 'change color satur. (HSL)', False, -2.0, 0.0, 2.0, "Change the color saturation using the HSL color model.\n-1.0 more grayish\n 0.0 disable\n 1.0 more saturated"],
+    ['change_color_v', 'change color value (HSV)', False, -2.0, 0.0, 2.0, "Change the color value (brightness, intensity) using the HSV color model. HSV changes are applied before HSL.\n-1.0 darker\n 0.0 disable\n 1.0 brigher"],
+    ['change_color_hsv_s', 'change color satur. (HSV)', False, -2.0, 0.0, 2.0, "Change the color saturation using the HSV color model. HSV changes are applied before HSL.\n-1.0 more grayish\n 0.0 disable\n 1.0 more saturated"],
+    ['smudge', 'smudge', False, 0.0, 0.0, 1.0, "Paint with the smudge color instead of the brush color. The smudge color is slowly changed to the color you are painting on.\n 0.0 do not use the smudge color\n 0.5 mix the smudge color with the brush color\n 1.0 use only the smudge color"],
+    ['smudge_length', 'smudge length', False, 0.0, 0.5, 1.0, "This controls how fast the smudge color becomes the color you are painting on.\n0.0 immediately change the smudge color\n1.0 never change the smudge color (FIXME: initially black!)"],
 
     ['stroke_treshold', 'stroke treshold', True, 0.0, 0.0, 0.5, "How much pressure is needed to start a stroke. This affects the stroke input only. Mypaint does not need a minimal pressure to start drawing."],
     ['stroke_duration_logarithmic', 'stroke duration', False, -1.0, 4.0, 7.0, "How far you have to move until the stroke input reaches 1.0. This value is logarithmic (negative values will not inverse the process)."],
@@ -68,11 +71,12 @@ settings_list = [
 
 
 settings_migrate = {
-    # old cname            new cname        scale function
-    'color_hue'        : ('change_color_h', lambda y: y*64.0/360.0),
-    'color_saturation' : ('change_color_s', lambda y: y*128.0/256.0),
-    'color_value'      : ('change_color_v', lambda y: y*128.0/256.0),
-    'speed_slowness'   : ('speed1_slowness', None),
+    # old cname              new cname        scale function
+    'color_hue'          : ('change_color_h', lambda y: y*64.0/360.0),
+    'color_saturation'   : ('change_color_hsv_s', lambda y: y*128.0/256.0),
+    'color_value'        : ('change_color_v', lambda y: y*128.0/256.0),
+    'speed_slowness'     : ('speed1_slowness', None),
+    'change_color_s'     : ('change_color_hsv_s', None),
     }
 
 # the states are not (yet?) exposed to the user
@@ -84,7 +88,7 @@ pressure
 dist              # "distance" moved since last dab, a new dab is drawn at 1.0
 actual_radius     # used by count_dabs_to, thus a state!
 
-smudge_r, smudge_g, smudge_b  # for adapt_color_from_image
+smudge_r, smudge_g, smudge_b
 
 actual_x, actual_y  # for slow position
 norm_dx_slow, norm_dy_slow # note: now this is dx/dt * (1/radius)

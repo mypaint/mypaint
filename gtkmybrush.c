@@ -370,8 +370,8 @@ int brush_prepare_and_draw_dab (GtkMyBrush * b, GtkMySurfaceOld * s, Rect * bbox
 
   opaque = settings[BRUSH_OPAQUE] * settings[BRUSH_OPAQUE_MULTIPLY];
   if (opaque >= 1.0) opaque = 1.0;
-  //if (opaque <= 0.0) opaque = 0.0;
-  if (opaque <= 0.0) return 0;
+  if (opaque <= 0.0) opaque = 0.0;
+  //if (opaque == 0.0) return 0; <-- bad idea: need to update smudge state.
   if (settings[BRUSH_OPAQUE_LINEARIZE]) {
     // OPTIMIZE: no need to recalculate this for each dab
     float alpha, beta, alpha_dab, beta_dab;
@@ -434,36 +434,63 @@ int brush_prepare_and_draw_dab (GtkMyBrush * b, GtkMySurfaceOld * s, Rect * bbox
   // color part
 
   float color_h, color_s, color_v;
-  if (!settings[BRUSH_ADAPT_COLOR_FROM_IMAGE]) {
+  if (settings[BRUSH_SMUDGE] <= 0.0) {
     // normal case (do not smudge)
-    // but to allow a smooth transition to smudging, ... FIXME: do what?
     color_h = b->settings[BRUSH_COLOR_H]->base_value;
     color_s = b->settings[BRUSH_COLOR_S]->base_value;
     color_v = b->settings[BRUSH_COLOR_V]->base_value;
-  } else {
-    // ignore the brush color, only use the smudge state
+  } else if (settings[BRUSH_SMUDGE] >= 1.0) {
+    // smudge only (ignore the original color)
     color_h = b->states[STATE_SMUDGE_R];
     color_s = b->states[STATE_SMUDGE_G];
     color_v = b->states[STATE_SMUDGE_B];
     rgb_to_hsv_float (&color_h, &color_s, &color_v);
-
-    { // update the smudge state
-      int px, py;
-      guchar *rgb;
-      float v = settings[BRUSH_ADAPT_COLOR_FROM_IMAGE];
-      px = ROUND(x); px = CLAMP(px, 0, s->w-1);
-      py = ROUND(y); py = CLAMP(py, 0, s->h-1);
-      rgb = PixelXY(s, px, py);
-      b->states[STATE_SMUDGE_R] = (1-v)*b->states[STATE_SMUDGE_R] + v*rgb[0]/255.0;
-      b->states[STATE_SMUDGE_G] = (1-v)*b->states[STATE_SMUDGE_G] + v*rgb[1]/255.0;
-      b->states[STATE_SMUDGE_B] = (1-v)*b->states[STATE_SMUDGE_B] + v*rgb[2]/255.0;
-    }
+  } else {
+    // mix (in RGB) the smudge color with the brush color
+    color_h = b->settings[BRUSH_COLOR_H]->base_value;
+    color_s = b->settings[BRUSH_COLOR_S]->base_value;
+    color_v = b->settings[BRUSH_COLOR_V]->base_value;
+    // XXX clamp??!? before this call?
+    hsv_to_rgb_float (&color_h, &color_s, &color_v);
+    float fac = settings[BRUSH_SMUDGE];
+    color_h = (1-fac)*color_h + fac*b->states[STATE_SMUDGE_R];
+    color_s = (1-fac)*color_s + fac*b->states[STATE_SMUDGE_G];
+    color_v = (1-fac)*color_v + fac*b->states[STATE_SMUDGE_B];
+    rgb_to_hsv_float (&color_h, &color_s, &color_v);
   }
 
+  // update the smudge state
+  if (settings[BRUSH_SMUDGE_LENGTH] < 1.0) {
+    float fac = settings[BRUSH_SMUDGE_LENGTH];
+    if (fac < 0.0) fac = 0;
+    int px, py;
+    guchar *rgb;
+    px = ROUND(x); px = CLAMP(px, 0, s->w-1);
+    py = ROUND(y); py = CLAMP(py, 0, s->h-1);
+    rgb = PixelXY(s, px, py);
+    b->states[STATE_SMUDGE_R] = fac*b->states[STATE_SMUDGE_R] + (1-fac)*rgb[0]/255.0;
+    b->states[STATE_SMUDGE_G] = fac*b->states[STATE_SMUDGE_G] + (1-fac)*rgb[1]/255.0;
+    b->states[STATE_SMUDGE_B] = fac*b->states[STATE_SMUDGE_B] + (1-fac)*rgb[2]/255.0;
+  }
+
+  // HSV color change
   color_h += settings[BRUSH_CHANGE_COLOR_H];
-  color_s += settings[BRUSH_CHANGE_COLOR_S];
+  color_s += settings[BRUSH_CHANGE_COLOR_HSV_S];
   color_v += settings[BRUSH_CHANGE_COLOR_V];
-  
+
+
+  // HSL color change
+  if (settings[BRUSH_CHANGE_COLOR_L] || settings[BRUSH_CHANGE_COLOR_HSL_S]) {
+    float h, s, l;
+    // (calculating way too much here, can be optimized if neccessary)
+    hsv_to_rgb_float (&color_h, &color_s, &color_v);
+    rgb_to_hsl_float (&color_h, &color_s, &color_v);
+    color_v += settings[BRUSH_CHANGE_COLOR_L];
+    color_s += settings[BRUSH_CHANGE_COLOR_HSL_S];
+    hsl_to_rgb_float (&color_h, &color_s, &color_v);
+    rgb_to_hsv_float (&color_h, &color_s, &color_v);
+  } 
+
   { // final calculations
     gint c[3];
 

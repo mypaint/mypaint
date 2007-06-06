@@ -207,6 +207,8 @@ class Brush_Lowlevel(mydrawwidget.MyBrush):
                     self.set_color_rgb([int(s)/255.0 for s in rest.split()])
                 elif version <= 1 and command == 'change_radius':
                     if rest != '0.0': error = 'change_radius is not supported any more'
+                elif version <= 2 and command == 'adapt_color_from_image':
+                    if rest != '0.0': error = 'adapt_color_from_image is obsolete, ignored; use smudge and smudge_length instead'
                 elif version <= 1 and command == 'painting_time':
                     pass
                 else:
