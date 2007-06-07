@@ -181,7 +181,7 @@ class Layer:
 
         def render_new_strokes():
             new_strokes = strokes_from_to(self.rendered, self)
-            warning = len(new_strokes) > 10
+            warning = len(new_strokes) > 20
             if warning:
                 print 'rendering', len(new_strokes), 'strokes...'
 

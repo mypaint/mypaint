@@ -164,7 +164,7 @@ class Window(gtk.Window):
             ('Redo',               None, 'Redo', '<control>Y', None, self.redo_cb),
             ('ModifyLastStroke',   None, 'Modify Last Stroke', 'm', None, self.modify_last_stroke_cb),
             ('ModifyEnd',          None, 'Stop Modifying', 'n', None, self.modify_end_cb),
-            ('LowerLastStroke',    None, 'Lower Last Stroke (Slow!)', 'Page_Down', None, self.lower_or_raise_last_stroke_cb),
+            ('LowerLastStroke',    None, 'Lower Last Stroke (Experimental, slow!)', 'Page_Down', None, self.lower_or_raise_last_stroke_cb),
             ('RaiseLastStroke',    None, 'Raise Last Stroke', 'Page_Up', None, self.lower_or_raise_last_stroke_cb),
 
             ('BrushMenu',    None, 'Brush'),

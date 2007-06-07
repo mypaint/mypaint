@@ -1,8 +1,10 @@
 # mypaint brush file
-color 90 68 16
-opaque 1.0 | stroke 0.62962962963 0.0 1.0 -1.0 0.0 0.0 0.0 0.0
-opaque_multiply 0.0 | pressure 1.0 1.0 0.0 0.0 0.0 0.0 0.0 0.0
-radius_logarithmic 1.29 | stroke 0.598765432099 -1.4175 0.70987654321 0.2278125 0.898148148148 -0.2278125 1.0 -2.43
+# you can edit this file and then select the brush in mypaint (again) to reload
+version 2
+opaque 1.0 | stroke (0.000000 0.000000), (0.629630 0.000000), (1.000000 -1.000000)
+opaque_multiply 0.0 | pressure (0.000000 0.000000), (1.000000 1.000000)
+opaque_linearize 0.0
+radius_logarithmic 1.89 | stroke (0.000000 0.000000), (0.598765 -1.417500), (0.709877 0.227813), (0.898148 -0.227813), (1.000000 -2.430000)
 hardness 0.8
 dabs_per_basic_radius 0.0
 dabs_per_actual_radius 2.0
@@ -10,17 +12,26 @@ dabs_per_second 0.0
 radius_by_random 0.0
 speed1_slowness 0.04
 speed2_slowness 0.8
+speed1_gamma -7.16
+speed2_gamma 4.0
 offset_by_random 0.0
 offset_by_speed 0.0
 offset_by_speed_slowness 1.0
 slow_tracking 0.0
 slow_tracking_per_dab 0.0
-color_value 0.39 | pressure 1.0 -1.14 0.0 0.0 0.0 0.0 0.0 0.0 | random 1.0 0.71 0.0 0.0 0.0 0.0 0.0 0.0 | stroke 0.0802469135802 -0.30125 0.614197530864 0.30125 0.753086419753 0.702916666667 1.0 0.953958333333
-color_saturation 0.0 | stroke 1.0 3.38 0.0 0.0 0.0 0.0 0.0 0.0
-color_hue 0.0 | speed 1.0 -1.37 0.0 0.0 0.0 0.0 0.0 0.0 | stroke 0.651234567901 -0.044375 0.706790123457 0.650833333333 0.891975308642 0.569479166667 1.0 -0.0
-adapt_color_from_image 0.0
-change_radius 0.0
+tracking_noise 0.0
+color_h 0.141002985802
+color_s 0.616074780389
+color_v 0.406469825284
+change_color_h 0.0 | speed1 (0.000000 -0.000000), (1.000000 -0.120000) | stroke (0.000000 0.000000), (0.651235 -0.007889), (0.706790 0.115704), (0.891975 0.101241), (1.000000 -0.000000)
+change_color_l 0.0
+change_color_hsl_s 0.0
+change_color_v 0.195 | pressure (0.000000 0.000000), (1.000000 -0.570000) | random (0.000000 0.000000), (1.000000 0.355000) | stroke (0.000000 0.000000), (0.080247 -0.150625), (0.614198 0.150625), (0.753086 0.351458), (1.000000 0.476979)
+change_color_hsv_s 0.0 | stroke (0.000000 0.000000), (1.000000 1.690000)
+smudge 0.0
+smudge_length 0.5
 stroke_treshold 0.0
 stroke_duration_logarithmic 2.76
 stroke_holdtime 10.0
-opaque_linearize 0.0
+custom_input 0.0
+custom_input_slowness 0.0

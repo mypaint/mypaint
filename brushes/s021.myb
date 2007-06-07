@@ -20,13 +20,16 @@ offset_by_speed_slowness 1.0
 slow_tracking 1.0
 slow_tracking_per_dab 0.0
 tracking_noise 6.82
-color_h 0.0259829464709
-color_s 0.480559096704
-color_v 0.670298313878
+color_h 0.145517693548
+color_s 0.488940295792
+color_v 0.587060349432
 change_color_h 0.0
-change_color_s 0.0
+change_color_l 0.0
+change_color_hsl_s 0.0
 change_color_v 0.0 | stroke (0.000000 0.000000), (0.246914 1.440000), (0.753086 -1.440000), (1.000000 0.000000)
-adapt_color_from_image 0.0
+change_color_hsv_s 0.0
+smudge 0.0
+smudge_length 0.5
 stroke_treshold 0.0
 stroke_duration_logarithmic 4.0
 stroke_holdtime 0.0
