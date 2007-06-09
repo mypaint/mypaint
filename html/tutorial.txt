@@ -107,6 +107,10 @@ There is no need to alter the curve you see at '''by random'''
 because its y-range now goes from zero to zero. This curve will not be
 saved any more with your brush because it has no effect.
 
+An useful helper when creating brushes is '''modify last stroke'''
+from the '''edit''' menu. You can see the effects of your slider and
+even curve changes immediately while modifying.
+
 ==Save your new brush==
 
 [[brushdialog.jpg|right]]
