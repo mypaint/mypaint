@@ -46,7 +46,7 @@ settings_list = [
     ['offset_by_speed_slowness', 'offset by speed slowness', False, 0.0, 1.0, 15.0, "how slow the offset goes back to zero when the cursor stops moving; 0 means there will never be any offset left"],
     ['slow_tracking', 'slow position tracking', True, 0.0, 0.0, 10.0, "Slowdown pointer tracking speed. 0 disables it, higher values remove more jitter in cursor movements. Useful for drawing smooth, comic-like outlines."],
     ['slow_tracking_per_dab', 'slow tracking per dab', False, 0.0, 0.0, 10.0, "Similar as above but at brushdab level (ignoring how much time has past, if brushdabs do not depend on time)"],
-    ['tracking_noise', 'tracking noise', True, 0.0, 0.0, 12.0, "add randomness to the mouse pointer; this usually generates many small lines in random directions; try this together with slow tracking for smoother noise (FIXME: does that really work?)"],
+    ['tracking_noise', 'tracking noise', True, 0.0, 0.0, 12.0, "add randomness to the mouse pointer; this usually generates many small lines in random directions; maybe try this together with 'slow tracking'"],
 
     ['color_h', 'color hue', True, 0.0, 0.0, 1.0, "color hue"],
     ['color_s', 'color saturation', True, -0.5, 0.0, 1.5, "color saturation"],
@@ -57,7 +57,7 @@ settings_list = [
     ['change_color_v', 'change color value (HSV)', False, -2.0, 0.0, 2.0, "Change the color value (brightness, intensity) using the HSV color model. HSV changes are applied before HSL.\n-1.0 darker\n 0.0 disable\n 1.0 brigher"],
     ['change_color_hsv_s', 'change color satur. (HSV)', False, -2.0, 0.0, 2.0, "Change the color saturation using the HSV color model. HSV changes are applied before HSL.\n-1.0 more grayish\n 0.0 disable\n 1.0 more saturated"],
     ['smudge', 'smudge', False, 0.0, 0.0, 1.0, "Paint with the smudge color instead of the brush color. The smudge color is slowly changed to the color you are painting on.\n 0.0 do not use the smudge color\n 0.5 mix the smudge color with the brush color\n 1.0 use only the smudge color"],
-    ['smudge_length', 'smudge length', False, 0.0, 0.5, 1.0, "This controls how fast the smudge color becomes the color you are painting on.\n0.0 immediately change the smudge color\n1.0 never change the smudge color (FIXME: initially black!)"],
+    ['smudge_length', 'smudge length', False, 0.0, 0.5, 1.0, "This controls how fast the smudge color becomes the color you are painting on.\n0.0 immediately change the smudge color\n1.0 never change the smudge color"],
 
     ['stroke_treshold', 'stroke treshold', True, 0.0, 0.0, 0.5, "How much pressure is needed to start a stroke. This affects the stroke input only. Mypaint does not need a minimal pressure to start drawing."],
     ['stroke_duration_logarithmic', 'stroke duration', False, -1.0, 4.0, 7.0, "How far you have to move until the stroke input reaches 1.0. This value is logarithmic (negative values will not inverse the process)."],

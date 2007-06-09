@@ -137,7 +137,7 @@ class Layer:
         self.rendered.background = None
 
         self.caches = []
-        self.strokes_to_cache = 8
+        self.strokes_to_cache = 6
 
     def populate_cache(self):
         # too few strokes to be worth caching?

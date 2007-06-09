@@ -17,19 +17,19 @@ Mypaint can save/load .png only (without alpha). Use the
 "manipulation" stuff.
 
 I paint with my left hand on the left half of the keyboard. That's how
-the shortcuts are arranged, but you can easily change them. To reset
-back to the defaults, move ~/.mypaint/accelmap.conf out of the way and
-restart.
+the shortcuts are arranged, but you can easily change them.
 
 ==Brush Size==
-To increase the size of the brush, press the '''F''' key a few times
-while drawing. Press the '''D''' key to make it smaller.  Try to use
-those keys instinctively.
+To increase the size of the brush, press the '''F''' key. Press the
+'''D''' key to make it smaller. Try to use those keys
+instinctively. You can use them in the middle of a stroke.
 
-Note that many brushes alter their settings depending on how fast you
-move. Because "fast" is relative to the brush radius, you might
-sometimes notice other changes than a different size. But many brushes
-get bigger when you move faster. Try to use this effect instead.
+However some brushes, especially the first two, change their size with
+your movement speed. Changing the radius as described will not work
+very well (because the speed is measured relative to the current
+radius). You control the size of those brushes by moving faster or
+slower. This works best when painting with small successive movements
+instead of doing one straight stroke.
 
 ==Change the Color==
 [[color.jpg|right]]
@@ -48,20 +48,19 @@ Finally, point at your painting and press the '''R''' key. This picks
 the color at the cursor - no mouse click is needed. This is even
 faster, but you get no color variation.
 
-==Infinite Canvas== 
+==Unlimited Canvas== 
 
 The border of the screen is not the end. The canvas is always a little
 bit bigger than this and will grow when you resize the window or move
 around. In the '''View''' menu, read the '''Help''' text now. The
 thing to remember is that zooming out can be dangerous. You will
 probably notice a heavy slowdown before you run out of memory. Anyway,
-try it while you have nothing to loose.
+try it while you have nothing to lose.
 
 ==The Brush Dialog==
+Open the '''edit''' expander in the brush dialog.
 The white space at the bottom of the graphical brush list is for
-trying out your brush. Use it a bit. But if you press '''Ctrl-.'''
-your main image will get cleared - you have to use the clear button at
-the right.
+trying out your brush. Use it a bit.
 
 [[redbrush.jpg|right|border]]
 
@@ -71,12 +70,12 @@ startup the upper left brush will be selected.
 Now choose the redish brush at the top. Click on it once more to show
 the bigger preview image. Try it a bit, I think it is a good one.
 
-The first thing to notice is that it gets more randomness when you
-increase pressure. Also, it will grow when you move around faster. And
+The first thing to note is that it gets more randomness when you
+increase pressure. And it will grow when you move around faster. And
 the brightness changes. You have to get a feeling for this brush
-before you can use it productively. Especially, try to change the
-size, and see what happens when you draw very slowly. (On the
-screenshot here the size was never changed.)
+before you can use it productively. Especially, try what happens when
+you move very slow and press very hard. (On this image the size was
+never changed.)
 
 ==Create your own brush==
 The rest of this tutorial is about making and changing brushes.
@@ -95,18 +94,18 @@ Color to black and draw a bit.
 
 OK, that was a bad idea, and it still does change with speed! Click on
 the red brush again to restore the original settings. Click on the
-'''X''' button right to the '''color brightness''' slider. The '''X'''
-indicates that something interesting was changed here, in contrast to
-the buttons labeled with '''...''' three dots.
+'''X''' button right to the '''change color value (HSV)''' slider. The
+'''X''' indicates that something interesting was changed here, in
+contrast to the buttons labeled with '''...''' three dots.
 
 Move the '''by random''' slider to the maximum, just for fun, and try
 your brush. You could increase the base value a bit to make the brush
 brighter on average. But now press all the zero buttons to get rid of
 this stuff completely. Try it, it did actually work.
 
-(There is no need to alter the curve you see at '''by random'''
+There is no need to alter the curve you see at '''by random'''
 because its y-range now goes from zero to zero. This curve will not be
-saved any more with your brush because it has no effect.)
+saved any more with your brush because it has no effect.
 
 ==Save your new brush==
 
@@ -122,7 +121,7 @@ It is also possible to draw the preview image with a different
 brush. Remember: click once to load the brush settings, click again to
 load its image. You can also change the preview (actually the settings
 file too) with an external program. Mypaint will notice the changes
-when you select the brush (again). Maybe you want our
+when you select the brush again. Maybe you want our
 [[prev-template.xcf.gz|GIMP template for the labels]].
 
 
