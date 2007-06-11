@@ -9,7 +9,7 @@ Optionally, 'make install'.
 Required: pygtk, python, gtk
 Recommended: a pressure sensitive input device (graphic tablet)
 
-Debian users: aptitude install python-gtk2-dev python2.3-dev
+Debian users: aptitude install python-gtk2-dev python2.4-dev
 
 Project homepage:
 http://people.ee.ethz.ch/~mrenold/mypaint/
