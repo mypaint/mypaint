@@ -7,7 +7,7 @@ def is_image(what):
     if not '.' in what: return False
     ext = what.split('.')[-1]
     ext = ext.lower()
-    return ext in ['png', 'gif', 'jpg', 'jpeg']
+    return ext in ['png', 'jpg', 'jpeg']
 
 def make_narrow(html, width='60%'):
     s = ''
@@ -71,7 +71,7 @@ class Wiki2html:
             s += '> \n'
             return s
         else:
-            return ' <a href="%s">%s</a> ' % (dst, name)
+            return '<a href="%s">%s</a>' % (dst, name)
 
     def doublelink(self, text):
         return self.link(text.split('|'))
