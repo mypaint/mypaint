@@ -38,6 +38,7 @@ class Window(gtk.Window):
         self.mdw.set_brush(self.app.brush)
         vbox.pack_start(self.mdw)
         self.mdw.toolchange_observers.append(self.toolchange_cb)
+        self.mdw.connect("gesture-recognized", self.gesture_recognized_cb)
 
         self.statusbar = sb = gtk.Statusbar()
         vbox.pack_end(sb, expand=False)
@@ -638,6 +639,10 @@ class Window(gtk.Window):
             self.app.select_brush(context)
             self.app.brushSelectionWindow.set_preview_pixbuf(context.preview)
 
+    def gesture_recognized_cb(self, widget):
+        print 'pick-color gesture recognized'
+        self.app.colorSelectionWindow.pick_color_at_pointer()
+
     def show_about_cb(self, action):
         d = gtk.MessageDialog(self, buttons=gtk.BUTTONS_OK)
 
@@ -706,3 +711,4 @@ class Window(gtk.Window):
             )
         d.run()
         d.destroy()
+

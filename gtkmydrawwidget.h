@@ -57,6 +57,7 @@ struct _GtkMyDrawWidgetClass
   GtkDrawingAreaClass parent_class;
 
   void (*dragging_finished) (GtkMyDrawWidget *mdw);
+  void (*gesture_recognized) (GtkMyDrawWidget *mdw);
 };
 
 

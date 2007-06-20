@@ -26,6 +26,7 @@ static gpointer parent_class;
 
 enum {
   DRAGGING_FINISHED,
+  GESTURE_RECOGNIZED,
   LAST_SIGNAL
 };
 guint gtk_my_draw_widget_signals[LAST_SIGNAL] = { 0 };
@@ -86,6 +87,14 @@ gtk_my_draw_widget_class_init (GtkMyDrawWidgetClass *class)
      g_cclosure_marshal_VOID__VOID,
      G_TYPE_NONE, 0);
 
+  gtk_my_draw_widget_signals[GESTURE_RECOGNIZED] = g_signal_new 
+    ("gesture-recognized",
+     G_TYPE_FROM_CLASS (class),
+     G_SIGNAL_RUN_LAST,
+     G_STRUCT_OFFSET (GtkMyDrawWidgetClass, gesture_recognized),
+     NULL, NULL,
+     g_cclosure_marshal_VOID__VOID,
+     G_TYPE_NONE, 0);
 }
 
 static void
@@ -224,6 +233,25 @@ gtk_my_draw_widget_process_motion_or_button (GtkWidget *widget, guint32 time, gd
     gtk_my_brush_stroke_to (mdw->brush, mdw->surface,
                             x*mdw->one_over_zoom + mdw->viewport_x, y*mdw->one_over_zoom + mdw->viewport_y,
                             pressure, (double)dtime / 1000.0 /* in seconds */);
+  }
+
+
+
+  // FIXME: proof-of-concept hack
+  {
+    static int pressed = 0;
+    static guint32 pressed_time = 0;
+    if (!pressed && pressure > 0.05) {
+      pressed = 1;
+      pressed_time = time;
+    } else if (pressed && pressure == 0) {
+      int duration = time - pressed_time;
+      pressed = 0;
+      // FIXME: proper signal recognition needed? use current speed, correlate to signal prototype, etc.
+      if (duration < 200/*ms*/) {
+        g_signal_emit (mdw, gtk_my_draw_widget_signals[GESTURE_RECOGNIZED], 0);
+      }
+    }
   }
 }
 
