@@ -274,7 +274,9 @@ gtk_my_draw_widget_button_updown (GtkWidget *widget, GdkEventButton *event)
   if (!gdk_event_get_axis ((GdkEvent *)event, GDK_AXIS_PRESSURE, &pressure)) {
     pressure = (event->state & GDK_BUTTON1_MASK) ? 0.5 : 0;
   }
-  gtk_my_draw_widget_process_motion_or_button (widget, event->time, event->x, event->y, pressure);
+  // FIXME: looks like this gets called with pressure = 0 even when a tablet is present
+  //        should add a heartbeat to ensure mouse-clicks without motion are drawn
+  //gtk_my_draw_widget_process_motion_or_button (widget, event->time, event->x, event->y, pressure);
   return TRUE;
 }
 

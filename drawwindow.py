@@ -58,6 +58,8 @@ class Window(gtk.Window):
         self.app.brush.observers.append(self.brush_modified_cb)
         self.app.brush.connect("split-stroke", self.split_stroke_cb)
 
+        self.last_gesture_time = 0
+
         self.init_child_dialogs()
 
         
@@ -641,7 +643,13 @@ class Window(gtk.Window):
 
     def gesture_recognized_cb(self, widget):
         print 'pick-color gesture recognized'
-        self.app.colorSelectionWindow.pick_color_at_pointer()
+        t = time()
+        if t - self.last_gesture_time < 1.0:
+            # double-click
+            self.app.colorSelectionWindow.show_change_color_window()
+        else:
+            self.app.colorSelectionWindow.pick_color_at_pointer()
+        self.last_gesture_time = t
 
     def show_about_cb(self, action):
         d = gtk.MessageDialog(self, buttons=gtk.BUTTONS_OK)
