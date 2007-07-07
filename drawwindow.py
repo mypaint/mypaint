@@ -63,7 +63,7 @@ class Window(gtk.Window):
         
     def create_ui(self):
         ag = gtk.ActionGroup('WindowActions')
-        # FIXME: this xml menu ony creates unneeded information duplication, I think.
+        # FIXME: this xml menu only creates unneeded information duplication, I think.
         ui_string = """<ui>
           <menubar name='Menubar'>
             <menu action='FileMenu'>

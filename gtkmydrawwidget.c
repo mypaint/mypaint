@@ -10,6 +10,8 @@
 // gtk stock code - left gtk prefix to use the pygtk wrapper-generator easier
 #include "gtkmydrawwidget.h"
 #include "stroke_recorder.h"
+#include "gestures.h"
+#include <math.h>
 
 static void gtk_my_draw_widget_class_init    (GtkMyDrawWidgetClass *klass);
 static void gtk_my_draw_widget_init          (GtkMyDrawWidget      *mdw);
@@ -230,27 +232,14 @@ gtk_my_draw_widget_process_motion_or_button (GtkWidget *widget, guint32 time, gd
   }
   
   if (mdw->brush) {
+    double dtime_ms = (double)dtime / 1000.0;
     gtk_my_brush_stroke_to (mdw->brush, mdw->surface,
                             x*mdw->one_over_zoom + mdw->viewport_x, y*mdw->one_over_zoom + mdw->viewport_y,
-                            pressure, (double)dtime / 1000.0 /* in seconds */);
-  }
+                            pressure, dtime_ms);
 
-
-
-  // FIXME: proof-of-concept hack
-  {
-    static int pressed = 0;
-    static guint32 pressed_time = 0;
-    if (!pressed && pressure > 0.05) {
-      pressed = 1;
-      pressed_time = time;
-    } else if (pressed && pressure == 0) {
-      int duration = time - pressed_time;
-      pressed = 0;
-      // FIXME: proper signal recognition needed? use current speed, correlate to signal prototype, etc.
-      if (duration < 200/*ms*/) {
-        g_signal_emit (mdw, gtk_my_draw_widget_signals[GESTURE_RECOGNIZED], 0);
-      }
+    int gesture = detect_gestures (dtime_ms, x, y, pressure);
+    if (gesture == GESTURE_COLORSELECT) {
+      g_signal_emit (mdw, gtk_my_draw_widget_signals[GESTURE_RECOGNIZED], 0);
     }
   }
 }

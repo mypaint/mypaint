@@ -39,6 +39,8 @@ mydrawwidget_la_SOURCES = \
 	helpers.c \
 	mapping.c \
 	mymarshal.c \
+	lfd.c \
+	gestures.c \
 	stroke_recorder.c
 
 CLEANFILES = mydrawwidget.defs.c mydrawwidget.defs  mydrawwidget.c brushsettings.h mymarshal.h mymarshal.c
