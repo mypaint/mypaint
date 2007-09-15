@@ -1,18 +1,18 @@
-[[..|back to the MyPaint homepage]]
+[[..|back To the MyPaint homepage]]
 
 ==Tutorial==
 
-Here I want to explain you how I use my program. My goal for mypaint
+Here I want to explain you how I use my program. My goal for MyPaint
 was "scribble without thinking". I want as little distraction as
 possible from the painting process.
 
 If you are drawing with the mouse you might notice small problems
-between the strokes. Mypaint is not really optimized for the mouse. If
-you paint often I really reccomend a graphic tablet. 
+between the strokes. MyPaint is not really optimized for the mouse. If
+you paint often I really recommend a graphic tablet. 
 
 ==General==
 [[shortcut.jpg|right|border]] 
-Mypaint can save/load .png only (without alpha). Use the
+MyPaint can save/load .png only (without alpha). Use the
 [http://www.gimp.org GIMP] for final touch up, cropping and all the
 "manipulation" stuff.
 
@@ -25,7 +25,7 @@ To increase the size of the brush, press the '''F''' key. Press the
 instinctively. You can use them in the middle of a stroke.
 
 However some brushes, especially the first two, change their size with
-your movement speed. Changing the radius as described will not work
+your movement speed. Changing their radius will not work
 very well (because the speed is measured relative to the current
 radius). You control the size of those brushes by moving faster or
 slower. This works best when painting with small successive movements
@@ -61,8 +61,8 @@ try it while you have nothing to lose.
 
 If you want to experiment with the color of a stroke you can hit
 '''M''' to start modifying the last stroke. Nothing will happen until
-you change the brush (usually color, opacity or size). I like to use
-this when drawing fog or clouds - faint strokes that cover a large
+you change the brush (usually color, opacity or size). I like 
+this when drawing clouds or fog or, in general, faint strokes that cover a large
 area. You can press '''M''' again to include earlier strokes.  Press
 '''N''' or simply start to paint to get out of this mode.
 ([[modify_last_stroke_anim2.gif|demo]]) 
@@ -74,7 +74,7 @@ The white space at the bottom of the graphical brush list is for
 trying out your brush. Use it a bit.
 
 You can drag the brushes around in the list to reorder them. On
-startup the upper left brush will be selected.  Now choose the redish
+startup the upper left brush will be selected.  Now choose the reddish
 brush at the top (the image looks a bit different in 0.5.0). Click on
 it once more to show the bigger preview image. Try it a bit, I think
 it is a good one.
@@ -132,7 +132,7 @@ preview'''. If you improve the brush settings even more, remember to
 It is also possible to draw the preview image with a different
 brush. Remember: click once to load the brush settings, click again to
 load its image. You can also change the preview (actually the settings
-file too) with an external program. Mypaint will notice the changes
+file too) with an external program. MyPaint will notice the changes
 when you select the brush again. Maybe you want our
 [[prev-template.xcf.gz|GIMP template for the labels]].
 
@@ -142,7 +142,7 @@ when you select the brush again. Maybe you want our
 This goes manually, sorry about that. Look at the directory
 ~/.mypaint/brushes/, use the png images to find the number of your
 brush. You can rename those files, as long as you keep the .myb
-extension mypaint will find them. The file b???.myb is most important,
+extension MyPaint will find them. The file b???.myb is most important,
 but you better get the _prev.png too for a nice preview. Wow, somebody
 is actually reading all this stuff! Well, if you ever come up with an
 own brush (or a whole collection) that you like and use often, please
