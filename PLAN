@@ -1,3 +1,7 @@
+- Display brush names in edit subwindow.
+
+- load alpha png (convert)
+
 - frame.
   - ("simulates" a finite canvas; infinite canvas alone is awful for artists)
   - visual only (do strokes outside anyway, might enlarge later)

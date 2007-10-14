@@ -15,6 +15,9 @@
 
 int detect_gestures (double dtime, double x, double y, double pressure)
 {
+  // disabled, too many false positives
+  return GESTURE_NONE;
+
   static double time = 0.0;
   time += dtime;
   
@@ -62,7 +65,7 @@ int detect_gestures (double dtime, double x, double y, double pressure)
         static FILE * hitlog;
         if (!hitlog) hitlog = fopen("hit.log", "a");
         fprintf(hitlog, "%f %d %f %f %f %f\n", ratio, v_ratio_hist_n, duration, v, v_ratio, v_ratio_hist[0]);
-        if (ratio < 45.0/100.0) {
+        if (ratio < 60.0/100.0) {
           signal = 1;
           //printf("\7");
           //fflush(stdout);

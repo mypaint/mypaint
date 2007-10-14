@@ -1,5 +1,7 @@
 # run this script from the octave prompt
-load data.log
+#load data.log
+load data_painting_annoying.log
+data = data_painting_annoying ;
 
 N = size(data)(2);
 t = data(:,1);
