@@ -102,6 +102,8 @@ gtk_my_surface_old_new  (int w, int h)
   g_assert (s->block_h * BLOCKSIZE >= h);
 
   s->rgb = g_new0 (guchar, 3*s->block_w*BLOCKSIZE*s->block_h*BLOCKSIZE);
+
+  gtk_my_surface_old_clear (s);
   return s;
 }
 
@@ -130,6 +132,14 @@ gtk_my_surface_old_clear (GtkMySurface *s_)
   GtkMySurfaceOld *s = GTK_MY_SURFACE_OLD(s_);
   // clear rgb buffer to white
   memset (s->rgb, 255, s->block_w*BLOCKSIZE*s->block_h*BLOCKSIZE*3);
+  /*
+  int i;
+  for (i=0; i<s->block_w*BLOCKSIZE*s->block_h*BLOCKSIZE; i++) {
+    s->rgb[3*i+0] = 130;
+    s->rgb[3*i+1] = 120;
+    s->rgb[3*i+2] = 100;
+  }
+  */
 }
 
 void
