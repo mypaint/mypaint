@@ -272,6 +272,8 @@ void brush_update_settings_values (GtkMyBrush * b)
   inputs[INPUT_SPEED2] = log(b->speed_mapping_gamma[1] + b->states[STATE_NORM_SPEED2_SLOW])*b->speed_mapping_m[1] + b->speed_mapping_q[1];
   inputs[INPUT_RANDOM] = g_rand_double (b->rng);
   inputs[INPUT_STROKE] = MIN(b->states[STATE_STROKE], 1.0);
+  //if (b->states[STATE_NORM_DY_SLOW] == 0 && b->states[STATE_NORM_DX_SLOW] == 0) {
+  inputs[INPUT_ANGLE] = fmodf(atan2f (b->states[STATE_NORM_DY_SLOW], b->states[STATE_NORM_DX_SLOW])/(M_PI) + 1.0, 1.0);
   inputs[INPUT_CUSTOM] = b->states[STATE_CUSTOM_INPUT];
   if (b->print_inputs) {
     g_print("press=% 4.3f, speed1=% 4.4f\tspeed2=% 4.4f\tstroke=% 4.3f\tcustom=% 4.3f\n", inputs[INPUT_PRESSURE], inputs[INPUT_SPEED1], inputs[INPUT_SPEED2], inputs[INPUT_STROKE], inputs[INPUT_CUSTOM]);

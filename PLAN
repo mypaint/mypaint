@@ -27,7 +27,8 @@
   - is dabs-per-second enough, or is dabs-per-dpressure needed?
 
 - pen/eraser
-  - recognize tool and asociate brush and color, as brushkeys do
+  - real alpha erasing: make it a mode, not a brush option
+  - recognize tool and asociate brush and color, as brushkeys do?
   - default to a white sharp ink tip on the eraser
 
 - focus on ink a bit more
