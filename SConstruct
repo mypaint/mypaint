@@ -51,3 +51,5 @@ python %s %s > mydrawwidget.defs && ./fix_generated_defs.py
 env.Command('mymarshal.h', 'mymarshal.list', glib_genmarshal + ' --prefix=mymarshal --header $SOURCE > $TARGET')
 env.Command('mymarshal.c', 'mymarshal.list', glib_genmarshal + ' --prefix=mymarshal --body   $SOURCE > $TARGET')
 
+# stub (this file would get generated with autotools)
+env.Command('config.h', [], 'echo > $TARGET')
