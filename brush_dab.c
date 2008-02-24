@@ -252,8 +252,8 @@ void draw_brush_dab_on_tiled_surface (PyObject * s,
             alpha_p[idx] = opa + opa_*alpha_p[idx]; 
             idx *= 3;
             rgb_p[idx+0] = color_r*opa + opa_*rgb_p[idx+0]; 
-            rgb_p[idx+1] = color_r*opa + opa_*rgb_p[idx+1]; 
-            rgb_p[idx+2] = color_r*opa + opa_*rgb_p[idx+2]; 
+            rgb_p[idx+1] = color_g*opa + opa_*rgb_p[idx+1]; 
+            rgb_p[idx+2] = color_b*opa + opa_*rgb_p[idx+2]; 
           }
         }
       }

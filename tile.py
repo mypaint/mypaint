@@ -34,6 +34,20 @@ class TiledLayer:
                 if tile is not None:
                     yield xx*Tile.N, yy*Tile.N, tile
 
+    def plot(self):
+        for xy, t in self.tiledict.iteritems():
+            #print t.rgb
+            subplot(121)
+            print t.rgb
+            imshow(t.rgb/(t.alpha+0.001))
+            subplot(122)
+            a = t.alpha.copy()
+            a.shape = (N,N)
+            imshow(a)
+            break
+        show()
+        raise SystemExit
+
     #def composite(self, dst):
         
         

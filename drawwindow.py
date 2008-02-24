@@ -150,6 +150,7 @@ class Window(gtk.Window):
             <menu action='DebugMenu'>
               <menuitem action='PrintInputs'/>
               <menuitem action='DontPrintInputs'/>
+              <menuitem action='Test'/>
             </menu>
             <menu action='HelpMenu'>
               <menuitem action='Docu'/>
@@ -223,6 +224,7 @@ class Window(gtk.Window):
             ('DebugMenu',    None, 'Debug'),
             ('PrintInputs', None, 'Print Brush Input Values to stdout', None, None, self.print_inputs_cb),
             ('DontPrintInputs', None, 'Stop Printing Them', None, None, self.dont_print_inputs_cb),
+            ('Test', None, 'Test', None, None, self.test_cb),
 
 
             ('ShortcutsMenu', None, 'Shortcuts'),
@@ -261,6 +263,8 @@ class Window(gtk.Window):
         self.app.brush.set_print_inputs(1)
     def dont_print_inputs_cb(self, action):
         self.app.brush.set_print_inputs(0)
+    def test_cb(self, action):
+        self.tiled_surface.plot()
 
     def finish_pending_actions(self, skip=None):
         # this function must be called before manipulation the command stack
