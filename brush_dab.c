@@ -8,7 +8,10 @@
  */
 
 #include <math.h>
+#include "Python.h"
+#include "Numeric/arrayobject.h"
 #include "brush_dab.h"
+
 // This actually draws every pixel of the dab.
 // Called from brush_prepare_and_draw_dab.
 // The parameters are only in the header file to avoid duplication.
@@ -144,6 +147,117 @@
     ExpandRectToIncludePoint (bbox, bb_x, bb_y);
     ExpandRectToIncludePoint (bbox, bb_x+bb_w-1, bb_y+bb_h-1);
   }
+
   return 1;
+}
+
+
+void draw_brush_dab_on_tiled_surface (PyObject * s, 
+                                      GRand * rng,
+                                      float x, float y, 
+                                      float radius, float opaque, float hardness,
+                                      float color_r, float color_g, float color_b
+                                      ) {
+  float r_fringe;
+  int x0, y0;
+  int x1, y1;
+  int xp, yp;
+  float xx, yy, rr;
+  float radius2, one_over_radius2;
+
+  if (opaque == 0) return;
+  if (radius < 0.1) return;
+  if (hardness == 0) return; // infintly small point, rest transparent
+
+  r_fringe = radius + 1;
+  rr = SQR(radius);
+
+
+  int tx1 = floor(x - r_fringe) / TILE_SIZE;
+  int tx2 = floor(x + r_fringe) / TILE_SIZE;
+  int ty1 = floor(y - r_fringe) / TILE_SIZE;
+  int ty2 = floor(y + r_fringe) / TILE_SIZE;
+  int tx, ty;
+  for (ty = ty1; ty <= ty2; ty++) {
+    for (tx = tx1; tx <= tx2; tx++) {
+      // OPTIMIZE: cache tile buffer pointers, so we don't have to call python for each dab;
+      //           this could be used to return a list of dirty tiles at the same time
+      //           (But profile this code first!)
+      PyObject* tuple;
+      tuple = PyObject_CallMethod(tiled_surface, "getTileMemory", "(ii)", tx, ty);
+      if (!tuple) return;
+      PyObject* rgb   = PyTuple_GET_ITEM(tuple, 0);
+      PyObject* alpha = PyTuple_GET_ITEM(tuple, 1);
+      Py_DECREF(tuple);
+
+      assert(PyArray_DIMS(rgb) == 3);
+      assert(PyArray_DIM(rgb, 0) == TILE_SIZE);
+      assert(PyArray_DIM(rgb, 1) == TILE_SIZE);
+      assert(PyArray_DIM(rgb, 2) == 3);
+
+      assert(PyArray_DIMS(alpha) == 3);
+      assert(PyArray_DIM(alpha, 0) == TILE_SIZE);
+      assert(PyArray_DIM(alpha, 1) == TILE_SIZE);
+      assert(PyArray_DIM(alpha, 2) == 1);
+
+      assert(ISCARRAY(rgb));
+      assert(ISBEHAVED(rgb));
+      assert(ISCARRAY(alpha));
+      assert(ISBEHAVED(alpha));
+
+      float * rgb_p   = (float*)((PyArrayObject*)rgb)->data;
+      float * alpha_p = (float*)((PyArrayObject*)alpha)->data;
+
+      float xc = x - tx*TILE_SIZE;
+      float yc = y - ty*TILE_SIZE;
+
+      int x0 = floor (xc - r_fringe);
+      int y0 = floor (yc - r_fringe);
+      int x1 = ceil (xc + r_fringe);
+      int y1 = ceil (yc + r_fringe);
+      if (x0 < 0) x0 = 0;
+      if (y0 < 0) y0 = 0;
+      if (x1 > TILE_SIZE-1) x1 = TILE_SIZE-1;
+      if (y1 > TILE_SIZE-1) y1 = TILE_SIZE-1;
+
+      for (yp = y0; yp <= y1; yp++) {
+        yy = (yp + 0.5 - y);
+        yy *= yy;
+        for (xp = x0; xp <= x1; xp++) {
+          xx = (xp + 0.5 - x);
+          xx *= xx;
+          rr = (yy + xx) * one_over_radius2;
+          // rr is in range 0.0..1.0*sqrt(2)
+
+          if (rr <= 1.0) {
+            float opa = opaque;
+            if (hardness < 1.0) {
+              if (rr < hardness) {
+                opa *= rr + 1-(rr/hardness);
+                // hardness == 0 is nonsense, excluded above
+              } else {
+                opa *= hardness/(hardness-1)*(rr-1);
+              }
+            }
+            color_r * opa;
+
+            // We are manipulating pixels with premultiplied alpha directly.
+            // This is an "over" operation (opa = topAlpha).
+            //
+            // resultAlpha = topAlpha + (1.0 - topAlpha) * bottomAlpha
+            // resultColor = topColor + (1.0 - topAlpha) * bottomColor
+
+            float opa_ = 1.0 - opa;
+            int idx = yp*TILE_SIZE + xp;
+            alpha_p[idx] = opa + opa_*alpha_p[idx]; 
+            idx *= 3;
+            rgb_p[idx+0] = color_r*opa + opa_*rgb_p[idx+0]; 
+            rgb_p[idx+1] = color_r*opa + opa_*rgb_p[idx+1]; 
+            rgb_p[idx+2] = color_r*opa + opa_*rgb_p[idx+2]; 
+          }
+        }
+      }
+    }
+  }
 }
 

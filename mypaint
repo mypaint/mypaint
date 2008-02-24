@@ -33,7 +33,7 @@ if os.path.basename(dir_install) == 'bin':
     sys.path.insert(0, share + '/python')
 else:
     # we are not installed, use .libs/mydrawwidget.so
-    sys.path.insert(0,'.libs')
+    #sys.path.insert(0,'.libs')
     prefix=None
     share='.'
     # checking for import error below

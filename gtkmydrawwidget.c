@@ -407,6 +407,16 @@ gtk_my_draw_widget_set_brush (GtkMyDrawWidget *mdw, GtkMyBrush * brush)
   return brush_old;
 }
 
+PyObject * tiled_surface;
+
+void gtk_my_draw_widget_set_tiled_surface (GtkMyDrawWidget *mdw, PyObject * tiled_surface_)
+{
+  // FIXME: remove globals...
+  Py_CLEAR(tiled_surface);
+  Py_INCREF(tiled_surface_);
+  tiled_surface = tiled_surface_;
+}
+
 void gtk_my_draw_widget_allow_dragging (GtkMyDrawWidget *mdw, int allow)
 {
   mdw->allow_dragging = allow;

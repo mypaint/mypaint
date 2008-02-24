@@ -18,6 +18,7 @@ ignore-glob
   *_get_type
 ignore brush_stroke_to 
 ignore brush_reset 
+ignore gtk_my_surface_old_get_nonwhite_region  
 %%
 override gtk_my_draw_widget_stop_recording noargs
 static PyObject *

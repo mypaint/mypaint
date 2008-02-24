@@ -511,6 +511,14 @@ int brush_prepare_and_draw_dab (GtkMyBrush * b, GtkMySurfaceOld * s, Rect * bbox
     if (hardness > 1.0) hardness = 1.0;
     if (hardness < 0.0) hardness = 0.0;
 
+    // FIXME: don't use global variable
+    if (tiled_surface) {
+      draw_brush_dab_on_tiled_surface (tiled_surface, b->rng, 
+                                       x, y, radius, opaque, hardness,
+                                       c[0] / 255.0, c[1] / 255.0, c[2] / 255.0);
+
+    }
+    
     return draw_brush_dab (s, bbox, b->rng, 
                            x, y, radius, opaque, hardness,
                            c[0], c[1], c[2]);

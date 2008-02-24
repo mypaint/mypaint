@@ -22,6 +22,10 @@
 - canvas rotation
   - (fast rotozoom? also would be nice to use OpenGL if available)
 
+- swap tools
+  - "Apparently Corel Photo Paint uses spacebar for swapping to previous tool."
+  - variants: tool history (like undo), skip tools not painted with, visually show tool switch
+
 - allow dots drawing
   - a dot should draw even without motion
   - is dabs-per-second enough, or is dabs-per-dpressure needed?
