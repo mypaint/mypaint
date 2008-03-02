@@ -1,8 +1,27 @@
 import os
+SConsignFile() # no .scsonsign into $PREFIX please
 
-env = Environment(ENV = os.environ)
+opts = Options('options.cache', ARGUMENTS)
+opts.Add(PathOption('PREFIX', 'Directory to install under', '/usr/local'))
+env = Environment(ENV=os.environ, options=opts)
+opts.Update(env)
+opts.Save('options.cache', env)
+
 env.ParseConfig('python-config --cflags --ldflags')
+
+# tilelib
+env2 = env.Clone()
+env2.Append(SWIGFLAGS='-python -noproxy')
+sources = '''
+tilelib/ctile.i
+'''
+tilelib_module = env2.LoadableModule('tilelib/ctile.so', Split(sources), LDMODULEPREFIX='')
+
+
+# mypaint application
+
 env.ParseConfig('pkg-config --cflags --libs gtk+-2.0 pygtk-2.0')
+
 
 sources = '''
 mydrawwidget.defs.c
@@ -22,7 +41,7 @@ stroke_recorder.c
 
 # the main python module
 # see also http://www.scons.org/wiki/PythonExtensions
-env.LoadableModule('mydrawwidget', Split(sources), LDMODULEPREFIX='')
+module = env.LoadableModule('mydrawwidget', Split(sources), LDMODULEPREFIX='')
 
 
 # code generators
@@ -53,3 +72,11 @@ env.Command('mymarshal.c', 'mymarshal.list', glib_genmarshal + ' --prefix=mymars
 
 # stub (this file would get generated with autotools)
 env.Command('config.h', [], 'echo > $TARGET')
+
+
+
+# installation
+
+#env.Install(module, '$PREFIX/lib/mypaint') # location for private compiled extensions
+##env.Install(module, '$PREFIX/share/mypaint') # theoretical location for private pure python modules (meld uses $PREFIX/lib/meld)
+#env.Install(data, '$PREFIX/share/mypaint')

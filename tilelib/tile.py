@@ -1,8 +1,6 @@
-from scipy import *
-from pylab import *
+from numpy import *
 
-
-N = 64
+tilesize = N = 64
 
 class Tile:
     def __init__(self):
@@ -35,16 +33,22 @@ class TiledLayer:
                     yield xx*Tile.N, yy*Tile.N, tile
 
     def plot(self):
-        for xy, t in self.tiledict.iteritems():
-            #print t.rgb
-            subplot(121)
-            print t.rgb
-            imshow(t.rgb/(t.alpha+0.001))
-            subplot(122)
-            a = t.alpha.copy()
-            a.shape = (N,N)
-            imshow(a)
-            break
+        from pylab import *
+
+        import random
+        xy, t = random.choice(self.tiledict.items())
+        print len(self.tiledict)
+
+        #print t.rgb
+        subplot(121)
+        #print t.rgb
+        imshow(t.rgb)
+        #imshow(t.rgb/(t.alpha+0.001))
+        subplot(122)
+        a = t.alpha.copy()
+        a.shape = (N,N)
+        imshow(a)
+
         show()
         raise SystemExit
 

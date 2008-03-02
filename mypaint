@@ -8,9 +8,6 @@
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY. See the COPYING file for more details.
 
-#import psyco
-#psyco.full()
-
 import gtk, sys, os, os.path
 gdk = gtk.gdk
 
@@ -24,7 +21,8 @@ pwd=os.getcwd()
 curdir=os.path.dirname(sys.argv[0])
 
 # script is installed as $prefix/bin. I just need $prefix to continue.
-dir_install=os.path.normpath(os.path.join(pwd,curdir))
+#dir_install=os.path.normpath(os.path.join(pwd,curdir)) # ????
+dir_install=curdir # same, except maybe if curdir is relative
 
 if os.path.basename(dir_install) == 'bin':
     prefix=os.path.dirname(dir_install)

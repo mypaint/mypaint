@@ -41,9 +41,9 @@ class Window(gtk.Window):
         self.mdw.connect("gesture-recognized", self.gesture_recognized_cb)
 
         # TEST
-        import tile
-        self.tiled_surface = tile.TiledLayer()
-        self.mdw.set_tiled_surface(self.tiled_surface)
+        #import tile
+        #self.tiled_surface = tile.TiledLayer()
+        #self.mdw.set_tiled_surface(self.tiled_surface)
 
         self.statusbar = sb = gtk.Statusbar()
         vbox.pack_end(sb, expand=False)

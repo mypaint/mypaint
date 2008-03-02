@@ -22,6 +22,8 @@
 - canvas rotation
   - (fast rotozoom? also would be nice to use OpenGL if available)
 
+- global pressure curve
+
 - swap tools
   - "Apparently Corel Photo Paint uses spacebar for swapping to previous tool."
   - variants: tool history (like undo), skip tools not painted with, visually show tool switch
@@ -34,6 +36,9 @@
   - real alpha erasing: make it a mode, not a brush option
   - recognize tool and asociate brush and color, as brushkeys do?
   - default to a white sharp ink tip on the eraser
+
+- color mixer?
+  http://www.valdyas.org/fading/index.cgi/2007/08/10#mixer_done
 
 - focus on ink a bit more
 
