@@ -233,6 +233,7 @@ gtk_my_draw_widget_process_motion_or_button (GtkWidget *widget, guint32 time, gd
   
   if (mdw->brush) {
     double dtime_ms = (double)dtime / 1000.0;
+    //printf("%d %f %f %f\n", (unsigned int)time, x, y, pressure);
     gtk_my_brush_stroke_to (mdw->brush, mdw->surface,
                             x*mdw->one_over_zoom + mdw->viewport_x, y*mdw->one_over_zoom + mdw->viewport_y,
                             pressure, dtime_ms);

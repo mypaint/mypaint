@@ -4,8 +4,8 @@
 
 #include "dab.h"
 
-// This file is also directly #included into the generated python
-// wrapper. Everything should be declared static.
+// This file is #included from the generated python wrapper,
+// so everything should be declared static.
 
 static void draw_brush_dab_on_tiled_surface (PyObject * tiled_surface, 
                                              float x, float y, 

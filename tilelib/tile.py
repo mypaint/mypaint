@@ -1,4 +1,5 @@
 from numpy import *
+from PIL import Image
 
 tilesize = N = 64
 
@@ -52,6 +53,19 @@ class TiledLayer:
         show()
         raise SystemExit
 
-    #def composite(self, dst):
-        
-        
+    def save(self, filename):
+        # only for debugging so far... should save alpha channel too
+        a = array([(x0, y0) for (x0, y0), tile in self.tiledict.iteritems()])
+        minx, miny = N*a.min(0)
+        sizex, sizey = N*(a.max(0) - a.min(0) + 1)
+        print sizex, sizey
+        buf = zeros((sizey, sizex, 3), 'float32')
+        for (x0, y0), tile in self.tiledict.iteritems():
+            x0 = N*x0 - minx
+            y0 = N*y0 - miny
+            buf[y0:y0+N,x0:x0+N,:] = tile.rgb[:,:,:]
+        buf *= 255
+        buf = buf.astype('uint8')
+
+        im = Image.fromstring('RGB', (sizex, sizey), buf.tostring())
+        im.save(filename)
