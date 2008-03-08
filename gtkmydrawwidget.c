@@ -200,6 +200,7 @@ gtk_my_draw_widget_process_motion_or_button (GtkWidget *widget, guint32 time, gd
   mdw = GTK_MY_DRAW_WIDGET (widget);
 
   g_assert (pressure >= 0 && pressure <= 1);
+  assert(x < 1e8 && y < 1e8 && x > -1e8 && y > -1e8);
 
   if (mdw->dragging) return;
 

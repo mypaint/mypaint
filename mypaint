@@ -71,10 +71,16 @@ def init_input():
     "make those pressure sensitive devices working"
     pressure_devices = []
     for device in gdk.devices_list():
-        if device.source in [gdk.SOURCE_PEN, gdk.SOURCE_ERASER]:
-            pressure_devices.append(device)
+        #if device.source in [gdk.SOURCE_PEN, gdk.SOURCE_ERASER]:
+        # The above seems to be True sometimes for a normal
+        # USB Mouse (bug #11215). Using different check now:
+        for use, val_min, val_max in device.axes:
+            if use == gdk.AXIS_PRESSURE:
+                pressure_devices.append(device)
+                break
+
     if pressure_devices:
-        print 'Setting "screen mode" for pressure_sensitive devices:'
+        print 'Setting "screen mode" for pressure sensitive devices:'
         for device in pressure_devices:
             print device.name
             device.set_mode(gdk.MODE_SCREEN)
