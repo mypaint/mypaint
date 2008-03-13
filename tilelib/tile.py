@@ -1,5 +1,6 @@
 from numpy import *
 from PIL import Image
+import _tilelib
 
 tilesize = N = 64
 
@@ -32,6 +33,9 @@ class TiledLayer:
                 tile = self.tiledict.get((xx, yy), None)
                 if tile is not None:
                     yield xx*Tile.N, yy*Tile.N, tile
+
+    def drawDab(self, *args):
+       _tilelib.tile_draw_dab(self, *args)
 
     def plot(self):
         from pylab import *

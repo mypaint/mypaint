@@ -13,9 +13,10 @@ env.ParseConfig('python-config --cflags --ldflags')
 env2 = env.Clone()
 env2.Append(SWIGFLAGS='-python -noproxy')
 sources = '''
-tilelib/ctile.i
+tilelib/tilelib.i
+tilelib/tilelib.c
 '''
-tilelib_module = env2.LoadableModule('tilelib/ctile.so', Split(sources), LDMODULEPREFIX='')
+tilelib_module = env2.LoadableModule('tilelib/_tilelib.so', Split(sources), LDMODULEPREFIX='')
 
 
 # mypaint application

@@ -1,17 +1,23 @@
+/* This file is part of MyPaint.
+ * Copyright (C) 2008 by Martin Renold <martinxyz@gmx.ch>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY. See the COPYING file for more details.
+ */
+
 #include "Python.h"
 #include "Numeric/arrayobject.h"
 #include <math.h>
+#include "tilelib.h"
 
-#include "dab.h"
-
-// This file is #included from the generated python wrapper,
-// so everything should be declared static.
-
-static void draw_brush_dab_on_tiled_surface (PyObject * tiled_surface, 
-                                             float x, float y, 
-                                             float radius, float opaque, float hardness,
-                                             float color_r, float color_g, float color_b
-                                             ) {
+void tile_draw_dab (PyObject * tiled_surface, 
+                    float x, float y, 
+                    float radius, 
+                    float color_r, float color_g, float color_b,
+                    float opaque, float hardness
+                    ) {
   float r_fringe;
   int xp, yp;
   float xx, yy, rr;
@@ -113,8 +119,8 @@ static void draw_brush_dab_on_tiled_surface (PyObject * tiled_surface,
   }
 }
 
-// FIXME: rename
-static PyObject * render (PyObject * layer, PyObject * dabs) {
+/* unused code to render an array of dabs
+PyObject * render (PyObject * layer, PyObject * dabs) {
 
   dabs = PyArray_ContiguousFromObject(dabs, PyArray_FLOAT, 2, 2);
   if (!dabs) return NULL;
@@ -139,3 +145,4 @@ static PyObject * render (PyObject * layer, PyObject * dabs) {
 
   Py_RETURN_NONE;
 }
+*/
