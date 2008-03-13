@@ -14,6 +14,7 @@ class Tile:
     #    self.rgb = other.alpha * other.rgb + (1.0-other.alpha) * self.rgb
     #    self.alpha = other.alpha + (1.0-other.alpha)*self.alpha
 
+
 class TiledLayer:
     def __init__(self):
         self.tiledict = {}
@@ -37,39 +38,20 @@ class TiledLayer:
     def drawDab(self, *args):
        _tilelib.tile_draw_dab(self, *args)
 
-    def plot(self):
-        from pylab import *
-
-        import random
-        xy, t = random.choice(self.tiledict.items())
-        print len(self.tiledict)
-
-        #print t.rgb
-        subplot(121)
-        #print t.rgb
-        imshow(t.rgb)
-        #imshow(t.rgb/(t.alpha+0.001))
-        subplot(122)
-        a = t.alpha.copy()
-        a.shape = (N,N)
-        imshow(a)
-
-        show()
-        raise SystemExit
-
     def save(self, filename):
-        # only for debugging so far... should save alpha channel too
-        a = array([(x0, y0) for (x0, y0), tile in self.tiledict.iteritems()])
+        a = array([xy for xy, tile in self.tiledict.iteritems()])
         minx, miny = N*a.min(0)
         sizex, sizey = N*(a.max(0) - a.min(0) + 1)
-        print sizex, sizey
-        buf = zeros((sizey, sizex, 3), 'float32')
+        buf = zeros((sizey, sizex, 4), 'float32')
+
         for (x0, y0), tile in self.tiledict.iteritems():
             x0 = N*x0 - minx
             y0 = N*y0 - miny
-            buf[y0:y0+N,x0:x0+N,:] = tile.rgb[:,:,:]
-        buf *= 255
-        buf = buf.astype('uint8')
+            dst = buf[y0:y0+N,x0:x0+N,:]
+            # un-premultiply alpha
+            dst[:,:,0:3] = tile.rgb[:,:,0:3] / clip(tile.alpha, 0.000001, 1.0)
+            dst[:,:,3:4] = tile.alpha
 
-        im = Image.fromstring('RGB', (sizex, sizey), buf.tostring())
+        buf = (buf*255).round().astype('uint8')
+        im = Image.fromstring('RGBA', (sizex, sizey), buf.tostring())
         im.save(filename)
