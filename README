@@ -1,15 +1,18 @@
 MyPaint - drawing program with dynamic brushes for graphic tablets
 
 Compile and run:
-./configure && make && ./mypaint
-If you are using svn you need ./autogen.sh first.
+scons && ./mypaint
 
-Optionally, 'make install'. 
+(Autoconf might not work currently:)
+# ./configure && make && ./mypaint
+# If you are using svn you need ./autogen.sh first.
+# 
+# Optionally, 'make install'. 
 
-Required: pygtk, python, gtk
+Required: pygtk, python, gtk, numpy, [maybe also scipy]
 Recommended: a pressure sensitive input device (graphic tablet)
 
-Debian users: aptitude install python-gtk2-dev python2.4-dev
+Debian users need: python-gtk2-dev python2.4-dev python-numeric python-scipy
 
 Project homepage:
 http://people.ee.ethz.ch/~mrenold/mypaint/
