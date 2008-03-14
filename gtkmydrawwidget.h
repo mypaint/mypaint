@@ -32,10 +32,6 @@
 typedef struct _GtkMyDrawWidget       GtkMyDrawWidget;
 typedef struct _GtkMyDrawWidgetClass  GtkMyDrawWidgetClass;
 
-// FIXME: move to better place, also it is a duplication of tile.py
-#define TILE_SIZE 64
-extern PyObject * tiled_surface;
-
 struct _GtkMyDrawWidget
 {
   GtkDrawingArea widget;
@@ -73,7 +69,6 @@ GtkWidget* gtk_my_draw_widget_new        (void);
 
 void gtk_my_draw_widget_clear (GtkMyDrawWidget *mdw);
 GtkMyBrush* gtk_my_draw_widget_set_brush (GtkMyDrawWidget *mdw, GtkMyBrush * brush);
-void gtk_my_draw_widget_set_tiled_surface (GtkMyDrawWidget *mdw, PyObject * tiled_surface);
 void gtk_my_draw_widget_set_viewport (GtkMyDrawWidget *mdw, float x, float y);
 float gtk_my_draw_widget_get_viewport_x (GtkMyDrawWidget *mdw);
 float gtk_my_draw_widget_get_viewport_y (GtkMyDrawWidget *mdw);

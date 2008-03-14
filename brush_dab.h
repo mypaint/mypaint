@@ -11,17 +11,6 @@
 #include "gtkmysurfaceold.h"
 #include "helpers.h"
 
-// FIXME remove those includes
-#include "Python.h"
-#include "gtkmydrawwidget.h"
-
-void draw_brush_dab_on_tiled_surface (PyObject * s, 
-                                      GRand * rng,
-                                      float x, float y, 
-                                      float radius, float opaque, float hardness,
-                                      float color_r, float color_g, float color_b
-                                      );
-
 // The bbox (bounding box) can be NULL, if not, it will be expanded to
 // include the surface area which was just painted.
 // Returns 0 if nothing was painted.

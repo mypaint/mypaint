@@ -9,8 +9,9 @@ def directPaint():
     #events = events[:100,:]
 
     for t, x, y, pressure in events:
-        l.drawDab(x, y, 12, 1.0, 1.0, 1.0, pressure, 0.6)
-    #l.plot()
+        r = g = b = 0.5*(1.0+sin(t))
+        r *= 0.8
+        l.drawDab(x, y, 12, r, g, b, pressure, 0.6)
     l.save('directPaint.png')
 
 

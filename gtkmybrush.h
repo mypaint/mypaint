@@ -35,6 +35,9 @@ typedef struct _GtkMyBrushClass  GtkMyBrushClass;
    a) the states of the cursor (velocity, color, speed)
    b) the brush settings (as set in the GUI)
    FIXME: Actually those are two orthogonal things. Should separate them.
+          (There used to be code that could change the settings during a
+           stroke, this is hopefully already all gone.)
+          (There might still be some "not-sure-if-those-are-states" though.)
 
    In python, there are two kinds of instances from this: a "global
    brush" which does the cursor tracking, and the "brushlist" where

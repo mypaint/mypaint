@@ -23,7 +23,6 @@ class TiledLayer:
     def getTileMemory(self, x, y):
         t = self.tiledict.get((x, y))
         if t is None:
-            print 'allocating tile', (x, y)
             t = Tile()
             self.tiledict[(x, y)] = t
         return t.rgb, t.alpha

@@ -43,7 +43,6 @@ class Window(gtk.Window):
         # TEST
         #import tile
         #self.tiled_surface = tile.TiledLayer()
-        #self.mdw.set_tiled_surface(self.tiled_surface)
 
         self.statusbar = sb = gtk.Statusbar()
         vbox.pack_end(sb, expand=False)

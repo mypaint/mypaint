@@ -353,7 +353,6 @@ int brush_prepare_and_draw_dab (GtkMyBrush * b, GtkMySurfaceOld * s, Rect * bbox
   float * settings = b->settings_value;
   float x, y, opaque;
   float radius;
-  int i;
 
   if (DEBUGLOG) {
     static FILE * logfile = NULL;
@@ -483,7 +482,6 @@ int brush_prepare_and_draw_dab (GtkMyBrush * b, GtkMySurfaceOld * s, Rect * bbox
 
   // HSL color change
   if (settings[BRUSH_CHANGE_COLOR_L] || settings[BRUSH_CHANGE_COLOR_HSL_S]) {
-    float h, s, l;
     // (calculating way too much here, can be optimized if neccessary)
     hsv_to_rgb_float (&color_h, &color_s, &color_v);
     rgb_to_hsl_float (&color_h, &color_s, &color_v);
@@ -511,14 +509,8 @@ int brush_prepare_and_draw_dab (GtkMyBrush * b, GtkMySurfaceOld * s, Rect * bbox
     if (hardness > 1.0) hardness = 1.0;
     if (hardness < 0.0) hardness = 0.0;
 
-    // FIXME: don't use global variable
-    if (tiled_surface) {
-      draw_brush_dab_on_tiled_surface (tiled_surface, b->rng, 
-                                       x, y, radius, opaque, hardness,
-                                       c[0] / 255.0, c[1] / 255.0, c[2] / 255.0);
+    // TODO: allow tiled surface here
 
-    }
-    
     return draw_brush_dab (s, bbox, b->rng, 
                            x, y, radius, opaque, hardness,
                            c[0], c[1], c[2]);
