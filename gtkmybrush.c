@@ -12,6 +12,7 @@
 #include <string.h>
 #include <glib.h>
 #include <math.h>
+#include "Python.h"
 #include "gtkmybrush.h"
 #include "helpers.h"
 #include "brush_dab.h" 
@@ -25,6 +26,12 @@
 // prototypes
 void gtk_my_brush_settings_base_values_have_changed (GtkMyBrush * b);
 void gtk_my_brush_split_stroke (GtkMyBrush * b);
+
+typedef struct {
+  GtkMySurfaceOld * old_surface;
+  PyObject * tiled_surface;
+  Rect bbox;
+} RenderContext;
 
 void
 gtk_my_brush_set_base_value (GtkMyBrush * b, int id, float value)
@@ -347,8 +354,8 @@ void brush_update_settings_values (GtkMyBrush * b)
 // draw the dab, then let draw_brush_dab() do the actual drawing.
 //
 // This is always called "directly" after brush_update_settings_values.
-// The bbox is enlarged so the dab fits in. Returns zero if nothing was drawn.
-int brush_prepare_and_draw_dab (GtkMyBrush * b, GtkMySurfaceOld * s, Rect * bbox)
+// Returns zero if nothing was drawn.
+int brush_prepare_and_draw_dab (GtkMyBrush * b, RenderContext * rc)
 {
   float * settings = b->settings_value;
   float x, y, opaque;
@@ -464,14 +471,19 @@ int brush_prepare_and_draw_dab (GtkMyBrush * b, GtkMySurfaceOld * s, Rect * bbox
   if (settings[BRUSH_SMUDGE_LENGTH] < 1.0) {
     float fac = settings[BRUSH_SMUDGE_LENGTH];
     if (fac < 0.0) fac = 0;
-    int px, py;
-    guchar *rgb;
-    px = ROUND(x); px = CLAMP(px, 0, s->w-1);
-    py = ROUND(y); py = CLAMP(py, 0, s->h-1);
-    rgb = PixelXY(s, px, py);
-    b->states[STATE_SMUDGE_R] = fac*b->states[STATE_SMUDGE_R] + (1-fac)*rgb[0]/255.0;
-    b->states[STATE_SMUDGE_G] = fac*b->states[STATE_SMUDGE_G] + (1-fac)*rgb[1]/255.0;
-    b->states[STATE_SMUDGE_B] = fac*b->states[STATE_SMUDGE_B] + (1-fac)*rgb[2]/255.0;
+    if (rc->old_surface) {
+      GtkMySurfaceOld * s = rc->old_surface;
+      int px, py;
+      guchar *rgb;
+      px = ROUND(x); px = CLAMP(px, 0, s->w-1);
+      py = ROUND(y); py = CLAMP(py, 0, s->h-1);
+      rgb = PixelXY(s, px, py);
+      b->states[STATE_SMUDGE_R] = fac*b->states[STATE_SMUDGE_R] + (1-fac)*rgb[0]/255.0;
+      b->states[STATE_SMUDGE_G] = fac*b->states[STATE_SMUDGE_G] + (1-fac)*rgb[1]/255.0;
+      b->states[STATE_SMUDGE_B] = fac*b->states[STATE_SMUDGE_B] + (1-fac)*rgb[2]/255.0;
+    } else if (rc->tiled_surface) {
+      printf("TODO: get smudge color from tiled surface\n");
+    }
   }
 
   // HSV color change
@@ -511,9 +523,16 @@ int brush_prepare_and_draw_dab (GtkMyBrush * b, GtkMySurfaceOld * s, Rect * bbox
 
     // TODO: allow tiled surface here
 
-    return draw_brush_dab (s, bbox, b->rng, 
-                           x, y, radius, opaque, hardness,
-                           c[0], c[1], c[2]);
+    int painted = 0;
+    if (rc->old_surface) {
+      painted |= draw_brush_dab (rc->old_surface, &rc->bbox, b->rng, 
+                                 x, y, radius, opaque, hardness,
+                                 c[0], c[1], c[2]);
+    }
+    if (rc->tiled_surface) {
+      printf("TODO: put dab on tiled surface\n");
+    }
+    return painted;
   }
 }
 
@@ -552,12 +571,8 @@ float brush_count_dabs_to (GtkMyBrush * b, float x, float y, float pressure, flo
 }
 
 // Called from gtkmydrawwidget.c when a GTK event was received, with the new pointer position.
-void gtk_my_brush_stroke_to (GtkMyBrush * b, GtkMySurfaceOld * s, float x, float y, float pressure, double dtime)
+void gtk_my_brush_any_surface_stroke_to (GtkMyBrush * b, RenderContext * rc, float x, float y, float pressure, double dtime)
 {
-  // bounding box of the modified region
-  Rect bbox;
-  bbox.w = 0;
-
   if (DEBUGLOG) {
     static FILE * logfile = NULL;
     static double global_time = 0;
@@ -654,7 +669,7 @@ void gtk_my_brush_stroke_to (GtkMyBrush * b, GtkMySurfaceOld * s, float x, float
     b->states[STATE_PRESSURE] += b->dpressure;
 
     brush_update_settings_values (b);
-    int painted_now = brush_prepare_and_draw_dab (b, s, &bbox);
+    int painted_now = brush_prepare_and_draw_dab (b, rc);
     if (painted_now) {
       painted = YES;
     } else if (painted == UNKNOWN) {
@@ -689,8 +704,11 @@ void gtk_my_brush_stroke_to (GtkMyBrush * b, GtkMySurfaceOld * s, float x, float
   b->states[STATE_DIST] = dist_moved + dist_todo;
   //g_print("dist_final = %f\n", b->states[STATE_DIST]);
 
-  if (bbox.w > 0) {
-    gtk_my_surface_modified ( GTK_MY_SURFACE (s), bbox.x, bbox.y, bbox.w, bbox.h);
+  if (rc->bbox.w > 0) {
+    Rect bbox = rc->bbox;
+    if (rc->old_surface) {
+      gtk_my_surface_modified ( GTK_MY_SURFACE (rc->old_surface), bbox.x, bbox.y, bbox.w, bbox.h);
+    }
     ExpandRectToIncludePoint(&b->stroke_bbox, bbox.x, bbox.y);
     ExpandRectToIncludePoint(&b->stroke_bbox, bbox.x+bbox.w-1, bbox.y+bbox.h-1);
   }
@@ -736,6 +754,23 @@ void gtk_my_brush_stroke_to (GtkMyBrush * b, GtkMySurfaceOld * s, float x, float
       }
     }
   }
+}
+
+void gtk_my_brush_old_surface_stroke_to   (GtkMyBrush * b, GtkMySurfaceOld * s, float x, float y, float pressure, double dtime)
+{
+  RenderContext rc;
+  rc.old_surface = s;
+  rc.tiled_surface = NULL;
+  rc.bbox.w = 0;
+  gtk_my_brush_any_surface_stroke_to (b, &rc, x, y, pressure, dtime);
+}
+void gtk_my_brush_tiled_surface_stroke_to (GtkMyBrush * b, PyObject * tiled_surface, float x, float y, float pressure, double dtime)
+{
+  RenderContext rc;
+  rc.old_surface = NULL;
+  rc.tiled_surface = tiled_surface;
+  rc.bbox.w = 0;
+  gtk_my_brush_any_surface_stroke_to (b, &rc, x, y, pressure, dtime);
 }
 
 void gtk_my_brush_split_stroke (GtkMyBrush * b)

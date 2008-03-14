@@ -53,6 +53,7 @@ struct _GtkMyBrush
   // see also brushsettings.py
 
   // those are not brush states, just convenience instead of function arguments
+  // FIXME: if the above comment is really correct (which I doubt) then those should be moved into RenderContext
   float dx, dy, dpressure, dtime; // note: this is dx/ddab, ..., dtime/ddab (dab number, 5.0 = 5th dab)
 
   // the current value of a setting
@@ -102,7 +103,8 @@ float gtk_my_brush_get_stroke_total_painting_time (GtkMyBrush * b);
 
 GdkPixbuf* gtk_my_brush_get_colorselection_pixbuf (GtkMyBrush * b);
 
-void gtk_my_brush_stroke_to (GtkMyBrush * b, GtkMySurfaceOld * s, float x, float y, float pressure, double dtime);
+void gtk_my_brush_old_surface_stroke_to   (GtkMyBrush * b, GtkMySurfaceOld * s, float x, float y, float pressure, double dtime);
+void gtk_my_brush_tiled_surface_stroke_to (GtkMyBrush * b, PyObject * tiled_surface, float x, float y, float pressure, double dtime);
 
 void gtk_my_brush_srandom (GtkMyBrush * b, int value);
 double gtk_my_brush_random_double (GtkMyBrush * b); // for testing the RNG
