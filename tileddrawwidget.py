@@ -122,3 +122,10 @@ class TiledDrawWidget(gtk.DrawingArea):
         assert version == '2'
         for dtime, x, y, pressure in numpy.fromstring(data, dtype='float64'):
             self.brush.tiled_surface_stroke_to (self.layer, x, y, pressure, dtime)
+
+
+    def save_snapshot(self):
+        print 'TODO: save_snapshot'
+        return 'blub'
+    def load_snapshot(self, data):
+        print 'TODO: load_snapshot'

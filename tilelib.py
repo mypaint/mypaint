@@ -42,7 +42,10 @@ class TiledLayer:
     #                yield xx*Tile.N, yy*Tile.N, tile
 
     def drawDab(self, *args):
-       mypaintlib.tile_draw_dab(self, *args)
+        # only used for testing
+        rc = mypaintlib.RenderContext()
+        rc.tiled_surface = self
+        mypaintlib.tile_draw_dab(rc, *args)
 
 
     def compositeOverRGB8(self, dst):

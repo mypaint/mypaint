@@ -51,7 +51,8 @@ private:
 
   // those are not brush states, just convenience instead of function arguments
   // FIXME: if the above comment is really correct (which I doubt) then those should be moved into RenderContext
-  float dx, dy, dpressure, dtime; // note: this is dx/ddab, ..., dtime/ddab (dab number, 5.0 = 5th dab)
+  // note: step means interpolation step (in contrast to dab or motion event)
+  float step_dx, step_dy, step_dpressure, step_dtime; // note: this is dx/ddab, ..., dtime/ddab (dab number, 5.0 = 5th dab)
 
   // the current value of a setting
   // FIXME: they could as well be passed as parameters to the dab function
@@ -199,12 +200,12 @@ public:
     float pressure;
     float inputs[INPUT_COUNT];
 
-    if (dtime < 0.0) {
+    if (step_dtime < 0.0) {
       printf("Time is running backwards!\n");
-      dtime = 0.00001;
-    } else if (dtime == 0.0) {
+      step_dtime = 0.00001;
+    } else if (step_dtime == 0.0) {
       // FIXME: happens about every 10th start, workaround (against division by zero)
-      dtime = 0.00001;
+      step_dtime = 0.00001;
     }
 
     float base_radius = expf(settings[BRUSH_RADIUS_LOGARITHMIC]->base_value);
@@ -235,10 +236,10 @@ public:
     // now follows input handling
 
     float norm_dx, norm_dy, norm_dist, norm_speed;
-    norm_dx = dx / dtime / base_radius;
-    norm_dy = dy / dtime / base_radius;
+    norm_dx = step_dx / step_dtime / base_radius;
+    norm_dy = step_dy / step_dtime / base_radius;
     norm_speed = sqrt(SQR(norm_dx) + SQR(norm_dy));
-    norm_dist = norm_speed * dtime;
+    norm_dist = norm_speed * step_dtime;
 
     inputs[INPUT_PRESSURE] = pressure;
     inputs[INPUT_SPEED1] = log(speed_mapping_gamma[0] + states[STATE_NORM_SPEED1_SLOW])*speed_mapping_m[0] + speed_mapping_q[0];
@@ -269,14 +270,14 @@ public:
 
     { // slow speed
       float fac;
-      fac = 1.0 - exp_decay (settings_value[BRUSH_SPEED1_SLOWNESS], dtime);
+      fac = 1.0 - exp_decay (settings_value[BRUSH_SPEED1_SLOWNESS], step_dtime);
       states[STATE_NORM_SPEED1_SLOW] += (norm_speed - states[STATE_NORM_SPEED1_SLOW]) * fac;
-      fac = 1.0 - exp_decay (settings_value[BRUSH_SPEED2_SLOWNESS], dtime);
+      fac = 1.0 - exp_decay (settings_value[BRUSH_SPEED2_SLOWNESS], step_dtime);
       states[STATE_NORM_SPEED2_SLOW] += (norm_speed - states[STATE_NORM_SPEED2_SLOW]) * fac;
     }
   
     { // slow speed, but as vector this time
-      float fac = 1.0 - exp_decay (exp(settings_value[BRUSH_OFFSET_BY_SPEED_SLOWNESS]*0.01)-1.0, dtime);
+      float fac = 1.0 - exp_decay (exp(settings_value[BRUSH_OFFSET_BY_SPEED_SLOWNESS]*0.01)-1.0, step_dtime);
       states[STATE_NORM_DX_SLOW] += (norm_dx - states[STATE_NORM_DX_SLOW]) * fac;
       states[STATE_NORM_DY_SLOW] += (norm_dy - states[STATE_NORM_DY_SLOW]) * fac;
     }
@@ -442,7 +443,6 @@ public:
     color_s += settings_value[BRUSH_CHANGE_COLOR_HSV_S];
     color_v += settings_value[BRUSH_CHANGE_COLOR_V];
 
-
     // HSL color change
     if (settings_value[BRUSH_CHANGE_COLOR_L] || settings_value[BRUSH_CHANGE_COLOR_HSL_S]) {
       // (calculating way too much here, can be optimized if neccessary)
@@ -455,36 +455,26 @@ public:
     } 
 
     { // final calculations
-      gint c[3];
-
-      g_assert(opaque >= 0);
-      g_assert(opaque <= 1);
+      assert(opaque >= 0);
+      assert(opaque <= 1);
     
-      c[0] = ((int)(color_h*360.0)) % 360;
-      if (c[0] < 0) c[0] += 360.0;
-      g_assert(c[0] >= 0);
-      c[1] = CLAMP(ROUND(color_s*255), 0, 255);
-      c[2] = CLAMP(ROUND(color_v*255), 0, 255);
+      if (color_h < 0.0) color_h += 1.0;
+      assert(color_h >= 0.0 && color_h <= 1.0);
+      assert(color_s >= 0.0 && color_s <= 1.0);
+      //c[1] = CLAMP(ROUND(color_s*255), 0, 255);
+      //c[2] = CLAMP(ROUND(color_v*255), 0, 255);
+      assert(color_v >= 0.0 && color_v <= 1.0);
 
-      hsv_to_rgb_int (c + 0, c + 1, c + 2);
-
-      float hardness = settings_value[BRUSH_HARDNESS];
-      if (hardness > 1.0) hardness = 1.0;
-      if (hardness < 0.0) hardness = 0.0;
-
-      return tile_draw_dab (rc, 
-                            x, y, 
-                            radius, 
-                            c[0], c[1], c[2],
-                            opaque, hardness
-                            );
+      hsv_to_rgb_float (&color_h, &color_s, &color_v);
+      float hardness = CLAMP(settings_value[BRUSH_HARDNESS], 0.0, 1.0);
+      return tile_draw_dab (rc, x, y, radius, color_h, color_s, color_v, opaque, hardness);
     }
   }
 
   // How many dabs will be drawn between the current and the next (x, y, pressure, +dt) position?
   float brush_count_dabs_to (float x, float y, float pressure, float dt)
   {
-    float dx, dy;
+    float tmp_dx, tmp_dy;
     float res1, res2, res3;
     float dist;
 
@@ -500,13 +490,13 @@ public:
     //if (base_radius < 0.5) base_radius = 0.5;
     //if (base_radius > 500.0) base_radius = 500.0;
 
-    dx = x - states[STATE_X];
-    dy = y - states[STATE_Y];
+    tmp_dx = x - states[STATE_X];
+    tmp_dy = y - states[STATE_Y];
     //dp = pressure - pressure; // Not useful?
     // TODO: control rate with pressure (dabs per pressure) (dpressure is useless)
 
     // OPTIMIZE
-    dist = sqrtf (dx*dx + dy*dy);
+    dist = hypotf(tmp_dx, tmp_dy);
     // FIXME: no need for base_value or for the range checks above IF always the interpolation
     //        function will be called before this one
     res1 = dist / states[STATE_ACTUAL_RADIUS] * settings[BRUSH_DABS_PER_ACTUAL_RADIUS]->base_value;
@@ -573,7 +563,6 @@ public:
       states[STATE_ACTUAL_X] = states[STATE_X];
       states[STATE_ACTUAL_Y] = states[STATE_Y];
       states[STATE_STROKE] = 1.0; // start in a state as if the stroke was long finished
-      dtime = 0.0001; // not sure if it this is needed
 
       split_stroke ();
       return; // ?no movement yet?
@@ -594,16 +583,16 @@ public:
           // "move" the brush from one dab to the next
           frac = 1.0 / dist_todo;
         }
-        dx        = frac * (x - states[STATE_X]);
-        dy        = frac * (y - states[STATE_Y]);
-        dpressure = frac * (pressure - states[STATE_PRESSURE]);
-        dtime     = frac * (dtime_left - 0.0);
+        step_dx        = frac * (x - states[STATE_X]);
+        step_dy        = frac * (y - states[STATE_Y]);
+        step_dpressure = frac * (pressure - states[STATE_PRESSURE]);
+        step_dtime     = frac * (dtime_left - 0.0);
         // Though it looks different, time is interpolated exactly like x/y/pressure.
       }
     
-      states[STATE_X]        += dx;
-      states[STATE_Y]        += dy;
-      states[STATE_PRESSURE] += dpressure;
+      states[STATE_X]        += step_dx;
+      states[STATE_Y]        += step_dy;
+      states[STATE_PRESSURE] += step_dpressure;
 
       brush_update_settings_values ();
       int painted_now = brush_prepare_and_draw_dab (rc);
@@ -613,7 +602,7 @@ public:
         painted = NO;
       }
 
-      dtime_left   -= dtime;
+      dtime_left   -= step_dtime;
       dist_todo  = brush_count_dabs_to (x, y, pressure, dtime_left);
     }
 
@@ -624,10 +613,10 @@ public:
       // depend on something that changes much faster than only every
       // dab (eg speed).
     
-      dx        = x - states[STATE_X];
-      dy        = y - states[STATE_Y];
-      dpressure = pressure - states[STATE_PRESSURE];
-      dtime     = dtime_left;
+      step_dx        = x - states[STATE_X];
+      step_dy        = y - states[STATE_Y];
+      step_dpressure = pressure - states[STATE_PRESSURE];
+      step_dtime     = dtime_left;
     
       states[STATE_X] = x;
       states[STATE_Y] = y;
@@ -666,7 +655,7 @@ public:
       // force a stroke split after some time
       if (stroke_total_painting_time > 5 + 10*pressure) {
         // but only if pressure is not being released
-        if (dpressure >= 0) {
+        if (step_dpressure >= 0) {
           split_stroke ();
         }
       }
