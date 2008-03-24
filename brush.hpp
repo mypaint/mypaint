@@ -44,39 +44,32 @@ void split_stroke ();
 */
 
 class Brush {
-private:
-  GRand * rng;
-
-  // see also brushsettings.py
-
-  // those are not brush states, just convenience instead of function arguments
-  // FIXME: if the above comment is really correct (which I doubt) then those should be moved into RenderContext
-  // note: step means interpolation step (in contrast to dab or motion event)
-  float step_dx, step_dy, step_dpressure, step_dtime; // note: this is dx/ddab, ..., dtime/ddab (dab number, 5.0 = 5th dab)
-
-  // the current value of a setting
-  // FIXME: they could as well be passed as parameters to the dab function
-  //        (Hm. This way no malloc is needed before each dab. Think about that.)
-  float settings_value[BRUSH_SETTINGS_COUNT];
-
-  // the mappings that describe how to calculate the current value for each setting
-  Mapping * settings[BRUSH_SETTINGS_COUNT];
-
 public:
   bool print_inputs; // debug menu
-  Rect stroke_bbox; // track it here, get/reset from python
+  Rect stroke_bbox; // gets expanded until split_stroke() is called
   double stroke_total_painting_time;
   double stroke_idling_time; 
 
 private:
+  // see also brushsettings.py
+
   // the states (get_state, set_state, reset) that change during a stroke
   float states[STATE_COUNT];
-  bool exception; // set if a python exception is pending (thrown in a callback)
+  GRand * rng;
+
+  // Those mappings describe how to calculate the current value for each setting.
+  // Most of settings will be constant (eg. only their base_value is used).
+  Mapping * settings[BRUSH_SETTINGS_COUNT];
+
+  // the current value of all settings (calculated using the current state)
+  float settings_value[BRUSH_SETTINGS_COUNT];
 
   // cached calculation results
   float speed_mapping_gamma[2], speed_mapping_m[2], speed_mapping_q[2];
 
   PyObject * split_stroke_callback;
+  bool exception_pending;
+
 
 public:
   Brush() {
@@ -87,10 +80,9 @@ public:
     rng = g_rand_new();
     print_inputs = false;
     
-    exception = false;
+    exception_pending = false;
     split_stroke_callback = NULL;
-    // initializes remaining members
-    split_stroke();
+    split_stroke(); // to initialize the remaining class members
 
     // FIXME: nobody can attach a listener to get events fired from the constructor
     settings_base_values_have_changed();
@@ -127,6 +119,7 @@ public:
     mapping_set_point (m, input, index, x, y);
   }
 
+private:
   // returns the fraction still left after t seconds (TODO: maybe move this out of this class)
   float exp_decay (float T_const, float t)
   {
@@ -185,16 +178,14 @@ public:
     }
   }
 
-  // Update the "important" settings. (eg. actual radius, velocity)
-  // FIXME: states, not settings! rename!
+  // This function runs a brush "simulation" step. Usually it is
+  // called once or twice per dab. In theory the precision of the
+  // "simulation" gets better when it is called more often. In
+  // practice this only matters if there are some highly nonlinear
+  // mappings in critical places or extremely few events per second.
   //
-  // This has to be done more often than each dab, because of
-  // interpolation. For example if the radius is very big and suddenly
-  // changes to very small, then lots of time might pass until a dab
-  // would happen. But with the updated smaller radius, much more dabs
-  // should have been painted already.
-
-  void brush_update_settings_values ()
+  // note: parameters are is dx/ddab, ..., dtime/ddab (dab is the number, 5.0 = 5th dab)
+  void update_states_and_setting_values (float step_dx, float step_dy, float step_dpressure, float step_dtime)
   {
     int i;
     float pressure;
@@ -202,11 +193,15 @@ public:
 
     if (step_dtime < 0.0) {
       printf("Time is running backwards!\n");
-      step_dtime = 0.00001;
+      step_dtime = 0.001;
     } else if (step_dtime == 0.0) {
       // FIXME: happens about every 10th start, workaround (against division by zero)
-      step_dtime = 0.00001;
+      step_dtime = 0.001;
     }
+
+    states[STATE_X]        += step_dx;
+    states[STATE_Y]        += step_dy;
+    states[STATE_PRESSURE] += step_dpressure;
 
     float base_radius = expf(settings[BRUSH_RADIUS_LOGARITHMIC]->base_value);
 
@@ -254,10 +249,6 @@ public:
     }
     assert(inputs[INPUT_SPEED1] >= 0.0 && inputs[INPUT_SPEED1] < 1e8); // checking for inf
 
-    // OPTIMIZE:
-    // Could only update those settings that can influence the dabbing process here.
-    // (the ones only relevant for the actual drawing could be updated later)
-    // However, this includes about half of the settings already. So never mind.
     for (i=0; i<BRUSH_SETTINGS_COUNT; i++) {
       settings_value[i] = mapping_calculate (settings[i], inputs);
     }
@@ -318,12 +309,12 @@ public:
     if (states[STATE_ACTUAL_RADIUS] > ACTUAL_RADIUS_MAX) states[STATE_ACTUAL_RADIUS] = ACTUAL_RADIUS_MAX;
   }
 
-  // Called only from brush_stroke_to(). Calculate everything needed to
+  // Called only from stroke_to(). Calculate everything needed to
   // draw the dab, then let draw_brush_dab() do the actual drawing.
   //
   // This is always called "directly" after brush_update_settings_values.
   // Returns zero if nothing was drawn.
-  int brush_prepare_and_draw_dab (RenderContext * rc)
+  int prepare_and_draw_dab (RenderContext * rc)
   {
     float x, y, opaque;
     float radius;
@@ -472,7 +463,7 @@ public:
   }
 
   // How many dabs will be drawn between the current and the next (x, y, pressure, +dt) position?
-  float brush_count_dabs_to (float x, float y, float pressure, float dt)
+  float count_dabs_to (float x, float y, float pressure, float dt)
   {
     float tmp_dx, tmp_dy;
     float res1, res2, res3;
@@ -535,7 +526,7 @@ public:
 
     // see html/stroke2dabs.png
     float dist_moved = states[STATE_DIST];
-    float dist_todo = brush_count_dabs_to (x, y, pressure, dtime);
+    float dist_todo = count_dabs_to (x, y, pressure, dtime);
 
     if (dtime > 5 || dist_todo > 300) {
 
@@ -572,6 +563,7 @@ public:
     enum { UNKNOWN, YES, NO } painted = UNKNOWN;
     double dtime_left = dtime;
 
+    float step_dx, step_dy, step_dpressure, step_dtime;
     while (dist_moved + dist_todo >= 1.0) { // there are dabs pending
       { // linear interpolation (nonlinear variant was too slow, see SVN log)
         float frac; // fraction of the remaining distance to move
@@ -590,12 +582,8 @@ public:
         // Though it looks different, time is interpolated exactly like x/y/pressure.
       }
     
-      states[STATE_X]        += step_dx;
-      states[STATE_Y]        += step_dy;
-      states[STATE_PRESSURE] += step_dpressure;
-
-      brush_update_settings_values ();
-      int painted_now = brush_prepare_and_draw_dab (rc);
+      update_states_and_setting_values (step_dx, step_dy, step_dpressure, step_dtime);
+      int painted_now = prepare_and_draw_dab (rc);
       if (painted_now) {
         painted = YES;
       } else if (painted == UNKNOWN) {
@@ -603,7 +591,7 @@ public:
       }
 
       dtime_left   -= step_dtime;
-      dist_todo  = brush_count_dabs_to (x, y, pressure, dtime_left);
+      dist_todo  = count_dabs_to (x, y, pressure, dtime_left);
     }
 
     {
@@ -618,12 +606,9 @@ public:
       step_dpressure = pressure - states[STATE_PRESSURE];
       step_dtime     = dtime_left;
     
-      states[STATE_X] = x;
-      states[STATE_Y] = y;
-      states[STATE_PRESSURE] = pressure;
       //dtime_left = 0; but that value is not used any more
 
-      brush_update_settings_values ();
+      update_states_and_setting_values (step_dx, step_dy, step_dpressure, step_dtime);
     }
 
     // save the fraction of a dab that is already done now
@@ -655,6 +640,8 @@ public:
       // force a stroke split after some time
       if (stroke_total_painting_time > 5 + 10*pressure) {
         // but only if pressure is not being released
+        // FIXME: use some smoothed state for dpressure, not the output of the interpolation code
+        //        (which might easily wrongly give dpressure == 0)
         if (step_dpressure >= 0) {
           split_stroke ();
         }
@@ -679,14 +666,15 @@ public:
     }
   }
 
+public:
   PyObject * tiled_surface_stroke_to (PyObject * tiled_surface, float x, float y, float pressure, double dtime)
   {
     RenderContext rc;
     rc.tiled_surface = tiled_surface;
     rc.bbox.w = 0;
     any_surface_stroke_to (&rc, x, y, pressure, dtime);
-    if (exception) {
-      exception = false;
+    if (exception_pending) {
+      exception_pending = false;
       return NULL;
     }
     if (rc.bbox.w == 0) {
@@ -703,6 +691,7 @@ public:
     split_stroke_callback = callback;
   }
 
+  // gets called when a new atomically undoable stroke should start
   void split_stroke ()
   {
     if (split_stroke_callback) {
@@ -711,11 +700,13 @@ public:
       Py_DECREF (arglist);
       if (!result) {
         printf("Exception during split_stroke callback!\n");
-        exception = true;
+        exception_pending = true;
       } else {
         Py_DECREF (result);
       }
     }
+
+    // note: those values have probably just been stored away in the split_stroke callback
 
     stroke_idling_time = 0;
     stroke_total_painting_time = 0;
