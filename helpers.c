@@ -293,6 +293,8 @@ rgb_to_hsv_float (float *r_, float *g_, float *b_)
   float h, s, v;
   float r, g, b;
 
+  h = 0.0; // silence gcc warning
+
   r = *r_;
   g = *g_;
   b = *b_;

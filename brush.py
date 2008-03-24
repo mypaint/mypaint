@@ -8,7 +8,7 @@
 
 "interface to MyBrush; hiding some C implementation details"
 # FIXME: bad file name, saying nothing about what's in here
-import mydrawwidget
+import mypaintlib
 import brushsettings
 import gtk, string, os, colorsys
 from helpers import clamp
@@ -140,9 +140,9 @@ class Setting:
             points = [(x, func(y)) for x, y in points]
             self.set_points(i, points)
 
-class Brush_Lowlevel(mydrawwidget.MyBrush):
+class Brush_Lowlevel(mypaintlib.Brush):
     def __init__(self):
-        mydrawwidget.MyBrush.__init__(self)
+        mypaintlib.Brush.__init__(self)
         self.observers = []
         self.hidden_observers = []
         self.settings = []
@@ -162,6 +162,11 @@ class Brush_Lowlevel(mydrawwidget.MyBrush):
     def end_atomic(self):
         self.observers[:] = self.hidden_observers.pop()
         for f in self.observers: f()
+
+
+    def get_stroke_bbox(self):
+        bbox = self.stroke_bbox
+        return bbox.x, bbox.y, bbox.w, bbox.h
 
     def setting_by_cname(self, cname):
         s = brushsettings.settings_dict[cname]
@@ -376,4 +381,3 @@ class Brush(Brush_Lowlevel):
         pixbuf_scale_nostretch_centered(src=pixbuf, dst=self.preview_thumb)
         self.preview_changed = True
 
-DrawWidget = mydrawwidget.MyDrawWidget

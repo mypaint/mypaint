@@ -19,14 +19,23 @@
   - or just "random slowness"?
     - could lead to unwanted correlations
 
+- one-sided brush
+  - brush that is hard to the right, soft to the left of the direction moving
+
 - canvas rotation
   - (fast rotozoom? also would be nice to use OpenGL if available)
 
 - global pressure curve
 
+- full screen mode
+
 - swap tools
   - "Apparently Corel Photo Paint uses spacebar for swapping to previous tool."
   - variants: tool history (like undo), skip tools not painted with, visually show tool switch
+
+- popup menu
+  - pops up at mouse, showing four squares with icons (or with adjustments directly?)
+  - click on one, the submenu opens (eg. change size, color, etc)
 
 - allow dots drawing
   - a dot should draw even without motion
@@ -81,8 +90,6 @@
   - and add a setting to intentionally do such gaps
 
 - layers.
-  - alpha support (for both rendering and brush strokes)
-  - new infinite surface class
   - rewrite the rendering code
   - layer dialog (select / set occupancy)
 

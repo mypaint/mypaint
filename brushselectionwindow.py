@@ -8,7 +8,7 @@
 
 "select brush window"
 import gtk
-import brush, mydrawwidget
+import brush, tileddrawwidget
 
 class Window(gtk.Window):
     def __init__(self, app):
@@ -39,9 +39,9 @@ class Window(gtk.Window):
         hbox = gtk.HBox()
         hbox.set_border_width(8)
         expander.add(hbox)
-        self.mdw = mydrawwidget.MyDrawWidget()
+        self.mdw = tileddrawwidget.TiledDrawWidget()
         # bad, fixed maximal size -- No, that's actually good!
-        self.mdw.discard_and_resize(128, 128)
+        #self.mdw.discard_and_resize(128, 128) TODO: replace?
         self.mdw.clear()
         self.mdw_brush = brush.Brush_Lowlevel()
         self.mdw.set_brush(self.mdw_brush)

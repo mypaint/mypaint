@@ -10,8 +10,8 @@
 
 "the main drawing window"
 import gtk, os, zlib, random
-import infinitemydrawwidget
-import brush, document
+import tileddrawwidget
+import tilelib, brush, document
 import command
 from time import time
 
@@ -32,17 +32,13 @@ class Window(gtk.Window):
         self.create_ui()
         vbox.pack_start(self.ui.get_widget('/Menubar'), expand=False)
 
-        self.mdw = infinitemydrawwidget.InfiniteMyDrawWidget()
+        self.mdw = tileddrawwidget.TiledDrawWidget()
         self.mdw.allow_dragging()
         self.mdw.clear()
         self.mdw.set_brush(self.app.brush)
         vbox.pack_start(self.mdw)
         self.mdw.toolchange_observers.append(self.toolchange_cb)
-        self.mdw.connect("gesture-recognized", self.gesture_recognized_cb)
-
-        # TEST
-        #import tile
-        #self.tiled_surface = tile.TiledLayer()
+        #self.mdw.connect("gesture-recognized", self.gesture_recognized_cb)
 
         self.statusbar = sb = gtk.Statusbar()
         vbox.pack_end(sb, expand=False)
@@ -60,7 +56,7 @@ class Window(gtk.Window):
         self.stroke.start_recording(self.mdw, self.app.brush)
         self.pending_actions = [self.split_stroke]
         self.app.brush.observers.append(self.brush_modified_cb)
-        self.app.brush.connect("split-stroke", self.split_stroke_cb)
+        self.app.brush.set_split_stroke_callback(self.split_stroke_cb)
 
         self.last_gesture_time = 0
 
@@ -259,11 +255,12 @@ class Window(gtk.Window):
         self.toggleWindow(self.app.colorSelectionWindow)
 
     def print_inputs_cb(self, action):
-        self.app.brush.set_print_inputs(1)
+        self.app.brush.print_inputs = True
     def dont_print_inputs_cb(self, action):
-        self.app.brush.set_print_inputs(0)
+        self.app.brush.print_inputs = False
+
     def test_cb(self, action):
-        self.tiled_surface.plot()
+        self.mdw.layer.save('test.png')
 
     def finish_pending_actions(self, skip=None):
         # this function must be called before manipulation the command stack
@@ -276,7 +273,7 @@ class Window(gtk.Window):
         # let the brush emit the signal (this calls self.split_stroke_cb)
         self.app.brush.split_stroke()
 
-    def split_stroke_cb(self, widget):
+    def split_stroke_cb(self):
         self.stroke.stop_recording()
         if not self.stroke.empty:
             self.finish_pending_actions(skip=self.split_stroke)

@@ -37,8 +37,8 @@ else:
     # checking for import error below
 
 try: # just for a nice error message, plus portability test
-    from mydrawwidget import MyBrush
-    b = MyBrush()
+    from mypaintlib import Brush
+    b = Brush()
     b.srandom(0xf4a1)
     b.random_double()
     b.random_double()
@@ -52,7 +52,7 @@ try: # just for a nice error message, plus portability test
         print
     assert val >= 0.0
     assert val <= 1.0
-    del MyBrush
+    del Brush
 except ImportError, detail:
     print 'ImportError:', detail
     print "\nWe are not correctly installed or compiled!"

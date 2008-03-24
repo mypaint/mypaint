@@ -15,6 +15,7 @@
 #include "Python.h"
 #include "gtkmybrush.h"
 #include "helpers.h"
+#include "tilelib/tilelib.h"
 #include "brush_dab.h" 
 ;  // ; needed
 
@@ -530,7 +531,12 @@ int brush_prepare_and_draw_dab (GtkMyBrush * b, RenderContext * rc)
                                  c[0], c[1], c[2]);
     }
     if (rc->tiled_surface) {
-      printf("TODO: put dab on tiled surface\n");
+      tile_draw_dab (rc->tiled_surface, 
+                     x, y, 
+                     radius, 
+                     c[0], c[1], c[2],
+                     opaque, hardness
+                     );
     }
     return painted;
   }
