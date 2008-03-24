@@ -129,3 +129,6 @@ class TiledDrawWidget(gtk.DrawingArea):
         return 'blub'
     def load_snapshot(self, data):
         print 'TODO: load_snapshot'
+
+    def set_from_pixbuf(self, pixbuf):
+        print 'TODO: set_from_pixbuf or alternative'

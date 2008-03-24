@@ -429,6 +429,11 @@ private:
       states[STATE_SMUDGE_A] = fac*states[STATE_SMUDGE_A] + (1-fac)*a;
     }
 
+    // eraser
+    if (settings_value[BRUSH_ERASER]) {
+      alpha_eraser *= (1.0-settings_value[BRUSH_ERASER]);
+    }
+
     // HSV color change
     color_h += settings_value[BRUSH_CHANGE_COLOR_H];
     color_s += settings_value[BRUSH_CHANGE_COLOR_HSV_S];
@@ -458,7 +463,7 @@ private:
 
       hsv_to_rgb_float (&color_h, &color_s, &color_v);
       float hardness = CLAMP(settings_value[BRUSH_HARDNESS], 0.0, 1.0);
-      return tile_draw_dab (rc, x, y, radius, color_h, color_s, color_v, opaque, hardness);
+      return tile_draw_dab (rc, x, y, radius, color_h, color_s, color_v, opaque, hardness, alpha_eraser);
     }
   }
 
