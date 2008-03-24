@@ -7,13 +7,8 @@
  * but WITHOUT ANY WARRANTY. See the COPYING file for more details.
  */
 
-#include "mapping.h"
-
+#include "mapping.hpp"
 #include <glib.h>
-//#include <glib-object.h>
-//#include <gdk/gdk.h>
-//#include <gtk/gtkwidget.h>
-
 
 Mapping * mapping_new (int inputs)
 {

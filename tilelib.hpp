@@ -7,12 +7,11 @@
  * but WITHOUT ANY WARRANTY. See the COPYING file for more details.
  */
 
-extern "C" {
 #include "Python.h"
 #include "Numeric/arrayobject.h"
 #include <math.h>
-#include "helpers.h"
-}
+
+#include "helpers.hpp"
 
 #define TILE_SIZE 64
 

@@ -9,7 +9,7 @@
 "select color window (GTK and an own window)"
 import gtk, gobject
 import colorsys
-import helpers
+import helpers, mypaintlib
 gdk = gtk.gdk
 
 # GTK selector
@@ -129,7 +129,13 @@ class AlternativeColorSelectorWindow(gtk.Window):
         self.image = image = gtk.Image()
         self.add(image)
 
-        self.image.set_from_pixbuf(self.app.brush.get_colorselection_pixbuf())
+
+
+        size = mypaintlib.colorselector_size
+        pixbuf = gdk.Pixbuf(gdk.COLORSPACE_RGB, False, 8, size, size)
+        arr = pixbuf.get_pixels_array()
+        mypaintlib.render_colorselector(arr, *self.app.brush.get_color_hsv())
+        self.image.set_from_pixbuf(pixbuf)
 
 	self.set_events(gdk.BUTTON_PRESS_MASK |
                         gdk.BUTTON_RELEASE_MASK |

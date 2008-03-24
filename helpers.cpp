@@ -12,7 +12,7 @@
  * Also fixed the hue range in gimp_hsl_to_rgb_int().
  */
 
-#include "helpers.h"
+#include "helpers.hpp"
 #include <glib.h>
 #include <math.h>
 

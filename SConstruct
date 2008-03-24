@@ -13,22 +13,22 @@ env.Append(CXXFLAGS=' -Wall -Wno-sign-compare -Wno-write-strings')
 #env.Append(CXXFLAGS=' -pg', LINKFLAGS=' -pg')
 
 env.ParseConfig('python-config --cflags --ldflags')
-env.ParseConfig('pkg-config --cflags --libs gtk+-2.0')
+env.ParseConfig('pkg-config --cflags --libs glib-2.0')
 
 # code generator
-#brushsettings = env.Command('brushsettings.h', ['generate.py', 'brushsettings.py'], './generate.py')
+#brushsettings = env.Command('brushsettings.hpp', ['generate.py', 'brushsettings.py'], './generate.py')
 # For the record: I know that scons supports swig. But it doesn't scan for #include in the generated code.
 # 
 # I have given up. Scons just can't get the dependencies right with those
 # code generators. Let's give scons a "normal" c++ project to dependency-scan.
 env.Execute('./generate.py')
-env.Clean('.', 'brushsettings.h')
+env.Clean('.', 'brushsettings.hpp')
 env.Execute('swig -o mypaintlib_wrap.cpp -python -c++ mypaintlib.i')
 env.Clean('.', 'mypaintlib_wrap.cc')
 env.Clean('.', 'mypaintlib.py')
 
 # python extension module
-src = 'mypaintlib_wrap.cpp helpers.c mapping.c lfd.c'
+src = 'mypaintlib_wrap.cpp helpers.cpp mapping.cpp'
 module = env.LoadableModule('_mypaintlib', Split(src), SHLIBPREFIX="")
 
 
