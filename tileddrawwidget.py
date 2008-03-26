@@ -87,10 +87,8 @@ class TiledDrawWidget(gtk.DrawingArea):
         gpb =    gdk.Pixbuf(gdk.COLORSPACE_RGB, True, 8, w, h)  
 
         pixbuf.fill(0xffffffff)
-        #arr = gpb.get_pixels_array()
-        #print repr(arr)[-50:]
         arr = pixbuf.get_pixels_array()
-        #print repr(arr)[-50:]
+        arr = mypaintlib.gdkpixbuf2numpy(arr)
         self.layer.compositeOverRGB8(arr)
         widget.window.draw_pixbuf(None, pixbuf, 0, 0, 0, 0)
 

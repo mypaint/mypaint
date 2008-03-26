@@ -12,10 +12,9 @@ class Tile:
         self.changes = 0
         
     def compositeOverRGB8(self, dst):
-        dst[:,:,0:3] = (dst[:,:,0:3] * (1.0-self.alpha)).round().astype('uint8')
-        #dst[:,:,0:3] *= 1.0-self.alpha
-        dst[:,:,0:3] = dst[:,:,0:3] + (255*self.rgb[:,:,0:3]).round().astype('uint8')
-        
+        dst[:,:,0:3] *= 1.0-self.alpha
+        dst[:,:,0:3] += 255*self.rgb[:,:,0:3]
+
     #def composite(self, other):
         # resultColor = topColor + (1.0 - topAlpha) * bottomColor
     #    self.rgb = other.alpha * other.rgb + (1.0-other.alpha) * self.rgb

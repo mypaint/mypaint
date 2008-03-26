@@ -8,7 +8,6 @@
  */
 
 #include "Python.h"
-#include "Numeric/arrayobject.h"
 #include <math.h>
 
 #include "helpers.hpp"
