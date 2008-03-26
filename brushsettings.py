@@ -71,6 +71,7 @@ settings_list = [
     #['dab2_position_noise', 'second position noise',
     ]
 
+settings_hidden = 'color_h color_s color_v'.split()
 
 settings_migrate = {
     # old cname              new cname        scale function
@@ -100,8 +101,6 @@ norm_speed1_slow, norm_speed2_slow
 stroke, stroke_started # stroke_started is used as boolean
 
 custom_input
-
-# hack warning: new absolute x/y states also need to be added to gtk_my_brush_translate_state()
 '''
 
 class BrushInput:
@@ -129,8 +128,7 @@ for s_list in settings_list:
     settings_dict[s.cname] = s
     globals()[s.cname] = s
 
-hidden = 'color_h color_s color_v'.split()
-settings_visible = [s for s in settings if s.cname not in hidden]
+settings_visible = [s for s in settings if s.cname not in settings_hidden]
 
 class BrushState:
     pass
