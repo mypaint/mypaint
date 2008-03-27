@@ -39,7 +39,8 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.set_extension_events (gdk.EXTENSION_EVENTS_ALL)
 
         self.brush = None
-        self.layer = tilelib.TiledLayer()
+        self.layer = None # tilelib.TiledLayer()
+        self.displayed_layers = None # tilelib.TiledLayer()
 
         self.last_event_time = None
 
@@ -54,6 +55,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         if not self.brush:
             print 'no brush!'
             return
+        assert isinstance(self.layer, tilelib.TiledLayer)
 
         if not self.last_event_time:
             self.last_event_time = event.time
@@ -89,7 +91,10 @@ class TiledDrawWidget(gtk.DrawingArea):
         pixbuf.fill(0xffffffff)
         arr = pixbuf.get_pixels_array()
         arr = mypaintlib.gdkpixbuf2numpy(arr)
-        self.layer.compositeOverRGB8(arr)
+
+        for surface in self.displayed_layers:
+            surface.compositeOverRGB8(arr)
+
         widget.window.draw_pixbuf(None, pixbuf, 0, 0, 0, 0)
 
     def clear(self):
@@ -122,11 +127,3 @@ class TiledDrawWidget(gtk.DrawingArea):
             self.brush.tiled_surface_stroke_to (self.layer, x, y, pressure, dtime)
 
 
-    def save_snapshot(self):
-        print 'TODO: save_snapshot'
-        return 'blub'
-    def load_snapshot(self, data):
-        print 'TODO: load_snapshot'
-
-    def set_from_pixbuf(self, pixbuf):
-        print 'TODO: set_from_pixbuf or alternative'

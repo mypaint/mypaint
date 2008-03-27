@@ -76,3 +76,12 @@ class TiledLayer:
         buf = (buf*255).round().astype('uint8')
         im = Image.fromstring('RGBA', (sizex, sizey), buf.tostring())
         im.save(filename)
+
+    def save_snapshot(self):
+        print 'TODO: save_snapshot'
+        return 'blub'
+    def load_snapshot(self, data):
+        print 'TODO: load_snapshot'
+
+    def set_from_pixbuf(self, pixbuf):
+        print 'TODO: set_from_pixbuf or alternative'

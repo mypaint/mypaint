@@ -19,7 +19,8 @@ A stroke:
 - has fixed brush settings (only brush states can change during a stroke)
 """
 
-import brush, helpers, random, gc
+import brush, helpers, tilelib
+import random, gc
 from time import time
 infinity = 99999999 
 
@@ -111,8 +112,12 @@ def strokes_from_to(a, b):
 
 
 class Layer:
-    def __init__(self, mdw):
-        self.mdw = mdw # MyDrawWidget used as "surface" until real layers/surfaces are implemented
+    def __init__(self, surface=None):
+        if surface is None:
+            surface = tilelib.TiledLayer()
+        else:
+            assert False, 'probably some outdated code doing this?'
+        self.surface = surface
 
         self.strokes = [] # gets manipulated directly from outside
         self.background = None
@@ -148,14 +153,14 @@ class Layer:
         cache = Struct()
         cache.strokes = self.rendered.strokes[:]
         cache.background = self.rendered.background
-        cache.snapshot = self.mdw.save_snapshot()
+        cache.snapshot = self.surface.save_snapshot()
         self.caches.append(cache)
         #print 'caching the layer bitmap took %.3f seconds' % (time() - t)
 
     def rerender(self, only_estimate_cost=False):
         #print 'rerender'
         t1 = time()
-        mdw = self.mdw
+        surface = self.surface
 
         def count_strokes_from(rendered):
             strokes = strokes_from_to(rendered, self)
@@ -175,7 +180,7 @@ class Layer:
                 caching = new_strokes[-2*self.strokes_to_cache]
 
             for new_stroke in new_strokes:
-                new_stroke.render(mdw)
+                new_stroke.render(surface)
                 self.rendered.strokes.append(new_stroke)
                 if caching is new_stroke:
                     caching = True
@@ -209,7 +214,7 @@ class Layer:
                 # least recently used caching strategy
                 self.caches.remove(cache)
                 self.caches.append(cache)
-                mdw.load_snapshot(cache.snapshot)
+                surface.load_snapshot(cache.snapshot)
                 self.rendered.strokes = cache.strokes[:]
                 self.rendered.background = cache.background
                 render_new_strokes()
@@ -219,9 +224,9 @@ class Layer:
         def render_from_empty():
             #print 'full rerender'
             if self.background:
-                mdw.load(self.background)
+                surface.load(self.background)
             else:
-                mdw.clear()
+                surface.clear()
             self.rendered.strokes = []
             self.rendered.background = self.background
             render_new_strokes()
@@ -242,3 +247,4 @@ class Layer:
         t3 = time()
         #print 'rerender took %.3f seconds, wasted %.3f seconds for cost evaluation' % (t3-t1, t2-t1)
         return cost
+

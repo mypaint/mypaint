@@ -43,6 +43,11 @@ class Window(gtk.Window):
         self.statusbar = sb = gtk.Statusbar()
         vbox.pack_end(sb, expand=False)
 
+        self.layer = document.Layer()
+        self.layers = [self.layer]
+        self.show_layers_above = False
+        self.update_layers()
+
         #self.zoomlevel_values = [0.09, 0.12,  0.18, 0.25, 0.33,  0.50, 0.66,  1.0, 1.5, 2.0, 3.0, 4.0, 5.5, 8.0]
         self.zoomlevel_values = [            2.0/11, 0.25, 1.0/3, 0.50, 2.0/3, 1.0, 1.5, 2.0, 3.0, 4.0, 5.5, 8.0, 16.0]
         self.zoomlevel = self.zoomlevel_values.index(1.0)
@@ -50,7 +55,6 @@ class Window(gtk.Window):
         self.modifying = False
         self.paint_below_stroke = None
 
-        self.layer = document.Layer(self.mdw)
         self.command_stack = command.CommandStack()
         self.stroke = document.Stroke()
         self.stroke.start_recording(self.mdw, self.app.brush)
@@ -142,6 +146,12 @@ class Window(gtk.Window):
               <menuitem action='ChangeColor'/>
               <menuitem action='ColorSelectionWindow'/>
             </menu>
+            <menu action='LayerMenu'>
+              <menuitem action='LayerBG'/>
+              <menuitem action='LayerFG'/>
+              <menuitem action='NewLayer'/>
+              <menuitem action='ToggleAbove'/>
+            </menu>
             <menu action='DebugMenu'>
               <menuitem action='PrintInputs'/>
               <menuitem action='DontPrintInputs'/>
@@ -177,8 +187,8 @@ class Window(gtk.Window):
             ('Darker',       None, 'Darker', None, None, self.darker_cb),
             ('Bigger',       None, 'Bigger', 'f', None, self.brush_bigger_cb),
             ('Smaller',      None, 'Smaller', 'd', None, self.brush_smaller_cb),
-            ('MoreOpaque',   None, 'More Opaque', 's', None, self.more_opaque_cb),
-            ('LessOpaque',   None, 'Less Opaque', 'a', None, self.less_opaque_cb),
+            ('MoreOpaque',   None, 'More Opaque', None, None, self.more_opaque_cb),
+            ('LessOpaque',   None, 'Less Opaque', None, None, self.less_opaque_cb),
             ('PickColor',    None, 'Pick Color', 'r', None, self.pick_color_cb),
             ('ChangeColor',  None, 'Change Color', 'v', None, self.change_color_cb),
 
@@ -206,6 +216,12 @@ class Window(gtk.Window):
             ('ContextStore', None, 'Save to Most Recently Restored', 'q', None, self.context_cb),
             ('ContextHelp',  None, 'Help!', None, None, self.context_help_cb),
 
+            ('LayerMenu',    None, 'Layers'),
+            ('LayerBG',      None, 'Background (take layer away)', None, None, self.layer_bg_cb),
+            ('LayerFG',      None, 'Foreground (put layer back)',  None, None, self.layer_fg_cb),
+            ('NewLayer',     None, 'New Layer', None, None, self.new_layer_cb),
+            ('ToggleAbove',  None, 'Toggle Layers Above Current', 'a', None, self.toggle_layers_above_cb),
+
             ('DialogMenu',  None, 'Dialogs'),
             ('BrushSelectionWindow',  None, 'Brush List', 'b', None, self.toggleBrushSelectionWindow_cb),
             ('BrushSettingsWindow',   None, 'Brush Settings', '<control>b', None, self.toggleBrushSettingsWindow_cb),
@@ -228,10 +244,10 @@ class Window(gtk.Window):
             ('Zoom1',        None, 'Zoom 1:1', 'z', None, self.zoom_cb),
             ('ZoomIn',       None, 'Zoom In', 'plus', None, self.zoom_cb),
             ('ZoomOut',      None, 'Zoom Out', 'minus', None, self.zoom_cb),
-            ('MoveLeft',     None, 'Move Left', 'h', None, self.move_cb),
-            ('MoveRight',    None, 'Move Right', 'l', None, self.move_cb),
-            ('MoveUp',       None, 'Move Up', 'k', None, self.move_cb),
-            ('MoveDown',     None, 'Move Down', 'j', None, self.move_cb),
+            ('MoveLeft',     None, 'Move Left', None, None, self.move_cb),
+            ('MoveRight',    None, 'Move Right', None, None, self.move_cb),
+            ('MoveUp',       None, 'Move Up', None, None, self.move_cb),
+            ('MoveDown',     None, 'Move Down', None, None, self.move_cb),
             ('ViewHelp',     None, 'Help', None, None, self.view_help_cb),
             ]
         ag.add_actions(actions)
@@ -470,6 +486,46 @@ class Window(gtk.Window):
         self.statusbar.pop(1) # FIXME hm? undoable?
         self.layer.rerender()
         
+    def update_layers(self):
+        self.mdw.layer = self.layer.surface
+        l = []
+        for layer in self.layers:
+            l.append(layer.surface)
+            if not self.show_layers_above and layer is self.layer:
+                break
+        self.mdw.displayed_layers = l
+        self.mdw.queue_draw()
+
+    def layer_bg_cb(self, action):
+        # TODO: make an action to allow undo
+        self.split_stroke()
+        i = self.layers.index(self.layer)
+        i -= 1
+        if i < 0: return
+        self.layer = self.layers[i]
+        self.update_layers()
+
+    def layer_fg_cb(self, action):
+        # TODO: make an action to allow undo
+        self.split_stroke()
+        i = self.layers.index(self.layer)
+        i += 1
+        if i >= len(self.layers): return
+        self.layer = self.layers[i]
+        self.update_layers()
+
+    def new_layer_cb(self, action):
+        # TODO: make an action to allow undo
+        self.split_stroke()
+        i = self.layers.index(self.layer)
+        self.layer = document.Layer()
+        self.layers.insert(i+1, self.layer)
+        self.update_layers()
+
+    def toggle_layers_above_cb(self, action):
+        self.show_layers_above = not self.show_layers_above
+        self.update_layers()
+
     def invert_color_cb(self, action):
         self.app.brush.invert_color()
         
