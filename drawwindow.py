@@ -168,8 +168,8 @@ class Window(gtk.Window):
         actions = [
             ('FileMenu',     None, 'File'),
             ('Clear',        None, 'Clear', '<control>period', None, self.clear_cb),
-            ('Open',         None, 'Open', '<control>O', None, self.open_cb),
-            ('Save',         None, 'Save', '<control>S', None, self.save_cb),
+            ('Open',         None, 'Open...', '<control>O', None, self.open_cb),
+            ('Save',         None, 'Save As...', '<control>S', None, self.save_cb),
             ('Quit',         None, 'Quit', None, None, self.quit_cb),
 
 

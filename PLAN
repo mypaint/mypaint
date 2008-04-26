@@ -26,6 +26,12 @@
   - (fast rotozoom? also would be nice to use OpenGL if available)
 
 - global pressure curve
+  - [x] ignore pressure information (use button up/down events)
+  - include "minimal pressure during button-down"
+  - "Even just having a config file that lets me add a fixed number to the pressure values would be a great start..."
+  - ?? how to fix line problem ??
+
+- incremental numbereing when saving
 
 - full screen mode
 
@@ -62,6 +68,7 @@
   - (mouse cursor shape, like in the GIMP? A key to show/hide it?
     - a key to quickly blink the shape? hmm...
     - note: shape size changes quickly!
+  "brief indication of brushsize onscreen (circle, on brush size change)"
 
 ? zoom-out only for viewing somehow?
   - do not resize canvas when zooming, only when moving?
