@@ -571,6 +571,12 @@ void gtk_my_brush_stroke_to (GtkMyBrush * b, GtkMySurfaceOld * s, float x, float
     return;
   }
 
+  if (dtime > 0.100 && pressure == 0) {
+    // workaround for devices that don't report motion events during button-up (avoid interpolation)
+    b->states[STATE_PRESSURE] = 0;
+  }
+
+
   { // calculate the actual "virtual" cursor position
 
     // noise first
