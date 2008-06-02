@@ -565,15 +565,14 @@ void gtk_my_brush_stroke_to (GtkMyBrush * b, GtkMySurfaceOld * s, float x, float
     }
     fprintf(logfile, "%f %f %f %f\n", global_time, x, y, pressure);
   }
-  if (dtime <= 0) {
-    if (dtime < 0) g_print("Time jumped backwards by dtime=%f seconds!\n", dtime);
-    //g_print("timeskip  (dtime=%f)\n", dtime);
-    return;
-  }
+  if (dtime < 0) g_print("Time jumped backwards by dtime=%f seconds!\n", dtime);
+  if (dtime <= 0) dtime = 0.0001; // protect against possible division by zero bugs
 
-  if (dtime > 0.100 && pressure == 0) {
-    // workaround for devices that don't report motion events during button-up (avoid interpolation)
-    b->states[STATE_PRESSURE] = 0;
+  if (dtime > 0.100 && pressure && b->states[STATE_PRESSURE] == 0) {
+    // Workaround for tablets that don't report motion events without pressure.
+    // This is to avoid linear interpolation of the pressure between two events.
+    gtk_my_brush_stroke_to (b, s, x, y, 0.0, dtime-0.0001);
+    dtime = 0.0001;
   }
 
 

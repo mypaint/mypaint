@@ -254,10 +254,24 @@ gtk_my_draw_widget_button_updown (GtkWidget *widget, GdkEventButton *event)
   g_return_val_if_fail (GTK_IS_MY_DRAW_WIDGET (widget), FALSE);
   mdw = GTK_MY_DRAW_WIDGET (widget);
 
-  double pressure;
-  if (!gdk_event_get_axis ((GdkEvent *)event, GDK_AXIS_PRESSURE, &pressure)) {
-    pressure = (event->state & GDK_BUTTON1_MASK) ? 0.5 : 0;
+  double pressure = 0;
+  if (event->type == GDK_BUTTON_PRESS) {
+    pressure = 0.5;
+  } else if (event->type == GDK_BUTTON_RELEASE) {
+    pressure = 0.0;
+  } else {
+    return FALSE;
   }
+
+  if (!(event->button & GDK_BUTTON1_MASK)) {
+    return FALSE;
+  }
+
+  double tablet_pressure;
+  if (gdk_event_get_axis ((GdkEvent *)event, GDK_AXIS_PRESSURE, &tablet_pressure)) {
+    pressure = tablet_pressure;
+  }
+
   gtk_my_draw_widget_process_motion_or_button (widget, event->time, event->x, event->y, pressure);
   return TRUE;
 }
