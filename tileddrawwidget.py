@@ -23,9 +23,10 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.connect("proximity-out-event", self.proximity_cb)
         self.toolchange_observers = []
 
-        self.connect("motion_notify_event", self.motion_notify_cb)
-        #self.connect("button_press_event", self.button_press_cb)
-        self.connect("expose_event", self.expose_cb)
+        self.connect("motion-notify-event", self.motion_notify_cb)
+        #self.connect("button-press-event", self.button_updown_cb)
+        #self.connect("button-release-event", self.button_updown_cb)
+        self.connect("expose-event", self.expose_cb)
 
         self.set_events(gdk.EXPOSURE_MASK
                         | gdk.LEAVE_NOTIFY_MASK
@@ -52,6 +53,13 @@ class TiledDrawWidget(gtk.DrawingArea):
             f()
 
     def motion_notify_cb(self, widget, event):
+        pressure = event.get_axis(gdk.AXIS_PRESSURE)
+        if pressure is None:
+            if event.state & gdk.BUTTON1_MASK:
+                pressure = 0.5
+            else:
+                pressure = 0.0
+
         if not self.brush:
             print 'no brush!'
             return
@@ -63,18 +71,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         dtime = (event.time - self.last_event_time)/1000.0
         self.last_event_time = event.time
 
-        x = event.x
-        y = event.y
-        pressure = event.get_axis(gdk.AXIS_PRESSURE)
-        if pressure is None:
-            if event.state & gtk.gdk.BUTTON1_MASK:
-                pressure = 0.5
-            else:
-                pressure = 0.0
-
-        # OPTIMIZE: move those into the C brush code
-        assert pressure >= 0.0 and pressure <= 1.0
-        assert x < 1e8 and y < 1e8 and x > -1e8 and y > -1e8
+        x, y = event.x, event.y
 
         if self.recording is not None:
             self.recording.append((dtime, x, y, pressure))

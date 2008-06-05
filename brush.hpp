@@ -505,10 +505,18 @@ private:
   void any_surface_stroke_to (RenderContext * rc, float x, float y, float pressure, double dtime)
   {
     //printf("%f %f %f %f\n", (double)dtime, (double)x, (double)y, (double)pressure);
-    if (dtime <= 0) {
-      if (dtime < 0) g_print("Time jumped backwards by dtime=%f seconds!\n", dtime);
-      //g_print("timeskip  (dtime=%f)\n", dtime);
-      return;
+
+    assert(pressure >= 0.0 && pressure <= 1.0);
+    assert(x < 1e8 && y < 1e8 && x > -1e8 && y > -1e8);
+
+    if (dtime < 0) g_print("Time jumped backwards by dtime=%f seconds!\n", dtime);
+    if (dtime <= 0) dtime = 0.0001; // protect against possible division by zero bugs
+    
+    if (dtime > 0.100 && pressure && states[STATE_PRESSURE] == 0) {
+      // Workaround for tablets that don't report motion events without pressure.
+      // This is to avoid linear interpolation of the pressure between two events.
+      any_surface_stroke_to (rc, x, y, 0.0, dtime-0.0001);
+      dtime = 0.0001;
     }
 
     { // calculate the actual "virtual" cursor position
