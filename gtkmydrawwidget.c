@@ -249,6 +249,10 @@ gtk_my_draw_widget_surface_modified (GtkMySurface *s, gint x, gint y, gint w, gi
 static gint
 gtk_my_draw_widget_button_updown (GtkWidget *widget, GdkEventButton *event)
 {
+  // button event handling seems to be completely unneccessary
+  // (except that you can't make dots with the mouse now)
+  return TRUE;
+  /*
   GtkMyDrawWidget * mdw;
   g_return_val_if_fail (widget != NULL, FALSE);
   g_return_val_if_fail (GTK_IS_MY_DRAW_WIDGET (widget), FALSE);
@@ -263,7 +267,7 @@ gtk_my_draw_widget_button_updown (GtkWidget *widget, GdkEventButton *event)
     return FALSE;
   }
 
-  if (!(event->button & GDK_BUTTON1_MASK)) {
+  if (event->button != 1) {
     return FALSE;
   }
 
@@ -271,9 +275,11 @@ gtk_my_draw_widget_button_updown (GtkWidget *widget, GdkEventButton *event)
   if (gdk_event_get_axis ((GdkEvent *)event, GDK_AXIS_PRESSURE, &tablet_pressure)) {
     pressure = tablet_pressure;
   }
+  printf("but p %f\n", pressure);
 
   gtk_my_draw_widget_process_motion_or_button (widget, event->time, event->x, event->y, pressure);
   return TRUE;
+  */
 }
 
 static gint
