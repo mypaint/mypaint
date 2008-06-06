@@ -99,6 +99,7 @@ class Window(gtk.Window):
               <menuitem action='BrushSelectionWindow'/>
               <menuitem action='BrushSettingsWindow'/>
               <menuitem action='ColorSelectionWindow'/>
+              <menuitem action='SettingsWindow'/>
             </menu>
             <menu action='BrushMenu'>
               <menu action='ContextMenu'>
@@ -206,6 +207,7 @@ class Window(gtk.Window):
             ('BrushSelectionWindow',  None, 'Brush List', 'b', None, self.toggleBrushSelectionWindow_cb),
             ('BrushSettingsWindow',   None, 'Brush Settings', '<control>b', None, self.toggleBrushSettingsWindow_cb),
             ('ColorSelectionWindow',  None, 'GTK Color Dialog', 'g', None, self.toggleColorSelectionWindow_cb),
+            ('SettingsWindow',        None, 'Settings', None, None, self.toggleSettingsWindow_cb),
 
             ('HelpMenu',     None, 'Help'),
             ('Docu', None, 'Where is the Documentation?', None, None, self.show_docu_cb),
@@ -248,6 +250,8 @@ class Window(gtk.Window):
         self.toggleWindow(self.app.brushSettingsWindow)
     def toggleColorSelectionWindow_cb(self, action):
         self.toggleWindow(self.app.colorSelectionWindow)
+    def toggleSettingsWindow_cb(self, action):
+        self.toggleWindow(self.app.settingsWindow)
 
     def print_inputs_cb(self, action):
         self.app.brush.set_print_inputs(1)

@@ -82,4 +82,7 @@ void gtk_my_draw_widget_start_recording (GtkMyDrawWidget *mdw);
 GString* gtk_my_draw_widget_stop_recording (GtkMyDrawWidget *mdw);
 void gtk_my_draw_widget_replay (GtkMyDrawWidget *mdw, GString* data, int immediately);
 
+void global_pressure_mapping_set_n (int n);
+void global_pressure_mapping_set_point (int index, float x, float y);
+
 #endif /* __GTK_MY_DRAW_WIDGET_H__ */

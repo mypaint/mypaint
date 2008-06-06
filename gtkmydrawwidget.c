@@ -10,6 +10,7 @@
 // gtk stock code - left gtk prefix to use the pygtk wrapper-generator easier
 #include "gtkmydrawwidget.h"
 #include "stroke_recorder.h"
+#include "mapping.h"
 
 static void gtk_my_draw_widget_class_init    (GtkMyDrawWidgetClass *klass);
 static void gtk_my_draw_widget_init          (GtkMyDrawWidget      *mdw);
@@ -192,6 +193,27 @@ void gtk_my_draw_widget_discard_and_resize (GtkMyDrawWidget *mdw, int width, int
 
 }
 
+Mapping * global_pressure_mapping = NULL;
+void global_pressure_mapping_set_n (int n)
+{
+  if (n == 0) {
+    if (global_pressure_mapping) {
+      mapping_free(global_pressure_mapping);
+      global_pressure_mapping = NULL;
+    }
+  } else {
+    if (!global_pressure_mapping) {
+      global_pressure_mapping = mapping_new(1);
+    }
+    mapping_set_n (global_pressure_mapping, 0, n);
+  }
+}
+void global_pressure_mapping_set_point (int index, float x, float y)
+{
+  assert(global_pressure_mapping);
+  mapping_set_point (global_pressure_mapping, 0, index, x, y);
+}
+
 static void
 gtk_my_draw_widget_process_motion_or_button (GtkWidget *widget, guint32 time, gdouble x, gdouble y, gdouble pressure)
 {
@@ -199,8 +221,14 @@ gtk_my_draw_widget_process_motion_or_button (GtkWidget *widget, guint32 time, gd
   GtkMyDrawWidget * mdw;
   mdw = GTK_MY_DRAW_WIDGET (widget);
 
-  g_assert (pressure >= 0 && pressure <= 1);
   assert(x < 1e8 && y < 1e8 && x > -1e8 && y > -1e8);
+  g_assert (pressure >= 0 && pressure <= 1);
+
+  if (global_pressure_mapping) {
+    float pressure_input = pressure;
+    pressure = mapping_calculate(global_pressure_mapping, &pressure_input);
+    g_assert (pressure >= 0 && pressure <= 1);
+  }
 
   if (mdw->dragging) return;
 
