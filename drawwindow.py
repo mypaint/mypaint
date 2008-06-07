@@ -288,6 +288,19 @@ class Window(gtk.Window):
     def undo_cb(self, action):
         self.finish_pending_actions()
         self.command_stack.undo()
+
+        cost = self.layer.rerender(only_estimate_cost=True)
+        if cost > 50:
+            d = gtk.MessageDialog(
+                 type = gtk.MESSAGE_QUESTION,
+                 flags = gtk.DIALOG_MODAL,
+                 buttons = gtk.BUTTONS_YES_NO,
+                 message_format="This undo step will require %d brush strokes to be re-rendered. This might take some time.\n\nDo you really want to undo?" % cost
+                 )
+            if d.run() != gtk.RESPONSE_YES:
+                self.command_stack.redo()
+            d.destroy()
+
         self.layer.rerender()
 
     def redo_cb(self, action):
