@@ -343,6 +343,8 @@ class CurveWidget(gtk.DrawingArea):
                 if self.points[i][0] < x:
                     insertpos = i + 1
             if insertpos > 0 and insertpos < len(self.points):
+                if y > 1.0: y = 1.0
+                if y < 0.0: y = 0.0
                 self.points.insert(insertpos, (x, y))
                 nearest = insertpos
                 self.queue_draw()
