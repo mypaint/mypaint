@@ -44,6 +44,9 @@ class Window(gtk.Window):
         t.attach(l6, 2, 3, 3, 4, 0, 0, 5, 0)
         v.pack_start(t)
 
+        self.ip_cb = gtk.CheckButton('ignore pressure (use click state instead)')
+        self.ip_cb.connect('toggled', self.ignore_pressure_cb)
+        v.pack_start(self.ip_cb, expand=False)
 
         h = gtk.HBox()
 
@@ -57,34 +60,45 @@ class Window(gtk.Window):
 
         v.pack_start(h, expand=False)
 
-        self.pressure_filename = os.path.join(self.app.confpath, 'pressure.conf')
+        self.filename = os.path.join(self.app.confpath, 'settings.conf')
 
         self.load_settings()
 
     def save_settings(self, *trash):
-        f = open(self.pressure_filename, 'w')
-        for x, y in self.cv.points:
-            print >>f, x, y
+        f = open(self.filename, 'w')
+        print >>f, 'global_pressure_mapping =', self.cv.points
+        print >>f, 'ignore_pressure =', self.ignore_pressure
         f.close()
 
     def load_settings(self, *trash):
-        if os.path.exists(self.pressure_filename):
-            self.cv.points = [[float(s) for s in line.split()] for line in open(self.pressure_filename)]
-            assert len(self.cv.points) >= 2
-        else:
-            self.cv.points = [(0.0, 1.0), (1.0, 0.0)]
+        # 1. set defaults
+        self.global_pressure_mapping = [(0.0, 1.0), (1.0, 0.0)]
+        self.ignore_pressure = 0
+        # 2. parse config file
+        if os.path.exists(self.filename):
+            exec open(self.filename) in self.__dict__
+        # 3. apply
         self.apply_settings()
-        self.cv.queue_draw()
 
     def apply_settings(self):
-        p = self.cv.points
+        p = self.cv.points = self.global_pressure_mapping
+        self.cv.queue_draw()
         if len(p) == 2 and abs(p[0][1]-1.0)+abs(p[1][1]-0.0) < 0.0001:
-            # disabled
+            # 1:1 mapping (mapping disabled)
             mydrawwidget.global_pressure_mapping_set_n(0)
         else:
             mydrawwidget.global_pressure_mapping_set_n(len(p))
             for i, (x, y) in enumerate(p):
                 mydrawwidget.global_pressure_mapping_set_point(i, x, 1.0-y)
+        mydrawwidget.global_ignore_pressure_set(self.ignore_pressure)
+
+        self.ip_cb.set_active(self.ignore_pressure)
 
     def pressure_curve_changed_cb(self, widget):
+        self.global_pressure_mapping = self.cv.points[:]
+        self.apply_settings()
+
+
+    def ignore_pressure_cb(self, widget):
+        self.ignore_pressure = self.ip_cb.get_active()
         self.apply_settings()

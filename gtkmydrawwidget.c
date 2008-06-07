@@ -193,6 +193,7 @@ void gtk_my_draw_widget_discard_and_resize (GtkMyDrawWidget *mdw, int width, int
 
 }
 
+int global_ignore_pressure = 0;
 Mapping * global_pressure_mapping = NULL;
 void global_pressure_mapping_set_n (int n)
 {
@@ -212,6 +213,10 @@ void global_pressure_mapping_set_point (int index, float x, float y)
 {
   assert(global_pressure_mapping);
   mapping_set_point (global_pressure_mapping, 0, index, x, y);
+}
+void global_ignore_pressure_set (int value)
+{
+  global_ignore_pressure = value;
 }
 
 static void
@@ -300,7 +305,7 @@ gtk_my_draw_widget_button_updown (GtkWidget *widget, GdkEventButton *event)
   }
 
   double tablet_pressure;
-  if (gdk_event_get_axis ((GdkEvent *)event, GDK_AXIS_PRESSURE, &tablet_pressure)) {
+  if (!global_ignore_pressure && gdk_event_get_axis ((GdkEvent *)event, GDK_AXIS_PRESSURE, &tablet_pressure)) {
     pressure = tablet_pressure;
   }
   printf("but p %f\n", pressure);
@@ -353,7 +358,7 @@ gtk_my_draw_widget_motion_notify (GtkWidget *widget, GdkEventMotion *event)
   }
 
   double pressure;
-  if (!gdk_event_get_axis ((GdkEvent *)event, GDK_AXIS_PRESSURE, &pressure)) {
+  if (global_ignore_pressure || !gdk_event_get_axis ((GdkEvent *)event, GDK_AXIS_PRESSURE, &pressure)) {
     pressure = (event->state & GDK_BUTTON1_MASK) ? 0.5 : 0;
   }
   gtk_my_draw_widget_process_motion_or_button (widget, event->time, event->x, event->y, pressure);

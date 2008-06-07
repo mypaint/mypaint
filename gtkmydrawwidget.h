@@ -84,5 +84,6 @@ void gtk_my_draw_widget_replay (GtkMyDrawWidget *mdw, GString* data, int immedia
 
 void global_pressure_mapping_set_n (int n);
 void global_pressure_mapping_set_point (int index, float x, float y);
+void global_ignore_pressure_set (int value);
 
 #endif /* __GTK_MY_DRAW_WIDGET_H__ */
