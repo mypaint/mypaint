@@ -9,11 +9,12 @@
 # but WITHOUT ANY WARRANTY. See the COPYING file for more details.
 
 "the main drawing window"
-import gtk, os, zlib, random
+import gtk, os, zlib, random, re
 import infinitemydrawwidget
 import brush, document
 import command
 from time import time
+from glob import glob
 
 class Window(gtk.Window):
     def __init__(self, app):
@@ -43,6 +44,8 @@ class Window(gtk.Window):
         self.statusbar = sb = gtk.Statusbar()
         vbox.pack_end(sb, expand=False)
 
+        self.filename = None
+
         self.zoomlevel_values = [0.25, 1.0/3, 0.50, 2.0/3, 1.0, 1.5, 2.0, 3.0, 4.0, 5.5, 8.0, 16.0]
         self.zoomlevel = self.zoomlevel_values.index(1.0)
         self.fullscreen = False
@@ -67,10 +70,11 @@ class Window(gtk.Window):
         ui_string = """<ui>
           <menubar name='Menubar'>
             <menu action='FileMenu'>
-              <menuitem action='Open'/>
-              <menuitem action='Save'/>
-              <separator/>
               <menuitem action='Clear'/>
+              <menuitem action='Open'/>
+              <separator/>
+              <menuitem action='Save'/>
+              <menuitem action='SaveNext'/>
               <separator/>
               <menuitem action='Quit'/>
             </menu>
@@ -160,6 +164,7 @@ class Window(gtk.Window):
             ('Clear',        None, 'Clear', '<control>period', None, self.clear_cb),
             ('Open',         None, 'Open...', '<control>O', None, self.open_cb),
             ('Save',         None, 'Save As...', '<control>S', None, self.save_cb),
+            ('SaveNext',     None, 'Save Next', 'F2', None, self.save_next_cb),
             ('Quit',         None, 'Quit', None, None, self.quit_cb),
 
 
@@ -481,7 +486,8 @@ class Window(gtk.Window):
         self.finish_pending_actions()
         cmd = command.ClearLayer(self.layer)
         self.command_stack.add(cmd)
-        self.statusbar.pop(1) # FIXME hm? undoable?
+        self.statusbar.pop(1)
+        self.filename = None
         self.layer.rerender()
         
     def invert_color_cb(self, action):
@@ -530,12 +536,14 @@ class Window(gtk.Window):
 
         self.statusbar.pop(1)
         self.statusbar.push(1, 'Loaded from ' + filename)
+        self.filename = filename
 
     def save_file(self, filename):
         self.finish_pending_actions()
         self.mdw.save(filename)
         self.statusbar.pop(1)
         self.statusbar.push(1, 'Saved to ' + filename)
+        self.filename = filename
 
     def init_child_dialogs(self):
         dialog = gtk.FileChooserDialog("Open..", self,
@@ -570,6 +578,10 @@ class Window(gtk.Window):
         
     def save_cb(self, action):
         dialog = self.savedialog
+        print repr(self.filename)
+        dialog.unselect_all()
+        if self.filename:
+            dialog.set_filename(self.filename)
         if dialog.run() == gtk.RESPONSE_OK:
             filename = dialog.get_filename()
             trash, ext = os.path.splitext(filename)
@@ -587,6 +599,36 @@ class Window(gtk.Window):
             if filename:
                 self.save_file(filename)
         dialog.hide()
+
+    def save_next_cb(self, action):
+        filename = self.filename
+        if filename:
+            while True:
+                # append a letter
+                name, ext = os.path.splitext(filename)
+                letter = 'a'
+                if len(name) > 2 and name[-2] == '_' and name[-1] >= 'a' and name[-1] < 'z':
+                    letter = chr(ord(name[-1]) + 1)
+                    name = name[:-2]
+                name = name + '_' + letter
+                filename = name + '.png'
+                if not os.path.exists(filename):
+                    break
+        else:
+            # we don't have a filename yet
+            prefix = self.app.settingsWindow.save_next_prefix
+            maximum = 0
+            for filename in glob(prefix + '[0-9][0-9][0-9]*'):
+                filename = filename[len(prefix):]
+                res = re.findall(r'[0-9]*', filename)
+                if not res: continue
+                number = int(res[0])
+                if number > maximum:
+                    maximum = number
+            filename = '%s%03d.png' % (prefix, maximum+1)
+
+        assert not os.path.exists(filename)
+        self.save_file(filename)
 
     def quit_cb(self, action):
         self.finish_pending_actions()

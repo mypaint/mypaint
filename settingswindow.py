@@ -25,9 +25,10 @@ class Window(gtk.Window):
         nb = gtk.Notebook()
         v_outside.pack_start(nb, expand=True)
 
+        ### pressure tab
+
         v = gtk.VBox()
         nb.append_page(v, gtk.Label('Pressure'))
-
 
         l = gtk.Label()
         l.set_alignment(0.0, 0.0)
@@ -58,6 +59,25 @@ class Window(gtk.Window):
         self.ip_cb.connect('toggled', self.ignore_pressure_cb)
         v.pack_start(self.ip_cb, expand=False)
 
+        ### paths tab
+
+        v = gtk.VBox()
+        nb.append_page(v, gtk.Label('Paths'))
+
+        l = gtk.Label()
+        l.set_alignment(0.0, 0.0)
+        l.set_markup('<b><span size="large">Save Next</span></b>')
+        v.pack_start(l, expand=False, padding=5)
+        l = gtk.Label('Path or filename prefix for "Save Next"')
+        l.set_alignment(0.0, 0.0)
+        v.pack_start(l, expand=False)
+
+        self.prefix_entry = gtk.Entry()
+        self.prefix_entry.connect('changed', self.prefix_entry_changed_cb)
+        v.pack_start(self.prefix_entry, expand=False)
+
+        ### end tabs
+
         h = gtk.HBox()
         h.set_border_width(3)
         b = gtk.Button("Revert")
@@ -77,12 +97,14 @@ class Window(gtk.Window):
         f = open(self.filename, 'w')
         print >>f, 'global_pressure_mapping =', self.cv.points
         print >>f, 'ignore_pressure =', self.ignore_pressure
+        print >>f, 'save_next_prefix =', repr(self.save_next_prefix)
         f.close()
 
     def load_settings(self, *trash):
         # 1. set defaults
         self.global_pressure_mapping = [(0.0, 1.0), (1.0, 0.0)]
         self.ignore_pressure = 0
+        self.save_next_prefix = 'sketch'
         # 2. parse config file
         if os.path.exists(self.filename):
             exec open(self.filename) in self.__dict__
@@ -102,12 +124,16 @@ class Window(gtk.Window):
         mydrawwidget.global_ignore_pressure_set(self.ignore_pressure)
 
         self.ip_cb.set_active(self.ignore_pressure)
+        self.prefix_entry.set_text(self.save_next_prefix)
 
     def pressure_curve_changed_cb(self, widget):
         self.global_pressure_mapping = self.cv.points[:]
         self.apply_settings()
 
-
     def ignore_pressure_cb(self, widget):
         self.ignore_pressure = self.ip_cb.get_active()
         self.apply_settings()
+
+    def prefix_entry_changed_cb(self, widget):
+        self.save_next_prefix = widget.get_text()
+
