@@ -61,8 +61,6 @@ class Window(gtk.Window):
         self.app.brush.observers.append(self.brush_modified_cb)
         self.app.brush.connect("split-stroke", self.split_stroke_cb)
 
-        self.init_child_dialogs()
-
         
     def create_ui(self):
         ag = gtk.ActionGroup('WindowActions')
@@ -567,36 +565,22 @@ class Window(gtk.Window):
         else:
             self.statusbar.push(1, 'Saved to ' + filename)
 
-    def init_child_dialogs(self):
+    def open_cb(self, action):
         dialog = gtk.FileChooserDialog("Open..", self,
                                        gtk.FILE_CHOOSER_ACTION_OPEN,
                                        (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
                                         gtk.STOCK_OPEN, gtk.RESPONSE_OK))
         dialog.set_default_response(gtk.RESPONSE_OK)
-
         filter = gtk.FileFilter()
         filter.set_name("png")
         filter.add_pattern("*.png")
         dialog.add_filter(filter)
-        self.opendialog = dialog
 
-        dialog = gtk.FileChooserDialog("Save..", self,
-                                       gtk.FILE_CHOOSER_ACTION_SAVE,
-                                       (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
-                                        gtk.STOCK_SAVE, gtk.RESPONSE_OK))
-        dialog.set_default_response(gtk.RESPONSE_OK)
-
-        filter = gtk.FileFilter()
-        filter.set_name("png")
-        filter.add_pattern("*.png")
-        dialog.add_filter(filter)
-        self.savedialog = dialog
-
-    def open_cb(self, action):
-        dialog = self.opendialog
+        if self.filename:
+            dialog.set_filename(self.filename)
         if dialog.run() == gtk.RESPONSE_OK:
             self.open_file(dialog.get_filename())
-        dialog.hide()
+        dialog.destroy()
         
     def save_cb(self, action):
         if not self.filename:
@@ -605,8 +589,16 @@ class Window(gtk.Window):
             self.save_file(self.filename)
 
     def save_as_cb(self, action):
-        dialog = self.savedialog
-        dialog.unselect_all()
+        dialog = gtk.FileChooserDialog("Save..", self,
+                                       gtk.FILE_CHOOSER_ACTION_SAVE,
+                                       (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
+                                        gtk.STOCK_SAVE, gtk.RESPONSE_OK))
+        dialog.set_default_response(gtk.RESPONSE_OK)
+        filter = gtk.FileFilter()
+        filter.set_name("png")
+        filter.add_pattern("*.png")
+        dialog.add_filter(filter)
+
         if self.filename:
             dialog.set_filename(self.filename)
         if dialog.run() == gtk.RESPONSE_OK:
@@ -625,7 +617,7 @@ class Window(gtk.Window):
                 d2.destroy()
             if filename:
                 self.save_file(filename)
-        dialog.hide()
+        dialog.destroy()
 
     def save_next_cb(self, action):
         filename = self.filename
