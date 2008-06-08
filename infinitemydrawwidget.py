@@ -61,6 +61,9 @@ class InfiniteMyDrawWidget(MyDrawWidget):
         if pixbuf.get_has_alpha():
             print 'Loaded file has an alpha channel. Rendering it on white instead.'
             print 'NOT IMPLEMENTED'
+            class FormatError(Exception):
+                pass
+            raise FormatError, 'PNG files with alpha channel are not supported!'
             #TODO
             #w, h = pixbuf.get_width(), pixbuf.get_height()
             #new_pixbuf = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, False, 8, w, h)

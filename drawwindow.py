@@ -74,6 +74,7 @@ class Window(gtk.Window):
               <menuitem action='Open'/>
               <separator/>
               <menuitem action='Save'/>
+              <menuitem action='SaveAs'/>
               <menuitem action='SaveNext'/>
               <separator/>
               <menuitem action='Quit'/>
@@ -163,7 +164,8 @@ class Window(gtk.Window):
             ('FileMenu',     None, 'File'),
             ('Clear',        None, 'Clear', '<control>period', None, self.clear_cb),
             ('Open',         None, 'Open...', '<control>O', None, self.open_cb),
-            ('Save',         None, 'Save As...', '<control>S', None, self.save_cb),
+            ('Save',         None, 'Save', '<control>S', None, self.save_cb),
+            ('SaveAs',       None, 'Save As...', '<control><shift>S', None, self.save_as_cb),
             ('SaveNext',     None, 'Save Next', 'F2', None, self.save_next_cb),
             ('Quit',         None, 'Quit', None, None, self.quit_cb),
 
@@ -291,6 +293,9 @@ class Window(gtk.Window):
             self.command_stack.add(command.Stroke(self.layer, self.stroke, z))
             self.layer.rerender()
             self.layer.populate_cache()
+
+            # remove "saved to..." etc.
+            self.statusbar.pop(1)
 
         self.stroke = document.Stroke()
         self.stroke.start_recording(self.mdw, self.app.brush)
@@ -529,21 +534,38 @@ class Window(gtk.Window):
         
     def open_file(self, filename):
         self.finish_pending_actions()
-        pixbuf = gtk.gdk.pixbuf_new_from_file(filename)
-        cmd = command.LoadImage(self.layer, pixbuf)
-        self.command_stack.add(cmd)
-        self.layer.rerender()
-
         self.statusbar.pop(1)
-        self.statusbar.push(1, 'Loaded from ' + filename)
-        self.filename = filename
+        try:
+            pixbuf = gtk.gdk.pixbuf_new_from_file(filename)
+            cmd = command.LoadImage(self.layer, pixbuf)
+            self.command_stack.add(cmd)
+            self.layer.rerender()
+        except Exception, e:
+            d = gtk.MessageDialog(self, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_OK)
+            d.set_markup(str(e))
+            d.run()
+            d.destroy()
+            print e
+            self.clear_cb(None)
+        else:
+            self.statusbar.push(1, 'Loaded from ' + filename)
+            self.filename = filename
 
     def save_file(self, filename):
         self.finish_pending_actions()
-        self.mdw.save(filename)
-        self.statusbar.pop(1)
-        self.statusbar.push(1, 'Saved to ' + filename)
         self.filename = filename
+        self.statusbar.pop(1)
+        try:
+            self.mdw.save(filename)
+        except Exception, e:
+            print e
+            d = gtk.MessageDialog(self, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_OK)
+            d.set_markup(str(e))
+            d.run()
+            d.destroy()
+            self.statusbar.push(1, 'Failed to save!')
+        else:
+            self.statusbar.push(1, 'Saved to ' + filename)
 
     def init_child_dialogs(self):
         dialog = gtk.FileChooserDialog("Open..", self,
@@ -577,8 +599,13 @@ class Window(gtk.Window):
         dialog.hide()
         
     def save_cb(self, action):
+        if not self.filename:
+            self.save_as_cb(action)
+        else:
+            self.save_file(self.filename)
+
+    def save_as_cb(self, action):
         dialog = self.savedialog
-        print repr(self.filename)
         dialog.unselect_all()
         if self.filename:
             dialog.set_filename(self.filename)
