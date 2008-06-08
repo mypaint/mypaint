@@ -30,7 +30,8 @@ class Window(gtk.Window):
         self.add(vbox)
 
         self.create_ui()
-        vbox.pack_start(self.ui.get_widget('/Menubar'), expand=False)
+        self.menubar = self.ui.get_widget('/Menubar')
+        vbox.pack_start(self.menubar, expand=False)
 
         self.mdw = infinitemydrawwidget.InfiniteMyDrawWidget()
         self.mdw.allow_dragging()
@@ -44,6 +45,7 @@ class Window(gtk.Window):
 
         self.zoomlevel_values = [0.25, 1.0/3, 0.50, 2.0/3, 1.0, 1.5, 2.0, 3.0, 4.0, 5.5, 8.0, 16.0]
         self.zoomlevel = self.zoomlevel_values.index(1.0)
+        self.fullscreen = False
 
         self.modifying = False
         self.paint_below_stroke = None
@@ -86,6 +88,8 @@ class Window(gtk.Window):
               <menuitem action='Zoom1'/>
               <menuitem action='ZoomIn'/>
               <menuitem action='ZoomOut'/>
+              <separator/>
+              <menuitem action='Fullscreen'/>
               <separator/>
               <menuitem action='MoveLeft'/>
               <menuitem action='MoveRight'/>
@@ -224,6 +228,7 @@ class Window(gtk.Window):
             ('Zoom1',        None, 'Zoom 1:1', 'z', None, self.zoom_cb),
             ('ZoomIn',       None, 'Zoom In', 'plus', None, self.zoom_cb),
             ('ZoomOut',      None, 'Zoom Out', 'minus', None, self.zoom_cb),
+            ('Fullscreen',   None, 'Fullscreen', 'F11', None, self.fullscreen_cb),
             ('MoveLeft',     None, 'Move Left', 'h', None, self.move_cb),
             ('MoveRight',    None, 'Move Right', 'l', None, self.move_cb),
             ('MoveUp',       None, 'Move Up', 'k', None, self.move_cb),
@@ -468,6 +473,7 @@ class Window(gtk.Window):
         # called if no user keybinding accepted the event.
         if event.keyval == gtk.keysyms.KP_Add: self.zoom('ZoomIn')
         elif event.keyval == gtk.keysyms.KP_Subtract: self.zoom('ZoomOut')
+        elif self.fullscreen and event.keyval == gtk.keysyms.Escape: self.fullscreen_cb()
         else: return False
         return True
 
@@ -624,6 +630,17 @@ class Window(gtk.Window):
         self.split_stroke()
         self.mdw.zoom(z)
         self.split_stroke() # record new stroke with new coordinates
+
+    def fullscreen_cb(self, *trash):
+        self.fullscreen = not self.fullscreen
+        if self.fullscreen:
+            self.statusbar.hide()
+            self.menubar.hide()
+            self.window.fullscreen()
+        else:
+            self.window.unfullscreen()
+            self.menubar.show()
+            self.statusbar.show()
 
     def context_cb(self, action):
         # TODO: this context-thing is not very useful like that, is it?
