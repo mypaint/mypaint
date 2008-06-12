@@ -1,0 +1,17 @@
+
+Version 0.5.1:
+- Fullscreen mode was implemented.
+- Streamlined "Save" and "Save As". Also added error handling.
+- Added "Save Next" as a dialog-free non-destructive alternative.
+- If undo would take a lot of time, show a confirmation dialog.
+- Reduced maximum zoom-out to 1/4 to avoid out of memory.
+- Added settings dialog with global pressure mapping.
+- New desktop icon by Sebastian Kraft (needcoffee).
+- Fixed "ghost strokes" seen on internet tablets.
+- Fixed startup crash where the mouse was wrongly recognized as a tablet.
+- Fixed compilation for some systems.
+- New brushes were added (and some removed).
+
+Before 0.5.0:
+- no changelog available
+
