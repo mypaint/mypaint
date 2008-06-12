@@ -60,6 +60,7 @@ mypaintlib_PYTHON = \
         functionwindow.py \
         helpers.py \
         infinitemydrawwidget.py \
+	settingswindow.py \
         command.py \
         document.py
 
