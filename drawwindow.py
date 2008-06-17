@@ -9,11 +9,12 @@
 # but WITHOUT ANY WARRANTY. See the COPYING file for more details.
 
 "the main drawing window"
-import gtk, os, zlib, random
+import gtk, os, zlib, random, re
 import tileddrawwidget
 import tilelib, brush, document
 import command
 from time import time
+from glob import glob
 
 class Window(gtk.Window):
     def __init__(self, app):
@@ -30,7 +31,8 @@ class Window(gtk.Window):
         self.add(vbox)
 
         self.create_ui()
-        vbox.pack_start(self.ui.get_widget('/Menubar'), expand=False)
+        self.menubar = self.ui.get_widget('/Menubar')
+        vbox.pack_start(self.menubar, expand=False)
 
         self.mdw = tileddrawwidget.TiledDrawWidget()
         self.mdw.allow_dragging()
@@ -51,6 +53,7 @@ class Window(gtk.Window):
         #self.zoomlevel_values = [0.09, 0.12,  0.18, 0.25, 0.33,  0.50, 0.66,  1.0, 1.5, 2.0, 3.0, 4.0, 5.5, 8.0]
         self.zoomlevel_values = [            2.0/11, 0.25, 1.0/3, 0.50, 2.0/3, 1.0, 1.5, 2.0, 3.0, 4.0, 5.5, 8.0, 16.0]
         self.zoomlevel = self.zoomlevel_values.index(1.0)
+        self.fullscreen = False
 
         self.modifying = False
         self.paint_below_stroke = None
@@ -63,9 +66,6 @@ class Window(gtk.Window):
         self.app.brush.set_split_stroke_callback(self.split_stroke_cb)
 
         self.last_gesture_time = 0
-
-        self.init_child_dialogs()
-
         
     def create_ui(self):
         ag = gtk.ActionGroup('WindowActions')
@@ -73,10 +73,12 @@ class Window(gtk.Window):
         ui_string = """<ui>
           <menubar name='Menubar'>
             <menu action='FileMenu'>
-              <menuitem action='Open'/>
-              <menuitem action='Save'/>
-              <separator/>
               <menuitem action='Clear'/>
+              <menuitem action='Open'/>
+              <separator/>
+              <menuitem action='Save'/>
+              <menuitem action='SaveAs'/>
+              <menuitem action='SaveNext'/>
               <separator/>
               <menuitem action='Quit'/>
             </menu>
@@ -95,6 +97,8 @@ class Window(gtk.Window):
               <menuitem action='ZoomIn'/>
               <menuitem action='ZoomOut'/>
               <separator/>
+              <menuitem action='Fullscreen'/>
+              <separator/>
               <menuitem action='MoveLeft'/>
               <menuitem action='MoveRight'/>
               <menuitem action='MoveUp'/>
@@ -106,6 +110,7 @@ class Window(gtk.Window):
               <menuitem action='BrushSelectionWindow'/>
               <menuitem action='BrushSettingsWindow'/>
               <menuitem action='ColorSelectionWindow'/>
+              <menuitem action='SettingsWindow'/>
             </menu>
             <menu action='BrushMenu'>
               <menu action='ContextMenu'>
@@ -169,7 +174,9 @@ class Window(gtk.Window):
             ('FileMenu',     None, 'File'),
             ('Clear',        None, 'Clear', '<control>period', None, self.clear_cb),
             ('Open',         None, 'Open...', '<control>O', None, self.open_cb),
-            ('Save',         None, 'Save As...', '<control>S', None, self.save_cb),
+            ('Save',         None, 'Save', '<control>S', None, self.save_cb),
+            ('SaveAs',       None, 'Save As...', '<control><shift>S', None, self.save_as_cb),
+            ('SaveNext',     None, 'Save Next', 'F2', None, self.save_next_cb),
             ('Quit',         None, 'Quit', None, None, self.quit_cb),
 
 
@@ -226,6 +233,7 @@ class Window(gtk.Window):
             ('BrushSelectionWindow',  None, 'Brush List', 'b', None, self.toggleBrushSelectionWindow_cb),
             ('BrushSettingsWindow',   None, 'Brush Settings', '<control>b', None, self.toggleBrushSettingsWindow_cb),
             ('ColorSelectionWindow',  None, 'GTK Color Dialog', 'g', None, self.toggleColorSelectionWindow_cb),
+            ('SettingsWindow',        None, 'Settings', None, None, self.toggleSettingsWindow_cb),
 
             ('HelpMenu',     None, 'Help'),
             ('Docu', None, 'Where is the Documentation?', None, None, self.show_docu_cb),
@@ -244,6 +252,7 @@ class Window(gtk.Window):
             ('Zoom1',        None, 'Zoom 1:1', 'z', None, self.zoom_cb),
             ('ZoomIn',       None, 'Zoom In', 'plus', None, self.zoom_cb),
             ('ZoomOut',      None, 'Zoom Out', 'minus', None, self.zoom_cb),
+            ('Fullscreen',   None, 'Fullscreen', 'F11', None, self.fullscreen_cb),
             ('MoveLeft',     None, 'Move Left', None, None, self.move_cb),
             ('MoveRight',    None, 'Move Right', None, None, self.move_cb),
             ('MoveUp',       None, 'Move Up', None, None, self.move_cb),
@@ -269,6 +278,8 @@ class Window(gtk.Window):
         self.toggleWindow(self.app.brushSettingsWindow)
     def toggleColorSelectionWindow_cb(self, action):
         self.toggleWindow(self.app.colorSelectionWindow)
+    def toggleSettingsWindow_cb(self, action):
+        self.toggleWindow(self.app.settingsWindow)
 
     def print_inputs_cb(self, action):
         self.app.brush.print_inputs = True
@@ -303,12 +314,28 @@ class Window(gtk.Window):
             self.layer.rerender()
             self.layer.populate_cache()
 
+            # remove "saved to..." etc.
+            self.statusbar.pop(1)
+
         self.stroke = document.Stroke()
         self.stroke.start_recording(self.mdw, self.app.brush)
 
     def undo_cb(self, action):
         self.finish_pending_actions()
         self.command_stack.undo()
+
+        cost = self.layer.rerender(only_estimate_cost=True)
+        if cost > 50:
+            d = gtk.MessageDialog(
+                 type = gtk.MESSAGE_QUESTION,
+                 flags = gtk.DIALOG_MODAL,
+                 buttons = gtk.BUTTONS_YES_NO,
+                 message_format="This undo step will require %d brush strokes to be re-rendered. This might take some time.\n\nDo you really want to undo?" % cost
+                 )
+            if d.run() != gtk.RESPONSE_YES:
+                self.command_stack.redo()
+            d.destroy()
+
         self.layer.rerender()
 
     def redo_cb(self, action):
@@ -476,6 +503,7 @@ class Window(gtk.Window):
         # called if no user keybinding accepted the event.
         if event.keyval == gtk.keysyms.KP_Add: self.zoom('ZoomIn')
         elif event.keyval == gtk.keysyms.KP_Subtract: self.zoom('ZoomOut')
+        elif self.fullscreen and event.keyval == gtk.keysyms.Escape: self.fullscreen_cb()
         else: return False
         return True
 
@@ -483,7 +511,8 @@ class Window(gtk.Window):
         self.finish_pending_actions()
         cmd = command.ClearLayer(self.layer)
         self.command_stack.add(cmd)
-        self.statusbar.pop(1) # FIXME hm? undoable?
+        self.statusbar.pop(1)
+        self.filename = None
         self.layer.rerender()
         
     def update_layers(self):
@@ -565,53 +594,75 @@ class Window(gtk.Window):
         
     def open_file(self, filename):
         self.finish_pending_actions()
-        pixbuf = gtk.gdk.pixbuf_new_from_file(filename)
-        cmd = command.LoadImage(self.layer, pixbuf)
-        self.command_stack.add(cmd)
-        self.layer.rerender()
-
         self.statusbar.pop(1)
-        self.statusbar.push(1, 'Loaded from ' + filename)
+        try:
+            pixbuf = gtk.gdk.pixbuf_new_from_file(filename)
+            cmd = command.LoadImage(self.layer, pixbuf)
+            self.command_stack.add(cmd)
+            self.layer.rerender()
+        except Exception, e:
+            d = gtk.MessageDialog(self, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_OK)
+            d.set_markup(str(e))
+            d.run()
+            d.destroy()
+            print e
+            self.clear_cb(None)
+        else:
+            self.statusbar.push(1, 'Loaded from ' + filename)
+            self.filename = filename
 
     def save_file(self, filename):
         self.finish_pending_actions()
-        self.mdw.save(filename)
+        self.filename = filename
         self.statusbar.pop(1)
-        self.statusbar.push(1, 'Saved to ' + filename)
+        try:
+            self.mdw.save(filename)
+        except Exception, e:
+            print e
+            d = gtk.MessageDialog(self, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_OK)
+            d.set_markup(str(e))
+            d.run()
+            d.destroy()
+            self.statusbar.push(1, 'Failed to save!')
+        else:
+            self.statusbar.push(1, 'Saved to ' + filename)
 
-    def init_child_dialogs(self):
+    def open_cb(self, action):
         dialog = gtk.FileChooserDialog("Open..", self,
                                        gtk.FILE_CHOOSER_ACTION_OPEN,
                                        (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
                                         gtk.STOCK_OPEN, gtk.RESPONSE_OK))
         dialog.set_default_response(gtk.RESPONSE_OK)
-
         filter = gtk.FileFilter()
         filter.set_name("png")
         filter.add_pattern("*.png")
         dialog.add_filter(filter)
-        self.opendialog = dialog
 
+        if self.filename:
+            dialog.set_filename(self.filename)
+        if dialog.run() == gtk.RESPONSE_OK:
+            self.open_file(dialog.get_filename())
+        dialog.destroy()
+        
+    def save_cb(self, action):
+        if not self.filename:
+            self.save_as_cb(action)
+        else:
+            self.save_file(self.filename)
+
+    def save_as_cb(self, action):
         dialog = gtk.FileChooserDialog("Save..", self,
                                        gtk.FILE_CHOOSER_ACTION_SAVE,
                                        (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
                                         gtk.STOCK_SAVE, gtk.RESPONSE_OK))
         dialog.set_default_response(gtk.RESPONSE_OK)
-
         filter = gtk.FileFilter()
         filter.set_name("png")
         filter.add_pattern("*.png")
         dialog.add_filter(filter)
-        self.savedialog = dialog
 
-    def open_cb(self, action):
-        dialog = self.opendialog
-        if dialog.run() == gtk.RESPONSE_OK:
-            self.open_file(dialog.get_filename())
-        dialog.hide()
-        
-    def save_cb(self, action):
-        dialog = self.savedialog
+        if self.filename:
+            dialog.set_filename(self.filename)
         if dialog.run() == gtk.RESPONSE_OK:
             filename = dialog.get_filename()
             trash, ext = os.path.splitext(filename)
@@ -628,7 +679,37 @@ class Window(gtk.Window):
                 d2.destroy()
             if filename:
                 self.save_file(filename)
-        dialog.hide()
+        dialog.destroy()
+
+    def save_next_cb(self, action):
+        filename = self.filename
+        if filename:
+            while True:
+                # append a letter
+                name, ext = os.path.splitext(filename)
+                letter = 'a'
+                if len(name) > 2 and name[-2] == '_' and name[-1] >= 'a' and name[-1] < 'z':
+                    letter = chr(ord(name[-1]) + 1)
+                    name = name[:-2]
+                name = name + '_' + letter
+                filename = name + '.png'
+                if not os.path.exists(filename):
+                    break
+        else:
+            # we don't have a filename yet
+            prefix = self.app.settingsWindow.save_next_prefix
+            maximum = 0
+            for filename in glob(prefix + '[0-9][0-9][0-9]*'):
+                filename = filename[len(prefix):]
+                res = re.findall(r'[0-9]*', filename)
+                if not res: continue
+                number = int(res[0])
+                if number > maximum:
+                    maximum = number
+            filename = '%s%03d.png' % (prefix, maximum+1)
+
+        assert not os.path.exists(filename)
+        self.save_file(filename)
 
     def quit_cb(self, action):
         self.finish_pending_actions()
@@ -672,6 +753,17 @@ class Window(gtk.Window):
         self.split_stroke()
         self.mdw.zoom(z)
         self.split_stroke() # record new stroke with new coordinates
+
+    def fullscreen_cb(self, *trash):
+        self.fullscreen = not self.fullscreen
+        if self.fullscreen:
+            self.statusbar.hide()
+            self.menubar.hide()
+            self.window.fullscreen()
+        else:
+            self.window.unfullscreen()
+            self.menubar.show()
+            self.statusbar.show()
 
     def context_cb(self, action):
         # TODO: this context-thing is not very useful like that, is it?

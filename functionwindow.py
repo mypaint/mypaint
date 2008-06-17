@@ -292,12 +292,13 @@ class ByInputWidget(gtk.VBox):
 RADIUS = 4
 class CurveWidget(gtk.DrawingArea):
     "modify a (restricted) nonlinear curve"
-    def __init__(self, changed_cb):
+    def __init__(self, changed_cb, magnetic=True):
         gtk.DrawingArea.__init__(self)
         self.points = [(0.0, 0.5), (1.0, 0.0)] # doesn't matter
         self.maxpoints = 8
         self.grabbed = None
         self.changed_cb = changed_cb
+        self.magnetic = magnetic
 
         self.connect("expose-event", self.expose_cb)
         self.connect("button-press-event", self.button_press_cb)
@@ -342,6 +343,8 @@ class CurveWidget(gtk.DrawingArea):
                 if self.points[i][0] < x:
                     insertpos = i + 1
             if insertpos > 0 and insertpos < len(self.points):
+                if y > 1.0: y = 1.0
+                if y < 0.0: y = 0.0
                 self.points.insert(insertpos, (x, y))
                 nearest = insertpos
                 self.queue_draw()
@@ -384,8 +387,9 @@ class CurveWidget(gtk.DrawingArea):
         else:
             if y > 1.0: y = 1.0
             if y < 0.0: y = 0.0
-            if y > 0.48 and y < 0.52: y = 0.5 # snap
-            if x > 0.48 and x < 0.52: x = 0.5 # snap
+            if self.magnetic:
+                if y > 0.48 and y < 0.52: y = 0.5
+                if x > 0.48 and x < 0.52: x = 0.5
             self.points[i] = (x, y)
         self.queue_draw()
 

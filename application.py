@@ -37,7 +37,7 @@ class Application: # singleton
 
         self.init_brushes()
 
-        self.window_names = 'drawWindow brushSettingsWindow brushSelectionWindow colorSelectionWindow'.split()
+        self.window_names = 'drawWindow brushSettingsWindow brushSelectionWindow colorSelectionWindow settingsWindow'.split()
         for name in self.window_names:
             module = __import__(name.lower())
             window = self.__dict__[name] = module.Window(self)
