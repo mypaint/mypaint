@@ -29,16 +29,12 @@ class Window(gtk.Window):
         #table.set_col_spacings(15)
         scroll.add_with_viewport(table)
 
-        self.tooltips = gtk.Tooltips()
-
         self.adj = {}
         self.app.brush_adjustment = {}
         for i, s in enumerate(brushsettings.settings_visible):
-            eb = gtk.EventBox()
             l = gtk.Label(s.name)
             l.set_alignment(0, 0.5)
-            self.tooltips.set_tip(eb, s.tooltip)
-            eb.add(l)
+            l.set_tooltip_text(s.tooltip)
 
             adj = gtk.Adjustment(value=s.default, lower=s.min, upper=s.max, step_incr=0.01, page_incr=0.1)
             adj.connect('value-changed', self.value_changed_cb, s.index, self.app)
@@ -62,7 +58,7 @@ class Window(gtk.Window):
                 b2.connect('clicked', self.details_clicked_cb, adj, s)
                 adj.three_dots_button = b2
 
-            table.attach(eb, 0, 1, i, i+1, gtk.FILL, gtk.FILL, 5, 0)
+            table.attach(l, 0, 1, i, i+1, gtk.FILL, gtk.FILL, 5, 0)
             table.attach(h, 1, 2, i, i+1, gtk.EXPAND | gtk.FILL, gtk.EXPAND | gtk.FILL)
             table.attach(b, 2, 3, i, i+1, gtk.FILL, gtk.FILL)
             table.attach(b2, 3, 4, i, i+1, gtk.FILL, gtk.FILL)
