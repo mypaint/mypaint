@@ -267,11 +267,12 @@ class Window(gtk.Window):
         self.add_accel_group(self.app.accel_group)
 
     def toggleWindow(self, w):
-        if w.get_property('visible'):
+        # TODO: make some windows "real" popups at mouse pos when invoked via keystrokes?
+        if w.is_active():
             w.hide()
         else:
-            #w.show()
             w.show_all() # might be for the first time
+            w.present()
     def toggleBrushSelectionWindow_cb(self, action):
         self.toggleWindow(self.app.brushSelectionWindow)
     def toggleBrushSettingsWindow_cb(self, action):
