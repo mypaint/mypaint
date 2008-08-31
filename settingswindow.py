@@ -79,11 +79,13 @@ class Window(gtk.Window):
 
         h = gtk.HBox()
         h.set_border_width(3)
-        b = gtk.Button("Revert")
-        b.connect('clicked', self.load_settings)
-        h.pack_start(b, expand=False)
+
         b = gtk.Button("Save")
         b.connect('clicked', self.save_settings)
+        h.pack_end(b, expand=False)
+
+        b = gtk.Button("Revert")
+        b.connect('clicked', self.load_settings)
         h.pack_end(b, expand=False)
 
         v_outside.pack_start(h, expand=False)
