@@ -12,10 +12,10 @@ scons && ./mypaint
 Required: pygtk, python, gtk, numpy, [maybe also scipy]
 Recommended: a pressure sensitive input device (graphic tablet)
 
-Debian users need: python-gtk2-dev python2.4-dev python-numeric python-scipy
+Debian users need: python-gtk2-dev python2.5-dev python-numeric
 
 Project homepage:
-http://people.ee.ethz.ch/~mrenold/mypaint/
+http://mypaint.intilinux.com/
 http://gna.org/projects/mypaint/
 
 The license for this program is in the file COPYING.

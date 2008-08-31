@@ -1,7 +1,7 @@
 # coding: utf8
 #
 # This file is part of MyPaint.
-# Copyright (C) 2007 by Martin Renold <martinxyz@gmx.ch>
+# Copyright (C) 2007-2008 by Martin Renold <martinxyz@gmx.ch>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License.
@@ -9,6 +9,7 @@
 # but WITHOUT ANY WARRANTY. See the COPYING file for more details.
 
 "the main drawing window"
+MYPAINT_VERSION="0.5.1"
 import gtk, os, zlib, random, re
 import tileddrawwidget
 import tilelib, brush, document
@@ -817,13 +818,14 @@ class Window(gtk.Window):
         d = gtk.MessageDialog(self, buttons=gtk.BUTTONS_OK)
 
         d.set_markup(
-            u"MyPaint - pressure sensitive painting application\n"
-            u"Copyright (C) 2005-2007\n"
+            u"MyPaint %s - pressure sensitive painting application\n"
+            u"Copyright (C) 2005-2008\n"
             u"Martin Renold &lt;martinxyz@gmx.ch&gt;\n\n"
             u"Contributors:\n"
             u"Artis Rozentāls &lt;artis@aaa.apollo.lv&gt; (brushes)\n"
             u"Yves Combe &lt;yves@ycombe.net&gt; (portability)\n"
-            u"Sebastian Kraft (logo)\n"
+            u"Sebastian Kraft (desktop icon)\n"
+            u"Popolon &lt;popolon@popolon.org&gt; (brushes)\n"
             u"\n"
             u"This program is free software; you can redistribute it and/or modify "
             u"it under the terms of the GNU General Public License as published by "
@@ -832,6 +834,7 @@ class Window(gtk.Window):
             u"\n"
             u"This program is distributed in the hope that it will be useful,"
             u"but WITHOUT ANY WARRANTY. See the COPYING file for more details."
+            % MYPAINT_VERSION
             )
 
         d.run()

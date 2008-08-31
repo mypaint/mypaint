@@ -15,6 +15,9 @@ rm *.pyc
 cd ..
 rm release.sh
 rpl "SVNVERSION=" "SVNVERSION=$version #" configure.in
+if ! grep "MYPAINT_VERSION='$version'"  drawwindow.py ; then
+    rpl "MYPAINT_VERSION=" "MYPAINT_VERSION='$version' #" drawwindow.py
+fi
 ./autogen.sh
 cd ..
 
