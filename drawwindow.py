@@ -70,6 +70,7 @@ class Window(gtk.Window):
     def create_ui(self):
         ag = gtk.ActionGroup('WindowActions')
         # FIXME: this xml menu only creates unneeded information duplication, I think.
+		# FIXME: better just use glade...
         ui_string = """<ui>
           <menubar name='Menubar'>
             <menu action='FileMenu'>
@@ -159,7 +160,7 @@ class Window(gtk.Window):
             </menu>
             <menu action='DebugMenu'>
               <menuitem action='PrintInputs'/>
-              <menuitem action='DontPrintInputs'/>
+              <menuitem action='DisableGammaCorrection'/>
               <menuitem action='Test'/>
             </menu>
             <menu action='HelpMenu'>
@@ -171,6 +172,7 @@ class Window(gtk.Window):
           </menubar>
         </ui>"""
         actions = [
+			# name, stock id, label, accelerator, tooltip, callback
             ('FileMenu',     None, 'File'),
             ('Clear',        None, 'Clear', '<control>period', None, self.clear_cb),
             ('Open',         None, 'Open...', '<control>O', None, self.open_cb),
@@ -241,8 +243,6 @@ class Window(gtk.Window):
             ('About', None, 'About MyPaint', None, None, self.show_about_cb),
 
             ('DebugMenu',    None, 'Debug'),
-            ('PrintInputs', None, 'Print Brush Input Values to stdout', None, None, self.print_inputs_cb),
-            ('DontPrintInputs', None, 'Stop Printing Them', None, None, self.dont_print_inputs_cb),
             ('Test', None, 'Test', None, None, self.test_cb),
 
 
@@ -260,6 +260,12 @@ class Window(gtk.Window):
             ('ViewHelp',     None, 'Help', None, None, self.view_help_cb),
             ]
         ag.add_actions(actions)
+        toggle_actions = [
+			# name, stock id, label, accelerator, tooltip, callback, default toggle status
+            ('PrintInputs', None, 'Print Brush Input Values to stdout', None, None, self.print_inputs_cb),
+            ('DisableGammaCorrection', None, 'Disable sRGB Gamma Correction', None, None, self.disableGammaCorrection_cb),
+			]
+        ag.add_toggle_actions(toggle_actions)
         self.ui = gtk.UIManager()
         self.ui.insert_action_group(ag, 0)
         self.ui.add_ui_from_string(ui_string)
@@ -283,12 +289,14 @@ class Window(gtk.Window):
         self.toggleWindow(self.app.settingsWindow)
 
     def print_inputs_cb(self, action):
-        self.app.brush.print_inputs = True
-    def dont_print_inputs_cb(self, action):
-        self.app.brush.print_inputs = False
+        self.app.brush.print_inputs = action.get_active()
 
     def test_cb(self, action):
         self.mdw.layer.save('test.png')
+
+    def disableGammaCorrection_cb(self, action):
+		self.mdw.disableGammaCorrection = action.get_active()
+		self.mdw.queue_draw()
 
     def finish_pending_actions(self, skip=None):
         # this function must be called before manipulation the command stack

@@ -47,6 +47,7 @@ class TiledDrawWidget(gtk.DrawingArea):
 
         self.recording = None
 
+        self.disableGammaCorrection = False
 
     def proximity_cb(self, widget, something):
         for f in self.toolchange_observers:
@@ -89,9 +90,16 @@ class TiledDrawWidget(gtk.DrawingArea):
         arr = pixbuf.get_pixels_array()
         arr = mypaintlib.gdkpixbuf2numpy(arr)
 
-        for surface in self.displayed_layers:
-            surface.compositeOverRGB8(arr)
-
+        # TODO: - start from linear light white/background pattern
+        #       - walk through all tiles?
+        #       - composite each of them with linear light
+        #       - covert to sRGB
+        if not self.disableGammaCorrection:
+            for surface in self.displayed_layers:
+                surface.compositeOverWhiteRGB8(arr)
+        else:
+            for surface in self.displayed_layers:
+                surface.compositeOverRGB8(arr)
         widget.window.draw_pixbuf(None, pixbuf, 0, 0, 0, 0)
 
     def clear(self):
