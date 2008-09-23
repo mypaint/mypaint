@@ -11,9 +11,10 @@
 # - dragging, zooming
 # - allow more than one layer (external document object?)
 
-import gtk, numpy
+import gtk, numpy, time
 gdk = gtk.gdk
 import mypaintlib, tilelib, brush
+from math import floor, ceil
 
 class TiledDrawWidget(gtk.DrawingArea):
     def __init__(self):
@@ -78,35 +79,72 @@ class TiledDrawWidget(gtk.DrawingArea):
             self.recording.append((dtime, x, y, pressure))
         bbox = self.brush.tiled_surface_stroke_to (self.layer, x, y, pressure, dtime)
         if bbox:
-            self.queue_draw_area(*bbox)
+            x1, y1, w, h = bbox
+            x2 = x1 + w - 1
+            y2 = y1 + h - 1
+            # transform 4 bbox corners to screen coordinates
+            cr = self.get_model_coordinates_cairo_context()
+            corners = [(x1, y1), (x1+w-1, y1), (x1, y1+h-1), (x1+w-1, y1+h-1)]
+            corners = [cr.user_to_device(x, y) for (x, y) in corners]
+            # find bbox containing the old (rotated, translated) rectangle
+            list_y = [y for (x, y) in corners]
+            list_x = [x for (x, y) in corners]
+            x1 = floor(min(list_x))
+            y1 = floor(min(list_y))
+            x2 = ceil(max(list_x))
+            y2 = ceil(max(list_y))
+            self.queue_draw_area(x1, y1, x2-x1+1, y2-y1+1)
 
     def expose_cb(self, widget, event):
+        t = time.time()
+        if hasattr(self, 'last_expose_time'):
+            # just for basic performance comparisons... but we could sleep if we make >50fps
+            print '%d fps' % int(1.0/(t-self.last_expose_time))
+        self.last_expose_time = t
+        print 'expose', tuple(event.area)
+
+        self.repaint()
+
+    def get_model_coordinates_cairo_context(self):
+        cr = self.window.cairo_create()
+        cr.rotate(0.1)
+        cr.scale(0.3, 0.3)
+        return cr
+
+    def repaint(self):
+        cr = self.get_model_coordinates_cairo_context()
+        #cr.rectangle(*event.area)
+        #cr.clip()
 
         w, h = self.window.get_size()
         pixbuf = gdk.Pixbuf(gdk.COLORSPACE_RGB, False, 8, w, h)
-        gpb =    gdk.Pixbuf(gdk.COLORSPACE_RGB, True, 8, w, h)  
 
         pixbuf.fill(0xffffffff)
         arr = pixbuf.get_pixels_array()
         arr = mypaintlib.gdkpixbuf2numpy(arr)
 
-        # TODO: - start from linear light white/background pattern
-        #       - walk through all tiles?
-        #       - composite each of them with linear light
-        #       - covert to sRGB
-        if not self.disableGammaCorrection:
-            for surface in self.displayed_layers:
-                surface.compositeOverWhiteRGB8(arr)
-        else:
-            for surface in self.displayed_layers:
-                surface.compositeOverRGB8(arr)
-        widget.window.draw_pixbuf(None, pixbuf, 0, 0, 0, 0)
+        #if not self.disableGammaCorrection:
+        #    for surface in self.displayed_layers:
+        #        surface.compositeOverWhiteRGB8(arr)
+        #else:
+        for surface in self.displayed_layers:
+            surface.compositeOverRGB8(arr)
+
+        #widget.window.draw_pixbuf(None, pixbuf, 0, 0, 0, 0)
+        #cr.rectangle(0,0,w,h)
+        #cr.clip()
+        cr.set_source_pixbuf(pixbuf, 0, 0)
+        cr.paint()
 
     def clear(self):
         print 'TODO: clear'
 
     def allow_dragging(self):
         print 'TODO: allow dragging'
+
+    def scroll(self, dx, dy):
+        print 'DEBUG'
+        self.repaint()
 
     def set_brush(self, b):
         self.brush = b
