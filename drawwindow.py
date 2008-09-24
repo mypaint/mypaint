@@ -537,16 +537,27 @@ class Window(gtk.Window):
     def key_release_event_cb_after(self, win, event):
         return False
 
+    def dragfunc_handtool(self, dx, dy):
+        self.tdw.scroll(-dx, -dy)
+
+    def dragfunc_rotozoom(self, dx, dy):
+        self.tdw.scroll(-dx, -dy)
+        self.tdw.zoom(math.exp(-dy/100.0))
+        self.tdw.rotate(2*math.pi*dx/500.0)
 
     def button_press_cb(self, win, event):
         #print event.device, event.button
         if event.button == 2:
-            self.tdw.dragging = True
+            self.tdw.start_drag(self.dragfunc_handtool)
+        elif event.button == 3:
+            self.tdw.start_drag(self.dragfunc_rotozoom)
 
     def button_release_cb(self, win, event):
         #print event.device, event.button
         if event.button == 2:
-            self.tdw.dragging = False
+            self.tdw.stop_drag(self.dragfunc_handtool)
+        elif event.button == 3:
+            self.tdw.stop_drag(self.dragfunc_rotozoom)
 
     def scroll_cb(self, win, event):
         d = event.direction

@@ -57,7 +57,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.viewport_locked = False
 
         self.has_pointer = False
-        self.dragging = False
+        self.dragfunc = None
 
     def proximity_cb(self, widget, something):
         for f in self.toolchange_observers:
@@ -81,8 +81,8 @@ class TiledDrawWidget(gtk.DrawingArea):
         if dtime is None:
             return
 
-        if self.dragging:
-            self.scroll(-dx, -dy)
+        if self.dragfunc:
+            self.dragfunc(dx, dy)
             return
 
         cr = self.get_model_coordinates_cairo_context()
@@ -117,10 +117,10 @@ class TiledDrawWidget(gtk.DrawingArea):
             # find screen bbox containing the old (rotated, translated) rectangle
             list_y = [y for (x, y) in corners]
             list_x = [x for (x, y) in corners]
-            x1 = floor(min(list_x))
-            y1 = floor(min(list_y))
-            x2 = ceil(max(list_x))
-            y2 = ceil(max(list_y))
+            x1 = int(floor(min(list_x)))
+            y1 = int(floor(min(list_y)))
+            x2 = int(ceil(max(list_x)))
+            y2 = int(ceil(max(list_y)))
             self.queue_draw_area(x1, y1, x2-x1+1, y2-y1+1)
 
     def expose_cb(self, widget, event):
@@ -198,6 +198,10 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.translation_y += cy - cy_new
         self.queue_draw()
 
+    def zoom(self, zoom_step):
+        def f(): self.scale *= zoom_step
+        self.rotozoom_with_center(f)
+
     def set_zoom(self, zoom):
         def f(): self.scale = zoom
         self.rotozoom_with_center(f)
@@ -209,6 +213,13 @@ class TiledDrawWidget(gtk.DrawingArea):
     def set_rotation(self, angle):
         def f(): self.rotation = angle
         self.rotozoom_with_center(f)
+
+
+    def start_drag(self, dragfunc):
+        self.dragfunc = dragfunc
+    def stop_drag(self, dragfunc):
+        if self.dragfunc == dragfunc:
+            self.dragfunc = None
 
     def set_brush(self, b):
         self.brush = b
