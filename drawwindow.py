@@ -11,6 +11,7 @@
 "the main drawing window"
 MYPAINT_VERSION="0.5.1"
 import gtk, os, zlib, random, re, math
+from gtk import gdk, keysyms
 import tileddrawwidget
 import tilelib, brush, document
 import command
@@ -26,7 +27,12 @@ class Window(gtk.Window):
         def delete_event_cb(window, event, app): return app.quit()
         self.connect('delete-event', delete_event_cb, self.app)
         self.connect('key-press-event', self.key_press_event_cb_before)
+        self.connect('key-release-event', self.key_release_event_cb_before)
         self.connect_after('key-press-event', self.key_press_event_cb_after)
+        self.connect_after('key-release-event', self.key_release_event_cb_after)
+        self.connect("button-press-event", self.button_press_cb)
+        self.connect("button-release-event", self.button_release_cb)
+        self.connect("scroll-event", self.scroll_cb)
         self.set_size_request(600, 400)
         vbox = gtk.VBox()
         self.add(vbox)
@@ -252,25 +258,25 @@ class Window(gtk.Window):
             ('ShortcutsMenu', None, 'Shortcuts'),
 
             ('ViewMenu', None, 'View'),
-            ('Zoom1',        None, 'Zoom 1:1', 'z', None, self.zoom_cb),
+            ('Fullscreen',   None, 'Fullscreen', 'F11', None, self.fullscreen_cb),
             ('ZoomIn',       None, 'Zoom In', 'plus', None, self.zoom_cb),
             ('ZoomOut',      None, 'Zoom Out', 'minus', None, self.zoom_cb),
-            ('RotateRight',  None, 'Rotate Clockwise', None, None, self.rotate_cb),
-            ('RotateLeft',   None, 'Rotate Counterclockwise', None, None, self.rotate_cb),
+            ('Zoom1',        None, 'Zoom 1:1', 'z', None, self.zoom_cb),
+            ('RotateRight',  None, 'Rotate Clockwise', 'comma', None, self.rotate_cb),
+            ('RotateLeft',   None, 'Rotate Counterclockwise', 'period', None, self.rotate_cb),
             ('Rotate0',      None, 'Rotate Upright', None, None, self.rotate_cb),
-            ('Fullscreen',   None, 'Fullscreen', 'F11', None, self.fullscreen_cb),
-            ('MoveLeft',     None, 'Move Left', None, None, self.move_cb),
-            ('MoveRight',    None, 'Move Right', None, None, self.move_cb),
-            ('MoveUp',       None, 'Move Up', None, None, self.move_cb),
-            ('MoveDown',     None, 'Move Down', None, None, self.move_cb),
+            ('MoveLeft',     None, 'Look Left', None, None, self.move_cb),
+            ('MoveRight',    None, 'Look Right', None, None, self.move_cb),
+            ('MoveUp',       None, 'Look Up', None, None, self.move_cb),
+            ('MoveDown',     None, 'Look Down', None, None, self.move_cb),
             ('ViewHelp',     None, 'Help', None, None, self.view_help_cb),
             ]
         ag.add_actions(actions)
         toggle_actions = [
-			# name, stock id, label, accelerator, tooltip, callback, default toggle status
+            # name, stock id, label, accelerator, tooltip, callback, default toggle status
             ('PrintInputs', None, 'Print Brush Input Values to stdout', None, None, self.print_inputs_cb),
             ('DisableGammaCorrection', None, 'Disable sRGB Gamma Correction', None, None, self.disableGammaCorrection_cb),
-			]
+            ]
         ag.add_toggle_actions(toggle_actions)
         self.ui = gtk.UIManager()
         self.ui.insert_action_group(ag, 0)
@@ -502,28 +508,60 @@ class Window(gtk.Window):
         self.split_stroke()
 
     def key_press_event_cb_before(self, win, event):
-        ANY_MODIFIER = gtk.gdk.SHIFT_MASK | gtk.gdk.MOD1_MASK | gtk.gdk.CONTROL_MASK
+        key = event.keyval 
+        ANY_MODIFIER = gdk.SHIFT_MASK | gdk.MOD1_MASK | gdk.CONTROL_MASK
         if event.state & ANY_MODIFIER:
             # allow user shortcuts with modifiers
             return False
-        print '  handled key:', event.keyval
-        if event.keyval == gtk.keysyms.Left: self.move('MoveLeft')
-        elif event.keyval == gtk.keysyms.Right: self.move('MoveRight')
-        elif event.keyval == gtk.keysyms.Up: self.move('MoveUp')
-        elif event.keyval == gtk.keysyms.Down: self.move('MoveDown')
+        if key == keysyms.Left: self.move('MoveLeft')
+        elif key == keysyms.Right: self.move('MoveRight')
+        elif key == keysyms.Up: self.move('MoveUp')
+        elif key == keysyms.Down: self.move('MoveDown')
+        elif key == keysyms.space: self.tdw.dragging = True
         else: return False
         return True
+    def key_release_event_cb_before(self, win, event):
+        if event.keyval == keysyms.space:
+            self.tdw.dragging = False
+            return True
+        return False
 
     def key_press_event_cb_after(self, win, event):
         # Not checking modifiers because this function gets only 
         # called if no user keybinding accepted the event.
-        if event.keyval == gtk.keysyms.KP_Add: self.zoom('ZoomIn')
-        elif event.keyval == gtk.keysyms.KP_Subtract: self.zoom('ZoomOut')
-        elif self.fullscreen and event.keyval == gtk.keysyms.Escape: self.fullscreen_cb()
-        else:
-            print 'unhandled key:', event.keyval
-            return False
+        if event.keyval == keysyms.KP_Add: self.zoom('ZoomIn')
+        elif event.keyval == keysyms.KP_Subtract: self.zoom('ZoomOut')
+        elif self.fullscreen and event.keyval == keysyms.Escape: self.fullscreen_cb()
+        else: return False
         return True
+    def key_release_event_cb_after(self, win, event):
+        return False
+
+
+    def button_press_cb(self, win, event):
+        #print event.device, event.button
+        if event.button == 2:
+            self.tdw.dragging = True
+
+    def button_release_cb(self, win, event):
+        #print event.device, event.button
+        if event.button == 2:
+            self.tdw.dragging = False
+
+    def scroll_cb(self, win, event):
+        d = event.direction
+        if event.state & gdk.CONTROL_MASK:
+            if d == gdk.SCROLL_UP:
+                self.zoom('ZoomIn')
+            elif d == gdk.SCROLL_DOWN:
+                self.zoom('ZoomOut')
+        else:
+            self.move({
+                gdk.SCROLL_RIGHT: 'MoveRight',
+                gdk.SCROLL_LEFT: 'MoveLeft',
+                gdk.SCROLL_UP: 'MoveUp',
+                gdk.SCROLL_DOWN: 'MoveDown',
+                }[d])
 
     def clear_cb(self, action):
         self.finish_pending_actions()
@@ -614,7 +652,7 @@ class Window(gtk.Window):
         self.finish_pending_actions()
         self.statusbar.pop(1)
         try:
-            pixbuf = gtk.gdk.pixbuf_new_from_file(filename)
+            pixbuf = gdk.pixbuf_new_from_file(filename)
             cmd = command.LoadImage(self.layer, pixbuf)
             self.command_stack.add(cmd)
             self.layer.rerender()
@@ -775,9 +813,9 @@ class Window(gtk.Window):
     def rotate(self, command):
         self.split_stroke()
         if command == 'RotateRight':
-            self.tdw.rotate(+2*math.pi/16)
+            self.tdw.rotate(+2*math.pi/14)
         elif command == 'RotateLeft':
-            self.tdw.rotate(-2*math.pi/16)
+            self.tdw.rotate(-2*math.pi/14)
         elif command == 'Rotate0':
             self.tdw.set_rotation(0.0)
         else:

@@ -6,11 +6,6 @@
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY. See the COPYING file for more details.
 
-# First widget that allows drawing on a tiled layer.
-# TODO:
-# - dragging, zooming
-# - allow more than one layer (external document object?)
-
 import mypaintlib, tilelib, brush
 import gtk, numpy, cairo
 gdk = gtk.gdk
@@ -20,7 +15,6 @@ import time
 class TiledDrawWidget(gtk.DrawingArea):
     def __init__(self):
         gtk.DrawingArea.__init__(self)
-        #self.connect("dragging-finished", self.dragging_finished_cb)
         self.connect("proximity-in-event", self.proximity_cb)
         self.connect("proximity-out-event", self.proximity_cb)
         self.toolchange_observers = []
@@ -63,6 +57,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.viewport_locked = False
 
         self.has_pointer = False
+        self.dragging = False
 
     def proximity_cb(self, widget, something):
         for f in self.toolchange_observers:
@@ -74,6 +69,25 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.has_pointer = False
 
     def motion_notify_cb(self, widget, event):
+        if self.last_event_time:
+            dtime = (event.time - self.last_event_time)/1000.0
+            dx = event.x - self.last_event_x
+            dy = event.y - self.last_event_y
+        else:
+            dtime = None
+        self.last_event_time = event.time
+        self.last_event_x = event.x
+        self.last_event_y = event.y
+        if dtime is None:
+            return
+
+        if self.dragging:
+            self.scroll(-dx, -dy)
+            return
+
+        cr = self.get_model_coordinates_cairo_context()
+        x, y = cr.device_to_user(event.x, event.y)
+        
         pressure = event.get_axis(gdk.AXIS_PRESSURE)
         if pressure is None:
             if event.state & gdk.BUTTON1_MASK:
@@ -84,21 +98,8 @@ class TiledDrawWidget(gtk.DrawingArea):
         if not self.brush:
             print 'no brush!'
             return
+        # FIXME: we should have a "model" object from which we fetch the current layer
         assert isinstance(self.layer, tilelib.TiledLayer)
-
-        if not self.last_event_time:
-            self.last_event_time = event.time
-            return
-        dtime = (event.time - self.last_event_time)/1000.0
-        self.last_event_time = event.time
-
-        self.last_event_x = event.x
-        self.last_event_y = event.y
-
-        cr = self.get_model_coordinates_cairo_context()
-        x, y = cr.device_to_user(event.x, event.y)
-        
-        #time.sleep(0.05)
 
         if self.recording is not None:
             self.recording.append((dtime, x, y, pressure))
@@ -183,7 +184,7 @@ class TiledDrawWidget(gtk.DrawingArea):
     def rotozoom_with_center(self, function):
         if self.viewport_locked:
             return
-        if self.has_pointer:
+        if self.has_pointer and self.last_event_x is not None:
             cx, cy = self.last_event_x, self.last_event_y
         else:
             w, h = self.window.get_size()

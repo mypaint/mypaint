@@ -6,14 +6,14 @@
   - ("simulates" a finite canvas; infinite canvas alone is awful for artists)
   - visual only (do strokes outside anyway, might enlarge later)
   - enable/disable/move/resize
+  - should be easy now, using Cairo
 
-- add a preferences dialog
-  - set maximum brush radius
-  - set canvas memory limit
+- preferences
+  - allow some memory limit maybe
   - set canvas border outside visible window (in percent)
-  - set "reallocate how much in advance" maybe?
+  - default canvas background color
   - zoom quality
-  - remember window pos or not
+  - remember window pos or not (gimp has a nice ui for this)
 
 - dedicated "slow random" input
   - or just "random slowness"?
@@ -21,19 +21,6 @@
 
 - one-sided brush
   - brush that is hard to the right, soft to the left of the direction moving
-
-- canvas rotation
-  - (fast rotozoom? also would be nice to use OpenGL if available)
-
-- global pressure curve
-  - [x] ignore pressure information (use button up/down events)
-  - include "minimal pressure during button-down"
-  - "Even just having a config file that lets me add a fixed number to the pressure values would be a great start..."
-  - ?? how to fix line problem ??
-
-- incremental numbereing when saving
-
-- full screen mode
 
 - swap tools
   - "Apparently Corel Photo Paint uses spacebar for swapping to previous tool."
@@ -61,7 +48,7 @@
 
 - tilt support 
   - what can tilt be used for?
-  - I need (someone with) a tilt tablet to test it
+  - not much, IMO, I even guess it is just a technical by-product
 
 - show brush radius
   - "some symbol to see the current size of the painting-tool"
@@ -69,10 +56,6 @@
     - a key to quickly blink the shape? hmm...
     - note: shape size changes quickly!
   "brief indication of brushsize onscreen (circle, on brush size change)"
-
-? zoom-out only for viewing somehow?
-  - do not resize canvas when zooming, only when moving?
-  - better do it right: do not allocate memory for white canvas areas.
 
 - edit global pressure nonlinearity curve
   - maybe wacom tool? maybe for each brush?
@@ -86,8 +69,11 @@
   - buttons next to shape? shared "symlinked" shape?
   - the "custom" input partially solves this problem now.
 
-- change brush without changin radius?
-  - how? distinguish brush tip vs brush size vs brush dynamics?
+- change brush size (not dab radius)
+  - this includes brush dynamics
+  - brush "scale factor" to make it behave the same no matter what zoom level
+  - useful to compensate the physical tablet size (A4 vs A5...)
+    to map "wrist motion speed" to "brush size" the same way for everyone
 
 - allow non-circle brush shapes
 
@@ -96,7 +82,21 @@
 - maybe avoid gaps when using the "offset by speed"
   - and add a setting to intentionally do such gaps
 
-- layers.
-  - rewrite the rendering code
+- layers
   - layer dialog (select / set occupancy)
+  - painless layer-switching ui
 
+- plenty of default keybindings
+  - check conventions of other apps and support as many as possible:
+    - spacebar for moving (with hand icon)
+    - ctrl-scrollwheel for zooming
+  - do something with mouse scrollwheel (eg. rotation)
+  - make sure (almost) all tablet buttons / stripes have some discoverable default function
+
+- input devices
+  - make buttons / stripes / scrollwheel configurable
+  - allow zoom/rotate/brushsize/opacity modes as-you-move (as spacebar)
+  - bonus points: allow to interpret mouse x/y motion as zoom/rotate/scroll etc.
+  - allow configurable step sizes (for rotozoom keys, for scroll events or motion sensitivity)
+
+- try auto-rotation (following your stroke directin slowly) and auto-zoom (zoom on slow motion)
