@@ -76,14 +76,14 @@ class ClearLayer(Action):
         self.old_background = self.layer.background
         self.layer.strokes = []
         self.layer.background = None
-        mdw = self.layer.mdw
-        self.viewport = mdw.get_viewport_orig()
-        mdw.set_viewport_orig(0, 0)
+        tdw = self.layer.tdw
+        self.viewport = tdw.get_viewport_orig()
+        tdw.set_viewport_orig(0, 0)
     def undo(self):
         self.layer.strokes = self.old_strokes
         self.layer.background = self.old_background
-        mdw = self.layer.mdw
-        mdw.set_viewport_orig(*self.viewport)
+        tdw = self.layer.tdw
+        tdw.set_viewport_orig(*self.viewport)
 
         del self.old_strokes, self.old_background, self.viewport
     redo = execute

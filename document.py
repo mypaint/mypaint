@@ -33,9 +33,9 @@ class Stroke:
         Stroke.serial_number += 1
         self.serial_number = Stroke.serial_number
 
-    def start_recording(self, mdw, brush):
+    def start_recording(self, tdw, brush):
         assert not self.finished
-        self.mdw = mdw
+        self.tdw = tdw
 
         self.brush_settings = brush.save_to_string() # fast (brush caches this string)
 
@@ -49,12 +49,12 @@ class Stroke:
         #   - stroke bbox is empty
         #   - stroke idle and painting times are empty
 
-        self.mdw.start_recording()
+        self.tdw.start_recording()
         self.rendered = True # being rendered while recording
 
     def stop_recording(self):
         assert not self.finished
-        self.stroke_data = self.mdw.stop_recording()
+        self.stroke_data = self.tdw.stop_recording()
         x, y, w, h = self.brush.get_stroke_bbox()
         self.bbox = helpers.Rect(x, y, w, h)
         self.total_painting_time = self.brush.stroke_total_painting_time
@@ -62,12 +62,12 @@ class Stroke:
         #if not self.empty:
         #    print 'Recorded', len(self.stroke_data), 'bytes. (painting time: %.2fs)' % self.total_painting_time
         #print 'Compressed size:', len(zlib.compress(self.stroke_data)), 'bytes.'
-        del self.mdw, self.brush
+        del self.tdw, self.brush
         self.finished = True
         
     def render(self, surface):
         assert self.finished
-        mdw = surface # Currently the surface can only be a MyDrawWidget.
+        tdw = surface # Currently the surface can only be a MyDrawWidget.
 
         x, y, w, h = self.bbox.tuple()
 
@@ -76,10 +76,10 @@ class Stroke:
         b.set_state(self.brush_state)
         b.srandom(self.seed)
         #b.set_print_inputs(1)
-        original_brush = mdw.set_brush(b)
+        original_brush = tdw.set_brush(b)
         #print 'replaying', len(self.stroke_data), 'bytes'
-        mdw.replay(self.stroke_data, 1)
-        mdw.set_brush(original_brush)
+        tdw.replay(self.stroke_data, 1)
+        tdw.set_brush(original_brush)
 
         self.rendered = True
 

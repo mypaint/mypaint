@@ -35,13 +35,11 @@ class Window(gtk.Window):
         self.menubar = self.ui.get_widget('/Menubar')
         vbox.pack_start(self.menubar, expand=False)
 
-        self.mdw = tileddrawwidget.TiledDrawWidget()
-        self.mdw.allow_dragging()
-        self.mdw.clear()
-        self.mdw.set_brush(self.app.brush)
-        vbox.pack_start(self.mdw)
-        self.mdw.toolchange_observers.append(self.toolchange_cb)
-        #self.mdw.connect("gesture-recognized", self.gesture_recognized_cb)
+        self.tdw = tileddrawwidget.TiledDrawWidget()
+        self.tdw.set_brush(self.app.brush)
+        vbox.pack_start(self.tdw)
+        self.tdw.toolchange_observers.append(self.toolchange_cb)
+        #self.tdw.connect("gesture-recognized", self.gesture_recognized_cb)
 
         self.statusbar = sb = gtk.Statusbar()
         vbox.pack_end(sb, expand=False)
@@ -61,7 +59,7 @@ class Window(gtk.Window):
 
         self.command_stack = command.CommandStack()
         self.stroke = document.Stroke()
-        self.stroke.start_recording(self.mdw, self.app.brush)
+        self.stroke.start_recording(self.tdw, self.app.brush)
         self.pending_actions = [self.split_stroke]
         self.app.brush.observers.append(self.brush_modified_cb)
         self.app.brush.set_split_stroke_callback(self.split_stroke_cb)
@@ -300,11 +298,11 @@ class Window(gtk.Window):
         self.app.brush.print_inputs = action.get_active()
 
     def test_cb(self, action):
-        self.mdw.layer.save('test.png')
+        self.tdw.layer.save('test.png')
 
     def disableGammaCorrection_cb(self, action):
-		self.mdw.disableGammaCorrection = action.get_active()
-		self.mdw.queue_draw()
+		self.tdw.disableGammaCorrection = action.get_active()
+		self.tdw.queue_draw()
 
     def finish_pending_actions(self, skip=None):
         # this function must be called before manipulation the command stack
@@ -335,7 +333,7 @@ class Window(gtk.Window):
             self.statusbar.pop(1)
 
         self.stroke = document.Stroke()
-        self.stroke.start_recording(self.mdw, self.app.brush)
+        self.stroke.start_recording(self.tdw, self.app.brush)
 
     def undo_cb(self, action):
         self.finish_pending_actions()
@@ -508,6 +506,7 @@ class Window(gtk.Window):
         if event.state & ANY_MODIFIER:
             # allow user shortcuts with modifiers
             return False
+        print '  handled key:', event.keyval
         if event.keyval == gtk.keysyms.Left: self.move('MoveLeft')
         elif event.keyval == gtk.keysyms.Right: self.move('MoveRight')
         elif event.keyval == gtk.keysyms.Up: self.move('MoveUp')
@@ -521,7 +520,9 @@ class Window(gtk.Window):
         if event.keyval == gtk.keysyms.KP_Add: self.zoom('ZoomIn')
         elif event.keyval == gtk.keysyms.KP_Subtract: self.zoom('ZoomOut')
         elif self.fullscreen and event.keyval == gtk.keysyms.Escape: self.fullscreen_cb()
-        else: return False
+        else:
+            print 'unhandled key:', event.keyval
+            return False
         return True
 
     def clear_cb(self, action):
@@ -533,14 +534,14 @@ class Window(gtk.Window):
         self.layer.rerender()
         
     def update_layers(self):
-        self.mdw.layer = self.layer.surface
+        self.tdw.layer = self.layer.surface
         l = []
         for layer in self.layers:
             l.append(layer.surface)
             if not self.show_layers_above and layer is self.layer:
                 break
-        self.mdw.displayed_layers = l
-        self.mdw.queue_draw()
+        self.tdw.displayed_layers = l
+        self.tdw.queue_draw()
 
     def layer_bg_cb(self, action):
         # TODO: make an action to allow undo
@@ -633,7 +634,7 @@ class Window(gtk.Window):
         self.filename = filename
         self.statusbar.pop(1)
         try:
-            self.mdw.save(filename)
+            self.tdw.save(filename)
         except Exception, e:
             print e
             d = gtk.MessageDialog(self, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_OK)
@@ -741,15 +742,15 @@ class Window(gtk.Window):
 
     def move(self, command):
         self.split_stroke()
-        step = min(self.mdw.window.get_size()) / 5
+        step = min(self.tdw.window.get_size()) / 5
         if command == 'MoveLeft':
-            self.mdw.scroll(-step, 0)
+            self.tdw.scroll(-step, 0)
         elif command == 'MoveRight':
-            self.mdw.scroll(+step, 0)
+            self.tdw.scroll(+step, 0)
         elif command == 'MoveUp':
-            self.mdw.scroll(0, -step)
+            self.tdw.scroll(0, -step)
         elif command == 'MoveDown':
-            self.mdw.scroll(0, +step)
+            self.tdw.scroll(0, +step)
         else:
             assert 0
 
@@ -769,16 +770,16 @@ class Window(gtk.Window):
         #print 'Zoom %.2f' % z
 
         self.split_stroke()
-        self.mdw.set_zoom(z)
+        self.tdw.set_zoom(z)
 
     def rotate(self, command):
         self.split_stroke()
         if command == 'RotateRight':
-            self.mdw.rotate(+2*math.pi/16)
+            self.tdw.rotate(+2*math.pi/16)
         elif command == 'RotateLeft':
-            self.mdw.rotate(-2*math.pi/16)
+            self.tdw.rotate(-2*math.pi/16)
         elif command == 'Rotate0':
-            self.mdw.set_rotation(0.0)
+            self.tdw.set_rotation(0.0)
         else:
             assert 0
 

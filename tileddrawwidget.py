@@ -60,6 +60,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.translation_y = 0.0
         self.scale = 1.0
         self.rotation = 0.0
+        self.viewport_locked = False
 
         self.has_pointer = False
 
@@ -167,10 +168,12 @@ class TiledDrawWidget(gtk.DrawingArea):
     def clear(self):
         print 'TODO: clear'
 
-    def allow_dragging(self):
-        print 'TODO: allow dragging'
+    def lock_viewport(self, lock=True):
+        self.viewport_locked = lock
 
     def scroll(self, dx, dy):
+        if self.viewport_locked:
+            return
         self.translation_x -= dx
         self.translation_y -= dy
         print 'TODO: fast scrolling without so much rerendering'
@@ -178,6 +181,8 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.queue_draw()
 
     def rotozoom_with_center(self, function):
+        if self.viewport_locked:
+            return
         if self.has_pointer:
             cx, cy = self.last_event_x, self.last_event_y
         else:
@@ -186,7 +191,6 @@ class TiledDrawWidget(gtk.DrawingArea):
         cr = self.get_model_coordinates_cairo_context()
         cx_device, cy_device = cr.device_to_user(cx, cy)
         function()
-        print self.rotation
         cr = self.get_model_coordinates_cairo_context()
         cx_new, cy_new = cr.user_to_device(cx_device, cy_device)
         self.translation_x += cx - cx_new

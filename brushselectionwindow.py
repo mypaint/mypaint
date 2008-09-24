@@ -39,14 +39,15 @@ class Window(gtk.Window):
         hbox = gtk.HBox()
         hbox.set_border_width(8)
         expander.add(hbox)
-        self.mdw = tileddrawwidget.TiledDrawWidget()
+        self.tdw = tileddrawwidget.TiledDrawWidget()
+        self.tdw.lock_viewport()
         # bad, fixed maximal size -- No, that's actually good!
-        #self.mdw.discard_and_resize(128, 128) TODO: replace?
-        self.mdw.clear()
-        self.mdw_brush = brush.Brush_Lowlevel()
-        self.mdw.set_brush(self.mdw_brush)
-        self.mdw.set_size_request(128, 128)
-        hbox.pack_start(self.mdw, expand=False, fill=False)
+        #self.tdw.discard_and_resize(128, 128) TODO: replace?
+        self.tdw.clear()
+        self.tdw_brush = brush.Brush_Lowlevel()
+        self.tdw.set_brush(self.tdw_brush)
+        self.tdw.set_size_request(128, 128)
+        hbox.pack_start(self.tdw, expand=False, fill=False)
 
         vbox2 = gtk.VBox()
         hbox.pack_end(vbox2, expand=False, fill=False)
@@ -56,7 +57,7 @@ class Window(gtk.Window):
         b = gtk.Button('Clear')
         def clear_cb(window, mdw):
             mdw.clear()
-        b.connect('clicked', clear_cb, self.mdw)
+        b.connect('clicked', clear_cb, self.tdw)
         vbox2.pack_start(b, expand=False)
 
         b = gtk.Button('add as new')
@@ -77,12 +78,12 @@ class Window(gtk.Window):
 
     def set_preview_pixbuf(self, pixbuf):
         if pixbuf is None:
-            self.mdw.clear()
+            self.tdw.clear()
         else:
-            self.mdw.set_from_pixbuf(pixbuf)
+            self.tdw.set_from_pixbuf(pixbuf)
 
     def get_preview_pixbuf(self):
-        pixbuf = self.mdw.get_as_pixbuf()
+        pixbuf = self.tdw.get_as_pixbuf()
         # TODO: cut only painted area, please
         return pixbuf
 
@@ -97,7 +98,7 @@ class Window(gtk.Window):
         self.app.save_brushorder()
 
     def update_preview_cb(self, window):
-        pixbuf = self.mdw.get_as_pixbuf()
+        pixbuf = self.tdw.get_as_pixbuf()
         b = self.app.selected_brush
         if b is None:
             # no brush selected
@@ -143,7 +144,7 @@ class Window(gtk.Window):
             self.set_preview_pixbuf(brush.preview)
 
     def brush_modified_cb(self):
-        self.mdw_brush.copy_settings_from(self.app.brush)
+        self.tdw_brush.copy_settings_from(self.app.brush)
 
 
 preview_spacing_outside = 0
