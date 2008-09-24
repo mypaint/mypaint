@@ -11,10 +11,11 @@
 # - dragging, zooming
 # - allow more than one layer (external document object?)
 
-import gtk, numpy, time
-gdk = gtk.gdk
 import mypaintlib, tilelib, brush
+import gtk, numpy, cairo
+gdk = gtk.gdk
 from math import floor, ceil
+import time
 
 class TiledDrawWidget(gtk.DrawingArea):
     def __init__(self):
@@ -50,6 +51,11 @@ class TiledDrawWidget(gtk.DrawingArea):
 
         self.disableGammaCorrection = False
 
+        self.translation_x = 0.0
+        self.translation_y = 0.0
+        self.scale = 1.0
+        self.rotation = 0.0
+
     def proximity_cb(self, widget, something):
         for f in self.toolchange_observers:
             f()
@@ -73,20 +79,23 @@ class TiledDrawWidget(gtk.DrawingArea):
         dtime = (event.time - self.last_event_time)/1000.0
         self.last_event_time = event.time
 
-        x, y = event.x, event.y
+        cr = self.get_model_coordinates_cairo_context()
+        x, y = cr.device_to_user(event.x, event.y)
 
         if self.recording is not None:
             self.recording.append((dtime, x, y, pressure))
         bbox = self.brush.tiled_surface_stroke_to (self.layer, x, y, pressure, dtime)
         if bbox:
+            # TODO: we should accumulate dirty regions and bboxes, and
+            #       do the stuff below once per redraw, not once per event
+            #       Question: who keeps bboxes and dirty tile list between event?
             x1, y1, w, h = bbox
             x2 = x1 + w - 1
             y2 = y1 + h - 1
             # transform 4 bbox corners to screen coordinates
-            cr = self.get_model_coordinates_cairo_context()
             corners = [(x1, y1), (x1+w-1, y1), (x1, y1+h-1), (x1+w-1, y1+h-1)]
             corners = [cr.user_to_device(x, y) for (x, y) in corners]
-            # find bbox containing the old (rotated, translated) rectangle
+            # find screen bbox containing the old (rotated, translated) rectangle
             list_y = [y for (x, y) in corners]
             list_x = [x for (x, y) in corners]
             x1 = floor(min(list_x))
@@ -107,8 +116,10 @@ class TiledDrawWidget(gtk.DrawingArea):
 
     def get_model_coordinates_cairo_context(self):
         cr = self.window.cairo_create()
-        cr.rotate(0.1)
-        cr.scale(0.3, 0.3)
+        cr.translate(self.translation_x, self.translation_y)
+        cr.rotate(self.rotation)
+        cr.scale(self.scale, self.scale)
+        self.last_cairo_context = cr
         return cr
 
     def repaint(self):
@@ -143,8 +154,37 @@ class TiledDrawWidget(gtk.DrawingArea):
         print 'TODO: allow dragging'
 
     def scroll(self, dx, dy):
-        print 'DEBUG'
-        self.repaint()
+        self.translation_x -= dx
+        self.translation_y -= dy
+        print 'TODO: fast scrolling without so much rerendering'
+        # and TODO: scroll with spacebar, with mouse, ...
+        self.queue_draw()
+
+    def rotozoom_with_center(self, cx, cy, function):
+        if cx is None or cy is None:
+            w, h = self.window.get_size()
+            cx, cy = w/2.0, h/2.0
+        cr = self.get_model_coordinates_cairo_context()
+        cx_device, cy_device = cr.device_to_user(cx, cy)
+        function()
+        print self.rotation
+        cr = self.get_model_coordinates_cairo_context()
+        cx_new, cy_new = cr.user_to_device(cx_device, cy_device)
+        self.translation_x += cx - cx_new
+        self.translation_y += cy - cy_new
+        self.queue_draw()
+
+    def set_zoom(self, zoom, cx=None, cy=None):
+        def f(): self.scale = zoom
+        self.rotozoom_with_center(cx, cy, f)
+
+    def rotate(self, angle_step, cx=None, cy=None):
+        def f(): self.rotation += angle_step
+        self.rotozoom_with_center(cx, cy, f)
+
+    def set_rotation(self, angle, cx=None, cy=None):
+        def f(): self.rotation = angle
+        self.rotozoom_with_center(cx, cy, f)
 
     def set_brush(self, b):
         self.brush = b
@@ -168,5 +208,4 @@ class TiledDrawWidget(gtk.DrawingArea):
         assert version == '2'
         for dtime, x, y, pressure in numpy.fromstring(data, dtype='float64'):
             self.brush.tiled_surface_stroke_to (self.layer, x, y, pressure, dtime)
-
 

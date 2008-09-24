@@ -10,7 +10,7 @@
 
 "the main drawing window"
 MYPAINT_VERSION="0.5.1"
-import gtk, os, zlib, random, re
+import gtk, os, zlib, random, re, math
 import tileddrawwidget
 import tilelib, brush, document
 import command
@@ -52,7 +52,7 @@ class Window(gtk.Window):
         self.update_layers()
 
         #self.zoomlevel_values = [0.09, 0.12,  0.18, 0.25, 0.33,  0.50, 0.66,  1.0, 1.5, 2.0, 3.0, 4.0, 5.5, 8.0]
-        self.zoomlevel_values = [            2.0/11, 0.25, 1.0/3, 0.50, 2.0/3, 1.0, 1.5, 2.0, 3.0, 4.0, 5.5, 8.0, 16.0]
+        self.zoomlevel_values = [      0.12, 2.0/11, 0.25, 1.0/3, 0.50, 2.0/3, 1.0, 1.5, 2.0, 3.0, 4.0, 5.5, 8.0, 16.0]
         self.zoomlevel = self.zoomlevel_values.index(1.0)
         self.fullscreen = False
 
@@ -95,11 +95,15 @@ class Window(gtk.Window):
               <menuitem action='RaiseLastStroke'/>
             </menu>
             <menu action='ViewMenu'>
-              <menuitem action='Zoom1'/>
+              <menuitem action='Fullscreen'/>
+              <separator/>
               <menuitem action='ZoomIn'/>
               <menuitem action='ZoomOut'/>
+              <menuitem action='Zoom1'/>
               <separator/>
-              <menuitem action='Fullscreen'/>
+              <menuitem action='RotateRight'/>
+              <menuitem action='RotateLeft'/>
+              <menuitem action='Rotate0'/>
               <separator/>
               <menuitem action='MoveLeft'/>
               <menuitem action='MoveRight'/>
@@ -253,6 +257,9 @@ class Window(gtk.Window):
             ('Zoom1',        None, 'Zoom 1:1', 'z', None, self.zoom_cb),
             ('ZoomIn',       None, 'Zoom In', 'plus', None, self.zoom_cb),
             ('ZoomOut',      None, 'Zoom Out', 'minus', None, self.zoom_cb),
+            ('RotateRight',  None, 'Rotate Clockwise', None, None, self.rotate_cb),
+            ('RotateLeft',   None, 'Rotate Counterclockwise', None, None, self.rotate_cb),
+            ('Rotate0',      None, 'Rotate Upright', None, None, self.rotate_cb),
             ('Fullscreen',   None, 'Fullscreen', 'F11', None, self.fullscreen_cb),
             ('MoveLeft',     None, 'Move Left', None, None, self.move_cb),
             ('MoveRight',    None, 'Move Right', None, None, self.move_cb),
@@ -729,6 +736,8 @@ class Window(gtk.Window):
         self.move(action.get_name())
     def zoom_cb(self, action):
         self.zoom(action.get_name())
+    def rotate_cb(self, action):
+        self.rotate(action.get_name())
 
     def move(self, command):
         self.split_stroke()
@@ -743,7 +752,6 @@ class Window(gtk.Window):
             self.mdw.scroll(0, +step)
         else:
             assert 0
-        self.split_stroke() # record new stroke with new coordinates
 
     def zoom(self, command):
         if command == 'ZoomIn':
@@ -761,8 +769,18 @@ class Window(gtk.Window):
         #print 'Zoom %.2f' % z
 
         self.split_stroke()
-        self.mdw.zoom(z)
-        self.split_stroke() # record new stroke with new coordinates
+        self.mdw.set_zoom(z)
+
+    def rotate(self, command):
+        self.split_stroke()
+        if command == 'RotateRight':
+            self.mdw.rotate(+2*math.pi/16)
+        elif command == 'RotateLeft':
+            self.mdw.rotate(-2*math.pi/16)
+        elif command == 'Rotate0':
+            self.mdw.set_rotation(0.0)
+        else:
+            assert 0
 
     def fullscreen_cb(self, *trash):
         self.fullscreen = not self.fullscreen
@@ -879,9 +897,11 @@ class Window(gtk.Window):
     def view_help_cb(self, action):
         d = gtk.MessageDialog(self, buttons=gtk.BUTTONS_OK)
         d.set_markup(
-            "You can also drag the canvas with the middle mouse button or with the arrow keys.\n\n"
-            "Beware! You might have an infinite canvas, but not infinite memory. "
-            "Whenever you scroll away or zoom away, more memory needs to be allocated."
+            "You can also drag the canvas with the middle mouse button or "
+            "with the arrow keys.\n\n"
+            "In contrast to earlier versions, scrolling and zooming are harmless now and "
+            "will not make you run out of memory. But you still require a lot of memory "
+            "if you paint all over while fully zoomed out."
             )
         d.run()
         d.destroy()
