@@ -29,8 +29,11 @@ class TiledDrawWidget(gtk.DrawingArea):
         #self.connect("button-press-event", self.button_updown_cb)
         #self.connect("button-release-event", self.button_updown_cb)
         self.connect("expose-event", self.expose_cb)
+        self.connect("enter-notify-event", self.enter_notify_cb)
+        self.connect("leave-notify-event", self.leave_notify_cb)
 
         self.set_events(gdk.EXPOSURE_MASK
+                        | gdk.ENTER_NOTIFY_MASK
                         | gdk.LEAVE_NOTIFY_MASK
                         | gdk.BUTTON_PRESS_MASK
                         | gdk.BUTTON_RELEASE_MASK
@@ -46,6 +49,8 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.displayed_layers = None # tilelib.TiledLayer()
 
         self.last_event_time = None
+        self.last_event_x = None
+        self.last_event_y = None
 
         self.recording = None
 
@@ -56,9 +61,16 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.scale = 1.0
         self.rotation = 0.0
 
+        self.has_pointer = False
+
     def proximity_cb(self, widget, something):
         for f in self.toolchange_observers:
             f()
+
+    def enter_notify_cb(self, widget, event):
+        self.has_pointer = True
+    def leave_notify_cb(self, widget, event):
+        self.has_pointer = False
 
     def motion_notify_cb(self, widget, event):
         pressure = event.get_axis(gdk.AXIS_PRESSURE)
@@ -79,8 +91,13 @@ class TiledDrawWidget(gtk.DrawingArea):
         dtime = (event.time - self.last_event_time)/1000.0
         self.last_event_time = event.time
 
+        self.last_event_x = event.x
+        self.last_event_y = event.y
+
         cr = self.get_model_coordinates_cairo_context()
         x, y = cr.device_to_user(event.x, event.y)
+        
+        #time.sleep(0.05)
 
         if self.recording is not None:
             self.recording.append((dtime, x, y, pressure))
@@ -160,8 +177,10 @@ class TiledDrawWidget(gtk.DrawingArea):
         # and TODO: scroll with spacebar, with mouse, ...
         self.queue_draw()
 
-    def rotozoom_with_center(self, cx, cy, function):
-        if cx is None or cy is None:
+    def rotozoom_with_center(self, function):
+        if self.has_pointer:
+            cx, cy = self.last_event_x, self.last_event_y
+        else:
             w, h = self.window.get_size()
             cx, cy = w/2.0, h/2.0
         cr = self.get_model_coordinates_cairo_context()
@@ -174,17 +193,17 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.translation_y += cy - cy_new
         self.queue_draw()
 
-    def set_zoom(self, zoom, cx=None, cy=None):
+    def set_zoom(self, zoom):
         def f(): self.scale = zoom
-        self.rotozoom_with_center(cx, cy, f)
+        self.rotozoom_with_center(f)
 
-    def rotate(self, angle_step, cx=None, cy=None):
+    def rotate(self, angle_step):
         def f(): self.rotation += angle_step
-        self.rotozoom_with_center(cx, cy, f)
+        self.rotozoom_with_center(f)
 
-    def set_rotation(self, angle, cx=None, cy=None):
+    def set_rotation(self, angle):
         def f(): self.rotation = angle
-        self.rotozoom_with_center(cx, cy, f)
+        self.rotozoom_with_center(f)
 
     def set_brush(self, b):
         self.brush = b
