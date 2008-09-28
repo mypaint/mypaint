@@ -8,6 +8,7 @@
 
 "interface to MyBrush; hiding some C implementation details"
 # FIXME: bad file name, saying nothing about what's in here
+# FIXME: should split brush_lowlevel into its own gtk-independent module
 import mypaintlib
 import brushsettings
 import gtk, string, os, colorsys
@@ -173,6 +174,8 @@ class Brush_Lowlevel(mypaintlib.Brush):
         return self.settings[s.index]
 
     def save_to_string(self):
+        # OPTIMIZE: this cache could be more useful, the current "copy_settings_from()"
+        #           brush selection mechanism invalidates it at every brush change
         if self.saved_string: return self.saved_string
         res  = '# mypaint brush file\n'
         res += '# you can edit this file and then select the brush in mypaint (again) to reload\n'

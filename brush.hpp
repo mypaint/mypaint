@@ -31,24 +31,15 @@
    brush" which does the cursor tracking, and the "brushlist" where
    only the settings are important. When a brush is selected, its
    settings are copied into the global one, leaving the status intact.
-   FIXME: if only the settings are important there is no need a full instance of this class
-          it is rather the other way around: in theory this brush class should be a
-          subclass of the class storing only the settings?
  */
 
-
-/*
-// prototypes
-void settings_base_values_have_changed ();
-void split_stroke ();
-*/
 
 class Brush {
 public:
   bool print_inputs; // debug menu
-  Rect stroke_bbox; // gets expanded until split_stroke() is called
+  // for stroke splitting (undo/redo)
   double stroke_total_painting_time;
-  double stroke_idling_time; 
+  double stroke_current_idling_time; 
 
 private:
   // see also brushsettings.py
@@ -67,10 +58,6 @@ private:
   // cached calculation results
   float speed_mapping_gamma[2], speed_mapping_m[2], speed_mapping_q[2];
 
-  PyObject * split_stroke_callback;
-  bool exception_pending;
-
-
 public:
   Brush() {
     int i;
@@ -80,13 +67,9 @@ public:
     rng = g_rand_new();
     print_inputs = false;
     
-    exception_pending = false;
-    split_stroke_callback = NULL;
-    split_stroke(); // to initialize the remaining class members
+    new_stroke();
 
-    // FIXME: nobody can attach a listener to get events fired from the constructor
     settings_base_values_have_changed();
-
   }
 
   ~Brush() {
@@ -95,8 +78,12 @@ public:
       mapping_free(settings[i]);
     }
     g_rand_free (rng); rng = NULL;
+  }
 
-    Py_CLEAR (split_stroke_callback);
+  void new_stroke()
+  {
+    stroke_current_idling_time = 0;
+    stroke_total_painting_time = 0;
   }
 
   void set_base_value (int id, float value) {
@@ -314,7 +301,7 @@ private:
   //
   // This is always called "directly" after brush_update_settings_values.
   // Returns zero if nothing was drawn.
-  int prepare_and_draw_dab (RenderContext * rc)
+  int prepare_and_draw_dab (TiledSurface * surface)
   {
     float x, y, opaque;
     float radius;
@@ -422,7 +409,7 @@ private:
       px = ROUND(x);
       py = ROUND(y);
       float r, g, b, a;
-      tile_get_color (rc->tiled_surface, px, py, /*radius*/5.0, &r, &g, &b, &a);
+      surface->tile_get_color (px, py, /*radius*/5.0, &r, &g, &b, &a);
       states[STATE_SMUDGE_R] = fac*states[STATE_SMUDGE_R] + (1-fac)*r;
       states[STATE_SMUDGE_G] = fac*states[STATE_SMUDGE_G] + (1-fac)*g;
       states[STATE_SMUDGE_B] = fac*states[STATE_SMUDGE_B] + (1-fac)*b;
@@ -463,7 +450,7 @@ private:
 
       hsv_to_rgb_float (&color_h, &color_s, &color_v);
       float hardness = CLAMP(settings_value[BRUSH_HARDNESS], 0.0, 1.0);
-      return tile_draw_dab (rc, x, y, radius, color_h, color_s, color_v, opaque, hardness, alpha_eraser);
+      return surface->draw_dab (x, y, radius, color_h, color_s, color_v, opaque, hardness, alpha_eraser);
     }
   }
 
@@ -501,8 +488,13 @@ private:
     return res1 + res2 + res3;
   }
 
-  // Called from gtkmydrawwidget.c when a GTK event was received, with the new pointer position.
-  void any_surface_stroke_to (RenderContext * rc, float x, float y, float pressure, double dtime)
+  // This function:
+  // - is called once for each motion event
+  // - does motion event interpolation
+  // - paints zero, one or several dabs
+  // - decides whether the stroke is finished (for undo/redo)
+  // returns true to suggest that a new stroke should be started
+  bool stroke_to_internal (TiledSurface * surface, float x, float y, float pressure, double dtime)
   {
     //printf("%f %f %f %f\n", (double)dtime, (double)x, (double)y, (double)pressure);
 
@@ -515,7 +507,7 @@ private:
     if (dtime > 0.100 && pressure && states[STATE_PRESSURE] == 0) {
       // Workaround for tablets that don't report motion events without pressure.
       // This is to avoid linear interpolation of the pressure between two events.
-      any_surface_stroke_to (rc, x, y, 0.0, dtime-0.0001);
+      stroke_to_internal (surface, x, y, 0.0, dtime-0.0001);
       dtime = 0.0001;
     }
 
@@ -541,9 +533,11 @@ private:
     float dist_moved = states[STATE_DIST];
     float dist_todo = count_dabs_to (x, y, pressure, dtime);
 
-    if (dtime > 5 || dist_todo > 300) {
+    //if (dtime > 5 || dist_todo > 300) {
+    if (dtime > 5) {
 
       /*
+        TODO:
         if (dist_todo > 300) {
         // this happens quite often, eg when moving the cursor back into the window
         // FIXME: bad to hardcode a distance treshold here - might look at zoomed image
@@ -568,8 +562,7 @@ private:
       states[STATE_ACTUAL_Y] = states[STATE_Y];
       states[STATE_STROKE] = 1.0; // start in a state as if the stroke was long finished
 
-      split_stroke ();
-      return; // ?no movement yet?
+      return true;
     }
 
     //g_print("dist = %f\n", states[STATE_DIST]);
@@ -596,7 +589,7 @@ private:
       }
     
       update_states_and_setting_values (step_dx, step_dy, step_dpressure, step_dtime);
-      int painted_now = prepare_and_draw_dab (rc);
+      int painted_now = prepare_and_draw_dab (surface);
       if (painted_now) {
         painted = YES;
       } else if (painted == UNKNOWN) {
@@ -628,16 +621,10 @@ private:
     states[STATE_DIST] = dist_moved + dist_todo;
     //g_print("dist_final = %f\n", states[STATE_DIST]);
 
-    if (rc->bbox.w > 0) {
-      Rect bbox = rc->bbox;
-      ExpandRectToIncludePoint(&stroke_bbox, bbox.x, bbox.y);
-      ExpandRectToIncludePoint(&stroke_bbox, bbox.x+bbox.w-1, bbox.y+bbox.h-1);
-    }
-
-    // stroke separation logic
+    // stroke separation logic (for undo/redo)
 
     if (painted == UNKNOWN) {
-      if (stroke_idling_time > 0) {
+      if (stroke_current_idling_time > 0) {
         // still idling
         painted = NO;
       } else {
@@ -647,87 +634,49 @@ private:
       }
     }
     if (painted == YES) {
-      //if (stroke_idling_time > 0) g_print ("idling ==> painting\n");
+      //if (stroke_current_idling_time > 0) g_print ("idling ==> painting\n");
       stroke_total_painting_time += dtime;
-      stroke_idling_time = 0;
+      stroke_current_idling_time = 0;
       // force a stroke split after some time
       if (stroke_total_painting_time > 5 + 10*pressure) {
         // but only if pressure is not being released
         // FIXME: use some smoothed state for dpressure, not the output of the interpolation code
         //        (which might easily wrongly give dpressure == 0)
         if (step_dpressure >= 0) {
-          split_stroke ();
+          return true;
         }
       }
     } else if (painted == NO) {
-      //if (stroke_idling_time == 0) g_print ("painting ==> idling\n");
-      stroke_idling_time += dtime;
+      //if (stroke_current_idling_time == 0) g_print ("painting ==> idling\n");
+      stroke_current_idling_time += dtime;
       if (stroke_total_painting_time == 0) {
         // not yet painted, split to discard the useless motion data
-        g_assert (stroke_bbox.w == 0);
-        if (stroke_idling_time > 1.0) {
-          split_stroke ();
+        if (stroke_current_idling_time > 1.0) {
+          return true;
         }
       } else {
         // Usually we have pressure==0 here. But some brushes can paint
         // nothing at full pressure (eg gappy lines, or a stroke that
         // fades out). In either case this is the prefered moment to split.
-        if (stroke_total_painting_time+stroke_idling_time > 1.5 + 5*pressure) {
-          split_stroke ();
+        if (stroke_total_painting_time+stroke_current_idling_time > 1.5 + 5*pressure) {
+          return true;
         }
       }
     }
+    return false;
   }
 
 public:
-  PyObject * tiled_surface_stroke_to (PyObject * tiled_surface, float x, float y, float pressure, double dtime)
+  PyObject * tiled_surface_stroke_to (TiledSurface * surface, float x, float y, float pressure, double dtime)
   {
-    RenderContext rc;
-    rc.tiled_surface = tiled_surface;
-    rc.bbox.w = 0;
-    any_surface_stroke_to (&rc, x, y, pressure, dtime);
-    if (exception_pending) {
-      exception_pending = false;
+    try {
+      surface->begin_atomic();
+      bool painted = stroke_to_internal (surface, x, y, pressure, dtime);
+      surface->end_atomic();
+      return Py_BuildValue("i", (int)painted);
+    } catch (int i) {
       return NULL;
     }
-    if (rc.bbox.w == 0) {
-      Py_RETURN_NONE;
-    } else {
-      return Py_BuildValue("(iiii)", rc.bbox.x, rc.bbox.y, rc.bbox.w, rc.bbox.h);
-    }
-  }
-
-  void set_split_stroke_callback (PyObject * callback)
-  {
-    Py_CLEAR (split_stroke_callback);
-    Py_INCREF (callback);
-    split_stroke_callback = callback;
-  }
-
-  // gets called when a new atomically undoable stroke should start
-  void split_stroke ()
-  {
-    if (split_stroke_callback) {
-      PyObject * arglist = Py_BuildValue("()");
-      PyObject * result = PyEval_CallObject(split_stroke_callback, arglist);
-      Py_DECREF (arglist);
-      if (!result) {
-        printf("Exception during split_stroke callback!\n");
-        exception_pending = true;
-      } else {
-        Py_DECREF (result);
-      }
-    }
-
-    // note: those values have probably just been stored away in the split_stroke callback
-
-    stroke_idling_time = 0;
-    stroke_total_painting_time = 0;
-
-    stroke_bbox.w = 0;
-    stroke_bbox.h = 0;
-    stroke_bbox.x = 0;
-    stroke_bbox.y = 0;
   }
 
   double random_double ()

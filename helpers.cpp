@@ -6,9 +6,9 @@
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY. See the COPYING file for more details.
  *
- * This file contains some modified code from the GIMP:
+ * This file contains some modified code from GIMP:
  * Copyright (C) 1995-1997 Peter Mattis and Spencer Kimball
- * Adapted 2007 by Martin Renold to fit into MyPaint.
+ * Adapted for MyPaint 2007 by Martin Renold.
  * Also fixed the hue range in gimp_hsl_to_rgb_int().
  */
 
@@ -16,7 +16,7 @@
 #include <glib.h>
 #include <math.h>
 
-// stolen from the gimp (noisify.c)
+// stolen from GIMP (noisify.c)
 
 /*
  * Return a Gaussian (aka normal) random variable.
@@ -41,7 +41,7 @@ gdouble rand_gauss (GRand * rng)
   return sum * 5.28596089837e-5 - 3.46410161514;
 }
 
-// stolen from the gimp (gimpcolorspace.c)
+// stolen from GIMP (gimpcolorspace.c)
 
 /*  gint functions  */
 
@@ -422,7 +422,7 @@ hsv_to_rgb_float (float *h_, float *s_, float *v_)
   *v_ = b;
 }
 
-// gimp_rgb_to_hsl:
+// (from gimp_rgb_to_hsl)
 void
 rgb_to_hsl_float (float *r_, float *g_, float *b_)
 {
@@ -562,7 +562,7 @@ hsl_to_rgb_float (float *h_, float *s_, float *l_)
   *l_ = b;
 }
 
-// tested, copied from my mass project
+// originally from my mass project (mass.sourceforge.net)
 void ExpandRectToIncludePoint(Rect * r, int x, int y) 
 {
   if (r->w == 0) {

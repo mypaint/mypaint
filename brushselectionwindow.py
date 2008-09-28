@@ -8,7 +8,7 @@
 
 "select brush window"
 import gtk
-import brush, tileddrawwidget
+import brush, tileddrawwidget, document
 
 class Window(gtk.Window):
     def __init__(self, app):
@@ -39,13 +39,9 @@ class Window(gtk.Window):
         hbox = gtk.HBox()
         hbox.set_border_width(8)
         expander.add(hbox)
-        self.tdw = tileddrawwidget.TiledDrawWidget()
+        self.tdw_doc = document.Document()
+        self.tdw = tileddrawwidget.TiledDrawWidget(self.tdw_doc)
         self.tdw.lock_viewport()
-        # bad, fixed maximal size -- No, that's actually good!
-        #self.tdw.discard_and_resize(128, 128) TODO: replace?
-        self.tdw.clear()
-        self.tdw_brush = brush.Brush_Lowlevel()
-        self.tdw.set_brush(self.tdw_brush)
         self.tdw.set_size_request(128, 128)
         hbox.pack_start(self.tdw, expand=False, fill=False)
 
@@ -144,7 +140,7 @@ class Window(gtk.Window):
             self.set_preview_pixbuf(brush.preview)
 
     def brush_modified_cb(self):
-        self.tdw_brush.copy_settings_from(self.app.brush)
+        self.tdw_doc.set_brush(self.app.brush)
 
 
 preview_spacing_outside = 0

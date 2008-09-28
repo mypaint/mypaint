@@ -1,6 +1,6 @@
 from numpy import *
 from PIL import Image
-import mypaintlib
+import mypaintlib, helpers
 
 tilesize = N = mypaintlib.TILE_SIZE
 
@@ -31,17 +31,40 @@ class Tile:
     #    self.rgb = other.alpha * other.rgb + (1.0-other.alpha) * self.rgb
     #    self.alpha = other.alpha + (1.0-other.alpha)*self.alpha
 
+transparentTile = Tile()
 
-class TiledLayer:
+def get_tiles_bbox(tiledict):
+    res = helpers.Rect()
+    for x, y in tiledict:
+        res.expandToIncludeRect(helpers.Rect(N*x, N*y, N, N))
+    return res
+
+class TiledSurface(mypaintlib.TiledSurface):
+    # the C++ half of this class is in tilelib.hpp
     def __init__(self):
+        mypaintlib.TiledSurface.__init__(self, self)
         self.tiledict = {}
         self.alpha = 1.0
+        self.observers = []
 
-    def getTileMemory(self, x, y):
+    def notify_observers(self, *args):
+        for f in self.observers:
+            f(*args)
+
+    def clear(self):
+        tiles = self.tiledict.keys()
+        self.tiledict = {}
+        for f in self.observers:
+            f(*get_tiles_bbox(tiles))
+
+    def get_tile_memory(self, x, y, readonly):
         t = self.tiledict.get((x, y))
         if t is None:
-            t = Tile()
-            self.tiledict[(x, y)] = t
+            if readonly:
+                t = transparentTile
+            else:
+                t = Tile()
+                self.tiledict[(x, y)] = t
         return t.rgb, t.alpha
         
     #def tiles(self, x, y, w, h):
@@ -50,13 +73,6 @@ class TiledLayer:
     #            tile = self.tiledict.get((xx, yy), None)
     #            if tile is not None:
     #                yield xx*Tile.N, yy*Tile.N, tile
-
-    def drawDab(self, *args):
-        # only used for testing
-        rc = mypaintlib.RenderContext()
-        rc.tiled_surface = self
-        mypaintlib.tile_draw_dab(rc, *args)
-
 
     def compositeOverRGB8(self, dst):
         h, w, channels = dst.shape
@@ -82,7 +98,7 @@ class TiledLayer:
             tile.compositeOverWhiteRGB8(dst[y0:y0+N,x0:x0+N,:])
 
     def save(self, filename):
-        assert self.tiledict, 'cannot save empty layer'
+        assert self.tiledict, 'cannot save empty surface'
         a = array([xy for xy, tile in self.tiledict.iteritems()])
         minx, miny = N*a.min(0)
         sizex, sizey = N*(a.max(0) - a.min(0) + 1)

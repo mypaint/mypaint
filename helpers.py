@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2007 by Martin Renold <martinxyz@gmx.ch>
+# Copyright (C) 2007-2008 by Martin Renold <martinxyz@gmx.ch>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License.
@@ -7,13 +7,15 @@
 # but WITHOUT ANY WARRANTY. See the COPYING file for more details.
 
 class Rect:
-    def __init__(self, x, y, w, h):
+    def __init__(self, x=0, y=0, w=0, h=0):
         self.x = x
         self.y = y
         self.w = w
         self.h = h
     def tuple(self):
         return (self.x, self.y, self.w, self.h)
+    def __iter__(self):
+        return iter(self.tuple())
     def copy(self):
         return Rect(self.x, self.y, self.w, self.h)
     def expand(self, border):
@@ -33,6 +35,12 @@ class Rect:
         if max(r1.y, r2.y) >= min(r1.y+r1.h, r2.y+r2.h): return False
         return True
     def expandToIncludePoint(self, x, y):
+        if self.w == 0 or self.h == 0:
+            self.x = x
+            self.y = y
+            self.w = 1
+            self.h = 1
+            return
         if x < self.x:
             self.w += self.x - x
             self.x = x

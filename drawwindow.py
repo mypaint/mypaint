@@ -9,12 +9,11 @@
 # but WITHOUT ANY WARRANTY. See the COPYING file for more details.
 
 "the main drawing window"
-MYPAINT_VERSION="0.5.1"
+MYPAINT_VERSION="0.6.0-svn"
 import gtk, os, zlib, random, re, math
 from gtk import gdk, keysyms
 import tileddrawwidget
-import tilelib, brush, document
-import command
+import document, command
 from time import time
 from glob import glob
 
@@ -41,8 +40,9 @@ class Window(gtk.Window):
         self.menubar = self.ui.get_widget('/Menubar')
         vbox.pack_start(self.menubar, expand=False)
 
-        self.tdw = tileddrawwidget.TiledDrawWidget()
-        self.tdw.set_brush(self.app.brush)
+        self.doc = document.Document()
+        self.doc.set_brush(self.app.brush)
+        self.tdw = tileddrawwidget.TiledDrawWidget(self.doc)
         vbox.pack_start(self.tdw)
         self.tdw.toolchange_observers.append(self.toolchange_cb)
         #self.tdw.connect("gesture-recognized", self.gesture_recognized_cb)
@@ -50,10 +50,8 @@ class Window(gtk.Window):
         self.statusbar = sb = gtk.Statusbar()
         vbox.pack_end(sb, expand=False)
 
-        self.layer = document.Layer()
-        self.layers = [self.layer]
         self.show_layers_above = False
-        self.update_layers()
+        #self.update_layers()
 
         #self.zoomlevel_values = [0.09, 0.12,  0.18, 0.25, 0.33,  0.50, 0.66,  1.0, 1.5, 2.0, 3.0, 4.0, 5.5, 8.0]
         self.zoomlevel_values = [      0.12, 2.0/11, 0.25, 1.0/3, 0.50, 2.0/3, 1.0, 1.5, 2.0, 3.0, 4.0, 5.5, 8.0, 16.0]
@@ -61,14 +59,8 @@ class Window(gtk.Window):
         self.fullscreen = False
 
         self.modifying = False
-        self.paint_below_stroke = None
 
-        self.command_stack = command.CommandStack()
-        self.stroke = document.Stroke()
-        self.stroke.start_recording(self.tdw, self.app.brush)
-        self.pending_actions = [self.split_stroke]
         self.app.brush.observers.append(self.brush_modified_cb)
-        self.app.brush.set_split_stroke_callback(self.split_stroke_cb)
 
         self.last_gesture_time = 0
         
@@ -94,9 +86,6 @@ class Window(gtk.Window):
               <separator/>
               <menuitem action='ModifyLastStroke'/>
               <menuitem action='ModifyEnd'/>
-              <separator/>
-              <menuitem action='LowerLastStroke'/>
-              <menuitem action='RaiseLastStroke'/>
             </menu>
             <menu action='ViewMenu'>
               <menuitem action='Fullscreen'/>
@@ -196,8 +185,6 @@ class Window(gtk.Window):
             ('Redo',               None, 'Redo', '<control>Y', None, self.redo_cb),
             ('ModifyLastStroke',   None, 'Modify Last Stroke', 'm', None, self.modify_last_stroke_cb),
             ('ModifyEnd',          None, 'Stop Modifying', 'n', None, self.modify_end_cb),
-            ('LowerLastStroke',    None, 'Lower Last Stroke (Experimental, slow!)', 'Page_Down', None, self.lower_or_raise_last_stroke_cb),
-            ('RaiseLastStroke',    None, 'Raise Last Stroke', 'Page_Up', None, self.lower_or_raise_last_stroke_cb),
 
             ('BrushMenu',    None, 'Brush'),
             ('InvertColor',  None, 'Invert Color', 'x', None, self.invert_color_cb),
@@ -310,59 +297,29 @@ class Window(gtk.Window):
 		self.tdw.disableGammaCorrection = action.get_active()
 		self.tdw.queue_draw()
 
-    def finish_pending_actions(self, skip=None):
-        # this function must be called before manipulation the command stack
-        for f in self.pending_actions[:]:
-            if f == skip: continue
-            if f not in self.pending_actions: continue # list modified
-            f()
-
-    def split_stroke(self):
-        # let the brush emit the signal (this calls self.split_stroke_cb)
-        self.app.brush.split_stroke()
-
-    def split_stroke_cb(self):
-        self.stroke.stop_recording()
-        if not self.stroke.empty:
-            self.finish_pending_actions(skip=self.split_stroke)
-            pbs = self.paint_below_stroke
-            if pbs and pbs in self.layer.strokes:
-                z = self.layer.strokes.index(pbs)
-            else:
-                z = -1
-
-            self.command_stack.add(command.Stroke(self.layer, self.stroke, z))
-            self.layer.rerender()
-            self.layer.populate_cache()
-
-            # remove "saved to..." etc.
-            self.statusbar.pop(1)
-
-        self.stroke = document.Stroke()
-        self.stroke.start_recording(self.tdw, self.app.brush)
+    def new_stroke_cb(self): # TODO: wire this
+        if self.modifying:
+            TODO # code missing here
 
     def undo_cb(self, action):
-        self.finish_pending_actions()
-        self.command_stack.undo()
+        self.doc.undo()
 
-        cost = self.layer.rerender(only_estimate_cost=True)
-        if cost > 50:
-            d = gtk.MessageDialog(
-                 type = gtk.MESSAGE_QUESTION,
-                 flags = gtk.DIALOG_MODAL,
-                 buttons = gtk.BUTTONS_YES_NO,
-                 message_format="This undo step will require %d brush strokes to be re-rendered. This might take some time.\n\nDo you really want to undo?" % cost
-                 )
-            if d.run() != gtk.RESPONSE_YES:
-                self.command_stack.redo()
-            d.destroy()
+        #cost = self.layer.rerender(only_estimate_cost=True)
+        #if cost > 50:
+        #    d = gtk.MessageDialog(
+        #         type = gtk.MESSAGE_QUESTION,
+        #         flags = gtk.DIALOG_MODAL,
+        #         buttons = gtk.BUTTONS_YES_NO,
+        #         message_format="This undo step will require %d brush strokes to be re-rendered. This might take some time.\n\nDo you really want to undo?" % cost
+        #         )
+        #    if d.run() != gtk.RESPONSE_YES:
+        #        self.command_stack.redo()
+        #    d.destroy()
 
-        self.layer.rerender()
+        ## TODO: where does this code go?
 
     def redo_cb(self, action):
-        self.finish_pending_actions()
-        self.command_stack.redo()
-        self.layer.rerender()
+        self.doc.redo()
 
     def get_recent_strokes(self, max_count):
         assert max_count > 0
@@ -414,69 +371,9 @@ class Window(gtk.Window):
         if self.modifying:
             self.end_modifying()
 
-    def lower_or_raise_last_stroke_cb(self, action):
-        self.finish_pending_actions()
-        action = action.get_name()
-
-        cmd = self.command_stack.get_last_command()
-        if not isinstance(cmd, command.Stroke):
-            self.statusbar.push(4, 'last command was not a stroke')
-            return
-
-        # note: you can undo->lower->redo
-        # this history manipluation is not in the undo/redo spirit
-        # let's say it's a feature, not a bug
-        self.command_stack.undo()
-
-        if action == 'LowerLastStroke':
-            # lower it such that the visible result changes
-            intersections = []
-            rect = cmd.stroke.bbox
-            for z, stroke in enumerate(self.layer.strokes):
-                stroke.z = z
-                if stroke is cmd.stroke: continue
-                if rect.overlaps(stroke.bbox):
-                    intersections.append(stroke)
-
-            below = [stroke for stroke in intersections if stroke.z < cmd.z]
-            print len(below), 'strokes are below'
-            if below:
-                def cmpfunc(a, b):
-                    return cmp(a.z, b.z)
-                below.sort(cmpfunc)
-                cmd.z = below[-1].z
-            else:
-                cmd.z = 0
-
-            # clean up
-            for stroke in self.layer.strokes:
-                del stroke.z
-
-        elif action == 'RaiseLastStroke':
-            # raise to top, because it is cheapest to render there
-            cmd.z = len(self.layer.strokes)
-        else:
-            assert False
-                
-        if cmd.z < 0:
-            cmd.z = 0
-        if cmd.z >= len(self.layer.strokes):
-            cmd.z = len(self.layer.strokes)
-            self.paint_below_stroke = None
-        else:
-            self.paint_below_stroke = self.layer.strokes[cmd.z]
-
-        self.command_stack.redo()
-        self.layer.rerender()
-
-        if self.paint_below_stroke:
-            self.statusbar.push(4, 'painting below other strokes (slow)')
-        else:
-            self.statusbar.push(4, '')
-
     def brush_modified_cb(self):
         # called at every brush setting modification, should return fast
-        self.split_stroke()
+        self.doc.set_brush(self.app.brush)
 
         if self.modifying:
             self.finish_pending_actions(skip=self.end_modifying)
@@ -505,7 +402,7 @@ class Window(gtk.Window):
     def toolchange_cb(self):
         # FIXME: add argument with tool id, and remember settings
         # also make sure proximity events outside the window are checked
-        self.split_stroke()
+        pass
 
     def key_press_event_cb_before(self, win, event):
         key = event.keyval 
@@ -575,26 +472,23 @@ class Window(gtk.Window):
                 }[d])
 
     def clear_cb(self, action):
-        self.finish_pending_actions()
-        cmd = command.ClearLayer(self.layer)
-        self.command_stack.add(cmd)
-        self.statusbar.pop(1)
-        self.filename = None
-        self.layer.rerender()
+        self.doc.do(command.ClearLayer(self.doc.layer))
         
-    def update_layers(self):
-        self.tdw.layer = self.layer.surface
-        l = []
-        for layer in self.layers:
-            l.append(layer.surface)
-            if not self.show_layers_above and layer is self.layer:
-                break
-        self.tdw.displayed_layers = l
-        self.tdw.queue_draw()
+    # obsolete?
+    #def update_layers(self):
+    #    self.tdw.layer = self.layer.surface
+    #    l = []
+    #    for layer in self.layers:
+    #        l.append(layer.surface)
+    #        if not self.show_layers_above and layer is self.layer:
+    #            break
+    #    self.tdw.displayed_layers = l
+    #    self.tdw.queue_draw()
 
     def layer_bg_cb(self, action):
+        TODO
         # TODO: make an action to allow undo
-        self.split_stroke()
+        self.doc.split_stroke()
         i = self.layers.index(self.layer)
         i -= 1
         if i < 0: return
@@ -602,8 +496,9 @@ class Window(gtk.Window):
         self.update_layers()
 
     def layer_fg_cb(self, action):
+        TODO
         # TODO: make an action to allow undo
-        self.split_stroke()
+        self.doc.split_stroke()
         i = self.layers.index(self.layer)
         i += 1
         if i >= len(self.layers): return
@@ -611,8 +506,9 @@ class Window(gtk.Window):
         self.update_layers()
 
     def new_layer_cb(self, action):
+        TODO
         # TODO: make an action to allow undo
-        self.split_stroke()
+        self.doc.split_stroke()
         i = self.layers.index(self.layer)
         self.layer = document.Layer()
         self.layers.insert(i+1, self.layer)
@@ -665,8 +561,7 @@ class Window(gtk.Window):
         try:
             pixbuf = gdk.pixbuf_new_from_file(filename)
             cmd = command.LoadImage(self.layer, pixbuf)
-            self.command_stack.add(cmd)
-            self.layer.rerender()
+            self.doc.execute(cmd)
         except Exception, e:
             d = gtk.MessageDialog(self, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_OK)
             d.set_markup(str(e))
@@ -790,7 +685,7 @@ class Window(gtk.Window):
         self.rotate(action.get_name())
 
     def move(self, command):
-        self.split_stroke()
+        self.doc.split_stroke()
         step = min(self.tdw.window.get_size()) / 5
         if command == 'MoveLeft':
             self.tdw.scroll(-step, 0)
@@ -818,11 +713,9 @@ class Window(gtk.Window):
         #self.statusbar.push(2, 'Zoom %.2f' % z)
         #print 'Zoom %.2f' % z
 
-        self.split_stroke()
         self.tdw.set_zoom(z)
 
     def rotate(self, command):
-        self.split_stroke()
         if command == 'RotateRight':
             self.tdw.rotate(+2*math.pi/14)
         elif command == 'RotateLeft':

@@ -13,7 +13,8 @@ from math import floor, ceil
 import time
 
 class TiledDrawWidget(gtk.DrawingArea):
-    def __init__(self):
+
+    def __init__(self, document):
         gtk.DrawingArea.__init__(self)
         self.connect("proximity-in-event", self.proximity_cb)
         self.connect("proximity-out-event", self.proximity_cb)
@@ -38,9 +39,8 @@ class TiledDrawWidget(gtk.DrawingArea):
 
         self.set_extension_events (gdk.EXTENSION_EVENTS_ALL)
 
-        self.brush = None
-        self.layer = None # tilelib.TiledLayer()
-        self.displayed_layers = None # tilelib.TiledLayer()
+        self.doc = document
+        self.doc.canvas_observers.append(self.canvas_modified_cb)
 
         self.last_event_time = None
         self.last_event_x = None
@@ -95,33 +95,29 @@ class TiledDrawWidget(gtk.DrawingArea):
             else:
                 pressure = 0.0
 
-        if not self.brush:
+        if not self.doc.brush:
             print 'no brush!'
             return
-        # FIXME: we should have a "model" object from which we fetch the current layer
-        assert isinstance(self.layer, tilelib.TiledLayer)
 
-        if self.recording is not None:
-            self.recording.append((dtime, x, y, pressure))
-        bbox = self.brush.tiled_surface_stroke_to (self.layer, x, y, pressure, dtime)
-        if bbox:
-            # TODO: we should accumulate dirty regions and bboxes, and
-            #       do the stuff below once per redraw, not once per event
-            #       Question: who keeps bboxes and dirty tile list between event?
-            x1, y1, w, h = bbox
-            x2 = x1 + w - 1
-            y2 = y1 + h - 1
-            # transform 4 bbox corners to screen coordinates
-            corners = [(x1, y1), (x1+w-1, y1), (x1, y1+h-1), (x1+w-1, y1+h-1)]
-            corners = [cr.user_to_device(x, y) for (x, y) in corners]
-            # find screen bbox containing the old (rotated, translated) rectangle
-            list_y = [y for (x, y) in corners]
-            list_x = [x for (x, y) in corners]
-            x1 = int(floor(min(list_x)))
-            y1 = int(floor(min(list_y)))
-            x2 = int(ceil(max(list_x)))
-            y2 = int(ceil(max(list_y)))
-            self.queue_draw_area(x1, y1, x2-x1+1, y2-y1+1)
+        self.doc.stroke_to(dtime, x, y, pressure)
+
+    def canvas_modified_cb(self, x1, y1, w, h):
+        # create an expose event with the event bbox rotated/zoomed
+        # OPTIMIZE: estimated to cause at least twice more rendering work than neccessary
+        x2 = x1 + w - 1
+        y2 = y1 + h - 1
+        # transform 4 bbox corners to screen coordinates
+        corners = [(x1, y1), (x1+w-1, y1), (x1, y1+h-1), (x1+w-1, y1+h-1)]
+        cr = self.get_model_coordinates_cairo_context() # OPTIMIZE: profile how much time does this takes; we could easily get rid of it
+        corners = [cr.user_to_device(x, y) for (x, y) in corners]
+        # find screen bbox containing the old (rotated, translated) rectangle
+        list_y = [y for (x, y) in corners]
+        list_x = [x for (x, y) in corners]
+        x1 = int(floor(min(list_x)))
+        y1 = int(floor(min(list_y)))
+        x2 = int(ceil(max(list_x)))
+        y2 = int(ceil(max(list_y)))
+        self.queue_draw_area(x1, y1, x2-x1+1, y2-y1+1)
 
     def expose_cb(self, widget, event):
         t = time.time()
@@ -138,7 +134,11 @@ class TiledDrawWidget(gtk.DrawingArea):
         cr.translate(self.translation_x, self.translation_y)
         cr.rotate(self.rotation)
         cr.scale(self.scale, self.scale)
-        self.last_cairo_context = cr
+        # does not seem to make a difference:
+        #cr.set_antialias(cairo.ANTIALIAS_SUBPIXEL)
+        # this one neither:
+        #cr.set_antialias(cairo.ANTIALIAS_NONE)
+        # looks like we always get nearest-neighbour downsampling
         return cr
 
     def repaint(self):
@@ -157,7 +157,8 @@ class TiledDrawWidget(gtk.DrawingArea):
         #    for surface in self.displayed_layers:
         #        surface.compositeOverWhiteRGB8(arr)
         #else:
-        for surface in self.displayed_layers:
+        for layer in self.doc.layers:
+            surface = layer.surface
             surface.compositeOverRGB8(arr)
 
         #widget.window.draw_pixbuf(None, pixbuf, 0, 0, 0, 0)
@@ -220,27 +221,4 @@ class TiledDrawWidget(gtk.DrawingArea):
     def stop_drag(self, dragfunc):
         if self.dragfunc == dragfunc:
             self.dragfunc = None
-
-    def set_brush(self, b):
-        self.brush = b
-
-
-    def start_recording(self):
-        assert self.recording is None
-        self.recording = []
-
-    def stop_recording(self):
-        # OPTIMIZE 
-        # - for space: just gzip? use integer datatypes?
-        # - for time: maybe already use array storage while recording?
-        data = numpy.array(self.recording, dtype='float64').tostring()
-        version = '2'
-        self.recording = None
-        return version + data
-
-    def playback(self, data):
-        version, data = data[0], data[1:]
-        assert version == '2'
-        for dtime, x, y, pressure in numpy.fromstring(data, dtype='float64'):
-            self.brush.tiled_surface_stroke_to (self.layer, x, y, pressure, dtime)
 
