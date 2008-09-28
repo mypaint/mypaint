@@ -26,12 +26,10 @@ private:
   PyObject * self;
   Rect dirty_bbox;
   int atomic;
-  bool exception_pending;
 public:
   TiledSurface(PyObject * self_) {
     self = self_; // no need to incref
     atomic = 0;
-    exception_pending = false;
     dirty_bbox.w = 0;
   }
 
@@ -91,6 +89,8 @@ public:
         if (!tuple) throw 0;
         PyObject* rgb   = PyTuple_GET_ITEM(tuple, 0);
         PyObject* alpha = PyTuple_GET_ITEM(tuple, 1);
+        Py_INCREF(rgb);
+        Py_INCREF(alpha);
         Py_DECREF(tuple);
 
         assert(PyArray_DIMS(rgb) == 3);
@@ -163,6 +163,8 @@ public:
             }
           }
         }
+        Py_DECREF(rgb);
+        Py_DECREF(alpha);
       }
     }
 
@@ -215,6 +217,8 @@ public:
         if (!tuple) throw 0;
         PyObject* rgb   = PyTuple_GET_ITEM(tuple, 0);
         PyObject* alpha = PyTuple_GET_ITEM(tuple, 1);
+        Py_INCREF(rgb);
+        Py_INCREF(alpha);
         Py_DECREF(tuple);
 
         float * rgb_p   = (float*)((PyArrayObject*)rgb)->data;
@@ -264,6 +268,8 @@ public:
             }
           }
         }
+        Py_DECREF(rgb);
+        Py_DECREF(alpha);
       }
     }
 

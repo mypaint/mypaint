@@ -55,6 +55,7 @@ class Stroke(Action):
         # this stroke has been rendered while recording
         self.layer.rendered.strokes.append(self.stroke)
         self.redo()
+        self.layer.populate_cache()
     def undo(self):
         self.layer.strokes.remove(self.stroke)
         self.layer.rerender()

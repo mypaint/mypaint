@@ -9,7 +9,13 @@ class Tile:
         # note: pixels are stored with premultiplied alpha
         self.rgb   = zeros((N, N, 3), 'float32')
         self.alpha = zeros((N, N, 1), 'float32')
-        self.changes = 0
+        self.readonly = False
+
+    def copy(self):
+        t = Tile()
+        t.rgb[:] = self.rgb[:]
+        t.alpha[:] = self.alpha[:]
+        return t
         
     def compositeOverRGB8(self, dst):
         dst[:,:,0:3] *= 1.0-self.alpha # <-- isn't a 255 missing here anywawy?
@@ -33,9 +39,9 @@ class Tile:
 
 transparentTile = Tile()
 
-def get_tiles_bbox(tiledict):
+def get_tiles_bbox(tiles):
     res = helpers.Rect()
-    for x, y in tiledict:
+    for x, y in tiles:
         res.expandToIncludeRect(helpers.Rect(N*x, N*y, N, N))
     return res
 
@@ -44,7 +50,6 @@ class TiledSurface(mypaintlib.TiledSurface):
     def __init__(self):
         mypaintlib.TiledSurface.__init__(self, self)
         self.tiledict = {}
-        self.alpha = 1.0
         self.observers = []
 
     def notify_observers(self, *args):
@@ -54,10 +59,11 @@ class TiledSurface(mypaintlib.TiledSurface):
     def clear(self):
         tiles = self.tiledict.keys()
         self.tiledict = {}
-        for f in self.observers:
-            f(*get_tiles_bbox(tiles))
+        self.notify_observers(*get_tiles_bbox(tiles))
 
     def get_tile_memory(self, x, y, readonly):
+        # copy-on-write for readonly tiles
+        # OPTIMIZE: do some profiling to check if this function is a bottleneck
         t = self.tiledict.get((x, y))
         if t is None:
             if readonly:
@@ -65,6 +71,12 @@ class TiledSurface(mypaintlib.TiledSurface):
             else:
                 t = Tile()
                 self.tiledict[(x, y)] = t
+        if t.readonly and not readonly:
+            # OPTIMIZE: we could do the copying in save_snapshot() instead, this might reduce the latency while drawing
+            #           (eg. tile.valid_copy = some_other_tile_instance; and valid_copy = None here)
+            #           before doing this, measure the worst-case time of the call below; same thing with new tiles
+            t = t.copy()
+            self.tiledict[(x, y)] = t
         return t.rgb, t.alpha
         
     #def tiles(self, x, y, w, h):
@@ -118,10 +130,17 @@ class TiledSurface(mypaintlib.TiledSurface):
         im.save(filename)
 
     def save_snapshot(self):
-        print 'TODO: save_snapshot'
-        return 'blub'
+        for t in self.tiledict.itervalues():
+            t.readonly = True
+        return self.tiledict.copy()
     def load_snapshot(self, data):
-        print 'TODO: load_snapshot'
+        old = set(self.tiledict.items())
+        self.tiledict = data.copy()
+        new = set(self.tiledict.items())
+        dirty = old.symmetric_difference(new)
+        bbox = get_tiles_bbox([pos for (pos, tile) in dirty])
+        self.notify_observers(*bbox)
+
 
     def set_from_pixbuf(self, pixbuf):
         print 'TODO: set_from_pixbuf or alternative'
