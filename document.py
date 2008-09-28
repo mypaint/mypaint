@@ -34,18 +34,19 @@ class Document():
     # This is the "model" in the Model-View-Controller design.
     # It should be possible to use it without any GUI attached.
     #
-    # - the document allows to "playback" a stroke partially and examine its timing
+    # Undo/redo is part of the model. The whole undo/redo stack can be
+    # saved to disk (planned) and can be used to reconstruct
+    # everything else.
     #
-    # Please note the following difficulties:
+    # Please note the following difficulty:
     #
-    #   It is allowed to have "unfinished" actions on the stack. In
-    #   particular a stroke action can be partially done.
+    #   Most of the time there is an unfinished (but already rendered)
+    #   stroke pending, which has to be turned into a command.Action
+    #   or discarded as empty before any other action is possible.
     #
-    #   We allow painting without pressure, and pressure without
-    #   painting. To find out if some motion event starts a new
-    #   undoable stroke, we have to let the brush execute it on the
-    #   surface. To record the stroke, we need to save the dynamic
-    #   states of the brush /before/ it modifies the surface.
+    # TODO: the document should allow to "playback" (redo) a stroke
+    # partially and examine its timing (realtime playback / calculate
+    # total painting time) ?using half-done commands?
 
     def __init__(self):
         self.brush = None
@@ -54,17 +55,6 @@ class Document():
         self.layers = [self.layer]
 
         self.brush = brush.Brush_Lowlevel()
-
-        # NOTE: does recording / replay code really belong to the model?
-        #       should it better be part of the controller?
-        #       ==> No. It is required also when loading a painting without GUI.
-        #           And since the model includes stroke as "list-of-events",
-        #           we might as well record them here.
-        #       But how will playback work?
-        #       ==> Basically like redo-redo-redo but splitting each stroke
-        #           into tiny bits.
-        #           Add a command that allows "redo 0.091 seconds".
-        #           The command is then "half-redone" and will
 
         self.stroke = stroke.Stroke()
         self.stroke.start_recording(self.brush)
@@ -124,4 +114,11 @@ class Document():
         self.split_stroke()
         self.brush.copy_settings_from(brush)
 
-
+    # rendering etc.
+    def get_bbox(self):
+        res = helpers.Rect()
+        for layer in self.layers:
+            # OPTIMIZE: only visible layers...
+            bbox = layer.surface.get_bbox()
+            res.expandToIncludeRect(bbox)
+        return res.tuple()

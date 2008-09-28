@@ -68,7 +68,7 @@ class Stroke:
         assert version == '2'
         data = numpy.fromstring(data, dtype='float64')
         data.shape = (len(data)/4, 4)
-        for dtime, x, y, pressure in data: # FIXME: only iterable if more than one?
+        for dtime, x, y, pressure in data:
             b.tiled_surface_stroke_to (surface, x, y, pressure, dtime)
 
     def copy_using_different_brush(self, brush):

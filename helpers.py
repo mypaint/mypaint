@@ -6,6 +6,8 @@
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY. See the COPYING file for more details.
 
+from math import floor, ceil
+
 class Rect:
     def __init__(self, x=0, y=0, w=0, h=0):
         self.x = x
@@ -62,6 +64,16 @@ def iter_rect(x, y, w, h):
     for yy in xrange(y, y+h):
         for xx in xrange(x, x+w):
             yield (xx, yy)
+
+
+def rotated_rectangle_bbox(corners):
+    list_y = [y for (x, y) in corners]
+    list_x = [x for (x, y) in corners]
+    x1 = int(floor(min(list_x)))
+    y1 = int(floor(min(list_y)))
+    x2 = int(ceil(max(list_x)))
+    y2 = int(ceil(max(list_y)))
+    return x1, y1, x2-x1+1, y2-y1+1
 
 if __name__ == '__main__':
     big = Rect(-3, 2, 180, 222)

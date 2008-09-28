@@ -1,3 +1,14 @@
+# This file is part of MyPaint.
+# Copyright (C) 2007-2008 by Martin Renold <martinxyz@gmx.ch>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY. See the COPYING file for more details.
+
+# Code to manage / draw onto / render a tiled unbounded transparent surface.
+# TODO: maybe rename to surface.py? tiledsurface.py?
+
 from numpy import *
 from PIL import Image
 import mypaintlib, helpers
@@ -17,11 +28,11 @@ class Tile:
         t.alpha[:] = self.alpha[:]
         return t
         
-    def compositeOverRGB8(self, dst):
+    def composite_over_RGB8(self, dst):
         dst[:,:,0:3] *= 1.0-self.alpha # <-- isn't a 255 missing here anywawy?
         dst[:,:,0:3] += 255*self.rgb[:,:,0:3]
 
-    def compositeOverWhiteRGB8(self, dst):
+    def composite_over_white_RGB8(self, dst):
 		# FIXME: to be removed; composite in high resolution
         # we are converting from linear RGB to sRGB (not precisely, but hopefully good enough)
         # FIXME: this calculation does not work with premultiplied alpha!!!?!
@@ -86,18 +97,18 @@ class TiledSurface(mypaintlib.TiledSurface):
     #            if tile is not None:
     #                yield xx*Tile.N, yy*Tile.N, tile
 
-    def compositeOverRGB8(self, dst):
+    def composite_over_RGB8(self, dst, px, py):
         h, w, channels = dst.shape
         assert channels == 3
 
         for (x0, y0), tile in self.tiledict.iteritems():
-            x0 = N*x0
-            y0 = N*y0
+            x0 = N*x0+px
+            y0 = N*y0+py
             if x0 < 0 or y0 < 0: continue
             if x0+N > w or y0+N > h: continue
-            tile.compositeOverRGB8(dst[y0:y0+N,x0:x0+N,:])
+            tile.composite_over_RGB8(dst[y0:y0+N,x0:x0+N,:])
 
-    def compositeOverWhiteRGB8(self, dst):
+    def composite_over_white_RGB8(self, dst):
         # FIXME: code duplication
         h, w, channels = dst.shape
         assert channels == 3
@@ -107,7 +118,7 @@ class TiledSurface(mypaintlib.TiledSurface):
             y0 = N*y0
             if x0 < 0 or y0 < 0: continue
             if x0+N > w or y0+N > h: continue
-            tile.compositeOverWhiteRGB8(dst[y0:y0+N,x0:x0+N,:])
+            tile.composite_over_white_RGB8(dst[y0:y0+N,x0:x0+N,:])
 
     def save(self, filename):
         assert self.tiledict, 'cannot save empty surface'
@@ -141,6 +152,8 @@ class TiledSurface(mypaintlib.TiledSurface):
         bbox = get_tiles_bbox([pos for (pos, tile) in dirty])
         self.notify_observers(*bbox)
 
+    def get_bbox(self):
+        return get_tiles_bbox(self.tiledict)
 
     def set_from_pixbuf(self, pixbuf):
         print 'TODO: set_from_pixbuf or alternative'

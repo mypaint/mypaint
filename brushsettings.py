@@ -8,7 +8,7 @@
 
 """Brush Settings / States
 
-This is used to generate brushsettings.h (see generate.py)
+This is used to generate brushsettings.hpp (see generate.py)
 It is also imported at runtime.
 """
 
@@ -83,7 +83,7 @@ settings_migrate = {
     }
 
 # the states are not (yet?) exposed to the user
-# WARNING: only append to this list, for compatibility of replay files
+# WARNING: only append to this list, for compatibility of replay files (brush.get_state() in stroke.py)
 states_list = '''
 # lowlevel
 x, y

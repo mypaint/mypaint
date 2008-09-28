@@ -6,11 +6,13 @@
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY. See the COPYING file for more details.
 
-import mypaintlib, tilelib, brush
+import helpers
 import gtk, numpy, cairo
 gdk = gtk.gdk
 from math import floor, ceil
 import time
+
+import random, mypaintlib, tilelib # FIXME: should not have to import those
 
 class TiledDrawWidget(gtk.DrawingArea):
 
@@ -58,6 +60,10 @@ class TiledDrawWidget(gtk.DrawingArea):
 
         self.has_pointer = False
         self.dragfunc = None
+
+        # gets overwritten for the main window
+        self.zoom_max = 5.0
+        self.zoom_min = 1/5.0
 
     def proximity_cb(self, widget, something):
         for f in self.toolchange_observers:
@@ -110,14 +116,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         corners = [(x1, y1), (x1+w-1, y1), (x1, y1+h-1), (x1+w-1, y1+h-1)]
         cr = self.get_model_coordinates_cairo_context() # OPTIMIZE: profile how much time does this takes; we could easily get rid of it
         corners = [cr.user_to_device(x, y) for (x, y) in corners]
-        # find screen bbox containing the old (rotated, translated) rectangle
-        list_y = [y for (x, y) in corners]
-        list_x = [x for (x, y) in corners]
-        x1 = int(floor(min(list_x)))
-        y1 = int(floor(min(list_y)))
-        x2 = int(ceil(max(list_x)))
-        y2 = int(ceil(max(list_y)))
-        self.queue_draw_area(x1, y1, x2-x1+1, y2-y1+1)
+        self.queue_draw_area(*helpers.rotated_rectangle_bbox(corners))
 
     def expose_cb(self, widget, event):
         t = time.time()
@@ -128,10 +127,11 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.last_expose_time = t
         #print 'expose', tuple(event.area)
 
-        self.repaint()
+        self.repaint(event.area)
 
-    def get_model_coordinates_cairo_context(self):
-        cr = self.window.cairo_create()
+    def get_model_coordinates_cairo_context(self, cr=None):
+        if cr is None:
+            cr = self.window.cairo_create()
         cr.translate(self.translation_x, self.translation_y)
         cr.rotate(self.rotation)
         cr.scale(self.scale, self.scale)
@@ -142,31 +142,84 @@ class TiledDrawWidget(gtk.DrawingArea):
         # looks like we always get nearest-neighbour downsampling
         return cr
 
-    def repaint(self):
-        cr = self.get_model_coordinates_cairo_context()
-        #cr.rectangle(*event.area)
-        #cr.clip()
+    def repaint(self, device_bbox=None, model_bbox=None):
+        # FIXME: ...we do not fill tile-free background white in this function...
 
-        w, h = self.window.get_size()
+        cr = self.window.cairo_create()
+
+        if device_bbox is None:
+            w, h = self.window.get_size()
+            device_bbox = (0, 0, w, h)
+
+        #print 'device bbox', tuple(device_bbox)
+
+        # actually this is only neccessary if we are not answering an expose event
+        cr.rectangle(*device_bbox)
+        cr.clip()
+
+        # fill it all white, though not required in the most common case
+        #cr.set_source_rgb(random.random(), random.random(), random.random())
+        cr.set_source_rgb(1.0, 1.0, 1.0)
+        cr.paint()
+
+        # bye bye device coordinates
+        self.get_model_coordinates_cairo_context(cr)
+
+        if model_bbox is not None:
+            cr.rectangle(*model_bbox)
+            cr.clip()
+
+        # do not attempt to render all the possible white space outside the image (can be huge if zoomed out)
+        cr.rectangle(*self.doc.get_bbox())
+        cr.clip()
+
+        # calculate the final model bbox with all the clipping above
+        x1, y1, x2, y2 = cr.clip_extents()
+        x1, y1 = int(floor(x1)), int(floor(y1))
+        x2, y2 = int(ceil (x2)), int(ceil (y2))
+
+        import tilelib
+        N = tilelib.N
+        # FIXME: remove this limitation?
+        # code here should not need to know about tiles?
+        x1 = x1/N*N
+        y1 = y1/N*N
+        x2 = (x2/N*N) + N
+        y2 = (y2/N*N) + N
+        w, h = x2-x1+1, y2-y1+1
+        model_bbox = x1, y1, w, h
+        assert w >= 0 and h >= 0
+
+        #print 'model bbox', model_bbox
+
+        # not sure if it is a good idea to clip so tightly
+        # has no effect right now because device_bbox is always smaller
+        cr.rectangle(*model_bbox)
+        cr.clip()
+        
+        print 'rendering pixbuf', w, h
         pixbuf = gdk.Pixbuf(gdk.COLORSPACE_RGB, False, 8, w, h)
-
+        #pixbuf.fill(int(random.random()*0xffffffff))
         pixbuf.fill(0xffffffff)
         arr = pixbuf.get_pixels_array()
         arr = mypaintlib.gdkpixbuf2numpy(arr)
 
         #if not self.disableGammaCorrection:
         #    for surface in self.displayed_layers:
-        #        surface.compositeOverWhiteRGB8(arr)
+        #        surface.composite_over_white_RGB8(arr)
         #else:
         for layer in self.doc.layers:
             surface = layer.surface
-            surface.compositeOverRGB8(arr)
+            surface.composite_over_RGB8(arr, -x1, -y1)
 
         #widget.window.draw_pixbuf(None, pixbuf, 0, 0, 0, 0)
-        #cr.rectangle(0,0,w,h)
-        #cr.clip()
-        cr.set_source_pixbuf(pixbuf, 0, 0)
+
+        cr.set_source_pixbuf(pixbuf, x1, y1)
         cr.paint()
+
+        # visualize painted bboxes
+        #cr.set_source_rgba(random.random(), random.random(), random.random(), 0.5)
+        #cr.paint()
 
     def clear(self):
         print 'TODO: clear'
@@ -179,8 +232,8 @@ class TiledDrawWidget(gtk.DrawingArea):
             return
         self.translation_x -= dx
         self.translation_y -= dy
-        print 'TODO: fast scrolling without so much rerendering'
-        # and TODO: scroll with spacebar, with mouse, ...
+        #OPTIMIZE: fast scrolling without so much rerendering
+        # but not if combined with rotation/zoom change
         self.queue_draw()
 
     def rotozoom_with_center(self, function):
@@ -194,6 +247,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         cr = self.get_model_coordinates_cairo_context()
         cx_device, cy_device = cr.device_to_user(cx, cy)
         function()
+        self.scale = helpers.clamp(self.scale, self.zoom_min, self.zoom_max)
         cr = self.get_model_coordinates_cairo_context()
         cx_new, cy_new = cr.user_to_device(cx_device, cy_device)
         self.translation_x += cx - cx_new

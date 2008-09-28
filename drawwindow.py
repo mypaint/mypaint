@@ -54,8 +54,10 @@ class Window(gtk.Window):
         #self.update_layers()
 
         #self.zoomlevel_values = [0.09, 0.12,  0.18, 0.25, 0.33,  0.50, 0.66,  1.0, 1.5, 2.0, 3.0, 4.0, 5.5, 8.0]
-        self.zoomlevel_values = [      0.12, 2.0/11, 0.25, 1.0/3, 0.50, 2.0/3, 1.0, 1.5, 2.0, 3.0, 4.0, 5.5, 8.0, 16.0]
+        self.zoomlevel_values = [            2.0/11, 0.25, 1.0/3, 0.50, 2.0/3, 1.0, 1.5, 2.0, 3.0, 4.0, 5.5, 8.0]
         self.zoomlevel = self.zoomlevel_values.index(1.0)
+        self.tdw.zoom_min = min(self.zoomlevel_values)
+        self.tdw.zoom_max = max(self.zoomlevel_values)
         self.fullscreen = False
 
         self.modifying = False

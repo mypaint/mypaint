@@ -63,7 +63,8 @@ class Layer:
 
         t = time()
         # the last one is the most recently used one
-        max_caches = 3
+        #max_caches = 3
+        max_caches = 5
         while len(self.caches) > max_caches-1:
             cache = self.caches.pop(0)
             #print 'dropping a cache with', len(cache.strokes), 'strokes'
@@ -78,7 +79,7 @@ class Layer:
         #print 'caching the layer bitmap took %.3f seconds' % (time() - t)
 
     def rerender(self, only_estimate_cost=False):
-        print 'rerender'
+        #print 'rerender'
         t1 = time()
         surface = self.surface
 
@@ -94,8 +95,8 @@ class Layer:
             if warning:
                 print 'rendering', len(new_strokes), 'strokes...'
 
-            caching = True # FIXME: shouldn't this be False?
             # when replaying a huge amount of strokes, only populate the cache towards the end
+            caching = True
             if len(new_strokes) > 2*self.strokes_to_cache:
                 caching = new_strokes[-2*self.strokes_to_cache]
 

@@ -20,8 +20,8 @@
 #define ACTUAL_RADIUS_MAX 150 //FIXME: performance problem actually depending on CPU
 
 /* The Brush class stores two things:
-   a) the states of the cursor (velocity, color, speed)
-   b) the brush settings (as set in the GUI)
+   a) the *states* of the cursor (velocity, color, speed)
+   b) the brush *settings* (as set in the GUI)
    FIXME: Actually those are two orthogonal things. Should separate them.
           (There used to be code that could change the settings during a
            stroke, this is hopefully already all gone.)
