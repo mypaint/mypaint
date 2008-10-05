@@ -63,6 +63,15 @@ class Document():
         self.layers = [self.layer]
         self.command_stack = command.CommandStack()
 
+        print 'document reset complete'
+
+    def split_stroke(self):
+        if not self.stroke: return
+        self.stroke.stop_recording()
+        if not self.stroke.empty:
+            self.command_stack.add(command.Stroke(self.layer, self.stroke))
+        self.stroke = None
+
     def clear(self):
         # TODO: build delete_layer actions? so this can be undone
         self.reset()
@@ -82,13 +91,6 @@ class Document():
         # for now, any layer modification is assumed to be visible
         for f in self.canvas_observers:
             f(*args)
-
-    def split_stroke(self):
-        if not self.stroke: return
-        self.stroke.stop_recording()
-        if not self.stroke.empty:
-            self.command_stack.add(command.Stroke(self.layer, self.stroke))
-        self.stroke = None
 
     def change_brush(self, brush):
         self.split_stroke()
