@@ -624,7 +624,7 @@ private:
     // stroke separation logic (for undo/redo)
 
     if (painted == UNKNOWN) {
-      if (stroke_current_idling_time > 0) {
+      if (stroke_current_idling_time > 0 || stroke_total_painting_time == 0) {
         // still idling
         painted = NO;
       } else {
