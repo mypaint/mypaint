@@ -6,8 +6,6 @@
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY. See the COPYING file for more details.
 
-# FIXME: rename this file to undo.py? or at least commands.py
-
 class CommandStack:
     def __init__(self):
         self.undo_stack = []

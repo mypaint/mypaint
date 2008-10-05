@@ -12,7 +12,7 @@ gdk = gtk.gdk
 from math import floor, ceil
 import time
 
-import random, mypaintlib, tilelib # FIXME: should not have to import those
+import random, mypaintlib, tiledsurface # FIXME: should not have to import those
 
 class TiledDrawWidget(gtk.DrawingArea):
 
@@ -50,6 +50,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.last_event_y = None
 
         self.disableGammaCorrection = False
+        self.visualize_rendering = False
 
         self.translation_x = 0.0
         self.translation_y = 0.0
@@ -126,7 +127,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.queue_draw_area(*helpers.rotated_rectangle_bbox(corners))
 
     def expose_cb(self, widget, event):
-        self.brush_modified_cb() # hack to get the initial cursor right
+        self.update_cursor() # hack to get the initial cursor right
 
         t = time.time()
         if hasattr(self, 'last_expose_time'):
@@ -167,8 +168,12 @@ class TiledDrawWidget(gtk.DrawingArea):
         cr.clip()
 
         # fill it all white, though not required in the most common case
-        #cr.set_source_rgb(random.random(), random.random(), random.random())
-        cr.set_source_rgb(1.0, 1.0, 1.0)
+        if self.visualize_rendering:
+            # grey
+            tmp = random.random()
+            cr.set_source_rgb(tmp, tmp, tmp)
+        else:
+            cr.set_source_rgb(1.0, 1.0, 1.0)
         cr.paint()
 
         # bye bye device coordinates
@@ -187,8 +192,8 @@ class TiledDrawWidget(gtk.DrawingArea):
         x1, y1 = int(floor(x1)), int(floor(y1))
         x2, y2 = int(ceil (x2)), int(ceil (y2))
 
-        import tilelib
-        N = tilelib.N
+        import tiledsurface
+        N = tiledsurface.N
         # FIXME: remove this limitation?
         # code here should not need to know about tiles?
         x1 = x1/N*N
@@ -207,9 +212,14 @@ class TiledDrawWidget(gtk.DrawingArea):
         cr.clip()
         
         #print 'rendering pixbuf', w, h
+
         pixbuf = gdk.Pixbuf(gdk.COLORSPACE_RGB, False, 8, w, h)
-        #pixbuf.fill(int(random.random()*0xffffffff))
-        pixbuf.fill(0xffffffff)
+        if self.visualize_rendering:
+            # green
+            #pixbuf.fill((int(random.random()*0xff)<<8)&0xff000000)
+            pixbuf.fill(0xffffffff)
+        else:
+            pixbuf.fill(0xffffffff)
         arr = pixbuf.get_pixels_array()
         arr = mypaintlib.gdkpixbuf2numpy(arr)
 
@@ -226,12 +236,11 @@ class TiledDrawWidget(gtk.DrawingArea):
         cr.set_source_pixbuf(pixbuf, x1, y1)
         cr.paint()
 
-        # visualize painted bboxes
-        #cr.set_source_rgba(random.random(), random.random(), random.random(), 0.5)
-        #cr.paint()
+        if self.visualize_rendering:
+            # visualize painted bboxes (blue)
+            cr.set_source_rgba(0, 0, random.random(), 0.4)
+            cr.paint()
 
-    def clear(self):
-        print 'TODO: clear'
 
     def lock_viewport(self, lock=True):
         self.viewport_locked = lock
@@ -288,6 +297,9 @@ class TiledDrawWidget(gtk.DrawingArea):
 
 
     def brush_modified_cb(self):
+        self.update_cursor()
+
+    def update_cursor(self):
         if not self.window: return
         d = int(self.doc.brush.get_actual_radius())*2
 

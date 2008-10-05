@@ -21,7 +21,7 @@
 // Its main use is to keep track about the region modified (for updating the display later).
 
 class TiledSurface {
-  // the Python half of this calss is in tilelib.py
+  // the Python half of this calss is in tiledsurface.py
 private:
   PyObject * self;
   Rect dirty_bbox;

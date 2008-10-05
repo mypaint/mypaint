@@ -25,7 +25,7 @@ A document:
 - must be altered via undo/redo commands (except painting)
 """
 
-import helpers, tilelib, command, stroke, layer
+import helpers, tiledsurface, command, stroke, layer
 import brush # FIXME: the brush module depends on gtk and everything, but we only need brush_lowlevel
 import random, gc
 import numpy
@@ -49,19 +49,23 @@ class Document():
     # total painting time) ?using half-done commands?
 
     def __init__(self):
-        self.brush = None
+        self.brush = brush.Brush_Lowlevel()
+        self.stroke = None
+        self.canvas_observers = []
+
+        self.reset()
+
+    def reset(self):
+        self.split_stroke()
+        # throw everything away, including undo stack
         self.layer = layer.Layer()
         self.layer.surface.observers.append(self.layer_modified_cb)
         self.layers = [self.layer]
-
-        self.brush = brush.Brush_Lowlevel()
-
-        self.stroke = stroke.Stroke()
-        self.stroke.start_recording(self.brush)
-
         self.command_stack = command.CommandStack()
 
-        self.canvas_observers = []
+    def clear(self):
+        # TODO: build delete_layer actions? so this can be undone
+        self.reset()
 
     def stroke_to(self, dtime, x, y, pressure):
         if not self.stroke:

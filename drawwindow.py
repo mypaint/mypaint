@@ -159,6 +159,7 @@ class Window(gtk.Window):
             <menu action='DebugMenu'>
               <menuitem action='PrintInputs'/>
               <menuitem action='DisableGammaCorrection'/>
+              <menuitem action='VisualizeRendering'/>
               <menuitem action='Test'/>
             </menu>
             <menu action='HelpMenu'>
@@ -262,6 +263,7 @@ class Window(gtk.Window):
         toggle_actions = [
             # name, stock id, label, accelerator, tooltip, callback, default toggle status
             ('PrintInputs', None, 'Print Brush Input Values to stdout', None, None, self.print_inputs_cb),
+            ('VisualizeRendering', None, 'Visualize Rendering', None, None, self.visualize_rendering_cb),
             ('DisableGammaCorrection', None, 'Disable sRGB Gamma Correction', None, None, self.disableGammaCorrection_cb),
             ]
         ag.add_toggle_actions(toggle_actions)
@@ -288,7 +290,10 @@ class Window(gtk.Window):
         self.toggleWindow(self.app.settingsWindow)
 
     def print_inputs_cb(self, action):
-        self.app.brush.print_inputs = action.get_active()
+        self.doc.brush.print_inputs = action.get_active()
+
+    def visualize_rendering_cb(self, action):
+        self.tdw.visualize_rendering = action.get_active()
 
     def test_cb(self, action):
         self.tdw.layer.save('test.png')
@@ -333,6 +338,7 @@ class Window(gtk.Window):
         self.start_or_continue_modifying()
 
     def start_or_continue_modifying(self, count=1):
+        OUTDATED
         self.finish_pending_actions(skip=self.end_modifying)
         if self.modifying:
             assert self.end_modifying in self.pending_actions
@@ -376,6 +382,7 @@ class Window(gtk.Window):
         self.doc.set_brush(self.app.brush)
 
         if self.modifying:
+            OUTDATED
             self.finish_pending_actions(skip=self.end_modifying)
             cmd = self.command_stack.get_last_command()
             if isinstance(cmd, command.ModifyStrokes):

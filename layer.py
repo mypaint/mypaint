@@ -6,7 +6,7 @@
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY. See the COPYING file for more details.
 
-import tilelib
+import tiledsurface
 from time import time
 import gc
 
@@ -37,7 +37,7 @@ class Layer:
         # the code manipulating them is responsible to keep the
         # strokes in sync with the surface, eg. by calling rerender()
         # FIXME: find a better design? also, rerender can take too long
-        self.surface = tilelib.TiledSurface()
+        self.surface = tiledsurface.TiledSurface()
         self.strokes = []
         self.background = None
 

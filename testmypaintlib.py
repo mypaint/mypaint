@@ -1,10 +1,11 @@
 from pylab import *
+OUTDATED
 
-import mypaintlib, tilelib, brushsettings, brush
+import mypaintlib, tiledsurface, brushsettings, brush
 
 def directPaint():
 
-    l = tilelib.TiledLayer()
+    l = tiledsurface.TiledLayer()
     events = load('painting30sec.dat.gz')
 
     for t, x, y, pressure in events:
@@ -15,7 +16,7 @@ def directPaint():
 
 def brushPaint():
 
-    l = tilelib.TiledLayer()
+    l = tiledsurface.TiledLayer()
     b = brush.Brush_Lowlevel()
     #b.load_from_string(open('brushes/s006.myb').read())
 

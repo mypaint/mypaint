@@ -51,9 +51,9 @@ class Window(gtk.Window):
         #hbox.set_spacing(10)
 
         b = gtk.Button('Clear')
-        def clear_cb(window, mdw):
-            mdw.clear()
-        b.connect('clicked', clear_cb, self.tdw)
+        def clear_cb(window):
+            self.tdw_doc.clear_layer()
+        b.connect('clicked', clear_cb)
         vbox2.pack_start(b, expand=False)
 
         b = gtk.Button('add as new')
@@ -74,9 +74,9 @@ class Window(gtk.Window):
 
     def set_preview_pixbuf(self, pixbuf):
         if pixbuf is None:
-            self.tdw.clear()
+            self.tdw_doc.clear()
         else:
-            self.tdw.set_from_pixbuf(pixbuf)
+            self.tdw.doc.load_pixbuf(pixbuf)
 
     def get_preview_pixbuf(self):
         pixbuf = self.tdw.get_as_pixbuf()

@@ -6,8 +6,8 @@
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY. See the COPYING file for more details.
 
-# Code to manage / draw onto / render a tiled unbounded transparent surface.
-# TODO: maybe rename to surface.py? tiledsurface.py?
+# This module contains an infinite (unbounded) tiled surface for painting.
+# It is the memory storage backend for one layer.
 
 from numpy import *
 from PIL import Image
@@ -57,7 +57,7 @@ def get_tiles_bbox(tiles):
     return res
 
 class TiledSurface(mypaintlib.TiledSurface):
-    # the C++ half of this class is in tilelib.hpp
+    # the C++ half of this class is in tiledsurface.hpp
     def __init__(self):
         mypaintlib.TiledSurface.__init__(self, self)
         self.tiledict = {}
