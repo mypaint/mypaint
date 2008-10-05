@@ -44,8 +44,6 @@ class Window(gtk.Window):
         self.doc.set_brush(self.app.brush)
         self.tdw = tileddrawwidget.TiledDrawWidget(self.doc)
         vbox.pack_start(self.tdw)
-        self.tdw.toolchange_observers.append(self.toolchange_cb)
-        #self.tdw.connect("gesture-recognized", self.gesture_recognized_cb)
 
         self.statusbar = sb = gtk.Statusbar()
         vbox.pack_end(sb, expand=False)
@@ -229,7 +227,7 @@ class Window(gtk.Window):
             ('NewLayer',     None, 'New Layer', None, None, self.new_layer_cb),
             ('ToggleAbove',  None, 'Toggle Layers Above Current', 'a', None, self.toggle_layers_above_cb),
 
-            ('DialogMenu',  None, 'Dialogs'),
+            ('DialogMenu',  None, 'Windows'),
             ('BrushSelectionWindow',  None, 'Brush List', 'b', None, self.toggleBrushSelectionWindow_cb),
             ('BrushSettingsWindow',   None, 'Brush Settings', '<control>b', None, self.toggleBrushSettingsWindow_cb),
             ('ColorSelectionWindow',  None, 'GTK Color Dialog', 'g', None, self.toggleColorSelectionWindow_cb),
@@ -400,11 +398,6 @@ class Window(gtk.Window):
                 if count == 1:
                     self.statusbar.pop(3)
                     self.statusbar.push(3, 'modifying one stroke (hit again to add more)')
-
-    def toolchange_cb(self):
-        # FIXME: add argument with tool id, and remember settings
-        # also make sure proximity events outside the window are checked
-        pass
 
     def key_press_event_cb_before(self, win, event):
         key = event.keyval 

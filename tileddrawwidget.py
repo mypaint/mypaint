@@ -18,13 +18,11 @@ class TiledDrawWidget(gtk.DrawingArea):
 
     def __init__(self, document):
         gtk.DrawingArea.__init__(self)
-        self.connect("proximity-in-event", self.proximity_cb)
-        self.connect("proximity-out-event", self.proximity_cb)
-        self.toolchange_observers = []
-
+        #self.connect("proximity-in-event", self.proximity_cb)
+        #self.connect("proximity-out-event", self.proximity_cb)
         self.connect("motion-notify-event", self.motion_notify_cb)
-        #self.connect("button-press-event", self.button_updown_cb)
-        #self.connect("button-release-event", self.button_updown_cb)
+        self.connect("button-press-event", self.button_updown_cb)
+        self.connect("button-release-event", self.button_updown_cb)
         self.connect("expose-event", self.expose_cb)
         self.connect("enter-notify-event", self.enter_notify_cb)
         self.connect("leave-notify-event", self.leave_notify_cb)
@@ -43,12 +41,13 @@ class TiledDrawWidget(gtk.DrawingArea):
 
         self.doc = document
         self.doc.canvas_observers.append(self.canvas_modified_cb)
+        self.doc.brush.observers.append(self.brush_modified_cb)
+
+        self.cursor_size = None
 
         self.last_event_time = None
         self.last_event_x = None
         self.last_event_y = None
-
-        self.recording = None
 
         self.disableGammaCorrection = False
 
@@ -65,9 +64,17 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.zoom_max = 5.0
         self.zoom_min = 1/5.0
 
-    def proximity_cb(self, widget, something):
-        for f in self.toolchange_observers:
-            f()
+
+    def button_updown_cb(self, widget, event):
+        d = event.device
+        if False:
+            print 'button_updown_cb', repr(d.name), event.button, event.type
+            print '  has_cursor', d.has_cursor
+            print '  mode', d.mode
+            print '  axes', d.num_axes, [event.get_axis(i) for i in range(d.num_axes+1)]
+            print '  keys', d.num_keys
+            print '  source', d.source
+            #print '  state', d.get_state()
 
     def enter_notify_cb(self, widget, event):
         self.has_pointer = True
@@ -119,6 +126,8 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.queue_draw_area(*helpers.rotated_rectangle_bbox(corners))
 
     def expose_cb(self, widget, event):
+        self.brush_modified_cb() # hack to get the initial cursor right
+
         t = time.time()
         if hasattr(self, 'last_expose_time'):
             # just for basic performance comparisons... but we could sleep if we make >50fps
@@ -197,7 +206,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         cr.rectangle(*model_bbox)
         cr.clip()
         
-        print 'rendering pixbuf', w, h
+        #print 'rendering pixbuf', w, h
         pixbuf = gdk.Pixbuf(gdk.COLORSPACE_RGB, False, 8, w, h)
         #pixbuf.fill(int(random.random()*0xffffffff))
         pixbuf.fill(0xffffffff)
@@ -276,4 +285,34 @@ class TiledDrawWidget(gtk.DrawingArea):
     def stop_drag(self, dragfunc):
         if self.dragfunc == dragfunc:
             self.dragfunc = None
+
+
+    def brush_modified_cb(self):
+        if not self.window: return
+        d = int(self.doc.brush.get_actual_radius())*2
+
+        if d < 6: d = 6
+        if d > 500: d = 500 # hm, better ask display for max cursor size? also, 500 is pretty slow
+        if self.cursor_size == d:
+            return
+        self.cursor_size = d
+
+        cursor = gdk.Pixmap(None, d+1, d+1,1)
+        mask   = gdk.Pixmap(None, d+1, d+1,1)
+        colormap = gdk.colormap_get_system()
+        black = colormap.alloc_color('black')
+        white = colormap.alloc_color('white')
+
+        bgc = cursor.new_gc(foreground=black)
+        wgc = cursor.new_gc(foreground=white)
+        cursor.draw_rectangle(wgc, True, 0, 0, d+1, d+1)
+        cursor.draw_arc(bgc,False, 0, 0, d, d, 0, 360*64)
+
+        bgc = mask.new_gc(foreground=black)
+        wgc = mask.new_gc(foreground=white)
+        mask.draw_rectangle(bgc, True, 0, 0, d+1, d+1)
+        mask.draw_arc(wgc, False, 0, 0, d, d, 0, 360*64)
+        mask.draw_arc(wgc, False, 1, 1, d-2, d-2, 0, 360*64)
+
+        self.window.set_cursor(gdk.Cursor(cursor,mask,gdk.color_parse('black'), gdk.color_parse('white'),(d+1)/2,(d+1)/2))
 
