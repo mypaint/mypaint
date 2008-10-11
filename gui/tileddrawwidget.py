@@ -6,13 +6,14 @@
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY. See the COPYING file for more details.
 
-import helpers
+from lib import helpers
 import gtk, numpy, cairo
 gdk = gtk.gdk
 from math import floor, ceil
 import time
 
-import random, mypaintlib, tiledsurface # FIXME: should not have to import those
+import random
+from lib import mypaintlib, tiledsurface # FIXME: should not have to import those
 
 class TiledDrawWidget(gtk.DrawingArea):
 
@@ -192,7 +193,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         x1, y1 = int(floor(x1)), int(floor(y1))
         x2, y2 = int(ceil (x2)), int(ceil (y2))
 
-        import tiledsurface
+        from lib import tiledsurface
         N = tiledsurface.N
         # FIXME: remove this limitation?
         # code here should not need to know about tiles?

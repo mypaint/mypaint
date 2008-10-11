@@ -15,26 +15,6 @@ env.Append(CXXFLAGS=' -Wall -Wno-sign-compare -Wno-write-strings')
 env.ParseConfig('python-config --cflags --ldflags')
 env.ParseConfig('pkg-config --cflags --libs glib-2.0')
 
-# code generator
-#brushsettings = env.Command('brushsettings.hpp', ['generate.py', 'brushsettings.py'], './generate.py')
-# For the record: I know that scons supports swig. But it doesn't scan for #include in the generated code.
-# 
-# I have given up. Scons just can't get the dependencies right with those
-# code generators. Let's give scons a "normal" c++ project to dependency-scan.
-env.Execute('./generate.py')
-env.Clean('.', 'brushsettings.hpp')
-env.Execute('swig -o mypaintlib_wrap.cpp -python -c++ mypaintlib.i')
-env.Clean('.', 'mypaintlib_wrap.cc')
-env.Clean('.', 'mypaintlib.py')
+SConscript('lib/SConscript', 'env')
 
-# python extension module
-src = 'mypaintlib_wrap.cpp helpers.cpp mapping.cpp'
-module = env.LoadableModule('_mypaintlib', Split(src), SHLIBPREFIX="")
-
-
-# installation
-
-#env.Install(module, '$PREFIX/lib/mypaint') # location for private compiled extensions
-##env.Install(module, '$PREFIX/share/mypaint') # theoretical location for private pure python modules (meld uses $PREFIX/lib/meld)
-#env.Install(data, '$PREFIX/share/mypaint')
 

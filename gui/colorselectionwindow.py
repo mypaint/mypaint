@@ -9,7 +9,7 @@
 "select color window (GTK and an own window)"
 import gtk, gobject
 import colorsys
-import helpers, mypaintlib
+from lib import helpers, mypaintlib
 gdk = gtk.gdk
 
 # GTK selector

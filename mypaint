@@ -37,8 +37,8 @@ else:
     # checking for import error below
 
 try: # just for a nice error message, plus portability test
-    from mypaintlib import Brush
-    b = Brush()
+    from lib import mypaintlib
+    b = mypaintlib.Brush()
     b.srandom(0xf4a1)
     b.random_double()
     b.random_double()
@@ -52,7 +52,7 @@ try: # just for a nice error message, plus portability test
         print
     assert val >= 0.0
     assert val <= 1.0
-    del Brush
+    del b
 except ImportError, detail:
     print 'ImportError:', detail
     print "\nWe are not correctly installed or compiled!"
@@ -63,7 +63,7 @@ except ImportError, detail:
         print "Maybe try 'python mypaint' instead of './mypaint'.\n"
     sys.exit(1)
 
-import application
+from gui import application
 
 def init_input():
     "make those pressure sensitive devices working"

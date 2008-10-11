@@ -7,6 +7,8 @@
  * but WITHOUT ANY WARRANTY. See the COPYING file for more details.
  */
 
+// FIXME: remove glib depencency, and maybe move to header-only implementation
+
 #include "mapping.hpp"
 #include <glib.h>
 

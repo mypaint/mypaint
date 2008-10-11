@@ -8,7 +8,8 @@
 
 "select brush window"
 import gtk
-import brush, tileddrawwidget, document
+from lib import brush, document
+import tileddrawwidget
 
 class Window(gtk.Window):
     def __init__(self, app):

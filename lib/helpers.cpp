@@ -12,6 +12,8 @@
  * Also fixed the hue range in gimp_hsl_to_rgb_int().
  */
 
+// FIXME: remove glib dependency
+
 #include "helpers.hpp"
 #include <glib.h>
 #include <math.h>

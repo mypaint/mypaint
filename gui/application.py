@@ -7,7 +7,7 @@
 # but WITHOUT ANY WARRANTY. See the COPYING file for more details.
 
 import gtk, os
-import brush
+from lib import brush
 
 class Application: # singleton
     def __init__(self, share, confpath, loadimage):
@@ -39,7 +39,7 @@ class Application: # singleton
 
         self.window_names = 'drawWindow brushSettingsWindow brushSelectionWindow colorSelectionWindow settingsWindow'.split()
         for name in self.window_names:
-            module = __import__(name.lower())
+            module = __import__(name.lower(), globals(), locals(), [])
             window = self.__dict__[name] = module.Window(self)
             self.load_window_position(name, window)
 

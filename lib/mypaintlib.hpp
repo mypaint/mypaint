@@ -4,4 +4,4 @@
 #include "tiledsurface.hpp"
 #include "brush.hpp"
 #include "colorselector.hpp"
-#include "gdkpixbuf2numpy.hpp"
+#include "gdkpixbuf2numpy.hpp" // FIXME: remove this only gtk dependency if possible

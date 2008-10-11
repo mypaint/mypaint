@@ -8,7 +8,7 @@
 
 "window to model a single brush property function"
 import gtk
-import brush, brushsettings
+from lib import brush, brushsettings
 
 class Window(gtk.Window):
     def __init__(self, app, setting, adj):

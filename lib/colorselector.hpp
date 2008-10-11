@@ -1,3 +1,4 @@
+// FIXME: maybe this file should not be part of mypainlib?
 const int colorselector_size = 256;
 
 #ifndef SWIG

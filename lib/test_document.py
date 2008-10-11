@@ -1,5 +1,5 @@
 from pylab import *
-import document, command, brush
+from mypaintlib import document, command, brush
 
 doc = document.Document()
 
