@@ -127,4 +127,4 @@ class Document():
             # OPTIMIZE: only visible layers...
             bbox = layer.surface.get_bbox()
             res.expandToIncludeRect(bbox)
-        return res.tuple()
+        return res

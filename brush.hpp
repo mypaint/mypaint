@@ -20,17 +20,18 @@
 #define ACTUAL_RADIUS_MAX 150 //FIXME: performance problem actually depending on CPU
 
 /* The Brush class stores two things:
-   a) the *states* of the cursor (velocity, color, speed)
-   b) the brush *settings* (as set in the GUI)
-   FIXME: Actually those are two orthogonal things. Should separate them.
-          (There used to be code that could change the settings during a
-           stroke, this is hopefully already all gone.)
+   b) settings: constant during a stroke (eg. size, spacing, dynamics)
+   a) states: changing during a stroke (eg. speed, smudge colors, time/distance to next dab, position filter states)
+
+   FIXME: Actually those are two orthogonal things. Should separate them:
+          a) brush class that is saved/loaded/selected  (can live without the states)
+          b) brush class to draw the dabs (using an exchangeable reference to the one above)
           (There might still be some "not-sure-if-those-are-states" though.)
 
    In python, there are two kinds of instances from this: a "global
    brush" which does the cursor tracking, and the "brushlist" where
-   only the settings are important. When a brush is selected, its
-   settings are copied into the global one, leaving the status intact.
+   the states are ignored. When a brush is selected, its settings are
+   copied into the global one, leaving the status intact.
  */
 
 
