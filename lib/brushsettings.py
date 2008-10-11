@@ -17,9 +17,9 @@ inputs_list = [
     ['pressure', 0.0,  0.0,  0.4,  1.0, 1.0,  "The pressure reported by the tablet, between 0.0 and 1.0. If you use the mouse, it will be 0.5 when a button is pressed and 0.0 otherwise."],
     ['speed1',   None, 0.0,  0.5,  4.0, None, "How fast you currently move. This can change very quickly. Try 'print input values' from the 'help' menu to get a feeling for the range; negative values are rare but possible for very low speed."],
     ['speed2',   None, 0.0,  0.5,  4.0, None, "Same as speed1, but changes slower. Also look at the 'speed2 slowness' setting."],
-    ['random',   0.0,  0.0,  0.5,  1.0, 1.0,  "Fast random noise, changing at each evaluation. Equally distributed between 0 and 1."],
+    ['random',   0.0,  0.0,  0.5,  1.0, 1.0,  "Fast random noise, changing at each evaluation. Evenly distributed between 0 and 1."],
     ['stroke',   0.0,  0.0,  0.5,  1.0, 1.0,  "This input slowly goes from zero to one while you draw a stroke. It can also be configured to jump back to zero periodically while you move. Look at the 'stroke duration' and 'stroke hold time' settings."],
-    ['angle',    0.0,  0.0,  0.5,  1.0, 1.0,  "Angle of movement. The dynamics are shared with BRUSH_OFFSET_BY_SPEED_SLOWNESS (FIXME: which is a bad thing)."],
+    ['angle',    0.0,  0.0,  0.5,  1.0, 1.0,  "[EXPERIMENTAL] Angle of movement. The dynamics are shared with BRUSH_OFFSET_BY_SPEED_SLOWNESS (FIXME: which is a bad thing)."],
     ['custom',   None,-2.0,  0.0, +2.0, None, "This is a user defined input. Look at the 'custom input' setting for details."],
     ]
     # [1] If, for example, the user increases the "by pressure" slider
