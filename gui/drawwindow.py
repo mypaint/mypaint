@@ -23,8 +23,7 @@ class Window(gtk.Window):
         self.app = app
 
         self.set_title('MyPaint')
-        def delete_event_cb(window, event, app): return app.quit()
-        self.connect('delete-event', delete_event_cb, self.app)
+        self.connect('delete-event', self.quit_cb)
         self.connect('key-press-event', self.key_press_event_cb_before)
         self.connect('key-release-event', self.key_release_event_cb_before)
         self.connect_after('key-press-event', self.key_press_event_cb_after)
@@ -675,9 +674,28 @@ class Window(gtk.Window):
         assert not os.path.exists(filename)
         self.save_file(filename)
 
-    def quit_cb(self, action):
-        self.finish_pending_actions()
-        return self.app.quit()
+    def quit_cb(self, *trash):
+        #self.finish_pending_actions()
+        self.doc.split_stroke()
+        self.app.save_gui_config()
+        t = self.doc.get_total_painting_time()
+        if t > 15:
+            if t > 120:
+                t = '%d minutes' % (t/60)
+            else:
+                t = '%d seconds' % t
+            d = gtk.MessageDialog(type = gtk.MESSAGE_QUESTION,
+                                  buttons = gtk.BUTTONS_YES_NO,
+                                  flags = gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                  )
+            d.set_title('Quit')
+            d.set_markup("<b>Really quit?</b>\n\nThis will discard %s of unsaved painting." % t)
+            if d.run() != gtk.RESPONSE_YES:
+                d.destroy()
+                return True
+
+        gtk.main_quit()
+        return False
 
     def move_cb(self, action):
         self.move(action.get_name())

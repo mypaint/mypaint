@@ -63,8 +63,6 @@ class Document():
         self.layers = [self.layer]
         self.command_stack = command.CommandStack()
 
-        print 'document reset complete'
-
     def split_stroke(self):
         if not self.stroke: return
         self.stroke.stop_recording()
@@ -82,9 +80,9 @@ class Document():
             self.stroke.start_recording(self.brush)
         self.stroke.record_event(dtime, x, y, pressure)
 
-        split_stroke = self.brush.tiled_surface_stroke_to (self.layer.surface, x, y, pressure, dtime)
+        split = self.brush.tiled_surface_stroke_to (self.layer.surface, x, y, pressure, dtime)
 
-        if split_stroke:
+        if split:
             self.split_stroke()
 
     def layer_modified_cb(self, *args):
@@ -128,3 +126,32 @@ class Document():
             bbox = layer.surface.get_bbox()
             res.expandToIncludeRect(bbox)
         return res
+
+    def get_total_painting_time(self):
+        t = 0.0
+        for cmd in self.command_stack.undo_stack:
+            if isinstance(cmd, command.Stroke):
+                t += cmd.stroke.total_painting_time
+        return t
+
+    def save(self, f):
+        self.split_stroke()
+        if isinstance(f, str):
+            f = open(f, 'wb')
+        f.write('MyPaint document\n1\n\n')
+        #self.command_stack.serialize(f)
+        for cmd in command_stack.undo_stack: TODO
+            
+
+    def load(self, f):
+        self.reset()
+        if isinstance(f, str):
+            f = open(f, 'rb')
+        assert f.readline() == 'MyPaint document'
+        version = f.readline()
+        assert version == '1\n'
+        # skip lines to allow backwards compatible extensions
+        while f.readline() != '\n':
+            pass
+
+        #self.command_stack.unserialize(f)

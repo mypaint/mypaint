@@ -135,19 +135,9 @@ class Application: # singleton
         window.hide()
         return True
 
-    def quit(self):
+    def save_gui_config(self):
         gtk.accel_map_save(os.path.join(self.confpath, 'accelmap.conf'))
-        d = gtk.Dialog("Really quit?",
-             None,
-             gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-             (gtk.STOCK_YES, gtk.RESPONSE_ACCEPT,
-              gtk.STOCK_NO, gtk.RESPONSE_REJECT))
-        if d.run() == gtk.RESPONSE_ACCEPT:
-            self.save_window_positions()
-            gtk.main_quit()
-            return False
-        d.destroy()
-        return True
+        self.save_window_positions()
         
     def save_window_positions(self):
         f = open(os.path.join(self.confpath, 'windowpos.conf'), 'w')
