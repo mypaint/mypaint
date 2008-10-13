@@ -690,36 +690,26 @@ public:
     g_rand_set_seed (rng, value);
   }
 
-  GString* get_state ()
+  PyObject* get_state ()
   {
-    // see also mydrawwidget.override
-    int i;
-    GString * bs = g_string_new ("1"); // version id
-    for (i=0; i<STATE_COUNT; i++) {
-      BS_WRITE_FLOAT (states[i]);
+    npy_intp dims = {STATE_COUNT};
+    PyObject * data = PyArray_SimpleNew(1, &dims, NPY_FLOAT32);
+    npy_float32 * data_p = (npy_float32*)PyArray_DATA(data);
+    for (int i=0; i<STATE_COUNT; i++) {
+      data_p[i] = states[i];
     }
-
-    return bs;
+    return data;
   }
 
-  void set_state (GString * data)
+  void set_state (PyObject * data)
   {
-    // see also mydrawwidget.override
-    char * p = data->str;
-    char c;
-
-    BS_READ_CHAR (c);
-    if (c != '1') {
-      g_print ("Unknown state version ID\n");
-      return;
-    }
-
-    memset(states, 0, sizeof(states[0])*STATE_COUNT);
-    int i = 0;
-    while (p<data->str+data->len && i < STATE_COUNT) {
-      BS_READ_FLOAT (states[i]);
-      i++;
-      //g_print ("states[%d] = %f\n", i, states[i]);
+    assert(PyArray_DIMS(data) == 1);
+    assert(PyArray_DIM(data, 0) == STATE_COUNT);
+    assert(ISCARRAY(data));
+    assert(ISBEHAVED(data));
+    npy_float32 * data_p = (npy_float32*)PyArray_DATA(data);
+    for (int i=0; i<STATE_COUNT; i++) {
+      states[i] = data_p[i];
     }
   }
 
