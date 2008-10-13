@@ -61,7 +61,9 @@ class Window(gtk.Window):
 
         self.app.brush.observers.append(self.brush_modified_cb)
 
-        self.last_gesture_time = 0
+        self.last_gesture_time = 0 # FIXME: unused?
+
+        self.filename = None
         
     def create_ui(self):
         ag = gtk.ActionGroup('WindowActions')
@@ -557,12 +559,13 @@ class Window(gtk.Window):
         cs.set_color_hsv((h, s, v))
         
     def open_file(self, filename):
-        self.finish_pending_actions()
         self.statusbar.pop(1)
         try:
-            pixbuf = gdk.pixbuf_new_from_file(filename)
-            cmd = command.LoadImage(self.layer, pixbuf)
-            self.doc.execute(cmd)
+            # TODO: that would be "open_file_as_layer"
+            #pixbuf = gdk.pixbuf_new_from_file(filename)
+            #cmd = command.LoadImage(self.layer, pixbuf)
+            #self.doc.execute(cmd)
+            self.doc.load(filename)
         except Exception, e:
             d = gtk.MessageDialog(self, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_OK)
             d.set_markup(str(e))
@@ -571,15 +574,19 @@ class Window(gtk.Window):
             print e
             self.clear_cb(None)
         else:
-            self.statusbar.push(1, 'Loaded from ' + filename)
+            t = self.doc.get_total_painting_time()
+            if t > 120:
+                t = '%d minutes' % (t/60)
+            else:
+                t = '%d seconds' % t
+            self.statusbar.push(1, 'Loaded %s of painting from %s' %(t, filename))
             self.filename = filename
 
     def save_file(self, filename):
-        self.finish_pending_actions()
         self.filename = filename
         self.statusbar.pop(1)
         try:
-            self.tdw.save(filename)
+            self.doc.save(filename)
         except Exception, e:
             print e
             d = gtk.MessageDialog(self, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_OK)
@@ -597,8 +604,10 @@ class Window(gtk.Window):
                                         gtk.STOCK_OPEN, gtk.RESPONSE_OK))
         dialog.set_default_response(gtk.RESPONSE_OK)
         filter = gtk.FileFilter()
-        filter.set_name("png")
-        filter.add_pattern("*.png")
+        #filter.set_name("png")
+        #filter.add_pattern("*.png")
+        filter.set_name("MyPaint Image (*.myp)")
+        filter.add_pattern("*.myp")
         dialog.add_filter(filter)
 
         if self.filename:
@@ -620,8 +629,10 @@ class Window(gtk.Window):
                                         gtk.STOCK_SAVE, gtk.RESPONSE_OK))
         dialog.set_default_response(gtk.RESPONSE_OK)
         filter = gtk.FileFilter()
-        filter.set_name("png")
-        filter.add_pattern("*.png")
+        #filter.set_name("png")
+        #filter.add_pattern("*.png")
+        filter.set_name("MyPaint Image (*.myp)")
+        filter.add_pattern("*.myp")
         dialog.add_filter(filter)
 
         if self.filename:
@@ -630,7 +641,8 @@ class Window(gtk.Window):
             filename = dialog.get_filename()
             trash, ext = os.path.splitext(filename)
             if not ext:
-                filename += '.png'
+                #filename += '.png'
+                filename += '.myp'
             if os.path.exists(filename):
                 d2 = gtk.Dialog("Overwrite?",
                      self,
