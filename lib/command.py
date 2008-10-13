@@ -12,7 +12,7 @@ class CommandStack:
         self.redo_stack = []
         self.call_before_action = []
     
-    def add(self, command):
+    def do(self, command):
         for f in self.call_before_action: f()
         self.redo_stack = [] # discard
         command.execute()
@@ -24,6 +24,7 @@ class CommandStack:
         command = self.undo_stack.pop()
         command.undo()
         self.redo_stack.append(command)
+        return command
         
     def redo(self):
         if not self.redo_stack: return
@@ -31,6 +32,7 @@ class CommandStack:
         command = self.redo_stack.pop()
         command.redo()
         self.undo_stack.append(command)
+        return command
 
     def get_last_command(self):
         if not self.undo_stack: return None
@@ -108,4 +110,11 @@ class LoadImage(ClearLayer):
 #     def undo(self):
 #         self.execute(undo=True)
 #     redo = execute
+
+
+#def make_action(cmd):
+#    actions = {
+#        'ClearLayer': ClearLayer,
+#        #'Stroke': Stroke,
+#        LoadImagesy
 

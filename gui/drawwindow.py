@@ -13,7 +13,7 @@ MYPAINT_VERSION="0.6.0-svn"
 import gtk, os, zlib, random, re, math
 from gtk import gdk, keysyms
 import tileddrawwidget
-from lib import document, command
+from lib import document #, command
 from time import time
 from glob import glob
 
@@ -473,7 +473,7 @@ class Window(gtk.Window):
                 }[d])
 
     def clear_cb(self, action):
-        self.doc.do(command.ClearLayer(self.doc.layer))
+        self.doc.clear_layer()
         
     # obsolete?
     #def update_layers(self):

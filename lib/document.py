@@ -67,12 +67,15 @@ class Document():
         if not self.stroke: return
         self.stroke.stop_recording()
         if not self.stroke.empty:
-            self.command_stack.add(command.Stroke(self.layer, self.stroke))
+            self.command_stack.do(command.Stroke(self.layer, self.stroke))
         self.stroke = None
 
     def clear(self):
         # TODO: build delete_layer actions? so this can be undone
         self.reset()
+
+    def clear_layer(self):
+        self.do(command.ClearLayer(self.layer))
 
     def stroke_to(self, dtime, x, y, pressure):
         if not self.stroke:
@@ -111,7 +114,7 @@ class Document():
 
     def do(self, cmd):
         self.split_stroke()
-        self.command_stack.add(cmd)
+        self.command_stack.do(cmd)
 
 
     def set_brush(self, brush):

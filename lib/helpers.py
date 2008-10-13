@@ -14,10 +14,10 @@ class Rect:
         self.y = y
         self.w = w
         self.h = h
-    def tuple(self):
-        return (self.x, self.y, self.w, self.h)
     def __iter__(self):
-        return iter(self.tuple())
+        return iter((self.x, self.y, self.w, self.h))
+    def empty(self):
+        return self.w == 0 or self.h == 0
     def copy(self):
         return Rect(self.x, self.y, self.w, self.h)
     def expand(self, border):
@@ -32,6 +32,8 @@ class Rect:
             other.x + other.w <= self.x + self.w and
             other.y + other.h <= self.y + self.h
             )
+    def __eq__(self, other):
+        return tuple(self) == tuple(other)
     def overlaps(r1, r2):
         if max(r1.x, r2.x) >= min(r1.x+r1.w, r2.x+r2.w): return False
         if max(r1.y, r2.y) >= min(r1.y+r1.h, r2.y+r2.h): return False
@@ -54,6 +56,7 @@ class Rect:
         if y > self.y + self.h - 1:
             self.h += y - (self.y + self.h - 1)
     def expandToIncludeRect(self, other):
+        if other.empty(): return
         self.expandToIncludePoint(other.x, other.y)
         self.expandToIncludePoint(other.x + other.w - 1, other.y + other.h - 1)
     def __repr__(self):

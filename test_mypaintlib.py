@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 from pylab import *
+from StringIO import StringIO
 
 from lib import mypaintlib, tiledsurface, brushsettings, brush, document, command
 
@@ -34,20 +35,64 @@ def brushPaint():
 
 
 def docPaint():
-    doc = document.Document()
+    b1 = brush.Brush_Lowlevel()
+    b1.load_from_string(open('brushes/s006.myb').read())
+    b2 = brush.Brush_Lowlevel()
+    b2.load_from_string(open('brushes/s023.myb').read())
 
+    # test all actions
+    doc = document.Document()
     events = load('painting30sec.dat.gz')
     t_old = events[0][0]
-    for t, x, y, pressure in events:
+    n = len(events)
+    for i, (t, x, y, pressure) in enumerate(events):
         dtime = t - t_old
         t_old = t
         doc.stroke_to(dtime, x, y, pressure)
+        if i == n*1/8:
+            doc.set_brush(b2)
+        if i == n*2/8:
+            doc.clear_layer()
+            doc.undo()
+            assert not doc.get_bbox().empty()
+            doc.redo()
+            assert doc.get_bbox().empty()
+        if i == n*3/8:
+            doc.undo()
+            doc.set_brush(b1)
+        if i == n*4/8:
+            doc.set_brush(b2)
+        if i == n*5/8:
+            doc.undo()
+            doc.redo()
+        if i == n*6/8:
+            doc.set_brush(b2)
 
-    # note: this might not always be reproducible due to randomness of the brush
-    print 'document bbox is', doc.get_bbox()
+    doc.layers[0].surface.save('test_docPaint_a.png')
 
-    s = doc.layers[0].surface
-    s.save('test_docPaint.png')
+    # test save/load
+    f1 = StringIO()
+    doc.save(f1)
+    doc2 = doc.load(StringIO(f1.getvalue()))
+    assert doc.get_bbox() == doc2.get_bbox()
+    f2 = StringIO()
+    doc2.save(f2)
+    assert f1.getvalue() == f2.getvalue()
+    doc2.layers[0].surface.save('test_docPaint_b.png')
+    while doc2.undo():
+        pass
+    assert doc.get_bbox().empty()
+    while doc2.redo():
+        pass
+    doc2.layers[0].surface.save('test_docPaint_c.png')
+    f3 = StringIO()
+    doc2.save(f3)
+    assert f2.getvalue() == f3.getvalue()
+    # TODO: add checks for the rendered buffers (random seed should be equal)
+
+    # note: this is not supposed to be strictly reproducible because of different random seeds
+    bbox = doc.get_bbox()
+    print 'document bbox is', bbox
 
 
 directPaint()
