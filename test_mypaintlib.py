@@ -30,9 +30,12 @@ def brushPaint():
         dtime = t - t_old
         t_old = t
         b.tiled_surface_stroke_to (s, x, y, pressure, dtime)
+    print s.get_bbox(), b.stroke_total_painting_time # FIXME: why is this time so different each run?
 
     s.save('test_brushPaint.png')
 
+def files_equal(a, b):
+    return open(a, 'rb').read() == open(b, 'rb').read()
 
 def docPaint():
     b1 = brush.Brush_Lowlevel()
@@ -48,6 +51,7 @@ def docPaint():
     for i, (t, x, y, pressure) in enumerate(events):
         dtime = t - t_old
         t_old = t
+        #print dtime
         doc.stroke_to(dtime, x, y, pressure)
         if i == n*1/8:
             doc.set_brush(b2)
@@ -73,18 +77,22 @@ def docPaint():
     # test save/load
     f1 = StringIO()
     doc.save(f1)
-    doc2 = doc.load(StringIO(f1.getvalue()))
+    doc2 = document.Document()
+    doc2.load(StringIO(f1.getvalue()))
+    print doc.get_bbox(), doc2.get_bbox()
     assert doc.get_bbox() == doc2.get_bbox()
     f2 = StringIO()
     doc2.save(f2)
     assert f1.getvalue() == f2.getvalue()
     doc2.layers[0].surface.save('test_docPaint_b.png')
+    assert files_equal('test_docPaint_a.png', 'test_docPaint_b.png')
     while doc2.undo():
         pass
-    assert doc.get_bbox().empty()
+    assert doc2.get_bbox().empty()
     while doc2.redo():
         pass
     doc2.layers[0].surface.save('test_docPaint_c.png')
+    assert files_equal('test_docPaint_a.png', 'test_docPaint_c.png')
     f3 = StringIO()
     doc2.save(f3)
     assert f2.getvalue() == f3.getvalue()

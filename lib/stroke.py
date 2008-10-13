@@ -23,12 +23,14 @@ class Stroke:
 
         self.brush_settings = brush.save_to_string() # fast (brush caches this string)
 
-        self.brush_state = brush.get_state()
+        states = brush.get_state()
+        assert states.dtype == 'float32'
+        self.brush_state = states.tostring()
 
         self.seed = random.randrange(0x10000)
         self.brush = brush
         brush.srandom(self.seed)
-        self.brush.new_stroke() # this only resets the stroke_* members
+        self.brush.new_stroke() # this just resets the stroke_* members of the brush
 
         self.tmp_event_list = []
 
@@ -47,19 +49,25 @@ class Stroke:
         self.stroke_data = version + data
 
         self.total_painting_time = self.brush.stroke_total_painting_time
-        self.empty = self.total_painting_time == 0
         #if not self.empty:
         #    print 'Recorded', len(self.stroke_data), 'bytes. (painting time: %.2fs)' % self.total_painting_time
         #print 'Compressed size:', len(zlib.compress(self.stroke_data)), 'bytes.'
         del self.brush, self.tmp_event_list
         self.finished = True
+
+    def is_empty(self):
+        return self.total_painting_time == 0
+    empty = property(is_empty)
         
     def render(self, surface):
         assert self.finished
 
         b = brush.Brush_Lowlevel()
         b.load_from_string(self.brush_settings) # OPTIMIZE: check if this is a performance bottleneck
-        b.set_state(self.brush_state)
+
+        states = numpy.fromstring(self.brush_state, dtype='float32')
+        b.set_state(states)
+
         b.srandom(self.seed)
         #b.set_print_inputs(1)
         #print 'replaying', len(self.stroke_data), 'bytes'
@@ -80,3 +88,14 @@ class Stroke:
         # has different meanings for the states. This should cause
         # fewer glitches than resetting the initial state to zero.
         return s
+
+    serialize_members = [
+        ('seed', int),
+        ('total_painting_time', float),
+        ('brush_settings', str),
+        ('brush_state', str),
+        ('stroke_data', str),
+        ]
+    def after_unserialize(self):
+        assert not self.finished
+        self.finished = True

@@ -68,6 +68,9 @@ public:
     rng = g_rand_new();
     print_inputs = false;
     
+    for (i=0; i<STATE_COUNT; i++) {
+      states[i] = 0;
+    }
     new_stroke();
 
     settings_base_values_have_changed();

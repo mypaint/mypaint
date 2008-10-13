@@ -15,7 +15,7 @@ class CommandStack:
     def do(self, command):
         for f in self.call_before_action: f()
         self.redo_stack = [] # discard
-        command.execute()
+        command.redo()
         self.undo_stack.append(command)
     
     def undo(self):
@@ -41,54 +41,53 @@ class CommandStack:
 
 class Action:
     # children must support:
-    # - execute
     # - redo
     # - undo
     pass
 
 class Stroke(Action):
-    def __init__(self, layer, stroke):
-        self.layer = layer
+    def __init__(self, doc, layer_idx, stroke):
+        self.doc = doc
+        self.layer_idx = layer_idx
         assert stroke.finished
         self.stroke = stroke # immutable
-    def execute(self):
-        # this stroke has been rendered while recording
-        self.layer.rendered.strokes.append(self.stroke)
-        self.redo()
-        self.layer.populate_cache()
     def undo(self):
-        self.layer.strokes.remove(self.stroke)
-        self.layer.rerender()
+        layer = self.doc.layers[self.layer_idx]
+        layer.strokes.remove(self.stroke)
+        layer.rerender()
     def redo(self):
-        self.layer.strokes.append(self.stroke)
-        self.layer.rerender()
+        layer = self.doc.layers[self.layer_idx]
+        layer.strokes.append(self.stroke)
+        layer.rerender()
 
 class ClearLayer(Action):
-    def __init__(self, layer):
-        self.layer = layer
-    def execute(self):
-        self.old_strokes = self.layer.strokes[:] # copy
-        self.old_background = self.layer.background
-        self.layer.strokes = []
-        self.layer.background = None
-        self.layer.rerender()
+    def __init__(self, doc, layer_idx):
+        self.doc = doc
+        self.layer_idx = layer_idx
+    def redo(self):
+        layer = self.doc.layers[self.layer_idx]
+        self.old_strokes = layer.strokes[:] # copy
+        self.old_background = layer.background
+        layer.strokes = []
+        layer.background = None
+        layer.rerender()
     def undo(self):
-        self.layer.strokes = self.old_strokes
-        self.layer.background = self.old_background
-        self.layer.rerender()
+        layer = self.doc.layers[self.layer_idx]
+        layer.strokes = self.old_strokes
+        layer.background = self.old_background
+        layer.rerender()
 
         del self.old_strokes, self.old_background
-    redo = execute
 
-class LoadImage(ClearLayer):
-    def __init__(self, layer, pixbuf):
-        ClearLayer.__init__(self, layer)
-        self.pixbuf = pixbuf
-    def execute(self):
-        ClearLayer.execute(self)
-        self.layer.background = self.pixbuf
-        self.layer.rerender()
-    redo = execute
+#class LoadImage(ClearLayer):
+#    def __init__(self, layer, pixbuf):
+#        ClearLayer.__init__(self, layer)
+#        self.pixbuf = pixbuf
+#    def execute(self):
+#        ClearLayer.execute(self)
+#        self.layer.background = self.pixbuf
+#        self.layer.rerender()
+#    redo = execute
 
 # class ModifyStrokes(Action):
 #     def __init__(self, layer, strokes, new_brush):

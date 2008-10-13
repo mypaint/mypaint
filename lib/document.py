@@ -25,7 +25,7 @@ A document:
 - must be altered via undo/redo commands (except painting)
 """
 
-import helpers, tiledsurface, command, stroke, layer
+import helpers, tiledsurface, command, stroke, layer, serialize
 import brush # FIXME: the brush module depends on gtk and everything, but we only need brush_lowlevel
 import random, gc
 import numpy
@@ -53,9 +53,9 @@ class Document():
         self.stroke = None
         self.canvas_observers = []
 
-        self.reset()
+        self.clear()
 
-    def reset(self):
+    def clear(self):
         self.split_stroke()
         # throw everything away, including undo stack
         self.layer = layer.Layer()
@@ -67,15 +67,16 @@ class Document():
         if not self.stroke: return
         self.stroke.stop_recording()
         if not self.stroke.empty:
-            self.command_stack.do(command.Stroke(self.layer, self.stroke))
+            self.layer.rendered.strokes.append(self.stroke)
+            self.layer.populate_cache()
+            self.command_stack.do(command.Stroke(self, self.layers.index(self.layer), self.stroke))
         self.stroke = None
 
-    def clear(self):
-        # TODO: build delete_layer actions? so this can be undone
-        self.reset()
+    def reset(self):
+        assert False, 'depreciated, use clear'
 
     def clear_layer(self):
-        self.do(command.ClearLayer(self.layer))
+        self.do(command.ClearLayer(self, self.layers.index(self.layer)))
 
     def stroke_to(self, dtime, x, y, pressure):
         if not self.stroke:
@@ -143,18 +144,43 @@ class Document():
             f = open(f, 'wb')
         f.write('MyPaint document\n1\n\n')
         #self.command_stack.serialize(f)
-        for cmd in command_stack.undo_stack: TODO
-            
+        for cmd in self.command_stack.undo_stack:
+            # FIXME: ugly design
+            if isinstance(cmd, command.Stroke):
+                f.write('Stroke %d\n' % cmd.layer_idx)
+                serialize.save(cmd.stroke, f)
+            elif isinstance(cmd, command.ClearLayer):
+                f.write('ClearLayer %d\n' % cmd.layer_idx)
+            else:
+                assert False, 'save not implemented for %s' % cmd
 
     def load(self, f):
-        self.reset()
+        self.clear()
         if isinstance(f, str):
             f = open(f, 'rb')
-        assert f.readline() == 'MyPaint document'
+        assert f.readline() == 'MyPaint document\n'
         version = f.readline()
         assert version == '1\n'
         # skip lines to allow backwards compatible extensions
         while f.readline() != '\n':
             pass
 
-        #self.command_stack.unserialize(f)
+        while 1:
+            cmd = f.readline()
+            if not cmd:
+                break
+            cmd, parts = cmd.split()[0], cmd.split()[1:]
+            if cmd == 'Stroke':
+                # FIXME: this code should probably be in command.py
+                layer_idx = int(parts[0])
+                stroke_ = stroke.Stroke()
+                serialize.load(stroke_, f)
+                cmd = command.Stroke(self, layer_idx, stroke_)
+                self.command_stack.do(cmd)
+            elif cmd == 'ClearLayer':
+                layer_idx = int(parts[0])
+                cmd = command.ClearLayer(self, layer_idx)
+                self.command_stack.do(cmd)
+            else:
+                assert False, 'unknown command %s' % cmd
+        assert not f.read()
