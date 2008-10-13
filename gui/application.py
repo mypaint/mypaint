@@ -10,7 +10,7 @@ import gtk, os
 from lib import brush
 
 class Application: # singleton
-    def __init__(self, share, confpath, loadimage):
+    def __init__(self, share, confpath, loadimage, profile):
         self.confpath = confpath
 
         datapaths = [share]
@@ -47,6 +47,10 @@ class Application: # singleton
 
         if loadimage:
             self.drawWindow.open_file(loadimage)
+
+        if profile:
+            self.drawWindow.start_profiling()
+
 
     def init_brushes(self):
         self.brush = brush.Brush(self)

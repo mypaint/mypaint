@@ -64,7 +64,7 @@ class Window(gtk.Window):
         self.last_gesture_time = 0 # FIXME: unused?
 
         self.filename = None
-        
+
     def create_ui(self):
         ag = gtk.ActionGroup('WindowActions')
         # FIXME: this xml menu only creates unneeded information duplication, I think.
@@ -301,6 +301,39 @@ class Window(gtk.Window):
     def test_cb(self, action):
         self.tdw.layer.save('test.png')
 
+    def start_profiling(self):
+        def autopaint():
+            import pylab
+            events = pylab.load('painting30sec.dat.gz')
+            events[:,0] *= 0.3
+            events = list(events)
+            t0 = time()
+            t_old = 0.0
+            for t, x, y, pressure in events:
+                sleeptime = t-(time()-t0)
+                if sleeptime > 0.001:
+                    yield sleeptime
+                dtime = t - t_old
+                t_old = t
+                self.doc.stroke_to(dtime, x, y, pressure)
+            print 'replay done.'
+            print self.repaints, 'repaints'
+            gtk.main_quit()
+            yield 10.0
+
+        import gobject
+        p = autopaint()
+        def timer_cb():
+            gobject.timeout_add(int(p.next()*1000.0), timer_cb)
+
+        self.repaints = 0
+        oldfunc=self.tdw.repaint
+        def count_repaints(*args, **kwargs):
+            self.repaints += 1
+            return oldfunc(*args, **kwargs)
+        self.tdw.repaint = count_repaints
+        timer_cb()
+        
     def disableGammaCorrection_cb(self, action):
 		self.tdw.disableGammaCorrection = action.get_active()
 		self.tdw.queue_draw()

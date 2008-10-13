@@ -301,6 +301,8 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.update_cursor()
 
     def update_cursor(self):
+        #return
+        # OPTIMIZE: looks like this can be a major slowdown with X11
         if not self.window: return
         d = int(self.doc.brush.get_actual_radius())*2
 

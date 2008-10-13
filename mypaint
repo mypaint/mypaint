@@ -92,6 +92,7 @@ def main():
         print sys.argv[0], '[OPTION]... [FILENAME]'
         print 'Options:'
         print '  -c /path/to/config   use this directory instead of ~/.mypaint/'
+        print '  -p                   profile (debug only; simulate some strokes and quit)'
         sys.exit(1)
 
     homepath =  os.path.expanduser('~')
@@ -100,14 +101,17 @@ def main():
     else:
         confpath = os.path.join(homepath, '.mypaint/')
 
-    print 'confpath =', confpath
     filename = None
+    profile = False
 
     args = sys.argv[1:]
     while args:
         if args[0] == '-c':
             confpath = args[1]
             args = args[2:]
+        elif args[0] == '-p':
+            args = args[1:]
+            profile = True
         elif args[0].startswith('-'):
             usage_exit()
         else:
@@ -120,8 +124,9 @@ def main():
                 sys.exit(2)
             args = args[1:]
 
+    print 'confpath =', confpath
     init_input()
-    app = application.Application(share, confpath, filename)
+    app = application.Application(share, confpath, filename, profile)
 
     # Recent gtk versions don't allow changing those menu shortcuts by
     # default. <rant>Sigh. This very useful feature used to be the
