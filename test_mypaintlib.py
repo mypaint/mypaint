@@ -76,14 +76,13 @@ def docPaint():
 
     # test save/load
     f1 = StringIO()
-    doc.save(f1)
+    doc.save('test_f1.myp', compress=False)
     doc2 = document.Document()
-    doc2.load(StringIO(f1.getvalue()))
+    doc2.load('test_f1.myp', decompress=False)
     print doc.get_bbox(), doc2.get_bbox()
     assert doc.get_bbox() == doc2.get_bbox()
-    f2 = StringIO()
-    doc2.save(f2)
-    assert f1.getvalue() == f2.getvalue()
+    doc2.save('test_f2.myp', compress=False)
+    assert files_equal('test_f1.myp', 'test_f2.myp')
     doc2.layers[0].surface.save('test_docPaint_b.png')
     assert files_equal('test_docPaint_a.png', 'test_docPaint_b.png')
     while doc2.undo():
@@ -93,9 +92,8 @@ def docPaint():
         pass
     doc2.layers[0].surface.save('test_docPaint_c.png')
     assert files_equal('test_docPaint_a.png', 'test_docPaint_c.png')
-    f3 = StringIO()
-    doc2.save(f3)
-    assert f2.getvalue() == f3.getvalue()
+    doc2.save('test_f3.myp', compress=False)
+    assert files_equal('test_f1.myp', 'test_f3.myp')
     # TODO: add checks for the rendered buffers (random seed should be equal)
 
     # note: this is not supposed to be strictly reproducible because of different random seeds

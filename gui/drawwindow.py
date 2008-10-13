@@ -72,7 +72,7 @@ class Window(gtk.Window):
         ui_string = """<ui>
           <menubar name='Menubar'>
             <menu action='FileMenu'>
-              <menuitem action='Clear'/>
+              <menuitem action='New'/>
               <menuitem action='Open'/>
               <separator/>
               <menuitem action='Save'/>
@@ -152,6 +152,7 @@ class Window(gtk.Window):
               <menuitem action='ColorSelectionWindow'/>
             </menu>
             <menu action='LayerMenu'>
+              <menuitem action='ClearLayer'/>
               <menuitem action='LayerBG'/>
               <menuitem action='LayerFG'/>
               <menuitem action='NewLayer'/>
@@ -174,7 +175,7 @@ class Window(gtk.Window):
         actions = [
 			# name, stock id, label, accelerator, tooltip, callback
             ('FileMenu',     None, 'File'),
-            ('Clear',        None, 'Clear', '<control>period', None, self.clear_cb),
+            ('New',          None, 'New', '<control>N', None, self.new_cb),
             ('Open',         None, 'Open...', '<control>O', None, self.open_cb),
             ('Save',         None, 'Save', '<control>S', None, self.save_cb),
             ('SaveAs',       None, 'Save As...', '<control><shift>S', None, self.save_as_cb),
@@ -224,6 +225,7 @@ class Window(gtk.Window):
             ('ContextHelp',  None, 'Help!', None, None, self.context_help_cb),
 
             ('LayerMenu',    None, 'Layers'),
+            ('ClearLayer',   None, 'Clear', '<control>period', None, self.clear_layer_cb),
             ('LayerBG',      None, 'Background (take layer away)', None, None, self.layer_bg_cb),
             ('LayerFG',      None, 'Foreground (put layer back)',  None, None, self.layer_fg_cb),
             ('NewLayer',     None, 'New Layer', None, None, self.new_layer_cb),
@@ -474,7 +476,7 @@ class Window(gtk.Window):
                 gdk.SCROLL_DOWN: 'MoveDown',
                 }[d])
 
-    def clear_cb(self, action):
+    def clear_layer_cb(self, action):
         self.doc.clear_layer()
         
     # obsolete?
@@ -571,8 +573,7 @@ class Window(gtk.Window):
             d.set_markup(str(e))
             d.run()
             d.destroy()
-            print e
-            self.clear_cb(None)
+            raise
         else:
             t = self.doc.get_total_painting_time()
             if t > 120:
@@ -594,10 +595,41 @@ class Window(gtk.Window):
             d.run()
             d.destroy()
             self.statusbar.push(1, 'Failed to save!')
+            raise
         else:
             self.statusbar.push(1, 'Saved to ' + filename)
 
+
+    def confirm_destructive_action(self, title='Confirm', question='Really continue?'):
+        #t = self.get_unsaved_painting_time()
+        t = self.doc.get_total_painting_time()
+        if t < 15:
+            # no need to ask
+            return True
+
+        if t > 120:
+            t = '%d minutes' % (t/60)
+        else:
+            t = '%d seconds' % t
+        d = gtk.MessageDialog(type = gtk.MESSAGE_QUESTION,
+                              buttons = gtk.BUTTONS_YES_NO,
+                              flags = gtk.DIALOG_MODAL,
+                              )
+        d.set_title(title)
+        d.set_markup("<b>" + question + "</b>\n\nThis will discard %s of unsaved painting." % t)
+        response = d.run()
+        d.destroy()
+        return response == gtk.RESPONSE_YES
+
+    def new_cb(self, action):
+        if not self.confirm_destructive_action():
+            return
+        self.doc.clear()
+        self.filename = None
+
     def open_cb(self, action):
+        if not self.confirm_destructive_action():
+            return
         dialog = gtk.FileChooserDialog("Open..", self,
                                        gtk.FILE_CHOOSER_ACTION_OPEN,
                                        (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
@@ -612,9 +644,11 @@ class Window(gtk.Window):
 
         if self.filename:
             dialog.set_filename(self.filename)
-        if dialog.run() == gtk.RESPONSE_OK:
-            self.open_file(dialog.get_filename())
-        dialog.destroy()
+        try:
+            if dialog.run() == gtk.RESPONSE_OK:
+                self.open_file(dialog.get_filename())
+        finally:
+            dialog.destroy()
         
     def save_cb(self, action):
         if not self.filename:
@@ -637,24 +671,26 @@ class Window(gtk.Window):
 
         if self.filename:
             dialog.set_filename(self.filename)
-        if dialog.run() == gtk.RESPONSE_OK:
-            filename = dialog.get_filename()
-            trash, ext = os.path.splitext(filename)
-            if not ext:
-                #filename += '.png'
-                filename += '.myp'
-            if os.path.exists(filename):
-                d2 = gtk.Dialog("Overwrite?",
-                     self,
-                     gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                     (gtk.STOCK_YES, gtk.RESPONSE_ACCEPT,
-                      gtk.STOCK_NO, gtk.RESPONSE_REJECT))
-                if d2.run() != gtk.RESPONSE_ACCEPT:
-                    filename = None
-                d2.destroy()
-            if filename:
-                self.save_file(filename)
-        dialog.destroy()
+        try:
+            if dialog.run() == gtk.RESPONSE_OK:
+                filename = dialog.get_filename()
+                trash, ext = os.path.splitext(filename)
+                if not ext:
+                    #filename += '.png'
+                    filename += '.myp'
+                if os.path.exists(filename):
+                    d2 = gtk.Dialog("Overwrite?",
+                         self,
+                         gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                         (gtk.STOCK_YES, gtk.RESPONSE_ACCEPT,
+                          gtk.STOCK_NO, gtk.RESPONSE_REJECT))
+                    if d2.run() != gtk.RESPONSE_ACCEPT:
+                        filename = None
+                    d2.destroy()
+                if filename:
+                    self.save_file(filename)
+        finally:
+            dialog.destroy()
 
     def save_next_cb(self, action):
         filename = self.filename
@@ -689,22 +725,10 @@ class Window(gtk.Window):
     def quit_cb(self, *trash):
         #self.finish_pending_actions()
         self.doc.split_stroke()
-        self.app.save_gui_config()
-        t = self.doc.get_total_painting_time()
-        if t > 15:
-            if t > 120:
-                t = '%d minutes' % (t/60)
-            else:
-                t = '%d seconds' % t
-            d = gtk.MessageDialog(type = gtk.MESSAGE_QUESTION,
-                                  buttons = gtk.BUTTONS_YES_NO,
-                                  flags = gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                  )
-            d.set_title('Quit')
-            d.set_markup("<b>Really quit?</b>\n\nThis will discard %s of unsaved painting." % t)
-            if d.run() != gtk.RESPONSE_YES:
-                d.destroy()
-                return True
+        self.app.save_gui_config() # FIXME: should do this periodically, not only on quit
+
+        if not self.confirm_destructive_action(title='Quit', question='Really Quit?'):
+            return True
 
         gtk.main_quit()
         return False

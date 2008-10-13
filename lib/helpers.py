@@ -78,6 +78,11 @@ def rotated_rectangle_bbox(corners):
     y2 = int(ceil(max(list_y)))
     return x1, y1, x2-x1+1, y2-y1+1
 
+def clamp(x, lo, hi):
+    if x < lo: return lo
+    if x > hi: return hi
+    return x
+
 if __name__ == '__main__':
     big = Rect(-3, 2, 180, 222)
     a = Rect(0, 10, 5, 15)
@@ -109,7 +114,3 @@ if __name__ == '__main__':
 
     print 'Tests passed.'
 
-def clamp(x, lo, hi):
-    if x < lo: return lo
-    if x > hi: return hi
-    return x

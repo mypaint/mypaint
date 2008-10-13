@@ -27,7 +27,7 @@ A document:
 
 import helpers, tiledsurface, command, stroke, layer, serialize
 import brush # FIXME: the brush module depends on gtk and everything, but we only need brush_lowlevel
-import random, gc
+import random, gc, gzip
 import numpy
 
 class Document():
@@ -53,15 +53,21 @@ class Document():
         self.stroke = None
         self.canvas_observers = []
 
-        self.clear()
+        self.clear(init=True)
 
-    def clear(self):
+    def clear(self, init=False):
         self.split_stroke()
+        if not init:
+            bbox = self.get_bbox()
         # throw everything away, including undo stack
         self.layer = layer.Layer()
         self.layer.surface.observers.append(self.layer_modified_cb)
         self.layers = [self.layer]
         self.command_stack = command.CommandStack()
+
+        if not init:
+            for f in self.canvas_observers:
+                f(*bbox)
 
     def split_stroke(self):
         if not self.stroke: return
@@ -138,10 +144,12 @@ class Document():
                 t += cmd.stroke.total_painting_time
         return t
 
-    def save(self, f):
+    def save(self, filename, compress=True):
         self.split_stroke()
-        if isinstance(f, str):
-            f = open(f, 'wb')
+        if compress:
+            f = gzip.GzipFile(filename, 'wb')
+        else:
+            f = open(filename, 'wb')
         f.write('MyPaint document\n1\n\n')
         #self.command_stack.serialize(f)
         for cmd in self.command_stack.undo_stack:
@@ -153,11 +161,14 @@ class Document():
                 f.write('ClearLayer %d\n' % cmd.layer_idx)
             else:
                 assert False, 'save not implemented for %s' % cmd
+        f.close()
 
-    def load(self, f):
+    def load(self, filename, decompress=True):
         self.clear()
-        if isinstance(f, str):
-            f = open(f, 'rb')
+        if decompress:
+            f = gzip.GzipFile(filename, 'rb')
+        else:
+            f = open(filename, 'rb')
         assert f.readline() == 'MyPaint document\n'
         version = f.readline()
         assert version == '1\n'
