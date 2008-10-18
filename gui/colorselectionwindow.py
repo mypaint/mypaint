@@ -112,7 +112,7 @@ class Window(gtk.Window):
 
 
 # own color selector
-# see also get_colorselection_pixbuf in gtkmybrush.c
+# see also get_colorselection_pixbuf in colorselector.hpp
 class AlternativeColorSelectorWindow(gtk.Window):
     def __init__(self, colorselectionwindow):
         gtk.Window.__init__(self, gtk.WINDOW_POPUP)
