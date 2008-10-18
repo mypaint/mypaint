@@ -452,12 +452,13 @@ class Window(gtk.Window):
         elif key == keysyms.Right: self.move('MoveRight')
         elif key == keysyms.Up: self.move('MoveUp')
         elif key == keysyms.Down: self.move('MoveDown')
-        elif key == keysyms.space: self.tdw.dragging = True
+        elif key == keysyms.space: 
+            self.tdw.start_drag(self.dragfunc_handtool)
         else: return False
         return True
     def key_release_event_cb_before(self, win, event):
         if event.keyval == keysyms.space:
-            self.tdw.dragging = False
+            self.tdw.stop_drag(self.dragfunc_handtool)
             return True
         return False
 
