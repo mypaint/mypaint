@@ -92,8 +92,7 @@ public:
 
   void set_base_value (int id, float value) {
     g_assert (id >= 0 && id < BRUSH_SETTINGS_COUNT);
-    Mapping * m = settings[id];
-    m->base_value = value;
+    settings[id]->base_value = value;
 
     settings_base_values_have_changed ();
   }

@@ -31,7 +31,9 @@ public:
   Mapping(int inputs_) {
     inputs = inputs_;
     pointsList = new ControlPoints[inputs];
+    for (int i=0; i<inputs; i++) pointsList[i].n = 0;
     inputs_used = 0;
+    base_value = 0;
   }
   ~Mapping() {
     delete pointsList;
