@@ -63,7 +63,7 @@ public:
   Brush() {
     int i;
     for (i=0; i<BRUSH_SETTINGS_COUNT; i++) {
-      settings[i] = mapping_new(INPUT_COUNT);
+      settings[i] = new Mapping(INPUT_COUNT);
     }
     rng = g_rand_new();
     print_inputs = false;
@@ -79,7 +79,7 @@ public:
   ~Brush() {
     int i;
     for (i=0; i<BRUSH_SETTINGS_COUNT; i++) {
-      mapping_free(settings[i]);
+      delete settings[i];
     }
     g_rand_free (rng); rng = NULL;
   }
@@ -100,14 +100,12 @@ public:
 
   void set_mapping_n (int id, int input, int n) {
     g_assert (id >= 0 && id < BRUSH_SETTINGS_COUNT);
-    Mapping * m = settings[id];
-    mapping_set_n (m, input, n);
+    settings[id]->set_n (input, n);
   }
 
   void set_mapping_point (int id, int input, int index, float x, float y) {
     g_assert (id >= 0 && id < BRUSH_SETTINGS_COUNT);
-    Mapping * m = settings[id];
-    mapping_set_point (m, input, index, x, y);
+    settings[id]->set_point (input, index, x, y);
   }
 
 private:
@@ -241,7 +239,7 @@ private:
     assert(inputs[INPUT_SPEED1] >= 0.0 && inputs[INPUT_SPEED1] < 1e8); // checking for inf
 
     for (i=0; i<BRUSH_SETTINGS_COUNT; i++) {
-      settings_value[i] = mapping_calculate (settings[i], inputs);
+      settings_value[i] = settings[i]->calculate (inputs);
     }
 
     {

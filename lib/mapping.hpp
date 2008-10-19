@@ -13,27 +13,103 @@
 // user-defined mappings
 // (the curves you can edit in the brush settings)
 
-// private
-typedef struct {
-  // a set of control points (stepwise linear)
-  float xvalues[8];
-  float yvalues[8];
-  int n;
-} ControlPoints;
+class Mapping {
+private:
+  typedef struct {
+    // a set of control points (stepwise linear)
+    float xvalues[8];
+    float yvalues[8];
+    int n;
+  } ControlPoints;
 
-// only base_value is accessed from outside
-typedef struct {
   int inputs;
-  float base_value;
   ControlPoints * pointsList; // one for each input
   int inputs_used; // optimization
-} Mapping;
+public:
+  float base_value;
 
-Mapping * mapping_new(int inputs);
-void mapping_free (Mapping * m);
+  Mapping(int inputs_) {
+    inputs = inputs_;
+    pointsList = new ControlPoints[inputs];
+    inputs_used = 0;
+  }
+  ~Mapping() {
+    delete pointsList;
+  }
 
-void mapping_set_n (Mapping * m, int input, int n);
-void mapping_set_point (Mapping * m, int input, int index, float x, float y);
-float mapping_calculate (Mapping * m, float * inputs);
+  void set_n (int input, int n)
+  {
+    assert (input >= 0 && input < inputs);
+    assert (n >= 0 && n <= 8);
+    assert (n != 1); // cannot build a linear mapping with only one point
+    ControlPoints * p = pointsList + input;
+
+    if (n != 0 && p->n == 0) inputs_used++;
+    if (n == 0 && p->n != 0) inputs_used--;
+    assert(inputs_used >= 0);
+    assert(inputs_used <= inputs);
+
+    p->n = n;
+  }
+
+  void set_point (int input, int index, float x, float y)
+  {
+    assert (input >= 0 && input < inputs);
+    assert (index >= 0 && index < 8);
+    ControlPoints * p = pointsList + input;
+    assert (index < p->n);
+
+    if (index > 0) {
+      assert (x > p->xvalues[index-1]);
+    }
+
+    p->xvalues[index] = x;
+    p->yvalues[index] = y;
+  }
+
+  float calculate (float * data)
+  {
+    int j;
+    float result;
+    result = base_value;
+
+    // constant mapping (common case)
+    if (inputs_used == 0) return result;
+
+    for (j=0; j<inputs; j++) {
+      ControlPoints * p = pointsList + j;
+
+      if (p->n) {
+        float x, y;
+        x = data[j];
+
+        // find the segment with the slope that we need to use
+        float x0, y0, x1, y1;
+        x0 = p->xvalues[0];
+        y0 = p->yvalues[0];
+        x1 = p->xvalues[1];
+        y1 = p->yvalues[1];
+
+        int i;
+        for (i=2; i<p->n && x>x1; i++) {
+          x0 = x1;
+          y0 = y1;
+          x1 = p->xvalues[i];
+          y1 = p->yvalues[i];
+        }
+
+        //g_print ("%d/%d x0=%f,x1=%f\n", i, p->n, x0, x1);
+
+        // linear interpolation
+        float m, q;
+        m = (y1-y0)/(x1-x0);
+        q = y0 - m*x0;
+        y = m*x + q;
+        result += y;
+      }
+    }
+    return result;
+  }
+};
 
 #endif
