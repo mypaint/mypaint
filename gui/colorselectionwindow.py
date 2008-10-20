@@ -134,6 +134,7 @@ class AlternativeColorSelectorWindow(gtk.Window):
         size = mypaintlib.colorselector_size
         pixbuf = gdk.Pixbuf(gdk.COLORSPACE_RGB, False, 8, size, size)
         arr = pixbuf.get_pixels_array()
+        arr = mypaintlib.gdkpixbuf2numpy(arr)
         mypaintlib.render_colorselector(arr, *self.app.brush.get_color_hsv())
         self.image.set_from_pixbuf(pixbuf)
 

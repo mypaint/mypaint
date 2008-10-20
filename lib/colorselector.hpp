@@ -147,9 +147,9 @@ void render_colorselector(PyObject * arr, double color_h, double color_s, double
   int h, s, v;
   int base_h, base_s, base_v;
 
-  assert(ISCARRAY(arr));
-  assert(ISBEHAVED(arr));
-  assert(PyArray_DIMS(arr) == 3);
+  assert(PyArray_ISCARRAY(arr));
+  assert(PyArray_ISBEHAVED(arr));
+  assert(PyArray_NDIM(arr) == 3);
   assert(PyArray_DIM(arr, 0) == colorselector_size);
   assert(PyArray_DIM(arr, 1) == colorselector_size);
   assert(PyArray_DIM(arr, 2) == 3);

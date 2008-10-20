@@ -34,7 +34,7 @@ public:
   }
 
   void begin_atomic() {
-    assert(self.dirty_bbox.w == 0);
+    if (atomic == 0) assert(dirty_bbox.w == 0);
     atomic++;
   }
   void end_atomic() {
@@ -93,20 +93,20 @@ public:
         Py_INCREF(alpha);
         Py_DECREF(tuple);
 
-        assert(PyArray_DIMS(rgb) == 3);
+        assert(PyArray_NDIM(rgb) == 3);
         assert(PyArray_DIM(rgb, 0) == TILE_SIZE);
         assert(PyArray_DIM(rgb, 1) == TILE_SIZE);
         assert(PyArray_DIM(rgb, 2) == 3);
 
-        assert(PyArray_DIMS(alpha) == 3);
+        assert(PyArray_NDIM(alpha) == 3);
         assert(PyArray_DIM(alpha, 0) == TILE_SIZE);
         assert(PyArray_DIM(alpha, 1) == TILE_SIZE);
         assert(PyArray_DIM(alpha, 2) == 1);
 
-        assert(ISCARRAY(rgb));
-        assert(ISBEHAVED(rgb));
-        assert(ISCARRAY(alpha));
-        assert(ISBEHAVED(alpha));
+        assert(PyArray_ISCARRAY(rgb));
+        assert(PyArray_ISBEHAVED(rgb));
+        assert(PyArray_ISCARRAY(alpha));
+        assert(PyArray_ISBEHAVED(alpha));
 
         float * rgb_p   = (float*)((PyArrayObject*)rgb)->data;
         float * alpha_p = (float*)((PyArrayObject*)alpha)->data;

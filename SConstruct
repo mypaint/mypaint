@@ -15,6 +15,9 @@ env.Append(CXXFLAGS=' -Wall -Wno-sign-compare -Wno-write-strings')
 env.ParseConfig('python-config --cflags --ldflags')
 env.ParseConfig('pkg-config --cflags --libs glib-2.0')
 
+# enable assertions (python-config defines NDEBUG)
+env['CPPDEFINES'].remove('NDEBUG')
+
 SConscript('lib/SConscript', 'env')
 
 

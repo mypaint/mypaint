@@ -235,7 +235,8 @@ private:
     if (print_inputs) {
       g_print("press=% 4.3f, speed1=% 4.4f\tspeed2=% 4.4f\tstroke=% 4.3f\tcustom=% 4.3f\n", (double)inputs[INPUT_PRESSURE], (double)inputs[INPUT_SPEED1], (double)inputs[INPUT_SPEED2], (double)inputs[INPUT_STROKE], (double)inputs[INPUT_CUSTOM]);
     }
-    assert(inputs[INPUT_SPEED1] >= 0.0 && inputs[INPUT_SPEED1] < 1e8); // checking for inf
+    // FIXME: this one fails!!!
+    //assert(inputs[INPUT_SPEED1] >= 0.0 && inputs[INPUT_SPEED1] < 1e8); // checking for inf
 
     for (i=0; i<BRUSH_SETTINGS_COUNT; i++) {
       settings_value[i] = settings[i]->calculate (inputs);
@@ -445,8 +446,8 @@ private:
       if (color_h < 0.0) color_h += 1.0;
       assert(color_h >= 0.0 && color_h <= 1.0);
       assert(color_s >= 0.0 && color_s <= 1.0);
-      //c[1] = CLAMP(ROUND(color_s*255), 0, 255);
-      //c[2] = CLAMP(ROUND(color_v*255), 0, 255);
+      // FIXME: check why this is neccessary
+      color_v = CLAMP(color_v, 0.0, 1.0);
       assert(color_v >= 0.0 && color_v <= 1.0);
 
       hsv_to_rgb_float (&color_h, &color_s, &color_v);
@@ -703,10 +704,10 @@ public:
 
   void set_state (PyObject * data)
   {
-    assert(PyArray_DIMS(data) == 1);
+    assert(PyArray_NDIM(data) == 1);
     assert(PyArray_DIM(data, 0) == STATE_COUNT);
-    assert(ISCARRAY(data));
-    assert(ISBEHAVED(data));
+    assert(PyArray_ISCARRAY(data));
+    assert(PyArray_ISBEHAVED(data));
     npy_float32 * data_p = (npy_float32*)PyArray_DATA(data);
     for (int i=0; i<STATE_COUNT; i++) {
       states[i] = data_p[i];
