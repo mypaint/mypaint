@@ -160,7 +160,7 @@ class Window(gtk.Window):
             </menu>
             <menu action='DebugMenu'>
               <menuitem action='PrintInputs'/>
-              <menuitem action='DisableGammaCorrection'/>
+              <menuitem action='LinearLight'/>
               <menuitem action='VisualizeRendering'/>
               <menuitem action='Test'/>
             </menu>
@@ -267,7 +267,7 @@ class Window(gtk.Window):
             # name, stock id, label, accelerator, tooltip, callback, default toggle status
             ('PrintInputs', None, 'Print Brush Input Values to stdout', None, None, self.print_inputs_cb),
             ('VisualizeRendering', None, 'Visualize Rendering', None, None, self.visualize_rendering_cb),
-            ('DisableGammaCorrection', None, 'Disable sRGB Gamma Correction', None, None, self.disableGammaCorrection_cb),
+            ('LinearLight', None, 'Linear Light (sRGB Gamma Correction)', None, None, self.linear_light_cb),
             ]
         ag.add_toggle_actions(toggle_actions)
         self.ui = gtk.UIManager()
@@ -334,8 +334,8 @@ class Window(gtk.Window):
         self.tdw.repaint = count_repaints
         timer_cb()
         
-    def disableGammaCorrection_cb(self, action):
-		self.tdw.disableGammaCorrection = action.get_active()
+    def linear_light_cb(self, action):
+		self.tdw.linear_light = action.get_active()
 		self.tdw.queue_draw()
 
     def new_stroke_cb(self): # TODO: wire this
@@ -930,8 +930,9 @@ class Window(gtk.Window):
     def view_help_cb(self, action):
         d = gtk.MessageDialog(self, buttons=gtk.BUTTONS_OK)
         d.set_markup(
-            "You can also drag the canvas with the middle mouse button or "
-            "with the arrow keys.\n\n"
+            "You can also drag the canvas with the mouse while holding the middle mouse button or spacebar. "
+            "or with the arrow keys. You can rotate by holding the right mouse button."
+            "\n\n"
             "In contrast to earlier versions, scrolling and zooming are harmless now and "
             "will not make you run out of memory. But you still require a lot of memory "
             "if you paint all over while fully zoomed out."

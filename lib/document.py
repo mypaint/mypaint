@@ -137,6 +137,18 @@ class Document():
             res.expandToIncludeRect(bbox)
         return res
 
+    def render(self, arr, px, py, linear_light=False):
+        assert arr.shape[2] == 3 # RGB only for now
+
+        for layer in self.layers:
+            surface = layer.surface
+            if not linear_light:
+                surface.composite_over_RGB8(arr, px, py)
+            else:
+                surface.composite_over_white_RGB8(arr, px, py)
+                print 'TODO: support layers with linear_light'
+                break
+
     def get_total_painting_time(self):
         t = 0.0
         for cmd in self.command_stack.undo_stack:

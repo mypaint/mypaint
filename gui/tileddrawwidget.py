@@ -50,7 +50,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.last_event_x = None
         self.last_event_y = None
 
-        self.disableGammaCorrection = False
+        self.linear_light = False
         self.visualize_rendering = False
 
         self.translation_x = 0.0
@@ -224,13 +224,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         arr = pixbuf.get_pixels_array()
         arr = mypaintlib.gdkpixbuf2numpy(arr)
 
-        #if not self.disableGammaCorrection:
-        #    for surface in self.displayed_layers:
-        #        surface.composite_over_white_RGB8(arr)
-        #else:
-        for layer in self.doc.layers:
-            surface = layer.surface
-            surface.composite_over_RGB8(arr, -x1, -y1)
+        self.doc.render(arr, -x1, -y1, self.linear_light)
 
         #widget.window.draw_pixbuf(None, pixbuf, 0, 0, 0, 0)
 
