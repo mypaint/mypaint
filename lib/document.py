@@ -140,14 +140,19 @@ class Document():
     def render(self, arr, px, py, linear_light=False):
         assert arr.shape[2] == 3 # RGB only for now
 
+        if linear_light:
+            arr_linear = numpy.ones(arr.shape, dtype='float32')
+
         for layer in self.layers:
             surface = layer.surface
             if not linear_light:
                 surface.composite_over_RGB8(arr, px, py)
             else:
-                surface.composite_over_white_RGB8(arr, px, py)
-                print 'TODO: support layers with linear_light'
-                break
+                surface.composite_over_RGB(arr_linear, px, py)
+
+        if linear_light:
+            # sRGB gamma correction (not correct, but close enough for a first impression)
+            arr[:] = 255*arr_linear**(1/2.2)
 
     def get_total_painting_time(self):
         t = 0.0

@@ -29,19 +29,13 @@ class Tile:
         return t
         
     def composite_over_RGB8(self, dst):
-        dst[:,:,0:3] *= 1.0-self.alpha # <-- isn't a 255 missing here anywawy?
+        dst[:,:,0:3] *= 1.0-self.alpha
         dst[:,:,0:3] += 255*self.rgb[:,:,0:3]
 
-    def composite_over_white_RGB8(self, dst):
-		# FIXME: to be removed; composite in high resolution
-        # we are converting from linear RGB to sRGB (not precisely, but hopefully good enough)
-        # FIXME: this calculation does not work with premultiplied alpha!!!?!
-        #        must composite in linear space anyway!
-        #dst[:,:,0:3] += 255*(self.rgb[:,:,0:3]**(1/2.2))
-        def lin2srgb(x):
-            return x**(1/2.2)
-        dst[:,:,0:3] = 255*lin2srgb(1.0-self.alpha + self.rgb[:,:,0:3])
-        # FIXME: this composites over white now...
+    def composite_over_RGB(self, dst):
+        dst[:,:,0:3] *= 1.0-self.alpha
+        dst[:,:,0:3] += self.rgb[:,:,0:3]
+
 
     #def composite(self, other):
         # resultColor = topColor + (1.0 - topAlpha) * bottomColor
@@ -106,19 +100,19 @@ class TiledSurface(mypaintlib.TiledSurface):
             y0 = N*y0+py
             if x0 < 0 or y0 < 0: continue
             if x0+N > w or y0+N > h: continue
-            tile.composite_over_RGB8(dst[y0:y0+N,x0:x0+N,:])
+            tile.composite_over_RGB8(dst[y0:y0+N,x0:x0+N,:]) # OPTIMIZE: is this slower than without offsets?
 
-    def composite_over_white_RGB8(self, dst):
+    def composite_over_RGB(self, dst, px, py):
         # FIXME: code duplication
         h, w, channels = dst.shape
         assert channels == 3
 
         for (x0, y0), tile in self.tiledict.iteritems():
-            x0 = N*x0
-            y0 = N*y0
+            x0 = N*x0+px
+            y0 = N*y0+py
             if x0 < 0 or y0 < 0: continue
             if x0+N > w or y0+N > h: continue
-            tile.composite_over_white_RGB8(dst[y0:y0+N,x0:x0+N,:])
+            tile.composite_over_RGB(dst[y0:y0+N,x0:x0+N,:]) # OPTIMIZE: is this slower than without offsets?
 
     def save(self, filename):
         assert self.tiledict, 'cannot save empty surface'
