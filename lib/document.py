@@ -25,7 +25,7 @@ A document:
 - must be altered via undo/redo commands (except painting)
 """
 
-import helpers, tiledsurface, command, stroke, layer, serialize
+import mypaintlib, helpers, tiledsurface, command, stroke, layer, serialize, colorspace
 import brush # FIXME: the brush module depends on gtk and everything, but we only need brush_lowlevel
 import random, gc, gzip
 import numpy
@@ -77,9 +77,6 @@ class Document():
             self.layer.populate_cache()
             self.command_stack.do(command.Stroke(self, self.layers.index(self.layer), self.stroke))
         self.stroke = None
-
-    def reset(self):
-        assert False, 'depreciated, use clear'
 
     def clear_layer(self):
         self.do(command.ClearLayer(self, self.layers.index(self.layer)))
@@ -151,8 +148,7 @@ class Document():
                 surface.composite_over_RGB(arr_linear, px, py)
 
         if linear_light:
-            # sRGB gamma correction (not correct, but close enough for a first impression)
-            arr[:] = 255*arr_linear**(1/2.2)
+            colorspace.float_rgb_lin_to_srgb(arr_linear, arr)
 
     def get_total_painting_time(self):
         t = 0.0
@@ -160,6 +156,27 @@ class Document():
             if isinstance(cmd, command.Stroke):
                 t += cmd.stroke.total_painting_time
         return t
+
+    def render_as_pixbuf(self, x, y, w, h):
+        from gtk import gdk
+        pixbuf = gdk.Pixbuf(gdk.COLORSPACE_RGB, False, 8, w, h)
+        pixbuf.fill(0xffffffff)
+        arr = pixbuf.get_pixels_array()
+        arr = mypaintlib.gdkpixbuf2numpy(arr)
+        self.render(arr, -x, -y)
+        return pixbuf
+
+
+    def load_layer_from_data(self, data):
+        self.do(command.LoadLayer(self, self.layers.index(self.layer), data))
+
+    def load_from_pixbuf(self, pixbuf):
+        self.clear()
+        arr = pixbuf.get_pixels_array()
+        arr = mypaintlib.gdkpixbuf2numpy(arr)
+        # TODO: linear light correction (if used)
+        data = (arr/255.0).astype('float32') # FIXME: duplicated internal buffer type knowledge
+        self.load_layer_from_data(data)
 
     def save(self, filename, compress=True):
         self.split_stroke()

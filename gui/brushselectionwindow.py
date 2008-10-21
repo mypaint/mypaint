@@ -43,7 +43,7 @@ class Window(gtk.Window):
         self.tdw_doc = document.Document()
         self.tdw = tileddrawwidget.TiledDrawWidget(self.tdw_doc)
         self.tdw.lock_viewport()
-        self.tdw.set_size_request(128, 128)
+        self.tdw.set_size_request(brush.preview_w, brush.preview_h)
         hbox.pack_start(self.tdw, expand=False, fill=False)
 
         vbox2 = gtk.VBox()
@@ -77,11 +77,10 @@ class Window(gtk.Window):
         if pixbuf is None:
             self.tdw_doc.clear()
         else:
-            self.tdw.doc.load_pixbuf(pixbuf)
+            self.tdw.doc.load_from_pixbuf(pixbuf)
 
     def get_preview_pixbuf(self):
-        pixbuf = self.tdw.get_as_pixbuf()
-        # TODO: cut only painted area, please
+        pixbuf = self.tdw.doc.render_as_pixbuf(0, 0, brush.preview_w, brush.preview_h)
         return pixbuf
 
     def add_as_new_cb(self, window):
@@ -95,7 +94,7 @@ class Window(gtk.Window):
         self.app.save_brushorder()
 
     def update_preview_cb(self, window):
-        pixbuf = self.tdw.get_as_pixbuf()
+        pixbuf = self.get_preview_pixbuf()
         b = self.app.selected_brush
         if b is None:
             # no brush selected

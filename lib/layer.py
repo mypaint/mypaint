@@ -16,7 +16,7 @@ class Struct:
     pass
 
 def strokes_from_to(a, b):
-    if a.background != b.background:
+    if a.background is not b.background:
         return None
     n = len(a.strokes)
     if a.strokes == b.strokes[:n]:
@@ -144,8 +144,8 @@ class Layer:
 
         def render_from_empty():
             #print 'full rerender'
-            if self.background:
-                surface.load(self.background)
+            if self.background is not None:
+                surface.load_from_data(self.background)
             else:
                 surface.clear()
             self.rendered.strokes = []
@@ -153,7 +153,7 @@ class Layer:
             render_new_strokes()
 
         cost = len(self.strokes)
-        if self.background:
+        if self.background is not None:
             cost += 3 # penalty for loading a pixbuf
         options.append((cost, render_from_empty))
 

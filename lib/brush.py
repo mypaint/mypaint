@@ -14,8 +14,10 @@ import brushsettings
 import gtk, string, os, colorsys
 from helpers import clamp
 
-thumb_w = 64 #128
-thumb_h = 64 #128
+preview_w = 128
+preview_h = 128
+thumb_w = 64
+thumb_h = 64
 
 current_brushfile_version = 2
 

@@ -84,12 +84,26 @@ class TiledSurface(mypaintlib.TiledSurface):
             self.tiledict[(x, y)] = t
         return t.rgb, t.alpha
         
-    #def tiles(self, x, y, w, h):
+    #def iter_existing_tiles(self, x, y, w, h):
     #    for xx in xrange(x/Tile.N, (x+w)/Tile.N+1):
     #        for yy in xrange(y/Tile.N, (x+h)/Tile.N+1):
     #            tile = self.tiledict.get((xx, yy), None)
     #            if tile is not None:
     #                yield xx*Tile.N, yy*Tile.N, tile
+
+    def iter_tiles_memory(self, x, y, w, h, readonly):
+        for xx in xrange(x/N, (x+w-1)/N+1):
+            for yy in xrange(y/N, (y+h-1)/N+1):
+                # note, this is somewhat untested
+                x_start = max(0, x - xx*N)
+                y_start = max(0, y - yy*N)
+                x_end = min(N, x+w - xx*N)
+                y_end = min(N, y+h - yy*N)
+                #print xx*N, yy*N
+                #print x_start, y_start, x_end, y_end
+
+                rgb, alpha = self.get_tile_memory(xx, yy, readonly)
+                yield xx*N, yy*N, (rgb[y_start:y_end,x_start:y_end], alpha[y_start:y_end,x_start:y_end])
 
     def composite_over_RGB8(self, dst, px, py):
         h, w, channels = dst.shape
@@ -146,8 +160,14 @@ class TiledSurface(mypaintlib.TiledSurface):
         bbox = get_tiles_bbox([pos for (pos, tile) in dirty])
         self.notify_observers(*bbox)
 
+    def load_from_data(self, data):
+        assert data.shape[2] == 3, 'alpha not yet implemented'
+        self.clear()
+        for x, y, (rgb, alpha) in self.iter_tiles_memory(0, 0, data.shape[1], data.shape[0], readonly=False):
+            # FIXME: will be buggy at border?
+            rgb[:,:,0:] = data[y:y+N,x:x+N,:]
+            alpha[:,:] = 1.0
+
     def get_bbox(self):
         return get_tiles_bbox(self.tiledict)
 
-    def set_from_pixbuf(self, pixbuf):
-        print 'TODO: set_from_pixbuf or alternative'

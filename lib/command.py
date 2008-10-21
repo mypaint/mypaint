@@ -79,6 +79,26 @@ class ClearLayer(Action):
 
         del self.old_strokes, self.old_background
 
+class LoadLayer(Action):
+    def __init__(self, doc, layer_idx, data):
+        self.doc = doc
+        self.layer_idx = layer_idx
+        self.data = data
+    def redo(self):
+        layer = self.doc.layers[self.layer_idx]
+        self.old_strokes = layer.strokes[:] # copy
+        self.old_background = layer.background
+        layer.strokes = []
+        layer.background = self.data
+        layer.rerender()
+    def undo(self):
+        layer = self.doc.layers[self.layer_idx]
+        layer.strokes = self.old_strokes
+        layer.background = self.old_background
+        layer.rerender()
+
+        del self.old_strokes, self.old_background
+
 #class LoadImage(ClearLayer):
 #    def __init__(self, layer, pixbuf):
 #        ClearLayer.__init__(self, layer)
