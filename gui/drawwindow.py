@@ -444,21 +444,33 @@ class Window(gtk.Window):
 
     def key_press_event_cb_before(self, win, event):
         key = event.keyval 
-        ANY_MODIFIER = gdk.SHIFT_MASK | gdk.MOD1_MASK | gdk.CONTROL_MASK
-        if event.state & ANY_MODIFIER:
-            # allow user shortcuts with modifiers
-            return False
-        if key == keysyms.Left: self.move('MoveLeft')
-        elif key == keysyms.Right: self.move('MoveRight')
+        #ANY_MODIFIER = gdk.SHIFT_MASK | gdk.MOD1_MASK | gdk.CONTROL_MASK
+        #if event.state & ANY_MODIFIER:
+        #    # allow user shortcuts with modifiers
+        #    return False
+        if key == keysyms.Left: 
+            if event.state & gdk.CONTROL_MASK:
+                self.rotate('RotateLeft')
+            else:
+                self.move('MoveLeft')
+        elif key == keysyms.Right:
+            if event.state & gdk.CONTROL_MASK:
+                self.rotate('RotateRight')
+            else:
+                self.move('MoveRight')
         elif key == keysyms.Up: self.move('MoveUp')
         elif key == keysyms.Down: self.move('MoveDown')
         elif key == keysyms.space: 
-            self.tdw.start_drag(self.dragfunc_handtool)
+            if event.state & gdk.CONTROL_MASK:
+                self.tdw.start_drag(self.dragfunc_rotate)
+            else:
+                self.tdw.start_drag(self.dragfunc_handtool)
         else: return False
         return True
     def key_release_event_cb_before(self, win, event):
         if event.keyval == keysyms.space:
             self.tdw.stop_drag(self.dragfunc_handtool)
+            self.tdw.stop_drag(self.dragfunc_rotate)
             return True
         return False
 
@@ -475,6 +487,10 @@ class Window(gtk.Window):
 
     def dragfunc_handtool(self, dx, dy):
         self.tdw.scroll(-dx, -dy)
+
+    def dragfunc_rotate(self, dx, dy):
+        self.tdw.scroll(-dx, -dy)
+        self.tdw.rotate(2*math.pi*dx/500.0)
 
     def dragfunc_rotozoom(self, dx, dy):
         self.tdw.scroll(-dx, -dy)
