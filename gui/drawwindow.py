@@ -162,7 +162,6 @@ class Window(gtk.Window):
               <menuitem action='PrintInputs'/>
               <menuitem action='LinearLight'/>
               <menuitem action='VisualizeRendering'/>
-              <menuitem action='Test'/>
             </menu>
             <menu action='HelpMenu'>
               <menuitem action='Docu'/>
@@ -243,7 +242,6 @@ class Window(gtk.Window):
             ('About', None, 'About MyPaint', None, None, self.show_about_cb),
 
             ('DebugMenu',    None, 'Debug'),
-            ('Test', None, 'Test', None, None, self.test_cb),
 
 
             ('ShortcutsMenu', None, 'Shortcuts'),
@@ -297,9 +295,6 @@ class Window(gtk.Window):
 
     def visualize_rendering_cb(self, action):
         self.tdw.visualize_rendering = action.get_active()
-
-    def test_cb(self, action):
-        self.tdw.layer.save('test.png')
 
     def start_profiling(self):
         def autopaint():
