@@ -1,194 +1,126 @@
-// FIXME: maybe this file should not be part of mypainlib?
-const int colorselector_size = 256;
+// FIXME: maybe this file should not be part of mypaintlib?
 
-#ifndef SWIG
+static const int colorselector_size = 240; // diameter of Swiss Cheese Wheel Color Selector(TM)
+static const int colorselector_center = (colorselector_size/2); // radii/center coordinate of SCWCS
 
-struct PrecalcData {
-  int h;
-  int s;
-  int v;
-  //signed char s;
-  //signed char v;
-};
+#include <cmath> // atan2, sqrt or hypot
 
-PrecalcData * precalcData[4];
-int precalcDataIndex;
+/*
+  --------- Swiss Cheese Wheel Color Selector(TM) --------- 
 
-PrecalcData * precalc_data(float phase0)
+  Ring 0: Current brush color
+  Ring 1: Value
+  Ring 2: Saturation
+  Ring 3: Hue
+  
+*/
+
+// Frequently used constants
+static const float RAD_TO_ONE = 0.5f/M_PI;
+static const float TWO_PI = 2.0f*M_PI;
+// Calculate these as precise as the hosting system can once and for all
+static const float ONE_OVER_THREE = 1.0f/3.0f;
+static const float TWO_OVER_THREE = 2.0f/3.0f;
+
+// 1 Mile of variables....
+void get_scwcs_hsva_at( float* h, float* s, float* v, float* a, float x, float y, float base_h, float base_s, float base_v, bool adjust_color = true, bool only_colors = true, float mark_h = 0.0f )
 {
-  // Hint to the casual reader: some of the calculation here do not
-  // what I originally intended. Not everything here will make sense.
-  // It does not matter in the end, as long as the result looks good.
-
-  int width, height;
-  float width_inv, height_inv;
-  int x, y, i;
-  PrecalcData * result;
-
-  width = colorselector_size;
-  height = colorselector_size;
-  result = (PrecalcData*)g_malloc(sizeof(PrecalcData)*width*height);
-
-  //phase0 = rand_double (rng) * 2*M_PI;
-
-  width_inv = 1.0/width;
-  height_inv = 1.0/height;
-
-  i = 0;
-  for (y=0; y<height; y++) {
-    for (x=0; x<width; x++) {
-      float h, s, v, s_original, v_original;
-      int dx, dy;
-      float v_factor = 0.8;
-      float s_factor = 0.8;
-      float h_factor = 0.05;
-
-#define factor2_func(x) ((x)*(x)*SIGN(x))
-      float v_factor2 = 0.01;
-      float s_factor2 = 0.01;
-
-
-      h = 0;
-      s = 0;
-      v = 0;
-
-      dx = x-width/2;
-      dy = y-height/2;
-
-      // basically, its x-axis = value, y-axis = saturation
-      v = dx*v_factor + factor2_func(dx)*v_factor2;
-      s = dy*s_factor + factor2_func(dy)*s_factor2;
-
-      v_original = v; s_original = s;
-
-      // overlay sine waves to color hue, not visible at center, ampilfying near the border
-      if (1) {
-        float amplitude, phase;
-        float dist, dist2, borderdist;
-        float dx_norm, dy_norm;
-        float angle;
-        dx_norm = dx*width_inv;
-        dy_norm = dy*height_inv;
-
-        dist2 = dx_norm*dx_norm + dy_norm*dy_norm;
-        dist = sqrtf(dist2);
-        borderdist = 0.5 - MAX(ABS(dx_norm), ABS(dy_norm));
-        angle = atan2f(dy_norm, dx_norm);
-        amplitude = 50 + dist2*dist2*dist2*100;
-        phase = phase0 + 2*M_PI* (dist*0 + dx_norm*dx_norm*dy_norm*dy_norm*50) + angle*7;
-        //h = sinf(phase) * amplitude;
-        h = sinf(phase);
-        h = (h>0)?h*h:-h*h;
-        h *= amplitude;
-
-        // calcualte angle to next 45-degree-line
-        angle = ABS(angle)/M_PI;
-        if (angle > 0.5) angle -= 0.5;
-        angle -= 0.25;
-        angle = ABS(angle) * 4;
-        // angle is now in range 0..1
-        // 0 = on a 45 degree line, 1 = on a horizontal or vertical line
-
-        v = 0.6*v*angle + 0.4*v;
-        h = h * angle * 1.5;
-        s = s * angle * 1.0;
-
-        // this part is for strong color variations at the borders
-        if (borderdist < 0.3) {
-          float fac;
-          float h_new;
-          fac = (1 - borderdist/0.3);
-          // fac is 1 at the outermost pixels
-          v = (1-fac)*v + fac*0;
-          s = (1-fac)*s + fac*0;
-          fac = fac*fac*0.6;
-          h_new = (angle+phase0+M_PI/4)*360/(2*M_PI) * 8;
-          while (h_new > h + 360/2) h_new -= 360;
-          while (h_new < h - 360/2) h_new += 360;
-          h = (1-fac)*h + fac*h_new;
-          //h = (angle+M_PI/4)*360/(2*M_PI) * 4;
-        }
-      }
-
-      {
-        // undo that funky stuff on horizontal and vertical lines
-        int min = ABS(dx);
-        if (ABS(dy) < min) min = ABS(dy);
-        if (min < 30) {
-          float mul;
-          min -= 6;
-          if (min < 0) min = 0;
-          mul = min / (30.0-1.0-6.0);
-          h = mul*h; //+ (1-mul)*0;
-
-          v = mul*v + (1-mul)*v_original;
-          s = mul*s + (1-mul)*s_original;
-        }
-      }
-
-      h -= h*h_factor;
-
-      result[i].h = (int)h;
-      result[i].v = (int)v;
-      result[i].s = (int)s;
-      i++;
+  float rel_x = (colorselector_center-x);
+  float rel_y = (colorselector_center-y);
+  
+  //float radi = sqrt( rel_x*rel_x + rel_y*rel_y ); // Pre-C99 solution
+  float radi = hypot( rel_x, rel_y );
+  float theta = atan2( rel_y, rel_x );
+  if( theta < 0.0f ) theta += TWO_PI; // Range: [ 0, 2*PI )
+  
+  // Current brush color
+  *h = base_h;
+  *s = base_s;
+  *v = base_v;
+  *a = 255.0f; // Alpha is always [0,255]
+  
+  if( radi < 43.0f || radi > 120.0f ) // Masked/Clipped/Tranparent area
+  {
+    // transparent/cut away
+    *a = 0.0f;
+  }
+  else if( radi > 50.0f && radi <= 65.0f ) // Saturation
+  {
+    *s = (theta/TWO_PI);
+    
+    if( only_colors == false && floor(*s*255.0f) == floor(base_s*255.0f) ) {
+      // Draw marker
+      *s = *v = 1.0f;
+      *h = mark_h;
+    }
+    
+  }
+  else if( radi > 65.0f && radi <= 90.0f ) // Value 
+  {
+    *v = (theta/TWO_PI);
+    
+    if( only_colors == false && floor(*v*255.0f) == floor(base_v*255.0f) ) {
+      // Draw marker
+      *s = *v = 1.0f;
+      *h = mark_h;
+    }
+    
+  }
+  else if( radi > 90.0f && radi <= 120.0f ) // Hue
+  {
+    *h = (theta*RAD_TO_ONE);
+    
+    if( only_colors == false && floor(*h*360.0f) == floor(base_h*360.0f) ) {
+      // Draw marker
+      *h = mark_h;
+    }
+    
+    if( adjust_color == false ) {
+      // Picking a new hue resets Saturation and Value
+      *s = *v = 1.0f;
     }
   }
-  return result;
 }
 
-#endif /* #ifndef SWIG */
-
-void render_colorselector(PyObject * arr, double color_h, double color_s, double color_v)
+PyObject* pick_scwcs_hsv_at( float x, float y, double brush_h, double brush_s, double brush_v )
 {
-  PrecalcData * pre;
-  guchar * pixels;
-  int x, y;
-  int h, s, v;
-  int base_h, base_s, base_v;
+  float h,s,v,a;
+  
+  float base_h = brush_h;
+  float base_s = brush_s;
+  float base_v = brush_v;
+  
+  get_scwcs_hsva_at(&h, &s, &v, &a, x, y, base_h, base_s, base_v);
+  
+  return Py_BuildValue("fff",h,s,v);
+}
 
+void render_swisscheesewheelcolorselector(PyObject * arr, double brush_h, double brush_s, double brush_v)
+{
   assert(PyArray_ISCARRAY(arr));
   assert(PyArray_ISBEHAVED(arr));
   assert(PyArray_NDIM(arr) == 3);
   assert(PyArray_DIM(arr, 0) == colorselector_size);
   assert(PyArray_DIM(arr, 1) == colorselector_size);
-  assert(PyArray_DIM(arr, 2) == 3);
-  pixels = (guchar*)((PyArrayObject*)arr)->data;
-    
-  pre = precalcData[precalcDataIndex];
-  if (!pre) {
-    pre = precalcData[precalcDataIndex] = precalc_data(2*M_PI*(precalcDataIndex/4.0));
-  }
-  precalcDataIndex++;
-  precalcDataIndex %= 4;
+  assert(PyArray_DIM(arr, 2) == 4);  // memory width of pixel data ( 3 = RGB, 4 = RGBA )
+  guchar* pixels = (guchar*)((PyArrayObject*)arr)->data;
+  
+  const int pixels_inc = PyArray_DIM(arr, 2);
+  
+  float h,s,v,a;
+  
+  float base_h = brush_h;
+  float base_s = brush_s;
+  float base_v = brush_v;
+  
+  float ofs_h = ((base_h+ONE_OVER_THREE)>1.0f)?(base_h-TWO_OVER_THREE):(base_h+ONE_OVER_THREE); // offset hue
 
-  base_h = color_h*360;
-  base_s = color_s*255;
-  base_v = color_v*255;
-
-  for (y=0; y<colorselector_size; y++) {
-    for (x=0; x<colorselector_size; x++) {
-      guchar * p;
-
-      h = base_h + pre->h;
-      s = base_s + pre->s;
-      v = base_v + pre->v;
-      pre++;
-
-
-      if (s < 0) { if (s < -50) { s = - (s + 50); } else { s = 0; } } 
-      if (s > 255) { if (s > 255 + 50) { s = 255 - ((s-50)-255); } else { s = 255; } }
-      if (v < 0) { if (v < -50) { v = - (v + 50); } else { v = 0; } }
-      if (v > 255) { if (v > 255 + 50) { v = 255 - ((v-50)-255); } else { v = 255; } }
-
-      s = s & 255;
-      v = v & 255;
-      h = h%360; if (h<0) h += 360;
-
-      p = pixels + 3*(y*colorselector_size + x);
-      hsv_to_rgb_int (&h, &s, &v);
-      p[0] = h; p[1] = s; p[2] = v;
+  for(float y=0; y<colorselector_size; y++) {
+    for(float x=0; x<colorselector_size; x++) {
+      get_scwcs_hsva_at(&h, &s, &v, &a, x, y, base_h, base_s, base_v, false, false, ofs_h);
+      hsv_to_rgb_range_one(&h,&s,&v); // convert from HSV [0,1] to RGB [0,255]
+      pixels[0] = h; pixels[1] = s; pixels[2] = v; pixels[3] = a;
+      pixels += pixels_inc; // next pixel block
     }
   }
 }
-

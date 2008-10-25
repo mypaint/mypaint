@@ -45,45 +45,6 @@ class Window(gtk.Window):
     def update(self):
         self.set_color_hsv(self.app.brush.get_color_hsv())
 
-    def pick_color_at_pointer(self, size=3):
-        # grab screen color at cursor (average of size x size rectangle)
-        # inspired by gtkcolorsel.c function grab_color_at_mouse()
-        screen = self.get_screen()
-        colormap = screen.get_system_colormap()
-        root = screen.get_root_window()
-        screen_w, screen_h = screen.get_width(), screen.get_height()
-        display = self.get_display()
-        screen_trash, x_root, y_root, modifiermask_trash = display.get_pointer()
-        image = None
-        x = x_root-size/2
-        y = y_root-size/2
-        if x < 0: x = 0
-        if y < 0: y = 0
-        if x+size > screen_w: x = screen_w-size
-        if y+size > screen_h: y = screen_h-size
-        image = root.get_image(x, y, size, size)
-        color_total = (0, 0, 0)
-        for x, y in helpers.iter_rect(0, 0, size, size):
-            pixel = image.get_pixel(x, y)
-            color = colormap.query_color(pixel)
-            color = [color.red, color.green, color.blue]
-            color_total = (color_total[0]+color[0], color_total[1]+color[1], color_total[2]+color[2])
-        N = size*size
-        color_total = (color_total[0]/N, color_total[1]/N, color_total[2]/N)
-        self.cs.set_current_color(gdk.Color(*color_total))
-        
-    def get_color_rgb(self):
-        c = self.cs.get_current_color()
-        r = float(c.red  ) * 255 / 65535
-        g = float(c.green) * 255 / 65535
-        b = float(c.blue ) * 255 / 65535
-        return [int(r), int(g), int(b)]
-
-    def set_color_rgb(self, rgb):
-        r, g, b  = rgb
-        c = gdk.Color(int(r*65535.0/255.0+0.5), int(g*65535.0/255.0+0.5), int(b*65535.0/255.0+0.5))
-        self.cs.set_current_color(c)
-
     def get_color_hsv(self):
         c = self.cs.get_current_color()
         r = float(c.red  ) / 65535
@@ -128,15 +89,9 @@ class AlternativeColorSelectorWindow(gtk.Window):
 
         self.image = image = gtk.Image()
         self.add(image)
-
-
-
-        size = mypaintlib.colorselector_size
-        pixbuf = gdk.Pixbuf(gdk.COLORSPACE_RGB, False, 8, size, size)
-        arr = pixbuf.get_pixels_array()
-        arr = mypaintlib.gdkpixbuf2numpy(arr)
-        mypaintlib.render_colorselector(arr, *self.app.brush.get_color_hsv())
-        self.image.set_from_pixbuf(pixbuf)
+        
+        self.h, self.s, self.v = self.app.brush.get_color_hsv()
+        self.update_image()
 
 	self.set_events(gdk.BUTTON_PRESS_MASK |
                         gdk.BUTTON_RELEASE_MASK |
@@ -154,10 +109,24 @@ class AlternativeColorSelectorWindow(gtk.Window):
         self.show_all()
 
         self.window.set_cursor(gdk.Cursor(gdk.CROSSHAIR))
+    
+    def update_image(self):
+        size = mypaintlib.colorselector_size
+        pixbuf = gdk.Pixbuf(gdk.COLORSPACE_RGB, True, 8, size, size)
+        arr = pixbuf.get_pixels_array()
+        arr = mypaintlib.gdkpixbuf2numpy(arr)
+        mypaintlib.render_swisscheesewheelcolorselector(arr, self.h, self.s, self.v)
+        pixmap, mask = pixbuf.render_pixmap_and_mask()
+        self.image.set_from_pixmap(pixmap, mask)
+        self.shape_combine_mask(mask,0,0)
         
+    def pick_color(self,x,y):
+        self.h, self.s, self.v = mypaintlib.pick_scwcs_hsv_at( x, y, self.h, self.s, self.v )
+        self.colorselectionwindow.set_color_hsv((self.h, self.s, self.v))
+    
     def button_press_cb(self, widget, event):
         if event.button == 1:
-            self.colorselectionwindow.pick_color_at_pointer(size=1)
+          self.pick_color(event.x,event.y)
         self.button_pressed = True
 
     def remove_cleanly(self):
@@ -169,7 +138,9 @@ class AlternativeColorSelectorWindow(gtk.Window):
 
     def button_release_cb(self, widget, event):
         if self.button_pressed:
-            self.remove_cleanly()
+            if event.button == 1:
+                self.pick_color(event.x,event.y)
+                self.update_image()
 
     def enter_notify_cb(self, widget, event):
         if self.destroy_timer is not None:
@@ -180,4 +151,4 @@ class AlternativeColorSelectorWindow(gtk.Window):
         # allow to leave the window for a short time
         if self.destroy_timer is not None:
             gobject.source_remove(self.destroy_timer)
-        self.destroy_timer = gobject.timeout_add(80, self.remove_cleanly)
+        self.destroy_timer = gobject.timeout_add(200, self.remove_cleanly)

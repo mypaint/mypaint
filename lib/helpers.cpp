@@ -44,249 +44,6 @@ gdouble rand_gauss (GRand * rng)
 }
 
 // stolen from GIMP (gimpcolorspace.c)
-
-/*  gint functions  */
-
-/**
- * gimp_rgb_to_hsv_int:
- * @red: The red channel value, returns the Hue channel
- * @green: The green channel value, returns the Saturation channel
- * @blue: The blue channel value, returns the Value channel
- *
- * The arguments are pointers to int representing channel values in
- * the RGB colorspace, and the values pointed to are all in the range
- * [0, 255].
- *
- * The function changes the arguments to point to the HSV value
- * corresponding, with the returned values in the following
- * ranges: H [0, 360], S [0, 255], V [0, 255].
- **/
-void
-rgb_to_hsv_int (gint *red,
-                gint *green,
-                gint *blue)
-{
-  gdouble  r, g, b;
-  gdouble  h, s, v;
-  gint     min;
-  gdouble  delta;
-
-  r = *red;
-  g = *green;
-  b = *blue;
-
-  if (r > g)
-    {
-      v = MAX (r, b);
-      min = MIN (g, b);
-    }
-  else
-    {
-      v = MAX (g, b);
-      min = MIN (r, b);
-    }
-
-  delta = v - min;
-
-  if (v == 0.0)
-    s = 0.0;
-  else
-    s = delta / v;
-
-  if (s == 0.0)
-    h = 0.0;
-  else
-    {
-      if (r == v)
-	h = 60.0 * (g - b) / delta;
-      else if (g == v)
-	h = 120 + 60.0 * (b - r) / delta;
-      else
-	h = 240 + 60.0 * (r - g) / delta;
-
-      if (h < 0.0)
-	h += 360.0;
-      if (h > 360.0)
-	h -= 360.0;
-    }
-
-  *red   = ROUND (h);
-  *green = ROUND (s * 255.0);
-  *blue  = ROUND (v);
-}
-
-/**
- * gimp_hsv_to_rgb_int:
- * @hue: The hue channel, returns the red channel
- * @saturation: The saturation channel, returns the green channel
- * @value: The value channel, returns the blue channel
- *
- * The arguments are pointers to int, with the values pointed to in the
- * following ranges:  H [0, 360], S [0, 255], V [0, 255].
- *
- * The function changes the arguments to point to the RGB value
- * corresponding, with the returned values all in the range [0, 255].
- **/
-void
-hsv_to_rgb_int (gint *hue,
-                gint *saturation,
-                gint *value)
-{
-  gdouble h, s, v, h_temp;
-  gdouble f, p, q, t;
-  gint i;
-
-  if (*saturation == 0)
-    {
-      *hue        = *value;
-      *saturation = *value;
-      *value      = *value;
-    }
-  else
-    {
-      h = *hue;
-      s = *saturation / 255.0;
-      v = *value      / 255.0;
-
-      if (h == 360)
-         h_temp = 0;
-      else
-         h_temp = h;
-
-      h_temp = h_temp / 60.0;
-      i = floor (h_temp);
-      f = h_temp - i;
-      p = v * (1.0 - s);
-      q = v * (1.0 - (s * f));
-      t = v * (1.0 - (s * (1.0 - f)));
-
-      switch (i)
-	{
-	case 0:
-	  *hue        = ROUND (v * 255.0);
-	  *saturation = ROUND (t * 255.0);
-	  *value      = ROUND (p * 255.0);
-	  break;
-
-	case 1:
-	  *hue        = ROUND (q * 255.0);
-	  *saturation = ROUND (v * 255.0);
-	  *value      = ROUND (p * 255.0);
-	  break;
-
-	case 2:
-	  *hue        = ROUND (p * 255.0);
-	  *saturation = ROUND (v * 255.0);
-	  *value      = ROUND (t * 255.0);
-	  break;
-
-	case 3:
-	  *hue        = ROUND (p * 255.0);
-	  *saturation = ROUND (q * 255.0);
-	  *value      = ROUND (v * 255.0);
-	  break;
-
-	case 4:
-	  *hue        = ROUND (t * 255.0);
-	  *saturation = ROUND (p * 255.0);
-	  *value      = ROUND (v * 255.0);
-	  break;
-
-	case 5:
-	  *hue        = ROUND (v * 255.0);
-	  *saturation = ROUND (p * 255.0);
-	  *value      = ROUND (q * 255.0);
-	  break;
-	}
-    }
-}
-
-
-static gint
-gimp_hsl_value_int (gdouble n1,
-                    gdouble n2,
-                    gdouble hue)
-{
-  gdouble value;
-
-  if (hue > 360)
-    hue -= 360;
-  else if (hue < 0)
-    hue += 360;
-
-  if (hue < 60.0)
-    value = n1 + (n2 - n1) * (hue / 60.0);
-  else if (hue < 180.0)
-    value = n2;
-  else if (hue < 240)
-    value = n1 + (n2 - n1) * ((240 - hue) / 60.0);
-  else
-    value = n1;
-
-  /*
-  if (hue < 1.0)
-    val = n1 + (n2 - n1) * hue;
-  else if (hue < 3.0)
-    val = n2;
-  else if (hue < 4.0)
-    val = n1 + (n2 - n1) * (4.0 - hue);
-  else
-    val = n1;
-  */
-
-  return ROUND (value * 255.0);
-}
-
-/**
- * gimp_hsl_to_rgb_int:
- * @hue: Hue channel, returns Red channel
- * @saturation: Saturation channel, returns Green channel
- * @lightness: Lightness channel, returns Blue channel
- *
- * The arguments are pointers to int, with the values pointed to in the
- * following ranges:  H [0, 360], L [0, 255], S [0, 255].
- *
- * The function changes the arguments to point to the RGB value
- * corresponding, with the returned values all in the range [0, 255].
- **/
-void
-hsl_to_rgb_int (gint *hue,
-                gint *saturation,
-                gint *lightness)
-{
-  gdouble h, s, l;
-
-  h = *hue;
-  s = *saturation;
-  l = *lightness;
-
-  if (s == 0)
-    {
-      /*  achromatic case  */
-      *hue        = l;
-      *lightness  = l;
-      *saturation = l;
-    }
-  else
-    {
-      gdouble m1, m2;
-
-      if (l < 128)
-        m2 = (l * (255 + s)) / 65025.0;
-      else
-        m2 = (l + s - (l * s) / 255.0) / 255.0;
-
-      m1 = (l / 127.5) - m2;
-
-      /*  chromatic case  */
-      *hue        = gimp_hsl_value_int (m1, m2, h + 120);
-      *saturation = gimp_hsl_value_int (m1, m2, h);
-      *lightness  = gimp_hsl_value_int (m1, m2, h - 120);
-    }
-}
-
-
-
 // (from gimp_rgb_to_hsv)
 void
 rgb_to_hsv_float (float *r_, float *g_, float *b_)
@@ -577,4 +334,75 @@ void ExpandRectToIncludePoint(Rect * r, int x, int y)
     if (y < r->y) { r->h += r->y-y; r->y = y; } else
     if (y >= r->y+r->h) { r->h = y - r->y + 1; }
   }
+}
+
+// Special HSV -> RGB converter for use with the Swiss Cheese Wheel Color Selector
+// Takes values in the range [ 0.0 , 1.0 ]
+// Gives values in the range [ 0.0 , 255.0 ]
+void hsv_to_rgb_range_one(float *h_, float *s_, float *v_)
+{
+	gint i;
+	gdouble f, w, q, t;
+	float h, s, v;
+	float r, g, b;
+	r = g = b = 0.0; // silence gcc warning
+
+	h = *h_;
+	s = *s_;
+	v = *v_;
+
+	h = h - floor(h);
+	s = CLAMP(s, 0.0, 1.0);
+	v = CLAMP(v, 0.0, 1.0);
+
+	gdouble hue = h;
+
+	if( hue == 1.0 )
+		hue = 0.0;
+	else
+		hue *= 6.0;
+
+	i = (gint) hue;
+	f = hue - i;
+	w = v * (1.0 - s);
+	q = v * (1.0 - (s * f));
+	t = v * (1.0 - (s * (1.0 - f)));
+
+	switch (i)
+	{
+		case 0:
+			r = v;
+			g = t;
+			b = w;
+			break;
+		case 1:
+			r = q;
+			g = v;
+			b = w;
+			break;
+		case 2:
+			r = w;
+			g = v;
+			b = t;
+			break;
+		case 3:
+			r = w;
+			g = q;
+			b = v;
+			break;
+		case 4:
+			r = t;
+			g = w;
+			b = v;
+			break;
+		case 5:
+			r = v;
+			g = w;
+			b = q;
+			break;
+	}
+
+	*h_ = r*255.0f;
+	*s_ = g*255.0f;
+	*v_ = b*255.0f;
 }
