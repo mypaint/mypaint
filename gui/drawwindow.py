@@ -893,6 +893,7 @@ class Window(gtk.Window):
             u"Yves Combe &lt;yves@ycombe.net&gt; (portability)\n"
             u"Sebastian Kraft (desktop icon)\n"
             u"Popolon &lt;popolon@popolon.org&gt; (brushes)\n"
+            u"Clement Skau &lt;clementskau@gmail.com&gt; (programming)\n"
             u"\n"
             u"This program is free software; you can redistribute it and/or modify "
             u"it under the terms of the GNU General Public License as published by "
