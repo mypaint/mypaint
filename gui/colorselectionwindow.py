@@ -18,6 +18,7 @@ class Window(gtk.Window):
         gtk.Window.__init__(self)
         self.app = app
         self.add_accel_group(self.app.accel_group)
+        self.app.brush.observers.append(self.brush_modified_cb)
 
         self.set_title('Color')
         self.connect('delete-event', self.app.hide_window_cb)
@@ -29,20 +30,13 @@ class Window(gtk.Window):
         self.cs.connect('color-changed', self.color_changed_cb)
         vbox.pack_start(self.cs)
 
-        self.alternative = None
-
-    def show_change_color_window(self):
-        if self.alternative:
-            # second press: <strike>pick color</strike> cancel and remove the window
-            #self.pick_color_at_pointer()
-            self.alternative.remove_cleanly()
-        else:
-            self.alternative = AlternativeColorSelectorWindow(self)
-
     def color_changed_cb(self, cs):
-        self.app.brush.set_color_hsv(self.get_color_hsv())
+        b = self.app.brush
+        b.observers.remove(self.brush_modified_cb)
+        b.set_color_hsv(self.get_color_hsv())
+        b.observers.append(self.brush_modified_cb)
 
-    def update(self):
+    def brush_modified_cb(self):
         self.set_color_hsv(self.app.brush.get_color_hsv())
 
     def get_color_hsv(self):
@@ -102,13 +96,12 @@ class Window(gtk.Window):
 # own color selector
 # see also get_colorselection_pixbuf in colorselector.hpp
 class AlternativeColorSelectorWindow(gtk.Window):
-    def __init__(self, colorselectionwindow):
+    def __init__(self, app):
         gtk.Window.__init__(self, gtk.WINDOW_POPUP)
         self.set_gravity(gdk.GRAVITY_CENTER)
         self.set_position(gtk.WIN_POS_MOUSE)
         
-        self.colorselectionwindow = colorselectionwindow
-        self.app = colorselectionwindow.app
+        self.app = app
         self.add_accel_group(self.app.accel_group)
 
         #self.set_title('Color')
@@ -117,7 +110,6 @@ class AlternativeColorSelectorWindow(gtk.Window):
         self.image = image = gtk.Image()
         self.add(image)
         
-        self.h, self.s, self.v = self.app.brush.get_color_hsv()
         self.update_image()
 
 	self.set_events(gdk.BUTTON_PRESS_MASK |
@@ -142,14 +134,14 @@ class AlternativeColorSelectorWindow(gtk.Window):
         pixbuf = gdk.Pixbuf(gdk.COLORSPACE_RGB, True, 8, size, size)
         arr = pixbuf.get_pixels_array()
         arr = mypaintlib.gdkpixbuf2numpy(arr)
-        mypaintlib.render_swisscheesewheelcolorselector(arr, self.h, self.s, self.v)
+        mypaintlib.render_swisscheesewheelcolorselector(arr, *self.app.brush.get_color_hsv())
         pixmap, mask = pixbuf.render_pixmap_and_mask()
         self.image.set_from_pixmap(pixmap, mask)
         self.shape_combine_mask(mask,0,0)
         
     def pick_color(self,x,y):
-        self.h, self.s, self.v = mypaintlib.pick_scwcs_hsv_at( x, y, self.h, self.s, self.v )
-        self.colorselectionwindow.set_color_hsv((self.h, self.s, self.v))
+        hsv = mypaintlib.pick_scwcs_hsv_at( x, y, *self.app.brush.get_color_hsv())
+        self.app.brush.set_color_hsv(hsv)
     
     def button_press_cb(self, widget, event):
         if event.button == 1:
@@ -157,7 +149,14 @@ class AlternativeColorSelectorWindow(gtk.Window):
         self.button_pressed = True
 
     def remove_cleanly(self):
-        self.colorselectionwindow.alternative = None
+        self.app.alternative_color_selection_window = None
+        if self.destroy_timer is not None:
+            gobject.source_remove(self.destroy_timer)
+            self.destroy_timer = None
+        self.destroy()
+
+    def show_change_color_window(self):
+        self.app.alternative_color_selection_window = None
         if self.destroy_timer is not None:
             gobject.source_remove(self.destroy_timer)
             self.destroy_timer = None

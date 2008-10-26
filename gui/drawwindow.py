@@ -12,7 +12,7 @@
 MYPAINT_VERSION="0.6.0-svn"
 import gtk, os, zlib, random, re, math
 from gtk import gdk, keysyms
-import tileddrawwidget
+import tileddrawwidget, colorselectionwindow
 from lib import document #, command
 from time import time
 from glob import glob
@@ -537,7 +537,10 @@ class Window(gtk.Window):
         self.app.colorSelectionWindow.pick_color_at_pointer()
 
     def change_color_cb(self, action):
-        self.app.colorSelectionWindow.show_change_color_window()
+        if getattr(self.app, 'alternative_color_selection_window', None):
+            self.app.alternative_color_selection_window.remove_cleanly()
+        else:
+            self.app.alternative_color_selection_window = colorselectionwindow.AlternativeColorSelectorWindow(self.app)
 
     def eraser_cb(self, action):
         adj = self.app.brush_adjustment['eraser']
@@ -563,17 +566,15 @@ class Window(gtk.Window):
         adj.set_value(adj.get_value() / 1.8)
 
     def brighter_cb(self, action):
-        cs = self.app.colorSelectionWindow 
-        cs.update()
-        h, s, v = cs.get_color_hsv()
+        h, s, v = self.app.brush.get_color_hsv()
         v += 0.08
-        cs.set_color_hsv((h, s, v))
+        if v > 1.0: v = 1.0
+        self.app.brush.set_color_hsv((h, s, v))
     def darker_cb(self, action):
-        cs = self.app.colorSelectionWindow 
-        cs.update()
-        h, s, v = cs.get_color_hsv()
+        h, s, v = self.app.brush.get_color_hsv()
         v -= 0.08
-        cs.set_color_hsv((h, s, v))
+        if v < 0.0: v = 0.0
+        self.app.brush.set_color_hsv((h, s, v))
         
     def open_file(self, filename):
         try:
