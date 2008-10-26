@@ -44,9 +44,6 @@ class Window(gtk.Window):
         self.tdw = tileddrawwidget.TiledDrawWidget(self.doc)
         vbox.pack_start(self.tdw)
 
-        self.show_layers_above = False
-        #self.update_layers()
-
         #self.zoomlevel_values = [0.09, 0.12,  0.18, 0.25, 0.33,  0.50, 0.66,  1.0, 1.5, 2.0, 3.0, 4.0, 5.5, 8.0]
         self.zoomlevel_values = [            2.0/11, 0.25, 1.0/3, 0.50, 2.0/3, 1.0, 1.5, 2.0, 3.0, 4.0, 5.5, 8.0]
         self.zoomlevel = self.zoomlevel_values.index(1.0)
@@ -514,49 +511,21 @@ class Window(gtk.Window):
     def clear_layer_cb(self, action):
         self.doc.clear_layer()
         
-    # obsolete?
-    #def update_layers(self):
-    #    self.tdw.layer = self.layer.surface
-    #    l = []
-    #    for layer in self.layers:
-    #        l.append(layer.surface)
-    #        if not self.show_layers_above and layer is self.layer:
-    #            break
-    #    self.tdw.displayed_layers = l
-    #    self.tdw.queue_draw()
-
     def layer_bg_cb(self, action):
-        TODO
-        # TODO: make an action to allow undo
-        self.doc.split_stroke()
-        i = self.layers.index(self.layer)
-        i -= 1
-        if i < 0: return
-        self.layer = self.layers[i]
-        self.update_layers()
+        idx = self.doc.layer_idx - 1
+        if idx < 0: return
+        self.doc.select_layer(idx)
 
     def layer_fg_cb(self, action):
-        TODO
-        # TODO: make an action to allow undo
-        self.doc.split_stroke()
-        i = self.layers.index(self.layer)
-        i += 1
-        if i >= len(self.layers): return
-        self.layer = self.layers[i]
-        self.update_layers()
+        idx = self.doc.layer_idx + 1
+        if idx >= len(self.doc.layers): return
+        self.doc.select_layer(idx)
 
     def new_layer_cb(self, action):
-        TODO
-        # TODO: make an action to allow undo
-        self.doc.split_stroke()
-        i = self.layers.index(self.layer)
-        self.layer = document.Layer()
-        self.layers.insert(i+1, self.layer)
-        self.update_layers()
+        self.doc.add_layer()
 
     def toggle_layers_above_cb(self, action):
-        self.show_layers_above = not self.show_layers_above
-        self.update_layers()
+        self.tdw.toggle_show_layers_above()
 
     def invert_color_cb(self, action):
         self.app.brush.invert_color()

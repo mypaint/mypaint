@@ -66,6 +66,9 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.zoom_max = 5.0
         self.zoom_min = 1/5.0
 
+        self.show_layers_above = True
+        self.doc.layer_observers.append(self.layer_selected_cb)
+
 
     def button_updown_cb(self, widget, event):
         d = event.device
@@ -224,7 +227,10 @@ class TiledDrawWidget(gtk.DrawingArea):
         arr = pixbuf.get_pixels_array()
         arr = mypaintlib.gdkpixbuf2numpy(arr)
 
-        self.doc.render(arr, -x1, -y1, self.linear_light)
+        layers = None
+        if self.show_layers_above:
+            layers = self.doc.layers[0:self.doc.layer_idx+1]
+        self.doc.render(arr, -x1, -y1, self.linear_light, layers)
 
         #widget.window.draw_pixbuf(None, pixbuf, 0, 0, 0, 0)
 
@@ -325,3 +331,9 @@ class TiledDrawWidget(gtk.DrawingArea):
 
         self.window.set_cursor(gdk.Cursor(cursor,mask,gdk.color_parse('black'), gdk.color_parse('white'),(d+1)/2,(d+1)/2))
 
+    def layer_selected_cb(self):
+        self.queue_draw() # OPTIMIZE
+
+    def toggle_show_layers_above(self):
+        self.show_layers_above = not self.show_layers_above
+        self.layer_selected_cb()

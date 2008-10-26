@@ -52,18 +52,23 @@ class Document():
         self.brush = brush.Brush_Lowlevel()
         self.stroke = None
         self.canvas_observers = []
+        self.layer_observers = []
 
-        self.clear(init=True)
+        def debug_layerswitch():
+            print 'layer', self.layer_idx, 'selected'
+        self.layer_observers.append(debug_layerswitch)
+
+        self.clear(True)
 
     def clear(self, init=False):
         self.split_stroke()
         if not init:
             bbox = self.get_bbox()
         # throw everything away, including undo stack
-        self.layer = layer.Layer()
-        self.layer.surface.observers.append(self.layer_modified_cb)
-        self.layers = [self.layer]
         self.command_stack = command.CommandStack()
+        self.layers = []
+        self.layer_idx = None
+        self.add_layer(0)
 
         if not init:
             for f in self.canvas_observers:
@@ -73,13 +78,17 @@ class Document():
         if not self.stroke: return
         self.stroke.stop_recording()
         if not self.stroke.empty:
-            self.layer.rendered.strokes.append(self.stroke)
-            self.layer.populate_cache()
-            self.command_stack.do(command.Stroke(self, self.layers.index(self.layer), self.stroke))
+            l = self.layers[self.layer_idx]
+            l.rendered.strokes.append(self.stroke)
+            l.populate_cache()
+            self.command_stack.do(command.Stroke(self, self.stroke))
         self.stroke = None
 
+    def select_layer(self, idx):
+        self.do(command.SelectLayer(self, idx))
+
     def clear_layer(self):
-        self.do(command.ClearLayer(self, self.layers.index(self.layer)))
+        self.do(command.ClearLayer(self))
 
     def stroke_to(self, dtime, x, y, pressure):
         if not self.stroke:
@@ -87,7 +96,8 @@ class Document():
             self.stroke.start_recording(self.brush)
         self.stroke.record_event(dtime, x, y, pressure)
 
-        split = self.brush.tiled_surface_stroke_to (self.layer.surface, x, y, pressure, dtime)
+        layer = self.layers[self.layer_idx]
+        split = self.brush.tiled_surface_stroke_to (layer.surface, x, y, pressure, dtime)
 
         if split:
             self.split_stroke()
@@ -102,19 +112,19 @@ class Document():
         assert not self.stroke
         self.brush.copy_settings_from(brush)
 
-    def get_last_command(self): 
-        XXX # or check, without side-effect?
-        self.split_stroke()
-        return self.command_stack.get_last_command()
-
     def undo(self):
         self.split_stroke()
-        return self.command_stack.undo()
+        while 1:
+            cmd = self.command_stack.undo()
+            if not cmd or not cmd.automatic_undo:
+                return cmd
 
     def redo(self):
         self.split_stroke()
-        return self.command_stack.redo()
-
+        while 1:
+            cmd = self.command_stack.redo()
+            if not cmd or not cmd.automatic_undo:
+                return cmd
 
     def do(self, cmd):
         self.split_stroke()
@@ -134,13 +144,14 @@ class Document():
             res.expandToIncludeRect(bbox)
         return res
 
-    def render(self, arr, px, py, linear_light=False):
+    def render(self, arr, px, py, linear_light=False, layers=None):
         assert arr.shape[2] == 3 # RGB only for now
-
         if linear_light:
             arr_linear = numpy.ones(arr.shape, dtype='float32')
+        if layers is None:
+            layers = self.layers
 
-        for layer in self.layers:
+        for layer in layers:
             surface = layer.surface
             if not linear_light:
                 surface.composite_over_RGB8(arr, px, py)
@@ -166,6 +177,10 @@ class Document():
         self.render(arr, -x, -y)
         return pixbuf
 
+    def add_layer(self, insert_idx=None):
+        if insert_idx is None:
+            insert_idx = self.layer_idx+1
+        self.do(command.AddLayer(self, insert_idx))
 
     def load_layer_from_data(self, data):
         self.do(command.LoadLayer(self, self.layers.index(self.layer), data))
@@ -179,6 +194,7 @@ class Document():
         self.load_layer_from_data(data)
 
     def save(self, filename, compress=True):
+        print 'WARNING: save/load file format is experimental'
         self.split_stroke()
         if compress:
             f = gzip.GzipFile(filename, 'wb')
@@ -188,16 +204,21 @@ class Document():
         #self.command_stack.serialize(f)
         for cmd in self.command_stack.undo_stack:
             # FIXME: ugly design
+            # FIXME: do we really want to stay backwards compatible with all those internals on the undo stack?
+            #        (and in the brush dab rendering code, etc.)
             if isinstance(cmd, command.Stroke):
-                f.write('Stroke %d\n' % cmd.layer_idx)
+                f.write('Stroke\n')
                 serialize.save(cmd.stroke, f)
             elif isinstance(cmd, command.ClearLayer):
-                f.write('ClearLayer %d\n' % cmd.layer_idx)
+                f.write('ClearLayer\n')
+            elif isinstance(cmd, command.AddLayer):
+                f.write('AddLayer %d\n' % cmd.insert_idx)
             else:
                 assert False, 'save not implemented for %s' % cmd
         f.close()
 
     def load(self, filename, decompress=True):
+        print 'WARNING: save/load file format is experimental'
         self.clear()
         if decompress:
             f = gzip.GzipFile(filename, 'rb')
@@ -217,14 +238,17 @@ class Document():
             cmd, parts = cmd.split()[0], cmd.split()[1:]
             if cmd == 'Stroke':
                 # FIXME: this code should probably be in command.py
-                layer_idx = int(parts[0])
                 stroke_ = stroke.Stroke()
                 serialize.load(stroke_, f)
-                cmd = command.Stroke(self, layer_idx, stroke_)
+                cmd = command.Stroke(self, stroke_)
                 self.command_stack.do(cmd)
             elif cmd == 'ClearLayer':
                 layer_idx = int(parts[0])
                 cmd = command.ClearLayer(self, layer_idx)
+                self.command_stack.do(cmd)
+            elif cmd == 'AddLayer':
+                insert_idx = int(parts[0])
+                cmd = command.AddLayer(self, insert_idx)
                 self.command_stack.do(cmd)
             else:
                 assert False, 'unknown command %s' % cmd
