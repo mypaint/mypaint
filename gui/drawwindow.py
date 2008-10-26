@@ -44,9 +44,6 @@ class Window(gtk.Window):
         self.tdw = tileddrawwidget.TiledDrawWidget(self.doc)
         vbox.pack_start(self.tdw)
 
-        self.statusbar = sb = gtk.Statusbar()
-        vbox.pack_end(sb, expand=False)
-
         self.show_layers_above = False
         #self.update_layers()
 
@@ -388,19 +385,12 @@ class Window(gtk.Window):
 
         self.layer.rerender()
 
-        if not self.modifying:
-            self.statusbar.push(3, 'modifying - change brush or color now')
-        else:
-            self.statusbar.pop(3)
-            self.statusbar.push(3, 'modifying %d strokes' % count)
-
         self.modifying = count
 
         self.last_modifying_time = time()
 
     def end_modifying(self):
         assert self.modifying
-        self.statusbar.pop(3)
         self.modifying = False
         self.pending_actions.remove(self.end_modifying)
 
@@ -433,9 +423,9 @@ class Window(gtk.Window):
                 self.command_stack.add(cmd)
                 self.layer.rerender()
 
-                if count == 1:
-                    self.statusbar.pop(3)
-                    self.statusbar.push(3, 'modifying one stroke (hit again to add more)')
+                #if count == 1:
+                #    self.statusbar.pop(3)
+                #    self.statusbar.push(3, 'modifying one stroke (hit again to add more)')
 
     def key_press_event_cb_before(self, win, event):
         key = event.keyval 
@@ -606,7 +596,6 @@ class Window(gtk.Window):
         cs.set_color_hsv((h, s, v))
         
     def open_file(self, filename):
-        self.statusbar.pop(1)
         try:
             # TODO: that would be "open_file_as_layer"
             #pixbuf = gdk.pixbuf_new_from_file(filename)
@@ -625,12 +614,11 @@ class Window(gtk.Window):
                 t = '%d minutes' % (t/60)
             else:
                 t = '%d seconds' % t
-            self.statusbar.push(1, 'Loaded %s of painting from %s' %(t, filename))
+            print 'Loaded %s of painting from %s' %(t, filename)
             self.filename = filename
 
     def save_file(self, filename):
         self.filename = filename
-        self.statusbar.pop(1)
         try:
             self.doc.save(filename)
         except Exception, e:
@@ -639,10 +627,10 @@ class Window(gtk.Window):
             d.set_markup(str(e))
             d.run()
             d.destroy()
-            self.statusbar.push(1, 'Failed to save!')
+            print 'Failed to save!'
             raise
         else:
-            self.statusbar.push(1, 'Saved to ' + filename)
+            print 'Saved to ' + filename
 
 
     def confirm_destructive_action(self, title='Confirm', question='Really continue?'):
@@ -811,8 +799,6 @@ class Window(gtk.Window):
         if self.zoomlevel < 0: self.zoomlevel = 0
         if self.zoomlevel >= len(self.zoomlevel_values): self.zoomlevel = len(self.zoomlevel_values) - 1
         z = self.zoomlevel_values[self.zoomlevel]
-        #self.statusbar.push(2, 'Zoom %.2f' % z)
-        #print 'Zoom %.2f' % z
 
         self.tdw.set_zoom(z)
 
@@ -829,13 +815,11 @@ class Window(gtk.Window):
     def fullscreen_cb(self, *trash):
         self.fullscreen = not self.fullscreen
         if self.fullscreen:
-            self.statusbar.hide()
             self.menubar.hide()
             self.window.fullscreen()
         else:
             self.window.unfullscreen()
             self.menubar.show()
-            self.statusbar.show()
 
     def context_cb(self, action):
         # TODO: this context-thing is not very useful like that, is it?
