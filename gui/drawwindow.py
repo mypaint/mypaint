@@ -140,6 +140,8 @@ class Window(gtk.Window):
               <menuitem action='MoreOpaque'/>
               <menuitem action='LessOpaque'/>
               <separator/>
+              <menuitem action='Eraser'/>
+              <separator/>
               <menuitem action='InvertColor'/>
               <menuitem action='PickColor'/>
               <menuitem action='ChangeColor'/>
@@ -192,6 +194,7 @@ class Window(gtk.Window):
             ('LessOpaque',   None, 'Less Opaque', None, None, self.less_opaque_cb),
             ('PickColor',    None, 'Pick Color', 'r', None, self.pick_color_cb),
             ('ChangeColor',  None, 'Change Color', 'v', None, self.change_color_cb),
+            ('Eraser',       None, 'Toggle Eraser Mode', 'e', None, self.eraser_cb),
 
             ('ContextMenu',  None, 'Brushkeys'),
             ('Context00',    None, 'Restore Brush 0', '0', None, self.context_cb),
@@ -535,6 +538,14 @@ class Window(gtk.Window):
 
     def change_color_cb(self, action):
         self.app.colorSelectionWindow.show_change_color_window()
+
+    def eraser_cb(self, action):
+        adj = self.app.brush_adjustment['eraser']
+        if adj.get_value() > 0.5:
+            # TODO: change cursor
+            adj.set_value(0.0)
+        else:
+            adj.set_value(1.0)
 
     def brush_bigger_cb(self, action):
         adj = self.app.brush_adjustment['radius_logarithmic']
