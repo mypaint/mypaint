@@ -30,11 +30,11 @@ class Window(gtk.Window):
         self.cs.connect('color-changed', self.color_changed_cb)
         vbox.pack_start(self.cs)
 
+        self.last_known_color_hsv = (None, None, None)
+
     def color_changed_cb(self, cs):
         b = self.app.brush
-        b.observers.remove(self.brush_modified_cb)
         b.set_color_hsv(self.get_color_hsv())
-        b.observers.append(self.brush_modified_cb)
 
     def brush_modified_cb(self):
         self.set_color_hsv(self.app.brush.get_color_hsv())
@@ -54,6 +54,9 @@ class Window(gtk.Window):
         return (h, s, v)
 
     def set_color_hsv(self, hsv):
+        if hsv == self.last_known_color_hsv:
+            return
+        self.last_known_color_hsv = hsv
         h, s, v = hsv
         while h > 1.0: h -= 1.0
         while h < 0.0: h += 1.0
