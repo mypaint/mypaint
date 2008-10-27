@@ -31,8 +31,11 @@ class Window(gtk.Window):
         vbox.pack_start(self.cs)
 
         self.last_known_color_hsv = (None, None, None)
+        self.change_notification = True
 
     def color_changed_cb(self, cs):
+        if not self.change_notification:
+            return
         b = self.app.brush
         b.set_color_hsv(self.get_color_hsv())
 
@@ -66,7 +69,10 @@ class Window(gtk.Window):
         if v < 0.0: v = 0.0
         r, g, b  = colorsys.hsv_to_rgb(h, s, v)
         c = gdk.Color(int(r*65535+0.5), int(g*65535+0.5), int(b*65535+0.5))
+        # only emit color_changed events if the user directly interacts with the window
+        self.change_notification = False
         self.cs.set_current_color(c)
+        self.change_notification = True
 
     def pick_color_at_pointer(self, size=3):
         # grab screen color at cursor (average of size x size rectangle)
