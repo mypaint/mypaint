@@ -143,7 +143,6 @@ class TiledSurface(mypaintlib.TiledSurface):
             dst[:,:,0:3] = tile.rgb[:,:,0:3] / clip(tile.alpha, 0.000001, 1.0)
             dst[:,:,3:4] = tile.alpha
 
-        # TODO: convert to sRGB?
         buf = (buf*255).round().astype('uint8')
         im = Image.fromstring('RGBA', (sizex, sizey), buf.tostring())
         im.save(filename)

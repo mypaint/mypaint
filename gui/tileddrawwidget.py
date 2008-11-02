@@ -50,7 +50,6 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.last_event_x = None
         self.last_event_y = None
 
-        self.linear_light = False
         self.visualize_rendering = False
 
         self.translation_x = 0.0
@@ -230,7 +229,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         layers = None
         if self.show_layers_above:
             layers = self.doc.layers[0:self.doc.layer_idx+1]
-        self.doc.render(arr, -x1, -y1, self.linear_light, layers)
+        self.doc.render(arr, -x1, -y1, layers)
 
         #widget.window.draw_pixbuf(None, pixbuf, 0, 0, 0, 0)
 

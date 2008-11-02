@@ -144,22 +144,14 @@ class Document():
             res.expandToIncludeRect(bbox)
         return res
 
-    def render(self, arr, px, py, linear_light=False, layers=None):
+    def render(self, arr, px, py, layers=None):
         assert arr.shape[2] == 3 # RGB only for now
-        if linear_light:
-            arr_linear = numpy.ones(arr.shape, dtype='float32')
         if layers is None:
             layers = self.layers
 
         for layer in layers:
             surface = layer.surface
-            if not linear_light:
-                surface.composite_over_RGB8(arr, px, py)
-            else:
-                surface.composite_over_RGB(arr_linear, px, py)
-
-        if linear_light:
-            colorspace.float_rgb_lin_to_srgb(arr_linear, arr)
+            surface.composite_over_RGB8(arr, px, py)
 
     def get_total_painting_time(self):
         t = 0.0
@@ -189,7 +181,6 @@ class Document():
         self.clear()
         arr = pixbuf.get_pixels_array()
         arr = mypaintlib.gdkpixbuf2numpy(arr)
-        # TODO: linear light correction (if used)
         data = (arr/255.0).astype('float32') # FIXME: duplicated internal buffer type knowledge
         self.load_layer_from_data(data)
 
