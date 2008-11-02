@@ -78,6 +78,12 @@ class Layer:
         self.caches.append(cache)
         #print 'caching the layer bitmap took %.3f seconds' % (time() - t)
 
+    def get_tiles(self):
+        # assumes that the layer is fully rendered
+        assert self.rendered.strokes == self.strokes
+        assert self.rendered.background == self.background
+        return self.surface.tiledict
+
     def rerender(self, only_estimate_cost=False):
         #print 'rerender'
         t1 = time()

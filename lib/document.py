@@ -144,11 +144,27 @@ class Document():
             res.expandToIncludeRect(bbox)
         return res
 
-    def render(self, arr, px, py, layers=None):
-        assert arr.shape[2] == 3 # RGB only for now
+    def get_tiles(self):
+        # OPTIMIZE: this is used for rendering, so, only visible tiles?
+        #           on the other hand, visibility can be checked later too
+        tiles = set()
+        for l in self.layers:
+            tiles.update(l.get_tiles())
+        return tiles
+
+    def composite_tile(self, dst, tx, ty, layers=None):
+        # OPTIMIZE: should use some caching strategy for the results somewhere, probably not here
         if layers is None:
             layers = self.layers
-
+        for layer in layers:
+            surface = layer.surface
+            surface.composite_tile(dst, tx, ty)
+            
+    def render(self, arr, px, py, layers=None):
+        # FIXME: remove this function or use render_tiles() internally
+        assert dst.shape[2] == 3 # RGB only for now
+        for tx, ty in self.get_tiles():
+            self.render_tile
         for layer in layers:
             surface = layer.surface
             surface.composite_over_RGB8(arr, px, py)

@@ -158,13 +158,16 @@ class TiledDrawWidget(gtk.DrawingArea):
     def repaint(self, device_bbox=None, model_bbox=None):
         # FIXME: ...we do not fill tile-free background white in this function...
 
-        cr = self.window.cairo_create()
-
         if device_bbox is None:
             w, h = self.window.get_size()
             device_bbox = (0, 0, w, h)
-
         #print 'device bbox', tuple(device_bbox)
+
+        gdk_clip_region = self.window.get_clip_region()
+        x, y, w, h = device_bbox
+        sparse = not gdk_clip_region.point_in(x+w/2, y+h/2)
+
+        cr = self.window.cairo_create()
 
         # actually this is only neccessary if we are not answering an expose event
         cr.rectangle(*device_bbox)
@@ -203,7 +206,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         y1 = y1/N*N
         x2 = (x2/N*N) + N
         y2 = (y2/N*N) + N
-        w, h = x2-x1+1, y2-y1+1
+        w, h = x2-x1, y2-y1
         model_bbox = x1, y1, w, h
         assert w >= 0 and h >= 0
 
@@ -214,8 +217,11 @@ class TiledDrawWidget(gtk.DrawingArea):
         cr.rectangle(*model_bbox)
         cr.clip()
         
-        #print 'rendering pixbuf', w, h
+        layers = self.doc.layers
+        if self.show_layers_above:
+            layers = self.doc.layers[0:self.doc.layer_idx+1]
 
+        # OPTIMIZE: if we are scrolling, we are creating an oversized pixbuf
         pixbuf = gdk.Pixbuf(gdk.COLORSPACE_RGB, False, 8, w, h)
         if self.visualize_rendering:
             # green
@@ -226,11 +232,28 @@ class TiledDrawWidget(gtk.DrawingArea):
         arr = pixbuf.get_pixels_array()
         arr = mypaintlib.gdkpixbuf2numpy(arr)
 
-        layers = None
-        if self.show_layers_above:
-            layers = self.doc.layers[0:self.doc.layer_idx+1]
-        self.doc.render(arr, -x1, -y1, layers)
+        for tx, ty in self.doc.get_tiles():
+            x = tx*N
+            y = ty*N
+            pixbuf_x = x - x1
+            pixbuf_y = y - y1
+            if pixbuf_x < 0 or pixbuf_x+N > w: continue
+            if pixbuf_y < 0 or pixbuf_y+N > h: continue
 
+            if sparse:
+                # it is worth checking whether this tile really will be visible
+                # (to speed up the L-shaped expose event after scrolling)
+                # (speedup clearly visible; slowdown in default case measured)
+                corners = [(x, y), (x+N-1, y), (x, y+N-1), (x+N-1, y+N-1)]
+                corners = [cr.user_to_device(x_, y_) for (x_, y_) in corners]
+                bbox = gdk.Rectangle(*helpers.rotated_rectangle_bbox(corners))
+                if gdk_clip_region.rect_in(bbox) == gdk.OVERLAP_RECTANGLE_OUT:
+                    continue
+
+            dst = arr[pixbuf_y:pixbuf_y+N,pixbuf_x:pixbuf_x+N]
+            self.doc.composite_tile(dst, tx, ty, layers)
+
+        #self.doc.render(arr, -x1, -y1, layers)
         #widget.window.draw_pixbuf(None, pixbuf, 0, 0, 0, 0)
 
         cr.set_source_pixbuf(pixbuf, x1, y1)
@@ -248,11 +271,10 @@ class TiledDrawWidget(gtk.DrawingArea):
     def scroll(self, dx, dy):
         if self.viewport_locked:
             return
+        assert int(dx) == dx and int(dy) == dy
         self.translation_x -= dx
         self.translation_y -= dy
-        #OPTIMIZE: fast scrolling without so much rerendering
-        # but not if combined with rotation/zoom change
-        self.queue_draw()
+        self.window.scroll(int(-dx), int(-dy))
 
     def rotozoom_with_center(self, function):
         if self.viewport_locked:

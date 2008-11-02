@@ -105,6 +105,12 @@ class TiledSurface(mypaintlib.TiledSurface):
                 rgb, alpha = self.get_tile_memory(xx, yy, readonly)
                 yield xx*N, yy*N, (rgb[y_start:y_end,x_start:y_end], alpha[y_start:y_end,x_start:y_end])
 
+    def composite_tile(self, dst, tx, ty):
+        tile = self.tiledict.get((tx, ty))
+        if tile is None:
+            return
+        tile.composite_over_RGB8(dst)
+
     def composite_over_RGB8(self, dst, px, py):
         h, w, channels = dst.shape
         assert channels == 3
