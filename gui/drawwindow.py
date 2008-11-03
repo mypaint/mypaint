@@ -635,6 +635,16 @@ class Window(gtk.Window):
         self.doc.clear()
         self.filename = None
 
+    def add_file_filters(self, dialog):
+        f = gtk.FileFilter()
+        f.set_name("PNG without layers")
+        f.add_pattern("*.png")
+        dialog.add_filter(f)
+        f = gtk.FileFilter()
+        f.set_name("MyPaint Image (*.myp)")
+        f.add_pattern("*.myp")
+        dialog.add_filter(f)
+
     def open_cb(self, action):
         if not self.confirm_destructive_action():
             return
@@ -643,12 +653,7 @@ class Window(gtk.Window):
                                        (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
                                         gtk.STOCK_OPEN, gtk.RESPONSE_OK))
         dialog.set_default_response(gtk.RESPONSE_OK)
-        filter = gtk.FileFilter()
-        #filter.set_name("png")
-        #filter.add_pattern("*.png")
-        filter.set_name("MyPaint Image (*.myp)")
-        filter.add_pattern("*.myp")
-        dialog.add_filter(filter)
+        self.add_file_filters(dialog)
 
         if self.filename:
             dialog.set_filename(self.filename)
@@ -670,12 +675,7 @@ class Window(gtk.Window):
                                        (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
                                         gtk.STOCK_SAVE, gtk.RESPONSE_OK))
         dialog.set_default_response(gtk.RESPONSE_OK)
-        filter = gtk.FileFilter()
-        #filter.set_name("png")
-        #filter.add_pattern("*.png")
-        filter.set_name("MyPaint Image (*.myp)")
-        filter.add_pattern("*.myp")
-        dialog.add_filter(filter)
+        self.add_file_filters(dialog)
 
         if self.filename:
             dialog.set_filename(self.filename)
@@ -684,8 +684,8 @@ class Window(gtk.Window):
                 filename = dialog.get_filename()
                 trash, ext = os.path.splitext(filename)
                 if not ext:
-                    #filename += '.png'
-                    filename += '.myp'
+                    filename += '.png'
+                    #filename += '.myp'
                 if os.path.exists(filename):
                     d2 = gtk.Dialog("Overwrite?",
                          self,

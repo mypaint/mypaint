@@ -27,8 +27,9 @@ A document:
 
 import mypaintlib, helpers, tiledsurface, command, stroke, layer, serialize, colorspace
 import brush # FIXME: the brush module depends on gtk and everything, but we only need brush_lowlevel
-import random, gc, gzip
+import random, gc, gzip, os
 import numpy
+import gtk
 
 class Document():
     # This is the "model" in the Model-View-Controller design.
@@ -203,7 +204,29 @@ class Document():
         arr = mypaintlib.gdkpixbuf2numpy(arr)
         self.load_layer_from_data(arr)
 
-    def save(self, filename, compress=True):
+    def save(self, filename):
+        trash, ext = os.path.splitext(filename)
+        ext = ext.lower().replace('.', '')
+        print ext
+        save = getattr(self, 'save_' + ext, self.unsupported)
+        save(filename)
+
+    def load(self, filename):
+        trash, ext = os.path.splitext(filename)
+        ext = ext.lower().replace('.', '')
+        load = getattr(self, 'load_' + ext, self.unsupported)
+        load(filename)
+
+    def unsupported(self, filename):
+        raise ValueError, 'Unkwnown file format extension: ' + repr(filename)
+
+    def save_png(self, filename):
+        self.render_as_pixbuf().save(filename)
+
+    def load_png(self, filename):
+        self.load_from_pixbuf(gtk.gdk.pixbuf_new_from_file(filename))
+
+    def save_myp(self, filename, compress=True):
         print 'WARNING: save/load file format is experimental'
         self.split_stroke()
         if compress:
@@ -227,7 +250,7 @@ class Document():
                 assert False, 'save not implemented for %s' % cmd
         f.close()
 
-    def load(self, filename, decompress=True):
+    def load_myp(self, filename, decompress=True):
         print 'WARNING: save/load file format is experimental'
         self.clear()
         if decompress:
