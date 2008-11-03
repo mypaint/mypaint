@@ -41,7 +41,7 @@ class Tile:
         dst_pixbuf_rgb[:] = dst
         # un-premultiply alpha (argh!)
         rgba_orig = self.rgba.copy()
-        self.rgba[:,:,0:3] = self.rgba[:,:,0:3] * 255 / clip(self.rgba[:,:,3:4], 1, 255)
+        self.rgba[:,:,0:3] = (self.rgba[:,:,0:3]).astype('uint16') * 255 / clip(self.rgba[:,:,3:4], 1, 255)
         self.pixbuf.composite(dst_pixbuf, 0, 0, N, N, 0, 0, 1, 1, gdk.INTERP_NEAREST, 255)
         dst[:] = dst_pixbuf_rgb[:]
 
