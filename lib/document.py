@@ -191,7 +191,7 @@ class Document():
         self.do(command.AddLayer(self, insert_idx))
 
     def load_layer_from_data(self, data):
-        self.do(command.LoadLayer(self, self.layers.index(self.layer), data))
+        self.do(command.LoadLayer(self, data))
 
     def load_from_pixbuf(self, pixbuf):
         self.clear()

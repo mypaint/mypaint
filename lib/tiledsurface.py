@@ -12,35 +12,40 @@
 from numpy import *
 from PIL import Image
 import mypaintlib, helpers
+import gtk
+from gtk import gdk
 
 tilesize = N = mypaintlib.TILE_SIZE
 
 class Tile:
     def __init__(self):
         # note: pixels are stored with premultiplied alpha
-        self.rgb   = zeros((N, N, 3), 'float32')
-        self.alpha = zeros((N, N, 1), 'float32')
+        #self.rgb   = zeros((N, N, 3), 'uint8')
+        #self.alpha = zeros((N, N, 1), 'uint8')
+        self.pixbuf = gdk.Pixbuf(gdk.COLORSPACE_RGB, True, 8, N, N)
+        self.rgba   = mypaintlib.gdkpixbuf2numpy(self.pixbuf.get_pixels_array())
+        self.rgba[:,:,:] = 0
+        # for finding bugs; this color is transparent and thus should never show up anywhere
+        #self.rgba[:,:,:] = (255, 0, 255, 0)
         self.readonly = False
 
     def copy(self):
         t = Tile()
-        t.rgb[:] = self.rgb[:]
-        t.alpha[:] = self.alpha[:]
+        t.rgba[:] = self.rgba[:]
         return t
         
     def composite_over_RGB8(self, dst):
-        dst[:,:,0:3] *= 1.0-self.alpha
-        dst[:,:,0:3] += 255*self.rgb[:,:,0:3]
+        # OPTIMIZE: that's not how it is supposed to be done
+        dst_pixbuf     = gdk.Pixbuf(gdk.COLORSPACE_RGB, False, 8, N, N)
+        dst_pixbuf_rgb = mypaintlib.gdkpixbuf2numpy(dst_pixbuf.get_pixels_array())
+        dst_pixbuf_rgb[:] = dst
+        # un-premultiply alpha (argh!)
+        rgba_orig = self.rgba.copy()
+        self.rgba[:,:,0:3] = self.rgba[:,:,0:3] * 255 / clip(self.rgba[:,:,3:4], 1, 255)
+        self.pixbuf.composite(dst_pixbuf, 0, 0, N, N, 0, 0, 1, 1, gdk.INTERP_NEAREST, 255)
+        dst[:] = dst_pixbuf_rgb[:]
 
-    def composite_over_RGB(self, dst):
-        dst[:,:,0:3] *= 1.0-self.alpha
-        dst[:,:,0:3] += self.rgb[:,:,0:3]
-
-
-    #def composite(self, other):
-        # resultColor = topColor + (1.0 - topAlpha) * bottomColor
-    #    self.rgb = other.alpha * other.rgb + (1.0-other.alpha) * self.rgb
-    #    self.alpha = other.alpha + (1.0-other.alpha)*self.alpha
+        self.rgba[:] = rgba_orig
 
 transparentTile = Tile()
 
@@ -82,7 +87,7 @@ class TiledSurface(mypaintlib.TiledSurface):
             #           before doing this, measure the worst-case time of the call below; same thing with new tiles
             t = t.copy()
             self.tiledict[(x, y)] = t
-        return t.rgb, t.alpha
+        return t.rgba
         
     #def iter_existing_tiles(self, x, y, w, h):
     #    for xx in xrange(x/Tile.N, (x+w)/Tile.N+1):
@@ -122,34 +127,19 @@ class TiledSurface(mypaintlib.TiledSurface):
             if x0+N > w or y0+N > h: continue
             tile.composite_over_RGB8(dst[y0:y0+N,x0:x0+N,:]) # OPTIMIZE: is this slower than without offsets?
 
-    def composite_over_RGB(self, dst, px, py):
-        # FIXME: code duplication
-        h, w, channels = dst.shape
-        assert channels == 3
-
-        for (x0, y0), tile in self.tiledict.iteritems():
-            x0 = N*x0+px
-            y0 = N*y0+py
-            if x0 < 0 or y0 < 0: continue
-            if x0+N > w or y0+N > h: continue
-            tile.composite_over_RGB(dst[y0:y0+N,x0:x0+N,:]) # OPTIMIZE: is this slower than without offsets?
-
     def save(self, filename):
         assert self.tiledict, 'cannot save empty surface'
         a = array([xy for xy, tile in self.tiledict.iteritems()])
         minx, miny = N*a.min(0)
         sizex, sizey = N*(a.max(0) - a.min(0) + 1)
-        buf = zeros((sizey, sizex, 4), 'float32')
+        buf = zeros((sizey, sizex, 4), 'uint8')
 
         for (x0, y0), tile in self.tiledict.iteritems():
             x0 = N*x0 - minx
             y0 = N*y0 - miny
             dst = buf[y0:y0+N,x0:x0+N,:]
-            # un-premultiply alpha
-            dst[:,:,0:3] = tile.rgb[:,:,0:3] / clip(tile.alpha, 0.000001, 1.0)
-            dst[:,:,3:4] = tile.alpha
+            dst[:,:,:] = tile.rgba
 
-        buf = (buf*255).round().astype('uint8')
         im = Image.fromstring('RGBA', (sizex, sizey), buf.tostring())
         im.save(filename)
 
@@ -166,12 +156,14 @@ class TiledSurface(mypaintlib.TiledSurface):
         self.notify_observers(*bbox)
 
     def load_from_data(self, data):
-        assert data.shape[2] == 3, 'alpha not yet implemented'
         self.clear()
-        for x, y, (rgb, alpha) in self.iter_tiles_memory(0, 0, data.shape[1], data.shape[0], readonly=False):
+        for x, y, rgba in self.iter_tiles_memory(0, 0, data.shape[1], data.shape[0], readonly=False):
             # FIXME: will be buggy at border?
-            rgb[:,:,0:] = data[y:y+N,x:x+N,:]
-            alpha[:,:] = 1.0
+            if data.shape[2] == 4:
+                rgba[:,:,:] = data[y:y+N,x:x+N,:]
+            else:
+                rgba[:,:,0:3] = data[y:y+N,x:x+N,:]
+                rgba[:,:,4]   = 255
 
     def get_bbox(self):
         return get_tiles_bbox(self.tiledict)

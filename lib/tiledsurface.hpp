@@ -64,6 +64,10 @@ public:
     float xx, yy, rr;
     float one_over_radius2;
 
+    assert(color_r >= 0.0 && color_r <= 1.0);
+    assert(color_g >= 0.0 && color_g <= 1.0);
+    assert(color_b >= 0.0 && color_b <= 1.0);
+
     if (opaque == 0) return 0;
     if (radius < 0.1) return 0;
     if (hardness == 0) return 0; // infintly small point, rest transparent
@@ -84,32 +88,19 @@ public:
         // OPTIMIZE: cache tile buffer pointers, so we don't have to call python for each dab;
         //           this could be used to return a list of dirty tiles at the same time
         //           (But profile this code first!)
-        PyObject* tuple;
-        tuple = PyObject_CallMethod(self, "get_tile_memory", "(iii)", tx, ty, 0);
-        if (!tuple) throw 0;
-        PyObject* rgb   = PyTuple_GET_ITEM(tuple, 0);
-        PyObject* alpha = PyTuple_GET_ITEM(tuple, 1);
-        Py_INCREF(rgb);
-        Py_INCREF(alpha);
-        Py_DECREF(tuple);
+        PyObject* rgba;
+        rgba = PyObject_CallMethod(self, "get_tile_memory", "(iii)", tx, ty, 0);
+        if (!rgba) throw 0;
 
-        assert(PyArray_NDIM(rgb) == 3);
-        assert(PyArray_DIM(rgb, 0) == TILE_SIZE);
-        assert(PyArray_DIM(rgb, 1) == TILE_SIZE);
-        assert(PyArray_DIM(rgb, 2) == 3);
+        assert(PyArray_NDIM(rgba) == 3);
+        assert(PyArray_DIM(rgba, 0) == TILE_SIZE);
+        assert(PyArray_DIM(rgba, 1) == TILE_SIZE);
+        assert(PyArray_DIM(rgba, 2) == 4);
 
-        assert(PyArray_NDIM(alpha) == 3);
-        assert(PyArray_DIM(alpha, 0) == TILE_SIZE);
-        assert(PyArray_DIM(alpha, 1) == TILE_SIZE);
-        assert(PyArray_DIM(alpha, 2) == 1);
+        assert(PyArray_ISCARRAY(rgba));
+        assert(PyArray_ISBEHAVED(rgba));
 
-        assert(PyArray_ISCARRAY(rgb));
-        assert(PyArray_ISBEHAVED(rgb));
-        assert(PyArray_ISCARRAY(alpha));
-        assert(PyArray_ISBEHAVED(alpha));
-
-        float * rgb_p   = (float*)((PyArrayObject*)rgb)->data;
-        float * alpha_p = (float*)((PyArrayObject*)alpha)->data;
+        uint8_t * rgba_p  = (uint8_t*)((PyArrayObject*)rgba)->data;
 
         float xc = x - tx*TILE_SIZE;
         float yc = y - ty*TILE_SIZE;
@@ -145,26 +136,31 @@ public:
 
               // We are manipulating pixels with premultiplied alpha directly.
               // This is an "over" operation (opa = topAlpha).
+              // In the formula below, topColor is assumed to be premultiplied.
               //
+              //              opa_eraser  <   opa_       >
               // resultAlpha = topAlpha + (1.0 - topAlpha) * bottomAlpha
               // resultColor = topColor + (1.0 - topAlpha) * bottomColor
               //
               // (at least for the normal case where alpha_eraser == 1.0)
               // OPTIMIZE: separate function for the standard case without erasing
 
-              float opa_ = 1.0 - opa;
-              float opa_eraser = opa * alpha_eraser;
-              int idx = yp*TILE_SIZE + xp;
-              alpha_p[idx] = opa_eraser + opa_*alpha_p[idx]; 
-              idx *= 3;
-              rgb_p[idx+0] = color_r*opa_eraser + opa_*rgb_p[idx+0]; 
-              rgb_p[idx+1] = color_g*opa_eraser + opa_*rgb_p[idx+1]; 
-              rgb_p[idx+2] = color_b*opa_eraser + opa_*rgb_p[idx+2]; 
+              //assert(opa >= 0.0 && opa <= 1.0);
+              //assert(alpha_eraser >= 0.0 && alpha_eraser <= 1.0);
+
+              uint16_t opa_a = 255*opa;
+              uint16_t opa_b = 255-opa_a;
+              uint16_t opa_eraser = 255 * opa * alpha_eraser;
+              //assert(opa_ + opa_eraser <= 255);
+              int idx = (yp*TILE_SIZE + xp)*4;
+              rgba_p[idx+3] = (opa_eraser + opa_b*rgba_p[idx+3]/255);
+              rgba_p[idx+0] = (color_r*opa_eraser + opa_b*rgba_p[idx+0]/255);
+              rgba_p[idx+1] = (color_g*opa_eraser + opa_b*rgba_p[idx+1]/255);
+              rgba_p[idx+2] = (color_b*opa_eraser + opa_b*rgba_p[idx+2]/255);
             }
           }
         }
-        Py_DECREF(rgb);
-        Py_DECREF(alpha);
+        Py_DECREF(rgba);
       }
     }
 
@@ -190,6 +186,12 @@ public:
                        float radius, 
                        float * color_r, float * color_g, float * color_b, float * color_a
                        ) {
+    *color_r = 0;
+    *color_g = 0;
+    *color_b = 0;
+    *color_a = 0;
+    // TODO
+    /*
     float r_fringe;
     int xp, yp;
     float xx, yy, rr;
@@ -294,34 +296,7 @@ public:
     assert (*color_r <= 1.001);
     assert (*color_g <= 1.001);
     assert (*color_b <= 1.001);
+    */
   }
-
-  /* unused code to render an array of dabs
-     PyObject * render (PyObject * surface, PyObject * dabs) {
-
-     dabs = PyArray_ContiguousFromObject(dabs, PyArray_FLOAT, 2, 2);
-     if (!dabs) return NULL;
-
-     PyArrayObject * array = (PyArrayObject*)dabs;
-
-     int n = array->dimensions[0];
-     assert(array->dimensions[1] == 8);
-
-     Dab * d = (Dab*)array->data;
-     int i;
-     for (i=0; i<n; i++) {
-
-     draw_brush_dab_on_tiled_surface (surface,
-     d[i].x, d[i].y, 
-     d[i].radius, d[i].opaque, d[i].hardness,
-     d[i].r, d[i].g, d[i].b
-     );
-     }
-
-     Py_DECREF(dabs);
-
-     Py_RETURN_NONE;
-     }
-  */
 };
 

@@ -611,7 +611,7 @@ class Window(gtk.Window):
     def confirm_destructive_action(self, title='Confirm', question='Really continue?'):
         #t = self.get_unsaved_painting_time()
         t = self.doc.get_total_painting_time()
-        if t < 15:
+        if t < 60:
             # no need to ask
             return True
 
