@@ -17,16 +17,17 @@ from gtk import gdk
 
 tilesize = N = mypaintlib.TILE_SIZE
 
+def premultiply_alpha(dst):
+    dst[:,:,0:3] = dst[:,:,0:3].astype('uint16') * dst[:,:,3:4] / 255
+def un_premultiply_alpha(dst):
+    dst[:,:,0:3] = dst[:,:,0:3].astype('uint16') * 255 / clip(dst[:,:,3:4], 1, 255)
+
 class Tile:
     def __init__(self):
         # note: pixels are stored with premultiplied alpha
-        #self.rgb   = zeros((N, N, 3), 'uint8')
-        #self.alpha = zeros((N, N, 1), 'uint8')
         self.pixbuf = gdk.Pixbuf(gdk.COLORSPACE_RGB, True, 8, N, N)
         self.rgba   = mypaintlib.gdkpixbuf2numpy(self.pixbuf.get_pixels_array())
         self.rgba[:,:,:] = 0
-        # for finding bugs; this color is transparent and thus should never show up anywhere
-        #self.rgba[:,:,:] = (255, 0, 255, 0)
         self.readonly = False
 
     def copy(self):
@@ -39,12 +40,14 @@ class Tile:
         dst_pixbuf     = gdk.Pixbuf(gdk.COLORSPACE_RGB, False, 8, N, N)
         dst_pixbuf_rgb = mypaintlib.gdkpixbuf2numpy(dst_pixbuf.get_pixels_array())
         dst_pixbuf_rgb[:] = dst
-        # un-premultiply alpha (argh!)
+        # OPTIMIZE: argh!
+        #           any blending library that supports premultiplied alpha?
+        #           with dirty optimizations like MMX acceleration, please?
+        #           Maybe numpy allows operations with higher-bit depth intermediate results?
         rgba_orig = self.rgba.copy()
-        self.rgba[:,:,0:3] = (self.rgba[:,:,0:3]).astype('uint16') * 255 / clip(self.rgba[:,:,3:4], 1, 255)
+        un_premultiply_alpha(self.rgba)
         self.pixbuf.composite(dst_pixbuf, 0, 0, N, N, 0, 0, 1, 1, gdk.INTERP_NEAREST, 255)
         dst[:] = dst_pixbuf_rgb[:]
-
         self.rgba[:] = rgba_orig
 
 transparentTile = Tile()
@@ -107,8 +110,8 @@ class TiledSurface(mypaintlib.TiledSurface):
                 #print xx*N, yy*N
                 #print x_start, y_start, x_end, y_end
 
-                rgb, alpha = self.get_tile_memory(xx, yy, readonly)
-                yield xx*N, yy*N, (rgb[y_start:y_end,x_start:y_end], alpha[y_start:y_end,x_start:y_end])
+                rgba = self.get_tile_memory(xx, yy, readonly)
+                yield xx*N, yy*N, rgba[y_start:y_end,x_start:y_end]
 
     def composite_tile(self, dst, tx, ty):
         tile = self.tiledict.get((tx, ty))
@@ -140,6 +143,8 @@ class TiledSurface(mypaintlib.TiledSurface):
             dst = buf[y0:y0+N,x0:x0+N,:]
             dst[:,:,:] = tile.rgba
 
+        un_premultiply_alpha(buf)
+
         im = Image.fromstring('RGBA', (sizex, sizey), buf.tostring())
         im.save(filename)
 
@@ -163,7 +168,8 @@ class TiledSurface(mypaintlib.TiledSurface):
                 rgba[:,:,:] = data[y:y+N,x:x+N,:]
             else:
                 rgba[:,:,0:3] = data[y:y+N,x:x+N,:]
-                rgba[:,:,4]   = 255
+                rgba[:,:,3]   = 255
+            premultiply_alpha(rgba)
 
     def get_bbox(self):
         return get_tiles_bbox(self.tiledict)

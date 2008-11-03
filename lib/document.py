@@ -160,14 +160,18 @@ class Document():
             surface = layer.surface
             surface.composite_tile(dst, tx, ty)
             
-    def render(self, arr, px, py, layers=None):
-        # FIXME: remove this function or use render_tiles() internally
-        assert dst.shape[2] == 3 # RGB only for now
+    def render(self, dst, px, py, layers=None):
+        assert dst.shape[2] == 3, 'RGB only for now'
+        assert px == 0 and py == 0, 'not implemented'
+        N = tiledsurface.N
+        h, w, trash = dst.shape
+        # FIXME: code duplication with tileddrawwidget.repaint()
         for tx, ty in self.get_tiles():
-            self.render_tile
-        for layer in layers:
-            surface = layer.surface
-            surface.composite_over_RGB8(arr, px, py)
+            x = tx*N
+            y = ty*N
+            if x < 0 or x+N > w: continue
+            if y < 0 or y+N > h: continue
+            self.composite_tile(dst[y:y+N,x:x+N], tx, ty, layers)
 
     def get_total_painting_time(self):
         t = 0.0
@@ -197,8 +201,7 @@ class Document():
         self.clear()
         arr = pixbuf.get_pixels_array()
         arr = mypaintlib.gdkpixbuf2numpy(arr)
-        data = (arr/255.0).astype('float32') # FIXME: duplicated internal buffer type knowledge
-        self.load_layer_from_data(data)
+        self.load_layer_from_data(arr)
 
     def save(self, filename, compress=True):
         print 'WARNING: save/load file format is experimental'
