@@ -25,7 +25,7 @@ A document:
 - must be altered via undo/redo commands (except painting)
 """
 
-import mypaintlib, helpers, tiledsurface, command, stroke, layer, serialize, colorspace
+import mypaintlib, helpers, tiledsurface, command, stroke, layer, serialize
 import brush # FIXME: the brush module depends on gtk and everything, but we only need brush_lowlevel
 import random, gc, gzip, os
 import numpy
