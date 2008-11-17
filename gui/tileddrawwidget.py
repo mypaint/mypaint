@@ -42,7 +42,7 @@ class TiledDrawWidget(gtk.DrawingArea):
 
         self.doc = document
         self.doc.canvas_observers.append(self.canvas_modified_cb)
-        self.doc.brush.observers.append(self.brush_modified_cb)
+        self.doc.brush.settings_observers.append(self.brush_modified_cb)
 
         self.cursor_size = None
 

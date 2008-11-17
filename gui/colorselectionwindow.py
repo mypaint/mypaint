@@ -18,7 +18,7 @@ class Window(gtk.Window):
         gtk.Window.__init__(self)
         self.app = app
         self.add_accel_group(self.app.accel_group)
-        self.app.brush.observers.append(self.brush_modified_cb)
+        self.app.brush.settings_observers.append(self.brush_modified_cb)
 
         self.set_title('Color')
         self.connect('delete-event', self.app.hide_window_cb)

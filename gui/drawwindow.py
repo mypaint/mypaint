@@ -53,7 +53,7 @@ class Window(gtk.Window):
 
         self.modifying = False
 
-        self.app.brush.observers.append(self.brush_modified_cb)
+        self.app.brush.settings_observers.append(self.brush_modified_cb)
 
         self.last_gesture_time = 0 # FIXME: unused?
 

@@ -146,25 +146,25 @@ class Setting:
 class Brush_Lowlevel(mypaintlib.Brush):
     def __init__(self):
         mypaintlib.Brush.__init__(self)
-        self.observers = []
-        self.hidden_observers = []
+        self.settings_observers = []
+        self.settings_observers_hidden = []
         self.settings = []
         for s in brushsettings.settings:
-            self.settings.append(Setting(s, self, self.observers))
+            self.settings.append(Setting(s, self, self.settings_observers))
 
         self.saved_string = None
-        self.observers.append(self.invalidate_saved_string)
+        self.settings_observers.append(self.invalidate_saved_string)
 
     def invalidate_saved_string(self):
         self.saved_string = None
 
     def begin_atomic(self):
-        self.hidden_observers.append(self.observers[:])
-        del self.observers[:]
+        self.settings_observers_hidden.append(self.settings_observers[:])
+        del self.settings_observers[:]
 
     def end_atomic(self):
-        self.observers[:] = self.hidden_observers.pop()
-        for f in self.observers: f()
+        self.settings_observers[:] = self.settings_observers_hidden.pop()
+        for f in self.settings_observers: f()
 
 
     def get_stroke_bbox(self):
