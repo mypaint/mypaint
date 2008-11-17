@@ -70,6 +70,8 @@ class Document():
         self.layers = []
         self.layer_idx = None
         self.add_layer(0)
+        # disallow undo of the first layer (TODO: deleting the last layer should clear it instead)
+        self.command_stack = command.CommandStack()
 
         if not init:
             for f in self.canvas_observers:
@@ -228,6 +230,7 @@ class Document():
 
     def save_myp(self, filename, compress=True):
         print 'WARNING: save/load file format is experimental'
+        NEEDS_REWRITE
         self.split_stroke()
         if compress:
             f = gzip.GzipFile(filename, 'wb')
@@ -252,6 +255,7 @@ class Document():
 
     def load_myp(self, filename, decompress=True):
         print 'WARNING: save/load file format is experimental'
+        NEEDS_REWRITE
         self.clear()
         if decompress:
             f = gzip.GzipFile(filename, 'rb')
