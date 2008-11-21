@@ -12,8 +12,6 @@
 from numpy import *
 from PIL import Image
 import mypaintlib, helpers
-import gtk
-from gtk import gdk
 
 tilesize = N = mypaintlib.TILE_SIZE
 
@@ -25,9 +23,10 @@ def un_premultiply_alpha(dst):
 class Tile:
     def __init__(self):
         # note: pixels are stored with premultiplied alpha
-        self.pixbuf = gdk.Pixbuf(gdk.COLORSPACE_RGB, True, 8, N, N)
-        self.rgba   = mypaintlib.gdkpixbuf2numpy(self.pixbuf.get_pixels_array())
-        self.rgba[:,:,:] = 0
+        #       15bits are used, but fully opaque or white is stored as 2**15 (requiring 16 bits)
+        #       This is to allow many calcuations to divide by 2**15 instead of (2**16-1)
+        self.rgba   = zeros((N, N, 4), 'uint16')
+        self.rgba[:,:,:] = (0, 0, 0, 0)
         self.readonly = False
 
     def copy(self):
@@ -36,19 +35,10 @@ class Tile:
         return t
         
     def composite_over_RGB8(self, dst):
-        # OPTIMIZE: that's not how it is supposed to be done
-        dst_pixbuf     = gdk.Pixbuf(gdk.COLORSPACE_RGB, False, 8, N, N)
-        dst_pixbuf_rgb = mypaintlib.gdkpixbuf2numpy(dst_pixbuf.get_pixels_array())
-        dst_pixbuf_rgb[:] = dst
-        # OPTIMIZE: argh!
-        #           any blending library that supports premultiplied alpha?
-        #           with dirty optimizations like MMX acceleration, please?
-        #           Maybe numpy allows operations with higher-bit depth intermediate results?
-        rgba_orig = self.rgba.copy()
-        un_premultiply_alpha(self.rgba)
-        self.pixbuf.composite(dst_pixbuf, 0, 0, N, N, 0, 0, 1, 1, gdk.INTERP_NEAREST, 255)
-        dst[:] = dst_pixbuf_rgb[:]
-        self.rgba[:] = rgba_orig
+        # OPTIMIZE: would be simpler and faster if we could asome tile-sized memory
+        dst_ = dst.copy()
+        mypaintlib.composite_tile_over_rgb8(self.rgba, dst_)
+        dst[:] = dst_
 
 transparentTile = Tile()
 

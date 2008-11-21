@@ -98,7 +98,6 @@ PyObject* pick_scwcs_hsv_at( float x, float y, double brush_h, double brush_s, d
 void render_swisscheesewheelcolorselector(PyObject * arr, double brush_h, double brush_s, double brush_v)
 {
   assert(PyArray_ISCARRAY(arr));
-  assert(PyArray_ISBEHAVED(arr));
   assert(PyArray_NDIM(arr) == 3);
   assert(PyArray_DIM(arr, 0) == colorselector_size);
   assert(PyArray_DIM(arr, 1) == colorselector_size);

@@ -411,7 +411,7 @@ private:
       px = ROUND(x);
       py = ROUND(y);
       float r, g, b, a;
-      surface->tile_get_color (px, py, /*radius*/5.0, &r, &g, &b, &a);
+      surface->get_color (px, py, /*radius*/5.0, &r, &g, &b, &a);
       states[STATE_SMUDGE_R] = fac*states[STATE_SMUDGE_R] + (1-fac)*r;
       states[STATE_SMUDGE_G] = fac*states[STATE_SMUDGE_G] + (1-fac)*g;
       states[STATE_SMUDGE_B] = fac*states[STATE_SMUDGE_B] + (1-fac)*b;
@@ -707,7 +707,6 @@ public:
     assert(PyArray_NDIM(data) == 1);
     assert(PyArray_DIM(data, 0) == STATE_COUNT);
     assert(PyArray_ISCARRAY(data));
-    assert(PyArray_ISBEHAVED(data));
     npy_float32 * data_p = (npy_float32*)PyArray_DATA(data);
     for (int i=0; i<STATE_COUNT; i++) {
       states[i] = data_p[i];

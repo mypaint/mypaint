@@ -14,12 +14,6 @@
 
 #define TILE_SIZE 64
 
-// A RenderContext is normally created when we want to process one or
-// more motion events, and destroyed when all of them are rendered and
-// we are ready to display the result. (TODO: find a better name?)
-//
-// Its main use is to keep track about the region modified (for updating the display later).
-
 class TiledSurface {
   // the Python half of this calss is in tiledsurface.py
 private:
@@ -98,9 +92,9 @@ public:
         assert(PyArray_DIM(rgba, 2) == 4);
 
         assert(PyArray_ISCARRAY(rgba));
-        assert(PyArray_ISBEHAVED(rgba));
+        assert(PyArray_TYPE(rgba) == NPY_UINT16);
 
-        uint8_t * rgba_p  = (uint8_t*)((PyArrayObject*)rgba)->data;
+        uint16_t * rgba_p  = (uint16_t*)((PyArrayObject*)rgba)->data;
 
         float xc = x - tx*TILE_SIZE;
         float yc = y - ty*TILE_SIZE;
@@ -148,15 +142,18 @@ public:
               //assert(opa >= 0.0 && opa <= 1.0);
               //assert(alpha_eraser >= 0.0 && alpha_eraser <= 1.0);
 
-              uint16_t opa_a = 255*opa;
-              uint16_t opa_b = 255-opa_a;
-              uint16_t opa_eraser = 255 * opa * alpha_eraser;
+              uint32_t opa_a = (1<<15)*opa;   // topAlpha
+              uint32_t opa_b = (1<<15)-opa_a; // bottomAlpha
+              
+              //uint16_t opa_eraser = 255 * opa * alpha_eraser;
               //assert(opa_ + opa_eraser <= 255);
               int idx = (yp*TILE_SIZE + xp)*4;
-              rgba_p[idx+3] = (opa_eraser + opa_b*rgba_p[idx+3]/255);
-              rgba_p[idx+0] = (color_r*opa_eraser + opa_b*rgba_p[idx+0]/255);
-              rgba_p[idx+1] = (color_g*opa_eraser + opa_b*rgba_p[idx+1]/255);
-              rgba_p[idx+2] = (color_b*opa_eraser + opa_b*rgba_p[idx+2]/255);
+
+              // OPTIMIZE: don't use floats here in the inner loop?
+              rgba_p[idx+3] = opa_a + (opa_b*rgba_p[idx+3])/(1<<15);
+              rgba_p[idx+0] = (uint16_t)(color_r*opa_a) + opa_b*rgba_p[idx+0]/(1<<15);
+              rgba_p[idx+1] = (uint16_t)(color_g*opa_a) + opa_b*rgba_p[idx+1]/(1<<15);
+              rgba_p[idx+2] = (uint16_t)(color_b*opa_a) + opa_b*rgba_p[idx+2]/(1<<15);
             }
           }
         }
@@ -182,10 +179,10 @@ public:
     return 1;
   }
 
-  void tile_get_color (float x, float y, 
-                       float radius, 
-                       float * color_r, float * color_g, float * color_b, float * color_a
-                       ) {
+  void get_color (float x, float y, 
+                  float radius, 
+                  float * color_r, float * color_g, float * color_b, float * color_a
+                  ) {
     *color_r = 0;
     *color_g = 0;
     *color_b = 0;
@@ -300,3 +297,32 @@ public:
   }
 };
 
+void composite_tile_over_rgb8(PyObject * src, PyObject * dst) {
+  assert(PyArray_DIM(src, 0) == TILE_SIZE);
+  assert(PyArray_DIM(src, 1) == TILE_SIZE);
+  assert(PyArray_DIM(src, 2) == 4);
+  assert(PyArray_TYPE(src) == NPY_UINT16);
+  assert(PyArray_ISCARRAY(src));
+  assert(PyArray_ISBEHAVED(src));
+
+  assert(PyArray_DIM(dst, 0) == TILE_SIZE);
+  assert(PyArray_DIM(dst, 1) == TILE_SIZE);
+  assert(PyArray_DIM(dst, 2) == 3);
+  assert(PyArray_TYPE(dst) == NPY_UINT8);
+  assert(PyArray_ISCARRAY(dst));
+  assert(PyArray_ISBEHAVED(src));
+  
+  uint16_t * src_p  = (uint16_t*)((PyArrayObject*)src)->data;
+  uint8_t  * dst_p  = (uint8_t*) ((PyArrayObject*)dst)->data;
+  int i;
+  for (i=0; i<TILE_SIZE*TILE_SIZE; i++) {
+    // resultAlpha = 1.0 (thus it does not matter if resultColor is premultiplied alpha or not)
+    // resultColor = topColor + (1.0 - topAlpha) * bottomColor
+    uint16_t * s = src_p + 4*i;
+    uint8_t * d = dst_p + 3*i;
+    const uint32_t one_minus_topAlpha = (1<<15) - s[3];
+    d[0] = ((uint32_t)s[0]*255 + one_minus_topAlpha*d[0]) / (1<<15);
+    d[1] = ((uint32_t)s[1]*255 + one_minus_topAlpha*d[1]) / (1<<15);
+    d[2] = ((uint32_t)s[2]*255 + one_minus_topAlpha*d[2]) / (1<<15);
+  }
+}
