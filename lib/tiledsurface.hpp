@@ -137,7 +137,8 @@ public:
               // resultColor = topColor + (1.0 - topAlpha) * bottomColor
               //
               // (at least for the normal case where alpha_eraser == 1.0)
-              // OPTIMIZE: separate function for the standard case without erasing
+              // OPTIMIZE: separate function for the standard case without erasing?
+              // OPTIMIZE: don't use floats here in the inner loop?
 
               //assert(opa >= 0.0 && opa <= 1.0);
               //assert(alpha_eraser >= 0.0 && alpha_eraser <= 1.0);
@@ -145,11 +146,10 @@ public:
               uint32_t opa_a = (1<<15)*opa;   // topAlpha
               uint32_t opa_b = (1<<15)-opa_a; // bottomAlpha
               
-              //uint16_t opa_eraser = 255 * opa * alpha_eraser;
-              //assert(opa_ + opa_eraser <= 255);
+              // only for eraser, or for painting with translucent-making colors
+              opa_a *= alpha_eraser;
+              
               int idx = (yp*TILE_SIZE + xp)*4;
-
-              // OPTIMIZE: don't use floats here in the inner loop?
               rgba_p[idx+3] = opa_a + (opa_b*rgba_p[idx+3])/(1<<15);
               rgba_p[idx+0] = (uint16_t)(color_r*opa_a) + opa_b*rgba_p[idx+0]/(1<<15);
               rgba_p[idx+1] = (uint16_t)(color_g*opa_a) + opa_b*rgba_p[idx+1]/(1<<15);
