@@ -105,7 +105,7 @@ public:
   }
 
 private:
-  // returns the fraction still left after t seconds (TODO: maybe move this out of this class)
+  // returns the fraction still left after t seconds
   float exp_decay (float T_const, float t)
   {
     // the argument might not make mathematical sense (whatever.)
@@ -114,6 +114,15 @@ private:
     } else {
       return exp(- t / T_const);
     }
+  }
+  float rand_gauss (GRand * rng)
+  {
+    // OPTIMIZE: faster algorithms exist
+    float res = -6.0;
+    for (int i=0; i<12; i++) {
+      res += g_rand_double(rng);
+    }
+    return res;
   }
 
 
