@@ -18,7 +18,11 @@ gdk = gtk.gdk
 data='/share/mypaint'
 lib='/lib/python%d.%d/site-packages/mypaint/' % (sys.version_info[0], sys.version_info[1])
 pwd=os.getcwd()
-curdir=os.path.dirname(sys.argv[0])
+
+if sys.argv != []:
+	curdir=os.path.dirname(sys.argv[0])
+else:
+	curdir='.'
 
 # script is installed as $prefix/bin. I just need $prefix to continue.
 #dir_install=os.path.normpath(os.path.join(pwd,curdir)) # ????

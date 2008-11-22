@@ -1,18 +1,116 @@
 MyPaint - drawing program with dynamic brushes for graphic tablets
 
-Compile and run:
-scons && ./mypaint
+Linux:
 
-(Autoconf might not work currently:)
-# ./configure && make && ./mypaint
-# If you are using svn you need ./autogen.sh first.
-# 
-# Optionally, 'make install'. 
+	Compile and run:
+	scons && ./mypaint
 
-Required: pygtk, python, gtk, numpy, [maybe also scipy]
-Recommended: a pressure sensitive input device (graphic tablet)
+	(Autoconf might not work currently:)
+	# ./configure && make && ./mypaint
+	# If you are using svn you need ./autogen.sh first.
+	# 
+	# Optionally, 'make install'. 
 
-Debian users need: python-gtk2-dev python2.5-dev python-numeric
+	Required: pygtk, python, gtk, numpy, [maybe also scipy]
+	Recommended: a pressure sensitive input device (graphic tablet)
+
+	Debian users need: python-gtk2-dev python2.5-dev python-numeric
+
+
+Windows:
+
+	NOTE: This is still very experimental.
+	If you'd much rather simply have a semi-recent pre-build version of MyPaint for Windows,
+	downloads should be available on the website.
+
+	To build on a Windows platform there are a handful of things you need to setup before building.
+	As the very first step you should make sure you have the following things installed correctly on your system:
+		
+		Tools:
+			SCons
+			MinGW (or the like)
+			Python 2.5 (or possibly above)
+			SWIG
+			pkg-config
+		
+		Libs:
+			GTK+
+			(And for Python:)
+			PyGTK
+			PyGObject
+			PyCairo
+			PIL
+			Numpy
+			Numeric ( This is the predecessor to Numpy, and dependency might depend on your choice of other libs - you might actually not need it )
+		
+	When everything is installed you will most likely have to set the following Environmet Variables under Windows.
+	These will naturally need to reflect the way you installed the above mentioned tools and libs.
+	The variables and example values are given here:
+		
+		PATH 						=	"C:\MinGW\bin;C:\GTK\bin;C:\swig;C:\Python25;C:\Python25\Scripts;"
+		PYTHONPATH			=	"C:\Python25\Lib\site-packages"
+		PKG_CONFIG_PATH	=	"C:\Python25\Lib\pkgconfig"
+
+		( The following is handy for debugging purpose, but should only be use when needed - NOT required ! )
+		PYTHONVERBOSE		=	"1"
+	
+	Along the line you will most likely also have to make the missing ".pc" files for pkg-config.
+	These should be put in one of the locations specified in PKG_CONFIG_PATH.
+	Here you should have the following files:
+	
+		numpy.pc
+		pycairo.pc
+		pygobject-2.0.pc
+		pygtk-2.0.pc
+		python25.pc
+	
+	If they do not exist and are not found elsewhere in PKG_CONFIG_PATH, you have to write them yourself.
+	These files are rather simple, containing only a few lines.
+	If you're not able to create these yourself by trial'n'error, try Google some info on the format.
+
+	Fortunately once everything is set up building should be a smooth process.
+	Open the Command Prompt and simply follow these two steps:
+		
+		"cd \mypaint-trunk\" 		To go the dir containing the downloaded source code.
+		"scons"									Start up SCons and have it read the SConstruct script.
+														This is the where 'mypaint.dll' and 'mypaint.exe' (hopefully) are build.
+	
+	Now the remaining problem is to boil it all down to a reasonable clean set of files.
+	At this stage you will have to experiment a lot - and again utilize your trial'n'error skills.
+	Some of the files you'll most likely need to find are:
+	
+		( in no particular order )
+	
+		libglib-2.0-0.dll,		libgobject-2.0-0.dll,			libpangowin32-1.0-0.dll,
+		libgmodule-2.0-0.dll,	libgdk_pixbuf-2.0-0.dll,	libgthread-2.0-0.dll,
+		libcairo-2.dll,				libpangocairo-1.0-0.dll,	libgdk-win32-2.0-0.dll,
+		libatk-1.0-0.dll,			libgio-2.0-0.dll,					libgtk-win32-2.0-0.dll
+		libpng12-0.dll,				libpango-1.0-0.dll,
+		
+		zlib1.dll,	jpeg62.dll,		libtiff3.dll,
+		tk84.dll,		tcl84.dll,
+		
+		python25.dll,		MSVCR71.dll,	w9xpopen.exe,
+		
+		numpy.core.umath.pyd,				numpy.lib._compiled_base.pyd,
+		numpy.core.multiarray.pyd,	numpy.core.scalarmath.pyd,
+		numpy.fft.fftpack_lite.pyd,	numpy.core._sort.pyd,
+		numpy.random.mtrand.pyd,		numpy.linalg.lapack_lite.pyd,
+		
+		gtk._gtk.pyd,		gobject._gobject.pyd,		cairo._cairo.pyd
+	
+	This stage is just insanity for you perfectinists out there. Noone will mind if you skip this step.
+	Likely MyPaint will run just fine, finding these files elsewhere on your system.
+	BUT! if it turns out it doesn't or if you need to run MyPaint on other systems than the one you build it on,
+	you'll still have to have these files in the directory you keep 'mypaint.exe'.
+	
+	Good luck !
+	
+	PS: If you give up along the way there should be semi-recent builds available on the website.
+	PPS: Much in line with all the shared libs metioned above,
+		the exe file is build to import two files 'python25.zip' and 'site-packages.zip'.
+		These files were ment to hold any addictional python scripts needed.
+		Examine the files from the recent Windows builds on the website for reference.
 
 Project homepage:
 http://mypaint.intilinux.com/

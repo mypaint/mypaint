@@ -29,3 +29,9 @@ if env.get('CPPDEFINES'):
 
 SConscript('lib/SConscript', 'env')
 
+# Build mypaint.exe for running on windows
+if sys.platform == "win32":
+	env2 = Environment(ENV=os.environ)
+	env2.ParseConfig('pkg-config --cflags --libs python25')
+	env2.Program('mypaint', ['mypaint_exe.c'])
+
