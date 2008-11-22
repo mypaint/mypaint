@@ -101,6 +101,7 @@ norm_speed1_slow, norm_speed2_slow
 stroke, stroke_started # stroke_started is used as boolean
 
 custom_input
+rng_seed
 '''
 
 class BrushInput:

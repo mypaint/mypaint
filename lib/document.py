@@ -100,7 +100,9 @@ class Document():
         self.stroke.record_event(dtime, x, y, pressure)
 
         layer = self.layers[self.layer_idx]
-        split = self.brush.tiled_surface_stroke_to (layer.surface, x, y, pressure, dtime)
+        layer.surface.begin_atomic()
+        split = self.brush.stroke_to (layer.surface, x, y, pressure, dtime)
+        layer.surface.end_atomic()
 
         if split:
             self.split_stroke()

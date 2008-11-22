@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from scipy import *
 #from pylab import *
 from time import time

@@ -5,8 +5,9 @@
 
 typedef struct { int x, y, w, h; } Rect;
 
-%include "tiledsurface.hpp"
+%include "surface.hpp"
 %include "brush.hpp"
+%include "tiledsurface.hpp"
 %include "colorselector.hpp"
 
 //from "gdkpixbuf2numpy.hpp"

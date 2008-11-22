@@ -20,18 +20,17 @@
 #define ACTUAL_RADIUS_MAX 150 //FIXME: performance problem actually depending on CPU
 
 /* The Brush class stores two things:
-   b) settings: constant during a stroke (eg. size, spacing, dynamics)
-   a) states: changing during a stroke (eg. speed, smudge colors, time/distance to next dab, position filter states)
+   b) settings: constant during a stroke (eg. size, spacing, dynamics, color selected by the user)
+   a) states: modified during a stroke (eg. speed, smudge colors, time/distance to next dab, position filter states)
 
    FIXME: Actually those are two orthogonal things. Should separate them:
-          a) brush class that is saved/loaded/selected  (can live without the states)
-          b) brush class to draw the dabs (using an exchangeable reference to the one above)
-          (There might still be some "not-sure-if-those-are-states" though.)
+          a) brush settings class that is saved/loaded/selected  (without states)
+          b) brush core class to draw the dabs (using an instance of the above)
 
    In python, there are two kinds of instances from this: a "global
    brush" which does the cursor tracking, and the "brushlist" where
    the states are ignored. When a brush is selected, its settings are
-   copied into the global one, leaving the status intact.
+   copied into the global one, leaving the state intact.
  */
 
 
@@ -61,14 +60,13 @@ private:
 
 public:
   Brush() {
-    int i;
-    for (i=0; i<BRUSH_SETTINGS_COUNT; i++) {
+    for (int i=0; i<BRUSH_SETTINGS_COUNT; i++) {
       settings[i] = new Mapping(INPUT_COUNT);
     }
     rng = g_rand_new();
     print_inputs = false;
     
-    for (i=0; i<STATE_COUNT; i++) {
+    for (int i=0; i<STATE_COUNT; i++) {
       states[i] = 0;
     }
     new_stroke();
@@ -77,8 +75,7 @@ public:
   }
 
   ~Brush() {
-    int i;
-    for (i=0; i<BRUSH_SETTINGS_COUNT; i++) {
+    for (int i=0; i<BRUSH_SETTINGS_COUNT; i++) {
       delete settings[i];
     }
     g_rand_free (rng); rng = NULL;
@@ -136,8 +133,7 @@ private:
     //
     // The code below calculates m and q given gamma and two hardcoded constraints.
     //
-    int i;
-    for (i=0; i<2; i++) {
+    for (int i=0; i<2; i++) {
       float gamma;
       gamma = settings[(i==0)?BRUSH_SPEED1_GAMMA:BRUSH_SPEED2_GAMMA]->base_value;
       gamma = exp(gamma);
@@ -175,7 +171,6 @@ private:
   // note: parameters are is dx/ddab, ..., dtime/ddab (dab is the number, 5.0 = 5th dab)
   void update_states_and_setting_values (float step_dx, float step_dy, float step_dpressure, float step_dtime)
   {
-    int i;
     float pressure;
     float inputs[INPUT_COUNT];
 
@@ -238,7 +233,7 @@ private:
     // FIXME: this one fails!!!
     //assert(inputs[INPUT_SPEED1] >= 0.0 && inputs[INPUT_SPEED1] < 1e8); // checking for inf
 
-    for (i=0; i<BRUSH_SETTINGS_COUNT; i++) {
+    for (int i=0; i<BRUSH_SETTINGS_COUNT; i++) {
       settings_value[i] = settings[i]->calculate (inputs);
     }
 
@@ -490,13 +485,14 @@ private:
     return res1 + res2 + res3;
   }
 
+public:
   // This function:
   // - is called once for each motion event
   // - does motion event interpolation
   // - paints zero, one or several dabs
   // - decides whether the stroke is finished (for undo/redo)
-  // returns true to suggest that a new stroke should be started
-  bool stroke_to_internal (TiledSurface * surface, float x, float y, float pressure, double dtime)
+  // returns true if the stroke is finished or empty
+  bool stroke_to (TiledSurface * surface, float x, float y, float pressure, double dtime)
   {
     //printf("%f %f %f %f\n", (double)dtime, (double)x, (double)y, (double)pressure);
 
@@ -509,9 +505,11 @@ private:
     if (dtime > 0.100 && pressure && states[STATE_PRESSURE] == 0) {
       // Workaround for tablets that don't report motion events without pressure.
       // This is to avoid linear interpolation of the pressure between two events.
-      stroke_to_internal (surface, x, y, 0.0, dtime-0.0001);
+      stroke_to (surface, x, y, 0.0, dtime-0.0001);
       dtime = 0.0001;
     }
+
+    g_rand_set_seed (rng, states[STATE_RNG_SEED]);
 
     { // calculate the actual "virtual" cursor position
 
@@ -623,6 +621,9 @@ private:
     states[STATE_DIST] = dist_moved + dist_todo;
     //g_print("dist_final = %f\n", states[STATE_DIST]);
 
+    // next seed for the RNG (GRand has no get_state() and states[] must always contain our full state)
+    states[STATE_RNG_SEED] = g_rand_int(rng);
+
     // stroke separation logic (for undo/redo)
 
     if (painted == UNKNOWN) {
@@ -652,7 +653,7 @@ private:
       //if (stroke_current_idling_time == 0) g_print ("painting ==> idling\n");
       stroke_current_idling_time += dtime;
       if (stroke_total_painting_time == 0) {
-        // not yet painted, split to discard the useless motion data
+        // not yet painted, start a new stroke if we have accumulated a lot of irrelevant motion events
         if (stroke_current_idling_time > 1.0) {
           return true;
         }
@@ -668,30 +669,7 @@ private:
     return false;
   }
 
-public:
-  PyObject * tiled_surface_stroke_to (TiledSurface * surface, float x, float y, float pressure, double dtime)
-  {
-    try {
-      surface->begin_atomic();
-      bool painted = stroke_to_internal (surface, x, y, pressure, dtime);
-      surface->end_atomic();
-      return Py_BuildValue("i", (int)painted);
-    } catch (int i) {
-      return NULL;
-    }
-  }
-
-  double random_double ()
-  {
-    return g_rand_double (rng);
-  }
-
-  void srandom (int value)
-  {
-    g_rand_set_seed (rng, value);
-  }
-
-  PyObject* get_state ()
+  PyObject * get_state ()
   {
     npy_intp dims = {STATE_COUNT};
     PyObject * data = PyArray_SimpleNew(1, &dims, NPY_FLOAT32);

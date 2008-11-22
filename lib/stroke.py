@@ -27,9 +27,7 @@ class Stroke:
         assert states.dtype == 'float32'
         self.brush_state = states.tostring()
 
-        self.seed = random.randrange(0x10000)
         self.brush = brush
-        brush.srandom(self.seed)
         self.brush.new_stroke() # this just resets the stroke_* members of the brush
 
         self.tmp_event_list = []
@@ -68,7 +66,6 @@ class Stroke:
         states = numpy.fromstring(self.brush_state, dtype='float32')
         b.set_state(states)
 
-        b.srandom(self.seed)
         #b.set_print_inputs(1)
         #print 'replaying', len(self.stroke_data), 'bytes'
 
@@ -76,8 +73,11 @@ class Stroke:
         assert version == '2'
         data = numpy.fromstring(data, dtype='float64')
         data.shape = (len(data)/4, 4)
+
+        surface.begin_atomic()
         for dtime, x, y, pressure in data:
-            b.tiled_surface_stroke_to (surface, x, y, pressure, dtime)
+            b.stroke_to (surface, x, y, pressure, dtime)
+        surface.end_atomic()
 
     def copy_using_different_brush(self, brush):
         assert self.finished
@@ -90,7 +90,6 @@ class Stroke:
         return s
 
     serialize_members = [
-        ('seed', int),
         ('total_painting_time', float),
         ('brush_settings', str),
         ('brush_state', str),

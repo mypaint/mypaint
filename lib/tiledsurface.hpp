@@ -10,12 +10,13 @@
 #include "Python.h"
 #include <math.h>
 
+#include "surface.hpp"
 #include "helpers.hpp"
 
 #define TILE_SIZE 64
 
-class TiledSurface {
-  // the Python half of this calss is in tiledsurface.py
+class TiledSurface : public Surface {
+  // the Python half of this class is in tiledsurface.py
 private:
   PyObject * self;
   Rect dirty_bbox;
@@ -132,7 +133,7 @@ public:
               // This is an "over" operation (opa = topAlpha).
               // In the formula below, topColor is assumed to be premultiplied.
               //
-              //              opa_eraser  <   opa_       >
+              //               opa_a      <   opa_b      >
               // resultAlpha = topAlpha + (1.0 - topAlpha) * bottomAlpha
               // resultColor = topColor + (1.0 - topAlpha) * bottomColor
               //

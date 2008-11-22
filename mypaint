@@ -40,23 +40,8 @@ else:
     share='.'
     # checking for import error below
 
-try: # just for a nice error message, plus portability test
+try: # just for a nice error message
     from lib import mypaintlib
-    b = mypaintlib.Brush()
-    b.srandom(0xf4a1)
-    b.random_double()
-    b.random_double()
-    val = b.random_double()
-    if abs(val - 0.37175135167) > 1e-10:
-        print val
-        print 'Warning: the pseudo random generator did not generate the expected sequence.'
-        print 'You should be able to use mypaint normally, but files (stroke replays) saved'
-        print 'on a different system will have a different randomness, thus look different.'
-        print 'Please report this together with your glib version and CPU architecture.'
-        print
-    assert val >= 0.0
-    assert val <= 1.0
-    del b
 except ImportError, detail:
     print 'ImportError:', detail
     print "\nWe are not correctly installed or compiled!"

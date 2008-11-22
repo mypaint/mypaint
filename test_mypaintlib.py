@@ -29,7 +29,7 @@ def brushPaint():
     for t, x, y, pressure in events:
         dtime = t - t_old
         t_old = t
-        b.tiled_surface_stroke_to (s, x, y, pressure, dtime)
+        b.stroke_to (s, x, y, pressure, dtime)
     print s.get_bbox(), b.stroke_total_painting_time # FIXME: why is this time so different each run?
 
     s.save('test_brushPaint.png')
