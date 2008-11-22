@@ -152,10 +152,6 @@ private:
       fix1_y = 0.5;
       fix2_x = 45.0;
       fix2_dy = 0.015;
-      //fix1_x = 45.0;
-      //fix1_y = 0.0;
-      //fix2_x = 45.0;
-      //fix2_dy = 0.015;
 
       float m, q;
       float c1;
@@ -163,8 +159,6 @@ private:
       m = fix2_dy * (fix2_x + gamma);
       q = fix1_y - m*c1;
     
-      //g_print("a=%f, m=%f, q=%f    c1=%f\n", a, m, q, c1);
-
       speed_mapping_gamma[i] = gamma;
       speed_mapping_m[i] = m;
       speed_mapping_q[i] = q;
@@ -303,11 +297,11 @@ private:
   }
 
   // Called only from stroke_to(). Calculate everything needed to
-  // draw the dab, then let draw_brush_dab() do the actual drawing.
+  // draw the dab, then let the surface do the actual drawing.
   //
-  // This is always called "directly" after brush_update_settings_values.
-  // Returns zero if nothing was drawn.
-  int prepare_and_draw_dab (TiledSurface * surface)
+  // This is only gets called right after update_states_and_setting_values().
+  // Returns true if the surface was modified.
+  bool prepare_and_draw_dab (TiledSurface * surface)
   {
     float x, y, opaque;
     float radius;
@@ -315,7 +309,7 @@ private:
     opaque = settings_value[BRUSH_OPAQUE] * settings_value[BRUSH_OPAQUE_MULTIPLY];
     if (opaque >= 1.0) opaque = 1.0;
     if (opaque <= 0.0) opaque = 0.0;
-    //if (opaque == 0.0) return 0; <-- bad idea: need to update smudge state.
+    //if (opaque == 0.0) return false; <-- cannot do that, since we need to update smudge state.
     if (settings_value[BRUSH_OPAQUE_LINEARIZE]) {
       // OPTIMIZE: no need to recalculate this for each dab
       float alpha, beta, alpha_dab, beta_dab;
@@ -598,7 +592,7 @@ public:
       }
     
       update_states_and_setting_values (step_dx, step_dy, step_dpressure, step_dtime);
-      int painted_now = prepare_and_draw_dab (surface);
+      bool painted_now = prepare_and_draw_dab (surface);
       if (painted_now) {
         painted = YES;
       } else if (painted == UNKNOWN) {

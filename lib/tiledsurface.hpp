@@ -47,12 +47,13 @@ public:
     }
   }
 
-  int draw_dab (float x, float y, 
-                float radius, 
-                float color_r, float color_g, float color_b,
-                float opaque, float hardness = 0.5,
-                float alpha_eraser = 1.0
-                ) {
+  // returns true if the surface was modified
+  bool draw_dab (float x, float y, 
+                 float radius, 
+                 float color_r, float color_g, float color_b,
+                 float opaque, float hardness = 0.5,
+                 float alpha_eraser = 1.0
+                 ) {
 
     float r_fringe;
     int xp, yp;
@@ -63,9 +64,9 @@ public:
     assert(color_g >= 0.0 && color_g <= 1.0);
     assert(color_b >= 0.0 && color_b <= 1.0);
 
-    if (opaque == 0) return 0;
-    if (radius < 0.1) return 0;
-    if (hardness == 0) return 0; // infintly small point, rest transparent
+    if (opaque == 0) return false;
+    if (radius < 0.1) return false;
+    if (hardness == 0) return false; // infintly small point, rest transparent
 
     begin_atomic();
 
@@ -177,7 +178,7 @@ public:
 
     end_atomic();
 
-    return 1;
+    return true;
   }
 
   void get_color (float x, float y, 

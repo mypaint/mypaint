@@ -9,12 +9,12 @@
 
 // surface interface required by brush.hpp
 class Surface {
-  virtual int draw_dab (float x, float y, 
-                        float radius, 
-                        float color_r, float color_g, float color_b,
-                        float opaque, float hardness = 0.5,
-                        float alpha_eraser = 1.0
-                        ) = 0;
+  virtual bool draw_dab (float x, float y, 
+                         float radius, 
+                         float color_r, float color_g, float color_b,
+                         float opaque, float hardness = 0.5,
+                         float alpha_eraser = 1.0
+                         ) = 0;
 
   virtual void get_color (float x, float y, 
                           float radius, 
