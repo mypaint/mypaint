@@ -119,6 +119,8 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.doc.stroke_to(dtime, x, y, pressure)
 
     def canvas_modified_cb(self, x1, y1, w, h):
+        if not self.window:
+            return
         # create an expose event with the event bbox rotated/zoomed
         # OPTIMIZE: estimated to cause at least twice more rendering work than neccessary
         x2 = x1 + w - 1
