@@ -64,11 +64,16 @@ class TiledDrawWidget(gtk.DrawingArea):
         # gets overwritten for the main window
         self.zoom_max = 5.0
         self.zoom_min = 1/5.0
+        
+        self.scroll_at_edges = False
 
         self.show_layers_above = True
         self.doc.layer_observers.append(self.layer_selected_cb)
 
 
+    def set_scroll_at_edges(self, choice):
+      self.scroll_at_edges = choice
+      
     def button_updown_cb(self, widget, event):
         d = event.device
         if False:
@@ -111,6 +116,20 @@ class TiledDrawWidget(gtk.DrawingArea):
                 pressure = 0.5
             else:
                 pressure = 0.0
+        
+        # CSS experimental - scroll when touching the edge of the screen in fullscreen mode
+        if self.scroll_at_edges and pressure <= 0.0:
+          screen_w = gdk.screen_width()
+          screen_h = gdk.screen_height()
+          trigger_area = 10
+          if (event.x <= trigger_area):
+            self.scroll(-10,0)
+          if (event.x >= (screen_w-1)-trigger_area):
+            self.scroll(10,0)
+          if (event.y <= trigger_area):
+            self.scroll(0,-10)
+          if (event.y >= (screen_h-1)-trigger_area):
+            self.scroll(0,10)
 
         if not self.doc.brush:
             print 'no brush!'
