@@ -38,6 +38,7 @@ def files_equal(a, b):
     return open(a, 'rb').read() == open(b, 'rb').read()
 
 def docPaint():
+    OUTDATED
     b1 = brush.Brush_Lowlevel()
     b1.load_from_string(open('brushes/s006.myb').read())
     b2 = brush.Brush_Lowlevel()
@@ -103,6 +104,6 @@ def docPaint():
 
 directPaint()
 brushPaint()
-docPaint()
+#docPaint()
 
 print 'tests done'

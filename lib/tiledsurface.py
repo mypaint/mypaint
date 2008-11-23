@@ -15,11 +15,6 @@ import mypaintlib, helpers
 
 tilesize = N = mypaintlib.TILE_SIZE
 
-def premultiply_alpha(dst):
-    dst[:,:,0:3] = dst[:,:,0:3].astype('uint16') * dst[:,:,3:4] / 255
-def un_premultiply_alpha(dst):
-    dst[:,:,0:3] = dst[:,:,0:3].astype('uint16') * 255 / clip(dst[:,:,3:4], 1, 255)
-
 class Tile:
     def __init__(self):
         # note: pixels are stored with premultiplied alpha
@@ -120,6 +115,19 @@ class TiledSurface(mypaintlib.TiledSurface):
             if x0+N > w or y0+N > h: continue
             tile.composite_over_RGB8(dst[y0:y0+N,x0:x0+N,:]) # OPTIMIZE: is this slower than without offsets?
 
+    def save_snapshot(self):
+        for t in self.tiledict.itervalues():
+            t.readonly = True
+        return self.tiledict.copy()
+
+    def load_snapshot(self, data):
+        old = set(self.tiledict.items())
+        self.tiledict = data.copy()
+        new = set(self.tiledict.items())
+        dirty = old.symmetric_difference(new)
+        bbox = get_tiles_bbox([pos for (pos, tile) in dirty])
+        self.notify_observers(*bbox)
+
     def save(self, filename):
         assert self.tiledict, 'cannot save empty surface'
         a = array([xy for xy, tile in self.tiledict.iteritems()])
@@ -131,35 +139,31 @@ class TiledSurface(mypaintlib.TiledSurface):
             x0 = N*x0 - minx
             y0 = N*y0 - miny
             dst = buf[y0:y0+N,x0:x0+N,:]
-            dst[:,:,:] = tile.rgba
-
-        un_premultiply_alpha(buf)
+            tmp = tile.rgba.astype('float32') / (1<<15)
+            tmp[:,:,0:3] /= tmp[:,:,3:].clip(0.0001, 1.0) # un-premultiply alpha
+            tmp = tmp.clip(0.0,1.0)
+            dst[:,:,:] = tmp * 255.0
 
         im = Image.fromstring('RGBA', (sizex, sizey), buf.tostring())
         im.save(filename)
-
-    def save_snapshot(self):
-        for t in self.tiledict.itervalues():
-            t.readonly = True
-        return self.tiledict.copy()
-    def load_snapshot(self, data):
-        old = set(self.tiledict.items())
-        self.tiledict = data.copy()
-        new = set(self.tiledict.items())
-        dirty = old.symmetric_difference(new)
-        bbox = get_tiles_bbox([pos for (pos, tile) in dirty])
-        self.notify_observers(*bbox)
 
     def load_from_data(self, data):
         self.clear()
         for x, y, rgba in self.iter_tiles_memory(0, 0, data.shape[1], data.shape[0], readonly=False):
             # FIXME: will be buggy at border?
-            if data.shape[2] == 4:
-                rgba[:,:,:] = data[y:y+N,x:x+N,:]
+            tmp = data[y:y+N,x:x+N,:].astype('float32') / 255.0
+            if data.shape[2] == 3:
+                # no alpha channel loaded
+                alpha = 1.0
             else:
-                rgba[:,:,0:3] = data[y:y+N,x:x+N,:]
-                rgba[:,:,3]   = 255
-            premultiply_alpha(rgba)
+                alpha = tmp[:,:,3:]
+            tmp[:,:,0:3] *= alpha # premultiply alpha
+            tmp *= 1<<15
+            if data.shape[2] == 4:
+                rgba[:,:,:] = tmp
+            else:
+                rgba[:,:,0:3] = tmp
+                rgba[:,:,3]   = 1<<15
 
     def get_bbox(self):
         return get_tiles_bbox(self.tiledict)
