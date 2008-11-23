@@ -1,0 +1,8 @@
+* The MyPaint application and any part of MyPaint not explicitly licensed
+  otherwise, is licensed under the GNU GENERAL PUBLIC LICENSE -- see the
+  'COPYING' file in this directory for details.
+
+* The MyPaint brush library, which can be found in the brushlib directory,
+  is licensed under the GNU LESSER GENERAL PUBLIC LICENSE -- see the
+  'COPYING' file in the brushlib directory for details. The MyPaint brush
+  collection is not part of that library.
