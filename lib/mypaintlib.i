@@ -5,8 +5,8 @@
 
 typedef struct { int x, y, w, h; } Rect;
 
-%include "surface.hpp"
-%include "brush.hpp"
+%include "../brushlib/surface.hpp"
+%include "../brushlib/brush.hpp"
 %include "tiledsurface.hpp"
 %include "colorselector.hpp"
 

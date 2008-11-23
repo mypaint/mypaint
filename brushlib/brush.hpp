@@ -301,7 +301,7 @@ private:
   //
   // This is only gets called right after update_states_and_setting_values().
   // Returns true if the surface was modified.
-  bool prepare_and_draw_dab (TiledSurface * surface)
+  bool prepare_and_draw_dab (Surface * surface)
   {
     float x, y, opaque;
     float radius;
@@ -495,7 +495,7 @@ public:
   // - paints zero, one or several dabs
   // - decides whether the stroke is finished (for undo/redo)
   // returns true if the stroke is finished or empty
-  bool stroke_to (TiledSurface * surface, float x, float y, float pressure, double dtime)
+  bool stroke_to (Surface * surface, float x, float y, float pressure, double dtime)
   {
     //printf("%f %f %f %f\n", (double)dtime, (double)x, (double)y, (double)pressure);
 

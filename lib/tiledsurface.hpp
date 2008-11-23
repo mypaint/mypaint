@@ -7,12 +7,6 @@
  * but WITHOUT ANY WARRANTY. See the COPYING file for more details.
  */
 
-#include "Python.h"
-#include <math.h>
-
-#include "surface.hpp"
-#include "helpers.hpp"
-
 #define TILE_SIZE 64
 
 class TiledSurface : public Surface {
@@ -41,7 +35,7 @@ public:
         PyObject* res;
         // OPTIMIZE: send a list tiles for minimal compositing? (but profile the code first)
         res = PyObject_CallMethod(self, "notify_observers", "(iiii)", bbox.x, bbox.y, bbox.w, bbox.h);
-        if (!res) throw 0;
+        if (!res) printf("Python exception during notify_observers! FIXME: Traceback will not be accurate.\n");
         Py_DECREF(res);
       }
     }
@@ -86,7 +80,7 @@ public:
         //           (But profile this code first!)
         PyObject* rgba;
         rgba = PyObject_CallMethod(self, "get_tile_memory", "(iii)", tx, ty, 0);
-        if (!rgba) throw 0;
+        if (!rgba) printf("Python exception during get_tile_memory! FIXME: Traceback will not be accurate.\n");
 
         assert(PyArray_NDIM(rgba) == 3);
         assert(PyArray_DIM(rgba, 0) == TILE_SIZE);

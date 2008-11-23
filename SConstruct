@@ -28,6 +28,7 @@ if env.get('CPPDEFINES'):
 	env['CPPDEFINES'].remove('NDEBUG')
 
 SConscript('lib/SConscript', 'env')
+SConscript('brushlib/SConscript', 'env')
 
 # Build mypaint.exe for running on windows
 if sys.platform == "win32":

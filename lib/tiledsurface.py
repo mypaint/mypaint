@@ -21,7 +21,6 @@ class Tile:
         #       15bits are used, but fully opaque or white is stored as 2**15 (requiring 16 bits)
         #       This is to allow many calcuations to divide by 2**15 instead of (2**16-1)
         self.rgba   = zeros((N, N, 4), 'uint16')
-        self.rgba[:,:,:] = (0, 0, 0, 0)
         self.readonly = False
 
     def copy(self):

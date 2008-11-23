@@ -10,7 +10,7 @@
 # FIXME: bad file name, saying nothing about what's in here
 # FIXME: should split brush_lowlevel into its own gtk-independent module
 import mypaintlib
-import brushsettings
+from brushlib import brushsettings
 import gtk, string, os, colorsys
 from helpers import clamp
 
