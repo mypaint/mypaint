@@ -792,9 +792,11 @@ class Window(gtk.Window):
         if self.fullscreen:
             self.menubar.hide()
             self.window.fullscreen()
+            self.tdw.set_scroll_at_edges(True)
         else:
             self.window.unfullscreen()
             self.menubar.show()
+            self.tdw.set_scroll_at_edges(False)
 
     def context_cb(self, action):
         # TODO: this context-thing is not very useful like that, is it?
@@ -854,7 +856,7 @@ class Window(gtk.Window):
             u"the Free Software Foundation; either version 2 of the License, or "
             u"(at your option) any later version.\n"
             u"\n"
-            u"This program is distributed in the hope that it will be useful,"
+            u"This program is distributed in the hope that it will be useful, "
             u"but WITHOUT ANY WARRANTY. See the COPYING file for more details."
             % MYPAINT_VERSION
             )
