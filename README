@@ -14,7 +14,7 @@ Linux:
 	Required: pygtk, python, gtk, numpy, [maybe also scipy]
 	Recommended: a pressure sensitive input device (graphic tablet)
 
-	Debian users need: python-gtk2-dev python2.5-dev python-numeric
+	Debian users need: python-gtk2-dev python2.5-dev python-numpy
 
 
 Windows:
