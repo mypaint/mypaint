@@ -147,7 +147,18 @@ class TiledSurface(mypaintlib.TiledSurface):
         im.save(filename)
 
     def load_from_data(self, data):
-        self.clear()
+        dirty_tiles = set(self.tiledict.keys())
+        self.tiledict = {}
+
+        if data.shape[0] % N or data.shape[1] % N:
+            s = list(data.shape)
+            print 'reshaping', s
+            s[0] = ((s[0]+N-1) / N) * N
+            s[1] = ((s[1]+N-1) / N) * N
+            data_new = zeros(s, data.dtype)
+            data_new[:data.shape[0],:data.shape[1],:] = data
+            data = data_new
+
         for x, y, rgba in self.iter_tiles_memory(0, 0, data.shape[1], data.shape[0], readonly=False):
             # FIXME: will be buggy at border?
             tmp = data[y:y+N,x:x+N,:].astype('float32') / 255.0
@@ -164,6 +175,13 @@ class TiledSurface(mypaintlib.TiledSurface):
                 rgba[:,:,0:3] = tmp
                 rgba[:,:,3]   = 1<<15
 
+        dirty_tiles.update(self.tiledict.keys())
+        bbox = get_tiles_bbox(dirty_tiles)
+        self.notify_observers(*bbox)
+
+
+
     def get_bbox(self):
+        # FIXME: should get precise bbox instead of tile bbox
         return get_tiles_bbox(self.tiledict)
 

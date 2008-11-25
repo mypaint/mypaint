@@ -151,12 +151,14 @@ class Layer:
 
         def render_from_empty():
             #print 'full rerender'
-            if self.background is not None:
-                surface.load_from_data(self.background)
-            else:
-                surface.clear()
+            try:
+                if self.background is not None:
+                    surface.load_from_data(self.background)
+                else:
+                    surface.clear()
+            finally:
+                self.rendered.background = self.background
             self.rendered.strokes = []
-            self.rendered.background = self.background
             render_new_strokes()
 
         cost = len(self.strokes)

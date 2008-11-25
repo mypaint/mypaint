@@ -79,6 +79,9 @@ class Window(gtk.Window):
               <menuitem action='Undo'/>
               <menuitem action='Redo'/>
               <separator/>
+              <menuitem action='CopyLayer'/>
+              <menuitem action='PasteLayer'/>
+              <separator/>
               <menuitem action='ModifyLastStroke'/>
               <menuitem action='ModifyEnd'/>
             </menu>
@@ -180,6 +183,8 @@ class Window(gtk.Window):
             ('EditMenu',           None, 'Edit'),
             ('Undo',               None, 'Undo', '<control>Z', None, self.undo_cb),
             ('Redo',               None, 'Redo', '<control>Y', None, self.redo_cb),
+            ('CopyLayer',          None, 'Copy Layer to Clipboard', '<control>C', None, self.copy_cb),
+            ('PasteLayer',         None, 'Paste Layer from Clipboard', '<control>V', None, self.paste_cb),
             ('ModifyLastStroke',   None, 'Modify Last Stroke', 'm', None, self.modify_last_stroke_cb),
             ('ModifyEnd',          None, 'Stop Modifying', 'n', None, self.modify_end_cb),
 
@@ -347,6 +352,20 @@ class Window(gtk.Window):
 
     def redo_cb(self, action):
         self.doc.redo()
+
+    def copy_cb(self, action):
+        pixbuf = self.doc.render_current_layer_as_pixbuf()
+        cb = gtk.Clipboard()
+        cb.set_image(pixbuf)
+
+    def paste_cb(self, action):
+        cb = gtk.Clipboard()
+        def callback(clipboard, pixbuf, trash):
+            if not pixbuf:
+                print 'The clipboard doeas not contain any image to paste!'
+                return
+            self.doc.load_layer_from_pixbuf(pixbuf)
+        cb.request_image(callback)
 
     def get_recent_strokes(self, max_count):
         assert max_count > 0

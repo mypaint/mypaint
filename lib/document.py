@@ -185,14 +185,19 @@ class Document():
                 t += cmd.stroke.total_painting_time
         return t
 
-    def render_as_pixbuf(self, x, y, w, h):
+    def render_as_pixbuf(self, x, y, w, h, layers=None):
         from gtk import gdk
         pixbuf = gdk.Pixbuf(gdk.COLORSPACE_RGB, False, 8, w, h)
         pixbuf.fill(0xffffffff)
         arr = pixbuf.get_pixels_array()
         arr = mypaintlib.gdkpixbuf2numpy(arr)
-        self.render(arr, -x, -y)
+        self.render(arr, -x, -y, layers)
         return pixbuf
+
+    def render_current_layer_as_pixbuf(self):
+        l = self.layers[self.layer_idx]
+        bbox = list(l.surface.get_bbox())
+        return self.render_as_pixbuf(*bbox + [[l]])
 
     def add_layer(self, insert_idx=None):
         if insert_idx is None:
@@ -202,11 +207,14 @@ class Document():
     def load_layer_from_data(self, data):
         self.do(command.LoadLayer(self, data))
 
-    def load_from_pixbuf(self, pixbuf):
-        self.clear()
+    def load_layer_from_pixbuf(self, pixbuf):
         arr = pixbuf.get_pixels_array()
         arr = mypaintlib.gdkpixbuf2numpy(arr)
         self.load_layer_from_data(arr)
+
+    def load_from_pixbuf(self, pixbuf):
+        self.clear()
+        self.load_layer_from_pixbuf(pixbuf)
 
     def save(self, filename):
         trash, ext = os.path.splitext(filename)
