@@ -328,6 +328,8 @@ class Window(gtk.Window):
             return oldfunc(*args, **kwargs)
         self.tdw.repaint = count_repaints
         timer_cb()
+
+        self.tdw.rotate(46.0/360*2*math.pi)
         
     def new_stroke_cb(self): # TODO: wire this
         if self.modifying:

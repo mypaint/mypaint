@@ -152,15 +152,7 @@ class TiledDrawWidget(gtk.DrawingArea):
 
     def expose_cb(self, widget, event):
         self.update_cursor() # hack to get the initial cursor right
-
-        t = time.time()
-        if hasattr(self, 'last_expose_time'):
-            # just for basic performance comparisons... but we could sleep if we make >50fps
-            #print '%d fps' % int(1.0/(t-self.last_expose_time))
-            pass
-        self.last_expose_time = t
         #print 'expose', tuple(event.area)
-
         self.repaint(event.area)
 
     def get_model_coordinates_cairo_context(self, cr=None):
