@@ -299,26 +299,31 @@ void composite_tile_over_rgb8(PyObject * src, PyObject * dst) {
   assert(PyArray_DIM(src, 2) == 4);
   assert(PyArray_TYPE(src) == NPY_UINT16);
   assert(PyArray_ISCARRAY(src));
-  assert(PyArray_ISBEHAVED(src));
 
   assert(PyArray_DIM(dst, 0) == TILE_SIZE);
   assert(PyArray_DIM(dst, 1) == TILE_SIZE);
   assert(PyArray_DIM(dst, 2) == 3);
   assert(PyArray_TYPE(dst) == NPY_UINT8);
-  assert(PyArray_ISCARRAY(dst));
-  assert(PyArray_ISBEHAVED(src));
+  assert(PyArray_ISBEHAVED(dst));
   
+  PyArrayObject* dst_arr = ((PyArrayObject*)dst);
+  assert(dst_arr->strides[1] == 3*sizeof(uint8_t));
+  assert(dst_arr->strides[2] ==   sizeof(uint8_t));
+
   uint16_t * src_p  = (uint16_t*)((PyArrayObject*)src)->data;
-  uint8_t  * dst_p  = (uint8_t*) ((PyArrayObject*)dst)->data;
-  int i;
-  for (i=0; i<TILE_SIZE*TILE_SIZE; i++) {
-    // resultAlpha = 1.0 (thus it does not matter if resultColor is premultiplied alpha or not)
-    // resultColor = topColor + (1.0 - topAlpha) * bottomColor
-    uint16_t * s = src_p + 4*i;
-    uint8_t * d = dst_p + 3*i;
-    const uint32_t one_minus_topAlpha = (1<<15) - s[3];
-    d[0] = ((uint32_t)s[0]*255 + one_minus_topAlpha*d[0]) / (1<<15);
-    d[1] = ((uint32_t)s[1]*255 + one_minus_topAlpha*d[1]) / (1<<15);
-    d[2] = ((uint32_t)s[2]*255 + one_minus_topAlpha*d[2]) / (1<<15);
+  char * p = dst_arr->data;
+  for (int y=0; y<TILE_SIZE; y++) {
+    uint8_t  * dst_p  = (uint8_t*) (p);
+    for (int x=0; x<TILE_SIZE; x++) {
+      // resultAlpha = 1.0 (thus it does not matter if resultColor is premultiplied alpha or not)
+      // resultColor = topColor + (1.0 - topAlpha) * bottomColor
+      const uint32_t one_minus_topAlpha = (1<<15) - src_p[3];
+      dst_p[0] = ((uint32_t)src_p[0]*255 + one_minus_topAlpha*dst_p[0]) / (1<<15);
+      dst_p[1] = ((uint32_t)src_p[1]*255 + one_minus_topAlpha*dst_p[1]) / (1<<15);
+      dst_p[2] = ((uint32_t)src_p[2]*255 + one_minus_topAlpha*dst_p[2]) / (1<<15);
+      src_p += 4;
+      dst_p += 3;
+    }
+    p += dst_arr->strides[0];
   }
 }

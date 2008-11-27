@@ -29,10 +29,7 @@ class Tile:
         return t
         
     def composite_over_RGB8(self, dst):
-        # OPTIMIZE: would be simpler and faster if we could asome tile-sized memory
-        dst_ = dst.copy()
-        mypaintlib.composite_tile_over_rgb8(self.rgba, dst_)
-        dst[:] = dst_
+        mypaintlib.composite_tile_over_rgb8(self.rgba, dst)
 
 transparentTile = Tile()
 
