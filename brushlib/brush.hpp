@@ -423,25 +423,19 @@ private:
     // HSL color change
     if (settings_value[BRUSH_CHANGE_COLOR_L] || settings_value[BRUSH_CHANGE_COLOR_HSL_S]) {
       // (calculating way too much here, can be optimized if neccessary)
+      // this function will CLAMP the inputs
       hsv_to_rgb_float (&color_h, &color_s, &color_v);
       rgb_to_hsl_float (&color_h, &color_s, &color_v);
       color_v += settings_value[BRUSH_CHANGE_COLOR_L];
       color_s += settings_value[BRUSH_CHANGE_COLOR_HSL_S];
       hsl_to_rgb_float (&color_h, &color_s, &color_v);
       rgb_to_hsv_float (&color_h, &color_s, &color_v);
-    } 
+    }
 
     { // final calculations
       assert(opaque >= 0);
       assert(opaque <= 1);
-    
-      if (color_h < 0.0) color_h += 1.0;
-      assert(color_h >= 0.0 && color_h <= 1.0);
-      assert(color_s >= 0.0 && color_s <= 1.0);
-      // FIXME: check why this is neccessary
-      color_v = CLAMP(color_v, 0.0, 1.0);
-      assert(color_v >= 0.0 && color_v <= 1.0);
-
+      // this function will CLAMP the inputs
       hsv_to_rgb_float (&color_h, &color_s, &color_v);
       float hardness = CLAMP(settings_value[BRUSH_HARDNESS], 0.0, 1.0);
       return surface->draw_dab (x, y, radius, color_h, color_s, color_v, opaque, hardness, alpha_eraser);
