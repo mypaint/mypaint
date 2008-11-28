@@ -10,7 +10,6 @@
 # It is the memory storage backend for one layer.
 
 from numpy import *
-from PIL import Image
 import mypaintlib, helpers
 
 tilesize = N = mypaintlib.TILE_SIZE
@@ -129,6 +128,8 @@ class TiledSurface(mypaintlib.TiledSurface):
 
     def save(self, filename):
         assert self.tiledict, 'cannot save empty surface'
+        print 'SAVE'
+        from PIL import Image
         a = array([xy for xy, tile in self.tiledict.iteritems()])
         minx, miny = N*a.min(0)
         sizex, sizey = N*(a.max(0) - a.min(0) + 1)
