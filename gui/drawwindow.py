@@ -489,11 +489,11 @@ class Window(gtk.Window):
         self.tdw.scroll(-dx, -dy)
 
     def dragfunc_rotate(self, dx, dy):
-        self.tdw.scroll(-dx, -dy)
+        self.tdw.scroll(-dx, -dy, False)
         self.tdw.rotate(2*math.pi*dx/500.0)
 
     def dragfunc_rotozoom(self, dx, dy):
-        self.tdw.scroll(-dx, -dy)
+        self.tdw.scroll(-dx, -dy, False)
         self.tdw.zoom(math.exp(-dy/100.0))
         self.tdw.rotate(2*math.pi*dx/500.0)
 

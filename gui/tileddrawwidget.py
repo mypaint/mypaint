@@ -95,16 +95,20 @@ class TiledDrawWidget(gtk.DrawingArea):
             dtime = (event.time - self.last_event_time)/1000.0
             dx = event.x - self.last_event_x
             dy = event.y - self.last_event_y
+            dx_int = int(event.x) - int(self.last_event_x)
+            dy_int = int(event.y) - int(self.last_event_y)
         else:
             dtime = None
-        self.last_event_time = event.time
         self.last_event_x = event.x
         self.last_event_y = event.y
+        self.last_event_time = event.time
         if dtime is None:
             return
 
         if self.dragfunc:
-            self.dragfunc(dx, dy)
+            if dx_int or dy_int:
+                # we only allow scrolling by full pixels, because it is much faster
+                self.dragfunc(dx_int, dy_int)
             return
 
         cr = self.get_model_coordinates_cairo_context()
@@ -281,13 +285,16 @@ class TiledDrawWidget(gtk.DrawingArea):
     def lock_viewport(self, lock=True):
         self.viewport_locked = lock
 
-    def scroll(self, dx, dy):
+    def scroll(self, dx, dy, show_immediately=False):
         if self.viewport_locked:
             return
         assert int(dx) == dx and int(dy) == dy
         self.translation_x -= dx
         self.translation_y -= dy
-        self.window.scroll(int(-dx), int(-dy))
+        if show_immediately:
+            self.window.scroll(int(-dx), int(-dy))
+        else:
+            self.queue_draw()
 
     def rotozoom_with_center(self, function):
         if self.viewport_locked:
