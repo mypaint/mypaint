@@ -35,8 +35,8 @@ transparentTile = Tile()
 
 def get_tiles_bbox(tiles):
     res = helpers.Rect()
-    for x, y in tiles:
-        res.expandToIncludeRect(helpers.Rect(N*x, N*y, N, N))
+    for tx, ty in tiles:
+        res.expandToIncludeRect(helpers.Rect(N*tx, N*ty, N, N))
     return res
 
 class TiledSurface(mypaintlib.TiledSurface):
@@ -58,6 +58,9 @@ class TiledSurface(mypaintlib.TiledSurface):
     def get_tile_memory(self, x, y, readonly):
         # copy-on-write for readonly tiles
         # OPTIMIZE: do some profiling to check if this function is a bottleneck
+        #           yes it is
+        # Note: we must return memory that stays valid for writing until the
+        # last end_atomic(), because of the caching in tiledsurface.hpp.
         t = self.tiledict.get((x, y))
         if t is None:
             if readonly:

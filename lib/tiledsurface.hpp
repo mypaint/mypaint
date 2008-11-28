@@ -15,20 +15,39 @@ private:
   PyObject * self;
   Rect dirty_bbox;
   int atomic;
+
+  // caching tile memory location (optimization)
+  #define TILE_MEMORY_SIZE 8
+  typedef struct {
+    int tx, ty;
+    uint16_t * rgba_p;
+  } TileMemory;
+  TileMemory tileMemory[TILE_MEMORY_SIZE];
+  int tileMemoryValid;
+  int tileMemoryWrite;
+
 public:
   TiledSurface(PyObject * self_) {
     self = self_; // no need to incref
     atomic = 0;
     dirty_bbox.w = 0;
+    tileMemoryValid = 0;
+    tileMemoryWrite = 0;
   }
 
   void begin_atomic() {
-    if (atomic == 0) assert(dirty_bbox.w == 0);
+    if (atomic == 0) {
+      assert(dirty_bbox.w == 0);
+      assert(tileMemoryValid == 0);
+    }
     atomic++;
   }
   void end_atomic() {
+    assert(atomic > 0);
     atomic--;
     if (atomic == 0) {
+      tileMemoryValid = 0;
+      tileMemoryWrite = 0;
       Rect bbox = dirty_bbox; // copy to safety before calling python
       dirty_bbox.w = 0;
       if (bbox.w > 0) {
@@ -39,6 +58,42 @@ public:
         Py_DECREF(res);
       }
     }
+  }
+
+  uint16_t * get_tile_memory(int tx, int ty, bool readonly) {
+    // We assume that the memory location does not change between begin_atomic() and end_atomic().
+    for (int i=0; i<tileMemoryValid; i++) {
+      if (tileMemory[i].tx == tx and tileMemory[i].ty == ty) {
+        return tileMemory[i].rgba_p;
+      }
+    }
+    assert(!readonly); // to be implemented later
+    PyObject* rgba = PyObject_CallMethod(self, "get_tile_memory", "(iii)", tx, ty, 0);
+    if (rgba == NULL) {
+      printf("Python exception during get_tile_memory()! The next traceback might be wrong.\n");
+      return NULL;
+    }
+    /* time critical assertions
+       assert(PyArray_NDIM(rgba) == 3);
+       assert(PyArray_DIM(rgba, 0) == TILE_SIZE);
+       assert(PyArray_DIM(rgba, 1) == TILE_SIZE);
+       assert(PyArray_DIM(rgba, 2) == 4);
+       assert(PyArray_ISCARRAY(rgba));
+       assert(PyArray_TYPE(rgba) == NPY_UINT16);
+    */
+    // tiledsurface.py will keep a reference in its tiledict, at least until the final end_atomic()
+    Py_DECREF(rgba);
+    uint16_t * rgba_p = (uint16_t*)((PyArrayObject*)rgba)->data;
+    if (tileMemoryValid < TILE_MEMORY_SIZE) {
+      tileMemoryValid++;
+    }
+    // We always overwrite the oldest cache entry.
+    // We are mainly optimizing for strokes with radius smaller than one tile.
+    tileMemory[tileMemoryWrite].tx = tx;
+    tileMemory[tileMemoryWrite].ty = ty;
+    tileMemory[tileMemoryWrite].rgba_p = rgba_p;
+    tileMemoryWrite = (tileMemoryWrite + 1) % TILE_MEMORY_SIZE;
+    return rgba_p;
   }
 
   // returns true if the surface was modified
@@ -62,7 +117,7 @@ public:
     if (radius < 0.1) return false;
     if (hardness == 0) return false; // infintly small point, rest transparent
 
-    begin_atomic();
+    assert(atomic > 0);
 
     r_fringe = radius + 1;
     rr = radius*radius;
@@ -75,22 +130,8 @@ public:
     int tx, ty;
     for (ty = ty1; ty <= ty2; ty++) {
       for (tx = tx1; tx <= tx2; tx++) {
-        // OPTIMIZE: cache tile buffer pointers, so we don't have to call python for each dab;
-        //           this could be used to return a list of dirty tiles at the same time
-        //           (But profile this code first!)
-        PyObject* rgba;
-        rgba = PyObject_CallMethod(self, "get_tile_memory", "(iii)", tx, ty, 0);
-        if (!rgba) printf("Python exception during get_tile_memory! FIXME: Traceback will not be accurate.\n");
-
-        assert(PyArray_NDIM(rgba) == 3);
-        assert(PyArray_DIM(rgba, 0) == TILE_SIZE);
-        assert(PyArray_DIM(rgba, 1) == TILE_SIZE);
-        assert(PyArray_DIM(rgba, 2) == 4);
-
-        assert(PyArray_ISCARRAY(rgba));
-        assert(PyArray_TYPE(rgba) == NPY_UINT16);
-
-        uint16_t * rgba_p  = (uint16_t*)((PyArrayObject*)rgba)->data;
+        uint16_t * rgba_p = get_tile_memory(tx, ty, 0);
+        if (!rgba_p) return true; // python exception
 
         float xc = x - tx*TILE_SIZE;
         float yc = y - ty*TILE_SIZE;
@@ -153,7 +194,6 @@ public:
             }
           }
         }
-        Py_DECREF(rgba);
       }
     }
 
@@ -169,8 +209,6 @@ public:
       ExpandRectToIncludePoint (&dirty_bbox, bb_x, bb_y);
       ExpandRectToIncludePoint (&dirty_bbox, bb_x+bb_w-1, bb_y+bb_h-1);
     }
-
-    end_atomic();
 
     return true;
   }
