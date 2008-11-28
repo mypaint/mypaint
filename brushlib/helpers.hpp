@@ -40,6 +40,19 @@ void ExpandRectToIncludePoint(Rect * r, int x, int y)
   }
 }
 
+// Stolen from GIMP (noitify.c), where it was adapted from ppmforge.c,
+// which is part of PBMPLUS. The algorithm comes from:
+// 'The Science Of Fractal Images'. Peitgen, H.-O., and Saupe, D. eds.
+// Springer Verlag, New York, 1988.
+float rand_gauss (GRand * rng)
+{
+  float sum = 0.0;
+  for (int i = 0; i < 4; i++) {
+    sum += g_rand_int_range (rng, 0, 0x7FFF);
+  }
+  return sum * 5.28596089837e-5 - 3.46410161514;
+}
+
 // stolen from GIMP (gimpcolorspace.c)
 // (from gimp_rgb_to_hsv)
 void

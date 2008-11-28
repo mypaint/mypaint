@@ -118,15 +118,6 @@ private:
       return exp(- t / T_const);
     }
   }
-  float rand_gauss (GRand * rng)
-  {
-    // OPTIMIZE: faster algorithms exist
-    float res = -6.0;
-    for (int i=0; i<12; i++) {
-      res += g_rand_double(rng);
-    }
-    return res;
-  }
 
 
   void settings_base_values_have_changed ()

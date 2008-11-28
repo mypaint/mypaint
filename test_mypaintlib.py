@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 from pylab import *
 from StringIO import StringIO
+from time import time
 
 from lib import mypaintlib, tiledsurface, brushsettings, brush, document, command
 
@@ -9,27 +10,35 @@ def directPaint():
     s = tiledsurface.TiledSurface()
     events = load('painting30sec.dat.gz')
 
+    s.begin_atomic()
     for t, x, y, pressure in events:
         r = g = b = 0.5*(1.0+sin(t))
         r *= 0.8
         s.draw_dab(x, y, 12, r, g, b, pressure, 0.6)
+    s.end_atomic()
     s.save('test_directPaint.png')
 
 def brushPaint():
 
     s = tiledsurface.TiledSurface()
     b = brush.Brush_Lowlevel()
-    b.load_from_string(open('brushes/s006.myb').read())
+    #b.load_from_string(open('brushes/s006.myb').read())
+    b.load_from_string(open('brushes/charcoal.myb').read())
 
     events = load('painting30sec.dat.gz')
 
     b.set_color_rgb((0.0, 0.9, 1.0))
 
-    t_old = events[0][0]
-    for t, x, y, pressure in events:
-        dtime = t - t_old
-        t_old = t
-        b.stroke_to (s, x, y, pressure, dtime)
+    t0 = time()
+    for i in range(10):
+        t_old = events[0][0]
+        s.begin_atomic()
+        for t, x, y, pressure in events:
+            dtime = t - t_old
+            t_old = t
+            b.stroke_to (s, x, y, pressure, dtime)
+        s.end_atomic()
+    print 'Brushpaint time:', time()-t0
     print s.get_bbox(), b.stroke_total_painting_time # FIXME: why is this time so different each run?
 
     s.save('test_brushPaint.png')

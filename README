@@ -4,17 +4,12 @@ Linux:
 
 	Compile and run:
 	scons && ./mypaint
+    There is currently no "make install" replacement.
 
-	(Autoconf might not work currently:)
-	# ./configure && make && ./mypaint
-	# If you are using svn you need ./autogen.sh first.
-	# 
-	# Optionally, 'make install'. 
-
-	Required: pygtk, python, gtk, numpy, [maybe also scipy]
+	Required: pygtk, python, swig, gtk, numpy, [maybe also scipy]
 	Recommended: a pressure sensitive input device (graphic tablet)
 
-	Debian users need: python-gtk2-dev python2.5-dev python-numpy
+	Debian users need: python-gtk2-dev python-dev python-numpy swig
 
 
 Windows:

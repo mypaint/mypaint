@@ -112,6 +112,9 @@ public:
     assert(color_r >= 0.0 && color_r <= 1.0);
     assert(color_g >= 0.0 && color_g <= 1.0);
     assert(color_b >= 0.0 && color_b <= 1.0);
+    uint32_t color_r_ = color_r * (1<<15);
+    uint32_t color_g_ = color_g * (1<<15);
+    uint32_t color_b_ = color_b * (1<<15);
 
     if (opaque == 0) return false;
     if (radius < 0.1) return false;
@@ -188,9 +191,9 @@ public:
               
               int idx = (yp*TILE_SIZE + xp)*4;
               rgba_p[idx+3] = opa_a + (opa_b*rgba_p[idx+3])/(1<<15);
-              rgba_p[idx+0] = (uint16_t)(color_r*opa_a) + opa_b*rgba_p[idx+0]/(1<<15);
-              rgba_p[idx+1] = (uint16_t)(color_g*opa_a) + opa_b*rgba_p[idx+1]/(1<<15);
-              rgba_p[idx+2] = (uint16_t)(color_b*opa_a) + opa_b*rgba_p[idx+2]/(1<<15);
+              rgba_p[idx+0] = (opa_a*color_r_ + opa_b*rgba_p[idx+0])/(1<<15);
+              rgba_p[idx+1] = (opa_a*color_g_ + opa_b*rgba_p[idx+1])/(1<<15);
+              rgba_p[idx+2] = (opa_a*color_b_ + opa_b*rgba_p[idx+2])/(1<<15);
             }
           }
         }
