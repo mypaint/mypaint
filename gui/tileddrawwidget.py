@@ -173,6 +173,11 @@ class TiledDrawWidget(gtk.DrawingArea):
         # looks like we always get nearest-neighbour downsampling
         return cr
 
+    def get_cursor_in_model_coordinates(self):
+        x, y, modifiers = self.window.get_pointer()
+        cr = self.get_model_coordinates_cairo_context()
+        return cr.device_to_user(x, y)
+
     def repaint(self, device_bbox=None, model_bbox=None):
         # FIXME: ...we do not fill tile-free background white in this function...
 

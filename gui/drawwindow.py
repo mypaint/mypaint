@@ -542,16 +542,12 @@ class Window(gtk.Window):
         self.doc.select_layer(idx)
 
     def pick_layer_cb(self, action):
-        #idx = self.doc.get_layer_at()
-        x, y, modifiers = self.window.get_pointer()
-        print 'pick layer at', x, y
-        best = None
+        x, y = self.tdw.get_cursor_in_model_coordinates()
         for idx, layer in reversed(list(enumerate(self.doc.layers))):
             alpha = layer.surface.get_alpha (x, y, 5)
             if alpha > 0.1:
                 self.doc.select_layer(idx)
                 return
-        print '(almost) no layer found'
         self.doc.select_layer(0)
 
     def new_layer_cb(self, action):
