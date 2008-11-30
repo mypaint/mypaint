@@ -326,6 +326,12 @@ public:
     assert (*color_g <= 1.001);
     assert (*color_b <= 1.001);
   }
+
+  float get_alpha (float x, float y, float radius) {
+    float color_r, color_g, color_b, color_a;
+    get_color (x, y, radius, &color_r, &color_g, &color_b, &color_a);
+    return color_a;
+  }
 };
 
 void composite_tile_over_rgb8(PyObject * src, PyObject * dst) {

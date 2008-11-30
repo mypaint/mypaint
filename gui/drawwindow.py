@@ -156,6 +156,7 @@ class Window(gtk.Window):
               <menuitem action='LayerFG'/>
               <menuitem action='NewLayer'/>
               <menuitem action='ToggleAbove'/>
+              <menuitem action='PickLayer'/>
             </menu>
             <menu action='DebugMenu'>
               <menuitem action='PrintInputs'/>
@@ -226,8 +227,9 @@ class Window(gtk.Window):
 
             ('LayerMenu',    None, 'Layers'),
             ('ClearLayer',   None, 'Clear', '<control>period', None, self.clear_layer_cb),
-            ('LayerBG',      None, 'Background (take layer away)', None, None, self.layer_bg_cb),
-            ('LayerFG',      None, 'Foreground (put layer back)',  None, None, self.layer_fg_cb),
+            ('LayerBG',      None, 'Background (previous layer)', None, None, self.layer_bg_cb),
+            ('LayerFG',      None, 'Foreground (next layer)',  None, None, self.layer_fg_cb),
+            ('PickLayer',    None, 'Select layer at cursor', 'l', None, self.pick_layer_cb),
             ('NewLayer',     None, 'New Layer', None, None, self.new_layer_cb),
             ('ToggleAbove',  None, 'Toggle Layers Above Current', 'a', None, self.toggle_layers_above_cb),
 
@@ -538,6 +540,19 @@ class Window(gtk.Window):
         idx = self.doc.layer_idx + 1
         if idx >= len(self.doc.layers): return
         self.doc.select_layer(idx)
+
+    def pick_layer_cb(self, action):
+        #idx = self.doc.get_layer_at()
+        x, y, modifiers = self.window.get_pointer()
+        print 'pick layer at', x, y
+        best = None
+        for idx, layer in reversed(list(enumerate(self.doc.layers))):
+            alpha = layer.surface.get_alpha (x, y, 5)
+            if alpha > 0.1:
+                self.doc.select_layer(idx)
+                return
+        print '(almost) no layer found'
+        self.doc.select_layer(0)
 
     def new_layer_cb(self, action):
         self.doc.add_layer()
