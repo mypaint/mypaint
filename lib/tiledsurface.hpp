@@ -67,8 +67,7 @@ public:
         return tileMemory[i].rgba_p;
       }
     }
-    assert(!readonly); // to be implemented later
-    PyObject* rgba = PyObject_CallMethod(self, "get_tile_memory", "(iii)", tx, ty, 0);
+    PyObject* rgba = PyObject_CallMethod(self, "get_tile_memory", "(iii)", tx, ty, readonly);
     if (rgba == NULL) {
       printf("Python exception during get_tile_memory()! The next traceback might be wrong.\n");
       return NULL;
@@ -84,15 +83,20 @@ public:
     // tiledsurface.py will keep a reference in its tiledict, at least until the final end_atomic()
     Py_DECREF(rgba);
     uint16_t * rgba_p = (uint16_t*)((PyArrayObject*)rgba)->data;
-    if (tileMemoryValid < TILE_MEMORY_SIZE) {
-      tileMemoryValid++;
+
+    // Cache tiles to speed up small brush strokes with lots of dabs, like charcoal.
+    // Not caching readonly requests; they are alternated with write requests anyway.
+    if (!readonly) {
+      if (tileMemoryValid < TILE_MEMORY_SIZE) {
+        tileMemoryValid++;
+      }
+      // We always overwrite the oldest cache entry.
+      // We are mainly optimizing for strokes with radius smaller than one tile.
+      tileMemory[tileMemoryWrite].tx = tx;
+      tileMemory[tileMemoryWrite].ty = ty;
+      tileMemory[tileMemoryWrite].rgba_p = rgba_p;
+      tileMemoryWrite = (tileMemoryWrite + 1) % TILE_MEMORY_SIZE;
     }
-    // We always overwrite the oldest cache entry.
-    // We are mainly optimizing for strokes with radius smaller than one tile.
-    tileMemory[tileMemoryWrite].tx = tx;
-    tileMemory[tileMemoryWrite].ty = ty;
-    tileMemory[tileMemoryWrite].rgba_p = rgba_p;
-    tileMemoryWrite = (tileMemoryWrite + 1) % TILE_MEMORY_SIZE;
     return rgba_p;
   }
 
@@ -133,7 +137,7 @@ public:
     int tx, ty;
     for (ty = ty1; ty <= ty2; ty++) {
       for (tx = tx1; tx <= tx2; tx++) {
-        uint16_t * rgba_p = get_tile_memory(tx, ty, 0);
+        uint16_t * rgba_p = get_tile_memory(tx, ty, false);
         if (!rgba_p) return true; // python exception
 
         float xc = x - tx*TILE_SIZE;
@@ -220,26 +224,24 @@ public:
                   float radius, 
                   float * color_r, float * color_g, float * color_b, float * color_a
                   ) {
-    *color_r = 0;
-    *color_g = 0;
-    *color_b = 0;
-    *color_a = 0;
-    // TODO
-    /*
+
     float r_fringe;
     int xp, yp;
     float xx, yy, rr;
     float one_over_radius2;
 
-    if (radius < 1.0) radius = 1.0; // make sure we get at least one pixel
+    assert(radius >= 0.1);
     const float hardness = 0.5;
+    const float opaque = 1.0;
+
+    float sum_r, sum_g, sum_b, sum_a, sum_weight;
+    sum_r = sum_g = sum_b = sum_a = sum_weight = 0.0;
+
+    // WARNING: some code duplication with draw_dab
 
     r_fringe = radius + 1;
     rr = radius*radius;
     one_over_radius2 = 1.0/rr;
-
-    float sum_r, sum_g, sum_b, sum_a, sum_weight;
-    sum_r = sum_g = sum_b = sum_a = sum_weight = 0.0;
 
     int tx1 = floor(floor(x - r_fringe) / TILE_SIZE);
     int tx2 = floor(floor(x + r_fringe) / TILE_SIZE);
@@ -248,17 +250,8 @@ public:
     int tx, ty;
     for (ty = ty1; ty <= ty2; ty++) {
       for (tx = tx1; tx <= tx2; tx++) {
-        PyObject* tuple;
-        tuple = PyObject_CallMethod(self, "get_tile_memory", "(iii)", tx, ty, 1);
-        if (!tuple) throw 0;
-        PyObject* rgb   = PyTuple_GET_ITEM(tuple, 0);
-        PyObject* alpha = PyTuple_GET_ITEM(tuple, 1);
-        Py_INCREF(rgb);
-        Py_INCREF(alpha);
-        Py_DECREF(tuple);
-
-        float * rgb_p   = (float*)((PyArrayObject*)rgb)->data;
-        float * alpha_p = (float*)((PyArrayObject*)alpha)->data;
+        uint16_t * rgba_p = get_tile_memory(tx, ty, true);
+        if (!rgba_p) return; // python exception
 
         float xc = x - tx*TILE_SIZE;
         float yc = y - ty*TILE_SIZE;
@@ -282,7 +275,7 @@ public:
             // rr is in range 0.0..1.0*sqrt(2)
 
             if (rr <= 1.0) {
-              float opa = 1.0;
+              float opa = opaque;
               if (hardness < 1.0) {
                 if (rr < hardness) {
                   opa *= rr + 1-(rr/hardness);
@@ -294,23 +287,25 @@ public:
 
               // note that we are working on premultiplied alpha
               // we do not un-premultiply it yet, so colors are weighted with their alpha
-              int idx = yp*TILE_SIZE + xp;
+              int idx = (yp*TILE_SIZE + xp)*4;
               sum_weight += opa;
-              sum_a      += opa*alpha_p[idx]; 
-              idx *= 3;
-              sum_r      += opa*rgb_p[idx+0];
-              sum_g      += opa*rgb_p[idx+1];
-              sum_b      += opa*rgb_p[idx+2];
+              sum_r      += opa*rgba_p[idx+0]/(1<<15);
+              sum_g      += opa*rgba_p[idx+1]/(1<<15);
+              sum_b      += opa*rgba_p[idx+2]/(1<<15);
+              sum_a      += opa*rgba_p[idx+3]/(1<<15);
             }
           }
         }
-        Py_DECREF(rgb);
-        Py_DECREF(alpha);
       }
     }
 
     assert(sum_weight > 0.0);
-    *color_a = sum_a / sum_weight;
+    sum_a /= sum_weight;
+    sum_r /= sum_weight;
+    sum_g /= sum_weight;
+    sum_b /= sum_weight;
+
+    *color_a = sum_a;
     // now un-premultiply the alpha
     if (sum_a > 0.0) {
       *color_r = sum_r / sum_a;
@@ -330,7 +325,6 @@ public:
     assert (*color_r <= 1.001);
     assert (*color_g <= 1.001);
     assert (*color_b <= 1.001);
-    */
   }
 };
 

@@ -396,6 +396,8 @@ private:
     }
 
     // update the smudge state
+    // OPTIMIZE: stupidly, we set smudge_length to 0.5 by default, making all brushes call get_color() without need
+    //           problem is, smudge_length is supposed to be nonzero to "make something reasonable happen" when you change brush_smudge
     if (settings_value[BRUSH_SMUDGE_LENGTH] < 1.0) {
       float fac = settings_value[BRUSH_SMUDGE_LENGTH];
       if (fac < 0.0) fac = 0;
