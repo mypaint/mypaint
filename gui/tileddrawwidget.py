@@ -7,7 +7,7 @@
 # but WITHOUT ANY WARRANTY. See the COPYING file for more details.
 
 from lib import helpers
-import gtk, numpy, cairo
+import gtk, gobject, numpy, cairo
 gdk = gtk.gdk
 from math import floor, ceil
 import time
@@ -60,6 +60,7 @@ class TiledDrawWidget(gtk.DrawingArea):
 
         self.has_pointer = False
         self.dragfunc = None
+        self.hide_current_layer = False
 
         # gets overwritten for the main window
         self.zoom_max = 5.0
@@ -234,9 +235,11 @@ class TiledDrawWidget(gtk.DrawingArea):
         cr.rectangle(*model_bbox)
         cr.clip()
         
-        layers = self.doc.layers
-        if self.show_layers_above:
+        layers = self.doc.layers[:]
+        if not self.show_layers_above:
             layers = self.doc.layers[0:self.doc.layer_idx+1]
+        if self.hide_current_layer:
+            layers.pop(self.doc.layer_idx)
 
         # OPTIMIZE: if we are scrolling, we are creating an oversized pixbuf
         pixbuf = gdk.Pixbuf(gdk.COLORSPACE_RGB, False, 8, w, h)
@@ -373,8 +376,13 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.window.set_cursor(gdk.Cursor(cursor,mask,gdk.color_parse('black'), gdk.color_parse('white'),(d+1)/2,(d+1)/2))
 
     def layer_selected_cb(self):
+        self.hide_current_layer = True
         self.queue_draw() # OPTIMIZE
+        def unhide():
+            self.hide_current_layer = False
+            self.queue_draw() # OPTIMIZE
+        self.blink_layer_timeout = gobject.timeout_add(200, unhide)
 
     def toggle_show_layers_above(self):
         self.show_layers_above = not self.show_layers_above
-        self.layer_selected_cb()
+        self.queue_draw()
