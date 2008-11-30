@@ -8,7 +8,10 @@
 
 "preferences dialog"
 import gtk, os
+gdk = gtk.gdk
 from functionwindow import CurveWidget
+
+device_modes = ['disabled','screen','window']
 
 class Window(gtk.Window):
     def __init__(self, app):
@@ -17,6 +20,8 @@ class Window(gtk.Window):
 
         self.set_title('Settings')
         self.connect('delete-event', self.app.hide_window_cb)
+
+        self.applying = True
 
         v_outside = gtk.VBox()
         self.add(v_outside)
@@ -54,9 +59,14 @@ class Window(gtk.Window):
 
         v.pack_start(gtk.HSeparator(), expand=False, padding=5)
 
-        self.ip_cb = gtk.CheckButton('ignore pressure and check the mouse button instead')
-        self.ip_cb.connect('toggled', self.ignore_pressure_cb)
-        v.pack_start(self.ip_cb, expand=False)
+        h = gtk.HBox()
+        h.pack_start(gtk.Label('Mode for input devices: '), expand=False)
+        combo = self.input_devices_combo = gtk.combo_box_new_text()
+        for s in device_modes:
+            combo.append_text(s)
+        combo.connect('changed', self.input_devices_combo_changed_cb)
+        h.pack_start(combo, expand=True)
+        v.pack_start(h, expand=False)
 
         ### paths tab
 
@@ -92,27 +102,34 @@ class Window(gtk.Window):
 
         self.filename = os.path.join(self.app.confpath, 'settings.conf')
 
-        self.load_settings()
+        self.applying = False
+        self.load_settings(None, startup=True)
 
     def save_settings(self, *trash):
         f = open(self.filename, 'w')
         print >>f, 'global_pressure_mapping =', self.cv.points
-        print >>f, 'ignore_pressure =', self.ignore_pressure
         print >>f, 'save_next_prefix =', repr(self.save_next_prefix)
+        print >>f, 'input_devices_mode =', repr(self.input_devices_mode)
         f.close()
 
-    def load_settings(self, *trash):
+    def load_settings(self, widget, startup=False):
         # 1. set defaults
         self.global_pressure_mapping = [(0.0, 1.0), (1.0, 0.0)]
-        self.ignore_pressure = 0
         self.save_next_prefix = 'sketch'
+        self.input_devices_mode = 'screen'
         # 2. parse config file
         if os.path.exists(self.filename):
             exec open(self.filename) in self.__dict__
         # 3. apply
         self.apply_settings()
 
+        if startup and not self.pressure_devices:
+            print 'No pressure sensitive devices found.'
+
     def apply_settings(self):
+        if self.applying:
+            return
+        self.applying = True
         p = self.cv.points = self.global_pressure_mapping
         self.cv.queue_draw()
         if len(p) == 2 and abs(p[0][1]-1.0)+abs(p[1][1]-0.0) < 0.0001:
@@ -122,17 +139,36 @@ class Window(gtk.Window):
             print 'TODO: mydrawwidget.global_pressure_mapping_set_n(len(p))'
             #for i, (x, y) in enumerate(p):
             #    mydrawwidget.global_pressure_mapping_set_point(i, x, 1.0-y)
-        print 'TODO: mydrawwidget.global_ignore_pressure_set(self.ignore_pressure)'
 
-        self.ip_cb.set_active(self.ignore_pressure)
         self.prefix_entry.set_text(self.save_next_prefix)
+
+        self.input_devices_combo.set_active(device_modes.index(self.input_devices_mode))
+
+        # init extended input devices
+        self.pressure_devices = []
+        for device in gdk.devices_list():
+            #if device.source in [gdk.SOURCE_PEN, gdk.SOURCE_ERASER]:
+            # The above seems to be True sometimes for a normal
+            # USB Mouse (bug #11215). Using different check now:
+            for use, val_min, val_max in device.axes:
+                if use == gdk.AXIS_PRESSURE:
+                    self.pressure_devices.append(device.name)
+                    if device.mode != self.input_devices_mode:
+                        print 'Setting %s mode for %s' % (self.input_devices_mode, device.name)
+                        device.set_mode(getattr(gdk, 'MODE_' + self.input_devices_mode.upper()))
+                    break
+        self.init_input()
+        self.applying = False
+
+    def init_input(self):
+        "make those pressure sensitive devices working"
+
+    def input_devices_combo_changed_cb(self, window):
+        self.input_devices_mode = self.input_devices_combo.get_active_text()
+        self.apply_settings()
 
     def pressure_curve_changed_cb(self, widget):
         self.global_pressure_mapping = self.cv.points[:]
-        self.apply_settings()
-
-    def ignore_pressure_cb(self, widget):
-        self.ignore_pressure = self.ip_cb.get_active()
         self.apply_settings()
 
     def prefix_entry_changed_cb(self, widget):
