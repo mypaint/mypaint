@@ -105,13 +105,16 @@ public:
                  float radius, 
                  float color_r, float color_g, float color_b,
                  float opaque, float hardness = 0.5,
-                 float alpha_eraser = 1.0
+                 float eraser_target_alpha = 1.0
                  ) {
 
     float r_fringe;
     int xp, yp;
     float xx, yy, rr;
     float one_over_radius2;
+
+    assert(eraser_target_alpha >= 0.0);
+    assert(eraser_target_alpha <= 1.0);
 
     assert(color_r >= 0.0 && color_r <= 1.0);
     assert(color_g >= 0.0 && color_g <= 1.0);
@@ -180,18 +183,18 @@ public:
               // resultAlpha = topAlpha + (1.0 - topAlpha) * bottomAlpha
               // resultColor = topColor + (1.0 - topAlpha) * bottomColor
               //
-              // (at least for the normal case where alpha_eraser == 1.0)
+              // (at least for the normal case where eraser_target_alpha == 1.0)
               // OPTIMIZE: separate function for the standard case without erasing?
               // OPTIMIZE: don't use floats here in the inner loop?
 
               //assert(opa >= 0.0 && opa <= 1.0);
-              //assert(alpha_eraser >= 0.0 && alpha_eraser <= 1.0);
+              //assert(eraser_target_alpha >= 0.0 && eraser_target_alpha <= 1.0);
 
               uint32_t opa_a = (1<<15)*opa;   // topAlpha
               uint32_t opa_b = (1<<15)-opa_a; // bottomAlpha
               
               // only for eraser, or for painting with translucent-making colors
-              opa_a *= alpha_eraser;
+              opa_a *= eraser_target_alpha;
               
               int idx = (yp*TILE_SIZE + xp)*4;
               rgba_p[idx+3] = opa_a + (opa_b*rgba_p[idx+3])/(1<<15);
@@ -322,6 +325,7 @@ public:
     assert (*color_r >= 0.0);
     assert (*color_g >= 0.0);
     assert (*color_b >= 0.0);
+    assert (*color_a <= 1.001);
     assert (*color_r <= 1.001);
     assert (*color_g <= 1.001);
     assert (*color_b <= 1.001);

@@ -94,7 +94,7 @@ pressure
 dist              # "distance" moved since last dab, a new dab is drawn at 1.0
 actual_radius     # used by count_dabs_to, thus a state!
 
-smudge_r, smudge_g, smudge_b, smudge_a
+smudge_ra, smudge_ga, smudge_ba, smudge_a  # smudge color stored with premultiplied alpha
 
 actual_x, actual_y  # for slow position
 norm_dx_slow, norm_dy_slow # note: now this is dx/dt * (1/radius)

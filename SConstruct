@@ -11,12 +11,14 @@ else:
 	opts.Update(env)
 	opts.Save('options.cache', env)
 
+env.ParseConfig('pkg-config --cflags --libs glib-2.0')
+
 env.Append(CXXFLAGS=' -Wall -Wno-sign-compare -Wno-write-strings')
 #env.Append(CXXFLAGS=' -ggdb')
+#env.Append(CXXFLAGS=' -O0', LINKFLAGS=' -O0')
 #env.Append(CXXFLAGS=' -O3', LINKFLAGS=' -O3')
 #env.Append(CXXFLAGS=' -pg', LINKFLAGS=' -pg')
 
-env.ParseConfig('pkg-config --cflags --libs glib-2.0')
 
 if sys.platform == "win32":
 	env.ParseConfig('pkg-config --cflags --libs python25') # These two '.pc' files you probably have to make for yourself.

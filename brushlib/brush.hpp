@@ -365,34 +365,32 @@ private:
 
     // color part
 
-    float color_h, color_s, color_v;
-    float alpha_eraser;
-    if (settings_value[BRUSH_SMUDGE] <= 0.0) {
-      // normal case (do not smudge)
-      color_h = settings[BRUSH_COLOR_H]->base_value;
-      color_s = settings[BRUSH_COLOR_S]->base_value;
-      color_v = settings[BRUSH_COLOR_V]->base_value;
-      alpha_eraser = 1.0;
-    } else if (settings_value[BRUSH_SMUDGE] >= 1.0) {
-      // smudge only (ignore the original color)
-      color_h = states[STATE_SMUDGE_R];
-      color_s = states[STATE_SMUDGE_G];
-      color_v = states[STATE_SMUDGE_B];
-      rgb_to_hsv_float (&color_h, &color_s, &color_v);
-      alpha_eraser = states[STATE_SMUDGE_A];
-    } else {
+    float color_h = settings[BRUSH_COLOR_H]->base_value;
+    float color_s = settings[BRUSH_COLOR_S]->base_value;
+    float color_v = settings[BRUSH_COLOR_V]->base_value;
+    float eraser_target_alpha = 1.0;
+    if (settings_value[BRUSH_SMUDGE] > 0.0) {
       // mix (in RGB) the smudge color with the brush color
-      color_h = settings[BRUSH_COLOR_H]->base_value;
-      color_s = settings[BRUSH_COLOR_S]->base_value;
-      color_v = settings[BRUSH_COLOR_V]->base_value;
-      // XXX clamp??!? before this call?
       hsv_to_rgb_float (&color_h, &color_s, &color_v);
       float fac = settings_value[BRUSH_SMUDGE];
-      color_h = (1-fac)*color_h + fac*states[STATE_SMUDGE_R];
-      color_s = (1-fac)*color_s + fac*states[STATE_SMUDGE_G];
-      color_v = (1-fac)*color_v + fac*states[STATE_SMUDGE_B];
+      if (fac > 1.0) fac = 1.0;
+      // If the smudge color somewhat transparent, then the resulting
+      // dab will do erasing towards that transparency level.
+      // see also ../html/smudge_math.png
+      eraser_target_alpha = (1-fac)*1.0 + fac*states[STATE_SMUDGE_A];
+      assert(eraser_target_alpha <= 1.0);
+      assert(eraser_target_alpha >= 0.0);
+      if (eraser_target_alpha > 0) {
+        color_h = (fac*states[STATE_SMUDGE_RA] + (1-fac)*color_h) / eraser_target_alpha;
+        color_s = (fac*states[STATE_SMUDGE_GA] + (1-fac)*color_s) / eraser_target_alpha;
+        color_v = (fac*states[STATE_SMUDGE_BA] + (1-fac)*color_v) / eraser_target_alpha;
+      } else {
+        // we are only erasing; the color does not matter
+        color_h = 1.0;
+        color_s = 0.0;
+        color_v = 0.0;
+      }
       rgb_to_hsv_float (&color_h, &color_s, &color_v);
-      alpha_eraser = (1-fac)*1.0 + fac*states[STATE_SMUDGE_A];
     }
 
     // update the smudge state
@@ -406,15 +404,16 @@ private:
       py = ROUND(y);
       float r, g, b, a;
       surface->get_color (px, py, radius, &r, &g, &b, &a);
-      states[STATE_SMUDGE_R] = fac*states[STATE_SMUDGE_R] + (1-fac)*r;
-      states[STATE_SMUDGE_G] = fac*states[STATE_SMUDGE_G] + (1-fac)*g;
-      states[STATE_SMUDGE_B] = fac*states[STATE_SMUDGE_B] + (1-fac)*b;
-      states[STATE_SMUDGE_A] = fac*states[STATE_SMUDGE_A] + (1-fac)*a;
+      // updated the smudge color (stored with premultiplied alpha)
+      states[STATE_SMUDGE_A ] = fac*states[STATE_SMUDGE_A ] + (1-fac)*a;
+      states[STATE_SMUDGE_RA] = fac*states[STATE_SMUDGE_RA] + (1-fac)*r*a;
+      states[STATE_SMUDGE_GA] = fac*states[STATE_SMUDGE_GA] + (1-fac)*g*a;
+      states[STATE_SMUDGE_BA] = fac*states[STATE_SMUDGE_BA] + (1-fac)*b*a;
     }
 
     // eraser
     if (settings_value[BRUSH_ERASER]) {
-      alpha_eraser *= (1.0-settings_value[BRUSH_ERASER]);
+      eraser_target_alpha *= (1.0-settings_value[BRUSH_ERASER]);
     }
 
     // HSV color change
@@ -440,7 +439,7 @@ private:
       // this function will CLAMP the inputs
       hsv_to_rgb_float (&color_h, &color_s, &color_v);
       float hardness = CLAMP(settings_value[BRUSH_HARDNESS], 0.0, 1.0);
-      return surface->draw_dab (x, y, radius, color_h, color_s, color_v, opaque, hardness, alpha_eraser);
+      return surface->draw_dab (x, y, radius, color_h, color_s, color_v, opaque, hardness, eraser_target_alpha);
     }
   }
 
