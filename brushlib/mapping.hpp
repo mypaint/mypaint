@@ -72,6 +72,11 @@ public:
     p->yvalues[index] = y;
   }
 
+  bool is_constant()
+  {
+    return inputs_used == 0;
+  }
+
   float calculate (float * data)
   {
     int j;

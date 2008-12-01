@@ -393,10 +393,9 @@ private:
       rgb_to_hsv_float (&color_h, &color_s, &color_v);
     }
 
-    // update the smudge state
-    // OPTIMIZE: stupidly, we set smudge_length to 0.5 by default, making all brushes call get_color() without need
-    //           problem is, smudge_length is supposed to be nonzero to "make something reasonable happen" when you change brush_smudge
-    if (settings_value[BRUSH_SMUDGE_LENGTH] < 1.0) {
+    if (settings_value[BRUSH_SMUDGE_LENGTH] < 1.0 and
+        // optimization, since normal brushes have smudge_length == 0.5 without actually smudging
+        (settings_value[BRUSH_SMUDGE] != 0.0 or not settings[BRUSH_SMUDGE]->is_constant())) {
       float fac = settings_value[BRUSH_SMUDGE_LENGTH];
       if (fac < 0.0) fac = 0;
       int px, py;
