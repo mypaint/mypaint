@@ -230,7 +230,7 @@ public:
     float xx, yy, rr;
     float one_over_radius2;
 
-    assert(radius >= 0.1);
+    if (radius < 1.0) radius = 1.0;
     const float hardness = 0.5;
     const float opaque = 1.0;
 
