@@ -405,7 +405,7 @@ private:
       px = ROUND(x);
       py = ROUND(y);
       float r, g, b, a;
-      surface->get_color (px, py, /*radius*/5.0, &r, &g, &b, &a);
+      surface->get_color (px, py, radius, &r, &g, &b, &a);
       states[STATE_SMUDGE_R] = fac*states[STATE_SMUDGE_R] + (1-fac)*r;
       states[STATE_SMUDGE_G] = fac*states[STATE_SMUDGE_G] + (1-fac)*g;
       states[STATE_SMUDGE_B] = fac*states[STATE_SMUDGE_B] + (1-fac)*b;
