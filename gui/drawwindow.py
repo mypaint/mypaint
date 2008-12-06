@@ -256,7 +256,7 @@ class Window(gtk.Window):
             ('Zoom1',        None, 'Zoom 1:1', 'z', None, self.zoom_cb),
             ('RotateRight',  None, 'Rotate Clockwise', 'comma', None, self.rotate_cb),
             ('RotateLeft',   None, 'Rotate Counterclockwise', 'period', None, self.rotate_cb),
-            ('Rotate0',      None, 'Rotate Upright', None, None, self.rotate_cb),
+            ('Rotate0',      None, 'Rotate Reset', None, None, self.rotate_cb),
             ('MoveLeft',     None, 'Look Left', None, None, self.move_cb),
             ('MoveRight',    None, 'Look Right', None, None, self.move_cb),
             ('MoveUp',       None, 'Look Up', None, None, self.move_cb),
