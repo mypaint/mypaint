@@ -55,10 +55,6 @@ class Document():
         self.canvas_observers = []
         self.layer_observers = []
 
-        def debug_layerswitch():
-            print 'layer', self.layer_idx, 'selected'
-        self.layer_observers.append(debug_layerswitch)
-
         self.clear(True)
 
     def clear(self, init=False):
