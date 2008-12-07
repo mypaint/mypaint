@@ -169,7 +169,7 @@ class Window(gtk.Window):
             ('Open',         None, 'Open...', '<control>O', None, self.open_cb),
             ('Save',         None, 'Save', '<control>S', None, self.save_cb),
             ('SaveAs',       None, 'Save As...', '<control><shift>S', None, self.save_as_cb),
-            ('SaveNext',     None, 'Save Next', 'F2', None, self.save_next_cb),
+            ('SaveNext',     None, 'Save as Scrap', 'F2', None, self.save_next_cb),
             ('Quit',         None, 'Quit', None, None, self.quit_cb),
 
 

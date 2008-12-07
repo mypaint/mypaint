@@ -27,7 +27,7 @@ class Window(gtk.Window):
         self.add(v_outside)
 
         nb = gtk.Notebook()
-        v_outside.pack_start(nb, expand=True)
+        v_outside.pack_start(nb, expand=True, padding=5)
 
         ### pressure tab
 
@@ -75,9 +75,9 @@ class Window(gtk.Window):
 
         l = gtk.Label()
         l.set_alignment(0.0, 0.0)
-        l.set_markup('<b><span size="large">Save Next</span></b>')
+        l.set_markup('<b><span size="large">Save as Scrap</span></b>')
         v.pack_start(l, expand=False, padding=5)
-        l = gtk.Label('Path or filename prefix for "Save Next"')
+        l = gtk.Label('Path or filename prefix for "Save as Scrap"')
         l.set_alignment(0.0, 0.0)
         v.pack_start(l, expand=False)
 
@@ -115,7 +115,7 @@ class Window(gtk.Window):
     def load_settings(self, widget, startup=False):
         # 1. set defaults
         self.global_pressure_mapping = [(0.0, 1.0), (1.0, 0.0)]
-        self.save_next_prefix = 'sketch'
+        self.save_next_prefix = 'scrap'
         self.input_devices_mode = 'screen'
         # 2. parse config file
         if os.path.exists(self.filename):
