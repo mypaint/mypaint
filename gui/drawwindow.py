@@ -453,7 +453,7 @@ class Window(gtk.Window):
                 self.rotate('RotateRight')
             else:
                 self.move('MoveRight')
-        elif key == keysyms.Up: self.move('MoveUp')
+        elif key == keysyms.Up  : self.move('MoveUp')
         elif key == keysyms.Down: self.move('MoveDown')
         elif key == keysyms.space: 
             if event.state & gdk.CONTROL_MASK:
@@ -514,12 +514,21 @@ class Window(gtk.Window):
             elif d == gdk.SCROLL_DOWN:
                 self.zoom('ZoomOut')
         else:
-            self.move({
+            mapping = {
                 gdk.SCROLL_RIGHT: 'MoveRight',
                 gdk.SCROLL_LEFT: 'MoveLeft',
                 gdk.SCROLL_UP: 'MoveUp',
-                gdk.SCROLL_DOWN: 'MoveDown',
-                }[d])
+                gdk.SCROLL_DOWN: 'MoveDown'
+            }
+
+            if event.state & gdk.SHIFT_MASK:
+                # remap up and down to left and right so that it's
+                # possible to scroll easier with mouse + keyboard.
+                mapping.update({
+                    gdk.SCROLL_UP: 'MoveLeft',
+                    gdk.SCROLL_DOWN: 'MoveRight'
+                })
+            self.move(mapping[d])
 
     def clear_layer_cb(self, action):
         self.doc.clear_layer()
