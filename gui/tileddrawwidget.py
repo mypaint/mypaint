@@ -56,6 +56,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.translation_y = 0.0
         self.scale = 1.0
         self.rotation = 0.0
+        self.flipped = False
         self.viewport_locked = False
 
         self.has_pointer = False
@@ -166,6 +167,11 @@ class TiledDrawWidget(gtk.DrawingArea):
         cr.translate(self.translation_x, self.translation_y)
         cr.rotate(self.rotation)
         cr.scale(self.scale, self.scale)
+        if self.flipped:
+            m = list(cr.get_matrix())
+            m[0] = -m[0]
+            m[2] = -m[2]
+            cr.set_matrix(cairo.Matrix(*m))
         # does not seem to make a difference:
         #cr.set_antialias(cairo.ANTIALIAS_SUBPIXEL)
         # this one neither:
@@ -338,6 +344,9 @@ class TiledDrawWidget(gtk.DrawingArea):
         def f(): self.rotation = angle
         self.rotozoom_with_center(f)
 
+    def set_flipped(self, flipped):
+        def f(): self.flipped = flipped
+        self.rotozoom_with_center(f)
 
     def start_drag(self, dragfunc):
         self.dragfunc = dragfunc
@@ -391,3 +400,4 @@ class TiledDrawWidget(gtk.DrawingArea):
     def toggle_show_layers_above(self):
         self.show_layers_above = not self.show_layers_above
         self.queue_draw()
+

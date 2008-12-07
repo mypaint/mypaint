@@ -95,11 +95,7 @@ class Window(gtk.Window):
               <menuitem action='RotateRight'/>
               <menuitem action='RotateLeft'/>
               <menuitem action='Rotate0'/>
-              <separator/>
-              <menuitem action='MoveLeft'/>
-              <menuitem action='MoveRight'/>
-              <menuitem action='MoveUp'/>
-              <menuitem action='MoveDown'/>
+              <menuitem action='Flip'/>
               <separator/>
               <menuitem action='ViewHelp'/>
             </menu>
@@ -257,10 +253,6 @@ class Window(gtk.Window):
             ('RotateRight',  None, 'Rotate Clockwise', 'comma', None, self.rotate_cb),
             ('RotateLeft',   None, 'Rotate Counterclockwise', 'period', None, self.rotate_cb),
             ('Rotate0',      None, 'Rotate Reset', None, None, self.rotate_cb),
-            ('MoveLeft',     None, 'Look Left', None, None, self.move_cb),
-            ('MoveRight',    None, 'Look Right', None, None, self.move_cb),
-            ('MoveUp',       None, 'Look Up', None, None, self.move_cb),
-            ('MoveDown',     None, 'Look Down', None, None, self.move_cb),
             ('ViewHelp',     None, 'Help', None, None, self.view_help_cb),
             ]
         ag.add_actions(actions)
@@ -268,6 +260,7 @@ class Window(gtk.Window):
             # name, stock id, label, accelerator, tooltip, callback, default toggle status
             ('PrintInputs', None, 'Print Brush Input Values to stdout', None, None, self.print_inputs_cb),
             ('VisualizeRendering', None, 'Visualize Rendering', None, None, self.visualize_rendering_cb),
+            ('Flip', None, 'Mirror Image', None, None, self.flip_cb),
             ]
         ag.add_toggle_actions(toggle_actions)
         self.ui = gtk.UIManager()
@@ -773,51 +766,37 @@ class Window(gtk.Window):
         gtk.main_quit()
         return False
 
-    def move_cb(self, action):
-        self.move(action.get_name())
     def zoom_cb(self, action):
         self.zoom(action.get_name())
     def rotate_cb(self, action):
         self.rotate(action.get_name())
+    def flip_cb(self, action):
+        self.tdw.set_flipped(action.get_active())
 
     def move(self, command):
         self.doc.split_stroke()
         step = min(self.tdw.window.get_size()) / 5
-        if command == 'MoveLeft':
-            self.tdw.scroll(-step, 0)
-        elif command == 'MoveRight':
-            self.tdw.scroll(+step, 0)
-        elif command == 'MoveUp':
-            self.tdw.scroll(0, -step)
-        elif command == 'MoveDown':
-            self.tdw.scroll(0, +step)
-        else:
-            assert 0
+        if   command == 'MoveLeft' : self.tdw.scroll(-step, 0)
+        elif command == 'MoveRight': self.tdw.scroll(+step, 0)
+        elif command == 'MoveUp'   : self.tdw.scroll(0, -step)
+        elif command == 'MoveDown' : self.tdw.scroll(0, +step)
+        else: assert 0
 
     def zoom(self, command):
-        if command == 'ZoomIn':
-            self.zoomlevel += 1
-        elif command == 'ZoomOut':
-            self.zoomlevel -= 1
-        elif command == 'Zoom1':
-            self.zoomlevel = self.zoomlevel_values.index(1.0)
-        else:
-            assert 0
+        if   command == 'ZoomIn' : self.zoomlevel += 1
+        elif command == 'ZoomOut': self.zoomlevel -= 1
+        elif command == 'Zoom1'  : self.zoomlevel = self.zoomlevel_values.index(1.0)
+        else: assert 0
         if self.zoomlevel < 0: self.zoomlevel = 0
         if self.zoomlevel >= len(self.zoomlevel_values): self.zoomlevel = len(self.zoomlevel_values) - 1
         z = self.zoomlevel_values[self.zoomlevel]
-
         self.tdw.set_zoom(z)
 
     def rotate(self, command):
-        if command == 'RotateRight':
-            self.tdw.rotate(+2*math.pi/14)
-        elif command == 'RotateLeft':
-            self.tdw.rotate(-2*math.pi/14)
-        elif command == 'Rotate0':
-            self.tdw.set_rotation(0.0)
-        else:
-            assert 0
+        if   command == 'RotateRight': self.tdw.rotate(+2*math.pi/14)
+        elif command == 'RotateLeft' : self.tdw.rotate(-2*math.pi/14)
+        elif command == 'Rotate0'    : self.tdw.set_rotation(0.0)
+        else: assert 0
 
     def fullscreen_cb(self, *trash):
         self.fullscreen = not self.fullscreen
