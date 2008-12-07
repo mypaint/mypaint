@@ -1,5 +1,5 @@
-import os
-import sys
+import os, sys
+import numpy
 SConsignFile() # no .scsonsign into $PREFIX please
 
 if sys.platform == "win32":
@@ -18,6 +18,10 @@ env.Append(CXXFLAGS=' -Wall -Wno-sign-compare -Wno-write-strings')
 #env.Append(CXXFLAGS=' -O0', LINKFLAGS=' -O0')
 #env.Append(CXXFLAGS=' -O3', LINKFLAGS=' -O3')
 #env.Append(CXXFLAGS=' -pg', LINKFLAGS=' -pg')
+
+# Get the numpy include path (for numpy/arrayobject.h).
+numpy_path = numpy.get_include()
+env.Append(CPPPATH=numpy_path)
 
 
 if sys.platform == "win32":
