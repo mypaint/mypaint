@@ -51,8 +51,6 @@ class Window(gtk.Window):
         self.tdw.zoom_max = max(self.zoomlevel_values)
         self.fullscreen = False
 
-        self.modifying = False
-
         self.app.brush.settings_observers.append(self.brush_modified_cb)
 
         self.last_gesture_time = 0 # FIXME: unused?
@@ -81,9 +79,6 @@ class Window(gtk.Window):
               <separator/>
               <menuitem action='CopyLayer'/>
               <menuitem action='PasteLayer'/>
-              <separator/>
-              <menuitem action='ModifyLastStroke'/>
-              <menuitem action='ModifyEnd'/>
             </menu>
             <menu action='ViewMenu'>
               <menuitem action='Fullscreen'/>
@@ -150,7 +145,8 @@ class Window(gtk.Window):
               <menuitem action='ClearLayer'/>
               <menuitem action='LayerBG'/>
               <menuitem action='LayerFG'/>
-              <menuitem action='NewLayer'/>
+              <menuitem action='NewLayerBG'/>
+              <menuitem action='NewLayerFG'/>
               <menuitem action='ToggleAbove'/>
               <menuitem action='PickLayer'/>
             </menu>
@@ -182,8 +178,6 @@ class Window(gtk.Window):
             ('Redo',               None, 'Redo', '<control>Y', None, self.redo_cb),
             ('CopyLayer',          None, 'Copy Layer to Clipboard', '<control>C', None, self.copy_cb),
             ('PasteLayer',         None, 'Paste Layer from Clipboard', '<control>V', None, self.paste_cb),
-            ('ModifyLastStroke',   None, 'Modify Last Stroke', 'm', None, self.modify_last_stroke_cb),
-            ('ModifyEnd',          None, 'Stop Modifying', 'n', None, self.modify_end_cb),
 
             ('BrushMenu',    None, 'Brush'),
             ('InvertColor',  None, 'Invert Color', 'x', None, self.invert_color_cb),
@@ -191,8 +185,8 @@ class Window(gtk.Window):
             ('Darker',       None, 'Darker', None, None, self.darker_cb),
             ('Bigger',       None, 'Bigger', 'f', None, self.brush_bigger_cb),
             ('Smaller',      None, 'Smaller', 'd', None, self.brush_smaller_cb),
-            ('MoreOpaque',   None, 'More Opaque', None, None, self.more_opaque_cb),
-            ('LessOpaque',   None, 'Less Opaque', None, None, self.less_opaque_cb),
+            ('MoreOpaque',   None, 'More Opaque', 's', None, self.more_opaque_cb),
+            ('LessOpaque',   None, 'Less Opaque', 'a', None, self.less_opaque_cb),
             ('PickColor',    None, 'Pick Color', 'r', None, self.pick_color_cb),
             ('ChangeColor',  None, 'Change Color', 'v', None, self.change_color_cb),
             ('Eraser',       None, 'Toggle Eraser Mode', 'e', None, self.eraser_cb),
@@ -223,11 +217,12 @@ class Window(gtk.Window):
 
             ('LayerMenu',    None, 'Layers'),
             ('ClearLayer',   None, 'Clear', '<control>period', None, self.clear_layer_cb),
-            ('LayerBG',      None, 'Background (previous layer)', None, None, self.layer_bg_cb),
-            ('LayerFG',      None, 'Foreground (next layer)',  None, None, self.layer_fg_cb),
-            ('PickLayer',    None, 'Select layer at cursor', 'l', None, self.pick_layer_cb),
-            ('NewLayer',     None, 'New Layer', None, None, self.new_layer_cb),
-            ('ToggleAbove',  None, 'Toggle Layers Above Current', 'a', None, self.toggle_layers_above_cb),
+            ('PickLayer',    None, 'Select layer at cursor', 'h', None, self.pick_layer_cb),
+            ('LayerBG',      None, 'Background (previous layer)', 'j', None, self.layer_bg_cb),
+            ('LayerFG',      None, 'Foreground (next layer)',  'k', None, self.layer_fg_cb),
+            ('NewLayerBG',   None, 'New Layer (behind current)', '<control>j', None, self.new_layer_cb),
+            ('NewLayerFG',   None, 'New Layer (above current)', '<control>k', None, self.new_layer_cb),
+            ('ToggleAbove',  None, 'Toggle Layers Above Current', 'k', None, self.toggle_layers_above_cb),
 
             ('DialogMenu',  None, 'Windows'),
             ('BrushSelectionWindow',  None, 'Brush List', 'b', None, self.toggleBrushSelectionWindow_cb),
@@ -247,11 +242,11 @@ class Window(gtk.Window):
 
             ('ViewMenu', None, 'View'),
             ('Fullscreen',   None, 'Fullscreen', 'F11', None, self.fullscreen_cb),
-            ('ZoomIn',       None, 'Zoom In', 'plus', None, self.zoom_cb),
-            ('ZoomOut',      None, 'Zoom Out', 'minus', None, self.zoom_cb),
-            ('Zoom1',        None, 'Zoom 1:1', 'z', None, self.zoom_cb),
-            ('RotateRight',  None, 'Rotate Clockwise', 'comma', None, self.rotate_cb),
-            ('RotateLeft',   None, 'Rotate Counterclockwise', 'period', None, self.rotate_cb),
+            ('ZoomIn',       None, 'Zoom In', 'period', None, self.zoom_cb),
+            ('ZoomOut',      None, 'Zoom Out', 'comma', None, self.zoom_cb),
+            ('Zoom1',        None, 'Zoom 1:1', None, None, self.zoom_cb),
+            ('RotateRight',  None, 'Rotate Clockwise', 'n', None, self.rotate_cb),
+            ('RotateLeft',   None, 'Rotate Counterclockwise', 'm', None, self.rotate_cb),
             ('Rotate0',      None, 'Rotate Reset', None, None, self.rotate_cb),
             ('ViewHelp',     None, 'Help', None, None, self.view_help_cb),
             ]
@@ -326,10 +321,6 @@ class Window(gtk.Window):
 
         self.tdw.rotate(46.0/360*2*math.pi)
         
-    def new_stroke_cb(self): # TODO: wire this
-        if self.modifying:
-            TODO # code missing here
-
     def undo_cb(self, action):
         self.doc.undo()
 
@@ -372,70 +363,9 @@ class Window(gtk.Window):
         result.sort(cmpfunc, reverse=True)
         return result[:max_count]
 
-    def modify_last_stroke_cb(self, action):
-        self.start_or_continue_modifying()
-
-    def start_or_continue_modifying(self, count=1):
-        OUTDATED
-        self.finish_pending_actions(skip=self.end_modifying)
-        if self.modifying:
-            assert self.end_modifying in self.pending_actions
-            count = self.modifying + 1
-            if count > len(self.layer.strokes):
-                print 'All strokes selected already!'
-                return
-            self.command_stack.undo()
-        else:
-            assert self.end_modifying not in self.pending_actions
-            self.pending_actions.append(self.end_modifying)
-
-        strokes = self.get_recent_strokes(count)
-        cmd = command.ModifyStrokes(self.layer, strokes, self.app.brush)
-        self.command_stack.add(cmd)
-
-        self.layer.rerender()
-
-        self.modifying = count
-
-        self.last_modifying_time = time()
-
-    def end_modifying(self):
-        assert self.modifying
-        self.modifying = False
-        self.pending_actions.remove(self.end_modifying)
-
-    def modify_end_cb(self, action):
-        if self.modifying:
-            self.end_modifying()
-
     def brush_modified_cb(self):
         # called at every brush setting modification, should return fast
         self.doc.set_brush(self.app.brush)
-
-        if self.modifying:
-            OUTDATED
-            self.finish_pending_actions(skip=self.end_modifying)
-            cmd = self.command_stack.get_last_command()
-            if isinstance(cmd, command.ModifyStrokes):
-                count = self.modifying
-
-                if time() - self.last_modifying_time > 3:
-                    # split into a different undo action
-                    # (so the user can recover the previous modification if he selected a brush and forgot that he was still modifying)
-                    self.end_modifying()
-                    self.start_or_continue_modifying(count)
-                    cmd = self.command_stack.get_last_command()
-                self.last_modifying_time = time()
-
-                #print 'redo', count, 'modified strokes'
-                self.command_stack.undo()
-                cmd.set_new_brush(self.app.brush)
-                self.command_stack.add(cmd)
-                self.layer.rerender()
-
-                #if count == 1:
-                #    self.statusbar.pop(3)
-                #    self.statusbar.push(3, 'modifying one stroke (hit again to add more)')
 
     def key_press_event_cb_before(self, win, event):
         key = event.keyval 
@@ -472,8 +402,8 @@ class Window(gtk.Window):
     def key_press_event_cb_after(self, win, event):
         # Not checking modifiers because this function gets only 
         # called if no user keybinding accepted the event.
-        if event.keyval == keysyms.KP_Add: self.zoom('ZoomIn')
-        elif event.keyval == keysyms.KP_Subtract: self.zoom('ZoomOut')
+        if event.keyval in [keysyms.KP_Add, keysyms.plus]: self.zoom('ZoomIn')
+        elif event.keyval in [keysyms.KP_Subtract, keysyms.minus]: self.zoom('ZoomOut')
         elif self.fullscreen and event.keyval == keysyms.Escape: self.fullscreen_cb()
         else: return False
         return True
@@ -553,7 +483,10 @@ class Window(gtk.Window):
         self.doc.select_layer(0)
 
     def new_layer_cb(self, action):
-        self.doc.add_layer()
+        insert_idx = self.doc.layer_idx
+        if action.get_name() == 'NewLayerFG':
+            insert_idx += 1
+        self.doc.add_layer(insert_idx)
 
     def toggle_layers_above_cb(self, action):
         self.tdw.toggle_show_layers_above()

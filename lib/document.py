@@ -195,9 +195,7 @@ class Document():
         bbox = list(l.surface.get_bbox())
         return self.render_as_pixbuf(*bbox + [[l]])
 
-    def add_layer(self, insert_idx=None):
-        if insert_idx is None:
-            insert_idx = self.layer_idx+1
+    def add_layer(self, insert_idx):
         self.do(command.AddLayer(self, insert_idx))
 
     def load_layer_from_data(self, data):
