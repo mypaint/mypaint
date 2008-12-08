@@ -136,24 +136,3 @@ class SelectLayer(Action):
         for f in self.doc.layer_observers:
             f()
 
-# class ModifyStrokes(Action):
-#     def __init__(self, layer, strokes, new_brush):
-#         self.layer = layer
-#         for s in strokes:
-#             assert s in layer.strokes
-#         self.strokemap = [[s, None] for s in strokes]
-#         self.set_new_brush(new_brush)
-#     def set_new_brush(self, new_brush):
-#         # only called when the action is not (yet/anymore) on the undo stack
-#         for pair in self.strokemap:
-#             pair[1] = pair[0].copy_using_different_brush(new_brush)
-#     def execute(self, undo=False):
-#         for old, new in self.strokemap:
-#             if undo: old, new = new, old
-#             i = self.layer.strokes.index(old)
-#             self.layer.strokes[i] = new
-#         self.layer.rerender()
-#     def undo(self):
-#         self.execute(undo=True)
-#     redo = execute
-
