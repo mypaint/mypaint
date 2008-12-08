@@ -122,7 +122,7 @@ class TiledDrawWidget(gtk.DrawingArea):
                 pressure = 0.5
             else:
                 pressure = 0.0
-        
+
         # CSS experimental - scroll when touching the edge of the screen in fullscreen mode
         if self.scroll_at_edges and pressure <= 0.0:
           screen_w = gdk.screen_width()

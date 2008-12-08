@@ -1,198 +1,125 @@
-// FIXME: maybe this file should not be part of mypaintlib?
-
-static const int colorselector_size = 240; // diameter of Swiss Cheese Wheel Color Selector(TM)
-static const int colorselector_center = (colorselector_size/2); // radii/center coordinate of SCWCS
-
 #include <cmath> // atan2, sqrt or hypot
+#include "helpers2.hpp"
 
-/*
-  --------- Swiss Cheese Wheel Color Selector(TM) --------- 
+class SCWSColorSelector {
+public:
+  static const int size = 240; // diameter of Swiss Cheese Wheel Color Selector(TM)
+  static const int center = (size/2); // radii/center coordinate of SCWCS
 
-  Ring 0: Current brush color
-  Ring 1: Value
-  Ring 2: Saturation
-  Ring 3: Hue
+  /*
+    --------- Swiss Cheese Wheel Color Selector(TM) --------- 
   
-*/
-
-// Frequently used constants
-static const float RAD_TO_ONE = 0.5f/M_PI;
-static const float TWO_PI = 2.0f*M_PI;
-// Calculate these as precise as the hosting system can once and for all
-static const float ONE_OVER_THREE = 1.0f/3.0f;
-static const float TWO_OVER_THREE = 2.0f/3.0f;
-
-// 1 Mile of variables....
-void get_scwcs_hsva_at( float* h, float* s, float* v, float* a, float x, float y, float base_h, float base_s, float base_v, bool adjust_color = true, bool only_colors = true, float mark_h = 0.0f )
-{
-  float rel_x = (colorselector_center-x);
-  float rel_y = (colorselector_center-y);
+    Ring 0: Current brush color
+    Ring 1: Value
+    Ring 2: Saturation
+    Ring 3: Hue
+    
+  */
   
-  //float radi = sqrt( rel_x*rel_x + rel_y*rel_y ); // Pre-C99 solution
-  float radi = hypot( rel_x, rel_y );
-  float theta = atan2( rel_y, rel_x );
-  if( theta < 0.0f ) theta += TWO_PI; // Range: [ 0, 2*PI )
+  // Frequently used constants
+  static const float RAD_TO_ONE = 0.5f/M_PI;
+  static const float TWO_PI = 2.0f*M_PI;
+  // Calculate these as precise as the hosting system can once and for all
+  static const float ONE_OVER_THREE = 1.0f/3.0f;
+  static const float TWO_OVER_THREE = 2.0f/3.0f;
   
-  // Current brush color
-  *h = base_h;
-  *s = base_s;
-  *v = base_v;
-  *a = 255.0f; // Alpha is always [0,255]
-  
-  if( radi < 43.0f || radi > 120.0f ) // Masked/Clipped/Tranparent area
+  float brush_h, brush_s, brush_v;
+  void set_brush_color(float h, float s, float v)
   {
-    // transparent/cut away
-    *a = 0.0f;
+    brush_h = h;
+    brush_s = s;
+    brush_v = v;
   }
-  else if( radi > 50.0f && radi <= 65.0f ) // Saturation
+
+  // 1 Mile of variables....
+  void get_hsva_at( float* h, float* s, float* v, float* a, float x, float y, bool adjust_color = true, bool only_colors = true, float mark_h = 0.0f )
   {
-    *s = (theta/TWO_PI);
+    float rel_x = (center-x);
+    float rel_y = (center-y);
     
-    if( only_colors == false && floor(*s*255.0f) == floor(base_s*255.0f) ) {
-      // Draw marker
-      *s = *v = 1.0f;
-      *h = mark_h;
-    }
+    //float radi = sqrt( rel_x*rel_x + rel_y*rel_y ); // Pre-C99 solution
+    float radi = hypot( rel_x, rel_y );
+    float theta = atan2( rel_y, rel_x );
+    if( theta < 0.0f ) theta += TWO_PI; // Range: [ 0, 2*PI )
+  
+    // Current brush color
+    *h = brush_h;
+    *s = brush_s;
+    *v = brush_v;
+    *a = 255.0f; // Alpha is always [0,255]
+  
+    if( radi < 43.0f || radi > 120.0f ) // Masked/Clipped/Tranparent area
+      {
+        // transparent/cut away
+        *a = 0.0f;
+      }
+    else if( radi > 50.0f && radi <= 65.0f ) // Saturation
+      {
+        *s = (theta/TWO_PI);
     
+        if( only_colors == false && floor(*s*255.0f) == floor(brush_s*255.0f) ) {
+          // Draw marker
+          *s = *v = 1.0f;
+          *h = mark_h;
+        }
+    
+      }
+    else if( radi > 65.0f && radi <= 90.0f ) // Value 
+      {
+        *v = (theta/TWO_PI);
+    
+        if( only_colors == false && floor(*v*255.0f) == floor(brush_v*255.0f) ) {
+          // Draw marker
+          *s = *v = 1.0f;
+          *h = mark_h;
+        }
+    
+      }
+    else if( radi > 90.0f && radi <= 120.0f ) // Hue
+      {
+        *h = (theta*RAD_TO_ONE);
+    
+        if( only_colors == false && floor(*h*360.0f) == floor(brush_h*360.0f) ) {
+          // Draw marker
+          *h = mark_h;
+        }
+    
+        if( adjust_color == false ) {
+          // Picking a new hue resets Saturation and Value
+          *s = *v = 1.0f;
+        }
+      }
   }
-  else if( radi > 65.0f && radi <= 90.0f ) // Value 
+
+  PyObject* pick_color_at( float x, float y)
   {
-    *v = (theta/TWO_PI);
-    
-    if( only_colors == false && floor(*v*255.0f) == floor(base_v*255.0f) ) {
-      // Draw marker
-      *s = *v = 1.0f;
-      *h = mark_h;
-    }
-    
+    float h,s,v,a;
+    get_hsva_at(&h, &s, &v, &a, x, y);
+    return Py_BuildValue("fff",h,s,v);
   }
-  else if( radi > 90.0f && radi <= 120.0f ) // Hue
+
+  void render(PyObject * arr)
   {
-    *h = (theta*RAD_TO_ONE);
-    
-    if( only_colors == false && floor(*h*360.0f) == floor(base_h*360.0f) ) {
-      // Draw marker
-      *h = mark_h;
-    }
-    
-    if( adjust_color == false ) {
-      // Picking a new hue resets Saturation and Value
-      *s = *v = 1.0f;
-    }
-  }
-}
+    assert(PyArray_ISCARRAY(arr));
+    assert(PyArray_NDIM(arr) == 3);
+    assert(PyArray_DIM(arr, 0) == size);
+    assert(PyArray_DIM(arr, 1) == size);
+    assert(PyArray_DIM(arr, 2) == 4);  // memory width of pixel data ( 3 = RGB, 4 = RGBA )
+    guchar* pixels = (guchar*)((PyArrayObject*)arr)->data;
+  
+    const int pixels_inc = PyArray_DIM(arr, 2);
+  
+    float h,s,v,a;
+  
+    float ofs_h = ((brush_h+ONE_OVER_THREE)>1.0f)?(brush_h-TWO_OVER_THREE):(brush_h+ONE_OVER_THREE); // offset hue
 
-PyObject* pick_scwcs_hsv_at( float x, float y, double brush_h, double brush_s, double brush_v )
-{
-  float h,s,v,a;
-  
-  float base_h = brush_h;
-  float base_s = brush_s;
-  float base_v = brush_v;
-  
-  get_scwcs_hsva_at(&h, &s, &v, &a, x, y, base_h, base_s, base_v);
-  
-  return Py_BuildValue("fff",h,s,v);
-}
-
-void hsv_to_rgb_range_one(float *h_, float *s_, float *v_);
-
-void render_swisscheesewheelcolorselector(PyObject * arr, double brush_h, double brush_s, double brush_v)
-{
-  assert(PyArray_ISCARRAY(arr));
-  assert(PyArray_NDIM(arr) == 3);
-  assert(PyArray_DIM(arr, 0) == colorselector_size);
-  assert(PyArray_DIM(arr, 1) == colorselector_size);
-  assert(PyArray_DIM(arr, 2) == 4);  // memory width of pixel data ( 3 = RGB, 4 = RGBA )
-  guchar* pixels = (guchar*)((PyArrayObject*)arr)->data;
-  
-  const int pixels_inc = PyArray_DIM(arr, 2);
-  
-  float h,s,v,a;
-  
-  float base_h = brush_h;
-  float base_s = brush_s;
-  float base_v = brush_v;
-  
-  float ofs_h = ((base_h+ONE_OVER_THREE)>1.0f)?(base_h-TWO_OVER_THREE):(base_h+ONE_OVER_THREE); // offset hue
-
-  for(float y=0; y<colorselector_size; y++) {
-    for(float x=0; x<colorselector_size; x++) {
-      get_scwcs_hsva_at(&h, &s, &v, &a, x, y, base_h, base_s, base_v, false, false, ofs_h);
-      hsv_to_rgb_range_one(&h,&s,&v); // convert from HSV [0,1] to RGB [0,255]
-      pixels[0] = h; pixels[1] = s; pixels[2] = v; pixels[3] = a;
-      pixels += pixels_inc; // next pixel block
+    for(float y=0; y<size; y++) {
+      for(float x=0; x<size; x++) {
+        get_hsva_at(&h, &s, &v, &a, x, y, false, false, ofs_h);
+        hsv_to_rgb_range_one(&h,&s,&v); // convert from HSV [0,1] to RGB [0,255]
+        pixels[0] = h; pixels[1] = s; pixels[2] = v; pixels[3] = a;
+        pixels += pixels_inc; // next pixel block
+      }
     }
   }
-}
-
-// Special HSV -> RGB converter for use with the Swiss Cheese Wheel Color Selector
-// Takes values in the range [ 0.0 , 1.0 ]
-// Gives values in the range [ 0.0 , 255.0 ]
-void hsv_to_rgb_range_one(float *h_, float *s_, float *v_)
-{
-	gint i;
-	gdouble f, w, q, t;
-	float h, s, v;
-	float r, g, b;
-	r = g = b = 0.0; // silence gcc warning
-
-	h = *h_;
-	s = *s_;
-	v = *v_;
-
-	h = h - floor(h);
-	s = CLAMP(s, 0.0, 1.0);
-	v = CLAMP(v, 0.0, 1.0);
-
-	gdouble hue = h;
-
-	if( hue == 1.0 )
-		hue = 0.0;
-	else
-		hue *= 6.0;
-
-	i = (gint) hue;
-	f = hue - i;
-	w = v * (1.0 - s);
-	q = v * (1.0 - (s * f));
-	t = v * (1.0 - (s * (1.0 - f)));
-
-	switch (i)
-	{
-		case 0:
-			r = v;
-			g = t;
-			b = w;
-			break;
-		case 1:
-			r = q;
-			g = v;
-			b = w;
-			break;
-		case 2:
-			r = w;
-			g = v;
-			b = t;
-			break;
-		case 3:
-			r = w;
-			g = q;
-			b = v;
-			break;
-		case 4:
-			r = t;
-			g = w;
-			b = v;
-			break;
-		case 5:
-			r = v;
-			g = w;
-			b = q;
-			break;
-	}
-
-	*h_ = r*255.0f;
-	*s_ = g*255.0f;
-	*v_ = b*255.0f;
-}
+};

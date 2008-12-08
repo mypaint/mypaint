@@ -51,11 +51,18 @@ class Window(gtk.Window):
         self.tdw.zoom_max = max(self.zoomlevel_values)
         self.fullscreen = False
 
+        self.popups = {
+            'ChangeColorPopup': colorselectionwindow.ChangeColorPopup(self.app),
+            'ColorWheelPopup': colorselectionwindow.ColorWheelPopup(self.app),
+            }
+        for w in self.popups.itervalues():
+            w.connect("unmap-event", self.popup_unmap_cb)
+        self.active_popup = None
+
         self.app.brush.settings_observers.append(self.brush_modified_cb)
 
-        self.last_gesture_time = 0 # FIXME: unused?
-
         self.filename = None
+
 
     def create_ui(self):
         ag = gtk.ActionGroup('WindowActions')
@@ -138,7 +145,8 @@ class Window(gtk.Window):
               <separator/>
               <menuitem action='InvertColor'/>
               <menuitem action='PickColor'/>
-              <menuitem action='ChangeColor'/>
+              <menuitem action='ChangeColorPopup'/>
+              <menuitem action='ColorWheelPopup'/>
               <menuitem action='ColorSelectionWindow'/>
             </menu>
             <menu action='LayerMenu'>
@@ -188,7 +196,8 @@ class Window(gtk.Window):
             ('MoreOpaque',   None, 'More Opaque', 's', None, self.more_opaque_cb),
             ('LessOpaque',   None, 'Less Opaque', 'a', None, self.less_opaque_cb),
             ('PickColor',    None, 'Pick Color', 'r', None, self.pick_color_cb),
-            ('ChangeColor',  None, 'Change Color', 'v', None, self.change_color_cb),
+            ('ChangeColorPopup', None, 'Change Color', 'v', None, self.popup_cb),
+            ('ColorWheelPopup',  None, 'Color Wheel', None, None, self.popup_cb),
             ('Eraser',       None, 'Toggle Eraser Mode', 'e', None, self.eraser_cb),
 
             ('ContextMenu',  None, 'Brushkeys'),
@@ -225,10 +234,10 @@ class Window(gtk.Window):
             ('ToggleAbove',  None, 'Toggle Layers Above Current', 'k', None, self.toggle_layers_above_cb),
 
             ('DialogMenu',  None, 'Windows'),
-            ('BrushSelectionWindow',  None, 'Brush List', 'b', None, self.toggleBrushSelectionWindow_cb),
-            ('BrushSettingsWindow',   None, 'Brush Settings', '<control>b', None, self.toggleBrushSettingsWindow_cb),
-            ('ColorSelectionWindow',  None, 'GTK Color Dialog', 'g', None, self.toggleColorSelectionWindow_cb),
-            ('SettingsWindow',        None, 'Settings', None, None, self.toggleSettingsWindow_cb),
+            ('BrushSelectionWindow',  None, 'Brush List', 'b', None, self.toggleWindow_cb),
+            ('BrushSettingsWindow',   None, 'Brush Settings', '<control>b', None, self.toggleWindow_cb),
+            ('ColorSelectionWindow',  None, 'GTK Color Dialog', 'g', None, self.toggleWindow_cb),
+            ('SettingsWindow',        None, 'Settings', None, None, self.toggleWindow_cb),
 
             ('HelpMenu',     None, 'Help'),
             ('Docu', None, 'Where is the Documentation?', None, None, self.show_docu_cb),
@@ -264,21 +273,15 @@ class Window(gtk.Window):
         self.app.accel_group = self.ui.get_accel_group()
         self.add_accel_group(self.app.accel_group)
 
-    def toggleWindow(self, w):
-        # TODO: make some windows "real" popups at mouse pos when invoked via keystrokes?
+    def toggleWindow_cb(self, action):
+        s = action.get_name()
+        s = s[0].lower() + s[1:]
+        w = getattr(self.app, s)
         if w.is_active():
             w.hide()
         else:
             w.show_all() # might be for the first time
             w.present()
-    def toggleBrushSelectionWindow_cb(self, action):
-        self.toggleWindow(self.app.brushSelectionWindow)
-    def toggleBrushSettingsWindow_cb(self, action):
-        self.toggleWindow(self.app.brushSettingsWindow)
-    def toggleColorSelectionWindow_cb(self, action):
-        self.toggleWindow(self.app.colorSelectionWindow)
-    def toggleSettingsWindow_cb(self, action):
-        self.toggleWindow(self.app.settingsWindow)
 
     def print_inputs_cb(self, action):
         self.doc.brush.print_inputs = action.get_active()
@@ -389,12 +392,12 @@ class Window(gtk.Window):
             if event.state & gdk.CONTROL_MASK:
                 self.tdw.start_drag(self.dragfunc_rotate)
             else:
-                self.tdw.start_drag(self.dragfunc_handtool)
+                Self.tdw.start_drag(self.dragfunc_translate)
         else: return False
         return True
     def key_release_event_cb_before(self, win, event):
         if event.keyval == keysyms.space:
-            self.tdw.stop_drag(self.dragfunc_handtool)
+            self.tdw.stop_drag(self.dragfunc_translate)
             self.tdw.stop_drag(self.dragfunc_rotate)
             return True
         return False
@@ -410,7 +413,7 @@ class Window(gtk.Window):
     def key_release_event_cb_after(self, win, event):
         return False
 
-    def dragfunc_handtool(self, dx, dy):
+    def dragfunc_translate(self, dx, dy):
         self.tdw.scroll(-dx, -dy)
 
     def dragfunc_rotate(self, dx, dy):
@@ -425,14 +428,14 @@ class Window(gtk.Window):
     def button_press_cb(self, win, event):
         #print event.device, event.button
         if event.button == 2:
-            self.tdw.start_drag(self.dragfunc_handtool)
+            self.tdw.start_drag(self.dragfunc_translate)
         elif event.button == 3:
             self.tdw.start_drag(self.dragfunc_rotate)
 
     def button_release_cb(self, win, event):
         #print event.device, event.button
         if event.button == 2:
-            self.tdw.stop_drag(self.dragfunc_handtool)
+            self.tdw.stop_drag(self.dragfunc_translate)
         elif event.button == 3:
             self.tdw.stop_drag(self.dragfunc_rotate)
 
@@ -497,11 +500,39 @@ class Window(gtk.Window):
     def pick_color_cb(self, action):
         self.app.colorSelectionWindow.pick_color_at_pointer()
 
+    def popup_cb(self, action):
+        self.popup(action.get_name())
+    def popup(self, name):
+        w = self.popups[name]
+        if w is self.active_popup:
+            # pressed the key for the same popup which is already active
+            w.hide()
+            transitions = {
+                'ChangeColorPopup': 'ColorWheelPopup',
+                'ColorWheelPopup': 'ChangeColorPopup',
+                }
+            if name in transitions:
+                self.popup(transitions[name])
+        else:
+            if self.active_popup:
+                self.active_popup.hide()
+            self.active_popup = w
+            w.popup()
+
+    def popup_unmap_cb(self, widget, event):
+        if self.active_popup is widget:
+            self.active_popup = None
+
     def change_color_cb(self, action):
+        self.popup()
         if getattr(self.app, 'alternative_color_selection_window', None):
             self.app.alternative_color_selection_window.remove_cleanly()
         else:
-            self.app.alternative_color_selection_window = colorselectionwindow.AlternativeColorSelectorWindow(self.app)
+            if action.get_name() == 'ChangeColor':
+                w = colorselectionwindow.AlternativeColorSelectorWindow(self.app)
+            else:
+                w = colorselectionwindow.AlternativeColorSelectorWindow(self.app)
+            self.app.alternative_color_selection_window = w
 
     def eraser_cb(self, action):
         adj = self.app.brush_adjustment['eraser']
@@ -779,16 +810,6 @@ class Window(gtk.Window):
         else: # restore
             self.app.select_brush(context)
             self.app.brushSelectionWindow.set_preview_pixbuf(context.preview)
-
-    def gesture_recognized_cb(self, widget):
-        print 'pick-color gesture recognized'
-        t = time()
-        if t - self.last_gesture_time < 1.0:
-            # double-click
-            self.app.colorSelectionWindow.show_change_color_window()
-        else:
-            self.app.colorSelectionWindow.pick_color_at_pointer()
-        self.last_gesture_time = t
 
     def show_about_cb(self, action):
         d = gtk.MessageDialog(self, buttons=gtk.BUTTONS_OK)

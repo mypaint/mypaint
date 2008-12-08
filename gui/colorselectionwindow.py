@@ -103,12 +103,17 @@ class Window(gtk.Window):
 
 
 # own color selector
-# see also get_colorselection_pixbuf in colorselector.hpp
-class AlternativeColorSelectorWindow(gtk.Window):
+# see also colorselector.hpp
+class ColorSelectorPopup(gtk.Window):
+    backend_class = None
+    closes_on_picking = True
+    autohide_timeout_ms = 200
     def __init__(self, app):
         gtk.Window.__init__(self, gtk.WINDOW_POPUP)
         self.set_gravity(gdk.GRAVITY_CENTER)
         self.set_position(gtk.WIN_POS_MOUSE)
+
+        self.backend = self.backend_class()
         
         self.app = app
         self.add_accel_group(self.app.accel_group)
@@ -119,8 +124,6 @@ class AlternativeColorSelectorWindow(gtk.Window):
         self.image = image = gtk.Image()
         self.add(image)
         
-        self.update_image()
-
 	self.set_events(gdk.BUTTON_PRESS_MASK |
                         gdk.BUTTON_RELEASE_MASK |
                         gdk.ENTER_NOTIFY |
@@ -130,26 +133,29 @@ class AlternativeColorSelectorWindow(gtk.Window):
         self.connect("leave-notify-event", self.leave_notify_cb)
         self.connect("button-release-event", self.button_release_cb)
         self.connect("button-press-event", self.button_press_cb)
+        self.connect("unmap-event", self.unmap_cb)
 
-        self.destroy_timer = None
+        self.hide_timeout = None
         self.button_pressed = False
 
+    def popup(self):
+        self.update_image()
         self.show_all()
-
         self.window.set_cursor(gdk.Cursor(gdk.CROSSHAIR))
     
     def update_image(self):
-        size = mypaintlib.colorselector_size
+        size = self.backend.size
         pixbuf = gdk.Pixbuf(gdk.COLORSPACE_RGB, True, 8, size, size)
         arr = pixbuf.get_pixels_array()
         arr = mypaintlib.gdkpixbuf2numpy(arr)
-        mypaintlib.render_swisscheesewheelcolorselector(arr, *self.app.brush.get_color_hsv())
+        self.backend.set_brush_color(*self.app.brush.get_color_hsv())
+        self.backend.render(arr)
         pixmap, mask = pixbuf.render_pixmap_and_mask()
         self.image.set_from_pixmap(pixmap, mask)
         self.shape_combine_mask(mask,0,0)
         
     def pick_color(self,x,y):
-        hsv = mypaintlib.pick_scwcs_hsv_at( x, y, *self.app.brush.get_color_hsv())
+        hsv = self.backend.pick_color_at(x, y)
         self.app.brush.set_color_hsv(hsv)
     
     def button_press_cb(self, widget, event):
@@ -157,33 +163,37 @@ class AlternativeColorSelectorWindow(gtk.Window):
           self.pick_color(event.x,event.y)
         self.button_pressed = True
 
-    def remove_cleanly(self):
-        self.app.alternative_color_selection_window = None
-        if self.destroy_timer is not None:
-            gobject.source_remove(self.destroy_timer)
-            self.destroy_timer = None
-        self.destroy()
-
-    def show_change_color_window(self):
-        self.app.alternative_color_selection_window = None
-        if self.destroy_timer is not None:
-            gobject.source_remove(self.destroy_timer)
-            self.destroy_timer = None
-        self.destroy()
+    def unmap_cb(self, widget, event):
+        if self.hide_timeout is not None:
+            gobject.source_remove(self.hide_timeout)
+            self.hide_timeout = None
 
     def button_release_cb(self, widget, event):
         if self.button_pressed:
             if event.button == 1:
                 self.pick_color(event.x,event.y)
-                self.update_image()
+                if self.closes_on_picking:
+                    self.hide()
+                else:
+                    self.update_image()
 
     def enter_notify_cb(self, widget, event):
-        if self.destroy_timer is not None:
-            gobject.source_remove(self.destroy_timer)
-            self.destroy_timer = None
+        if self.hide_timeout is not None:
+            gobject.source_remove(self.hide_timeout)
+            self.hide_timeout = None
 
     def leave_notify_cb(self, widget, event):
         # allow to leave the window for a short time
-        if self.destroy_timer is not None:
-            gobject.source_remove(self.destroy_timer)
-        self.destroy_timer = gobject.timeout_add(200, self.remove_cleanly)
+        if self.hide_timeout is not None:
+            gobject.source_remove(self.hide_timeout)
+        self.hide_timeout = gobject.timeout_add(self.autohide_timeout_ms, self.hide)
+
+
+class ChangeColorPopup(ColorSelectorPopup):
+    backend_class = mypaintlib.ColorChanger 
+    autohide_timeout_ms = 50
+
+class ColorWheelPopup(ColorSelectorPopup):
+    backend_class = mypaintlib.SCWSColorSelector 
+    closes_on_picking = False
+
