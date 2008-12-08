@@ -1,18 +1,24 @@
 MyPaint - drawing program with dynamic brushes for graphic tablets
 
-Linux:
+The license is described in the file LICENSE.
+Documentation can be found within the program and on the homepage:
+http://mypaint.intilinux.com/
+http://gna.org/projects/mypaint/
+A list of contributors can be found in the about dialog.
+
+Building on Linux:
 
 	Compile and run:
 	scons && ./mypaint
     There is currently no "make install" replacement.
 
-	Required: pygtk, python, swig, gtk, numpy, [maybe also scipy]
+	Required: pygtk, python, swig, gtk, numpy
 	Recommended: a pressure sensitive input device (graphic tablet)
 
-	Debian users need: python-gtk2-dev python-dev python-numpy swig
+	Debian users need: python-gtk2-dev python-numpy swig scons
 
 
-Windows:
+Building on Windows:
 
 	NOTE: This is still very experimental.
 	If you'd much rather simply have a semi-recent pre-build version of MyPaint for Windows,
@@ -106,9 +112,3 @@ Windows:
 		the exe file is build to import two files 'python25.zip' and 'site-packages.zip'.
 		These files were ment to hold any addictional python scripts needed.
 		Examine the files from the recent Windows builds on the website for reference.
-
-Project homepage:
-http://mypaint.intilinux.com/
-http://gna.org/projects/mypaint/
-
-The license for this program is in the file COPYING.
