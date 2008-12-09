@@ -61,7 +61,7 @@ class Window(gtk.Window):
             vbox.pack_start(w, expand=False)
             vbox.pack_start(gtk.HSeparator(), expand=False)
 
-        self.set_size_request(450, 500)
+        self.set_default_size(450, 500)
 
     def set_fixed_value_clicked_cb(self, widget, adj, value):
         adj.set_value(value);

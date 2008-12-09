@@ -31,7 +31,7 @@ class Window(gtk.Window):
         self.connect("button-press-event", self.button_press_cb)
         self.connect("button-release-event", self.button_release_cb)
         self.connect("scroll-event", self.scroll_cb)
-        self.set_size_request(600, 400)
+        self.set_default_size(600, 400)
         vbox = gtk.VBox()
         self.add(vbox)
 

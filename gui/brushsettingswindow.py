@@ -65,7 +65,7 @@ class Window(gtk.Window):
 
         self.functionWindows = {}
 
-        self.set_size_request(450, 500)
+        self.set_default_size(450, 500)
 
         self.relabel_buttons()
 
