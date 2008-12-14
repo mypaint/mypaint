@@ -7,7 +7,7 @@ from lib import mypaintlib, tiledsurface, brushsettings, brush, document, comman
 
 def directPaint():
 
-    s = tiledsurface.TiledSurface()
+    s = tiledsurface.Surface()
     events = load('painting30sec.dat.gz')
 
     s.begin_atomic()
@@ -20,7 +20,7 @@ def directPaint():
 
 def brushPaint():
 
-    s = tiledsurface.TiledSurface()
+    s = tiledsurface.Surface()
     b = brush.Brush_Lowlevel()
     #b.load_from_string(open('brushes/s006.myb').read())
     b.load_from_string(open('brushes/charcoal.myb').read())

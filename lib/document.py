@@ -25,7 +25,8 @@ A document:
 - must be altered via undo/redo commands (except painting)
 """
 
-import mypaintlib, helpers, tiledsurface, command, stroke, layer, serialize
+import mypaintlib, helpers, tiledsurface, pixbufsurface
+import command, stroke, layer, serialize
 import brush # FIXME: the brush module depends on gtk and everything, but we only need brush_lowlevel
 import random, gc, gzip, os
 import numpy
@@ -152,28 +153,19 @@ class Document():
             tiles.update(l.get_tiles())
         return tiles
 
-    def composite_tile(self, dst, tx, ty, layers=None):
-        # OPTIMIZE: should use some caching strategy for the results somewhere, probably not here
+    def blit_tile_into(self, dst, tx, ty, layers=None):
         if layers is None:
             layers = self.layers
+
+        # render solid white background (planned: something like self.background.blit_tile())
+        assert dst.shape[2] == 3, 'RGB destination expected'
+        N = tiledsurface.N
+        dst[:N,:N,:] = 255
+
         for layer in layers:
             surface = layer.surface
-            surface.composite_tile(dst, tx, ty)
+            surface.composite_tile_over(dst, tx, ty)
             
-    def render(self, dst, px, py, layers=None):
-        # FIXME: replace?
-        assert dst.shape[2] == 3, 'RGB only for now'
-        assert px == 0 and py == 0, 'not implemented'
-        N = tiledsurface.N
-        h, w, trash = dst.shape
-        # FIXME: code duplication with tileddrawwidget.repaint()
-        for tx, ty in self.get_tiles():
-            x = tx*N
-            y = ty*N
-            if x < 0 or x+N > w: continue
-            if y < 0 or y+N > h: continue
-            self.composite_tile(dst[y:y+N,x:x+N], tx, ty, layers)
-
     def get_total_painting_time(self):
         t = 0.0
         for cmd in self.command_stack.undo_stack:
@@ -182,13 +174,11 @@ class Document():
         return t
 
     def render_as_pixbuf(self, x, y, w, h, layers=None):
-        from gtk import gdk
-        pixbuf = gdk.Pixbuf(gdk.COLORSPACE_RGB, False, 8, w, h)
-        pixbuf.fill(0xffffffff)
-        arr = pixbuf.get_pixels_array()
-        arr = mypaintlib.gdkpixbuf2numpy(arr)
-        self.render(arr, -x, -y, layers)
-        return pixbuf
+        s = pixbufsurface.Surface(x, y, w, h)
+        for tx, ty in s.get_tiles():
+            dst = s.get_tile_memory(tx, ty)
+            self.blit_tile_into(dst, tx, ty)
+        return s.pixbuf
 
     def render_current_layer_as_pixbuf(self):
         l = self.layers[self.layer_idx]

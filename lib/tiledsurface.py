@@ -46,7 +46,7 @@ def get_tiles_bbox(tiles):
         res.expandToIncludeRect(helpers.Rect(N*tx, N*ty, N, N))
     return res
 
-class TiledSurface(mypaintlib.TiledSurface):
+class Surface(mypaintlib.TiledSurface):
     # the C++ half of this class is in tiledsurface.hpp
     def __init__(self):
         mypaintlib.TiledSurface.__init__(self, self)
@@ -97,22 +97,23 @@ class TiledSurface(mypaintlib.TiledSurface):
                 rgba = self.get_tile_memory(tx, ty, readonly)
                 yield tx*N, ty*N, rgba[y_start:y_end,x_start:y_end]
 
-    def composite_tile(self, dst, tx, ty):
+
+    def composite_tile_over(self, dst, tx, ty):
         tile = self.tiledict.get((tx, ty))
         if tile is None:
             return
         tile.composite_over_RGB8(dst)
-
-    def composite_over_RGB8(self, dst, px, py):
-        h, w, channels = dst.shape
-        assert channels == 3
-
-        for (x0, y0), tile in self.tiledict.iteritems():
-            x0 = N*x0+px
-            y0 = N*y0+py
-            if x0 < 0 or y0 < 0: continue
-            if x0+N > w or y0+N > h: continue
-            tile.composite_over_RGB8(dst[y0:y0+N,x0:x0+N,:]) # OPTIMIZE: is this slower than without offsets?
+#
+#    def composite_over_RGB8(self, dst, px, py):
+#        h, w, channels = dst.shape
+#        assert channels == 3
+#
+#        for (x0, y0), tile in self.tiledict.iteritems():
+#            x0 = N*x0+px
+#            y0 = N*y0+py
+#            if x0 < 0 or y0 < 0: continue
+#            if x0+N > w or y0+N > h: continue
+#            tile.composite_over_RGB8(dst[y0:y0+N,x0:x0+N,:]) # OPTIMIZE: is this slower than without offsets?
 
     def save_snapshot(self):
         for t in self.tiledict.itervalues():
@@ -145,10 +146,25 @@ class TiledSurface(mypaintlib.TiledSurface):
         im = Image.fromstring('RGBA', (sizex, sizey), buf.tostring())
         im.save(filename)
 
+#     # planned
+#     def load_from_surface(self, surface):
+#         dirty_tiles = set(self.tiledict.keys())
+#         self.tiledict = {}
+
+#         for tx, ty, tile in surface.iter_tiles():
+#             rgba = self.get_tile_memory(tx, ty, readonly=False)
+#             tile.copy_into(rgba)
+
+#         dirty_tiles.update(self.tiledict.keys())
+#         bbox = get_tiles_bbox(dirty_tiles)
+#         self.notify_observers(*bbox)
+        
+
     def load_from_data(self, data):
         dirty_tiles = set(self.tiledict.keys())
         self.tiledict = {}
 
+        # FIXME: rewrite this to use pixbufsurface
         if data.shape[0] % N or data.shape[1] % N:
             s = list(data.shape)
             print 'reshaping', s

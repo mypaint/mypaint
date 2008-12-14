@@ -13,7 +13,7 @@ from math import floor, ceil
 import time
 
 import random
-from lib import mypaintlib, tiledsurface # FIXME: should not have to import those
+from lib import mypaintlib, tiledsurface, pixbufsurface
 
 class TiledDrawWidget(gtk.DrawingArea):
 
@@ -194,7 +194,7 @@ class TiledDrawWidget(gtk.DrawingArea):
 
         gdk_clip_region = self.window.get_clip_region()
         x, y, w, h = device_bbox
-        sparse = not gdk_clip_region.point_in(x+w/2, y+h/2)
+        #sparse = not gdk_clip_region.point_in(x+w/2, y+h/2)
 
         cr = self.window.cairo_create()
 
@@ -227,17 +227,13 @@ class TiledDrawWidget(gtk.DrawingArea):
         x1, y1 = int(floor(x1)), int(floor(y1))
         x2, y2 = int(ceil (x2)), int(ceil (y2))
 
-        from lib import tiledsurface
-        N = tiledsurface.N
-        # FIXME: remove this limitation?
-        # code here should not need to know about tiles?
-        x1 = x1/N*N
-        y1 = y1/N*N
-        x2 = (x2/N*N) + N
-        y2 = (y2/N*N) + N
-        w, h = x2-x1, y2-y1
-        model_bbox = x1, y1, w, h
-        assert w >= 0 and h >= 0
+        # OPTIMIZE: if we are scrolling, we are creating an oversized pixbuf (L-shaped expose event)
+        surface = pixbufsurface.Surface(x1, y1, x2-x1+1, y2-y1+1)
+
+        del x1, y1, x2, y2, w, h
+
+        model_bbox = surface.x, surface.y, surface.w, surface.h
+        assert surface.w >= 0 and surface.h >= 0
 
         #print 'model bbox', model_bbox
 
@@ -252,42 +248,33 @@ class TiledDrawWidget(gtk.DrawingArea):
         if self.hide_current_layer:
             layers.pop(self.doc.layer_idx)
 
-        # OPTIMIZE: if we are scrolling, we are creating an oversized pixbuf
-        pixbuf = gdk.Pixbuf(gdk.COLORSPACE_RGB, False, 8, w, h)
+        # TODO: this should not be neccessary, since background tiles are supposed to be rendered by the document
+        surface.pixbuf.fill(0xffffffff)
         if self.visualize_rendering:
-            # green
-            #pixbuf.fill((int(random.random()*0xff)<<8)&0xff000000)
-            pixbuf.fill(0xffffffff)
-        else:
-            pixbuf.fill(0xffffffff)
-        arr = pixbuf.get_pixels_array()
-        arr = mypaintlib.gdkpixbuf2numpy(arr)
+            surface.pixbuf.fill((int(random.random()*0xff)<<16)+0x00000000)
+                    
+        #arr = pixbuf.get_pixels_array()
+        #arr = mypaintlib.gdkpixbuf2numpy(arr)
 
-        for tx, ty in self.doc.get_tiles():
-            x = tx*N
-            y = ty*N
-            pixbuf_x = x - x1
-            pixbuf_y = y - y1
-            if pixbuf_x < 0 or pixbuf_x+N > w: continue
-            if pixbuf_y < 0 or pixbuf_y+N > h: continue
+        tiles = set(self.doc.get_tiles())
+        tiles = tiles.intersection(surface.get_tiles())
 
-            if sparse:
-                # it is worth checking whether this tile really will be visible
-                # (to speed up the L-shaped expose event after scrolling)
-                # (speedup clearly visible; slowdown in default case measured)
-                corners = [(x, y), (x+N-1, y), (x, y+N-1), (x+N-1, y+N-1)]
-                corners = [cr.user_to_device(x_, y_) for (x_, y_) in corners]
-                bbox = gdk.Rectangle(*helpers.rotated_rectangle_bbox(corners))
-                if gdk_clip_region.rect_in(bbox) == gdk.OVERLAP_RECTANGLE_OUT:
-                    continue
+        for tx, ty in tiles:
+# OPTIMIZE: update this to work with the new code?
+#            if sparse:
+#                # it is worth checking whether this tile really will be visible
+#                # (to speed up the L-shaped expose event after scrolling)
+#                # (speedup clearly visible; slowdown in default case measured)
+#                corners = [(x, y), (x+N-1, y), (x, y+N-1), (x+N-1, y+N-1)]
+#                corners = [cr.user_to_device(x_, y_) for (x_, y_) in corners]
+#                bbox = gdk.Rectangle(*helpers.rotated_rectangle_bbox(corners))
+#                if gdk_clip_region.rect_in(bbox) == gdk.OVERLAP_RECTANGLE_OUT:
+#                    continue
 
-            dst = arr[pixbuf_y:pixbuf_y+N,pixbuf_x:pixbuf_x+N]
-            self.doc.composite_tile(dst, tx, ty, layers)
+            dst = surface.get_tile_memory(tx, ty)
+            self.doc.blit_tile_into(dst, tx, ty, layers)
 
-        #self.doc.render(arr, -x1, -y1, layers)
-        #widget.window.draw_pixbuf(None, pixbuf, 0, 0, 0, 0)
-
-        cr.set_source_pixbuf(pixbuf, x1, y1)
+        cr.set_source_pixbuf(surface.pixbuf, surface.x, surface.y)
         cr.paint()
 
         if self.visualize_rendering:

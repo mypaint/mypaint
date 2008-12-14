@@ -37,7 +37,7 @@ class Layer:
         # the code manipulating them is responsible to keep the
         # strokes in sync with the surface, eg. by calling rerender()
         # FIXME: find a better design? also, rerender can take too long
-        self.surface = tiledsurface.TiledSurface()
+        self.surface = tiledsurface.Surface()
         self.strokes = []
         self.background = None
 
@@ -96,7 +96,9 @@ class Layer:
         ## assumes that the layer is fully rendered
         #assert self.rendered.strokes == self.strokes
         #assert self.rendered.background == self.background
-        self.rerender()
+        cost = self.rerender()
+        if cost > 0:
+            print 'FIXME: figure out why this rerender() was neccessary'
         return self.surface.tiledict
 
     def rerender(self, only_estimate_cost=False):
