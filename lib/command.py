@@ -58,12 +58,10 @@ class Stroke(Action):
         self.stroke = stroke # immutable
     def undo(self):
         l = self.doc.layers[self.doc.layer_idx]
-        l.strokes.remove(self.stroke)
-        l.rerender()
+        l.remove_stroke(self.stroke)
     def redo(self):
         l = self.doc.layers[self.doc.layer_idx]
-        l.strokes.append(self.stroke)
-        l.rerender()
+        l.add_stroke(self.stroke)
 
 class ClearLayer(Action):
     def __init__(self, doc):

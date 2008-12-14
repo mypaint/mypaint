@@ -48,6 +48,20 @@ class Layer:
         self.caches = []
         self.strokes_to_cache = 6
 
+    def new_stroke_rendered_on_surface(self, stroke):
+        # This is called when self.surface was modified directly (to display a partial stroke).
+        # A corresponding self.add_stroke() will follow.
+        self.rendered.strokes.append(stroke)
+        self.populate_cache()
+
+    def add_stroke(self, stroke):
+        self.strokes.append(stroke)
+        self.rerender()
+
+    def remove_stroke(self, stroke):
+        self.strokes.remove(stroke)
+        self.rerender()
+
     def populate_cache(self):
         # too few strokes to be worth caching?
         if len(self.rendered.strokes) < self.strokes_to_cache:

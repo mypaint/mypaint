@@ -78,8 +78,7 @@ class Document():
         self.stroke.stop_recording()
         if not self.stroke.empty:
             l = self.layers[self.layer_idx]
-            l.rendered.strokes.append(self.stroke)
-            l.populate_cache()
+            l.new_stroke_rendered_on_surface(self.stroke)
             self.command_stack.do(command.Stroke(self, self.stroke))
         self.stroke = None
 
