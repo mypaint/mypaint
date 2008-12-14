@@ -6,13 +6,16 @@
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY. See the COPYING file for more details.
 
-# This module contains an infinite (unbounded) tiled surface for painting.
-# It is the memory storage backend for one layer.
+# This module implements an an unbounded tiled surface for painting.
 
 from numpy import *
 import mypaintlib, helpers
 
 tilesize = N = mypaintlib.TILE_SIZE
+
+import pixbufsurface
+from gtk import gdk
+
 
 class Tile:
     def __init__(self):
@@ -27,17 +30,6 @@ class Tile:
         t.rgba[:] = self.rgba[:]
         return t
         
-    def composite_over_RGB8(self, dst):
-        mypaintlib.composite_tile_over_rgb8(self.rgba, dst)
-
-    def copy_into_RGBA8(self, dst):
-        # rarely used
-        tmp = self.rgba.astype('float32') / (1<<15)
-        tmp[:,:,0:3] /= tmp[:,:,3:].clip(0.0001, 1.0) # un-premultiply alpha
-        tmp = tmp.clip(0.0,1.0)
-        dst[:,:,:] = tmp * 255.0
-
-
 transparentTile = Tile()
 
 def get_tiles_bbox(tiles):
@@ -97,12 +89,21 @@ class Surface(mypaintlib.TiledSurface):
                 rgba = self.get_tile_memory(tx, ty, readonly)
                 yield tx*N, ty*N, rgba[y_start:y_end,x_start:y_end]
 
+    def blit_tile_into(self, dst, tx, ty):
+        # rarely used
+        assert dst.shape[2] == 4
+        tmp = self.get_tile_memory(tx, ty, readonly=True)
+        tmp = tmp.astype('float32') / (1<<15)
+        tmp[:,:,0:3] /= tmp[:,:,3:].clip(0.0001, 1.0) # un-premultiply alpha
+        tmp = tmp.clip(0.0,1.0)
+        dst[:,:,:] = tmp * 255.0
 
     def composite_tile_over(self, dst, tx, ty):
         tile = self.tiledict.get((tx, ty))
         if tile is None:
             return
-        tile.composite_over_RGB8(dst)
+        assert dst.shape[2] == 3
+        mypaintlib.composite_tile_over_rgb8(tile.rgba, dst)
 #
 #    def composite_over_RGB8(self, dst, px, py):
 #        h, w, channels = dst.shape
@@ -128,73 +129,39 @@ class Surface(mypaintlib.TiledSurface):
         bbox = get_tiles_bbox([pos for (pos, tile) in dirty])
         self.notify_observers(*bbox)
 
+    def render_as_pixbuf(self):
+        if not self.tiledict:
+            print 'WARNING: empty surface'
+        x, y, w, h = self.get_bbox()
+        s = pixbufsurface.Surface(x, y, w, h, alpha=True)
+
+        for tx, ty in s.get_tiles():
+            dst = s.get_tile_memory(tx, ty)
+            self.blit_tile_into(dst, tx, ty)
+        return s.pixbuf
+
     def save(self, filename):
-        assert self.tiledict, 'cannot save empty surface'
-        print 'SAVE'
-        from PIL import Image
-        a = array([xy for xy, tile in self.tiledict.iteritems()])
-        minx, miny = N*a.min(0)
-        sizex, sizey = N*(a.max(0) - a.min(0) + 1)
-        buf = zeros((sizey, sizex, 4), 'uint8')
+        pixbuf = self.render_as_pixbuf()
+        pixbuf.save(filename, 'png')
 
-        for (x0, y0), tile in self.tiledict.iteritems():
-            x0 = N*x0 - minx
-            y0 = N*y0 - miny
-            dst = buf[y0:y0+N,x0:x0+N,:]
-            tile.copy_into_RGBA8(dst)
-
-        im = Image.fromstring('RGBA', (sizex, sizey), buf.tostring())
-        im.save(filename)
-
-#     # planned
-#     def load_from_surface(self, surface):
-#         dirty_tiles = set(self.tiledict.keys())
-#         self.tiledict = {}
-
-#         for tx, ty, tile in surface.iter_tiles():
-#             rgba = self.get_tile_memory(tx, ty, readonly=False)
-#             tile.copy_into(rgba)
-
-#         dirty_tiles.update(self.tiledict.keys())
-#         bbox = get_tiles_bbox(dirty_tiles)
-#         self.notify_observers(*bbox)
-        
-
-    def load_from_data(self, data):
+    def load_from_pixbufsurface(self, s):
         dirty_tiles = set(self.tiledict.keys())
         self.tiledict = {}
 
-        # FIXME: rewrite this to use pixbufsurface
-        if data.shape[0] % N or data.shape[1] % N:
-            s = list(data.shape)
-            print 'reshaping', s
-            s[0] = ((s[0]+N-1) / N) * N
-            s[1] = ((s[1]+N-1) / N) * N
-            data_new = zeros(s, data.dtype)
-            data_new[:data.shape[0],:data.shape[1],:] = data
-            data = data_new
-
-        for x, y, rgba in self.iter_tiles_memory(0, 0, data.shape[1], data.shape[0], readonly=False):
-            # FIXME: will be buggy at border?
-            tmp = data[y:y+N,x:x+N,:].astype('float32') / 255.0
-            if data.shape[2] == 3:
-                # no alpha channel loaded
-                alpha = 1.0
-            else:
-                alpha = tmp[:,:,3:]
-            tmp[:,:,0:3] *= alpha # premultiply alpha
-            tmp *= 1<<15
-            if data.shape[2] == 4:
-                rgba[:,:,:] = tmp
-            else:
-                rgba[:,:,0:3] = tmp
-                rgba[:,:,3]   = 1<<15
+        for tx, ty in s.get_tiles():
+            dst = self.get_tile_memory(tx, ty, readonly=False)
+            s.blit_tile_into(dst, tx, ty)
 
         dirty_tiles.update(self.tiledict.keys())
         bbox = get_tiles_bbox(dirty_tiles)
         self.notify_observers(*bbox)
-
-
+        
+    def load_from_data(self, data, dst_x=0, dst_y=0):
+        assert data.dtype == 'uint8'
+        h, w, channels = data.shape
+        
+        s = pixbufsurface.Surface(dst_x, dst_y, w, h, alpha=True, data=data)
+        self.load_from_pixbufsurface(s)
 
     def get_bbox(self):
         # FIXME: should get precise bbox instead of tile bbox

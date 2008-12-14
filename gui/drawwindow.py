@@ -345,7 +345,7 @@ class Window(gtk.Window):
         self.doc.redo()
 
     def copy_cb(self, action):
-        pixbuf = self.doc.render_current_layer_as_pixbuf()
+        pixbuf = self.doc.layer.surface.render_as_pixbuf()
         cb = gtk.Clipboard()
         cb.set_image(pixbuf)
 

@@ -74,12 +74,15 @@ class Document():
             for f in self.canvas_observers:
                 f(*bbox)
 
+    def get_current_layer(self):
+        return self.layers[self.layer_idx]
+    layer = property(get_current_layer)
+
     def split_stroke(self):
         if not self.stroke: return
         self.stroke.stop_recording()
         if not self.stroke.empty:
-            l = self.layers[self.layer_idx]
-            l.new_stroke_rendered_on_surface(self.stroke)
+            self.layer.new_stroke_rendered_on_surface(self.stroke)
             self.command_stack.do(command.Stroke(self, self.stroke))
         self.stroke = None
 
@@ -95,10 +98,10 @@ class Document():
             self.stroke.start_recording(self.brush)
         self.stroke.record_event(dtime, x, y, pressure)
 
-        layer = self.layers[self.layer_idx]
-        layer.surface.begin_atomic()
-        split = self.brush.stroke_to (layer.surface, x, y, pressure, dtime)
-        layer.surface.end_atomic()
+        l = self.layer
+        l.surface.begin_atomic()
+        split = self.brush.stroke_to (l.surface, x, y, pressure, dtime)
+        l.surface.end_atomic()
 
         if split:
             self.split_stroke()
@@ -180,21 +183,13 @@ class Document():
             self.blit_tile_into(dst, tx, ty)
         return s.pixbuf
 
-    def render_current_layer_as_pixbuf(self):
-        l = self.layers[self.layer_idx]
-        bbox = list(l.surface.get_bbox())
-        return self.render_as_pixbuf(*bbox + [[l]])
-
     def add_layer(self, insert_idx):
         self.do(command.AddLayer(self, insert_idx))
-
-    def load_layer_from_data(self, data):
-        self.do(command.LoadLayer(self, data))
 
     def load_layer_from_pixbuf(self, pixbuf):
         arr = pixbuf.get_pixels_array()
         arr = mypaintlib.gdkpixbuf2numpy(arr)
-        self.load_layer_from_data(arr)
+        self.do(command.LoadLayer(self, arr))
 
     def load_from_pixbuf(self, pixbuf):
         self.clear()

@@ -57,24 +57,22 @@ class Stroke(Action):
         assert stroke.finished
         self.stroke = stroke # immutable
     def undo(self):
-        l = self.doc.layers[self.doc.layer_idx]
-        l.remove_stroke(self.stroke)
+        self.doc.layer.remove_stroke(self.stroke)
     def redo(self):
-        l = self.doc.layers[self.doc.layer_idx]
-        l.add_stroke(self.stroke)
+        self.doc.layer.add_stroke(self.stroke)
 
 class ClearLayer(Action):
     def __init__(self, doc):
         self.doc = doc
     def redo(self):
-        layer = self.doc.layers[self.doc.layer_idx]
+        layer = self.doc.layer
         self.old_strokes = layer.strokes[:] # copy
         self.old_background = layer.background
         layer.strokes = []
         layer.background = None
         layer.rerender()
     def undo(self):
-        layer = self.doc.layers[self.doc.layer_idx]
+        layer = self.doc.layer
         layer.strokes = self.old_strokes
         layer.background = self.old_background
         layer.rerender()
@@ -86,14 +84,14 @@ class LoadLayer(Action):
         self.doc = doc
         self.data = data
     def redo(self):
-        layer = self.doc.layers[self.doc.layer_idx]
+        layer = self.doc.layer
         self.old_strokes = layer.strokes[:] # copy
         self.old_background = layer.background
         layer.strokes = []
         layer.background = self.data
         layer.rerender()
     def undo(self):
-        layer = self.doc.layers[self.doc.layer_idx]
+        layer = self.doc.layer
         layer.strokes = self.old_strokes
         layer.background = self.old_background
         layer.rerender()
