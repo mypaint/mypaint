@@ -30,6 +30,14 @@ class Tile:
     def composite_over_RGB8(self, dst):
         mypaintlib.composite_tile_over_rgb8(self.rgba, dst)
 
+    def copy_into_RGBA8(self, dst):
+        # rarely used
+        tmp = self.rgba.astype('float32') / (1<<15)
+        tmp[:,:,0:3] /= tmp[:,:,3:].clip(0.0001, 1.0) # un-premultiply alpha
+        tmp = tmp.clip(0.0,1.0)
+        dst[:,:,:] = tmp * 255.0
+
+
 transparentTile = Tile()
 
 def get_tiles_bbox(tiles):
@@ -54,47 +62,40 @@ class TiledSurface(mypaintlib.TiledSurface):
         self.tiledict = {}
         self.notify_observers(*get_tiles_bbox(tiles))
 
-    def get_tile_memory(self, x, y, readonly):
+    def get_tile_memory(self, tx, ty, readonly):
         # copy-on-write for readonly tiles
         # OPTIMIZE: do some profiling to check if this function is a bottleneck
         #           yes it is
         # Note: we must return memory that stays valid for writing until the
         # last end_atomic(), because of the caching in tiledsurface.hpp.
-        t = self.tiledict.get((x, y))
+        t = self.tiledict.get((tx, ty))
         if t is None:
             if readonly:
                 t = transparentTile
             else:
                 t = Tile()
-                self.tiledict[(x, y)] = t
+                self.tiledict[(tx, ty)] = t
         if t.readonly and not readonly:
             # OPTIMIZE: we could do the copying in save_snapshot() instead, this might reduce the latency while drawing
             #           (eg. tile.valid_copy = some_other_tile_instance; and valid_copy = None here)
             #           before doing this, measure the worst-case time of the call below; same thing with new tiles
             t = t.copy()
-            self.tiledict[(x, y)] = t
+            self.tiledict[(tx, ty)] = t
         return t.rgba
         
-    #def iter_existing_tiles(self, x, y, w, h):
-    #    for xx in xrange(x/Tile.N, (x+w)/Tile.N+1):
-    #        for yy in xrange(y/Tile.N, (x+h)/Tile.N+1):
-    #            tile = self.tiledict.get((xx, yy), None)
-    #            if tile is not None:
-    #                yield xx*Tile.N, yy*Tile.N, tile
-
     def iter_tiles_memory(self, x, y, w, h, readonly):
-        for xx in xrange(x/N, (x+w-1)/N+1):
-            for yy in xrange(y/N, (y+h-1)/N+1):
+        for tx in xrange(x/N, (x+w-1)/N+1):
+            for ty in xrange(y/N, (y+h-1)/N+1):
                 # note, this is somewhat untested
-                x_start = max(0, x - xx*N)
-                y_start = max(0, y - yy*N)
-                x_end = min(N, x+w - xx*N)
-                y_end = min(N, y+h - yy*N)
+                x_start = max(0, x - tx*N)
+                y_start = max(0, y - ty*N)
+                x_end = min(N, x+w - tx*N)
+                y_end = min(N, y+h - ty*N)
                 #print xx*N, yy*N
                 #print x_start, y_start, x_end, y_end
 
-                rgba = self.get_tile_memory(xx, yy, readonly)
-                yield xx*N, yy*N, rgba[y_start:y_end,x_start:y_end]
+                rgba = self.get_tile_memory(tx, ty, readonly)
+                yield tx*N, ty*N, rgba[y_start:y_end,x_start:y_end]
 
     def composite_tile(self, dst, tx, ty):
         tile = self.tiledict.get((tx, ty))
@@ -139,10 +140,7 @@ class TiledSurface(mypaintlib.TiledSurface):
             x0 = N*x0 - minx
             y0 = N*y0 - miny
             dst = buf[y0:y0+N,x0:x0+N,:]
-            tmp = tile.rgba.astype('float32') / (1<<15)
-            tmp[:,:,0:3] /= tmp[:,:,3:].clip(0.0001, 1.0) # un-premultiply alpha
-            tmp = tmp.clip(0.0,1.0)
-            dst[:,:,:] = tmp * 255.0
+            tile.copy_into_RGBA8(dst)
 
         im = Image.fromstring('RGBA', (sizex, sizey), buf.tostring())
         im.save(filename)

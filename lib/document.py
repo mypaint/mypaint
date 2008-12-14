@@ -162,6 +162,7 @@ class Document():
             surface.composite_tile(dst, tx, ty)
             
     def render(self, dst, px, py, layers=None):
+        # FIXME: replace?
         assert dst.shape[2] == 3, 'RGB only for now'
         assert px == 0 and py == 0, 'not implemented'
         N = tiledsurface.N
@@ -227,7 +228,7 @@ class Document():
         raise ValueError, 'Unkwnown file format extension: ' + repr(filename)
 
     def save_png(self, filename):
-        self.render_as_pixbuf().save(filename)
+        self.render_as_pixbuf(*self.get_bbox()).save(filename, 'png')
 
     def load_png(self, filename):
         self.load_from_pixbuf(gtk.gdk.pixbuf_new_from_file(filename))
