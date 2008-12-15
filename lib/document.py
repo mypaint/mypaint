@@ -223,6 +223,7 @@ class Document():
     def save_ora(self, filename):
         tempdir = tempfile.mkdtemp('mypaint')
         z = zipfile.ZipFile(filename, 'w', compression=zipfile.ZIP_STORED)
+        writestr('mimetype', 'ora') # Mime type must be the first object stored. FIXME: what should go here?
         root = ET.Element('image')
         stack = ET.SubElement(root, 'stack')
         x0, y0, w0, h0 = self.get_bbox()
@@ -260,7 +261,6 @@ class Document():
             z.writestr(zi, data)
 
         writestr('stack.xml', xml)
-        writestr('mimetype', 'ora') # FIXME: what should go here?
         z.close()
         os.rmdir(tempdir)
 
