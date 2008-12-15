@@ -358,14 +358,6 @@ class Window(gtk.Window):
             self.doc.load_layer_from_pixbuf(pixbuf)
         cb.request_image(callback)
 
-    def get_recent_strokes(self, max_count):
-        assert max_count > 0
-        result = self.layer.strokes[:] # copy
-        def cmpfunc(a, b):
-            return cmp(a.serial_number, b.serial_number)
-        result.sort(cmpfunc, reverse=True)
-        return result[:max_count]
-
     def brush_modified_cb(self):
         # called at every brush setting modification, should return fast
         self.doc.set_brush(self.app.brush)
@@ -635,13 +627,26 @@ class Window(gtk.Window):
 
     def add_file_filters(self, dialog):
         f = gtk.FileFilter()
-        f.set_name("PNG without layers")
+        f.set_name("Any Format (*.png; *.ora; *.myp)")
         f.add_pattern("*.png")
-        dialog.add_filter(f)
-        f = gtk.FileFilter()
-        f.set_name("MyPaint Image (*.myp)")
+        f.add_pattern("*.ora")
         f.add_pattern("*.myp")
         dialog.add_filter(f)
+
+        f = gtk.FileFilter()
+        f.set_name("PNG without layers (*.png)")
+        f.add_pattern("*.png")
+        dialog.add_filter(f)
+
+        f = gtk.FileFilter()
+        f.set_name("OpenRaster (*.ora)")
+        f.add_pattern("*.ora")
+        dialog.add_filter(f)
+
+        #f = gtk.FileFilter()
+        #f.set_name("MyPaint Image (*.myp)")
+        #f.add_pattern("*.myp")
+        #dialog.add_filter(f)
 
     def open_cb(self, action):
         if not self.confirm_destructive_action():

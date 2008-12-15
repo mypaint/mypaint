@@ -80,9 +80,9 @@ class ClearLayer(Action):
         del self.old_strokes, self.old_background
 
 class LoadLayer(Action):
-    def __init__(self, doc, data):
+    def __init__(self, doc, data, x, y):
         self.doc = doc
-        self.data = data
+        self.data = [x, y, data]
     def redo(self):
         layer = self.doc.layer
         self.old_strokes = layer.strokes[:] # copy

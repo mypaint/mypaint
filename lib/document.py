@@ -28,9 +28,12 @@ A document:
 import mypaintlib, helpers, tiledsurface, pixbufsurface
 import command, stroke, layer, serialize
 import brush # FIXME: the brush module depends on gtk and everything, but we only need brush_lowlevel
-import random, gc, gzip, os
+import random, gc, gzip, os, zipfile, tempfile
+join = os.path.join
+import xml.etree.ElementTree as ET
 import numpy
 import gtk
+gdk = gtk.gdk
 
 class Document():
     # This is the "model" in the Model-View-Controller design.
@@ -139,11 +142,11 @@ class Document():
         self.split_stroke()
         self.brush.copy_settings_from(brush)
 
-    # rendering etc.
     def get_bbox(self):
         res = helpers.Rect()
         for layer in self.layers:
             # OPTIMIZE: only visible layers...
+            # careful: currently saving assumes that all layers are included
             bbox = layer.surface.get_bbox()
             res.expandToIncludeRect(bbox)
         return res
@@ -186,10 +189,10 @@ class Document():
     def add_layer(self, insert_idx):
         self.do(command.AddLayer(self, insert_idx))
 
-    def load_layer_from_pixbuf(self, pixbuf):
+    def load_layer_from_pixbuf(self, pixbuf, x=0, y=0):
         arr = pixbuf.get_pixels_array()
         arr = mypaintlib.gdkpixbuf2numpy(arr)
-        self.do(command.LoadLayer(self, arr))
+        self.do(command.LoadLayer(self, arr, x, y))
 
     def load_from_pixbuf(self, pixbuf):
         self.clear()
@@ -216,6 +219,91 @@ class Document():
 
     def load_png(self, filename):
         self.load_from_pixbuf(gtk.gdk.pixbuf_new_from_file(filename))
+
+    def save_ora(self, filename):
+        tempdir = tempfile.mkdtemp('mypaint')
+        z = zipfile.ZipFile(filename, 'w', compression=zipfile.ZIP_STORED)
+        root = ET.Element('image')
+        stack = ET.SubElement(root, 'stack')
+        x0, y0, w0, h0 = self.get_bbox()
+        a = stack.attrib
+        a['x'] = str(0)
+        a['y'] = str(0)
+        a['w'] = str(w0)
+        a['h'] = str(h0)
+
+        for idx, l in enumerate(reversed(self.layers)):
+            if l.surface.is_empty():
+                continue
+            layer = ET.Element('layer')
+            x, y, w, h = l.surface.get_bbox()
+            stack.append(layer)
+
+            tmp = join(tempdir, 'tmp.png')
+            pixbuf = l.surface.save(tmp)
+            name = 'data/layer%03d.png' % idx
+            z.write(tmp, name)
+            os.remove(tmp)
+
+            a = layer.attrib
+            a['src'] = name
+            a['opacity'] = '255'
+            a['x'] = str(x-x0)
+            a['y'] = str(y-y0)
+
+        xml = ET.tostring(root, encoding='UTF-8')
+
+        # work around a permission bug in the zipfile library: http://bugs.python.org/issue3394
+        def writestr(filename, data):
+            zi = zipfile.ZipInfo(filename)
+            zi.external_attr = 0600 << 16L
+            z.writestr(zi, data)
+
+        writestr('stack.xml', xml)
+        writestr('mimetype', 'ora') # FIXME: what should go here?
+        z.close()
+        os.rmdir(tempdir)
+
+    def load_ora(self, filename):
+        tempdir = tempfile.mkdtemp('mypaint')
+        z = zipfile.ZipFile(filename)
+        print 'mimetype:', z.read('mimetype').strip()
+        xml = z.read('stack.xml')
+        root = ET.fromstring(xml)
+        stack = root.find('stack')
+
+        self.clear()
+        for layer in stack:
+            if layer.tag != 'layer':
+                print 'Warning: ignoring unsupported tag:', layer.tag
+                continue
+            a = layer.attrib
+            src = a.get('src', '')
+            if not src.lower().endswith('.png'):
+                print 'Warning: ignoring non-png layer'
+                continue
+
+            tmp = join(tempdir, 'tmp.png')
+            f = open(tmp, 'w')
+            f.write(z.read(src))
+            f.close()
+            pixbuf = gdk.pixbuf_new_from_file(tmp)
+            os.remove(tmp)
+
+            x = int(a.get('x', '0'))
+            y = int(a.get('y', '0'))
+            self.add_layer(insert_idx=0)
+            self.load_layer_from_pixbuf(pixbuf, x, y)
+
+        if len(self.layers) == 1:
+            raise ValueError, 'Could not load any layer.'
+
+        if len(self.layers) > 1:
+            # select the still present initial empty top layer
+            # hm, should this better be removed?
+            self.select_layer(len(self.layers)-1)
+
+        os.rmdir(tempdir)
 
     def save_myp(self, filename, compress=True):
         print 'WARNING: save/load file format is experimental'

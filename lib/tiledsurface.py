@@ -156,14 +156,17 @@ class Surface(mypaintlib.TiledSurface):
         bbox = get_tiles_bbox(dirty_tiles)
         self.notify_observers(*bbox)
         
-    def load_from_data(self, data, dst_x=0, dst_y=0):
+    def load_from_data(self, data):
+        x, y, data = data
         assert data.dtype == 'uint8'
         h, w, channels = data.shape
         
-        s = pixbufsurface.Surface(dst_x, dst_y, w, h, alpha=True, data=data)
+        s = pixbufsurface.Surface(x, y, w, h, alpha=True, data=data)
         self.load_from_pixbufsurface(s)
 
     def get_bbox(self):
-        # FIXME: should get precise bbox instead of tile bbox
         return get_tiles_bbox(self.tiledict)
+
+    def is_empty(self):
+        return not self.tiledict
 
