@@ -487,12 +487,15 @@ class Window(gtk.Window):
         self.tdw.toggle_show_layers_above()
 
     def invert_color_cb(self, action):
+        self.end_eraser_mode()
         self.app.brush.invert_color()
         
     def pick_color_cb(self, action):
+        self.end_eraser_mode()
         self.app.colorSelectionWindow.pick_color_at_pointer()
 
     def popup_cb(self, action):
+        self.end_eraser_mode()
         self.popup(action.get_name())
     def popup(self, name):
         w = self.popups[name]
@@ -515,23 +518,17 @@ class Window(gtk.Window):
         if self.active_popup is widget:
             self.active_popup = None
 
-    def change_color_cb(self, action):
-        self.popup()
-        if getattr(self.app, 'alternative_color_selection_window', None):
-            self.app.alternative_color_selection_window.remove_cleanly()
-        else:
-            if action.get_name() == 'ChangeColor':
-                w = colorselectionwindow.AlternativeColorSelectorWindow(self.app)
-            else:
-                w = colorselectionwindow.AlternativeColorSelectorWindow(self.app)
-            self.app.alternative_color_selection_window = w
-
     def eraser_cb(self, action):
         adj = self.app.brush_adjustment['eraser']
         if adj.get_value() > 0.5:
             adj.set_value(0.0)
         else:
             adj.set_value(1.0)
+
+    def end_eraser_mode(self):
+        adj = self.app.brush_adjustment['eraser']
+        if adj.get_value() > 0.5:
+            adj.set_value(0.0)
 
     def brush_bigger_cb(self, action):
         adj = self.app.brush_adjustment['radius_logarithmic']
@@ -549,11 +546,13 @@ class Window(gtk.Window):
         adj.set_value(adj.get_value() / 1.8)
 
     def brighter_cb(self, action):
+        self.end_eraser_mode()
         h, s, v = self.app.brush.get_color_hsv()
         v += 0.08
         if v > 1.0: v = 1.0
         self.app.brush.set_color_hsv((h, s, v))
     def darker_cb(self, action):
+        self.end_eraser_mode()
         h, s, v = self.app.brush.get_color_hsv()
         v -= 0.08
         if v < 0.0: v = 0.0
