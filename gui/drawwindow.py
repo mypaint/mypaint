@@ -492,7 +492,10 @@ class Window(gtk.Window):
         
     def pick_color_cb(self, action):
         self.end_eraser_mode()
-        self.app.colorSelectionWindow.pick_color_at_pointer()
+        size = int(self.app.brush.get_actual_radius() * math.sqrt(math.pi))
+        if size < 1:
+            size = 1
+        self.app.colorSelectionWindow.pick_color_at_pointer(size)
 
     def popup_cb(self, action):
         self.end_eraser_mode()
