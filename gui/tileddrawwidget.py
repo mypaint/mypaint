@@ -44,7 +44,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.doc.canvas_observers.append(self.canvas_modified_cb)
         self.doc.brush.settings_observers.append(self.brush_modified_cb)
 
-        self.cursor_size = None
+        self.cursor_info = None
 
         self.last_event_time = None
         self.last_event_x = None
@@ -349,13 +349,16 @@ class TiledDrawWidget(gtk.DrawingArea):
         #return
         # OPTIMIZE: looks like this can be a major slowdown with X11
         if not self.window: return
-        d = int(self.doc.brush.get_actual_radius())*2
+        brush = self.doc.brush
+        d = int(brush.get_actual_radius())*2
+        eraser = brush.is_eraser()
 
         if d < 6: d = 6
+        if eraser and d < 8: d = 8
         if d > 500: d = 500 # hm, better ask display for max cursor size? also, 500 is pretty slow
-        if self.cursor_size == d:
+        if self.cursor_info == (d, eraser):
             return
-        self.cursor_size = d
+        self.cursor_info = (d, eraser)
 
         cursor = gdk.Pixmap(None, d+1, d+1,1)
         mask   = gdk.Pixmap(None, d+1, d+1,1)
@@ -373,6 +376,11 @@ class TiledDrawWidget(gtk.DrawingArea):
         mask.draw_rectangle(bgc, True, 0, 0, d+1, d+1)
         mask.draw_arc(wgc, False, 0, 0, d, d, 0, 360*64)
         mask.draw_arc(wgc, False, 1, 1, d-2, d-2, 0, 360*64)
+
+        if eraser:
+            thickness = d/8
+            mask.draw_rectangle(bgc, True, d/2-thickness, 0, 2*thickness+1, d+1)
+            mask.draw_rectangle(bgc, True, 0, d/2-thickness, d+1, 2*thickness+1)
 
         self.window.set_cursor(gdk.Cursor(cursor,mask,gdk.color_parse('black'), gdk.color_parse('white'),(d+1)/2,(d+1)/2))
 

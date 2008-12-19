@@ -529,7 +529,6 @@ class Window(gtk.Window):
     def eraser_cb(self, action):
         adj = self.app.brush_adjustment['eraser']
         if adj.get_value() > 0.5:
-            # TODO: change cursor
             adj.set_value(0.0)
         else:
             adj.set_value(1.0)

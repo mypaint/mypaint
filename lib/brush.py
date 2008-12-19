@@ -270,6 +270,8 @@ class Brush_Lowlevel(mypaintlib.Brush):
         rgb = [1-x for x in rgb]
         self.set_color_rgb(rgb)
 
+    def is_eraser(self):
+        return self.setting_by_cname('eraser').base_value > 0.5
 
 class Brush(Brush_Lowlevel):
     def __init__(self, app):
