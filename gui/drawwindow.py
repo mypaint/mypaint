@@ -523,14 +523,14 @@ class Window(gtk.Window):
 
     def eraser_cb(self, action):
         adj = self.app.brush_adjustment['eraser']
-        if adj.get_value() > 0.5:
+        if adj.get_value() > 0.9:
             adj.set_value(0.0)
         else:
             adj.set_value(1.0)
 
     def end_eraser_mode(self):
         adj = self.app.brush_adjustment['eraser']
-        if adj.get_value() > 0.5:
+        if adj.get_value() > 0.9:
             adj.set_value(0.0)
 
     def brush_bigger_cb(self, action):

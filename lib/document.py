@@ -223,6 +223,11 @@ class Document():
     def save_ora(self, filename):
         tempdir = tempfile.mkdtemp('mypaint')
         z = zipfile.ZipFile(filename, 'w', compression=zipfile.ZIP_STORED)
+        # work around a permission bug in the zipfile library: http://bugs.python.org/issue3394
+        def writestr(filename, data):
+            zi = zipfile.ZipInfo(filename)
+            zi.external_attr = 0600 << 16L
+            z.writestr(zi, data)
         writestr('mimetype', 'ora') # Mime type must be the first object stored. FIXME: what should go here?
         root = ET.Element('image')
         stack = ET.SubElement(root, 'stack')
@@ -253,12 +258,6 @@ class Document():
             a['y'] = str(y-y0)
 
         xml = ET.tostring(root, encoding='UTF-8')
-
-        # work around a permission bug in the zipfile library: http://bugs.python.org/issue3394
-        def writestr(filename, data):
-            zi = zipfile.ZipInfo(filename)
-            zi.external_attr = 0600 << 16L
-            z.writestr(zi, data)
 
         writestr('stack.xml', xml)
         z.close()
