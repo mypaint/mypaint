@@ -7,6 +7,7 @@
 # but WITHOUT ANY WARRANTY. See the COPYING file for more details.
 
 import gtk, os
+gdk = gtk.gdk
 from lib import brush
 
 class Application: # singleton
@@ -25,6 +26,12 @@ class Application: # singleton
             print 'Default brush collection not found! Searched:'
             print ' '.join(datapaths)
             raise SystemExit
+
+        icons = []
+        for size in ['24x24', '48x48', '32x32', '22x22', '16x16']:
+            filename = os.path.join(self.datapath, 'desktop', size, 'mypaint.png')
+            icons.append(gdk.pixbuf_new_from_file(filename))
+        gtk.window_set_default_icon_list(*icons)
 
         self.user_brushpath = os.path.join(self.confpath, 'brushes')
         self.stock_brushpath = os.path.join(self.datapath, 'brushes')
