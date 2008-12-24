@@ -224,11 +224,11 @@ class Document():
         tempdir = tempfile.mkdtemp('mypaint')
         z = zipfile.ZipFile(filename, 'w', compression=zipfile.ZIP_STORED)
         # work around a permission bug in the zipfile library: http://bugs.python.org/issue3394
-        def writestr(filename, data):
+        def write_file_str(filename, data):
             zi = zipfile.ZipInfo(filename)
-            zi.external_attr = 0600 << 16L
+            zi.external_attr = 0100644 << 16
             z.writestr(zi, data)
-        writestr('mimetype', 'ora') # Mime type must be the first object stored. FIXME: what should go here?
+        write_file_str('mimetype', 'image/openraster') # Mime type must be the first object stored. FIXME: what should go here?
         root = ET.Element('image')
         stack = ET.SubElement(root, 'stack')
         x0, y0, w0, h0 = self.get_bbox()
@@ -259,7 +259,7 @@ class Document():
 
         xml = ET.tostring(root, encoding='UTF-8')
 
-        writestr('stack.xml', xml)
+        write_file_str('stack.xml', xml)
         z.close()
         os.rmdir(tempdir)
 
