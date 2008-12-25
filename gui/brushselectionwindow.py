@@ -9,7 +9,7 @@
 "select brush window"
 import gtk
 from lib import brush, document
-import tileddrawwidget
+import tileddrawwidget, pixbuflist
 
 class Window(gtk.Window):
     def __init__(self, app):
@@ -88,7 +88,7 @@ class Window(gtk.Window):
         b.copy_settings_from(self.app.brush)
         b.update_preview(self.get_preview_pixbuf())
         self.app.brushes.insert(0, b)
-        self.brushlist.redraw_thumbnails()
+        self.brushlist.update()
         self.app.select_brush(b)
         b.save()
         self.app.save_brushorder()
@@ -103,7 +103,7 @@ class Window(gtk.Window):
             return
         b.update_preview(pixbuf)
         b.save()
-        self.brushlist.redraw_thumbnails()
+        self.brushlist.update()
 
     def update_settings_cb(self, window):
         b = self.app.selected_brush
@@ -131,7 +131,7 @@ class Window(gtk.Window):
         self.app.select_brush(None)
         self.app.brushes.remove(b)
         b.delete_from_disk()
-        self.brushlist.redraw_thumbnails()
+        self.brushlist.update()
 
     def brush_selected_cb(self, brush):
         if brush is None: return
@@ -143,149 +143,27 @@ class Window(gtk.Window):
         self.tdw_doc.set_brush(self.app.brush)
 
 
-preview_spacing_outside = 0
-preview_border_visible = 1
-preview_spacing_inside = 1
-preview_total_border = preview_border_visible + preview_spacing_inside + preview_spacing_outside
-preview_total_w = brush.thumb_w + 2*preview_total_border
-preview_total_h = brush.thumb_h + 2*preview_total_border
-
-class BrushList(gtk.DrawingArea):
+class BrushList(pixbuflist.PixbufList):
     "choose a brush by preview"
     def __init__(self, app):
-        gtk.DrawingArea.__init__(self)
-        self.pixbuf = None
         self.app = app
+        pixbuflist.PixbufList.__init__(self, self.app.brushes, brush.thumb_w, brush.thumb_h, lambda x: x.preview_thumb)
         self.app.brush_selected_callbacks.append(self.brush_selected_cb)
 
-        self.tiles_w = 4
-        self.grabbed = None
-        self.must_save_order = False
-
-        self.connect("expose-event", self.expose_cb)
-        self.connect("button-press-event", self.button_press_cb)
-        self.connect("button-release-event", self.button_release_cb)
-        self.connect("motion-notify-event", self.motion_notify_cb)
-        self.connect("configure-event", self.configure_event_cb)
-        self.set_events(gtk.gdk.EXPOSURE_MASK |
-                        gtk.gdk.BUTTON_PRESS_MASK |
-                        gtk.gdk.BUTTON_RELEASE_MASK |
-                        gtk.gdk.POINTER_MOTION_MASK)
-        self.redraw_thumbnails()
-
-    def redraw_thumbnails(self, width = None, height = None):
-        if width is None:
-            if not self.pixbuf: return
-            width = self.pixbuf.get_width()
-            height = self.pixbuf.get_height()
-        self.tiles_w = (width / preview_total_w) or 1
-        self.tiles_h = len(self.app.brushes)/self.tiles_w + 1
-        height = self.tiles_h * preview_total_h
-        self.set_size_request(preview_total_w, height)
-        self.pixbuf = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, False, 8, width, height)
-        self.pixbuf.fill(0xffffffff) # white
-        i = 0
-        for b in self.app.brushes:
-            x = (i % self.tiles_w) * preview_total_w
-            y = (i / self.tiles_w) * preview_total_h
-            x += preview_total_border
-            y += preview_total_border
-            b.preview_thumb.copy_area(0, 0, brush.thumb_w, brush.thumb_h, self.pixbuf, x, y)
-            i += 1
-        self.queue_draw()
-
-    def brushindex(self, event):
-        x, y = int(event.x), int(event.y)
-        i = x / preview_total_w
-        if i >= self.tiles_w: i = self.tiles_w - 1
-        if i < 0: i = 0
-        i = i + self.tiles_w * (y / preview_total_h)
-        if i < 0: i = 0
-        return i
-
-    def button_press_cb(self, widget, event):
-        i = self.brushindex(event)
-        if i >= len(self.app.brushes): return
-
+    def on_select(self, brush):
         # keep the color setting
         color = self.app.brush.get_color_hsv()
-        brush = self.app.brushes[i]
         brush.set_color_hsv(color)
 
         # brush changed on harddisk?
         changed = brush.reload_if_changed()
         if changed:
-            self.redraw_thumbnails()
+            self.update()
 
         self.app.select_brush(brush)
 
-        self.grabbed = brush
-
-    def button_release_cb(self, widget, event):
-        self.grabbed = None
-        if self.must_save_order:
-            self.app.save_brushorder()
-            self.must_save_order = False
-
-    def motion_notify_cb(self, widget, event):
-        if not self.grabbed: return
-        i = self.brushindex(event)
-        if i >= len(self.app.brushes): return
-        if self.app.brushes[i] is not self.grabbed:
-            self.app.brushes.remove(self.grabbed)
-            self.app.brushes.insert(i, self.grabbed)
-            self.must_save_order = True
-            self.redraw_thumbnails()
+    def on_order_change(self):
+        self.app.save_brushorder()
 
     def brush_selected_cb(self, brush):
-        self.queue_draw()
-
-    #def size_request_cb(self, widget, size):
-    def configure_event_cb(self, widget, size):
-        if self.pixbuf and self.pixbuf.get_width() == size.width:
-            if self.pixbuf.get_height() == size.height:
-                return
-        self.redraw_thumbnails(size.width, size.height)
-
-    def expose_cb(self, widget, event):
-        rowstride = self.pixbuf.get_rowstride()
-        pixels = self.pixbuf.get_pixels()
-        
-        # cut to maximal size
-        e_x, e_y = event.area.x, event.area.y
-        e_w, e_h = event.area.width, event.area.height
-        p_w, p_h = self.pixbuf.get_width(), self.pixbuf.get_height()
-
-        widget.window.draw_rgb_image(
-            widget.style.black_gc,
-            0, 0, p_w, p_h,
-            'normal',
-            pixels, rowstride)
-
-        # draw borders
-        i = 0
-        for b in self.app.brushes:
-            if b is self.app.selected_brush:
-                gc = widget.style.black_gc
-            else:
-                gc = widget.style.white_gc
-            x = (i % self.tiles_w) * preview_total_w
-            y = (i / self.tiles_w) * preview_total_h
-            w = preview_total_w
-            h = preview_total_h
-            def shrink(pixels, x, y, w, h):
-                x += pixels
-                y += pixels
-                w -= 2*pixels
-                h -= 2*pixels
-                return (x, y, w, h)
-            x, y, w, h = shrink(preview_spacing_outside, x, y, w, h)
-            for j in range(preview_border_visible):
-                widget.window.draw_rectangle(gc, False, x, y, w-1, h-1)
-                x, y, w, h = shrink(1, x, y, w, h)
-            i += 1
-
-        return True
-
-
-
+        self.set_selected(brush)
