@@ -57,7 +57,6 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.scale = 1.0
         self.rotation = 0.0
         self.flipped = False
-        self.viewport_locked = False
 
         self.has_pointer = False
         self.dragfunc = None
@@ -283,12 +282,7 @@ class TiledDrawWidget(gtk.DrawingArea):
             cr.paint()
 
 
-    def lock_viewport(self, lock=True):
-        self.viewport_locked = lock
-
     def scroll(self, dx, dy, show_immediately=False):
-        if self.viewport_locked:
-            return
         assert int(dx) == dx and int(dy) == dy
         self.translation_x -= dx
         self.translation_y -= dy
@@ -298,8 +292,6 @@ class TiledDrawWidget(gtk.DrawingArea):
             self.queue_draw()
 
     def rotozoom_with_center(self, function):
-        if self.viewport_locked:
-            return
         if self.has_pointer and self.last_event_x is not None:
             cx, cy = self.last_event_x, self.last_event_y
         else:

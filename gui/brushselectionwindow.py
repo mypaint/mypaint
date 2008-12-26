@@ -42,7 +42,6 @@ class Window(gtk.Window):
         expander.add(hbox)
         self.tdw_doc = document.Document()
         self.tdw = tileddrawwidget.TiledDrawWidget(self.tdw_doc)
-        self.tdw.lock_viewport()
         self.tdw.set_size_request(brush.preview_w, brush.preview_h)
         hbox.pack_start(self.tdw, expand=False, fill=False)
 

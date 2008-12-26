@@ -114,11 +114,6 @@ class Document():
         for f in self.canvas_observers:
             f(*args)
 
-    def change_brush(self, brush):
-        self.split_stroke()
-        assert not self.stroke
-        self.brush.copy_settings_from(brush)
-
     def undo(self):
         self.split_stroke()
         while 1:
