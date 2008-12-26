@@ -16,26 +16,28 @@ import random
 from lib import mypaintlib, tiledsurface, pixbufsurface
 
 class TiledDrawWidget(gtk.DrawingArea):
+    """
+    This widget displays a document (../lib/document*.py).
+    
+    It can show the document translated, rotated or zoomed. It does
+    not respond to user input except for painting. Painting events are
+    passed to the document after applying the inverse transformation.
+    """
 
     def __init__(self, document):
         gtk.DrawingArea.__init__(self)
-        #self.connect("proximity-in-event", self.proximity_cb)
-        #self.connect("proximity-out-event", self.proximity_cb)
-        self.connect("motion-notify-event", self.motion_notify_cb)
-        self.connect("button-press-event", self.button_updown_cb)
-        self.connect("button-release-event", self.button_updown_cb)
         self.connect("expose-event", self.expose_cb)
+        self.connect("motion-notify-event", self.motion_notify_cb)
         self.connect("enter-notify-event", self.enter_notify_cb)
         self.connect("leave-notify-event", self.leave_notify_cb)
 
         self.set_events(gdk.EXPOSURE_MASK
+                        | gdk.POINTER_MOTION_MASK
                         | gdk.ENTER_NOTIFY_MASK
                         | gdk.LEAVE_NOTIFY_MASK
+                        # for some reason we also need to specify events handled in drawwindow.py:
                         | gdk.BUTTON_PRESS_MASK
                         | gdk.BUTTON_RELEASE_MASK
-                        | gdk.POINTER_MOTION_MASK
-                        | gdk.PROXIMITY_IN_MASK
-                        | gdk.PROXIMITY_OUT_MASK
                         )
 
         self.set_extension_events (gdk.EXTENSION_EVENTS_ALL)
@@ -75,17 +77,6 @@ class TiledDrawWidget(gtk.DrawingArea):
     def set_scroll_at_edges(self, choice):
       self.scroll_at_edges = choice
       
-    def button_updown_cb(self, widget, event):
-        d = event.device
-        if False:
-            print 'button_updown_cb', repr(d.name), event.button, event.type
-            print '  has_cursor', d.has_cursor
-            print '  mode', d.mode
-            print '  axes', d.num_axes, [event.get_axis(i) for i in range(d.num_axes+1)]
-            print '  keys', d.num_keys
-            print '  source', d.source
-            #print '  state', d.get_state()
-
     def enter_notify_cb(self, widget, event):
         self.has_pointer = True
     def leave_notify_cb(self, widget, event):
@@ -145,6 +136,12 @@ class TiledDrawWidget(gtk.DrawingArea):
     def canvas_modified_cb(self, x1, y1, w, h):
         if not self.window:
             return
+        
+        if w == 0 and h == 0:
+            # full redraw (used when background has changed)
+            self.queue_draw()
+            return
+
         # create an expose event with the event bbox rotated/zoomed
         # OPTIMIZE: estimated to cause at least twice more rendering work than neccessary
         x2 = x1 + w - 1
@@ -217,9 +214,11 @@ class TiledDrawWidget(gtk.DrawingArea):
             cr.rectangle(*model_bbox)
             cr.clip()
 
-        # do not attempt to render all the possible white space outside the image (can be huge if zoomed out)
-        cr.rectangle(*self.doc.get_bbox())
-        cr.clip()
+        # <strike>do not attempt to render all the possible white space outside the image (can be huge if zoomed out)</strike>
+        # OPTIMIZE: Yes we need to do that now! Since only the document knows whether the space is white at all...
+        #           Maybe we could at least special-case solid colors, since they don't need to be transformed?
+        #cr.rectangle(*self.doc.get_bbox())
+        #cr.clip()
 
         # calculate the final model bbox with all the clipping above
         x1, y1, x2, y2 = cr.clip_extents()
@@ -241,22 +240,25 @@ class TiledDrawWidget(gtk.DrawingArea):
         cr.rectangle(*model_bbox)
         cr.clip()
         
+        # FIXME: tileddrawwidget should not need to know whether the document has layers
         layers = self.doc.layers[:]
         if not self.show_layers_above:
             layers = self.doc.layers[0:self.doc.layer_idx+1]
         if self.hide_current_layer:
             layers.pop(self.doc.layer_idx)
 
-        # TODO: this should not be neccessary, since background tiles are supposed to be rendered by the document
-        surface.pixbuf.fill(0xffffffff)
+        # possible optimization with solid background color:
+        #surface.pixbuf.fill(0xffffffff)
         if self.visualize_rendering:
             surface.pixbuf.fill((int(random.random()*0xff)<<16)+0x00000000)
                     
         #arr = pixbuf.get_pixels_array()
         #arr = mypaintlib.gdkpixbuf2numpy(arr)
 
-        tiles = set(self.doc.get_tiles())
-        tiles = tiles.intersection(surface.get_tiles())
+        #tiles = set(self.doc.get_tiles())
+        #tiles = tiles.intersection(surface.get_tiles())
+        tiles = surface.get_tiles()
+        # OPTIMIZE: remove tiles that are clipped by cairo
 
         for tx, ty in tiles:
 # OPTIMIZE: update this to work with the new code?
@@ -339,7 +341,7 @@ class TiledDrawWidget(gtk.DrawingArea):
 
     def update_cursor(self):
         #return
-        # OPTIMIZE: looks like this can be a major slowdown with X11
+        # OPTIMIZE: looks like big cursors can be a major slowdown with X11
         if not self.window: return
         brush = self.doc.brush
         d = int(brush.get_actual_radius())*2

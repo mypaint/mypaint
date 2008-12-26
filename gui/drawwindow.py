@@ -150,6 +150,8 @@ class Window(gtk.Window):
               <menuitem action='ColorSelectionWindow'/>
             </menu>
             <menu action='LayerMenu'>
+              <menuitem action='BackgroundWindow'/>
+              <separator/>
               <menuitem action='ClearLayer'/>
               <menuitem action='LayerBG'/>
               <menuitem action='LayerFG'/>
@@ -225,6 +227,8 @@ class Window(gtk.Window):
             ('ContextHelp',  None, 'Help!', None, None, self.context_help_cb),
 
             ('LayerMenu',    None, 'Layers'),
+
+            ('BackgroundWindow', None, 'Background Pattern...', None, None, self.toggleWindow_cb),
             ('ClearLayer',   None, 'Clear', '<control>period', None, self.clear_layer_cb),
             ('PickLayer',    None, 'Select layer at cursor', 'h', None, self.pick_layer_cb),
             ('LayerBG',      None, 'Background (previous layer)', 'j', None, self.layer_bg_cb),

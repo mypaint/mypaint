@@ -40,8 +40,8 @@ class Window(gtk.Window):
         hbox = gtk.HBox()
         hbox.set_border_width(8)
         expander.add(hbox)
-        self.tdw_doc = document.Document()
-        self.tdw = tileddrawwidget.TiledDrawWidget(self.tdw_doc)
+        doc = document.Document()
+        self.tdw = tileddrawwidget.TiledDrawWidget(doc)
         self.tdw.set_size_request(brush.preview_w, brush.preview_h)
         hbox.pack_start(self.tdw, expand=False, fill=False)
 
@@ -52,7 +52,7 @@ class Window(gtk.Window):
 
         b = gtk.Button('Clear')
         def clear_cb(window):
-            self.tdw_doc.clear_layer()
+            self.tdw.doc.clear_layer()
         b.connect('clicked', clear_cb)
         vbox2.pack_start(b, expand=False)
 
@@ -74,7 +74,7 @@ class Window(gtk.Window):
 
     def set_preview_pixbuf(self, pixbuf):
         if pixbuf is None:
-            self.tdw_doc.clear()
+            self.tdw.doc.clear()
         else:
             self.tdw.doc.load_from_pixbuf(pixbuf)
 
@@ -139,7 +139,7 @@ class Window(gtk.Window):
             self.set_preview_pixbuf(brush.preview)
 
     def brush_modified_cb(self):
-        self.tdw_doc.set_brush(self.app.brush)
+        self.tdw.doc.set_brush(self.app.brush)
 
 
 class BrushList(pixbuflist.PixbufList):

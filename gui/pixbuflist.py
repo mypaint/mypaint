@@ -36,7 +36,6 @@ class PixbufList(gtk.DrawingArea):
         self.border_visible = 1
         self.spacing_inside = 1
 
-        #self.tiles_w = 4 -- why?
         self.selected = None
         self.grabbed = None
         self.must_save_order = False
@@ -76,7 +75,6 @@ class PixbufList(gtk.DrawingArea):
             x += self.total_border
             y += self.total_border
 
-            #b.preview_thumb.copy_area(0, 0, brush.thumb_w, brush.thumb_h, self.pixbuf, x, y)
             pixbuf = self.pixbuffunc(item)
             pixbuf.copy_area(0, 0, self.item_w, self.item_h, self.pixbuf, x, y)
         self.queue_draw()
@@ -98,7 +96,7 @@ class PixbufList(gtk.DrawingArea):
         i = self.index(event)
         if i >= len(self.itemlist): return
         item = self.itemlist[i]
-        self.selected = item
+        self.set_selected(item)
         self.on_select(item)
         self.grabbed = item
 

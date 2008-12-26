@@ -28,21 +28,25 @@ A document:
 import mypaintlib, helpers, tiledsurface, pixbufsurface
 import command, stroke, layer, serialize
 import brush # FIXME: the brush module depends on gtk and everything, but we only need brush_lowlevel
-import random, gc, gzip, os, zipfile, tempfile
+import gzip, os, zipfile, tempfile
 join = os.path.join
 import xml.etree.ElementTree as ET
-import numpy
-import gtk
-gdk = gtk.gdk
+from gtk import gdk
 
 class Document():
-    # This is the "model" in the Model-View-Controller design.
-    # It should be possible to use it without any GUI attached.
-    #
-    # Undo/redo is part of the model. The whole undo/redo stack can be
-    # saved to disk (planned) and can be used to reconstruct
-    # everything else.
-    #
+    """
+    This is the "model" in the Model-View-Controller design.
+    (The "view" would be ../gui/tileddrawwidget.py.)
+    It represenst everything that the user would want to save.
+
+
+    The "controller" mostly in drawwindow.py.
+    It should be possible to use it without any GUI attached.
+    
+    Undo/redo is part of the model. The whole undo/redo stack can be
+    saved to disk (planned) and can be used to reconstruct
+    everything else.
+    """
     # Please note the following difficulty:
     #
     #   Most of the time there is an unfinished (but already rendered)
@@ -58,6 +62,7 @@ class Document():
         self.stroke = None
         self.canvas_observers = []
         self.layer_observers = []
+        self.background = (255, 255, 255)
 
         self.clear(True)
 
@@ -114,6 +119,10 @@ class Document():
         for f in self.canvas_observers:
             f(*args)
 
+    def invalidate_all(self):
+        for f in self.canvas_observers:
+            f(0, 0, 0, 0)
+
     def undo(self):
         self.split_stroke()
         while 1:
@@ -146,14 +155,6 @@ class Document():
             res.expandToIncludeRect(bbox)
         return res
 
-    def get_tiles(self):
-        # OPTIMIZE: this is used for rendering, so, only visible tiles?
-        #           on the other hand, visibility can be checked later too
-        tiles = set()
-        for l in self.layers:
-            tiles.update(l.get_tiles())
-        return tiles
-
     def blit_tile_into(self, dst, tx, ty, layers=None):
         if layers is None:
             layers = self.layers
@@ -161,7 +162,7 @@ class Document():
         # render solid white background (planned: something like self.background.blit_tile())
         assert dst.shape[2] == 3, 'RGB destination expected'
         N = tiledsurface.N
-        dst[:N,:N,:] = 255
+        dst[:N,:N,:] = self.background
 
         for layer in layers:
             surface = layer.surface
@@ -174,13 +175,6 @@ class Document():
                 t += cmd.stroke.total_painting_time
         return t
 
-    def render_as_pixbuf(self, x, y, w, h, layers=None):
-        s = pixbufsurface.Surface(x, y, w, h)
-        for tx, ty in s.get_tiles():
-            dst = s.get_tile_memory(tx, ty)
-            self.blit_tile_into(dst, tx, ty)
-        return s.pixbuf
-
     def add_layer(self, insert_idx):
         self.do(command.AddLayer(self, insert_idx))
 
@@ -188,6 +182,15 @@ class Document():
         arr = pixbuf.get_pixels_array()
         arr = mypaintlib.gdkpixbuf2numpy(arr)
         self.do(command.LoadLayer(self, arr, x, y))
+
+    def set_background(self, obj):
+        try:
+            obj = obj.get_pixels_array()
+            obj = mypaintlib.gdkpixbuf2numpy(obj)
+        except:
+            # it was already an array
+            pass
+        self.do(command.SetBackground(self, obj))
 
     def load_from_pixbuf(self, pixbuf):
         self.clear()
@@ -209,11 +212,15 @@ class Document():
     def unsupported(self, filename):
         raise ValueError, 'Unkwnown file format extension: ' + repr(filename)
 
+    def render_as_pixbuf(self, *args):
+        return pixbufsurface.render_as_pixbuf(self, *args)
+
     def save_png(self, filename):
-        self.render_as_pixbuf(*self.get_bbox()).save(filename, 'png')
+        pixbuf = self.render_as_pixbuf()
+        pixbuf.save(filename, 'png')
 
     def load_png(self, filename):
-        self.load_from_pixbuf(gtk.gdk.pixbuf_new_from_file(filename))
+        self.load_from_pixbuf(gdk.pixbuf_new_from_file(filename))
 
     def save_ora(self, filename):
         tempdir = tempfile.mkdtemp('mypaint')

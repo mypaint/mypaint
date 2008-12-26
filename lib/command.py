@@ -132,3 +132,15 @@ class SelectLayer(Action):
         for f in self.doc.layer_observers:
             f()
 
+class SetBackground(Action):
+    def __init__(self, doc, data):
+        self.doc = doc
+        self.data = data
+    def redo(self):
+        self.old_background = self.doc.background
+        self.doc.background = self.data
+        self.doc.invalidate_all()
+    def undo(self):
+        self.doc.background = self.old_background
+        self.doc.invalidate_all()
+        del self.old_background

@@ -88,3 +88,14 @@ class Surface:
         tmp *= 1<<15
         dst[:,:,:] = tmp
 
+
+def render_as_pixbuf(surface, *rect, **kwargs):
+    alpha = kwargs.get('alpha', False)
+    if not rect:
+        rect = surface.get_bbox()
+    x, y, w, h, = rect
+    s = Surface(x, y, w, h, alpha)
+    for tx, ty in s.get_tiles():
+        dst = s.get_tile_memory(tx, ty)
+        surface.blit_tile_into(dst, tx, ty)
+    return s.pixbuf

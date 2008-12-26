@@ -132,13 +132,7 @@ class Surface(mypaintlib.TiledSurface):
     def render_as_pixbuf(self):
         if not self.tiledict:
             print 'WARNING: empty surface'
-        x, y, w, h = self.get_bbox()
-        s = pixbufsurface.Surface(x, y, w, h, alpha=True)
-
-        for tx, ty in s.get_tiles():
-            dst = s.get_tile_memory(tx, ty)
-            self.blit_tile_into(dst, tx, ty)
-        return s.pixbuf
+        return pixbufsurface.render_as_pixbuf(self, alpha=True)
 
     def save(self, filename):
         pixbuf = self.render_as_pixbuf()
@@ -163,6 +157,9 @@ class Surface(mypaintlib.TiledSurface):
         
         s = pixbufsurface.Surface(x, y, w, h, alpha=True, data=data)
         self.load_from_pixbufsurface(s)
+
+    def get_tiles(self):
+        return self.tiledict
 
     def get_bbox(self):
         return get_tiles_bbox(self.tiledict)
