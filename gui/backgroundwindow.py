@@ -23,20 +23,39 @@ class Window(gtk.Window):
         vbox = gtk.VBox()
         self.add(vbox)
 
-        #vbox.pack_start(gtk.Label('Choose a background pattern:'), expand=False)
+        nb = gtk.Notebook()
+        vbox.pack_start(nb)
 
         self.bgl = BackgroundList(self.app)
-        vbox.pack_start(self.bgl, padding=5)
+        nb.append_page(self.bgl, gtk.Label('Pattern'))
 
-    def brush_modified_cb(self):
-        self.tdw.doc.set_brush(self.app.brush)
+        self.cs = gtk.ColorSelection()
+        self.cs.connect('color-changed', self.color_changed_cb)
+        nb.append_page(self.cs, gtk.Label('Color'))
+
+        hbox = gtk.HBox()
+        vbox.pack_start(hbox, expand=False)
+
+        b = gtk.Button('save as default')
+        b.connect('clicked', self.save_as_default_cb)
+        hbox.pack_start(b)
+
+    def color_changed_cb(self, widget):
+        rgb = self.cs.get_current_color()
+        rgb = rgb.red, rgb.green, rgb.blue
+        rgb = [int(x / 65535.0 * 255.0) for x in rgb] 
+        doc = self.app.drawWindow.doc
+        doc.set_background(rgb)
+
+    def save_as_default_cb(self, widget):
+        print 'TODO'
+
 
 class BackgroundObject:
     pass
 
 
 class BackgroundList(pixbuflist.PixbufList):
-    "choose a brush by preview"
     def __init__(self, app):
         self.app = app
 
@@ -62,5 +81,4 @@ class BackgroundList(pixbuflist.PixbufList):
 
     def on_select(self, bg):
         doc = self.app.drawWindow.doc
-        #doc.set_background((123, 0, 50))
         doc.set_background(bg.pixbuf)
