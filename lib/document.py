@@ -255,7 +255,6 @@ class Document():
 
             a = layer.attrib
             a['src'] = name
-            a['opacity'] = '255'
             a['x'] = str(x-x0)
             a['y'] = str(y-y0)
 
