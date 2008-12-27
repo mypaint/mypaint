@@ -151,14 +151,16 @@ class Window(gtk.Window):
             </menu>
             <menu action='LayerMenu'>
               <menuitem action='BackgroundWindow'/>
-              <separator/>
               <menuitem action='ClearLayer'/>
-              <menuitem action='LayerBG'/>
-              <menuitem action='LayerFG'/>
+              <separator/>
               <menuitem action='NewLayerBG'/>
               <menuitem action='NewLayerFG'/>
-              <menuitem action='ToggleAbove'/>
+              <menuitem action='RemoveLayer'/>
+              <separator/>
+              <menuitem action='LayerBG'/>
+              <menuitem action='LayerFG'/>
               <menuitem action='PickLayer'/>
+              <menuitem action='ToggleAbove'/>
             </menu>
             <menu action='DebugMenu'>
               <menuitem action='PrintInputs'/>
@@ -229,13 +231,14 @@ class Window(gtk.Window):
             ('LayerMenu',    None, 'Layers'),
 
             ('BackgroundWindow', None, 'Background Pattern...', None, None, self.toggleWindow_cb),
-            ('ClearLayer',   None, 'Clear', '<control>period', None, self.clear_layer_cb),
+            ('ClearLayer',   None, 'Clear Layer', '<control>period', None, self.clear_layer_cb),
             ('PickLayer',    None, 'Select layer at cursor', 'h', None, self.pick_layer_cb),
             ('LayerBG',      None, 'Background (previous layer)', 'j', None, self.layer_bg_cb),
             ('LayerFG',      None, 'Foreground (next layer)',  'k', None, self.layer_fg_cb),
             ('NewLayerBG',   None, 'New Layer (behind current)', '<control>j', None, self.new_layer_cb),
             ('NewLayerFG',   None, 'New Layer (above current)', '<control>k', None, self.new_layer_cb),
-            ('ToggleAbove',  None, 'Toggle Layers Above Current', 'k', None, self.toggle_layers_above_cb),
+            ('RemoveLayer',  None, 'Remove Layer', None, None, self.remove_layer_cb),
+            ('ToggleAbove',  None, 'Toggle Layers Above Current', 'l', None, self.toggle_layers_above_cb),
 
             ('DialogMenu',  None, 'Windows'),
             ('BrushSelectionWindow',  None, 'Brush List', 'b', None, self.toggleWindow_cb),
@@ -462,6 +465,12 @@ class Window(gtk.Window):
     def clear_layer_cb(self, action):
         self.doc.clear_layer()
         
+    def remove_layer_cb(self, action):
+        if len(self.doc.layers) == 1:
+            self.doc.clear_layer()
+        else:
+            self.doc.remove_layer()
+
     def layer_bg_cb(self, action):
         idx = self.doc.layer_idx - 1
         if idx < 0: return
