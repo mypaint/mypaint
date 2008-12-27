@@ -588,13 +588,11 @@ class Window(gtk.Window):
             d.destroy()
             raise
         else:
-            t = self.doc.get_total_painting_time()
-            if t > 120:
-                t = '%d minutes' % (t/60)
-            else:
-                t = '%d seconds' % t
-            print 'Loaded %s of painting from %s' %(t, filename)
+            print 'Loaded from', filename
             self.filename = filename
+            self.zoom('Zoom1')
+            self.rotate('Rotate0')
+            self.tdw.recenter_document()
 
     def save_file(self, filename):
         self.filename = filename

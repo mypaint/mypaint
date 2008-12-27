@@ -346,6 +346,18 @@ class TiledDrawWidget(gtk.DrawingArea):
         if self.dragfunc == dragfunc:
             self.dragfunc = None
 
+    def recenter_document(self):
+        x, y, w, h = self.doc.get_bbox()
+        desired_cx_user = x+w/2
+        desired_cy_user = y+h/2
+
+        cr = self.get_model_coordinates_cairo_context()
+        w, h = self.window.get_size()
+        cx_user, cy_user = cr.device_to_user(w/2.0, h/2.0)
+
+        self.translation_x += cx_user - desired_cx_user
+        self.translation_y += cy_user - desired_cy_user
+        self.queue_draw()
 
     def brush_modified_cb(self):
         self.update_cursor()
