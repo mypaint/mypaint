@@ -231,10 +231,10 @@ class Document():
             zi.external_attr = 0100644 << 16
             z.writestr(zi, data)
         write_file_str('mimetype', 'image/openraster') # Mime type must be the first object stored. FIXME: what should go here?
-        root = ET.Element('image')
-        stack = ET.SubElement(root, 'stack')
+        image = ET.Element('image')
+        stack = ET.SubElement(image, 'stack')
         x0, y0, w0, h0 = self.get_bbox()
-        a = stack.attrib
+        a = image.attrib
         a['x'] = str(0)
         a['y'] = str(0)
         a['w'] = str(w0)
@@ -258,7 +258,7 @@ class Document():
             a['x'] = str(x-x0)
             a['y'] = str(y-y0)
 
-        xml = ET.tostring(root, encoding='UTF-8')
+        xml = ET.tostring(image, encoding='UTF-8')
 
         write_file_str('stack.xml', xml)
         z.close()
@@ -269,8 +269,8 @@ class Document():
         z = zipfile.ZipFile(filename)
         print 'mimetype:', z.read('mimetype').strip()
         xml = z.read('stack.xml')
-        root = ET.fromstring(xml)
-        stack = root.find('stack')
+        image = ET.fromstring(xml)
+        stack = image.find('stack')
 
         self.clear()
         for layer in stack:
