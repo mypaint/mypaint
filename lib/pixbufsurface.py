@@ -78,6 +78,10 @@ class Surface:
     def get_tile_memory(self, tx, ty):
         return self.tile_memory_dict[(tx, ty)]
 
+    def fill(self, data):
+        for dst in self.tile_memory_dict.itervalues():
+            dst[:,:,:] = data
+
     def blit_tile_into(self, dst, tx, ty):
         assert dst.dtype == 'uint16', '16 bit dst expected'
         tmp = self.tile_memory_dict[(tx, ty)]

@@ -116,6 +116,22 @@ class AddLayer(Action):
         for f in self.doc.layer_observers:
             f()
 
+class RemoveLayer(Action):
+    def __init__(self, doc):
+        self.doc = doc
+    def redo(self):
+        self.idx = self.doc.layer_idx
+        self.layer = self.doc.layers.pop(self.doc.layer_idx)
+        if self.doc.layer_idx == len(self.doc.layers):
+            self.doc.layer_idx -= 1
+        for f in self.doc.layer_observers:
+            f()
+    def undo(self):
+        self.doc.layers.insert(self.idx, self.layer)
+        self.doc.layer_idx = self.idx
+        for f in self.doc.layer_observers:
+            f()
+
 class SelectLayer(Action):
     automatic_undo = True
     def __init__(self, doc, idx):

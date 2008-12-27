@@ -632,10 +632,9 @@ class Window(gtk.Window):
 
     def add_file_filters(self, dialog):
         f = gtk.FileFilter()
-        f.set_name("Any Format (*.png; *.ora; *.myp)")
+        f.set_name("Any Format (*.png; *.ora)")
         f.add_pattern("*.png")
         f.add_pattern("*.ora")
-        f.add_pattern("*.myp")
         dialog.add_filter(f)
 
         f = gtk.FileFilter()
@@ -649,7 +648,7 @@ class Window(gtk.Window):
         dialog.add_filter(f)
 
         #f = gtk.FileFilter()
-        #f.set_name("MyPaint Image (*.myp)")
+        #f.set_name("MyPaint (*.myp)")
         #f.add_pattern("*.myp")
         #dialog.add_filter(f)
 
@@ -694,6 +693,7 @@ class Window(gtk.Window):
                 if not ext:
                     filename += '.png'
                     #filename += '.myp'
+                    # TODO: auto-propose .ora when using layers or non-solid background patterns
                 if os.path.exists(filename):
                     d2 = gtk.Dialog("Overwrite?",
                          self,

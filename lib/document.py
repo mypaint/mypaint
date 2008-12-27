@@ -62,7 +62,6 @@ class Document():
         self.stroke = None
         self.canvas_observers = []
         self.layer_observers = []
-        self.background = (255, 255, 255)
 
         self.clear(True)
 
@@ -72,6 +71,7 @@ class Document():
             bbox = self.get_bbox()
         # throw everything away, including undo stack
         self.command_stack = command.CommandStack()
+        self.background = (255, 255, 255)
         self.layers = []
         self.layer_idx = None
         self.add_layer(0)
@@ -178,6 +178,9 @@ class Document():
     def add_layer(self, insert_idx):
         self.do(command.AddLayer(self, insert_idx))
 
+    def remove_layer(self):
+        self.do(command.RemoveLayer(self))
+
     def load_layer_from_pixbuf(self, pixbuf, x=0, y=0):
         arr = pixbuf.get_pixels_array()
         arr = mypaintlib.gdkpixbuf2numpy(arr)
@@ -240,23 +243,31 @@ class Document():
         a['w'] = str(w0)
         a['h'] = str(h0)
 
-        for idx, l in enumerate(reversed(self.layers)):
-            if l.surface.is_empty():
-                continue
+        def add_layer(x, y, pixbuf, name):
             layer = ET.Element('layer')
-            x, y, w, h = l.surface.get_bbox()
             stack.append(layer)
 
             tmp = join(tempdir, 'tmp.png')
-            pixbuf = l.surface.save(tmp)
-            name = 'data/layer%03d.png' % idx
+            pixbuf.save(tmp, 'png')
             z.write(tmp, name)
             os.remove(tmp)
 
             a = layer.attrib
             a['src'] = name
-            a['x'] = str(x-x0)
-            a['y'] = str(y-y0)
+            a['x'] = str(x)
+            a['y'] = str(y)
+
+        for idx, l in enumerate(reversed(self.layers)):
+            if l.surface.is_empty():
+                continue
+            x, y, w, h = l.surface.get_bbox()
+            pixbuf = l.surface.render_as_pixbuf()
+            add_layer(x-x0, y-y0, pixbuf, 'data/layer%03d.png' % idx)
+
+        # save background as layer (solid color or tiled)
+        s = pixbufsurface.Surface(0, 0, w0, h0)
+        s.fill(self.background)
+        add_layer(0, 0, s.pixbuf, 'data/background.png')
 
         xml = ET.tostring(image, encoding='UTF-8')
 
@@ -293,77 +304,36 @@ class Document():
             x = int(a.get('x', '0'))
             y = int(a.get('y', '0'))
             self.add_layer(insert_idx=0)
+            last_pixbuf = pixbuf
             self.load_layer_from_pixbuf(pixbuf, x, y)
+
+        os.rmdir(tempdir)
 
         if len(self.layers) == 1:
             raise ValueError, 'Could not load any layer.'
+
+        # recognize solid or tiled background layers (at least those that mypaint saves)
+        # (OpenRaster will probably get generator layers for this some day)
+        N = tiledsurface.N
+        p = last_pixbuf
+        if not p.get_has_alpha() and p.get_width() % N == 0 and p.get_height() % N == 0:
+            tiles = self.layers[0].surface.tiledict.values()
+            if len(tiles) > 1:
+                all_equal = True
+                for tile in tiles[1:]:
+                    if (tile.rgba != tiles[0].rgba).any():
+                        all_equal = False
+                        break
+                if all_equal:
+                    arr = p.get_pixels_array()
+                    arr = mypaintlib.gdkpixbuf2numpy(arr)
+                    tile = arr[0:N,0:N,:]
+                    self.set_background(tile.copy())
+                    self.select_layer(0)
+                    self.remove_layer()
 
         if len(self.layers) > 1:
             # select the still present initial empty top layer
             # hm, should this better be removed?
             self.select_layer(len(self.layers)-1)
 
-        os.rmdir(tempdir)
-
-    def save_myp(self, filename, compress=True):
-        print 'WARNING: save/load file format is experimental'
-        NEEDS_REWRITE
-        self.split_stroke()
-        if compress:
-            f = gzip.GzipFile(filename, 'wb')
-        else:
-            f = open(filename, 'wb')
-        f.write('MyPaint document\n1\n\n')
-        #self.command_stack.serialize(f)
-        for cmd in self.command_stack.undo_stack:
-            # FIXME: ugly design
-            # FIXME: do we really want to stay backwards compatible with all those internals on the undo stack?
-            #        (and in the brush dab rendering code, etc.)
-            if isinstance(cmd, command.Stroke):
-                f.write('Stroke\n')
-                serialize.save(cmd.stroke, f)
-            elif isinstance(cmd, command.ClearLayer):
-                f.write('ClearLayer\n')
-            elif isinstance(cmd, command.AddLayer):
-                f.write('AddLayer %d\n' % cmd.insert_idx)
-            else:
-                assert False, 'save not implemented for %s' % cmd
-        f.close()
-
-    def load_myp(self, filename, decompress=True):
-        print 'WARNING: save/load file format is experimental'
-        NEEDS_REWRITE
-        self.clear()
-        if decompress:
-            f = gzip.GzipFile(filename, 'rb')
-        else:
-            f = open(filename, 'rb')
-        assert f.readline() == 'MyPaint document\n'
-        version = f.readline()
-        assert version == '1\n'
-        # skip lines to allow backwards compatible extensions
-        while f.readline() != '\n':
-            pass
-
-        while 1:
-            cmd = f.readline()
-            if not cmd:
-                break
-            cmd, parts = cmd.split()[0], cmd.split()[1:]
-            if cmd == 'Stroke':
-                # FIXME: this code should probably be in command.py
-                stroke_ = stroke.Stroke()
-                serialize.load(stroke_, f)
-                cmd = command.Stroke(self, stroke_)
-                self.command_stack.do(cmd)
-            elif cmd == 'ClearLayer':
-                layer_idx = int(parts[0])
-                cmd = command.ClearLayer(self, layer_idx)
-                self.command_stack.do(cmd)
-            elif cmd == 'AddLayer':
-                insert_idx = int(parts[0])
-                cmd = command.AddLayer(self, insert_idx)
-                self.command_stack.do(cmd)
-            else:
-                assert False, 'unknown command %s' % cmd
-        assert not f.read()
