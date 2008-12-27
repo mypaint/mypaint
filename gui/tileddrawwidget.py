@@ -30,6 +30,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.connect("motion-notify-event", self.motion_notify_cb)
         self.connect("enter-notify-event", self.enter_notify_cb)
         self.connect("leave-notify-event", self.leave_notify_cb)
+        self.connect("size-allocate", self.size_allocate_cb)
 
         self.set_events(gdk.EXPOSURE_MASK
                         | gdk.POINTER_MOTION_MASK
@@ -81,6 +82,16 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.has_pointer = True
     def leave_notify_cb(self, widget, event):
         self.has_pointer = False
+
+    def size_allocate_cb(self, widget, allocation):
+        new_size = tuple(allocation)[2:4]
+        old_size = getattr(self, 'current_size', new_size)
+        self.current_size = new_size
+        if new_size != old_size:
+            # recenter
+            dx = old_size[0] - new_size[0]
+            dy = old_size[1] - new_size[1]
+            self.scroll(dx/2, dy/2)
 
     def motion_notify_cb(self, widget, event):
         if self.last_event_time:
