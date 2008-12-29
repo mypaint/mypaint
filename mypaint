@@ -16,7 +16,11 @@ gdk = gtk.gdk
 
 #standard values
 data='/share/mypaint'
-lib='/lib/python%d.%d/site-packages/mypaint/' % (sys.version_info[0], sys.version_info[1])
+
+#TODO: update?
+# note: some distros use lib64 instead of lib here, should support both somehow...
+lib='/lib/mypaint/'
+#lib='/lib/python%d.%d/site-packages/mypaint/' % (sys.version_info[0], sys.version_info[1])
 pwd=os.getcwd()
 
 if sys.argv != []:
@@ -32,7 +36,8 @@ if os.path.basename(dir_install) == 'bin':
     prefix=os.path.dirname(dir_install)
     share=prefix+data
     sys.path.insert(0, prefix + lib)
-    sys.path.insert(0, share + '/python')
+    #sys.path.insert(0, share + '/python')
+    sys.path.insert(0, share)
 else:
     # we are not installed, use .libs/mydrawwidget.so
     #sys.path.insert(0,'.libs')
@@ -41,16 +46,20 @@ else:
     # checking for import error below
 
 try: # just for a nice error message
-    from lib import mypaintlib
+    try:
+        from lib import mypaintlib
+    except:
+        from lib import mypaintlib
 except ImportError, detail:
     print 'ImportError:', detail
     print "\nWe are not correctly installed or compiled!"
     print 'script = "%s"' % sys.argv[0]
     print 'dir_install = "%s"' % dir_install
-    print "\nYou need to './configure && make' the C modules first.\n"
+    print "\nYou need to run 'scons' to compile the C module first.\n"
     if 'cannot import name' in str(detail).lower():
         print "Maybe try 'python mypaint' instead of './mypaint'.\n"
-    sys.exit(1)
+    raise
+    #sys.exit(1)
 
 from gui import application
 

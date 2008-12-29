@@ -16,9 +16,4 @@ if sys.platform == "win32": # there 's a better way to do this
 else:
     module = env.LoadableModule('_mypaintlib', Split(src), SHLIBPREFIX="")
 
-
-# installation
-
-#env.Install(module, '$PREFIX/lib/mypaint') # location for private compiled extensions
-##env.Install(module, '$PREFIX/share/mypaint') # theoretical location for private pure python modules (meld uses $PREFIX/lib/meld)
-#env.Install(data, '$PREFIX/share/mypaint')
+Return('module')
