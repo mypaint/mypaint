@@ -389,7 +389,7 @@ class Window(gtk.Window):
             if event.state & gdk.CONTROL_MASK:
                 self.tdw.start_drag(self.dragfunc_rotate)
             else:
-                Self.tdw.start_drag(self.dragfunc_translate)
+                self.tdw.start_drag(self.dragfunc_translate)
         else: return False
         return True
     def key_release_event_cb_before(self, win, event):
