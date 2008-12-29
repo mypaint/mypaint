@@ -17,6 +17,8 @@ class Window(gtk.Window):
         self.app = app
         self.add_accel_group(self.app.accel_group)
 
+        self.app.default_background = (255, 255, 255)
+
         self.set_title('Background')
         self.connect('delete-event', self.app.hide_window_cb)
 
@@ -26,7 +28,7 @@ class Window(gtk.Window):
         nb = gtk.Notebook()
         vbox.pack_start(nb)
 
-        self.bgl = BackgroundList(self.app)
+        self.bgl = BackgroundList(self)
         nb.append_page(self.bgl, gtk.Label('Pattern'))
 
         self.cs = gtk.ColorSelection()
@@ -44,11 +46,17 @@ class Window(gtk.Window):
         rgb = self.cs.get_current_color()
         rgb = rgb.red, rgb.green, rgb.blue
         rgb = [int(x / 65535.0 * 255.0) for x in rgb] 
-        doc = self.app.drawWindow.doc
-        doc.set_background(rgb)
+        self.set_background(rgb)
 
     def save_as_default_cb(self, widget):
-        print 'TODO'
+        pixbuf = self.app.drawWindow.doc.get_background_pixbuf()
+        pixbuf.save(os.path.join(self.app.confpath, 'backgrounds', 'default.png'), 'png')
+        self.set_background(pixbuf)
+
+    def set_background(self, obj):
+        doc = self.app.drawWindow.doc
+        doc.set_background(obj)
+        self.app.background = obj
 
 
 class BackgroundObject:
@@ -56,8 +64,9 @@ class BackgroundObject:
 
 
 class BackgroundList(pixbuflist.PixbufList):
-    def __init__(self, app):
-        self.app = app
+    def __init__(self, win):
+        self.app = win.app
+        self.win = win
 
         stock_path = os.path.join(self.app.datapath, 'backgrounds')
         user_path  = os.path.join(self.app.confpath, 'backgrounds')
@@ -75,10 +84,32 @@ class BackgroundList(pixbuflist.PixbufList):
                 continue
             obj = BackgroundObject()
             obj.pixbuf = gdk.pixbuf_new_from_file(filename)
+
+            # error checking
+            def error(msg):
+                d = gtk.MessageDialog(type = gtk.MESSAGE_WARNING,
+                                      buttons = gtk.BUTTONS_OK,
+                                      flags = gtk.DIALOG_MODAL)
+                d.set_title('Bad Background Pattern')
+                d.set_markup(msg)
+                d.run()
+                d.destroy()
+            if obj.pixbuf.get_has_alpha():
+                error('The background %s was ignored because it has an alpha channel. Please remove it.' % filename)
+                continue
+            w, h = obj.pixbuf.get_width(), obj.pixbuf.get_height()
+            N = tiledsurface.N
+            if w != N or h != N:
+                error('The background %s was ignored because it has the wrong size. Only %dx%d is supported.' % (filename, N, N))
+                continue
+
+            if os.path.basename(filename).lower() == 'default.png':
+                self.win.set_background(obj.pixbuf)
+                continue
+
             self.backgrounds.append(obj)
 
         pixbuflist.PixbufList.__init__(self, self.backgrounds, tiledsurface.N, tiledsurface.N)
 
     def on_select(self, bg):
-        doc = self.app.drawWindow.doc
-        doc.set_background(bg.pixbuf)
+        self.win.set_background(bg.pixbuf)

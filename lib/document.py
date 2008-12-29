@@ -187,13 +187,29 @@ class Document():
         self.do(command.LoadLayer(self, arr, x, y))
 
     def set_background(self, obj):
+        # This is not an undoable action. One reason is that dragging
+        # on the color chooser would get tons of undo steps.
         try:
             obj = obj.get_pixels_array()
             obj = mypaintlib.gdkpixbuf2numpy(obj)
         except:
             # it was already an array
             pass
-        self.do(command.SetBackground(self, obj))
+        if len(obj) > 3:
+            # simplify single-color pixmaps
+            color = obj[0,0,:]
+            if (obj == color).all():
+                obj = list(color)
+        self.background = obj
+        self.invalidate_all()
+
+    def get_background_pixbuf(self):
+        N = tiledsurface.N
+        pixbuf = gdk.Pixbuf(gdk.COLORSPACE_RGB, False, 8, N, N)
+        arr = pixbuf.get_pixels_array()
+        arr = mypaintlib.gdkpixbuf2numpy(arr)
+        arr[:,:,:] = self.background
+        return pixbuf
 
     def load_from_pixbuf(self, pixbuf):
         self.clear()

@@ -86,6 +86,8 @@ class Window(gtk.Window):
               <separator/>
               <menuitem action='CopyLayer'/>
               <menuitem action='PasteLayer'/>
+              <separator/>
+              <menuitem action='SettingsWindow'/>
             </menu>
             <menu action='ViewMenu'>
               <menuitem action='Fullscreen'/>
@@ -101,13 +103,8 @@ class Window(gtk.Window):
               <separator/>
               <menuitem action='ViewHelp'/>
             </menu>
-            <menu action='DialogMenu'>
-              <menuitem action='BrushSelectionWindow'/>
-              <menuitem action='BrushSettingsWindow'/>
-              <menuitem action='ColorSelectionWindow'/>
-              <menuitem action='SettingsWindow'/>
-            </menu>
             <menu action='BrushMenu'>
+              <menuitem action='BrushSelectionWindow'/>
               <menu action='ContextMenu'>
                 <menuitem action='ContextStore'/>
                 <separator/>
@@ -134,12 +131,14 @@ class Window(gtk.Window):
                 <separator/>
                 <menuitem action='ContextHelp'/>
               </menu>
+              <separator/>
               <menuitem action='Bigger'/>
               <menuitem action='Smaller'/>
               <menuitem action='Brighter'/>
               <menuitem action='Darker'/>
               <menuitem action='MoreOpaque'/>
               <menuitem action='LessOpaque'/>
+              <menuitem action='BrushSettingsWindow'/>
               <separator/>
               <menuitem action='Eraser'/>
               <separator/>
@@ -230,21 +229,20 @@ class Window(gtk.Window):
 
             ('LayerMenu',    None, 'Layers'),
 
-            ('BackgroundWindow', None, 'Background Pattern...', None, None, self.toggleWindow_cb),
+            ('BackgroundWindow', None, 'Background...', None, None, self.toggleWindow_cb),
             ('ClearLayer',   None, 'Clear Layer', '<control>period', None, self.clear_layer_cb),
-            ('PickLayer',    None, 'Select layer at cursor', 'h', None, self.pick_layer_cb),
-            ('LayerBG',      None, 'Background (previous layer)', 'j', None, self.layer_bg_cb),
-            ('LayerFG',      None, 'Foreground (next layer)',  'k', None, self.layer_fg_cb),
+            ('PickLayer',    None, 'Select Layer at Cursor', 'h', None, self.pick_layer_cb),
+            ('LayerBG',      None, 'Next Layer (behind current)', 'j', None, self.layer_bg_cb),
+            ('LayerFG',      None, 'Next Layer (above current)',  'k', None, self.layer_fg_cb),
             ('NewLayerBG',   None, 'New Layer (behind current)', '<control>j', None, self.new_layer_cb),
             ('NewLayerFG',   None, 'New Layer (above current)', '<control>k', None, self.new_layer_cb),
             ('RemoveLayer',  None, 'Remove Layer', None, None, self.remove_layer_cb),
             ('ToggleAbove',  None, 'Toggle Layers Above Current', 'l', None, self.toggle_layers_above_cb),
 
-            ('DialogMenu',  None, 'Windows'),
-            ('BrushSelectionWindow',  None, 'Brush List', 'b', None, self.toggleWindow_cb),
-            ('BrushSettingsWindow',   None, 'Brush Settings', '<control>b', None, self.toggleWindow_cb),
-            ('ColorSelectionWindow',  None, 'GTK Color Dialog', 'g', None, self.toggleWindow_cb),
-            ('SettingsWindow',        None, 'Settings', None, None, self.toggleWindow_cb),
+            ('BrushSelectionWindow',  None, 'Brush List...', 'b', None, self.toggleWindow_cb),
+            ('BrushSettingsWindow',   None, 'Brush Settings...', '<control>b', None, self.toggleWindow_cb),
+            ('ColorSelectionWindow',  None, 'Color Triangle...', 'g', None, self.toggleWindow_cb),
+            ('SettingsWindow',        None, 'Settings...', None, None, self.toggleWindow_cb),
 
             ('HelpMenu',     None, 'Help'),
             ('Docu', None, 'Where is the Documentation?', None, None, self.show_docu_cb),
@@ -635,6 +633,7 @@ class Window(gtk.Window):
         if not self.confirm_destructive_action():
             return
         self.doc.clear()
+        self.doc.set_background(self.app.background)
         self.filename = None
 
     def add_file_filters(self, dialog):
