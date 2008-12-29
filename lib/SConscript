@@ -12,9 +12,9 @@ env.Clean('.', 'mypaintlib.py')
 # python extension module
 src = 'mypaintlib_wrap.cpp'
 if sys.platform == "win32": # there 's a better way to do this 
-	module = env.LoadableModule('_mypaintlib', Split(src), SHLIBPREFIX="", SHLIBSUFFIX=".pyd")
+    module = env.LoadableModule('_mypaintlib', Split(src), SHLIBPREFIX="", SHLIBSUFFIX=".pyd")
 else:
-	module = env.LoadableModule('_mypaintlib', Split(src), SHLIBPREFIX="")
+    module = env.LoadableModule('_mypaintlib', Split(src), SHLIBPREFIX="")
 
 
 # installation
