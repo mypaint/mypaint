@@ -24,7 +24,7 @@ class PixbufList(gtk.DrawingArea):
     def on_select(self, item):
         pass
 
-    def __init__(self, itemlist, item_w, item_h, pixbuffunc=lambda x: x.pixbuf):
+    def __init__(self, itemlist, item_w, item_h, pixbuffunc=lambda x: x):
         gtk.DrawingArea.__init__(self)
         self.itemlist = itemlist
         self.pixbuffunc = pixbuffunc

@@ -25,15 +25,22 @@ class Window(gtk.Window):
         vbox = gtk.VBox()
         self.add(vbox)
 
-        nb = gtk.Notebook()
+        nb = self.nb = gtk.Notebook()
         vbox.pack_start(nb)
 
         self.bgl = BackgroundList(self)
         nb.append_page(self.bgl, gtk.Label('Pattern'))
 
+        vbox2 = gtk.VBox()
+        nb.append_page(vbox2, gtk.Label('Color'))
+
         self.cs = gtk.ColorSelection()
         self.cs.connect('color-changed', self.color_changed_cb)
-        nb.append_page(self.cs, gtk.Label('Color'))
+        vbox2.pack_start(self.cs, expand=True)
+
+        b = gtk.Button('add color to patterns')
+        b.connect('clicked', self.add_color_to_patterns_cb)
+        vbox2.pack_start(b, expand=False)
 
         hbox = gtk.HBox()
         vbox.pack_start(hbox, expand=False)
@@ -58,10 +65,19 @@ class Window(gtk.Window):
         doc.set_background(obj)
         self.app.background = obj
 
-
-class BackgroundObject:
-    pass
-
+    def add_color_to_patterns_cb(self, widget):
+        pixbuf = self.app.drawWindow.doc.get_background_pixbuf()
+        i = 1
+        while 1:
+            filename = os.path.join(self.app.confpath, 'backgrounds', '90_color%02d.png' % i)
+            if not os.path.exists(filename):
+                break
+            i += 1
+        pixbuf.save(filename, 'png')
+        self.bgl.backgrounds.append(pixbuf)
+        self.bgl.update()
+        self.bgl.set_selected(pixbuf)
+        self.nb.set_current_page(0)
 
 class BackgroundList(pixbuflist.PixbufList):
     def __init__(self, win):
@@ -76,14 +92,17 @@ class BackgroundList(pixbuflist.PixbufList):
 
         def listdir(path):
             l = [os.path.join(path, filename) for filename in os.listdir(path)]
-            l.sort()
+            l.sort(key=os.path.getmtime)
             return l
 
-        for filename in listdir(user_path) + listdir(stock_path):
+        files = listdir(stock_path)
+        files.sort()
+        files += listdir(user_path)
+
+        for filename in files:
             if not filename.lower().endswith('.png'):
                 continue
-            obj = BackgroundObject()
-            obj.pixbuf = gdk.pixbuf_new_from_file(filename)
+            pixbuf = gdk.pixbuf_new_from_file(filename)
 
             # error checking
             def error(msg):
@@ -94,23 +113,23 @@ class BackgroundList(pixbuflist.PixbufList):
                 d.set_markup(msg)
                 d.run()
                 d.destroy()
-            if obj.pixbuf.get_has_alpha():
+            if pixbuf.get_has_alpha():
                 error('The background %s was ignored because it has an alpha channel. Please remove it.' % filename)
                 continue
-            w, h = obj.pixbuf.get_width(), obj.pixbuf.get_height()
+            w, h = pixbuf.get_width(), pixbuf.get_height()
             N = tiledsurface.N
             if w != N or h != N:
                 error('The background %s was ignored because it has the wrong size. Only %dx%d is supported.' % (filename, N, N))
                 continue
 
             if os.path.basename(filename).lower() == 'default.png':
-                self.win.set_background(obj.pixbuf)
+                self.win.set_background(pixbuf)
                 continue
 
-            self.backgrounds.append(obj)
+            self.backgrounds.append(pixbuf)
 
         pixbuflist.PixbufList.__init__(self, self.backgrounds, tiledsurface.N, tiledsurface.N)
         self.dragging_allowed = False
 
-    def on_select(self, bg):
-        self.win.set_background(bg.pixbuf)
+    def on_select(self, pixbuf):
+        self.win.set_background(pixbuf)
