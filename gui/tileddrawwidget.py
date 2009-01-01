@@ -200,7 +200,7 @@ class TiledDrawWidget(gtk.DrawingArea):
 
         gdk_clip_region = self.window.get_clip_region()
         x, y, w, h = device_bbox
-        #sparse = not gdk_clip_region.point_in(x+w/2, y+h/2)
+        sparse = not gdk_clip_region.point_in(x+w/2, y+h/2)
 
         cr = self.window.cairo_create()
 
@@ -270,17 +270,19 @@ class TiledDrawWidget(gtk.DrawingArea):
         tiles = surface.get_tiles()
         # OPTIMIZE: remove tiles that are clipped by cairo
 
+        N = tiledsurface.N
+
         for tx, ty in tiles:
-# OPTIMIZE: update this to work with the new code?
-#            if sparse:
-#                # it is worth checking whether this tile really will be visible
-#                # (to speed up the L-shaped expose event after scrolling)
-#                # (speedup clearly visible; slowdown in default case measured)
-#                corners = [(x, y), (x+N-1, y), (x, y+N-1), (x+N-1, y+N-1)]
-#                corners = [cr.user_to_device(x_, y_) for (x_, y_) in corners]
-#                bbox = gdk.Rectangle(*helpers.rotated_rectangle_bbox(corners))
-#                if gdk_clip_region.rect_in(bbox) == gdk.OVERLAP_RECTANGLE_OUT:
-#                    continue
+            if sparse:
+                # it is worth checking whether this tile really will be visible
+                # (to speed up the L-shaped expose event after scrolling)
+                # (speedup clearly visible; slowdown in default case measured)
+                # FIXME: is this rectangle width off-by-one or not?
+                corners = [(tx*N, ty*N), ((tx+1)*N-1, ty*N), (tx*N, (ty+1)*N-1), ((tx+1)*N-1, (ty+1)*N-1)]
+                corners = [cr.user_to_device(x_, y_) for (x_, y_) in corners]
+                bbox = gdk.Rectangle(*helpers.rotated_rectangle_bbox(corners))
+                if gdk_clip_region.rect_in(bbox) == gdk.OVERLAP_RECTANGLE_OUT:
+                    continue
 
             dst = surface.get_tile_memory(tx, ty)
             self.doc.blit_tile_into(dst, tx, ty, layers)
