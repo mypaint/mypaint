@@ -69,7 +69,7 @@ class Window(gtk.Window):
         pixbuf = self.app.drawWindow.doc.get_background_pixbuf()
         i = 1
         while 1:
-            filename = os.path.join(self.app.confpath, 'backgrounds', '90_color%02d.png' % i)
+            filename = os.path.join(self.app.confpath, 'backgrounds', 'color%02d.png' % i)
             if not os.path.exists(filename):
                 break
             i += 1

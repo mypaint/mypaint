@@ -164,6 +164,7 @@ class Window(gtk.Window):
             <menu action='DebugMenu'>
               <menuitem action='PrintInputs'/>
               <menuitem action='VisualizeRendering'/>
+              <menuitem action='NoDoubleBuffereing'/>
             </menu>
             <menu action='HelpMenu'>
               <menuitem action='Docu'/>
@@ -269,6 +270,7 @@ class Window(gtk.Window):
             # name, stock id, label, accelerator, tooltip, callback, default toggle status
             ('PrintInputs', None, 'Print Brush Input Values to stdout', None, None, self.print_inputs_cb),
             ('VisualizeRendering', None, 'Visualize Rendering', None, None, self.visualize_rendering_cb),
+            ('NoDoubleBuffereing', None, 'Disable GTK Double Buffering', None, None, self.no_double_buffering_cb),
             ('Flip', None, 'Mirror Image', None, None, self.flip_cb),
             ]
         ag.add_toggle_actions(toggle_actions)
@@ -293,6 +295,8 @@ class Window(gtk.Window):
 
     def visualize_rendering_cb(self, action):
         self.tdw.visualize_rendering = action.get_active()
+    def no_double_buffering_cb(self, action):
+        self.tdw.set_double_buffered(not action.get_active())
 
     def start_profiling(self):
         def autopaint():
@@ -595,11 +599,13 @@ class Window(gtk.Window):
     def save_file(self, filename):
         self.filename = filename
         try:
+            x, y, w, h =  self.doc.get_bbox()
+            assert w > 0 and h > 0, 'The canvas is empty.'
             self.doc.save(filename)
         except Exception, e:
             print e
             d = gtk.MessageDialog(self, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_OK)
-            d.set_markup(str(e))
+            d.set_markup('Failed to save:\n' + str(e))
             d.run()
             d.destroy()
             print 'Failed to save!'
@@ -832,7 +838,7 @@ class Window(gtk.Window):
 
         d.set_markup(
             u"MyPaint %s - pressure sensitive painting application\n"
-            u"Copyright (C) 2005-2008\n"
+            u"Copyright (C) 2005-2009\n"
             u"Martin Renold &lt;martinxyz@gmx.ch&gt;\n\n"
             u"Contributors:\n"
             u"Artis Rozentāls &lt;artis@aaa.apollo.lv&gt; (brushes)\n"

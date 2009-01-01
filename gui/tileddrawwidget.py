@@ -74,7 +74,6 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.show_layers_above = True
         self.doc.layer_observers.append(self.layer_selected_cb)
 
-
     def set_scroll_at_edges(self, choice):
       self.scroll_at_edges = choice
       
@@ -295,7 +294,7 @@ class TiledDrawWidget(gtk.DrawingArea):
             cr.paint()
 
 
-    def scroll(self, dx, dy, show_immediately=False):
+    def scroll(self, dx, dy, show_immediately=True):
         assert int(dx) == dx and int(dy) == dy
         self.translation_x -= dx
         self.translation_y -= dy

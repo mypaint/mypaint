@@ -16,6 +16,7 @@ N = tiledsurface.N
 
 class Surface:
     def __init__(self, x, y, w, h, alpha=False, data=None):
+        assert w>0 and h>0
         # We create and use a pixbuf enlarged to the tile boundaries internally.
         # Variables ex, ey, ew, eh and epixbuf store the enlarged version.
         self.x, self.y, self.w, self.h = x, y, w, h
