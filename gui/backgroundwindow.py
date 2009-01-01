@@ -110,6 +110,7 @@ class BackgroundList(pixbuflist.PixbufList):
             self.backgrounds.append(obj)
 
         pixbuflist.PixbufList.__init__(self, self.backgrounds, tiledsurface.N, tiledsurface.N)
+        self.dragging_allowed = False
 
     def on_select(self, bg):
         self.win.set_background(bg.pixbuf)

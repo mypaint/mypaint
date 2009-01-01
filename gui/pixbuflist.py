@@ -11,11 +11,11 @@ gdk = gtk.gdk
 
 class PixbufList(gtk.DrawingArea):
     """
-    This widget presents a list of items to the user by accessing
-    item.pixbuf for each. The user can select a single item. Items can
-    be dragged around, causing the list to be reordered.
+    This widget presents a list of items to the user. Each item must
+    have a pixbuf. The user can select a single item. Items can be
+    dragged around, causing the list to be reordered immediately.
 
-    update() must be called when the list or any pixbufs were changed
+    update() must be called when the list or any pixbufs have changed
     """
 
     # interface to be implemented by children
@@ -37,8 +37,9 @@ class PixbufList(gtk.DrawingArea):
         self.spacing_inside = 1
 
         self.selected = None
+        self.dragging_allowed = True
         self.grabbed = None
-        self.must_save_order = False
+        self.dragging = False
 
         self.connect("expose-event", self.expose_cb)
         self.connect("button-press-event", self.button_press_cb)
@@ -98,13 +99,14 @@ class PixbufList(gtk.DrawingArea):
         item = self.itemlist[i]
         self.set_selected(item)
         self.on_select(item)
-        self.grabbed = item
+        if self.dragging_allowed:
+            self.grabbed = item
 
     def button_release_cb(self, widget, event):
         self.grabbed = None
-        if self.must_save_order:
+        if self.dragging:
             self.on_order_change()
-            self.must_save_order = False
+            self.dragging = False
 
     def motion_notify_cb(self, widget, event):
         if not self.grabbed: return
@@ -113,7 +115,7 @@ class PixbufList(gtk.DrawingArea):
         if self.itemlist[i] is not self.grabbed:
             self.itemlist.remove(self.grabbed)
             self.itemlist.insert(i, self.grabbed)
-            self.must_save_order = True
+            self.dragging = True
             self.update()
 
     #def size_request_cb(self, widget, size):
