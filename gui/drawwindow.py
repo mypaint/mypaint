@@ -1,4 +1,4 @@
-# coding: utf8
+# -*- coding: utf-8 -*-
 #
 # This file is part of MyPaint.
 # Copyright (C) 2007-2008 by Martin Renold <martinxyz@gmx.ch>
@@ -846,6 +846,7 @@ class Window(gtk.Window):
             u"Sebastian Kraft (desktop icon)\n"
             u"Popolon &lt;popolon@popolon.org&gt; (brushes)\n"
             u"Clement Skau &lt;clementskau@gmail.com&gt; (programming)\n"
+            u'Marcelo "Tanda" Cerviño &lt;info@lodetanda.com.ar&gt; (patterns)\n'
             u"\n"
             u"This program is free software; you can redistribute it and/or modify "
             u"it under the terms of the GNU General Public License as published by "
