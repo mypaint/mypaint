@@ -28,8 +28,12 @@ class Window(gtk.Window):
         nb = self.nb = gtk.Notebook()
         vbox.pack_start(nb)
 
+        scroll = gtk.ScrolledWindow()
+        scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
+        nb.append_page(scroll, gtk.Label('Pattern'))
+
         self.bgl = BackgroundList(self)
-        nb.append_page(self.bgl, gtk.Label('Pattern'))
+        scroll.add_with_viewport(self.bgl)
 
         vbox2 = gtk.VBox()
         nb.append_page(vbox2, gtk.Label('Color'))
