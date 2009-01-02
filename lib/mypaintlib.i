@@ -12,7 +12,7 @@ typedef struct { int x, y, w, h; } Rect;
 %include "colorchanger.hpp"
 
 //from "gdkpixbuf2numpy.hpp"
-PyObject * gdkpixbuf2numpy(PyObject * gdk_pixbuf_pixels_array);
+PyObject * gdkpixbuf_numeric2numpy(PyObject * gdk_pixbuf_pixels_array);
 
 %init %{
 import_array();

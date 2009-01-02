@@ -182,16 +182,14 @@ class Document():
         self.do(command.RemoveLayer(self))
 
     def load_layer_from_pixbuf(self, pixbuf, x=0, y=0):
-        arr = pixbuf.get_pixels_array()
-        arr = mypaintlib.gdkpixbuf2numpy(arr)
+        arr = helpers.gdkpixbuf2numpy(pixbuf)
         self.do(command.LoadLayer(self, arr, x, y))
 
     def set_background(self, obj):
         # This is not an undoable action. One reason is that dragging
         # on the color chooser would get tons of undo steps.
         try:
-            obj = obj.get_pixels_array()
-            obj = mypaintlib.gdkpixbuf2numpy(obj)
+            obj = helpers.gdkpixbuf2numpy(obj)
         except:
             # it was already an array
             pass
@@ -206,8 +204,7 @@ class Document():
     def get_background_pixbuf(self):
         N = tiledsurface.N
         pixbuf = gdk.Pixbuf(gdk.COLORSPACE_RGB, False, 8, N, N)
-        arr = pixbuf.get_pixels_array()
-        arr = mypaintlib.gdkpixbuf2numpy(arr)
+        arr = helpers.gdkpixbuf2numpy(pixbuf)
         arr[:,:,:] = self.background
         return pixbuf
 
@@ -249,7 +246,7 @@ class Document():
             zi = zipfile.ZipInfo(filename)
             zi.external_attr = 0100644 << 16
             z.writestr(zi, data)
-        write_file_str('mimetype', 'image/openraster') # Mime type must be the first object stored. FIXME: what should go here?
+        write_file_str('mimetype', 'image/openraster') # must be the first file
         image = ET.Element('image')
         stack = ET.SubElement(image, 'stack')
         x0, y0, w0, h0 = self.get_bbox()
@@ -299,7 +296,7 @@ class Document():
         image = ET.fromstring(xml)
         stack = image.find('stack')
 
-        self.clear()
+        self.clear() # this leaves one empty layer
         for layer in stack:
             if layer.tag != 'layer':
                 print 'Warning: ignoring unsupported tag:', layer.tag
@@ -328,7 +325,7 @@ class Document():
         if len(self.layers) == 1:
             raise ValueError, 'Could not load any layer.'
 
-        # recognize solid or tiled background layers (at least those that mypaint saves)
+        # recognize solid or tiled background layers, at least those that mypaint saves
         # (OpenRaster will probably get generator layers for this some day)
         N = tiledsurface.N
         p = last_pixbuf
@@ -341,8 +338,7 @@ class Document():
                         all_equal = False
                         break
                 if all_equal:
-                    arr = p.get_pixels_array()
-                    arr = mypaintlib.gdkpixbuf2numpy(arr)
+                    arr = helpers.gdkpixbuf2numpy(p)
                     tile = arr[0:N,0:N,:]
                     self.set_background(tile.copy())
                     self.select_layer(0)

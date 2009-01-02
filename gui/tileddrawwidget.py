@@ -262,9 +262,6 @@ class TiledDrawWidget(gtk.DrawingArea):
         if self.visualize_rendering:
             surface.pixbuf.fill((int(random.random()*0xff)<<16)+0x00000000)
                     
-        #arr = pixbuf.get_pixels_array()
-        #arr = mypaintlib.gdkpixbuf2numpy(arr)
-
         #tiles = set(self.doc.get_tiles())
         #tiles = tiles.intersection(surface.get_tiles())
         tiles = surface.get_tiles()

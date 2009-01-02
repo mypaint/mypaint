@@ -10,11 +10,15 @@
 # It is used for rendering updates, but also for save/load.
 
 from gtk import gdk
-import mypaintlib, tiledsurface
+import mypaintlib, tiledsurface, helpers
 
 N = tiledsurface.N
 
 class Surface:
+    """
+    This class represents a gdk.Pixbuf (8 bit RGB or RGBA data) with
+    memory also accessible per-tile, similar to tiledsurface.Surface.
+    """
     def __init__(self, x, y, w, h, alpha=False, data=None):
         assert w>0 and h>0
         # We create and use a pixbuf enlarged to the tile boundaries internally.
@@ -49,8 +53,7 @@ class Surface:
         else:
             self.epixbuf.fill(0x00000000) # keep undefined region transparent
 
-        arr = self.epixbuf.get_pixels_array()
-        arr = mypaintlib.gdkpixbuf2numpy(arr)
+        arr = helpers.gdkpixbuf2numpy(self.epixbuf)
 
         discard_transparent = False
 

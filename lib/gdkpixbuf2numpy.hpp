@@ -13,7 +13,7 @@ typedef struct {
   PyObject *weakreflist;
 } OldNumeric_PyArrayObject;
 
-PyObject * gdkpixbuf2numpy(PyObject * gdk_pixbuf_pixels_array)
+PyObject * gdkpixbuf_numeric2numpy(PyObject * gdk_pixbuf_pixels_array)
 {
 
   // in case the bug is fixed in pygtk

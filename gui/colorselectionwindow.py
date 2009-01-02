@@ -146,8 +146,7 @@ class ColorSelectorPopup(gtk.Window):
     def update_image(self):
         size = self.backend.size
         pixbuf = gdk.Pixbuf(gdk.COLORSPACE_RGB, True, 8, size, size)
-        arr = pixbuf.get_pixels_array()
-        arr = mypaintlib.gdkpixbuf2numpy(arr)
+        arr = helpers.gdkpixbuf2numpy(pixbuf)
         self.backend.set_brush_color(*self.app.brush.get_color_hsv())
         self.backend.render(arr)
         pixmap, mask = pixbuf.render_pixmap_and_mask()

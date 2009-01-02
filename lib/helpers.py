@@ -7,6 +7,7 @@
 # (at your option) any later version.
 
 from math import floor, ceil
+import mypaintlib
 
 class Rect:
     def __init__(self, x=0, y=0, w=0, h=0):
@@ -82,6 +83,14 @@ def clamp(x, lo, hi):
     if x < lo: return lo
     if x > hi: return hi
     return x
+
+
+def gdkpixbuf2numpy(pixbuf):
+    # workaround for pygtk still returning Numeric instead of numpy arrays
+    # (see gdkpixbuf2numpy.hpp)
+    arr = pixbuf.get_pixels_array()
+    return mypaintlib.gdkpixbuf_numeric2numpy(arr)
+
 
 if __name__ == '__main__':
     big = Rect(-3, 2, 180, 222)
