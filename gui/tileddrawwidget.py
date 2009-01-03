@@ -232,6 +232,14 @@ class TiledDrawWidget(gtk.DrawingArea):
 
         # calculate the final model bbox with all the clipping above
         x1, y1, x2, y2 = cr.clip_extents()
+        if self.scale > 1.0:
+            # Looks like cairo needs one extra pixel rendered for interpolation at the border.
+            # If we don't do this, we get dark stripe artefacts when panning while zoomed.
+            x1 -= 1
+            y1 -= 1
+            x2 += 1
+            y2 += 1
+            # FIXME: we also need to extend the tiles that we render?
         x1, y1 = int(floor(x1)), int(floor(y1))
         x2, y2 = int(ceil (x2)), int(ceil (y2))
 
@@ -276,6 +284,10 @@ class TiledDrawWidget(gtk.DrawingArea):
                 # (speedup clearly visible; slowdown in default case measured)
                 # FIXME: is this rectangle width off-by-one or not?
                 corners = [(tx*N, ty*N), ((tx+1)*N-1, ty*N), (tx*N, (ty+1)*N-1), ((tx+1)*N-1, (ty+1)*N-1)]
+                if self.scale > 1.0:
+                    # same problem as above: cairo needs to know one extra pixel for interpolation
+                    # FIXME: ugly code duplication
+                    corners = [(tx*N-1, ty*N-1), ((tx+1)*N, ty*N-1), (tx*N-1, (ty+1)*N), ((tx+1)*N, (ty+1)*N)]
                 corners = [cr.user_to_device(x_, y_) for (x_, y_) in corners]
                 bbox = gdk.Rectangle(*helpers.rotated_rectangle_bbox(corners))
                 if gdk_clip_region.rect_in(bbox) == gdk.OVERLAP_RECTANGLE_OUT:

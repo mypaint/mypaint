@@ -49,7 +49,7 @@ class Surface:
         assert self.eh <= h + 2*N-2
 
         if not alpha:
-            self.epixbuf.fill(0xff0088ff) # to detect uninitialized memory
+            self.epixbuf.fill(0xff44ff44) # to detect uninitialized memory
         else:
             self.epixbuf.fill(0x00000000) # keep undefined region transparent
 
