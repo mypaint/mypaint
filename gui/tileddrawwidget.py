@@ -219,7 +219,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         # bye bye device coordinates
         self.get_model_coordinates_cairo_context(cr)
 
-        # optimization for solid-color backgrounds
+        # optimization for solid color background
         try:
             r, g, b = self.doc.background
             solid = True
@@ -233,9 +233,11 @@ class TiledDrawWidget(gtk.DrawingArea):
             cr.rectangle(*self.doc.get_bbox())
             cr.clip()
 
+        translation_only = self.is_translation_only()
+
         # calculate the final model bbox with all the clipping above
         x1, y1, x2, y2 = cr.clip_extents()
-        if self.scale > 1.0:
+        if not translation_only:
             # Looks like cairo needs one extra pixel rendered for interpolation at the border.
             # If we don't do this, we get dark stripe artefacts when panning while zoomed.
             x1 -= 1
@@ -279,7 +281,7 @@ class TiledDrawWidget(gtk.DrawingArea):
                 # (speedup clearly visible; slowdown measurable when always executing this code)
                 N = tiledsurface.N
                 corners = [(tx*N, ty*N), ((tx+1)*N-1, ty*N), (tx*N, (ty+1)*N-1), ((tx+1)*N-1, (ty+1)*N-1)]
-                if self.scale > 1.0:
+                if not translation_only:
                     # same problem as above: cairo needs to know one extra pixel for interpolation
                     # FIXME: ugly duplicated code, any better ideas?
                     corners = [(tx*N-1, ty*N-1), ((tx+1)*N, ty*N-1), (tx*N-1, (ty+1)*N), ((tx+1)*N, (ty+1)*N)]
@@ -291,7 +293,7 @@ class TiledDrawWidget(gtk.DrawingArea):
             dst = surface.get_tile_memory(tx, ty)
             self.doc.blit_tile_into(dst, tx, ty, layers)
 
-        if self.is_translation_only():
+        if translation_only:
             # not sure why, but using gdk directly is notably faster than the same via cairo
             x, y = cr.user_to_device(surface.x, surface.y)
             self.window.draw_pixbuf(None, surface.pixbuf, 0, 0, int(x), int(y))

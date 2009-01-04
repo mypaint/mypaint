@@ -159,10 +159,10 @@ class Document():
         if layers is None:
             layers = self.layers
 
-        # render solid white background (planned: something like self.background.blit_tile())
-        assert dst.shape[2] == 3, 'RGB destination expected'
-        N = tiledsurface.N
-        dst[:N,:N,:] = self.background
+        # render solid or tiled background
+        # OPTIMIZE: surprisingly this call takes longer for single-color backgrounds
+        #           this optimization should be done in numpy
+        dst[:,:,:] = self.background
 
         for layer in layers:
             surface = layer.surface
