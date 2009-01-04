@@ -190,9 +190,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         cr = self.get_model_coordinates_cairo_context()
         return cr.device_to_user(x, y)
 
-    def repaint(self, device_bbox=None, model_bbox=None):
-        # FIXME: ...we do not fill tile-free background white in this function...
-
+    def repaint(self, device_bbox=None):
         if device_bbox is None:
             w, h = self.window.get_size()
             device_bbox = (0, 0, w, h)
@@ -213,22 +211,24 @@ class TiledDrawWidget(gtk.DrawingArea):
             # grey
             tmp = random.random()
             cr.set_source_rgb(tmp, tmp, tmp)
-        else:
-            cr.set_source_rgb(1.0, 1.0, 1.0)
-        cr.paint()
+            cr.paint()
 
         # bye bye device coordinates
         self.get_model_coordinates_cairo_context(cr)
 
-        if model_bbox is not None:
-            cr.rectangle(*model_bbox)
+        # optimization for solid-color backgrounds
+        try:
+            r, g, b = self.doc.background
+            solid = True
+        except ValueError:
+            solid = False
+        if solid:
+            # do not render all the unused space outside the image as pixmap
+            # (makes a huge difference when zoomed out)
+            cr.set_source_rgb(r/255.0, g/255.0, b/255.0)
+            cr.paint()
+            cr.rectangle(*self.doc.get_bbox())
             cr.clip()
-
-        # <strike>do not attempt to render all the possible white space outside the image (can be huge if zoomed out)</strike>
-        # OPTIMIZE: Yes we need to do that now! Since only the document knows whether the space is white at all...
-        #           Maybe we could at least special-case solid colors, since they don't need to be transformed?
-        #cr.rectangle(*self.doc.get_bbox())
-        #cr.clip()
 
         # calculate the final model bbox with all the clipping above
         x1, y1, x2, y2 = cr.clip_extents()
@@ -243,7 +243,6 @@ class TiledDrawWidget(gtk.DrawingArea):
         x1, y1 = int(floor(x1)), int(floor(y1))
         x2, y2 = int(ceil (x2)), int(ceil (y2))
 
-        # OPTIMIZE: if we are scrolling, we are creating an oversized pixbuf (L-shaped expose event)
         surface = pixbufsurface.Surface(x1, y1, x2-x1+1, y2-y1+1)
 
         del x1, y1, x2, y2, w, h
@@ -265,28 +264,21 @@ class TiledDrawWidget(gtk.DrawingArea):
         if self.hide_current_layer:
             layers.pop(self.doc.layer_idx)
 
-        # possible optimization with solid background color:
-        #surface.pixbuf.fill(0xffffffff)
         if self.visualize_rendering:
             surface.pixbuf.fill((int(random.random()*0xff)<<16)+0x00000000)
                     
-        #tiles = set(self.doc.get_tiles())
-        #tiles = tiles.intersection(surface.get_tiles())
         tiles = surface.get_tiles()
-        # OPTIMIZE: remove tiles that are clipped by cairo
-
-        N = tiledsurface.N
 
         for tx, ty in tiles:
             if sparse:
                 # it is worth checking whether this tile really will be visible
-                # (to speed up the L-shaped expose event after scrolling)
-                # (speedup clearly visible; slowdown in default case measured)
-                # FIXME: is this rectangle width off-by-one or not?
+                # (to speed up the L-shaped expose event during scrolling)
+                # (speedup clearly visible; slowdown measurable when always executing this code)
+                N = tiledsurface.N
                 corners = [(tx*N, ty*N), ((tx+1)*N-1, ty*N), (tx*N, (ty+1)*N-1), ((tx+1)*N-1, (ty+1)*N-1)]
                 if self.scale > 1.0:
                     # same problem as above: cairo needs to know one extra pixel for interpolation
-                    # FIXME: ugly code duplication
+                    # FIXME: ugly duplicated code, any better ideas?
                     corners = [(tx*N-1, ty*N-1), ((tx+1)*N, ty*N-1), (tx*N-1, (ty+1)*N), ((tx+1)*N, (ty+1)*N)]
                 corners = [cr.user_to_device(x_, y_) for (x_, y_) in corners]
                 bbox = gdk.Rectangle(*helpers.rotated_rectangle_bbox(corners))

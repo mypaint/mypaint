@@ -157,11 +157,7 @@ class Window(gtk.Window):
                         print 'Setting %s mode for %s' % (self.input_devices_mode, device.name)
                         device.set_mode(getattr(gdk, 'MODE_' + self.input_devices_mode.upper()))
                     break
-        self.init_input()
         self.applying = False
-
-    def init_input(self):
-        "make those pressure sensitive devices working"
 
     def input_devices_combo_changed_cb(self, window):
         self.input_devices_mode = self.input_devices_combo.get_active_text()

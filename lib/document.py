@@ -197,7 +197,7 @@ class Document():
             # simplify single-color pixmaps
             color = obj[0,0,:]
             if (obj == color).all():
-                obj = list(color)
+                obj = tuple(color)
         self.background = obj
         self.invalidate_all()
 

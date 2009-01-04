@@ -794,6 +794,8 @@ class Window(gtk.Window):
         else: assert 0
 
     def fullscreen_cb(self, *trash):
+        # note: there is some ugly flickering when toggling fullscreen
+        #       self.window.begin_paint/end_paint does not help against it
         self.fullscreen = not self.fullscreen
         if self.fullscreen:
             self.menubar.hide()

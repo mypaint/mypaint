@@ -49,9 +49,10 @@ class Surface:
         assert self.eh <= h + 2*N-2
 
         if not alpha:
-            self.epixbuf.fill(0xff44ff44) # to detect uninitialized memory
+            #self.epixbuf.fill(0xff44ff44) # to detect uninitialized memory
+            pass # speeds up scrolling slightly
         else:
-            self.epixbuf.fill(0x00000000) # keep undefined region transparent
+            self.epixbuf.fill(0x00000000) # keep undefined regions transparent
 
         arr = helpers.gdkpixbuf2numpy(self.epixbuf)
 
