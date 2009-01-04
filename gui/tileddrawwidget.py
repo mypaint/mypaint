@@ -185,6 +185,9 @@ class TiledDrawWidget(gtk.DrawingArea):
         # looks like we always get nearest-neighbour downsampling
         return cr
 
+    def is_translation_only(self):
+        return self.rotation == 0.0 and self.scale == 1.0 and not self.flipped
+
     def get_cursor_in_model_coordinates(self):
         x, y, modifiers = self.window.get_pointer()
         cr = self.get_model_coordinates_cairo_context()
@@ -288,8 +291,14 @@ class TiledDrawWidget(gtk.DrawingArea):
             dst = surface.get_tile_memory(tx, ty)
             self.doc.blit_tile_into(dst, tx, ty, layers)
 
-        cr.set_source_pixbuf(surface.pixbuf, surface.x, surface.y)
-        cr.paint()
+        if self.is_translation_only():
+            # not sure why, but using gdk directly is notably faster than the same via cairo
+            x, y = cr.user_to_device(surface.x, surface.y)
+            self.window.draw_pixbuf(None, surface.pixbuf, 0, 0, int(x), int(y))
+            assert int(x) == x and int(y) == y
+        else:
+            cr.set_source_pixbuf(surface.pixbuf, surface.x, surface.y)
+            cr.paint()
 
         if self.visualize_rendering:
             # visualize painted bboxes (blue)
@@ -323,7 +332,7 @@ class TiledDrawWidget(gtk.DrawingArea):
 
         # this is for fast scrolling with only tanslation
         self.rotation = self.rotation % (2*pi)
-        if self.rotation == 0.0 and self.scale == 1.0:
+        if self.is_translation_only():
             self.translation_x = int(self.translation_x)
             self.translation_y = int(self.translation_y)
 
