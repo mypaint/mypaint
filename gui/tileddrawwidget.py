@@ -9,7 +9,7 @@
 from lib import helpers
 import gtk, gobject, numpy, cairo
 gdk = gtk.gdk
-from math import floor, ceil
+from math import floor, ceil, pi
 import time
 
 import random
@@ -320,6 +320,13 @@ class TiledDrawWidget(gtk.DrawingArea):
         cx_new, cy_new = cr.user_to_device(cx_device, cy_device)
         self.translation_x += cx - cx_new
         self.translation_y += cy - cy_new
+
+        # this is for fast scrolling with only tanslation
+        self.rotation = self.rotation % (2*pi)
+        if self.rotation == 0.0 and self.scale == 1.0:
+            self.translation_x = int(self.translation_x)
+            self.translation_y = int(self.translation_y)
+
         self.queue_draw()
 
     def zoom(self, zoom_step):
@@ -355,8 +362,9 @@ class TiledDrawWidget(gtk.DrawingArea):
 
         cr = self.get_model_coordinates_cairo_context()
         w, h = self.window.get_size()
-        cx_user, cy_user = cr.device_to_user(w/2.0, h/2.0)
+        cx_user, cy_user = cr.device_to_user(w/2, h/2)
 
+        # note: integer rounding above avoids fractional translation
         self.translation_x += cx_user - desired_cx_user
         self.translation_y += cy_user - desired_cy_user
         self.queue_draw()

@@ -28,7 +28,7 @@ A document:
 import mypaintlib, helpers, tiledsurface, pixbufsurface
 import command, stroke, layer, serialize
 import brush # FIXME: the brush module depends on gtk and everything, but we only need brush_lowlevel
-import gzip, os, zipfile, tempfile
+import gzip, os, zipfile, tempfile, numpy
 join = os.path.join
 import xml.etree.ElementTree as ET
 from gtk import gdk
@@ -197,7 +197,7 @@ class Document():
             # simplify single-color pixmaps
             color = obj[0,0,:]
             if (obj == color).all():
-                obj = tuple(color)
+                obj = numpy.asarray(color, dtype='uint8')
         self.background = obj
         self.invalidate_all()
 
