@@ -8,6 +8,7 @@
 
 "select brush window"
 import gtk
+gdk = gtk.gdk
 from lib import brush, document
 import tileddrawwidget, pixbuflist
 
@@ -21,6 +22,9 @@ class Window(gtk.Window):
 
         self.set_title('Brush selection')
         self.connect('delete-event', self.app.hide_window_cb)
+        def set_hint(widget):
+            self.window.set_type_hint(gdk.WINDOW_TYPE_HINT_UTILITY)
+        self.connect("realize", set_hint)
 
         vbox = gtk.VBox()
         self.add(vbox)
