@@ -152,15 +152,20 @@ class TiledDrawWidget(gtk.DrawingArea):
             self.queue_draw()
             return
 
-        # create an expose event with the event bbox rotated/zoomed
-        # OPTIMIZE: estimated to cause at least twice more rendering work than neccessary
-        x2 = x1 + w - 1
-        y2 = y1 + h - 1
-        # transform 4 bbox corners to screen coordinates
-        corners = [(x1, y1), (x1+w-1, y1), (x1, y1+h-1), (x1+w-1, y1+h-1)]
-        cr = self.get_model_coordinates_cairo_context() # OPTIMIZE: profile how much time does this takes; we could easily get rid of it
-        corners = [cr.user_to_device(x, y) for (x, y) in corners]
-        self.queue_draw_area(*helpers.rotated_rectangle_bbox(corners))
+        cr = self.get_model_coordinates_cairo_context()
+
+        if self.is_translation_only():
+            x, y = cr.user_to_device(x1, y1)
+            self.queue_draw_area(int(x), int(y), w, h)
+        else:
+            # create an expose event with the event bbox rotated/zoomed
+            # OPTIMIZE: this is estimated to cause at least twice more rendering work than neccessary
+            x2 = x1 + w - 1
+            y2 = y1 + h - 1
+            # transform 4 bbox corners to screen coordinates
+            corners = [(x1, y1), (x1+w-1, y1), (x1, y1+h-1), (x1+w-1, y1+h-1)]
+            corners = [cr.user_to_device(x, y) for (x, y) in corners]
+            self.queue_draw_area(*helpers.rotated_rectangle_bbox(corners))
 
     def expose_cb(self, widget, event):
         self.update_cursor() # hack to get the initial cursor right
@@ -280,13 +285,16 @@ class TiledDrawWidget(gtk.DrawingArea):
                 # (to speed up the L-shaped expose event during scrolling)
                 # (speedup clearly visible; slowdown measurable when always executing this code)
                 N = tiledsurface.N
-                corners = [(tx*N, ty*N), ((tx+1)*N-1, ty*N), (tx*N, (ty+1)*N-1), ((tx+1)*N-1, (ty+1)*N-1)]
-                if not translation_only:
+                if translation_only:
+                    x, y = cr.user_to_device(tx*N, ty*N)
+                    bbox = (int(x), int(y), N, N)
+                else:
+                    #corners = [(tx*N, ty*N), ((tx+1)*N-1, ty*N), (tx*N, (ty+1)*N-1), ((tx+1)*N-1, (ty+1)*N-1)]
                     # same problem as above: cairo needs to know one extra pixel for interpolation
-                    # FIXME: ugly duplicated code, any better ideas?
                     corners = [(tx*N-1, ty*N-1), ((tx+1)*N, ty*N-1), (tx*N-1, (ty+1)*N), ((tx+1)*N, (ty+1)*N)]
-                corners = [cr.user_to_device(x_, y_) for (x_, y_) in corners]
-                bbox = gdk.Rectangle(*helpers.rotated_rectangle_bbox(corners))
+                    corners = [cr.user_to_device(x_, y_) for (x_, y_) in corners]
+                    bbox = gdk.Rectangle(*helpers.rotated_rectangle_bbox(corners))
+
                 if gdk_clip_region.rect_in(bbox) == gdk.OVERLAP_RECTANGLE_OUT:
                     continue
 

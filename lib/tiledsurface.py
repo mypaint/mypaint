@@ -103,18 +103,7 @@ class Surface(mypaintlib.TiledSurface):
         if tile is None:
             return
         assert dst.shape[2] == 3
-        mypaintlib.composite_tile_over_rgb8(tile.rgba, dst)
-#
-#    def composite_over_RGB8(self, dst, px, py):
-#        h, w, channels = dst.shape
-#        assert channels == 3
-#
-#        for (x0, y0), tile in self.tiledict.iteritems():
-#            x0 = N*x0+px
-#            y0 = N*y0+py
-#            if x0 < 0 or y0 < 0: continue
-#            if x0+N > w or y0+N > h: continue
-#            tile.composite_over_RGB8(dst[y0:y0+N,x0:x0+N,:]) # OPTIMIZE: is this slower than without offsets?
+        mypaintlib.tile_composite_rgba16_over_rgb8(tile.rgba, dst)
 
     def save_snapshot(self):
         for t in self.tiledict.itervalues():

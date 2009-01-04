@@ -28,10 +28,12 @@ A document:
 import mypaintlib, helpers, tiledsurface, pixbufsurface
 import command, stroke, layer, serialize
 import brush # FIXME: the brush module depends on gtk and everything, but we only need brush_lowlevel
-import gzip, os, zipfile, tempfile, numpy
+import gzip, os, zipfile, tempfile, numpy, time
 join = os.path.join
 import xml.etree.ElementTree as ET
 from gtk import gdk
+
+N = tiledsurface.N
 
 class Document():
     """
@@ -71,7 +73,7 @@ class Document():
             bbox = self.get_bbox()
         # throw everything away, including undo stack
         self.command_stack = command.CommandStack()
-        self.background = (255, 255, 255)
+        self.set_background((255, 255, 255))
         self.layers = []
         self.layer_idx = None
         self.add_layer(0)
@@ -160,9 +162,9 @@ class Document():
             layers = self.layers
 
         # render solid or tiled background
-        # OPTIMIZE: surprisingly this call takes longer for single-color backgrounds
-        #           this optimization should be done in numpy
-        dst[:,:,:] = self.background
+        #dst[:] = self.background_memory # 13 times slower than below, with some bursts having the same speed as below (huh?)
+        # note: optimization for solid colors is not worth it any more now, even if it gives 2x speedup (at best)
+        mypaintlib.tile_blit_rgb8_into_rgb8(self.background_memory, dst)
 
         for layer in layers:
             surface = layer.surface
@@ -197,12 +199,16 @@ class Document():
             # simplify single-color pixmaps
             color = obj[0,0,:]
             if (obj == color).all():
-                obj = numpy.asarray(color, dtype='uint8')
+                obj = tuple(color)
         self.background = obj
+
+        # optimization
+        self.background_memory = numpy.zeros((N, N, 3), dtype='uint8')
+        self.background_memory[:,:,:] = self.background
+
         self.invalidate_all()
 
     def get_background_pixbuf(self):
-        N = tiledsurface.N
         pixbuf = gdk.Pixbuf(gdk.COLORSPACE_RGB, False, 8, N, N)
         arr = helpers.gdkpixbuf2numpy(pixbuf)
         arr[:,:,:] = self.background
@@ -327,7 +333,6 @@ class Document():
 
         # recognize solid or tiled background layers, at least those that mypaint saves
         # (OpenRaster will probably get generator layers for this some day)
-        N = tiledsurface.N
         p = last_pixbuf
         if not p.get_has_alpha() and p.get_width() % N == 0 and p.get_height() % N == 0:
             tiles = self.layers[0].surface.tiledict.values()

@@ -338,7 +338,8 @@ public:
   }
 };
 
-void composite_tile_over_rgb8(PyObject * src, PyObject * dst) {
+void tile_composite_rgba16_over_rgb8(PyObject * src, PyObject * dst) {
+  /* disabled as optimization
   assert(PyArray_DIM(src, 0) == TILE_SIZE);
   assert(PyArray_DIM(src, 1) == TILE_SIZE);
   assert(PyArray_DIM(src, 2) == 4);
@@ -350,10 +351,13 @@ void composite_tile_over_rgb8(PyObject * src, PyObject * dst) {
   assert(PyArray_DIM(dst, 2) == 3);
   assert(PyArray_TYPE(dst) == NPY_UINT8);
   assert(PyArray_ISBEHAVED(dst));
+  */
   
   PyArrayObject* dst_arr = ((PyArrayObject*)dst);
+  /*
   assert(dst_arr->strides[1] == 3*sizeof(uint8_t));
   assert(dst_arr->strides[2] ==   sizeof(uint8_t));
+  */
 
   uint16_t * src_p  = (uint16_t*)((PyArrayObject*)src)->data;
   char * p = dst_arr->data;
@@ -370,5 +374,37 @@ void composite_tile_over_rgb8(PyObject * src, PyObject * dst) {
       dst_p += 3;
     }
     p += dst_arr->strides[0];
+  }
+}
+
+// simply array copying (numpy assignment operator is about 13 times slower, sadly)
+void tile_blit_rgb8_into_rgb8(PyObject * src, PyObject * dst) {
+  PyArrayObject* src_arr = ((PyArrayObject*)src);
+  PyArrayObject* dst_arr = ((PyArrayObject*)dst);
+
+  /* disabled as optimization
+  assert(PyArray_DIM(dst, 0) == TILE_SIZE);
+  assert(PyArray_DIM(dst, 1) == TILE_SIZE);
+  assert(PyArray_DIM(dst, 2) == 3);
+  assert(PyArray_TYPE(dst) == NPY_UINT8);
+  assert(PyArray_ISBEHAVED(dst));
+  assert(dst_arr->strides[1] == 3*sizeof(uint8_t));
+  assert(dst_arr->strides[2] ==   sizeof(uint8_t));
+
+  assert(PyArray_DIM(src, 0) == TILE_SIZE);
+  assert(PyArray_DIM(src, 1) == TILE_SIZE);
+  assert(PyArray_DIM(src, 2) == 3);
+  assert(PyArray_TYPE(src) == NPY_UINT8);
+  assert(PyArray_ISBEHAVED(src));
+  assert(src_arr->strides[1] == 3*sizeof(uint8_t));
+  assert(src_arr->strides[2] ==   sizeof(uint8_t));
+  */
+
+  char * src_p = src_arr->data;
+  char * dst_p = dst_arr->data;
+  for (int y=0; y<TILE_SIZE; y++) {
+    memcpy(dst_p, src_p, TILE_SIZE*3);
+    src_p += src_arr->strides[0];
+    dst_p += dst_arr->strides[0];
   }
 }
