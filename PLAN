@@ -1,7 +1,5 @@
 - Display brush names in edit subwindow.
 
-- load alpha png (convert)
-
 - frame.
   - ("simulates" a finite canvas; infinite canvas alone is awful for artists)
   - visual only (do strokes outside anyway, might enlarge later)
@@ -10,9 +8,6 @@
 
 - preferences
   - allow some memory limit maybe
-  - set canvas border outside visible window (in percent)
-  - default canvas background color
-  - zoom quality
   - remember window pos or not (gimp has a nice ui for this)
 
 - dedicated "slow random" input
@@ -26,46 +21,22 @@
   - "Apparently Corel Photo Paint uses spacebar for swapping to previous tool."
   - variants: tool history (like undo), skip tools not painted with, visually show tool switch
 
-- popup menu
-  - pops up at mouse, showing four squares with icons (or with adjustments directly?)
-  - click on one, the submenu opens (eg. change size, color, etc)
-
 - allow dots drawing
   - a dot should draw even without motion
   - is dabs-per-second enough, or is dabs-per-dpressure needed?
 
-- pen/eraser
-  - real alpha erasing: make it a mode, not a brush option
-  - recognize tool and asociate brush and color, as brushkeys do?
-  - default to a white sharp ink tip on the eraser
+- eraser side
+  - associate eraser side of pen with white sharp ink eraser
 
 - color mixer?
   http://www.valdyas.org/fading/index.cgi/2007/08/10#mixer_done
 
-- focus on ink a bit more
-
-- try to get the smear brush described by simastrick
-
-- tilt support 
-  - what can tilt be used for?
-  - not much, IMO, I even guess it is just a technical by-product
-
-- show brush radius
-  - "some symbol to see the current size of the painting-tool"
-  - (mouse cursor shape, like in the GIMP? A key to show/hide it?
-    - a key to quickly blink the shape? hmm...
-    - note: shape size changes quickly!
-  "brief indication of brushsize onscreen (circle, on brush size change)"
-
-- edit global pressure nonlinearity curve
-  - maybe wacom tool? maybe for each brush?
-
 - more brush information
   - attach text notes to brush
-  - attach a small demo-replay / demo image
+  - attach a small demo-replay / demo image?
   - brush categories - put all inky brushes into subfolder etc.
 
-- copy/paste buttons curve shapes 
+- copy/paste mapping curve shapes?
   - buttons next to shape? shared "symlinked" shape?
   - the "custom" input partially solves this problem now.
 
@@ -77,8 +48,6 @@
 
 - allow non-circle brush shapes
 
-- button for fast GIMP in- and export, also a GIMP plugin if needed
-
 - maybe avoid gaps when using the "offset by speed"
   - and add a setting to intentionally do such gaps
 
@@ -87,10 +56,7 @@
   - painless layer-switching ui
 
 - plenty of default keybindings
-  - check conventions of other apps and support as many as possible:
-    - spacebar for moving (with hand icon)
-    - ctrl-scrollwheel for zooming
-  - do something with mouse scrollwheel (eg. rotation)
+  - support non-conflicting keyboard shortcuts from as many other apps as possible
   - make sure (almost) all tablet buttons / stripes have some discoverable default function
 
 - input devices
@@ -99,4 +65,5 @@
   - bonus points: allow to interpret mouse x/y motion as zoom/rotate/scroll etc.
   - allow configurable step sizes (for rotozoom keys, for scroll events or motion sensitivity)
 
-- try auto-rotation (following your stroke directin slowly) and auto-zoom (zoom on slow motion)
+- try auto-rotation (normalizing your stroke direction slowly) and auto-zoom (zoom on slow motion)
+  - not yet, rotozoom is too slow for such interactivity right now

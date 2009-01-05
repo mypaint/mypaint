@@ -390,6 +390,7 @@ class TiledDrawWidget(gtk.DrawingArea):
     def update_cursor(self):
         #return
         # OPTIMIZE: looks like big cursors can be a major slowdown with X11
+        #   if everything breaks down, we could only show brush shape shortly after changes
         if not self.window: return
         brush = self.doc.brush
         d = int(brush.get_actual_radius())*2
