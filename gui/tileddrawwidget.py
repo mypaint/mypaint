@@ -249,7 +249,6 @@ class TiledDrawWidget(gtk.DrawingArea):
             y1 -= 1
             x2 += 1
             y2 += 1
-            # FIXME: we also need to extend the tiles that we render?
         x1, y1 = int(floor(x1)), int(floor(y1))
         x2, y2 = int(ceil (x2)), int(ceil (y2))
 
@@ -258,8 +257,6 @@ class TiledDrawWidget(gtk.DrawingArea):
         del x1, y1, x2, y2, w, h
 
         model_bbox = surface.x, surface.y, surface.w, surface.h
-        assert surface.w >= 0 and surface.h >= 0
-
         #print 'model bbox', model_bbox
 
         # not sure if it is a good idea to clip so tightly
@@ -305,7 +302,6 @@ class TiledDrawWidget(gtk.DrawingArea):
             # not sure why, but using gdk directly is notably faster than the same via cairo
             x, y = cr.user_to_device(surface.x, surface.y)
             self.window.draw_pixbuf(None, surface.pixbuf, 0, 0, int(x), int(y))
-            assert int(x) == x and int(y) == y
         else:
             cr.set_source_pixbuf(surface.pixbuf, surface.x, surface.y)
             cr.paint()
