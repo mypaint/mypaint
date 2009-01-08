@@ -316,7 +316,16 @@ class TiledDrawWidget(gtk.DrawingArea):
         assert int(dx) == dx and int(dy) == dy
         self.translation_x -= dx
         self.translation_y -= dy
-        if show_immediately:
+        #if show_immediately:
+        if False:
+            # This speeds things up nicely when scrolling is already
+            # fast, but produces temporary artefacts and an
+            # annoyingliy non-constant framerate otherwise.
+            #
+            # It might be worth it if it was done only once per
+            # redraw, instead of once per motion event. Maybe try to
+            # implement something like "queue_scroll" with priority
+            # similar to redraw?
             self.window.scroll(int(-dx), int(-dy))
         else:
             self.queue_draw()
