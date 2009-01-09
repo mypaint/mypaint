@@ -431,15 +431,17 @@ class Window(gtk.Window):
         #print event.device, event.button
         if event.button == 2:
             self.tdw.start_drag(self.dragfunc_translate)
-        elif event.button == 3:
-            self.tdw.start_drag(self.dragfunc_rotate)
+        # too slow to be useful:
+        #elif event.button == 3:
+        #    self.tdw.start_drag(self.dragfunc_rotate)
 
     def button_release_cb(self, win, event):
         #print event.device, event.button
         if event.button == 2:
             self.tdw.stop_drag(self.dragfunc_translate)
-        elif event.button == 3:
-            self.tdw.stop_drag(self.dragfunc_rotate)
+        # too slow to be useful:
+        #elif event.button == 3:
+        #    self.tdw.stop_drag(self.dragfunc_rotate)
 
     def scroll_cb(self, win, event):
         d = event.direction
