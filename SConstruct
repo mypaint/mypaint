@@ -1,5 +1,17 @@
 import os, sys
-import numpy
+
+try: 
+    Glob
+except:
+    # compatibility with SCons version 0.97
+    from glob import glob as Glob
+try: 
+    import numpy
+except ImportError:
+    print 'You need to have numpy installed.'
+    print
+    raise
+
 SConsignFile() # no .scsonsign into $PREFIX please
 
 # Does option parsing really screw up the win32 build? if no, remove comment
@@ -36,6 +48,7 @@ else:
     env.ParseConfig('python-config --cflags --ldflags')
 
 if env.get('CPPDEFINES'):
+    # make sure assertions are enabled
     env['CPPDEFINES'].remove('NDEBUG')
 
 module = SConscript('lib/SConscript', 'env')
