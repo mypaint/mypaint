@@ -113,19 +113,19 @@ public:
     float xx, yy, rr;
     float one_over_radius2;
 
-    assert(eraser_target_alpha >= 0.0);
-    assert(eraser_target_alpha <= 1.0);
-
-    assert(color_r >= 0.0 && color_r <= 1.0);
-    assert(color_g >= 0.0 && color_g <= 1.0);
-    assert(color_b >= 0.0 && color_b <= 1.0);
+    eraser_target_alpha = CLAMP(eraser_target_alpha, 0.0, 1.0);
     uint32_t color_r_ = color_r * (1<<15);
     uint32_t color_g_ = color_g * (1<<15);
     uint32_t color_b_ = color_b * (1<<15);
+    color_r = CLAMP(color_r, 0, (1<<15));
+    color_g = CLAMP(color_g, 0, (1<<15));
+    color_b = CLAMP(color_b, 0, (1<<15));
 
-    if (opaque == 0) return false;
+    opaque = CLAMP(opaque, 0.0, 1.0);
+    hardness = CLAMP(hardness, 0.0, 1.0);
+    if (opaque == 0.0) return false;
     if (radius < 0.1) return false;
-    if (hardness == 0) return false; // infintly small point, rest transparent
+    if (hardness == 0.0) return false; // infintly small point, rest transparent
 
     assert(atomic > 0);
 

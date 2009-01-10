@@ -186,10 +186,8 @@ private:
     float base_radius = expf(settings[BRUSH_RADIUS_LOGARITHMIC]->base_value);
 
     // FIXME: does happen (interpolation problem?)
-    if (states[STATE_PRESSURE] < 0.0) states[STATE_PRESSURE] = 0.0;
-    if (states[STATE_PRESSURE] > 1.0) states[STATE_PRESSURE] = 1.0;
-    g_assert (states[STATE_PRESSURE] >= 0.0 && states[STATE_PRESSURE] <= 1.0);
-    pressure = states[STATE_PRESSURE]; // could distort it here
+    states[STATE_PRESSURE] = CLAMP(states[STATE_PRESSURE], 0.0, 1.0);
+    pressure = states[STATE_PRESSURE];
 
     { // start / end stroke (for "stroke" input only)
       if (!states[STATE_STROKE_STARTED]) {
@@ -265,19 +263,17 @@ private:
       float wrap;
       frequency = expf(-settings_value[BRUSH_STROKE_DURATION_LOGARITHMIC]);
       states[STATE_STROKE] += norm_dist * frequency;
-      //FIXME: why can this happen?
+      // can happen, probably caused by rounding
       if (states[STATE_STROKE] < 0) states[STATE_STROKE] = 0;
-      //assert(stroke >= 0);
       wrap = 1.0 + settings_value[BRUSH_STROKE_HOLDTIME];
       if (states[STATE_STROKE] > wrap) {
         if (wrap > 9.9 + 1.0) {
           // "inifinity", just hold stroke somewhere >= 1.0
           states[STATE_STROKE] = 1.0;
         } else {
-          //printf("fmodf(%f, %f) = ", (double)stroke, (double)wrap);
           states[STATE_STROKE] = fmodf(states[STATE_STROKE], wrap);
-          //printf("%f\n", (double)stroke);
-          assert(states[STATE_STROKE] >= 0);
+          // just in case
+          if (states[STATE_STROKE] < 0) states[STATE_STROKE] = 0;
         }
       }
     }
@@ -377,11 +373,9 @@ private:
       // If the smudge color somewhat transparent, then the resulting
       // dab will do erasing towards that transparency level.
       // see also ../html/smudge_math.png
-      assert(states[STATE_SMUDGE_A] >= 0.0); // DEBUG
-      assert(states[STATE_SMUDGE_A] <= 1.0); // DEBUG
       eraser_target_alpha = (1-fac)*1.0 + fac*states[STATE_SMUDGE_A];
-      assert(eraser_target_alpha <= 1.0);
-      assert(eraser_target_alpha >= 0.0);
+      // fix rounding errors (they really seem to happen in the previous line)
+      eraser_target_alpha = CLAMP(eraser_target_alpha, 0.0, 1.0);
       if (eraser_target_alpha > 0) {
         color_h = (fac*states[STATE_SMUDGE_RA] + (1-fac)*color_h) / eraser_target_alpha;
         color_s = (fac*states[STATE_SMUDGE_GA] + (1-fac)*color_s) / eraser_target_alpha;
@@ -406,10 +400,10 @@ private:
       float r, g, b, a;
       surface->get_color (px, py, radius, &r, &g, &b, &a);
       // updated the smudge color (stored with premultiplied alpha)
-      assert(states[STATE_SMUDGE_A] <= 1.0); // DEBUG
       states[STATE_SMUDGE_A ] = fac*states[STATE_SMUDGE_A ] + (1-fac)*a;
+      // fix rounding errors
       states[STATE_SMUDGE_A ] = CLAMP(states[STATE_SMUDGE_A], 0.0, 1.0);
-      assert(states[STATE_SMUDGE_A] <= 1.0); // DEBUG
+
       states[STATE_SMUDGE_RA] = fac*states[STATE_SMUDGE_RA] + (1-fac)*r*a;
       states[STATE_SMUDGE_GA] = fac*states[STATE_SMUDGE_GA] + (1-fac)*g*a;
       states[STATE_SMUDGE_BA] = fac*states[STATE_SMUDGE_BA] + (1-fac)*b*a;
@@ -437,14 +431,11 @@ private:
       rgb_to_hsv_float (&color_h, &color_s, &color_v);
     }
 
-    { // final calculations
-      assert(opaque >= 0);
-      assert(opaque <= 1);
-      // this function will CLAMP the inputs
-      hsv_to_rgb_float (&color_h, &color_s, &color_v);
-      float hardness = CLAMP(settings_value[BRUSH_HARDNESS], 0.0, 1.0);
-      return surface->draw_dab (x, y, radius, color_h, color_s, color_v, opaque, hardness, eraser_target_alpha);
-    }
+    float hardness = settings_value[BRUSH_HARDNESS];
+
+    // the functions below will CLAMP most inputs
+    hsv_to_rgb_float (&color_h, &color_s, &color_v);
+    return surface->draw_dab (x, y, radius, color_h, color_s, color_v, opaque, hardness, eraser_target_alpha);
   }
 
   // How many dabs will be drawn between the current and the next (x, y, pressure, +dt) position?
