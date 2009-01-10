@@ -430,7 +430,13 @@ class Window(gtk.Window):
     def button_press_cb(self, win, event):
         #print event.device, event.button
         if event.button == 2:
-            self.tdw.start_drag(self.dragfunc_translate)
+            # check whether we are painting (accidental
+            pressure = event.get_axis(gdk.AXIS_PRESSURE)
+            if (event.state & gdk.BUTTON1_MASK) or pressure:
+                # do not allow dragging while painting (often happens accidentally)
+                pass
+            else:
+                self.tdw.start_drag(self.dragfunc_translate)
         # too slow to be useful:
         #elif event.button == 3:
         #    self.tdw.start_drag(self.dragfunc_rotate)
