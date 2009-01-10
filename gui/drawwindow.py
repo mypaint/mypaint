@@ -437,6 +437,10 @@ class Window(gtk.Window):
                 pass
             else:
                 self.tdw.start_drag(self.dragfunc_translate)
+        elif event.button == 1:
+            # pick color "standard"; TODO: show color picking cursor?
+            if event.state & gdk.CONTROL_MASK:
+                self.pick_color_cb(None)
         # too slow to be useful:
         #elif event.button == 3:
         #    self.tdw.start_drag(self.dragfunc_rotate)
