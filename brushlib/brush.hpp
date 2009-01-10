@@ -377,6 +377,8 @@ private:
       // If the smudge color somewhat transparent, then the resulting
       // dab will do erasing towards that transparency level.
       // see also ../html/smudge_math.png
+      assert(states[STATE_SMUDGE_A] >= 0.0); // DEBUG
+      assert(states[STATE_SMUDGE_A] <= 1.0); // DEBUG
       eraser_target_alpha = (1-fac)*1.0 + fac*states[STATE_SMUDGE_A];
       assert(eraser_target_alpha <= 1.0);
       assert(eraser_target_alpha >= 0.0);
@@ -398,6 +400,7 @@ private:
         (settings_value[BRUSH_SMUDGE] != 0.0 or not settings[BRUSH_SMUDGE]->is_constant())) {
       float fac = settings_value[BRUSH_SMUDGE_LENGTH];
       if (fac < 0.0) fac = 0;
+      assert(fac <= 1.0); // DEBUG
       int px, py;
       px = ROUND(x);
       py = ROUND(y);
@@ -405,6 +408,7 @@ private:
       surface->get_color (px, py, radius, &r, &g, &b, &a);
       // updated the smudge color (stored with premultiplied alpha)
       states[STATE_SMUDGE_A ] = fac*states[STATE_SMUDGE_A ] + (1-fac)*a;
+      assert(states[STATE_SMUDGE_A] <= 1.0); // DEBUG
       states[STATE_SMUDGE_RA] = fac*states[STATE_SMUDGE_RA] + (1-fac)*r*a;
       states[STATE_SMUDGE_GA] = fac*states[STATE_SMUDGE_GA] + (1-fac)*g*a;
       states[STATE_SMUDGE_BA] = fac*states[STATE_SMUDGE_BA] + (1-fac)*b*a;

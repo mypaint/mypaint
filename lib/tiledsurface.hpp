@@ -296,6 +296,7 @@ public:
               sum_g      += opa*rgba_p[idx+1]/(1<<15);
               sum_b      += opa*rgba_p[idx+2]/(1<<15);
               sum_a      += opa*rgba_p[idx+3]/(1<<15);
+              assert(rgba_p[idx+3] <= (1<<15)); // DEBUG
             }
           }
         }
@@ -325,10 +326,10 @@ public:
     assert (*color_r >= 0.0);
     assert (*color_g >= 0.0);
     assert (*color_b >= 0.0);
-    assert (*color_a <= 1.001);
-    assert (*color_r <= 1.001);
-    assert (*color_g <= 1.001);
-    assert (*color_b <= 1.001);
+    assert (*color_a <= 1.000);
+    assert (*color_r <= 1.000);
+    assert (*color_g <= 1.000);
+    assert (*color_b <= 1.000);
   }
 
   float get_alpha (float x, float y, float radius) {
