@@ -91,6 +91,7 @@ class Layer:
         cache.strokes = self.rendered.strokes[:]
         cache.background = self.rendered.background
         cache.snapshot = self.surface.save_snapshot()
+        print 'saving surface snapshot'
         self.caches.append(cache)
         #print 'caching the layer bitmap took %.3f seconds' % (time() - t)
 
@@ -104,7 +105,7 @@ class Layer:
     #    return self.surface.get_tiles()
 
     def rerender(self, only_estimate_cost=False):
-        #print 'rerender'
+        print 'rerender'
         t1 = time()
         surface = self.surface
 
@@ -117,6 +118,7 @@ class Layer:
         def render_new_strokes():
             new_strokes = strokes_from_to(self.rendered, self)
             warning = len(new_strokes) > 20
+            warning = True
             if warning:
                 print 'rendering', len(new_strokes), 'strokes...'
 
@@ -151,12 +153,12 @@ class Layer:
             return cost
 
         for cache in self.caches:
-            #print 'evaluating a cache containing %d strokes' % len(cache.strokes)
+            print 'evaluating a cache containing %d strokes' % len(cache.strokes)
             cost = count_strokes_from(cache)
-            cost += 3 # penalty for loading a pixbuf
+            #cost += 3 # penalty for loading a pixbuf
 
             def render_cached(cache=cache):
-                #print 'using a cache containing %d strokes' % len(cache.strokes)
+                print 'using a cache containing %d strokes' % len(cache.strokes)
                 # least recently used caching strategy
                 self.caches.remove(cache)
                 self.caches.append(cache)
@@ -168,7 +170,7 @@ class Layer:
             options.append((cost, render_cached))
 
         def render_from_empty():
-            #print 'full rerender'
+            print 'full rerender'
             try:
                 if self.background is not None:
                     surface.load_from_data(self.background)
