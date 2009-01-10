@@ -400,7 +400,6 @@ private:
         (settings_value[BRUSH_SMUDGE] != 0.0 or not settings[BRUSH_SMUDGE]->is_constant())) {
       float fac = settings_value[BRUSH_SMUDGE_LENGTH];
       if (fac < 0.0) fac = 0;
-      assert(fac <= 1.0); // DEBUG
       int px, py;
       px = ROUND(x);
       py = ROUND(y);
