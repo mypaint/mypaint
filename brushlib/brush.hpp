@@ -406,7 +406,9 @@ private:
       float r, g, b, a;
       surface->get_color (px, py, radius, &r, &g, &b, &a);
       // updated the smudge color (stored with premultiplied alpha)
+      assert(states[STATE_SMUDGE_A] <= 1.0); // DEBUG
       states[STATE_SMUDGE_A ] = fac*states[STATE_SMUDGE_A ] + (1-fac)*a;
+      states[STATE_SMUDGE_A ] = CLAMP(states[STATE_SMUDGE_A], 0.0, 1.0);
       assert(states[STATE_SMUDGE_A] <= 1.0); // DEBUG
       states[STATE_SMUDGE_RA] = fac*states[STATE_SMUDGE_RA] + (1-fac)*r*a;
       states[STATE_SMUDGE_GA] = fac*states[STATE_SMUDGE_GA] + (1-fac)*g*a;
@@ -543,7 +545,9 @@ public:
       */
 
       //printf("Brush reset.\n");
-      memset(states, 0, sizeof(states[0])*STATE_COUNT);
+      for (int i=0; i<STATE_COUNT; i++) {
+        states[i] = 0;
+      }
 
       states[STATE_X] = x;
       states[STATE_Y] = y;

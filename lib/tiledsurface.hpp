@@ -141,7 +141,10 @@ public:
     for (ty = ty1; ty <= ty2; ty++) {
       for (tx = tx1; tx <= tx2; tx++) {
         uint16_t * rgba_p = get_tile_memory(tx, ty, false);
-        if (!rgba_p) return true; // python exception
+        if (!rgba_p) {
+          printf("Python exception during draw_dab()!\n");
+          return true;
+        }
 
         float xc = x - tx*TILE_SIZE;
         float yc = y - ty*TILE_SIZE;
@@ -240,6 +243,11 @@ public:
     float sum_r, sum_g, sum_b, sum_a, sum_weight;
     sum_r = sum_g = sum_b = sum_a = sum_weight = 0.0;
 
+    // in case we return with an error
+    *color_r = 0.0;
+    *color_g = 1.0;
+    *color_b = 0.0;
+
     // WARNING: some code duplication with draw_dab
 
     r_fringe = radius + 1;
@@ -254,7 +262,10 @@ public:
     for (ty = ty1; ty <= ty2; ty++) {
       for (tx = tx1; tx <= tx2; tx++) {
         uint16_t * rgba_p = get_tile_memory(tx, ty, true);
-        if (!rgba_p) return; // python exception
+        if (!rgba_p) {
+          printf("Python exception during get_color()!\n");
+          return;
+        }
 
         float xc = x - tx*TILE_SIZE;
         float yc = y - ty*TILE_SIZE;
