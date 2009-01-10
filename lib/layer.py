@@ -46,7 +46,8 @@ class Layer:
         self.rendered.background = None
 
         self.caches = []
-        self.strokes_to_cache = 6
+        #self.strokes_to_cache = 6
+        self.strokes_to_cache = 1
 
     def new_stroke_rendered_on_surface(self, stroke):
         # This is called when self.surface was modified directly (to display a partial stroke).
@@ -78,7 +79,8 @@ class Layer:
         t = time()
         # the last one is the most recently used one
         #max_caches = 3
-        max_caches = 5
+        #max_caches = 5
+        max_caches = 20
         while len(self.caches) > max_caches-1:
             cache = self.caches.pop(0)
             #print 'dropping a cache with', len(cache.strokes), 'strokes'
