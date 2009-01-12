@@ -10,15 +10,19 @@ import layer
 
 class CommandStack:
     def __init__(self):
+        self.call_before_action = []
+        self.clear()
+    
+    def clear(self):
         self.undo_stack = []
         self.redo_stack = []
-        self.call_before_action = []
-    
+
     def do(self, command):
         for f in self.call_before_action: f()
         self.redo_stack = [] # discard
         command.redo()
         self.undo_stack.append(command)
+        self.reduce_undo_history()
     
     def undo(self):
         if not self.undo_stack: return
@@ -36,6 +40,17 @@ class CommandStack:
         self.undo_stack.append(command)
         return command
 
+    def reduce_undo_history(self):
+        stack = self.undo_stack
+        self.undo_stack = []
+        steps = 0
+        for item in reversed(stack):
+            self.undo_stack.insert(0, item)
+            if not item.automatic_undo:
+                steps += 1
+            if steps == 20: # and memory > ...
+                break
+
     def get_last_command(self):
         if not self.undo_stack: return None
         return self.undo_stack[-1]
@@ -52,32 +67,26 @@ class Action:
 # - and then auto-build wrapper methods?
 
 class Stroke(Action):
-    def __init__(self, doc, stroke):
+    def __init__(self, doc, stroke, snapshot_before, snapshot_after):
         self.doc = doc
         assert stroke.finished
-        self.stroke = stroke # immutable
+        self.stroke = stroke # immutable; not used for drawing any more, just for inspection
+        self.before = snapshot_before
+        self.after = snapshot_after
     def undo(self):
-        self.doc.layer.remove_stroke(self.stroke)
+        self.doc.layer.load_snapshot(self.before)
     def redo(self):
-        self.doc.layer.add_stroke(self.stroke)
+        self.doc.layer.load_snapshot(self.after)
 
 class ClearLayer(Action):
     def __init__(self, doc):
         self.doc = doc
     def redo(self):
-        layer = self.doc.layer
-        self.old_strokes = layer.strokes[:] # copy
-        self.old_background = layer.background
-        layer.strokes = []
-        layer.background = None
-        layer.rerender()
+        self.before = self.doc.layer.save_snapshot()
+        self.doc.layer.clear()
     def undo(self):
-        layer = self.doc.layer
-        layer.strokes = self.old_strokes
-        layer.background = self.old_background
-        layer.rerender()
-
-        del self.old_strokes, self.old_background
+        self.doc.layer.load_snapshot(self.before)
+        del self.before
 
 class LoadLayer(Action):
     def __init__(self, doc, data, x, y):
@@ -85,18 +94,11 @@ class LoadLayer(Action):
         self.data = [x, y, data]
     def redo(self):
         layer = self.doc.layer
-        self.old_strokes = layer.strokes[:] # copy
-        self.old_background = layer.background
-        layer.strokes = []
-        layer.background = self.data
-        layer.rerender()
+        self.before = layer.save_snapshot()
+        layer.load_from_pixbuf(self.data)
     def undo(self):
-        layer = self.doc.layer
-        layer.strokes = self.old_strokes
-        layer.background = self.old_background
-        layer.rerender()
-
-        del self.old_strokes, self.old_background
+        self.doc.layer.load_snapshot(self.before)
+        del self.before
 
 class AddLayer(Action):
     def __init__(self, doc, insert_idx):

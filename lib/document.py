@@ -77,8 +77,8 @@ class Document():
         self.layers = []
         self.layer_idx = None
         self.add_layer(0)
-        # disallow undo of the first layer (TODO: deleting the last layer should clear it instead)
-        self.command_stack = command.CommandStack()
+        # disallow undo of the first layer
+        self.command_stack.clear()
 
         if not init:
             for f in self.canvas_observers:
@@ -92,8 +92,11 @@ class Document():
         if not self.stroke: return
         self.stroke.stop_recording()
         if not self.stroke.empty:
-            self.layer.new_stroke_rendered_on_surface(self.stroke)
-            self.command_stack.do(command.Stroke(self, self.stroke))
+            self.layer.strokes.append(self.stroke)
+            before = self.snapshot_before_stroke
+            after = self.layer.save_snapshot()
+            self.command_stack.do(command.Stroke(self, self.stroke, before, after))
+            self.snapshot_before_stroke = after
         self.stroke = None
 
     def select_layer(self, idx):
@@ -106,6 +109,7 @@ class Document():
         if not self.stroke:
             self.stroke = stroke.Stroke()
             self.stroke.start_recording(self.brush)
+            self.snapshot_before_stroke = self.layer.save_snapshot()
         self.stroke.record_event(dtime, x, y, pressure)
 
         l = self.layer
@@ -142,7 +146,6 @@ class Document():
     def do(self, cmd):
         self.split_stroke()
         self.command_stack.do(cmd)
-
 
     def set_brush(self, brush):
         self.split_stroke()
@@ -230,6 +233,7 @@ class Document():
         ext = ext.lower().replace('.', '')
         load = getattr(self, 'load_' + ext, self.unsupported)
         load(filename)
+        self.command_stack.clear()
 
     def unsupported(self, filename):
         raise ValueError, 'Unkwnown file format extension: ' + repr(filename)
