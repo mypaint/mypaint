@@ -37,7 +37,6 @@ class Layer:
         self.surface.clear()
 
     def load_from_pixbuf(self, pixbuf):
-        # TODO: use this function everywhere
         self.strokes = []
         self.background = pixbuf
         self.surface.load_from_data(pixbuf)

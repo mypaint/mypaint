@@ -18,17 +18,18 @@ from gtk import gdk
 
 
 class Tile:
-    def __init__(self):
+    def __init__(self, copy_from=None):
         # note: pixels are stored with premultiplied alpha
         #       15bits are used, but fully opaque or white is stored as 2**15 (requiring 16 bits)
         #       This is to allow many calcuations to divide by 2**15 instead of (2**16-1)
-        self.rgba   = zeros((N, N, 4), 'uint16')
+        if copy_from is None:
+            self.rgba = zeros((N, N, 4), 'uint16')
+        else:
+            self.rgba = copy_from.rgba.copy()
         self.readonly = False
 
     def copy(self):
-        t = Tile()
-        t.rgba[:] = self.rgba[:]
-        return t
+        return Tile(copy_from=self)
         
 transparentTile = Tile()
 
