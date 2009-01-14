@@ -53,6 +53,10 @@ class Window(gtk.Window):
         b.connect('clicked', self.save_as_default_cb)
         hbox.pack_start(b)
 
+        b = gtk.Button('done')
+        b.connect('clicked', lambda w: self.hide())
+        hbox.pack_start(b)
+
     def color_changed_cb(self, widget):
         rgb = self.cs.get_current_color()
         rgb = rgb.red, rgb.green, rgb.blue
