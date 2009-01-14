@@ -443,11 +443,16 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.window.set_cursor(gdk.Cursor(cursor,mask,gdk.color_parse('black'), gdk.color_parse('white'),(d+1)/2,(d+1)/2))
 
     def layer_selected_cb(self):
+        self.queue_draw() # fast enough
+        if self.show_layers_above:
+            self.blink_current_layer()
+
+    def blink_current_layer(self):
+        self.queue_draw() # fast enough
         self.hide_current_layer = True
-        self.queue_draw() # OPTIMIZE
         def unhide():
             self.hide_current_layer = False
-            self.queue_draw() # OPTIMIZE
+            self.queue_draw()
         self.blink_layer_timeout = gobject.timeout_add(200, unhide)
 
     def toggle_show_layers_above(self):

@@ -152,13 +152,14 @@ class Window(gtk.Window):
               <menuitem action='BackgroundWindow'/>
               <menuitem action='ClearLayer'/>
               <separator/>
-              <menuitem action='NewLayerBG'/>
               <menuitem action='NewLayerFG'/>
+              <menuitem action='NewLayerBG'/>
               <menuitem action='RemoveLayer'/>
               <separator/>
-              <menuitem action='LayerBG'/>
-              <menuitem action='LayerFG'/>
               <menuitem action='PickLayer'/>
+              <menuitem action='LayerFG'/>
+              <menuitem action='LayerBG'/>
+              <menuitem action='BlinkLayer'/>
               <menuitem action='ToggleAbove'/>
             </menu>
             <menu action='DebugMenu'>
@@ -231,14 +232,15 @@ class Window(gtk.Window):
             ('LayerMenu',    None, 'Layers'),
 
             ('BackgroundWindow', None, 'Background...', None, None, self.toggleWindow_cb),
-            ('ClearLayer',   None, 'Clear Layer', '<control>period', None, self.clear_layer_cb),
+            ('ClearLayer',   None, 'Clear Layer', 'Delete', None, self.clear_layer_cb),
             ('PickLayer',    None, 'Select Layer at Cursor', 'h', None, self.pick_layer_cb),
-            ('LayerBG',      None, 'Next Layer (behind current)', 'j', None, self.layer_bg_cb),
-            ('LayerFG',      None, 'Next Layer (above current)',  'k', None, self.layer_fg_cb),
-            ('NewLayerBG',   None, 'New Layer (behind current)', '<control>j', None, self.new_layer_cb),
-            ('NewLayerFG',   None, 'New Layer (above current)', '<control>k', None, self.new_layer_cb),
+            ('LayerFG',      None, 'Next Layer (above current)',  'Page_Up', None, self.layer_fg_cb),
+            ('LayerBG',      None, 'Next Layer (behind current)', 'Page_Down', None, self.layer_bg_cb),
+            ('NewLayerFG',   None, 'New Layer (above current)', '<control>Page_Up', None, self.new_layer_cb),
+            ('NewLayerBG',   None, 'New Layer (behind current)', '<control>Page_Down', None, self.new_layer_cb),
+            ('BlinkLayer',   None, 'Blink Current Layer', 'Home', None, self.blink_layer_cb),
             ('RemoveLayer',  None, 'Remove Layer', None, None, self.remove_layer_cb),
-            ('ToggleAbove',  None, 'Toggle Layers Above Current', 'l', None, self.toggle_layers_above_cb),
+            ('ToggleAbove',  None, 'Toggle Layers Above Current', 'End', None, self.toggle_layers_above_cb), # TODO: make toggle action
 
             ('BrushSelectionWindow',  None, 'Brush List...', 'b', None, self.toggleWindow_cb),
             ('BrushSettingsWindow',   None, 'Brush Settings...', '<control>b', None, self.toggleWindow_cb),
@@ -488,12 +490,16 @@ class Window(gtk.Window):
 
     def layer_bg_cb(self, action):
         idx = self.doc.layer_idx - 1
-        if idx < 0: return
+        if idx < 0:
+            self.tdw.blink_current_layer()
+            return
         self.doc.select_layer(idx)
 
     def layer_fg_cb(self, action):
         idx = self.doc.layer_idx + 1
-        if idx >= len(self.doc.layers): return
+        if idx >= len(self.doc.layers):
+            self.tdw.blink_current_layer()
+            return
         self.doc.select_layer(idx)
 
     def pick_layer_cb(self, action):
@@ -504,6 +510,9 @@ class Window(gtk.Window):
                 self.doc.select_layer(idx)
                 return
         self.doc.select_layer(0)
+
+    def blink_layer_cb(self, action):
+        self.tdw.blink_current_layer()
 
     def new_layer_cb(self, action):
         insert_idx = self.doc.layer_idx
