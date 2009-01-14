@@ -235,9 +235,9 @@ class Window(gtk.Window):
             ('ClearLayer',   None, 'Clear Layer', 'Delete', None, self.clear_layer_cb),
             ('PickLayer',    None, 'Select Layer at Cursor', 'h', None, self.pick_layer_cb),
             ('LayerFG',      None, 'Next Layer (above current)',  'Page_Up', None, self.layer_fg_cb),
-            ('LayerBG',      None, 'Next Layer (behind current)', 'Page_Down', None, self.layer_bg_cb),
+            ('LayerBG',      None, 'Next Layer (below current)', 'Page_Down', None, self.layer_bg_cb),
             ('NewLayerFG',   None, 'New Layer (above current)', '<control>Page_Up', None, self.new_layer_cb),
-            ('NewLayerBG',   None, 'New Layer (behind current)', '<control>Page_Down', None, self.new_layer_cb),
+            ('NewLayerBG',   None, 'New Layer (below current)', '<control>Page_Down', None, self.new_layer_cb),
             ('BlinkLayer',   None, 'Blink Current Layer', 'Home', None, self.blink_layer_cb),
             ('RemoveLayer',  None, 'Remove Layer', None, None, self.remove_layer_cb),
             ('ToggleAbove',  None, 'Toggle Layers Above Current', 'End', None, self.toggle_layers_above_cb), # TODO: make toggle action
@@ -753,8 +753,9 @@ class Window(gtk.Window):
                     letter = chr(ord(name[-1]) + 1)
                     name = name[:-2]
                 name = name + '_' + letter
-                filename = name + '.png'
-                if not os.path.exists(filename):
+                filename = name
+                exists = os.path.exists 
+                if not exists(filename+'.png') and not exists(filename+'.ora'):
                     break
         else:
             # we don't have a filename yet
@@ -767,7 +768,12 @@ class Window(gtk.Window):
                 number = int(res[0])
                 if number > maximum:
                     maximum = number
-            filename = '%s%03d.png' % (prefix, maximum+1)
+            filename = '%s%03d' % (prefix, maximum+1)
+
+        if self.doc.is_layered():
+            filename += '.ora'
+        else:
+            filename += '.png'
 
         assert not os.path.exists(filename)
         self.save_file(filename)

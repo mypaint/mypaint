@@ -221,6 +221,13 @@ class Document():
         self.clear()
         self.load_layer_from_pixbuf(pixbuf)
 
+    def is_layered(self):
+        count = 0
+        for l in self.layers:
+            if not l.surface.is_empty():
+                count += 1
+        return count > 1
+
     def save(self, filename):
         trash, ext = os.path.splitext(filename)
         ext = ext.lower().replace('.', '')
