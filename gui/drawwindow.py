@@ -63,6 +63,11 @@ class Window(gtk.Window):
 
         self.filename = None
 
+        filename = os.path.join(self.app.confpath, 'save_history.conf')
+        if os.path.exists(filename):
+            self.save_history = [line.strip() for line in open(filename)]
+        else:
+            self.save_history = []
 
     def create_ui(self):
         ag = gtk.ActionGroup('WindowActions')
@@ -73,6 +78,7 @@ class Window(gtk.Window):
             <menu action='FileMenu'>
               <menuitem action='New'/>
               <menuitem action='Open'/>
+              <menuitem action='OpenNext'/>
               <separator/>
               <menuitem action='Save'/>
               <menuitem action='SaveAs'/>
@@ -180,6 +186,7 @@ class Window(gtk.Window):
             ('FileMenu',     None, 'File'),
             ('New',          None, 'New', '<control>N', None, self.new_cb),
             ('Open',         None, 'Open...', '<control>O', None, self.open_cb),
+            ('OpenNext',     None, 'Open Recent', 'F3', None, self.open_next_cb),
             ('Save',         None, 'Save', '<control>S', None, self.save_cb),
             ('SaveAs',       None, 'Save As...', '<control><shift>S', None, self.save_as_cb),
             ('SaveNext',     None, 'Save as Scrap', 'F2', None, self.save_next_cb),
@@ -634,7 +641,10 @@ class Window(gtk.Window):
             raise
         else:
             print 'Saved to ' + filename
-
+            self.save_history.append(os.path.abspath(filename))
+            self.save_history = self.save_history[-100:]
+            f = open(os.path.join(self.app.confpath, 'save_history.conf'), 'w')
+            f.write('\n'.join(self.save_history))
 
     def confirm_destructive_action(self, title='Confirm', question='Really continue?'):
         #t = self.get_unsaved_painting_time()
@@ -710,6 +720,7 @@ class Window(gtk.Window):
         else:
             self.save_file(self.filename)
 
+
     def save_as_cb(self, action):
         dialog = gtk.FileChooserDialog("Save..", self,
                                        gtk.FILE_CHOOSER_ACTION_SAVE,
@@ -777,6 +788,24 @@ class Window(gtk.Window):
 
         assert not os.path.exists(filename)
         self.save_file(filename)
+
+    def open_next_cb(self, action):
+        # add possibly stale files to save history
+        prefix = self.app.settingsWindow.save_next_prefix
+        l = glob(prefix + '*.png') + glob(prefix + '*.ora')
+        l = [x for x in l if x not in self.save_history]
+        self.save_history = l + self.save_history
+        self.save_history.sort(key=os.path.getmtime)
+        # TODO: maybe group same-image stuff together and only load most recent?
+        idx = -1
+        if self.filename in self.save_history:
+            idx = self.save_history.index(self.filename) - 1
+            if idx == -1:
+                return
+
+        if not self.confirm_destructive_action():
+            return
+        self.open_file(self.save_history[idx])
 
     def quit_cb(self, *trash):
         #self.finish_pending_actions()
