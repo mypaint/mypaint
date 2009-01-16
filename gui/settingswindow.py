@@ -108,7 +108,7 @@ class Window(gtk.Window):
     def save_settings_and_hide(self, *trash):
         f = open(self.filename, 'w')
         print >>f, 'global_pressure_mapping =', self.cv.points
-        print >>f, 'save_next_prefix =', repr(self.save_next_prefix)
+        print >>f, 'save_scrap_prefix =', repr(self.save_scrap_prefix)
         print >>f, 'input_devices_mode =', repr(self.input_devices_mode)
         f.close()
         self.hide()
@@ -116,7 +116,7 @@ class Window(gtk.Window):
     def load_settings(self, widget, startup=False):
         # 1. set defaults
         self.global_pressure_mapping = [(0.0, 1.0), (1.0, 0.0)]
-        self.save_next_prefix = 'scrap'
+        self.save_scrap_prefix = 'scrap'
         self.input_devices_mode = 'screen'
         # 2. parse config file
         if os.path.exists(self.filename):
@@ -141,7 +141,7 @@ class Window(gtk.Window):
             #for i, (x, y) in enumerate(p):
             #    mydrawwidget.global_pressure_mapping_set_point(i, x, 1.0-y)
 
-        self.prefix_entry.set_text(self.save_next_prefix)
+        self.prefix_entry.set_text(self.save_scrap_prefix)
 
         self.input_devices_combo.set_active(device_modes.index(self.input_devices_mode))
 
@@ -169,5 +169,5 @@ class Window(gtk.Window):
         self.apply_settings()
 
     def prefix_entry_changed_cb(self, widget):
-        self.save_next_prefix = widget.get_text()
+        self.save_scrap_prefix = widget.get_text()
 

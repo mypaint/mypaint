@@ -255,6 +255,13 @@ class Document():
     def load_png(self, filename):
         self.load_from_pixbuf(gdk.pixbuf_new_from_file(filename))
 
+    def load_jpg(self, filename):
+        self.load_from_pixbuf(gdk.pixbuf_new_from_file(filename))
+
+    def save_jpg(self, filename):
+        pixbuf = self.render_as_pixbuf()
+        pixbuf.save(filename, 'jpeg', {'quality':'90'})
+
     def save_ora(self, filename):
         tempdir = tempfile.mkdtemp('mypaint')
         z = zipfile.ZipFile(filename, 'w', compression=zipfile.ZIP_STORED)

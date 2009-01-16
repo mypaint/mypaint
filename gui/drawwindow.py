@@ -8,14 +8,20 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-"the main drawing window"
+"""
+This is the main drawing window.
+"""
+
 MYPAINT_VERSION="0.6.0-svn"
-import gtk, os, zlib, random, re, math
-from gtk import gdk, keysyms
-import tileddrawwidget, colorselectionwindow
-from lib import document #, command
+
+import os, re, math
 from time import time
 from glob import glob
+import gtk
+from gtk import gdk, keysyms
+
+import tileddrawwidget, colorselectionwindow
+from lib import document
 
 class Window(gtk.Window):
     def __init__(self, app):
@@ -78,11 +84,11 @@ class Window(gtk.Window):
             <menu action='FileMenu'>
               <menuitem action='New'/>
               <menuitem action='Open'/>
-              <menuitem action='OpenNext'/>
+              <menuitem action='OpenRecent'/>
               <separator/>
               <menuitem action='Save'/>
               <menuitem action='SaveAs'/>
-              <menuitem action='SaveNext'/>
+              <menuitem action='SaveScrap'/>
               <separator/>
               <menuitem action='Quit'/>
             </menu>
@@ -186,10 +192,10 @@ class Window(gtk.Window):
             ('FileMenu',     None, 'File'),
             ('New',          None, 'New', '<control>N', None, self.new_cb),
             ('Open',         None, 'Open...', '<control>O', None, self.open_cb),
-            ('OpenNext',     None, 'Open Recent', 'F3', None, self.open_next_cb),
+            ('OpenRecent',   None, 'Open Recent', 'F3', None, self.open_recent_cb),
             ('Save',         None, 'Save', '<control>S', None, self.save_cb),
             ('SaveAs',       None, 'Save As...', '<control><shift>S', None, self.save_as_cb),
-            ('SaveNext',     None, 'Save as Scrap', 'F2', None, self.save_next_cb),
+            ('SaveScrap',    None, 'Save as Scrap', 'F2', None, self.save_scrap_cb),
             ('Quit',         None, 'Quit', None, None, self.quit_cb),
 
 
@@ -676,13 +682,14 @@ class Window(gtk.Window):
 
     def add_file_filters(self, dialog):
         f = gtk.FileFilter()
-        f.set_name("Any Format (*.png; *.ora)")
+        f.set_name("Any Format (*.png; *.ora; *.jpg)")
         f.add_pattern("*.png")
         f.add_pattern("*.ora")
+        f.add_pattern("*.jpg")
         dialog.add_filter(f)
 
         f = gtk.FileFilter()
-        f.set_name("PNG without layers (*.png)")
+        f.set_name("PNG (*.png)")
         f.add_pattern("*.png")
         dialog.add_filter(f)
 
@@ -691,10 +698,10 @@ class Window(gtk.Window):
         f.add_pattern("*.ora")
         dialog.add_filter(f)
 
-        #f = gtk.FileFilter()
-        #f.set_name("MyPaint (*.myp)")
-        #f.add_pattern("*.myp")
-        #dialog.add_filter(f)
+        f = gtk.FileFilter()
+        f.set_name("JPEG (*.jpg)")
+        f.add_pattern("*.jpg")
+        dialog.add_filter(f)
 
     def open_cb(self, action):
         if not self.confirm_destructive_action():
@@ -728,6 +735,7 @@ class Window(gtk.Window):
                                         gtk.STOCK_SAVE, gtk.RESPONSE_OK))
         dialog.set_default_response(gtk.RESPONSE_OK)
         self.add_file_filters(dialog)
+        dialog.set_do_overwrite_confirmation(True)
 
         if self.filename:
             dialog.set_filename(self.filename)
@@ -735,25 +743,19 @@ class Window(gtk.Window):
             if dialog.run() == gtk.RESPONSE_OK:
                 filename = dialog.get_filename()
                 trash, ext = os.path.splitext(filename)
+                assert filename
                 if not ext:
-                    filename += '.png'
-                    #filename += '.myp'
-                    # TODO: auto-propose .ora when using layers or non-solid background patterns
-                if os.path.exists(filename):
-                    d2 = gtk.Dialog("Overwrite?",
-                         self,
-                         gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                         (gtk.STOCK_YES, gtk.RESPONSE_ACCEPT,
-                          gtk.STOCK_NO, gtk.RESPONSE_REJECT))
-                    if d2.run() != gtk.RESPONSE_ACCEPT:
-                        filename = None
-                    d2.destroy()
-                if filename:
-                    self.save_file(filename)
+                    # #ç%&! file dialog does not add extension from the choosen type filter
+                    # FIXME: figure this out...?
+                    if self.doc.is_layered():
+                        filename += '.ora'
+                    else:
+                        filename += '.png'
+                self.save_file(filename)
         finally:
             dialog.destroy()
 
-    def save_next_cb(self, action):
+    def save_scrap_cb(self, action):
         filename = self.filename
         if filename:
             while True:
@@ -766,11 +768,11 @@ class Window(gtk.Window):
                 name = name + '_' + letter
                 filename = name
                 exists = os.path.exists 
-                if not exists(filename+'.png') and not exists(filename+'.ora'):
+                if not exists(filename+'.png') and not exists(filename+'.ora') and not exists(filename+'.jpg'):
                     break
         else:
             # we don't have a filename yet
-            prefix = self.app.settingsWindow.save_next_prefix
+            prefix = self.app.settingsWindow.save_scrap_prefix
             maximum = 0
             for filename in glob(prefix + '[0-9][0-9][0-9]*'):
                 filename = filename[len(prefix):]
@@ -789,26 +791,36 @@ class Window(gtk.Window):
         assert not os.path.exists(filename)
         self.save_file(filename)
 
-    def open_next_cb(self, action):
-        # add possibly stale files to save history
-        prefix = self.app.settingsWindow.save_next_prefix
-        l = glob(prefix + '*.png') + glob(prefix + '*.ora')
+    def open_recent_cb(self, action):
+        # feed history with scrap directory (mainly for initial history)
+        prefix = self.app.settingsWindow.save_scrap_prefix
+        l = glob(prefix + '*.png') + glob(prefix + '*.ora') + glob(prefix + '*.jpg')
         l = [x for x in l if x not in self.save_history]
         self.save_history = l + self.save_history
         self.save_history.sort(key=os.path.getmtime)
-        # TODO: maybe group same-image stuff together and only load most recent?
+
+        # pick the next most recent file from the history
         idx = -1
         if self.filename in self.save_history:
-            idx = self.save_history.index(self.filename) - 1
-            if idx == -1:
-                return
+            def basename(filename):
+                """get the work name, stripping file type and revision index"""
+                # this mainly is for the scraps that we save
+                l = re.findall(r'(.*)(_[a-z])\.png', filename)
+                if l:
+                    return l[0][0]
+                else:
+                    return os.path.splitext(filename)[0]
+            idx = self.save_history.index(self.filename)
+            while basename(self.save_history[idx]) == basename(self.filename):
+                idx -= 1
+                if idx == -1:
+                    return
 
         if not self.confirm_destructive_action():
             return
         self.open_file(self.save_history[idx])
 
     def quit_cb(self, *trash):
-        #self.finish_pending_actions()
         self.doc.split_stroke()
         self.app.save_gui_config() # FIXME: should do this periodically, not only on quit
 
