@@ -108,8 +108,8 @@ class Window(gtk.Window):
               <menuitem action='ZoomOut'/>
               <menuitem action='Zoom1'/>
               <separator/>
-              <menuitem action='RotateRight'/>
               <menuitem action='RotateLeft'/>
+              <menuitem action='RotateRight'/>
               <menuitem action='Rotate0'/>
               <menuitem action='Flip'/>
               <separator/>
@@ -275,8 +275,8 @@ class Window(gtk.Window):
             ('ZoomIn',       None, 'Zoom In', 'period', None, self.zoom_cb),
             ('ZoomOut',      None, 'Zoom Out', 'comma', None, self.zoom_cb),
             ('Zoom1',        None, 'Zoom 1:1', None, None, self.zoom_cb),
-            ('RotateRight',  None, 'Rotate Clockwise', 'n', None, self.rotate_cb),
-            ('RotateLeft',   None, 'Rotate Counterclockwise', 'm', None, self.rotate_cb),
+            ('RotateLeft',   None, 'Rotate Counterclockwise', 'n', None, self.rotate_cb),
+            ('RotateRight',  None, 'Rotate Clockwise', 'm', None, self.rotate_cb),
             ('Rotate0',      None, 'Rotate Reset', None, None, self.rotate_cb),
             ('ViewHelp',     None, 'Help', None, None, self.view_help_cb),
             ]
