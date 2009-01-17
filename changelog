@@ -1,3 +1,10 @@
+Version 0.6.0:
+- Layers and Transparency
+- Background color and pattterns
+- Eraser mode
+- Save and load OpenRaster
+- Canvas rotation (via keyboard shortcuts only)
+- Very fast undo with limited steps
 
 Version 0.5.1:
 - Fullscreen mode was implemented.

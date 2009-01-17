@@ -611,6 +611,22 @@ class Window(gtk.Window):
         if v < 0.0: v = 0.0
         self.app.brush.set_color_hsv((h, s, v))
         
+    def with_wait_cursor(func):
+        """python decorator that adds a wait cursor around a function"""
+        def wrapper(self, *args, **kwargs):
+            self.window.set_cursor(gdk.Cursor(gdk.WATCH))
+            self.tdw.window.set_cursor(None)
+            # make sure it is actually changed before we return
+            while gtk.events_pending():
+                gtk.main_iteration(False)
+            try:
+                func(self, *args, **kwargs)
+            finally:
+                self.window.set_cursor(None)
+                self.tdw.update_cursor(force=True)
+        return wrapper
+    
+    @with_wait_cursor
     def open_file(self, filename):
         try:
             # TODO: that would be "open_file_as_layer"
@@ -631,6 +647,7 @@ class Window(gtk.Window):
             self.rotate('Rotate0')
             self.tdw.recenter_document()
 
+    @with_wait_cursor
     def save_file(self, filename):
         self.filename = filename
         try:

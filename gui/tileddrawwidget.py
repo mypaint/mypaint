@@ -402,7 +402,7 @@ class TiledDrawWidget(gtk.DrawingArea):
     def brush_modified_cb(self):
         self.update_cursor()
 
-    def update_cursor(self):
+    def update_cursor(self, force=False):
         #return
         # OPTIMIZE: looks like big cursors can be a major slowdown with X11
         #   if everything breaks down, we could only show brush shape shortly after changes
@@ -414,7 +414,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         if d < 6: d = 6
         if eraser and d < 8: d = 8
         if d > 500: d = 500 # hm, better ask display for max cursor size? also, 500 is pretty slow
-        if self.cursor_info == (d, eraser):
+        if self.cursor_info == (d, eraser) and not force:
             return
         self.cursor_info = (d, eraser)
 
