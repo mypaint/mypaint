@@ -117,7 +117,8 @@ class Surface(mypaintlib.TiledSurface):
         new = set(self.tiledict.items())
         dirty = old.symmetric_difference(new)
         bbox = get_tiles_bbox([pos for (pos, tile) in dirty])
-        self.notify_observers(*bbox)
+        if not bbox.empty():
+            self.notify_observers(*bbox)
 
     def render_as_pixbuf(self):
         if not self.tiledict:

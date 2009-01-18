@@ -155,6 +155,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         
         if w == 0 and h == 0:
             # full redraw (used when background has changed)
+            #print 'full redraw'
             self.queue_draw()
             return
 

@@ -64,6 +64,7 @@ class Document():
         self.stroke = None
         self.canvas_observers = []
         self.layer_observers = []
+        self.unsaved_painting_time = 0.0
 
         self.clear(True)
 
