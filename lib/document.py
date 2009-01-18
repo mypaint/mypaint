@@ -98,6 +98,7 @@ class Document():
             after = self.layer.save_snapshot()
             self.command_stack.do(command.Stroke(self, self.stroke, before, after))
             self.snapshot_before_stroke = after
+            self.unsaved_painting_time += self.stroke.total_painting_time
         self.stroke = None
 
     def select_layer(self, idx):
@@ -174,13 +175,6 @@ class Document():
             surface = layer.surface
             surface.composite_tile_over(dst, tx, ty)
             
-    def get_total_painting_time(self):
-        t = 0.0
-        for cmd in self.command_stack.undo_stack:
-            if isinstance(cmd, command.Stroke):
-                t += cmd.stroke.total_painting_time
-        return t
-
     def add_layer(self, insert_idx):
         self.do(command.AddLayer(self, insert_idx))
 
@@ -235,6 +229,7 @@ class Document():
         print ext
         save = getattr(self, 'save_' + ext, self.unsupported)
         save(filename)
+        self.unsaved_painting_time = 0.0
 
     def load(self, filename):
         trash, ext = os.path.splitext(filename)
@@ -242,6 +237,7 @@ class Document():
         load = getattr(self, 'load_' + ext, self.unsupported)
         load(filename)
         self.command_stack.clear()
+        self.unsaved_painting_time = 0.0
 
     def unsupported(self, filename):
         raise ValueError, 'Unkwnown file format extension: ' + repr(filename)
