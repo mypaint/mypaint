@@ -668,6 +668,10 @@ class Window(gtk.Window):
             self.save_history = self.save_history[-100:]
             f = open(os.path.join(self.app.confpath, 'save_history.conf'), 'w')
             f.write('\n'.join(self.save_history))
+            ## tell other gtk applications
+            ## (hm, is there any application that uses this at all? or is the code below wrong?)
+            #manager = gtk.recent_manager_get_default()
+            #manager.add_item(os.path.abspath(filename))
 
     def confirm_destructive_action(self, title='Confirm', question='Really continue?'):
         t = self.doc.unsaved_painting_time
@@ -679,15 +683,21 @@ class Window(gtk.Window):
             t = '%d minutes' % (t/60)
         else:
             t = '%d seconds' % t
-        d = gtk.MessageDialog(type = gtk.MESSAGE_QUESTION,
-                              buttons = gtk.BUTTONS_YES_NO,
-                              flags = gtk.DIALOG_MODAL,
-                              )
-        d.set_title(title)
-        d.set_markup("<b>" + question + "</b>\n\nThis will discard %s of unsaved painting." % t)
+        d = gtk.Dialog(title, 
+                       self,
+                       gtk.DIALOG_MODAL,
+                       (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
+                        gtk.STOCK_DISCARD, gtk.RESPONSE_OK))
+        d.set_has_separator(False)
+        d.set_default_response(gtk.RESPONSE_OK)
+        l = gtk.Label()
+        l.set_markup("<b>" + question + "</b>\n\nThis will discard %s of unsaved painting." % t)
+        l.set_padding(10, 10)
+        l.show()
+        d.vbox.pack_start(l)
         response = d.run()
         d.destroy()
-        return response == gtk.RESPONSE_YES
+        return response == gtk.RESPONSE_OK
 
     def new_cb(self, action):
         if not self.confirm_destructive_action():
@@ -812,8 +822,10 @@ class Window(gtk.Window):
         prefix = self.app.settingsWindow.save_scrap_prefix
         l = glob(prefix + '*.png') + glob(prefix + '*.ora') + glob(prefix + '*.jpg')
         l = [x for x in l if x not in self.save_history]
-        self.save_history = l + self.save_history
-        self.save_history.sort(key=os.path.getmtime)
+        l = l + self.save_history
+        l = [x for x in l if os.path.exists(x)]
+        l.sort(key=os.path.getmtime)
+        self.save_history = l
 
         # pick the next most recent file from the history
         idx = -1
