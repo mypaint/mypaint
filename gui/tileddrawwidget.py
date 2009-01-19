@@ -74,6 +74,8 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.show_layers_above = True
         self.doc.layer_observers.append(self.layer_selected_cb)
 
+        self.pressure_mapping = None
+
     def set_scroll_at_edges(self, choice):
       self.scroll_at_edges = choice
       
@@ -147,6 +149,9 @@ class TiledDrawWidget(gtk.DrawingArea):
             print 'no brush!'
             return
 
+        func = self.pressure_mapping
+        if func:
+            pressure = func(pressure)
         self.doc.stroke_to(dtime, x, y, pressure)
 
     def canvas_modified_cb(self, x1, y1, w, h):

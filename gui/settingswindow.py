@@ -9,7 +9,9 @@
 "preferences dialog"
 import gtk, os
 gdk = gtk.gdk
+
 from functionwindow import CurveWidget
+from lib import mypaintlib
 
 device_modes = ['disabled','screen','window']
 
@@ -135,11 +137,17 @@ class Window(gtk.Window):
         self.cv.queue_draw()
         if len(p) == 2 and abs(p[0][1]-1.0)+abs(p[1][1]-0.0) < 0.0001:
             # 1:1 mapping (mapping disabled)
-            print 'TODO: mydrawwidget.global_pressure_mapping_set_n(0)'
+            self.app.global_pressure_mapping = None
         else:
-            print 'TODO: mydrawwidget.global_pressure_mapping_set_n(len(p))'
-            #for i, (x, y) in enumerate(p):
-            #    mydrawwidget.global_pressure_mapping_set_point(i, x, 1.0-y)
+            # TODO: maybe replace this stupid mapping by a hard<-->soft slider?
+            m = mypaintlib.Mapping(1)
+            m.set_n(0, len(p))
+            for i, (x, y) in enumerate(p):
+                m.set_point(0, i, x, 1.0-y)
+
+            def mapping(pressure):
+                return m.calculate_single_input(pressure)
+            self.app.drawWindow.tdw.pressure_mapping = mapping
 
         self.prefix_entry.set_text(self.save_scrap_prefix)
 
@@ -154,9 +162,10 @@ class Window(gtk.Window):
             for use, val_min, val_max in device.axes:
                 if use == gdk.AXIS_PRESSURE:
                     self.pressure_devices.append(device.name)
-                    if device.mode != self.input_devices_mode:
+                    mode = getattr(gdk, 'MODE_' + self.input_devices_mode.upper())
+                    if device.mode != mode:
                         print 'Setting %s mode for %s' % (self.input_devices_mode, device.name)
-                        device.set_mode(getattr(gdk, 'MODE_' + self.input_devices_mode.upper()))
+                        device.set_mode(mode)
                     break
         self.applying = False
 

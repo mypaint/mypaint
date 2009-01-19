@@ -7,6 +7,7 @@ typedef struct { int x, y, w, h; } Rect;
 
 %include "../brushlib/surface.hpp"
 %include "../brushlib/brush.hpp"
+%include "../brushlib/mapping.hpp"
 %include "tiledsurface.hpp"
 %include "colorselector.hpp"
 %include "colorchanger.hpp"

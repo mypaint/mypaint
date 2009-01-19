@@ -120,6 +120,13 @@ public:
     }
     return result;
   }
+
+  // used in python for the global pressure mapping
+  float calculate_single_input (float input)
+  {
+    assert(inputs == 1); 
+    return calculate(&input);
+  }
 };
 
 #endif
