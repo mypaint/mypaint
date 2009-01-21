@@ -120,10 +120,11 @@ class Surface(mypaintlib.TiledSurface):
         if not bbox.empty():
             self.notify_observers(*bbox)
 
-    def render_as_pixbuf(self):
+    def render_as_pixbuf(self, *args, **kwargs):
         if not self.tiledict:
             print 'WARNING: empty surface'
-        return pixbufsurface.render_as_pixbuf(self, alpha=True)
+        kwargs['alpha'] = True
+        return pixbufsurface.render_as_pixbuf(self, *args, **kwargs)
 
     def save(self, filename):
         pixbuf = self.render_as_pixbuf()

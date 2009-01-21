@@ -370,7 +370,9 @@ class Window(gtk.Window):
         self.doc.redo()
 
     def copy_cb(self, action):
-        pixbuf = self.doc.layer.surface.render_as_pixbuf()
+        # use the full document bbox, so we can past layers back to the correct position
+        bbox = self.doc.get_bbox()
+        pixbuf = self.doc.layer.surface.render_as_pixbuf(*bbox)
         cb = gtk.Clipboard()
         cb.set_image(pixbuf)
 
@@ -380,7 +382,9 @@ class Window(gtk.Window):
             if not pixbuf:
                 print 'The clipboard doeas not contain any image to paste!'
                 return
-            self.doc.load_layer_from_pixbuf(pixbuf)
+            # paste to the upper left of our doc bbox (see above)
+            x, y, w, h = self.doc.get_bbox()
+            self.doc.load_layer_from_pixbuf(pixbuf, x, y)
         cb.request_image(callback)
 
     def brush_modified_cb(self):
