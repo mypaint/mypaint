@@ -706,12 +706,21 @@ class Window(gtk.Window):
         self.doc.set_background(self.app.background)
         self.filename = None
 
-    def add_file_filters(self, dialog):
+    def open_cb(self, action):
+        if not self.confirm_destructive_action():
+            return
+        dialog = gtk.FileChooserDialog("Open..", self,
+                                       gtk.FILE_CHOOSER_ACTION_OPEN,
+                                       (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
+                                        gtk.STOCK_OPEN, gtk.RESPONSE_OK))
+        dialog.set_default_response(gtk.RESPONSE_OK)
+
         f = gtk.FileFilter()
-        f.set_name("Any Format (*.png; *.ora; *.jpg)")
+        f.set_name("All Recognized Formats")
         f.add_pattern("*.png")
         f.add_pattern("*.ora")
         f.add_pattern("*.jpg")
+        f.add_pattern("*.jpeg")
         dialog.add_filter(f)
 
         f = gtk.FileFilter()
@@ -725,19 +734,10 @@ class Window(gtk.Window):
         dialog.add_filter(f)
 
         f = gtk.FileFilter()
-        f.set_name("JPEG (*.jpg)")
+        f.set_name("JPEG (*.jpg; *.jpeg)")
         f.add_pattern("*.jpg")
+        f.add_pattern("*.jpeg")
         dialog.add_filter(f)
-
-    def open_cb(self, action):
-        if not self.confirm_destructive_action():
-            return
-        dialog = gtk.FileChooserDialog("Open..", self,
-                                       gtk.FILE_CHOOSER_ACTION_OPEN,
-                                       (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
-                                        gtk.STOCK_OPEN, gtk.RESPONSE_OK))
-        dialog.set_default_response(gtk.RESPONSE_OK)
-        self.add_file_filters(dialog)
 
         if self.filename:
             dialog.set_filename(self.filename)
@@ -760,23 +760,53 @@ class Window(gtk.Window):
                                        (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
                                         gtk.STOCK_SAVE, gtk.RESPONSE_OK))
         dialog.set_default_response(gtk.RESPONSE_OK)
-        self.add_file_filters(dialog)
         dialog.set_do_overwrite_confirmation(True)
+
+        filter2ext = {}
+
+        f = gtk.FileFilter()
+        if self.doc.is_layered():
+            filter2ext[f] = 'auto ora'
+            f.set_name("Automatic, prefering OpenRaster")
+        else:
+            filter2ext[f] = 'auto png'
+            f.set_name("Automatic, prefering PNG")
+        f.add_pattern("*.png")
+        f.add_pattern("*.ora")
+        f.add_pattern("*.jpg")
+        f.add_pattern("*.jpeg")
+        dialog.add_filter(f)
+
+        f = gtk.FileFilter()
+        filter2ext[f] = 'ora'
+        f.set_name("OpenRaster (*.ora)")
+        f.add_pattern("*.ora")
+        dialog.add_filter(f)
+
+        f = gtk.FileFilter()
+        filter2ext[f] = 'png'
+        f.set_name("PNG without alpha (*.png)")
+        f.add_pattern("*.png")
+        dialog.add_filter(f)
+
+        f = gtk.FileFilter()
+        filter2ext[f] = 'jpg'
+        f.set_name("JPEG 90% quality (*.jpg; *.jpeg)")
+        f.add_pattern("*.jpg")
+        f.add_pattern("*.jpeg")
+        dialog.add_filter(f)
 
         if self.filename:
             dialog.set_filename(self.filename)
         try:
             if dialog.run() == gtk.RESPONSE_OK:
                 filename = dialog.get_filename()
-                trash, ext = os.path.splitext(filename)
+                name, ext = os.path.splitext(filename)
+                ext_filter = filter2ext.get(dialog.get_filter(), 'ora')
+                if not ext_filter.startswith('auto ') or not ext:
+                    # force proper extension
+                    filename = name + '.' + ext_filter.replace('auto ', '')
                 assert filename
-                if not ext:
-                    # #ç%&! file dialog does not add extension from the choosen type filter
-                    # FIXME: figure this out...?
-                    if self.doc.is_layered():
-                        filename += '.ora'
-                    else:
-                        filename += '.png'
                 self.save_file(filename)
         finally:
             dialog.destroy()
@@ -820,7 +850,7 @@ class Window(gtk.Window):
     def open_recent_cb(self, action):
         # feed history with scrap directory (mainly for initial history)
         prefix = self.app.settingsWindow.save_scrap_prefix
-        l = glob(prefix + '*.png') + glob(prefix + '*.ora') + glob(prefix + '*.jpg')
+        l = glob(prefix + '*.png') + glob(prefix + '*.ora') + glob(prefix + '*.jpg') + glob(prefix + '*.jpeg')
         l = [x for x in l if x not in self.save_history]
         l = l + self.save_history
         l = [x for x in l if os.path.exists(x)]

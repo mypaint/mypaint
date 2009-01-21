@@ -226,7 +226,6 @@ class Document():
     def save(self, filename):
         trash, ext = os.path.splitext(filename)
         ext = ext.lower().replace('.', '')
-        print ext
         save = getattr(self, 'save_' + ext, self.unsupported)
         save(filename)
         self.unsaved_painting_time = 0.0
@@ -254,10 +253,12 @@ class Document():
 
     def load_jpg(self, filename):
         self.load_from_pixbuf(gdk.pixbuf_new_from_file(filename))
+    load_jpeg = load_jpg
 
     def save_jpg(self, filename):
         pixbuf = self.render_as_pixbuf()
         pixbuf.save(filename, 'jpeg', {'quality':'90'})
+    save_jpeg = save_jpg
 
     def save_ora(self, filename):
         tempdir = tempfile.mkdtemp('mypaint')
