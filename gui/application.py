@@ -47,6 +47,10 @@ class Application: # singleton
 
         gtk.accel_map_load(os.path.join(self.confpath, 'accelmap.conf'))
 
+        if self.brushes:
+            self.select_brush(self.brushes[0])
+        self.brush.set_color_hsv((0, 0, 0))
+
         if loadimage:
             self.drawWindow.open_file(loadimage)
 
@@ -106,11 +110,6 @@ class Application: # singleton
                 self.contexts[i] = b
             else:
                 self.brushes.append(b)
-
-        if self.brushes:
-            self.select_brush(self.brushes[0])
-
-        self.brush.set_color_hsv((0, 0, 0))
 
     def save_brushorder(self):
         f = open(os.path.join(self.user_brushpath, 'order.conf'), 'w')

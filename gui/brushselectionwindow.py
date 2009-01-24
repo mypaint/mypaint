@@ -49,32 +49,43 @@ class Window(gtk.Window):
         self.tdw.set_size_request(brush.preview_w, brush.preview_h)
         hbox.pack_start(self.tdw, expand=False, fill=False)
 
-        vbox2 = gtk.VBox()
-        hbox.pack_end(vbox2, expand=False, fill=False)
-        #hbox.properties.padding = 10
-        #hbox.set_spacing(10)
+        #vbox2a = gtk.VBox()
+        #hbox.pack_end(vbox2a, expand=True, fill=True, padding=5)
+        #l = self.brush_name_label = gtk.Label()
+        #l.set_justify(gtk.JUSTIFY_LEFT)
+        #vbox2a.pack_start(l, expand=False)
+        #tv = self.brush_info_textview = gtk.TextView()
+        #vbox2a.pack_start(tv, expand=True)
+
+        vbox2b = gtk.VBox()
+        hbox.pack_end(vbox2b, expand=False, fill=False)
+
+        l = self.brush_name_label = gtk.Label()
+        l.set_justify(gtk.JUSTIFY_LEFT)
+        l.set_text('(no name)')
+        vbox2b.pack_start(l, expand=False)
 
         b = gtk.Button('Clear')
         def clear_cb(window):
             self.tdw.doc.clear_layer()
         b.connect('clicked', clear_cb)
-        vbox2.pack_start(b, expand=False)
+        vbox2b.pack_start(b, expand=False)
 
         b = gtk.Button('add as new')
         b.connect('clicked', self.add_as_new_cb)
-        vbox2.pack_start(b, expand=False)
+        vbox2b.pack_start(b, expand=False)
 
         b = gtk.Button('save preview')
         b.connect('clicked', self.update_preview_cb)
-        vbox2.pack_start(b, expand=False)
+        vbox2b.pack_start(b, expand=False)
 
         b = gtk.Button('save settings')
         b.connect('clicked', self.update_settings_cb)
-        vbox2.pack_start(b, expand=False)
+        vbox2b.pack_start(b, expand=False)
 
         b = gtk.Button('delete selected')
         b.connect('clicked', self.delete_selected_cb)
-        vbox2.pack_start(b, expand=False)
+        vbox2b.pack_start(b, expand=False)
 
     def set_preview_pixbuf(self, pixbuf):
         if pixbuf is None:
@@ -138,6 +149,12 @@ class Window(gtk.Window):
 
     def brush_selected_cb(self, brush):
         if brush is None: return
+        name = brush.name
+        if name is None:
+            name = '(no name)'
+        else:
+            name += '.myb'
+        self.brush_name_label.set_text(name)
         if brush is self.app.selected_brush:
             # selected same brush twice: load pixmap
             self.set_preview_pixbuf(brush.preview)
