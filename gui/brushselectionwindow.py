@@ -136,7 +136,7 @@ class Window(gtk.Window):
         hbox.pack_start(gtk.Label('Name'))
 
         e = gtk.Entry()
-        e.set_text(b.name)
+        e.set_text(b.name.replace('_', ' '))
         e.select_region(0, len(b.name))
         def responseToDialog(entry, dialog, response):  
             dialog.response(response)  
@@ -145,7 +145,7 @@ class Window(gtk.Window):
         hbox.pack_start(e)
         d.vbox.show_all()
         if d.run() == gtk.RESPONSE_ACCEPT:
-            new_name = e.get_text()
+            new_name = e.get_text().replace(' ', '_')
             print 'renaming brush', repr(b.name), '-->', repr(new_name)
             if [True for x in self.app.brushes if x.name == new_name]:
                 print 'Target already exists!'
@@ -205,8 +205,8 @@ class Window(gtk.Window):
         name = brush.name
         if name is None:
             name = '(no name)'
-        #else:
-        #    name += '.myb'
+        else:
+            name = name.replace('_', ' ')
         self.brush_name_label.set_text(name)
         if brush is self.app.selected_brush:
             # selected same brush twice: load pixmap
