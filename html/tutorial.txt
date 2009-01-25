@@ -2,6 +2,9 @@
 
 ==Tutorial==
 
+(This tutorial was written for MyPaint 0.5 and is somewhat
+outdated because of this.)
+
 Here I want to explain you how I use my program. My goal for MyPaint
 was "scribble without thinking". I want as little distraction as
 possible from the painting process.
