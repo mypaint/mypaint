@@ -12,7 +12,7 @@
 This is the main drawing window.
 """
 
-MYPAINT_VERSION="0.6.0-svn"
+MYPAINT_VERSION="0.6.0"
 
 import os, re, math
 from time import time
