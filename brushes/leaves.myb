@@ -20,9 +20,9 @@ offset_by_speed_slowness 1.0
 slow_tracking 0.0
 slow_tracking_per_dab 0.0
 tracking_noise 0.0
-color_h 0.141002985802
-color_s 0.616074780389
-color_v 0.406469825284
+color_h 0.0
+color_s 0.0
+color_v 0.0
 change_color_h 0.0 | speed1 (0.000000 -0.000000), (1.000000 -0.120000) | stroke (0.000000 0.000000), (0.651235 -0.007889), (0.706790 0.115704), (0.891975 0.101241), (1.000000 -0.000000)
 change_color_l 0.0
 change_color_hsl_s 0.0
@@ -30,6 +30,7 @@ change_color_v 0.195 | pressure (0.000000 0.000000), (1.000000 -0.570000) | rand
 change_color_hsv_s 0.0 | stroke (0.000000 0.000000), (1.000000 1.690000)
 smudge 0.0
 smudge_length 0.5
+eraser 0.0
 stroke_treshold 0.0
 stroke_duration_logarithmic 2.76
 stroke_holdtime 10.0

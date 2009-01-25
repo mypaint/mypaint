@@ -30,6 +30,7 @@ change_color_v 0.0
 change_color_hsv_s 0.0
 smudge 0.0
 smudge_length 0.5
+eraser 0.0
 stroke_treshold 0.0
 stroke_duration_logarithmic 1.18
 stroke_holdtime 10.0
