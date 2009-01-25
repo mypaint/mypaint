@@ -328,6 +328,8 @@ class Brush(Brush_Lowlevel):
             f.write(self.name + '\n')
             f.close()
 
+        self.preview_changed = True # need to recreate when saving
+
     def remember_mtimes(self):
         prefix = self.get_fileprefix()
         self.preview_mtime = os.path.getmtime(prefix + '_prev.png')

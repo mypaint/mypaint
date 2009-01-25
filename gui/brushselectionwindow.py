@@ -26,6 +26,8 @@ class Window(gtk.Window):
             self.window.set_type_hint(gdk.WINDOW_TYPE_HINT_UTILITY)
         self.connect("realize", set_hint)
 
+        # TODO: evaluate glade/gazpacho, the code below is getting scary
+
         vbox = gtk.VBox()
         self.add(vbox)
 
@@ -44,10 +46,21 @@ class Window(gtk.Window):
         hbox = gtk.HBox()
         hbox.set_border_width(8)
         expander.add(hbox)
+
+        vbox2 = gtk.VBox()
+        hbox.pack_start(vbox2, expand=False, fill=False)
+
         doc = document.Document()
         self.tdw = tileddrawwidget.TiledDrawWidget(doc)
         self.tdw.set_size_request(brush.preview_w, brush.preview_h)
-        hbox.pack_start(self.tdw, expand=False, fill=False)
+        vbox2.pack_start(self.tdw, expand=False, fill=False)
+
+        b = gtk.Button('Clear')
+        def clear_cb(window):
+            self.tdw.doc.clear_layer()
+        b.connect('clicked', clear_cb)
+        vbox2.pack_start(b, expand=False, padding=5)
+
 
         #vbox2a = gtk.VBox()
         #hbox.pack_end(vbox2a, expand=True, fill=True, padding=5)
@@ -65,14 +78,12 @@ class Window(gtk.Window):
         l.set_text('(no name)')
         vbox2b.pack_start(l, expand=False)
 
-        b = gtk.Button('Clear')
-        def clear_cb(window):
-            self.tdw.doc.clear_layer()
-        b.connect('clicked', clear_cb)
-        vbox2b.pack_start(b, expand=False)
-
         b = gtk.Button('add as new')
         b.connect('clicked', self.add_as_new_cb)
+        vbox2b.pack_start(b, expand=False)
+
+        b = gtk.Button('rename...')
+        b.connect('clicked', self.rename_cb)
         vbox2b.pack_start(b, expand=False)
 
         b = gtk.Button('save preview')
@@ -106,6 +117,48 @@ class Window(gtk.Window):
         self.app.select_brush(b)
         b.save()
         self.app.save_brushorder()
+
+    def rename_cb(self, window):
+        b = self.app.selected_brush
+        if b is None or not b.name:
+            display = gtk.gdk.display_get_default()
+            display.beep()
+            return
+
+        d = gtk.Dialog("Rename Brush",
+                       self,
+                       gtk.DIALOG_MODAL,
+                       (gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT,
+                        gtk.STOCK_OK, gtk.RESPONSE_ACCEPT))
+
+        hbox = gtk.HBox()
+        d.vbox.pack_start(hbox)
+        hbox.pack_start(gtk.Label('Name'))
+
+        e = gtk.Entry()
+        e.set_text(b.name)
+        e.select_region(0, len(b.name))
+        def responseToDialog(entry, dialog, response):  
+            dialog.response(response)  
+        e.connect("activate", responseToDialog, d, gtk.RESPONSE_ACCEPT)  
+
+        hbox.pack_start(e)
+        d.vbox.show_all()
+        if d.run() == gtk.RESPONSE_ACCEPT:
+            new_name = e.get_text()
+            print 'renaming brush', repr(b.name), '-->', repr(new_name)
+            if [True for x in self.app.brushes if x.name == new_name]:
+                print 'Target already exists!'
+                display = gtk.gdk.display_get_default()
+                display.beep()
+                d.destroy()
+                return
+            b.delete_from_disk()
+            b.name = new_name
+            b.save()
+            self.app.select_brush(b)
+            self.app.save_brushorder()
+        d.destroy()
 
     def update_preview_cb(self, window):
         pixbuf = self.get_preview_pixbuf()
@@ -152,8 +205,8 @@ class Window(gtk.Window):
         name = brush.name
         if name is None:
             name = '(no name)'
-        else:
-            name += '.myb'
+        #else:
+        #    name += '.myb'
         self.brush_name_label.set_text(name)
         if brush is self.app.selected_brush:
             # selected same brush twice: load pixmap
