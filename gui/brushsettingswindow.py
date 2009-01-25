@@ -10,6 +10,7 @@
 import gtk
 import functionwindow
 from lib import brush, brushsettings
+from lib import command, stroke
 
 class Window(gtk.Window):
     def __init__(self, app):
@@ -20,9 +21,17 @@ class Window(gtk.Window):
         self.set_title('Brush settings')
         self.connect('delete-event', self.app.hide_window_cb)
 
+        vbox = gtk.VBox()
+        self.add(vbox)
+
+        cb = self.live_update = gtk.CheckButton('live update the last canvas stroke')
+        vbox.pack_start(cb, expand=False, fill=True, padding=5)
+        cb.connect('toggled', self.live_update_cb)
+        self.app.brush.settings_observers.append(self.live_update_cb)
+
         scroll = gtk.ScrolledWindow()
         scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
-        self.add(scroll)
+        vbox.pack_start(scroll, expand=True, fill=True)
 
         table = gtk.Table(4, len(brushsettings.settings_visible))
         #table.set_border_width(4)
@@ -102,4 +111,19 @@ class Window(gtk.Window):
     def brush_selected_cb(self, brush_selected):
         self.relabel_buttons()
 
+    def live_update_cb(self, *trash):
+        if self.live_update.get_active():
+            doc = self.app.drawWindow.doc
+            cmd = 'something'
+            while cmd:
+                cmd = doc.undo()
+                if isinstance(cmd, command.Stroke):
+                    # found it
+                    # bad design that we need to touch internals document.py here...
+                    new_stroke = cmd.stroke.copy_using_different_brush(self.app.brush)
+                    snapshot_before = doc.layer.save_snapshot()
+                    new_stroke.render(doc.layer.surface)
+                    snapshot_after = doc.layer.save_snapshot()
+                    doc.do(command.Stroke(doc, new_stroke, snapshot_before, snapshot_after))
+                    break
 
