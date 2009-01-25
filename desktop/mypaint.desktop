@@ -1,11 +1,12 @@
 [Desktop Entry]
+Version=1.0
 Encoding=UTF-8
 Name=MyPaint
 Exec=mypaint %U
-Comment=Paint images
-GenericName=Painting Images
-MimeType=application/x-mypaint
+Comment=Paint images from scratch
+GenericName=Image Editor
+MimeType=image/openraster;image/png;image/jpeg;
 Type=Application
 Icon=mypaint_48
 Categories=Graphics;
-
+Terminal=false

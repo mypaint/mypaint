@@ -1,5 +1,8 @@
 import os, sys
 
+python = 'python%d.%d' % (sys.version_info[0], sys.version_info[1])
+print 'Building for', python
+
 try: 
     Glob
 except:
@@ -19,7 +22,7 @@ SConsignFile() # no .scsonsign into $PREFIX please
 #    env = Environment(ENV=os.environ)
 #else:
 
-# Warn user of current set of build options.
+# Warn the user about saved build options.
 if os.path.exists('options.cache'):
     optfile = file('options.cache')
     print "Saved options:", optfile.read().replace("\n", ", ")[:-2]
@@ -45,7 +48,7 @@ if sys.platform == "win32":
     env.ParseConfig('pkg-config --cflags --libs python25') # These two '.pc' files you probably have to make for yourself.
     env.ParseConfig('pkg-config --cflags --libs numpy')    # Place them among the other '.pc' files ( where the 'glib-2.0.pc' is located .. probably )
 else:
-    env.ParseConfig('python-config --cflags --ldflags')
+    env.ParseConfig('python%d.%d-config --cflags --ldflags' % (sys.version_info[0], sys.version_info[1]))
 
 if env.get('CPPDEFINES'):
     # make sure assertions are enabled
@@ -60,6 +63,18 @@ if sys.platform == "win32":
     env2.ParseConfig('pkg-config --cflags --libs python25')
     env2.Program('mypaint', ['mypaint_exe.c'])
 
+def burn_python_version(target, source, env):
+    # make sure we run the python version that we built the extension modules for
+    s =  '#!/usr/bin/env ' + python + '\n'
+    s += '#\n'
+    s += '# DO NOT EDIT - edit %s instead\n' % source[0]
+    s += '#\n'
+    s += open(str(source[0])).read()
+    f = open(str(target[0]), 'w')
+    f.write(s)
+    f.close()
+
+env.Command('mypaint', 'mypaint.in', [burn_python_version, Chmod('$TARGET', 0755)])
 
 env.Alias('install', env['prefix'])
 def install(dst, pattern):
@@ -78,11 +93,7 @@ for dirpath, dirnames, filenames in os.walk('desktop'):
 # mypaint.desktop goes into /usr/share/applications (debian-only or standard?)
 install('share/applications', 'desktop/mypaint.desktop')
 
-
-#env.Install(module, '$PREFIX/lib/mypaint') # location for private compiled extensions
-##env.Install(module, '$PREFIX/share/mypaint') # theoretical location for private pure python modules (meld uses $PREFIX/lib/meld)
-# FIXME: and what if the python version changes?
-# --> A program which requires a specific version of Python must begin with #!/usr/bin/pythonX.Y (or #!/usr/bin/env pythonX.Y). 
+# location for achitecture-dependent modules
 env.Install(os.path.join(env['prefix'], 'lib/mypaint'), module)
 install('share/mypaint/lib', 'lib/*.py')
 install('share/mypaint/gui', 'gui/*.py')
