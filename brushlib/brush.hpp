@@ -220,7 +220,7 @@ private:
     inputs[INPUT_RANDOM] = g_rand_double (rng);
     inputs[INPUT_STROKE] = MIN(states[STATE_STROKE], 1.0);
     //if (states[STATE_NORM_DY_SLOW] == 0 && states[STATE_NORM_DX_SLOW] == 0) {
-    inputs[INPUT_ANGLE] = fmodf(atan2f (states[STATE_NORM_DY_SLOW], states[STATE_NORM_DX_SLOW])/(M_PI) + 1.0, 1.0);
+    //inputs[INPUT_ANGLE] = fmodf(atan2f (states[STATE_NORM_DY_SLOW], states[STATE_NORM_DX_SLOW])/(M_PI) + 1.0, 1.0);
     inputs[INPUT_CUSTOM] = states[STATE_CUSTOM_INPUT];
     if (print_inputs) {
       g_print("press=% 4.3f, speed1=% 4.4f\tspeed2=% 4.4f\tstroke=% 4.3f\tcustom=% 4.3f\n", (double)inputs[INPUT_PRESSURE], (double)inputs[INPUT_SPEED1], (double)inputs[INPUT_SPEED2], (double)inputs[INPUT_STROKE], (double)inputs[INPUT_CUSTOM]);

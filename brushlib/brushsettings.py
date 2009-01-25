@@ -22,7 +22,7 @@ inputs_list = [
     ['speed2',   None, 0.0,  0.5,  4.0, None, "Same as speed1, but changes slower. Also look at the 'speed2 slowness' setting."],
     ['random',   0.0,  0.0,  0.5,  1.0, 1.0,  "Fast random noise, changing at each evaluation. Evenly distributed between 0 and 1."],
     ['stroke',   0.0,  0.0,  0.5,  1.0, 1.0,  "This input slowly goes from zero to one while you draw a stroke. It can also be configured to jump back to zero periodically while you move. Look at the 'stroke duration' and 'stroke hold time' settings."],
-    ['angle',    0.0,  0.0,  0.5,  1.0, 1.0,  "[EXPERIMENTAL] Angle of movement. The dynamics are shared with BRUSH_OFFSET_BY_SPEED_SLOWNESS (FIXME: which is a bad thing)."],
+    #['angle',    0.0,  0.0,  0.5,  1.0, 1.0,  "[EXPERIMENTAL] Angle of movement. The dynamics are shared with BRUSH_OFFSET_BY_SPEED_SLOWNESS (FIXME: which is a bad thing)."],
     ['custom',   None,-2.0,  0.0, +2.0, None, "This is a user defined input. Look at the 'custom input' setting for details."],
     ]
     # [1] If, for example, the user increases the "by pressure" slider
