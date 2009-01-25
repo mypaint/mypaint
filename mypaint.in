@@ -11,6 +11,15 @@ This script does all the platform dependent stuff. Its main task is
 to figure out where the python modules are.
 """
 
+# This helps on slow PCs where the python overhead dominates.
+# (30% higher framerate measured on 533MHz CPU; startup slowdown below 20%)
+# Note: python -O -O does not help.
+try:
+    import psyco
+    psyco.full()
+except ImportError:
+    pass
+
 import sys, os
 join = os.path.join
 

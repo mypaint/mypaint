@@ -145,13 +145,8 @@ class TiledDrawWidget(gtk.DrawingArea):
         #  if (event.y >= (screen_h-1)-trigger_area):
         #    self.scroll(0,10)
 
-        if not self.doc.brush:
-            print 'no brush!'
-            return
-
-        func = self.pressure_mapping
-        if func:
-            pressure = func(pressure)
+        if self.pressure_mapping:
+            pressure = self.pressure_mapping(pressure)
         self.doc.stroke_to(dtime, x, y, pressure)
 
     def canvas_modified_cb(self, x1, y1, w, h):
