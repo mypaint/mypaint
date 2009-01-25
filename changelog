@@ -1,10 +1,10 @@
 Version 0.6.0:
-- Layers and Transparency
+- Layers, transparency and eraser mode
 - Background color and pattterns
-- Eraser mode
-- Save and load OpenRaster
-- Canvas rotation (via keyboard shortcuts only)
-- Very fast undo with limited steps
+- Save OpenRaster
+- Very fast undo, limited number of steps
+- Canvas rotation (via keyboard shortcuts) and mirroring
+- A few great new brushes
 
 Version 0.5.1:
 - Fullscreen mode was implemented.
