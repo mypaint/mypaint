@@ -276,7 +276,9 @@ class TiledDrawWidget(gtk.DrawingArea):
         if not self.show_layers_above:
             layers = self.doc.layers[0:self.doc.layer_idx+1]
         if self.hide_current_layer:
-            layers.pop(self.doc.layer_idx)
+            # experiment
+            layers = [self.doc.layer]
+            #layers.pop(self.doc.layer_idx)
 
         if self.visualize_rendering:
             surface.pixbuf.fill((int(random.random()*0xff)<<16)+0x00000000)
@@ -454,7 +456,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         def unhide():
             self.hide_current_layer = False
             self.queue_draw()
-        self.blink_layer_timeout = gobject.timeout_add(200, unhide)
+        self.blink_layer_timeout = gobject.timeout_add(500, unhide)
 
     def toggle_show_layers_above(self):
         self.show_layers_above = not self.show_layers_above
