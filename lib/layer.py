@@ -50,3 +50,12 @@ class Layer:
         self.background = background
         self.surface.load_snapshot(data)
 
+    def merge_into(self, dst):
+        """
+        Merges this layer into dst, modifying only dst.
+        """
+        src = self
+        dst.background = None # hm... this breaks "full-rerender" capability, but should work fine... FIXME: redesign needed?
+        dst.strokes = [] # this one too...
+        for tx, ty in src.surface.get_tiles():
+            src.surface.composite_tile_over(dst.surface.get_tile_memory(tx, ty, readonly=False), tx, ty)

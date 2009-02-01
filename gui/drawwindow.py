@@ -167,6 +167,7 @@ class Window(gtk.Window):
               <menuitem action='NewLayerFG'/>
               <menuitem action='NewLayerBG'/>
               <menuitem action='RemoveLayer'/>
+              <menuitem action='MergeLayer'/>
               <separator/>
               <menuitem action='PickLayer'/>
               <menuitem action='LayerFG'/>
@@ -251,6 +252,7 @@ class Window(gtk.Window):
             ('LayerBG',      None, 'Next Layer (below current)', 'Page_Down', None, self.layer_bg_cb),
             ('NewLayerFG',   None, 'New Layer (above current)', '<control>Page_Up', None, self.new_layer_cb),
             ('NewLayerBG',   None, 'New Layer (below current)', '<control>Page_Down', None, self.new_layer_cb),
+            ('MergeLayer',   None, 'Merge Layer Down', '<control>Delete', None, self.merge_layer_cb),
             ('BlinkLayer',   None, 'Blink Current Layer', 'Home', None, self.blink_layer_cb),
             ('RemoveLayer',  None, 'Remove Layer', None, None, self.remove_layer_cb),
             ('ToggleAbove',  None, 'Toggle Layers Above Current', 'End', None, self.toggle_layers_above_cb), # TODO: make toggle action
@@ -540,6 +542,12 @@ class Window(gtk.Window):
         if action.get_name() == 'NewLayerFG':
             insert_idx += 1
         self.doc.add_layer(insert_idx)
+
+    def merge_layer_cb(self, action):
+        dst_idx = self.doc.layer_idx - 1
+        if dst_idx < 0:
+            return
+        self.doc.merge_layer(dst_idx)
 
     def toggle_layers_above_cb(self, action):
         self.tdw.toggle_show_layers_above()

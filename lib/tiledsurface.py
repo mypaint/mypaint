@@ -100,11 +100,21 @@ class Surface(mypaintlib.TiledSurface):
         dst[:,:,:] = tmp * 255.0
 
     def composite_tile_over(self, dst, tx, ty):
+        """
+        composite one tile of this surface over the array dst, modifying only dst
+        """
         tile = self.tiledict.get((tx, ty))
         if tile is None:
             return
-        assert dst.shape[2] == 3
-        mypaintlib.tile_composite_rgba16_over_rgb8(tile.rgba, dst)
+        if dst.shape[2] == 3 and dst.dtype == 'uint8':
+            mypaintlib.tile_composite_rgba16_over_rgb8(tile.rgba, dst)
+        elif dst.shape[2] == 4 and dst.dtype == 'uint16':
+            # rarely used (only for merging layers)
+            # premultiplied OVER premultiplied (src=top, dst=bottom)
+            # dstColor = srcColor + (1.0 - srcAlpha) * dstColor
+            src = tile.rgba
+            one_minus_srcAlpha = (1<<15) - src[:,:,3:4].astype('uint32')
+            dst[:,:,:] = src[:,:,:] + ((one_minus_srcAlpha * dst[:,:,:]) >> 15).astype('uint16')
 
     def save_snapshot(self):
         for t in self.tiledict.itervalues():

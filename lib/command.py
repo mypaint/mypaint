@@ -100,6 +100,25 @@ class LoadLayer(Action):
         self.doc.layer.load_snapshot(self.before)
         del self.before
 
+class MergeLayer(Action):
+    """merge the current layer into dst"""
+    def __init__(self, doc, dst_idx):
+        self.doc = doc
+        self.dst_layer = self.doc.layers[dst_idx]
+        self.remove_src = RemoveLayer(doc)
+    def redo(self):
+        self.dst_before = self.dst_layer.save_snapshot()
+        self.doc.layer.merge_into(self.dst_layer)
+        self.remove_src.redo()
+        self.select_dst = SelectLayer(self.doc, self.doc.layers.index(self.dst_layer))
+        self.select_dst.redo()
+    def undo(self):
+        self.select_dst.undo()
+        del self.select_dst
+        self.remove_src.undo()
+        self.dst_layer.load_snapshot(self.dst_before)
+        del self.dst_before
+
 class AddLayer(Action):
     def __init__(self, doc, insert_idx):
         self.doc = doc

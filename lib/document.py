@@ -181,6 +181,9 @@ class Document():
     def remove_layer(self):
         self.do(command.RemoveLayer(self))
 
+    def merge_layer(self, dst_idx):
+        self.do(command.MergeLayer(self, dst_idx))
+
     def load_layer_from_pixbuf(self, pixbuf, x=0, y=0):
         arr = helpers.gdkpixbuf2numpy(pixbuf)
         self.do(command.LoadLayer(self, arr, x, y))
