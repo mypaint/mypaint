@@ -498,6 +498,10 @@ class Window(gtk.Window):
 
     def clear_layer_cb(self, action):
         self.doc.clear_layer()
+        if len(self.doc.layers) == 1:
+            # this is like creating a new document:
+            # make "save next" use a new file name
+            self.filename = None
         
     def remove_layer_cb(self, action):
         if len(self.doc.layers) == 1:
