@@ -456,7 +456,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         def unhide():
             self.hide_current_layer = False
             self.queue_draw()
-        self.blink_layer_timeout = gobject.timeout_add(500, unhide)
+        self.blink_layer_timeout = gobject.timeout_add(1500, unhide)
 
     def toggle_show_layers_above(self):
         self.show_layers_above = not self.show_layers_above
