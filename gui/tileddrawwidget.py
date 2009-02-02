@@ -64,6 +64,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.has_pointer = False
         self.dragfunc = None
         self.hide_current_layer = False
+        self.blink_layer_timeout = None
 
         # gets overwritten for the main window
         self.zoom_max = 5.0
@@ -456,6 +457,9 @@ class TiledDrawWidget(gtk.DrawingArea):
         def unhide():
             self.hide_current_layer = False
             self.queue_draw()
+            self.blink_layer_timeout = None
+        if self.blink_layer_timeout:
+            gobject.source_remove(self.blink_layer_timeout)
         self.blink_layer_timeout = gobject.timeout_add(1500, unhide)
 
     def toggle_show_layers_above(self):
