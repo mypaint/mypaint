@@ -657,15 +657,14 @@ class Window(gtk.Window):
             d.destroy()
             raise
         else:
-            print 'Loaded from', filename
-            self.filename = filename
+            self.filename = os.path.abspath(filename)
+            print 'Loaded from', self.filename
             self.zoom('Zoom1')
             self.rotate('Rotate0')
             self.tdw.recenter_document()
 
     @with_wait_cursor
     def save_file(self, filename):
-        self.filename = filename
         try:
             x, y, w, h =  self.doc.get_bbox()
             assert w > 0 and h > 0, 'The canvas is empty.'
@@ -679,7 +678,8 @@ class Window(gtk.Window):
             print 'Failed to save!'
             raise
         else:
-            print 'Saved to ' + filename
+            self.filename = os.path.abspath(filename)
+            print 'Saved to', self.filename
             self.save_history.append(os.path.abspath(filename))
             self.save_history = self.save_history[-100:]
             f = open(os.path.join(self.app.confpath, 'save_history.conf'), 'w')
