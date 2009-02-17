@@ -282,6 +282,15 @@ class TiledDrawWidget(gtk.DrawingArea):
                     
         tiles = surface.get_tiles()
 
+        if self.current_layer_solo:
+            # FIXME: hack alert!
+            # Should implement FSM for hiding / showing normal / soloing layer, or similar.
+            old_background = self.doc.background_memory
+            self.doc.background_memory = self.neutral_background_pixbuf
+            layers = [self.doc.layer]
+            # this is for hiding instead
+            #layers.pop(self.doc.layer_idx)
+
         for tx, ty in tiles:
             if sparse:
                 # it is worth checking whether this tile really will be visible
@@ -301,27 +310,13 @@ class TiledDrawWidget(gtk.DrawingArea):
                 if gdk_clip_region.rect_in(bbox) == gdk.OVERLAP_RECTANGLE_OUT:
                     continue
 
-            solo = False
-            if self.current_layer_solo:
-                if (tx, ty) in self.doc.layer.surface.get_tiles():
-                    solo = True
-            if solo:
-                # FIXME: hack alert!
-                # Should implement FSM for hiding / showing normal / soloing layer, or similar.
-                old_background = self.doc.background_memory
-                self.doc.background_memory = self.neutral_background_pixbuf
-                layers_old = layers
-                layers = [self.doc.layer]
-                # this is for hiding instead
-                #layers.pop(self.doc.layer_idx)
 
             dst = surface.get_tile_memory(tx, ty)
             self.doc.blit_tile_into(dst, tx, ty, layers)
 
-            if solo:
-                # undo background change (FIXME: Hack alert!)
-                self.doc.background_memory = old_background
-                layers = layers_old
+        if self.current_layer_solo:
+            # undo background change (FIXME: Hack alert!)
+            self.doc.background_memory = old_background
 
         if translation_only:
             # not sure why, but using gdk directly is notably faster than the same via cairo
