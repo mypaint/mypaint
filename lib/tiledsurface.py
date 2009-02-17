@@ -110,7 +110,7 @@ class Surface(mypaintlib.TiledSurface):
             mypaintlib.tile_composite_rgba16_over_rgb8(tile.rgba, dst)
         elif dst.shape[2] == 4 and dst.dtype == 'uint16':
             # rarely used (only for merging layers)
-            # premultiplied OVER premultiplied (src=top, dst=bottom)
+            # src (premultiplied) OVER dst (premultiplied)
             # dstColor = srcColor + (1.0 - srcAlpha) * dstColor
             src = tile.rgba
             one_minus_srcAlpha = (1<<15) - src[:,:,3:4].astype('uint32')

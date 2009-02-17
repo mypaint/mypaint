@@ -7,7 +7,7 @@
 # (at your option) any later version.
 
 from lib import helpers
-import gtk, gobject, numpy, cairo
+import gtk, gobject, numpy, cairo, os
 gdk = gtk.gdk
 from math import floor, ceil, pi
 import time
@@ -63,7 +63,7 @@ class TiledDrawWidget(gtk.DrawingArea):
 
         self.has_pointer = False
         self.dragfunc = None
-        self.hide_current_layer = False
+        self.current_layer_solo = False
         self.blink_layer_timeout = None
 
         # gets overwritten for the main window
@@ -276,10 +276,6 @@ class TiledDrawWidget(gtk.DrawingArea):
         layers = self.doc.layers[:]
         if not self.show_layers_above:
             layers = self.doc.layers[0:self.doc.layer_idx+1]
-        if self.hide_current_layer:
-            # experiment
-            layers = [self.doc.layer]
-            #layers.pop(self.doc.layer_idx)
 
         if self.visualize_rendering:
             surface.pixbuf.fill((int(random.random()*0xff)<<16)+0x00000000)
@@ -305,8 +301,27 @@ class TiledDrawWidget(gtk.DrawingArea):
                 if gdk_clip_region.rect_in(bbox) == gdk.OVERLAP_RECTANGLE_OUT:
                     continue
 
+            solo = False
+            if self.current_layer_solo:
+                if (tx, ty) in self.doc.layer.surface.get_tiles():
+                    solo = True
+            if solo:
+                # FIXME: hack alert!
+                # Should implement FSM for hiding / showing normal / soloing layer, or similar.
+                old_background = self.doc.background_memory
+                self.doc.background_memory = self.neutral_background_pixbuf
+                layers_old = layers
+                layers = [self.doc.layer]
+                # this is for hiding instead
+                #layers.pop(self.doc.layer_idx)
+
             dst = surface.get_tile_memory(tx, ty)
             self.doc.blit_tile_into(dst, tx, ty, layers)
+
+            if solo:
+                # undo background change (FIXME: Hack alert!)
+                self.doc.background_memory = old_background
+                layers = layers_old
 
         if translation_only:
             # not sure why, but using gdk directly is notably faster than the same via cairo
@@ -453,14 +468,14 @@ class TiledDrawWidget(gtk.DrawingArea):
 
     def blink_current_layer(self):
         self.queue_draw() # fast enough
-        self.hide_current_layer = True
+        self.current_layer_solo = True
         def unhide():
-            self.hide_current_layer = False
+            self.current_layer_solo = False
             self.queue_draw()
             self.blink_layer_timeout = None
         if self.blink_layer_timeout:
             gobject.source_remove(self.blink_layer_timeout)
-        self.blink_layer_timeout = gobject.timeout_add(1500, unhide)
+        self.blink_layer_timeout = gobject.timeout_add(800, unhide)
 
     def toggle_show_layers_above(self):
         self.show_layers_above = not self.show_layers_above

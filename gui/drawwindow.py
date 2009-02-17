@@ -21,7 +21,7 @@ import gtk
 from gtk import gdk, keysyms
 
 import tileddrawwidget, colorselectionwindow
-from lib import document
+from lib import document, helpers
 
 class Window(gtk.Window):
     def __init__(self, app):
@@ -49,6 +49,11 @@ class Window(gtk.Window):
         self.doc.set_brush(self.app.brush)
         self.tdw = tileddrawwidget.TiledDrawWidget(self.doc)
         vbox.pack_start(self.tdw)
+
+        # FIXME: hack, to be removed
+        filename = os.path.join(self.app.datapath, 'backgrounds', '03_check1.png')
+        pixbuf = gdk.pixbuf_new_from_file(filename)
+        self.tdw.neutral_background_pixbuf = helpers.gdkpixbuf2numpy(pixbuf)
 
         #self.zoomlevel_values = [0.09, 0.12,  0.18, 0.25, 0.33,  0.50, 0.66,  1.0, 1.5, 2.0, 3.0, 4.0, 5.5, 8.0]
         self.zoomlevel_values = [            2.0/11, 0.25, 1.0/3, 0.50, 2.0/3, 1.0, 1.5, 2.0, 3.0, 4.0, 5.5, 8.0]
