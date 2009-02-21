@@ -43,7 +43,11 @@ class Window(gtk.Window):
         b.set_color_hsv(self.get_color_hsv())
 
     def brush_modified_cb(self):
+        if not self.change_notification:
+            return
+        self.change_notification = False
         self.set_color_hsv(self.app.brush.get_color_hsv())
+        self.change_notification = True
 
     def get_color_hsv(self):
         c = self.cs.get_current_color()
@@ -60,6 +64,8 @@ class Window(gtk.Window):
         return (h, s, v)
 
     def set_color_hsv(self, hsv):
+        if not self.change_notification:
+            return
         if hsv == self.last_known_color_hsv:
             return
         self.last_known_color_hsv = hsv
