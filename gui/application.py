@@ -20,6 +20,7 @@ class Application: # singleton
             filename = os.path.join(self.datapath, 'desktop', size, 'mypaint.png')
             icons.append(gdk.pixbuf_new_from_file(filename))
         gtk.window_set_default_icon_list(*icons)
+        gdk.set_program_class('MyPaint')
 
         self.user_brushpath = os.path.join(self.confpath, 'brushes')
         self.stock_brushpath = os.path.join(self.datapath, 'brushes')
