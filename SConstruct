@@ -48,7 +48,8 @@ if sys.platform == "win32":
     env.ParseConfig('pkg-config --cflags --libs python25') # These two '.pc' files you probably have to make for yourself.
     env.ParseConfig('pkg-config --cflags --libs numpy')    # Place them among the other '.pc' files ( where the 'glib-2.0.pc' is located .. probably )
 else:
-    env.ParseConfig('python%d.%d-config --cflags --ldflags' % (sys.version_info[0], sys.version_info[1]))
+    # not using python2.5-config or python-config2.5 since it's distribution specific
+    env.ParseConfig('python-config --cflags --ldflags')
 
 if env.get('CPPDEFINES'):
     # make sure assertions are enabled
