@@ -519,14 +519,12 @@ class Window(gtk.Window):
     def layer_bg_cb(self, action):
         idx = self.doc.layer_idx - 1
         if idx < 0:
-            self.tdw.blink_current_layer()
             return
         self.doc.select_layer(idx)
 
     def layer_fg_cb(self, action):
         idx = self.doc.layer_idx + 1
         if idx >= len(self.doc.layers):
-            self.tdw.blink_current_layer()
             return
         self.doc.select_layer(idx)
 
