@@ -109,13 +109,11 @@ class Window(gtk.Window):
             <menu action='ViewMenu'>
               <menuitem action='Fullscreen'/>
               <separator/>
+              <menuitem action='ResetView'/>
               <menuitem action='ZoomIn'/>
               <menuitem action='ZoomOut'/>
-              <menuitem action='Zoom1'/>
-              <separator/>
               <menuitem action='RotateLeft'/>
               <menuitem action='RotateRight'/>
-              <menuitem action='Rotate0'/>
               <menuitem action='Flip'/>
               <separator/>
               <menuitem action='ViewHelp'/>
@@ -279,12 +277,11 @@ class Window(gtk.Window):
 
             ('ViewMenu', None, 'View'),
             ('Fullscreen',   None, 'Fullscreen', 'F11', None, self.fullscreen_cb),
+            ('ResetView',   None, 'Reset Zoom and Rotation', None, None, self.reset_view_cb),
             ('ZoomIn',       None, 'Zoom In', 'period', None, self.zoom_cb),
             ('ZoomOut',      None, 'Zoom Out', 'comma', None, self.zoom_cb),
-            ('Zoom1',        None, 'Zoom 1:1', None, None, self.zoom_cb),
             ('RotateLeft',   None, 'Rotate Counterclockwise', 'n', None, self.rotate_cb),
             ('RotateRight',  None, 'Rotate Clockwise', 'm', None, self.rotate_cb),
-            ('Rotate0',      None, 'Rotate Reset', None, None, self.rotate_cb),
             ('ViewHelp',     None, 'Help', None, None, self.view_help_cb),
             ]
         ag.add_actions(actions)
@@ -662,8 +659,7 @@ class Window(gtk.Window):
         else:
             self.filename = os.path.abspath(filename)
             print 'Loaded from', self.filename
-            self.zoom('Zoom1')
-            self.rotate('Rotate0')
+            self.reset_view_cb(None)
             self.tdw.recenter_document()
 
     @with_wait_cursor
@@ -926,7 +922,6 @@ class Window(gtk.Window):
     def zoom(self, command):
         if   command == 'ZoomIn' : self.zoomlevel += 1
         elif command == 'ZoomOut': self.zoomlevel -= 1
-        elif command == 'Zoom1'  : self.zoomlevel = self.zoomlevel_values.index(1.0)
         else: assert 0
         if self.zoomlevel < 0: self.zoomlevel = 0
         if self.zoomlevel >= len(self.zoomlevel_values): self.zoomlevel = len(self.zoomlevel_values) - 1
@@ -936,8 +931,12 @@ class Window(gtk.Window):
     def rotate(self, command):
         if   command == 'RotateRight': self.tdw.rotate(+2*math.pi/14)
         elif command == 'RotateLeft' : self.tdw.rotate(-2*math.pi/14)
-        elif command == 'Rotate0'    : self.tdw.set_rotation(0.0)
         else: assert 0
+
+    def reset_view_cb(self, command):
+        self.tdw.set_rotation(0.0)
+        self.zoomlevel = self.zoomlevel_values.index(1.0)
+        self.tdw.set_zoom(1.0)
 
     def fullscreen_cb(self, *trash):
         # note: there is some ugly flickering when toggling fullscreen
