@@ -62,14 +62,6 @@ class Window(gtk.Window):
         self.tdw.zoom_max = max(self.zoomlevel_values)
         self.fullscreen = False
 
-        self.popups = {
-            'ChangeColorPopup': colorselectionwindow.ChangeColorPopup(self.app),
-            'ColorWheelPopup': colorselectionwindow.ColorWheelPopup(self.app),
-            }
-        for w in self.popups.itervalues():
-            w.connect("unmap-event", self.popup_unmap_cb)
-        self.active_popup = None
-
         self.app.brush.settings_observers.append(self.brush_modified_cb)
 
         self.filename = None
@@ -303,6 +295,20 @@ class Window(gtk.Window):
         sg.add_source_widget(self)
 
         self.layerblink_state = sg.create_state(self.layerblink_state_enter, self.layerblink_state_leave)
+
+        p2s = sg.create_popup_state
+        changer = p2s(colorselectionwindow.ChangeColorPopup(self.app))
+        wheel = p2s(colorselectionwindow.ColorWheelPopup(self.app))
+
+        self.popup_states = {
+            'ChangeColorPopup': changer,
+            'ColorWheelPopup': wheel,
+            }
+        changer.next_state = wheel
+        wheel.next_state = changer
+        changer.autoleave_timeout = None
+        wheel.autoleave_timeout = None
+
 
     def toggleWindow_cb(self, action):
         s = action.get_name()
@@ -582,29 +588,14 @@ class Window(gtk.Window):
             size = 1
         self.app.colorSelectionWindow.pick_color_at_pointer(size)
 
-    def popup_cb(self, action):
-        self.end_eraser_mode()
-        self.popup(action.get_name())
-    def popup(self, name):
-        w = self.popups[name]
-        if w is self.active_popup:
-            # pressed the key for the same popup which is already active
-            w.hide()
-            transitions = {
-                'ChangeColorPopup': 'ColorWheelPopup',
-                'ColorWheelPopup': 'ChangeColorPopup',
-                }
-            if name in transitions:
-                self.popup(transitions[name])
-        else:
-            if self.active_popup:
-                self.active_popup.hide()
-            self.active_popup = w
-            w.popup()
 
-    def popup_unmap_cb(self, widget, event):
-        if self.active_popup is widget:
-            self.active_popup = None
+    def popup_cb(self, action):
+        # This doesn't really belong here...
+        # ...maybe should eraser_mode a GUI state too?
+        self.end_eraser_mode()
+
+        state = self.popup_states[action.get_name()]
+        state.activate(action)
 
     def eraser_cb(self, action):
         adj = self.app.brush_adjustment['eraser']

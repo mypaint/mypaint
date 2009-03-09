@@ -116,7 +116,6 @@ class Window(gtk.Window):
 class ColorSelectorPopup(gtk.Window):
     backend_class = None
     closes_on_picking = True
-    autohide_timeout_ms = 200
     def __init__(self, app):
         gtk.Window.__init__(self, gtk.WINDOW_POPUP)
         self.set_gravity(gdk.GRAVITY_CENTER)
@@ -138,20 +137,19 @@ class ColorSelectorPopup(gtk.Window):
                         gdk.ENTER_NOTIFY |
                         gdk.LEAVE_NOTIFY
                         )
-        self.connect("enter-notify-event", self.enter_notify_cb)
-        self.connect("leave-notify-event", self.leave_notify_cb)
         self.connect("button-release-event", self.button_release_cb)
         self.connect("button-press-event", self.button_press_cb)
-        self.connect("unmap-event", self.unmap_cb)
 
-        self.hide_timeout = None
         self.button_pressed = False
 
-    def popup(self):
+    def enter(self):
         self.update_image()
         self.show_all()
         self.window.set_cursor(gdk.Cursor(gdk.CROSSHAIR))
     
+    def leave(self):
+        self.hide()
+
     def update_image(self):
         size = self.backend.size
         pixbuf = gdk.Pixbuf(gdk.COLORSPACE_RGB, True, 8, size, size)
@@ -171,37 +169,24 @@ class ColorSelectorPopup(gtk.Window):
           self.pick_color(event.x,event.y)
         self.button_pressed = True
 
-    def unmap_cb(self, widget, event):
-        if self.hide_timeout is not None:
-            gobject.source_remove(self.hide_timeout)
-            self.hide_timeout = None
-
     def button_release_cb(self, widget, event):
         if self.button_pressed:
             if event.button == 1:
                 self.pick_color(event.x,event.y)
                 if self.closes_on_picking:
-                    self.hide()
+                    # FIXME: hacky?
+                    self.popup_state.leave()
                 else:
                     self.update_image()
 
-    def enter_notify_cb(self, widget, event):
-        if self.hide_timeout is not None:
-            gobject.source_remove(self.hide_timeout)
-            self.hide_timeout = None
-
-    def leave_notify_cb(self, widget, event):
-        # allow to leave the window for a short time
-        if self.hide_timeout is not None:
-            gobject.source_remove(self.hide_timeout)
-        self.hide_timeout = gobject.timeout_add(self.autohide_timeout_ms, self.hide)
 
 
 class ChangeColorPopup(ColorSelectorPopup):
     backend_class = mypaintlib.ColorChanger 
-    autohide_timeout_ms = 50
+    outside_popup_timeout = 0.050
 
 class ColorWheelPopup(ColorSelectorPopup):
     backend_class = mypaintlib.SCWSColorSelector 
     closes_on_picking = False
+    outside_popup_timeout = 0.200
 

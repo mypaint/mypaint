@@ -27,7 +27,6 @@ class StateGroup():
         """
         widget.connect("key-press-event", self.key_press_cb)
         widget.connect("key-release-event", self.key_release_cb)
-    add_popup_window = add_source_widget # TODO
 
     def get_active_states(self):
         return [s for s in self.states if s.active]
@@ -43,25 +42,43 @@ class StateGroup():
         for s in self.active_states:
             s.key_release_cb(widget, event)
 
-    def create_state(self, enter, leave):
-        s = State(self)
+    def create_state(self, enter, leave, popup=None):
+        s = State(self, popup)
+        s.popup = None
         s.on_enter = enter
         s.on_leave = leave
         self.states.append(s)
         return s
 
-class State:
-    max_key_hit_duration = 0.2
-    autoleave_timeout = 0.8
+    def create_popup_state(self, popup):
+        return self.create_state(popup.enter, popup.leave, popup)
 
-    def __init__(self, popupgroup):
-        self.pg = popupgroup
+class State:
+    "how long a key can be held down to go through as single hit (and not press-and-hold)"
+    max_key_hit_duration = 0.200
+    "the state is automatically left after this time (ignored during press-and-hold)"
+    autoleave_timeout = 0.800
+    #"popups only: how long the cursor is allowed outside before closing (ignored during press-and-hold)"
+    #outside_popup_timeout = 0.050
+    "state to activate when this state is activated while already active (None = just leave this state)"
+    next_state = None
+
+    def __init__(self, stategroup, popup):
+        self.sg = stategroup
         self.active = False
         self.action = None
+        self.popup = popup
         self.autoleave_timer = None
+        self.outside_popup_timer = None
+        if popup:
+            popup.connect("enter-notify-event", self.popup_enter_notify_cb)
+            popup.connect("leave-notify-event", self.popup_leave_notify_cb)
+            popup.popup_state = self # FIXME: hacky?
+            self.outside_popup_timeout = popup.outside_popup_timeout
 
     def enter(self):
         #print 'entering state, calling', self.on_enter.__name__
+        assert not self.active
         self.active = True
         self.enter_time = time.time()
         if self.autoleave_timeout:
@@ -70,13 +87,18 @@ class State:
 
     def leave(self):
         #print 'leaving state, calling', self.on_leave.__name__
+        assert self.active
         self.active = False
         self.action = None
         if self.autoleave_timer:
             gobject.source_remove(self.autoleave_timer)
+            self.autoleave_timer = None
+        if self.outside_popup_timer:
+            gobject.source_remove(self.outside_popup_timer)
+            self.outside_popup_timer = None
         self.on_leave()
 
-    def activate(self, action=None, popup=None):
+    def activate(self, action=None):
         """
         Called from the GUI code, eg. when a gtk.Action is
         activated. The action is used to figure out the key.
@@ -87,12 +109,14 @@ class State:
                 # TODO: allow different actions (eg. bring up another dialog on double-hit)
                 # FIXME: should special-case automatic double-activations vs user double-keyhit
                 self.leave()
+                if self.next_state:
+                    self.next_state.activate()
             return
         self.action = action
         self.keydown = False
         if action:
             keyval, modifiers = gtk.accel_map_lookup_entry(action.get_accel_path())
-            if self.pg.keys_pressed.get(keyval):
+            if self.sg.keys_pressed.get(keyval):
                 # The user has activated the action by hitting the
                 # accelerator key. If we do not see any key released
                 # event, we know that the user is holding the key down
@@ -123,3 +147,22 @@ class State:
     def autoleave_timeout_cb(self):
         if not self.keydown:
             self.leave()
+    def outside_popup_timeout_cb(self):
+        if not self.keydown:
+            self.leave()
+
+    def popup_enter_notify_cb(self, widget, event):
+        if not self.active:
+            return
+        if self.outside_popup_timer:
+            gobject.source_remove(self.outside_popup_timer)
+            self.outside_popup_timer = None
+
+    def popup_leave_notify_cb(self, widget, event):
+        if not self.active:
+            return
+        # allow to leave the window for a short time
+        if self.outside_popup_timer:
+            gobject.source_remove(self.outside_popup_timer)
+        self.outside_popup_timer = gobject.timeout_add(int(1000*self.outside_popup_timeout), self.outside_popup_timeout_cb)
+
