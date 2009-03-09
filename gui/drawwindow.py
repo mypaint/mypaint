@@ -20,7 +20,7 @@ from glob import glob
 import gtk
 from gtk import gdk, keysyms
 
-import tileddrawwidget, colorselectionwindow
+import tileddrawwidget, colorselectionwindow, stategroup
 from lib import document, helpers
 
 class Window(gtk.Window):
@@ -299,6 +299,11 @@ class Window(gtk.Window):
         self.app.accel_group = self.ui.get_accel_group()
         self.add_accel_group(self.app.accel_group)
 
+        sg = self.app.state_group = stategroup.StateGroup()
+        sg.add_source_widget(self)
+
+        self.layerblink_state = sg.create_state(self.layerblink_state_enter, self.layerblink_state_leave)
+
     def toggleWindow_cb(self, action):
         s = action.get_name()
         s = s[0].lower() + s[1:]
@@ -512,18 +517,21 @@ class Window(gtk.Window):
             self.doc.clear_layer()
         else:
             self.doc.remove_layer()
+            self.layerblink_state.activate(action)
 
     def layer_bg_cb(self, action):
         idx = self.doc.layer_idx - 1
         if idx < 0:
             return
         self.doc.select_layer(idx)
+        self.layerblink_state.activate(action)
 
     def layer_fg_cb(self, action):
         idx = self.doc.layer_idx + 1
         if idx >= len(self.doc.layers):
             return
         self.doc.select_layer(idx)
+        self.layerblink_state.activate(action)
 
     def pick_layer_cb(self, action):
         x, y = self.tdw.get_cursor_in_model_coordinates()
@@ -531,23 +539,34 @@ class Window(gtk.Window):
             alpha = layer.surface.get_alpha (x, y, 5)
             if alpha > 0.1:
                 self.doc.select_layer(idx)
+                self.layerblink_state.activate(action)
                 return
         self.doc.select_layer(0)
+        self.layerblink_state.activate(action)
+
+    def layerblink_state_enter(self):
+        self.tdw.current_layer_solo = True
+        self.tdw.queue_draw()
+    def layerblink_state_leave(self):
+        self.tdw.current_layer_solo = False
+        self.tdw.queue_draw()
 
     def blink_layer_cb(self, action):
-        self.tdw.blink_current_layer()
+        self.layerblink_state.activate(action)
 
     def new_layer_cb(self, action):
         insert_idx = self.doc.layer_idx
         if action.get_name() == 'NewLayerFG':
             insert_idx += 1
         self.doc.add_layer(insert_idx)
+        self.layerblink_state.activate(action)
 
     def merge_layer_cb(self, action):
         dst_idx = self.doc.layer_idx - 1
         if dst_idx < 0:
             return
         self.doc.merge_layer(dst_idx)
+        self.layerblink_state.activate(action)
 
     def toggle_layers_above_cb(self, action):
         self.tdw.toggle_show_layers_above()

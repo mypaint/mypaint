@@ -63,18 +63,15 @@ class TiledDrawWidget(gtk.DrawingArea):
 
         self.has_pointer = False
         self.dragfunc = None
+
         self.current_layer_solo = False
-        self.blink_layer_timeout = None
+        self.show_layers_above = True
 
         # gets overwritten for the main window
         self.zoom_max = 5.0
         self.zoom_min = 1/5.0
         
         self.scroll_at_edges = False
-
-        self.show_layers_above = True
-        self.doc.layer_observers.append(self.layer_selected_cb)
-
         self.pressure_mapping = None
 
     def set_scroll_at_edges(self, choice):
@@ -455,22 +452,6 @@ class TiledDrawWidget(gtk.DrawingArea):
             mask.draw_rectangle(bgc, True, 0, d/2-thickness, d+1, 2*thickness+1)
 
         self.window.set_cursor(gdk.Cursor(cursor,mask,gdk.color_parse('black'), gdk.color_parse('white'),(d+1)/2,(d+1)/2))
-
-    def layer_selected_cb(self):
-        self.queue_draw() # fast enough
-        if self.show_layers_above:
-            self.blink_current_layer()
-
-    def blink_current_layer(self):
-        self.queue_draw() # fast enough
-        self.current_layer_solo = True
-        def unhide():
-            self.current_layer_solo = False
-            self.queue_draw()
-            self.blink_layer_timeout = None
-        if self.blink_layer_timeout:
-            gobject.source_remove(self.blink_layer_timeout)
-        self.blink_layer_timeout = gobject.timeout_add(800, unhide)
 
     def toggle_show_layers_above(self):
         self.show_layers_above = not self.show_layers_above
