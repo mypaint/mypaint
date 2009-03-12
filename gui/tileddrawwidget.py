@@ -52,6 +52,8 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.last_event_time = None
         self.last_event_x = None
         self.last_event_y = None
+        self.last_event_device = None
+        self.device_observers = []
 
         self.visualize_rendering = False
 
@@ -101,9 +103,13 @@ class TiledDrawWidget(gtk.DrawingArea):
             dy_int = int(event.y) - int(self.last_event_y)
         else:
             dtime = None
+        if event.device != self.last_event_device:
+            for f in self.device_observers:
+                f(self.last_event_device, event.device)
         self.last_event_x = event.x
         self.last_event_y = event.y
         self.last_event_time = event.time
+        self.last_event_device = event.device
         if dtime is None:
             return
 

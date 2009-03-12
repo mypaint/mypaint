@@ -63,6 +63,7 @@ class Window(gtk.Window):
         self.fullscreen = False
 
         self.app.brush.settings_observers.append(self.brush_modified_cb)
+        self.tdw.device_observers.append(self.device_changed_cb)
 
         self.filename = None
 
@@ -608,6 +609,22 @@ class Window(gtk.Window):
         adj = self.app.brush_adjustment['eraser']
         if adj.get_value() > 0.9:
             adj.set_value(0.0)
+
+    def device_changed_cb(self, old_device, new_device):
+        # just enable eraser mode for now (TODO: remember full tool settings)
+        # small problem with this code: it doesn't work well with brushes that have (eraser not in [1.0, 0.0])
+        adj = self.app.brush_adjustment['eraser']
+        if old_device is None and new_device.source != gdk.SOURCE_ERASER:
+            # keep whatever startup brush was choosen
+            return
+        if new_device.source == gdk.SOURCE_ERASER:
+            # enter eraser mode
+            adj.set_value(1.0)
+        elif new_device.source != gdk.SOURCE_ERASER and \
+               (old_device is None or old_device.source == gdk.SOURCE_ERASER):
+            # leave eraser mode
+            adj.set_value(0.0)
+        print 'device change:', new_device.name
 
     def brush_bigger_cb(self, action):
         adj = self.app.brush_adjustment['radius_logarithmic']
