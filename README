@@ -16,7 +16,6 @@ Building on Linux:
 
     Required: pygtk, python, swig, gtk, numpy, pycairo(>=1.4)
     Debian and derivatives need: python2.6-dev libglib2.0-dev python-numpy swig scons
-    Slow PCs will get a small speedup by installing psyco.
 
     Recommended: a pressure sensitive input device (graphic tablet)
 
