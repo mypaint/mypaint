@@ -71,5 +71,5 @@ if homepath == '~':
 else:
     confpath = join(homepath, '.mypaint/')
 
-from gui import application
-application.main(datapath, confpath)
+import main
+main.main(datapath, confpath)
