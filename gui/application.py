@@ -184,6 +184,7 @@ def main(datapath, confpath):
         print 'Options:'
         print '  -c /path/to/config   use this directory instead of ~/.mypaint/'
         print '  -p                   profile (debug only; simulate some strokes and quit)'
+        sys.exit(1)
 
     filename = None
     profile = False
