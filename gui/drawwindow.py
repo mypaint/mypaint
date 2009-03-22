@@ -1036,8 +1036,8 @@ class Window(gtk.Window):
 
     def show_docu_cb(self, action):
         d = gtk.MessageDialog(self, buttons=gtk.BUTTONS_OK)
-        d.set_markup("There is a tutorial in the html directory, also available "
-                     "on the MyPaint homepage. It explains the features which are "
+        d.set_markup("There is a tutorial available "
+                     "on the MyPaint homepage. It explains some features which are "
                      "hard to discover yourself.\n\n"
                      "Comments about the brush settings (opaque, hardness, etc.) and "
                      "inputs (pressure, speed, etc.) are available as tooltips. "
