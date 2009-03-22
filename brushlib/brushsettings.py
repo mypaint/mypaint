@@ -45,7 +45,7 @@ settings_list = [
     ['speed2_slowness', 'speed2 slowness', False, 0.0, 0.8, 3.0, "same as 'speed1 slowness', but note that the range is different"],
     ['speed1_gamma', 'speed1 gamma', True, -8.0, 4.0, 8.0, "This changes the reaction of the speed1 input to extreme physical speed. You will see the difference best if speed1 is mapped to the radius.\n-8.0 very fast speed does not increase speed1 much more\n+8.0 very fast speed increases speed1 a lot\nFor very slow speed the opposite happens."],
     ['speed2_gamma', 'speed2 gamma', True, -8.0, 4.0, 8.0, "same as 'speed1 gamma' for speed2"],
-    ['offset_by_random', 'offset by random', False, 0.0, 0.0, 2.0, "add randomness to the position where each dab is drawn\n 0.0 disabled\n 1.0 standard deviation is one basic radius away"],
+    ['offset_by_random', 'jitter', False, 0.0, 0.0, 2.0, "add a random offset to the position where each dab is drawn\n 0.0 disabled\n 1.0 standard deviation is one basic radius away"],
     ['offset_by_speed', 'offset by speed', False, -3.0, 0.0, 3.0, "change position depending on pointer speed\n= 0 disable\n> 0 draw where the pointer moves to\n< 0 draw where the pointer comes from"],
     ['offset_by_speed_slowness', 'offset by speed slowness', False, 0.0, 1.0, 15.0, "how slow the offset goes back to zero when the cursor stops moving; 0 means there will never be any offset left"],
     ['slow_tracking', 'slow position tracking', True, 0.0, 0.0, 10.0, "Slowdown pointer tracking speed. 0 disables it, higher values remove more jitter in cursor movements. Useful for drawing smooth, comic-like outlines."],
