@@ -333,7 +333,7 @@ class Document():
                 continue
 
             tmp = join(tempdir, 'tmp.png')
-            f = open(tmp, 'w')
+            f = open(tmp, 'wb')
             f.write(z.read(src))
             f.close()
             pixbuf = gdk.pixbuf_new_from_file(tmp)
