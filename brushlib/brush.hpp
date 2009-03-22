@@ -317,7 +317,7 @@ private:
       // interpret the user-setting smoothly
       dabs_per_pixel = 1.0 + settings[BRUSH_OPAQUE_LINEARIZE]->base_value*(dabs_per_pixel-1.0);
 
-      // see html/brushdab_saturation.png
+      // see doc/brushdab_saturation.png
       //      beta = beta_dab^dabs_per_pixel
       // <==> beta_dab = beta^(1/dabs_per_pixel)
       alpha = opaque;
@@ -372,7 +372,7 @@ private:
       if (fac > 1.0) fac = 1.0;
       // If the smudge color somewhat transparent, then the resulting
       // dab will do erasing towards that transparency level.
-      // see also ../html/smudge_math.png
+      // see also ../doc/smudge_math.png
       eraser_target_alpha = (1-fac)*1.0 + fac*states[STATE_SMUDGE_A];
       // fix rounding errors (they really seem to happen in the previous line)
       eraser_target_alpha = CLAMP(eraser_target_alpha, 0.0, 1.0);
@@ -516,7 +516,7 @@ public:
 
     // draw many (or zero) dabs to the next position
 
-    // see html/stroke2dabs.png
+    // see doc/stroke2dabs.png
     float dist_moved = states[STATE_DIST];
     float dist_todo = count_dabs_to (x, y, pressure, dtime);
 
