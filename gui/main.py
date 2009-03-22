@@ -6,7 +6,7 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-import sys
+import sys, os
 import gtk
 from gui import application
 
