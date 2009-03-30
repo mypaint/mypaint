@@ -72,6 +72,9 @@ settings_list = [
 
     #['dab2_opacity_fac', 'second dab opaque', False, 0.0, 0.0, 2.0, "0.0 disable the second dab\n1.0 as opaque as the first dab\n2.0 twice as opaque as the first dab"],
     #['dab2_position_noise', 'second position noise',
+
+    ['aspect_ratio', 'aspect ratio', False, 1.0, 1.0, 10.0, "[EXPERIMENTAL] aspect ratio, must be >= 1.0"],
+    ['aspect_ratio_angle', 'aspect ratio angle', False, 0.0, 45.0, 360.0, "[EXPERIMENTAL] dab angle in degrees"],
     ]
 
 settings_hidden = 'color_h color_s color_v'.split()
@@ -105,6 +108,8 @@ stroke, stroke_started # stroke_started is used as boolean
 
 custom_input
 rng_seed
+
+actual_aspect_ratio, actual_angle # used by count_dabs_to
 '''
 
 class BrushInput:

@@ -284,6 +284,14 @@ private:
     states[STATE_ACTUAL_RADIUS] = expf(radius_log);
     if (states[STATE_ACTUAL_RADIUS] < ACTUAL_RADIUS_MIN) states[STATE_ACTUAL_RADIUS] = ACTUAL_RADIUS_MIN;
     if (states[STATE_ACTUAL_RADIUS] > ACTUAL_RADIUS_MAX) states[STATE_ACTUAL_RADIUS] = ACTUAL_RADIUS_MAX;
+
+    // aspect ratio (needs to be caluclated here because it can affect the dab spacing)
+
+    float aspect_ratio = settings_value[BRUSH_ASPECT_RATIO]; 
+    //float angle = atan2(states[STATE_NORM_DY_SLOW], -states[STATE_NORM_DX_SLOW]) / M_PI * 180;
+    float angle = settings_value[BRUSH_ASPECT_RATIO_ANGLE];
+    states[STATE_ACTUAL_ASPECT_RATIO] = aspect_ratio;
+    states[STATE_ACTUAL_ANGLE] = angle;
   }
 
   // Called only from stroke_to(). Calculate everything needed to
@@ -435,13 +443,14 @@ private:
 
     // the functions below will CLAMP most inputs
     hsv_to_rgb_float (&color_h, &color_s, &color_v);
-    return surface->draw_dab (x, y, radius, color_h, color_s, color_v, opaque, hardness, eraser_target_alpha);
+    return surface->draw_dab (x, y, radius, color_h, color_s, color_v, opaque, hardness, eraser_target_alpha,
+                              states[STATE_ACTUAL_ASPECT_RATIO], states[STATE_ACTUAL_ANGLE]);
   }
 
   // How many dabs will be drawn between the current and the next (x, y, pressure, +dt) position?
   float count_dabs_to (float x, float y, float pressure, float dt)
   {
-    float tmp_dx, tmp_dy;
+    float xx, yy;
     float res1, res2, res3;
     float dist;
 
@@ -457,13 +466,22 @@ private:
     //if (base_radius < 0.5) base_radius = 0.5;
     //if (base_radius > 500.0) base_radius = 500.0;
 
-    tmp_dx = x - states[STATE_X];
-    tmp_dy = y - states[STATE_Y];
+    xx = x - states[STATE_X];
+    yy = y - states[STATE_Y];
     //dp = pressure - pressure; // Not useful?
     // TODO: control rate with pressure (dabs per pressure) (dpressure is useless)
 
-    // OPTIMIZE
-    dist = hypotf(tmp_dx, tmp_dy);
+    if (states[STATE_ACTUAL_ASPECT_RATIO] > 1.0) {
+      float angle_rad=states[STATE_ACTUAL_ANGLE]*M_PI/180.0;
+      float cs=cos(angle_rad);
+      float sn=sin(angle_rad);
+      float yyr=(yy*cs+xx*sn)*states[STATE_ACTUAL_ASPECT_RATIO];
+      float xxr=-yy*sn+xx*cs;
+      dist = sqrt(yyr*yyr + xxr*xxr);
+    } else {
+      dist = hypotf(xx, yy);
+    }
+
     // FIXME: no need for base_value or for the range checks above IF always the interpolation
     //        function will be called before this one
     res1 = dist / states[STATE_ACTUAL_RADIUS] * settings[BRUSH_DABS_PER_ACTUAL_RADIUS]->base_value;

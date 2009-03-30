@@ -105,8 +105,10 @@ public:
                  float radius, 
                  float color_r, float color_g, float color_b,
                  float opaque, float hardness = 0.5,
-                 float eraser_target_alpha = 1.0
-                 ) {
+                 float eraser_target_alpha = 1.0,
+                 float aspect_ratio = 1.0, float angle = 0.0) {
+
+	if (aspect_ratio<1.0) aspect_ratio=1.0;
 
     float r_fringe;
     int xp, yp;
@@ -158,13 +160,17 @@ public:
         if (x1 > TILE_SIZE-1) x1 = TILE_SIZE-1;
         if (y1 > TILE_SIZE-1) y1 = TILE_SIZE-1;
 
+		float angle_rad=angle*M_PI/180.0;
+		float cs=cos(angle_rad);
+		float sn=sin(angle_rad);
+
         for (yp = y0; yp <= y1; yp++) {
           yy = (yp + 0.5 - yc);
-          yy *= yy;
           for (xp = x0; xp <= x1; xp++) {
             xx = (xp + 0.5 - xc);
-            xx *= xx;
-            rr = (yy + xx) * one_over_radius2;
+          	float yyr=(yy*cs+xx*sn)*aspect_ratio;
+			float xxr=-yy*sn+xx*cs;
+            rr = (yyr*yyr + xxr*xxr) * one_over_radius2;
             // rr is in range 0.0..1.0*sqrt(2)
 
             if (rr <= 1.0) {
