@@ -28,6 +28,8 @@ class TiledDrawWidget(gtk.DrawingArea):
         gtk.DrawingArea.__init__(self)
         self.connect("expose-event", self.expose_cb)
         self.connect("motion-notify-event", self.motion_notify_cb)
+        self.connect("button-press-event", self.button_updown_cb)
+        self.connect("button-release-event", self.button_updown_cb)
         self.connect("enter-notify-event", self.enter_notify_cb)
         self.connect("leave-notify-event", self.leave_notify_cb)
         self.connect("size-allocate", self.size_allocate_cb)
@@ -94,7 +96,7 @@ class TiledDrawWidget(gtk.DrawingArea):
             dy = old_size[1] - new_size[1]
             self.scroll(dx/2, dy/2)
 
-    def motion_notify_cb(self, widget, event):
+    def motion_notify_cb(self, widget, event, button_state=None):
         if self.last_event_time:
             dtime = (event.time - self.last_event_time)/1000.0
             dx = event.x - self.last_event_x
@@ -124,7 +126,11 @@ class TiledDrawWidget(gtk.DrawingArea):
         
         pressure = event.get_axis(gdk.AXIS_PRESSURE)
         if pressure is None:
-            if event.state & gdk.BUTTON1_MASK:
+            if button_state is None:
+                # This codepath is not always used because in the case
+                # of a button up/down event, the state seems to reflect how it was /before/ that event
+                button_state = event.state & gdk.BUTTON1_MASK
+            if button_state:
                 pressure = 0.5
             else:
                 pressure = 0.0
@@ -152,6 +158,15 @@ class TiledDrawWidget(gtk.DrawingArea):
         if self.pressure_mapping:
             pressure = self.pressure_mapping(pressure)
         self.doc.stroke_to(dtime, x, y, pressure)
+
+    def button_updown_cb(self, widget, event):
+        if event.button == 1:
+            # for special devices (mainly touchpads) we really need to pay attention to the event type
+            # to avoid "ghost lines" between strokes
+            if event.type == gdk.BUTTON_PRESS:
+                self.motion_notify_cb(widget, event, True)
+            elif event.type == gdk.BUTTON_RELEASE:
+                self.motion_notify_cb(widget, event, False)
 
     def canvas_modified_cb(self, x1, y1, w, h):
         if not self.window:
