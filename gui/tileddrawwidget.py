@@ -197,6 +197,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.update_cursor() # hack to get the initial cursor right
         #print 'expose', tuple(event.area)
         self.repaint(event.area)
+        return True
 
     def get_model_coordinates_cairo_context(self, cr=None):
         if cr is None:
@@ -440,7 +441,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         #   if everything breaks down, we could only show brush shape shortly after changes
         if not self.window: return
         brush = self.doc.brush
-        d = int(brush.get_actual_radius())*2
+        d = int(brush.get_actual_radius()*self.scale)*2
         eraser = brush.is_eraser()
 
         if d < 6: d = 6
