@@ -1,3 +1,7 @@
+SVN:
+- Ghost lines between strokes (on touchpads) fixed
+- Elliptical dabs
+
 Version 0.6.0:
 - Layers, transparency and eraser mode
 - Background color and pattterns

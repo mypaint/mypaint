@@ -20,7 +20,7 @@
 #include "mapping.hpp"
 
 #define ACTUAL_RADIUS_MIN 0.2
-#define ACTUAL_RADIUS_MAX 5000 // not really used, only a safety guard against radius 1e20 and similar insanity
+#define ACTUAL_RADIUS_MAX 800 // safety guard against radius like 1e20 and against rendering overload with unexpected brush dynamics
 
 /* The Brush class stores two things:
    b) settings: constant during a stroke (eg. size, spacing, dynamics, color selected by the user)
