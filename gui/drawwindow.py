@@ -1079,7 +1079,7 @@ class Window(gtk.Window):
         d = gtk.MessageDialog(self, buttons=gtk.BUTTONS_OK)
         d.set_markup(
             "You can also drag the canvas with the mouse while holding the middle mouse button or spacebar. "
-            "or with the arrow keys. You can rotate by holding the right mouse button."
+            "or with the arrow keys."
             "\n\n"
             "In contrast to earlier versions, scrolling and zooming are harmless now and "
             "will not make you run out of memory. But you still require a lot of memory "
