@@ -15,7 +15,7 @@ class Window(gtk.Window):
     def __init__(self, app):
         gtk.Window.__init__(self)
         self.app = app
-        self.add_accel_group(self.app.accel_group)
+        self.app.kbm.add_window(self)
 
         self.app.default_background = (255, 255, 255)
 

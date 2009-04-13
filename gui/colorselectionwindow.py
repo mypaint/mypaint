@@ -17,7 +17,7 @@ class Window(gtk.Window):
     def __init__(self, app):
         gtk.Window.__init__(self)
         self.app = app
-        self.add_accel_group(self.app.accel_group)
+        self.app.kbm.add_window(self)
         self.app.brush.settings_observers.append(self.brush_modified_cb)
 
         self.set_title('Color')
@@ -124,7 +124,7 @@ class ColorSelectorPopup(gtk.Window):
         self.backend = self.backend_class()
         
         self.app = app
-        self.add_accel_group(self.app.accel_group)
+        self.app.kbm.add_window(self)
 
         #self.set_title('Color')
         self.connect('delete-event', self.app.hide_window_cb)

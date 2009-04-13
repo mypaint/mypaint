@@ -18,7 +18,7 @@ class Window(gtk.Window):
         self.app = app
         self.app.brush_selected_callbacks.insert(0, self.brush_selected_cb)
         self.app.brush.settings_observers.append(self.brush_modified_cb)
-        self.add_accel_group(self.app.accel_group)
+        self.app.kbm.add_window(self)
 
         self.set_title('Brush selection')
         self.connect('delete-event', self.app.hide_window_cb)

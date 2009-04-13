@@ -1,3 +1,11 @@
+# This file is part of MyPaint.
+# Copyright (C) 2009 by Martin Renold <martinxyz@gmx.ch>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+
 import gtk, gobject
 gdk = gtk.gdk
 import time
@@ -20,27 +28,9 @@ class StateGroup():
         self.states = []
         self.keys_pressed = {}
 
-    def add_source_widget(self, widget):
-        """
-        This should be called for every widget from which a state can
-        be activated through a keypress.
-        """
-        widget.connect("key-press-event", self.key_press_cb)
-        widget.connect("key-release-event", self.key_release_cb)
-
-    def get_active_states(self):
-        return [s for s in self.states if s.active]
-    active_states = property(get_active_states)
-
-    def key_press_cb(self, widget, event):
-        self.keys_pressed[event.keyval] = True
-        for s in self.active_states:
-            s.key_press_cb(widget, event)
-
-    def key_release_cb(self, widget, event):
-        self.keys_pressed[event.keyval] = False
-        for s in self.active_states:
-            s.key_release_cb(widget, event)
+    #def get_active_states(self):
+    #    return [s for s in self.states if s.active]
+    #active_states = property(get_active_states)
 
     def create_state(self, enter, leave, popup=None):
         s = State(self, popup)
@@ -66,7 +56,6 @@ class State:
     def __init__(self, stategroup, popup):
         self.sg = stategroup
         self.active = False
-        self.action = None
         self.popup = popup
         self.autoleave_timer = None
         self.outside_popup_timer = None
@@ -89,7 +78,6 @@ class State:
         #print 'leaving state, calling', self.on_leave.__name__
         assert self.active
         self.active = False
-        self.action = None
         if self.autoleave_timer:
             gobject.source_remove(self.autoleave_timer)
             self.autoleave_timer = None
@@ -104,45 +92,26 @@ class State:
         activated. The action is used to figure out the key.
         """
         if self.active:
-            if not self.keydown:
-                # pressing the key again
-                # TODO: allow different actions (eg. bring up another dialog on double-hit)
-                # FIXME: should special-case automatic double-activations vs user double-keyhit
-                self.leave()
-                if self.next_state:
-                    self.next_state.activate()
+            # pressing the key again
+            # TODO: allow different actions (eg. bring up another dialog on double-hit)
+            self.leave()
+            if self.next_state:
+                self.next_state.activate()
             return
-        self.action = action
         self.keydown = False
-        if action:
-            keyval, modifiers = gtk.accel_map_lookup_entry(action.get_accel_path())
-            if self.sg.keys_pressed.get(keyval):
-                # The user has activated the action by hitting the
-                # accelerator key. If we do not see any key released
-                # event, we know that the user is holding the key down
-                # deliberately long.
-                self.keydown = True
-            self.keyval = keyval
-        else:
-            self.keyval = None
-
+        if action and action.keydown:
+            self.keydown = True
+            action.keyup_callback = self.keyup_cb
         self.enter()
 
-    def key_press_cb(self, widget, event):
-        if event.keyval == self.keyval:
-            pass # probably keyboard autorepeat (self.activate will be called also)
+    def keyup_cb(self, widget, event):
+        if not self.active:
+            return
+        self.keydown = False
+        if time.time() - self.enter_time < self.max_key_hit_duration:
+            pass # accept as one-time hit
         else:
-            # any keypress leaves the action
             self.leave()
-
-    def key_release_cb(self, widget, event):
-        if event.keyval == self.keyval:
-            if self.keydown:
-                self.keydown = False
-                if time.time() - self.enter_time < self.max_key_hit_duration:
-                    pass # accept as one-time hit
-                else:
-                    self.leave()
 
     def autoleave_timeout_cb(self):
         if not self.keydown:

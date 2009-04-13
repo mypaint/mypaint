@@ -20,7 +20,7 @@ from glob import glob
 import gtk
 from gtk import gdk, keysyms
 
-import tileddrawwidget, colorselectionwindow, stategroup
+import tileddrawwidget, colorselectionwindow, stategroup, keyboard
 from lib import document, helpers
 
 class Window(gtk.Window):
@@ -288,11 +288,16 @@ class Window(gtk.Window):
         self.ui = gtk.UIManager()
         self.ui.insert_action_group(ag, 0)
         self.ui.add_ui_from_string(ui_string)
-        self.app.accel_group = self.ui.get_accel_group()
-        self.add_accel_group(self.app.accel_group)
+        #self.app.accel_group = self.ui.get_accel_group()
+
+        self.app.kbm = keyboard.KeyboardManager()
+        # TODO: and now tell the keyboard manager about hardcoded keys ("unless used otherwise" aliases)
+        self.app.kbm.add_window(self)
+
+        for action in ag.list_actions():
+            self.app.kbm.takeover_action(action)
 
         sg = self.app.state_group = stategroup.StateGroup()
-        sg.add_source_widget(self)
 
         self.layerblink_state = sg.create_state(self.layerblink_state_enter, self.layerblink_state_leave)
 
