@@ -28,9 +28,9 @@ class StateGroup():
         self.states = []
         self.keys_pressed = {}
 
-    #def get_active_states(self):
-    #    return [s for s in self.states if s.active]
-    #active_states = property(get_active_states)
+    def get_active_states(self):
+        return [s for s in self.states if s.active]
+    active_states = property(get_active_states)
 
     def create_state(self, enter, leave, popup=None):
         s = State(self, popup)
@@ -97,9 +97,11 @@ class State:
                 self.leave()
                 self.next_state.activate()
                 return
-            else:
-                # leave and enter again
-                self.leave()
+
+        # first leave other active states from the same stategroup
+        for state in self.sg.active_states:
+            state.leave()
+
         self.keydown = False
         if action and action.keydown:
             self.keydown = True
