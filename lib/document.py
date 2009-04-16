@@ -369,7 +369,8 @@ class Document():
                     self.remove_layer()
 
         if len(self.layers) > 1:
-            # select the still present initial empty top layer
-            # hm, should this better be removed?
+            # remove the still present initial empty top layer
             self.select_layer(len(self.layers)-1)
+            self.remove_layer()
+            # this leaves the topmost layer selected
 
