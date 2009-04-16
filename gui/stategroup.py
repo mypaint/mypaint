@@ -93,11 +93,13 @@ class State:
         """
         if self.active:
             # pressing the key again
-            # TODO: allow different actions (eg. bring up another dialog on double-hit)
-            self.leave()
             if self.next_state:
+                self.leave()
                 self.next_state.activate()
-            return
+                return
+            else:
+                # leave and enter again
+                self.leave()
         self.keydown = False
         if action and action.keydown:
             self.keydown = True
