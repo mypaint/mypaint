@@ -20,7 +20,7 @@ from glob import glob
 import gtk
 from gtk import gdk, keysyms
 
-import tileddrawwidget, colorselectionwindow, stategroup, keyboard
+import tileddrawwidget, colorselectionwindow, historypopup, stategroup, keyboard
 from lib import document, helpers
 
 class Window(gtk.Window):
@@ -41,12 +41,13 @@ class Window(gtk.Window):
         vbox = gtk.VBox()
         self.add(vbox)
 
+        self.doc = document.Document()
+        self.doc.set_brush(self.app.brush)
+
         self.create_ui()
         self.menubar = self.ui.get_widget('/Menubar')
         vbox.pack_start(self.menubar, expand=False)
 
-        self.doc = document.Document()
-        self.doc.set_brush(self.app.brush)
         self.tdw = tileddrawwidget.TiledDrawWidget(self.doc)
         vbox.pack_start(self.tdw)
 
@@ -149,7 +150,7 @@ class Window(gtk.Window):
               <separator/>
               <menuitem action='Eraser'/>
               <separator/>
-              <menuitem action='InvertColor'/>
+              <menuitem action='ColorHistoryPopup'/>
               <menuitem action='PickColor'/>
               <menuitem action='ChangeColorPopup'/>
               <menuitem action='ColorWheelPopup'/>
@@ -202,7 +203,7 @@ class Window(gtk.Window):
             ('PasteLayer',         None, 'Paste Layer from Clipboard', '<control>V', None, self.paste_cb),
 
             ('BrushMenu',    None, 'Brush'),
-            ('InvertColor',  None, 'Invert Color', 'x', None, self.invert_color_cb),
+            ('ColorHistoryPopup',  None, 'Previous Color', 'x', None, self.popup_cb),
             ('Brighter',     None, 'Brighter', None, None, self.brighter_cb),
             ('Darker',       None, 'Darker', None, None, self.darker_cb),
             ('Bigger',       None, 'Bigger', 'f', None, self.brush_bigger_cb),
@@ -304,16 +305,20 @@ class Window(gtk.Window):
         p2s = sg.create_popup_state
         changer = p2s(colorselectionwindow.ChangeColorPopup(self.app))
         wheel = p2s(colorselectionwindow.ColorWheelPopup(self.app))
+        hist = p2s(historypopup.HistoryPopup(self.app, self.doc))
 
         self.popup_states = {
             'ChangeColorPopup': changer,
             'ColorWheelPopup': wheel,
+            'ColorHistoryPopup': hist,
             }
         changer.next_state = wheel
         wheel.next_state = changer
         changer.autoleave_timeout = None
         wheel.autoleave_timeout = None
-
+        hist.autoleave_timeout = None
+        hist.autoleave_timeout = 0.600
+        self.history_popup_state = hist
 
     def toggleWindow_cb(self, action):
         s = action.get_name()
@@ -469,7 +474,7 @@ class Window(gtk.Window):
     def button_press_cb(self, win, event):
         #print event.device, event.button
         if event.button == 2:
-            # check whether we are painting (accidental
+            # check whether we are painting (accidental)
             pressure = event.get_axis(gdk.AXIS_PRESSURE)
             if (event.state & gdk.BUTTON1_MASK) or pressure:
                 # do not allow dragging while painting (often happens accidentally)
@@ -480,9 +485,8 @@ class Window(gtk.Window):
             # pick color "standard"; TODO: show color picking cursor?
             if event.state & gdk.CONTROL_MASK:
                 self.pick_color_cb(None)
-        # too slow to be useful:
-        #elif event.button == 3:
-        #    self.tdw.start_drag(self.dragfunc_rotate)
+        elif event.button == 3:
+            self.history_popup_state.activate()
 
     def button_release_cb(self, win, event):
         #print event.device, event.button
@@ -582,10 +586,6 @@ class Window(gtk.Window):
     def toggle_layers_above_cb(self, action):
         self.tdw.toggle_show_layers_above()
 
-    def invert_color_cb(self, action):
-        self.end_eraser_mode()
-        self.app.brush.invert_color()
-        
     def pick_color_cb(self, action):
         self.end_eraser_mode()
         size = int(self.app.brush.get_actual_radius() * math.sqrt(math.pi))

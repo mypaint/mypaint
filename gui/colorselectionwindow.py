@@ -127,7 +127,7 @@ class ColorSelectorPopup(gtk.Window):
         self.app.kbm.add_window(self)
 
         #self.set_title('Color')
-        self.connect('delete-event', self.app.hide_window_cb)
+        #self.connect('delete-event', self.app.hide_window_cb)
 
         self.image = image = gtk.Image()
         self.add(image)

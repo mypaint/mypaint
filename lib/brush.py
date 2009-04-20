@@ -265,13 +265,8 @@ class Brush_Lowlevel(mypaintlib.Brush):
         hsv = [clamp(x, 0.0, 1.0) for x in hsv]
         return colorsys.hsv_to_rgb(*hsv)
 
-    def invert_color(self):
-        rgb = self.get_color_rgb()
-        rgb = [1-x for x in rgb]
-        self.set_color_rgb(rgb)
-
     def is_eraser(self):
-        return self.setting_by_cname('eraser').base_value > 0.5
+        return self.setting_by_cname('eraser').base_value > 0.9
 
 class Brush(Brush_Lowlevel):
     def __init__(self, app):
