@@ -134,11 +134,13 @@ class ColorSelectorPopup(gtk.Window):
         
 	self.set_events(gdk.BUTTON_PRESS_MASK |
                         gdk.BUTTON_RELEASE_MASK |
+                        gtk.gdk.POINTER_MOTION_MASK |
                         gdk.ENTER_NOTIFY |
                         gdk.LEAVE_NOTIFY
                         )
         self.connect("button-release-event", self.button_release_cb)
         self.connect("button-press-event", self.button_press_cb)
+        self.connect("motion-notify-event", self.motion_notify_cb)
 
         self.button_pressed = False
 
@@ -146,8 +148,13 @@ class ColorSelectorPopup(gtk.Window):
         self.update_image()
         self.show_all()
         self.window.set_cursor(gdk.Cursor(gdk.CROSSHAIR))
+        self.mouse_pos = None
     
-    def leave(self):
+    def leave(self, reason):
+        # TODO: make a generic "popupmenu" class with this code?
+        if reason == 'keyup':
+            if self.mouse_pos:
+                self.pick_color(*self.mouse_pos)
         self.hide()
 
     def update_image(self):
@@ -164,9 +171,12 @@ class ColorSelectorPopup(gtk.Window):
         hsv = self.backend.pick_color_at(x, y)
         self.app.brush.set_color_hsv(hsv)
     
+    def motion_notify_cb(self, widget, event):
+        self.mouse_pos = event.x, event.y
+
     def button_press_cb(self, widget, event):
         if event.button == 1:
-          self.pick_color(event.x,event.y)
+            self.pick_color(event.x,event.y)
         self.button_pressed = True
 
     def button_release_cb(self, widget, event):

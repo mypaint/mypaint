@@ -562,7 +562,7 @@ class Window(gtk.Window):
     def layerblink_state_enter(self):
         self.tdw.current_layer_solo = True
         self.tdw.queue_draw()
-    def layerblink_state_leave(self):
+    def layerblink_state_leave(self, reason):
         self.tdw.current_layer_solo = False
         self.tdw.queue_draw()
 

@@ -74,7 +74,7 @@ class HistoryPopup(gtk.Window):
         self.show_all()
         self.window.set_cursor(gdk.Cursor(gdk.CROSSHAIR))
     
-    def leave(self):
+    def leave(self, reason):
         self.hide()
 
     def button_press_cb(self, widget, event):

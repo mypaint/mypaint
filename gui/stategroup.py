@@ -34,7 +34,7 @@ class StateGroup():
 
     def create_state(self, enter, leave, popup=None):
         s = State(self, popup)
-        s.popup = None
+        s.popup = None # FIXME: who uses this? hack?
         s.on_enter = enter
         s.on_leave = leave
         self.states.append(s)
@@ -74,7 +74,7 @@ class State:
             self.autoleave_timer = gobject.timeout_add(int(1000*self.autoleave_timeout), self.autoleave_timeout_cb)
         self.on_enter()
 
-    def leave(self):
+    def leave(self, reason=None):
         #print 'leaving state, calling', self.on_leave.__name__
         assert self.active
         self.active = False
@@ -84,7 +84,7 @@ class State:
         if self.outside_popup_timer:
             gobject.source_remove(self.outside_popup_timer)
             self.outside_popup_timer = None
-        self.on_leave()
+        self.on_leave(reason)
 
     def activate(self, action=None):
         """
@@ -115,14 +115,17 @@ class State:
         if time.time() - self.enter_time < self.max_key_hit_duration:
             pass # accept as one-time hit
         else:
-            self.leave()
+            if self.outside_popup_timer:
+                self.leave('outside')
+            else:
+                self.leave('keyup')
 
     def autoleave_timeout_cb(self):
         if not self.keydown:
-            self.leave()
+            self.leave('timeout')
     def outside_popup_timeout_cb(self):
         if not self.keydown:
-            self.leave()
+            self.leave('outside')
 
     def popup_enter_notify_cb(self, widget, event):
         if not self.active:
