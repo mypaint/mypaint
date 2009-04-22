@@ -23,13 +23,13 @@ Observation:
   ==> you rather want a /minimum/ duration
 """
 
-num_colors = 6
+num_colors = 5
 
 class HistoryPopup(gtk.Window):
     outside_popup_timeout = 0
     def __init__(self, app, doc):
         gtk.Window.__init__(self, gtk.WINDOW_POPUP)
-        self.set_gravity(gdk.GRAVITY_CENTER)
+        # TODO: put the mouse position onto the selected color
         self.set_position(gtk.WIN_POS_MOUSE)
 
         self.app = app
@@ -44,11 +44,14 @@ class HistoryPopup(gtk.Window):
         self.connect("button-press-event", self.button_press_cb)
         self.connect("expose_event", self.expose_cb)
 
-        self.set_size_request(300, 50)
+        self.set_size_request(270, 55)
 
         self.selection = None
 
         self.colorhist = [(random.random(), random.random(), random.random()) for i in range(num_colors)]
+        # default to black-and-white
+        self.colorhist[-1] = (0.0, 0.0, 0.0)
+        self.colorhist[-2] = (0.0, 0.0, 1.0)
 
         self.doc = doc
         doc.stroke_observers.append(self.stroke_finished_cb)
@@ -114,6 +117,7 @@ class HistoryPopup(gtk.Window):
         
             if i == self.selection:
                 cr.fill_preserve()
+                cr.set_line_width(10)
                 cr.set_source_rgb(0, 0, 0)
                 cr.stroke()
             else:
