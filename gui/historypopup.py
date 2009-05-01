@@ -3,7 +3,7 @@ import gtk
 gdk = gtk.gdk
 
 import random, colorsys
-import numpy
+import numpy, cairo
 
 """
 Worklist (planning/prototyping)
@@ -24,6 +24,18 @@ Observation:
 """
 
 num_colors = 5
+popup_height = 80
+bigcolor_width   = popup_height
+smallcolor_width = popup_height/2
+popup_width = bigcolor_width + (num_colors-1)*smallcolor_width
+
+
+def hsv_equal(a, b):
+    # hack required because we somewhere have an rgb<-->hsv conversion roundtrip
+    a_ = numpy.array(colorsys.hsv_to_rgb(*a))
+    b_ = numpy.array(colorsys.hsv_to_rgb(*b))
+    return ((a_ - b_)**2).sum() < (3*1.0/256)**2
+
 
 class HistoryPopup(gtk.Window):
     outside_popup_timeout = 0
@@ -44,7 +56,7 @@ class HistoryPopup(gtk.Window):
         self.connect("button-press-event", self.button_press_cb)
         self.connect("expose_event", self.expose_cb)
 
-        self.set_size_request(270, 55)
+        self.set_size_request(popup_width, popup_height)
 
         self.selection = None
 
@@ -57,12 +69,6 @@ class HistoryPopup(gtk.Window):
         doc.stroke_observers.append(self.stroke_finished_cb)
 
     def enter(self):
-        def hsv_equal(a, b):
-            # hack required because we somewhere have an rgb<-->hsv conversion roundtrip
-            a_ = numpy.array(colorsys.hsv_to_rgb(*a))
-            b_ = numpy.array(colorsys.hsv_to_rgb(*b))
-            return ((a_ - b_)**2).sum() < (3*1.0/256)**2
-
         # finish pending stroke, if any (causes stroke_finished_cb to get called)
         self.doc.split_stroke()
         if self.selection is None:
@@ -74,7 +80,13 @@ class HistoryPopup(gtk.Window):
             self.selection = (self.selection - 1) % num_colors
 
         self.app.brush.set_color_hsv(self.colorhist[self.selection])
+
+        # popup placement
+        x, y = self.get_position()
+        bigcolor_center_x = self.selection * smallcolor_width + bigcolor_width/2
+        self.move(x + popup_width/2 - bigcolor_center_x, y + bigcolor_width)
         self.show_all()
+
         self.window.set_cursor(gdk.Cursor(gdk.CROSSHAIR))
     
     def leave(self, reason):
@@ -91,8 +103,10 @@ class HistoryPopup(gtk.Window):
         self.selection = None
         if not brush.is_eraser():
             color = brush.get_color_hsv()
-            if color in self.colorhist:
-                self.colorhist.remove(color)
+            for c in self.colorhist:
+                if hsv_equal(color, c):
+                    self.colorhist.remove(c)
+                    break
             self.colorhist = (self.colorhist + [color])[-num_colors:]
 
     def expose_cb(self, widget, event):
@@ -100,32 +114,34 @@ class HistoryPopup(gtk.Window):
         aloc = self.get_allocation()
         #pixbuf = gdk.Pixbuf(gdk.COLORSPACE_RGB, True, 8, size, size)
 
-        # translate to center
-        cx = aloc.x + aloc.width / 2
-        cy = aloc.y + aloc.height / 2
-        r = aloc.height/2.0 - 2.0
-        #cr.translate(aloc.width-1 -r-1.0, cy)
-        cr.translate(0+r+1.0, cy)
-
-        cr.set_source_rgb(1.0, 1.0, 1.0)
+        # fill it (TODO: transparency)
+        cr.set_source_rgb(0.9, 0.9, 0.9)
         cr.paint()
 
+        cr.set_line_join(cairo.LINE_JOIN_ROUND)
+
+        cr.translate(0.0, popup_height/2.0)
+
         for i, c in enumerate(self.colorhist):
-            cr.arc(0, 0, r, 0, 2 * math.pi)
+            if i != self.selection:
+                cr.scale(0.5, 0.5)
 
+            line_width = 3.0
+            rect = [0, -popup_height/2.0, popup_height, popup_height]
+            rect[0] += line_width/2.0
+            rect[1] += line_width/2.0
+            rect[2] -= line_width
+            rect[3] -= line_width
+            cr.rectangle(*rect)
             cr.set_source_rgb(*colorsys.hsv_to_rgb(*c))
-        
-            if i == self.selection:
-                cr.fill_preserve()
-                cr.set_line_width(10)
-                cr.set_source_rgb(0, 0, 0)
-                cr.stroke()
-            else:
-                cr.fill()
-                #cr.set_source_rgb(0.5, 0, 0)
-                #cr.stroke()
+            cr.fill_preserve()
+            cr.set_line_width(line_width)
+            cr.set_source_rgb(0, 0, 0)
+            cr.stroke()
+            cr.translate(popup_height, 0)
 
-            cr.translate(+2*r+2.0, 0)
+            if i != self.selection:
+                cr.scale(2.0, 2.0)
 
         #pixmap, mask = pixbuf.render_pixmap_and_mask()
         #self.image.set_from_pixmap(pixmap, mask)
