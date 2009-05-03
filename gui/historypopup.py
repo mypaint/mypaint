@@ -24,7 +24,7 @@ Observation:
 """
 
 num_colors = 5
-popup_height = 80
+popup_height = 60
 bigcolor_width   = popup_height
 smallcolor_width = popup_height/2
 popup_width = bigcolor_width + (num_colors-1)*smallcolor_width
