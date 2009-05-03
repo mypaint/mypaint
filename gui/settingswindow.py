@@ -138,6 +138,7 @@ class Window(gtk.Window):
         if len(p) == 2 and abs(p[0][1]-1.0)+abs(p[1][1]-0.0) < 0.0001:
             # 1:1 mapping (mapping disabled)
             self.app.global_pressure_mapping = None
+            self.app.drawWindow.tdw.pressure_mapping = None
         else:
             # TODO: maybe replace this stupid mapping by a hard<-->soft slider?
             m = mypaintlib.Mapping(1)
