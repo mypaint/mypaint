@@ -648,7 +648,7 @@ public:
       stroke_total_painting_time += dtime;
       stroke_current_idling_time = 0;
       // force a stroke split after some time
-      if (stroke_total_painting_time > 5 + 10*pressure) {
+      if (stroke_total_painting_time > 4 + 3*pressure) {
         // but only if pressure is not being released
         // FIXME: use some smoothed state for dpressure, not the output of the interpolation code
         //        (which might easily wrongly give dpressure == 0)
@@ -668,7 +668,7 @@ public:
         // Usually we have pressure==0 here. But some brushes can paint
         // nothing at full pressure (eg gappy lines, or a stroke that
         // fades out). In either case this is the prefered moment to split.
-        if (stroke_total_painting_time+stroke_current_idling_time > 0.9 + 5*pressure) {
+        if (stroke_total_painting_time+stroke_current_idling_time > 1.2 + 5*pressure) {
           return true;
         }
       }
