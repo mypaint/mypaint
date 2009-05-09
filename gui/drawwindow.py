@@ -324,8 +324,7 @@ class Window(gtk.Window):
         s = action.get_name()
         s = s[0].lower() + s[1:]
         w = getattr(self.app, s)
-        #if w.is_active():
-        if w.window is not None and w.window.is_visible():
+        if w.window and w.window.is_visible():
             w.hide()
         else:
             w.show_all() # might be for the first time
