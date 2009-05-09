@@ -152,6 +152,8 @@ class Application: # singleton
             window = self.__dict__[name]
             x, y = window.get_position()
             w, h = window.get_size()
+            if hasattr(window, 'geometry_before_fullscreen'):
+                x, y, w, h = window.geometry_before_fullscreen
             visible = window.get_property('visible')
             f.write('%s %s %d %d %d %d\n' % (name, visible, x, y, w, h))
 

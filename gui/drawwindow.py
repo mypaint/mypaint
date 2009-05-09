@@ -973,6 +973,9 @@ class Window(gtk.Window):
         #       self.window.begin_paint/end_paint does not help against it
         self.fullscreen = not self.fullscreen
         if self.fullscreen:
+            x, y = self.get_position()
+            w, h = self.get_size()
+            self.geometry_before_fullscreen = (x, y, w, h)
             self.menubar.hide()
             self.window.fullscreen()
             self.tdw.set_scroll_at_edges(True)
@@ -980,6 +983,7 @@ class Window(gtk.Window):
             self.window.unfullscreen()
             self.menubar.show()
             self.tdw.set_scroll_at_edges(False)
+            del self.geometry_before_fullscreen
 
     def context_cb(self, action):
         # TODO: this context-thing is not very useful like that, is it?
