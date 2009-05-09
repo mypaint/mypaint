@@ -197,8 +197,8 @@ class Window(gtk.Window):
 
 
             ('EditMenu',           None, 'Edit'),
-            ('Undo',               None, 'Undo', '<control>Z', None, self.undo_cb),
-            ('Redo',               None, 'Redo', '<control>Y', None, self.redo_cb),
+            ('Undo',               None, 'Undo', 'Z', None, self.undo_cb),
+            ('Redo',               None, 'Redo', 'Y', None, self.redo_cb),
             ('CopyLayer',          None, 'Copy Layer to Clipboard', '<control>C', None, self.copy_cb),
             ('PasteLayer',         None, 'Paste Layer from Clipboard', '<control>V', None, self.paste_cb),
 
@@ -376,20 +376,6 @@ class Window(gtk.Window):
     def undo_cb(self, action):
         self.doc.undo()
 
-        #cost = self.layer.rerender(only_estimate_cost=True)
-        #if cost > 50:
-        #    d = gtk.MessageDialog(
-        #         type = gtk.MESSAGE_QUESTION,
-        #         flags = gtk.DIALOG_MODAL,
-        #         buttons = gtk.BUTTONS_YES_NO,
-        #         message_format="This undo step will require %d brush strokes to be re-rendered. This might take some time.\n\nDo you really want to undo?" % cost
-        #         )
-        #    if d.run() != gtk.RESPONSE_YES:
-        #        self.command_stack.redo()
-        #    d.destroy()
-
-        ## TODO: where does this code go?
-
     def redo_cb(self, action):
         self.doc.redo()
 
@@ -417,24 +403,25 @@ class Window(gtk.Window):
 
     def key_press_event_cb_before(self, win, event):
         key = event.keyval 
+        ctrl = event.state & gdk.CONTROL_MASK
         #ANY_MODIFIER = gdk.SHIFT_MASK | gdk.MOD1_MASK | gdk.CONTROL_MASK
         #if event.state & ANY_MODIFIER:
         #    # allow user shortcuts with modifiers
         #    return False
         if key == keysyms.Left: 
-            if event.state & gdk.CONTROL_MASK:
+            if ctrl:
                 self.rotate('RotateLeft')
             else:
                 self.move('MoveLeft')
         elif key == keysyms.Right:
-            if event.state & gdk.CONTROL_MASK:
+            if ctrl:
                 self.rotate('RotateRight')
             else:
                 self.move('MoveRight')
         elif key == keysyms.Up  : self.move('MoveUp')
         elif key == keysyms.Down: self.move('MoveDown')
         elif key == keysyms.space: 
-            if event.state & gdk.CONTROL_MASK:
+            if ctrl:
                 self.tdw.start_drag(self.dragfunc_rotate)
             else:
                 self.tdw.start_drag(self.dragfunc_translate)
@@ -448,11 +435,13 @@ class Window(gtk.Window):
         return False
 
     def key_press_event_cb_after(self, win, event):
-        # Not checking modifiers because this function gets only 
-        # called if no user keybinding accepted the event.
-        if event.keyval in [keysyms.KP_Add, keysyms.plus]: self.zoom('ZoomIn')
-        elif event.keyval in [keysyms.KP_Subtract, keysyms.minus]: self.zoom('ZoomOut')
-        elif self.fullscreen and event.keyval == keysyms.Escape: self.fullscreen_cb()
+        key = event.keyval
+        ctrl = event.state & gdk.CONTROL_MASK
+        if key in [keysyms.KP_Add, keysyms.plus]: self.zoom('ZoomIn')
+        elif key in [keysyms.KP_Subtract, keysyms.minus]: self.zoom('ZoomOut')
+        elif self.fullscreen and key == keysyms.Escape: self.fullscreen_cb()
+        elif ctrl and key == keysyms.z: self.undo_cb(None)
+        elif ctrl and key == keysyms.y: self.redo_cb(None)
         else: return False
         return True
     def key_release_event_cb_after(self, win, event):
