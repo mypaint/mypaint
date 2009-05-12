@@ -100,7 +100,7 @@ class HistoryPopup(gtk.Window):
         pass
 
     def stroke_finished_cb(self, stroke, brush):
-        print 'stroke finished', stroke.total_painting_time, 'seconds'
+        #print 'stroke finished', stroke.total_painting_time, 'seconds'
         self.selection = None
         if not brush.is_eraser():
             color = brush.get_color_hsv()
