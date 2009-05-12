@@ -11,8 +11,8 @@
 # FIXME: should split brush_lowlevel into its own gtk-independent module
 import mypaintlib
 from brushlib import brushsettings
-import gtk, string, os, colorsys
-from helpers import clamp
+import gtk, string, os
+import helpers
 
 preview_w = 128
 preview_h = 128
@@ -257,13 +257,11 @@ class Brush_Lowlevel(mypaintlib.Brush):
         self.end_atomic()
 
     def set_color_rgb(self, rgb):
-        for i in range(3): assert rgb[i] <= 1.0
-        self.set_color_hsv(colorsys.rgb_to_hsv(*rgb))
+        self.set_color_hsv(helpers.rgb_to_hsv(*rgb))
 
     def get_color_rgb(self):
         hsv = self.get_color_hsv()
-        hsv = [clamp(x, 0.0, 1.0) for x in hsv]
-        return colorsys.hsv_to_rgb(*hsv)
+        return helpers.hsv_to_rgb(*hsv)
 
     def is_eraser(self):
         return self.setting_by_cname('eraser').base_value > 0.9

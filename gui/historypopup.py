@@ -2,8 +2,9 @@ import math
 import gtk
 gdk = gtk.gdk
 
-import random, colorsys
+import random
 import numpy, cairo
+from lib import helpers
 
 """
 Worklist (planning/prototyping)
@@ -32,8 +33,8 @@ popup_width = bigcolor_width + (num_colors-1)*smallcolor_width
 
 def hsv_equal(a, b):
     # hack required because we somewhere have an rgb<-->hsv conversion roundtrip
-    a_ = numpy.array(colorsys.hsv_to_rgb(*a))
-    b_ = numpy.array(colorsys.hsv_to_rgb(*b))
+    a_ = numpy.array(helpers.hsv_to_rgb(*a))
+    b_ = numpy.array(helpers.hsv_to_rgb(*b))
     return ((a_ - b_)**2).sum() < (3*1.0/256)**2
 
 
@@ -133,7 +134,7 @@ class HistoryPopup(gtk.Window):
             rect[2] -= line_width
             rect[3] -= line_width
             cr.rectangle(*rect)
-            cr.set_source_rgb(*colorsys.hsv_to_rgb(*c))
+            cr.set_source_rgb(*helpers.hsv_to_rgb(*c))
             cr.fill_preserve()
             cr.set_line_width(line_width)
             cr.set_source_rgb(0, 0, 0)

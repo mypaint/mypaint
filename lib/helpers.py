@@ -7,6 +7,7 @@
 # (at your option) any later version.
 
 from math import floor, ceil
+import colorsys
 import mypaintlib
 
 class Rect:
@@ -91,6 +92,17 @@ def gdkpixbuf2numpy(pixbuf):
     arr = pixbuf.get_pixels_array()
     return mypaintlib.gdkpixbuf_numeric2numpy(arr)
 
+def rgb_to_hsv(r, g, b):
+    r = clamp(r, 0.0, 1.0)
+    g = clamp(g, 0.0, 1.0)
+    b = clamp(b, 0.0, 1.0)
+    return colorsys.rgb_to_hsv(r, g, b)
+
+def hsv_to_rgb(h, s, v):
+    h = clamp(h, 0.0, 1.0)
+    s = clamp(s, 0.0, 1.0)
+    v = clamp(v, 0.0, 1.0)
+    return colorsys.hsv_to_rgb(h, s, v)
 
 if __name__ == '__main__':
     big = Rect(-3, 2, 180, 222)

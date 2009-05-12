@@ -8,7 +8,6 @@
 
 "select color window (GTK and an own window)"
 import gtk, gobject
-import colorsys
 from lib import helpers, mypaintlib
 gdk = gtk.gdk
 
@@ -60,7 +59,7 @@ class Window(gtk.Window):
         assert r <= 1.0
         assert g <= 1.0
         assert b <= 1.0
-        h, s, v = colorsys.rgb_to_hsv(r, g, b)
+        h, s, v = helpers.rgb_to_hsv(r, g, b)
         return (h, s, v)
 
     def set_color_hsv(self, hsv):
@@ -76,7 +75,7 @@ class Window(gtk.Window):
         if s < 0.0: s = 0.0
         if v > 1.0: v = 1.0
         if v < 0.0: v = 0.0
-        r, g, b  = colorsys.hsv_to_rgb(h, s, v)
+        r, g, b  = helpers.hsv_to_rgb(h, s, v)
         c = gdk.Color(int(r*65535+0.5), int(g*65535+0.5), int(b*65535+0.5))
         # only emit color_changed events if the user directly interacts with the window
         self.change_notification = False
