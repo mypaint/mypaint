@@ -128,11 +128,12 @@ class HistoryPopup(gtk.Window):
                 cr.scale(0.5, 0.5)
 
             line_width = 3.0
+            distance = 2*line_width
             rect = [0, -popup_height/2.0, popup_height, popup_height]
-            rect[0] += line_width/2.0
-            rect[1] += line_width/2.0
-            rect[2] -= line_width
-            rect[3] -= line_width
+            rect[0] += distance/2.0
+            rect[1] += distance/2.0
+            rect[2] -= distance
+            rect[3] -= distance
             cr.rectangle(*rect)
             cr.set_source_rgb(*helpers.hsv_to_rgb(*c))
             cr.fill_preserve()
