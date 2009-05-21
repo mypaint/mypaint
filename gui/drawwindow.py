@@ -755,8 +755,9 @@ class Window(gtk.Window):
     def new_cb(self, action):
         if not self.confirm_destructive_action():
             return
+        bg = self.doc.background
         self.doc.clear()
-        self.doc.set_background(self.app.background)
+        self.doc.set_background(bg)
         self.filename = None
 
     def open_cb(self, action):

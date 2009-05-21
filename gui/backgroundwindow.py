@@ -17,8 +17,6 @@ class Window(gtk.Window):
         self.app = app
         self.app.kbm.add_window(self)
 
-        self.app.default_background = (255, 255, 255)
-
         self.set_title('Background')
         self.connect('delete-event', self.app.hide_window_cb)
 
@@ -71,7 +69,6 @@ class Window(gtk.Window):
     def set_background(self, obj):
         doc = self.app.drawWindow.doc
         doc.set_background(obj)
-        self.app.background = obj
 
     def add_color_to_patterns_cb(self, widget):
         pixbuf = self.app.drawWindow.doc.get_background_pixbuf()
