@@ -18,10 +18,12 @@ def main(datapath, confpath):
         print 'Options:'
         print '  -c /path/to/config   use this directory instead of ~/.mypaint/'
         print '  -p                   profile (debug only; simulate some strokes and quit)'
+        print '  -e                   use default pygtk exception handling (no dialog)'
         sys.exit(1)
 
     filename = None
     profile = False
+    excepthook = True
 
     args = sys.argv[1:]
     while args:
@@ -30,6 +32,8 @@ def main(datapath, confpath):
             confpath = args.pop(0)
         elif arg == '-p':
             profile = True
+        elif arg == '-e':
+            excepthook = False
         elif arg.startswith('-'):
             usage_exit()
         else:
@@ -52,5 +56,8 @@ def main(datapath, confpath):
     # windows.</rant>
     gtksettings = gtk.settings_get_default()
     gtksettings.set_property('gtk-can-change-accels', True)
+
+    if excepthook:
+        import gtkexcepthook
 
     gtk.main()
