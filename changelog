@@ -1,5 +1,6 @@
 SVN:
-- Ghost lines between strokes (on touchpads) fixed
+- color history popup
+- <strike>Ghost lines between strokes (on touchpads) fixed</strike> fix reverted
 - Elliptical dabs
 
 Version 0.6.0:

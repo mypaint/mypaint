@@ -168,7 +168,7 @@ class Window(gtk.Window):
               <menuitem action='PickLayer'/>
               <menuitem action='LayerFG'/>
               <menuitem action='LayerBG'/>
-              <menuitem action='BlinkLayer'/>
+              <menuitem action='SoloLayer'/>
               <menuitem action='ToggleAbove'/>
             </menu>
             <menu action='DebugMenu'>
@@ -242,15 +242,15 @@ class Window(gtk.Window):
             ('LayerMenu',    None, 'Layers'),
 
             ('BackgroundWindow', None, 'Background...', None, None, self.toggleWindow_cb),
-            ('ClearLayer',   None, 'Clear Layer', 'Delete', None, self.clear_layer_cb),
+            ('ClearLayer',   None, 'Clear', 'Delete', None, self.clear_layer_cb),
             ('PickLayer',    None, 'Select Layer at Cursor', 'h', None, self.pick_layer_cb),
-            ('LayerFG',      None, 'Next Layer (above current)',  'Page_Up', None, self.layer_fg_cb),
-            ('LayerBG',      None, 'Next Layer (below current)', 'Page_Down', None, self.layer_bg_cb),
-            ('NewLayerFG',   None, 'New Layer (above current)', '<control>Page_Up', None, self.new_layer_cb),
-            ('NewLayerBG',   None, 'New Layer (below current)', '<control>Page_Down', None, self.new_layer_cb),
-            ('MergeLayer',   None, 'Merge Layer Down', '<control>Delete', None, self.merge_layer_cb),
-            ('BlinkLayer',   None, 'Blink Current Layer', 'Home', None, self.blink_layer_cb),
-            ('RemoveLayer',  None, 'Remove Layer', None, None, self.remove_layer_cb),
+            ('LayerFG',      None, 'Next (above current)',  'Page_Up', None, self.layer_fg_cb),
+            ('LayerBG',      None, 'Next (below current)', 'Page_Down', None, self.layer_bg_cb),
+            ('NewLayerFG',   None, 'New (above current)', '<control>Page_Up', None, self.new_layer_cb),
+            ('NewLayerBG',   None, 'New (below current)', '<control>Page_Down', None, self.new_layer_cb),
+            ('MergeLayer',   None, 'Merge Down', '<control>Delete', None, self.merge_layer_cb),
+            ('RemoveLayer',  None, 'Remove', None, None, self.remove_layer_cb),
+            ('SoloLayer',    None, 'Toggle Solo Mode', 'Home', None, self.solo_layer_cb),
             ('ToggleAbove',  None, 'Toggle Layers Above Current', 'End', None, self.toggle_layers_above_cb), # TODO: make toggle action
 
             ('BrushSelectionWindow',  None, 'Brush List...', 'b', None, self.toggleWindow_cb),
@@ -298,9 +298,13 @@ class Window(gtk.Window):
         for action in ag.list_actions():
             self.app.kbm.takeover_action(action)
 
-        sg = self.app.state_group = stategroup.StateGroup()
-
+        sg = stategroup.StateGroup()
         self.layerblink_state = sg.create_state(self.layerblink_state_enter, self.layerblink_state_leave)
+
+        # separate stategroup...
+        sg2 = stategroup.StateGroup()
+        self.layersolo_state = sg2.create_state(self.layersolo_state_enter, self.layersolo_state_leave)
+        self.layersolo_state.autoleave_timeout = None
 
         p2s = sg.create_popup_state
         changer = p2s(colorselectionwindow.ChangeColorPopup(self.app))
@@ -551,11 +555,26 @@ class Window(gtk.Window):
         self.tdw.current_layer_solo = True
         self.tdw.queue_draw()
     def layerblink_state_leave(self, reason):
+        if self.layersolo_state.active:
+            # FIXME: use state machine concept, maybe?
+            return
+        self.tdw.current_layer_solo = False
+        self.tdw.queue_draw()
+    def layersolo_state_enter(self):
+        s = self.layerblink_state
+        if s.active:
+            s.leave()
+        self.tdw.current_layer_solo = True
+        self.tdw.queue_draw()
+    def layersolo_state_leave(self, reason):
         self.tdw.current_layer_solo = False
         self.tdw.queue_draw()
 
-    def blink_layer_cb(self, action):
-        self.layerblink_state.activate(action)
+    #def blink_layer_cb(self, action):
+    #    self.layerblink_state.activate(action)
+
+    def solo_layer_cb(self, action):
+        self.layersolo_state.toggle(action)
 
     def new_layer_cb(self, action):
         insert_idx = self.doc.layer_idx

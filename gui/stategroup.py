@@ -108,6 +108,12 @@ class State:
             action.keyup_callback = self.keyup_cb
         self.enter()
 
+    def toggle(self, action=None):
+        if not self.active:
+            self.activate(action)
+        else:
+            self.leave()
+
     def keyup_cb(self, widget, event):
         if not self.active:
             return
