@@ -14,13 +14,12 @@ class KeyboardManager:
     This class represents all keyboard shortcuts (similar to
     gtk.AccelGroup). It connects to keyboard events of various
     gtk.Window instances to handle hotkeys. It synchronizes with the
-    global gtk accelmap to figure out what the keyboard shortcuts the
-    user has assigned in the menu.
+    global gtk accelmap to figure out what keyboard shortcuts the user
+    has assigned through the menu.
 
     The point of the whole exercise (instead of just using gtk
-    standard tools) is to make it possible for the action handler to
-    wait for the key release event that has activated the
-    action. Autorepeated key press events are blocked in this case.
+    standard tools) is to allow the action handlers to wait for the
+    corresponding key release event.
     """
     def __init__(self):
         gtk.accel_map_get().connect('changed', self.accel_map_changed_cb)
@@ -59,8 +58,6 @@ class KeyboardManager:
         keyval = gdk.keyval_to_lower(event.keyval)
         if keyval != event.keyval:
             modifiers |= gdk.SHIFT_MASK
-        #print 'You are pressing keyval', event.keyval, 'with hardware code', event.hardware_keycode
-        #print 'Which has the lowercase form', keyval
         action = self.keymap.get((keyval, modifiers))
 
         if action:
@@ -85,7 +82,6 @@ class KeyboardManager:
             return True
 
     def key_release_cb(self, widget, event):
-        #print 'You are releasing keyval', event.keyval, 'with hardware code', event.hardware_keycode
         def released(hardware_keycode):
             #gdk.keyboard_ungrab(event.time)
             action = self.pressed[hardware_keycode]
