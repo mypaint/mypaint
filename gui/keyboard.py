@@ -26,7 +26,7 @@ class KeyboardManager:
         gtk.accel_map_get().connect('changed', self.accel_map_changed_cb)
         self.actions = []
         self.keymap = {} # (keyval, modifiers) --> gtk.Action
-        self.pressed = {} # keyval --> gtk.Action
+        self.pressed = {} # hardware_keycode --> gtk.Action (while holding it down)
 
     def accel_map_changed_cb(self, object, accel_path, accel_key, accel_mods):
         self.update_keymap(accel_path)
@@ -46,15 +46,21 @@ class KeyboardManager:
             raise RuntimeError
 
     def key_press_cb(self, widget, event):
-        # This modifier checking code is from an example in the PyGTK docu:
-        # http://www.pygtk.org/pygtk2reference/class-gdkkeymap.html
+        # See gtk sourcecode in gtkmenu.c function gtk_menu_key_press,
+        # which uses the same code as below when changing an accelerator.
         keymap = gdk.keymap_get_default()
-        # We want to ignore irrelevant modifiers like ScrollLock
-        ALL_ACCELS_MASK = gtk.accelerator_get_default_mod_mask()
-        keyval, egroup, level, consumed = keymap.translate_keyboard_state(
+        # figure out what modifiers went into determing the keyval
+        trash1, trash2, trash3, consumed_modifiers = keymap.translate_keyboard_state(
                          event.hardware_keycode, event.state, event.group)
-        assert keyval == event.keyval
-        modifiers = event.state & ~consumed & ALL_ACCELS_MASK
+        # We want to ignore irrelevant modifiers like ScrollLock.
+        # The stored key binding does not include modifiers that affected its keyval.
+        modifiers = event.state & gtk.accelerator_get_default_mod_mask() & ~consumed_modifiers
+        # Except that key bindings are always stored in lowercase.
+        keyval = gdk.keyval_to_lower(event.keyval)
+        if keyval != event.keyval:
+            modifiers |= gdk.SHIFT_MASK
+        #print 'You are pressing keyval', event.keyval, 'with hardware code', event.hardware_keycode
+        #print 'Which has the lowercase form', keyval
         action = self.keymap.get((keyval, modifiers))
 
         if action:
@@ -64,14 +70,14 @@ class KeyboardManager:
                 action.activate()
                 action.keydown = False
 
-            if keyval in self.pressed:
+            if event.hardware_keycode in self.pressed:
                 # allow keyboard autorepeating only if the action
                 # handler is not waiting for the key release event
                 if not action.keyup_callback:
                     activate()
             else:
                 #print 'PRESS', action.get_name()
-                self.pressed[keyval] = action
+                self.pressed[event.hardware_keycode] = action
                 ## make sure we also get the corresponding key release event
                 #gdk.keyboard_grab(widget.window, False, event.time)
                 #widget.grab_add() hm? what would this do?
@@ -79,10 +85,11 @@ class KeyboardManager:
             return True
 
     def key_release_cb(self, widget, event):
-        def released(keyval):
+        #print 'You are releasing keyval', event.keyval, 'with hardware code', event.hardware_keycode
+        def released(hardware_keycode):
             #gdk.keyboard_ungrab(event.time)
-            action = self.pressed[keyval]
-            del self.pressed[keyval]
+            action = self.pressed[hardware_keycode]
+            del self.pressed[hardware_keycode]
             #print 'RELEASE', action.get_name()
             if action.keyup_callback:
                 action.keyup_callback(widget, event)
@@ -90,11 +97,14 @@ class KeyboardManager:
 
         if event.keyval == gtk.keysyms.Escape:
             # emergency exit in case of bugs
-            for keyval in self.pressed.keys():
-                released(keyval)
+            for hardware_keycode in self.pressed.keys():
+                released(hardware_keycode)
         else:
-            if event.keyval in self.pressed:
-                released(event.keyval)
+            # note: event.keyval would not be suited for this because
+            # it can be different from the one we have seen in
+            # key_press_cb if the user has released a modifier first
+            if event.hardware_keycode in self.pressed:
+                released(event.hardware_keycode)
                 return True
     
     def add_window(self, window):
