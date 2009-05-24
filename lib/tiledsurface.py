@@ -97,8 +97,9 @@ class Surface(mypaintlib.TiledSurface):
         tmp = tmp.astype('float32') / (1<<15)
         tmp[:,:,0:3] /= tmp[:,:,3:].clip(0.0001, 1.0) # un-premultiply alpha
         tmp = tmp.clip(0.0,1.0)
-        #tmp *= 255.0 + 0.5 # correct rounding (important)
-        tmp *= 255.0 + random.random(tmp.shape) # dithering
+        tmp *= 255.0
+        #tmp += 0.5 # correct rounding (important)
+        tmp += random.random(tmp.shape) # dithering
         dst[:,:,:] = tmp
 
     def composite_tile_over(self, dst, tx, ty):
