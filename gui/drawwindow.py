@@ -872,22 +872,28 @@ class Window(gtk.Window):
 
     def save_scrap_cb(self, action):
         filename = self.filename
+        prefix = self.app.settingsWindow.save_scrap_prefix
+
+        number = None
         if filename:
-            while True:
-                # append a letter
-                name, ext = os.path.splitext(filename)
-                letter = 'a'
-                if len(name) > 2 and name[-2] == '_' and name[-1] >= 'a' and name[-1] < 'z':
-                    letter = chr(ord(name[-1]) + 1)
-                    name = name[:-2]
-                name = name + '_' + letter
-                filename = name
-                exists = os.path.exists 
-                if not exists(filename+'.png') and not exists(filename+'.ora') and not exists(filename+'.jpg'):
-                    break
+            l = re.findall(re.escape(prefix) + '([0-9]+)', filename)
+            if l:
+                number = l[0]
+
+        if number:
+            # reuse the number, find the next character
+            char = 'a'
+            for filename in glob(prefix + number + '_*'):
+                c = filename[len(prefix + number + '_')]
+                if c >= 'a' and c <= 'z' and c >= char:
+                    char = chr(ord(c)+1)
+            if char > 'z':
+                # out of characters, increase the number
+                self.filename = None
+                return self.save_scrap_cb(action)
+            filename = '%s%s_%c' % (prefix, number, char)
         else:
-            # we don't have a filename yet
-            prefix = self.app.settingsWindow.save_scrap_prefix
+            # we don't have a scrap filename yet, find the next number
             maximum = 0
             for filename in glob(prefix + '[0-9][0-9][0-9]*'):
                 filename = filename[len(prefix):]
@@ -896,7 +902,7 @@ class Window(gtk.Window):
                 number = int(res[0])
                 if number > maximum:
                     maximum = number
-            filename = '%s%03d' % (prefix, maximum+1)
+            filename = '%s%03d_a' % (prefix, maximum+1)
 
         if self.doc.is_layered():
             filename += '.ora'
@@ -909,6 +915,7 @@ class Window(gtk.Window):
     def open_recent_cb(self, action):
         # feed history with scrap directory (mainly for initial history)
         prefix = self.app.settingsWindow.save_scrap_prefix
+        prefix = os.path.abspath(prefix)
         l = glob(prefix + '*.png') + glob(prefix + '*.ora') + glob(prefix + '*.jpg') + glob(prefix + '*.jpeg')
         l = [x for x in l if x not in self.save_history]
         l = l + self.save_history
@@ -920,13 +927,7 @@ class Window(gtk.Window):
         idx = -1
         if self.filename in self.save_history:
             def basename(filename):
-                """get the work name, stripping file type and revision index"""
-                # this mainly is for the scraps that we save
-                l = re.findall(r'(.*)(_[a-z])\.png', filename)
-                if l:
-                    return l[0][0]
-                else:
-                    return os.path.splitext(filename)[0]
+                return os.path.splitext(filename)[0]
             idx = self.save_history.index(self.filename)
             while basename(self.save_history[idx]) == basename(self.filename):
                 idx -= 1
