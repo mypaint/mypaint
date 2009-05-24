@@ -195,7 +195,7 @@ class Window(gtk.Window):
             ('OpenRecent',   None, 'Open Recent', 'F3', None, self.open_recent_cb),
             ('Save',         None, 'Save', '<control>S', None, self.save_cb),
             ('SaveAs',       None, 'Save As...', '<control><shift>S', None, self.save_as_cb),
-            ('SaveScrap',    None, 'Save as Scrap', 'F2', None, self.save_scrap_cb),
+            ('SaveScrap',    None, 'Save Next Scrap', 'F2', None, self.save_scrap_cb),
             ('Quit',         None, 'Quit', None, None, self.quit_cb),
 
 
@@ -470,6 +470,9 @@ class Window(gtk.Window):
 
     def button_press_cb(self, win, event):
         #print event.device, event.button
+        if event.type != gdk.BUTTON_PRESS:
+            # ignore the extra double-click event
+            return
         if event.button == 2:
             # check whether we are painting (accidental)
             pressure = event.get_axis(gdk.AXIS_PRESSURE)
