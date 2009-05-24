@@ -88,6 +88,8 @@ class Surface:
             dst[:,:,:] = data
 
     def blit_tile_into(self, dst, tx, ty):
+        # (used mainly for loading)
+        # conversion 8bit RGBA ==> 16bit premultiplied
         assert dst.dtype == 'uint16', '16 bit dst expected'
         tmp = self.tile_memory_dict[(tx, ty)]
         assert tmp.shape[2] == 4, 'alpha required'

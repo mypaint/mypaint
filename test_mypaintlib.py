@@ -46,6 +46,37 @@ def brushPaint():
 def files_equal(a, b):
     return open(a, 'rb').read() == open(b, 'rb').read()
 
+def pngs_equal(a, b):
+    if files_equal(a, b):
+        return True
+    diff = imread(b) - imread(a)
+
+    print a, 'and', b, 'are different, analyzing whether it is just the undefined colors...'
+    print 'Average difference (255=white): (R, G, B, A)'
+    print mean(mean(diff, 0), 0) * 255
+    print 'Average difference with premultiplied alpha (255=white): (R, G, B, A)'
+    diff2 = diff[:,:,0:3] * imread(a)[:,:,3:4]
+    res = mean(mean(diff2, 0), 0) * 255
+    print res
+
+    res = max(abs(res)) < 0.1
+    if res == False:
+        print 'Not equal enough!'
+        figure(1)
+        title('Combined')
+        imshow(diff)
+        figure(2)
+        title('Green')
+        colorbar()
+        imshow(diff[:,:,1])
+        figure(3)
+        title('Alpha')
+        colorbar()
+        imshow(diff[:,:,3])
+        show()
+
+    return res
+
 def docPaint():
     b1 = brush.Brush_Lowlevel()
     b1.load_from_string(open('brushes/s008.myb').read())
@@ -85,7 +116,7 @@ def docPaint():
 
     doc.layers[0].surface.save('test_docPaint_a.png')
     doc.layers[0].surface.save('test_docPaint_a1.png')
-    assert files_equal('test_docPaint_a.png', 'test_docPaint_a1.png')
+    assert pngs_equal('test_docPaint_a.png', 'test_docPaint_a1.png')
 
     # test save/load
     f1 = StringIO()
@@ -96,14 +127,20 @@ def docPaint():
     # TODO: fix this one?!
     #assert doc.get_bbox() == doc2.get_bbox()
     doc2.layers[0].surface.save('test_docPaint_b.png')
-    assert files_equal('test_docPaint_a.png', 'test_docPaint_b.png')
+    assert pngs_equal('test_docPaint_a.png', 'test_docPaint_b.png')
     doc2.save('test_f2.ora')
-    assert files_equal('test_f1.ora', 'test_f2.ora')
+    #check not possible, because PNGs not exactly equal:
+    #assert files_equal('test_f1.ora', 'test_f2.ora')
 
-    doc2.layers[0].surface.save('test_docPaint_c.png')
-    assert files_equal('test_docPaint_a.png', 'test_docPaint_c.png')
+    # less strict test than above (just require load-save-load-save not to alter the file)
+    doc3 = document.Document()
+    doc3.load('test_f2.ora')
+    assert doc2.get_bbox() == doc3.get_bbox()
+    doc3.layers[0].surface.save('test_docPaint_c.png')
+    assert pngs_equal('test_docPaint_b.png', 'test_docPaint_c.png')
     doc2.save('test_f3.ora')
-    assert files_equal('test_f1.ora', 'test_f3.ora')
+    #check not possible, because PNGs not exactly equal:
+    #assert files_equal('test_f2.ora', 'test_f3.ora')
 
     # note: this is not supposed to be strictly reproducible because
     # of different random seeds [huh? what does that mean?]

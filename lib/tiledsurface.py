@@ -91,13 +91,14 @@ class Surface(mypaintlib.TiledSurface):
                 yield tx*N, ty*N, rgba[y_start:y_end,x_start:y_end]
 
     def blit_tile_into(self, dst, tx, ty):
-        # rarely used
+        # used mainly for saving (transparent PNG)
         assert dst.shape[2] == 4
         tmp = self.get_tile_memory(tx, ty, readonly=True)
         tmp = tmp.astype('float32') / (1<<15)
         tmp[:,:,0:3] /= tmp[:,:,3:].clip(0.0001, 1.0) # un-premultiply alpha
         tmp = tmp.clip(0.0,1.0)
-        dst[:,:,:] = tmp * 255.0
+        tmp *= 255.0 + 0.5 # correct rounding (important)
+        dst[:,:,:] = tmp
 
     def composite_tile_over(self, dst, tx, ty):
         """
