@@ -140,21 +140,24 @@ class Window(gtk.Window):
                 <menuitem action='ContextHelp'/>
               </menu>
               <separator/>
-              <menuitem action='Bigger'/>
-              <menuitem action='Smaller'/>
-              <menuitem action='Brighter'/>
-              <menuitem action='Darker'/>
-              <menuitem action='MoreOpaque'/>
-              <menuitem action='LessOpaque'/>
               <menuitem action='BrushSettingsWindow'/>
               <separator/>
-              <menuitem action='Eraser'/>
+              <menuitem action='Bigger'/>
+              <menuitem action='Smaller'/>
+              <menuitem action='MoreOpaque'/>
+              <menuitem action='LessOpaque'/>
               <separator/>
-              <menuitem action='ColorHistoryPopup'/>
-              <menuitem action='PickColor'/>
-              <menuitem action='ChangeColorPopup'/>
-              <menuitem action='ColorWheelPopup'/>
+              <menuitem action='Eraser'/>
+            </menu>
+            <menu action='ColorMenu'>
               <menuitem action='ColorSelectionWindow'/>
+              <menuitem action='ColorWheelPopup'/>
+              <menuitem action='ChangeColorPopup'/>
+              <menuitem action='PickColor'/>
+              <menuitem action='ColorHistoryPopup'/>
+              <separator/>
+              <menuitem action='Brighter'/>
+              <menuitem action='Darker'/>
             </menu>
             <menu action='LayerMenu'>
               <menuitem action='BackgroundWindow'/>
@@ -203,17 +206,19 @@ class Window(gtk.Window):
             ('PasteLayer',         None, 'Paste Layer from Clipboard', '<control>V', None, self.paste_cb),
 
             ('BrushMenu',    None, 'Brush'),
-            ('ColorHistoryPopup',  None, 'Previous Color', 'x', None, self.popup_cb),
             ('Brighter',     None, 'Brighter', None, None, self.brighter_cb),
-            ('Darker',       None, 'Darker', None, None, self.darker_cb),
-            ('Bigger',       None, 'Bigger', 'f', None, self.brush_bigger_cb),
             ('Smaller',      None, 'Smaller', 'd', None, self.brush_smaller_cb),
             ('MoreOpaque',   None, 'More Opaque', 's', None, self.more_opaque_cb),
             ('LessOpaque',   None, 'Less Opaque', 'a', None, self.less_opaque_cb),
+            ('Eraser',       None, 'Toggle Eraser Mode', 'e', None, self.eraser_cb),
+
+            ('ColorMenu',    None, 'Color'),
+            ('Darker',       None, 'Darker', None, None, self.darker_cb),
+            ('Bigger',       None, 'Bigger', 'f', None, self.brush_bigger_cb),
             ('PickColor',    None, 'Pick Color', 'r', None, self.pick_color_cb),
+            ('ColorHistoryPopup',  None, 'Color History', 'x', None, self.popup_cb),
             ('ChangeColorPopup', None, 'Change Color', 'v', None, self.popup_cb),
             ('ColorWheelPopup',  None, 'Color Wheel', None, None, self.popup_cb),
-            ('Eraser',       None, 'Toggle Eraser Mode', 'e', None, self.eraser_cb),
 
             ('ContextMenu',  None, 'Brushkeys'),
             ('Context00',    None, 'Restore Brush 0', '0', None, self.context_cb),
