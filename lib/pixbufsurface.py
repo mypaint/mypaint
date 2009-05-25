@@ -88,7 +88,7 @@ class Surface:
             dst[:,:,:] = data
 
     def blit_tile_into(self, dst, tx, ty):
-        # (used mainly for loading)
+        # (used mainly for loading transparent PNGs)
         # conversion 8bit RGBA ==> 16bit premultiplied
         assert dst.dtype == 'uint16', '16 bit dst expected'
         tmp = self.tile_memory_dict[(tx, ty)]
@@ -97,6 +97,7 @@ class Surface:
         alpha = tmp[:,:,3:]
         tmp[:,:,0:3] *= alpha # premultiply alpha
         tmp *= 1<<15
+        tmp += 0.5 # rounding required (no exact 16bit integers)
         dst[:,:,:] = tmp
 
 

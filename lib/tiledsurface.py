@@ -99,7 +99,12 @@ class Surface(mypaintlib.TiledSurface):
         tmp = tmp.clip(0.0,1.0)
         tmp *= 255.0
         #tmp += 0.5 # correct rounding (important)
-        tmp += random.random(tmp.shape) # dithering
+        #tmp += random.random(tmp.shape) # dithering
+        if 1: # dithering, but do not add alpha noise when loaded from 8bit
+            quantization_noise_level = 255.0/(1<<15) # this is the impact on tmp when adding +1 to the 16bit integer (noise = 0.0078)
+            tmp += random.random(tmp.shape) * (1.0-4*quantization_noise_level) + 2*quantization_noise_level
+            # note: the above works well, but low-alpha colors still tend to catch a tiny bit of noise each load/save step
+            #       (this is most likely due to un-premultiplying, which amplifies the quantization noise)
         dst[:,:,:] = tmp
 
     def composite_tile_over(self, dst, tx, ty):

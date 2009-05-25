@@ -51,16 +51,24 @@ def pngs_equal(a, b):
         return True
     diff = imread(b) - imread(a)
 
+    equal = True
     print a, 'and', b, 'are different, analyzing whether it is just the undefined colors...'
     print 'Average difference (255=white): (R, G, B, A)'
     print mean(mean(diff, 0), 0) * 255
+    print 'Maximum abs difference (255=white): (R, G, B, A)'
+    res = amax(amax(abs(diff), 0), 0) * 255
+    print res
+    if res[-1] > 3:
+        # that's more than just some dithering gone astray...
+        equal = False
     print 'Average difference with premultiplied alpha (255=white): (R, G, B, A)'
     diff2 = diff[:,:,0:3] * imread(a)[:,:,3:4]
     res = mean(mean(diff2, 0), 0) * 255
     print res
+    if max(abs(res)) > 0.01:
+        equal = False
 
-    res = max(abs(res)) < 0.1
-    if res == False:
+    if not equal:
         print 'Not equal enough!'
         figure(1)
         title('Combined')
@@ -75,7 +83,7 @@ def pngs_equal(a, b):
         imshow(diff[:,:,3])
         show()
 
-    return res
+    return equal
 
 def docPaint():
     b1 = brush.Brush_Lowlevel()
@@ -116,6 +124,7 @@ def docPaint():
 
     doc.layers[0].surface.save('test_docPaint_a.png')
     doc.layers[0].surface.save('test_docPaint_a1.png')
+    # the resulting images will look slightly different because of dithering
     assert pngs_equal('test_docPaint_a.png', 'test_docPaint_a1.png')
 
     # test save/load
@@ -152,4 +161,4 @@ directPaint()
 brushPaint()
 docPaint()
 
-print 'tests done'
+print 'Tests passed.'
