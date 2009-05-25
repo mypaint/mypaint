@@ -98,6 +98,7 @@ class Surface:
         tmp[:,:,0:3] *= alpha # premultiply alpha
         tmp *= 1<<15
         tmp += 0.5 # rounding required (no exact 16bit integers)
+        # FIXME: hm... couldn't this cause green*alpha > alpha for some rounding cases?
         dst[:,:,:] = tmp
 
 

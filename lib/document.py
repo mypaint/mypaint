@@ -266,7 +266,6 @@ class Document():
     save_jpeg = save_jpg
 
     def save_ora(self, filename):
-        t0 = time.time()
         tempdir = tempfile.mkdtemp('mypaint')
         z = zipfile.ZipFile(filename, 'w', compression=zipfile.ZIP_STORED)
         # work around a permission bug in the zipfile library: http://bugs.python.org/issue3394
@@ -289,9 +288,7 @@ class Document():
             stack.append(layer)
 
             tmp = join(tempdir, 'tmp.png')
-            t1 = time.time()
             pixbuf.save(tmp, 'png', {'compression':'2'})
-            print 'png save', time.time()-t1
             z.write(tmp, name)
             os.remove(tmp)
 
@@ -317,7 +314,6 @@ class Document():
         write_file_str('stack.xml', xml)
         z.close()
         os.rmdir(tempdir)
-        print 'TOTAL', time.time()-t0
 
     def load_ora(self, filename):
         tempdir = tempfile.mkdtemp('mypaint')

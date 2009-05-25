@@ -94,18 +94,7 @@ class Surface(mypaintlib.TiledSurface):
         # used mainly for saving (transparent PNG)
         assert dst.shape[2] == 4
         tmp = self.get_tile_memory(tx, ty, readonly=True)
-        tmp = tmp.astype('float32') / (1<<15)
-        tmp[:,:,0:3] /= tmp[:,:,3:].clip(0.0001, 1.0) # un-premultiply alpha
-        tmp = tmp.clip(0.0,1.0)
-        tmp *= 255.0
-        #tmp += 0.5 # correct rounding (important)
-        #tmp += random.random(tmp.shape) # dithering
-        if 1: # dithering, but do not add alpha noise when loaded from 8bit
-            quantization_noise_level = 255.0/(1<<15) # this is the impact on tmp when adding +1 to the 16bit integer (noise = 0.0078)
-            tmp += random.random(tmp.shape) * (1.0-4*quantization_noise_level) + 2*quantization_noise_level
-            # note: the above works well, but low-alpha colors still tend to catch a tiny bit of noise each load/save step
-            #       (this is most likely due to un-premultiplying, which amplifies the quantization noise)
-        dst[:,:,:] = tmp
+        return mypaintlib.tile_convert_rgba16_to_rgba8(tmp, dst)
 
     def composite_tile_over(self, dst, tx, ty):
         """

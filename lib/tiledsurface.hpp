@@ -423,3 +423,100 @@ void tile_blit_rgb8_into_rgb8(PyObject * src, PyObject * dst) {
     dst_p += dst_arr->strides[0];
   }
 }
+
+// used mainly for saving layers (transparent PNG)
+void tile_convert_rgba16_to_rgba8(PyObject * src, PyObject * dst) {
+  PyArrayObject* src_arr = ((PyArrayObject*)src);
+  PyArrayObject* dst_arr = ((PyArrayObject*)dst);
+
+  /* disabled as optimization
+  assert(PyArray_DIM(dst, 0) == TILE_SIZE);
+  assert(PyArray_DIM(dst, 1) == TILE_SIZE);
+  assert(PyArray_DIM(dst, 2) == 4);
+  assert(PyArray_TYPE(dst) == NPY_UINT8);
+  assert(PyArray_ISBEHAVED(dst));
+  assert(dst_arr->strides[1] == 4*sizeof(uint8_t));
+  assert(dst_arr->strides[2] ==   sizeof(uint8_t));
+
+  assert(PyArray_DIM(src, 0) == TILE_SIZE);
+  assert(PyArray_DIM(src, 1) == TILE_SIZE);
+  assert(PyArray_DIM(src, 2) == 4);
+  assert(PyArray_TYPE(src) == NPY_UINT16);
+  assert(PyArray_ISBEHAVED(src));
+  assert(src_arr->strides[1] == 4*sizeof(uint16_t));
+  assert(src_arr->strides[2] ==   sizeof(uint16_t));
+  */
+
+  for (int y=0; y<TILE_SIZE; y++) {
+    uint16_t * src_p = (uint16_t*)(src_arr->data + y*src_arr->strides[0]);
+    uint8_t  * dst_p = (uint8_t*)(dst_arr->data + y*dst_arr->strides[0]);
+    for (int x=0; x<TILE_SIZE; x++) {
+      uint32_t r, g, b, a;
+      r = *src_p++;
+      g = *src_p++;
+      b = *src_p++;
+      a = *src_p++;
+      /*
+      assert(a<=(1<<15));
+      assert(r<=(1<<15));
+      assert(g<=(1<<15));
+      assert(b<=(1<<15));
+      assert(r<=a);
+      assert(g<=a);
+      assert(b<=a);
+      */
+      // un-premultiply alpha (with rounding)
+      if (a != 0) {
+        r = ((r << 15) + a/2) / a;
+        g = ((g << 15) + a/2) / a;
+        b = ((b << 15) + a/2) / a;
+      } else {
+        r = g = b = 0;
+      }
+      /*
+      assert(a<=(1<<15));
+      assert(r<=(1<<15));
+      assert(g<=(1<<15));
+      assert(b<=(1<<15));
+      */
+
+      /*
+      // Variant A) rounding
+      const uint32_t add_r = (1<<15)/2;
+      const uint32_t add_g = (1<<15)/2;
+      const uint32_t add_b = (1<<15)/2;
+      const uint32_t add_a = (1<<15)/2;
+      */
+      
+      /*
+      // Variant B) naive dithering
+      // This can alter the alpha channel during a load->save cycle.
+      const uint32_t add_r = random() % (1<<15);
+      const uint32_t add_g = random() % (1<<15);
+      const uint32_t add_b = random() % (1<<15);
+      const uint32_t add_a = random() % (1<<15);
+      */
+
+      // Variant C) slightly better dithering
+      // make sure we don't dither rounding errors (those did occur when converting 8bit-->16bit)
+      // this preserves the alpha channel, but we still add noise to the highly transparent colors
+      // OPTIMIZE: calling random() slows us down...
+      const uint32_t add_r = (random() % (1<<15)) * 240/256 + (1<<15) * 8/256;
+      const uint32_t add_g = (random() % (1<<15)) * 240/256 + (1<<15) * 8/256;
+      const uint32_t add_b = (random() % (1<<15)) * 240/256 + (1<<15) * 8/256;
+      const uint32_t add_a = (random() % (1<<15)) * 240/256 + (1<<15) * 8/256;
+
+      /*
+      assert(add_a < (1<<15));
+      assert(add_a >= 0);
+      */
+
+      *dst_p++ = (r * 255 + add_r) / (1<<15);
+      *dst_p++ = (g * 255 + add_g) / (1<<15);
+      *dst_p++ = (b * 255 + add_b) / (1<<15);
+      *dst_p++ = (a * 255 + add_a) / (1<<15);
+    }
+    src_p += src_arr->strides[0];
+    dst_p += dst_arr->strides[0];
+  }
+}

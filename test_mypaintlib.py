@@ -46,41 +46,51 @@ def brushPaint():
 def files_equal(a, b):
     return open(a, 'rb').read() == open(b, 'rb').read()
 
-def pngs_equal(a, b):
+def pngs_equal(a, b, exact=True):
     if files_equal(a, b):
+        print a, 'and', b, 'are perfectly equal'
         return True
-    diff = imread(b) - imread(a)
+    im_a = imread(a)*255.0
+    im_b = imread(b)*255.0
+    diff = im_b - im_a
+    diff_alpha = diff[:,:,3]
 
-    equal = True
+    equal = False
+    if not exact:
+        equal = True
     print a, 'and', b, 'are different, analyzing whether it is just the undefined colors...'
     print 'Average difference (255=white): (R, G, B, A)'
-    print mean(mean(diff, 0), 0) * 255
-    print 'Maximum abs difference (255=white): (R, G, B, A)'
-    res = amax(amax(abs(diff), 0), 0) * 255
-    print res
-    if res[-1] > 3:
-        # that's more than just some dithering gone astray...
-        equal = False
+    print mean(mean(diff, 0), 0)
     print 'Average difference with premultiplied alpha (255=white): (R, G, B, A)'
-    diff2 = diff[:,:,0:3] * imread(a)[:,:,3:4]
-    res = mean(mean(diff2, 0), 0) * 255
+    diff = diff[:,:,0:3] * imread(a)[:,:,3:4]
+    res = mean(mean(diff, 0), 0)
     print res
-    if max(abs(res)) > 0.01:
+    if mean(res) > 0.001:
+        # dithering should make this value nearly zero...
+        equal = False
+    print 'Maximum abs difference with premultiplied alpha (255=white): (R, G, B, A)'
+    res = amax(amax(abs(diff), 0), 0)
+    print res
+    if max(abs(res)) > 1.1:
+        # this error will be visible
+        # - smaller errors are hidden by the weak alpha
+        #   (but we should pay attention not to accumulate such errors at each load/save cycle...)
         equal = False
 
     if not equal:
         print 'Not equal enough!'
         figure(1)
-        title('Combined')
-        imshow(diff)
-        figure(2)
-        title('Green')
-        colorbar()
-        imshow(diff[:,:,1])
-        figure(3)
         title('Alpha')
+        imshow(im_b[:,:,3])
         colorbar()
-        imshow(diff[:,:,3])
+        figure(2)
+        title('Green Error (multiplied with alpha)')
+        imshow(diff[:,:,1])
+        colorbar()
+        figure(3)
+        title('Alpha Error')
+        imshow(diff_alpha)
+        colorbar()
         show()
 
     return equal
@@ -125,7 +135,7 @@ def docPaint():
     doc.layers[0].surface.save('test_docPaint_a.png')
     doc.layers[0].surface.save('test_docPaint_a1.png')
     # the resulting images will look slightly different because of dithering
-    assert pngs_equal('test_docPaint_a.png', 'test_docPaint_a1.png')
+    assert pngs_equal('test_docPaint_a.png', 'test_docPaint_a1.png', exact=False)
 
     # test save/load
     f1 = StringIO()
@@ -136,7 +146,7 @@ def docPaint():
     # TODO: fix this one?!
     #assert doc.get_bbox() == doc2.get_bbox()
     doc2.layers[0].surface.save('test_docPaint_b.png')
-    assert pngs_equal('test_docPaint_a.png', 'test_docPaint_b.png')
+    assert pngs_equal('test_docPaint_a.png', 'test_docPaint_b.png', exact=False)
     doc2.save('test_f2.ora')
     #check not possible, because PNGs not exactly equal:
     #assert files_equal('test_f1.ora', 'test_f2.ora')
@@ -146,7 +156,7 @@ def docPaint():
     doc3.load('test_f2.ora')
     assert doc2.get_bbox() == doc3.get_bbox()
     doc3.layers[0].surface.save('test_docPaint_c.png')
-    assert pngs_equal('test_docPaint_b.png', 'test_docPaint_c.png')
+    assert pngs_equal('test_docPaint_b.png', 'test_docPaint_c.png', exact=False) # TODO: exact=True please
     doc2.save('test_f3.ora')
     #check not possible, because PNGs not exactly equal:
     #assert files_equal('test_f2.ora', 'test_f3.ora')
