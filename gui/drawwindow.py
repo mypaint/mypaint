@@ -714,11 +714,11 @@ class Window(gtk.Window):
             self.tdw.recenter_document()
 
     @with_wait_cursor
-    def save_file(self, filename):
+    def save_file(self, filename, **options):
         try:
             x, y, w, h =  self.doc.get_bbox()
             assert w > 0 and h > 0, 'The canvas is empty.'
-            self.doc.save(filename)
+            self.doc.save(filename, **options)
         except Exception, e:
             print 'Failed to save, traceback:'
             traceback.print_exc()
@@ -833,7 +833,7 @@ class Window(gtk.Window):
         self.filter2info = filter2info
 
         f = gtk.FileFilter()
-        filter2info[f] = ('ora', {})
+        filter2info[f] = ('.ora', {})
         f.set_name("Any format (prefer OpenRaster)")
         self.save_filter_default = f
 
@@ -844,26 +844,25 @@ class Window(gtk.Window):
         dialog.add_filter(f)
 
         f = gtk.FileFilter()
-        filter2info[f] = ('ora', {})
+        filter2info[f] = ('.ora', {})
         f.set_name("OpenRaster (*.ora)")
         f.add_pattern("*.ora")
         dialog.add_filter(f)
 
         f = gtk.FileFilter()
-        filter2info[f] = ('png', {'alpha': False})
+        filter2info[f] = ('.png', {'alpha': False})
         f.set_name("PNG solid with background (*.png)")
         f.add_pattern("*.png")
         dialog.add_filter(f)
 
-        # TODO
-        #f = gtk.FileFilter()
-        #filter2info[f] = ('png', {'alpha': True})
-        #f.set_name("PNG transparent (*.png)")
-        #f.add_pattern("*.png")
-        #dialog.add_filter(f)
+        f = gtk.FileFilter()
+        filter2info[f] = ('.png', {'alpha': True})
+        f.set_name("PNG transparent (*.png)")
+        f.add_pattern("*.png")
+        dialog.add_filter(f)
 
         f = gtk.FileFilter()
-        filter2info[f] = ('jpg', {'quality': 90})
+        filter2info[f] = ('.jpg', {'quality': 90})
         f.set_name("JPEG 90% quality (*.jpg; *.jpeg)")
         f.add_pattern("*.jpg")
         f.add_pattern("*.jpeg")
@@ -904,7 +903,7 @@ class Window(gtk.Window):
                     break
                 
                 # add proper extension
-                filename = name + '.' + ext_filter
+                filename = name + ext_filter
 
                 # trigger overwrite confirmation for the modified filename
                 dialog_set_filename(filename)

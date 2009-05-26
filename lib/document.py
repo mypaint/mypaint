@@ -250,8 +250,13 @@ class Document():
         return pixbufsurface.render_as_pixbuf(self, *args)
 
     def save_png(self, filename, compression=2, alpha=False):
-        assert alpha != True, 'TODO'
-        pixbuf = self.render_as_pixbuf()
+        if alpha:
+            tmp_layer = layer.Layer()
+            for l in self.layers:
+                l.merge_into(tmp_layer)
+            pixbuf = tmp_layer.surface.render_as_pixbuf()
+        else:
+            pixbuf = self.render_as_pixbuf()
         pixbuf.save(filename, 'png', {'compression':str(compression)})
 
     def load_png(self, filename):
