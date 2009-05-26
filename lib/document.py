@@ -228,11 +228,11 @@ class Document():
                 count += 1
         return count > 1
 
-    def save(self, filename):
+    def save(self, filename, **kwargs):
         trash, ext = os.path.splitext(filename)
         ext = ext.lower().replace('.', '')
         save = getattr(self, 'save_' + ext, self.unsupported)
-        save(filename)
+        save(filename, **kwargs)
         self.unsaved_painting_time = 0.0
 
     def load(self, filename):
@@ -249,9 +249,10 @@ class Document():
     def render_as_pixbuf(self, *args):
         return pixbufsurface.render_as_pixbuf(self, *args)
 
-    def save_png(self, filename):
+    def save_png(self, filename, compression=2, alpha=False):
+        assert alpha != True, 'TODO'
         pixbuf = self.render_as_pixbuf()
-        pixbuf.save(filename, 'png', {'compression':'2'})
+        pixbuf.save(filename, 'png', {'compression':str(compression)})
 
     def load_png(self, filename):
         self.load_from_pixbuf(gdk.pixbuf_new_from_file(filename))
@@ -260,12 +261,12 @@ class Document():
         self.load_from_pixbuf(gdk.pixbuf_new_from_file(filename))
     load_jpeg = load_jpg
 
-    def save_jpg(self, filename):
+    def save_jpg(self, filename, quality=90):
         pixbuf = self.render_as_pixbuf()
-        pixbuf.save(filename, 'jpeg', {'quality':'90'})
+        pixbuf.save(filename, 'jpeg', options={'quality':str(quality)})
     save_jpeg = save_jpg
 
-    def save_ora(self, filename):
+    def save_ora(self, filename, options=None):
         tempdir = tempfile.mkdtemp('mypaint')
         z = zipfile.ZipFile(filename, 'w', compression=zipfile.ZIP_STORED)
         # work around a permission bug in the zipfile library: http://bugs.python.org/issue3394

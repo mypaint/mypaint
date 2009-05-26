@@ -17,10 +17,13 @@ MYPAINT_VERSION="0.6.0+svn"
 import os, re, math
 from time import time
 from glob import glob
+import traceback
+
 import gtk
 from gtk import gdk, keysyms
 
-import tileddrawwidget, colorselectionwindow, historypopup, stategroup, keyboard
+import tileddrawwidget, colorselectionwindow, historypopup, \
+       stategroup, keyboard, filechooser
 from lib import document, helpers
 
 class Window(gtk.Window):
@@ -715,13 +718,12 @@ class Window(gtk.Window):
             assert w > 0 and h > 0, 'The canvas is empty.'
             self.doc.save(filename)
         except Exception, e:
-            print e
+            print 'Failed to save, traceback:'
+            traceback.print_exc()
             d = gtk.MessageDialog(self, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_OK)
             d.set_markup('Failed to save:\n' + str(e))
             d.run()
             d.destroy()
-            print 'Failed to save!'
-            raise
         else:
             self.filename = os.path.abspath(filename)
             print 'Saved to', self.filename
@@ -824,15 +826,12 @@ class Window(gtk.Window):
         dialog.set_default_response(gtk.RESPONSE_OK)
         dialog.set_do_overwrite_confirmation(True)
 
-        filter2ext = {}
+        filter2info = {}
 
         f = gtk.FileFilter()
-        if self.doc.is_layered():
-            filter2ext[f] = 'auto ora'
-            f.set_name("Automatic, prefering OpenRaster")
-        else:
-            filter2ext[f] = 'auto png'
-            f.set_name("Automatic, prefering PNG")
+        filter2info[f] = ('ora', {})
+        f.set_name("Any format (prefer OpenRaster)")
+
         f.add_pattern("*.png")
         f.add_pattern("*.ora")
         f.add_pattern("*.jpg")
@@ -840,19 +839,26 @@ class Window(gtk.Window):
         dialog.add_filter(f)
 
         f = gtk.FileFilter()
-        filter2ext[f] = 'ora'
+        filter2info[f] = ('ora', {})
         f.set_name("OpenRaster (*.ora)")
         f.add_pattern("*.ora")
         dialog.add_filter(f)
 
         f = gtk.FileFilter()
-        filter2ext[f] = 'png'
-        f.set_name("PNG without alpha (*.png)")
+        filter2info[f] = ('png', {'alpha': False})
+        f.set_name("PNG solid with background (*.png)")
         f.add_pattern("*.png")
         dialog.add_filter(f)
 
+        # TODO
+        #f = gtk.FileFilter()
+        #filter2info[f] = ('png', {'alpha': True})
+        #f.set_name("PNG transparent (*.png)")
+        #f.add_pattern("*.png")
+        #dialog.add_filter(f)
+
         f = gtk.FileFilter()
-        filter2ext[f] = 'jpg'
+        filter2info[f] = ('jpg', {'quality': 90})
         f.set_name("JPEG 90% quality (*.jpg; *.jpeg)")
         f.add_pattern("*.jpg")
         f.add_pattern("*.jpeg")
@@ -861,15 +867,30 @@ class Window(gtk.Window):
         if self.filename:
             dialog.set_filename(self.filename)
         try:
-            if dialog.run() == gtk.RESPONSE_OK:
+            while dialog.run() == gtk.RESPONSE_OK:
+
                 filename = dialog.get_filename()
                 name, ext = os.path.splitext(filename)
-                ext_filter = filter2ext.get(dialog.get_filter(), 'ora')
-                if not ext_filter.startswith('auto ') or not ext:
-                    # force proper extension
-                    filename = name + '.' + ext_filter.replace('auto ', '')
-                assert filename
-                self.save_file(filename)
+                ext_filter, options = filter2info.get(dialog.get_filter(), ('ora', {}))
+
+                if ext:
+                    if ext_filter != ext:
+                        # Minor ugliness: if the user types '.png' but
+                        # leaves the default .ora filter selected, we
+                        # use the default options instead of those
+                        # above. However, they are the same at the moment.
+                        options = {}
+                    assert(filename)
+                    self.save_file(filename, **options)
+                    break
+                
+                # add proper extension
+                filename = name + '.' + ext_filter
+
+                # trigger overwrite confirmation for the modified filename
+                dialog.set_current_name(filename)
+                dialog.response(gtk.RESPONSE_OK)
+
         finally:
             dialog.destroy()
 
@@ -907,10 +928,11 @@ class Window(gtk.Window):
                     maximum = number
             filename = '%s%03d_a' % (prefix, maximum+1)
 
-        if self.doc.is_layered():
-            filename += '.ora'
-        else:
-            filename += '.png'
+        #if self.doc.is_layered():
+        #    filename += '.ora'
+        #else:
+        #    filename += '.png'
+        filename += '.ora'
 
         assert not os.path.exists(filename)
         self.save_file(filename)
