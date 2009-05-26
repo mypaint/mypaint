@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 from pylab import *
-from StringIO import StringIO
 from time import time
 
 from lib import mypaintlib, tiledsurface, brushsettings, brush, document, command
@@ -138,7 +137,6 @@ def docPaint():
     assert pngs_equal('test_docPaint_a.png', 'test_docPaint_a1.png', exact=False)
 
     # test save/load
-    f1 = StringIO()
     doc.save('test_f1.ora')
     doc2 = document.Document()
     doc2.load('test_f1.ora')
