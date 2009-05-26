@@ -76,6 +76,8 @@ class Window(gtk.Window):
         else:
             self.save_history = []
 
+        self.init_save_dialog()
+
     def create_ui(self):
         ag = gtk.ActionGroup('WindowActions')
         # FIXME: this xml menu only creates unneeded information duplication, I think.
@@ -818,19 +820,22 @@ class Window(gtk.Window):
             self.save_file(self.filename)
 
 
-    def save_as_cb(self, action):
+    def init_save_dialog(self):
         dialog = gtk.FileChooserDialog("Save..", self,
                                        gtk.FILE_CHOOSER_ACTION_SAVE,
                                        (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
                                         gtk.STOCK_SAVE, gtk.RESPONSE_OK))
+        self.save_dialog = dialog
         dialog.set_default_response(gtk.RESPONSE_OK)
         dialog.set_do_overwrite_confirmation(True)
 
         filter2info = {}
+        self.filter2info = filter2info
 
         f = gtk.FileFilter()
         filter2info[f] = ('ora', {})
         f.set_name("Any format (prefer OpenRaster)")
+        self.save_filter_default = f
 
         f.add_pattern("*.png")
         f.add_pattern("*.ora")
@@ -864,14 +869,28 @@ class Window(gtk.Window):
         f.add_pattern("*.jpeg")
         dialog.add_filter(f)
 
+    def save_as_cb(self, action):
+        dialog = self.save_dialog
+
+        def dialog_set_filename(s):
+            # According to pygtk docu we should use set_filename(),
+            # however doing so removes the selected filefilter.
+            path, name = os.path.split(s)
+            dialog.set_current_folder(path)
+            dialog.set_current_name(name)
+
         if self.filename:
-            dialog.set_filename(self.filename)
+            dialog_set_filename(self.filename)
+        else:
+            dialog_set_filename('')
+            dialog.set_filter(self.save_filter_default)
+
         try:
             while dialog.run() == gtk.RESPONSE_OK:
 
                 filename = dialog.get_filename()
                 name, ext = os.path.splitext(filename)
-                ext_filter, options = filter2info.get(dialog.get_filter(), ('ora', {}))
+                ext_filter, options = self.filter2info.get(dialog.get_filter(), ('ora', {}))
 
                 if ext:
                     if ext_filter != ext:
@@ -888,11 +907,11 @@ class Window(gtk.Window):
                 filename = name + '.' + ext_filter
 
                 # trigger overwrite confirmation for the modified filename
-                dialog.set_current_name(filename)
+                dialog_set_filename(filename)
                 dialog.response(gtk.RESPONSE_OK)
 
         finally:
-            dialog.destroy()
+            dialog.hide()
 
     def save_scrap_cb(self, action):
         filename = self.filename
