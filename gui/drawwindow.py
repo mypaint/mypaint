@@ -23,7 +23,7 @@ import gtk
 from gtk import gdk, keysyms
 
 import tileddrawwidget, colorselectionwindow, historypopup, \
-       stategroup, keyboard, filechooser
+       stategroup, keyboard
 from lib import document, helpers
 
 class Window(gtk.Window):
