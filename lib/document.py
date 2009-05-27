@@ -289,15 +289,16 @@ class Document():
         a['w'] = str(w0)
         a['h'] = str(h0)
 
-        def add_layer(x, y, pixbuf, name):
-            layer = ET.Element('layer')
-            stack.append(layer)
-
+        def store_pixbuf(pixbuf, name):
             tmp = join(tempdir, 'tmp.png')
             pixbuf.save(tmp, 'png', {'compression':'2'})
             z.write(tmp, name)
             os.remove(tmp)
 
+        def add_layer(x, y, pixbuf, name):
+            layer = ET.Element('layer')
+            stack.append(layer)
+            store_pixbuf(pixbuf, name)
             a = layer.attrib
             a['src'] = name
             a['x'] = str(x)
@@ -314,6 +315,16 @@ class Document():
         s = pixbufsurface.Surface(0, 0, w0, h0)
         s.fill(self.background)
         add_layer(0, 0, s.pixbuf, 'data/background.png')
+
+        # preview
+        pixbuf = self.render_as_pixbuf()
+        w, h = pixbuf.get_width(), pixbuf.get_height()
+        if w > h:
+            pixbuf = pixbuf.scale_simple(256, h*256/w, gdk.INTERP_BILINEAR)
+        else:
+            pixbuf = pixbuf.scale_simple(w*256/h, 256, gdk.INTERP_BILINEAR)
+        # FIXME: handle extreme case of less-than-one-pixel height/width?
+        store_pixbuf(pixbuf, 'Thumbnails/thumbnail.png')
 
         xml = ET.tostring(image, encoding='UTF-8')
 
