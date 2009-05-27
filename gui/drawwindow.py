@@ -783,20 +783,20 @@ class Window(gtk.Window):
 
         f = gtk.FileFilter()
         f.set_name("All Recognized Formats")
-        f.add_pattern("*.png")
         f.add_pattern("*.ora")
+        f.add_pattern("*.png")
         f.add_pattern("*.jpg")
         f.add_pattern("*.jpeg")
         dialog.add_filter(f)
 
         f = gtk.FileFilter()
-        f.set_name("PNG (*.png)")
-        f.add_pattern("*.png")
+        f.set_name("OpenRaster (*.ora)")
+        f.add_pattern("*.ora")
         dialog.add_filter(f)
 
         f = gtk.FileFilter()
-        f.set_name("OpenRaster (*.ora)")
-        f.add_pattern("*.ora")
+        f.set_name("PNG (*.png)")
+        f.add_pattern("*.png")
         dialog.add_filter(f)
 
         f = gtk.FileFilter()
