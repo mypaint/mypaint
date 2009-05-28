@@ -9,6 +9,7 @@
 # This module implements an an unbounded tiled surface for painting.
 
 from numpy import *
+import time
 import mypaintlib, helpers
 
 tilesize = N = mypaintlib.TILE_SIZE
@@ -130,8 +131,11 @@ class Surface(mypaintlib.TiledSurface):
     def render_as_pixbuf(self, *args, **kwargs):
         if not self.tiledict:
             print 'WARNING: empty surface'
+        t0 = time.time()
         kwargs['alpha'] = True
-        return pixbufsurface.render_as_pixbuf(self, *args, **kwargs)
+        res = pixbufsurface.render_as_pixbuf(self, *args, **kwargs)
+        print '  %.3fs rendering layer as pixbuf' % (time.time() - t0)
+        return res
 
     def save(self, filename):
         pixbuf = self.render_as_pixbuf()

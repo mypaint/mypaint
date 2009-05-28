@@ -293,7 +293,7 @@ class Window(gtk.Window):
             ('PrintInputs', None, 'Print Brush Input Values to stdout', None, None, self.print_inputs_cb),
             ('VisualizeRendering', None, 'Visualize Rendering', None, None, self.visualize_rendering_cb),
             ('NoDoubleBuffereing', None, 'Disable GTK Double Buffering', None, None, self.no_double_buffering_cb),
-            ('Flip', None, 'Mirror Image', None, None, self.flip_cb),
+            ('Flip', None, 'Mirror Image', 'i', None, self.flip_cb),
             ]
         ag.add_toggle_actions(toggle_actions)
         self.ui = gtk.UIManager()

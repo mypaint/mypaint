@@ -272,8 +272,11 @@ class Document():
     save_jpeg = save_jpg
 
     def save_ora(self, filename, options=None):
+        print 'save_ora:'
+        t0 = time.time()
         tempdir = tempfile.mkdtemp('mypaint')
-        z = zipfile.ZipFile(filename, 'w', compression=zipfile.ZIP_STORED)
+        # use .tmp extension, so we don't overwrite a valid file if there is an exception
+        z = zipfile.ZipFile(filename + '.tmpsave', 'w', compression=zipfile.ZIP_STORED)
         # work around a permission bug in the zipfile library: http://bugs.python.org/issue3394
         def write_file_str(filename, data):
             zi = zipfile.ZipInfo(filename)
@@ -291,7 +294,9 @@ class Document():
 
         def store_pixbuf(pixbuf, name):
             tmp = join(tempdir, 'tmp.png')
+            t1 = time.time()
             pixbuf.save(tmp, 'png', {'compression':'2'})
+            print '  %.3fs saving %s compression 2' % (time.time() - t1, name)
             z.write(tmp, name)
             os.remove(tmp)
 
@@ -317,22 +322,32 @@ class Document():
         add_layer(0, 0, s.pixbuf, 'data/background.png')
 
         # preview
+        t2 = time.time()
+        print '  starting to render image for thumbnail...'
         pixbuf = self.render_as_pixbuf()
         w, h = pixbuf.get_width(), pixbuf.get_height()
         if w > h:
-            pixbuf = pixbuf.scale_simple(256, h*256/w, gdk.INTERP_BILINEAR)
+            w, h = 256, max(h*256/w, 1)
         else:
-            pixbuf = pixbuf.scale_simple(w*256/h, 256, gdk.INTERP_BILINEAR)
-        # FIXME: handle extreme case of less-than-one-pixel height/width?
+            w, h = max(w*256/h, 1), 256
+        t1 = time.time()
+        pixbuf = pixbuf.scale_simple(w, h, gdk.INTERP_BILINEAR)
+        print '  %.3fs scaling thumbnail' % (time.time() - t1)
         store_pixbuf(pixbuf, 'Thumbnails/thumbnail.png')
+        print '  total %.3fs spent on thumbnail' % (time.time() - t2)
 
         xml = ET.tostring(image, encoding='UTF-8')
 
         write_file_str('stack.xml', xml)
         z.close()
         os.rmdir(tempdir)
+        os.rename(filename + '.tmpsave', filename)
+
+        print '%.3fs save_ora total' % (time.time() - t0)
 
     def load_ora(self, filename):
+        print 'load_ora:'
+        t0 = time.time()
         tempdir = tempfile.mkdtemp('mypaint')
         z = zipfile.ZipFile(filename)
         print 'mimetype:', z.read('mimetype').strip()
@@ -355,14 +370,18 @@ class Document():
             f = open(tmp, 'wb')
             f.write(z.read(src))
             f.close()
+            t1 = time.time()
             pixbuf = gdk.pixbuf_new_from_file(tmp)
+            print '  %.3fs loading %s' % (time.time() - t1, src)
             os.remove(tmp)
 
             x = int(a.get('x', '0'))
             y = int(a.get('y', '0'))
             self.add_layer(insert_idx=0)
             last_pixbuf = pixbuf
+            t1 = time.time()
             self.load_layer_from_pixbuf(pixbuf, x, y)
+            print '  %.3fs converting pixbuf to layer format' % (time.time() - t1)
 
         os.rmdir(tempdir)
 
@@ -393,3 +412,4 @@ class Document():
             self.remove_layer()
             # this leaves the topmost layer selected
 
+        print '%.3fs load_ora total' % (time.time() - t0)
