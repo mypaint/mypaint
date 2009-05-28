@@ -89,18 +89,10 @@ class Surface:
 
     def blit_tile_into(self, dst, tx, ty):
         # (used mainly for loading transparent PNGs)
-        # conversion 8bit RGBA ==> 16bit premultiplied
         assert dst.dtype == 'uint16', '16 bit dst expected'
-        tmp = self.tile_memory_dict[(tx, ty)]
-        assert tmp.shape[2] == 4, 'alpha required'
-        tmp = tmp.astype('float32') / 255.0
-        alpha = tmp[:,:,3:]
-        tmp[:,:,0:3] *= alpha # premultiply alpha
-        tmp *= 1<<15
-        tmp += 0.5 # rounding required (no exact 16bit integers)
-        # FIXME: hm... couldn't this cause green*alpha > alpha for some rounding cases?
-        dst[:,:,:] = tmp
-
+        src = self.tile_memory_dict[(tx, ty)]
+        assert src.shape[2] == 4, 'alpha required'
+        mypaintlib.tile_convert_rgba8_to_rgba16(src, dst);
 
 def render_as_pixbuf(surface, *rect, **kwargs):
     alpha = kwargs.get('alpha', False)

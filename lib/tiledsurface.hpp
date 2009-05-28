@@ -520,3 +520,62 @@ void tile_convert_rgba16_to_rgba8(PyObject * src, PyObject * dst) {
     dst_p += dst_arr->strides[0];
   }
 }
+
+// used mainly for loading layers (transparent PNG)
+void tile_convert_rgba8_to_rgba16(PyObject * src, PyObject * dst) {
+  PyArrayObject* src_arr = ((PyArrayObject*)src);
+  PyArrayObject* dst_arr = ((PyArrayObject*)dst);
+
+  /* disabled as optimization
+  assert(PyArray_DIM(dst, 0) == TILE_SIZE);
+  assert(PyArray_DIM(dst, 1) == TILE_SIZE);
+  assert(PyArray_DIM(dst, 2) == 4);
+  assert(PyArray_TYPE(dst) == NPY_UINT16);
+  assert(PyArray_ISBEHAVED(dst));
+  assert(dst_arr->strides[1] == 4*sizeof(uint16_t));
+  assert(dst_arr->strides[2] ==   sizeof(uint16_t));
+
+  assert(PyArray_DIM(src, 0) == TILE_SIZE);
+  assert(PyArray_DIM(src, 1) == TILE_SIZE);
+  assert(PyArray_DIM(src, 2) == 4);
+  assert(PyArray_TYPE(src) == NPY_UINT8);
+  assert(PyArray_ISBEHAVED(src));
+  assert(src_arr->strides[1] == 4*sizeof(uint8_t));
+  assert(src_arr->strides[2] ==   sizeof(uint8_t));
+  */
+
+  for (int y=0; y<TILE_SIZE; y++) {
+    uint8_t  * src_p = (uint8_t*)(src_arr->data + y*src_arr->strides[0]);
+    uint16_t * dst_p = (uint16_t*)(dst_arr->data + y*dst_arr->strides[0]);
+    for (int x=0; x<TILE_SIZE; x++) {
+      uint32_t r, g, b, a;
+      r = *src_p++;
+      g = *src_p++;
+      b = *src_p++;
+      a = *src_p++;
+
+      /*
+        // old python implementation:
+        tmp = tmp.astype('float32') / 255.0
+        alpha = tmp[:,:,3:]
+        tmp[:,:,0:3] *= alpha # premultiply alpha
+        tmp *= 1<<15
+        tmp += 0.5 # rounding required (no exact 16bit integers)
+        # FIXME: hm... couldn't this cause green*alpha > alpha for some rounding cases?
+        dst[:,:,:] = tmp
+      */
+
+      // convert to fixed point (with rounding)
+      r = (r * (1<<15) + 255/2) / 255;
+      g = (g * (1<<15) + 255/2) / 255;
+      b = (b * (1<<15) + 255/2) / 255;
+      a = (a * (1<<15) + 255/2) / 255;
+
+      // premultiply alpha, save back (hm... should we do rounding here too?)
+      *dst_p++ = r * a / (1<<15);
+      *dst_p++ = g * a / (1<<15);
+      *dst_p++ = b * a / (1<<15);
+      *dst_p++ = a;
+    }
+  }
+}

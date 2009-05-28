@@ -390,6 +390,7 @@ class Document():
 
         # recognize solid or tiled background layers, at least those that mypaint saves
         # (OpenRaster will probably get generator layers for this some day)
+        t1 = time.time()
         p = last_pixbuf
         if not p.get_has_alpha() and p.get_width() % N == 0 and p.get_height() % N == 0:
             tiles = self.layers[0].surface.tiledict.values()
@@ -405,6 +406,7 @@ class Document():
                     self.set_background(tile.copy())
                     self.select_layer(0)
                     self.remove_layer()
+        print '  %.3fs recognizing tiled background' % (time.time() - t1)
 
         if len(self.layers) > 1:
             # remove the still present initial empty top layer
