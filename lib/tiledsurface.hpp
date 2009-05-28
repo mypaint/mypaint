@@ -554,27 +554,16 @@ void tile_convert_rgba8_to_rgba16(PyObject * src, PyObject * dst) {
       b = *src_p++;
       a = *src_p++;
 
-      /*
-        // old python implementation:
-        tmp = tmp.astype('float32') / 255.0
-        alpha = tmp[:,:,3:]
-        tmp[:,:,0:3] *= alpha # premultiply alpha
-        tmp *= 1<<15
-        tmp += 0.5 # rounding required (no exact 16bit integers)
-        # FIXME: hm... couldn't this cause green*alpha > alpha for some rounding cases?
-        dst[:,:,:] = tmp
-      */
-
       // convert to fixed point (with rounding)
       r = (r * (1<<15) + 255/2) / 255;
       g = (g * (1<<15) + 255/2) / 255;
       b = (b * (1<<15) + 255/2) / 255;
       a = (a * (1<<15) + 255/2) / 255;
 
-      // premultiply alpha, save back (hm... should we do rounding here too?)
-      *dst_p++ = r * a / (1<<15);
-      *dst_p++ = g * a / (1<<15);
-      *dst_p++ = b * a / (1<<15);
+      // premultiply alpha (with rounding), save back
+      *dst_p++ = (r * a + (1<<15)/2) / (1<<15);
+      *dst_p++ = (g * a + (1<<15)/2) / (1<<15);
+      *dst_p++ = (b * a + (1<<15)/2) / (1<<15);
       *dst_p++ = a;
     }
   }
