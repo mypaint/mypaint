@@ -19,10 +19,10 @@ inputs_list = [
     # name, hard minimum, soft minimum, normal[1], soft maximum, hard maximum, tooltip
     ['pressure', 0.0,  0.0,  0.4,  1.0, 1.0,  "The pressure reported by the tablet, between 0.0 and 1.0. If you use the mouse, it will be 0.5 when a button is pressed and 0.0 otherwise."],
     ['speed1',   None, 0.0,  0.5,  4.0, None, "How fast you currently move. This can change very quickly. Try 'print input values' from the 'help' menu to get a feeling for the range; negative values are rare but possible for very low speed."],
-    ['speed2',   None, 0.0,  0.5,  4.0, None, "Same as speed1, but changes slower. Also look at the 'speed2 slowness' setting."],
+    ['speed2',   None, 0.0,  0.5,  4.0, None, "Same as speed1, but changes slower. Also look at the 'speed2 filter' setting."],
     ['random',   0.0,  0.0,  0.5,  1.0, 1.0,  "Fast random noise, changing at each evaluation. Evenly distributed between 0 and 1."],
     ['stroke',   0.0,  0.0,  0.5,  1.0, 1.0,  "This input slowly goes from zero to one while you draw a stroke. It can also be configured to jump back to zero periodically while you move. Look at the 'stroke duration' and 'stroke hold time' settings."],
-    #['angle',    0.0,  0.0,  0.5,  1.0, 1.0,  "[EXPERIMENTAL] Angle of movement. The dynamics are shared with BRUSH_OFFSET_BY_SPEED_SLOWNESS (FIXME: which is a bad thing)."],
+    #['angle',    0.0,  0.0,  0.5,  1.0, 1.0,  "[EXPERIMENTAL] Angle of movement. The dynamics are shared with BRUSH_OFFSET_BY_SPEED_FILTER (FIXME: which is a bad thing)."],
     ['custom',   None,-2.0,  0.0, +2.0, None, "This is a user defined input. Look at the 'custom input' setting for details."],
     ]
     # [1] If, for example, the user increases the "by pressure" slider
@@ -41,13 +41,13 @@ settings_list = [
     ['dabs_per_actual_radius', 'dabs per actual radius', True, 0.0, 2.0, 6.0, "same as above, but the radius actually drawn is used, which can change dynamically"],
     ['dabs_per_second', 'dabs per second', True, 0.0, 0.0, 80.0, "dabs to draw each second, no matter how far the pointer moves"],
     ['radius_by_random', 'radius by random', False, 0.0, 0.0, 1.5, "Alter the radius randomly each dab. You can also do this with the by_random input on the radius setting. If you do it here, there are two differences:\n1) the opaque value will be corrected such that a big-radius dabs is more transparent\n2) it will not change the actual radius seen by dabs_per_actual_radius"],
-    ['speed1_slowness', 'speed1 slowness', False, 0.0, 0.04, 0.2, "how slow the input speed1 is following the real speed\n0.0 change immediatly as your speed changes (not recommended, but try it)"],
-    ['speed2_slowness', 'speed2 slowness', False, 0.0, 0.8, 3.0, "same as 'speed1 slowness', but note that the range is different"],
+    ['speed1_slowness', 'speed1 filter', False, 0.0, 0.04, 0.2, "how slow the input speed1 is following the real speed\n0.0 change immediatly as your speed changes (not recommended, but try it)"],
+    ['speed2_slowness', 'speed2 filter', False, 0.0, 0.8, 3.0, "same as 'speed1 slowness', but note that the range is different"],
     ['speed1_gamma', 'speed1 gamma', True, -8.0, 4.0, 8.0, "This changes the reaction of the speed1 input to extreme physical speed. You will see the difference best if speed1 is mapped to the radius.\n-8.0 very fast speed does not increase speed1 much more\n+8.0 very fast speed increases speed1 a lot\nFor very slow speed the opposite happens."],
     ['speed2_gamma', 'speed2 gamma', True, -8.0, 4.0, 8.0, "same as 'speed1 gamma' for speed2"],
     ['offset_by_random', 'jitter', False, 0.0, 0.0, 2.0, "add a random offset to the position where each dab is drawn\n 0.0 disabled\n 1.0 standard deviation is one basic radius away"],
     ['offset_by_speed', 'offset by speed', False, -3.0, 0.0, 3.0, "change position depending on pointer speed\n= 0 disable\n> 0 draw where the pointer moves to\n< 0 draw where the pointer comes from"],
-    ['offset_by_speed_slowness', 'offset by speed slowness', False, 0.0, 1.0, 15.0, "how slow the offset goes back to zero when the cursor stops moving; 0 means there will never be any offset left"],
+    ['offset_by_speed_slowness', 'offset by speed filter', False, 0.0, 1.0, 15.0, "how slow the offset goes back to zero when the cursor stops moving; 0 means there will never be any offset left"],
     ['slow_tracking', 'slow position tracking', True, 0.0, 0.0, 10.0, "Slowdown pointer tracking speed. 0 disables it, higher values remove more jitter in cursor movements. Useful for drawing smooth, comic-like outlines."],
     ['slow_tracking_per_dab', 'slow tracking per dab', False, 0.0, 0.0, 10.0, "Similar as above but at brushdab level (ignoring how much time has past, if brushdabs do not depend on time)"],
     ['tracking_noise', 'tracking noise', True, 0.0, 0.0, 12.0, "add randomness to the mouse pointer; this usually generates many small lines in random directions; maybe try this together with 'slow tracking'"],
@@ -68,7 +68,7 @@ settings_list = [
     ['stroke_duration_logarithmic', 'stroke duration', False, -1.0, 4.0, 7.0, "How far you have to move until the stroke input reaches 1.0. This value is logarithmic (negative values will not inverse the process)."],
     ['stroke_holdtime', 'stroke hold time', False, 0.0, 0.0, 10.0, "This defines how long the stroke input stays at 1.0. After that it will reset to 0.0 and start growing again, even if the stroke is not yet finished.\n2.0 means twice as long as it takes to go from 0.0 to 1.0\n9.9 and bigger stands for infinite"],
     ['custom_input', 'custom input', False, -5.0, 0.0, 5.0, "Set the custom input to this value. If it is slowed down, move it towards this value (see below). The idea is that you make this input depend on a mixture of pressure/speed/whatever, and then make other settings depend on this 'custom input' instead of repeating this combination everywhere you need it.\nIf you make it change 'by random' you can generate a slow (smooth) random input."],
-    ['custom_input_slowness', 'custom input slowness', False, 0.0, 0.0, 10.0, "How slow the custom input actually follows the desired value (the one above). This happens at brushdab level (ignoring how much time has past, if brushdabs do not depend on time).\n0.0 no slowdown (changes apply instantly)"],
+    ['custom_input_slowness', 'custom input filter', False, 0.0, 0.0, 10.0, "How slow the custom input actually follows the desired value (the one above). This happens at brushdab level (ignoring how much time has past, if brushdabs do not depend on time).\n0.0 no slowdown (changes apply instantly)"],
 
     #['dab2_opacity_fac', 'second dab opaque', False, 0.0, 0.0, 2.0, "0.0 disable the second dab\n1.0 as opaque as the first dab\n2.0 twice as opaque as the first dab"],
     #['dab2_position_noise', 'second position noise',
