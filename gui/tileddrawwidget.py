@@ -236,20 +236,6 @@ class TiledDrawWidget(gtk.DrawingArea):
         # bye bye device coordinates
         self.get_model_coordinates_cairo_context(cr)
 
-        # optimization for solid color background
-        try:
-            r, g, b = self.doc.background
-            solid = True
-        except ValueError:
-            solid = False
-        if solid:
-            # do not render all the unused space outside the image as pixmap
-            # (makes a huge difference when zoomed out)
-            cr.set_source_rgb(r/255.0, g/255.0, b/255.0)
-            cr.paint()
-            cr.rectangle(*self.doc.get_bbox())
-            cr.clip()
-
         translation_only = self.is_translation_only()
 
         # calculate the final model bbox with all the clipping above
@@ -286,11 +272,9 @@ class TiledDrawWidget(gtk.DrawingArea):
                     
         tiles = surface.get_tiles()
 
+        background_memory = None
         if self.current_layer_solo:
-            # FIXME: hack alert!
-            # Should implement FSM for hiding / showing normal / soloing layer, or similar.
-            old_background = self.doc.background_memory
-            self.doc.background_memory = self.neutral_background_pixbuf
+            background_memory = self.neutral_background_pixbuf
             layers = [self.doc.layer]
             # this is for hiding instead
             #layers.pop(self.doc.layer_idx)
@@ -316,11 +300,7 @@ class TiledDrawWidget(gtk.DrawingArea):
 
 
             dst = surface.get_tile_memory(tx, ty)
-            self.doc.blit_tile_into(dst, tx, ty, layers)
-
-        if self.current_layer_solo:
-            # undo background change (FIXME: Hack alert!)
-            self.doc.background_memory = old_background
+            self.doc.blit_tile_into(dst, tx, ty, layers, background_memory)
 
         if translation_only:
             # not sure why, but using gdk directly is notably faster than the same via cairo

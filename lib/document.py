@@ -164,14 +164,16 @@ class Document():
             res.expandToIncludeRect(bbox)
         return res
 
-    def blit_tile_into(self, dst, tx, ty, layers=None):
+    def blit_tile_into(self, dst, tx, ty, layers=None, background_memory=None):
         if layers is None:
             layers = self.layers
+        if background_memory is None:
+            background_memory = self.background_memory
 
         # render solid or tiled background
-        #dst[:] = self.background_memory # 13 times slower than below, with some bursts having the same speed as below (huh?)
+        #dst[:] = background_memory # 13 times slower than below, with some bursts having the same speed as below (huh?)
         # note: optimization for solid colors is not worth it any more now, even if it gives 2x speedup (at best)
-        mypaintlib.tile_blit_rgb8_into_rgb8(self.background_memory, dst)
+        mypaintlib.tile_blit_rgb8_into_rgb8(background_memory, dst)
 
         for layer in layers:
             surface = layer.surface
