@@ -1,5 +1,7 @@
 import os, sys
 
+EnsureSConsVersion(1, 1)
+
 python = 'python%d.%d' % (sys.version_info[0], sys.version_info[1])
 print 'Building for', python
 
