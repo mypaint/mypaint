@@ -287,11 +287,11 @@ private:
 
     // aspect ratio (needs to be caluclated here because it can affect the dab spacing)
 
-    float aspect_ratio = settings_value[BRUSH_ASPECT_RATIO]; 
+    float ratio = settings_value[BRUSH_ELLIPTICAL_DAB_RATIO];
     //float angle = atan2(states[STATE_NORM_DY_SLOW], -states[STATE_NORM_DX_SLOW]) / M_PI * 180;
-    float angle = settings_value[BRUSH_ASPECT_RATIO_ANGLE];
-    states[STATE_ACTUAL_ASPECT_RATIO] = aspect_ratio;
-    states[STATE_ACTUAL_ANGLE] = angle;
+    float angle = settings_value[BRUSH_ELLIPTICAL_DAB_ANGLE];
+    states[STATE_ACTUAL_ELLIPTICAL_DAB_RATIO] = ratio;
+    states[STATE_ACTUAL_ELLIPTICAL_DAB_ANGLE] = angle;
   }
 
   // Called only from stroke_to(). Calculate everything needed to
@@ -444,7 +444,7 @@ private:
     // the functions below will CLAMP most inputs
     hsv_to_rgb_float (&color_h, &color_s, &color_v);
     return surface->draw_dab (x, y, radius, color_h, color_s, color_v, opaque, hardness, eraser_target_alpha,
-                              states[STATE_ACTUAL_ASPECT_RATIO], states[STATE_ACTUAL_ANGLE]);
+                              states[STATE_ACTUAL_ELLIPTICAL_DAB_RATIO], states[STATE_ACTUAL_ELLIPTICAL_DAB_ANGLE]);
   }
 
   // How many dabs will be drawn between the current and the next (x, y, pressure, +dt) position?
@@ -471,12 +471,13 @@ private:
     //dp = pressure - pressure; // Not useful?
     // TODO: control rate with pressure (dabs per pressure) (dpressure is useless)
 
-    if (states[STATE_ACTUAL_ASPECT_RATIO] > 1.0) {
-      float angle_rad=states[STATE_ACTUAL_ANGLE]*M_PI/180.0;
+    if (states[STATE_ACTUAL_ELLIPTICAL_DAB_RATIO] > 1.0) {
+      // code duplication, see tiledsurface::draw_dab()
+      float angle_rad=states[STATE_ACTUAL_ELLIPTICAL_DAB_ANGLE]*2*M_PI;
       float cs=cos(angle_rad);
       float sn=sin(angle_rad);
-      float yyr=(yy*cs+xx*sn)*states[STATE_ACTUAL_ASPECT_RATIO];
-      float xxr=-yy*sn+xx*cs;
+      float yyr=(yy*cs-xx*sn)*states[STATE_ACTUAL_ELLIPTICAL_DAB_RATIO];
+      float xxr=yy*sn+xx*cs;
       dist = sqrt(yyr*yyr + xxr*xxr);
     } else {
       dist = hypotf(xx, yy);

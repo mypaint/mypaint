@@ -160,7 +160,7 @@ public:
         if (x1 > TILE_SIZE-1) x1 = TILE_SIZE-1;
         if (y1 > TILE_SIZE-1) y1 = TILE_SIZE-1;
 
-		float angle_rad=angle*M_PI/180.0;
+		float angle_rad=angle*2*M_PI;
 		float cs=cos(angle_rad);
 		float sn=sin(angle_rad);
 
@@ -168,8 +168,9 @@ public:
           yy = (yp + 0.5 - yc);
           for (xp = x0; xp <= x1; xp++) {
             xx = (xp + 0.5 - xc);
-          	float yyr=(yy*cs+xx*sn)*aspect_ratio;
-			float xxr=-yy*sn+xx*cs;
+            // code duplication, see brush::count_dabs_to()
+          	float yyr=(yy*cs-xx*sn)*aspect_ratio;
+			float xxr=yy*sn+xx*cs;
             rr = (yyr*yyr + xxr*xxr) * one_over_radius2;
             // rr is in range 0.0..1.0*sqrt(2)
 
