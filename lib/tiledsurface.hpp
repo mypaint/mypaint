@@ -160,7 +160,7 @@ public:
         if (x1 > TILE_SIZE-1) x1 = TILE_SIZE-1;
         if (y1 > TILE_SIZE-1) y1 = TILE_SIZE-1;
 
-		float angle_rad=angle*2*M_PI;
+		float angle_rad=angle/360*2*M_PI;
 		float cs=cos(angle_rad);
 		float sn=sin(angle_rad);
 

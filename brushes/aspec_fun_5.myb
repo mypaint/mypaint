@@ -20,9 +20,9 @@ offset_by_speed_slowness 1.0
 slow_tracking 0.65
 slow_tracking_per_dab 0.8
 tracking_noise 0.0
-color_h 0.61131247483
-color_s 0.601458354215
-color_v 0.608957045853
+color_h 0.0
+color_s 0.0
+color_v 0.0
 change_color_h 0.0
 change_color_l 0.0
 change_color_hsl_s 0.0
@@ -32,9 +32,10 @@ smudge 0.0
 smudge_length 0.5
 eraser 0.0
 stroke_treshold 0.0
-stroke_duration_logarithmic 2.81
+stroke_duration_logarithmic 2.69
 stroke_holdtime 0.0
 custom_input 0.0 | random (0.000000 -5.300000), (1.000000 5.300000)
 custom_input_slowness 10.0
-aspect_ratio 1.74 | speed1 (0.000000 0.171429), (4.000000 -1.200000)
-aspect_ratio_angle 45.0 | stroke (0.000000 -180.000000), (1.000000 180.000000)
+direction_filter 2.0
+elliptical_dab_ratio 1.66
+elliptical_dab_angle 0.0 | stroke (0.000000 -180.000000), (1.000000 180.000000)

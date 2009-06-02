@@ -36,5 +36,6 @@ stroke_duration_logarithmic 4.0
 stroke_holdtime 0.0
 custom_input 0.0
 custom_input_slowness 0.0
-aspect_ratio 3.55
-aspect_ratio_angle 45.0 | random (0.000000 -216.460000), (1.000000 216.460000)
+direction_filter 2.0
+elliptical_dab_ratio 1.4 | pressure (0.000000 0.000000), (1.000000 2.390000)
+elliptical_dab_angle 90.0 | random (0.000000 -180.000000), (1.000000 180.000000)

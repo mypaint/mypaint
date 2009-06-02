@@ -219,8 +219,7 @@ private:
     inputs[INPUT_SPEED2] = log(speed_mapping_gamma[1] + states[STATE_NORM_SPEED2_SLOW])*speed_mapping_m[1] + speed_mapping_q[1];
     inputs[INPUT_RANDOM] = g_rand_double (rng);
     inputs[INPUT_STROKE] = MIN(states[STATE_STROKE], 1.0);
-    //if (states[STATE_NORM_DY_SLOW] == 0 && states[STATE_NORM_DX_SLOW] == 0) {
-    //inputs[INPUT_ANGLE] = fmodf(atan2f (states[STATE_NORM_DY_SLOW], states[STATE_NORM_DX_SLOW])/(M_PI) + 1.0, 1.0);
+    inputs[INPUT_DIRECTION] = fmodf (atan2f (states[STATE_DIRECTION_DY], states[STATE_DIRECTION_DX])/(2*M_PI)*360 + 180.0, 180.0);
     inputs[INPUT_CUSTOM] = states[STATE_CUSTOM_INPUT];
     if (print_inputs) {
       g_print("press=% 4.3f, speed1=% 4.4f\tspeed2=% 4.4f\tstroke=% 4.3f\tcustom=% 4.3f\n", (double)inputs[INPUT_PRESSURE], (double)inputs[INPUT_SPEED1], (double)inputs[INPUT_SPEED2], (double)inputs[INPUT_STROKE], (double)inputs[INPUT_CUSTOM]);
@@ -250,6 +249,23 @@ private:
       float fac = 1.0 - exp_decay (exp(settings_value[BRUSH_OFFSET_BY_SPEED_SLOWNESS]*0.01)-1.0, step_dtime);
       states[STATE_NORM_DX_SLOW] += (norm_dx - states[STATE_NORM_DX_SLOW]) * fac;
       states[STATE_NORM_DY_SLOW] += (norm_dy - states[STATE_NORM_DY_SLOW]) * fac;
+    }
+
+    { // orientation (similar lowpass filter as above, but use dabtime instead of wallclock time)
+      float dx = step_dx / base_radius;
+      float dy = step_dy / base_radius;
+      float step_in_dabtime = hypotf(dx, dy); // FIXME: are we recalculating something here that we already have?
+      float fac = 1.0 - exp_decay (exp(settings_value[BRUSH_DIRECTION_FILTER]*0.5)-1.0, step_in_dabtime);
+
+      float dx_old = states[STATE_DIRECTION_DX];
+      float dy_old = states[STATE_DIRECTION_DY];
+      // use the opposite speed vector if it is closer (we don't care about 180 degree turns)
+      if (SQR(dx_old-dx) + SQR(dy_old-dy) > SQR(dx_old-(-dx)) + SQR(dy_old-(-dy))) {
+        dx = -dx;
+        dy = -dy;
+      }
+      states[STATE_DIRECTION_DX] += (dx - states[STATE_DIRECTION_DX]) * fac;
+      states[STATE_DIRECTION_DY] += (dy - states[STATE_DIRECTION_DY]) * fac;
     }
 
     { // custom input
@@ -286,12 +302,8 @@ private:
     if (states[STATE_ACTUAL_RADIUS] > ACTUAL_RADIUS_MAX) states[STATE_ACTUAL_RADIUS] = ACTUAL_RADIUS_MAX;
 
     // aspect ratio (needs to be caluclated here because it can affect the dab spacing)
-
-    float ratio = settings_value[BRUSH_ELLIPTICAL_DAB_RATIO];
-    //float angle = atan2(states[STATE_NORM_DY_SLOW], -states[STATE_NORM_DX_SLOW]) / M_PI * 180;
-    float angle = settings_value[BRUSH_ELLIPTICAL_DAB_ANGLE];
-    states[STATE_ACTUAL_ELLIPTICAL_DAB_RATIO] = ratio;
-    states[STATE_ACTUAL_ELLIPTICAL_DAB_ANGLE] = angle;
+    states[STATE_ACTUAL_ELLIPTICAL_DAB_RATIO] = settings_value[BRUSH_ELLIPTICAL_DAB_RATIO];
+    states[STATE_ACTUAL_ELLIPTICAL_DAB_ANGLE] = settings_value[BRUSH_ELLIPTICAL_DAB_ANGLE];
   }
 
   // Called only from stroke_to(). Calculate everything needed to
@@ -473,7 +485,7 @@ private:
 
     if (states[STATE_ACTUAL_ELLIPTICAL_DAB_RATIO] > 1.0) {
       // code duplication, see tiledsurface::draw_dab()
-      float angle_rad=states[STATE_ACTUAL_ELLIPTICAL_DAB_ANGLE]*2*M_PI;
+      float angle_rad=states[STATE_ACTUAL_ELLIPTICAL_DAB_ANGLE]/360*2*M_PI;
       float cs=cos(angle_rad);
       float sn=sin(angle_rad);
       float yyr=(yy*cs-xx*sn)*states[STATE_ACTUAL_ELLIPTICAL_DAB_RATIO];

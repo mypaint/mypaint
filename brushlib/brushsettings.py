@@ -22,7 +22,8 @@ inputs_list = [
     ['speed2',   None, 0.0,  0.5,  4.0, None, "Same as speed1, but changes slower. Also look at the 'speed2 filter' setting."],
     ['random',   0.0,  0.0,  0.5,  1.0, 1.0,  "Fast random noise, changing at each evaluation. Evenly distributed between 0 and 1."],
     ['stroke',   0.0,  0.0,  0.5,  1.0, 1.0,  "This input slowly goes from zero to one while you draw a stroke. It can also be configured to jump back to zero periodically while you move. Look at the 'stroke duration' and 'stroke hold time' settings."],
-    #['angle',    0.0,  0.0,  0.5,  1.0, 1.0,  "[EXPERIMENTAL] Angle of movement. The dynamics are shared with BRUSH_OFFSET_BY_SPEED_FILTER (FIXME: which is a bad thing)."],
+    ['direction',0.0,  0.0,  0.0,  180.0, 180.0,  "The angle of the stroke, in degrees. The value will stay between 0.0 and 180.0, effectively ignoring turns of 180 degrees."],
+    #['motion_strength',0.0,0.0,  0.0,  1.0, 1.0,  "[EXPERIMENTAL] Same as angle, but wraps at 180 degrees. The dynamics are shared with BRUSH_OFFSET_BY_SPEED_FILTER (FIXME: which is a bad thing)."],
     ['custom',   None,-2.0,  0.0, +2.0, None, "This is a user defined input. Look at the 'custom input' setting for details."],
     ]
     # [1] If, for example, the user increases the "by pressure" slider
@@ -55,7 +56,7 @@ settings_list = [
     ['color_h', 'color hue', True, 0.0, 0.0, 1.0, "color hue"],
     ['color_s', 'color saturation', True, -0.5, 0.0, 1.5, "color saturation"],
     ['color_v', 'color value', True, -0.5, 0.0, 1.5, "color value (brightness, intensity)"],
-    ['change_color_h', 'change color hue', False, -2.0, 0.0, 2.0, "Change color hue.\n-1.0 clockwise color hue shift\n 0.0 disable\n 1.0 counterclockwise hue shift"],
+    ['change_color_h', 'change color hue', False, -2.0, 0.0, 2.0, "Change color hue.\n-0.1 small clockwise color hue shift\n 0.0 disable\n 0.5 counterclockwise hue shift by 180 degrees"],
     ['change_color_l', 'change color lightness (HSL)', False, -2.0, 0.0, 2.0, "Change the color lightness (luminance) using the HSL color model.\n-1.0 blacker\n 0.0 disable\n 1.0 whiter"],
     ['change_color_hsl_s', 'change color satur. (HSL)', False, -2.0, 0.0, 2.0, "Change the color saturation using the HSL color model.\n-1.0 more grayish\n 0.0 disable\n 1.0 more saturated"],
     ['change_color_v', 'change color value (HSV)', False, -2.0, 0.0, 2.0, "Change the color value (brightness, intensity) using the HSV color model. HSV changes are applied before HSL.\n-1.0 darker\n 0.0 disable\n 1.0 brigher"],
@@ -70,11 +71,9 @@ settings_list = [
     ['custom_input', 'custom input', False, -5.0, 0.0, 5.0, "Set the custom input to this value. If it is slowed down, move it towards this value (see below). The idea is that you make this input depend on a mixture of pressure/speed/whatever, and then make other settings depend on this 'custom input' instead of repeating this combination everywhere you need it.\nIf you make it change 'by random' you can generate a slow (smooth) random input."],
     ['custom_input_slowness', 'custom input filter', False, 0.0, 0.0, 10.0, "How slow the custom input actually follows the desired value (the one above). This happens at brushdab level (ignoring how much time has past, if brushdabs do not depend on time).\n0.0 no slowdown (changes apply instantly)"],
 
-    #['dab2_opacity_fac', 'second dab opaque', False, 0.0, 0.0, 2.0, "0.0 disable the second dab\n1.0 as opaque as the first dab\n2.0 twice as opaque as the first dab"],
-    #['dab2_position_noise', 'second position noise',
-
+    ['direction_filter', 'direction filter', False, 0.0, 2.0, 10.0, "a low value will make the direction input adapt more quickly, a high value will make it smoother"],
     ['elliptical_dab_ratio', 'elliptical dab: ratio', False, 1.0, 1.0, 10.0, "aspect ratio of the dabs; must be >= 1.0, where 1.0 means a perfectly round dab. TODO: linearize? start at 0.0 maybe, or log?"],
-    ['elliptical_dab_angle', 'elliptical dab: angle', False, 0.0, 0.0, 0.5, "this defines the angle by which eliptical dabs are tilted\n 0.0 horizontal dabs\n 0.25 vertical dabs\n 0.5 horizontal again"],
+    ['elliptical_dab_angle', 'elliptical dab: angle', False, 0.0, 90.0, 180.0, "this defines the angle by which eliptical dabs are tilted\n 0.0 horizontal dabs\n 45.0 45 degrees, turned clockwise\n 180.0 horizontal again"],
     ]
 
 settings_hidden = 'color_h color_s color_v'.split()
@@ -110,6 +109,8 @@ custom_input
 rng_seed
 
 actual_elliptical_dab_ratio, actual_elliptical_dab_angle # used by count_dabs_to
+
+direction_dx, direction_dy
 '''
 
 class BrushInput:

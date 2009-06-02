@@ -5,7 +5,7 @@ opaque 0.4 | pressure (0.000000 0.000000), (1.000000 0.400000)
 opaque_multiply 0.0 | pressure (0.000000 0.000000), (1.000000 1.000000)
 opaque_linearize 0.0
 radius_logarithmic 1.9
-hardness 0.58
+hardness 0.2
 dabs_per_basic_radius 0.0
 dabs_per_actual_radius 5.0
 dabs_per_second 0.0
@@ -36,5 +36,6 @@ stroke_duration_logarithmic 4.0
 stroke_holdtime 0.0
 custom_input 0.0
 custom_input_slowness 0.0
-aspect_ratio 3.65
-aspect_ratio_angle 48.08 | random (0.000000 -31.250000), (1.000000 31.250000)
+direction_filter 2.0
+elliptical_dab_ratio 3.91
+elliptical_dab_angle 90.0 | random (0.000000 -16.780000), (0.613636 -8.739583), (0.876623 0.873958), (1.000000 16.780000) | direction (0.000000 0.000000), (180.000000 180.000000)
