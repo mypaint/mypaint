@@ -112,21 +112,29 @@ class KeyboardManager:
         window.connect("key-release-event", self.key_release_cb)
 
     def add_extra_key(self, keystring, action):
-        # find the action by name
-        for a in self.actions:
-            if a.get_name() == action:
-                keyval, modifiers = gtk.accelerator_parse(keystring)
-                self.keymap2[(keyval, modifiers)] = a
-                return
-        assert False, 'action %s not found' % action
+        keyval, modifiers = gtk.accelerator_parse(keystring)
+        if callable(action):
+            # construct an action-like object from a function
+            self.add_custom_attributes(action)
+            action.activate = lambda: action(action)
+            #action.get_name = lambda: action.__name__
+        else:
+            # find an existing gtk.Action by name
+            res = [a for a in self.actions if a.get_name() == action]
+            assert len(res) == 1, 'action %s not found, or found more than once' % action
+            action = res[0]
+        self.keymap2[(keyval, modifiers)] = action
 
     def takeover_action(self, action):
         assert action not in self.actions
         # custom action attributes:
+        self.add_custom_attributes(action)
+        self.actions.append(action)
+        self.update_keymap(action.get_accel_path())
+
+    def add_custom_attributes(self, action):
         assert not hasattr(action, 'keydown')
         assert not hasattr(action, 'keyup_callback')
         action.keydown = False
         action.keyup_callback = None
-        self.actions.append(action)
-        self.update_keymap(action.get_accel_path())
 

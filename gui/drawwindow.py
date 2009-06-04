@@ -311,6 +311,16 @@ class Window(gtk.Window):
 
         kbm.add_extra_key('<control>z', 'Undo')
         kbm.add_extra_key('<control>y', 'Redo')
+        kbm.add_extra_key('KP_Add', 'ZoomIn')
+        kbm.add_extra_key('KP_Subtract', 'ZoomOut')
+
+        kbm.add_extra_key('Left', lambda(action): self.move('MoveLeft'))
+        kbm.add_extra_key('Right', lambda(action): self.move('MoveRight'))
+        kbm.add_extra_key('Down', lambda(action): self.move('MoveDown'))
+        kbm.add_extra_key('Up', lambda(action): self.move('MoveUp'))
+
+        kbm.add_extra_key('<control>Left', 'RotateLeft')
+        kbm.add_extra_key('<control>Right', 'RotateRight')
 
         sg = stategroup.StateGroup()
         self.layerblink_state = sg.create_state(self.layerblink_state_enter, self.layerblink_state_leave)
@@ -426,19 +436,7 @@ class Window(gtk.Window):
         #if event.state & ANY_MODIFIER:
         #    # allow user shortcuts with modifiers
         #    return False
-        if key == keysyms.Left: 
-            if ctrl:
-                self.rotate('RotateLeft')
-            else:
-                self.move('MoveLeft')
-        elif key == keysyms.Right:
-            if ctrl:
-                self.rotate('RotateRight')
-            else:
-                self.move('MoveRight')
-        elif key == keysyms.Up  : self.move('MoveUp')
-        elif key == keysyms.Down: self.move('MoveDown')
-        elif key == keysyms.space: 
+        if key == keysyms.space:
             if ctrl:
                 self.tdw.start_drag(self.dragfunc_rotate)
             else:
@@ -455,9 +453,7 @@ class Window(gtk.Window):
     def key_press_event_cb_after(self, win, event):
         key = event.keyval
         ctrl = event.state & gdk.CONTROL_MASK
-        if key in [keysyms.KP_Add, keysyms.plus]: self.zoom('ZoomIn')
-        elif key in [keysyms.KP_Subtract, keysyms.minus]: self.zoom('ZoomOut')
-        elif self.fullscreen and key == keysyms.Escape: self.fullscreen_cb()
+        if self.fullscreen and key == keysyms.Escape: self.fullscreen_cb()
         else: return False
         return True
     def key_release_event_cb_after(self, win, event):

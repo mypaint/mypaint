@@ -15,7 +15,6 @@ class Window(gtk.Window):
     def __init__(self, app):
         gtk.Window.__init__(self)
         self.app = app
-        self.app.kbm.add_window(self)
 
         self.set_title('Background')
         self.connect('delete-event', self.app.hide_window_cb)
