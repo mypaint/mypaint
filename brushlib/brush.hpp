@@ -514,7 +514,7 @@ public:
   {
     //printf("%f %f %f %f\n", (double)dtime, (double)x, (double)y, (double)pressure);
 
-    assert(pressure >= 0.0 && pressure <= 1.0);
+    pressure = CLAMP(pressure, 0.0, 1.0);
     assert(x < 1e8 && y < 1e8 && x > -1e8 && y > -1e8);
 
     if (dtime < 0) g_print("Time jumped backwards by dtime=%f seconds!\n", dtime);
