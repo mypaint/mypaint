@@ -65,7 +65,7 @@ public:
     assert (index < p->n);
 
     if (index > 0) {
-      assert (x > p->xvalues[index-1]);
+      assert (x >= p->xvalues[index-1]);
     }
 
     p->xvalues[index] = x;

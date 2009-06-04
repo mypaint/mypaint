@@ -328,7 +328,7 @@ class CurveWidget(gtk.DrawingArea):
         nearest = None
         for i in range(len(self.points)):
             px, py = self.points[i]
-            dist = abs(px - x)
+            dist = abs(px - x) + 0.5*abs(py - y)
             if nearest is None or dist < mindist:
                 mindist = dist
                 nearest = i
@@ -369,14 +369,17 @@ class CurveWidget(gtk.DrawingArea):
         i = self.grabbed
         out = False # by default, the point cannot be removed by drawing it out
         if i == len(self.points)-1:
-            x = 1.0 # right point stays right
+            # last point stays right
+            leftbound = rightbound = 1.0
         elif i == 0:
-            x = 0.0 # left point stays left
+            # first point stays left
+            leftbound = rightbound = 0.0
         else:
+            # other points can be dragged out
             if y > 1.1 or y < -0.1: out = True
             leftbound  = self.points[i-1][0]
             rightbound = self.points[i+1][0]
-            if x <= leftbound or x >= rightbound: out = True
+            if x <= leftbound - 0.02 or x >= rightbound + 0.02: out = True
         if out:
             self.points[i] = None
         else:
@@ -385,6 +388,8 @@ class CurveWidget(gtk.DrawingArea):
             if self.magnetic:
                 if y > 0.48 and y < 0.52: y = 0.5
                 if x > 0.48 and x < 0.52: x = 0.5
+            if x < leftbound: x = leftbound
+            if x > rightbound: x = rightbound
             self.points[i] = (x, y)
         self.queue_draw()
 
