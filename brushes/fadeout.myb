@@ -36,5 +36,3 @@ stroke_duration_logarithmic 4.0
 stroke_holdtime 0.0
 custom_input 0.0 | pressure (0.000000 0.000000), (1.000000 1.000000)
 custom_input_slowness 3.85
-aspect_ratio 1.0
-aspect_ratio_angle 45.0

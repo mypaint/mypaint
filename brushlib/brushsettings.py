@@ -71,9 +71,9 @@ settings_list = [
     ['custom_input', 'custom input', False, -5.0, 0.0, 5.0, "Set the custom input to this value. If it is slowed down, move it towards this value (see below). The idea is that you make this input depend on a mixture of pressure/speed/whatever, and then make other settings depend on this 'custom input' instead of repeating this combination everywhere you need it.\nIf you make it change 'by random' you can generate a slow (smooth) random input."],
     ['custom_input_slowness', 'custom input filter', False, 0.0, 0.0, 10.0, "How slow the custom input actually follows the desired value (the one above). This happens at brushdab level (ignoring how much time has past, if brushdabs do not depend on time).\n0.0 no slowdown (changes apply instantly)"],
 
-    ['direction_filter', 'direction filter', False, 0.0, 2.0, 10.0, "a low value will make the direction input adapt more quickly, a high value will make it smoother"],
     ['elliptical_dab_ratio', 'elliptical dab: ratio', False, 1.0, 1.0, 10.0, "aspect ratio of the dabs; must be >= 1.0, where 1.0 means a perfectly round dab. TODO: linearize? start at 0.0 maybe, or log?"],
     ['elliptical_dab_angle', 'elliptical dab: angle', False, 0.0, 90.0, 180.0, "this defines the angle by which eliptical dabs are tilted\n 0.0 horizontal dabs\n 45.0 45 degrees, turned clockwise\n 180.0 horizontal again"],
+    ['direction_filter', 'direction filter', False, 0.0, 2.0, 10.0, "a low value will make the direction input adapt more quickly, a high value will make it smoother"],
     ]
 
 settings_hidden = 'color_h color_s color_v'.split()
