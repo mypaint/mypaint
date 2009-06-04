@@ -24,7 +24,8 @@ class KeyboardManager:
     def __init__(self):
         gtk.accel_map_get().connect('changed', self.accel_map_changed_cb)
         self.actions = []
-        self.keymap = {} # (keyval, modifiers) --> gtk.Action
+        self.keymap  = {} # (keyval, modifiers) --> gtk.Action
+        self.keymap2 = {} # (keyval, modifiers) --> gtk.Action (2nd priority; for hardcoded keys)
         self.pressed = {} # hardware_keycode --> gtk.Action (while holding it down)
 
     def accel_map_changed_cb(self, object, accel_path, accel_key, accel_mods):
@@ -59,6 +60,9 @@ class KeyboardManager:
         if keyval != event.keyval:
             modifiers |= gdk.SHIFT_MASK
         action = self.keymap.get((keyval, modifiers))
+        if not action:
+            # try hardcoded keys
+            action = self.keymap2.get((keyval, modifiers))
 
         if action:
             def activate():
@@ -106,6 +110,15 @@ class KeyboardManager:
     def add_window(self, window):
         window.connect("key-press-event", self.key_press_cb)
         window.connect("key-release-event", self.key_release_cb)
+
+    def add_extra_key(self, keystring, action):
+        # find the action by name
+        for a in self.actions:
+            if a.get_name() == action:
+                keyval, modifiers = gtk.accelerator_parse(keystring)
+                self.keymap2[(keyval, modifiers)] = a
+                return
+        assert False, 'action %s not found' % action
 
     def takeover_action(self, action):
         assert action not in self.actions

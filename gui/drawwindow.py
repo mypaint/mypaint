@@ -302,12 +302,15 @@ class Window(gtk.Window):
         self.ui.add_ui_from_string(ui_string)
         #self.app.accel_group = self.ui.get_accel_group()
 
-        self.app.kbm = keyboard.KeyboardManager()
+        self.app.kbm = kbm = keyboard.KeyboardManager()
         # TODO: and now tell the keyboard manager about hardcoded keys ("unless used otherwise" aliases)
-        self.app.kbm.add_window(self)
+        kbm.add_window(self)
 
         for action in ag.list_actions():
             self.app.kbm.takeover_action(action)
+
+        kbm.add_extra_key('<control>z', 'Undo')
+        kbm.add_extra_key('<control>y', 'Redo')
 
         sg = stategroup.StateGroup()
         self.layerblink_state = sg.create_state(self.layerblink_state_enter, self.layerblink_state_leave)
@@ -455,8 +458,6 @@ class Window(gtk.Window):
         if key in [keysyms.KP_Add, keysyms.plus]: self.zoom('ZoomIn')
         elif key in [keysyms.KP_Subtract, keysyms.minus]: self.zoom('ZoomOut')
         elif self.fullscreen and key == keysyms.Escape: self.fullscreen_cb()
-        elif ctrl and key == keysyms.z: self.undo_cb(None)
-        elif ctrl and key == keysyms.y: self.redo_cb(None)
         else: return False
         return True
     def key_release_event_cb_after(self, win, event):
