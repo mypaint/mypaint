@@ -1,7 +1,20 @@
-SVN:
+Version 0.7.0:
 - color history popup
-- <strike>Ghost lines between strokes (on touchpads) fixed</strike> fix reverted
-- Elliptical dabs
+- merge layer down
+- layer solo
+- color changer can operate clickless (hold key down, release key to select)
+- can save flattened transparent PNG
+- recognize eraser end of the stylus
+- elliptical dabs are possible now (aspect ratio)
+- new brushes and background patterns
+- save/load improved
+  - fixed bugs that caused overwrite without asking
+  - made OpenRaster the default file format
+  - made "save scrap" more consistent (always save to scrap directory)
+  - faster saving and loading (about factor two)
+  - do dithering when converting from 16bit to 8bit (only when saving with transparency)
+- fixed build problem with some distributions
+- many other GUI tweaks and bugfixes
 
 Version 0.6.0:
 - Layers, transparency and eraser mode

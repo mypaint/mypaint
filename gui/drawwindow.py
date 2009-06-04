@@ -9,7 +9,8 @@
 # (at your option) any later version.
 
 """
-This is the main drawing window.
+This is the main drawing window, containing menu actions.
+Painting is done in tileddrawwidget.py.
 """
 
 MYPAINT_VERSION="0.6.0+svn"

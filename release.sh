@@ -2,7 +2,7 @@
 # this does roughly what 'make distcheck' would do if it did work
 set -e
 
-version=0.6.0
+version=0.7.0
 
 orig=$(pwd)
 d=/tmp/mypaint-$version
@@ -27,5 +27,6 @@ tar -cvjf $filename mypaint-$version
 
 cd $d
 scons
+./test_mypaintlib.py
 
 ls -sSh $filename
