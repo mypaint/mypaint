@@ -108,13 +108,9 @@ public:
           y1 = p->yvalues[i];
         }
 
-        //g_print ("%d/%d x0=%f,x1=%f\n", i, p->n, x0, x1);
-
         // linear interpolation
-        float m, q;
-        m = (y1-y0)/(x1-x0);
-        q = y0 - m*x0;
-        y = m*x + q;
+        y = (y1*(x - x0) + y0*(x1 - x)) / (x1 - x0);
+
         result += y;
       }
     }
@@ -124,7 +120,7 @@ public:
   // used in python for the global pressure mapping
   float calculate_single_input (float input)
   {
-    assert(inputs == 1); 
+    assert(inputs == 1);
     return calculate(&input);
   }
 };
