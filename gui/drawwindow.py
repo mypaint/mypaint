@@ -281,10 +281,10 @@ class Window(gtk.Window):
             ('ViewMenu', None, 'View'),
             ('Fullscreen',   None, 'Fullscreen', 'F11', None, self.fullscreen_cb),
             ('ResetView',   None, 'Reset Zoom and Rotation', None, None, self.reset_view_cb),
-            ('ZoomIn',       None, 'Zoom In', 'period', None, self.zoom_cb),
             ('ZoomOut',      None, 'Zoom Out', 'comma', None, self.zoom_cb),
-            ('RotateLeft',   None, 'Rotate Counterclockwise', 'n', None, self.rotate_cb),
-            ('RotateRight',  None, 'Rotate Clockwise', 'm', None, self.rotate_cb),
+            ('ZoomIn',       None, 'Zoom In', 'period', None, self.zoom_cb),
+            ('RotateLeft',   None, 'Rotate Counterclockwise', None, None, self.rotate_cb),
+            ('RotateRight',  None, 'Rotate Clockwise', None, None, self.rotate_cb),
             ('ViewHelp',     None, 'Help', None, None, self.view_help_cb),
             ]
         ag.add_actions(actions)
