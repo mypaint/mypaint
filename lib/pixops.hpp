@@ -157,9 +157,10 @@ void tile_convert_rgba16_to_rgba8(PyObject * src, PyObject * dst) {
       // this preserves the alpha channel, but we still add noise to the highly transparent colors
       // OPTIMIZE: calling random() slows us down...
       const uint32_t add_r = (random() % (1<<15)) * 240/256 + (1<<15) * 8/256;
-      const uint32_t add_g = (random() % (1<<15)) * 240/256 + (1<<15) * 8/256;
-      const uint32_t add_b = (random() % (1<<15)) * 240/256 + (1<<15) * 8/256;
+      const uint32_t add_g = add_r; // hm... do not produce too much color noise
+      const uint32_t add_b = add_r;
       const uint32_t add_a = (random() % (1<<15)) * 240/256 + (1<<15) * 8/256;
+      // TODO: error diffusion might work better than random dithering...
 
       /*
       assert(add_a < (1<<15));
