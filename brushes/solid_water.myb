@@ -20,9 +20,9 @@ offset_by_speed_slowness 1.0
 slow_tracking 0.0
 slow_tracking_per_dab 0.0
 tracking_noise 0.0
-color_h 0
-color_s 0
-color_v 0
+color_h 0.0
+color_s 0.0
+color_v 0.0
 change_color_h 0.0
 change_color_l 0.0 | stroke (0.000000 -0.010000), (0.500000 0.010000), (1.000000 -0.010000)
 change_color_hsl_s 0.0
