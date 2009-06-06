@@ -202,7 +202,7 @@ class Window(gtk.Window):
             ('Save',         None, 'Save', '<control>S', None, self.save_cb),
             ('SaveAs',       None, 'Save As...', '<control><shift>S', None, self.save_as_cb),
             ('SaveScrap',    None, 'Save Next Scrap', 'F2', None, self.save_scrap_cb),
-            ('Quit',         None, 'Quit', None, None, self.quit_cb),
+            ('Quit',         None, 'Quit', '<control>q', None, self.quit_cb),
 
 
             ('EditMenu',           None, 'Edit'),
@@ -260,7 +260,7 @@ class Window(gtk.Window):
             ('NewLayerFG',   None, 'New (above current)', '<control>Page_Up', None, self.new_layer_cb),
             ('NewLayerBG',   None, 'New (below current)', '<control>Page_Down', None, self.new_layer_cb),
             ('MergeLayer',   None, 'Merge Down', '<control>Delete', None, self.merge_layer_cb),
-            ('RemoveLayer',  None, 'Remove', None, None, self.remove_layer_cb),
+            ('RemoveLayer',  None, 'Remove', '<shift>Delete', None, self.remove_layer_cb),
             ('SoloLayer',    None, 'Toggle Solo Mode', 'Home', None, self.solo_layer_cb),
             ('ToggleAbove',  None, 'Toggle Layers Above Current', 'End', None, self.toggle_layers_above_cb), # TODO: make toggle action
 
