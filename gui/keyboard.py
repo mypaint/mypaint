@@ -50,8 +50,14 @@ class KeyboardManager:
         # which uses the same code as below when changing an accelerator.
         keymap = gdk.keymap_get_default()
         # figure out what modifiers went into determing the keyval
-        trash1, trash2, trash3, consumed_modifiers = keymap.translate_keyboard_state(
-                         event.hardware_keycode, event.state, event.group)
+        res = keymap.translate_keyboard_state(event.hardware_keycode, event.state, event.group)
+        if not res:
+            # PyGTK returns None when gdk_keymap_translate_keyboard_state() returns false.
+            # Not sure if this is a bug or a feature - the only time I have seen this
+            # happen is when I put my laptop into sleep mode.
+            print 'Warning: translate_keyboard_state() returned None. Strange key pressed?'
+            return
+        trash1, trash2, trash3, consumed_modifiers = res
         # We want to ignore irrelevant modifiers like ScrollLock.
         # The stored key binding does not include modifiers that affected its keyval.
         modifiers = event.state & gtk.accelerator_get_default_mod_mask() & ~consumed_modifiers
