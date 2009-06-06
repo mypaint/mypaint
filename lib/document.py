@@ -63,7 +63,6 @@ class Document():
         self.brush = brush.Brush_Lowlevel()
         self.stroke = None
         self.canvas_observers = []
-        self.layer_observers = []  # callback arguments: x, y, w, h
         self.stroke_observers = [] # callback arguments: stroke, brush (brush is a temporary read-only convenience object)
         self.clear(True)
 

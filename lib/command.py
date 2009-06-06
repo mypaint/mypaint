@@ -129,13 +129,9 @@ class AddLayer(Action):
         self.doc.layers.insert(self.insert_idx, l)
         self.prev_idx = self.doc.layer_idx
         self.doc.layer_idx = self.insert_idx
-        for f in self.doc.layer_observers:
-            f()
     def undo(self):
         self.doc.layers.pop(self.insert_idx)
         self.doc.layer_idx = self.prev_idx
-        for f in self.doc.layer_observers:
-            f()
 
 class RemoveLayer(Action):
     def __init__(self, doc):
@@ -145,13 +141,15 @@ class RemoveLayer(Action):
         self.layer = self.doc.layers.pop(self.doc.layer_idx)
         if self.doc.layer_idx == len(self.doc.layers):
             self.doc.layer_idx -= 1
-        for f in self.doc.layer_observers:
-            f()
+        bbox = self.layer.surface.get_bbox()
+        for f in self.doc.canvas_observers:
+            f(*bbox)
     def undo(self):
         self.doc.layers.insert(self.idx, self.layer)
         self.doc.layer_idx = self.idx
-        for f in self.doc.layer_observers:
-            f()
+        bbox = self.layer.surface.get_bbox()
+        for f in self.doc.canvas_observers:
+            f(*bbox)
 
 class SelectLayer(Action):
     automatic_undo = True
@@ -162,10 +160,6 @@ class SelectLayer(Action):
         assert self.idx >= 0 and self.idx < len(self.doc.layers)
         self.prev_idx = self.doc.layer_idx
         self.doc.layer_idx = self.idx
-        for f in self.doc.layer_observers:
-            f()
     def undo(self):
         self.doc.layer_idx = self.prev_idx
-        for f in self.doc.layer_observers:
-            f()
 
