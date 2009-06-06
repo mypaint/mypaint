@@ -9,10 +9,7 @@ d=/tmp/mypaint-$version
 
 rm -rf $d
 svn export . $d
-cd $d/html
-./generate.py
-rm *.pyc
-cd ..
+cd $d
 rm release.sh
 #rpl "SVNVERSION=" "SVNVERSION=$version #" configure.in
 if ! grep "MYPAINT_VERSION='$version'"  gui/drawwindow.py ; then
