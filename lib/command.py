@@ -123,14 +123,14 @@ class AddLayer(Action):
     def __init__(self, doc, insert_idx):
         self.doc = doc
         self.insert_idx = insert_idx
+        self.layer = layer.Layer()
+        self.layer.surface.observers.append(self.doc.layer_modified_cb)
     def redo(self):
-        l = layer.Layer()
-        l.surface.observers.append(self.doc.layer_modified_cb)
-        self.doc.layers.insert(self.insert_idx, l)
+        self.doc.layers.insert(self.insert_idx, self.layer)
         self.prev_idx = self.doc.layer_idx
         self.doc.layer_idx = self.insert_idx
     def undo(self):
-        self.doc.layers.pop(self.insert_idx)
+        self.doc.layers.remove(self.layer)
         self.doc.layer_idx = self.prev_idx
 
 class RemoveLayer(Action):
