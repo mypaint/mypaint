@@ -89,17 +89,25 @@ class Application: # singleton
         for path in [self.user_brushpath, self.stock_brushpath]:
             filename = os.path.join(path, 'order.conf')
             if not os.path.exists(filename): continue
+            insert_index = 0
             for line in open(filename):
                 name = line.strip()
-                if name in loadnames_sorted: continue
+                if name in loadnames_sorted:
+                    if path == self.stock_brushpath:
+                        # We set the insert_index to ensure that an
+                        # user who has not reordered brushes and
+                        # updates mypaint gets the new brushes
+                        # inserted into places according to the stock
+                        # brush order. This is not optimal, but better
+                        # than dropping them all at the top or bottom.
+                        insert_index = loadnames_sorted.index(name) + 1
+                    continue
                 if name not in loadnames_unsorted: continue
                 loadnames_unsorted.remove(name)
-                loadnames_sorted.append(name)
-        if len(loadnames_unsorted) > 3: 
-            # many new brushes, do not disturb user's order
-            loadnames = loadnames_sorted + loadnames_unsorted
-        else:
-            loadnames = loadnames_unsorted + loadnames_sorted
+                loadnames_sorted.insert(insert_index, name)
+                insert_index += 1
+        # new brushes that the user has put into the directory go to the top
+        loadnames = loadnames_unsorted + loadnames_sorted
 
         for name in loadnames:
             # load brushes from disk
