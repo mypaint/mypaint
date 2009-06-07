@@ -24,13 +24,8 @@ SConsignFile() # no .scsonsign into $PREFIX please
 #    env = Environment(ENV=os.environ)
 #else:
 
-# Warn the user about saved build options.
-if os.path.exists('options.cache'):
-    optfile = file('options.cache')
-    print "Saved options:", optfile.read().replace("\n", ", ")[:-2]
-    optfile.close()
-opts = Options('options.cache', ARGUMENTS)
-opts.Add(PathOption('prefix', 'autotools-style installation prefix', '/usr/local', PathOption.PathAccept))
+opts = Variables()
+opts.Add(PathVariable('prefix', 'autotools-style installation prefix', '/usr/local'))
 env = Environment(ENV=os.environ, options=opts)
 opts.Update(env)
 opts.Save('options.cache', env)
