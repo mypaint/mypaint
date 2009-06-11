@@ -501,27 +501,20 @@ class Window(gtk.Window):
 
     def scroll_cb(self, win, event):
         d = event.direction
-        if event.state & gdk.CONTROL_MASK:
-            if d == gdk.SCROLL_UP:
-                self.zoom('ZoomIn')
-            elif d == gdk.SCROLL_DOWN:
-                self.zoom('ZoomOut')
-        else:
-            mapping = {
-                gdk.SCROLL_RIGHT: 'MoveRight',
-                gdk.SCROLL_LEFT: 'MoveLeft',
-                gdk.SCROLL_UP: 'MoveUp',
-                gdk.SCROLL_DOWN: 'MoveDown'
-            }
-
+        if d == gdk.SCROLL_UP:
             if event.state & gdk.SHIFT_MASK:
-                # remap up and down to left and right so that it's
-                # possible to scroll easier with mouse + keyboard.
-                mapping.update({
-                    gdk.SCROLL_UP: 'MoveLeft',
-                    gdk.SCROLL_DOWN: 'MoveRight'
-                })
-            self.move(mapping[d])
+                self.rotate('RotateLeft')
+            else:
+                self.zoom('ZoomIn')
+        elif d == gdk.SCROLL_DOWN:
+            if event.state & gdk.SHIFT_MASK:
+                self.rotate('RotateRight')
+            else:
+                self.zoom('ZoomOut')
+        elif d == gdk.SCROLL_LEFT:
+            self.rotate('RotateRight')
+        elif d == gdk.SCROLL_LEFT:
+            self.rotate('RotateLeft')
 
     def clear_layer_cb(self, action):
         self.doc.clear_layer()
