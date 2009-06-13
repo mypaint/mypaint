@@ -28,7 +28,6 @@ opts = Variables()
 opts.Add(PathVariable('prefix', 'autotools-style installation prefix', '/usr/local', validator=PathVariable.PathIsDirCreate))
 env = Environment(ENV=os.environ, options=opts)
 opts.Update(env)
-opts.Save('options.cache', env)
 
 env.ParseConfig('pkg-config --cflags --libs glib-2.0')
 
