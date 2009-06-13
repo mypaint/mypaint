@@ -41,6 +41,7 @@ def main(datapath, confpath):
                 print 'Cannot open more than one file!'
                 sys.exit(2)
             filename = arg
+            filename = filename.replace('file:///', '/') # some filebrowsers do this
             if not os.path.isfile(filename):
                 print 'File', filename, 'does not exist!'
                 sys.exit(2)
