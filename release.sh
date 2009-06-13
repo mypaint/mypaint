@@ -1,22 +1,24 @@
-#!/bin/sh
-# this does roughly what 'make distcheck' would do if it did work
+#!/bin/bash
+# this does roughly what 'make distcheck' would do if we were using autotools
 set -e
 
-version=0.7.0
+if ! git diff --quiet; then
+    echo "You have local changes, stage them first with 'git add'!"
+    exit 1
+fi
+
+eval $(grep MYPAINT_VERSION= gui/drawwindow.py)
+version=$MYPAINT_VERSION
+echo "Version $version"
 
 orig=$(pwd)
 d=/tmp/mypaint-$version
 
 rm -rf $d
-svn export . $d
+#svn export . $d
+git checkout-index -a -f --prefix=$d/
 cd $d
 rm release.sh
-#rpl "SVNVERSION=" "SVNVERSION=$version #" configure.in
-if ! grep "MYPAINT_VERSION='$version'"  gui/drawwindow.py ; then
-    echo "Fixing Version in drawwindow.py."
-    rpl "MYPAINT_VERSION=" "MYPAINT_VERSION='$version' #" gui/drawwindow.py
-fi
-#./autogen.sh
 cd ..
 
 filename=$orig/mypaint-$version.tar.bz2
@@ -27,3 +29,6 @@ scons
 ./test_mypaintlib.py
 
 ls -sSh $filename
+
+echo "you can tag this release with 'git tag -s v$version'"
+
