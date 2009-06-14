@@ -7,8 +7,10 @@
 # Message-ID: <1062087716.1196.5.camel@emperor.homelinux.net>
 # 	"The license is whatever you want."
 #
+# This file was downloaded from http://www.sysfs.be/downloads/
 # Minor adaptions 2009 by Martin Renold:
-# - let KeyboardInterrupt
+# - let KeyboardInterrupt through
+# - print traceback to stderr before showing the dialog
 # see also http://faq.pygtk.org/index.py?req=show&file=faq20.010.htp
 
 import inspect, linecache, pydoc, sys, traceback
