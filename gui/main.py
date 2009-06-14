@@ -9,45 +9,41 @@
 import sys, os
 import gtk
 from gui import application
+from optparse import OptionParser
 
 # main entry, called from the "mypaint" script
 def main(datapath, confpath):
 
-    def usage_exit():
-        print sys.argv[0], '[OPTION]... [FILENAME]'
-        print 'Options:'
-        print '  -c /path/to/config   use this directory instead of ~/.mypaint/'
-        print '  -p                   profile (debug only; simulate some strokes and quit)'
-        print '  -e                   use default pygtk exception handling (no dialog)'
-        sys.exit(1)
+    parser = OptionParser()
+    parser.add_option('-c', '--config', metavar='DIR',
+                    help='use this config directory instead of ~/.mypaint/')
+    parser.add_option('-p', '--profile', action='store_true', default = False,
+                    help='(debug only; simulate some strokes and quit)')
+    parser.add_option('-e', '--except-hook', action='store_true', default=True,
+                    dest='excepthook', help='use default pygtk exception handling (no dialog')
+    (options, args) = parser.parse_args()
 
-    filename = None
-    profile = False
-    excepthook = True
+    if not options.config:
+        options.config = confpath 
+    
+    if len(args) == 0:
+        filename = None
+    elif len(args) == 1:
+        filename = args[0]
+        filename = filename.replace('file:///', '/') # some filebrowsers do this
+        
+        # fixme? testing for file existence in advance is unpythonic and opens up for a possible race condition
+        # would have to solve it later, which could also be an advantage for GUI user feedback
+        # also consider not killing the app when a file doesnt exist, but rather create the file
+        if not os.path.isfile(filename): 
+            print 'File', filename, 'does not exist!'
+            sys.exit(2)
+    else:
+        print 'Cannot open more than one file!'
+        sys.exit(2)
 
-    args = sys.argv[1:]
-    while args:
-        arg = args.pop(0)
-        if arg == '-c':
-            confpath = args.pop(0)
-        elif arg == '-p':
-            profile = True
-        elif arg == '-e':
-            excepthook = False
-        elif arg.startswith('-'):
-            usage_exit()
-        else:
-            if filename:
-                print 'Cannot open more than one file!'
-                sys.exit(2)
-            filename = arg
-            filename = filename.replace('file:///', '/') # some filebrowsers do this
-            if not os.path.isfile(filename):
-                print 'File', filename, 'does not exist!'
-                sys.exit(2)
-
-    print 'confpath =', confpath
-    app = application.Application(datapath, confpath, filename, profile)
+    print 'confpath =', options.config
+    app = application.Application(datapath, options.config, filename, options.profile)
 
     # Recent gtk versions don't allow changing those menu shortcuts by
     # default. <rant>Sigh. This very useful feature used to be the
@@ -58,7 +54,8 @@ def main(datapath, confpath):
     gtksettings = gtk.settings_get_default()
     gtksettings.set_property('gtk-can-change-accels', True)
 
-    if excepthook:
+    if options.excepthook:
+        print 'using gtkexcepthook'
         import gtkexcepthook
 
     gtk.main()
