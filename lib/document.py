@@ -238,6 +238,7 @@ class Document():
 
     def load(self, filename):
         trash, ext = os.path.splitext(filename)
+        # consider catching and raising "nicer" (consistent) Errors for files that doesnt exist when trying to open them
         ext = ext.lower().replace('.', '')
         load = getattr(self, 'load_' + ext, self.unsupported)
         load(filename)
@@ -245,7 +246,7 @@ class Document():
         self.unsaved_painting_time = 0.0
 
     def unsupported(self, filename):
-        raise ValueError, 'Unkwnown file format extension: ' + repr(filename)
+        raise ValueError, 'Unknown file format extension: ' + repr(filename)
 
     def render_as_pixbuf(self, *args):
         return pixbufsurface.render_as_pixbuf(self, *args)

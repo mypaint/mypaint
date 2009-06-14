@@ -20,24 +20,9 @@ def main(datapath, confpath):
     parser.add_option('-p', '--profile', action='store_true', default = False,
                     help='(debug only; simulate some strokes and quit)')
     options, args = parser.parse_args()
-    
-    if len(args) == 0:
-        filename = None
-    elif len(args) == 1:
-        filename = args[0].replace('file:///', '/') # some filebrowsers do this
-        
-        # fixme? testing for file existence in advance is unpythonic and opens up for a possible race condition
-        # would have to solve it later, which could also be an advantage for GUI user feedback
-        # also consider not killing the app when a file doesnt exist, but rather create the file
-        if not os.path.isfile(filename): 
-            print 'File', filename, 'does not exist!'
-            sys.exit(2)
-    else:
-        print 'Cannot open more than one file!'
-        sys.exit(2)
 
     print 'confpath =', options.config
-    app = application.Application(datapath, options.config, filename, options.profile)
+    app = application.Application(datapath, options.config, args, options.profile)
 
     # Recent gtk versions don't allow changing those menu shortcuts by
     # default. <rant>Sigh. This very useful feature used to be the

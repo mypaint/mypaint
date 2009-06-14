@@ -13,7 +13,7 @@ gdk = gtk.gdk
 from lib import brush
 
 class Application: # singleton
-    def __init__(self, datapath, confpath, loadimage, profile):
+    def __init__(self, datapath, confpath, filenames, profile):
         self.confpath = confpath
         self.datapath = datapath
 
@@ -55,8 +55,10 @@ class Application: # singleton
         self.brush.set_color_hsv((0, 0, 0))
 
         def at_application_start(*trash):
-            if loadimage:
-                self.drawWindow.open_file(loadimage)
+            if filenames:
+                #open the first file, no matter how many that has been specified
+                fn = filenames[0].replace('file:///', '/') # some filebrowsers do this
+                self.drawWindow.open_file(fn)
             if profile:
                 self.drawWindow.start_profiling()
 
