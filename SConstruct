@@ -67,9 +67,9 @@ if sys.platform == "win32":
 def burn_python_version(target, source, env):
     # make sure we run the python version that we built the extension modules for
     s =  '#!/usr/bin/env ' + python + '\n'
-    s += '#\n'
+    s += 5*'#\n'
     s += '# DO NOT EDIT - edit %s instead\n' % source[0]
-    s += '#\n'
+    s += 5*'#\n'
     s += open(str(source[0])).read()
     f = open(str(target[0]), 'w')
     f.write(s)
