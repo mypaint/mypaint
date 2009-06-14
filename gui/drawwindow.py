@@ -32,7 +32,6 @@ class Window(gtk.Window):
         gtk.Window.__init__(self)
         self.app = app
 
-        self.set_title('MyPaint')
         self.connect('delete-event', self.quit_cb)
         self.connect('key-press-event', self.key_press_event_cb_before)
         self.connect('key-release-event', self.key_release_event_cb_before)
@@ -77,8 +76,8 @@ class Window(gtk.Window):
 
         self.init_save_dialog()
 
-         #filename is a property so that all changes will update the title
-        self._filename = None
+        #filename is a property so that all changes will update the title
+        self.filename = None
         
         
     def get_filename(self):
@@ -86,9 +85,9 @@ class Window(gtk.Window):
     def set_filename(self,value):
         self._filename = value
         if self.filename: 
-            self.set_title("Mypaint - %s" % self.filename)
+            self.set_title("MyPaint - %s" % os.path.basename(self.filename))
         else:
-            self.set_title("Mypaint")
+            self.set_title("MyPaint")
     filename = property(get_filename, set_filename)
 
     def create_ui(self):
