@@ -303,7 +303,6 @@ class Window(gtk.Window):
         #self.app.accel_group = self.ui.get_accel_group()
 
         self.app.kbm = kbm = keyboard.KeyboardManager()
-        # TODO: and now tell the keyboard manager about hardcoded keys ("unless used otherwise" aliases)
         kbm.add_window(self)
 
         for action in ag.list_actions():
@@ -687,10 +686,6 @@ class Window(gtk.Window):
     @with_wait_cursor
     def open_file(self, filename):
         try:
-            # TODO: that would be "open_file_as_layer"
-            #pixbuf = gdk.pixbuf_new_from_file(filename)
-            #cmd = command.LoadImage(self.layer, pixbuf)
-            #self.doc.execute(cmd)
             self.doc.load(filename)
         except Exception, e:
             d = gtk.MessageDialog(self, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_OK)
