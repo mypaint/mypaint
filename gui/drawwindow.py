@@ -68,16 +68,28 @@ class Window(gtk.Window):
 
         self.app.brush.settings_observers.append(self.brush_modified_cb)
         self.tdw.device_observers.append(self.device_changed_cb)
-
-        self.filename = None
-
-        filename = os.path.join(self.app.confpath, 'save_history.conf')
-        if os.path.exists(filename):
-            self.save_history = [line.strip() for line in open(filename)]
+            
+        historyfile_name = os.path.join(self.app.confpath, 'save_history.conf')
+        if os.path.exists(historyfile_name):
+            self.save_history = [line.strip() for line in open(historyfile_name)]
         else:
             self.save_history = []
 
         self.init_save_dialog()
+
+         #filename is a property so that all changes will update the title
+        self._filename = None
+        
+        
+    def get_filename(self):
+        return self._filename 
+    def set_filename(self,value):
+        self._filename = value
+        if self.filename: 
+            self.set_title("Mypaint - %s" % self.filename)
+        else:
+            self.set_title("Mypaint")
+    filename = property(get_filename, set_filename)
 
     def create_ui(self):
         ag = gtk.ActionGroup('WindowActions')
