@@ -21,7 +21,9 @@ def main(datapath, confpath):
                     help='(debug only; simulate some strokes and quit)')
     options, args = parser.parse_args()
     
-    if len(args) <= 1:
+    if len(args) == 0:
+        filename = None
+    elif len(args) == 1:
         filename = args[0].replace('file:///', '/') # some filebrowsers do this
         
         # fixme? testing for file existence in advance is unpythonic and opens up for a possible race condition
