@@ -14,23 +14,15 @@ from optparse import OptionParser
 # main entry, called from the "mypaint" script
 def main(datapath, confpath):
 
-    parser = OptionParser()
-    parser.add_option('-c', '--config', metavar='DIR',
+    parser = OptionParser('usage: %prog [options] [FILE]')
+    parser.add_option('-c', '--config', metavar='DIR', default=confpath,
                     help='use this config directory instead of ~/.mypaint/')
     parser.add_option('-p', '--profile', action='store_true', default = False,
                     help='(debug only; simulate some strokes and quit)')
-    parser.add_option('-e', '--except-hook', action='store_true', default=True,
-                    dest='excepthook', help='use default pygtk exception handling (no dialog')
-    (options, args) = parser.parse_args()
-
-    if not options.config:
-        options.config = confpath 
+    options, args = parser.parse_args()
     
-    if len(args) == 0:
-        filename = None
-    elif len(args) == 1:
-        filename = args[0]
-        filename = filename.replace('file:///', '/') # some filebrowsers do this
+    if len(args) <= 1:
+        filename = args[0].replace('file:///', '/') # some filebrowsers do this
         
         # fixme? testing for file existence in advance is unpythonic and opens up for a possible race condition
         # would have to solve it later, which could also be an advantage for GUI user feedback
@@ -54,8 +46,5 @@ def main(datapath, confpath):
     gtksettings = gtk.settings_get_default()
     gtksettings.set_property('gtk-can-change-accels', True)
 
-    if options.excepthook:
-        print 'using gtkexcepthook'
-        import gtkexcepthook
-
+    import gtkexcepthook
     gtk.main()
