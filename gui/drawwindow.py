@@ -68,9 +68,9 @@ class Window(gtk.Window):
         self.app.brush.settings_observers.append(self.brush_modified_cb)
         self.tdw.device_observers.append(self.device_changed_cb)
             
-        historyfile_name = os.path.join(self.app.confpath, 'save_history.conf')
-        if os.path.exists(historyfile_name):
-            self.save_history = [line.strip() for line in open(historyfile_name)]
+        fn = os.path.join(self.app.confpath, 'save_history.conf')
+        if os.path.exists(fn):
+            self.save_history = [line.strip() for line in open(fn)]
         else:
             self.save_history = []
 
