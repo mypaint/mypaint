@@ -79,7 +79,7 @@ class Window(gtk.Window):
         l.set_alignment(0.0, 0.0)
         l.set_markup('<b><span size="large">Save as Scrap</span></b>')
         v.pack_start(l, expand=False, padding=5)
-        l = gtk.Label('Path or filename prefix for "Save as Scrap"')
+        l = gtk.Label('Path and filename prefix for "Save Next Scrap"')
         l.set_alignment(0.0, 0.0)
         v.pack_start(l, expand=False)
 
