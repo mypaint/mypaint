@@ -6,8 +6,10 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-import gtk, os, sys
+import os, sys
+import gtk, gobject
 gdk = gtk.gdk
+
 from lib import brush
 
 class Application: # singleton
@@ -52,12 +54,13 @@ class Application: # singleton
             self.select_brush(self.brushes[0])
         self.brush.set_color_hsv((0, 0, 0))
 
-        if loadimage:
-            self.drawWindow.open_file(loadimage)
+        def at_application_start(*trash):
+            if loadimage:
+                self.drawWindow.open_file(loadimage)
+            if profile:
+                self.drawWindow.start_profiling()
 
-        if profile:
-            self.drawWindow.start_profiling()
-
+        gobject.idle_add(at_application_start)
 
     def init_brushes(self):
         self.brush = brush.Brush(self)
