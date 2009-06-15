@@ -16,7 +16,6 @@ Painting is done in tileddrawwidget.py.
 MYPAINT_VERSION="0.7.0+git"
 
 import os, re, math
-from time import time
 from glob import glob
 
 import gtk
@@ -405,41 +404,6 @@ class Window(gtk.Window):
         self.tdw.visualize_rendering = action.get_active()
     def no_double_buffering_cb(self, action):
         self.tdw.set_double_buffered(not action.get_active())
-
-    def start_profiling(self):
-        def autopaint():
-            import pylab
-            events = pylab.load('painting30sec.dat.gz')
-            events[:,0] *= 0.3
-            events = list(events)
-            t0 = time()
-            t_old = 0.0
-            for t, x, y, pressure in events:
-                sleeptime = t-(time()-t0)
-                if sleeptime > 0.001:
-                    yield sleeptime
-                dtime = t - t_old
-                t_old = t
-                self.doc.stroke_to(dtime, x, y, pressure)
-            print 'replay done.'
-            print self.repaints, 'repaints'
-            gtk.main_quit()
-            yield 10.0
-
-        import gobject
-        p = autopaint()
-        def timer_cb():
-            gobject.timeout_add(int(p.next()*1000.0), timer_cb)
-
-        self.repaints = 0
-        oldfunc=self.tdw.repaint
-        def count_repaints(*args, **kwargs):
-            self.repaints += 1
-            return oldfunc(*args, **kwargs)
-        self.tdw.repaint = count_repaints
-        timer_cb()
-
-        self.tdw.rotate(46.0/360*2*math.pi)
         
     def undo_cb(self, action):
         self.doc.undo()

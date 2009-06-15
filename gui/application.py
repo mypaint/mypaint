@@ -13,7 +13,7 @@ gdk = gtk.gdk
 from lib import brush
 
 class Application: # singleton
-    def __init__(self, datapath, confpath, filenames, profile):
+    def __init__(self, datapath, confpath, filenames):
         self.confpath = confpath
         self.datapath = datapath
 
@@ -61,8 +61,6 @@ class Application: # singleton
                 #open the first file, no matter how many that has been specified
                 fn = filenames[0].replace('file:///', '/') # some filebrowsers do this
                 self.drawWindow.open_file(fn)
-            if profile:
-                self.drawWindow.start_profiling()
 
         gobject.idle_add(at_application_start)
 
