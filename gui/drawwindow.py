@@ -714,12 +714,11 @@ class Window(gtk.Window):
     def open_file(self, filename):
         try:
             self.doc.load(filename)
-        except Exception, e:
+        except document.SaveLoadError, e:
             d = gtk.MessageDialog(self, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_OK)
             d.set_markup(str(e))
             d.run()
             d.destroy()
-            raise
         else:
             self.filename = os.path.abspath(filename)
             print 'Loaded from', self.filename
@@ -730,13 +729,12 @@ class Window(gtk.Window):
     def save_file(self, filename, **options):
         try:
             x, y, w, h =  self.doc.get_bbox()
-            assert w > 0 and h > 0, 'The canvas is empty.'
+            if w == 0 and h == 0:
+                raise document.SaveLoadError, 'Did not save, the canvas is empty.'
             self.doc.save(filename, **options)
-        except Exception, e:
-            print 'Failed to save, traceback:'
-            traceback.print_exc()
+        except document.SaveLoadError, e:
             d = gtk.MessageDialog(self, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_OK)
-            d.set_markup('Failed to save:\n' + str(e))
+            d.set_markup(str(e))
             d.run()
             d.destroy()
         else:

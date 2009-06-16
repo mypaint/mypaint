@@ -35,6 +35,10 @@ from gtk import gdk
 
 N = tiledsurface.N
 
+class SaveLoadError(Exception):
+    """Expected errors on loading or saving, like missing permissions or non-existing files."""
+    pass
+
 class Document():
     """
     This is the "model" in the Model-View-Controller design.
@@ -230,6 +234,13 @@ class Document():
         return count > 1
 
     def save(self, filename, **kwargs):
+        #if the file doesnt allready exist, we need to check permissions on the directory
+        if not os.path.isfile(filename): 
+            path = os.path.dirname(filename)
+        else:
+            path = filename
+        if not os.access(path,os.W_OK):
+            raise SaveLoadError, 'You do not have the necessary permissions to save file: ' + repr(filename)
         trash, ext = os.path.splitext(filename)
         ext = ext.lower().replace('.', '')
         save = getattr(self, 'save_' + ext, self.unsupported)
@@ -237,8 +248,11 @@ class Document():
         self.unsaved_painting_time = 0.0
 
     def load(self, filename):
+        if not os.path.isfile(filename):
+            raise SaveLoadError, 'File does not exist: ' + repr(filename)
+        if not os.access(filename,os.R_OK):
+            raise SaveLoadError, 'You do not have the necessary permissions to open file: ' + repr(filename)
         trash, ext = os.path.splitext(filename)
-        # consider catching and raising "nicer" (consistent) Errors for files that doesnt exist when trying to open them
         ext = ext.lower().replace('.', '')
         load = getattr(self, 'load_' + ext, self.unsupported)
         load(filename)
@@ -246,7 +260,7 @@ class Document():
         self.unsaved_painting_time = 0.0
 
     def unsupported(self, filename):
-        raise ValueError, 'Unknown file format extension: ' + repr(filename)
+        raise SaveLoadError, 'Unknown file format extension: ' + repr(filename)
 
     def render_as_pixbuf(self, *args):
         return pixbufsurface.render_as_pixbuf(self, *args)
