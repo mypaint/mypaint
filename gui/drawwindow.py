@@ -78,6 +78,9 @@ class Window(gtk.Window):
 
         #filename is a property so that all changes will update the title
         self.filename = None
+
+        self.eraser_mode_radius_change = 1.2
+        self.eraser_mode_original_radius = None
         
         
     def get_filename(self):
@@ -626,14 +629,27 @@ class Window(gtk.Window):
     def eraser_cb(self, action):
         adj = self.app.brush_adjustment['eraser']
         if adj.get_value() > 0.9:
-            adj.set_value(0.0)
+            self.end_eraser_mode()
         else:
+            # enter eraser mode
             adj.set_value(1.0)
+            adj2 = self.app.brush_adjustment['radius_logarithmic']
+            r = adj2.get_value()
+            self.eraser_mode_original_radius = r
+            adj2.set_value(r + self.eraser_mode_radius_change)
 
     def end_eraser_mode(self):
         adj = self.app.brush_adjustment['eraser']
-        if adj.get_value() > 0.9:
-            adj.set_value(0.0)
+        if not adj.get_value() > 0.9:
+            return
+        adj.set_value(0.0)
+        if self.eraser_mode_original_radius:
+            # save eraser radius, restore old radius
+            adj2 = self.app.brush_adjustment['radius_logarithmic']
+            r = adj2.get_value()
+            self.eraser_mode_radius_change = r - self.eraser_mode_original_radius
+            adj2.set_value(self.eraser_mode_original_radius)
+            self.eraser_mode_original_radius = None
 
     def device_changed_cb(self, old_device, new_device):
         # just enable eraser mode for now (TODO: remember full tool settings)
