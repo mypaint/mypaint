@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 
 def renderperf():
     import gtk
@@ -42,11 +43,11 @@ def renderperf():
 
 
     from gui import main
-    import mypaintinit
-    data, conf = mypaintinit.get_paths()
+    import mypaint
+    data, conf = mypaint.get_paths()
     conf = '/tmp/randomdir228283' #fresh config
-    maininst = main.Main(data, conf, standalone = False)
-    start_profiling(maininst.app.drawWindow)
+    app = main.main(data, conf, standalone = False)
+    start_profiling(app.drawWindow)
     gtk.main()
 
 def strokeperf():

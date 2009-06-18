@@ -81,4 +81,4 @@ if __name__ == '__main__':
         pass
     datapath, confpath = get_paths()
     from gui import main
-    main.Main(datapath, confpath)
+    main.main(datapath, confpath)

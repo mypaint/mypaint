@@ -10,27 +10,28 @@ import gtk
 from gui import application
 from optparse import OptionParser
 
-# main entry, called from the "mypaint" script
-class Main():
-    def __init__(self, datapath, confpath, standalone=True):
+# main entry, called from the "mypaint" script, but also from some test scripts
+def main(datapath, confpath, standalone=True):
 
-        parser = OptionParser('usage: %prog [options] [FILE]')
-        parser.add_option('-c', '--config', metavar='DIR', default=confpath,
-                        help='use this config directory instead of ~/.mypaint/')
-        options, args = parser.parse_args()
+    parser = OptionParser('usage: %prog [options] [FILE]')
+    parser.add_option('-c', '--config', metavar='DIR', default=confpath,
+                    help='use this config directory instead of ~/.mypaint/')
+    options, args = parser.parse_args()
 
-        print 'confpath =', options.config
-        self.app = application.Application(datapath, options.config, args)
+    print 'confpath =', options.config
+    app = application.Application(datapath, options.config, args)
 
-        # Recent gtk versions don't allow changing those menu shortcuts by
-        # default. <rant>Sigh. This very useful feature used to be the
-        # default behaviour even in the GIMP some time ago. I guess
-        # assigning a keyboard shortcut without a complicated dialog
-        # clicking marathon must have totally upset the people coming from
-        # windows.</rant>
-        gtksettings = gtk.settings_get_default()
-        gtksettings.set_property('gtk-can-change-accels', True)
+    # Recent gtk versions don't allow changing those menu shortcuts by
+    # default. <rant>Sigh. This very useful feature used to be the
+    # default behaviour even in the GIMP some time ago. I guess
+    # assigning a keyboard shortcut without a complicated dialog
+    # clicking marathon must have totally upset the people coming from
+    # windows.</rant>
+    gtksettings = gtk.settings_get_default()
+    gtksettings.set_property('gtk-can-change-accels', True)
 
+    if standalone:
         import gtkexcepthook
-        if standalone:
-            gtk.main()
+        gtk.main()
+    else:
+        return app

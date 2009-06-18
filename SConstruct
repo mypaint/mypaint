@@ -75,7 +75,7 @@ def burn_python_version(target, source, env):
     f.write(s)
     f.close()
 
-env.Command('mypaint', 'mypaintinit.py', [burn_python_version, Chmod('$TARGET', 0755)])
+env.Command('mypaint', 'mypaint.py', [burn_python_version, Chmod('$TARGET', 0755)])
 
 env.Alias('install', env['prefix'])
 def install(dst, pattern):
