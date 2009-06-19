@@ -288,8 +288,6 @@ class Document():
         stack = ET.SubElement(image, 'stack')
         x0, y0, w0, h0 = self.get_bbox()
         a = image.attrib
-        a['x'] = str(0)
-        a['y'] = str(0)
         a['w'] = str(w0)
         a['h'] = str(h0)
 
@@ -337,6 +335,7 @@ class Document():
         store_pixbuf(pixbuf, 'Thumbnails/thumbnail.png')
         print '  total %.3fs spent on thumbnail' % (time.time() - t2)
 
+        helpers.indent_etree(image)
         xml = ET.tostring(image, encoding='UTF-8')
 
         write_file_str('stack.xml', xml)
