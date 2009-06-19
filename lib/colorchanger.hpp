@@ -87,6 +87,18 @@ public:
 
         v_original = v; s_original = s;
 
+        s=v=0;
+
+        const int stripe_width = 20;
+        float stripe_dist = 0.0;
+        {
+          int min = ABS(dx);
+          if (ABS(dy) < min) min = ABS(dy);
+          if (min > stripe_width) {
+            stripe_dist = float(min - stripe_width) / (size - stripe_width);
+          }
+        }
+
         // overlay sine waves to color hue, not visible at center, ampilfying near the border
         if (1) {
           float amplitude, phase;
@@ -115,9 +127,7 @@ public:
           // angle is now in range 0..1
           // 0 = on a 45 degree line, 1 = on a horizontal or vertical line
 
-          v = 0.6*v*angle + 0.4*v;
           h = h * angle * 1.5;
-          s = s * angle * 1.0;
 
           // this part is for strong color variations at the borders
           if (borderdist < 0.3) {
@@ -125,8 +135,6 @@ public:
             float h_new;
             fac = (1 - borderdist/0.3);
             // fac is 1 at the outermost pixels
-            v = (1-fac)*v + fac*0;
-            s = (1-fac)*s + fac*0;
             fac = fac*fac*0.6;
             h_new = (angle+phase0+M_PI/4)*360/(2*M_PI) * 8;
             while (h_new > h + 360/2) h_new -= 360;
@@ -134,21 +142,24 @@ public:
             h = (1-fac)*h + fac*h_new;
             //h = (angle+M_PI/4)*360/(2*M_PI) * 4;
           }
+
+          s += 300 * dist * dist * stripe_dist;
+          v += 500 * dist * dist * stripe_dist;
         }
 
         {
           // undo that funky stuff on horizontal and vertical lines
-          int min = ABS(dx);
-          if (ABS(dy) < min) min = ABS(dy);
-          if (min < 30) {
-            float mul;
-            min -= 6;
-            if (min < 0) min = 0;
-            mul = min / (30.0-1.0-6.0);
-            h = mul*h; //+ (1-mul)*0;
-
-            v = mul*v + (1-mul)*v_original;
-            s = mul*s + (1-mul)*s_original;
+          if (stripe_dist == 0.0) {
+            h = 0;
+            s = s_original;
+            v = v_original;
+            if (ABS(dx) > ABS(dy)) {
+              // horizontal stripe
+              s = 0.0;
+            } else {
+              // vertical stripe
+              v = 0.0;
+            }
           }
         }
 
@@ -169,10 +180,8 @@ public:
     s = brush_s + pre->s/255.0;
     v = brush_v + pre->v/255.0;
 
-    if (s < 0) { if (s < -0.2) { s = - (s + 0.2); } else { s = 0; } } 
-    if (s > 1) { if (s > 1.0 + 0.2) { s = 1.0 - ((s-0.2)-1.0); } else { s = 1.0; } }
-    if (v < 0) { if (v < -0.2) { v = - (v + 0.2); } else { v = 0; } }
-    if (v > 1) { if (v > 1.0 + 0.2) { v = 1.0 - ((v-0.2)-1.0); } else { v = 1.0; } }
+    s = CLAMP(s, 0.0, 1.0);
+    v = CLAMP(v, 0.0, 1.0);
 
   }
 
