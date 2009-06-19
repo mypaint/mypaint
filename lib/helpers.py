@@ -104,6 +104,25 @@ def hsv_to_rgb(h, s, v):
     v = clamp(v, 0.0, 1.0)
     return colorsys.hsv_to_rgb(h, s, v)
 
+def indent_etree(elem, level=0):
+    """
+    Indent an XML etree. This does not seem to come with python?
+    Source: http://effbot.org/zone/element-lib.htm#prettyprint
+    """
+    i = "\n" + level*"  "
+    if len(elem):
+        if not elem.text or not elem.text.strip():
+            elem.text = i + "  "
+        if not elem.tail or not elem.tail.strip():
+            elem.tail = i
+        for elem in elem:
+            indent_etree(elem, level+1)
+        if not elem.tail or not elem.tail.strip():
+            elem.tail = i
+    else:
+        if level and (not elem.tail or not elem.tail.strip()):
+            elem.tail = i
+
 if __name__ == '__main__':
     big = Rect(-3, 2, 180, 222)
     a = Rect(0, 10, 5, 15)
