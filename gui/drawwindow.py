@@ -24,7 +24,7 @@ import gtk
 from gtk import gdk, keysyms
 
 import tileddrawwidget, colorselectionwindow, historypopup, \
-       stategroup, keyboard
+       stategroup, keyboard, colorpicker
 from lib import document, helpers
 
 class Window(gtk.Window):
@@ -173,7 +173,7 @@ class Window(gtk.Window):
               <menuitem action='ColorSelectionWindow'/>
               <menuitem action='ColorWheelPopup'/>
               <menuitem action='ChangeColorPopup'/>
-              <menuitem action='PickColor'/>
+              <menuitem action='ColorPickerPopup'/>
               <menuitem action='ColorHistoryPopup'/>
               <separator/>
               <menuitem action='Brighter'/>
@@ -235,7 +235,7 @@ class Window(gtk.Window):
             ('ColorMenu',    None, 'Color'),
             ('Darker',       None, 'Darker', None, None, self.darker_cb),
             ('Bigger',       None, 'Bigger', 'f', None, self.brush_bigger_cb),
-            ('PickColor',    None, 'Pick Color', 'r', None, self.pick_color_cb),
+            ('ColorPickerPopup',    None, 'Pick Color', 'r', None, self.popup_cb),
             ('ColorHistoryPopup',  None, 'Color History', 'x', None, self.popup_cb),
             ('ChangeColorPopup', None, 'Change Color', 'v', None, self.popup_cb),
             ('ColorWheelPopup',  None, 'Color Wheel', None, None, self.popup_cb),
@@ -347,11 +347,13 @@ class Window(gtk.Window):
         changer = p2s(colorselectionwindow.ChangeColorPopup(self.app))
         wheel = p2s(colorselectionwindow.ColorWheelPopup(self.app))
         hist = p2s(historypopup.HistoryPopup(self.app, self.doc))
+        pick = p2s(colorpicker.ColorPicker(self.app, self.doc))
 
         self.popup_states = {
             'ChangeColorPopup': changer,
             'ColorWheelPopup': wheel,
             'ColorHistoryPopup': hist,
+            'ColorPickerPopup': pick,
             }
         changer.next_state = wheel
         wheel.next_state = changer
@@ -609,14 +611,6 @@ class Window(gtk.Window):
 
     def toggle_layers_above_cb(self, action):
         self.tdw.toggle_show_layers_above()
-
-    def pick_color_cb(self, action):
-        self.end_eraser_mode()
-        size = int(self.app.brush.get_actual_radius() * math.sqrt(math.pi))
-        if size < 1:
-            size = 1
-        self.app.colorSelectionWindow.pick_color_at_pointer(size)
-
 
     def popup_cb(self, action):
         # This doesn't really belong here...
