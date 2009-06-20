@@ -63,75 +63,51 @@ public:
     i = 0;
     for (y=0; y<height; y++) {
       for (x=0; x<width; x++) {
-        float h, s, v, s_original, v_original;
-        int dx, dy;
-        float v_factor = 0.8;
-        float s_factor = 0.8;
+        float v_factor = 0.6;
+        float s_factor = 0.6;
         float h_factor = 0.4;
 
 #define factor2_func(x) ((x)*(x)*SIGN(x))
-        float v_factor2 = 0.01;
-        float s_factor2 = 0.01;
+        float v_factor2 = 0.013;
+        float s_factor2 = 0.013;
         float h_factor2 = 0.02;
 
+        int stripe_width = 20;
 
-        h = 0;
-        s = 0;
-        v = 0;
+        float h = 0;
+        float s = 0;
+        float v = 0;
 
-        dx = x-width/2;
-        dy = y-height/2;
+        int dx = x-width/2;
+        int dy = y-height/2;
 
-        // basically, its x-axis = value, y-axis = saturation
-        v = dx*v_factor + factor2_func(dx)*v_factor2;
-        s = dy*s_factor + factor2_func(dy)*s_factor2;
-
-        v_original = v; s_original = s;
-
-        s=v=0;
-
-        const int stripe_width = 20;
-        float stripe_dist = 0.0;
-        {
-          int min = ABS(dx);
-          if (ABS(dy) < min) min = ABS(dy);
-          if (min > stripe_width) {
-            stripe_dist = float(min - stripe_width) / (size - stripe_width);
-          }
+        // hue
+        if (dy > 0) {
+          h += float(dy-stripe_width)/stripe_width * 16;
+        } else {
+          h += float(dy+stripe_width)/stripe_width * 16;
+        }
+        h = h*h_factor + factor2_func(h)*h_factor2;
+        if (abs(dx) > size*0.30) {
+          s = 10000;
+          v = 10000;
         }
 
-        // overlay sine waves to color hue, not visible at center, ampilfying near the border
-        if (1) {
-          if (dy > 0) {
-            h += float(dy-stripe_width)/stripe_width * 16;
+        // horizontal and vertical lines
+        int min = ABS(dx);
+        if (ABS(dy) < min) min = ABS(dy);
+        if (min < stripe_width) {
+          h = 0;
+          // x-axis = value, y-axis = saturation
+          v =    dx*v_factor + factor2_func(dx)*v_factor2;
+          s = - (dy*s_factor + factor2_func(dy)*s_factor2);
+          // but not both at once
+          if (ABS(dx) > ABS(dy)) {
+            // horizontal stripe
+            s = 0.0;
           } else {
-            h += float(dy+stripe_width)/stripe_width * 16;
-          }
-          h = h*h_factor + factor2_func(h)*h_factor2;
-
-          if (abs(dx) > size/4) {
-            s = 10000;
-            v = 10000;
-          }
-          int borderdist = MAX(MIN(x-0, size-x), MIN(x-0, size-x));
-          if (borderdist < 5) {
-            h = 0;
-          }
-        }
-
-        {
-          // undo that funky stuff on horizontal and vertical lines
-          if (stripe_dist == 0.0) {
-            h = 0;
-            s = s_original;
-            v = v_original;
-            if (ABS(dx) > ABS(dy)) {
-              // horizontal stripe
-              s = 0.0;
-            } else {
-              // vertical stripe
-              v = 0.0;
-            }
+            // vertical stripe
+            v = 0.0;
           }
         }
 
