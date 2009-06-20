@@ -126,6 +126,7 @@ public:
     s = brush_s + pre->s/255.0;
     v = brush_v + pre->v/255.0;
 
+    h -= floor(h);
     s = CLAMP(s, 0.0, 1.0);
     v = CLAMP(v, 0.0, 1.0);
 
