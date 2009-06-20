@@ -67,11 +67,12 @@ public:
         int dx, dy;
         float v_factor = 0.8;
         float s_factor = 0.8;
-        float h_factor = 0.05;
+        float h_factor = 0.4;
 
 #define factor2_func(x) ((x)*(x)*SIGN(x))
         float v_factor2 = 0.01;
         float s_factor2 = 0.01;
+        float h_factor2 = 0.02;
 
 
         h = 0;
@@ -101,50 +102,21 @@ public:
 
         // overlay sine waves to color hue, not visible at center, ampilfying near the border
         if (1) {
-          float amplitude, phase;
-          float dist, dist2, borderdist;
-          float dx_norm, dy_norm;
-          float angle;
-          dx_norm = dx*width_inv;
-          dy_norm = dy*height_inv;
-
-          dist2 = dx_norm*dx_norm + dy_norm*dy_norm;
-          dist = sqrtf(dist2);
-          borderdist = 0.5 - MAX(ABS(dx_norm), ABS(dy_norm));
-          angle = atan2f(dy_norm, dx_norm);
-          amplitude = 50 + dist2*dist2*dist2*100;
-          phase = phase0 + 2*M_PI* (dist*0 + dx_norm*dx_norm*dy_norm*dy_norm*50) + angle*7;
-          //h = sinf(phase) * amplitude;
-          h = sinf(phase);
-          h = (h>0)?h*h:-h*h;
-          h *= amplitude;
-
-          // calcualte angle to next 45-degree-line
-          angle = ABS(angle)/M_PI;
-          if (angle > 0.5) angle -= 0.5;
-          angle -= 0.25;
-          angle = ABS(angle) * 4;
-          // angle is now in range 0..1
-          // 0 = on a 45 degree line, 1 = on a horizontal or vertical line
-
-          h = h * angle * 1.5;
-
-          // this part is for strong color variations at the borders
-          if (borderdist < 0.3) {
-            float fac;
-            float h_new;
-            fac = (1 - borderdist/0.3);
-            // fac is 1 at the outermost pixels
-            fac = fac*fac*0.6;
-            h_new = (angle+phase0+M_PI/4)*360/(2*M_PI) * 8;
-            while (h_new > h + 360/2) h_new -= 360;
-            while (h_new < h - 360/2) h_new += 360;
-            h = (1-fac)*h + fac*h_new;
-            //h = (angle+M_PI/4)*360/(2*M_PI) * 4;
+          if (dy > 0) {
+            h += float(dy-stripe_width)/stripe_width * 16;
+          } else {
+            h += float(dy+stripe_width)/stripe_width * 16;
           }
+          h = h*h_factor + factor2_func(h)*h_factor2;
 
-          s += 300 * dist * dist * stripe_dist;
-          v += 500 * dist * dist * stripe_dist;
+          if (abs(dx) > size/4) {
+            s = 10000;
+            v = 10000;
+          }
+          int borderdist = MAX(MIN(x-0, size-x), MIN(x-0, size-x));
+          if (borderdist < 5) {
+            h = 0;
+          }
         }
 
         {
@@ -162,8 +134,6 @@ public:
             }
           }
         }
-
-        h -= h*h_factor;
 
         result[i].h = (int)h;
         result[i].v = (int)v;
