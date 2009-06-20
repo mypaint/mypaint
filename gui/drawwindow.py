@@ -347,7 +347,7 @@ class Window(gtk.Window):
         changer = p2s(colorselectionwindow.ChangeColorPopup(self.app))
         wheel = p2s(colorselectionwindow.ColorWheelPopup(self.app))
         hist = p2s(historypopup.HistoryPopup(self.app, self.doc))
-        pick = p2s(colorpicker.ColorPicker(self.app, self.doc))
+        pick = self.colorpick_state = p2s(colorpicker.ColorPicker(self.app, self.doc))
 
         self.popup_states = {
             'ChangeColorPopup': changer,
@@ -500,11 +500,11 @@ class Window(gtk.Window):
             else:
                 self.tdw.start_drag(self.dragfunc_translate)
         elif event.button == 1:
-            # pick color "standard"; TODO: show color picking cursor?
             if event.state & gdk.CONTROL_MASK:
-                self.pick_color_cb(None)
+                self.end_eraser_mode()
+                self.colorpick_state.activate(event)
         elif event.button == 3:
-            self.history_popup_state.activate()
+            self.history_popup_state.activate(event)
 
     def button_release_cb(self, win, event):
         #print event.device, event.button
@@ -614,7 +614,8 @@ class Window(gtk.Window):
 
     def popup_cb(self, action):
         # This doesn't really belong here...
-        # ...maybe should eraser_mode a GUI state too?
+        # just because all popups are color popups now...
+        # ...maybe should eraser_mode be a GUI state too?
         self.end_eraser_mode()
 
         state = self.popup_states[action.get_name()]

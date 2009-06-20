@@ -129,6 +129,10 @@ class TiledDrawWidget(gtk.DrawingArea):
             else:
                 pressure = 0.0
         
+        if event.state & gdk.CONTROL_MASK:
+            # color picking, do not paint
+            return
+            
         ### CSS experimental - scroll when touching the edge of the screen in fullscreen mode
         #
         # Disabled for the following reasons:

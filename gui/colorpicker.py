@@ -26,7 +26,6 @@ class ColorPicker(gtk.Window):
                         )
         self.connect("button-release-event", self.button_release_cb)
         self.connect("button-press-event", self.button_press_cb)
-        self.connect("button-press-event", self.button_press_cb)
         self.connect("expose_event", self.expose_cb)
         self.connect("motion-notify-event", self.motion_notify_cb)
 
@@ -54,9 +53,9 @@ class ColorPicker(gtk.Window):
         x, y = self.get_position()
         self.move(x, y + popup_height)
         self.show_all()
-        self.window.set_cursor(gdk.Cursor(gdk.CROSSHAIR)) # well... a pointer grab maybe instead???
 
         gdk.pointer_grab(self.window, event_mask=gdk.POINTER_MOTION_MASK)
+        self.popup_state.register_mouse_grab(self)
     
     def leave(self, reason):
         gdk.pointer_ungrab()
@@ -66,9 +65,14 @@ class ColorPicker(gtk.Window):
         self.hide()
 
     def motion_notify_cb(self, widget, event):
-        pressure = event.get_axis(gdk.AXIS_PRESSURE)
-        if pressure:
-            self.leave(None)
+        if not self.popup_state.mouse_button:
+            pressure = event.get_axis(gdk.AXIS_PRESSURE)
+            painting = (event.state & gdk.BUTTON1_MASK) or pressure
+            if painting:
+                self.leave(None)
+
+        if not self.popup_state.keydown:
+            return
 
         def update():
             self.idle_handler = None

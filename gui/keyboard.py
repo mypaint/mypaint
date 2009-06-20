@@ -20,6 +20,8 @@ class KeyboardManager:
     The point of the whole exercise (instead of just using gtk
     standard tools) is to allow the action handlers to wait for the
     corresponding key release event.
+
+    This class adds extra state attributes to every gtk.Action.
     """
     def __init__(self):
         gtk.accel_map_get().connect('changed', self.accel_map_changed_cb)
@@ -105,6 +107,7 @@ class KeyboardManager:
             # emergency exit in case of bugs
             for hardware_keycode in self.pressed.keys():
                 released(hardware_keycode)
+            gdk.pointer_ungrab()
         else:
             # note: event.keyval would not be suited for this because
             # it can be different from the one we have seen in
@@ -133,7 +136,6 @@ class KeyboardManager:
 
     def takeover_action(self, action):
         assert action not in self.actions
-        # custom action attributes:
         self.add_custom_attributes(action)
         self.actions.append(action)
         self.update_keymap(action.get_accel_path())

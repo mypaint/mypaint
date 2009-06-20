@@ -70,6 +70,7 @@ class State:
         assert not self.active
         self.active = True
         self.enter_time = time.time()
+        self.connected_motion_handler = None
         if self.autoleave_timeout:
             self.autoleave_timer = gobject.timeout_add(int(1000*self.autoleave_timeout), self.autoleave_timeout_cb)
         self.on_enter()
@@ -84,9 +85,10 @@ class State:
         if self.outside_popup_timer:
             gobject.source_remove(self.outside_popup_timer)
             self.outside_popup_timer = None
+        self.disconnect_motion_handler()
         self.on_leave(reason)
 
-    def activate(self, action=None):
+    def activate(self, action_or_event=None):
         """
         Called from the GUI code, eg. when a gtk.Action is
         activated. The action is used to figure out the key.
@@ -95,7 +97,7 @@ class State:
             # pressing the key again
             if self.next_state:
                 self.leave()
-                self.next_state.activate()
+                self.next_state.activate(action_or_event)
                 return
 
         # first leave other active states from the same stategroup
@@ -103,9 +105,25 @@ class State:
             state.leave()
 
         self.keydown = False
-        if action and action.keydown:
-            self.keydown = True
-            action.keyup_callback = self.keyup_cb
+        self.mouse_button = None
+
+        if action_or_event:
+            if isinstance(action_or_event, gdk.Event):
+                e = action_or_event
+                # currently, we only support mouse buttons being pressed here
+                assert e.type == gdk.BUTTON_PRESS
+                # let's just note down what mous button that was
+                assert e.button
+                if e.button in [1]:
+                    self.mouse_button = 1
+
+            else:
+                a = action_or_event
+                # register for key release events, see keyboard.py
+                if a.keydown:
+                    a.keyup_callback = self.keyup_cb
+                    self.keydown = True
+        self.activated_by_keyboard = self.keydown # FIXME: should probably be renamed (mouse button possible)
         self.enter()
 
     def toggle(self, action=None):
@@ -147,4 +165,36 @@ class State:
         if self.outside_popup_timer:
             gobject.source_remove(self.outside_popup_timer)
         self.outside_popup_timer = gobject.timeout_add(int(1000*self.outside_popup_timeout), self.outside_popup_timeout_cb)
+
+
+    def motion_notify_cb(self, widget, event):
+        assert self.keydown
+        pressure = event.get_axis(gdk.AXIS_PRESSURE)
+        painting = (event.state & gdk.BUTTON1_MASK) or pressure
+        if not painting:
+            self.disconnect_motion_handler()
+            self.keyup_cb(widget, event)
+
+    def disconnect_motion_handler(self):
+        if not self.connected_motion_handler:
+            return
+        widget, handler_id = self.connected_motion_handler
+        widget.disconnect(handler_id)
+        self.connected_motion_handler = None
+
+    def register_mouse_grab(self, widget):
+        assert self.active
+        if self.keydown:
+            # we are reacting to a keyboard event, we will not be
+            # waiting for a mouse button release
+            assert not self.mouse_button
+            return
+        if self.mouse_button:
+            # we are able to wait for a button release now
+            self.keydown = True
+            # register for events
+            assert self.mouse_button == 1
+            handler_id = widget.connect("motion-notify-event", self.motion_notify_cb)
+            assert not self.connected_motion_handler
+            self.connected_motion_handler = (widget, handler_id)
 
