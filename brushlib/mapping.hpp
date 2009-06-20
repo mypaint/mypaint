@@ -108,8 +108,12 @@ public:
           y1 = p->yvalues[i];
         }
 
-        // linear interpolation
-        y = (y1*(x - x0) + y0*(x1 - x)) / (x1 - x0);
+        if (x0 == x1) {
+          y = y0;
+        } else {
+          // linear interpolation
+          y = (y1*(x - x0) + y0*(x1 - x)) / (x1 - x0);
+        }
 
         result += y;
       }
