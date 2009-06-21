@@ -79,7 +79,7 @@ class Window(gtk.Window):
         #filename is a property so that all changes will update the title
         self.filename = None
 
-        self.eraser_mode_radius_change = 1.2
+        self.eraser_mode_radius_change = 3*(0.3) # can go back to exact original with brush_smaller_cb()
         self.eraser_mode_original_radius = None
         
         
