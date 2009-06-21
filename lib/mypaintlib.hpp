@@ -3,6 +3,6 @@
 #include "../brushlib/brushlib.hpp"
 #include "tiledsurface.hpp"
 #include "pixops.hpp"
-#include "colorselector.hpp"
+#include "colorring.hpp"
 #include "colorchanger.hpp"
 #include "gdkpixbuf2numpy.hpp"

@@ -111,7 +111,7 @@ class Window(gtk.Window):
 
 
 # own color selector
-# see also colorselector.hpp
+# see also colorchanger.hpp
 class ColorSelectorPopup(gtk.Window):
     backend_class = None
     closes_on_picking = True
@@ -190,11 +190,11 @@ class ColorSelectorPopup(gtk.Window):
 
 
 
-class ChangeColorPopup(ColorSelectorPopup):
+class ColorChangerPopup(ColorSelectorPopup):
     backend_class = mypaintlib.ColorChanger 
     outside_popup_timeout = 0.050
 
-class ColorWheelPopup(ColorSelectorPopup):
+class ColorRingPopup(ColorSelectorPopup):
     backend_class = mypaintlib.SCWSColorSelector 
     closes_on_picking = False
     outside_popup_timeout = 0.200

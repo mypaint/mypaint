@@ -10,7 +10,7 @@ typedef struct { int x, y, w, h; } Rect;
 %include "../brushlib/mapping.hpp"
 %include "tiledsurface.hpp"
 %include "pixops.hpp"
-%include "colorselector.hpp"
+%include "colorring.hpp"
 %include "colorchanger.hpp"
 
 //from "gdkpixbuf2numpy.hpp"

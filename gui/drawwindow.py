@@ -171,8 +171,8 @@ class Window(gtk.Window):
             </menu>
             <menu action='ColorMenu'>
               <menuitem action='ColorSelectionWindow'/>
-              <menuitem action='ColorWheelPopup'/>
-              <menuitem action='ChangeColorPopup'/>
+              <menuitem action='ColorRingPopup'/>
+              <menuitem action='ColorChangerPopup'/>
               <menuitem action='ColorPickerPopup'/>
               <menuitem action='ColorHistoryPopup'/>
               <separator/>
@@ -237,8 +237,8 @@ class Window(gtk.Window):
             ('Bigger',       None, 'Bigger', 'f', None, self.brush_bigger_cb),
             ('ColorPickerPopup',    None, 'Pick Color', 'r', None, self.popup_cb),
             ('ColorHistoryPopup',  None, 'Color History', 'x', None, self.popup_cb),
-            ('ChangeColorPopup', None, 'Change Color', 'v', None, self.popup_cb),
-            ('ColorWheelPopup',  None, 'Color Wheel', None, None, self.popup_cb),
+            ('ColorChangerPopup', None, 'Color Changer', 'v', None, self.popup_cb),
+            ('ColorRingPopup',  None, 'Color Ring', None, None, self.popup_cb),
 
             ('ContextMenu',  None, 'Brushkeys'),
             ('Context00',    None, 'Restore Brush 0', '0', None, self.context_cb),
@@ -296,7 +296,7 @@ class Window(gtk.Window):
             ('ViewMenu', None, 'View'),
             ('Fullscreen',   None, 'Fullscreen', 'F11', None, self.fullscreen_cb),
             ('ResetView',   None, 'Reset Zoom and Rotation', None, None, self.reset_view_cb),
-            ('ZoomOut',      None, 'Zoom Out', 'comma', None, self.zoom_cb),
+            ('ZoomOut',      None, 'Zoom Out (at cursor)', 'comma', None, self.zoom_cb),
             ('ZoomIn',       None, 'Zoom In', 'period', None, self.zoom_cb),
             ('RotateLeft',   None, 'Rotate Counterclockwise', None, None, self.rotate_cb),
             ('RotateRight',  None, 'Rotate Clockwise', None, None, self.rotate_cb),
@@ -344,21 +344,21 @@ class Window(gtk.Window):
         self.layersolo_state.autoleave_timeout = None
 
         p2s = sg.create_popup_state
-        changer = p2s(colorselectionwindow.ChangeColorPopup(self.app))
-        wheel = p2s(colorselectionwindow.ColorWheelPopup(self.app))
+        changer = p2s(colorselectionwindow.ColorChangerPopup(self.app))
+        ring = p2s(colorselectionwindow.ColorRingPopup(self.app))
         hist = p2s(historypopup.HistoryPopup(self.app, self.doc))
         pick = self.colorpick_state = p2s(colorpicker.ColorPicker(self.app, self.doc))
 
         self.popup_states = {
-            'ChangeColorPopup': changer,
-            'ColorWheelPopup': wheel,
+            'ColorChangerPopup': changer,
+            'ColorRingPopup': ring,
             'ColorHistoryPopup': hist,
             'ColorPickerPopup': pick,
             }
-        changer.next_state = wheel
-        wheel.next_state = changer
+        changer.next_state = ring
+        ring.next_state = changer
         changer.autoleave_timeout = None
-        wheel.autoleave_timeout = None
+        ring.autoleave_timeout = None
         hist.autoleave_timeout = None
         hist.autoleave_timeout = 0.600
         self.history_popup_state = hist
