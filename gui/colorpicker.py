@@ -65,13 +65,15 @@ class ColorPicker(gtk.Window):
         self.hide()
 
     def motion_notify_cb(self, widget, event):
+        pressure = event.get_axis(gdk.AXIS_PRESSURE)
+        painting = (event.state & gdk.BUTTON1_MASK) or pressure
         if not self.popup_state.mouse_button:
-            pressure = event.get_axis(gdk.AXIS_PRESSURE)
-            painting = (event.state & gdk.BUTTON1_MASK) or pressure
             if painting:
                 self.leave(None)
 
         if not self.popup_state.keydown:
+            if pressure:
+                gdk.pointer_ungrab()
             return
 
         def update():
