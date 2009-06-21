@@ -359,7 +359,10 @@ class Window(gtk.Window):
         ring.next_state = changer
         changer.autoleave_timeout = None
         ring.autoleave_timeout = None
-        hist.autoleave_timeout = None
+
+        pick.max_key_hit_duration = 0.0
+        pick.autoleave_timeout = None
+
         hist.autoleave_timeout = 0.600
         self.history_popup_state = hist
 
