@@ -235,10 +235,12 @@ class Document():
 
     def save(self, filename, **kwargs):
         #if the file doesnt allready exist, we need to check permissions on the directory
-        if not os.path.isfile(filename): 
-            path = os.path.dirname(filename)
-        else:
+        if os.path.isfile(filename):
             path = filename
+        else:
+            path = os.path.dirname(filename)
+            if not path:
+                path = '.'
         if not os.access(path,os.W_OK):
             raise SaveLoadError, 'You do not have the necessary permissions to save file: ' + repr(filename)
         trash, ext = os.path.splitext(filename)
