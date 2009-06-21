@@ -53,7 +53,7 @@ except ImportError:
     print "We are not correctly installed or compiled!"
     print 'script: "%s"' % sys.argv[0]
     if prefix:
-        print 'deduced prefix: "%s"' % dir_install
+        print 'deduced prefix: "%s"' % prefix
         print 'lib_shared: "%s"' % libpath
         print 'lib_compiled: "%s"' % libpath_compiled
     print
