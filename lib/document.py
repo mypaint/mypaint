@@ -96,11 +96,8 @@ class Document():
         if not self.stroke: return
         self.stroke.stop_recording()
         if not self.stroke.empty:
-            self.layer.strokes.append(self.stroke)
-            before = self.snapshot_before_stroke
-            after = self.layer.save_snapshot()
-            self.command_stack.do(command.Stroke(self, self.stroke, before, after))
-            self.snapshot_before_stroke = after
+            self.command_stack.do(command.Stroke(self, self.stroke, self.snapshot_before_stroke))
+            del self.snapshot_before_stroke
             self.unsaved_painting_time += self.stroke.total_painting_time
             for f in self.stroke_observers:
                 f(self.stroke, self.brush)

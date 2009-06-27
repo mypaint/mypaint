@@ -123,7 +123,6 @@ class Window(gtk.Window):
                     new_stroke = cmd.stroke.copy_using_different_brush(self.app.brush)
                     snapshot_before = doc.layer.save_snapshot()
                     new_stroke.render(doc.layer.surface)
-                    snapshot_after = doc.layer.save_snapshot()
-                    doc.do(command.Stroke(doc, new_stroke, snapshot_before, snapshot_after))
+                    doc.do(command.Stroke(doc, new_stroke, snapshot_before))
                     break
 

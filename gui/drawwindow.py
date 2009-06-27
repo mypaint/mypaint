@@ -15,7 +15,7 @@ Painting is done in tileddrawwidget.py.
 
 MYPAINT_VERSION="0.7.0+git"
 
-import os, re, math
+import os, re, math, sys
 from time import time
 from glob import glob
 import traceback
@@ -25,7 +25,7 @@ from gtk import gdk, keysyms
 
 import tileddrawwidget, colorselectionwindow, historypopup, \
        stategroup, keyboard, colorpicker
-from lib import document, helpers
+from lib import document, helpers, tiledsurface
 
 class Window(gtk.Window):
     def __init__(self, app):
@@ -168,6 +168,8 @@ class Window(gtk.Window):
               <menuitem action='LessOpaque'/>
               <separator/>
               <menuitem action='Eraser'/>
+              <separator/>
+              <menuitem action='PickContext'/>
             </menu>
             <menu action='ColorMenu'>
               <menuitem action='ColorSelectionWindow'/>
@@ -231,6 +233,7 @@ class Window(gtk.Window):
             ('MoreOpaque',   None, 'More Opaque', 's', None, self.more_opaque_cb),
             ('LessOpaque',   None, 'Less Opaque', 'a', None, self.less_opaque_cb),
             ('Eraser',       None, 'Toggle Eraser Mode', 'e', None, self.eraser_cb),
+            ('PickContext',  None, 'Pick Context (layer, brush and color)', 'w', None, self.pick_context_cb),
 
             ('ColorMenu',    None, 'Color'),
             ('Darker',       None, 'Darker', None, None, self.darker_cb),
@@ -569,6 +572,31 @@ class Window(gtk.Window):
             if alpha > 0.1:
                 self.doc.select_layer(idx)
                 self.layerblink_state.activate(action)
+                return
+        self.doc.select_layer(0)
+        self.layerblink_state.activate(action)
+
+    def pick_context_cb(self, action):
+        x, y = self.tdw.get_cursor_in_model_coordinates()
+        for idx, layer in reversed(list(enumerate(self.doc.layers))):
+            alpha = layer.surface.get_alpha (x, y, 5)
+            if alpha > 0.1:
+                self.doc.select_layer(idx)
+                self.layerblink_state.activate(action)
+
+                # find the most recent (last) stroke that touches our picking point
+                brush = self.doc.layer.get_brush_at(x, y)
+
+                if brush:
+                    # FIXME: clean brush concept?
+                    self.app.brush.load_from_string(brush)
+                    self.app.select_brush(None)
+                else:
+                    print 'Nothing found!'
+
+                #self.app.brush.copy_settings_from(stroke.brush_settings)
+                #self.app.select_brush()
+                    
                 return
         self.doc.select_layer(0)
         self.layerblink_state.activate(action)

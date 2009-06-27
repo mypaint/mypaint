@@ -32,7 +32,7 @@ class Tile:
     def copy(self):
         return Tile(copy_from=self)
         
-transparentTile = Tile()
+transparent_tile = Tile()
 
 def get_tiles_bbox(tiles):
     res = helpers.Rect()
@@ -68,7 +68,7 @@ class Surface(mypaintlib.TiledSurface):
         t = self.tiledict.get((tx, ty))
         if t is None:
             if readonly:
-                t = transparentTile
+                t = transparent_tile
             else:
                 t = Tile()
                 self.tiledict[(tx, ty)] = t

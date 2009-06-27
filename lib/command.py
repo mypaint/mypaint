@@ -6,7 +6,7 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-import layer
+import layer, tiledsurface
 
 class CommandStack:
     def __init__(self):
@@ -62,17 +62,17 @@ class Action:
     # - undo
     automatic_undo = False
 
-# FIXME: the code below looks horrible, there must be a less redundant way to implement this.
-# - eg command_* special members on the document class?
-# - and then auto-build wrapper methods?
 
 class Stroke(Action):
-    def __init__(self, doc, stroke, snapshot_before, snapshot_after):
+    def __init__(self, doc, stroke, snapshot_before):
+        """called only when the stroke was just completed and is now fully rendered"""
         self.doc = doc
         assert stroke.finished
         self.stroke = stroke # immutable; not used for drawing any more, just for inspection
         self.before = snapshot_before
-        self.after = snapshot_after
+        self.doc.layer.add_stroke(stroke, snapshot_before)
+        # this snapshot will include the updated stroke list (modified by the line above)
+        self.after = self.doc.layer.save_snapshot()
     def undo(self):
         self.doc.layer.load_snapshot(self.before)
     def redo(self):
