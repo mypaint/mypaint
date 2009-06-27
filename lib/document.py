@@ -26,7 +26,7 @@ A document:
 """
 
 import mypaintlib, helpers, tiledsurface, pixbufsurface
-import command, stroke, layer, serialize
+import command, stroke, layer
 import brush # FIXME: the brush module depends on gtk and everything, but we only need brush_lowlevel
 import gzip, os, zipfile, tempfile, numpy, time
 join = os.path.join

@@ -12,6 +12,7 @@ import random
 
 class Stroke:
     # A "finished" stroke object is immutable, except right after creation (when it has never been fully rendered).
+    # To modify an existing stroke, the old one must be deleted and a new Stroke instance must be used to replace it.
     serial_number = 0
     def __init__(self):
         self.finished = False
@@ -88,13 +89,3 @@ class Stroke:
         # has different meanings for the states. This should cause
         # fewer glitches than resetting the initial state to zero.
         return s
-
-    serialize_members = [
-        ('total_painting_time', float),
-        ('brush_settings', str),
-        ('brush_state', str),
-        ('stroke_data', str),
-        ]
-    def after_unserialize(self):
-        assert not self.finished
-        self.finished = True
