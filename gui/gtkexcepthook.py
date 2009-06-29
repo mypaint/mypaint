@@ -11,6 +11,7 @@
 # Minor adaptions 2009 by Martin Renold:
 # - let KeyboardInterrupt through
 # - print traceback to stderr before showing the dialog
+# - nonzero exit code when hitting the "quit" button
 # see also http://faq.pygtk.org/index.py?req=show&file=faq20.010.htp
 
 import inspect, linecache, pydoc, sys, traceback
@@ -185,7 +186,8 @@ def _info (exctyp, value, tb):
 			details.destroy()
 
 		elif resp == 1 and gtk.main_level() > 0:
-			gtk.main_quit()
+			#gtk.main_quit() - why...? Exit code 0 is bad for IDEs.
+			sys.exit(1)
 			break
 		else:
 			break
