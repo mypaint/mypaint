@@ -40,6 +40,9 @@ def get_tiles_bbox(tiles):
         res.expandToIncludeRect(helpers.Rect(N*tx, N*ty, N, N))
     return res
 
+class SurfaceSnapshot:
+    pass
+
 class Surface(mypaintlib.TiledSurface):
     # the C++ half of this class is in tiledsurface.hpp
     def __init__(self):
@@ -115,13 +118,15 @@ class Surface(mypaintlib.TiledSurface):
             dst[:,:,:] = src[:,:,:] + ((one_minus_srcAlpha * dst[:,:,:]) >> 15).astype('uint16')
 
     def save_snapshot(self):
+        sshot = SurfaceSnapshot()
         for t in self.tiledict.itervalues():
             t.readonly = True
-        return self.tiledict.copy()
+        sshot.tiledict = self.tiledict.copy()
+        return sshot
 
-    def load_snapshot(self, data):
+    def load_snapshot(self, sshot):
         old = set(self.tiledict.items())
-        self.tiledict = data.copy()
+        self.tiledict = sshot.tiledict.copy()
         new = set(self.tiledict.items())
         dirty = old.symmetric_difference(new)
         bbox = get_tiles_bbox([pos for (pos, tile) in dirty])
