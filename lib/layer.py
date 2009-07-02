@@ -13,48 +13,28 @@ import tiledsurface
 N = tiledsurface.N
 
 class Layer:
-    # A layer contains a list of strokes, and possibly a background
-    # pixmap. There is also a surface with those strokes rendered.
-    #
-    # Some history from the time when each snapshot required a
-    # larger-than-screen pixbuf: The undo system used to work by
-    # finding the closest snapshot (there were only two or three of
-    # them) and rerendering the missing strokes. There used to be
-    # quite some generic code here for this. The last svn revision
-    # including this code was r242.
-    #
-    # Now the strokes are here just for possible future features, like
-    # "pick brush from stroke", or "repaint layer with different
-    # brush" for brush previews.
-    #
-    # The strokes don't take much memory compared to the snapshots
-    # IMO, but this should better be measured...
-
     def __init__(self):
         self.surface = tiledsurface.Surface()
         self.clear()
 
     def clear(self):
-        self.background = None
         self.strokes = [] # contains StrokeInfo instances (not stroke.Stroke)
         self.surface.clear()
 
     def load_from_pixbuf(self, pixbuf):
         self.strokes = []
-        self.background = pixbuf
         self.surface.load_from_data(pixbuf)
 
     def save_snapshot(self):
-        return (self.strokes[:], self.background, self.surface.save_snapshot())
+        return (self.strokes[:], self.surface.save_snapshot())
 
     def load_snapshot(self, data):
-        strokes, background, data = data
+        strokes, data = data
         self.strokes = strokes[:]
-        self.background = background
         self.surface.load_snapshot(data)
 
     def add_stroke(self, stroke, snapshot_before):
-        before = snapshot_before[2] # extract surface snapshot
+        before = snapshot_before[1] # extract surface snapshot
         after  = self.surface.save_snapshot()
         self.strokes.append(StrokeInfo(stroke, before, after))
 
@@ -63,8 +43,7 @@ class Layer:
         Merge this layer into dst, modifying only dst.
         """
         src = self
-        dst.background = None # hm... this breaks "full-rerender" capability, but should work fine... FIXME: redesign needed?
-        dst.strokes.extend(self.strokes) # TODO: test this codepath!
+        dst.strokes.extend(self.strokes)
         for tx, ty in src.surface.get_tiles():
             src.surface.composite_tile_over(dst.surface.get_tile_memory(tx, ty, readonly=False), tx, ty)
 
@@ -88,7 +67,7 @@ class StrokeInfo:
         changes = a_tiles.symmetric_difference(b_tiles)
         tiles_modified = set([pos for pos, data in changes])
 
-        # for each tile, calculate the exact difference and update our brushmap
+        # for each tile, calculate the exact difference
         self.strokemap = {}
         for tx, ty in tiles_modified:
             # get the pixel data to compare
