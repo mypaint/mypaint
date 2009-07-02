@@ -12,7 +12,7 @@
 
 class SCWSColorSelector {
 public:
-  static const int size = 240; // diameter of Swiss Cheese Wheel Color Selector(TM)
+  static const int size = 256; // diameter of Swiss Cheese Wheel Color Selector(TM)
   static const int center = (size/2); // radii/center coordinate of SCWCS
 
   /*
@@ -57,48 +57,42 @@ public:
     *v = brush_v;
     *a = 255.0f; // Alpha is always [0,255]
   
-    if( radi > 120.0f ) // Masked/Clipped/Tranparent area
+    if( radi <= 15.0f ) // center disk
       {
-        // transparent/cut away
-        *a = 0.0f;
-      }
-    else if( radi <= 27.0f ) // center disk
-      {
-        // exit by clicking
-        if (only_colors) *a = 0.0f;
-      }
-    else if( radi > 27.0f && radi <= 30.0f ) // white border
-      {
+        if( radi < 12.0f ) {
+          // exit by clicking
+          if (only_colors) *a = 0.0f;
+        }
         *h = *s = 0.0f;
         *v = 1.0f;
       }
-    else if( radi > 30.0f && radi <= 55.0f ) // Saturation
+    else if( radi > 15.0f && radi <= 47.0f ) // Saturation
       {
         *s = (theta/TWO_PI);
     
-        if( only_colors == false && floor(*s*255.0f) == floor(brush_s*255.0f) ) {
+        if( only_colors == false && floor(*s*200.0f) == floor(brush_s*200.0f) ) {
           // Draw marker
           *s = *v = 1.0f;
           *h = mark_h;
         }
     
       }
-    else if( radi > 55.0f && radi <= 85.0f ) // Value 
+    else if( radi > 47.0f && radi <= 81.0f ) // Value 
       {
         *v = (theta/TWO_PI);
     
-        if( only_colors == false && floor(*v*255.0f) == floor(brush_v*255.0f) ) {
+        if( only_colors == false && floor(*v*200.0f) == floor(brush_v*200.0f) ) {
           // Draw marker
           *s = *v = 1.0f;
           *h = mark_h;
         }
     
       }
-    else if( radi > 85.0f && radi <= 120.0f ) // Hue
+    else if( radi > 81.0f && radi <= 114.0f ) // Hue
       {
         *h = (theta*RAD_TO_ONE);
     
-        if( only_colors == false && floor(*h*360.0f) == floor(brush_h*360.0f) ) {
+        if( only_colors == false && floor(*h*200.0f) == floor(brush_h*200.0f) ) {
           // Draw marker
           *h = mark_h;
         }
@@ -107,6 +101,15 @@ public:
           // Picking a new hue resets Saturation and Value
           *s = *v = 1.0f;
         }
+      }
+    else if( radi > 114.0f && radi <= 128.0f ) // outermost border ring
+      {
+        // nothing, leave selected color
+      }
+    else if( radi > 128.0f ) // Masked/Clipped/Tranparent area
+      {
+        // transparent/cut away
+        *a = 0.0f;
       }
   }
 
