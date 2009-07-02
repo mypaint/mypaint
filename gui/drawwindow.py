@@ -581,8 +581,10 @@ class Window(gtk.Window):
         for idx, layer in reversed(list(enumerate(self.doc.layers))):
             alpha = layer.surface.get_alpha (x, y, 5)
             if alpha > 0.1:
+                old_layer = self.doc.layer
                 self.doc.select_layer(idx)
-                self.layerblink_state.activate(action)
+                if self.doc.layer != old_layer:
+                    self.layerblink_state.activate(action)
 
                 # find the most recent (last) stroke that touches our picking point
                 brush = self.doc.layer.get_brush_at(x, y)
