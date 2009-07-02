@@ -7,7 +7,7 @@
 # (at your option) any later version.
 
 from numpy import *
-import time
+import time, zlib
 
 import tiledsurface
 N = tiledsurface.N
@@ -89,11 +89,21 @@ class StrokeInfo:
             is_different = absdiff > threshold
             # except if there is no previous stroke below it
             is_different |= (absdiff > 0) #& (brushmap_data == 0) --- FIXME: not possible any more
-            self.strokemap[tx, ty] = is_different
+            strokemap_data = is_different.astype('uint8')
 
-        print 'brushmap update took %.3f seconds' % (time.time() - t0)
+            # keep memory usage reasonable (data is highly redundant)
+            before = len(strokemap_data.tostring())
+            strokemap_data = zlib.compress(strokemap_data.tostring())
+            after = len(strokemap_data)
+
+            self.strokemap[tx, ty] = strokemap_data
+
+        size = sum([len(data) for data in self.strokemap.itervalues()])
+        print 'strokeinfo: took %.3f seconds, consuming %d bytes of memory' % (time.time() - t0, size)
 
     def touches_pixel(self, x, y):
-        tile = self.strokemap.get((x/N, y/N))
-        if tile is not None:
-            return tile[y%N, x%N]
+        data = self.strokemap.get((x/N, y/N))
+        if data:
+            data = fromstring(zlib.decompress(data), dtype='uint8')
+            data.shape = (N, N)
+            return data[y%N, x%N]
