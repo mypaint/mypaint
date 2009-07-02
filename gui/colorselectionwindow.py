@@ -168,7 +168,10 @@ class ColorSelectorPopup(gtk.Window):
         
     def pick_color(self,x,y):
         hsv = self.backend.pick_color_at(x, y)
-        self.app.brush.set_color_hsv(hsv)
+        if hsv:
+            self.app.brush.set_color_hsv(hsv)
+        else:
+            self.hide()
     
     def motion_notify_cb(self, widget, event):
         self.mouse_pos = event.x, event.y
@@ -197,5 +200,5 @@ class ColorChangerPopup(ColorSelectorPopup):
 class ColorRingPopup(ColorSelectorPopup):
     backend_class = mypaintlib.SCWSColorSelector 
     closes_on_picking = False
-    outside_popup_timeout = 0.200
+    outside_popup_timeout = 0.150
 

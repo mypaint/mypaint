@@ -57,12 +57,22 @@ public:
     *v = brush_v;
     *a = 255.0f; // Alpha is always [0,255]
   
-    if( radi < 43.0f || radi > 120.0f ) // Masked/Clipped/Tranparent area
+    if( radi > 120.0f ) // Masked/Clipped/Tranparent area
       {
         // transparent/cut away
         *a = 0.0f;
       }
-    else if( radi > 50.0f && radi <= 65.0f ) // Saturation
+    else if( radi <= 27.0f ) // center disk
+      {
+        // exit by clicking
+        if (only_colors) *a = 0.0f;
+      }
+    else if( radi > 27.0f && radi <= 30.0f ) // white border
+      {
+        *h = *s = 0.0f;
+        *v = 1.0f;
+      }
+    else if( radi > 30.0f && radi <= 55.0f ) // Saturation
       {
         *s = (theta/TWO_PI);
     
@@ -73,7 +83,7 @@ public:
         }
     
       }
-    else if( radi > 65.0f && radi <= 90.0f ) // Value 
+    else if( radi > 55.0f && radi <= 85.0f ) // Value 
       {
         *v = (theta/TWO_PI);
     
@@ -84,7 +94,7 @@ public:
         }
     
       }
-    else if( radi > 90.0f && radi <= 120.0f ) // Hue
+    else if( radi > 85.0f && radi <= 120.0f ) // Hue
       {
         *h = (theta*RAD_TO_ONE);
     
@@ -104,6 +114,9 @@ public:
   {
     float h,s,v,a;
     get_hsva_at(&h, &s, &v, &a, x, y);
+    if (a == 0) {
+      Py_RETURN_NONE;
+    }
     return Py_BuildValue("fff",h,s,v);
   }
 
