@@ -7,7 +7,7 @@
 # (at your option) any later version.
 
 from numpy import *
-import time, zlib
+import time, zlib, gobject
 
 import tiledsurface
 N = tiledsurface.N
@@ -56,6 +56,7 @@ class Layer:
 
 
 class StrokeInfo:
+    processing_queue = [] # global (static) list
     def __init__(self, stroke, snapshot_before, snapshot_after):
         self.brush = stroke.brush_settings
         t0 = time.time()
@@ -67,41 +68,68 @@ class StrokeInfo:
         changes = a_tiles.symmetric_difference(b_tiles)
         tiles_modified = set([pos for pos, data in changes])
 
-        # for each tile, calculate the exact difference
+        # for each tile, calculate the exact difference (not now, later)
         self.strokemap = {}
+        queue = []
         for tx, ty in tiles_modified:
-            # get the pixel data to compare
-            a_data = a.get((tx, ty), tiledsurface.transparent_tile).rgba
-            b_data = b.get((tx, ty), tiledsurface.transparent_tile).rgba
+            def work(tx=tx, ty=ty):
+                # get the pixel data to compare
+                a_data = a.get((tx, ty), tiledsurface.transparent_tile).rgba
+                b_data = b.get((tx, ty), tiledsurface.transparent_tile).rgba
 
-            # calculate the "perceptual" amount of difference
-            absdiff = zeros((N, N), 'uint32')
-            for i in range(4): # RGBA
-                absdiff += abs(a_data[:,:,i].astype('uint32') - b_data[:,:,i])
-            # ignore badly visible (parts of) strokes, eg. very faint strokes
-            #
-            # This is an arbitrary threshold. If it is too high, an
-            # ink stroke with slightly different color than the one
-            # below will not be pickable.  If it is too high, barely
-            # visible strokes will make things below unpickable.
-            #
-            threshold = (1<<15)*4 / 16 # require 1/16 of the max difference (also not bad: 1/8)
-            is_different = absdiff > threshold
-            # except if there is no previous stroke below it
-            is_different |= (absdiff > 0) #& (brushmap_data == 0) --- FIXME: not possible any more
-            strokemap_data = is_different.astype('uint8')
+                # calculate the "perceptual" amount of difference
+                absdiff = zeros((N, N), 'uint32')
+                for i in range(4): # RGBA
+                    absdiff += abs(a_data[:,:,i].astype('uint32') - b_data[:,:,i])
+                # ignore badly visible (parts of) strokes, eg. very faint strokes
+                #
+                # This is an arbitrary threshold. If it is too high, an
+                # ink stroke with slightly different color than the one
+                # below will not be pickable.  If it is too high, barely
+                # visible strokes will make things below unpickable.
+                #
+                threshold = (1<<15)*4 / 16 # require 1/16 of the max difference (also not bad: 1/8)
+                is_different = absdiff > threshold
+                # except if there is no previous stroke below it
+                is_different |= (absdiff > 0) #& (brushmap_data == 0) --- FIXME: not possible any more
+                strokemap_data = is_different.astype('uint8')
 
-            # keep memory usage reasonable (data is highly redundant)
-            before = len(strokemap_data.tostring())
-            strokemap_data = zlib.compress(strokemap_data.tostring())
-            after = len(strokemap_data)
+                # keep memory usage reasonable (data is highly redundant)
+                before = len(strokemap_data.tostring())
+                strokemap_data = zlib.compress(strokemap_data.tostring())
+                after = len(strokemap_data)
 
-            self.strokemap[tx, ty] = strokemap_data
+                self.strokemap[tx, ty] = strokemap_data
 
-        size = sum([len(data) for data in self.strokemap.itervalues()])
-        print 'strokeinfo: took %.3f seconds, consuming %d bytes of memory' % (time.time() - t0, size)
+            queue.append(work)
+        self.processing_queue.append(queue)
+
+        gobject.idle_add(self.idle_cb)
+
+        # make sure we never lag too much behind with processing
+        # (otherwise we waste way too much memory)
+        self.process_pending_strokes(max_pending_strokes=6)
+
+    def process_one_item(self):
+        items = self.processing_queue[0]
+        if items:
+            func = items.pop(0)
+            func()
+        else:
+            self.processing_queue.pop(0)
+        
+    def process_pending_strokes(self, max_pending_strokes=0):
+        while len(self.processing_queue) > max_pending_strokes:
+            self.process_one_item()
+
+    def idle_cb(self):
+        if not self.processing_queue:
+            return False
+        self.process_one_item()
+        return True
 
     def touches_pixel(self, x, y):
+        self.process_pending_strokes()
         data = self.strokemap.get((x/N, y/N))
         if data:
             data = fromstring(zlib.decompress(data), dtype='uint8')
