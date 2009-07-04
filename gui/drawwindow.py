@@ -94,7 +94,7 @@ class Window(gtk.Window):
     filename = property(get_filename, set_filename)
 
     def create_ui(self):
-        ag = gtk.ActionGroup('WindowActions')
+        ag = self.action_group = gtk.ActionGroup('WindowActions')
         # FIXME: this xml menu only creates unneeded information duplication, I think.
 		# FIXME: better just use glade...
         ui_string = """<ui>
@@ -298,7 +298,7 @@ class Window(gtk.Window):
 
             ('ViewMenu', None, 'View'),
             ('Fullscreen',   None, 'Fullscreen', 'F11', None, self.fullscreen_cb),
-            ('ResetView',   None, 'Reset Zoom and Rotation', None, None, self.reset_view_cb),
+            ('ResetView',   None, 'Reset (Zoom, Rotation, Mirror)', None, None, self.reset_view_cb),
             ('ZoomOut',      None, 'Zoom Out (at cursor)', 'comma', None, self.zoom_cb),
             ('ZoomIn',       None, 'Zoom In', 'period', None, self.zoom_cb),
             ('RotateLeft',   None, 'Rotate Counterclockwise', None, None, self.rotate_cb),
@@ -1064,6 +1064,9 @@ class Window(gtk.Window):
         self.tdw.set_rotation(0.0)
         self.zoomlevel = self.zoomlevel_values.index(1.0)
         self.tdw.set_zoom(1.0)
+        self.tdw.set_zoom(1.0)
+        self.tdw.set_flipped(False)
+        self.action_group.get_action('Flip').set_active(False)
 
     def fullscreen_cb(self, *trash):
         # note: there is some ugly flickering when toggling fullscreen
