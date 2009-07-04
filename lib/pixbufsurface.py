@@ -83,9 +83,10 @@ class Surface:
     def get_tile_memory(self, tx, ty):
         return self.tile_memory_dict[(tx, ty)]
 
-    def fill(self, data):
-        for dst in self.tile_memory_dict.itervalues():
-            dst[:,:,:] = data
+    def fill(self, background):
+        # currently, the only data we can get is a backgrounsurface...
+        for (tx, ty), dst in self.tile_memory_dict.iteritems():
+            background.blit_tile_into(dst, tx, ty)
 
     def blit_tile_into(self, dst, tx, ty):
         # (used mainly for loading transparent PNGs)

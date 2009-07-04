@@ -25,14 +25,14 @@ A document:
 - must be altered via undo/redo commands (except painting)
 """
 
-import mypaintlib, helpers, tiledsurface, pixbufsurface
-import command, stroke, layer
-import brush # FIXME: the brush module depends on gtk and everything, but we only need brush_lowlevel
 import gzip, os, zipfile, tempfile, numpy, time
 join = os.path.join
 import xml.etree.ElementTree as ET
 from gtk import gdk
 
+import mypaintlib, helpers, tiledsurface, pixbufsurface, backgroundsurface
+import command, stroke, layer
+import brush # FIXME: the brush module depends on gtk and everything, but we only need brush_lowlevel
 N = tiledsurface.N
 
 class SaveLoadError(Exception):
@@ -164,16 +164,13 @@ class Document():
             res.expandToIncludeRect(bbox)
         return res
 
-    def blit_tile_into(self, dst, tx, ty, layers=None, background_memory=None):
+    def blit_tile_into(self, dst, tx, ty, layers=None, background=None):
         if layers is None:
             layers = self.layers
-        if background_memory is None:
-            background_memory = self.background_memory
+        if background is None:
+            background = self.background
 
-        # render solid or tiled background
-        #dst[:] = background_memory # 13 times slower than below, with some bursts having the same speed as below (huh?)
-        # note: optimization for solid colors is not worth it any more now, even if it gives 2x speedup (at best)
-        mypaintlib.tile_blit_rgb8_into_rgb8(background_memory, dst)
+        background.blit_tile_into(dst, tx, ty)
 
         for layer in layers:
             surface = layer.surface
@@ -195,21 +192,10 @@ class Document():
     def set_background(self, obj):
         # This is not an undoable action. One reason is that dragging
         # on the color chooser would get tons of undo steps.
-        try:
-            obj = helpers.gdkpixbuf2numpy(obj)
-        except:
-            # it was already an array
-            pass
-        if len(obj) > 3:
-            # simplify single-color pixmaps
-            color = obj[0,0,:]
-            if (obj == color).all():
-                obj = tuple(color)
-        self.background = obj
 
-        # optimization
-        self.background_memory = numpy.zeros((N, N, 3), dtype='uint8')
-        self.background_memory[:,:,:] = self.background
+        if not isinstance(obj, backgroundsurface.Background):
+            obj = backgroundsurface.Background(obj)
+        self.background = obj
 
         self.invalidate_all()
 
@@ -330,7 +316,7 @@ class Document():
             add_layer(x-x0, y-y0, pixbuf, 'data/layer%03d.png' % idx)
 
         # save background as layer (solid color or tiled)
-        s = pixbufsurface.Surface(0, 0, w0, h0)
+        s = pixbufsurface.Surface(x0, y0, w0, h0)
         s.fill(self.background)
         add_layer(0, 0, s.pixbuf, 'data/background.png')
 

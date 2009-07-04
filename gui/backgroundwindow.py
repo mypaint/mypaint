@@ -9,7 +9,8 @@
 import gtk, os
 gdk = gtk.gdk
 import tileddrawwidget, pixbuflist
-from lib import tiledsurface, document
+from lib import tiledsurface, document, helpers
+N = tiledsurface.N
 
 class Window(gtk.Window):
     def __init__(self, app):
@@ -121,9 +122,8 @@ class BackgroundList(pixbuflist.PixbufList):
                 error('The background %s was ignored because it has an alpha channel. Please remove it.' % filename)
                 continue
             w, h = pixbuf.get_width(), pixbuf.get_height()
-            N = tiledsurface.N
-            if w != N or h != N:
-                error('The background %s was ignored because it has the wrong size. Only %dx%d is supported.' % (filename, N, N))
+            if w % N != 0 or h % N != 0 or w == 0 or h == 0:
+                error('The background %s was ignored because it has the wrong size. Only (N*%d)x(M*%d) is supported.' % (filename, N, N))
                 continue
 
             if os.path.basename(filename).lower() == 'default.png':
@@ -132,8 +132,20 @@ class BackgroundList(pixbuflist.PixbufList):
 
             self.backgrounds.append(pixbuf)
 
-        pixbuflist.PixbufList.__init__(self, self.backgrounds, tiledsurface.N, tiledsurface.N)
+        pixbuflist.PixbufList.__init__(self, self.backgrounds, N, N, self.pixbuf_scaler)
         self.dragging_allowed = False
+
+        self.pixbufs_scaled = {}
+
+    def pixbuf_scaler(self, pixbuf):
+        w, h = pixbuf.get_width(), pixbuf.get_height()
+        if w == N and h == N:
+            return pixbuf
+        if pixbuf not in self.pixbufs_scaled:
+            scaled = helpers.pixbuf_thumbnail(pixbuf, N, N)
+            self.pixbufs_scaled[pixbuf] = scaled
+
+        return self.pixbufs_scaled[pixbuf]
 
     def on_select(self, pixbuf):
         self.win.set_background(pixbuf)

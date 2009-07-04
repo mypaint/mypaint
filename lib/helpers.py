@@ -8,7 +8,10 @@
 
 from math import floor, ceil
 import colorsys
+
+from gtk import gdk # for gdk_pixbuf stuff
 import mypaintlib
+
 
 class Rect:
     def __init__(self, x=0, y=0, w=0, h=0):
@@ -91,6 +94,29 @@ def gdkpixbuf2numpy(pixbuf):
     # (see gdkpixbuf2numpy.hpp)
     arr = pixbuf.get_pixels_array()
     return mypaintlib.gdkpixbuf_numeric2numpy(arr)
+
+def pixbuf_thumbnail(src, w, h):
+    """
+    Creates a centered thumbnail of a gdk.pixbuf.
+    """
+    src_w = src.get_width()
+    src_h = src.get_height()
+
+    w2, h2 = src_w, src_h
+    if w2 > w:
+        w2 = w
+        h2 = h2*w/src_w
+    if h2 > h:
+        w2 = w2*h/src_h
+        h2 = h
+    assert w2 <= w and h2 <= h
+    src2 = src.scale_simple(w2, h2, gdk.INTERP_BILINEAR)
+    
+    dst = gdk.Pixbuf(gdk.COLORSPACE_RGB, False, 8, w, h)
+    dst.fill(0xffffffff) # white background
+
+    src2.copy_area(0, 0, w2, h2, dst, (w-w2)/2, (h-h2)/2)
+    return dst
 
 def rgb_to_hsv(r, g, b):
     r = clamp(r, 0.0, 1.0)

@@ -21,22 +21,6 @@ thumb_h = 64
 
 current_brushfile_version = 2
 
-def pixbuf_scale_nostretch_centered(src, dst):
-    scale_x = float(dst.get_width()) / src.get_width()
-    scale_y = float(dst.get_height()) / src.get_height()
-    offset_x = 0
-    offset_y = 0
-    if scale_x > scale_y: 
-        scale = scale_y
-        offset_x = (dst.get_width() - src.get_width() * scale) / 2
-    else:
-        scale = scale_x
-        offset_y = (dst.get_height() - src.get_height() * scale) / 2
-
-    src.scale(dst, 0, 0, dst.get_width(), dst.get_height(),
-              offset_x, offset_y, scale, scale,
-              gtk.gdk.INTERP_BILINEAR)
-
 # points = [(x1, y1), (x2, y2), ...] (at least two points, or None)
 class Setting:
     "a specific setting for a specific brush"
@@ -379,7 +363,6 @@ class Brush(Brush_Lowlevel):
 
     def update_preview(self, pixbuf):
         self.preview = pixbuf
-        self.preview_thumb = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, False, 8, thumb_w, thumb_h)
-        pixbuf_scale_nostretch_centered(src=pixbuf, dst=self.preview_thumb)
+        self.preview_thumb = helpers.pixbuf_thumbnail(pixbuf, thumb_w, thumb_h)
         self.preview_changed = True
 
