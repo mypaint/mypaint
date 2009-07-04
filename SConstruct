@@ -83,6 +83,7 @@ def install(dst, pattern):
 install('bin', 'mypaint')
 install('share/mypaint/brushes', 'brushes/*')
 install('share/mypaint/backgrounds', 'backgrounds/*')
+install('share/mypaint/pixmaps', 'pixmaps/*')
 
 #install('share/mypaint/desktop', 'desktop/*')
 # scons could recurse with Glob(), but it adds .svn directories when doing so

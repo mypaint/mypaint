@@ -143,6 +143,9 @@ class BackgroundList(pixbuflist.PixbufList):
             return pixbuf
         if pixbuf not in self.pixbufs_scaled:
             scaled = helpers.pixbuf_thumbnail(pixbuf, N, N)
+            # add plus sign
+            self.app.pixmaps.plus.composite(scaled, 0, 0, N, N, 0, 0, 1.0, 1.0, gdk.INTERP_BILINEAR, 255)
+
             self.pixbufs_scaled[pixbuf] = scaled
 
         return self.pixbufs_scaled[pixbuf]

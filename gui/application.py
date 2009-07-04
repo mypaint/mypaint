@@ -24,6 +24,8 @@ class Application: # singleton
         gtk.window_set_default_icon_list(*icons)
         gdk.set_program_class('MyPaint')
 
+        self.pixmaps = PixbufDirectory(os.path.join(self.datapath, 'pixmaps'))
+
         self.user_brushpath = os.path.join(self.confpath, 'brushes')
         self.stock_brushpath = os.path.join(self.datapath, 'brushes')
 
@@ -191,3 +193,14 @@ class Application: # singleton
         if name in 'drawWindow brushSelectionWindow colorSelectionWindow'.split():
             window.show_all()
 
+
+class PixbufDirectory:
+    def __init__(self, dirname):
+        self.dirname = dirname
+        self.cache = {}
+
+    def __getattr__(self, name):
+        if name not in self.cache:
+            pixbuf = gdk.pixbuf_new_from_file(os.path.join(self.dirname, name + '.png'))
+            self.cache[name] = pixbuf
+        return self.cache[name]
