@@ -174,7 +174,7 @@ class Document():
 
         for layer in layers:
             surface = layer.surface
-            surface.composite_tile_over(dst, tx, ty)
+            surface.composite_tile_over(dst, tx, ty, layer.opacity)
             
     def add_layer(self, insert_idx):
         self.do(command.AddLayer(self, insert_idx))
@@ -299,7 +299,7 @@ class Document():
             z.write(tmp, name)
             os.remove(tmp)
 
-        def add_layer(x, y, pixbuf, name):
+        def add_layer(x, y, opac, pixbuf, name):
             layer = ET.Element('layer')
             stack.append(layer)
             store_pixbuf(pixbuf, name)
@@ -307,18 +307,20 @@ class Document():
             a['src'] = name
             a['x'] = str(x)
             a['y'] = str(y)
+            a['opacity'] = str(opac)
 
         for idx, l in enumerate(reversed(self.layers)):
             if l.surface.is_empty():
                 continue
+            opac = l.opacity
             x, y, w, h = l.surface.get_bbox()
             pixbuf = l.surface.render_as_pixbuf()
-            add_layer(x-x0, y-y0, pixbuf, 'data/layer%03d.png' % idx)
+            add_layer(x-x0, y-y0, opac, pixbuf, 'data/layer%03d.png' % idx)
 
         # save background as layer (solid color or tiled)
         s = pixbufsurface.Surface(x0, y0, w0, h0)
         s.fill(self.background)
-        add_layer(0, 0, s.pixbuf, 'data/background.png')
+        add_layer(0, 0, 1.0, s.pixbuf, 'data/background.png')
 
         # preview
         t2 = time.time()
@@ -377,10 +379,12 @@ class Document():
 
             x = int(a.get('x', '0'))
             y = int(a.get('y', '0'))
+            opac = float(a.get('opacity', '1.0'))
             self.add_layer(insert_idx=0)
             last_pixbuf = pixbuf
             t1 = time.time()
             self.load_layer_from_pixbuf(pixbuf, x, y)
+            self.layers[0].opacity = helpers.clamp(opac, 0.0, 1.0)
             print '  %.3fs converting pixbuf to layer format' % (time.time() - t1)
 
         os.rmdir(tempdir)

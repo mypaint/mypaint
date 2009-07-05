@@ -195,6 +195,9 @@ class Window(gtk.Window):
               <menuitem action='LayerBG'/>
               <menuitem action='SoloLayer'/>
               <menuitem action='ToggleAbove'/>
+              <separator/>
+              <menuitem action='IncreaseLayerOpacity'/>
+              <menuitem action='DecreaseLayerOpacity'/>
             </menu>
             <menu action='DebugMenu'>
               <menuitem action='PrintInputs'/>
@@ -280,6 +283,8 @@ class Window(gtk.Window):
             ('RemoveLayer',  None, 'Remove', '<shift>Delete', None, self.remove_layer_cb),
             ('SoloLayer',    None, 'Toggle Solo Mode', 'Home', None, self.solo_layer_cb),
             ('ToggleAbove',  None, 'Toggle Layers Above Current', 'End', None, self.toggle_layers_above_cb), # TODO: make toggle action
+            ('IncreaseLayerOpacity', None, 'Increase Layer Opacity',  'p', None, self.layer_increase_opacity),
+            ('DecreaseLayerOpacity', None, 'Decrease Layer Opacity',  'o', None, self.layer_decrease_opacity),
 
             ('BrushSelectionWindow',  None, 'Brush List...', 'b', None, self.toggleWindow_cb),
             ('BrushSettingsWindow',   None, 'Brush Settings...', '<control>b', None, self.toggleWindow_cb),
@@ -568,6 +573,8 @@ class Window(gtk.Window):
     def pick_layer_cb(self, action):
         x, y = self.tdw.get_cursor_in_model_coordinates()
         for idx, layer in reversed(list(enumerate(self.doc.layers))):
+            if layer.opacity == 0.0:
+                continue
             alpha = layer.surface.get_alpha (x, y, 5)
             if alpha > 0.1:
                 self.doc.select_layer(idx)
@@ -722,6 +729,14 @@ class Window(gtk.Window):
         v -= 0.08
         if v < 0.0: v = 0.0
         self.app.brush.set_color_hsv((h, s, v))
+
+    def layer_increase_opacity(self, action):
+        self.doc.layer.opacity = helpers.clamp(self.doc.layer.opacity + 0.08, 0.0, 1.0)
+        self.tdw.queue_draw()
+
+    def layer_decrease_opacity(self, action):
+        self.doc.layer.opacity = helpers.clamp(self.doc.layer.opacity - 0.08, 0.0, 1.0)
+        self.tdw.queue_draw()
         
     def with_wait_cursor(func):
         """python decorator that adds a wait cursor around a function"""

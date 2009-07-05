@@ -15,6 +15,7 @@ N = tiledsurface.N
 class Layer:
     def __init__(self):
         self.surface = tiledsurface.Surface()
+        self.opacity = 1.0
         self.clear()
 
     def clear(self):
@@ -44,8 +45,12 @@ class Layer:
         """
         src = self
         dst.strokes.extend(self.strokes)
+        for tx, ty in dst.surface.get_tiles():
+            surf = dst.surface.get_tile_memory(tx, ty, readonly=False)
+            surf[:,:,:] = dst.opacity * surf[:,:,:]
         for tx, ty in src.surface.get_tiles():
-            src.surface.composite_tile_over(dst.surface.get_tile_memory(tx, ty, readonly=False), tx, ty)
+            src.surface.composite_tile_over(dst.surface.get_tile_memory(tx, ty, readonly=False), tx, ty, self.opacity)
+        dst.opacity = 1.0
 
     def get_brush_at(self, x, y):
         x, y = int(x), int(y)

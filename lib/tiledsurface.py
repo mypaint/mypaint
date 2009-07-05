@@ -100,7 +100,7 @@ class Surface(mypaintlib.TiledSurface):
         tmp = self.get_tile_memory(tx, ty, readonly=True)
         return mypaintlib.tile_convert_rgba16_to_rgba8(tmp, dst)
 
-    def composite_tile_over(self, dst, tx, ty):
+    def composite_tile_over(self, dst, tx, ty, opac):
         """
         composite one tile of this surface over the array dst, modifying only dst
         """
@@ -108,14 +108,14 @@ class Surface(mypaintlib.TiledSurface):
         if tile is None:
             return
         if dst.shape[2] == 3 and dst.dtype == 'uint8':
-            mypaintlib.tile_composite_rgba16_over_rgb8(tile.rgba, dst)
+            mypaintlib.tile_composite_rgba16_over_rgb8(tile.rgba, dst, opac)
         elif dst.shape[2] == 4 and dst.dtype == 'uint16':
             # rarely used (only for merging layers)
             # src (premultiplied) OVER dst (premultiplied)
             # dstColor = srcColor + (1.0 - srcAlpha) * dstColor
             src = tile.rgba
-            one_minus_srcAlpha = (1<<15) - src[:,:,3:4].astype('uint32')
-            dst[:,:,:] = src[:,:,:] + ((one_minus_srcAlpha * dst[:,:,:]) >> 15).astype('uint16')
+            one_minus_srcAlpha = (1<<15) - (opac * src[:,:,3:4]).astype('uint32')
+            dst[:,:,:] = opac * src[:,:,:] + ((one_minus_srcAlpha * dst[:,:,:]) >> 15).astype('uint16')
 
     def save_snapshot(self):
         sshot = SurfaceSnapshot()
