@@ -276,9 +276,9 @@ class TiledDrawWidget(gtk.DrawingArea):
                     
         tiles = surface.get_tiles()
 
-        background_memory = None
+        background = None
         if self.current_layer_solo:
-            background_memory = self.neutral_background_pixbuf
+            background = self.neutral_background_pixbuf
             layers = [self.doc.layer]
             # this is for hiding instead
             #layers.pop(self.doc.layer_idx)
@@ -304,7 +304,7 @@ class TiledDrawWidget(gtk.DrawingArea):
 
 
             dst = surface.get_tile_memory(tx, ty)
-            self.doc.blit_tile_into(dst, tx, ty, layers, background_memory)
+            self.doc.blit_tile_into(dst, tx, ty, layers, background)
 
         if translation_only:
             # not sure why, but using gdk directly is notably faster than the same via cairo

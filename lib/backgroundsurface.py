@@ -42,7 +42,7 @@ class Background:
     def blit_tile_into(self, dst, tx, ty):
         rgb = self.tiles[tx%self.tw, ty%self.th]
         # render solid or tiled background
-        #dst[:] = background_memory # 13 times slower than below, with some bursts having the same speed as below (huh?)
+        #dst[:] = rgb # 13 times slower than below, with some bursts having the same speed as below (huh?)
         # note: optimization for solid colors is not worth it any more now, even if it gives 2x speedup (at best)
         mypaintlib.tile_blit_rgb8_into_rgb8(rgb, dst)
 

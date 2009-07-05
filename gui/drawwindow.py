@@ -25,7 +25,7 @@ from gtk import gdk, keysyms
 
 import tileddrawwidget, colorselectionwindow, historypopup, \
        stategroup, keyboard, colorpicker
-from lib import document, helpers, tiledsurface
+from lib import document, helpers, tiledsurface, backgroundsurface
 
 class Window(gtk.Window):
     def __init__(self, app):
@@ -57,7 +57,7 @@ class Window(gtk.Window):
         # FIXME: hack, to be removed
         filename = os.path.join(self.app.datapath, 'backgrounds', '03_check1.png')
         pixbuf = gdk.pixbuf_new_from_file(filename)
-        self.tdw.neutral_background_pixbuf = helpers.gdkpixbuf2numpy(pixbuf)
+        self.tdw.neutral_background_pixbuf = backgroundsurface.Background(helpers.gdkpixbuf2numpy(pixbuf))
 
         self.zoomlevel_values = [2.0/11, 0.25, 1.0/3, 0.50, 2.0/3, 1.0, 1.5, 2.0, 3.0, 4.0, 5.5, 8.0]
         self.zoomlevel = self.zoomlevel_values.index(1.0)
