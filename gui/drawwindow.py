@@ -373,6 +373,21 @@ class Window(gtk.Window):
         hist.autoleave_timeout = 0.600
         self.history_popup_state = hist
 
+    def with_wait_cursor(func):
+        """python decorator that adds a wait cursor around a function"""
+        def wrapper(self, *args, **kwargs):
+            self.window.set_cursor(gdk.Cursor(gdk.WATCH))
+            self.tdw.window.set_cursor(None)
+            # make sure it is actually changed before we return
+            while gtk.events_pending():
+                gtk.main_iteration(False)
+            try:
+                func(self, *args, **kwargs)
+            finally:
+                self.window.set_cursor(None)
+                self.tdw.update_cursor(force=True)
+        return wrapper
+
     def toggleWindow_cb(self, action):
         s = action.get_name()
         s = s[0].lower() + s[1:]
@@ -571,9 +586,7 @@ class Window(gtk.Window):
     def pick_layer_cb(self, action):
         x, y = self.tdw.get_cursor_in_model_coordinates()
         for idx, layer in reversed(list(enumerate(self.doc.layers))):
-            if layer.opacity == 0.0:
-                continue
-            alpha = layer.surface.get_alpha (x, y, 5)
+            alpha = layer.surface.get_alpha (x, y, 5) * layer.opacity
             if alpha > 0.1:
                 self.doc.select_layer(idx)
                 self.layerblink_state.activate(action)
@@ -584,7 +597,7 @@ class Window(gtk.Window):
     def pick_context_cb(self, action):
         x, y = self.tdw.get_cursor_in_model_coordinates()
         for idx, layer in reversed(list(enumerate(self.doc.layers))):
-            alpha = layer.surface.get_alpha (x, y, 5)
+            alpha = layer.surface.get_alpha (x, y, 5) * layer.opacity
             if alpha > 0.1:
                 old_layer = self.doc.layer
                 self.doc.select_layer(idx)
@@ -640,6 +653,7 @@ class Window(gtk.Window):
         self.doc.add_layer(insert_idx)
         self.layerblink_state.activate(action)
 
+    @with_wait_cursor
     def merge_layer_cb(self, action):
         dst_idx = self.doc.layer_idx - 1
         if dst_idx < 0:
@@ -736,21 +750,6 @@ class Window(gtk.Window):
         self.doc.layer.opacity = helpers.clamp(self.doc.layer.opacity - 0.08, 0.0, 1.0)
         self.tdw.queue_draw()
         
-    def with_wait_cursor(func):
-        """python decorator that adds a wait cursor around a function"""
-        def wrapper(self, *args, **kwargs):
-            self.window.set_cursor(gdk.Cursor(gdk.WATCH))
-            self.tdw.window.set_cursor(None)
-            # make sure it is actually changed before we return
-            while gtk.events_pending():
-                gtk.main_iteration(False)
-            try:
-                func(self, *args, **kwargs)
-            finally:
-                self.window.set_cursor(None)
-                self.tdw.update_cursor(force=True)
-        return wrapper
-    
     @with_wait_cursor
     def open_file(self, filename):
         try:
