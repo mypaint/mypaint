@@ -118,7 +118,6 @@ class PixbufList(gtk.DrawingArea):
             self.dragging = True
             self.update()
 
-    #def size_request_cb(self, widget, size):
     def configure_event_cb(self, widget, size):
         if self.pixbuf and self.pixbuf.get_width() == size.width:
             if self.pixbuf.get_height() == size.height:
@@ -130,8 +129,6 @@ class PixbufList(gtk.DrawingArea):
         pixels = self.pixbuf.get_pixels()
         
         # cut to maximal size
-        e_x, e_y = event.area.x, event.area.y
-        e_w, e_h = event.area.width, event.area.height
         p_w, p_h = self.pixbuf.get_width(), self.pixbuf.get_height()
 
         widget.window.draw_rgb_image(

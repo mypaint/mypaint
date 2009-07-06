@@ -8,8 +8,8 @@
 
 import gtk, os
 gdk = gtk.gdk
-import tileddrawwidget, pixbuflist
-from lib import tiledsurface, document, helpers
+import pixbuflist
+from lib import tiledsurface, helpers
 N = tiledsurface.N
 
 class Window(gtk.Window):

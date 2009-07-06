@@ -93,7 +93,7 @@ class Surface:
         assert dst.dtype == 'uint16', '16 bit dst expected'
         src = self.tile_memory_dict[(tx, ty)]
         assert src.shape[2] == 4, 'alpha required'
-        mypaintlib.tile_convert_rgba8_to_rgba16(src, dst);
+        mypaintlib.tile_convert_rgba8_to_rgba16(src, dst)
 
 def render_as_pixbuf(surface, *rect, **kwargs):
     alpha = kwargs.get('alpha', False)

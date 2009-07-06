@@ -8,7 +8,7 @@
 
 "window to model a single brush property function"
 import gtk
-from lib import brush, brushsettings
+from lib import brushsettings
 
 class Window(gtk.Window):
     def __init__(self, app, setting, adj):
@@ -64,7 +64,7 @@ class Window(gtk.Window):
         self.set_default_size(450, 500)
 
     def set_fixed_value_clicked_cb(self, widget, adj, value):
-        adj.set_value(value);
+        adj.set_value(value)
 
     def brush_selected_cb(self, brush_selected):
         # update curves
@@ -167,7 +167,6 @@ class ByInputWidget(gtk.VBox):
 
         # 2. update the brush
         if scale_y:
-            allzero = True
             brush_points = [self.point_widget2real(p) for p in self.curve_widget.points]
             nonzero = [True for x, y in brush_points if y != 0]
             if not nonzero:
@@ -299,7 +298,7 @@ class CurveWidget(gtk.DrawingArea):
         self.connect("button-press-event", self.button_press_cb)
         self.connect("button-release-event", self.button_release_cb)
         self.connect("motion-notify-event", self.motion_notify_cb)
-	self.set_events(gtk.gdk.EXPOSURE_MASK |
+        self.set_events(gtk.gdk.EXPOSURE_MASK |
                         gtk.gdk.BUTTON_PRESS_MASK |
                         gtk.gdk.BUTTON_RELEASE_MASK |
                         gtk.gdk.POINTER_MOTION_MASK

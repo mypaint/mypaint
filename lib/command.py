@@ -6,7 +6,7 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-import layer, tiledsurface
+import layer
 
 class CommandStack:
     def __init__(self):

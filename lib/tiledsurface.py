@@ -15,7 +15,6 @@ import mypaintlib, helpers
 tilesize = N = mypaintlib.TILE_SIZE
 
 import pixbufsurface
-from gtk import gdk
 
 
 class Tile:
@@ -80,20 +79,6 @@ class Surface(mypaintlib.TiledSurface):
             self.tiledict[(tx, ty)] = t
         return t.rgba
         
-    def iter_tiles_memory(self, x, y, w, h, readonly):
-        for tx in xrange(x/N, (x+w-1)/N+1):
-            for ty in xrange(y/N, (y+h-1)/N+1):
-                # note, this is somewhat untested
-                x_start = max(0, x - tx*N)
-                y_start = max(0, y - ty*N)
-                x_end = min(N, x+w - tx*N)
-                y_end = min(N, y+h - ty*N)
-                #print xx*N, yy*N
-                #print x_start, y_start, x_end, y_end
-
-                rgba = self.get_tile_memory(tx, ty, readonly)
-                yield tx*N, ty*N, rgba[y_start:y_end,x_start:y_end]
-
     def blit_tile_into(self, dst, tx, ty):
         # used mainly for saving (transparent PNG)
         assert dst.shape[2] == 4

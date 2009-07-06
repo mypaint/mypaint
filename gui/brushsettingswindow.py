@@ -9,8 +9,8 @@
 "tune brush window"
 import gtk
 import functionwindow
-from lib import brush, brushsettings
-from lib import command, stroke
+from lib import brushsettings
+from lib import command
 
 class Window(gtk.Window):
     def __init__(self, app):
@@ -79,7 +79,7 @@ class Window(gtk.Window):
         self.relabel_buttons()
 
     def set_fixed_value_clicked_cb(self, widget, adj, value):
-        adj.set_value(value);
+        adj.set_value(value)
 
     def details_clicked_cb(self, window, adj, setting):
         # FIXME: should the old window get closed automatically?

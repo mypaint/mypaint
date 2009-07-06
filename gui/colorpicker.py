@@ -19,7 +19,7 @@ class ColorPicker(gtk.Window):
         self.app = app
         self.app.kbm.add_window(self)
 
-	self.set_events(gdk.BUTTON_PRESS_MASK |
+        self.set_events(gdk.BUTTON_PRESS_MASK |
                         gdk.BUTTON_RELEASE_MASK |
                         gdk.ENTER_NOTIFY |
                         gdk.LEAVE_NOTIFY
@@ -44,7 +44,6 @@ class ColorPicker(gtk.Window):
         if size < 6:
             size = 6
         self.app.colorSelectionWindow.pick_color_at_pointer(size)
-        self
 
     def enter(self):
         self.pick()
@@ -92,7 +91,6 @@ class ColorPicker(gtk.Window):
 
     def expose_cb(self, widget, event):
         cr = self.window.cairo_create()
-        aloc = self.get_allocation()
 
         #cr.set_source_rgb (1.0, 1.0, 1.0)
         cr.set_source_rgba (1.0, 1.0, 1.0, 0.0) # transparent

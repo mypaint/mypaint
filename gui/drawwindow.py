@@ -15,17 +15,16 @@ Painting is done in tileddrawwidget.py.
 
 MYPAINT_VERSION="0.7.0+git"
 
-import os, re, math, sys
+import os, re, math
 from time import time
 from glob import glob
-import traceback
 
 import gtk
 from gtk import gdk, keysyms
 
 import tileddrawwidget, colorselectionwindow, historypopup, \
        stategroup, keyboard, colorpicker
-from lib import document, helpers, tiledsurface, backgroundsurface
+from lib import document, helpers, backgroundsurface
 
 class Window(gtk.Window):
     def __init__(self, app):
@@ -478,7 +477,6 @@ class Window(gtk.Window):
 
     def key_press_event_cb_after(self, win, event):
         key = event.keyval
-        ctrl = event.state & gdk.CONTROL_MASK
         if self.fullscreen and key == keysyms.Escape: self.fullscreen_cb()
         else: return False
         return True
@@ -1093,11 +1091,11 @@ class Window(gtk.Window):
             self.geometry_before_fullscreen = (x, y, w, h)
             self.menubar.hide()
             self.window.fullscreen()
-            self.tdw.set_scroll_at_edges(True)
+            #self.tdw.set_scroll_at_edges(True)
         else:
             self.window.unfullscreen()
             self.menubar.show()
-            self.tdw.set_scroll_at_edges(False)
+            #self.tdw.set_scroll_at_edges(False)
             del self.geometry_before_fullscreen
 
     def context_cb(self, action):

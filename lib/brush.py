@@ -11,7 +11,7 @@
 # FIXME: should split brush_lowlevel into its own gtk-independent module
 import mypaintlib
 from brushlib import brushsettings
-import gtk, string, os
+import gtk, os
 import helpers
 
 preview_w = 128
@@ -355,7 +355,6 @@ class Brush(Brush_Lowlevel):
         if self.settings_mtime is None: return
         if self.preview_mtime is None: return
         if not self.name: return
-        prefix = self.get_fileprefix()
         if not self.has_changed_on_disk(): return False
         print 'Brush "' + self.name + '" has changed on disk, reloading it.'
         self.load(self.name)

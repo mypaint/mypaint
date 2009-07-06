@@ -171,10 +171,10 @@ if __name__ == '__main__':
     r2 = Rect( -40-1, -40+5, 5, 500 )
     assert not r1.overlaps(r2)
     assert not r2.overlaps(r1)
-    r1.y += 1;
+    r1.y += 1
     assert r1.overlaps(r2)
     assert r2.overlaps(r1)
-    r1.x += 999;
+    r1.x += 999
     assert not r1.overlaps(r2)
     assert not r2.overlaps(r1)
 

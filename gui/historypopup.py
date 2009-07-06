@@ -1,4 +1,11 @@
-import math
+# This file is part of MyPaint.
+# Copyright (C) 2009 by Martin Renold <martinxyz@gmx.ch>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+
 import gtk
 gdk = gtk.gdk
 
@@ -48,7 +55,7 @@ class HistoryPopup(gtk.Window):
         self.app = app
         self.app.kbm.add_window(self)
 
-	self.set_events(gdk.BUTTON_PRESS_MASK |
+        self.set_events(gdk.BUTTON_PRESS_MASK |
                         gdk.BUTTON_RELEASE_MASK |
                         gdk.ENTER_NOTIFY |
                         gdk.LEAVE_NOTIFY
@@ -112,10 +119,7 @@ class HistoryPopup(gtk.Window):
 
     def expose_cb(self, widget, event):
         cr = self.window.cairo_create()
-        aloc = self.get_allocation()
-        #pixbuf = gdk.Pixbuf(gdk.COLORSPACE_RGB, True, 8, size, size)
 
-        # fill it (TODO: transparency)
         cr.set_source_rgb(0.9, 0.9, 0.9)
         cr.paint()
 
@@ -144,9 +148,5 @@ class HistoryPopup(gtk.Window):
 
             if i != self.selection:
                 cr.scale(2.0, 2.0)
-
-        #pixmap, mask = pixbuf.render_pixmap_and_mask()
-        #self.image.set_from_pixmap(pixmap, mask)
-        #self.shape_combine_mask(mask,0,0)
 
         return True

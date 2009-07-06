@@ -7,7 +7,7 @@
 # (at your option) any later version.
 
 "select color window (GTK and an own window)"
-import gtk, gobject
+import gtk
 from lib import helpers, mypaintlib
 gdk = gtk.gdk
 
@@ -131,7 +131,7 @@ class ColorSelectorPopup(gtk.Window):
         self.image = image = gtk.Image()
         self.add(image)
         
-	self.set_events(gdk.BUTTON_PRESS_MASK |
+        self.set_events(gdk.BUTTON_PRESS_MASK |
                         gdk.BUTTON_RELEASE_MASK |
                         gtk.gdk.POINTER_MOTION_MASK |
                         gdk.ENTER_NOTIFY |

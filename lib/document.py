@@ -25,12 +25,12 @@ A document:
 - must be altered via undo/redo commands (except painting)
 """
 
-import gzip, os, zipfile, tempfile, numpy, time
+import os, zipfile, tempfile, time
 join = os.path.join
 import xml.etree.ElementTree as ET
 from gtk import gdk
 
-import mypaintlib, helpers, tiledsurface, pixbufsurface, backgroundsurface
+import helpers, tiledsurface, pixbufsurface, backgroundsurface
 import command, stroke, layer
 import brush # FIXME: the brush module depends on gtk and everything, but we only need brush_lowlevel
 N = tiledsurface.N

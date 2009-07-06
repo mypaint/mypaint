@@ -7,13 +7,12 @@
 # (at your option) any later version.
 
 from lib import helpers
-import gtk, gobject, numpy, cairo, os
+import gtk, cairo
 gdk = gtk.gdk
 from math import floor, ceil, pi
-import time
 
 import random
-from lib import mypaintlib, tiledsurface, pixbufsurface
+from lib import tiledsurface, pixbufsurface
 
 class TiledDrawWidget(gtk.DrawingArea):
     """
@@ -73,11 +72,11 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.zoom_max = 5.0
         self.zoom_min = 1/5.0
         
-        self.scroll_at_edges = False
+        #self.scroll_at_edges = False
         self.pressure_mapping = None
 
-    def set_scroll_at_edges(self, choice):
-      self.scroll_at_edges = choice
+    #def set_scroll_at_edges(self, choice):
+    #    self.scroll_at_edges = choice
       
     def enter_notify_cb(self, widget, event):
         self.has_pointer = True
@@ -97,8 +96,6 @@ class TiledDrawWidget(gtk.DrawingArea):
     def motion_notify_cb(self, widget, event):
         if self.last_event_time:
             dtime = (event.time - self.last_event_time)/1000.0
-            dx = event.x - self.last_event_x
-            dy = event.y - self.last_event_y
             dx_int = int(event.x) - int(self.last_event_x)
             dy_int = int(event.y) - int(self.last_event_y)
         else:
@@ -175,8 +172,6 @@ class TiledDrawWidget(gtk.DrawingArea):
         else:
             # create an expose event with the event bbox rotated/zoomed
             # OPTIMIZE: this is estimated to cause at least twice more rendering work than neccessary
-            x2 = x1 + w - 1
-            y2 = y1 + h - 1
             # transform 4 bbox corners to screen coordinates
             corners = [(x1, y1), (x1+w-1, y1), (x1, y1+h-1), (x1+w-1, y1+h-1)]
             corners = [cr.user_to_device(x, y) for (x, y) in corners]

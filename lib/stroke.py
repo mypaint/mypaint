@@ -6,9 +6,8 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-import helpers, brush
+import brush
 import numpy
-import random
 
 class Stroke:
     # A "finished" stroke object is immutable, except right after creation (when it has never been fully rendered).

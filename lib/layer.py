@@ -64,7 +64,6 @@ class StrokeInfo:
     processing_queue = [] # global (static) list
     def __init__(self, stroke, snapshot_before, snapshot_after):
         self.brush = stroke.brush_settings
-        t0 = time.time()
         # extract the layer from each snapshot
         a, b = snapshot_before.tiledict, snapshot_after.tiledict
         # enumerate all tiles that have changed
@@ -100,9 +99,7 @@ class StrokeInfo:
                 strokemap_data = is_different.astype('uint8')
 
                 # keep memory usage reasonable (data is highly redundant)
-                before = len(strokemap_data.tostring())
                 strokemap_data = zlib.compress(strokemap_data.tostring())
-                after = len(strokemap_data)
 
                 self.strokemap[tx, ty] = strokemap_data
 
