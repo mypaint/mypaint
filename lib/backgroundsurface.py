@@ -9,10 +9,10 @@
 import numpy
 
 import mypaintlib, helpers
-from tiledsurface import N
+from tiledsurface import N, MAX_MIPMAP_LEVEL
 
 class Background:
-    def __init__(self, obj):
+    def __init__(self, obj, mipmap_level=0):
         try:
             obj = helpers.gdkpixbuf2numpy(obj)
         except:
@@ -39,7 +39,18 @@ class Background:
                 tile[:,:,:] = obj[N*ty:N*(ty+1), N*tx:N*(tx+1), :]
                 self.tiles[tx, ty] = tile
         
-    def blit_tile_into(self, dst, tx, ty):
+        # generate mipmap
+        self.mipmap_level = mipmap_level
+        if mipmap_level < MAX_MIPMAP_LEVEL:
+            mipmap_obj = numpy.zeros((self.th*N, self.tw*N, 3), dtype='uint8')
+            for ty in range(self.th):
+                for tx in range(self.tw):
+                    mypaintlib.tile_downscale_rgb8(self.tiles[tx, ty], mipmap_obj, tx*N/2, ty*N/2, True)
+            self.mipmap = Background(mipmap_obj, mipmap_level+1)
+
+    def blit_tile_into(self, dst, tx, ty, mipmap_level=0):
+        if self.mipmap_level < mipmap_level:
+            return self.mipmap.blit_tile_into(dst, tx, ty, mipmap_level)
         rgb = self.tiles[tx%self.tw, ty%self.th]
         # render solid or tiled background
         #dst[:] = rgb # 13 times slower than below, with some bursts having the same speed as below (huh?)

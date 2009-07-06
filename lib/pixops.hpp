@@ -7,6 +7,76 @@
  * (at your option) any later version.
  */
 
+// downscale a tile to half its size using bilinear interpolation
+// used mainly for generating background mipmaps
+void tile_downscale_rgb8(PyObject *src, PyObject *dst, int dst_x, int dst_y, bool repeat) {
+  /* disabled as optimization
+  assert(PyArray_DIM(src, 0) == TILE_SIZE);
+  assert(PyArray_DIM(src, 1) == TILE_SIZE);
+  assert(PyArray_TYPE(src) == NPY_UINT8);
+  assert(PyArray_ISCARRAY(src));
+
+  assert(PyArray_TYPE(dst) == NPY_UINT8);
+  assert(PyArray_ISCARRAY(dst));
+  */
+
+  PyArrayObject* src_arr = ((PyArrayObject*)src);
+  PyArrayObject* dst_arr = ((PyArrayObject*)dst);
+
+  for (int y=0; y<TILE_SIZE/2; y++) {
+    uint8_t * src_p = (uint8_t*)(src_arr->data + (2*y)*src_arr->strides[0]);
+    uint8_t * dst_p = (uint8_t*)(dst_arr->data + (y+dst_y)*dst_arr->strides[0]);
+    dst_p += 3*dst_x;
+    for(int x=0; x<TILE_SIZE/2; x++) {
+      dst_p[0] = src_p[0]/4 + (src_p+3)[0]/4 + (src_p+3*TILE_SIZE)[0]/4 + (src_p+3*TILE_SIZE+3)[0]/4;
+      dst_p[1] = src_p[1]/4 + (src_p+3)[1]/4 + (src_p+3*TILE_SIZE)[1]/4 + (src_p+3*TILE_SIZE+3)[1]/4;
+      dst_p[2] = src_p[2]/4 + (src_p+3)[2]/4 + (src_p+3*TILE_SIZE)[2]/4 + (src_p+3*TILE_SIZE+3)[2]/4;
+      src_p += 6;
+      dst_p += 3;
+    }
+    if(repeat) {
+        uint8_t *p1 = (uint8_t*)(dst_arr->data + (y+dst_y)*dst_arr->strides[0] + 3*dst_x);
+        uint8_t *p2 = p1 + 3 * dst_arr->dimensions[1] / 2;
+        uint8_t *p3 = p1 + dst_arr->strides[0] * dst_arr->dimensions[0] / 2;
+        uint8_t *p4 = p3 + 3 * dst_arr->dimensions[1] / 2;
+        memcpy(p2, p1, 3*TILE_SIZE/2);
+        memcpy(p3, p1, 3*TILE_SIZE/2);
+        memcpy(p4, p1, 3*TILE_SIZE/2);
+    }
+  }
+}
+// downscale a tile to half its size using bilinear interpolation
+// used mainly for generating tiledsurface mipmaps
+void tile_downscale_rgba16(PyObject *src, PyObject *dst, int dst_x, int dst_y) {
+  /* disabled as optimization
+  assert(PyArray_DIM(src, 0) == TILE_SIZE);
+  assert(PyArray_DIM(src, 1) == TILE_SIZE);
+  assert(PyArray_TYPE(src) == NPY_UINT16);
+  assert(PyArray_ISCARRAY(src));
+
+  assert(PyArray_DIM(dst, 0) == TILE_SIZE);
+  assert(PyArray_DIM(dst, 1) == TILE_SIZE);
+  assert(PyArray_TYPE(dst) == NPY_UINT16);
+  assert(PyArray_ISCARRAY(dst));
+  */
+
+  PyArrayObject* src_arr = ((PyArrayObject*)src);
+  PyArrayObject* dst_arr = ((PyArrayObject*)dst);
+
+  for (int y=0; y<TILE_SIZE/2; y++) {
+    uint16_t * src_p = (uint16_t*)(src_arr->data + (2*y)*src_arr->strides[0]);
+    uint16_t * dst_p = (uint16_t*)(dst_arr->data + (y+dst_y)*dst_arr->strides[0]);
+    dst_p += 4*dst_x;
+    for(int x=0; x<TILE_SIZE/2; x++) {
+      dst_p[0] = src_p[0]/4 + (src_p+4)[0]/4 + (src_p+4*TILE_SIZE)[0]/4 + (src_p+4*TILE_SIZE+4)[0]/4;
+      dst_p[1] = src_p[1]/4 + (src_p+4)[1]/4 + (src_p+4*TILE_SIZE)[1]/4 + (src_p+4*TILE_SIZE+4)[1]/4;
+      dst_p[2] = src_p[2]/4 + (src_p+4)[2]/4 + (src_p+4*TILE_SIZE)[2]/4 + (src_p+4*TILE_SIZE+4)[2]/4;
+      dst_p[3] = src_p[3]/4 + (src_p+4)[3]/4 + (src_p+4*TILE_SIZE)[3]/4 + (src_p+4*TILE_SIZE+4)[3]/4;
+      src_p += 8;
+      dst_p += 4;
+    }
+  }
+}
 
 void tile_composite_rgba16_over_rgb8(PyObject * src, PyObject * dst, float alpha) {
   /* disabled as optimization

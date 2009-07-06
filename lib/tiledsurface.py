@@ -13,9 +13,9 @@ import time
 import mypaintlib, helpers
 
 tilesize = N = mypaintlib.TILE_SIZE
+MAX_MIPMAP_LEVEL = mypaintlib.MAX_MIPMAP_LEVEL
 
 import pixbufsurface
-
 
 class Tile:
     def __init__(self, copy_from=None):
@@ -27,6 +27,7 @@ class Tile:
         else:
             self.rgba = copy_from.rgba.copy()
         self.readonly = False
+        self.mipmap_dirty = False
 
     def copy(self):
         return Tile(copy_from=self)
@@ -44,10 +45,18 @@ class SurfaceSnapshot:
 
 class Surface(mypaintlib.TiledSurface):
     # the C++ half of this class is in tiledsurface.hpp
-    def __init__(self):
+    def __init__(self, mipmap_level=0):
         mypaintlib.TiledSurface.__init__(self, self)
         self.tiledict = {}
         self.observers = []
+
+        self.mipmap_level = mipmap_level
+        self.mipmap = None
+        self.parent = None
+
+        if mipmap_level < MAX_MIPMAP_LEVEL:
+            self.mipmap = Surface(mipmap_level+1)
+            self.mipmap.parent = self
 
     def notify_observers(self, *args):
         for f in self.observers:
@@ -57,6 +66,7 @@ class Surface(mypaintlib.TiledSurface):
         tiles = self.tiledict.keys()
         self.tiledict = {}
         self.notify_observers(*get_tiles_bbox(tiles))
+        if self.mipmap: self.mipmap.clear()
 
     def get_tile_memory(self, tx, ty, readonly):
         # copy-on-write for readonly tiles
@@ -71,34 +81,57 @@ class Surface(mypaintlib.TiledSurface):
             else:
                 t = Tile()
                 self.tiledict[(tx, ty)] = t
+        if t.mipmap_dirty:
+            # regenerate mipmap
+            if self.mipmap_level > 0:
+                for x in xrange(2):
+                    for y in xrange(2):
+                        src = self.parent.get_tile_memory(tx*2 + x, ty*2 + y, True)
+                        mypaintlib.tile_downscale_rgba16(src, t.rgba, x*N/2, y*N/2)
+            t.mipmap_dirty = False
         if t.readonly and not readonly:
             # OPTIMIZE: we could do the copying in save_snapshot() instead, this might reduce the latency while drawing
             #           (eg. tile.valid_copy = some_other_tile_instance; and valid_copy = None here)
             #           before doing this, measure the worst-case time of the call below; same thing with new tiles
             t = t.copy()
             self.tiledict[(tx, ty)] = t
+        if not readonly:
+            self.mark_mipmap_dirty(tx, ty, t)
         return t.rgba
         
+    def mark_mipmap_dirty(self, tx, ty, t=None):
+        if t is None:
+            t = self.tiledict.get((tx,ty))
+        if t is None:
+            t = Tile()
+            self.tiledict[(tx, ty)] = t
+        if not t.mipmap_dirty:
+            t.mipmap_dirty = True
+            if self.mipmap:
+                self.mipmap.mark_mipmap_dirty(tx/2, ty/2)
+
     def blit_tile_into(self, dst, tx, ty):
         # used mainly for saving (transparent PNG)
         assert dst.shape[2] == 4
         tmp = self.get_tile_memory(tx, ty, readonly=True)
         return mypaintlib.tile_convert_rgba16_to_rgba8(tmp, dst)
 
-    def composite_tile_over(self, dst, tx, ty, opac):
+    def composite_tile_over(self, dst, tx, ty, mipmap_level=0, opac=1.0):
         """
         composite one tile of this surface over the array dst, modifying only dst
         """
-        tile = self.tiledict.get((tx, ty))
-        if tile is None:
+
+        if self.mipmap_level < mipmap_level:
+            return self.mipmap.composite_tile_over(dst, tx, ty, mipmap_level, opac)
+        if not (tx,ty) in self.tiledict:
             return
+        src = self.get_tile_memory(tx, ty, True)
         if dst.shape[2] == 3 and dst.dtype == 'uint8':
-            mypaintlib.tile_composite_rgba16_over_rgb8(tile.rgba, dst, opac)
+            mypaintlib.tile_composite_rgba16_over_rgb8(src, dst, opac)
         elif dst.shape[2] == 4 and dst.dtype == 'uint16':
             # rarely used (only for merging layers)
             # src (premultiplied) OVER dst (premultiplied)
             # dstColor = srcColor + (1.0 - srcAlpha) * dstColor
-            src = tile.rgba
             one_minus_srcAlpha = (1<<15) - (opac * src[:,:,3:4]).astype('uint32')
             dst[:,:,:] = opac * src[:,:,:] + ((one_minus_srcAlpha * dst[:,:,:]) >> 15).astype('uint16')
 
@@ -114,6 +147,8 @@ class Surface(mypaintlib.TiledSurface):
         self.tiledict = sshot.tiledict.copy()
         new = set(self.tiledict.items())
         dirty = old.symmetric_difference(new)
+        for pos, tile in dirty:
+            self.mark_mipmap_dirty(*pos)
         bbox = get_tiles_bbox([pos for (pos, tile) in dirty])
         if not bbox.empty():
             self.notify_observers(*bbox)

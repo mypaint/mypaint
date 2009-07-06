@@ -168,17 +168,17 @@ class Document():
             res.expandToIncludeRect(bbox)
         return res
 
-    def blit_tile_into(self, dst, tx, ty, layers=None, background=None):
+    def blit_tile_into(self, dst, tx, ty, mipmap=1, layers=None, background=None):
         if layers is None:
             layers = self.layers
         if background is None:
             background = self.background
 
-        background.blit_tile_into(dst, tx, ty)
+        background.blit_tile_into(dst, tx, ty, mipmap)
 
         for layer in layers:
             surface = layer.surface
-            surface.composite_tile_over(dst, tx, ty, layer.opacity)
+            surface.composite_tile_over(dst, tx, ty, mipmap, layer.opacity)
             
     def add_layer(self, insert_idx):
         self.do(command.AddLayer(self, insert_idx))

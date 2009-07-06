@@ -8,7 +8,7 @@
 
 import gtk, cairo, random
 gdk = gtk.gdk
-from math import floor, ceil, pi
+from math import floor, ceil, pi, log
 
 from lib import helpers, tiledsurface, pixbufsurface
 import cursor
@@ -234,6 +234,11 @@ class TiledDrawWidget(gtk.DrawingArea):
         # bye bye device coordinates
         self.get_model_coordinates_cairo_context(cr)
 
+        # choose best mipmap
+        mipmap_level = max(0, int(ceil(log(1/self.scale,2))))
+        mipmap_level = min(mipmap_level, tiledsurface.MAX_MIPMAP_LEVEL)
+        cr.scale(2**mipmap_level, 2**mipmap_level)
+
         translation_only = self.is_translation_only()
 
         # calculate the final model bbox with all the clipping above
@@ -298,7 +303,7 @@ class TiledDrawWidget(gtk.DrawingArea):
 
 
             dst = surface.get_tile_memory(tx, ty)
-            self.doc.blit_tile_into(dst, tx, ty, layers, background)
+            self.doc.blit_tile_into(dst, tx, ty, mipmap_level, layers, background)
 
         if translation_only:
             # not sure why, but using gdk directly is notably faster than the same via cairo
