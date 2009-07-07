@@ -385,7 +385,7 @@ class Window(gtk.Window):
                 func(self, *args, **kwargs)
             finally:
                 self.window.set_cursor(None)
-                self.tdw.update_cursor(force=True)
+                self.tdw.update_cursor()
         return wrapper
 
     def toggleWindow_cb(self, action):

@@ -6,13 +6,12 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-from lib import helpers
-import gtk, cairo
+import gtk, cairo, random
 gdk = gtk.gdk
 from math import floor, ceil, pi
 
-import random
-from lib import tiledsurface, pixbufsurface
+from lib import helpers, tiledsurface, pixbufsurface
+import cursor
 
 class TiledDrawWidget(gtk.DrawingArea):
     """
@@ -399,45 +398,13 @@ class TiledDrawWidget(gtk.DrawingArea):
     def brush_modified_cb(self):
         self.update_cursor()
 
-    def update_cursor(self, force=False):
-        #return
-        # OPTIMIZE: looks like big cursors can be a major slowdown with X11
-        #   if everything breaks down, we could only show brush shape shortly after changes
+    def update_cursor(self):
         if not self.window: return
-        brush = self.doc.brush
-        d = int(brush.get_actual_radius()*self.scale)*2
-        eraser = brush.is_eraser()
 
-        if d < 6: d = 6
-        if eraser and d < 8: d = 8
-        if d > 500: d = 500 # hm, better ask display for max cursor size? also, 500 is pretty slow
-        if self.cursor_info == (d, eraser) and not force:
-            return
-        self.cursor_info = (d, eraser)
-
-        cursor = gdk.Pixmap(None, d+1, d+1,1)
-        mask   = gdk.Pixmap(None, d+1, d+1,1)
-        colormap = gdk.colormap_get_system()
-        black = colormap.alloc_color('black')
-        white = colormap.alloc_color('white')
-
-        bgc = cursor.new_gc(foreground=black)
-        wgc = cursor.new_gc(foreground=white)
-        cursor.draw_rectangle(wgc, True, 0, 0, d+1, d+1)
-        cursor.draw_arc(bgc,False, 0, 0, d, d, 0, 360*64)
-
-        bgc = mask.new_gc(foreground=black)
-        wgc = mask.new_gc(foreground=white)
-        mask.draw_rectangle(bgc, True, 0, 0, d+1, d+1)
-        mask.draw_arc(wgc, False, 0, 0, d, d, 0, 360*64)
-        mask.draw_arc(wgc, False, 1, 1, d-2, d-2, 0, 360*64)
-
-        if eraser:
-            thickness = d/8
-            mask.draw_rectangle(bgc, True, d/2-thickness, 0, 2*thickness+1, d+1)
-            mask.draw_rectangle(bgc, True, 0, d/2-thickness, d+1, 2*thickness+1)
-
-        self.window.set_cursor(gdk.Cursor(cursor,mask,gdk.color_parse('black'), gdk.color_parse('white'),(d+1)/2,(d+1)/2))
+        b = self.doc.brush
+        radius = b.get_actual_radius()*self.scale
+        c = cursor.get_brush_cursor(radius, b.is_eraser())
+        self.window.set_cursor(c)
 
     def toggle_show_layers_above(self):
         self.show_layers_above = not self.show_layers_above
