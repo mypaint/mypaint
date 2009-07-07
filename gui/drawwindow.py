@@ -1140,6 +1140,7 @@ class Window(gtk.Window):
             u"Popolon &lt;popolon@popolon.org&gt; (brushes)\n"
             u"Clement Skau &lt;clementskau@gmail.com&gt; (programming)\n"
             u'Marcelo "Tanda" Cerviño &lt;info@lodetanda.com.ar&gt; (patterns, brushes)\n'
+            u'Jon Nordby &lt;jononor@gmail.com&gt; (programming)\n'
             u"\n"
             u"This program is free software; you can redistribute it and/or modify "
             u"it under the terms of the GNU General Public License as published by "
