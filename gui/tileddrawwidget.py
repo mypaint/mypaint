@@ -303,7 +303,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         if translation_only:
             # not sure why, but using gdk directly is notably faster than the same via cairo
             x, y = cr.user_to_device(surface.x, surface.y)
-            self.window.draw_pixbuf(None, surface.pixbuf, 0, 0, int(x), int(y))
+            self.window.draw_pixbuf(None, surface.pixbuf, 0, 0, int(x), int(y), dither=gdk.RGB_DITHER_MAX)
         else:
             cr.set_source_pixbuf(surface.pixbuf, surface.x, surface.y)
             cr.paint()
