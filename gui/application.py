@@ -13,6 +13,11 @@ gdk = gtk.gdk
 from lib import brush
 
 class Application: # singleton
+    """
+    This class serves as a global container for everything that needs
+    to be shared in the GUI. Its constructor is the last part of the
+    initialization, called by main.py or by the testing scripts.
+    """
     def __init__(self, datapath, confpath, filenames):
         self.confpath = confpath
         self.datapath = datapath

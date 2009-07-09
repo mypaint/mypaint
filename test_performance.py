@@ -5,17 +5,52 @@ import gtk
 from time import time
 
 wait_for_idle = -1
+all_tests = {}
 
-def paint30sec(app, FPS=30):
+def run_gui_test(testfunction):
+    """Setup the MyPaint GUI and run testfunction.
+    testfunction must be a generator (using yield)
+    """
+    import mypaint
+    data, conf = mypaint.get_paths()
+    filenames = []
+    from gui import application
+    app = application.Application(data, conf, filenames)
+    #app = main.main(data, conf, standalone = False)
+
+    def profiling_main():
+        for res in testfunction(app):
+            yield res
+        gtk.main_quit(app)
+        yield 10.0
+
+    import gobject
+    p = profiling_main()
+    def callback():
+        res = p.next()
+        if res == wait_for_idle:
+            gobject.idle_add(callback)
+        else:
+            gobject.timeout_add(int(res*1000.0), callback)
+    callback()
+    gtk.main()
+
+def gui_test(f):
+    "decorator to declare GUI test functions"
+    def run_f():
+        run_gui_test(f)
+    all_tests[f.__name__] = run_f
+    return f
+
+@gui_test
+def paint30sec(app):
+    FPS = 30
     dw = app.drawWindow
     tdw = dw.tdw
 
     dw.fullscreen_cb()
 
     yield wait_for_idle
-
-    #tdw.rotate(46.0/360*2*math.pi)
-
     #wrap the ordinary function with one that counts repaints
     dw.repaints = 0
     oldfunc=tdw.repaint
@@ -45,11 +80,7 @@ def paint30sec(app, FPS=30):
     #print 'replay done.', dw.repaints, 'repaints'
     print 'replay done, time:', time()-t0
 
-    # cleanup
-    dw.fullscreen_cb()
-    tdw.repaint = oldfunc
-    dw.doc.clear()
-
+@gui_test
 def paint30sec_zoomed(app):
     dw = app.drawWindow
     dw.zoom('ZoomOut')
@@ -58,9 +89,14 @@ def paint30sec_zoomed(app):
     dw.zoom('ZoomOut')
     for res in paint30sec(app):
         yield res
-    dw.reset_view_cb(None)
 
+@gui_test
+def paint30sec_rotated(app):
+    app.drawWindow.tdw.rotate(46.0/360*2*math.pi)
+    for res in paint30sec(app):
+        yield res
 
+@gui_test
 def clear_time(app):
     print 'Clear time test:'
     doc = app.drawWindow.doc
@@ -68,50 +104,26 @@ def clear_time(app):
     for i in range(20):
         doc.clear()
         yield 0.0
-    doc.clear()
-
-def strokeperf():
-    #from library
-    raise NotImplementedError
-
-def startuptime():
-    #take a similar approach as renderperf() ?
-    raise NotImplementedError
-
-def test_gui_main(app):
-    for res in paint30sec(app):
-        yield res
-    for res in paint30sec_zoomed(app):
-        yield res
-    gtk.main_quit(app)
-    yield 10.0
-
-def test_gui():
-    t0 = time()
-    from gui import main
-    import mypaint
-    data, conf = mypaint.get_paths()
-    app = main.main(data, conf, standalone = False)
-    
-    def profiling_main():
-        for res in test_gui_main(app):
-            yield res
-
-    import gobject
-    p = profiling_main()
-    def callback():
-        res = p.next()
-        if res == wait_for_idle:
-            gobject.idle_add(callback)
-        else:
-            gobject.timeout_add(int(res*1000.0), callback)
-    callback()
-    gtk.main()
-
-def test_nogui():
-    pass
 
 if __name__ == '__main__':
-    test_gui()
-    #print '%s repaints' % renderperf(rotate=False)
-    #scrollperf()
+    from optparse import OptionParser
+    parser = OptionParser('usage: %prog [options] testname')
+    parser.add_option('-l', '--list', action='store_true', default=False,
+                    help='list all available tests')
+    options, tests = parser.parse_args()
+
+    if options.list:
+        for name in sorted(all_tests.keys()):
+            print name
+        sys.exit(0)
+
+    if len(tests) != 1:
+        parser.print_help()
+        sys.exit(1)
+
+    for test in tests:
+        if test not in all_tests:
+            print 'Unknown test:', test
+            sys.exit(1)
+        func = all_tests[test]
+        func()

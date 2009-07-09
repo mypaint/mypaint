@@ -10,8 +10,8 @@ import gtk
 from gui import application
 from optparse import OptionParser
 
-# main entry, called from the "mypaint" script, but also from some test scripts
-def main(datapath, confpath, standalone=True):
+# main entry, called from the "mypaint" script
+def main(datapath, confpath):
 
     parser = OptionParser('usage: %prog [options] [FILE]')
     parser.add_option('-c', '--config', metavar='DIR', default=confpath,
@@ -30,8 +30,5 @@ def main(datapath, confpath, standalone=True):
     gtksettings = gtk.settings_get_default()
     gtksettings.set_property('gtk-can-change-accels', True)
 
-    if standalone:
-        import gtkexcepthook
-        gtk.main()
-    else:
-        return app
+    import gtkexcepthook
+    gtk.main()
