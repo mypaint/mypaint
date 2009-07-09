@@ -19,6 +19,7 @@ class Window(gtk.Window):
         self.app.brush_selected_callbacks.insert(0, self.brush_selected_cb)
         self.app.brush.settings_observers.append(self.brush_modified_cb)
         self.app.kbm.add_window(self)
+        self.brushlist = BrushList(self.app)
 
         self.set_title('Brush selection')
         self.connect('delete-event', self.app.hide_window_cb)
@@ -28,39 +29,41 @@ class Window(gtk.Window):
 
         # TODO: evaluate glade/gazpacho, the code below is getting scary
 
+        #main container
         vbox = gtk.VBox()
         self.add(vbox)
 
-        self.brushlist = BrushList(self.app)
         scroll = gtk.ScrolledWindow()
         scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
         scroll.add_with_viewport(self.brushlist)
-        vbox.pack_start(scroll)
-
-        vbox.pack_start(gtk.HSeparator(), expand=False)
-
         expander = self.expander = gtk.Expander(label='Edit')
         expander.set_expanded(False)
+
+        vbox.pack_start(scroll)
+        vbox.pack_start(gtk.HSeparator(), expand=False)
         vbox.pack_start(expander, expand=False, fill=False)
 
+        #expanded part
         hbox = gtk.HBox()
         hbox.set_border_width(8)
         expander.add(hbox)
 
-        vbox2 = gtk.VBox()
-        hbox.pack_start(vbox2, expand=False, fill=False)
+        left_vbox = gtk.VBox()
+        right_vbox = gtk.VBox()
+        hbox.pack_start(left_vbox, expand=False, fill=False)
+        hbox.pack_end(right_vbox, expand=False, fill=False)
 
+        #expanded part, left side
         doc = document.Document()
         self.tdw = tileddrawwidget.TiledDrawWidget(doc)
         self.tdw.set_size_request(brush.preview_w, brush.preview_h)
-        vbox2.pack_start(self.tdw, expand=False, fill=False)
+        left_vbox.pack_start(self.tdw, expand=False, fill=False)
 
         b = gtk.Button('Clear')
         def clear_cb(window):
             self.tdw.doc.clear_layer()
         b.connect('clicked', clear_cb)
-        vbox2.pack_start(b, expand=False, padding=5)
-
+        left_vbox.pack_start(b, expand=False, padding=5)
 
         #vbox2a = gtk.VBox()
         #hbox.pack_end(vbox2a, expand=True, fill=True, padding=5)
@@ -70,33 +73,23 @@ class Window(gtk.Window):
         #tv = self.brush_info_textview = gtk.TextView()
         #vbox2a.pack_start(tv, expand=True)
 
-        vbox2b = gtk.VBox()
-        hbox.pack_end(vbox2b, expand=False, fill=False)
-
+        #expanded part, right side
         l = self.brush_name_label = gtk.Label()
         l.set_justify(gtk.JUSTIFY_LEFT)
         l.set_text('(no name)')
-        vbox2b.pack_start(l, expand=False)
+        right_vbox.pack_start(l, expand=False)
 
-        b = gtk.Button('add as new')
-        b.connect('clicked', self.add_as_new_cb)
-        vbox2b.pack_start(b, expand=False)
+        right_vbox_buttons = [
+        ('add as new', self.add_as_new_cb),
+        ('rename...', self.rename_cb),
+        ('save preview', self.update_preview_cb),
+        ('save settings', self.update_settings_cb),
+        ('delete selected', self.delete_selected_cb) ]
 
-        b = gtk.Button('rename...')
-        b.connect('clicked', self.rename_cb)
-        vbox2b.pack_start(b, expand=False)
-
-        b = gtk.Button('save preview')
-        b.connect('clicked', self.update_preview_cb)
-        vbox2b.pack_start(b, expand=False)
-
-        b = gtk.Button('save settings')
-        b.connect('clicked', self.update_settings_cb)
-        vbox2b.pack_start(b, expand=False)
-
-        b = gtk.Button('delete selected')
-        b.connect('clicked', self.delete_selected_cb)
-        vbox2b.pack_start(b, expand=False)
+        for title, clicked_cb in right_vbox_buttons:
+            b = gtk.Button(title)
+            b.connect('clicked', clicked_cb)
+            right_vbox.pack_start(b, expand=False)
 
     def set_preview_pixbuf(self, pixbuf):
         if pixbuf is None:
