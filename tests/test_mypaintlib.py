@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 from pylab import *
 from time import time
+import sys, os
+
+os.chdir(os.path.dirname(sys.argv[0]))
+sys.path.insert(0, '..')
 
 from lib import mypaintlib, tiledsurface, brushsettings, brush, document, command
 
@@ -21,8 +25,8 @@ def brushPaint():
 
     s = tiledsurface.Surface()
     b = brush.Brush_Lowlevel()
-    #b.load_from_string(open('brushes/s006.myb').read())
-    b.load_from_string(open('brushes/charcoal.myb').read())
+    #b.load_from_string(open('../brushes/s006.myb').read())
+    b.load_from_string(open('../brushes/charcoal.myb').read())
 
     events = load('painting30sec.dat.gz')
 
@@ -96,9 +100,9 @@ def pngs_equal(a, b, exact=True):
 
 def docPaint():
     b1 = brush.Brush_Lowlevel()
-    b1.load_from_string(open('brushes/s008.myb').read())
+    b1.load_from_string(open('../brushes/s008.myb').read())
     b2 = brush.Brush_Lowlevel()
-    b2.load_from_string(open('brushes/redbrush.myb').read())
+    b2.load_from_string(open('../brushes/redbrush.myb').read())
     b2.set_color_hsv((0.3, 0.4, 0.35))
 
     # test some actions

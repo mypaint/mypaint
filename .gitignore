@@ -11,5 +11,3 @@ lib/mypaintlib_wrap.cpp
 lib/mypaintlib_wrap.os
 mypaint
 options.cache
-test_*.png
-test_*.ora

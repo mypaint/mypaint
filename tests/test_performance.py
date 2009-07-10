@@ -1,22 +1,31 @@
 #!/usr/bin/env python
 
-from pylab import *
-import gtk
+import sys, os, tempfile
 from time import time
 
+from pylab import *
+import gtk, glib
+
+os.chdir(os.path.dirname(sys.argv[0]))
+sys.path.insert(0, '..')
+
+# wait until the last mypaint idle handler has finished
 wait_for_idle = -1
+# wait until all GUI updates are done, but don't wait for background tasks
+wait_for_gui = -2
+
 all_tests = {}
 
 def run_gui_test(testfunction):
     """Setup the MyPaint GUI and run testfunction.
     testfunction must be a generator (using yield)
     """
-    import mypaint
-    data, conf = mypaint.get_paths()
-    filenames = []
+    global gui_startup_time
+    gui_startup_time = time()
+
     from gui import application
-    app = application.Application(data, conf, filenames)
-    #app = main.main(data, conf, standalone = False)
+    tempdir = tempfile.mkdtemp()
+    app = application.Application(datapath='..', confpath=tempdir, filenames=[])
 
     def profiling_main():
         for res in testfunction(app):
@@ -28,12 +37,17 @@ def run_gui_test(testfunction):
     p = profiling_main()
     def callback():
         res = p.next()
-        if res == wait_for_idle:
-            gobject.idle_add(callback)
+        if res < 0:
+            if res == wait_for_idle:
+                priority = gobject.PRIORITY_LOW + 50
+            elif res == wait_for_gui:
+                priority = gobject.PRIORITY_DEFAULT_IDLE - 1
+            gobject.idle_add(callback, priority=priority)
         else:
             gobject.timeout_add(int(res*1000.0), callback)
     callback()
     gtk.main()
+    os.system('rm -rf ' + tempdir)
 
 def gui_test(f):
     "decorator to declare GUI test functions"
@@ -42,11 +56,21 @@ def gui_test(f):
     all_tests[f.__name__] = run_f
     return f
 
+
 @gui_test
-def paint30sec(app):
+def startup(app):
+    yield wait_for_idle
+    print 'result = %.3f' % (time() - gui_startup_time)
+
+@gui_test
+def paint(app):
     FPS = 30
     dw = app.drawWindow
     tdw = dw.tdw
+
+    for b in app.brushes:
+        if b.name == 'redbrush':
+            app.select_brush(b)
 
     dw.fullscreen_cb()
 
@@ -68,7 +92,7 @@ def paint30sec(app):
     t_last_redraw = 0.0
     for t, x, y, pressure in events:
         if t > t_last_redraw + 1.0/FPS:
-            yield wait_for_idle
+            yield wait_for_gui
             t_last_redraw = t
         #sleeptime = t-(time()-t0)
         #if sleeptime > 0.001:
@@ -81,29 +105,28 @@ def paint30sec(app):
     print 'replay done, time:', time()-t0
 
 @gui_test
-def paint30sec_zoomed(app):
+def paint_zoomed_out_5x(app):
     dw = app.drawWindow
     dw.zoom('ZoomOut')
     dw.zoom('ZoomOut')
     dw.zoom('ZoomOut')
     dw.zoom('ZoomOut')
-    for res in paint30sec(app):
+    dw.zoom('ZoomOut')
+    for res in paint(app):
         yield res
 
 @gui_test
-def paint30sec_rotated(app):
+def paint_zoomed_out_1x(app):
+    dw = app.drawWindow
+    dw.zoom('ZoomOut')
+    for res in paint(app):
+        yield res
+
+@gui_test
+def paint_rotated(app):
     app.drawWindow.tdw.rotate(46.0/360*2*math.pi)
-    for res in paint30sec(app):
+    for res in paint(app):
         yield res
-
-@gui_test
-def clear_time(app):
-    print 'Clear time test:'
-    doc = app.drawWindow.doc
-    t0 = time()
-    for i in range(20):
-        doc.clear()
-        yield 0.0
 
 if __name__ == '__main__':
     from optparse import OptionParser
@@ -127,3 +150,4 @@ if __name__ == '__main__':
             sys.exit(1)
         func = all_tests[test]
         func()
+
