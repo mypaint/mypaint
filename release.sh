@@ -27,6 +27,7 @@ tar -cvjf $filename mypaint-$version
 cd $d
 scons
 tests/test_mypaintlib.py
+tests/test_performance.py -a -c 1
 
 ls -sSh $filename
 
