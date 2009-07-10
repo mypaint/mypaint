@@ -190,6 +190,20 @@ def scroll_zoomed_out_5x(app):
     for res in scroll(app, f):
         yield res
 
+@gui_test
+def memory_zoomed_out_5x(app):
+    dw = app.drawWindow
+    dw.fullscreen_cb()
+    dw.open_file('bigimage.ora')
+    for i in range(5):
+        dw.zoom('ZoomOut')
+    yield wait_for_idle
+    dw.tdw.scroll(100, 120)
+    yield wait_for_idle
+    dw.tdw.scroll(-80, -500)
+    yield wait_for_idle
+    print 'result =', open('/proc/self/statm').read().split()[0]
+
 if __name__ == '__main__':
     if len(sys.argv) == 3 and sys.argv[1] == 'SINGLE_TEST_RUN':
         func = all_tests[sys.argv[2]]
