@@ -2,7 +2,7 @@
 # you can edit this file and then select the brush in mypaint (again) to reload
 version 2
 opaque 1.0 | random (0.000000 1.000000), (1.000000 1.000000)
-opaque_multiply 1.0 | pressure (0.000000 0.000000), (0.040123 0.885417), (0.138889 1.000000), (1.000000 1.000000)
+opaque_multiply 0.0 | pressure (0.000000 0.000000), (0.040123 0.885417), (0.138889 1.000000), (1.000000 1.000000)
 opaque_linearize 0.9
 radius_logarithmic 3.2 | pressure (0.000000 0.000000), (0.750000 0.000000), (1.000000 1.000000)
 hardness 0.4 | pressure (0.000000 -0.000000), (0.746914 -0.000000), (1.000000 -0.300000)
@@ -20,7 +20,7 @@ offset_by_speed_slowness 1.0
 slow_tracking 0.0
 slow_tracking_per_dab 0.0
 tracking_noise 0.0
-color_h 0
+color_h 0.0
 color_s 0.0
 color_v 0.0
 change_color_h 0.0
