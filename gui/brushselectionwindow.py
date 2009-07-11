@@ -82,9 +82,11 @@ class Window(gtk.Window):
         right_vbox_buttons = [
         ('add as new', self.add_as_new_cb),
         ('rename...', self.rename_cb),
-        ('save preview', self.update_preview_cb),
+        ('remove...', self.delete_selected_cb),
+        ('settings...', self.brush_settings_cb),
         ('save settings', self.update_settings_cb),
-        ('delete selected', self.delete_selected_cb) ]
+        ('save preview', self.update_preview_cb),
+        ]
 
         for title, clicked_cb in right_vbox_buttons:
             b = gtk.Button(title)
@@ -100,6 +102,11 @@ class Window(gtk.Window):
     def get_preview_pixbuf(self):
         pixbuf = self.tdw.doc.render_as_pixbuf(0, 0, brush.preview_w, brush.preview_h)
         return pixbuf
+
+    def brush_settings_cb(self, window):
+        w = self.app.brushSettingsWindow
+        w.show_all() # might be for the first time
+        w.present()
 
     def add_as_new_cb(self, window):
         b = brush.Brush(self.app)
