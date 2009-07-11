@@ -23,7 +23,7 @@ from gtk import gdk, keysyms
 
 import tileddrawwidget, colorselectionwindow, historypopup, \
        stategroup, keyboard, colorpicker
-from lib import document, helpers, backgroundsurface
+from lib import document, helpers, backgroundsurface, command
 
 class Window(gtk.Window):
     def __init__(self, app):
@@ -406,10 +406,16 @@ class Window(gtk.Window):
         self.tdw.set_double_buffered(not action.get_active())
         
     def undo_cb(self, action):
-        self.doc.undo()
+        cmd = self.doc.undo()
+        if isinstance(cmd, command.MergeLayer):
+            # show otherwise invisible change (hack...)
+            self.layerblink_state.activate()
 
     def redo_cb(self, action):
-        self.doc.redo()
+        cmd = self.doc.redo()
+        if isinstance(cmd, command.MergeLayer):
+            # show otherwise invisible change (hack...)
+            self.layerblink_state.activate()
 
     def copy_cb(self, action):
         # use the full document bbox, so we can past layers back to the correct position
@@ -707,12 +713,12 @@ class Window(gtk.Window):
         self.app.brush.set_color_hsv((h, s, v))
 
     def layer_increase_opacity(self, action):
-        self.doc.layer.opacity = helpers.clamp(self.doc.layer.opacity + 0.08, 0.0, 1.0)
-        self.tdw.queue_draw()
+        opa = helpers.clamp(self.doc.layer.opacity + 0.08, 0.0, 1.0)
+        self.doc.set_layer_opacity(opa)
 
     def layer_decrease_opacity(self, action):
-        self.doc.layer.opacity = helpers.clamp(self.doc.layer.opacity - 0.08, 0.0, 1.0)
-        self.tdw.queue_draw()
+        opa = helpers.clamp(self.doc.layer.opacity - 0.08, 0.0, 1.0)
+        self.doc.set_layer_opacity(opa)
         
     @with_wait_cursor
     def open_file(self, filename):

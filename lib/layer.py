@@ -27,10 +27,10 @@ class Layer:
         self.surface.load_from_data(pixbuf)
 
     def save_snapshot(self):
-        return (self.strokes[:], self.surface.save_snapshot())
+        return (self.strokes[:], self.surface.save_snapshot(), self.opacity)
 
     def load_snapshot(self, data):
-        strokes, data = data
+        strokes, data, self.opacity = data
         self.strokes = strokes[:]
         self.surface.load_snapshot(data)
 

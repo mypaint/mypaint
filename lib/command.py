@@ -163,3 +163,21 @@ class SelectLayer(Action):
     def undo(self):
         self.doc.layer_idx = self.prev_idx
 
+class SetLayerOpacity(Action):
+    def __init__(self, doc, opacity):
+        self.doc = doc
+        self.new_opacity = opacity
+    def redo(self):
+        l = self.doc.layer
+        self.old_opacity = l.opacity
+        l.opacity = self.new_opacity
+        bbox = l.surface.get_bbox()
+        for f in self.doc.canvas_observers:
+            f(*bbox)
+    def undo(self):
+        l = self.doc.layer
+        l.opacity = self.old_opacity
+        bbox = l.surface.get_bbox()
+        for f in self.doc.canvas_observers:
+            f(*bbox)
+

@@ -151,6 +151,10 @@ class Document():
         self.split_stroke()
         self.command_stack.do(cmd)
 
+    def get_last_command(self):
+        self.split_stroke()
+        return self.command_stack.get_last_command()
+
     def set_brush(self, brush):
         self.split_stroke()
         self.brush.copy_settings_from(brush)
@@ -188,6 +192,12 @@ class Document():
     def load_layer_from_pixbuf(self, pixbuf, x=0, y=0):
         arr = helpers.gdkpixbuf2numpy(pixbuf)
         self.do(command.LoadLayer(self, arr, x, y))
+
+    def set_layer_opacity(self, opacity):
+        cmd = self.get_last_command()
+        if isinstance(cmd, command.SetLayerOpacity):
+            self.undo()
+        self.do(command.SetLayerOpacity(self, opacity))
 
     def set_background(self, obj):
         # This is not an undoable action. One reason is that dragging
