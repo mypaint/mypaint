@@ -12,15 +12,20 @@ gdk = gtk.gdk
 # caching only the last cursor
 last_cursor_info = None
 last_cursor = None
+max_cursor_size = None
 
 def get_brush_cursor(radius, is_eraser):
-    global last_cursor, last_cursor_info
-    # OPTIMIZE: looks like big cursors can be a major slowdown with X11
+    global last_cursor, last_cursor_info, max_cursor_size
+
+    if not max_cursor_size:
+        display = gdk.display_get_default()
+        max_cursor_size = max(display.get_maximal_cursor_size())
 
     d = int(radius)*2
     if d < 6: d = 6
     if is_eraser and d < 8: d = 8
-    if d > 500: d = 500 # hm, better ask display for max cursor size? also, 500 is pretty slow
+    if d+1 > max_cursor_size:
+        d = max_cursor_size-1
     cursor_info = (d, is_eraser)
     if cursor_info != last_cursor_info:
         last_cursor_info = cursor_info
