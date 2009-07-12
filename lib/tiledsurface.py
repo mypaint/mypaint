@@ -116,24 +116,24 @@ class Surface(mypaintlib.TiledSurface):
         tmp = self.get_tile_memory(tx, ty, readonly=True)
         return mypaintlib.tile_convert_rgba16_to_rgba8(tmp, dst)
 
-    def composite_tile_over(self, dst, tx, ty, mipmap_level=0, opac=1.0):
+    def composite_tile_over(self, dst, tx, ty, mipmap_level=0, opacity=1.0):
         """
         composite one tile of this surface over the array dst, modifying only dst
         """
 
         if self.mipmap_level < mipmap_level:
-            return self.mipmap.composite_tile_over(dst, tx, ty, mipmap_level, opac)
+            return self.mipmap.composite_tile_over(dst, tx, ty, mipmap_level, opacity)
         if not (tx,ty) in self.tiledict:
             return
         src = self.get_tile_memory(tx, ty, True)
         if dst.shape[2] == 3 and dst.dtype == 'uint8':
-            mypaintlib.tile_composite_rgba16_over_rgb8(src, dst, opac)
+            mypaintlib.tile_composite_rgba16_over_rgb8(src, dst, opacity)
         elif dst.shape[2] == 4 and dst.dtype == 'uint16':
-            # rarely used (only for merging layers)
+            # rarely used (for merging layers, also when exporting a transparent PNGs)
             # src (premultiplied) OVER dst (premultiplied)
             # dstColor = srcColor + (1.0 - srcAlpha) * dstColor
-            one_minus_srcAlpha = (1<<15) - (opac * src[:,:,3:4]).astype('uint32')
-            dst[:,:,:] = opac * src[:,:,:] + ((one_minus_srcAlpha * dst[:,:,:]) >> 15).astype('uint16')
+            one_minus_srcAlpha = (1<<15) - (opacity * src[:,:,3:4]).astype('uint32')
+            dst[:,:,:] = opacity * src[:,:,:] + ((one_minus_srcAlpha * dst[:,:,:]) >> 15).astype('uint16')
 
     def save_snapshot(self):
         sshot = SurfaceSnapshot()

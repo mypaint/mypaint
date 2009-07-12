@@ -178,7 +178,7 @@ class Document():
 
         for layer in layers:
             surface = layer.surface
-            surface.composite_tile_over(dst, tx, ty, mipmap, layer.opacity)
+            surface.composite_tile_over(dst, tx, ty, mipmap_level=mipmap, opacity=layer.opacity)
             
     def add_layer(self, insert_idx):
         self.do(command.AddLayer(self, insert_idx))

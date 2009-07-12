@@ -49,7 +49,8 @@ class Layer:
             surf = dst.surface.get_tile_memory(tx, ty, readonly=False)
             surf[:,:,:] = dst.opacity * surf[:,:,:]
         for tx, ty in src.surface.get_tiles():
-            src.surface.composite_tile_over(dst.surface.get_tile_memory(tx, ty, readonly=False), tx, ty, self.opacity)
+            surf = dst.surface.get_tile_memory(tx, ty, readonly=False)
+            src.surface.composite_tile_over(surf, tx, ty, opacity=self.opacity)
         dst.opacity = 1.0
 
     def get_brush_at(self, x, y):
