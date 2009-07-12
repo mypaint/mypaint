@@ -33,8 +33,8 @@ class PixbufList(gtk.DrawingArea):
         self.item_w = item_w
         self.item_h = item_h
         self.spacing_outside = 0
-        self.border_visible = 1
-        self.spacing_inside = 1
+        self.border_visible = 2
+        self.spacing_inside = 0
 
         self.selected = None
         self.dragging_allowed = True
