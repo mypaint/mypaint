@@ -8,7 +8,6 @@
 
 import gtk, gobject
 gdk = gtk.gdk
-import time
 
 class StateGroup():
     """
@@ -45,7 +44,7 @@ class StateGroup():
 
 class State:
     "how long a key can be held down to go through as single hit (and not press-and-hold)"
-    max_key_hit_duration = 0.200
+    max_key_hit_duration = 0.250
     "the state is automatically left after this time (ignored during press-and-hold)"
     autoleave_timeout = 0.800
     #"popups only: how long the cursor is allowed outside before closing (ignored during press-and-hold)"
@@ -69,7 +68,7 @@ class State:
         #print 'entering state, calling', self.on_enter.__name__
         assert not self.active
         self.active = True
-        self.enter_time = time.time()
+        self.enter_time = gtk.get_current_event_time()/1000.0
         self.connected_motion_handler = None
         if self.autoleave_timeout:
             self.autoleave_timer = gobject.timeout_add(int(1000*self.autoleave_timeout), self.autoleave_timeout_cb)
@@ -136,7 +135,7 @@ class State:
         if not self.active:
             return
         self.keydown = False
-        if time.time() - self.enter_time < self.max_key_hit_duration:
+        if event.time/1000.0 - self.enter_time < self.max_key_hit_duration:
             pass # accept as one-time hit
         else:
             if self.outside_popup_timer:
