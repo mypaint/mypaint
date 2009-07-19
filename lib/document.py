@@ -29,6 +29,7 @@ import os, zipfile, tempfile, time
 join = os.path.join
 import xml.etree.ElementTree as ET
 from gtk import gdk
+import gobject
 
 import helpers, tiledsurface, pixbufsurface, backgroundsurface
 import command, stroke, layer
@@ -227,19 +228,19 @@ class Document():
         return count > 1
 
     def save(self, filename, **kwargs):
-        #if the file doesnt allready exist, we need to check permissions on the directory
-        if os.path.isfile(filename):
-            path = filename
-        else:
-            path = os.path.dirname(filename)
-            if not path:
-                path = '.'
-        if not os.access(path,os.W_OK):
-            raise SaveLoadError, 'You do not have the necessary permissions to save file: ' + repr(filename)
         trash, ext = os.path.splitext(filename)
         ext = ext.lower().replace('.', '')
         save = getattr(self, 'save_' + ext, self.unsupported)
-        save(filename, **kwargs)
+        try:        
+            save(filename, **kwargs)
+        except gobject.GError, e:
+                if  e.code == 5:
+                    #add a hint due to a very consfusing error message when there is no space left on device
+                    raise SaveLoadError, 'Unable to save: ' + e.message +  '\nDo you have enough space left on the device?'
+                else:
+                    raise SaveLoadError, 'Unable to save: ' + e.message
+        except IOError, e:
+            raise SaveLoadError, 'Unable to save: ' + e.strerror
         self.unsaved_painting_time = 0.0
 
     def load(self, filename):
