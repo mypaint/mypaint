@@ -27,12 +27,17 @@ class Tile:
         else:
             self.rgba = copy_from.rgba.copy()
         self.readonly = False
-        self.mipmap_dirty = False
 
     def copy(self):
         return Tile(copy_from=self)
         
+# tile for read-only operations on empty spots
 transparent_tile = Tile()
+transparent_tile.readonly = True
+
+# tile with invalid pixel memory (needs refresh)
+mipmap_dirty_tile = Tile()
+del mipmap_dirty_tile.rgba
 
 def get_tiles_bbox(tiles):
     res = helpers.Rect()
@@ -69,7 +74,6 @@ class Surface(mypaintlib.TiledSurface):
         if self.mipmap: self.mipmap.clear()
 
     def get_tile_memory(self, tx, ty, readonly):
-        # copy-on-write for readonly tiles
         # OPTIMIZE: do some profiling to check if this function is a bottleneck
         #           yes it is
         # Note: we must return memory that stays valid for writing until the
@@ -81,34 +85,35 @@ class Surface(mypaintlib.TiledSurface):
             else:
                 t = Tile()
                 self.tiledict[(tx, ty)] = t
-        if t.mipmap_dirty:
+        if t is mipmap_dirty_tile:
             # regenerate mipmap
-            if self.mipmap_level > 0:
-                for x in xrange(2):
-                    for y in xrange(2):
-                        src = self.parent.get_tile_memory(tx*2 + x, ty*2 + y, True)
-                        mypaintlib.tile_downscale_rgba16(src, t.rgba, x*N/2, y*N/2)
-            t.mipmap_dirty = False
+            t = Tile()
+            self.tiledict[(tx, ty)] = t
+            empty = True
+            for x in xrange(2):
+                for y in xrange(2):
+                    src = self.parent.get_tile_memory(tx*2 + x, ty*2 + y, True)
+                    mypaintlib.tile_downscale_rgba16(src, t.rgba, x*N/2, y*N/2)
+                    if src is not transparent_tile.rgba:
+                        empty = False
+            if empty:
+                # rare case, no need to speed it up
+                del self.tiledict[(tx, ty)]
+                t = transparent_tile
         if t.readonly and not readonly:
-            # OPTIMIZE: we could do the copying in save_snapshot() instead, this might reduce the latency while drawing
-            #           (eg. tile.valid_copy = some_other_tile_instance; and valid_copy = None here)
-            #           before doing this, measure the worst-case time of the call below; same thing with new tiles
+            # shared memory, get a private copy for writing
             t = t.copy()
             self.tiledict[(tx, ty)] = t
         if not readonly:
-            self.mark_mipmap_dirty(tx, ty, t)
+            assert self.mipmap_level == 0
+            self.mark_mipmap_dirty(tx, ty)
         return t.rgba
         
-    def mark_mipmap_dirty(self, tx, ty, t=None):
-        if t is None:
-            t = self.tiledict.get((tx,ty))
-        if t is None:
-            t = Tile()
-            self.tiledict[(tx, ty)] = t
-        if not t.mipmap_dirty:
-            t.mipmap_dirty = True
-            if self.mipmap:
-                self.mipmap.mark_mipmap_dirty(tx/2, ty/2)
+    def mark_mipmap_dirty(self, tx, ty):
+        if self.mipmap_level > 0:
+            self.tiledict[(tx, ty)] = mipmap_dirty_tile
+        if self.mipmap:
+            self.mipmap.mark_mipmap_dirty(tx/2, ty/2)
 
     def blit_tile_into(self, dst, tx, ty):
         # used mainly for saving (transparent PNG)
@@ -125,7 +130,7 @@ class Surface(mypaintlib.TiledSurface):
             return self.mipmap.composite_tile_over(dst, tx, ty, mipmap_level, opacity)
         if not (tx,ty) in self.tiledict:
             return
-        src = self.get_tile_memory(tx, ty, True)
+        src = self.get_tile_memory(tx, ty, readonly=True)
         if dst.shape[2] == 3 and dst.dtype == 'uint8':
             mypaintlib.tile_composite_rgba16_over_rgb8(src, dst, opacity)
         elif dst.shape[2] == 4 and dst.dtype == 'uint16':
@@ -134,6 +139,8 @@ class Surface(mypaintlib.TiledSurface):
             # dstColor = srcColor + (1.0 - srcAlpha) * dstColor
             one_minus_srcAlpha = (1<<15) - (opacity * src[:,:,3:4]).astype('uint32')
             dst[:,:,:] = opacity * src[:,:,:] + ((one_minus_srcAlpha * dst[:,:,:]) >> 15).astype('uint16')
+        else:
+            raise NotImplemented
 
     def save_snapshot(self):
         sshot = SurfaceSnapshot()
