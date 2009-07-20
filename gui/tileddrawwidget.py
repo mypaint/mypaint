@@ -76,6 +76,8 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.scroll_at_edges = False
         self.pressure_mapping = None
 
+        self.max_cursor_size = None
+
     def set_scroll_at_edges(self, choice):
       self.scroll_at_edges = choice
       
@@ -409,9 +411,14 @@ class TiledDrawWidget(gtk.DrawingArea):
         d = int(brush.get_actual_radius()*self.scale)*2
         eraser = brush.is_eraser()
 
+        if not self.max_cursor_size:
+            display = gdk.display_get_default()
+            self.max_cursor_size = max(display.get_maximal_cursor_size())
+
         if d < 6: d = 6
         if eraser and d < 8: d = 8
-        if d > 500: d = 500 # hm, better ask display for max cursor size? also, 500 is pretty slow
+        if d+1 > self.max_cursor_size:
+            d = self.max_cursor_size-1
         if self.cursor_info == (d, eraser) and not force:
             return
         self.cursor_info = (d, eraser)
