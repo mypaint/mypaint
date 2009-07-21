@@ -48,7 +48,7 @@ settings_list = [
     ['speed2_gamma', 'speed2 gamma', True, -8.0, 4.0, 8.0, "same as 'speed1 gamma' for speed2"],
     ['offset_by_random', 'jitter', False, 0.0, 0.0, 2.0, "add a random offset to the position where each dab is drawn\n 0.0 disabled\n 1.0 standard deviation is one basic radius away"],
     ['offset_by_speed', 'offset by speed', False, -3.0, 0.0, 3.0, "change position depending on pointer speed\n= 0 disable\n> 0 draw where the pointer moves to\n< 0 draw where the pointer comes from"],
-    ['offset_by_speed_slowness', 'offset by speed filter', False, 0.0, 1.0, 15.0, "how slow the offset goes back to zero when the cursor stops moving; 0 means there will never be any offset left"],
+    ['offset_by_speed_slowness', 'offset by speed filter', False, 0.0, 1.0, 15.0, "how slow the offset goes back to zero when the cursor stops moving"],
     ['slow_tracking', 'slow position tracking', True, 0.0, 0.0, 10.0, "Slowdown pointer tracking speed. 0 disables it, higher values remove more jitter in cursor movements. Useful for drawing smooth, comic-like outlines."],
     ['slow_tracking_per_dab', 'slow tracking per dab', False, 0.0, 0.0, 10.0, "Similar as above but at brushdab level (ignoring how much time has past, if brushdabs do not depend on time)"],
     ['tracking_noise', 'tracking noise', True, 0.0, 0.0, 12.0, "add randomness to the mouse pointer; this usually generates many small lines in random directions; maybe try this together with 'slow tracking'"],

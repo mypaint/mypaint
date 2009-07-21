@@ -246,7 +246,17 @@ private:
     }
   
     { // slow speed, but as vector this time
-      float fac = 1.0 - exp_decay (exp(settings_value[BRUSH_OFFSET_BY_SPEED_SLOWNESS]*0.01)-1.0, step_dtime);
+
+      // FIXME: offset_by_speed should be removed.
+      //   Is it broken, non-smooth, system-dependent math?!
+      //   A replacement could be a directed random offset.
+
+      float time_constant = exp(settings_value[BRUSH_OFFSET_BY_SPEED_SLOWNESS]*0.01)-1.0;
+      // Workaround for a bug that happens mainly on Windows, causing
+      // individual dabs to be placed far far away. Using the speed
+      // with zero filtering is just asking for trouble anyway.
+      if (time_constant < 0.002) time_constant = 0.002;
+      float fac = 1.0 - exp_decay (time_constant, step_dtime);
       states[STATE_NORM_DX_SLOW] += (norm_dx - states[STATE_NORM_DX_SLOW]) * fac;
       states[STATE_NORM_DY_SLOW] += (norm_dy - states[STATE_NORM_DY_SLOW]) * fac;
     }
