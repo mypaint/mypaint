@@ -342,6 +342,8 @@ class Document():
         write_file_str('stack.xml', xml)
         z.close()
         os.rmdir(tempdir)
+        if os.path.exists(filename):
+            os.remove(filename) # windows needs that
         os.rename(filename + '.tmpsave', filename)
 
         print '%.3fs save_ora total' % (time.time() - t0)
