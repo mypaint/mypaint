@@ -1,3 +1,12 @@
+Version 0.7.1:
+- bugfixes for win32 build
+- limit the cursor size (problem on Windows, and X11 with Compiz)
+- fixed brushes that lead to save problems (Windows only?)
+- show filename in titlebar
+- zoom on scrollwheel
+- new brushes: splatter and marker
+- other minor fixes
+
 Version 0.7.0:
 - color history popup
 - merge layer down

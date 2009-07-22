@@ -13,7 +13,7 @@ This is the main drawing window, containing menu actions.
 Painting is done in tileddrawwidget.py.
 """
 
-MYPAINT_VERSION="0.7.0+git"
+MYPAINT_VERSION="0.7.1+git"
 
 import os, re, math
 from glob import glob
@@ -302,8 +302,8 @@ class Window(gtk.Window):
             ('ViewMenu', None, 'View'),
             ('Fullscreen',   None, 'Fullscreen', 'F11', None, self.fullscreen_cb),
             ('ResetView',   None, 'Reset (Zoom, Rotation, Mirror)', None, None, self.reset_view_cb),
-            ('ZoomOut',      None, 'Zoom Out (at cursor)', 'comma', None, self.zoom_cb),
-            ('ZoomIn',       None, 'Zoom In', 'period', None, self.zoom_cb),
+            ('ZoomIn',       None, 'Zoom In (at cursor)', 'period', None, self.zoom_cb),
+            ('ZoomOut',      None, 'Zoom Out', 'comma', None, self.zoom_cb),
             ('RotateLeft',   None, 'Rotate Counterclockwise', None, None, self.rotate_cb),
             ('RotateRight',  None, 'Rotate Clockwise', None, None, self.rotate_cb),
             ('ViewHelp',     None, 'Help', None, None, self.view_help_cb),
@@ -1045,7 +1045,6 @@ class Window(gtk.Window):
     def reset_view_cb(self, command):
         self.tdw.set_rotation(0.0)
         self.zoomlevel = self.zoomlevel_values.index(1.0)
-        self.tdw.set_zoom(1.0)
         self.tdw.set_zoom(1.0)
         self.tdw.set_flipped(False)
         self.action_group.get_action('Flip').set_active(False)
