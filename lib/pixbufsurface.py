@@ -84,7 +84,7 @@ class Surface:
         return self.tile_memory_dict[(tx, ty)]
 
     def fill(self, background):
-        # currently, the only data we can get is a backgrounsurface...
+        # currently, the only data we can get is a backgroundsurface...
         for (tx, ty), dst in self.tile_memory_dict.iteritems():
             background.blit_tile_into(dst, tx, ty)
 

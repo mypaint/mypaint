@@ -6,7 +6,7 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-# This module implements an an unbounded tiled surface for painting.
+# This module implements an unbounded tiled surface for painting.
 
 from numpy import *
 import time
