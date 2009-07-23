@@ -332,6 +332,8 @@ class Window(gtk.Window):
         kbm.add_extra_key('<control>y', 'Redo')
         kbm.add_extra_key('KP_Add', 'ZoomIn')
         kbm.add_extra_key('KP_Subtract', 'ZoomOut')
+        kbm.add_extra_key('plus', 'ZoomIn')
+        kbm.add_extra_key('minus', 'ZoomOut')
 
         kbm.add_extra_key('Left', lambda(action): self.move('MoveLeft'))
         kbm.add_extra_key('Right', lambda(action): self.move('MoveRight'))
