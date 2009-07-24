@@ -169,7 +169,7 @@ class Document():
             res.expandToIncludeRect(bbox)
         return res
 
-    def blit_tile_into(self, dst, tx, ty, mipmap=1, layers=None, background=None):
+    def blit_tile_into(self, dst, tx, ty, mipmap=0, layers=None, background=None):
         if layers is None:
             layers = self.layers
         if background is None:
