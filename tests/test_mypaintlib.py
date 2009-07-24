@@ -109,6 +109,7 @@ def docPaint():
     doc = document.Document()
     doc.undo() # nop
     events = load('painting30sec.dat.gz')
+    events = events[:len(events)/8]
     t_old = events[0][0]
     n = len(events)
     for i, (t, x, y, pressure) in enumerate(events):
@@ -134,6 +135,8 @@ def docPaint():
             doc.redo()
         if i == n*6/8:
             doc.set_brush(b2)
+        if i == n*7/8:
+            doc.add_layer(1)
 
     doc.layers[0].surface.save('test_docPaint_a.png')
     doc.layers[0].surface.save('test_docPaint_a1.png')
@@ -168,6 +171,11 @@ def docPaint():
     bbox = doc.get_bbox()
     print 'document bbox is', bbox
 
+    # test for appearance changes (make sure they are intended)
+    doc.save('test_docPaint_flat.png', alpha=False)
+    doc.save('test_docPaint_alpha.png', alpha=True)
+    assert pngs_equal('test_docPaint_flat.png', 'correct_docPaint_flat.png', exact=True)
+    assert pngs_equal('test_docPaint_alpha.png', 'correct_docPaint_alpha.png', exact=True)
 
 directPaint()
 brushPaint()
