@@ -112,9 +112,6 @@ class Window(gtk.Window):
               <menuitem action='Undo'/>
               <menuitem action='Redo'/>
               <separator/>
-              <menuitem action='CopyLayer'/>
-              <menuitem action='PasteLayer'/>
-              <separator/>
               <menuitem action='SettingsWindow'/>
             </menu>
             <menu action='ViewMenu'>
@@ -127,8 +124,12 @@ class Window(gtk.Window):
               <menuitem action='RotateRight'/>
               <menuitem action='Flip'/>
               <separator/>
+              <menuitem action='SoloLayer'/>
+              <menuitem action='ToggleAbove'/>
+              <separator/>
               <menuitem action='ViewHelp'/>
             </menu>
+            <separator/>
             <menu action='BrushMenu'>
               <menuitem action='BrushSelectionWindow'/>
               <menu action='ContextMenu'>
@@ -181,18 +182,20 @@ class Window(gtk.Window):
             </menu>
             <menu action='LayerMenu'>
               <menuitem action='BackgroundWindow'/>
+              <separator/>
               <menuitem action='ClearLayer'/>
+              <menuitem action='RemoveLayer'/>
+              <menuitem action='MergeLayer'/>
               <separator/>
               <menuitem action='NewLayerFG'/>
               <menuitem action='NewLayerBG'/>
-              <menuitem action='RemoveLayer'/>
-              <menuitem action='MergeLayer'/>
               <separator/>
               <menuitem action='PickLayer'/>
               <menuitem action='LayerFG'/>
               <menuitem action='LayerBG'/>
-              <menuitem action='SoloLayer'/>
-              <menuitem action='ToggleAbove'/>
+              <separator/>
+              <menuitem action='CopyLayer'/>
+              <menuitem action='PasteLayer'/>
               <separator/>
               <menuitem action='IncreaseLayerOpacity'/>
               <menuitem action='DecreaseLayerOpacity'/>
@@ -225,8 +228,6 @@ class Window(gtk.Window):
             ('EditMenu',           None, 'Edit'),
             ('Undo',               None, 'Undo', 'Z', None, self.undo_cb),
             ('Redo',               None, 'Redo', 'Y', None, self.redo_cb),
-            ('CopyLayer',          None, 'Copy Layer to Clipboard', '<control>C', None, self.copy_cb),
-            ('PasteLayer',         None, 'Paste Layer from Clipboard', '<control>V', None, self.paste_cb),
 
             ('BrushMenu',    None, 'Brush'),
             ('Brighter',     None, 'Brighter', None, None, self.brighter_cb),
@@ -272,6 +273,8 @@ class Window(gtk.Window):
 
             ('BackgroundWindow', None, 'Background...', None, None, self.toggleWindow_cb),
             ('ClearLayer',   None, 'Clear', 'Delete', None, self.clear_layer_cb),
+            ('CopyLayer',          None, 'Copy to Clipboard', '<control>C', None, self.copy_cb),
+            ('PasteLayer',         None, 'Paste from Clipboard', '<control>V', None, self.paste_cb),
             ('PickLayer',    None, 'Select Layer at Cursor', 'h', None, self.pick_layer_cb),
             ('LayerFG',      None, 'Next (above current)',  'Page_Up', None, self.layer_fg_cb),
             ('LayerBG',      None, 'Next (below current)', 'Page_Down', None, self.layer_bg_cb),
@@ -279,8 +282,6 @@ class Window(gtk.Window):
             ('NewLayerBG',   None, 'New (below current)', '<control>Page_Down', None, self.new_layer_cb),
             ('MergeLayer',   None, 'Merge Down', '<control>Delete', None, self.merge_layer_cb),
             ('RemoveLayer',  None, 'Remove', '<shift>Delete', None, self.remove_layer_cb),
-            ('SoloLayer',    None, 'Toggle Solo Mode', 'Home', None, self.solo_layer_cb),
-            ('ToggleAbove',  None, 'Toggle Layers Above Current', 'End', None, self.toggle_layers_above_cb), # TODO: make toggle action
             ('IncreaseLayerOpacity', None, 'Increase Layer Opacity',  'p', None, self.layer_increase_opacity),
             ('DecreaseLayerOpacity', None, 'Decrease Layer Opacity',  'o', None, self.layer_decrease_opacity),
 
@@ -306,6 +307,8 @@ class Window(gtk.Window):
             ('ZoomOut',      None, 'Zoom Out', 'comma', None, self.zoom_cb),
             ('RotateLeft',   None, 'Rotate Counterclockwise', None, None, self.rotate_cb),
             ('RotateRight',  None, 'Rotate Clockwise', None, None, self.rotate_cb),
+            ('SoloLayer',    None, 'Layer Solo', 'Home', None, self.solo_layer_cb),
+            ('ToggleAbove',  None, 'Hide Layers Above Current', 'End', None, self.toggle_layers_above_cb), # TODO: make toggle action
             ('ViewHelp',     None, 'Help', None, None, self.view_help_cb),
             ]
         ag.add_actions(actions)
