@@ -888,6 +888,12 @@ class Window(gtk.Window):
         dialog.add_filter(f)
 
         f = gtk.FileFilter()
+        filter2info[f] = ('.png', {'multifile': True})
+        f.set_name("Multiple PNG transparent (*.XXX.png)")
+        f.add_pattern("*.png")
+        dialog.add_filter(f)
+
+        f = gtk.FileFilter()
         filter2info[f] = ('.jpg', {'quality': 90})
         f.set_name("JPEG 90% quality (*.jpg; *.jpeg)")
         f.add_pattern("*.jpg")

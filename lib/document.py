@@ -261,15 +261,29 @@ class Document():
     def render_as_pixbuf(self, *args):
         return pixbufsurface.render_as_pixbuf(self, *args)
 
-    def save_png(self, filename, compression=2, alpha=False):
-        if alpha:
-            tmp_layer = layer.Layer()
-            for l in self.layers:
-                l.merge_into(tmp_layer)
-            pixbuf = tmp_layer.surface.render_as_pixbuf()
+    def save_png(self, filename, compression=2, alpha=False, multifile=False):
+        if multifile:
+            self.save_multifile_png(filename, compression)
         else:
-            pixbuf = self.render_as_pixbuf()
-        pixbuf.save(filename, 'png', {'compression':str(compression)})
+            if alpha:
+                tmp_layer = layer.Layer()
+                for l in self.layers:
+                    l.merge_into(tmp_layer)
+                pixbuf = tmp_layer.surface.render_as_pixbuf()
+            else:
+                pixbuf = self.render_as_pixbuf()
+            pixbuf.save(filename, 'png', {'compression':str(compression)})
+
+    def save_multifile_png(self, filename, compression=2, alpha=False):
+        prefix, ext = os.path.splitext(filename)
+        # if we have a number already, strip it
+        l = prefix.rsplit('.', 1)
+        if l[-1].isdigit():
+            prefix = l[0]
+        doc_bbox = self.get_bbox()
+        for i, l in enumerate(self.layers):
+            filename = '%s.%03d%s' % (prefix, i+1, ext)
+            l.surface.save(filename, *doc_bbox)
 
     def load_png(self, filename):
         self.load_from_pixbuf(gdk.pixbuf_new_from_file(filename))

@@ -169,8 +169,8 @@ class Surface(mypaintlib.TiledSurface):
         print '  %.3fs rendering layer as pixbuf' % (time.time() - t0)
         return res
 
-    def save(self, filename):
-        pixbuf = self.render_as_pixbuf()
+    def save(self, filename, *args, **kwargs):
+        pixbuf = self.render_as_pixbuf(*args, **kwargs)
         pixbuf.save(filename, 'png')
 
     def load_from_pixbufsurface(self, s):
