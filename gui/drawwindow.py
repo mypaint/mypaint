@@ -807,29 +807,18 @@ class Window(gtk.Window):
                                         gtk.STOCK_OPEN, gtk.RESPONSE_OK))
         dialog.set_default_response(gtk.RESPONSE_OK)
 
-        f = gtk.FileFilter()
-        f.set_name("All Recognized Formats")
-        f.add_pattern("*.ora")
-        f.add_pattern("*.png")
-        f.add_pattern("*.jpg")
-        f.add_pattern("*.jpeg")
-        dialog.add_filter(f)
-
-        f = gtk.FileFilter()
-        f.set_name("OpenRaster (*.ora)")
-        f.add_pattern("*.ora")
-        dialog.add_filter(f)
-
-        f = gtk.FileFilter()
-        f.set_name("PNG (*.png)")
-        f.add_pattern("*.png")
-        dialog.add_filter(f)
-
-        f = gtk.FileFilter()
-        f.set_name("JPEG (*.jpg; *.jpeg)")
-        f.add_pattern("*.jpg")
-        f.add_pattern("*.jpeg")
-        dialog.add_filter(f)
+        filters = [ #name, patterns
+        ("All Recognized Formats", ("*.ora", "*.png", "*.jpg", "*.jpeg")),
+        ("OpenRaster (*.ora)", ("*.ora",)),
+        ("PNG (*.png)", ("*.png",)),
+        ("JPEG (*.jpg; *.jpeg)", ("*.jpg", "*.jpeg")),
+        ]
+        for name, patterns in filters:
+            f = gtk.FileFilter()
+            f.set_name(name)
+            for p in patterns:
+                f.add_pattern(p)
+            dialog.add_filter(f)
 
         if self.filename:
             dialog.set_filename(self.filename)
@@ -838,7 +827,7 @@ class Window(gtk.Window):
                 self.open_file(dialog.get_filename())
         finally:
             dialog.destroy()
-        
+
     def save_cb(self, action):
         if not self.filename:
             self.save_as_cb(action)
@@ -858,47 +847,24 @@ class Window(gtk.Window):
         filter2info = {}
         self.filter2info = filter2info
 
-        f = gtk.FileFilter()
-        filter2info[f] = ('.ora', {})
-        f.set_name("Any format (prefer OpenRaster)")
-        self.save_filter_default = f
-
-        f.add_pattern("*.png")
-        f.add_pattern("*.ora")
-        f.add_pattern("*.jpg")
-        f.add_pattern("*.jpeg")
-        dialog.add_filter(f)
-
-        f = gtk.FileFilter()
-        filter2info[f] = ('.ora', {})
-        f.set_name("OpenRaster (*.ora)")
-        f.add_pattern("*.ora")
-        dialog.add_filter(f)
-
-        f = gtk.FileFilter()
-        filter2info[f] = ('.png', {'alpha': False})
-        f.set_name("PNG solid with background (*.png)")
-        f.add_pattern("*.png")
-        dialog.add_filter(f)
-
-        f = gtk.FileFilter()
-        filter2info[f] = ('.png', {'alpha': True})
-        f.set_name("PNG transparent (*.png)")
-        f.add_pattern("*.png")
-        dialog.add_filter(f)
-
-        f = gtk.FileFilter()
-        filter2info[f] = ('.png', {'multifile': True})
-        f.set_name("Multiple PNG transparent (*.XXX.png)")
-        f.add_pattern("*.png")
-        dialog.add_filter(f)
-
-        f = gtk.FileFilter()
-        filter2info[f] = ('.jpg', {'quality': 90})
-        f.set_name("JPEG 90% quality (*.jpg; *.jpeg)")
-        f.add_pattern("*.jpg")
-        f.add_pattern("*.jpeg")
-        dialog.add_filter(f)
+        filters = [ #name, patterns, saveopts
+        ("Any format (prefer OpenRaster)", ("*.ora", "*.png", "*.jpg", "*.jpeg"), ('.ora', {})),
+        ("OpenRaster (*.ora)", ("*.ora", ), ('.ora', {})),
+        ("PNG solid with background (*.png)", ("*.png", ), ('.png', {'alpha': False})),
+        ("PNG transparent (*.png)", ("*.png", ), ('.png', {'alpha': True})),
+        ("Multiple PNG transparent (*.XXX.png)", ("*.png", ), ('.png', {'multifile': True})),
+        ("JPEG 90% quality (*.jpg; *.jpeg)", ("*.jpg", "*.jpeg"), ('.jpg', {'quality': 90})),
+        ]
+        for nr, filt in enumerate(filters):
+            name, patterns, saveopts = filt
+            f = gtk.FileFilter()
+            filter2info[f] = saveopts
+            f.set_name(name)
+            for pat in patterns:
+                f.add_pattern(pat)
+            dialog.add_filter(f)
+            if nr == 0:
+                self.save_filter_default = f
 
     def save_as_cb(self, action):
         dialog = self.save_dialog
