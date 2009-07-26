@@ -1111,11 +1111,12 @@ class Window(gtk.Window):
                 u"Artis Rozentāls &lt;artis@aaa.apollo.lv&gt; (brushes)\n"
                 u"Yves Combe &lt;yves@ycombe.net&gt; (portability)\n"
                 u"Sebastian Kraft (desktop icon)\n"
-                u"Popolon &lt;popolon@popolon.org&gt; (brushes)\n"
+                u"Popolon &lt;popolon@popolon.org&gt; (brushes, programming)\n"
                 u"Clement Skau &lt;clementskau@gmail.com&gt; (programming)\n"
                 u'Marcelo "Tanda" Cerviño &lt;info@lodetanda.com.ar&gt; (patterns, brushes)\n'
                 u'Jon Nordby &lt;jononor@gmail.com&gt; (programming)\n'
                 u'Álinson Santos &lt;isoron@gmail.com&gt; (programming)\n'
+                u'Tumagonx &lt;mr.tiar@gmail.com&gt; (portability)\n'
                 u"\n"
                 u"This program is free software; you can redistribute it and/or modify "
                 u"it under the terms of the GNU General Public License as published by "
