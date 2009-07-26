@@ -129,7 +129,6 @@ class Window(gtk.Window):
               <separator/>
               <menuitem action='ViewHelp'/>
             </menu>
-            <separator/>
             <menu action='BrushMenu'>
               <menuitem action='BrushSelectionWindow'/>
               <menu action='ContextMenu'>
