@@ -267,7 +267,7 @@ class Window(gtk.Window):
             ('Context09',    None, 'Restore 9', '9', None, self.context_cb),
             ('Context09s',   None, 'Save 9', '<control>9', None, self.context_cb),
             ('ContextStore', None, 'Save to Most Recently Restored', 'q', None, self.context_cb),
-            ('ContextHelp',  None, 'Help!', None, None, self.context_help_cb),
+            ('ContextHelp',  None, 'Help!', None, None, self.show_infodialog_cb),
 
             ('LayerMenu',    None, 'Layers'),
 
@@ -291,9 +291,9 @@ class Window(gtk.Window):
             ('SettingsWindow',        None, 'Settings...', None, None, self.toggleWindow_cb),
 
             ('HelpMenu',     None, 'Help'),
-            ('Docu', None, 'Where is the Documentation?', None, None, self.show_docu_cb),
-            ('ShortcutHelp',  None, 'Change the Keyboard Shortcuts?', None, None, self.shortcut_help_cb),
-            ('About', None, 'About MyPaint', None, None, self.show_about_cb),
+            ('Docu', None, 'Where is the Documentation?', None, None, self.show_infodialog_cb),
+            ('ShortcutHelp',  None, 'Change the Keyboard Shortcuts?', None, None, self.show_infodialog_cb),
+            ('About', None, 'About MyPaint', None, None, self.show_infodialog_cb),
 
             ('DebugMenu',    None, 'Debug'),
 
@@ -309,7 +309,7 @@ class Window(gtk.Window):
             ('RotateRight',  None, 'Rotate Clockwise', None, None, self.rotate_cb),
             ('SoloLayer',    None, 'Layer Solo', 'Home', None, self.solo_layer_cb),
             ('ToggleAbove',  None, 'Hide Layers Above Current', 'End', None, self.toggle_layers_above_cb), # TODO: make toggle action
-            ('ViewHelp',     None, 'Help', None, None, self.view_help_cb),
+            ('ViewHelp',     None, 'Help', None, None, self.show_infodialog_cb),
             ]
         ag.add_actions(actions)
         toggle_actions = [
@@ -1072,82 +1072,61 @@ class Window(gtk.Window):
             self.app.select_brush(context)
             self.app.brushSelectionWindow.set_preview_pixbuf(context.preview)
 
-    def show_about_cb(self, action):
+    def show_infodialog_cb(self, action):
         d = gtk.MessageDialog(self, buttons=gtk.BUTTONS_OK)
-
-        d.set_markup(
-            u"MyPaint %s - pressure sensitive painting application\n"
-            u"Copyright (C) 2005-2009\n"
-            u"Martin Renold &lt;martinxyz@gmx.ch&gt;\n\n"
-            u"Contributors:\n"
-            u"Artis Rozentāls &lt;artis@aaa.apollo.lv&gt; (brushes)\n"
-            u"Yves Combe &lt;yves@ycombe.net&gt; (portability)\n"
-            u"Sebastian Kraft (desktop icon)\n"
-            u"Popolon &lt;popolon@popolon.org&gt; (brushes)\n"
-            u"Clement Skau &lt;clementskau@gmail.com&gt; (programming)\n"
-            u'Marcelo "Tanda" Cerviño &lt;info@lodetanda.com.ar&gt; (patterns, brushes)\n'
-            u'Jon Nordby &lt;jononor@gmail.com&gt; (programming)\n'
-            u'Álinson Santos &lt;isoron@gmail.com&gt; (programming)\n'
-            u"\n"
-            u"This program is free software; you can redistribute it and/or modify "
-            u"it under the terms of the GNU General Public License as published by "
-            u"the Free Software Foundation; either version 2 of the License, or "
-            u"(at your option) any later version.\n"
-            u"\n"
-            u"This program is distributed in the hope that it will be useful, "
-            u"but WITHOUT ANY WARRANTY. See the COPYING file for more details."
-            % MYPAINT_VERSION
-            )
-
-        d.run()
-        d.destroy()
-
-    def show_docu_cb(self, action):
-        d = gtk.MessageDialog(self, buttons=gtk.BUTTONS_OK)
-        d.set_markup("There is a tutorial available "
-                     "on the MyPaint homepage. It explains some features which are "
-                     "hard to discover yourself.\n\n"
-                     "Comments about the brush settings (opaque, hardness, etc.) and "
-                     "inputs (pressure, speed, etc.) are available as tooltips. "
-                     "Put your mouse over a label to see them. "
-                     "\n"
-                     )
-        d.run()
-        d.destroy()
-
-    def context_help_cb(self, action):
-        d = gtk.MessageDialog(self, buttons=gtk.BUTTONS_OK)
-        d.set_markup("This is used to quickly save/restore brush settings "
-                     "using keyboard shortcuts. You can paint with one hand and "
-                     "change brushes with the other without interrupting."
-                     "\n\n"
-                     "There are 10 memory slots to hold brush settings.\n"
-                     "Those are annonymous "
-                     "brushes, they are not visible in the brush selector list. "
-                     "But they will stay even if you quit. "
-                     "They will also remember the selected color. In contrast, selecting a "
-                     "normal brush never changes the color. "
-                     )
-        d.run()
-        d.destroy()
-
-    def shortcut_help_cb(self, action):
-        d = gtk.MessageDialog(self, buttons=gtk.BUTTONS_OK)
-        d.set_markup("Move your mouse over a menu entry, then press the key to "
-                     "assign.")
-        d.run()
-        d.destroy()
-
-    def view_help_cb(self, action):
-        d = gtk.MessageDialog(self, buttons=gtk.BUTTONS_OK)
-        d.set_markup(
-            "You can also drag the canvas with the mouse while holding the middle mouse button or spacebar. "
-            "or with the arrow keys."
-            "\n\n"
-            "In contrast to earlier versions, scrolling and zooming are harmless now and "
-            "will not make you run out of memory. But you still require a lot of memory "
-            "if you paint all over while fully zoomed out."
-            )
+        text = {
+        'ShortcutHelp': 
+                "Move your mouse over a menu entry, then press the key to assign.",
+        'ViewHelp': 
+                "You can also drag the canvas with the mouse while holding the middle "
+                "mouse button or spacebar. Or with the arrow keys."
+                "\n\n"
+                "In contrast to earlier versions, scrolling and zooming are harmless now and "
+                "will not make you run out of memory. But you still require a lot of memory "
+                "if you paint all over while fully zoomed out.",
+        'ContextHelp':
+                "This is used to quickly save/restore brush settings "
+                 "using keyboard shortcuts. You can paint with one hand and "
+                 "change brushes with the other without interrupting."
+                 "\n\n"
+                 "There are 10 memory slots to hold brush settings.\n"
+                 "Those are annonymous "
+                 "brushes, they are not visible in the brush selector list. "
+                 "But they will stay even if you quit. "
+                 "They will also remember the selected color. In contrast, selecting a "
+                 "normal brush never changes the color. ",
+        'Docu':
+                "There is a tutorial available "
+                 "on the MyPaint homepage. It explains some features which are "
+                 "hard to discover yourself.\n\n"
+                 "Comments about the brush settings (opaque, hardness, etc.) and "
+                 "inputs (pressure, speed, etc.) are available as tooltips. "
+                 "Put your mouse over a label to see them. "
+                 "\n",
+        'About':
+                u"MyPaint %s - pressure sensitive painting application\n"
+                u"Copyright (C) 2005-2009\n"
+                u"Martin Renold &lt;martinxyz@gmx.ch&gt;\n\n"
+                u"Contributors:\n"
+                u"Artis Rozentāls &lt;artis@aaa.apollo.lv&gt; (brushes)\n"
+                u"Yves Combe &lt;yves@ycombe.net&gt; (portability)\n"
+                u"Sebastian Kraft (desktop icon)\n"
+                u"Popolon &lt;popolon@popolon.org&gt; (brushes)\n"
+                u"Clement Skau &lt;clementskau@gmail.com&gt; (programming)\n"
+                u'Marcelo "Tanda" Cerviño &lt;info@lodetanda.com.ar&gt; (patterns, brushes)\n'
+                u'Jon Nordby &lt;jononor@gmail.com&gt; (programming)\n'
+                u'Álinson Santos &lt;isoron@gmail.com&gt; (programming)\n'
+                u"\n"
+                u"This program is free software; you can redistribute it and/or modify "
+                u"it under the terms of the GNU General Public License as published by "
+                u"the Free Software Foundation; either version 2 of the License, or "
+                u"(at your option) any later version.\n"
+                u"\n"
+                u"This program is distributed in the hope that it will be useful, "
+                u"but WITHOUT ANY WARRANTY. See the COPYING file for more details."
+                % MYPAINT_VERSION
+        }
+        d.set_markup(text[action.get_name()])
         d.run()
         d.destroy()
 
