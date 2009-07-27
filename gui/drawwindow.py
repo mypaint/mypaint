@@ -760,13 +760,16 @@ class Window(gtk.Window):
             t = _('%d minutes') % (t/60)
         else:
             t = _('%d seconds') % t
-        d = gtk.Dialog(title, 
-                       self,
-                       gtk.DIALOG_MODAL,
-                       (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
-                        gtk.STOCK_DISCARD, gtk.RESPONSE_OK))
+        d = gtk.Dialog(title, self, gtk.DIALOG_MODAL)
+
+        b = d.add_button(gtk.STOCK_DISCARD, gtk.RESPONSE_OK)
+        b.set_image(gtk.image_new_from_stock(gtk.STOCK_DELETE, gtk.ICON_SIZE_BUTTON))
+        d.add_button(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL)
+        b = d.add_button(_("_Save as Scrap"), gtk.RESPONSE_APPLY)
+        b.set_image(gtk.image_new_from_stock(gtk.STOCK_SAVE, gtk.ICON_SIZE_BUTTON))
+
         d.set_has_separator(False)
-        d.set_default_response(gtk.RESPONSE_OK)
+        d.set_default_response(gtk.RESPONSE_CANCEL)
         l = gtk.Label()
         l.set_markup(_("<b>%s</b>\n\nThis will discard %s of unsaved painting.") % (question,t))
         l.set_padding(10, 10)
@@ -774,6 +777,9 @@ class Window(gtk.Window):
         d.vbox.pack_start(l)
         response = d.run()
         d.destroy()
+        if response == gtk.RESPONSE_APPLY:
+            self.save_scrap_cb(None)
+            return True
         return response == gtk.RESPONSE_OK
 
     def new_cb(self, action):
