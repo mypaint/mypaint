@@ -158,10 +158,12 @@ class Window(gtk.Window):
         self.pressure_devices = []
         for device in gdk.devices_list():
             #if device.source in [gdk.SOURCE_PEN, gdk.SOURCE_ERASER]:
-            # The above seems to be True sometimes for a normal
-            # USB Mouse (bug #11215). Using different check now:
+            # The above contition seems to be True sometimes for a
+            # normal USB Mouse. https://gna.org/bugs/?11215
             for use, val_min, val_max in device.axes:
-                if use == gdk.AXIS_PRESSURE:
+                # Some mice have a third "pressure" axis, but without
+                # minimum or maximum. https://gna.org/bugs/?14029
+                if use == gdk.AXIS_PRESSURE and val_min != val_max:
                     self.pressure_devices.append(device.name)
                     mode = getattr(gdk, 'MODE_' + self.input_devices_mode.upper())
                     if device.mode != mode:
