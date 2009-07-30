@@ -65,14 +65,13 @@ public:
       for (x=0; x<width; x++) {
         float v_factor = 0.6;
         float s_factor = 0.6;
-        float h_factor = 0.4;
 
 #define factor2_func(x) ((x)*(x)*SIGN(x))
         float v_factor2 = 0.013;
         float s_factor2 = 0.013;
-        float h_factor2 = 0.02;
 
-        int stripe_width = 20;
+        int stripe_width = 15;
+        int s_radius = size/4;
 
         float h = 0;
         float s = 0;
@@ -81,17 +80,24 @@ public:
         int dx = x-width/2;
         int dy = y-height/2;
 
+        int dxs, dys;
+        if (dx > 0) 
+            dxs = dx - stripe_width;
+        else
+            dxs = dx + stripe_width;
+        if (dy > 0) 
+            dys = dy - stripe_width;
+        else
+            dys = dy + stripe_width;
+
+        float r = sqrt(SQR(dxs)+SQR(dys));
+
         // hue
-        if (dy > 0) {
-          h += float(dy-stripe_width)/stripe_width * 16;
-        } else {
-          h += float(dy+stripe_width)/stripe_width * 16;
-        }
-        h = h*h_factor + factor2_func(h)*h_factor2;
-        if (abs(dx) > size*0.30) {
-          s = 10000;
-          v = 10000;
-        }
+        h += 180 + 180*atan2f(dys,-dxs)/M_PI;
+        if (r < s_radius)
+            s = 255*r/s_radius - 128;
+        else
+            v = 255*(r-s_radius)/((size/2)-s_radius) - 128;
 
         // horizontal and vertical lines
         int min = ABS(dx);
