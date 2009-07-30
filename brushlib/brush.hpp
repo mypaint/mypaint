@@ -368,8 +368,10 @@ private:
     }
 
     if (settings_value[BRUSH_OFFSET_BY_RANDOM]) {
-      x += rand_gauss (rng) * settings_value[BRUSH_OFFSET_BY_RANDOM] * base_radius;
-      y += rand_gauss (rng) * settings_value[BRUSH_OFFSET_BY_RANDOM] * base_radius;
+      float amp = settings_value[BRUSH_OFFSET_BY_RANDOM];
+      if (amp < 0.0) amp = 0.0;
+      x += rand_gauss (rng) * amp * base_radius;
+      y += rand_gauss (rng) * amp * base_radius;
     }
 
   
