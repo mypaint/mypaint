@@ -273,7 +273,7 @@ class Window(gtk.Window):
             ('BackgroundWindow', None, 'Background...', None, None, self.toggleWindow_cb),
             ('ClearLayer',   None, 'Clear', 'Delete', None, self.clear_layer_cb),
             ('CopyLayer',          None, 'Copy to Clipboard', '<control>C', None, self.copy_cb),
-            ('PasteLayer',         None, 'Replace with Clipboard', '<control>V', None, self.paste_cb),
+            ('PasteLayer',         None, 'Paste Clipboard (Replace Layer)', '<control>V', None, self.paste_cb),
             ('PickLayer',    None, 'Select Layer at Cursor', 'h', None, self.pick_layer_cb),
             ('LayerFG',      None, 'Next (above current)',  'Page_Up', None, self.layer_fg_cb),
             ('LayerBG',      None, 'Next (below current)', 'Page_Down', None, self.layer_bg_cb),
