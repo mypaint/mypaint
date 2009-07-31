@@ -210,12 +210,6 @@ class Document():
 
         self.invalidate_all()
 
-    def get_background_pixbuf(self):
-        pixbuf = gdk.Pixbuf(gdk.COLORSPACE_RGB, False, 8, N, N)
-        arr = helpers.gdkpixbuf2numpy(pixbuf)
-        arr[:,:,:] = self.background
-        return pixbuf
-
     def load_from_pixbuf(self, pixbuf):
         self.clear()
         self.load_layer_from_pixbuf(pixbuf)

@@ -59,19 +59,22 @@ class Window(gtk.Window):
         rgb = self.cs.get_current_color()
         rgb = rgb.red, rgb.green, rgb.blue
         rgb = [int(x / 65535.0 * 255.0) for x in rgb] 
-        self.set_background(rgb)
-
-    def save_as_default_cb(self, widget):
-        pixbuf = self.app.drawWindow.doc.get_background_pixbuf()
-        pixbuf.save(os.path.join(self.app.confpath, 'backgrounds', 'default.png'), 'png')
+        pixbuf = gdk.Pixbuf(gdk.COLORSPACE_RGB, False, 8, N, N)
+        arr = helpers.gdkpixbuf2numpy(pixbuf)
+        arr[:,:] = rgb
         self.set_background(pixbuf)
 
-    def set_background(self, obj):
+    def save_as_default_cb(self, widget):
+        pixbuf = self.current_background_pixbuf
+        pixbuf.save(os.path.join(self.app.confpath, 'backgrounds', 'default.png'), 'png')
+
+    def set_background(self, pixbuf):
         doc = self.app.drawWindow.doc
-        doc.set_background(obj)
+        doc.set_background(pixbuf)
+        self.current_background_pixbuf = pixbuf
 
     def add_color_to_patterns_cb(self, widget):
-        pixbuf = self.app.drawWindow.doc.get_background_pixbuf()
+        pixbuf = self.current_background_pixbuf
         i = 1
         while 1:
             filename = os.path.join(self.app.confpath, 'backgrounds', 'color%02d.png' % i)

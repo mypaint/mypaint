@@ -16,7 +16,7 @@ class Background:
         try:
             obj = helpers.gdkpixbuf2numpy(obj)
         except:
-            # it was already an array (FIXME: is this codepath ever used?)
+            # it was already an array (eg. when creating the mipmap)
             pass
         try:
             r, g, b = obj
