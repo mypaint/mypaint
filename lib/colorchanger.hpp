@@ -49,13 +49,12 @@ public:
     int width, height;
     float width_inv, height_inv;
     int x, y, i;
+    int s_radius = size/2.6;
     PrecalcData * result;
 
     width = size;
     height = size;
     result = (PrecalcData*)malloc(sizeof(PrecalcData)*width*height);
-
-    //phase0 = rand_double (rng) * 2*M_PI;
 
     width_inv = 1.0/width;
     height_inv = 1.0/height;
@@ -67,11 +66,11 @@ public:
         float s_factor = 0.6;
 
 #define factor2_func(x) ((x)*(x)*SIGN(x))
+#define SQR2(x) (x)*(x)/2 + (x)/2
         float v_factor2 = 0.013;
         float s_factor2 = 0.013;
 
         int stripe_width = 15;
-        int s_radius = size/4;
 
         float h = 0;
         float s = 0;
@@ -79,6 +78,7 @@ public:
 
         int dx = x-width/2;
         int dy = y-height/2;
+        int diag = sqrt(2)*size/2;
 
         int dxs, dys;
         if (dx > 0) 
@@ -93,11 +93,16 @@ public:
         float r = sqrt(SQR(dxs)+SQR(dys));
 
         // hue
-        h += 180 + 180*atan2f(dys,-dxs)/M_PI;
-        if (r < s_radius)
-            s = 255*r/s_radius - 128;
-        else
-            v = 255*(r-s_radius)/((size/2)-s_radius) - 128;
+        if (r < s_radius) {
+            if (dx > 0) 
+                h = 90*SQR2(r/s_radius);
+            else
+                h = 360 - 90*SQR2(r/s_radius);
+            s = 256*factor2_func(atan2f(abs(dxs),dys)/M_PI) - 128;
+        } else {
+            h = 180 + 180*atan2f(dys,-dxs)/M_PI;
+            v = 255*(r-s_radius)/(diag-s_radius) - 128;
+        }
 
         // horizontal and vertical lines
         int min = ABS(dx);
