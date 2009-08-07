@@ -157,19 +157,44 @@ class Window(gtk.Window):
         # init extended input devices
         self.pressure_devices = []
         for device in gdk.devices_list():
+            #print device.name, device.source
+
             #if device.source in [gdk.SOURCE_PEN, gdk.SOURCE_ERASER]:
-            # The above contition seems to be True sometimes for a
-            # normal USB Mouse. https://gna.org/bugs/?11215
+            # The above contition is True sometimes for a normal USB
+            # Mouse. https://gna.org/bugs/?11215
+            # In fact, GTK also just guesses this value from device.name.
+
+            last_word = device.name.split()[-1].lower()
+            if last_word == 'pad':
+                # Setting the intuos3 pad into "screen mode" causes
+                # glitches when you press a pad-button in mid-stroke,
+                # and it's not a pointer device anyway. But it reports
+                # axes almost identical to the pen and eraser.
+                #
+                # device.name is usually something like "wacom intuos3 6x8 pad" or just "pad"
+                print 'Ignoring "%s" (probably wacom keypad device)' % device.name
+                continue
+            if last_word == 'cursor':
+                # this is a "normal" mouse and does not work in screen mode
+                print 'Ignoring "%s" (probably wacom mouse device)' % device.name
+                continue
+
             for use, val_min, val_max in device.axes:
                 # Some mice have a third "pressure" axis, but without
                 # minimum or maximum. https://gna.org/bugs/?14029
                 if use == gdk.AXIS_PRESSURE and val_min != val_max:
+                    if 'mouse' in device.name.lower():
+                        # Real fix for the above bug https://gna.org/bugs/?14029
+                        print 'Ignoring "%s" (probably a mouse, but it reports extra axes)' % device.name
+                        continue
+
                     self.pressure_devices.append(device.name)
                     mode = getattr(gdk, 'MODE_' + self.input_devices_mode.upper())
                     if device.mode != mode:
-                        print 'Setting %s mode for %s' % (self.input_devices_mode, device.name)
+                        print 'Setting %s mode for "%s"' % (self.input_devices_mode, device.name)
                         device.set_mode(mode)
                     break
+
         self.applying = False
 
     def input_devices_combo_changed_cb(self, window):
