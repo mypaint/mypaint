@@ -98,7 +98,7 @@ public:
                 h = 90*SQR2(r/s_radius);
             else
                 h = 360 - 90*SQR2(r/s_radius);
-            s = 256*factor2_func(atan2f(abs(dxs),dys)/M_PI) - 128;
+            s = 256*(atan2f(abs(dxs),dys)/M_PI) - 128;
         } else {
             h = 180 + 180*atan2f(dys,-dxs)/M_PI;
             v = 255*(r-s_radius)/(diag-s_radius) - 128;
