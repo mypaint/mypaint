@@ -9,6 +9,9 @@
 "window to model a single brush property function"
 import gtk
 from lib import brushsettings
+import gettext
+
+gettext.install('mypaint', None, True)
 
 class Window(gtk.Window):
     def __init__(self, app, setting, adj):
@@ -36,7 +39,7 @@ class Window(gtk.Window):
 
         
         l = gtk.Label()
-        l.set_markup('Base Value')
+        l.set_markup(_('Base Value'))
         l.set_alignment(0.0, 0.0)
         l.xpad = 5
         vbox.pack_start(l, expand=False)
@@ -100,7 +103,7 @@ class ByInputWidget(gtk.VBox):
         self.scale_y_adj.connect('value-changed', self.user_changes_cb)
 
         l = gtk.Label()
-        l.set_markup('By <b>%s</b>' % input.name)
+        l.set_markup(_('By <b>%s</b>') % input.name)
         l.set_alignment(0.0, 0.0)
         l.set_tooltip_text(input.tooltip)
         self.pack_start(l, expand=False)
@@ -134,7 +137,7 @@ class ByInputWidget(gtk.VBox):
         t.attach(l5, 1, 2, 3, 4, gtk.EXPAND, 0, 5, 0)
         t.attach(l6, 2, 3, 3, 4, 0, 0, 5, 0)
 
-        expander = self.expander = gtk.Expander(label='Details')
+        expander = self.expander = gtk.Expander(label=_('Details'))
         expander.add(t)
         expander.set_expanded(False)
 

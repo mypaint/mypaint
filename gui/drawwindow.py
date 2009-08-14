@@ -21,6 +21,8 @@ from glob import glob
 import gtk
 from gtk import gdk, keysyms
 
+import gettext
+
 import tileddrawwidget, colorselectionwindow, historypopup, \
        stategroup, keyboard, colorpicker
 from lib import document, helpers, backgroundsurface, command
@@ -214,109 +216,109 @@ class Window(gtk.Window):
         </ui>"""
         actions = [
 			# name, stock id, label, accelerator, tooltip, callback
-            ('FileMenu',     None, 'File'),
-            ('New',          None, 'New', '<control>N', None, self.new_cb),
-            ('Open',         None, 'Open...', '<control>O', None, self.open_cb),
-            ('OpenRecent',   None, 'Open Recent', 'F3', None, self.open_recent_cb),
-            ('Save',         None, 'Save', '<control>S', None, self.save_cb),
-            ('SaveAs',       None, 'Save As...', '<control><shift>S', None, self.save_as_cb),
-            ('SaveScrap',    None, 'Save Next Scrap', 'F2', None, self.save_scrap_cb),
-            ('Quit',         None, 'Quit', '<control>q', None, self.quit_cb),
+            ('FileMenu',     None, _('File')),
+            ('New',          None, _('New'), '<control>N', None, self.new_cb),
+            ('Open',         None, _('Open...'), '<control>O', None, self.open_cb),
+            ('OpenRecent',   None, _('Open Recent'), 'F3', None, self.open_recent_cb),
+            ('Save',         None, _('Save'), '<control>S', None, self.save_cb),
+            ('SaveAs',       None, _('Save As...'), '<control><shift>S', None, self.save_as_cb),
+            ('SaveScrap',    None, _('Save Next Scrap'), 'F2', None, self.save_scrap_cb),
+            ('Quit',         None, _('Quit'), '<control>q', None, self.quit_cb),
 
 
-            ('EditMenu',           None, 'Edit'),
-            ('Undo',               None, 'Undo', 'Z', None, self.undo_cb),
-            ('Redo',               None, 'Redo', 'Y', None, self.redo_cb),
+            ('EditMenu',           None, _('Edit')),
+            ('Undo',               None, _('Undo'), 'Z', None, self.undo_cb),
+            ('Redo',               None, _('Redo'), 'Y', None, self.redo_cb),
 
-            ('BrushMenu',    None, 'Brush'),
-            ('Brighter',     None, 'Brighter', None, None, self.brighter_cb),
-            ('Smaller',      None, 'Smaller', 'd', None, self.brush_smaller_cb),
-            ('MoreOpaque',   None, 'More Opaque', 's', None, self.more_opaque_cb),
-            ('LessOpaque',   None, 'Less Opaque', 'a', None, self.less_opaque_cb),
-            ('Eraser',       None, 'Toggle Eraser Mode', 'e', None, self.eraser_cb),
-            ('PickContext',  None, 'Pick Context (layer, brush and color)', 'w', None, self.pick_context_cb),
+            ('BrushMenu',    None, _('Brush')),
+            ('Brighter',     None, _('Brighter'), None, None, self.brighter_cb),
+            ('Smaller',      None, _('Smaller'), 'd', None, self.brush_smaller_cb),
+            ('MoreOpaque',   None, _('More Opaque'), 's', None, self.more_opaque_cb),
+            ('LessOpaque',   None, _('Less Opaque'), 'a', None, self.less_opaque_cb),
+            ('Eraser',       None, _('Toggle Eraser Mode'), 'e', None, self.eraser_cb),
+            ('PickContext',  None, _('Pick Context (layer, brush and color)'), 'w', None, self.pick_context_cb),
 
-            ('ColorMenu',    None, 'Color'),
-            ('Darker',       None, 'Darker', None, None, self.darker_cb),
-            ('Bigger',       None, 'Bigger', 'f', None, self.brush_bigger_cb),
-            ('ColorPickerPopup',    None, 'Pick Color', 'r', None, self.popup_cb),
-            ('ColorHistoryPopup',  None, 'Color History', 'x', None, self.popup_cb),
-            ('ColorChangerPopup', None, 'Color Changer', 'v', None, self.popup_cb),
-            ('ColorRingPopup',  None, 'Color Ring', None, None, self.popup_cb),
+            ('ColorMenu',    None, _('Color')),
+            ('Darker',       None, _('Darker'), None, None, self.darker_cb),
+            ('Bigger',       None, _('Bigger'), 'f', None, self.brush_bigger_cb),
+            ('ColorPickerPopup',    None, _('Pick Color'), 'r', None, self.popup_cb),
+            ('ColorHistoryPopup',  None, _('Color History'), 'x', None, self.popup_cb),
+            ('ColorChangerPopup', None, _('Color Changer'), 'v', None, self.popup_cb),
+            ('ColorRingPopup',  None, _('Color Ring'), None, None, self.popup_cb),
 
-            ('ContextMenu',  None, 'Brushkeys'),
-            ('Context00',    None, 'Restore Brush 0', '0', None, self.context_cb),
-            ('Context00s',   None, 'Save to Brush 0', '<control>0', None, self.context_cb),
-            ('Context01',    None, 'Restore 1', '1', None, self.context_cb),
-            ('Context01s',   None, 'Save 1', '<control>1', None, self.context_cb),
-            ('Context02',    None, 'Restore 2', '2', None, self.context_cb),
-            ('Context02s',   None, 'Save 2', '<control>2', None, self.context_cb),
-            ('Context03',    None, 'Restore 3', '3', None, self.context_cb),
-            ('Context03s',   None, 'Save 3', '<control>3', None, self.context_cb),
-            ('Context04',    None, 'Restore 4', '4', None, self.context_cb),
-            ('Context04s',   None, 'Save 4', '<control>4', None, self.context_cb),
-            ('Context05',    None, 'Restore 5', '5', None, self.context_cb),
-            ('Context05s',   None, 'Save 5', '<control>5', None, self.context_cb),
-            ('Context06',    None, 'Restore 6', '6', None, self.context_cb),
-            ('Context06s',   None, 'Save 6', '<control>6', None, self.context_cb),
-            ('Context07',    None, 'Restore 7', '7', None, self.context_cb),
-            ('Context07s',   None, 'Save 7', '<control>7', None, self.context_cb),
-            ('Context08',    None, 'Restore 8', '8', None, self.context_cb),
-            ('Context08s',   None, 'Save 8', '<control>8', None, self.context_cb),
-            ('Context09',    None, 'Restore 9', '9', None, self.context_cb),
-            ('Context09s',   None, 'Save 9', '<control>9', None, self.context_cb),
-            ('ContextStore', None, 'Save to Most Recently Restored', 'q', None, self.context_cb),
-            ('ContextHelp',  None, 'Help!', None, None, self.show_infodialog_cb),
+            ('ContextMenu',  None, _('Brushkeys')),
+            ('Context00',    None, _('Restore Brush 0'), '0', None, self.context_cb),
+            ('Context00s',   None, _('Save to Brush 0'), '<control>0', None, self.context_cb),
+            ('Context01',    None, _('Restore 1'), '1', None, self.context_cb),
+            ('Context01s',   None, _('Save 1'), '<control>1', None, self.context_cb),
+            ('Context02',    None, _('Restore 2'), '2', None, self.context_cb),
+            ('Context02s',   None, _('Save 2'), '<control>2', None, self.context_cb),
+            ('Context03',    None, _('Restore 3'), '3', None, self.context_cb),
+            ('Context03s',   None, _('Save 3'), '<control>3', None, self.context_cb),
+            ('Context04',    None, _('Restore 4'), '4', None, self.context_cb),
+            ('Context04s',   None, _('Save 4'), '<control>4', None, self.context_cb),
+            ('Context05',    None, _('Restore 5'), '5', None, self.context_cb),
+            ('Context05s',   None, _('Save 5'), '<control>5', None, self.context_cb),
+            ('Context06',    None, _('Restore 6'), '6', None, self.context_cb),
+            ('Context06s',   None, _('Save 6'), '<control>6', None, self.context_cb),
+            ('Context07',    None, _('Restore 7'), '7', None, self.context_cb),
+            ('Context07s',   None, _('Save 7'), '<control>7', None, self.context_cb),
+            ('Context08',    None, _('Restore 8'), '8', None, self.context_cb),
+            ('Context08s',   None, _('Save 8'), '<control>8', None, self.context_cb),
+            ('Context09',    None, _('Restore 9'), '9', None, self.context_cb),
+            ('Context09s',   None, _('Save 9'), '<control>9', None, self.context_cb),
+            ('ContextStore', None, _('Save to Most Recently Restored'), 'q', None, self.context_cb),
+            ('ContextHelp',  None, _('Help!'), None, None, self.show_infodialog_cb),
 
-            ('LayerMenu',    None, 'Layers'),
+            ('LayerMenu',    None, _('Layers')),
 
-            ('BackgroundWindow', None, 'Background...', None, None, self.toggleWindow_cb),
-            ('ClearLayer',   None, 'Clear', 'Delete', None, self.clear_layer_cb),
-            ('CopyLayer',          None, 'Copy to Clipboard', '<control>C', None, self.copy_cb),
-            ('PasteLayer',         None, 'Replace with Clipboard', '<control>V', None, self.paste_cb),
-            ('PickLayer',    None, 'Select Layer at Cursor', 'h', None, self.pick_layer_cb),
-            ('LayerFG',      None, 'Next (above current)',  'Page_Up', None, self.layer_fg_cb),
-            ('LayerBG',      None, 'Next (below current)', 'Page_Down', None, self.layer_bg_cb),
-            ('NewLayerFG',   None, 'New (above current)', '<control>Page_Up', None, self.new_layer_cb),
-            ('NewLayerBG',   None, 'New (below current)', '<control>Page_Down', None, self.new_layer_cb),
-            ('MergeLayer',   None, 'Merge Down', '<control>Delete', None, self.merge_layer_cb),
-            ('RemoveLayer',  None, 'Remove', '<shift>Delete', None, self.remove_layer_cb),
-            ('IncreaseLayerOpacity', None, 'Increase Layer Opacity',  'p', None, self.layer_increase_opacity),
-            ('DecreaseLayerOpacity', None, 'Decrease Layer Opacity',  'o', None, self.layer_decrease_opacity),
+            ('BackgroundWindow', None, _('Background...'), None, None, self.toggleWindow_cb),
+            ('ClearLayer',   None, _('Clear'), 'Delete', None, self.clear_layer_cb),
+            ('CopyLayer',          None, _('Copy to Clipboard'), '<control>C', None, self.copy_cb),
+            ('PasteLayer',         None, _('Replace with Clipboard'), '<control>V', None, self.paste_cb),
+            ('PickLayer',    None, _('Select Layer at Cursor'), 'h', None, self.pick_layer_cb),
+            ('LayerFG',      None, _('Next (above current)'),  'Page_Up', None, self.layer_fg_cb),
+            ('LayerBG',      None, _('Next (below current)'), 'Page_Down', None, self.layer_bg_cb),
+            ('NewLayerFG',   None, _('New (above current)'), '<control>Page_Up', None, self.new_layer_cb),
+            ('NewLayerBG',   None, _('New (below current)'), '<control>Page_Down', None, self.new_layer_cb),
+            ('MergeLayer',   None, _('Merge Down'), '<control>Delete', None, self.merge_layer_cb),
+            ('RemoveLayer',  None, _('Remove'), '<shift>Delete', None, self.remove_layer_cb),
+            ('IncreaseLayerOpacity', None, _('Increase Layer Opacity'),  'p', None, self.layer_increase_opacity),
+            ('DecreaseLayerOpacity', None, _('Decrease Layer Opacity'),  'o', None, self.layer_decrease_opacity),
 
-            ('BrushSelectionWindow',  None, 'Brush List...', 'b', None, self.toggleWindow_cb),
-            ('BrushSettingsWindow',   None, 'Brush Settings...', '<control>b', None, self.toggleWindow_cb),
-            ('ColorSelectionWindow',  None, 'Color Triangle...', 'g', None, self.toggleWindow_cb),
-            ('SettingsWindow',        None, 'Settings...', None, None, self.toggleWindow_cb),
+            ('BrushSelectionWindow',  None, _('Brush List...'), 'b', None, self.toggleWindow_cb),
+            ('BrushSettingsWindow',   None, _('Brush Settings...'), '<control>b', None, self.toggleWindow_cb),
+            ('ColorSelectionWindow',  None, _('Color Triangle...'), 'g', None, self.toggleWindow_cb),
+            ('SettingsWindow',        None, _('Settings...'), None, None, self.toggleWindow_cb),
 
-            ('HelpMenu',     None, 'Help'),
-            ('Docu', None, 'Where is the Documentation?', None, None, self.show_infodialog_cb),
-            ('ShortcutHelp',  None, 'Change the Keyboard Shortcuts?', None, None, self.show_infodialog_cb),
-            ('About', None, 'About MyPaint', None, None, self.show_infodialog_cb),
+            ('HelpMenu',     None, _('Help')),
+            ('Docu', None, _('Where is the Documentation?'), None, None, self.show_infodialog_cb),
+            ('ShortcutHelp',  None, _('Change the Keyboard Shortcuts?'), None, None, self.show_infodialog_cb),
+            ('About', None, _('About MyPaint'), None, None, self.show_infodialog_cb),
 
-            ('DebugMenu',    None, 'Debug'),
+            ('DebugMenu',    None, _('Debug')),
 
 
-            ('ShortcutsMenu', None, 'Shortcuts'),
+            ('ShortcutsMenu', None, _('Shortcuts')),
 
-            ('ViewMenu', None, 'View'),
-            ('Fullscreen',   None, 'Fullscreen', 'F11', None, self.fullscreen_cb),
-            ('ResetView',   None, 'Reset (Zoom, Rotation, Mirror)', None, None, self.reset_view_cb),
-            ('ZoomIn',       None, 'Zoom In (at cursor)', 'period', None, self.zoom_cb),
-            ('ZoomOut',      None, 'Zoom Out', 'comma', None, self.zoom_cb),
-            ('RotateLeft',   None, 'Rotate Counterclockwise', None, None, self.rotate_cb),
-            ('RotateRight',  None, 'Rotate Clockwise', None, None, self.rotate_cb),
-            ('SoloLayer',    None, 'Layer Solo', 'Home', None, self.solo_layer_cb),
-            ('ToggleAbove',  None, 'Hide Layers Above Current', 'End', None, self.toggle_layers_above_cb), # TODO: make toggle action
-            ('ViewHelp',     None, 'Help', None, None, self.show_infodialog_cb),
+            ('ViewMenu', None, _('View')),
+            ('Fullscreen',   None, _('Fullscreen'), 'F11', None, self.fullscreen_cb),
+            ('ResetView',   None, _('Reset (Zoom, Rotation, Mirror)'), None, None, self.reset_view_cb),
+            ('ZoomIn',       None, _('Zoom In (at cursor)'), 'period', None, self.zoom_cb),
+            ('ZoomOut',      None, _('Zoom Out'), 'comma', None, self.zoom_cb),
+            ('RotateLeft',   None, _('Rotate Counterclockwise'), None, None, self.rotate_cb),
+            ('RotateRight',  None, _('Rotate Clockwise'), None, None, self.rotate_cb),
+            ('SoloLayer',    None, _('Layer Solo'), 'Home', None, self.solo_layer_cb),
+            ('ToggleAbove',  None, _('Hide Layers Above Current'), 'End', None, self.toggle_layers_above_cb), # TODO: make toggle action
+            ('ViewHelp',     None, _('Help'), None, None, self.show_infodialog_cb),
             ]
         ag.add_actions(actions)
         toggle_actions = [
             # name, stock id, label, accelerator, tooltip, callback, default toggle status
-            ('PrintInputs', None, 'Print Brush Input Values to stdout', None, None, self.print_inputs_cb),
-            ('VisualizeRendering', None, 'Visualize Rendering', None, None, self.visualize_rendering_cb),
-            ('NoDoubleBuffereing', None, 'Disable GTK Double Buffering', None, None, self.no_double_buffering_cb),
-            ('Flip', None, 'Mirror Image', 'i', None, self.flip_cb),
+            ('PrintInputs', None, _('Print Brush Input Values to stdout'), None, None, self.print_inputs_cb),
+            ('VisualizeRendering', None, _('Visualize Rendering'), None, None, self.visualize_rendering_cb),
+            ('NoDoubleBuffereing', None, _('Disable GTK Double Buffering'), None, None, self.no_double_buffering_cb),
+            ('Flip', None, _('Mirror Image'), 'i', None, self.flip_cb),
             ]
         ag.add_toggle_actions(toggle_actions)
         self.ui = gtk.UIManager()
@@ -744,7 +746,7 @@ class Window(gtk.Window):
         try:
             x, y, w, h =  self.doc.get_bbox()
             if w == 0 and h == 0:
-                raise document.SaveLoadError, 'Did not save, the canvas is empty.'
+                raise document.SaveLoadError, _('Did not save, the canvas is empty.')
             self.doc.save(filename, **options)
         except document.SaveLoadError, e:
             d = gtk.MessageDialog(self, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_OK)
@@ -770,9 +772,9 @@ class Window(gtk.Window):
             return True
 
         if t > 120:
-            t = '%d minutes' % (t/60)
+            t = _('%d minutes') % (t/60)
         else:
-            t = '%d seconds' % t
+            t = _('%d seconds') % t
         d = gtk.Dialog(title, 
                        self,
                        gtk.DIALOG_MODAL,
@@ -781,7 +783,7 @@ class Window(gtk.Window):
         d.set_has_separator(False)
         d.set_default_response(gtk.RESPONSE_OK)
         l = gtk.Label()
-        l.set_markup("<b>" + question + "</b>\n\nThis will discard %s of unsaved painting." % t)
+        l.set_markup(_("<b>%s</b>\n\nThis will discard %s of unsaved painting.") % (question,t))
         l.set_padding(10, 10)
         l.show()
         d.vbox.pack_start(l)
@@ -800,17 +802,17 @@ class Window(gtk.Window):
     def open_cb(self, action):
         if not self.confirm_destructive_action():
             return
-        dialog = gtk.FileChooserDialog("Open..", self,
+        dialog = gtk.FileChooserDialog(_("Open.."), self,
                                        gtk.FILE_CHOOSER_ACTION_OPEN,
                                        (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
                                         gtk.STOCK_OPEN, gtk.RESPONSE_OK))
         dialog.set_default_response(gtk.RESPONSE_OK)
 
         filters = [ #name, patterns
-        ("All Recognized Formats", ("*.ora", "*.png", "*.jpg", "*.jpeg")),
-        ("OpenRaster (*.ora)", ("*.ora",)),
-        ("PNG (*.png)", ("*.png",)),
-        ("JPEG (*.jpg; *.jpeg)", ("*.jpg", "*.jpeg")),
+        (_("All Recognized Formats"), ("*.ora", "*.png", "*.jpg", "*.jpeg")),
+        (_("OpenRaster (*.ora)"), ("*.ora",)),
+        (_("PNG (*.png)"), ("*.png",)),
+        (_("JPEG (*.jpg; *.jpeg)"), ("*.jpg", "*.jpeg")),
         ]
         for name, patterns in filters:
             f = gtk.FileFilter()
@@ -835,7 +837,7 @@ class Window(gtk.Window):
 
 
     def init_save_dialog(self):
-        dialog = gtk.FileChooserDialog("Save..", self,
+        dialog = gtk.FileChooserDialog(_("Save.."), self,
                                        gtk.FILE_CHOOSER_ACTION_SAVE,
                                        (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
                                         gtk.STOCK_SAVE, gtk.RESPONSE_OK))
@@ -847,12 +849,12 @@ class Window(gtk.Window):
         self.filter2info = filter2info
 
         filters = [ #name, patterns, saveopts
-        ("Any format (prefer OpenRaster)", ("*.ora", "*.png", "*.jpg", "*.jpeg"), ('.ora', {})),
-        ("OpenRaster (*.ora)", ("*.ora", ), ('.ora', {})),
+        (_("Any format (prefer OpenRaster)"), ("*.ora", "*.png", "*.jpg", "*.jpeg"), ('.ora', {})),
+        (_("OpenRaster (*.ora)"), ("*.ora", ), ('.ora', {})),
         ("PNG solid with background (*.png)", ("*.png", ), ('.png', {'alpha': False})),
-        ("PNG transparent (*.png)", ("*.png", ), ('.png', {'alpha': True})),
-        ("Multiple PNG transparent (*.XXX.png)", ("*.png", ), ('.png', {'multifile': True})),
-        ("JPEG 90% quality (*.jpg; *.jpeg)", ("*.jpg", "*.jpeg"), ('.jpg', {'quality': 90})),
+        (_("PNG transparent (*.png)"), ("*.png", ), ('.png', {'alpha': True})),
+        (_("Multiple PNG transparent (*.XXX.png)"), ("*.png", ), ('.png', {'multifile': True})),
+        (_("JPEG 90% quality (*.jpg; *.jpeg)"), ("*.jpg", "*.jpeg"), ('.jpg', {'quality': 90})),
         ]
         for nr, filt in enumerate(filters):
             name, patterns, saveopts = filt
@@ -982,7 +984,7 @@ class Window(gtk.Window):
         self.doc.split_stroke()
         self.app.save_gui_config() # FIXME: should do this periodically, not only on quit
 
-        if not self.confirm_destructive_action(title='Quit', question='Really Quit?'):
+        if not self.confirm_destructive_action(title=_('Quit'), question=_('Really Quit?')):
             return True
 
         gtk.main_quit()
@@ -1075,16 +1077,16 @@ class Window(gtk.Window):
         d = gtk.MessageDialog(self, buttons=gtk.BUTTONS_OK)
         text = {
         'ShortcutHelp': 
-                "Move your mouse over a menu entry, then press the key to assign.",
+                _("Move your mouse over a menu entry, then press the key to assign."),
         'ViewHelp': 
-                "You can also drag the canvas with the mouse while holding the middle "
+                _("You can also drag the canvas with the mouse while holding the middle "
                 "mouse button or spacebar. Or with the arrow keys."
                 "\n\n"
                 "In contrast to earlier versions, scrolling and zooming are harmless now and "
                 "will not make you run out of memory. But you still require a lot of memory "
-                "if you paint all over while fully zoomed out.",
+                "if you paint all over while fully zoomed out."),
         'ContextHelp':
-                "This is used to quickly save/restore brush settings "
+                _("This is used to quickly save/restore brush settings "
                  "using keyboard shortcuts. You can paint with one hand and "
                  "change brushes with the other without interrupting."
                  "\n\n"
@@ -1093,20 +1095,20 @@ class Window(gtk.Window):
                  "brushes, they are not visible in the brush selector list. "
                  "But they will stay even if you quit. "
                  "They will also remember the selected color. In contrast, selecting a "
-                 "normal brush never changes the color. ",
+                 "normal brush never changes the color. "),
         'Docu':
-                "There is a tutorial available "
+                _("There is a tutorial available "
                  "on the MyPaint homepage. It explains some features which are "
                  "hard to discover yourself.\n\n"
                  "Comments about the brush settings (opaque, hardness, etc.) and "
                  "inputs (pressure, speed, etc.) are available as tooltips. "
                  "Put your mouse over a label to see them. "
-                 "\n",
+                 "\n"),
         'About':
-                u"MyPaint %s - pressure sensitive painting application\n"
+                _(u"MyPaint %s - pressure sensitive painting application\n") % MYPAINT_VERSION +
                 u"Copyright (C) 2005-2009\n"
-                u"Martin Renold &lt;martinxyz@gmx.ch&gt;\n\n"
-                u"Contributors:\n"
+                u"Martin Renold &lt;martinxyz@gmx.ch&gt;\n\n" + 
+                _(u"Contributors:\n") + 
                 u"Artis Rozentāls &lt;artis@aaa.apollo.lv&gt; (brushes)\n"
                 u"Yves Combe &lt;yves@ycombe.net&gt; (portability)\n"
                 u"Sebastian Kraft (desktop icon)\n"
@@ -1116,15 +1118,14 @@ class Window(gtk.Window):
                 u'Jon Nordby &lt;jononor@gmail.com&gt; (programming)\n'
                 u'Álinson Santos &lt;isoron@gmail.com&gt; (programming)\n'
                 u'Tumagonx &lt;mr.tiar@gmail.com&gt; (portability)\n'
-                u"\n"
-                u"This program is free software; you can redistribute it and/or modify "
+                u"\n" + 
+                _(u"This program is free software; you can redistribute it and/or modify "
                 u"it under the terms of the GNU General Public License as published by "
                 u"the Free Software Foundation; either version 2 of the License, or "
                 u"(at your option) any later version.\n"
                 u"\n"
                 u"This program is distributed in the hope that it will be useful, "
-                u"but WITHOUT ANY WARRANTY. See the COPYING file for more details."
-                % MYPAINT_VERSION
+                u"but WITHOUT ANY WARRANTY. See the COPYING file for more details.")
         }
         d.set_markup(text[action.get_name()])
         d.run()

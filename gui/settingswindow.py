@@ -20,7 +20,7 @@ class Window(gtk.Window):
         gtk.Window.__init__(self)
         self.app = app
 
-        self.set_title('Settings')
+        self.set_title(_('Settings'))
         self.connect('delete-event', self.app.hide_window_cb)
 
         self.applying = True
@@ -34,11 +34,11 @@ class Window(gtk.Window):
         ### pressure tab
 
         v = gtk.VBox()
-        nb.append_page(v, gtk.Label('Pressure'))
+        nb.append_page(v, gtk.Label(_('Pressure')))
 
         l = gtk.Label()
         l.set_alignment(0.0, 0.0)
-        l.set_markup('<b><span size="large">Global Pressure Mapping</span></b>')
+        l.set_markup(_('<b><span size="large">Global Pressure Mapping</span></b>'))
         v.pack_start(l, expand=False, padding=5)
 
         t = gtk.Table(4, 4)
@@ -51,7 +51,7 @@ class Window(gtk.Window):
         t.attach(l2, 3, 4, 1, 2, 0, gtk.EXPAND, 5, 0)
         t.attach(l3, 3, 4, 2, 3, 0, 0, 5, 0)
         l4 = gtk.Label('0.0')
-        l5 = gtk.Label('0.5\n(mouse button)')
+        l5 = gtk.Label(_('0.5\n(mouse button)'))
         l5.set_justify(gtk.JUSTIFY_CENTER)
         l6 = gtk.Label('1.0')
         t.attach(l4, 0, 1, 3, 4, 0, 0, 5, 0)
@@ -62,7 +62,7 @@ class Window(gtk.Window):
         v.pack_start(gtk.HSeparator(), expand=False, padding=5)
 
         h = gtk.HBox()
-        h.pack_start(gtk.Label('Mode for input devices: '), expand=False)
+        h.pack_start(gtk.Label(_('Mode for input devices: ')), expand=False)
         combo = self.input_devices_combo = gtk.combo_box_new_text()
         for s in device_modes:
             combo.append_text(s)
@@ -73,13 +73,13 @@ class Window(gtk.Window):
         ### paths tab
 
         v = gtk.VBox()
-        nb.append_page(v, gtk.Label('Paths'))
+        nb.append_page(v, gtk.Label(_('Paths')))
 
         l = gtk.Label()
         l.set_alignment(0.0, 0.0)
-        l.set_markup('<b><span size="large">Save as Scrap</span></b>')
+        l.set_markup(_('<b><span size="large">Save as Scrap</span></b>'))
         v.pack_start(l, expand=False, padding=5)
-        l = gtk.Label('Path and filename prefix for "Save Next Scrap"')
+        l = gtk.Label(_('Path and filename prefix for "Save Next Scrap"'))
         l.set_alignment(0.0, 0.0)
         v.pack_start(l, expand=False)
 
@@ -92,11 +92,11 @@ class Window(gtk.Window):
         h = gtk.HBox()
         h.set_border_width(3)
 
-        b = gtk.Button("Save")
+        b = gtk.Button(_("Save"))
         b.connect('clicked', self.save_settings_and_hide)
         h.pack_end(b, expand=False)
 
-        b = gtk.Button("Revert")
+        b = gtk.Button(_("Revert"))
         b.connect('clicked', self.load_settings)
         h.pack_end(b, expand=False)
 

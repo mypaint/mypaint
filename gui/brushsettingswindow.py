@@ -12,6 +12,10 @@ import functionwindow
 from lib import brushsettings
 from lib import command
 
+import gettext
+
+gettext.install('mypaint',None,True)
+
 class Window(gtk.Window):
     def __init__(self, app):
         gtk.Window.__init__(self)
@@ -25,7 +29,7 @@ class Window(gtk.Window):
         vbox = gtk.VBox()
         self.add(vbox)
 
-        cb = self.live_update = gtk.CheckButton('live update the last canvas stroke')
+        cb = self.live_update = gtk.CheckButton(_('live update the last canvas stroke'))
         vbox.pack_start(cb, expand=False, fill=True, padding=5)
         cb.connect('toggled', self.live_update_cb)
         self.app.brush.settings_observers.append(self.live_update_cb)
