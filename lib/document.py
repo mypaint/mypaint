@@ -6,25 +6,6 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-"""
-Design thoughts:
-A stroke:
-- is a list of motion events
-- knows everything needed to draw itself (brush settings / initial brush state)
-- has fixed brush settings (only brush states can change during a stroke)
-
-A layer:
-- is a container of several strokes (strokes can be removed)
-- can be rendered as a whole
-- can contain cache bitmaps, so it doesn't have to retrace all strokes all the time
-
-A document:
-- contains several layers
-- knows the active layer and the current brush
-- manages the undo history
-- must be altered via undo/redo commands (except painting)
-"""
-
 import os, zipfile, tempfile, time
 join = os.path.join
 import xml.etree.ElementTree as ET
@@ -44,25 +25,18 @@ class Document():
     """
     This is the "model" in the Model-View-Controller design.
     (The "view" would be ../gui/tileddrawwidget.py.)
-    It represenst everything that the user would want to save.
+    It represents everything that the user would want to save.
 
 
     The "controller" mostly in drawwindow.py.
-    It should be possible to use it without any GUI attached.
-    
-    Undo/redo is part of the model. The whole undo/redo stack can be
-    saved to disk (planned) and can be used to reconstruct
-    everything else.
+    It is possible to use it without any GUI attached (see ../tests/)
     """
-    # Please note the following difficulty:
+    # Please note the following difficulty with the undo stack:
     #
     #   Most of the time there is an unfinished (but already rendered)
     #   stroke pending, which has to be turned into a command.Action
     #   or discarded as empty before any other action is possible.
-    #
-    # TODO: the document should allow to "playback" (redo) a stroke
-    # partially and examine its timing (realtime playback / calculate
-    # total painting time) ?using half-done commands?
+    #   (split_stroke)
 
     def __init__(self):
         self.brush = brush.Brush_Lowlevel()
