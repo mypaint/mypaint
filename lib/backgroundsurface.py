@@ -9,7 +9,10 @@
 import numpy
 
 import mypaintlib, helpers
-from tiledsurface import N, MAX_MIPMAP_LEVEL
+from tiledsurface import N, MAX_MIPMAP_LEVEL, get_tiles_bbox
+
+class BackgroundError(Exception):
+    pass
 
 class Background:
     def __init__(self, obj, mipmap_level=0):
@@ -28,7 +31,10 @@ class Background:
 
         self.tw = obj.shape[1]/N
         self.th = obj.shape[0]/N
-        assert obj.shape == (self.th*N, self.tw*N, 3), 'unsupported background pixmap type or dimensions'
+        if obj.shape[-1] == 4:
+            raise BackgroundError, 'background tile with alpha channel is not allowed'
+        if obj.shape != (self.th*N, self.tw*N, 3):
+            raise BackgroundError, 'unsupported background tile size: %dx%d' % (obj.shape[0], obj.shape[1])
         assert obj.dtype == 'uint8'
 
         self.tiles = {}
@@ -57,4 +63,6 @@ class Background:
         # note: optimization for solid colors is not worth it any more now, even if it gives 2x speedup (at best)
         mypaintlib.tile_blit_rgb8_into_rgb8(rgb, dst)
 
+    def get_pattern_bbox(self):
+        return get_tiles_bbox(self.tiles)
 

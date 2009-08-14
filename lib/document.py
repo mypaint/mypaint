@@ -327,6 +327,7 @@ class Document():
             a['x'] = str(x)
             a['y'] = str(y)
             a['opacity'] = str(opac)
+            return layer
 
         for idx, l in enumerate(reversed(self.layers)):
             if l.surface.is_empty():
@@ -339,7 +340,12 @@ class Document():
         # save background as layer (solid color or tiled)
         s = pixbufsurface.Surface(x0, y0, w0, h0)
         s.fill(self.background)
-        add_layer(0, 0, 1.0, s.pixbuf, 'data/background.png')
+        l = add_layer(0, 0, 1.0, s.pixbuf, 'data/background.png')
+        bg = self.background
+        x, y, w, h = bg.get_pattern_bbox()
+        pixbuf = pixbufsurface.render_as_pixbuf(bg, x, y, w, h, alpha=False)
+        store_pixbuf(pixbuf, 'data/background_tile.png')
+        l.attrib['background_tile'] = 'data/background_tile.png'
 
         # preview
         t2 = time.time()
@@ -378,25 +384,40 @@ class Document():
         image = ET.fromstring(xml)
         stack = image.find('stack')
 
+        def get_pixbuf(filename):
+            t1 = time.time()
+            tmp = join(tempdir, 'tmp.png')
+            f = open(tmp, 'wb')
+            f.write(z.read(filename))
+            f.close()
+            res = gdk.pixbuf_new_from_file(tmp)
+            os.remove(tmp)
+            print '  %.3fs loading %s' % (time.time() - t1, filename)
+            return res
+
         self.clear() # this leaves one empty layer
+        no_background = True
         for layer in stack:
             if layer.tag != 'layer':
                 print 'Warning: ignoring unsupported tag:', layer.tag
                 continue
             a = layer.attrib
+
+            if 'background_tile' in a:
+                assert no_background
+                try:
+                    print a['background_tile']
+                    self.set_background(get_pixbuf(a['background_tile']))
+                    no_background = False
+                    continue
+                except backgroundsurface.BackgroundError, e:
+                    print 'ORA background tile not usable:', e
+
             src = a.get('src', '')
             if not src.lower().endswith('.png'):
                 print 'Warning: ignoring non-png layer'
                 continue
-
-            tmp = join(tempdir, 'tmp.png')
-            f = open(tmp, 'wb')
-            f.write(z.read(src))
-            f.close()
-            t1 = time.time()
-            pixbuf = gdk.pixbuf_new_from_file(tmp)
-            print '  %.3fs loading %s' % (time.time() - t1, src)
-            os.remove(tmp)
+            pixbuf = get_pixbuf(src)
 
             x = int(a.get('x', '0'))
             y = int(a.get('y', '0'))
@@ -413,25 +434,25 @@ class Document():
         if len(self.layers) == 1:
             raise ValueError, 'Could not load any layer.'
 
-        # recognize solid or tiled background layers, at least those that mypaint saves
-        # (OpenRaster will probably get generator layers for this some day)
-        t1 = time.time()
-        p = last_pixbuf
-        if not p.get_has_alpha() and p.get_width() % N == 0 and p.get_height() % N == 0:
-            tiles = self.layers[0].surface.tiledict.values()
-            if len(tiles) > 1:
-                all_equal = True
-                for tile in tiles[1:]:
-                    if (tile.rgba != tiles[0].rgba).any():
-                        all_equal = False
-                        break
-                if all_equal:
-                    arr = helpers.gdkpixbuf2numpy(p)
-                    tile = arr[0:N,0:N,:]
-                    self.set_background(tile.copy())
-                    self.select_layer(0)
-                    self.remove_layer()
-        print '  %.3fs recognizing tiled background' % (time.time() - t1)
+        if no_background:
+            # recognize solid or tiled background layers, at least those that mypaint <= 0.7.1 saves
+            t1 = time.time()
+            p = last_pixbuf
+            if not p.get_has_alpha() and p.get_width() % N == 0 and p.get_height() % N == 0:
+                tiles = self.layers[0].surface.tiledict.values()
+                if len(tiles) > 1:
+                    all_equal = True
+                    for tile in tiles[1:]:
+                        if (tile.rgba != tiles[0].rgba).any():
+                            all_equal = False
+                            break
+                    if all_equal:
+                        arr = helpers.gdkpixbuf2numpy(p)
+                        tile = arr[0:N,0:N,:]
+                        self.set_background(tile.copy())
+                        self.select_layer(0)
+                        self.remove_layer()
+            print '  %.3fs recognizing tiled background' % (time.time() - t1)
 
         if len(self.layers) > 1:
             # remove the still present initial empty top layer
