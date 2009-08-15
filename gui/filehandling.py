@@ -36,7 +36,9 @@ class FileHandler(object):
         ('Reload', None, _('Reload'), 'F5', None, self.reload_cb),
         ('Save',         None, _('Save'), '<control>S', None, self.save_cb),
         ('SaveAs',       None, _('Save As...'), '<control><shift>S', None, self.save_as_cb),
-        ('SaveScrap',    None, _('Save Next Scrap'), 'F2', None, self.save_scrap_cb),
+        ('SaveScrap',    None, _('Save As Scrap'), 'F2', None, self.save_scrap_cb),
+        ('PrevScrap',    None, _('Open Previous Scrap'), 'F5', None, self.open_scrap_cb),
+        ('NextScrap',    None, _('Open Next Scrap'), 'F6', None, self.open_scrap_cb),
         ]
         ag = gtk.ActionGroup('FileActions')
         ag.add_actions(file_actions)
@@ -45,12 +47,17 @@ class FileHandler(object):
         for action in ag.list_actions():
             self.app.kbm.takeover_action(action)
 
+        self._filename = None
+        self.active_scrap_filename = None
+
     def get_filename(self):
         return self._filename 
     def set_filename(self, value):
         self._filename = value
         if self.filename: 
             self.app.drawWindow.set_title("MyPaint - %s" % os.path.basename(self.filename))
+            if self.filename.startswith(self.get_scrap_prefix()):
+                self.active_scrap_filename = self.filename
         else:
             self.app.drawWindow.set_title("MyPaint")
     filename = property(get_filename, set_filename)
@@ -243,7 +250,7 @@ class FileHandler(object):
 
     def save_scrap_cb(self, action):
         filename = self.filename
-        prefix = self.app.settingsWindow.save_scrap_prefix
+        prefix = self.get_scrap_prefix()
 
         number = None
         if filename:
@@ -284,11 +291,41 @@ class FileHandler(object):
         assert not os.path.exists(filename)
         self.save_file(filename)
 
-    def open_recent_cb(self, action):
-        # feed history with scrap directory (mainly for initial history)
+    def get_scrap_prefix(self):
         prefix = self.app.settingsWindow.save_scrap_prefix
         prefix = os.path.abspath(prefix)
-        l = glob(prefix + '*.png') + glob(prefix + '*.ora') + glob(prefix + '*.jpg') + glob(prefix + '*.jpeg')
+        if os.path.isdir(prefix):
+            if not prefix.endswith(os.path.sep):
+                prefix += os.path.sep
+        return prefix
+
+    def list_scraps(self):
+        prefix = self.get_scrap_prefix()
+        filenames = []
+        for ext in ['png', 'ora', 'jpg', 'jpeg']:
+            filenames += glob(prefix + '[0-9]*.' + ext)
+            filenames += glob(prefix + '[0-9]*.' + ext.upper())
+        filenames.sort()
+        return filenames
+
+    def list_scraps_grouped(self):
+        """return scraps grouped by their major number"""
+        def scrap_id(filename):
+            s = os.path.basename(filename)
+            return re.findall('([0-9]+)', s)[0]
+        filenames = self.list_scraps()
+        groups = []
+        while filenames:
+            group = []
+            sid = scrap_id(filenames[0])
+            while filenames and scrap_id(filenames[0]) == sid:
+                group.append(filenames.pop(0))
+            groups.append(group)
+        return groups
+
+    def open_recent_cb(self, action):
+        # feed history with scrap directory (mainly for initial history)
+        l = self.list_scraps()
         l = [x for x in l if x not in self.save_history]
         l = l + self.save_history
         l = [x for x in l if os.path.exists(x)]
@@ -313,6 +350,24 @@ class FileHandler(object):
             return
 
         self.open_file(self.save_history[idx])
+
+    def open_scrap_cb(self, action):
+        groups = self.list_scraps_grouped()
+        if not groups:
+            self.app.message_dialog(_('There are no scrap files named "%s" yet.' % (self.get_scrap_prefix() + '[0-9]*')), gtk.MESSAGE_WARNING)
+            return
+        if not self.confirm_destructive_action():
+            return
+        next = action.get_name() == 'NextScrap'
+
+        if next: idx = 0
+        else:    idx = -1
+        for i, group in enumerate(groups):
+            if self.active_scrap_filename in group:
+                if next: idx = i + 1
+                else:    idx = i - 1
+        filename = groups[idx%len(groups)][-1]
+        self.open_file(filename)
 
     def reload_cb(self, action):
         if self.filename and self.confirm_destructive_action():

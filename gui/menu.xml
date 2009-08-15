@@ -8,7 +8,10 @@
       <separator/>
       <menuitem action='Save'/>
       <menuitem action='SaveAs'/>
+      <separator/>
       <menuitem action='SaveScrap'/>
+      <menuitem action='NextScrap'/>
+      <menuitem action='PrevScrap'/>
       <separator/>
       <menuitem action='Quit'/>
     </menu>
