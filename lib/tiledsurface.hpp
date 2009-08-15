@@ -182,7 +182,7 @@ public:
                   opa *= rr + 1-(rr/hardness);
                   // hardness == 0 is nonsense, excluded above
                 } else {
-                  opa *= hardness/(hardness-1)*(rr-1);
+                  opa *= hardness/(1-hardness)*(1-rr);
                 }
               }
 
@@ -303,7 +303,7 @@ public:
                   opa *= rr + 1-(rr/hardness);
                   // hardness == 0 is nonsense, excluded above
                 } else {
-                  opa *= hardness/(hardness-1)*(rr-1);
+                  opa *= hardness/(1-hardness)*(1-rr);
                 }
               }
 
