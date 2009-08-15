@@ -26,6 +26,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         gtk.DrawingArea.__init__(self)
         self.connect("expose-event", self.expose_cb)
         self.connect("motion-notify-event", self.motion_notify_cb)
+        self.connect("button-press-event", self.button_press_cb)
         self.connect("enter-notify-event", self.enter_notify_cb)
         self.connect("leave-notify-event", self.leave_notify_cb)
         self.connect("size-allocate", self.size_allocate_cb)
@@ -51,6 +52,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.last_event_x = None
         self.last_event_y = None
         self.last_event_device = None
+        self.last_painting_pos = None
         self.device_observers = []
 
         self.visualize_rendering = False
@@ -151,7 +153,18 @@ class TiledDrawWidget(gtk.DrawingArea):
 
         if self.pressure_mapping:
             pressure = self.pressure_mapping(pressure)
+        if event.state & gdk.SHIFT_MASK:
+            pressure = 0.0
+
+        if pressure:
+            self.last_painting_pos = x, y
+
         self.doc.stroke_to(dtime, x, y, pressure)
+
+    def button_press_cb(self, win, event):
+        if (event.state & gdk.SHIFT_MASK) and self.last_painting_pos:
+            dst = self.get_cursor_in_model_coordinates()
+            self.doc.straight_line(self.last_painting_pos, dst)
 
     def canvas_modified_cb(self, x1, y1, w, h):
         if not self.window:

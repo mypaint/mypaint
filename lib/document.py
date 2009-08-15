@@ -10,7 +10,7 @@ import os, zipfile, tempfile, time
 join = os.path.join
 import xml.etree.ElementTree as ET
 from gtk import gdk
-import gobject
+import gobject, numpy
 
 import helpers, tiledsurface, pixbufsurface, backgroundsurface
 import command, stroke, layer
@@ -98,6 +98,28 @@ class Document():
 
         if split:
             self.split_stroke()
+
+    def straight_line(self, src, dst):
+        self.split_stroke()
+        # TODO: undo last stroke if it was very short... (but not at document level?)
+        real_brush = self.brush
+        self.brush = brush.Brush_Lowlevel()
+        self.brush.copy_settings_from(real_brush)
+
+        duration = 3.0
+        pressure = 0.3
+        N = 1000
+        x = numpy.linspace(src[0], dst[0], N)
+        y = numpy.linspace(src[1], dst[1], N)
+        # rest the brush in src for a minute, to avoid interpolation
+        # from the upper left corner (states are zero) (FIXME: the
+        # brush should handle this on its own, maybe?)
+        self.stroke_to(60.0, x[0], y[0], 0.0)
+        for i in xrange(N):
+            self.stroke_to(duration/N, x[i], y[i], pressure)
+        self.split_stroke()
+        self.brush = real_brush
+
 
     def layer_modified_cb(self, *args):
         # for now, any layer modification is assumed to be visible
