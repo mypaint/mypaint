@@ -127,6 +127,7 @@ class Window(gtk.Window):
 
             ('LayerMenu',    None, _('Layers')),
 
+            ('LayersWindow', None, _('Layers...'), None, None, self.toggleWindow_cb),
             ('BackgroundWindow', None, _('Background...'), None, None, self.toggleWindow_cb),
             ('ClearLayer',   None, _('Clear'), 'Delete', None, self.clear_layer_cb),
             ('CopyLayer',          None, _('Copy to Clipboard'), '<control>C', None, self.copy_cb),
@@ -463,22 +464,22 @@ class Window(gtk.Window):
         self.tdw.queue_draw() # OPTIMIZE: excess
 
     def layerblink_state_enter(self):
-        self.tdw.current_layer_solo = True
+        self.tdw.toggle_solo_mode()
         self.tdw.queue_draw()
     def layerblink_state_leave(self, reason):
         if self.layersolo_state.active:
             # FIXME: use state machine concept, maybe?
             return
-        self.tdw.current_layer_solo = False
+        self.tdw.toggle_solo_mode()
         self.tdw.queue_draw()
     def layersolo_state_enter(self):
         s = self.layerblink_state
         if s.active:
             s.leave()
-        self.tdw.current_layer_solo = True
+        self.tdw.toggle_solo_mode()
         self.tdw.queue_draw()
     def layersolo_state_leave(self, reason):
-        self.tdw.current_layer_solo = False
+        self.tdw.toggle_solo_mode()
         self.tdw.queue_draw()
 
     #def blink_layer_cb(self, action):

@@ -63,6 +63,7 @@ class Application: # singleton
         colorSamplerWindow
         settingsWindow
         backgroundWindow
+        layersWindow
         '''.split()
         for name in self.window_names:
             module = __import__(name.lower(), globals(), locals(), [])

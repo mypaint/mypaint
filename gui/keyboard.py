@@ -24,6 +24,7 @@ class KeyboardManager:
     This class adds extra state attributes to every gtk.Action.
     """
     def __init__(self):
+        self.enabled = True
         self.actions = []
         self.keymap  = {} # (keyval, modifiers) --> gtk.Action
         self.keymap2 = {} # (keyval, modifiers) --> gtk.Action (2nd priority; for hardcoded keys)
@@ -50,6 +51,8 @@ class KeyboardManager:
             print 'Ignoring keybinding for', accel_path
 
     def key_press_cb(self, widget, event):
+        if not self.enabled:
+            return
         # See gtk sourcecode in gtkmenu.c function gtk_menu_key_press,
         # which uses the same code as below when changing an accelerator.
         keymap = gdk.keymap_get_default()

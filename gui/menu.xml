@@ -89,6 +89,8 @@
       <menuitem action='Darker'/>
     </menu>
     <menu action='LayerMenu'>
+      <menuitem action='LayersWindow'/>
+      <separator/>
       <menuitem action='BackgroundWindow'/>
       <separator/>
       <menuitem action='ClearLayer'/>

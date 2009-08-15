@@ -120,9 +120,12 @@ class MergeLayer(Action):
         del self.dst_before
 
 class AddLayer(Action):
-    def __init__(self, doc, insert_idx):
+    def __init__(self, doc, insert_idx=None, after=None):
         self.doc = doc
         self.insert_idx = insert_idx
+        if after:
+            l_idx = self.doc.layers.index(after)
+            self.insert_idx = l_idx + 1
         self.layer = layer.Layer()
         self.layer.surface.observers.append(self.doc.layer_modified_cb)
     def redo(self):
@@ -134,11 +137,18 @@ class AddLayer(Action):
         self.doc.layer_idx = self.prev_idx
 
 class RemoveLayer(Action):
-    def __init__(self, doc):
+    def __init__(self, doc,layer=None):
         self.doc = doc
+        self.layer = layer
     def redo(self):
-        self.idx = self.doc.layer_idx
-        self.layer = self.doc.layers.pop(self.doc.layer_idx)
+        if len(self.doc.layers)==1:
+            return
+        if self.layer:
+            self.idx = self.doc.layers.index(self.layer)
+            self.doc.layers.remove(self.layer)
+        else:
+            self.idx = self.doc.layer_idx
+            self.layer = self.doc.layers.pop(self.doc.layer_idx)
         if self.doc.layer_idx == len(self.doc.layers):
             self.doc.layer_idx -= 1
         bbox = self.layer.surface.get_bbox()
@@ -163,19 +173,46 @@ class SelectLayer(Action):
     def undo(self):
         self.doc.layer_idx = self.prev_idx
 
+class MoveLayer(Action):
+    def __init__(self, doc, was_idx, new_idx):
+        self.doc = doc
+        self.was_idx = was_idx
+        self.new_idx = new_idx
+    def redo(self):
+        moved_layer = self.doc.layers[self.was_idx]
+        self.doc.layers.remove(moved_layer)
+        self.doc.layers.insert(self.new_idx, moved_layer)
+        bbox = moved_layer.surface.get_bbox()
+        for f in self.doc.canvas_observers:
+            f(*bbox)
+    def undo(self):
+        moved_layer = self.doc.layers[self.new_idx]
+        self.doc.layers.remove(moved_layer)
+        self.doc.layers.insert(self.was_idx, moved_layer)
+        bbox = moved_layer.surface.get_bbox()
+        for f in self.doc.canvas_observers:
+            f(*bbox)
+
 class SetLayerOpacity(Action):
-    def __init__(self, doc, opacity):
+    def __init__(self, doc, opacity, layer=None):
         self.doc = doc
         self.new_opacity = opacity
+        self.layer = layer
     def redo(self):
-        l = self.doc.layer
+        if self.layer:
+            l = self.layer
+        else:
+            l = self.doc.layer
         self.old_opacity = l.opacity
         l.opacity = self.new_opacity
         bbox = l.surface.get_bbox()
         for f in self.doc.canvas_observers:
             f(*bbox)
     def undo(self):
-        l = self.doc.layer
+        if self.layer:
+            l = self.layer
+        else:
+            l = self.doc.layer
         l.opacity = self.old_opacity
         bbox = l.surface.get_bbox()
         for f in self.doc.canvas_observers:

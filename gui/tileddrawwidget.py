@@ -67,7 +67,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.dragfunc = None
 
         self.current_layer_solo = False
-        self.show_layers_above = True
+#         self.show_layers_above = True
 
         self.overlay_layer = None
 
@@ -223,6 +223,13 @@ class TiledDrawWidget(gtk.DrawingArea):
         cr = self.get_model_coordinates_cairo_context()
         return cr.device_to_user(x, y)
 
+    def get_layers(self):
+        # FIXME: tileddrawwidget should not need to know whether the document has layers
+        layers = filter(lambda l: l.visible, self.doc.layers[:])
+#         if not self.show_layers_above:
+#             layers = self.doc.layers[0:self.doc.layer_idx+1]
+        return layers
+
     def repaint(self, device_bbox=None):
         if device_bbox is None:
             w, h = self.window.get_size()
@@ -280,10 +287,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         cr.rectangle(*model_bbox)
         cr.clip()
         
-        # FIXME: tileddrawwidget should not need to know whether the document has layers
-        layers = self.doc.layers[:]
-        if not self.show_layers_above:
-            layers = self.doc.layers[0:self.doc.layer_idx+1]
+        layers = self.get_layers()
 
         if self.visualize_rendering:
             surface.pixbuf.fill((int(random.random()*0xff)<<16)+0x00000000)
@@ -336,6 +340,8 @@ class TiledDrawWidget(gtk.DrawingArea):
             cr.set_source_rgba(0, 0, random.random(), 0.4)
             cr.paint()
 
+    def toggle_solo_mode(self):
+        self.current_layer_solo = not self.current_layer_solo
 
     def scroll(self, dx, dy, show_immediately=True):
         assert int(dx) == dx and int(dy) == dy
@@ -430,6 +436,10 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.window.set_cursor(c)
 
     def toggle_show_layers_above(self):
-        self.show_layers_above = not self.show_layers_above
+        for layer in self.doc.layers:
+            if layer is self.doc.layer:
+                break
+            layer.visible = not layer.visible
+#         self.show_layers_above = not self.show_layers_above
         self.queue_draw()
 

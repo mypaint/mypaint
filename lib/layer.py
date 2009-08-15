@@ -11,9 +11,11 @@ from numpy import *
 import tiledsurface, strokemap, strokemap_pb2
 
 class Layer:
-    def __init__(self):
+    def __init__(self,name=""):
         self.surface = tiledsurface.Surface()
         self.opacity = 1.0
+        self.name = name
+        self.visible = True
         self.clear()
 
     def clear(self):

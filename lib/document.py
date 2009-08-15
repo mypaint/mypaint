@@ -43,7 +43,18 @@ class Document():
         self.stroke = None
         self.canvas_observers = []
         self.stroke_observers = [] # callback arguments: stroke, brush (brush is a temporary read-only convenience object)
+        self.doc_observers = []
         self.clear(True)
+        self.can_update_layers = False
+        gobject.timeout_add_seconds(5, self.allow_layers_update)
+
+    def allow_layers_update(self):
+        self.can_update_layers = True
+
+    def call_doc_observers(self):
+        for f in self.doc_observers:
+            f(self)
+        return True
 
     def clear(self, init=False):
         self.split_stroke()
@@ -63,6 +74,8 @@ class Document():
             for f in self.canvas_observers:
                 f(*bbox)
 
+        self.call_doc_observers()
+
     def get_current_layer(self):
         return self.layers[self.layer_idx]
     layer = property(get_current_layer)
@@ -80,9 +93,16 @@ class Document():
 
     def select_layer(self, idx):
         self.do(command.SelectLayer(self, idx))
+        for f in self.doc_observers:
+            f(self,'select_layer',idx)
+
+    def move_layer(self, was_idx, new_idx):
+        self.do(command.MoveLayer(self, was_idx, new_idx))
+        self.call_doc_observers()
 
     def clear_layer(self):
         self.do(command.ClearLayer(self))
+        self.call_doc_observers()
 
     def stroke_to(self, dtime, x, y, pressure):
         if not self.stroke:
@@ -98,6 +118,10 @@ class Document():
 
         if split:
             self.split_stroke()
+
+        if self.can_update_layers:
+            self.can_update_layers = False
+            self.call_doc_observers()
 
     def straight_line(self, src, dst):
         self.split_stroke()
@@ -182,14 +206,17 @@ class Document():
 
         mypaintlib.tile_convert_rgb16_to_rgb8(dst, dst_8bit)
             
-    def add_layer(self, insert_idx):
-        self.do(command.AddLayer(self, insert_idx))
+    def add_layer(self, insert_idx=None, after=None):
+        self.do(command.AddLayer(self, insert_idx, after))
+        self.call_doc_observers()
 
-    def remove_layer(self):
-        self.do(command.RemoveLayer(self))
+    def remove_layer(self,layer=None):
+        self.do(command.RemoveLayer(self,layer))
+        self.call_doc_observers()
 
     def merge_layer(self, dst_idx):
         self.do(command.MergeLayer(self, dst_idx))
+        self.call_doc_observers()
 
     def load_layer_from_pixbuf(self, pixbuf, x=0, y=0):
         arr = helpers.gdkpixbuf2numpy(pixbuf)
@@ -200,7 +227,9 @@ class Document():
         if isinstance(cmd, command.SetLayerOpacity):
             self.undo()
         self.do(command.SetLayerOpacity(self, opacity))
+        self.call_doc_observers()
 
+        self.call_doc_observers()
     def set_background(self, obj):
         # This is not an undoable action. One reason is that dragging
         # on the color chooser would get tons of undo steps.
@@ -250,6 +279,7 @@ class Document():
         load(filename)
         self.command_stack.clear()
         self.unsaved_painting_time = 0.0
+        self.call_doc_observers()
 
     def unsupported(self, filename):
         raise SaveLoadError, 'Unknown file format extension: ' + repr(filename)
@@ -320,11 +350,13 @@ class Document():
             z.write(tmp, name)
             os.remove(tmp)
 
-        def add_layer(x, y, opac, pixbuf, name):
+        def add_layer(x, y, opac, pixbuf, name,layer_name):
             layer = ET.Element('layer')
             stack.append(layer)
             store_pixbuf(pixbuf, name)
             a = layer.attrib
+            if layer_name:
+                a['name'] = layer_name
             a['src'] = name
             a['x'] = str(x)
             a['y'] = str(y)
@@ -337,17 +369,19 @@ class Document():
             opac = l.opacity
             x, y, w, h = l.surface.get_bbox()
             pixbuf = l.surface.render_as_pixbuf()
-            el = add_layer(x-x0, y-y0, opac, pixbuf, 'data/layer%03d.png' % idx)
+
+            el = add_layer(x-x0, y-y0, opac, pixbuf, 'data/layer%03d.png' % idx, l.name)
             # strokemap
             data = l.save_strokemap_to_string(-x, -y)
             name = 'data/layer%03d_strokemap.dat' % idx
             el.attrib['mypaint_strokemap'] = name
             write_file_str(name, data)
 
+
         # save background as layer (solid color or tiled)
         s = pixbufsurface.Surface(x0, y0, w0, h0)
         s.fill(self.background)
-        l = add_layer(0, 0, 1.0, s.pixbuf, 'data/background.png')
+        l = add_layer(0, 0, 1.0, s.pixbuf, 'data/background.png', 'background')
         bg = self.background
         x, y, w, h = bg.get_pattern_bbox()
         pixbuf = pixbufsurface.render_as_pixbuf(bg, x+x0, y+y0, w, h, alpha=False)
@@ -439,6 +473,7 @@ class Document():
                 print 'Warning: ignoring non-png layer'
                 continue
             pixbuf = get_pixbuf(src)
+            name = a.get('name', '')
 
             x = int(a.get('x', '0'))
             y = int(a.get('y', '0'))
@@ -447,7 +482,9 @@ class Document():
             last_pixbuf = pixbuf
             t1 = time.time()
             self.load_layer_from_pixbuf(pixbuf, x, y)
-            self.layers[0].opacity = helpers.clamp(opac, 0.0, 1.0)
+            layer = self.layers[0]
+            layer.name = name
+            layer.opacity = helpers.clamp(opac, 0.0, 1.0)
             print '  %.3fs converting pixbuf to layer format' % (time.time() - t1)
             # strokemap
             fname = a.get('mypaint_strokemap', None)
