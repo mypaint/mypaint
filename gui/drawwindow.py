@@ -246,26 +246,7 @@ class Window(gtk.Window):
             ('ColorRingPopup',  None, _('Color Ring'), None, None, self.popup_cb),
 
             ('ContextMenu',  None, _('Brushkeys')),
-            ('Context00',    None, _('Restore Brush 0'), '0', None, self.context_cb),
-            ('Context00s',   None, _('Save to Brush 0'), '<control>0', None, self.context_cb),
-            ('Context01',    None, _('Restore 1'), '1', None, self.context_cb),
-            ('Context01s',   None, _('Save 1'), '<control>1', None, self.context_cb),
-            ('Context02',    None, _('Restore 2'), '2', None, self.context_cb),
-            ('Context02s',   None, _('Save 2'), '<control>2', None, self.context_cb),
-            ('Context03',    None, _('Restore 3'), '3', None, self.context_cb),
-            ('Context03s',   None, _('Save 3'), '<control>3', None, self.context_cb),
-            ('Context04',    None, _('Restore 4'), '4', None, self.context_cb),
-            ('Context04s',   None, _('Save 4'), '<control>4', None, self.context_cb),
-            ('Context05',    None, _('Restore 5'), '5', None, self.context_cb),
-            ('Context05s',   None, _('Save 5'), '<control>5', None, self.context_cb),
-            ('Context06',    None, _('Restore 6'), '6', None, self.context_cb),
-            ('Context06s',   None, _('Save 6'), '<control>6', None, self.context_cb),
-            ('Context07',    None, _('Restore 7'), '7', None, self.context_cb),
-            ('Context07s',   None, _('Save 7'), '<control>7', None, self.context_cb),
-            ('Context08',    None, _('Restore 8'), '8', None, self.context_cb),
-            ('Context08s',   None, _('Save 8'), '<control>8', None, self.context_cb),
-            ('Context09',    None, _('Restore 9'), '9', None, self.context_cb),
-            ('Context09s',   None, _('Save 9'), '<control>9', None, self.context_cb),
+            #each of the context actions are generated and added below
             ('ContextStore', None, _('Save to Most Recently Restored'), 'q', None, self.context_cb),
             ('ContextHelp',  None, _('Help!'), None, None, self.show_infodialog_cb),
 
@@ -312,6 +293,15 @@ class Window(gtk.Window):
             ('ViewHelp',     None, _('Help'), None, None, self.show_infodialog_cb),
             ]
         ag.add_actions(actions)
+        context_actions = []
+        for x in range(10):
+            r = ('Context0%d' % x,    None, _('Restore Brush %d') % x, 
+                    '%d' % x, None, self.context_cb)
+            s = ('Context0%ds' % x,   None, _('Save to Brush %d') % x, 
+                    '<control>%d' % x, None, self.context_cb)
+            context_actions.append(s)
+            context_actions.append(r)
+        ag.add_actions(context_actions)
         toggle_actions = [
             # name, stock id, label, accelerator, tooltip, callback, default toggle status
             ('PrintInputs', None, _('Print Brush Input Values to stdout'), None, None, self.print_inputs_cb),
@@ -801,7 +791,7 @@ class Window(gtk.Window):
     def open_cb(self, action):
         if not self.confirm_destructive_action():
             return
-        dialog = gtk.FileChooserDialog(_("Open.."), self,
+        dialog = gtk.FileChooserDialog(_("Open..."), self,
                                        gtk.FILE_CHOOSER_ACTION_OPEN,
                                        (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
                                         gtk.STOCK_OPEN, gtk.RESPONSE_OK))

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-16 19:40+0200\n"
+"POT-Creation-Date: 2009-08-16 20:15+0200\n"
 "PO-Revision-Date: 2009-08-16 14:40+0200\n"
 "Last-Translator: Jon Nordby <jononor@gmail.com>\n"
 "Language-Team: Norwegian Bokmål <nb@li.org>\n"
@@ -21,7 +21,7 @@ msgstr "Fil"
 msgid "New"
 msgstr "Ny"
 
-#: ../gui/drawwindow.py:221
+#: ../gui/drawwindow.py:221 ../gui/drawwindow.py:802
 msgid "Open..."
 msgstr "Åpne..."
 
@@ -43,7 +43,7 @@ msgid "Save Next Scrap"
 msgstr "Lagre neste kladd"
 
 #. FIXME: should do this periodically, not only on quit
-#: ../gui/drawwindow.py:226 ../gui/drawwindow.py:994
+#: ../gui/drawwindow.py:226 ../gui/drawwindow.py:984
 msgid "Quit"
 msgstr "Avslutt"
 
@@ -130,253 +130,183 @@ msgstr "Fargering"
 msgid "Brushkeys"
 msgstr "Hurtigtaster"
 
-# terrible amount of duplication. Any way to fix?
-#: ../gui/drawwindow.py:251
-msgid "Restore Brush 0"
-msgstr ""
-
+#. each of the context actions are generated and added below
 #: ../gui/drawwindow.py:252
-msgid "Save to Brush 0"
-msgstr ""
+msgid "Save to Most Recently Restored"
+msgstr "Lagre til sist brukte"
 
 #: ../gui/drawwindow.py:253
-msgid "Restore 1"
-msgstr ""
-
-#: ../gui/drawwindow.py:254
-msgid "Save 1"
-msgstr ""
-
-#: ../gui/drawwindow.py:255
-msgid "Restore 2"
-msgstr ""
-
-#: ../gui/drawwindow.py:256
-msgid "Save 2"
-msgstr ""
-
-#: ../gui/drawwindow.py:257
-msgid "Restore 3"
-msgstr ""
-
-#: ../gui/drawwindow.py:258
-msgid "Save 3"
-msgstr ""
-
-#: ../gui/drawwindow.py:259
-msgid "Restore 4"
-msgstr ""
-
-#: ../gui/drawwindow.py:260
-msgid "Save 4"
-msgstr ""
-
-#: ../gui/drawwindow.py:261
-msgid "Restore 5"
-msgstr ""
-
-#: ../gui/drawwindow.py:262
-msgid "Save 5"
-msgstr ""
-
-#: ../gui/drawwindow.py:263
-msgid "Restore 6"
-msgstr ""
-
-#: ../gui/drawwindow.py:264
-msgid "Save 6"
-msgstr ""
-
-#: ../gui/drawwindow.py:265
-msgid "Restore 7"
-msgstr ""
-
-#: ../gui/drawwindow.py:266
-msgid "Save 7"
-msgstr ""
-
-#: ../gui/drawwindow.py:267
-msgid "Restore 8"
-msgstr ""
-
-#: ../gui/drawwindow.py:268
-msgid "Save 8"
-msgstr ""
-
-#: ../gui/drawwindow.py:269
-msgid "Restore 9"
-msgstr ""
-
-#: ../gui/drawwindow.py:270
-msgid "Save 9"
-msgstr ""
-
-#: ../gui/drawwindow.py:271
-msgid "Save to Most Recently Restored"
-msgstr ""
-
-#: ../gui/drawwindow.py:272
 msgid "Help!"
 msgstr "Hjelp!"
 
-#: ../gui/drawwindow.py:274
+#: ../gui/drawwindow.py:255
 msgid "Layers"
 msgstr "Lag"
 
-#: ../gui/drawwindow.py:276
+#: ../gui/drawwindow.py:257
 msgid "Background..."
 msgstr "Bakgrunn"
 
-#: ../gui/drawwindow.py:277 ../gui/brushselectionwindow.py:64
+#: ../gui/drawwindow.py:258 ../gui/brushselectionwindow.py:64
 msgid "Clear"
 msgstr "Slett"
 
-#: ../gui/drawwindow.py:278
+#: ../gui/drawwindow.py:259
 msgid "Select Layer at Cursor"
 msgstr "Velg lag ved peker"
 
-#: ../gui/drawwindow.py:279
+#: ../gui/drawwindow.py:260
 msgid "Next (above current)"
 msgstr "Neste (over nåværende)"
 
-#: ../gui/drawwindow.py:280
+#: ../gui/drawwindow.py:261
 msgid "Next (below current)"
 msgstr "Neste (under nåværende)"
 
-#: ../gui/drawwindow.py:281
+#: ../gui/drawwindow.py:262
 msgid "New (above current)"
 msgstr "Nytt (over nåværende)"
 
-#: ../gui/drawwindow.py:282
+#: ../gui/drawwindow.py:263
 msgid "New (below current)"
 msgstr "Nytt (under nåværende)"
 
-#: ../gui/drawwindow.py:283
+#: ../gui/drawwindow.py:264
 msgid "Merge Down"
 msgstr "Spleis med underliggende lag"
 
-#: ../gui/drawwindow.py:284
+#: ../gui/drawwindow.py:265
 msgid "Remove"
 msgstr "Fjern"
 
-#: ../gui/drawwindow.py:285
+#: ../gui/drawwindow.py:266
 msgid "Toggle Solo Mode"
 msgstr "Enkeltlagsmodus av/på"
 
-#: ../gui/drawwindow.py:286
+#: ../gui/drawwindow.py:267
 msgid "Toggle Layers Above Current"
 msgstr "Vis/skjul overliggende lag"
 
 #. TODO: make toggle action
-#: ../gui/drawwindow.py:287
+#: ../gui/drawwindow.py:268
 msgid "Increase Layer Opacity"
 msgstr "Mink gjennomsiktighet"
 
-#: ../gui/drawwindow.py:288
+#: ../gui/drawwindow.py:269
 msgid "Decrease Layer Opacity"
 msgstr "Øk gjennomsiktighet"
 
-#: ../gui/drawwindow.py:290
+#: ../gui/drawwindow.py:271
 msgid "Brush List..."
 msgstr "Velg pensel..."
 
-#: ../gui/drawwindow.py:291
+#: ../gui/drawwindow.py:272
 msgid "Brush Settings..."
 msgstr "Tilpass pensel..."
 
-#: ../gui/drawwindow.py:292
+#: ../gui/drawwindow.py:273
 msgid "Color Triangle..."
 msgstr "Fargetriangel"
 
-#: ../gui/drawwindow.py:293
+#: ../gui/drawwindow.py:274
 msgid "Settings..."
 msgstr "Instillinger..."
 
-#: ../gui/drawwindow.py:295 ../gui/drawwindow.py:312
+#: ../gui/drawwindow.py:276 ../gui/drawwindow.py:293
 msgid "Help"
 msgstr "Hjelp"
 
-#: ../gui/drawwindow.py:296
+#: ../gui/drawwindow.py:277
 msgid "Where is the Documentation?"
 msgstr "Hvor er dokumentasjonen?"
 
-#: ../gui/drawwindow.py:297
+#: ../gui/drawwindow.py:278
 msgid "Change the Keyboard Shortcuts?"
 msgstr "Endre tastatursnarveier?"
 
-#: ../gui/drawwindow.py:298
+#: ../gui/drawwindow.py:279
 msgid "About MyPaint"
 msgstr "Om MyPaint"
 
-#: ../gui/drawwindow.py:300
+#: ../gui/drawwindow.py:281
 msgid "Debug"
 msgstr "Feilsøking"
 
-#: ../gui/drawwindow.py:303
+#: ../gui/drawwindow.py:284
 msgid "Shortcuts"
 msgstr "Snarveier"
 
-#: ../gui/drawwindow.py:305
+#: ../gui/drawwindow.py:286
 msgid "View"
 msgstr "Vis"
 
-#: ../gui/drawwindow.py:306
+#: ../gui/drawwindow.py:287
 msgid "Fullscreen"
 msgstr "Fullskjerm"
 
-#: ../gui/drawwindow.py:307
+#: ../gui/drawwindow.py:288
 msgid "Reset Zoom and Rotation"
 msgstr "Nullstill zoom og rotasjon"
 
-#: ../gui/drawwindow.py:308
+#: ../gui/drawwindow.py:289
 msgid "Zoom Out"
 msgstr "Zoom ut"
 
-#: ../gui/drawwindow.py:309
+#: ../gui/drawwindow.py:290
 msgid "Zoom In"
 msgstr "Zoom inn"
 
-#: ../gui/drawwindow.py:310
+#: ../gui/drawwindow.py:291
 msgid "Rotate Counterclockwise"
 msgstr "Roter mot klokken"
 
-#: ../gui/drawwindow.py:311
+#: ../gui/drawwindow.py:292
 msgid "Rotate Clockwise"
 msgstr "Roter med klokken"
 
+#: ../gui/drawwindow.py:298
+#, python-format
+msgid "Restore Brush %d"
+msgstr "Bruk pensel %d"
+
+#: ../gui/drawwindow.py:300
+#, python-format
+msgid "Save to Brush %d"
+msgstr "Lagre til pensel %d"
+
 #. name, stock id, label, accelerator, tooltip, callback, default toggle status
-#: ../gui/drawwindow.py:317
+#: ../gui/drawwindow.py:307
 msgid "Print Brush Input Values to stdout"
 msgstr "Skriv ut penselens innverdier til stdout"
 
-#: ../gui/drawwindow.py:318
+#: ../gui/drawwindow.py:308
 msgid "Visualize Rendering"
 msgstr "Visualiser tegning"
 
-#: ../gui/drawwindow.py:319
+#: ../gui/drawwindow.py:309
 msgid "Disable GTK Double Buffering"
 msgstr "Skru av GTK Double Buffering"
 
-#: ../gui/drawwindow.py:320
+#: ../gui/drawwindow.py:310
 msgid "Mirror Image"
 msgstr "Speil bilde"
 
 # "canvas" -> "lerret"
-#: ../gui/drawwindow.py:756
+#: ../gui/drawwindow.py:746
 msgid "Did not save, the canvas is empty."
 msgstr "Lagret ikke, lerretet er tomt."
 
-#: ../gui/drawwindow.py:782
+#: ../gui/drawwindow.py:772
 #, python-format
 msgid "%d minutes"
 msgstr "%d minutter"
 
-#: ../gui/drawwindow.py:784
+#: ../gui/drawwindow.py:774
 #, python-format
 msgid "%d seconds"
 msgstr "%d sekunder"
 
-#: ../gui/drawwindow.py:793
+#: ../gui/drawwindow.py:783
 #, python-format
 msgid ""
 "<b>%s</b>\n"
@@ -387,60 +317,55 @@ msgstr ""
 "\n"
 "Du har %s maling som ikke er lagret."
 
-# duplication with msgid "Open..."
-#: ../gui/drawwindow.py:812
-msgid "Open.."
-msgstr "Åpne..."
-
 #. name, patterns
-#: ../gui/drawwindow.py:819
+#: ../gui/drawwindow.py:809
 msgid "All Recognized Formats"
 msgstr "Alle kjente format"
 
-#: ../gui/drawwindow.py:820 ../gui/drawwindow.py:860
+#: ../gui/drawwindow.py:810 ../gui/drawwindow.py:850
 msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
 
-#: ../gui/drawwindow.py:821
+#: ../gui/drawwindow.py:811
 msgid "PNG (*.png)"
 msgstr "PNG (*.png)"
 
-#: ../gui/drawwindow.py:822
+#: ../gui/drawwindow.py:812
 msgid "JPEG (*.jpg; *.jpeg)"
 msgstr "JPEG (*.jpg; *.jpeg)"
 
 # duplication?
-#: ../gui/drawwindow.py:847
+#: ../gui/drawwindow.py:837
 msgid "Save.."
 msgstr "Lagre.."
 
 #. name, patterns, saveopts
-#: ../gui/drawwindow.py:859
+#: ../gui/drawwindow.py:849
 msgid "Any format (prefer OpenRaster)"
 msgstr "Ikke-spesifisert format (foretrekk OpenRaster)"
 
-#: ../gui/drawwindow.py:862
+#: ../gui/drawwindow.py:852
 msgid "PNG transparent (*.png)"
 msgstr "PNG transparent (*.png)"
 
-#: ../gui/drawwindow.py:863
+#: ../gui/drawwindow.py:853
 msgid "Multiple PNG transparent (*.XXX.png)"
 msgstr "Flerfils transparent PNG (*.XXX.png)"
 
-#: ../gui/drawwindow.py:864
+#: ../gui/drawwindow.py:854
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
 msgstr "JPEG 90% kvalitet (*.jpg; *.jpeg)"
 
-#: ../gui/drawwindow.py:994
+#: ../gui/drawwindow.py:984
 msgid "Really Quit?"
 msgstr "Er du sikker på at du vil avslutte?"
 
-#: ../gui/drawwindow.py:1087
+#: ../gui/drawwindow.py:1077
 msgid "Move your mouse over a menu entry, then press the key to assign."
 msgstr ""
 "Beveg musen over en handling i menyen og trykk på knappen du ønsker å bruke."
 
-#: ../gui/drawwindow.py:1089
+#: ../gui/drawwindow.py:1079
 msgid ""
 "You can also drag the canvas with the mouse while holding the middle mouse "
 "button or spacebar. Or with the arrow keys.\n"
@@ -455,7 +380,7 @@ msgstr ""
 "vil ikke føre til at du går tom for minne. Med det kreves fortsatt mye minne "
 "dersom du maler over store områder når du har zoomet helt ut."
 
-#: ../gui/drawwindow.py:1096
+#: ../gui/drawwindow.py:1086
 msgid ""
 "This is used to quickly save/restore brush settings using keyboard "
 "shortcuts. You can paint with one hand and change brushes with the other "
@@ -477,7 +402,7 @@ msgstr ""
 "husker også den valgte fargen, i motsetning til vanlige pensler som ikke "
 "endrer fargen du jobber med."
 
-#: ../gui/drawwindow.py:1107
+#: ../gui/drawwindow.py:1097
 msgid ""
 "There is a tutorial available on the MyPaint homepage. It explains some "
 "features which are hard to discover yourself.\n"
@@ -492,17 +417,17 @@ msgstr ""
 "Forklaringer om penselens innstillinger finnes som \"tooltips\".Hold musen "
 "over innstillingen for å se de. \n"
 
-#: ../gui/drawwindow.py:1115
+#: ../gui/drawwindow.py:1105
 #, python-format
 msgid "MyPaint %s - pressure sensitive painting application\n"
 msgstr "MyPaint %s - trykksensistiv tegneapplikasjon\n"
 
-#: ../gui/drawwindow.py:1118
+#: ../gui/drawwindow.py:1108
 msgid "Contributors:\n"
 msgstr "Bidragsytere:\n"
 
 # lisens: finn ut om det finnes en offisiell oversettelse et sted
-#: ../gui/drawwindow.py:1129
+#: ../gui/drawwindow.py:1119
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -1089,3 +1014,7 @@ msgid ""
 "a low value will make the direction input adapt more quickly, a high value "
 "will make it smoother"
 msgstr ""
+
+# duplication with msgid "Open..."
+#~ msgid "Open.."
+#~ msgstr "Åpne..."
