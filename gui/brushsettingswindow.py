@@ -7,14 +7,11 @@
 # (at your option) any later version.
 
 "tune brush window"
+from gettext import gettext as _
 import gtk
 import functionwindow
 from lib import brushsettings
 from lib import command
-
-import gettext
-
-gettext.install('mypaint',None,True)
 
 class Window(gtk.Window):
     def __init__(self, app):

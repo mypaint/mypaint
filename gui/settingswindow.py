@@ -7,6 +7,7 @@
 # (at your option) any later version.
 
 "preferences dialog"
+from gettext import gettext as _
 import gtk, os
 gdk = gtk.gdk
 

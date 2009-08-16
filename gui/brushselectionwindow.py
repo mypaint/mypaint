@@ -7,11 +7,11 @@
 # (at your option) any later version.
 
 "select brush window"
+from gettext import gettext as _
 import gtk
 gdk = gtk.gdk
 from lib import brush, document
 import tileddrawwidget, pixbuflist
-import gettext
 
 class Window(gtk.Window):
     def __init__(self, app):

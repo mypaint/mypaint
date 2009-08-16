@@ -11,8 +11,6 @@ import gtk, gobject
 gdk = gtk.gdk
 from lib import brush
 
-import gettext
-
 class Application: # singleton
     """
     This class serves as a global container for everything that needs
@@ -22,8 +20,6 @@ class Application: # singleton
     def __init__(self, datapath, confpath, filenames):
         self.confpath = confpath
         self.datapath = datapath
-
-        gettext.install('mypaint',None,True)
 
         icons = []
         for size in ['24x24', '48x48', '32x32', '22x22', '16x16']:

@@ -16,12 +16,11 @@ Painting is done in tileddrawwidget.py.
 MYPAINT_VERSION="0.7.1+git"
 
 import os, re, math
+from gettext import gettext as _
 from glob import glob
 
 import gtk
 from gtk import gdk, keysyms
-
-import gettext
 
 import tileddrawwidget, colorselectionwindow, historypopup, \
        stategroup, keyboard, colorpicker

@@ -7,11 +7,9 @@
 # (at your option) any later version.
 
 "window to model a single brush property function"
+from gettext import gettext as _
 import gtk
 from lib import brushsettings
-import gettext
-
-gettext.install('mypaint', None, True)
 
 class Window(gtk.Window):
     def __init__(self, app, setting, adj):

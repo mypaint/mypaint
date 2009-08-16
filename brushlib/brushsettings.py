@@ -15,9 +15,7 @@ This is used to generate brushsettings.hpp (see generate.py)
 It is also imported at runtime.
 """
 
-import gettext
-
-gettext.install('mypaint',None,True)
+from gettext import gettext as _
 
 inputs_list = [
     # name, hard minimum, soft minimum, normal[1], soft maximum, hard maximum, tooltip
