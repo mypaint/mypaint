@@ -976,6 +976,10 @@ class Window(gtk.Window):
 
         if not self.confirm_destructive_action():
             return
+        if not self.save_history:
+            self.message("There are no existing images in the save history. Did you move them all away?", gtk.MESSAGE_WARNING)
+            return
+
         self.open_file(self.save_history[idx])
 
     def quit_cb(self, *trash):
@@ -1071,8 +1075,13 @@ class Window(gtk.Window):
             self.app.select_brush(context)
             self.app.brushSelectionWindow.set_preview_pixbuf(context.preview)
 
+    def message(self, text, type=gtk.MESSAGE_INFO):
+        d = gtk.MessageDialog(self, buttons=gtk.BUTTONS_OK, type=type)
+        d.set_markup(text)
+        d.run()
+        d.destroy()
+
     def show_infodialog_cb(self, action):
-        d = gtk.MessageDialog(self, buttons=gtk.BUTTONS_OK)
         text = {
         'ShortcutHelp': 
                 "Move your mouse over a menu entry, then press the key to assign.",
@@ -1126,7 +1135,5 @@ class Window(gtk.Window):
                 u"but WITHOUT ANY WARRANTY. See the COPYING file for more details."
                 % MYPAINT_VERSION
         }
-        d.set_markup(text[action.get_name()])
-        d.run()
-        d.destroy()
+        self.message(text[action.get_name()])
 
