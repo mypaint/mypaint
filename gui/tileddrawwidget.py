@@ -8,7 +8,7 @@
 
 import gtk, gobject, cairo, random
 gdk = gtk.gdk
-from math import floor, ceil, pi, log
+from math import floor, ceil, pi, log, sqrt, atan2
 
 from lib import helpers, tiledsurface, pixbufsurface
 import cursor
@@ -151,6 +151,16 @@ class TiledDrawWidget(gtk.DrawingArea):
                 pressure = 0.0
         else:
             self.last_event_had_pressure_info = True
+
+        xtilt = event.get_axis(gdk.AXIS_XTILT)
+        ytilt = event.get_axis(gdk.AXIS_YTILT)
+        if xtilt is None or ytilt is None:
+            tilt_declination = 90.0
+            tilt_ascension = 0.0
+        else:
+            tilt_declination = 90.0*(1 - sqrt(xtilt**2 + ytilt**2)/sqrt(2.0))
+            tilt_ascension = 180.0*atan2(-xtilt, ytilt)/pi
+        print "tilt: R: %.2f, A: %.2f" % (tilt_declination, tilt_ascension)
         
         if event.state & gdk.CONTROL_MASK:
             # color picking, do not paint
