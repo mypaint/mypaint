@@ -8,7 +8,7 @@
 
 import gtk, gobject, cairo, random
 gdk = gtk.gdk
-from math import floor, ceil, pi, log, sqrt, atan2
+from math import floor, ceil, pi, log, sqrt, atan2, acos
 
 from lib import helpers, tiledsurface, pixbufsurface
 import cursor
@@ -158,9 +158,16 @@ class TiledDrawWidget(gtk.DrawingArea):
             tilt_declination = 90.0
             tilt_ascension = 0.0
         else:
-            tilt_declination = 90.0*(1 - sqrt(xtilt**2 + ytilt**2)/sqrt(2.0))
+            # FIXME: should we move this calculations to C++?
             tilt_ascension = 180.0*atan2(-xtilt, ytilt)/pi
-#         print "tilt: R: %.2f, A: %.2f" % (tilt_declination, tilt_ascension)
+            if abs(xtilt) > abs(ytilt):
+                e = sqrt(1+ytilt**2)
+            else:
+                e = sqrt(1+xtilt**2)
+            rad = sqrt(xtilt**2 + ytilt**2)
+            cos_alpha = rad/e
+            tilt_declination = 180.0*acos(cos_alpha)/pi
+#         print "tilt: R: %.2f, E: %.2f, A: %.2f" % (rad, 1.0/e, tilt_ascension)
         
         if event.state & gdk.CONTROL_MASK:
             # color picking, do not paint
