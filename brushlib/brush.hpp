@@ -166,7 +166,7 @@ private:
   // mappings in critical places or extremely few events per second.
   //
   // note: parameters are is dx/ddab, ..., dtime/ddab (dab is the number, 5.0 = 5th dab)
-  void update_states_and_setting_values (float step_dx, float step_dy, float step_dpressure, float step_dtime)
+  void update_states_and_setting_values (float step_dx, float step_dy, float step_dpressure, float step_declination, float step_ascension, float step_dtime)
   {
     float pressure;
     float inputs[INPUT_COUNT];
@@ -182,6 +182,9 @@ private:
     states[STATE_X]        += step_dx;
     states[STATE_Y]        += step_dy;
     states[STATE_PRESSURE] += step_dpressure;
+
+    states[STATE_DECLINATION] += step_declination;
+    states[STATE_ASCENSION] += step_ascension;
 
     float base_radius = expf(settings[BRUSH_RADIUS_LOGARITHMIC]->base_value);
 
@@ -220,6 +223,8 @@ private:
     inputs[INPUT_RANDOM] = g_rand_double (rng);
     inputs[INPUT_STROKE] = MIN(states[STATE_STROKE], 1.0);
     inputs[INPUT_DIRECTION] = fmodf (atan2f (states[STATE_DIRECTION_DY], states[STATE_DIRECTION_DX])/(2*M_PI)*360 + 180.0, 180.0);
+    inputs[INPUT_TILT_DECLINATION] = states[STATE_DECLINATION];
+    inputs[INPUT_TILT_ASCENSION] = states[STATE_ASCENSION];
     inputs[INPUT_CUSTOM] = states[STATE_CUSTOM_INPUT];
     if (print_inputs) {
       g_print("press=% 4.3f, speed1=% 4.4f\tspeed2=% 4.4f\tstroke=% 4.3f\tcustom=% 4.3f\n", (double)inputs[INPUT_PRESSURE], (double)inputs[INPUT_SPEED1], (double)inputs[INPUT_SPEED2], (double)inputs[INPUT_STROKE], (double)inputs[INPUT_CUSTOM]);
@@ -523,7 +528,7 @@ public:
   // - paints zero, one or several dabs
   // - decides whether the stroke is finished (for undo/redo)
   // returns true if the stroke is finished or empty
-  bool stroke_to (Surface * surface, float x, float y, float pressure, double dtime)
+  bool stroke_to (Surface * surface, float x, float y, float pressure, float tilt_declination, float tilt_ascension, double dtime)
   {
     //printf("%f %f %f %f\n", (double)dtime, (double)x, (double)y, (double)pressure);
 
@@ -545,7 +550,7 @@ public:
     if (dtime > 0.100 && pressure && states[STATE_PRESSURE] == 0) {
       // Workaround for tablets that don't report motion events without pressure.
       // This is to avoid linear interpolation of the pressure between two events.
-      stroke_to (surface, x, y, 0.0, dtime-0.0001);
+      stroke_to (surface, x, y, 0.0, 90.0, 0.0, dtime-0.0001);
       dtime = 0.0001;
     }
 
@@ -612,6 +617,7 @@ public:
     double dtime_left = dtime;
 
     float step_dx, step_dy, step_dpressure, step_dtime;
+    float step_declination, step_ascension;
     while (dist_moved + dist_todo >= 1.0) { // there are dabs pending
       { // linear interpolation (nonlinear variant was too slow, see SVN log)
         float frac; // fraction of the remaining distance to move
@@ -627,10 +633,12 @@ public:
         step_dy        = frac * (y - states[STATE_Y]);
         step_dpressure = frac * (pressure - states[STATE_PRESSURE]);
         step_dtime     = frac * (dtime_left - 0.0);
+        step_declination = frac * (tilt_declination - states[STATE_DECLINATION]);
+        step_ascension   = frac * (tilt_ascension - states[STATE_ASCENSION]);
         // Though it looks different, time is interpolated exactly like x/y/pressure.
       }
     
-      update_states_and_setting_values (step_dx, step_dy, step_dpressure, step_dtime);
+      update_states_and_setting_values (step_dx, step_dy, step_dpressure, step_declination, step_ascension, step_dtime);
       bool painted_now = prepare_and_draw_dab (surface);
       if (painted_now) {
         painted = YES;
@@ -652,11 +660,13 @@ public:
       step_dx        = x - states[STATE_X];
       step_dy        = y - states[STATE_Y];
       step_dpressure = pressure - states[STATE_PRESSURE];
+      step_declination = tilt_declination - states[STATE_DECLINATION];
+      step_ascension = tilt_ascension - states[STATE_ASCENSION];
       step_dtime     = dtime_left;
     
       //dtime_left = 0; but that value is not used any more
 
-      update_states_and_setting_values (step_dx, step_dy, step_dpressure, step_dtime);
+      update_states_and_setting_values (step_dx, step_dy, step_dpressure, step_declination, step_ascension, step_dtime);
     }
 
     // save the fraction of a dab that is already done now

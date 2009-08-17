@@ -25,6 +25,8 @@ inputs_list = [
     ['random',   0.0,  0.0,  0.5,  1.0, 1.0, _("Random"), _("Fast random noise, changing at each evaluation. Evenly distributed between 0 and 1.")],
     ['stroke',   0.0,  0.0,  0.5,  1.0, 1.0, _("Stroke"), _("This input slowly goes from zero to one while you draw a stroke. It can also be configured to jump back to zero periodically while you move. Look at the 'stroke duration' and 'stroke hold time' settings.")],
     ['direction',0.0,  0.0,  0.0,  180.0, 180.0, _("Direction"), _("The angle of the stroke, in degrees. The value will stay between 0.0 and 180.0, effectively ignoring turns of 180 degrees.")],
+    ['tilt_declination',0.0,  0.0,  0.0,  90.0, 90.0,  _("Declination"), _("Declination of stylus tilt. 0 when stylus is parallel to tablet and 90.0 when it's perpendicular to tablet.")],
+    ['tilt_ascension',-180.0,  -180.0,  0.0,  180.0, 180.0, _("Ascension"),  _("Right ascension of stylus tilt. 0 when stylus working end points to you, +90 when rotated 90 degrees clockwise, -90 when rotated 90 degrees counterclockwise.")],
     #['motion_strength',0.0,0.0,  0.0,  1.0, 1.0,  "[EXPERIMENTAL] Same as angle, but wraps at 180 degrees. The dynamics are shared with BRUSH_OFFSET_BY_SPEED_FILTER (FIXME: which is a bad thing)."],
     ['custom',   None,-2.0,  0.0, +2.0, None, _("Custom"), _("This is a user defined input. Look at the 'custom input' setting for details.")],
     ]
@@ -114,6 +116,7 @@ rng_seed
 actual_elliptical_dab_ratio, actual_elliptical_dab_angle # used by count_dabs_to
 
 direction_dx, direction_dy
+declination, ascension
 '''
 
 class BrushInput:

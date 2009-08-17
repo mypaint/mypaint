@@ -160,7 +160,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         else:
             tilt_declination = 90.0*(1 - sqrt(xtilt**2 + ytilt**2)/sqrt(2.0))
             tilt_ascension = 180.0*atan2(-xtilt, ytilt)/pi
-        print "tilt: R: %.2f, A: %.2f" % (tilt_declination, tilt_ascension)
+#         print "tilt: R: %.2f, A: %.2f" % (tilt_declination, tilt_ascension)
         
         if event.state & gdk.CONTROL_MASK:
             # color picking, do not paint
@@ -195,7 +195,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         if pressure:
             self.last_painting_pos = x, y
 
-        self.doc.stroke_to(dtime, x, y, pressure)
+        self.doc.stroke_to(dtime, x, y, pressure,tilt_declination, tilt_ascension)
 
     def button_press_cb(self, win, event):
         if event.type != gdk.BUTTON_PRESS:

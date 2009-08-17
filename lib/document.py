@@ -97,16 +97,16 @@ class Document():
         if not self.layer.surface.is_empty():
             self.do(command.ClearLayer(self))
 
-    def stroke_to(self, dtime, x, y, pressure):
+    def stroke_to(self, dtime, x, y, pressure, tilt_declination, tilt_ascension):
         if not self.stroke:
             self.stroke = stroke.Stroke()
             self.stroke.start_recording(self.brush)
             self.snapshot_before_stroke = self.layer.save_snapshot()
-        self.stroke.record_event(dtime, x, y, pressure)
+        self.stroke.record_event(dtime, x, y, pressure, tilt_declination, tilt_ascension)
 
         l = self.layer
         l.surface.begin_atomic()
-        split = self.brush.stroke_to (l.surface, x, y, pressure, dtime)
+        split = self.brush.stroke_to (l.surface, x, y, pressure, tilt_declination, tilt_ascension, dtime)
         l.surface.end_atomic()
 
         if split:
