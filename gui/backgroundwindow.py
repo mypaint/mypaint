@@ -6,6 +6,7 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
+from gettext import gettext as _
 import gtk, os
 gdk = gtk.gdk
 import pixbuflist
@@ -114,19 +115,13 @@ class BackgroundList(pixbuflist.PixbufList):
 
             # error checking
             def error(msg):
-                d = gtk.MessageDialog(type = gtk.MESSAGE_WARNING,
-                                      buttons = gtk.BUTTONS_OK,
-                                      flags = gtk.DIALOG_MODAL)
-                d.set_title('Bad Background Pattern')
-                d.set_markup(msg)
-                d.run()
-                d.destroy()
+                self.app.message_dialog(msg, type = gtk.MESSAGE_WARNING, flags = gtk.DIALOG_MODAL)
             if pixbuf.get_has_alpha():
-                error('The background %s was ignored because it has an alpha channel. Please remove it.' % filename)
+                error(_('The background %s was ignored because it has an alpha channel. Please remove it.') % filename)
                 continue
             w, h = pixbuf.get_width(), pixbuf.get_height()
             if w % N != 0 or h % N != 0 or w == 0 or h == 0:
-                error('The background %s was ignored because it has the wrong size. Only (N*%d)x(M*%d) is supported.' % (filename, N, N))
+                error(_('The background %s was ignored because it has the wrong size. Only (N*%d)x(M*%d) is supported.') % (filename, N, N))
                 continue
 
             if os.path.basename(filename).lower() == 'default.png':

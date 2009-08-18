@@ -195,6 +195,12 @@ class Application: # singleton
         if name in 'drawWindow brushSelectionWindow colorSelectionWindow'.split():
             window.show_all()
 
+    def message_dialog(self, text, type=gtk.MESSAGE_INFO, flags=0):
+        """utility function to show a message/information dialog"""
+        d = gtk.MessageDialog(self.drawWindow, flags=flags, buttons=gtk.BUTTONS_OK, type=type)
+        d.set_markup(text)
+        d.run()
+        d.destroy()
 
 class PixbufDirectory:
     def __init__(self, dirname):

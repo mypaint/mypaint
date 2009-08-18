@@ -720,10 +720,7 @@ class Window(gtk.Window):
         try:
             self.doc.load(filename)
         except document.SaveLoadError, e:
-            d = gtk.MessageDialog(self, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_OK)
-            d.set_markup(str(e))
-            d.run()
-            d.destroy()
+            self.app.message_dialog(str(e),type=gtk.MESSAGE_ERROR)
         else:
             self.filename = os.path.abspath(filename)
             print 'Loaded from', self.filename
@@ -738,10 +735,7 @@ class Window(gtk.Window):
                 raise document.SaveLoadError, _('Did not save, the canvas is empty.')
             self.doc.save(filename, **options)
         except document.SaveLoadError, e:
-            d = gtk.MessageDialog(self, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_OK)
-            d.set_markup(str(e))
-            d.run()
-            d.destroy()
+            self.app.message_dialog(str(e),type=gtk.MESSAGE_ERROR)
         else:
             self.filename = os.path.abspath(filename)
             print 'Saved to', self.filename
@@ -968,7 +962,7 @@ class Window(gtk.Window):
         if not self.confirm_destructive_action():
             return
         if not self.save_history:
-            self.message("There are no existing images in the save history. Did you move them all away?", gtk.MESSAGE_WARNING)
+            self.app.message_dialog(_('There are no existing images in the save history. Did you move them all away?'), gtk.MESSAGE_WARNING)
             return
 
         self.open_file(self.save_history[idx])
@@ -1066,12 +1060,6 @@ class Window(gtk.Window):
             self.app.select_brush(context)
             self.app.brushSelectionWindow.set_preview_pixbuf(context.preview)
 
-    def message(self, text, type=gtk.MESSAGE_INFO):
-        d = gtk.MessageDialog(self, buttons=gtk.BUTTONS_OK, type=type)
-        d.set_markup(text)
-        d.run()
-        d.destroy()
-
     def show_infodialog_cb(self, action):
         text = {
         'ShortcutHelp': 
@@ -1125,5 +1113,5 @@ class Window(gtk.Window):
                 u"This program is distributed in the hope that it will be useful, "
                 u"but WITHOUT ANY WARRANTY. See the COPYING file for more details.")
         }
-        self.message(text[action.get_name()])
+        self.app.message_dialog(text[action.get_name()])
 
