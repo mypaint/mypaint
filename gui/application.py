@@ -9,7 +9,6 @@
 import os
 import gtk, gobject
 gdk = gtk.gdk
-
 from lib import brush
 
 class Application: # singleton

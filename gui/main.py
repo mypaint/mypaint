@@ -6,17 +6,21 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
+import gettext
 import gtk
 from gui import application
 from optparse import OptionParser
 
 # main entry, called from the "mypaint" script
-def main(datapath, confpath):
+def main(datapath, confpath, localepath):
 
     parser = OptionParser('usage: %prog [options] [FILE]')
     parser.add_option('-c', '--config', metavar='DIR', default=confpath,
                     help='use this config directory instead of ~/.mypaint/')
     options, args = parser.parse_args()
+
+    gettext.bindtextdomain("mypaint", localepath)
+    gettext.textdomain("mypaint")
 
     print 'confpath =', options.config
     app = application.Application(datapath, options.config, args)

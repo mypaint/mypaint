@@ -32,11 +32,12 @@ def get_paths():
         libpath_compiled = join(prefix, lib_compiled)
         sys.path.insert(0, libpath)
         sys.path.insert(0, libpath_compiled)
+        localepath = join(prefix, 'share/locale')
     else:
         # we are not installed
         prefix=None
         libpath='.'
-        # checking for import error below
+        localepath = 'po'
 
     try: # just for a nice error message
         from lib import mypaintlib
@@ -63,7 +64,7 @@ def get_paths():
     else:
         confpath = join(homepath, '.mypaint/')
 
-    return datapath, confpath
+    return datapath, confpath, localepath
 
 def psyco_opt():
     # This helps on slow PCs where the python overhead dominates.
@@ -79,6 +80,6 @@ if __name__ == '__main__':
         psyco_opt()
     except ImportError:
         pass
-    datapath, confpath = get_paths()
+    paths = get_paths()
     from gui import main
-    main.main(datapath, confpath)
+    main.main(*paths)

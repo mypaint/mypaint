@@ -10,6 +10,9 @@ try:
 except:
     # compatibility with SCons version 0.97
     from glob import glob as Glob
+
+from glob import glob
+
 try: 
     import numpy
 except ImportError:
@@ -58,6 +61,14 @@ if env.get('CPPDEFINES'):
 module = SConscript('lib/SConscript', 'env')
 SConscript('brushlib/SConscript', 'env')
 
+cdir = os.getcwd()
+os.chdir('po')
+for po in glob('*.po'):
+    lang = os.path.basename(po)[:-3]
+    os.system('intltool-update -g mypaint %s' % lang)
+    os.system('msgfmt %s -o %s/LC_MESSAGES/mypaint.mo' % (po,lang))
+os.chdir(cdir)
+
 # Build mypaint.exe for running on windows
 if sys.platform == "win32":
     env2 = Environment(ENV=os.environ)
@@ -100,6 +111,11 @@ env.Install(os.path.join(env['prefix'], 'lib/mypaint'), module)
 install('share/mypaint/lib', 'lib/*.py')
 install('share/mypaint/gui', 'gui/*.py')
 install('share/mypaint/brushlib', 'brushlib/*.py')
+
+for f in glob('po/*'):
+    if os.path.isdir(f):
+        lang = os.path.basename(f)
+        install('share/locale/%s/LC_MESSAGES' % lang, os.path.join(f,'LC_MESSAGES/mypaint.mo'))
 
 # debian python policy:
 # "Private modules are installed in a directory such as /usr/share/packagename or /usr/lib/packagename."

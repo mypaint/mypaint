@@ -7,6 +7,7 @@
 # (at your option) any later version.
 
 "select brush window"
+from gettext import gettext as _
 import gtk
 gdk = gtk.gdk
 from lib import brush, document
@@ -21,7 +22,8 @@ class Window(gtk.Window):
         self.app.kbm.add_window(self)
         self.brushlist = BrushList(self.app)
 
-        self.set_title('Brush selection')
+        self.set_title(_('Brush selection'))
+        self.set_role('Brush selector')
         self.connect('delete-event', self.app.hide_window_cb)
         #def set_hint(widget):
         #    self.window.set_type_hint(gdk.WINDOW_TYPE_HINT_UTILITY)
@@ -36,7 +38,7 @@ class Window(gtk.Window):
         scroll = gtk.ScrolledWindow()
         scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
         scroll.add_with_viewport(self.brushlist)
-        expander = self.expander = gtk.Expander(label='Edit')
+        expander = self.expander = gtk.Expander(label=_('Edit'))
         expander.set_expanded(False)
 
         vbox.pack_start(scroll)
@@ -59,7 +61,7 @@ class Window(gtk.Window):
         self.tdw.set_size_request(brush.preview_w, brush.preview_h)
         left_vbox.pack_start(self.tdw, expand=False, fill=False)
 
-        b = gtk.Button('Clear')
+        b = gtk.Button(_('Clear'))
         def clear_cb(window):
             self.tdw.doc.clear_layer()
         b.connect('clicked', clear_cb)
@@ -76,16 +78,16 @@ class Window(gtk.Window):
         #expanded part, right side
         l = self.brush_name_label = gtk.Label()
         l.set_justify(gtk.JUSTIFY_LEFT)
-        l.set_text('(no name)')
+        l.set_text(_('(no name)'))
         right_vbox.pack_start(l, expand=False)
 
         right_vbox_buttons = [
-        ('add as new', self.add_as_new_cb),
-        ('rename...', self.rename_cb),
-        ('remove...', self.delete_selected_cb),
-        ('settings...', self.brush_settings_cb),
-        ('save settings', self.update_settings_cb),
-        ('save preview', self.update_preview_cb),
+        (_('add as new'), self.add_as_new_cb),
+        (_('rename...'), self.rename_cb),
+        (_('remove...'), self.delete_selected_cb),
+        (_('settings...'), self.brush_settings_cb),
+        (_('save settings'), self.update_settings_cb),
+        (_('save preview'), self.update_preview_cb),
         ]
 
         for title, clicked_cb in right_vbox_buttons:
@@ -125,7 +127,7 @@ class Window(gtk.Window):
             display.beep()
             return
 
-        d = gtk.Dialog("Rename Brush",
+        d = gtk.Dialog(_("Rename Brush"),
                        self,
                        gtk.DIALOG_MODAL,
                        (gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT,
@@ -186,7 +188,7 @@ class Window(gtk.Window):
         b = self.app.selected_brush
         if b is None: return
 
-        d = gtk.Dialog("Really delete this brush?",
+        d = gtk.Dialog(_("Really delete this brush?"),
              self,
              gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
              (gtk.STOCK_YES, gtk.RESPONSE_ACCEPT,
@@ -204,7 +206,7 @@ class Window(gtk.Window):
         if brush is None: return
         name = brush.name
         if name is None:
-            name = '(no name)'
+            name = _('(no name)')
         else:
             name = name.replace('_', ' ')
         self.brush_name_label.set_text(name)

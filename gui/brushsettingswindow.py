@@ -7,6 +7,7 @@
 # (at your option) any later version.
 
 "tune brush window"
+from gettext import gettext as _
 import gtk
 import functionwindow
 from lib import brushsettings
@@ -25,7 +26,7 @@ class Window(gtk.Window):
         vbox = gtk.VBox()
         self.add(vbox)
 
-        cb = self.live_update = gtk.CheckButton('live update the last canvas stroke')
+        cb = self.live_update = gtk.CheckButton(_('live update the last canvas stroke'))
         vbox.pack_start(cb, expand=False, fill=True, padding=5)
         cb.connect('toggled', self.live_update_cb)
         self.app.brush.settings_observers.append(self.live_update_cb)
