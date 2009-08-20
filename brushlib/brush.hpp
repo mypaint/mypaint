@@ -528,9 +528,21 @@ public:
   // - paints zero, one or several dabs
   // - decides whether the stroke is finished (for undo/redo)
   // returns true if the stroke is finished or empty
-  bool stroke_to (Surface * surface, float x, float y, float pressure, float tilt_declination, float tilt_ascension, double dtime)
+  bool stroke_to (Surface * surface, float x, float y, float pressure, float xtilt, float ytilt, double dtime)
   {
     //printf("%f %f %f %f\n", (double)dtime, (double)x, (double)y, (double)pressure);
+
+    // Moved from Python
+    float tilt_ascension = 180.0*atan2(-xtilt, ytilt)/M_PI;
+    float e;
+    if (abs(xtilt) > abs(ytilt)) {
+        e = sqrt(1+ytilt*ytilt);
+    } else {
+        e = sqrt(1+xtilt*xtilt);
+    }
+    float rad = sqrt(xtilt*xtilt + ytilt*ytilt);
+    float cos_alpha = rad/e;
+    float tilt_declination = 180.0*acos(cos_alpha)/M_PI;
 
     pressure = CLAMP(pressure, 0.0, 1.0);
     if (!isfinite(x) || !isfinite(y) ||

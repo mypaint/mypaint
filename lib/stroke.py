@@ -38,9 +38,9 @@ class Stroke:
 
         self.tmp_event_list = []
 
-    def record_event(self, dtime, x, y, pressure, tilt_declination, tilt_ascension):
+    def record_event(self, dtime, x, y, pressure, xtilt,ytilt):
         assert not self.finished
-        self.tmp_event_list.append((dtime, x, y, pressure, tilt_declination, tilt_ascension))
+        self.tmp_event_list.append((dtime, x, y, pressure, xtilt,ytilt))
 
     def stop_recording(self):
         assert not self.finished
@@ -81,8 +81,8 @@ class Stroke:
         data.shape = (len(data)/4, 4)
 
         surface.begin_atomic()
-        for dtime, x, y, pressure, tilt_declination, tilt_ascension in data:
-            b.stroke_to (surface, x, y, pressure, dtime, tilt_declination, tilt_ascension)
+        for dtime, x, y, pressure, xtilt,ytilt in data:
+            b.stroke_to (surface, x, y, pressure, dtime, xtilt,ytilt)
         surface.end_atomic()
 
     def copy_using_different_brush(self, brush):

@@ -155,19 +155,8 @@ class TiledDrawWidget(gtk.DrawingArea):
         xtilt = event.get_axis(gdk.AXIS_XTILT)
         ytilt = event.get_axis(gdk.AXIS_YTILT)
         if xtilt is None or ytilt is None:
-            tilt_declination = 90.0
-            tilt_ascension = 0.0
-        else:
-            # FIXME: should we move this calculations to C++?
-            tilt_ascension = 180.0*atan2(-xtilt, ytilt)/pi
-            if abs(xtilt) > abs(ytilt):
-                e = sqrt(1+ytilt**2)
-            else:
-                e = sqrt(1+xtilt**2)
-            rad = sqrt(xtilt**2 + ytilt**2)
-            cos_alpha = rad/e
-            tilt_declination = 180.0*acos(cos_alpha)/pi
-#         print "tilt: R: %.2f, E: %.2f, A: %.2f" % (rad, 1.0/e, tilt_ascension)
+            xtilt = 0.0
+            ytilt = 0.0
         
         if event.state & gdk.CONTROL_MASK:
             # color picking, do not paint
@@ -202,7 +191,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         if pressure:
             self.last_painting_pos = x, y
 
-        self.doc.stroke_to(dtime, x, y, pressure,tilt_declination, tilt_ascension)
+        self.doc.stroke_to(dtime, x, y, pressure, xtilt, ytilt)
 
     def button_press_cb(self, win, event):
         if event.type != gdk.BUTTON_PRESS:
