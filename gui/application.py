@@ -10,6 +10,7 @@ import os
 import gtk, gobject
 gdk = gtk.gdk
 from lib import brush
+import filehandling, keyboard
 
 class Application: # singleton
     """
@@ -20,6 +21,8 @@ class Application: # singleton
     def __init__(self, datapath, confpath, filenames):
         self.confpath = confpath
         self.datapath = datapath
+
+        self.ui_manager = gtk.UIManager()
 
         icons = []
         for size in ['24x24', '48x48', '32x32', '22x22', '16x16']:
@@ -40,6 +43,8 @@ class Application: # singleton
             os.mkdir(self.user_brushpath)
 
         self.init_brushes()
+        self.kbm = keyboard.KeyboardManager()
+        self.filehandler = filehandling.FileHandler(self)
 
         self.window_names = '''
         drawWindow
@@ -55,6 +60,8 @@ class Application: # singleton
             window = self.__dict__[name] = module.Window(self)
             self.load_window_position(name, window)
 
+        self.filehandler.doc = self.drawWindow.doc
+        self.filehandler.filename = None
         gtk.accel_map_load(os.path.join(self.confpath, 'accelmap.conf'))
 
         if self.brushes:
@@ -65,7 +72,7 @@ class Application: # singleton
             if filenames:
                 #open the first file, no matter how many that has been specified
                 fn = filenames[0].replace('file:///', '/') # some filebrowsers do this
-                self.drawWindow.open_file(fn)
+                self.filehandler.open_file(fn)
 
         gobject.idle_add(at_application_start)
 
@@ -202,6 +209,7 @@ class Application: # singleton
         d.set_markup(text)
         d.run()
         d.destroy()
+
 
 class PixbufDirectory:
     def __init__(self, dirname):

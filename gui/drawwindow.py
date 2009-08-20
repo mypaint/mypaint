@@ -15,16 +15,32 @@ Painting is done in tileddrawwidget.py.
 
 MYPAINT_VERSION="0.7.1+git"
 
-import os, re, math
+import os, math
 from gettext import gettext as _
-from glob import glob
 
 import gtk
 from gtk import gdk, keysyms
 
 import tileddrawwidget, colorselectionwindow, historypopup, \
-       stategroup, keyboard, colorpicker
+       stategroup, keyboard, colorpicker, filehandling
 from lib import document, helpers, backgroundsurface, command
+
+#TODO: make generic by taking the windows as arguments and put in a helper file?
+def with_wait_cursor(func):
+    """python decorator that adds a wait cursor around a function"""
+    def wrapper(self, *args, **kwargs):
+        self.app.drawWindow.window.set_cursor(gdk.Cursor(gdk.WATCH))
+        self.app.drawWindow.tdw.window.set_cursor(None)
+        # make sure it is actually changed before we return
+        while gtk.events_pending():
+            gtk.main_iteration(False)
+        try:
+            func(self, *args, **kwargs)
+        finally:
+            self.app.drawWindow.window.set_cursor(None)
+            self.app.drawWindow.tdw.update_cursor()
+    return wrapper
+
 
 class Window(gtk.Window):
     def __init__(self, app):
@@ -43,19 +59,20 @@ class Window(gtk.Window):
         vbox = gtk.VBox()
         self.add(vbox)
 
+        #TODO: move self.doc into application.py?
         self.doc = document.Document()
         self.doc.set_brush(self.app.brush)
 
         self.create_ui()
-        self.menubar = self.ui.get_widget('/Menubar')
+        self.menubar = self.app.ui_manager.get_widget('/Menubar')
         vbox.pack_start(self.menubar, expand=False)
 
         self.tdw = tileddrawwidget.TiledDrawWidget(self.doc)
         vbox.pack_start(self.tdw)
 
         # FIXME: hack, to be removed
-        filename = os.path.join(self.app.datapath, 'backgrounds', '03_check1.png')
-        pixbuf = gdk.pixbuf_new_from_file(filename)
+        fname = os.path.join(self.app.datapath, 'backgrounds', '03_check1.png')
+        pixbuf = gdk.pixbuf_new_from_file(fname)
         self.tdw.neutral_background_pixbuf = backgroundsurface.Background(pixbuf)
 
         self.zoomlevel_values = [1.0/8, 2.0/11, 0.25, 1.0/3, 0.50, 2.0/3, 1.0, 1.5, 2.0, 3.0, 4.0, 5.5, 8.0]
@@ -66,36 +83,14 @@ class Window(gtk.Window):
 
         self.app.brush.settings_observers.append(self.brush_modified_cb)
         self.tdw.device_observers.append(self.device_changed_cb)
-            
-        fn = os.path.join(self.app.confpath, 'save_history.conf')
-        if os.path.exists(fn):
-            self.save_history = [line.strip() for line in open(fn)]
-        else:
-            self.save_history = []
-
-        self.init_save_dialog()
-
-        #filename is a property so that all changes will update the title
-        self.filename = None
 
         self.eraser_mode_radius_change = 3*(0.3) # can go back to exact original with brush_smaller_cb()
         self.eraser_mode_original_radius = None
-        
-        
-    def get_filename(self):
-        return self._filename 
-    def set_filename(self,value):
-        self._filename = value
-        if self.filename: 
-            self.set_title("MyPaint - %s" % os.path.basename(self.filename))
-        else:
-            self.set_title("MyPaint")
-    filename = property(get_filename, set_filename)
+
 
     def create_ui(self):
         ag = self.action_group = gtk.ActionGroup('WindowActions')
-        # FIXME: this xml menu only creates unneeded information duplication, I think.
-		# FIXME: better just use glade...
+        #TODO: put ui_string in separate file?
         ui_string = """<ui>
           <menubar name='Menubar'>
             <menu action='FileMenu'>
@@ -217,14 +212,7 @@ class Window(gtk.Window):
         actions = [
 			# name, stock id, label, accelerator, tooltip, callback
             ('FileMenu',     None, _('File')),
-            ('New',          None, _('New'), '<control>N', None, self.new_cb),
-            ('Open',         None, _('Open...'), '<control>O', None, self.open_cb),
-            ('OpenRecent',   None, _('Open Recent'), 'F3', None, self.open_recent_cb),
-            ('Save',         None, _('Save'), '<control>S', None, self.save_cb),
-            ('SaveAs',       None, _('Save As...'), '<control><shift>S', None, self.save_as_cb),
-            ('SaveScrap',    None, _('Save Next Scrap'), 'F2', None, self.save_scrap_cb),
             ('Quit',         None, _('Quit'), '<control>q', None, self.quit_cb),
-
 
             ('EditMenu',           None, _('Edit')),
             ('Undo',               None, _('Undo'), 'Z', None, self.undo_cb),
@@ -312,12 +300,11 @@ class Window(gtk.Window):
             ('Flip', None, _('Mirror Image'), 'i', None, self.flip_cb),
             ]
         ag.add_toggle_actions(toggle_actions)
-        self.ui = gtk.UIManager()
-        self.ui.insert_action_group(ag, 0)
-        self.ui.add_ui_from_string(ui_string)
-        #self.app.accel_group = self.ui.get_accel_group()
+        self.app.ui_manager.insert_action_group(ag, 0)
+        self.app.ui_manager.add_ui_from_string(ui_string)
+        #self.app.accel_group = self.app.ui_manager.get_accel_group()
 
-        self.app.kbm = kbm = keyboard.KeyboardManager()
+        kbm = self.app.kbm
         kbm.add_window(self)
 
         for action in ag.list_actions():
@@ -369,20 +356,6 @@ class Window(gtk.Window):
         hist.autoleave_timeout = 0.600
         self.history_popup_state = hist
 
-    def with_wait_cursor(func):
-        """python decorator that adds a wait cursor around a function"""
-        def wrapper(self, *args, **kwargs):
-            self.window.set_cursor(gdk.Cursor(gdk.WATCH))
-            self.tdw.window.set_cursor(None)
-            # make sure it is actually changed before we return
-            while gtk.events_pending():
-                gtk.main_iteration(False)
-            try:
-                func(self, *args, **kwargs)
-            finally:
-                self.window.set_cursor(None)
-                self.tdw.update_cursor()
-        return wrapper
 
     def toggleWindow_cb(self, action):
         s = action.get_name()
@@ -527,8 +500,8 @@ class Window(gtk.Window):
         if len(self.doc.layers) == 1:
             # this is like creating a new document:
             # make "save next" use a new file name
-            self.filename = None
-        
+            self.app.filehandler.filename = None
+
     def remove_layer_cb(self, action):
         if len(self.doc.layers) == 1:
             self.doc.clear_layer()
@@ -716,270 +689,12 @@ class Window(gtk.Window):
     def layer_decrease_opacity(self, action):
         opa = helpers.clamp(self.doc.layer.opacity - 0.08, 0.0, 1.0)
         self.doc.set_layer_opacity(opa)
-        
-    @with_wait_cursor
-    def open_file(self, filename):
-        try:
-            self.doc.load(filename)
-        except document.SaveLoadError, e:
-            self.app.message_dialog(str(e),type=gtk.MESSAGE_ERROR)
-        else:
-            self.filename = os.path.abspath(filename)
-            print 'Loaded from', self.filename
-            self.reset_view_cb(None)
-            self.tdw.recenter_document()
-
-    @with_wait_cursor
-    def save_file(self, filename, **options):
-        try:
-            x, y, w, h =  self.doc.get_bbox()
-            if w == 0 and h == 0:
-                raise document.SaveLoadError, _('Did not save, the canvas is empty.')
-            self.doc.save(filename, **options)
-        except document.SaveLoadError, e:
-            self.app.message_dialog(str(e),type=gtk.MESSAGE_ERROR)
-        else:
-            self.filename = os.path.abspath(filename)
-            print 'Saved to', self.filename
-            self.save_history.append(os.path.abspath(filename))
-            self.save_history = self.save_history[-100:]
-            f = open(os.path.join(self.app.confpath, 'save_history.conf'), 'w')
-            f.write('\n'.join(self.save_history))
-            ## tell other gtk applications
-            ## (hm, is there any application that uses this at all? or is the code below wrong?)
-            #manager = gtk.recent_manager_get_default()
-            #manager.add_item(os.path.abspath(filename))
-
-    def confirm_destructive_action(self, title='Confirm', question='Really continue?'):
-        t = self.doc.unsaved_painting_time
-        if t < 30:
-            # no need to ask
-            return True
-
-        if t > 120:
-            t = _('%d minutes') % (t/60)
-        else:
-            t = _('%d seconds') % t
-        d = gtk.Dialog(title, self, gtk.DIALOG_MODAL)
-
-        b = d.add_button(gtk.STOCK_DISCARD, gtk.RESPONSE_OK)
-        b.set_image(gtk.image_new_from_stock(gtk.STOCK_DELETE, gtk.ICON_SIZE_BUTTON))
-        d.add_button(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL)
-        b = d.add_button(_("_Save as Scrap"), gtk.RESPONSE_APPLY)
-        b.set_image(gtk.image_new_from_stock(gtk.STOCK_SAVE, gtk.ICON_SIZE_BUTTON))
-
-        d.set_has_separator(False)
-        d.set_default_response(gtk.RESPONSE_CANCEL)
-        l = gtk.Label()
-        l.set_markup(_("<b>%s</b>\n\nThis will discard %s of unsaved painting.") % (question,t))
-        l.set_padding(10, 10)
-        l.show()
-        d.vbox.pack_start(l)
-        response = d.run()
-        d.destroy()
-        if response == gtk.RESPONSE_APPLY:
-            self.save_scrap_cb(None)
-            return True
-        return response == gtk.RESPONSE_OK
-
-    def new_cb(self, action):
-        if not self.confirm_destructive_action():
-            return
-        bg = self.doc.background
-        self.doc.clear()
-        self.doc.set_background(bg)
-        self.filename = None
-
-    def open_cb(self, action):
-        if not self.confirm_destructive_action():
-            return
-        dialog = gtk.FileChooserDialog(_("Open..."), self,
-                                       gtk.FILE_CHOOSER_ACTION_OPEN,
-                                       (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
-                                        gtk.STOCK_OPEN, gtk.RESPONSE_OK))
-        dialog.set_default_response(gtk.RESPONSE_OK)
-
-        filters = [ #name, patterns
-        (_("All Recognized Formats"), ("*.ora", "*.png", "*.jpg", "*.jpeg")),
-        (_("OpenRaster (*.ora)"), ("*.ora",)),
-        (_("PNG (*.png)"), ("*.png",)),
-        (_("JPEG (*.jpg; *.jpeg)"), ("*.jpg", "*.jpeg")),
-        ]
-        for name, patterns in filters:
-            f = gtk.FileFilter()
-            f.set_name(name)
-            for p in patterns:
-                f.add_pattern(p)
-            dialog.add_filter(f)
-
-        if self.filename:
-            dialog.set_filename(self.filename)
-        try:
-            if dialog.run() == gtk.RESPONSE_OK:
-                self.open_file(dialog.get_filename())
-        finally:
-            dialog.destroy()
-
-    def save_cb(self, action):
-        if not self.filename:
-            self.save_as_cb(action)
-        else:
-            self.save_file(self.filename)
-
-
-    def init_save_dialog(self):
-        dialog = gtk.FileChooserDialog(_("Save.."), self,
-                                       gtk.FILE_CHOOSER_ACTION_SAVE,
-                                       (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
-                                        gtk.STOCK_SAVE, gtk.RESPONSE_OK))
-        self.save_dialog = dialog
-        dialog.set_default_response(gtk.RESPONSE_OK)
-        dialog.set_do_overwrite_confirmation(True)
-
-        filter2info = {}
-        self.filter2info = filter2info
-
-        filters = [ #name, patterns, saveopts
-        (_("Any format (prefer OpenRaster)"), ("*.ora", "*.png", "*.jpg", "*.jpeg"), ('.ora', {})),
-        (_("OpenRaster (*.ora)"), ("*.ora", ), ('.ora', {})),
-        ("PNG solid with background (*.png)", ("*.png", ), ('.png', {'alpha': False})),
-        (_("PNG transparent (*.png)"), ("*.png", ), ('.png', {'alpha': True})),
-        (_("Multiple PNG transparent (*.XXX.png)"), ("*.png", ), ('.png', {'multifile': True})),
-        (_("JPEG 90% quality (*.jpg; *.jpeg)"), ("*.jpg", "*.jpeg"), ('.jpg', {'quality': 90})),
-        ]
-        for nr, filt in enumerate(filters):
-            name, patterns, saveopts = filt
-            f = gtk.FileFilter()
-            filter2info[f] = saveopts
-            f.set_name(name)
-            for pat in patterns:
-                f.add_pattern(pat)
-            dialog.add_filter(f)
-            if nr == 0:
-                self.save_filter_default = f
-
-    def save_as_cb(self, action):
-        dialog = self.save_dialog
-
-        def dialog_set_filename(s):
-            # According to pygtk docu we should use set_filename(),
-            # however doing so removes the selected filefilter.
-            path, name = os.path.split(s)
-            dialog.set_current_folder(path)
-            dialog.set_current_name(name)
-
-        if self.filename:
-            dialog_set_filename(self.filename)
-        else:
-            dialog_set_filename('')
-            dialog.set_filter(self.save_filter_default)
-
-        try:
-            while dialog.run() == gtk.RESPONSE_OK:
-
-                filename = dialog.get_filename()
-                name, ext = os.path.splitext(filename)
-                ext_filter, options = self.filter2info.get(dialog.get_filter(), ('ora', {}))
-
-                if ext:
-                    if ext_filter != ext:
-                        # Minor ugliness: if the user types '.png' but
-                        # leaves the default .ora filter selected, we
-                        # use the default options instead of those
-                        # above. However, they are the same at the moment.
-                        options = {}
-                    assert(filename)
-                    self.save_file(filename, **options)
-                    break
-                
-                # add proper extension
-                filename = name + ext_filter
-
-                # trigger overwrite confirmation for the modified filename
-                dialog_set_filename(filename)
-                dialog.response(gtk.RESPONSE_OK)
-
-        finally:
-            dialog.hide()
-
-    def save_scrap_cb(self, action):
-        filename = self.filename
-        prefix = self.app.settingsWindow.save_scrap_prefix
-
-        number = None
-        if filename:
-            l = re.findall(re.escape(prefix) + '([0-9]+)', filename)
-            if l:
-                number = l[0]
-
-        if number:
-            # reuse the number, find the next character
-            char = 'a'
-            for filename in glob(prefix + number + '_*'):
-                c = filename[len(prefix + number + '_')]
-                if c >= 'a' and c <= 'z' and c >= char:
-                    char = chr(ord(c)+1)
-            if char > 'z':
-                # out of characters, increase the number
-                self.filename = None
-                return self.save_scrap_cb(action)
-            filename = '%s%s_%c' % (prefix, number, char)
-        else:
-            # we don't have a scrap filename yet, find the next number
-            maximum = 0
-            for filename in glob(prefix + '[0-9][0-9][0-9]*'):
-                filename = filename[len(prefix):]
-                res = re.findall(r'[0-9]*', filename)
-                if not res: continue
-                number = int(res[0])
-                if number > maximum:
-                    maximum = number
-            filename = '%s%03d_a' % (prefix, maximum+1)
-
-        #if self.doc.is_layered():
-        #    filename += '.ora'
-        #else:
-        #    filename += '.png'
-        filename += '.ora'
-
-        assert not os.path.exists(filename)
-        self.save_file(filename)
-
-    def open_recent_cb(self, action):
-        # feed history with scrap directory (mainly for initial history)
-        prefix = self.app.settingsWindow.save_scrap_prefix
-        prefix = os.path.abspath(prefix)
-        l = glob(prefix + '*.png') + glob(prefix + '*.ora') + glob(prefix + '*.jpg') + glob(prefix + '*.jpeg')
-        l = [x for x in l if x not in self.save_history]
-        l = l + self.save_history
-        l = [x for x in l if os.path.exists(x)]
-        l.sort(key=os.path.getmtime)
-        self.save_history = l
-
-        # pick the next most recent file from the history
-        idx = -1
-        if self.filename in self.save_history:
-            def basename(filename):
-                return os.path.splitext(filename)[0]
-            idx = self.save_history.index(self.filename)
-            while basename(self.save_history[idx]) == basename(self.filename):
-                idx -= 1
-                if idx == -1:
-                    return
-
-        if not self.confirm_destructive_action():
-            return
-        if not self.save_history:
-            self.app.message_dialog(_('There are no existing images in the save history. Did you move them all away?'), gtk.MESSAGE_WARNING)
-            return
-
-        self.open_file(self.save_history[idx])
 
     def quit_cb(self, *trash):
         self.doc.split_stroke()
         self.app.save_gui_config() # FIXME: should do this periodically, not only on quit
 
-        if not self.confirm_destructive_action(title=_('Quit'), question=_('Really Quit?')):
+        if not self.app.filehandler.confirm_destructive_action(title=_('Quit'), question=_('Really Quit?')):
             return True
 
         gtk.main_quit()
@@ -1147,4 +862,3 @@ class Window(gtk.Window):
                  "\n"),
         }
         self.app.message_dialog(text[action.get_name()])
-
