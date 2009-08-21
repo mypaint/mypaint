@@ -1,4 +1,5 @@
 import os, sys
+from os.path import join, basename
 
 EnsureSConsVersion(1, 0)
 
@@ -58,16 +59,10 @@ if env.get('CPPDEFINES'):
     # make sure assertions are enabled
     env['CPPDEFINES'].remove('NDEBUG')
 
-module = SConscript('lib/SConscript', 'env')
-SConscript('brushlib/SConscript', 'env')
-
-cdir = os.getcwd()
-os.chdir('po')
-for po in glob('*.po'):
-    lang = os.path.basename(po)[:-3]
-    os.system('intltool-update -g mypaint %s' % lang)
-    os.system('msgfmt %s -o %s/LC_MESSAGES/mypaint.mo' % (po,lang))
-os.chdir(cdir)
+Export('env')
+module = SConscript('lib/SConscript')
+SConscript('brushlib/SConscript')
+languages = SConscript('po/SConscript')
 
 # Build mypaint.exe for running on windows
 if sys.platform == "win32":
@@ -90,7 +85,7 @@ env.Command('mypaint', 'mypaint.py', [burn_python_version, Chmod('$TARGET', 0755
 
 env.Alias('install', env['prefix'])
 def install(dst, pattern):
-    env.Install(os.path.join(env['prefix'], dst), Glob(pattern))
+    env.Install(join(env['prefix'], dst), Glob(pattern))
 install('bin', 'mypaint')
 install('share/mypaint/brushes', 'brushes/*')
 install('share/mypaint/backgrounds', 'backgrounds/*')
@@ -101,33 +96,17 @@ install('share/mypaint/pixmaps', 'pixmaps/*')
 for dirpath, dirnames, filenames in os.walk('desktop'):
     if '.svn' in dirnames:
         dirnames.remove('.svn')
-    env.Install(os.path.join(env['prefix'], 'share/mypaint', dirpath), [os.path.join(dirpath, s) for s in filenames])
+    env.Install(join(env['prefix'], 'share/mypaint', dirpath), [join(dirpath, s) for s in filenames])
 
 # mypaint.desktop goes into /usr/share/applications (debian-only or standard?)
 install('share/applications', 'desktop/mypaint.desktop')
 
 # location for achitecture-dependent modules
-env.Install(os.path.join(env['prefix'], 'lib/mypaint'), module)
+env.Install(join(env['prefix'], 'lib/mypaint'), module)
 install('share/mypaint/lib', 'lib/*.py')
 install('share/mypaint/gui', 'gui/*.py')
 install('share/mypaint/brushlib', 'brushlib/*.py')
 
-for f in glob('po/*'):
-    if os.path.isdir(f):
-        lang = os.path.basename(f)
-        install('share/locale/%s/LC_MESSAGES' % lang, os.path.join(f,'LC_MESSAGES/mypaint.mo'))
-
-# debian python policy:
-# "Private modules are installed in a directory such as /usr/share/packagename or /usr/lib/packagename."
-# in general /usr/lib is for architecture-dependent stuff (compiled binaries or modules)
-# and        /usr/share for independent
-
-
-# normal python library:
-# .deb on gettdeb.net:  /usr/share/mypaint/python
-
-# autotools before:     /usr/lib/python2.5/site-packages/mypaint/mydrawwidget.so
-# .deb on gettdeb.net:  /usr/lib/python2.5/site-packages/mypaint/mydrawwidget.so
-# with foresight linux: /usr/lib64/python2.4/site-packages/mypaint/mydrawwidget.so
-# (both of them probably just mirror autotools)
-
+# translations
+for lang in languages:
+    install('share/locale/%s/LC_MESSAGES' % lang, 'po/%s/LC_MESSAGES/mypaint.mo' % lang)

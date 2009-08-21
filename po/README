@@ -1,0 +1,7 @@
+Before starting to translate, you should update the po file for your language.
+For example, for the french translation, run:
+
+scons translate=fr
+
+TODO: describe how to add a new translation
+

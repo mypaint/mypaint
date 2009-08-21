@@ -1,0 +1,22 @@
+Import('env')
+from os.path import join, basename
+
+languages = []
+for src in env.Glob('*.po'):
+    lang = basename(str(src))[:-3]
+    languages.append(lang)
+    dst = join(lang, "LC_MESSAGES", 'mypaint.mo')
+    Command(dst, src, 'msgfmt $SOURCE -o $TARGET')
+print 'Translations:', ', '.join(languages)
+
+lang = ARGUMENTS.get('translate')
+if lang:
+    if lang == 'all':
+        translate = languages
+    else:
+        translate = [lang]
+    for lang in translate:
+        print 'Updating translation:', lang
+        env.Execute('intltool-update -g mypaint %s' % lang)
+
+Return('languages')

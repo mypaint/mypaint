@@ -15,7 +15,7 @@ Building on Linux:
     scons prefix=/usr/local install
 
     Required: pygtk, python, swig, gtk, numpy, pycairo(>=1.4)
-    Debian users: apt-get install g++ python-dev libglib2.0-dev python-numpy swig scons
+    Debian users: apt-get install g++ python-dev libglib2.0-dev python-numpy swig scons gettext
 
     Recommended: a pressure sensitive input device (graphic tablet)
 
