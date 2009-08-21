@@ -45,7 +45,7 @@ class KeyboardManager:
                 if action.get_accel_path() == accel_path:
                     self.keymap[shortcut] = action
                     return
-            raise RuntimeError
+            print 'Ignoring keybinding for', accel_path
 
     def key_press_cb(self, widget, event):
         # See gtk sourcecode in gtkmenu.c function gtk_menu_key_press,
