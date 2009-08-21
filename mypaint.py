@@ -80,6 +80,14 @@ if __name__ == '__main__':
         psyco_opt()
     except ImportError:
         pass
-    paths = get_paths()
+
+    datapath, confpath, localepath = get_paths()
+
+    # must be done before importing any translated python modules
+    # (to get global strings translated, especially brushsettings.py)
+    import gettext
+    gettext.bindtextdomain("mypaint", localepath)
+    gettext.textdomain("mypaint")
+
     from gui import main
-    main.main(*paths)
+    main.main(datapath, confpath)

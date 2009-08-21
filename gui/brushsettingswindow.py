@@ -10,7 +10,7 @@
 from gettext import gettext as _
 import gtk
 import functionwindow
-from lib import brushsettings
+from brushlib import brushsettings
 from lib import command
 
 class Window(gtk.Window):
