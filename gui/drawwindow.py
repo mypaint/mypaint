@@ -176,6 +176,7 @@ class Window(gtk.Window):
               <menuitem action='ColorChangerPopup'/>
               <menuitem action='ColorPickerPopup'/>
               <menuitem action='ColorHistoryPopup'/>
+              <menuitem action='ColorSamplerWindow'/>
               <separator/>
               <menuitem action='Brighter'/>
               <menuitem action='Darker'/>
@@ -269,6 +270,7 @@ class Window(gtk.Window):
             ('BrushSelectionWindow',  None, _('Brush List...'), 'b', None, self.toggleWindow_cb),
             ('BrushSettingsWindow',   None, _('Brush Settings...'), '<control>b', None, self.toggleWindow_cb),
             ('ColorSelectionWindow',  None, _('Color Triangle...'), 'g', None, self.toggleWindow_cb),
+            ('ColorSamplerWindow',  None, _('Color Sampler...'), 't', None, self.toggleWindow_cb),
             ('SettingsWindow',        None, _('Settings...'), None, None, self.toggleWindow_cb),
 
             ('HelpMenu',     None, _('Help')),

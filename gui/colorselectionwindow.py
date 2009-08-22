@@ -76,6 +76,10 @@ class Window(gtk.Window):
         if v > 1.0: v = 1.0
         if v < 0.0: v = 0.0
         r, g, b  = helpers.hsv_to_rgb(h, s, v)
+        self.set_color_rgb(r, g, b)
+
+    def set_color_rgb(self,rgb):
+        r,g,b = rgb
         c = gdk.Color(int(r*65535+0.5), int(g*65535+0.5), int(b*65535+0.5))
         # only emit color_changed events if the user directly interacts with the window
         self.change_notification = False
