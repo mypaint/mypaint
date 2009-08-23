@@ -47,6 +47,8 @@ class GColorSelector(gtk.DrawingArea):
         selection.set(selection.target, 8, clrs)
 
     def on_configure(self,w, size):
+        self.x_rel = size.x
+        self.y_rel = size.y
         self.w = size.width
         self.h = size.height
         self.configure_calc()
@@ -108,6 +110,7 @@ class RecentColors(gtk.HBox):
             self.slots.append(slot)
             self.colors.append(slot.color)
         self.show_all()
+        self.last_color = (1.0,1.0,1.0)
 
     def slot_selected(self,color):
         self.on_select(color)
@@ -116,6 +119,12 @@ class RecentColors(gtk.HBox):
         pass
 
     def set_color(self, color):
+        eps = 0.0001
+        r1,g1,b1 = color
+        r2,g2,b2 = self.last_color
+        if abs(r1-r2)<eps and abs(g1-g2)<eps and abs(b1-b2)<eps:
+            return
+        self.last_color = color
         if color in self.colors:
             self.colors.remove(color)
         self.colors.insert(0, color)
@@ -131,8 +140,11 @@ class CircleSelector(GColorSelector):
         GColorSelector.__init__(self)
         self.color = color
         self.hsv = rgb_to_hsv(*color)
-        self.previous = color
+        self.last_line = None
         self.calc_colors()
+
+    def get_previous_color(self,n):
+        return self.color
 
     def calc_line(self, angle):
         x1 = self.x0 + self.r2*cos(-angle)
@@ -158,8 +170,8 @@ class CircleSelector(GColorSelector):
             a1 += CSTEP
 
     def configure_calc(self):
-        self.x0 = self.w/2.0
-        self.y0 = self.h/2.0
+        self.x0 = self.x_rel + self.w/2.0
+        self.y0 = self.y_rel + self.h/2.0
         M = min(self.w,self.h)-5
         self.r1 = M/10.0
         self.r2 = 0.36*M
@@ -167,7 +179,6 @@ class CircleSelector(GColorSelector):
         self.calc_circle()
 
     def set_color(self, color, redraw=True):
-        self.previous = self.color
         self.color = color
         h,s,v = rgb_to_hsv(*color)
         old_h,old_s,old_v = self.hsv
@@ -176,14 +187,13 @@ class CircleSelector(GColorSelector):
             if h!=old_h:
                 self.redraw_circle_line()
             if h!=old_h or s!=old_s or v!=old_v:
-                self.draw_inside_circle()
+                self.draw_inside_circle(n=1)
 
     def select_color_at(self, x,y):
         d = sqrt((x-self.x0)**2 + (y-self.y0)**2)
         if self.r2 < d < self.r3:
             h,s,v = self.hsv
             h = 0.5 + 0.5*atan2(y-self.y0, self.x0-x)/pi
-            self.previous = self.color
             self.color = hsv_to_rgb(h,s,v)
             self.hsv = (h,s,v)
             self.redraw_circle_line()
@@ -194,7 +204,6 @@ class CircleSelector(GColorSelector):
             for i,a1 in enumerate(self.angles):
                 if a1-2*pi/CIRCLE_N < a < a1:
                     clr = self.simple_colors[i]
-                    self.previous = self.color
                     self.color = clr
                     self.hsv = rgb_to_hsv(*clr)
                     self.redraw_circle_line()
@@ -202,7 +211,6 @@ class CircleSelector(GColorSelector):
                     self.on_select(self.color)
                     break
         elif d < self.r1 and (x-self.x0) < 0:
-            self.previous, self.color = self.color, self.previous
             self.hsv = rgb_to_hsv(*self.color)
             self.queue_draw()
             self.on_select(self.color)
@@ -211,7 +219,10 @@ class CircleSelector(GColorSelector):
         if not self.window:
             return
         cr = self.window.cairo_create()
-        x1,y1, x2,y2, h = self.last_line
+        if not self.last_line:
+            x1,y1,x2,y2,h = self.x0+self.r2,self.y0, self.x0+self.r3, self.y0, 0.0
+        else:
+            x1,y1, x2,y2, h = self.last_line
         cr.set_line_width(5.0)
         cr.set_source_rgb(*hsv_to_rgb(h,1.0,1.0))
         cr.move_to(x1,y1)
@@ -227,7 +238,7 @@ class CircleSelector(GColorSelector):
         cr.stroke()
         self.draw_circles(cr)
 
-    def draw_inside_circle(self,cr=None):
+    def draw_inside_circle(self,n=0,cr=None):
         if not self.window:
             return
         if not cr:
@@ -267,7 +278,7 @@ class CircleSelector(GColorSelector):
         cr.set_source_rgb(*self.color)
         cr.arc(self.x0, self.y0, self.r1, -pi/2, pi/2)
         cr.fill()
-        cr.set_source_rgb(*self.previous)
+        cr.set_source_rgb(*self.get_previous_color(n))
         cr.arc(self.x0, self.y0, self.r1, pi/2, 3*pi/2)
         cr.fill()
         cr.arc(self.x0, self.y0, self.r1, 0, 2*pi)
@@ -292,7 +303,7 @@ class CircleSelector(GColorSelector):
             cr.set_source_rgb(*clr)
             cr.line_to(x2,y2)
             cr.stroke()
-        self.draw_inside_circle(cr)
+        self.draw_inside_circle(cr=cr)
         self.draw_circles(cr)
 
 class VSelector(GColorSelector):
@@ -490,6 +501,7 @@ class Selector(gtk.VBox):
         expander.add(hbox2)
         self.pack_start(expander, expand=False)
         self.circle.on_select = self.hue_selected
+        self.circle.get_previous_color = self.previous_color
         self.recent.on_select = self.recent_selected
         self.light.on_select = self.light_selected
         self.saturation.on_select = self.saturation_selected
@@ -499,6 +511,12 @@ class Selector(gtk.VBox):
         self.drag_dest_set(gtk.DEST_DEFAULT_MOTION | gtk.DEST_DEFAULT_HIGHLIGHT | gtk.DEST_DEFAULT_DROP,
                  [("application/x-color",0,80)],
                  gtk.gdk.ACTION_COPY)
+
+    def previous_color(self,n):
+        try:
+            return self.recent.colors[n]
+        except:
+            return (1.0,1.0,1.0)
 
     def set_color(self,color,exclude=None):
         for w in self.widgets:
