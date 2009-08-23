@@ -14,3 +14,5 @@ mypaint
 options.cache
 *.mo
 *.pot
+POTFILES.in
+

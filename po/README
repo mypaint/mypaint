@@ -1,7 +1,10 @@
-Before starting to translate, you should update the po file for your language.
+Before working on a translation, update the po file for your language.
 For example, for the french translation, run:
 
 scons translate=fr
 
-TODO: describe how to add a new translation
+To start a new language, generate only the template mypaint.pot with:
 
+scons translate=pot
+
+Just put the new .po file into this directory and run scons.

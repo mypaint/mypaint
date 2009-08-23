@@ -1,7 +1,0 @@
-gui/drawwindow.py
-gui/brushselectionwindow.py 
-gui/brushsettingswindow.py
-gui/functionwindow.py
-gui/gtkexcepthook.py
-gui/settingswindow.py
-brushlib/brushsettings.py
