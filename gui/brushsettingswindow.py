@@ -20,7 +20,7 @@ class Window(gtk.Window):
         self.app.brush_selected_callbacks.append(self.brush_selected_cb)
         self.app.kbm.add_window(self)
 
-        self.set_title('Brush settings')
+        self.set_title(_('Brush settings'))
         self.connect('delete-event', self.app.hide_window_cb)
 
         vbox = gtk.VBox()

@@ -18,7 +18,7 @@ class Window(gtk.Window):
         gtk.Window.__init__(self)
         self.app = app
 
-        self.set_title('Background')
+        self.set_title(_('Background'))
         self.connect('delete-event', self.app.hide_window_cb)
 
         vbox = gtk.VBox()
@@ -29,30 +29,30 @@ class Window(gtk.Window):
 
         scroll = gtk.ScrolledWindow()
         scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
-        nb.append_page(scroll, gtk.Label('Pattern'))
+        nb.append_page(scroll, gtk.Label(_('Pattern')))
 
         self.bgl = BackgroundList(self)
         scroll.add_with_viewport(self.bgl)
 
         vbox2 = gtk.VBox()
-        nb.append_page(vbox2, gtk.Label('Color'))
+        nb.append_page(vbox2, gtk.Label(_('Color')))
 
         self.cs = gtk.ColorSelection()
         self.cs.connect('color-changed', self.color_changed_cb)
         vbox2.pack_start(self.cs, expand=True)
 
-        b = gtk.Button('add color to patterns')
+        b = gtk.Button(_('add color to patterns'))
         b.connect('clicked', self.add_color_to_patterns_cb)
         vbox2.pack_start(b, expand=False)
 
         hbox = gtk.HBox()
         vbox.pack_start(hbox, expand=False)
 
-        b = gtk.Button('save as default')
+        b = gtk.Button(_('save as default'))
         b.connect('clicked', self.save_as_default_cb)
         hbox.pack_start(b)
 
-        b = gtk.Button('done')
+        b = gtk.Button(_('done'))
         b.connect('clicked', lambda w: self.hide())
         hbox.pack_start(b)
 
