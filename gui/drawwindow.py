@@ -276,7 +276,7 @@ class Window(gtk.Window):
             ('HelpMenu',     None, _('Help')),
             ('Docu', None, _('Where is the Documentation?'), None, None, self.show_infodialog_cb),
             ('ShortcutHelp',  None, _('Change the Keyboard Shortcuts?'), None, None, self.show_infodialog_cb),
-            ('About', None, _('About MyPaint'), None, None, self.show_infodialog_cb),
+            ('About', None, _('About MyPaint'), None, None, self.about_cb),
 
             ('DebugMenu',    None, _('Debug')),
 
@@ -1068,6 +1068,53 @@ class Window(gtk.Window):
             self.app.select_brush(context)
             self.app.brushSelectionWindow.set_preview_pixbuf(context.preview)
 
+    def about_cb(self, action):
+        d = gtk.AboutDialog()
+        d.set_transient_for(self)
+        d.set_program_name("MyPaint")
+        d.set_version(MYPAINT_VERSION)
+        d.set_copyright(_("Copyright (C) 2005-2009\nMartin Renold and the MyPaint Development Team"))
+        d.set_website("http://mypaint.info/")
+        filename = os.path.join(self.app.datapath, 'desktop', '100x100', 'mypaint.png')
+        pixbuf = gdk.pixbuf_new_from_file(filename)
+        d.set_logo(pixbuf)
+        d.set_license(
+            _(u"This program is free software; you can redistribute it and/or modify "
+              u"it under the terms of the GNU General Public License as published by "
+              u"the Free Software Foundation; either version 2 of the License, or "
+              u"(at your option) any later version.\n"
+              u"\n"
+              u"This program is distributed in the hope that it will be useful, "
+              u"but WITHOUT ANY WARRANTY. See the COPYING file for more details.")
+            )
+        d.set_wrap_license(True)
+        d.set_authors([
+            u"Martin Renold (%s)" % _('programming'),
+            u'Artis Rozentāls (%s)' % _('brushes'),
+            u'Yves Combe (%s)' % _('portability'),
+            u'Popolon (%s)' % _('brushes, programming'),
+            u'Clement Skau (%s)' % _('programming'),
+            u"Marcelo 'Tanda' Cerviño (%s)" % _('patterns, brushes'),
+            u'Jon Nordby (%s)' % _('programming'),
+            u'Álinson Santos (%s)' % _('programming'),
+            u'Tumagonx (%s)' % _('portability'),
+            u'Ilya Portnov (%s)' % _('programming'),
+            ])
+        d.set_artists([
+            u'Sebastian Kraft (%s)' % _('desktop icon'),
+            ])
+        # list all translators, not only those of the current language
+        d.set_translator_credits(
+            u'Ilya Portnov (ru)\n'
+            u'Popolon (fr, zh_CN)\n'
+            u'Jon Nordby (nb)\n'
+            u'Griatch (sv)\n'
+            u'Tobias Jakobs (de)\n'
+            )
+        
+        d.run()
+        d.destroy()
+
     def show_infodialog_cb(self, action):
         text = {
         'ShortcutHelp': 
@@ -1098,29 +1145,6 @@ class Window(gtk.Window):
                  "inputs (pressure, speed, etc.) are available as tooltips. "
                  "Put your mouse over a label to see them. "
                  "\n"),
-        'About':
-                _(u"MyPaint %s - pressure sensitive painting application\n") % MYPAINT_VERSION +
-                u"Copyright (C) 2005-2009\n"
-                u"Martin Renold &lt;martinxyz@gmx.ch&gt;\n\n" + 
-                _(u"Contributors:\n") + 
-                u"Artis Rozentāls &lt;artis@aaa.apollo.lv&gt; (brushes)\n"
-                u"Yves Combe &lt;yves@ycombe.net&gt; (portability)\n"
-                u"Sebastian Kraft (desktop icon)\n"
-                u"Popolon &lt;popolon@popolon.org&gt; (brushes, programming)\n"
-                u"Clement Skau &lt;clementskau@gmail.com&gt; (programming)\n"
-                u'Marcelo "Tanda" Cerviño &lt;info@lodetanda.com.ar&gt; (patterns, brushes)\n'
-                u'Jon Nordby &lt;jononor@gmail.com&gt; (programming)\n'
-                u'Álinson Santos &lt;isoron@gmail.com&gt; (programming)\n'
-                u'Tumagonx &lt;mr.tiar@gmail.com&gt; (portability)\n'
-                u'Ilya Portnov &lt;portnov84@rambler.ru&gt; (programming, i18n)\n'
-                u"\n" + 
-                _(u"This program is free software; you can redistribute it and/or modify "
-                u"it under the terms of the GNU General Public License as published by "
-                u"the Free Software Foundation; either version 2 of the License, or "
-                u"(at your option) any later version.\n"
-                u"\n"
-                u"This program is distributed in the hope that it will be useful, "
-                u"but WITHOUT ANY WARRANTY. See the COPYING file for more details.")
         }
         self.app.message_dialog(text[action.get_name()])
 
