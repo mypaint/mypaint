@@ -6,7 +6,8 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-import numpy
+import numpy, gtk
+gdk = gtk.gdk
 
 import mypaintlib, helpers
 from tiledsurface import N, MAX_MIPMAP_LEVEL, get_tiles_bbox
@@ -16,16 +17,10 @@ class BackgroundError(Exception):
 
 class Background:
     def __init__(self, obj, mipmap_level=0):
-        try:
+        if isinstance(obj, gdk.Pixbuf):
             obj = helpers.gdkpixbuf2numpy(obj)
-        except:
-            # it was already an array (eg. when creating the mipmap)
-            pass
-        try:
+        elif not isinstance(obj, numpy.ndarray):
             r, g, b = obj
-        except:
-            pass
-        else:
             obj = numpy.zeros((N, N, 3), dtype='uint8')
             obj[:,:,:] = r, g, b
 
