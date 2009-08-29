@@ -78,7 +78,7 @@ void tile_downscale_rgba16(PyObject *src, PyObject *dst, int dst_x, int dst_y) {
   }
 }
 
-void tile_composite_rgba16_over_rgb8(PyObject * src, PyObject * dst, float alpha) {
+void tile_composite_rgba16_over_rgb16(PyObject * src, PyObject * dst, float alpha) {
 #ifdef HEAVY_DEBUG
   assert(PyArray_DIM(src, 0) == TILE_SIZE);
   assert(PyArray_DIM(src, 1) == TILE_SIZE);
@@ -89,26 +89,28 @@ void tile_composite_rgba16_over_rgb8(PyObject * src, PyObject * dst, float alpha
   assert(PyArray_DIM(dst, 0) == TILE_SIZE);
   assert(PyArray_DIM(dst, 1) == TILE_SIZE);
   assert(PyArray_DIM(dst, 2) == 3);
-  assert(PyArray_TYPE(dst) == NPY_UINT8);
+  assert(PyArray_TYPE(dst) == NPY_UINT16);
   assert(PyArray_ISBEHAVED(dst));
 #endif
   
   PyArrayObject* dst_arr = ((PyArrayObject*)dst);
 #ifdef HEAVY_DEBUG
-  assert(dst_arr->strides[1] == 3*sizeof(uint8_t));
-  assert(dst_arr->strides[2] ==   sizeof(uint8_t));
+  assert(dst_arr->strides[1] == 3*sizeof(uint16_t));
+  assert(dst_arr->strides[2] ==   sizeof(uint16_t));
 #endif
 
-  uint32_t opac  = 255*alpha;
-  uint32_t opac_ = opac*(1<<15)/255;
+  uint32_t opac  = alpha * (1<<15) + 0.5;
+  opac = CLAMP(opac, 0, 1<<15);
+  if (opac == 0) return;
+
   uint16_t * src_p  = (uint16_t*)((PyArrayObject*)src)->data;
   char * p = dst_arr->data;
   for (int y=0; y<TILE_SIZE; y++) {
-    uint8_t  * dst_p  = (uint8_t*) (p);
+    uint16_t  * dst_p  = (uint16_t*) (p);
     for (int x=0; x<TILE_SIZE; x++) {
       // resultAlpha = 1.0 (thus it does not matter if resultColor is premultiplied alpha or not)
       // resultColor = topColor + (1.0 - topAlpha) * bottomColor
-      const uint32_t one_minus_topAlpha = (1<<15) - (src_p[3]*opac_)/(1<<15);
+      const uint32_t one_minus_topAlpha = (1<<15) - src_p[3]*opac/(1<<15);
       dst_p[0] = ((uint32_t)src_p[0]*opac + one_minus_topAlpha*dst_p[0]) / (1<<15);
       dst_p[1] = ((uint32_t)src_p[1]*opac + one_minus_topAlpha*dst_p[1]) / (1<<15);
       dst_p[2] = ((uint32_t)src_p[2]*opac + one_minus_topAlpha*dst_p[2]) / (1<<15);
@@ -243,6 +245,56 @@ void tile_convert_rgba16_to_rgba8(PyObject * src, PyObject * dst) {
       *dst_p++ = (g * 255 + add_g) / (1<<15);
       *dst_p++ = (b * 255 + add_b) / (1<<15);
       *dst_p++ = (a * 255 + add_a) / (1<<15);
+    }
+    src_p += src_arr->strides[0];
+    dst_p += dst_arr->strides[0];
+  }
+}
+
+// used after compositing
+void tile_convert_rgb16_to_rgb8(PyObject * src, PyObject * dst) {
+  PyArrayObject* src_arr = ((PyArrayObject*)src);
+  PyArrayObject* dst_arr = ((PyArrayObject*)dst);
+
+#ifdef HEAVY_DEBUG
+  assert(PyArray_DIM(dst, 0) == TILE_SIZE);
+  assert(PyArray_DIM(dst, 1) == TILE_SIZE);
+  assert(PyArray_DIM(dst, 2) == 3);
+  assert(PyArray_TYPE(dst) == NPY_UINT8);
+  assert(PyArray_ISBEHAVED(dst));
+  assert(dst_arr->strides[1] == 3*sizeof(uint8_t));
+  assert(dst_arr->strides[2] ==   sizeof(uint8_t));
+
+  assert(PyArray_DIM(src, 0) == TILE_SIZE);
+  assert(PyArray_DIM(src, 1) == TILE_SIZE);
+  assert(PyArray_DIM(src, 2) == 3);
+  assert(PyArray_TYPE(src) == NPY_UINT16);
+  assert(PyArray_ISBEHAVED(src));
+  assert(src_arr->strides[1] == 3*sizeof(uint16_t));
+  assert(src_arr->strides[2] ==   sizeof(uint16_t));
+#endif
+
+  for (int y=0; y<TILE_SIZE; y++) {
+    uint16_t * src_p = (uint16_t*)(src_arr->data + y*src_arr->strides[0]);
+    uint8_t  * dst_p = (uint8_t*)(dst_arr->data + y*dst_arr->strides[0]);
+    for (int x=0; x<TILE_SIZE; x++) {
+      uint32_t r, g, b;
+      r = *src_p++;
+      g = *src_p++;
+      b = *src_p++;
+#ifdef HEAVY_DEBUG
+      assert(r<=(1<<15));
+      assert(g<=(1<<15));
+      assert(b<=(1<<15));
+#endif
+
+      // Doing rounding for now.
+      // TODO: error diffusion / dithering? (but watch the performance benchmarks)
+      const uint32_t add = (1<<15)/2;
+
+      *dst_p++ = (r * 255 + add) / (1<<15);
+      *dst_p++ = (g * 255 + add) / (1<<15);
+      *dst_p++ = (b * 255 + add) / (1<<15);
     }
     src_p += src_arr->strides[0];
     dst_p += dst_arr->strides[0];

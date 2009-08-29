@@ -12,7 +12,7 @@ import xml.etree.ElementTree as ET
 from gtk import gdk
 import gobject, numpy
 
-import helpers, tiledsurface, pixbufsurface, backgroundsurface
+import helpers, tiledsurface, pixbufsurface, backgroundsurface, mypaintlib
 import command, stroke, layer
 import brush # FIXME: the brush module depends on gtk and everything, but we only need brush_lowlevel
 N = tiledsurface.N
@@ -173,9 +173,15 @@ class Document():
 
         background.blit_tile_into(dst, tx, ty, mipmap)
 
+        assert dst.dtype == 'uint8' # OPTIMIZE: rewrite background to hold 16bit directly
+        dst_16bit = (dst.astype('uint32') * (1<<15) / 255).astype('uint16')
+
         for layer in layers:
             surface = layer.surface
-            surface.composite_tile_over(dst, tx, ty, mipmap_level=mipmap, opacity=layer.opacity)
+            surface.composite_tile_over(dst_16bit, tx, ty, mipmap_level=mipmap, opacity=layer.opacity)
+
+        if dst_16bit is not dst:
+            mypaintlib.tile_convert_rgb16_to_rgb8(dst_16bit, dst)
             
     def add_layer(self, insert_idx):
         self.do(command.AddLayer(self, insert_idx))
