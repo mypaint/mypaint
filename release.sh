@@ -25,7 +25,7 @@ filename=$orig/mypaint-$version.tar.bz2
 tar -cvjf $filename mypaint-$version
 
 cd $d
-scons
+scons debug=true
 tests/test_mypaintlib.py
 tests/test_performance.py -a -c 1
 

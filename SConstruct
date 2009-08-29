@@ -30,14 +30,13 @@ SConsignFile() # no .scsonsign into $PREFIX please
 
 opts = Variables()
 opts.Add(PathVariable('prefix', 'autotools-style installation prefix', '/usr/local', validator=PathVariable.PathIsDirCreate))
+opts.Add(BoolVariable('debug', 'enable HEAVY_DEBUG and disable optimizations', False))
 env = Environment(ENV=os.environ, options=opts)
 opts.Update(env)
 
 env.ParseConfig('pkg-config --cflags --libs glib-2.0')
 
 env.Append(CXXFLAGS=' -Wall -Wno-sign-compare -Wno-write-strings')
-#env.Append(CXXFLAGS=' -O0', LINKFLAGS=' -O0')
-#env.Append(CXXFLAGS=' -O3', LINKFLAGS=' -O3')
 
 # Get the numpy include path (for numpy/arrayobject.h).
 numpy_path = numpy.get_include()
@@ -58,6 +57,10 @@ else:
 if env.get('CPPDEFINES'):
     # make sure assertions are enabled
     env['CPPDEFINES'].remove('NDEBUG')
+
+if env['debug']:
+    env.Append(CPPDEFINES='HEAVY_DEBUG')
+    env.Append(CCFLAGS='-O0', LINKFLAGS='-O0')
 
 Export('env')
 module = SConscript('lib/SConscript')

@@ -73,14 +73,14 @@ public:
       printf("Python exception during get_tile_memory()! The next traceback might be wrong.\n");
       return NULL;
     }
-    /* time critical assertions
+#ifdef HEAVY_DEBUG
        assert(PyArray_NDIM(rgba) == 3);
        assert(PyArray_DIM(rgba, 0) == TILE_SIZE);
        assert(PyArray_DIM(rgba, 1) == TILE_SIZE);
        assert(PyArray_DIM(rgba, 2) == 4);
        assert(PyArray_ISCARRAY(rgba));
        assert(PyArray_TYPE(rgba) == NPY_UINT16);
-    */
+#endif
     // tiledsurface.py will keep a reference in its tiledict, at least until the final end_atomic()
     Py_DECREF(rgba);
     uint16_t * rgba_p = (uint16_t*)((PyArrayObject*)rgba)->data;
@@ -198,8 +198,10 @@ public:
               // OPTIMIZE: separate function for the standard case without erasing?
               // OPTIMIZE: don't use floats here in the inner loop?
 
-              //assert(opa >= 0.0 && opa <= 1.0);
-              //assert(eraser_target_alpha >= 0.0 && eraser_target_alpha <= 1.0);
+#ifdef HEAVY_DEBUG
+              assert(opa >= 0.0 && opa <= 1.0);
+              assert(eraser_target_alpha >= 0.0 && eraser_target_alpha <= 1.0);
+#endif
 
               uint32_t opa_a = (1<<15)*opa;   // topAlpha
               uint32_t opa_b = (1<<15)-opa_a; // bottomAlpha

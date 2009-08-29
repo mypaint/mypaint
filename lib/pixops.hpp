@@ -10,7 +10,7 @@
 // downscale a tile to half its size using bilinear interpolation
 // used mainly for generating background mipmaps
 void tile_downscale_rgb8(PyObject *src, PyObject *dst, int dst_x, int dst_y, bool repeat) {
-  /* disabled as optimization
+#ifdef HEAVY_DEBUG
   assert(PyArray_DIM(src, 0) == TILE_SIZE);
   assert(PyArray_DIM(src, 1) == TILE_SIZE);
   assert(PyArray_TYPE(src) == NPY_UINT8);
@@ -18,7 +18,7 @@ void tile_downscale_rgb8(PyObject *src, PyObject *dst, int dst_x, int dst_y, boo
 
   assert(PyArray_TYPE(dst) == NPY_UINT8);
   assert(PyArray_ISCARRAY(dst));
-  */
+#endif
 
   PyArrayObject* src_arr = ((PyArrayObject*)src);
   PyArrayObject* dst_arr = ((PyArrayObject*)dst);
@@ -48,7 +48,7 @@ void tile_downscale_rgb8(PyObject *src, PyObject *dst, int dst_x, int dst_y, boo
 // downscale a tile to half its size using bilinear interpolation
 // used mainly for generating tiledsurface mipmaps
 void tile_downscale_rgba16(PyObject *src, PyObject *dst, int dst_x, int dst_y) {
-  /* disabled as optimization
+#ifdef HEAVY_DEBUG
   assert(PyArray_DIM(src, 0) == TILE_SIZE);
   assert(PyArray_DIM(src, 1) == TILE_SIZE);
   assert(PyArray_TYPE(src) == NPY_UINT16);
@@ -58,7 +58,7 @@ void tile_downscale_rgba16(PyObject *src, PyObject *dst, int dst_x, int dst_y) {
   assert(PyArray_DIM(dst, 1) == TILE_SIZE);
   assert(PyArray_TYPE(dst) == NPY_UINT16);
   assert(PyArray_ISCARRAY(dst));
-  */
+#endif
 
   PyArrayObject* src_arr = ((PyArrayObject*)src);
   PyArrayObject* dst_arr = ((PyArrayObject*)dst);
@@ -79,7 +79,7 @@ void tile_downscale_rgba16(PyObject *src, PyObject *dst, int dst_x, int dst_y) {
 }
 
 void tile_composite_rgba16_over_rgb8(PyObject * src, PyObject * dst, float alpha) {
-  /* disabled as optimization
+#ifdef HEAVY_DEBUG
   assert(PyArray_DIM(src, 0) == TILE_SIZE);
   assert(PyArray_DIM(src, 1) == TILE_SIZE);
   assert(PyArray_DIM(src, 2) == 4);
@@ -91,13 +91,13 @@ void tile_composite_rgba16_over_rgb8(PyObject * src, PyObject * dst, float alpha
   assert(PyArray_DIM(dst, 2) == 3);
   assert(PyArray_TYPE(dst) == NPY_UINT8);
   assert(PyArray_ISBEHAVED(dst));
-  */
+#endif
   
   PyArrayObject* dst_arr = ((PyArrayObject*)dst);
-  /*
+#ifdef HEAVY_DEBUG
   assert(dst_arr->strides[1] == 3*sizeof(uint8_t));
   assert(dst_arr->strides[2] ==   sizeof(uint8_t));
-  */
+#endif
 
   uint32_t opac  = 255*alpha;
   uint32_t opac_ = opac*(1<<15)/255;
@@ -124,7 +124,7 @@ void tile_blit_rgb8_into_rgb8(PyObject * src, PyObject * dst) {
   PyArrayObject* src_arr = ((PyArrayObject*)src);
   PyArrayObject* dst_arr = ((PyArrayObject*)dst);
 
-  /* disabled as optimization
+#ifdef HEAVY_DEBUG
   assert(PyArray_DIM(dst, 0) == TILE_SIZE);
   assert(PyArray_DIM(dst, 1) == TILE_SIZE);
   assert(PyArray_DIM(dst, 2) == 3);
@@ -140,7 +140,7 @@ void tile_blit_rgb8_into_rgb8(PyObject * src, PyObject * dst) {
   assert(PyArray_ISBEHAVED(src));
   assert(src_arr->strides[1] == 3*sizeof(uint8_t));
   assert(src_arr->strides[2] ==   sizeof(uint8_t));
-  */
+#endif
 
   char * src_p = src_arr->data;
   char * dst_p = dst_arr->data;
@@ -156,7 +156,7 @@ void tile_convert_rgba16_to_rgba8(PyObject * src, PyObject * dst) {
   PyArrayObject* src_arr = ((PyArrayObject*)src);
   PyArrayObject* dst_arr = ((PyArrayObject*)dst);
 
-  /* disabled as optimization
+#ifdef HEAVY_DEBUG
   assert(PyArray_DIM(dst, 0) == TILE_SIZE);
   assert(PyArray_DIM(dst, 1) == TILE_SIZE);
   assert(PyArray_DIM(dst, 2) == 4);
@@ -172,7 +172,7 @@ void tile_convert_rgba16_to_rgba8(PyObject * src, PyObject * dst) {
   assert(PyArray_ISBEHAVED(src));
   assert(src_arr->strides[1] == 4*sizeof(uint16_t));
   assert(src_arr->strides[2] ==   sizeof(uint16_t));
-  */
+#endif
 
   for (int y=0; y<TILE_SIZE; y++) {
     uint16_t * src_p = (uint16_t*)(src_arr->data + y*src_arr->strides[0]);
@@ -183,7 +183,7 @@ void tile_convert_rgba16_to_rgba8(PyObject * src, PyObject * dst) {
       g = *src_p++;
       b = *src_p++;
       a = *src_p++;
-      /*
+#ifdef HEAVY_DEBUG
       assert(a<=(1<<15));
       assert(r<=(1<<15));
       assert(g<=(1<<15));
@@ -191,7 +191,7 @@ void tile_convert_rgba16_to_rgba8(PyObject * src, PyObject * dst) {
       assert(r<=a);
       assert(g<=a);
       assert(b<=a);
-      */
+#endif
       // un-premultiply alpha (with rounding)
       if (a != 0) {
         r = ((r << 15) + a/2) / a;
@@ -200,12 +200,12 @@ void tile_convert_rgba16_to_rgba8(PyObject * src, PyObject * dst) {
       } else {
         r = g = b = 0;
       }
-      /*
+#ifdef HEAVY_DEBUG
       assert(a<=(1<<15));
       assert(r<=(1<<15));
       assert(g<=(1<<15));
       assert(b<=(1<<15));
-      */
+#endif
 
       /*
       // Variant A) rounding
@@ -234,10 +234,10 @@ void tile_convert_rgba16_to_rgba8(PyObject * src, PyObject * dst) {
       const uint32_t add_a = (rand() % (1<<15)) * 240/256 + (1<<15) * 8/256;
       // TODO: error diffusion might work better than random dithering...
 
-      /*
+#ifdef HEAVY_DEBUG
       assert(add_a < (1<<15));
       assert(add_a >= 0);
-      */
+#endif
 
       *dst_p++ = (r * 255 + add_r) / (1<<15);
       *dst_p++ = (g * 255 + add_g) / (1<<15);
@@ -254,7 +254,7 @@ void tile_convert_rgba8_to_rgba16(PyObject * src, PyObject * dst) {
   PyArrayObject* src_arr = ((PyArrayObject*)src);
   PyArrayObject* dst_arr = ((PyArrayObject*)dst);
 
-  /* disabled as optimization
+#ifdef HEAVY_DEBUG
   assert(PyArray_DIM(dst, 0) == TILE_SIZE);
   assert(PyArray_DIM(dst, 1) == TILE_SIZE);
   assert(PyArray_DIM(dst, 2) == 4);
@@ -270,7 +270,7 @@ void tile_convert_rgba8_to_rgba16(PyObject * src, PyObject * dst) {
   assert(PyArray_ISBEHAVED(src));
   assert(src_arr->strides[1] == 4*sizeof(uint8_t));
   assert(src_arr->strides[2] ==   sizeof(uint8_t));
-  */
+#endif
 
   for (int y=0; y<TILE_SIZE; y++) {
     uint8_t  * src_p = (uint8_t*)(src_arr->data + y*src_arr->strides[0]);

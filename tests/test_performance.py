@@ -271,8 +271,12 @@ if __name__ == '__main__':
     print 'results =', repr(results)
     print
     print '=== SUMMARY ==='
+    fail=False
     for t, result in zip(tests, results):
         if not result:
             print t, 'FAILED'
+            fail=True
         else:
             print '%s %.3f' % (t, min(result))
+    if fail:
+        sys.exit(1)
