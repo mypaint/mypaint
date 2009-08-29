@@ -55,8 +55,13 @@ def pngs_equal(a, b, exact=True):
         return True
     im_a = imread(a)*255.0
     im_b = imread(b)*255.0
+    if im_a.shape != im_b.shape:
+        print a, 'and', b, 'have different size:', im_a.shape, im_b.shape
+        return False
     diff = im_b - im_a
-    diff_alpha = diff[:,:,3]
+    alpha = im_a.shape[-1] == 4
+    if alpha:
+        diff_alpha = diff[:,:,3]
 
     equal = False
     if not exact:
@@ -65,7 +70,9 @@ def pngs_equal(a, b, exact=True):
     print 'Average difference (255=white): (R, G, B, A)'
     print mean(mean(diff, 0), 0)
     print 'Average difference with premultiplied alpha (255=white): (R, G, B, A)'
-    diff = diff[:,:,0:3] * imread(a)[:,:,3:4]
+    diff = diff[:,:,0:3]
+    if alpha:
+        diff *= imread(a)[:,:,3:4]
     res = mean(mean(diff, 0), 0)
     print res
     if mean(res) > 0.001:
@@ -82,18 +89,20 @@ def pngs_equal(a, b, exact=True):
 
     if not equal:
         print 'Not equal enough!'
-        figure(1)
-        title('Alpha')
-        imshow(im_b[:,:,3])
-        colorbar()
+        if alpha:
+            figure(1)
+            title('Alpha')
+            imshow(im_b[:,:,3])
+            colorbar()
         figure(2)
         title('Green Error (multiplied with alpha)')
         imshow(diff[:,:,1])
         colorbar()
-        figure(3)
-        title('Alpha Error')
-        imshow(diff_alpha)
-        colorbar()
+        if alpha:
+            figure(3)
+            title('Alpha Error')
+            imshow(diff_alpha)
+            colorbar()
         show()
 
     return equal
