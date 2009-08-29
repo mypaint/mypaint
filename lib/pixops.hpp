@@ -9,14 +9,14 @@
 
 // downscale a tile to half its size using bilinear interpolation
 // used mainly for generating background mipmaps
-void tile_downscale_rgb8(PyObject *src, PyObject *dst, int dst_x, int dst_y, bool repeat) {
+void tile_downscale_rgb16(PyObject *src, PyObject *dst, int dst_x, int dst_y) {
 #ifdef HEAVY_DEBUG
   assert(PyArray_DIM(src, 0) == TILE_SIZE);
   assert(PyArray_DIM(src, 1) == TILE_SIZE);
-  assert(PyArray_TYPE(src) == NPY_UINT8);
+  assert(PyArray_TYPE(src) == NPY_UINT16);
   assert(PyArray_ISCARRAY(src));
 
-  assert(PyArray_TYPE(dst) == NPY_UINT8);
+  assert(PyArray_TYPE(dst) == NPY_UINT16);
   assert(PyArray_ISCARRAY(dst));
 #endif
 
@@ -24,8 +24,8 @@ void tile_downscale_rgb8(PyObject *src, PyObject *dst, int dst_x, int dst_y, boo
   PyArrayObject* dst_arr = ((PyArrayObject*)dst);
 
   for (int y=0; y<TILE_SIZE/2; y++) {
-    uint8_t * src_p = (uint8_t*)(src_arr->data + (2*y)*src_arr->strides[0]);
-    uint8_t * dst_p = (uint8_t*)(dst_arr->data + (y+dst_y)*dst_arr->strides[0]);
+    uint16_t * src_p = (uint16_t*)(src_arr->data + (2*y)*src_arr->strides[0]);
+    uint16_t * dst_p = (uint16_t*)(dst_arr->data + (y+dst_y)*dst_arr->strides[0]);
     dst_p += 3*dst_x;
     for(int x=0; x<TILE_SIZE/2; x++) {
       dst_p[0] = src_p[0]/4 + (src_p+3)[0]/4 + (src_p+3*TILE_SIZE)[0]/4 + (src_p+3*TILE_SIZE+3)[0]/4;
@@ -33,15 +33,6 @@ void tile_downscale_rgb8(PyObject *src, PyObject *dst, int dst_x, int dst_y, boo
       dst_p[2] = src_p[2]/4 + (src_p+3)[2]/4 + (src_p+3*TILE_SIZE)[2]/4 + (src_p+3*TILE_SIZE+3)[2]/4;
       src_p += 6;
       dst_p += 3;
-    }
-    if(repeat) {
-        uint8_t *p1 = (uint8_t*)(dst_arr->data + (y+dst_y)*dst_arr->strides[0] + 3*dst_x);
-        uint8_t *p2 = p1 + 3 * dst_arr->dimensions[1] / 2;
-        uint8_t *p3 = p1 + dst_arr->strides[0] * dst_arr->dimensions[0] / 2;
-        uint8_t *p4 = p3 + 3 * dst_arr->dimensions[1] / 2;
-        memcpy(p2, p1, 3*TILE_SIZE/2);
-        memcpy(p3, p1, 3*TILE_SIZE/2);
-        memcpy(p4, p1, 3*TILE_SIZE/2);
     }
   }
 }
@@ -121,8 +112,12 @@ void tile_composite_rgba16_over_rgb16(PyObject * src, PyObject * dst, float alph
   }
 }
 
+// used to copy the background before starting to composite over it
+//
 // simply array copying (numpy assignment operator is about 13 times slower, sadly)
-void tile_blit_rgb8_into_rgb8(PyObject * src, PyObject * dst) {
+// The above comment is true when the array is sliced; it's only about two
+// times faster now, in the current usecae.
+void tile_blit_rgb16_into_rgb16(PyObject * src, PyObject * dst) {
   PyArrayObject* src_arr = ((PyArrayObject*)src);
   PyArrayObject* dst_arr = ((PyArrayObject*)dst);
 
@@ -130,20 +125,22 @@ void tile_blit_rgb8_into_rgb8(PyObject * src, PyObject * dst) {
   assert(PyArray_DIM(dst, 0) == TILE_SIZE);
   assert(PyArray_DIM(dst, 1) == TILE_SIZE);
   assert(PyArray_DIM(dst, 2) == 3);
-  assert(PyArray_TYPE(dst) == NPY_UINT8);
-  assert(PyArray_ISBEHAVED(dst));
-  assert(dst_arr->strides[1] == 3*sizeof(uint8_t));
-  assert(dst_arr->strides[2] ==   sizeof(uint8_t));
+  assert(PyArray_TYPE(dst) == NPY_UINT16);
+  assert(PyArray_ISCARRAY(dst));
+  assert(dst_arr->strides[1] == 3*sizeof(uint16_t));
+  assert(dst_arr->strides[2] ==   sizeof(uint16_t));
 
   assert(PyArray_DIM(src, 0) == TILE_SIZE);
   assert(PyArray_DIM(src, 1) == TILE_SIZE);
   assert(PyArray_DIM(src, 2) == 3);
-  assert(PyArray_TYPE(src) == NPY_UINT8);
-  assert(PyArray_ISBEHAVED(src));
-  assert(src_arr->strides[1] == 3*sizeof(uint8_t));
-  assert(src_arr->strides[2] ==   sizeof(uint8_t));
+  assert(PyArray_TYPE(src) == NPY_UINT16);
+  assert(PyArray_ISCARRAY(dst));
+  assert(src_arr->strides[1] == 3*sizeof(uint16_t));
+  assert(src_arr->strides[2] ==   sizeof(uint16_t));
 #endif
 
+  memcpy(dst_arr->data, src_arr->data, TILE_SIZE*TILE_SIZE*3*sizeof(uint16_t));
+  /* the code below can be used if it is not ISCARRAY, but only ISBEHAVED:
   char * src_p = src_arr->data;
   char * dst_p = dst_arr->data;
   for (int y=0; y<TILE_SIZE; y++) {
@@ -151,6 +148,7 @@ void tile_blit_rgb8_into_rgb8(PyObject * src, PyObject * dst) {
     src_p += src_arr->strides[0];
     dst_p += dst_arr->strides[0];
   }
+  */
 }
 
 // used mainly for saving layers (transparent PNG)

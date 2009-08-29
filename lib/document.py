@@ -165,23 +165,22 @@ class Document():
             res.expandToIncludeRect(bbox)
         return res
 
-    def blit_tile_into(self, dst, tx, ty, mipmap=0, layers=None, background=None):
+    def blit_tile_into(self, dst_8bit, tx, ty, mipmap=0, layers=None, background=None):
         if layers is None:
             layers = self.layers
         if background is None:
             background = self.background
 
-        background.blit_tile_into(dst, tx, ty, mipmap)
+        assert dst_8bit.dtype == 'uint8'
+        dst = numpy.empty((N, N, 3), dtype='uint16')
 
-        assert dst.dtype == 'uint8' # OPTIMIZE: rewrite background to hold 16bit directly
-        dst_16bit = (dst.astype('uint32') * (1<<15) / 255).astype('uint16')
+        background.blit_tile_into(dst, tx, ty, mipmap)
 
         for layer in layers:
             surface = layer.surface
-            surface.composite_tile_over(dst_16bit, tx, ty, mipmap_level=mipmap, opacity=layer.opacity)
+            surface.composite_tile_over(dst, tx, ty, mipmap_level=mipmap, opacity=layer.opacity)
 
-        if dst_16bit is not dst:
-            mypaintlib.tile_convert_rgb16_to_rgb8(dst_16bit, dst)
+        mypaintlib.tile_convert_rgb16_to_rgb8(dst, dst_8bit)
             
     def add_layer(self, insert_idx):
         self.do(command.AddLayer(self, insert_idx))

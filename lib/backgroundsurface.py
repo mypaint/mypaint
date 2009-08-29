@@ -35,33 +35,43 @@ class Background:
             raise BackgroundError, 'background tile with alpha channel is not allowed'
         if obj.shape != (self.th*N, self.tw*N, 3):
             raise BackgroundError, 'unsupported background tile size: %dx%d' % (obj.shape[0], obj.shape[1])
-        assert obj.dtype == 'uint8'
+        if obj.dtype == 'uint8':
+            obj = (obj.astype('uint32') * (1<<15) / 255).astype('uint16')
 
         self.tiles = {}
         for ty in range(self.th):
             for tx in range(self.tw):
                 # make sure we have linear memory (optimization)
-                tile = numpy.zeros((N, N, 3), dtype='uint8')
+                tile = numpy.zeros((N, N, 3), dtype='uint16')
                 tile[:,:,:] = obj[N*ty:N*(ty+1), N*tx:N*(tx+1), :]
                 self.tiles[tx, ty] = tile
         
         # generate mipmap
         self.mipmap_level = mipmap_level
         if mipmap_level < MAX_MIPMAP_LEVEL:
-            mipmap_obj = numpy.zeros((self.th*N, self.tw*N, 3), dtype='uint8')
-            for ty in range(self.th):
-                for tx in range(self.tw):
-                    mypaintlib.tile_downscale_rgb8(self.tiles[tx, ty], mipmap_obj, tx*N/2, ty*N/2, True)
+            mipmap_obj = numpy.zeros((self.th*N, self.tw*N, 3), dtype='uint16')
+            for ty in range(self.th*2):
+                for tx in range(self.tw*2):
+                    src = self.get_tile_memory(tx, ty)
+                    mypaintlib.tile_downscale_rgb16(src, mipmap_obj, tx*N/2, ty*N/2)
             self.mipmap = Background(mipmap_obj, mipmap_level+1)
+
+    def get_tile_memory(self, tx, ty):
+        return self.tiles[(tx%self.tw, ty%self.th)]
 
     def blit_tile_into(self, dst, tx, ty, mipmap_level=0):
         if self.mipmap_level < mipmap_level:
             return self.mipmap.blit_tile_into(dst, tx, ty, mipmap_level)
-        rgb = self.tiles[tx%self.tw, ty%self.th]
+        rgb = self.get_tile_memory(tx, ty)
         # render solid or tiled background
         #dst[:] = rgb # 13 times slower than below, with some bursts having the same speed as below (huh?)
-        # note: optimization for solid colors is not worth it any more now, even if it gives 2x speedup (at best)
-        mypaintlib.tile_blit_rgb8_into_rgb8(rgb, dst)
+        # note: optimization for solid colors is not worth it, it gives only 2x speedup (at best)
+        if dst.dtype == 'uint16':
+            mypaintlib.tile_blit_rgb16_into_rgb16(rgb, dst)
+        else:
+            # this case is for saving the background
+            assert dst.dtype == 'uint8'
+            dst[:N,:N,:] = rgb.astype('uint32') * 255 / (1<<15)
 
     def get_pattern_bbox(self):
         return get_tiles_bbox(self.tiles)
