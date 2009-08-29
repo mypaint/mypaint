@@ -6,7 +6,7 @@ import sys, os
 os.chdir(os.path.dirname(sys.argv[0]))
 sys.path.insert(0, '..')
 
-from lib import mypaintlib, tiledsurface, brushsettings, brush, document, command
+from lib import mypaintlib, tiledsurface, brush, document, command
 
 def directPaint():
 
