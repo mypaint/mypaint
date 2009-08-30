@@ -60,6 +60,7 @@ class Application: # singleton
             window = self.__dict__[name] = module.Window(self)
             self.load_window_position(name, window)
 
+        self.kbm.start_listening()
         self.filehandler.doc = self.drawWindow.doc
         self.filehandler.filename = None
         gtk.accel_map_load(os.path.join(self.confpath, 'accelmap.conf'))

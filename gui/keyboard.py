@@ -24,11 +24,13 @@ class KeyboardManager:
     This class adds extra state attributes to every gtk.Action.
     """
     def __init__(self):
-        gtk.accel_map_get().connect('changed', self.accel_map_changed_cb)
         self.actions = []
         self.keymap  = {} # (keyval, modifiers) --> gtk.Action
         self.keymap2 = {} # (keyval, modifiers) --> gtk.Action (2nd priority; for hardcoded keys)
         self.pressed = {} # hardware_keycode --> gtk.Action (while holding it down)
+
+    def start_listening(self):
+        gtk.accel_map_get().connect('changed', self.accel_map_changed_cb)
 
     def accel_map_changed_cb(self, object, accel_path, accel_key, accel_mods):
         self.update_keymap(accel_path)
