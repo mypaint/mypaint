@@ -10,9 +10,9 @@
 This script does all the platform dependent stuff. Its main task is
 to figure out where the python modules are.
 """
+import sys, os
 
 def get_paths():
-    import sys, os
     join = os.path.join
 
     lib_shared='share/mypaint/'
@@ -70,16 +70,18 @@ def psyco_opt():
     # This helps on slow PCs where the python overhead dominates.
     # (30% higher framerate measured on 533MHz CPU; startup slowdown below 20%)
     # Note: python -O -O does not help.
-    import psyco
-    psyco.full()
-    print 'Psyco being used'
-
-
-if __name__ == '__main__':
+    if os.name in ('nt', 'ce'):
+        # reported to be broken on Windows
+        return
     try:
-        psyco_opt()
+        import psyco
+        psyco.full()
+        print 'Psyco being used'
     except ImportError:
         pass
+
+if __name__ == '__main__':
+    psyco_opt()
 
     datapath, confpath, localepath = get_paths()
 
