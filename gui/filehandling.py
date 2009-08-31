@@ -33,6 +33,7 @@ class FileHandler(object):
         ('New',          None, _('New'), '<control>N', None, self.new_cb),
         ('Open',         None, _('Open...'), '<control>O', None, self.open_cb),
         ('OpenRecent',   None, _('Open Recent'), 'F3', None, self.open_recent_cb),
+        ('Reload', None, _('Reload'), 'F5', None, self.reload_cb),
         ('Save',         None, _('Save'), '<control>S', None, self.save_cb),
         ('SaveAs',       None, _('Save As...'), '<control><shift>S', None, self.save_as_cb),
         ('SaveScrap',    None, _('Save Next Scrap'), 'F2', None, self.save_scrap_cb),
@@ -313,3 +314,6 @@ class FileHandler(object):
 
         self.open_file(self.save_history[idx])
 
+    def reload_cb(self, action):
+        if self.filename and self.confirm_destructive_action():
+            self.open_file(self.filename)

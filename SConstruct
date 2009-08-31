@@ -108,6 +108,7 @@ install('share/applications', 'desktop/mypaint.desktop')
 env.Install(join(env['prefix'], 'lib/mypaint'), module)
 install('share/mypaint/lib', 'lib/*.py')
 install('share/mypaint/gui', 'gui/*.py')
+install('share/mypaint/gui', 'gui/menu.xml')
 install('share/mypaint/brushlib', 'brushlib/*.py')
 
 # translations

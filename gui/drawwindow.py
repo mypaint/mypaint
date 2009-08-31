@@ -89,128 +89,8 @@ class Window(gtk.Window):
 
 
     def create_ui(self):
-        ag = self.action_group = gtk.ActionGroup('WindowActions')
-        #TODO: put ui_string in separate file?
-        ui_string = """<ui>
-          <menubar name='Menubar'>
-            <menu action='FileMenu'>
-              <menuitem action='New'/>
-              <menuitem action='Open'/>
-              <menuitem action='OpenRecent'/>
-              <separator/>
-              <menuitem action='Save'/>
-              <menuitem action='SaveAs'/>
-              <menuitem action='SaveScrap'/>
-              <separator/>
-              <menuitem action='Quit'/>
-            </menu>
-            <menu action='EditMenu'>
-              <menuitem action='Undo'/>
-              <menuitem action='Redo'/>
-              <separator/>
-              <menuitem action='SettingsWindow'/>
-            </menu>
-            <menu action='ViewMenu'>
-              <menuitem action='Fullscreen'/>
-              <separator/>
-              <menuitem action='ResetView'/>
-              <menuitem action='ZoomIn'/>
-              <menuitem action='ZoomOut'/>
-              <menuitem action='RotateLeft'/>
-              <menuitem action='RotateRight'/>
-              <menuitem action='Flip'/>
-              <separator/>
-              <menuitem action='SoloLayer'/>
-              <menuitem action='ToggleAbove'/>
-              <separator/>
-              <menuitem action='ViewHelp'/>
-            </menu>
-            <menu action='BrushMenu'>
-              <menuitem action='BrushSelectionWindow'/>
-              <menu action='ContextMenu'>
-                <menuitem action='ContextStore'/>
-                <separator/>
-                <menuitem action='Context00'/>
-                <menuitem action='Context00s'/>
-                <menuitem action='Context01'/>
-                <menuitem action='Context01s'/>
-                <menuitem action='Context02'/>
-                <menuitem action='Context02s'/>
-                <menuitem action='Context03'/>
-                <menuitem action='Context03s'/>
-                <menuitem action='Context04'/>
-                <menuitem action='Context04s'/>
-                <menuitem action='Context05'/>
-                <menuitem action='Context05s'/>
-                <menuitem action='Context06'/>
-                <menuitem action='Context06s'/>
-                <menuitem action='Context07'/>
-                <menuitem action='Context07s'/>
-                <menuitem action='Context08'/>
-                <menuitem action='Context08s'/>
-                <menuitem action='Context09'/>
-                <menuitem action='Context09s'/>
-                <separator/>
-                <menuitem action='ContextHelp'/>
-              </menu>
-              <separator/>
-              <menuitem action='BrushSettingsWindow'/>
-              <separator/>
-              <menuitem action='Bigger'/>
-              <menuitem action='Smaller'/>
-              <menuitem action='MoreOpaque'/>
-              <menuitem action='LessOpaque'/>
-              <separator/>
-              <menuitem action='Eraser'/>
-              <separator/>
-              <menuitem action='PickContext'/>
-            </menu>
-            <menu action='ColorMenu'>
-              <menuitem action='ColorSelectionWindow'/>
-              <menuitem action='ColorRingPopup'/>
-              <menuitem action='ColorChangerPopup'/>
-              <menuitem action='ColorPickerPopup'/>
-              <menuitem action='ColorHistoryPopup'/>
-              <menuitem action='ColorSamplerWindow'/>
-              <separator/>
-              <menuitem action='Brighter'/>
-              <menuitem action='Darker'/>
-            </menu>
-            <menu action='LayerMenu'>
-              <menuitem action='BackgroundWindow'/>
-              <separator/>
-              <menuitem action='ClearLayer'/>
-              <menuitem action='RemoveLayer'/>
-              <menuitem action='MergeLayer'/>
-              <separator/>
-              <menuitem action='NewLayerFG'/>
-              <menuitem action='NewLayerBG'/>
-              <separator/>
-              <menuitem action='PickLayer'/>
-              <menuitem action='LayerFG'/>
-              <menuitem action='LayerBG'/>
-              <separator/>
-              <menuitem action='CopyLayer'/>
-              <menuitem action='PasteLayer'/>
-              <separator/>
-              <menuitem action='IncreaseLayerOpacity'/>
-              <menuitem action='DecreaseLayerOpacity'/>
-            </menu>
-            <menu action='DebugMenu'>
-              <menuitem action='PrintInputs'/>
-              <menuitem action='VisualizeRendering'/>
-              <menuitem action='NoDoubleBuffereing'/>
-            </menu>
-            <menu action='HelpMenu'>
-              <menuitem action='Docu'/>
-              <menuitem action='ShortcutHelp'/>
-              <separator/>
-              <menuitem action='About'/>
-            </menu>
-          </menubar>
-        </ui>"""
         actions = [
-			# name, stock id, label, accelerator, tooltip, callback
+            # name, stock id, label, accelerator, tooltip, callback
             ('FileMenu',     None, _('File')),
             ('Quit',         None, _('Quit'), '<control>q', None, self.quit_cb),
 
@@ -282,6 +162,7 @@ class Window(gtk.Window):
             ('ToggleAbove',  None, _('Hide Layers Above Current'), 'End', None, self.toggle_layers_above_cb), # TODO: make toggle action
             ('ViewHelp',     None, _('Help'), None, None, self.show_infodialog_cb),
             ]
+        ag = self.action_group = gtk.ActionGroup('WindowActions')
         ag.add_actions(actions)
         context_actions = []
         for x in range(10):
@@ -301,7 +182,8 @@ class Window(gtk.Window):
             ]
         ag.add_toggle_actions(toggle_actions)
         self.app.ui_manager.insert_action_group(ag)
-        self.app.ui_manager.add_ui_from_string(ui_string)
+        menupath = os.path.join(self.app.datapath, 'gui/menu.xml')
+        self.app.ui_manager.add_ui_from_file(menupath)
         #self.app.accel_group = self.app.ui_manager.get_accel_group()
 
         kbm = self.app.kbm
