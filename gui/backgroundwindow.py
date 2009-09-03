@@ -18,43 +18,48 @@ class Window(gtk.Window):
         gtk.Window.__init__(self)
         self.app = app
 
+        #set up window
         self.set_title(_('Background'))
         self.connect('delete-event', self.app.hide_window_cb)
 
-        vbox = gtk.VBox()
-        self.add(vbox)
+        toplevel_vbox = gtk.VBox()
+        self.add(toplevel_vbox)
 
-        nb = self.nb = gtk.Notebook()
-        vbox.pack_start(nb)
+        notebook = self.nb = gtk.Notebook()
+        toplevel_vbox.pack_start(notebook)
 
-        scroll = gtk.ScrolledWindow()
-        scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
-        nb.append_page(scroll, gtk.Label(_('Pattern')))
-
-        self.bgl = BackgroundList(self)
-        scroll.add_with_viewport(self.bgl)
-
-        vbox2 = gtk.VBox()
-        nb.append_page(vbox2, gtk.Label(_('Color')))
-
-        self.cs = gtk.ColorSelection()
-        self.cs.connect('color-changed', self.color_changed_cb)
-        vbox2.pack_start(self.cs, expand=True)
-
-        b = gtk.Button(_('add color to patterns'))
-        b.connect('clicked', self.add_color_to_patterns_cb)
-        vbox2.pack_start(b, expand=False)
-
-        hbox = gtk.HBox()
-        vbox.pack_start(hbox, expand=False)
+        #add buttons
+        buttons_hbox = gtk.HBox()
+        toplevel_vbox.pack_start(buttons_hbox, expand=False)
 
         b = gtk.Button(_('save as default'))
         b.connect('clicked', self.save_as_default_cb)
-        hbox.pack_start(b)
+        buttons_hbox.pack_start(b)
 
         b = gtk.Button(_('done'))
         b.connect('clicked', lambda w: self.hide())
-        hbox.pack_start(b)
+        buttons_hbox.pack_start(b)
+
+        #set up patterns tab
+        patterns_scroll = gtk.ScrolledWindow()
+        patterns_scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
+        notebook.append_page(patterns_scroll, gtk.Label(_('Pattern')))
+
+        self.bgl = BackgroundList(self)
+        patterns_scroll.add_with_viewport(self.bgl)
+
+        #set up colors tab
+        color_vbox = gtk.VBox()
+        notebook.append_page(color_vbox, gtk.Label(_('Color')))
+
+        self.cs = gtk.ColorSelection()
+        self.cs.connect('color-changed', self.color_changed_cb)
+        color_vbox.pack_start(self.cs, expand=True)
+
+        b = gtk.Button(_('add color to patterns'))
+        b.connect('clicked', self.add_color_to_patterns_cb)
+        color_vbox.pack_start(b, expand=False)
+
 
     def color_changed_cb(self, widget):
         rgb = self.cs.get_current_color()
