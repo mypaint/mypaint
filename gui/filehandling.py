@@ -42,7 +42,7 @@ class FileHandler(object):
         ]
         ag = gtk.ActionGroup('FileActions')
         ag.add_actions(file_actions)
-        self.app.ui_manager.insert_action_group(ag)
+        self.app.ui_manager.insert_action_group(ag, -1)
 
         for action in ag.list_actions():
             self.app.kbm.takeover_action(action)

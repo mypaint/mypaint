@@ -181,7 +181,7 @@ class Window(gtk.Window):
             ('Flip', None, _('Mirror Image'), 'i', None, self.flip_cb),
             ]
         ag.add_toggle_actions(toggle_actions)
-        self.app.ui_manager.insert_action_group(ag)
+        self.app.ui_manager.insert_action_group(ag, -1)
         menupath = os.path.join(self.app.datapath, 'gui/menu.xml')
         self.app.ui_manager.add_ui_from_file(menupath)
         #self.app.accel_group = self.app.ui_manager.get_accel_group()
