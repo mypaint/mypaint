@@ -6,7 +6,7 @@ for src in env.Glob('*.po'):
     lang = basename(str(src))[:-3]
     languages.append(lang)
     dst = join(lang, "LC_MESSAGES", 'mypaint.mo')
-    Command(dst, src, 'msgfmt $SOURCE -o $TARGET')
+    env.Command(dst, src, 'msgfmt $SOURCE -o $TARGET')
 
 lang = ARGUMENTS.get('translate')
 if lang:
