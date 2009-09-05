@@ -344,7 +344,7 @@ class Document():
         l = add_layer(0, 0, 1.0, s.pixbuf, 'data/background.png')
         bg = self.background
         x, y, w, h = bg.get_pattern_bbox()
-        pixbuf = pixbufsurface.render_as_pixbuf(bg, x, y, w, h, alpha=False)
+        pixbuf = pixbufsurface.render_as_pixbuf(bg, x+x0, y+y0, w, h, alpha=False)
         store_pixbuf(pixbuf, 'data/background_tile.png')
         l.attrib['background_tile'] = 'data/background_tile.png'
 
