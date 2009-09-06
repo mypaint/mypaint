@@ -25,9 +25,6 @@ class Window(gtk.Window):
         self.set_title(_('Brush selection'))
         self.set_role('Brush selector')
         self.connect('delete-event', self.app.hide_window_cb)
-        #def set_hint(widget):
-        #    self.window.set_type_hint(gdk.WINDOW_TYPE_HINT_UTILITY)
-        #self.connect("realize", set_hint)
 
         # TODO: evaluate glade/gazpacho, the code below is getting scary
 
