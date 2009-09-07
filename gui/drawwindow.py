@@ -672,9 +672,7 @@ class Window(gtk.Window):
         d.set_version(MYPAINT_VERSION)
         d.set_copyright(_("Copyright (C) 2005-2009\nMartin Renold and the MyPaint Development Team"))
         d.set_website("http://mypaint.info/")
-        filename = os.path.join(self.app.datapath, 'desktop', '100x100', 'mypaint.png')
-        pixbuf = gdk.pixbuf_new_from_file(filename)
-        d.set_logo(pixbuf)
+        d.set_logo(self.app.pixmaps.mypaint_logo)
         d.set_license(
             _(u"This program is free software; you can redistribute it and/or modify "
               u"it under the terms of the GNU General Public License as published by "

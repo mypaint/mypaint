@@ -12,8 +12,6 @@ except:
     # compatibility with SCons version 0.97
     from glob import glob as Glob
 
-from glob import glob
-
 try: 
     import numpy
 except ImportError:
@@ -94,14 +92,7 @@ install('share/mypaint/brushes', 'brushes/*')
 install('share/mypaint/backgrounds', 'backgrounds/*')
 install('share/mypaint/pixmaps', 'pixmaps/*')
 
-#install('share/mypaint/desktop', 'desktop/*')
-# scons could recurse with Glob(), but it adds .svn directories when doing so
-for dirpath, dirnames, filenames in os.walk('desktop'):
-    if '.svn' in dirnames:
-        dirnames.remove('.svn')
-    env.Install(join(env['prefix'], 'share/mypaint', dirpath), [join(dirpath, s) for s in filenames])
-
-# mypaint.desktop goes into /usr/share/applications (debian-only or standard?)
+install('share', 'desktop/icons')
 install('share/applications', 'desktop/mypaint.desktop')
 
 # location for achitecture-dependent modules

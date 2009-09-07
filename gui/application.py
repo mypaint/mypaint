@@ -24,11 +24,15 @@ class Application: # singleton
 
         self.ui_manager = gtk.UIManager()
 
-        icons = []
-        for size in ['24x24', '48x48', '32x32', '22x22', '16x16']:
-            filename = os.path.join(self.datapath, 'desktop', size, 'mypaint.png')
-            icons.append(gdk.pixbuf_new_from_file(filename))
-        gtk.window_set_default_icon_list(*icons)
+        # if we are not installed, use the the icons from the source
+        theme = gtk.icon_theme_get_default()
+        themedir_src = os.path.join(self.datapath, 'desktop/icons')
+        if os.path.exists(themedir_src):
+            theme.prepend_search_path(themedir_src)
+        if not theme.has_icon('mypaint'):
+            print 'Warning: Where have all my icons gone?'
+        gtk.window_set_default_icon_name('mypaint')
+
         gdk.set_program_class('MyPaint')
 
         self.pixmaps = PixbufDirectory(os.path.join(self.datapath, 'pixmaps'))
@@ -76,7 +80,7 @@ class Application: # singleton
         def at_application_start(*trash):
             if filenames:
                 #open the first file, no matter how many that has been specified
-                fn = filenames[0].replace('file:///', '/') # some filebrowsers do this
+                fn = filenames[0].replace('file:///', '/') # some filebrowsers do this (should only happen with outdated mypaint.desktop)
                 self.filehandler.open_file(fn)
 
         gobject.idle_add(at_application_start)

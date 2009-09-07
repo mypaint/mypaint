@@ -2,11 +2,11 @@
 Version=1.0
 Encoding=UTF-8
 Name=MyPaint
-Exec=mypaint %U
+Exec=mypaint %f
 Comment=Paint images from scratch
 GenericName=Image Editor
 MimeType=image/openraster;image/png;image/jpeg;
 Type=Application
-Icon=mypaint_48
+Icon=mypaint
 Categories=Graphics;
 Terminal=false
