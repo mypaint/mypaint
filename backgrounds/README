@@ -8,7 +8,7 @@ You can create your own Background in this folder.
    64*N x 64*M (in other words, 64x64, 128x128, 128x192, 256x64, 
    320x640, ... 640x192, ... etc). 
  - Create the tile graphics. This is easiest done in GIMP, by 
-   creating a new image of the correct pixel size, or cropping 
+   creating a new image of the correct pixel size, or by cropping 
    an existing image. Remember that it should look good  
    "tiled", i.e. placed next to itself over and over in all 
    directions. 
