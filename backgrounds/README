@@ -5,11 +5,14 @@ They can be selected from the Layers->Background... menu.
 You can create your own Background in this folder. 
 
  - Create (e.g. using GIMP) an image of size exactly 
-   64*N x 64*M (in other words, 64x64, 128x128, 192x192, 256x256, 
-   320x320, ... 640x640, ... etc). 
- - Create the tile graphics. Remember that it should look good  
-   when placed next to itself over and over in all directions. 
+   64*N x 64*M (in other words, 64x64, 128x128, 128x192, 256x64, 
+   320x640, ... 640x192, ... etc). 
+ - Create the tile graphics. This is easiest done in GIMP, by 
+   creating a new image of the correct pixel size, or cropping 
+   an existing image. Remember that it should look good  
+   "tiled", i.e. placed next to itself over and over in all 
+   directions. 
  - Give it a good name and save it as a PNG image *without* 
-   alpha channel and put it in this folder
- - Restart MyPaint. 
+   alpha channel. Put it in this folder
+ - Restart MyPaint.
 
