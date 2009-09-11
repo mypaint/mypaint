@@ -119,8 +119,8 @@ def paint_zoomed_out_5x(app):
 
 @gui_test
 def layerpaint_nozoom(app):
+    app.filehandler.open_file('bigimage.ora')
     dw = app.drawWindow
-    dw.open_file('bigimage.ora')
     dw.doc.select_layer(len(dw.doc.layers)/2)
     for res in paint(app):
         yield res
@@ -128,7 +128,7 @@ def layerpaint_nozoom(app):
 @gui_test
 def layerpaint_zoomed_out_5x(app):
     dw = app.drawWindow
-    dw.open_file('bigimage.ora')
+    app.filehandler.open_file('bigimage.ora')
     dw.tdw.scroll(800, 1000)
     dw.doc.select_layer(len(dw.doc.layers)/3)
     for i in range(5):
@@ -161,7 +161,7 @@ def saveload():
 def scroll(app, zoom_func):
     dw = app.drawWindow
     dw.fullscreen_cb()
-    dw.open_file('bigimage.ora')
+    app.filehandler.open_file('bigimage.ora')
     zoom_func()
     yield wait_for_idle
 
@@ -194,7 +194,7 @@ def scroll_zoomed_out_5x(app):
 def memory_zoomed_out_5x(app):
     dw = app.drawWindow
     dw.fullscreen_cb()
-    dw.open_file('bigimage.ora')
+    app.filehandler.open_file('bigimage.ora')
     for i in range(5):
         dw.zoom('ZoomOut')
     yield wait_for_idle
