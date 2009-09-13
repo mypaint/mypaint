@@ -27,10 +27,10 @@ class Application: # singleton
         # if we are not installed, use the the icons from the source
         theme = gtk.icon_theme_get_default()
         themedir_src = os.path.join(self.datapath, 'desktop/icons')
-        if os.path.exists(themedir_src):
-            theme.prepend_search_path(themedir_src)
+        theme.prepend_search_path(themedir_src)
         if not theme.has_icon('mypaint'):
             print 'Warning: Where have all my icons gone?'
+            print 'Theme search path:', theme.get_search_path()
         gtk.window_set_default_icon_name('mypaint')
 
         gdk.set_program_class('MyPaint')

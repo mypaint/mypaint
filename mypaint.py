@@ -88,6 +88,9 @@ if __name__ == '__main__':
     # must be done before importing any translated python modules
     # (to get global strings translated, especially brushsettings.py)
     import gettext
+    if sys.platform == 'win32':
+        import locale
+        os.environ['LANG'] = locale.getdefaultlocale()[0]
     gettext.bindtextdomain("mypaint", localepath)
     gettext.textdomain("mypaint")
 
