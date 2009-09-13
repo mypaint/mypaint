@@ -24,8 +24,6 @@ class ColorPicker(gtk.Window):
                         gdk.ENTER_NOTIFY |
                         gdk.LEAVE_NOTIFY
                         )
-        self.connect("button-release-event", self.button_release_cb)
-        self.connect("button-press-event", self.button_press_cb)
         self.connect("expose_event", self.expose_cb)
         self.connect("motion-notify-event", self.motion_notify_cb)
 
@@ -64,17 +62,6 @@ class ColorPicker(gtk.Window):
         self.hide()
 
     def motion_notify_cb(self, widget, event):
-        pressure = event.get_axis(gdk.AXIS_PRESSURE)
-        painting = (event.state & gdk.BUTTON1_MASK) or pressure
-        if not self.popup_state.mouse_button:
-            if painting:
-                self.leave(None)
-
-        if not self.popup_state.keydown:
-            if pressure:
-                gdk.pointer_ungrab()
-            return
-
         def update():
             self.idle_handler = None
             self.pick()
@@ -82,12 +69,6 @@ class ColorPicker(gtk.Window):
 
         if not self.idle_handler:
             self.idle_handler = gobject.idle_add(update)
-
-    def button_press_cb(self, widget, event):
-        pass
-
-    def button_release_cb(self, widget, event):
-        pass
 
     def expose_cb(self, widget, event):
         cr = self.window.cairo_create()

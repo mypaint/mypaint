@@ -171,6 +171,7 @@ class State:
         pressure = event.get_axis(gdk.AXIS_PRESSURE)
         painting = (event.state & gdk.BUTTON1_MASK) or pressure
         if not painting:
+            # we can leave the state without putting an accidental dab on the canvas
             self.disconnect_motion_handler()
             self.keyup_cb(widget, event)
 
