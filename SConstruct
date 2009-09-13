@@ -30,6 +30,8 @@ opts = Variables()
 opts.Add(PathVariable('prefix', 'autotools-style installation prefix', '/usr/local', validator=PathVariable.PathIsDirCreate))
 opts.Add(BoolVariable('debug', 'enable HEAVY_DEBUG and disable optimizations', False))
 env = Environment(ENV=os.environ, options=opts)
+if sys.platform == "win32":
+    env.Prepend(tools=['mingw'])
 opts.Update(env)
 
 env.ParseConfig('pkg-config --cflags --libs glib-2.0')
@@ -67,7 +69,7 @@ languages = SConscript('po/SConscript')
 
 # Build mypaint.exe for running on windows
 if sys.platform == "win32":
-    env2 = Environment(ENV=os.environ)
+    env2 = Environment(tools=['mingw'], ENV=os.environ)
     env2.ParseConfig('pkg-config --cflags --libs python25')
     env2.Program('mypaint', ['mypaint_exe.c'])
 
