@@ -68,6 +68,7 @@ class Window(gtk.Window):
     def save_as_default_cb(self, widget):
         pixbuf = self.current_background_pixbuf
         pixbuf.save(os.path.join(self.app.confpath, 'backgrounds', 'default.png'), 'png')
+        self.hide()
 
     def set_background(self, pixbuf):
         doc = self.app.drawWindow.doc
