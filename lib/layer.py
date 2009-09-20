@@ -7,10 +7,8 @@
 # (at your option) any later version.
 
 from numpy import *
-import time, zlib, gobject
 
-import tiledsurface
-N = tiledsurface.N
+import tiledsurface, strokemap, strokemap_pb2
 
 class Layer:
     def __init__(self):
@@ -37,7 +35,24 @@ class Layer:
     def add_stroke(self, stroke, snapshot_before):
         before = snapshot_before[1] # extract surface snapshot
         after  = self.surface.save_snapshot()
-        self.strokes.append(StrokeInfo(stroke, before, after))
+        info = strokemap.StrokeInfo()
+        info.init_from_snapshots(stroke.brush_settings, before, after)
+        self.strokes.append(info)
+
+    def save_strokemap_to_string(self, translate_x, translate_y):
+        sl = strokemap_pb2.StrokeList()
+        for stroke in self.strokes:
+            stroke_pb = sl.strokes.add()
+            stroke.save_to_pb(stroke_pb, translate_x, translate_y)
+        return sl.SerializeToString()
+
+    def load_strokemap_from_string(self, data, translate_x, translate_y):
+        sl = strokemap_pb2.StrokeList()
+        sl.ParseFromString(data)
+        for stroke_pb in sl.strokes:
+            stroke = strokemap.StrokeInfo()
+            stroke.init_from_pb(stroke_pb, translate_x, translate_y)
+            self.strokes.append(stroke)
 
     def merge_into(self, dst):
         """
@@ -57,84 +72,7 @@ class Layer:
         x, y = int(x), int(y)
         for s in reversed(self.strokes):
             if s.touches_pixel(x, y):
-                return s.brush
+                return s.brush_string
 
 
 
-class StrokeInfo:
-    processing_queue = [] # global (static) list
-    def __init__(self, stroke, snapshot_before, snapshot_after):
-        self.brush = stroke.brush_settings
-        # extract the layer from each snapshot
-        a, b = snapshot_before.tiledict, snapshot_after.tiledict
-        # enumerate all tiles that have changed
-        a_tiles = set(a.items())
-        b_tiles = set(b.items())
-        changes = a_tiles.symmetric_difference(b_tiles)
-        tiles_modified = set([pos for pos, data in changes])
-
-        # for each tile, calculate the exact difference (not now, later)
-        self.strokemap = {}
-        queue = []
-        for tx, ty in tiles_modified:
-            def work(tx=tx, ty=ty):
-                # get the pixel data to compare
-                a_data = a.get((tx, ty), tiledsurface.transparent_tile).rgba
-                b_data = b.get((tx, ty), tiledsurface.transparent_tile).rgba
-
-                # calculate the "perceptual" amount of difference
-                absdiff = zeros((N, N), 'uint32')
-                for i in range(4): # RGBA
-                    absdiff += abs(a_data[:,:,i].astype('uint32') - b_data[:,:,i])
-                # ignore badly visible (parts of) strokes, eg. very faint strokes
-                #
-                # This is an arbitrary threshold. If it is too high, an
-                # ink stroke with slightly different color than the one
-                # below will not be pickable.  If it is too high, barely
-                # visible strokes will make things below unpickable.
-                #
-                threshold = (1<<15)*4 / 16 # require 1/16 of the max difference (also not bad: 1/8)
-                is_different = absdiff > threshold
-                # except if there is no previous stroke below it
-                is_different |= (absdiff > 0) #& (brushmap_data == 0) --- FIXME: not possible any more
-                strokemap_data = is_different.astype('uint8')
-
-                # keep memory usage reasonable (data is highly redundant)
-                strokemap_data = zlib.compress(strokemap_data.tostring())
-
-                self.strokemap[tx, ty] = strokemap_data
-
-            queue.append(work)
-        self.processing_queue.append(queue)
-
-        gobject.idle_add(self.idle_cb)
-
-        # make sure we never lag too much behind with processing
-        # (otherwise we waste way too much memory)
-        self.process_pending_strokes(max_pending_strokes=6)
-
-    def process_one_item(self):
-        items = self.processing_queue[0]
-        if items:
-            func = items.pop(0)
-            func()
-        else:
-            self.processing_queue.pop(0)
-        
-    def process_pending_strokes(self, max_pending_strokes=0):
-        while len(self.processing_queue) > max_pending_strokes:
-            self.process_one_item()
-
-    def idle_cb(self):
-        if not self.processing_queue:
-            return False
-        self.process_one_item()
-        return True
-
-    def touches_pixel(self, x, y):
-        self.process_pending_strokes()
-        data = self.strokemap.get((x/N, y/N))
-        if data:
-            data = fromstring(zlib.decompress(data), dtype='uint8')
-            data.shape = (N, N)
-            return data[y%N, x%N]

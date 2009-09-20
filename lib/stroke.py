@@ -10,8 +10,14 @@ import brush
 import numpy
 
 class Stroke:
-    # A "finished" stroke object is immutable, except right after creation (when it has never been fully rendered).
-    # To modify an existing stroke, the old one must be deleted and a new Stroke instance must be used to replace it.
+    """
+    This class stores all information required to replay a stroke with
+    the brush engine, event by event. This includes the RNG seed etc.
+    """
+    # A "finished" stroke object is immutable, except right after
+    # creation (when it has never been fully rendered).  To modify an
+    # existing stroke, the old one must be deleted and a new Stroke
+    # instance must be used to replace it.
     serial_number = 0
     def __init__(self):
         self.finished = False

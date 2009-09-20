@@ -427,11 +427,11 @@ class Window(gtk.Window):
                     self.layerblink_state.activate(action)
 
                 # find the most recent (last) stroke that touches our picking point
-                brush = self.doc.layer.get_brush_at(x, y)
+                brush_string = self.doc.layer.get_brush_at(x, y)
 
-                if brush:
+                if brush_string:
                     # FIXME: clean brush concept?
-                    self.app.brush.load_from_string(brush)
+                    self.app.brush.load_from_string(brush_string)
                     self.app.select_brush(None)
                 else:
                     print 'Nothing found!'

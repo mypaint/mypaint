@@ -223,6 +223,7 @@ class Document():
         return count > 1
 
     def save(self, filename, **kwargs):
+        self.split_stroke()
         trash, ext = os.path.splitext(filename)
         ext = ext.lower().replace('.', '')
         save = getattr(self, 'save_' + ext, self.unsupported)
@@ -336,7 +337,12 @@ class Document():
             opac = l.opacity
             x, y, w, h = l.surface.get_bbox()
             pixbuf = l.surface.render_as_pixbuf()
-            add_layer(x-x0, y-y0, opac, pixbuf, 'data/layer%03d.png' % idx)
+            el = add_layer(x-x0, y-y0, opac, pixbuf, 'data/layer%03d.png' % idx)
+            # strokemap
+            data = l.save_strokemap_to_string(-x, -y)
+            name = 'data/layer%03d_strokemap.dat' % idx
+            el.attrib['mypaint_strokemap'] = name
+            write_file_str(name, data)
 
         # save background as layer (solid color or tiled)
         s = pixbufsurface.Surface(x0, y0, w0, h0)
@@ -429,6 +435,14 @@ class Document():
             self.load_layer_from_pixbuf(pixbuf, x, y)
             self.layers[0].opacity = helpers.clamp(opac, 0.0, 1.0)
             print '  %.3fs converting pixbuf to layer format' % (time.time() - t1)
+            # strokemap
+            fname = a.get('mypaint_strokemap', None)
+            if fname:
+                if x % N or y % N:
+                    print 'Warning: dropping non-aligned strokemap'
+                else:
+                    data = z.read(fname)
+                    self.layers[0].load_strokemap_from_string(data, x, y)
 
         os.rmdir(tempdir)
 
