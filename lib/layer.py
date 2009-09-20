@@ -68,11 +68,11 @@ class Layer:
             src.surface.composite_tile_over(surf, tx, ty, opacity=self.opacity)
         dst.opacity = 1.0
 
-    def get_brush_at(self, x, y):
+    def get_stroke_info_at(self, x, y):
         x, y = int(x), int(y)
         for s in reversed(self.strokes):
             if s.touches_pixel(x, y):
-                return s.brush_string
+                return s
 
 
 

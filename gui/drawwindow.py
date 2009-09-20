@@ -23,7 +23,7 @@ from gtk import gdk, keysyms
 
 import tileddrawwidget, colorselectionwindow, historypopup, \
        stategroup, keyboard, colorpicker, filehandling
-from lib import document, helpers, backgroundsurface, command
+from lib import document, helpers, backgroundsurface, command, layer
 
 #TODO: make generic by taking the windows as arguments and put in a helper file?
 def with_wait_cursor(func):
@@ -209,6 +209,10 @@ class Window(gtk.Window):
 
         sg = stategroup.StateGroup()
         self.layerblink_state = sg.create_state(self.layerblink_state_enter, self.layerblink_state_leave)
+
+        sg = stategroup.StateGroup()
+        self.strokeblink_state = sg.create_state(self.strokeblink_state_enter, self.strokeblink_state_leave)
+        self.strokeblink_state.autoleave_timeout = 0.3
 
         # separate stategroup...
         sg2 = stategroup.StateGroup()
@@ -423,25 +427,27 @@ class Window(gtk.Window):
             if alpha > 0.1:
                 old_layer = self.doc.layer
                 self.doc.select_layer(idx)
-                if self.doc.layer != old_layer:
-                    self.layerblink_state.activate(action)
+                #if self.doc.layer != old_layer:
+                #    self.layerblink_state.activate(action)
 
                 # find the most recent (last) stroke that touches our picking point
-                brush_string = self.doc.layer.get_brush_at(x, y)
+                si = self.doc.layer.get_stroke_info_at(x, y)
 
-                if brush_string:
-                    # FIXME: clean brush concept?
-                    self.app.brush.load_from_string(brush_string)
+                if si:
+                    self.app.brush.load_from_string(si.brush_string)
                     self.app.select_brush(None)
-                else:
-                    print 'Nothing found!'
-
-                #self.app.brush.copy_settings_from(stroke.brush_settings)
-                #self.app.select_brush()
-                    
+                    self.si = si # FIXME: should be a method parameter?
+                    self.strokeblink_state.activate(action)
                 return
-        self.doc.select_layer(0)
-        self.layerblink_state.activate(action)
+
+    def strokeblink_state_enter(self):
+        l = layer.Layer()
+        self.si.render_overlay(l.surface)
+        self.tdw.overlay_layer = l
+        self.tdw.queue_draw() # OPTIMIZE: excess
+    def strokeblink_state_leave(self, reason):
+        self.tdw.overlay_layer = None
+        self.tdw.queue_draw() # OPTIMIZE: excess
 
     def layerblink_state_enter(self):
         self.tdw.current_layer_solo = True

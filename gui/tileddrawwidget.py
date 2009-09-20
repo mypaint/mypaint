@@ -69,6 +69,8 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.current_layer_solo = False
         self.show_layers_above = True
 
+        self.overlay_layer = None
+
         # gets overwritten for the main window
         self.zoom_max = 5.0
         self.zoom_min = 1/5.0
@@ -294,6 +296,9 @@ class TiledDrawWidget(gtk.DrawingArea):
             layers = [self.doc.layer]
             # this is for hiding instead
             #layers.pop(self.doc.layer_idx)
+        if self.overlay_layer:
+            idx = layers.index(self.doc.layer)
+            layers.insert(idx+1, self.overlay_layer)
 
         for tx, ty in tiles:
             if sparse:

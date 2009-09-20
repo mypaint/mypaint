@@ -119,3 +119,15 @@ class StrokeInfo:
             data = fromstring(zlib.decompress(data), dtype='uint8')
             data.shape = (N, N)
             return data[y%N, x%N]
+
+    def render_overlay(self, surf):
+        self.process_pending_strokes()
+        for (tx, ty), data in self.strokemap.iteritems():
+            data = fromstring(zlib.decompress(data), dtype='uint8')
+            data.shape = (N, N)
+            rgba = surf.get_tile_memory(tx, ty, readonly=False)
+            # neutral gray, 50% opaque
+            rgba[:,:,3] = data.astype('uint16') * (1<<15)/2
+            rgba[:,:,0] = rgba[:,:,3]/2
+            rgba[:,:,1] = rgba[:,:,3]/2
+            rgba[:,:,2] = rgba[:,:,3]/2
