@@ -527,6 +527,15 @@ public:
     //printf("%f %f %f %f\n", (double)dtime, (double)x, (double)y, (double)pressure);
 
     pressure = CLAMP(pressure, 0.0, 1.0);
+    if (!isfinite(x) || !isfinite(y) ||
+        (x > 1e10 || y > 1e10 || x < -1e10 || y < -1e10)) {
+      // workaround attempt for https://gna.org/bugs/?14372
+      g_print("Warning: ignoring brush::stroke_to with insane inputs (x = %f, y = %f)\n", (double)x, (double)y);
+      x = 0.0;
+      y = 0.0;
+      pressure = 0.0;
+    }
+    // the assertion below is better than out-of-memory later at save time
     assert(x < 1e8 && y < 1e8 && x > -1e8 && y > -1e8);
 
     if (dtime < 0) g_print("Time jumped backwards by dtime=%f seconds!\n", dtime);
