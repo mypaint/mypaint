@@ -14,15 +14,15 @@ speed1_slowness 0.05
 speed2_slowness 1.0
 speed1_gamma 5.95
 speed2_gamma 4.06
-offset_by_random 0.0 | pressure (0.000000 -1.333333), (1.000000 2.000000)
+offset_by_random 0.0 | pressure (0.000000 1.333333), (0.400000 0.000000), (1.000000 2.000000)
 offset_by_speed 0.17 | pressure (0.000000 0.000000), (1.000000 -0.560000)
 offset_by_speed_slowness 1.0
 slow_tracking 0.0
 slow_tracking_per_dab 0.0
 tracking_noise 0.0
-color_h 0.0370732980876
-color_s 1.0
-color_v 0.0779278248264
+color_h 0.0
+color_s 0.0
+color_v 0.0
 change_color_h 0.0
 change_color_l 0.0
 change_color_hsl_s 0.0
