@@ -107,14 +107,15 @@
       <menuitem action='IncreaseLayerOpacity'/>
       <menuitem action='DecreaseLayerOpacity'/>
     </menu>
-    <menu action='DebugMenu'>
-      <menuitem action='PrintInputs'/>
-      <menuitem action='VisualizeRendering'/>
-      <menuitem action='NoDoubleBuffereing'/>
-    </menu>
     <menu action='HelpMenu'>
       <menuitem action='Docu'/>
       <menuitem action='ShortcutHelp'/>
+      <separator/>
+      <menu action='DebugMenu'>
+        <menuitem action='PrintInputs'/>
+        <menuitem action='VisualizeRendering'/>
+        <menuitem action='NoDoubleBuffereing'/>
+      </menu>
       <separator/>
       <menuitem action='About'/>
     </menu>
