@@ -17,7 +17,7 @@ class Window(gtk.Window):
     def __init__(self, app):
         gtk.Window.__init__(self)
         self.app = app
-        self.app.brush_selected_callbacks.append(self.brush_selected_cb)
+        self.app.selected_brush_observers.append(self.brush_selected_cb)
         self.app.kbm.add_window(self)
 
         self.set_title(_('Brush settings'))

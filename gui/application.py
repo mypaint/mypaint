@@ -89,7 +89,7 @@ class Application: # singleton
         self.brush = brush.Brush(self)
         self.brushes = []
         self.selected_brush = None
-        self.brush_selected_callbacks = [self.brush_selected_cb]
+        self.selected_brush_observers = [self.brush_selected_cb]
         self.contexts = []
         for i in range(10):
             c = brush.Brush(self)
@@ -167,7 +167,7 @@ class Application: # singleton
             self.brush.copy_settings_from(brush)
 
     def select_brush(self, brush):
-        for callback in self.brush_selected_callbacks:
+        for callback in self.selected_brush_observers:
             callback(brush)
 
     def hide_window_cb(self, window, event):
