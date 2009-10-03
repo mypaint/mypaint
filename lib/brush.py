@@ -16,8 +16,8 @@ import helpers
 
 preview_w = 128
 preview_h = 128
-thumb_w = 64
-thumb_h = 64
+thumb_w = 48
+thumb_h = 48
 
 current_brushfile_version = 2
 
