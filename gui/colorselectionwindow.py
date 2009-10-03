@@ -33,21 +33,14 @@ class Window(gtk.Window):
         self.cs.connect('color-changed', self.color_changed_cb)
         vbox.pack_start(self.cs)
 
-        self.last_known_color_hsv = (None, None, None)
-        self.change_notification = True
-
     def color_changed_cb(self, cs):
-        if not self.change_notification:
-            return
         b = self.app.brush
         b.set_color_hsv(self.get_color_hsv())
 
     def brush_modified_cb(self):
-        if not self.change_notification:
-            return
-        self.change_notification = False
-        self.set_color_hsv(self.app.brush.get_color_hsv())
-        self.change_notification = True
+        brush_color = self.app.brush.get_color_hsv()
+        if brush_color != self.get_color_hsv():
+            self.set_color_hsv(brush_color)
 
     def get_color_hsv(self):
         c = self.cs.get_current_color()
@@ -64,11 +57,6 @@ class Window(gtk.Window):
         return (h, s, v)
 
     def set_color_hsv(self, hsv):
-        if not self.change_notification:
-            return
-        if hsv == self.last_known_color_hsv:
-            return
-        self.last_known_color_hsv = hsv
         h, s, v = hsv
         while h > 1.0: h -= 1.0
         while h < 0.0: h += 1.0
@@ -76,16 +64,15 @@ class Window(gtk.Window):
         if s < 0.0: s = 0.0
         if v > 1.0: v = 1.0
         if v < 0.0: v = 0.0
-        r, g, b  = helpers.hsv_to_rgb(h, s, v)
-        self.set_color_rgb(r, g, b)
+        rgb  = helpers.hsv_to_rgb(h, s, v)
+        self.set_color_rgb(rgb)
 
     def set_color_rgb(self,rgb):
         r,g,b = rgb
         c = gdk.Color(int(r*65535+0.5), int(g*65535+0.5), int(b*65535+0.5))
-        # only emit color_changed events if the user directly interacts with the window
-        self.change_notification = False
+        current_color = self.cs.get_current_color()
+        self.cs.set_previous_color(current_color)
         self.cs.set_current_color(c)
-        self.change_notification = True
 
     def pick_color_at_pointer(self, size=3):
         # grab screen color at cursor (average of size x size rectangle)
@@ -126,7 +113,7 @@ class ColorSelectorPopup(gtk.Window):
         self.set_position(gtk.WIN_POS_MOUSE)
 
         self.backend = self.backend_class()
-        
+
         self.app = app
         self.app.kbm.add_window(self)
 
@@ -135,7 +122,7 @@ class ColorSelectorPopup(gtk.Window):
 
         self.image = image = gtk.Image()
         self.add(image)
-        
+
         self.set_events(gdk.BUTTON_PRESS_MASK |
                         gdk.BUTTON_RELEASE_MASK |
                         gtk.gdk.POINTER_MOTION_MASK |
@@ -153,7 +140,7 @@ class ColorSelectorPopup(gtk.Window):
         self.show_all()
         self.window.set_cursor(gdk.Cursor(gdk.CROSSHAIR))
         self.mouse_pos = None
-    
+
     def leave(self, reason):
         # TODO: make a generic "popupmenu" class with this code?
         if reason == 'keyup':
@@ -170,14 +157,14 @@ class ColorSelectorPopup(gtk.Window):
         pixmap, mask = pixbuf.render_pixmap_and_mask()
         self.image.set_from_pixmap(pixmap, mask)
         self.shape_combine_mask(mask,0,0)
-        
+
     def pick_color(self,x,y):
         hsv = self.backend.pick_color_at(x, y)
         if hsv:
             self.app.brush.set_color_hsv(hsv)
         else:
             self.hide()
-    
+
     def motion_notify_cb(self, widget, event):
         self.mouse_pos = event.x, event.y
 
@@ -199,11 +186,11 @@ class ColorSelectorPopup(gtk.Window):
 
 
 class ColorChangerPopup(ColorSelectorPopup):
-    backend_class = mypaintlib.ColorChanger 
+    backend_class = mypaintlib.ColorChanger
     outside_popup_timeout = 0.050
 
 class ColorRingPopup(ColorSelectorPopup):
-    backend_class = mypaintlib.SCWSColorSelector 
+    backend_class = mypaintlib.SCWSColorSelector
     closes_on_picking = False
     outside_popup_timeout = 0.050
 
