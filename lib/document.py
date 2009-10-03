@@ -409,20 +409,19 @@ class Document():
                     if 'x' in item.attrib:
                         item.attrib['x'] = int(item.attrib['x']) + x
                     if 'y' in item.attrib:
-                        item.attrib['y'] = int(item.attrib['y']) + x
+                        item.attrib['y'] = int(item.attrib['y']) + y
                     res.append(item)
                 elif item.tag == 'stack':
                     stack_x = int( item.attrib.get('x', 0) )
                     stack_y = int( item.attrib.get('y', 0) )
                     res += get_layers_list(item, stack_x, stack_y)
+                else:
+                    print 'Warning: ignoring unsupported tag:', item.tag
             return res
 
         self.clear() # this leaves one empty layer
         no_background = True
         for layer in get_layers_list(stack):
-#             if layer.tag != 'layer':
-#                 print 'Warning: ignoring unsupported tag:', layer.tag
-#                 continue
             a = layer.attrib
 
             if 'background_tile' in a:
