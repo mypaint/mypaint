@@ -402,12 +402,21 @@ class Document():
             print '  %.3fs loading %s' % (time.time() - t1, filename)
             return res
 
+        def get_layers_list(root):
+            res = []
+            for item in root:
+                if item.tag == 'layer':
+                    res.append(item)
+                elif item.tag == 'stack':
+                    res += get_layers_list(item)
+            return res
+
         self.clear() # this leaves one empty layer
         no_background = True
-        for layer in stack:
-            if layer.tag != 'layer':
-                print 'Warning: ignoring unsupported tag:', layer.tag
-                continue
+        for layer in get_layers_list(stack):
+#             if layer.tag != 'layer':
+#                 print 'Warning: ignoring unsupported tag:', layer.tag
+#                 continue
             a = layer.attrib
 
             if 'background_tile' in a:
