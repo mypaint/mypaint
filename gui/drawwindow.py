@@ -92,11 +92,11 @@ class Window(gtk.Window):
         actions = [
             # name, stock id, label, accelerator, tooltip, callback
             ('FileMenu',     None, _('File')),
-            ('Quit',         None, _('Quit'), '<control>q', None, self.quit_cb),
+            ('Quit',         gtk.STOCK_QUIT, _('Quit'), '<control>q', None, self.quit_cb),
 
             ('EditMenu',           None, _('Edit')),
-            ('Undo',               None, _('Undo'), 'Z', None, self.undo_cb),
-            ('Redo',               None, _('Redo'), 'Y', None, self.redo_cb),
+            ('Undo',               gtk.STOCK_UNDO, _('Undo'), 'Z', None, self.undo_cb),
+            ('Redo',               gtk.STOCK_REDO, _('Redo'), 'Y', None, self.redo_cb),
 
             ('BrushMenu',    None, _('Brush')),
             ('Brighter',     None, _('Brighter'), None, None, self.brighter_cb),
@@ -117,7 +117,7 @@ class Window(gtk.Window):
             ('ContextMenu',  None, _('Brushkeys')),
             #each of the context actions are generated and added below
             ('ContextStore', None, _('Save to Most Recently Restored'), 'q', None, self.context_cb),
-            ('ContextHelp',  None, _('Help!'), None, None, self.show_infodialog_cb),
+            ('ContextHelp',  gtk.STOCK_HELP, _('Help!'), None, None, self.show_infodialog_cb),
 
             ('LayerMenu',    None, _('Layers')),
 
@@ -138,13 +138,13 @@ class Window(gtk.Window):
             ('BrushSelectionWindow',  None, _('Brush List...'), 'b', None, self.toggleWindow_cb),
             ('BrushSettingsWindow',   None, _('Brush Settings...'), '<control>b', None, self.toggleWindow_cb),
             ('ColorSelectionWindow',  None, _('Color Triangle...'), 'g', None, self.toggleWindow_cb),
-            ('ColorSamplerWindow',  None, _('Color Sampler...'), 't', None, self.toggleWindow_cb),
-            ('SettingsWindow',        None, _('Settings...'), None, None, self.toggleWindow_cb),
+            ('ColorSamplerWindow',  gtk.STOCK_COLOR_PICKER, _('Color Sampler...'), 't', None, self.toggleWindow_cb),
+            ('SettingsWindow',        gtk.STOCK_PREFERENCES, _('Settings...'), None, None, self.toggleWindow_cb),
 
             ('HelpMenu',     None, _('Help')),
             ('Docu', None, _('Where is the Documentation?'), None, None, self.show_infodialog_cb),
             ('ShortcutHelp',  None, _('Change the Keyboard Shortcuts?'), None, None, self.show_infodialog_cb),
-            ('About', None, _('About MyPaint'), None, None, self.about_cb),
+            ('About', gtk.STOCK_ABOUT, _('About MyPaint'), None, None, self.about_cb),
 
             ('DebugMenu',    None, _('Debug')),
 
@@ -152,15 +152,15 @@ class Window(gtk.Window):
             ('ShortcutsMenu', None, _('Shortcuts')),
 
             ('ViewMenu', None, _('View')),
-            ('Fullscreen',   None, _('Fullscreen'), 'F11', None, self.fullscreen_cb),
-            ('ResetView',   None, _('Reset (Zoom, Rotation, Mirror)'), None, None, self.reset_view_cb),
-            ('ZoomIn',       None, _('Zoom In (at cursor)'), 'period', None, self.zoom_cb),
-            ('ZoomOut',      None, _('Zoom Out'), 'comma', None, self.zoom_cb),
+            ('Fullscreen',   gtk.STOCK_FULLSCREEN, _('Fullscreen'), 'F11', None, self.fullscreen_cb),
+            ('ResetView',   gtk.STOCK_ZOOM_100, _('Reset (Zoom, Rotation, Mirror)'), None, None, self.reset_view_cb),
+            ('ZoomIn',       gtk.STOCK_ZOOM_IN, _('Zoom In (at cursor)'), 'period', None, self.zoom_cb),
+            ('ZoomOut',      gtk.STOCK_ZOOM_OUT, _('Zoom Out'), 'comma', None, self.zoom_cb),
             ('RotateLeft',   None, _('Rotate Counterclockwise'), None, None, self.rotate_cb),
             ('RotateRight',  None, _('Rotate Clockwise'), None, None, self.rotate_cb),
             ('SoloLayer',    None, _('Layer Solo'), 'Home', None, self.solo_layer_cb),
             ('ToggleAbove',  None, _('Hide Layers Above Current'), 'End', None, self.toggle_layers_above_cb), # TODO: make toggle action
-            ('ViewHelp',     None, _('Help'), None, None, self.show_infodialog_cb),
+            ('ViewHelp',  gtk.STOCK_HELP, _('Help'), None, None, self.show_infodialog_cb),
             ]
         ag = self.action_group = gtk.ActionGroup('WindowActions')
         ag.add_actions(actions)
@@ -260,7 +260,7 @@ class Window(gtk.Window):
         self.tdw.visualize_rendering = action.get_active()
     def no_double_buffering_cb(self, action):
         self.tdw.set_double_buffered(not action.get_active())
-        
+
     def undo_cb(self, action):
         cmd = self.doc.undo()
         if isinstance(cmd, command.MergeLayer):

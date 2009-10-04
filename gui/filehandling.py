@@ -30,12 +30,12 @@ class FileHandler(object):
             self.save_history = []
 
         file_actions = [ \
-        ('New',          None, _('New'), '<control>N', None, self.new_cb),
-        ('Open',         None, _('Open...'), '<control>O', None, self.open_cb),
+        ('New',          gtk.STOCK_NEW, _('New'), '<control>N', None, self.new_cb),
+        ('Open',         gtk.STOCK_OPEN, _('Open...'), '<control>O', None, self.open_cb),
         ('OpenRecent',   None, _('Open Recent'), 'F3', None, self.open_recent_cb),
-        ('Reload', None, _('Reload'), 'F5', None, self.reload_cb),
-        ('Save',         None, _('Save'), '<control>S', None, self.save_cb),
-        ('SaveAs',       None, _('Save As...'), '<control><shift>S', None, self.save_as_cb),
+        ('Reload',       gtk.STOCK_REFRESH, _('Reload'), 'F5', None, self.reload_cb),
+        ('Save',         gtk.STOCK_SAVE, _('Save'), '<control>S', None, self.save_cb),
+        ('SaveAs',       gtk.STOCK_SAVE_AS, _('Save As...'), '<control><shift>S', None, self.save_as_cb),
         ('SaveScrap',    None, _('Save As Scrap'), 'F2', None, self.save_scrap_cb),
         ('PrevScrap',    None, _('Open Previous Scrap'), 'F5', None, self.open_scrap_cb),
         ('NextScrap',    None, _('Open Next Scrap'), 'F6', None, self.open_scrap_cb),
