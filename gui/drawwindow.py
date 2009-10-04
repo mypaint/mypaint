@@ -714,6 +714,7 @@ class Window(gtk.Window):
             u'Griatch (sv)\n'
             u'Tobias Jakobs (de)\n'
             u'Martin Tabačan (cs)\n'
+            u'Tumagonx (id)\n'
             )
         
         d.run()
