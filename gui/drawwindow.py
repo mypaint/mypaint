@@ -533,14 +533,16 @@ class Window(gtk.Window):
         if old_device is None and new_device.source != gdk.SOURCE_ERASER:
             # keep whatever startup brush was choosen
             return
-        if new_device.source == gdk.SOURCE_ERASER:
+        def is_eraser(device):
+            if device is None: return False
+            return device.source == gdk.SOURCE_ERASER or 'eraser' in device.name.lower()
+        if is_eraser(new_device):
             # enter eraser mode
             adj.set_value(1.0)
-        elif new_device.source != gdk.SOURCE_ERASER and \
-               (old_device is None or old_device.source == gdk.SOURCE_ERASER):
+        elif not is_eraser(new_device) and is_eraser(old_device):
             # leave eraser mode
             adj.set_value(0.0)
-        print 'device change:', new_device.name
+        print 'device change:', new_device.name, new_device.source
 
     def brush_bigger_cb(self, action):
         adj = self.app.brush_adjustment['radius_logarithmic']
