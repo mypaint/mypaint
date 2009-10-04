@@ -1000,7 +1000,7 @@ msgid ""
 "dynamically"
 msgstr ""
 "sama seperti diatas, tapi jari-jari sebenarnya yg dipakai, yg mana dapat berubah secara "
-"dinamis
+"dinamis"
 
 #: ../brushlib/brushsettings.py:50
 msgid "dabs per second"
@@ -1281,7 +1281,6 @@ msgstr ""
 "pada kanvas.\n"
 "0.0 langsung merubah warna smudge\n"
 "1.0 tanpa merubah warna smudge"
-msgstr ""
 
 #: ../brushlib/brushsettings.py:73
 msgid "eraser"
