@@ -529,20 +529,32 @@ class Window(gtk.Window):
     def device_changed_cb(self, old_device, new_device):
         # just enable eraser mode for now (TODO: remember full tool settings)
         # small problem with this code: it doesn't work well with brushes that have (eraser not in [1.0, 0.0])
-        adj = self.app.brush_adjustment['eraser']
-        if old_device is None and new_device.source != gdk.SOURCE_ERASER:
-            # keep whatever startup brush was choosen
-            return
         def is_eraser(device):
             if device is None: return False
             return device.source == gdk.SOURCE_ERASER or 'eraser' in device.name.lower()
-        if is_eraser(new_device):
-            # enter eraser mode
-            adj.set_value(1.0)
-        elif not is_eraser(new_device) and is_eraser(old_device):
-            # leave eraser mode
-            adj.set_value(0.0)
+        if old_device is None and not is_eraser(new_device):
+            # keep whatever startup brush was choosen
+            return
+
         print 'device change:', new_device.name, new_device.source
+
+        self.app.brush_by_device[old_device.name] = (self.app.selected_brush, self.app.brush.save_to_string())
+
+        if new_device.name in self.app.brush_by_device:
+            brush_to_select, brush_settings = self.app.brush_by_device[new_device.name]
+            # mark as selected in brushlist
+            self.app.select_brush(brush_to_select)
+            # restore modifications (radius / color change the user made)
+            self.app.brush.load_from_string(brush_settings)
+        else:
+            # first time using that device
+            adj = self.app.brush_adjustment['eraser']
+            if is_eraser(new_device):
+                # enter eraser mode
+                adj.set_value(1.0)
+            elif not is_eraser(new_device) and is_eraser(old_device):
+                # leave eraser mode
+                adj.set_value(0.0)
 
     def brush_bigger_cb(self, action):
         adj = self.app.brush_adjustment['radius_logarithmic']

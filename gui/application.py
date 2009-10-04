@@ -97,6 +97,9 @@ class Application: # singleton
             self.contexts.append(c)
         self.selected_context = None
 
+        # maybe this should be save/loaded too?
+        self.brush_by_device = {}
+
         # find all brush names to load
         deleted = []
         filename = os.path.join(self.user_brushpath, 'deleted.conf')
