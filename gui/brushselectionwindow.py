@@ -17,10 +17,11 @@ class Window(gtk.Window):
     def __init__(self, app):
         gtk.Window.__init__(self)
         self.app = app
-        self.app.selected_brush_observers.insert(0, self.brush_selected_cb)
+        self.app.selected_brush_observers.append(self.brush_selected_cb)
         self.app.brush.settings_observers.append(self.brush_modified_cb)
         self.app.kbm.add_window(self)
         self.brushlist = BrushList(self.app)
+        self.last_selected_brush = None
 
         self.set_title(_('Brush selection'))
         self.set_role('Brush selector')
@@ -207,9 +208,10 @@ class Window(gtk.Window):
         else:
             name = name.replace('_', ' ')
         self.brush_name_label.set_text(name)
-        if brush is self.app.selected_brush:
+        if brush is self.last_selected_brush:
             # selected same brush twice: load pixmap
             self.set_preview_pixbuf(brush.preview)
+        self.last_selected_brush = brush
 
     def brush_modified_cb(self):
         self.tdw.doc.set_brush(self.app.brush)
