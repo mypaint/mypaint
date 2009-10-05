@@ -8,6 +8,7 @@
 
 import os, re
 from glob import glob
+import sys
 
 import gtk
 from gtk import gdk
@@ -32,7 +33,6 @@ class FileHandler(object):
         file_actions = [ \
         ('New',          gtk.STOCK_NEW, _('New'), '<control>N', None, self.new_cb),
         ('Open',         gtk.STOCK_OPEN, _('Open...'), '<control>O', None, self.open_cb),
-        ('OpenRecent',   None, _('Open Recent'), 'F3', None, self.open_recent_cb),
         ('Reload',       gtk.STOCK_REFRESH, _('Reload'), 'F5', None, self.reload_cb),
         ('Save',         gtk.STOCK_SAVE, _('Save'), '<control>S', None, self.save_cb),
         ('SaveAs',       gtk.STOCK_SAVE_AS, _('Save As...'), '<control><shift>S', None, self.save_as_cb),
@@ -43,6 +43,13 @@ class FileHandler(object):
         ag = gtk.ActionGroup('FileActions')
         ag.add_actions(file_actions)
         self.app.ui_manager.insert_action_group(ag, -1)
+
+        ra = gtk.RecentAction('OpenRecent', 'Open Recent', 'Open Recent files', None)
+        rf = gtk.RecentFilter()
+        rf.add_application('mypaint')
+        ra.add_filter(rf)
+        ra.connect('item-activated', self.open_recent_cb)
+        ag.add_action(ra)
 
         for action in ag.list_actions():
             self.app.kbm.takeover_action(action)
@@ -157,6 +164,14 @@ class FileHandler(object):
         else:
             self.filename = os.path.abspath(filename)
             print 'Saved to', self.filename
+            gtk.recent_manager_get_default().add_full("file://" + self.filename,
+                    {
+                        'app_name': 'mypaint',
+                        'app_exec': sys.argv[0],
+                        # todo: get mime_type
+                        'mime_type': 'application/octet-stream'
+                    }
+            )
             self.save_history.append(os.path.abspath(filename))
             self.save_history = self.save_history[-100:]
             f = open(os.path.join(self.app.confpath, 'save_history.conf'), 'w')
@@ -324,6 +339,12 @@ class FileHandler(object):
         return groups
 
     def open_recent_cb(self, action):
+        if not self.confirm_destructive_action():
+            return
+        uri = action.get_current_uri()
+        assert uri.startswith("file://")
+        self.open_file(uri[7:])
+        return
         # feed history with scrap directory (mainly for initial history)
         l = self.list_scraps()
         l = [x for x in l if x not in self.save_history]
