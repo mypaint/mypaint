@@ -4,6 +4,7 @@
       <menuitem action='New'/>
       <menuitem action='Open'/>
       <menuitem action='OpenRecent'/>
+      <menuitem action='OpenLast'/>
       <menuitem action='Reload'/>
       <separator/>
       <menuitem action='Save'/>

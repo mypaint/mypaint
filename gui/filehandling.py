@@ -33,6 +33,7 @@ class FileHandler(object):
         file_actions = [ \
         ('New',          gtk.STOCK_NEW, _('New'), '<control>N', None, self.new_cb),
         ('Open',         gtk.STOCK_OPEN, _('Open...'), '<control>O', None, self.open_cb),
+        ('OpenLast',     None, _('Open Last'), 'F3', None, self.open_last_cb),
         ('Reload',       gtk.STOCK_REFRESH, _('Reload'), 'F5', None, self.reload_cb),
         ('Save',         gtk.STOCK_SAVE, _('Save'), '<control>S', None, self.save_cb),
         ('SaveAs',       gtk.STOCK_SAVE_AS, _('Save As...'), '<control><shift>S', None, self.save_as_cb),
@@ -45,23 +46,32 @@ class FileHandler(object):
         self.app.ui_manager.insert_action_group(ag, -1)
 
         ra = gtk.RecentAction('OpenRecent', 'Open Recent', 'Open Recent files', None)
+        ra.set_show_tips(True)
+        ra.set_show_numbers(True)
         rf = gtk.RecentFilter()
         rf.add_application('mypaint')
         ra.add_filter(rf)
+        ra.set_sort_type(gtk.RECENT_SORT_MRU)
         ra.connect('item-activated', self.open_recent_cb)
-        ag.add_action(ra)
+        ag.add_action_with_accel(ra, None)
 
         for action in ag.list_actions():
             self.app.kbm.takeover_action(action)
 
         self._filename = None
         self.active_scrap_filename = None
+        self.recent_items = [
+                i for i in gtk.recent_manager_get_default().get_items()
+                if "mypaint" in i.get_applications() and i.exists()
+        ]
+        self.recent_items.reverse()
 
     def get_filename(self):
-        return self._filename 
+        return self._filename
+
     def set_filename(self, value):
         self._filename = value
-        if self.filename: 
+        if self.filename:
             self.app.drawWindow.set_title("MyPaint - %s" % os.path.basename(self.filename))
             if self.filename.startswith(self.get_scrap_prefix()):
                 self.active_scrap_filename = self.filename
@@ -371,6 +381,14 @@ class FileHandler(object):
             return
 
         self.open_file(self.save_history[idx])
+
+    def open_last_cb(self, action):
+        print "open_last"
+        if not self.recent_items:
+            return
+        uri = self.recent_items.pop().get_uri()
+        assert uri.startswith("file://")
+        self.open_file(uri[7:])
 
     def open_scrap_cb(self, action):
         groups = self.list_scraps_grouped()
