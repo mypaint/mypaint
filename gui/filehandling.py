@@ -24,12 +24,6 @@ class FileHandler(object):
         #NOTE: filehandling and drawwindow are very tightly coupled
         self.save_dialog = None
 
-        fn = os.path.join(self.app.confpath, 'save_history.conf')
-        if os.path.exists(fn):
-            self.save_history = [line.strip() for line in open(fn)]
-        else:
-            self.save_history = []
-
         file_actions = [ \
         ('New',          gtk.STOCK_NEW, _('New'), '<control>N', None, self.new_cb),
         ('Open',         gtk.STOCK_OPEN, _('Open...'), '<control>O', None, self.open_cb),
@@ -45,7 +39,7 @@ class FileHandler(object):
         ag.add_actions(file_actions)
         self.app.ui_manager.insert_action_group(ag, -1)
 
-        ra = gtk.RecentAction('OpenRecent', 'Open Recent', 'Open Recent files', None)
+        ra = gtk.RecentAction('OpenRecent', _('Open Recent'), _('Open Recent files'), None)
         ra.set_show_tips(True)
         ra.set_show_numbers(True)
         rf = gtk.RecentFilter()
@@ -53,13 +47,16 @@ class FileHandler(object):
         ra.add_filter(rf)
         ra.set_sort_type(gtk.RECENT_SORT_MRU)
         ra.connect('item-activated', self.open_recent_cb)
-        ag.add_action_with_accel(ra, None)
+        ag.add_action(ra)
 
         for action in ag.list_actions():
             self.app.kbm.takeover_action(action)
 
         self._filename = None
         self.active_scrap_filename = None
+        self.set_recent_items()
+
+    def set_recent_items(self):
         self.recent_items = [
                 i for i in gtk.recent_manager_get_default().get_items()
                 if "mypaint" in i.get_applications() and i.exists()
@@ -149,8 +146,9 @@ class FileHandler(object):
         self.doc.clear()
         self.doc.set_background(bg)
         self.filename = None
+        self.set_recent_items()
 
-    @drawwindow.with_wait_cursor 
+    @drawwindow.with_wait_cursor
     def open_file(self, filename):
         try:
             self.doc.load(filename)
@@ -182,14 +180,6 @@ class FileHandler(object):
                         'mime_type': 'application/octet-stream'
                     }
             )
-            self.save_history.append(os.path.abspath(filename))
-            self.save_history = self.save_history[-100:]
-            f = open(os.path.join(self.app.confpath, 'save_history.conf'), 'w')
-            f.write('\n'.join(self.save_history))
-            ## tell other gtk applications
-            ## (hm, is there any application that uses this at all? or is the code below wrong?)
-            #manager = gtk.recent_manager_get_default()
-            #manager.add_item(os.path.abspath(filename))
 
     def open_cb(self, action):
         if not self.confirm_destructive_action():
@@ -349,41 +339,15 @@ class FileHandler(object):
         return groups
 
     def open_recent_cb(self, action):
+        """Callback for RecentAction"""
         if not self.confirm_destructive_action():
             return
         uri = action.get_current_uri()
         assert uri.startswith("file://")
         self.open_file(uri[7:])
-        return
-        # feed history with scrap directory (mainly for initial history)
-        l = self.list_scraps()
-        l = [x for x in l if x not in self.save_history]
-        l = l + self.save_history
-        l = [x for x in l if os.path.exists(x)]
-        l.sort(key=os.path.getmtime)
-        self.save_history = l
-
-        # pick the next most recent file from the history
-        idx = -1
-        if self.filename in self.save_history:
-            def basename(filename):
-                return os.path.splitext(filename)[0]
-            idx = self.save_history.index(self.filename)
-            while basename(self.save_history[idx]) == basename(self.filename):
-                idx -= 1
-                if idx == -1:
-                    return
-
-        if not self.confirm_destructive_action():
-            return
-        if not self.save_history:
-            self.app.message_dialog(_('There are no existing images in the save history. Did you move them all away?'), gtk.MESSAGE_WARNING)
-            return
-
-        self.open_file(self.save_history[idx])
 
     def open_last_cb(self, action):
-        print "open_last"
+        """Callback to open the last file"""
         if not self.recent_items:
             return
         uri = self.recent_items.pop().get_uri()
