@@ -52,6 +52,7 @@ class Window(gtk.Window):
         self.connect('key-release-event', self.key_release_event_cb_before)
         self.connect_after('key-press-event', self.key_press_event_cb_after)
         self.connect_after('key-release-event', self.key_release_event_cb_after)
+        self.connect("drag-data-received", self.drag_data_received)
         self.connect("button-press-event", self.button_press_cb)
         self.connect("button-release-event", self.button_release_cb)
         self.connect("scroll-event", self.scroll_cb)
@@ -87,6 +88,8 @@ class Window(gtk.Window):
         self.eraser_mode_radius_change = 3*(0.3) # can go back to exact original with brush_smaller_cb()
         self.eraser_mode_original_radius = None
 
+        # enable drag & drop
+        self.drag_dest_set(gtk.DEST_DEFAULT_MOTION | gtk.DEST_DEFAULT_HIGHLIGHT | gtk.DEST_DEFAULT_DROP, [("text/uri-list", 0, 1)], gtk.gdk.ACTION_DEFAULT|gtk.gdk.ACTION_COPY)
 
     def create_ui(self):
         actions = [
@@ -242,6 +245,11 @@ class Window(gtk.Window):
         hist.autoleave_timeout = 0.600
         self.history_popup_state = hist
 
+    def drag_data_received(self, widget, context, x, y, selection, info, t):
+        if selection.data:
+            url = selection.data.split("\r\n")[0]
+            if url.startswith("file://"):
+                self.app.filehandler.open_file(url[7:])
 
     def toggleWindow_cb(self, action):
         s = action.get_name()
