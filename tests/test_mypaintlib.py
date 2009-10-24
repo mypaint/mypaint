@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 from pylab import *
 from time import time
-import sys, os
+import sys, os, gc
 
 os.chdir(os.path.dirname(sys.argv[0]))
 sys.path.insert(0, '..')
@@ -186,8 +186,66 @@ def docPaint():
     assert pngs_equal('test_docPaint_flat.png', 'correct_docPaint_flat.png', exact=True)
     assert pngs_equal('test_docPaint_alpha.png', 'correct_docPaint_alpha.png', exact=True)
 
+def mem():
+    gc.collect()
+    return int(open('/proc/self/statm').read().split()[0])
+
+def leakTest_fast():
+    gc.collect()
+    assert not gc.garbage, 'uncollectable garbage left over from previous tests'
+    s = tiledsurface.Surface()
+    del s
+    gc.collect()
+    assert not gc.garbage, 'surface class leaks uncollectable garbage (regression)'
+
+def leakTest_slow():
+    # FIXME: known to fail
+    print 'memory leak test:'
+    assert not gc.garbage, 'uncollectable garbage left over from previous tests'
+
+    doc = document.Document()
+    def paint():
+        events = load('painting30sec.dat.gz')
+        t_old = events[0][0]
+        for i, (t, x, y, pressure) in enumerate(events):
+            dtime = t - t_old
+            t_old = t
+            doc.stroke_to(dtime, x, y, pressure)
+
+    #gc.set_debug(gc.DEBUG_LEAK)
+    paint()
+    doc.clear()
+    m0 = mem()
+
+    paint()
+    assert mem() >= m0
+    doc.clear()
+    m1 = mem()
+
+    for i in range(100):
+        paint()
+        doc.clear()
+        m2 = mem()
+        print 'iteration %02d/100: %d pages used' % (i, m2)
+
+    assert m1 == m2, 'memory leak during paint/clear cycles'
+
+    paint()
+    doc.save('test_memory_leak.png', alpha=False)
+    #doc.clear()
+
+    m3 = mem()
+
+    #assert m2 == m0, (m2-m0, m3-m2)
+
+    # note: if gc.DEBUG_LEAK is enabled above this is expected to fail
+    assert not gc.garbage
+    print 'no leaks found'
+
 directPaint()
 brushPaint()
 docPaint()
+leakTest_fast()
+leakTest_slow()
 
 print 'Tests passed.'
