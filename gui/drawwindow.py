@@ -657,10 +657,6 @@ class Window(gtk.Window):
             del self.geometry_before_fullscreen
 
     def context_cb(self, action):
-        # TODO: this context-thing is not very useful like that, is it?
-        #       You overwrite your settings too easy by accident.
-        # - not storing settings under certain circumstances?
-        # - think about other stuff... brush history, only those actually used, etc...
         name = action.get_name()
         store = False
         if name == 'ContextStore':
@@ -681,7 +677,10 @@ class Window(gtk.Window):
             preview = self.app.brushSelectionWindow.get_preview_pixbuf()
             context.update_preview(preview)
             context.save()
-        else: # restore
+        else:
+            # restore (but keep color)
+            color = self.app.brush.get_color_hsv()
+            context.set_color_hsv(color)
             self.app.select_brush(context)
             self.app.brushSelectionWindow.set_preview_pixbuf(context.preview)
 
