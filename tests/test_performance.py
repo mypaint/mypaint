@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import sys, os, tempfile, subprocess
+import sys, os, tempfile, subprocess, gc
 from time import time, sleep
 
 from pylab import *

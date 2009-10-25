@@ -213,28 +213,22 @@ def leakTest_slow():
             doc.stroke_to(dtime, x, y, pressure)
 
     #gc.set_debug(gc.DEBUG_LEAK)
-    paint()
-    doc.clear()
-    m0 = mem()
 
-    paint()
-    assert mem() >= m0
-    doc.clear()
-    m1 = mem()
-
-    for i in range(100):
+    m = []
+    for i in range(20):
         paint()
         doc.clear()
         m2 = mem()
+        m.append(m2)
         print 'iteration %02d/100: %d pages used' % (i, m2)
 
-    assert m1 == m2, 'memory leak during paint/clear cycles'
+    for i in range(10,20):
+        assert m[i] == m[9], 'memory leak during paint/clear cycles'
 
-    paint()
-    doc.save('test_memory_leak.png', alpha=False)
-    #doc.clear()
-
-    m3 = mem()
+    #import objgraph
+    #from lib import strokemap
+    #objgraph.show_refs(doc)
+    #sys.exit(0)
 
     #assert m2 == m0, (m2-m0, m3-m2)
 
