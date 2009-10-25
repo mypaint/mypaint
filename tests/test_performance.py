@@ -87,7 +87,7 @@ def paint(app):
     tdw = dw.tdw
 
     for b in app.brushes:
-        if b.name == 'redbrush':
+        if b.name == brush:
             app.select_brush(b)
 
     dw.fullscreen_cb()

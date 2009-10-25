@@ -25,7 +25,6 @@ class Processor:
         self.finish_downto(self.max_pending)
 
     def finish_one(self):
-        print '.'
         func = self._queue.pop(0)
         func()
 

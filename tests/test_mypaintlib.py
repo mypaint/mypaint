@@ -198,32 +198,24 @@ def leakTest_fast():
     gc.collect()
     assert not gc.garbage, 'surface class leaks uncollectable garbage (regression)'
 
-def leakTest_slow():
-    # FIXME: known to fail
-    print 'memory leak test:'
+def leakTest_generic(func):
+    print 'memory leak test', func.__name__
     assert not gc.garbage, 'uncollectable garbage left over from previous tests'
 
     doc = document.Document()
-    def paint():
-        events = load('painting30sec.dat.gz')
-        t_old = events[0][0]
-        for i, (t, x, y, pressure) in enumerate(events):
-            dtime = t - t_old
-            t_old = t
-            doc.stroke_to(dtime, x, y, pressure)
-
     #gc.set_debug(gc.DEBUG_LEAK)
 
     m = []
-    for i in range(20):
-        paint()
-        doc.clear()
+    N = 20
+    for i in range(N):
+        func(doc, i)
         m2 = mem()
         m.append(m2)
-        print 'iteration %02d/100: %d pages used' % (i, m2)
+        print 'iteration %02d/%02d: %d pages used' % (i+1, N, m2)
 
-    for i in range(10,20):
-        assert m[i] == m[9], 'memory leak during paint/clear cycles'
+    print m
+    for i in range(N/2,N):
+        assert m[i] == m[9], 'looks like a memory leak in ' + func.__name__
 
     #import objgraph
     #from lib import strokemap
@@ -234,12 +226,50 @@ def leakTest_slow():
 
     # note: if gc.DEBUG_LEAK is enabled above this is expected to fail
     assert not gc.garbage
-    print 'no leaks found'
+    print 'no leak found'
+
+def leakTest_slow():
+
+    def paint(doc):
+        events = load('painting30sec.dat.gz')
+        t_old = events[0][0]
+        for i, (t, x, y, pressure) in enumerate(events):
+            dtime = t - t_old
+            t_old = t
+            doc.stroke_to(dtime, x, y, pressure)
+
+    def paint_and_clear(doc, iteration):
+        paint(doc)
+        doc.clear()
+
+    def repeated_saving(doc, iteration):
+        if iteration == 0:
+            paint(doc)
+        doc.save('test_leak.ora')
+        doc.save('test_leak.png')
+        doc.save('test_leak.jpg')
+
+    def repeated_loading(doc, iteration):
+        doc.load('bigimage.ora')
+
+    def paint_save_clear(doc, iteration):
+        paint(doc)
+        doc.save('test_leak.ora')
+        doc.clear()
+
+    leakTest_generic(paint_and_clear)
+    leakTest_generic(repeated_saving)
+    leakTest_generic(repeated_loading)
+    leakTest_generic(paint_save_clear)
 
 directPaint()
 brushPaint()
 docPaint()
 leakTest_fast()
-leakTest_slow()
+if '--leak' in sys.argv:
+    leakTest_slow()
+else:
+    print
+    print 'Skipping slow memory leak tests (use --leak to run them).'
 
 print 'Tests passed.'
