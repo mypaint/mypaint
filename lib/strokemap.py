@@ -7,11 +7,13 @@
 # (at your option) any later version.
 
 import time
-import gobject, zlib
+import zlib
 from numpy import *
 
-import tiledsurface, strokemap_pb2
+import tiledsurface, idletask, strokemap_pb2
 N = tiledsurface.N
+
+tasks = idletask.Processor(max_pending=6)
 
 class StrokeInfo:
     """
@@ -19,7 +21,6 @@ class StrokeInfo:
     single stroke. Mainly this is the stroke shape and the brush
     settings that were used. Needed to pick brush from canvas.
     """
-    processing_queue = [] # global (static) list
     def __init__(self):
         self.strokemap = {}
         self.brush = None
@@ -63,14 +64,7 @@ class StrokeInfo:
                 data_compressed = zlib.compress(data.tostring())
                 self.strokemap[tx, ty] = data_compressed
 
-            queue.append(work)
-        self.processing_queue.append(queue)
-
-        gobject.idle_add(self.idle_cb)
-
-        # make sure we never lag too much behind with processing
-        # (otherwise we waste way too much memory)
-        self.process_pending_strokes(max_pending_strokes=6)
+            tasks.add_work(work, weight=1.0/len(tiles_modified))
 
     def init_from_pb(self, stroke_pb, translate_x, translate_y):
         assert not self.strokemap
@@ -87,33 +81,15 @@ class StrokeInfo:
         assert translate_y % N == 0
         translate_x /= N
         translate_y /= N
-        self.process_pending_strokes()
+        tasks.finish_all()
         for (tx, ty), data in self.strokemap.iteritems():
             t = stroke_pb.tiles.add()
             t.tx, t.ty = tx + translate_x, ty + translate_y
             t.data_compressed = data
         stroke_pb.brush_string_compressed = zlib.compress(self.brush_string)
 
-    def process_one_item(self):
-        items = self.processing_queue[0]
-        if items:
-            func = items.pop(0)
-            func()
-        else:
-            self.processing_queue.pop(0)
-        
-    def process_pending_strokes(self, max_pending_strokes=0):
-        while len(self.processing_queue) > max_pending_strokes:
-            self.process_one_item()
-
-    def idle_cb(self):
-        if not self.processing_queue:
-            return False
-        self.process_one_item()
-        return True
-
     def touches_pixel(self, x, y):
-        self.process_pending_strokes()
+        tasks.finish_all()
         data = self.strokemap.get((x/N, y/N))
         if data:
             data = fromstring(zlib.decompress(data), dtype='uint8')
@@ -121,7 +97,7 @@ class StrokeInfo:
             return data[y%N, x%N]
 
     def render_overlay(self, surf):
-        self.process_pending_strokes()
+        tasks.finish_all()
         for (tx, ty), data in self.strokemap.iteritems():
             data = fromstring(zlib.decompress(data), dtype='uint8')
             data.shape = (N, N)
@@ -131,3 +107,5 @@ class StrokeInfo:
             rgba[:,:,0] = rgba[:,:,3]/2
             rgba[:,:,1] = rgba[:,:,3]/2
             rgba[:,:,2] = rgba[:,:,3]/2
+
+

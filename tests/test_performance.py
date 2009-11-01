@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import sys, os, tempfile, subprocess
+import sys, os, tempfile, subprocess, gc
 from time import time, sleep
 
 from pylab import *
@@ -87,7 +87,7 @@ def paint(app):
     tdw = dw.tdw
 
     for b in app.brushes:
-        if b.name == 'redbrush':
+        if b.name == brush:
             app.select_brush(b)
 
     dw.fullscreen_cb()

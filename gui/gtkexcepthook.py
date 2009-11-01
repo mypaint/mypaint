@@ -12,7 +12,9 @@
 # - let KeyboardInterrupt through
 # - print traceback to stderr before showing the dialog
 # - nonzero exit code when hitting the "quit" button
+# - suppress more dialogs while one is already active
 # see also http://faq.pygtk.org/index.py?req=show&file=faq20.010.htp
+# (The license is still whatever you want.)
 
 import inspect, linecache, pydoc, sys, traceback
 from cStringIO import StringIO
@@ -97,17 +99,21 @@ def analyse (exctyp, value, tb):
 	return trace
 
 def _info (exctyp, value, tb):
+	global exception_dialog_active
 	if exctyp is KeyboardInterrupt:
 		return original_excepthook(exctyp, value, tb)
 	sys.stderr.write(analyse_simple (exctyp, value, tb).getvalue())
+	if exception_dialog_active:
+		return
+	exception_dialog_active = True
 	trace = None
 	dialog = gtk.MessageDialog (parent=None, flags=0, type=gtk.MESSAGE_WARNING, buttons=gtk.BUTTONS_NONE)
 	dialog.set_title (_("Bug Detected"))
 	if gtk.check_version (2, 4, 0) is not None:
 		dialog.set_has_separator (False)
 
-	primary = _("<big><b>A programming error has been detected during the execution of this program.</b></big>")
-	secondary = _("It probably isn't fatal, but should be reported to the developers nonetheless.")
+	primary = _("<big><b>A programming error has been detected.</b></big>")
+	secondary = _("It probably isn't fatal, but the details should be reported to the developers nonetheless.")
 
 	try:
 		setsec = dialog.format_secondary_text
@@ -193,9 +199,11 @@ def _info (exctyp, value, tb):
 			break
 
 	dialog.destroy()
+	exception_dialog_active = False
 
 original_excepthook = sys.excepthook
 sys.excepthook = _info
+exception_dialog_active = False
 
 if __name__ == '__main__':
 	class X (object):

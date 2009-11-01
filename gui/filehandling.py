@@ -57,6 +57,7 @@ class FileHandler(object):
         self.set_recent_items()
 
     def set_recent_items(self):
+        # this list is consumed in open_last_cb
         self.recent_items = [
                 i for i in gtk.recent_manager_get_default().get_items()
                 if "mypaint" in i.get_applications() and i.exists()
@@ -234,6 +235,17 @@ class FileHandler(object):
         else:
             dialog_set_filename('')
             dialog.set_filter(self.save_filter_default)
+            # choose the most recent save folder
+            self.set_recent_items()
+            for item in reversed(self.recent_items):
+                uri = item.get_uri()
+                if not uri.startswith("file://"):
+                    continue
+                fn = uri[7:]
+                dn = os.path.dirname(fn)
+                if os.path.isdir(dn):
+                    dialog.set_current_folder(dn)
+                    break
 
         try:
             while dialog.run() == gtk.RESPONSE_OK:
