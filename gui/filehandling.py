@@ -362,6 +362,8 @@ class FileHandler(object):
         """Callback to open the last file"""
         if not self.recent_items:
             return
+        if not self.confirm_destructive_action():
+            return
         uri = self.recent_items.pop().get_uri()
         assert uri.startswith("file://")
         self.open_file(uri[7:])

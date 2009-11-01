@@ -249,7 +249,8 @@ class Window(gtk.Window):
         if selection.data:
             url = selection.data.split("\r\n")[0]
             if url.startswith("file://"):
-                self.app.filehandler.open_file(url[7:])
+                if self.app.filehandler.confirm_destructive_action():
+                    self.app.filehandler.open_file(url[7:])
 
     def toggleWindow_cb(self, action):
         s = action.get_name()
