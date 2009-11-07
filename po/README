@@ -35,6 +35,18 @@ where "ll" and "CC" are language/country codes given by [1] and [2] respectivly
 and your working directory is the root directory of mypaint 
 
 
+== Send changes ==
+Before you send your changes, please make sure that your changes are based 
+on the current development (git) version of MyPaint.
+
+We prefer changes as git merge requests, but if you do not know git just
+send a unified diff or the updated .po file along with your name to:
+jononor (AT) gmail.com
+
+If you are interested in keeping the transalation up to date, please subscribe to
+mypaint-discuss (AT) gna.org
+
+
 == References ==
 Official GNU gettext manual
 http://www.gnu.org/software/hello/manual/gettext/
