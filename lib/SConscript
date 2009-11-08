@@ -5,7 +5,8 @@ import sys
 # 
 # I have given up. Scons just can't get the dependencies right with those
 # code generators. Let's give scons a "normal" c++ project to dependency-scan.
-env.Execute('swig -o mypaintlib_wrap.cpp -noproxydel -python -c++ mypaintlib.i')
+if env.Execute('swig -o mypaintlib_wrap.cpp -noproxydel -python -c++ mypaintlib.i'):
+    Exit(1)
 env.Clean('.', 'mypaintlib_wrap.cpp')
 env.Clean('.', 'mypaintlib.py')
 
