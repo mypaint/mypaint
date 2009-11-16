@@ -247,10 +247,11 @@ class Window(gtk.Window):
 
     def drag_data_received(self, widget, context, x, y, selection, info, t):
         if selection.data:
-            url = selection.data.split("\r\n")[0]
-            if url.startswith("file://"):
+            uri = selection.data.split("\r\n")[0]
+            fn = helpers.get_file_path_from_dnd_dropped_uri(uri)
+            if os.path.exists(fn):
                 if self.app.filehandler.confirm_destructive_action():
-                    self.app.filehandler.open_file(url[7:])
+                    self.app.filehandler.open_file(fn)
 
     def toggleWindow_cb(self, action):
         s = action.get_name()

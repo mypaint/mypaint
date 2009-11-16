@@ -14,7 +14,7 @@ import gtk
 from gtk import gdk
 from gettext import gettext as _
 
-from lib import document
+from lib import document, helpers
 import drawwindow
 
 
@@ -239,9 +239,7 @@ class FileHandler(object):
             self.set_recent_items()
             for item in reversed(self.recent_items):
                 uri = item.get_uri()
-                if not uri.startswith("file://"):
-                    continue
-                fn = uri[7:]
+                fn = helpers.get_file_path_from_dnd_dropped_uri(uri)
                 dn = os.path.dirname(fn)
                 if os.path.isdir(dn):
                     dialog.set_current_folder(dn)
@@ -355,8 +353,8 @@ class FileHandler(object):
         if not self.confirm_destructive_action():
             return
         uri = action.get_current_uri()
-        assert uri.startswith("file://")
-        self.open_file(uri[7:])
+        fn = helpers.get_file_path_from_dnd_dropped_uri(uri)
+        self.open_file(fn)
 
     def open_last_cb(self, action):
         """Callback to open the last file"""
@@ -365,8 +363,8 @@ class FileHandler(object):
         if not self.confirm_destructive_action():
             return
         uri = self.recent_items.pop().get_uri()
-        assert uri.startswith("file://")
-        self.open_file(uri[7:])
+        fn = helpers.get_file_path_from_dnd_dropped_uri(uri)
+        self.open_file(fn)
 
     def open_scrap_cb(self, action):
         groups = self.list_scraps_grouped()

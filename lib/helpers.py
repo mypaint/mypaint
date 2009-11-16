@@ -7,7 +7,7 @@
 # (at your option) any later version.
 
 from math import floor, ceil
-import colorsys
+import colorsys, urllib
 
 from gtk import gdk # for gdk_pixbuf stuff
 import mypaintlib
@@ -117,6 +117,22 @@ def pixbuf_thumbnail(src, w, h):
 
     src2.copy_area(0, 0, w2, h2, dst, (w-w2)/2, (h-h2)/2)
     return dst
+
+def get_file_path_from_dnd_dropped_uri(uri):
+    # code from http://faq.pygtk.org/index.py?req=show&file=faq23.031.htp
+    # get the path to file
+    path = ""
+    if uri.startswith('file:\\\\\\'): # windows
+        path = uri[8:] # 8 is len('file:///')
+    elif uri.startswith('file://'): # nautilus, rox
+        path = uri[7:] # 7 is len('file://')
+    elif uri.startswith('file:'): # xffm
+        path = uri[5:] # 5 is len('file:')
+        
+    path = urllib.url2pathname(path) # escape special chars
+    path = path.strip('\r\n\x00') # remove \r\n and NULL
+    
+    return path
 
 def rgb_to_hsv(r, g, b):
     r = clamp(r, 0.0, 1.0)
