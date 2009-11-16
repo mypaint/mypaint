@@ -29,6 +29,9 @@ from lib import document, helpers, backgroundsurface, command, layer
 def with_wait_cursor(func):
     """python decorator that adds a wait cursor around a function"""
     def wrapper(self, *args, **kwargs):
+        # process events which might include cursor changes
+        while gtk.events_pending():
+            gtk.main_iteration(False)
         self.app.drawWindow.window.set_cursor(gdk.Cursor(gdk.WATCH))
         self.app.drawWindow.tdw.window.set_cursor(None)
         # make sure it is actually changed before we return
