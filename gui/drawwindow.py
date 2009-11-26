@@ -688,7 +688,7 @@ class Window(gtk.Window):
         if store:
             context.copy_settings_from(self.app.brush)
             preview = self.app.brushSelectionWindow.get_preview_pixbuf()
-            context.update_preview(preview)
+            context.preview = preview
             context.save()
         else:
             # restore (but keep color)

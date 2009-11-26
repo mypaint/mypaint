@@ -86,7 +86,7 @@ def paint(app):
     dw = app.drawWindow
     tdw = dw.tdw
 
-    for b in app.brushes:
+    for b in app.brushes FIXME:
         if b.name == brush:
             app.select_brush(b)
 

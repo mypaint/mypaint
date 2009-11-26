@@ -16,8 +16,6 @@ import helpers
 
 preview_w = 128
 preview_h = 128
-thumb_w = 48
-thumb_h = 48
 
 current_brushfile_version = 2
 
@@ -255,7 +253,6 @@ class Brush(Brush_Lowlevel):
         Brush_Lowlevel.__init__(self)
         self.app = app
         self.preview = None
-        self.preview_thumb = None
         self.name = None
         self.preview_changed = True
 
@@ -283,7 +280,8 @@ class Brush(Brush_Lowlevel):
             return prefix
         if not os.path.isfile(prefix + '.myb'):
             prefix = os.path.join(self.app.stock_brushpath,self.name)
-        assert os.path.isfile(prefix + '.myb'), 'brush "' + self.name + '" not found'
+        if not os.path.isfile(prefix + '.myb'):
+            raise IOError, 'brush "' + self.name + '" not found'
         return prefix
 
     def delete_from_disk(self):
@@ -332,7 +330,7 @@ class Brush(Brush_Lowlevel):
 
         filename = prefix + '_prev.png'
         pixbuf = gtk.gdk.pixbuf_new_from_file(filename)
-        self.update_preview(pixbuf)
+        self.preview = pixbuf
 
         if prefix.startswith(self.app.user_brushpath):
             self.preview_changed = False
@@ -359,9 +357,4 @@ class Brush(Brush_Lowlevel):
         print 'Brush "' + self.name + '" has changed on disk, reloading it.'
         self.load(self.name)
         return True
-
-    def update_preview(self, pixbuf):
-        self.preview = pixbuf
-        self.preview_thumb = helpers.pixbuf_thumbnail(pixbuf, thumb_w, thumb_h)
-        self.preview_changed = True
 

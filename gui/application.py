@@ -11,6 +11,8 @@ import gtk, gobject
 gdk = gtk.gdk
 from lib import brush
 import filehandling, keyboard
+from lib.helpers import to_unicode
+from brushselectionwindow import DEFAULT_BRUSH_GROUP
 
 class Application: # singleton
     """
@@ -69,13 +71,15 @@ class Application: # singleton
                 window.connect("realize", set_hint)
             self.load_window_position(name, window)
 
+        self.brushSelectionWindow.disable_selection_callback = False # FIXME: huh?
         self.kbm.start_listening()
         self.filehandler.doc = self.drawWindow.doc
         self.filehandler.filename = None
         gtk.accel_map_load(os.path.join(self.confpath, 'accelmap.conf'))
 
-        if self.brushes:
-            self.select_brush(self.brushes[0])
+        # TODO: remember last selected brush, and select one at frist startup
+        #if self.brushes:
+        #    self.select_brush(self.brushes[0])
         self.brush.set_color_hsv((0, 0, 0))
 
         def at_application_start(*trash):
@@ -88,8 +92,7 @@ class Application: # singleton
 
     def init_brushes(self):
         self.brush = brush.Brush(self)
-        self.brushes = []
-        self.selected_brush = None
+        self.selected_brush = self.brush
         self.selected_brush_observers = []
         self.contexts = []
         for i in range(10):
@@ -98,69 +101,108 @@ class Application: # singleton
             self.contexts.append(c)
         self.selected_context = None
 
+        brush_by_name = {}
+        def get_brush(name):
+            if name not in brush_by_name:
+                b = brush.Brush(self)
+                b.load(name)
+                brush_by_name[name] = b
+            return brush_by_name[name]
+
         # maybe this should be save/loaded too?
         self.brush_by_device = {}
 
-        # find all brush names to load
-        deleted = []
-        filename = os.path.join(self.user_brushpath, 'deleted.conf')
-        if os.path.exists(filename): 
-            for line in open(filename):
-                deleted.append(line.strip())
+        def read_groups(filename):
+            groups = {}
+            if os.path.exists(filename):
+                curr_group = DEFAULT_BRUSH_GROUP
+                groups[curr_group] = []
+                for line in open(filename):
+                    name = line.strip()
+                    if name.startswith('#'):
+                        continue
+                    if name.startswith('Group: '):
+                        curr_group = to_unicode(name[7:])
+                        if curr_group not in groups:
+                            groups[curr_group] = []
+                        continue
+                    try:
+                        b = get_brush(name)
+                    except IOError, e:
+                        print e, '(removed from group)'
+                        continue
+                    if b in groups[curr_group]:
+                        print filename + ': Warning: brush appears twice in the same group, ignored'
+                        continue
+                    groups[curr_group].append(b)
+            return groups
+
+        # tree-way-merge of brush groups (for upgrading)
+        base  = read_groups(os.path.join(self.user_brushpath,  'order_default.conf'))
+        our   = read_groups(os.path.join(self.user_brushpath,  'order.conf'))
+        their = read_groups(os.path.join(self.stock_brushpath, 'order.conf'))
+
+        if base == their:
+            self.brushgroups = our
+        else:
+            print 'Merging upstream brush changes into your collection.'
+            groups = set(base).union(our).union(their)
+            for group in groups:
+                # treat the non-existing groups as if empty
+                base_brushes = base.setdefault(group, [])
+                our_brushes = our.setdefault(group, [])
+                their_brushes = their.setdefault(group, [])
+                # add new brushes
+                insert_index = 0
+                for b in their_brushes:
+                    if b in our_brushes:
+                        insert_index = our_brushes.index(b) + 1
+                    else:
+                        if b in their_brushes:
+                            our_brushes.insert(insert_index, b)
+                            insert_index += 1
+                # remove deleted brushes
+                for b in base_brushes:
+                    if b not in their_brushes and b in our_brushes:
+                        our_brushes.remove(b)
+                # remove empty groups
+                if not our_brushes:
+                    del our[group]
+            # finish
+            self.brushgroups = our
+            self.save_brushorder()
+            data = open(os.path.join(self.stock_brushpath, 'order.conf')).read()
+            open(os.path.join(self.user_brushpath,  'order_default.conf'), 'w').write(data)
+                
+        # handle brushes that are in the brush directory, but not in any group
         def listbrushes(path):
             return [filename[:-4] for filename in os.listdir(path) if filename.endswith('.myb')]
-        stock_names = listbrushes(self.stock_brushpath)
-        user_names =  listbrushes(self.user_brushpath)
-        stock_names = [name for name in stock_names if name not in deleted and name not in user_names]
-        loadnames_unsorted = user_names + stock_names
-        loadnames_sorted = []
-
-        # sort them
-        for path in [self.user_brushpath, self.stock_brushpath]:
-            filename = os.path.join(path, 'order.conf')
-            if not os.path.exists(filename): continue
-            insert_index = 0
-            for line in open(filename):
-                name = line.strip()
-                if name in loadnames_sorted:
-                    if path == self.stock_brushpath:
-                        # We set the insert_index to ensure that an
-                        # user who has not reordered brushes and
-                        # updates mypaint gets the new brushes
-                        # inserted into places according to the stock
-                        # brush order. This is not optimal, but better
-                        # than dropping them all at the top or bottom.
-                        insert_index = loadnames_sorted.index(name) + 1
-                    continue
-                if name not in loadnames_unsorted: continue
-                loadnames_unsorted.remove(name)
-                loadnames_sorted.insert(insert_index, name)
-                insert_index += 1
-        # new brushes that the user has put into the directory go to the top
-        loadnames = loadnames_unsorted + loadnames_sorted
-
-        for name in loadnames:
-            # load brushes from disk
-            b = brush.Brush(self)
-            b.load(name)
+        for name in listbrushes(self.stock_brushpath) + listbrushes(self.user_brushpath):
+            b = get_brush(name)
             if name.startswith('context'):
                 i = int(name[-2:])
-                assert i >= 0 and i < 10 # 10 for now...
                 self.contexts[i] = b
-            else:
-                self.brushes.append(b)
+                continue
+            if not [True for group in our.itervalues() if b in group]:
+                self.brushgroups[DEFAULT_BRUSH_GROUP].insert(0, b)
+
+        # clean up legacy stuff
+        fn = os.path.join(self.user_brushpath, 'deleted.conf')
+        if os.path.exists(fn):
+            os.path.remove(fn)
 
     def save_brushorder(self):
         f = open(os.path.join(self.user_brushpath, 'order.conf'), 'w')
-        f.write('# this file saves brushorder\n')
-        f.write('# the first one (upper left) will be selected at startup\n')
-        for b in self.brushes:
-            f.write(b.name + '\n')
+        f.write('# this file saves brush groups and order\n')
+        for group, brushes in self.brushgroups.iteritems():
+            f.write('Group: %s\n' % group)
+            for b in brushes:
+                f.write(b.name + '\n')
         f.close()
 
     def select_brush(self, brush):
         assert brush is not self.brush # self.brush never gets exchanged
-        if brush in self.brushes:
+        if [brush in brushes for brushes in self.brushgroups.itervalues()]:
             self.selected_brush = brush
         else:
             #print 'Warning, you have selected a brush not in the list.'
@@ -225,7 +267,6 @@ class Application: # singleton
         d.set_markup(text)
         d.run()
         d.destroy()
-
 
 class PixbufDirectory:
     def __init__(self, dirname):

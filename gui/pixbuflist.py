@@ -8,49 +8,101 @@
 
 import gtk
 gdk = gtk.gdk
+from math import sqrt
+from lib import helpers
+
+DRAG_ITEM_NAME = 103
+
+MOTION_NONE = 1
+MOTION_BUTTON_PRESSED = 2
+
+def rho(x1,y1, x2,y2):
+    return sqrt((x2-x1)**2 + (y2-y1)**2)
 
 class PixbufList(gtk.DrawingArea):
-    """
-    This widget presents a list of items to the user. Each item must
-    have a pixbuf. The user can select a single item. Items can be
-    dragged around, causing the list to be reordered immediately.
-
-    update() must be called when the list or any pixbufs have changed
-    """
-
     # interface to be implemented by children
-    def on_order_change(self):
-        pass
     def on_select(self, item):
         pass
+    def get_tooltip(self, item):
+        return self.namefunc(item)
 
-    def __init__(self, itemlist, item_w, item_h, pixbuffunc=lambda x: x):
+    def __init__(self, itemlist, item_w, item_h, namefunc=None, pixbuffunc=lambda x: x):
         gtk.DrawingArea.__init__(self)
+        #if not disable_dragging:
+        if True:
+            self.drag_dest_set(gtk.DEST_DEFAULT_ALL,
+                    [('LIST_ITEM', gtk.TARGET_SAME_APP, DRAG_ITEM_NAME)],
+                    gdk.ACTION_MOVE | gdk.ACTION_COPY)
+            self.connect('drag-data-get', self.drag_data_get)
+            self.connect('motion-notify-event', self.motion_notify)
+            self.connect('button-press-event', self.on_button_press)
+            self.connect('button-release-event', self.on_button_release)
         self.itemlist = itemlist
+        self.motion_mode = MOTION_NONE
+        self.press_x = 0
+        self.press_y = 0
         self.pixbuffunc = pixbuffunc
+        self.namefunc = namefunc
         self.pixbuf = None
 
-        self.item_w = item_w
-        self.item_h = item_h
         self.spacing_outside = 0
         self.border_visible = 2
         self.spacing_inside = 0
+        self.set_size(item_w, item_h)
 
         self.selected = None
-        self.dragging_allowed = True
-        self.grabbed = None
-        self.dragging = False
 
         self.connect("expose-event", self.expose_cb)
         self.connect("button-press-event", self.button_press_cb)
-        self.connect("button-release-event", self.button_release_cb)
-        self.connect("motion-notify-event", self.motion_notify_cb)
         self.connect("configure-event", self.configure_event_cb)
         self.set_events(gdk.EXPOSURE_MASK |
                         gdk.BUTTON_PRESS_MASK |
                         gdk.BUTTON_RELEASE_MASK |
                         gdk.POINTER_MOTION_MASK)
         self.update()
+
+    def set_size(self, item_w, item_h):
+        self.item_w = item_w
+        self.item_h = item_h
+        self.thumbnails = {}
+
+    def on_button_press(self, widget, event):
+        self.control_pressed = bool( event.state & gdk.CONTROL_MASK )
+        if event.button == 1:
+            self.press_x = event.x
+            self.press_y = event.y
+            self.motion_mode = MOTION_BUTTON_PRESSED
+
+    def motion_notify(self, widget, event):
+        if self.motion_mode != MOTION_BUTTON_PRESSED:
+            return
+        if rho(event.x, event.y, self.press_x, self.press_y) > max(self.item_w, self.item_h):
+            if self.control_pressed:
+                action = gdk.ACTION_COPY
+            else:
+                action = gdk.ACTION_MOVE
+            self.drag_begin([('LIST_ITEM', gtk.TARGET_SAME_APP, DRAG_ITEM_NAME)],
+                            action, 1, event)
+
+    def on_button_release(self, widget, event):
+        self.motion_mode = MOTION_NONE
+
+    def drag_data_get(self, widget, context, selection, targetType, time):
+        item = self.selected
+        assert item in self.itemlist
+        assert targetType == DRAG_ITEM_NAME
+        name = self.namefunc(item)
+        selection.set(selection.target, 8, name)
+
+    def drag_data_received(self, widget, context, x,y, selection, targetType, time):
+        item_name = selection.data
+        target_item_idx = self.index(x, y)
+        if target_item_idx > len(self.itemlist):
+            return
+        w = context.get_source_widget()
+        copy = context.action==gdk.ACTION_COPY
+        success = self.on_drag_data(copy, w, item_name, target_item_idx)
+        context.finish(success, False, time)
 
     def update(self, width = None, height = None):
         """
@@ -64,7 +116,8 @@ class PixbufList(gtk.DrawingArea):
             if not self.pixbuf: return
             width = self.pixbuf.get_width()
             height = self.pixbuf.get_height()
-        self.tiles_w = (width / self.total_w) or 1
+        width = max(width, self.total_w)
+        self.tiles_w = width / self.total_w
         self.tiles_h = len(self.itemlist)/self.tiles_w + 1
         height = self.tiles_h * self.total_h
         self.set_size_request(self.total_w, height)
@@ -77,6 +130,9 @@ class PixbufList(gtk.DrawingArea):
             y += self.total_border
 
             pixbuf = self.pixbuffunc(item)
+            if pixbuf not in self.thumbnails:
+                self.thumbnails[pixbuf] = helpers.pixbuf_thumbnail(pixbuf, self.item_w, self.item_h)
+            pixbuf = self.thumbnails[pixbuf]
             pixbuf.copy_area(0, 0, self.item_w, self.item_h, self.pixbuf, x, y)
         self.queue_draw()
 
@@ -84,8 +140,8 @@ class PixbufList(gtk.DrawingArea):
         self.selected = item
         self.queue_draw()
 
-    def index(self, event):
-        x, y = int(event.x), int(event.y)
+    def index(self, x,y):
+        x, y = int(x), int(y)
         i = x / self.total_w
         if i >= self.tiles_w: i = self.tiles_w - 1
         if i < 0: i = 0
@@ -94,29 +150,16 @@ class PixbufList(gtk.DrawingArea):
         return i
 
     def button_press_cb(self, widget, event):
-        i = self.index(event)
+        self.control_pressed = bool( event.state & gdk.CONTROL_MASK )
+        if event.button == 1:
+            self.press_x = event.x
+            self.press_y = event.y
+            self.motion_mode = MOTION_BUTTON_PRESSED
+        i = self.index(event.x, event.y)
         if i >= len(self.itemlist): return
         item = self.itemlist[i]
         self.set_selected(item)
         self.on_select(item)
-        if self.dragging_allowed:
-            self.grabbed = item
-
-    def button_release_cb(self, widget, event):
-        self.grabbed = None
-        if self.dragging:
-            self.on_order_change()
-            self.dragging = False
-
-    def motion_notify_cb(self, widget, event):
-        if not self.grabbed: return
-        i = self.index(event)
-        if i >= len(self.itemlist): return
-        if self.itemlist[i] is not self.grabbed:
-            self.itemlist.remove(self.grabbed)
-            self.itemlist.insert(i, self.grabbed)
-            self.dragging = True
-            self.update()
 
     def configure_event_cb(self, widget, size):
         if self.pixbuf and self.pixbuf.get_width() == size.width:
