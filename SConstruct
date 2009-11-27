@@ -7,12 +7,6 @@ python = 'python%d.%d' % (sys.version_info[0], sys.version_info[1])
 print 'Building for', python
 
 try: 
-    Glob
-except:
-    # compatibility with SCons version 0.97
-    from glob import glob as Glob
-
-try: 
     import numpy
 except ImportError:
     print 'You need to have numpy installed.'
