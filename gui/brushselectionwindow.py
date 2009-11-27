@@ -20,6 +20,7 @@ from gettext import gettext as _
 
 # not translatable for now (this string is saved into a file and would screw up between language switches)
 DEFAULT_BRUSH_GROUP = 'default'
+DELETED_BRUSH_GROUP = 'deleted'
 
 class Window(gtk.Window):
     def __init__(self, app):
@@ -38,8 +39,6 @@ class Window(gtk.Window):
         self.set_title(_('Brush selection'))
         self.set_role('Brush selector')
         self.connect('delete-event', self.app.hide_window_cb)
-
-        # TODO: evaluate glade/gazpacho, the code below is getting scary
 
         #main container
         vbox = gtk.VBox()
@@ -128,16 +127,14 @@ class Window(gtk.Window):
 
     def add_as_new_cb(self, window):
         b = brush.Brush(self.app)
-        b.copy_settings_from(self.app.brush)
-        b.groups = [DEFAULT_BRUSH_GROUP]
+        if self.app.brush:
+            b.copy_settings_from(self.app.brush)
         b.preview = self.get_preview_pixbuf()
-        TODO
-        self.app.brushes.insert(0, b)
-        #still needed?:
-        self.brushlist.update()
-        self.app.select_brush(b)
         b.save()
-        self.brushgroups.add_brush_to_group(b, DEFAULT_BRUSH_GROUP)
+        group = self.brushgroups.active_group or DEFAULT_BRUSH_GROUP
+        self.app.brushgroups.setdefault(group, []) # create default group if needed
+        self.app.brushgroups[group].insert(0, b)
+        self.app.select_brush(b)
         self.app.save_brushorder()
         self.brushgroups.update()
 
@@ -148,46 +145,41 @@ class Window(gtk.Window):
             display.beep()
             return
 
-        d = gtk.Dialog(_("Rename Brush"),
-                       self,
-                       gtk.DIALOG_MODAL,
-                       (gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT,
-                        gtk.STOCK_OK, gtk.RESPONSE_ACCEPT))
+        name = ask_for_name(self, _("Rename Brush"), b.name.replace('_', ' '))
+        if not name:
+            return
+        name = name.replace(' ', '_')
+        print 'renaming brush', repr(b.name), '-->', repr(name)
+        # ensure we don't overwrite an existing brush by accident
+        for groupname, brushes in self.app.brushgroups.iteritems():
+            if groupname == DELETED_BRUSH_GROUP:
+                continue
+            for b2 in brushes:
+                if b2.name == name:
+                    print 'Target already exists!'
+                    display = gtk.gdk.display_get_default()
+                    display.beep()
+                    return
+        success = b.delete_from_disk()
+        old_name = b.name
+        b.name = name
+        b.save()
+        if not success:
+            # we are renaming a stock brush
+            # we can't delete the original; instead we put it away so it doesn't reappear
+            old_brush = brush.Brush(self.app)
+            old_brush.load(old_name)
+            deleted_brushes = self.app.brushgroups.setdefault(DELETED_BRUSH_GROUP, [])
+            deleted_brushes.insert(0, old_brush)
 
-        hbox = gtk.HBox()
-        d.vbox.pack_start(hbox)
-        hbox.pack_start(gtk.Label('Name'))
-
-        e = gtk.Entry()
-        e.set_text(b.name.replace('_', ' '))
-        e.select_region(0, len(b.name))
-        def responseToDialog(entry, dialog, response):  
-            dialog.response(response)  
-        e.connect("activate", responseToDialog, d, gtk.RESPONSE_ACCEPT)  
-
-        hbox.pack_start(e)
-        d.vbox.show_all()
-        if d.run() == gtk.RESPONSE_ACCEPT:
-            new_name = e.get_text().replace(' ', '_')
-            print 'renaming brush', repr(b.name), '-->', repr(new_name)
-            TODO
-            if [True for x in self.app.brushes if x.name == new_name]:
-                print 'Target already exists!'
-                display = gtk.gdk.display_get_default()
-                display.beep()
-                d.destroy()
-                return
-            b.delete_from_disk()
-            b.name = new_name
-            b.save()
-            self.app.select_brush(b)
-            self.app.save_brushorder()
-        d.destroy()
+        self.app.select_brush(b)
+        self.app.save_brushorder()
+        self.brushgroups.update()
 
     def update_preview_cb(self, window):
         pixbuf = self.get_preview_pixbuf()
         b = self.app.selected_brush
-        if b is None:
+        if b is None or not b.name:
             # no brush selected
             display = gtk.gdk.display_get_default()
             display.beep()
@@ -198,27 +190,31 @@ class Window(gtk.Window):
 
     def update_settings_cb(self, window):
         b = self.app.selected_brush
-        if b is None:
+        if b is None or not b.name:
             # no brush selected
             display = gtk.gdk.display_get_default()
             display.beep()
             return
         b.copy_settings_from(self.app.brush)
         b.save()
-        # TODO: call this somewhere, but not here: self.app.save_brushorder()
 
     def delete_selected_cb(self, window):
         b = self.app.selected_brush
-        if b is None: return
-        d = confirm_dialog(self, _("Really delete this brush?"))
-        response = d.run()
-        d.destroy()
-        if response != gtk.RESPONSE_ACCEPT: return
+        if b is None or not b.name: return
+        if not run_confirm_dialog(self, _("Really delete brush from disk?")):
+            return
 
         self.app.select_brush(None)
-        TODO
-        self.app.brushes.remove(b)
-        b.delete_from_disk()
+
+        for brushes in self.app.brushgroups.itervalues():
+            if b in brushes:
+                brushes.remove(b)
+        if not b.delete_from_disk():
+            # stock brush can't be deleted
+            deleted_brushes = self.app.brushgroups.setdefault(DELETED_BRUSH_GROUP, [])
+            deleted_brushes.insert(0, b)
+
+        self.app.save_brushorder()
         self.brushgroups.update()
 
     def brush_selected_cb(self, brush):
@@ -246,23 +242,7 @@ class Window(gtk.Window):
         self.app.selected_brush_observers = callbacks
         self.brushgroups.update()
 
-    #def get_brushes_dict(self):
-    #    return self.brushgroups.groups
-#
-#    def get_brushes(self):
-#        res = []
-#        bg = self.brushgroups
-#        for group in sorted(bg.groups):
-#            brushes = bg.groups[group]
-#            for b in brushes:
-#                if b not in res:
-#                    res.append(b)
-#        return res
-
-    def index_of(self, brush):
-        return self.get_brushes().index(brush)
-
-def rename_dialog(window, title, default):
+def ask_for_name(window, title, default):
     d = gtk.Dialog(title,
                    window,
                    gtk.DIALOG_MODAL,
@@ -282,15 +262,22 @@ def rename_dialog(window, title, default):
 
     hbox.pack_start(e)
     d.vbox.show_all()
-    return d
+    if d.run() == gtk.RESPONSE_ACCEPT:
+        result = d.e.get_text()
+    else:
+        result = None
+    d.destroy()
+    return result
 
-def confirm_dialog(window, title):
+def run_confirm_dialog(window, title):
     d = gtk.Dialog(title,
          window,
          gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
          (gtk.STOCK_YES, gtk.RESPONSE_ACCEPT,
           gtk.STOCK_NO, gtk.RESPONSE_REJECT))
-    return d
+    response = d.run()
+    d.destroy()
+    return response == gtk.RESPONSE_ACCEPT
 
 class BrushList(pixbuflist.PixbufList):
     def __init__(self, app, win, groupname, grouplist):
@@ -371,28 +358,19 @@ def child_brushlist(expander):
     return expander.child
 
 class Expander(gtk.Expander):
-    def __init__(self,label, data):
+    def __init__(self,label, groupname):
         gtk.Expander.__init__(self, label)
-        self.add_events(gdk.BUTTON_PRESS_MASK | gdk.BUTTON_RELEASE_MASK)
+        self.add_events(gdk.BUTTON_PRESS_MASK)
         self.connect('button-press-event', self.on_button_press)
-        self.connect('button-release-event', self.on_button_release)
-        self.data = data
-        self.button_pressed = False
-
-    def popup_menu(self, data):
-        return None
+        self.groupname = groupname
+        self.popup_menu = None # gets overwritten
 
     def on_button_press(self, w, event):
         if event.button == 3:
-            self.button_pressed = True
-
-    def on_button_release(self, w, event):
-        if self.button_pressed and event.button == 3:
-            menu = self.popup_menu(self.data)
+            menu = self.popup_menu(self.groupname)
             if not menu:
                 return
             menu.popup(None,None,None, 3, event.time)
-        self.button_pressed = False
 
 class BrushGroupsList(gtk.VBox):
     def __init__(self, app, window):
@@ -412,11 +390,12 @@ class BrushGroupsList(gtk.VBox):
         b = self.app.selected_brush
         # Set DEFAULT_BRUSH_GROUP to be first in the list
         tmp = list(sorted(self.app.brushgroups.keys()))
-        tmp.remove(DEFAULT_BRUSH_GROUP)
-        tmp.insert(0, DEFAULT_BRUSH_GROUP)
+        if DEFAULT_BRUSH_GROUP in tmp:
+            tmp.remove(DEFAULT_BRUSH_GROUP)
+            tmp.insert(0, DEFAULT_BRUSH_GROUP)
 
         for groupname in tmp:
-            expander = Expander(groupname, None) # huh?
+            expander = Expander(groupname, groupname)
             brushlist = BrushList(self.app, self.parent_window, groupname, self)
             #if self.active_group == group:
             #    brushlist.set_selected(b)
@@ -427,14 +406,15 @@ class BrushGroupsList(gtk.VBox):
             self.group_list[groupname] = expander
         if self.active_group in self.group_list:
             self.group_list[self.active_group].set_expanded(True)
-        else:
+        elif DEFAULT_BRUSH_GROUP in self.group_list:
             self.group_list[DEFAULT_BRUSH_GROUP].set_expanded(True)
         self.show_all()
 
     def expander_menu(self, groupname):
         m = gtk.Menu()
-        menu = [(_("Rename group..."), self.rename_group),
-                (_("Delete group..."), self.delete_group)]
+        menu = [ (_("New group..."), self.create_group),
+                 (_("Rename group..."), self.rename_group),
+                 (_("Delete group..."), self.delete_group)]
         for label, callback in menu:
             mi = gtk.MenuItem(label)
             mi.connect('activate', callback, groupname)
@@ -442,33 +422,37 @@ class BrushGroupsList(gtk.VBox):
         m.show_all()
         return m
 
-    def rename_group(self, w, old_group):
-        d = rename_dialog(self.parent_window, _('Rename group'), old_group)
-        if d.run() == gtk.RESPONSE_ACCEPT:
-            new_group = d.e.get_text()
-            if not new_group or new_group==old_group:
-                return
-            for b in self.app.brushes:
-                if old_group in b.groups:
-                    self.del_brush_from_group(b, old_group)
-                    self.add_brush_to_group(b, new_group)
-                    b.save()
-            try:
-                del self.app.brushgroups[old_group]
-            except KeyError:
-                pass
+    def create_group(self, w, active_group):
+        new_group = ask_for_name(self.parent_window, _('Create group'), '')
+        if new_group and new_group not in self.app.brushgroups:
+            self.app.brushgroups[new_group] = []
+            self.app.save_brushorder()
             self.update()
-        d.destroy()
+
+    def rename_group(self, w, old_group):
+        new_group = ask_for_name(self.parent_window, _('Rename group'), old_group)
+        if new_group and new_group not in self.app.brushgroups:
+            self.app.brushgroups[new_group] = self.app.brushgroups[old_group]
+            del self.app.brushgroups[old_group]
+            self.app.save_brushorder()
+            self.update()
 
     def delete_group(self,w, group):
-        d = confirm_dialog(self.parent_window, _('Delete group %s') % group)
-        if d.run() == gtk.RESPONSE_ACCEPT:
-            for b in self.app.brushes:
-                if group in b.groups:
-                    self.del_brush_from_group(b, group)
-                    b.save()
+        if run_confirm_dialog(self.parent_window, _('Delete group %s') % group):
+            homeless_brushes = self.app.brushgroups[group]
+            del self.app.brushgroups[group]
+
+            for groupname, brushes in self.app.brushgroups.iteritems():
+                for b2 in brushes:
+                    if b2 in homeless_brushes:
+                        homeless_brushes.remove(b2)
+
+            deleted_brushes = self.app.brushgroups.setdefault(DELETED_BRUSH_GROUP, [])
+            for b in homeless_brushes:
+                deleted_brushes.insert(0, b)
+
+            self.app.save_brushorder()
             self.update()
-        d.destroy()
 
     def set_active_group(self, name, brush):
         def expand(e):

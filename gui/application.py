@@ -202,17 +202,7 @@ class Application: # singleton
 
     def select_brush(self, brush):
         assert brush is not self.brush # self.brush never gets exchanged
-        if [brush in brushes for brushes in self.brushgroups.itervalues()]:
-            self.selected_brush = brush
-        else:
-            #print 'Warning, you have selected a brush not in the list.'
-            # TODO: maybe find out parent and set this as selected_brush
-            #
-            # We keep self.selected_brush something that we can save
-            # back into a file when the user hits "save settings" or
-            # "save preview" in the brush list. (FIXME: maybe this
-            # should be a brushlist internal).
-            self.selected_brush = None
+        self.selected_brush = brush
         if brush is not None:
             self.brush.copy_settings_from(brush)
 

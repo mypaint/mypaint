@@ -289,21 +289,10 @@ class Brush(Brush_Lowlevel):
         if os.path.isfile(prefix + '.myb'):
             os.remove(prefix + '_prev.png')
             os.remove(prefix + '.myb')
-
-        prefix = os.path.join(self.app.stock_brushpath, self.name)
-        if os.path.isfile(prefix + '.myb'):
-            # user wants to delete a stock brush
-            # cannot remove the file, manage blacklist instead
-            filename = os.path.join(self.app.user_brushpath, 'deleted.conf')
-            new = not os.path.isfile(filename)
-            f = open(filename, 'a')
-            if new:
-                f.write('# list of stock brush names which you have deleted\n')
-                f.write('# you can remove this file to get all of them back\n')
-            f.write(self.name + '\n')
-            f.close()
-
-        self.preview_changed = True # need to recreate when saving
+            self.preview_changed = True # need to recreate when saving
+            return True
+        # stock brush cannot be deleted
+        return False
 
     def remember_mtimes(self):
         prefix = self.get_fileprefix()
