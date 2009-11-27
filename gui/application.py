@@ -184,6 +184,7 @@ class Application: # singleton
                 self.contexts[i] = b
                 continue
             if not [True for group in our.itervalues() if b in group]:
+                self.brushgroups.setdefault(DEFAULT_BRUSH_GROUP, [])
                 self.brushgroups[DEFAULT_BRUSH_GROUP].insert(0, b)
 
         # clean up legacy stuff

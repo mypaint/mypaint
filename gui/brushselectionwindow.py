@@ -7,7 +7,7 @@
 # (at your option) any later version.
 
 "select brush window"
-import gtk
+import gtk, pango
 gdk = gtk.gdk
 from lib import brush, document
 import tileddrawwidget, pixbuflist
@@ -26,14 +26,12 @@ class Window(gtk.Window):
         self.app.kbm.add_window(self)
         self.last_selected_brush = None
 
-        self.disable_selection_callback = True
-        self.selected_ok = False
-        self.new_brush = None
-
-        self.brushgroups = BrushGroupsList(self.app, self)
         self.set_title(_('Brush selection'))
         self.set_role('Brush selector')
         self.connect('delete-event', self.app.hide_window_cb)
+
+        self.brushgroups = BrushGroupsList(self.app, self)
+        self.groupselector = GroupSelector(self.app, self.brushgroups)
 
         #main container
         vbox = gtk.VBox()
@@ -46,7 +44,9 @@ class Window(gtk.Window):
         expander = self.expander = gtk.Expander(label=_('Edit'))
         expander.set_expanded(False)
 
-        vbox.pack_start(scroll)
+        vbox.pack_start(self.groupselector, expand=False)
+        vbox.pack_start(gtk.HSeparator(), expand=False)
+        vbox.pack_start(scroll, expand=True)
         vbox.pack_start(gtk.HSeparator(), expand=False)
         vbox.pack_start(expander, expand=False, fill=False)
 
@@ -77,14 +77,6 @@ class Window(gtk.Window):
         b.connect('clicked', clear_cb)
         left_vbox.pack_start(b, expand=False, padding=5)
 
-        #vbox2a = gtk.VBox()
-        #hbox.pack_end(vbox2a, expand=True, fill=True, padding=5)
-        #l = self.brush_name_label = gtk.Label()
-        #l.set_justify(gtk.JUSTIFY_LEFT)
-        #vbox2a.pack_start(l, expand=False)
-        #tv = self.brush_info_textview = gtk.TextView()
-        #vbox2a.pack_start(tv, expand=True)
-
         #expanded part, right side
         l = self.brush_name_label = gtk.Label()
         l.set_justify(gtk.JUSTIFY_LEFT)
@@ -92,9 +84,9 @@ class Window(gtk.Window):
         right_vbox.pack_start(l, expand=False)
 
         right_vbox_buttons = [
-        (_('add as new'), self.add_as_new_cb),
-        (_('rename...'), self.rename_cb),
-        (_('remove...'), self.delete_selected_cb),
+        (_('add as new'), self.create_brush_cb),
+        (_('rename...'), self.rename_brush_cb),
+        (_('remove...'), self.delete_brush_cb),
         (_('settings...'), self.brush_settings_cb),
         (_('save settings'), self.update_settings_cb),
         (_('save preview'), self.update_preview_cb),
@@ -120,7 +112,7 @@ class Window(gtk.Window):
         w.show_all() # might be for the first time
         w.present()
 
-    def add_as_new_cb(self, window):
+    def create_brush_cb(self, window):
         b = brush.Brush(self.app)
         if self.app.brush:
             b.copy_settings_from(self.app.brush)
@@ -133,7 +125,7 @@ class Window(gtk.Window):
         self.app.save_brushorder()
         self.brushgroups.update()
 
-    def rename_cb(self, window):
+    def rename_brush_cb(self, window):
         b = self.app.selected_brush
         if b is None or not b.name:
             display = gtk.gdk.display_get_default()
@@ -193,7 +185,8 @@ class Window(gtk.Window):
         b.copy_settings_from(self.app.brush)
         b.save()
 
-    def delete_selected_cb(self, window):
+    def delete_brush_cb(self, window):
+        # XXXX brushgroup update? Better idea: make "deleted" group mandatory! (and undeletable)
         b = self.app.selected_brush
         if b is None or not b.name: return
         if not run_confirm_dialog(self, _("Really delete brush from disk?")):
@@ -229,9 +222,6 @@ class Window(gtk.Window):
         self.tdw.doc.set_brush(self.app.brush)
 
     def update_cb(self, button):
-        self.update()
-
-    def update(self):
         callbacks = self.app.selected_brush_observers
         self.app.selected_brush_observers = callbacks
         self.brushgroups.update()
@@ -277,17 +267,12 @@ class BrushList(pixbuflist.PixbufList):
     def __init__(self, app, win, groupname, grouplist):
         self.app = app
         self.win = win
-        self.app.selected_brush_observers.append(self.brush_selected_cb)
         self.group = groupname
         self.grouplist = grouplist
-        self.device = None
         self.brushes = self.app.brushgroups[self.group]
         pixbuflist.PixbufList.__init__(self, self.brushes, 48, 48,
                                        namefunc = lambda x: x.name,
                                        pixbuffunc = lambda x: x.preview)
-        #self.connect('item-activated', self.on_item_activated)
-        self.app.drawWindow.tdw.device_observers.append(self.on_device_change)
-
     def remove_brush(self, brush):
         self.brushes.remove(brush)
         self.update()
@@ -313,14 +298,7 @@ class BrushList(pixbuflist.PixbufList):
         self.app.save_brushorder()
         return True
 
-    def on_device_change(self, old_device, new_device):
-        self.device = new_device.source
-
     def on_select(self, brush):
-        if self.win.disable_selection_callback:
-            return
-        self.win.disable_selection_callback = True
-        self.win.selected_ok = False
         # keep the color setting
         color = self.app.brush.get_color_hsv()
         brush.set_color_hsv(color)
@@ -329,36 +307,8 @@ class BrushList(pixbuflist.PixbufList):
         changed = brush.reload_if_changed()
         if changed:
             self.update()
-
-        if not self.win.selected_ok:
-            self.app.eraser_mode = False
-            if self.device is not None:
-                self.app.brush_by_device[self.device] = brush
-            self.app.select_brush(brush)
-        self.win.disable_selection_callback = False
-        self.grouplist.set_active_group(self.group, brush)
-
-    def brush_selected_cb(self, brush):
-        if self.win.selected_ok:
-            return
-        self.win.selected_ok = self.set_selected(brush)
-def child_brushlist(expander):
-    return expander.child
-
-class Expander(gtk.Expander):
-    def __init__(self,label, groupname):
-        gtk.Expander.__init__(self, label)
-        self.add_events(gdk.BUTTON_PRESS_MASK)
-        self.connect('button-press-event', self.on_button_press)
-        self.groupname = groupname
-        self.popup_menu = None # gets overwritten
-
-    def on_button_press(self, w, event):
-        if event.button == 3:
-            menu = self.popup_menu(self.groupname)
-            if not menu:
-                return
-            menu.popup(None,None,None, 3, event.time)
+        self.app.select_brush(brush)
+        #self.grouplist.set_active_group(self.group, brush)
 
 class BrushGroupsList(gtk.VBox):
     def __init__(self, app, window):
@@ -367,65 +317,159 @@ class BrushGroupsList(gtk.VBox):
         self.parent_window = window
         #self.active_group = to_unicode( app.get_config('State', 'active_group'))
         self.active_group = DEFAULT_BRUSH_GROUP
-        self.update(init=True)
+        self.visible_groups = list(sorted(self.app.brushgroups.keys()))
+        #self.visible_groups = [DEFAULT_BRUSH_GROUP]
+        self.group_widgets = {}
+        self.update()
+        self.app.selected_brush_observers.append(self.brush_selected_cb)
 
-    def update(self,init=False):
-        if not init:
-            for expander in self.group_list.itervalues():
-                self.app.selected_brush_observers.remove(child_brushlist(expander).brush_selected_cb)
-            self.foreach(self.remove) # ????
-        self.group_list = {}            # group name -> list of Expander's
-        # Set DEFAULT_BRUSH_GROUP to be first in the list
-        tmp = list(sorted(self.app.brushgroups.keys()))
-        if DEFAULT_BRUSH_GROUP in tmp:
-            tmp.remove(DEFAULT_BRUSH_GROUP)
-            tmp.insert(0, DEFAULT_BRUSH_GROUP)
+    def update(self):
+        old_widgets = self.group_widgets
+        self.group_widgets = {}
 
-        for groupname in tmp:
-            expander = Expander(groupname, groupname)
-            brushlist = BrushList(self.app, self.parent_window, groupname, self)
-            #if self.active_group == group:
-            #    brushlist.set_selected(b)
-            expander.add(brushlist)
-            expander.set_expanded(False)
-            expander.popup_menu = self.expander_menu
-            self.pack_start(expander, expand=False)
-            self.group_list[groupname] = expander
-        if self.active_group in self.group_list:
-            self.group_list[self.active_group].set_expanded(True)
-        elif DEFAULT_BRUSH_GROUP in self.group_list:
-            self.group_list[DEFAULT_BRUSH_GROUP].set_expanded(True)
+        self.foreach(self.remove)
+
+        for group in self.visible_groups:
+            if group in old_widgets:
+                w = old_widgets[group]
+            else:
+                w = BrushList(self.app, self.parent_window, group, self)
+            self.group_widgets[group] = w
+            self.pack_start(w, expand=False, fill=False, padding=3)
+            # FIXME: are we leaking memory by not calling .destroy() on unused widgets? probably not...
+
         self.show_all()
 
-    def expander_menu(self, groupname):
+    def brush_selected_cb(self, brush):
+        for w in self.group_widgets.itervalues():
+            w.set_selected(brush)
+
+class GroupSelector(gtk.DrawingArea):
+
+    class GroupData:
+        pass
+
+    def __init__(self, app, brushgroups):
+        gtk.DrawingArea.__init__(self)
+
+        self.app = app
+        self.brushgroups = brushgroups
+
+        self.active_groups = brushgroups.visible_groups
+
+        self.connect("expose-event", self.expose_cb)
+        self.connect("button-press-event", self.button_press_cb)
+	self.set_events(gdk.EXPOSURE_MASK |
+                        gdk.BUTTON_PRESS_MASK |
+                        gdk.BUTTON_RELEASE_MASK |
+                        gdk.POINTER_MOTION_MASK
+                        )
+        self.idx2group = {}
+        self.layout = None
+        self.set_size_request(20, 20) # FIXME: use layout?
+
+    def expose_cb(self, widget, event):
+        cr = self.window.cairo_create()
+        #cr.rectangle(event.area.x, event.area.y, event.area.width, event.area.height)
+        #cr.clip()
+        width, height = self.window.get_size()
+
+        # Fill the background with gray (FIXME: gtk theme colors please)
+        cr.set_source_rgb(0.7, 0.7, 0.7)
+        cr.rectangle(0, 0, width, height)
+        cr.fill()
+
+        cr.set_source_rgb(0.0, 0.0, 0.2)
+        layout = cr.create_layout()
+        #width, height = layout.get_size()
+        layout.set_width(width*pango.SCALE)
+
+        attr = pango.AttrList()
+        #attr.insert(pango.AttrBackground(0x5555, 0x5555, 0xffff, 5, 7))
+
+        all_groups = list(sorted(self.app.brushgroups.keys()))
+
+        idx = 0
+        text = ''
+        #attr = pango.AttrList()
+        self.idx2group = {}
+        for group in all_groups:
+            s = group.encode('utf8')
+            for c in s:
+                self.idx2group[idx] = group
+                idx += 1
+            if group in self.active_groups:
+                text += '<b>' + group + '</b>'
+            else:
+                text += group
+            text += ' '
+            idx += 1
+
+        #layout.set_text(text)
+        layout.set_markup(text)
+        #layout.set_attributes(attr)
+        cr.show_layout(layout)
+        #cr.restore()
+        self.layout = layout
+
+    def group_at(self, x, y):
+        x, y = int(x), int(y) # avoid warning
+        i, d = self.layout.xy_to_index(x*pango.SCALE, y*pango.SCALE)
+        # i is the byte-index of the utf8 encoded string
+        print i, d,
+        return self.idx2group.get(i)
+        
+    def button_press_cb(self, widget, event):
+        if event.type != gdk.BUTTON_PRESS:
+            return
+            # ignore the extra double-click event
+        group = self.group_at(event.x, event.y)
+        if event.button == 1:
+            if not group:
+                return
+            if group in self.active_groups:
+                self.active_groups.remove(group)
+            else:
+                self.active_groups.insert(0, group)
+            self.brushgroups.update()
+            self.queue_draw()
+        elif event.button == 3:
+            menu = self.context_menu(group)
+            menu.popup(None,None,None, event.button, event.time, group)
+
+    def context_menu(self, group):
         m = gtk.Menu()
-        menu = [ (_("New group..."), self.create_group),
-                 (_("Rename group..."), self.rename_group),
-                 (_("Delete group..."), self.delete_group)]
+        menu = []
+        menu = [ (_("New group..."), self.create_group) ]
+        if group:
+            menu += [ (_("Rename group..."), self.rename_group),
+                      (_("Delete group..."), self.delete_group)]
         for label, callback in menu:
             mi = gtk.MenuItem(label)
-            mi.connect('activate', callback, groupname)
+            mi.connect('activate', callback, group)
             m.append(mi)
         m.show_all()
         return m
 
-    def create_group(self, w, active_group):
-        new_group = ask_for_name(self.parent_window, _('Create group'), '')
+    def create_group(self, w, group):
+        new_group = ask_for_name(self.get_toplevel(), _('Create group'), '')
         if new_group and new_group not in self.app.brushgroups:
             self.app.brushgroups[new_group] = []
             self.app.save_brushorder()
-            self.update()
+            self.brushgroups.update()
+            self.queue_draw()
 
     def rename_group(self, w, old_group):
-        new_group = ask_for_name(self.parent_window, _('Rename group'), old_group)
+        new_group = ask_for_name(self.get_toplevel(), _('Rename group'), old_group)
         if new_group and new_group not in self.app.brushgroups:
             self.app.brushgroups[new_group] = self.app.brushgroups[old_group]
             del self.app.brushgroups[old_group]
             self.app.save_brushorder()
-            self.update()
+            self.brushgroups.update()
+            self.queue_draw()
 
     def delete_group(self,w, group):
-        if run_confirm_dialog(self.parent_window, _('Delete group %s') % group):
+        if run_confirm_dialog(self.get_toplevel(), _('Delete group %s') % group):
             homeless_brushes = self.app.brushgroups[group]
             del self.app.brushgroups[group]
 
@@ -434,22 +478,12 @@ class BrushGroupsList(gtk.VBox):
                     if b2 in homeless_brushes:
                         homeless_brushes.remove(b2)
 
+            # if the user has deleted the "deleted" group, we recreate it...?
             deleted_brushes = self.app.brushgroups.setdefault(DELETED_BRUSH_GROUP, [])
             for b in homeless_brushes:
                 deleted_brushes.insert(0, b)
 
             self.app.save_brushorder()
-            self.update()
+            self.brushgroups.update()
+            self.queue_draw()
 
-    def set_active_group(self, name, brush):
-        #def expand(e):
-        #    if not e.get_expanded():
-        #        e.set_expanded(True)
-        self.active_group = name
-        for group, expander in self.group_list.iteritems():
-            if group!=name:
-                child_brushlist(expander).set_selected(None)
-            else:
-                child_brushlist(expander).set_selected(brush)
-#                expand(expander)
-            child_brushlist(expander).queue_draw()
