@@ -8,43 +8,29 @@
 
 import gtk
 gdk = gtk.gdk
-from math import sqrt
 from lib import helpers
 
 DRAG_ITEM_NAME = 103
-
-MOTION_NONE = 1
-MOTION_BUTTON_PRESSED = 2
-
-def rho(x1,y1, x2,y2):
-    return sqrt((x2-x1)**2 + (y2-y1)**2)
 
 class PixbufList(gtk.DrawingArea):
     # interface to be implemented by children
     def on_select(self, item):
         pass
+    def on_drag_data(self, copy, source_widget, brush_name, target_idx):
+        return False
     def get_tooltip(self, item):
         return self.namefunc(item)
 
     def __init__(self, itemlist, item_w, item_h, namefunc=None, pixbuffunc=lambda x: x):
         gtk.DrawingArea.__init__(self)
-        #if not disable_dragging:
-        if True:
-            self.drag_dest_set(gtk.DEST_DEFAULT_ALL,
-                    [('LIST_ITEM', gtk.TARGET_SAME_APP, DRAG_ITEM_NAME)],
-                    gdk.ACTION_MOVE | gdk.ACTION_COPY)
-            self.connect('drag-data-get', self.drag_data_get)
-            self.connect('motion-notify-event', self.motion_notify)
-            self.connect('button-press-event', self.on_button_press)
-            self.connect('button-release-event', self.on_button_release)
         self.itemlist = itemlist
-        self.motion_mode = MOTION_NONE
         self.press_x = 0
         self.press_y = 0
         self.pixbuffunc = pixbuffunc
         self.namefunc = namefunc
-        self.pixbuf = None
+        self.dragging_allowed = True
 
+        self.pixbuf = None
         self.spacing_outside = 0
         self.border_visible = 2
         self.spacing_inside = 0
@@ -55,10 +41,16 @@ class PixbufList(gtk.DrawingArea):
         self.connect("expose-event", self.expose_cb)
         self.connect("button-press-event", self.button_press_cb)
         self.connect("configure-event", self.configure_event_cb)
+        self.connect('drag-data-get', self.drag_data_get)
+        self.connect('motion-notify-event', self.motion_notify)
+        self.connect('drag-data-received', self.drag_data_received)
         self.set_events(gdk.EXPOSURE_MASK |
                         gdk.BUTTON_PRESS_MASK |
                         gdk.BUTTON_RELEASE_MASK |
                         gdk.POINTER_MOTION_MASK)
+        self.drag_dest_set(gtk.DEST_DEFAULT_ALL,
+                [('LIST_ITEM', gtk.TARGET_SAME_APP, DRAG_ITEM_NAME)],
+                gdk.ACTION_MOVE | gdk.ACTION_COPY)
         self.update()
 
     def set_size(self, item_w, item_h):
@@ -66,26 +58,20 @@ class PixbufList(gtk.DrawingArea):
         self.item_h = item_h
         self.thumbnails = {}
 
-    def on_button_press(self, widget, event):
-        self.control_pressed = bool( event.state & gdk.CONTROL_MASK )
-        if event.button == 1:
-            self.press_x = event.x
-            self.press_y = event.y
-            self.motion_mode = MOTION_BUTTON_PRESSED
-
     def motion_notify(self, widget, event):
-        if self.motion_mode != MOTION_BUTTON_PRESSED:
+        if not self.dragging_allowed:
             return
-        if rho(event.x, event.y, self.press_x, self.press_y) > max(self.item_w, self.item_h):
-            if self.control_pressed:
-                action = gdk.ACTION_COPY
-            else:
-                action = gdk.ACTION_MOVE
-            self.drag_begin([('LIST_ITEM', gtk.TARGET_SAME_APP, DRAG_ITEM_NAME)],
-                            action, 1, event)
-
-    def on_button_release(self, widget, event):
-        self.motion_mode = MOTION_NONE
+        if event.state & gdk.BUTTON1_MASK:
+            dx = float(event.x - self.press_x) / self.item_w
+            dy = float(event.y - self.press_y) / self.item_h
+            if abs(dx) > 0.5 or abs(dy) > 0.5:
+                if self.selected in self.itemlist:
+                    if event.state & gdk.CONTROL_MASK:
+                        action = gdk.ACTION_COPY
+                    else:
+                        action = gdk.ACTION_MOVE
+                    self.drag_begin([('LIST_ITEM', gtk.TARGET_SAME_APP, DRAG_ITEM_NAME)],
+                                    action, 1, event)
 
     def drag_data_get(self, widget, context, selection, targetType, time):
         item = self.selected
@@ -150,11 +136,8 @@ class PixbufList(gtk.DrawingArea):
         return i
 
     def button_press_cb(self, widget, event):
-        self.control_pressed = bool( event.state & gdk.CONTROL_MASK )
-        if event.button == 1:
-            self.press_x = event.x
-            self.press_y = event.y
-            self.motion_mode = MOTION_BUTTON_PRESSED
+        self.press_x = event.x
+        self.press_y = event.y
         i = self.index(event.x, event.y)
         if i >= len(self.itemlist): return
         item = self.itemlist[i]

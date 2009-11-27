@@ -7,14 +7,9 @@
 # (at your option) any later version.
 
 "select brush window"
-import os
 import gtk
 gdk = gtk.gdk
-from math import floor
-import zipfile
-import tempfile
 from lib import brush, document
-from lib.helpers import to_unicode
 import tileddrawwidget, pixbuflist
 from gettext import gettext as _
 
@@ -237,7 +232,6 @@ class Window(gtk.Window):
         self.update()
 
     def update(self):
-        brush = self.app.brush
         callbacks = self.app.selected_brush_observers
         self.app.selected_brush_observers = callbacks
         self.brushgroups.update()
@@ -293,12 +287,6 @@ class BrushList(pixbuflist.PixbufList):
                                        pixbuffunc = lambda x: x.preview)
         #self.connect('item-activated', self.on_item_activated)
         self.app.drawWindow.tdw.device_observers.append(self.on_device_change)
-
-        self.connect('drag-data-get', self.drag_data_get)
-        self.connect('drag-data-received', self.drag_data_received)
-        self.connect('motion-notify-event', self.motion_notify)
-        self.connect('button-press-event', self.on_button_press)
-        self.connect('button-release-event', self.on_button_release)
 
     def remove_brush(self, brush):
         self.brushes.remove(brush)
@@ -383,11 +371,10 @@ class BrushGroupsList(gtk.VBox):
 
     def update(self,init=False):
         if not init:
-            for group, expander in self.group_list.iteritems():
+            for expander in self.group_list.itervalues():
                 self.app.selected_brush_observers.remove(child_brushlist(expander).brush_selected_cb)
-            self.foreach(self.remove)
+            self.foreach(self.remove) # ????
         self.group_list = {}            # group name -> list of Expander's
-        b = self.app.selected_brush
         # Set DEFAULT_BRUSH_GROUP to be first in the list
         tmp = list(sorted(self.app.brushgroups.keys()))
         if DEFAULT_BRUSH_GROUP in tmp:
@@ -442,7 +429,7 @@ class BrushGroupsList(gtk.VBox):
             homeless_brushes = self.app.brushgroups[group]
             del self.app.brushgroups[group]
 
-            for groupname, brushes in self.app.brushgroups.iteritems():
+            for brushes in self.app.brushgroups.itervalues():
                 for b2 in brushes:
                     if b2 in homeless_brushes:
                         homeless_brushes.remove(b2)
@@ -455,9 +442,9 @@ class BrushGroupsList(gtk.VBox):
             self.update()
 
     def set_active_group(self, name, brush):
-        def expand(e):
-            if not e.get_expanded():
-                e.set_expanded(True)
+        #def expand(e):
+        #    if not e.get_expanded():
+        #        e.set_expanded(True)
         self.active_group = name
         for group, expander in self.group_list.iteritems():
             if group!=name:

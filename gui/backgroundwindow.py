@@ -136,7 +136,7 @@ class BackgroundList(pixbuflist.PixbufList):
 
             self.backgrounds.append(pixbuf)
 
-        pixbuflist.PixbufList.__init__(self, self.backgrounds, N, N, self.pixbuf_scaler)
+        pixbuflist.PixbufList.__init__(self, self.backgrounds, N, N, pixbuffunc=self.pixbuf_scaler)
         self.dragging_allowed = False
 
         self.pixbufs_scaled = {}
