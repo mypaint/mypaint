@@ -159,7 +159,7 @@ class Window(gtk.Window):
 
             ('ViewMenu', None, _('View')),
             ('Fullscreen',   gtk.STOCK_FULLSCREEN, _('Fullscreen'), 'F11', None, self.fullscreen_cb),
-            ('ResetView',   gtk.STOCK_ZOOM_100, _('Reset (Zoom, Rotation, Mirror)'), None, None, self.reset_view_cb),
+            ('ResetView',   gtk.STOCK_ZOOM_100, _('Reset (Zoom, Rotation, Mirror)'), 'F12', None, self.reset_view_cb),
             ('ZoomIn',       gtk.STOCK_ZOOM_IN, _('Zoom In (at cursor)'), 'period', None, self.zoom_cb),
             ('ZoomOut',      gtk.STOCK_ZOOM_OUT, _('Zoom Out'), 'comma', None, self.zoom_cb),
             ('RotateLeft',   None, _('Rotate Counterclockwise'), None, None, self.rotate_cb),

@@ -148,6 +148,7 @@ class FileHandler(object):
         self.doc.set_background(bg)
         self.filename = None
         self.set_recent_items()
+        self.app.drawWindow.reset_view_cb(None)
 
     @drawwindow.with_wait_cursor
     def open_file(self, filename):
