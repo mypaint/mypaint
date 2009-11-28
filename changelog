@@ -1,3 +1,17 @@
+Version c2fed0a8933ddd03886a9e1dd817f843d00737bd:
+- select the brush from a stroke on the canvas
+- straight lines are possible (hold shift)
+- tools stay at top, only one taskbar entry (depending on your wm)
+- new brushes contributed by different artists
+- faster zoomed-out view (30x speedup in some cases)
+- i18n support added, translations in several languages
+- new and revised color selectors
+- color picker shows color while picking
+- big background patterns are possible (with some limitations)
+- can save all layers as numbered PNGs
+- some drag&drop support
+- many other minor enhancements and bugfixes
+	
 Version 0.7.1:
 - bugfixes for win32 build
 - limit the cursor size (problem on Windows, and X11 with Compiz)
