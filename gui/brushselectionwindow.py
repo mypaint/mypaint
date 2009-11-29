@@ -118,12 +118,19 @@ class Window(gtk.Window):
             b.copy_settings_from(self.app.brush)
         b.preview = self.get_preview_pixbuf()
         b.save()
-        group = self.brushgroups.active_group or DEFAULT_BRUSH_GROUP
+        active_groups = self.brushgroups.active_groups
+        if active_groups:
+            group = active_groups[0]
+        else:
+            group = DEFAULT_BRUSH_GROUP
+        if group not in active_groups:
+            active_groups.insert(0, group)
         self.app.brushgroups.setdefault(group, []) # create default group if needed
         self.app.brushgroups[group].insert(0, b)
-        self.app.select_brush(b)
         self.app.save_brushorder()
         self.brushgroups.update()
+        self.groupselector.queue_draw()
+        self.app.select_brush(b)
 
     def rename_brush_cb(self, window):
         b = self.app.selected_brush
@@ -314,10 +321,8 @@ class BrushGroupsList(gtk.VBox):
         gtk.VBox.__init__(self)
         self.app = app
         self.parent_window = window
-        #self.active_group = to_unicode( app.get_config('State', 'active_group'))
-        self.active_group = DEFAULT_BRUSH_GROUP
-        self.visible_groups = list(sorted(self.app.brushgroups.keys()))
-        #self.visible_groups = [DEFAULT_BRUSH_GROUP]
+        self.app.brushgroups.setdefault(DEFAULT_BRUSH_GROUP, [])
+        self.active_groups = [DEFAULT_BRUSH_GROUP]
         self.group_widgets = {}
         self.update()
         self.app.selected_brush_observers.append(self.brush_selected_cb)
@@ -328,7 +333,7 @@ class BrushGroupsList(gtk.VBox):
 
         self.foreach(self.remove)
 
-        for group in self.visible_groups:
+        for group in self.active_groups:
             if group in old_widgets:
                 w = old_widgets[group]
             else:
@@ -354,7 +359,7 @@ class GroupSelector(gtk.DrawingArea):
         self.app = app
         self.brushgroups = brushgroups
 
-        self.active_groups = brushgroups.visible_groups
+        self.active_groups = brushgroups.active_groups
 
         self.connect("expose-event", self.expose_cb)
         self.connect("button-press-event", self.button_press_cb)
@@ -365,12 +370,9 @@ class GroupSelector(gtk.DrawingArea):
                         )
         self.idx2group = {}
         self.layout = None
-        self.set_size_request(20, 20) # FIXME: use layout?
 
     def expose_cb(self, widget, event):
         cr = self.window.cairo_create()
-        #cr.rectangle(event.area.x, event.area.y, event.area.width, event.area.height)
-        #cr.clip()
         width, height = self.window.get_size()
 
         # Fill the background with gray (FIXME: gtk theme colors please)
@@ -380,10 +382,9 @@ class GroupSelector(gtk.DrawingArea):
 
         cr.set_source_rgb(0.0, 0.0, 0.2)
         layout = cr.create_layout()
-        #width, height = layout.get_size()
         layout.set_width(width*pango.SCALE)
 
-        attr = pango.AttrList()
+        #attr = pango.AttrList()
         #attr.insert(pango.AttrBackground(0x5555, 0x5555, 0xffff, 5, 7))
 
         all_groups = list(sorted(self.app.brushgroups.keys()))
@@ -408,7 +409,10 @@ class GroupSelector(gtk.DrawingArea):
         layout.set_markup(text)
         #layout.set_attributes(attr)
         cr.show_layout(layout)
-        #cr.restore()
+
+        w, h = layout.get_pixel_size()
+        self.set_size_request(-1, h)
+
         self.layout = layout
 
     def group_at(self, x, y):
@@ -453,6 +457,7 @@ class GroupSelector(gtk.DrawingArea):
         if new_group and new_group not in self.app.brushgroups:
             self.app.brushgroups[new_group] = []
             self.app.save_brushorder()
+            self.active_groups.insert(0, new_group)
             self.brushgroups.update()
             self.queue_draw()
 
@@ -469,6 +474,8 @@ class GroupSelector(gtk.DrawingArea):
         if run_confirm_dialog(self.get_toplevel(), _('Delete group %s') % group):
             homeless_brushes = self.app.brushgroups[group]
             del self.app.brushgroups[group]
+            if group in self.active_groups:
+                self.active_groups.remove(group)
 
             for brushes in self.app.brushgroups.itervalues():
                 for b2 in brushes:
