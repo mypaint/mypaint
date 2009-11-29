@@ -8,13 +8,9 @@
 
 from math import floor, ceil
 import colorsys, urllib
-import locale
 
 from gtk import gdk # for gdk_pixbuf stuff
 import mypaintlib
-
-ENCODING = locale.getpreferredencoding()
-
 
 class Rect:
     def __init__(self, x=0, y=0, w=0, h=0):
@@ -90,11 +86,6 @@ def clamp(x, lo, hi):
     if x < lo: return lo
     if x > hi: return hi
     return x
-
-def to_unicode(s):
-    if type(s)==unicode:
-        return s
-    return unicode(s, ENCODING)
 
 def gdkpixbuf2numpy(pixbuf):
     # workaround for pygtk still returning Numeric instead of numpy arrays

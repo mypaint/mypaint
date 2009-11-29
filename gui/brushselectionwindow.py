@@ -283,7 +283,6 @@ class BrushList(pixbuflist.PixbufList):
 
     def on_drag_data(self, copy, source_widget, brush_name, target_idx):
         assert source_widget, 'cannot handle drag data from another app'
-        print 'Dragging brush', brush_name, 'between', source_widget.group, '-->', self.group
         b, = [b for b in source_widget.brushes if b.name == brush_name]
         if source_widget is self:                  # If brush dragged from same widget
             copy = False
@@ -415,8 +414,6 @@ class GroupSelector(gtk.DrawingArea):
     def group_at(self, x, y):
         x, y = int(x), int(y) # avoid warning
         i, d = self.layout.xy_to_index(x*pango.SCALE, y*pango.SCALE)
-        # i is the byte-index of the utf8 encoded string
-        print i, d,
         return self.idx2group.get(i)
         
     def button_press_cb(self, widget, event):

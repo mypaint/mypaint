@@ -11,7 +11,6 @@ import gtk, gobject
 gdk = gtk.gdk
 from lib import brush
 import filehandling, keyboard
-from lib.helpers import to_unicode
 from brushselectionwindow import DEFAULT_BRUSH_GROUP
 
 class Application: # singleton
@@ -122,7 +121,7 @@ class Application: # singleton
                     if name.startswith('#'):
                         continue
                     if name.startswith('Group: '):
-                        curr_group = to_unicode(name[7:])
+                        curr_group = unicode(name[7:], 'utf-8')
                         if curr_group not in groups:
                             groups[curr_group] = []
                         continue
@@ -196,7 +195,7 @@ class Application: # singleton
         f = open(os.path.join(self.user_brushpath, 'order.conf'), 'w')
         f.write('# this file saves brush groups and order\n')
         for group, brushes in self.brushgroups.iteritems():
-            f.write('Group: %s\n' % group)
+            f.write('Group: %s\n' % group.encode('utf-8'))
             for b in brushes:
                 f.write(b.name + '\n')
         f.close()
