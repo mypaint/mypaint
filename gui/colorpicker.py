@@ -19,10 +19,8 @@ class ColorPicker(gtk.Window):
         self.app = app
         self.app.kbm.add_window(self)
 
-        self.set_events(gdk.BUTTON_PRESS_MASK |
-                        gdk.BUTTON_RELEASE_MASK |
-                        gdk.ENTER_NOTIFY |
-                        gdk.LEAVE_NOTIFY
+        self.add_events(gdk.BUTTON_PRESS_MASK |
+                        gdk.BUTTON_RELEASE_MASK
                         )
         self.connect("expose_event", self.expose_cb)
         self.connect("motion-notify-event", self.motion_notify_cb)
@@ -32,10 +30,6 @@ class ColorPicker(gtk.Window):
         self.doc = doc
 
         self.idle_handler = None
-
-        # we need this, otherwise we can't prevent painting events
-        # from reaching the canvas window
-        self.set_extension_events (gdk.EXTENSION_EVENTS_ALL)
 
     def pick(self):
         size = int(self.app.brush.get_actual_radius() * math.sqrt(math.pi))
@@ -51,7 +45,10 @@ class ColorPicker(gtk.Window):
         self.move(x, y + popup_height)
         self.show_all()
 
-        gdk.pointer_grab(self.window, event_mask=gdk.POINTER_MOTION_MASK)
+        result = gdk.pointer_grab(self.window, event_mask=gdk.POINTER_MOTION_MASK)
+        if result != gdk.GRAB_SUCCESS:
+            print 'Warning: pointer grab failed with result', result
+            self.leave(reason=None)
         self.popup_state.register_mouse_grab(self)
     
     def leave(self, reason):

@@ -184,6 +184,11 @@ class State:
 
     def register_mouse_grab(self, widget):
         assert self.active
+
+        # fix for https://gna.org/bugs/?14871 (problem with tablet and pointer grabs)
+        widget.add_events(gdk.POINTER_MOTION_MASK)
+        widget.set_extension_events (gdk.EXTENSION_EVENTS_ALL)
+
         if self.keydown:
             # we are reacting to a keyboard event, we will not be
             # waiting for a mouse button release
