@@ -45,7 +45,7 @@ settings_list = [
     ['dabs_per_second', _('dabs per second'), True, 0.0, 0.0, 80.0, _("dabs to draw each second, no matter how far the pointer moves")],
     ['radius_by_random', _('radius by random'), False, 0.0, 0.0, 1.5, _("Alter the radius randomly each dab. You can also do this with the by_random input on the radius setting. If you do it here, there are two differences:\n1) the opaque value will be corrected such that a big-radius dabs is more transparent\n2) it will not change the actual radius seen by dabs_per_actual_radius")],
     ['speed1_slowness', _('speed1 filter'), False, 0.0, 0.04, 0.2, _("how slow the input speed1 is following the real speed\n0.0 change immediatly as your speed changes (not recommended, but try it)")],
-    ['speed2_slowness', _('speed2 filter'), False, 0.0, 0.8, 3.0, _("same as 'speed1 slowness', but note that the range is different")],
+    ['speed2_slowness', _('speed2 filter'), False, 0.0, 0.8, 3.0, _("same as 'speed1 filter', but note that the range is different")],
     ['speed1_gamma', _('speed1 gamma'), True, -8.0, 4.0, 8.0, _("This changes the reaction of the speed1 input to extreme physical speed. You will see the difference best if speed1 is mapped to the radius.\n-8.0 very fast speed does not increase speed1 much more\n+8.0 very fast speed increases speed1 a lot\nFor very slow speed the opposite happens.")],
     ['speed2_gamma', _('speed2 gamma'), True, -8.0, 4.0, 8.0, _("same as 'speed1 gamma' for speed2")],
     ['offset_by_random', _('jitter'), False, 0.0, 0.0, 2.0, _("add a random offset to the position where each dab is drawn\n 0.0 disabled\n 1.0 standard deviation is one basic radius away\n<0.0 negative values produce no jitter")],
