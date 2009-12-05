@@ -105,6 +105,10 @@ def _info (exctyp, value, tb):
 	sys.stderr.write(analyse_simple (exctyp, value, tb).getvalue())
 	if exception_dialog_active:
 		return
+
+	gtk.gdk.pointer_ungrab()
+	gtk.gdk.keyboard_ungrab()
+
 	exception_dialog_active = True
 	trace = None
 	dialog = gtk.MessageDialog (parent=None, flags=0, type=gtk.MESSAGE_WARNING, buttons=gtk.BUTTONS_NONE)
