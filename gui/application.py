@@ -36,6 +36,7 @@ class Application: # singleton
         gdk.set_program_class('MyPaint')
 
         self.pixmaps = PixbufDirectory(os.path.join(self.datapath, 'pixmaps'))
+        self.cursor_color_picker = gdk.Cursor(gdk.display_get_default(), self.pixmaps.cursor_color_picker, 1, 30)
 
         self.user_brushpath = os.path.join(self.confpath, 'brushes')
         self.stock_brushpath = os.path.join(self.datapath, 'brushes')

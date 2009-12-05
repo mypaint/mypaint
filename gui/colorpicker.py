@@ -45,7 +45,10 @@ class ColorPicker(gtk.Window):
         self.move(x, y + popup_height)
         self.show_all()
 
-        result = gdk.pointer_grab(self.window, event_mask=gdk.POINTER_MOTION_MASK)
+        result = gdk.pointer_grab(self.window,
+                                  event_mask=gdk.POINTER_MOTION_MASK,
+                                  cursor=self.app.cursor_color_picker
+                                  )
         if result != gdk.GRAB_SUCCESS:
             print 'Warning: pointer grab failed with result', result
             self.leave(reason=None)
