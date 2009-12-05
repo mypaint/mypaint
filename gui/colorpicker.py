@@ -1,4 +1,11 @@
-import math
+# This file is part of MyPaint.
+# Copyright (C) 2009 by Martin Renold <martinxyz@gmx.ch>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+
 import gtk, gobject
 gdk = gtk.gdk
 import cairo
@@ -32,9 +39,10 @@ class ColorPicker(gtk.Window):
         self.idle_handler = None
 
     def pick(self):
-        size = int(self.app.brush.get_actual_radius() * math.sqrt(math.pi))
-        if size < 6:
-            size = 6
+        # fixed size is prefered to brush radius, see https://gna.org/bugs/?14794
+        #size = int(self.app.brush.get_actual_radius() * math.sqrt(math.pi))
+        #if size < 6: size = 6
+        size = 6
         self.app.colorSelectionWindow.pick_color_at_pointer(size)
 
     def enter(self):
