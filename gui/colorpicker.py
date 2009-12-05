@@ -37,6 +37,7 @@ class ColorPicker(gtk.Window):
         self.doc = doc
 
         self.idle_handler = None
+        self.require_ctrl = False
 
     def pick(self):
         # fixed size is prefered to brush radius, see https://gna.org/bugs/?14794
@@ -61,6 +62,8 @@ class ColorPicker(gtk.Window):
             print 'Warning: pointer grab failed with result', result
             self.leave(reason=None)
         self.popup_state.register_mouse_grab(self)
+
+        self.require_ctrl = False
     
     def leave(self, reason):
         gdk.pointer_ungrab()
@@ -70,6 +73,12 @@ class ColorPicker(gtk.Window):
         self.hide()
 
     def motion_notify_cb(self, widget, event):
+        if event.state & gdk.CONTROL_MASK:
+            self.require_ctrl = True
+        elif self.require_ctrl:
+            # stop picking when the user releases CTRL
+            return
+
         def update():
             self.idle_handler = None
             self.pick()
