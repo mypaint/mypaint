@@ -13,6 +13,7 @@ import sys
 import gtk
 from gtk import gdk
 from gettext import gettext as _
+from gettext import ngettext
 
 from lib import document, helpers
 import drawwindow
@@ -115,9 +116,9 @@ class FileHandler(object):
             return True
 
         if t > 120:
-            t = _('%d minutes') % (t/60)
+            t = ngettext('%d minute', '%d minutes', (t/60)) % (t/60)
         else:
-            t = _('%d seconds') % t
+            t = ngettext('%d second', '%d seconds', t) % t
         d = gtk.Dialog(title, self.app.drawWindow, gtk.DIALOG_MODAL)
 
         b = d.add_button(gtk.STOCK_DISCARD, gtk.RESPONSE_OK)
