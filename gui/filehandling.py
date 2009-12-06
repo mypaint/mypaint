@@ -110,7 +110,7 @@ class FileHandler(object):
                 self.save_filter_default = f
 
     def confirm_destructive_action(self, title='Confirm', question='Really continue?'):
-        t = self.doc.unsaved_painting_time
+        t = round(self.doc.unsaved_painting_time)
         if t < 30:
             # no need to ask
             return True
