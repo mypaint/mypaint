@@ -4,564 +4,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-20 23:51+0200\n"
+"POT-Creation-Date: 2009-12-07 08:43+0100\n"
 "PO-Revision-Date: 2009-08-20 21:57+0200\n"
 "Last-Translator: Griatch <www.griatch-art.deviantart.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-#. name, stock id, label, accelerator, tooltip, callback
-#: ../gui/drawwindow.py:218
-msgid "File"
-msgstr "Fil"
-
-#: ../gui/drawwindow.py:219
-msgid "New"
-msgstr "Ny"
-
-#: ../gui/drawwindow.py:220 ../gui/drawwindow.py:794
-msgid "Open..."
-msgstr "Öppna..."
-
-#: ../gui/drawwindow.py:221
-msgid "Open Recent"
-msgstr "Öppna senaste"
-
-#: ../gui/drawwindow.py:222 ../gui/settingswindow.py:96
-msgid "Save"
-msgstr "Spara"
-
-#: ../gui/drawwindow.py:223
-msgid "Save As..."
-msgstr "Spara som..."
-
-# "Scrap" -> "kladd"
-#: ../gui/drawwindow.py:224
-msgid "Save Next Scrap"
-msgstr "Spara nästa kladd"
-
-#. FIXME: should do this periodically, not only on quit
-#: ../gui/drawwindow.py:225 ../gui/drawwindow.py:980
-msgid "Quit"
-msgstr "Avsluta"
-
-#: ../gui/drawwindow.py:228 ../gui/brushselectionwindow.py:41
-msgid "Edit"
-msgstr "Redigera"
-
-#: ../gui/drawwindow.py:229
-msgid "Undo"
-msgstr "Ångra"
-
-#: ../gui/drawwindow.py:230
-msgid "Redo"
-msgstr "Gör om"
-
-#: ../gui/drawwindow.py:232
-msgid "Brush"
-msgstr "Pensel"
-
-#: ../gui/drawwindow.py:233
-msgid "Brighter"
-msgstr "Ljusare"
-
-#: ../gui/drawwindow.py:234
-msgid "Smaller"
-msgstr "Mindre"
-
-# "opaque" -> ikke gjennomsiktig
-# er dette den beste oversettelsen?
-#: ../gui/drawwindow.py:235
-msgid "More Opaque"
-msgstr "Mindre genomskinlig"
-
-#: ../gui/drawwindow.py:236
-msgid "Less Opaque"
-msgstr "Mer genomskinlig"
-
-#: ../gui/drawwindow.py:237
-msgid "Toggle Eraser Mode"
-msgstr "Sudda av/på"
-
-#: ../gui/drawwindow.py:238
-msgid "Pick Context (layer, brush and color)"
-msgstr "Plocka kontext (lager, pensel och färg)"
-
-#: ../gui/drawwindow.py:240
-msgid "Color"
-msgstr "Färg"
-
-#: ../gui/drawwindow.py:241
-msgid "Darker"
-msgstr "Mörkare"
-
-#: ../gui/drawwindow.py:242
-msgid "Bigger"
-msgstr "Större"
-
-#: ../gui/drawwindow.py:243
-msgid "Pick Color"
-msgstr "Välj färg vid pekaren"
-
-#: ../gui/drawwindow.py:244
-msgid "Color History"
-msgstr "Färghistoria"
-
-#: ../gui/drawwindow.py:245
-msgid "Color Changer"
-msgstr "Färgjustering"
-
-#: ../gui/drawwindow.py:246
-msgid "Color Ring"
-msgstr "Färg-ring"
-
-#: ../gui/drawwindow.py:248
-msgid "Brushkeys"
-msgstr "Snabbval av penslar"
-
-#. each of the context actions are generated and added below
-#: ../gui/drawwindow.py:250
-msgid "Save to Most Recently Restored"
-msgstr "Spara till senaste "
-
-#: ../gui/drawwindow.py:251
-msgid "Help!"
-msgstr "Hjälp!"
-
-#: ../gui/drawwindow.py:253
-msgid "Layers"
-msgstr "Lager"
-
-#: ../gui/drawwindow.py:255
-msgid "Background..."
-msgstr "Bakgrund"
-
-#: ../gui/drawwindow.py:256 ../gui/brushselectionwindow.py:64
-msgid "Clear"
-msgstr "Radera allt"
-
-#: ../gui/drawwindow.py:257
-msgid "Copy to Clipboard"
-msgstr "Kopiera till klippbordet"
-
-#: ../gui/drawwindow.py:258
-msgid "Paste Clipboard (Replace Layer)"
-msgstr "Klistra till klippbordet"
-
-#: ../gui/drawwindow.py:259
-msgid "Select Layer at Cursor"
-msgstr "Välj lagret vid pekaren"
-
-#: ../gui/drawwindow.py:260
-msgid "Next (above current)"
-msgstr "Byt lager uppåt"
-
-#: ../gui/drawwindow.py:261
-msgid "Next (below current)"
-msgstr "Byt lager nedåt"
-
-#: ../gui/drawwindow.py:262
-msgid "New (above current)"
-msgstr "Nytt lager (över nuvarande)"
-
-#: ../gui/drawwindow.py:263
-msgid "New (below current)"
-msgstr "Nytt lager (under nuvarande)"
-
-#: ../gui/drawwindow.py:264
-msgid "Merge Down"
-msgstr "Slå ihop med underliggande lager"
-
-#: ../gui/drawwindow.py:265
-msgid "Remove"
-msgstr "Ta bort lager"
-
-#: ../gui/drawwindow.py:266
-msgid "Increase Layer Opacity"
-msgstr "Öka lagrets genomskinlighet"
-
-#: ../gui/drawwindow.py:267
-msgid "Decrease Layer Opacity"
-msgstr "Minska lagrets genomskinlighet"
-
-#: ../gui/drawwindow.py:269
-msgid "Brush List..."
-msgstr "Välj pensel..."
-
-#: ../gui/drawwindow.py:270
-msgid "Brush Settings..."
-msgstr "Pensel-inställningar..."
-
-#: ../gui/drawwindow.py:271
-msgid "Color Triangle..."
-msgstr "Färgtriangel"
-
-#: ../gui/drawwindow.py:272
-msgid "Settings..."
-msgstr "Inställningar..."
-
-#. TODO: make toggle action
-#: ../gui/drawwindow.py:274 ../gui/drawwindow.py:293
-msgid "Help"
-msgstr "Hjälp"
-
-#: ../gui/drawwindow.py:275
-msgid "Where is the Documentation?"
-msgstr "Var finns manualen?"
-
-#: ../gui/drawwindow.py:276
-msgid "Change the Keyboard Shortcuts?"
-msgstr "Hur ändrar man snabbvalen?"
-
-#: ../gui/drawwindow.py:277
-msgid "About MyPaint"
-msgstr "Om MyPaint"
-
-#: ../gui/drawwindow.py:279
-msgid "Debug"
-msgstr "Felsökning"
-
-#: ../gui/drawwindow.py:282
-msgid "Shortcuts"
-msgstr "Snabbval"
-
-#: ../gui/drawwindow.py:284
-msgid "View"
-msgstr "Vy"
-
-#: ../gui/drawwindow.py:285
-msgid "Fullscreen"
-msgstr "Helskärm"
-
-#: ../gui/drawwindow.py:286
-msgid "Reset (Zoom, Rotation, Mirror)"
-msgstr "Nollställ (Förstoring, Rotation, Spegel)"
-
-#: ../gui/drawwindow.py:287
-msgid "Zoom In (at cursor)"
-msgstr "Förstora (vid pekaren)"
-
-#: ../gui/drawwindow.py:288
-msgid "Zoom Out"
-msgstr "Förminska"
-
-#: ../gui/drawwindow.py:289
-msgid "Rotate Counterclockwise"
-msgstr "Rotera motsols"
-
-#: ../gui/drawwindow.py:290
-msgid "Rotate Clockwise"
-msgstr "Rotera medsols"
-
-#: ../gui/drawwindow.py:291
-msgid "Layer Solo"
-msgstr "Se enbart nuvarande lager"
-
-#: ../gui/drawwindow.py:292
-msgid "Hide Layers Above Current"
-msgstr "Göm lager ovanför nuvarande"
-
-#: ../gui/drawwindow.py:298
-#, python-format
-msgid "Restore Brush %d"
-msgstr "Återställ pensel %d"
-
-#: ../gui/drawwindow.py:300
-#, python-format
-msgid "Save to Brush %d"
-msgstr "Spara till pensel %d"
-
-#. name, stock id, label, accelerator, tooltip, callback, default toggle status
-#: ../gui/drawwindow.py:307
-msgid "Print Brush Input Values to stdout"
-msgstr "Skriv ut penselns värden till stdout"
-
-#: ../gui/drawwindow.py:308
-msgid "Visualize Rendering"
-msgstr "Visualisera penseldrag"
-
-#: ../gui/drawwindow.py:309
-msgid "Disable GTK Double Buffering"
-msgstr "Stäng av GTK:s dubbelbuffer"
-
-#: ../gui/drawwindow.py:310
-msgid "Mirror Image"
-msgstr "Spegla bilden"
-
-# "canvas" -> "lerret"
-#: ../gui/drawwindow.py:738
-msgid "Did not save, the canvas is empty."
-msgstr "Sparade inte, duken är tom."
-
-#: ../gui/drawwindow.py:764
-#, python-format
-msgid "%d minutes"
-msgstr "%d minuter"
-
-#: ../gui/drawwindow.py:766
-#, python-format
-msgid "%d seconds"
-msgstr "%d sekunder"
-
-#: ../gui/drawwindow.py:775
-#, python-format
-msgid ""
-"<b>%s</b>\n"
-"\n"
-"This will discard %s of unsaved painting."
-msgstr ""
-"<b>%s</b>\n"
-"\n"
-"Detta kommer att kasta bort arbete gjort under %s."
-
-#. name, patterns
-#: ../gui/drawwindow.py:801
-msgid "All Recognized Formats"
-msgstr "Alla kända format"
-
-#: ../gui/drawwindow.py:802 ../gui/drawwindow.py:842
-msgid "OpenRaster (*.ora)"
-msgstr "OpenRaster (*.ora)"
-
-#: ../gui/drawwindow.py:803
-msgid "PNG (*.png)"
-msgstr "PNG (*.png)"
-
-#: ../gui/drawwindow.py:804
-msgid "JPEG (*.jpg; *.jpeg)"
-msgstr "JPEG (*.jpg; *.jpeg)"
-
-# duplication?
-#: ../gui/drawwindow.py:829
-msgid "Save.."
-msgstr "Spara.."
-
-#. name, patterns, saveopts
-#: ../gui/drawwindow.py:841
-msgid "Any format (prefer OpenRaster)"
-msgstr "Ospecificerat format (föredrar OpenRaster)"
-
-#: ../gui/drawwindow.py:844
-msgid "PNG transparent (*.png)"
-msgstr "PNG transparent (*.png)"
-
-#: ../gui/drawwindow.py:845
-msgid "Multiple PNG transparent (*.XXX.png)"
-msgstr "Flerfils-transparent PNG (*.XXX.png)"
-
-#: ../gui/drawwindow.py:846
-msgid "JPEG 90% quality (*.jpg; *.jpeg)"
-msgstr "JPEG 90% kvalitet (*.jpg; *.jpeg)"
-
-#: ../gui/drawwindow.py:980
-msgid "Really Quit?"
-msgstr "Är du säker på att du vill avsluta?"
-
-#: ../gui/drawwindow.py:1078
-msgid "Move your mouse over a menu entry, then press the key to assign."
-msgstr ""
-"Håll muspekaren över ett menyval. Tryck sedan på knappen/knapparna du vill "
-"använda för att snabbt nå detta menyval. Du ser dem dyka upp till höger om "
-"menyvalet. Klart!"
-
-#: ../gui/drawwindow.py:1080
-msgid ""
-"You can also drag the canvas with the mouse while holding the middle mouse "
-"button or spacebar. Or with the arrow keys.\n"
-"\n"
-"In contrast to earlier versions, scrolling and zooming are harmless now and "
-"will not make you run out of memory. But you still require a lot of memory "
-"if you paint all over while fully zoomed out."
-msgstr ""
-"Du kan flytta duken med musen om du håller nere mittersta musknappen eller "
-"mellanslagstangenten. Även piltangenterna kan användas.\n"
-"I motsats till tidigare versioner så är radrullning och förstoring harmlöst "
-"och gör inte längre att du får slut på minne (det det krävs dock fortfarande "
-"mycket minne om målar över hela duken med liten förstoring."
-
-#: ../gui/drawwindow.py:1087
-msgid ""
-"This is used to quickly save/restore brush settings using keyboard "
-"shortcuts. You can paint with one hand and change brushes with the other "
-"without interrupting.\n"
-"\n"
-"There are 10 memory slots to hold brush settings.\n"
-"Those are annonymous brushes, they are not visible in the brush selector "
-"list. But they will stay even if you quit. They will also remember the "
-"selected color. In contrast, selecting a normal brush never changes the "
-"color. "
-msgstr ""
-"Denna funktion används för att snabbt spara och hämta penselinställningar "
-"med snabbkommandon. Du kan därmed måla med en hand och byta penslar med den "
-"andra utan att lyfta handen från duken.\n"
-"\n"
-"Det finns 10 snabbminnen för att lagra penselinställningar.\n"
-"Dessa är \"anonyma\" penslar, dvs de visas inte i den vanliga pensellistan. "
-"De lagras även om du stänger programmet, och minns dessutom sin senaste "
-"använda färg, i motsats till penslar som väljes från listan."
-
-#: ../gui/drawwindow.py:1098
-msgid ""
-"There is a tutorial available on the MyPaint homepage. It explains some "
-"features which are hard to discover yourself.\n"
-"\n"
-"Comments about the brush settings (opaque, hardness, etc.) and inputs "
-"(pressure, speed, etc.) are available as tooltips. Put your mouse over a "
-"label to see them. \n"
-msgstr ""
-"Det finns en hjälphandledning (på engelska) på MyPaints hemsida. Den "
-"förklarar en del funktioner som kan vara svåra att hitta på egen hand.\n"
-"\n"
-"Penslarnas olika inställningar beskrivs av hjälp-text-rutor. Håll musen över "
-"inställningen du undrar över för att få hjälp.\n"
-
-#: ../gui/drawwindow.py:1106
-#, python-format
-msgid "MyPaint %s - pressure sensitive painting application\n"
-msgstr "MyPaint %s - Tryckkänsligt konstnärsprogram\n"
-
-#: ../gui/drawwindow.py:1109
-msgid "Contributors:\n"
-msgstr "Medarbetare:\n"
-
-#: ../gui/drawwindow.py:1120
-msgid ""
-"This program is free software; you can redistribute it and/or modify it "
-"under the terms of the GNU General Public License as published by the Free "
-"Software Foundation; either version 2 of the License, or (at your option) "
-"any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful, but WITHOUT "
-"ANY WARRANTY. See the COPYING file for more details."
-msgstr ""
-
-#: ../gui/brushselectionwindow.py:25
-msgid "Brush selection"
-msgstr "Välj pensel"
-
-#: ../gui/brushselectionwindow.py:81 ../gui/brushselectionwindow.py:209
-msgid "(no name)"
-msgstr "(inget namn)"
-
-#: ../gui/brushselectionwindow.py:85
-msgid "add as new"
-msgstr "lägg till som ny"
-
-#: ../gui/brushselectionwindow.py:86
-msgid "rename..."
-msgstr "döp om..."
-
-#: ../gui/brushselectionwindow.py:87
-msgid "remove..."
-msgstr "ta bort..."
-
-#: ../gui/brushselectionwindow.py:88
-msgid "settings..."
-msgstr "inställningar..."
-
-#: ../gui/brushselectionwindow.py:89
-msgid "save settings"
-msgstr "spara inställningar"
-
-#: ../gui/brushselectionwindow.py:90
-msgid "save preview"
-msgstr "spara förhandsvisning"
-
-#: ../gui/brushselectionwindow.py:130
-msgid "Rename Brush"
-msgstr "Döp om pensel"
-
-#: ../gui/brushselectionwindow.py:191
-msgid "Really delete this brush?"
-msgstr "Vill du verkligen radera denna pensel?"
-
-#: ../gui/brushsettingswindow.py:29
-msgid "live update the last canvas stroke"
-msgstr "Direkt uppdatering av det senaste penseldraget"
-
-#: ../gui/functionwindow.py:40
-msgid "Base Value"
-msgstr "Basvärde"
-
-#: ../gui/functionwindow.py:104
-#, python-format
-msgid "By <b>%s</b>"
-msgstr "Av <b>%s</b>"
-
-#: ../gui/functionwindow.py:138
-msgid "Details"
-msgstr "Detaljer"
-
-#: ../gui/gtkexcepthook.py:105
-msgid "Bug Detected"
-msgstr "Bugg upptäckt"
-
-#: ../gui/gtkexcepthook.py:109
-msgid ""
-"<big><b>A programming error has been detected during the execution of this "
-"program.</b></big>"
-msgstr "<big><b>Ett programmeringsfel har hittats i programmet.</b></big>"
-
-#: ../gui/gtkexcepthook.py:110
-msgid ""
-"It probably isn't fatal, but should be reported to the developers "
-"nonetheless."
-msgstr "Det är troligen inte kritiskt, men bör rapporteras till utvecklarna."
-
-#: ../gui/gtkexcepthook.py:125
-msgid "Report..."
-msgstr "Rapporter..."
-
-#: ../gui/gtkexcepthook.py:129
-msgid "Details..."
-msgstr "Detaljer"
-
-#. Show details...
-#: ../gui/gtkexcepthook.py:158
-msgid "Bug Details"
-msgstr "Buggdetaljer"
-
-#: ../gui/settingswindow.py:24
-msgid "Settings"
-msgstr "Inställningar"
-
-#: ../gui/settingswindow.py:38
-msgid "Pressure"
-msgstr "Tryck"
-
-#: ../gui/settingswindow.py:42
-msgid "<b><span size=\"large\">Global Pressure Mapping</span></b>"
-msgstr "<b><span size=\"large\">Global tryck-konfiguration</span></b>"
-
-#: ../gui/settingswindow.py:55
-msgid ""
-"0.5\n"
-"(mouse button)"
-msgstr ""
-"0,5\n"
-"(musknapp)"
-
-#: ../gui/settingswindow.py:66
-msgid "Mode for input devices: "
-msgstr "metod för inmatningsenheter: "
-
-#: ../gui/settingswindow.py:77
-msgid "Paths"
-msgstr "Sökvägar"
-
-#: ../gui/settingswindow.py:81
-msgid "<b><span size=\"large\">Save as Scrap</span></b>"
-msgstr "<b><span size=\"large\">Spara som kladd</span></b>"
-
-#: ../gui/settingswindow.py:83
-msgid "Path and filename prefix for \"Save Next Scrap\""
-msgstr "Sökväg och bas-filnamn för \"Spara nästa kladd\""
-
-#: ../gui/settingswindow.py:100
-msgid "Revert"
-msgstr "Ångra"
 
 # brushsettings currently not translated
 #. name, hard minimum, soft minimum, normal[1], soft maximum, hard maximum, tooltip
@@ -768,8 +217,8 @@ msgid "speed2 filter"
 msgstr "filter hastighet2"
 
 #: ../brushlib/brushsettings.py:48
-msgid "same as 'speed1 slowness', but note that the range is different"
-msgstr "samma som 'trögheten för hastighet1'"
+msgid "same as 'speed1 filter', but note that the range is different"
+msgstr "samma som 'trögheten för hastighet1', men notera att intervallet är annorlunda."
 
 #: ../brushlib/brushsettings.py:49
 msgid "speed1 gamma"
@@ -1142,6 +591,704 @@ msgid ""
 msgstr ""
 "ett lågt värde gör att riktningen justeras snabbare, ett högt värde gör att "
 "det går långsammare men mjukare."
+
+#. set up window
+#: ../gui/backgroundwindow.py:22
+msgid "Background"
+msgstr "Bakgrund"
+
+#: ../gui/backgroundwindow.py:35
+msgid "save as default"
+msgstr ""
+
+#: ../gui/backgroundwindow.py:39
+msgid "done"
+msgstr ""
+
+#: ../gui/backgroundwindow.py:46
+msgid "Pattern"
+msgstr "Mönster"
+
+#: ../gui/backgroundwindow.py:53 ../gui/drawwindow.py:115
+msgid "Color"
+msgstr "Färg"
+
+#: ../gui/backgroundwindow.py:59
+msgid "add color to patterns"
+msgstr ""
+
+#: ../gui/backgroundwindow.py:126
+#, python-format
+msgid ""
+"The background %s was ignored because it has an alpha channel. Please remove "
+"it."
+msgstr ""
+
+#: ../gui/backgroundwindow.py:130
+#, python-format
+msgid ""
+"The background %s was ignored because it has the wrong size. Only (N*%d)x(M*%"
+"d) is supported."
+msgstr ""
+
+#: ../gui/brushselectionwindow.py:26
+msgid "Brush selection"
+msgstr "Välj pensel"
+
+#: ../gui/brushselectionwindow.py:39 ../gui/drawwindow.py:103
+msgid "Edit"
+msgstr "Redigera"
+
+#: ../gui/brushselectionwindow.py:62 ../gui/drawwindow.py:131
+msgid "Clear"
+msgstr "Radera allt"
+
+#: ../gui/brushselectionwindow.py:79 ../gui/brushselectionwindow.py:207
+msgid "(no name)"
+msgstr "(inget namn)"
+
+#: ../gui/brushselectionwindow.py:83
+msgid "add as new"
+msgstr "lägg till som ny"
+
+#: ../gui/brushselectionwindow.py:84
+msgid "rename..."
+msgstr "döp om..."
+
+#: ../gui/brushselectionwindow.py:85
+msgid "remove..."
+msgstr "ta bort..."
+
+#: ../gui/brushselectionwindow.py:86
+msgid "settings..."
+msgstr "inställningar..."
+
+#: ../gui/brushselectionwindow.py:87
+msgid "save settings"
+msgstr "spara inställningar"
+
+#: ../gui/brushselectionwindow.py:88
+msgid "save preview"
+msgstr "spara förhandsvisning"
+
+#: ../gui/brushselectionwindow.py:128
+msgid "Rename Brush"
+msgstr "Döp om pensel"
+
+#: ../gui/brushselectionwindow.py:189
+msgid "Really delete this brush?"
+msgstr "Vill du verkligen radera denna pensel?"
+
+#: ../gui/brushsettingswindow.py:23
+msgid "Brush settings"
+msgstr "Pensel-inställningar..."
+
+#: ../gui/brushsettingswindow.py:29
+msgid "live update the last canvas stroke"
+msgstr "Direkt uppdatering av det senaste penseldraget"
+
+#: ../gui/colorsamplerwindow.py:391
+msgid "R: "
+msgstr ""
+
+#: ../gui/colorsamplerwindow.py:395
+msgid "G: "
+msgstr ""
+
+#: ../gui/colorsamplerwindow.py:399
+msgid "B: "
+msgstr ""
+
+#: ../gui/colorsamplerwindow.py:438
+msgid "H: "
+msgstr ""
+
+#: ../gui/colorsamplerwindow.py:442
+msgid "S: "
+msgstr ""
+
+#: ../gui/colorsamplerwindow.py:446
+msgid "V: "
+msgstr ""
+
+#: ../gui/colorsamplerwindow.py:481
+msgid "V"
+msgstr ""
+
+#: ../gui/colorsamplerwindow.py:484
+msgid "S"
+msgstr ""
+
+#: ../gui/colorsamplerwindow.py:497
+msgid "Colors history"
+msgstr "Färghistoria"
+
+#: ../gui/colorsamplerwindow.py:501 ../gui/functionwindow.py:138
+msgid "Details"
+msgstr "Detaljer"
+
+#: ../gui/colorsamplerwindow.py:560
+msgid "MyPaint color selector"
+msgstr "MyPaints färgväljare"
+
+#. name, stock id, label, accelerator, tooltip, callback
+#: ../gui/drawwindow.py:100
+msgid "File"
+msgstr "Fil"
+
+#. FIXME: should do this periodically, not only on quit
+#: ../gui/drawwindow.py:101 ../gui/drawwindow.py:612
+msgid "Quit"
+msgstr "Avsluta"
+
+#: ../gui/drawwindow.py:104
+msgid "Undo"
+msgstr "Ångra"
+
+#: ../gui/drawwindow.py:105
+msgid "Redo"
+msgstr "Gör om"
+
+#: ../gui/drawwindow.py:107
+msgid "Brush"
+msgstr "Pensel"
+
+#: ../gui/drawwindow.py:108
+msgid "Brighter"
+msgstr "Ljusare"
+
+#: ../gui/drawwindow.py:109
+msgid "Smaller"
+msgstr "Mindre"
+
+# "opaque" -> ikke gjennomsiktig
+# er dette den beste oversettelsen?
+#: ../gui/drawwindow.py:110
+msgid "More Opaque"
+msgstr "Mindre genomskinlig"
+
+#: ../gui/drawwindow.py:111
+msgid "Less Opaque"
+msgstr "Mer genomskinlig"
+
+#: ../gui/drawwindow.py:112
+msgid "Toggle Eraser Mode"
+msgstr "Sudda av/på"
+
+#: ../gui/drawwindow.py:113
+msgid "Pick Context (layer, brush and color)"
+msgstr "Plocka kontext (lager, pensel och färg)"
+
+#: ../gui/drawwindow.py:116
+msgid "Darker"
+msgstr "Mörkare"
+
+#: ../gui/drawwindow.py:117
+msgid "Bigger"
+msgstr "Större"
+
+#: ../gui/drawwindow.py:118
+msgid "Pick Color"
+msgstr "Välj färg vid pekaren"
+
+#: ../gui/drawwindow.py:119
+msgid "Color History"
+msgstr "Färghistoria"
+
+#: ../gui/drawwindow.py:120
+msgid "Color Changer"
+msgstr "Färgjustering"
+
+#: ../gui/drawwindow.py:121
+msgid "Color Ring"
+msgstr "Färg-ring"
+
+#: ../gui/drawwindow.py:123
+msgid "Brushkeys"
+msgstr "Snabbval av penslar"
+
+#. each of the context actions are generated and added below
+#: ../gui/drawwindow.py:125
+msgid "Save to Most Recently Restored"
+msgstr "Spara till senaste "
+
+#: ../gui/drawwindow.py:126
+msgid "Help!"
+msgstr "Hjälp!"
+
+#: ../gui/drawwindow.py:128
+msgid "Layers"
+msgstr "Lager"
+
+#: ../gui/drawwindow.py:130
+msgid "Background..."
+msgstr "Bakgrund"
+
+#: ../gui/drawwindow.py:132
+msgid "Copy to Clipboard"
+msgstr "Kopiera till klippbordet"
+
+#: ../gui/drawwindow.py:133
+msgid "Paste Clipboard (Replace Layer)"
+msgstr "Klistra till klippbordet"
+
+#: ../gui/drawwindow.py:134
+msgid "Select Layer at Cursor"
+msgstr "Välj lagret vid pekaren"
+
+#: ../gui/drawwindow.py:135
+msgid "Next (above current)"
+msgstr "Byt lager uppåt"
+
+#: ../gui/drawwindow.py:136
+msgid "Next (below current)"
+msgstr "Byt lager nedåt"
+
+#: ../gui/drawwindow.py:137
+msgid "New (above current)"
+msgstr "Nytt lager (över nuvarande)"
+
+#: ../gui/drawwindow.py:138
+msgid "New (below current)"
+msgstr "Nytt lager (under nuvarande)"
+
+#: ../gui/drawwindow.py:139
+msgid "Merge Down"
+msgstr "Slå ihop med underliggande lager"
+
+#: ../gui/drawwindow.py:140
+msgid "Remove"
+msgstr "Ta bort lager"
+
+#: ../gui/drawwindow.py:141
+msgid "Increase Layer Opacity"
+msgstr "Öka lagrets genomskinlighet"
+
+#: ../gui/drawwindow.py:142
+msgid "Decrease Layer Opacity"
+msgstr "Minska lagrets genomskinlighet"
+
+#: ../gui/drawwindow.py:144
+msgid "Brush List..."
+msgstr "Välj pensel..."
+
+#: ../gui/drawwindow.py:145
+msgid "Brush Settings..."
+msgstr "Pensel-inställningar..."
+
+#: ../gui/drawwindow.py:146
+msgid "Color Triangle..."
+msgstr "Färgtriangel"
+
+#: ../gui/drawwindow.py:147
+msgid "Color Sampler..."
+msgstr "Färgväljare"
+
+#: ../gui/drawwindow.py:148
+msgid "Settings..."
+msgstr "Inställningar..."
+
+#. TODO: make toggle action
+#: ../gui/drawwindow.py:150 ../gui/drawwindow.py:169
+msgid "Help"
+msgstr "Hjälp"
+
+#: ../gui/drawwindow.py:151
+msgid "Where is the Documentation?"
+msgstr "Var finns manualen?"
+
+#: ../gui/drawwindow.py:152
+msgid "Change the Keyboard Shortcuts?"
+msgstr "Hur ändrar man snabbvalen?"
+
+#: ../gui/drawwindow.py:153
+msgid "About MyPaint"
+msgstr "Om MyPaint"
+
+#: ../gui/drawwindow.py:155
+msgid "Debug"
+msgstr "Felsökning"
+
+#: ../gui/drawwindow.py:158
+msgid "Shortcuts"
+msgstr "Snabbval"
+
+#: ../gui/drawwindow.py:160
+msgid "View"
+msgstr "Vy"
+
+#: ../gui/drawwindow.py:161
+msgid "Fullscreen"
+msgstr "Helskärm"
+
+#: ../gui/drawwindow.py:162
+msgid "Reset (Zoom, Rotation, Mirror)"
+msgstr "Nollställ (Förstoring, Rotation, Spegel)"
+
+#: ../gui/drawwindow.py:163
+msgid "Zoom In (at cursor)"
+msgstr "Förstora (vid pekaren)"
+
+#: ../gui/drawwindow.py:164
+msgid "Zoom Out"
+msgstr "Förminska"
+
+#: ../gui/drawwindow.py:165
+msgid "Rotate Counterclockwise"
+msgstr "Rotera motsols"
+
+#: ../gui/drawwindow.py:166
+msgid "Rotate Clockwise"
+msgstr "Rotera medsols"
+
+#: ../gui/drawwindow.py:167
+msgid "Layer Solo"
+msgstr "Se enbart nuvarande lager"
+
+#: ../gui/drawwindow.py:168
+msgid "Hide Layers Above Current"
+msgstr "Göm lager ovanför nuvarande"
+
+#: ../gui/drawwindow.py:175
+#, python-format
+msgid "Restore Brush %d"
+msgstr "Återställ pensel %d"
+
+#: ../gui/drawwindow.py:177
+#, python-format
+msgid "Save to Brush %d"
+msgstr "Spara till pensel %d"
+
+#. name, stock id, label, accelerator, tooltip, callback, default toggle status
+#: ../gui/drawwindow.py:184
+msgid "Print Brush Input Values to stdout"
+msgstr "Skriv ut penselns värden till stdout"
+
+#: ../gui/drawwindow.py:185
+msgid "Visualize Rendering"
+msgstr "Visualisera penseldrag"
+
+#: ../gui/drawwindow.py:186
+msgid "Disable GTK Double Buffering"
+msgstr "Stäng av GTK:s dubbelbuffer"
+
+#: ../gui/drawwindow.py:187
+msgid "Mirror Image"
+msgstr "Spegla bilden"
+
+#: ../gui/drawwindow.py:612
+msgid "Really Quit?"
+msgstr "Är du säker på att du vill avsluta?"
+
+#: ../gui/drawwindow.py:705
+msgid ""
+"Copyright (C) 2005-2009\n"
+"Martin Renold and the MyPaint Development Team"
+msgstr ""
+"Copyright (C) 2005-2009\n"
+"Martin Renold och MyPaints Utvecklingsteam"
+
+#: ../gui/drawwindow.py:709
+msgid ""
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY. See the COPYING file for more details."
+msgstr ""
+
+#: ../gui/drawwindow.py:719 ../gui/drawwindow.py:723 ../gui/drawwindow.py:725
+#: ../gui/drawwindow.py:726 ../gui/drawwindow.py:728
+msgid "programming"
+msgstr "programmering"
+
+#: ../gui/drawwindow.py:720
+#, fuzzy
+msgid "brushes"
+msgstr "Snabbval av penslar"
+
+#: ../gui/drawwindow.py:721 ../gui/drawwindow.py:727
+msgid "portability"
+msgstr "konverterbarhet"
+
+#: ../gui/drawwindow.py:722
+msgid "brushes, programming"
+msgstr "penslar, programmering"
+
+#: ../gui/drawwindow.py:724
+msgid "patterns, brushes"
+msgstr "mönster, penslar"
+
+#: ../gui/drawwindow.py:731
+msgid "desktop icon"
+msgstr "fönterikon"
+
+#: ../gui/drawwindow.py:753
+msgid "Move your mouse over a menu entry, then press the key to assign."
+msgstr ""
+"Håll muspekaren över ett menyval. Tryck sedan på knappen/knapparna du vill "
+"använda för att snabbt nå detta menyval. Du ser dem dyka upp till höger om "
+"menyvalet. Klart!"
+
+#: ../gui/drawwindow.py:755
+msgid ""
+"You can also drag the canvas with the mouse while holding the middle mouse "
+"button or spacebar. Or with the arrow keys.\n"
+"\n"
+"In contrast to earlier versions, scrolling and zooming are harmless now and "
+"will not make you run out of memory. But you still require a lot of memory "
+"if you paint all over while fully zoomed out."
+msgstr ""
+"Du kan flytta duken med musen om du håller nere mittersta musknappen eller "
+"mellanslagstangenten. Även piltangenterna kan användas.\n"
+"I motsats till tidigare versioner så är radrullning och förstoring harmlöst "
+"och gör inte längre att du får slut på minne (det det krävs dock fortfarande "
+"mycket minne om målar över hela duken med liten förstoring."
+
+#: ../gui/drawwindow.py:762
+msgid ""
+"This is used to quickly save/restore brush settings using keyboard "
+"shortcuts. You can paint with one hand and change brushes with the other "
+"without interrupting.\n"
+"\n"
+"There are 10 memory slots to hold brush settings.\n"
+"Those are annonymous brushes, they are not visible in the brush selector "
+"list. But they will stay even if you quit. They will also remember the "
+"selected color. In contrast, selecting a normal brush never changes the "
+"color. "
+msgstr ""
+"Denna funktion används för att snabbt spara och hämta penselinställningar "
+"med snabbkommandon. Du kan därmed måla med en hand och byta penslar med den "
+"andra utan att lyfta handen från duken.\n"
+"\n"
+"Det finns 10 snabbminnen för att lagra penselinställningar.\n"
+"Dessa är \"anonyma\" penslar, dvs de visas inte i den vanliga pensellistan. "
+"De lagras även om du stänger programmet, och minns dessutom sin senaste "
+"använda färg, i motsats till penslar som väljes från listan."
+
+#: ../gui/drawwindow.py:773
+msgid ""
+"There is a tutorial available on the MyPaint homepage. It explains some "
+"features which are hard to discover yourself.\n"
+"\n"
+"Comments about the brush settings (opaque, hardness, etc.) and inputs "
+"(pressure, speed, etc.) are available as tooltips. Put your mouse over a "
+"label to see them. \n"
+msgstr ""
+"Det finns en hjälphandledning (på engelska) på MyPaints hemsida. Den "
+"förklarar en del funktioner som kan vara svåra att hitta på egen hand.\n"
+"\n"
+"Penslarnas olika inställningar beskrivs av hjälp-text-rutor. Håll musen över "
+"inställningen du undrar över för att få hjälp.\n"
+
+#: ../gui/filehandling.py:29
+msgid "New"
+msgstr "Ny"
+
+#: ../gui/filehandling.py:30 ../gui/filehandling.py:190
+msgid "Open..."
+msgstr "Öppna..."
+
+#: ../gui/filehandling.py:31
+msgid "Open Last"
+msgstr "Öppna senaste"
+
+#: ../gui/filehandling.py:32
+msgid "Reload"
+msgstr "Gör om"
+
+#: ../gui/filehandling.py:33 ../gui/settingswindow.py:96
+msgid "Save"
+msgstr "Spara"
+
+#: ../gui/filehandling.py:34
+msgid "Save As..."
+msgstr "Spara som..."
+
+# "Scrap" -> "kladd"
+#: ../gui/filehandling.py:35
+msgid "Save As Scrap"
+msgstr "Spara som kladd"
+
+#: ../gui/filehandling.py:36
+msgid "Open Previous Scrap"
+msgstr "Öppna föregående kladd"
+
+# "Scrap" -> "kladd"
+#: ../gui/filehandling.py:37
+msgid "Open Next Scrap"
+msgstr "Spara nästa kladd"
+
+#: ../gui/filehandling.py:43
+msgid "Open Recent"
+msgstr "Öppna senaste"
+
+#: ../gui/filehandling.py:43
+msgid "Open Recent files"
+msgstr "Öppna senaste filer"
+
+# duplication?
+#: ../gui/filehandling.py:82
+msgid "Save.."
+msgstr "Spara.."
+
+#. name, patterns, saveopts
+#: ../gui/filehandling.py:94
+msgid "Any format (prefer OpenRaster)"
+msgstr "Ospecificerat format (föredra OpenRaster)"
+
+#: ../gui/filehandling.py:95 ../gui/filehandling.py:198
+msgid "OpenRaster (*.ora)"
+msgstr "OpenRaster (*.ora)"
+
+#: ../gui/filehandling.py:97
+msgid "PNG transparent (*.png)"
+msgstr "PNG transparent (*.png)"
+
+#: ../gui/filehandling.py:98
+msgid "Multiple PNG transparent (*.XXX.png)"
+msgstr "Flerfils-transparent PNG (*.XXX.png)"
+
+#: ../gui/filehandling.py:99
+msgid "JPEG 90% quality (*.jpg; *.jpeg)"
+msgstr "JPEG 90% kvalitet (*.jpg; *.jpeg)"
+
+#: ../gui/filehandling.py:119
+#, python-format
+msgid "%d minute"
+msgid_plural "%d minutes"
+msgstr[0] "%d minuter"
+msgstr[1] "%d minuter"
+
+#: ../gui/filehandling.py:121
+#, python-format
+msgid "%d second"
+msgid_plural "%d seconds"
+msgstr[0] "%d sekunder"
+msgstr[1] "%d sekunder"
+
+# "Scrap" -> "kladd"
+#: ../gui/filehandling.py:127
+msgid "_Save as Scrap"
+msgstr "Spara som kladd"
+
+#: ../gui/filehandling.py:133
+#, python-format
+msgid ""
+"<b>%s</b>\n"
+"\n"
+"This will discard %s of unsaved painting."
+msgstr ""
+"<b>%s</b>\n"
+"\n"
+"Detta kommer att kasta bort arbete gjort under %s."
+
+# "canvas" -> "lerret"
+#: ../gui/filehandling.py:171
+msgid "Did not save, the canvas is empty."
+msgstr "Sparade inte, duken är tom."
+
+#. name, patterns
+#: ../gui/filehandling.py:197
+msgid "All Recognized Formats"
+msgstr "Alla kända format"
+
+#: ../gui/filehandling.py:199
+msgid "PNG (*.png)"
+msgstr "PNG (*.png)"
+
+#: ../gui/filehandling.py:200
+msgid "JPEG (*.jpg; *.jpeg)"
+msgstr "JPEG (*.jpg; *.jpeg)"
+
+#: ../gui/filehandling.py:374
+#, python-format
+msgid "There are no scrap files named \"%s\" yet."
+msgstr ""
+
+#: ../gui/functionwindow.py:40
+msgid "Base Value"
+msgstr "Basvärde"
+
+#: ../gui/functionwindow.py:104
+#, python-format
+msgid "By <b>%s</b>"
+msgstr "Av <b>%s</b>"
+
+#: ../gui/gtkexcepthook.py:115
+msgid "Bug Detected"
+msgstr "Bugg upptäckt"
+
+#: ../gui/gtkexcepthook.py:119
+msgid "<big><b>A programming error has been detected.</b></big>"
+msgstr "<big><b>Ett programmeringsfel har hittats i programmet.</b></big>"
+
+#: ../gui/gtkexcepthook.py:120
+msgid ""
+"It probably isn't fatal, but the details should be reported to the "
+"developers nonetheless."
+msgstr "Det är troligen inte kritiskt, men bör rapporteras till utvecklarna."
+
+#: ../gui/gtkexcepthook.py:135
+msgid "Report..."
+msgstr "Rapporter..."
+
+#: ../gui/gtkexcepthook.py:139
+msgid "Details..."
+msgstr "Detaljer"
+
+#. Show details...
+#: ../gui/gtkexcepthook.py:168
+msgid "Bug Details"
+msgstr "Buggdetaljer"
+
+#: ../gui/settingswindow.py:24
+msgid "Settings"
+msgstr "Inställningar"
+
+#: ../gui/settingswindow.py:38
+msgid "Pressure"
+msgstr "Tryck"
+
+#: ../gui/settingswindow.py:42
+msgid "<b><span size=\"large\">Global Pressure Mapping</span></b>"
+msgstr "<b><span size=\"large\">Global tryck-konfiguration</span></b>"
+
+#: ../gui/settingswindow.py:55
+msgid ""
+"0.5\n"
+"(mouse button)"
+msgstr ""
+"0,5\n"
+"(musknapp)"
+
+#: ../gui/settingswindow.py:66
+msgid "Mode for input devices: "
+msgstr "metod för inmatningsenheter: "
+
+#: ../gui/settingswindow.py:77
+msgid "Paths"
+msgstr "Sökvägar"
+
+#: ../gui/settingswindow.py:81
+msgid "<b><span size=\"large\">Save as Scrap</span></b>"
+msgstr "<b><span size=\"large\">Spara som kladd</span></b>"
+
+#: ../gui/settingswindow.py:83
+msgid "Path and filename prefix for \"Save Next Scrap\""
+msgstr "Sökväg och bas-filnamn för \"Spara nästa kladd\""
+
+#: ../gui/settingswindow.py:100
+msgid "Revert"
+msgstr "Ångra"
+
+#~ msgid "MyPaint %s - pressure sensitive painting application\n"
+#~ msgstr "MyPaint %s - Tryckkänsligt konstnärsprogram\n"
+
+#~ msgid "Contributors:\n"
+#~ msgstr "Medarbetare:\n"
 
 #~ msgid "Copy layer"
 #~ msgstr "Kopiera lager"
