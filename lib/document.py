@@ -14,7 +14,7 @@ import gobject, numpy
 
 import helpers, tiledsurface, pixbufsurface, backgroundsurface, mypaintlib
 import command, stroke, layer
-import brush # FIXME: the brush module depends on gtk and everything, but we only need brush_lowlevel
+import brush
 N = tiledsurface.N
 
 class SaveLoadError(Exception):
@@ -39,7 +39,7 @@ class Document():
     #   (split_stroke)
 
     def __init__(self):
-        self.brush = brush.Brush_Lowlevel()
+        self.brush = brush.Brush()
         self.stroke = None
         self.canvas_observers = []
         self.stroke_observers = [] # callback arguments: stroke, brush (brush is a temporary read-only convenience object)
@@ -103,7 +103,7 @@ class Document():
         self.split_stroke()
         # TODO: undo last stroke if it was very short... (but not at document level?)
         real_brush = self.brush
-        self.brush = brush.Brush_Lowlevel()
+        self.brush = brush.Brush()
         self.brush.copy_settings_from(real_brush)
 
         duration = 3.0

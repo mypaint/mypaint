@@ -6,16 +6,9 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-"interface to MyBrush; hiding some C implementation details"
-# FIXME: bad file name, saying nothing about what's in here
-# FIXME: should split brush_lowlevel into its own gtk-independent module
 import mypaintlib
 from brushlib import brushsettings
-import gtk, os
 import helpers
-
-preview_w = 128
-preview_h = 128
 
 current_brushfile_version = 2
 
@@ -125,7 +118,7 @@ class Setting:
             points = [(x, func(y)) for x, y in points]
             self.set_points(i, points)
 
-class Brush_Lowlevel(mypaintlib.Brush):
+class Brush(mypaintlib.Brush):
     def __init__(self):
         mypaintlib.Brush.__init__(self)
         self.settings_observers = []
@@ -247,103 +240,4 @@ class Brush_Lowlevel(mypaintlib.Brush):
 
     def is_eraser(self):
         return self.setting_by_cname('eraser').base_value > 0.9
-
-class Brush(Brush_Lowlevel):
-    def __init__(self, app):
-        Brush_Lowlevel.__init__(self)
-        self.app = app
-        self.preview = None
-        self.name = None
-        self.preview_changed = True
-
-        self.settings_mtime = None
-        self.preview_mtime = None
-
-    def get_fileprefix(self, saving=False):
-        prefix = 'b'
-        if os.path.realpath(self.app.user_brushpath) == os.path.realpath(self.app.stock_brushpath):
-        #if os.path.samefile(self.app.user_brushpath, self.app.stock_brushpath):
-            # working directly on brush collection, use different prefix
-            prefix = 's'
-
-        if not self.name:
-            i = 0
-            while 1:
-                self.name = '%s%03d' % (prefix, i)
-                a = os.path.join(self.app.user_brushpath,self.name + '.myb')
-                b = os.path.join(self.app.stock_brushpath,self.name + '.myb')
-                if not os.path.isfile(a) and not os.path.isfile(b):
-                    break
-                i += 1
-        prefix = os.path.join(self.app.user_brushpath, self.name)
-        if saving: 
-            return prefix
-        if not os.path.isfile(prefix + '.myb'):
-            prefix = os.path.join(self.app.stock_brushpath,self.name)
-        if not os.path.isfile(prefix + '.myb'):
-            raise IOError, 'brush "' + self.name + '" not found'
-        return prefix
-
-    def delete_from_disk(self):
-        prefix = os.path.join(self.app.user_brushpath, self.name)
-        if os.path.isfile(prefix + '.myb'):
-            os.remove(prefix + '_prev.png')
-            os.remove(prefix + '.myb')
-            self.preview_changed = True # need to recreate when saving
-            return True
-        # stock brush cannot be deleted
-        return False
-
-    def remember_mtimes(self):
-        prefix = self.get_fileprefix()
-        self.preview_mtime = os.path.getmtime(prefix + '_prev.png')
-        self.settings_mtime = os.path.getmtime(prefix + '.myb')
-
-    def has_changed_on_disk(self):
-        prefix = self.get_fileprefix()
-        if self.preview_mtime != os.path.getmtime(prefix + '_prev.png'): return True
-        if self.settings_mtime != os.path.getmtime(prefix + '.myb'): return True
-        return False
-
-    def save(self):
-        prefix = self.get_fileprefix(saving=True)
-        if self.preview_changed:
-            self.preview.save(prefix + '_prev.png', 'png')
-            self.preview_changed = False
-        open(prefix + '.myb', 'w').write(self.save_to_string())
-        self.remember_mtimes()
-
-    def load(self, name):
-        self.name = name
-        prefix = self.get_fileprefix()
-
-        filename = prefix + '_prev.png'
-        pixbuf = gtk.gdk.pixbuf_new_from_file(filename)
-        self.preview = pixbuf
-
-        if prefix.startswith(self.app.user_brushpath):
-            self.preview_changed = False
-        else:
-            # for saving, create the preview file even if not changed
-            self.preview_changed = True
-
-        filename = prefix + '.myb'
-        errors = self.load_from_string(open(filename).read())
-        if errors:
-            print '%s:' % filename
-            for line, reason in errors:
-                print line
-                print '==>', reason
-            print
-
-        self.remember_mtimes()
-
-    def reload_if_changed(self):
-        if self.settings_mtime is None: return
-        if self.preview_mtime is None: return
-        if not self.name: return
-        if not self.has_changed_on_disk(): return False
-        print 'Brush "' + self.name + '" has changed on disk, reloading it.'
-        self.load(self.name)
-        return True
 

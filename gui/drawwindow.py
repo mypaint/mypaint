@@ -448,7 +448,7 @@ class Window(gtk.Window):
 
                 if si:
                     self.app.brush.load_from_string(si.brush_string)
-                    self.app.select_brush(None)
+                    self.app.brushmanager.select_brush(None)
                     self.si = si # FIXME: should be a method parameter?
                     self.strokeblink_state.activate(action)
                 return
@@ -551,12 +551,13 @@ class Window(gtk.Window):
 
         print 'device change:', new_device.name, new_device.source
 
-        self.app.brush_by_device[old_device.name] = (self.app.selected_brush, self.app.brush.save_to_string())
+        bm = self.app.brushmanager
+        bm.brush_by_device[old_device.name] = (self.app.selected_brush, self.app.brush.save_to_string())
 
-        if new_device.name in self.app.brush_by_device:
-            brush_to_select, brush_settings = self.app.brush_by_device[new_device.name]
+        if new_device.name in bm.brush_by_device:
+            brush_to_select, brush_settings = bm.brush_by_device[new_device.name]
             # mark as selected in brushlist
-            self.app.select_brush(brush_to_select)
+            bm.select_brush(brush_to_select)
             # restore modifications (radius / color change the user made)
             self.app.brush.load_from_string(brush_settings)
         else:
@@ -672,8 +673,9 @@ class Window(gtk.Window):
     def context_cb(self, action):
         name = action.get_name()
         store = False
+        bm = self.app.brushmanager
         if name == 'ContextStore':
-            context = self.app.selected_context
+            context = bm.selected_context
             if not context:
                 print 'No context was selected, ignoring store command.'
                 return
@@ -683,8 +685,8 @@ class Window(gtk.Window):
                 store = True
                 name = name[:-1]
             i = int(name[-2:])
-            context = self.app.contexts[i]
-        self.app.selected_context = context
+            context = bm.contexts[i]
+        bm.selected_context = context
         if store:
             context.copy_settings_from(self.app.brush)
             preview = self.app.brushSelectionWindow.get_preview_pixbuf()
@@ -694,7 +696,7 @@ class Window(gtk.Window):
             # restore (but keep color)
             color = self.app.brush.get_color_hsv()
             context.set_color_hsv(color)
-            self.app.select_brush(context)
+            bm.select_brush(context)
             self.app.brushSelectionWindow.set_preview_pixbuf(context.preview)
 
     def about_cb(self, action):

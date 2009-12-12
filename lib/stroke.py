@@ -66,7 +66,7 @@ class Stroke:
     def render(self, surface):
         assert self.finished
 
-        b = brush.Brush_Lowlevel()
+        b = brush.Brush()
         b.load_from_string(self.brush_settings) # OPTIMIZE: check if this is a performance bottleneck
 
         states = numpy.fromstring(self.brush_state, dtype='float32')
