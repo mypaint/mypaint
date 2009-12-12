@@ -84,10 +84,10 @@ class Application: # singleton
 
         gobject.idle_add(at_application_start)
 
-    def brush_selected_cb(self, brush):
-        assert brush is not self.brush
-        if brush:
-            self.brush.copy_settings_from(brush)
+    def brush_selected_cb(self, b):
+        assert b is not self.brush
+        if b:
+            self.brush.copy_settings_from(b)
 
     def hide_window_cb(self, window, event):
         # used by some of the windows

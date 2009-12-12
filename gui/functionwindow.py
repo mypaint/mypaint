@@ -237,7 +237,6 @@ class ByInputWidget(gtk.VBox):
         y_min = min([y for x, y in brush_points])
         y_max = max([y for x, y in brush_points])
         scale_y = max(abs(y_min), abs(y_max))
-        scale_x = xmax - xmin
 
         # choose between scale_y and -scale_y (arbitrary)
         if brush_points[0][1] > brush_points[-1][1]:
@@ -248,9 +247,8 @@ class ByInputWidget(gtk.VBox):
             # if xmin/xmax were non-default, reset them
             xmin = self.input.soft_min
             xmax = self.input.soft_max
-            scale_x = xmax - xmin
 
-        # xmin, xmax, scale_x, scale_y are fixed now
+        # xmin, xmax, scale_y are fixed now
         self.block_user_changes_cb = True
         self.xmax_adj.set_value(xmax)
         self.xmin_adj.set_value(xmin)

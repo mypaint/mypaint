@@ -30,6 +30,7 @@ class BrushManager:
         self.groups = []
         self.contexts = []
         self.brush_by_device = {} # should be save/loaded too?
+        self.selected_context = None
 
         self.selected_brush_observers = []
         self.groups_observers = [] # for both self.groups and self.active_groups
@@ -50,7 +51,6 @@ class BrushManager:
             c = ManagedBrush(self)
             c.name = 'context%02d' % i
             self.contexts.append(c)
-        self.selected_context = None
 
         brush_by_name = {}
         def get_brush(name):
@@ -221,8 +221,8 @@ class ManagedBrush(brush.Brush):
             i = 0
             while 1:
                 self.name = '%s%03d' % (prefix, i)
-                a = os.path.join(self.bm.user_brushpath,self.name + '.myb')
-                b = os.path.join(self.bm.stock_brushpath,self.name + '.myb')
+                a = os.path.join(self.bm.user_brushpath, self.name + '.myb')
+                b = os.path.join(self.bm.stock_brushpath, self.name + '.myb')
                 if not os.path.isfile(a) and not os.path.isfile(b):
                     break
                 i += 1
@@ -230,7 +230,7 @@ class ManagedBrush(brush.Brush):
         if saving: 
             return prefix
         if not os.path.isfile(prefix + '.myb'):
-            prefix = os.path.join(self.bm.stock_brushpath,self.name)
+            prefix = os.path.join(self.bm.stock_brushpath, self.name)
         if not os.path.isfile(prefix + '.myb'):
             raise IOError, 'brush "' + self.name + '" not found'
         return prefix

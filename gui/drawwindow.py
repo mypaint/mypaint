@@ -22,7 +22,7 @@ import gtk
 from gtk import gdk, keysyms
 
 import tileddrawwidget, colorselectionwindow, historypopup, \
-       stategroup, keyboard, colorpicker, filehandling
+       stategroup, colorpicker
 from lib import document, helpers, backgroundsurface, command, layer
 
 #TODO: make generic by taking the windows as arguments and put in a helper file?
@@ -438,7 +438,7 @@ class Window(gtk.Window):
         for idx, layer in reversed(list(enumerate(self.doc.layers))):
             alpha = layer.surface.get_alpha (x, y, 5) * layer.opacity
             if alpha > 0.1:
-                old_layer = self.doc.layer
+                #old_layer = self.doc.layer
                 self.doc.select_layer(idx)
                 #if self.doc.layer != old_layer:
                 #    self.layerblink_state.activate(action)
@@ -552,7 +552,7 @@ class Window(gtk.Window):
         print 'device change:', new_device.name, new_device.source
 
         bm = self.app.brushmanager
-        bm.brush_by_device[old_device.name] = (self.app.selected_brush, self.app.brush.save_to_string())
+        bm.brush_by_device[old_device.name] = (bm.selected_brush, self.app.brush.save_to_string())
 
         if new_device.name in bm.brush_by_device:
             brush_to_select, brush_settings = bm.brush_by_device[new_device.name]

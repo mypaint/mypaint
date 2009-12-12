@@ -6,9 +6,9 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-import gtk, pango
+import gtk
 gdk = gtk.gdk
-from lib import brush, document
+from lib import document
 import tileddrawwidget, brushmanager, dialogs
 from gettext import gettext as _
 
@@ -122,7 +122,7 @@ class Widget(gtk.HBox):
             # we can't delete the original; instead we put it away so it doesn't reappear
             old_brush = brushmanager.ManagedBrush(self.bm)
             old_brush.load(old_name)
-            deleted_brushes = self.bm.get_group_brushes(DELETED_BRUSH_GROUP)
+            deleted_brushes = self.bm.get_group_brushes(brushmanager.DELETED_BRUSH_GROUP)
             deleted_brushes.insert(0, old_brush)
             for f in self.bm.brushes_observers: f(deleted_brushes)
 
@@ -130,7 +130,7 @@ class Widget(gtk.HBox):
 
     def update_preview_cb(self, window):
         pixbuf = self.get_preview_pixbuf()
-        b = self.app.selected_brush
+        b = self.bm.selected_brush
         if not b.name:
             # no brush selected
             display = gdk.display_get_default()
@@ -174,8 +174,8 @@ class Widget(gtk.HBox):
             deleted_brushes.insert(0, b)
             for f in self.bm.brushes_observers: f(deleted_brushes)
 
-    def brush_selected_cb(self, brush):
-        name = brush.name
+    def brush_selected_cb(self, b):
+        name = b.name
         if name is None:
             name = _('(no name)')
         else:

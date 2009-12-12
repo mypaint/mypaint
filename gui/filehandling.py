@@ -11,7 +11,6 @@ from glob import glob
 import sys
 
 import gtk
-from gtk import gdk
 from gettext import gettext as _
 from gettext import ngettext
 

@@ -9,8 +9,7 @@
 "select brush window"
 import gtk, pango
 gdk = gtk.gdk
-from lib import document
-import pixbuflist, brushcreationwidget, dialogs, brushmanager
+import pixbuflist, brushcreationwidget, dialogs
 from gettext import gettext as _
 
 class Window(gtk.Window):
@@ -133,10 +132,6 @@ class BrushGroupsList(gtk.VBox):
             w.set_selected(brush)
 
 class GroupSelector(gtk.DrawingArea):
-
-    class GroupData:
-        pass
-
     def __init__(self, app, brushgroups):
         gtk.DrawingArea.__init__(self)
 
@@ -147,7 +142,7 @@ class GroupSelector(gtk.DrawingArea):
 
         self.connect("expose-event", self.expose_cb)
         self.connect("button-press-event", self.button_press_cb)
-	self.set_events(gdk.EXPOSURE_MASK |
+        self.set_events(gdk.EXPOSURE_MASK |
                         gdk.BUTTON_PRESS_MASK |
                         gdk.BUTTON_RELEASE_MASK |
                         gdk.POINTER_MOTION_MASK

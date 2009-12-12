@@ -230,11 +230,11 @@ class Document():
         try:        
             save(filename, **kwargs)
         except gobject.GError, e:
-                if  e.code == 5:
-                    #add a hint due to a very consfusing error message when there is no space left on device
-                    raise SaveLoadError, 'Unable to save: ' + e.message +  '\nDo you have enough space left on the device?'
-                else:
-                    raise SaveLoadError, 'Unable to save: ' + e.message
+            if  e.code == 5:
+                #add a hint due to a very consfusing error message when there is no space left on device
+                raise SaveLoadError, 'Unable to save: ' + e.message +  '\nDo you have enough space left on the device?'
+            else:
+                raise SaveLoadError, 'Unable to save: ' + e.message
         except IOError, e:
             raise SaveLoadError, 'Unable to save: ' + e.strerror
         self.unsaved_painting_time = 0.0
