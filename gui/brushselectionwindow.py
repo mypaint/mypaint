@@ -240,17 +240,21 @@ class GroupSelector(gtk.DrawingArea):
         return m
 
     def create_group_cb(self, w, group):
-        new_group = dialogs.ask_for_name(self.get_toplevel(), _('Create group'), '')
+        new_group = dialogs.ask_for_name(self, _('Create group'), '')
         if new_group:
             self.bm.create_group(new_group)
 
     def rename_group_cb(self, w, old_group):
-        new_group = dialogs.ask_for_name(self.get_toplevel(), _('Rename group'), old_group)
-        # TODO: complain if target exists 
-        if new_group and new_group not in self.bm.groups:
+        new_group = dialogs.ask_for_name(self, _('Rename group'), old_group)
+        if not new_group:
+            return
+        if new_group not in self.bm.groups:
             self.bm.rename_group(old_group, new_group)
+        else:
+            dialogs.error(self, _('A group with this name already exists!'))
 
     def delete_group_cb(self, w, group):
-        # TODO: complain if group == DELETED_BRUSH_GROUP
-        if dialogs.confirm(self.get_toplevel(), _('Delete group %s') % group):
+        if dialogs.confirm(self, _('Really delete group %s?') % group):
             self.bm.delete_group(group)
+            if group in self.bm.groups:
+                dialogs.error(self, _('This group can not be deleted.'))

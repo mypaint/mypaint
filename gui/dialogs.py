@@ -9,22 +9,23 @@
 import gtk
 from gettext import gettext as _
 
-def confirm(window, title):
-    if not isinstance(window, gtk.Window):
-        window = window.get_toplevel()
-    d = gtk.Dialog(title,
-         window,
-         gtk.DIALOG_MODAL,
-         (gtk.STOCK_YES, gtk.RESPONSE_ACCEPT,
-          gtk.STOCK_NO, gtk.RESPONSE_REJECT))
+def confirm(widget, question):
+    window = widget.get_toplevel()
+    d = gtk.MessageDialog(
+        window,
+        gtk.DIALOG_MODAL,
+        gtk.MESSAGE_QUESTION,
+        gtk.BUTTONS_NONE,
+        question)
+    d.add_button(gtk.STOCK_NO, gtk.RESPONSE_REJECT)
+    d.add_button(gtk.STOCK_YES, gtk.RESPONSE_ACCEPT)
+    d.set_default_response(gtk.RESPONSE_ACCEPT)
     response = d.run()
     d.destroy()
     return response == gtk.RESPONSE_ACCEPT
 
-
-def ask_for_name(window, title, default):
-    if not isinstance(window, gtk.Window):
-        window = window.get_toplevel()
+def ask_for_name(widget, title, default):
+    window = widget.get_toplevel()
     d = gtk.Dialog(title,
                    window,
                    gtk.DIALOG_MODAL,
@@ -51,9 +52,8 @@ def ask_for_name(window, title, default):
     d.destroy()
     return result
 
-def error(window, message):
-    if not isinstance(window, gtk.Window):
-        window = window.get_toplevel()
+def error(widget, message):
+    window = widget.get_toplevel()
     d = gtk.MessageDialog(window, gtk.DIALOG_MODAL, gtk.MESSAGE_ERROR, gtk.BUTTONS_OK, message)
     d.run()
     d.destroy()
