@@ -105,9 +105,9 @@ class BrushGroupsList(gtk.VBox):
         self.bm = app.brushmanager
         self.group_widgets = {}
         self.update()
-        self.bm.groups_observers.append(self.brushes_modified_cb)
+        self.bm.groups_observers.append(self.groups_modified_cb)
 
-    def brushes_modified_cb(self):
+    def groups_modified_cb(self):
         self.update()
 
     def update(self):
@@ -154,39 +154,43 @@ class GroupSelector(gtk.DrawingArea):
         cr = self.window.cairo_create()
         width, height = self.window.get_size()
 
-        # Fill the background with gray (FIXME: gtk theme colors please)
-        cr.set_source_rgb(0.7, 0.7, 0.7)
+        style = self.get_style()
+
+        c = style.bg[gtk.STATE_NORMAL]
+        cr.set_source_rgb(c.red_float, c.blue_float, c.green_float)
         cr.rectangle(0, 0, width, height)
         cr.fill()
 
-        cr.set_source_rgb(0.0, 0.0, 0.2)
+        c = style.text[gtk.STATE_NORMAL]
+        cr.set_source_rgb(c.red_float, c.blue_float, c.green_float)
         layout = cr.create_layout()
         layout.set_width(width*pango.SCALE)
-
-        #attr = pango.AttrList()
-        #attr.insert(pango.AttrBackground(0x5555, 0x5555, 0xffff, 5, 7))
 
         all_groups = list(sorted(self.bm.groups.keys()))
 
         idx = 0
         text = ''
-        #attr = pango.AttrList()
+        attr = pango.AttrList()
         self.idx2group = {}
         for group in all_groups:
             s = group.encode('utf8')
+            idx_start = idx
             for c in s:
                 self.idx2group[idx] = group
                 idx += 1
             if group in self.bm.active_groups:
-                text += '<b>' + group + '</b>'
-            else:
-                text += group
-            text += ' '
+                # those colors create too much distraction:
+                #c = style.bg[gtk.STATE_SELECTED]
+                #attr.insert(pango.AttrBackground(c.red, c.green, c.blue, idx_start, idx))
+                #c = style.text[gtk.STATE_SELECTED]
+                #attr.insert(pango.AttrForeground(c.red, c.green, c.blue, idx_start, idx))
+                attr.insert(pango.AttrWeight(pango.WEIGHT_BOLD, idx_start, idx))
+
+            text += group + ' '
             idx += 1
 
-        #layout.set_text(text)
-        layout.set_markup(text)
-        #layout.set_attributes(attr)
+        layout.set_text(text)
+        layout.set_attributes(attr)
         cr.show_layout(layout)
 
         w, h = layout.get_pixel_size()
