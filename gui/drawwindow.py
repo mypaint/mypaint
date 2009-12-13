@@ -447,8 +447,8 @@ class Window(gtk.Window):
                 si = self.doc.layer.get_stroke_info_at(x, y)
 
                 if si:
+                    self.app.brushmanager.select_brush(None) # FIXME: restore the selected brush
                     self.app.brush.load_from_string(si.brush_string)
-                    self.app.brushmanager.select_brush(None)
                     self.si = si # FIXME: should be a method parameter?
                     self.strokeblink_state.activate(action)
                 return
@@ -689,15 +689,13 @@ class Window(gtk.Window):
         bm.selected_context = context
         if store:
             context.copy_settings_from(self.app.brush)
-            preview = self.app.brushSelectionWindow.get_preview_pixbuf()
-            context.preview = preview
+            context.preview = bm.selected_brush.preview
             context.save()
         else:
             # restore (but keep color)
             color = self.app.brush.get_color_hsv()
             context.set_color_hsv(color)
             bm.select_brush(context)
-            self.app.brushSelectionWindow.set_preview_pixbuf(context.preview)
 
     def about_cb(self, action):
         d = gtk.AboutDialog()

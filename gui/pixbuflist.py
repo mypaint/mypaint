@@ -18,8 +18,6 @@ class PixbufList(gtk.DrawingArea):
         pass
     def on_drag_data(self, copy, source_widget, brush_name, target_idx):
         return False
-    def get_tooltip(self, item):
-        return self.namefunc(item)
 
     def __init__(self, itemlist, item_w, item_h, namefunc=None, pixbuffunc=lambda x: x):
         gtk.DrawingArea.__init__(self)
@@ -41,9 +39,9 @@ class PixbufList(gtk.DrawingArea):
         self.connect("expose-event", self.expose_cb)
         self.connect("button-press-event", self.button_press_cb)
         self.connect("configure-event", self.configure_event_cb)
-        self.connect('drag-data-get', self.drag_data_get)
-        self.connect('motion-notify-event', self.motion_notify)
-        self.connect('drag-data-received', self.drag_data_received)
+        self.connect('drag-data-get', self.drag_data_get_cb)
+        self.connect('motion-notify-event', self.motion_notify_cb)
+        self.connect('drag-data-received', self.drag_data_received_cb)
         self.set_events(gdk.EXPOSURE_MASK |
                         gdk.BUTTON_PRESS_MASK |
                         gdk.BUTTON_RELEASE_MASK |
@@ -58,7 +56,7 @@ class PixbufList(gtk.DrawingArea):
         self.item_h = item_h
         self.thumbnails = {}
 
-    def motion_notify(self, widget, event):
+    def motion_notify_cb(self, widget, event):
         if not self.dragging_allowed:
             return
         if event.state & gdk.BUTTON1_MASK:
@@ -73,14 +71,14 @@ class PixbufList(gtk.DrawingArea):
                     self.drag_begin([('LIST_ITEM', gtk.TARGET_SAME_APP, DRAG_ITEM_NAME)],
                                     action, 1, event)
 
-    def drag_data_get(self, widget, context, selection, targetType, time):
+    def drag_data_get_cb(self, widget, context, selection, targetType, time):
         item = self.selected
         assert item in self.itemlist
         assert targetType == DRAG_ITEM_NAME
         name = self.namefunc(item)
         selection.set(selection.target, 8, name)
 
-    def drag_data_received(self, widget, context, x,y, selection, targetType, time):
+    def drag_data_received_cb(self, widget, context, x,y, selection, targetType, time):
         item_name = selection.data
         target_item_idx = self.index(x, y)
         if target_item_idx > len(self.itemlist):

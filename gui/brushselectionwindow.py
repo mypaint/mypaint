@@ -23,8 +23,8 @@ class Window(gtk.Window):
         self.set_role('Brush selector')
         self.connect('delete-event', self.app.hide_window_cb)
 
-        self.brushgroups = BrushGroupsList(self.app, self)
-        self.groupselector = GroupSelector(self.app, self.brushgroups)
+        self.groupselector = GroupSelector(self.app)
+        self.brushgroups = BrushGroupsList(self.app)
 
         #main container
         vbox = gtk.VBox()
@@ -33,7 +33,6 @@ class Window(gtk.Window):
         self.scroll = scroll = gtk.ScrolledWindow()
         scroll.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
         scroll.add_with_viewport(self.brushgroups)
-        #self.connect('configure-event', self.on_configure)
         expander = self.expander = gtk.Expander(label=_('Edit'))
         expander.set_expanded(False)
         expander.add(brushcreationwidget.Widget(app))
@@ -46,21 +45,23 @@ class Window(gtk.Window):
 
 
 class BrushList(pixbuflist.PixbufList):
-    def __init__(self, app, win, groupname, grouplist):
+    def __init__(self, app, group):
         self.app = app
         self.bm = app.brushmanager
-        self.win = win
-        self.group = groupname
-        self.grouplist = grouplist
-        self.brushes = self.bm.groups[self.group]
+        self.brushes = self.bm.groups[group]
         pixbuflist.PixbufList.__init__(self, self.brushes, 48, 48,
                                        namefunc = lambda x: x.name,
                                        pixbuffunc = lambda x: x.preview)
+        self.set_selected(self.bm.selected_brush)
         self.bm.brushes_observers.append(self.brushes_modified_cb)
+        self.bm.selected_brush_observers.append(self.brush_selected_cb)
 
     def brushes_modified_cb(self, brushes):
         if brushes is self.brushes:
             self.update()
+
+    def brush_selected_cb(self, brush):
+        self.set_selected(brush)
 
     def remove_brush(self, brush):
         self.brushes.remove(brush)
@@ -91,20 +92,19 @@ class BrushList(pixbuflist.PixbufList):
         brush.set_color_hsv(color)
 
         # brush changed on harddisk?
-        changed = brush.reload_if_changed()
-        if changed:
-            self.update()
+        if brush.reload_if_changed():
+            for brushes in self.bm.groups.itervalues():
+                for f in self.bm.brushes_observers: f(brushes)
+
         self.bm.select_brush(brush)
 
 class BrushGroupsList(gtk.VBox):
-    def __init__(self, app, window):
+    def __init__(self, app):
         gtk.VBox.__init__(self)
         self.app = app
         self.bm = app.brushmanager
-        self.parent_window = window
         self.group_widgets = {}
         self.update()
-        self.bm.selected_brush_observers.append(self.brush_selected_cb)
         self.bm.groups_observers.append(self.brushes_modified_cb)
 
     def brushes_modified_cb(self):
@@ -123,24 +123,19 @@ class BrushGroupsList(gtk.VBox):
             if group in self.group_widgets:
                 w = self.group_widgets[group]
             else:
-                w = BrushList(self.app, self.parent_window, group, self)
+                w = BrushList(self.app, group)
             self.group_widgets[group] = w
             self.pack_start(w, expand=False, fill=False, padding=3)
 
         self.show_all()
 
-    def brush_selected_cb(self, brush):
-        for w in self.group_widgets.itervalues():
-            w.set_selected(brush)
-
 class GroupSelector(gtk.DrawingArea):
-    def __init__(self, app, brushgroups):
+    def __init__(self, app):
         gtk.DrawingArea.__init__(self)
 
         self.app = app
         self.bm = app.brushmanager
         self.bm.groups_observers.append(self.active_groups_changed_cb)
-        self.brushgroups = brushgroups
 
         self.connect("expose-event", self.expose_cb)
         self.connect("button-press-event", self.button_press_cb)
@@ -206,8 +201,7 @@ class GroupSelector(gtk.DrawingArea):
         
     def button_press_cb(self, widget, event):
         if event.type != gdk.BUTTON_PRESS:
-            return
-            # ignore the extra double-click event
+            return # ignore the extra double-click event
         group = self.group_at(event.x, event.y)
         if event.button == 1:
             if not group:
@@ -216,8 +210,7 @@ class GroupSelector(gtk.DrawingArea):
                 self.bm.active_groups.remove(group)
             else:
                 self.bm.active_groups.insert(0, group)
-            self.brushgroups.update()
-            self.queue_draw()
+            for f in self.bm.groups_observers: f()
         elif event.button == 3:
             menu = self.context_menu(group)
             menu.popup(None,None,None, event.button, event.time, group)
@@ -225,7 +218,7 @@ class GroupSelector(gtk.DrawingArea):
     def context_menu(self, group):
         m = gtk.Menu()
         menu = []
-        menu = [ (_("New group..."), self.create_group_cb) ]
+        menu += [ (_("New group..."), self.create_group_cb) ]
         if group:
             menu += [ (_("Rename group..."), self.rename_group_cb),
                       (_("Delete group..."), self.delete_group_cb)]
@@ -254,4 +247,4 @@ class GroupSelector(gtk.DrawingArea):
         if dialogs.confirm(self, _('Really delete group %s?') % group):
             self.bm.delete_group(group)
             if group in self.bm.groups:
-                dialogs.error(self, _('This group can not be deleted.'))
+                dialogs.error(self, _('This group can not be deleted (try to make it empty first).'))

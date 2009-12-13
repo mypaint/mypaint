@@ -57,7 +57,8 @@ class Widget(gtk.HBox):
             b.connect('clicked', clicked_cb)
             right_vbox.pack_start(b, expand=False)
 
-        self.app.brushmanager.selected_brush_observers.append(self.brush_selected_cb)
+        self.last_selected_brush = self.bm.selected_brush
+        self.bm.selected_brush_observers.append(self.brush_selected_cb)
         self.app.brush.settings_observers.append(self.brush_modified_cb)
 
 
@@ -94,47 +95,51 @@ class Widget(gtk.HBox):
         self.bm.select_brush(b)
 
     def rename_brush_cb(self, window):
-        b = self.bm.selected_brush
-        if not b.name:
-            display = gdk.display_get_default()
-            display.beep()
+        src_brush = self.bm.selected_brush
+        if not src_brush.name:
+            dialogs.error(self, _('No brush selected!'))
             return
 
-        name = dialogs.ask_for_name(self, _("Rename Brush"), b.name.replace('_', ' '))
-        if not name:
+        dst_name = dialogs.ask_for_name(self, _("Rename Brush"), src_brush.name.replace('_', ' '))
+        if not dst_name:
             return
-        name = name.replace(' ', '_')
-        print 'renaming brush', repr(b.name), '-->', repr(name)
+        dst_name = dst_name.replace(' ', '_')
         # ensure we don't overwrite an existing brush by accident
+        dst_deleted = None
         for group, brushes in self.bm.groups.iteritems():
-            if group == brushmanager.DELETED_BRUSH_GROUP:
-                continue
             for b2 in brushes:
-                if b2.name == name:
-                    dialogs.error(self, _('A brush with this name already exists!'))
-                    return
-        success = b.delete_from_disk()
-        old_name = b.name
-        b.name = name
-        b.save()
-        if not success:
-            # we are renaming a stock brush
-            # we can't delete the original; instead we put it away so it doesn't reappear
-            old_brush = brushmanager.ManagedBrush(self.bm)
-            old_brush.load(old_name)
+                if b2.name == dst_name:
+                    if group == brushmanager.DELETED_BRUSH_GROUP:
+                        dst_deleted = b2
+                    else:
+                        dialogs.error(self, _('A brush with this name already exists!'))
+                        return
+
+        print 'renaming brush', repr(src_brush.name), '-->', repr(dst_name)
+        if dst_deleted:
             deleted_brushes = self.bm.get_group_brushes(brushmanager.DELETED_BRUSH_GROUP)
-            deleted_brushes.insert(0, old_brush)
+            deleted_brushes.remove(dst_deleted)
             for f in self.bm.brushes_observers: f(deleted_brushes)
 
-        self.bm.select_brush(b)
+        # save src as dst
+        src_name = src_brush.name
+        src_brush.name = dst_name
+        src_brush.save()
+        src_brush.name = src_name
+        # load dst
+        dst_brush = brushmanager.ManagedBrush(self.bm)
+        dst_brush.load(dst_name)
+
+        # replace src with dst (but keep src in the deleted list if it is a stock brush)
+        self.delete_brush_internal(src_brush, replacement=dst_brush)
+
+        self.bm.select_brush(dst_brush)
 
     def update_preview_cb(self, window):
         pixbuf = self.get_preview_pixbuf()
         b = self.bm.selected_brush
         if not b.name:
-            # no brush selected
-            display = gdk.display_get_default()
-            display.beep()
+            dialogs.error(self, _('No brush selected, please use "add as new" instead.'))
             return
         b.preview = pixbuf
         b.save()
@@ -145,9 +150,7 @@ class Widget(gtk.HBox):
     def update_settings_cb(self, window):
         b = self.bm.selected_brush
         if not b.name:
-            # no brush selected
-            display = gdk.display_get_default()
-            display.beep()
+            dialogs.error(self, _('No brush selected, please use "add as new" instead.'))
             return
         b.copy_settings_from(self.app.brush)
         b.save()
@@ -155,18 +158,23 @@ class Widget(gtk.HBox):
     def delete_brush_cb(self, window):
         b = self.bm.selected_brush
         if not b.name:
-            display = gdk.display_get_default()
-            display.beep()
+            dialogs.error(self, _('No brush selected!'))
             return
         if not dialogs.confirm(self, _("Really delete brush from disk?")):
             return
-
         self.bm.select_brush(None)
+        self.delete_brush_internal(b)
 
+    def delete_brush_internal(self, b, replacement=None):
         for brushes in self.bm.groups.itervalues():
             if b in brushes:
-                brushes.remove(b)
+                idx = brushes.index(b)
+                if replacement:
+                    brushes[idx] = replacement
+                else:
+                    del brushes[idx]
                 for f in self.bm.brushes_observers: f(brushes)
+                assert b not in brushes, 'Brush exists multiple times in the same group!'
 
         if not b.delete_from_disk():
             # stock brush can't be deleted
@@ -181,6 +189,11 @@ class Widget(gtk.HBox):
         else:
             name = name.replace('_', ' ')
         self.brush_name_label.set_text(name)
+
+        # selecting twice loads preview
+        if b == self.last_selected_brush:
+            self.set_preview_pixbuf(b.preview)
+        self.last_selected_brush = self.bm.selected_brush
 
     def brush_modified_cb(self):
         self.tdw.doc.set_brush(self.app.brush)

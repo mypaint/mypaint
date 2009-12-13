@@ -51,6 +51,8 @@ class Application: # singleton
         self.kbm = keyboard.KeyboardManager()
         self.filehandler = filehandling.FileHandler(self)
 
+        self.brush.copy_settings_from(self.brushmanager.selected_brush)
+        self.brush.set_color_hsv((0, 0, 0))
         self.brushmanager.selected_brush_observers.append(self.brush_selected_cb)
 
         self.window_names = '''

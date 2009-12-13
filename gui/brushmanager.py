@@ -27,8 +27,9 @@ class BrushManager:
         self.user_brushpath = user_brushpath
 
         self.selected_brush = ManagedBrush(self)
-        self.groups = []
+        self.groups = {}
         self.contexts = []
+        self.active_groups = []
         self.brush_by_device = {} # should be save/loaded too?
         self.selected_context = None
 
@@ -41,8 +42,10 @@ class BrushManager:
         self.load_groups()
 
         # TODO: load from config instead
-        self.groups.setdefault(DEFAULT_BRUSH_GROUP, [])
-        self.active_groups = [DEFAULT_BRUSH_GROUP]
+        if DEFAULT_BRUSH_GROUP in self.groups:
+            brushes = self.get_group_brushes(DEFAULT_BRUSH_GROUP, make_active=True)
+            if brushes:
+                self.selected_brush = brushes[0]
 
         self.brushes_observers.append(self.brushes_modified_cb)
 
@@ -64,9 +67,7 @@ class BrushManager:
             groups = {}
             if os.path.exists(filename):
                 curr_group = DEFAULT_BRUSH_GROUP
-                groups[curr_group] = []
                 for line in open(filename):
-
                     name = line.strip()
                     if name.startswith('#'):
                         continue
@@ -80,6 +81,7 @@ class BrushManager:
                     except IOError, e:
                         print e, '(removed from group)'
                         continue
+                    groups.setdefault(curr_group, [])
                     if b in groups[curr_group]:
                         print filename + ': Warning: brush appears twice in the same group, ignored'
                         continue
@@ -90,6 +92,10 @@ class BrushManager:
         base  = read_groups(os.path.join(self.user_brushpath,  'order_default.conf'))
         our   = read_groups(os.path.join(self.user_brushpath,  'order.conf'))
         their = read_groups(os.path.join(self.stock_brushpath, 'order.conf'))
+
+        if not our:
+            # order.conf missing, restore stock order even if order_default.conf exists
+            base = {}
 
         if base == their:
             self.groups = our
@@ -107,7 +113,7 @@ class BrushManager:
                     if b in our_brushes:
                         insert_index = our_brushes.index(b) + 1
                     else:
-                        if b in their_brushes:
+                        if b not in base_brushes:
                             our_brushes.insert(insert_index, b)
                             insert_index += 1
                 # remove deleted brushes
@@ -206,7 +212,6 @@ class ManagedBrush(brush.Brush):
         self.bm = brushmanager
         self.preview = None
         self.name = None
-        self.preview_changed = True
 
         self.settings_mtime = None
         self.preview_mtime = None
@@ -240,8 +245,12 @@ class ManagedBrush(brush.Brush):
         if os.path.isfile(prefix + '.myb'):
             os.remove(prefix + '_prev.png')
             os.remove(prefix + '.myb')
-            self.preview_changed = True # need to recreate when saving
-            return True
+            try:
+                self.load(self.name)
+            except IOError:
+                return True # success
+            else:
+                return False # partial success, this brush was hiding a stock brush with the same name
         # stock brush cannot be deleted
         return False
 
@@ -258,9 +267,7 @@ class ManagedBrush(brush.Brush):
 
     def save(self):
         prefix = self.get_fileprefix(saving=True)
-        if self.preview_changed:
-            self.preview.save(prefix + '_prev.png', 'png')
-            self.preview_changed = False
+        self.preview.save(prefix + '_prev.png', 'png')
         open(prefix + '.myb', 'w').write(self.save_to_string())
         self.remember_mtimes()
 
@@ -271,12 +278,6 @@ class ManagedBrush(brush.Brush):
         filename = prefix + '_prev.png'
         pixbuf = gdk.pixbuf_new_from_file(filename)
         self.preview = pixbuf
-
-        if prefix.startswith(self.bm.user_brushpath):
-            self.preview_changed = False
-        else:
-            # for saving, create the preview file even if not changed
-            self.preview_changed = True
 
         filename = prefix + '.myb'
         errors = self.load_from_string(open(filename).read())
