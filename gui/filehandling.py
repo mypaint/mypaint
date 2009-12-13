@@ -110,14 +110,16 @@ class FileHandler(object):
                 self.save_filter_default = f
 
     def confirm_destructive_action(self, title='Confirm', question='Really continue?'):
-        t = round(self.doc.unsaved_painting_time)
+        t = self.doc.unsaved_painting_time
         if t < 30:
             # no need to ask
             return True
 
         if t > 120:
-            t = ngettext('%d minute', '%d minutes', (t/60)) % (t/60)
+            t = int(round(t/60))
+            t = ngettext('%d minute', '%d minutes', t) % t
         else:
+            t = int(round(t))
             t = ngettext('%d second', '%d seconds', t) % t
         d = gtk.Dialog(title, self.app.drawWindow, gtk.DIALOG_MODAL)
 
