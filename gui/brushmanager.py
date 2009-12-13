@@ -145,7 +145,7 @@ class BrushManager:
         # clean up legacy stuff
         fn = os.path.join(self.user_brushpath, 'deleted.conf')
         if os.path.exists(fn):
-            os.path.remove(fn)
+            os.remove(fn)
 
     def brushes_modified_cb(self, brushes):
         self.save_brushorder()
