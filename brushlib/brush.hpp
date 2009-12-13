@@ -191,14 +191,14 @@ private:
 
     { // start / end stroke (for "stroke" input only)
       if (!states[STATE_STROKE_STARTED]) {
-        if (pressure > settings[BRUSH_STROKE_TRESHOLD]->base_value + 0.0001) {
+        if (pressure > settings[BRUSH_STROKE_THRESHOLD]->base_value + 0.0001) {
           // start new stroke
           //printf("stroke start %f\n", pressure);
           states[STATE_STROKE_STARTED] = 1;
           states[STATE_STROKE] = 0.0;
         }
       } else {
-        if (pressure <= settings[BRUSH_STROKE_TRESHOLD]->base_value * 0.9 + 0.0001) {
+        if (pressure <= settings[BRUSH_STROKE_THRESHOLD]->base_value * 0.9 + 0.0001) {
           // end stroke
           //printf("stroke end\n");
           states[STATE_STROKE_STARTED] = 0;

@@ -67,7 +67,7 @@ settings_list = [
     ['smudge_length', _('smudge length'), False, 0.0, 0.5, 1.0, _("This controls how fast the smudge color becomes the color you are painting on.\n0.0 immediately change the smudge color\n1.0 never change the smudge color")],
     ['eraser', _('eraser'), False, 0.0, 0.0, 1.0, _("how much this tool behaves like an eraser\n 0.0 normal painting\n 1.0 standard eraser\n 0.5 pixels go towards 50% transparency")],
 
-    ['stroke_treshold', _('stroke treshold'), True, 0.0, 0.0, 0.5, _("How much pressure is needed to start a stroke. This affects the stroke input only. Mypaint does not need a minimal pressure to start drawing.")],
+    ['stroke_threshold', _('stroke threshold'), True, 0.0, 0.0, 0.5, _("How much pressure is needed to start a stroke. This affects the stroke input only. Mypaint does not need a minimal pressure to start drawing.")],
     ['stroke_duration_logarithmic', _('stroke duration'), False, -1.0, 4.0, 7.0, _("How far you have to move until the stroke input reaches 1.0. This value is logarithmic (negative values will not inverse the process).")],
     ['stroke_holdtime', _('stroke hold time'), False, 0.0, 0.0, 10.0, _("This defines how long the stroke input stays at 1.0. After that it will reset to 0.0 and start growing again, even if the stroke is not yet finished.\n2.0 means twice as long as it takes to go from 0.0 to 1.0\n9.9 and bigger stands for infinite")],
     ['custom_input', _('custom input'), False, -5.0, 0.0, 5.0, _("Set the custom input to this value. If it is slowed down, move it towards this value (see below). The idea is that you make this input depend on a mixture of pressure/speed/whatever, and then make other settings depend on this 'custom input' instead of repeating this combination everywhere you need it.\nIf you make it change 'by random' you can generate a slow (smooth) random input.")],
@@ -87,6 +87,7 @@ settings_migrate = {
     'color_value'        : ('change_color_v', lambda y: y*128.0/256.0),
     'speed_slowness'     : ('speed1_slowness', None),
     'change_color_s'     : ('change_color_hsv_s', None),
+    'stroke_treshold'    : ('stroke_threshold', None),
     }
 
 # the states are not (yet?) exposed to the user
