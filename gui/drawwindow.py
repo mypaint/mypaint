@@ -726,6 +726,8 @@ class Window(gtk.Window):
             u'Álinson Santos (%s)' % _('programming'),
             u'Tumagonx (%s)' % _('portability'),
             u'Ilya Portnov (%s)' % _('programming'),
+            u'David Revoy (%s)' % _('brushes'),
+            u'Ramón Miranda (%s)' % _('brushes'),
             ])
         d.set_artists([
             u'Sebastian Kraft (%s)' % _('desktop icon'),
