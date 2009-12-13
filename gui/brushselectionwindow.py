@@ -111,19 +111,21 @@ class BrushGroupsList(gtk.VBox):
         self.update()
 
     def update(self):
-        old_widgets = self.group_widgets
-        self.group_widgets = {}
+        for group in self.group_widgets.keys():
+            if group not in self.bm.groups:
+                # this leaks around 2MB of memory, not sure why
+                # (no real problem, this is only when deleting/renaming groups)
+                del self.group_widgets[group]
 
         self.foreach(self.remove)
 
         for group in self.bm.active_groups:
-            if group in old_widgets:
-                w = old_widgets[group]
+            if group in self.group_widgets:
+                w = self.group_widgets[group]
             else:
                 w = BrushList(self.app, self.parent_window, group, self)
             self.group_widgets[group] = w
             self.pack_start(w, expand=False, fill=False, padding=3)
-            # FIXME: are we leaking memory by not calling .destroy() on unused widgets? probably not...
 
         self.show_all()
 
