@@ -149,6 +149,7 @@ class GroupSelector(gtk.DrawingArea):
                         )
         self.idx2group = {}
         self.layout = None
+        self.set_tooltip_text(_('Right click on group to modify'))
 
     def active_groups_changed_cb(self):
         self.queue_draw()
@@ -208,12 +209,14 @@ class GroupSelector(gtk.DrawingArea):
         x, y = int(x), int(y) # avoid warning
         i, d = self.layout.xy_to_index(x*pango.SCALE, y*pango.SCALE)
         return self.idx2group.get(i)
-        
+
     def button_press_cb(self, widget, event):
-        if event.type != gdk.BUTTON_PRESS:
-            return # ignore the extra double-click event
         group = self.group_at(event.x, event.y)
-        if event.button == 1:
+        if event.type != gdk.BUTTON_PRESS:
+            # Double-click
+            self.bm.active_groups = [group]
+            for f in self.bm.groups_observers: f()
+        elif event.button == 1:
             if not group:
                 return
             if group in self.bm.active_groups:
