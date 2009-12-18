@@ -76,7 +76,6 @@ class ByInputWidget(gtk.VBox):
     "the gui elements that change the response to one input"
     def __init__(self, app, input, setting):
         gtk.VBox.__init__(self)
-        self.tooltips = gtk.Tooltips()
 
         self.set_spacing(5)
 

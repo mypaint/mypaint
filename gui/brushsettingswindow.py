@@ -89,6 +89,9 @@ class Window(gtk.Window):
         w = self.functionWindows.get(setting)
         if w is None:
             w = functionwindow.Window(self.app, setting, adj)
+            def set_hint(widget):
+                widget.window.set_type_hint(gtk.gdk.WINDOW_TYPE_HINT_UTILITY)
+            w.connect('realize', set_hint)
             self.functionWindows[setting] = w
             w.show_all()
         w.present() # get to the front
