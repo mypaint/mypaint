@@ -80,9 +80,13 @@ class Application: # singleton
 
         def at_application_start(*trash):
             if filenames:
-                #open the first file, no matter how many that has been specified
+                # Open only the first file, no matter how many has been specified
+                # If the file does not exist just set it as the file to save to
                 fn = filenames[0].replace('file:///', '/') # some filebrowsers do this (should only happen with outdated mypaint.desktop)
-                self.filehandler.open_file(fn)
+                if not os.path.exists(fn):
+                    self.filehandler.filename = fn
+                else:
+                    self.filehandler.open_file(fn)
 
         gobject.idle_add(at_application_start)
 
