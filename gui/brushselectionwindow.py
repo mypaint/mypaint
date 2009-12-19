@@ -37,7 +37,10 @@ class Window(gtk.Window):
         expander.set_expanded(False)
         expander.add(brushcreationwidget.Widget(app))
 
-        vbox.pack_start(self.groupselector, expand=False)
+        al = gtk.Alignment(0.0, 0.0, 1.0, 1.0)
+        al.add(self.groupselector)
+        al.set_padding(2,2,4,4)
+        vbox.pack_start(al, expand=False)
         vbox.pack_start(gtk.HSeparator(), expand=False)
         vbox.pack_start(scroll, expand=True)
         vbox.pack_start(gtk.HSeparator(), expand=False)
@@ -167,6 +170,7 @@ class GroupSelector(gtk.DrawingArea):
         cr.set_source_rgb(*c_floats)
         layout = cr.create_layout()
         layout.set_width(width*pango.SCALE)
+        layout.set_font_description(style.font_desc)
 
         all_groups = list(sorted(self.bm.groups.keys()))
 
@@ -186,7 +190,7 @@ class GroupSelector(gtk.DrawingArea):
                 #attr.insert(pango.AttrBackground(c.red, c.green, c.blue, idx_start, idx))
                 #c = style.text[gtk.STATE_SELECTED]
                 #attr.insert(pango.AttrForeground(c.red, c.green, c.blue, idx_start, idx))
-                attr.insert(pango.AttrWeight(pango.WEIGHT_BOLD, idx_start, idx))
+                attr.insert(pango.AttrUnderline(pango.UNDERLINE_SINGLE, idx_start, idx))
 
             text += group + ' '
             idx += 1
