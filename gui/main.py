@@ -9,8 +9,8 @@
 import pygtk
 pygtk.require('2.0')
 import gtk
-required = (2, 16, 0)
-assert gtk.ver >= required, 'You need to upgrade PyGTK, at least version %d.%d.%d is required.' % required
+#required = (2, 16, 0)
+#assert gtk.ver >= required, 'You need to upgrade PyGTK, at least version %d.%d.%d is required.' % required
 
 from gui import application
 from optparse import OptionParser
