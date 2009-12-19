@@ -157,12 +157,14 @@ class GroupSelector(gtk.DrawingArea):
         style = self.get_style()
 
         c = style.bg[gtk.STATE_NORMAL]
-        cr.set_source_rgb(c.red_float, c.blue_float, c.green_float)
+        c_floats = [float(c.red)/65535, float(c.green)/65535, float(c.blue)/65535]
+        cr.set_source_rgb(*c_floats)
         cr.rectangle(0, 0, width, height)
         cr.fill()
 
         c = style.text[gtk.STATE_NORMAL]
-        cr.set_source_rgb(c.red_float, c.blue_float, c.green_float)
+        c_floats = [float(c.red)/65535, float(c.green)/65535, float(c.blue)/65535]
+        cr.set_source_rgb(*c_floats)
         layout = cr.create_layout()
         layout.set_width(width*pango.SCALE)
 
