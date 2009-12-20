@@ -4,11 +4,11 @@ version 2
 opaque 0.51
 opaque_multiply 0.0 | pressure (0.000000 0.000000), (1.000000 1.000000)
 opaque_linearize 0.9
-radius_logarithmic 1.7 | speed1 (0.000000 0.000000), (0.817901 1.659167), (0.910494 1.810000), (1.000000 1.810000) | speed2 (0.000000 0.000000), (0.074074 -0.255208), (0.490741 0.000000), (0.611111 0.583333), (0.867284 0.700000), (1.000000 0.700000)
+radius_logarithmic 2.57 | speed1 (0.000000 0.000000), (0.817901 1.659167), (0.910494 1.810000), (1.000000 1.810000) | speed2 (0.000000 0.000000), (0.074074 -0.255208), (0.490741 0.000000), (0.611111 0.583333), (0.867284 0.700000), (1.000000 0.700000)
 hardness 0.23
-dabs_per_basic_radius 0.91
-dabs_per_actual_radius 0.67
-dabs_per_second 20.61
+dabs_per_basic_radius 0.17
+dabs_per_actual_radius 0.17
+dabs_per_second 1.42
 radius_by_random 0.0
 speed1_slowness 0.04
 speed2_slowness 0.31
@@ -20,9 +20,9 @@ offset_by_speed_slowness 1.0
 slow_tracking 0.0
 slow_tracking_per_dab 0.0
 tracking_noise 0.0
-color_h 0.146378132473
-color_s 0.68941017255
-color_v 0.947112230106
+color_h 0.0
+color_s 0.0
+color_v 0.0
 change_color_h 0.0
 change_color_l 0.0
 change_color_hsl_s 0.0

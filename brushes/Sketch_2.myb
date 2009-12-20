@@ -6,8 +6,8 @@ opaque_multiply 0.57 | pressure (0.000000 -0.875000), (1.000000 1.000000)
 opaque_linearize 0.45
 radius_logarithmic 0.63
 hardness 0.8
-dabs_per_basic_radius 3.54
-dabs_per_actual_radius 3.57
+dabs_per_basic_radius 2.09
+dabs_per_actual_radius 2.13
 dabs_per_second 0.0
 radius_by_random 0.88
 speed1_slowness 0.04

@@ -1,10 +1,10 @@
 # mypaint brush file
 # you can edit this file and then select the brush in mypaint (again) to reload
 version 2
-opaque 0.4 | pressure (0.000000 0.000000), (1.000000 0.400000)
+opaque 0.123456790123 | pressure (0.000000 0.000000), (1.000000 0.400000)
 opaque_multiply 0.0 | pressure (0.000000 0.000000), (1.000000 1.000000)
 opaque_linearize 0.0
-radius_logarithmic 0.58
+radius_logarithmic 0.88
 hardness 0.2
 dabs_per_basic_radius 5.07
 dabs_per_actual_radius 3.93

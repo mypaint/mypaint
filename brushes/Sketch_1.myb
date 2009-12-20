@@ -14,7 +14,7 @@ speed1_slowness 0.04
 speed2_slowness 0.8
 speed1_gamma 4.0
 speed2_gamma 4.0
-offset_by_random 2.0 | pressure (0.000000 2.000000), (0.142857 1.687500), (0.255952 0.750000), (0.404762 -2.000000), (1.000000 -2.000000)
+offset_by_random 2.0 | pressure (0.000000 2.000000), (0.160714 1.583333), (0.288690 0.708333), (0.440476 -2.000000), (1.000000 -2.000000)
 offset_by_speed 0.0
 offset_by_speed_slowness 1.0
 slow_tracking 0.0

@@ -7,7 +7,7 @@ opaque_linearize 0.0
 radius_logarithmic 2.3 | pressure (0.000000 0.000000), (0.404321 -0.087500), (1.000000 -0.420000) | speed1 (0.000000 -0.201429), (4.000000 1.410000) | speed2 (0.000000 0.000000), (1.000000 0.420000)
 hardness 0.38 | pressure (0.000000 -0.250000), (0.133929 -0.195312), (0.223214 -0.109375), (0.342262 -0.028646), (0.500000 0.000000), (1.000000 0.000000)
 dabs_per_basic_radius 0.0
-dabs_per_actual_radius 3.67
+dabs_per_actual_radius 1.27
 dabs_per_second 0.0
 radius_by_random 0.0
 speed1_slowness 0.04

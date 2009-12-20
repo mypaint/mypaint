@@ -1,10 +1,10 @@
 # mypaint brush file
 # you can edit this file and then select the brush in mypaint (again) to reload
 version 2
-opaque 1.0 | pressure (0.000000 -0.690000), (0.213855 -0.632500), (0.343373 -0.424062), (0.448795 0.028750), (0.533133 0.582187), (0.728916 0.690000), (0.873494 0.690000), (1.000000 0.690000) | speed1 (0.000000 0.947917), (0.614458 0.343750), (1.530120 -0.135417), (2.481928 -0.489583), (3.325301 -0.885417), (4.000000 -1.000000)
+opaque 0.74 | pressure (0.000000 -0.500000), (0.213855 -0.458333), (0.343373 -0.307291), (0.448795 0.020833), (0.533133 0.421875), (0.728916 0.500000), (0.873494 0.500000), (1.000000 0.500000) | speed1 (0.000000 0.947917), (0.614458 0.343750), (1.530120 -0.135417), (2.481928 -0.489583), (3.325301 -0.885417), (4.000000 -1.000000)
 opaque_multiply 0.0 | pressure (0.000000 0.000000), (0.015000 0.000000), (0.015000 1.000000), (1.000000 1.000000)
 opaque_linearize 0.0
-radius_logarithmic 2.02 | pressure (0.000000 -0.398646), (1.000000 0.430000) | speed1 (0.000000 0.118646), (1.000000 -0.170000)
+radius_logarithmic 2.92 | pressure (0.000000 -0.398646), (1.000000 0.430000) | speed1 (0.000000 0.118646), (1.000000 -0.170000)
 hardness 0.5 | pressure (0.000000 0.000000), (1.000000 0.050000) | speed1 (0.000000 0.000000), (1.000000 -0.090000)
 dabs_per_basic_radius 0.0
 dabs_per_actual_radius 2.0
@@ -20,9 +20,9 @@ offset_by_speed_slowness 1.0
 slow_tracking 0.0
 slow_tracking_per_dab 0.8
 tracking_noise 0.0
-color_h 0.0
-color_s 0.0
-color_v 0.0
+color_h 0.850545992967
+color_s 1.0
+color_v 0.027481498436
 change_color_h 0.0
 change_color_l 0.0
 change_color_hsl_s 0.0
@@ -37,5 +37,5 @@ stroke_holdtime 0.0
 custom_input 0.0
 custom_input_slowness 0.0
 elliptical_dab_ratio 5.46
-elliptical_dab_angle 45.29
+elliptical_dab_angle 0.0
 direction_filter 2.0
