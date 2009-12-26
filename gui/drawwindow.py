@@ -717,17 +717,18 @@ class Window(gtk.Window):
         d.set_wrap_license(True)
         d.set_authors([
             u"Martin Renold (%s)" % _('programming'),
-            u'Artis Rozentāls (%s)' % _('brushes'),
-            u'Yves Combe (%s)' % _('portability'),
-            u'Popolon (%s)' % _('brushes, programming'),
-            u'Clement Skau (%s)' % _('programming'),
+            u"Artis Rozentāls (%s)" % _('brushes'),
+            u"Yves Combe (%s)" % _('portability'),
+            u"Popolon (%s)" % _('brushes, programming'),
+            u"Clement Skau (%s)" % _('programming'),
             u"Marcelo 'Tanda' Cerviño (%s)" % _('patterns, brushes'),
-            u'Jon Nordby (%s)' % _('programming'),
-            u'Álinson Santos (%s)' % _('programming'),
-            u'Tumagonx (%s)' % _('portability'),
-            u'Ilya Portnov (%s)' % _('programming'),
-            u'David Revoy (%s)' % _('brushes'),
-            u'Ramón Miranda (%s)' % _('brushes'),
+            u"Jon Nordby (%s)" % _('programming'),
+            u"Álinson Santos (%s)" % _('programming'),
+            u"Tumagonx (%s)" % _('portability'),
+            u"Ilya Portnov (%s)" % _('programming'),
+            u"David Revoy (%s)" % _('brushes'),
+            u"Ramón Miranda (%s)" % _('brushes'),
+            u"Enrico Guarnieri 'Ico_dY' (%s)" % _('brushes'),
             ])
         d.set_artists([
             u'Sebastian Kraft (%s)' % _('desktop icon'),
