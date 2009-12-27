@@ -868,11 +868,11 @@ msgstr "Successivo (sotto quello corrente)"
 
 #: ../gui/drawwindow.py:137
 msgid "New (above current)"
-msgstr "Nuovo (sotto quello corrente)"
+msgstr "Nuovo (sopra quello corrente)"
 
 #: ../gui/drawwindow.py:138
 msgid "New (below current)"
-msgstr "Nuovo (sopra quello corrente)"
+msgstr "Nuovo (sotto quello corrente)"
 
 #: ../gui/drawwindow.py:139
 msgid "Merge Down"
