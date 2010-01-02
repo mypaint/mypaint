@@ -241,20 +241,20 @@ class Document():
         try:        
             save(filename, **kwargs)
         except gobject.GError, e:
-            if  e.code == 5:
+            if e.code == 5:
                 #add a hint due to a very consfusing error message when there is no space left on device
-                raise SaveLoadError, 'Unable to save: ' + e.message +  '\nDo you have enough space left on the device?'
+                raise SaveLoadError, _('Unable to save: %s\nDo you have enough space left on the device?') % e.message
             else:
-                raise SaveLoadError, 'Unable to save: ' + e.message
+                raise SaveLoadError, _('Unable to save: %s') % e.message
         except IOError, e:
-            raise SaveLoadError, 'Unable to save: ' + e.strerror
+            raise SaveLoadError, _('Unable to save: %s') % e.strerror
         self.unsaved_painting_time = 0.0
 
     def load(self, filename):
         if not os.path.isfile(filename):
-            raise SaveLoadError, 'File does not exist: ' + repr(filename)
+            raise SaveLoadError, _('File does not exist: %s') % repr(filename)
         if not os.access(filename,os.R_OK):
-            raise SaveLoadError, 'You do not have the necessary permissions to open file: ' + repr(filename)
+            raise SaveLoadError, _('You do not have the necessary permissions to open file: %s') % repr(filename)
         trash, ext = os.path.splitext(filename)
         ext = ext.lower().replace('.', '')
         load = getattr(self, 'load_' + ext, self.unsupported)
@@ -264,7 +264,7 @@ class Document():
         self.call_doc_observers()
 
     def unsupported(self, filename):
-        raise SaveLoadError, 'Unknown file format extension: ' + repr(filename)
+        raise SaveLoadError, _('Unknown file format extension: %s') % repr(filename)
 
     def render_as_pixbuf(self, *args):
         return pixbufsurface.render_as_pixbuf(self, *args)
@@ -351,14 +351,12 @@ class Document():
             opac = l.opacity
             x, y, w, h = l.surface.get_bbox()
             pixbuf = l.surface.render_as_pixbuf()
-
             el = add_layer(x-x0, y-y0, opac, pixbuf, 'data/layer%03d.png' % idx, l.name)
             # strokemap
             data = l.save_strokemap_to_string(-x, -y)
             name = 'data/layer%03d_strokemap.dat' % idx
             el.attrib['mypaint_strokemap'] = name
             write_file_str(name, data)
-
 
         # save background as layer (solid color or tiled)
         s = pixbufsurface.Surface(x0, y0, w0, h0)

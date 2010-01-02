@@ -3,7 +3,7 @@ gdk = gtk.gdk
 from math import pi, sin, cos, sqrt, atan2
 import struct
 import cairo
-from lib.helpers import rgb_to_hsv, hsv_to_rgb, str_to_bool, clamp, wrap
+from lib.helpers import rgb_to_hsv, hsv_to_rgb, clamp
 import colorhistory as ch
 from gettext import gettext as _
 
@@ -883,19 +883,8 @@ class Selector(gtk.VBox):
         vbox3.pack_start(cb_sv, expand=False)
         vbox3.pack_start(cb_opposite, expand=False)
         vbox3.pack_start(cb_neg, expand=False)
-        hbox_buttons = gtk.HBox()
-#         btn = gtk.Button(_('Fill palette'))
-#         btn.connect('clicked', self.fill_palette, False)
-#         hbox_buttons.pack_start(btn)
-        btn = gtk.Button(_('Add to palette'))
-        btn.connect('clicked', self.fill_palette, True)
-        hbox_buttons.pack_start(btn)
-        vbox3.pack_start(hbox_buttons, expand=False)
-        frame2 = gtk.Frame(_('Harmonies to palette'))
-        frame2.add(vbox3)
         vbox_exp = gtk.VBox()
         vbox_exp.pack_start(frame1)
-        vbox_exp.pack_start(frame2)
         expander.add(vbox_exp)
         self.pack_start(expander, expand=False)
         self.circle.on_select = self.hue_selected
@@ -915,109 +904,6 @@ class Selector(gtk.VBox):
     def toggle_blend(self, checkbox, name):
         attr = name+'_blends'
         setattr(self, attr, not getattr(self, attr))
-
-    def fill_palette(self, btn, add=False):
-        if not self.opposite_blends and not self.value_blends and not self.negative_blends:
-            return
-#         K = SLOTS_N/2
-        setlists = []
-        samples = self.circle.samples
-        if not samples:
-            samples = [self.hsv]
-
-        def add_tones_square(h,s,v):
-            setlist = []
-            start_i = start_j = 0
-            if s > 0.9:
-                # For saturated color, blend from it to gray
-                setlist.append((start_i,           start_j,           h,s,v))
-                setlist.append((start_i+SLOTS_N-1, start_j+SLOTS_N-1, 0.,0.,v))
-            else:
-                # Else, blend from it's saturated variant to source color.
-                setlist.append((start_i,           start_j,           h,1.,v))
-                setlist.append((start_i+SLOTS_N-1, start_j+SLOTS_N-1, h,s,v))
-            # Add white and black to corners
-            setlist.append((start_i,           start_j+SLOTS_N-1, 0.,0.,1.))
-            setlist.append((start_i+SLOTS_N-1, start_j,           0.,0.,0.))
-            return setlist
-
-        def add_hue_row(h,s,v):
-            setlist = []
-            start_i = start_j = 0
-            setlist.append((start_i, start_j,           wrap(h-1./CIRCLE_N),s,v))
-#             setlist.append((start_i, start_j+K,         h,s,v))
-            setlist.append((start_i, start_j+SLOTS_N-1, wrap(h+1./CIRCLE_N),s,v))
-            return setlist
-
-        def add_pair_blend((h1,s1,v1),(h2,s2,v2)):
-            start_i = start_j = 0
-            setlist = []
-            setlist.append((start_i,           start_j,           h1,s1,v1))
-            setlist.append((start_i+SLOTS_N-1, start_j+SLOTS_N-1, h2,s2,v2))
-            setlist.append((start_i,           start_j+SLOTS_N-1, 0.,0.,1.))
-            setlist.append((start_i+SLOTS_N-1, start_j,           0.,0.,0.))
-            return setlist
-
-        def add_negative_square(h,s,v):
-            return add_pair_blend((h,s,v), (wrap(h+0.5),1-s,1-v))
-
-        def pairs():
-            n = len(samples)
-            if n < 2:
-                return []
-            elif n == 2:
-                return [(samples[0], samples[1])]
-            elif n == 3:
-                return [(samples[0], samples[1]), 
-                        (samples[1], samples[2]),
-                        (samples[2], samples[0])]
-            else:
-                samples_ = samples[:]
-
-                def invert(h,s,v):
-                    """Find color nearest to inverted (h,s,v)
-                    and remove it from samples_."""
-                    m = 2
-                    r = samples_[0]
-                    h_inv = wrap(h+0.5)
-                    for h1,s1,v1 in samples_:
-                        d = abs(h1-h_inv)
-                        if d < m:
-                            m = d
-                            r = h1,s1,v1
-                    samples_.remove((h,s,v))
-                    try:
-                        samples_.remove(r)
-                    except ValueError:
-                        return None
-                    return r
-
-                res = []
-                while samples_:
-                    one = samples_[0]
-                    two = invert(*one)
-                    if two:
-                        res.append((one,two))
-                return res
-
-        if self.value_blends:
-            for h,s,v in samples:
-                tones = add_tones_square(h,s,v)
-                setlists.append(tones)
-#                 hues = add_hue_row(h,s,v)
-#                 setlists.append(hues)
-
-        if self.negative_blends:
-            for h,s,v in samples:
-                blend = add_negative_square(h,s,v)
-                setlists.append(blend)
-
-        if self.opposite_blends:
-            for clr1,clr2 in pairs():
-                blend = add_pair_blend(clr1,clr2)
-                setlists.append(blend)
-
-        self.app.paletteWindow.fill_palette_with(SLOTS_N,SLOTS_N, setlists, add)
 
     def harmony_toggled(self, checkbox, attr):
         setattr(self.circle, attr, not getattr(self.circle, attr))
@@ -1072,9 +958,10 @@ class Window(gtk.Window):
         self.exp_history = self.selector.exp_history
         self.exp_details = self.selector.exp_details
         self.exp_config = self.selector.exp_config
-        self.exp_history.set_expanded(str_to_bool( app.get_config('State', 'color_history_expanded') ))
-        self.exp_details.set_expanded(str_to_bool( app.get_config('State', 'color_details_expanded') ))
-        self.exp_config.set_expanded(str_to_bool( app.get_config('State', 'color_configure_expanded') ))
+        # TODO: persistency
+        #self.exp_history.set_expanded(str_to_bool( app.get_config('State', 'color_history_expanded') ))
+        #self.exp_details.set_expanded(str_to_bool( app.get_config('State', 'color_details_expanded') ))
+        #self.exp_config.set_expanded(str_to_bool( app.get_config('State', 'color_configure_expanded') ))
         self.add(self.selector)
         self.app.kbm.add_window(self)
         self.app.brush.settings_observers.append(self.brush_modified_cb)
