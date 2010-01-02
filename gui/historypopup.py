@@ -12,6 +12,7 @@ gdk = gtk.gdk
 import random
 import numpy, cairo
 from lib import helpers
+import colorhistory as ch
 
 """
 Worklist (planning/prototyping)
@@ -31,19 +32,10 @@ Observation:
   ==> you rather want a /minimum/ duration
 """
 
-num_colors = 5
 popup_height = 60
 bigcolor_width   = popup_height
 smallcolor_width = popup_height/2
-popup_width = bigcolor_width + (num_colors-1)*smallcolor_width
-
-
-def hsv_equal(a, b):
-    # hack required because we somewhere have an rgb<-->hsv conversion roundtrip
-    a_ = numpy.array(helpers.hsv_to_rgb(*a))
-    b_ = numpy.array(helpers.hsv_to_rgb(*b))
-    return ((a_ - b_)**2).sum() < (3*1.0/256)**2
-
+popup_width = bigcolor_width + (ch.num_colors-1)*smallcolor_width
 
 class HistoryPopup(gtk.Window):
     outside_popup_timeout = 0
@@ -68,11 +60,6 @@ class HistoryPopup(gtk.Window):
 
         self.selection = None
 
-        self.colorhist = [(random.random(), random.random(), random.random()) for i in range(num_colors)]
-        # default to black-and-white
-        self.colorhist[-1] = (0.0, 0.0, 0.0)
-        self.colorhist[-2] = (0.0, 0.0, 1.0)
-
         self.doc = doc
         doc.stroke_observers.append(self.stroke_finished_cb)
 
@@ -80,14 +67,16 @@ class HistoryPopup(gtk.Window):
         # finish pending stroke, if any (causes stroke_finished_cb to get called)
         self.doc.split_stroke()
         if self.selection is None:
-            self.selection = num_colors - 1
+            self.selection = ch.num_colors - 1
             color = self.app.brush.get_color_hsv()
-            if hsv_equal(self.colorhist[self.selection], color):
+            if ch.hsv_equal(ch.colors[self.selection], color):
                 self.selection -= 1
         else:
-            self.selection = (self.selection - 1) % num_colors
+            self.selection = (self.selection - 1) % ch.num_colors
 
-        self.app.brush.set_color_hsv(self.colorhist[self.selection])
+        ch.atomic = True
+        self.app.brush.set_color_hsv(ch.colors[self.selection])
+        ch.atomic = False
 
         # popup placement
         x, y = self.get_position()
@@ -111,11 +100,8 @@ class HistoryPopup(gtk.Window):
         self.selection = None
         if not brush.is_eraser():
             color = brush.get_color_hsv()
-            for c in self.colorhist:
-                if hsv_equal(color, c):
-                    self.colorhist.remove(c)
-                    break
-            self.colorhist = (self.colorhist + [color])[-num_colors:]
+            ch.push_color(color)
+            ch.last_color = helpers.hsv_to_rgb(*color)
 
     def expose_cb(self, widget, event):
         cr = self.window.cairo_create()
@@ -127,7 +113,7 @@ class HistoryPopup(gtk.Window):
 
         cr.translate(0.0, popup_height/2.0)
 
-        for i, c in enumerate(self.colorhist):
+        for i, c in enumerate(ch.colors):
             if i != self.selection:
                 cr.scale(0.5, 0.5)
 

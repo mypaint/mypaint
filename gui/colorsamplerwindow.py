@@ -1,15 +1,17 @@
-from gettext import gettext as _
 import gtk
 gdk = gtk.gdk
-from lib.helpers import rgb_to_hsv, hsv_to_rgb
 from math import pi, sin, cos, sqrt, atan2
 import struct
+import cairo
+from lib.helpers import rgb_to_hsv, hsv_to_rgb, str_to_bool, clamp, wrap
+import colorhistory as ch
+from gettext import gettext as _
 
 CSTEP=0.007
 PADDING=4
 
 class GColorSelector(gtk.DrawingArea):
-    def __init__(self):
+    def __init__(self, init_dnd=True):
         gtk.DrawingArea.__init__(self)
         self.color = (1,0,0)
         self.hsv = (0,1,1)
@@ -26,20 +28,44 @@ class GColorSelector(gtk.DrawingArea):
         self.connect('button-release-event', self.on_button_release)
         self.connect('configure-event', self.on_configure)
         self.connect('motion-notify-event', self.motion)
-        self.connect('drag_data_get', self.drag_get)
+        if init_dnd:
+            self.connect('drag_data_get', self.drag_get)
         self.button_pressed = False
         self.do_select = True
+        self.grabbed = False
+        self.dnd_enabled = init_dnd
+
+    def test_drag(self,x,y,d):
+        return d>20
+
+    def move(self,x,y):
+        pass
+
+    def redraw_on_select(self):
+        self.queue_draw()
 
     def motion(self,w, event):
         if not self.button_pressed:
             return
         d = sqrt((event.x-self.press_x)**2 + (event.y-self.press_y)**2)
-        if d > 20:
+        if self.dnd_enabled and self.test_drag(event.x,event.y, d):
             self.do_select = False
             self.drag_begin([("application/x-color",0,80)], gdk.ACTION_COPY, 1, event)
+        else:
+            if not self.grabbed:
+                self.grabbed = True
+                self.grab_add()
+            self.move(event.x,event.y)
 
     def drag_get(self, widget, context, selection, targetType, eventTime):
-        r,g,b = self.color
+        try:
+            color, is_hsv = self.get_color_at(self.press_x, self.press_y)
+        except TypeError:
+            return
+        if is_hsv:
+            r,g,b = hsv_to_rgb(*color)
+        else:
+            r,g,b = color
         r = min(int(r*65536), 65535)
         g = min(int(g*65536), 65535)
         b = min(int(b*65536), 65535)
@@ -57,10 +83,27 @@ class GColorSelector(gtk.DrawingArea):
         pass
 
     def on_select(self,color):
-        self.queue_draw()
+        pass
+
+    def record_button_press(self, x,y):
+        pass
+
+    def get_color_at(self, x,y):
+        return self.color, False
 
     def select_color_at(self, x,y):
-        pass
+        try:
+            color, is_hsv = self.get_color_at(x,y)
+        except TypeError:
+            return
+        if is_hsv:
+            self.hsv = color
+            self.color = hsv_to_rgb(*color)
+        else:
+            self.color = color
+            self.hsv = rgb_to_hsv(*color)
+        self.redraw_on_select()
+        self.on_select(self.color)
 
     def set_color(self, color):
         self.color = color
@@ -75,12 +118,15 @@ class GColorSelector(gtk.DrawingArea):
         self.do_select = True
         self.press_x = event.x
         self.press_y = event.y
+        self.record_button_press(event.x, event.y)
 
     def on_button_release(self,w, event):
         if self.button_pressed and self.do_select:
             self.select_color_at(event.x,event.y)
-            self.on_select(self.color)
         self.button_pressed = False
+        if self.grabbed:
+            self.grab_remove()
+            self.grabbed = False
 
     def draw(self,w,event):
         if not self.window:
@@ -91,26 +137,25 @@ class GColorSelector(gtk.DrawingArea):
         cr.fill()
 
 class RectSlot(GColorSelector):
-    def __init__(self,color=(1,1,1),size=48):
+    def __init__(self,color=(1.0,1.0,1.0),size=32):
         GColorSelector.__init__(self)
         self.color = color
         self.set_size_request(size,size)
 
 class RecentColors(gtk.HBox):
-    def __init__(self, N=5):
+    def __init__(self):
         gtk.HBox.__init__(self)
         self.set_border_width(4)
-        self.N = N
+        self.N = N = ch.num_colors
         self.slots = []
-        self.colors = []
-        for i in range(N):
-            slot = RectSlot()
+        for i,color in enumerate(reversed(ch.colors)):
+            slot = RectSlot(color=color)
             slot.on_select = self.slot_selected
             self.pack_start(slot, expand=True)
             self.slots.append(slot)
-            self.colors.append(slot.color)
         self.show_all()
         self.last_color = (1.0,1.0,1.0)
+        ch.on_color_pushed = self.refill_slots
 
     def slot_selected(self,color):
         self.on_select(color)
@@ -118,33 +163,47 @@ class RecentColors(gtk.HBox):
     def on_select(self,color):
         pass
 
-    def set_color(self, color):
-        eps = 0.0001
-        r1,g1,b1 = color
-        r2,g2,b2 = self.last_color
-        if abs(r1-r2)<eps and abs(g1-g2)<eps and abs(b1-b2)<eps:
-            return
-        self.last_color = color
-        if color in self.colors:
-            self.colors.remove(color)
-        self.colors.insert(0, color)
-        if len(self.colors) > self.N:
-            self.colors = self.colors[:-1]
-        for color,slot in zip(self.colors, self.slots):
-            slot.set_color(color)
+    def refill_slots(self, pushed_color):
+        for color,slot in zip(ch.colors, reversed(self.slots)):
+            slot.set_color(hsv_to_rgb(*color))
 
-CIRCLE_N = 8.0
+    def set_color(self, color):
+        self.last_color = color
+
+CIRCLE_N = 12.0
+SLOTS_N = 5
+
+AREA_SQUARE = 1
+AREA_SAMPLE = 2
+AREA_CIRCLE = 3
+
+sq32 = sqrt(3)/2
+sq33 = sqrt(3)/3
+sq36 = sq33/2
+sq22 = sqrt(2)/2
+
+def try_put(list, item):
+    if not item in list:
+        list.append(item)
 
 class CircleSelector(GColorSelector):
-    def __init__(self, color=(1.0,0.0,0.0)):
+    def __init__(self, color=(1,0,0)):
         GColorSelector.__init__(self)
         self.color = color
         self.hsv = rgb_to_hsv(*color)
-        self.last_line = None
-        self.last_color = color
-        self.calc_colors()
 
-    def get_previous_color(self,n):
+        self.samples = []      # [(h,s,v)] -- list of `harmonic' colors
+        self.last_line = None  # 
+
+        # Whether to show harmonies
+        self.complimentary = False
+        self.triadic = False
+        self.double_comp = False
+        self.split_comp = False
+        self.analogous = False
+        self.square = False
+
+    def get_previous_color(self):
         return self.color
 
     def calc_line(self, angle):
@@ -154,371 +213,824 @@ class CircleSelector(GColorSelector):
         y2 = self.y0 + self.r3*sin(-angle)
         return x1,y1,x2,y2
 
-    def calc_circle(self):
-        self.circle = []
-        a1 = 0.0
-        while a1 < 2*pi:
-            x1,y1,x2,y2 = self.calc_line(a1)
-            self.circle.append((x1,y1,x2,y2))
-            a1 += CSTEP
-
-    def calc_colors(self):
-        self.colors = []
-        a1 = 0.0
-        while a1 < 2*pi:
-            clr = hsv_to_rgb(a1/(2*pi), 1.0, 1.0)
-            self.colors.append(clr)
-            a1 += CSTEP
-
     def configure_calc(self):
         self.x0 = self.x_rel + self.w/2.0
         self.y0 = self.y_rel + self.h/2.0
-        M = min(self.w,self.h)-5
-        self.r1 = M/10.0
-        self.r2 = 0.36*M
+        self.M = M = min(self.w,self.h)-2
+        self.rd = 0.31*M       # gives size of square
+        self.r2 = 0.42*M      # Inner radius of hue ring
         self.r3 = M/2.0
-        self.calc_circle()
+        self.m = self.rd/sqrt(2.0)
+        self.circle_img = None
+        self.stroke_width = 0.015*M
 
-    def set_color(self, color):
+    def set_color(self, color, redraw=True):
         self.color = color
         h,s,v = rgb_to_hsv(*color)
         old_h,old_s,old_v = self.hsv
         self.hsv = h,s,v
-        #if h!=old_h:
-        #    self.redraw_circle_line()
-        #if h!=old_h or s!=old_s or v!=old_v:
-        #    self.draw_inside_circle(n=1)
-        self.queue_draw()
- 
-    def select_color_at(self, x,y):
-        d = sqrt((x-self.x0)**2 + (y-self.y0)**2)
+        if redraw:
+            self.queue_draw()
+
+    def test_drag(self,x,y,dist):
+        area = self.area_at(self.press_x,self.press_y)
+        return area == AREA_SAMPLE
+
+    def nearest_dragable(self, x,y):
+        area_source = self.area_at(self.press_x, self.press_y)
+        area = self.area_at(x,y)
+        if area == area_source and area in [AREA_CIRCLE, AREA_SQUARE]:
+            return x,y
+        dx = x-self.x0
+        dy = y-self.y0
+        d = sqrt(dx*dx+dy*dy)
+        x1 = dx/d
+        y1 = dy/d
+        if area_source == AREA_CIRCLE:
+            rx = self.x0 + (self.r2+3.0)*x1
+            ry = self.y0 + (self.r2+3.0)*y1
+        else:
+            tx = self.rd*x1
+            ty = self.rd*y1
+            m = self.m-1.0
+            rx = self.x0 + clamp(tx, -m, +m)
+            ry = self.y0 + clamp(ty, -m, +m)
+        return rx,ry
+
+    def move(self,x,y):
+        x_,y_ = self.nearest_dragable(x,y)
+        self.select_color_at(x_,y_)
+
+    def area_at(self, x,y):
+        dx = x-self.x0
+        dy = y-self.y0
+        d = sqrt(dx*dx+dy*dy)
         if self.r2 < d < self.r3:
+            return AREA_CIRCLE
+        elif self.rd < d < self.r2:
+            return AREA_SAMPLE
+        elif abs(dx)<self.m and abs(dy)<self.m:
+            return AREA_SQUARE
+
+    def get_color_at(self, x,y):
+        area = self.area_at(x,y)
+        if not area:
+            return
+        if area == AREA_CIRCLE:
             h,s,v = self.hsv
             h = 0.5 + 0.5*atan2(y-self.y0, self.x0-x)/pi
-            self.color = hsv_to_rgb(h,s,v)
-            self.hsv = (h,s,v)
-            self.on_select(self.color)
-        elif self.r1 < d < self.r2:
+            return (h,s,v), True
+        elif area == AREA_SAMPLE:
             a = pi+atan2(y-self.y0, self.x0-x)
             for i,a1 in enumerate(self.angles):
                 if a1-2*pi/CIRCLE_N < a < a1:
                     clr = self.simple_colors[i]
-                    self.color = clr
-                    self.hsv = rgb_to_hsv(*clr)
-                    self.on_select(self.color)
-                    break
-        elif d < self.r1 and (x-self.x0) < 0:
-            self.hsv = rgb_to_hsv(*self.color)
-            self.on_select(self.color)
+                    return clr, False
+        elif area == AREA_SQUARE:
+            h,s,v = self.hsv
+            s = (x-self.x0+self.m)/(2*self.m)
+            v = (y-self.y0+self.m)/(2*self.m)
+            return (h,s,1-v), True
 
-    def redraw_circle_line(self):
-        if not self.window:
-            return
-        cr = self.window.cairo_create()
-        if not self.last_line:
-            x1,y1,x2,y2,h = self.x0+self.r2,self.y0, self.x0+self.r3, self.y0, 0.0
-        else:
-            x1,y1, x2,y2, h = self.last_line
-        cr.set_line_width(5.0)
-        cr.set_source_rgb(*hsv_to_rgb(h,1.0,1.0))
-        cr.move_to(x1,y1)
-        cr.line_to(x2,y2)
-        cr.stroke()
+    def draw_square(self,width,height,radius):
+        img = cairo.ImageSurface(cairo.FORMAT_ARGB32, width,height)
+        cr = cairo.Context(img)
         h,s,v = self.hsv
-        x1,y1,x2,y2 = self.calc_line(2*pi*h)
-        self.last_line = x1,y1,x2,y2, h
-        cr.set_line_width(4.0)
-        cr.set_source_rgb(0,0,0)
+        m = radius/sqrt(2.0)
+        ds = 2*m*CSTEP
+        v = 0.0
+        x1 = self.x0-m
+        x2 = self.x0+m
+        y = self.y0-m
+        while v < 1.0:
+            y += ds
+            g = cairo.LinearGradient(x1,y,x2,y)
+            g.add_color_stop_rgb(0.0, *hsv_to_rgb(h,0.0,1.0-v))
+            g.add_color_stop_rgb(1.0, *hsv_to_rgb(h,1.0,1.0-v))
+            cr.set_source(g)
+            cr.rectangle(x1,y, 2*m, ds)
+            cr.fill_preserve()
+            cr.stroke()
+            v += CSTEP
+        h,s,v = self.hsv
+        x = self.x0-m + s*2*m
+        y = self.y0-m + (1-v)*2*m
+        cr.set_source_rgb(*hsv_to_rgb(1-h,1-s,1-v))
+        cr.arc(x,y, 3.0, 0.0, 2*pi)
+        cr.stroke()
+        return img
+
+    def small_circle(self, cr, size, color, angle, rad):
+        x0 = self.x0 + rad*cos(angle)
+        y0 = self.y0 + rad*sin(angle)
+        cr.set_source_rgb(*color)
+        cr.arc(x0,y0,size/2., 0, 2*pi)
+        cr.fill()
+
+    def small_triangle(self, cr, size, color, angle, rad):
+        x0 = self.x0 + rad*cos(angle)
+        y0 = self.y0 + rad*sin(angle)
+        x1,y1 = x0, y0 - size*sq32
+        x2,y2 = x0 + 0.5*size, y0 + size*sq36
+        x3,y3 = x0 - 0.5*size, y0 + size*sq36
+        cr.set_source_rgb(*color)
         cr.move_to(x1,y1)
         cr.line_to(x2,y2)
-        cr.stroke()
-        self.draw_circles(cr)
+        cr.line_to(x3,y3)
+        cr.line_to(x1,y1)
+        cr.fill()
 
-    def draw_inside_circle(self,cr):
+    def small_triangle_down(self, cr, size, color, angle, rad):
+        x0 = self.x0 + rad*cos(angle)
+        y0 = self.y0 + rad*sin(angle)
+        x1,y1 = x0, y0 + size*sq32
+        x2,y2 = x0 + 0.5*size, y0 - size*sq36
+        x3,y3 = x0 - 0.5*size, y0 - size*sq36
+        cr.set_source_rgb(*color)
+        cr.move_to(x1,y1)
+        cr.line_to(x2,y2)
+        cr.line_to(x3,y3)
+        cr.line_to(x1,y1)
+        cr.fill()
+
+    def small_square(self, cr, size, color, angle, rad):
+        x0 = self.x0 + rad*cos(angle)
+        y0 = self.y0 + rad*sin(angle)
+        x1,y1 = x0+size*sq22, y0+size*sq22
+        x2,y2 = x0+size*sq22, y0-size*sq22
+        x3,y3 = x0-size*sq22, y0-size*sq22
+        x4,y4 = x0-size*sq22, y0+size*sq22
+        cr.set_source_rgb(*color)
+        cr.move_to(x1,y1)
+        cr.line_to(x2,y2)
+        cr.line_to(x3,y3)
+        cr.line_to(x4,y4)
+        cr.fill()
+
+    def small_rect(self, cr, size, color, angle, rad):
+        x0 = self.x0 + rad*cos(angle)
+        y0 = self.y0 + rad*sin(angle)
+        x1,y1 = x0+size*sq22, y0+size*0.3
+        x2,y2 = x0+size*sq22, y0-size*0.3
+        x3,y3 = x0-size*sq22, y0-size*0.3
+        x4,y4 = x0-size*sq22, y0+size*0.3
+        cr.set_source_rgb(*color)
+        cr.move_to(x1,y1)
+        cr.line_to(x2,y2)
+        cr.line_to(x3,y3)
+        cr.line_to(x4,y4)
+        cr.fill()
+
+    def small_rect_vert(self, cr, size, color, angle, rad):
+        x0 = self.x0 + rad*cos(angle)
+        y0 = self.y0 + rad*sin(angle)
+        x1,y1 = x0+size*0.3, y0+size*sq22
+        x2,y2 = x0+size*0.3, y0-size*sq22
+        x3,y3 = x0-size*0.3, y0-size*sq22
+        x4,y4 = x0-size*0.3, y0+size*sq22
+        cr.set_source_rgb(*color)
+        cr.move_to(x1,y1)
+        cr.line_to(x2,y2)
+        cr.line_to(x3,y3)
+        cr.line_to(x4,y4)
+        cr.fill()
+
+    def inv(self, rgb):
+        r,g,b = rgb
+        return 1-r,1-g,1-b
+
+    def draw_inside_circle(self,width,height):
         if not self.window:
             return
-        if not cr:
-            cr = self.window.cairo_create()
+        points_size = min(width,height)/27.
+        img = cairo.ImageSurface(cairo.FORMAT_ARGB32, width,height)
+        cr = cairo.Context(img)
         h,s,v = self.hsv
         a = h*2*pi
         self.angles = []
         self.simple_colors = []
-        cr.set_line_width(6.0)
+        cr.set_line_width(self.stroke_width)
+        self.samples = [self.hsv]
         for i in range(int(CIRCLE_N)):
-            c = h + i/CIRCLE_N
-            if c > 1:
-                c -= 1
-            cr.new_path()
-            clr = hsv_to_rgb(c,s,v)
-            cr.set_source_rgb(*clr)
+            c1 = c = h + i/CIRCLE_N
+            if c1 > 1:
+                c1 -= 1
+            clr = hsv_to_rgb(c1,s,v)
+            hsv = c1,s,v
             self.simple_colors.append(clr)
-            an = -c*2*pi
-            cr.move_to(self.x0, self.y0)
+            delta = c1 - h
+            an = -c1*2*pi
             self.angles.append(-an+pi/CIRCLE_N)
-            cr.arc(self.x0, self.y0, self.r2, an-pi/CIRCLE_N, an+pi/CIRCLE_N)
-#             cr.line_to(self.x0, self.y0)
-            cr.close_path()
+            a1 = an-pi/CIRCLE_N
+            a2 = an+pi/CIRCLE_N
+            cr.new_path()
+            cr.set_source_rgb(*clr)
+            cr.move_to(self.x0,self.y0)
+            cr.arc(self.x0, self.y0, self.r2, a1, a2)
+            cr.line_to(self.x0,self.y0)
             cr.fill_preserve()
             cr.set_source_rgb(0.5,0.5,0.5)
             cr.stroke()
+            # Indicate harmonic colors
+            if self.triadic and i%(CIRCLE_N/3)==0:
+                self.small_triangle(cr, points_size, self.inv(clr), an, (self.r2+self.rd)/2)
+                try_put(self.samples, hsv)
+            if self.complimentary and i%(CIRCLE_N/2)==0:
+                self.small_circle(cr, points_size, self.inv(clr), an, (self.r2+self.rd)/2)
+                try_put(self.samples, hsv)
+            if self.square and i%(CIRCLE_N/4)==0:
+                self.small_square(cr, points_size, self.inv(clr), an, (self.r2+self.rd)/2)
+                try_put(self.samples, hsv)
+# FIXME: should this harmonies be expressed in terms of CIRCLE_N?
+            if self.double_comp and i in [0,2,6,8]:
+                self.small_rect_vert(cr, points_size, self.inv(clr), an, (self.r2+self.rd)/2)
+                try_put(self.samples, hsv)
+            if self.split_comp and i in [0,5,7]:
+                self.small_triangle_down(cr, points_size, self.inv(clr), an, (self.r2+self.rd)/2)
+                try_put(self.samples, hsv)
+            if self.analogous and i in [0,1,CIRCLE_N-1]:
+                self.small_rect(cr, points_size, self.inv(clr), an, (self.r2+self.rd)/2)
+                try_put(self.samples, hsv)
         x1 = self.x0 + self.r2*cos(-a)
         y1 = self.y0 + self.r2*sin(-a)
         x2 = self.x0 + self.r3*cos(-a)
         y2 = self.y0 + self.r3*sin(-a)
         self.last_line = x1,y1, x2,y2, h
-        cr.set_line_width(4.0)
+        cr.set_line_width(0.8*self.stroke_width)
         cr.set_source_rgb(0,0,0)
         cr.move_to(x1,y1)
         cr.line_to(x2,y2)
         cr.stroke()
-        cr.set_source_rgb(*self.color)
-        cr.arc(self.x0, self.y0, self.r1, 0, 2*pi)
-        cr.fill()
-        #cr.set_source_rgb(*self.get_previous_color(n))
-        #cr.arc(self.x0, self.y0, self.r1, pi/2, 3*pi/2)
-        #cr.fill()
-        cr.arc(self.x0, self.y0, self.r1, 0, 2*pi)
         cr.set_source_rgb(0.5,0.5,0.5)
-        cr.stroke()
+        cr.arc(self.x0, self.y0, self.rd, 0, 2*pi)
+        cr.fill()
+        return img
 
     def draw_circles(self, cr):
-        cr.set_line_width(6.0)
+        cr.set_line_width(self.stroke_width)
         cr.set_source_rgb(0.5,0.5,0.5)
         cr.arc(self.x0,self.y0, self.r2, 0, 2*pi)
         cr.stroke()
         cr.arc(self.x0,self.y0, self.r3, 0, 2*pi)
         cr.stroke()
         
+    def draw_circle(self, w, h):
+        if self.circle_img:
+            return self.circle_img
+        img = cairo.ImageSurface(cairo.FORMAT_ARGB32, w,h)
+        cr = cairo.Context(img)
+        cr.set_line_width(0.8*self.stroke_width)
+        a1 = 0.0
+        while a1 < 2*pi:
+            clr = hsv_to_rgb(a1/(2*pi), 1.0, 1.0)
+            x1,y1,x2,y2 = self.calc_line(a1)
+            a1 += CSTEP
+            cr.set_source_rgb(*clr)
+            cr.move_to(x1,y1)
+            cr.line_to(x2,y2)
+            cr.stroke()
+        self.circle_img = img
+        return img
+
     def draw(self,w,event):
         if not self.window:
             return
         cr = self.window.cairo_create()
-        cr.set_line_width(4.0)
-        for (x1,y1,x2,y2),clr in zip(self.circle, self.colors):
-            cr.move_to(x1,y1)
-            cr.set_source_rgb(*clr)
-            cr.line_to(x2,y2)
-            cr.stroke()
-        self.draw_inside_circle(cr)
+        cr.set_source_surface(self.draw_circle(self.w,self.h))
+        cr.paint()
+        cr.set_source_surface(self.draw_inside_circle(self.w,self.h))
+        cr.paint()
         self.draw_circles(cr)
+        cr.set_source_surface(self.draw_square(self.w,self.h, self.rd*0.92))
+        cr.paint()
+        sq2 = sqrt(2.0)
+        M = self.M/2.0
+        r = (sq2-1)*M/(2*sq2)
+        x0 = self.x0+M-r
+        y0 = self.y0+M-r
+        cr.set_source_rgb(*self.color)
+        cr.arc(x0, y0, 0.9*r, -pi/2, pi/2)
+        cr.fill()
+        cr.set_source_rgb(*self.get_previous_color())
+        cr.arc(x0, y0, 0.9*r, pi/2, 3*pi/2)
+        cr.fill()
+        cr.arc(x0, y0, 0.9*r, 0, 2*pi)
+        cr.set_source_rgb(0.5,0.5,0.5)
+        cr.set_line_width(0.8*self.stroke_width)
+        cr.stroke()
 
 class VSelector(GColorSelector):
-    def __init__(self, color=(1,0,0), width=40):
-        GColorSelector.__init__(self)
+    def __init__(self, color=(1,0,0), height=16):
+        GColorSelector.__init__(self, init_dnd=False)
         self.color = color
         self.hsv = rgb_to_hsv(*color)
-        self.set_size_request(width,width*2)
+        self.set_size_request(height*2,height)
 
-    def select_color_at(self, x,y):
+    def get_color_at(self, x,y):
         h,s,v = self.hsv
-        v = 1-y/self.h
-        self.hsv = h,s,v
-        self.color = hsv_to_rgb(h,s,v)
-        self.queue_draw()
-        self.on_select(self.color)
+        v = x/self.w
+        return (h,s,v), True
+
+    def move(self, x,y):
+        self.select_color_at(x,y)
+
+    def draw_gradient(self,cr, start,end, hsv=True):
+        if hsv:
+            clr1 = hsv_to_rgb(*start)
+            clr2 = hsv_to_rgb(*end)
+        else:
+            clr1 = start
+            clr2 = end
+        g = cairo.LinearGradient(0,0,self.w,self.h)
+        g.add_color_stop_rgb(0.0, *clr1)
+        g.add_color_stop_rgb(1.0, *clr2)
+        cr.set_source(g)
+        cr.rectangle(0,0,self.w,self.h)
+        cr.fill()
+
+    def draw_line_at(self, cr, x):
+        cr.set_source_rgb(0,0,0)
+        cr.move_to(x,0)
+        cr.line_to(x, self.h)
+        cr.stroke()
 
     def draw(self,w, event):
         if not self.window:
             return
         cr = self.window.cairo_create()
-        cr.set_line_width(4.0)
         h,s,v = self.hsv
-        t = 0.0
-        while t < 1.0:
-            x1 = 5
-            x2 = self.w-10
-            y1 = y2 = t*self.h
-            cr.set_source_rgb(*hsv_to_rgb(h,s,1-t))
-            cr.move_to(x1,y1)
-            cr.line_to(x2,y2)
+        self.draw_gradient(cr, (h,s,0.), (h,s,1.))
+
+        x1 = v*self.w
+        self.draw_line_at(cr, x1)
+
+class HSelector(VSelector):
+    def get_color_at(self,x,y):
+        h,s,v = self.hsv
+        h = x/self.w
+        return (h,s,v), True
+    
+    def draw(self,w, event):
+        if not self.window:
+            return
+        cr = self.window.cairo_create()
+        h,s,v = self.hsv
+        dx = self.w*CSTEP
+        x = 0
+        h1 = 0.
+        while h1 < 1:
+            cr.set_source_rgb(*hsv_to_rgb(h1,s,v))
+            cr.rectangle(x,0,dx,self.h)
+            cr.fill_preserve()
             cr.stroke()
-            t += CSTEP
-        x1 = 5
-        x2 = self.w-10
-        y1 = y2 = (1-v)*self.h
-        cr.set_source_rgb(0,0,0)
-        cr.move_to(x1,y1)
-        cr.line_to(x2,y2)
-        cr.stroke()
+            h1 += CSTEP
+            x += dx
+        x1 = h*self.w
+        self.draw_line_at(cr, x1)
 
 class SSelector(VSelector):
-    def select_color_at(self, x,y):
+    def get_color_at(self, x,y):
         h,s,v = self.hsv
-        s = 1-y/self.h
-        self.hsv = h,s,v
-        self.color = hsv_to_rgb(h,s,v)
-        self.queue_draw()
-        self.on_select(self.color)
+        s = x/self.w
+        return (h,s,v), True
 
     def draw(self,w, event):
         if not self.window:
             return
         cr = self.window.cairo_create()
-        cr.set_line_width(4.0)
         h,s,v = self.hsv
-        t = 0.0
-        while t < 1.0:
-            x1 = 5
-            x2 = self.w-10
-            y1 = y2 = t*self.h
-            cr.set_source_rgb(*hsv_to_rgb(h,1-t,v))
-            cr.move_to(x1,y1)
-            cr.line_to(x2,y2)
-            cr.stroke()
-            t += CSTEP
-        x1 = 5
-        x2 = self.w-10
-        y1 = y2 = (1-s)*self.h
-        cr.set_source_rgb(0,0,0)
-        cr.move_to(x1,y1)
-        cr.line_to(x2,y2)
-        cr.stroke()
+        self.draw_gradient(cr, (h,0.,v), (h,1.,v))
 
-class RGBSelector(gtk.VBox):
-    def __init__(self):
-        gtk.VBox.__init__(self)
-        self.color = (1,0,0)
-        adj1 = gtk.Adjustment(lower=0,upper=255,step_incr=1,page_incr=10)
-        adj2 = gtk.Adjustment(lower=0,upper=255,step_incr=1,page_incr=10)
-        adj3 = gtk.Adjustment(lower=0,upper=255,step_incr=1,page_incr=10)
-        self.r_e = gtk.SpinButton(adj1)
-        self.g_e = gtk.SpinButton(adj2)
-        self.b_e = gtk.SpinButton(adj3)
-        self.r_e.connect('focus-out-event', self.calc_color)
-        self.g_e.connect('focus-out-event', self.calc_color)
-        self.b_e.connect('focus-out-event', self.calc_color)
-        hbox = gtk.HBox()
-        hbox.pack_start(gtk.Label(_('R: ')), expand=False)
-        hbox.pack_start(self.r_e, expand=True)
-        self.pack_start(hbox)
-        hbox = gtk.HBox()
-        hbox.pack_start(gtk.Label(_('G: ')), expand=False)
-        hbox.pack_start(self.g_e, expand=True)
-        self.pack_start(hbox)
-        hbox = gtk.HBox()
-        hbox.pack_start(gtk.Label(_('B: ')), expand=False)
-        hbox.pack_start(self.b_e, expand=True)
-        self.pack_start(hbox)
+        x1 = s*self.w
+        self.draw_line_at(cr, x1)
 
-    def on_select(self,color):
-        pass
+class RSelector(VSelector):
+    def get_color_at(self,x,y):
+        r,g,b = self.color
+        r = x/self.w
+        return (r,g,b), False
+    
+    def draw(self,w, event):
+        if not self.window:
+            return
+        cr = self.window.cairo_create()
+        r,g,b = self.color
+        self.draw_gradient(cr, (0.,g,b),(1.,g,b), hsv=False)
+        x1 = r*self.w
+        self.draw_line_at(cr,x1)
 
-    def calc_color(self, spin, event):
-        r = self.r_e.get_value()
-        g = self.g_e.get_value()
-        b = self.b_e.get_value()
-        self.color = (r/255.0, g/255.0, b/255.0)
-        self.on_select(self.color)
+class GSelector(VSelector):
+    def get_color_at(self,x,y):
+        r,g,b = self.color
+        g = x/self.w
+        return (r,g,b), False
+    
+    def draw(self,w, event):
+        if not self.window:
+            return
+        cr = self.window.cairo_create()
+        r,g,b = self.color
+        self.draw_gradient(cr, (r,0.,b),(r,1.,b), hsv=False)
+        x1 = g*self.w
+        self.draw_line_at(cr,x1)
 
-    def set_color(self, color):
-        self.color = color
-        r,g,b = color
-        r = int(r*255)
-        g = int(g*255)
-        b = int(b*255)
-        self.r_e.set_value(r)
-        self.g_e.set_value(g)
-        self.b_e.set_value(b)
+class BSelector(VSelector):
+    def get_color_at(self,x,y):
+        r,g,b = self.color
+        b = x/self.w
+        return (r,g,b), False
+    
+    def draw(self,w, event):
+        if not self.window:
+            return
+        cr = self.window.cairo_create()
+        r,g,b = self.color
+        self.draw_gradient(cr, (r,g,0.),(r,g,1.), hsv=False)
+        x1 = b*self.w
+        self.draw_line_at(cr,x1)
+
+def make_spin(min,max, changed_cb, focus_in_cb=None, focus_out_cb=None):
+    adj = gtk.Adjustment(0,min,max, 1,10)
+    btn = gtk.SpinButton(adj)
+    btn.connect('value-changed', changed_cb)
+    if focus_in_cb:
+        btn.connect('focus-in-event', focus_in_cb)
+    if focus_out_cb:
+        btn.connect('focus-out-event', focus_out_cb)
+    return btn
 
 class HSVSelector(gtk.VBox):
-    def __init__(self):
+    def __init__(self, color=(1.,0.,0)):
         gtk.VBox.__init__(self)
-        self.color = (1,0,0)
-        self.hsv = (0,1,1)
-        adj1 = gtk.Adjustment(lower=0,upper=359,step_incr=1,page_incr=10)
-        adj2 = gtk.Adjustment(lower=0,upper=100,step_incr=1,page_incr=10)
-        adj3 = gtk.Adjustment(lower=0,upper=359,step_incr=1,page_incr=10)
-        self.h_e = gtk.SpinButton(adj1)
-        self.s_e = gtk.SpinButton(adj2)
-        self.v_e = gtk.SpinButton(adj3)
-        self.h_e.connect('focus-out-event', self.calc_color)
-        self.s_e.connect('focus-out-event', self.calc_color)
-        self.v_e.connect('focus-out-event', self.calc_color)
-        hbox = gtk.HBox()
-        hbox.pack_start(gtk.Label(_('H: ')), expand=False)
-        hbox.pack_start(self.h_e, expand=True)
-        self.pack_start(hbox)
-        hbox = gtk.HBox()
-        hbox.pack_start(gtk.Label(_('S: ')), expand=False)
-        hbox.pack_start(self.s_e, expand=True)
-        self.pack_start(hbox)
-        hbox = gtk.HBox()
-        hbox.pack_start(gtk.Label(_('V: ')), expand=False)
-        hbox.pack_start(self.v_e, expand=True)
-        self.pack_start(hbox)
-
-    def on_select(self,color):
-        pass
-
-    def calc_color(self, spin, event):
-        h = self.h_e.get_value()
-        s = self.s_e.get_value()
-        v = self.v_e.get_value()
-        self.hsv = h/359.0, s/100.0, v/100.0
-        self.color = hsv_to_rgb(*self.hsv)
-        self.on_select(self.color)
-
-    def set_color(self, color):
         self.color = color
         self.hsv = rgb_to_hsv(*color)
+        self.atomic = False
+
+        hbox = gtk.HBox()
+        self.hsel = hsel = HSelector(color)
+        hsel.on_select = self.user_selected_color
+        self.hspin = hspin = make_spin(0,359, self.hue_change, self.spin_focused, self.spin_unfocused)
+        hbox.pack_start(hsel, expand=True)
+        hbox.pack_start(hspin, expand=False)
+
+        sbox = gtk.HBox()
+        self.ssel = ssel = SSelector(color)
+        ssel.on_select = self.user_selected_color
+        self.sspin = sspin = make_spin(0,100, self.sat_change, self.spin_focused, self.spin_unfocused)
+        sbox.pack_start(ssel, expand=True)
+        sbox.pack_start(sspin, expand=False)
+
+        vbox = gtk.HBox()
+        self.vsel = vsel = VSelector(color)
+        vsel.on_select = self.user_selected_color
+        self.vspin = vspin = make_spin(0,100, self.val_change, self.spin_focused, self.spin_unfocused)
+        vbox.pack_start(vsel, expand=True)
+        vbox.pack_start(vspin, expand=False)
+        
+        self.pack_start(hbox, expand=False)
+        self.pack_start(sbox, expand=False)
+        self.pack_start(vbox, expand=False)
+
+    def user_selected_color(self, color):
+        self.set_color(color)
+        self.on_select(color)
+
+    def set_color(self, color):
+        self.atomic = True
+        h,s,v = rgb_to_hsv(*color)
+        self.hspin.set_value(h*359)
+        self.sspin.set_value(s*100)
+        self.vspin.set_value(v*100)
+        self.hsel.set_color(color)
+        self.ssel.set_color(color)
+        self.vsel.set_color(color)
+        self.atomic = False
+        self.color = color
+        self.hsv = rgb_to_hsv(*color)
+
+    def spin_focused(self, spin, event):
+        self.on_entry_focus()
+
+    def spin_unfocused(self, spin, event):
+        self.on_entry_focus_out()
+
+    def on_entry_focus(self):
+        pass
+
+    def on_entry_focus_out(self):
+        pass
+
+    def on_select(self, color):
+        pass
+
+    def hue_change(self, spin):
+        if self.atomic:
+            return
         h,s,v = self.hsv
-        self.h_e.set_value(h*359)
-        self.s_e.set_value(s*100)
-        self.v_e.set_value(v*100)
+        self.set_color(hsv_to_rgb(spin.get_value()/359., s,v))
+
+    def sat_change(self, spin):
+        if self.atomic:
+            return
+        h,s,v = self.hsv
+        self.set_color(hsv_to_rgb(h, spin.get_value()/100., v))
+
+    def val_change(self, spin):
+        if self.atomic:
+            return
+        h,s,v = self.hsv
+        self.set_color(hsv_to_rgb(h,s, spin.get_value()/100.))
+
+class RGBSelector(gtk.VBox):
+    def __init__(self, color=(1.,0.,0)):
+        gtk.VBox.__init__(self)
+        self.color = color
+        self.hsv = rgb_to_hsv(*color)
+        self.atomic = False
+
+        rbox = gtk.HBox()
+        self.rsel = rsel = RSelector(color)
+        rsel.on_select = self.user_selected_color
+        self.rspin = rspin = make_spin(0,255, self.r_change, self.spin_focused, self.spin_unfocused)
+        rbox.pack_start(rsel, expand=True)
+        rbox.pack_start(rspin, expand=False)
+
+        gbox = gtk.HBox()
+        self.gsel = gsel = GSelector(color)
+        gsel.on_select = self.user_selected_color
+        self.gspin = gspin = make_spin(0,255, self.g_change, self.spin_focused, self.spin_unfocused)
+        gbox.pack_start(gsel, expand=True)
+        gbox.pack_start(gspin, expand=False)
+
+        bbox = gtk.HBox()
+        self.bsel = bsel = BSelector(color)
+        bsel.on_select = self.user_selected_color
+        self.bspin = bspin = make_spin(0,255, self.b_change, self.spin_focused, self.spin_unfocused)
+        bbox.pack_start(bsel, expand=True)
+        bbox.pack_start(bspin, expand=False)
+        
+        self.pack_start(rbox, expand=False)
+        self.pack_start(gbox, expand=False)
+        self.pack_start(bbox, expand=False)
+
+    def user_selected_color(self, color):
+        self.set_color(color)
+        self.on_select(color)
+
+    def set_color(self, color):
+        self.atomic = True
+        r,g,b = color
+        self.rspin.set_value(r*255)
+        self.gspin.set_value(g*255)
+        self.bspin.set_value(b*255)
+        self.rsel.set_color(color)
+        self.gsel.set_color(color)
+        self.bsel.set_color(color)
+        self.atomic = False
+        self.color = color
+        self.hsv = rgb_to_hsv(*color)
+
+    def spin_focused(self, spin, event):
+        self.on_entry_focus()
+
+    def spin_unfocused(self, spin, event):
+        self.on_entry_focus_out()
+
+    def on_entry_focus(self):
+        pass
+
+    def on_entry_focus_out(self):
+        pass
+
+    def on_select(self, color):
+        pass
+
+    def r_change(self, spin):
+        if self.atomic:
+            return
+        r,g,b = self.color
+        self.set_color((spin.get_value()/255., g,b))
+
+    def g_change(self, spin):
+        if self.atomic:
+            return
+        r,g,b = self.color
+        self.set_color((r, spin.get_value()/255., b))
+
+    def b_change(self, spin):
+        if self.atomic:
+            return
+        r,g,b = self.color
+        self.set_color((r,g, spin.get_value()/255.))
 
 class Selector(gtk.VBox):
-    def __init__(self):
+    def __init__(self,app):
         gtk.VBox.__init__(self)
+        self.app = app
         hbox = gtk.HBox()
         self.pack_start(hbox, expand=True)
         vbox = gtk.VBox()
         hbox.pack_start(vbox,expand=True)
         self.recent = RecentColors()
         self.circle = CircleSelector()
-        self.light = VSelector()
-        self.saturation = SSelector()
-        l_box = gtk.VBox()
-        l_box.pack_start(gtk.Label(_('V')), expand=False)
-        l_box.pack_start(self.light, expand=True)
-        s_box = gtk.VBox()
-        s_box.pack_start(gtk.Label(_('S')), expand=False)
-        s_box.pack_start(self.saturation, expand=True)
-        hbox.pack_start(s_box, expand=False)
-        hbox.pack_start(l_box, expand=False)
         vbox.pack_start(self.circle, expand=True)
+
         self.rgb_selector = RGBSelector()
         self.hsv_selector = HSVSelector()
         self.rgb_selector.on_select = self.rgb_selected
         self.hsv_selector.on_select = self.hsv_selected
-        hbox2 = gtk.HBox()
-        hbox2.set_spacing(6)
-        hbox2.pack_start(self.rgb_selector)
-        hbox2.pack_start(self.hsv_selector)
-        expander = gtk.Expander(_('Colors history'))
+        self.rgb_selector.on_entry_focus = self.disable_kbm
+        self.hsv_selector.on_entry_focus = self.disable_kbm
+        self.rgb_selector.on_entry_focus_out = self.enable_kbm
+        self.hsv_selector.on_entry_focus_out = self.enable_kbm
+        nb = gtk.Notebook()
+        nb.append_page(self.rgb_selector, gtk.Label(_('RGB')))
+        nb.append_page(self.hsv_selector, gtk.Label(_('HSV')))
+
+        self.exp_history = expander = gtk.Expander(_('Colors history'))
         expander.set_spacing(6)
         expander.add(self.recent)
         self.pack_start(expander, expand=False)
-        expander = gtk.Expander(_('Details'))
+        self.exp_details = expander = gtk.Expander(_('Details'))
         expander.set_spacing(6)
-        expander.add(hbox2)
+        expander.add(nb)
+        self.pack_start(expander, expand=False)
+
+        def harmony_checkbox(attr, label):
+            cb = gtk.CheckButton(label)
+            cb.connect('toggled', self.harmony_toggled, attr)
+            vbox2.pack_start(cb, expand=False)
+
+        self.exp_config = expander = gtk.Expander(_('Harmonies'))
+        vbox2 = gtk.VBox()
+        harmony_checkbox('analogous', _('Analogous'))
+        harmony_checkbox('complimentary', _('Complimentary color'))
+        harmony_checkbox('split_comp', _('Split compimentary'))
+        harmony_checkbox('double_comp', _('Double complimentary'))
+        harmony_checkbox('square', _('Square'))
+        harmony_checkbox('triadic', _('Triadic'))
+
+        frame1 = gtk.Frame(_('Select harmonies'))
+        frame1.add(vbox2)
+        vbox3 = gtk.VBox()
+        cb_sv = gtk.CheckButton(_('Change value/saturation'))
+        cb_sv.set_active(True)
+        cb_sv.connect('toggled', self.toggle_blend, 'value')
+        cb_opposite = gtk.CheckButton(_('Blend each color to opposite'))
+        cb_opposite.connect('toggled', self.toggle_blend, 'opposite')
+        cb_neg = gtk.CheckButton(_('Blend each color to negative'))
+        cb_neg.connect('toggled', self.toggle_blend, 'negative')
+        vbox3.pack_start(cb_sv, expand=False)
+        vbox3.pack_start(cb_opposite, expand=False)
+        vbox3.pack_start(cb_neg, expand=False)
+        hbox_buttons = gtk.HBox()
+#         btn = gtk.Button(_('Fill palette'))
+#         btn.connect('clicked', self.fill_palette, False)
+#         hbox_buttons.pack_start(btn)
+        btn = gtk.Button(_('Add to palette'))
+        btn.connect('clicked', self.fill_palette, True)
+        hbox_buttons.pack_start(btn)
+        vbox3.pack_start(hbox_buttons, expand=False)
+        frame2 = gtk.Frame(_('Harmonies to palette'))
+        frame2.add(vbox3)
+        vbox_exp = gtk.VBox()
+        vbox_exp.pack_start(frame1)
+        vbox_exp.pack_start(frame2)
+        expander.add(vbox_exp)
         self.pack_start(expander, expand=False)
         self.circle.on_select = self.hue_selected
         self.circle.get_previous_color = self.previous_color
         self.recent.on_select = self.recent_selected
-        self.light.on_select = self.light_selected
-        self.saturation.on_select = self.saturation_selected
-        self.widgets = [self.recent, self.circle, self.light, self.saturation, self.rgb_selector, self.hsv_selector]
+        self.widgets = [self.circle, self.rgb_selector, self.hsv_selector, self.recent]
+
+        self.value_blends = True
+        self.opposite_blends = False
+        self.negative_blends = False
 
         self.connect('drag_data_received',self.drag_data)
         self.drag_dest_set(gtk.DEST_DEFAULT_MOTION | gtk.DEST_DEFAULT_HIGHLIGHT | gtk.DEST_DEFAULT_DROP,
                  [("application/x-color",0,80)],
                  gtk.gdk.ACTION_COPY)
 
-    def previous_color(self,n):
-        try:
-            return self.recent.colors[n]
-        except:
-            return (1.0,1.0,1.0)
+    def toggle_blend(self, checkbox, name):
+        attr = name+'_blends'
+        setattr(self, attr, not getattr(self, attr))
+
+    def fill_palette(self, btn, add=False):
+        if not self.opposite_blends and not self.value_blends and not self.negative_blends:
+            return
+#         K = SLOTS_N/2
+        setlists = []
+        samples = self.circle.samples
+        if not samples:
+            samples = [self.hsv]
+
+        def add_tones_square(h,s,v):
+            setlist = []
+            start_i = start_j = 0
+            if s > 0.9:
+                # For saturated color, blend from it to gray
+                setlist.append((start_i,           start_j,           h,s,v))
+                setlist.append((start_i+SLOTS_N-1, start_j+SLOTS_N-1, 0.,0.,v))
+            else:
+                # Else, blend from it's saturated variant to source color.
+                setlist.append((start_i,           start_j,           h,1.,v))
+                setlist.append((start_i+SLOTS_N-1, start_j+SLOTS_N-1, h,s,v))
+            # Add white and black to corners
+            setlist.append((start_i,           start_j+SLOTS_N-1, 0.,0.,1.))
+            setlist.append((start_i+SLOTS_N-1, start_j,           0.,0.,0.))
+            return setlist
+
+        def add_hue_row(h,s,v):
+            setlist = []
+            start_i = start_j = 0
+            setlist.append((start_i, start_j,           wrap(h-1./CIRCLE_N),s,v))
+#             setlist.append((start_i, start_j+K,         h,s,v))
+            setlist.append((start_i, start_j+SLOTS_N-1, wrap(h+1./CIRCLE_N),s,v))
+            return setlist
+
+        def add_pair_blend((h1,s1,v1),(h2,s2,v2)):
+            start_i = start_j = 0
+            setlist = []
+            setlist.append((start_i,           start_j,           h1,s1,v1))
+            setlist.append((start_i+SLOTS_N-1, start_j+SLOTS_N-1, h2,s2,v2))
+            setlist.append((start_i,           start_j+SLOTS_N-1, 0.,0.,1.))
+            setlist.append((start_i+SLOTS_N-1, start_j,           0.,0.,0.))
+            return setlist
+
+        def add_negative_square(h,s,v):
+            return add_pair_blend((h,s,v), (wrap(h+0.5),1-s,1-v))
+
+        def pairs():
+            n = len(samples)
+            if n < 2:
+                return []
+            elif n == 2:
+                return [(samples[0], samples[1])]
+            elif n == 3:
+                return [(samples[0], samples[1]), 
+                        (samples[1], samples[2]),
+                        (samples[2], samples[0])]
+            else:
+                samples_ = samples[:]
+
+                def invert(h,s,v):
+                    """Find color nearest to inverted (h,s,v)
+                    and remove it from samples_."""
+                    m = 2
+                    r = samples_[0]
+                    h_inv = wrap(h+0.5)
+                    for h1,s1,v1 in samples_:
+                        d = abs(h1-h_inv)
+                        if d < m:
+                            m = d
+                            r = h1,s1,v1
+                    samples_.remove((h,s,v))
+                    try:
+                        samples_.remove(r)
+                    except ValueError:
+                        return None
+                    return r
+
+                res = []
+                while samples_:
+                    one = samples_[0]
+                    two = invert(*one)
+                    if two:
+                        res.append((one,two))
+                return res
+
+        if self.value_blends:
+            for h,s,v in samples:
+                tones = add_tones_square(h,s,v)
+                setlists.append(tones)
+#                 hues = add_hue_row(h,s,v)
+#                 setlists.append(hues)
+
+        if self.negative_blends:
+            for h,s,v in samples:
+                blend = add_negative_square(h,s,v)
+                setlists.append(blend)
+
+        if self.opposite_blends:
+            for clr1,clr2 in pairs():
+                blend = add_pair_blend(clr1,clr2)
+                setlists.append(blend)
+
+        self.app.paletteWindow.fill_palette_with(SLOTS_N,SLOTS_N, setlists, add)
+
+    def harmony_toggled(self, checkbox, attr):
+        setattr(self.circle, attr, not getattr(self.circle, attr))
+        self.queue_draw()
+
+    def disable_kbm(self):
+        self.app.kbm.enabled = False
+
+    def enable_kbm(self):
+        self.app.kbm.enabled = True
+
+    def previous_color(self):
+        return ch.last_color
 
     def set_color(self,color,exclude=None):
         for w in self.widgets:
@@ -542,13 +1054,7 @@ class Selector(gtk.VBox):
         self.set_color(color, exclude=self.circle)
 
     def recent_selected(self, color):
-        self.set_color(color)
-
-    def light_selected(self,color):
-        self.set_color(color, exclude=self.light)
-
-    def saturation_selected(self, color):
-        self.set_color(color, exclude=self.saturation)
+        self.set_color(color, exclude=self.recent)
 
     def on_select(self,color):
         pass
@@ -561,8 +1067,14 @@ class Window(gtk.Window):
         self.set_role('Color selector')
         self.set_default_size(350,340)
         self.connect('delete-event', self.app.hide_window_cb)
-        self.selector = Selector()
+        self.selector = Selector(app)
         self.selector.on_select = self.on_select
+        self.exp_history = self.selector.exp_history
+        self.exp_details = self.selector.exp_details
+        self.exp_config = self.selector.exp_config
+        self.exp_history.set_expanded(str_to_bool( app.get_config('State', 'color_history_expanded') ))
+        self.exp_details.set_expanded(str_to_bool( app.get_config('State', 'color_details_expanded') ))
+        self.exp_config.set_expanded(str_to_bool( app.get_config('State', 'color_configure_expanded') ))
         self.add(self.selector)
         self.app.kbm.add_window(self)
         self.app.brush.settings_observers.append(self.brush_modified_cb)
