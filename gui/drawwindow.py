@@ -464,22 +464,22 @@ class Window(gtk.Window):
         self.tdw.queue_draw() # OPTIMIZE: excess
 
     def layerblink_state_enter(self):
-        self.tdw.toggle_solo_mode()
+        self.tdw.current_layer_solo = True
         self.tdw.queue_draw()
     def layerblink_state_leave(self, reason):
         if self.layersolo_state.active:
             # FIXME: use state machine concept, maybe?
             return
-        self.tdw.toggle_solo_mode()
+        self.tdw.current_layer_solo = False
         self.tdw.queue_draw()
     def layersolo_state_enter(self):
         s = self.layerblink_state
         if s.active:
             s.leave()
-        self.tdw.toggle_solo_mode()
+        self.tdw.current_layer_solo = True
         self.tdw.queue_draw()
     def layersolo_state_leave(self, reason):
-        self.tdw.toggle_solo_mode()
+        self.tdw.current_layer_solo = False
         self.tdw.queue_draw()
 
     #def blink_layer_cb(self, action):

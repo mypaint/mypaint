@@ -340,9 +340,6 @@ class TiledDrawWidget(gtk.DrawingArea):
             cr.set_source_rgba(0, 0, random.random(), 0.4)
             cr.paint()
 
-    def toggle_solo_mode(self):
-        self.current_layer_solo = not self.current_layer_solo
-
     def scroll(self, dx, dy, show_immediately=True):
         assert int(dx) == dx and int(dy) == dy
         self.translation_x -= dx
