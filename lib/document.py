@@ -93,16 +93,12 @@ class Document():
 
     def select_layer(self, idx):
         self.do(command.SelectLayer(self, idx))
-        for f in self.doc_observers:
-            f(self,'select_layer',idx)
 
     def move_layer(self, was_idx, new_idx):
         self.do(command.MoveLayer(self, was_idx, new_idx))
-        self.call_doc_observers()
 
     def clear_layer(self):
         self.do(command.ClearLayer(self))
-        self.call_doc_observers()
 
     def stroke_to(self, dtime, x, y, pressure):
         if not self.stroke:
@@ -205,18 +201,15 @@ class Document():
             surface.composite_tile_over(dst, tx, ty, mipmap_level=mipmap, opacity=layer.opacity)
 
         mypaintlib.tile_convert_rgb16_to_rgb8(dst, dst_8bit)
-            
+
     def add_layer(self, insert_idx=None, after=None):
         self.do(command.AddLayer(self, insert_idx, after))
-        self.call_doc_observers()
 
     def remove_layer(self,layer=None):
         self.do(command.RemoveLayer(self,layer))
-        self.call_doc_observers()
 
     def merge_layer(self, dst_idx):
         self.do(command.MergeLayer(self, dst_idx))
-        self.call_doc_observers()
 
     def load_layer_from_pixbuf(self, pixbuf, x=0, y=0):
         arr = helpers.gdkpixbuf2numpy(pixbuf)
@@ -227,9 +220,7 @@ class Document():
         if isinstance(cmd, command.SetLayerOpacity):
             self.undo()
         self.do(command.SetLayerOpacity(self, opacity))
-        self.call_doc_observers()
 
-        self.call_doc_observers()
     def set_background(self, obj):
         # This is not an undoable action. One reason is that dragging
         # on the color chooser would get tons of undo steps.
@@ -350,7 +341,7 @@ class Document():
             z.write(tmp, name)
             os.remove(tmp)
 
-        def add_layer(x, y, opac, pixbuf, name,layer_name):
+        def add_layer(x, y, opac, pixbuf, name, layer_name):
             layer = ET.Element('layer')
             stack.append(layer)
             store_pixbuf(pixbuf, name)

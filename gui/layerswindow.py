@@ -411,6 +411,13 @@ class LayersList(gtk.VBox):
         self.foreach(self.remove)
         for w in self.widgets:
             self.pack_end(w,expand=False)
+
+        # Prevent callback loop
+        self.disable_selected_callback = True
+        idx = self.app.drawWindow.doc.layer_idx
+        self.selected = self.widgets[idx]
+        self.disable_selected_callback = False
+
         self.show_all()
 
     def repack_layers(self):
@@ -471,12 +478,6 @@ class Window(gtk.Window):
         self.update(doc)
 
     def update(self, doc, action='edit', idx=None):
-        if action=='edit':
-            self.layers_list.set_layers(doc.layers)
-        elif action=='select_layer':
-            self.layers_list.disable_selected_callback = True
-            self.layers_list.selected = self.layers_list.widgets[idx]
-            self.layers_list.disable_selected_callback = False
-        
+        self.layers_list.set_layers(doc.layers)
 
 
