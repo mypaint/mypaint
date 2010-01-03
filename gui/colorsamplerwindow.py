@@ -648,14 +648,10 @@ class BSelector(VSelector):
         x1 = b*self.w
         self.draw_line_at(cr,x1)
 
-def make_spin(min,max, changed_cb, focus_in_cb=None, focus_out_cb=None):
+def make_spin(min,max, changed_cb):
     adj = gtk.Adjustment(0,min,max, 1,10)
     btn = gtk.SpinButton(adj)
     btn.connect('value-changed', changed_cb)
-    if focus_in_cb:
-        btn.connect('focus-in-event', focus_in_cb)
-    if focus_out_cb:
-        btn.connect('focus-out-event', focus_out_cb)
     return btn
 
 class HSVSelector(gtk.VBox):
@@ -668,21 +664,21 @@ class HSVSelector(gtk.VBox):
         hbox = gtk.HBox()
         self.hsel = hsel = HSelector(color)
         hsel.on_select = self.user_selected_color
-        self.hspin = hspin = make_spin(0,359, self.hue_change, self.spin_focused, self.spin_unfocused)
+        self.hspin = hspin = make_spin(0,359, self.hue_change)
         hbox.pack_start(hsel, expand=True)
         hbox.pack_start(hspin, expand=False)
 
         sbox = gtk.HBox()
         self.ssel = ssel = SSelector(color)
         ssel.on_select = self.user_selected_color
-        self.sspin = sspin = make_spin(0,100, self.sat_change, self.spin_focused, self.spin_unfocused)
+        self.sspin = sspin = make_spin(0,100, self.sat_change)
         sbox.pack_start(ssel, expand=True)
         sbox.pack_start(sspin, expand=False)
 
         vbox = gtk.HBox()
         self.vsel = vsel = VSelector(color)
         vsel.on_select = self.user_selected_color
-        self.vspin = vspin = make_spin(0,100, self.val_change, self.spin_focused, self.spin_unfocused)
+        self.vspin = vspin = make_spin(0,100, self.val_change)
         vbox.pack_start(vsel, expand=True)
         vbox.pack_start(vspin, expand=False)
         
@@ -706,18 +702,6 @@ class HSVSelector(gtk.VBox):
         self.atomic = False
         self.color = color
         self.hsv = rgb_to_hsv(*color)
-
-    def spin_focused(self, spin, event):
-        self.on_entry_focus()
-
-    def spin_unfocused(self, spin, event):
-        self.on_entry_focus_out()
-
-    def on_entry_focus(self):
-        pass
-
-    def on_entry_focus_out(self):
-        pass
 
     def on_select(self, color):
         pass
@@ -750,21 +734,21 @@ class RGBSelector(gtk.VBox):
         rbox = gtk.HBox()
         self.rsel = rsel = RSelector(color)
         rsel.on_select = self.user_selected_color
-        self.rspin = rspin = make_spin(0,255, self.r_change, self.spin_focused, self.spin_unfocused)
+        self.rspin = rspin = make_spin(0,255, self.r_change)
         rbox.pack_start(rsel, expand=True)
         rbox.pack_start(rspin, expand=False)
 
         gbox = gtk.HBox()
         self.gsel = gsel = GSelector(color)
         gsel.on_select = self.user_selected_color
-        self.gspin = gspin = make_spin(0,255, self.g_change, self.spin_focused, self.spin_unfocused)
+        self.gspin = gspin = make_spin(0,255, self.g_change)
         gbox.pack_start(gsel, expand=True)
         gbox.pack_start(gspin, expand=False)
 
         bbox = gtk.HBox()
         self.bsel = bsel = BSelector(color)
         bsel.on_select = self.user_selected_color
-        self.bspin = bspin = make_spin(0,255, self.b_change, self.spin_focused, self.spin_unfocused)
+        self.bspin = bspin = make_spin(0,255, self.b_change)
         bbox.pack_start(bsel, expand=True)
         bbox.pack_start(bspin, expand=False)
         
@@ -788,18 +772,6 @@ class RGBSelector(gtk.VBox):
         self.atomic = False
         self.color = color
         self.hsv = rgb_to_hsv(*color)
-
-    def spin_focused(self, spin, event):
-        self.on_entry_focus()
-
-    def spin_unfocused(self, spin, event):
-        self.on_entry_focus_out()
-
-    def on_entry_focus(self):
-        pass
-
-    def on_entry_focus_out(self):
-        pass
 
     def on_select(self, color):
         pass
@@ -838,10 +810,6 @@ class Selector(gtk.VBox):
         self.hsv_selector = HSVSelector()
         self.rgb_selector.on_select = self.rgb_selected
         self.hsv_selector.on_select = self.hsv_selected
-        self.rgb_selector.on_entry_focus = self.disable_kbm
-        self.hsv_selector.on_entry_focus = self.disable_kbm
-        self.rgb_selector.on_entry_focus_out = self.enable_kbm
-        self.hsv_selector.on_entry_focus_out = self.enable_kbm
         nb = gtk.Notebook()
         nb.append_page(self.rgb_selector, gtk.Label(_('RGB')))
         nb.append_page(self.hsv_selector, gtk.Label(_('HSV')))
@@ -907,12 +875,6 @@ class Selector(gtk.VBox):
     def harmony_toggled(self, checkbox, attr):
         setattr(self.circle, attr, not getattr(self.circle, attr))
         self.queue_draw()
-
-    def disable_kbm(self):
-        self.app.kbm.enabled = False
-
-    def enable_kbm(self):
-        self.app.kbm.enabled = True
 
     def previous_color(self):
         return ch.last_color

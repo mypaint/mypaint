@@ -206,8 +206,6 @@ class LayerWidget(gtk.EventBox):
             l_name = None
         self.name_entry = GrayedEntry(_('Name:'), l_name)
         self.name_entry.on_changed = self.on_name_changed
-        self.name_entry.on_enter = self.name_enter_cb
-        self.name_entry.on_leave = self.name_leave_cb
         adj = gtk.Adjustment(lower=0, upper=100, step_incr=1, page_incr=10)
         self.opacity_scale = gtk.HScale(adj)
         self.opacity_scale.connect('value-changed', self.on_opacity_changed)
@@ -323,14 +321,6 @@ class LayerWidget(gtk.EventBox):
         self.name_entry.set_text(layer.name)
         self.opacity_scale.set_value( layer.opacity*100 )
         self.callbacks_active = True
-
-    def name_enter_cb(self):
-        self.app.kbm.enabled = False
-
-    def name_leave_cb(self):
-        self.app.kbm.enabled = True
-        self.name_entry.to_show = False
-        self.name_entry.show_edit_auto()
 
     def on_layer_add(self,button):
         doc = self.app.drawWindow.tdw.doc
