@@ -24,6 +24,7 @@
     </menu>
     <menu action='ViewMenu'>
       <menuitem action='Fullscreen'/>
+      <menuitem action='ShowMenu'/>
       <separator/>
       <menuitem action='ResetView'/>
       <menuitem action='ZoomIn'/>

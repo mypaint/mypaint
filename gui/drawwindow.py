@@ -69,6 +69,9 @@ class Window(gtk.Window):
 
         self.create_ui()
         self.menubar = self.app.ui_manager.get_widget('/Menubar')
+        self.menubar.connect("selection-done", self.menu_done_cb)
+        self.menubar.connect("deactivate", self.menu_done_cb)
+        self.menubar.connect("cancel", self.menu_done_cb)
         vbox.pack_start(self.menubar, expand=False)
 
         self.tdw = tileddrawwidget.TiledDrawWidget(self.doc)
@@ -160,6 +163,7 @@ class Window(gtk.Window):
 
             ('ViewMenu', None, _('View')),
             ('Fullscreen',   gtk.STOCK_FULLSCREEN, _('Fullscreen'), 'F11', None, self.fullscreen_cb),
+            ('ShowMenu',    None, _('Show Menu'), 'Menu', None, self.menu_show_cb),
             ('ResetView',   gtk.STOCK_ZOOM_100, _('Reset (Zoom, Rotation, Mirror)'), 'F12', None, self.reset_view_cb),
             ('ZoomIn',       gtk.STOCK_ZOOM_IN, _('Zoom In (at cursor)'), 'period', None, self.zoom_cb),
             ('ZoomOut',      gtk.STOCK_ZOOM_OUT, _('Zoom Out'), 'comma', None, self.zoom_cb),
@@ -697,6 +701,15 @@ class Window(gtk.Window):
             color = self.app.brush.get_color_hsv()
             context.set_color_hsv(color)
             bm.select_brush(context)
+
+    def menu_show_cb(self, action):
+        if self.fullscreen:
+            self.menubar.show()
+        self.menubar.select_first(False)
+
+    def menu_done_cb(self, *a, **kw):
+        if self.fullscreen:
+            self.menubar.hide()
 
     def about_cb(self, action):
         d = gtk.AboutDialog()
