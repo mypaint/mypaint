@@ -9,7 +9,7 @@ colors = [(random.random(), random.random(), random.random()) for i in range(num
 colors[-1] = (0.0, 0.0, 0.0)
 colors[-2] = (1.0, 1.0, 1.0)
 last_color = colors[-1]
-atomic = False
+atomic = False # FIXME: bad name, it has nothing to do with atomic, right?
 
 def hsv_equal(a, b):
     # hack required because we somewhere have an rgb<-->hsv conversion roundtrip
@@ -21,7 +21,7 @@ def on_color_pushed(color):
     pass
 
 def push_color(color):
-    global colors, num_colors, atomic
+    global colors, num_colors, atomic, last_color
 
     if atomic:
         return
@@ -32,3 +32,5 @@ def push_color(color):
             break
     colors = (colors + [color])[-num_colors:]
     on_color_pushed(color)
+
+    last_color = helpers.hsv_to_rgb(*color)

@@ -101,7 +101,6 @@ class HistoryPopup(gtk.Window):
         if not brush.is_eraser():
             color = brush.get_color_hsv()
             ch.push_color(color)
-            ch.last_color = helpers.hsv_to_rgb(*color)
 
     def expose_cb(self, widget, event):
         cr = self.window.cairo_create()

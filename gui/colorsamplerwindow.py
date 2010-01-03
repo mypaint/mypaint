@@ -154,7 +154,6 @@ class RecentColors(gtk.HBox):
             self.pack_start(slot, expand=True)
             self.slots.append(slot)
         self.show_all()
-        self.last_color = (1.0,1.0,1.0)
         ch.on_color_pushed = self.refill_slots
 
     def slot_selected(self,color):
@@ -168,7 +167,7 @@ class RecentColors(gtk.HBox):
             slot.set_color(hsv_to_rgb(*color))
 
     def set_color(self, color):
-        self.last_color = color
+        pass
 
 CIRCLE_N = 12.0
 SLOTS_N = 5
