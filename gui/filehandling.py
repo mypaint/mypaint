@@ -17,6 +17,14 @@ from gettext import ngettext
 from lib import document, helpers
 import drawwindow
 
+# Utility function to work around the fact that gtk FileChooser/FileFilter
+# does not have an easy way to use case insensitive filters
+def get_case_insensitive_glob(string):
+    '''Ex: '*.ora' => '*.[oO][rR][aA]' '''
+    ext = string.split('.')[1]
+    globlist = ["[%s%s]" % (c.lower(), c.upper()) for c in ext]
+    return '*.%s' % ''.join(globlist)
+
 
 class FileHandler(object):
     def __init__(self, app):
@@ -103,7 +111,7 @@ class FileHandler(object):
             filter2info[f] = saveopts
             f.set_name(name)
             for pat in patterns:
-                f.add_pattern(pat)
+                f.add_pattern(get_case_insensitive_glob(pat))
             dialog.add_filter(f)
             if nr == 0:
                 self.save_filter_default = f
@@ -204,7 +212,7 @@ class FileHandler(object):
             f = gtk.FileFilter()
             f.set_name(name)
             for p in patterns:
-                f.add_pattern(p)
+                f.add_pattern(get_case_insensitive_glob(p))
             dialog.add_filter(f)
 
         if self.filename:
