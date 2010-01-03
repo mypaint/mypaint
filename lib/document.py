@@ -45,11 +45,6 @@ class Document():
         self.stroke_observers = [] # callback arguments: stroke, brush (brush is a temporary read-only convenience object)
         self.doc_observers = []
         self.clear(True)
-        self.can_update_layers = False
-        gobject.timeout_add_seconds(5, self.allow_layers_update)
-
-    def allow_layers_update(self):
-        self.can_update_layers = True
 
     def call_doc_observers(self):
         for f in self.doc_observers:
@@ -114,10 +109,6 @@ class Document():
 
         if split:
             self.split_stroke()
-
-        if self.can_update_layers:
-            self.can_update_layers = False
-            self.call_doc_observers()
 
     def straight_line(self, src, dst):
         self.split_stroke()
