@@ -34,6 +34,7 @@ class GColorSelector(gtk.DrawingArea):
         self.do_select = True
         self.grabbed = False
         self.dnd_enabled = init_dnd
+        self.set_size_request(80, 80)
 
     def test_drag(self,x,y,d):
         return d>20
