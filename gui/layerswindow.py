@@ -20,81 +20,6 @@ def stock_button(stock_id):
     b.add(img)
     return b
 
-class GrayedEntry(gtk.EventBox):
-    def __init__(self, label, value=None):
-        gtk.EventBox.__init__(self)
-        self.hbox = gtk.HBox()
-        self.label = gtk.Label(label)
-        self.entry = gtk.Entry()
-        self.hbox.pack_start(self.label, expand=False)
-        self.hbox.pack_start(self.entry, expand=True)
-        if value:
-            self.to_show = True
-            self.hbox_added = True
-            self.entry.set_text(value)
-            self.add(self.hbox)
-            self.value = value
-        else:
-            self.hbox_added = False
-            self.to_show = False
-            self.value = value
-        self.entry.connect('focus-in-event', self.on_focus_in)
-        self.entry.connect('focus-out-event', self.on_focus_out)
-        self.entry.connect('changed', self.on_entry_changed)
-
-    def on_changed(self, entry):
-        pass
-
-    def on_entry_changed(self,entry):
-        self.on_changed(entry)
-
-    def on_enter(self):
-        pass
-
-    def on_leave(self):
-        pass
-
-    def show_edit(self):
-        if not self.hbox_added:
-            self.hbox_added = True
-            self.add(self.hbox)
-            self.entry.set_text(self.value)
-        self.to_show = True
-        self.hbox.show()
-        self.show_all()
-
-    def show_edit_auto(self):
-        if self.get_text():
-            if not self.hbox_added:
-                self.hbox_added = True
-                self.add(self.hbox)
-            self.hbox.show()
-        elif self.value:
-            if not self.hbox_added:
-                self.hbox_added = True
-                self.add(self.hbox)
-            self.entry.set_text(self.value)
-            self.hbox.show()
-        elif not self.to_show:
-            self.hbox.hide()
-
-    def on_focus_in(self, entry, event):
-        self.on_enter()
-
-    def on_focus_out(self, entry, event):
-        self.show_edit_auto()
-        self.on_leave()
-
-    def set_text(self, text):
-        if not self.hbox_added:
-            return
-        if text:
-            self.to_show = True
-        self.entry.set_text(text)
-        self.value = text
-
-    def get_text(self):
-        return self.entry.get_text()
 
 alpha = asin(0.8)
 class EyeOnly(gtk.DrawingArea):
@@ -191,8 +116,8 @@ class LayerWidget(gtk.EventBox):
         self.add_events( gdk.BUTTON_PRESS_MASK | gdk.BUTTON_RELEASE_MASK ) 
         self.connect("button-press-event", self.on_button_press)
         self.connect("button-release-event", self.on_button_release)
-        self.connect("leave-notify-event", self.on_mouse_leave)
-        self.connect('focus-out-event', self.on_focus_out)
+#         self.connect("leave-notify-event", self.on_mouse_leave)
+#         self.connect('focus-out-event', self.on_focus_out)
         self.button_pressed = False
         self.selected = False
         self.layer = layer
@@ -204,8 +129,8 @@ class LayerWidget(gtk.EventBox):
             l_name = layer.name
         else:
             l_name = None
-        self.name_entry = GrayedEntry(_('Name:'), l_name)
-        self.name_entry.on_changed = self.on_name_changed
+#         self.name_entry = GrayedEntry(_('Name:'), l_name)
+#         self.name_entry.on_changed = self.on_name_changed
         adj = gtk.Adjustment(lower=0, upper=100, step_incr=1, page_incr=10)
         self.opacity_scale = gtk.HScale(adj)
         self.opacity_scale.connect('value-changed', self.on_opacity_changed)
@@ -215,7 +140,7 @@ class LayerWidget(gtk.EventBox):
         hbox1.pack_start(lbl, expand=False)
         hbox1.pack_start(self.opacity_scale, expand=True)
         vbox1 = gtk.VBox()
-        vbox1.pack_start(self.name_entry)
+#         vbox1.pack_start(self.name_entry)
         vbox1.pack_start(hbox1)
         self.hbox.pack_start(small_pack(gtk.VBox, self.visibility), expand=False)
         self.hbox.pack_start(vbox1, expand=True)
@@ -246,12 +171,12 @@ class LayerWidget(gtk.EventBox):
 
         self.set_layer(layer)
 
-    def on_focus_out(self, w, event):
-        self.name_entry.to_show = False
-        self.name_entry.show_edit_auto()
-        
-    def on_mouse_leave(self, widget, event):
-        self.name_entry.show_edit_auto()
+#     def on_focus_out(self, w, event):
+#         self.name_entry.to_show = False
+#         self.name_entry.show_edit_auto()
+#         
+#     def on_mouse_leave(self, widget, event):
+#         self.name_entry.show_edit_auto()
 
     def on_button_press(self, widget, event):
         self.button_pressed = True
@@ -267,9 +192,9 @@ class LayerWidget(gtk.EventBox):
             self.clicked = 2
         else:
             self.clicked = 0
-        if self.clicked == 2:
-            self.clicked = 0
-            self.name_entry.show_edit()
+#         if self.clicked == 2:
+#             self.clicked = 0
+#             self.name_entry.show_edit()
 
     def drag_data(self, widget, context, x,y, selection, targetType, time):
         if targetType==DRAG_LAYER_INDEX:
@@ -318,7 +243,7 @@ class LayerWidget(gtk.EventBox):
             return
         self.callbacks_active = False
         self.visibility.set_active(layer.visible)
-        self.name_entry.set_text(layer.name)
+#         self.name_entry.set_text(layer.name)
         self.opacity_scale.set_value( layer.opacity*100 )
         self.callbacks_active = True
 
@@ -330,13 +255,13 @@ class LayerWidget(gtk.EventBox):
         doc = self.app.drawWindow.tdw.doc
         doc.remove_layer(layer=self.layer)
 
-    def on_name_changed(self,entry):
-        if not self.callbacks_active:
-            return
-        text =  entry.get_text()
-        if text:
-            entry.to_show = True
-        self.layer.name = text
+#     def on_name_changed(self,entry):
+#         if not self.callbacks_active:
+#             return
+#         text =  entry.get_text()
+#         if text:
+#             entry.to_show = True
+#         self.layer.name = text
 
     def on_opacity_changed(self,scale):
         if not self.callbacks_active:
