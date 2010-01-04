@@ -223,6 +223,7 @@ class SetLayerOpacity(Action):
         self.old_opacity = l.opacity
         l.opacity = self.new_opacity
         self._notify_canvas_observers(l)
+        self._notify_document_observers()
     def undo(self):
         if self.layer:
             l = self.layer
@@ -230,4 +231,5 @@ class SetLayerOpacity(Action):
             l = self.doc.layer
         l.opacity = self.old_opacity
         self._notify_canvas_observers(l)
+        self._notify_document_observers()
 

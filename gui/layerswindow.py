@@ -246,16 +246,6 @@ class LayerWidget(gtk.EventBox):
 #             entry.to_show = True
 #         self.layer.name = text
 
-    def on_opacity_changed(self,scale):
-        if not self.callbacks_active:
-            return
-        doc = self.app.drawWindow.tdw.doc
-        cmd = doc.get_last_command()
-        if isinstance(cmd, command.SetLayerOpacity) and cmd.layer is self.layer:
-            doc.undo()
-        opacity = scale.get_value()/100.0
-        doc.do(command.SetLayerOpacity(doc, opacity, self.layer))
-
     def on_visibility_toggled(self, checkbox):
         if not self.callbacks_active:
             return
@@ -366,17 +356,54 @@ class Window(gtk.Window):
         self.app = app
         self.connect('delete-event', self.app.hide_window_cb)
         self.app.kbm.add_window(self)
+        self.set_size_request(300, 300)
+        self.callbacks_active = True
+
+        # Widgets
+        # Layer list
+        layers_scroll = gtk.ScrolledWindow()
+        layers_scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
+        self.layers_list = LayersList(app)
+        layers_scroll.add_with_viewport(self.layers_list)
+
+        # Common controls
+        adj = gtk.Adjustment(lower=0, upper=100, step_incr=1, page_incr=10)
+        self.opacity_scale = gtk.HScale(adj)
+        self.opacity_scale.set_value_pos(gtk.POS_RIGHT)
+        opacity_lbl = gtk.Label(_('Opacity:'))
+        opacity_hbox = gtk.HBox()
+        opacity_hbox.pack_start(opacity_lbl, expand=False)
+        opacity_hbox.pack_start(self.opacity_scale, expand=True)
+
+        # Pack and add to toplevel
+        vbox = gtk.VBox()
+        vbox.pack_start(layers_scroll)
+        vbox.pack_start(opacity_hbox, expand=False)
+        self.add(vbox)
+
+        # Updates
         doc = app.drawWindow.tdw.doc
         doc.doc_observers.append(self.update)
-        scroll = gtk.ScrolledWindow()
-        scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
-        self.layers_list = LayersList(app)
-        scroll.add_with_viewport(self.layers_list)
-        self.add(scroll)
-        self.set_size_request(300, 300)
+        self.opacity_scale.connect('value-changed', self.on_opacity_changed)
+
         self.update(doc)
 
     def update(self, doc, action='edit', idx=None):
+        if not self.callbacks_active:
+            return
+
         self.layers_list.set_layers(doc.layers)
 
+        self.callbacks_active = False
+        self.opacity_scale.set_value(doc.get_current_layer().opacity*100)
+        self.callbacks_active = True
 
+    def on_opacity_changed(self, *ignore):
+        '''Called when '''
+        if not self.callbacks_active:
+            return
+
+        self.callbacks_active = False
+        doc = self.app.drawWindow.tdw.doc
+        doc.set_layer_opacity(self.opacity_scale.get_value()/100.0)
+        self.callbacks_active = True
