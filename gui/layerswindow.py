@@ -465,6 +465,7 @@ class Window(gtk.Window):
         self.layers_list = LayersList(app)
         scroll.add_with_viewport(self.layers_list)
         self.add(scroll)
+        self.set_size_request(300, 300)
         self.update(doc)
 
     def update(self, doc, action='edit', idx=None):
