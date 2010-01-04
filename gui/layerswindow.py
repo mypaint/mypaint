@@ -108,51 +108,41 @@ class LayerWidget(gtk.EventBox):
     def __init__(self,parent,layer=None):
         gtk.EventBox.__init__(self)
         self.set_border_width(2)
-        vbox = gtk.VBox()
-        vbox.pack_start(gtk.HSeparator(), expand=False)
-        self.hbox = gtk.HBox()
-        vbox.pack_start(self.hbox, expand=True)
-        self.add(vbox)
         self.add_events( gdk.BUTTON_PRESS_MASK | gdk.BUTTON_RELEASE_MASK ) 
         self.connect("button-press-event", self.on_button_press)
         self.connect("button-release-event", self.on_button_release)
-#         self.connect("leave-notify-event", self.on_mouse_leave)
-#         self.connect('focus-out-event', self.on_focus_out)
         self.button_pressed = False
         self.selected = False
         self.layer = layer
         self.list = parent
         self.app = parent.app
-        self.visibility = Eye()
-        self.visibility.on_toggle = self.on_visibility_toggled
-        if layer:
-            l_name = layer.name
-        else:
-            l_name = None
-#         self.name_entry = GrayedEntry(_('Name:'), l_name)
-#         self.name_entry.on_changed = self.on_name_changed
-        adj = gtk.Adjustment(lower=0, upper=100, step_incr=1, page_incr=10)
-        self.opacity_scale = gtk.HScale(adj)
-        self.opacity_scale.connect('value-changed', self.on_opacity_changed)
-        self.opacity_scale.set_value_pos(gtk.POS_RIGHT)
-        lbl = gtk.Label(_('Opacity:'))
-        hbox1 = gtk.HBox()
-        hbox1.pack_start(lbl, expand=False)
-        hbox1.pack_start(self.opacity_scale, expand=True)
-        vbox1 = gtk.VBox()
-#         vbox1.pack_start(self.name_entry)
-        vbox1.pack_start(hbox1)
-        self.hbox.pack_start(small_pack(gtk.VBox, self.visibility), expand=False)
-        self.hbox.pack_start(vbox1, expand=True)
+
+#         vbox = gtk.VBox()
+#         vbox.pack_start(gtk.HSeparator(), expand=False)
+
         add_button = stock_button(gtk.STOCK_ADD)
         add_button.connect('clicked', self.on_layer_add)
         del_button = stock_button(gtk.STOCK_DELETE)
         del_button.connect('clicked', self.on_layer_del)
-        vbox2 = gtk.VBox()
-        vbox2.pack_start(add_button)
-        vbox2.pack_start(del_button)
-        self.hbox.pack_start(vbox2, expand=False)
 
+        # Widgets
+        self.visibility_button = Eye()
+        self.visibility_button.on_toggle = self.on_visibility_toggled
+
+        # Clickable label with layer name
+        self.layer_name = gtk.Label("LAYER!!!")
+        layer_name_box = gtk.EventBox()
+        layer_name_box.add(self.layer_name)
+
+        # Pack and add to self
+        self.main_hbox = gtk.HBox()
+        self.main_hbox.pack_start(self.visibility_button, expand=False)
+        self.main_hbox.pack_start(layer_name_box)
+        self.main_hbox.pack_start(add_button, expand=False)
+        self.main_hbox.pack_start(del_button, expand=False)
+        self.add(self.main_hbox)
+
+        # Drag/drop for moving layers
         self.connect('drag_data_received',self.drag_data)
         self.connect('drag_drop', self.drag_drop)
         self.connect('drag_data_get', self.drag_get)
@@ -165,18 +155,12 @@ class LayerWidget(gtk.EventBox):
                  ("image/png", 0, DRAG_LAYER_PNG),
                  ("text/uri-list", 0, DRAG_LAYER_URI)],
                 gdk.ACTION_MOVE)
+
         self.clicked = 0
         self.button_pressed = False
         self.time_pressed = 0
 
         self.set_layer(layer)
-
-#     def on_focus_out(self, w, event):
-#         self.name_entry.to_show = False
-#         self.name_entry.show_edit_auto()
-#         
-#     def on_mouse_leave(self, widget, event):
-#         self.name_entry.show_edit_auto()
 
     def on_button_press(self, widget, event):
         self.button_pressed = True
@@ -237,14 +221,13 @@ class LayerWidget(gtk.EventBox):
             tmpfile = tempfile.mktemp(prefix='mypaint', suffix='.png')
             pixbuf.save(tmpfile, 'png', {'alpha': 'True'})
             selection.set(selection.target, 8, "file://"+tmpfile+"\n")
-    
-    def set_layer(self,layer):
+
+    def set_layer(self, layer):
         if not layer:
             return
         self.callbacks_active = False
-        self.visibility.set_active(layer.visible)
-#         self.name_entry.set_text(layer.name)
-        self.opacity_scale.set_value( layer.opacity*100 )
+        self.visibility_button.set_active(layer.visible)
+#         self.layer_name.set_text(layer.name)
         self.callbacks_active = True
 
     def on_layer_add(self,button):
@@ -287,7 +270,7 @@ class LayerWidget(gtk.EventBox):
             if isinstance(w, gtk.Box):
                 w.foreach(mark)
         mark(self)
-        self.hbox.foreach(mark)
+        self.main_hbox.foreach(mark)
 
     def set_unselected(self):
         def unmark(w):
@@ -295,7 +278,7 @@ class LayerWidget(gtk.EventBox):
             if isinstance(w, gtk.Box):
                 w.foreach(unmark)
         unmark(self)
-        self.hbox.foreach(unmark)
+        self.main_hbox.foreach(unmark)
 
 class LayersList(gtk.VBox):
     def __init__(self,app,layers=[]):
