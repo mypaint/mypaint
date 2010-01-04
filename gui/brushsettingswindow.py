@@ -61,11 +61,13 @@ class Window(gtk.Window):
             b.connect('clicked', self.set_fixed_value_clicked_cb, adj, s.default)
 
             if s.constant:
-                b2 = gtk.Label("=")
+                b2 = gtk.Label("")
+                b2.set_tooltip_text(_("No additional configuration"))
                 b2.set_alignment(0.5, 0.5)
                 adj.three_dots_button = None
             else:
                 b2 = gtk.Button("...")
+                b2.set_tooltip_text(_("Add input values mapping"))
                 b2.connect('clicked', self.details_clicked_cb, adj, s)
                 adj.three_dots_button = b2
 
@@ -105,13 +107,14 @@ class Window(gtk.Window):
             s = self.app.brush.settings[s.index]
             adj.set_value(s.base_value)
             if adj.three_dots_button:
-                def set_label(s):
+                def set_label(s, t):
                     if adj.three_dots_button.get_label() == s: return
                     adj.three_dots_button.set_label(s)
+                    adj.three_dots_button.set_tooltip_text(t)
                 if s.has_only_base_value():
-                    set_label("...")
+                    set_label("...", _("Add input values mapping"))
                 else:
-                    set_label("X")
+                    set_label("X", _("Modify input values mapping"))
 
     def brush_selected_cb(self, brush_selected):
         self.relabel_buttons()
