@@ -18,15 +18,15 @@ It is also imported at runtime.
 from gettext import gettext as _
 
 inputs_list = [
-    # name, hard minimum, soft minimum, normal[1], soft maximum, hard maximum, tooltip
-    ['pressure', 0.0,  0.0,  0.4,  1.0, 1.0,  _("The pressure reported by the tablet, between 0.0 and 1.0. If you use the mouse, it will be 0.5 when a button is pressed and 0.0 otherwise.")],
-    ['speed1',   None, 0.0,  0.5,  4.0, None, _("How fast you currently move. This can change very quickly. Try 'print input values' from the 'help' menu to get a feeling for the range; negative values are rare but possible for very low speed.")],
-    ['speed2',   None, 0.0,  0.5,  4.0, None, _("Same as fine speed, but changes slower. Also look at the 'gross speed filter' setting.")],
-    ['random',   0.0,  0.0,  0.5,  1.0, 1.0,  _("Fast random noise, changing at each evaluation. Evenly distributed between 0 and 1.")],
-    ['stroke',   0.0,  0.0,  0.5,  1.0, 1.0,  _("This input slowly goes from zero to one while you draw a stroke. It can also be configured to jump back to zero periodically while you move. Look at the 'stroke duration' and 'stroke hold time' settings.")],
-    ['direction',0.0,  0.0,  0.0,  180.0, 180.0,  _("The angle of the stroke, in degrees. The value will stay between 0.0 and 180.0, effectively ignoring turns of 180 degrees.")],
+    # name, hard minimum, soft minimum, normal[1], soft maximum, hard maximum, displayed name, tooltip
+    ['pressure', 0.0,  0.0,  0.4,  1.0, 1.0,  _("Pressure"), _("The pressure reported by the tablet, between 0.0 and 1.0. If you use the mouse, it will be 0.5 when a button is pressed and 0.0 otherwise.")],
+    ['speed1',   None, 0.0,  0.5,  4.0, None, _("Fine speed"), _("How fast you currently move. This can change very quickly. Try 'print input values' from the 'help' menu to get a feeling for the range; negative values are rare but possible for very low speed.")],
+    ['speed2',   None, 0.0,  0.5,  4.0, None, _("Gross speed"), _("Same as fine speed, but changes slower. Also look at the 'gross speed filter' setting.")],
+    ['random',   0.0,  0.0,  0.5,  1.0, 1.0, _("Random"), _("Fast random noise, changing at each evaluation. Evenly distributed between 0 and 1.")],
+    ['stroke',   0.0,  0.0,  0.5,  1.0, 1.0, _("Stroke"), _("This input slowly goes from zero to one while you draw a stroke. It can also be configured to jump back to zero periodically while you move. Look at the 'stroke duration' and 'stroke hold time' settings.")],
+    ['direction',0.0,  0.0,  0.0,  180.0, 180.0, _("Direction"), _("The angle of the stroke, in degrees. The value will stay between 0.0 and 180.0, effectively ignoring turns of 180 degrees.")],
     #['motion_strength',0.0,0.0,  0.0,  1.0, 1.0,  "[EXPERIMENTAL] Same as angle, but wraps at 180 degrees. The dynamics are shared with BRUSH_OFFSET_BY_SPEED_FILTER (FIXME: which is a bad thing)."],
-    ['custom',   None,-2.0,  0.0, +2.0, None, _("This is a user defined input. Look at the 'custom input' setting for details.")],
+    ['custom',   None,-2.0,  0.0, +2.0, None, _("Custom"), _("This is a user defined input. Look at the 'custom input' setting for details.")],
     ]
     # [1] If, for example, the user increases the "by pressure" slider
     # in the "radius" control, then this should change the reaction to
@@ -123,7 +123,7 @@ inputs = []
 inputs_dict = {}
 for i_list in inputs_list:
     i = BrushInput()
-    i.name, i.hard_min, i.soft_min, i.normal, i.soft_max, i.hard_max, i.tooltip = i_list
+    i.name, i.hard_min, i.soft_min, i.normal, i.soft_max, i.hard_max, i.dname, i.tooltip = i_list
     i.index = len(inputs)
     inputs.append(i)
     inputs_dict[i.name] = i

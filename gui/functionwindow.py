@@ -100,7 +100,7 @@ class ByInputWidget(gtk.VBox):
         self.scale_y_adj.connect('value-changed', self.user_changes_cb)
 
         l = gtk.Label()
-        l.set_markup(_('By <b>%s</b>') % input.name)
+        l.set_markup(input.dname)
         l.set_alignment(0.0, 0.0)
         l.set_tooltip_text(input.tooltip)
         self.pack_start(l, expand=False)
