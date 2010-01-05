@@ -833,7 +833,7 @@ class Selector(gtk.VBox):
         vbox2 = gtk.VBox()
         harmony_checkbox('analogous', _('Analogous'))
         harmony_checkbox('complimentary', _('Complimentary color'))
-        harmony_checkbox('split_comp', _('Split compimentary'))
+        harmony_checkbox('split_comp', _('Split complimentary'))
         harmony_checkbox('double_comp', _('Double complimentary'))
         harmony_checkbox('square', _('Square'))
         harmony_checkbox('triadic', _('Triadic'))

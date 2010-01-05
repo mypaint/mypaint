@@ -781,7 +781,7 @@ class Window(gtk.Window):
                  "change brushes with the other without interrupting."
                  "\n\n"
                  "There are 10 memory slots to hold brush settings.\n"
-                 "Those are annonymous "
+                 "Those are anonymous "
                  "brushes, they are not visible in the brush selector list. "
                  "But they will stay even if you quit. "
                  "They will also remember the selected color. In contrast, selecting a "
