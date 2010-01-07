@@ -13,32 +13,24 @@ import pixbuflist
 from lib import tiledsurface, helpers
 N = tiledsurface.N
 
-class Window(gtk.Window):
+RESPONSE_SAVE_AS_DEFAULT = 1
+
+class Window(gtk.Dialog):
     def __init__(self, app):
-        gtk.Window.__init__(self)
+        gtk.Dialog.__init__(self, _('Background'),
+                     app.drawWindow,
+                     gtk.DIALOG_DESTROY_WITH_PARENT,
+                     (_('save as default'), RESPONSE_SAVE_AS_DEFAULT,
+                        gtk.STOCK_OK, gtk.RESPONSE_ACCEPT)
+                      )
         self.app = app
 
         #set up window
-        self.set_title(_('Background'))
         self.connect('delete-event', self.app.hide_window_cb)
-
-        toplevel_vbox = gtk.VBox()
-        self.add(toplevel_vbox)
+        self.connect('response', self.on_response)
 
         notebook = self.nb = gtk.Notebook()
-        toplevel_vbox.pack_start(notebook)
-
-        #add buttons
-        buttons_hbox = gtk.HBox()
-        toplevel_vbox.pack_start(buttons_hbox, expand=False)
-
-        b = gtk.Button(_('save as default'))
-        b.connect('clicked', self.save_as_default_cb)
-        buttons_hbox.pack_start(b)
-
-        b = gtk.Button(_('done'))
-        b.connect('clicked', lambda w: self.hide())
-        buttons_hbox.pack_start(b)
+        self.vbox.pack_start(notebook)
 
         #set up patterns tab
         patterns_scroll = gtk.ScrolledWindow()
@@ -60,6 +52,11 @@ class Window(gtk.Window):
         b.connect('clicked', self.add_color_to_patterns_cb)
         color_vbox.pack_start(b, expand=False)
 
+    def on_response(self, dialog, response, *args):
+        if response == RESPONSE_SAVE_AS_DEFAULT:
+             self.save_as_default_cb()
+        elif response == gtk.RESPONSE_ACCEPT:
+            self.hide()
 
     def color_changed_cb(self, widget):
         rgb = self.cs.get_current_color()
@@ -70,7 +67,7 @@ class Window(gtk.Window):
         arr[:,:] = rgb
         self.set_background(pixbuf)
 
-    def save_as_default_cb(self, widget):
+    def save_as_default_cb(self):
         pixbuf = self.current_background_pixbuf
         pixbuf.save(os.path.join(self.app.confpath, 'backgrounds', 'default.png'), 'png')
         self.hide()

@@ -15,22 +15,26 @@ from functionwindow import CurveWidget
 from lib import mypaintlib
 
 device_modes = ['disabled','screen','window']
+RESPONSE_REVERT = 1
 
-class Window(gtk.Window):
+class Window(gtk.Dialog):
     def __init__(self, app):
-        gtk.Window.__init__(self)
+        gtk.Dialog.__init__(self, _('Settings'),
+                     app.drawWindow,
+                     gtk.DIALOG_DESTROY_WITH_PARENT,
+                     (gtk.STOCK_REVERT_TO_SAVED, RESPONSE_REVERT,
+                        gtk.STOCK_OK, gtk.RESPONSE_ACCEPT)
+                      )
         self.app = app
-
-        self.set_title(_('Settings'))
-        self.connect('delete-event', self.app.hide_window_cb)
-
+        self.filename = os.path.join(self.app.confpath, 'settings.conf')
         self.applying = True
 
-        v_outside = gtk.VBox()
-        self.add(v_outside)
+        self.connect('delete-event', self.app.hide_window_cb)
+        self.connect('response', self.on_response)
+
 
         nb = gtk.Notebook()
-        v_outside.pack_start(nb, expand=True, padding=5)
+        self.vbox.pack_start(nb, expand=True, padding=5)
 
         ### pressure tab
 
@@ -88,25 +92,15 @@ class Window(gtk.Window):
         self.prefix_entry.connect('changed', self.prefix_entry_changed_cb)
         v.pack_start(self.prefix_entry, expand=False)
 
-        ### end tabs
-
-        h = gtk.HBox()
-        h.set_border_width(3)
-
-        b = gtk.Button(_("Save"))
-        b.connect('clicked', self.save_settings_and_hide)
-        h.pack_end(b, expand=False)
-
-        b = gtk.Button(_("Revert"))
-        b.connect('clicked', self.load_settings)
-        h.pack_end(b, expand=False)
-
-        v_outside.pack_start(h, expand=False)
-
-        self.filename = os.path.join(self.app.confpath, 'settings.conf')
 
         self.applying = False
-        self.load_settings(None, startup=True)
+        self.load_settings(startup=True)
+
+    def on_response(self, dialog, response, *args):
+        if response == gtk.RESPONSE_ACCEPT:
+            self.save_settings_and_hide()
+        elif response == RESPONSE_REVERT:
+            self.load_settings()
 
     def save_settings_and_hide(self, *trash):
         f = open(self.filename, 'w')
@@ -116,7 +110,7 @@ class Window(gtk.Window):
         f.close()
         self.hide()
 
-    def load_settings(self, widget, startup=False):
+    def load_settings(self, startup=False):
         # 1. set defaults
         self.global_pressure_mapping = [(0.0, 1.0), (1.0, 0.0)]
         self.save_scrap_prefix = 'scrap'
