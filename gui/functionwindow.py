@@ -122,8 +122,12 @@ class ByInputWidget(gtk.VBox):
         t.attach(c, 0, 3, 0, 3, gtk.EXPAND | gtk.FILL, gtk.EXPAND | gtk.FILL, 5, 0)
         l1 = gtk.SpinButton(self.scale_y_adj); l1.set_digits(2)
         l2 = gtk.Label(' 0.0')
-        l3 = gtk.Label('%.2f' % -self.scale_y_adj.get_value())
-        self.negative_scale_label = l3 # will have to update this one
+        l3 = gtk.Label()
+        def update_negative_scale(*trash):
+            l3.set_text('%.2f' % -self.scale_y_adj.get_value())
+        self.scale_y_adj.connect('value-changed', update_negative_scale)
+        update_negative_scale()
+
         t.attach(l1, 3, 4, 0, 1, 0, 0, 5, 0)
         t.attach(l2, 3, 4, 1, 2, 0, gtk.EXPAND, 5, 0)
         t.attach(l3, 3, 4, 2, 3, 0, 0, 5, 0)
@@ -176,7 +180,6 @@ class ByInputWidget(gtk.VBox):
         self.app.brush.settings[self.setting.index].set_points(self.input, brush_points)
 
         # 3. update display
-        self.negative_scale_label.set_text('%.2f' % -scale_y)
         self.update_graypoint()
 
     def update_graypoint(self):
