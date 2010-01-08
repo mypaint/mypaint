@@ -80,6 +80,10 @@ def burn_python_version(target, source, env):
 
 env.Command('mypaint', 'mypaint.py', [burn_python_version, Chmod('$TARGET', 0755)])
 
+env.Clean('.', Glob('*.pyc'))
+env.Clean('.', Glob('gui/*.pyc'))
+env.Clean('.', Glob('lib/*.pyc'))
+
 env.Alias('install', env['prefix'])
 def install(dst, pattern):
     env.Install(join(env['prefix'], dst), Glob(pattern))
