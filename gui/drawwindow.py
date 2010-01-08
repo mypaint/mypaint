@@ -130,7 +130,7 @@ class Window(gtk.Window):
 
             ('LayerMenu',    None, _('Layers')),
 
-            ('LayersWindow', None, _('Layers...'), None, None, self.toggleWindow_cb),
+            ('LayersWindow', None, _('Layers...'), None, 'l', self.toggleWindow_cb),
             ('BackgroundWindow', None, _('Background...'), None, None, self.toggleWindow_cb),
             ('ClearLayer',   None, _('Clear'), 'Delete', None, self.clear_layer_cb),
             ('CopyLayer',          None, _('Copy to Clipboard'), '<control>C', None, self.copy_cb),
