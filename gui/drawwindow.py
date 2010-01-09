@@ -294,7 +294,11 @@ class Window(gtk.Window):
     def copy_cb(self, action):
         # use the full document bbox, so we can past layers back to the correct position
         bbox = self.doc.get_bbox()
-        pixbuf = self.doc.layer.surface.render_as_pixbuf(*bbox)
+        if bbox.w == 0 or bbox.h == 0:
+            print "WARNING: empty document, nothing copied"
+            return
+        else:
+            pixbuf = self.doc.layer.surface.render_as_pixbuf(*bbox)
         cb = gtk.Clipboard()
         cb.set_image(pixbuf)
 
