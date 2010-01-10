@@ -267,6 +267,9 @@ class ManagedBrush(brush.Brush):
 
     def save(self):
         prefix = self.get_fileprefix(saving=True)
+        if self.preview is None:
+            self.preview = gdk.Pixbuf(gdk.COLORSPACE_RGB, False, 8, preview_w, preview_h)
+            self.preview.fill(0xffffffff) # white
         self.preview.save(prefix + '_prev.png', 'png')
         open(prefix + '.myb', 'w').write(self.save_to_string())
         self.remember_mtimes()
