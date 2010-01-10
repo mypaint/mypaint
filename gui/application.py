@@ -71,6 +71,7 @@ class Application: # singleton
             if name != 'drawWindow':
                 def set_hint(widget):
                     widget.window.set_type_hint(gdk.WINDOW_TYPE_HINT_UTILITY)
+                    widget.set_transient_for(self.drawWindow)
                 window.connect("realize", set_hint)
             self.load_window_position(name, window)
 
