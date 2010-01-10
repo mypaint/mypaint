@@ -11,7 +11,7 @@ from lib import mypaintlib, tiledsurface, brush, document, command
 def directPaint():
 
     s = tiledsurface.Surface()
-    events = load('painting30sec.dat.gz')
+    events = loadtxt('painting30sec.dat.gz')
 
     s.begin_atomic()
     for t, x, y, pressure in events:
@@ -28,7 +28,7 @@ def brushPaint():
     #b.load_from_string(open('../brushes/s006.myb').read())
     b.load_from_string(open('../brushes/charcoal.myb').read())
 
-    events = load('painting30sec.dat.gz')
+    events = loadtxt('painting30sec.dat.gz')
 
     b.set_color_rgb((0.0, 0.9, 1.0))
 
@@ -117,7 +117,7 @@ def docPaint():
     # test some actions
     doc = document.Document()
     doc.undo() # nop
-    events = load('painting30sec.dat.gz')
+    events = loadtxt('painting30sec.dat.gz')
     events = events[:len(events)/8]
     t_old = events[0][0]
     n = len(events)
@@ -231,7 +231,7 @@ def leakTest_generic(func):
 def leakTest_slow():
 
     def paint(doc):
-        events = load('painting30sec.dat.gz')
+        events = loadtxt('painting30sec.dat.gz')
         t_old = events[0][0]
         for i, (t, x, y, pressure) in enumerate(events):
             dtime = t - t_old

@@ -86,14 +86,13 @@ def paint(app):
     dw = app.drawWindow
     tdw = dw.tdw
 
-    for b in app.brushes FIXME:
-        if b.name == brush:
-            app.select_brush(b)
+    b = app.brushmanager.get_brush_by_name('redbrush')
+    app.brushmanager.select_brush(b)
 
     dw.fullscreen_cb()
     yield wait_for_idle
 
-    events = load('painting30sec.dat.gz')
+    events = loadtxt('painting30sec.dat.gz')
     events = list(events)
     t0 = time()
     t_old = 0.0

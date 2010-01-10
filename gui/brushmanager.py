@@ -147,6 +147,13 @@ class BrushManager:
         if os.path.exists(fn):
             os.remove(fn)
 
+    def get_brush_by_name(self, name):
+        # used only for testing
+        for group, brushes in self.groups.iteritems():
+            for b in brushes:
+                if b.name == name:
+                    return b
+
     def brushes_modified_cb(self, brushes):
         self.save_brushorder()
 
