@@ -6,7 +6,7 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-import gtk, cairo, random
+import gtk, gobject, cairo, random
 gdk = gtk.gdk
 from math import floor, ceil, pi, log
 
@@ -25,11 +25,16 @@ class TiledDrawWidget(gtk.DrawingArea):
     def __init__(self, document):
         gtk.DrawingArea.__init__(self)
         self.connect("expose-event", self.expose_cb)
-        self.connect("motion-notify-event", self.motion_notify_cb)
-        self.connect("button-press-event", self.button_press_cb)
         self.connect("enter-notify-event", self.enter_notify_cb)
         self.connect("leave-notify-event", self.leave_notify_cb)
         self.connect("size-allocate", self.size_allocate_cb)
+
+        # workaround attempt for https://gna.org/bugs/?14372
+        self.starting = True
+        def at_application_start(*trash):
+            self.connect("motion-notify-event", self.motion_notify_cb)
+            self.connect("button-press-event", self.button_press_cb)
+        gobject.idle_add(at_application_start)
 
         self.set_events(gdk.EXPOSURE_MASK
                         | gdk.POINTER_MOTION_MASK
