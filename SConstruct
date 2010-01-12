@@ -25,7 +25,7 @@ opts.Add(PathVariable('prefix', 'autotools-style installation prefix', '/usr/loc
 opts.Add(BoolVariable('debug', 'enable HEAVY_DEBUG and disable optimizations', False))
 env = Environment(ENV=os.environ, options=opts)
 if sys.platform == "win32":
-    env.Prepend(tools=['mingw'])
+    env = Environment(tools=['mingw'], ENV=os.environ, options=opts)
 opts.Update(env)
 
 env.ParseConfig('pkg-config --cflags --libs glib-2.0')
