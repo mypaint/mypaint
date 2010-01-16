@@ -29,8 +29,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.connect("leave-notify-event", self.leave_notify_cb)
         self.connect("size-allocate", self.size_allocate_cb)
 
-        # workaround attempt for https://gna.org/bugs/?14372
-        self.starting = True
+        # workaround for https://gna.org/bugs/?14372
         def at_application_start(*trash):
             self.connect("motion-notify-event", self.motion_notify_cb)
             self.connect("button-press-event", self.button_press_cb)
