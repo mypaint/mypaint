@@ -363,8 +363,8 @@ class TiledDrawWidget(gtk.DrawingArea):
         else:
             self.queue_draw()
 
-    def rotozoom_with_center(self, function):
-        if self.has_pointer and self.last_event_x is not None:
+    def rotozoom_with_center(self, function, at_pointer=True):
+        if at_pointer and self.has_pointer and self.last_event_x is not None:
             cx, cy = self.last_event_x, self.last_event_y
         else:
             w, h = self.window.get_size()
@@ -404,7 +404,7 @@ class TiledDrawWidget(gtk.DrawingArea):
 
     def set_flipped(self, flipped):
         def f(): self.flipped = flipped
-        self.rotozoom_with_center(f)
+        self.rotozoom_with_center(f, at_pointer=False)
 
     def start_drag(self, dragfunc):
         self.dragfunc = dragfunc
