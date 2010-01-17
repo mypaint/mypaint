@@ -326,9 +326,10 @@ private:
     float x, y, opaque;
     float radius;
 
+    // ensure we don't get a positive result with two negative opaque values
+    if (settings_value[BRUSH_OPAQUE] < 0) settings_value[BRUSH_OPAQUE] = 0;
     opaque = settings_value[BRUSH_OPAQUE] * settings_value[BRUSH_OPAQUE_MULTIPLY];
-    if (opaque >= 1.0) opaque = 1.0;
-    if (opaque <= 0.0) opaque = 0.0;
+    opaque = CLAMP(opaque, 0.0, 1.0);
     //if (opaque == 0.0) return false; <-- cannot do that, since we need to update smudge state.
     if (settings_value[BRUSH_OPAQUE_LINEARIZE]) {
       // OPTIMIZE: no need to recalculate this for each dab
