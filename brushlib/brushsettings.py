@@ -35,8 +35,8 @@ inputs_list = [
 
 settings_list = [
     # internal name, displayed name, constant, minimum, default, maximum, tooltip
-    ['opaque', _('opaque'), False, 0.0, 1.0, 1.0, _("0 means brush is transparent, 1 fully visible\n(also known als alpha or opacity)")],
-    ['opaque_multiply', _('opaque multiply'), False, 0.0, 0.0, 1.0, _("This gets multiplied with opaque. It is used for making opaque depend on pressure (or other inputs).")],
+    ['opaque', _('opaque'), False, 0.0, 1.0, 2.0, _("0 means brush is transparent, 1 fully visible\n(also known als alpha or opacity)")],
+    ['opaque_multiply', _('opaque multiply'), False, 0.0, 0.0, 2.0, _("This gets multiplied with opaque. It is used for making opaque depend on pressure (or other inputs).")],
     ['opaque_linearize', _('opaque linearize'), True, 0.0, 0.9, 2.0, _("Correct the nonlinearity introduced by blending multiple dabs on top of each other. This correction should get you a linear (\"natural\") pressure response when pressure is mapped to opaque_multiply, as it is usually done. 0.9 is good for standard strokes, set it smaller if your brush scatters a lot, or higher if you use dabs_per_second.\n0.0 the opaque value above is for the individual dabs\n1.0 the opaque value above is for the final brush stroke, assuming each pixel gets (dabs_per_radius*2) brushdabs on average during a stroke")],
     ['radius_logarithmic', _('radius'), False, -2.0, 2.0, 5.0, _("basic brush radius (logarithmic)\n 0.7 means 2 pixels\n 3.0 means 20 pixels")],
     ['hardness', _('hardness'), False, 0.0, 0.8, 1.0, _("hard brush-circle borders (setting to zero will draw nothing)")],
