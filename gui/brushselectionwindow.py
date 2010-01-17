@@ -214,6 +214,8 @@ class GroupSelector(gtk.DrawingArea):
         group = self.group_at(event.x, event.y)
         if event.type != gdk.BUTTON_PRESS:
             # Double-click
+            if not group:
+                return
             self.bm.active_groups = [group]
             for f in self.bm.groups_observers: f()
         elif event.button == 1:
