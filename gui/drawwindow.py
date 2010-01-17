@@ -90,6 +90,7 @@ class Window(gtk.Window):
 
         self.app.brush.settings_observers.append(self.brush_modified_cb)
         self.tdw.device_observers.append(self.device_changed_cb)
+        self.last_pen_device = None
 
         self.eraser_mode_radius_change = 3*(0.3) # can go back to exact original with brush_smaller_cb()
         self.eraser_mode_original_radius = None
@@ -559,6 +560,16 @@ class Window(gtk.Window):
             return
 
         print 'device change:', new_device.name, new_device.source
+
+        # When editing brush settings, it is often more convenient to use the mouse.
+        # Because of this, we don't restore brushsettings when switching to/from the mouse.
+        # We act as if the mouse was identical to the last active pen device.
+        if new_device.source == gdk.SOURCE_MOUSE and self.last_pen_device:
+            new_device = self.last_pen_device
+        if new_device.source == gdk.SOURCE_PEN:
+            self.last_pen_device = new_device
+        if old_device.source == gdk.SOURCE_MOUSE and self.last_pen_device:
+            old_device = self.last_pen_device
 
         bm = self.app.brushmanager
         bm.brush_by_device[old_device.name] = (bm.selected_brush, self.app.brush.save_to_string())
