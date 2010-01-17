@@ -142,6 +142,8 @@ class GroupSelector(gtk.DrawingArea):
 
         self.connect("expose-event", self.expose_cb)
         self.connect("button-press-event", self.button_press_cb)
+        self.connect("motion-notify-event", self.motion_notify_cb)
+        self.connect("leave-notify-event", self.leave_notify_cb)
         self.set_events(gdk.EXPOSURE_MASK |
                         gdk.BUTTON_PRESS_MASK |
                         gdk.BUTTON_RELEASE_MASK |
@@ -149,6 +151,8 @@ class GroupSelector(gtk.DrawingArea):
                         )
         self.idx2group = {}
         self.layout = None
+        self.gtkstate_prelight_group = None
+        self.gtkstate_active_group = None
         self.set_tooltip_text(_('Right click on group to modify'))
 
     def active_groups_changed_cb(self):
@@ -179,28 +183,49 @@ class GroupSelector(gtk.DrawingArea):
         text = ''
         attr = pango.AttrList()
         self.idx2group = {}
+        pad_s = u"\u202f"  # NARROW NO-BREAK SPACE
+        sp_s = pad_s + u"\u200b"  # ZERO WIDTH SPACE
         for group in all_groups:
-            s = group.encode('utf8')
+            u = pad_s + group + pad_s
+            s = u.encode('utf8')
             idx_start = idx
             for c in s:
                 self.idx2group[idx] = group
                 idx += 1
-            if group in self.bm.active_groups:
-                # those colors create too much distraction:
-                #c = style.bg[gtk.STATE_SELECTED]
-                #attr.insert(pango.AttrBackground(c.red, c.green, c.blue, idx_start, idx))
-                #c = style.text[gtk.STATE_SELECTED]
-                #attr.insert(pango.AttrForeground(c.red, c.green, c.blue, idx_start, idx))
-                attr.insert(pango.AttrUnderline(pango.UNDERLINE_SINGLE, idx_start, idx))
+            
+            # Note the difference in terminology here
+            bg_state = fg_state = gtk.STATE_NORMAL
+            if group == self.gtkstate_active_group: # activated the menu
+                bg_state = fg_state = gtk.STATE_ACTIVE
+            elif group in self.bm.active_groups: # those groups visible
+                bg_state = fg_state = gtk.STATE_SELECTED
+            elif group == self.gtkstate_prelight_group:
+                bg_state = fg_state = gtk.STATE_PRELIGHT
 
-            text += group + ' '
-            idx += 1
+            # always use the STATE_SELECTED fg if the group is visible
+            if group in self.bm.active_groups:
+                fg_state = gtk.STATE_SELECTED 
+
+            c = style.bg[bg_state]
+            attr.insert(pango.AttrBackground(c.red, c.green, c.blue, idx_start, idx))
+            c = style.fg[fg_state]
+            attr.insert(pango.AttrForeground(c.red, c.green, c.blue, idx_start, idx))
+
+            text += u + sp_s
+            idx += len(sp_s.encode("utf8"))
 
         layout.set_text(text)
         layout.set_attributes(attr)
+        
+        leading = style.font_desc.get_size() / 6
+        vmargin = leading // pango.SCALE
+        layout.set_spacing(leading)
+        
+        w, h = layout.get_pixel_size()
+        h += 2*vmargin
+        cr.move_to(0, vmargin)
         cr.show_layout(layout)
 
-        w, h = layout.get_pixel_size()
         self.set_size_request(-1, h)
 
         self.layout = layout
@@ -227,8 +252,23 @@ class GroupSelector(gtk.DrawingArea):
                 self.bm.active_groups.insert(0, group)
             for f in self.bm.groups_observers: f()
         elif event.button == 3:
+            self.gtkstate_active_group = group
+            self.queue_draw()
             menu = self.context_menu(group)
             menu.popup(None,None,None, event.button, event.time, group)
+
+    def motion_notify_cb(self, widget, event):
+        old_prelight_group = self.gtkstate_prelight_group
+        self.gtkstate_prelight_group = self.group_at(event.x, event.y)
+        if self.gtkstate_prelight_group != old_prelight_group:
+            self.queue_draw()
+
+    def leave_notify_cb(self, widget, event):
+        old_prelight_group = self.gtkstate_prelight_group
+        self.gtkstate_prelight_group = None
+        if self.gtkstate_prelight_group != old_prelight_group:
+            self.gtkstate_prelight_group = None
+            self.queue_draw()
 
     def context_menu(self, group):
         m = gtk.Menu()
@@ -241,8 +281,13 @@ class GroupSelector(gtk.DrawingArea):
             mi = gtk.MenuItem(label)
             mi.connect('activate', callback, group)
             m.append(mi)
+        m.connect('selection-done', self.menu_finished_cb)
         m.show_all()
         return m
+
+    def menu_finished_cb(self, menushell):
+        self.gtkstate_active_group = None
+        self.queue_draw()
 
     def create_group_cb(self, w, group):
         new_group = dialogs.ask_for_name(self, _('Create group'), '')
