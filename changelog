@@ -1,13 +1,15 @@
-Version c2fed0a8933ddd03886a9e1dd817f843d00737bd:
-- select the brush from a stroke on the canvas
+Version 0.8.0:
+- many new brushes contributed by various artists
+- brushes organized into groups
 - straight lines are possible (hold shift)
+- basic layer dialog
+- select brush from a stroke on the canvas
+- improved color picker, show color while picking
 - tools stay at top, only one taskbar entry (depending on your wm)
-- new brushes contributed by different artists
 - faster zoomed-out view (30x speedup in some cases)
 - i18n support added, translations in several languages
 - new and revised color selectors
-- color picker shows color while picking
-- big background patterns are possible (with some limitations)
+- big background patterns are possible (with limitations)
 - can save all layers as numbered PNGs
 - some drag&drop support
 - many other minor enhancements and bugfixes
