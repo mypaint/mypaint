@@ -113,7 +113,7 @@ class Window(gtk.Window):
             ('Smaller',      None, _('Smaller'), 'd', None, self.brush_smaller_cb),
             ('MoreOpaque',   None, _('More Opaque'), 's', None, self.more_opaque_cb),
             ('LessOpaque',   None, _('Less Opaque'), 'a', None, self.less_opaque_cb),
-            ('Eraser',       None, _('Toggle Eraser Mode'), 'e', None, self.eraser_cb),
+            ('Eraser',       None, _('Toggle Eraser Mode'), 'e', None, self.eraser_cb), # TODO: make toggle action
             ('PickContext',  None, _('Pick Context (layer, brush and color)'), 'w', None, self.pick_context_cb),
 
             ('ColorMenu',    None, _('Color')),
@@ -133,23 +133,23 @@ class Window(gtk.Window):
 
             ('LayersWindow', None, _('Layers...'), None, 'l', self.toggleWindow_cb),
             ('BackgroundWindow', None, _('Background...'), None, None, self.toggleWindow_cb),
-            ('ClearLayer',   None, _('Clear'), 'Delete', None, self.clear_layer_cb),
-            ('CopyLayer',          None, _('Copy to Clipboard'), '<control>C', None, self.copy_cb),
-            ('PasteLayer',         None, _('Paste Clipboard (Replace Layer)'), '<control>V', None, self.paste_cb),
+            ('ClearLayer',   gtk.STOCK_CLEAR, _('Clear'), 'Delete', None, self.clear_layer_cb),
+            ('CopyLayer',          gtk.STOCK_COPY, _('Copy to Clipboard'), '<control>C', None, self.copy_cb),
+            ('PasteLayer',         gtk.STOCK_PASTE, _('Paste Clipboard (Replace Layer)'), '<control>V', None, self.paste_cb),
             ('PickLayer',    None, _('Select Layer at Cursor'), 'h', None, self.pick_layer_cb),
             ('LayerFG',      None, _('Next (above current)'),  'Page_Up', None, self.layer_fg_cb),
             ('LayerBG',      None, _('Next (below current)'), 'Page_Down', None, self.layer_bg_cb),
             ('NewLayerFG',   None, _('New (above current)'), '<control>Page_Up', None, self.new_layer_cb),
             ('NewLayerBG',   None, _('New (below current)'), '<control>Page_Down', None, self.new_layer_cb),
             ('MergeLayer',   None, _('Merge Down'), '<control>Delete', None, self.merge_layer_cb),
-            ('RemoveLayer',  None, _('Remove'), '<shift>Delete', None, self.remove_layer_cb),
+            ('RemoveLayer',  gtk.STOCK_DELETE, _('Remove'), '<shift>Delete', None, self.remove_layer_cb),
             ('IncreaseLayerOpacity', None, _('Increase Layer Opacity'),  'p', None, self.layer_increase_opacity),
             ('DecreaseLayerOpacity', None, _('Decrease Layer Opacity'),  'o', None, self.layer_decrease_opacity),
 
             ('BrushSelectionWindow',  None, _('Brush List...'), 'b', None, self.toggleWindow_cb),
             ('BrushSettingsWindow',   None, _('Brush Settings...'), '<control>b', None, self.toggleWindow_cb),
             ('ColorSelectionWindow',  None, _('Color Triangle...'), 'g', None, self.toggleWindow_cb),
-            ('ColorSamplerWindow',  None, _('Color Sampler...'), 't', None, self.toggleWindow_cb),
+            ('ColorSamplerWindow',  gtk.STOCK_SELECT_COLOR, _('Color Sampler...'), 't', None, self.toggleWindow_cb),
             ('SettingsWindow',        gtk.STOCK_PREFERENCES, _('Settings...'), None, None, self.toggleWindow_cb),
 
             ('HelpMenu',     None, _('Help')),
@@ -170,7 +170,7 @@ class Window(gtk.Window):
             ('ZoomOut',      gtk.STOCK_ZOOM_OUT, _('Zoom Out'), 'comma', None, self.zoom_cb),
             ('RotateLeft',   None, _('Rotate Counterclockwise'), None, None, self.rotate_cb),
             ('RotateRight',  None, _('Rotate Clockwise'), None, None, self.rotate_cb),
-            ('SoloLayer',    None, _('Layer Solo'), 'Home', None, self.solo_layer_cb),
+            ('SoloLayer',    None, _('Layer Solo'), 'Home', None, self.solo_layer_cb), # TODO: make toggle action
             ('ToggleAbove',  None, _('Hide Layers Above Current'), 'End', None, self.toggle_layers_above_cb), # TODO: make toggle action
             ('ViewHelp',  gtk.STOCK_HELP, _('Help'), None, None, self.show_infodialog_cb),
             ]
