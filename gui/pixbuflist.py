@@ -31,6 +31,7 @@ class PixbufList(gtk.DrawingArea):
         self.pixbuf = None
         self.spacing_outside = 0
         self.border_visible = 2
+        self.border_visible_outside_cell = 1
         self.spacing_inside = 0
         self.set_size(item_w, item_h)
 
@@ -179,8 +180,11 @@ class PixbufList(gtk.DrawingArea):
                 h -= 2*pixels
                 return (x, y, w, h)
             x, y, w, h = shrink(self.spacing_outside, x, y, w, h)
-            for j in range(self.border_visible):
-                widget.window.draw_rectangle(gc, False, x, y, w-1, h-1)
+            for j in range(self.border_visible_outside_cell):
+                x, y, w, h = shrink(-1, x, y, w, h)
+            for j in range(self.border_visible + self.border_visible_outside_cell):
+                if b is self.selected:
+                    widget.window.draw_rectangle(gc, False, x, y, w-1, h-1)
                 x, y, w, h = shrink(1, x, y, w, h)
             i += 1
 
