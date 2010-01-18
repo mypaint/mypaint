@@ -119,7 +119,7 @@ class Window(gtk.Window):
             ('ColorMenu',    None, _('Color')),
             ('Darker',       None, _('Darker'), None, None, self.darker_cb),
             ('Bigger',       None, _('Bigger'), 'f', None, self.brush_bigger_cb),
-            ('ColorPickerPopup',    None, _('Pick Color'), 'r', None, self.popup_cb),
+            ('ColorPickerPopup',    gtk.STOCK_COLOR_PICKER, _('Pick Color'), 'r', None, self.popup_cb),
             ('ColorHistoryPopup',  None, _('Color History'), 'x', None, self.popup_cb),
             ('ColorChangerPopup', None, _('Color Changer'), 'v', None, self.popup_cb),
             ('ColorRingPopup',  None, _('Color Ring'), None, None, self.popup_cb),
@@ -149,7 +149,7 @@ class Window(gtk.Window):
             ('BrushSelectionWindow',  None, _('Brush List...'), 'b', None, self.toggleWindow_cb),
             ('BrushSettingsWindow',   None, _('Brush Settings...'), '<control>b', None, self.toggleWindow_cb),
             ('ColorSelectionWindow',  None, _('Color Triangle...'), 'g', None, self.toggleWindow_cb),
-            ('ColorSamplerWindow',  gtk.STOCK_COLOR_PICKER, _('Color Sampler...'), 't', None, self.toggleWindow_cb),
+            ('ColorSamplerWindow',  None, _('Color Sampler...'), 't', None, self.toggleWindow_cb),
             ('SettingsWindow',        gtk.STOCK_PREFERENCES, _('Settings...'), None, None, self.toggleWindow_cb),
 
             ('HelpMenu',     None, _('Help')),
