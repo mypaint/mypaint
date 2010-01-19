@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: MyPaint 0.7.1+git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-01-05 19:24+0100\n"
-"PO-Revision-Date: 2009-11-23 19:18+0100\n"
+"PO-Revision-Date: 2010-01-19 11:18+0100\n"
 "Last-Translator: Gergely Aradszki <garpeer@cube-x.hu>\n"
 "Language-Team: Hungarian <hu@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -30,7 +30,7 @@ msgstr ""
 
 #: ../brushlib/brushsettings.py:23
 msgid "Fine speed"
-msgstr ""
+msgstr "Finom sebesség"
 
 #: ../brushlib/brushsettings.py:23
 msgid ""
@@ -44,23 +44,20 @@ msgstr ""
 "mozgás."
 
 #: ../brushlib/brushsettings.py:24
-#, fuzzy
 msgid "Gross speed"
-msgstr "Eltolás sebesség szerint"
+msgstr "Durva sebesség"
 
 #: ../brushlib/brushsettings.py:24
-#, fuzzy
 msgid ""
 "Same as fine speed, but changes slower. Also look at the 'gross speed "
 "filter' setting."
 msgstr ""
-"Ugyanaz, mint a 'sebesség1', csak lassabban változik. Érdemes megnézni a "
-"'sebesség2 szűrő'-t is."
+"Ugyanaz, mint a 'finom sebesség', csak lassabban változik. Érdemes megnézni a "
+"'durva sebesség szűrő'-t is."
 
 #: ../brushlib/brushsettings.py:25
-#, fuzzy
 msgid "Random"
-msgstr "Visszavonás"
+msgstr "Véletlenszerű"
 
 #: ../brushlib/brushsettings.py:25
 msgid ""
@@ -72,7 +69,7 @@ msgstr ""
 
 #: ../brushlib/brushsettings.py:26
 msgid "Stroke"
-msgstr ""
+msgstr "Vonás"
 
 #: ../brushlib/brushsettings.py:26
 msgid ""
@@ -85,9 +82,8 @@ msgstr ""
 "'ecsetvonás hossza' és az 'ecsetvonás tartási ideje' beállításokat."
 
 #: ../brushlib/brushsettings.py:27
-#, fuzzy
 msgid "Direction"
-msgstr "irány szűrő"
+msgstr "Irány"
 
 #: ../brushlib/brushsettings.py:27
 msgid ""
@@ -100,7 +96,7 @@ msgstr ""
 #. ['motion_strength',0.0,0.0,  0.0,  1.0, 1.0,  "[EXPERIMENTAL] Same as angle, but wraps at 180 degrees. The dynamics are shared with BRUSH_OFFSET_BY_SPEED_FILTER (FIXME: which is a bad thing)."],
 #: ../brushlib/brushsettings.py:29
 msgid "Custom"
-msgstr ""
+msgstr "Saját"
 
 #: ../brushlib/brushsettings.py:29
 msgid ""
@@ -234,12 +230,10 @@ msgstr ""
 "2. Nem hat a 'valós sugár' bemenet által látott értékre"
 
 #: ../brushlib/brushsettings.py:47
-#, fuzzy
 msgid "fine speed filter"
-msgstr "Sebesség1 szűrő"
+msgstr "Finom sebesség szűrő"
 
 #: ../brushlib/brushsettings.py:47
-#, fuzzy
 msgid ""
 "how slow the input fine speed is following the real speed\n"
 "0.0 change immediately as your speed changes (not recommended, but try it)"
@@ -248,22 +242,18 @@ msgstr ""
 "A 0.0 érték azonnali követést eredményez (nem ajánlott, de próbáld csak ki)."
 
 #: ../brushlib/brushsettings.py:48
-#, fuzzy
 msgid "gross speed filter"
-msgstr "Sebesség1 szűrő"
+msgstr "Durva sebesség szűrő"
 
 #: ../brushlib/brushsettings.py:48
-#, fuzzy
 msgid "same as 'fine speed filter', but note that the range is different"
-msgstr "Ugyanaz, mint a 'Sebesség1 lassúság', de más a tartomány. "
+msgstr "Ugyanaz, mint a 'finom sebesség szűrő', de más a tartomány. "
 
 #: ../brushlib/brushsettings.py:49
-#, fuzzy
 msgid "fine speed gamma"
-msgstr "Sebesség1 gamma"
+msgstr "Finom sebesség gamma"
 
 #: ../brushlib/brushsettings.py:49
-#, fuzzy
 msgid ""
 "This changes the reaction of the 'fine speed' input to extreme physical "
 "speed. You will see the difference best if 'fine speed' is mapped to the "
@@ -280,14 +270,12 @@ msgstr ""
 "Nagyon kis sebességeknél a hatás ellentétes."
 
 #: ../brushlib/brushsettings.py:50
-#, fuzzy
 msgid "gross speed gamma"
-msgstr "Sebesség1 gamma"
+msgstr "Durva sebesség gamma"
 
 #: ../brushlib/brushsettings.py:50
-#, fuzzy
 msgid "same as 'fine speed gamma' for gross speed"
-msgstr "Ugyanaz, mint a 'Sebesség1 gamma', csak a Sebesség2-nek"
+msgstr "Ugyanaz, mint a 'Finom sebesség gamma', csak a SDurva sebesség-nek"
 
 #: ../brushlib/brushsettings.py:51
 msgid "jitter"
@@ -501,7 +489,7 @@ msgstr ""
 
 #: ../brushlib/brushsettings.py:68
 msgid "eraser"
-msgstr "radír"
+msgstr "Radír"
 
 #: ../brushlib/brushsettings.py:68
 msgid ""
@@ -516,7 +504,6 @@ msgstr ""
 "0.5 a pixelek az 50%-os átlátszóság felé közelítenek"
 
 #: ../brushlib/brushsettings.py:70
-#, fuzzy
 msgid "stroke threshold"
 msgstr "Ecsetvonási küszöb"
 
@@ -711,7 +698,6 @@ msgid "save preview"
 msgstr "Előnézet mentése"
 
 #: ../gui/brushcreationwidget.py:100 ../gui/brushcreationwidget.py:161
-#, fuzzy
 msgid "No brush selected!"
 msgstr "Ecsetválasztás"
 
@@ -721,14 +707,13 @@ msgstr "Ecset átnevezése"
 
 #: ../gui/brushcreationwidget.py:115
 msgid "A brush with this name already exists!"
-msgstr ""
+msgstr "Már létezik ilyen nevű ecset!"
 
 #: ../gui/brushcreationwidget.py:142 ../gui/brushcreationwidget.py:153
 msgid "No brush selected, please use \"add as new\" instead."
-msgstr ""
+msgstr "Nincsen kiválasztott ecset, használja inkább a \"Hozzáadást\"."
 
 #: ../gui/brushcreationwidget.py:163
-#, fuzzy
 msgid "Really delete brush from disk?"
 msgstr "Valóban törli ezt az ecsetet?"
 
@@ -742,42 +727,40 @@ msgstr "Szerkesztés"
 
 #: ../gui/brushselectionwindow.py:152
 msgid "Right click on group to modify"
-msgstr ""
+msgstr "Jobb kattintás a csoport módosításához"
 
 #: ../gui/brushselectionwindow.py:234
 msgid "New group..."
-msgstr ""
+msgstr "Új csoport..."
 
 #: ../gui/brushselectionwindow.py:236
-#, fuzzy
 msgid "Rename group..."
-msgstr "Átnevezés"
+msgstr "Csoport átnevezése..."
 
 #: ../gui/brushselectionwindow.py:237
 msgid "Delete group..."
-msgstr ""
+msgstr "Csoport törlése..."
 
 #: ../gui/brushselectionwindow.py:246
 msgid "Create group"
-msgstr ""
+msgstr "Csoport létrehozása"
 
 #: ../gui/brushselectionwindow.py:251
-#, fuzzy
 msgid "Rename group"
-msgstr "Ecset átnevezése"
+msgstr "Csoport átnevezése"
 
 #: ../gui/brushselectionwindow.py:257
 msgid "A group with this name already exists!"
-msgstr ""
+msgstr "Már létezik ilyen nevű csoport"
 
 #: ../gui/brushselectionwindow.py:260
-#, fuzzy, python-format
+#, python-format
 msgid "Really delete group %s?"
-msgstr "Valóban törli ezt az ecsetet?"
+msgstr "Valóban törli a %s csoportot?"
 
 #: ../gui/brushselectionwindow.py:263
 msgid "This group can not be deleted (try to make it empty first)."
-msgstr ""
+msgstr "A csoport nem törölhető (először ki kell üríteni)"
 
 #: ../gui/brushsettingswindow.py:23
 msgid "Brush settings"
@@ -789,23 +772,23 @@ msgstr "Az utolsó ecsetvonás 'élő' frissítése"
 
 #: ../gui/brushsettingswindow.py:65
 msgid "No additional configuration"
-msgstr ""
+msgstr "Nincs további beállítás"
 
 #: ../gui/brushsettingswindow.py:70 ../gui/brushsettingswindow.py:115
 msgid "Add input values mapping"
-msgstr ""
+msgstr "Bemeneti érték leképezés hozzáadása"
 
 #: ../gui/brushsettingswindow.py:117
 msgid "Modify input values mapping"
-msgstr ""
+msgstr "Bemeneti érték leképezés módosítása"
 
 #: ../gui/colorsamplerwindow.py:815
 msgid "RGB"
-msgstr ""
+msgstr "RGB"
 
 #: ../gui/colorsamplerwindow.py:816
 msgid "HSV"
-msgstr ""
+msgstr "HSV"
 
 #: ../gui/colorsamplerwindow.py:818
 msgid "Colors history"
@@ -817,49 +800,47 @@ msgstr "Részletek"
 
 #: ../gui/colorsamplerwindow.py:832
 msgid "Harmonies"
-msgstr ""
+msgstr "Harmóniák"
 
 #: ../gui/colorsamplerwindow.py:834
 msgid "Analogous"
-msgstr ""
+msgstr "Analóg"
 
 #: ../gui/colorsamplerwindow.py:835
 msgid "Complimentary color"
-msgstr ""
+msgstr "Komplementer színek"
 
 #: ../gui/colorsamplerwindow.py:836
 msgid "Split complimentary"
-msgstr ""
+msgstr "Osztott komplementer"
 
 #: ../gui/colorsamplerwindow.py:837
 msgid "Double complimentary"
-msgstr ""
+msgstr "Kettős komplementer"
 
 #: ../gui/colorsamplerwindow.py:838
-#, fuzzy
 msgid "Square"
-msgstr "Mentés"
+msgstr "Négyzet"
 
 #: ../gui/colorsamplerwindow.py:839
-#, fuzzy
 msgid "Triadic"
-msgstr "Sugár"
+msgstr "Triád"
 
 #: ../gui/colorsamplerwindow.py:841
 msgid "Select harmonies"
-msgstr ""
+msgstr "Harmóniák kiválasztása"
 
 #: ../gui/colorsamplerwindow.py:844
 msgid "Change value/saturation"
-msgstr ""
+msgstr "Érték/telítettség módosítása"
 
 #: ../gui/colorsamplerwindow.py:847
 msgid "Blend each color to opposite"
-msgstr ""
+msgstr "Mindegyik szín keverése az ellentettjével"
 
 #: ../gui/colorsamplerwindow.py:849
 msgid "Blend each color to negative"
-msgstr ""
+msgstr "Mindegyik szín keverése az inverzével"
 
 #: ../gui/colorsamplerwindow.py:914
 msgid "MyPaint color selector"
@@ -867,7 +848,7 @@ msgstr "MyPaint színválasztó"
 
 #: ../gui/dialogs.py:37
 msgid "Name"
-msgstr ""
+msgstr "Név"
 
 #. name, stock id, label, accelerator, tooltip, callback
 #: ../gui/drawwindow.py:103
@@ -957,9 +938,8 @@ msgid "Layers"
 msgstr "Rétegek"
 
 #: ../gui/drawwindow.py:133
-#, fuzzy
 msgid "Layers..."
-msgstr "Rétegek"
+msgstr "Rétegek..."
 
 #: ../gui/drawwindow.py:134
 msgid "Background..."
@@ -1064,7 +1044,7 @@ msgstr "Teljes képernyő"
 
 #: ../gui/drawwindow.py:166
 msgid "Show Menu"
-msgstr ""
+msgstr "Menü megjelenítése"
 
 #: ../gui/drawwindow.py:167
 msgid "Reset (Zoom, Rotation, Mirror)"
@@ -1202,7 +1182,6 @@ msgstr ""
 "lesz szüksége."
 
 #: ../gui/drawwindow.py:779
-#, fuzzy
 msgid ""
 "This is used to quickly save/restore brush settings using keyboard "
 "shortcuts. You can paint with one hand and change brushes with the other "
@@ -1310,14 +1289,14 @@ msgid "JPEG 90% quality (*.jpg; *.jpeg)"
 msgstr "JPEG 90%-os minőség (*.jpg; *.jpeg)"
 
 #: ../gui/filehandling.py:127
-#, fuzzy, python-format
+#, python-format
 msgid "%d minute"
 msgid_plural "%d minutes"
 msgstr[0] "%d perc"
 msgstr[1] "%d perc"
 
 #: ../gui/filehandling.py:130
-#, fuzzy, python-format
+#, python-format
 msgid "%d second"
 msgid_plural "%d seconds"
 msgstr[0] "%d másodperc"
@@ -1395,15 +1374,15 @@ msgstr "Bug részletei"
 
 #: ../gui/layerswindow.py:108
 msgid "Layer visibility"
-msgstr ""
+msgstr "Réteg-láthatóság"
 
 #: ../gui/layerswindow.py:207
 msgid "Name:"
-msgstr ""
+msgstr "Név:"
 
 #: ../gui/layerswindow.py:213
 msgid "Opacity:"
-msgstr ""
+msgstr "Átlátszóság:"
 
 #: ../gui/settingswindow.py:24
 msgid "Settings"
