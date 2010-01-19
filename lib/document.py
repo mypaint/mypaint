@@ -11,6 +11,7 @@ join = os.path.join
 import xml.etree.ElementTree as ET
 from gtk import gdk
 import gobject, numpy
+from gettext import gettext as _
 
 import helpers, tiledsurface, pixbufsurface, backgroundsurface, mypaintlib
 import command, stroke, layer
