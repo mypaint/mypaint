@@ -9,6 +9,7 @@
 import gtk
 gdk = gtk.gdk
 from lib import helpers
+from math import ceil
 
 DRAG_ITEM_NAME = 103
 
@@ -18,6 +19,11 @@ class PixbufList(gtk.DrawingArea):
         pass
     def on_drag_data(self, copy, source_widget, brush_name, target_idx):
         return False
+    def drag_begin_cb(self, widget, context):
+        widget.drag_insertion_index = None
+    def drag_end_cb(self, widget, context):
+        widget.drag_insertion_index = None
+
 
     def __init__(self, itemlist, item_w, item_h, namefunc=None, pixbuffunc=lambda x: x):
         gtk.DrawingArea.__init__(self)
@@ -36,21 +42,45 @@ class PixbufList(gtk.DrawingArea):
         self.set_size(item_w, item_h)
 
         self.selected = None
+        self.tooltip_text = None
 
         self.connect("expose-event", self.expose_cb)
         self.connect("button-press-event", self.button_press_cb)
         self.connect("configure-event", self.configure_event_cb)
-        self.connect('drag-data-get', self.drag_data_get_cb)
-        self.connect('motion-notify-event', self.motion_notify_cb)
-        self.connect('drag-data-received', self.drag_data_received_cb)
+        self.connect("motion-notify-event", self.motion_notify_cb)
         self.set_events(gdk.EXPOSURE_MASK |
                         gdk.BUTTON_PRESS_MASK |
                         gdk.BUTTON_RELEASE_MASK |
                         gdk.POINTER_MOTION_MASK)
-        self.drag_dest_set(gtk.DEST_DEFAULT_ALL,
-                [('LIST_ITEM', gtk.TARGET_SAME_APP, DRAG_ITEM_NAME)],
-                gdk.ACTION_MOVE | gdk.ACTION_COPY)
+        
+        self.realized_once = False
+        self.connect("realize", self.on_realize)
+        
+        self.drag_highlighted = False
+        self.drag_insertion_index = None
         self.update()
+    
+    def on_realize(self, widget):
+        if self.realized_once:
+            return
+        self.realized_once = True
+        # Be responsive to user's GTK+ style (TODO: what happens when the
+        # user changes style for an already-realized widget?)
+        self.modify_bg(gtk.STATE_NORMAL, widget.style.base[gtk.STATE_NORMAL])
+        if self.dragging_allowed:
+            # DnD setup.
+            self.connect('drag-data-get', self.drag_data_get_cb)
+            self.connect('drag-motion', self.drag_motion_cb)
+            self.connect('drag-leave', self.drag_leave_cb)
+            self.connect('drag-begin', self.drag_begin_cb)
+            self.connect('drag-end', self.drag_end_cb)
+            self.connect('drag-data-received', self.drag_data_received_cb)
+            # Users can drag pixbufs *to* anywhere on a pixbuflist at all times.
+            self.drag_dest_set(gtk.DEST_DEFAULT_ALL,
+                    [('LIST_ITEM', gtk.TARGET_SAME_APP, DRAG_ITEM_NAME)],
+                    gdk.ACTION_MOVE | gdk.ACTION_COPY)
+            # Dragging *from* a list can only happen over a pixbuf: see motion_notify_cb
+            self.drag_source_sensitive = False
 
     def set_size(self, item_w, item_h):
         self.item_w = item_w
@@ -58,19 +88,75 @@ class PixbufList(gtk.DrawingArea):
         self.thumbnails = {}
 
     def motion_notify_cb(self, widget, event):
-        if not self.dragging_allowed:
+        i = self.index(event.x, event.y) 
+        over_item = i < len(self.itemlist)
+        if over_item:
+            if self.namefunc is not None:
+                item = self.itemlist[i]
+                item_name = self.namefunc(item)
+                # Tooltip changing has to happen over two motion-notifys
+                # because we want to force the tooltip box to move with the
+                # mouse pointer.
+                if self.tooltip_text != item_name:
+                    self.tooltip_text = item_name
+                    self.set_has_tooltip(False)
+                    # pop down on the 1st event with this name
+                else:
+                    self.set_tooltip_text(item_name)
+                    # pop up on the 2nd
+            if self.dragging_allowed:
+                if not self.drag_source_sensitive:
+                    self.drag_source_set(gtk.gdk.BUTTON1_MASK,
+                        [('LIST_ITEM', gtk.TARGET_SAME_APP, DRAG_ITEM_NAME)],
+                        gdk.ACTION_COPY|gdk.ACTION_MOVE)
+                    self.drag_source_sensitive = True
+        else:
+            if self.tooltip_text is not None:
+                self.set_has_tooltip(False)
+                self.tooltip_text = None
+            if self.dragging_allowed:
+                if self.drag_source_sensitive:
+                    self.drag_source_unset()
+                    self.drag_source_sensitive = False
+
+    def drag_motion_cb(self, widget, context, x, y, time):
+        if not widget.dragging_allowed:
+            context.drag_status(gdk.ACTION_DEFAULT, time)
             return
-        if event.state & gdk.BUTTON1_MASK:
-            dx = float(event.x - self.press_x) / self.item_w
-            dy = float(event.y - self.press_y) / self.item_h
-            if abs(dx) > 0.5 or abs(dy) > 0.5:
-                if self.selected in self.itemlist:
-                    if event.state & gdk.CONTROL_MASK:
-                        action = gdk.ACTION_COPY
-                    else:
-                        action = gdk.ACTION_MOVE
-                    self.drag_begin([('LIST_ITEM', gtk.TARGET_SAME_APP, DRAG_ITEM_NAME)],
-                                    action, 1, event)
+        action = None
+        source_widget = context.get_source_widget()
+        if widget is source_widget:
+            # Only moves are possible
+            action = gdk.ACTION_MOVE
+        else:
+            # Dragging from another widget, default action is copy
+            action = gdk.ACTION_COPY
+            # However, if the item already exists here, it's a move
+            sel = source_widget.selected
+            if sel in widget.itemlist:
+                action = gdk.ACTION_MOVE
+            else:
+                # the user can force a move by pressing shift
+                px, py, kbmods = widget.get_window().get_pointer()
+                if kbmods & gdk.SHIFT_MASK:
+                    action = gdk.ACTION_MOVE
+        context.drag_status(action, time)
+        if not widget.drag_highlighted:
+            #widget.drag_highlight()   # XXX nonfunctional
+            widget.drag_highlighted = True
+            widget.queue_draw()
+        if widget.drag_highlighted:
+            i = widget.index(x, y)
+            if i != self.drag_insertion_index:
+                self.queue_draw()
+                self.drag_insertion_index = i
+
+    def drag_leave_cb(self, widget, context, time):
+        if widget.drag_highlighted:
+            #widget.drag_unhighlight()   # XXX nonfunctional
+            widget.drag_highlighted = False
+            widget.drag_insertion_index = None
+            widget.queue_draw()
 
     def drag_data_get_cb(self, widget, context, selection, targetType, time):
         item = self.selected
@@ -82,8 +168,8 @@ class PixbufList(gtk.DrawingArea):
     def drag_data_received_cb(self, widget, context, x,y, selection, targetType, time):
         item_name = selection.data
         target_item_idx = self.index(x, y)
-        if target_item_idx > len(self.itemlist):
-            return
+        #if target_item_idx > len(self.itemlist):
+        #    return
         w = context.get_source_widget()
         copy = context.action==gdk.ACTION_COPY
         success = self.on_drag_data(copy, w, item_name, target_item_idx)
@@ -102,12 +188,14 @@ class PixbufList(gtk.DrawingArea):
             width = self.pixbuf.get_width()
             height = self.pixbuf.get_height()
         width = max(width, self.total_w)
-        self.tiles_w = width / self.total_w
-        self.tiles_h = len(self.itemlist)/self.tiles_w + 1
+        self.tiles_w = max(1, int( width / self.total_w ))
+        self.tiles_h = max(1, int( ceil( float(len(self.itemlist)) / self.tiles_w ) ))
+
         height = self.tiles_h * self.total_h
         self.set_size_request(self.total_w, height)
-        self.pixbuf = gdk.Pixbuf(gdk.COLORSPACE_RGB, False, 8, width, height)
-        self.pixbuf.fill(0xffffffff) # white
+
+        self.pixbuf = gdk.Pixbuf(gdk.COLORSPACE_RGB, True, 8, width, height)
+        self.pixbuf.fill(0xffffff00) # transparent
         for i, item in enumerate(self.itemlist):
             x = (i % self.tiles_w) * self.total_w
             y = (i / self.tiles_w) * self.total_h
@@ -150,25 +238,31 @@ class PixbufList(gtk.DrawingArea):
         self.update(size.width, size.height)
 
     def expose_cb(self, widget, event):
-        rowstride = self.pixbuf.get_rowstride()
-        pixels = self.pixbuf.get_pixels()
-        
         # cut to maximal size
         p_w, p_h = self.pixbuf.get_width(), self.pixbuf.get_height()
 
-        widget.window.draw_rgb_image(
-            widget.style.black_gc,
-            0, 0, p_w, p_h,
-            'normal',
-            pixels, rowstride)
+        widget.style.set_background(widget.window, gtk.STATE_NORMAL)
+        if self.drag_highlighted:
+            self.window.draw_rectangle(widget.style.black_gc, False, 0, 0, p_w-1, p_h-1)
+
+        widget.window.draw_pixbuf(widget.style.black_gc,
+                                  self.pixbuf,
+                                  0, 0, 0, 0) 
 
         # draw borders
         i = 0
+        last_i = len(self.itemlist) - 1
         for b in self.itemlist:
+            draw_rect = False
             if b is self.selected:
-                gc = widget.style.black_gc
-            else:
-                gc = widget.style.white_gc
+                gc = widget.style.bg_gc[gtk.STATE_SELECTED]
+                draw_rect = True
+            elif  i == self.drag_insertion_index \
+              or (i == last_i and self.drag_insertion_index > i):
+                gc = widget.style.fg_gc[gtk.STATE_NORMAL]
+                draw_rect = True
+            #else:
+            #    gc = widget.style.bg_gc[gtk.STATE_NORMAL]
             x = (i % self.tiles_w) * self.total_w
             y = (i / self.tiles_w) * self.total_h
             w = self.total_w
@@ -183,7 +277,7 @@ class PixbufList(gtk.DrawingArea):
             for j in range(self.border_visible_outside_cell):
                 x, y, w, h = shrink(-1, x, y, w, h)
             for j in range(self.border_visible + self.border_visible_outside_cell):
-                if b is self.selected:
+                if draw_rect:
                     widget.window.draw_rectangle(gc, False, x, y, w-1, h-1)
                 x, y, w, h = shrink(1, x, y, w, h)
             i += 1

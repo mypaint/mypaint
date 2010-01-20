@@ -74,6 +74,15 @@ class BrushList(pixbuflist.PixbufList):
         self.brushes.insert(idx, brush)
         for f in self.bm.brushes_observers: f(self.brushes)
 
+    def drag_begin_cb(self, widget, context):
+        preview = self.bm.selected_brush.preview
+        preview = preview.scale_simple(preview.get_width()//2, preview.get_height()//2, gtk.gdk.INTERP_BILINEAR)
+        self.drag_source_set_icon_pixbuf(preview)
+        pixbuflist.PixbufList.drag_begin_cb(self, widget, context)
+
+    #def drag_end_cb(self, widget, context):
+    #    pixbuflist.PixbufList.drag_end_cb(self, widget, context)
+
     def on_drag_data(self, copy, source_widget, brush_name, target_idx):
         assert source_widget, 'cannot handle drag data from another app'
         b, = [b for b in source_widget.brushes if b.name == brush_name]
@@ -82,6 +91,8 @@ class BrushList(pixbuflist.PixbufList):
         else:
             if b in self.brushes:
                 source_widget.remove_brush(b)
+                self.remove_brush(b)
+                self.insert_brush(target_idx, b)
                 return True
         if not copy:
             source_widget.remove_brush(b)
