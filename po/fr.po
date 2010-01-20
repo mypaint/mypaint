@@ -2,6 +2,7 @@
 # Copyright (C) 2009 Martin Renold, Ilya Portnov
 # This file is distributed under the same license as the MyPaint package.
 # Martin Renold <martinxyz@gmx.ch> 2009
+# Olivier Gondouin <popolon@popolon.org> 2009-2010
 #
 msgid ""
 msgstr ""
