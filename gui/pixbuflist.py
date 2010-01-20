@@ -64,9 +64,6 @@ class PixbufList(gtk.DrawingArea):
         if self.realized_once:
             return
         self.realized_once = True
-        # Be responsive to user's GTK+ style (TODO: what happens when the
-        # user changes style for an already-realized widget?)
-        self.modify_bg(gtk.STATE_NORMAL, widget.style.base[gtk.STATE_NORMAL])
         if self.dragging_allowed:
             # DnD setup.
             self.connect('drag-data-get', self.drag_data_get_cb)
@@ -241,7 +238,9 @@ class PixbufList(gtk.DrawingArea):
         # cut to maximal size
         p_w, p_h = self.pixbuf.get_width(), self.pixbuf.get_height()
 
-        widget.style.set_background(widget.window, gtk.STATE_NORMAL)
+        self.window.draw_rectangle(widget.style.base_gc[gtk.STATE_NORMAL],
+                                   True, 0, 0, p_w, p_h)
+
         if self.drag_highlighted:
             self.window.draw_rectangle(widget.style.black_gc, False, 0, 0, p_w-1, p_h-1)
 
