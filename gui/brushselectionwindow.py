@@ -97,7 +97,6 @@ class BrushList(pixbuflist.PixbufList):
         if not copy:
             source_widget.remove_brush(b)
         self.insert_brush(target_idx, b)
-        for f in self.bm.brushes_observers: f(self.brushes)
         return True
 
     def on_select(self, brush):

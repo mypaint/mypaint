@@ -28,8 +28,6 @@ class PixbufList(gtk.DrawingArea):
     def __init__(self, itemlist, item_w, item_h, namefunc=None, pixbuffunc=lambda x: x):
         gtk.DrawingArea.__init__(self)
         self.itemlist = itemlist
-        self.press_x = 0
-        self.press_y = 0
         self.pixbuffunc = pixbuffunc
         self.namefunc = namefunc
         self.dragging_allowed = True
@@ -164,9 +162,7 @@ class PixbufList(gtk.DrawingArea):
 
     def drag_data_received_cb(self, widget, context, x,y, selection, targetType, time):
         item_name = selection.data
-        target_item_idx = self.index(x, y)
-        #if target_item_idx > len(self.itemlist):
-        #    return
+        target_item_idx = self.index(x, y) # idx always valid, we reject drops at invalid idx
         w = context.get_source_widget()
         copy = context.action==gdk.ACTION_COPY
         success = self.on_drag_data(copy, w, item_name, target_item_idx)
@@ -220,8 +216,6 @@ class PixbufList(gtk.DrawingArea):
         return i
 
     def button_press_cb(self, widget, event):
-        self.press_x = event.x
-        self.press_y = event.y
         i = self.index(event.x, event.y)
         if i >= len(self.itemlist): return
         item = self.itemlist[i]
@@ -252,16 +246,12 @@ class PixbufList(gtk.DrawingArea):
         i = 0
         last_i = len(self.itemlist) - 1
         for b in self.itemlist:
-            draw_rect = False
+            rect_gc = None
             if b is self.selected:
-                gc = widget.style.bg_gc[gtk.STATE_SELECTED]
-                draw_rect = True
+                rect_gc = widget.style.bg_gc[gtk.STATE_SELECTED]
             elif  i == self.drag_insertion_index \
               or (i == last_i and self.drag_insertion_index > i):
-                gc = widget.style.fg_gc[gtk.STATE_NORMAL]
-                draw_rect = True
-            #else:
-            #    gc = widget.style.bg_gc[gtk.STATE_NORMAL]
+                rect_gc = widget.style.fg_gc[gtk.STATE_NORMAL]
             x = (i % self.tiles_w) * self.total_w
             y = (i / self.tiles_w) * self.total_h
             w = self.total_w
@@ -276,8 +266,8 @@ class PixbufList(gtk.DrawingArea):
             for j in range(self.border_visible_outside_cell):
                 x, y, w, h = shrink(-1, x, y, w, h)
             for j in range(self.border_visible + self.border_visible_outside_cell):
-                if draw_rect:
-                    widget.window.draw_rectangle(gc, False, x, y, w-1, h-1)
+                if rect_gc:
+                    widget.window.draw_rectangle(rect_gc, False, x, y, w-1, h-1)
                 x, y, w, h = shrink(1, x, y, w, h)
             i += 1
 
