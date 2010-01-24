@@ -375,9 +375,18 @@ class Window(gtk.Window):
         opacity_hbox.pack_start(opacity_lbl, expand=False)
         opacity_hbox.pack_start(self.opacity_scale, expand=True)
 
+        move_up_button = stock_button(gtk.STOCK_GO_UP)
+        move_down_button = stock_button(gtk.STOCK_GO_DOWN)
+        buttons_hbox = gtk.HBox()
+        buttons_hbox.pack_start(move_up_button)
+        buttons_hbox.pack_start(move_down_button)
+        move_up_button.connect('clicked', self.move_layer, 'up')
+        move_down_button.connect('clicked', self.move_layer, 'down')
+
         # Pack and add to toplevel
         vbox = gtk.VBox()
         vbox.pack_start(layers_scroll)
+        vbox.pack_start(buttons_hbox, expand=False)
         vbox.pack_start(opacity_hbox, expand=False)
         self.add(vbox)
 
@@ -407,3 +416,18 @@ class Window(gtk.Window):
         doc = self.app.drawWindow.tdw.doc
         doc.set_layer_opacity(self.opacity_scale.get_value()/100.0)
         self.callbacks_active = True
+
+    def move_layer(self, widget, action):
+        doc = self.app.drawWindow.doc
+        current_layer_pos = doc.layer_idx
+        if action == 'up':
+            new_layer_pos = current_layer_pos + 1
+        elif action == 'down':
+            new_layer_pos = current_layer_pos - 1
+        else:
+            return
+
+        if new_layer_pos < len(doc.layers) and new_layer_pos >= 0:
+            doc.move_layer(current_layer_pos, new_layer_pos)
+            doc.select_layer(new_layer_pos)
+
