@@ -115,12 +115,11 @@ class PixbufList(gtk.DrawingArea):
                     self.drag_source_sensitive = False
 
     def drag_motion_cb(self, widget, context, x, y, time):
-        if not widget.dragging_allowed:
-            context.drag_status(gdk.ACTION_DEFAULT, time)
-            return
+        if not self.dragging_allowed:
+            return False
         action = None
         source_widget = context.get_source_widget()
-        if widget is source_widget:
+        if self is source_widget:
             # Only moves are possible
             action = gdk.ACTION_MOVE
         else:
@@ -128,20 +127,20 @@ class PixbufList(gtk.DrawingArea):
             action = gdk.ACTION_COPY
             # However, if the item already exists here, it's a move
             sel = source_widget.selected
-            if sel in widget.itemlist:
+            if sel in self.itemlist:
                 action = gdk.ACTION_MOVE
             else:
                 # the user can force a move by pressing shift
-                px, py, kbmods = widget.get_window().get_pointer()
+                px, py, kbmods = self.get_window().get_pointer()
                 if kbmods & gdk.SHIFT_MASK:
                     action = gdk.ACTION_MOVE
         context.drag_status(action, time)
-        if not widget.drag_highlighted:
-            #widget.drag_highlight()   # XXX nonfunctional
-            widget.drag_highlighted = True
-            widget.queue_draw()
-        if widget.drag_highlighted:
-            i = widget.index(x, y)
+        if not self.drag_highlighted:
+            #self.drag_highlight()   # XXX nonfunctional
+            self.drag_highlighted = True
+            self.queue_draw()
+        if self.drag_highlighted:
+            i = self.index(x, y)
             if i != self.drag_insertion_index:
                 self.queue_draw()
                 self.drag_insertion_index = i
