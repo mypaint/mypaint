@@ -753,6 +753,9 @@ class Window(gtk.Window):
             u"David Revoy (%s)" % _('brushes'),
             u"Ramón Miranda (%s)" % _('brushes'),
             u"Enrico Guarnieri 'Ico_dY' (%s)" % _('brushes'),
+            u"Jonas Wagner (%s)" % _('programming'),
+            u"Luka Čehovin (%s)" % _('programming'),
+            u"Andrew Chadwick (%s)" % _('programming'),
             ])
         d.set_artists([
             u'Sebastian Kraft (%s)' % _('desktop icon'),
