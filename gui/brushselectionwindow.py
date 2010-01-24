@@ -195,6 +195,13 @@ class GroupSelector(gtk.DrawingArea):
         self.idx2group = {}
         pad_s = u"\u202f"  # NARROW NO-BREAK SPACE
         sp_s = pad_s + u"\u200b"  # ZERO WIDTH SPACE
+
+        import platform
+        if platform.system() == 'Windows':
+            # workaround for https://gna.org/bugs/?15192
+            pad_s = ''
+            sp_s = ' '
+
         for group in all_groups:
             u = pad_s + group + pad_s
             s = u.encode('utf8')
