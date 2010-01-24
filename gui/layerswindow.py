@@ -7,6 +7,7 @@ from cStringIO import StringIO
 from gettext import gettext as _
 from math import asin, pi
 from lib import command
+import dialogs
 
 DRAG_LAYER_INDEX = 100
 DRAG_LAYER_PNG = 101
@@ -176,9 +177,9 @@ class LayerWidget(gtk.EventBox):
             self.clicked = 2
         else:
             self.clicked = 0
-#         if self.clicked == 2:
-#             self.clicked = 0
-#             self.name_entry.show_edit()
+        if self.clicked == 2:
+            self.clicked = 0
+            self.change_name()
 
     def drag_data(self, widget, context, x,y, selection, targetType, time):
         if targetType==DRAG_LAYER_INDEX:
@@ -227,7 +228,7 @@ class LayerWidget(gtk.EventBox):
             return
         self.callbacks_active = False
         self.visibility_button.set_active(layer.visible)
-#         self.layer_name.set_text(layer.name)
+        self.layer_name.set_text(layer.name)
         self.callbacks_active = True
 
     def on_layer_add(self,button):
@@ -238,13 +239,11 @@ class LayerWidget(gtk.EventBox):
         doc = self.app.drawWindow.tdw.doc
         doc.remove_layer(layer=self.layer)
 
-#     def on_name_changed(self,entry):
-#         if not self.callbacks_active:
-#             return
-#         text =  entry.get_text()
-#         if text:
-#             entry.to_show = True
-#         self.layer.name = text
+    def change_name(self, *ignore):
+        layer_name = dialogs.ask_for_name(self, _("Layer name"), "New Layer")
+        if layer_name:
+            self.layer.name = layer_name
+            self.layer_name.set_text(layer_name)
 
     def on_visibility_toggled(self, checkbox):
         if not self.callbacks_active:
