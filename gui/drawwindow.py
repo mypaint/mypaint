@@ -726,7 +726,7 @@ class Window(gtk.Window):
         d.set_transient_for(self)
         d.set_program_name("MyPaint")
         d.set_version(MYPAINT_VERSION)
-        d.set_copyright(_("Copyright (C) 2005-2009\nMartin Renold and the MyPaint Development Team"))
+        d.set_copyright(_("Copyright (C) 2005-2010\nMartin Renold and the MyPaint Development Team"))
         d.set_website("http://mypaint.info/")
         d.set_logo(self.app.pixmaps.mypaint_logo)
         d.set_license(
@@ -763,7 +763,7 @@ class Window(gtk.Window):
         # list all translators, not only those of the current language
         d.set_translator_credits(
             u'Ilya Portnov (ru)\n'
-            u'Popolon (fr, zh_CN)\n'
+            u'Popolon (fr, zh_CN, ja)\n'
             u'Jon Nordby (nb)\n'
             u'Griatch (sv)\n'
             u'Tobias Jakobs (de)\n'
@@ -772,6 +772,8 @@ class Window(gtk.Window):
             u'Manuel Quiñones (es)\n'
             u'Gergely Aradszki (hu)\n'
             u'Lamberto Tedaldi (it)\n'
+            u'Dong-Jun Wu (zh_TW)\n'
+            u'Luka Čehovin (sl)\n'
             )
         
         d.run()
