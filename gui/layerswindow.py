@@ -121,11 +121,6 @@ class LayerWidget(gtk.EventBox):
 #         vbox = gtk.VBox()
 #         vbox.pack_start(gtk.HSeparator(), expand=False)
 
-        add_button = stock_button(gtk.STOCK_ADD)
-        add_button.connect('clicked', self.on_layer_add)
-        del_button = stock_button(gtk.STOCK_DELETE)
-        del_button.connect('clicked', self.on_layer_del)
-
         # Widgets
         self.visibility_button = Eye()
         self.visibility_button.on_toggle = self.on_visibility_toggled
@@ -139,8 +134,6 @@ class LayerWidget(gtk.EventBox):
         self.main_hbox = gtk.HBox()
         self.main_hbox.pack_start(self.visibility_button, expand=False)
         self.main_hbox.pack_start(layer_name_box)
-        self.main_hbox.pack_start(add_button, expand=False)
-        self.main_hbox.pack_start(del_button, expand=False)
         self.add(self.main_hbox)
 
         # Drag/drop for moving layers
@@ -214,7 +207,7 @@ class LayerWidget(gtk.EventBox):
             selection.set(selection.target, 8, str(idx))
         elif targetType==DRAG_LAYER_PNG:
             pixbuf = self.layer.surface.render_as_pixbuf()
-            pixbuf.save_to_callback(stringIO_saver, 'png', {'aplha':'True'})
+            pixbuf.save_to_callback(stringIO_saver, 'png', {'alpha':'True'})
             s = tmp.getvalue()
             selection.set(selection.target, 8, s)
         elif targetType==DRAG_LAYER_URI:
@@ -230,14 +223,6 @@ class LayerWidget(gtk.EventBox):
         self.visibility_button.set_active(layer.visible)
         self.layer_name.set_text(layer.name)
         self.callbacks_active = True
-
-    def on_layer_add(self,button):
-        doc = self.app.drawWindow.tdw.doc
-        doc.add_layer(after=self.layer)
-
-    def on_layer_del(self,button):
-        doc = self.app.drawWindow.tdw.doc
-        doc.remove_layer(layer=self.layer)
 
     def change_name(self, *ignore):
         layer_name = dialogs.ask_for_name(self, _("Layer name"), "New Layer")
@@ -374,13 +359,23 @@ class Window(gtk.Window):
         opacity_hbox.pack_start(opacity_lbl, expand=False)
         opacity_hbox.pack_start(self.opacity_scale, expand=True)
 
+
+        buttons_hbox = gtk.HBox()
+        add_button = stock_button(gtk.STOCK_ADD)
+        add_button.connect('clicked', self.on_layer_add)
+        del_button = stock_button(gtk.STOCK_DELETE)
+        del_button.connect('clicked', self.on_layer_del)
+
         move_up_button = stock_button(gtk.STOCK_GO_UP)
         move_down_button = stock_button(gtk.STOCK_GO_DOWN)
-        buttons_hbox = gtk.HBox()
-        buttons_hbox.pack_start(move_up_button)
-        buttons_hbox.pack_start(move_down_button)
         move_up_button.connect('clicked', self.move_layer, 'up')
         move_down_button.connect('clicked', self.move_layer, 'down')
+
+        buttons_hbox.pack_start(add_button)
+        buttons_hbox.pack_start(move_up_button)
+        buttons_hbox.pack_start(move_down_button)
+        buttons_hbox.pack_start(del_button)
+
 
         # Pack and add to toplevel
         vbox = gtk.VBox()
@@ -430,3 +425,10 @@ class Window(gtk.Window):
             doc.move_layer(current_layer_pos, new_layer_pos)
             doc.select_layer(new_layer_pos)
 
+    def on_layer_add(self,button):
+        doc = self.app.drawWindow.tdw.doc
+        doc.add_layer(after=doc.get_current_layer())
+
+    def on_layer_del(self,button):
+        doc = self.app.drawWindow.tdw.doc
+        doc.remove_layer(layer=doc.get_current_layer())
