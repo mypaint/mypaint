@@ -406,17 +406,15 @@ class Window(gtk.Window):
 
     def clear_layer_cb(self, action):
         self.doc.clear_layer()
-        if len(self.doc.layers) == 1:
-            # this is like creating a new document:
-            # make "save next" use a new file name
+        if self.doc.is_empty():
+            # the user started a new painting
             self.app.filehandler.filename = None
 
     def remove_layer_cb(self, action):
-        if len(self.doc.layers) == 1:
-            self.doc.clear_layer()
-        else:
-            self.doc.remove_layer()
-            self.layerblink_state.activate(action)
+        self.doc.remove_layer()
+        if self.doc.is_empty():
+            # the user started a new painting
+            self.app.filehandler.filename = None
 
     def layer_bg_cb(self, action):
         idx = self.doc.layer_idx - 1
@@ -506,11 +504,8 @@ class Window(gtk.Window):
 
     @with_wait_cursor
     def merge_layer_cb(self, action):
-        dst_idx = self.doc.layer_idx - 1
-        if dst_idx < 0:
-            return
-        self.doc.merge_layer(dst_idx)
-        self.layerblink_state.activate(action)
+        if self.doc.merge_layer_down():
+            self.layerblink_state.activate(action)
 
     def toggle_layers_above_cb(self, action):
         self.tdw.toggle_show_layers_above()

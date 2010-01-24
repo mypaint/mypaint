@@ -123,6 +123,7 @@ class MergeLayer(Action):
         self.remove_src = RemoveLayer(doc)
     def redo(self):
         self.dst_before = self.dst_layer.save_snapshot()
+        assert self.doc.layer is not self.dst_layer
         self.doc.layer.merge_into(self.dst_layer)
         self.remove_src.redo()
         self.select_dst = SelectLayer(self.doc, self.doc.layers.index(self.dst_layer))
@@ -160,8 +161,7 @@ class RemoveLayer(Action):
         self.doc = doc
         self.layer = layer
     def redo(self):
-        if len(self.doc.layers)==1:
-            return
+        assert len(self.doc.layers) > 1
         if self.layer:
             self.idx = self.doc.layers.index(self.layer)
             self.doc.layers.remove(self.layer)

@@ -94,7 +94,8 @@ class Document():
         self.do(command.MoveLayer(self, was_idx, new_idx))
 
     def clear_layer(self):
-        self.do(command.ClearLayer(self))
+        if not self.layer.surface.is_empty():
+            self.do(command.ClearLayer(self))
 
     def stroke_to(self, dtime, x, y, pressure):
         if not self.stroke:
@@ -198,10 +199,17 @@ class Document():
         self.do(command.AddLayer(self, insert_idx, after))
 
     def remove_layer(self,layer=None):
-        self.do(command.RemoveLayer(self,layer))
+        if len(self.layers) > 1:
+            self.do(command.RemoveLayer(self,layer))
+        else:
+            self.clear_layer()
 
-    def merge_layer(self, dst_idx):
+    def merge_layer_down(self):
+        dst_idx = self.layer_idx - 1
+        if dst_idx < 0:
+            return False
         self.do(command.MergeLayer(self, dst_idx))
+        return True
 
     def load_layer_from_pixbuf(self, pixbuf, x=0, y=0):
         arr = helpers.gdkpixbuf2numpy(pixbuf)
@@ -233,6 +241,9 @@ class Document():
             if not l.surface.is_empty():
                 count += 1
         return count > 1
+
+    def is_empty(self):
+        return len(self.layers) == 1 and self.layer.surface.is_empty()
 
     def save(self, filename, **kwargs):
         self.split_stroke()
