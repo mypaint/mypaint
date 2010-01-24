@@ -130,18 +130,19 @@ class LayerWidget(gtk.EventBox):
         self.add(self.main_hbox)
 
         # Drag/drop for moving layers
-        self.connect('drag_data_received', self.drag_data)
-        self.connect('drag_drop', self.drag_drop)
-        self.connect('drag_data_get', self.drag_get)
-        self.drag_dest_set(gtk.DEST_DEFAULT_MOTION | gtk.DEST_DEFAULT_HIGHLIGHT | gtk.DEST_DEFAULT_DROP,
-                 [(LAYER_INDEX_MIME,0,DRAG_LAYER_INDEX),
-                  ("text/plain", 0, DRAG_LAYER_URI)],
-                 gdk.ACTION_MOVE)
-        self.drag_source_set(gdk.BUTTON1_MASK,
-                [(LAYER_INDEX_MIME,0,DRAG_LAYER_INDEX),
-                 ("image/png", 0, DRAG_LAYER_PNG),
-                 ("text/uri-list", 0, DRAG_LAYER_URI)],
-                gdk.ACTION_MOVE)
+        # FIXME: Broken, the callbacks are not being called
+#         self.connect('drag_data_received', self.drag_data)
+#         self.connect('drag_drop', self.drag_drop)
+#         self.connect('drag_data_get', self.drag_get)
+#         self.drag_dest_set(gtk.DEST_DEFAULT_MOTION | gtk.DEST_DEFAULT_HIGHLIGHT | gtk.DEST_DEFAULT_DROP,
+#                  [(LAYER_INDEX_MIME,0,DRAG_LAYER_INDEX),
+#                   ("text/plain", 0, DRAG_LAYER_URI)],
+#                  gdk.ACTION_MOVE)
+#         self.drag_source_set(gdk.BUTTON1_MASK,
+#                 [(LAYER_INDEX_MIME,0,DRAG_LAYER_INDEX),
+#                  ("image/png", 0, DRAG_LAYER_PNG),
+#                  ("text/uri-list", 0, DRAG_LAYER_URI)],
+#                 gdk.ACTION_MOVE)
 
         self.clicked = 0
         self.button_pressed = False
