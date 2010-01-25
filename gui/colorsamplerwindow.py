@@ -913,7 +913,7 @@ class Window(gtk.Window):
         self.app = app
         self.set_title(_('MyPaint color selector'))
         self.set_role('Color selector')
-        self.set_default_size(350,340)
+        self.set_default_size(270,300)
         self.connect('delete-event', self.app.hide_window_cb)
         self.selector = Selector(app)
         self.selector.on_select = self.on_select

@@ -136,7 +136,7 @@ class Application: # singleton
             window.parse_geometry('300x500')
 
         # default visibility setting
-        if name in 'drawWindow brushSelectionWindow colorSelectionWindow'.split():
+        if name in 'drawWindow brushSelectionWindow colorSamplerWindow'.split():
             window.show_all()
 
     def message_dialog(self, text, type=gtk.MESSAGE_INFO, flags=0):
