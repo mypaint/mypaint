@@ -271,6 +271,7 @@ class FileHandler(object):
                         # above. However, they are the same at the moment.
                         options = {}
                     assert(filename)
+                    dialog.hide()
                     self.save_file(filename, **options)
                     break
 
