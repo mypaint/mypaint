@@ -334,7 +334,7 @@ class Window(gtk.Window):
         self.app = app
         self.connect('delete-event', self.app.hide_window_cb)
         self.app.kbm.add_window(self)
-        self.set_size_request(300, 300)
+        self.set_default_size(200, 300)
         self.callbacks_active = True # Used to prevent callback loops
 
         # Widgets
