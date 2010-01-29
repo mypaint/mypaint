@@ -195,8 +195,8 @@ class Document():
 
         mypaintlib.tile_convert_rgb16_to_rgb8(dst, dst_8bit)
 
-    def add_layer(self, insert_idx=None, after=None):
-        self.do(command.AddLayer(self, insert_idx, after))
+    def add_layer(self, insert_idx=None, after=None, name=''):
+        self.do(command.AddLayer(self, insert_idx, after, name))
 
     def remove_layer(self,layer=None):
         if len(self.layers) > 1:
@@ -466,16 +466,16 @@ class Document():
                 continue
             pixbuf = get_pixbuf(src)
             name = a.get('name', '')
-
             x = int(a.get('x', '0'))
             y = int(a.get('y', '0'))
             opac = float(a.get('opacity', '1.0'))
-            self.add_layer(insert_idx=0)
+
+            self.add_layer(insert_idx=0, name=name)
             last_pixbuf = pixbuf
             t1 = time.time()
             self.load_layer_from_pixbuf(pixbuf, x, y)
             layer = self.layers[0]
-            layer.name = name
+
             layer.opacity = helpers.clamp(opac, 0.0, 1.0)
             print '  %.3fs converting pixbuf to layer format' % (time.time() - t1)
             # strokemap

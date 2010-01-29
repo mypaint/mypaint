@@ -138,13 +138,13 @@ class MergeLayer(Action):
         self._notify_document_observers()
 
 class AddLayer(Action):
-    def __init__(self, doc, insert_idx=None, after=None):
+    def __init__(self, doc, insert_idx=None, after=None, name=''):
         self.doc = doc
         self.insert_idx = insert_idx
         if after:
             l_idx = self.doc.layers.index(after)
             self.insert_idx = l_idx + 1
-        self.layer = layer.Layer()
+        self.layer = layer.Layer(name)
         self.layer.surface.observers.append(self.doc.layer_modified_cb)
     def redo(self):
         self.doc.layers.insert(self.insert_idx, self.layer)
