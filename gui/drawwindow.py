@@ -669,18 +669,22 @@ class Window(gtk.Window):
         self.action_group.get_action('Flip').set_active(False)
 
     def fullscreen_cb(self, *trash):
-        # note: there is some ugly flickering when toggling fullscreen
-        #       self.window.begin_paint/end_paint does not help against it
         self.fullscreen = not self.fullscreen
         if self.fullscreen:
             x, y = self.get_position()
             w, h = self.get_size()
             self.geometry_before_fullscreen = (x, y, w, h)
             self.menubar.hide()
+            # fix for fullscreen problem on Windows, https://gna.org/bugs/?15175
+            # on X11/Metacity it also helps a bit against flickering during the switch
+            while gtk.events_pending():
+                gtk.main_iteration()
             self.window.fullscreen()
             #self.tdw.set_scroll_at_edges(True)
         else:
             self.window.unfullscreen()
+            while gtk.events_pending():
+                gtk.main_iteration()
             self.menubar.show()
             #self.tdw.set_scroll_at_edges(False)
             del self.geometry_before_fullscreen
