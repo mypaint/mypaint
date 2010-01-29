@@ -24,6 +24,9 @@ Building on Windows:
     If you'd much rather simply have a semi-recent pre-build version of MyPaint for Windows,
     downloads should be available on the website.
 
+    NOTE: This page might contain more up to date instructions:
+    http://opensourcepack.blogspot.com/2009/08/building-mypaint-in-windows.html
+
     To build on a Windows platform there are a handful of things you need to setup before building.
     As the very first step you should make sure you have the following things installed correctly on your system:
         
