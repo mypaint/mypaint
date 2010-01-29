@@ -13,7 +13,7 @@ This is the main drawing window, containing menu actions.
 Painting is done in tileddrawwidget.py.
 """
 
-MYPAINT_VERSION="0.8.0"
+MYPAINT_VERSION="0.8.0+git"
 
 import os, math
 from gettext import gettext as _
