@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 
-import sys, os, tempfile, subprocess, gc
+import sys, os, tempfile, subprocess, gc, cProfile
 from time import time, sleep
 
-from pylab import *
 import gtk, glib
+from pylab import math, linspace, loadtxt
 
 os.chdir(os.path.dirname(sys.argv[0]))
 sys.path.insert(0, '..')
@@ -204,9 +204,16 @@ def memory_zoomed_out_5x(app):
     print 'result =', open('/proc/self/statm').read().split()[0]
 
 if __name__ == '__main__':
-    if len(sys.argv) == 3 and sys.argv[1] == 'SINGLE_TEST_RUN':
+    if len(sys.argv) == 4 and sys.argv[1] == 'SINGLE_TEST_RUN':
         func = all_tests[sys.argv[2]]
-        func()
+        if sys.argv[3] == 'NONE':
+            func()
+        else:
+            # Not as useful as it could be, because most tests start the UI
+            # The UI startup time dominates over the actual test execution time
+            # Perhaps the tests should return a function that we can execute 
+            # after setting everything up?
+            cProfile.run('func()', sys.argv[3])
         sys.exit(0)
 
     from optparse import OptionParser
@@ -217,6 +224,8 @@ if __name__ == '__main__':
                     help='list all available tests')
     parser.add_option('-c', '--count', metavar='N', type='int', default=3, 
                       help='number of repetitions (default: 3)')
+    parser.add_option('-p', '--profile', metavar='PREFIX',
+                    help='dump cProfile info to PREFIX_TESTNAME_N.pstats')
     options, tests = parser.parse_args()
 
     if options.list:
@@ -244,7 +253,11 @@ if __name__ == '__main__':
             print 'running test "%s" (run %d of %d)' % (t, i+1, options.count)
             print '---'
             # spawn a new process for each test, to ensure proper cleanup
-            child = subprocess.Popen(['./test_performance.py', 'SINGLE_TEST_RUN', t], stdout=subprocess.PIPE)
+            args = ['./test_performance.py', 'SINGLE_TEST_RUN', t, 'NONE']
+            if options.profile:
+                fname = '%s_%s_%d.pstats' % (options.profile, t, i)
+                args[3] = fname
+            child = subprocess.Popen(args, stdout=subprocess.PIPE)
             output, trash = child.communicate()
             if child.returncode != 0:
                 print 'FAILED'
