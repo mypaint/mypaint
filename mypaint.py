@@ -18,7 +18,7 @@ def get_paths():
     lib_shared='share/mypaint/'
     # note: some distros use lib64 instead, they have to edit this...
     lib_compiled='lib/mypaint/'
-
+    
     scriptdir=os.path.dirname(sys.argv[0])
 
     # this script is installed as $prefix/bin. We just need $prefix to continue.
@@ -33,6 +33,13 @@ def get_paths():
         sys.path.insert(0, libpath)
         sys.path.insert(0, libpath_compiled)
         localepath = join(prefix, 'share/locale')
+    elif sys.platform == 'win32':
+        prefix=None
+        # this is py2exe point of view, all executables in root of installdir
+        # all path must be normalized to absolute path
+        libpath = os.path.abspath(os.path.dirname(os.path.realpath(sys.argv[0])))
+        sys.path.insert(0, libpath)
+        localepath = join(libpath,'share/locale')
     else:
         # we are not installed
         prefix=None
@@ -75,8 +82,15 @@ def psyco_opt():
         return
     try:
         import psyco
-        psyco.full()
-        print 'Psyco being used'
+        if sys.platform == 'win32':
+            if psyco.hexversion >= 0x020000f0 :
+                psyco.full()
+                print 'Psyco being used'
+            else:
+                print "Need at least psyco 2.0 to run"
+        else:
+            psyco.full()
+            print 'Psyco being used'
     except ImportError:
         pass
 
