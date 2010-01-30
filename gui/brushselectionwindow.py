@@ -101,7 +101,6 @@ class BrushList(pixbuflist.PixbufList):
     def on_select(self, brush):
         # keep the color setting
         color = self.app.brush.get_color_hsv()
-        brush.set_color_hsv(color)
 
         # brush changed on harddisk?
         if brush.reload_if_changed():
@@ -109,6 +108,7 @@ class BrushList(pixbuflist.PixbufList):
                 for f in self.bm.brushes_observers: f(brushes)
 
         self.bm.select_brush(brush)
+        self.app.brush.set_color_hsv(color)
 
 class BrushGroupsList(gtk.VBox):
     def __init__(self, app):

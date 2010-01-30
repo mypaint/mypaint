@@ -60,6 +60,7 @@ class BrushManager:
 
         self.brushes_observers.append(self.brushes_modified_cb)
 
+
     def load_groups(self):
         for i in range(10):
             c = ManagedBrush(self)
@@ -69,7 +70,7 @@ class BrushManager:
         brush_by_name = {}
         def get_brush(name):
             if name not in brush_by_name:
-                b = ManagedBrush(self)
+                b = ManagedBrush(self, persistent=True)
                 b.load(name)
                 brush_by_name[name] = b
             return brush_by_name[name]
@@ -180,6 +181,8 @@ class BrushManager:
     def select_brush(self, brush):
         if brush is None:
             brush = ManagedBrush(self)
+        if brush.persistent and not brush.settings_loaded:
+            brush.load_settings()
         assert isinstance(brush, ManagedBrush)
         self.selected_brush = brush
         for callback in self.selected_brush_observers:
@@ -227,11 +230,16 @@ class BrushManager:
 
 
 class ManagedBrush(brush.Brush):
-    def __init__(self, brushmanager):
+    def __init__(self, brushmanager, persistent=False):
         brush.Brush.__init__(self)
         self.bm = brushmanager
         self.preview = None
         self.name = None
+        self.persistent = persistent
+        """If True this brush is stored in the filesystem and 
+        not a context/picked brush."""
+        self.settings_loaded = False
+        """If True this brush is fully initialized, ready to paint with."""
 
         self.settings_mtime = None
         self.preview_mtime = None
@@ -295,6 +303,7 @@ class ManagedBrush(brush.Brush):
         self.remember_mtimes()
 
     def load(self, name):
+        """Loads the name and preview pixbuf into the brush."""
         self.name = name
         prefix = self.get_fileprefix()
 
@@ -302,6 +311,10 @@ class ManagedBrush(brush.Brush):
         pixbuf = gdk.pixbuf_new_from_file(filename)
         self.preview = pixbuf
 
+    def load_settings(self):
+        """Loads the brush settings/dynamics from disk. This is separated 
+        from __init__ and load() because it is a fairly expensive operation."""
+        prefix = self.get_fileprefix()
         filename = prefix + '.myb'
         errors = self.load_from_string(open(filename).read())
         if errors:
@@ -312,6 +325,7 @@ class ManagedBrush(brush.Brush):
             print
 
         self.remember_mtimes()
+        self.settings_loaded = True
 
     def reload_if_changed(self):
         if self.settings_mtime is None: return
