@@ -9,79 +9,119 @@ from pylab import math, linspace, loadtxt
 os.chdir(os.path.dirname(sys.argv[0]))
 sys.path.insert(0, '..')
 
-# wait until the last mypaint idle handler has finished
-wait_for_idle = -1
-# wait until all GUI updates are done, but don't wait for background tasks
-wait_for_gui = -2
+# A test function is a python generator function that may yield the
+# values below to control the GUI and the testing:
+#
+wait_for_idle = -1 # wait until the last mypaint idle handler has finished
+wait_for_gui = -2  # wait until all GUI updates are done, but don't wait for background tasks
+start_measurement = -3
+stop_measurement = -4
 
 all_tests = {}
 
-def run_gui_test(testfunction):
-    """Setup the MyPaint GUI and run testfunction.
+def run_test(testfunction):
+    """Run a single test
     testfunction must be a generator (using yield)
     """
-    global gui_startup_time
-    gui_startup_time = time()
+    tst = testfunction()
 
-    from gui import application
-    tempdir = tempfile.mkdtemp()
-    app = application.Application(datapath='..', confpath=tempdir, filenames=[])
+    time_total = 0.0
+    for res in tst:
+        assert res == start_measurement
+        def run_function_under_test():
+            res = tst.next()
+            assert res == stop_measurement
+        t0 = time()
+        run_function_under_test() # <--- profile this!
+        time_total += time() - t0
 
-    def profiling_main():
-        for res in testfunction(app):
-            yield res
-        gtk.main_quit(app)
-        yield 10.0
+    if time_total:
+        print 'result =', time_total
+    else:
+        pass # test did not make time measurements, it will print its own result (eg. memory)
 
-    import gobject
-    p = profiling_main()
-    def callback():
-        res = p.next()
-        if res < 0:
-            if res == wait_for_idle:
-                priority = gobject.PRIORITY_LOW + 50
-            elif res == wait_for_gui:
-                priority = gobject.PRIORITY_DEFAULT_IDLE - 1
-            gobject.idle_add(callback, priority=priority)
-        else:
-            gobject.timeout_add(int(res*1000.0), callback)
+def with_gui_setup(testfunction):
+    """Add GUI setup code around a testfunction
+    testfunction must be a generator (using yield)
+    """
+    def modified_testfunction():
+        global app
+        app = None
+        tst = testfunction()
+        # wait for the first command that requires the GUI
+        while True:
+            res = tst.next()
+            if res in [wait_for_idle, wait_for_gui]:
+                break
+            else:
+                yield res
 
-    # fatal exceptions, please
-    def excepthook(exctyp, value, tb):
-        import traceback
-        traceback.print_exception (exctyp, value, tb, None, sys.stderr)
-        sys.exit(1)
-    sys.excepthook = excepthook
+        tempdir = tempfile.mkdtemp()
+        try:
+            from gui import application
+            app = application.Application(datapath='..', confpath=tempdir, filenames=[])
 
-    callback()
-    gtk.main()
-    os.system('rm -rf ' + tempdir)
+            import gobject
+            def signal_handler():
+                global wait_for_signal_handler
+                wait_for_signal_handler = False
+
+            # fatal exceptions, please
+            def excepthook(exctyp, value, tb):
+                import traceback
+                traceback.print_exception (exctyp, value, tb, None, sys.stderr)
+                sys.exit(1)
+            sys.excepthook = excepthook
+
+            global wait_for_signal_handler
+            wait_for_signal_handler = False
+            while True:
+                while not wait_for_signal_handler:
+                    res = tst.next()
+                    if res == wait_for_idle:
+                        gobject.idle_add(signal_handler, priority=gobject.PRIORITY_LOW + 50)
+                        wait_for_signal_handler = True
+                    elif res == wait_for_gui:
+                        gobject.idle_add(signal_handler, priority=gobject.PRIORITY_DEFAULT_IDLE - 1)
+                        wait_for_signal_handler = True
+                    elif res >= 0:
+                        gobject.timeout_add(int(res*1000.0), signal_handler)
+                        wait_for_signal_handler = True
+                    else:
+                        yield res
+                gtk.main_iteration()
+        finally:
+            os.system('rm -rf ' + tempdir)
+
+    return modified_testfunction
 
 def gui_test(f):
     "decorator to declare GUI test functions"
-    def run_f():
-        run_gui_test(f)
-    all_tests[f.__name__] = run_f
+    all_tests[f.__name__] = with_gui_setup(f)
     return f
 
 def nogui_test(f):
     "decorator for test functions that require no gui"
-    all_tests[f.__name__] = f
+    def run_f():
+        run_test(f)
+    all_tests[f.__name__] = run_f
     return f
 
 
 
 @gui_test
-def startup(app):
+def startup():
+    yield start_measurement
     yield wait_for_idle
-    print 'result = %.3f' % (time() - gui_startup_time)
+    yield stop_measurement
 
 @gui_test
-def paint(app):
+def paint():
     """
     Paint with a constant number of frames per recorded second.
     Not entirely realistic, but gives good and stable measurements.
     """
+    yield wait_for_gui
     FPS = 30
     dw = app.drawWindow
     tdw = dw.tdw
@@ -94,6 +134,7 @@ def paint(app):
 
     events = loadtxt('painting30sec.dat.gz')
     events = list(events)
+    yield start_measurement
     t0 = time()
     t_old = 0.0
     t_last_redraw = 0.0
@@ -106,39 +147,43 @@ def paint(app):
         cr = tdw.get_model_coordinates_cairo_context()
         x, y = cr.device_to_user(x, y)
         dw.doc.stroke_to(dtime, x, y, pressure)
-    print 'result =', time()-t0
+    yield stop_measurement
 
 @gui_test
-def paint_zoomed_out_5x(app):
+def paint_zoomed_out_5x():
+    yield wait_for_idle
     dw = app.drawWindow
     for i in range(5):
         dw.zoom('ZoomOut')
-    for res in paint(app):
+    for res in paint():
         yield res
 
 @gui_test
-def layerpaint_nozoom(app):
+def layerpaint_nozoom():
+    yield wait_for_idle
     app.filehandler.open_file('bigimage.ora')
     dw = app.drawWindow
     dw.doc.select_layer(len(dw.doc.layers)/2)
-    for res in paint(app):
+    for res in paint():
         yield res
 
 @gui_test
-def layerpaint_zoomed_out_5x(app):
+def layerpaint_zoomed_out_5x():
+    yield wait_for_idle
     dw = app.drawWindow
     app.filehandler.open_file('bigimage.ora')
     dw.tdw.scroll(800, 1000)
     dw.doc.select_layer(len(dw.doc.layers)/3)
     for i in range(5):
         dw.zoom('ZoomOut')
-    for res in paint(app):
+    for res in paint():
         yield res
 
 @gui_test
-def paint_rotated(app):
+def paint_rotated():
+    yield wait_for_idle
     app.drawWindow.tdw.rotate(46.0/360*2*math.pi)
-    for res in paint(app):
+    for res in paint():
         yield res
 
 @nogui_test
@@ -157,40 +202,42 @@ def saveload():
 
     print 'result = %.3f' % (time() - t0)
 
-def scroll(app, zoom_func):
+def scroll(zoom_func):
     dw = app.drawWindow
     dw.fullscreen_cb()
     app.filehandler.open_file('bigimage.ora')
     zoom_func()
     yield wait_for_idle
 
-    t0 = time()
+    yield start_measurement
     N = 20
     dx = linspace(-30, 30, N)
     dy = linspace(-10, 60, N)
     for i in xrange(N):
         dw.tdw.scroll(int(dx[i]), int(dy[i]))
         yield wait_for_idle
-
-    print 'result = %.3f' % (time() - t0)
+    yield stop_measurement
 
 @gui_test
-def scroll_nozoom(app):
+def scroll_nozoom():
+    yield wait_for_idle
     def f(): pass
-    for res in scroll(app, f):
+    for res in scroll(f):
         yield res
 
 @gui_test
-def scroll_zoomed_out_5x(app):
+def scroll_zoomed_out_5x():
+    yield wait_for_idle
     dw = app.drawWindow
     def f():
         for i in range(5):
             dw.zoom('ZoomOut')
-    for res in scroll(app, f):
+    for res in scroll(f):
         yield res
 
 @gui_test
-def memory_zoomed_out_5x(app):
+def memory_zoomed_out_5x():
+    yield wait_for_idle
     dw = app.drawWindow
     dw.fullscreen_cb()
     app.filehandler.open_file('bigimage.ora')
@@ -207,7 +254,7 @@ if __name__ == '__main__':
     if len(sys.argv) == 4 and sys.argv[1] == 'SINGLE_TEST_RUN':
         func = all_tests[sys.argv[2]]
         if sys.argv[3] == 'NONE':
-            func()
+            run_test(func)
         else:
             # Not as useful as it could be, because most tests start the UI
             # The UI startup time dominates over the actual test execution time
