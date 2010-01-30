@@ -149,8 +149,8 @@ class Window(gtk.Window):
             ('BrushSelectionWindow',  None, _('Brush List...'), 'b', None, self.toggleWindow_cb),
             ('BrushSettingsWindow',   None, _('Brush Settings...'), '<control>b', None, self.toggleWindow_cb),
             ('ColorSelectionWindow',  None, _('Color Triangle...'), 'g', None, self.toggleWindow_cb),
-            ('ColorSamplerWindow',  gtk.STOCK_SELECT_COLOR, _('Color Sampler...'), 't', None, self.toggleWindow_cb),
-            ('SettingsWindow',        gtk.STOCK_PREFERENCES, _('Settings...'), None, None, self.toggleWindow_cb),
+            ('ColorSamplerWindow', gtk.STOCK_SELECT_COLOR, _('Color Sampler...'), 't', None, self.toggleWindow_cb),
+            ('PreferencesWindow', gtk.STOCK_PREFERENCES, _('Preferences...'), None, None, self.toggleWindow_cb),
 
             ('HelpMenu',     None, _('Help')),
             ('Docu', None, _('Where is the Documentation?'), None, None, self.show_infodialog_cb),

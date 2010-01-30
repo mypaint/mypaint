@@ -20,7 +20,7 @@
       <menuitem action='Undo'/>
       <menuitem action='Redo'/>
       <separator/>
-      <menuitem action='SettingsWindow'/>
+      <menuitem action='PreferencesWindow'/>
     </menu>
     <menu action='ViewMenu'>
       <menuitem action='Fullscreen'/>

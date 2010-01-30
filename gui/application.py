@@ -61,7 +61,7 @@ class Application: # singleton
         brushSelectionWindow
         colorSelectionWindow
         colorSamplerWindow
-        settingsWindow
+        preferencesWindow
         backgroundWindow
         layersWindow
         '''.split()

@@ -86,7 +86,7 @@ class FileHandler(object):
     filename = property(get_filename, set_filename)
 
     def init_save_dialog(self):
-        dialog = gtk.FileChooserDialog(_("Save.."), self.app.drawWindow,
+        dialog = gtk.FileChooserDialog(_("Save..."), self.app.drawWindow,
                                        gtk.FILE_CHOOSER_ACTION_SAVE,
                                        (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
                                         gtk.STOCK_SAVE, gtk.RESPONSE_OK))
@@ -330,7 +330,7 @@ class FileHandler(object):
         self.save_file(filename)
 
     def get_scrap_prefix(self):
-        prefix = self.app.settingsWindow.save_scrap_prefix
+        prefix = self.app.preferencesWindow.save_scrap_prefix
         prefix = os.path.abspath(prefix)
         if os.path.isdir(prefix):
             if not prefix.endswith(os.path.sep):

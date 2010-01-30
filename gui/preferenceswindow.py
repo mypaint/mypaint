@@ -19,7 +19,7 @@ RESPONSE_REVERT = 1
 
 class Window(gtk.Dialog):
     def __init__(self, app):
-        gtk.Dialog.__init__(self, _('Settings'),
+        gtk.Dialog.__init__(self, _('Preferences'),
                      app.drawWindow,
                      gtk.DIALOG_DESTROY_WITH_PARENT,
                      (gtk.STOCK_REVERT_TO_SAVED, RESPONSE_REVERT,
