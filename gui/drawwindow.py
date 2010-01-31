@@ -668,6 +668,7 @@ class Window(gtk.Window):
         self.tdw.set_zoom(1.0)
         self.tdw.set_flipped(False)
         self.action_group.get_action('Flip').set_active(False)
+        self.tdw.recenter_document()
 
     def fullscreen_cb(self, *trash):
         self.fullscreen = not self.fullscreen

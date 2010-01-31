@@ -170,7 +170,6 @@ class FileHandler(object):
             self.filename = os.path.abspath(filename)
             print 'Loaded from', self.filename
             self.app.drawWindow.reset_view_cb(None)
-            self.app.drawWindow.tdw.recenter_document()
 
     @drawwindow.with_wait_cursor
     def save_file(self, filename, **options):
