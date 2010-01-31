@@ -179,6 +179,7 @@ class BrushManager:
             brushes = []
             self.groups[group] = brushes
             for f in self.groups_observers: f()
+            self.save_brushorder()
         if make_active and group not in self.active_groups:
             self.active_groups.insert(0, group)
             for f in self.groups_observers: f()
@@ -211,6 +212,7 @@ class BrushManager:
             for f in self.brushes_observers: f(deleted_brushes)
         for f in self.brushes_observers: f(homeless_brushes)
         for f in self.groups_observers: f()
+        self.save_brushorder()
 
 
 class ManagedBrush(brush.Brush):
