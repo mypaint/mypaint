@@ -17,6 +17,7 @@ import os
 # not translatable for now (this string is saved into a file and would screw up between language switches)
 DEFAULT_BRUSH_GROUP = 'default'
 DELETED_BRUSH_GROUP = 'deleted'
+FAVORITES_BRUSH_GROUP = 'favorites'
 
 preview_w = 128
 preview_h = 128
@@ -120,8 +121,8 @@ class BrushManager:
                 for b in base_brushes:
                     if b not in their_brushes and b in our_brushes:
                         our_brushes.remove(b)
-                # remove empty groups
-                if not our_brushes:
+                # remove empty groups (except for the favorites)
+                if not our_brushes and group != FAVORITES_BRUSH_GROUP:
                     del our[group]
             # finish
             self.groups = our
