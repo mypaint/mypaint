@@ -206,6 +206,7 @@ class Window(gtk.Window):
 
         kbm.add_extra_key('<control>z', 'Undo')
         kbm.add_extra_key('<control>y', 'Redo')
+        kbm.add_extra_key('<control><shift>z', 'Redo')
         kbm.add_extra_key('KP_Add', 'ZoomIn')
         kbm.add_extra_key('KP_Subtract', 'ZoomOut')
         kbm.add_extra_key('plus', 'ZoomIn')
