@@ -256,7 +256,7 @@ class GroupSelector(gtk.DrawingArea):
             # group solo
             if not group:
                 return
-            self.bm.active_groups = [group]
+            self.bm.set_active_groups([group])
             for f in self.bm.groups_observers: f()
         elif event.type != gdk.BUTTON_PRESS:
             pass # tripple-click or similar
@@ -266,7 +266,7 @@ class GroupSelector(gtk.DrawingArea):
             if group in self.bm.active_groups:
                 self.bm.active_groups.remove(group)
             else:
-                self.bm.active_groups.insert(0, group)
+                self.bm.set_active_groups([group] + self.bm.active_groups)
             for f in self.bm.groups_observers: f()
         elif event.button == 3:
             self.gtkstate_active_group = group

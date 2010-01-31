@@ -41,6 +41,7 @@ class BrushManager:
         self.groups = {}
         self.contexts = []
         self.active_groups = []
+        self.loaded_groups = []
         self.brush_by_device = {} # should be save/loaded too?
         self.selected_context = None
 
@@ -70,8 +71,7 @@ class BrushManager:
         brush_by_name = {}
         def get_brush(name):
             if name not in brush_by_name:
-                b = ManagedBrush(self, persistent=True)
-                b.load(name)
+                b = ManagedBrush(self, name, persistent=True)
                 brush_by_name[name] = b
             return brush_by_name[name]
 
@@ -188,6 +188,15 @@ class BrushManager:
         for callback in self.selected_brush_observers:
             callback(brush)
 
+    def set_active_groups(self, groups):
+        """Set active groups, loading them first if neccesary."""
+        for groupname in groups:
+            if not groupname in self.loaded_groups:
+                for brush in self.groups[groupname]:
+                    brush.load_preview()
+            self.loaded_groups.append(groupname)
+        self.active_groups = groups
+
     def get_group_brushes(self, group, make_active=False):
         if group not in self.groups:
             brushes = []
@@ -195,7 +204,7 @@ class BrushManager:
             for f in self.groups_observers: f()
             self.save_brushorder()
         if make_active and group not in self.active_groups:
-            self.active_groups.insert(0, group)
+            self.set_active_groups([group] + self.active_groups)
             for f in self.groups_observers: f()
         return self.groups[group]
 
@@ -230,11 +239,11 @@ class BrushManager:
 
 
 class ManagedBrush(brush.Brush):
-    def __init__(self, brushmanager, persistent=False):
+    def __init__(self, brushmanager, name=None, persistent=False):
         brush.Brush.__init__(self)
         self.bm = brushmanager
         self.preview = None
-        self.name = None
+        self.name = name
         self.persistent = persistent
         """If True this brush is stored in the filesystem and 
         not a context/picked brush."""
@@ -274,7 +283,7 @@ class ManagedBrush(brush.Brush):
             os.remove(prefix + '_prev.png')
             os.remove(prefix + '.myb')
             try:
-                self.load(self.name)
+                self.load()
             except IOError:
                 return True # success
             else:
@@ -302,18 +311,21 @@ class ManagedBrush(brush.Brush):
         open(prefix + '.myb', 'w').write(self.save_to_string())
         self.remember_mtimes()
 
-    def load(self, name):
-        """Loads the name and preview pixbuf into the brush."""
-        self.name = name
+    def load(self):
+        self.load_preview()
+        self.load_settings()
+
+    def load_preview(self):
+        """Loads the brush preview as pixbuf into the brush."""
         prefix = self.get_fileprefix()
 
         filename = prefix + '_prev.png'
         pixbuf = gdk.pixbuf_new_from_file(filename)
         self.preview = pixbuf
+        self.remember_mtimes()
 
     def load_settings(self):
-        """Loads the brush settings/dynamics from disk. This is separated 
-        from __init__ and load() because it is a fairly expensive operation."""
+        """Loads the brush settings/dynamics from disk."""
         prefix = self.get_fileprefix()
         filename = prefix + '.myb'
         errors = self.load_from_string(open(filename).read())
@@ -333,6 +345,6 @@ class ManagedBrush(brush.Brush):
         if not self.name: return
         if not self.has_changed_on_disk(): return False
         print 'Brush "' + self.name + '" has changed on disk, reloading it.'
-        self.load(self.name)
+        self.load()
         return True
 
