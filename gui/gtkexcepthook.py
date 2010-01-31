@@ -13,6 +13,7 @@
 # - print traceback to stderr before showing the dialog
 # - nonzero exit code when hitting the "quit" button
 # - suppress more dialogs while one is already active
+# - fix Details button when a context in the traceback is None
 # see also http://faq.pygtk.org/index.py?req=show&file=faq20.010.htp
 # (The license is still whatever you want.)
 
@@ -91,6 +92,8 @@ def analyse (exctyp, value, tb):
 
 		trace.write (funcname +
 		  inspect.formatargvalues (args, varargs, varkw, lcls, formatvalue=lambda v: '=' + pydoc.text.repr (v)) + '\n')
+		if context is None:
+			context = ['<source context missing>\n']
 		trace.write (''.join (['    ' + x.replace ('\t', '  ') for x in filter (lambda a: a.strip(), context)]))
 		if len (all):
 			trace.write ('  variables: %s\n' % str (all))
