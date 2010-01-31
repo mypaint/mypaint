@@ -12,15 +12,25 @@ This module does file management for brushes and brush groups.
 
 from lib import brush
 from gtk import gdk # only for gdk.pixbuf
+from gettext import gettext as _
 import os
 
-# not translatable for now (this string is saved into a file and would screw up between language switches)
+preview_w = 128
+preview_h = 128
+
 DEFAULT_BRUSH_GROUP = 'default'
 DELETED_BRUSH_GROUP = 'deleted'
 FAVORITES_BRUSH_GROUP = 'favorites'
 
-preview_w = 128
-preview_h = 128
+def translate_group_name(name):
+    d = {DEFAULT_BRUSH_GROUP: _('default'),
+         DELETED_BRUSH_GROUP: _('deleted'),
+         FAVORITES_BRUSH_GROUP: _('favorites'),
+         'ink': _('ink'),
+         'classic': _('classic'),
+         'experimental': _('experimental'),
+         }
+    return d.get(name, name)
 
 class BrushManager:
     def __init__(self, stock_brushpath, user_brushpath):

@@ -9,7 +9,7 @@
 "select brush window"
 import gtk, pango
 gdk = gtk.gdk
-import pixbuflist, brushcreationwidget, dialogs
+import pixbuflist, brushcreationwidget, dialogs, brushmanager
 from gettext import gettext as _
 
 class Window(gtk.Window):
@@ -203,7 +203,8 @@ class GroupSelector(gtk.DrawingArea):
             sp_s = ' '
 
         for group in all_groups:
-            u = pad_s + group + pad_s
+            group_label = brushmanager.translate_group_name(group)
+            u = pad_s + group_label + pad_s
             s = u.encode('utf8')
             idx_start = idx
             for c in s:
@@ -321,7 +322,7 @@ class GroupSelector(gtk.DrawingArea):
             dialogs.error(self, _('A group with this name already exists!'))
 
     def delete_group_cb(self, w, group):
-        if dialogs.confirm(self, _('Really delete group %s?') % group):
+        if dialogs.confirm(self, _('Really delete group %s?') % brushmanager.translate_group_name(group)):
             self.bm.delete_group(group)
             if group in self.bm.groups:
                 dialogs.error(self, _('This group can not be deleted (try to make it empty first).'))
