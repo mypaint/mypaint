@@ -22,7 +22,7 @@ import gtk
 from gtk import gdk, keysyms
 
 import tileddrawwidget, colorselectionwindow, historypopup, \
-       stategroup, colorpicker
+       stategroup, colorpicker, windowing
 from lib import document, helpers, backgroundsurface, command, layer
 
 #TODO: make generic by taking the windows as arguments and put in a helper file?
@@ -45,10 +45,9 @@ def with_wait_cursor(func):
     return wrapper
 
 
-class Window(gtk.Window):
+class Window(windowing.MainWindow):
     def __init__(self, app):
-        gtk.Window.__init__(self)
-        self.app = app
+        windowing.MainWindow.__init__(self, app)
 
         self.connect('delete-event', self.quit_cb)
         self.connect('key-press-event', self.key_press_event_cb_before)
@@ -165,6 +164,7 @@ class Window(gtk.Window):
             ('ViewMenu', None, _('View')),
             ('Fullscreen',   gtk.STOCK_FULLSCREEN, _('Fullscreen'), 'F11', None, self.fullscreen_cb),
             ('ShowMenu',    None, _('Show Menu'), 'Menu', None, self.menu_show_cb),
+            ('ToggleSubwindows',    None, _('Toggle Subwindows'), 'Tab', None, self.toggle_subwindows_cb),
             ('ResetView',   gtk.STOCK_ZOOM_100, _('Reset (Zoom, Rotation, Mirror)'), 'F12', None, self.reset_view_cb),
             ('ZoomIn',       gtk.STOCK_ZOOM_IN, _('Zoom In (at cursor)'), 'period', None, self.zoom_cb),
             ('ZoomOut',      gtk.STOCK_ZOOM_OUT, _('Zoom Out'), 'comma', None, self.zoom_cb),
@@ -199,7 +199,6 @@ class Window(gtk.Window):
         #self.app.accel_group = self.app.ui_manager.get_accel_group()
 
         kbm = self.app.kbm
-        kbm.add_window(self)
 
         for action in ag.list_actions():
             self.app.kbm.takeover_action(action)
@@ -219,6 +218,9 @@ class Window(gtk.Window):
 
         kbm.add_extra_key('<control>Left', 'RotateLeft')
         kbm.add_extra_key('<control>Right', 'RotateRight')
+
+        kbm.add_extra_key('Menu', 'ShowMenu')
+        kbm.add_extra_key('Tab', 'ToggleSubwindows')
 
         sg = stategroup.StateGroup()
         self.layerblink_state = sg.create_state(self.layerblink_state_enter, self.layerblink_state_leave)
@@ -726,6 +728,9 @@ class Window(gtk.Window):
     def menu_done_cb(self, *a, **kw):
         if self.fullscreen:
             self.menubar.hide()
+
+    def toggle_subwindows_cb(self, action):
+        self.app.user_subwindows.toggle()
 
     def about_cb(self, action):
         d = gtk.AboutDialog()

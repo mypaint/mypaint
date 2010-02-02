@@ -9,14 +9,13 @@
 "select brush window"
 import gtk, pango
 gdk = gtk.gdk
+import windowing
 import pixbuflist, brushcreationwidget, dialogs, brushmanager
 from gettext import gettext as _
 
-class Window(gtk.Window):
+class Window(windowing.SubWindow):
     def __init__(self, app):
-        gtk.Window.__init__(self)
-        self.app = app
-        self.app.kbm.add_window(self)
+        windowing.SubWindow.__init__(self, app)
         self.last_selected_brush = None
 
         self.set_title(_('Brush selection'))

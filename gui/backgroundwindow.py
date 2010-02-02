@@ -10,20 +10,20 @@ from gettext import gettext as _
 import gtk, os
 gdk = gtk.gdk
 import pixbuflist
+import windowing
 from lib import tiledsurface, helpers
 N = tiledsurface.N
 
 RESPONSE_SAVE_AS_DEFAULT = 1
 
-class Window(gtk.Dialog):
+class Window(windowing.Dialog):
     def __init__(self, app):
-        gtk.Dialog.__init__(self, _('Background'),
-                     app.drawWindow,
-                     gtk.DIALOG_DESTROY_WITH_PARENT,
-                     (_('save as default'), RESPONSE_SAVE_AS_DEFAULT,
-                        gtk.STOCK_OK, gtk.RESPONSE_ACCEPT)
-                      )
-        self.app = app
+        flags = gtk.DIALOG_DESTROY_WITH_PARENT
+        buttons = (_('save as default'), RESPONSE_SAVE_AS_DEFAULT,
+                   gtk.STOCK_OK, gtk.RESPONSE_ACCEPT)
+        windowing.Dialog.__init__(self, app=app, title=_('Background'),
+                                  parent=app.drawWindow, flags=flags,
+                                  buttons=buttons)
 
         #set up window
         self.connect('delete-event', self.app.hide_window_cb)

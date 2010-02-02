@@ -8,6 +8,7 @@ from gettext import gettext as _
 from math import asin, pi
 from lib import command
 import dialogs
+import windowing
 
 DRAG_LAYER_INDEX = 100
 DRAG_LAYER_PNG = 101
@@ -326,14 +327,12 @@ class LayersList(gtk.VBox):
         doc = self.app.drawWindow.tdw.doc
         doc.move_layer(another_widget_idx, target_idx)
 
-class Window(gtk.Window):
+class Window(windowing.SubWindow):
     def __init__(self, app):
-        gtk.Window.__init__(self)
+        windowing.SubWindow.__init__(self, app)
         self.set_title(_("Layers"))
         self.set_role("Layers")
-        self.app = app
         self.connect('delete-event', self.app.hide_window_cb)
-        self.app.kbm.add_window(self)
         self.set_default_size(200, 300)
         self.callbacks_active = True # Used to prevent callback loops
 

@@ -10,15 +10,14 @@
 from gettext import gettext as _
 import gtk
 import functionwindow
+import windowing
 from brushlib import brushsettings
 from lib import command
 
-class Window(gtk.Window):
+class Window(windowing.SubWindow):
     def __init__(self, app):
-        gtk.Window.__init__(self)
-        self.app = app
+        windowing.SubWindow.__init__(self, app)
         self.app.brushmanager.selected_brush_observers.append(self.brush_selected_cb)
-        self.app.kbm.add_window(self)
 
         self.set_title(_('Brush settings'))
         self.connect('delete-event', self.app.hide_window_cb)
@@ -91,11 +90,14 @@ class Window(gtk.Window):
         w = self.functionWindows.get(setting)
         if w is None:
             w = functionwindow.Window(self.app, setting, adj)
-            def set_hint(widget):
-                widget.window.set_type_hint(gtk.gdk.WINDOW_TYPE_HINT_UTILITY)
-            w.connect('realize', set_hint)
             self.functionWindows[setting] = w
             w.show_all()
+            bsw_pos = self.get_position()
+            if bsw_pos:
+                x, y = bsw_pos
+                x += 16
+                y = max(0, y-50)
+                w.move(x, y)
         w.present() # get to the front
 
     def value_changed_cb(self, adj, index, app):

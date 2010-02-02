@@ -12,6 +12,32 @@ import gtk, gobject
 gdk = gtk.gdk
 from lib import brush
 import filehandling, keyboard, brushmanager
+from windowing import UserSubWindows
+
+# The window geometry that will be assumed at save time.
+SAVE_POS_GRAVITY = gdk.GRAVITY_NORTH_WEST
+
+# Window names and their default positions and visibilities. Arguably
+# this should be migrated into the window class definitions themselves.
+WINDOW_DEFAULTS = {
+    # The drawWindow should be centre-stage, and quite large.
+    'drawWindow':           ("600x450+100+50", True ),
+    # Brush-related dialogs go in the bottom right by default
+    'brushSelectionWindow': ("300x400-30-30",  True ),
+    'brushSettingsWindow':  ("-345-30",        False),
+    # Colour choosers go in the top-right quadrant by default
+    'colorSamplerWindow':   ("-30+30",         True ),
+    'colorSelectionWindow': ("-145+75",        False), # positions strangely
+    # Preferences go "inside" the main window
+    'preferencesWindow':    ("+150+100",       False),
+    # Layer details in the bottom-left quadrant.
+    'layersWindow':         ("200x300+30-30",  False),
+    'backgroundWindow':     ("500x400+245-30", False),
+}
+# TODO: if we're defaulting, try to make sure all the windows end up on the
+# same monitor in multihead setups. While we're at it, apply the defaults again
+# if the saved geometry is no longer within the default screen (because heads
+# might be removed between sessions).
 
 class Application: # singleton
     """
@@ -55,24 +81,12 @@ class Application: # singleton
         self.brush.set_color_hsv((0, 0, 0))
         self.brushmanager.selected_brush_observers.append(self.brush_selected_cb)
 
-        self.window_names = '''
-        drawWindow
-        brushSettingsWindow
-        brushSelectionWindow
-        colorSelectionWindow
-        colorSamplerWindow
-        preferencesWindow
-        backgroundWindow
-        layersWindow
-        '''.split()
+        self.user_subwindows = UserSubWindows(self)
+        self.window_names = ['drawWindow'] \
+          + [n for n in WINDOW_DEFAULTS.keys() if n != 'drawWindow']
         for name in self.window_names:
             module = __import__(name.lower(), globals(), locals(), [])
             window = self.__dict__[name] = module.Window(self)
-            if name != 'drawWindow':
-                def set_hint(widget):
-                    widget.window.set_type_hint(gdk.WINDOW_TYPE_HINT_UTILITY)
-                    widget.set_transient_for(self.drawWindow)
-                window.connect("realize", set_hint)
             self.load_window_position(name, window)
 
         self.kbm.start_listening()
@@ -113,30 +127,46 @@ class Application: # singleton
             window = self.__dict__[name]
             x, y = window.get_position()
             w, h = window.get_size()
+            gravity = window.get_gravity()
+            if gravity != SAVE_POS_GRAVITY:
+                # Then it was never mapped, and must still be using the
+                # defaults. Don't save position (which'd be wrong anyway).
+                continue
             if hasattr(window, 'geometry_before_fullscreen'):
                 x, y, w, h = window.geometry_before_fullscreen
-            visible = window.get_property('visible')
+            visible = window in self.user_subwindows.windows \
+                or window.get_property('visible') 
             f.write('%s %s %d %d %d %d\n' % (name, visible, x, y, w, h))
 
     def load_window_position(self, name, window):
+        geometry, visible = WINDOW_DEFAULTS.get(name, (None, False))
         try:
             for line in open(join(self.confpath, 'windowpos.conf')):
                 if line.startswith(name):
                     parts = line.split()
                     visible = parts[1] == 'True'
                     x, y, w, h = [int(i) for i in parts[2:2+4]]
-                    window.parse_geometry('%dx%d+%d+%d' % (w, h, x, y))
-                    if visible or name == 'drawWindow':
-                        window.show_all()
-                    return
+                    geometry = '%dx%d+%d+%d' % (w, h, x, y)
+                    break
         except IOError:
             pass
+        
+        # Initial gravities can be all over the place. Fix aberrant ones up
+        # when the windows are safely on-screen so their position can be
+        # saved sanely. Doing this only when the window's mapped means that the
+        # window position stays where we specified in the defaults, and the
+        # window manager (should) compensate for us without the position
+        # changing.
+        if geometry is not None:
+            window.parse_geometry(geometry)
+            initial_gravity = window.get_gravity()
+            if initial_gravity != SAVE_POS_GRAVITY:
+                def fix_gravity(w, event):
+                    if w.get_gravity() != SAVE_POS_GRAVITY:
+                        w.set_gravity(SAVE_POS_GRAVITY)
+                window.connect("map-event", fix_gravity)
 
-        if name == 'brushSelectionWindow':
-            window.parse_geometry('300x500')
-
-        # default visibility setting
-        if name in 'drawWindow brushSelectionWindow colorSamplerWindow'.split():
+        if visible:
             window.show_all()
 
     def message_dialog(self, text, type=gtk.MESSAGE_INFO, flags=0):

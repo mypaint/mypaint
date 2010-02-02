@@ -13,19 +13,19 @@ gdk = gtk.gdk
 
 from functionwindow import CurveWidget
 from lib import mypaintlib
+import windowing
 
 device_modes = ['disabled','screen','window']
 RESPONSE_REVERT = 1
 
-class Window(gtk.Dialog):
+class Window(windowing.Dialog):
     def __init__(self, app):
-        gtk.Dialog.__init__(self, _('Preferences'),
-                     app.drawWindow,
-                     gtk.DIALOG_DESTROY_WITH_PARENT,
-                     (gtk.STOCK_REVERT_TO_SAVED, RESPONSE_REVERT,
-                        gtk.STOCK_OK, gtk.RESPONSE_ACCEPT)
-                      )
-        self.app = app
+        flags = gtk.DIALOG_DESTROY_WITH_PARENT
+        buttons = (gtk.STOCK_REVERT_TO_SAVED, RESPONSE_REVERT,
+                   gtk.STOCK_OK, gtk.RESPONSE_ACCEPT)
+        windowing.Dialog.__init__(self, app=app, title=_('Preferences'),
+                                  parent=app.drawWindow, flags=flags,
+                                  buttons=buttons)
         self.filename = os.path.join(self.app.confpath, 'settings.conf')
         self.applying = True
 

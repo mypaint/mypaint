@@ -25,6 +25,7 @@
     <menu action='ViewMenu'>
       <menuitem action='Fullscreen'/>
       <menuitem action='ShowMenu'/>
+      <menuitem action='ToggleSubwindows'/>
       <separator/>
       <menuitem action='ResetView'/>
       <menuitem action='ZoomIn'/>

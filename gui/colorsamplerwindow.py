@@ -3,6 +3,7 @@ gdk = gtk.gdk
 from math import pi, sin, cos, sqrt, atan2
 import struct
 import cairo
+import windowing
 from lib.helpers import rgb_to_hsv, hsv_to_rgb, clamp
 import colorhistory as ch
 from gettext import gettext as _
@@ -907,10 +908,9 @@ class Selector(gtk.VBox):
     def on_select(self,color):
         pass
 
-class Window(gtk.Window):
+class Window(windowing.SubWindow):
     def __init__(self,app):
-        gtk.Window.__init__(self)
-        self.app = app
+        windowing.SubWindow.__init__(self, app)
         self.set_title(_('MyPaint color selector'))
         self.set_role('Color selector')
         self.set_default_size(270,300)
@@ -925,7 +925,6 @@ class Window(gtk.Window):
         #self.exp_details.set_expanded(str_to_bool( app.get_config('State', 'color_details_expanded') ))
         #self.exp_config.set_expanded(str_to_bool( app.get_config('State', 'color_configure_expanded') ))
         self.add(self.selector)
-        self.app.kbm.add_window(self)
         self.app.brush.settings_observers.append(self.brush_modified_cb)
         self.stop_callback = False
 

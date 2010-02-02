@@ -10,11 +10,11 @@
 from gettext import gettext as _
 import gtk
 from brushlib import brushsettings
+import windowing
 
-class Window(gtk.Window):
+class Window(windowing.SubWindow):
     def __init__(self, app, setting, adj):
-        gtk.Window.__init__(self)
-        self.app = app
+        windowing.SubWindow.__init__(self, app, key_input=True)
         self.app.brushmanager.selected_brush_observers.append(self.brush_selected_cb)
 
         self.set_title(setting.name)
@@ -62,7 +62,11 @@ class Window(gtk.Window):
             vbox.pack_start(w, expand=False)
             vbox.pack_start(gtk.HSeparator(), expand=False)
 
-        self.set_default_size(450, 500)
+        # functionwindows are a little narrower and a little taller than
+        # their parent brushsettingswindow, and will appear over the top
+        # of it. Positions are not saved, though they'll hide and show with
+        # tab
+        self.set_default_size(440, 550)
 
     def set_fixed_value_clicked_cb(self, widget, adj, value):
         adj.set_value(value)

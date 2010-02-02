@@ -8,23 +8,18 @@
 
 "select color window (GTK and an own window)"
 import gtk
+import windowing
 from lib import helpers, mypaintlib
 gdk = gtk.gdk
 
 # GTK selector
-class Window(gtk.Window):
+class Window(windowing.SubWindow):
     def __init__(self, app):
-        gtk.Window.__init__(self)
-        self.app = app
-        self.app.kbm.add_window(self)
+        windowing.SubWindow.__init__(self, app)
         self.app.brush.settings_observers.append(self.brush_modified_cb)
 
         self.set_title('Color')
         self.connect('delete-event', self.app.hide_window_cb)
-
-        def set_hint(widget):
-            self.window.set_type_hint(gdk.WINDOW_TYPE_HINT_UTILITY)
-        self.connect("realize", set_hint)
 
         vbox = gtk.VBox()
         self.add(vbox)
@@ -104,18 +99,13 @@ class Window(gtk.Window):
 
 # own color selector
 # see also colorchanger.hpp
-class ColorSelectorPopup(gtk.Window):
+class ColorSelectorPopup(windowing.PopupWindow):
     backend_class = None
     closes_on_picking = True
     def __init__(self, app):
-        gtk.Window.__init__(self, gtk.WINDOW_POPUP)
-        self.set_gravity(gdk.GRAVITY_CENTER)
-        self.set_position(gtk.WIN_POS_MOUSE)
+        windowing.PopupWindow.__init__(self, app)
 
         self.backend = self.backend_class()
-
-        self.app = app
-        self.app.kbm.add_window(self)
 
         #self.set_title('Color')
         #self.connect('delete-event', self.app.hide_window_cb)

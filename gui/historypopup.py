@@ -13,6 +13,7 @@ import random
 import numpy, cairo
 from lib import helpers
 import colorhistory as ch
+import windowing
 
 """
 Worklist (planning/prototyping)
@@ -37,10 +38,10 @@ bigcolor_width   = popup_height
 smallcolor_width = popup_height/2
 popup_width = bigcolor_width + (ch.num_colors-1)*smallcolor_width
 
-class HistoryPopup(gtk.Window):
+class HistoryPopup(windowing.PopupWindow):
     outside_popup_timeout = 0
     def __init__(self, app, doc):
-        gtk.Window.__init__(self, gtk.WINDOW_POPUP)
+        windowing.PopupWindow.__init__(self, app)
         # TODO: put the mouse position onto the selected color
         self.set_position(gtk.WIN_POS_MOUSE)
 
