@@ -140,3 +140,60 @@ class PopupWindow (gtk.Window):
         self.set_position(gtk.WIN_POS_MOUSE)
         self.app = app
         self.app.kbm.add_window(self)
+
+
+def centre_stage(window, l, t, b, rsmall, rbig):
+    """
+    Applies a "Centre Stage" geometry to a given window, which is moved
+    and resized to fit within its current monitor using the given constraints.
+    There are two right margins: one for small screens and one for big
+    screens; a big screen is one that's 3 times greater than the "big"
+    right margin.
+    """
+    screen = window.get_screen()
+    gdk_window = window.window
+    if screen is None or gdk_window is None:
+        return
+    monitor_num = screen.get_monitor_at_window(gdk_window)
+    monitor_geom = screen.get_monitor_geometry(monitor_num)
+    # Determine frame geometry if we can...
+    w, h = window.get_size()
+    frame_size = gdk_window.get_frame_extents()
+    frame_w = frame_size.width - w
+    frame_h = frame_size.height - h
+    
+    mon_w, mon_h = monitor_geom.width, monitor_geom.height
+    mon_x, mon_y = monitor_geom.x, monitor_geom.y
+    gtk.Window.move(window, mon_x + l, mon_y + t) #FIXME
+    if monitor_geom.width <= rbig * 3:
+        window.resize(mon_w-(rsmall+l+frame_w), mon_h-(t+b+frame_h))
+    else:
+        window.resize(mon_w-(rbig+l+frame_w), mon_h-(t+b+frame_h))
+        
+
+def move_to_monitor_of(win, targ_win):
+    """
+    Moves win to the same monitor as targ_win, preserving its gravity and
+    screen position.
+    """
+    s = win.get_screen()
+    targ_s = targ_win.get_screen()
+    if s is None or targ_s is None or s.get_number() != targ_s.get_number():
+        return
+    w = win.window
+    targ_w = targ_win.window
+    if w is None or targ_w is None:
+        return
+    mon = s.get_monitor_at_window(w)
+    targ_mon = s.get_monitor_at_window(targ_w)
+    if mon == targ_mon:
+        return
+    mg = s.get_monitor_geometry(mon)
+    targ_mg = s.get_monitor_geometry(targ_mon)
+    grav = win.get_gravity()
+    pos = win.get_position()
+    targ_pos = pos[0]-mg.x+targ_mg.x, pos[1]-mg.y+targ_mg.y
+    print "gravitate: correcting position from %s to %s" % (pos, targ_pos)
+    win.move(*targ_pos)
+
+

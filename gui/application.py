@@ -11,33 +11,48 @@ from os.path import join
 import gtk, gobject
 gdk = gtk.gdk
 from lib import brush
-import filehandling, keyboard, brushmanager
-from windowing import UserSubWindows
+import filehandling, keyboard, brushmanager, windowing
+
+## TODO: move all window sizing stuff to windowing module
+##       while the keys below refer to fields in the Application, this will
+##       be ugly, however.
 
 # The window geometry that will be assumed at save time.
 SAVE_POS_GRAVITY = gdk.GRAVITY_NORTH_WEST
 
-# Window names and their default positions and visibilities. Arguably
-# this should be migrated into the window class definitions themselves.
+# Window names and their default positions and visibilities. They interrelate,
+# so define them together.
 WINDOW_DEFAULTS = {
-    # The drawWindow should be centre-stage, and quite large.
-    'drawWindow':           ("600x450+100+50", True ),
-    # Brush-related dialogs go in the bottom right by default
-    'brushSelectionWindow': ("300x400-30-30",  True ),
-    'brushSettingsWindow':  ("-345-30",        False),
+    'drawWindow':           (None, True), # initial geom overridden, but set vis
     # Colour choosers go in the top-right quadrant by default
-    'colorSamplerWindow':   ("-30+30",         True ),
-    'colorSelectionWindow': ("-145+75",        False), # positions strangely
-    # Preferences go "inside" the main window
-    'preferencesWindow':    ("+150+100",       False),
+    'colorSamplerWindow':   ("280x350-50+75",  True ),
+    'colorSelectionWindow': ("-145+100",        False), # positions strangely
+    # Brush-related dialogs go in the bottom right by default
+    'brushSelectionWindow': ("280x350-50-50",  True ),
+    'brushSettingsWindow':  ("400x250-345-50",        False),
+    # Preferences go "inside" the main window (TODO: just center-on-parent?)
+    'preferencesWindow':    ("+200+100",       False),
     # Layer details in the bottom-left quadrant.
-    'layersWindow':         ("200x300+30-30",  False),
-    'backgroundWindow':     ("500x400+245-30", False),
+    'layersWindow':         ("200x300+50-50",  False),
+    'backgroundWindow':     ("500x400+265-50", False),
 }
-# TODO: if we're defaulting, try to make sure all the windows end up on the
-# same monitor in multihead setups. While we're at it, apply the defaults again
-# if the saved geometry is no longer within the default screen (because heads
-# might be removed between sessions).
+
+# The main drawWindow gets centre stage, sized around the default set of
+# visible utility windows. Sizing constraints for this:
+CENTRE_STAGE_CONSTRAINTS = (\
+    166, # left: leave some space for icons (but: OSX?)
+    50,  # top: avoid panel
+    75,  # bottom: avoid panel
+    10,  # right (small screens): ensure close button not covered at least
+    375, # right (big screens): don't cover brushes or colour
+    # "big screens" are anything 3 times wider than the big-right margin:
+    ## > Size. The Center Stage content should be at least twice as wide as
+    ## > whatever is in its side margins, and twice as tall as its top and
+    ## > bottom margins. (The user may change its size, but this is how it
+    ## > should be when the user first sees it.)
+    ## >     -- http://designinginterfaces.com/Center_Stage
+)
+
 
 class Application: # singleton
     """
@@ -81,13 +96,21 @@ class Application: # singleton
         self.brush.set_color_hsv((0, 0, 0))
         self.brushmanager.selected_brush_observers.append(self.brush_selected_cb)
 
-        self.user_subwindows = UserSubWindows(self)
+        self.user_subwindows = windowing.UserSubWindows(self)
         self.window_names = ['drawWindow'] \
           + [n for n in WINDOW_DEFAULTS.keys() if n != 'drawWindow']
         for name in self.window_names:
             module = __import__(name.lower(), globals(), locals(), [])
             window = self.__dict__[name] = module.Window(self)
-            self.load_window_position(name, window)
+            using_default = self.load_window_position(name, window)
+            if using_default:
+                if name == 'drawWindow':
+                    def on_map_event(win, ev, dw):
+                        windowing.centre_stage(win, *CENTRE_STAGE_CONSTRAINTS)
+                else:
+                    def on_map_event(win, ev, dw):
+                        windowing.move_to_monitor_of(win, dw)
+                window.connect('map-event', on_map_event, self.drawWindow)
 
         self.kbm.start_listening()
         self.filehandler.doc = self.drawWindow.doc
@@ -140,6 +163,7 @@ class Application: # singleton
 
     def load_window_position(self, name, window):
         geometry, visible = WINDOW_DEFAULTS.get(name, (None, False))
+        using_default = True
         try:
             for line in open(join(self.confpath, 'windowpos.conf')):
                 if line.startswith(name):
@@ -147,10 +171,10 @@ class Application: # singleton
                     visible = parts[1] == 'True'
                     x, y, w, h = [int(i) for i in parts[2:2+4]]
                     geometry = '%dx%d+%d+%d' % (w, h, x, y)
+                    using_default = False
                     break
         except IOError:
             pass
-        
         # Initial gravities can be all over the place. Fix aberrant ones up
         # when the windows are safely on-screen so their position can be
         # saved sanely. Doing this only when the window's mapped means that the
@@ -159,15 +183,16 @@ class Application: # singleton
         # changing.
         if geometry is not None:
             window.parse_geometry(geometry)
-            initial_gravity = window.get_gravity()
-            if initial_gravity != SAVE_POS_GRAVITY:
-                def fix_gravity(w, event):
-                    if w.get_gravity() != SAVE_POS_GRAVITY:
-                        w.set_gravity(SAVE_POS_GRAVITY)
-                window.connect("map-event", fix_gravity)
-
+            if using_default:
+                initial_gravity = window.get_gravity()
+                if initial_gravity != SAVE_POS_GRAVITY:
+                    def fix_gravity(w, event):
+                        if w.get_gravity() != SAVE_POS_GRAVITY:
+                            w.set_gravity(SAVE_POS_GRAVITY)
+                    window.connect("map-event", fix_gravity)
         if visible:
             window.show_all()
+        return using_default
 
     def message_dialog(self, text, type=gtk.MESSAGE_INFO, flags=0):
         """utility function to show a message/information dialog"""

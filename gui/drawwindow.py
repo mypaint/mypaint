@@ -641,6 +641,7 @@ class Window(windowing.MainWindow):
     def flip_cb(self, action):
         self.tdw.set_flipped(action.get_active())
 
+    # FIXME: this shadows the gtk.Window routine of the same name
     def move(self, command):
         self.doc.split_stroke()
         step = min(self.tdw.window.get_size()) / 5
