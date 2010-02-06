@@ -211,10 +211,10 @@ class Window(windowing.MainWindow):
         kbm.add_extra_key('plus', 'ZoomIn')
         kbm.add_extra_key('minus', 'ZoomOut')
 
-        kbm.add_extra_key('Left', lambda(action): self.move('MoveLeft'))
-        kbm.add_extra_key('Right', lambda(action): self.move('MoveRight'))
-        kbm.add_extra_key('Down', lambda(action): self.move('MoveDown'))
-        kbm.add_extra_key('Up', lambda(action): self.move('MoveUp'))
+        kbm.add_extra_key('Left', lambda(action): self.pan('PanLeft'))
+        kbm.add_extra_key('Right', lambda(action): self.pan('PanRight'))
+        kbm.add_extra_key('Down', lambda(action): self.pan('PanDown'))
+        kbm.add_extra_key('Up', lambda(action): self.pan('PanUp'))
 
         kbm.add_extra_key('<control>Left', 'RotateLeft')
         kbm.add_extra_key('<control>Right', 'RotateRight')
@@ -641,14 +641,13 @@ class Window(windowing.MainWindow):
     def flip_cb(self, action):
         self.tdw.set_flipped(action.get_active())
 
-    # FIXME: this shadows the gtk.Window routine of the same name
-    def move(self, command):
+    def pan(self, command):
         self.doc.split_stroke()
         step = min(self.tdw.window.get_size()) / 5
-        if   command == 'MoveLeft' : self.tdw.scroll(-step, 0)
-        elif command == 'MoveRight': self.tdw.scroll(+step, 0)
-        elif command == 'MoveUp'   : self.tdw.scroll(0, -step)
-        elif command == 'MoveDown' : self.tdw.scroll(0, +step)
+        if   command == 'PanLeft' : self.tdw.scroll(-step, 0)
+        elif command == 'PanRight': self.tdw.scroll(+step, 0)
+        elif command == 'PanUp'   : self.tdw.scroll(0, -step)
+        elif command == 'PanDown' : self.tdw.scroll(0, +step)
         else: assert 0
 
     def zoom(self, command):

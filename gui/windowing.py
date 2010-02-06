@@ -164,7 +164,7 @@ def centre_stage(window, l, t, b, rsmall, rbig):
     
     mon_w, mon_h = monitor_geom.width, monitor_geom.height
     mon_x, mon_y = monitor_geom.x, monitor_geom.y
-    gtk.Window.move(window, mon_x + l, mon_y + t) #FIXME
+    window.move(mon_x + l, mon_y + t)
     if monitor_geom.width <= rbig * 3:
         window.resize(mon_w-(rsmall+l+frame_w), mon_h-(t+b+frame_h))
     else:
