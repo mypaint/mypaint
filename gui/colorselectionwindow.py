@@ -7,19 +7,23 @@
 # (at your option) any later version.
 
 "select color window (GTK and an own window)"
+from gettext import gettext as _
+
 import gtk
-from lib import helpers, mypaintlib
 gdk = gtk.gdk
+
+from lib import helpers, mypaintlib
 
 # GTK selector
 class Window(gtk.Window):
+    """Window with the standard GTK color selector (triangle)."""
     def __init__(self, app):
         gtk.Window.__init__(self)
         self.app = app
         self.app.kbm.add_window(self)
         self.app.brush.settings_observers.append(self.brush_modified_cb)
 
-        self.set_title('Color')
+        self.set_title(_('Color'))
         self.connect('delete-event', self.app.hide_window_cb)
 
         def set_hint(widget):
