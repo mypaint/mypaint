@@ -19,7 +19,7 @@ stop_measurement = -4
 
 all_tests = {}
 
-def run_test(testfunction):
+def run_test(testfunction, profile=None):
     """Run a single test
     testfunction must be a generator (using yield)
     """
@@ -32,7 +32,10 @@ def run_test(testfunction):
             res = tst.next()
             assert res == stop_measurement
         t0 = time()
-        run_function_under_test() # <--- profile this!
+        if profile:
+            profile.runcall(run_function_under_test)
+        else:
+            run_function_under_test()
         time_total += time() - t0
 
     if time_total:
@@ -43,8 +46,9 @@ def run_test(testfunction):
 def with_gui_setup(testfunction):
     """Add GUI setup code around a testfunction
     testfunction must be a generator (using yield)
+    returns a new generator function
     """
-    def modified_testfunction():
+    def testfunction_with_gui_setup():
         global app
         app = None
         tst = testfunction()
@@ -93,7 +97,7 @@ def with_gui_setup(testfunction):
         finally:
             os.system('rm -rf ' + tempdir)
 
-    return modified_testfunction
+    return testfunction_with_gui_setup
 
 def gui_test(f):
     "decorator to declare GUI test functions"
@@ -102,11 +106,8 @@ def gui_test(f):
 
 def nogui_test(f):
     "decorator for test functions that require no gui"
-    def run_f():
-        run_test(f)
-    all_tests[f.__name__] = run_f
+    all_tests[f.__name__] = f
     return f
-
 
 
 @gui_test
@@ -187,20 +188,30 @@ def paint_rotated():
         yield res
 
 @nogui_test
-def saveload():
+def load_ora():
     from lib import document
     d = document.Document()
-    t0 = t1 = time()
+    yield start_measurement
     d.load('bigimage.ora')
-    print 'ora load time %.3f' % (time() - t1)
-    t1 = time()
-    d.save('test_save.ora')
-    print 'ora save time %.3f' % (time() - t1)
-    t1 = time()
-    d.save('test_save.png')
-    print 'png save time %.3f' % (time() - t1)
+    yield stop_measurement
 
-    print 'result = %.3f' % (time() - t0)
+@nogui_test
+def save_ora():
+    from lib import document
+    d = document.Document()
+    d.load('bigimage.ora')
+    yield start_measurement
+    d.save('test_save.ora')
+    yield stop_measurement
+
+@nogui_test
+def save_png():
+    from lib import document
+    d = document.Document()
+    d.load('bigimage.ora')
+    yield start_measurement
+    d.save('test_save.png')
+    yield stop_measurement
 
 def scroll(zoom_func):
     dw = app.drawWindow
@@ -260,7 +271,9 @@ if __name__ == '__main__':
             # The UI startup time dominates over the actual test execution time
             # Perhaps the tests should return a function that we can execute 
             # after setting everything up?
-            cProfile.run('func()', sys.argv[3])
+            profile = cProfile.Profile()
+            run_test(func, profile)
+            profile.dump_stats(sys.argv[3])
         sys.exit(0)
 
     from optparse import OptionParser

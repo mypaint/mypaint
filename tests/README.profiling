@@ -1,0 +1,12 @@
+Quick Profiling HOWTO:
+
+# get gprof2dot (you will also need graphviz installed)
+wget http://gprof2dot.jrfonseca.googlecode.com/hg/gprof2dot.py
+chmod +x gprof2dot.py
+
+# run some test with profiling
+./test_performance.py startup -p base
+
+# generate a PNG
+./gprof2dot.py -f base_startup_2.pstats output.pstats | dot -Tpng -o output.png
+
