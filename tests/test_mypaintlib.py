@@ -6,12 +6,16 @@ import sys, os, gc
 os.chdir(os.path.dirname(sys.argv[0]))
 sys.path.insert(0, '..')
 
-from lib import mypaintlib, tiledsurface, brush, document, command
+from lib import mypaintlib, tiledsurface, brush, document, command, helpers
+
+# loadtxt is known to leak memory, thus we run it only once
+# http://projects.scipy.org/numpy/ticket/1356
+painting30sec_events = loadtxt('painting30sec.dat.gz')
 
 def directPaint():
 
     s = tiledsurface.Surface()
-    events = loadtxt('painting30sec.dat.gz')
+    events = painting30sec_events
 
     s.begin_atomic()
     for t, x, y, pressure in events:
@@ -28,7 +32,7 @@ def brushPaint():
     #b.load_from_string(open('../brushes/s006.myb').read())
     b.load_from_string(open('../brushes/charcoal.myb').read())
 
-    events = loadtxt('painting30sec.dat.gz')
+    events = painting30sec_events
 
     b.set_color_rgb((0.0, 0.9, 1.0))
 
@@ -117,7 +121,7 @@ def docPaint():
     # test some actions
     doc = document.Document()
     doc.undo() # nop
-    events = loadtxt('painting30sec.dat.gz')
+    events = painting30sec_events
     events = events[:len(events)/8]
     t_old = events[0][0]
     n = len(events)
@@ -218,6 +222,12 @@ def leakTest_generic(func):
     N = 21
     for i in range(N):
         func(doc, i)
+        if options.debug_leak:
+            if i == 3:
+                check_garbage()
+                helpers.record_memory_leak_status()
+            if i == 4:
+                helpers.record_memory_leak_status(print_diff=True)
         m2 = mem()
         m.append(m2)
         print 'iteration %02d/%02d: %d pages used' % (i+1, N, m2)
@@ -245,7 +255,7 @@ def leakTest_generic(func):
 def leakTest_slow():
 
     def paint(doc):
-        events = loadtxt('painting30sec.dat.gz')
+        events = painting30sec_events
         t_old = events[0][0]
         for i, (t, x, y, pressure) in enumerate(events):
             dtime = t - t_old
@@ -282,11 +292,23 @@ def leakTest_slow():
     leakTest_generic(repeated_loading)
     leakTest_generic(paint_save_clear)
 
+
+from optparse import OptionParser
+parser = OptionParser('usage: %prog [options]')
+parser.add_option('--leak', action='store_true', default=False, 
+                  help='also run slow memory leak tests')
+parser.add_option('--debug-leak', action='store_true', default=False,
+                  help='run even slower leak analysis (implies --leak)')
+options, tests = parser.parse_args()
+if options.debug_leak:
+    options.leak = True
+
 directPaint()
 brushPaint()
 docPaint()
 leakTest_fast()
-if '--leak' in sys.argv:
+if options.leak:
+    # FIXME: would be better to start each of those tests isolated from other tests that also allocate memory
     leakTest_slow()
 else:
     print

@@ -120,6 +120,8 @@
         <menuitem action='PrintInputs'/>
         <menuitem action='VisualizeRendering'/>
         <menuitem action='NoDoubleBuffereing'/>
+        <menuitem action='PrintMemoryLeak'/>
+        <menuitem action='RunGarbageCollector'/>
       </menu>
       <separator/>
       <menuitem action='About'/>

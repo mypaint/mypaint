@@ -7,7 +7,7 @@
 # (at your option) any later version.
 
 from math import floor, ceil
-import colorsys, urllib
+import colorsys, urllib, gc
 
 from gtk import gdk # for gdk_pixbuf stuff
 import mypaintlib
@@ -162,6 +162,35 @@ def indent_etree(elem, level=0):
     else:
         if level and (not elem.tail or not elem.tail.strip()):
             elem.tail = i
+
+def run_garbage_collector():
+    print 'MEM: garbage collector run, collected', gc.collect(), 'objects'
+    print 'MEM: gc.garbage contains', len(gc.garbage), 'items of uncollectible garbage'
+
+old_stats = []
+def record_memory_leak_status(print_diff=False):
+    run_garbage_collector()
+    print 'MEM: collecting info (can take some time)...'
+    new_stats = []
+    for obj in gc.get_objects():
+        if 'A' <= getattr(obj, '__name__', ' ')[0] <= 'Z':
+            cnt = len(gc.get_referrers(obj))
+            new_stats.append((obj.__name__ + ' ' + str(obj), cnt))
+    new_stats.sort()
+    print 'MEM: ...done collecting.'
+    global old_stats
+    if old_stats:
+        if print_diff:
+            d = {}
+            for obj, cnt in old_stats:
+                d[obj] = cnt
+            for obj, cnt in new_stats:
+                cnt_old = d.get(obj, 0)
+                if cnt != cnt_old:
+                    print 'MEM: DELTA %+d %s' % (cnt - cnt_old, obj)
+    else:
+        print 'MEM: Stored stats to compare with the next info collection.'
+    old_stats = new_stats
 
 if __name__ == '__main__':
     big = Rect(-3, 2, 180, 222)

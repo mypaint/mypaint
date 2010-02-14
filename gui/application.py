@@ -208,6 +208,9 @@ class PixbufDirectory:
 
     def __getattr__(self, name):
         if name not in self.cache:
-            pixbuf = gdk.pixbuf_new_from_file(join(self.dirname, name + '.png'))
+            try:
+                pixbuf = gdk.pixbuf_new_from_file(join(self.dirname, name + '.png'))
+            except gobject.GError, e:
+                raise AttributeError, str(e)
             self.cache[name] = pixbuf
         return self.cache[name]

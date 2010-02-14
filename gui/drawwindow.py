@@ -157,7 +157,8 @@ class Window(windowing.MainWindow):
             ('About', gtk.STOCK_ABOUT, _('About MyPaint'), None, None, self.about_cb),
 
             ('DebugMenu',    None, _('Debug')),
-
+            ('PrintMemoryLeak',  None, _('Print Memory Leak Info to stdout (Slow!)'), None, None, self.print_memory_leak_cb),
+            ('RunGarbageCollector',  None, _('Run Garbage Collector Now'), None, None, self.run_garbage_collector_cb),
 
             ('ShortcutsMenu', None, _('Shortcuts')),
 
@@ -277,6 +278,11 @@ class Window(windowing.MainWindow):
 
     def print_inputs_cb(self, action):
         self.doc.brush.print_inputs = action.get_active()
+
+    def print_memory_leak_cb(self, action):
+        helpers.record_memory_leak_status(print_diff = True)
+    def run_garbage_collector_cb(self, action):
+        helpers.run_garbage_collector()
 
     def visualize_rendering_cb(self, action):
         self.tdw.visualize_rendering = action.get_active()
