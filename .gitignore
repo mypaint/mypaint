@@ -18,3 +18,4 @@ options.cache
 POTFILES.in
 lib/strokemap_pb2.py
 .#*
+*.pstats
