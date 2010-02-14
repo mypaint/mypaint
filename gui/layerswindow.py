@@ -275,7 +275,11 @@ class LayersList(gtk.VBox):
                 w = LayerWidget(self, l)
                 ws.append(w)
         self.widgets = ws
-        self.foreach(self.remove)
+        def remove_or_destroy(w):
+            self.remove(w)
+            if w not in self.widgets:
+                w.destroy() # fix for memory leak that would keep layerdata alive
+        self.foreach(remove_or_destroy)
         for w in self.widgets:
             self.pack_end(w,expand=False)
 
