@@ -780,6 +780,7 @@ class Window(gtk.Window):
             u'Lamberto Tedaldi (it)\n'
             u'Dong-Jun Wu (zh_TW)\n'
             u'Luka Čehovin (sl)\n'
+            u'Geuntak Jeong (ko)\n'
             )
         
         d.run()
