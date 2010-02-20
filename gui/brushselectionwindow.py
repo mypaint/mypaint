@@ -254,12 +254,14 @@ class GroupSelector(gtk.DrawingArea):
 
     def button_press_cb(self, widget, event):
         group = self.group_at(event.x, event.y)
-        if event.type != gdk.BUTTON_PRESS:
-            # Double-click
+        if event.type == gdk._2BUTTON_PRESS or (event.type == gdk.BUTTON_PRESS and event.state & gdk.SHIFT_MASK):
+            # group solo
             if not group:
                 return
             self.bm.active_groups = [group]
             for f in self.bm.groups_observers: f()
+        elif event.type != gdk.BUTTON_PRESS:
+            pass # tripple-click or similar
         elif event.button == 1:
             if not group:
                 return
