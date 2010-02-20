@@ -357,7 +357,7 @@ class Window(windowing.MainWindow):
         return False
 
     def dragfunc_translate(self, dx, dy):
-        self.tdw.scroll(-dx, -dy)
+        self.tdw.scroll(-dx*3, -dy*3)
 
     def dragfunc_rotate(self, dx, dy):
         self.tdw.scroll(-dx, -dy, False)
