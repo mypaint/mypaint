@@ -1,3 +1,12 @@
+Version 0.8.1:
+- fixed memory leak: layer data was never freed, eg. when opening a new image
+- fixed loading of layer names
+- respect layer visibility when saving to PNG
+- fixed a freeze in the exception dialog
+- added empty "favorites" brushgroup
+- Korean translation
+- some minor gui fixes
+
 Version 0.8.0:
 - many new brushes contributed by various artists
 - brushes organized into groups
