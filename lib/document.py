@@ -191,7 +191,7 @@ class Document():
 
         for layer in layers:
             surface = layer.surface
-            surface.composite_tile_over(dst, tx, ty, mipmap_level=mipmap, opacity=layer.opacity)
+            surface.composite_tile_over(dst, tx, ty, mipmap_level=mipmap, opacity=layer.effective_opacity)
 
         mypaintlib.tile_convert_rgb16_to_rgb8(dst, dst_8bit)
 

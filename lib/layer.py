@@ -18,6 +18,13 @@ class Layer:
         self.visible = True
         self.clear()
 
+    def get_effective_opacity(self):
+        if self.visible:
+            return self.opacity
+        else:
+            return 0.0
+    effective_opacity = property(get_effective_opacity)
+
     def clear(self):
         self.strokes = [] # contains StrokeInfo instances (not stroke.Stroke)
         self.surface.clear()
@@ -60,14 +67,16 @@ class Layer:
         """
         Merge this layer into dst, modifying only dst.
         """
+        # We must respect layer visibility, because saving a
+        # transparent PNG just calls this function for each layer.
         src = self
         dst.strokes.extend(self.strokes)
         for tx, ty in dst.surface.get_tiles():
             surf = dst.surface.get_tile_memory(tx, ty, readonly=False)
-            surf[:,:,:] = dst.opacity * surf[:,:,:]
+            surf[:,:,:] = dst.effective_opacity * surf[:,:,:]
         for tx, ty in src.surface.get_tiles():
             surf = dst.surface.get_tile_memory(tx, ty, readonly=False)
-            src.surface.composite_tile_over(surf, tx, ty, opacity=self.opacity)
+            src.surface.composite_tile_over(surf, tx, ty, opacity=self.effective_opacity)
         dst.opacity = 1.0
 
     def get_stroke_info_at(self, x, y):
