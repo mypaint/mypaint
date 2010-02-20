@@ -3,6 +3,8 @@ from os.path import join, basename
 
 EnsureSConsVersion(1, 0)
 
+# FIXME: sometimes it would be good to build for a different python
+# version than the one running scons. (But how to find all paths then?)
 python = 'python%d.%d' % (sys.version_info[0], sys.version_info[1])
 print 'Building for', python
 
@@ -15,13 +17,14 @@ except ImportError:
 
 SConsignFile() # no .scsonsign into $PREFIX please
 
-# Does option parsing really screw up the win32 build? if no, remove comment
-#if sys.platform == "win32":
-#    env = Environment(ENV=os.environ)
-#else:
+if sys.platform == "darwin":
+    default_prefix = '/opt/local/'
+else:
+    default_prefix = '/usr/local/'
 
 opts = Variables()
-opts.Add(PathVariable('prefix', 'autotools-style installation prefix', '/usr/local', validator=PathVariable.PathIsDirCreate))
+opts.Add(PathVariable('prefix', 'autotools-style installation prefix', default_prefix, validator=PathVariable.PathIsDirCreate))
+
 opts.Add(BoolVariable('debug', 'enable HEAVY_DEBUG and disable optimizations', False))
 env = Environment(ENV=os.environ, options=opts)
 if sys.platform == "win32":
@@ -40,13 +43,17 @@ env.Append(CPPPATH=numpy_path)
 if sys.platform == "win32":
     env.ParseConfig('pkg-config --cflags --libs python25') # These two '.pc' files you probably have to make for yourself.
     env.ParseConfig('pkg-config --cflags --libs numpy')    # Place them among the other '.pc' files ( where the 'glib-2.0.pc' is located .. probably )
+elif sys.platform == "darwin":
+    env.ParseConfig('python-config --cflags')
+    env.ParseConfig('python-config --ldflags')
 else:
     # some distros use python2.5-config, others python-config2.5
     try:
         env.ParseConfig(python + '-config --cflags --ldflags')
     except OSError:
         print 'going to try python-config instead'
-        env.ParseConfig('python-config --cflags --ldflags')
+        env.ParseConfig('python-config --ldflags')
+        env.ParseConfig('python-config --cflags')
 
 if env.get('CPPDEFINES'):
     # make sure assertions are enabled

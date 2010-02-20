@@ -14,6 +14,8 @@ env.Clean('.', 'mypaintlib.py')
 src = 'mypaintlib_wrap.cpp'
 if sys.platform == "win32": # there 's a better way to do this 
     module = env.LoadableModule('_mypaintlib', Split(src), SHLIBPREFIX="", SHLIBSUFFIX=".pyd")
+elif sys.platform == "darwin":
+    module = env.LoadableModule('_mypaintlib', Split(src), SHLIBPREFIX="", SHLIBSUFFIX=".so")
 else:
     module = env.LoadableModule('_mypaintlib', Split(src), SHLIBPREFIX="")
 
