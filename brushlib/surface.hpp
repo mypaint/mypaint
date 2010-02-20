@@ -13,6 +13,9 @@
 // surface interface required by brush.hpp
 class Surface {
 public:
+
+  virtual ~Surface() {}
+
   virtual bool draw_dab (float x, float y, 
                          float radius, 
                          float color_r, float color_g, float color_b,
