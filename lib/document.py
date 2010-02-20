@@ -6,7 +6,7 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-import os, zipfile, tempfile, time
+import os, zipfile, tempfile, time, traceback
 join = os.path.join
 import xml.etree.ElementTree as ET
 from gtk import gdk
@@ -253,12 +253,14 @@ class Document():
         try:        
             save(filename, **kwargs)
         except gobject.GError, e:
+            traceback.print_exc()
             if e.code == 5:
                 #add a hint due to a very consfusing error message when there is no space left on device
                 raise SaveLoadError, _('Unable to save: %s\nDo you have enough space left on the device?') % e.message
             else:
                 raise SaveLoadError, _('Unable to save: %s') % e.message
         except IOError, e:
+            traceback.print_exc()
             raise SaveLoadError, _('Unable to save: %s') % e.strerror
         self.unsaved_painting_time = 0.0
 
@@ -270,7 +272,14 @@ class Document():
         trash, ext = os.path.splitext(filename)
         ext = ext.lower().replace('.', '')
         load = getattr(self, 'load_' + ext, self.unsupported)
-        load(filename)
+        try:
+            load(filename)
+        except gobject.GError, e:
+            traceback.print_exc()
+            raise SaveLoadError, _('Error while loading: GError %s') % e
+        except IOError, e:
+            traceback.print_exc()
+            raise SaveLoadError, _('Error while loading: IOError %s') % e
         self.command_stack.clear()
         self.unsaved_painting_time = 0.0
         self.call_doc_observers()
