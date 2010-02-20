@@ -66,6 +66,9 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.scale = 1.0
         self.rotation = 0.0
         self.flipped = False
+        # only used when forcing translation_x/y aligned to full pixels
+        self.translation_subpixel_x = 0.0
+        self.translation_subpixel_y = 0.0
 
         self.has_pointer = False
         self.dragfunc = None
@@ -103,8 +106,8 @@ class TiledDrawWidget(gtk.DrawingArea):
     def motion_notify_cb(self, widget, event):
         if self.last_event_time:
             dtime = (event.time - self.last_event_time)/1000.0
-            dx_int = int(event.x) - int(self.last_event_x)
-            dy_int = int(event.y) - int(self.last_event_y)
+            dx = event.x - self.last_event_x
+            dy = event.y - self.last_event_y
         else:
             dtime = None
         if event.device != self.last_event_device:
@@ -118,9 +121,7 @@ class TiledDrawWidget(gtk.DrawingArea):
             return
 
         if self.dragfunc:
-            if dx_int or dy_int:
-                # we only allow scrolling by full pixels, because it is much faster
-                self.dragfunc(dx_int, dy_int)
+            self.dragfunc(dx, dy)
             return
 
         cr = self.get_model_coordinates_cairo_context()
@@ -345,11 +346,27 @@ class TiledDrawWidget(gtk.DrawingArea):
             cr.set_source_rgba(0, 0, random.random(), 0.4)
             cr.paint()
 
-    def scroll(self, dx, dy, show_immediately=True):
-        assert int(dx) == dx and int(dy) == dy
+    def align_translation(self):
+        """
+        Align translation to integer pixel coordinates. Keep track of
+        the remainder to allow incremental sub-pixel scrolling.
+        """
+        if self.is_translation_only():
+            tx_real = self.translation_x + self.translation_subpixel_x
+            ty_real = self.translation_y + self.translation_subpixel_y
+            self.translation_x = round(tx_real)
+            self.translation_y = round(ty_real)
+            self.translation_subpixel_x = tx_real - self.translation_x
+            self.translation_subpixel_y = ty_real - self.translation_y
+        else:
+            # forget about the subpixel translation (which was never executed)
+            self.translation_subpixel_x = 0.0
+            self.translation_subpixel_y = 0.0
+
+    def scroll(self, dx, dy):
         self.translation_x -= dx
         self.translation_y -= dy
-        #if show_immediately:
+        self.align_translation()
         if False:
             # This speeds things up nicely when scrolling is already
             # fast, but produces temporary artefacts and an
@@ -383,6 +400,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         if self.is_translation_only():
             self.translation_x = int(self.translation_x)
             self.translation_y = int(self.translation_y)
+        self.align_translation()
 
         self.queue_draw()
 
