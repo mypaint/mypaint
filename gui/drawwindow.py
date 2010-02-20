@@ -434,7 +434,7 @@ class Window(gtk.Window):
     def pick_layer_cb(self, action):
         x, y = self.tdw.get_cursor_in_model_coordinates()
         for idx, layer in reversed(list(enumerate(self.doc.layers))):
-            alpha = layer.surface.get_alpha (x, y, 5) * layer.opacity
+            alpha = layer.surface.get_alpha (x, y, 5) * layer.effective_opacity
             if alpha > 0.1:
                 self.doc.select_layer(idx)
                 self.layerblink_state.activate(action)
@@ -445,7 +445,7 @@ class Window(gtk.Window):
     def pick_context_cb(self, action):
         x, y = self.tdw.get_cursor_in_model_coordinates()
         for idx, layer in reversed(list(enumerate(self.doc.layers))):
-            alpha = layer.surface.get_alpha (x, y, 5) * layer.opacity
+            alpha = layer.surface.get_alpha (x, y, 5) * layer.effective_opacity
             if alpha > 0.1:
                 old_layer = self.doc.layer
                 self.doc.select_layer(idx)

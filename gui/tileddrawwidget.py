@@ -227,14 +227,6 @@ class TiledDrawWidget(gtk.DrawingArea):
         cr = self.get_model_coordinates_cairo_context()
         return cr.device_to_user(x, y)
 
-    def get_visible_layers(self):
-        # FIXME: tileddrawwidget should not need to know whether the document has layers
-        layers = self.doc.layers
-        if not self.show_layers_above:
-            layers = self.doc.layers[0:self.doc.layer_idx+1]
-        layers = [l for l in layers if l.visible]
-        return layers
-
     def repaint(self, device_bbox=None):
         if device_bbox is None:
             w, h = self.window.get_size()
@@ -292,7 +284,9 @@ class TiledDrawWidget(gtk.DrawingArea):
         cr.rectangle(*model_bbox)
         cr.clip()
 
-        layers = self.get_visible_layers()
+        layers = self.doc.layers
+        if not self.show_layers_above:
+            layers = self.doc.layers[0:self.doc.layer_idx+1]
 
         if self.visualize_rendering:
             surface.pixbuf.fill((int(random.random()*0xff)<<16)+0x00000000)
