@@ -1,3 +1,7 @@
+Version 0.8.2:
+- fix regression in 0.8.1 causing temporary layers to stick
+- complain about unsupported pygtk version
+
 Version 0.8.1:
 - fixed memory leak: layer data was never freed, eg. when opening a new image
 - fixed loading of layer names
