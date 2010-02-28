@@ -8,10 +8,14 @@ sys.path.insert(0, '..')
 
 from lib import mypaintlib, tiledsurface, brush, document, command
 
+# loadtxt is known to leak memory, thus we run it only once
+# http://projects.scipy.org/numpy/ticket/1356
+painting30sec_events = loadtxt('painting30sec.dat.gz')
+
 def directPaint():
 
     s = tiledsurface.Surface()
-    events = loadtxt('painting30sec.dat.gz')
+    events = painting30sec_events
 
     s.begin_atomic()
     for t, x, y, pressure in events:
@@ -28,7 +32,7 @@ def brushPaint():
     #b.load_from_string(open('../brushes/s006.myb').read())
     b.load_from_string(open('../brushes/charcoal.myb').read())
 
-    events = loadtxt('painting30sec.dat.gz')
+    events = painting30sec_events
 
     b.set_color_rgb((0.0, 0.9, 1.0))
 
@@ -117,7 +121,7 @@ def docPaint():
     # test some actions
     doc = document.Document()
     doc.undo() # nop
-    events = loadtxt('painting30sec.dat.gz')
+    events = painting30sec_events
     events = events[:len(events)/8]
     t_old = events[0][0]
     n = len(events)
@@ -245,7 +249,7 @@ def leakTest_generic(func):
 def leakTest_slow():
 
     def paint(doc):
-        events = loadtxt('painting30sec.dat.gz')
+        events = painting30sec_events
         t_old = events[0][0]
         for i, (t, x, y, pressure) in enumerate(events):
             dtime = t - t_old
