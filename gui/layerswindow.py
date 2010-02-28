@@ -216,7 +216,8 @@ class LayerWidget(gtk.EventBox):
             return
         self.callbacks_active = False
         self.visibility_button.set_active(layer.visible)
-        self.layer_name.set_text(layer.name)
+        layer_text = layer.name or _('<small>Double click to enter name</small>')
+        self.layer_name.set_markup(layer_text)
         self.callbacks_active = True
 
     def change_name(self, *ignore):
