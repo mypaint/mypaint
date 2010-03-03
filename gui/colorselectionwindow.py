@@ -21,7 +21,7 @@ class Window(windowing.SubWindow):
     def __init__(self, app):
         windowing.SubWindow.__init__(self, app)
         self.app.brush.settings_observers.append(self.brush_modified_cb)
-
+        self.set_resizable(False)
         self.set_title(_('Color'))
         self.connect('delete-event', self.app.hide_window_cb)
 
@@ -29,8 +29,17 @@ class Window(windowing.SubWindow):
         self.add(vbox)
 
         self.cs = gtk.ColorSelection()
+        self.cs.connect('realize', self.on_cs_realize)
         self.cs.connect('color-changed', self.color_changed_cb)
         vbox.pack_start(self.cs)
+
+    def on_cs_realize(self, *ignore):
+        # Remove unwanted widgets
+        hbox= self.cs.get_children()[0]
+        hbox.set_no_show_all(True)
+        l,r = hbox.get_children()
+        r.hide()
+        return True
 
     def color_changed_cb(self, cs):
         b = self.app.brush
