@@ -559,9 +559,6 @@ class Window(windowing.MainWindow):
         def is_eraser(device):
             if device is None: return False
             return device.source == gdk.SOURCE_ERASER or 'eraser' in device.name.lower()
-        if old_device is None and not is_eraser(new_device):
-            # keep whatever startup brush was choosen
-            return
 
         print 'device change:', new_device.name, new_device.source
 
@@ -572,11 +569,12 @@ class Window(windowing.MainWindow):
             new_device = self.last_pen_device
         if new_device.source == gdk.SOURCE_PEN:
             self.last_pen_device = new_device
-        if old_device.source == gdk.SOURCE_MOUSE and self.last_pen_device:
+        if old_device and old_device.source == gdk.SOURCE_MOUSE and self.last_pen_device:
             old_device = self.last_pen_device
 
         bm = self.app.brushmanager
-        bm.brush_by_device[old_device.name] = (bm.selected_brush, self.app.brush.save_to_string())
+        if old_device:
+            bm.brush_by_device[old_device.name] = (bm.selected_brush, self.app.brush.save_to_string())
 
         if new_device.name in bm.brush_by_device:
             brush_to_select, brush_settings = bm.brush_by_device[new_device.name]
