@@ -7,6 +7,7 @@ os.chdir(os.path.dirname(sys.argv[0]))
 sys.path.insert(0, '..')
 
 from lib import mypaintlib, tiledsurface, brush, document, command, helpers
+import guicontrol
 
 # loadtxt is known to leak memory, thus we run it only once
 # http://projects.scipy.org/numpy/ticket/1356
@@ -81,6 +82,16 @@ def leaktest(test_func):
     all_tests[test_func.__name__] = test_func
     return test_func
 
+all_tests = {}
+def leaktest_gui(test_func):
+    "decorator to declare leak test functions using GUI"
+    def testfunc_modified(doc, iteration):
+        gui = guicontrol.GUI()
+
+    all_tests[test_func.__name__] = test_func
+    test_func = test_performance.with_gui_setup(test_func)
+    return test_func
+
 #@leaktest
 def provoke_leak(doc, iteration):
     # note: interestingly this leaky only shows in the later iterations
@@ -98,6 +109,14 @@ def document_alloc(doc, iteration):
 @leaktest
 def surface_alloc(doc, iteration):
     tiledsurface.Surface()
+
+@leaktest_gui
+def scroll_nozoom(gui, iteration):
+    yield wait_for_idle
+    def f(): pass
+    for res in scroll(f):
+        yield res
+
 
 def paint(doc):
     events = painting30sec_events

@@ -9,13 +9,10 @@ from pylab import math, linspace, loadtxt
 os.chdir(os.path.dirname(sys.argv[0]))
 sys.path.insert(0, '..')
 
-# A test function is a python generator function that may yield the
-# values below to control the GUI and the testing:
-#
-wait_for_idle = -1 # wait until the last mypaint idle handler has finished
-wait_for_gui = -2  # wait until all GUI updates are done, but don't wait for background tasks
-start_measurement = -3
-stop_measurement = -4
+import guicontrol
+
+start_measurement = -1
+stop_measurement = -2
 
 all_tests = {}
 
@@ -27,7 +24,7 @@ def run_test(testfunction, profile=None):
 
     time_total = 0.0
     for res in tst:
-        assert res == start_measurement
+        assert res == start_measurement, res
         def run_function_under_test():
             res = tst.next()
             assert res == stop_measurement
@@ -43,95 +40,42 @@ def run_test(testfunction, profile=None):
     else:
         pass # test did not make time measurements, it will print its own result (eg. memory)
 
-def with_gui_setup(testfunction):
-    """Add GUI setup code around a testfunction
-    testfunction must be a generator (using yield)
-    returns a new generator function
-    """
-    def testfunction_with_gui_setup():
-        global app
-        app = None
-        tst = testfunction()
-        # wait for the first command that requires the GUI
-        while True:
-            res = tst.next()
-            if res in [wait_for_idle, wait_for_gui]:
-                break
-            else:
-                yield res
-
-        tempdir = tempfile.mkdtemp()
-        try:
-            from gui import application
-            app = application.Application(datapath='..', confpath=tempdir, filenames=[])
-
-            import gobject
-            def signal_handler():
-                global wait_for_signal_handler
-                wait_for_signal_handler = False
-
-            # fatal exceptions, please
-            def excepthook(exctyp, value, tb):
-                import traceback
-                traceback.print_exception (exctyp, value, tb, None, sys.stderr)
-                sys.exit(1)
-            sys.excepthook = excepthook
-
-            global wait_for_signal_handler
-            wait_for_signal_handler = False
-            while True:
-                while not wait_for_signal_handler:
-                    res = tst.next()
-                    if res == wait_for_idle:
-                        gobject.idle_add(signal_handler, priority=gobject.PRIORITY_LOW + 50)
-                        wait_for_signal_handler = True
-                    elif res == wait_for_gui:
-                        gobject.idle_add(signal_handler, priority=gobject.PRIORITY_DEFAULT_IDLE - 1)
-                        wait_for_signal_handler = True
-                    elif res >= 0:
-                        gobject.timeout_add(int(res*1000.0), signal_handler)
-                        wait_for_signal_handler = True
-                    else:
-                        yield res
-                gtk.main_iteration()
-        finally:
-            os.system('rm -rf ' + tempdir)
-
-    return testfunction_with_gui_setup
-
-def gui_test(f):
-    "decorator to declare GUI test functions"
-    all_tests[f.__name__] = with_gui_setup(f)
-    return f
-
 def nogui_test(f):
     "decorator for test functions that require no gui"
     all_tests[f.__name__] = f
     return f
+def gui_test(f):
+    "decorator for test functions that require no gui"
+    def f2():
+        gui = guicontrol.GUI()
+        for action in f(gui):
+            yield action
+    all_tests[f.__name__] = f2
+    return f
 
 
 @gui_test
-def startup():
+def startup(gui):
     yield start_measurement
-    yield wait_for_idle
+    gui.wait_for_idle()
     yield stop_measurement
 
 @gui_test
-def paint():
+def paint(gui):
     """
     Paint with a constant number of frames per recorded second.
     Not entirely realistic, but gives good and stable measurements.
     """
-    yield wait_for_gui
+    gui.wait_for_gui()
     FPS = 30
-    dw = app.drawWindow
+    dw = gui.app.drawWindow
     tdw = dw.tdw
 
-    b = app.brushmanager.get_brush_by_name('redbrush')
-    app.brushmanager.select_brush(b)
+    b = gui.app.brushmanager.get_brush_by_name('redbrush')
+    gui.app.brushmanager.select_brush(b)
 
     dw.fullscreen_cb()
-    yield wait_for_idle
+    gui.wait_for_idle()
 
     events = loadtxt('painting30sec.dat.gz')
     events = list(events)
@@ -141,7 +85,7 @@ def paint():
     t_last_redraw = 0.0
     for t, x, y, pressure in events:
         if t > t_last_redraw + 1.0/FPS:
-            yield wait_for_gui
+            gui.wait_for_gui()
             t_last_redraw = t
         dtime = t - t_old
         t_old = t
@@ -151,40 +95,40 @@ def paint():
     yield stop_measurement
 
 @gui_test
-def paint_zoomed_out_5x():
-    yield wait_for_idle
-    dw = app.drawWindow
+def paint_zoomed_out_5x(gui):
+    gui.wait_for_idle()
+    dw = gui.app.drawWindow
     for i in range(5):
         dw.zoom('ZoomOut')
-    for res in paint():
+    for res in paint(gui):
         yield res
 
 @gui_test
-def layerpaint_nozoom():
-    yield wait_for_idle
-    app.filehandler.open_file('bigimage.ora')
-    dw = app.drawWindow
+def layerpaint_nozoom(gui):
+    gui.wait_for_idle()
+    gui.app.filehandler.open_file('bigimage.ora')
+    dw = gui.app.drawWindow
     dw.doc.select_layer(len(dw.doc.layers)/2)
-    for res in paint():
+    for res in paint(gui):
         yield res
 
 @gui_test
-def layerpaint_zoomed_out_5x():
-    yield wait_for_idle
-    dw = app.drawWindow
-    app.filehandler.open_file('bigimage.ora')
+def layerpaint_zoomed_out_5x(gui):
+    gui.wait_for_idle()
+    dw = gui.app.drawWindow
+    gui.app.filehandler.open_file('bigimage.ora')
     dw.tdw.scroll(800, 1000)
     dw.doc.select_layer(len(dw.doc.layers)/3)
     for i in range(5):
         dw.zoom('ZoomOut')
-    for res in paint():
+    for res in paint(gui):
         yield res
 
 @gui_test
-def paint_rotated():
-    yield wait_for_idle
-    app.drawWindow.tdw.rotate(46.0/360*2*math.pi)
-    for res in paint():
+def paint_rotated(gui):
+    gui.wait_for_idle()
+    gui.app.drawWindow.tdw.rotate(46.0/360*2*math.pi)
+    for res in paint(gui):
         yield res
 
 @nogui_test
@@ -213,12 +157,12 @@ def save_png():
     d.save('test_save.png')
     yield stop_measurement
 
-def scroll(zoom_func):
-    dw = app.drawWindow
+def scroll(gui, zoom_func):
+    dw = gui.app.drawWindow
     dw.fullscreen_cb()
-    app.filehandler.open_file('bigimage.ora')
+    gui.app.filehandler.open_file('bigimage.ora')
     zoom_func()
-    yield wait_for_idle
+    gui.wait_for_idle()
 
     yield start_measurement
     N = 20
@@ -226,40 +170,42 @@ def scroll(zoom_func):
     dy = linspace(-10, 60, N)
     for i in xrange(N):
         dw.tdw.scroll(int(dx[i]), int(dy[i]))
-        yield wait_for_idle
+        gui.wait_for_idle()
     yield stop_measurement
 
 @gui_test
-def scroll_nozoom():
-    yield wait_for_idle
+def scroll_nozoom(gui):
+    gui.wait_for_idle()
     def f(): pass
-    for res in scroll(f):
+    for res in scroll(gui, f):
         yield res
 
 @gui_test
-def scroll_zoomed_out_5x():
-    yield wait_for_idle
-    dw = app.drawWindow
+def scroll_zoomed_out_5x(gui):
+    gui.wait_for_idle()
+    dw = gui.app.drawWindow
     def f():
         for i in range(5):
             dw.zoom('ZoomOut')
-    for res in scroll(f):
+    for res in scroll(gui, f):
         yield res
 
 @gui_test
-def memory_zoomed_out_5x():
-    yield wait_for_idle
-    dw = app.drawWindow
+def memory_zoomed_out_5x(gui):
+    gui.wait_for_idle()
+    dw = gui.app.drawWindow
     dw.fullscreen_cb()
-    app.filehandler.open_file('bigimage.ora')
+    gui.app.filehandler.open_file('bigimage.ora')
     for i in range(5):
         dw.zoom('ZoomOut')
-    yield wait_for_idle
+    gui.wait_for_idle()
     dw.tdw.scroll(100, 120)
-    yield wait_for_idle
+    gui.wait_for_idle()
     dw.tdw.scroll(-80, -500)
-    yield wait_for_idle
+    gui.wait_for_idle()
     print 'result =', open('/proc/self/statm').read().split()[0]
+    if False:
+        yield None # just to make this function iterator
 
 if __name__ == '__main__':
     if len(sys.argv) == 4 and sys.argv[1] == 'SINGLE_TEST_RUN':
