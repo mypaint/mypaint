@@ -26,8 +26,9 @@ tar -cvjf $filename mypaint-$version
 
 cd $d
 scons debug=true
-tests/test_mypaintlib.py --leak
+tests/test_mypaintlib.py
 tests/test_performance.py -a -c 1
+tests/test_memory_leak.py -a -e
 
 ls -sSh $filename
 
