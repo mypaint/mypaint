@@ -157,38 +157,29 @@ def save_png():
     d.save('test_save.png')
     yield stop_measurement
 
-def scroll(gui, zoom_func):
-    dw = gui.app.drawWindow
-    dw.fullscreen_cb()
-    gui.app.filehandler.open_file('bigimage.ora')
-    zoom_func()
-    gui.wait_for_idle()
-
-    yield start_measurement
-    N = 20
-    dx = linspace(-30, 30, N)
-    dy = linspace(-10, 60, N)
-    for i in xrange(N):
-        dw.tdw.scroll(int(dx[i]), int(dy[i]))
-        gui.wait_for_idle()
-    yield stop_measurement
-
 @gui_test
 def scroll_nozoom(gui):
     gui.wait_for_idle()
-    def f(): pass
-    for res in scroll(gui, f):
-        yield res
+    dw = gui.app.drawWindow
+    dw.fullscreen_cb()
+    gui.app.filehandler.open_file('bigimage.ora')
+    gui.wait_for_idle()
+    yield start_measurement
+    gui.scroll()
+    yield stop_measurement
 
 @gui_test
 def scroll_zoomed_out_5x(gui):
     gui.wait_for_idle()
     dw = gui.app.drawWindow
-    def f():
-        for i in range(5):
-            dw.zoom('ZoomOut')
-    for res in scroll(gui, f):
-        yield res
+    dw.fullscreen_cb()
+    gui.app.filehandler.open_file('bigimage.ora')
+    for i in range(5):
+        dw.zoom('ZoomOut')
+    gui.wait_for_idle()
+    yield start_measurement
+    gui.scroll()
+    yield stop_measurement
 
 @gui_test
 def memory_zoomed_out_5x(gui):
@@ -199,10 +190,7 @@ def memory_zoomed_out_5x(gui):
     for i in range(5):
         dw.zoom('ZoomOut')
     gui.wait_for_idle()
-    dw.tdw.scroll(100, 120)
-    gui.wait_for_idle()
-    dw.tdw.scroll(-80, -500)
-    gui.wait_for_idle()
+    gui.scroll()
     print 'result =', open('/proc/self/statm').read().split()[0]
     if False:
         yield None # just to make this function iterator

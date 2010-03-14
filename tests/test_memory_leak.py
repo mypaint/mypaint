@@ -29,19 +29,16 @@ def check_garbage(msg = 'uncollectable garbage left over from previous tests'):
         garbage.append(obj)
     assert not garbage, 'uncollectable garbage left over from previous tests: %s' % garbage
 
-def leakTest_generic(func):
-    print 'memory leak test', func.__name__
+def iterations():
     check_garbage()
-
-    doc = document.Document()
-    #gc.set_debug(gc.DEBUG_LEAK)
 
     max_mem = 0
     max_mem_stable = 0
-    no_leak = False
+    max_mem_increasing = 0
+    leak = True
     m1 = 0
     for i in range(options.max_iterations):
-        func(doc, i)
+        yield i
         if options.debug:
             if i == 3:
                 check_garbage()
@@ -54,71 +51,56 @@ def leakTest_generic(func):
         if m2 > max_mem:
             max_mem = m2
             max_mem_stable = 0
+            max_mem_increasing += 1
+            if max_mem_increasing == options.required:
+                print 'maximum was always increasing for', max_mem_increasing, 'iterations'
+                break
         else:
             max_mem_stable += 1
+            max_mem_increasing = 0
             if max_mem_stable == options.required:
                 print 'maximum was stable for', max_mem_stable, 'iterations'
-                no_leak = True
+                leak = False
                 break
 
-    #import objgraph
-    #from lib import strokemap
-    #objgraph.show_refs(doc)
-    #sys.exit(0)
-
-    # note: if gc.DEBUG_LEAK is enabled above this is expected to fail
     check_garbage()
 
-    if no_leak:
-        print 'no leak found'
-    else:
-        print 'memory leak in ' + func.__name__
+    if leak:
+        print 'memory leak found'
         sys.exit(LEAK_EXIT_CODE)
+    else:
+        print 'no leak found'
 
 
 all_tests = {}
-def leaktest(test_func):
+def leaktest(f):
     "decorator to declare leak test functions"
-    all_tests[test_func.__name__] = test_func
-    return test_func
-
-all_tests = {}
-def leaktest_gui(test_func):
-    "decorator to declare leak test functions using GUI"
-    def testfunc_modified(doc, iteration):
-        gui = guicontrol.GUI()
-
-    all_tests[test_func.__name__] = test_func
-    test_func = test_performance.with_gui_setup(test_func)
-    return test_func
+    all_tests[f.__name__] = f
+    return f
 
 #@leaktest
-def provoke_leak(doc, iteration):
-    # note: interestingly this leaky only shows in the later iterations
-    #       (and very small leaks might not be detected)
-    setattr(gc, 'my_test_leak_%d' % iteration, zeros(50000))
+def provoke_leak():
+    for i in iterations():
+        # note: interestingly this leaky only shows in the later iterations
+        #       (and very small leaks might not be detected)
+        setattr(gc, 'my_test_leak_%d' % i, zeros(50000))
 
 @leaktest
-def noleak(doc, iteration):
-    setattr(gc, 'my_test_leak', zeros(50000))
+def noleak():
+    for i in iterations():
+        setattr(gc, 'my_test_leak', zeros(50000))
 
 @leaktest
-def document_alloc(doc, iteration):
-    document.Document()
+def document_alloc():
+    for i in iterations():
+        document.Document()
 
 @leaktest
-def surface_alloc(doc, iteration):
-    tiledsurface.Surface()
+def surface_alloc():
+    for i in iterations():
+        tiledsurface.Surface()
 
-@leaktest_gui
-def scroll_nozoom(gui, iteration):
-    yield wait_for_idle
-    def f(): pass
-    for res in scroll(f):
-        yield res
-
-
-def paint(doc):
+def paint_doc(doc):
     events = painting30sec_events
     t_old = events[0][0]
     for i, (t, x, y, pressure) in enumerate(events):
@@ -127,28 +109,71 @@ def paint(doc):
         doc.stroke_to(dtime, x, y, pressure)
 
 @leaktest
-def paint_and_clear(doc, iteration):
-    paint(doc)
-    doc.clear()
+def save_test():
+    doc = document.Document()
+    paint_doc(doc)
+    for i in iterations():
+        doc.save('test_leak.ora')
+        doc.save('test_leak.png')
+        doc.save('test_leak.jpg')
 
 @leaktest
-def repeated_saving(doc, iteration):
-    if iteration == 0:
-        paint(doc)
-    doc.save('test_leak.ora')
-    doc.save('test_leak.png')
-    doc.save('test_leak.jpg')
+def repeated_loading():
+    doc = document.Document()
+    for i in iterations():
+        doc.load('bigimage.ora')
 
 @leaktest
-def repeated_loading(doc, iteration):
-    doc.load('bigimage.ora')
+def paint_save_clear():
+    doc = document.Document()
+    for i in iterations():
+        paint_doc(doc)
+        doc.save('test_leak.ora')
+        doc.clear()
+
+def paint_gui(gui):
+    """
+    Paint with a constant number of frames per recorded second.
+    Not entirely realistic, but gives good and stable measurements.
+    """
+    FPS = 30
+    dw = gui.app.drawWindow
+    tdw = dw.tdw
+
+    b = gui.app.brushmanager.get_brush_by_name('redbrush')
+    gui.app.brushmanager.select_brush(b)
+
+    events = list(painting30sec_events)
+    t0 = time()
+    t_old = 0.0
+    t_last_redraw = 0.0
+    for t, x, y, pressure in events:
+        if t > t_last_redraw + 1.0/FPS:
+            gui.wait_for_gui()
+            t_last_redraw = t
+        dtime = t - t_old
+        t_old = t
+        cr = tdw.get_model_coordinates_cairo_context()
+        x, y = cr.device_to_user(x, y)
+        dw.doc.stroke_to(dtime, x, y, pressure)
 
 @leaktest
-def paint_save_clear(doc, iteration):
-    paint(doc)
-    doc.save('test_leak.ora')
-    doc.clear()
-
+def gui_test():
+    # NOTE: this an all-in-one GUI test as a workaround for the
+    # problem that the GUI does not cleanly terminate after the test fork()
+    gui = guicontrol.GUI()
+    gui.wait_for_idle()
+    gui.app.filehandler.open_file('bigimage.ora')
+    dw = gui.app.drawWindow
+    for i in iterations():
+        gui.app.filehandler.open_file('smallimage.ora')
+        gui.wait_for_idle()
+        paint_gui(gui)
+        gui.app.filehandler.save_file('test_save.ora')
+        gui.scroll()
+        dw.zoom('ZoomOut')
+        gui.scroll()
+        dw.zoom('ZoomIn')
 
 if __name__ == '__main__':
     from optparse import OptionParser
@@ -162,7 +187,7 @@ if __name__ == '__main__':
     parser.add_option('-e', '--exit', action='store_true', default=False,
                       help='exit at first error')
     parser.add_option('-r', '--required', type='int', default=15,
-                      help='good iterations required (default: 15)')
+                      help='iterations required to draw a conclusion (default: 15)')
     parser.add_option('-m', '--max-iterations', type='int', default=100,
                       help='maximum number of iterations (default: 100)')
     options, tests = parser.parse_args()
@@ -195,7 +220,7 @@ if __name__ == '__main__':
             print '---'
             print 'running test "%s"' % t
             print '---'
-            leakTest_generic(all_tests[t])
+            all_tests[t]()
             sys.exit(0)
 
         pid, status = os.wait()
