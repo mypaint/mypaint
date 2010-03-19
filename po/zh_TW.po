@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mypaint\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-19 08:35+0800\n"
-"PO-Revision-Date: 2010-01-19 08:47+0800\n"
+"POT-Creation-Date: 2010-03-09 18:29+0800\n"
+"PO-Revision-Date: 2010-03-09 18:43+0800\n"
 "Last-Translator: Dong-Jun Wu <ziyawu@gmail.com>\n"
 "Language-Team: Chinese Traditional <zh-l10n@linux.org.tw>\n"
 "MIME-Version: 1.0\n"
@@ -20,7 +20,7 @@ msgstr ""
 
 #. name, hard minimum, soft minimum, normal[1], soft maximum, hard maximum, displayed name, tooltip
 #: ../brushlib/brushsettings.py:22
-#: ../gui/settingswindow.py:42
+#: ../gui/preferenceswindow.py:42
 msgid "Pressure"
 msgstr "壓力"
 
@@ -508,20 +508,21 @@ msgstr "方向濾鏡"
 msgid "a low value will make the direction input adapt more quickly, a high value will make it smoother"
 msgstr "數值較低會使輸入方向調整更迅速，數值較高則會更平滑"
 
-#: ../gui/backgroundwindow.py:20
-msgid "Background"
-msgstr "背景"
-
-#: ../gui/backgroundwindow.py:23
+#: ../gui/backgroundwindow.py:22
 msgid "save as default"
 msgstr "儲存為預設值"
+
+#: ../gui/backgroundwindow.py:24
+msgid "Background"
+msgstr "背景"
 
 #: ../gui/backgroundwindow.py:38
 msgid "Pattern"
 msgstr "圖案"
 
 #: ../gui/backgroundwindow.py:45
-#: ../gui/drawwindow.py:119
+#: ../gui/colorselectionwindow.py:25
+#: ../gui/drawwindow.py:118
 msgid "Color"
 msgstr "顏色"
 
@@ -540,7 +541,7 @@ msgid "The background %s was ignored because it has the wrong size. Only (N*%d)x
 msgstr "因為含有錯誤尺寸，所以忽略背景 %s。只支援 (N*%d)x(M*%d)。"
 
 #: ../gui/brushcreationwidget.py:34
-#: ../gui/drawwindow.py:136
+#: ../gui/drawwindow.py:135
 msgid "Clear"
 msgstr "清除"
 
@@ -595,131 +596,155 @@ msgstr "沒有選擇筆刷，請改用「加入新筆刷」。"
 msgid "Really delete brush from disk?"
 msgstr "確定要從磁碟中刪除筆刷？"
 
-#: ../gui/brushselectionwindow.py:22
+#: ../gui/brushmanager.py:26
+msgid "default"
+msgstr "預設"
+
+#: ../gui/brushmanager.py:27
+msgid "deleted"
+msgstr "刪除的"
+
+#: ../gui/brushmanager.py:28
+msgid "favorites"
+msgstr "收藏"
+
+#: ../gui/brushmanager.py:29
+msgid "ink"
+msgstr "墨水"
+
+#: ../gui/brushmanager.py:30
+msgid "classic"
+msgstr "經典"
+
+#: ../gui/brushmanager.py:31
+msgid "experimental"
+msgstr "實驗性"
+
+#: ../gui/brushselectionwindow.py:21
 msgid "Brush selection"
 msgstr "筆刷選擇"
 
-#: ../gui/brushselectionwindow.py:36
-#: ../gui/drawwindow.py:107
+#: ../gui/brushselectionwindow.py:35
+#: ../gui/drawwindow.py:106
 msgid "Edit"
 msgstr "編輯"
 
-#: ../gui/brushselectionwindow.py:156
+#: ../gui/brushselectionwindow.py:165
 msgid "Right click on group to modify"
 msgstr "用右鍵點擊群組進行修改"
 
-#: ../gui/brushselectionwindow.py:276
+#: ../gui/brushselectionwindow.py:293
 msgid "New group..."
 msgstr "新增群組..."
 
-#: ../gui/brushselectionwindow.py:278
+#: ../gui/brushselectionwindow.py:295
 msgid "Rename group..."
 msgstr "重新命名群組..."
 
-#: ../gui/brushselectionwindow.py:279
+#: ../gui/brushselectionwindow.py:296
 msgid "Delete group..."
 msgstr "刪除群組..."
 
-#: ../gui/brushselectionwindow.py:293
+#: ../gui/brushselectionwindow.py:310
 msgid "Create group"
 msgstr "建立群組"
 
-#: ../gui/brushselectionwindow.py:298
+#: ../gui/brushselectionwindow.py:315
 msgid "Rename group"
 msgstr "重新命名群組"
 
-#: ../gui/brushselectionwindow.py:304
+#: ../gui/brushselectionwindow.py:321
 msgid "A group with this name already exists!"
 msgstr "已經存在相同名稱的群組！"
 
-#: ../gui/brushselectionwindow.py:307
+#: ../gui/brushselectionwindow.py:324
 #, python-format
 msgid "Really delete group %s?"
 msgstr "確定要刪除群組 %s？"
 
-#: ../gui/brushselectionwindow.py:310
+#: ../gui/brushselectionwindow.py:327
 msgid "This group can not be deleted (try to make it empty first)."
 msgstr "這個群組無法刪除 (先試著清空這個群組)。"
 
-#: ../gui/brushsettingswindow.py:23
+#: ../gui/brushsettingswindow.py:22
 msgid "Brush settings"
 msgstr "筆刷設定值"
 
-#: ../gui/brushsettingswindow.py:29
+#: ../gui/brushsettingswindow.py:28
 msgid "live update the last canvas stroke"
 msgstr "即時更新最後畫布筆畫"
 
-#: ../gui/brushsettingswindow.py:65
+#: ../gui/brushsettingswindow.py:64
 msgid "No additional configuration"
 msgstr "沒有附加的組態設定"
 
-#: ../gui/brushsettingswindow.py:70
-#: ../gui/brushsettingswindow.py:115
+#: ../gui/brushsettingswindow.py:69
+#: ../gui/brushsettingswindow.py:117
 msgid "Add input values mapping"
 msgstr "加入輸入值對應"
 
-#: ../gui/brushsettingswindow.py:117
+#: ../gui/brushsettingswindow.py:119
 msgid "Modify input values mapping"
 msgstr "修改輸入值對應"
 
-#: ../gui/colorsamplerwindow.py:815
+#: ../gui/colorsamplerwindow.py:816
 msgid "RGB"
 msgstr "RGB"
 
-#: ../gui/colorsamplerwindow.py:816
+#: ../gui/colorsamplerwindow.py:817
 msgid "HSV"
 msgstr "HSV"
 
-#: ../gui/colorsamplerwindow.py:818
+#: ../gui/colorsamplerwindow.py:819
 msgid "Colors history"
 msgstr "顏色記錄"
 
-#: ../gui/colorsamplerwindow.py:822
-#: ../gui/functionwindow.py:141
+#: ../gui/colorsamplerwindow.py:823
+#: ../gui/functionwindow.py:145
 msgid "Details"
 msgstr "詳細資訊"
 
-#: ../gui/colorsamplerwindow.py:832
+#: ../gui/colorsamplerwindow.py:833
 msgid "Harmonies"
 msgstr "協調色"
 
-#: ../gui/colorsamplerwindow.py:834
+#: ../gui/colorsamplerwindow.py:835
 msgid "Analogous"
 msgstr "類似色"
 
-#: ../gui/colorsamplerwindow.py:835
+#: ../gui/colorsamplerwindow.py:836
 msgid "Complimentary color"
 msgstr "互補色"
 
-#: ../gui/colorsamplerwindow.py:836
+#: ../gui/colorsamplerwindow.py:837
 msgid "Split complimentary"
 msgstr "鄰接補色"
 
-#: ../gui/colorsamplerwindow.py:837
+#: ../gui/colorsamplerwindow.py:838
 msgid "Double complimentary"
 msgstr "雙補色"
 
-#: ../gui/colorsamplerwindow.py:838
+#: ../gui/colorsamplerwindow.py:839
 msgid "Square"
 msgstr "二元"
 
-#: ../gui/colorsamplerwindow.py:839
+#: ../gui/colorsamplerwindow.py:840
 msgid "Triadic"
 msgstr "三元"
 
-#: ../gui/colorsamplerwindow.py:841
+#: ../gui/colorsamplerwindow.py:842
 msgid "Select harmonies"
 msgstr "選擇協調色"
 
-#: ../gui/colorsamplerwindow.py:844
+#: ../gui/colorsamplerwindow.py:845
 msgid "Change value/saturation"
 msgstr "改變明度/飽和度"
 
-#: ../gui/colorsamplerwindow.py:847
+#: ../gui/colorsamplerwindow.py:848
 msgid "Blend each color to opposite"
 msgstr "混合每種顏色為相反"
 
-#: ../gui/colorsamplerwindow.py:849
+#: ../gui/colorsamplerwindow.py:850
 msgid "Blend each color to negative"
 msgstr "混合每種顏色為負值"
 
@@ -728,191 +753,201 @@ msgid "MyPaint color selector"
 msgstr "MyPaint 選色器"
 
 #: ../gui/dialogs.py:37
+#: ../gui/layerswindow.py:223
 msgid "Name"
 msgstr "名稱"
 
 #. name, stock id, label, accelerator, tooltip, callback
-#: ../gui/drawwindow.py:104
+#: ../gui/drawwindow.py:103
 msgid "File"
 msgstr "檔案"
 
 #. FIXME: should do this periodically, not only on quit
-#: ../gui/drawwindow.py:105
-#: ../gui/drawwindow.py:633
+#: ../gui/drawwindow.py:104
+#: ../gui/drawwindow.py:637
 msgid "Quit"
 msgstr "離開"
 
-#: ../gui/drawwindow.py:108
+#: ../gui/drawwindow.py:107
 msgid "Undo"
 msgstr "復原"
 
-#: ../gui/drawwindow.py:109
+#: ../gui/drawwindow.py:108
 msgid "Redo"
 msgstr "取消復原"
 
-#: ../gui/drawwindow.py:111
+#: ../gui/drawwindow.py:110
 msgid "Brush"
 msgstr "筆刷"
 
-#: ../gui/drawwindow.py:112
+#: ../gui/drawwindow.py:111
 msgid "Brighter"
 msgstr "變亮"
 
-#: ../gui/drawwindow.py:113
+#: ../gui/drawwindow.py:112
 msgid "Smaller"
 msgstr "變小"
 
-#: ../gui/drawwindow.py:114
+#: ../gui/drawwindow.py:113
 msgid "More Opaque"
 msgstr "增加不透明"
 
-#: ../gui/drawwindow.py:115
+#: ../gui/drawwindow.py:114
 msgid "Less Opaque"
 msgstr "減少不透明"
 
-#: ../gui/drawwindow.py:116
+#: ../gui/drawwindow.py:115
 msgid "Toggle Eraser Mode"
 msgstr "切換橡皮擦模式"
 
-#: ../gui/drawwindow.py:117
+#. TODO: make toggle action
+#: ../gui/drawwindow.py:116
 msgid "Pick Context (layer, brush and color)"
 msgstr "點取內容 (圖層、筆刷和顏色)"
 
-#: ../gui/drawwindow.py:120
+#: ../gui/drawwindow.py:119
 msgid "Darker"
 msgstr "變暗"
 
-#: ../gui/drawwindow.py:121
+#: ../gui/drawwindow.py:120
 msgid "Bigger"
 msgstr "變大"
 
-#: ../gui/drawwindow.py:122
+#: ../gui/drawwindow.py:121
 msgid "Pick Color"
 msgstr "點取顏色"
 
-#: ../gui/drawwindow.py:123
+#: ../gui/drawwindow.py:122
 msgid "Color History"
 msgstr "顏色記錄"
 
-#: ../gui/drawwindow.py:124
+#: ../gui/drawwindow.py:123
 msgid "Color Changer"
 msgstr "換色器"
 
-#: ../gui/drawwindow.py:125
+#: ../gui/drawwindow.py:124
 msgid "Color Ring"
 msgstr "色圈"
 
-#: ../gui/drawwindow.py:127
+#: ../gui/drawwindow.py:126
 msgid "Brushkeys"
 msgstr "筆刷按鍵"
 
 #. each of the context actions are generated and added below
-#: ../gui/drawwindow.py:129
+#: ../gui/drawwindow.py:128
 msgid "Save to Most Recently Restored"
 msgstr "儲存到最近還原的檔案"
 
-#: ../gui/drawwindow.py:130
+#: ../gui/drawwindow.py:129
 msgid "Help!"
-msgstr "求助！"
+msgstr "說明！"
 
-#: ../gui/drawwindow.py:132
-#: ../gui/layerswindow.py:456
+#: ../gui/drawwindow.py:131
+#: ../gui/layerswindow.py:337
 msgid "Layers"
 msgstr "圖層"
 
-#: ../gui/drawwindow.py:134
+#: ../gui/drawwindow.py:133
 msgid "Layers..."
 msgstr "圖層..."
 
-#: ../gui/drawwindow.py:135
+#: ../gui/drawwindow.py:134
 msgid "Background..."
 msgstr "背景..."
 
-#: ../gui/drawwindow.py:137
+#: ../gui/drawwindow.py:136
 msgid "Copy to Clipboard"
 msgstr "複製到剪貼簿"
 
-#: ../gui/drawwindow.py:138
+#: ../gui/drawwindow.py:137
 msgid "Paste Clipboard (Replace Layer)"
 msgstr "貼上剪貼簿 (取代圖層)"
 
-#: ../gui/drawwindow.py:139
+#: ../gui/drawwindow.py:138
 msgid "Select Layer at Cursor"
 msgstr "選擇游標下的圖層"
 
-#: ../gui/drawwindow.py:140
+#: ../gui/drawwindow.py:139
 msgid "Next (above current)"
 msgstr "下一個 (目前之上)"
 
-#: ../gui/drawwindow.py:141
+#: ../gui/drawwindow.py:140
 msgid "Next (below current)"
 msgstr "下一個 (目前之下)"
 
-#: ../gui/drawwindow.py:142
+#: ../gui/drawwindow.py:141
 msgid "New (above current)"
 msgstr "新增 (目前之上)"
 
-#: ../gui/drawwindow.py:143
+#: ../gui/drawwindow.py:142
 msgid "New (below current)"
 msgstr "新增 (目前之下)"
 
-#: ../gui/drawwindow.py:144
+#: ../gui/drawwindow.py:143
 msgid "Merge Down"
 msgstr "向下合併"
 
-#: ../gui/drawwindow.py:145
+#: ../gui/drawwindow.py:144
 msgid "Remove"
 msgstr "移除"
 
-#: ../gui/drawwindow.py:146
+#: ../gui/drawwindow.py:145
 msgid "Increase Layer Opacity"
 msgstr "增加圖層不透明度"
 
-#: ../gui/drawwindow.py:147
+#: ../gui/drawwindow.py:146
 msgid "Decrease Layer Opacity"
 msgstr "減少圖層不透明度"
 
-#: ../gui/drawwindow.py:149
+#: ../gui/drawwindow.py:148
 msgid "Brush List..."
 msgstr "筆刷清單..."
 
-#: ../gui/drawwindow.py:150
+#: ../gui/drawwindow.py:149
 msgid "Brush Settings..."
 msgstr "筆刷設定值..."
 
-#: ../gui/drawwindow.py:151
+#: ../gui/drawwindow.py:150
 msgid "Color Triangle..."
 msgstr "顏色三角..."
 
-#: ../gui/drawwindow.py:152
+#: ../gui/drawwindow.py:151
 msgid "Color Sampler..."
 msgstr "顏色取樣器..."
 
-#: ../gui/drawwindow.py:153
-msgid "Settings..."
-msgstr "設定值..."
+#: ../gui/drawwindow.py:152
+msgid "Preferences..."
+msgstr "偏好設定..."
 
 #. TODO: make toggle action
-#: ../gui/drawwindow.py:155
-#: ../gui/drawwindow.py:175
+#: ../gui/drawwindow.py:154
+#: ../gui/drawwindow.py:176
 msgid "Help"
 msgstr "說明"
 
-#: ../gui/drawwindow.py:156
+#: ../gui/drawwindow.py:155
 msgid "Where is the Documentation?"
-msgstr "說明文件在哪裡？"
+msgstr "說明文件？"
+
+#: ../gui/drawwindow.py:156
+msgid "Change the Keyboard Shortcuts?"
+msgstr "變更鍵盤快捷鍵？"
 
 #: ../gui/drawwindow.py:157
-msgid "Change the Keyboard Shortcuts?"
-msgstr "要變更鍵盤快捷鍵嗎？"
-
-#: ../gui/drawwindow.py:158
 msgid "About MyPaint"
 msgstr "關於 MyPaint"
 
-#: ../gui/drawwindow.py:160
+#: ../gui/drawwindow.py:159
 msgid "Debug"
 msgstr "除錯"
+
+#: ../gui/drawwindow.py:160
+msgid "Print Memory Leak Info to stdout (Slow!)"
+msgstr "列印記憶體溢出資訊到標準輸出 (慢！)"
+
+#: ../gui/drawwindow.py:161
+msgid "Run Garbage Collector Now"
+msgstr "立刻執行垃圾收集器"
 
 #: ../gui/drawwindow.py:163
 msgid "Shortcuts"
@@ -931,73 +966,78 @@ msgid "Show Menu"
 msgstr "顯示選單"
 
 #: ../gui/drawwindow.py:168
+msgid "Toggle Subwindows"
+msgstr "切換子視窗"
+
+#: ../gui/drawwindow.py:169
 msgid "Reset (Zoom, Rotation, Mirror)"
 msgstr "重設 (縮放、旋轉、鏡像)"
 
-#: ../gui/drawwindow.py:169
+#: ../gui/drawwindow.py:170
 msgid "Zoom In (at cursor)"
 msgstr "放大 (於游標處)"
 
-#: ../gui/drawwindow.py:170
+#: ../gui/drawwindow.py:171
 msgid "Zoom Out"
 msgstr "縮小"
 
-#: ../gui/drawwindow.py:171
+#: ../gui/drawwindow.py:172
 msgid "Rotate Counterclockwise"
 msgstr "逆時針旋轉"
 
-#: ../gui/drawwindow.py:172
+#: ../gui/drawwindow.py:173
 msgid "Rotate Clockwise"
 msgstr "順時針旋轉"
 
-#: ../gui/drawwindow.py:173
+#: ../gui/drawwindow.py:174
 msgid "Layer Solo"
 msgstr "圖層單獨顯示"
 
-#: ../gui/drawwindow.py:174
+#. TODO: make toggle action
+#: ../gui/drawwindow.py:175
 msgid "Hide Layers Above Current"
 msgstr "隱藏目前之上的圖層"
 
-#: ../gui/drawwindow.py:181
+#: ../gui/drawwindow.py:182
 #, python-format
 msgid "Restore Brush %d"
 msgstr "還原筆刷 %d"
 
-#: ../gui/drawwindow.py:183
+#: ../gui/drawwindow.py:184
 #, python-format
 msgid "Save to Brush %d"
 msgstr "儲存到筆刷 %d"
 
 #. name, stock id, label, accelerator, tooltip, callback, default toggle status
-#: ../gui/drawwindow.py:190
+#: ../gui/drawwindow.py:191
 msgid "Print Brush Input Values to stdout"
 msgstr "列印筆刷輸入值到標準輸出"
 
-#: ../gui/drawwindow.py:191
+#: ../gui/drawwindow.py:192
 msgid "Visualize Rendering"
 msgstr "視覺化演算"
 
-#: ../gui/drawwindow.py:192
+#: ../gui/drawwindow.py:193
 msgid "Disable GTK Double Buffering"
 msgstr "停用 GTK 雙倍緩衝"
 
-#: ../gui/drawwindow.py:193
+#: ../gui/drawwindow.py:194
 msgid "Mirror Image"
 msgstr "鏡射圖像"
 
-#: ../gui/drawwindow.py:633
+#: ../gui/drawwindow.py:637
 msgid "Really Quit?"
 msgstr "確定要離開？"
 
-#: ../gui/drawwindow.py:734
+#: ../gui/drawwindow.py:746
 msgid ""
-"Copyright (C) 2005-2009\n"
+"Copyright (C) 2005-2010\n"
 "Martin Renold and the MyPaint Development Team"
 msgstr ""
-"著作權 (C) 2005-2009\n"
+"著作權 (C) 2005-2010\n"
 "Martin Renold 和 MyPaint 開發團隊"
 
-#: ../gui/drawwindow.py:738
+#: ../gui/drawwindow.py:750
 msgid ""
 "This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n"
 "\n"
@@ -1007,43 +1047,46 @@ msgstr ""
 "\n"
 "這個程式發佈的目的是希望它對人們有所幫助，但沒有任何保證。請見 COPYING 檔案獲得更多詳細資訊。"
 
-#: ../gui/drawwindow.py:748
-#: ../gui/drawwindow.py:752
-#: ../gui/drawwindow.py:754
-#: ../gui/drawwindow.py:755
-#: ../gui/drawwindow.py:757
-msgid "programming"
-msgstr "編排"
-
-#: ../gui/drawwindow.py:749
-#: ../gui/drawwindow.py:758
-#: ../gui/drawwindow.py:759
 #: ../gui/drawwindow.py:760
+#: ../gui/drawwindow.py:764
+#: ../gui/drawwindow.py:766
+#: ../gui/drawwindow.py:767
+#: ../gui/drawwindow.py:769
+#: ../gui/drawwindow.py:773
+#: ../gui/drawwindow.py:774
+#: ../gui/drawwindow.py:775
+msgid "programming"
+msgstr "程式"
+
+#: ../gui/drawwindow.py:761
+#: ../gui/drawwindow.py:770
+#: ../gui/drawwindow.py:771
+#: ../gui/drawwindow.py:772
 msgid "brushes"
 msgstr "筆刷"
 
-#: ../gui/drawwindow.py:750
-#: ../gui/drawwindow.py:756
+#: ../gui/drawwindow.py:762
+#: ../gui/drawwindow.py:768
 msgid "portability"
-msgstr "可攜式"
+msgstr "可移植性"
 
-#: ../gui/drawwindow.py:751
+#: ../gui/drawwindow.py:763
 msgid "brushes, programming"
-msgstr "筆刷、編排"
+msgstr "筆刷、程式"
 
-#: ../gui/drawwindow.py:753
+#: ../gui/drawwindow.py:765
 msgid "patterns, brushes"
 msgstr "圖案、筆刷"
 
-#: ../gui/drawwindow.py:763
+#: ../gui/drawwindow.py:778
 msgid "desktop icon"
 msgstr "桌面圖示"
 
-#: ../gui/drawwindow.py:785
+#: ../gui/drawwindow.py:803
 msgid "Move your mouse over a menu entry, then press the key to assign."
 msgstr "將您的滑鼠移動到選單項目上方，然後按滑鼠鍵來指定。"
 
-#: ../gui/drawwindow.py:787
+#: ../gui/drawwindow.py:805
 msgid ""
 "You can also drag the canvas with the mouse while holding the middle mouse button or spacebar. Or with the arrow keys.\n"
 "\n"
@@ -1053,7 +1096,7 @@ msgstr ""
 "\n"
 "相對於早期版本，現在畫面滾動和縮放更為順暢且不會讓您用完記憶體。但如果在畫面縮到相當小時您到處塗繪，仍然需要大量的記憶體。"
 
-#: ../gui/drawwindow.py:794
+#: ../gui/drawwindow.py:812
 msgid ""
 "This is used to quickly save/restore brush settings using keyboard shortcuts. You can paint with one hand and change brushes with the other without interrupting.\n"
 "\n"
@@ -1065,7 +1108,7 @@ msgstr ""
 "有 10 個記憶槽來保留筆刷設定值。\n"
 "這些不具名稱的筆刷不會顯示在筆刷選擇器清單。但這些筆刷會被留下來，即使您離開程式。這些筆刷也會記住選擇的顏色。相反的，選擇普通筆刷則不會改變顏色。"
 
-#: ../gui/drawwindow.py:805
+#: ../gui/drawwindow.py:823
 msgid ""
 "There is a tutorial available on the MyPaint homepage. It explains some features which are hard to discover yourself.\n"
 "\n"
@@ -1080,7 +1123,7 @@ msgid "New"
 msgstr "新增"
 
 #: ../gui/filehandling.py:37
-#: ../gui/filehandling.py:199
+#: ../gui/filehandling.py:198
 msgid "Open..."
 msgstr "開啟..."
 
@@ -1121,7 +1164,7 @@ msgid "Open Recent files"
 msgstr "開啟最近的檔案"
 
 #: ../gui/filehandling.py:89
-msgid "Save.."
+msgid "Save..."
 msgstr "儲存..."
 
 #. name, patterns, saveopts
@@ -1130,7 +1173,7 @@ msgid "Any format (prefer OpenRaster)"
 msgstr "任何格式 (優先使用 OpenRaster)"
 
 #: ../gui/filehandling.py:102
-#: ../gui/filehandling.py:207
+#: ../gui/filehandling.py:206
 msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
 
@@ -1173,24 +1216,24 @@ msgstr ""
 "\n"
 "這將會丟棄未儲存圖畫的 %s。"
 
-#: ../gui/filehandling.py:180
+#: ../gui/filehandling.py:179
 msgid "Did not save, the canvas is empty."
 msgstr "沒有儲存，畫布是空白的。"
 
 #. name, patterns
-#: ../gui/filehandling.py:206
+#: ../gui/filehandling.py:205
 msgid "All Recognized Formats"
 msgstr "所有可辨識的格式"
 
-#: ../gui/filehandling.py:208
+#: ../gui/filehandling.py:207
 msgid "PNG (*.png)"
 msgstr "PNG (*.png)"
 
-#: ../gui/filehandling.py:209
+#: ../gui/filehandling.py:208
 msgid "JPEG (*.jpg; *.jpeg)"
 msgstr "JPEG (*.jpg; *.jpeg)"
 
-#: ../gui/filehandling.py:383
+#: ../gui/filehandling.py:384
 #, python-format
 msgid "There are no scrap files named \"%s\" yet."
 msgstr "還沒有廢料檔命名為「%s」。"
@@ -1199,52 +1242,48 @@ msgstr "還沒有廢料檔命名為「%s」。"
 msgid "Base Value"
 msgstr "基本值"
 
-#: ../gui/gtkexcepthook.py:115
+#: ../gui/gtkexcepthook.py:118
 msgid "Bug Detected"
 msgstr "偵測到程式錯誤"
 
-#: ../gui/gtkexcepthook.py:119
+#: ../gui/gtkexcepthook.py:122
 msgid "<big><b>A programming error has been detected.</b></big>"
 msgstr "<big><b>已偵測到一個程式錯誤。</b></big>"
 
-#: ../gui/gtkexcepthook.py:120
+#: ../gui/gtkexcepthook.py:123
 msgid "It probably isn't fatal, but the details should be reported to the developers nonetheless."
 msgstr "它可能不是很嚴重的錯誤，儘管如此詳細資訊還是應該回報給開發人員。"
 
-#: ../gui/gtkexcepthook.py:135
+#: ../gui/gtkexcepthook.py:138
 msgid "Report..."
 msgstr "回報..."
 
-#: ../gui/gtkexcepthook.py:139
+#: ../gui/gtkexcepthook.py:142
 msgid "Details..."
 msgstr "詳細資訊..."
 
 #. Show details...
-#: ../gui/gtkexcepthook.py:168
+#: ../gui/gtkexcepthook.py:171
 msgid "Bug Details"
 msgstr "程式錯誤詳細資訊"
 
-#: ../gui/layerswindow.py:108
+#: ../gui/layerswindow.py:35
 msgid "Layer visibility"
 msgstr "圖層可見度"
 
-#: ../gui/layerswindow.py:207
-msgid "Name:"
-msgstr "名稱："
-
-#: ../gui/layerswindow.py:213
+#: ../gui/layerswindow.py:354
 msgid "Opacity:"
 msgstr "不透明度："
 
-#: ../gui/settingswindow.py:22
-msgid "Settings"
-msgstr "設定值"
+#: ../gui/preferenceswindow.py:26
+msgid "Preferences"
+msgstr "偏好設定"
 
-#: ../gui/settingswindow.py:46
+#: ../gui/preferenceswindow.py:46
 msgid "<b><span size=\"large\">Global Pressure Mapping</span></b>"
 msgstr "<b><span size=\"large\">整體壓力對應</span></b>"
 
-#: ../gui/settingswindow.py:59
+#: ../gui/preferenceswindow.py:59
 msgid ""
 "0.5\n"
 "(mouse button)"
@@ -1252,22 +1291,69 @@ msgstr ""
 "0.5\n"
 "(滑鼠鍵)"
 
-#: ../gui/settingswindow.py:70
+#: ../gui/preferenceswindow.py:70
 msgid "Mode for input devices: "
 msgstr "輸入裝置的模式："
 
-#: ../gui/settingswindow.py:81
+#: ../gui/preferenceswindow.py:81
 msgid "Paths"
 msgstr "路徑"
 
-#: ../gui/settingswindow.py:85
+#: ../gui/preferenceswindow.py:85
 msgid "<b><span size=\"large\">Save as Scrap</span></b>"
 msgstr "<b><span size=\"large\">另存為廢料</span></b>"
 
-#: ../gui/settingswindow.py:87
+#: ../gui/preferenceswindow.py:87
 msgid "Path and filename prefix for \"Save Next Scrap\""
 msgstr "「儲存下一個廢料」的路徑和檔名字首"
 
+#. add a hint due to a very consfusing error message when there is no space left on device
+#: ../lib/document.py:259
+#, python-format
+msgid ""
+"Unable to save: %s\n"
+"Do you have enough space left on the device?"
+msgstr ""
+"無法儲存：%s\n"
+"裝置上是否剩餘足夠的空間？"
+
+#: ../lib/document.py:261
+#: ../lib/document.py:264
+#, python-format
+msgid "Unable to save: %s"
+msgstr "無法儲存：%s"
+
+#: ../lib/document.py:269
+#, python-format
+msgid "File does not exist: %s"
+msgstr "檔案不存在：%s"
+
+#: ../lib/document.py:271
+#, python-format
+msgid "You do not have the necessary permissions to open file: %s"
+msgstr "您沒有足夠的權限來開啟檔案：%s"
+
+#: ../lib/document.py:279
+#, python-format
+msgid "Error while loading: GError %s"
+msgstr "載入時發生錯誤：GError %s"
+
+#: ../lib/document.py:282
+#, python-format
+msgid "Error while loading: IOError %s"
+msgstr "載入時發生錯誤：IOError %s"
+
+#: ../lib/document.py:288
+#, python-format
+msgid "Unknown file format extension: %s"
+msgstr "未知的檔案格式副檔名：%s"
+
+#~ msgid "Settings..."
+#~ msgstr "設定值..."
+#~ msgid "Settings"
+#~ msgstr "設定值"
+#~ msgid "Name:"
+#~ msgstr "名稱："
 #~ msgid "done"
 #~ msgstr "完成"
 #~ msgid "R: "
