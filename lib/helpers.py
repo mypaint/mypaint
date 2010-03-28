@@ -12,6 +12,21 @@ import colorsys, urllib, gc
 from gtk import gdk # for gdk_pixbuf stuff
 import mypaintlib
 
+try:
+    from json import dumps as json_dumps, loads as json_loads
+    print "builtin python 2.6 json support"
+except ImportError:
+    try:
+        from cjson import encode as json_dumps, decode as json_loads
+        print "external python-cjson"
+    except ImportError:
+        try:
+            from json import write as json_dumps, read as json_loads
+            print "external python-json"
+        except ImportError:
+                from simplejson import dumps as json_dumps, loads as json_loads
+                print "external python-simplejson"
+
 class Rect:
     def __init__(self, x=0, y=0, w=0, h=0):
         self.x = x
