@@ -11,7 +11,7 @@ from os.path import join
 import gtk, gobject
 gdk = gtk.gdk
 from lib import brush
-import filehandling, keyboard, brushmanager, windowing
+import filehandling, keyboard, brushmanager, windowing, document
 
 ## TODO: move all window sizing stuff to windowing module
 ##       while the keys below refer to fields in the Application, this will
@@ -91,6 +91,7 @@ class Application: # singleton
         self.brushmanager = brushmanager.BrushManager(join(datapath, 'brushes'), join(confpath, 'brushes'))
         self.kbm = keyboard.KeyboardManager()
         self.filehandler = filehandling.FileHandler(self)
+        self.doc = document.Document(self)
 
         self.brush.copy_settings_from(self.brushmanager.selected_brush)
         self.brush.set_color_hsv((0, 0, 0))
@@ -113,7 +114,7 @@ class Application: # singleton
                 window.connect('map-event', on_map_event, self.drawWindow)
 
         self.kbm.start_listening()
-        self.filehandler.doc = self.drawWindow.doc
+        self.filehandler.doc = self.doc
         self.filehandler.filename = None
         gtk.accel_map_load(join(self.confpath, 'accelmap.conf'))
 

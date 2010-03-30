@@ -73,7 +73,7 @@ class Window(windowing.Dialog):
         self.hide()
 
     def set_background(self, pixbuf):
-        doc = self.app.drawWindow.doc
+        doc = self.app.doc.model
         doc.set_background(pixbuf)
         self.current_background_pixbuf = pixbuf
 

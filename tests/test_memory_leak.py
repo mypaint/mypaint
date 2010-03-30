@@ -137,8 +137,8 @@ def paint_gui(gui):
     Not entirely realistic, but gives good and stable measurements.
     """
     FPS = 30
-    dw = gui.app.drawWindow
-    tdw = dw.tdw
+    gui_doc = gui.app.doc
+    tdw = gui_doc.tdw
 
     b = gui.app.brushmanager.get_brush_by_name('redbrush')
     gui.app.brushmanager.select_brush(b)
@@ -155,7 +155,7 @@ def paint_gui(gui):
         t_old = t
         cr = tdw.get_model_coordinates_cairo_context()
         x, y = cr.device_to_user(x, y)
-        dw.doc.stroke_to(dtime, x, y, pressure)
+        gui_doc.model.stroke_to(dtime, x, y, pressure)
 
 @leaktest
 def gui_test():
@@ -164,16 +164,16 @@ def gui_test():
     gui = guicontrol.GUI()
     gui.wait_for_idle()
     gui.app.filehandler.open_file('bigimage.ora')
-    dw = gui.app.drawWindow
+    gui_doc = gui.app.doc
     for i in iterations():
         gui.app.filehandler.open_file('smallimage.ora')
         gui.wait_for_idle()
         paint_gui(gui)
         gui.app.filehandler.save_file('test_save.ora')
         gui.scroll()
-        dw.zoom('ZoomOut')
+        gui_doc.zoom('ZoomOut')
         gui.scroll()
-        dw.zoom('ZoomIn')
+        gui_doc.zoom('ZoomIn')
 
 if __name__ == '__main__':
     from optparse import OptionParser

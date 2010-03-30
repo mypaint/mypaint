@@ -69,7 +69,8 @@ def paint(gui):
     gui.wait_for_gui()
     FPS = 30
     dw = gui.app.drawWindow
-    tdw = dw.tdw
+    gui_doc = gui.app.doc
+    tdw = gui_doc.tdw
 
     b = gui.app.brushmanager.get_brush_by_name('redbrush')
     gui.app.brushmanager.select_brush(b)
@@ -91,15 +92,15 @@ def paint(gui):
         t_old = t
         cr = tdw.get_model_coordinates_cairo_context()
         x, y = cr.device_to_user(x, y)
-        dw.doc.stroke_to(dtime, x, y, pressure)
+        gui_doc.model.stroke_to(dtime, x, y, pressure)
     yield stop_measurement
 
 @gui_test
 def paint_zoomed_out_5x(gui):
     gui.wait_for_idle()
-    dw = gui.app.drawWindow
+    gui_doc = gui.app.doc
     for i in range(5):
-        dw.zoom('ZoomOut')
+        gui_doc.zoom('ZoomOut')
     for res in paint(gui):
         yield res
 
@@ -107,27 +108,27 @@ def paint_zoomed_out_5x(gui):
 def layerpaint_nozoom(gui):
     gui.wait_for_idle()
     gui.app.filehandler.open_file('bigimage.ora')
-    dw = gui.app.drawWindow
-    dw.doc.select_layer(len(dw.doc.layers)/2)
+    gui_doc = gui.app.doc
+    gui_doc.model.select_layer(len(gui_doc.model.layers)/2)
     for res in paint(gui):
         yield res
 
 @gui_test
 def layerpaint_zoomed_out_5x(gui):
     gui.wait_for_idle()
-    dw = gui.app.drawWindow
+    gui_doc = gui.app.doc
     gui.app.filehandler.open_file('bigimage.ora')
-    dw.tdw.scroll(800, 1000)
-    dw.doc.select_layer(len(dw.doc.layers)/3)
+    gui_doc.tdw.scroll(800, 1000)
+    gui_doc.model.select_layer(len(gui_doc.model.layers)/3)
     for i in range(5):
-        dw.zoom('ZoomOut')
+        gui_doc.zoom('ZoomOut')
     for res in paint(gui):
         yield res
 
 @gui_test
 def paint_rotated(gui):
     gui.wait_for_idle()
-    gui.app.drawWindow.tdw.rotate(46.0/360*2*math.pi)
+    gui.app.doc.tdw.rotate(46.0/360*2*math.pi)
     for res in paint(gui):
         yield res
 
@@ -175,7 +176,7 @@ def scroll_zoomed_out_5x(gui):
     dw.fullscreen_cb()
     gui.app.filehandler.open_file('bigimage.ora')
     for i in range(5):
-        dw.zoom('ZoomOut')
+        gui.app.doc.zoom('ZoomOut')
     gui.wait_for_idle()
     yield start_measurement
     gui.scroll()
@@ -188,7 +189,7 @@ def memory_zoomed_out_5x(gui):
     dw.fullscreen_cb()
     gui.app.filehandler.open_file('bigimage.ora')
     for i in range(5):
-        dw.zoom('ZoomOut')
+        gui.app.doc.zoom('ZoomOut')
     gui.wait_for_idle()
     gui.scroll()
     print 'result =', open('/proc/self/statm').read().split()[0]

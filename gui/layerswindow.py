@@ -175,7 +175,7 @@ class LayerWidget(gtk.EventBox):
             self.list.swap(self, idx)
         elif targetType==DRAG_LAYER_URI:
             filename = selection.data.strip().replace('file://','')
-            doc = self.app.drawWindow.tdw.doc
+            doc = self.app.doc.model
             idx = self.list.widgets.index(self)
             try:
                 pixbuf = gdk.pixbuf_new_from_file(filename)
@@ -230,7 +230,7 @@ class LayerWidget(gtk.EventBox):
         if not self.callbacks_active:
             return
         self.layer.visible = not self.layer.visible
-        self.app.drawWindow.tdw.queue_draw()
+        self.app.doc.tdw.queue_draw()
 
     def set_selected(self):
         style = self.get_style()
@@ -286,7 +286,7 @@ class LayersList(gtk.VBox):
 
         # Prevent callback loop
         self.disable_selected_callback = True
-        idx = self.app.drawWindow.doc.layer_idx
+        idx = self.app.doc.model.layer_idx
         self.selected = self.widgets[idx]
         self.disable_selected_callback = False
 
@@ -318,9 +318,9 @@ class LayersList(gtk.VBox):
                     item.set_unselected()
         if widget in self.widgets and not self.disable_selected_callback:
             idx = self.widgets.index(widget)
-            dw = self.app.drawWindow
-            dw.doc.select_layer(idx)
-            dw.layerblink_state.activate()
+            doc = self.app.doc
+            doc.model.select_layer(idx)
+            doc.layerblink_state.activate()
 
     def get_selected(self):
         return self._selected
@@ -329,7 +329,7 @@ class LayersList(gtk.VBox):
 
     def swap(self, widget, another_widget_idx):
         target_idx = self.widgets.index(widget)
-        doc = self.app.drawWindow.tdw.doc
+        doc = self.app.doc.model
         doc.move_layer(another_widget_idx, target_idx)
 
 class Window(windowing.SubWindow):
@@ -381,7 +381,7 @@ class Window(windowing.SubWindow):
         self.add(vbox)
 
         # Updates
-        doc = app.drawWindow.tdw.doc
+        doc = app.doc.model
         doc.doc_observers.append(self.update)
         self.opacity_scale.connect('value-changed', self.on_opacity_changed)
 
@@ -402,12 +402,12 @@ class Window(windowing.SubWindow):
             return
 
         self.callbacks_active = False
-        doc = self.app.drawWindow.tdw.doc
+        doc = self.app.doc.model
         doc.set_layer_opacity(self.opacity_scale.get_value()/100.0)
         self.callbacks_active = True
 
     def move_layer(self, widget, action):
-        doc = self.app.drawWindow.doc
+        doc = self.app.doc.model
         current_layer_pos = doc.layer_idx
         if action == 'up':
             new_layer_pos = current_layer_pos + 1
@@ -422,9 +422,9 @@ class Window(windowing.SubWindow):
             doc.select_layer(new_layer_pos)
 
     def on_layer_add(self, button):
-        doc = self.app.drawWindow.tdw.doc
+        doc = self.app.doc.model
         doc.add_layer(after=doc.get_current_layer())
 
     def on_layer_del(self, button):
-        doc = self.app.drawWindow.tdw.doc
+        doc = self.app.doc.model
         doc.remove_layer(layer=doc.get_current_layer())

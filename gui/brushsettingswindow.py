@@ -123,7 +123,7 @@ class Window(windowing.SubWindow):
 
     def live_update_cb(self, *trash):
         if self.live_update.get_active():
-            doc = self.app.drawWindow.doc
+            doc = self.app.doc.model
             cmd = 'something'
             while cmd:
                 cmd = doc.undo()

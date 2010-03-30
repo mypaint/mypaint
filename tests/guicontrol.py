@@ -49,13 +49,13 @@ class GUI:
         gtk.main()
 
     def scroll(self, N=20):
-        dw = self.app.drawWindow
+        tdw = self.app.doc.tdw
         dx = linspace(-30, 30, N)
         dy = linspace(-10, 60, N)
         for i in xrange(N):
-            dw.tdw.scroll(int(dx[i]), int(dy[i]))
+            tdw.scroll(int(dx[i]), int(dy[i]))
             self.wait_for_idle()
         # jump back to the start
         for i in xrange(N):
-            dw.tdw.scroll(-int(dx[i]), -int(dy[i]))
+            tdw.scroll(-int(dx[i]), -int(dy[i]))
 

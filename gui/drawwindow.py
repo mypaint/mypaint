@@ -21,9 +21,9 @@ from gettext import gettext as _
 import gtk
 from gtk import gdk, keysyms
 
-import tileddrawwidget, colorselectionwindow, historypopup, \
-       stategroup, colorpicker, windowing
-from lib import document, helpers, backgroundsurface, command, layer
+import colorselectionwindow, historypopup, stategroup, colorpicker, windowing
+from lib import helpers
+
 
 #TODO: make generic by taking the windows as arguments and put in a helper file?
 def with_wait_cursor(func):
@@ -33,7 +33,7 @@ def with_wait_cursor(func):
         while gtk.events_pending():
             gtk.main_iteration(False)
         self.app.drawWindow.window.set_cursor(gdk.Cursor(gdk.WATCH))
-        self.app.drawWindow.tdw.window.set_cursor(None)
+        self.app.doc.tdw.window.set_cursor(None)
         # make sure it is actually changed before we return
         while gtk.events_pending():
             gtk.main_iteration(False)
@@ -41,14 +41,23 @@ def with_wait_cursor(func):
             func(self, *args, **kwargs)
         finally:
             self.app.drawWindow.window.set_cursor(None)
-            self.app.drawWindow.tdw.update_cursor()
+            self.app.doc.tdw.update_cursor()
     return wrapper
 
 
 class Window(windowing.MainWindow):
     def __init__(self, app):
         windowing.MainWindow.__init__(self, app)
+        self.app = app
 
+        # Enable drag & drop
+        self.drag_dest_set(gtk.DEST_DEFAULT_MOTION | 
+                            gtk.DEST_DEFAULT_HIGHLIGHT | 
+                            gtk.DEST_DEFAULT_DROP, 
+                            [("text/uri-list", 0, 1)], 
+                            gtk.gdk.ACTION_DEFAULT|gtk.gdk.ACTION_COPY)
+
+        # Connect events
         self.connect('delete-event', self.quit_cb)
         self.connect('key-press-event', self.key_press_event_cb_before)
         self.connect('key-release-event', self.key_release_event_cb_before)
@@ -58,98 +67,67 @@ class Window(windowing.MainWindow):
         self.connect("button-press-event", self.button_press_cb)
         self.connect("button-release-event", self.button_release_cb)
         self.connect("scroll-event", self.scroll_cb)
-        self.set_default_size(600, 400)
+
+        self.init_actions()
+
+        kbm = self.app.kbm
+        kbm.add_extra_key('Menu', 'ShowMenu')
+        kbm.add_extra_key('Tab', 'ToggleSubwindows')
+
+        self.init_stategroups()
+        menupath = os.path.join(self.app.datapath, 'gui/menu.xml')
+        self.app.ui_manager.add_ui_from_file(menupath)
+
+        # Set up widgets
         vbox = gtk.VBox()
         self.add(vbox)
-
-        #TODO: move self.doc into application.py?
-        self.doc = document.Document()
-        self.doc.set_brush(self.app.brush)
-
-        self.create_ui()
         self.menubar = self.app.ui_manager.get_widget('/Menubar')
         self.menubar.connect("selection-done", self.menu_done_cb)
         self.menubar.connect("deactivate", self.menu_done_cb)
         self.menubar.connect("cancel", self.menu_done_cb)
         vbox.pack_start(self.menubar, expand=False)
+        vbox.pack_start(self.app.doc.tdw)
 
-        self.tdw = tileddrawwidget.TiledDrawWidget(self.doc)
-        vbox.pack_start(self.tdw)
-
-        # FIXME: hack, to be removed
-        fname = os.path.join(self.app.datapath, 'backgrounds', '03_check1.png')
-        pixbuf = gdk.pixbuf_new_from_file(fname)
-        self.tdw.neutral_background_pixbuf = backgroundsurface.Background(pixbuf)
-
-        self.zoomlevel_values = [1.0/8, 2.0/11, 0.25, 1.0/3, 0.50, 2.0/3, 1.0, 1.5, 2.0, 3.0, 4.0, 5.5, 8.0]
-        self.zoomlevel = self.zoomlevel_values.index(1.0)
-        self.tdw.zoom_min = min(self.zoomlevel_values)
-        self.tdw.zoom_max = max(self.zoomlevel_values)
+        # Window handling
+        self.set_default_size(600, 400)
         self.fullscreen = False
 
-        self.app.brush.settings_observers.append(self.brush_modified_cb)
-        self.tdw.device_observers.append(self.device_changed_cb)
-        self.last_pen_device = None
+    #XXX: Compatability
+    def get_doc(self):
+        print "DeprecationWarning: Use app.doc instead"
+        return self.app.doc
+    def get_tdw(self):
+        print "DeprecationWarning: Use app.doc.tdw instead"
+        return self.app.doc.tdw
+    tdw, doc = property(get_tdw), property(get_doc)
 
-        self.eraser_mode_radius_change = 3*(0.3) # can go back to exact original with brush_smaller_cb()
-        self.eraser_mode_original_radius = None
-
-        # enable drag & drop
-        self.drag_dest_set(gtk.DEST_DEFAULT_MOTION | gtk.DEST_DEFAULT_HIGHLIGHT | gtk.DEST_DEFAULT_DROP, [("text/uri-list", 0, 1)], gtk.gdk.ACTION_DEFAULT|gtk.gdk.ACTION_COPY)
-
-    def create_ui(self):
+    def init_actions(self):
         actions = [
             # name, stock id, label, accelerator, tooltip, callback
             ('FileMenu',     None, _('File')),
             ('Quit',         gtk.STOCK_QUIT, _('Quit'), '<control>q', None, self.quit_cb),
 
             ('EditMenu',           None, _('Edit')),
-            ('Undo',               gtk.STOCK_UNDO, _('Undo'), 'Z', None, self.undo_cb),
-            ('Redo',               gtk.STOCK_REDO, _('Redo'), 'Y', None, self.redo_cb),
-
-            ('BrushMenu',    None, _('Brush')),
-            ('Brighter',     None, _('Brighter'), None, None, self.brighter_cb),
-            ('Smaller',      None, _('Smaller'), 'd', None, self.brush_smaller_cb),
-            ('MoreOpaque',   None, _('More Opaque'), 's', None, self.more_opaque_cb),
-            ('LessOpaque',   None, _('Less Opaque'), 'a', None, self.less_opaque_cb),
-            ('Eraser',       None, _('Toggle Eraser Mode'), 'e', None, self.eraser_cb), # TODO: make toggle action
-            ('PickContext',  None, _('Pick Context (layer, brush and color)'), 'w', None, self.pick_context_cb),
+            ('PreferencesWindow', gtk.STOCK_PREFERENCES, _('Preferences...'), None, None, self.toggleWindow_cb),
 
             ('ColorMenu',    None, _('Color')),
-            ('Darker',       None, _('Darker'), None, None, self.darker_cb),
-            ('Bigger',       None, _('Bigger'), 'f', None, self.brush_bigger_cb),
             ('ColorPickerPopup',    gtk.STOCK_COLOR_PICKER, _('Pick Color'), 'r', None, self.popup_cb),
             ('ColorHistoryPopup',  None, _('Color History'), 'x', None, self.popup_cb),
             ('ColorChangerPopup', None, _('Color Changer'), 'v', None, self.popup_cb),
             ('ColorRingPopup',  None, _('Color Ring'), None, None, self.popup_cb),
+            ('ColorSelectionWindow',  None, _('Color Triangle...'), 'g', None, self.toggleWindow_cb),
+            ('ColorSamplerWindow',  gtk.STOCK_SELECT_COLOR, _('Color Sampler...'), 't', None, self.toggleWindow_cb),
 
             ('ContextMenu',  None, _('Brushkeys')),
-            #each of the context actions are generated and added below
-            ('ContextStore', None, _('Save to Most Recently Restored'), 'q', None, self.context_cb),
             ('ContextHelp',  gtk.STOCK_HELP, _('Help!'), None, None, self.show_infodialog_cb),
 
             ('LayerMenu',    None, _('Layers')),
-
             ('LayersWindow', None, _('Layers...'), 'l', None, self.toggleWindow_cb),
             ('BackgroundWindow', None, _('Background...'), None, None, self.toggleWindow_cb),
-            ('ClearLayer',   gtk.STOCK_CLEAR, _('Clear'), 'Delete', None, self.clear_layer_cb),
-            ('CopyLayer',          gtk.STOCK_COPY, _('Copy to Clipboard'), '<control>C', None, self.copy_cb),
-            ('PasteLayer',         gtk.STOCK_PASTE, _('Paste Clipboard (Replace Layer)'), '<control>V', None, self.paste_cb),
-            ('PickLayer',    None, _('Select Layer at Cursor'), 'h', None, self.pick_layer_cb),
-            ('LayerFG',      None, _('Next (above current)'),  'Page_Up', None, self.layer_fg_cb),
-            ('LayerBG',      None, _('Next (below current)'), 'Page_Down', None, self.layer_bg_cb),
-            ('NewLayerFG',   None, _('New (above current)'), '<control>Page_Up', None, self.new_layer_cb),
-            ('NewLayerBG',   None, _('New (below current)'), '<control>Page_Down', None, self.new_layer_cb),
-            ('MergeLayer',   None, _('Merge Down'), '<control>Delete', None, self.merge_layer_cb),
-            ('RemoveLayer',  gtk.STOCK_DELETE, _('Remove'), '<shift>Delete', None, self.remove_layer_cb),
-            ('IncreaseLayerOpacity', None, _('Increase Layer Opacity'),  'p', None, self.layer_increase_opacity),
-            ('DecreaseLayerOpacity', None, _('Decrease Layer Opacity'),  'o', None, self.layer_decrease_opacity),
 
+            ('BrushMenu',    None, _('Brush')),
             ('BrushSelectionWindow',  None, _('Brush List...'), 'b', None, self.toggleWindow_cb),
             ('BrushSettingsWindow',   None, _('Brush Settings...'), '<control>b', None, self.toggleWindow_cb),
-            ('ColorSelectionWindow',  None, _('Color Triangle...'), 'g', None, self.toggleWindow_cb),
-            ('ColorSamplerWindow', gtk.STOCK_SELECT_COLOR, _('Color Sampler...'), 't', None, self.toggleWindow_cb),
-            ('PreferencesWindow', gtk.STOCK_PREFERENCES, _('Preferences...'), None, None, self.toggleWindow_cb),
 
             ('HelpMenu',     None, _('Help')),
             ('Docu', None, _('Where is the Documentation?'), None, None, self.show_infodialog_cb),
@@ -160,86 +138,27 @@ class Window(windowing.MainWindow):
             ('PrintMemoryLeak',  None, _('Print Memory Leak Info to stdout (Slow!)'), None, None, self.print_memory_leak_cb),
             ('RunGarbageCollector',  None, _('Run Garbage Collector Now'), None, None, self.run_garbage_collector_cb),
 
-            ('ShortcutsMenu', None, _('Shortcuts')),
-
             ('ViewMenu', None, _('View')),
-            ('Fullscreen',   gtk.STOCK_FULLSCREEN, _('Fullscreen'), 'F11', None, self.fullscreen_cb),
             ('ShowMenu',    None, _('Show Menu'), 'Menu', None, self.menu_show_cb),
+            ('Fullscreen',   gtk.STOCK_FULLSCREEN, _('Fullscreen'), 'F11', None, self.fullscreen_cb),
             ('ToggleSubwindows',    None, _('Toggle Subwindows'), 'Tab', None, self.toggle_subwindows_cb),
-            ('ResetView',   gtk.STOCK_ZOOM_100, _('Reset (Zoom, Rotation, Mirror)'), 'F12', None, self.reset_view_cb),
-            ('ZoomIn',       gtk.STOCK_ZOOM_IN, _('Zoom In (at cursor)'), 'period', None, self.zoom_cb),
-            ('ZoomOut',      gtk.STOCK_ZOOM_OUT, _('Zoom Out'), 'comma', None, self.zoom_cb),
-            ('RotateLeft',   None, _('Rotate Counterclockwise'), None, None, self.rotate_cb),
-            ('RotateRight',  None, _('Rotate Clockwise'), None, None, self.rotate_cb),
-            ('SoloLayer',    None, _('Layer Solo'), 'Home', None, self.solo_layer_cb), # TODO: make toggle action
-            ('ToggleAbove',  None, _('Hide Layers Above Current'), 'End', None, self.toggle_layers_above_cb), # TODO: make toggle action
             ('ViewHelp',  gtk.STOCK_HELP, _('Help'), None, None, self.show_infodialog_cb),
             ]
         ag = self.action_group = gtk.ActionGroup('WindowActions')
         ag.add_actions(actions)
-        context_actions = []
-        for x in range(10):
-            r = ('Context0%d' % x,    None, _('Restore Brush %d') % x, 
-                    '%d' % x, None, self.context_cb)
-            s = ('Context0%ds' % x,   None, _('Save to Brush %d') % x, 
-                    '<control>%d' % x, None, self.context_cb)
-            context_actions.append(s)
-            context_actions.append(r)
-        ag.add_actions(context_actions)
-        toggle_actions = [
-            # name, stock id, label, accelerator, tooltip, callback, default toggle status
-            ('PrintInputs', None, _('Print Brush Input Values to stdout'), None, None, self.print_inputs_cb),
-            ('VisualizeRendering', None, _('Visualize Rendering'), None, None, self.visualize_rendering_cb),
-            ('NoDoubleBuffereing', None, _('Disable GTK Double Buffering'), None, None, self.no_double_buffering_cb),
-            ('Flip', None, _('Mirror Image'), 'i', None, self.flip_cb),
-            ]
-        ag.add_toggle_actions(toggle_actions)
-        self.app.ui_manager.insert_action_group(ag, -1)
-        menupath = os.path.join(self.app.datapath, 'gui/menu.xml')
-        self.app.ui_manager.add_ui_from_file(menupath)
-        #self.app.accel_group = self.app.ui_manager.get_accel_group()
 
-        kbm = self.app.kbm
-
-        for action in ag.list_actions():
+        for action in self.action_group.list_actions():
             self.app.kbm.takeover_action(action)
 
-        kbm.add_extra_key('<control>z', 'Undo')
-        kbm.add_extra_key('<control>y', 'Redo')
-        kbm.add_extra_key('<control><shift>z', 'Redo')
-        kbm.add_extra_key('KP_Add', 'ZoomIn')
-        kbm.add_extra_key('KP_Subtract', 'ZoomOut')
-        kbm.add_extra_key('plus', 'ZoomIn')
-        kbm.add_extra_key('minus', 'ZoomOut')
+        self.app.ui_manager.insert_action_group(ag, -1)
 
-        kbm.add_extra_key('Left', lambda(action): self.pan('PanLeft'))
-        kbm.add_extra_key('Right', lambda(action): self.pan('PanRight'))
-        kbm.add_extra_key('Down', lambda(action): self.pan('PanDown'))
-        kbm.add_extra_key('Up', lambda(action): self.pan('PanUp'))
-
-        kbm.add_extra_key('<control>Left', 'RotateLeft')
-        kbm.add_extra_key('<control>Right', 'RotateRight')
-
-        kbm.add_extra_key('Menu', 'ShowMenu')
-        kbm.add_extra_key('Tab', 'ToggleSubwindows')
-
+    def init_stategroups(self):
         sg = stategroup.StateGroup()
-        self.layerblink_state = sg.create_state(self.layerblink_state_enter, self.layerblink_state_leave)
-
-        sg = stategroup.StateGroup()
-        self.strokeblink_state = sg.create_state(self.strokeblink_state_enter, self.strokeblink_state_leave)
-        self.strokeblink_state.autoleave_timeout = 0.3
-
-        # separate stategroup...
-        sg2 = stategroup.StateGroup()
-        self.layersolo_state = sg2.create_state(self.layersolo_state_enter, self.layersolo_state_leave)
-        self.layersolo_state.autoleave_timeout = None
-
         p2s = sg.create_popup_state
         changer = p2s(colorselectionwindow.ColorChangerPopup(self.app))
         ring = p2s(colorselectionwindow.ColorRingPopup(self.app))
-        hist = p2s(historypopup.HistoryPopup(self.app, self.doc))
-        pick = self.colorpick_state = p2s(colorpicker.ColorPicker(self.app, self.doc))
+        hist = p2s(historypopup.HistoryPopup(self.app, self.app.doc.model))
+        pick = self.colorpick_state = p2s(colorpicker.ColorPicker(self.app, self.app.doc.model))
 
         self.popup_states = {
             'ColorChangerPopup': changer,
@@ -258,6 +177,7 @@ class Window(windowing.MainWindow):
         hist.autoleave_timeout = 0.600
         self.history_popup_state = hist
 
+    # INPUT EVENT HANDLING
     def drag_data_received(self, widget, context, x, y, selection, info, t):
         if selection.data:
             uri = selection.data.split("\r\n")[0]
@@ -266,66 +186,10 @@ class Window(windowing.MainWindow):
                 if self.app.filehandler.confirm_destructive_action():
                     self.app.filehandler.open_file(fn)
 
-    def toggleWindow_cb(self, action):
-        s = action.get_name()
-        s = s[0].lower() + s[1:]
-        w = getattr(self.app, s)
-        if w.window and w.window.is_visible():
-            w.hide()
-        else:
-            w.show_all() # might be for the first time
-            w.present()
-
-    def print_inputs_cb(self, action):
-        self.doc.brush.print_inputs = action.get_active()
-
     def print_memory_leak_cb(self, action):
         helpers.record_memory_leak_status(print_diff = True)
     def run_garbage_collector_cb(self, action):
         helpers.run_garbage_collector()
-
-    def visualize_rendering_cb(self, action):
-        self.tdw.visualize_rendering = action.get_active()
-    def no_double_buffering_cb(self, action):
-        self.tdw.set_double_buffered(not action.get_active())
-
-    def undo_cb(self, action):
-        cmd = self.doc.undo()
-        if isinstance(cmd, command.MergeLayer):
-            # show otherwise invisible change (hack...)
-            self.layerblink_state.activate()
-
-    def redo_cb(self, action):
-        cmd = self.doc.redo()
-        if isinstance(cmd, command.MergeLayer):
-            # show otherwise invisible change (hack...)
-            self.layerblink_state.activate()
-
-    def copy_cb(self, action):
-        # use the full document bbox, so we can past layers back to the correct position
-        bbox = self.doc.get_bbox()
-        if bbox.w == 0 or bbox.h == 0:
-            print "WARNING: empty document, nothing copied"
-            return
-        else:
-            pixbuf = self.doc.layer.surface.render_as_pixbuf(*bbox)
-        cb = gtk.Clipboard()
-        cb.set_image(pixbuf)
-
-    def paste_cb(self, action):
-        cb = gtk.Clipboard()
-        def callback(clipboard, pixbuf, trash):
-            if not pixbuf:
-                print 'The clipboard doeas not contain any image to paste!'
-                return
-            # paste to the upper left of our doc bbox (see above)
-            x, y, w, h = self.doc.get_bbox()
-            self.doc.load_layer_from_pixbuf(pixbuf, x, y)
-        cb.request_image(callback)
-
-    def brush_modified_cb(self):
-        # called at every brush setting modification, should return fast
-        self.doc.set_brush(self.app.brush)
 
     def key_press_event_cb_before(self, win, event):
         key = event.keyval 
@@ -336,15 +200,16 @@ class Window(windowing.MainWindow):
         #    return False
         if key == keysyms.space:
             if ctrl:
-                self.tdw.start_drag(self.dragfunc_rotate)
+                self.app.doc.tdw.start_drag(self.app.doc.dragfunc_rotate)
             else:
-                self.tdw.start_drag(self.dragfunc_translate)
+                self.app.doc.tdw.start_drag(self.app.doc.dragfunc_translate)
         else: return False
         return True
+
     def key_release_event_cb_before(self, win, event):
         if event.keyval == keysyms.space:
-            self.tdw.stop_drag(self.dragfunc_translate)
-            self.tdw.stop_drag(self.dragfunc_rotate)
+            self.app.doc.tdw.stop_drag(self.app.doc.dragfunc_translate)
+            self.app.doc.tdw.stop_drag(self.app.doc.dragfunc_rotate)
             return True
         return False
 
@@ -355,18 +220,6 @@ class Window(windowing.MainWindow):
         return True
     def key_release_event_cb_after(self, win, event):
         return False
-
-    def dragfunc_translate(self, dx, dy):
-        self.tdw.scroll(-dx*3, -dy*3)
-
-    def dragfunc_rotate(self, dx, dy):
-        self.tdw.scroll(-dx, -dy)
-        self.tdw.rotate(2*math.pi*dx/500.0)
-
-    #def dragfunc_rotozoom(self, dx, dy):
-    #    self.tdw.scroll(-dx, -dy)
-    #    self.tdw.zoom(math.exp(-dy/100.0))
-    #    self.tdw.rotate(2*math.pi*dx/500.0)
 
     def button_press_cb(self, win, event):
         #print event.device, event.button
@@ -380,10 +233,10 @@ class Window(windowing.MainWindow):
                 # do not allow dragging while painting (often happens accidentally)
                 pass
             else:
-                self.tdw.start_drag(self.dragfunc_translate)
+                self.app.doc.tdw.start_drag(self.app.doc.dragfunc_translate)
         elif event.button == 1:
             if event.state & gdk.CONTROL_MASK:
-                self.end_eraser_mode()
+                self.app.doc.end_eraser_mode()
                 self.colorpick_state.activate(event)
         elif event.button == 3:
             self.history_popup_state.activate(event)
@@ -391,290 +244,47 @@ class Window(windowing.MainWindow):
     def button_release_cb(self, win, event):
         #print event.device, event.button
         if event.button == 2:
-            self.tdw.stop_drag(self.dragfunc_translate)
+            self.app.doc.tdw.stop_drag(self.app.doc.dragfunc_translate)
         # too slow to be useful:
         #elif event.button == 3:
-        #    self.tdw.stop_drag(self.dragfunc_rotate)
+        #    self.app.doc.tdw.stop_drag(self.app.doc.dragfunc_rotate)
 
     def scroll_cb(self, win, event):
         d = event.direction
         if d == gdk.SCROLL_UP:
             if event.state & gdk.SHIFT_MASK:
-                self.rotate('RotateLeft')
+                self.app.doc.rotate('RotateLeft')
             else:
-                self.zoom('ZoomIn')
+                self.app.doc.zoom('ZoomIn')
         elif d == gdk.SCROLL_DOWN:
             if event.state & gdk.SHIFT_MASK:
-                self.rotate('RotateRight')
+                self.app.doc.rotate('RotateRight')
             else:
-                self.zoom('ZoomOut')
+                self.app.doc.zoom('ZoomOut')
         elif d == gdk.SCROLL_LEFT:
-            self.rotate('RotateRight')
+            self.app.doc.rotate('RotateRight')
         elif d == gdk.SCROLL_LEFT:
-            self.rotate('RotateLeft')
+            self.app.doc.rotate('RotateLeft')
 
-    def clear_layer_cb(self, action):
-        self.doc.clear_layer()
-        if self.doc.is_empty():
-            # the user started a new painting
-            self.app.filehandler.filename = None
-
-    def remove_layer_cb(self, action):
-        self.doc.remove_layer()
-        if self.doc.is_empty():
-            # the user started a new painting
-            self.app.filehandler.filename = None
-
-    def layer_bg_cb(self, action):
-        idx = self.doc.layer_idx - 1
-        if idx < 0:
-            return
-        self.doc.select_layer(idx)
-        self.layerblink_state.activate(action)
-
-    def layer_fg_cb(self, action):
-        idx = self.doc.layer_idx + 1
-        if idx >= len(self.doc.layers):
-            return
-        self.doc.select_layer(idx)
-        self.layerblink_state.activate(action)
-
-    def pick_layer_cb(self, action):
-        x, y = self.tdw.get_cursor_in_model_coordinates()
-        for idx, layer in reversed(list(enumerate(self.doc.layers))):
-            alpha = layer.surface.get_alpha (x, y, 5) * layer.effective_opacity
-            if alpha > 0.1:
-                self.doc.select_layer(idx)
-                self.layerblink_state.activate(action)
-                return
-        self.doc.select_layer(0)
-        self.layerblink_state.activate(action)
-
-    def pick_context_cb(self, action):
-        x, y = self.tdw.get_cursor_in_model_coordinates()
-        for idx, layer in reversed(list(enumerate(self.doc.layers))):
-            alpha = layer.surface.get_alpha (x, y, 5) * layer.effective_opacity
-            if alpha > 0.1:
-                old_layer = self.doc.layer
-                self.doc.select_layer(idx)
-                if self.doc.layer != old_layer:
-                    self.layerblink_state.activate()
-
-                # find the most recent (last) stroke that touches our picking point
-                si = self.doc.layer.get_stroke_info_at(x, y)
-
-                if si:
-                    self.app.brushmanager.select_brush(None) # FIXME: restore the selected brush
-                    self.app.brush.load_from_string(si.brush_string)
-                    self.si = si # FIXME: should be a method parameter?
-                    self.strokeblink_state.activate(action)
-                return
-
-    def strokeblink_state_enter(self):
-        l = layer.Layer()
-        self.si.render_overlay(l.surface)
-        self.tdw.overlay_layer = l
-        self.tdw.queue_draw() # OPTIMIZE: excess
-    def strokeblink_state_leave(self, reason):
-        self.tdw.overlay_layer = None
-        self.tdw.queue_draw() # OPTIMIZE: excess
-
-    def layerblink_state_enter(self):
-        self.tdw.current_layer_solo = True
-        self.tdw.queue_draw()
-    def layerblink_state_leave(self, reason):
-        if self.layersolo_state.active:
-            # FIXME: use state machine concept, maybe?
-            return
-        self.tdw.current_layer_solo = False
-        self.tdw.queue_draw()
-    def layersolo_state_enter(self):
-        s = self.layerblink_state
-        if s.active:
-            s.leave()
-        self.tdw.current_layer_solo = True
-        self.tdw.queue_draw()
-    def layersolo_state_leave(self, reason):
-        self.tdw.current_layer_solo = False
-        self.tdw.queue_draw()
-
-    #def blink_layer_cb(self, action):
-    #    self.layerblink_state.activate(action)
-
-    def solo_layer_cb(self, action):
-        self.layersolo_state.toggle(action)
-
-    def new_layer_cb(self, action):
-        insert_idx = self.doc.layer_idx
-        if action.get_name() == 'NewLayerFG':
-            insert_idx += 1
-        self.doc.add_layer(insert_idx)
-        self.layerblink_state.activate(action)
-
-    @with_wait_cursor
-    def merge_layer_cb(self, action):
-        if self.doc.merge_layer_down():
-            self.layerblink_state.activate(action)
-
-    def toggle_layers_above_cb(self, action):
-        self.tdw.toggle_show_layers_above()
+    # WINDOW HANDLING
+    def toggleWindow_cb(self, action):
+        s = action.get_name()
+        s = s[0].lower() + s[1:]
+        w = getattr(self.app, s)
+        if w.window and w.window.is_visible():
+            w.hide()
+        else:
+            w.show_all() # might be for the first time
+            w.present()
 
     def popup_cb(self, action):
         # This doesn't really belong here...
         # just because all popups are color popups now...
         # ...maybe should eraser_mode be a GUI state too?
-        self.end_eraser_mode()
+        self.app.doc.end_eraser_mode()
 
         state = self.popup_states[action.get_name()]
         state.activate(action)
-
-    def eraser_cb(self, action):
-        adj = self.app.brush_adjustment['eraser']
-        if adj.get_value() > 0.9:
-            self.end_eraser_mode()
-        else:
-            # enter eraser mode
-            adj.set_value(1.0)
-            adj2 = self.app.brush_adjustment['radius_logarithmic']
-            r = adj2.get_value()
-            self.eraser_mode_original_radius = r
-            adj2.set_value(r + self.eraser_mode_radius_change)
-
-    def end_eraser_mode(self):
-        adj = self.app.brush_adjustment['eraser']
-        if not adj.get_value() > 0.9:
-            return
-        adj.set_value(0.0)
-        if self.eraser_mode_original_radius:
-            # save eraser radius, restore old radius
-            adj2 = self.app.brush_adjustment['radius_logarithmic']
-            r = adj2.get_value()
-            self.eraser_mode_radius_change = r - self.eraser_mode_original_radius
-            adj2.set_value(self.eraser_mode_original_radius)
-            self.eraser_mode_original_radius = None
-
-    def device_changed_cb(self, old_device, new_device):
-        # just enable eraser mode for now (TODO: remember full tool settings)
-        # small problem with this code: it doesn't work well with brushes that have (eraser not in [1.0, 0.0])
-        def is_eraser(device):
-            if device is None: return False
-            return device.source == gdk.SOURCE_ERASER or 'eraser' in device.name.lower()
-
-        print 'device change:', new_device.name, new_device.source
-
-        # When editing brush settings, it is often more convenient to use the mouse.
-        # Because of this, we don't restore brushsettings when switching to/from the mouse.
-        # We act as if the mouse was identical to the last active pen device.
-        if new_device.source == gdk.SOURCE_MOUSE and self.last_pen_device:
-            new_device = self.last_pen_device
-        if new_device.source == gdk.SOURCE_PEN:
-            self.last_pen_device = new_device
-        if old_device and old_device.source == gdk.SOURCE_MOUSE and self.last_pen_device:
-            old_device = self.last_pen_device
-
-        bm = self.app.brushmanager
-        if old_device:
-            bm.brush_by_device[old_device.name] = (bm.selected_brush, self.app.brush.save_to_string())
-
-        if new_device.name in bm.brush_by_device:
-            brush_to_select, brush_settings = bm.brush_by_device[new_device.name]
-            # mark as selected in brushlist
-            bm.select_brush(brush_to_select)
-            # restore modifications (radius / color change the user made)
-            self.app.brush.load_from_string(brush_settings)
-        else:
-            # first time using that device
-            adj = self.app.brush_adjustment['eraser']
-            if is_eraser(new_device):
-                # enter eraser mode
-                adj.set_value(1.0)
-            elif not is_eraser(new_device) and is_eraser(old_device):
-                # leave eraser mode
-                adj.set_value(0.0)
-
-    def brush_bigger_cb(self, action):
-        adj = self.app.brush_adjustment['radius_logarithmic']
-        adj.set_value(adj.get_value() + 0.3)
-    def brush_smaller_cb(self, action):
-        adj = self.app.brush_adjustment['radius_logarithmic']
-        adj.set_value(adj.get_value() - 0.3)
-
-    def more_opaque_cb(self, action):
-        # FIXME: hm, looks this slider should be logarithmic?
-        adj = self.app.brush_adjustment['opaque']
-        adj.set_value(adj.get_value() * 1.8)
-    def less_opaque_cb(self, action):
-        adj = self.app.brush_adjustment['opaque']
-        adj.set_value(adj.get_value() / 1.8)
-
-    def brighter_cb(self, action):
-        self.end_eraser_mode()
-        h, s, v = self.app.brush.get_color_hsv()
-        v += 0.08
-        if v > 1.0: v = 1.0
-        self.app.brush.set_color_hsv((h, s, v))
-    def darker_cb(self, action):
-        self.end_eraser_mode()
-        h, s, v = self.app.brush.get_color_hsv()
-        v -= 0.08
-        if v < 0.0: v = 0.0
-        self.app.brush.set_color_hsv((h, s, v))
-
-    def layer_increase_opacity(self, action):
-        opa = helpers.clamp(self.doc.layer.opacity + 0.08, 0.0, 1.0)
-        self.doc.set_layer_opacity(opa)
-
-    def layer_decrease_opacity(self, action):
-        opa = helpers.clamp(self.doc.layer.opacity - 0.08, 0.0, 1.0)
-        self.doc.set_layer_opacity(opa)
-
-    def quit_cb(self, *trash):
-        self.doc.split_stroke()
-        self.app.save_gui_config() # FIXME: should do this periodically, not only on quit
-
-        if not self.app.filehandler.confirm_destructive_action(title=_('Quit'), question=_('Really Quit?')):
-            return True
-
-        gtk.main_quit()
-        return False
-
-    def zoom_cb(self, action):
-        self.zoom(action.get_name())
-    def rotate_cb(self, action):
-        self.rotate(action.get_name())
-    def flip_cb(self, action):
-        self.tdw.set_flipped(action.get_active())
-
-    def pan(self, command):
-        self.doc.split_stroke()
-        step = min(self.tdw.window.get_size()) / 5
-        if   command == 'PanLeft' : self.tdw.scroll(-step, 0)
-        elif command == 'PanRight': self.tdw.scroll(+step, 0)
-        elif command == 'PanUp'   : self.tdw.scroll(0, -step)
-        elif command == 'PanDown' : self.tdw.scroll(0, +step)
-        else: assert 0
-
-    def zoom(self, command):
-        if   command == 'ZoomIn' : self.zoomlevel += 1
-        elif command == 'ZoomOut': self.zoomlevel -= 1
-        else: assert 0
-        if self.zoomlevel < 0: self.zoomlevel = 0
-        if self.zoomlevel >= len(self.zoomlevel_values): self.zoomlevel = len(self.zoomlevel_values) - 1
-        z = self.zoomlevel_values[self.zoomlevel]
-        self.tdw.set_zoom(z)
-
-    def rotate(self, command):
-        if   command == 'RotateRight': self.tdw.rotate(+2*math.pi/14)
-        elif command == 'RotateLeft' : self.tdw.rotate(-2*math.pi/14)
-        else: assert 0
-
-    def reset_view_cb(self, command):
-        self.tdw.set_rotation(0.0)
-        self.zoomlevel = self.zoomlevel_values.index(1.0)
-        self.tdw.set_zoom(1.0)
-        self.tdw.set_flipped(False)
-        self.action_group.get_action('Flip').set_active(False)
-        self.tdw.recenter_document()
 
     def fullscreen_cb(self, *trash):
         self.fullscreen = not self.fullscreen
@@ -688,41 +298,14 @@ class Window(windowing.MainWindow):
             while gtk.events_pending():
                 gtk.main_iteration()
             self.window.fullscreen()
-            #self.tdw.set_scroll_at_edges(True)
+            #self.app.doc.tdw.set_scroll_at_edges(True)
         else:
             self.window.unfullscreen()
             while gtk.events_pending():
                 gtk.main_iteration()
             self.menubar.show()
-            #self.tdw.set_scroll_at_edges(False)
+            #self.app.doc.tdw.set_scroll_at_edges(False)
             del self.geometry_before_fullscreen
-
-    def context_cb(self, action):
-        name = action.get_name()
-        store = False
-        bm = self.app.brushmanager
-        if name == 'ContextStore':
-            context = bm.selected_context
-            if not context:
-                print 'No context was selected, ignoring store command.'
-                return
-            store = True
-        else:
-            if name.endswith('s'):
-                store = True
-                name = name[:-1]
-            i = int(name[-2:])
-            context = bm.contexts[i]
-        bm.selected_context = context
-        if store:
-            context.copy_settings_from(self.app.brush)
-            context.preview = bm.selected_brush.preview
-            context.save()
-        else:
-            # restore (but keep color)
-            color = self.app.brush.get_color_hsv()
-            context.set_color_hsv(color)
-            bm.select_brush(context)
 
     def menu_show_cb(self, action):
         if self.fullscreen:
@@ -736,6 +319,18 @@ class Window(windowing.MainWindow):
     def toggle_subwindows_cb(self, action):
         self.app.user_subwindows.toggle()
 
+    def quit_cb(self, *trash):
+        self.app.doc.model.split_stroke()
+        self.app.save_gui_config() # FIXME: should do this periodically, not only on quit
+
+        if not self.app.filehandler.confirm_destructive_action(title=_('Quit'), question=_('Really Quit?')):
+            return True
+
+        gtk.main_quit()
+        return False
+
+    # INFORMATION
+    # TODO: Move into dialogs.py?
     def about_cb(self, action):
         d = gtk.AboutDialog()
         d.set_transient_for(self)

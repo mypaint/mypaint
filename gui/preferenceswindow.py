@@ -133,7 +133,7 @@ class Window(windowing.Dialog):
         if len(p) == 2 and abs(p[0][1]-1.0)+abs(p[1][1]-0.0) < 0.0001:
             # 1:1 mapping (mapping disabled)
             self.app.global_pressure_mapping = None
-            self.app.drawWindow.tdw.pressure_mapping = None
+            self.app.doc.tdw.pressure_mapping = None
         else:
             # TODO: maybe replace this stupid mapping by a hard<-->soft slider?
             m = mypaintlib.Mapping(1)
@@ -143,7 +143,7 @@ class Window(windowing.Dialog):
 
             def mapping(pressure):
                 return m.calculate_single_input(pressure)
-            self.app.drawWindow.tdw.pressure_mapping = mapping
+            self.app.doc.tdw.pressure_mapping = mapping
 
         self.prefix_entry.set_text(self.save_scrap_prefix)
 

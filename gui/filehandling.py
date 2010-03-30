@@ -117,7 +117,7 @@ class FileHandler(object):
                 self.save_filter_default = f
 
     def confirm_destructive_action(self, title='Confirm', question='Really continue?'):
-        t = self.doc.unsaved_painting_time
+        t = self.doc.model.unsaved_painting_time
         if t < 30:
             # no need to ask
             return True
@@ -153,31 +153,31 @@ class FileHandler(object):
     def new_cb(self, action):
         if not self.confirm_destructive_action():
             return
-        bg = self.doc.background
-        self.doc.clear()
-        self.doc.set_background(bg)
+        bg = self.doc.model.background
+        self.doc.model.clear()
+        self.doc.model.set_background(bg)
         self.filename = None
         self.set_recent_items()
-        self.app.drawWindow.reset_view_cb(None)
+        self.app.doc.reset_view_cb(None)
 
     @drawwindow.with_wait_cursor
     def open_file(self, filename):
         try:
-            self.doc.load(filename)
+            self.doc.model.load(filename)
         except document.SaveLoadError, e:
             self.app.message_dialog(str(e),type=gtk.MESSAGE_ERROR)
         else:
             self.filename = os.path.abspath(filename)
             print 'Loaded from', self.filename
-            self.app.drawWindow.reset_view_cb(None)
+            self.app.doc.reset_view_cb(None)
 
     @drawwindow.with_wait_cursor
     def save_file(self, filename, **options):
         try:
-            x, y, w, h =  self.doc.get_bbox()
+            x, y, w, h =  self.doc.model.get_bbox()
             if w == 0 and h == 0:
                 raise document.SaveLoadError, _('Did not save, the canvas is empty.')
-            self.doc.save(filename, **options)
+            self.doc.model.save(filename, **options)
         except document.SaveLoadError, e:
             self.app.message_dialog(str(e),type=gtk.MESSAGE_ERROR)
         else:
@@ -319,7 +319,7 @@ class FileHandler(object):
                     maximum = number
             filename = '%s%03d_a' % (prefix, maximum+1)
 
-        #if self.doc.is_layered():
+        #if self.doc.model.is_layered():
         #    filename += '.ora'
         #else:
         #    filename += '.png'
