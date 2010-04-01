@@ -352,7 +352,7 @@ class Document(object):
 
     def dragfunc_rotate(self, dx, dy):
         self.tdw.scroll(-dx, -dy)
-        self.tdw.rotate(2*math.pi*dx/500.0)
+        self.tdw.rotate(2*math.pi*dx/300.0)
 
     #def dragfunc_rotozoom(self, dx, dy):
     #    self.tdw.scroll(-dx, -dy)

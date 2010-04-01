@@ -233,9 +233,12 @@ class Window(windowing.MainWindow):
                 # do not allow dragging while painting (often happens accidentally)
                 pass
             else:
-                self.app.doc.tdw.start_drag(self.app.doc.dragfunc_translate)
+                dragfunc = self.app.doc.dragfunc_translate
+                if event.state & gdk.CONTROL_MASK:
+                    dragfunc = self.app.doc.dragfunc_rotate
+                self.app.doc.tdw.start_drag(dragfunc)
         elif event.button == 1:
-            if event.state & gdk.CONTROL_MASK:
+            if (event.state & gdk.CONTROL_MASK) and not (event.state & (gdk.BUTTON2_MASK | gdk.BUTTON3_MASK)):
                 self.app.doc.end_eraser_mode()
                 self.colorpick_state.activate(event)
         elif event.button == 3:
@@ -245,9 +248,7 @@ class Window(windowing.MainWindow):
         #print event.device, event.button
         if event.button == 2:
             self.app.doc.tdw.stop_drag(self.app.doc.dragfunc_translate)
-        # too slow to be useful:
-        #elif event.button == 3:
-        #    self.app.doc.tdw.stop_drag(self.app.doc.dragfunc_rotate)
+            self.app.doc.tdw.stop_drag(self.app.doc.dragfunc_rotate)
 
     def scroll_cb(self, win, event):
         d = event.direction
