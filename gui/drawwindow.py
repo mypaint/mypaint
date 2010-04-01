@@ -204,18 +204,6 @@ class Window(windowing.MainWindow):
         for action in ag.list_actions():
             self.app.kbm.takeover_action(action)
 
-        # The keyboard shortcuts below are not visible in the menu.
-        # Shortcuts assigned through the menu will take precedence.
-        # If we assign the same key twice, the last one will work.
-
-        kbm.add_extra_key('bracketleft', 'Smaller') # GIMP, Photoshop, Painter
-        kbm.add_extra_key('bracketright', 'Bigger') # GIMP, Photoshop, Painter
-        kbm.add_extra_key('equal', 'ZoomIn') # (on US keyboard next to minus)
-        kbm.add_extra_key('comma', 'Smaller') # Krita
-        kbm.add_extra_key('period', 'Bigger') # Krita
-
-        kbm.add_extra_key('BackSpace', 'ClearLayer')
-
         kbm.add_extra_key('<control>z', 'Undo')
         kbm.add_extra_key('<control>y', 'Redo')
         kbm.add_extra_key('<control><shift>z', 'Redo')
@@ -224,16 +212,16 @@ class Window(windowing.MainWindow):
         kbm.add_extra_key('plus', 'ZoomIn')
         kbm.add_extra_key('minus', 'ZoomOut')
 
-        kbm.add_extra_key('<control>Left', 'RotateLeft')
-        kbm.add_extra_key('<control>Right', 'RotateRight')
-
-        kbm.add_extra_key('Menu', 'ShowMenu')
-        kbm.add_extra_key('Tab', 'ShowMenu')
-
         kbm.add_extra_key('Left', lambda(action): self.pan('PanLeft'))
         kbm.add_extra_key('Right', lambda(action): self.pan('PanRight'))
         kbm.add_extra_key('Down', lambda(action): self.pan('PanDown'))
         kbm.add_extra_key('Up', lambda(action): self.pan('PanUp'))
+
+        kbm.add_extra_key('<control>Left', 'RotateLeft')
+        kbm.add_extra_key('<control>Right', 'RotateRight')
+
+        kbm.add_extra_key('Menu', 'ShowMenu')
+        kbm.add_extra_key('Tab', 'ToggleSubwindows')
 
         sg = stategroup.StateGroup()
         self.layerblink_state = sg.create_state(self.layerblink_state_enter, self.layerblink_state_leave)
