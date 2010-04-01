@@ -135,6 +135,18 @@ class Document(object):
 
     def init_extra_keys(self):
         kbm = self.app.kbm
+        # The keyboard shortcuts below are not visible in the menu.
+        # Shortcuts assigned through the menu will take precedence.
+        # If we assign the same key twice, the last one will work.
+
+        kbm.add_extra_key('bracketleft', 'Smaller') # GIMP, Photoshop, Painter
+        kbm.add_extra_key('bracketright', 'Bigger') # GIMP, Photoshop, Painter
+        kbm.add_extra_key('equal', 'ZoomIn') # (on US keyboard next to minus)
+        kbm.add_extra_key('comma', 'Smaller') # Krita
+        kbm.add_extra_key('period', 'Bigger') # Krita
+
+        kbm.add_extra_key('BackSpace', 'ClearLayer')
+
         kbm.add_extra_key('<control>z', 'Undo')
         kbm.add_extra_key('<control>y', 'Redo')
         kbm.add_extra_key('<control><shift>z', 'Redo')
