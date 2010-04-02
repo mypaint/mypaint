@@ -59,17 +59,14 @@ class Window(windowing.SubWindow):
         scroll.add_with_viewport(table)
 
         self.adj = {}
-        self.app.brush_adjustment = {}
-
         for i, s in enumerate(brushsettings.settings_visible):
             l = gtk.Label(s.name)
             l.set_alignment(0, 0.5)
             l.set_tooltip_text(s.tooltip)
 
-            adj = gtk.Adjustment(value=s.default, lower=s.min, upper=s.max, step_incr=0.01, page_incr=0.1)
+            adj = self.app.brush_adjustment[s.cname]
             adj.connect('value-changed', self.value_changed_cb, s.index, self.app)
             self.adj[s] = adj
-            self.app.brush_adjustment[s.cname] = adj
             h = gtk.HScale(adj)
             h.set_digits(2)
             h.set_draw_value(True)

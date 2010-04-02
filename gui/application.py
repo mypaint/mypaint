@@ -98,6 +98,7 @@ class Application: # singleton
         self.brush.copy_settings_from(self.brushmanager.selected_brush)
         self.brush.set_color_hsv((0, 0, 0))
         self.brushmanager.selected_brush_observers.append(self.brush_selected_cb)
+        self.init_brush_adjustments()
 
         self.user_subwindows = windowing.UserSubWindows(self)
         self.window_names = ['drawWindow'] \
@@ -173,6 +174,14 @@ class Application: # singleton
         except IOError:
             user_config = get_legacy_config()
         self.preferences.update(user_config)
+
+    def init_brush_adjustments(self, ):
+        """Initializes all the brush adjustments for the current brush"""
+        self.brush_adjustment = {}
+        from brushlib import brushsettings
+        for i, s in enumerate(brushsettings.settings_visible):
+            adj = gtk.Adjustment(value=s.default, lower=s.min, upper=s.max, step_incr=0.01, page_incr=0.1)
+            self.brush_adjustment[s.cname] = adj
 
     def brush_selected_cb(self, b):
         assert b is not self.brush
