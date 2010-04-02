@@ -127,8 +127,8 @@ class Widget(gtk.HBox):
         src_brush.save()
         src_brush.name = src_name
         # load dst
-        dst_brush = brushmanager.ManagedBrush(self.bm)
-        dst_brush.load(dst_name)
+        dst_brush = brushmanager.ManagedBrush(self.bm, dst_name, persistent=True)
+        dst_brush.load()
 
         # replace src with dst (but keep src in the deleted list if it is a stock brush)
         self.delete_brush_internal(src_brush, replacement=dst_brush)
