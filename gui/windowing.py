@@ -1,6 +1,8 @@
 # Base classes for window types
 # Management of the user's chosen subwindows as a group.
 
+import sys
+
 import gtk
 import gtk.gdk as gdk
 
@@ -109,7 +111,9 @@ class SubWindow (gtk.Window):
 
     def on_realize(self, widget):
         # Mark subwindows as utility windows: many X11 WMs handle this sanely
-        widget.window.set_type_hint(gdk.WINDOW_TYPE_HINT_UTILITY)
+        # OSX with x11.app does not handle this well; https://gna.org/bugs/?15838
+        if not sys.platform == 'darwin':
+            widget.window.set_type_hint(gdk.WINDOW_TYPE_HINT_UTILITY)
         # Win32 is responsive to the following: keeps the utility
         # window above the main window in fullscreen.
         widget.set_transient_for(self.app.drawWindow)
