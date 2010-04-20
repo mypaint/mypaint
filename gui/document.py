@@ -341,9 +341,7 @@ class Document(object):
             context.preview = bm.selected_brush.preview
             context.save()
         else:
-            # restore (but keep color)
-            color = self.app.brush.get_color_hsv()
-            context.set_color_hsv(color)
+            # restore (including color, see https://gna.org/bugs/?15381)
             bm.select_brush(context)
 
     # TDW view manipulation
