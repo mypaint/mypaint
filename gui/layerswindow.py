@@ -289,6 +289,7 @@ class LayersList(gtk.VBox):
         idx = self.app.doc.model.layer_idx
         self.selected = self.widgets[idx]
         self.disable_selected_callback = False
+        self.update()
 
         self.show_all()
 
@@ -391,8 +392,10 @@ class Window(windowing.SubWindow):
         if not self.callbacks_active:
             return
 
+        # Update the layer list
         self.layers_list.set_layers(doc.layers)
 
+        # Update the common widgets
         self.callbacks_active = False
         self.opacity_scale.set_value(doc.get_current_layer().opacity*100)
         self.callbacks_active = True

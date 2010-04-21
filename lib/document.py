@@ -353,7 +353,7 @@ class Document():
             z.write(tmp, name)
             os.remove(tmp)
 
-        def add_layer(x, y, opac, pixbuf, name, layer_name):
+        def add_layer(x, y, opac, pixbuf, name, layer_name, visible=True):
             layer = ET.Element('layer')
             stack.append(layer)
             store_pixbuf(pixbuf, name)
@@ -364,6 +364,10 @@ class Document():
             a['x'] = str(x)
             a['y'] = str(y)
             a['opacity'] = str(opac)
+            if visible:
+                a['visibility'] = 'visible'
+            else:
+                a['visibility'] = 'hidden'
             return layer
 
         for idx, l in enumerate(reversed(self.layers)):
@@ -372,7 +376,7 @@ class Document():
             opac = l.opacity
             x, y, w, h = l.surface.get_bbox()
             pixbuf = l.surface.render_as_pixbuf()
-            el = add_layer(x-x0, y-y0, opac, pixbuf, 'data/layer%03d.png' % idx, l.name)
+            el = add_layer(x-x0, y-y0, opac, pixbuf, 'data/layer%03d.png' % idx, l.name, l.visible)
             # strokemap
             data = l.save_strokemap_to_string(-x, -y)
             name = 'data/layer%03d_strokemap.dat' % idx
@@ -478,7 +482,7 @@ class Document():
             x = int(a.get('x', '0'))
             y = int(a.get('y', '0'))
             opac = float(a.get('opacity', '1.0'))
-
+            visible = not 'hidden' in a.get('visibility', 'visible')
             self.add_layer(insert_idx=0, name=name)
             last_pixbuf = pixbuf
             t1 = time.time()
@@ -486,6 +490,7 @@ class Document():
             layer = self.layers[0]
 
             layer.opacity = helpers.clamp(opac, 0.0, 1.0)
+            layer.visible = visible
             print '  %.3fs converting pixbuf to layer format' % (time.time() - t1)
             # strokemap
             fname = a.get('mypaint_strokemap', None)
