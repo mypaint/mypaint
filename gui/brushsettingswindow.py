@@ -25,7 +25,7 @@ class Window(windowing.SubWindow):
         vbox = gtk.VBox()
         self.add(vbox)
 
-        cb = self.live_update = gtk.CheckButton(_('live update the last canvas stroke'))
+        cb = self.live_update = gtk.CheckButton(_('Live update the last canvas stroke'))
         vbox.pack_start(cb, expand=False, fill=True, padding=5)
         cb.connect('toggled', self.live_update_cb)
         self.app.brush.settings_observers.append(self.live_update_cb)

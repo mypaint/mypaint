@@ -44,12 +44,12 @@ class Widget(gtk.HBox):
         right_vbox.pack_start(l, expand=False)
 
         right_vbox_buttons = [
-        (_('add as new'), self.create_brush_cb),
-        (_('rename...'), self.rename_brush_cb),
-        (_('remove...'), self.delete_brush_cb),
-        (_('settings...'), self.brush_settings_cb),
-        (_('save settings'), self.update_settings_cb),
-        (_('save preview'), self.update_preview_cb),
+        (_('Add As New'), self.create_brush_cb),
+        (_('Rename...'), self.rename_brush_cb),
+        (_('Remove...'), self.delete_brush_cb),
+        (_('Settings...'), self.brush_settings_cb),
+        (_('Save Settings'), self.update_settings_cb),
+        (_('Save Preview'), self.update_preview_cb),
         ]
 
         for title, clicked_cb in right_vbox_buttons:
