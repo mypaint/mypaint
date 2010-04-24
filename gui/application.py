@@ -88,6 +88,7 @@ class Application: # singleton
         # this brush is where temporary changes (color, size...) happen
         self.brush = brush.Brush()
 
+        self.preferences = {}
         self.brushmanager = brushmanager.BrushManager(join(datapath, 'brushes'), join(confpath, 'brushes'))
         self.kbm = keyboard.KeyboardManager()
         self.filehandler = filehandling.FileHandler(self)
@@ -129,6 +130,50 @@ class Application: # singleton
                     self.filehandler.open_file(fn)
 
         gobject.idle_add(at_application_start)
+
+    def init_brush_adjustments(self, ):
+        """Initializes all the brush adjustments for the current brush"""
+        self.brush_adjustment = {}
+        from brushlib import brushsettings
+        for i, s in enumerate(brushsettings.settings_visible):
+            adj = gtk.Adjustment(value=s.default, lower=s.min, upper=s.max, step_incr=0.01, page_incr=0.1)
+            self.brush_adjustment[s.cname] = adj
+
+    #TODO: move out to separate module??
+    def save_settings(self):
+        """Saves the current settings to persistent storage."""
+        def save_config():
+            f = open(join(self.confpath, 'settings.conf'), 'w')
+            p = self.preferences
+            print >>f, 'global_pressure_mapping =', p['input.global_pressure_mapping']
+            print >>f, 'save_scrap_prefix =', repr(p['saving.scrap_prefix'])
+            print >>f, 'input_devices_mode =', repr(p['input.device_mode'])
+            f.close()
+        save_config()
+
+    def apply_setting(self):
+        pass
+    def load_settings(self):
+        '''Loads the settings from peristent storage. Uses defaults if
+        not explicitly configured'''
+        def get_config():
+            dummyobj = {}
+            tmpdict = {}
+            settingspath = join(self.confpath, 'settings.conf')
+            if os.path.exists(settingspath):
+                exec open(settingspath) in dummyobj
+                tmpdict['saving.scrap_prefix'] = dummyobj['save_scrap_prefix']
+                tmpdict['input.device_mode'] = dummyobj['input_devices_mode']
+                tmpdict['input.global_pressure_mapping'] = dummyobj['global_pressure_mapping']
+            return tmpdict
+
+        DEFAULT_CONFIG = {
+            'saving.scrap_prefix': 'scrap',
+            'input.device_mode': 'screen',
+            'input.global_pressure_mapping': [(0.0, 1.0), (1.0, 0.0)],
+        }
+        self.preferences = DEFAULT_CONFIG
+        self.preferences.update(get_config())
 
     def brush_selected_cb(self, b):
         assert b is not self.brush

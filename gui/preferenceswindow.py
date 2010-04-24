@@ -103,25 +103,14 @@ class Window(windowing.Dialog):
             self.load_settings()
 
     def save_settings_and_hide(self, *trash):
-        f = open(self.filename, 'w')
-        print >>f, 'global_pressure_mapping =', self.cv.points
-        print >>f, 'save_scrap_prefix =', repr(self.save_scrap_prefix)
-        print >>f, 'input_devices_mode =', repr(self.input_devices_mode)
-        f.close()
+        self.app.save_settings()
         self.hide()
 
     def load_settings(self, startup=False):
-        # 1. set defaults
-        self.global_pressure_mapping = [(0.0, 1.0), (1.0, 0.0)]
-        self.save_scrap_prefix = 'scrap'
-        self.input_devices_mode = 'screen'
-        # 2. parse config file
-        if os.path.exists(self.filename):
-            exec open(self.filename) in self.__dict__
-        # 3. apply
+        self.app.load_settings()
         self.apply_settings()
 
-        if startup and not self.pressure_devices:
+        if startup and not self.app.pressure_devices:
             print 'No pressure sensitive devices found.'
 
     def apply_settings(self):
@@ -134,10 +123,9 @@ class Window(windowing.Dialog):
         self.applying = False
 
     def update_input_mapping(self):
-        p = self.global_pressure_mapping
+        p = self.app.preferences['input.global_pressure_mapping']
         if len(p) == 2 and abs(p[0][1]-1.0)+abs(p[1][1]-0.0) < 0.0001:
             # 1:1 mapping (mapping disabled)
-            self.app.global_pressure_mapping = None
             self.app.doc.tdw.pressure_mapping = None
         else:
             # TODO: maybe replace this stupid mapping by a hard<-->soft slider?
@@ -151,15 +139,17 @@ class Window(windowing.Dialog):
             self.app.doc.tdw.pressure_mapping = mapping
 
     def update_ui(self):
-        self.cv.points = self.global_pressure_mapping
-        self.prefix_entry.set_text(self.save_scrap_prefix)
-        self.input_devices_combo.set_active(device_modes.index(self.input_devices_mode))
+        p = self.app.preferences
+        self.cv.points = p['input.global_pressure_mapping']
+        self.prefix_entry.set_text(p['saving.scrap_prefix'])
+        mode = device_modes.index(p['input.device_mode'])
+        self.input_devices_combo.set_active(mode)
 
         self.cv.queue_draw()
 
     def update_input_devices(self):
         # init extended input devices
-        self.pressure_devices = []
+        self.app.pressure_devices = []
         for device in gdk.devices_list():
             #print device.name, device.source
 
@@ -192,21 +182,23 @@ class Window(windowing.Dialog):
                         print 'Ignoring "%s" (probably a mouse, but it reports extra axes)' % device.name
                         continue
 
-                    self.pressure_devices.append(device.name)
-                    mode = getattr(gdk, 'MODE_' + self.input_devices_mode.upper())
+                    self.app.pressure_devices.append(device.name)
+                    modesetting = self.app.preferences['input.device_mode']
+                    mode = getattr(gdk, 'MODE_' + modesetting.upper())
                     if device.mode != mode:
-                        print 'Setting %s mode for "%s"' % (self.input_devices_mode, device.name)
+                        print 'Setting %s mode for "%s"' % (modesetting, device.name)
                         device.set_mode(mode)
                     break
 
     def input_devices_combo_changed_cb(self, window):
-        self.input_devices_mode = self.input_devices_combo.get_active_text()
+        mode = self.input_devices_combo.get_active_text()
+        self.app.preferences['input.device_mode'] = mode
         self.apply_settings()
 
     def pressure_curve_changed_cb(self, widget):
-        self.global_pressure_mapping = self.cv.points[:]
+        self.app.preferences['input.global_pressure_mapping'] = self.cv.points[:]
         self.apply_settings()
 
     def prefix_entry_changed_cb(self, widget):
-        self.save_scrap_prefix = widget.get_text()
+        self.app.preferences['saving.scrap_prefix'] = widget.get_text()
 

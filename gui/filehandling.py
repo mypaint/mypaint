@@ -329,7 +329,7 @@ class FileHandler(object):
         self.save_file(filename)
 
     def get_scrap_prefix(self):
-        prefix = self.app.preferencesWindow.save_scrap_prefix
+        prefix = self.app.preferences['saving.scrap_prefix']
         prefix = os.path.abspath(prefix)
         if os.path.isdir(prefix):
             if not prefix.endswith(os.path.sep):
