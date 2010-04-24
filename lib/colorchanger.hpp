@@ -7,16 +7,21 @@
  * (at your option) any later version.
  */
 
+const int size = 256;
+
 class ColorChanger {
 public:
-  static const int size = 256;
-
   float brush_h, brush_s, brush_v;
   void set_brush_color(float h, float s, float v)
   {
     brush_h = h;
     brush_s = s;
     brush_v = v;
+  }
+
+  int get_size() 
+  {
+    return size;
   }
 
 #ifndef SWIG

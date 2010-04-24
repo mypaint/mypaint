@@ -10,10 +10,18 @@
 #include <cmath> // atan2, sqrt or hypot
 #include "helpers2.hpp"
 
+const int colorring_size = 256; // diameter of Swiss Cheese Wheel Color Selector(TM)
+const int center = (colorring_size/2); // radii/center coordinate of SCWCS
+
+// Frequently used constants
+const float RAD_TO_ONE = 0.5f/M_PI;
+const float TWO_PI = 2.0f*M_PI;
+// Calculate these as precise as the hosting system can once and for all
+const float ONE_OVER_THREE = 1.0f/3.0f;
+const float TWO_OVER_THREE = 2.0f/3.0f;
+  
 class SCWSColorSelector {
 public:
-  static const int size = 256; // diameter of Swiss Cheese Wheel Color Selector(TM)
-  static const int center = (size/2); // radii/center coordinate of SCWCS
 
   /*
     --------- Swiss Cheese Wheel Color Selector(TM) --------- 
@@ -25,13 +33,11 @@ public:
     
   */
   
-  // Frequently used constants
-  static const float RAD_TO_ONE = 0.5f/M_PI;
-  static const float TWO_PI = 2.0f*M_PI;
-  // Calculate these as precise as the hosting system can once and for all
-  static const float ONE_OVER_THREE = 1.0f/3.0f;
-  static const float TWO_OVER_THREE = 2.0f/3.0f;
-  
+  int get_size() 
+  {
+    return colorring_size;
+  }
+
   float brush_h, brush_s, brush_v;
   void set_brush_color(float h, float s, float v)
   {
@@ -127,8 +133,8 @@ public:
   {
     assert(PyArray_ISCARRAY(arr));
     assert(PyArray_NDIM(arr) == 3);
-    assert(PyArray_DIM(arr, 0) == size);
-    assert(PyArray_DIM(arr, 1) == size);
+    assert(PyArray_DIM(arr, 0) == colorring_size);
+    assert(PyArray_DIM(arr, 1) == colorring_size);
     assert(PyArray_DIM(arr, 2) == 4);  // memory width of pixel data ( 3 = RGB, 4 = RGBA )
     guchar* pixels = (guchar*)((PyArrayObject*)arr)->data;
   
@@ -138,8 +144,8 @@ public:
   
     float ofs_h = ((brush_h+ONE_OVER_THREE)>1.0f)?(brush_h-TWO_OVER_THREE):(brush_h+ONE_OVER_THREE); // offset hue
 
-    for(float y=0; y<size; y++) {
-      for(float x=0; x<size; x++) {
+    for(float y=0; y<colorring_size; y++) {
+      for(float x=0; x<colorring_size; x++) {
         get_hsva_at(&h, &s, &v, &a, x, y, false, false, ofs_h);
         hsv_to_rgb_range_one(&h,&s,&v); // convert from HSV [0,1] to RGB [0,255]
         pixels[0] = h; pixels[1] = s; pixels[2] = v; pixels[3] = a;
