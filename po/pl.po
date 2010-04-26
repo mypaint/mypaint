@@ -1,0 +1,1493 @@
+# Polish translation to MyPaint software
+# Copyright (C) 2010 Lukasz Lubojanski
+# This file is distributed under the same license as the MyPaint package.
+# Lukasz Lubojanski <lukasz@lubojanski.info>, 2010.
+#
+
+msgid ""
+msgstr ""
+"Project-Id-Version: MyPaint GIT\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-04-26 18:54+0200\n"
+"PO-Revision-Date:\n"
+"Last-Translator: Lukasz Lubojanski <lukasz@lubojanski.info>\n"
+"Language-Team: Lukasz Lubojanski <lukasz@lugojanski.info>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Polish\n"
+"X-Poedit-Country: Polski\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#. name, hard minimum, soft minimum, normal[1], soft maximum, hard maximum, displayed name, tooltip
+#: ../brushlib/brushsettings.py:22 ../gui/preferenceswindow.py:42
+msgid "Pressure"
+msgstr "Nacisk"
+
+#: ../brushlib/brushsettings.py:22
+msgid ""
+"The pressure reported by the tablet, between 0.0 and 1.0. If you use the "
+"mouse, it will be 0.5 when a button is pressed and 0.0 otherwise."
+msgstr ""
+"Nacisk raportowany przez tablet - wartości od 0.0 do 1.0. Jeśli używasz "
+"zwykłej myszki wartość będzie wynosić 0.5."
+
+#: ../brushlib/brushsettings.py:23
+msgid "Fine speed"
+msgstr "Prędkość odpowiednia"
+
+#: ../brushlib/brushsettings.py:23
+msgid ""
+"How fast you currently move. This can change very quickly. Try 'print input "
+"values' from the 'help' menu to get a feeling for the range; negative values "
+"are rare but possible for very low speed."
+msgstr ""
+"Jak szybko poruszasz kursorem. Ta wartość może się bardzo szybko zmieniać. "
+"Jeśli chcesz zobaczyć wartości prędkości użyj funkcji 'Wyświetl na konsoli "
+"informacje o urządzeniach wskazujących' z menu pomoc."
+
+#: ../brushlib/brushsettings.py:24
+msgid "Gross speed"
+msgstr "Prędkość całkowita"
+
+#: ../brushlib/brushsettings.py:24
+msgid ""
+"Same as fine speed, but changes slower. Also look at the 'gross speed "
+"filter' setting."
+msgstr ""
+"Podobnie jak 'Prędkość odpowiednia' lesz wolniej zmienia swoje wartości.\n"
+"Sprawdź również 'Filtr prędkości całkowitej'."
+
+#: ../brushlib/brushsettings.py:25
+msgid "Random"
+msgstr "Wartość losowa"
+
+#: ../brushlib/brushsettings.py:25
+msgid ""
+"Fast random noise, changing at each evaluation. Evenly distributed between 0 "
+"and 1."
+msgstr ""
+"Szybki losowy szum. Jego wartość zmienia się przy każdej wartości zwróconej "
+"przez tablet. Przyjmuje wartości od 0 do 1."
+
+#: ../brushlib/brushsettings.py:26
+msgid "Stroke"
+msgstr "Pociągnięcie pędzla"
+
+#: ../brushlib/brushsettings.py:26
+msgid ""
+"This input slowly goes from zero to one while you draw a stroke. It can also "
+"be configured to jump back to zero periodically while you move. Look at the "
+"'stroke duration' and 'stroke hold time' settings."
+msgstr ""
+"Wartość ta powoli wzrasta od zera do jedynki przy pociągnięciu pędzlem. "
+"Można tą opcję również skonfigurować tak, by wartość przeskoczyła do zera i "
+"z powrotem wzrastała. Zobacz również na parametry: 'Czas pociągnięcia' i "
+"'wstrzymanie pociągnięcia'."
+
+#: ../brushlib/brushsettings.py:27
+msgid "Direction"
+msgstr "Nachylenie"
+
+#: ../brushlib/brushsettings.py:27
+msgid ""
+"The angle of the stroke, in degrees. The value will stay between 0.0 and "
+"180.0, effectively ignoring turns of 180 degrees."
+msgstr ""
+"Kąt nachylenia pędzla w stopniach. Może przyjmować wartości od 0.0 do 180.0 "
+"stopni. Domyślną wartością jest 180."
+
+#. ['motion_strength',0.0,0.0,  0.0,  1.0, 1.0,  "[EXPERIMENTAL] Same as angle, but wraps at 180 degrees. The dynamics are shared with BRUSH_OFFSET_BY_SPEED_FILTER (FIXME: which is a bad thing)."],
+#: ../brushlib/brushsettings.py:29
+msgid "Custom"
+msgstr "Parametry dowolne"
+
+#: ../brushlib/brushsettings.py:29
+msgid ""
+"This is a user defined input. Look at the 'custom input' setting for details."
+msgstr ""
+"Te wartości są definiowana przez użytkownika. Więcej szczegółów znajdziesz "
+"pod opcją 'dowolna wartość'."
+
+#. internal name, displayed name, constant, minimum, default, maximum, tooltip
+#: ../brushlib/brushsettings.py:38
+msgid "opaque"
+msgstr "krycie"
+
+#: ../brushlib/brushsettings.py:38
+msgid ""
+"0 means brush is transparent, 1 fully visible\n"
+"(also known als alpha or opacity)"
+msgstr "0 oznacza przeźroczysty pędzel, 1 oznacza w pełni widoczny."
+
+#: ../brushlib/brushsettings.py:39
+msgid "opaque multiply"
+msgstr "mnożenie krycia"
+
+#: ../brushlib/brushsettings.py:39
+msgid ""
+"This gets multiplied with opaque. It is used for making opaque depend on "
+"pressure (or other inputs)."
+msgstr ""
+"Ta wartość jest mnożona przez wartość krycia i używana jest do uzależnienia "
+"krycia od nacisku tabletu."
+
+#: ../brushlib/brushsettings.py:40
+msgid "opaque linearize"
+msgstr "liniowość krycia"
+
+#: ../brushlib/brushsettings.py:40
+msgid ""
+"Correct the nonlinearity introduced by blending multiple dabs on top of each "
+"other. This correction should get you a linear (\"natural\") pressure "
+"response when pressure is mapped to opaque_multiply, as it is usually done. "
+"0.9 is good for standard strokes, set it smaller if your brush scatters a "
+"lot, or higher if you use dabs_per_second.\n"
+"0.0 the opaque value above is for the individual dabs\n"
+"1.0 the opaque value above is for the final brush stroke, assuming each "
+"pixel gets (dabs_per_radius*2) brushdabs on average during a stroke"
+msgstr ""
+"Poprawia nieliniowość poprzez łączenie wielu kropek-spojeń jedna z drugą. Ta "
+"operacja daje naturalny wygląd przejścia podczas zmiany nacisku i ustawionej "
+"opcji\"Mnożenia krycia\".\n"
+"0.9 jest dobrą wartością przy standardowych pociągnięciach pędzla. Jeśli "
+"ustawisz mniej pędzel będzie \"skakał\". Możesz ustawić więcej przy używaniu "
+"opcji \"ilość spojeń na sekundę\".\n"
+"0.0 używana jest przy rysowaniu pojedynczych kropek.\n"
+"1.0 używana jest do końcowych posunięć pędzla - każdy pixel otrzymuje "
+"(spojeń na promień * 2) średnio podczas posunięcia."
+
+#: ../brushlib/brushsettings.py:41
+msgid "radius"
+msgstr "promień"
+
+#: ../brushlib/brushsettings.py:41
+msgid ""
+"basic brush radius (logarithmic)\n"
+" 0.7 means 2 pixels\n"
+" 3.0 means 20 pixels"
+msgstr ""
+"Podstawowa wielkość pędzla (logarytmiczna)\n"
+" 0.7 oznacza 2 pixele\n"
+" 3.0 oznacza 20 pixeli."
+
+#: ../brushlib/brushsettings.py:42
+msgid "hardness"
+msgstr "twardość"
+
+#: ../brushlib/brushsettings.py:42
+msgid "hard brush-circle borders (setting to zero will draw nothing)"
+msgstr ""
+"Twardość brzegów okręgu pędzla (ustawienie 0 oznacza, że pędzel nie będzie "
+"malował)."
+
+#: ../brushlib/brushsettings.py:43
+msgid "dabs per basic radius"
+msgstr "ilość kropek na podstawę promienia"
+
+#: ../brushlib/brushsettings.py:43
+msgid ""
+"how many dabs to draw while the pointer moves a distance of one brush radius "
+"(more precise: the base value of the radius)"
+msgstr ""
+"Ilość rysowanych kropek-spojeń podczas posunięcia pędzlem na odległość "
+"jednego promienia."
+
+#: ../brushlib/brushsettings.py:44
+msgid "dabs per actual radius"
+msgstr "ilość kropek na właściwy promień"
+
+#: ../brushlib/brushsettings.py:44
+msgid ""
+"same as above, but the radius actually drawn is used, which can change "
+"dynamically"
+msgstr ""
+"Ilość rysowanych kropek-spojeń podczas posunięcia pędzlem na odległość "
+"rzeczywistego promienia, które może zmieniać się dynamicznie poprzez nacisk."
+
+#: ../brushlib/brushsettings.py:45
+msgid "dabs per second"
+msgstr "ilość kropek na sekundę"
+
+#: ../brushlib/brushsettings.py:45
+msgid "dabs to draw each second, no matter how far the pointer moves"
+msgstr "ilość kropek-spojeń na sekundę - niezależnie od ruchów kursora"
+
+#: ../brushlib/brushsettings.py:46
+msgid "radius by random"
+msgstr "losowy promień"
+
+#: ../brushlib/brushsettings.py:46
+msgid ""
+"Alter the radius randomly each dab. You can also do this with the by_random "
+"input on the radius setting. If you do it here, there are two differences:\n"
+"1) the opaque value will be corrected such that a big-radius dabs is more "
+"transparent\n"
+"2) it will not change the actual radius seen by dabs_per_actual_radius"
+msgstr ""
+"Zmienia losowo promień każdej kropki-spojenia. Podobny efekt uzyskuje opcja "
+"\"Wartość losowa\"  z tą różnicą, że losowy promień zmniejsza krycie przy "
+"większej kropce oraz nie jest zależny od parametru \"ilość spojeń na "
+"właściwy promień\"."
+
+#: ../brushlib/brushsettings.py:47
+msgid "fine speed filter"
+msgstr "filtr prędkości odpowiedniej"
+
+#: ../brushlib/brushsettings.py:47
+msgid ""
+"how slow the input fine speed is following the real speed\n"
+"0.0 change immediately as your speed changes (not recommended, but try it)"
+msgstr ""
+"Wartość określa jak bardzo prawdziwa prędkość jest łagodzona przez wartość "
+"'prędkości odpowiedniej'.\n"
+"0.0 oznacza natychmiastową zmianę prędkości do rzeczywistej (nie zalecane "
+"ale można eksperymentować)."
+
+#: ../brushlib/brushsettings.py:48
+msgid "gross speed filter"
+msgstr "filtr prędkości całkowitej"
+
+#: ../brushlib/brushsettings.py:48
+msgid "same as 'fine speed filter', but note that the range is different"
+msgstr "Podobnie jak 'filtr prędkości odpowiedniej' ale ma inny zasięg."
+
+#: ../brushlib/brushsettings.py:49
+msgid "fine speed gamma"
+msgstr "gamma prędkości odpowiedniej"
+
+#: ../brushlib/brushsettings.py:49
+msgid ""
+"This changes the reaction of the 'fine speed' input to extreme physical "
+"speed. You will see the difference best if 'fine speed' is mapped to the "
+"radius.\n"
+"-8.0 very fast speed does not increase 'fine speed' much more\n"
+"+8.0 very fast speed increases 'fine speed' a lot\n"
+"For very slow speed the opposite happens."
+msgstr ""
+"Ta wartość zmienia reakcję 'prędkości odpowiedniej' przy bardzo szybkim i "
+"bardzo wolnym poruszaniu kursorem. Najlepiej widoczne efekty są w przypadku "
+"ustawienia tej opcji na wartość promienia\n"
+"-8.0 bardzo szybkie ruchy nie zwiększają więcej 'prędkości odpowiedniej'\n"
+"+8.0 bardzo szybkie ruchy zwiększają bardzo wartość 'prędkości "
+"odpowiedniej'\n"
+"W przypadku bardzo wolnych ruchów reakcje są odwrotne."
+
+#: ../brushlib/brushsettings.py:50
+msgid "gross speed gamma"
+msgstr "gamma całkowitej prędkości"
+
+#: ../brushlib/brushsettings.py:50
+msgid "same as 'fine speed gamma' for gross speed"
+msgstr ""
+"podobnie jak 'gamma prędkości odpowiedniej' ale dla 'prędkości całkowitej'."
+
+#: ../brushlib/brushsettings.py:51
+msgid "jitter"
+msgstr "drgania"
+
+#: ../brushlib/brushsettings.py:51
+msgid ""
+"add a random offset to the position where each dab is drawn\n"
+" 0.0 disabled\n"
+" 1.0 standard deviation is one basic radius away\n"
+"<0.0 negative values produce no jitter"
+msgstr ""
+"dodaje losowy odstęp pomiędzy linią pędzla miejscem gdzie zostanie "
+"narysowana kropka.\n"
+"0.0 wyłączone\n"
+"1.0 maksymalny odstęp do wielkości podstawowego promienia\n"
+"<0.0 ujemne wartości wyłączają drgania."
+
+#: ../brushlib/brushsettings.py:52
+msgid "offset by speed"
+msgstr "odstęp zależny od prędkości"
+
+#: ../brushlib/brushsettings.py:52
+msgid ""
+"change position depending on pointer speed\n"
+"= 0 disable\n"
+"> 0 draw where the pointer moves to\n"
+"< 0 draw where the pointer comes from"
+msgstr ""
+"W odległości od kursora pędzla zależnej od prędkości.\n"
+"0 wyłączone\n"
+"> 0 przed kursorem\n"
+"< 0 maluj za kursorem"
+
+#: ../brushlib/brushsettings.py:53
+msgid "offset by speed filter"
+msgstr "filtr odstępu zależnego od prędkości"
+
+#: ../brushlib/brushsettings.py:53
+msgid "how slow the offset goes back to zero when the cursor stops moving"
+msgstr ""
+"Wartość określa jak szybko odstęp wraca do zera gdy kursor się zatrzymie."
+
+#: ../brushlib/brushsettings.py:54
+msgid "slow position tracking"
+msgstr "powolne śledzenie pozycji"
+
+#: ../brushlib/brushsettings.py:54
+msgid ""
+"Slowdown pointer tracking speed. 0 disables it, higher values remove more "
+"jitter in cursor movements. Useful for drawing smooth, comic-like outlines."
+msgstr ""
+"Parametr spowalnia rysowanie posunięcia pędzla w celu jej wygładzenia. Opcja "
+"przydaje się w przypadku rysowania gładkich , komiksowych linii.0 wyłącza "
+"opcje. Tym większa wartość tym większe wygładzenie."
+
+#: ../brushlib/brushsettings.py:55
+msgid "slow tracking per dab"
+msgstr "powolne śledzenie na kropkę"
+
+#: ../brushlib/brushsettings.py:55
+msgid ""
+"Similar as above but at brushdab level (ignoring how much time has past, if "
+"brushdabs do not depend on time)"
+msgstr ""
+"Podobnie jak 'powolne śledzenie pozycji', z tą różnicą, że nie jest zależne "
+"od czasu a tylko od ilości rysowanych kropek."
+
+#: ../brushlib/brushsettings.py:56
+msgid "tracking noise"
+msgstr "szum śledzenia kursora"
+
+#: ../brushlib/brushsettings.py:56
+msgid ""
+"add randomness to the mouse pointer; this usually generates many small lines "
+"in random directions; maybe try this together with 'slow tracking'"
+msgstr ""
+"Dodaje wartości losowe do pobranej pozycji kursora powodując rysowanie wielu "
+"małych linii w losowym kierunku. Można poeksperymentować mieszając tą opcję "
+"z 'powolnym śledzeniem'."
+
+#: ../brushlib/brushsettings.py:58
+msgid "color hue"
+msgstr "odcień"
+
+#: ../brushlib/brushsettings.py:59
+msgid "color saturation"
+msgstr "nasycenie"
+
+#: ../brushlib/brushsettings.py:60
+msgid "color value"
+msgstr "jasność"
+
+#: ../brushlib/brushsettings.py:60
+msgid "color value (brightness, intensity)"
+msgstr "wartość koloru (jasność, indensywność)"
+
+#: ../brushlib/brushsettings.py:61
+msgid "change color hue"
+msgstr "zmień odcień koloru"
+
+#: ../brushlib/brushsettings.py:61
+msgid ""
+"Change color hue.\n"
+"-0.1 small clockwise color hue shift\n"
+" 0.0 disable\n"
+" 0.5 counterclockwise hue shift by 180 degrees"
+msgstr ""
+"Zmiania odcień koloru.\n"
+"-0.1 mała zmiana odcienia (zgodnie ze wskazówkami zegara)\n"
+" 0.0 wyłączone\n"
+" 0.5 zmienia odcień w przewnym kierunku do wskazówek zegara o 180 stopni."
+
+#: ../brushlib/brushsettings.py:62
+msgid "change color lightness (HSL)"
+msgstr "zmień jasność koloru (HSL)"
+
+#: ../brushlib/brushsettings.py:62
+msgid ""
+"Change the color lightness (luminance) using the HSL color model.\n"
+"-1.0 blacker\n"
+" 0.0 disable\n"
+" 1.0 whiter"
+msgstr ""
+"Zmiana jasności koloru (luminacji) poprzez użycie trybu kolorów HSL\n"
+"-1.0 mniej światła\n"
+" 0.0 wyłączone\n"
+" 1.0 więcej światła"
+
+#: ../brushlib/brushsettings.py:63
+msgid "change color satur. (HSL)"
+msgstr "zmień nasycenie koloru (HSL)"
+
+#: ../brushlib/brushsettings.py:63
+msgid ""
+"Change the color saturation using the HSL color model.\n"
+"-1.0 more grayish\n"
+" 0.0 disable\n"
+" 1.0 more saturated"
+msgstr ""
+"Zmień nasycenie koloru poprzez użycie trybu kolorów HSL\n"
+"-1.0 bardziej szare\n"
+" 0.0 wyłączone\n"
+" 1.0 więcej koloru"
+
+#: ../brushlib/brushsettings.py:64
+msgid "change color value (HSV)"
+msgstr "zmień wartość koloru (HSV)"
+
+#: ../brushlib/brushsettings.py:64
+msgid ""
+"Change the color value (brightness, intensity) using the HSV color model. "
+"HSV changes are applied before HSL.\n"
+"-1.0 darker\n"
+" 0.0 disable\n"
+" 1.0 brigher"
+msgstr ""
+"Zmień wartość koloru (jasność i intensywność) poprzez użycie modelu kolorów "
+"HSV.\n"
+" -1.0 ciemniej\n"
+" 0.0 wyłączone\n"
+" 1.0 jaśniej"
+
+#: ../brushlib/brushsettings.py:65
+msgid "change color satur. (HSV)"
+msgstr "zmień nasycenie (HSV)"
+
+#: ../brushlib/brushsettings.py:65
+msgid ""
+"Change the color saturation using the HSV color model. HSV changes are "
+"applied before HSL.\n"
+"-1.0 more grayish\n"
+" 0.0 disable\n"
+" 1.0 more saturated"
+msgstr ""
+"Zmień nasycenie koloru poprzez użycie modelu kolorów HSV.\n"
+"-1.0 bardziej szare\n"
+" 0.0 wyłączone\n"
+" 1.0 więcej koloru"
+
+#: ../brushlib/brushsettings.py:66
+msgid "smudge"
+msgstr "rozmazanie"
+
+#: ../brushlib/brushsettings.py:66
+msgid ""
+"Paint with the smudge color instead of the brush color. The smudge color is "
+"slowly changed to the color you are painting on.\n"
+" 0.0 do not use the smudge color\n"
+" 0.5 mix the smudge color with the brush color\n"
+" 1.0 use only the smudge color"
+msgstr ""
+"Maluje rozmazanym kolorem aktualnego rysunku powoli przechodząc do koloru "
+"pędzla.\n"
+"0.0 nie używaj koloru rozmazanie\n"
+"0.5 mieszaj kolor rozmazania z kolorem pędzla\n"
+"1.0 używaj tylko kolor rozmazania"
+
+#: ../brushlib/brushsettings.py:67
+msgid "smudge length"
+msgstr "długość rozmycia"
+
+#: ../brushlib/brushsettings.py:67
+msgid ""
+"This controls how fast the smudge color becomes the color you are painting "
+"on.\n"
+"0.0 immediately change the smudge color\n"
+"1.0 never change the smudge color"
+msgstr ""
+"Ten parametr kontroluje jak szybko kolor rozmazania przejdzie w faktyczny "
+"kolor pędzla.\n"
+"0.0 natychmiastowe przejście na kolor pędzla\n"
+"1.0 zawsze używaj koloru rozmycia"
+
+#: ../brushlib/brushsettings.py:68
+msgid "eraser"
+msgstr "gumka"
+
+#: ../brushlib/brushsettings.py:68
+msgid ""
+"how much this tool behaves like an eraser\n"
+" 0.0 normal painting\n"
+" 1.0 standard eraser\n"
+" 0.5 pixels go towards 50% transparency"
+msgstr ""
+"Jak bardzo pędzel ma zachowywać się jak gumka\n"
+" 0.0 zwykłe malowanie\n"
+" 1.0 pełna gumka\n"
+" 0.5 działa w 50% jako gumka a w 50% jako pędzel"
+
+#: ../brushlib/brushsettings.py:70
+msgid "stroke threshold"
+msgstr "margines pociągnięcia"
+
+#: ../brushlib/brushsettings.py:70
+msgid ""
+"How much pressure is needed to start a stroke. This affects the stroke input "
+"only. Mypaint does not need a minimal pressure to start drawing."
+msgstr ""
+"Określa jaki jest wymagany nacisk by zacząć posunięcie pędzla. Wartość ta "
+"dotyczy tylko parametrów 'Pociągnięcia pędzla'."
+
+#: ../brushlib/brushsettings.py:71
+msgid "stroke duration"
+msgstr "długość pociągnięcia"
+
+#: ../brushlib/brushsettings.py:71
+msgid ""
+"How far you have to move until the stroke input reaches 1.0. This value is "
+"logarithmic (negative values will not inverse the process)."
+msgstr ""
+"Określa wymaganą odległość pociągnięcia by wartość 'pociągnięcie pędzla' "
+"doszła do 1.0. Wartość jest wartością logarytmiczną."
+
+#: ../brushlib/brushsettings.py:72
+msgid "stroke hold time"
+msgstr "wstrzymanie pociągnięcia"
+
+#: ../brushlib/brushsettings.py:72
+msgid ""
+"This defines how long the stroke input stays at 1.0. After that it will "
+"reset to 0.0 and start growing again, even if the stroke is not yet "
+"finished.\n"
+"2.0 means twice as long as it takes to go from 0.0 to 1.0\n"
+"9.9 and bigger stands for infinite"
+msgstr ""
+"Określa jak długo wartość 'pociągniecie pędzla' będzie wynosiła 1.0.Po "
+"przekroczeniu 'wstrzymania' wartość wróci do 0 i będzie ponownie rosła.2.0 "
+"oznacza podwójną wartość 'długości pociągnięcia'\n"
+"9.9 i większe oznaczają nieskończoność."
+
+#: ../brushlib/brushsettings.py:73
+msgid "custom input"
+msgstr "dowolna wartość"
+
+#: ../brushlib/brushsettings.py:73
+msgid ""
+"Set the custom input to this value. If it is slowed down, move it towards "
+"this value (see below). The idea is that you make this input depend on a "
+"mixture of pressure/speed/whatever, and then make other settings depend on "
+"this 'custom input' instead of repeating this combination everywhere you "
+"need it.\n"
+"If you make it change 'by random' you can generate a slow (smooth) random "
+"input."
+msgstr ""
+"Możesz ustawić dowolną wartość wejściową. Wartość ta polega na uzależnieniu "
+"jej od nacisku/prędkości/itp. Później wartość tą można wykorzystać "
+"zmieniając tylko ten parametr a nie wszystkie z osobna.\n"
+"\n"
+"Jeśli ustawisz by wartość zmieniała się przez 'losową' możesz uzyskać "
+"powolny (gładki) losowy wynik."
+
+#: ../brushlib/brushsettings.py:74
+msgid "custom input filter"
+msgstr "filtr wartości dowolnej"
+
+#: ../brushlib/brushsettings.py:74
+msgid ""
+"How slow the custom input actually follows the desired value (the one "
+"above). This happens at brushdab level (ignoring how much time has past, if "
+"brushdabs do not depend on time).\n"
+"0.0 no slowdown (changes apply instantly)"
+msgstr ""
+"Wartość określa jak szybko 'wartość dowolna' dochodzi do wartości pożądanej. "
+"Opóźnienie te nie jest zależne od czasu ale tylko od ilości rysowanych "
+"kropek.\n"
+"0.0 brak opóźnienia (zmiany stosują się bezpośrednio)."
+
+#: ../brushlib/brushsettings.py:76
+msgid "elliptical dab: ratio"
+msgstr "kropki elipsy"
+
+#: ../brushlib/brushsettings.py:76
+msgid ""
+"aspect ratio of the dabs; must be >= 1.0, where 1.0 means a perfectly round "
+"dab. TODO: linearize? start at 0.0 maybe, or log?"
+msgstr ""
+"Określa kształt eliptyczny kropki.\n"
+"Wartość musi być >= 1.0 gdzie 1.0 określa idealne kolo."
+
+#: ../brushlib/brushsettings.py:77
+msgid "elliptical dab: angle"
+msgstr "kąt kropki elipsy"
+
+#: ../brushlib/brushsettings.py:77
+msgid ""
+"this defines the angle by which eliptical dabs are tilted\n"
+" 0.0 horizontal dabs\n"
+" 45.0 45 degrees, turned clockwise\n"
+" 180.0 horizontal again"
+msgstr ""
+"Ta wartość określa kąt w jakim będzie rysowana kropka\n"
+"0.0 i 180.0.rysuje horyzontalnie\n"
+"45.0 rysuje kropkę pod kątem 45 stopni (zgodnie ze wskazówkami zegara)."
+
+#: ../brushlib/brushsettings.py:78
+msgid "direction filter"
+msgstr "filtr kierunkowy"
+
+#: ../brushlib/brushsettings.py:78
+msgid ""
+"a low value will make the direction input adapt more quickly, a high value "
+"will make it smoother"
+msgstr ""
+"Przy małych wartościach zapewnia szybszą reakcję na zmianę kierunku kursora, "
+"większe wartości złagodzą reakcję na kierunek."
+
+#: ../gui/backgroundwindow.py:22
+msgid "save as default"
+msgstr "zapisz jako domyślne"
+
+#: ../gui/backgroundwindow.py:24
+msgid "Background"
+msgstr "Tło"
+
+#: ../gui/backgroundwindow.py:38
+msgid "Pattern"
+msgstr "Wzór"
+
+#: ../gui/backgroundwindow.py:45 ../gui/colorselectionwindow.py:25
+#: ../gui/drawwindow.py:113
+msgid "Color"
+msgstr "Kolor"
+
+#: ../gui/backgroundwindow.py:51
+msgid "add color to patterns"
+msgstr "dodaj kolor do wzoru"
+
+#: ../gui/backgroundwindow.py:123
+#, python-format
+msgid ""
+"The background %s was ignored because it has an alpha channel. Please remove "
+"it."
+msgstr ""
+"Tło %s musi zostać odrzucone ze względu na wartości przeźroczyste. Usuń je i "
+"spróbuj ponownie."
+
+#: ../gui/backgroundwindow.py:127
+#, python-format
+msgid ""
+"The background %s was ignored because it has the wrong size. Only (N*%d)x(M*%"
+"d) is supported."
+msgstr ""
+"Tło %s musi zostać odrzucone ze względu na złą wielkość obrazu. Tylko "
+"wielkość (N*%d)x(M*%d) jest wspierana."
+
+#: ../gui/brushcreationwidget.py:34 ../gui/document.py:76
+msgid "Clear"
+msgstr "Wyczyść"
+
+#: ../gui/brushcreationwidget.py:43 ../gui/brushcreationwidget.py:188
+msgid "(no name)"
+msgstr "(bez nazwy)"
+
+#: ../gui/brushcreationwidget.py:47
+msgid "Add As New"
+msgstr "Dodaj jako nowy"
+
+#: ../gui/brushcreationwidget.py:48
+msgid "Rename..."
+msgstr "Zmień nazwę..."
+
+#: ../gui/brushcreationwidget.py:49
+msgid "Remove..."
+msgstr "Usuń..."
+
+#: ../gui/brushcreationwidget.py:50
+msgid "Settings..."
+msgstr "Ustawienia..."
+
+#: ../gui/brushcreationwidget.py:51
+msgid "Save Settings"
+msgstr "Zapisz ustawienia"
+
+#: ../gui/brushcreationwidget.py:52
+msgid "Save Preview"
+msgstr "Zapisz podgląd"
+
+#: ../gui/brushcreationwidget.py:100 ../gui/brushcreationwidget.py:161
+msgid "No brush selected!"
+msgstr "Nie zaznaczyłeś żadnego pędzla!"
+
+#: ../gui/brushcreationwidget.py:103
+msgid "Rename Brush"
+msgstr "Zmień nazwę pędzla"
+
+#: ../gui/brushcreationwidget.py:115
+msgid "A brush with this name already exists!"
+msgstr "Pędzel o tej nazwie już istnieje!"
+
+#: ../gui/brushcreationwidget.py:142 ../gui/brushcreationwidget.py:153
+msgid "No brush selected, please use \"add as new\" instead."
+msgstr "Nie zaznaczyłeś żadnego pędzla. Użyj \"dodaj nowy\"."
+
+#: ../gui/brushcreationwidget.py:163
+msgid "Really delete brush from disk?"
+msgstr "Czy na pewno usunąć plik ustawienia pędzla?"
+
+#: ../gui/brushmanager.py:26
+msgid "default"
+msgstr "domyślne"
+
+#: ../gui/brushmanager.py:27
+msgid "deleted"
+msgstr "usunięte"
+
+#: ../gui/brushmanager.py:28
+msgid "favorites"
+msgstr "ulubione"
+
+#: ../gui/brushmanager.py:29
+msgid "ink"
+msgstr "tusz"
+
+#: ../gui/brushmanager.py:30
+msgid "classic"
+msgstr "klasyczne"
+
+#: ../gui/brushmanager.py:31
+msgid "experimental"
+msgstr "FX"
+
+#: ../gui/brushselectionwindow.py:21
+msgid "Brush selection"
+msgstr "Wybór pędzla"
+
+#: ../gui/brushselectionwindow.py:35 ../gui/drawwindow.py:110
+msgid "Edit"
+msgstr "Edycja"
+
+#: ../gui/brushselectionwindow.py:165
+msgid "Right click on group to modify"
+msgstr "Kliknij prawym klawiszem by modyfikować grupę."
+
+#: ../gui/brushselectionwindow.py:293
+msgid "New group..."
+msgstr "Dodaj nową grupę..."
+
+#: ../gui/brushselectionwindow.py:295
+msgid "Rename group..."
+msgstr "Zmień nazwę grupy..."
+
+#: ../gui/brushselectionwindow.py:296
+msgid "Delete group..."
+msgstr "Usuń grupę..."
+
+#: ../gui/brushselectionwindow.py:310
+msgid "Create group"
+msgstr "Stwórz grupę"
+
+#: ../gui/brushselectionwindow.py:315
+msgid "Rename group"
+msgstr "Zmień nazwę grupy"
+
+#: ../gui/brushselectionwindow.py:321
+msgid "A group with this name already exists!"
+msgstr "Istnieje już grupa o tej nazwie!"
+
+#: ../gui/brushselectionwindow.py:324
+#, python-format
+msgid "Really delete group %s?"
+msgstr "Czy na pewno usunąć grupę %s?"
+
+#: ../gui/brushselectionwindow.py:327
+msgid "This group can not be deleted (try to make it empty first)."
+msgstr "Nie możesz usunąć tą grupę (usuń najpierw wszystkie elementy)."
+
+#: ../gui/brushsettingswindow.py:22
+msgid "Brush settings"
+msgstr "Ustawienia pędzla"
+
+#: ../gui/brushsettingswindow.py:28
+msgid "Live update the last canvas stroke"
+msgstr "Użyj nowych do ostatniego pociągnięcia pędzlem na płutnie"
+
+#: ../gui/brushsettingswindow.py:64
+msgid "No additional configuration"
+msgstr "Brak dodatkowej konfiguracji"
+
+#: ../gui/brushsettingswindow.py:69 ../gui/brushsettingswindow.py:117
+msgid "Add input values mapping"
+msgstr "Dodaj mapowanie urządzenia wejściowego"
+
+#: ../gui/brushsettingswindow.py:119
+msgid "Modify input values mapping"
+msgstr "Modyfikuj parametry mapowania urządzenia"
+
+#: ../gui/colorsamplerwindow.py:816
+msgid "RGB"
+msgstr "RGB"
+
+#: ../gui/colorsamplerwindow.py:817
+msgid "HSV"
+msgstr "HSV"
+
+#: ../gui/colorsamplerwindow.py:819
+msgid "Colors history"
+msgstr "Historia kolorów"
+
+#: ../gui/colorsamplerwindow.py:823 ../gui/functionwindow.py:145
+msgid "Details"
+msgstr "Składniowe koloru"
+
+#: ../gui/colorsamplerwindow.py:833
+msgid "Harmonies"
+msgstr "Harmoniczne kolory"
+
+#: ../gui/colorsamplerwindow.py:835
+msgid "Analogous"
+msgstr "Analogiczne"
+
+#: ../gui/colorsamplerwindow.py:836
+msgid "Complimentary color"
+msgstr "Opozycyjne"
+
+#: ../gui/colorsamplerwindow.py:837
+msgid "Split complimentary"
+msgstr "Sąsiednie opozycyjnych"
+
+#: ../gui/colorsamplerwindow.py:838
+msgid "Double complimentary"
+msgstr "Podwójnie opozycyjne"
+
+#: ../gui/colorsamplerwindow.py:839
+msgid "Square"
+msgstr "Kwadrat"
+
+#: ../gui/colorsamplerwindow.py:840
+msgid "Triadic"
+msgstr "Triada"
+
+#: ../gui/colorsamplerwindow.py:842
+msgid "Select harmonies"
+msgstr "Ustaw harmoniczne"
+
+#: ../gui/colorsamplerwindow.py:845
+msgid "Change value/saturation"
+msgstr "Zmień jasność i nasycenie"
+
+#: ../gui/colorsamplerwindow.py:848
+msgid "Blend each color to opposite"
+msgstr "Przejście do koloru opozycyjnego"
+
+#: ../gui/colorsamplerwindow.py:850
+msgid "Blend each color to negative"
+msgstr "Przejście do koloru odwróconego"
+
+#: ../gui/colorsamplerwindow.py:914
+msgid "MyPaint color selector"
+msgstr "MyPaint wybór koloru"
+
+#: ../gui/dialogs.py:37 ../gui/layerswindow.py:224
+msgid "Name"
+msgstr "Nazwa"
+
+#: ../gui/document.py:60
+msgid "Undo"
+msgstr "Cofnij"
+
+#: ../gui/document.py:61
+msgid "Redo"
+msgstr "Ponów"
+
+#: ../gui/document.py:63
+msgid "Brighter"
+msgstr "Jaśniej"
+
+#: ../gui/document.py:64
+msgid "Smaller"
+msgstr "Zmniejsz pędzel"
+
+#: ../gui/document.py:65
+msgid "More Opaque"
+msgstr "Zwiększ krycie"
+
+#: ../gui/document.py:66
+msgid "Less Opaque"
+msgstr "Zmniejsz krycie"
+
+#: ../gui/document.py:67
+msgid "Toggle Eraser Mode"
+msgstr "Zmień w gumkę"
+
+#. TODO: make toggle action
+#: ../gui/document.py:68
+msgid "Pick Context (layer, brush and color)"
+msgstr "Pobierz kontekst (warstwę, kolor, pędzel)"
+
+#: ../gui/document.py:70
+msgid "Darker"
+msgstr "Ciemniej"
+
+#: ../gui/document.py:71
+msgid "Bigger"
+msgstr "Zwiększ pędzel"
+
+#. Context actions are also added in init_context_actions
+#: ../gui/document.py:74
+msgid "Save to Most Recently Restored"
+msgstr "Zapisz jako ostatnio odtworzony"
+
+#: ../gui/document.py:77
+msgid "Copy to Clipboard"
+msgstr "Skopiuj do schowka"
+
+#: ../gui/document.py:78
+msgid "Paste Clipboard (Replace Layer)"
+msgstr "Wklej ze schowka (zamień warstwę)"
+
+#: ../gui/document.py:79
+msgid "Select Layer at Cursor"
+msgstr "Wybierz warstwę pod kursorem"
+
+#: ../gui/document.py:80
+msgid "Next (above current)"
+msgstr "Następna (nad aktualną)"
+
+#: ../gui/document.py:81
+msgid "Next (below current)"
+msgstr "Poprzednia (pod aktualną)"
+
+#: ../gui/document.py:82
+msgid "New (above current)"
+msgstr "Nowa (nad aktualną)"
+
+#: ../gui/document.py:83
+msgid "New (below current)"
+msgstr "Nowa (pod aktualną)"
+
+#: ../gui/document.py:84
+msgid "Merge Down"
+msgstr "Połącz w dół"
+
+#: ../gui/document.py:85
+msgid "Remove"
+msgstr "Usuń"
+
+#: ../gui/document.py:86
+msgid "Increase Layer Opacity"
+msgstr "Zwiększ krycie warstwy"
+
+#: ../gui/document.py:87
+msgid "Decrease Layer Opacity"
+msgstr "Zmniejsz krycie warstwy"
+
+#: ../gui/document.py:89
+msgid "Shortcuts"
+msgstr "Skróty klawiszowe"
+
+#: ../gui/document.py:91
+msgid "Reset (Zoom, Rotation, Mirror)"
+msgstr "Zresetuj (zbliżenie, obórt, odbicie)"
+
+#: ../gui/document.py:92
+msgid "Zoom In (at cursor)"
+msgstr "Zbliż"
+
+#: ../gui/document.py:93
+msgid "Zoom Out"
+msgstr "Oddal"
+
+#: ../gui/document.py:94
+msgid "Rotate Counterclockwise"
+msgstr "Obróć w lewo"
+
+#: ../gui/document.py:95
+msgid "Rotate Clockwise"
+msgstr "Obróc w prawo"
+
+#: ../gui/document.py:96
+msgid "Layer Solo"
+msgstr "Tryb jednej warstwy"
+
+#. TODO: make toggle action
+#: ../gui/document.py:97
+msgid "Hide Layers Above Current"
+msgstr "Ukryj warstwę powyżej"
+
+#. name, stock id, label, accelerator, tooltip, callback, default toggle status
+#: ../gui/document.py:104
+msgid "Print Brush Input Values to stdout"
+msgstr "Wyświetlaj na konsoli informację o urządzeniach wskazujących"
+
+#: ../gui/document.py:105
+msgid "Visualize Rendering"
+msgstr "Pokaż renderowanie"
+
+#: ../gui/document.py:106
+msgid "Disable GTK Double Buffering"
+msgstr "Wyłącz podwójny bufor obrazu w GTK"
+
+#: ../gui/document.py:107
+msgid "Mirror Image"
+msgstr "Odbij obraz w poziomie"
+
+#: ../gui/document.py:115
+#, python-format
+msgid "Restore Brush %d"
+msgstr "Użyj pędzla '%d'"
+
+#: ../gui/document.py:117
+#, python-format
+msgid "Save to Brush %d"
+msgstr "Zapamiętaj pędzel jako klawisz %d"
+
+#. name, stock id, label, accelerator, tooltip, callback
+#: ../gui/drawwindow.py:107
+msgid "File"
+msgstr "Plik"
+
+#. FIXME: should do this periodically, not only on quit
+#: ../gui/drawwindow.py:108 ../gui/drawwindow.py:327
+msgid "Quit"
+msgstr "Zakończ"
+
+#: ../gui/drawwindow.py:111
+msgid "Preferences..."
+msgstr "Preferencje..."
+
+#: ../gui/drawwindow.py:114
+msgid "Pick Color"
+msgstr "Pobierz kolor"
+
+#: ../gui/drawwindow.py:115
+msgid "Color History"
+msgstr "Historia kolorów"
+
+#: ../gui/drawwindow.py:116
+msgid "Color Changer"
+msgstr "Szybka zmiana koloru"
+
+#: ../gui/drawwindow.py:117
+msgid "Color Ring"
+msgstr "Koło kolorów"
+
+#: ../gui/drawwindow.py:118
+msgid "Color Triangle..."
+msgstr "Trójkąt kolorów..."
+
+#: ../gui/drawwindow.py:119
+msgid "Color Sampler..."
+msgstr "Okno kolorów"
+
+#: ../gui/drawwindow.py:121
+msgid "Brushkeys"
+msgstr "Szybkie ustawienia pędzla"
+
+#: ../gui/drawwindow.py:122
+msgid "Help!"
+msgstr "Pomoc"
+
+#: ../gui/drawwindow.py:124 ../gui/layerswindow.py:338
+msgid "Layers"
+msgstr "Warstwy"
+
+#: ../gui/drawwindow.py:125
+msgid "Layers..."
+msgstr "Warstwy..."
+
+#: ../gui/drawwindow.py:126
+msgid "Background..."
+msgstr "Tło..."
+
+#: ../gui/drawwindow.py:128
+msgid "Brush"
+msgstr "Pędzel"
+
+#: ../gui/drawwindow.py:129
+msgid "Brush List..."
+msgstr "Lista pędzli..."
+
+#: ../gui/drawwindow.py:130
+msgid "Brush Settings..."
+msgstr "Ustawienia pędzla..."
+
+#: ../gui/drawwindow.py:132 ../gui/drawwindow.py:145
+msgid "Help"
+msgstr "Pomoc"
+
+#: ../gui/drawwindow.py:133
+msgid "Where is the Documentation?"
+msgstr "Gdzie znajdę dokumentację?"
+
+#: ../gui/drawwindow.py:134
+msgid "Change the Keyboard Shortcuts?"
+msgstr "Jak zmienić skróty klawiszowe?"
+
+#: ../gui/drawwindow.py:135
+msgid "About MyPaint"
+msgstr "O programie MyPaint"
+
+#: ../gui/drawwindow.py:137
+msgid "Debug"
+msgstr "Debugowanie"
+
+#: ../gui/drawwindow.py:138
+msgid "Print Memory Leak Info to stdout (Slow!)"
+msgstr "Wyświetl wycieki pamięci na konsole (POWOLNE!)"
+
+#: ../gui/drawwindow.py:139
+msgid "Run Garbage Collector Now"
+msgstr "Uruchom teraz czyszczenie pamięci (Garbage Collector)"
+
+#: ../gui/drawwindow.py:141
+msgid "View"
+msgstr "Widok"
+
+#: ../gui/drawwindow.py:142
+msgid "Show Menu"
+msgstr "Pokaż menu"
+
+#: ../gui/drawwindow.py:143
+msgid "Fullscreen"
+msgstr "Tryb pełnoekranowy"
+
+#: ../gui/drawwindow.py:144
+msgid "Toggle Subwindows"
+msgstr "Włącz okna narzędzi"
+
+#: ../gui/drawwindow.py:327
+msgid "Really Quit?"
+msgstr "Czy na pewno chcesz zamknąć program ?"
+
+#: ../gui/drawwindow.py:340
+msgid ""
+"Copyright (C) 2005-2010\n"
+"Martin Renold and the MyPaint Development Team"
+msgstr ""
+"Copyright (C) 2005-2010\n"
+"Martin Renold i zespół deweloperów MyPaint"
+
+#: ../gui/drawwindow.py:344
+msgid ""
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY. See the COPYING file for more details."
+msgstr ""
+"MyPaint jest darmowym oprogramowaniem opartym na licencji GNU General Public "
+"License opublikowanej przez Free Software Foundation. Program ten można "
+"modyfikować, rozprowadzać lub dystrybuować pod warunkiem zachowania licencji "
+"GNU GPL wersja druga lub nowsza."
+
+#: ../gui/drawwindow.py:354 ../gui/drawwindow.py:358 ../gui/drawwindow.py:360
+#: ../gui/drawwindow.py:361 ../gui/drawwindow.py:363 ../gui/drawwindow.py:367
+#: ../gui/drawwindow.py:368 ../gui/drawwindow.py:369
+msgid "programming"
+msgstr "programowanie"
+
+#: ../gui/drawwindow.py:355 ../gui/drawwindow.py:364 ../gui/drawwindow.py:365
+#: ../gui/drawwindow.py:366
+msgid "brushes"
+msgstr "pędzle"
+
+#: ../gui/drawwindow.py:356 ../gui/drawwindow.py:362
+msgid "portability"
+msgstr "przenoszenie na różne systemy"
+
+#: ../gui/drawwindow.py:357
+msgid "brushes, programming"
+msgstr "pędzle i programowanie"
+
+#: ../gui/drawwindow.py:359
+msgid "patterns, brushes"
+msgstr "wzorce tła i pędzle"
+
+#: ../gui/drawwindow.py:372
+msgid "desktop icon"
+msgstr "ikona pulpitu"
+
+#: ../gui/drawwindow.py:397
+msgid "Move your mouse over a menu entry, then press the key to assign."
+msgstr ""
+"Najedź kursorem na element z menu i wciśnij przycisk klawiatury by "
+"skonfigurować skrót."
+
+#: ../gui/drawwindow.py:399
+msgid ""
+"You can also drag the canvas with the mouse while holding the middle mouse "
+"button or spacebar. Or with the arrow keys.\n"
+"\n"
+"In contrast to earlier versions, scrolling and zooming are harmless now and "
+"will not make you run out of memory. But you still require a lot of memory "
+"if you paint all over while fully zoomed out."
+msgstr ""
+"Możesz również przeciągać płótno używając środkowego klawisza myszki lub "
+"spacji. Klawisze strzałek również umożliwiają przesuwanie płótna.\n"
+"\n"
+"W przeciwieństwie do poprzednich wersji przesuwanie i zbliżanie/oddalanie "
+"nie powodują problemów z całkowitego zużycia pamięci. Nadal jednak malowanie "
+"przy maksymalnym oddaleniu wymaga sporej ilości pamięci."
+
+#: ../gui/drawwindow.py:406
+msgid ""
+"This is used to quickly save/restore brush settings using keyboard "
+"shortcuts. You can paint with one hand and change brushes with the other "
+"without interrupting.\n"
+"\n"
+"There are 10 memory slots to hold brush settings.\n"
+"Those are anonymous brushes, they are not visible in the brush selector "
+"list. But they will stay even if you quit. They will also remember the "
+"selected color. In contrast, selecting a normal brush never changes the "
+"color. "
+msgstr ""
+"Ta opcja jest używana do szybkiego zapamiętania i odzyskiwania ustawień "
+"pędzla przy użyciu klawiatury numerycznej. W ten sposób możesz malować jedną "
+"ręką a drugą zmieniać ustawia pędzla bez przerywania malowania\n"
+"\n"
+"Do dyspozycji jest 10 slotów a zapamiętane ustawienia pędzla nie będą "
+"listowane na standardowej liście pędzli. Sloty te są zapisywane i nie utracą "
+"swoich wartości po zamknięciu programu.\n"
+"Sloty pamiętają i odzyskują nie tylko same ustawienia pędzla ale nawet "
+"kolor, czego nie robi standardowa lista pędzli."
+
+#: ../gui/drawwindow.py:417
+msgid ""
+"There is a tutorial available on the MyPaint homepage. It explains some "
+"features which are hard to discover yourself.\n"
+"\n"
+"Comments about the brush settings (opaque, hardness, etc.) and inputs "
+"(pressure, speed, etc.) are available as tooltips. Put your mouse over a "
+"label to see them. \n"
+msgstr ""
+"Na stronie domowej MyPaint (http://mypaint.intilinux.com) można znaleźć "
+"samouczek, z którego możesz nauczyć się używania nawet zaawansowanych "
+"funkcji.\n"
+"\n"
+"Komentarze dotyczące ustawienia pędzla (krycie, twardość, itp.) oraz "
+"urządzenia (nacisk, prędkość, itp.) są dostępne jako chmurki. Najedź "
+"kursorem na tekst opcji i poczekaj sekundę by wyskoczyły.\n"
+
+#: ../gui/filehandling.py:36
+msgid "New"
+msgstr "Nowy obraz"
+
+#: ../gui/filehandling.py:37 ../gui/filehandling.py:198
+msgid "Open..."
+msgstr "Otwórz..."
+
+#: ../gui/filehandling.py:38
+msgid "Open Last"
+msgstr "Otwórz ostatni plik"
+
+#: ../gui/filehandling.py:39
+msgid "Reload"
+msgstr "Odczytaj ponownie"
+
+#: ../gui/filehandling.py:40
+msgid "Save"
+msgstr "Zapisz"
+
+#: ../gui/filehandling.py:41
+msgid "Save As..."
+msgstr "Zapisz jako..."
+
+#: ../gui/filehandling.py:42
+msgid "Save As Scrap"
+msgstr "Dodaj kartkę do teczki"
+
+#: ../gui/filehandling.py:43
+msgid "Open Previous Scrap"
+msgstr "Otwórz ostatnią kartkę w teczce"
+
+#: ../gui/filehandling.py:44
+msgid "Open Next Scrap"
+msgstr "Otwórz następną kartkę w teczce"
+
+#: ../gui/filehandling.py:50
+msgid "Open Recent"
+msgstr "Otwórz ostatni"
+
+#: ../gui/filehandling.py:50
+msgid "Open Recent files"
+msgstr "Otwórz ostatnie pliki"
+
+#: ../gui/filehandling.py:89
+msgid "Save..."
+msgstr "Zapisz.."
+
+#. name, patterns, saveopts
+#: ../gui/filehandling.py:101
+msgid "Any format (prefer OpenRaster)"
+msgstr "Jakikolwiek format pliku (preferowany OpenRaster)"
+
+#: ../gui/filehandling.py:102 ../gui/filehandling.py:206
+msgid "OpenRaster (*.ora)"
+msgstr "OpenRaster (*.ora)"
+
+#: ../gui/filehandling.py:104
+msgid "PNG transparent (*.png)"
+msgstr "PNG z przeźroczystością (*.png)"
+
+#: ../gui/filehandling.py:105
+msgid "Multiple PNG transparent (*.XXX.png)"
+msgstr "Osobne pliki PNG na warstwę z przeźroczystością (*.XXX.png)"
+
+#: ../gui/filehandling.py:106
+msgid "JPEG 90% quality (*.jpg; *.jpeg)"
+msgstr "JPEG 90% jakości (*.jpg; *.jpeg)"
+
+#: ../gui/filehandling.py:127
+#, python-format
+msgid "%d minute"
+msgid_plural "%d minutes"
+msgstr[0] "%d minut"
+msgstr[1] "%d minuty"
+
+#: ../gui/filehandling.py:130
+#, python-format
+msgid "%d second"
+msgid_plural "%d seconds"
+msgstr[0] "%d sekund"
+msgstr[1] "%d sekundy"
+
+#: ../gui/filehandling.py:136
+msgid "_Save as Scrap"
+msgstr "_Zapamiętaj jako kartkę"
+
+#: ../gui/filehandling.py:142
+#, python-format
+msgid ""
+"<b>%s</b>\n"
+"\n"
+"This will discard %s of unsaved painting."
+msgstr ""
+"<b>%s</b>\n"
+"\n"
+"Zmiany w pliku z ostatnich %s zostaną utracone."
+
+#: ../gui/filehandling.py:179
+msgid "Did not save, the canvas is empty."
+msgstr "Plik nie zostanie zapisany ponieważ płótno jest czyste."
+
+#. name, patterns
+#: ../gui/filehandling.py:205
+msgid "All Recognized Formats"
+msgstr "Wszystkie obsługiwane formaty plików"
+
+#: ../gui/filehandling.py:207
+msgid "PNG (*.png)"
+msgstr "PNG (*.png)"
+
+#: ../gui/filehandling.py:208
+msgid "JPEG (*.jpg; *.jpeg)"
+msgstr "JPEG (*.jpg; *.jpeg)"
+
+#: ../gui/filehandling.py:384
+#, python-format
+msgid "There are no scrap files named \"%s\" yet."
+msgstr "Nie znaleziono pliku kartki o nazwie \"%s\"."
+
+#: ../gui/functionwindow.py:40
+msgid "Base Value"
+msgstr "Wartość bazowa"
+
+#: ../gui/gtkexcepthook.py:118
+msgid "Bug Detected"
+msgstr "Wykryto błąd"
+
+#: ../gui/gtkexcepthook.py:122
+msgid "<big><b>A programming error has been detected.</b></big>"
+msgstr "<big><b>Wykryto błąd programu</b></big>"
+
+#: ../gui/gtkexcepthook.py:123
+msgid ""
+"It probably isn't fatal, but the details should be reported to the "
+"developers nonetheless."
+msgstr ""
+"Najprawdopodobniej błąd nie jest krytyczny. Prosimy jednak o zgłoszenie w "
+"miarę możliwości do autorów informacje o zaistniałym błędzie."
+
+#: ../gui/gtkexcepthook.py:138
+msgid "Report..."
+msgstr "Zgłoś błąd..."
+
+#: ../gui/gtkexcepthook.py:142
+msgid "Details..."
+msgstr "Szczegóły..."
+
+#. Show details...
+#: ../gui/gtkexcepthook.py:171
+msgid "Bug Details"
+msgstr "Więcej o błędzie"
+
+#: ../gui/layerswindow.py:35
+msgid "Layer visibility"
+msgstr "Widoczność warstwy"
+
+#: ../gui/layerswindow.py:219
+msgid "<small>Double click to enter name</small>"
+msgstr "<small>Kliknij podwójnie by ustawić nazwę</small>"
+
+#: ../gui/layerswindow.py:355
+msgid "Opacity:"
+msgstr "Krycie:"
+
+#: ../gui/preferenceswindow.py:26
+msgid "Preferences"
+msgstr "Ustawienia"
+
+#: ../gui/preferenceswindow.py:46
+msgid "<b><span size=\"large\">Global Pressure Mapping</span></b>"
+msgstr "<b><span size=\"large\">Globalne mapowanie nacisku</span></b>"
+
+#: ../gui/preferenceswindow.py:59
+msgid ""
+"0.5\n"
+"(mouse button)"
+msgstr ""
+"0,5\n"
+"(przycisk myszki)"
+
+#: ../gui/preferenceswindow.py:70
+msgid "Mode for input devices: "
+msgstr "Tryb urządzenia wskazującego: "
+
+#: ../gui/preferenceswindow.py:81
+msgid "Paths"
+msgstr "Ścieżki"
+
+#: ../gui/preferenceswindow.py:85
+msgid "<b><span size=\"large\">Save as Scrap</span></b>"
+msgstr "<b><span size=\"large\">Zapisz jako szkic</span></b>"
+
+#: ../gui/preferenceswindow.py:87
+msgid "Path and filename prefix for \"Save Next Scrap\""
+msgstr "Ścieżka i podstawa nazwy pliku dla zapisywanych kartek."
+
+#. add a hint due to a very consfusing error message when there is no space left on device
+#: ../lib/document.py:259
+#, python-format
+msgid ""
+"Unable to save: %s\n"
+"Do you have enough space left on the device?"
+msgstr ""
+"Nie można zapisać pliku %s\n"
+"Sprawdź czy na dysku jest wystarczająca ilość miejsca."
+
+#: ../lib/document.py:261 ../lib/document.py:264
+#, python-format
+msgid "Unable to save: %s"
+msgstr "Nie można zapisać pliku %s."
+
+#: ../lib/document.py:269
+#, python-format
+msgid "File does not exist: %s"
+msgstr "Plik %s nie istnieje."
+
+#: ../lib/document.py:271
+#, python-format
+msgid "You do not have the necessary permissions to open file: %s"
+msgstr "Brak wystarczających uprawnień by otworzyć plik %s"
+
+#: ../lib/document.py:279
+#, python-format
+msgid "Error while loading: GError %s"
+msgstr "Błąd podczas ładowania: GError %s"
+
+#: ../lib/document.py:282
+#, python-format
+msgid "Error while loading: IOError %s"
+msgstr "Błąd podczas ładowania: IOError %s"
+
+#: ../lib/document.py:288
+#, python-format
+msgid "Unknown file format extension: %s"
+msgstr "Nieznane rozszerzenie pliku: %s"
