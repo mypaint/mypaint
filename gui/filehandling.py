@@ -381,7 +381,9 @@ class FileHandler(object):
     def open_scrap_cb(self, action):
         groups = self.list_scraps_grouped()
         if not groups:
-            self.app.message_dialog(_('There are no scrap files named "%s" yet.' % (self.get_scrap_prefix() + '[0-9]*')), gtk.MESSAGE_WARNING)
+            msg = _('There are no scrap files named "%s" yet.') % \
+                (self.get_scrap_prefix() + '[0-9]*')
+            self.app.message_dialog(msg, gtk.MESSAGE_WARNING)
             return
         if not self.confirm_destructive_action():
             return
