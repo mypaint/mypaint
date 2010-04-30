@@ -1,0 +1,1523 @@
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Yuri Chornoivan <yurchor@ukr.net>, 2010.
+# Daniel Korostil <ted.korostiled@gmail.com>, 2010.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-04-30 23:02+0200\n"
+"PO-Revision-Date: 2010-04-30 20:07+0300\n"
+"Last-Translator: Daniel Korostil <ted.korostiled@gmail.com>\n"
+"Language-Team: Ukrainian <kde-i18n-doc@kde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
+"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Lokalize 1.0\n"
+
+#. name, hard minimum, soft minimum, normal[1], soft maximum, hard maximum, displayed name, tooltip
+#: ../brushlib/brushsettings.py:22 ../gui/preferenceswindow.py:42
+msgid "Pressure"
+msgstr "Тиск"
+
+#: ../brushlib/brushsettings.py:22
+msgid ""
+"The pressure reported by the tablet, between 0.0 and 1.0. If you use the "
+"mouse, it will be 0.5 when a button is pressed and 0.0 otherwise."
+msgstr ""
+"Значення натиску, отримане від планшета, від 0,0 до 1,0. Якщо ви "
+"використовуєте мишу, значенням буде 0,5, якщо натиснуто кнопку, і 0,0, якщо "
+"кнопку не натиснуто."
+
+#: ../brushlib/brushsettings.py:23
+msgid "Fine speed"
+msgstr "Додаткова швидкість"
+
+#: ../brushlib/brushsettings.py:23
+msgid ""
+"How fast you currently move. This can change very quickly. Try 'print input "
+"values' from the 'help' menu to get a feeling for the range; negative values "
+"are rare but possible for very low speed."
+msgstr ""
+"Поточна швидкість руху. Це значення дуже швидко змінюється. Позначте пункт "
+"«Виводити вхідні значення» у меню «Довідка», щоб оцінити діапазон можливих "
+"значень; поява від'ємних значень є рідкісною, але можливою за дуже малої "
+"швидкості."
+
+#: ../brushlib/brushsettings.py:24
+msgid "Gross speed"
+msgstr "Основна швидкість"
+
+#: ../brushlib/brushsettings.py:24
+msgid ""
+"Same as fine speed, but changes slower. Also look at the 'gross speed "
+"filter' setting."
+msgstr ""
+"Те саме, що і додаткова швидкість, але з повільнішою зміною. Див. також "
+"параметр «фільтр основної швидкості»."
+
+#: ../brushlib/brushsettings.py:25
+msgid "Random"
+msgstr "Випадковий"
+
+#: ../brushlib/brushsettings.py:25
+msgid ""
+"Fast random noise, changing at each evaluation. Evenly distributed between 0 "
+"and 1."
+msgstr ""
+"Швидкозмінний випадковий шум, змінюється під час кожного обчислення. "
+"Рівномірно розподілено від 0 до 1."
+
+#: ../brushlib/brushsettings.py:26
+msgid "Stroke"
+msgstr "Штрих"
+
+#: ../brushlib/brushsettings.py:26
+msgid ""
+"This input slowly goes from zero to one while you draw a stroke. It can also "
+"be configured to jump back to zero periodically while you move. Look at the "
+"'stroke duration' and 'stroke hold time' settings."
+msgstr ""
+"Ці вхідні дані повільно змінюються від нуля до одиниці під час малювання "
+"штриха. Програму можна налаштувати так, щоб значення періодично поверталося "
+"до нуля під час малювання штриха. Див. параметри «тривалість штриха» та «час "
+"утримування штриха»."
+
+#: ../brushlib/brushsettings.py:27
+msgid "Direction"
+msgstr "Напрямок"
+
+#: ../brushlib/brushsettings.py:27
+msgid ""
+"The angle of the stroke, in degrees. The value will stay between 0.0 and "
+"180.0, effectively ignoring turns of 180 degrees."
+msgstr ""
+"Кут штриха, виміряний у градусах. Значення від 0,0 до 180,0, повороти на 180 "
+"градусів не змінюватимуть значення кута."
+
+#. ['motion_strength',0.0,0.0,  0.0,  1.0, 1.0,  "[EXPERIMENTAL] Same as angle, but wraps at 180 degrees. The dynamics are shared with BRUSH_OFFSET_BY_SPEED_FILTER (FIXME: which is a bad thing)."],
+#: ../brushlib/brushsettings.py:29
+msgid "Custom"
+msgstr "Нетиповий"
+
+#: ../brushlib/brushsettings.py:29
+msgid ""
+"This is a user defined input. Look at the 'custom input' setting for details."
+msgstr ""
+"Це визначені користувачем параметри вхідних даних. Докладніше про них у "
+"підказці до параметра «нетипові вхідні дані»."
+
+#. internal name, displayed name, constant, minimum, default, maximum, tooltip
+#: ../brushlib/brushsettings.py:38
+msgid "opaque"
+msgstr "непрозорий"
+
+#: ../brushlib/brushsettings.py:38
+msgid ""
+"0 means brush is transparent, 1 fully visible\n"
+"(also known als alpha or opacity)"
+msgstr ""
+"0 означає повну прозорість пензля, 1 — повну непрозорість\n"
+"(ці точки також називають альфою та точкою непрозорості)"
+
+#: ../brushlib/brushsettings.py:39
+msgid "opaque multiply"
+msgstr "коефіцієнт непрозорості"
+
+#: ../brushlib/brushsettings.py:39
+msgid ""
+"This gets multiplied with opaque. It is used for making opaque depend on "
+"pressure (or other inputs)."
+msgstr ""
+"На це число буде помножено непрозорість. Використовується для встановлення "
+"залежності непрозорості від тиску (або інших вхідних даних)."
+
+#: ../brushlib/brushsettings.py:40
+msgid "opaque linearize"
+msgstr "лінеаризація непрозорості"
+
+#: ../brushlib/brushsettings.py:40
+msgid ""
+"Correct the nonlinearity introduced by blending multiple dabs on top of each "
+"other. This correction should get you a linear (\"natural\") pressure "
+"response when pressure is mapped to opaque_multiply, as it is usually done. "
+"0.9 is good for standard strokes, set it smaller if your brush scatters a "
+"lot, or higher if you use dabs_per_second.\n"
+"0.0 the opaque value above is for the individual dabs\n"
+"1.0 the opaque value above is for the final brush stroke, assuming each "
+"pixel gets (dabs_per_radius*2) brushdabs on average during a stroke"
+msgstr ""
+"Виправляти нелінійність внаслідок злиття декількох мазків, нанесених один на "
+"одного. У результаті виправлення ви отримаєте лінійні («природні») мазки під "
+"час відображення за допомогою параметра «коефіцієнт непрозорості». Значення "
+"0,9 пасує до стандартних штрихів, зменшіть його, якщо використовуєте пензель "
+"зі значним розбризкуванням фарби або збільште, якщо ви використовуєте "
+"параметр «мазків на секунду».\n"
+"Значення непрозорості 0,0 слід використовувати для отримання картинки з "
+"окремих мазків\n"
+"Значення непрозорості 1,0 дасть вам спільний штрих пензлем, програма "
+"припускатиме, що кожен піксель відповідає (мазків на радіус*2) мазкам пензля "
+"у середньому під час виконання штриха."
+
+#: ../brushlib/brushsettings.py:41
+msgid "radius"
+msgstr "радіус"
+
+#: ../brushlib/brushsettings.py:41
+msgid ""
+"basic brush radius (logarithmic)\n"
+" 0.7 means 2 pixels\n"
+" 3.0 means 20 pixels"
+msgstr ""
+"базовий радіус пензля (за логарифмічною шкалою)\n"
+" 0,7 означає 2 пікселі\n"
+" 3,0 означає 20 пікселів"
+
+#: ../brushlib/brushsettings.py:42
+msgid "hardness"
+msgstr "жорсткість"
+
+#: ../brushlib/brushsettings.py:42
+msgid "hard brush-circle borders (setting to zero will draw nothing)"
+msgstr ""
+"жорсткі межі кругового пензля (встановлення нульового значення призведе до "
+"відсутності видимих результатів штриха пензлем)"
+
+#: ../brushlib/brushsettings.py:43
+msgid "dabs per basic radius"
+msgstr "мазків на базовий радіус"
+
+#: ../brushlib/brushsettings.py:43
+msgid ""
+"how many dabs to draw while the pointer moves a distance of one brush radius "
+"(more precise: the base value of the radius)"
+msgstr ""
+"кількість мазків на полотні, що відповідає відстані у один радіус пензля "
+"(точніше, у одне базове значення радіуса)"
+
+#: ../brushlib/brushsettings.py:44
+msgid "dabs per actual radius"
+msgstr "мазків на поточний радіус"
+
+#: ../brushlib/brushsettings.py:44
+msgid ""
+"same as above, but the radius actually drawn is used, which can change "
+"dynamically"
+msgstr ""
+"те саме, що і попередній параметр, але буде використано значення радіуса "
+"пензля під час малювання (це значення може постійно змінюватися)"
+
+#: ../brushlib/brushsettings.py:45
+msgid "dabs per second"
+msgstr "мазків на секунду"
+
+#: ../brushlib/brushsettings.py:45
+msgid "dabs to draw each second, no matter how far the pointer moves"
+msgstr ""
+"кількість мазків, що відповідає одній секунді малювання, незалежно від руху "
+"вказівника миші"
+
+#: ../brushlib/brushsettings.py:46
+msgid "radius by random"
+msgstr "випадковий радіус"
+
+#: ../brushlib/brushsettings.py:46
+msgid ""
+"Alter the radius randomly each dab. You can also do this with the by_random "
+"input on the radius setting. If you do it here, there are two differences:\n"
+"1) the opaque value will be corrected such that a big-radius dabs is more "
+"transparent\n"
+"2) it will not change the actual radius seen by dabs_per_actual_radius"
+msgstr ""
+"Випадково змінювати радіус під час кожного мазка. Подібного результату можна "
+"досягти за допомогою параметра випадкових вхідних даних радіуса. Якщо ви "
+"скористаєтеся цим параметром, відмінності будуть такими:\n"
+"1) значення непрозорості буде виправлено так, що мазки з більшими радіусом "
+"будуть прозорішими\n"
+"2) радіус малювання, що використовуватиметься для параметра «мазків на "
+"поточний радіус», не змінюватиметься"
+
+#: ../brushlib/brushsettings.py:47
+msgid "fine speed filter"
+msgstr "фільтр додаткової швидкості"
+
+#: ../brushlib/brushsettings.py:47
+msgid ""
+"how slow the input fine speed is following the real speed\n"
+"0.0 change immediately as your speed changes (not recommended, but try it)"
+msgstr ""
+"визначає, наскільки повільно встановлюватиметься відповідність між вхідними "
+"даними швидкості і справжньою швидкістю\n"
+"0,0 відповідатиме негайному встановленню відповідності (не рекомендується, "
+"але ви можете спробувати)"
+
+#: ../brushlib/brushsettings.py:48
+msgid "gross speed filter"
+msgstr "фільтр основної швидкості"
+
+#: ../brushlib/brushsettings.py:48
+msgid "same as 'fine speed filter', but note that the range is different"
+msgstr "те саме, що і «фільтр додаткової швидкості», але з іншим діапазоном"
+
+#: ../brushlib/brushsettings.py:49
+msgid "fine speed gamma"
+msgstr "гама додаткової швидкості"
+
+#: ../brushlib/brushsettings.py:49
+msgid ""
+"This changes the reaction of the 'fine speed' input to extreme physical "
+"speed. You will see the difference best if 'fine speed' is mapped to the "
+"radius.\n"
+"-8.0 very fast speed does not increase 'fine speed' much more\n"
+"+8.0 very fast speed increases 'fine speed' a lot\n"
+"For very slow speed the opposite happens."
+msgstr ""
+"За допомогою цього параметра можна визначити відповідність вхідних даних "
+"додаткової швидкості швидким змінам вказівника. Вплив цього параметра є "
+"найпомітнішим, якщо додаткову швидкість пов'язано з радіусом.\n"
+"-8,0 — значне пришвидшення не призводить до значного збільшення додаткової "
+"швидкості\n"
+"+8,0 — значне пришвидшення призводить до значного збільшення додаткової "
+"швидкості\n"
+"Повільний рух вказівника, відповідно, призводитиме до зворотніх ефектів."
+
+#: ../brushlib/brushsettings.py:50
+msgid "gross speed gamma"
+msgstr "гама основної швидкості"
+
+#: ../brushlib/brushsettings.py:50
+msgid "same as 'fine speed gamma' for gross speed"
+msgstr "те саме, що і «гама додаткової швидкості», але для основної швидкості"
+
+#: ../brushlib/brushsettings.py:51
+msgid "jitter"
+msgstr "тремтіння"
+
+#: ../brushlib/brushsettings.py:51
+msgid ""
+"add a random offset to the position where each dab is drawn\n"
+" 0.0 disabled\n"
+" 1.0 standard deviation is one basic radius away\n"
+"<0.0 negative values produce no jitter"
+msgstr ""
+"додає випадковий відступ до позиції мазка\n"
+" 0,0 — вимкнути\n"
+" 1,0 — стандартне відхилення у один базовий радіус\n"
+"<0,0 — від’ємні значення вимикають тремтіння"
+
+#: ../brushlib/brushsettings.py:52
+msgid "offset by speed"
+msgstr "відступ за швидкістю"
+
+#: ../brushlib/brushsettings.py:52
+msgid ""
+"change position depending on pointer speed\n"
+"= 0 disable\n"
+"> 0 draw where the pointer moves to\n"
+"< 0 draw where the pointer comes from"
+msgstr ""
+"зміна позиції залежно від швидкості вказівника\n"
+"= 0 вимкнути\n"
+"> 0 малювати у напрямку руху вказівника\n"
+"< 0 малювати у напрямку звідки рухається вказівник"
+
+#: ../brushlib/brushsettings.py:53
+msgid "offset by speed filter"
+msgstr "фільтр швидкості відступу"
+
+#: ../brushlib/brushsettings.py:53
+msgid "how slow the offset goes back to zero when the cursor stops moving"
+msgstr ""
+"визначає швидкість повернення відступу до нульового значення після зупинки "
+"вказівника"
+
+#: ../brushlib/brushsettings.py:54
+msgid "slow position tracking"
+msgstr "сповільнення трасування вказівника"
+
+#: ../brushlib/brushsettings.py:54
+msgid ""
+"Slowdown pointer tracking speed. 0 disables it, higher values remove more "
+"jitter in cursor movements. Useful for drawing smooth, comic-like outlines."
+msgstr ""
+"Сповільнення трасування швидкості вказівника. Нульове значення вимикає "
+"сповільнення, вищі значення призводитимуть до вилучення тремтіння під час "
+"руху вказівника. Корисно для малювання плавних контурів."
+
+#: ../brushlib/brushsettings.py:55
+msgid "slow tracking per dab"
+msgstr "сповільнення трасування за мазками"
+
+#: ../brushlib/brushsettings.py:55
+msgid ""
+"Similar as above but at brushdab level (ignoring how much time has past, if "
+"brushdabs do not depend on time)"
+msgstr ""
+"Параметр, подібний до попереднього, але працює на рівні мазків пензлем (час "
+"не береться до уваги, якщо визначення мазків відбувається без врахування "
+"часових параметрів)"
+
+#: ../brushlib/brushsettings.py:56
+msgid "tracking noise"
+msgstr "шум трасування"
+
+#: ../brushlib/brushsettings.py:56
+msgid ""
+"add randomness to the mouse pointer; this usually generates many small lines "
+"in random directions; maybe try this together with 'slow tracking'"
+msgstr ""
+"додає випадкові відхилення до маршруту вказівника миші; таким чином, "
+"зазвичай, буде створено багато маленьких ліній у випадкових напрямках; "
+"можете спробувати цей пункт разом з «повільним трасуванням»"
+
+#: ../brushlib/brushsettings.py:58
+msgid "color hue"
+msgstr "відтінок кольору"
+
+#: ../brushlib/brushsettings.py:59
+msgid "color saturation"
+msgstr "насиченість кольору"
+
+#: ../brushlib/brushsettings.py:60
+msgid "color value"
+msgstr "значення кольору"
+
+#: ../brushlib/brushsettings.py:60
+msgid "color value (brightness, intensity)"
+msgstr "значення кольору (яскравість, інтенсивність)"
+
+#: ../brushlib/brushsettings.py:61
+msgid "change color hue"
+msgstr "зміна відтінку кольору"
+
+#: ../brushlib/brushsettings.py:61
+msgid ""
+"Change color hue.\n"
+"-0.1 small clockwise color hue shift\n"
+" 0.0 disable\n"
+" 0.5 counterclockwise hue shift by 180 degrees"
+msgstr ""
+"Зміна відтінку кольору.\n"
+"-0,1 невеличкий зсув відтінку за годинниковою стрілкою\n"
+" 0,0 вимкнути\n"
+" 0,5 зсув відтінку на 180 градусів проти годинникової стрілки"
+
+#: ../brushlib/brushsettings.py:62
+msgid "change color lightness (HSL)"
+msgstr "зміна освітленості кольору (ВНР)"
+
+#: ../brushlib/brushsettings.py:62
+msgid ""
+"Change the color lightness (luminance) using the HSL color model.\n"
+"-1.0 blacker\n"
+" 0.0 disable\n"
+" 1.0 whiter"
+msgstr ""
+"Зміна освітленості кольору за використання моделі кольорів ВНР.\n"
+"-1,0 —темніший\n"
+" 0,0 — вимкнути\n"
+" 1,0 — світліший"
+
+#: ../brushlib/brushsettings.py:63
+msgid "change color satur. (HSL)"
+msgstr "зміна насиченості кольору (ВНР)"
+
+#: ../brushlib/brushsettings.py:63
+msgid ""
+"Change the color saturation using the HSL color model.\n"
+"-1.0 more grayish\n"
+" 0.0 disable\n"
+" 1.0 more saturated"
+msgstr ""
+"Зміна насиченості кольору за використання моделі кольорів ВНР.\n"
+"-1,0 — сіріший\n"
+" 0,0 — вимкнути\n"
+" 1.0 — насиченіший"
+
+#: ../brushlib/brushsettings.py:64
+msgid "change color value (HSV)"
+msgstr "зміна значення кольору (ВНЗ)"
+
+#: ../brushlib/brushsettings.py:64
+msgid ""
+"Change the color value (brightness, intensity) using the HSV color model. "
+"HSV changes are applied before HSL.\n"
+"-1.0 darker\n"
+" 0.0 disable\n"
+" 1.0 brigher"
+msgstr ""
+"Зміна значення кольору (яскравості, інтенсивності) за використання моделі "
+"кольорів ВНЗ. Зміни ВНЗ застосовуватимуться до змін ВНР.\n"
+"-1,0 — темніший\n"
+" 0,0 — вимкнути\n"
+" 1,0 — світліший"
+
+#: ../brushlib/brushsettings.py:65
+msgid "change color satur. (HSV)"
+msgstr "зміна насиченості кольору (ВНЗ)"
+
+#: ../brushlib/brushsettings.py:65
+msgid ""
+"Change the color saturation using the HSV color model. HSV changes are "
+"applied before HSL.\n"
+"-1.0 more grayish\n"
+" 0.0 disable\n"
+" 1.0 more saturated"
+msgstr ""
+"Зміна насиченості кольору за використання моделі кольорів ВНЗ. Зміни у ВНЗ "
+"застосовуватимуться раніше змін у ВНР.\n"
+"-1,0 — сіріший\n"
+" 0,0 — вимкнути\n"
+" 1.0 — насиченіший"
+
+#: ../brushlib/brushsettings.py:66
+msgid "smudge"
+msgstr "розмазування"
+
+#: ../brushlib/brushsettings.py:66
+msgid ""
+"Paint with the smudge color instead of the brush color. The smudge color is "
+"slowly changed to the color you are painting on.\n"
+" 0.0 do not use the smudge color\n"
+" 0.5 mix the smudge color with the brush color\n"
+" 1.0 use only the smudge color"
+msgstr ""
+"Визначає параметри малювання змішаним кольором замість кольору пензля. За "
+"використання розмазування колір поступово зливатиметься з кольором ділянки "
+"малюнка, на якій відбувається малювання.\n"
+" 0,0 — не використовувати розмазування\n"
+" 0,5 — змішувати розмазаний колір з кольором пензля\n"
+" 1,0 — використовувати лише розмазаний колір"
+
+#: ../brushlib/brushsettings.py:67
+msgid "smudge length"
+msgstr "ширина розмазування"
+
+#: ../brushlib/brushsettings.py:67
+msgid ""
+"This controls how fast the smudge color becomes the color you are painting "
+"on.\n"
+"0.0 immediately change the smudge color\n"
+"1.0 never change the smudge color"
+msgstr ""
+"Визначає швидкість злиття кольору розмазування з кольором ділянки полотна, "
+"на якій ви малюєте.\n"
+"0,0 — негайна зміна кольору розмазування\n"
+"1,0 — без зміни кольору розмазування"
+
+#: ../brushlib/brushsettings.py:68
+msgid "eraser"
+msgstr "гумка"
+
+#: ../brushlib/brushsettings.py:68
+msgid ""
+"how much this tool behaves like an eraser\n"
+" 0.0 normal painting\n"
+" 1.0 standard eraser\n"
+" 0.5 pixels go towards 50% transparency"
+msgstr ""
+"визначає подібність поведінки цього інструменту до справжньої гумки\n"
+" 0,0 — звичайне малювання\n"
+" 1,0 — стандартна гумка\n"
+" 0,5 — малювання пікселями з 50% прозорості"
+
+#: ../brushlib/brushsettings.py:70
+msgid "stroke threshold"
+msgstr "поріг штриха"
+
+#: ../brushlib/brushsettings.py:70
+msgid ""
+"How much pressure is needed to start a stroke. This affects the stroke input "
+"only. Mypaint does not need a minimal pressure to start drawing."
+msgstr ""
+"Визначає порогове значення натиску, потрібне для малювання штриха. Параметр "
+"впливає лише на вхідні дані штриха. Додаток «Мій пензель» не використовує "
+"даних щодо мінімального натиску для визначення малювання."
+
+#: ../brushlib/brushsettings.py:71
+msgid "stroke duration"
+msgstr "тривалість штриха"
+
+#: ../brushlib/brushsettings.py:71
+msgid ""
+"How far you have to move until the stroke input reaches 1.0. This value is "
+"logarithmic (negative values will not inverse the process)."
+msgstr ""
+"Визначає відстань, на яку слід просунути вказівник, щоб інтенсивність штриха "
+"досягла 1,0. Значення у логарифмічній шкалі (від'ємні значення не даватимуть "
+"від'ємних відстаней)."
+
+#: ../brushlib/brushsettings.py:72
+msgid "stroke hold time"
+msgstr "час утримування штриха"
+
+#: ../brushlib/brushsettings.py:72
+msgid ""
+"This defines how long the stroke input stays at 1.0. After that it will "
+"reset to 0.0 and start growing again, even if the stroke is not yet "
+"finished.\n"
+"2.0 means twice as long as it takes to go from 0.0 to 1.0\n"
+"9.9 and bigger stands for infinite"
+msgstr ""
+"Визначає тривалість періоду, протягом якого значення вхідних даних штриха "
+"залишатиметься рівним 1,0. Після завершення цього періоду, інтенсивність "
+"знову буде скинуто до нульового значення (малювання розпочнеться з початку), "
+"навіть якщо малювання штриха ще не завершено.\n"
+"Значення 2,0 означає подвійну тривалість переходу від 0,0 до 1,0\n"
+"9,9 та більші значення відповідають нескінченності"
+
+#: ../brushlib/brushsettings.py:73
+msgid "custom input"
+msgstr "нетипові вхідні дані"
+
+#: ../brushlib/brushsettings.py:73
+msgid ""
+"Set the custom input to this value. If it is slowed down, move it towards "
+"this value (see below). The idea is that you make this input depend on a "
+"mixture of pressure/speed/whatever, and then make other settings depend on "
+"this 'custom input' instead of repeating this combination everywhere you "
+"need it.\n"
+"If you make it change 'by random' you can generate a slow (smooth) random "
+"input."
+msgstr ""
+"Встановлює вказане значення нетипових вхідних даних. Сповільнення "
+"призводитиме до повернення до вказаного значення (див. нижче). Таким чином, "
+"ви можете встановити залежність вхідних даних від комплексу натиск/швидкість/"
+"інші параметри, а потім встановити залежність цього комплексу від «нетипових "
+"вхідних даних», замість заміни параметрів на цей комплекс у потрібних "
+"місцях.\n"
+"Якщо ви оберете випадкову зміну, ви зможете отримати повільнішу (плавнішу) "
+"випадкову зміну вхідних даних."
+
+#: ../brushlib/brushsettings.py:74
+msgid "custom input filter"
+msgstr "нетиповий фільтр вхідних даних"
+
+#: ../brushlib/brushsettings.py:74
+msgid ""
+"How slow the custom input actually follows the desired value (the one "
+"above). This happens at brushdab level (ignoring how much time has past, if "
+"brushdabs do not depend on time).\n"
+"0.0 no slowdown (changes apply instantly)"
+msgstr ""
+"Визначає швидкість набуття нетиповими вхідними значеннями бажаного значення "
+"(визначеного вище). Зміна відбуватиметься на рівні мазків (з уникненням "
+"часового параметра, якщо визначення мазків не залежить від часу).\n"
+"0,0 — без сповільнення (негайне застосування змін)"
+
+#: ../brushlib/brushsettings.py:76
+msgid "elliptical dab: ratio"
+msgstr "еліптичний мазок: коефіцієнт стискання"
+
+#: ../brushlib/brushsettings.py:76
+msgid ""
+"aspect ratio of the dabs; must be >= 1.0, where 1.0 means a perfectly round "
+"dab. TODO: linearize? start at 0.0 maybe, or log?"
+msgstr ""
+"співвідношення сторін мазків; значення >= 1,0, де 1,0 відповідає круговому "
+"мазку. РЕАЛІЗУВАТИ: лінеаризація? починати з 0,0 або використовувати "
+"логарифмічні значення?"
+
+#: ../brushlib/brushsettings.py:77
+msgid "elliptical dab: angle"
+msgstr "еліптичний мазок: кут"
+
+#: ../brushlib/brushsettings.py:77
+msgid ""
+"this defines the angle by which eliptical dabs are tilted\n"
+" 0.0 horizontal dabs\n"
+" 45.0 45 degrees, turned clockwise\n"
+" 180.0 horizontal again"
+msgstr ""
+"визначає нахил великої півосі еліптичних мазків\n"
+" 0,0 — горизонтальні мазки\n"
+" 45,0 — мазки, нахилені на 45 градусів за годинниковою стрілкою\n"
+" 180,0 — горизонтальні мазки"
+
+#: ../brushlib/brushsettings.py:78
+msgid "direction filter"
+msgstr "фільтр напрямку"
+
+#: ../brushlib/brushsettings.py:78
+msgid ""
+"a low value will make the direction input adapt more quickly, a high value "
+"will make it smoother"
+msgstr ""
+"низьке значення цього параметра призводитиме до швидшого встановлення "
+"відповідності за вхідними даними напрямку; вище значення надасть вам змогу "
+"малювати плавніші лінії"
+
+#: ../gui/backgroundwindow.py:22
+msgid "save as default"
+msgstr "зберегти як типовий"
+
+#: ../gui/backgroundwindow.py:24
+msgid "Background"
+msgstr "Тло"
+
+#: ../gui/backgroundwindow.py:38
+msgid "Pattern"
+msgstr "Візерунок"
+
+#: ../gui/backgroundwindow.py:45 ../gui/colorselectionwindow.py:25
+#: ../gui/drawwindow.py:113
+msgid "Color"
+msgstr "Колір"
+
+#: ../gui/backgroundwindow.py:51
+msgid "add color to patterns"
+msgstr "додати колір до візерунків"
+
+#: ../gui/backgroundwindow.py:123
+#, python-format
+msgid ""
+"The background %s was ignored because it has an alpha channel. Please remove "
+"it."
+msgstr ""
+"Тло %s було проігноровано, оскільки воно містить канал прозорості. Будь "
+"ласка, вилучіть цей канал."
+
+#: ../gui/backgroundwindow.py:127
+#, python-format
+msgid ""
+"The background %s was ignored because it has the wrong size. Only (N*%d)x(M*%"
+"d) is supported."
+msgstr ""
+"Тло %s було проігноровано через помилкову розмірність. Підтримується лише "
+"розмірність (N*%d)⨯(M*%d)."
+
+#: ../gui/brushcreationwidget.py:34 ../gui/document.py:76
+msgid "Clear"
+msgstr "Спорожнити"
+
+#: ../gui/brushcreationwidget.py:43 ../gui/brushcreationwidget.py:188
+msgid "(no name)"
+msgstr "(без назви)"
+
+#: ../gui/brushcreationwidget.py:47
+msgid "Add As New"
+msgstr "додати як новий"
+
+#: ../gui/brushcreationwidget.py:48
+msgid "Rename..."
+msgstr "перейменувати…"
+
+#: ../gui/brushcreationwidget.py:49
+msgid "Remove..."
+msgstr "вилучити…"
+
+#: ../gui/brushcreationwidget.py:50
+msgid "Settings..."
+msgstr "налаштування…"
+
+#: ../gui/brushcreationwidget.py:51
+msgid "Save Settings"
+msgstr "зберегти налаштування"
+
+#: ../gui/brushcreationwidget.py:52
+msgid "Save Preview"
+msgstr "зберегти перегляд"
+
+#: ../gui/brushcreationwidget.py:100 ../gui/brushcreationwidget.py:161
+msgid "No brush selected!"
+msgstr "Не вибрано жодного пензля!"
+
+#: ../gui/brushcreationwidget.py:103
+msgid "Rename Brush"
+msgstr "Перейменувати пензель"
+
+#: ../gui/brushcreationwidget.py:115
+msgid "A brush with this name already exists!"
+msgstr "Пензель з такою назвою вже існує!"
+
+#: ../gui/brushcreationwidget.py:142 ../gui/brushcreationwidget.py:153
+msgid "No brush selected, please use \"add as new\" instead."
+msgstr ""
+"Не позначено жодного пензля, будь ласка, скористайтеся пунктом «Додати як "
+"новий»."
+
+#: ../gui/brushcreationwidget.py:163
+msgid "Really delete brush from disk?"
+msgstr "Бажаєте вилучити цей пензель?"
+
+#: ../gui/brushmanager.py:26
+msgid "default"
+msgstr "типовий"
+
+#: ../gui/brushmanager.py:27
+msgid "deleted"
+msgstr "вилучено"
+
+#: ../gui/brushmanager.py:28
+msgid "favorites"
+msgstr "улюблене"
+
+#: ../gui/brushmanager.py:29
+msgid "ink"
+msgstr "чорнило"
+
+#: ../gui/brushmanager.py:30
+msgid "classic"
+msgstr "класичне"
+
+#: ../gui/brushmanager.py:31
+msgid "experimental"
+msgstr "експериментальне"
+
+#: ../gui/brushselectionwindow.py:21
+msgid "Brush selection"
+msgstr "Вибір пензля"
+
+#: ../gui/brushselectionwindow.py:35 ../gui/drawwindow.py:110
+msgid "Edit"
+msgstr "Змінити"
+
+#: ../gui/brushselectionwindow.py:165
+msgid "Right click on group to modify"
+msgstr "Клацніть правою на групі, щоб змінити її"
+
+#: ../gui/brushselectionwindow.py:293
+msgid "New group..."
+msgstr "Створити групу…"
+
+#: ../gui/brushselectionwindow.py:295
+msgid "Rename group..."
+msgstr "Перейменувати групу…"
+
+#: ../gui/brushselectionwindow.py:296
+msgid "Delete group..."
+msgstr "Вилучити групу…"
+
+#: ../gui/brushselectionwindow.py:310
+msgid "Create group"
+msgstr "Створити групу"
+
+#: ../gui/brushselectionwindow.py:315
+msgid "Rename group"
+msgstr "Перейменувати групу"
+
+#: ../gui/brushselectionwindow.py:321
+msgid "A group with this name already exists!"
+msgstr "Група з такою назвою вже існує!"
+
+#: ../gui/brushselectionwindow.py:324
+#, python-format
+msgid "Really delete group %s?"
+msgstr "Бажаєте вилучити групу %s?"
+
+#: ../gui/brushselectionwindow.py:327
+msgid "This group can not be deleted (try to make it empty first)."
+msgstr "Цю групу не можна вилучити (спробуйте спершу її спорожнити)."
+
+#: ../gui/brushsettingswindow.py:22
+msgid "Brush settings"
+msgstr "Параметри пензля"
+
+#: ../gui/brushsettingswindow.py:28
+msgid "Live update the last canvas stroke"
+msgstr "інтерактивне оновлення останнього штриха на полотні"
+
+#: ../gui/brushsettingswindow.py:64
+msgid "No additional configuration"
+msgstr "Без додаткового налаштування"
+
+#: ../gui/brushsettingswindow.py:69 ../gui/brushsettingswindow.py:117
+msgid "Add input values mapping"
+msgstr "Додати відповідність вхідних значень"
+
+#: ../gui/brushsettingswindow.py:119
+msgid "Modify input values mapping"
+msgstr "Змінити відповідність вхідних значень"
+
+#: ../gui/colorsamplerwindow.py:816
+msgid "RGB"
+msgstr "RGB"
+
+#: ../gui/colorsamplerwindow.py:817
+msgid "HSV"
+msgstr "HSV"
+
+#: ../gui/colorsamplerwindow.py:819
+msgid "Colors history"
+msgstr "Журнал кольорів"
+
+#: ../gui/colorsamplerwindow.py:823 ../gui/functionwindow.py:145
+msgid "Details"
+msgstr "Подробиці"
+
+#: ../gui/colorsamplerwindow.py:833
+msgid "Harmonies"
+msgstr "Гармонії"
+
+#: ../gui/colorsamplerwindow.py:835
+msgid "Analogous"
+msgstr "Аналог"
+
+#: ../gui/colorsamplerwindow.py:836
+msgid "Complimentary color"
+msgstr "Додатковий колір"
+
+#: ../gui/colorsamplerwindow.py:837
+msgid "Split complimentary"
+msgstr "Додатковий суміщений"
+
+#: ../gui/colorsamplerwindow.py:838
+msgid "Double complimentary"
+msgstr "Подвійне доповнення"
+
+#: ../gui/colorsamplerwindow.py:839
+msgid "Square"
+msgstr "Квадрат"
+
+#: ../gui/colorsamplerwindow.py:840
+msgid "Triadic"
+msgstr "Тріада"
+
+#: ../gui/colorsamplerwindow.py:842
+msgid "Select harmonies"
+msgstr "Вибір гармонії"
+
+#: ../gui/colorsamplerwindow.py:845
+msgid "Change value/saturation"
+msgstr "Змінити значення/насиченість"
+
+#: ../gui/colorsamplerwindow.py:848
+msgid "Blend each color to opposite"
+msgstr "Перейти від всіх кольорів до протилежних"
+
+#: ../gui/colorsamplerwindow.py:850
+msgid "Blend each color to negative"
+msgstr "Перейти від всіх кольорів до негативних"
+
+#: ../gui/colorsamplerwindow.py:914
+msgid "MyPaint color selector"
+msgstr "Вибір кольору MyPaint"
+
+#: ../gui/dialogs.py:37 ../gui/layerswindow.py:224
+msgid "Name"
+msgstr "Назва"
+
+#: ../gui/document.py:60
+msgid "Undo"
+msgstr "Вернути"
+
+#: ../gui/document.py:61
+msgid "Redo"
+msgstr "Повторити"
+
+#: ../gui/document.py:63
+msgid "Brighter"
+msgstr "Яскравіше"
+
+#: ../gui/document.py:64
+msgid "Smaller"
+msgstr "Менше"
+
+#: ../gui/document.py:65
+msgid "More Opaque"
+msgstr "Менше прозорості"
+
+#: ../gui/document.py:66
+msgid "Less Opaque"
+msgstr "Більше прозорості"
+
+#: ../gui/document.py:67
+msgid "Toggle Eraser Mode"
+msgstr "Перемкнути режим гумки"
+
+#. TODO: make toggle action
+#: ../gui/document.py:68
+msgid "Pick Context (layer, brush and color)"
+msgstr "Взяти контекст (шар, пензель і колір)"
+
+#: ../gui/document.py:70
+msgid "Darker"
+msgstr "Темніше"
+
+#: ../gui/document.py:71
+msgid "Bigger"
+msgstr "Більше"
+
+#. Context actions are also added in init_context_actions
+#: ../gui/document.py:74
+msgid "Save to Most Recently Restored"
+msgstr "Зберегти до попередньої відновленої"
+
+#: ../gui/document.py:77
+msgid "Copy to Clipboard"
+msgstr "Скопіювати до буфера"
+
+#: ../gui/document.py:78
+msgid "Paste Clipboard (Replace Layer)"
+msgstr "Вставити вміст буфера (Замістити шар)"
+
+#: ../gui/document.py:79
+msgid "Select Layer at Cursor"
+msgstr "Позначити шар під вказівником"
+
+#: ../gui/document.py:80
+msgid "Next (above current)"
+msgstr "Наступний (над поточним)"
+
+#: ../gui/document.py:81
+msgid "Next (below current)"
+msgstr "Наступний (під поточним)"
+
+#: ../gui/document.py:82
+msgid "New (above current)"
+msgstr "Створити (над поточним)"
+
+#: ../gui/document.py:83
+msgid "New (below current)"
+msgstr "Створити (під поточним)"
+
+#: ../gui/document.py:84
+msgid "Merge Down"
+msgstr "Об'єднати з нижнім"
+
+#: ../gui/document.py:85
+msgid "Remove"
+msgstr "Вилучити"
+
+#: ../gui/document.py:86
+msgid "Increase Layer Opacity"
+msgstr "Зменшити прозорість шару"
+
+#: ../gui/document.py:87
+msgid "Decrease Layer Opacity"
+msgstr "Збільшити прозорість шару"
+
+#: ../gui/document.py:89
+msgid "Shortcuts"
+msgstr "Скорочення"
+
+#: ../gui/document.py:91
+msgid "Reset (Zoom, Rotation, Mirror)"
+msgstr "Відновити (масштаб, обертання, віддзеркалення)"
+
+#: ../gui/document.py:92
+msgid "Zoom In (at cursor)"
+msgstr "Збільшити (під вказівником)"
+
+#: ../gui/document.py:93
+msgid "Zoom Out"
+msgstr "Зменшити"
+
+#: ../gui/document.py:94
+msgid "Rotate Counterclockwise"
+msgstr "Обернути проти годинникової стрілки"
+
+#: ../gui/document.py:95
+msgid "Rotate Clockwise"
+msgstr "Обернути за годинниковою стрілкою"
+
+#: ../gui/document.py:96
+msgid "Layer Solo"
+msgstr "Лише поточний шар"
+
+#. TODO: make toggle action
+#: ../gui/document.py:97
+msgid "Hide Layers Above Current"
+msgstr "Сховати шари над поточним"
+
+#. name, stock id, label, accelerator, tooltip, callback, default toggle status
+#: ../gui/document.py:104
+msgid "Print Brush Input Values to stdout"
+msgstr "Вивести вхідні значення пензля у стандартний вивід"
+
+#: ../gui/document.py:105
+msgid "Visualize Rendering"
+msgstr "Візуалізувати відтворення"
+
+#: ../gui/document.py:106
+msgid "Disable GTK Double Buffering"
+msgstr "Вимкнути подвійну буферизацію GTK"
+
+#: ../gui/document.py:107
+msgid "Mirror Image"
+msgstr "Віддзеркалити зображення"
+
+#: ../gui/document.py:115
+#, python-format
+msgid "Restore Brush %d"
+msgstr "Відновити пензель %d"
+
+#: ../gui/document.py:117
+#, python-format
+msgid "Save to Brush %d"
+msgstr "Зберегти до пензля %d"
+
+#. name, stock id, label, accelerator, tooltip, callback
+#: ../gui/drawwindow.py:107
+msgid "File"
+msgstr "Файл"
+
+#. FIXME: should do this periodically, not only on quit
+#: ../gui/drawwindow.py:108 ../gui/drawwindow.py:327
+msgid "Quit"
+msgstr "Вийти"
+
+#: ../gui/drawwindow.py:111
+msgid "Preferences..."
+msgstr "Налаштування…"
+
+#: ../gui/drawwindow.py:114
+msgid "Pick Color"
+msgstr "Взяти колір"
+
+#: ../gui/drawwindow.py:115
+msgid "Color History"
+msgstr "Журнал кольорів"
+
+#: ../gui/drawwindow.py:116
+msgid "Color Changer"
+msgstr "Зміна кольорів"
+
+#: ../gui/drawwindow.py:117
+msgid "Color Ring"
+msgstr "Кільце кольорів"
+
+#: ../gui/drawwindow.py:118
+msgid "Color Triangle..."
+msgstr "Трикутник кольорів…"
+
+#: ../gui/drawwindow.py:119
+msgid "Color Sampler..."
+msgstr "Пробник кольорів…"
+
+#: ../gui/drawwindow.py:121
+msgid "Brushkeys"
+msgstr "Пензлі"
+
+#: ../gui/drawwindow.py:122
+msgid "Help!"
+msgstr "Довідка"
+
+#: ../gui/drawwindow.py:124 ../gui/layerswindow.py:338
+msgid "Layers"
+msgstr "Шари"
+
+#: ../gui/drawwindow.py:125
+msgid "Layers..."
+msgstr "Шари…"
+
+#: ../gui/drawwindow.py:126
+msgid "Background..."
+msgstr "Тло…"
+
+#: ../gui/drawwindow.py:128
+msgid "Brush"
+msgstr "Пензель"
+
+#: ../gui/drawwindow.py:129
+msgid "Brush List..."
+msgstr "Список пензлів…"
+
+#: ../gui/drawwindow.py:130
+msgid "Brush Settings..."
+msgstr "Налаштування пензля…"
+
+#: ../gui/drawwindow.py:132 ../gui/drawwindow.py:145
+msgid "Help"
+msgstr "Довідка"
+
+#: ../gui/drawwindow.py:133
+msgid "Where is the Documentation?"
+msgstr "Де взяти документацію?"
+
+#: ../gui/drawwindow.py:134
+msgid "Change the Keyboard Shortcuts?"
+msgstr "Змінити клавіатурні скорочення?"
+
+#: ../gui/drawwindow.py:135
+msgid "About MyPaint"
+msgstr "Про MyPaint"
+
+#: ../gui/drawwindow.py:137
+msgid "Debug"
+msgstr "Зневадження"
+
+#: ../gui/drawwindow.py:138
+msgid "Print Memory Leak Info to stdout (Slow!)"
+msgstr "Вивести дані щодо витоку пам'яті до стандартного виводу (Повільно!)"
+
+#: ../gui/drawwindow.py:139
+msgid "Run Garbage Collector Now"
+msgstr "Розпочати вилучення зайвих даних (сміття) зараз"
+
+#: ../gui/drawwindow.py:141
+msgid "View"
+msgstr "Перегляд"
+
+#: ../gui/drawwindow.py:142
+msgid "Show Menu"
+msgstr "Показати меню"
+
+#: ../gui/drawwindow.py:143
+msgid "Fullscreen"
+msgstr "На повний екран"
+
+#: ../gui/drawwindow.py:144
+msgid "Toggle Subwindows"
+msgstr "Увімкнути/Вимкнути підвікна"
+
+#: ../gui/drawwindow.py:327
+msgid "Really Quit?"
+msgstr "Справді вийти?"
+
+#: ../gui/drawwindow.py:340
+msgid ""
+"Copyright (C) 2005-2010\n"
+"Martin Renold and the MyPaint Development Team"
+msgstr ""
+"© Martin Renold і Команда розробників MyPaint,\n"
+"2005–2010"
+
+#: ../gui/drawwindow.py:344
+msgid ""
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY. See the COPYING file for more details."
+msgstr ""
+"Ця програма є вільним програмним забезпеченням; ви можете поширювати та/або "
+"змінювати її за умов дотримання GNU General Public License у тому вигляді, "
+"що оприлюднений Free Software Foundation; версії 2 цієї Ліцензії, або (якщо "
+"забажаєте) будь-якої випущеної пізніше.\n"
+"\n"
+"Ця програма поширюється у сподіванні, що вона буде корисною, але БЕЗ ЖОДНИХ "
+"ГАРАНТІЙ. Докладніше про це у файлі COPYING."
+
+#: ../gui/drawwindow.py:354 ../gui/drawwindow.py:358 ../gui/drawwindow.py:360
+#: ../gui/drawwindow.py:361 ../gui/drawwindow.py:363 ../gui/drawwindow.py:367
+#: ../gui/drawwindow.py:368 ../gui/drawwindow.py:369
+msgid "programming"
+msgstr "програмування"
+
+#: ../gui/drawwindow.py:355 ../gui/drawwindow.py:364 ../gui/drawwindow.py:365
+#: ../gui/drawwindow.py:366
+msgid "brushes"
+msgstr "пензлі"
+
+#: ../gui/drawwindow.py:356 ../gui/drawwindow.py:362
+msgid "portability"
+msgstr "придатність до портування"
+
+#: ../gui/drawwindow.py:357
+msgid "brushes, programming"
+msgstr "пензлі, програмування"
+
+#: ../gui/drawwindow.py:359
+msgid "patterns, brushes"
+msgstr "візерунки, пензлі"
+
+#: ../gui/drawwindow.py:372
+msgid "desktop icon"
+msgstr "піктограма стільниці"
+
+#: ../gui/drawwindow.py:398
+msgid "Move your mouse over a menu entry, then press the key to assign."
+msgstr ""
+"Щоб призначити скорочення, наведіть вказівник на пункт меню і натисніть "
+"комбінацію клавіш."
+
+#: ../gui/drawwindow.py:400
+msgid ""
+"You can also drag the canvas with the mouse while holding the middle mouse "
+"button or spacebar. Or with the arrow keys.\n"
+"\n"
+"In contrast to earlier versions, scrolling and zooming are harmless now and "
+"will not make you run out of memory. But you still require a lot of memory "
+"if you paint all over while fully zoomed out."
+msgstr ""
+"Крім того, ви можете перетягувати полотно за допомогою вказівника миші, "
+"утримуючи натиснутою середню кнопку миші, клавішу пробілу, або за допомогою "
+"клавіш зі стрілками.\n"
+"\n"
+"На відміну від попередніх версій, дії з гортання та зміни масштабу є "
+"безпечними: витоки пам'яті усунуто, але все ж для малювання з максимальним "
+"рівнем масштабу потрібен значний об'єм пам'яті."
+
+#: ../gui/drawwindow.py:407
+msgid ""
+"This is used to quickly save/restore brush settings using keyboard "
+"shortcuts. You can paint with one hand and change brushes with the other "
+"without interrupting.\n"
+"\n"
+"There are 10 memory slots to hold brush settings.\n"
+"Those are anonymous brushes, they are not visible in the brush selector "
+"list. But they will stay even if you quit. They will also remember the "
+"selected color. In contrast, selecting a normal brush never changes the "
+"color. "
+msgstr ""
+"Використовується для пришвидшення збереження/відновлення параметрів пензлів "
+"за допомогою клавіатурних скорочень. Ви зможете малювати однією рукою і "
+"змінювати пензлі іншою, не перериваючи процесу.\n"
+"\n"
+"Передбачено 10 комірок параметрів пензлів.\n"
+"Пензлі з цих комірок не матимуть назв, їх не буде показано у списку вибору "
+"пензлів, але програма зберігатиме їхні параметри під час виходу з програми. "
+"Запам’ятовуватиметься також і колір пензлів (на відміну від звичайних "
+"пензлів, колір яких не зберігається). "
+
+#: ../gui/drawwindow.py:418
+msgid ""
+"There is a tutorial available on the MyPaint homepage. It explains some "
+"features which are hard to discover yourself.\n"
+"\n"
+"Comments about the brush settings (opaque, hardness, etc.) and inputs "
+"(pressure, speed, etc.) are available as tooltips. Put your mouse over a "
+"label to see them. \n"
+msgstr ""
+"Підручник можна знайти на домашній сторінці MyPaint. У ньому наведено "
+"пояснення щодо деяких можливостей програми, які важко виявити самостійно.\n"
+"\n"
+"Підказки щодо налаштувань пензлів (прозорості, жорсткості тощо) та вхідних "
+"даних (натиску, швидкості тощо) можна переглянути у вікнах підказок. Щоб "
+"переглянути вміст підказок, достатньо навести вказівник на відповідний "
+"елемент інтерфейсу програми. \n"
+
+#: ../gui/filehandling.py:36
+msgid "New"
+msgstr "Створити"
+
+#: ../gui/filehandling.py:37 ../gui/filehandling.py:198
+msgid "Open..."
+msgstr "Відкрити…"
+
+#: ../gui/filehandling.py:38
+msgid "Open Last"
+msgstr "Відкрити останній"
+
+#: ../gui/filehandling.py:39
+msgid "Reload"
+msgstr "Перезавантажити"
+
+#: ../gui/filehandling.py:40
+msgid "Save"
+msgstr "Зберегти"
+
+#: ../gui/filehandling.py:41
+msgid "Save As..."
+msgstr "Зберегти як…"
+
+#: ../gui/filehandling.py:42
+msgid "Save As Scrap"
+msgstr "Зберегти як чернетку"
+
+#: ../gui/filehandling.py:43
+msgid "Open Previous Scrap"
+msgstr "Відкрити попередню чернетку"
+
+#: ../gui/filehandling.py:44
+msgid "Open Next Scrap"
+msgstr "Відкрити наступну чернетку"
+
+#: ../gui/filehandling.py:50
+msgid "Open Recent"
+msgstr "Відкрити недавні"
+
+#: ../gui/filehandling.py:50
+msgid "Open Recent files"
+msgstr "Відкрити недавні файли"
+
+#: ../gui/filehandling.py:89
+msgid "Save..."
+msgstr "Зберегти…"
+
+#. name, patterns, saveopts
+#: ../gui/filehandling.py:101
+msgid "Any format (prefer OpenRaster)"
+msgstr "Будь-який формат (пріоритет OpenRaster)"
+
+#: ../gui/filehandling.py:102 ../gui/filehandling.py:206
+msgid "OpenRaster (*.ora)"
+msgstr "OpenRaster (*.ora)"
+
+#: ../gui/filehandling.py:104
+msgid "PNG transparent (*.png)"
+msgstr "PNG з прозорістю (*.png)"
+
+#: ../gui/filehandling.py:105
+msgid "Multiple PNG transparent (*.XXX.png)"
+msgstr "Серія прозорих PNG (*.XXX.png)"
+
+#: ../gui/filehandling.py:106
+msgid "JPEG 90% quality (*.jpg; *.jpeg)"
+msgstr "JPEG 90% якості (*.jpg; *.jpeg)"
+
+#: ../gui/filehandling.py:127
+#, python-format
+msgid "%d minute"
+msgid_plural "%d minutes"
+msgstr[0] "%d хвилина"
+msgstr[1] "%d хвилини"
+msgstr[2] "%d хвилин"
+
+#: ../gui/filehandling.py:130
+#, python-format
+msgid "%d second"
+msgid_plural "%d seconds"
+msgstr[0] "%d секунда"
+msgstr[1] "%d секунди"
+msgstr[2] "%d секунд"
+
+#: ../gui/filehandling.py:136
+msgid "_Save as Scrap"
+msgstr "_Зберегти як чернетку"
+
+#: ../gui/filehandling.py:142
+#, python-format
+msgid ""
+"<b>%s</b>\n"
+"\n"
+"This will discard %s of unsaved painting."
+msgstr ""
+"<b>%s</b>\n"
+"\n"
+"%s незбереженого малюнка буде скасовано."
+
+#: ../gui/filehandling.py:179
+msgid "Did not save, the canvas is empty."
+msgstr "Не збережено, полотно порожнє."
+
+#. name, patterns
+#: ../gui/filehandling.py:205
+msgid "All Recognized Formats"
+msgstr "Всі формати, які можна розпізнати"
+
+#: ../gui/filehandling.py:207
+msgid "PNG (*.png)"
+msgstr "PNG (*.png)"
+
+#: ../gui/filehandling.py:208
+msgid "JPEG (*.jpg; *.jpeg)"
+msgstr "JPEG (*.jpg; *.jpeg)"
+
+#: ../gui/filehandling.py:384
+#, python-format
+msgid "There are no scrap files named \"%s\" yet."
+msgstr "Файлів чернеток з назвою «%s» ще не існує."
+
+#: ../gui/functionwindow.py:40
+msgid "Base Value"
+msgstr "Основне значення"
+
+#: ../gui/gtkexcepthook.py:118
+msgid "Bug Detected"
+msgstr "Виявлено ваду"
+
+#: ../gui/gtkexcepthook.py:122
+msgid "<big><b>A programming error has been detected.</b></big>"
+msgstr "<big><b>Було виявлено помилку у програмі.</b></big>"
+
+#: ../gui/gtkexcepthook.py:123
+msgid ""
+"It probably isn't fatal, but the details should be reported to the "
+"developers nonetheless."
+msgstr ""
+"Ймовірно, помилка не є критичною, але варто повідомити подробиці щодо неї "
+"розробникам."
+
+#: ../gui/gtkexcepthook.py:138
+msgid "Report..."
+msgstr "Звіт…"
+
+#: ../gui/gtkexcepthook.py:142
+msgid "Details..."
+msgstr "Подробиці…"
+
+#. Show details...
+#: ../gui/gtkexcepthook.py:171
+msgid "Bug Details"
+msgstr "Подробиці щодо вади"
+
+#: ../gui/layerswindow.py:35
+msgid "Layer visibility"
+msgstr "Видимість шару"
+
+#: ../gui/layerswindow.py:219
+msgid "<small>Double click to enter name</small>"
+msgstr "<small>Двічі клацніть, щоб ввести назву</small>"
+
+#: ../gui/layerswindow.py:355
+msgid "Opacity:"
+msgstr "Непрозорість:"
+
+#: ../gui/preferenceswindow.py:26
+msgid "Preferences"
+msgstr "Параметри"
+
+#: ../gui/preferenceswindow.py:46
+msgid "<b><span size=\"large\">Global Pressure Mapping</span></b>"
+msgstr "<b><span size=\"large\">Загальна відповідність тиску</span></b>"
+
+#: ../gui/preferenceswindow.py:59
+msgid ""
+"0.5\n"
+"(mouse button)"
+msgstr ""
+"0.5\n"
+"(кнопка миші)"
+
+#: ../gui/preferenceswindow.py:70
+msgid "Mode for input devices: "
+msgstr "Режим пристроїв введення: "
+
+#: ../gui/preferenceswindow.py:81
+msgid "Paths"
+msgstr "Контури"
+
+#: ../gui/preferenceswindow.py:85
+msgid "<b><span size=\"large\">Save as Scrap</span></b>"
+msgstr "<b><span size=\"large\">Зберегти як чернетку</span></b>"
+
+#: ../gui/preferenceswindow.py:87
+msgid "Path and filename prefix for \"Save Next Scrap\""
+msgstr "Адреса теки на префікс назви файла для «Зберегти наступну чернетку»"
+
+#. add a hint due to a very consfusing error message when there is no space left on device
+#: ../lib/document.py:259
+#, python-format
+msgid ""
+"Unable to save: %s\n"
+"Do you have enough space left on the device?"
+msgstr ""
+"Не вдалося зберегти %s\n"
+"Чи достатньо місця на вашому диску?"
+
+#: ../lib/document.py:261 ../lib/document.py:264
+#, python-format
+msgid "Unable to save: %s"
+msgstr "Не вдалося зберегти: %s"
+
+#: ../lib/document.py:269
+#, python-format
+msgid "File does not exist: %s"
+msgstr "Файла не існує: %s"
+
+#: ../lib/document.py:271
+#, python-format
+msgid "You do not have the necessary permissions to open file: %s"
+msgstr "У вас недостатньо прав для відкриття файла: %s"
+
+#: ../lib/document.py:279
+#, python-format
+msgid "Error while loading: GError %s"
+msgstr "Помилка під час завантаження: GError %s"
+
+#: ../lib/document.py:282
+#, python-format
+msgid "Error while loading: IOError %s"
+msgstr "Помилка під час завантаження: IOError %s"
+
+#: ../lib/document.py:288
+#, python-format
+msgid "Unknown file format extension: %s"
+msgstr "Невідоме розширення формату файлів: %s"

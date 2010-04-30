@@ -387,6 +387,7 @@ class Window(windowing.MainWindow):
             u'Luka Čehovin (sl)\n'
             u'Geuntak Jeong (ko)\n'
             u'Łukasz Lubojański (pl)\n'
+            u'Daniel Korostil (uk)\n'
             )
         
         d.run()
