@@ -128,8 +128,13 @@ class Window(windowing.Dialog):
         if self.applying:
             return
         self.applying = True
-        p = self.cv.points = self.global_pressure_mapping
-        self.cv.queue_draw()
+        self.update_input_mapping()
+        self.update_ui()
+        self.update_input_devices()
+        self.applying = False
+
+    def update_input_mapping(self):
+        p = self.global_pressure_mapping
         if len(p) == 2 and abs(p[0][1]-1.0)+abs(p[1][1]-0.0) < 0.0001:
             # 1:1 mapping (mapping disabled)
             self.app.global_pressure_mapping = None
@@ -145,10 +150,14 @@ class Window(windowing.Dialog):
                 return m.calculate_single_input(pressure)
             self.app.doc.tdw.pressure_mapping = mapping
 
+    def update_ui(self):
+        self.cv.points = self.global_pressure_mapping
         self.prefix_entry.set_text(self.save_scrap_prefix)
-
         self.input_devices_combo.set_active(device_modes.index(self.input_devices_mode))
 
+        self.cv.queue_draw()
+
+    def update_input_devices(self):
         # init extended input devices
         self.pressure_devices = []
         for device in gdk.devices_list():
@@ -189,8 +198,6 @@ class Window(windowing.Dialog):
                         print 'Setting %s mode for "%s"' % (self.input_devices_mode, device.name)
                         device.set_mode(mode)
                     break
-
-        self.applying = False
 
     def input_devices_combo_changed_cb(self, window):
         self.input_devices_mode = self.input_devices_combo.get_active_text()
