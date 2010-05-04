@@ -221,11 +221,12 @@ class Document():
             self.undo()
         self.do(command.SetLayerVisibility(self, visible, layer))
 
-    def set_layer_opacity(self, opacity):
+    def set_layer_opacity(self, opacity, layer=None):
+        """Sets the opacity of a layer. If layer=None, works on the current layer"""
         cmd = self.get_last_command()
         if isinstance(cmd, command.SetLayerOpacity):
             self.undo()
-        self.do(command.SetLayerOpacity(self, opacity))
+        self.do(command.SetLayerOpacity(self, opacity, layer))
 
     def set_background(self, obj):
         # This is not an undoable action. One reason is that dragging
@@ -427,6 +428,7 @@ class Document():
         print '%.3fs save_ora total' % (time.time() - t0)
 
     def load_ora(self, filename):
+        """Loads from an OpenRaster file"""
         print 'load_ora:'
         t0 = time.time()
         tempdir = tempfile.mkdtemp('mypaint')
@@ -495,8 +497,8 @@ class Document():
             self.load_layer_from_pixbuf(pixbuf, x, y)
             layer = self.layers[0]
 
-            layer.opacity = helpers.clamp(opac, 0.0, 1.0)
-            layer.visible = visible
+            self.set_layer_opacity(helpers.clamp(opac, 0.0, 1.0), layer)
+            self.set_layer_visibility(visible, layer)
             print '  %.3fs converting pixbuf to layer format' % (time.time() - t1)
             # strokemap
             fname = a.get('mypaint_strokemap', None)
@@ -505,7 +507,7 @@ class Document():
                     print 'Warning: dropping non-aligned strokemap'
                 else:
                     data = z.read(fname)
-                    self.layers[0].load_strokemap_from_string(data, x, y)
+                    layer.load_strokemap_from_string(data, x, y)
 
         os.rmdir(tempdir)
 
