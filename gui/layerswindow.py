@@ -229,8 +229,8 @@ class LayerWidget(gtk.EventBox):
     def on_visibility_toggled(self, checkbox):
         if not self.callbacks_active:
             return
-        self.layer.visible = not self.layer.visible
-        self.app.doc.tdw.queue_draw()
+        visible = not self.layer.visible
+        self.app.doc.model.set_layer_visibility(visible, self.layer)
 
     def set_selected(self):
         style = self.get_style()
