@@ -215,9 +215,9 @@ class Document():
         arr = helpers.gdkpixbuf2numpy(pixbuf)
         self.do(command.LoadLayer(self, arr, x, y))
 
-    def set_layer_visibility(self, visible, layer=None):
+    def set_layer_visibility(self, visible, layer):
         cmd = self.get_last_command()
-        if isinstance(cmd, command.SetLayerVisibility):
+        if isinstance(cmd, command.SetLayerVisibility) and cmd.layer is layer:
             self.undo()
         self.do(command.SetLayerVisibility(self, visible, layer))
 

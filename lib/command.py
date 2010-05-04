@@ -211,12 +211,12 @@ class MoveLayer(Action):
         self._notify_document_observers()
 
 class SetLayerVisibility(Action):
-    def __init__(self, doc, visible, layer=None):
+    def __init__(self, doc, visible, layer):
         self.doc = doc
         self.new_visibility = visible
-        self.layer = layer if layer else self.doc.layer
+        self.layer = layer
     def redo(self):
-        self.old_visibility = self.doc.layer.visible
+        self.old_visibility = self.layer.visible
         self.layer.visible = self.new_visibility
         self._notify_canvas_observers(self.layer)
         self._notify_document_observers()
