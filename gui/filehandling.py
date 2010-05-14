@@ -40,8 +40,8 @@ class FileHandler(object):
         ('Save',         gtk.STOCK_SAVE, _('Save'), '<control>S', None, self.save_cb),
         ('SaveAs',       gtk.STOCK_SAVE_AS, _('Save As...'), '<control><shift>S', None, self.save_as_cb),
         ('SaveScrap',    None, _('Save As Scrap'), 'F2', None, self.save_scrap_cb),
-        ('PrevScrap',    None, _('Open Previous Scrap'), 'F5', None, self.open_scrap_cb),
-        ('NextScrap',    None, _('Open Next Scrap'), 'F6', None, self.open_scrap_cb),
+        ('PrevScrap',    None, _('Open Previous Scrap'), 'F6', None, self.open_scrap_cb),
+        ('NextScrap',    None, _('Open Next Scrap'), 'F7', None, self.open_scrap_cb),
         ]
         ag = gtk.ActionGroup('FileActions')
         ag.add_actions(file_actions)
