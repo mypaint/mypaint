@@ -17,12 +17,12 @@ speed2_gamma 4.0
 offset_by_random 0.0
 offset_by_speed 0.0
 offset_by_speed_slowness 1.0
-slow_tracking 0.65
-slow_tracking_per_dab 0.8
+slow_tracking 0.0
+slow_tracking_per_dab 0.0
 tracking_noise 0.0
-color_h 0.0
-color_s 0.0
-color_v 0.0
+color_h 0.833333333333
+color_s 0.975806451613
+color_v 0.00946059357595
 change_color_h 0.0
 change_color_l 0.0
 change_color_hsl_s 0.0
@@ -31,7 +31,7 @@ change_color_hsv_s 0.0
 smudge 0.0
 smudge_length 0.5
 eraser 0.0
-stroke_treshold 0.0
+stroke_threshold 0.0
 stroke_duration_logarithmic 1.18
 stroke_holdtime 10.0
 custom_input 0.0

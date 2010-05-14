@@ -4,10 +4,10 @@ version 2
 opaque 1.0
 opaque_multiply 0.0 | pressure (0.000000 0.000000), (0.015000 0.000000), (0.025000 1.000000), (1.000000 1.000000)
 opaque_linearize 0.0
-radius_logarithmic 2.16 | pressure (0.000000 0.000000), (1.000000 0.500000) | speed1 (0.000000 0.000000), (1.000000 -0.210000)
-hardness 0.5 | pressure (0.000000 0.000000), (1.000000 0.050000) | speed1 (0.000000 0.000000), (1.000000 -0.090000)
-dabs_per_basic_radius 0.0
-dabs_per_actual_radius 2.2
+radius_logarithmic 2.5 | pressure (0.000000 -2.325000), (0.452941 0.100000), (0.641176 0.325000), (0.820588 0.850000), (1.000000 2.400000) | speed1 (0.000000 -0.537500), (1.000000 0.600000)
+hardness 0.8 | pressure (0.000000 0.000000), (1.000000 0.050000) | speed1 (0.000000 0.000000), (1.000000 -0.090000)
+dabs_per_basic_radius 2.44
+dabs_per_actual_radius 1.37
 dabs_per_second 0.0
 radius_by_random 0.0
 speed1_slowness 0.04
@@ -17,12 +17,12 @@ speed2_gamma 4.0
 offset_by_random 0.0
 offset_by_speed 0.0
 offset_by_speed_slowness 1.0
-slow_tracking 0.65
+slow_tracking 3.66
 slow_tracking_per_dab 0.8
 tracking_noise 0.0
-color_h 0.0
-color_s 0.0
-color_v 0.0
+color_h 0.463906213906
+color_s 0.471614864202
+color_v 0.466880292973
 change_color_h 0.0
 change_color_l 0.0
 change_color_hsl_s 0.0
@@ -31,7 +31,7 @@ change_color_hsv_s 0.0
 smudge 0.0
 smudge_length 0.5
 eraser 1.0
-stroke_treshold 0.0
+stroke_threshold 0.0
 stroke_duration_logarithmic 4.0
 stroke_holdtime 0.0
 custom_input 0.0
