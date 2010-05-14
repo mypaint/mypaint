@@ -65,7 +65,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.translation_y = 0.0
         self.scale = 1.0
         self.rotation = 0.0
-        self.flipped = False
+        self.mirrored = False
         # only used when forcing translation_x/y aligned to full pixels
         self.translation_subpixel_x = 0.0
         self.translation_subpixel_y = 0.0
@@ -208,7 +208,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         cr.translate(self.translation_x, self.translation_y)
         cr.rotate(self.rotation)
         cr.scale(self.scale, self.scale)
-        if self.flipped:
+        if self.mirrored:
             m = list(cr.get_matrix())
             m[0] = -m[0]
             m[2] = -m[2]
@@ -221,7 +221,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         return cr
 
     def is_translation_only(self):
-        return self.rotation == 0.0 and self.scale == 1.0 and not self.flipped
+        return self.rotation == 0.0 and self.scale == 1.0 and not self.mirrored
 
     def get_cursor_in_model_coordinates(self):
         x, y, modifiers = self.window.get_pointer()
@@ -380,7 +380,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         else:
             self.queue_draw()
 
-    def rotozoom_with_center(self, function, at_pointer=True):
+    def rotozoom_with_center(self, function, at_pointer=False):
         if at_pointer and self.has_pointer and self.last_event_x is not None:
             cx, cy = self.last_event_x, self.last_event_y
         else:
@@ -406,11 +406,11 @@ class TiledDrawWidget(gtk.DrawingArea):
 
     def zoom(self, zoom_step):
         def f(): self.scale *= zoom_step
-        self.rotozoom_with_center(f)
+        self.rotozoom_with_center(f, at_pointer=True)
 
     def set_zoom(self, zoom):
         def f(): self.scale = zoom
-        self.rotozoom_with_center(f)
+        self.rotozoom_with_center(f, at_pointer=True)
 
     def rotate(self, angle_step):
         def f(): self.rotation += angle_step
@@ -420,9 +420,13 @@ class TiledDrawWidget(gtk.DrawingArea):
         def f(): self.rotation = angle
         self.rotozoom_with_center(f)
 
-    def set_flipped(self, flipped):
-        def f(): self.flipped = flipped
-        self.rotozoom_with_center(f, at_pointer=False)
+    def mirror(self):
+        def f(): self.mirrored = not self.mirrored
+        self.rotozoom_with_center(f)
+
+    def set_mirrored(self, mirrored):
+        def f(): self.mirrored = mirrored
+        self.rotozoom_with_center(f)
 
     def start_drag(self, dragfunc):
         self.dragfunc = dragfunc

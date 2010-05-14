@@ -93,6 +93,8 @@ class Document(object):
             ('ZoomOut',      gtk.STOCK_ZOOM_OUT, _('Zoom Out'), 'comma', None, self.zoom_cb),
             ('RotateLeft',   None, _('Rotate Counterclockwise'), None, None, self.rotate_cb),
             ('RotateRight',  None, _('Rotate Clockwise'), None, None, self.rotate_cb),
+            ('MirrorHorizontal', None, _('Mirror Horizontal'), 'i', None, self.mirror_horizontal_cb),
+            ('MirrorVertical', None, _('Mirror Vertical'), 'u', None, self.mirror_vertical_cb),
             ('SoloLayer',    None, _('Layer Solo'), 'Home', None, self.solo_layer_cb), # TODO: make toggle action
             ('ToggleAbove',  None, _('Hide Layers Above Current'), 'End', None, self.toggle_layers_above_cb), # TODO: make toggle action
         ]
@@ -104,7 +106,6 @@ class Document(object):
             ('PrintInputs', None, _('Print Brush Input Values to stdout'), None, None, self.print_inputs_cb),
             ('VisualizeRendering', None, _('Visualize Rendering'), None, None, self.visualize_rendering_cb),
             ('NoDoubleBuffereing', None, _('Disable GTK Double Buffering'), None, None, self.no_double_buffering_cb),
-            ('Flip', None, _('Mirror Image'), 'i', None, self.flip_cb),
             ]
         ag.add_toggle_actions(toggle_actions)
 
@@ -349,7 +350,6 @@ class Document(object):
         self.tdw.scroll(-dx*3, -dy*3)
 
     def dragfunc_rotate(self, dx, dy):
-        self.tdw.scroll(-dx, -dy)
         self.tdw.rotate(2*math.pi*dx/300.0)
 
     #def dragfunc_rotozoom(self, dx, dy):
@@ -415,15 +415,17 @@ class Document(object):
         self.zoom(action.get_name())
     def rotate_cb(self, action):
         self.rotate(action.get_name())
-    def flip_cb(self, action):
-        self.tdw.set_flipped(action.get_active())
+    def mirror_horizontal_cb(self, action):
+        self.tdw.mirror()
+    def mirror_vertical_cb(self, action):
+        self.tdw.rotate(math.pi)
+        self.tdw.mirror()
 
     def reset_view_cb(self, command):
         self.tdw.set_rotation(0.0)
         self.zoomlevel = self.zoomlevel_values.index(1.0)
         self.tdw.set_zoom(1.0)
-        self.tdw.set_flipped(False)
-        self.action_group.get_action('Flip').set_active(False)
+        self.tdw.set_mirrored(False)
         self.tdw.recenter_document()
 
     # DEBUGGING

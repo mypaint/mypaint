@@ -32,7 +32,8 @@
       <menuitem action='ZoomOut'/>
       <menuitem action='RotateLeft'/>
       <menuitem action='RotateRight'/>
-      <menuitem action='Flip'/>
+      <menuitem action='MirrorHorizontal'/>
+      <menuitem action='MirrorVertical'/>
       <separator/>
       <menuitem action='SoloLayer'/>
       <menuitem action='ToggleAbove'/>
