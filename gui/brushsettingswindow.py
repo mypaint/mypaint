@@ -105,8 +105,8 @@ class Window(windowing.SubWindow):
 
         self.relabel_buttons()
         #self.mode_changed_cb(mode_sel)
-        self.show_all()
-        self.set_no_show_all(True)
+        top_vbox.show_all()
+        top_vbox.set_no_show_all(True)
         mode_sel.set_active(0)
 
     def mode_changed_cb(self, widget):
