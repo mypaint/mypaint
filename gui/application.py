@@ -10,7 +10,7 @@ import os
 from os.path import join
 import gtk, gobject
 gdk = gtk.gdk
-from lib import brush
+from lib import brush, helpers
 import filehandling, keyboard, brushmanager, windowing, document
 
 ## TODO: move all window sizing stuff to windowing module
@@ -134,18 +134,17 @@ class Application: # singleton
     def save_settings(self):
         """Saves the current settings to persistent storage."""
         def save_config():
-            f = open(join(self.confpath, 'settings.conf'), 'w')
-            p = self.preferences
-            print >>f, 'global_pressure_mapping =', p['input.global_pressure_mapping']
-            print >>f, 'save_scrap_prefix =', repr(p['saving.scrap_prefix'])
-            print >>f, 'input_devices_mode =', repr(p['input.device_mode'])
+            settingspath = join(self.confpath, 'settings.json')
+            jsonstr = helpers.json_dumps(self.preferences)
+            f = open(settingspath, 'w')
+            f.write(jsonstr)
             f.close()
         save_config()
 
     def load_settings(self):
         '''Loads the settings from persistent storage. Uses defaults if
         not explicitly configured'''
-        def get_config():
+        def get_legacy_config():
             dummyobj = {}
             tmpdict = {}
             settingspath = join(self.confpath, 'settings.conf')
@@ -155,6 +154,10 @@ class Application: # singleton
                 tmpdict['input.device_mode'] = dummyobj['input_devices_mode']
                 tmpdict['input.global_pressure_mapping'] = dummyobj['global_pressure_mapping']
             return tmpdict
+        def get_json_config():
+            settingspath = join(self.confpath, 'settings.json')
+            jsonstr = open(settingspath).read()
+            return helpers.json_loads(jsonstr)
 
         DEFAULT_CONFIG = {
             'saving.scrap_prefix': 'scrap',
@@ -162,7 +165,11 @@ class Application: # singleton
             'input.global_pressure_mapping': [(0.0, 1.0), (1.0, 0.0)],
         }
         self.preferences = DEFAULT_CONFIG
-        self.preferences.update(get_config())
+        try: 
+            user_config = get_json_config()
+        except IOError:
+            user_config = get_legacy_config()
+        self.preferences.update(user_config)
 
     def brush_selected_cb(self, b):
         assert b is not self.brush
