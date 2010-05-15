@@ -70,7 +70,7 @@ class Application: # singleton
 
         self.ui_manager = gtk.UIManager()
 
-        # if we are not installed, use the the icons from the source
+        # if we are not installed, use the icons from the source
         theme = gtk.icon_theme_get_default()
         themedir_src = join(self.datapath, 'desktop/icons')
         theme.prepend_search_path(themedir_src)
@@ -143,7 +143,7 @@ class Application: # singleton
         save_config()
 
     def load_settings(self):
-        '''Loads the settings from peristent storage. Uses defaults if
+        '''Loads the settings from persistent storage. Uses defaults if
         not explicitly configured'''
         def get_config():
             dummyobj = {}
