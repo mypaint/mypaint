@@ -289,6 +289,11 @@ class FileHandler(object):
         filename = self.filename
         prefix = self.get_scrap_prefix()
 
+        # If necessary, create the folder(s) the scraps are stored under
+        prefix_dir = os.path.dirname(prefix)
+        if not os.path.exists(prefix_dir): 
+            os.makedirs(prefix_dir)
+
         number = None
         if filename:
             l = re.findall(re.escape(prefix) + '([0-9]+)', filename)

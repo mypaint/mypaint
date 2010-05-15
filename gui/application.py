@@ -160,7 +160,7 @@ class Application: # singleton
             return helpers.json_loads(jsonstr)
 
         DEFAULT_CONFIG = {
-            'saving.scrap_prefix': 'scrap',
+            'saving.scrap_prefix': '~/MyPaint/scrap',
             'input.device_mode': 'screen',
             'input.global_pressure_mapping': [(0.0, 1.0), (1.0, 0.0)],
         }
