@@ -131,15 +131,6 @@ class Application: # singleton
 
         gobject.idle_add(at_application_start)
 
-    def init_brush_adjustments(self, ):
-        """Initializes all the brush adjustments for the current brush"""
-        self.brush_adjustment = {}
-        from brushlib import brushsettings
-        for i, s in enumerate(brushsettings.settings_visible):
-            adj = gtk.Adjustment(value=s.default, lower=s.min, upper=s.max, step_incr=0.01, page_incr=0.1)
-            self.brush_adjustment[s.cname] = adj
-
-    #TODO: move out to separate module??
     def save_settings(self):
         """Saves the current settings to persistent storage."""
         def save_config():
@@ -151,8 +142,6 @@ class Application: # singleton
             f.close()
         save_config()
 
-    def apply_setting(self):
-        pass
     def load_settings(self):
         '''Loads the settings from peristent storage. Uses defaults if
         not explicitly configured'''
