@@ -221,7 +221,7 @@ class LayerWidget(gtk.EventBox):
         self.callbacks_active = True
 
     def change_name(self, *ignore):
-        layer_name = dialogs.ask_for_name(self, _("Name"), "")
+        layer_name = dialogs.ask_for_name(self, _("Name"), self.layer.name)
         if layer_name:
             self.layer.name = layer_name
             self.layer_name.set_text(layer_name)
