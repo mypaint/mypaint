@@ -444,8 +444,8 @@ class TiledDrawWidget(gtk.DrawingArea):
         cx_user, cy_user = cr.device_to_user(w/2, h/2)
 
         # note: integer rounding above avoids fractional translation
-        self.translation_x += cx_user - desired_cx_user
-        self.translation_y += cy_user - desired_cy_user
+        self.translation_x += (cx_user - desired_cx_user)*self.scale
+        self.translation_y += (cy_user - desired_cy_user)*self.scale
         self.queue_draw()
 
     def brush_modified_cb(self):

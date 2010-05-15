@@ -92,6 +92,19 @@ class Window(windowing.Dialog):
         self.prefix_entry.connect('changed', self.prefix_entry_changed_cb)
         v.pack_start(self.prefix_entry, expand=False)
 
+        ### View tab
+        view_vbox = gtk.VBox()
+        l = gtk.Label('Default zoom')
+        l.set_alignment(0.0, 0.0)
+        nb.append_page(view_vbox, gtk.Label(_('View'))) 
+        combo = self.defaultzoom_combo = gtk.combo_box_new_text()
+        # Different from doc.zoomlevel_values because we only want a subset
+        self.defaultzoom_values = [0.25, 0.50, 1.0, 2.0]
+        for val in self.defaultzoom_values:
+            combo.append_text('%d%%' % (val*100))
+        combo.connect('changed', self.defaultzoom_combo_changed_cb)
+        view_vbox.pack_start(l, expand=False)
+        view_vbox.pack_start(combo, expand=False)
 
         self.applying = False
         self.load_settings(startup=True)
@@ -144,6 +157,9 @@ class Window(windowing.Dialog):
         self.prefix_entry.set_text(p['saving.scrap_prefix'])
         mode = device_modes.index(p['input.device_mode'])
         self.input_devices_combo.set_active(mode)
+        zoom = self.app.doc.zoomlevel_values[self.app.doc.zoomlevel]
+        zoomlevel = self.defaultzoom_values.index(zoom)
+        self.defaultzoom_combo.set_active(zoomlevel)
 
         self.cv.queue_draw()
 
@@ -190,6 +206,7 @@ class Window(windowing.Dialog):
                         device.set_mode(mode)
                     break
 
+    # Callbacks for widgets that manipulate settings
     def input_devices_combo_changed_cb(self, window):
         mode = self.input_devices_combo.get_active_text()
         self.app.preferences['input.device_mode'] = mode
@@ -202,3 +219,7 @@ class Window(windowing.Dialog):
     def prefix_entry_changed_cb(self, widget):
         self.app.preferences['saving.scrap_prefix'] = widget.get_text()
 
+    def defaultzoom_combo_changed_cb(self, widget):
+        zoomlevel = self.defaultzoom_combo.get_active()
+        zoom = self.defaultzoom_values[zoomlevel]
+        self.app.preferences['view.default_zoom'] = zoom

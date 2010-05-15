@@ -89,6 +89,7 @@ class Application: # singleton
         self.brush = brush.Brush()
 
         self.preferences = {}
+        self.load_settings()
         self.brushmanager = brushmanager.BrushManager(join(datapath, 'brushes'), join(confpath, 'brushes'))
         self.kbm = keyboard.KeyboardManager()
         self.filehandler = filehandling.FileHandler(self)
@@ -163,6 +164,7 @@ class Application: # singleton
             'saving.scrap_prefix': '~/MyPaint/scrap',
             'input.device_mode': 'screen',
             'input.global_pressure_mapping': [(0.0, 1.0), (1.0, 0.0)],
+            'view.default_zoom': 1.0,
         }
         self.preferences = DEFAULT_CONFIG
         try: 
