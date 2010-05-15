@@ -102,10 +102,10 @@ def pixbuf_thumbnail(src, w, h):
 
     w2, h2 = src_w, src_h
     if w2 > w:
+        h2 = h2*w/w2
         w2 = w
-        h2 = h2*w/src_w
     if h2 > h:
-        w2 = w2*h/src_h
+        w2 = w2*h/h2
         h2 = h
     assert w2 <= w and h2 <= h
     src2 = src.scale_simple(w2, h2, gdk.INTERP_BILINEAR)
