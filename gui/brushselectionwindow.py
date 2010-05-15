@@ -149,6 +149,12 @@ class GroupSelector(gtk.DrawingArea):
         self.bm = app.brushmanager
         self.bm.groups_observers.append(self.active_groups_changed_cb)
 
+        self.drag_dest_set(gtk.DEST_DEFAULT_MOTION | gtk.DEST_DEFAULT_DROP,
+                [('LIST_ITEM', gtk.TARGET_SAME_APP, pixbuflist.DRAG_ITEM_NAME)],
+                gdk.ACTION_COPY)
+        self.connect('drag-motion', self.drag_motion_cb)
+        self.connect('drag-data-received', self.drag_data_received_cb)
+
         self.connect("expose-event", self.expose_cb)
         self.connect("button-press-event", self.button_press_cb)
         self.connect("motion-notify-event", self.motion_notify_cb)
@@ -325,3 +331,28 @@ class GroupSelector(gtk.DrawingArea):
             self.bm.delete_group(group)
             if group in self.bm.groups:
                 dialogs.error(self, _('This group can not be deleted (try to make it empty first).'))
+
+    def drag_data_received_cb(self, widget, context, x, y, selection, targetType, time):
+        group = self.group_at(x,y)
+        source = context.get_source_widget()
+        # ensure, that drop comes from BrushList and targets some group
+        if not group or not isinstance(source, BrushList):
+            context.finish(False, False, time)
+            return
+        target = self.bm.groups[group]
+        brush = self.bm.get_brush_by_name(selection.data)
+        if brush in target:
+            source.brushes.remove(brush)
+            changed = source.brushes
+        else:
+            target.append(brush)
+            changed = target
+        for f in self.bm.brushes_observers: f(changed)
+        context.finish(True, False, time)
+
+    def drag_motion_cb(self, widget, context, x, y, time):
+        context.drag_status(gdk.ACTION_COPY, time)
+        old_prelight_group = self.gtkstate_prelight_group
+        self.gtkstate_prelight_group = self.group_at(x,y)
+        if self.gtkstate_prelight_group != old_prelight_group:
+            self.queue_draw()
