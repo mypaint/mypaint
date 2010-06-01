@@ -125,10 +125,10 @@ class ByInputWidget(gtk.VBox):
         c = self.curve_widget = CurveWidget(self.user_changes_cb)
         t.attach(c, 0, 3, 0, 3, gtk.EXPAND | gtk.FILL, gtk.EXPAND | gtk.FILL, 5, 0)
         l1 = gtk.SpinButton(self.scale_y_adj); l1.set_digits(2)
-        l2 = gtk.Label(' 0.0')
+        l2 = gtk.Label('+0.0')
         l3 = gtk.Label()
         def update_negative_scale(*trash):
-            l3.set_text('%.2f' % -self.scale_y_adj.get_value())
+            l3.set_text('%+.2f' % -self.scale_y_adj.get_value())
         self.scale_y_adj.connect('value-changed', update_negative_scale)
         update_negative_scale()
 
