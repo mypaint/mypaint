@@ -12,6 +12,7 @@ typedef struct { int x, y, w, h; } Rect;
 %include "pixops.hpp"
 %include "colorring.hpp"
 %include "colorchanger.hpp"
+%include "fastpng.hpp"
 
 //from "gdkpixbuf2numpy.hpp"
 PyObject * gdkpixbuf_numeric2numpy(PyObject * gdk_pixbuf_pixels_array);

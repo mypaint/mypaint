@@ -32,6 +32,7 @@ if sys.platform == "win32":
 opts.Update(env)
 
 env.ParseConfig('pkg-config --cflags --libs glib-2.0')
+env.ParseConfig('pkg-config --cflags --libs libpng')
 
 env.Append(CXXFLAGS=' -Wall -Wno-sign-compare -Wno-write-strings')
 

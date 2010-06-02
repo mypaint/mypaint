@@ -1,3 +1,4 @@
+#include "png.h"
 #include "Python.h"
 #include "numpy/arrayobject.h"
 #include "../brushlib/brushlib.hpp"
@@ -6,3 +7,4 @@
 #include "colorring.hpp"
 #include "colorchanger.hpp"
 #include "gdkpixbuf2numpy.hpp"
+#include "fastpng.hpp"

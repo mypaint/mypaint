@@ -297,9 +297,9 @@ class Document():
     def render_as_pixbuf(self, *args):
         return pixbufsurface.render_as_pixbuf(self, *args)
 
-    def save_png(self, filename, compression=2, alpha=False, multifile=False):
+    def save_png(self, filename, alpha=False, multifile=False):
         if multifile:
-            self.save_multifile_png(filename, compression)
+            self.save_multifile_png(filename)
         else:
             if alpha:
                 tmp_layer = layer.Layer()
@@ -308,9 +308,10 @@ class Document():
                 pixbuf = tmp_layer.surface.render_as_pixbuf()
             else:
                 pixbuf = self.render_as_pixbuf()
-            pixbuf.save(filename, 'png', {'compression':str(compression)})
+            arr = pixbuf.get_pixels_array()
+            mypaintlib.save_png_fast(filename, arr)
 
-    def save_multifile_png(self, filename, compression=2, alpha=False):
+    def save_multifile_png(self, filename, alpha=False):
         prefix, ext = os.path.splitext(filename)
         # if we have a number already, strip it
         l = prefix.rsplit('.', 1)
@@ -355,8 +356,9 @@ class Document():
         def store_pixbuf(pixbuf, name):
             tmp = join(tempdir, 'tmp.png')
             t1 = time.time()
-            pixbuf.save(tmp, 'png', {'compression':'2'})
-            print '  %.3fs saving %s compression 2' % (time.time() - t1, name)
+            arr = pixbuf.get_pixels_array()
+            mypaintlib.save_png_fast(tmp, arr)
+            print '  %.3fs saving %s' % (time.time() - t1, name)
             z.write(tmp, name)
             os.remove(tmp)
 
