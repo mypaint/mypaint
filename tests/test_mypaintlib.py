@@ -92,16 +92,16 @@ def pngs_equal(a, b, exact=True):
         if alpha:
             figure(1)
             title('Alpha')
-            imshow(im_b[:,:,3])
+            imshow(im_b[:,:,3], interpolation='nearest')
             colorbar()
         figure(2)
         title('Green Error (multiplied with alpha)')
-        imshow(diff[:,:,1])
+        imshow(diff[:,:,1], interpolation='nearest')
         colorbar()
         if alpha:
             figure(3)
             title('Alpha Error')
-            imshow(diff_alpha)
+            imshow(diff_alpha, interpolation='nearest')
             colorbar()
         show()
 
