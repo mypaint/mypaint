@@ -4,7 +4,11 @@ static void png_write_error_callback(png_structp png_save_ptr, png_const_charp e
   // we don't trust libpng to call the error callback only once, so
   // check for already-set error
   if (!PyErr_Occurred()) {
-    PyErr_Format(PyExc_RuntimeError, "Error writing PNG image: %s", error_msg);
+    if (!strcmp(error_msg, "Write Error")) {
+      PyErr_SetFromErrno(PyExc_IOError);
+    } else {
+      PyErr_Format(PyExc_RuntimeError, "Error writing PNG: %s", error_msg);
+    }
   }
   longjmp (png_save_ptr->jmpbuf, 1);
 }
