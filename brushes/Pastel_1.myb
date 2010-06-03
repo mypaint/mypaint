@@ -9,7 +9,7 @@ hardness 0.8 | pressure (0.000000 -0.666667), (0.426471 0.052083), (0.755882 0.0
 dabs_per_basic_radius 3.54
 dabs_per_actual_radius 3.57
 dabs_per_second 0.0
-radius_by_random 0.0
+radius_by_random 1.08
 speed1_slowness 0.04
 speed2_slowness 0.8
 speed1_gamma 4.0
@@ -20,9 +20,9 @@ offset_by_speed_slowness 1.0
 slow_tracking 0.0
 slow_tracking_per_dab 0.0
 tracking_noise 0.0
-color_h 0.113848827594
-color_s 0.384055162613
-color_v 0.944930189975
+color_h 0.0893086896279
+color_s 0.912180919494
+color_v 0.676081483177
 change_color_h 0.0
 change_color_l 0.0
 change_color_hsl_s 0.0

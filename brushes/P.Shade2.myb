@@ -22,7 +22,7 @@ slow_tracking_per_dab 0.0
 tracking_noise 0.0
 color_h 0.0
 color_s 0.0
-color_v 0.0
+color_v 0.00358587014572
 change_color_h 0.0
 change_color_l 0.0
 change_color_hsl_s 0.0
@@ -31,7 +31,7 @@ change_color_hsv_s 0.0
 smudge 0.1
 smudge_length 0.5
 eraser 0.0
-stroke_treshold 0.0
+stroke_threshold 0.0
 stroke_duration_logarithmic 4.0
 stroke_holdtime 0.0
 custom_input 0.0
