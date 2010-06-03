@@ -1,5 +1,3 @@
-# vim: sw=4 ts=4:
-#
 # (c) 2003 Gustavo J A M Carneiro gjc at inescporto.pt
 #     2004-2005 Filip Van Raemdonck
 #
@@ -8,19 +6,20 @@
 #     "The license is whatever you want."
 #
 # This file was downloaded from http://www.sysfs.be/downloads/
-# Minor adaptions 2009 by Martin Renold:
+# Adaptions 2009-2010 by Martin Renold:
 # - let KeyboardInterrupt through
 # - print traceback to stderr before showing the dialog
 # - nonzero exit code when hitting the "quit" button
 # - suppress more dialogs while one is already active
 # - fix Details button when a context in the traceback is None
+# - remove email features
+# - fix lockup with dialog.run(), return to mainloop instead
 # see also http://faq.pygtk.org/index.py?req=show&file=faq20.010.htp
 # (The license is still whatever you want.)
 
 import inspect, linecache, pydoc, sys, traceback
 from cStringIO import StringIO
 from gettext import gettext as _
-from smtplib import SMTP
 
 import pygtk
 pygtk.require ('2.0')
@@ -113,7 +112,6 @@ def _info (exctyp, value, tb):
     gtk.gdk.keyboard_ungrab()
 
     exception_dialog_active = True
-    trace = None
     dialog = gtk.MessageDialog (parent=None, flags=0, type=gtk.MESSAGE_WARNING, buttons=gtk.BUTTONS_NONE)
     dialog.set_title (_("Bug Detected"))
     if gtk.check_version (2, 4, 0) is not None:
@@ -133,40 +131,17 @@ def _info (exctyp, value, tb):
         dialog.set_markup (primary)
         dialog.format_secondary_text (secondary)
 
-    try:
-        email = feedback
-        dialog.add_button (_("Report..."), 3)
-    except NameError:
-        # could ask for an email address instead...
-        pass
     dialog.add_button (_("Details..."), 2)
     dialog.add_button (gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE)
     dialog.add_button (gtk.STOCK_QUIT, 1)
 
-    while True:
-        resp = dialog.run()
-        if resp == 3:
-            if trace == None:
-                trace = analyse (exctyp, value, tb)
-
-            # TODO: prettyprint, deal with problems in sending feedback, &tc
-            try:
-                server = smtphost
-            except NameError:
-                server = 'localhost'
-
-            message = 'From: buggy_application"\nTo: bad_programmer\nSubject: Exception feedback\n\n%s' % trace.getvalue()
-
-            s = SMTP()
-            s.connect (server)
-            s.sendmail (email, (email,), message)
-            s.quit()
-            break
-
-        elif resp == 2:
-            if trace == None:
-                trace = analyse (exctyp, value, tb)
-
+    try:
+        trace = analyse (exctyp, value, tb).getvalue()
+    except:
+        trace = _("Exception while analyzing the exception.")
+        
+    def response_cb(window, resp):
+        if resp == 2:
             # Show details...
             details = gtk.Dialog (_("Bug Details"), dialog,
               gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
@@ -182,7 +157,7 @@ def _info (exctyp, value, tb):
             sw.add (textview)
             details.vbox.add (sw)
             textbuffer = textview.get_buffer()
-            textbuffer.set_text (trace.getvalue())
+            textbuffer.set_text (trace)
 
             monitor = gtk.gdk.screen_get_default ().get_monitor_at_window (dialog.window)
             area = gtk.gdk.screen_get_default ().get_monitor_geometry (monitor)
@@ -199,27 +174,21 @@ def _info (exctyp, value, tb):
             details.destroy()
 
         elif resp == 1 and gtk.main_level() > 0:
-            #gtk.main_quit() - why...? Exit code 0 is bad for IDEs.
-            sys.exit(1)
-            break
-        else:
-            break
+            sys.exit(1) # Exit code is important for IDEs
 
-    dialog.destroy()
-    exception_dialog_active = False
+        else:
+            dialog.destroy()
+            global exception_dialog_active
+            exception_dialog_active = False
+
+    dialog.connect('response', response_cb)
+    #dialog.set_modal(True) # this might actually be contra-productive...
+    dialog.show()
+    # calling dialog.run() here locks everything up in some cases, so
+    # we just return to the main loop instead
+
 
 original_excepthook = sys.excepthook
 sys.excepthook = _info
 exception_dialog_active = False
 
-if __name__ == '__main__':
-    class X (object):
-        pass
-    x = X()
-    x.y = 'Test'
-    x.z = x
-    w = ' e'
-    #feedback = 'developer@bigcorp.comp'
-    #smtphost = 'mx.bigcorp.comp'
-    1, x.z.y, f, w
-    raise Exception (x.z.y + w)
