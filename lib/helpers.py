@@ -24,8 +24,11 @@ except ImportError:
             from json import write as json_dumps, read as json_loads
             print "external python-json"
         except ImportError:
+            try:
                 from simplejson import dumps as json_dumps, loads as json_loads
                 print "external python-simplejson"
+            except ImportError:
+                raise ImportError("Could jot import json. You either need to use python >= 2.6 or install one of python-cjson, python-json or python-simplejson.")
 
 class Rect:
     def __init__(self, x=0, y=0, w=0, h=0):
