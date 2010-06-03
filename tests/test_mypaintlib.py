@@ -49,7 +49,7 @@ def brushPaint():
 def files_equal(a, b):
     return open(a, 'rb').read() == open(b, 'rb').read()
 
-def pngs_equal(a, b, exact=True):
+def pngs_equal(a, b):
     if files_equal(a, b):
         print a, 'and', b, 'are perfectly equal'
         return True
@@ -63,9 +63,7 @@ def pngs_equal(a, b, exact=True):
     if alpha:
         diff_alpha = diff[:,:,3]
 
-    equal = False
-    if not exact:
-        equal = True
+    equal = True
     print a, 'and', b, 'are different, analyzing whether it is just the undefined colors...'
     print 'Average difference (255=white): (R, G, B, A)'
     print mean(mean(diff, 0), 0)
@@ -150,7 +148,7 @@ def docPaint():
     doc.layers[0].surface.save('test_docPaint_a.png')
     doc.layers[0].surface.save('test_docPaint_a1.png')
     # the resulting images will look slightly different because of dithering
-    assert pngs_equal('test_docPaint_a.png', 'test_docPaint_a1.png', exact=False)
+    assert pngs_equal('test_docPaint_a.png', 'test_docPaint_a1.png')
 
     # test save/load
     doc.save('test_f1.ora')
@@ -160,7 +158,7 @@ def docPaint():
     # TODO: fix this one?!
     #assert doc.get_bbox() == doc2.get_bbox()
     doc2.layers[0].surface.save('test_docPaint_b.png')
-    assert pngs_equal('test_docPaint_a.png', 'test_docPaint_b.png', exact=False)
+    assert pngs_equal('test_docPaint_a.png', 'test_docPaint_b.png')
     doc2.save('test_f2.ora')
     #check not possible, because PNGs not exactly equal:
     #assert files_equal('test_f1.ora', 'test_f2.ora')
@@ -170,7 +168,7 @@ def docPaint():
     doc3.load('test_f2.ora')
     assert doc2.get_bbox() == doc3.get_bbox()
     doc3.layers[0].surface.save('test_docPaint_c.png')
-    assert pngs_equal('test_docPaint_b.png', 'test_docPaint_c.png', exact=False) # TODO: exact=True please
+    assert pngs_equal('test_docPaint_b.png', 'test_docPaint_c.png')
     doc2.save('test_f3.ora')
     #check not possible, because PNGs not exactly equal:
     #assert files_equal('test_f2.ora', 'test_f3.ora')
@@ -183,8 +181,8 @@ def docPaint():
     # test for appearance changes (make sure they are intended)
     doc.save('test_docPaint_flat.png', alpha=False)
     doc.save('test_docPaint_alpha.png', alpha=True)
-    assert pngs_equal('test_docPaint_flat.png', 'correct_docPaint_flat.png', exact=True)
-    assert pngs_equal('test_docPaint_alpha.png', 'correct_docPaint_alpha.png', exact=True)
+    assert pngs_equal('test_docPaint_flat.png', 'correct_docPaint_flat.png')
+    assert pngs_equal('test_docPaint_alpha.png', 'correct_docPaint_alpha.png')
 
 from optparse import OptionParser
 parser = OptionParser('usage: %prog [options]')
