@@ -17,6 +17,13 @@ from gettext import ngettext
 from lib import document, helpers
 import drawwindow
 
+SAVE_FORMAT_ANY = 0
+SAVE_FORMAT_ORA = 1
+SAVE_FORMAT_PNGSOLID = 2
+SAVE_FORMAT_PNGTRANS = 3
+SAVE_FORMAT_PNGMULTI = 4
+SAVE_FORMAT_JPEG = 5
+
 # Utility function to work around the fact that gtk FileChooser/FileFilter
 # does not have an easy way to use case insensitive filters
 def get_case_insensitive_glob(string):
@@ -24,6 +31,14 @@ def get_case_insensitive_glob(string):
     ext = string.split('.')[1]
     globlist = ["[%s%s]" % (c.lower(), c.upper()) for c in ext]
     return '*.%s' % ''.join(globlist)
+
+def add_filters_to_dialog(filters, dialog):
+    for name, patterns in filters:
+        f = gtk.FileFilter()
+        f.set_name(name)
+        for p in patterns:
+            f.add_pattern(get_case_insensitive_glob(p))
+        dialog.add_filter(f)
 
 
 class FileHandler(object):
@@ -64,6 +79,26 @@ class FileHandler(object):
         self.active_scrap_filename = None
         self.set_recent_items()
 
+        self.file_filters = [ #(name, patterns)
+        (_("All Recognized Formats"), ("*.ora", "*.png", "*.jpg", "*.jpeg")),
+        (_("OpenRaster (*.ora)"), ("*.ora",)),
+        (_("PNG (*.png)"), ("*.png",)),
+        (_("JPEG (*.jpg; *.jpeg)"), ("*.jpg", "*.jpeg")),
+        ]
+        self.saveformats = [ #(name, extension, options)
+        (_("Any format (prefer OpenRaster)"), None, {}), #0
+        (_("OpenRaster (*.ora)"), '.ora', {}), #1
+        (_("PNG solid with background (*.png)"), '.png', {'alpha': False}), #2
+        (_("PNG transparent (*.png)"), '.png', {'alpha': True}), #3
+        (_("Multiple PNG transparent (*.XXX.png)"), '.png', {'multifile': True}), #4
+        (_("JPEG 90% quality (*.jpg; *.jpeg)"), '.jpg', {'quality': 90}), #5
+        ]
+        self.ext2saveformat = {
+        '.ora': SAVE_FORMAT_ORA, 
+        '.png': SAVE_FORMAT_PNGSOLID, 
+        '.jpeg': SAVE_FORMAT_JPEG, 
+        '.jpg': SAVE_FORMAT_JPEG}
+
     def set_recent_items(self):
         # this list is consumed in open_last_cb
         self.recent_items = [
@@ -93,28 +128,20 @@ class FileHandler(object):
         self.save_dialog = dialog
         dialog.set_default_response(gtk.RESPONSE_OK)
         dialog.set_do_overwrite_confirmation(True)
+        add_filters_to_dialog(self.file_filters, dialog)
 
-        filter2info = {}
-        self.filter2info = filter2info
-
-        filters = [ #name, patterns, saveopts
-        (_("Any format (prefer OpenRaster)"), ("*.ora", "*.png", "*.jpg", "*.jpeg"), ('.ora', {})),
-        (_("OpenRaster (*.ora)"), ("*.ora", ), ('.ora', {})),
-        ("PNG solid with background (*.png)", ("*.png", ), ('.png', {'alpha': False})),
-        (_("PNG transparent (*.png)"), ("*.png", ), ('.png', {'alpha': True})),
-        (_("Multiple PNG transparent (*.XXX.png)"), ("*.png", ), ('.png', {'multifile': True})),
-        (_("JPEG 90% quality (*.jpg; *.jpeg)"), ("*.jpg", "*.jpeg"), ('.jpg', {'quality': 90})),
-        ]
-        for nr, filt in enumerate(filters):
-            name, patterns, saveopts = filt
-            f = gtk.FileFilter()
-            filter2info[f] = saveopts
-            f.set_name(name)
-            for pat in patterns:
-                f.add_pattern(get_case_insensitive_glob(pat))
-            dialog.add_filter(f)
-            if nr == 0:
-                self.save_filter_default = f
+        # Add widget for selecting save format
+        box = gtk.HBox()
+        label = gtk.Label(_('Format to save as:'))
+        label.set_alignment(0.0, 0.0)
+        combo = self.saveformat_combo = gtk.combo_box_new_text()
+        for name, ext, opt in self.saveformats:
+            combo.append_text(name)
+        combo.set_active(0)
+        box.pack_start(label)
+        box.pack_start(combo, expand=False)
+        dialog.set_extra_widget(box)
+        dialog.show_all()
 
     def confirm_destructive_action(self, title='Confirm', question='Really continue?'):
         t = self.doc.model.unsaved_painting_time
@@ -201,18 +228,7 @@ class FileHandler(object):
                                         gtk.STOCK_OPEN, gtk.RESPONSE_OK))
         dialog.set_default_response(gtk.RESPONSE_OK)
 
-        filters = [ #name, patterns
-        (_("All Recognized Formats"), ("*.ora", "*.png", "*.jpg", "*.jpeg")),
-        (_("OpenRaster (*.ora)"), ("*.ora",)),
-        (_("PNG (*.png)"), ("*.png",)),
-        (_("JPEG (*.jpg; *.jpeg)"), ("*.jpg", "*.jpeg")),
-        ]
-        for name, patterns in filters:
-            f = gtk.FileFilter()
-            f.set_name(name)
-            for p in patterns:
-                f.add_pattern(get_case_insensitive_glob(p))
-            dialog.add_filter(f)
+        add_filters_to_dialog(self.file_filters, dialog)
 
         if self.filename:
             dialog.set_filename(self.filename)
@@ -245,7 +261,6 @@ class FileHandler(object):
             dialog_set_filename(self.filename)
         else:
             dialog_set_filename('')
-            dialog.set_filter(self.save_filter_default)
             # choose the most recent save folder
             self.set_recent_items()
             for item in reversed(self.recent_items):
@@ -257,14 +272,27 @@ class FileHandler(object):
                     break
 
         try:
+            # Loop until we have filename with an extension
             while dialog.run() == gtk.RESPONSE_OK:
-
                 filename = dialog.get_filename()
                 name, ext = os.path.splitext(filename)
-                ext_filter, options = self.filter2info.get(dialog.get_filter(), ('ora', {}))
+                saveformat = self.saveformat_combo.get_active()
 
+                # If no explicitly selected format, use the extension to figure it out
+                if saveformat == SAVE_FORMAT_ANY:
+                    if ext:
+                        try: 
+                            saveformat = self.ext2saveformat[ext]
+                        except KeyError:
+                            saveformat = SAVE_FORMAT_ORA
+                    else:
+                            saveformat = SAVE_FORMAT_ORA
+
+                desc, ext_format, options = self.saveformats[saveformat]
+
+                # 
                 if ext:
-                    if ext_filter != ext:
+                    if ext_format != ext:
                         # Minor ugliness: if the user types '.png' but
                         # leaves the default .ora filter selected, we
                         # use the default options instead of those
@@ -275,8 +303,7 @@ class FileHandler(object):
                     self.save_file(filename, **options)
                     break
 
-                # add proper extension
-                filename = name + ext_filter
+                filename = name + ext_format
 
                 # trigger overwrite confirmation for the modified filename
                 dialog_set_filename(filename)
