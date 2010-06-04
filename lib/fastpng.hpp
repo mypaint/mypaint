@@ -1,3 +1,6 @@
+#define PNG_SKIP_SETJMP_CHECK
+#include "png.h"
+
 #ifndef SWIG
 static void png_write_error_callback(png_structp png_save_ptr, png_const_charp error_msg)
 {

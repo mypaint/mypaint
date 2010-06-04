@@ -1,4 +1,3 @@
-#include "png.h"
 #include "Python.h"
 #include "numpy/arrayobject.h"
 #include "../brushlib/brushlib.hpp"
