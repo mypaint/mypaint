@@ -120,6 +120,17 @@ public:
             // vertical stripe
             v = 0.0;
           }
+        } else {
+          // diagonal lines
+          min = ABS(dx+dy);
+          if (ABS(dx-dy) < min) min = ABS(dx-dy);
+          if (min < stripe_width) {
+            h = 0;
+            // x-axis = value, y-axis = saturation
+            v =    dx*v_factor + factor2_func(dx)*v_factor2;
+            s = - (dy*s_factor + factor2_func(dy)*s_factor2);
+            // both at once
+          }
         }
 
         result[i].h = (int)h;
