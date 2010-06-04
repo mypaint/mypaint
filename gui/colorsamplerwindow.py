@@ -654,6 +654,7 @@ def make_spin(min,max, changed_cb):
     adj = gtk.Adjustment(0,min,max, 1,10)
     btn = gtk.SpinButton(adj)
     btn.connect('value-changed', changed_cb)
+    btn.set_sensitive(False)
     return btn
 
 class HSVSelector(gtk.VBox):
