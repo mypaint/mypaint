@@ -40,6 +40,12 @@ def add_filters_to_dialog(filters, dialog):
             f.add_pattern(get_case_insensitive_glob(p))
         dialog.add_filter(f)
 
+def dialog_set_filename(dialog, s):
+    # According to pygtk docu we should use set_filename(),
+    # however doing so removes the selected filefilter.
+    path, name = os.path.split(s)
+    dialog.set_current_folder(path)
+    dialog.set_current_name(name)
 
 class FileHandler(object):
     def __init__(self, app):
@@ -138,10 +144,24 @@ class FileHandler(object):
         for name, ext, opt in self.saveformats:
             combo.append_text(name)
         combo.set_active(0)
+        combo.connect('changed', self.selected_save_format_changed_cb)
         box.pack_start(label)
         box.pack_start(combo, expand=False)
         dialog.set_extra_widget(box)
         dialog.show_all()
+
+    def selected_save_format_changed_cb(self, widget):
+        """When the user changes the selected format to save as in the dialog, 
+        change the extension of the filename (if existing) immediately."""
+        dialog = self.save_dialog
+        filename = dialog.get_filename()
+        if filename:
+            filename, ext = os.path.splitext(filename)
+            if ext:
+                saveformat = self.saveformat_combo.get_active()
+                ext = self.saveformats[saveformat][1]
+                if ext is not None:
+                    dialog_set_filename(dialog, filename+ext)
 
     def confirm_destructive_action(self, title='Confirm', question='Really continue?'):
         t = self.doc.model.unsaved_painting_time
@@ -250,17 +270,10 @@ class FileHandler(object):
             self.init_save_dialog()
         dialog = self.save_dialog
 
-        def dialog_set_filename(s):
-            # According to pygtk docu we should use set_filename(),
-            # however doing so removes the selected filefilter.
-            path, name = os.path.split(s)
-            dialog.set_current_folder(path)
-            dialog.set_current_name(name)
-
         if self.filename:
-            dialog_set_filename(self.filename)
+            dialog_set_filename(dialog, self.filename)
         else:
-            dialog_set_filename('')
+            dialog_set_filename(dialog, '')
             # choose the most recent save folder
             self.set_recent_items()
             for item in reversed(self.recent_items):
@@ -306,7 +319,7 @@ class FileHandler(object):
                 filename = name + ext_format
 
                 # trigger overwrite confirmation for the modified filename
-                dialog_set_filename(filename)
+                dialog_set_filename(dialog, filename)
                 dialog.response(gtk.RESPONSE_OK)
 
         finally:
