@@ -60,6 +60,7 @@ class FileHandler(object):
         ('Reload',       gtk.STOCK_REFRESH, _('Reload'), 'F5', None, self.reload_cb),
         ('Save',         gtk.STOCK_SAVE, _('Save'), '<control>S', None, self.save_cb),
         ('SaveAs',       gtk.STOCK_SAVE_AS, _('Save As...'), '<control><shift>S', None, self.save_as_cb),
+        ('Export',       gtk.STOCK_SAVE_AS, _('Export...'), '<control><shift>E', None, self.save_as_cb),
         ('SaveScrap',    None, _('Save As Scrap'), 'F2', None, self.save_scrap_cb),
         ('PrevScrap',    None, _('Open Previous Scrap'), 'F6', None, self.open_scrap_cb),
         ('NextScrap',    None, _('Open Next Scrap'), 'F7', None, self.open_scrap_cb),
@@ -219,7 +220,7 @@ class FileHandler(object):
             self.app.doc.reset_view_cb(None)
 
     @drawwindow.with_wait_cursor
-    def save_file(self, filename, **options):
+    def save_file(self, filename, export=False, **options):
         try:
             x, y, w, h =  self.doc.model.get_bbox()
             if w == 0 and h == 0:
@@ -228,16 +229,19 @@ class FileHandler(object):
         except document.SaveLoadError, e:
             self.app.message_dialog(str(e),type=gtk.MESSAGE_ERROR)
         else:
-            self.filename = os.path.abspath(filename)
-            print 'Saved to', self.filename
-            gtk.recent_manager_get_default().add_full("file://" + self.filename,
-                    {
-                        'app_name': 'mypaint',
-                        'app_exec': sys.argv[0],
-                        # todo: get mime_type
-                        'mime_type': 'application/octet-stream'
-                    }
-            )
+            if not export:
+                self.filename = os.path.abspath(filename)
+                print 'Saved to', self.filename
+                gtk.recent_manager_get_default().add_full("file://" + self.filename,
+                        {
+                            'app_name': 'mypaint',
+                            'app_exec': sys.argv[0],
+                            # todo: get mime_type
+                            'mime_type': 'application/octet-stream'
+                        }
+                )
+            else:
+                print 'Exported to', os.path.abspath(filename)
 
     def open_cb(self, action):
         if not self.confirm_destructive_action():
@@ -269,7 +273,6 @@ class FileHandler(object):
         if not self.save_dialog:
             self.init_save_dialog()
         dialog = self.save_dialog
-
         if self.filename:
             dialog_set_filename(dialog, self.filename)
         else:
@@ -313,7 +316,11 @@ class FileHandler(object):
                         options = {}
                     assert(filename)
                     dialog.hide()
-                    self.save_file(filename, **options)
+                    if action.get_name() == 'Export':
+                        # Do not change working file
+                        self.save_file(filename, True, **options)
+		    else:
+                        self.save_file(filename, **options)
                     break
 
                 filename = name + ext_format

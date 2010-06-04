@@ -9,6 +9,7 @@
       <separator/>
       <menuitem action='Save'/>
       <menuitem action='SaveAs'/>
+      <menuitem action='Export' />
       <separator/>
       <menuitem action='SaveScrap'/>
       <menuitem action='NextScrap'/>
