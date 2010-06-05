@@ -13,7 +13,7 @@ static void png_write_error_callback(png_structp png_save_ptr, png_const_charp e
       PyErr_Format(PyExc_RuntimeError, "Error writing PNG: %s", error_msg);
     }
   }
-  longjmp (png_save_ptr->jmpbuf, 1);
+  longjmp (png_jmpbuf(png_save_ptr), 1);
 }
 #endif
 
@@ -59,7 +59,7 @@ PyObject * save_png_fast(char * filename, PyObject * arr)
     goto cleanup;
   }
 
-  if (setjmp(png_ptr->jmpbuf)) {
+  if (setjmp(png_jmpbuf(png_ptr))) {
     goto cleanup;
   }
 
