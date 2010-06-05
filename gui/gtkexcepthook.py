@@ -89,8 +89,12 @@ def analyse (exctyp, value, tb):
                 if ttype == tokenize.NEWLINE:
                     break
 
-        trace.write (funcname +
-          inspect.formatargvalues (args, varargs, varkw, lcls, formatvalue=lambda v: '=' + pydoc.text.repr (v)) + '\n')
+        try:
+            details = inspect.formatargvalues (args, varargs, varkw, lcls, formatvalue=lambda v: '=' + pydoc.text.repr (v))
+        except:
+            # seen that one on Windows (actual exception was KeyError: self)
+            details = '(no details)'
+        trace.write (funcname + details + '\n')
         if context is None:
             context = ['<source context missing>\n']
         trace.write (''.join (['    ' + x.replace ('\t', '  ') for x in filter (lambda a: a.strip(), context)]))
@@ -138,7 +142,11 @@ def _info (exctyp, value, tb):
     try:
         trace = analyse (exctyp, value, tb).getvalue()
     except:
-        trace = _("Exception while analyzing the exception.")
+        try:
+            trace = _("Exception while analyzing the exception.") + "\n"
+            trace += analyse_simple (exctyp, value, tb).getvalue()
+        except:
+            trace = _("Exception while analyzing the exception.")
         
     def response_cb(window, resp):
         if resp == 2:
