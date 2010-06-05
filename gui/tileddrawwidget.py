@@ -84,6 +84,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         
         #self.scroll_at_edges = False
         self.pressure_mapping = None
+        self.bad_devices = []
 
     #def set_scroll_at_edges(self, choice):
     #    self.scroll_at_edges = choice
@@ -128,6 +129,16 @@ class TiledDrawWidget(gtk.DrawingArea):
         x, y = cr.device_to_user(event.x, event.y)
         
         pressure = event.get_axis(gdk.AXIS_PRESSURE)
+
+        if pressure is not None and (pressure > 1.0 or pressure < 0.0):
+            if event.device.name not in self.bad_devices:
+                print 'WARNING: device "%s" is reporting bad pressure %+f' % (event.device.name, pressure)
+                self.bad_devices.append(event.device.name)
+            if pressure > 1000.0 or pressure < -1000.0:
+                # infinity: use button state (instead of clamping in brush.hpp)
+                # https://gna.org/bugs/?14709
+                pressure = None
+
         if pressure is None:
             if event.state & gdk.BUTTON1_MASK:
                 pressure = 0.5
