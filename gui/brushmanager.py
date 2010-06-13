@@ -253,6 +253,10 @@ class ManagedBrush(brush.Brush):
         self.settings_mtime = None
         self.preview_mtime = None
 
+        if persistent:
+            # we load the files later, but throw an exception now if they don't exist
+            self.get_fileprefix()
+
     def get_fileprefix(self, saving=False):
         prefix = 'b'
         if os.path.realpath(self.bm.user_brushpath) == os.path.realpath(self.bm.stock_brushpath):
