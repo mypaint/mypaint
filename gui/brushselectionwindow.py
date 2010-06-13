@@ -168,7 +168,7 @@ class GroupSelector(gtk.DrawingArea):
         self.layout = None
         self.gtkstate_prelight_group = None
         self.gtkstate_active_group = None
-        self.set_tooltip_text(_('Right click on group to modify'))
+        self.set_tooltip_text(_('try right click, middle click or Ctrl click'))
 
     def active_groups_changed_cb(self):
         self.queue_draw()
@@ -257,24 +257,27 @@ class GroupSelector(gtk.DrawingArea):
         return self.idx2group.get(i)
 
     def button_press_cb(self, widget, event):
+        if event.type != gdk.BUTTON_PRESS:
+            return # double or tripple click
         group = self.group_at(event.x, event.y)
-        if event.type == gdk._2BUTTON_PRESS or (event.type == gdk.BUTTON_PRESS and event.state & gdk.SHIFT_MASK):
-            # group solo
+
+        if event.button in [1, 2]:
             if not group:
                 return
-            self.bm.set_active_groups([group])
-            for f in self.bm.groups_observers: f()
-        elif event.type != gdk.BUTTON_PRESS:
-            pass # tripple-click or similar
-        elif event.button == 1:
-            if not group:
-                return
-            if group in self.bm.active_groups:
-                self.bm.active_groups.remove(group)
+            if event.state & gdk.CONTROL_MASK or event.state & gdk.SHIFT_MASK or event.button == 2:
+                # toggle group visibility
+                if group in self.bm.active_groups:
+                    self.bm.active_groups.remove(group)
+                else:
+                    self.bm.set_active_groups([group] + self.bm.active_groups)
             else:
-                self.bm.set_active_groups([group] + self.bm.active_groups)
+                # group solo
+                self.bm.set_active_groups([group])
+
             for f in self.bm.groups_observers: f()
+
         elif event.button == 3:
+            # context menu
             self.gtkstate_active_group = group
             self.queue_draw()
             menu = self.context_menu(group)
