@@ -454,7 +454,6 @@ class TiledDrawWidget(gtk.DrawingArea):
         w, h = self.window.get_size()
         cx_user, cy_user = cr.device_to_user(w/2, h/2)
 
-        # note: integer rounding above avoids fractional translation
         self.translation_x += (cx_user - desired_cx_user)*self.scale
         self.translation_y += (cy_user - desired_cy_user)*self.scale
         self.queue_draw()

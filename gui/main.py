@@ -14,15 +14,22 @@ assert gtk.ver >= required, 'You need to upgrade PyGTK, at least version %d.%d.%
 
 from gui import application
 from optparse import OptionParser
+import sys, time
 
 # main entry, called from the "mypaint" script
 def main(datapath, confpath):
 
     parser = OptionParser('usage: %prog [options] [FILE]')
     parser.add_option('-c', '--config', metavar='DIR', default=confpath,
-                    help='use this config directory instead of ~/.mypaint/')
+                    help='use config directory DIR instead of ~/.mypaint/')
+    parser.add_option('-l', '--logfile', metavar='FILE', default=None,
+                    help='redirect python stdout and stderr into FILE')
     options, args = parser.parse_args()
 
+    if options.logfile:
+        print 'Python prints are redirected to', options.logfile, 'after this one.'
+        sys.stdout = sys.stderr = open(options.logfile, 'a', 1)
+        print '--- mypaint log %s ---' % time.strftime('%F %T')
     print 'confpath =', options.config
     app = application.Application(datapath, options.config, args)
 
