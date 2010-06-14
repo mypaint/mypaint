@@ -50,7 +50,8 @@ elif sys.platform == "darwin":
 else:
     # some distros use python2.5-config, others python-config2.5
     try:
-        env.ParseConfig(python + '-config --cflags --ldflags')
+        env.ParseConfig(python + '-config --cflags')
+        env.ParseConfig(python + '-config --ldflags')
     except OSError:
         print 'going to try python-config instead'
         env.ParseConfig('python-config --ldflags')
