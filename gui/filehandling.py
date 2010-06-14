@@ -93,7 +93,7 @@ class FileHandler(object):
         (_("JPEG (*.jpg; *.jpeg)"), ("*.jpg", "*.jpeg")),
         ]
         self.saveformats = [ #(name, extension, options)
-        (_("Any format (prefer OpenRaster)"), None, {}), #0
+        (_("By extension (prefer default format)"), None, {}), #0
         (_("OpenRaster (*.ora)"), '.ora', {}), #1
         (_("PNG solid with background (*.png)"), '.png', {'alpha': False}), #2
         (_("PNG transparent (*.png)"), '.png', {'alpha': True}), #3
@@ -105,6 +105,11 @@ class FileHandler(object):
         '.png': SAVE_FORMAT_PNGSOLID, 
         '.jpeg': SAVE_FORMAT_JPEG, 
         '.jpg': SAVE_FORMAT_JPEG}
+        self.config2saveformat = {
+        'openraster': SAVE_FORMAT_ORA,
+        'jpeg-90%': SAVE_FORMAT_JPEG,
+        'png-solid': SAVE_FORMAT_PNGSOLID,
+        }
 
     def set_recent_items(self):
         # this list is consumed in open_last_cb
@@ -296,13 +301,15 @@ class FileHandler(object):
 
                 # If no explicitly selected format, use the extension to figure it out
                 if saveformat == SAVE_FORMAT_ANY:
+                    cfg = self.app.preferences['saving.default_format']
+                    default_saveformat = self.config2saveformat[cfg]
                     if ext:
                         try: 
                             saveformat = self.ext2saveformat[ext]
                         except KeyError:
-                            saveformat = SAVE_FORMAT_ORA
+                            saveformat = default_saveformat
                     else:
-                            saveformat = SAVE_FORMAT_ORA
+                            saveformat = default_saveformat
 
                 desc, ext_format, options = self.saveformats[saveformat]
 
@@ -371,11 +378,10 @@ class FileHandler(object):
                     maximum = number
             filename = '%s%03d_a' % (prefix, maximum+1)
 
-        #if self.doc.model.is_layered():
-        #    filename += '.ora'
-        #else:
-        #    filename += '.png'
-        filename += '.ora'
+        # Add extension
+        cfg = self.app.preferences['saving.default_format']
+        default_saveformat = self.config2saveformat[cfg]
+        filename += self.saveformats[default_saveformat][1]
 
         assert not os.path.exists(filename)
         self.save_file(filename)

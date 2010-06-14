@@ -13,7 +13,7 @@ gdk = gtk.gdk
 
 from functionwindow import CurveWidget
 from lib import mypaintlib
-import windowing
+import windowing, filehandling
 
 device_modes = ['disabled','screen','window']
 RESPONSE_REVERT = 1
@@ -75,22 +75,32 @@ class Window(windowing.Dialog):
         h.pack_start(combo, expand=True)
         v.pack_start(h, expand=False)
 
-        ### paths tab
-
-        v = gtk.VBox()
-        nb.append_page(v, gtk.Label(_('Paths')))
+        ### Saving tab
+        saving_vbox = gtk.VBox()
+        nb.append_page(saving_vbox, gtk.Label(_('Saving')))
 
         l = gtk.Label()
         l.set_alignment(0.0, 0.0)
         l.set_markup(_('<b><span size="large">Save as Scrap</span></b>'))
-        v.pack_start(l, expand=False, padding=5)
+        saving_vbox.pack_start(l, expand=False, padding=5)
         l = gtk.Label(_('Path and filename prefix for "Save Next Scrap"'))
         l.set_alignment(0.0, 0.0)
-        v.pack_start(l, expand=False)
-
+        saving_vbox.pack_start(l, expand=False)
         self.prefix_entry = gtk.Entry()
         self.prefix_entry.connect('changed', self.prefix_entry_changed_cb)
-        v.pack_start(self.prefix_entry, expand=False)
+        saving_vbox.pack_start(self.prefix_entry, expand=False)
+
+        l = gtk.Label(_('Default file format for saving'))
+        l.set_alignment(0.0, 0.0)
+        combo = self.defaultsaveformat_combo = gtk.combo_box_new_text()
+        self.defaultsaveformat_values = [filehandling.SAVE_FORMAT_ORA, 
+            filehandling.SAVE_FORMAT_PNGSOLID, filehandling.SAVE_FORMAT_JPEG]
+        for saveformat in self.defaultsaveformat_values:
+            format_desc = self.app.filehandler.saveformats[saveformat][0]
+            combo.append_text(format_desc)
+        combo.connect('changed', self.defaultsaveformat_combo_changed_cb)
+        saving_vbox.pack_start(l, expand=False)
+        saving_vbox.pack_start(combo, expand=False)
 
         ### View tab
         view_vbox = gtk.VBox()
@@ -160,6 +170,10 @@ class Window(windowing.Dialog):
         zoom = self.app.doc.zoomlevel_values[self.app.doc.zoomlevel]
         zoomlevel = self.defaultzoom_values.index(zoom)
         self.defaultzoom_combo.set_active(zoomlevel)
+        saveformat_config = p['saving.default_format']
+        saveformat_idx = self.app.filehandler.config2saveformat[saveformat_config]
+        idx = self.defaultsaveformat_values.index(saveformat_idx)
+        self.defaultsaveformat_combo.set_active(idx)
 
         self.cv.queue_draw()
 
@@ -223,3 +237,13 @@ class Window(windowing.Dialog):
         zoomlevel = self.defaultzoom_combo.get_active()
         zoom = self.defaultzoom_values[zoomlevel]
         self.app.preferences['view.default_zoom'] = zoom
+
+    def defaultsaveformat_combo_changed_cb(self, widget):
+        idx = self.defaultsaveformat_combo.get_active()
+        saveformat = self.defaultsaveformat_values[idx]
+        # Reverse lookup
+        for key, val in self.app.filehandler.config2saveformat.iteritems():
+            if val == saveformat:
+                formatstr = key
+        self.app.preferences['saving.default_format'] = formatstr
+

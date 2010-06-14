@@ -165,6 +165,7 @@ class Application: # singleton
             'input.device_mode': 'screen',
             'input.global_pressure_mapping': [(0.0, 1.0), (1.0, 0.0)],
             'view.default_zoom': 1.0,
+            'saving.default_format': 'openraster',
         }
         self.preferences = DEFAULT_CONFIG
         try: 
