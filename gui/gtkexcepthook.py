@@ -148,52 +148,52 @@ def _info (exctyp, value, tb):
         except:
             trace = _("Exception while analyzing the exception.")
         
-    def response_cb(window, resp):
-        if resp == 2:
-            # Show details...
-            details = gtk.Dialog (_("Bug Details"), dialog,
-              gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-              (gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE, ))
-            details.set_property ("has-separator", False)
-
-            textview = gtk.TextView(); textview.show()
-            textview.set_editable (False)
-            textview.modify_font (pango.FontDescription ("Monospace"))
-
-            sw = gtk.ScrolledWindow(); sw.show()
-            sw.set_policy (gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-            sw.add (textview)
-            details.vbox.add (sw)
-            textbuffer = textview.get_buffer()
-            textbuffer.set_text (trace)
-
-            monitor = gtk.gdk.screen_get_default ().get_monitor_at_window (dialog.window)
-            area = gtk.gdk.screen_get_default ().get_monitor_geometry (monitor)
-            try:
-                w = area.width // 1.6
-                h = area.height // 1.6
-            except SyntaxError:
-                # python < 2.2
-                w = area.width / 1.6
-                h = area.height / 1.6
-            details.set_default_size (int (w), int (h))
-
-            details.run()
-            details.destroy()
-
-        elif resp == 1 and gtk.main_level() > 0:
-            sys.exit(1) # Exit code is important for IDEs
-
-        else:
-            dialog.destroy()
-            global exception_dialog_active
-            exception_dialog_active = False
-
-    dialog.connect('response', response_cb)
+    dialog.connect('response', _dialog_response_cb, trace)
     #dialog.set_modal(True) # this might actually be contra-productive...
     dialog.show()
     # calling dialog.run() here locks everything up in some cases, so
     # we just return to the main loop instead
+
+def _dialog_response_cb(dialog, resp, trace):
+    if resp == 2:
+        # Show details...
+        details = gtk.Dialog (_("Bug Details"), dialog,
+          gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+          (gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE, ))
+        details.set_property ("has-separator", False)
+
+        textview = gtk.TextView(); textview.show()
+        textview.set_editable (False)
+        textview.modify_font (pango.FontDescription ("Monospace"))
+
+        sw = gtk.ScrolledWindow(); sw.show()
+        sw.set_policy (gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        sw.add (textview)
+        details.vbox.add (sw)
+        textbuffer = textview.get_buffer()
+        textbuffer.set_text (trace)
+
+        monitor = gtk.gdk.screen_get_default ().get_monitor_at_window (dialog.window)
+        area = gtk.gdk.screen_get_default ().get_monitor_geometry (monitor)
+        try:
+            w = area.width // 1.6
+            h = area.height // 1.6
+        except SyntaxError:
+            # python < 2.2
+            w = area.width / 1.6
+            h = area.height / 1.6
+        details.set_default_size (int (w), int (h))
+
+        details.run()
+        details.destroy()
+
+    elif resp == 1 and gtk.main_level() > 0:
+        sys.exit(1) # Exit code is important for IDEs
+
+    else:
+        dialog.destroy()
+        global exception_dialog_active
+        exception_dialog_active = False
 
 
 original_excepthook = sys.excepthook
