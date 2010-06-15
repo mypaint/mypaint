@@ -17,6 +17,9 @@ from gettext import ngettext
 from lib import document, helpers
 import drawwindow
 
+import zipfile
+import mimetypes
+
 SAVE_FORMAT_ANY = 0
 SAVE_FORMAT_ORA = 1
 SAVE_FORMAT_PNGSOLID = 2
@@ -248,6 +251,30 @@ class FileHandler(object):
             else:
                 print 'Exported to', os.path.abspath(filename)
 
+    def update_preview_cb(self, file_chooser, preview):
+        filename = file_chooser.get_preview_filename()
+        pixbuf = self.get_preview_image(filename)
+        preview.set_from_pixbuf(pixbuf)
+        file_chooser.set_preview_widget_active(pixbuf != None)
+
+    def get_preview_image(self, filename):
+        if filename:
+            if os.path.splitext(filename)[1].lower() == ".ora":
+                ora = zipfile.ZipFile(file(filename))
+                data = ora.read("Thumbnails/thumbnail.png")
+                loader = gtk.gdk.PixbufLoader("png")
+                loader.write(data)
+                loader.close()
+                pixbuf = loader.get_pixbuf()
+                return pixbuf
+            else:
+                try:
+                    #TODO do not scale images smaller than 256x256 up.
+                    pixbuf = gtk.gdk.pixbuf_new_from_file_at_size(filename, 256, 256)
+                    return pixbuf
+                except:
+                    pass
+
     def open_cb(self, action):
         if not self.confirm_destructive_action():
             return
@@ -256,6 +283,10 @@ class FileHandler(object):
                                        (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
                                         gtk.STOCK_OPEN, gtk.RESPONSE_OK))
         dialog.set_default_response(gtk.RESPONSE_OK)
+
+        preview = gtk.Image()
+        dialog.set_preview_widget(preview)
+        dialog.connect("update-preview", self.update_preview_cb, preview)
 
         add_filters_to_dialog(self.file_filters, dialog)
 
@@ -326,7 +357,7 @@ class FileHandler(object):
                     if action.get_name() == 'Export':
                         # Do not change working file
                         self.save_file(filename, True, **options)
-		    else:
+                    else:
                         self.save_file(filename, **options)
                     break
 
