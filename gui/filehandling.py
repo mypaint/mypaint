@@ -261,7 +261,10 @@ class FileHandler(object):
         if filename:
             if os.path.splitext(filename)[1].lower() == ".ora":
                 ora = zipfile.ZipFile(file(filename))
-                data = ora.read("Thumbnails/thumbnail.png")
+                try:
+                    data = ora.read("Thumbnails/thumbnail.png")
+                except KeyError:
+                    return None
                 loader = gtk.gdk.PixbufLoader("png")
                 loader.write(data)
                 loader.close()
