@@ -361,17 +361,22 @@ class Window(windowing.SubWindow):
         add_button = stock_button(gtk.STOCK_ADD)
         move_up_button = stock_button(gtk.STOCK_GO_UP)
         move_down_button = stock_button(gtk.STOCK_GO_DOWN)
+        merge_down_button = stock_button(gtk.STOCK_DND_MULTIPLE)
         del_button = stock_button(gtk.STOCK_DELETE)
 
         add_button.connect('clicked', self.on_layer_add)
         move_up_button.connect('clicked', self.move_layer, 'up')
         move_down_button.connect('clicked', self.move_layer, 'down')
+        merge_down_button.connect('clicked', self.merge_layer_down)
         del_button.connect('clicked', self.on_layer_del)
+
+        merge_down_button.set_tooltip_text(_('Merge Down'))
 
         buttons_hbox = gtk.HBox()
         buttons_hbox.pack_start(add_button)
         buttons_hbox.pack_start(move_up_button)
         buttons_hbox.pack_start(move_down_button)
+        buttons_hbox.pack_start(merge_down_button)
         buttons_hbox.pack_start(del_button)
 
         # Pack and add to toplevel
@@ -423,6 +428,9 @@ class Window(windowing.SubWindow):
             # TODO: avoid calling two actions as this is actually one operation
             doc.move_layer(current_layer_pos, new_layer_pos)
             doc.select_layer(new_layer_pos)
+
+    def merge_layer_down(self, widget):
+        self.app.doc.model.merge_layer_down()
 
     def on_layer_add(self, button):
         doc = self.app.doc.model
