@@ -70,7 +70,7 @@ class KeyboardManager:
         modifiers = event.state & gtk.accelerator_get_default_mod_mask() & ~consumed_modifiers
         # Except that key bindings are always stored in lowercase.
         keyval = gdk.keyval_to_lower(event.keyval)
-        if keyval != event.keyval:
+        if keyval != event.keyval and not event.get_state() & gdk.LOCK_MASK:
             modifiers |= gdk.SHIFT_MASK
         action = self.keymap.get((keyval, modifiers))
         if not action:
