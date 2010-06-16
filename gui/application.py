@@ -10,7 +10,7 @@ import os
 from os.path import join
 import gtk, gobject
 gdk = gtk.gdk
-from lib import brush, helpers
+from lib import brush, helpers, mypaintlib
 import filehandling, keyboard, brushmanager, windowing, document
 
 ## TODO: move all window sizing stuff to windowing module
@@ -52,7 +52,6 @@ CENTRE_STAGE_CONSTRAINTS = (\
     ## > should be when the user first sees it.)
     ## >     -- http://designinginterfaces.com/Center_Stage
 )
-
 
 class Application: # singleton
     """
@@ -131,6 +130,10 @@ class Application: # singleton
                 else:
                     self.filehandler.open_file(fn)
 
+            self.apply_settings()
+            if not self.pressure_devices:
+                print 'No pressure sensitive devices found.'
+
         gobject.idle_add(at_application_start)
 
     def save_settings(self):
@@ -142,6 +145,15 @@ class Application: # singleton
             f.write(jsonstr)
             f.close()
         save_config()
+
+    def apply_settings(self):
+        """Applies the current settings."""
+        self.update_input_mapping()
+        self.update_input_devices()
+        try:
+            self.preferencesWindow.update_ui()
+        except AttributeError:
+            pass
 
     def load_settings(self):
         '''Loads the settings from persistent storage. Uses defaults if
@@ -182,6 +194,65 @@ class Application: # singleton
         for i, s in enumerate(brushsettings.settings_visible):
             adj = gtk.Adjustment(value=s.default, lower=s.min, upper=s.max, step_incr=0.01, page_incr=0.1)
             self.brush_adjustment[s.cname] = adj
+
+    def update_input_mapping(self):
+        p = self.preferences['input.global_pressure_mapping']
+        if len(p) == 2 and abs(p[0][1]-1.0)+abs(p[1][1]-0.0) < 0.0001:
+            # 1:1 mapping (mapping disabled)
+            self.doc.tdw.pressure_mapping = None
+        else:
+            # TODO: maybe replace this stupid mapping by a hard<-->soft slider?
+            m = mypaintlib.Mapping(1)
+            m.set_n(0, len(p))
+            for i, (x, y) in enumerate(p):
+                m.set_point(0, i, x, 1.0-y)
+
+            def mapping(pressure):
+                return m.calculate_single_input(pressure)
+            self.doc.tdw.pressure_mapping = mapping
+
+    def update_input_devices(self):
+        # init extended input devices
+        self.pressure_devices = []
+        for device in gdk.devices_list():
+            #print device.name, device.source
+
+            #if device.source in [gdk.SOURCE_PEN, gdk.SOURCE_ERASER]:
+            # The above contition is True sometimes for a normal USB
+            # Mouse. https://gna.org/bugs/?11215
+            # In fact, GTK also just guesses this value from device.name.
+
+            last_word = device.name.split()[-1].lower()
+            if last_word == 'pad':
+                # Setting the intuos3 pad into "screen mode" causes
+                # glitches when you press a pad-button in mid-stroke,
+                # and it's not a pointer device anyway. But it reports
+                # axes almost identical to the pen and eraser.
+                #
+                # device.name is usually something like "wacom intuos3 6x8 pad" or just "pad"
+                print 'Ignoring "%s" (probably wacom keypad device)' % device.name
+                continue
+            if last_word == 'cursor':
+                # this is a "normal" mouse and does not work in screen mode
+                print 'Ignoring "%s" (probably wacom mouse device)' % device.name
+                continue
+
+            for use, val_min, val_max in device.axes:
+                # Some mice have a third "pressure" axis, but without
+                # minimum or maximum. https://gna.org/bugs/?14029
+                if use == gdk.AXIS_PRESSURE and val_min != val_max:
+                    if 'mouse' in device.name.lower():
+                        # Real fix for the above bug https://gna.org/bugs/?14029
+                        print 'Ignoring "%s" (probably a mouse, but it reports extra axes)' % device.name
+                        continue
+
+                    self.pressure_devices.append(device.name)
+                    modesetting = self.preferences['input.device_mode']
+                    mode = getattr(gdk, 'MODE_' + modesetting.upper())
+                    if device.mode != mode:
+                        print 'Setting %s mode for "%s"' % (modesetting, device.name)
+                        device.set_mode(mode)
+                    break
 
     def brush_selected_cb(self, b):
         assert b is not self.brush
