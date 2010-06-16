@@ -79,7 +79,7 @@ class Widget(gtk.HBox):
 
     def create_brush_cb(self, window):
         b = brushmanager.ManagedBrush(self.bm)
-        b.copy_settings_from(self.app.brush)
+        b.settings_str = self.app.brush.save_to_string()
         b.preview = self.get_preview_pixbuf()
         b.save()
 
@@ -152,7 +152,7 @@ class Widget(gtk.HBox):
         if not b.name:
             dialogs.error(self, _('No brush selected, please use "add as new" instead.'))
             return
-        b.copy_settings_from(self.app.brush)
+        b.settings_str = self.app.brush.save_to_string()
         b.save()
 
     def delete_brush_cb(self, window):

@@ -238,12 +238,13 @@ class BrushManager:
         self.save_brushorder()
 
 
-class ManagedBrush(brush.Brush):
+class ManagedBrush(object):
+    '''Represents a brush, but cannot be selected or painted with directly.'''
     def __init__(self, brushmanager, name=None, persistent=False):
-        brush.Brush.__init__(self)
         self.bm = brushmanager
         self.preview = None
         self.name = name
+        self.settings_str = ''
         self.persistent = persistent
         """If True this brush is stored in the filesystem and 
         not a context/picked brush."""
@@ -312,7 +313,7 @@ class ManagedBrush(brush.Brush):
             self.preview = gdk.Pixbuf(gdk.COLORSPACE_RGB, False, 8, preview_w, preview_h)
             self.preview.fill(0xffffffff) # white
         self.preview.save(prefix + '_prev.png', 'png')
-        open(prefix + '.myb', 'w').write(self.save_to_string())
+        open(prefix + '.myb', 'w').write(self.settings_str)
         self.remember_mtimes()
 
     def load(self):
@@ -332,14 +333,7 @@ class ManagedBrush(brush.Brush):
         """Loads the brush settings/dynamics from disk."""
         prefix = self.get_fileprefix()
         filename = prefix + '.myb'
-        errors = self.load_from_string(open(filename).read())
-        if errors:
-            print '%s:' % filename
-            for line, reason in errors:
-                print line
-                print '==>', reason
-            print
-
+        self.settings_str = open(filename).read()
         self.remember_mtimes()
         self.settings_loaded = True
 

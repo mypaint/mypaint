@@ -94,7 +94,7 @@ class Application: # singleton
         self.filehandler = filehandling.FileHandler(self)
         self.doc = document.Document(self)
 
-        self.brush.copy_settings_from(self.brushmanager.selected_brush)
+        self.set_current_brush(self.brushmanager.selected_brush)
         self.brush.set_color_hsv((0, 0, 0))
         self.brushmanager.selected_brush_observers.append(self.brush_selected_cb)
         self.init_brush_adjustments()
@@ -254,10 +254,13 @@ class Application: # singleton
                         device.set_mode(mode)
                     break
 
+    def set_current_brush(self, managedbrush):
+        self.brush.load_from_string(managedbrush.settings_str)
+
     def brush_selected_cb(self, b):
         assert b is not self.brush
         if b:
-            self.brush.copy_settings_from(b)
+            self.set_current_brush(b)
 
     def hide_window_cb(self, window, event):
         # used by some of the windows
