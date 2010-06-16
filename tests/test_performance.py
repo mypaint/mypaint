@@ -196,6 +196,17 @@ def memory_zoomed_out_5x(gui):
     if False:
         yield None # just to make this function iterator
 
+@gui_test
+def memory_after_startup(gui):
+    gui.wait_for_idle()
+    sleep(1)
+    gui.wait_for_idle()
+    sleep(1)
+    gui.wait_for_idle()
+    print 'result =', open('/proc/self/statm').read().split()[0]
+    if False:
+        yield None # just to make this function iterator
+
 if __name__ == '__main__':
     if len(sys.argv) == 4 and sys.argv[1] == 'SINGLE_TEST_RUN':
         func = all_tests[sys.argv[2]]
