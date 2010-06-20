@@ -929,6 +929,9 @@ class Window(windowing.SubWindow):
         self.app.brush.settings_observers.append(self.brush_modified_cb)
         self.stop_callback = False
 
+        # The first callback notification happens before the window is initialized
+        self.selector.set_color(app.brush.get_color_rgb())
+
     def brush_modified_cb(self):
         self.stop_callback = True
         self.selector.set_color(self.app.brush.get_color_rgb())
@@ -937,6 +940,4 @@ class Window(windowing.SubWindow):
     def on_select(self, color):
         if self.stop_callback:
             return
-        self.app.colorSelectionWindow.set_color_rgb(color)
         self.app.brush.set_color_rgb(color)
-
