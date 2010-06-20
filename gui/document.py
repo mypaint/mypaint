@@ -340,7 +340,7 @@ class Document(object):
             context = bm.contexts[i]
         bm.selected_context = context
         if store:
-            context.copy_settings_from(self.app.brush)
+            context.settings_str = self.app.brush.save_to_string()
             context.preview = bm.selected_brush.preview
             context.save()
         else:
