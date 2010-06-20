@@ -56,26 +56,27 @@ class KeyboardManager:
         # See gtk sourcecode in gtkmenu.c function gtk_menu_key_press,
         # which uses the same code as below when changing an accelerator.
         keymap = gdk.keymap_get_default()
-        # figure out what modifiers went into determing the keyval
-        res = keymap.translate_keyboard_state(event.hardware_keycode, event.state, event.group)
+        # Instead of using event.keyval, we do it the lowlevel way.
+        # Reason: ignoring CAPSLOCK and checking if SHIFT was pressed
+        res = keymap.translate_keyboard_state(event.hardware_keycode, event.state & ~gdk.LOCK_MASK, event.group)
         if not res:
             # PyGTK returns None when gdk_keymap_translate_keyboard_state() returns false.
             # Not sure if this is a bug or a feature - the only time I have seen this
             # happen is when I put my laptop into sleep mode.
             print 'Warning: translate_keyboard_state() returned None. Strange key pressed?'
             return
-        trash1, trash2, trash3, consumed_modifiers = res
+        keyval, trash2, trash3, consumed_modifiers = res
         # We want to ignore irrelevant modifiers like ScrollLock.
         # The stored key binding does not include modifiers that affected its keyval.
         modifiers = event.state & gtk.accelerator_get_default_mod_mask() & ~consumed_modifiers
         # Except that key bindings are always stored in lowercase.
-        keyval = gdk.keyval_to_lower(event.keyval)
-        if keyval != event.keyval and not event.get_state() & gdk.LOCK_MASK:
+        keyval_lower = gdk.keyval_to_lower(keyval)
+        if keyval_lower != keyval:
             modifiers |= gdk.SHIFT_MASK
-        action = self.keymap.get((keyval, modifiers))
+        action = self.keymap.get((keyval_lower, modifiers))
         if not action:
             # try hardcoded keys
-            action = self.keymap2.get((keyval, modifiers))
+            action = self.keymap2.get((keyval_lower, modifiers))
 
         if action:
             def activate():
