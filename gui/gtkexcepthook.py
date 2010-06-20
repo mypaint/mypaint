@@ -116,6 +116,7 @@ def _info (exctyp, value, tb):
     gtk.gdk.keyboard_ungrab()
 
     exception_dialog_active = True
+    # Create the dialog
     dialog = gtk.MessageDialog (parent=None, flags=0, type=gtk.MESSAGE_WARNING, buttons=gtk.BUTTONS_NONE)
     dialog.set_title (_("Bug Detected"))
     if gtk.check_version (2, 4, 0) is not None:
@@ -135,10 +136,33 @@ def _info (exctyp, value, tb):
         dialog.set_markup (primary)
         dialog.format_secondary_text (secondary)
 
-    dialog.add_button (_("Details..."), 2)
     dialog.add_button (gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE)
     dialog.add_button (gtk.STOCK_QUIT, 1)
 
+    # Add an expander with details of the problem to the dialog
+    def expander_cb(expander, *ignore):
+        # Ensures that on deactivating the expander, the dialog is resized down
+        if expander.get_expanded():
+            dialog.set_resizable(True)
+        else:
+            dialog.set_resizable(False)
+    details_expander = gtk.Expander(_("Details..."))
+    details_expander.connect("notify::expanded", expander_cb)
+
+    textview = gtk.TextView(); textview.show()
+    textview.set_editable (False)
+    textview.modify_font (pango.FontDescription ("Monospace"))
+
+    sw = gtk.ScrolledWindow(); sw.show()
+    sw.set_policy (gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+    sw.set_size_request(200, 300)
+    sw.add (textview)
+
+    details_expander.add (sw)
+    details_expander.show_all()
+    dialog.get_content_area().pack_start(details_expander)
+
+    # Get the traceback and set contents of the details
     try:
         trace = analyse (exctyp, value, tb).getvalue()
     except:
@@ -147,7 +171,9 @@ def _info (exctyp, value, tb):
             trace += analyse_simple (exctyp, value, tb).getvalue()
         except:
             trace = _("Exception while analyzing the exception.")
-        
+    textview.get_buffer().set_text (trace)
+
+    # Connect callback and present the dialog
     dialog.connect('response', _dialog_response_cb, trace)
     #dialog.set_modal(True) # this might actually be contra-productive...
     dialog.show()
@@ -155,39 +181,7 @@ def _info (exctyp, value, tb):
     # we just return to the main loop instead
 
 def _dialog_response_cb(dialog, resp, trace):
-    if resp == 2:
-        # Show details...
-        details = gtk.Dialog (_("Bug Details"), dialog,
-          gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-          (gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE, ))
-        details.set_property ("has-separator", False)
-
-        textview = gtk.TextView(); textview.show()
-        textview.set_editable (False)
-        textview.modify_font (pango.FontDescription ("Monospace"))
-
-        sw = gtk.ScrolledWindow(); sw.show()
-        sw.set_policy (gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-        sw.add (textview)
-        details.vbox.add (sw)
-        textbuffer = textview.get_buffer()
-        textbuffer.set_text (trace)
-
-        monitor = gtk.gdk.screen_get_default ().get_monitor_at_window (dialog.window)
-        area = gtk.gdk.screen_get_default ().get_monitor_geometry (monitor)
-        try:
-            w = area.width // 1.6
-            h = area.height // 1.6
-        except SyntaxError:
-            # python < 2.2
-            w = area.width / 1.6
-            h = area.height / 1.6
-        details.set_default_size (int (w), int (h))
-
-        details.run()
-        details.destroy()
-
-    elif resp == 1 and gtk.main_level() > 0:
+    if resp == 1 and gtk.main_level() > 0:
         sys.exit(1) # Exit code is important for IDEs
 
     else:
