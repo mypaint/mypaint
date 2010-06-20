@@ -147,7 +147,8 @@ class TiledDrawWidget(gtk.DrawingArea):
         
         if event.state & gdk.CONTROL_MASK:
             # color picking, do not paint
-            return
+            # Don't simply return; this is a workaround for unwanted lines in https://gna.org/bugs/?16169
+            pressure = 0.0
             
         ### CSS experimental - scroll when touching the edge of the screen in fullscreen mode
         #

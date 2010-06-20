@@ -14,9 +14,6 @@ import cairo
 popup_width = 80
 popup_height = 80
 
-# TODO: end eraser modus when done with picking (or even before starting to pick)
-
-
 class ColorPicker(windowing.PopupWindow):
     outside_popup_timeout = 0
     def __init__(self, app, doc):
