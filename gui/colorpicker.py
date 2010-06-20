@@ -38,7 +38,7 @@ class ColorPicker(windowing.PopupWindow):
         #size = int(self.app.brush.get_actual_radius() * math.sqrt(math.pi))
         #if size < 6: size = 6
         size = 6
-        self.app.colorSelectionWindow.pick_color_at_pointer(size)
+        self.app.pick_color_at_pointer(self, size)
 
     def enter(self):
         self.pick()
