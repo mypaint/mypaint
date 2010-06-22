@@ -351,6 +351,13 @@ class TiledDrawWidget(gtk.DrawingArea):
             self.window.draw_pixbuf(None, surface.pixbuf, 0, 0, int(x), int(y), dither=gdk.RGB_DITHER_MAX)
         else:
             cr.set_source_pixbuf(surface.pixbuf, surface.x, surface.y)
+            pattern = cr.get_source()
+            # Required for ATI drivers, to avoid a slower-than-software fallback
+            # https://gna.org/bugs/?16122 and https://bugs.freedesktop.org/show_bug.cgi?id=28670
+            # (instead we could also provide a RGBA surface; TODO: compare performance?)
+            pattern.set_extend(cairo.EXTEND_PAD)
+            # We could set interpolation mode here (eg nearest neighbour)
+            #pattern.set_filter(cairo.FILTER_FAST)
             cr.paint()
 
         if self.visualize_rendering:
