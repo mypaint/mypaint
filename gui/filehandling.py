@@ -171,7 +171,7 @@ class FileHandler(object):
                 if ext is not None:
                     dialog_set_filename(dialog, filename+ext)
 
-    def confirm_destructive_action(self, title='Confirm', question='Really continue?'):
+    def confirm_destructive_action(self, title=_('Confirm'), question=_('Really continue?')):
         t = self.doc.model.unsaved_painting_time
         if t < 30:
             # no need to ask

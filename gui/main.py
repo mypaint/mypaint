@@ -47,6 +47,8 @@ def main(datapath, confpath):
         gtksettings.set_property('gtk-can-change-accels', True)
 
         import gtkexcepthook
+        func = app.filehandler.confirm_destructive_action
+        gtkexcepthook.quit_confirmation_func = func
         gtk.main()
 
     if options.trace:
@@ -55,3 +57,4 @@ def main(datapath, confpath):
         tracer.runfunc(run)
     else:
         run()
+

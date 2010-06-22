@@ -25,6 +25,12 @@ import pygtk
 pygtk.require ('2.0')
 import gtk, pango
 
+# Function that will be called when the user presses "Quit"
+# Return True to confirm quit, False to cancel
+quit_confirmation_func = None
+
+RESPONSE_QUIT = 1
+
 def analyse_simple (exctyp, value, tb):
     trace = StringIO()
     traceback.print_exception (exctyp, value, tb, None, trace)
@@ -137,7 +143,7 @@ def _info (exctyp, value, tb):
         dialog.format_secondary_text (secondary)
 
     dialog.add_button (gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE)
-    dialog.add_button (gtk.STOCK_QUIT, 1)
+    dialog.add_button (gtk.STOCK_QUIT, RESPONSE_QUIT)
 
     # Add an expander with details of the problem to the dialog
     def expander_cb(expander, *ignore):
@@ -189,12 +195,20 @@ def _info (exctyp, value, tb):
     # we just return to the main loop instead
 
 def _dialog_response_cb(dialog, resp, trace):
-    if resp == 1 and gtk.main_level() > 0:
-        sys.exit(1) # Exit code is important for IDEs
+    global exception_dialog_active
+
+    if resp == RESPONSE_QUIT and gtk.main_level() > 0:
+        if not quit_confirmation_func:
+            sys.exit(1) # Exit code is important for IDEs
+        else:
+            if quit_confirmation_func():
+                sys.exit(1) # Exit code is important for IDEs
+            else:
+                dialog.destroy()
+                exception_dialog_active = False
 
     else:
         dialog.destroy()
-        global exception_dialog_active
         exception_dialog_active = False
 
 
