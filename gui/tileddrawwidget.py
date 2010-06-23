@@ -276,6 +276,7 @@ class TiledDrawWidget(gtk.DrawingArea):
 
         # choose best mipmap
         mipmap_level = max(0, int(ceil(log(1/self.scale,2))))
+        #mipmap_level = max(0, int(floor(log(1.0/self.scale,2)))) # slightly better quality but clearly slower
         mipmap_level = min(mipmap_level, tiledsurface.MAX_MIPMAP_LEVEL)
         cr.scale(2**mipmap_level, 2**mipmap_level)
 
@@ -293,7 +294,11 @@ class TiledDrawWidget(gtk.DrawingArea):
         x1, y1 = int(floor(x1)), int(floor(y1))
         x2, y2 = int(ceil (x2)), int(ceil (y2))
 
-        surface = pixbufsurface.Surface(x1, y1, x2-x1+1, y2-y1+1)
+        # alpha=True is just to get hardware acceleration, we don't
+        # actually use the alpha channel. Speedup factor 3 for
+        # ATI/Radeon Xorg driver (and hopefully others).
+        # TODO: measure effect on pure software rendering
+        surface = pixbufsurface.Surface(x1, y1, x2-x1+1, y2-y1+1, alpha=True)
 
         del x1, y1, x2, y2, w, h
 
@@ -354,10 +359,17 @@ class TiledDrawWidget(gtk.DrawingArea):
             pattern = cr.get_source()
             # Required for ATI drivers, to avoid a slower-than-software fallback
             # https://gna.org/bugs/?16122 and https://bugs.freedesktop.org/show_bug.cgi?id=28670
-            # (instead we could also provide a RGBA surface; TODO: compare performance?)
-            pattern.set_extend(cairo.EXTEND_PAD)
+            # However, when using an alpha channel in the source image
+            # (as we do now) performance is much better without this.
+            #pattern.set_extend(cairo.EXTEND_PAD)
+
             # We could set interpolation mode here (eg nearest neighbour)
-            #pattern.set_filter(cairo.FILTER_FAST)
+            #pattern.set_filter(cairo.FILTER_NEAREST)  # 1.6s
+            #pattern.set_filter(cairo.FILTER_FAST)     # 2.0s
+            #pattern.set_filter(cairo.FILTER_GOOD)     # 3.1s
+            #pattern.set_filter(cairo.FILTER_BEST)     # 3.1s
+            #pattern.set_filter(cairo.FILTER_BILINEAR) # 3.1s
+
             cr.paint()
 
         if self.visualize_rendering:

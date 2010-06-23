@@ -257,10 +257,9 @@ void tile_convert_rgb16_to_rgb8(PyObject * src, PyObject * dst) {
 #ifdef HEAVY_DEBUG
   assert(PyArray_DIM(dst, 0) == TILE_SIZE);
   assert(PyArray_DIM(dst, 1) == TILE_SIZE);
-  assert(PyArray_DIM(dst, 2) == 3);
   assert(PyArray_TYPE(dst) == NPY_UINT8);
   assert(PyArray_ISBEHAVED(dst));
-  assert(dst_arr->strides[1] == 3*sizeof(uint8_t));
+  assert(dst_arr->strides[1] == PyArray_DIM(dst, 2)*sizeof(uint8_t));
   assert(dst_arr->strides[2] ==   sizeof(uint8_t));
 
   assert(PyArray_DIM(src, 0) == TILE_SIZE);
@@ -272,27 +271,52 @@ void tile_convert_rgb16_to_rgb8(PyObject * src, PyObject * dst) {
   assert(src_arr->strides[2] ==   sizeof(uint16_t));
 #endif
 
+  bool dst_has_alpha = PyArray_DIM(dst, 2) == 4;
+
   for (int y=0; y<TILE_SIZE; y++) {
     uint16_t * src_p = (uint16_t*)(src_arr->data + y*src_arr->strides[0]);
     uint8_t  * dst_p = (uint8_t*)(dst_arr->data + y*dst_arr->strides[0]);
-    for (int x=0; x<TILE_SIZE; x++) {
-      uint32_t r, g, b;
-      r = *src_p++;
-      g = *src_p++;
-      b = *src_p++;
+    if (dst_has_alpha) {
+      for (int x=0; x<TILE_SIZE; x++) {
+        uint32_t r, g, b;
+        r = *src_p++;
+        g = *src_p++;
+        b = *src_p++;
 #ifdef HEAVY_DEBUG
-      assert(r<=(1<<15));
-      assert(g<=(1<<15));
-      assert(b<=(1<<15));
+        assert(r<=(1<<15));
+        assert(g<=(1<<15));
+        assert(b<=(1<<15));
 #endif
-
-      // Doing rounding for now.
-      // TODO: error diffusion / dithering? (but watch the performance benchmarks)
-      const uint32_t add = (1<<15)/2;
-
-      *dst_p++ = (r * 255 + add) / (1<<15);
-      *dst_p++ = (g * 255 + add) / (1<<15);
-      *dst_p++ = (b * 255 + add) / (1<<15);
+          
+        // Doing rounding for now.
+        // TODO: error diffusion / dithering? (but watch the performance benchmarks)
+        const uint32_t add = (1<<15)/2;
+          
+        *dst_p++ = (r * 255 + add) / (1<<15);
+        *dst_p++ = (g * 255 + add) / (1<<15);
+        *dst_p++ = (b * 255 + add) / (1<<15);
+        *dst_p++ = 255;
+      }
+    } else {
+      for (int x=0; x<TILE_SIZE; x++) {
+        uint32_t r, g, b;
+        r = *src_p++;
+        g = *src_p++;
+        b = *src_p++;
+#ifdef HEAVY_DEBUG
+        assert(r<=(1<<15));
+        assert(g<=(1<<15));
+        assert(b<=(1<<15));
+#endif
+          
+        // Doing rounding for now.
+        // TODO: error diffusion / dithering? (but watch the performance benchmarks)
+        const uint32_t add = (1<<15)/2;
+          
+        *dst_p++ = (r * 255 + add) / (1<<15);
+        *dst_p++ = (g * 255 + add) / (1<<15);
+        *dst_p++ = (b * 255 + add) / (1<<15);
+      }
     }
     src_p += src_arr->strides[0];
     dst_p += dst_arr->strides[0];
