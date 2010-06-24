@@ -349,7 +349,7 @@ class Document(object):
 
     # TDW view manipulation
     def dragfunc_translate(self, dx, dy):
-        self.tdw.scroll(-dx*3, -dy*3)
+        self.tdw.scroll(-dx*2, -dy*2)
 
     def dragfunc_rotate(self, dx, dy):
         self.tdw.rotate(2*math.pi*dx/300.0)
