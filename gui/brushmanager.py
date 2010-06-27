@@ -275,6 +275,10 @@ class ManagedBrush(object):
                 i += 1
         prefix = os.path.join(self.bm.user_brushpath, self.name)
         if saving: 
+            if '/' in self.name:
+                d = os.path.dirname(prefix)
+                if not os.path.isdir(d):
+                    os.makedirs(d)
             return prefix
         if not os.path.isfile(prefix + '.myb'):
             prefix = os.path.join(self.bm.stock_brushpath, self.name)
