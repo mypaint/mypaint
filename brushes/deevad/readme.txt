@@ -1,0 +1,25 @@
+-----------------------
+Mypaint V3 brushkit
+-----------------------
+by David REVOY
+www.davidrevoy.com
+-----------------------
+
+Infos and explanation:
+http://davidrevoy.com/?article33/mypaint-v3-brushkit
+
+-------------------------------------------
+V3 License :
+
+The distribution and the files are under the creative commons 3.0 attribution. If you want to know more about ; read the following page here : http://creativecommons.org/licenses/by/3.0/
+
+    * Attributed to: David REVOY | www.davidrevoy.com
+
+Exceptions:
+
+    * You are free to use those palette files to draw / paint a commercial project without attributing.
+    * You can show them in a screenshot of your workflow or in a video screencast freely without attributing.
+    * You can show them in your school if you are a teacher or a student and do a presentation about on a CMYK ( paper / print ) support or a RVB ( video / Internet / presentation / Tv ) without attributing.
+    * If you are a developer of an open source software, you can use them for the default preset in your code for your software without attributing.
+-------------------------------------------
+
