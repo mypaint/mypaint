@@ -155,7 +155,7 @@ def _info (exctyp, value, tb):
 
     sw = gtk.ScrolledWindow(); sw.show()
     sw.set_policy (gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-    sw.set_size_request(200, 300)
+    sw.set_size_request(800, 400)
     sw.add (textview)
 
     details_expander.add (sw)
@@ -171,7 +171,15 @@ def _info (exctyp, value, tb):
             trace += analyse_simple (exctyp, value, tb).getvalue()
         except:
             trace = _("Exception while analyzing the exception.")
-    textview.get_buffer().set_text (trace)
+    buf = textview.get_buffer()
+    buf.set_text (trace)
+    ## Would be nice to scroll to the bottom automatically, but @#&%*@
+    #first, last = buf.get_bounds()
+    #buf.place_cursor(last)
+    #mark = buf.get_insert()
+    ##buf.scroll_mark_onscreen()
+    ##textview.scroll_mark_onscreen(buf.get_insert(), 0)
+    #textview.scroll_to_mark(mark, 0.0)
 
     # Connect callback and present the dialog
     dialog.connect('response', _dialog_response_cb, trace)
