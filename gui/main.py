@@ -23,24 +23,35 @@ def main(datapath, confpath):
     parser.add_option('-c', '--config', metavar='DIR', default=confpath,
                     help='use config directory DIR instead of ~/.mypaint/')
     parser.add_option('-l', '--logfile', metavar='FILE', default=None,
-                    help='redirect python stdout and stderr into FILE')
+                    help='append python stdout and stderr to FILE')
+    parser.add_option('-t', '--trace', action="store_true",
+                    help='print all exectued python statements')
     options, args = parser.parse_args()
 
     if options.logfile:
         print 'Python prints are redirected to', options.logfile, 'after this one.'
         sys.stdout = sys.stderr = open(options.logfile, 'a', 1)
         print '--- mypaint log %s ---' % time.strftime('%F %T')
-    print 'confpath =', options.config
-    app = application.Application(datapath, options.config, args)
 
-    # Recent gtk versions don't allow changing those menu shortcuts by
-    # default. <rant>Sigh. This very useful feature used to be the
-    # default behaviour even in the GIMP some time ago. I guess
-    # assigning a keyboard shortcut without a complicated dialog
-    # clicking marathon must have totally upset the people coming from
-    # windows.</rant>
-    gtksettings = gtk.settings_get_default()
-    gtksettings.set_property('gtk-can-change-accels', True)
+    def run():
+        print 'confpath =', options.config
+        app = application.Application(datapath, options.config, args)
 
-    import gtkexcepthook
-    gtk.main()
+        # Recent gtk versions don't allow changing those menu shortcuts by
+        # default. <rant>Sigh. This very useful feature used to be the
+        # default behaviour even in the GIMP some time ago. I guess
+        # assigning a keyboard shortcut without a complicated dialog
+        # clicking marathon must have totally upset the people coming from
+        # windows.</rant>
+        gtksettings = gtk.settings_get_default()
+        gtksettings.set_property('gtk-can-change-accels', True)
+
+        import gtkexcepthook
+        gtk.main()
+
+    if options.trace:
+        import trace
+        tracer = trace.Trace(trace=1, count=0)
+        tracer.runfunc(run)
+    else:
+        run()
