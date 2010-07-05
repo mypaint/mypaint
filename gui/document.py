@@ -349,7 +349,13 @@ class Document(object):
 
     # TDW view manipulation
     def dragfunc_translate(self, dx, dy):
-        self.tdw.scroll(-dx*2, -dy*2)
+        self.tdw.scroll(-dx, -dy)
+        # Accelerated scrolling: Highly comfortable to me, but lots of
+        # negative feedback from users.  Certainly should be disabled
+        # by default. Maybe add it back as preference one day.
+        # https://gna.org/bugs/?16232
+        #
+        #self.tdw.scroll(-dx*3, -dy*3)
 
     def dragfunc_rotate(self, dx, dy):
         self.tdw.rotate(2*math.pi*dx/300.0)
