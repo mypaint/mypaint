@@ -225,11 +225,6 @@ class TiledDrawWidget(gtk.DrawingArea):
             m[0] = -m[0]
             m[2] = -m[2]
             cr.set_matrix(cairo.Matrix(*m))
-        # does not seem to make a difference:
-        #cr.set_antialias(cairo.ANTIALIAS_SUBPIXEL)
-        # this one neither:
-        #cr.set_antialias(cairo.ANTIALIAS_NONE)
-        # looks like we always get nearest-neighbour downsampling
         return cr
 
     def is_translation_only(self):
@@ -369,6 +364,10 @@ class TiledDrawWidget(gtk.DrawingArea):
             #pattern.set_filter(cairo.FILTER_GOOD)     # 3.1s
             #pattern.set_filter(cairo.FILTER_BEST)     # 3.1s
             #pattern.set_filter(cairo.FILTER_BILINEAR) # 3.1s
+
+            if self.scale > 1.5:
+                # pixelize at high zoom-in levels
+                pattern.set_filter(cairo.FILTER_NEAREST)
 
             cr.paint()
 
