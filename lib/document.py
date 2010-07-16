@@ -127,9 +127,9 @@ class Document():
         # rest the brush in src for a minute, to avoid interpolation
         # from the upper left corner (states are zero) (FIXME: the
         # brush should handle this on its own, maybe?)
-        self.stroke_to(60.0, x[0], y[0], 0.0)
+        self.stroke_to(60.0, x[0], y[0], 0.0, 0.0, 0.0)
         for i in xrange(N):
-            self.stroke_to(duration/N, x[i], y[i], pressure)
+            self.stroke_to(duration/N, x[i], y[i], pressure, 0.0, 0.0)
         self.split_stroke()
         self.brush = real_brush
 
