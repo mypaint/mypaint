@@ -331,8 +331,6 @@ class Window(windowing.MainWindow):
         gtk.main_quit()
         return False
 
-        dialog.hide()
-        
     def import_brush_pack_cb(self, action):
         dialog = gtk.FileChooserDialog(_("Import brush package..."), self,
                                        gtk.FILE_CHOOSER_ACTION_OPEN,
@@ -353,6 +351,7 @@ class Window(windowing.MainWindow):
                 d.set_markup(text)
                 d.run()
                 d.destroy()
+        dialog.hide()
 
     # INFORMATION
     # TODO: Move into dialogs.py?
