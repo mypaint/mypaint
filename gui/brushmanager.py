@@ -178,8 +178,12 @@ class BrushManager:
         for name in zip.namelist():
             if name.endswith('.myb') or name.endswith('.png'):
                 try:
+                    if name.startswith('brushes/'):
+                        target_name = name[8:]
+                    else:
+                        target_name = name
                     data = zip.read(name)
-                    out = open(os.path.join(self.user_brushpath, name), 'w')
+                    out = open(os.path.join(self.user_brushpath, target_name), 'w')
                     out.write(data)
                     out.close()
                 except Exception, e:
