@@ -29,10 +29,11 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.connect("leave-notify-event", self.leave_notify_cb)
         self.connect("size-allocate", self.size_allocate_cb)
 
-        # workaround for https://gna.org/bugs/?14372
+        # workaround for https://gna.org/bugs/?14372 ([Windows] crash when moving the pen during startup)
         def at_application_start(*trash):
             self.connect("motion-notify-event", self.motion_notify_cb)
             self.connect("button-press-event", self.button_press_cb)
+            self.connect("button-release-event", self.button_release_cb)
         gobject.idle_add(at_application_start)
 
         self.set_events(gdk.EXPOSURE_MASK
@@ -56,6 +57,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.last_event_x = None
         self.last_event_y = None
         self.last_event_device = None
+        self.last_event_had_pressure_info = False
         self.last_painting_pos = None
         self.device_observers = []
 
@@ -104,7 +106,7 @@ class TiledDrawWidget(gtk.DrawingArea):
             dy = old_size[1] - new_size[1]
             self.scroll(dx/2, dy/2)
 
-    def motion_notify_cb(self, widget, event):
+    def motion_notify_cb(self, widget, event, button1_pressed=None):
         if self.last_event_time:
             dtime = (event.time - self.last_event_time)/1000.0
             dx = event.x - self.last_event_x
@@ -140,10 +142,15 @@ class TiledDrawWidget(gtk.DrawingArea):
                 pressure = None
 
         if pressure is None:
-            if event.state & gdk.BUTTON1_MASK:
+            self.last_event_had_pressure_info = False
+            if button1_pressed is None:
+                button1_pressed = event.state & gdk.BUTTON1_MASK
+            if button1_pressed:
                 pressure = 0.5
             else:
                 pressure = 0.0
+        else:
+            self.last_event_had_pressure_info = True
         
         if event.state & gdk.CONTROL_MASK:
             # color picking, do not paint
@@ -181,9 +188,26 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.doc.stroke_to(dtime, x, y, pressure)
 
     def button_press_cb(self, win, event):
+        if event.type != gdk.BUTTON_PRESS:
+            # ignore the extra double-click event
+            return
+
+        # straight line
         if (event.state & gdk.SHIFT_MASK) and self.last_painting_pos:
             dst = self.get_cursor_in_model_coordinates()
             self.doc.straight_line(self.last_painting_pos, dst)
+
+        # mouse button pressed (while painting without pressure information)
+        if event.button == 1 and not self.last_event_had_pressure_info:
+            # For the mouse we don't get a motion event for "pressure"
+            # changes, so we simulate it. (Note: we can't use the
+            # event's button state because it carries the old state.)
+            self.motion_notify_cb(win, event, button1_pressed=True)
+
+    def button_release_cb(self, win, event):
+        # (see comment above in button_press_cb)
+        if event.button == 1 and not self.last_event_had_pressure_info:
+            self.motion_notify_cb(win, event, button1_pressed=False)
 
     def canvas_modified_cb(self, x1, y1, w, h):
         if not self.window:
