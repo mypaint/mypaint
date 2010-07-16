@@ -302,6 +302,7 @@ class GroupSelector(gtk.DrawingArea):
         menu += [ (_("New group..."), self.create_group_cb) ]
         if group:
             menu += [ (_("Rename group..."), self.rename_group_cb),
+                      (_("Export group..."), self.export_group_cb),
                       (_("Delete group..."), self.delete_group_cb)]
         for label, callback in menu:
             mi = gtk.MenuItem(label)
@@ -328,6 +329,25 @@ class GroupSelector(gtk.DrawingArea):
             self.bm.rename_group(old_group, new_group)
         else:
             dialogs.error(self, _('A group with this name already exists!'))
+
+    def export_group_cb(self, w, group):
+        dialog = gtk.FileChooserDialog(_("Export brush pack..."), None,
+                                       gtk.FILE_CHOOSER_ACTION_SAVE,
+                                       (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
+                                        gtk.STOCK_SAVE, gtk.RESPONSE_OK))
+        dialog.set_default_response(gtk.RESPONSE_OK)
+        dialog.set_do_overwrite_confirmation(True)
+        f = gtk.FileFilter()
+        f.set_name(_("Zip archive (*.zip)"))
+        f.add_pattern("*.zip")
+        dialog.add_filter(f)
+
+        if dialog.run() == gtk.RESPONSE_OK:
+            filename = dialog.get_filename()
+            if not filename.endswith('.zip'):
+                filename += '.zip'
+            self.bm.export_group(group, filename)
+        dialog.hide()
 
     def delete_group_cb(self, w, group):
         if dialogs.confirm(self, _('Really delete group %s?') % brushmanager.translate_group_name(group)):

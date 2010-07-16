@@ -128,6 +128,7 @@ class Window(windowing.MainWindow):
             ('BrushMenu',    None, _('Brush')),
             ('BrushSelectionWindow',  None, _('Brush List...'), 'b', None, self.toggleWindow_cb),
             ('BrushSettingsWindow',   None, _('Brush Settings...'), '<control>b', None, self.toggleWindow_cb),
+            ('ImportBrushPack',       None, _('Import brush package...'),None, None, self.import_brush_pack_cb),
 
             ('HelpMenu',     None, _('Help')),
             ('Docu', None, _('Where is the Documentation?'), None, None, self.show_infodialog_cb),
@@ -329,6 +330,29 @@ class Window(windowing.MainWindow):
 
         gtk.main_quit()
         return False
+
+        dialog.hide()
+        
+    def import_brush_pack_cb(self, action):
+        dialog = gtk.FileChooserDialog(_("Import brush package..."), self,
+                                       gtk.FILE_CHOOSER_ACTION_OPEN,
+                                       (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
+                                        gtk.STOCK_OPEN, gtk.RESPONSE_OK))
+        dialog.set_default_response(gtk.RESPONSE_OK)
+        f = gtk.FileFilter()
+        f.set_name(_("MyPaint brush package (*.zip)"))
+        f.add_pattern("*.zip")
+        dialog.add_filter(f)
+        if dialog.run() == gtk.RESPONSE_OK:
+            filename = dialog.get_filename()
+            try:
+                self.app.brushmanager.import_brushpack(filename)
+            except Exception, e:
+                d = gtk.MessageDialog(self, buttons=gtk.BUTTONS_OK_CANCEL, type=gtk.MESSAGE_ERROR)
+                text = _("An error occured while importing brush package. Error was: %s") % e
+                d.set_markup(text)
+                d.run()
+                d.destroy()
 
     # INFORMATION
     # TODO: Move into dialogs.py?

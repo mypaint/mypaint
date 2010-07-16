@@ -80,6 +80,8 @@
       <menuitem action='Eraser'/>
       <separator/>
       <menuitem action='PickContext'/>
+      <separator/>
+      <menuitem action='ImportBrushPack'/>
     </menu>
     <menu action='ColorMenu'>
       <menuitem action='ColorSelectionWindow'/>

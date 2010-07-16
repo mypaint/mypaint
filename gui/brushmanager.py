@@ -14,6 +14,8 @@ from lib import brush
 from gtk import gdk # only for gdk.pixbuf
 from gettext import gettext as _
 import os
+from os.path import basename
+import zipfile
 
 preview_w = 128
 preview_h = 128
@@ -170,6 +172,31 @@ class BrushManager:
         fn = os.path.join(self.user_brushpath, 'deleted.conf')
         if os.path.exists(fn):
             os.remove(fn)
+
+    def import_brushpack(self, path):
+        zip = zipfile.ZipFile(path)
+        for name in zip.namelist():
+            if name.endswith('.myb') or name.endswith('.png'):
+                try:
+                    data = zip.read(name)
+                    out = open(os.path.join(self.user_brushpath, name), 'w')
+                    out.write(data)
+                    out.close()
+                except Exception, e:
+                    print e
+        zip.close()
+        self.load_groups()
+
+    def export_group(self, group, filename):
+        zip = zipfile.ZipFile(filename, mode='w')
+        brushes = self.get_group_brushes(group)
+        for brush in brushes:
+            prefix = brush.get_fileprefix()
+            preview = prefix + '_prev.png'
+            myb = prefix + '.myb'
+            zip.write(preview, basename(preview))
+            zip.write(myb, basename(preview))
+        zip.close()
 
     def get_brush_by_name(self, name):
         # used only for testing
