@@ -342,11 +342,16 @@ class GroupSelector(gtk.DrawingArea):
         f.add_pattern("*.zip")
         dialog.add_filter(f)
 
-        if dialog.run() == gtk.RESPONSE_OK:
+        while dialog.run() == gtk.RESPONSE_OK:
             filename = dialog.get_filename()
             if not filename.endswith('.zip'):
                 filename += '.zip'
-            self.bm.export_group(group, filename)
+                # trigger overwrite confirmation for the modified filename
+                dialog.set_filename(filename)
+                dialog.response(gtk.RESPONSE_OK)
+            else:
+                self.bm.export_group(group, filename)
+                break
         dialog.hide()
 
     def delete_group_cb(self, w, group):
