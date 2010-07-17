@@ -532,18 +532,26 @@ public:
   {
     //printf("%f %f %f %f\n", (double)dtime, (double)x, (double)y, (double)pressure);
 
-    // Moved from Python
-    float tilt_ascension = 180.0*atan2(-xtilt, ytilt)/M_PI;
-    float e;
-    if (abs(xtilt) > abs(ytilt)) {
+    float tilt_ascension = 90.0;
+    float tilt_declination = 0.0;
+    if (xtilt || ytilt) {
+      xtilt = CLAMP(xtilt, -1.0, 1.0);
+      ytilt = CLAMP(ytilt, -1.0, 1.0);
+      tilt_ascension = 180.0*atan2(-xtilt, ytilt)/M_PI;
+      float e;
+      if (abs(xtilt) > abs(ytilt)) {
         e = sqrt(1+ytilt*ytilt);
-    } else {
+      } else {
         e = sqrt(1+xtilt*xtilt);
+      }
+      float rad = hypot(xtilt, ytilt);
+      float cos_alpha = rad/e;
+      tilt_declination = 180.0*acos(cos_alpha)/M_PI;
     }
-    float rad = sqrt(xtilt*xtilt + ytilt*ytilt);
-    float cos_alpha = rad/e;
-    float tilt_declination = 180.0*acos(cos_alpha)/M_PI;
 
+    //printf("%f %f\n", (double)xtilt, (double)ytilt);
+    //printf("%f %f\n", (double)tilt_ascension, (double)tilt_declination);
+      
     pressure = CLAMP(pressure, 0.0, 1.0);
     if (!isfinite(x) || !isfinite(y) ||
         (x > 1e10 || y > 1e10 || x < -1e10 || y < -1e10)) {

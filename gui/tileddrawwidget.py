@@ -8,7 +8,7 @@
 
 import gtk, gobject, cairo, random
 gdk = gtk.gdk
-from math import floor, ceil, pi, log, sqrt, atan2, acos
+from math import floor, ceil, pi, log
 
 from lib import helpers, tiledsurface, pixbufsurface
 import cursor
