@@ -22,6 +22,7 @@ import gtk
 from gtk import gdk, keysyms
 
 import colorselectionwindow, historypopup, stategroup, colorpicker, windowing
+import dialogs
 from lib import helpers
 
 
@@ -344,7 +345,7 @@ class Window(windowing.MainWindow):
         if dialog.run() == gtk.RESPONSE_OK:
             filename = dialog.get_filename()
             try:
-                self.app.brushmanager.import_brushpack(filename)
+                self.app.brushmanager.import_brushpack(filename, dialogs.confirm_rewrite_brush, self)
             except Exception, e:
                 d = gtk.MessageDialog(self, buttons=gtk.BUTTONS_OK_CANCEL, type=gtk.MESSAGE_ERROR)
                 text = _("An error occured while importing brush package. Error was: %s") % e

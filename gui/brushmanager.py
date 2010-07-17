@@ -11,10 +11,11 @@ This module does file management for brushes and brush groups.
 """
 
 from lib import brush
+import dialogs
 from gtk import gdk # only for gdk.pixbuf
 from gettext import gettext as _
 import os
-from os.path import basename
+from os.path import basename, join, isdir, exists
 import zipfile
 
 preview_w = 128
@@ -173,21 +174,67 @@ class BrushManager:
         if os.path.exists(fn):
             os.remove(fn)
 
-    def import_brushpack(self, path):
+    def import_brushpack(self, path, confirm_rewrite=None, window=None):
+
+        if not confirm_rewrite:
+            confirm_rewrite = lambda *args: dialogs.OVERWRITE_ALL
+
+        def new_name(name):
+            if name.startswith('brushes/'):
+                target_name = name[8:]
+            else:
+                target_name = name
+            if '/' in target_name:
+                dir = dirname(target_name)
+                target_path = join(self.user_brushpath, dir)
+                if not isdir(target_path):
+                    makedirs(target_path)
+                target_path = join(target_path, target_name)
+            else:
+                target_path = join(self.user_brushpath, target_name)
+            return target_path
+
         zip = zipfile.ZipFile(path)
-        for name in zip.namelist():
-            if name.endswith('.myb') or name.endswith('.png'):
-                try:
-                    if name.startswith('brushes/'):
-                        target_name = name[8:]
-                    else:
-                        target_name = name
-                    data = zip.read(name)
-                    out = open(os.path.join(self.user_brushpath, target_name), 'w')
-                    out.write(data)
-                    out.close()
-                except Exception, e:
-                    print e
+        names = zip.namelist()
+        myb_names = []
+        do_overwrite = False
+        do_ask = True
+        for name in names:
+            if name.endswith('.myb'):
+                brushname = basename(name)[:-4]
+                imported_preview = zip.read(brushname + '_prev.png')
+                target_path = new_name(name)
+                target_brushname = target_path[:-4]
+                if exists(target_path):
+                    brush_exists = True
+                    existing_preview = join(self.user_brushpath, target_brushname+'_prev.png')
+                    if do_ask:
+                        answer = confirm_rewrite(window, brushname, existing_preview, imported_preview)
+                        if answer == dialogs.CANCEL:
+                            break
+                        elif answer == dialogs.OVERWRITE_ALL:
+                            do_overwrite = True
+                            do_ask = False
+                        elif answer == dialogs.OVERWRITE_THIS:
+                            do_overwrite = True
+                            do_ask = True
+                        elif answer == dialogs.DONT_OVERWRITE_THIS:
+                            do_overwrite = False
+                            do_ask = True
+                        elif answer == dialogs.DONT_OVERWRITE_ANYTHING:
+                            do_overwrite = False
+                            do_ask = False
+                else:
+                    brush_exists = False
+                if not brush_exists or do_overwrite:
+                    myb = zip.read(name)
+                    myb_f = open(target_path, 'w')
+                    myb_f.write(myb)
+                    myb_f.close()
+                    preview = zip.read(brushname + '_prev.png')
+                    preview_f = open(target_brushname + '_prev.png', 'w')
+                    preview_f.write(preview)
+                    preview_f.close()
         zip.close()
         self.load_groups()
 
