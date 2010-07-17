@@ -367,6 +367,8 @@ class Window(windowing.MainWindow):
             u"Jonas Wagner (%s)" % _('programming'),
             u"Luka Čehovin (%s)" % _('programming'),
             u"Andrew Chadwick (%s)" % _('programming'),
+            u"Till Hartmann (%s)" % _('programming'),
+            u"Nicola Lunghi (%s)" % _('patterns'),
             ])
         d.set_artists([
             u'Sebastian Kraft (%s)' % _('desktop icon'),
