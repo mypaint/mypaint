@@ -65,6 +65,15 @@ def error(widget, message):
     d.run()
     d.destroy()
 
+def image_new_from_png_data(data):
+    loader = gtk.gdk.PixbufLoader("png")
+    loader.write(data)
+    loader.close()
+    pixbuf = loader.get_pixbuf()
+    image = gtk.Image()
+    image.set_from_pixbuf(pixbuf)
+    return image
+
 def confirm_rewrite_brush(window, brushname, existing_preview_file, imported_preview_data):
     dialog = gtk.Dialog(_("Overwrite brush?"),
                         window, gtk.DIALOG_MODAL)
@@ -106,12 +115,7 @@ def confirm_rewrite_brush(window, brushname, existing_preview_file, imported_pre
 Are you really want to replace your brush with imported one?""" % brushname))
     question.set_use_markup(True)
 
-    tmp_name =os.tmpnam() + '.png'
-    tmp = open(tmp_name, 'w')
-    tmp.write(imported_preview_data)
-    tmp.close()
-    preview_l = gtk.image_new_from_file(tmp_name)
-    os.remove(tmp_name)
+    preview_l = image_new_from_png_data(imported_preview_data)
 
     vbox_l.pack_start(preview_l, expand=True)
     vbox_l.pack_start(label_l, expand=False)
