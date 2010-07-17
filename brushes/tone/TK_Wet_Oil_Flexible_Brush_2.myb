@@ -1,0 +1,41 @@
+# mypaint brush file
+# you can edit this file and then select the brush in mypaint (again) to reload
+version 2
+opaque 2.0 | speed2 (0.000000 0.025714), (4.000000 -0.180000)
+opaque_multiply 0.0 | pressure (0.000000 0.000000), (0.030645 0.515521), (0.053226 0.746979), (0.104839 0.978437), (1.000000 1.010000)
+opaque_linearize 0.0
+radius_logarithmic 0.67 | pressure (0.000000 0.000000), (0.837097 3.175521), (0.898387 3.175521), (0.959677 3.142443), (0.993548 2.679346), (1.000000 1.951622), (1.000000 0.959272)
+hardness 0.8 | pressure (0.000000 0.427500), (0.500000 -0.166250), (0.775806 -0.403750), (1.000000 -0.530417) | speed1 (0.000000 0.058571), (3.587097 -0.320312), (4.000000 -0.337396) | speed2 (0.000000 0.014286), (4.000000 -0.100000)
+dabs_per_basic_radius 0.88
+dabs_per_actual_radius 0.0
+dabs_per_second 0.0
+radius_by_random 0.0
+speed1_slowness 0.16
+speed2_slowness 2.13
+speed1_gamma 4.0
+speed2_gamma 4.0
+offset_by_random 0.17 | pressure (0.000000 -1.333333), (0.117742 -0.520833), (0.548387 0.000000), (0.661290 1.395833), (1.000000 2.000000) | speed1 (0.000000 -0.285714), (4.000000 2.000000) | speed2 (0.000000 -0.285714), (4.000000 2.000000)
+offset_by_speed 0.39 | pressure (0.000000 -0.160000), (1.000000 0.240000) | speed1 (0.000000 -0.041429), (4.000000 0.290000)
+offset_by_speed_slowness 3.51 | pressure (0.000000 -1.520000), (1.000000 2.280000) | speed1 (0.000000 -1.324285), (4.000000 9.270000)
+slow_tracking 0.0
+slow_tracking_per_dab 0.0
+tracking_noise 0.0
+color_h 0.0
+color_s 1.0
+color_v 1.0
+change_color_h 0.0
+change_color_l 0.0
+change_color_hsl_s 0.0
+change_color_v 0.0
+change_color_hsv_s 0.0
+smudge 0.01 | pressure (0.000000 -0.666667), (0.116129 -0.416667), (0.724194 0.270833), (0.764516 0.822917), (0.829032 1.000000), (0.924194 1.000000), (1.000000 1.000000) | speed1 (0.000000 -0.102857), (4.000000 0.720000) | speed2 (0.000000 -0.031428), (4.000000 0.220000)
+smudge_length 0.5 | pressure (0.000000 -0.666667), (0.851613 0.270833), (0.869355 1.000000), (1.000000 1.000000) | speed1 (0.000000 -0.121429), (4.000000 0.850000)
+eraser 0.0
+stroke_threshold 0.0
+stroke_duration_logarithmic 4.0
+stroke_holdtime 0.0
+custom_input 0.0
+custom_input_slowness 0.0
+elliptical_dab_ratio 1.0 | speed1 (0.000000 -1.285714), (4.000000 9.000000)
+elliptical_dab_angle 0.0 | direction (0.000000 0.000000), (180.000000 180.000000)
+direction_filter 2.0
