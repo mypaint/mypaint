@@ -76,7 +76,7 @@ def image_new_from_png_data(data):
 
 def confirm_rewrite_brush(window, brushname, existing_preview_file, imported_preview_data):
     dialog = gtk.Dialog(_("Overwrite brush?"),
-                        window, gtk.DIALOG_MODAL)
+                        window, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT)
 
     cancel         = gtk.Button(stock=gtk.STOCK_CANCEL)
     cancel.show_all()
@@ -112,7 +112,7 @@ def confirm_rewrite_brush(window, brushname, existing_preview_file, imported_pre
     label_r = gtk.Label(_("Existing brush"))
 
     question = gtk.Label(_("""<b>Brush named `%s' already exists in your collection.</b>
-Are you really want to replace your brush with imported one?""" % brushname))
+Are you really want to replace your brush with imported one?""") % brushname)
     question.set_use_markup(True)
 
     preview_l = image_new_from_png_data(imported_preview_data)
@@ -133,4 +133,31 @@ Are you really want to replace your brush with imported one?""" % brushname))
     answer = dialog.run()
     dialog.destroy()
     return answer
+
+def confirm_brushpack_import(packname, window=None, readme=None, license=None):
+    dialog = gtk.Dialog(_("Import brushes package?"),
+                       window,
+                       gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                       (gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT,
+                        gtk.STOCK_OK, gtk.RESPONSE_ACCEPT))
+    if readme:
+        readme_label = gtk.Label(_("%s README:") % packname)
+        dialog.vbox.pack_start(readme_label)
+        readme_tv = gtk.TextView()
+        readme_tv.get_buffer().set_text(readme)
+        dialog.vbox.pack_start(readme_tv)
+    if license:
+        license_label = gtk.Label(_("%s license:") % packname)
+        dialog.vbox.pack_start(license_label)
+        license_tv = gtk.TextView()
+        license_tv.get_buffer().set_text(license)
+        dialog.vbox.pack_start(license_tv)
+    question = gtk.Label(_("<b>Do you really want to import package `%s'?</b>") % packname)
+    question.set_use_markup(True)
+    dialog.vbox.pack_start(question)
+    dialog.vbox.show_all()
+    answer = dialog.run()
+    dialog.destroy()
+    return answer
+        
 

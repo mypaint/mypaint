@@ -12,6 +12,7 @@ This module does file management for brushes and brush groups.
 
 from lib import brush
 import dialogs
+import gtk
 from gtk import gdk # only for gdk.pixbuf
 from gettext import gettext as _
 import os
@@ -196,13 +197,30 @@ class BrushManager:
 
         zip = zipfile.ZipFile(path)
         names = zip.namelist()
-        myb_names = []
+
+        readme = None
+        license = None
+        for name in ["README", "README.txt"]:
+            if name in names:
+                readme = zip.read(name)
+                break
+        for name in ["LICENSE", "LICENSE.txt", "LEGAL", "COPYRIGHT"]:
+            if name in names:
+                license = zip.read(name)
+                break
+
+        answer = dialogs.confirm_brushpack_import(basename(path), window, readme, license)
+        if answer == gtk.RESPONSE_REJECT:
+            zip.close()
+            return
+
         do_overwrite = False
         do_ask = True
         for name in names:
             if name.endswith('.myb'):
+                source_name = name[:-4]
                 brushname = basename(name)[:-4]
-                imported_preview = zip.read(brushname + '_prev.png')
+                imported_preview = zip.read(source_name + '_prev.png')
                 target_path = new_name(name)
                 target_brushname = target_path[:-4]
                 if exists(target_path):
@@ -231,7 +249,7 @@ class BrushManager:
                     myb_f = open(target_path, 'w')
                     myb_f.write(myb)
                     myb_f.close()
-                    preview = zip.read(brushname + '_prev.png')
+                    preview = zip.read(source_name + '_prev.png')
                     preview_f = open(target_brushname + '_prev.png', 'w')
                     preview_f.write(preview)
                     preview_f.close()
