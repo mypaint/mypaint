@@ -199,7 +199,7 @@ class BrushManager:
             preview = prefix + '_prev.png'
             myb = prefix + '.myb'
             zip.write(preview, basename(preview))
-            zip.write(myb, basename(preview))
+            zip.write(myb, basename(myb))
         zip.close()
 
     def get_brush_by_name(self, name):
