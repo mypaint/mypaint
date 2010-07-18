@@ -532,8 +532,8 @@ public:
   {
     //printf("%f %f %f %f\n", (double)dtime, (double)x, (double)y, (double)pressure);
 
-    float tilt_ascension = 90.0;
-    float tilt_declination = 0.0;
+    float tilt_ascension = 0.0;
+    float tilt_declination = 90.0;
     if (xtilt || ytilt) {
       xtilt = CLAMP(xtilt, -1.0, 1.0);
       ytilt = CLAMP(ytilt, -1.0, 1.0);
