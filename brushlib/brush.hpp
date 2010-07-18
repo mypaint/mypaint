@@ -535,8 +535,11 @@ public:
     float tilt_ascension = 0.0;
     float tilt_declination = 90.0;
     if (xtilt != 0 || ytilt != 0) {
+      // shield us from insane tilt input
       xtilt = CLAMP(xtilt, -1.0, 1.0);
       ytilt = CLAMP(ytilt, -1.0, 1.0);
+      assert(isfinite(xtilt) && isfinite(ytilt));
+
       tilt_ascension = 180.0*atan2(-xtilt, ytilt)/M_PI;
       float e;
       if (abs(xtilt) > abs(ytilt)) {
@@ -546,11 +549,15 @@ public:
       }
       float rad = hypot(xtilt, ytilt);
       float cos_alpha = rad/e;
+      if (cos_alpha >= 1.0) cos_alpha = 1.0; // fix numerical inaccuracy
       tilt_declination = 180.0*acos(cos_alpha)/M_PI;
+
+      assert(isfinite(tilt_ascension));
+      assert(isfinite(tilt_declination));
     }
 
-    //printf("%f %f\n", (double)xtilt, (double)ytilt);
-    //printf("%f %f\n", (double)tilt_ascension, (double)tilt_declination);
+    // printf("xtilt %f, ytilt %f\n", (double)xtilt, (double)ytilt);
+    // printf("ascension %f, declination %f\n", (double)tilt_ascension, (double)tilt_declination);
       
     pressure = CLAMP(pressure, 0.0, 1.0);
     if (!isfinite(x) || !isfinite(y) ||
