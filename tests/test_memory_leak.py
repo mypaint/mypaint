@@ -106,7 +106,7 @@ def paint_doc(doc):
     for i, (t, x, y, pressure) in enumerate(events):
         dtime = t - t_old
         t_old = t
-        doc.stroke_to(dtime, x, y, pressure)
+        doc.stroke_to(dtime, x, y, pressure, 0.0, 0.0)
 
 @leaktest
 def save_test():
@@ -155,7 +155,7 @@ def paint_gui(gui):
         t_old = t
         cr = tdw.get_model_coordinates_cairo_context()
         x, y = cr.device_to_user(x, y)
-        gui_doc.model.stroke_to(dtime, x, y, pressure)
+        gui_doc.model.stroke_to(dtime, x, y, pressure, 0.0, 0.0)
 
 @leaktest
 def gui_test():

@@ -92,7 +92,7 @@ def paint(gui):
         t_old = t
         cr = tdw.get_model_coordinates_cairo_context()
         x, y = cr.device_to_user(x, y)
-        gui_doc.model.stroke_to(dtime, x, y, pressure)
+        gui_doc.model.stroke_to(dtime, x, y, pressure, 0.0, 0.0)
     yield stop_measurement
 
 @gui_test

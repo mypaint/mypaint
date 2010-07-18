@@ -39,7 +39,7 @@ def brushPaint():
         for t, x, y, pressure in events:
             dtime = t - t_old
             t_old = t
-            b.stroke_to (s, x, y, pressure, dtime)
+            b.stroke_to (s, x, y, pressure, 0.0, 0.0, dtime)
         s.end_atomic()
     print 'Brushpaint time:', time()-t0
     print s.get_bbox(), b.stroke_total_painting_time # FIXME: why is this time so different each run?
@@ -123,7 +123,7 @@ def docPaint():
         dtime = t - t_old
         t_old = t
         #print dtime
-        doc.stroke_to(dtime, x, y, pressure)
+        doc.stroke_to(dtime, x, y, pressure, 0.0, 0.0)
         if i == n*1/8:
             doc.set_brush(b2)
         if i == n*2/8:
