@@ -333,17 +333,9 @@ class Window(windowing.MainWindow):
         return False
 
     def import_brush_pack_cb(self, action):
-        dialog = gtk.FileChooserDialog(_("Import brush package..."), self,
-                                       gtk.FILE_CHOOSER_ACTION_OPEN,
-                                       (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
-                                        gtk.STOCK_OPEN, gtk.RESPONSE_OK))
-        dialog.set_default_response(gtk.RESPONSE_OK)
-        f = gtk.FileFilter()
-        f.set_name(_("MyPaint brush package (*.zip)"))
-        f.add_pattern("*.zip")
-        dialog.add_filter(f)
-        if dialog.run() == gtk.RESPONSE_OK:
-            filename = dialog.get_filename()
+        format_id, filename = dialogs.open_dialog(_("Import brush package..."), self,
+                                 [(_("MyPaint brush package (*.zip)"), "*.zip")])
+        if filename is not None:
             try:
                 self.app.brushmanager.import_brushpack(filename, dialogs.confirm_rewrite_brush, self)
             except Exception, e:
@@ -352,7 +344,6 @@ class Window(windowing.MainWindow):
                 d.set_markup(text)
                 d.run()
                 d.destroy()
-        dialog.hide()
 
     # INFORMATION
     # TODO: Move into dialogs.py?
