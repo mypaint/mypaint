@@ -534,7 +534,7 @@ public:
 
     float tilt_ascension = 0.0;
     float tilt_declination = 90.0;
-    if (xtilt || ytilt) {
+    if (xtilt != 0 || ytilt != 0) {
       xtilt = CLAMP(xtilt, -1.0, 1.0);
       ytilt = CLAMP(ytilt, -1.0, 1.0);
       tilt_ascension = 180.0*atan2(-xtilt, ytilt)/M_PI;
