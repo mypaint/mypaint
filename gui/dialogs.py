@@ -9,6 +9,7 @@
 import os
 import gtk
 from gettext import gettext as _
+from fnmatch import fnmatch
 
 OVERWRITE_THIS = 1
 OVERWRITE_ALL  = 2
@@ -133,6 +134,76 @@ Are you really want to replace your brush with imported one?""") % brushname)
     answer = dialog.run()
     dialog.destroy()
     return answer
+
+def open_dialog(title, window, filters):
+    """
+    filters should be a list of tuples: (filter title, glob pattern).
+    Returns a tuple: (file format, filename).
+    Here "file format" is index of filter that matches filename (None if no matches).
+    filename is None if no file was selected.
+    """
+    dialog = gtk.FileChooserDialog(title, window,
+                                   gtk.FILE_CHOOSER_ACTION_OPEN,
+                                   (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
+                                    gtk.STOCK_OPEN, gtk.RESPONSE_OK))
+    dialog.set_default_response(gtk.RESPONSE_OK)
+    for filter_title, pattern in filters:
+        f = gtk.FileFilter()
+        f.set_name(filter_title)
+        f.add_pattern(pattern)
+        dialog.add_filter(f)
+
+    if dialog.run() == gtk.RESPONSE_OK:
+        filename = dialog.get_filename()
+        file_format = None
+        for i, (_, pattern) in enumerate(filters):
+            if fnmatch(filename, pattern):
+                file_format = i
+                break
+        return file_format, filename
+    dialog.hide()
+    return None, None
+
+def save_dialog(title, window, filters, default_format=None):
+    """
+    filters should be a list of tuples: (filter title, glob pattern).
+    default_format may be a pair (format id, suffix). That suffix will be added to filename if
+    it does not match any of filters.
+    Returns a tuple: (file format, filename).
+    Here "file format" is index of filter that matches filename (None if no matches).
+    filename is None if no file was selected.
+    """
+    dialog = gtk.FileChooserDialog(title, window,
+                                   gtk.FILE_CHOOSER_ACTION_SAVE,
+                                   (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
+                                    gtk.STOCK_SAVE, gtk.RESPONSE_OK))
+    dialog.set_default_response(gtk.RESPONSE_OK)
+    dialog.set_do_overwrite_confirmation(True)
+
+    for filter_title, pattern in filters:
+        f = gtk.FileFilter()
+        f.set_name(filter_title)
+        f.add_pattern(pattern)
+        dialog.add_filter(f)
+
+    result = (None, None)
+    while dialog.run() == gtk.RESPONSE_OK:
+        filename = dialog.get_filename()
+        file_format = None
+        for i, (_, pattern) in enumerate(filters):
+            if fnmatch(filename, pattern):
+                file_format = i
+                break
+        if file_format is None and default_format is not None:
+            file_format, suffix = default_format
+            filename += suffix
+            dialog.set_filename(filename)
+            dialog.response(gtk.RESPONSE_OK)
+        else:
+            result = (file_format, filename)
+            break
+    dialog.hide()
+    return result
 
 def confirm_brushpack_import(packname, window=None, readme=None, license=None):
     dialog = gtk.Dialog(_("Import brushes package?"),
