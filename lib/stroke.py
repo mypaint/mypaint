@@ -78,11 +78,11 @@ class Stroke:
         version, data = self.stroke_data[0], self.stroke_data[1:]
         assert version == '2'
         data = numpy.fromstring(data, dtype='float64')
-        data.shape = (len(data)/4, 4)
+        data.shape = (len(data)/6, 6)
 
         surface.begin_atomic()
         for dtime, x, y, pressure, xtilt,ytilt in data:
-            b.stroke_to (surface, x, y, pressure, dtime, xtilt,ytilt)
+            b.stroke_to (surface, x, y, pressure, xtilt,ytilt, dtime)
         surface.end_atomic()
 
     def copy_using_different_brush(self, brush):
