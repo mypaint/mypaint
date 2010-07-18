@@ -153,6 +153,7 @@ def open_dialog(title, window, filters):
         f.add_pattern(pattern)
         dialog.add_filter(f)
 
+    result = (None, None)
     if dialog.run() == gtk.RESPONSE_OK:
         filename = dialog.get_filename()
         file_format = None
@@ -160,9 +161,9 @@ def open_dialog(title, window, filters):
             if fnmatch(filename, pattern):
                 file_format = i
                 break
-        return file_format, filename
+        result = (file_format, filename)
     dialog.hide()
-    return None, None
+    return result
 
 def save_dialog(title, window, filters, default_format=None):
     """
