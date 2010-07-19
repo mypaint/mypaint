@@ -102,7 +102,7 @@ class Window(windowing.Dialog):
 
         ### View tab
         view_vbox = gtk.VBox()
-        l = gtk.Label('Default zoom')
+        l = gtk.Label(_('Default zoom'))
         l.set_alignment(0.0, 0.0)
         nb.append_page(view_vbox, gtk.Label(_('View'))) 
         combo = self.defaultzoom_combo = gtk.combo_box_new_text()
