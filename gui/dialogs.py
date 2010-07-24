@@ -198,7 +198,7 @@ def save_dialog(title, window, filters, default_format=None):
         if file_format is None and default_format is not None:
             file_format, suffix = default_format
             filename += suffix
-            dialog.set_filename(filename)
+            dialog.set_current_name(filename)
             dialog.response(gtk.RESPONSE_OK)
         else:
             result = (file_format, filename)
