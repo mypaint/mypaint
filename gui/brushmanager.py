@@ -142,8 +142,20 @@ class BrushManager:
             open(os.path.join(self.user_brushpath,  'order_default.conf'), 'w').write(data)
 
         # check for brushes that are in the brush directory, but not in any group
+
         def listbrushes(path):
-            return [filename[:-4] for filename in os.listdir(path) if filename.endswith('.myb')]
+            # Return a list of brush names relative to path, using
+            # slashes for subirectories on all platforms.
+            path += '/'
+            l = []
+            for name in os.listdir(path):
+                if name.endswith('.myb'):
+                    l.append(name[:-4])
+                elif os.path.isdir(path+name):
+                    for name2 in listbrushes(path+name):
+                        l.append(name + '/' + name2)
+            return l
+
         for name in listbrushes(self.stock_brushpath) + listbrushes(self.user_brushpath):
             b = get_brush(name)
             if name.startswith('context'):
