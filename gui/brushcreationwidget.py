@@ -6,11 +6,20 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
+import os
 import gtk
 gdk = gtk.gdk
 from lib import document
 import tileddrawwidget, brushmanager, dialogs
 from gettext import gettext as _
+
+def startfile(path):
+    import os
+    import platform
+    if platform.system == 'Windows':
+        os.startfile(path)
+    else:
+        os.system("xdg-open " + path)
 
 class Widget(gtk.HBox):
     def __init__(self, app):
@@ -50,6 +59,7 @@ class Widget(gtk.HBox):
         (_('Settings...'), self.brush_settings_cb),
         (_('Save Settings'), self.update_settings_cb),
         (_('Save Preview'), self.update_preview_cb),
+        (_('About brush'),  self.show_about_cb),
         ]
 
         for title, clicked_cb in right_vbox_buttons:
@@ -71,6 +81,21 @@ class Widget(gtk.HBox):
     def get_preview_pixbuf(self):
         pixbuf = self.tdw.doc.render_as_pixbuf(0, 0, brushmanager.preview_w, brushmanager.preview_h)
         return pixbuf
+
+    def show_about_cb(self, window):
+        b = self.bm.selected_brush
+        path = b.get_fileprefix()
+        dir = os.path.dirname(path)
+        found = False
+        for name in ["README", "LICENSE", "LEGAL", "COPYRIGHT"]:
+            for another_name in [name, name + '.txt', name + '.TXT', name.lower(), name.lower() + '.txt']:
+                filename = os.path.join(dir, another_name)
+                if os.path.exists(filename):
+                    startfile(filename)
+                    found = True
+                    break
+        if not found:
+            dialogs.error(self, _('No README file for this brush!'))
 
     def brush_settings_cb(self, window):
         w = self.app.brushSettingsWindow
