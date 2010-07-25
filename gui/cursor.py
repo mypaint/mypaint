@@ -21,9 +21,16 @@ def get_brush_cursor(radius, is_eraser):
         display = gdk.display_get_default()
         max_cursor_size = max(display.get_maximal_cursor_size())
 
+    bulky = True # experiment
+    if bulky:
+        radius += 1
+
     d = int(radius)*2
     if d < 6: d = 6
     if is_eraser and d < 8: d = 8
+    if bulky:
+        if d < 8: d = 8
+        if is_eraser and d < 10: d = 10
     if d+1 > max_cursor_size:
         d = max_cursor_size-1
     cursor_info = (d, is_eraser)
@@ -40,12 +47,17 @@ def get_brush_cursor(radius, is_eraser):
         wgc = cursor.new_gc(foreground=white)
         cursor.draw_rectangle(wgc, True, 0, 0, d+1, d+1)
         cursor.draw_arc(bgc,False, 0, 0, d, d, 0, 360*64)
+        if bulky:
+            cursor.draw_arc(bgc, False, 2, 2, d-4, d-4, 0, 360*64)
 
         bgc = mask.new_gc(foreground=black)
         wgc = mask.new_gc(foreground=white)
         mask.draw_rectangle(bgc, True, 0, 0, d+1, d+1)
         mask.draw_arc(wgc, False, 0, 0, d, d, 0, 360*64)
         mask.draw_arc(wgc, False, 1, 1, d-2, d-2, 0, 360*64)
+        if bulky:
+            mask.draw_arc(wgc, False, 2, 2, d-4, d-4, 0, 360*64)
+            mask.draw_arc(wgc, False, 3, 3, d-6, d-6, 0, 360*64)
 
         if is_eraser:
             thickness = d/8
