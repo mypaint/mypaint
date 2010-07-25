@@ -292,6 +292,7 @@ class Window(windowing.MainWindow):
     def fullscreen_cb(self, *trash):
         self.fullscreen = not self.fullscreen
         if self.fullscreen:
+            self.app.user_subwindows.hide()
             x, y = self.get_position()
             w, h = self.get_size()
             self.geometry_before_fullscreen = (x, y, w, h)
@@ -309,6 +310,7 @@ class Window(windowing.MainWindow):
             self.menubar.show()
             #self.app.doc.tdw.set_scroll_at_edges(False)
             del self.geometry_before_fullscreen
+            self.app.user_subwindows.show()
 
     def menu_show_cb(self, action):
         if self.fullscreen:
