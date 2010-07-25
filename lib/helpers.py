@@ -12,6 +12,10 @@ import colorsys, urllib, gc
 from gtk import gdk # for gdk_pixbuf stuff
 import mypaintlib
 
+import hashlib
+import os
+import zipfile
+
 try:
     from json import dumps as json_dumps, loads as json_loads
     print "builtin python 2.6 json support"
@@ -111,26 +115,79 @@ def gdkpixbuf2numpy(pixbuf):
     arr = pixbuf.get_pixels_array()
     return mypaintlib.gdkpixbuf_numeric2numpy(arr)
 
-def pixbuf_thumbnail(src, w, h):
+def get_freedesktop_thumbnail(filename):
+    """
+    Tries to fetch a thumbnail from ~/.thumbnails.
+    If there is no thumbnail for the specified filename,
+    a new thumbnail will be generated and stored according to the FDO spec.
+    A thumbnail will also get regenerated if the MTimes (as in "modified")
+    of thumbnail and original image do not match.
+    """
+    file_hash = hashlib.md5('file://'+filename).hexdigest()
+    tb_filename_normal = os.path.join(os.path.expanduser('~/.thumbnails/normal'), file_hash) + '.png'
+    tb_filename_large = os.path.join(os.path.expanduser('~/.thumbnails/large'), file_hash) + '.png'
+    if os.path.isfile(tb_filename_normal):
+        pixbuf = gdk.pixbuf_new_from_file(tb_filename_normal)
+    elif os.path.isfile(tb_filename_large):
+        pixbuf = gdk.pixbuf_new_from_file(tb_filename_large)
+    else:
+        pixbuf = None
+    pixbuf = save_freedesktop_thumbnail(pixbuf, filename) # save thumbnail or regenerate if MTimes do not match
+    return pixbuf
+
+def save_freedesktop_thumbnail(pixbuf, filename):
+    """
+    Saves a thumbnail according to the FDO spec.
+    """
+    file_hash = hashlib.md5('file://'+filename).hexdigest()
+    tb_filename_normal = os.path.join(os.path.expanduser('~/.thumbnails/normal'), file_hash) + '.png'
+    file_mtime = str(int(os.stat(filename).st_mtime))
+    if (not os.path.isfile(tb_filename_normal)) or (not pixbuf) or (file_mtime != pixbuf.get_option("tEXt::Thumb::MTime")):
+        pixbuf = get_pixbuf(filename)
+        if pixbuf:
+            pixbuf = scale_proportionally(pixbuf, 128,128)
+            pixbuf.save(tb_filename_normal, 'png', {"tEXt::Thumb::MTime" : file_mtime, "tEXt::Thumb::URI" : ('file://'+filename)})
+            return pixbuf
+    else:
+        return pixbuf
+
+def get_pixbuf(filename):
+    try:
+        if os.path.splitext(filename)[1].lower() == ".ora":
+            ora = zipfile.ZipFile(file(filename))
+            data = ora.read("Thumbnails/thumbnail.png")
+            loader = gdk.PixbufLoader("png")
+            loader.write(data)
+            loader.close()
+            pixbuf = loader.get_pixbuf()
+            return pixbuf
+        else:
+            pixbuf = gdk.pixbuf_new_from_file(filename)
+            return pixbuf;
+    except:
+        pass
+
+def scale_proportionally(pixbuf, w, h, shrink_only=True):
+    width, height = pixbuf.get_width(), pixbuf.get_height()
+    scale = min(w / float(width), h / float(height))
+    if shrink_only and scale >= 1:
+        return pixbuf
+    new_width, new_height = int(width * scale), int(height * scale)
+    if new_width > 0 and new_height > 0:
+        pixbuf = pixbuf.scale_simple(new_width, new_height, gdk.INTERP_BILINEAR)
+    return pixbuf
+
+def pixbuf_thumbnail(src, w, h, alpha=False):
     """
     Creates a centered thumbnail of a gdk.pixbuf.
     """
-    src_w = src.get_width()
-    src_h = src.get_height()
-
-    w2, h2 = src_w, src_h
-    if w2 > w:
-        h2 = h2*w/w2
-        w2 = w
-    if h2 > h:
-        w2 = w2*h/h2
-        h2 = h
-    assert w2 <= w and h2 <= h
-    src2 = src.scale_simple(w2, h2, gdk.INTERP_BILINEAR)
-    
-    dst = gdk.Pixbuf(gdk.COLORSPACE_RGB, False, 8, w, h)
-    dst.fill(0xffffffff) # white background
-
+    src2 = scale_proportionally(src, w, h)
+    w2, h2 = src2.get_width(), src2.get_height()
+    dst = gdk.Pixbuf(gdk.COLORSPACE_RGB, alpha, 8, w, h)
+    if alpha:
+        dst.fill(0xffffff00) # transparent background
+    else:
+        dst.fill(0xffffffff) # white background
     src2.copy_area(0, 0, w2, h2, dst, (w-w2)/2, (h-h2)/2)
     return dst
 

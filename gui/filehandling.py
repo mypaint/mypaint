@@ -17,7 +17,6 @@ from gettext import ngettext
 from lib import document, helpers
 import drawwindow
 
-import zipfile
 import mimetypes
 
 SAVE_FORMAT_ANY = 0
@@ -253,30 +252,16 @@ class FileHandler(object):
 
     def update_preview_cb(self, file_chooser, preview):
         filename = file_chooser.get_preview_filename()
-        pixbuf = self.get_preview_image(filename)
-        preview.set_from_pixbuf(pixbuf)
-        file_chooser.set_preview_widget_active(pixbuf != None)
-
-    def get_preview_image(self, filename):
         if filename:
-            if os.path.splitext(filename)[1].lower() == ".ora":
-                ora = zipfile.ZipFile(file(filename))
-                try:
-                    data = ora.read("Thumbnails/thumbnail.png")
-                except KeyError:
-                    return None
-                loader = gtk.gdk.PixbufLoader("png")
-                loader.write(data)
-                loader.close()
-                pixbuf = loader.get_pixbuf()
-                return pixbuf
+            pixbuf = helpers.get_freedesktop_thumbnail(filename)
+            if pixbuf:
+                # if pixbuf is smaller than 128px in width, copy it onto a transparent 128x128 pixbuf
+                pixbuf = helpers.pixbuf_thumbnail(pixbuf, 128, 128, True)
+                preview.set_from_pixbuf(pixbuf)
+                file_chooser.set_preview_widget_active(True)
             else:
-                try:
-                    #TODO do not scale images smaller than 256x256 up.
-                    pixbuf = gtk.gdk.pixbuf_new_from_file_at_size(filename, 256, 256)
-                    return pixbuf
-                except:
-                    pass
+                #TODO display "no preview available" image
+                pass
 
     def open_cb(self, action):
         if not self.confirm_destructive_action():
