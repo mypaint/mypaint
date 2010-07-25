@@ -180,21 +180,6 @@ class BrushManager:
         if not confirm_rewrite:
             confirm_rewrite = lambda *args: dialogs.OVERWRITE_ALL
 
-        def new_name(name):
-            if name.startswith('brushes/'):
-                target_name = name[8:]
-            else:
-                target_name = name
-            if '/' in target_name:
-                dir = os.path.dirname(target_name)
-                target_path = join(self.user_brushpath, dir)
-                if not isdir(target_path):
-                    os.makedirs(target_path)
-                target_path = join(target_path, basename(target_name))
-            else:
-                target_path = join(self.user_brushpath, target_name)
-            return target_path
-
         zip = zipfile.ZipFile(path)
         names = zip.namelist()
 
@@ -214,20 +199,22 @@ class BrushManager:
             zip.close()
             return
 
+        brushes = self.get_group_brushes(_('imported'), make_active=True)
+
         do_overwrite = False
         do_ask = True
         for name in names:
             if name.endswith('.myb'):
                 source_name = name[:-4]
                 brushname = basename(name)[:-4]
-                imported_preview = zip.read(source_name + '_prev.png')
-                target_path = new_name(name)
-                target_brushname = target_path[:-4]
-                if exists(target_path):
-                    brush_exists = True
-                    existing_preview = join(self.user_brushpath, target_brushname+'_prev.png')
+                print 'importing brush', repr(brushname)
+                imported_preview_data = zip.read(source_name + '_prev.png')
+                b = self.get_brush_by_name(brushname)
+                if b:
+                    b.load_preview()
+                    existing_preview_pixbuf = b.preview
                     if do_ask:
-                        answer = confirm_rewrite(window, brushname, existing_preview, imported_preview)
+                        answer = confirm_rewrite(window, brushname, existing_preview_pixbuf, imported_preview_data)
                         if answer == dialogs.CANCEL:
                             break
                         elif answer == dialogs.OVERWRITE_ALL:
@@ -242,19 +229,26 @@ class BrushManager:
                         elif answer == dialogs.DONT_OVERWRITE_ANYTHING:
                             do_overwrite = False
                             do_ask = False
-                else:
-                    brush_exists = False
-                if not brush_exists or do_overwrite:
+                if not b or do_overwrite:
+                    if not b:
+                        b = ManagedBrush(self, brushname)
+
+                    prefix = b.get_fileprefix(saving=True)
                     myb = zip.read(name)
-                    myb_f = open(target_path, 'w')
+                    myb_f = open(prefix + '.myb', 'w')
                     myb_f.write(myb)
                     myb_f.close()
                     preview = zip.read(source_name + '_prev.png')
-                    preview_f = open(target_brushname + '_prev.png', 'w')
+                    preview_f = open(prefix + '_prev.png', 'w')
                     preview_f.write(preview)
                     preview_f.close()
+
+                    b.load()
+                    if b not in brushes:
+                        brushes.append(b)
+
         zip.close()
-        self.load_groups()
+        for f in self.brushes_observers: f(brushes)
 
     def export_group(self, group, filename):
         zip = zipfile.ZipFile(filename, mode='w')
@@ -268,7 +262,7 @@ class BrushManager:
         zip.close()
 
     def get_brush_by_name(self, name):
-        # used only for testing
+        # slow method, should not be called too often
         for group, brushes in self.groups.iteritems():
             for b in brushes:
                 if b.name == name:

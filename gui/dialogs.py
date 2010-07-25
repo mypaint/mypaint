@@ -75,7 +75,7 @@ def image_new_from_png_data(data):
     image.set_from_pixbuf(pixbuf)
     return image
 
-def confirm_rewrite_brush(window, brushname, existing_preview_file, imported_preview_data):
+def confirm_rewrite_brush(window, brushname, existing_preview_pixbuf, imported_preview_data):
     dialog = gtk.Dialog(_("Overwrite brush?"),
                         window, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT)
 
@@ -107,8 +107,7 @@ def confirm_rewrite_brush(window, brushname, existing_preview_file, imported_pre
     hbox   = gtk.HBox()
     vbox_l = gtk.VBox()
     vbox_r = gtk.VBox()
-#         preview_l = gtk.Image()
-    preview_r = gtk.image_new_from_file(existing_preview_file)
+    preview_r = gtk.image_new_from_pixbuf(existing_preview_pixbuf)
     label_l = gtk.Label(_("Imported brush"))
     label_r = gtk.Label(_("Existing brush"))
 
