@@ -10,14 +10,12 @@
 This module does file management for brushes and brush groups.
 """
 
-from lib import brush
 import dialogs
 import gtk
 from gtk import gdk # only for gdk.pixbuf
 from gettext import gettext as _
-import os
-from os.path import basename, join, isdir, exists
-import zipfile
+import os, zipfile
+from os.path import basename
 
 preview_w = 128
 preview_h = 128
@@ -205,10 +203,9 @@ class BrushManager:
         do_ask = True
         for name in names:
             if name.endswith('.myb'):
-                source_name = name[:-4]
-                brushname = basename(name)[:-4]
-                print 'importing brush', repr(brushname)
-                imported_preview_data = zip.read(source_name + '_prev.png')
+                brushname = name[:-4]
+                print 'trying to import brush', repr(brushname)
+                imported_preview_data = zip.read(brushname + '_prev.png')
                 b = self.get_brush_by_name(brushname)
                 if b:
                     b.load_preview()
@@ -238,7 +235,7 @@ class BrushManager:
                     myb_f = open(prefix + '.myb', 'w')
                     myb_f.write(myb)
                     myb_f.close()
-                    preview = zip.read(source_name + '_prev.png')
+                    preview = zip.read(brushname + '_prev.png')
                     preview_f = open(prefix + '_prev.png', 'w')
                     preview_f.write(preview)
                     preview_f.close()
@@ -255,10 +252,8 @@ class BrushManager:
         brushes = self.get_group_brushes(group)
         for brush in brushes:
             prefix = brush.get_fileprefix()
-            preview = prefix + '_prev.png'
-            myb = prefix + '.myb'
-            zip.write(preview, basename(preview))
-            zip.write(myb, basename(myb))
+            zip.write(prefix + '.myb', brush.name + '.myb')
+            zip.write(prefix + '_prev.png', brush.name + '_prev.png')
         zip.close()
 
     def get_brush_by_name(self, name):
