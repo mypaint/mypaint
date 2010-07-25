@@ -87,13 +87,17 @@ class Widget(gtk.HBox):
         path = b.get_fileprefix()
         dir = os.path.dirname(path)
         found = False
-        for name in ["README", "LICENSE", "LEGAL", "COPYRIGHT"]:
-            for another_name in [name, name + '.txt', name + '.TXT', name.lower(), name.lower() + '.txt']:
-                filename = os.path.join(dir, another_name)
-                if os.path.isfile(filename):
-                    startfile(filename)
-                    found = True
-                    break
+        while dir:
+            for name in ["README", "LICENSE", "LEGAL", "COPYRIGHT"]:
+                for another_name in [name, name + '.txt', name + '.TXT', name.lower(), name.lower() + '.txt']:
+                    filename = os.path.join(dir, another_name)
+                    if os.path.isfile(filename):
+                        startfile(filename)
+                        found = True
+                        break
+            if found:
+                break
+            dir = os.path.dirname(dir)
         if not found:
             dialogs.error(self, _('No README file for this brush!'))
 
