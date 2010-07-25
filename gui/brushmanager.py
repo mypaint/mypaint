@@ -190,7 +190,7 @@ class BrushManager:
                 target_path = join(self.user_brushpath, dir)
                 if not isdir(target_path):
                     os.makedirs(target_path)
-                target_path = join(target_path, target_name)
+                target_path = join(target_path, basename(target_name))
             else:
                 target_path = join(self.user_brushpath, target_name)
             return target_path
