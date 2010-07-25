@@ -293,6 +293,7 @@ class BrushManager:
                     brush.load_preview()
             self.loaded_groups.append(groupname)
         self.active_groups = groups
+        for f in self.groups_observers: f()
 
     def get_group_brushes(self, group, make_active=False):
         if group not in self.groups:
@@ -302,7 +303,6 @@ class BrushManager:
             self.save_brushorder()
         if make_active and group not in self.active_groups:
             self.set_active_groups([group] + self.active_groups)
-            for f in self.groups_observers: f()
         return self.groups[group]
 
     def create_group(self, new_group, make_active=True):

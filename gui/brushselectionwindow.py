@@ -264,17 +264,20 @@ class GroupSelector(gtk.DrawingArea):
         if event.button in [1, 2]:
             if not group:
                 return
+
+            active_groups = self.bm.active_groups[:]
+
             if event.state & gdk.CONTROL_MASK or event.state & gdk.SHIFT_MASK or event.button == 2:
                 # toggle group visibility
-                if group in self.bm.active_groups:
-                    self.bm.active_groups.remove(group)
+                if group in active_groups:
+                    active_groups.remove(group)
                 else:
-                    self.bm.set_active_groups([group] + self.bm.active_groups)
+                    active_groups += [group]
             else:
                 # group solo
-                self.bm.set_active_groups([group])
+                active_groups = [group]
 
-            for f in self.bm.groups_observers: f()
+            self.bm.set_active_groups(active_groups)
 
         elif event.button == 3:
             # context menu
