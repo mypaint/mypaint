@@ -90,7 +90,7 @@ class Widget(gtk.HBox):
         for name in ["README", "LICENSE", "LEGAL", "COPYRIGHT"]:
             for another_name in [name, name + '.txt', name + '.TXT', name.lower(), name.lower() + '.txt']:
                 filename = os.path.join(dir, another_name)
-                if os.path.exists(filename):
+                if os.path.isfile(filename):
                     startfile(filename)
                     found = True
                     break
