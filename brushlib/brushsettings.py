@@ -67,6 +67,7 @@ settings_list = [
     ['change_color_hsv_s', _('change color satur. (HSV)'), False, -2.0, 0.0, 2.0, _("Change the color saturation using the HSV color model. HSV changes are applied before HSL.\n-1.0 more grayish\n 0.0 disable\n 1.0 more saturated")],
     ['smudge', _('smudge'), False, 0.0, 0.0, 1.0, _("Paint with the smudge color instead of the brush color. The smudge color is slowly changed to the color you are painting on.\n 0.0 do not use the smudge color\n 0.5 mix the smudge color with the brush color\n 1.0 use only the smudge color")],
     ['smudge_length', _('smudge length'), False, 0.0, 0.5, 1.0, _("This controls how fast the smudge color becomes the color you are painting on.\n0.0 immediately change the smudge color\n1.0 never change the smudge color")],
+    ['smudge_radius_log', _('smudge radius'), False, -1.6, 0.0, 1.6, _("This modifies the radius of the circle where color is picked up for smudging.\n 0.0 use the brush radius \n-0.7 half the brush radius\n+0.7 twice the brush radius\n+1.6 five times the brush radius (slow)")],
     ['eraser', _('eraser'), False, 0.0, 0.0, 1.0, _("how much this tool behaves like an eraser\n 0.0 normal painting\n 1.0 standard eraser\n 0.5 pixels go towards 50% transparency")],
 
     ['stroke_threshold', _('stroke threshold'), True, 0.0, 0.0, 0.5, _("How much pressure is needed to start a stroke. This affects the stroke input only. Mypaint does not need a minimal pressure to start drawing.")],

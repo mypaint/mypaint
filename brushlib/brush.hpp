@@ -388,8 +388,7 @@ private:
       radius_log  = settings_value[BRUSH_RADIUS_LOGARITHMIC];
       radius_log += rand_gauss (rng) * settings_value[BRUSH_RADIUS_BY_RANDOM];
       radius = expf(radius_log);
-      if (radius < ACTUAL_RADIUS_MIN) radius = ACTUAL_RADIUS_MIN;
-      if (radius > ACTUAL_RADIUS_MAX) radius = ACTUAL_RADIUS_MAX;
+      radius = CLAMP(radius, ACTUAL_RADIUS_MIN, ACTUAL_RADIUS_MAX);
       alpha_correction = states[STATE_ACTUAL_RADIUS] / radius;
       alpha_correction = SQR(alpha_correction);
       if (alpha_correction <= 1.0) {
@@ -430,13 +429,18 @@ private:
     if (settings_value[BRUSH_SMUDGE_LENGTH] < 1.0 and
         // optimization, since normal brushes have smudge_length == 0.5 without actually smudging
         (settings_value[BRUSH_SMUDGE] != 0.0 or not settings[BRUSH_SMUDGE]->is_constant())) {
+
+      float smudge_radius = radius * expf(settings_value[BRUSH_SMUDGE_RADIUS_LOG]);
+      smudge_radius = CLAMP(smudge_radius, ACTUAL_RADIUS_MIN, ACTUAL_RADIUS_MAX);
+
       float fac = settings_value[BRUSH_SMUDGE_LENGTH];
       if (fac < 0.0) fac = 0;
       int px, py;
       px = ROUND(x);
       py = ROUND(y);
       float r, g, b, a;
-      surface->get_color (px, py, radius, &r, &g, &b, &a);
+
+      surface->get_color (px, py, smudge_radius, &r, &g, &b, &a);
       // updated the smudge color (stored with premultiplied alpha)
       states[STATE_SMUDGE_A ] = fac*states[STATE_SMUDGE_A ] + (1-fac)*a;
       // fix rounding errors
