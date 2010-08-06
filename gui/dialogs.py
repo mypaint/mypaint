@@ -206,6 +206,12 @@ def save_dialog(title, window, filters, default_format=None):
     return result
 
 def confirm_brushpack_import(packname, window=None, readme=None, license=None):
+    def show_text(text):
+        tv = gtk.TextView()
+        tv.set_wrap_mode(gtk.WRAP_WORD)
+        tv.get_buffer().set_text(text)
+        return tv
+
     dialog = gtk.Dialog(_("Import brushes package?"),
                        window,
                        gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
@@ -214,14 +220,12 @@ def confirm_brushpack_import(packname, window=None, readme=None, license=None):
     if readme:
         readme_label = gtk.Label(_("%s README:") % packname)
         dialog.vbox.pack_start(readme_label)
-        readme_tv = gtk.TextView()
-        readme_tv.get_buffer().set_text(readme)
+        readme_tv = show_text(readme)
         dialog.vbox.pack_start(readme_tv)
     if license:
         license_label = gtk.Label(_("%s license:") % packname)
         dialog.vbox.pack_start(license_label)
-        license_tv = gtk.TextView()
-        license_tv.get_buffer().set_text(license)
+        license_tv = show_text(license)
         dialog.vbox.pack_start(license_tv)
     question = gtk.Label(_("<b>Do you really want to import package `%s'?</b>") % packname)
     question.set_use_markup(True)
