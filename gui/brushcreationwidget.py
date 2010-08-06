@@ -87,7 +87,7 @@ class Widget(gtk.HBox):
         path = b.get_fileprefix()
         dir = os.path.dirname(path)
         found = False
-        while dir:
+        while dir not in ['', '/']:
             for name in ["README", "LICENSE", "LEGAL", "COPYRIGHT"]:
                 for another_name in [name, name + '.txt', name + '.TXT', name.lower(), name.lower() + '.txt']:
                     filename = os.path.join(dir, another_name)
