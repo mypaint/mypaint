@@ -89,7 +89,7 @@ class Application: # singleton
 
         self.preferences = {}
         self.load_settings()
-        self.brushmanager = brushmanager.BrushManager(join(datapath, 'brushes'), join(confpath, 'brushes'))
+        self.brushmanager = brushmanager.BrushManager(join(datapath, 'brushes'), join(confpath, 'brushes'), self)
         self.kbm = keyboard.KeyboardManager()
         self.filehandler = filehandling.FileHandler(self)
         self.doc = document.Document(self)
@@ -179,6 +179,8 @@ class Application: # singleton
             'input.global_pressure_mapping': [(0.0, 1.0), (1.0, 0.0)],
             'view.default_zoom': 1.0,
             'saving.default_format': 'openraster',
+            'brushmanager.selected_brush' : None,
+            'brushmanager.selected_groups' : [],
         }
         self.preferences = DEFAULT_CONFIG
         try: 
@@ -270,7 +272,8 @@ class Application: # singleton
     def save_gui_config(self):
         gtk.accel_map_save(join(self.confpath, 'accelmap.conf'))
         self.save_window_positions()
-        
+	self.save_settings()
+
     def save_window_positions(self):
         f = open(join(self.confpath, 'windowpos.conf'), 'w')
         f.write('# name visible x y width height\n')

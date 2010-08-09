@@ -35,9 +35,10 @@ def translate_group_name(name):
     return d.get(name, name)
 
 class BrushManager:
-    def __init__(self, stock_brushpath, user_brushpath):
+    def __init__(self, stock_brushpath, user_brushpath, app):
         self.stock_brushpath = stock_brushpath
         self.user_brushpath = user_brushpath
+        self.app = app
 
         self.selected_brush = ManagedBrush(self)
         self.groups = {}
@@ -55,12 +56,16 @@ class BrushManager:
             os.mkdir(self.user_brushpath)
         self.load_groups()
 
-        # TODO: load from config instead
-        if DEFAULT_BRUSH_GROUP in self.groups:
-            brushes = self.get_group_brushes(DEFAULT_BRUSH_GROUP, make_active=True)
-            if brushes:
-                self.selected_brush = brushes[0]
 
+        last_active_groups = self.app.preferences['brushmanager.selected_groups']
+        if not last_active_groups:
+            last_active_groups = [DEFAULT_BRUSH_GROUP]
+        for group in reversed(last_active_groups):
+            if group in self.groups:
+                brushes = self.get_group_brushes(group, make_active=True)
+
+        last_active_brush = self.get_brush_by_name(self.app.preferences['brushmanager.selected_brush'])
+        self.select_brush(last_active_brush)
         self.brushes_observers.append(self.brushes_modified_cb)
 
 
@@ -282,6 +287,7 @@ class BrushManager:
             brush.load_settings()
         assert isinstance(brush, ManagedBrush)
         self.selected_brush = brush
+        self.app.preferences['brushmanager.selected_brush'] = self.selected_brush.name
         for callback in self.selected_brush_observers:
             callback(brush)
 
@@ -293,6 +299,7 @@ class BrushManager:
                     brush.load_preview()
             self.loaded_groups.append(groupname)
         self.active_groups = groups
+        self.app.preferences['brushmanager.selected_groups'] = groups
         for f in self.groups_observers: f()
 
     def get_group_brushes(self, group, make_active=False):
