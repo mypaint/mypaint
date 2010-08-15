@@ -305,11 +305,9 @@ class Document():
                 tmp_layer = layer.Layer()
                 for l in self.layers:
                     l.merge_into(tmp_layer)
-                pixbuf = tmp_layer.surface.render_as_pixbuf()
+                tmp_layer.surface.save(filename)
             else:
-                pixbuf = self.render_as_pixbuf()
-            arr = pixbuf.get_pixels_array()
-            mypaintlib.save_png_fast(filename, arr)
+                pixbufsurface.save_as_png(self, filename, alpha=False)
 
     def save_multifile_png(self, filename, alpha=False):
         prefix, ext = os.path.splitext(filename)
@@ -356,16 +354,23 @@ class Document():
         def store_pixbuf(pixbuf, name):
             tmp = join(tempdir, 'tmp.png')
             t1 = time.time()
-            arr = pixbuf.get_pixels_array()
-            mypaintlib.save_png_fast(tmp, arr)
-            print '  %.3fs saving %s' % (time.time() - t1, name)
+            pixbuf.save(tmp, 'png')
+            print '  %.3fs pixbuf saving %s' % (time.time() - t1, name)
             z.write(tmp, name)
             os.remove(tmp)
 
-        def add_layer(x, y, opac, pixbuf, name, layer_name, visible=True):
+        def store_surface(surface, name, rect=[]):
+            tmp = join(tempdir, 'tmp.png')
+            t1 = time.time()
+            surface.save(tmp, *rect)
+            print '  %.3fs surface saving %s' % (time.time() - t1, name)
+            z.write(tmp, name)
+            os.remove(tmp)
+
+        def add_layer(x, y, opac, surface, name, layer_name, visible=True, rect=[]):
             layer = ET.Element('layer')
             stack.append(layer)
-            store_pixbuf(pixbuf, name)
+            store_surface(surface, name, rect)
             a = layer.attrib
             if layer_name:
                 a['name'] = layer_name
@@ -384,8 +389,7 @@ class Document():
                 continue
             opac = l.opacity
             x, y, w, h = l.surface.get_bbox()
-            pixbuf = l.surface.render_as_pixbuf()
-            el = add_layer(x-x0, y-y0, opac, pixbuf, 'data/layer%03d.png' % idx, l.name, l.visible)
+            el = add_layer(x-x0, y-y0, opac, l.surface, 'data/layer%03d.png' % idx, l.name, l.visible, rect=(x, y, w, h))
             # strokemap
             data = l.save_strokemap_to_string(-x, -y)
             name = 'data/layer%03d_strokemap.dat' % idx
@@ -393,18 +397,17 @@ class Document():
             write_file_str(name, data)
 
         # save background as layer (solid color or tiled)
-        s = pixbufsurface.Surface(x0, y0, w0, h0)
-        s.fill(self.background)
-        l = add_layer(0, 0, 1.0, s.pixbuf, 'data/background.png', 'background')
         bg = self.background
+        # save as fully rendered layer
+        l = add_layer(0, 0, 1.0, bg, 'data/background.png', 'background', rect=(x0, y0, w0, h0))
         x, y, w, h = bg.get_pattern_bbox()
-        pixbuf = pixbufsurface.render_as_pixbuf(bg, x+x0, y+y0, w, h, alpha=False)
-        store_pixbuf(pixbuf, 'data/background_tile.png')
+        # save as single pattern (with corrected origin)
+        store_surface(bg, 'data/background_tile.png', rect=(x+x0, y+y0, w, h))
         l.attrib['background_tile'] = 'data/background_tile.png'
 
         # preview
         t2 = time.time()
-        print '  starting to render image for thumbnail...'
+        print '  starting to render full image for thumbnail...'
         pixbuf = self.render_as_pixbuf()
         w, h = pixbuf.get_width(), pixbuf.get_height()
         if w > h:

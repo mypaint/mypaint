@@ -11,13 +11,14 @@
 
 from gtk import gdk
 import mypaintlib, tiledsurface, helpers
+import numpy
 
 N = tiledsurface.N
 
 class Surface:
     """
     This class represents a gdk.Pixbuf (8 bit RGB or RGBA data) with
-    memory also accessible per-tile, similar to tiledsurface.Surface.
+    memory also accessible per-tile, compatible with tiledsurface.Surface.
     """
     def __init__(self, x, y, w, h, alpha=False, data=None):
         assert w>0 and h>0
@@ -83,11 +84,6 @@ class Surface:
     def get_tile_memory(self, tx, ty):
         return self.tile_memory_dict[(tx, ty)]
 
-    def fill(self, background):
-        # currently, the only data we can get is a backgroundsurface...
-        for (tx, ty), dst in self.tile_memory_dict.iteritems():
-            background.blit_tile_into(dst, tx, ty)
-
     def blit_tile_into(self, dst, tx, ty):
         # (used mainly for loading transparent PNGs)
         assert dst.dtype == 'uint16', '16 bit dst expected'
@@ -105,3 +101,29 @@ def render_as_pixbuf(surface, *rect, **kwargs):
         dst = s.get_tile_memory(tx, ty)
         surface.blit_tile_into(dst, tx, ty)
     return s.pixbuf
+
+def save_as_png(surface, filename, *rect, **kwargs):
+    alpha = kwargs['alpha']
+    if not rect:
+        rect = surface.get_bbox()
+    x, y, w, h, = rect
+    assert x % N == 0 and y % N == 0, 'only saving of full tiles is implemented (for now)'
+    assert w % N == 0 and h % N == 0, 'only saving of full tiles is implemented (for now)'
+
+    if alpha:
+        bpp = 4
+    else:
+        bpp = 3
+    arr = numpy.empty((N, w, bpp), 'uint8')
+
+    ty_list = range(y/N, (y+h)/N)
+
+    def render_tile_scanline():
+        ty = ty_list.pop(0)
+        for tx_rel in xrange(w/N):
+            # OPTIMIZE: shortcut for empty tiles (not in tiledict)?
+            dst = arr[:,tx_rel*N:(tx_rel+1)*N,:]
+            surface.blit_tile_into(dst, x/N+tx_rel, ty)
+        return arr
+
+    mypaintlib.save_png_fast_progressive(filename, w, h, alpha, render_tile_scanline)

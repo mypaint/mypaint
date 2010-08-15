@@ -11,6 +11,7 @@ gdk = gtk.gdk
 
 import mypaintlib, helpers
 from tiledsurface import N, MAX_MIPMAP_LEVEL, get_tiles_bbox
+import pixbufsurface
 
 class BackgroundError(Exception):
     pass
@@ -71,3 +72,7 @@ class Background:
     def get_pattern_bbox(self):
         return get_tiles_bbox(self.tiles)
 
+    def save(self, filename, *rect, **kwargs):
+        assert 'alpha' not in kwargs
+        kwargs['alpha'] = False
+        pixbufsurface.save_as_png(self, filename, *rect, **kwargs)

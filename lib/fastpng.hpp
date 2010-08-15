@@ -17,27 +17,25 @@ static void png_write_error_callback(png_structp png_save_ptr, png_const_charp e
 }
 #endif
 
-PyObject * save_png_fast(char * filename, PyObject * arr)
+PyObject * save_png_fast_progressive(char * filename, int w, int h, bool has_alpha,
+                                     PyObject * get_data_callback)
 {
   png_structp png_ptr = NULL;
   png_infop info_ptr = NULL;
   PyObject * result = NULL;
-  int w, h, bpc, rowstride;
-  bool has_alpha;
+  int bpc;
   FILE * fp = NULL;
-  png_bytep row_ptr;
 
-  assert(PyArray_NDIM(arr) == 3);
-  h = PyArray_DIM(arr, 0);
-  w = PyArray_DIM(arr, 1);
-  if (PyArray_DIM(arr, 2) == 4) {
-    has_alpha = true;
-  } else {
-    assert(PyArray_DIM(arr, 2) == 3);
-    has_alpha = false;
-  }
-  assert(PyArray_ISCARRAY(arr));
-  assert(PyArray_TYPE(arr) == NPY_UINT8);
+  /* TODO: try if this silliness helps
+#if defined(PNG_LIBPNG_VER) && (PNG_LIBPNG_VER >= 10200)
+  png_uint_32 mask, flags;
+  
+  flags = png_get_asm_flags(png_ptr);
+  mask = png_get_asm_flagmask(PNG_SELECT_READ | PNG_SELECT_WRITE);
+  png_set_asm_flags(png_ptr, flags | mask);
+#endif
+  */
+
   bpc = 8;
   
   fp = fopen(filename, "wb");
@@ -84,12 +82,33 @@ PyObject * save_png_fast(char * filename, PyObject * arr)
 
   png_write_info(png_ptr, info_ptr);
 
-  row_ptr = (png_bytep)PyArray_DATA(arr);
-  rowstride = w * PyArray_DIM(arr, 2);
+  {
+    int y = 0;
+    while (y < h) {
+      PyObject * arr;
+      int rows;
+      arr = PyObject_CallObject(get_data_callback, NULL);
 
-  for (int y = 0; y < h; y++) {
-    png_write_rows (png_ptr, &row_ptr, 1);
-    row_ptr += rowstride;
+      if (!arr) goto cleanup;
+#ifdef HEAVY_DEBUG
+      assert(PyArray_ISCARRAY(arr));
+      assert(PyArray_NDIM(arr) == 3);
+      assert(PyArray_DIM(arr, 1) == w);
+      assert(PyArray_DIM(arr, 2) == has_alpha?4:3);
+      assert(PyArray_TYPE(arr) == NPY_UINT8);
+#endif
+
+      rows = PyArray_DIM(arr, 0);
+      assert(rows > 0);
+      y += rows;
+      png_bytep p = (png_bytep)PyArray_DATA(arr);
+      for (int row=0; row<rows; row++) {
+        png_write_row (png_ptr, p);
+        p += w * PyArray_DIM(arr, 2);
+      }
+      Py_DECREF(arr);
+    }
+    assert(y == h);
   }
   
   png_write_end (png_ptr, info_ptr);
@@ -102,4 +121,3 @@ PyObject * save_png_fast(char * filename, PyObject * arr)
   if (fp) fclose(fp);
   return result;
 }
-

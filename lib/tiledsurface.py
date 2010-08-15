@@ -174,8 +174,9 @@ class Surface(mypaintlib.TiledSurface):
         return res
 
     def save(self, filename, *args, **kwargs):
-        pixbuf = self.render_as_pixbuf(*args, **kwargs)
-        pixbuf.save(filename, 'png')
+        assert 'alpha' not in kwargs
+        kwargs['alpha'] = True
+        pixbufsurface.save_as_png(self, filename, *args, **kwargs)
 
     def load_from_pixbufsurface(self, s):
         dirty_tiles = set(self.tiledict.keys())
