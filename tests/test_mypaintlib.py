@@ -8,6 +8,20 @@ sys.path.insert(0, '..')
 
 from lib import mypaintlib, tiledsurface, brush, document, command, helpers
 
+def tileConversions():
+    # fully transparent tile stays fully transparent (without noise)
+    N = mypaintlib.TILE_SIZE
+    src = zeros((N, N, 4), 'uint16')
+    dst = ones((N, N, 4), 'uint8')
+    mypaintlib.tile_convert_rgba16_to_rgba8(src, dst)
+    assert not dst.any()
+    # fully opaque tile stays fully opaque
+    src[:,:,3] = 1<<15
+    src[:,:,:3] = randint(0, 1<<15, (N, N, 3))
+    dst = zeros((N, N, 4), 'uint8')
+    mypaintlib.tile_convert_rgba16_to_rgba8(src, dst)
+    assert (dst[:,:,3] == 255).all()
+
 def directPaint():
 
     s = tiledsurface.Surface()
@@ -73,7 +87,7 @@ def pngs_equal(a, b):
         diff *= imread(a)[:,:,3:4]
     res = mean(mean(diff, 0), 0)
     print res
-    if mean(res) > 0.001:
+    if mean(res) > 0.01:
         # dithering should make this value nearly zero...
         equal = False
     print 'Maximum abs difference with premultiplied alpha (255=white): (R, G, B, A)'
@@ -188,6 +202,7 @@ from optparse import OptionParser
 parser = OptionParser('usage: %prog [options]')
 options, tests = parser.parse_args()
 
+tileConversions()
 directPaint()
 brushPaint()
 docPaint()
