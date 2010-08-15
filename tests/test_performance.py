@@ -158,6 +158,15 @@ def save_png():
     d.save('test_save.png')
     yield stop_measurement
 
+@nogui_test
+def save_png_layer():
+    from lib import document
+    d = document.Document()
+    d.load('biglayer.png')
+    yield start_measurement
+    d.layer.surface.save('test_save.png')
+    yield stop_measurement
+
 @gui_test
 def scroll_nozoom(gui):
     gui.wait_for_idle()
