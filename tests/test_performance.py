@@ -150,6 +150,16 @@ def save_ora():
     yield stop_measurement
 
 @nogui_test
+def save_ora_again():
+    from lib import document
+    d = document.Document()
+    d.load('bigimage.ora')
+    d.save('test_save.ora')
+    yield start_measurement
+    d.save('test_save.ora')
+    yield stop_measurement
+
+@nogui_test
 def save_png():
     from lib import document
     d = document.Document()
