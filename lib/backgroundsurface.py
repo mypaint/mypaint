@@ -67,6 +67,11 @@ class Background:
         else:
             # this case is for saving the background
             assert dst.dtype == 'uint8'
+            # note: when saving the background layer we usually
+            # convert here the same tile over and over again. But it
+            # does help much to cache this conversion result. The
+            # save_ora speedup when doing this is below 1%, even for a
+            # single-layer ora.
             mypaintlib.tile_convert_rgb16_to_rgb8(rgb, dst)
 
     def get_pattern_bbox(self):
@@ -75,4 +80,6 @@ class Background:
     def save(self, filename, *rect, **kwargs):
         assert 'alpha' not in kwargs
         kwargs['alpha'] = False
+        if len(self.tiles) == 1:
+            kwargs['single_tile_pattern'] = True
         pixbufsurface.save_as_png(self, filename, *rect, **kwargs)

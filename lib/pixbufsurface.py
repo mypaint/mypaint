@@ -126,4 +126,9 @@ def save_as_png(surface, filename, *rect, **kwargs):
             surface.blit_tile_into(dst, x/N+tx_rel, ty)
         return arr
 
+    if kwargs.get('single_tile_pattern', False):
+        render_tile_scanline()
+        def render_tile_scanline():
+            return arr
+
     mypaintlib.save_png_fast_progressive(filename, w, h, alpha, render_tile_scanline)
