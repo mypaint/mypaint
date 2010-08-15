@@ -118,8 +118,12 @@ class Surface(mypaintlib.TiledSurface):
     def blit_tile_into(self, dst, tx, ty):
         # used mainly for saving (transparent PNG)
         assert dst.shape[2] == 4
-        tmp = self.get_tile_memory(tx, ty, readonly=True)
-        return mypaintlib.tile_convert_rgba16_to_rgba8(tmp, dst)
+        src = self.get_tile_memory(tx, ty, readonly=True)
+        if src is transparent_tile.rgba:
+            #dst[:] = 0 # <-- notably slower than memset()
+            mypaintlib.tile_clear(dst)
+        else:
+            mypaintlib.tile_convert_rgba16_to_rgba8(src, dst)
 
     def composite_tile_over(self, dst, tx, ty, mipmap_level=0, opacity=1.0, mode=0):
         """

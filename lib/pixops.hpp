@@ -249,6 +249,24 @@ void tile_convert_rgba16_to_rgba8(PyObject * src, PyObject * dst) {
   }
 }
 
+void tile_clear(PyObject * dst) {
+  PyArrayObject* dst_arr = ((PyArrayObject*)dst);
+
+#ifdef HEAVY_DEBUG
+  assert(PyArray_DIM(dst, 0) == TILE_SIZE);
+  assert(PyArray_DIM(dst, 1) == TILE_SIZE);
+  assert(PyArray_TYPE(dst) == NPY_UINT8);
+  assert(PyArray_ISBEHAVED(dst));
+  assert(dst_arr->strides[1] <= 8);
+#endif
+
+  for (int y=0; y<TILE_SIZE; y++) {
+    uint8_t  * dst_p = (uint8_t*)(dst_arr->data + y*dst_arr->strides[0]);
+    memset(dst_p, 0, TILE_SIZE*dst_arr->strides[1]);
+    dst_p += dst_arr->strides[0];
+  }
+}
+
 // used after compositing
 void tile_convert_rgb16_to_rgb8(PyObject * src, PyObject * dst) {
   PyArrayObject* src_arr = ((PyArrayObject*)src);
