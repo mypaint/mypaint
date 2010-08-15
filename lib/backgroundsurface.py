@@ -66,7 +66,7 @@ class Background:
         else:
             # this case is for saving the background
             assert dst.dtype == 'uint8'
-            dst[:N,:N,:] = rgb.astype('uint32') * 255 / (1<<15)
+            mypaintlib.tile_convert_rgb16_to_rgb8(rgb, dst)
 
     def get_pattern_bbox(self):
         return get_tiles_bbox(self.tiles)
