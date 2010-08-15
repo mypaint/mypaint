@@ -269,7 +269,8 @@ class Window(windowing.MainWindow):
                 self.app.doc.end_eraser_mode()
                 self.colorpick_state.activate(event)
         elif event.button == 3:
-            self.history_popup_state.activate(event)
+            if self.app.preferences['input.enable_history_popup']:
+                self.history_popup_state.activate(event)
 
     def button_release_cb(self, win, event):
         #print event.device, event.button

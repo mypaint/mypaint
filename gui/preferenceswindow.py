@@ -73,6 +73,10 @@ class Window(windowing.Dialog):
         h.pack_start(combo, expand=True)
         v.pack_start(h, expand=False)
 
+        self.enable_history_popup_checkbox = c = gtk.CheckButton(_('Enable color history popup'))
+        c.connect('toggled', self.enable_history_popup_toggled_cb)
+        v.pack_start(c, expand=False)
+
         ### Saving tab
         saving_vbox = gtk.VBox()
         nb.append_page(saving_vbox, gtk.Label(_('Saving')))
@@ -136,6 +140,7 @@ class Window(windowing.Dialog):
         saveformat_idx = self.app.filehandler.config2saveformat[saveformat_config]
         idx = self.defaultsaveformat_values.index(saveformat_idx)
         self.defaultsaveformat_combo.set_active(idx)
+        self.enable_history_popup_checkbox.set_active(p['input.enable_history_popup'])
 
         self.cv.queue_draw()
 
@@ -143,6 +148,10 @@ class Window(windowing.Dialog):
     def input_devices_combo_changed_cb(self, window):
         mode = self.input_devices_combo.get_active_text()
         self.app.preferences['input.device_mode'] = mode
+        self.app.apply_settings()
+
+    def enable_history_popup_toggled_cb(self, widget):
+        self.app.preferences['input.enable_history_popup'] = widget.get_active()
         self.app.apply_settings()
 
     def pressure_curve_changed_cb(self, widget):

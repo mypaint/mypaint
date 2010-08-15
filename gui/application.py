@@ -177,6 +177,7 @@ class Application: # singleton
             'saving.scrap_prefix': '~/MyPaint/scrap',
             'input.device_mode': 'screen',
             'input.global_pressure_mapping': [(0.0, 1.0), (1.0, 0.0)],
+            'input.enable_history_popup': True,
             'view.default_zoom': 1.0,
             'saving.default_format': 'openraster',
             'brushmanager.selected_brush' : None,
