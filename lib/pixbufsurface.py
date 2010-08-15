@@ -93,13 +93,14 @@ class Surface:
 
 def render_as_pixbuf(surface, *rect, **kwargs):
     alpha = kwargs.get('alpha', False)
+    mipmap_level = kwargs.get('mipmap_level', 0)
     if not rect:
         rect = surface.get_bbox()
     x, y, w, h, = rect
     s = Surface(x, y, w, h, alpha)
     for tx, ty in s.get_tiles():
         dst = s.get_tile_memory(tx, ty)
-        surface.blit_tile_into(dst, tx, ty)
+        surface.blit_tile_into(dst, tx, ty, mipmap_level=mipmap_level)
     return s.pixbuf
 
 def save_as_png(surface, filename, *rect, **kwargs):

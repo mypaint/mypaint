@@ -178,7 +178,7 @@ class Document():
             res.expandToIncludeRect(bbox)
         return res
 
-    def blit_tile_into(self, dst_8bit, tx, ty, mipmap=0, layers=None, background=None):
+    def blit_tile_into(self, dst_8bit, tx, ty, mipmap_level=0, layers=None, background=None):
         if layers is None:
             layers = self.layers
         if background is None:
@@ -187,11 +187,11 @@ class Document():
         assert dst_8bit.dtype == 'uint8'
         dst = numpy.empty((N, N, 3), dtype='uint16')
 
-        background.blit_tile_into(dst, tx, ty, mipmap)
+        background.blit_tile_into(dst, tx, ty, mipmap_level)
 
         for layer in layers:
             surface = layer.surface
-            surface.composite_tile_over(dst, tx, ty, mipmap_level=mipmap, opacity=layer.effective_opacity)
+            surface.composite_tile_over(dst, tx, ty, mipmap_level=mipmap_level, opacity=layer.effective_opacity)
 
         mypaintlib.tile_convert_rgb16_to_rgb8(dst, dst_8bit)
 
@@ -294,8 +294,8 @@ class Document():
     def unsupported(self, filename):
         raise SaveLoadError, _('Unknown file format extension: %s') % repr(filename)
 
-    def render_as_pixbuf(self, *args):
-        return pixbufsurface.render_as_pixbuf(self, *args)
+    def render_as_pixbuf(self, *args, **kwargs):
+        return pixbufsurface.render_as_pixbuf(self, *args, **kwargs)
 
     def save_png(self, filename, alpha=False, multifile=False):
         if multifile:
@@ -405,11 +405,18 @@ class Document():
         store_surface(bg, 'data/background_tile.png', rect=(x+x0, y+y0, w, h))
         l.attrib['background_tile'] = 'data/background_tile.png'
 
-        # preview
+        # preview (256x256)
         t2 = time.time()
         print '  starting to render full image for thumbnail...'
-        pixbuf = self.render_as_pixbuf()
-        w, h = pixbuf.get_width(), pixbuf.get_height()
+
+        x, y, w, h = x0, y0, w0, h0
+        mipmap_level = 0
+        while mipmap_level < tiledsurface.MAX_MIPMAP_LEVEL and max(w, h) >= 512:
+            mipmap_level += 1
+            x, y, w, h = x/2, y/2, w/2, h/2
+
+        pixbuf = self.render_as_pixbuf(x, y, w, h, mipmap_level=mipmap_level)
+        assert pixbuf.get_width() == w and pixbuf.get_height() == h
         if w > h:
             w, h = 256, max(h*256/w, 1)
         else:

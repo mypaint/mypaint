@@ -115,8 +115,10 @@ class Surface(mypaintlib.TiledSurface):
         if self.mipmap:
             self.mipmap.mark_mipmap_dirty(tx/2, ty/2)
 
-    def blit_tile_into(self, dst, tx, ty):
+    def blit_tile_into(self, dst, tx, ty, mipmap_level=0):
         # used mainly for saving (transparent PNG)
+        if self.mipmap_level < mipmap_level:
+            return self.mipmap.blit_tile_into(dst, tx, ty, mipmap_level)
         assert dst.shape[2] == 4
         src = self.get_tile_memory(tx, ty, readonly=True)
         if src is transparent_tile.rgba:
