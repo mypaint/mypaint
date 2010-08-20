@@ -68,9 +68,6 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.scale = 1.0
         self.rotation = 0.0
         self.mirrored = False
-        # only used when forcing translation_x/y aligned to full pixels
-        self.translation_subpixel_x = 0.0
-        self.translation_subpixel_y = 0.0
 
         self.has_pointer = False
         self.dragfunc = None
@@ -245,11 +242,29 @@ class TiledDrawWidget(gtk.DrawingArea):
         return True
 
     def get_model_coordinates_cairo_context(self, cr=None):
+        # OPTIMIZE: check whether this is a bottleneck during painting (many motion events) - if yes, use cache
         if cr is None:
             cr = self.window.cairo_create()
+
+        scale = self.scale
+        # check if scale is almost a power of two
+        scale_log2 = log(scale, 2)
+        scale_log2_rounded = round(scale_log2)
+        if abs(scale_log2-scale_log2_rounded) < 0.01:
+            scale = 2.0**scale_log2_rounded
+
+        rotation = self.rotation # maybe we should check if rotation is almost a multiple of 90 degrees?
+
         cr.translate(self.translation_x, self.translation_y)
-        cr.rotate(self.rotation)
-        cr.scale(self.scale, self.scale)
+        cr.rotate(rotation)
+        cr.scale(scale, scale)
+
+        # Align the translation such that (0,0) maps to an integer
+        # screen pixel, to keep image rendering fast and sharp.
+        x, y = cr.user_to_device(0, 0)
+        x, y = cr.device_to_user(round(x), round(y))
+        cr.translate(x, y)
+
         if self.mirrored:
             m = list(cr.get_matrix())
             m[0] = -m[0]
@@ -302,6 +317,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         # choose best mipmap
         mipmap_level = max(0, int(ceil(log(1/self.scale,2))))
         #mipmap_level = max(0, int(floor(log(1.0/self.scale,2)))) # slightly better quality but clearly slower
+        # OPTIMIZE: if we would render tile scanlines, we could probably use the better one above...
         mipmap_level = min(mipmap_level, tiledsurface.MAX_MIPMAP_LEVEL)
         cr.scale(2**mipmap_level, 2**mipmap_level)
 
@@ -322,7 +338,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         # alpha=True is just to get hardware acceleration, we don't
         # actually use the alpha channel. Speedup factor 3 for
         # ATI/Radeon Xorg driver (and hopefully others).
-        # TODO: measure effect on pure software rendering
+        # https://bugs.freedesktop.org/show_bug.cgi?id=28670
         surface = pixbufsurface.Surface(x1, y1, x2-x1+1, y2-y1+1, alpha=True)
 
         del x1, y1, x2, y2, w, h
@@ -380,13 +396,9 @@ class TiledDrawWidget(gtk.DrawingArea):
             x, y = cr.user_to_device(surface.x, surface.y)
             self.window.draw_pixbuf(None, surface.pixbuf, 0, 0, int(x), int(y), dither=gdk.RGB_DITHER_MAX)
         else:
-            cr.set_source_pixbuf(surface.pixbuf, surface.x, surface.y)
+            #print 'Position (screen coordinates):', cr.user_to_device(surface.x, surface.y)
+            cr.set_source_pixbuf(surface.pixbuf, round(surface.x), round(surface.y))
             pattern = cr.get_source()
-            # Required for ATI drivers, to avoid a slower-than-software fallback
-            # https://gna.org/bugs/?16122 and https://bugs.freedesktop.org/show_bug.cgi?id=28670
-            # However, when using an alpha channel in the source image
-            # (as we do now) performance is much better without this.
-            #pattern.set_extend(cairo.EXTEND_PAD)
 
             # We could set interpolation mode here (eg nearest neighbour)
             #pattern.set_filter(cairo.FILTER_NEAREST)  # 1.6s
@@ -406,27 +418,9 @@ class TiledDrawWidget(gtk.DrawingArea):
             cr.set_source_rgba(0, 0, random.random(), 0.4)
             cr.paint()
 
-    def align_translation(self):
-        """
-        Align translation to integer pixel coordinates. Keep track of
-        the remainder to allow incremental sub-pixel scrolling.
-        """
-        if self.is_translation_only():
-            tx_real = self.translation_x + self.translation_subpixel_x
-            ty_real = self.translation_y + self.translation_subpixel_y
-            self.translation_x = round(tx_real)
-            self.translation_y = round(ty_real)
-            self.translation_subpixel_x = tx_real - self.translation_x
-            self.translation_subpixel_y = ty_real - self.translation_y
-        else:
-            # forget about the subpixel translation (which was never executed)
-            self.translation_subpixel_x = 0.0
-            self.translation_subpixel_y = 0.0
-
     def scroll(self, dx, dy):
         self.translation_x -= dx
         self.translation_y -= dy
-        self.align_translation()
         if False:
             # This speeds things up nicely when scrolling is already
             # fast, but produces temporary artefacts and an
@@ -454,13 +448,6 @@ class TiledDrawWidget(gtk.DrawingArea):
         cx_new, cy_new = cr.user_to_device(cx_device, cy_device)
         self.translation_x += cx - cx_new
         self.translation_y += cy - cy_new
-
-        # this is for fast scrolling with only tanslation
-        self.rotation = self.rotation % (2*pi)
-        if self.is_translation_only():
-            self.translation_x = int(self.translation_x)
-            self.translation_y = int(self.translation_y)
-        self.align_translation()
 
         self.queue_draw()
 
