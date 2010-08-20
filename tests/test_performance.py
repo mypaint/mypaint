@@ -189,6 +189,43 @@ def scroll_nozoom(gui):
     yield stop_measurement
 
 @gui_test
+def scroll_nozoom_onelayer(gui):
+    gui.wait_for_idle()
+    dw = gui.app.drawWindow
+    dw.fullscreen_cb()
+    gui.app.filehandler.open_file('biglayer.png')
+    gui.wait_for_idle()
+    yield start_measurement
+    gui.scroll()
+    yield stop_measurement
+
+@gui_test
+def scroll_zoomed_out_1x_onelayer(gui):
+    gui.wait_for_idle()
+    dw = gui.app.drawWindow
+    dw.fullscreen_cb()
+    gui.app.filehandler.open_file('biglayer.png')
+    for i in range(1):
+        gui.app.doc.zoom('ZoomOut')
+    gui.wait_for_idle()
+    yield start_measurement
+    gui.scroll()
+    yield stop_measurement
+
+@gui_test
+def scroll_zoomed_out_2x_onelayer(gui):
+    gui.wait_for_idle()
+    dw = gui.app.drawWindow
+    dw.fullscreen_cb()
+    gui.app.filehandler.open_file('biglayer.png')
+    for i in range(2):
+        gui.app.doc.zoom('ZoomOut')
+    gui.wait_for_idle()
+    yield start_measurement
+    gui.scroll()
+    yield stop_measurement
+
+@gui_test
 def scroll_zoomed_out_5x(gui):
     gui.wait_for_idle()
     dw = gui.app.drawWindow
