@@ -126,6 +126,7 @@
         <menuitem action='NoDoubleBuffereing'/>
         <menuitem action='PrintMemoryLeak'/>
         <menuitem action='RunGarbageCollector'/>
+        <menuitem action='StartProfiling'/>
       </menu>
       <separator/>
       <menuitem action='About'/>

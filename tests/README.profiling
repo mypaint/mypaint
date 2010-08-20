@@ -12,5 +12,13 @@ For more options see
 
 ./test_performance.py -h
 
+
+You can also start the profiler from within MyPaint (Menu->Help->Debug).
+Works best with a keyboard shortcut assigned through the menu.
+
+Use the results with care. There is profiler overhead, the work being
+done while idling will sum up (eg. just hovering with the stylus), and
+xorg is probably filtered out completely.
+
 To profile the code written in C you have to use something else
 (eg. oprofile).

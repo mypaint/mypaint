@@ -15,10 +15,10 @@ Painting is done in tileddrawwidget.py.
 
 MYPAINT_VERSION="0.8.2+git"
 
-import os, math
+import os, math, time
 from gettext import gettext as _
 
-import gtk
+import gtk, gobject
 from gtk import gdk, keysyms
 
 import colorselectionwindow, historypopup, stategroup, colorpicker, windowing
@@ -139,6 +139,7 @@ class Window(windowing.MainWindow):
             ('DebugMenu',    None, _('Debug')),
             ('PrintMemoryLeak',  None, _('Print Memory Leak Info to stdout (Slow!)'), None, None, self.print_memory_leak_cb),
             ('RunGarbageCollector',  None, _('Run Garbage Collector Now'), None, None, self.run_garbage_collector_cb),
+            ('StartProfiling',  None, _('Start/Stop Python Profiling (cProfile)'), None, None, self.start_profiling_cb),
 
             ('ViewMenu', None, _('View')),
             ('ShowMenu',    None, _('Show Menu'), 'Menu', None, self.menu_show_cb),
@@ -190,8 +191,32 @@ class Window(windowing.MainWindow):
 
     def print_memory_leak_cb(self, action):
         helpers.record_memory_leak_status(print_diff = True)
+
     def run_garbage_collector_cb(self, action):
         helpers.run_garbage_collector()
+
+    def start_profiling_cb(self, action):
+        if getattr(self, 'profiler_active', False):
+            self.profiler_active = False
+            return
+
+        def doit():
+            import cProfile
+            profile = cProfile.Profile()
+
+            self.profiler_active = True
+            print '--- GUI Profiling starts ---'
+            while self.profiler_active:
+                profile.runcall(gtk.main_iteration, False)
+                if not gtk.events_pending():
+                    time.sleep(0.050) # ugly trick to remove "user does nothing" from profile
+            print '--- GUI Profiling ends ---'
+
+            profile.dump_stats('profile_fromgui.pstats')
+            #print 'profile written to mypaint_profile.pstats'
+            os.system('gprof2dot.py -f pstats profile_fromgui.pstats | dot -Tpng -o profile_fromgui.png && feh profile_fromgui.png &')
+
+        gobject.idle_add(doit)
 
     def key_press_event_cb_before(self, win, event):
         key = event.keyval 
