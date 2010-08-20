@@ -269,10 +269,6 @@ if __name__ == '__main__':
         if sys.argv[3] == 'NONE':
             run_test(func)
         else:
-            # Not as useful as it could be, because most tests start the UI
-            # The UI startup time dominates over the actual test execution time
-            # Perhaps the tests should return a function that we can execute 
-            # after setting everything up?
             profile = cProfile.Profile()
             run_test(func, profile)
             profile.dump_stats(sys.argv[3])
@@ -288,6 +284,8 @@ if __name__ == '__main__':
                       help='number of repetitions (default: 3)')
     parser.add_option('-p', '--profile', metavar='PREFIX',
                     help='dump cProfile info to PREFIX_TESTNAME_N.pstats')
+    parser.add_option('-s', '--show-profile', action='store_true', default=False,
+                    help='run cProfile, gprof2dot.py and show last result')
     options, tests = parser.parse_args()
 
     if options.list:
@@ -316,8 +314,11 @@ if __name__ == '__main__':
             print '---'
             # spawn a new process for each test, to ensure proper cleanup
             args = ['./test_performance.py', 'SINGLE_TEST_RUN', t, 'NONE']
-            if options.profile:
-                fname = '%s_%s_%d.pstats' % (options.profile, t, i)
+            if options.profile or options.show_profile:
+                if options.show_profile:
+                    fname = 'tmp.pstats'
+                else:
+                    fname = '%s_%s_%d.pstats' % (options.profile, t, i)
                 args[3] = fname
             child = subprocess.Popen(args, stdout=subprocess.PIPE)
             output, trash = child.communicate()
@@ -354,3 +355,6 @@ if __name__ == '__main__':
             print '%s %.3f' % (t, min(result))
     if fail:
         sys.exit(1)
+
+    if options.show_profile:
+        os.system('gprof2dot.py -f pstats tmp.pstats | dot -Tpng -o tmp.png && feh tmp.png')

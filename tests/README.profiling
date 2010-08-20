@@ -1,12 +1,16 @@
 Quick Profiling HOWTO:
 
-# get gprof2dot (you will also need graphviz installed)
-wget http://gprof2dot.jrfonseca.googlecode.com/hg/gprof2dot.py
-chmod +x gprof2dot.py
+Install gprof2dot.py into your $PATH:
+http://code.google.com/p/jrfonseca/wiki/Gprof2Dot
+Also install graphviz (to render PNGs) and feh (image viewer).
 
-# run some test with profiling
-./test_performance.py startup -p base
+Now run
 
-# generate a PNG
-./gprof2dot.py -f pstats base_startup_2.pstats | dot -Tpng -o output.png
+./test_performance.py -c 1 -s load_ora
 
+For more options see
+
+./test_performance.py -h
+
+To profile the code written in C you have to use something else
+(eg. oprofile).
