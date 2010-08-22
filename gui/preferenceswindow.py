@@ -73,7 +73,7 @@ class Window(windowing.Dialog):
         h.pack_start(combo, expand=True)
         v.pack_start(h, expand=False)
 
-        self.enable_history_popup_checkbox = c = gtk.CheckButton(_('Enable color history popup'))
+        self.enable_history_popup_checkbox = c = gtk.CheckButton(_('Enable right-click color history'))
         c.connect('toggled', self.enable_history_popup_toggled_cb)
         v.pack_start(c, expand=False)
 
