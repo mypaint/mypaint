@@ -6,28 +6,26 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-import time
+import time, struct
 import zlib
 from numpy import *
 
-import tiledsurface, idletask, strokemap_pb2
+import tiledsurface, idletask
 N = tiledsurface.N
 
 tasks = idletask.Processor(max_pending=6)
 
-class StrokeInfo:
+class StrokeShape:
     """
-    This class stores permanent (saved with image) information about a
-    single stroke. Mainly this is the stroke shape and the brush
-    settings that were used. Needed to pick brush from canvas.
+    This class stores the shape of a stroke in as a 1-bit bitmap. The
+    information is stored in compressed memory blocks of the size of a
+    tile (for fast lookup).
     """
     def __init__(self):
         self.strokemap = {}
-        self.brush = None
 
-    def init_from_snapshots(self, brush_string, snapshot_before, snapshot_after):
+    def init_from_snapshots(self, snapshot_before, snapshot_after):
         assert not self.strokemap
-        self.brush_string = brush_string
         # extract the layer from each snapshot
         a, b = snapshot_before.tiledict, snapshot_after.tiledict
         # enumerate all tiles that have changed
@@ -66,27 +64,30 @@ class StrokeInfo:
 
             tasks.add_work(work, weight=1.0/len(tiles_modified))
 
-    def init_from_pb(self, stroke_pb, translate_x, translate_y):
+    def init_from_string(self, data, translate_x, translate_y):
         assert not self.strokemap
         assert translate_x % N == 0
         assert translate_y % N == 0
         translate_x /= N
         translate_y /= N
-        for t in stroke_pb.tiles:
-            self.strokemap[t.tx + translate_x, t.ty + translate_y] = t.data_compressed
-        self.brush_string = zlib.decompress(stroke_pb.brush_string_compressed)
+        while data:
+            tx, ty, size = struct.unpack('>iiI', data[:3*4])
+            compressed_bitmap = data[3*4:size+3*4]
+            self.strokemap[tx + translate_x, ty + translate_y] = compressed_bitmap
+            data = data[size+3*4:]
 
-    def save_to_pb(self, stroke_pb, translate_x, translate_y):
+    def save_to_string(self, translate_x, translate_y):
         assert translate_x % N == 0
         assert translate_y % N == 0
         translate_x /= N
         translate_y /= N
         tasks.finish_all()
-        for (tx, ty), data in self.strokemap.iteritems():
-            t = stroke_pb.tiles.add()
-            t.tx, t.ty = tx + translate_x, ty + translate_y
-            t.data_compressed = data
-        stroke_pb.brush_string_compressed = zlib.compress(self.brush_string)
+        data = ''
+        for (tx, ty), compressed_bitmap in self.strokemap.iteritems():
+            tx, ty = tx + translate_x, ty + translate_y
+            data += struct.pack('>iiI', tx, ty, len(compressed_bitmap))
+            data += compressed_bitmap
+        return data
 
     def touches_pixel(self, x, y):
         tasks.finish_all()

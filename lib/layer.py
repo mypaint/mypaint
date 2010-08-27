@@ -6,9 +6,10 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
+import struct, zlib
 from numpy import *
 
-import tiledsurface, strokemap, strokemap_pb2
+import tiledsurface, strokemap
 
 class Layer:
     def __init__(self,name=""):
@@ -26,7 +27,7 @@ class Layer:
     effective_opacity = property(get_effective_opacity)
 
     def clear(self):
-        self.strokes = [] # contains StrokeInfo instances (not stroke.Stroke)
+        self.strokes = [] # contains StrokeShape instances (not stroke.Stroke)
         self.surface.clear()
 
     def load_from_pixbuf(self, pixbuf):
@@ -44,24 +45,52 @@ class Layer:
     def add_stroke(self, stroke, snapshot_before):
         before = snapshot_before[1] # extract surface snapshot
         after  = self.surface.save_snapshot()
-        info = strokemap.StrokeInfo()
-        info.init_from_snapshots(stroke.brush_settings, before, after)
-        self.strokes.append(info)
+        shape = strokemap.StrokeShape()
+        shape.init_from_snapshots(before, after)
+        shape.brush_string = stroke.brush_settings
+        self.strokes.append(shape)
 
-    def save_strokemap_to_string(self, translate_x, translate_y):
-        sl = strokemap_pb2.StrokeList()
+    def save_strokemap_to_file(self, f, translate_x, translate_y):
+        brush2id = {}
         for stroke in self.strokes:
-            stroke_pb = sl.strokes.add()
-            stroke.save_to_pb(stroke_pb, translate_x, translate_y)
-        return sl.SerializeToString()
+            s = stroke.brush_string
+            # save brush (if not already known)
+            if s not in brush2id:
+                brush2id[s] = len(brush2id)
+                s = zlib.compress(s)
+                f.write('b')
+                f.write(struct.pack('>I', len(s)))
+                f.write(s)
+            # save stroke
+            s = stroke.save_to_string(translate_x, translate_y)
+            f.write('s')
+            f.write(struct.pack('>II', brush2id[stroke.brush_string], len(s)))
+            f.write(s)
+        f.write('}')
 
-    def load_strokemap_from_string(self, data, translate_x, translate_y):
-        sl = strokemap_pb2.StrokeList()
-        sl.ParseFromString(data)
-        for stroke_pb in sl.strokes:
-            stroke = strokemap.StrokeInfo()
-            stroke.init_from_pb(stroke_pb, translate_x, translate_y)
-            self.strokes.append(stroke)
+
+    def load_strokemap_from_file(self, f, translate_x, translate_y):
+        assert not self.strokes
+        brushes = []
+        while True:
+            t = f.read(1)
+            if t == 'b':
+                length, = struct.unpack('>I', f.read(4))
+                tmp = f.read(length)
+                brushes.append(zlib.decompress(tmp))
+                print 'b', len(tmp)
+            elif t == 's':
+                brush_id, length = struct.unpack('>II', f.read(2*4))
+                stroke = strokemap.StrokeShape()
+                tmp = f.read(length)
+                stroke.init_from_string(tmp, translate_x, translate_y)
+                stroke.brush_string = brushes[brush_id]
+                self.strokes.append(stroke)
+                print 's', len(tmp)
+            elif t == '}':
+                break
+            else:
+                assert False, 'invalid strokemap'
 
     def merge_into(self, dst):
         """

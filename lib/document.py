@@ -8,6 +8,7 @@
 
 import os, zipfile, tempfile, time, traceback
 join = os.path.join
+from cStringIO import StringIO
 import xml.etree.ElementTree as ET
 from gtk import gdk
 import gobject, numpy
@@ -391,9 +392,11 @@ class Document():
             x, y, w, h = l.surface.get_bbox()
             el = add_layer(x-x0, y-y0, opac, l.surface, 'data/layer%03d.png' % idx, l.name, l.visible, rect=(x, y, w, h))
             # strokemap
-            data = l.save_strokemap_to_string(-x, -y)
+            sio = StringIO()
+            l.save_strokemap_to_file(sio, -x, -y)
+            data = sio.getvalue(); sio.close()
             name = 'data/layer%03d_strokemap.dat' % idx
-            el.attrib['mypaint_strokemap'] = name
+            el.attrib['mypaint_strokemap_v2'] = name
             write_file_str(name, data)
 
         # save background as layer (solid color or tiled)
@@ -513,13 +516,14 @@ class Document():
             self.set_layer_visibility(visible, layer)
             print '  %.3fs converting pixbuf to layer format' % (time.time() - t1)
             # strokemap
-            fname = a.get('mypaint_strokemap', None)
+            fname = a.get('mypaint_strokemap_v2', None)
             if fname:
                 if x % N or y % N:
                     print 'Warning: dropping non-aligned strokemap'
                 else:
-                    data = z.read(fname)
-                    layer.load_strokemap_from_string(data, x, y)
+                    sio = StringIO(z.read(fname))
+                    layer.load_strokemap_from_file(sio, x, y)
+                    sio.close()
 
         os.rmdir(tempdir)
 

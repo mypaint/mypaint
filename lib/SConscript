@@ -19,6 +19,4 @@ elif sys.platform == "darwin":
 else:
     module = env.LoadableModule('_mypaintlib', Split(src), SHLIBPREFIX="")
 
-env.Command('strokemap_pb2.py', 'strokemap.proto', 'protoc --python_out=. lib/strokemap.proto')
-
 Return('module')

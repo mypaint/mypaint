@@ -16,6 +16,5 @@ options.cache
 *.mo
 *.pot
 POTFILES.in
-lib/strokemap_pb2.py
 .#*
 *.pstats
