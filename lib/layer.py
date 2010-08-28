@@ -78,7 +78,6 @@ class Layer:
                 length, = struct.unpack('>I', f.read(4))
                 tmp = f.read(length)
                 brushes.append(zlib.decompress(tmp))
-                print 'b', len(tmp)
             elif t == 's':
                 brush_id, length = struct.unpack('>II', f.read(2*4))
                 stroke = strokemap.StrokeShape()
@@ -86,7 +85,6 @@ class Layer:
                 stroke.init_from_string(tmp, translate_x, translate_y)
                 stroke.brush_string = brushes[brush_id]
                 self.strokes.append(stroke)
-                print 's', len(tmp)
             elif t == '}':
                 break
             else:
