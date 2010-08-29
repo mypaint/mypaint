@@ -27,13 +27,12 @@ class Processor:
     def finish_one(self):
         func = self._queue.pop(0)
         func()
+        return func.__weight
 
     def finish_downto(self, max_pending):
-        while 1:
-            pending_weight = sum([func.__weight for func in self._queue])
-            if pending_weight <= max_pending:
-                return
-            self.finish_one()
+        pending = sum([func.__weight for func in self._queue])
+        while self._queue and pending > max_pending:
+            pending -= self.finish_one()
 
     def finish_all(self):
         self.finish_downto(0)
