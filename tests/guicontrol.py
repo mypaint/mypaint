@@ -26,27 +26,33 @@ class GUI:
         sys.excepthook = excepthook
 
     def signal_cb(self):
-        gtk.main_quit()
+        self.waiting = False
 
     def wait_for_idle(self):
         "wait until the last mypaint idle handler has finished"
         if not self.app: self.setup()
         self.signal = False
         gobject.idle_add(self.signal_cb, priority=gobject.PRIORITY_LOW + 50)
-        gtk.main()
+        self.waiting = True
+        while self.waiting:
+            gtk.main_iteration()
 
     def wait_for_gui(self):
         "wait until all GUI updates are done, but don't wait for background tasks"
         if not self.app: self.setup()
         self.signal = False
         gobject.idle_add(self.signal_cb, priority=gobject.PRIORITY_DEFAULT_IDLE - 1)
-        gtk.main()
+        self.waiting = True
+        while self.waiting:
+            gtk.main_iteration()
 
     def wait_for_duration(self, duration):
         if not self.app: self.setup()
         self.signal = False
         gobject.timeout_add(int(duration*1000.0), self.signal_cb)
-        gtk.main()
+        self.waiting = True
+        while self.waiting:
+            gtk.main_iteration()
 
     def scroll(self, N=20):
         tdw = self.app.doc.tdw
