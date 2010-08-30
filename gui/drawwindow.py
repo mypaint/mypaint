@@ -255,9 +255,16 @@ class Window(windowing.MainWindow):
             return
         if event.button == 2:
             # check whether we are painting (accidental)
-            pressure = event.get_axis(gdk.AXIS_PRESSURE)
-            if (event.state & gdk.BUTTON1_MASK) or pressure:
-                # do not allow dragging while painting (often happens accidentally)
+            if event.state & gdk.BUTTON1_MASK:
+                # Do not allow dragging in the middle of
+                # painting. This often happens by accident with wacom
+                # tablet's stylus button.
+                #
+                # However we allow dragging if the user's pressure is
+                # still below the click threshold.  This is because
+                # some tablet PCs are not able to produce a
+                # middle-mouse click without reporting pressure.
+                # https://gna.org/bugs/index.php?15907
                 pass
             else:
                 dragfunc = self.app.doc.dragfunc_translate
