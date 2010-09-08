@@ -25,8 +25,8 @@ SAVE_POS_GRAVITY = gdk.GRAVITY_NORTH_WEST
 WINDOW_DEFAULTS = {
     'drawWindow':           (None, True), # initial geom overridden, but set vis
     # Colour choosers go in the top-right quadrant by default
-    'colorSamplerWindow':   ("280x350-50+75",  True ),
-    'colorSelectionWindow': ("-145+100",        False), # positions strangely
+    'colorSamplerWindow':   ("280x350-50+75",  False ),
+    'colorSelectionWindow': ("-250+100",        True), # positions strangely
     # Brush-related dialogs go in the bottom right by default
     'brushSelectionWindow': ("280x350-50-50",  True ),
     'brushSettingsWindow':  ("400x250-345-50",        False),
