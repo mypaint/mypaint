@@ -35,9 +35,9 @@ class Window(windowing.Dialog):
         nb = gtk.Notebook()
         self.vbox.pack_start(nb, expand=True, padding=5)
 
-        ### pressure tab
+        ### Input tab
         v = gtk.VBox()
-        nb.append_page(v, gtk.Label(_('Pressure')))
+        nb.append_page(v, gtk.Label(_('Input')))
 
         l = gtk.Label()
         l.set_alignment(0.0, 0.0)
@@ -81,17 +81,6 @@ class Window(windowing.Dialog):
         saving_vbox = gtk.VBox()
         nb.append_page(saving_vbox, gtk.Label(_('Saving')))
 
-        l = gtk.Label()
-        l.set_alignment(0.0, 0.0)
-        l.set_markup(_('<b><span size="large">Save as Scrap</span></b>'))
-        saving_vbox.pack_start(l, expand=False, padding=5)
-        l = gtk.Label(_('Path and filename prefix for "Save Next Scrap"'))
-        l.set_alignment(0.0, 0.0)
-        saving_vbox.pack_start(l, expand=False)
-        self.prefix_entry = gtk.Entry()
-        self.prefix_entry.connect('changed', self.prefix_entry_changed_cb)
-        saving_vbox.pack_start(self.prefix_entry, expand=False)
-
         l = gtk.Label(_('Default file format for saving'))
         l.set_alignment(0.0, 0.0)
         combo = self.defaultsaveformat_combo = gtk.combo_box_new_text()
@@ -103,6 +92,13 @@ class Window(windowing.Dialog):
         combo.connect('changed', self.defaultsaveformat_combo_changed_cb)
         saving_vbox.pack_start(l, expand=False)
         saving_vbox.pack_start(combo, expand=False)
+
+        l = gtk.Label(_('Path and filename prefix for "Save Next Scrap"'))
+        l.set_alignment(0.0, 0.0)
+        saving_vbox.pack_start(l, expand=False)
+        self.prefix_entry = gtk.Entry()
+        self.prefix_entry.connect('changed', self.prefix_entry_changed_cb)
+        saving_vbox.pack_start(self.prefix_entry, expand=False)
 
         ### View tab
         view_vbox = gtk.VBox()
