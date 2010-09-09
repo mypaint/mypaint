@@ -20,6 +20,7 @@ from os.path import basename
 preview_w = 128
 preview_h = 128
 
+DEFAULT_STARTUP_GROUP = 'Deevad'
 DEFAULT_BRUSH_GROUP = 'default'
 DELETED_BRUSH_GROUP = 'deleted'
 FAVORITES_BRUSH_GROUP = 'favorites'
@@ -59,14 +60,14 @@ class BrushManager:
 
         last_active_groups = self.app.preferences['brushmanager.selected_groups']
         if not last_active_groups:
-            last_active_groups = [DEFAULT_BRUSH_GROUP]
+            last_active_groups = [DEFAULT_STARTUP_GROUP]
         for group in reversed(last_active_groups):
             if group in self.groups:
                 brushes = self.get_group_brushes(group, make_active=True)
 
         last_active_brush = self.app.preferences['brushmanager.selected_brush']
         if last_active_brush is None:
-            brush = self.get_group_brushes(DEFAULT_BRUSH_GROUP)[0]
+            brush = self.get_group_brushes(DEFAULT_STARTUP_GROUP)[0]
         else:
             brush = self.get_brush_by_name(last_active_brush)
         self.select_brush(brush)
