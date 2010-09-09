@@ -64,8 +64,12 @@ class BrushManager:
             if group in self.groups:
                 brushes = self.get_group_brushes(group, make_active=True)
 
-        last_active_brush = self.get_brush_by_name(self.app.preferences['brushmanager.selected_brush'])
-        self.select_brush(last_active_brush)
+        last_active_brush = self.app.preferences['brushmanager.selected_brush']
+        if last_active_brush is None:
+            brush = self.get_group_brushes(DEFAULT_BRUSH_GROUP)[0]
+        else:
+            brush = self.get_brush_by_name(last_active_brush)
+        self.select_brush(brush)
         self.brushes_observers.append(self.brushes_modified_cb)
 
 
