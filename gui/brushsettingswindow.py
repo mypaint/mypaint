@@ -9,7 +9,7 @@
 "tune brush window"
 from gettext import gettext as _
 import gtk
-import functionwindow
+import functionwindow, brushcreationwidget
 import windowing
 from brushlib import brushsettings
 from lib import command
@@ -24,6 +24,13 @@ class Window(windowing.SubWindow):
 
         vbox = gtk.VBox()
         self.add(vbox)
+
+        # Expander with brushcreation widget under it
+        expander = self.expander = gtk.Expander(label=_('Save and edit brush'))
+        expander.set_expanded(False)
+        expander.add(brushcreationwidget.Widget(app))
+
+        vbox.pack_end(expander, expand=False, fill=False)
 
         cb = self.live_update = gtk.CheckButton(_('Live update the last canvas stroke'))
         vbox.pack_start(cb, expand=False, fill=True, padding=5)

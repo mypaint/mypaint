@@ -128,7 +128,7 @@ class Window(windowing.MainWindow):
 
             ('BrushMenu',    None, _('Brush')),
             ('BrushSelectionWindow',  None, _('Brush List...'), 'b', None, self.toggleWindow_cb),
-            ('BrushSettingsWindow',   None, _('Brush Settings...'), '<control>b', None, self.toggleWindow_cb),
+            ('BrushSettingsWindow',   None, _('Brush Editor...'), '<control>b', None, self.toggleWindow_cb),
             ('ImportBrushPack',       None, _('Import brush package...'),None, None, self.import_brush_pack_cb),
 
             ('HelpMenu',     None, _('Help')),

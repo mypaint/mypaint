@@ -9,9 +9,11 @@
 "select brush window"
 import gtk, pango
 gdk = gtk.gdk
-import windowing
-import pixbuflist, brushcreationwidget, dialogs, brushmanager
 from gettext import gettext as _
+
+import windowing
+import pixbuflist, dialogs, brushmanager
+from brushlib import brushsettings
 
 class Window(windowing.SubWindow):
     def __init__(self, app):
@@ -28,13 +30,14 @@ class Window(windowing.SubWindow):
         #main container
         vbox = gtk.VBox()
         self.add(vbox)
-        
+
         self.scroll = scroll = gtk.ScrolledWindow()
         scroll.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
         scroll.add_with_viewport(self.brushgroups)
-        expander = self.expander = gtk.Expander(label=_('Edit'))
+
+        expander = self.expander = gtk.Expander(label=_('Common brush settings'))
         expander.set_expanded(False)
-        expander.add(brushcreationwidget.Widget(app))
+        expander.add(get_common_settings_widget(app))
 
         al = gtk.Alignment(0.0, 0.0, 1.0, 1.0)
         al.add(self.groupselector)
@@ -45,6 +48,39 @@ class Window(windowing.SubWindow):
         vbox.pack_start(gtk.HSeparator(), expand=False)
         vbox.pack_start(expander, expand=False, fill=False)
 
+def get_common_settings_widget(app):
+    """Return a widget with controls for manipulating common settings"""
+
+    cmn = ['radius', 'opaque', 'hardness']
+    common_settings = [s for s in brushsettings.settings_visible if s.name in cmn]
+    settings_box = gtk.VBox()
+
+    def value_changed_cb(adj, index, app):
+        app.brush.settings[index].set_base_value(adj.get_value())
+
+    def get_setting_widget(setting):
+        """Return a widget to control a single setting"""
+
+        adj = app.brush_adjustment[s.cname]
+        adj.connect('value-changed', value_changed_cb, s.index, app)
+
+        l = gtk.Label(s.name)
+        l.set_alignment(0, 0.5)
+
+        h = gtk.HScale(adj)
+        h.set_digits(2)
+        h.set_draw_value(True)
+        h.set_value_pos(gtk.POS_LEFT)
+
+        box = gtk.HBox()
+        box.pack_start(l)
+        box.pack_start(h)
+        return box
+
+    for s in common_settings:
+        settings_box.pack_start(get_setting_widget(s))
+
+    return settings_box
 
 class BrushList(pixbuflist.PixbufList):
     def __init__(self, app, group):
