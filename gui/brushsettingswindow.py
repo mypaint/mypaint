@@ -14,12 +14,6 @@ import windowing
 from brushlib import brushsettings
 from lib import command
 
-often_used_settings = '''
-    opaque
-    hardness
-    radius_logarithmic
-'''.split()
-
 class Window(windowing.SubWindow):
     def __init__(self, app):
         windowing.SubWindow.__init__(self, app)
@@ -28,30 +22,17 @@ class Window(windowing.SubWindow):
         self.set_title(_('Brush settings'))
         self.connect('delete-event', self.app.hide_window_cb)
 
-        self.advanced_mode_widgets = []
-
-        top_vbox = gtk.VBox()
-        self.add(top_vbox)
-
-        mode_hbox = gtk.HBox()
-        top_vbox.pack_start(mode_hbox, expand=False, fill=False, padding=5)
-
-        mode_sel = gtk.combo_box_new_text()
-        mode_sel.append_text(_('Simple'))
-        mode_sel.append_text(_('Advanced'))
-        mode_sel.connect('changed', self.mode_changed_cb)
-
-        mode_hbox.pack_start(mode_sel, expand=False, fill=False)
+        vbox = gtk.VBox()
+        self.add(vbox)
 
         cb = self.live_update = gtk.CheckButton(_('Live update the last canvas stroke'))
-        mode_hbox.pack_start(cb, expand=False, fill=True)
+        vbox.pack_start(cb, expand=False, fill=True, padding=5)
         cb.connect('toggled', self.live_update_cb)
         self.app.brush.settings_observers.append(self.live_update_cb)
-        self.advanced_mode_widgets.append(cb)
 
         scroll = gtk.ScrolledWindow()
         scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
-        top_vbox.pack_start(scroll, expand=True, fill=True)
+        vbox.pack_start(scroll, expand=True, fill=True)
 
         table = gtk.Table(4, len(brushsettings.settings_visible))
         #table.set_border_width(4)
@@ -72,6 +53,7 @@ class Window(windowing.SubWindow):
             h.set_draw_value(True)
             h.set_value_pos(gtk.POS_LEFT)
 
+            #sb = gtk.SpinButton(adj, climb_rate=0.1, digits=2)
             b = gtk.Button("%.1f" % s.default)
             b.connect('clicked', self.set_fixed_value_clicked_cb, adj, s.default)
 
@@ -86,13 +68,8 @@ class Window(windowing.SubWindow):
                 b2.connect('clicked', self.details_clicked_cb, adj, s)
                 adj.three_dots_button = b2
 
-            if s.cname in often_used_settings:
-                self.advanced_mode_widgets += [b, b2]
-            else:
-                self.advanced_mode_widgets += [l, h, b, b2]
-                    
             table.attach(l, 0, 1, i, i+1, gtk.FILL, gtk.FILL, 5, 0)
-            table.attach(h, 1, 2, i, i+1, gtk.EXPAND | gtk.FILL, gtk.FILL)
+            table.attach(h, 1, 2, i, i+1, gtk.EXPAND | gtk.FILL, gtk.EXPAND | gtk.FILL)
             table.attach(b, 2, 3, i, i+1, gtk.FILL, gtk.FILL)
             table.attach(b2, 3, 4, i, i+1, gtk.FILL, gtk.FILL)
 
@@ -101,18 +78,6 @@ class Window(windowing.SubWindow):
         self.set_default_size(450, 500)
 
         self.relabel_buttons()
-        #self.mode_changed_cb(mode_sel)
-        top_vbox.show_all()
-        top_vbox.set_no_show_all(True)
-        mode_sel.set_active(0)
-
-    def mode_changed_cb(self, widget):
-        mode = widget.get_active()
-        for w in self.advanced_mode_widgets:
-            if mode == 0: # simple
-                w.hide()
-            else: # full
-                w.show()
 
     def set_fixed_value_clicked_cb(self, widget, adj, value):
         adj.set_value(value)
