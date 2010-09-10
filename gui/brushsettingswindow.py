@@ -26,7 +26,7 @@ class Window(windowing.SubWindow):
         self.add(vbox)
 
         # Expander with brushcreation widget under it
-        expander = self.expander = gtk.Expander(label=_('Save and edit brush'))
+        expander = self.expander = gtk.Expander(label=_('Edit and save brush'))
         expander.set_expanded(False)
         expander.add(brushcreationwidget.Widget(app))
 

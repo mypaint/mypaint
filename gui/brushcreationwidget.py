@@ -35,6 +35,10 @@ class Widget(gtk.HBox):
         self.pack_end(right_vbox, expand=False, fill=False)
 
         #expanded part, left side
+        l = gtk.Label()
+        l.set_text(_("Brush icon"))
+        left_vbox.pack_start(l)
+
         doc = document.Document()
         self.tdw = tileddrawwidget.TiledDrawWidget(doc)
         self.tdw.set_size_request(brushmanager.preview_w, brushmanager.preview_h)
@@ -44,7 +48,11 @@ class Widget(gtk.HBox):
         def clear_cb(window):
             self.tdw.doc.clear_layer()
         b.connect('clicked', clear_cb)
-        left_vbox.pack_start(b, expand=False, padding=5)
+        left_vbox.pack_start(b, expand=False, padding=3)
+
+        b = gtk.Button(_('Save'))
+        b.connect('clicked', self.update_preview_cb)
+        left_vbox.pack_start(b, expand=False)
 
         #expanded part, right side
         l = self.brush_name_label = gtk.Label()
@@ -56,16 +64,14 @@ class Widget(gtk.HBox):
         (_('Add As New'), self.create_brush_cb),
         (_('Rename...'), self.rename_brush_cb),
         (_('Remove...'), self.delete_brush_cb),
-        (_('Settings...'), self.brush_settings_cb),
         (_('Save Settings'), self.update_settings_cb),
-        (_('Save Preview'), self.update_preview_cb),
         (_('About brush'),  self.show_about_cb),
         ]
 
         for title, clicked_cb in right_vbox_buttons:
             b = gtk.Button(title)
             b.connect('clicked', clicked_cb)
-            right_vbox.pack_start(b, expand=False)
+            right_vbox.pack_start(b, expand=False, padding=3)
 
         self.last_selected_brush = self.bm.selected_brush
         self.bm.selected_brush_observers.append(self.brush_selected_cb)
@@ -100,11 +106,6 @@ class Widget(gtk.HBox):
             dir = os.path.dirname(dir)
         if not found:
             dialogs.error(self, _('No README file for this brush!'))
-
-    def brush_settings_cb(self, window):
-        w = self.app.brushSettingsWindow
-        w.show_all() # might be for the first time
-        w.present()
 
     def create_brush_cb(self, window):
         b = brushmanager.ManagedBrush(self.bm)
