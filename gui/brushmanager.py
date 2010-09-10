@@ -21,12 +21,12 @@ preview_w = 128
 preview_h = 128
 
 DEFAULT_STARTUP_GROUP = 'Deevad'
-DEFAULT_BRUSH_GROUP = 'default'
+FOUND_BRUSHES_GROUP = 'lost&found'
 DELETED_BRUSH_GROUP = 'deleted'
 FAVORITES_BRUSH_GROUP = 'favorites'
 
 def translate_group_name(name):
-    d = {DEFAULT_BRUSH_GROUP: _('default'),
+    d = {FOUND_BRUSHES_GROUP: _('lost&found'),
          DELETED_BRUSH_GROUP: _('deleted'),
          FAVORITES_BRUSH_GROUP: _('favorites'),
          'ink': _('ink'),
@@ -90,7 +90,7 @@ class BrushManager:
         def read_groups(filename):
             groups = {}
             if os.path.exists(filename):
-                curr_group = DEFAULT_BRUSH_GROUP
+                curr_group = FOUND_BRUSHES_GROUP
                 for line in open(filename):
                     name = line.strip()
                     if name.startswith('#'):
@@ -175,7 +175,7 @@ class BrushManager:
                 self.contexts[i] = b
                 continue
             if not [True for group in our.itervalues() if b in group]:
-                brushes = self.groups.setdefault(DEFAULT_BRUSH_GROUP, [])
+                brushes = self.groups.setdefault(FOUND_BRUSHES_GROUP, [])
                 brushes.insert(0, b)
 
         # clean up legacy stuff
