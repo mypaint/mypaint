@@ -35,7 +35,7 @@ class Window(windowing.SubWindow):
         scroll.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
         scroll.add_with_viewport(self.brushgroups)
 
-        expander = self.expander = gtk.Expander(label=_('Common brush settings'))
+        expander = self.expander = gtk.Expander(label='')
         expander.set_expanded(False)
         expander.add(get_common_settings_widget(app))
 
