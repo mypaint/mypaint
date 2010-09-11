@@ -51,8 +51,8 @@ class Window(windowing.SubWindow):
 def get_common_settings_widget(app):
     """Return a widget with controls for manipulating common settings"""
 
-    cmn = ['radius', 'opaque', 'hardness']
-    common_settings = [s for s in brushsettings.settings_visible if s.name in cmn]
+    cmn = ['radius_logarithmic', 'opaque', 'hardness']
+    common_settings = [s for s in brushsettings.settings_visible if s.cname in cmn]
     settings_box = gtk.VBox()
 
     def value_changed_cb(adj, index, app):
