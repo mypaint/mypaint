@@ -63,6 +63,7 @@ class Window(windowing.SubWindow):
             #sb = gtk.SpinButton(adj, climb_rate=0.1, digits=2)
             b = gtk.Button("%.1f" % s.default)
             b.connect('clicked', self.set_fixed_value_clicked_cb, adj, s.default)
+            b.set_tooltip_text(_('Reset to default value'))
 
             if s.constant:
                 b2 = gtk.Label("")
