@@ -60,10 +60,10 @@ class Window(windowing.SubWindow):
             h.set_draw_value(True)
             h.set_value_pos(gtk.POS_LEFT)
 
-            #sb = gtk.SpinButton(adj, climb_rate=0.1, digits=2)
-            b = gtk.Button("%.1f" % s.default)
+            b = gtk.Button("%.2f" % s.default)
             b.connect('clicked', self.set_fixed_value_clicked_cb, adj, s.default)
             b.set_tooltip_text(_('Reset to default value'))
+            adj.default_value_button = b
 
             if s.constant:
                 b2 = gtk.Label("")
@@ -85,7 +85,7 @@ class Window(windowing.SubWindow):
 
         self.set_default_size(450, 500)
 
-        self.relabel_buttons()
+        self.update_settings()
 
     def set_fixed_value_clicked_cb(self, widget, adj, value):
         adj.set_value(value)
@@ -107,25 +107,44 @@ class Window(windowing.SubWindow):
         w.present() # get to the front
 
     def value_changed_cb(self, adj, index, app):
-        app.brush.settings[index].set_base_value(adj.get_value())
+        setting = [k for k, v in self.adj.items() if v == adj][0]
+        s = app.brush.settings[index]
+        s.set_base_value(adj.get_value())
+        self.relabel_setting_buttons(adj, setting, s)
 
-    def relabel_buttons(self):
-        for s in brushsettings.settings_visible:
-            adj = self.adj[s]
-            s = self.app.brush.settings[s.index]
+    def update_settings(self):
+        """Update all settings; their value and button labels"""
+        for setting in brushsettings.settings_visible:
+            adj = self.adj[setting]
+            s = self.app.brush.settings[setting.index]
+            self.relabel_setting_buttons(adj, setting, s)
             adj.set_value(s.base_value)
-            if adj.three_dots_button:
-                def set_label(s, t):
-                    if adj.three_dots_button.get_label() == s: return
-                    adj.three_dots_button.set_label(s)
-                    adj.three_dots_button.set_tooltip_text(t)
-                if s.has_only_base_value():
-                    set_label("...", _("Add input values mapping"))
-                else:
-                    set_label("X", _("Modify input values mapping"))
+
+    def relabel_setting_buttons(self, adj, setting, brushsetting):
+        """Relabel the buttons of a setting"""
+        s = brushsetting
+
+        # Make "input value mapping" button reflect if this brush
+        # allready has a mapping or not
+        if adj.three_dots_button:
+            def set_label(s, t):
+                if adj.three_dots_button.get_label() == s: return
+                adj.three_dots_button.set_label(s)
+                adj.three_dots_button.set_tooltip_text(t)
+            if s.has_only_base_value():
+                set_label("...", _("Add input values mapping"))
+            else:
+                set_label("X", _("Modify input values mapping"))
+
+        # Make "reset to default value" button insensitive
+        # if the value is already the default (the button will have no effect)
+        if adj.get_value() == setting.default:
+            adj.default_value_button.set_sensitive(False)
+        else:
+            adj.default_value_button.set_sensitive(True)
 
     def brush_selected_cb(self, brush_selected):
-        self.relabel_buttons()
+        self.update_settings()
 
     def live_update_cb(self, *trash):
         if self.live_update.get_active():
