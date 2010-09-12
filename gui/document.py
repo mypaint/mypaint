@@ -73,6 +73,10 @@ class Document(object):
             ('PickContext',  None, _('Pick Context (layer, brush and color)'), 'w', None, self.pick_context_cb),
 
             ('Darker',       None, _('Darker'), None, None, self.darker_cb),
+            ('Warmer',       None, _('Warmer'), None, None, self.warmer_cb),
+            ('Cooler',       None, _('Cooler'), None, None, self.cooler_cb),
+            ('Purer',        None, _('Purer'), None, None, self.purer_cb),
+            ('Grayer',       None, _('Grayer'), None, None, self.grayer_cb),
             ('Bigger',       None, _('Bigger'), 'f', None, self.brush_bigger_cb),
 
             # Context actions are also added in init_context_actions
@@ -322,7 +326,49 @@ class Document(object):
         self.end_eraser_mode()
         h, s, v = self.app.brush.get_color_hsv()
         v -= 0.08
-        if v < 0.0: v = 0.0
+        # stop a little higher than 0.0, to avoid resetting hue to 0
+        if v < 0.005: v = 0.005
+        self.app.brush.set_color_hsv((h, s, v))
+
+    def warmer_cb(self,action):
+        self.end_eraser_mode()
+        h, s, v = self.app.brush.get_color_hsv()
+        # using about 40 degrees (0.111 +- e) as warmest and
+        # 130 deg (0.611 +- e) as coolest
+        e = 0.015
+        if 0.111 + e < h < 0.611:
+            h -= 0.015
+        elif 0.0 <= h < 0.111 - e or 0.611<= h <= 1.0:
+            h += 0.015
+        if h > 1.0: h -= 1.0
+        if h < 0.0: h += 1.0
+        self.app.brush.set_color_hsv((h, s, v))
+
+    def cooler_cb(self,action):
+        self.end_eraser_mode()
+        h, s, v = self.app.brush.get_color_hsv()
+        e = 0.015
+        if 0.111 < h < 0.611 - e:
+            h += 0.015
+        elif 0.0 <= h <= 0.111 or 0.611 + e < h <= 1.0:
+            h -= 0.015
+        if h > 1.0: h -= 1.0
+        if h < 0.0: h += 1.0
+        self.app.brush.set_color_hsv((h, s, v))
+
+    def purer_cb(self,action):
+        self.end_eraser_mode()
+        h, s, v = self.app.brush.get_color_hsv()
+        s += 0.08
+        if s > 1.0: s = 1.0
+        self.app.brush.set_color_hsv((h, s, v))
+
+    def grayer_cb(self,action):
+        self.end_eraser_mode()
+        h, s, v = self.app.brush.get_color_hsv()
+        s -= 0.08
+        # stop a little higher than 0.0, to avoid resetting hue to 0
+        if s < 0.005: s = 0.005
         self.app.brush.set_color_hsv((h, s, v))
 
     def context_cb(self, action):

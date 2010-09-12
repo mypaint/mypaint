@@ -93,6 +93,10 @@
       <separator/>
       <menuitem action='Brighter'/>
       <menuitem action='Darker'/>
+      <menuitem action='Warmer'/>
+      <menuitem action='Cooler'/>
+      <menuitem action='Purer'/>
+      <menuitem action='Grayer'/>
     </menu>
     <menu action='LayerMenu'>
       <menuitem action='LayersWindow'/>
