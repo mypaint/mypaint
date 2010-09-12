@@ -20,13 +20,16 @@ class Setting:
         self.brush = parent_brush
         self.observers = observers
         self.base_value = None
-        self.set_base_value(setting.default)
         self.points = [[] for i in xrange(len(brushsettings.inputs))]
-        if setting.cname == 'opaque_multiply':
-            # make opaque depend on pressure by default
-            for i in brushsettings.inputs:
-                if i.name == 'pressure': break
-            self.set_points(i, [(0.0, 0.0), (1.0, 1.0)])
+        self.restore_defaults()
+    def restore_defaults(self):
+        self.set_base_value(self.setting.default)
+        for i in brushsettings.inputs:
+            if self.setting.cname == 'opaque_multiply' and i.name == 'pressure':
+                # make opaque depend on pressure by default
+                self.set_points(i, [(0.0, 0.0), (1.0, 1.0)])
+            else:
+                self.set_points(i, [])
     def set_base_value(self, value):
         if self.base_value == value: return
         self.base_value = value
@@ -61,9 +64,6 @@ class Setting:
         self.points[input.index] = points[:] # copy
         for f in self.observers: f()
 
-    def copy_from(self, other):
-        error = self.load_from_string(other.save_to_string(), version=current_brushfile_version)
-        assert not error, error
     def save_to_string(self):
         s = str(self.base_value)
         for i in brushsettings.inputs:
@@ -151,8 +151,6 @@ class Brush(mypaintlib.Brush):
         return self.settings[s.index]
 
     def save_to_string(self):
-        # OPTIMIZE: this cache could be more useful, the current "copy_settings_from()"
-        #           brush selection mechanism invalidates it at every brush change
         if self.saved_string: return self.saved_string
         res  = '# mypaint brush file\n'
         res += '# you can edit this file and then select the brush in mypaint (again) to reload\n'
@@ -164,6 +162,8 @@ class Brush(mypaintlib.Brush):
 
     def load_from_string(self, s):
         self.begin_atomic()
+        for setting in self.settings:
+            setting.restore_defaults()
         num_found = 0
         errors = []
         version = 1 # for files without a 'version' field
@@ -209,13 +209,15 @@ class Brush(mypaintlib.Brush):
         if num_found == 0:
             errors.append(('', 'there was only garbage in this file, using defaults'))
         self.end_atomic()
+
+        if not errors:
+            # speedup for self.save_to_string()
+            self.saved_string = s
+
         return errors
 
     def copy_settings_from(self, other):
-        self.begin_atomic()
-        for i, setting in enumerate(self.settings):
-            setting.copy_from(other.settings[i])
-        self.end_atomic()
+        self.load_from_string(other.save_to_string())
 
     def get_color_hsv(self):
         h = self.setting_by_cname('color_h').base_value
