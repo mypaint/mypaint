@@ -29,12 +29,20 @@ class Widget(gtk.HBox):
 
         self.set_border_width(8)
 
+        self.init_widgets()
+
+        self.bm.selected_brush_observers.append(self.brush_selected_cb)
+        self.app.brush.settings_observers.append(self.brush_modified_cb)
+
+        self.set_brush_preview_edit_mode(False)
+
+    def init_widgets(self):
         left_vbox = gtk.VBox()
         right_vbox = gtk.VBox()
         self.pack_start(left_vbox, expand=False, fill=False)
         self.pack_end(right_vbox, expand=False, fill=False)
 
-        #expanded part, left side
+        # Left side - brush icon actions
         l = gtk.Label()
         l.set_text(_("Brush icon"))
         left_vbox.pack_start(l)
@@ -42,19 +50,23 @@ class Widget(gtk.HBox):
         doc = document.Document()
         self.tdw = tileddrawwidget.TiledDrawWidget(doc)
         self.tdw.set_size_request(brushmanager.preview_w, brushmanager.preview_h)
-        left_vbox.pack_start(self.tdw, expand=False, fill=False)
+        left_vbox.pack_start(self.tdw, expand=False, fill=False, padding=3)
 
-        b = gtk.Button(_('Clear'))
+        self.brush_preview_edit_mode_button = b = gtk.CheckButton(_('Edit'))
+        b.connect('toggled', self.brush_preview_edit_mode_cb)
+        left_vbox.pack_start(b, expand=False, padding=3)
+
+        self.brush_preview_clear_button = b = gtk.Button(_('Clear'))
         def clear_cb(window):
             self.tdw.doc.clear_layer()
         b.connect('clicked', clear_cb)
         left_vbox.pack_start(b, expand=False, padding=3)
 
-        b = gtk.Button(_('Save'))
+        self.brush_preview_save_button = b = gtk.Button(_('Save'))
         b.connect('clicked', self.update_preview_cb)
-        left_vbox.pack_start(b, expand=False)
+        left_vbox.pack_start(b, expand=False, padding=3)
 
-        #expanded part, right side
+        # Right side - brush actions
         l = self.brush_name_label = gtk.Label()
         l.set_justify(gtk.JUSTIFY_LEFT)
         l.set_text(_('(no name)'))
@@ -73,10 +85,16 @@ class Widget(gtk.HBox):
             b.connect('clicked', clicked_cb)
             right_vbox.pack_start(b, expand=False, padding=3)
 
-        self.last_selected_brush = self.bm.selected_brush
-        self.bm.selected_brush_observers.append(self.brush_selected_cb)
-        self.app.brush.settings_observers.append(self.brush_modified_cb)
+    def brush_preview_edit_mode_cb(self, button):
+        self.set_brush_preview_edit_mode(button.get_active())
 
+    def set_brush_preview_edit_mode(self, edit_mode):
+        self.brush_preview_edit_mode = edit_mode
+
+        self.brush_preview_edit_mode_button.set_active(edit_mode)
+        self.brush_preview_save_button.set_sensitive(edit_mode)
+        self.brush_preview_clear_button.set_sensitive(edit_mode)
+        self.tdw.set_sensitive(edit_mode)
 
     def set_preview_pixbuf(self, pixbuf):
         if pixbuf is None:
@@ -220,10 +238,9 @@ class Widget(gtk.HBox):
             name = name.replace('_', ' ')
         self.brush_name_label.set_text(name)
 
-        # selecting twice loads preview
-        if b == self.last_selected_brush:
+        # Update brush icon preview it is not in edit mode
+        if not self.brush_preview_edit_mode:
             self.set_preview_pixbuf(b.preview)
-        self.last_selected_brush = self.bm.selected_brush
 
     def brush_modified_cb(self):
         self.tdw.doc.set_brush(self.app.brush)

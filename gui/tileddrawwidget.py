@@ -80,14 +80,20 @@ class TiledDrawWidget(gtk.DrawingArea):
         # gets overwritten for the main window
         self.zoom_max = 5.0
         self.zoom_min = 1/5.0
-        
+
         #self.scroll_at_edges = False
         self.pressure_mapping = None
         self.bad_devices = []
 
+        self.set_sensitive(True)
+
     #def set_scroll_at_edges(self, choice):
     #    self.scroll_at_edges = choice
-      
+
+    def set_sensitive(self, sensitive):
+        """Set if the widget accepts input or not"""
+        self.is_sensitive = sensitive
+
     def enter_notify_cb(self, widget, event):
         self.has_pointer = True
     def leave_notify_cb(self, widget, event):
@@ -104,6 +110,9 @@ class TiledDrawWidget(gtk.DrawingArea):
             self.scroll(dx/2, dy/2)
 
     def motion_notify_cb(self, widget, event, button1_pressed=None):
+        if not self.is_sensitive:
+            return
+
         if self.last_event_time:
             dtime = (event.time - self.last_event_time)/1000.0
             dx = event.x - self.last_event_x
