@@ -87,6 +87,7 @@ class BrushList(pixbuflist.PixbufList):
         self.app = app
         self.bm = app.brushmanager
         self.brushes = self.bm.groups[group]
+        self.group = group
         pixbuflist.PixbufList.__init__(self, self.brushes, 48, 48,
                                        namefunc = lambda x: x.name,
                                        pixbuffunc = lambda x: x.preview)
@@ -187,9 +188,12 @@ class GroupSelector(gtk.DrawingArea):
 
         self.drag_dest_set(gtk.DEST_DEFAULT_MOTION | gtk.DEST_DEFAULT_DROP,
                 [('LIST_ITEM', gtk.TARGET_SAME_APP, pixbuflist.DRAG_ITEM_NAME)],
-                gdk.ACTION_COPY)
+                gdk.ACTION_COPY|gdk.ACTION_MOVE)
         self.connect('drag-motion', self.drag_motion_cb)
         self.connect('drag-data-received', self.drag_data_received_cb)
+        self.connect('drag-leave', self.drag_clear_cb)
+        self.connect('drag-begin', self.drag_clear_cb)
+        self.connect('drag-end', self.drag_clear_cb)
 
         self.connect("expose-event", self.expose_cb)
         self.connect("button-press-event", self.button_press_cb)
@@ -204,6 +208,7 @@ class GroupSelector(gtk.DrawingArea):
         self.layout = None
         self.gtkstate_prelight_group = None
         self.gtkstate_active_group = None
+        self.drag_target_group = None
         self.set_tooltip_text(_('try right click, middle click or Ctrl click'))
 
     def active_groups_changed_cb(self):
@@ -259,13 +264,19 @@ class GroupSelector(gtk.DrawingArea):
             elif group == self.gtkstate_prelight_group:
                 bg_state = fg_state = gtk.STATE_PRELIGHT
 
+            style_fg, style_bg = style.fg, style.bg
+            if group == self.drag_target_group:
+                # Invert colurs
+                style_fg, style_bg = style.bg, style.fg
+                # attr.insert(pango.AttrUnderline(pango.UNDERLINE_SINGLE, idx_start, idx))
+
             # always use the STATE_SELECTED fg if the group is visible
             if group in self.bm.active_groups:
                 fg_state = gtk.STATE_SELECTED 
 
-            c = style.bg[bg_state]
+            c = style_bg[bg_state]
             attr.insert(pango.AttrBackground(c.red, c.green, c.blue, idx_start, idx))
-            c = style.fg[fg_state]
+            c = style_fg[fg_state]
             attr.insert(pango.AttrForeground(c.red, c.green, c.blue, idx_start, idx))
 
             text += u + sp_s
@@ -383,6 +394,11 @@ class GroupSelector(gtk.DrawingArea):
                 dialogs.error(self, _('This group can not be deleted (try to make it empty first).'))
 
     def drag_data_received_cb(self, widget, context, x, y, selection, targetType, time):
+        """
+        Respond to some data being dropped via dnd onto the list of groups.
+        This typically results in a brush being copied or moved into the group
+        being dragged onto.
+        """
         group = self.group_at(x,y)
         source = context.get_source_widget()
         # ensure, that drop comes from BrushList and targets some group
@@ -391,18 +407,64 @@ class GroupSelector(gtk.DrawingArea):
             return
         target = self.bm.groups[group]
         brush = self.bm.get_brush_by_name(selection.data)
-        if brush in target:
+        changed = []
+        if context.action == gdk.ACTION_MOVE:
             source.brushes.remove(brush)
+            if brush not in target:
+                target.append(brush)
             changed = source.brushes
+        elif context.action == gdk.ACTION_COPY:
+            if brush not in target:
+                target.append(brush)
+                changed = target
         else:
-            target.append(brush)
-            changed = target
+            context.finish(False, False, time)
         for f in self.bm.brushes_observers: f(changed)
         context.finish(True, False, time)
 
     def drag_motion_cb(self, widget, context, x, y, time):
-        context.drag_status(gdk.ACTION_COPY, time)
-        old_prelight_group = self.gtkstate_prelight_group
-        self.gtkstate_prelight_group = self.group_at(x,y)
-        if self.gtkstate_prelight_group != old_prelight_group:
+        """
+        During dragging a brush from an open BrushList, select the action to
+        take when the drop happens. Provide feedback by changing the mouse
+        cursor and highlighting the group label under the cursor, if
+        applicable.
+        """
+        group = self.group_at(x,y)
+        source = context.get_source_widget()
+        if group is None or not isinstance(source, BrushList):
+            # Unknown action if not dragging from a BrushList or onto
+            # a group label.
+            action = gdk.ACTION_DEFAULT
+        else:
+            # Default action is to copy the brush
+            action = gdk.ACTION_COPY
+            dragged_brush = source.selected
+            target = self.bm.groups[group]
+            if group == source.group:
+                # Dragging to the current group label should behave
+                # like dragging between visible BrushLists, i.e. a no-op.
+                action = gdk.ACTION_DEFAULT
+            elif dragged_brush in target:
+                # If the brush is already in the target group, move it instead
+                action = gdk.ACTION_MOVE
+            else:
+                # The user can force a move by pressing shift during the drag
+                px, py, kbmods = self.get_window().get_pointer()
+                if kbmods & gdk.SHIFT_MASK:
+                    action = gdk.ACTION_MOVE
+        context.drag_status(action, time)
+        if action == gdk.ACTION_DEFAULT:
+            group = None
+        if group != self.drag_target_group:
+            self.drag_target_group = group
             self.queue_draw()
+
+    def drag_clear_cb(self, widget, context, time):
+        """
+        Remove any UI features showing the drag-and-drop target. Call when the
+        cursor goes out of the widget during a drag, or when the drag would
+        have no effect for any other reason.
+        """
+        if self.drag_target_group is  None: return
+        self.drag_target_group = None
+        self.queue_draw()
