@@ -40,6 +40,12 @@ class TiledDrawWidget(gtk.DrawingArea):
                         | gdk.POINTER_MOTION_MASK
                         | gdk.ENTER_NOTIFY_MASK
                         | gdk.LEAVE_NOTIFY_MASK
+                        # Workaround for https://gna.org/bugs/index.php?16253
+                        # Mypaint doesn't use proximity-*-event for anything
+                        # yet, but this seems to be needed for scrollwheels
+                        # etc. to keep working.
+                        | gdk.PROXIMITY_OUT_MASK
+
                         # for some reason we also need to specify events handled in drawwindow.py:
                         | gdk.BUTTON_PRESS_MASK
                         | gdk.BUTTON_RELEASE_MASK
