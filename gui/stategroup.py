@@ -186,7 +186,11 @@ class State:
         assert self.active
 
         # fix for https://gna.org/bugs/?14871 (problem with tablet and pointer grabs)
-        widget.add_events(gdk.POINTER_MOTION_MASK)
+        widget.add_events(gdk.POINTER_MOTION_MASK
+                          # proximity mask might help with scrollwheel events (https://gna.org/bugs/index.php?16253)
+                          | gdk.PROXIMITY_OUT_MASK
+                          | gdk.PROXIMITY_IN_MASK
+                          )
         widget.set_extension_events (gdk.EXTENSION_EVENTS_ALL)
 
         if self.keydown:

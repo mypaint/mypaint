@@ -45,7 +45,7 @@ class TiledDrawWidget(gtk.DrawingArea):
                         # yet, but this seems to be needed for scrollwheels
                         # etc. to keep working.
                         | gdk.PROXIMITY_OUT_MASK
-
+                        | gdk.PROXIMITY_IN_MASK
                         # for some reason we also need to specify events handled in drawwindow.py:
                         | gdk.BUTTON_PRESS_MASK
                         | gdk.BUTTON_RELEASE_MASK
