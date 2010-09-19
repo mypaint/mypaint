@@ -207,10 +207,42 @@ void tile_convert_rgba16_to_rgba8(PyObject * src, PyObject * dst) {
       assert(b<=(1<<15));
 #endif
 
-      *dst_p++ = (r * 255 + (1<<15)/2) / (1<<15);
-      *dst_p++ = (g * 255 + (1<<15)/2) / (1<<15);
-      *dst_p++ = (b * 255 + (1<<15)/2) / (1<<15);
-      *dst_p++ = (a * 255 + (1<<15)/2) / (1<<15);
+      /*
+      // Variant A) rounding
+      const uint32_t add_r = (1<<15)/2;
+      const uint32_t add_g = (1<<15)/2;
+      const uint32_t add_b = (1<<15)/2;
+      const uint32_t add_a = (1<<15)/2;
+      */
+      
+      /*
+      // Variant B) naive dithering
+      // This can alter the alpha channel during a load->save cycle.
+      const uint32_t add_r = rand() % (1<<15);
+      const uint32_t add_g = rand() % (1<<15);
+      const uint32_t add_b = rand() % (1<<15);
+      const uint32_t add_a = rand() % (1<<15);
+      */
+
+      // Variant C) slightly better dithering
+      // make sure we don't dither rounding errors (those did occur when converting 8bit-->16bit)
+      // this preserves the alpha channel, but we still add noise to the highly transparent colors
+      // OPTIMIZE: calling rand() slows us down...
+      const uint32_t add_r = (rand() % (1<<15)) * 240/256 + (1<<15) * 8/256;
+      const uint32_t add_g = add_r; // hm... do not produce too much color noise
+      const uint32_t add_b = add_r;
+      const uint32_t add_a = (rand() % (1<<15)) * 240/256 + (1<<15) * 8/256;
+      // TODO: error diffusion might work better than random dithering...
+
+#ifdef HEAVY_DEBUG
+      assert(add_a < (1<<15));
+      assert(add_a >= 0);
+#endif
+
+      *dst_p++ = (r * 255 + add_r) / (1<<15);
+      *dst_p++ = (g * 255 + add_g) / (1<<15);
+      *dst_p++ = (b * 255 + add_b) / (1<<15);
+      *dst_p++ = (a * 255 + add_a) / (1<<15);
     }
     src_p += src_arr->strides[0];
     dst_p += dst_arr->strides[0];
