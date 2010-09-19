@@ -140,6 +140,7 @@ class Window(windowing.MainWindow):
             ('PrintMemoryLeak',  None, _('Print Memory Leak Info to stdout (Slow!)'), None, None, self.print_memory_leak_cb),
             ('RunGarbageCollector',  None, _('Run Garbage Collector Now'), None, None, self.run_garbage_collector_cb),
             ('StartProfiling',  None, _('Start/Stop Python Profiling (cProfile)'), None, None, self.start_profiling_cb),
+            ('InputTestWindow',  None, _('Test input devices...'), None, None, self.toggleWindow_cb),
 
             ('ViewMenu', None, _('View')),
             ('ShowMenu',    None, _('Show Menu'), 'Menu', None, self.menu_show_cb),

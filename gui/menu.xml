@@ -125,9 +125,11 @@
       <menuitem action='ShortcutHelp'/>
       <separator/>
       <menu action='DebugMenu'>
+        <menuitem action='InputTestWindow'/>
         <menuitem action='PrintInputs'/>
         <menuitem action='VisualizeRendering'/>
         <menuitem action='NoDoubleBuffereing'/>
+        <separator/>
         <menuitem action='PrintMemoryLeak'/>
         <menuitem action='RunGarbageCollector'/>
         <menuitem action='StartProfiling'/>

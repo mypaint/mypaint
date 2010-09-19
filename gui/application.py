@@ -35,6 +35,8 @@ WINDOW_DEFAULTS = {
     # Layer details in the bottom-left quadrant.
     'layersWindow':         ("200x300+50-50",  False),
     'backgroundWindow':     ("500x400+265-50", False),
+    # Debug menu
+    'inputTestWindow':      (None, False),
 }
 
 # The main drawWindow gets centre stage, sized around the default set of
