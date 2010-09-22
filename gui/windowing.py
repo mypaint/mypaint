@@ -5,6 +5,7 @@ import sys
 
 import gtk
 import gtk.gdk as gdk
+import gobject
 
 class UserSubWindows:
     """
@@ -36,8 +37,14 @@ class UserSubWindows:
         "Shows all of the user's subwindows reversibly."
         self._in_command = True
         for w in self.windows:
-            w.show_all()
+            w.present()
         self.hidden = False
+
+        # For metacity. See https://gna.org/bugs/?15990
+        def refocus_drawwindow(*junk):
+            self.app.drawWindow.window.focus()
+        gobject.idle_add(refocus_drawwindow)
+
         self._in_command = False
 
     def hide(self):
