@@ -37,6 +37,7 @@ class UserSubWindows:
         "Shows all of the user's subwindows reversibly."
         self._in_command = True
         for w in self.windows:
+            w.show_all()
             w.present()
         self.hidden = False
 
