@@ -135,6 +135,7 @@ class Application: # singleton
             self.apply_settings()
             if not self.pressure_devices:
                 print 'No pressure sensitive devices found.'
+            self.drawWindow.present()
 
         gobject.idle_add(at_application_start)
 

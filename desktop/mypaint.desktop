@@ -8,5 +8,6 @@ GenericName=Image Editor
 MimeType=image/openraster;image/png;image/jpeg;
 Type=Application
 Icon=mypaint
+StartupNotify=true
 Categories=Graphics;
 Terminal=false
