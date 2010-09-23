@@ -51,6 +51,9 @@ class PixbufList(gtk.DrawingArea):
                         gdk.BUTTON_RELEASE_MASK |
                         gdk.POINTER_MOTION_MASK)
         
+        self.get_settings().set_property("gtk-dnd-drag-threshold",
+            int(min(item_w, item_h) * 0.75))
+
         self.realized_once = False
         self.connect("realize", self.on_realize)
         
