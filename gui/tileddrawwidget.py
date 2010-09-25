@@ -90,6 +90,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         #self.scroll_at_edges = False
         self.pressure_mapping = None
         self.bad_devices = []
+        self.motions = []
 
         self.set_sensitive(True)
 
@@ -203,7 +204,31 @@ class TiledDrawWidget(gtk.DrawingArea):
         if pressure:
             self.last_painting_pos = x, y
 
-        self.doc.stroke_to(dtime, x, y, pressure, xtilt, ytilt)
+        # On Windows, GTK timestamps have a resolution around
+        # 15ms, but tablet events arrive every 8ms.
+        # https://gna.org/bugs/index.php?16569
+        # TODO: proper fix in the brush engine, using only smooth,
+        #       filtered speed inputs, will make this unneccessary
+        if dtime < 0.0:
+            print 'Time is running backwards, dtime=%f' % dtime
+            dtime = 0.0
+        data = (x, y, pressure, xtilt, ytilt)
+        if dtime == 0.0:
+            self.motions.append(data)
+        elif dtime > 0.0:
+            if self.motions:
+                # replay previous events that had identical timestamp
+                if dtime > 0.1:
+                    # really old events, don't associate them with the new one
+                    step = 0.1
+                else:
+                    step = dtime
+                step /= len(self.motions)+1
+                for data_old in self.motions:
+                    self.doc.stroke_to(step, *data_old)
+                    dtime -= step
+                self.motions = []
+            self.doc.stroke_to(dtime, *data)
 
     def button_press_cb(self, win, event):
         if event.type != gdk.BUTTON_PRESS:
