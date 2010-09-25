@@ -21,13 +21,13 @@ class Window(windowing.SubWindow):
         self.set_role('Test')
         self.connect('delete-event', self.app.hide_window_cb)
         self.connect('map-event', self.map_cb)
-        gobject.timeout_add(1000, self.second_timer_cb, priority=gobject.PRIORITY_HIGH)
 
         self.initialized = False
-        self.unreported_motion = None
-        self.suppressed = 0
-        self.motion_counter = 0
+        self.motion_reports = []
+        self.motion_event_counter = 0
+        self.motion_dtime_sample = []
         self.last_device = None
+        self.last_motion_time = 0
 
         #main container
         vbox = gtk.VBox()
@@ -51,8 +51,8 @@ class Window(windowing.SubWindow):
         l = self.tilt_label = gtk.Label(_('(no tilt)'))
         add(1, _('Tilt:'), l)
 
-        l = self.motion_counter_label = gtk.Label()
-        add(2, 'MOTION_NOTIFY:', l)
+        l = self.motion_event_counter_label = gtk.Label()
+        add(2, 'Motion:', l)
 
         l = self.device_label = gtk.Label(_('(no device)'))
         add(3, _('Device:'), l)
@@ -66,9 +66,27 @@ class Window(windowing.SubWindow):
         vbox.pack_start(tv, expand=True, fill=True)
         self.log = []
 
+    def map_cb(self, *trash):
+        if self.initialized:
+            return
+        print 'Event statistics enabled.'
+        self.initialized = True
+        #self.app.doc.tdw.connect("event", self.event_cb)
+        self.app.drawWindow.connect("event", self.event_cb)
+        gobject.timeout_add(1000, self.second_timer_cb, priority=gobject.PRIORITY_HIGH)
+
     def second_timer_cb(self):
-        self.motion_counter_label.set_text(str(self.motion_counter))
-        self.motion_counter = 0
+        s = str(self.motion_event_counter)
+        s += ' events, timestamp spacing: '
+        if self.motion_dtime_sample:
+            for dtime in self.motion_dtime_sample:
+                s += '%d, ' % dtime
+            s += '...'
+        else:
+            s += '-'
+        self.motion_event_counter_label.set_text(s)
+        self.motion_event_counter = 0
+        self.motion_dtime_sample = []
         return True
 
     def event2str(self, event):
@@ -121,27 +139,24 @@ class Window(windowing.SubWindow):
             return False
         msg = self.event2str(event)
         if event.type == gdk.MOTION_NOTIFY:
-            self.motion_counter += 1
-            if self.unreported_motion:
-                self.suppressed += 1
-            else:
-                self.suppressed = 0
-                self.report(msg)
-            self.unreported_motion = msg
+            # statistics
+            self.motion_event_counter += 1
+            self.motion_dtime_sample.append(event.time - self.last_motion_time)
+            self.motion_dtime_sample = self.motion_dtime_sample[-10:]
+            self.last_motion_time = event.time
+            # report suppression
+            if not self.motion_reports:
+                self.report(msg) # report first motion event immediately
+            self.motion_reports.append(msg)
         else:
-            if self.unreported_motion:
-                if self.suppressed > 0:
-                    self.report('...      MOTION_NOTIFY %d events suppressed' % self.suppressed)
-                    self.report(self.unreported_motion)
-                self.unreported_motion = None
+            if self.motion_reports:
+                self.motion_reports.pop(0) # already reported the first motion event
+                if self.motion_reports:
+                    last_report = self.motion_reports.pop()
+                    if self.motion_reports:
+                        self.report('...      MOTION_NOTIFY %d events suppressed' % len(self.motion_reports))
+                    self.report(last_report)
+                self.motion_reports = []
             self.report(msg)
         return False
-
-    def map_cb(self, *trash):
-        if self.initialized:
-            return
-        print 'Event statistics enabled.'
-        self.initialized = True
-        #self.app.doc.tdw.connect("event", self.event_cb)
-        self.app.drawWindow.connect("event", self.event_cb)
 
