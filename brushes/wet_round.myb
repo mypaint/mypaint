@@ -4,7 +4,7 @@ version 2
 opaque 1.0 | pressure (0.000000 -0.666667), (0.313253 -0.166667), (0.575301 0.229167), (1.000000 1.000000)
 opaque_multiply 0.0 | pressure (0.000000 0.000000), (0.222222 0.000000), (0.454819 0.538125), (1.000000 0.630000)
 opaque_linearize 0.9
-radius_logarithmic 3.07 | pressure (0.000000 0.000000), (0.424658 0.000000), (0.575342 -0.659063), (1.000000 -0.659063)
+radius_logarithmic 3.07
 hardness 0.95
 dabs_per_basic_radius 0.0
 dabs_per_actual_radius 5.05
@@ -20,9 +20,9 @@ offset_by_speed_slowness 1.0
 slow_tracking 0.0
 slow_tracking_per_dab 0.0
 tracking_noise 0.0
-color_h 0.51753171857
-color_s 0.279038331563
-color_v 0.948226138705
+color_h 0.900092921382
+color_s 0.5966576243
+color_v 0.770626382849
 change_color_h 0.0
 change_color_l 0.0
 change_color_hsl_s 0.0
@@ -37,5 +37,5 @@ stroke_holdtime 0.0
 custom_input 0.0
 custom_input_slowness 0.0
 elliptical_dab_ratio 1.0
-elliptical_dab_angle 90.0
-direction_filter 2.0
+elliptical_dab_angle 90.0 | direction (0.000000 0.000000), (180.000000 180.000000)
+direction_filter 0.35
