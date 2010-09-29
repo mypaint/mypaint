@@ -73,7 +73,7 @@ class Window(windowing.MainWindow):
         self.init_actions()
 
         kbm = self.app.kbm
-        kbm.add_extra_key('Menu', 'ShowMenu')
+        kbm.add_extra_key('Menu', 'ShowPopupMenu')
         kbm.add_extra_key('Tab', 'ToggleSubwindows')
 
         self.init_stategroups()
@@ -145,7 +145,7 @@ class Window(windowing.MainWindow):
             ('InputTestWindow',  None, _('Test input devices...'), None, None, self.toggleWindow_cb),
 
             ('ViewMenu', None, _('View')),
-            ('ShowMenu',    None, _('Show Menu'), 'Menu', None, self.popupmenu_show_cb),
+            ('ShowPopupMenu',    None, _('Popup Menu'), 'Menu', None, self.popupmenu_show_cb),
             ('Fullscreen',   gtk.STOCK_FULLSCREEN, _('Fullscreen'), 'F11', None, self.fullscreen_cb),
             ('ToggleSubwindows',    None, _('Toggle Subwindows'), 'Tab', None, self.toggle_subwindows_cb),
             ('ViewHelp',  gtk.STOCK_HELP, _('Help'), None, None, self.show_infodialog_cb),
@@ -196,7 +196,7 @@ class Window(windowing.MainWindow):
         ## XML-style menu jiggling. No need for this really though.
         #for menu_elt in rootmenu_elt.findall("menu"):
         #    for item_elt in menu_elt.findall("menuitem"):
-        #        if item_elt.attrib.get("action", "") == "ShowMenu":
+        #        if item_elt.attrib.get("action", "") == "ShowPopupMenu":
         #            menu_elt.remove(item_elt)
         ## Maybe shift a small number of frequently-used items to the top?
         xml = ET.tostring(ui_elt)
