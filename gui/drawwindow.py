@@ -24,6 +24,7 @@ from gtk import gdk, keysyms
 import colorselectionwindow, historypopup, stategroup, colorpicker, windowing
 import dialogs
 from lib import helpers
+import xml.etree.ElementTree as ET
 
 
 #TODO: make generic by taking the windows as arguments and put in a helper file?
@@ -76,16 +77,17 @@ class Window(windowing.MainWindow):
         kbm.add_extra_key('Tab', 'ToggleSubwindows')
 
         self.init_stategroups()
+
+        # Load Menubar, duplicate into self.popupmenu
         menupath = os.path.join(self.app.datapath, 'gui/menu.xml')
-        self.app.ui_manager.add_ui_from_file(menupath)
+        menubar_xml = open(menupath).read()
+        self.app.ui_manager.add_ui_from_string(menubar_xml)
+        self._init_popupmenu(menubar_xml)
 
         # Set up widgets
         vbox = gtk.VBox()
         self.add(vbox)
         self.menubar = self.app.ui_manager.get_widget('/Menubar')
-        self.menubar.connect("selection-done", self.menu_done_cb)
-        self.menubar.connect("deactivate", self.menu_done_cb)
-        self.menubar.connect("cancel", self.menu_done_cb)
         vbox.pack_start(self.menubar, expand=False)
         vbox.pack_start(self.app.doc.tdw)
 
@@ -143,7 +145,7 @@ class Window(windowing.MainWindow):
             ('InputTestWindow',  None, _('Test input devices...'), None, None, self.toggleWindow_cb),
 
             ('ViewMenu', None, _('View')),
-            ('ShowMenu',    None, _('Show Menu'), 'Menu', None, self.menu_show_cb),
+            ('ShowMenu',    None, _('Show Menu'), 'Menu', None, self.popupmenu_show_cb),
             ('Fullscreen',   gtk.STOCK_FULLSCREEN, _('Fullscreen'), 'F11', None, self.fullscreen_cb),
             ('ToggleSubwindows',    None, _('Toggle Subwindows'), 'Tab', None, self.toggle_subwindows_cb),
             ('ViewHelp',  gtk.STOCK_HELP, _('Help'), None, None, self.show_infodialog_cb),
@@ -180,6 +182,37 @@ class Window(windowing.MainWindow):
 
         hist.autoleave_timeout = 0.600
         self.history_popup_state = hist
+
+    def _init_popupmenu(self, xml):
+        """
+        Hopefully temporary hack for converting UIManager XML describing the
+        main menubar into a rebindable popup menu. UIManager by itself doesn't
+        let you do this, by design, but we need a bigger menu than the little
+        things it allows you to build.
+        """
+        ui_elt = ET.fromstring(xml)
+        rootmenu_elt = ui_elt.find("menubar")
+        rootmenu_elt.attrib["name"] = "PopupMenu"
+        ## XML-style menu jiggling. No need for this really though.
+        #for menu_elt in rootmenu_elt.findall("menu"):
+        #    for item_elt in menu_elt.findall("menuitem"):
+        #        if item_elt.attrib.get("action", "") == "ShowMenu":
+        #            menu_elt.remove(item_elt)
+        ## Maybe shift a small number of frequently-used items to the top?
+        xml = ET.tostring(ui_elt)
+        self.app.ui_manager.add_ui_from_string(xml)
+        tmp_menubar = self.app.ui_manager.get_widget('/PopupMenu')
+        self.popupmenu = gtk.Menu()
+        for item in tmp_menubar.get_children():
+            tmp_menubar.remove(item)
+            self.popupmenu.append(item)
+        self.popupmenu.attach_to_widget(self.app.doc.tdw, None)
+        #self.popupmenu.set_title("MyPaint")
+        #self.popupmenu.set_take_focus(True)
+        self.popupmenu.connect("selection-done", self.popupmenu_done_cb)
+        self.popupmenu.connect("deactivate", self.popupmenu_done_cb)
+        self.popupmenu.connect("cancel", self.popupmenu_done_cb)
+        self.popupmenu_last_active = None
 
     # INPUT EVENT HANDLING
     def drag_data_received(self, widget, context, x, y, selection, info, t):
@@ -346,14 +379,21 @@ class Window(windowing.MainWindow):
             del self.geometry_before_fullscreen
             self.app.user_subwindows.show()
 
-    def menu_show_cb(self, action):
-        if self.fullscreen:
-            self.menubar.show()
-        self.menubar.select_first(False)
+    def popupmenu_show_cb(self, action):
+        self.menubar.set_sensitive(False)   # excessive feedback?
+        self.popupmenu.popup(None, None, None, 1, 0)
+        if self.popupmenu_last_active is None:
+            self.popupmenu.select_first(True) # one less keypress
+        else:
+            self.popupmenu.select_item(self.popupmenu_last_active)
 
-    def menu_done_cb(self, *a, **kw):
-        if self.fullscreen:
-            self.menubar.hide()
+    def popupmenu_done_cb(self, *a, **kw):
+        # Not sure if we need to bother with this level of feedback,
+        # but it actaully looks quite nice to see one menu taking over
+        # the other. Makes it clear that the popups are the same thing as
+        # the full menu, maybe.
+        self.menubar.set_sensitive(True)
+        self.popupmenu_last_active = self.popupmenu.get_active()
 
     def toggle_subwindows_cb(self, action):
         self.app.user_subwindows.toggle()
