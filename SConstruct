@@ -23,9 +23,11 @@ else:
     default_prefix = '/usr/local/'
 
 opts = Variables()
-opts.Add(PathVariable('prefix', 'autotools-style installation prefix', default_prefix, validator=PathVariable.PathIsDirCreate))
 
+opts.Add(PathVariable('prefix', 'autoconf-style installation prefix', 
+    default_prefix, validator=PathVariable.PathIsDirCreate))
 opts.Add(BoolVariable('debug', 'enable HEAVY_DEBUG and disable optimizations', False))
+
 env = Environment(ENV=os.environ, options=opts)
 if sys.platform == "win32":
     env = Environment(tools=['mingw'], ENV=os.environ, options=opts)
@@ -93,11 +95,39 @@ env.Clean('.', Glob('*.pyc'))
 env.Clean('.', Glob('gui/*.pyc'))
 env.Clean('.', Glob('lib/*.pyc'))
 
-env.Alias('install', env['prefix'])
+def substitute_template_strings(infile_path, outfile_path, tmpl_str, value):
+    """Substitute all occurences of tmpl_str with value, 
+    and save the new content to outfile_path"""
+    infile = open(infile_path)
+    outfile = open(outfile_path, 'w')
+
+    template_str = infile.read()
+    template_str = template_str.replace(tmpl_str, value)
+    outfile.write(template_str)
+
+    infile.close()
+    outfile.close()
+
+def substitute_prefix(target, source, env):
+    substitute_template_strings(str(source[0]), str(target[0]), "$PREFIX", env['prefix'])
+
+def get_install_path():
+    """Returns $DEST/$prefix if DEST is specified on commandline, 
+    else $prefix"""
+    dest = ARGUMENTS.get('DEST', '')
+    if dest:
+        return join(dest, env['prefix'].lstrip('/'))
+    else:
+        return env['prefix']
+
+env.Command('desktop/openraster-thumbnailer.schemas', 
+    'desktop/openraster-thumbnailer.schemas.tmpl', substitute_prefix)
+
+env.Alias('install', get_install_path())
 def install(dst, pattern):
     files = Glob(pattern)
     assert files, "Glob expression did not match any files"
-    env.Install(join(env['prefix'], dst), files)
+    env.Install(join(get_install_path(), dst), files)
 install('bin', 'mypaint')
 install('share/mypaint/brushes', 'brushes/*')
 install('share/mypaint/backgrounds', 'backgrounds/*')
@@ -106,8 +136,12 @@ install('share/mypaint/pixmaps', 'pixmaps/*')
 install('share', 'desktop/icons')
 install('share/applications', 'desktop/mypaint.desktop')
 
+# OpenRaster thumbnailer
+install('bin', 'desktop/openraster-thumbnailer.py')
+install('share/gconf/schemas', 'desktop/openraster-thumbnailer.schemas')
+
 # location for achitecture-dependent modules
-env.Install(join(env['prefix'], 'lib/mypaint'), module)
+env.Install(join(get_install_path(), 'lib/mypaint'), module)
 install('share/mypaint/lib', 'lib/*.py')
 install('share/mypaint/gui', 'gui/*.py')
 install('share/mypaint/gui', 'gui/menu.xml')

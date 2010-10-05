@@ -1,0 +1,25 @@
+<gconfschemafile>
+<schemalist>
+ <schema>
+  <key>/schemas/desktop/gnome/thumbnailers/image@openraster/enable</key>
+  <applyto>/desktop/gnome/thumbnailers/image@openraster/enable</applyto>
+  <owner>openraster-thumbnailer</owner>
+  <type>bool</type>
+  <default>true</default>
+  <locale name="C">
+   <short/>
+   <long/>
+  </locale>
+ </schema>
+ <schema>
+  <key>/schemas/desktop/gnome/thumbnailers/image@openraster/command</key>
+   <applyto>/desktop/gnome/thumbnailers/image@openraster/command</applyto>
+   <owner>openraster-thumbnailer</owner>
+   <type>string</type>
+   <default>$PREFIX/bin/openraster-thumbnailer.py %i %o %s</default>
+   <locale name="C">
+    <short/>
+    <long/>
+   </locale>
+ </schema>
+</gconfschemafile>
