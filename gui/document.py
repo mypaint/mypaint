@@ -227,8 +227,8 @@ class Document(object):
                 si = self.model.layer.get_stroke_info_at(x, y)
 
                 if si:
-                    self.app.brushmanager.select_brush(None) # FIXME: restore the selected brush
-                    self.app.brush.load_from_string(si.brush_string)
+                    picked_brush = None # TODO: remember and restore...?
+                    self.app.brushmanager.select_brush(picked_brush, si.brush_string)
                     self.si = si # FIXME: should be a method parameter?
                     self.strokeblink_state.activate(action)
                 return
@@ -547,10 +547,9 @@ class Document(object):
 
         if new_device.name in bm.brush_by_device:
             brush_to_select, brush_settings = bm.brush_by_device[new_device.name]
-            # mark as selected in brushlist
-            bm.select_brush(brush_to_select)
-            # restore modifications (radius / color change the user made)
-            self.app.brush.load_from_string(brush_settings)
+            # mark as selected in brushlist, and restore modifications (radius
+            # and/or color changes the user made)
+            bm.select_brush(brush_to_select, brush_settings)
         else:
             # first time using that device
             adj = self.app.brush_adjustment['eraser']

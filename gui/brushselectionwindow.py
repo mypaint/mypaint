@@ -99,8 +99,8 @@ class BrushList(pixbuflist.PixbufList):
         if brushes is self.brushes:
             self.update()
 
-    def brush_selected_cb(self, brush):
-        self.set_selected(brush)
+    def brush_selected_cb(self, base_brush, settings_str=None):
+        self.set_selected(base_brush)
 
     def remove_brush(self, brush):
         self.brushes.remove(brush)

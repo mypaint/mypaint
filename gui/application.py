@@ -260,13 +260,15 @@ class Application: # singleton
                         device.set_mode(mode)
                     break
 
-    def set_current_brush(self, managedbrush):
-        self.brush.load_from_string(managedbrush.settings_str)
+    def set_current_brush(self, base_brush, settings_str=None):
+        if settings_str is None:
+            settings_str = base_brush.settings_str
+        self.brush.load_from_string(settings_str)
 
-    def brush_selected_cb(self, b):
-        assert b is not self.brush
-        if b:
-            self.set_current_brush(b)
+    def brush_selected_cb(self, base_brush, settings_str=None):
+        assert base_brush is not self.brush
+        if base_brush is not None:
+            self.set_current_brush(base_brush, settings_str)
 
     def hide_window_cb(self, window, event):
         # used by some of the windows

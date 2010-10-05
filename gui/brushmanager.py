@@ -285,16 +285,32 @@ class BrushManager:
                 f.write(b.name + '\n')
         f.close()
 
-    def select_brush(self, brush):
-        if brush is None:
-            brush = ManagedBrush(self)
-        if brush.persistent and not brush.settings_loaded:
-            brush.load_settings()
-        assert isinstance(brush, ManagedBrush)
-        self.selected_brush = brush
-        self.app.preferences['brushmanager.selected_brush'] = self.selected_brush.name
+    def select_brush(self, base_brush=None, settings_str=None):
+        """
+        Select a new ``ManagedBrush`` in the brush selector parts of the UI.
+        Also copy *either* ``brush``'s settings *or* the serialised settings
+        in ``settings_str`` into the brush settings parts of the UI and into
+        the ``Application`` instance's active brush.
+
+        Set both when you want to update settings while retaining a UI
+        reference to a base brush (basically keeping the parent highlighted but
+        updating the sliders for radius and so on).
+
+        Set just ``settings_str`` if that's all you have.
+
+        See also ``BrushManager.selected_brush_observers``: most of the
+        legwork is delegated out to callbacks which follow the pattern
+        documented here.
+        """
+        if base_brush is None:
+            base_brush = ManagedBrush(self)
+        if base_brush.persistent and not base_brush.settings_loaded:
+            base_brush.load_settings()
+        assert isinstance(base_brush, ManagedBrush)
+        self.selected_brush = base_brush
+        self.app.preferences['brushmanager.selected_brush'] = base_brush.name
         for callback in self.selected_brush_observers:
-            callback(brush)
+            callback(base_brush, settings_str)
 
     def set_active_groups(self, groups):
         """Set active groups, loading them first if neccesary."""

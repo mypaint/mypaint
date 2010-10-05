@@ -230,17 +230,17 @@ class Widget(gtk.HBox):
             deleted_brushes.insert(0, b)
             for f in self.bm.brushes_observers: f(deleted_brushes)
 
-    def brush_selected_cb(self, b):
-        name = b.name
+    def brush_selected_cb(self, base_brush, settings_str=None):
+        name = base_brush.name
         if name is None:
             name = _('(no name)')
         else:
             name = name.replace('_', ' ')
         self.brush_name_label.set_text(name)
 
-        # Update brush icon preview it is not in edit mode
+        # Update brush icon preview if it is not in edit mode
         if not self.brush_preview_edit_mode:
-            self.set_preview_pixbuf(b.preview)
+            self.set_preview_pixbuf(base_brush.preview)
 
     def brush_modified_cb(self):
         self.tdw.doc.set_brush(self.app.brush)
