@@ -815,6 +815,7 @@ class Selector(gtk.VBox):
 
         self.window_ = window
         self.window_.connect("configure-event", self.window_configured_cb)
+        self.window_.connect("map-event", self.window_mapped_cb)
 
         self.rgb_selector = RGBSelector()
         self.hsv_selector = HSVSelector()
@@ -824,17 +825,21 @@ class Selector(gtk.VBox):
         nb.append_page(self.rgb_selector, gtk.Label(_('RGB')))
         nb.append_page(self.hsv_selector, gtk.Label(_('HSV')))
 
+        # Colour history
         self.exp_history = expander = gtk.Expander(_('Colors history'))
         expander.set_spacing(6)
         expander.add(self.recent)
-        expander.connect("notify::expanded", self.expander_expanded_cb)
+        expander.connect("notify::expanded", self.expander_expanded_cb, 'history')
         self.pack_start(expander, expand=False)
+
+        # Colour details
         self.exp_details = expander = gtk.Expander(_('Details'))
         expander.set_spacing(6)
         expander.add(nb)
-        expander.connect("notify::expanded", self.expander_expanded_cb)
+        expander.connect("notify::expanded", self.expander_expanded_cb, 'details')
         self.pack_start(expander, expand=False)
 
+        # Colour scheme harmonies
         def harmony_checkbox(attr, label):
             cb = gtk.CheckButton(label)
             cb.connect('toggled', self.harmony_toggled, attr)
@@ -865,8 +870,11 @@ class Selector(gtk.VBox):
         vbox_exp = gtk.VBox()
         vbox_exp.pack_start(frame1)
         expander.add(vbox_exp)
-        expander.connect("notify::expanded", self.expander_expanded_cb)
+        expander.connect("notify::expanded", self.expander_expanded_cb, 'harmonies')
         self.pack_start(expander, expand=False)
+
+        self.loaded_prefs = False
+
         self.circle.on_select = self.hue_selected
         self.circle.get_previous_color = self.previous_color
         self.recent.on_select = self.recent_selected
@@ -919,13 +927,15 @@ class Selector(gtk.VBox):
     def on_select(self,color):
         pass
 
-    def expander_expanded_cb(self, expander, *junk):
+    def expander_expanded_cb(self, expander, junk, cfg_stem):
         # After expander activation (both expand and un-expand), don't let the
         # colour circle shrink smaller than its current size, and force the WM
         # to shrink-fit the window to the new size.
         circle_alloc = self.circle.get_allocation()
         self.circle.set_size_request(circle_alloc.width, circle_alloc.height)
         self.window_.set_resizable(False)
+        self.app.preferences['colorsampler.%s_expanded' % cfg_stem] \
+          = bool(expander.get_expanded())
 
     def window_configured_cb(self, window, event, *param):
         # Undo the expander trick if it's still in effect: the user should be
@@ -934,6 +944,16 @@ class Selector(gtk.VBox):
         if not self.window_.get_resizable():
             self.window_.set_resizable(True)
             self.circle.set_size_request(*self.CIRCLE_MIN_SIZE)
+
+    def window_mapped_cb(self, window, event, *params):
+        if not self.loaded_prefs:
+            if self.app.preferences.get("colorsampler.history_expanded", False):
+                self.exp_history.set_expanded(True)
+            if self.app.preferences.get("colorsampler.details_expanded", False):
+                self.exp_details.set_expanded(True)
+            if self.app.preferences.get("colorsampler.harmonies_expanded", False):
+                self.exp_config.set_expanded(True)
+            self.loaded_prefs = True
 
 class Window(windowing.SubWindow):
     def __init__(self,app):
@@ -946,10 +966,7 @@ class Window(windowing.SubWindow):
         self.exp_history = self.selector.exp_history
         self.exp_details = self.selector.exp_details
         self.exp_config = self.selector.exp_config
-        # TODO: persistency
-        #self.exp_history.set_expanded(str_to_bool( app.get_config('State', 'color_history_expanded') ))
-        #self.exp_details.set_expanded(str_to_bool( app.get_config('State', 'color_details_expanded') ))
-        #self.exp_config.set_expanded(str_to_bool( app.get_config('State', 'color_configure_expanded') ))
+
         self.add(self.selector)
         self.app.brush.settings_observers.append(self.brush_modified_cb)
         self.stop_callback = False
