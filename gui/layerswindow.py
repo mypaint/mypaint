@@ -361,7 +361,7 @@ class Window(windowing.SubWindow):
         add_button = stock_button(gtk.STOCK_ADD)
         move_up_button = stock_button(gtk.STOCK_GO_UP)
         move_down_button = stock_button(gtk.STOCK_GO_DOWN)
-        merge_down_button = stock_button(gtk.STOCK_DND_MULTIPLE)
+        merge_down_button = stock_button(gtk.STOCK_DND_MULTIPLE)  # XXX need a better one
         del_button = stock_button(gtk.STOCK_DELETE)
 
         add_button.connect('clicked', self.on_layer_add)

@@ -107,10 +107,10 @@ class Window(windowing.MainWindow):
     def init_actions(self):
         actions = [
             # name, stock id, label, accelerator, tooltip, callback
-            ('FileMenu',     None, _('File')),
+            ('FileMenu',    None, _('File')),
             ('Quit',         gtk.STOCK_QUIT, _('Quit'), '<control>q', None, self.quit_cb),
 
-            ('EditMenu',           None, _('Edit')),
+            ('EditMenu',        None, _('Edit')),
             ('PreferencesWindow', gtk.STOCK_PREFERENCES, _('Preferences...'), None, None, self.toggleWindow_cb),
 
             ('ColorMenu',    None, _('Color')),
@@ -118,30 +118,30 @@ class Window(windowing.MainWindow):
             ('ColorHistoryPopup',  None, _('Color History'), 'x', None, self.popup_cb),
             ('ColorChangerPopup', None, _('Color Changer'), 'v', None, self.popup_cb),
             ('ColorRingPopup',  None, _('Color Ring'), None, None, self.popup_cb),
-            ('ColorSelectionWindow',  None, _('Color Triangle...'), 'g', None, self.toggleWindow_cb),
+            ('ColorSelectionWindow',  gtk.STOCK_SELECT_COLOR, _('Color Triangle...'), 'g', None, self.toggleWindow_cb),
             ('ColorSamplerWindow',  gtk.STOCK_SELECT_COLOR, _('Color Sampler...'), 't', None, self.toggleWindow_cb),
 
             ('ContextMenu',  None, _('Brushkeys')),
             ('ContextHelp',  gtk.STOCK_HELP, _('Help!'), None, None, self.show_infodialog_cb),
 
             ('LayerMenu',    None, _('Layers')),
-            ('LayersWindow', None, _('Layers...'), 'l', None, self.toggleWindow_cb),
-            ('BackgroundWindow', None, _('Background...'), None, None, self.toggleWindow_cb),
+            ('LayersWindow', gtk.STOCK_INDEX, _('Layers...'), 'l', None, self.toggleWindow_cb),
+            ('BackgroundWindow', gtk.STOCK_PAGE_SETUP, _('Background...'), None, None, self.toggleWindow_cb),
 
             ('BrushMenu',    None, _('Brush')),
             ('BrushSelectionWindow',  None, _('Brush List...'), 'b', None, self.toggleWindow_cb),
-            ('BrushSettingsWindow',   None, _('Brush Editor...'), '<control>b', None, self.toggleWindow_cb),
-            ('ImportBrushPack',       None, _('Import brush package...'),None, None, self.import_brush_pack_cb),
+            ('BrushSettingsWindow',   gtk.STOCK_PROPERTIES, _('Brush Editor...'), '<control>b', None, self.toggleWindow_cb),
+            ('ImportBrushPack',       gtk.STOCK_OPEN, _('Import brush package...'),None, None, self.import_brush_pack_cb),
 
-            ('HelpMenu',     None, _('Help')),
-            ('Docu', None, _('Where is the Documentation?'), None, None, self.show_infodialog_cb),
-            ('ShortcutHelp',  None, _('Change the Keyboard Shortcuts?'), None, None, self.show_infodialog_cb),
+            ('HelpMenu',   None, _('Help')),
+            ('Docu', gtk.STOCK_INFO, _('Where is the Documentation?'), None, None, self.show_infodialog_cb),
+            ('ShortcutHelp',  gtk.STOCK_INFO, _('Change the Keyboard Shortcuts?'), None, None, self.show_infodialog_cb),
             ('About', gtk.STOCK_ABOUT, _('About MyPaint'), None, None, self.about_cb),
 
             ('DebugMenu',    None, _('Debug')),
             ('PrintMemoryLeak',  None, _('Print Memory Leak Info to stdout (Slow!)'), None, None, self.print_memory_leak_cb),
             ('RunGarbageCollector',  None, _('Run Garbage Collector Now'), None, None, self.run_garbage_collector_cb),
-            ('StartProfiling',  None, _('Start/Stop Python Profiling (cProfile)'), None, None, self.start_profiling_cb),
+            ('StartProfiling',  gtk.STOCK_EXECUTE, _('Start/Stop Python Profiling (cProfile)'), None, None, self.start_profiling_cb),
             ('InputTestWindow',  None, _('Test input devices...'), None, None, self.toggleWindow_cb),
 
             ('ViewMenu', None, _('View')),
