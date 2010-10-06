@@ -798,7 +798,10 @@ class RGBSelector(gtk.VBox):
         self.set_color((r,g, spin.get_value()/255.))
 
 class Selector(gtk.VBox):
-    def __init__(self,app):
+
+    CIRCLE_MIN_SIZE = (200, 200)
+
+    def __init__(self, app, window):
         gtk.VBox.__init__(self)
         self.app = app
         hbox = gtk.HBox()
@@ -807,7 +810,11 @@ class Selector(gtk.VBox):
         hbox.pack_start(vbox,expand=True)
         self.recent = RecentColors()
         self.circle = CircleSelector()
+        self.circle.set_size_request(*self.CIRCLE_MIN_SIZE)
         vbox.pack_start(self.circle, expand=True)
+
+        self.window_ = window
+        self.window_.connect("configure-event", self.window_configured_cb)
 
         self.rgb_selector = RGBSelector()
         self.hsv_selector = HSVSelector()
@@ -820,10 +827,12 @@ class Selector(gtk.VBox):
         self.exp_history = expander = gtk.Expander(_('Colors history'))
         expander.set_spacing(6)
         expander.add(self.recent)
+        expander.connect("notify::expanded", self.expander_expanded_cb)
         self.pack_start(expander, expand=False)
         self.exp_details = expander = gtk.Expander(_('Details'))
         expander.set_spacing(6)
         expander.add(nb)
+        expander.connect("notify::expanded", self.expander_expanded_cb)
         self.pack_start(expander, expand=False)
 
         def harmony_checkbox(attr, label):
@@ -856,6 +865,7 @@ class Selector(gtk.VBox):
         vbox_exp = gtk.VBox()
         vbox_exp.pack_start(frame1)
         expander.add(vbox_exp)
+        expander.connect("notify::expanded", self.expander_expanded_cb)
         self.pack_start(expander, expand=False)
         self.circle.on_select = self.hue_selected
         self.circle.get_previous_color = self.previous_color
@@ -909,14 +919,29 @@ class Selector(gtk.VBox):
     def on_select(self,color):
         pass
 
+    def expander_expanded_cb(self, expander, *junk):
+        # After expander activation (both expand and un-expand), don't let the
+        # colour circle shrink smaller than its current size, and force the WM
+        # to shrink-fit the window to the new size.
+        circle_alloc = self.circle.get_allocation()
+        self.circle.set_size_request(circle_alloc.width, circle_alloc.height)
+        self.window_.set_resizable(False)
+
+    def window_configured_cb(self, window, event, *param):
+        # Undo the expander trick if it's still in effect: the user should be
+        # able to resize the dialog.
+        assert window == self.window_
+        if not self.window_.get_resizable():
+            self.window_.set_resizable(True)
+            self.circle.set_size_request(*self.CIRCLE_MIN_SIZE)
+
 class Window(windowing.SubWindow):
     def __init__(self,app):
         windowing.SubWindow.__init__(self, app)
         self.set_title(_('MyPaint color selector'))
         self.set_role('Color selector')
-        self.set_default_size(270,300)
         self.connect('delete-event', self.app.hide_window_cb)
-        self.selector = Selector(app)
+        self.selector = Selector(app, self)
         self.selector.on_select = self.on_select
         self.exp_history = self.selector.exp_history
         self.exp_details = self.selector.exp_details

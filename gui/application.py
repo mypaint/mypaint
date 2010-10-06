@@ -25,16 +25,16 @@ SAVE_POS_GRAVITY = gdk.GRAVITY_NORTH_WEST
 WINDOW_DEFAULTS = {
     'drawWindow':           (None, True), # initial geom overridden, but set vis
     # Colour choosers go in the top-right quadrant by default
-    'colorSamplerWindow':   ("280x350-50+75",  False ),
-    'colorSelectionWindow': ("-250+100",        True), # positions strangely
+    'colorSamplerWindow':   ("220x220-50+100",  False),
+    'colorSelectionWindow': ("-250+150",        True), # positions strangely
     # Brush-related dialogs go in the bottom right by default
-    'brushSelectionWindow': ("280x350-50-50",  True ),
-    'brushSettingsWindow':  ("400x250-345-50",        False),
+    'brushSelectionWindow': ("240x350-50-50",   True ),
+    'brushSettingsWindow':  ("400x400-325-50",  False),
     # Preferences go "inside" the main window (TODO: just center-on-parent?)
-    'preferencesWindow':    ("+200+100",       False),
+    'preferencesWindow':    ("+200+100",        False),
     # Layer details in the bottom-left quadrant.
-    'layersWindow':         ("200x300+50-50",  False),
-    'backgroundWindow':     ("500x400+265-50", False),
+    'layersWindow':         ("200x300+50-50",   False),
+    'backgroundWindow':     ("500x400-275+75", False),
     # Debug menu
     'inputTestWindow':      (None, False),
 }
@@ -46,7 +46,7 @@ CENTRE_STAGE_CONSTRAINTS = (\
     50,  # top: avoid panel
     75,  # bottom: avoid panel
     10,  # right (small screens): ensure close button not covered at least
-    375, # right (big screens): don't cover brushes or colour
+    220, # right (big screens): don't overlap brushes or colour (much)
     # "big screens" are anything 3 times wider than the big-right margin:
     ## > Size. The Center Stage content should be at least twice as wide as
     ## > whatever is in its side margins, and twice as tall as its top and
