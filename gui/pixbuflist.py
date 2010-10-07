@@ -41,9 +41,11 @@ class PixbufList(gtk.DrawingArea):
 
         self.selected = None
         self.tooltip_text = None
+        self.in_potential_drag = False
 
         self.connect("expose-event", self.expose_cb)
         self.connect("button-press-event", self.button_press_cb)
+        self.connect("button-release-event", self.button_release_cb)
         self.connect("configure-event", self.configure_event_cb)
         self.connect("motion-notify-event", self.motion_notify_cb)
         self.set_events(gdk.EXPOSURE_MASK |
@@ -112,8 +114,10 @@ class PixbufList(gtk.DrawingArea):
             if self.tooltip_text is not None:
                 self.set_has_tooltip(False)
                 self.tooltip_text = None
-            if self.dragging_allowed:
-                if self.drag_source_sensitive:
+            if self.dragging_allowed and self.drag_source_sensitive:
+                if not self.in_potential_drag:
+                    # If we haven't crossed the drag threshold yet, don't kill
+                    # the potential drag before it starts.
                     self.drag_source_unset()
                     self.drag_source_sensitive = False
 
@@ -223,6 +227,10 @@ class PixbufList(gtk.DrawingArea):
         item = self.itemlist[i]
         self.set_selected(item)
         self.on_select(item)
+        self.in_potential_drag = True
+
+    def button_release_cb(self, widget, event):
+        self.in_potential_drag = False
 
     def configure_event_cb(self, widget, size):
         if self.pixbuf and self.pixbuf.get_width() == size.width:
