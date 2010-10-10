@@ -228,10 +228,11 @@ class BrushManager:
                 brush = name[:-4]
                 assert brush in new_brushes, 'invalid brushpack: brush %r exists in zip, but not in order.conf' % brush
 
-        answer = dialogs.confirm_brushpack_import(basename(path), window, readme)
-        if answer == gtk.RESPONSE_REJECT:
-            zip.close()
-            return
+        if readme:
+            answer = dialogs.confirm_brushpack_import(basename(path), window, readme)
+            if answer == gtk.RESPONSE_REJECT:
+                zip.close()
+                return
 
         do_overwrite = False
         do_ask = True
