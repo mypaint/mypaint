@@ -196,11 +196,7 @@ class BrushManager:
         if os.path.exists(fn):
             os.remove(fn)
 
-    def import_brushpack(self, path, confirm_rewrite=None, window=None):
-
-        if not confirm_rewrite:
-            confirm_rewrite = lambda *args: dialogs.OVERWRITE_ALL
-
+    def import_brushpack(self, path,  window):
         zip = zipfile.ZipFile(path)
         names = zip.namelist()
 
@@ -231,17 +227,32 @@ class BrushManager:
         if readme:
             answer = dialogs.confirm_brushpack_import(basename(path), window, readme)
             if answer == gtk.RESPONSE_REJECT:
-                zip.close()
                 return
 
         do_overwrite = False
         do_ask = True
         renamed_brushes = {}
+        final_groups = []
         for groupname, brushes in groups.iteritems():
             managed_brushes = self.get_group_brushes(groupname)
             self.set_active_groups([groupname])
             if managed_brushes:
-                print 'TODO: ask user whether we should wipe clean the group first...'
+                answer = dialogs.confirm_rewrite_group(
+                    window, translate_group_name(groupname), translate_group_name(DELETED_BRUSH_GROUP))
+                if answer == dialogs.CANCEL:
+                    return
+                elif answer == dialogs.OVERWRITE_THIS:
+                    self.delete_group(groupname)
+                elif answer == dialogs.DONT_OVERWRITE_THIS:
+                    i = 0
+                    old_groupname = groupname
+                    while groupname in self.groups:
+                        i += 1
+                        groupname = old_groupname + '#%d' % i
+                managed_brushes = self.get_group_brushes(groupname, make_active=True)
+
+            final_groups.append(groupname)
+
             for brushname in brushes:
                 # extract the brush from the zip
                 myb_data = zip.read(brushname + '.myb')
@@ -258,7 +269,7 @@ class BrushManager:
                         b.load_preview()
                         existing_preview_pixbuf = b.preview
                         if do_ask:
-                            answer = confirm_rewrite(window, brushname, existing_preview_pixbuf, preview_data)
+                            answer = dialogs.confirm_rewrite_brush(window, brushname, existing_preview_pixbuf, preview_data)
                             if answer == dialogs.CANCEL:
                                 break
                             elif answer == dialogs.OVERWRITE_ALL:
@@ -299,9 +310,7 @@ class BrushManager:
                     managed_brushes.append(b)
                 for f in self.brushes_observers: f(managed_brushes)
 
-
-        zip.close()
-        self.set_active_groups(groups.keys())
+        self.set_active_groups(final_groups)
 
     def export_group(self, group, filename):
         zip = zipfile.ZipFile(filename, mode='w')

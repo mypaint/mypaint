@@ -133,6 +133,39 @@ def confirm_rewrite_brush(window, brushname, existing_preview_pixbuf, imported_p
     dialog.destroy()
     return answer
 
+def confirm_rewrite_group(window, groupname, deleted_groupname):
+    dialog = gtk.Dialog(_("Overwrite brush group?"),
+                        window, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT)
+
+    cancel         = gtk.Button(stock=gtk.STOCK_CANCEL)
+    cancel.show_all()
+    img_yes        = gtk.Image()
+    img_yes.set_from_stock(gtk.STOCK_YES, gtk.ICON_SIZE_BUTTON)
+    img_no         = gtk.Image()
+    img_no.set_from_stock(gtk.STOCK_NO, gtk.ICON_SIZE_BUTTON)
+    overwrite_this = gtk.Button(_("Replace"))
+    overwrite_this.set_image(img_yes)
+    overwrite_this.show_all()
+    skip_this      = gtk.Button(_("Rename"))
+    skip_this.set_image(img_no)
+    skip_this.show_all()
+
+    buttons = [(cancel,         CANCEL),
+               (skip_this,      DONT_OVERWRITE_THIS),
+               (overwrite_this, OVERWRITE_THIS)]
+    for button, code in buttons:
+        dialog.add_action_widget(button, code)
+
+    question = gtk.Label(_("<b>A group named `%s' already exists.</b>\nDo you want to replace it, or should the new group be renamed?\nIf you replace it, the brushes may be moved to a group called `%s'.") % (groupname, deleted_groupname))
+    question.set_use_markup(True)
+
+    dialog.vbox.pack_start(question)
+    dialog.vbox.show_all()
+
+    answer = dialog.run()
+    dialog.destroy()
+    return answer
+
 def open_dialog(title, window, filters):
     """
     filters should be a list of tuples: (filter title, glob pattern).

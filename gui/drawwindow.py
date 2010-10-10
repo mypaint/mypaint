@@ -413,7 +413,7 @@ class Window(windowing.MainWindow):
                                  [(_("MyPaint brush package (*.zip)"), "*.zip")])
         if filename is not None:
             #try:
-            self.app.brushmanager.import_brushpack(filename, dialogs.confirm_rewrite_brush, self)
+            self.app.brushmanager.import_brushpack(filename, self)
             #except Exception, e:
             #    d = gtk.MessageDialog(self, buttons=gtk.BUTTONS_OK_CANCEL, type=gtk.MESSAGE_ERROR)
             #    text = _("An error occured while importing brush package. Error was: %s") % e
