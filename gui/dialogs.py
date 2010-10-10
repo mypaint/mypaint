@@ -88,12 +88,12 @@ def confirm_rewrite_brush(window, brushname, existing_preview_pixbuf, imported_p
     overwrite_this = gtk.Button(_("Replace"))
     overwrite_this.set_image(img_yes)
     overwrite_this.show_all()
-    skip_this      = gtk.Button(_("Don't replace"))
+    skip_this      = gtk.Button(_("Rename"))
     skip_this.set_image(img_no)
     skip_this.show_all()
     overwrite_all  = gtk.Button(_("Replace all"))
     overwrite_all.show_all()
-    skip_all       = gtk.Button(_("Don't replace anything"))
+    skip_all       = gtk.Button(_("Rename all"))
     skip_all.show_all()
 
     buttons = [(cancel,         CANCEL),
@@ -111,7 +111,7 @@ def confirm_rewrite_brush(window, brushname, existing_preview_pixbuf, imported_p
     label_l = gtk.Label(_("Imported brush"))
     label_r = gtk.Label(_("Existing brush"))
 
-    question = gtk.Label(_("<b>A brush named `%s' already exists.</b>\nDo you want to replace it?") % brushname)
+    question = gtk.Label(_("<b>A brush named `%s' already exists.</b>\nDo you want to replace it, or should the new brush be renamed?") % brushname)
     question.set_use_markup(True)
 
     preview_l = image_new_from_png_data(imported_preview_data)
