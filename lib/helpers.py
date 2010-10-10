@@ -139,8 +139,11 @@ def save_freedesktop_thumbnail(pixbuf, filename):
     """
     Saves a thumbnail according to the FDO spec.
     """
+    directory = os.path.expanduser('~/.thumbnails/normal')
+    if not os.path.exists(directory):
+        os.makedirs(directory, 0700)
     file_hash = hashlib.md5('file://'+filename).hexdigest()
-    tb_filename_normal = os.path.join(os.path.expanduser('~/.thumbnails/normal'), file_hash) + '.png'
+    tb_filename_normal = os.path.join(directory, file_hash) + '.png'
     file_mtime = str(int(os.stat(filename).st_mtime))
     if (not os.path.isfile(tb_filename_normal)) or (not pixbuf) or (file_mtime != pixbuf.get_option("tEXt::Thumb::MTime")):
         pixbuf = get_pixbuf(filename)
