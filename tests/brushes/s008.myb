@@ -1,0 +1,34 @@
+# mypaint brush file
+# you can edit this file and then select the brush in mypaint (again) to reload
+version 2
+opaque 1.0
+opaque_multiply 0.0 | pressure (0.000000 0.000000), (0.191358 0.000000), (0.200617 1.000000), (1.000000 1.000000)
+opaque_linearize 0.9
+radius_logarithmic 1.37 | pressure (0.000000 0.000000), (1.000000 0.500000) | speed1 (0.000000 0.000000), (1.000000 -0.300000)
+hardness 0.7 | pressure (0.000000 0.000000), (1.000000 0.060000) | speed1 (0.000000 0.000000), (1.000000 -0.100000)
+dabs_per_basic_radius 0.0
+dabs_per_actual_radius 2.0
+dabs_per_second 0.0
+radius_by_random 0.0
+speed1_slowness 0.11
+speed2_slowness 0.8
+speed1_gamma 4.0
+speed2_gamma 4.0
+offset_by_random 0.0
+offset_by_speed 0.0
+offset_by_speed_slowness 1.0
+slow_tracking 8.64
+slow_tracking_per_dab 1.44
+tracking_noise 0.0
+color_h 0
+color_s 0
+color_v 0
+change_color_h 0.0
+change_color_s 0.0
+change_color_v 0.0
+adapt_color_from_image 0.0
+stroke_treshold 0.0
+stroke_duration_logarithmic 4.0
+stroke_holdtime 0.0
+custom_input 0.0
+custom_input_slowness 0.0

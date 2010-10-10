@@ -39,8 +39,7 @@ def brushPaint():
 
     s = tiledsurface.Surface()
     b = brush.Brush()
-    #b.load_from_string(open('../brushes/s006.myb').read())
-    b.load_from_string(open('../brushes/charcoal.myb').read())
+    b.load_from_string(open('brushes/charcoal.myb').read())
 
     events = loadtxt('painting30sec.dat.gz')
 
@@ -121,9 +120,9 @@ def pngs_equal(a, b):
 
 def docPaint():
     b1 = brush.Brush()
-    b1.load_from_string(open('../brushes/s008.myb').read())
+    b1.load_from_string(open('brushes/s008.myb').read())
     b2 = brush.Brush()
-    b2.load_from_string(open('../brushes/redbrush.myb').read())
+    b2.load_from_string(open('brushes/redbrush.myb').read())
     b2.set_color_hsv((0.3, 0.4, 0.35))
 
     # test some actions

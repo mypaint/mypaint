@@ -73,6 +73,7 @@ def paint(gui):
     tdw = gui_doc.tdw
 
     b = gui.app.brushmanager.get_brush_by_name('redbrush')
+    assert b, 'brush not found'
     gui.app.brushmanager.select_brush(b)
 
     dw.fullscreen_cb()
