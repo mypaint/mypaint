@@ -264,7 +264,6 @@ class BrushManager:
                 b = self.get_brush_by_name(brushname)
                 if brushname in new_brushes:
                     new_brushes.remove(brushname)
-                    print 'trying to import brush', repr(brushname)
                     if b:
                         b.load_preview()
                         existing_preview_pixbuf = b.preview
@@ -289,7 +288,7 @@ class BrushManager:
                         i = 0
                         while not do_overwrite and b:
                             i += 1
-                            brushname = brushname_old + '_#%d' % i
+                            brushname = brushname_old + '#%d' % i
                             renamed_brushes[brushname_old] = brushname
                             b = self.get_brush_by_name(brushname)
 
@@ -310,6 +309,9 @@ class BrushManager:
                     managed_brushes.append(b)
                 for f in self.brushes_observers: f(managed_brushes)
 
+        if DELETED_BRUSH_GROUP in self.groups:
+            # remove deleted brushes that are in some group again
+            self.delete_group(DELETED_BRUSH_GROUP)
         self.set_active_groups(final_groups)
 
     def export_group(self, group, filename):
