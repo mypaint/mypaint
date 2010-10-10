@@ -111,8 +111,7 @@ def confirm_rewrite_brush(window, brushname, existing_preview_pixbuf, imported_p
     label_l = gtk.Label(_("Imported brush"))
     label_r = gtk.Label(_("Existing brush"))
 
-    question = gtk.Label(_("""<b>Brush named `%s' already exists in your collection.</b>
-Are you really want to replace your brush with imported one?""") % brushname)
+    question = gtk.Label(_("<b>A brush named `%s' already exists.</b>\nDo you want to replace it?") % brushname)
     question.set_use_markup(True)
 
     preview_l = image_new_from_png_data(imported_preview_data)
@@ -205,7 +204,7 @@ def save_dialog(title, window, filters, default_format=None):
     dialog.hide()
     return result
 
-def confirm_brushpack_import(packname, window=None, readme=None, license=None):
+def confirm_brushpack_import(packname, window=None, readme=None):
     def show_text(text):
         tv = gtk.TextView()
         tv.set_wrap_mode(gtk.WRAP_WORD)
@@ -217,16 +216,13 @@ def confirm_brushpack_import(packname, window=None, readme=None, license=None):
                        gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
                        (gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT,
                         gtk.STOCK_OK, gtk.RESPONSE_ACCEPT))
+
     if readme:
-        readme_label = gtk.Label(_("%s README:") % packname)
-        dialog.vbox.pack_start(readme_label)
+        #readme_label = gtk.Label(_("readme.txt") % packname)
+        #dialog.vbox.pack_start(readme_label)
         readme_tv = show_text(readme)
         dialog.vbox.pack_start(readme_tv)
-    if license:
-        license_label = gtk.Label(_("%s license:") % packname)
-        dialog.vbox.pack_start(license_label)
-        license_tv = show_text(license)
-        dialog.vbox.pack_start(license_tv)
+
     question = gtk.Label(_("<b>Do you really want to import package `%s'?</b>") % packname)
     question.set_use_markup(True)
     dialog.vbox.pack_start(question)

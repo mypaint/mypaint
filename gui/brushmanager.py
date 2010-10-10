@@ -192,17 +192,10 @@ class BrushManager:
         names = zip.namelist()
 
         readme = None
-        license = None
-        for name in ["README", "README.txt"]:
-            if name in names:
-                readme = zip.read(name)
-                break
-        for name in ["LICENSE", "LICENSE.txt", "LEGAL", "COPYRIGHT"]:
-            if name in names:
-                license = zip.read(name)
-                break
+        if 'readme.txt' in names:
+            readme = zip.read('readme.txt')
 
-        answer = dialogs.confirm_brushpack_import(basename(path), window, readme, license)
+        answer = dialogs.confirm_brushpack_import(basename(path), window, readme)
         if answer == gtk.RESPONSE_REJECT:
             zip.close()
             return
