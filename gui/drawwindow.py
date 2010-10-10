@@ -131,7 +131,7 @@ class Window(windowing.MainWindow):
             ('BrushMenu',    None, _('Brush')),
             ('BrushSelectionWindow',  None, _('Brush List...'), 'b', None, self.toggleWindow_cb),
             ('BrushSettingsWindow',   gtk.STOCK_PROPERTIES, _('Brush Editor...'), '<control>b', None, self.toggleWindow_cb),
-            ('ImportBrushPack',       gtk.STOCK_OPEN, _('Import brush package...'),None, None, self.import_brush_pack_cb),
+            ('ImportBrushPack',       gtk.STOCK_OPEN, _('Import brush package...'), '', None, self.import_brush_pack_cb),
 
             ('HelpMenu',   None, _('Help')),
             ('Docu', gtk.STOCK_INFO, _('Where is the Documentation?'), None, None, self.show_infodialog_cb),
