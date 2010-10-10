@@ -408,12 +408,12 @@ class Window(windowing.MainWindow):
         gtk.main_quit()
         return False
 
-    def import_brush_pack_cb(self, action):
+    def import_brush_pack_cb(self, *trash):
         format_id, filename = dialogs.open_dialog(_("Import brush package..."), self,
                                  [(_("MyPaint brush package (*.zip)"), "*.zip")])
         if filename is not None:
             #try:
-            self.app.brushmanager.import_brushpack(filename, self)
+            self.app.brushmanager.import_brushpack(filename,  self)
             #except Exception, e:
             #    d = gtk.MessageDialog(self, buttons=gtk.BUTTONS_OK_CANCEL, type=gtk.MESSAGE_ERROR)
             #    text = _("An error occured while importing brush package. Error was: %s") % e

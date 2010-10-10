@@ -352,8 +352,10 @@ class GroupSelector(gtk.DrawingArea):
         menu += [ (_("New group..."), self.create_group_cb) ]
         if group:
             menu += [ (_("Rename group..."), self.rename_group_cb),
-                      (_("Export group..."), self.export_group_cb),
-                      (_("Delete group..."), self.delete_group_cb)]
+                      (_("Delete group..."), self.delete_group_cb),
+                      (_("Export group as brush package..."), self.export_group_cb),
+                      ]
+        menu += [ (_("Import brush package..."), self.app.drawWindow.import_brush_pack_cb) ]
         for label, callback in menu:
             mi = gtk.MenuItem(label)
             mi.connect('activate', callback, group)
