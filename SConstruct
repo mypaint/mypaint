@@ -95,7 +95,9 @@ env.Clean('.', Glob('lib/*.pyc'))
 
 env.Alias('install', env['prefix'])
 def install(dst, pattern):
-    env.Install(join(env['prefix'], dst), Glob(pattern))
+    files = Glob(pattern)
+    assert files, "Glob expression did not match any files"
+    env.Install(join(env['prefix'], dst), files)
 install('bin', 'mypaint')
 install('share/mypaint/brushes', 'brushes/*')
 install('share/mypaint/backgrounds', 'backgrounds/*')
