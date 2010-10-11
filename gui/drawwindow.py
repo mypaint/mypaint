@@ -331,7 +331,7 @@ class Window(windowing.MainWindow):
                 self.app.doc.rotate('RotateRight')
             else:
                 self.app.doc.zoom('ZoomOut')
-        elif d == gdk.SCROLL_LEFT:
+        elif d == gdk.SCROLL_RIGHT:
             self.app.doc.rotate('RotateRight')
         elif d == gdk.SCROLL_LEFT:
             self.app.doc.rotate('RotateLeft')
