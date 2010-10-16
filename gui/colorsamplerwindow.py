@@ -50,9 +50,10 @@ class GColorSelector(gtk.DrawingArea):
         if not self.button_pressed:
             return
         d = sqrt((event.x-self.press_x)**2 + (event.y-self.press_y)**2)
-        if self.dnd_enabled and self.test_drag(event.x,event.y, d):
+        if self.test_drag(event.x,event.y, d):
             self.do_select = False
-            self.drag_begin([("application/x-color",0,80)], gdk.ACTION_COPY, 1, event)
+            if self.dnd_enabled:
+                self.drag_begin([("application/x-color",0,80)], gdk.ACTION_COPY, 1, event)
         else:
             if not self.grabbed:
                 self.grabbed = True
@@ -140,7 +141,7 @@ class GColorSelector(gtk.DrawingArea):
 
 class RectSlot(GColorSelector):
     def __init__(self,color=(1.0,1.0,1.0),size=32):
-        GColorSelector.__init__(self)
+        GColorSelector.__init__(self, False)
         self.color = color
         self.set_size_request(size,size)
 
@@ -189,7 +190,7 @@ def try_put(list, item):
 
 class CircleSelector(GColorSelector):
     def __init__(self, color=(1,0,0)):
-        GColorSelector.__init__(self)
+        GColorSelector.__init__(self, False)
         self.color = color
         self.hsv = rgb_to_hsv(*color)
 
