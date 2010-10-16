@@ -16,14 +16,33 @@ from gtk import gdk # only for gdk.pixbuf
 from gettext import gettext as _
 import os, zipfile
 from os.path import basename
+import urllib
+import gobject
 
 preview_w = 128
 preview_h = 128
 
 DEFAULT_STARTUP_GROUP = 'Deevad'
+DEFAULT_BRUSH = 'deevad/pencil'
+DEFAULT_ERASER = 'deevad/eraser'
 FOUND_BRUSHES_GROUP = 'lost&found'
 DELETED_BRUSH_GROUP = 'deleted'
 FAVORITES_BRUSH_GROUP = 'favorites'
+DEVBRUSH_NAME_PREFIX = "devbrush_"
+
+def devbrush_quote(device_name, prefix=DEVBRUSH_NAME_PREFIX):
+    """
+    Quotes an arbitrary device name for use as the basename of a
+    device-specific brush.
+    """
+    return prefix + urllib.quote_plus(device_name, safe='')
+
+def devbrush_unquote(devbrush_name, prefix=DEVBRUSH_NAME_PREFIX):
+    """
+    Unquotes the basename of a devbrush for use when matching device names.
+    """
+    assert devbrush_name.startswith(prefix)
+    return urllib.unquote_plus(devbrush_name[len(prefix):])
 
 def translate_group_name(name):
     d = {FOUND_BRUSHES_GROUP: _('lost&found'),
@@ -73,12 +92,11 @@ class BrushManager:
 
         self.selected_brush_observers = []
         self.groups_observers = [] # for both self.groups and self.active_groups
-        self.brushes_observers = [] # for all bruslists inside groups
+        self.brushes_observers = [] # for all brushlists inside groups
 
         if not os.path.isdir(self.user_brushpath):
             os.mkdir(self.user_brushpath)
         self.load_groups()
-
 
         last_active_groups = self.app.preferences['brushmanager.selected_groups']
         if not last_active_groups:
@@ -87,13 +105,32 @@ class BrushManager:
             if group in self.groups:
                 brushes = self.get_group_brushes(group, make_active=True)
 
-        last_active_brush = self.app.preferences['brushmanager.selected_brush']
-        if last_active_brush is None:
-            brush = self.get_group_brushes(DEFAULT_STARTUP_GROUP)[0]
-        else:
-            brush = self.get_brush_by_name(last_active_brush)
-        self.select_brush(brush)
         self.brushes_observers.append(self.brushes_modified_cb)
+
+        initial_brush = None
+        # If we recorded which devbrush was last in use, restore it and assume
+        # that most of the time the user will continue to work with the same
+        # brush and its settings.
+        last_used_devbrush = self.app.preferences.get('devbrush.last_used', None)
+        initial_brush = self.brush_by_device.get(last_used_devbrush, None)
+        # Otherwise, initialise from the old selected_brush setting
+        if initial_brush is None:
+            last_active_name = self.app.preferences['brushmanager.selected_brush']
+            if last_active_name is not None:
+                initial_brush = self.get_brush_by_name(last_active_name)
+        # Fallback
+        if initial_brush is None:
+            initial_brush = self.get_default_brush()
+
+        def at_application_start():
+            self.select_brush(initial_brush)
+        gobject.idle_add(at_application_start)
+
+    def get_default_brush(self):
+        return self.get_brush_by_name(DEFAULT_BRUSH)
+
+    def get_default_eraser(self):
+        return self.get_brush_by_name(DEFAULT_ERASER)
 
     def load_groups(self):
         for i in range(10):
@@ -185,13 +222,21 @@ class BrushManager:
 
         for name in listbrushes(self.stock_brushpath) + listbrushes(self.user_brushpath):
             b = get_brush(name)
+            can_be_lost = True
             if name.startswith('context'):
                 i = int(name[-2:])
                 self.contexts[i] = b
-                continue
-            if not [True for group in our.itervalues() if b in group]:
-                brushes = self.groups.setdefault(FOUND_BRUSHES_GROUP, [])
-                brushes.insert(0, b)
+                can_be_lost = False
+            elif name.startswith(DEVBRUSH_NAME_PREFIX):
+                device_name = devbrush_unquote(name)
+                self.brush_by_device[device_name] = b
+                b.load_settings()
+                b.persistent = False
+                can_be_lost = False
+            if can_be_lost:
+                if not [True for group in our.itervalues() if b in group]:
+                    brushes = self.groups.setdefault(FOUND_BRUSHES_GROUP, [])
+                    brushes.insert(0, b)
 
         # clean up legacy stuff
         fn = os.path.join(self.user_brushpath, 'deleted.conf')
@@ -343,6 +388,7 @@ class BrushManager:
 
     def get_brush_by_name(self, name):
         # slow method, should not be called too often
+        # FIXME: speed up, use a dict.
         for group, brushes in self.groups.iteritems():
             for b in brushes:
                 if b.name == name:
@@ -360,32 +406,69 @@ class BrushManager:
                 f.write(b.name.encode('utf-8') + '\n')
         f.close()
 
-    def select_brush(self, base_brush=None, settings_str=None):
+    def find_nearest_persistent_brush(self, managed_brush):
         """
-        Select a new ``ManagedBrush`` in the brush selector parts of the UI.
-        Also copy *either* ``brush``'s settings *or* the serialised settings
-        in ``settings_str`` into the brush settings parts of the UI and into
-        the ``Application`` instance's active brush.
-
-        Set both when you want to update settings while retaining a UI
-        reference to a base brush (basically keeping the parent highlighted but
-        updating the sliders for radius and so on).
-
-        Set just ``settings_str`` if that's all you have.
-
-        See also ``BrushManager.selected_brush_observers``: most of the
-        legwork is delegated out to callbacks which follow the pattern
-        documented here.
+        Tries to find and a persistent version of a ``ManagedBrush`` from
+        either ``managed_brush`` or its named ancestors. If no persistent
+        brush can be found, returns ``None``.
         """
-        if base_brush is None:
-            base_brush = ManagedBrush(self)
-        if base_brush.persistent and not base_brush.settings_loaded:
-            base_brush.load_settings()
-        assert isinstance(base_brush, ManagedBrush)
-        self.selected_brush = base_brush
-        self.app.preferences['brushmanager.selected_brush'] = base_brush.name
+        b = managed_brush
+        while b is not None:
+            if b.persistent:
+                return b
+            b = self.get_brush_by_name(b.parent_brush_name)
+        return None
+
+    def select_brush(self, brush):
+        """
+        Selects the given ManagedBrush in the UI, and updates the live brush.
+        If ``brush`` is not a persistent brush - e.g. a devbrush or a brushkey
+        brush - its parent will be highlighted instead, if it can be found.
+        """
+        if brush is None:
+            brush = self.get_default_brush()
+        self.selected_brush = brush
+        if brush.persistent and not brush.settings_loaded:
+            brush.load_settings()
+        self.app.preferences['brushmanager.selected_brush'] = brush.name
+        # Take care of updating the live brush, amongst other thing
         for callback in self.selected_brush_observers:
-            callback(base_brush, settings_str)
+            callback(brush)
+
+    def clone_selected_brush(self, name):
+        """
+        Creates a new non-persistent ManagedBrush based on the selected
+        persistent brush in the UI and the currently active lib.brush.
+        """
+        clone = ManagedBrush(self, name, persistent=False)
+        clone.settings_str = self.app.brush.save_to_string()
+        clone.preview = self.selected_brush.preview
+        persistent_parent = self.find_nearest_persistent_brush(self.selected_brush)
+        if persistent_parent is not None:
+            clone.parent_brush_name = persistent_parent.name
+        else:
+            clone.parent_brush_name = None
+        return clone
+
+    def store_selected_brush_for_device(self, device_name):
+        """
+        Stores all current brush settings as a cloned brush associated with
+        a given input device.
+        """
+        devbrush_name = devbrush_quote(device_name)
+        devbrush = self.clone_selected_brush(devbrush_name)
+        self.brush_by_device[device_name] = devbrush
+
+    def fetch_brush_for_device(self, device_name):
+        """
+        Fetches the brush associated with a particular input device name.
+        """
+        devbrush_name = devbrush_quote(device_name)
+        return self.brush_by_device.get(device_name, None)
+
+    def save_brushes_for_devices(self):
+        for device_name, devbrush in self.brush_by_device.iteritems():
+            devbrush.save()
 
     def set_active_groups(self, groups):
         """Set active groups, loading them first if neccesary."""
@@ -451,6 +534,7 @@ class ManagedBrush(object):
         self.settings_loaded = False
         """If True this brush is fully initialized, ready to paint with."""
 
+        self.parent_brush_name = None
         self.settings_mtime = None
         self.preview_mtime = None
 
@@ -539,6 +623,12 @@ class ManagedBrush(object):
         prefix = self.get_fileprefix()
         filename = prefix + '.myb'
         self.settings_str = open(filename).read()
+        self.parent_brush_name = None
+        # FIXME: parsing here duplicates effort
+        from lib.brush import tokenise_settings_str, unquote_str
+        for setting, value in tokenise_settings_str(self.settings_str):
+            if setting == 'parent_brush_name':
+                self.parent_brush_name = unquote_str(value)
         self.remember_mtimes()
         self.settings_loaded = True
 
@@ -551,3 +641,5 @@ class ManagedBrush(object):
         self.load()
         return True
 
+    def __str__(self):
+        return "<ManagedBrush %s p=%s>" % (self.name, self.parent_brush_name)

@@ -65,7 +65,8 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.last_event_device = None
         self.last_event_had_pressure_info = False
         self.last_painting_pos = None
-        self.device_observers = []
+        self.device_observers = [] #: Notified during drawing when input devices change
+        self.stroke_ended_observers = [] #: Notified when a drawing stroke finishes
 
         self.visualize_rendering = False
 
@@ -252,6 +253,8 @@ class TiledDrawWidget(gtk.DrawingArea):
         # (see comment above in button_press_cb)
         if event.button == 1 and not self.last_event_had_pressure_info:
             self.motion_notify_cb(win, event, button1_pressed=False)
+        for func in self.stroke_ended_observers:
+            func(event)
 
     def canvas_modified_cb(self, x1, y1, w, h):
         if not self.window:

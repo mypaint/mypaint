@@ -143,8 +143,8 @@ class Window(windowing.SubWindow):
         else:
             adj.default_value_button.set_sensitive(True)
 
-    def brush_selected_cb(self, base_brush, settings_str=None):
-        self.update_settings()  # XXX: assumes Application has updated self.app.brush
+    def brush_selected_cb(self, brush):
+        self.update_settings()
 
     def live_update_cb(self, *trash):
         if self.live_update.get_active():

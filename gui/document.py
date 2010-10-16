@@ -17,6 +17,7 @@ from gettext import gettext as _
 import lib.document
 from lib import backgroundsurface, command, helpers, layer
 import tileddrawwidget, stategroup
+from brushmanager import ManagedBrush
 
 
 class Document(object):
@@ -45,9 +46,12 @@ class Document(object):
 
         # Brush
         self.app.brush.settings_observers.append(self.brush_modified_cb)
-        self.tdw.device_observers.append(self.device_changed_cb)
 
+        # Device change management & pen-stroke watching
+        self.tdw.device_observers.append(self.device_changed_cb)
+        self.tdw.stroke_ended_observers.append(self.stroke_ended_cb)
         self.last_pen_device = None
+
         self.eraser_mode_radius_change = 3*(0.3) # can go back to exact original with brush_smaller_cb()
         self.eraser_mode_original_radius = None
 
@@ -228,8 +232,9 @@ class Document(object):
                 si = self.model.layer.get_stroke_info_at(x, y)
 
                 if si:
-                    picked_brush = None # TODO: remember and restore...?
-                    self.app.brushmanager.select_brush(picked_brush, si.brush_string)
+                    picked_brush = ManagedBrush(self.app.brushmanager)
+                    picked_brush.settings_str = si.brush_string
+                    self.app.brushmanager.select_brush(picked_brush)
                     self.si = si # FIXME: should be a method parameter?
                     self.strokeblink_state.activate(action)
                 return
@@ -552,20 +557,37 @@ class Document(object):
 
         bm = self.app.brushmanager
         if old_device:
-            bm.brush_by_device[old_device.name] = (bm.selected_brush, self.app.brush.save_to_string())
+            bm.store_selected_brush_for_device(old_device.name)
 
-
-        if new_device.name in bm.brush_by_device:
-            brush_to_select, brush_settings = bm.brush_by_device[new_device.name]
-            # mark as selected in brushlist, and restore modifications (radius
-            # and/or color changes the user made)
-            bm.select_brush(brush_to_select, brush_settings)
+        if new_device.source == gdk.SOURCE_MOUSE:
+            # Avoid fouling up unrelated devbrushes at stroke end
+            self.app.preferences.pop('devbrush.last_used', None)
         else:
-            # first time using that device
-            adj = self.app.brush_adjustment['eraser']
-            if is_eraser(new_device):
-                # enter eraser mode
-                adj.set_value(1.0)
-            elif not is_eraser(new_device) and is_eraser(old_device):
-                # leave eraser mode
-                adj.set_value(0.0)
+            # Select the brush and update the UI.
+            # Use a sane default if there's nothing associated
+            # with the device yet.
+            brush = bm.fetch_brush_for_device(new_device.name)
+            if brush is None:
+                if is_eraser(new_device):
+                    brush = bm.get_default_eraser()
+                else:
+                    brush = bm.get_default_brush()
+            self.app.preferences['devbrush.last_used'] = new_device.name
+            bm.select_brush(brush)
+
+    def stroke_ended_cb(self, event):
+        # Store device-specific brush settings at the end of the stroke, not
+        # when the device changes because the user can change brush radii etc.
+        # in the middle of a stroke, and because device_changed_cb won't
+        # respond when the user fiddles with colours, opacity and sizes via the
+        # dialogs.
+        device_name = self.app.preferences.get('devbrush.last_used', None)
+        if device_name is None:
+            return
+        self.app.brushmanager.store_selected_brush_for_device(device_name)
+        self.app.preferences['devbrush.last_used'] = device_name
+        # However it may be better to reflect any brush settings change into
+        # the last-used devbrush immediately. The UI idea here is that the
+        # pointer (when you're holding the pen) is special, it's the point of a
+        # real-world tool that you're dipping into a palette, or modifying
+        # using the sliders.

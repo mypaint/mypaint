@@ -71,7 +71,7 @@ class Window(windowing.SubWindow):
     def set_fixed_value_clicked_cb(self, widget, adj, value):
         adj.set_value(value)
 
-    def brush_selected_cb(self, base_brush, settings_str=None):
+    def brush_selected_cb(self, brush):
         # update curves
         for w in self.byinputwidgets:
             w.reread()

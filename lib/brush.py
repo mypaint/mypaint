@@ -9,8 +9,27 @@
 import mypaintlib
 from brushlib import brushsettings
 import helpers
+import urllib, encodings.utf_8
 
 current_brushfile_version = 2
+
+def tokenise_settings_str(s):
+    "Splits and iterates across a brush settings string."
+    for line in s.split('\n'):
+        line = line.strip()
+        if not line or line.startswith('#'):
+            continue
+        yield line.split(' ', 1)
+
+def quote_str(rawstring):
+    "Quote a unicode string for saving in a free-text field."
+    u8bytes = encodings.utf_8.encode(unicode(rawstring))[0]
+    return urllib.quote(u8bytes)
+
+def unquote_str(quotedstring):
+    "Converts a free-text field's stored representation to unicode."
+    u8bytes = urllib.unquote(quotedstring)
+    return encodings.utf_8.decode(u8bytes)[0]
 
 # points = [(x1, y1), (x2, y2), ...] (at least two points, or None)
 class Setting:
@@ -124,6 +143,7 @@ class Brush(mypaintlib.Brush):
         self.settings_observers = []
         self.settings_observers_hidden = []
         self.settings = []
+        self.parent_brush_name = None
         for s in brushsettings.settings:
             self.settings.append(Setting(s, self, self.settings_observers))
 
@@ -155,6 +175,8 @@ class Brush(mypaintlib.Brush):
         res  = '# mypaint brush file\n'
         res += '# you can edit this file and then select the brush in mypaint (again) to reload\n'
         res += 'version %d\n' % current_brushfile_version
+        if self.parent_brush_name is not None:
+            res += "parent_brush_name %s\n" % quote_str(self.parent_brush_name)
         for s in brushsettings.settings:
             res += s.cname + ' ' + self.settings[s.index].save_to_string() + '\n'
         self.saved_string = res
@@ -167,12 +189,9 @@ class Brush(mypaintlib.Brush):
         num_found = 0
         errors = []
         version = 1 # for files without a 'version' field
-        for line in s.split('\n'):
-            line = line.strip()
-            if line.startswith('#'): continue
-            if not line: continue
+        self.parent_brush_name = None
+        for command, rest in tokenise_settings_str(s):
             try:
-                command, rest = line.split(' ', 1)
                 error = None
 
                 if command in brushsettings.settings_dict:
@@ -196,14 +215,18 @@ class Brush(mypaintlib.Brush):
                     if rest != '0.0': error = 'adapt_color_from_image is obsolete, ignored; use smudge and smudge_length instead'
                 elif version <= 1 and command == 'painting_time':
                     pass
+                elif command == 'parent_brush_name':
+                    self.parent_brush_name = unquote_str(rest)
                 else:
                     error = 'unknown command, line ignored'
 
                 if error:
-                    errors.append((line, error))
+                    line = "%s %s" % (command, rest)
+                    errors.append(line, error)
 
             except Exception, e:
-                errors.append((line, str(e)))
+                line = "%s %s" % (command, rest)
+                errors.append(line, str(e))
             else:
                 num_found += 1
         if num_found == 0:

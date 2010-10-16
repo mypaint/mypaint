@@ -147,6 +147,7 @@ class Application: # singleton
             f = open(settingspath, 'w')
             f.write(jsonstr)
             f.close()
+        self.brushmanager.save_brushes_for_devices()
         save_config()
 
     def apply_settings(self):
@@ -260,15 +261,27 @@ class Application: # singleton
                         device.set_mode(mode)
                     break
 
-    def set_current_brush(self, base_brush, settings_str=None):
-        if settings_str is None:
-            settings_str = base_brush.settings_str
-        self.brush.load_from_string(settings_str)
+    def set_current_brush(self, managed_brush):
+        """
+        Copies a ManagedBrush's settings into the brush settings currently used
+        for painting. Sets the parent brush name to something long-lasting too,
+        specifically the nearest persistent brush in managed_brush's ancestry.
+        """
+        if managed_brush is None:
+            return
+        self.brush.load_from_string(managed_brush.settings_str)
 
-    def brush_selected_cb(self, base_brush, settings_str=None):
-        assert base_brush is not self.brush
-        if base_brush is not None:
-            self.set_current_brush(base_brush, settings_str)
+        # If the user just picked a brush from the brush selection window,
+        # it's likely to have no parent.
+        if self.brush.parent_brush_name is None:
+            parent_mb = self.brushmanager.find_nearest_persistent_brush(managed_brush)
+            parent_mb_name = parent_mb is not None and parent_mb.name or None
+            self.brush.parent_brush_name = parent_mb_name
+
+
+    def brush_selected_cb(self, brush):
+        assert brush is not self.brush
+        self.set_current_brush(brush)
 
     def hide_window_cb(self, window, event):
         # used by some of the windows
@@ -278,7 +291,7 @@ class Application: # singleton
     def save_gui_config(self):
         gtk.accel_map_save(join(self.confpath, 'accelmap.conf'))
         self.save_window_positions()
-	self.save_settings()
+        self.save_settings()
 
     def save_window_positions(self):
         f = open(join(self.confpath, 'windowpos.conf'), 'w')
