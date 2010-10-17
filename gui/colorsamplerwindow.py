@@ -12,7 +12,7 @@ CSTEP=0.007
 PADDING=4
 
 class GColorSelector(gtk.DrawingArea):
-    def __init__(self, init_dnd=True):
+    def __init__(self):
         gtk.DrawingArea.__init__(self)
         self.color = (1,0,0)
         self.hsv = (0,1,1)
@@ -29,18 +29,25 @@ class GColorSelector(gtk.DrawingArea):
         self.connect('button-release-event', self.on_button_release)
         self.connect('configure-event', self.on_configure)
         self.connect('motion-notify-event', self.motion)
-        if init_dnd:
-            self.connect('drag_data_get', self.drag_get)
         self.button_pressed = False
-        self.do_select = True
         self.grabbed = False
-        self.dnd_enabled = init_dnd
         self.set_size_request(80, 80)
 
-    def test_drag(self,x,y,d):
-        return d>20
+    def test_move(self, x, y):
+        """
+        Return true during motion if the selection indicator
+        should move to where the cursor is pointing.
+        """
+        return True
 
-    def move(self,x,y):
+    def test_button_release(self, x, y):
+        """
+        Return true after a button-release-event if the colour under the
+        pointer should be selected.
+        """
+        return True
+
+    def move(self, x, y):
         pass
 
     def redraw_on_select(self):
@@ -49,31 +56,11 @@ class GColorSelector(gtk.DrawingArea):
     def motion(self,w, event):
         if not self.button_pressed:
             return
-        d = sqrt((event.x-self.press_x)**2 + (event.y-self.press_y)**2)
-        if self.test_drag(event.x,event.y, d):
-            self.do_select = False
-            if self.dnd_enabled:
-                self.drag_begin([("application/x-color",0,80)], gdk.ACTION_COPY, 1, event)
-        else:
+        if self.test_move(event.x, event.y):
             if not self.grabbed:
                 self.grabbed = True
                 self.grab_add()
             self.move(event.x,event.y)
-
-    def drag_get(self, widget, context, selection, targetType, eventTime):
-        try:
-            color, is_hsv = self.get_color_at(self.press_x, self.press_y)
-        except TypeError:
-            return
-        if is_hsv:
-            r,g,b = hsv_to_rgb(*color)
-        else:
-            r,g,b = color
-        r = min(int(r*65536), 65535)
-        g = min(int(g*65536), 65535)
-        b = min(int(b*65536), 65535)
-        clrs = struct.pack('HHHH',r,g,b,0)
-        selection.set(selection.target, 8, clrs)
 
     def on_configure(self,w, size):
         self.x_rel = size.x
@@ -118,13 +105,12 @@ class GColorSelector(gtk.DrawingArea):
 
     def on_button_press(self,w, event):
         self.button_pressed = True
-        self.do_select = True
         self.press_x = event.x
         self.press_y = event.y
         self.record_button_press(event.x, event.y)
 
     def on_button_release(self,w, event):
-        if self.button_pressed and self.do_select:
+        if self.button_pressed and self.test_button_release(event.x, event.y):
             self.select_color_at(event.x,event.y)
         self.button_pressed = False
         if self.grabbed:
@@ -141,7 +127,7 @@ class GColorSelector(gtk.DrawingArea):
 
 class RectSlot(GColorSelector):
     def __init__(self,color=(1.0,1.0,1.0),size=32):
-        GColorSelector.__init__(self, False)
+        GColorSelector.__init__(self)
         self.color = color
         self.set_size_request(size,size)
 
@@ -175,9 +161,11 @@ class RecentColors(gtk.HBox):
 CIRCLE_N = 12.0
 SLOTS_N = 5
 
-AREA_SQUARE = 1
-AREA_SAMPLE = 2
-AREA_CIRCLE = 3
+AREA_SQUARE = 1  #: Central saturation/value square
+AREA_INSIDE = 2  #: Grey area inside the rings
+AREA_SAMPLE = 3  #: Inner ring of color sampler boxes (hue)
+AREA_CIRCLE = 4  #: Outer gradiated ring (hue)
+AREA_OUTSIDE = 5  #: Blank outer area, outer space
 
 sq32 = sqrt(3)/2
 sq33 = sqrt(3)/3
@@ -190,7 +178,7 @@ def try_put(list, item):
 
 class CircleSelector(GColorSelector):
     def __init__(self, color=(1,0,0)):
-        GColorSelector.__init__(self, False)
+        GColorSelector.__init__(self)
         self.color = color
         self.hsv = rgb_to_hsv(*color)
 
@@ -234,11 +222,29 @@ class CircleSelector(GColorSelector):
         if redraw:
             self.queue_draw()
 
-    def test_drag(self,x,y,dist):
-        area = self.area_at(self.press_x,self.press_y)
-        return area == AREA_SAMPLE
+    def test_move(self, x, y):
+        from_area = self.area_at(self.press_x,self.press_y)
+        to_area = self.area_at(x, y)
+        if from_area == AREA_CIRCLE:
+            return to_area not in (AREA_SQUARE, AREA_INSIDE)
+        elif from_area == AREA_SQUARE:
+            return to_area not in (AREA_CIRCLE, AREA_OUTSIDE)
+        else:
+            return False
+        #return from_area == to_area
+        #    and from_area in [AREA_CIRCLE, AREA_SQUARE]
 
-    def nearest_dragable(self, x,y):
+    def test_button_release(self, x, y):
+        from_area = self.area_at(self.press_x,self.press_y)
+        to_area = self.area_at(x, y)
+        return from_area == to_area \
+            and from_area in [AREA_SAMPLE, AREA_CIRCLE, AREA_SQUARE]
+
+    def nearest_move_target(self, x,y):
+        """
+        Returns the nearest (x, y) the selection indicator can move to during a
+        move with the button held down.
+        """
         area_source = self.area_at(self.press_x, self.press_y)
         area = self.area_at(x,y)
         if area == area_source and area in [AREA_CIRCLE, AREA_SQUARE]:
@@ -260,19 +266,23 @@ class CircleSelector(GColorSelector):
         return rx,ry
 
     def move(self,x,y):
-        x_,y_ = self.nearest_dragable(x,y)
+        x_,y_ = self.nearest_move_target(x,y)
         self.select_color_at(x_,y_)
 
     def area_at(self, x,y):
         dx = x-self.x0
         dy = y-self.y0
         d = sqrt(dx*dx+dy*dy)
-        if self.r2 < d < self.r3:
+        if d > self.r3:
+            return AREA_OUTSIDE
+        elif self.r2 < d < self.r3:
             return AREA_CIRCLE
         elif self.rd < d < self.r2:
             return AREA_SAMPLE
         elif abs(dx)<self.m and abs(dy)<self.m:
             return AREA_SQUARE
+        else:
+            return AREA_INSIDE
 
     def get_color_at(self, x,y):
         area = self.area_at(x,y)
@@ -523,7 +533,7 @@ class CircleSelector(GColorSelector):
 
 class VSelector(GColorSelector):
     def __init__(self, color=(1,0,0), height=16):
-        GColorSelector.__init__(self, init_dnd=False)
+        GColorSelector.__init__(self)
         self.color = color
         self.hsv = rgb_to_hsv(*color)
         self.set_size_request(height*2,height)
