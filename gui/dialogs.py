@@ -58,7 +58,7 @@ def ask_for_name(widget, title, default):
     else:
         result = None
     d.destroy()
-    return result
+    return result.decode('utf-8')
 
 def error(widget, message):
     window = widget.get_toplevel()
@@ -186,7 +186,7 @@ def open_dialog(title, window, filters):
 
     result = (None, None)
     if dialog.run() == gtk.RESPONSE_OK:
-        filename = dialog.get_filename()
+        filename = dialog.get_filename().decode('utf-8')
         file_format = None
         for i, (_, pattern) in enumerate(filters):
             if fnmatch(filename, pattern):
@@ -220,7 +220,7 @@ def save_dialog(title, window, filters, default_format=None):
 
     result = (None, None)
     while dialog.run() == gtk.RESPONSE_OK:
-        filename = dialog.get_filename()
+        filename = dialog.get_filename().decode('utf-8')
         file_format = None
         for i, (_, pattern) in enumerate(filters):
             if fnmatch(filename, pattern):

@@ -19,7 +19,8 @@ def get_paths():
     # note: some distros use lib64 instead, they have to edit this...
     lib_compiled='lib/mypaint/'
     
-    scriptdir=os.path.dirname(sys.argv[0])
+    arg0 = unicode(sys.argv[0], sys.getfilesystemencoding())
+    scriptdir=os.path.dirname(arg0)
 
     # this script is installed as $prefix/bin. We just need $prefix to continue.
     #pwd=os.getcwd() # why????
@@ -28,6 +29,7 @@ def get_paths():
 
     if os.path.basename(dir_install) == 'bin':
         prefix=os.path.dirname(dir_install)
+        assert isinstance(prefix, unicode)
         libpath=join(prefix, lib_shared)
         libpath_compiled = join(prefix, lib_compiled)
         sys.path.insert(0, libpath)
@@ -37,21 +39,23 @@ def get_paths():
         prefix=None
         # this is py2exe point of view, all executables in root of installdir
         # all path must be normalized to absolute path
-        libpath = os.path.abspath(os.path.dirname(os.path.realpath(sys.argv[0])))
+        libpath = os.path.abspath(os.path.dirname(os.path.realpath(arg0)))
         sys.path.insert(0, libpath)
         localepath = join(libpath,'share/locale')
     else:
         # we are not installed
-        prefix=None
-        libpath='.'
+        prefix = None
+        libpath = u'.'
         localepath = 'po'
+
+    assert isinstance(libpath, unicode)
 
     try: # just for a nice error message
         from lib import mypaintlib
     except ImportError:
         print
         print "We are not correctly installed or compiled!"
-        print 'script: "%s"' % sys.argv[0]
+        print 'script: "%s"' % arg0
         if prefix:
             print 'deduced prefix: "%s"' % prefix
             print 'lib_shared: "%s"' % libpath
@@ -65,12 +69,14 @@ def get_paths():
         print datapath
         raise sys.exit(1)
 
-    homepath =  os.path.expanduser('~')
+    homepath =  os.path.expanduser(u'~')
     if homepath == '~':
         confpath = join(prefix, 'UserData')
     else:
         confpath = join(homepath, '.mypaint/')
 
+    assert isinstance(datapath, unicode)
+    assert isinstance(confpath, unicode)
     return datapath, confpath, localepath
 
 def psyco_opt():

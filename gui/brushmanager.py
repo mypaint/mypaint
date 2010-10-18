@@ -42,11 +42,11 @@ def parse_order_conf(file_content):
     curr_group = FOUND_BRUSHES_GROUP
     lines = file_content.replace('\r', '\n').split('\n')
     for line in lines:
-        name = line.strip()
+        name = unicode(line.strip(), 'utf-8')
         if name.startswith('#') or not name:
             continue
         if name.startswith('Group: '):
-            curr_group = unicode(name[7:], 'utf-8')
+            curr_group = name[7:]
             if curr_group not in groups:
                 groups[curr_group] = []
             continue
@@ -98,7 +98,7 @@ class BrushManager:
     def load_groups(self):
         for i in range(10):
             c = ManagedBrush(self)
-            c.name = 'context%02d' % i
+            c.name = u'context%02d' % i
             self.contexts.append(c)
 
         brush_by_name = {}
@@ -173,7 +173,9 @@ class BrushManager:
             # slashes for subirectories on all platforms.
             path += '/'
             l = []
+            assert isinstance(path, unicode) # make sure we get unicode filenames 
             for name in os.listdir(path):
+                assert isinstance(name, unicode)
                 if name.endswith('.myb'):
                     l.append(name[:-4])
                 elif os.path.isdir(path+name):
@@ -199,6 +201,9 @@ class BrushManager:
     def import_brushpack(self, path,  window):
         zip = zipfile.ZipFile(path)
         names = zip.namelist()
+        # zipfile does utf-8 decoding on its own; this is just to make
+        # sure we have only unicode objects as brush names.
+        names = [s.decode('utf-8') for s in names]
 
         readme = None
         if 'readme.txt' in names:
@@ -216,7 +221,7 @@ class BrushManager:
 
         # Validate file content. The names in order.conf and the
         # brushes found in the zip must match. This should catch
-        # encoding screwups, everything is supposed to be utf-8.
+        # encoding screwups, everything should be an unicode object.
         for brush in new_brushes:
             assert brush + '.myb' in names, 'invalid brushpack: brush %r in order.conf does not exist in zip' % brush
         for name in names:
@@ -255,8 +260,18 @@ class BrushManager:
 
             for brushname in brushes:
                 # extract the brush from the zip
-                myb_data = zip.read(brushname + '.myb')
-                preview_data = zip.read(brushname + '_prev.png')
+                assert (brushname + '.myb') in zip.namelist()
+                # looks like we need to encode to utf-8 again... bug in zipfile,
+                # which handles unicode fine otherwise...
+                brushname_utf8 = brushname.encode('utf-8')
+                try:
+                    myb_data = zip.read(brushname + '.myb')
+                except KeyError:
+                    myb_data = zip.read(brushname_utf8 + '.myb')
+                try:
+                    preview_data = zip.read(brushname + '_prev.png')
+                except KeyError:
+                    preview_data = zip.read(brushname_utf8 + '_prev.png')
                 # in case we have imported that brush already in a previous group, but decided to rename it
                 if brushname in renamed_brushes:
                     brushname = renamed_brushes[brushname]
@@ -322,7 +337,7 @@ class BrushManager:
             prefix = brush.get_fileprefix()
             zip.write(prefix + '.myb', brush.name + '.myb')
             zip.write(prefix + '_prev.png', brush.name + '_prev.png')
-            order_conf += brush.name + '\n'
+            order_conf += brush.name.encode('utf-8') + '\n'
         zip.writestr('order.conf', order_conf)
         zip.close()
 
@@ -342,7 +357,7 @@ class BrushManager:
         for group, brushes in self.groups.iteritems():
             f.write('Group: %s\n' % group.encode('utf-8'))
             for b in brushes:
-                f.write(b.name + '\n')
+                f.write(b.name.encode('utf-8') + '\n')
         f.close()
 
     def select_brush(self, base_brush=None, settings_str=None):
@@ -452,12 +467,13 @@ class ManagedBrush(object):
         if not self.name:
             i = 0
             while 1:
-                self.name = '%s%03d' % (prefix, i)
+                self.name = u'%s%03d' % (prefix, i)
                 a = os.path.join(self.bm.user_brushpath, self.name + '.myb')
                 b = os.path.join(self.bm.stock_brushpath, self.name + '.myb')
                 if not os.path.isfile(a) and not os.path.isfile(b):
                     break
                 i += 1
+        assert isinstance(self.name, unicode)
         prefix = os.path.join(self.bm.user_brushpath, self.name)
         if saving: 
             if '/' in self.name:

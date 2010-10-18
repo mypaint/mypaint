@@ -164,6 +164,7 @@ class FileHandler(object):
         dialog = self.save_dialog
         filename = dialog.get_filename()
         if filename:
+            filename = filename.decode('utf-8')
             filename, ext = os.path.splitext(filename)
             if ext:
                 saveformat = self.saveformat_combo.get_active()
@@ -253,6 +254,7 @@ class FileHandler(object):
     def update_preview_cb(self, file_chooser, preview):
         filename = file_chooser.get_preview_filename()
         if filename:
+            filename = filename.decode('utf-8')
             pixbuf = helpers.get_freedesktop_thumbnail(filename)
             if pixbuf:
                 # if pixbuf is smaller than 128px in width, copy it onto a transparent 128x128 pixbuf
@@ -283,7 +285,7 @@ class FileHandler(object):
         try:
             if dialog.run() == gtk.RESPONSE_OK:
                 dialog.hide()
-                self.open_file(dialog.get_filename())
+                self.open_file(dialog.get_filename().decode('utf-8'))
         finally:
             dialog.destroy()
 
@@ -314,7 +316,7 @@ class FileHandler(object):
         try:
             # Loop until we have filename with an extension
             while dialog.run() == gtk.RESPONSE_OK:
-                filename = dialog.get_filename()
+                filename = dialog.get_filename().decode('utf-8')
                 name, ext = os.path.splitext(filename)
                 saveformat = self.saveformat_combo.get_active()
 

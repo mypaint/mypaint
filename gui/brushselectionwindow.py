@@ -249,7 +249,7 @@ class GroupSelector(gtk.DrawingArea):
         for group in all_groups:
             group_label = brushmanager.translate_group_name(group)
             u = pad_s + group_label + pad_s
-            s = u.encode('utf8')
+            s = u.encode('utf-8')
             idx_start = idx
             for c in s:
                 self.idx2group[idx] = group
@@ -280,7 +280,7 @@ class GroupSelector(gtk.DrawingArea):
             attr.insert(pango.AttrForeground(c.red, c.green, c.blue, idx_start, idx))
 
             text += u + sp_s
-            idx += len(sp_s.encode("utf8"))
+            idx += len(sp_s.encode("utf-8"))
 
         layout.set_text(text)
         layout.set_attributes(attr)

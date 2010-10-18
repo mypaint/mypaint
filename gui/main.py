@@ -33,9 +33,11 @@ def main(datapath, confpath):
         sys.stdout = sys.stderr = open(options.logfile, 'a', 1)
         print '--- mypaint log %s ---' % time.strftime('%F %T')
 
+    confpath = unicode(options.config, sys.getfilesystemencoding())
+
     def run():
         print 'confpath =', options.config
-        app = application.Application(datapath, options.config, args)
+        app = application.Application(datapath, confpath, args)
 
         # Recent gtk versions don't allow changing those menu shortcuts by
         # default. <rant>Sigh. This very useful feature used to be the
