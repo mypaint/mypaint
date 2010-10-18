@@ -11,7 +11,7 @@
 
 from gtk import gdk
 import mypaintlib, tiledsurface, helpers
-import numpy
+import sys, numpy
 
 N = tiledsurface.N
 
@@ -132,4 +132,5 @@ def save_as_png(surface, filename, *rect, **kwargs):
         def render_tile_scanline():
             return arr
 
-    mypaintlib.save_png_fast_progressive(filename, w, h, alpha, render_tile_scanline)
+    filename_sys = filename.encode(sys.getfilesystemencoding()) # FIXME: should not do that, should use open(unicode_object)
+    mypaintlib.save_png_fast_progressive(filename_sys, w, h, alpha, render_tile_scanline)

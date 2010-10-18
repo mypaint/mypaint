@@ -123,9 +123,10 @@ def get_freedesktop_thumbnail(filename):
     A thumbnail will also get regenerated if the MTimes (as in "modified")
     of thumbnail and original image do not match.
     """
-    file_hash = hashlib.md5('file://'+filename).hexdigest()
-    tb_filename_normal = os.path.join(os.path.expanduser('~/.thumbnails/normal'), file_hash) + '.png'
-    tb_filename_large = os.path.join(os.path.expanduser('~/.thumbnails/large'), file_hash) + '.png'
+    uri = 'file://'+urllib.pathname2url(filename.encode('utf-8'))
+    file_hash = hashlib.md5(uri).hexdigest()
+    tb_filename_normal = os.path.join(os.path.expanduser(u'~/.thumbnails/normal'), file_hash) + '.png'
+    tb_filename_large = os.path.join(os.path.expanduser(u'~/.thumbnails/large'), file_hash) + '.png'
     if os.path.isfile(tb_filename_normal):
         pixbuf = gdk.pixbuf_new_from_file(tb_filename_normal)
     elif os.path.isfile(tb_filename_large):
@@ -139,34 +140,36 @@ def save_freedesktop_thumbnail(pixbuf, filename):
     """
     Saves a thumbnail according to the FDO spec.
     """
-    directory = os.path.expanduser('~/.thumbnails/normal')
+    directory = os.path.expanduser(u'~/.thumbnails/normal')
     if not os.path.exists(directory):
         os.makedirs(directory, 0700)
-    file_hash = hashlib.md5('file://'+filename).hexdigest()
+    uri = 'file://'+urllib.pathname2url(filename.encode('utf-8'))
+    file_hash = hashlib.md5(uri).hexdigest()
     tb_filename_normal = os.path.join(directory, file_hash) + '.png'
     file_mtime = str(int(os.stat(filename).st_mtime))
     if (not os.path.isfile(tb_filename_normal)) or (not pixbuf) or (file_mtime != pixbuf.get_option("tEXt::Thumb::MTime")):
         pixbuf = get_pixbuf(filename)
         if pixbuf:
             pixbuf = scale_proportionally(pixbuf, 128,128)
-            pixbuf.save(tb_filename_normal, 'png', {"tEXt::Thumb::MTime" : file_mtime, "tEXt::Thumb::URI" : ('file://'+filename)})
+            pixbuf.save(tb_filename_normal, 'png', {"tEXt::Thumb::MTime" : file_mtime, "tEXt::Thumb::URI" : uri})
             return pixbuf
     else:
         return pixbuf
 
 def get_pixbuf(filename):
-    if os.path.splitext(filename)[1].lower() == ".ora":
-        ora = zipfile.ZipFile(filename)
-        try:
+    try:
+        if os.path.splitext(filename)[1].lower() == ".ora":
+            ora = zipfile.ZipFile(filename)
             data = ora.read("Thumbnails/thumbnail.png")
-        except KeyError:
-            return
-        loader = gdk.PixbufLoader("png")
-        loader.write(data)
-        loader.close()
-        return loader.get_pixbuf()
-    else:
-        return gdk.pixbuf_new_from_file(filename)
+            loader = gdk.PixbufLoader("png")
+            loader.write(data)
+            loader.close()
+            return loader.get_pixbuf()
+        else:
+            return gdk.pixbuf_new_from_file(filename)
+    except:
+        # filename is a directory, or just nothing image-like
+        return
 
 def scale_proportionally(pixbuf, w, h, shrink_only=True):
     width, height = pixbuf.get_width(), pixbuf.get_height()
