@@ -214,8 +214,19 @@ def uri2filename(uri):
 
 def filename2uri(path):
     path = os.path.abspath(path)
+    #print 'encode', repr(path.encode('utf-8'))
     path = urllib.pathname2url(path.encode('utf-8'))
-    return 'file://' + path
+
+    # Workaround for Windows. For some reason (wtf?) urllib adds
+    # trailing slashes on Windows. It converts "C:\blah" to "//C:\blah".
+    # This would result in major problems when using the URI later.
+    # (However, it seems we must add a single slash on Windows.)
+    # One effect of this bug was that the last save directory was not remembered.
+    while path.startswith('/'):
+        path = path[1:]
+
+    #print 'pathname2url:', repr(path)
+    return 'file:///' + path
 
 def rgb_to_hsv(r, g, b):
     r = clamp(r, 0.0, 1.0)

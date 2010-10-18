@@ -115,9 +115,14 @@ class FileHandler(object):
 
     def set_recent_items(self):
         # this list is consumed in open_last_cb
+
+        # Note: i.exists() does not work on Windows if the pathname
+        # contains utf-8 characters. Since GIMP also saves its URIs
+        # with utf-8 characters into this list, I assume this is a
+        # gtk bug.  So we use our own test instead of i.exists().
         self.recent_items = [
                 i for i in gtk.recent_manager_get_default().get_items()
-                if "mypaint" in i.get_applications() and i.exists()
+                if "mypaint" in i.get_applications() and os.path.exists(helpers.uri2filename(i.get_uri()))
         ]
         self.recent_items.reverse()
 
