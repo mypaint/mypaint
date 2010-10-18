@@ -155,20 +155,18 @@ def save_freedesktop_thumbnail(pixbuf, filename):
         return pixbuf
 
 def get_pixbuf(filename):
-    try:
-        if os.path.splitext(filename)[1].lower() == ".ora":
-            ora = zipfile.ZipFile(file(filename))
+    if os.path.splitext(filename)[1].lower() == ".ora":
+        ora = zipfile.ZipFile(filename)
+        try:
             data = ora.read("Thumbnails/thumbnail.png")
-            loader = gdk.PixbufLoader("png")
-            loader.write(data)
-            loader.close()
-            pixbuf = loader.get_pixbuf()
-            return pixbuf
-        else:
-            pixbuf = gdk.pixbuf_new_from_file(filename)
-            return pixbuf;
-    except:
-        pass
+        except KeyError:
+            return
+        loader = gdk.PixbufLoader("png")
+        loader.write(data)
+        loader.close()
+        return loader.get_pixbuf()
+    else:
+        return gdk.pixbuf_new_from_file(filename)
 
 def scale_proportionally(pixbuf, w, h, shrink_only=True):
     width, height = pixbuf.get_width(), pixbuf.get_height()
