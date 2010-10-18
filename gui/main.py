@@ -31,7 +31,7 @@ def main(datapath, confpath):
     if options.logfile:
         print 'Python prints are redirected to', options.logfile, 'after this one.'
         sys.stdout = sys.stderr = open(options.logfile, 'a', 1)
-        print '--- mypaint log %s ---' % time.strftime('%F %T')
+        print '--- mypaint log %s ---' % time.strftime('%Y-%m-%d %H:%M:%S')
 
     confpath = unicode(options.config, sys.getfilesystemencoding())
 
