@@ -282,6 +282,16 @@ class FileHandler(object):
 
         if self.filename:
             dialog.set_filename(self.filename)
+        else:
+            # choose the most recent save folder
+            self.set_recent_items()
+            for item in reversed(self.recent_items):
+                uri = item.get_uri()
+                fn = helpers.uri2filename(uri)
+                dn = os.path.dirname(fn)
+                if os.path.isdir(dn):
+                    dialog.set_current_folder(dn)
+                    break
         try:
             if dialog.run() == gtk.RESPONSE_OK:
                 dialog.hide()
