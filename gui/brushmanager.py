@@ -300,7 +300,7 @@ class BrushManager:
                     myb_f = open(prefix + '.myb', 'w')
                     myb_f.write(myb_data)
                     myb_f.close()
-                    preview_f = open(prefix + '_prev.png', 'w')
+                    preview_f = open(prefix + '_prev.png', 'wb')
                     preview_f.write(preview_data)
                     preview_f.close()
                     b.load()
