@@ -218,7 +218,7 @@ class Window(windowing.MainWindow):
     def drag_data_received(self, widget, context, x, y, selection, info, t):
         if selection.data:
             uri = selection.data.split("\r\n")[0]
-            fn = helpers.get_file_path_from_dnd_dropped_uri(uri)
+            fn = helpers.uri2filename(uri)
             if os.path.exists(fn):
                 if self.app.filehandler.confirm_destructive_action():
                     self.app.filehandler.open_file(fn)

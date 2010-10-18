@@ -123,7 +123,7 @@ def get_freedesktop_thumbnail(filename):
     A thumbnail will also get regenerated if the MTimes (as in "modified")
     of thumbnail and original image do not match.
     """
-    uri = 'file://'+urllib.pathname2url(filename.encode('utf-8'))
+    uri = filename2uri(filename)
     file_hash = hashlib.md5(uri).hexdigest()
     tb_filename_normal = os.path.join(os.path.expanduser(u'~/.thumbnails/normal'), file_hash) + '.png'
     tb_filename_large = os.path.join(os.path.expanduser(u'~/.thumbnails/large'), file_hash) + '.png'
@@ -143,7 +143,7 @@ def save_freedesktop_thumbnail(pixbuf, filename):
     directory = os.path.expanduser(u'~/.thumbnails/normal')
     if not os.path.exists(directory):
         os.makedirs(directory, 0700)
-    uri = 'file://'+urllib.pathname2url(filename.encode('utf-8'))
+    uri = filename2uri(filename)
     file_hash = hashlib.md5(uri).hexdigest()
     tb_filename_normal = os.path.join(directory, file_hash) + '.png'
     file_mtime = str(int(os.stat(filename).st_mtime))
@@ -195,7 +195,7 @@ def pixbuf_thumbnail(src, w, h, alpha=False):
     src2.copy_area(0, 0, w2, h2, dst, (w-w2)/2, (h-h2)/2)
     return dst
 
-def get_file_path_from_dnd_dropped_uri(uri):
+def uri2filename(uri):
     # code from http://faq.pygtk.org/index.py?req=show&file=faq23.031.htp
     # get the path to file
     path = ""
@@ -208,8 +208,14 @@ def get_file_path_from_dnd_dropped_uri(uri):
         
     path = urllib.url2pathname(path) # escape special chars
     path = path.strip('\r\n\x00') # remove \r\n and NULL
+    path = path.decode('utf-8') # return unicode object (for Windows)
     
     return path
+
+def filename2uri(path):
+    path = os.path.abspath(path)
+    path = urllib.pathname2url(path.encode('utf-8'))
+    return 'file://' + path
 
 def rgb_to_hsv(r, g, b):
     r = clamp(r, 0.0, 1.0)

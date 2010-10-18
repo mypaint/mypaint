@@ -240,7 +240,7 @@ class FileHandler(object):
             if not export:
                 self.filename = os.path.abspath(filename)
                 print 'Saved to', self.filename
-                gtk.recent_manager_get_default().add_full("file://" + self.filename,
+                gtk.recent_manager_get_default().add_full(helpers.filename2uri(self.filename),
                         {
                             'app_name': 'mypaint',
                             'app_exec': sys.argv[0],
@@ -307,7 +307,7 @@ class FileHandler(object):
             self.set_recent_items()
             for item in reversed(self.recent_items):
                 uri = item.get_uri()
-                fn = helpers.get_file_path_from_dnd_dropped_uri(uri)
+                fn = helpers.uri2filename(uri)
                 dn = os.path.dirname(fn)
                 if os.path.isdir(dn):
                     dialog.set_current_folder(dn)
@@ -445,7 +445,7 @@ class FileHandler(object):
         if not self.confirm_destructive_action():
             return
         uri = action.get_current_uri()
-        fn = helpers.get_file_path_from_dnd_dropped_uri(uri)
+        fn = helpers.uri2filename(uri)
         self.open_file(fn)
 
     def open_last_cb(self, action):
@@ -455,7 +455,7 @@ class FileHandler(object):
         if not self.confirm_destructive_action():
             return
         uri = self.recent_items.pop().get_uri()
-        fn = helpers.get_file_path_from_dnd_dropped_uri(uri)
+        fn = helpers.uri2filename(uri)
         self.open_file(fn)
 
     def open_scrap_cb(self, action):
