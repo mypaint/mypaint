@@ -827,6 +827,7 @@ class Selector(gtk.VBox):
         self.window_ = window
         self.window_.connect("configure-event", self.window_configured_cb)
         self.window_.connect("map-event", self.window_mapped_cb)
+        self.window_mapped = False
 
         self.rgb_selector = RGBSelector()
         self.hsv_selector = HSVSelector()
@@ -884,8 +885,6 @@ class Selector(gtk.VBox):
         expander.connect("notify::expanded", self.expander_expanded_cb, 'harmonies')
         self.pack_start(expander, expand=False)
 
-        self.loaded_prefs = False
-
         self.circle.on_select = self.hue_selected
         self.circle.get_previous_color = self.previous_color
         self.recent.on_select = self.recent_selected
@@ -939,6 +938,8 @@ class Selector(gtk.VBox):
         pass
 
     def expander_expanded_cb(self, expander, junk, cfg_stem):
+        if not self.window_mapped:
+            return
         # After expander activation (both expand and un-expand), don't let the
         # colour circle shrink smaller than its current size, and force the WM
         # to shrink-fit the window to the new size.
@@ -949,22 +950,25 @@ class Selector(gtk.VBox):
           = bool(expander.get_expanded())
 
     def window_configured_cb(self, window, event, *param):
+        if not self.window_mapped:
+            return
         # Undo the expander trick if it's still in effect: the user should be
         # able to resize the dialog.
-        assert window == self.window_
         if not self.window_.get_resizable():
             self.window_.set_resizable(True)
             self.circle.set_size_request(*self.CIRCLE_MIN_SIZE)
 
     def window_mapped_cb(self, window, event, *params):
-        if not self.loaded_prefs:
-            if self.app.preferences.get("colorsampler.history_expanded", False):
-                self.exp_history.set_expanded(True)
-            if self.app.preferences.get("colorsampler.details_expanded", False):
-                self.exp_details.set_expanded(True)
-            if self.app.preferences.get("colorsampler.harmonies_expanded", False):
-                self.exp_config.set_expanded(True)
-            self.loaded_prefs = True
+        # On the first map event, restore expander state from prefs.
+        if self.window_mapped:
+            return
+        if self.app.preferences.get("colorsampler.history_expanded", False):
+            self.exp_history.set_expanded(True)
+        if self.app.preferences.get("colorsampler.details_expanded", False):
+            self.exp_details.set_expanded(True)
+        if self.app.preferences.get("colorsampler.harmonies_expanded", False):
+            self.exp_config.set_expanded(True)
+        self.window_mapped = True
 
 class Window(windowing.SubWindow):
     def __init__(self,app):
