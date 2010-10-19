@@ -19,7 +19,7 @@ def get_paths():
     # note: some distros use lib64 instead, they have to edit this...
     lib_compiled='lib/mypaint/'
     
-    arg0 = unicode(sys.argv[0], sys.getfilesystemencoding())
+    arg0 = sys.argv[0].decode(sys.getfilesystemencoding())
     scriptdir=os.path.dirname(arg0)
 
     # this script is installed as $prefix/bin. We just need $prefix to continue.

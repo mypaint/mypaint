@@ -42,7 +42,7 @@ def parse_order_conf(file_content):
     curr_group = FOUND_BRUSHES_GROUP
     lines = file_content.replace('\r', '\n').split('\n')
     for line in lines:
-        name = unicode(line.strip(), 'utf-8')
+        name = line.strip().decode('utf-8')
         if name.startswith('#') or not name:
             continue
         if name.startswith('Group: '):
