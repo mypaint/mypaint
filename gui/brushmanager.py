@@ -134,10 +134,7 @@ class BrushManager:
         return self.get_brush_by_name(DEFAULT_ERASER)
 
     def load_groups(self):
-        for i in range(10):
-            c = ManagedBrush(self)
-            c.name = u'context%02d' % i
-            self.contexts.append(c)
+        self.contexts = [None for i in xrange(10)]
 
         brush_by_name = {}
         def get_brush(name):
@@ -238,6 +235,22 @@ class BrushManager:
                 if not [True for group in our.itervalues() if b in group]:
                     brushes = self.groups.setdefault(FOUND_BRUSHES_GROUP, [])
                     brushes.insert(0, b)
+
+        # Sensible defaults for brushkeys: clone brushes 1 through 10 from the
+        # default startup group if we need to and if we can.
+        for i in xrange(10):
+            if self.contexts[i] is not None:
+                continue
+            name = unicode('context%02d') % i
+            c = ManagedBrush(self, name=name, persistent=False)
+            default_group = self.groups.get(DEFAULT_STARTUP_GROUP, None)
+            if group is not None:
+                try:
+                    b = default_group[(i+9) % 10]   # keyboard order
+                    b.clone_into(c, name)
+                except IndexError:
+                    pass
+            self.contexts[i] = c
 
         # clean up legacy stuff
         fn = os.path.join(self.user_brushpath, 'deleted.conf')
