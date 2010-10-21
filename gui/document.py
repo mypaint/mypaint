@@ -233,7 +233,7 @@ class Document(object):
 
                 if si:
                     picked_brush = ManagedBrush(self.app.brushmanager)
-                    picked_brush.settings_str = si.brush_string
+                    picked_brush.brushinfo.parse(si.brush_string)
                     self.app.brushmanager.select_brush(picked_brush)
                     self.si = si # FIXME: should be a method parameter?
                     self.strokeblink_state.activate(action)
@@ -395,7 +395,7 @@ class Document(object):
             context = bm.contexts[i]
         bm.selected_context = context
         if store:
-            context.settings_str = self.app.brush.save_to_string()
+            context.brushinfo = self.app.brush.brushinfo.clone()
             context.preview = bm.selected_brush.preview
             context.save()
         else:

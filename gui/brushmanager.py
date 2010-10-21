@@ -18,6 +18,7 @@ import os, zipfile
 from os.path import basename
 import urllib
 import gobject
+from lib.brush import BrushInfo
 
 preview_w = 128
 preview_h = 128
@@ -416,7 +417,8 @@ class BrushManager:
         while b is not None:
             if b.persistent:
                 return b
-            b = self.get_brush_by_name(b.parent_brush_name)
+            parent_name = b.brushinfo.get("parent_brush_name", None)
+            b = self.get_brush_by_name(parent_name)
         return None
 
     def select_brush(self, brush):
@@ -431,7 +433,7 @@ class BrushManager:
         if brush.persistent and not brush.settings_loaded:
             brush.load_settings()
         self.app.preferences['brushmanager.selected_brush'] = brush.name
-        # Take care of updating the live brush, amongst other thing
+        # Take care of updating the live brush, amongst other things
         for callback in self.selected_brush_observers:
             callback(brush)
 
@@ -441,13 +443,13 @@ class BrushManager:
         persistent brush in the UI and the currently active lib.brush.
         """
         clone = ManagedBrush(self, name, persistent=False)
-        clone.settings_str = self.app.brush.save_to_string()
+        clone.brushinfo = self.app.brush.brushinfo.clone()
         clone.preview = self.selected_brush.preview
         persistent_parent = self.find_nearest_persistent_brush(self.selected_brush)
         if persistent_parent is not None:
-            clone.parent_brush_name = persistent_parent.name
+            clone.brushinfo["parent_brush_name"] = persistent_parent.name
         else:
-            clone.parent_brush_name = None
+            clone.brushinfo["parent_brush_name"] = None
         return clone
 
     def store_selected_brush_for_device(self, device_name):
@@ -527,14 +529,13 @@ class ManagedBrush(object):
         self.bm = brushmanager
         self.preview = None
         self.name = name
-        self.settings_str = ''
+        self.brushinfo = BrushInfo()
         self.persistent = persistent
         """If True this brush is stored in the filesystem and 
         not a context/picked brush."""
         self.settings_loaded = False
         """If True this brush is fully initialized, ready to paint with."""
 
-        self.parent_brush_name = None
         self.settings_mtime = None
         self.preview_mtime = None
 
@@ -571,6 +572,25 @@ class ManagedBrush(object):
             raise IOError, 'brush "' + self.name + '" not found'
         return prefix
 
+    def clone(self, name):
+        "Creates a new brush with all the settings of this brush, assigning it a new name"
+        clone = ManagedBrush(self.bm)
+        self.clone_into(clone, name=name)
+        return clone
+
+    def clone_into(self, target, name):
+        "Copies all brush settings into another brush, giving it a new name"
+        if not self.settings_loaded:
+            self.load()
+        target.brushinfo = self.brushinfo.clone()
+        parent = self.bm.find_nearest_persistent_brush(self)
+        if parent:
+            target.brushinfo["parent_brush_name"] = parent.name
+        else:
+            target.brushinfo["parent_brush_name"] = None
+        target.preview = self.preview
+        target.name = name
+
     def delete_from_disk(self):
         prefix = os.path.join(self.bm.user_brushpath, self.name)
         if os.path.isfile(prefix + '.myb'):
@@ -602,7 +622,7 @@ class ManagedBrush(object):
             self.preview = gdk.Pixbuf(gdk.COLORSPACE_RGB, False, 8, preview_w, preview_h)
             self.preview.fill(0xffffffff) # white
         self.preview.save(prefix + '_prev.png', 'png')
-        open(prefix + '.myb', 'w').write(self.settings_str)
+        open(prefix + '.myb', 'w').write(self.brushinfo.serialize())
         self.remember_mtimes()
 
     def load(self):
@@ -622,13 +642,8 @@ class ManagedBrush(object):
         """Loads the brush settings/dynamics from disk."""
         prefix = self.get_fileprefix()
         filename = prefix + '.myb'
-        self.settings_str = open(filename).read()
-        self.parent_brush_name = None
-        # FIXME: parsing here duplicates effort
-        from lib.brush import tokenise_settings_str, unquote_str
-        for setting, value in tokenise_settings_str(self.settings_str):
-            if setting == 'parent_brush_name':
-                self.parent_brush_name = unquote_str(value)
+        brushinfo_str = open(filename).read()
+        self.brushinfo.parse(brushinfo_str)
         self.remember_mtimes()
         self.settings_loaded = True
 
@@ -642,4 +657,5 @@ class ManagedBrush(object):
         return True
 
     def __str__(self):
-        return "<ManagedBrush %s p=%s>" % (self.name, self.parent_brush_name)
+        return "<ManagedBrush %s p=%s>" % (self.name, self.brushinfo.get("parent_brush_name", None))
+

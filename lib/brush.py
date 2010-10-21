@@ -10,26 +10,208 @@ import mypaintlib
 from brushlib import brushsettings
 import helpers
 import urllib, encodings.utf_8
+import copy
 
+string_value_settings = set(("parent_brush_name", "group"))
 current_brushfile_version = 2
 
-def tokenise_settings_str(s):
-    "Splits and iterates across a brush settings string."
-    for line in s.split('\n'):
-        line = line.strip()
-        if not line or line.startswith('#'):
-            continue
-        yield line.split(' ', 1)
+class BrushInfo(dict):
+    """Lightweight but fully parsed description of a brush.
 
-def quote_str(rawstring):
-    "Quote a unicode string for saving in a free-text field."
-    u8bytes = encodings.utf_8.encode(unicode(rawstring))[0]
-    return urllib.quote(u8bytes)
+    Just the strings, numbers and inputs/points hashes in a dict-based wrapper
+    without any special interpretation other than a free upgrade to the newest
+    brush format."""
 
-def unquote_str(quotedstring):
-    "Converts a free-text field's stored representation to unicode."
-    u8bytes = urllib.unquote(quotedstring)
-    return encodings.utf_8.decode(u8bytes)[0]
+    def __init__(self, string=None):
+        """Construct a BrushInfo object, optionally parsing it."""
+        dict.__init__(self)
+        self._cache_str = None
+        if string is not None:
+            self.parse(string)
+
+    def clone(self):
+        """Returns a deep-copied duplicate."""
+        return copy.deepcopy(self)
+
+    class ParseError(Exception):
+        pass
+
+    class Obsolete(ParseError):
+        pass
+
+    def parse(self, settings_str):
+        """Load a setting string, overwriting all current settings."""
+
+        def parse_value(rawvalue, cname, version):
+            """Parses a setting value, for a given setting name and brushfile version."""
+            if cname in string_value_settings:
+                u8bytes = urllib.unquote(rawvalue)
+                string = encodings.utf_8.decode(u8bytes)[0]
+                return [(cname, string)]
+            elif version <= 1 and cname == 'color':
+                rgb = [int(c)/255.0 for c in rawvalue.split(" ")]
+                h, s, v = helpers.rgb_to_hsv(*rgb)
+                return [('color_h', (h, {})), ('color_s', (s, {})), ('color_v', (v, {}))]
+            elif version <= 1 and cname == 'change_radius':
+                if rawvalue == '0.0':
+                    return []
+                raise Obsolete, 'change_radius is not supported any more'
+            elif version <= 2 and cname == 'adapt_color_from_image':
+                if rawvalue == '0.0':
+                    return []
+                raise Obsolete, 'adapt_color_from_image is obsolete, ignored;' + \
+                                ' use smudge and smudge_length instead'
+            elif version <= 1 and cname == 'painting_time':
+                return []
+ 
+            if version <= 1 and cname == 'speed':
+                cname = 'speed1'
+            parts = rawvalue.split('|')
+            basevalue = float(parts[0])
+            input_points = {}
+            for part in parts[1:]:
+                inputname, rawpoints = part.strip().split(' ', 1)
+                if version <= 1:
+                    points = parse_points_v1(rawpoints)
+                else:
+                    points = parse_points_v2(rawpoints)
+                assert len(points) >= 2
+                input_points.update({ inputname: points })
+            return [(cname, (float(basevalue), input_points))]
+
+        def parse_points_v1(rawpoints):
+            """Parses the points list format from versions prior to version 2."""
+            points_seq = [float(f) for f in rawpoints.split()]
+            points = [(0, 0)]
+            while points_seq:
+                x = points_seq.pop(0)
+                y = points_seq.pop(0)
+                if x == 0: break
+                assert x > points[-1][0]
+                points.append((x, y))
+            return points
+
+        def parse_points_v2(rawpoints):
+            """Parses the newer points list format of v2 and beyond."""
+            points = []
+            for s in rawpoints.split(', '):
+                s = s.strip()
+                if not (s.startswith('(') and s.endswith(')') and ' ' in s):
+                    return '(x y) expected, got "%s"' % s
+                s = s[1:-1]
+                try:
+                    x, y = [float(ss) for ss in s.split(' ')]
+                except:
+                    print s
+                    raise
+                points.append((x, y))
+            return points
+
+        def transform_y(valuepair, func):
+            """Used during migration from earlier versions."""
+            basevalue, input_points = valuepair
+            basevalue = func(basevalue)
+            input_points_new = {}
+            for inputname, points in input_points.iteritems():
+                points_new = [(x, func(y)) for x, y in points]
+                input_points_new[inputname] = points_new
+            return (basevalue, input_points_new)
+
+        # Split out the raw settings and grab the version we're dealing with
+        rawsettings = []
+        errors = []
+        version = 1 # for files without a 'version' field
+        for line in settings_str.split('\n'):
+            try:
+                line = line.strip()
+                if not line or line.startswith('#'):
+                    continue
+                cname, rawvalue = line.split(' ', 1)
+                if cname == 'version':
+                    version = int(rawvalue)
+                    if version > current_brushfile_version:
+                        raise BrushInfo.ParseError, 'this brush was saved with a more recent version of mypaint'
+                else:
+                    rawsettings.append((cname, rawvalue))
+            except Exception, e:
+                errors.append((line, str(e)))
+
+        # Parse each pair
+        self.clear()
+        num_parsed = 0
+        for rawcname, rawvalue in rawsettings:
+            try:
+                cnamevaluepairs = parse_value(rawvalue, rawcname, version)
+                num_parsed += 1
+                for cname, value in cnamevaluepairs:
+                    if cname in brushsettings.settings_migrate:
+                        cname, func = brushsettings.settings_migrate[cname]
+                        if func:
+                            value = transform_y(value, func)
+                    self[cname] = value
+            except Exception, e:
+                line = "%s %s" % (rawcname, rawvalue)
+                errors.append((line, str(e)))
+        if num_parsed == 0:
+            errors.append(('', 'there was only garbage in this file, using defaults'))
+        if errors:
+            for error in errors:
+                print error
+        self._cache_str = settings_str   # Maybe. It could still be old format...
+
+    def serialize(self):
+        """Serialise brush information to a string. Result is cached."""
+        if self._cache_str is not None:
+            return self._cache_str
+        res = '# mypaint brush file\n'
+        res += '# you can edit this file and then select the brush in mypaint (again) to reload\n'
+        res += 'version %d\n' % current_brushfile_version
+        for cname, data in self.iteritems():
+            if cname in string_value_settings:
+                if data is not None:
+                    u8bytes = encodings.utf_8.encode(unicode(data))[0]
+                    res += cname + " " + urllib.quote(u8bytes)
+            else:
+                res += cname + " "
+                basevalue, input_points = data
+                res += str(basevalue)
+                if input_points:
+                    for inputname, points in input_points.iteritems():
+                        res += " | " + inputname + ' '
+                        res += ', '.join(['(%f %f)' % xy for xy in points])
+            res += "\n"
+        self._cache_str = res
+        return res
+
+    def clear(self):
+        """Erases all keys of the underlying dict, invalidating cached strings."""
+        self._cache_str = None
+        dict.clear(self)
+
+    def __setitem__(self, key, value):
+        """Set an item via the dict interface, also invalidating cached strings.
+
+        BrushInfo objects should map setting names to tuples of the form
+        (base_value, input_points) where input_points is a hash mapping input
+        names to lists of (x, y) pairs and at least length 2.
+        """
+        self._cache_str = None
+        dict.__setitem__(self, key, value)
+
+    def __delitem__(self, key):
+        """Delete an item via the dict interface, also invalidating cached strings."""
+        self._cache_str = None
+        dict.__delitem__(self, key, value)
+
+    def engine_settings_iter(self):
+        """Iterate across the settings that are meaningful to the brush engine.
+
+        Yields tuples of the form (cname, base_value, input_points)."""
+        for cname, data in self.iteritems():
+            if cname in string_value_settings:
+                continue
+            basevalue, input_points = data
+            yield (cname, basevalue, input_points)
 
 # points = [(x1, y1), (x2, y2), ...] (at least two points, or None)
 class Setting:
@@ -53,14 +235,19 @@ class Setting:
         if self.base_value == value: return
         self.base_value = value
         self.brush.set_base_value(self.setting.index, value)
-        for f in self.observers: f()
+        self.brush.brushinfo_pending_changes[self.setting.cname] = self.save_to_tuple()
+        for f in self.observers:
+            f()
+
     def has_only_base_value(self):
         for i in brushsettings.inputs:
             if self.has_input(i):
                 return False
         return True
+
     def has_input(self, input):
         return self.points[input.index]
+
     def has_input_nonlinear(self, input):
         points = self.points[input.index]
         if not points: return False
@@ -79,79 +266,43 @@ class Setting:
         self.brush.set_mapping_n(self.setting.index, input.index, len(points))
         for i, (x, y) in enumerate(points):
             self.brush.set_mapping_point(self.setting.index, input.index, i, x, y)
-
         self.points[input.index] = points[:] # copy
-        for f in self.observers: f()
+        for f in self.observers:
+            f()
+        self.brush.brushinfo_pending_changes[self.setting.cname] = self.save_to_tuple()
 
-    def save_to_string(self):
-        s = str(self.base_value)
+    def save_to_tuple(self):
+        # Equivalent of the old save_to_string().
+        input_hash = {}
         for i in brushsettings.inputs:
             points = self.points[i.index]
             if points:
-                s += ' | ' + i.name + ' ' + ', '.join(['(%f %f)' % xy for xy in points])
-        return s
-    def load_from_string(self, s, version):
-        error = None
-        parts = s.split('|')
-        self.set_base_value(float(parts[0]))
-        for i in brushsettings.inputs:
-            self.set_points(i, [])
-        for part in parts[1:]:
-            command, args = part.strip().split(' ', 1)
-            if version <= 1 and command == 'speed': command = 'speed1'
-            i = brushsettings.inputs_dict.get(command)
-            if i:
-                if version <= 1:
-                    points_old = [float(f) for f in args.split()]
-                    points = [(0, 0)]
-                    while points_old:
-                        x = points_old.pop(0)
-                        y = points_old.pop(0)
-                        if x == 0: break
-                        assert x > points[-1][0]
-                        points.append((x, y))
-                else:
-                    points = []
-                    for s in args.split(', '):
-                        s = s.strip()
-                        if not (s.startswith('(') and s.endswith(')') and ' ' in s):
-                            return '(x y) expected, got "%s"' % s
-                        s = s[1:-1]
-                        try:
-                            x, y = [float(ss) for ss in s.split(' ')]
-                        except:
-                            print s
-                            raise
-                        points.append((x, y))
-                assert len(points) >= 2
-                self.set_points(i, points)
-            else:
-                error = 'unknown input "%s"' % command
-        return error
-    def transform_y(self, func):
-        # useful for migration from a earlier version
-        self.set_base_value(func(self.base_value))
-        for i in brushsettings.inputs:
-            if not self.points[i.index]: continue
-            points = self.points[i.index]
-            points = [(x, func(y)) for x, y in points]
-            self.set_points(i, points)
+                input_vector = []
+                for x, y in points:
+                    input_vector.append((x, y))
+                input_hash[i.name] = input_vector
+        return (self.base_value, input_hash)
 
 class Brush(mypaintlib.Brush):
     def __init__(self):
         mypaintlib.Brush.__init__(self)
+        self.brushinfo = BrushInfo()
+        self.brushinfo_pending_changes = {}
         self.settings_observers = []
         self.settings_observers_hidden = []
         self.settings = []
-        self.parent_brush_name = None
         for s in brushsettings.settings:
             self.settings.append(Setting(s, self, self.settings_observers))
+        self.settings_observers.append(self._update_brushinfo)
 
-        self.saved_string = None
-        self.settings_observers.append(self.invalidate_saved_string)
-
-    def invalidate_saved_string(self):
-        self.saved_string = None
+    def _update_brushinfo(self):
+        """Mirror changed settings into the BrushInfo tracking this Brush."""
+        #print "update {"
+        for cname, tup in self.brushinfo_pending_changes.iteritems():
+            self.brushinfo[cname] = tup
+            #print "  %s = %s" % (cname, tup)
+        self.brushinfo_pending_changes = {}
+        #print "} //update"
 
     def begin_atomic(self):
         self.settings_observers_hidden.append(self.settings_observers[:])
@@ -171,76 +322,30 @@ class Brush(mypaintlib.Brush):
         return self.settings[s.index]
 
     def save_to_string(self):
-        if self.saved_string: return self.saved_string
-        res  = '# mypaint brush file\n'
-        res += '# you can edit this file and then select the brush in mypaint (again) to reload\n'
-        res += 'version %d\n' % current_brushfile_version
-        if self.parent_brush_name is not None:
-            res += "parent_brush_name %s\n" % quote_str(self.parent_brush_name)
-        for s in brushsettings.settings:
-            res += s.cname + ' ' + self.settings[s.index].save_to_string() + '\n'
-        self.saved_string = res
-        return res
+        return self.brushinfo.serialize()
 
     def load_from_string(self, s):
+        self.load_from_brushinfo(BrushInfo(s))
+
+    def load_from_brushinfo(self, brushinfo):
+        """Updates the brush's Settings from (a clone of) ``brushinfo``."""
         self.begin_atomic()
-        for setting in self.settings:
-            setting.restore_defaults()
-        num_found = 0
-        errors = []
-        version = 1 # for files without a 'version' field
-        self.parent_brush_name = None
-        for command, rest in tokenise_settings_str(s):
-            try:
-                error = None
-
-                if command in brushsettings.settings_dict:
-                    setting = self.setting_by_cname(command)
-                    error = setting.load_from_string(rest, version)
-                elif command in brushsettings.settings_migrate:
-                    command_new, transform_func = brushsettings.settings_migrate[command]
-                    setting = self.setting_by_cname(command_new)
-                    error = setting.load_from_string(rest, version)
-                    if transform_func:
-                        setting.transform_y(transform_func)
-                elif command == 'version':
-                    version = int(rest)
-                    if version > current_brushfile_version:
-                        error = 'this brush was saved with a more recent version of mypaint'
-                elif version <= 1 and command == 'color':
-                    self.set_color_rgb([int(s)/255.0 for s in rest.split()])
-                elif version <= 1 and command == 'change_radius':
-                    if rest != '0.0': error = 'change_radius is not supported any more'
-                elif version <= 2 and command == 'adapt_color_from_image':
-                    if rest != '0.0': error = 'adapt_color_from_image is obsolete, ignored; use smudge and smudge_length instead'
-                elif version <= 1 and command == 'painting_time':
-                    pass
-                elif command == 'parent_brush_name':
-                    self.parent_brush_name = unquote_str(rest)
-                else:
-                    error = 'unknown command, line ignored'
-
-                if error:
-                    line = "%s %s" % (command, rest)
-                    errors.append(line, error)
-
-            except Exception, e:
-                line = "%s %s" % (command, rest)
-                errors.append(line, str(e))
-            else:
-                num_found += 1
-        if num_found == 0:
-            errors.append(('', 'there was only garbage in this file, using defaults'))
-        self.end_atomic()
-
-        if not errors:
-            # speedup for self.save_to_string()
-            self.saved_string = s
-
-        return errors
+        try:
+            self.brushinfo = brushinfo.clone()
+            for setting in self.settings:
+                setting.restore_defaults()
+            engine_settings = self.brushinfo.engine_settings_iter()
+            for cname, basevalue, input_points in engine_settings:
+                setting = self.setting_by_cname(cname)
+                setting.set_base_value(basevalue)
+                for inputname, points in input_points.iteritems():
+                    brushinput = brushsettings.inputs_dict.get(inputname)
+                    setting.set_points(brushinput, points)
+        finally:
+            self.end_atomic()
 
     def copy_settings_from(self, other):
-        self.load_from_string(other.save_to_string())
+        self.load_from_brushinfo(other.brushinfo)
 
     def get_color_hsv(self):
         h = self.setting_by_cname('color_h').base_value
@@ -250,11 +355,13 @@ class Brush(mypaintlib.Brush):
 
     def set_color_hsv(self, hsv):
         self.begin_atomic()
-        h, s, v = hsv
-        self.setting_by_cname('color_h').set_base_value(h)
-        self.setting_by_cname('color_s').set_base_value(s)
-        self.setting_by_cname('color_v').set_base_value(v)
-        self.end_atomic()
+        try:
+            h, s, v = hsv
+            self.setting_by_cname('color_h').set_base_value(h)
+            self.setting_by_cname('color_s').set_base_value(s)
+            self.setting_by_cname('color_v').set_base_value(v)
+        finally:
+            self.end_atomic()
 
     def set_color_rgb(self, rgb):
         self.set_color_hsv(helpers.rgb_to_hsv(*rgb))

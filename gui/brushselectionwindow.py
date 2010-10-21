@@ -104,7 +104,8 @@ class BrushList(pixbuflist.PixbufList):
         Highlights the Application instance's active brush in the list, or something
         close to it along its chain of ancestors.
         """
-        parent_brush = self.bm.get_brush_by_name(self.app.brush.parent_brush_name)
+        active_brush_parent_name = self.app.brush.brushinfo.get("parent_brush_name")
+        parent_brush = self.bm.get_brush_by_name(active_brush_parent_name)
         persistant_brush = self.bm.find_nearest_persistent_brush(parent_brush)
         self.set_selected(persistant_brush)
 

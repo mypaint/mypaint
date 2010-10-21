@@ -269,15 +269,14 @@ class Application: # singleton
         """
         if managed_brush is None:
             return
-        self.brush.load_from_string(managed_brush.settings_str)
+        self.brush.load_from_brushinfo(managed_brush.brushinfo)
 
         # If the user just picked a brush from the brush selection window,
         # it's likely to have no parent.
-        if self.brush.parent_brush_name is None:
+        if not managed_brush.brushinfo.has_key("parent_brush_name"):
             parent_mb = self.brushmanager.find_nearest_persistent_brush(managed_brush)
             parent_mb_name = parent_mb is not None and parent_mb.name or None
-            self.brush.parent_brush_name = parent_mb_name
-
+            self.brush.brushinfo["parent_brush_name"] = parent_mb_name
 
     def brush_selected_cb(self, brush):
         assert brush is not self.brush
