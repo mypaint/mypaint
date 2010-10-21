@@ -17,6 +17,7 @@ from gettext import gettext as _
 import os, zipfile
 from os.path import basename
 import urllib
+import encodings.utf_8
 import gobject
 from lib.brush import BrushInfo
 
@@ -36,14 +37,18 @@ def devbrush_quote(device_name, prefix=DEVBRUSH_NAME_PREFIX):
     Quotes an arbitrary device name for use as the basename of a
     device-specific brush.
     """
-    return prefix + urllib.quote_plus(device_name, safe='')
+    u8bytes = encodings.utf_8.encode(unicode(device_name))[0]
+    quoted = urllib.quote_plus(u8bytes, safe='')
+    return unicode(prefix + quoted)
 
 def devbrush_unquote(devbrush_name, prefix=DEVBRUSH_NAME_PREFIX):
     """
     Unquotes the basename of a devbrush for use when matching device names.
     """
     assert devbrush_name.startswith(prefix)
-    return urllib.unquote_plus(devbrush_name[len(prefix):])
+    quoted = devbrush_name[len(prefix):]
+    u8bytes = urllib.unquote_plus(quoted)
+    return unicode(encodings.utf_8.decode(u8bytes)[0])
 
 def translate_group_name(name):
     d = {FOUND_BRUSHES_GROUP: _('lost&found'),
