@@ -117,6 +117,10 @@ class BrushList(pixbuflist.PixbufList):
         self.brushes.insert(idx, brush)
         for f in self.bm.brushes_observers: f(self.brushes)
 
+    def button_press_cb(self, widget, event):
+        self.app.doc.tdw.device_used(event.device)
+        pixbuflist.PixbufList.button_press_cb(self, widget, event)
+
     def drag_begin_cb(self, widget, context):
         preview = self.bm.selected_brush.preview
         preview = preview.scale_simple(preview.get_width()//2, preview.get_height()//2, gtk.gdk.INTERP_BILINEAR)

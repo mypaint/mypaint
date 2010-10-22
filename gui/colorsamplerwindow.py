@@ -12,10 +12,11 @@ CSTEP=0.007
 PADDING=4
 
 class GColorSelector(gtk.DrawingArea):
-    def __init__(self):
+    def __init__(self, app):
         gtk.DrawingArea.__init__(self)
         self.color = (1,0,0)
         self.hsv = (0,1,1)
+        self.app = app
         self.connect('expose-event', self.draw)
         self.set_events(gdk.BUTTON_PRESS_MASK |
                         gdk.BUTTON_RELEASE_MASK |
@@ -24,12 +25,17 @@ class GColorSelector(gtk.DrawingArea):
                         gdk.LEAVE_NOTIFY |
                         gdk.DROP_FINISHED |
                         gdk.DROP_START |
-                        gdk.DRAG_STATUS)
+                        gdk.DRAG_STATUS |
+                        gdk.PROXIMITY_IN_MASK |
+                        gdk.PROXIMITY_OUT_MASK)
+        # When the colour is chosen set it for the input device that was used
+        # for the input events
+        self.set_extension_events(gdk.EXTENSION_EVENTS_ALL)
         self.connect('button-press-event', self.on_button_press)
         self.connect('button-release-event', self.on_button_release)
         self.connect('configure-event', self.on_configure)
         self.connect('motion-notify-event', self.motion)
-        self.button_pressed = False
+        self.device_pressed = None
         self.grabbed = False
         self.set_size_request(110, 100)
 
@@ -54,7 +60,7 @@ class GColorSelector(gtk.DrawingArea):
         self.queue_draw()
 
     def motion(self,w, event):
-        if not self.button_pressed:
+        if not self.device_pressed:
             return
         if self.test_move(event.x, event.y):
             if not self.grabbed:
@@ -75,9 +81,6 @@ class GColorSelector(gtk.DrawingArea):
     def on_select(self,color):
         pass
 
-    def record_button_press(self, x,y):
-        pass
-
     def get_color_at(self, x,y):
         return self.color, False
 
@@ -92,6 +95,11 @@ class GColorSelector(gtk.DrawingArea):
         else:
             self.color = color
             self.hsv = rgb_to_hsv(*color)
+        if self.device_pressed:
+            selected_color = self.color
+            # Potential device change, therefore brush & colour change...
+            self.app.doc.tdw.device_used(self.device_pressed)
+            self.color = selected_color #... but *this* is what the user wants
         self.redraw_on_select()
         self.on_select(self.color)
 
@@ -103,16 +111,19 @@ class GColorSelector(gtk.DrawingArea):
     def get_color(self):
         return self.color
 
-    def on_button_press(self,w, event):
-        self.button_pressed = True
+    def on_button_press(self, w, event):
         self.press_x = event.x
         self.press_y = event.y
-        self.record_button_press(event.x, event.y)
+        # Remember the device that was clicked, tapped to the stylus, etc.  We
+        # process any potential device changing on the button release to avoid
+        # redrawing with colours associated with the newly picked bush during
+        # the select.
+        self.device_pressed = event.device
 
     def on_button_release(self,w, event):
-        if self.button_pressed and self.test_button_release(event.x, event.y):
-            self.select_color_at(event.x,event.y)
-        self.button_pressed = False
+        if self.device_pressed and self.test_button_release(event.x, event.y):
+            self.select_color_at(event.x, event.y)
+        self.device_pressed = None
         if self.grabbed:
             self.grab_remove()
             self.grabbed = False
@@ -126,19 +137,19 @@ class GColorSelector(gtk.DrawingArea):
         cr.fill()
 
 class RectSlot(GColorSelector):
-    def __init__(self,color=(1.0,1.0,1.0),size=32):
-        GColorSelector.__init__(self)
+    def __init__(self,app,color=(1.0,1.0,1.0),size=32):
+        GColorSelector.__init__(self, app)
         self.color = color
         self.set_size_request(size,size)
 
 class RecentColors(gtk.HBox):
-    def __init__(self):
+    def __init__(self, app):
         gtk.HBox.__init__(self)
         self.set_border_width(4)
         self.N = N = ch.num_colors
         self.slots = []
         for i,color in enumerate(reversed(ch.colors)):
-            slot = RectSlot(color=color)
+            slot = RectSlot(app, color=color)
             slot.on_select = self.slot_selected
             self.pack_start(slot, expand=True)
             self.slots.append(slot)
@@ -179,8 +190,8 @@ def try_put(list, item):
         list.append(item)
 
 class CircleSelector(GColorSelector):
-    def __init__(self, color=(1,0,0)):
-        GColorSelector.__init__(self)
+    def __init__(self,app,color=(1,0,0)):
+        GColorSelector.__init__(self,app)
         self.color = color
         self.hsv = rgb_to_hsv(*color)
 
@@ -574,8 +585,8 @@ class CircleSelector(GColorSelector):
         #self.draw_prev_vs_current_semicircles(cr)
 
 class VSelector(GColorSelector):
-    def __init__(self, color=(1,0,0), height=16):
-        GColorSelector.__init__(self)
+    def __init__(self, app, color=(1,0,0), height=16):
+        GColorSelector.__init__(self,app)
         self.color = color
         self.hsv = rgb_to_hsv(*color)
         self.set_size_request(height*2,height)
@@ -711,28 +722,28 @@ def make_spin(min,max, changed_cb):
     return btn
 
 class HSVSelector(gtk.VBox):
-    def __init__(self, color=(1.,0.,0)):
+    def __init__(self, app, color=(1.,0.,0)):
         gtk.VBox.__init__(self)
         self.color = color
         self.hsv = rgb_to_hsv(*color)
         self.atomic = False
 
         hbox = gtk.HBox()
-        self.hsel = hsel = HSelector(color)
+        self.hsel = hsel = HSelector(app, color)
         hsel.on_select = self.user_selected_color
         self.hspin = hspin = make_spin(0,359, self.hue_change)
         hbox.pack_start(hsel, expand=True)
         hbox.pack_start(hspin, expand=False)
 
         sbox = gtk.HBox()
-        self.ssel = ssel = SSelector(color)
+        self.ssel = ssel = SSelector(app, color)
         ssel.on_select = self.user_selected_color
         self.sspin = sspin = make_spin(0,100, self.sat_change)
         sbox.pack_start(ssel, expand=True)
         sbox.pack_start(sspin, expand=False)
 
         vbox = gtk.HBox()
-        self.vsel = vsel = VSelector(color)
+        self.vsel = vsel = VSelector(app, color)
         vsel.on_select = self.user_selected_color
         self.vspin = vspin = make_spin(0,100, self.val_change)
         vbox.pack_start(vsel, expand=True)
@@ -781,28 +792,28 @@ class HSVSelector(gtk.VBox):
         self.set_color(hsv_to_rgb(h,s, spin.get_value()/100.))
 
 class RGBSelector(gtk.VBox):
-    def __init__(self, color=(1.,0.,0)):
+    def __init__(self, app, color=(1.,0.,0)):
         gtk.VBox.__init__(self)
         self.color = color
         self.hsv = rgb_to_hsv(*color)
         self.atomic = False
 
         rbox = gtk.HBox()
-        self.rsel = rsel = RSelector(color)
+        self.rsel = rsel = RSelector(app, color)
         rsel.on_select = self.user_selected_color
         self.rspin = rspin = make_spin(0,255, self.r_change)
         rbox.pack_start(rsel, expand=True)
         rbox.pack_start(rspin, expand=False)
 
         gbox = gtk.HBox()
-        self.gsel = gsel = GSelector(color)
+        self.gsel = gsel = GSelector(app, color)
         gsel.on_select = self.user_selected_color
         self.gspin = gspin = make_spin(0,255, self.g_change)
         gbox.pack_start(gsel, expand=True)
         gbox.pack_start(gspin, expand=False)
 
         bbox = gtk.HBox()
-        self.bsel = bsel = BSelector(color)
+        self.bsel = bsel = BSelector(app, color)
         bsel.on_select = self.user_selected_color
         self.bspin = bspin = make_spin(0,255, self.b_change)
         bbox.pack_start(bsel, expand=True)
@@ -861,8 +872,8 @@ class Selector(gtk.VBox):
         self.pack_start(hbox, expand=True)
         vbox = gtk.VBox()
         hbox.pack_start(vbox,expand=True)
-        self.recent = RecentColors()
-        self.circle = CircleSelector()
+        self.recent = RecentColors(app)
+        self.circle = CircleSelector(app)
         self.circle.set_size_request(*self.CIRCLE_MIN_SIZE)
         vbox.pack_start(self.circle, expand=True)
 
@@ -871,8 +882,8 @@ class Selector(gtk.VBox):
         self.window_.connect("map-event", self.window_mapped_cb)
         self.window_mapped = False
 
-        self.rgb_selector = RGBSelector()
-        self.hsv_selector = HSVSelector()
+        self.rgb_selector = RGBSelector(app)
+        self.hsv_selector = HSVSelector(app)
         self.rgb_selector.on_select = self.rgb_selected
         self.hsv_selector.on_select = self.hsv_selected
         nb = gtk.Notebook()
