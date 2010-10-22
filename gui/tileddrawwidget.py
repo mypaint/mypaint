@@ -116,6 +116,14 @@ class TiledDrawWidget(gtk.DrawingArea):
             dy = old_size[1] - new_size[1]
             self.scroll(dx/2, dy/2)
 
+    def device_used(self, device):
+        """Tell the TDW about a device being used."""
+        if device == self.last_event_device:
+            return
+        for func in self.device_observers:
+            func(self.last_event_device, device)
+        self.last_event_device = device
+
     def motion_notify_cb(self, widget, event, button1_pressed=None):
         if not self.is_sensitive:
             return
@@ -126,13 +134,10 @@ class TiledDrawWidget(gtk.DrawingArea):
             dy = event.y - self.last_event_y
         else:
             dtime = None
-        if event.device != self.last_event_device:
-            for f in self.device_observers:
-                f(self.last_event_device, event.device)
+        self.device_used(event.device)
         self.last_event_x = event.x
         self.last_event_y = event.y
         self.last_event_time = event.time
-        self.last_event_device = event.device
         if dtime is None:
             return
 

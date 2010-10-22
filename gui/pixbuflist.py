@@ -51,8 +51,14 @@ class PixbufList(gtk.DrawingArea):
         self.set_events(gdk.EXPOSURE_MASK |
                         gdk.BUTTON_PRESS_MASK |
                         gdk.BUTTON_RELEASE_MASK |
-                        gdk.POINTER_MOTION_MASK)
-        
+                        gdk.POINTER_MOTION_MASK |
+                        # Allow switching between mouse and pen inside the widget
+                        gdk.PROXIMITY_OUT_MASK |
+                        gdk.PROXIMITY_IN_MASK)
+
+        # For subclasses that bind pixmap-clicks to input devices
+        self.set_extension_events(gdk.EXTENSION_EVENTS_ALL)
+
         self.get_settings().set_property("gtk-dnd-drag-threshold",
             int(min(item_w, item_h) * 0.75))
 
