@@ -31,7 +31,7 @@ class GColorSelector(gtk.DrawingArea):
         self.connect('motion-notify-event', self.motion)
         self.button_pressed = False
         self.grabbed = False
-        self.set_size_request(80, 80)
+        self.set_size_request(110, 100)
 
     def test_move(self, x, y):
         """
@@ -160,6 +160,8 @@ class RecentColors(gtk.HBox):
 
 CIRCLE_N = 12.0
 SLOTS_N = 5
+NEUTRAL_MID_GREY  = (0.5, 0.5, 0.5)  #: Background neutral mid grey, intended to permit colour comparisons without theme colours distracting and imposing themselves
+NEUTRAL_DARK_GREY = (0.46, 0.46, 0.46) #: Slightly distinct outlinefor colour pots, intended to reduce "1+1=3 (or more)" effects
 
 AREA_SQUARE = 1  #: Central saturation/value square
 AREA_INSIDE = 2  #: Grey area inside the rings
@@ -193,6 +195,10 @@ class CircleSelector(GColorSelector):
         self.analogous = False
         self.square = False
 
+    def has_harmonies_visible(self):
+        return self.complimentary or self.triadic or self.double_comp \
+          or self.split_comp or self.analogous or self.square
+
     def get_previous_color(self):
         return self.color
 
@@ -204,15 +210,20 @@ class CircleSelector(GColorSelector):
         return x1,y1,x2,y2
 
     def configure_calc(self):
+        padding = 5
         self.x0 = self.x_rel + self.w/2.0
         self.y0 = self.y_rel + self.h/2.0
-        self.M = M = min(self.w,self.h)-2
-        self.rd = 0.31*M       # gives size of square
-        self.r2 = 0.42*M      # Inner radius of hue ring
-        self.r3 = M/2.0
+        self.M = M = min(self.w,self.h) - (2*padding)
+        self.r3 = 0.5*M     # outer radius of hue ring
+        if not self.has_harmonies_visible():
+            self.r2 = 0.42*M  # inner radius of hue ring
+            self.rd = 0.42*M  # and size of square
+        else:
+            self.r2 = 0.44*M  # line between hue ring & harmony samplers
+            self.rd = 0.34*M  # size of square & inner edge of harmony samplers
         self.m = self.rd/sqrt(2.0)
         self.circle_img = None
-        self.stroke_width = 0.015*M
+        self.stroke_width = 0.01*M
 
     def set_color(self, color, redraw=True):
         self.color = color
@@ -307,15 +318,21 @@ class CircleSelector(GColorSelector):
     def draw_square(self,width,height,radius):
         img = cairo.ImageSurface(cairo.FORMAT_ARGB32, width,height)
         cr = cairo.Context(img)
-        h,s,v = self.hsv
         m = radius/sqrt(2.0)
+
+        # Slightly darker border for the colour area
+        sw = max(0.75*self.stroke_width, 3.0)
+        cr.set_source_rgb(*NEUTRAL_DARK_GREY)
+        cr.rectangle(self.x0-m-sw, self.y0-m-sw, 2*(m+sw), 2*(m+sw))
+        cr.fill()
+
+        h,s,v = self.hsv
         ds = 2*m*CSTEP
         v = 0.0
         x1 = self.x0-m
         x2 = self.x0+m
         y = self.y0-m
         while v < 1.0:
-            y += ds
             g = cairo.LinearGradient(x1,y,x2,y)
             g.add_color_stop_rgb(0.0, *hsv_to_rgb(h,0.0,1.0-v))
             g.add_color_stop_rgb(1.0, *hsv_to_rgb(h,1.0,1.0-v))
@@ -323,6 +340,7 @@ class CircleSelector(GColorSelector):
             cr.rectangle(x1,y, 2*m, ds)
             cr.fill_preserve()
             cr.stroke()
+            y += ds
             v += CSTEP
         h,s,v = self.hsv
         x = self.x0-m + s*2*m
@@ -330,6 +348,7 @@ class CircleSelector(GColorSelector):
         cr.set_source_rgb(*hsv_to_rgb(1-h,1-s,1-v))
         cr.arc(x,y, 3.0, 0.0, 2*pi)
         cr.stroke()
+
         return img
 
     def small_circle(self, cr, size, color, angle, rad):
@@ -411,17 +430,27 @@ class CircleSelector(GColorSelector):
         r,g,b = rgb
         return 1-r,1-g,1-b
 
-    def draw_inside_circle(self,width,height):
+    def draw_central_fill(self, cr, r):
+        """Draws a neutral-coloured grey circle of the specified radius in the central area."""
+        cr.set_source_rgb(*NEUTRAL_MID_GREY)
+        cr.arc(self.x0, self.y0, r, 0, 2*pi)
+        cr.fill()
+
+    def draw_harmony_ring(self,width,height):
+        """Draws the harmony ring if any colour harmonies are visible."""
         if not self.window:
             return
         points_size = min(width,height)/27.
         img = cairo.ImageSurface(cairo.FORMAT_ARGB32, width,height)
         cr = cairo.Context(img)
+        if not self.has_harmonies_visible():
+            self.draw_central_fill(cr, self.r2)
+            return img
         h,s,v = self.hsv
         a = h*2*pi
         self.angles = []
         self.simple_colors = []
-        cr.set_line_width(self.stroke_width)
+        cr.set_line_width(0.75*self.stroke_width)
         self.samples = [self.hsv]
         for i in range(int(CIRCLE_N)):
             c1 = c = h + i/CIRCLE_N
@@ -441,7 +470,7 @@ class CircleSelector(GColorSelector):
             cr.arc(self.x0, self.y0, self.r2, a1, a2)
             cr.line_to(self.x0,self.y0)
             cr.fill_preserve()
-            cr.set_source_rgb(0.5,0.5,0.5)
+            cr.set_source_rgb(*NEUTRAL_DARK_GREY) # "lines" between samples
             cr.stroke()
             # Indicate harmonic colors
             if self.triadic and i%(CIRCLE_N/3)==0:
@@ -463,24 +492,33 @@ class CircleSelector(GColorSelector):
             if self.analogous and i in [0,1,CIRCLE_N-1]:
                 self.small_rect(cr, points_size, self.inv(clr), an, (self.r2+self.rd)/2)
                 try_put(self.samples, hsv)
+        # Fill the centre
+        self.draw_central_fill(cr, self.rd)
+        # And an inner thin line
+        cr.set_source_rgb(*NEUTRAL_DARK_GREY)
+        cr.arc(self.x0, self.y0, self.rd, 0, 2*pi)
+        cr.stroke()
+        return img
+
+    def draw_circle_indicator(self, cr):
+        """Draws the indicator which shows the current hue on the outer ring."""
+        h, s, v = self.hsv
+        a = h*2*pi
         x1 = self.x0 + self.r2*cos(-a)
         y1 = self.y0 + self.r2*sin(-a)
         x2 = self.x0 + self.r3*cos(-a)
         y2 = self.y0 + self.r3*sin(-a)
         self.last_line = x1,y1, x2,y2, h
         cr.set_line_width(0.8*self.stroke_width)
-        cr.set_source_rgb(0,0,0)
+        cr.set_source_rgb(0, 0, 0)
         cr.move_to(x1,y1)
         cr.line_to(x2,y2)
         cr.stroke()
-        cr.set_source_rgb(0.5,0.5,0.5)
-        cr.arc(self.x0, self.y0, self.rd, 0, 2*pi)
-        cr.fill()
-        return img
 
     def draw_circles(self, cr):
-        cr.set_line_width(self.stroke_width)
-        cr.set_source_rgb(0.5,0.5,0.5)
+        """Draws two grey lines just inside and outside the outer hue ring."""
+        cr.set_line_width(0.75*self.stroke_width)
+        cr.set_source_rgb(*NEUTRAL_DARK_GREY)
         cr.arc(self.x0,self.y0, self.r2, 0, 2*pi)
         cr.stroke()
         cr.arc(self.x0,self.y0, self.r3, 0, 2*pi)
@@ -491,7 +529,7 @@ class CircleSelector(GColorSelector):
             return self.circle_img
         img = cairo.ImageSurface(cairo.FORMAT_ARGB32, w,h)
         cr = cairo.Context(img)
-        cr.set_line_width(0.8*self.stroke_width)
+        cr.set_line_width(0.75*self.stroke_width)
         a1 = 0.0
         while a1 < 2*pi:
             clr = hsv_to_rgb(a1/(2*pi), 1.0, 1.0)
@@ -504,17 +542,7 @@ class CircleSelector(GColorSelector):
         self.circle_img = img
         return img
 
-    def draw(self,w,event):
-        if not self.window:
-            return
-        cr = self.window.cairo_create()
-        cr.set_source_surface(self.draw_circle(self.w,self.h))
-        cr.paint()
-        cr.set_source_surface(self.draw_inside_circle(self.w,self.h))
-        cr.paint()
-        self.draw_circles(cr)
-        cr.set_source_surface(self.draw_square(self.w,self.h, self.rd*0.92))
-        cr.paint()
+    def draw_prev_vs_current_semicircles(self, cr):
         sq2 = sqrt(2.0)
         M = self.M/2.0
         r = (sq2-1)*M/(2*sq2)
@@ -527,9 +555,23 @@ class CircleSelector(GColorSelector):
         cr.arc(x0, y0, 0.9*r, pi/2, 3*pi/2)
         cr.fill()
         cr.arc(x0, y0, 0.9*r, 0, 2*pi)
-        cr.set_source_rgb(0.5,0.5,0.5)
-        cr.set_line_width(0.8*self.stroke_width)
+        cr.set_source_rgb(*NEUTRAL_DARK_GREY)
+        cr.set_line_width(0.75*self.stroke_width)
         cr.stroke()
+
+    def draw(self,w,event):
+        if not self.window:
+            return
+        cr = self.window.cairo_create()
+        cr.set_source_surface(self.draw_circle(self.w,self.h))
+        cr.paint()
+        cr.set_source_surface(self.draw_harmony_ring(self.w,self.h))
+        cr.paint()
+        self.draw_circle_indicator(cr)
+        self.draw_circles(cr)
+        cr.set_source_surface(self.draw_square(self.w, self.h, self.rd*0.95))
+        cr.paint()
+        #self.draw_prev_vs_current_semicircles(cr)
 
 class VSelector(GColorSelector):
     def __init__(self, color=(1,0,0), height=16):
@@ -905,6 +947,7 @@ class Selector(gtk.VBox):
 
     def harmony_toggled(self, checkbox, attr):
         setattr(self.circle, attr, not getattr(self.circle, attr))
+        self.circle.configure_calc()
         self.queue_draw()
 
     def previous_color(self):
