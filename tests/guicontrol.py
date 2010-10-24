@@ -18,7 +18,7 @@ class GUI:
         self.tempdir = tempfile.mkdtemp()
         from gui import application
         os.system('cp -a brushes ' + self.tempdir)
-        self.app = application.Application(datapath='..', confpath=self.tempdir, filenames=[])
+        self.app = application.Application(datapath=u'..', confpath=unicode(self.tempdir), filenames=[])
 
         # fatal exceptions, please
         def excepthook(exctyp, value, tb):
