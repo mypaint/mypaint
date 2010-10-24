@@ -54,11 +54,11 @@ def ask_for_name(widget, title, default):
     hbox.pack_start(e)
     d.vbox.show_all()
     if d.run() == gtk.RESPONSE_ACCEPT:
-        result = d.e.get_text()
+        result = d.e.get_text().decode('utf-8')
     else:
         result = None
     d.destroy()
-    return result.decode('utf-8')
+    return result
 
 def error(widget, message):
     window = widget.get_toplevel()
