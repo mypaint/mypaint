@@ -198,17 +198,13 @@ class CircleSelector(GColorSelector):
         self.samples = []      # [(h,s,v)] -- list of `harmonic' colors
         self.last_line = None  # 
 
-        # Whether to show harmonies
-        self.complimentary = False
-        self.triadic = False
-        self.double_comp = False
-        self.split_comp = False
-        self.analogous = False
-        self.square = False
-
     def has_harmonies_visible(self):
-        return self.complimentary or self.triadic or self.double_comp \
-          or self.split_comp or self.analogous or self.square
+        return self.app.preferences.get("colorsampler.complementary", False) \
+            or self.app.preferences.get("colorsampler.triadic", False) \
+            or self.app.preferences.get("colorsampler.double_comp", False) \
+            or self.app.preferences.get("colorsampler.split_comp", False) \
+            or self.app.preferences.get("colorsampler.analogous", False) \
+            or self.app.preferences.get("colorsampler.square", False)
 
     def get_previous_color(self):
         return self.color
@@ -484,23 +480,23 @@ class CircleSelector(GColorSelector):
             cr.set_source_rgb(*NEUTRAL_DARK_GREY) # "lines" between samples
             cr.stroke()
             # Indicate harmonic colors
-            if self.triadic and i%(CIRCLE_N/3)==0:
+            if self.app.preferences.get("colorsampler.triadic", False) and i%(CIRCLE_N/3)==0:
                 self.small_triangle(cr, points_size, self.inv(clr), an, (self.r2+self.rd)/2)
                 try_put(self.samples, hsv)
-            if self.complimentary and i%(CIRCLE_N/2)==0:
+            if self.app.preferences.get("colorsampler.complementary", False) and i%(CIRCLE_N/2)==0:
                 self.small_circle(cr, points_size, self.inv(clr), an, (self.r2+self.rd)/2)
                 try_put(self.samples, hsv)
-            if self.square and i%(CIRCLE_N/4)==0:
+            if self.app.preferences.get("colorsampler.square", False) and i%(CIRCLE_N/4)==0:
                 self.small_square(cr, points_size, self.inv(clr), an, (self.r2+self.rd)/2)
                 try_put(self.samples, hsv)
 # FIXME: should this harmonies be expressed in terms of CIRCLE_N?
-            if self.double_comp and i in [0,2,6,8]:
+            if self.app.preferences.get("colorsampler.double_comp", False) and i in [0,2,6,8]:
                 self.small_rect_vert(cr, points_size, self.inv(clr), an, (self.r2+self.rd)/2)
                 try_put(self.samples, hsv)
-            if self.split_comp and i in [0,5,7]:
+            if self.app.preferences.get("colorsampler.split_comp", False) and i in [0,5,7]:
                 self.small_triangle_down(cr, points_size, self.inv(clr), an, (self.r2+self.rd)/2)
                 try_put(self.samples, hsv)
-            if self.analogous and i in [0,1,CIRCLE_N-1]:
+            if self.app.preferences.get("colorsampler.analogous", False) and i in [0,1,CIRCLE_N-1]:
                 self.small_rect(cr, points_size, self.inv(clr), an, (self.r2+self.rd)/2)
                 try_put(self.samples, hsv)
         # Fill the centre
@@ -907,15 +903,17 @@ class Selector(gtk.VBox):
         # Colour scheme harmonies
         def harmony_checkbox(attr, label):
             cb = gtk.CheckButton(label)
+            pref = "colorsampler.%s" % (attr,)
+            cb.set_active(self.app.preferences.get(pref, False))
             cb.connect('toggled', self.harmony_toggled, attr)
             vbox2.pack_start(cb, expand=False)
 
         self.exp_config = expander = gtk.Expander(_('Harmonies'))
         vbox2 = gtk.VBox()
         harmony_checkbox('analogous', _('Analogous'))
-        harmony_checkbox('complimentary', _('Complimentary color'))
-        harmony_checkbox('split_comp', _('Split complimentary'))
-        harmony_checkbox('double_comp', _('Double complimentary'))
+        harmony_checkbox('complementary', _('Complimentary color')) # FIXME: Spelling in the localised
+        harmony_checkbox('split_comp', _('Split complimentary'))    #         strings for English:
+        harmony_checkbox('double_comp', _('Double complimentary'))  # http://www.wsu.edu/~brians/errors/complement.html
         harmony_checkbox('square', _('Square'))
         harmony_checkbox('triadic', _('Triadic'))
 
@@ -957,7 +955,8 @@ class Selector(gtk.VBox):
         setattr(self, attr, not getattr(self, attr))
 
     def harmony_toggled(self, checkbox, attr):
-        setattr(self.circle, attr, not getattr(self.circle, attr))
+        pref = "colorsampler.%s" % (attr,)
+        self.app.preferences[pref] = checkbox.get_active()
         self.circle.configure_calc()
         self.queue_draw()
 
