@@ -555,15 +555,25 @@ class CircleSelector(GColorSelector):
         r = (sq2-1)*M/(2*sq2)
         x0 = self.x0+M-r
         y0 = self.y0+M-r
-        cr.set_source_rgb(*self.color)
-        cr.arc(x0, y0, 0.9*r, -pi/2, pi/2)
+
+        cr.set_source_rgb(*NEUTRAL_MID_GREY)
+        cr.arc(x0, y0, 1.0*r,  pi/2, 3*pi/2)
         cr.fill()
+        cr.arc(x0, y0, 0.9*r,  -pi/2,   pi/2)
+        cr.fill()
+
         cr.set_source_rgb(*self.get_previous_color())
+        cr.arc(x0, y0, 0.8*r, 0, 2*pi)
+        cr.fill()
+
+        cr.set_source_rgb(*self.color)
         cr.arc(x0, y0, 0.9*r, pi/2, 3*pi/2)
         cr.fill()
-        cr.arc(x0, y0, 0.9*r, 0, 2*pi)
-        cr.set_source_rgb(*NEUTRAL_DARK_GREY)
-        cr.set_line_width(0.75*self.stroke_width)
+
+        cr.set_source_rgb(*NEUTRAL_MID_GREY)
+        cr.set_line_width(0.25*self.stroke_width)
+        cr.move_to(x0, y0-(1.0*r))
+        cr.line_to(x0, y0+(1.0*r))
         cr.stroke()
 
     def draw(self,w,event):
@@ -578,7 +588,7 @@ class CircleSelector(GColorSelector):
         self.draw_circles(cr)
         cr.set_source_surface(self.draw_square(self.w, self.h, self.rd*0.95))
         cr.paint()
-        #self.draw_prev_vs_current_semicircles(cr)
+        self.draw_prev_vs_current_semicircles(cr)
 
 class VSelector(GColorSelector):
     def __init__(self, app, color=(1,0,0), height=16):
