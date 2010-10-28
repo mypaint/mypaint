@@ -17,7 +17,6 @@ from gettext import gettext as _
 import os, zipfile
 from os.path import basename
 import urllib
-import encodings.utf_8
 import gobject
 from lib.brush import BrushInfo
 
@@ -36,19 +35,33 @@ def devbrush_quote(device_name, prefix=DEVBRUSH_NAME_PREFIX):
     """
     Quotes an arbitrary device name for use as the basename of a
     device-specific brush.
+
+    >>> devbrush_quote(u'Heavy Metal Umlaut D\u00ebvice')
+    'devbrush_Heavy+Metal+Umlaut+D%C3%ABvice'
+    >>> devbrush_quote(u'unsafe/device\u005Cname') # U+005C == backslash
+    'devbrush_unsafe%2Fdevice%5Cname'
+
+    Hopefully this is OK for Windows, UNIX and Mac OS X names.
     """
-    u8bytes = encodings.utf_8.encode(unicode(device_name))[0]
+    device_name = unicode(device_name)
+    u8bytes = device_name.encode("utf-8")
     quoted = urllib.quote_plus(u8bytes, safe='')
-    return unicode(prefix + quoted)
+    return prefix + quoted
 
 def devbrush_unquote(devbrush_name, prefix=DEVBRUSH_NAME_PREFIX):
     """
     Unquotes the basename of a devbrush for use when matching device names.
+
+    >>> expected = "My sister was bitten by a m\u00f8\u00f8se..."
+    >>> quoted = 'devbrush_My+sister+was+bitten+by+a+m%5Cu00f8%5Cu00f8se...'
+    >>> devbrush_unquote(quoted) == expected
+    True
     """
+    devbrush_name = str(devbrush_name)
     assert devbrush_name.startswith(prefix)
     quoted = devbrush_name[len(prefix):]
     u8bytes = urllib.unquote_plus(quoted)
-    return unicode(encodings.utf_8.decode(u8bytes)[0])
+    return unicode(u8bytes.decode("utf-8"))
 
 def translate_group_name(name):
     d = {FOUND_BRUSHES_GROUP: _('lost&found'),
@@ -481,7 +494,7 @@ class BrushManager:
         brush = managed_brush
         if brush.name is not None:
             brush = brush.clone()
-        brush.name = devbrush_quote(device_name)
+        brush.name = unicode(devbrush_quote(device_name))
         self.brush_by_device[device_name] = brush
 
     def fetch_brush_for_device(self, device_name):
@@ -681,4 +694,9 @@ class ManagedBrush(object):
 
     def __str__(self):
         return "<ManagedBrush %s p=%s>" % (self.name, self.brushinfo.get("parent_brush_name", None))
+
+
+if __name__ == '__main__':
+    import doctest
+    doctest.testmod()
 

@@ -9,11 +9,43 @@
 import mypaintlib
 from brushlib import brushsettings
 import helpers
-import urllib, encodings.utf_8
+import urllib
 import copy
 
 string_value_settings = set(("parent_brush_name", "group"))
 current_brushfile_version = 2
+
+
+def brushinfo_quote(string):
+    """Quote a string for serialisation of brushes.
+
+    >>> brushinfo_quote(u'foo')
+    'foo'
+    >>> brushinfo_quote(u'foo/bar blah')
+    'foo%2Fbar%20blah'
+    >>> brushinfo_quote(u'Have a nice day \u263A')
+    'Have%20a%20nice%20day%20%E2%98%BA'
+    """
+    string = unicode(string)
+    u8bytes = string.encode("utf-8")
+    return str(urllib.quote(u8bytes, safe=''))
+
+
+def brushinfo_unquote(quoted):
+    """Unquote a serialised string value from a brush field.
+
+    >>> brushinfo_unquote("foo")
+    u'foo'
+    >>> brushinfo_unquote("foo%2fbar%20blah")
+    u'foo/bar blah'
+    >>> expected = u'Have a nice day \u263A'
+    >>> brushinfo_unquote('Have%20a%20nice%20day%20%E2%98%BA') == expected
+    True
+    """
+    quoted = str(quoted)
+    u8bytes = urllib.unquote(quoted)
+    return unicode(u8bytes.decode("utf-8"))
+
 
 class BrushInfo(dict):
     """Lightweight but fully parsed description of a brush.
@@ -45,8 +77,7 @@ class BrushInfo(dict):
         def parse_value(rawvalue, cname, version):
             """Parses a setting value, for a given setting name and brushfile version."""
             if cname in string_value_settings:
-                u8bytes = urllib.unquote(rawvalue)
-                string = encodings.utf_8.decode(u8bytes)[0]
+                string = brushinfo_unquote(rawvalue)
                 return [(cname, string)]
             elif version <= 1 and cname == 'color':
                 rgb = [int(c)/255.0 for c in rawvalue.split(" ")]
@@ -169,8 +200,7 @@ class BrushInfo(dict):
         for cname, data in self.iteritems():
             if cname in string_value_settings:
                 if data is not None:
-                    u8bytes = encodings.utf_8.encode(unicode(data))[0]
-                    res += cname + " " + urllib.quote(u8bytes)
+                    res += cname + " " + brushinfo_quote(data)
             else:
                 res += cname + " "
                 basevalue, input_points = data
@@ -297,12 +327,9 @@ class Brush(mypaintlib.Brush):
 
     def _update_brushinfo(self):
         """Mirror changed settings into the BrushInfo tracking this Brush."""
-        #print "update {"
         for cname, tup in self.brushinfo_pending_changes.iteritems():
             self.brushinfo[cname] = tup
-            #print "  %s = %s" % (cname, tup)
         self.brushinfo_pending_changes = {}
-        #print "} //update"
 
     def begin_atomic(self):
         self.settings_observers_hidden.append(self.settings_observers[:])
@@ -373,3 +400,7 @@ class Brush(mypaintlib.Brush):
     def is_eraser(self):
         return self.setting_by_cname('eraser').base_value > 0.9
 
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
