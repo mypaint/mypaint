@@ -19,6 +19,9 @@ from lib import backgroundsurface, command, helpers, layer
 import tileddrawwidget, stategroup
 from brushmanager import ManagedBrush
 
+# This value allows the user to go back to the exact original size with brush_smaller_cb().
+ERASER_MODE_RADIUS_CHANGE_DEFAULT = 3*(0.3)
+ERASER_MODE_RADIUS_CHANGE_PREF = 'document.eraser_mode_radius_change'
 
 class Document(object):
     def __init__(self, app):
@@ -46,14 +49,16 @@ class Document(object):
 
         # Brush
         self.app.brush.settings_observers.append(self.brush_modified_cb)
+        self.app.brushmanager.selected_brush_observers.append(self.brush_selected_cb)
 
         # Device change management & pen-stroke watching
         self.tdw.device_observers.append(self.device_changed_cb)
         self.tdw.stroke_ended_observers.append(self.stroke_ended_cb)
         self.last_pen_device = None
+        self.last_used_devbrush_was_eraser = None
 
-        self.eraser_mode_radius_change = 3*(0.3) # can go back to exact original with brush_smaller_cb()
-        self.eraser_mode_original_radius = None
+        # Eraser mode
+        self.eraser_mode_original_settings = None
 
         self.init_actions()
         self.init_context_actions()
@@ -217,6 +222,8 @@ class Document(object):
         # called at every brush setting modification, should return fast
         self.model.set_brush(self.app.brush)
 
+    def brush_selected_cb(self, brush):
+        self.forget_eraser_mode()
 
     def pick_context_cb(self, action):
         x, y = self.tdw.get_cursor_in_model_coordinates()
@@ -235,6 +242,7 @@ class Document(object):
                     picked_brush = ManagedBrush(self.app.brushmanager)
                     picked_brush.brushinfo.parse(si.brush_string)
                     self.app.brushmanager.select_brush(picked_brush)
+                    self.forget_eraser_mode()
                     self.si = si # FIXME: should be a method parameter?
                     self.strokeblink_state.activate(action)
                 return
@@ -403,6 +411,8 @@ class Document(object):
             color = self.app.brush.get_color_hsv()
             bm.select_brush(context)
             self.app.brush.set_color_hsv(color)
+            # XXX
+            self.forget_eraser_mode()
 
     # TDW view manipulation
     def dragfunc_translate(self, dx, dy):
@@ -512,37 +522,60 @@ class Document(object):
 
     # ERASER
     def eraser_cb(self, action):
-        adj = self.app.brush_adjustment['eraser']
-        if adj.get_value() > 0.9:
+        if self.eraser_mode_original_settings:
             self.end_eraser_mode()
-        else:
-            # enter eraser mode
-            adj.set_value(1.0)
-            adj2 = self.app.brush_adjustment['radius_logarithmic']
-            r = adj2.get_value()
-            self.eraser_mode_original_radius = r
-            adj2.set_value(r + self.eraser_mode_radius_change)
+            return
+        adj = self.app.brush_adjustment['eraser']
+        e = adj.get_value()
+        if e > 0.9:
+            print "can't enter eraser mode if the current brush is an eraser"
+            self.tdw.window.beep()  # TODO: better feedback
+            return
+        # enter eraser mode
+        adj.set_value(1.0)
+        adj2 = self.app.brush_adjustment['radius_logarithmic']
+        r = adj2.get_value()
+        self.eraser_mode_original_settings = (e, r)
+        dr = self.app.preferences.get(ERASER_MODE_RADIUS_CHANGE_PREF, ERASER_MODE_RADIUS_CHANGE_DEFAULT)
+        adj2.set_value(r + dr)
+        # TODO: feedback to the user: "just shrink the brush three steps if this is too big"?
 
     def end_eraser_mode(self):
-        adj = self.app.brush_adjustment['eraser']
-        if not adj.get_value() > 0.9:
+        if not self.eraser_mode_original_settings:
             return
-        adj.set_value(0.0)
-        if self.eraser_mode_original_radius:
-            # save eraser radius, restore old radius
-            adj2 = self.app.brush_adjustment['radius_logarithmic']
-            r = adj2.get_value()
-            self.eraser_mode_radius_change = r - self.eraser_mode_original_radius
-            adj2.set_value(self.eraser_mode_original_radius)
-            self.eraser_mode_original_radius = None
+        orig_e, orig_r = self.eraser_mode_original_settings
+        adj = self.app.brush_adjustment['eraser']
+        adj.set_value(orig_e)
+        # save eraser mode radius change, restore old radius
+        adj2 = self.app.brush_adjustment['radius_logarithmic']
+        r = adj2.get_value()
+        self.app.preferences[ERASER_MODE_RADIUS_CHANGE_PREF] = r - orig_r
+        adj2.set_value(orig_r)
+        self.forget_eraser_mode()
+
+    def forget_eraser_mode(self):
+        # Forget eraser mode states without altering the current brush.
+        # Do this always after restoring something from a saved brush.
+        self.eraser_mode_original_settings = None
+
+    def clone_selected_brush_for_saving(self):
+        # Clones the current brush as a new, nameless brush with all eraser
+        # mode settings de-applied.
+        settings_override = {}
+        clone = self.app.brushmanager.clone_selected_brush(name=None)
+        if self.eraser_mode_original_settings:
+            orig_e, orig_r = self.eraser_mode_original_settings
+            i = clone.brushinfo
+            i['eraser']             = (orig_e, i.get('eraser',             (None, {}))[1])
+            i['radius_logarithmic'] = (orig_r, i.get('radius_logarithmic', (None, {}))[1])
+        return clone
+
+    def device_is_eraser(self, device):
+        if device is None: return False
+        return device.source == gdk.SOURCE_ERASER or 'eraser' in device.name.lower()
 
     def device_changed_cb(self, old_device, new_device):
-        # just enable eraser mode for now (TODO: remember full tool settings)
         # small problem with this code: it doesn't work well with brushes that have (eraser not in [1.0, 0.0])
-        def is_eraser(device):
-            if device is None: return False
-            return device.source == gdk.SOURCE_ERASER or 'eraser' in device.name.lower()
-
         print 'device change:', new_device.name, new_device.source
 
         # When editing brush settings, it is often more convenient to use the mouse.
@@ -557,11 +590,16 @@ class Document(object):
 
         bm = self.app.brushmanager
         if old_device:
-            bm.store_selected_brush_for_device(old_device.name)
+            if self.device_is_eraser(old_device):
+                old_brush = bm.clone_selected_brush(name=None)  # preserve user-chosen eraser mode settings
+            else:
+                old_brush = self.clone_selected_brush_for_saving()  # discard eraser mode settings
+            bm.store_brush_for_device(old_device.name, old_brush)
 
         if new_device.source == gdk.SOURCE_MOUSE:
             # Avoid fouling up unrelated devbrushes at stroke end
             self.app.preferences.pop('devbrush.last_used', None)
+            self.last_used_devbrush_was_eraser = None
         else:
             # Select the brush and update the UI.
             # Use a sane default if there's nothing associated
@@ -573,7 +611,9 @@ class Document(object):
                 else:
                     brush = bm.get_default_brush()
             self.app.preferences['devbrush.last_used'] = new_device.name
+            self.last_used_devbrush_was_eraser = self.device_is_eraser(new_device)
             bm.select_brush(brush)
+        self.forget_eraser_mode()
 
     def stroke_ended_cb(self, event):
         # Store device-specific brush settings at the end of the stroke, not
@@ -584,8 +624,12 @@ class Document(object):
         device_name = self.app.preferences.get('devbrush.last_used', None)
         if device_name is None:
             return
-        self.app.brushmanager.store_selected_brush_for_device(device_name)
-        self.app.preferences['devbrush.last_used'] = device_name
+        if self.last_used_devbrush_was_eraser:
+            bm = self.app.brushmanager
+            selected_brush = bm.clone_selected_brush(name=None)  # preserve user-chosen eraser mode settings
+        else:
+            selected_brush = self.clone_selected_brush_for_saving()  # discard eraser mode settings
+        self.app.brushmanager.store_brush_for_device(device_name, selected_brush)
         # However it may be better to reflect any brush settings change into
         # the last-used devbrush immediately. The UI idea here is that the
         # pointer (when you're holding the pen) is special, it's the point of a

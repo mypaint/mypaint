@@ -470,14 +470,19 @@ class BrushManager:
             clone.brushinfo["parent_brush_name"] = None
         return clone
 
-    def store_selected_brush_for_device(self, device_name):
+    def store_brush_for_device(self, device_name, managed_brush):
         """
-        Stores all current brush settings as a cloned brush associated with
-        a given input device.
+        Records an existing ManagedBrush as associated with a given input device.
+
+        Normally the brush will be cloned first, since it will be given a new
+        name. However, if the ManagedBrush has a 'name' attribute of None, it
+        will *not* be cloned and just modified in place and stored.
         """
-        devbrush_name = devbrush_quote(device_name)
-        devbrush = self.clone_selected_brush(devbrush_name)
-        self.brush_by_device[device_name] = devbrush
+        brush = managed_brush
+        if brush.name is not None:
+            brush = brush.clone()
+        brush.name = devbrush_quote(device_name)
+        self.brush_by_device[device_name] = brush
 
     def fetch_brush_for_device(self, device_name):
         """
