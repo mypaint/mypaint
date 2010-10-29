@@ -62,7 +62,9 @@ class HistoryPopup(windowing.PopupWindow):
         self.selection = None
 
         self.doc = doc
-        doc.stroke_observers.append(self.stroke_finished_cb)
+        guidoc = app.doc
+        guidoc.input_stroke_ended_observers.append(self.input_stroke_ended_cb)
+        self.is_shown = False
 
     def enter(self):
         # finish pending stroke, if any (causes stroke_finished_cb to get called)
@@ -84,11 +86,13 @@ class HistoryPopup(windowing.PopupWindow):
         bigcolor_center_x = self.selection * smallcolor_width + bigcolor_width/2
         self.move(x + popup_width/2 - bigcolor_center_x, y + bigcolor_width)
         self.show_all()
+        self.is_shown = True
 
         self.window.set_cursor(gdk.Cursor(gdk.CROSSHAIR))
     
     def leave(self, reason):
         self.hide()
+        self.is_shown = False
 
     def button_press_cb(self, widget, event):
         pass
@@ -96,8 +100,9 @@ class HistoryPopup(windowing.PopupWindow):
     def button_release_cb(self, widget, event):
         pass
 
-    def stroke_finished_cb(self, stroke, brush):
-        #print 'stroke finished', stroke.total_painting_time, 'seconds'
+    def input_stroke_ended_cb(self, event):
+        if self.is_shown: return
+        brush = self.app.brush
         self.selection = None
         if not brush.is_eraser():
             color = brush.get_color_hsv()

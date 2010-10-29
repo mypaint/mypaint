@@ -53,7 +53,7 @@ class Document(object):
 
         # Device change management & pen-stroke watching
         self.tdw.device_observers.append(self.device_changed_cb)
-        self.tdw.stroke_ended_observers.append(self.stroke_ended_cb)
+        self.input_stroke_ended_observers.append(self.input_stroke_ended_cb)
         self.last_pen_device = None
         self.last_used_devbrush_was_eraser = None
 
@@ -182,6 +182,20 @@ class Document(object):
 
         kbm.add_extra_key('<control>Left', 'RotateLeft')
         kbm.add_extra_key('<control>Right', 'RotateRight')
+
+    @property
+    def input_stroke_ended_observers(self):
+        """Array of callbacks interested in the end of an input stroke.
+
+        Observers are called with the GTK event as their only argument. This
+        is a good place to listen for "just painted something" events;
+        app.brush will contain everything needed about the input stroke which
+        just ended, in the state in which it ended.
+
+        An input stroke is a single pen-down, draw, pen-up action. This sort of
+        stroke is not the same as a brush engine stroke (see ``lib.document``).
+        """
+        return self.tdw._input_stroke_ended_observers
 
     # GENERIC
     def undo_cb(self, action):
@@ -615,7 +629,7 @@ class Document(object):
             bm.select_brush(brush)
         self.forget_eraser_mode()
 
-    def stroke_ended_cb(self, event):
+    def input_stroke_ended_cb(self, event):
         # Store device-specific brush settings at the end of the stroke, not
         # when the device changes because the user can change brush radii etc.
         # in the middle of a stroke, and because device_changed_cb won't
