@@ -284,6 +284,8 @@ class Window(windowing.MainWindow):
 
     def button_press_cb(self, win, event):
         #print event.device, event.button
+        ctrl = event.state & gdk.CONTROL_MASK
+        alt  = event.state & gdk.MOD1_MASK
         if event.type != gdk.BUTTON_PRESS:
             # ignore the extra double-click event
             return
@@ -302,11 +304,11 @@ class Window(windowing.MainWindow):
                 pass
             else:
                 dragfunc = self.app.doc.dragfunc_translate
-                if event.state & gdk.CONTROL_MASK:
+                if ctrl:
                     dragfunc = self.app.doc.dragfunc_rotate
                 self.app.doc.tdw.start_drag(dragfunc)
         elif event.button == 1:
-            if (event.state & gdk.CONTROL_MASK) and not (event.state & (gdk.BUTTON2_MASK | gdk.BUTTON3_MASK)):
+            if (ctrl or alt) and not (event.state & (gdk.BUTTON2_MASK | gdk.BUTTON3_MASK)):
                 self.app.doc.end_eraser_mode()
                 self.colorpick_state.activate(event)
         elif event.button == 3:

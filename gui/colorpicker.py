@@ -67,10 +67,10 @@ class ColorPicker(windowing.PopupWindow):
         self.hide()
 
     def motion_notify_cb(self, widget, event):
-        if event.state & gdk.CONTROL_MASK:
+        if event.state & gdk.CONTROL_MASK or event.state & gdk.MOD1_MASK:
             self.require_ctrl = True
         elif self.require_ctrl:
-            # stop picking when the user releases CTRL
+            # stop picking when the user releases CTRL (or ALT)
             return
 
         def update():

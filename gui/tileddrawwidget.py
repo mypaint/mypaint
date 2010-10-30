@@ -171,7 +171,7 @@ class TiledDrawWidget(gtk.DrawingArea):
             xtilt = 0.0
             ytilt = 0.0
         
-        if event.state & gdk.CONTROL_MASK:
+        if event.state & gdk.CONTROL_MASK or event.state & gdk.MOD1_MASK:
             # color picking, do not paint
             # Don't simply return; this is a workaround for unwanted lines in https://gna.org/bugs/?16169
             pressure = 0.0
