@@ -412,6 +412,13 @@ class Document(object):
     def dragfunc_rotate(self, dx, dy):
         self.tdw.rotate(2*math.pi*dx/300.0)
 
+    def dragfunc_zoom(self, dx, dy):
+        # workaround (should zoom at x=(first click point).x instead of cursor)
+        self.tdw.scroll(-dx, -dy)
+        # The meaning of drag direction up/down is a convention from
+        # Blender and probably other 3D tools (Google Earth at least).
+        self.tdw.zoom(math.exp(-dy/100.0))
+
     #def dragfunc_rotozoom(self, dx, dy):
     #    self.tdw.scroll(-dx, -dy)
     #    self.tdw.zoom(math.exp(-dy/100.0))

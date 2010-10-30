@@ -255,13 +255,16 @@ class Window(windowing.MainWindow):
     def key_press_event_cb_before(self, win, event):
         key = event.keyval 
         ctrl = event.state & gdk.CONTROL_MASK
+        shift = event.state & gdk.SHIFT_MASK
         #ANY_MODIFIER = gdk.SHIFT_MASK | gdk.MOD1_MASK | gdk.CONTROL_MASK
         #if event.state & ANY_MODIFIER:
         #    # allow user shortcuts with modifiers
         #    return False
         if key == keysyms.space:
-            if ctrl:
+            if shift:
                 self.app.doc.tdw.start_drag(self.app.doc.dragfunc_rotate)
+            elif ctrl:
+                self.app.doc.tdw.start_drag(self.app.doc.dragfunc_zoom)
             else:
                 self.app.doc.tdw.start_drag(self.app.doc.dragfunc_translate)
         else: return False
@@ -271,6 +274,7 @@ class Window(windowing.MainWindow):
         if event.keyval == keysyms.space:
             self.app.doc.tdw.stop_drag(self.app.doc.dragfunc_translate)
             self.app.doc.tdw.stop_drag(self.app.doc.dragfunc_rotate)
+            self.app.doc.tdw.stop_drag(self.app.doc.dragfunc_zoom)
             return True
         return False
 
@@ -286,6 +290,7 @@ class Window(windowing.MainWindow):
         #print event.device, event.button
         ctrl = event.state & gdk.CONTROL_MASK
         alt  = event.state & gdk.MOD1_MASK
+        shift = event.state & gdk.SHIFT_MASK
         if event.type != gdk.BUTTON_PRESS:
             # ignore the extra double-click event
             return
@@ -304,8 +309,10 @@ class Window(windowing.MainWindow):
                 pass
             else:
                 dragfunc = self.app.doc.dragfunc_translate
-                if ctrl:
+                if shift:
                     dragfunc = self.app.doc.dragfunc_rotate
+                elif ctrl:
+                    dragfunc = self.app.doc.dragfunc_zoom
                 self.app.doc.tdw.start_drag(dragfunc)
         elif event.button == 1:
             if (ctrl or alt) and not (event.state & (gdk.BUTTON2_MASK | gdk.BUTTON3_MASK)):
@@ -320,6 +327,7 @@ class Window(windowing.MainWindow):
         if event.button == 2:
             self.app.doc.tdw.stop_drag(self.app.doc.dragfunc_translate)
             self.app.doc.tdw.stop_drag(self.app.doc.dragfunc_rotate)
+            self.app.doc.tdw.stop_drag(self.app.doc.dragfunc_zoom)
 
     def scroll_cb(self, win, event):
         d = event.direction

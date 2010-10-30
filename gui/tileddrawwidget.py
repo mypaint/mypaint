@@ -235,17 +235,18 @@ class TiledDrawWidget(gtk.DrawingArea):
             # ignore the extra double-click event
             return
 
-        # straight line
-        if (event.state & gdk.SHIFT_MASK) and self.last_painting_pos:
-            dst = self.get_cursor_in_model_coordinates()
-            self.doc.straight_line(self.last_painting_pos, dst)
+        if event.button == 1:
+            # straight line
+            if (event.state & gdk.SHIFT_MASK) and self.last_painting_pos:
+                dst = self.get_cursor_in_model_coordinates()
+                self.doc.straight_line(self.last_painting_pos, dst)
 
-        # mouse button pressed (while painting without pressure information)
-        if event.button == 1 and not self.last_event_had_pressure_info:
-            # For the mouse we don't get a motion event for "pressure"
-            # changes, so we simulate it. (Note: we can't use the
-            # event's button state because it carries the old state.)
-            self.motion_notify_cb(win, event, button1_pressed=True)
+            # mouse button pressed (while painting without pressure information)
+            if not self.last_event_had_pressure_info:
+                # For the mouse we don't get a motion event for "pressure"
+                # changes, so we simulate it. (Note: we can't use the
+                # event's button state because it carries the old state.)
+                self.motion_notify_cb(win, event, button1_pressed=True)
 
     def button_release_cb(self, win, event):
         # (see comment above in button_press_cb)
