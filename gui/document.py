@@ -396,8 +396,8 @@ class Document(object):
         else:
             # restore (but keep color, see https://gna.org/bugs/index.php?16977)
             color = self.app.brush.get_color_hsv()
-            context.set_color_hsv(color)
             bm.select_brush(context)
+            self.app.brush.set_color_hsv(color)
 
     # TDW view manipulation
     def dragfunc_translate(self, dx, dy):
