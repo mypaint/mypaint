@@ -206,4 +206,12 @@ class State:
             handler_id = widget.connect("motion-notify-event", self.motion_notify_cb)
             assert not self.connected_motion_handler
             self.connected_motion_handler = (widget, handler_id)
+        else:
+            # The user is neither pressing a key, nor holding down a button.
+            # This happens when activating the color picker from the menu.
+            #
+            # Stop everything, release the pointer grab.
+            # (TODO: wait for a click instead, or show an instruction dialog)
+            print 'COV'
+            self.leave(None)
 
