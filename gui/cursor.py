@@ -38,8 +38,8 @@ def get_brush_cursor(radius, is_eraser):
 
         bgc = cursor.new_gc(foreground=black)
         wgc = cursor.new_gc(foreground=white)
-        cursor.draw_rectangle(wgc, True, 0, 0, d+1, d+1)
-        cursor.draw_arc(bgc,False, 0, 0, d, d, 0, 360*64)
+        cursor.draw_rectangle(bgc, True, 0, 0, d+1, d+1)
+        cursor.draw_arc(wgc,False, 0, 0, d, d, 0, 360*64)
 
         bgc = mask.new_gc(foreground=black)
         wgc = mask.new_gc(foreground=white)
