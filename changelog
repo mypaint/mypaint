@@ -7,10 +7,15 @@ Version 0.9.0:
 - stylus tilt support
 - persistence of selected brush and group
 - file preview in open dialog
-- configurable default save format
+- configurable default save format and zoom level
 - optimizations: faster startup, much faster saving
 - lots of small improvements, bug fixes, optimizations
 - updated translations: hu,es,ru,sv,nb,nn_NO,sl,ko,it
+- improved exception dialog
+- added GIMP-style subwindow toggle
+- added GIMP-style cursor-menu
+- usability improvements for brush selector and brush settings dialog
+- added file->export action
 
 Version 0.8.2:
 - fix regression in 0.8.1 causing temporary layers to stick
