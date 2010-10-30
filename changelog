@@ -1,14 +1,16 @@
-0.9.0 beta1: (4fd288067117f249716a9a46577d2f96ad816692)
-- brush collection: many updates, better and smaller collection
+Version 0.9.0:
+- brush collection: updated better and smaller collection
 - brushset import and export
-- fix for bad timestamp resolution on Windows that was probably leading to problems when saving
+- improvement for jaggy lines on Windows (might also fix saving problems)
+- fixes for non-ascii brush- and filenames (for Windows mainly)
 - sharper image for some zoom levels
 - stylus tilt support
 - persistence of selected brush and group
 - file preview in open dialog
 - configurable default save format
-- optimizations: faster startup, much faster saving of ora/png
-- lots and lots of small improvements, fixes, optimizations
+- optimizations: faster startup, much faster saving
+- lots of small improvements, bug fixes, optimizations
+- updated translations: hu,es,ru,sv,nb,nn_NO,sl,ko,it
 
 Version 0.8.2:
 - fix regression in 0.8.1 causing temporary layers to stick
