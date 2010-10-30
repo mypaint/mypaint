@@ -111,7 +111,7 @@ msgstr ""
 #. internal name, displayed name, constant, minimum, default, maximum, tooltip
 #: ../brushlib/brushsettings.py:40
 msgid "Opacity"
-msgstr ""
+msgstr "Dekkevne"
 
 #: ../brushlib/brushsettings.py:40
 msgid ""
@@ -1152,7 +1152,7 @@ msgstr "Print minnelekkasjeinformasjon til standard ut (tregt!)"
 
 #: ../gui/drawwindow.py:143
 msgid "Run Garbage Collector Now"
-msgstr "Kjør minnerydder nå"
+msgstr "Start minnerydding"
 
 #: ../gui/drawwindow.py:144
 msgid "Start/Stop Python Profiling (cProfile)"
@@ -1160,7 +1160,7 @@ msgstr "Start/Stopp Python profilering (cProfile)"
 
 #: ../gui/drawwindow.py:145
 msgid "Test input devices..."
-msgstr ""
+msgstr "Test pekerenheter..."
 
 #: ../gui/drawwindow.py:147 ../gui/preferenceswindow.py:107
 msgid "View"
@@ -1176,7 +1176,7 @@ msgstr "Fullskjerm"
 
 #: ../gui/drawwindow.py:150
 msgid "Toggle Subwindows"
-msgstr ""
+msgstr "Vis/skjul verktøyvinduer"
 
 #: ../gui/drawwindow.py:405
 msgid "Really Quit?"
@@ -1384,7 +1384,7 @@ msgstr "Lagre..."
 
 #: ../gui/filehandling.py:149
 msgid "Format to save as:"
-msgstr "Format å lagre som:"
+msgstr "Lagringsformat:"
 
 #: ../gui/filehandling.py:174
 msgid "Confirm"
@@ -1463,11 +1463,11 @@ msgstr "Feil under analyse av feilen."
 
 #: ../gui/inputtestwindow.py:20
 msgid "Input Device Test"
-msgstr ""
+msgstr "Test av pekerenheter"
 
 #: ../gui/inputtestwindow.py:48
 msgid "(no pressure)"
-msgstr ""
+msgstr "(null trykk)"
 
 #: ../gui/inputtestwindow.py:49
 msgid "Pressure:"
@@ -1475,11 +1475,11 @@ msgstr "Trykk:"
 
 #: ../gui/inputtestwindow.py:51
 msgid "(no tilt)"
-msgstr ""
+msgstr "(null helning)"
 
 #: ../gui/inputtestwindow.py:52
 msgid "Tilt:"
-msgstr ""
+msgstr "Helning:"
 
 #: ../gui/inputtestwindow.py:57
 msgid "(no device)"
@@ -1507,7 +1507,7 @@ msgstr "Innstillinger"
 
 #: ../gui/preferenceswindow.py:40
 msgid "Input"
-msgstr ""
+msgstr "Peker"
 
 #: ../gui/preferenceswindow.py:44
 msgid "<b><span size=\"large\">Global Pressure Mapping</span></b>"
