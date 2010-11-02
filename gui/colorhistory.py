@@ -17,8 +17,7 @@ def hsv_equal(a, b):
     b_ = numpy.array(helpers.hsv_to_rgb(*b))
     return ((a_ - b_)**2).sum() < (3*1.0/256)**2
 
-def on_color_pushed(color):
-    pass
+color_pushed_observers = []
 
 def push_color(color):
     global colors, num_colors, atomic, last_color
@@ -31,6 +30,6 @@ def push_color(color):
             colors.remove(c)
             break
     colors = (colors + [color])[-num_colors:]
-    on_color_pushed(color)
-
     last_color = helpers.hsv_to_rgb(*color)
+    for func in color_pushed_observers:
+        func(color)

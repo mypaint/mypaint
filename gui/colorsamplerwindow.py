@@ -160,9 +160,9 @@ class RecentColors(gtk.HBox):
             slot.on_select = self.slot_selected
             self.pack_start(slot, expand=True)
             self.slots.append(slot)
+        ch.color_pushed_observers.append(self.refill_slots)
         self.set_tooltip_text(_("Recently used colors"))
         self.show_all()
-        ch.on_color_pushed = self.refill_slots
 
     def slot_selected(self,color):
         self.on_select(color)
@@ -215,10 +215,14 @@ class CircleSelector(GColorSelector):
 
         self.samples = []      # [(h,s,v)] -- list of `harmonic' colors
         self.last_line = None  # 
+        ch.color_pushed_observers.append(self.color_pushed_cb)
 
         self.has_tooltip_areas = True
         self.previous_tooltip_area = None
         self.previous_tooltip_xy = None
+
+    def color_pushed_cb(self, pushed_color):
+        self.queue_draw()
 
     def has_harmonies_visible(self):
         return self.app.preferences.get("colorsampler.complementary", False) \
