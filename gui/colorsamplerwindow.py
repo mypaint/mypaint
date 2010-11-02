@@ -38,6 +38,7 @@ class GColorSelector(gtk.DrawingArea):
         self.device_pressed = None
         self.grabbed = False
         self.set_size_request(110, 100)
+        self.has_tooltip_areas = False
 
     def test_move(self, x, y):
         """
@@ -60,6 +61,8 @@ class GColorSelector(gtk.DrawingArea):
         self.queue_draw()
 
     def motion(self,w, event):
+        if self.has_tooltip_areas:
+            self.update_tooltip(event.x, event.y)
         if not self.device_pressed:
             return
         if self.test_move(event.x, event.y):
@@ -79,6 +82,10 @@ class GColorSelector(gtk.DrawingArea):
         pass
 
     def on_select(self,color):
+        pass
+
+    def update_tooltip(self, x, y):
+        """Updates the tooltip during motion, if tooltips are zoned."""
         pass
 
     def get_color_at(self, x,y):
@@ -153,6 +160,7 @@ class RecentColors(gtk.HBox):
             slot.on_select = self.slot_selected
             self.pack_start(slot, expand=True)
             self.slots.append(slot)
+        self.set_tooltip_text(_("Recently used colors"))
         self.show_all()
         ch.on_color_pushed = self.refill_slots
 
@@ -178,7 +186,17 @@ AREA_SQUARE = 1  #: Central saturation/value square
 AREA_INSIDE = 2  #: Grey area inside the rings
 AREA_SAMPLE = 3  #: Inner ring of color sampler boxes (hue)
 AREA_CIRCLE = 4  #: Outer gradiated ring (hue)
-AREA_OUTSIDE = 5  #: Blank outer area, outer space
+AREA_COMPARE = 5  #: Current/previous comparison semicircles
+AREA_OUTSIDE = 6  #: Blank outer area, outer space
+
+CIRCLE_TOOLTIPS = \
+  { AREA_SQUARE: _('Change Saturation and Value'),
+    AREA_INSIDE: None,
+    AREA_SAMPLE: _('Harmony color switcher'),
+    AREA_CIRCLE: _('Change Hue'),
+    AREA_COMPARE: _('Current color vs. Last Used'),
+    AREA_OUTSIDE: None,
+    }
 
 sq32 = sqrt(3)/2
 sq33 = sqrt(3)/3
@@ -198,6 +216,10 @@ class CircleSelector(GColorSelector):
         self.samples = []      # [(h,s,v)] -- list of `harmonic' colors
         self.last_line = None  # 
 
+        self.has_tooltip_areas = True
+        self.previous_tooltip_area = None
+        self.previous_tooltip_xy = None
+
     def has_harmonies_visible(self):
         return self.app.preferences.get("colorsampler.complementary", False) \
             or self.app.preferences.get("colorsampler.triadic", False) \
@@ -208,6 +230,18 @@ class CircleSelector(GColorSelector):
 
     def get_previous_color(self):
         return self.color
+
+    def update_tooltip(self, x, y):
+        area = self.area_at(x, y)
+        if self.previous_tooltip_area is None:
+            tooltip = CIRCLE_TOOLTIPS.get(area, None)
+            self.set_tooltip_text(tooltip)
+            self.previous_tooltip_area = area, x, y
+        else:
+            old_area, old_x, old_y = self.previous_tooltip_area
+            if area != old_area or abs(old_x - x) > 20 or abs(old_y - y) > 20:
+                self.set_tooltip_text(None)
+                self.previous_tooltip_area = None
 
     def calc_line(self, angle):
         x1 = self.x0 + self.r2*cos(-angle)
@@ -291,7 +325,16 @@ class CircleSelector(GColorSelector):
         dx = x-self.x0
         dy = y-self.y0
         d = sqrt(dx*dx+dy*dy)
-        if d > self.r3:
+        sq2 = sqrt(2.0)
+        cmp_M = self.M/2.0
+        cmp_r = (sq2-1)*cmp_M/(2*sq2)
+        cmp_x0 = self.x0+cmp_M-cmp_r
+        cmp_y0 = self.y0+cmp_M-cmp_r
+        cmp_dx = x - cmp_x0
+        cmp_dy = y - cmp_y0
+        if cmp_r > sqrt(cmp_dx*cmp_dx + cmp_dy*cmp_dy):
+            return AREA_COMPARE
+        elif d > self.r3:
             return AREA_OUTSIDE
         elif self.r2 < d < self.r3:
             return AREA_CIRCLE
@@ -301,6 +344,7 @@ class CircleSelector(GColorSelector):
             return AREA_SQUARE
         else:
             return AREA_INSIDE
+
 
     def get_color_at(self, x,y):
         area = self.area_at(x,y)
@@ -759,6 +803,8 @@ class HSVSelector(gtk.VBox):
         self.pack_start(sbox, expand=False)
         self.pack_start(vbox, expand=False)
 
+        self.set_tooltip_text(_("Change Hue, Saturation and Value"))
+
     def user_selected_color(self, color):
         self.set_color(color)
         self.on_select(color)
@@ -828,6 +874,8 @@ class RGBSelector(gtk.VBox):
         self.pack_start(rbox, expand=False)
         self.pack_start(gbox, expand=False)
         self.pack_start(bbox, expand=False)
+
+        self.set_tooltip_text(_("Change Red, Green and Blue components"))
 
     def user_selected_color(self, color):
         self.set_color(color)
@@ -911,24 +959,24 @@ class Selector(gtk.VBox):
         self.pack_start(expander, expand=False)
 
         # Colour scheme harmonies
-        def harmony_checkbox(attr, label):
+        def harmony_checkbox(attr, label, tooltip=None):
             cb = gtk.CheckButton(label)
             pref = "colorsampler.%s" % (attr,)
             cb.set_active(self.app.preferences.get(pref, False))
             cb.connect('toggled', self.harmony_toggled, attr)
+            if tooltip is not None:
+                cb.set_tooltip_text(tooltip)
             vbox2.pack_start(cb, expand=False)
 
         self.exp_config = expander = gtk.Expander(_('Harmonies'))
         vbox2 = gtk.VBox()
-        harmony_checkbox('analogous', _('Analogous'))
-        harmony_checkbox('complementary', _('Complimentary color')) # FIXME: Spelling in the localised
-        harmony_checkbox('split_comp', _('Split complimentary'))    #         strings for English:
-        harmony_checkbox('double_comp', _('Double complimentary'))  # http://www.wsu.edu/~brians/errors/complement.html
-        harmony_checkbox('square', _('Square'))
-        harmony_checkbox('triadic', _('Triadic'))
+        harmony_checkbox('analogous', _('Analogous'), _("Three nearby hues on the color wheel.\nOften found in nature, frequently pleasing to the eye."))
+        harmony_checkbox('complementary', _('Complementary color'), _("Two opposite hues on the color wheel.\nVibrant, and maximally contrasting."))
+        harmony_checkbox('split_comp', _('Split complementary'), _("Two hues next to the current hue's complement.\nContrasting, but adds a possibly pleasing harmony."))
+        harmony_checkbox('double_comp', _('Double complementary'), _("Four hues in two complementary pairs."))
+        harmony_checkbox('square', _('Square'), _("Four equally-spaced hues"))
+        harmony_checkbox('triadic', _('Triadic'), _("Three equally-spaced hues.\nVibrant with equal tension."))
 
-        frame1 = gtk.Frame(_('Select harmonies'))
-        frame1.add(vbox2)
         vbox3 = gtk.VBox()
         cb_sv = gtk.CheckButton(_('Change value/saturation'))
         cb_sv.set_active(True)
@@ -940,9 +988,7 @@ class Selector(gtk.VBox):
         vbox3.pack_start(cb_sv, expand=False)
         vbox3.pack_start(cb_opposite, expand=False)
         vbox3.pack_start(cb_neg, expand=False)
-        vbox_exp = gtk.VBox()
-        vbox_exp.pack_start(frame1)
-        expander.add(vbox_exp)
+        expander.add(vbox2)
         expander.connect("notify::expanded", self.expander_expanded_cb, 'harmonies')
         self.pack_start(expander, expand=False)
 
