@@ -620,7 +620,7 @@ class Document(object):
             # with the device yet.
             brush = bm.fetch_brush_for_device(new_device.name)
             if brush is None:
-                if is_eraser(new_device):
+                if self.device_is_eraser(new_device):
                     brush = bm.get_default_eraser()
                 else:
                     brush = bm.get_default_brush()
