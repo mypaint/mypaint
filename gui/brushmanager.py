@@ -261,13 +261,11 @@ class BrushManager:
                 continue
             name = unicode('context%02d') % i
             c = ManagedBrush(self, name=name, persistent=False)
-            default_group = self.groups.get(DEFAULT_STARTUP_GROUP, None)
-            if group is not None:
-                try:
-                    b = default_group[(i+9) % 10]   # keyboard order
-                    b.clone_into(c, name)
-                except IndexError:
-                    pass
+            group = self.groups.get(DEFAULT_STARTUP_GROUP, [])
+            idx = (i+9) % 10 # keyboard order
+            if idx < len(group):
+                b = group[idx]
+                b.clone_into(c, name)
             self.contexts[i] = c
 
         # clean up legacy stuff
