@@ -12,7 +12,6 @@ gdk = gtk.gdk
 import random
 import numpy, cairo
 from lib import helpers
-import colorhistory as ch
 import windowing
 
 """
@@ -36,7 +35,6 @@ Observation:
 popup_height = 60
 bigcolor_width   = popup_height
 smallcolor_width = popup_height/2
-popup_width = bigcolor_width + (ch.num_colors-1)*smallcolor_width
 
 class HistoryPopup(windowing.PopupWindow):
     outside_popup_timeout = 0
@@ -48,6 +46,8 @@ class HistoryPopup(windowing.PopupWindow):
         self.app = app
         self.app.kbm.add_window(self)
 
+        self.popup_width = bigcolor_width + (self.app.ch.num_colors-1)*smallcolor_width
+
         self.set_events(gdk.BUTTON_PRESS_MASK |
                         gdk.BUTTON_RELEASE_MASK |
                         gdk.ENTER_NOTIFY |
@@ -57,7 +57,7 @@ class HistoryPopup(windowing.PopupWindow):
         self.connect("button-press-event", self.button_press_cb)
         self.connect("expose_event", self.expose_cb)
 
-        self.set_size_request(popup_width, popup_height)
+        self.set_size_request(self.popup_width, popup_height)
 
         self.selection = None
 
@@ -69,6 +69,7 @@ class HistoryPopup(windowing.PopupWindow):
     def enter(self):
         # finish pending stroke, if any (causes stroke_finished_cb to get called)
         self.doc.split_stroke()
+        ch = self.app.ch
         if self.selection is None:
             self.selection = ch.num_colors - 1
             color = self.app.brush.get_color_hsv()
@@ -84,7 +85,7 @@ class HistoryPopup(windowing.PopupWindow):
         # popup placement
         x, y = self.get_position()
         bigcolor_center_x = self.selection * smallcolor_width + bigcolor_width/2
-        self.move(x + popup_width/2 - bigcolor_center_x, y + bigcolor_width)
+        self.move(x + self.popup_width/2 - bigcolor_center_x, y + bigcolor_width)
         self.show_all()
         self.is_shown = True
 
@@ -106,7 +107,7 @@ class HistoryPopup(windowing.PopupWindow):
         self.selection = None
         if not brush.is_eraser():
             color = brush.get_color_hsv()
-            ch.push_color(color)
+            self.app.ch.push_color(color)
 
     def expose_cb(self, widget, event):
         cr = self.window.cairo_create()
@@ -118,7 +119,7 @@ class HistoryPopup(windowing.PopupWindow):
 
         cr.translate(0.0, popup_height/2.0)
 
-        for i, c in enumerate(ch.colors):
+        for i, c in enumerate(self.app.ch.colors):
             if i != self.selection:
                 cr.scale(0.5, 0.5)
 

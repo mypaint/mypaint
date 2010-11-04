@@ -5,7 +5,6 @@ import struct
 import cairo
 import windowing
 from lib.helpers import rgb_to_hsv, hsv_to_rgb, clamp
-import colorhistory as ch
 from gettext import gettext as _
 
 CSTEP=0.007
@@ -89,7 +88,7 @@ class GColorSelector(gtk.DrawingArea):
         pass
 
     def get_color_at(self, x,y):
-        return self.color, False
+        return self.hsv, True
 
     def select_color_at(self, x,y):
         try:
@@ -108,11 +107,11 @@ class GColorSelector(gtk.DrawingArea):
             self.app.doc.tdw.device_used(self.device_pressed)
             self.color = selected_color #... but *this* is what the user wants
         self.redraw_on_select()
-        self.on_select(self.color)
+        self.on_select(self.hsv)
 
-    def set_color(self, color):
-        self.color = color
-        self.hsv = rgb_to_hsv(*color)
+    def set_color(self, hsv):
+        self.hsv = hsv
+        self.color = hsv_to_rgb(*hsv)
         self.queue_draw()
 
     def get_color(self):
@@ -153,14 +152,15 @@ class RecentColors(gtk.HBox):
     def __init__(self, app):
         gtk.HBox.__init__(self)
         self.set_border_width(4)
-        self.N = N = ch.num_colors
+        self.N = N = app.ch.num_colors
         self.slots = []
-        for i,color in enumerate(reversed(ch.colors)):
-            slot = RectSlot(app, color=color)
+        for i,color in enumerate(reversed(app.ch.colors)):
+            slot = RectSlot(app, color=hsv_to_rgb(*color))
             slot.on_select = self.slot_selected
             self.pack_start(slot, expand=True)
             self.slots.append(slot)
-        ch.color_pushed_observers.append(self.refill_slots)
+        self.app = app
+        app.ch.color_pushed_observers.append(self.refill_slots)
         self.set_tooltip_text(_("Recently used colors"))
         self.show_all()
 
@@ -171,10 +171,10 @@ class RecentColors(gtk.HBox):
         pass
 
     def refill_slots(self, pushed_color):
-        for color,slot in zip(ch.colors, reversed(self.slots)):
-            slot.set_color(hsv_to_rgb(*color))
+        for hsv,slot in zip(self.app.ch.colors, reversed(self.slots)):
+            slot.set_color(hsv)
 
-    def set_color(self, color):
+    def set_color(self, hsv):
         pass
 
 CIRCLE_N = 12.0
@@ -215,7 +215,7 @@ class CircleSelector(GColorSelector):
 
         self.samples = []      # [(h,s,v)] -- list of `harmonic' colors
         self.last_line = None  # 
-        ch.color_pushed_observers.append(self.color_pushed_cb)
+        app.ch.color_pushed_observers.append(self.color_pushed_cb)
 
         self.has_tooltip_areas = True
         self.previous_tooltip_area = None
@@ -270,11 +270,9 @@ class CircleSelector(GColorSelector):
         self.circle_img = None
         self.stroke_width = 0.01*M
 
-    def set_color(self, color, redraw=True):
-        self.color = color
-        h,s,v = rgb_to_hsv(*color)
-        old_h,old_s,old_v = self.hsv
-        self.hsv = h,s,v
+    def set_color(self, hsv, redraw=True):
+        self.hsv = hsv
+        self.color = hsv_to_rgb(*hsv)
         if redraw:
             self.queue_draw()
 
@@ -605,7 +603,7 @@ class CircleSelector(GColorSelector):
         y0 = self.y0+M-r
         a0 = pi/4
 
-        prev_col = self.get_previous_color()
+        prev_col = hsv_to_rgb(*self.get_previous_color())
         curr_col = self.color
 
         cr.set_source_rgb(*NEUTRAL_MID_GREY)
@@ -643,7 +641,7 @@ class VSelector(GColorSelector):
 
     def get_color_at(self, x,y):
         h,s,v = self.hsv
-        v = x/self.w
+        v = clamp(x/self.w, 0.0, 1.0)
         return (h,s,v), True
 
     def move(self, x,y):
@@ -682,7 +680,7 @@ class VSelector(GColorSelector):
 class HSelector(VSelector):
     def get_color_at(self,x,y):
         h,s,v = self.hsv
-        h = x/self.w
+        h = clamp(x/self.w, 0.0, 1.0)
         return (h,s,v), True
     
     def draw(self,w, event):
@@ -706,7 +704,7 @@ class HSelector(VSelector):
 class SSelector(VSelector):
     def get_color_at(self, x,y):
         h,s,v = self.hsv
-        s = x/self.w
+        s = clamp(x/self.w, 0.0, 1.0)
         return (h,s,v), True
 
     def draw(self,w, event):
@@ -722,7 +720,7 @@ class SSelector(VSelector):
 class RSelector(VSelector):
     def get_color_at(self,x,y):
         r,g,b = self.color
-        r = x/self.w
+        r = clamp(x/self.w, 0.0, 1.0)
         return (r,g,b), False
     
     def draw(self,w, event):
@@ -737,7 +735,7 @@ class RSelector(VSelector):
 class GSelector(VSelector):
     def get_color_at(self,x,y):
         r,g,b = self.color
-        g = x/self.w
+        g = clamp(x/self.w, 0.0, 1.0)
         return (r,g,b), False
     
     def draw(self,w, event):
@@ -752,7 +750,7 @@ class GSelector(VSelector):
 class BSelector(VSelector):
     def get_color_at(self,x,y):
         r,g,b = self.color
-        b = x/self.w
+        b = clamp(x/self.w, 0.0, 1.0)
         return (r,g,b), False
     
     def draw(self,w, event):
@@ -805,22 +803,21 @@ class HSVSelector(gtk.VBox):
 
         self.set_tooltip_text(_("Change Hue, Saturation and Value"))
 
-    def user_selected_color(self, color):
-        self.set_color(color)
-        self.on_select(color)
+    def user_selected_color(self, hsv):
+        self.set_color(hsv)
+        self.on_select(hsv)
 
-    def set_color(self, color):
+    def set_color(self, hsv):
         self.atomic = True
-        h,s,v = rgb_to_hsv(*color)
+        self.hsv = h,s,v = hsv
         self.hspin.set_value(h*359)
         self.sspin.set_value(s*100)
         self.vspin.set_value(v*100)
-        self.hsel.set_color(color)
-        self.ssel.set_color(color)
-        self.vsel.set_color(color)
+        self.hsel.set_color(hsv)
+        self.ssel.set_color(hsv)
+        self.vsel.set_color(hsv)
         self.atomic = False
-        self.color = color
-        self.hsv = rgb_to_hsv(*color)
+        self.color = hsv_to_rgb(*hsv)
 
     def on_select(self, color):
         pass
@@ -829,19 +826,19 @@ class HSVSelector(gtk.VBox):
         if self.atomic:
             return
         h,s,v = self.hsv
-        self.set_color(hsv_to_rgb(spin.get_value()/359., s,v))
+        self.set_color((spin.get_value()/359., s,v))
 
     def sat_change(self, spin):
         if self.atomic:
             return
         h,s,v = self.hsv
-        self.set_color(hsv_to_rgb(h, spin.get_value()/100., v))
+        self.set_color((h, spin.get_value()/100., v))
 
     def val_change(self, spin):
         if self.atomic:
             return
         h,s,v = self.hsv
-        self.set_color(hsv_to_rgb(h,s, spin.get_value()/100.))
+        self.set_color((h,s, spin.get_value()/100.))
 
 class RGBSelector(gtk.VBox):
     def __init__(self, app, color=(1.,0.,0)):
@@ -877,43 +874,42 @@ class RGBSelector(gtk.VBox):
 
         self.set_tooltip_text(_("Change Red, Green and Blue components"))
 
-    def user_selected_color(self, color):
-        self.set_color(color)
-        self.on_select(color)
+    def user_selected_color(self, hsv):
+        self.set_color(hsv)
+        self.on_select(hsv)
 
-    def set_color(self, color):
+    def set_color(self, hsv):
         self.atomic = True
-        r,g,b = color
+        self.color = r,g,b = hsv_to_rgb(*hsv)
         self.rspin.set_value(r*255)
         self.gspin.set_value(g*255)
         self.bspin.set_value(b*255)
-        self.rsel.set_color(color)
-        self.gsel.set_color(color)
-        self.bsel.set_color(color)
+        self.rsel.set_color(hsv)
+        self.gsel.set_color(hsv)
+        self.bsel.set_color(hsv)
         self.atomic = False
-        self.color = color
-        self.hsv = rgb_to_hsv(*color)
+        self.hsv = hsv
 
-    def on_select(self, color):
+    def on_select(self, hsv):
         pass
 
     def r_change(self, spin):
         if self.atomic:
             return
         r,g,b = self.color
-        self.set_color((spin.get_value()/255., g,b))
+        self.set_color(rgb_to_hsv(spin.get_value()/255., g,b))
 
     def g_change(self, spin):
         if self.atomic:
             return
         r,g,b = self.color
-        self.set_color((r, spin.get_value()/255., b))
+        self.set_color(rgb_to_hsv(r, spin.get_value()/255., b))
 
     def b_change(self, spin):
         if self.atomic:
             return
         r,g,b = self.color
-        self.set_color((r,g, spin.get_value()/255.))
+        self.set_color(rgb_to_hsv(r,g, spin.get_value()/255.))
 
 class Selector(gtk.VBox):
 
@@ -1001,11 +997,6 @@ class Selector(gtk.VBox):
         self.opposite_blends = False
         self.negative_blends = False
 
-        self.connect('drag_data_received',self.drag_data)
-        self.drag_dest_set(gtk.DEST_DEFAULT_MOTION | gtk.DEST_DEFAULT_HIGHLIGHT | gtk.DEST_DEFAULT_DROP,
-                 [("application/x-color",0,80)],
-                 gtk.gdk.ACTION_COPY)
-
     def toggle_blend(self, checkbox, name):
         attr = name+'_blends'
         setattr(self, attr, not getattr(self, attr))
@@ -1017,33 +1008,29 @@ class Selector(gtk.VBox):
         self.queue_draw()
 
     def previous_color(self):
-        return ch.last_color
+        return self.app.ch.last_color
 
-    def set_color(self,color,exclude=None):
+    def set_color(self, hsv, exclude=None):
         for w in self.widgets:
             if w is not exclude:
-                w.set_color(color)
-        self.color = color
-        self.on_select(color)
+                w.set_color(hsv)
+        self.color = hsv_to_rgb(*hsv)
+        self.hsv = hsv
+        self.on_select(hsv)
 
-    def drag_data(self, widget, context, x,y, selection, targetType, time):
-        r,g,b,a = struct.unpack('HHHH', selection.data)
-        clr = (r/65536.0, g/65536.0, b/65536.0)
-        self.set_color(clr)
+    def rgb_selected(self, hsv):
+        self.set_color(hsv, exclude=self.rgb_selector)
 
-    def rgb_selected(self, color):
-        self.set_color(color, exclude=self.rgb_selector)
+    def hsv_selected(self, hsv):
+        self.set_color(hsv, exclude=self.hsv_selector)
 
-    def hsv_selected(self, color):
-        self.set_color(color, exclude=self.hsv_selector)
+    def hue_selected(self, hsv):
+        self.set_color(hsv, exclude=self.circle)
 
-    def hue_selected(self, color):
-        self.set_color(color, exclude=self.circle)
+    def recent_selected(self, hsv):
+        self.set_color(hsv, exclude=self.recent)
 
-    def recent_selected(self, color):
-        self.set_color(color, exclude=self.recent)
-
-    def on_select(self,color):
+    def on_select(self, hsv):
         pass
 
     def expander_expanded_cb(self, expander, junk, cfg_stem):
@@ -1096,14 +1083,17 @@ class Window(windowing.SubWindow):
         self.stop_callback = False
 
         # The first callback notification happens before the window is initialized
-        self.selector.set_color(app.brush.get_color_rgb())
+        self.selector.set_color(app.brush.get_color_hsv())
 
     def brush_modified_cb(self):
-        self.stop_callback = True
-        self.selector.set_color(self.app.brush.get_color_rgb())
-        self.stop_callback = False
-
-    def on_select(self, color):
         if self.stop_callback:
             return
-        self.app.brush.set_color_rgb(color)
+        self.stop_callback = True
+        hsv = self.app.brush.get_color_hsv()
+        self.selector.set_color(hsv)
+        self.stop_callback = False
+
+    def on_select(self, hsv):
+        if self.stop_callback:
+            return
+        self.app.brush.set_color_hsv(hsv)

@@ -12,6 +12,7 @@ import gtk, gobject
 gdk = gtk.gdk
 from lib import brush, helpers, mypaintlib
 import filehandling, keyboard, brushmanager, windowing, document
+import colorhistory
 
 ## TODO: move all window sizing stuff to windowing module
 ##       while the keys below refer to fields in the Application, this will
@@ -91,6 +92,7 @@ class Application: # singleton
 
         self.preferences = {}
         self.load_settings()
+
         self.brushmanager = brushmanager.BrushManager(join(datapath, 'brushes'), join(confpath, 'brushes'), self)
         self.kbm = keyboard.KeyboardManager()
         self.filehandler = filehandling.FileHandler(self)
@@ -100,6 +102,8 @@ class Application: # singleton
         self.brush.set_color_hsv((0, 0, 0))
         self.brushmanager.selected_brush_observers.append(self.brush_selected_cb)
         self.init_brush_adjustments()
+
+        self.ch = colorhistory.ColorHistory(self)
 
         self.user_subwindows = windowing.UserSubWindows(self)
         self.window_names = ['drawWindow'] \

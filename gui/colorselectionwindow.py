@@ -32,6 +32,8 @@ class Window(windowing.SubWindow):
         self.cs.connect('realize', self.on_cs_realize)
         self.cs.connect('color-changed', self.color_changed_cb)
         vbox.pack_start(self.cs)
+        self.in_callback = False
+
 
     def on_cs_realize(self, *ignore):
         # Remove unwanted widgets
@@ -42,13 +44,17 @@ class Window(windowing.SubWindow):
         return True
 
     def color_changed_cb(self, cs):
+        if self.in_callback:
+            return
         b = self.app.brush
         b.set_color_hsv(self.get_color_hsv())
 
     def brush_modified_cb(self):
         brush_color = self.app.brush.get_color_hsv()
         if brush_color != self.get_color_hsv():
+            self.in_callback = True
             self.set_color_hsv(brush_color)
+            self.in_callback = False
 
     def get_color_hsv(self):
         c = self.cs.get_current_color()
