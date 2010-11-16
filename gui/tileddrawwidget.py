@@ -173,7 +173,12 @@ class TiledDrawWidget(gtk.DrawingArea):
 
         xtilt = event.get_axis(gdk.AXIS_XTILT)
         ytilt = event.get_axis(gdk.AXIS_YTILT)
-        if xtilt is None or ytilt is None:
+        # Check whether tilt is present.  For some tablets without
+        # tilt support GTK reports a tilt axis with value infinity.
+        # https://gna.org/bugs/?17084
+        if xtilt is None or ytilt is None or \
+           xtilt > 1000.0 or xtilt < -1000.0 or \
+           ytilt > 1000.0 or ytilt < -1000.0:
             xtilt = 0.0
             ytilt = 0.0
         
