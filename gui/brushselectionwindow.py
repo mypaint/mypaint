@@ -16,6 +16,9 @@ import pixbuflist, dialogs, brushmanager
 from brushlib import brushsettings
 
 class Window(windowing.SubWindow):
+
+    EXPANDER_PREFS_KEY = "brushmanager.common_settings_expanded"
+
     def __init__(self, app):
         windowing.SubWindow.__init__(self, app)
         self.last_selected_brush = None
@@ -35,9 +38,11 @@ class Window(windowing.SubWindow):
         scroll.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
         scroll.add_with_viewport(self.brushgroups)
 
-        expander = self.expander = gtk.Expander(label='')
-        expander.set_expanded(False)
+        is_expanded = bool(app.preferences.get(self.EXPANDER_PREFS_KEY, False))
+        expander = self.expander = gtk.Expander(label=None)
+        expander.set_expanded(is_expanded)
         expander.add(get_common_settings_widget(app))
+        expander.connect("notify::expanded", self.common_settings_expanded_cb)
 
         al = gtk.Alignment(0.0, 0.0, 1.0, 1.0)
         al.add(self.groupselector)
@@ -47,6 +52,10 @@ class Window(windowing.SubWindow):
         vbox.pack_start(scroll, expand=True)
         vbox.pack_start(gtk.HSeparator(), expand=False)
         vbox.pack_start(expander, expand=False, fill=False)
+
+    def common_settings_expanded_cb(self, expander, *junk):
+        is_expanded = bool(expander.get_expanded())
+        self.app.preferences[self.EXPANDER_PREFS_KEY] = is_expanded
 
 def get_common_settings_widget(app):
     """Return a widget with controls for manipulating common settings"""
