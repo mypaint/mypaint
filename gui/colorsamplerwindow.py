@@ -1,6 +1,6 @@
 import gtk
 gdk = gtk.gdk
-from math import pi, sin, cos, sqrt, atan2
+from math import pi, sin, cos, sqrt, atan2, ceil
 import struct
 import cairo
 import windowing
@@ -91,9 +91,8 @@ class GColorSelector(gtk.DrawingArea):
         return self.hsv, True
 
     def select_color_at(self, x,y):
-        try:
-            color, is_hsv = self.get_color_at(x,y)
-        except TypeError:
+        color, is_hsv = self.get_color_at(x,y)
+        if color is None:
             return
         if is_hsv:
             self.hsv = color
@@ -279,14 +278,7 @@ class CircleSelector(GColorSelector):
     def test_move(self, x, y):
         from_area = self.area_at(self.press_x,self.press_y)
         to_area = self.area_at(x, y)
-        if from_area == AREA_CIRCLE:
-            return to_area not in (AREA_SQUARE, AREA_INSIDE)
-        elif from_area == AREA_SQUARE:
-            return to_area not in (AREA_CIRCLE, AREA_OUTSIDE)
-        else:
-            return False
-        #return from_area == to_area
-        #    and from_area in [AREA_CIRCLE, AREA_SQUARE]
+        return from_area in (AREA_CIRCLE, AREA_SQUARE)
 
     def test_button_release(self, x, y):
         from_area = self.area_at(self.press_x,self.press_y)
@@ -312,11 +304,11 @@ class CircleSelector(GColorSelector):
             rx = self.x0 + (self.r2+3.0)*x1
             ry = self.y0 + (self.r2+3.0)*y1
         else:
-            tx = self.rd*x1
-            ty = self.rd*y1
-            m = self.m-1.0
-            rx = self.x0 + clamp(tx, -m, +m)
-            ry = self.y0 + clamp(ty, -m, +m)
+            m = self.m
+            dx = clamp(dx, -m, m)
+            dy = clamp(dy, -m, m)
+            rx = self.x0 + dx
+            ry = self.y0 + dy
         return rx,ry
 
     def move(self,x,y):
@@ -338,20 +330,17 @@ class CircleSelector(GColorSelector):
             return AREA_COMPARE
         elif d > self.r3:
             return AREA_OUTSIDE
-        elif self.r2 < d < self.r3:
+        elif self.r2 < d <= self.r3:
             return AREA_CIRCLE
-        elif self.rd < d < self.r2:
-            return AREA_SAMPLE
-        elif abs(dx)<self.m and abs(dy)<self.m:
+        elif abs(dx)<ceil(self.m) and abs(dy)<ceil(self.m):
             return AREA_SQUARE
+        elif self.rd < d <= self.r2:
+            return AREA_SAMPLE
         else:
             return AREA_INSIDE
 
-
     def get_color_at(self, x,y):
         area = self.area_at(x,y)
-        if not area:
-            return
         if area == AREA_CIRCLE:
             h,s,v = self.hsv
             h = 0.5 + 0.5*atan2(y-self.y0, self.x0-x)/pi
@@ -362,11 +351,13 @@ class CircleSelector(GColorSelector):
                 if a1-2*pi/CIRCLE_N < a < a1:
                     clr = self.simple_colors[i]
                     return clr, False
+            return None, False
         elif area == AREA_SQUARE:
             h,s,v = self.hsv
             s = (x-self.x0+self.m)/(2*self.m)
             v = (y-self.y0+self.m)/(2*self.m)
             return (h,s,1-v), True
+        return None, False
 
     def draw_square(self,width,height,radius):
         img = cairo.ImageSurface(cairo.FORMAT_ARGB32, width,height)
