@@ -478,8 +478,11 @@ class Document(object):
         self.tdw.set_zoom(z)
 
     def rotate(self, command):
-        if   command == 'RotateRight': self.tdw.rotate(+2*math.pi/14)
-        elif command == 'RotateLeft' : self.tdw.rotate(-2*math.pi/14)
+        # Allows easy and quick rotation to 45/90/180 degrees
+        rotation_step = 2*math.pi/16
+
+        if   command == 'RotateRight': self.tdw.rotate(+rotation_step)
+        elif command == 'RotateLeft' : self.tdw.rotate(-rotation_step)
         else: assert 0
 
     def zoom_cb(self, action):
