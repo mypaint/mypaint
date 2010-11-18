@@ -9,6 +9,7 @@
 import gtk, gobject, cairo, random
 gdk = gtk.gdk
 from math import floor, ceil, pi, log
+from numpy import isfinite
 
 from lib import helpers, tiledsurface, pixbufsurface
 import cursor
@@ -150,12 +151,12 @@ class TiledDrawWidget(gtk.DrawingArea):
         
         pressure = event.get_axis(gdk.AXIS_PRESSURE)
 
-        if pressure is not None and (pressure > 1.0 or pressure < 0.0):
+        if pressure is not None and (pressure > 1.0 or pressure < 0.0 or not isfinite(pressure)):
             if event.device.name not in self.bad_devices:
                 print 'WARNING: device "%s" is reporting bad pressure %+f' % (event.device.name, pressure)
                 self.bad_devices.append(event.device.name)
-            if pressure > 1000.0 or pressure < -1000.0:
-                # infinity: use button state (instead of clamping in brush.hpp)
+            if not isfinite(pressure):
+                # infinity/nan: use button state (instead of clamping in brush.hpp)
                 # https://gna.org/bugs/?14709
                 pressure = None
 
@@ -173,11 +174,9 @@ class TiledDrawWidget(gtk.DrawingArea):
         xtilt = event.get_axis(gdk.AXIS_XTILT)
         ytilt = event.get_axis(gdk.AXIS_YTILT)
         # Check whether tilt is present.  For some tablets without
-        # tilt support GTK reports a tilt axis with value infinity.
-        # https://gna.org/bugs/?17084
-        if xtilt is None or ytilt is None or \
-           xtilt > 1000.0 or xtilt < -1000.0 or \
-           ytilt > 1000.0 or ytilt < -1000.0:
+        # tilt support GTK reports a tilt axis with value nan, instead
+        # of None.  https://gna.org/bugs/?17084
+        if xtilt is None or ytilt is None or not isfinite(xtilt+ytilt):
             xtilt = 0.0
             ytilt = 0.0
         
