@@ -35,7 +35,7 @@ class Window(windowing.SubWindow):
         self.add(vbox)
 
         self.scroll = scroll = gtk.ScrolledWindow()
-        scroll.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        scroll.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_ALWAYS)
         scroll.add_with_viewport(self.brushgroups)
 
         is_expanded = bool(app.preferences.get(self.EXPANDER_PREFS_KEY, False))
