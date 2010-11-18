@@ -594,7 +594,7 @@ class CircleSelector(GColorSelector):
         y0 = self.y0+M-r
         a0 = pi/4
 
-        prev_col = hsv_to_rgb(*self.get_previous_color())
+        prev_col = self.get_previous_color()
         curr_col = self.color
 
         cr.set_source_rgb(*NEUTRAL_MID_GREY)
