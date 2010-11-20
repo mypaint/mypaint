@@ -126,8 +126,10 @@ class Widget(gtk.HBox):
             dialogs.error(self, _('No README file for this brush!'))
 
     def create_brush_cb(self, window):
+        """Create and save a new brush based on the current working brush."""
         b = brushmanager.ManagedBrush(self.bm)
         b.brushinfo = self.app.brush.brushinfo.clone()
+        b.brushinfo.pop("parent_brush_name", None) #avoid mis-hilight
         b.preview = self.get_preview_pixbuf()
         b.save()
 
@@ -138,9 +140,16 @@ class Widget(gtk.HBox):
 
         brushes = self.bm.get_group_brushes(group, make_active=True)
         brushes.insert(0, b)
+        b.persistent = True   # Brush was saved, and is now in the user's list
         for f in self.bm.brushes_observers: f(brushes)
 
         self.bm.select_brush(b)
+
+        # Pretend that the active app.brush is a child of the new one, for the
+        # sake of the strokemap and strokes drawn immediately after.
+        self.app.brush.begin_atomic()
+        self.app.brush.brushinfo["parent_brush_name"] = b.name
+        self.app.brush.end_atomic()
 
     def rename_brush_cb(self, window):
         src_brush = self.bm.selected_brush
