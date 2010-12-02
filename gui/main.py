@@ -11,6 +11,7 @@ pygtk.require('2.0')
 import gtk
 required = (2, 16, 0)
 assert gtk.ver >= required, 'You need to upgrade PyGTK, at least version %d.%d.%d is required.' % required
+import gobject
 
 from gui import application
 from optparse import OptionParser
@@ -26,6 +27,8 @@ def main(datapath, confpath):
                     help='append python stdout and stderr to FILE')
     parser.add_option('-t', '--trace', action="store_true",
                     help='print all exectued python statements')
+    parser.add_option('-f', '--fullscreen', action="store_true",
+                    help='start in fullscreen mode')
     options, args = parser.parse_args()
 
     if options.logfile:
@@ -38,6 +41,10 @@ def main(datapath, confpath):
     def run():
         print 'confpath =', options.config
         app = application.Application(datapath, confpath, args)
+        if options.fullscreen:
+            def f():
+                app.drawWindow.fullscreen_cb()
+            gobject.idle_add(f)
 
         # Recent gtk versions don't allow changing those menu shortcuts by
         # default. <rant>Sigh. This very useful feature used to be the
