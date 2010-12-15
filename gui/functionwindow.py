@@ -31,7 +31,7 @@ class Window(windowing.SubWindow):
 
         l = gtk.Label()
         l.set_alignment(0.0, 0.0)
-        l.set_markup('<b><span size="large">%s</span></b>' % setting.name.title())
+        l.set_markup('<b><span size="large">%s</span></b>' % setting.name)
         l.set_tooltip_text(setting.tooltip)
         vbox.pack_start(l, expand=False)
 
