@@ -504,16 +504,14 @@ class Window(windowing.MainWindow):
                 "will not make you run out of memory. But you still require a lot of memory "
                 "if you paint all over while fully zoomed out."),
         'ContextHelp':
-                _("This is used to quickly save/restore brush settings "
+                _("Brushkeys are used to quickly save/restore brush settings "
                  "using keyboard shortcuts. You can paint with one hand and "
                  "change brushes with the other without interrupting."
                  "\n\n"
                  "There are 10 memory slots to hold brush settings.\n"
                  "Those are anonymous "
                  "brushes, they are not visible in the brush selector list. "
-                 "But they will stay even if you quit. "
-                 "They will also remember the selected color. In contrast, selecting a "
-                 "normal brush never changes the color. "),
+                 "But they will stay even if you quit. "),
         'Docu':
                 _("There is a tutorial available "
                  "on the MyPaint homepage. It explains some features which are "
