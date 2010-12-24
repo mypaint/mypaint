@@ -343,6 +343,10 @@ class TiledDrawWidget(gtk.DrawingArea):
         return layers
 
     def repaint(self, device_bbox=None):
+        cr, surface, sparse, mipmap_level, gdk_clip_region = self.render_prepare(device_bbox)
+        self.render_execute(cr, surface, sparse, mipmap_level, gdk_clip_region)
+
+    def render_prepare(self, device_bbox):
         if device_bbox is None:
             w, h = self.window.get_size()
             device_bbox = (0, 0, w, h)
@@ -397,7 +401,12 @@ class TiledDrawWidget(gtk.DrawingArea):
 
         del x1, y1, x2, y2, w, h
 
+        return cr, surface, sparse, mipmap_level, gdk_clip_region
+
+    def render_execute(self, cr, surface, sparse, mipmap_level, gdk_clip_region):
+        translation_only = self.is_translation_only()
         model_bbox = surface.x, surface.y, surface.w, surface.h
+
         #print 'model bbox', model_bbox
 
         # not sure if it is a good idea to clip so tightly
