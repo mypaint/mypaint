@@ -14,48 +14,6 @@ from lib import brush, helpers, mypaintlib
 import filehandling, keyboard, brushmanager, windowing, document
 import colorhistory
 
-## TODO: move all window sizing stuff to windowing module
-##       while the keys below refer to fields in the Application, this will
-##       be ugly, however.
-
-# The window geometry that will be assumed at save time.
-SAVE_POS_GRAVITY = gdk.GRAVITY_NORTH_WEST
-
-# Window names and their default positions and visibilities. They interrelate,
-# so define them together.
-WINDOW_DEFAULTS = {
-    'drawWindow':           (None, True), # initial geom overridden, but set vis
-    # Colour choosers go in the top-right quadrant by default
-    'colorSamplerWindow':   ("220x220-50+100",  False),
-    'colorSelectionWindow': ("-250+150",        True), # positions strangely
-    # Brush-related dialogs go in the bottom right by default
-    'brushSelectionWindow': ("240x350-50-50",   True ),
-    'brushSettingsWindow':  ("400x400-325-50",  False),
-    # Preferences go "inside" the main window (TODO: just center-on-parent?)
-    'preferencesWindow':    ("+200+100",        False),
-    # Layer details in the bottom-left quadrant.
-    'layersWindow':         ("200x300+50-50",   False),
-    'backgroundWindow':     ("500x400-275+75", False),
-    # Debug menu
-    'inputTestWindow':      (None, False),
-}
-
-# The main drawWindow gets centre stage, sized around the default set of
-# visible utility windows. Sizing constraints for this:
-CENTRE_STAGE_CONSTRAINTS = (\
-    166, # left: leave some space for icons (but: OSX?)
-    50,  # top: avoid panel
-    75,  # bottom: avoid panel
-    10,  # right (small screens): ensure close button not covered at least
-    220, # right (big screens): don't overlap brushes or colour (much)
-    # "big screens" are anything 3 times wider than the big-right margin:
-    ## > Size. The Center Stage content should be at least twice as wide as
-    ## > whatever is in its side margins, and twice as tall as its top and
-    ## > bottom margins. (The user may change its size, but this is how it
-    ## > should be when the user first sees it.)
-    ## >     -- http://designinginterfaces.com/Center_Stage
-)
-
 class Application: # singleton
     """
     This class serves as a global container for everything that needs
@@ -105,21 +63,8 @@ class Application: # singleton
 
         self.ch = colorhistory.ColorHistory(self)
 
-        self.user_subwindows = windowing.UserSubWindows(self)
-        self.window_names = ['drawWindow'] \
-          + [n for n in WINDOW_DEFAULTS.keys() if n != 'drawWindow']
-        for name in self.window_names:
-            module = __import__(name.lower(), globals(), locals(), [])
-            window = self.__dict__[name] = module.Window(self)
-            using_default = self.load_window_position(name, window)
-            if using_default:
-                if name == 'drawWindow':
-                    def on_map_event(win, ev, dw):
-                        windowing.centre_stage(win, *CENTRE_STAGE_CONSTRAINTS)
-                else:
-                    def on_map_event(win, ev, dw):
-                        windowing.move_to_monitor_of(win, dw)
-                window.connect('map-event', on_map_event, self.drawWindow)
+        self.windowmanager = windowing.WindowManager(self)
+        self.drawWindow = self.windowmanager.main_window # TODO: rename
 
         self.kbm.start_listening()
         self.filehandler.doc = self.doc
@@ -286,66 +231,10 @@ class Application: # singleton
         assert brush is not self.brush
         self.set_current_brush(brush)
 
-    def hide_window_cb(self, window, event):
-        # used by some of the windows
-        window.hide()
-        return True
-
     def save_gui_config(self):
         gtk.accel_map_save(join(self.confpath, 'accelmap.conf'))
-        self.save_window_positions()
+        self.windowmanager.save_window_positions()
         self.save_settings()
-
-    def save_window_positions(self):
-        f = open(join(self.confpath, 'windowpos.conf'), 'w')
-        f.write('# name visible x y width height\n')
-        for name in self.window_names:
-            window = self.__dict__[name]
-            x, y = window.get_position()
-            w, h = window.get_size()
-            gravity = window.get_gravity()
-            if gravity != SAVE_POS_GRAVITY:
-                # Then it was never mapped, and must still be using the
-                # defaults. Don't save position (which'd be wrong anyway).
-                continue
-            if hasattr(window, 'geometry_before_fullscreen'):
-                x, y, w, h = window.geometry_before_fullscreen
-            visible = window in self.user_subwindows.windows \
-                or window.get_property('visible') 
-            f.write('%s %s %d %d %d %d\n' % (name, visible, x, y, w, h))
-
-    def load_window_position(self, name, window):
-        geometry, visible = WINDOW_DEFAULTS.get(name, (None, False))
-        using_default = True
-        try:
-            for line in open(join(self.confpath, 'windowpos.conf')):
-                if line.startswith(name):
-                    parts = line.split()
-                    visible = parts[1] == 'True'
-                    x, y, w, h = [int(i) for i in parts[2:2+4]]
-                    geometry = '%dx%d+%d+%d' % (w, h, x, y)
-                    using_default = False
-                    break
-        except IOError:
-            pass
-        # Initial gravities can be all over the place. Fix aberrant ones up
-        # when the windows are safely on-screen so their position can be
-        # saved sanely. Doing this only when the window's mapped means that the
-        # window position stays where we specified in the defaults, and the
-        # window manager (should) compensate for us without the position
-        # changing.
-        if geometry is not None:
-            window.parse_geometry(geometry)
-            if using_default:
-                initial_gravity = window.get_gravity()
-                if initial_gravity != SAVE_POS_GRAVITY:
-                    def fix_gravity(w, event):
-                        if w.get_gravity() != SAVE_POS_GRAVITY:
-                            w.set_gravity(SAVE_POS_GRAVITY)
-                    window.connect("map-event", fix_gravity)
-        if visible:
-            window.show_all()
-        return using_default
 
     def message_dialog(self, text, type=gtk.MESSAGE_INFO, flags=0):
         """utility function to show a message/information dialog"""

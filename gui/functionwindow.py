@@ -18,7 +18,6 @@ class Window(windowing.SubWindow):
         self.app.brushmanager.selected_brush_observers.append(self.brush_selected_cb)
 
         self.set_title(setting.name)
-        self.connect('delete-event', self.app.hide_window_cb)
 
         scroll = gtk.ScrolledWindow()
         scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)

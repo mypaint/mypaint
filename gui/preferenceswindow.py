@@ -28,7 +28,6 @@ class Window(windowing.Dialog):
         windowing.Dialog.__init__(self, app=app, title=_('Preferences'),
                                   parent=app.drawWindow, flags=flags,
                                   buttons=buttons)
-        self.connect('delete-event', self.app.hide_window_cb)
         self.connect('response', self.on_response)
 
         # Set up widgets

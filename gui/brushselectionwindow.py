@@ -25,7 +25,6 @@ class Window(windowing.SubWindow):
 
         self.set_title(_('Brush selection'))
         self.set_role('Brush selector')
-        self.connect('delete-event', self.app.hide_window_cb)
 
         self.groupselector = GroupSelector(self.app)
         self.brushgroups = BrushGroupsList(self.app)

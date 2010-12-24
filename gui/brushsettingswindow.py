@@ -20,7 +20,6 @@ class Window(windowing.SubWindow):
         self.app.brushmanager.selected_brush_observers.append(self.brush_selected_cb)
 
         self.set_title(_('Brush settings'))
-        self.connect('delete-event', self.app.hide_window_cb)
 
         vbox = gtk.VBox()
         self.add(vbox)

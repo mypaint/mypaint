@@ -338,7 +338,6 @@ class Window(windowing.SubWindow):
         windowing.SubWindow.__init__(self, app)
         self.set_title(_("Layers"))
         self.set_role("Layers")
-        self.connect('delete-event', self.app.hide_window_cb)
         self.set_default_size(200, 300)
         self.callbacks_active = True # Used to prevent callback loops
 

@@ -26,7 +26,6 @@ class Window(windowing.Dialog):
                                   buttons=buttons)
 
         #set up window
-        self.connect('delete-event', self.app.hide_window_cb)
         self.connect('response', self.on_response)
 
         notebook = self.nb = gtk.Notebook()

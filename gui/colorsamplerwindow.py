@@ -1062,7 +1062,6 @@ class Window(windowing.SubWindow):
         windowing.SubWindow.__init__(self, app)
         self.set_title(_('MyPaint color selector'))
         self.set_role('Color selector')
-        self.connect('delete-event', self.app.hide_window_cb)
         self.selector = Selector(app, self)
         self.selector.on_select = self.on_select
         self.exp_history = self.selector.exp_history

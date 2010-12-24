@@ -2,10 +2,55 @@
 # Management of the user's chosen subwindows as a group.
 
 import sys
+import os.path
 
 import gtk
 import gtk.gdk as gdk
 import gobject
+
+# The window geometry that will be assumed at save time.
+SAVE_POS_GRAVITY = gdk.GRAVITY_NORTH_WEST
+
+# Window names and their default positions and visibilities. They interrelate,
+# so define them together.
+WINDOW_DEFAULTS = {
+    'drawWindow':           (None, True), # initial geom overridden, but set vis
+    # Colour choosers go in the top-right quadrant by default
+    'colorSamplerWindow':   ("220x220-50+100",  False),
+    'colorSelectionWindow': ("-250+150",        True), # positions strangely
+    # Brush-related dialogs go in the bottom right by default
+    'brushSelectionWindow': ("240x350-50-50",   True ),
+    'brushSettingsWindow':  ("400x400-325-50",  False),
+    # Preferences go "inside" the main window (TODO: just center-on-parent?)
+    'preferencesWindow':    ("+200+100",        False),
+    # Layer details in the bottom-left quadrant.
+    'layersWindow':         ("200x300+50-50",   False),
+    'backgroundWindow':     ("500x400-275+75", False),
+    # Debug menu
+    'inputTestWindow':      (None, False),
+}
+
+# The main drawWindow gets centre stage, sized around the default set of
+# visible utility windows. Sizing constraints for this:
+CENTRE_STAGE_CONSTRAINTS = (\
+    166, # left: leave some space for icons (but: OSX?)
+    50,  # top: avoid panel
+    75,  # bottom: avoid panel
+    10,  # right (small screens): ensure close button not covered at least
+    220, # right (big screens): don't overlap brushes or colour (much)
+    # "big screens" are anything 3 times wider than the big-right margin:
+    ## > Size. The Center Stage content should be at least twice as wide as
+    ## > whatever is in its side margins, and twice as tall as its top and
+    ## > bottom margins. (The user may change its size, but this is how it
+    ## > should be when the user first sees it.)
+    ## >     -- http://designinginterfaces.com/Center_Stage
+)
+
+
+def hide_window_cb(window, event):
+    # used by some of the windows
+    window.hide()
+    return True
 
 class UserSubWindows:
     """
@@ -24,7 +69,7 @@ class UserSubWindows:
         window.connect('map-event', self.on_registered_window_map_event)
         window.connect('hide', self.on_registered_window_hide)
         if window.flags() & gtk.VISIBLE:
-            self.windows.append(widget)
+            self.windows.append(window)
 
     def toggle(self):
         "Toggles the user's subwindows between shown and not-shown."
@@ -79,7 +124,9 @@ class Dialog (gtk.Dialog):
     def __init__(self, app, *args, **kwargs):
         gtk.Dialog.__init__(self, *args, **kwargs)
         self.app = app
-        self.app.user_subwindows.register(self)
+
+        self.connect('delete-event', hide_window_cb)
+
     # TODO: dialogs should be freely positioned by the window manager
 
 
@@ -114,8 +161,8 @@ class SubWindow (gtk.Window):
             # windows? Do they share anything in common with dialogs (could
             # they all be implmented as dialogs?)
         self.pre_hide_pos = None
-        self.app.user_subwindows.register(self)
         self.connect("realize", self.on_realize)
+        self.connect('delete-event', hide_window_cb)
 
     def on_realize(self, widget):
         # Mark subwindows as utility windows: many X11 WMs handle this sanely
@@ -208,4 +255,104 @@ def move_to_monitor_of(win, targ_win):
     print "gravitate: correcting position from %s to %s" % (pos, targ_pos)
     win.move(*targ_pos)
 
+class WindowManager(object):
+
+    def __init__(self, app):
+        self.app = app
+        self.config_file_path = os.path.join(self.app.confpath, 'windowpos.conf')
+
+        self.windows = {} # {'windowname': window_instance }
+        self.window_names = [n for n in WINDOW_DEFAULTS.keys()]
+
+        self.main_window = self.get_window('drawWindow')
+        self.user_subwindows = UserSubWindows(self.app)
+
+        self.app.drawWindow = self.main_window
+
+        # Can't initialize on-demand because of save_window_positions implementation
+        for name in self.window_names:
+            self.get_window(name)
+
+    def get_window(self, window_name):
+        """Return the window instance of window_name. Initializes the window on-demand.
+        Imports the python module with the same name as the window (all lower-case),
+        and instantiate an object of the class Window in that module."""
+        if window_name in self.windows:
+            return self.windows[window_name]
+
+        # Load and initialize window
+        module = __import__(window_name.lower(), globals(), locals(), [])
+        window = self.windows[window_name] = module.Window(self.app)
+        using_default = self.load_window_position(window_name, window)
+
+        if using_default:
+            if window_name == 'drawWindow':
+                def on_map_event(win, ev):
+                    centre_stage(win, *CENTRE_STAGE_CONSTRAINTS)
+                window.connect('map-event', on_map_event)
+            else:
+                def on_map_event(win, ev, main_window):
+                    move_to_monitor_of(win, main_window)
+                window.connect('map-event', on_map_event, self.main_window)
+
+        if window_name != 'drawWindow':
+            self.user_subwindows.register(window)
+
+        return window
+
+    def load_window_position(self, name, window):
+        geometry, visible = WINDOW_DEFAULTS.get(name, (None, False))
+        using_default = True
+        try:
+            f = open(self.config_file_path)
+            for line in f:
+                if line.startswith(name):
+                    parts = line.split()
+                    visible = parts[1] == 'True'
+                    x, y, w, h = [int(i) for i in parts[2:2+4]]
+                    geometry = '%dx%d+%d+%d' % (w, h, x, y)
+                    using_default = False
+                    break
+        except IOError:
+            pass
+        finally:
+            f.close()
+        # Initial gravities can be all over the place. Fix aberrant ones up
+        # when the windows are safely on-screen so their position can be
+        # saved sanely. Doing this only when the window's mapped means that the
+        # window position stays where we specified in the defaults, and the
+        # window manager (should) compensate for us without the position
+        # changing.
+        if geometry is not None:
+            window.parse_geometry(geometry)
+            if using_default:
+                initial_gravity = window.get_gravity()
+                if initial_gravity != SAVE_POS_GRAVITY:
+                    def fix_gravity(w, event):
+                        if w.get_gravity() != SAVE_POS_GRAVITY:
+                            w.set_gravity(SAVE_POS_GRAVITY)
+                    window.connect("map-event", fix_gravity)
+        if visible:
+            window.show_all()
+        return using_default
+
+    # FIXME: assumes all windows have been initialized
+    def save_window_positions(self):
+        f = open(self.config_file_path, 'w')
+        f.write('# name visible x y width height\n')
+        for name in self.window_names:
+            window = self.get_window(name)
+            x, y = window.get_position()
+            w, h = window.get_size()
+            gravity = window.get_gravity()
+            if gravity != SAVE_POS_GRAVITY:
+                # Then it was never mapped, and must still be using the
+                # defaults. Don't save position (which'd be wrong anyway).
+                continue
+            if hasattr(window, 'geometry_before_fullscreen'):
+                x, y, w, h = window.geometry_before_fullscreen
+            visible = window in self.user_subwindows.windows \
+                or window.get_property('visible')
+            f.write('%s %s %d %d %d %d\n' % (name, visible, x, y, w, h))
+        f.close()
 

@@ -23,7 +23,6 @@ class Window(windowing.SubWindow):
         self.app.brush.settings_observers.append(self.brush_modified_cb)
         self.set_resizable(False)
         self.set_title(_('Color'))
-        self.connect('delete-event', self.app.hide_window_cb)
 
         vbox = gtk.VBox()
         self.add(vbox)

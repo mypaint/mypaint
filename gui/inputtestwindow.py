@@ -19,7 +19,6 @@ class Window(windowing.SubWindow):
 
         self.set_title(_('Input Device Test'))
         self.set_role('Test')
-        self.connect('delete-event', self.app.hide_window_cb)
         self.connect('map-event', self.map_cb)
 
         self.initialized = False

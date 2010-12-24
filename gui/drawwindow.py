@@ -358,8 +358,8 @@ class Window(windowing.MainWindow):
     # WINDOW HANDLING
     def toggleWindow_cb(self, action):
         s = action.get_name()
-        s = s[0].lower() + s[1:]
-        w = getattr(self.app, s)
+        window_name = s[0].lower() + s[1:] # WindowName -> windowName
+        w = self.app.windowmanager.get_window(window_name)
         if w.window and w.window.is_visible():
             w.hide()
         else:
@@ -378,7 +378,7 @@ class Window(windowing.MainWindow):
     def fullscreen_cb(self, *trash):
         self.fullscreen = not self.fullscreen
         if self.fullscreen:
-            self.app.user_subwindows.hide()
+            self.app.windowmanager.user_subwindows.hide()
             x, y = self.get_position()
             w, h = self.get_size()
             self.geometry_before_fullscreen = (x, y, w, h)
@@ -396,7 +396,7 @@ class Window(windowing.MainWindow):
             self.menubar.show()
             #self.app.doc.tdw.set_scroll_at_edges(False)
             del self.geometry_before_fullscreen
-            self.app.user_subwindows.show()
+            self.app.windowmanager.user_subwindows.show()
 
     def popupmenu_show_cb(self, action):
         self.menubar.set_sensitive(False)   # excessive feedback?
@@ -415,7 +415,7 @@ class Window(windowing.MainWindow):
         self.popupmenu_last_active = self.popupmenu.get_active()
 
     def toggle_subwindows_cb(self, action):
-        self.app.user_subwindows.toggle()
+        self.app.windowmanager.user_subwindows.toggle()
 
     def quit_cb(self, *trash):
         self.app.doc.model.split_stroke()
