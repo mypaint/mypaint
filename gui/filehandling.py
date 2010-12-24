@@ -85,6 +85,7 @@ class FileHandler(object):
             self.app.kbm.takeover_action(action)
 
         self._filename = None
+        self.current_file_observers = []
         self.active_scrap_filename = None
         self.set_recent_items()
 
@@ -131,12 +132,13 @@ class FileHandler(object):
 
     def set_filename(self, value):
         self._filename = value
+        for f in self.current_file_observers:
+            f(self.filename)
+
         if self.filename:
-            self.app.drawWindow.set_title("MyPaint - %s" % os.path.basename(self.filename))
             if self.filename.startswith(self.get_scrap_prefix()):
                 self.active_scrap_filename = self.filename
-        else:
-            self.app.drawWindow.set_title("MyPaint")
+
     filename = property(get_filename, set_filename)
 
     def init_save_dialog(self):

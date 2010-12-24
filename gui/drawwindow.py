@@ -70,6 +70,8 @@ class Window(windowing.MainWindow):
         self.connect("button-release-event", self.button_release_cb)
         self.connect("scroll-event", self.scroll_cb)
 
+        self.app.filehandler.current_file_observers.append(self.update_title)
+
         self.init_actions()
 
         kbm = self.app.kbm
@@ -213,6 +215,13 @@ class Window(windowing.MainWindow):
         self.popupmenu.connect("deactivate", self.popupmenu_done_cb)
         self.popupmenu.connect("cancel", self.popupmenu_done_cb)
         self.popupmenu_last_active = None
+
+
+    def update_title(self, filename):
+        if filename:
+            self.set_title("MyPaint - %s" % os.path.basename(filename))
+        else:
+            self.set_title("MyPaint")
 
     # INPUT EVENT HANDLING
     def drag_data_received(self, widget, context, x, y, selection, info, t):
