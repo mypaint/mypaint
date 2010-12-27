@@ -656,8 +656,11 @@ class ManagedBrush(object):
             self.preview = gdk.Pixbuf(gdk.COLORSPACE_RGB, False, 8, preview_w, preview_h)
             self.preview.fill(0xffffffff) # white
         self.preview.save(prefix + '_prev.png', 'png')
-        open(prefix + '.myb', 'w').write(self.brushinfo.serialize())
+        brushinfo = self.brushinfo.clone()
+        brushinfo.pop("parent_brush_name", None)
+        open(prefix + '.myb', 'w').write(brushinfo.serialize())
         self.remember_mtimes()
+        self.persistent = True
 
     def load(self):
         self.load_preview()
@@ -678,8 +681,10 @@ class ManagedBrush(object):
         filename = prefix + '.myb'
         brushinfo_str = open(filename).read()
         self.brushinfo.parse(brushinfo_str)
+        self.brushinfo.pop("parent_brush_name", None)
         self.remember_mtimes()
         self.settings_loaded = True
+        self.persistent = True
 
     def reload_if_changed(self):
         if self.settings_mtime is None: return
