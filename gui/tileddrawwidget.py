@@ -566,7 +566,7 @@ class TiledDrawWidget(gtk.DrawingArea):
             self.dragfunc = None
 
     def recenter_document(self):
-        x, y, w, h = self.doc.get_bbox()
+        x, y, w, h = self.doc.get_effective_bbox()
         desired_cx_user = x+w/2
         desired_cy_user = y+h/2
 
