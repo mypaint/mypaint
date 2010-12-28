@@ -313,10 +313,9 @@ class WindowManager(object):
                     geometry = '%dx%d+%d+%d' % (w, h, x, y)
                     using_default = False
                     break
+            f.close()
         except IOError:
             pass
-        finally:
-            f.close()
         # Initial gravities can be all over the place. Fix aberrant ones up
         # when the windows are safely on-screen so their position can be
         # saved sanely. Doing this only when the window's mapped means that the
