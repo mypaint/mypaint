@@ -65,7 +65,7 @@ if env['debug']:
     env.Append(CPPDEFINES='HEAVY_DEBUG')
     env.Append(CCFLAGS='-O0', LINKFLAGS='-O0')
 
-Export('env')
+Export('env', 'python')
 module = SConscript('lib/SConscript')
 SConscript('brushlib/SConscript')
 languages = SConscript('po/SConscript')
