@@ -140,7 +140,8 @@ class Widget(gtk.HBox):
 
         brushes = self.bm.get_group_brushes(group, make_active=True)
         brushes.insert(0, b)
-        b.persistent = True   # Brush was saved, and is now in the user's list
+        b.persistent = True   # Brush was saved
+        b.in_brushlist = True
         for f in self.bm.brushes_observers: f(brushes)
 
         self.bm.select_brush(b)
@@ -186,6 +187,7 @@ class Widget(gtk.HBox):
         # load dst
         dst_brush = brushmanager.ManagedBrush(self.bm, dst_name, persistent=True)
         dst_brush.load()
+        dst_brush.in_brushlist = True
 
         # replace src with dst (but keep src in the deleted list if it is a stock brush)
         self.delete_brush_internal(src_brush, replacement=dst_brush)

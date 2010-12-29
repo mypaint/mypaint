@@ -213,19 +213,17 @@ class Application: # singleton
     def set_current_brush(self, managed_brush):
         """
         Copies a ManagedBrush's settings into the brush settings currently used
-        for painting. Sets the parent brush name to something long-lasting too,
-        specifically the nearest persistent brush in managed_brush's ancestry.
+        for painting. Sets the parent brush name to the closest ancestor brush
+        currently in the brushlist.
         """
         if managed_brush is None:
             return
         self.brush.load_from_brushinfo(managed_brush.brushinfo)
-
-        # If the user just picked a brush from the brush selection window,
-        # it's likely to have no parent.
-        if not managed_brush.brushinfo.has_key("parent_brush_name"):
-            parent_mb = self.brushmanager.find_nearest_persistent_brush(managed_brush)
-            parent_mb_name = parent_mb is not None and parent_mb.name or None
-            self.brush.brushinfo["parent_brush_name"] = parent_mb_name
+        parent_name = None
+        list_brush = self.brushmanager.find_brushlist_ancestor(managed_brush)
+        if list_brush and list_brush.name is not None:
+            parent_name = list_brush.name
+        self.brush.brushinfo["parent_brush_name"] = parent_name
 
     def brush_selected_cb(self, brush):
         assert brush is not self.brush

@@ -287,20 +287,22 @@ class BrushManager:
                         l.append(name + '/' + name2)
             return l
 
+        # Distinguish between brushes in the brushlist and those that are not;
+        # handle lost-and-found ones.
         for name in listbrushes(self.stock_brushpath) + listbrushes(self.user_brushpath):
             b = get_brush(name)
-            can_be_lost = True
+            b.in_brushlist = True
             if name.startswith('context'):
                 i = int(name[-2:])
                 self.contexts[i] = b
                 b.load_settings(retain_parent=True)
-                can_be_lost = False
+                b.in_brushlist = False
             elif name.startswith(DEVBRUSH_NAME_PREFIX):
                 device_name = devbrush_unquote(name)
                 self.brush_by_device[device_name] = b
                 b.load_settings(retain_parent=True)
-                can_be_lost = False
-            if can_be_lost:
+                b.in_brushlist = False
+            if b.in_brushlist:
                 if not [True for group in our.itervalues() if b in group]:
                     brushes = self.groups.setdefault(FOUND_BRUSHES_GROUP, [])
                     brushes.insert(0, b)
@@ -445,6 +447,7 @@ class BrushManager:
                     preview_f.write(preview_data)
                     preview_f.close()
                     b.load()
+                    b.in_brushlist = True
                 # finally, add it to the group
                 if b not in managed_brushes:
                     managed_brushes.append(b)
@@ -487,26 +490,22 @@ class BrushManager:
                 f.write(b.name.encode('utf-8') + '\n')
         f.close()
 
-    def find_nearest_persistent_brush(self, managed_brush):
+    def find_brushlist_ancestor(self, brush):
+        """Finds the nearest ancestor of a ManagedBrush having in_brushlist
+
+        Searches a brush's ancestry chain for something which can be
+        highlighted for the user in the brushlist. Returns `brush`, one of its
+        ancestors, or None if nothing suitable can be found.
         """
-        Tries to find and a persistent version of a ``ManagedBrush`` from
-        either ``managed_brush`` or its named ancestors. If no persistent
-        brush can be found, returns ``None``.
-        """
-        b = managed_brush
-        while b is not None:
-            if b.persistent:
-                return b
-            parent_name = b.brushinfo.get("parent_brush_name", None)
-            b = self.get_brush_by_name(parent_name)
+        while brush is not None:
+            if brush.in_brushlist:
+                return brush
+            parent_name = brush.brushinfo.get("parent_brush_name", None)
+            brush = self.get_brush_by_name(parent_name)
         return None
 
     def select_brush(self, brush):
-        """
-        Selects the given ManagedBrush in the UI, and updates the live brush.
-        If ``brush`` is not a persistent brush - e.g. a devbrush or a brushkey
-        brush - its parent will be highlighted instead, if it can be found.
-        """
+        """Selects a ManagedBrush, highlights it, & updates the live brush."""
         if brush is None:
             brush = self.get_default_brush()
         self.selected_brush = brush
@@ -519,15 +518,15 @@ class BrushManager:
 
     def clone_selected_brush(self, name):
         """
-        Creates a new non-persistent ManagedBrush based on the selected
-        persistent brush in the UI and the currently active lib.brush.
+        Creates a new ManagedBrush based on the selected
+        brush in the brushlist and the currently active lib.brush.
         """
         clone = ManagedBrush(self, name, persistent=False)
         clone.brushinfo = self.app.brush.brushinfo.clone()
         clone.preview = self.selected_brush.preview
-        persistent_parent = self.find_nearest_persistent_brush(self.selected_brush)
-        if persistent_parent is not None:
-            clone.brushinfo["parent_brush_name"] = persistent_parent.name
+        list_brush = self.find_brushlist_ancestor(self.selected_brush)
+        if list_brush is not None:
+            clone.brushinfo["parent_brush_name"] = list_brush.name
         else:
             clone.brushinfo["parent_brush_name"] = None
         return clone
@@ -551,7 +550,8 @@ class BrushManager:
         Fetches the brush associated with a particular input device name.
         """
         devbrush_name = devbrush_quote(device_name)
-        return self.brush_by_device.get(device_name, None)
+        brush = self.brush_by_device.get(device_name, None)
+        return brush
 
     def save_brushes_for_devices(self):
         for device_name, devbrush in self.brush_by_device.iteritems():
@@ -616,10 +616,11 @@ class ManagedBrush(object):
         self.name = name
         self.brushinfo = BrushInfo()
         self.persistent = persistent
-        """If True this brush is stored in the filesystem and 
-        not a context/picked brush."""
+        """If True this brush is stored in the filesystem."""
         self.settings_loaded = False
         """If True this brush is fully initialized, ready to paint with."""
+        self.in_brushlist = False
+        """Set to True if this brush is known to be in the brushlist"""
 
         self.settings_mtime = None
         self.preview_mtime = None
@@ -668,9 +669,9 @@ class ManagedBrush(object):
         if not self.settings_loaded:
             self.load()
         target.brushinfo = self.brushinfo.clone()
-        parent = self.bm.find_nearest_persistent_brush(self)
-        if parent:
-            target.brushinfo["parent_brush_name"] = parent.name
+        list_brush = self.bm.find_brushlist_ancestor(self)
+        if list_brush:
+            target.brushinfo["parent_brush_name"] = list_brush.name
         else:
             target.brushinfo["parent_brush_name"] = None
         target.preview = self.preview
