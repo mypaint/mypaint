@@ -711,7 +711,6 @@ class ManagedBrush(object):
         brushinfo = self.brushinfo.clone()
         open(prefix + '.myb', 'w').write(brushinfo.serialize())
         self.remember_mtimes()
-        self.persistent = True
 
     def load(self, retain_parent=False):
         """Loads the brush's preview and settings from disk."""
