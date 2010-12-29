@@ -46,7 +46,33 @@ class Document():
         self.canvas_observers = []
         self.stroke_observers = [] # callback arguments: stroke, brush (brush is a temporary read-only convenience object)
         self.doc_observers = []
+        self.frame_observers = []
         self.clear(True)
+
+        self._frame = [0, 0, 0, 0]
+        self._frame_enabled = False
+
+    def get_frame(self):
+        return self._frame
+
+    def set_frame(self, x=None, y=None, width=None, height=None):
+        """Set the size of the frame. Pass None to indicate no-change."""
+
+        for i, var in enumerate([x, y, width, height]):
+            if not var is None:
+                # FIXME: must be aligned to tile size due to PNG saving
+                assert not var % N, "Frame size must be aligned to tile size"
+                self._frame[i] = var
+
+        for f in self.frame_observers: f()
+
+    def get_frame_enabled(self):
+        return self._frame_enabled
+
+    def set_frame_enabled(self, enabled):
+        self._frame_enabled = enabled
+        for f in self.frame_observers: f()
+    frame_enabled = property(get_frame_enabled)
 
     def call_doc_observers(self):
         for f in self.doc_observers:

@@ -476,6 +476,21 @@ class TiledDrawWidget(gtk.DrawingArea):
 
             cr.paint()
 
+        if self.doc.frame_enabled:
+            # Draw a semi-transparent black overlay for
+            # all the area outside the "document area"
+            cr.save()
+            cr.set_source_rgba(0, 0, 0, 0.6)
+            cr.set_operator(cairo.OPERATOR_OVER)
+            mipmap_factor = 2**mipmap_level
+            frame = self.doc.get_frame()
+            cr.rectangle(frame[0]/mipmap_factor, frame[1]/mipmap_factor,
+                            frame[2]/mipmap_factor, frame[3]/mipmap_factor)
+            cr.rectangle(*model_bbox)
+            cr.set_fill_rule(cairo.FILL_RULE_EVEN_ODD)
+            cr.fill()
+            cr.restore()
+
         if self.visualize_rendering:
             # visualize painted bboxes (blue)
             cr.set_source_rgba(0, 0, random.random(), 0.4)

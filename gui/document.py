@@ -31,6 +31,7 @@ class Document(object):
 
         # View
         self.tdw = tileddrawwidget.TiledDrawWidget(self.model)
+        self.model.frame_observers.append(self.frame_changed_cb)
 
         # FIXME: hack, to be removed
         fname = os.path.join(self.app.datapath, 'backgrounds', '03_check1.png')
@@ -659,3 +660,6 @@ class Document(object):
         # pointer (when you're holding the pen) is special, it's the point of a
         # real-world tool that you're dipping into a palette, or modifying
         # using the sliders.
+
+    def frame_changed_cb(self):
+        self.tdw.queue_draw()
