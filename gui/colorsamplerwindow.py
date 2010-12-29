@@ -153,14 +153,15 @@ class RecentColors(gtk.HBox):
         self.set_border_width(4)
         self.N = N = app.ch.num_colors
         self.slots = []
-        for i,color in enumerate(reversed(app.ch.colors)):
-            slot = RectSlot(app, color=hsv_to_rgb(*color))
+        for i in xrange(N):
+            slot = RectSlot(app)
             slot.on_select = self.slot_selected
             self.pack_start(slot, expand=True)
             self.slots.append(slot)
         self.app = app
         app.ch.color_pushed_observers.append(self.refill_slots)
         self.set_tooltip_text(_("Recently used colors"))
+        self.refill_slots(None)
         self.show_all()
 
     def slot_selected(self,color):
@@ -169,7 +170,7 @@ class RecentColors(gtk.HBox):
     def on_select(self,color):
         pass
 
-    def refill_slots(self, pushed_color):
+    def refill_slots(self, *junk):
         for hsv,slot in zip(self.app.ch.colors, reversed(self.slots)):
             slot.set_color(hsv)
 
