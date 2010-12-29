@@ -293,12 +293,12 @@ class BrushManager:
             if name.startswith('context'):
                 i = int(name[-2:])
                 self.contexts[i] = b
+                b.load_settings(retain_parent=True)
                 can_be_lost = False
             elif name.startswith(DEVBRUSH_NAME_PREFIX):
                 device_name = devbrush_unquote(name)
                 self.brush_by_device[device_name] = b
-                b.load_settings()
-                b.persistent = False
+                b.load_settings(retain_parent=True)
                 can_be_lost = False
             if can_be_lost:
                 if not [True for group in our.itervalues() if b in group]:
@@ -708,14 +708,14 @@ class ManagedBrush(object):
             self.preview.fill(0xffffffff) # white
         self.preview.save(prefix + '_prev.png', 'png')
         brushinfo = self.brushinfo.clone()
-        brushinfo.pop("parent_brush_name", None)
         open(prefix + '.myb', 'w').write(brushinfo.serialize())
         self.remember_mtimes()
         self.persistent = True
 
-    def load(self):
+    def load(self, retain_parent=False):
+        """Loads the brush's preview and settings from disk."""
         self.load_preview()
-        self.load_settings()
+        self.load_settings(retain_parent)
 
     def load_preview(self):
         """Loads the brush preview as pixbuf into the brush."""
@@ -726,15 +726,16 @@ class ManagedBrush(object):
         self.preview = pixbuf
         self.remember_mtimes()
 
-    def load_settings(self):
+    def load_settings(self, retain_parent=False):
         """Loads the brush settings/dynamics from disk."""
         prefix = self.get_fileprefix()
         filename = prefix + '.myb'
         brushinfo_str = open(filename).read()
         self.brushinfo.parse(brushinfo_str)
-        self.brushinfo.pop("parent_brush_name", None)
         self.remember_mtimes()
         self.settings_loaded = True
+        if not retain_parent:
+            self.brushinfo.pop("parent_brush_name", None)
         self.persistent = True
 
     def reload_if_changed(self):
