@@ -23,9 +23,9 @@ from lib.brush import BrushInfo
 preview_w = 128
 preview_h = 128
 
-DEFAULT_STARTUP_GROUP = 'Deevad'
-DEFAULT_BRUSH = 'deevad/pencil'
-DEFAULT_ERASER = 'deevad/eraser'
+DEFAULT_STARTUP_GROUP = 'Deevad'  # Suggestion only
+DEFAULT_BRUSH = 'deevad/pencil'  # TODO: phase out and use heruristics?
+DEFAULT_ERASER = 'deevad/eraser'  # TODO: ---------------"--------------
 FOUND_BRUSHES_GROUP = 'lost&found'
 DELETED_BRUSH_GROUP = 'deleted'
 FAVORITES_BRUSH_GROUP = 'favorites'
@@ -117,9 +117,17 @@ class BrushManager:
             os.mkdir(self.user_brushpath)
         self.load_groups()
 
+        # Retreive which groups were last open, or default to a nice/sane set.
         last_active_groups = self.app.preferences['brushmanager.selected_groups']
         if not last_active_groups:
-            last_active_groups = [DEFAULT_STARTUP_GROUP]
+            if DEFAULT_STARTUP_GROUP in self.groups:
+                last_active_groups = [DEFAULT_STARTUP_GROUP]
+            elif self.groups:
+                group_names = self.groups.keys()
+                group_names.sort()
+                last_active_groups = [group_names[0]]
+            else:
+                last_active_groups = []
         for group in reversed(last_active_groups):
             if group in self.groups:
                 brushes = self.get_group_brushes(group, make_active=True)
@@ -145,11 +153,54 @@ class BrushManager:
             self.select_brush(initial_brush)
         gobject.idle_add(at_application_start)
 
+
+    def get_matching_brush(self, name=None, keywords=None,
+                           favored_group=DEFAULT_STARTUP_GROUP,
+                           fallback_eraser=0.0):
+        """Gets a brush robustly by name, by partial name, or a default.
+
+        If a brush named `name` exists, use that. Otherwise search though all
+        groups, `favored_group` first, for brushes with any of `keywords`
+        in their name. If that fails, construct a new default brush and use
+        a given value for its 'eraser' property.
+        """
+        if name is not None:
+            brush = self.get_brush_by_name(name)
+            if brush is not None:
+                return brush
+        if keywords is not None:
+            group_names = self.groups.keys()
+            group_names.sort()
+            if favored_group in self.groups:
+                group_names.remove(favored_group)
+                group_names.insert(0, favored_group)
+            for group_name in group_names:
+                for brush in self.groups[group_name]:
+                    for keyword in keywords:
+                        if keyword in brush.name:
+                            return brush
+        # Fallback
+        name = 'fallback-default'
+        if fallback_eraser != 0.0:
+            name += '-eraser'
+        brush = ManagedBrush(self, name)
+        brush.brushinfo["eraser"] = (fallback_eraser, {})
+        return brush
+
+
     def get_default_brush(self):
-        return self.get_brush_by_name(DEFAULT_BRUSH)
+        """Returns a suitable default drawing brush."""
+        return self.get_matching_brush(name=DEFAULT_BRUSH,
+                                keywords=["pencil", "charcoal", "sketch"])
+
 
     def get_default_eraser(self):
-        return self.get_brush_by_name(DEFAULT_ERASER)
+        """Returns a suitable default eraser brush."""
+        return self.get_matching_brush(name=DEFAULT_ERASER,
+                                keywords=["eraser", "knife", "smudge"],
+                                fallback_eraser=1.0)
+
+
 
     def load_groups(self):
         self.contexts = [None for i in xrange(10)]
