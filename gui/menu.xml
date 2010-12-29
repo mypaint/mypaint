@@ -15,6 +15,9 @@
       <menuitem action='NextScrap'/>
       <menuitem action='PrevScrap'/>
       <separator/>
+      <menuitem action='FrameWindow'/>
+      <menuitem action='FrameToggle'/>
+      <separator/>
       <menuitem action='Quit'/>
     </menu>
     <menu action='EditMenu'>

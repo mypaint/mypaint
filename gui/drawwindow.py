@@ -111,6 +111,8 @@ class Window(windowing.MainWindow):
             # name, stock id, label, accelerator, tooltip, callback
             ('FileMenu',    None, _('File')),
             ('Quit',         gtk.STOCK_QUIT, _('Quit'), '<control>q', None, self.quit_cb),
+            ('FrameWindow',  None, _('Document Frame...'), None, None, self.toggleWindow_cb),
+            ('FrameToggle',  None, _('Toggle Document Frame'), None, None, self.toggle_frame_cb),
 
             ('EditMenu',        None, _('Edit')),
             ('PreferencesWindow', gtk.STOCK_PREFERENCES, _('Preferences...'), None, None, self.toggleWindow_cb),
@@ -485,6 +487,10 @@ class Window(windowing.MainWindow):
 
         gtk.main_quit()
         return False
+
+    def toggle_frame_cb(self, action):
+        enabled = self.app.doc.model.frame_enabled
+        self.app.doc.model.set_frame_enabled(not enabled)
 
     def import_brush_pack_cb(self, *trash):
         format_id, filename = dialogs.open_dialog(_("Import brush package..."), self,

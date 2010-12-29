@@ -28,6 +28,7 @@ WINDOW_DEFAULTS = {
     'backgroundWindow':     ("500x400-275+75", False),
     # Debug menu
     'inputTestWindow':      (None, False),
+    'frameWindow':          (None, False),
 }
 
 # The main drawWindow gets centre stage, sized around the default set of
