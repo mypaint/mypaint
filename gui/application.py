@@ -103,10 +103,8 @@ class Application: # singleton
         """Applies the current settings."""
         self.update_input_mapping()
         self.update_input_devices()
-        try:
-            self.preferencesWindow.update_ui()
-        except AttributeError:
-            pass
+        prefs_win = self.windowmanager.get_window('preferencesWindow')
+        prefs_win.update_ui()
 
     def load_settings(self):
         '''Loads the settings from persistent storage. Uses defaults if
