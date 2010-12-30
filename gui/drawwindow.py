@@ -328,8 +328,11 @@ class Window(windowing.MainWindow):
                 self.app.doc.end_eraser_mode()
                 self.colorpick_state.activate(event)
         elif event.button == 3:
-            if self.app.preferences['input.enable_history_popup']:
+            action = self.app.preferences["input.right_click_action"]
+            if action == 'popup_color_history':
                 self.history_popup_state.activate(event)
+            elif action == 'popup_menu':
+                self.popupmenu_show_cb(event)
 
     def button_release_cb(self, win, event):
         #print event.device, event.button

@@ -16,6 +16,9 @@ from lib import mypaintlib
 import windowing, filehandling
 
 device_modes = ['disabled','screen','window']
+right_click_actions = [ ('popup_color_history', _("Show color history popup")),
+    ('popup_menu', _("Display the application menu")),
+    ('no_action', _("No action")),  ]
 RESPONSE_REVERT = 1
 
 class Window(windowing.Dialog):
@@ -29,6 +32,8 @@ class Window(windowing.Dialog):
                                   parent=app.drawWindow, flags=flags,
                                   buttons=buttons)
         self.connect('response', self.on_response)
+
+        self.in_update_ui = False
 
         # Set up widgets
         nb = gtk.Notebook()
@@ -95,10 +100,16 @@ class Window(windowing.Dialog):
         table.attach(combo, 2, 3, current_row, current_row + 1, xopt, yopt)
         current_row += 1
 
-        self.enable_history_popup_checkbox = c = gtk.CheckButton(_('Show color history on right-click'))
-        c.connect('toggled', self.enable_history_popup_toggled_cb)
-        table.attach(c, 1, 3, current_row, current_row + 1, xopt, yopt)
-        current_row += 1
+        # Right-click actions
+        l = gtk.Label(_('Right click action: '))
+        l.set_alignment(0.0, 0.5)
+        table.attach(l, 1, 2, current_row, current_row + 1, xopt, yopt)
+        right_click_action = self.app.preferences.get("input.right_click_action", None)
+        self.right_click_action_combobox = c = gtk.combo_box_new_text()
+        for a, s in right_click_actions:
+            c.append_text(s)
+        c.connect("changed", self.right_click_action_changed)  #XXX
+        table.attach(c, 2, 3, current_row, current_row + 1, xopt, yopt)
 
         ### Saving tab
         table = gtk.Table(5, 3)
@@ -183,6 +194,9 @@ class Window(windowing.Dialog):
 
     def update_ui(self):
         """Update the preferences window to reflect the current settings."""
+        if self.in_update_ui:
+            return
+        self.in_update_ui = True
         p = self.app.preferences
         self.cv.points = p['input.global_pressure_mapping']
         self.prefix_entry.set_text(p['saving.scrap_prefix'])
@@ -195,9 +209,17 @@ class Window(windowing.Dialog):
         saveformat_idx = self.app.filehandler.config2saveformat[saveformat_config]
         idx = self.defaultsaveformat_values.index(saveformat_idx)
         self.defaultsaveformat_combo.set_active(idx)
-        self.enable_history_popup_checkbox.set_active(p['input.enable_history_popup'])
 
+        rmb_action_config = p.get("input.right_click_action", None)
+        rmb_action_idx = i = 0
+        for a, s in right_click_actions:
+            if a == rmb_action_config:
+                rmb_action_idx = i
+                break
+            i += 1
+        self.right_click_action_combobox.set_active(rmb_action_idx)
         self.cv.queue_draw()
+        self.in_update_ui = False
 
     # Callbacks for widgets that manipulate settings
     def input_devices_combo_changed_cb(self, window):
@@ -205,8 +227,10 @@ class Window(windowing.Dialog):
         self.app.preferences['input.device_mode'] = mode
         self.app.apply_settings()
 
-    def enable_history_popup_toggled_cb(self, widget):
-        self.app.preferences['input.enable_history_popup'] = widget.get_active()
+    def right_click_action_changed(self, widget):
+        i = widget.get_property("active")
+        action = right_click_actions[i][0]
+        self.app.preferences["input.right_click_action"] = action
         self.app.apply_settings()
 
     def pressure_curve_changed_cb(self, widget):
