@@ -332,7 +332,7 @@ class Window(windowing.MainWindow):
             if action == 'popup_color_history':
                 self.history_popup_state.activate(event)
             elif action == 'popup_menu':
-                self.popupmenu_show_cb(event)
+                self.show_popupmenu(event=event)
 
     def button_release_cb(self, win, event):
         #print event.device, event.button
@@ -402,12 +402,24 @@ class Window(windowing.MainWindow):
             self.app.windowmanager.user_subwindows.show()
 
     def popupmenu_show_cb(self, action):
+        self.show_popupmenu()
+
+    def show_popupmenu(self, event=None):
         self.menubar.set_sensitive(False)   # excessive feedback?
-        self.popupmenu.popup(None, None, None, 1, 0)
-        if self.popupmenu_last_active is None:
-            self.popupmenu.select_first(True) # one less keypress
-        else:
-            self.popupmenu.select_item(self.popupmenu_last_active)
+        button = 1
+        time = 0
+        if event is not None:
+            if event.type == gdk.BUTTON_PRESS:
+                button = event.button
+                time = event.time
+        self.popupmenu.popup(None, None, None, button, time)
+        if event is None:
+            # We're responding to an Action, most probably the menu key.
+            # Open out the last highlighted menu to speed key navigation up.
+            if self.popupmenu_last_active is None:
+                self.popupmenu.select_first(True) # one less keypress
+            else:
+                self.popupmenu.select_item(self.popupmenu_last_active)
 
     def popupmenu_done_cb(self, *a, **kw):
         # Not sure if we need to bother with this level of feedback,
