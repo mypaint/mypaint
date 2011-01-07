@@ -244,8 +244,9 @@ class FileHandler(object):
         except document.SaveLoadError, e:
             self.app.message_dialog(str(e),type=gtk.MESSAGE_ERROR)
         else:
+            file_location = None
             if not export:
-                self.filename = os.path.abspath(filename)
+                file_location = self.filename = os.path.abspath(filename)
                 print 'Saved to', self.filename
                 gtk.recent_manager_get_default().add_full(helpers.filename2uri(self.filename),
                         {
@@ -256,7 +257,9 @@ class FileHandler(object):
                         }
                 )
             else:
-                print 'Exported to', os.path.abspath(filename)
+                file_location = os.path.abspath(filename)
+                print 'Exported to', os.path.abspath(file_location)
+            helpers.save_freedesktop_thumbnail(None, file_location)
 
     def update_preview_cb(self, file_chooser, preview):
         filename = file_chooser.get_preview_filename()
