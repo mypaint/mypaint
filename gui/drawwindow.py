@@ -267,6 +267,7 @@ class Window(windowing.MainWindow):
         key = event.keyval 
         ctrl = event.state & gdk.CONTROL_MASK
         shift = event.state & gdk.SHIFT_MASK
+        alt = event.state & gdk.MOD1_MASK
         #ANY_MODIFIER = gdk.SHIFT_MASK | gdk.MOD1_MASK | gdk.CONTROL_MASK
         #if event.state & ANY_MODIFIER:
         #    # allow user shortcuts with modifiers
@@ -276,8 +277,10 @@ class Window(windowing.MainWindow):
                 self.app.doc.tdw.start_drag(self.app.doc.dragfunc_rotate)
             elif ctrl:
                 self.app.doc.tdw.start_drag(self.app.doc.dragfunc_zoom)
+            elif alt:
+                self.app.doc.tdw.start_drag(self.app.doc.dragfunc_frame)
             else:
-                self.app.doc.tdw.start_drag(self.app.doc.dragfunc_translate)
+                self.app.doc.tdw.start_drag(self.app.doc.dragfunc_translate)            
         else: return False
         return True
 
@@ -286,6 +289,7 @@ class Window(windowing.MainWindow):
             self.app.doc.tdw.stop_drag(self.app.doc.dragfunc_translate)
             self.app.doc.tdw.stop_drag(self.app.doc.dragfunc_rotate)
             self.app.doc.tdw.stop_drag(self.app.doc.dragfunc_zoom)
+            self.app.doc.tdw.stop_drag(self.app.doc.dragfunc_frame)
             return True
         return False
 

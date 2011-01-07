@@ -461,6 +461,19 @@ class Document(object):
     #    self.tdw.zoom(math.exp(-dy/100.0))
     #    self.tdw.rotate(2*math.pi*dx/500.0)
 
+    def dragfunc_frame(self, dx, dy, x, y):
+        if not self.model.frame_enabled:
+            return
+
+        x, y, w, h = self.model.get_frame()
+
+        # Find the difference in document coordinates
+        cr = self.tdw.get_model_coordinates_cairo_context()
+        x0, y0 = cr.device_to_user(x, y)
+        x1, y1 = cr.device_to_user(x+dx, y+dy)
+
+        self.model.move_frame(dx=x1-x0, dy=y1-y0)
+
     def strokeblink_state_enter(self):
         l = layer.Layer()
         self.si.render_overlay(l.surface)

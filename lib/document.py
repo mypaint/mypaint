@@ -51,9 +51,37 @@ class Document():
 
         self._frame = [0, 0, 0, 0]
         self._frame_enabled = False
+        # Used by move_frame() to accumulate values
+        self._frame_dx = 0.0
+        self._frame_dy = 0.0
 
     def get_frame(self):
         return self._frame
+
+    def move_frame(self, dx=0.0, dy=0.0):
+        """Move the frame. Accumulates changes and moves the frame once
+        the accumulated change reaches the minimum move step."""
+        # FIXME: Should be 1 (pixel aligned), not tile aligned
+        # This is due to PNG saving having to be tile aligned
+        min_step = N
+
+        def round_to_n(value, n):
+            return int(round(value/n)*n)
+
+        x, y, w, h = self.get_frame()
+
+        self._frame_dx += dx
+        self._frame_dy += dy
+        step_x = round_to_n(self._frame_dx, min_step)
+        step_y = round_to_n(self._frame_dy, min_step)
+
+        if step_x:
+            self.set_frame(x=x+step_x)
+            self._frame_dx -= step_x
+
+        if step_y:
+            self.set_frame(y=y+step_y)
+            self._frame_dy -= step_y
 
     def set_frame(self, x=None, y=None, width=None, height=None):
         """Set the size of the frame. Pass None to indicate no-change."""
