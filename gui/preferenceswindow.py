@@ -16,9 +16,9 @@ from lib import mypaintlib
 import windowing, filehandling
 
 device_modes = [
-    ('disabled', _("Disabled")),
-    ('screen', _("Screen")),
-    ('window', _("Window")),  ]
+    ('disabled', _("Disabled (no pressure sensitivity)")),
+    ('screen', _("Screen (normal)")),
+    ('window', _("Window (not recommended)")),  ]
 
 RESPONSE_REVERT = 1
 
