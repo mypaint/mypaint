@@ -246,11 +246,6 @@ class TiledDrawWidget(gtk.DrawingArea):
             return
 
         if event.button == 1:
-            # straight line
-            if (event.state & gdk.SHIFT_MASK) and self.last_painting_pos:
-                dst = self.get_cursor_in_model_coordinates()
-                self.doc.straight_line(self.last_painting_pos, dst)
-
             # mouse button pressed (while painting without pressure information)
             if not self.last_event_had_pressure_info:
                 # For the mouse we don't get a motion event for "pressure"
@@ -265,6 +260,11 @@ class TiledDrawWidget(gtk.DrawingArea):
         # Outsiders can access this via gui.document
         for func in self._input_stroke_ended_observers:
             func(event)
+
+    def straight_line_from_last_painting_pos(self):
+        if self.last_painting_pos:
+            dst = self.get_cursor_in_model_coordinates()
+            self.doc.straight_line(self.last_painting_pos, dst)
 
     def canvas_modified_cb(self, x1, y1, w, h):
         if not self.window:

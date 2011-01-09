@@ -297,13 +297,14 @@ class Window(windowing.MainWindow):
 
     def button_press_cb(self, win, event):
         #print event.device, event.button
-        ctrl = event.state & gdk.CONTROL_MASK
-        alt  = event.state & gdk.MOD1_MASK
-        shift = event.state & gdk.SHIFT_MASK
+
+        ## Ignore accidentals
+        # Single button-presses only, not 2ble/3ple
         if event.type != gdk.BUTTON_PRESS:
             # ignore the extra double-click event
-            return
-        if event.button == 2:
+            return False
+
+        if event.button != 1:
             # check whether we are painting (accidental)
             if event.state & gdk.BUTTON1_MASK:
                 # Do not allow dragging in the middle of
@@ -315,31 +316,74 @@ class Window(windowing.MainWindow):
                 # some tablet PCs are not able to produce a
                 # middle-mouse click without reporting pressure.
                 # https://gna.org/bugs/index.php?15907
-                pass
-            else:
+                return False
+
+        # Pick a suitable config option
+        ctrl = event.state & gdk.CONTROL_MASK
+        alt  = event.state & gdk.MOD1_MASK
+        shift = event.state & gdk.SHIFT_MASK
+        if shift:
+            modifier_str = "_shift"
+        elif alt or ctrl:
+            modifier_str = "_ctrl"
+        else:
+            modifier_str = ""
+        prefs_name = "input.button%d%s_action" % (event.button, modifier_str)
+        action_name = self.app.preferences.get(prefs_name, "no_action")
+
+        # No-ops
+        if action_name == 'no_action':
+            return True  # We handled it by doing nothing
+
+        # Straight line
+        # Really belongs in the tdw, but this is the only object with access
+        # to the application preferences.
+        if action_name == 'straight_line':
+            self.app.doc.tdw.straight_line_from_last_painting_pos()
+            return True
+
+        # View control
+        if action_name.endswith("_canvas"):
+            dragfunc = None
+            if action_name == "pan_canvas":
                 dragfunc = self.app.doc.dragfunc_translate
-                if shift:
-                    dragfunc = self.app.doc.dragfunc_rotate
-                elif ctrl:
-                    dragfunc = self.app.doc.dragfunc_zoom
+            elif action_name == "zoom_canvas":
+                dragfunc = self.app.doc.dragfunc_zoom
+            elif action_name == "rotate_canvas":
+                dragfunc = self.app.doc.dragfunc_rotate
+            if dragfunc is not None:
                 self.app.doc.tdw.start_drag(dragfunc)
-        elif event.button == 1:
-            if (ctrl or alt) and not (event.state & (gdk.BUTTON2_MASK | gdk.BUTTON3_MASK)):
-                self.app.doc.end_eraser_mode()
-                self.colorpick_state.activate(event)
-        elif event.button == 3:
-            action = self.app.preferences["input.right_click_action"]
-            if action == 'popup_color_history':
-                self.history_popup_state.activate(event)
-            elif action == 'popup_menu':
-                self.show_popupmenu(event=event)
+                return True
+            return False
+
+        # Application menu
+        if action_name == 'popup_menu':
+            self.show_popupmenu(event=event)
+            return True
+
+        # Popup states, typically for changing colour. Kill eraser mode and
+        # then enter them the usual way.
+        if action_name in self.popup_states:
+            state = self.popup_states[action_name]
+            self.app.doc.end_eraser_mode()
+            state.activate(event)
+            return True
+
+        # Dispatch regular GTK events.
+        for ag in self.action_group, self.app.doc.action_group:
+            action = ag.get_action(action_name)
+            if action is not None:
+                action.activate()
+                return True
 
     def button_release_cb(self, win, event):
         #print event.device, event.button
-        if event.button == 2:
-            self.app.doc.tdw.stop_drag(self.app.doc.dragfunc_translate)
-            self.app.doc.tdw.stop_drag(self.app.doc.dragfunc_rotate)
-            self.app.doc.tdw.stop_drag(self.app.doc.dragfunc_zoom)
+        tdw = self.app.doc.tdw
+        if tdw.dragfunc is not None:
+            tdw.stop_drag(self.app.doc.dragfunc_translate)
+            tdw.stop_drag(self.app.doc.dragfunc_rotate)
+            tdw.stop_drag(self.app.doc.dragfunc_zoom)
+        return False
 
     def scroll_cb(self, win, event):
         d = event.direction

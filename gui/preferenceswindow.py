@@ -15,11 +15,42 @@ from functionwindow import CurveWidget
 from lib import mypaintlib
 import windowing, filehandling
 
-device_modes = ['disabled','screen','window']
-right_click_actions = [ ('popup_color_history', _("Show color history popup")),
-    ('popup_menu', _("Display the application menu")),
-    ('no_action', _("No action")),  ]
+device_modes = [
+    ('disabled', _("Disabled")),
+    ('screen', _("Screen")),
+    ('window', _("Window")),  ]
+
 RESPONSE_REVERT = 1
+
+# Rebindable mouse buttons
+mouse_button_actions = [
+    # These can be names of actions within ActionGroups defined elsewhere,
+    # or names of actions the handler interprets itself.
+    # (action_or_whatever, label)
+    ('no_action', _("No action")),  #[0] is the default for the comboboxes
+    ('ColorHistoryPopup', _("Color History")),
+    ('popup_menu', _("Menu")),
+    ('ColorPickerPopup', _("Pick Color")),
+    ('PickContext', _('Pick Context (layer, brush and color)')),
+    ('PickLayer', _('Select Layer at Cursor')),
+    ('pan_canvas', _("Pan")),
+    ('zoom_canvas', _("Zoom")),
+    ('rotate_canvas', _("Rotate")),
+    ('straight_line', _("Straight Line")),
+    ('ColorChangerPopup', _("Color Changer")),
+    ('ColorRingPopup', _("Color Ring")),  ]
+mouse_button_prefs = [
+    # Used for creating the menus,
+    # (pref_name, label)
+    ("input.button1_shift_action", _("Button 1 + Shift")),
+    ("input.button1_ctrl_action",  _("Button 1 + Ctrl (or Alt)")),
+    ("input.button2_action",       _("Button 2")),
+    ("input.button2_shift_action", _("Button 2 + Shift")),
+    ("input.button2_ctrl_action",  _("Button 2 + Ctrl (or Alt)")),
+    ("input.button3_action",       _("Button 3")),
+    ("input.button3_shift_action", _("Button 3 + Shift")),
+    ("input.button3_ctrl_action",  _("Button 3 + Ctrl (or Alt)")),
+    ]
 
 class Window(windowing.Dialog):
     '''Window for manipulating preferences.'''
@@ -48,7 +79,7 @@ class Window(windowing.Dialog):
         table.set_row_spacings(6)
         current_row = 0
         # TRANSLATORS: Tab label
-        nb.append_page(table, gtk.Label(_('Input')))
+        nb.append_page(table, gtk.Label(_('Pen Input')))
         xopt = gtk.FILL | gtk.EXPAND
         yopt = gtk.FILL
 
@@ -61,7 +92,7 @@ class Window(windowing.Dialog):
         l = gtk.Label()
         l.set_alignment(0.0, 0.5)
         l.set_line_wrap(True)
-        l.set_markup(_('Scale input pressure to brush pressure. This is applied to all input devices. The mouse button have an input pressure of 0.5 when pressed.'))
+        l.set_markup(_('Scale input pressure to brush pressure. This is applied to all input devices. The mouse button has an input pressure of 0.5 when pressed.'))
         table.attach(l, 1, 3, current_row, current_row + 1, xopt, yopt)
         current_row += 1
 
@@ -94,22 +125,43 @@ class Window(windowing.Dialog):
         l.set_alignment(0.0, 0.5)
         table.attach(l, 1, 2, current_row, current_row + 1, xopt, yopt)
         combo = self.input_devices_combo = gtk.combo_box_new_text()
-        for s in device_modes:
+        for m, s in device_modes:
             combo.append_text(s)
         combo.connect('changed', self.input_devices_combo_changed_cb)
         table.attach(combo, 2, 3, current_row, current_row + 1, xopt, yopt)
         current_row += 1
 
-        # Right-click actions
-        l = gtk.Label(_('Right click action: '))
+        ### Buttons tab
+        table = gtk.Table(5, 3)
+        table.set_border_width(12)
+        table.set_col_spacing(0, 12)
+        table.set_col_spacing(1, 12)
+        table.set_row_spacings(6)
+        current_row = 0
+        nb.append_page(table, gtk.Label(_('Buttons')))
+        xopt = gtk.FILL | gtk.EXPAND
+        yopt = gtk.FILL
+
+        l = gtk.Label()
         l.set_alignment(0.0, 0.5)
-        table.attach(l, 1, 2, current_row, current_row + 1, xopt, yopt)
-        right_click_action = self.app.preferences.get("input.right_click_action", None)
-        self.right_click_action_combobox = c = gtk.combo_box_new_text()
-        for a, s in right_click_actions:
-            c.append_text(s)
-        c.connect("changed", self.right_click_action_changed)  #XXX
-        table.attach(c, 2, 3, current_row, current_row + 1, xopt, yopt)
+        l.set_markup(_('<b>Pen and mouse button mappings</b>'))
+        table.attach(l, 0, 3, current_row, current_row + 1, xopt, yopt)
+        current_row += 1
+
+        # Mouse button actions
+        self.mouse_action_comboboxes = {}
+        for pref_name, label_str in mouse_button_prefs:
+            l = gtk.Label(label_str)
+            l.set_alignment(0.0, 0.5)
+            table.attach(l, 1, 2, current_row, current_row + 1, xopt, yopt)
+            action_name = self.app.preferences.get(pref_name, None)
+            c = gtk.combo_box_new_text()
+            self.mouse_action_comboboxes[pref_name] = c
+            for a, s in mouse_button_actions:
+                c.append_text(s)
+            c.connect("changed", self.mouse_button_action_changed, pref_name)
+            table.attach(c, 2, 3, current_row, current_row + 1, xopt, yopt)
+            current_row += 1
 
         ### Saving tab
         table = gtk.Table(5, 3)
@@ -200,8 +252,15 @@ class Window(windowing.Dialog):
         p = self.app.preferences
         self.cv.points = p['input.global_pressure_mapping']
         self.prefix_entry.set_text(p['saving.scrap_prefix'])
-        mode = device_modes.index(p['input.device_mode'])
-        self.input_devices_combo.set_active(mode)
+        # Device mode
+        mode_config = p.get("input.device_mode", None)
+        mode_idx = i = 0
+        for mode_name, junk in device_modes:
+            if mode_config == mode_name:
+                mode_idx = i
+                break
+            i += 1
+        self.input_devices_combo.set_active(mode_idx)
         zoom = self.app.doc.zoomlevel_values[self.app.doc.zoomlevel]
         zoomlevel = self.defaultzoom_values.index(zoom)
         self.defaultzoom_combo.set_active(zoomlevel)
@@ -209,28 +268,31 @@ class Window(windowing.Dialog):
         saveformat_idx = self.app.filehandler.config2saveformat[saveformat_config]
         idx = self.defaultsaveformat_values.index(saveformat_idx)
         self.defaultsaveformat_combo.set_active(idx)
-
-        rmb_action_config = p.get("input.right_click_action", None)
-        rmb_action_idx = i = 0
-        for a, s in right_click_actions:
-            if a == rmb_action_config:
-                rmb_action_idx = i
-                break
-            i += 1
-        self.right_click_action_combobox.set_active(rmb_action_idx)
+        # Mouse button
+        for pref_name, junk in mouse_button_prefs:
+            action_config = p.get(pref_name, None)
+            action_idx = i = 0
+            for action_name, junk in mouse_button_actions:
+                if action_config == action_name:
+                    action_idx = i
+                    break
+                i += 1
+            combobox = self.mouse_action_comboboxes[pref_name]
+            combobox.set_active(action_idx)
         self.cv.queue_draw()
         self.in_update_ui = False
 
     # Callbacks for widgets that manipulate settings
-    def input_devices_combo_changed_cb(self, window):
-        mode = self.input_devices_combo.get_active_text()
+    def input_devices_combo_changed_cb(self, widget):
+        i = widget.get_property("active")
+        mode = device_modes[i][0]
         self.app.preferences['input.device_mode'] = mode
         self.app.apply_settings()
 
-    def right_click_action_changed(self, widget):
+    def mouse_button_action_changed(self, widget, pref_name):
         i = widget.get_property("active")
-        action = right_click_actions[i][0]
-        self.app.preferences["input.right_click_action"] = action
+        action = mouse_button_actions[i][0]
+        self.app.preferences[pref_name] = action
         self.app.apply_settings()
 
     def pressure_curve_changed_cb(self, widget):

@@ -128,11 +128,18 @@ class Application: # singleton
             'saving.scrap_prefix': '~/MyPaint/scrap',
             'input.device_mode': 'screen',
             'input.global_pressure_mapping': [(0.0, 1.0), (1.0, 0.0)],
-            'input.right_click_action': 'popup_color_history',
             'view.default_zoom': 1.0,
             'saving.default_format': 'openraster',
             'brushmanager.selected_brush' : None,
             'brushmanager.selected_groups' : [],
+            "input.button1_shift_action": 'straight_line',
+            "input.button1_ctrl_action":  'ColorPickerPopup',
+            "input.button2_action":       'pan_canvas',
+            "input.button2_shift_action": 'rotate_canvas',
+            "input.button2_ctrl_action":  'zoom_canvas',
+            "input.button3_action":       'ColorHistoryPopup',
+            "input.button3_shift_action": 'no_action',
+            "input.button3_ctrl_action":  'no_action',
         }
         self.preferences = DEFAULT_CONFIG
         try: 
