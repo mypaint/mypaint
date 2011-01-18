@@ -22,7 +22,7 @@ def get_brush_cursor(radius, is_eraser):
         max_cursor_size = max(display.get_maximal_cursor_size())
 
     d = int(radius)*2
-    if d < 6: d = 6
+    if d < 3: d = 3
     if is_eraser and d < 8: d = 8
     if d+1 > max_cursor_size:
         d = max_cursor_size-1
