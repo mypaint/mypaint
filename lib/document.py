@@ -500,6 +500,7 @@ class Document():
             if not src.lower().endswith('.png'):
                 print 'Warning: ignoring non-png layer'
                 continue
+            src = src.encode('utf-8')
             pixbuf = get_pixbuf(src)
             name = a.get('name', '')
             x = int(a.get('x', '0'))
