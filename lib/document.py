@@ -457,7 +457,15 @@ class Document():
             t1 = time.time()
             tmp = join(tempdir, 'tmp.png')
             f = open(tmp, 'wb')
-            f.write(z.read(filename))
+
+            try:
+                data = z.read(filename)
+            except KeyError:
+                # support for bad zip files (saved by old versions of the GIMP ORA plugin)
+                data = z.read(filename.encode('utf-8'))
+                print 'WARNING: bad OpenRaster ZIP file. There is an utf-8 encoded filename that does not have the utf-8 flag set:', repr(filename)
+
+            f.write(data)
             f.close()
             res = gdk.pixbuf_new_from_file(tmp)
             os.remove(tmp)
@@ -500,7 +508,6 @@ class Document():
             if not src.lower().endswith('.png'):
                 print 'Warning: ignoring non-png layer'
                 continue
-            src = src.encode('utf-8')
             pixbuf = get_pixbuf(src)
             name = a.get('name', '')
             x = int(a.get('x', '0'))
