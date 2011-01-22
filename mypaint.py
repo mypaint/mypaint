@@ -73,7 +73,7 @@ def get_paths():
     if homepath == '~':
         confpath = join(prefix, 'UserData')
     else:
-        confpath = join(homepath, '.mypaint/')
+        confpath = join(homepath, '.mypaint')
 
     assert isinstance(datapath, unicode)
     assert isinstance(confpath, unicode)
