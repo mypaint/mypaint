@@ -105,8 +105,8 @@ class Document(object):
             ('ResetView',   gtk.STOCK_ZOOM_100, _('Reset (Zoom, Rotation, Mirror)'), 'F12', None, self.reset_view_cb),
             ('ZoomIn',       gtk.STOCK_ZOOM_IN, _('Zoom In (at cursor)'), 'period', None, self.zoom_cb),
             ('ZoomOut',      gtk.STOCK_ZOOM_OUT, _('Zoom Out'), 'comma', None, self.zoom_cb),
-            ('RotateLeft',   None, _('Rotate Counterclockwise'), None, None, self.rotate_cb),
-            ('RotateRight',  None, _('Rotate Clockwise'), None, None, self.rotate_cb),
+            ('RotateLeft',   None, _('Rotate Counterclockwise'), '<control>Left', None, self.rotate_cb),
+            ('RotateRight',  None, _('Rotate Clockwise'), '<control>Right', None, self.rotate_cb),
             ('MirrorHorizontal', None, _('Mirror Horizontal'), 'i', None, self.mirror_horizontal_cb),
             ('MirrorVertical', None, _('Mirror Vertical'), 'u', None, self.mirror_vertical_cb),
             ('SoloLayer',    None, _('Layer Solo'), 'Home', None, self.solo_layer_cb), # TODO: make toggle action
