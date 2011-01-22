@@ -261,8 +261,7 @@ class BrushManager:
             for brushname in brushes:
                 # extract the brush from the zip
                 assert (brushname + '.myb') in zip.namelist()
-                # looks like we need to encode to utf-8 again... bug in zipfile,
-                # which handles unicode fine otherwise...
+                # Support for utf-8 ZIP filenames that don't have the utf-8 bit set.
                 brushname_utf8 = brushname.encode('utf-8')
                 try:
                     myb_data = zip.read(brushname + '.myb')
