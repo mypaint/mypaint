@@ -144,7 +144,7 @@ class TiledDrawWidget(gtk.DrawingArea):
             return
 
         if self.dragfunc:
-            self.dragfunc(dx, dy)
+            self.dragfunc(dx, dy, event.x, event.y)
             return
 
         cr = self.get_model_coordinates_cairo_context()
@@ -488,12 +488,16 @@ class TiledDrawWidget(gtk.DrawingArea):
         else:
             self.queue_draw()
 
+    def get_center(self):
+        w, h = self.window.get_size()
+        return w/2.0, h/2.0
+
     def rotozoom_with_center(self, function, at_pointer=False):
         if at_pointer and self.has_pointer and self.last_event_x is not None:
             cx, cy = self.last_event_x, self.last_event_y
         else:
             w, h = self.window.get_size()
-            cx, cy = w/2.0, h/2.0
+            cx, cy = self.get_center()
         cr = self.get_model_coordinates_cairo_context()
         cx_device, cy_device = cr.device_to_user(cx, cy)
         function()
