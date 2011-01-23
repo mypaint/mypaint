@@ -78,6 +78,8 @@ def paint(gui):
 
     dw.fullscreen_cb()
     gui.wait_for_idle()
+    gui.wait_for_duration(1.5) # fullscreen seems to take some time to get through...
+    gui.wait_for_idle()
 
     events = loadtxt('painting30sec.dat.gz')
     events = list(events)

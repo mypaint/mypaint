@@ -20,6 +20,11 @@ class GUI:
         os.system('cp -a brushes ' + self.tempdir)
         self.app = application.Application(datapath=u'..', confpath=unicode(self.tempdir), filenames=[])
 
+        # ignore mouse movements during testing (creating extra strokes)
+        def motion_ignore_cb(*trash1, **trash2):
+            pass
+        self.app.doc.tdw.motion_notify_cb = motion_ignore_cb
+
         # fatal exceptions, please
         def excepthook(exctyp, value, tb):
             traceback.print_exception (exctyp, value, tb, None, sys.stderr)
