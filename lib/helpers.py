@@ -7,14 +7,11 @@
 # (at your option) any later version.
 
 from math import floor, ceil
-import colorsys, urllib, gc
+import os, sys, hashlib, zipfile, colorsys, urllib, gc
 
 from gtk import gdk # for gdk_pixbuf stuff
 import mypaintlib
 
-import hashlib
-import os
-import zipfile
 
 try:
     from json import dumps as json_dumps, loads as json_loads
@@ -125,8 +122,8 @@ def get_freedesktop_thumbnail(filename):
     """
     uri = filename2uri(filename)
     file_hash = hashlib.md5(uri).hexdigest()
-    tb_filename_normal = os.path.join(os.path.expanduser(u'~/.thumbnails/normal'), file_hash) + '.png'
-    tb_filename_large = os.path.join(os.path.expanduser(u'~/.thumbnails/large'), file_hash) + '.png'
+    tb_filename_normal = os.path.join(expanduser_unicode(u'~/.thumbnails/normal'), file_hash) + '.png'
+    tb_filename_large = os.path.join(expanduser_unicode(u'~/.thumbnails/large'), file_hash) + '.png'
     if os.path.isfile(tb_filename_normal):
         pixbuf = gdk.pixbuf_new_from_file(tb_filename_normal)
     elif os.path.isfile(tb_filename_large):
@@ -140,7 +137,7 @@ def save_freedesktop_thumbnail(pixbuf, filename):
     """
     Saves a thumbnail according to the FDO spec.
     """
-    directory = os.path.expanduser(u'~/.thumbnails/normal')
+    directory = expanduser_unicode(u'~/.thumbnails/normal')
     if not os.path.exists(directory):
         os.makedirs(directory, 0700)
     uri = filename2uri(filename)
@@ -287,6 +284,14 @@ def record_memory_leak_status(print_diff=False):
     else:
         print 'MEM: Stored stats to compare with the next info collection.'
     old_stats = new_stats
+
+def expanduser_unicode(s):
+    # expanduser() doesn't handle non-ascii characters in environment variables
+    # https://gna.org/bugs/index.php?17111
+    s = s.encode(sys.getfilesystemencoding())
+    s = os.path.expanduser(s)
+    s = s.decode(sys.getfilesystemencoding())
+    return s
 
 if __name__ == '__main__':
     big = Rect(-3, 2, 180, 222)
