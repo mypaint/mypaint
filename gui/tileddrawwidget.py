@@ -510,10 +510,12 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.rotozoom_with_center(f, at_pointer=True)
 
     def rotate(self, angle_step):
+        if self.mirrored: angle_step = -angle_step
         def f(): self.rotation += angle_step
         self.rotozoom_with_center(f)
 
     def set_rotation(self, angle):
+        if self.mirrored: angle = -angle
         def f(): self.rotation = angle
         self.rotozoom_with_center(f)
 
