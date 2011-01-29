@@ -429,7 +429,7 @@ class FileHandler(object):
 
     def get_scrap_prefix(self):
         prefix = self.app.preferences['saving.scrap_prefix']
-        prefix = os.path.expanduser(prefix.decode('utf-8'))
+        prefix = helpers.expanduser_unicode(prefix.decode('utf-8'))
         prefix = os.path.abspath(prefix)
         if os.path.isdir(prefix):
             if not prefix.endswith(os.path.sep):

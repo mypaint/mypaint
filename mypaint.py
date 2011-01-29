@@ -69,7 +69,8 @@ def get_paths():
         print datapath
         raise sys.exit(1)
 
-    homepath =  os.path.expanduser(u'~')
+    from lib import helpers
+    homepath =  helpers.expanduser_unicode(u'~')
     if homepath == '~':
         confpath = join(prefix, 'UserData')
     else:
