@@ -240,7 +240,7 @@ class FileHandler(object):
             x, y, w, h =  self.doc.model.get_bbox()
             if w == 0 and h == 0:
                 raise document.SaveLoadError, _('Did not save, the canvas is empty.')
-            self.doc.model.save(filename, **options)
+            thumbnail_pixbuf = self.doc.model.save(filename, **options)
         except document.SaveLoadError, e:
             self.app.message_dialog(str(e),type=gtk.MESSAGE_ERROR)
         else:
@@ -259,16 +259,19 @@ class FileHandler(object):
             else:
                 file_location = os.path.abspath(filename)
                 print 'Exported to', os.path.abspath(file_location)
-            helpers.save_freedesktop_thumbnail(None, file_location)
+
+            if not thumbnail_pixbuf:
+                thumbnail_pixbuf = self.doc.model.render_thumbnail()
+            helpers.freedesktop_thumbnail(file_location, thumbnail_pixbuf)
 
     def update_preview_cb(self, file_chooser, preview):
         filename = file_chooser.get_preview_filename()
         if filename:
             filename = filename.decode('utf-8')
-            pixbuf = helpers.get_freedesktop_thumbnail(filename)
+            pixbuf = helpers.freedesktop_thumbnail(filename)
             if pixbuf:
-                # if pixbuf is smaller than 128px in width, copy it onto a transparent 128x128 pixbuf
-                pixbuf = helpers.pixbuf_thumbnail(pixbuf, 128, 128, True)
+                # if pixbuf is smaller than 256px in width, copy it onto a transparent 256x256 pixbuf
+                pixbuf = helpers.pixbuf_thumbnail(pixbuf, 256, 256, True)
                 preview.set_from_pixbuf(pixbuf)
                 file_chooser.set_preview_widget_active(True)
             else:

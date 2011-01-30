@@ -112,46 +112,70 @@ def gdkpixbuf2numpy(pixbuf):
     arr = pixbuf.get_pixels_array()
     return mypaintlib.gdkpixbuf_numeric2numpy(arr)
 
-def get_freedesktop_thumbnail(filename):
+def freedesktop_thumbnail(filename, pixbuf=None):
     """
-    Tries to fetch a thumbnail from ~/.thumbnails.
-    If there is no thumbnail for the specified filename,
-    a new thumbnail will be generated and stored according to the FDO spec.
+    Fetch or (re-)generate the thumbnail in ~/.thumbnails.
+
+    If there is no thumbnail for the specified filename, a new
+    thumbnail will be generated and stored according to the FDO spec.
     A thumbnail will also get regenerated if the MTimes (as in "modified")
     of thumbnail and original image do not match.
+
+    When pixbuf is given, it will be scaled and used as thumbnail
+    instead of reading the file itself. In this case the file is still
+    accessed to get its mtime, so this method must not be called if
+    the file is still open.
+
+    Returns the thumbnail.
     """
+
     uri = filename2uri(filename)
     file_hash = hashlib.md5(uri).hexdigest()
-    tb_filename_normal = os.path.join(expanduser_unicode(u'~/.thumbnails/normal'), file_hash) + '.png'
-    tb_filename_large = os.path.join(expanduser_unicode(u'~/.thumbnails/large'), file_hash) + '.png'
-    if os.path.isfile(tb_filename_normal):
-        pixbuf = gdk.pixbuf_new_from_file(tb_filename_normal)
-    elif os.path.isfile(tb_filename_large):
-        pixbuf = gdk.pixbuf_new_from_file(tb_filename_large)
-    else:
-        pixbuf = None
-    pixbuf = save_freedesktop_thumbnail(pixbuf, filename) # save thumbnail or regenerate if MTimes do not match
-    return pixbuf
 
-def save_freedesktop_thumbnail(pixbuf, filename):
-    """
-    Saves a thumbnail according to the FDO spec.
-    """
     directory = expanduser_unicode(u'~/.thumbnails/normal')
+    tb_filename_normal = os.path.join(directory, file_hash) + '.png'
     if not os.path.exists(directory):
         os.makedirs(directory, 0700)
-    uri = filename2uri(filename)
-    file_hash = hashlib.md5(uri).hexdigest()
-    tb_filename_normal = os.path.join(directory, file_hash) + '.png'
+    directory = expanduser_unicode(u'~/.thumbnails/large')
+    tb_filename_large = os.path.join(directory, file_hash) + '.png'
+    if not os.path.exists(directory):
+        os.makedirs(directory, 0700)
+
     file_mtime = str(int(os.stat(filename).st_mtime))
-    if (not os.path.isfile(tb_filename_normal)) or (not pixbuf) or (file_mtime != pixbuf.get_option("tEXt::Thumb::MTime")):
-        pixbuf = get_pixbuf(filename)
-        if pixbuf:
-            pixbuf = scale_proportionally(pixbuf, 128,128)
-            pixbuf.save(tb_filename_normal, 'png', {"tEXt::Thumb::MTime" : file_mtime, "tEXt::Thumb::URI" : uri})
-            return pixbuf
+
+    save_thumbnail = True
+
+    if filename.lower().endswith('.ora'):
+        # don't bother with normal (128x128) thumbnails when we can
+        # get a large one (256x256) from the file in an instant
+        acceptable_tb_filenames = [tb_filename_large]
     else:
-        return pixbuf
+        # prefer the large thumbnail, but accept the normal one if
+        # available, for the sake of performance
+        acceptable_tb_filenames = [tb_filename_large, tb_filename_normal]
+
+    for fn in acceptable_tb_filenames:
+        if not pixbuf and os.path.isfile(fn):
+            # use the largest stored thumbnail that isn't obsolete
+            pixbuf = gdk.pixbuf_new_from_file(fn)
+            if file_mtime == pixbuf.get_option("tEXt::Thumb::MTime"):
+                save_thumbnail = False
+            else:
+                pixbuf = None
+
+    if not pixbuf:
+        # try to load a pixbuf from the file
+        pixbuf = get_pixbuf(filename)
+
+    if pixbuf:
+        pixbuf = scale_proportionally(pixbuf, 256,256)
+        if save_thumbnail:
+            pixbuf.save(tb_filename_large, 'png', {"tEXt::Thumb::MTime" : file_mtime, "tEXt::Thumb::URI" : uri})
+            # save normal size too, in case some implementations don't bother with large thumbnails
+            pixbuf_normal = scale_proportionally(pixbuf, 128,128)
+            pixbuf_normal.save(tb_filename_normal, 'png', {"tEXt::Thumb::MTime" : file_mtime, "tEXt::Thumb::URI" : uri})
+
+    return pixbuf
 
 def get_pixbuf(filename):
     try:
@@ -174,9 +198,9 @@ def scale_proportionally(pixbuf, w, h, shrink_only=True):
     if shrink_only and scale >= 1:
         return pixbuf
     new_width, new_height = int(width * scale), int(height * scale)
-    if new_width > 0 and new_height > 0:
-        pixbuf = pixbuf.scale_simple(new_width, new_height, gdk.INTERP_BILINEAR)
-    return pixbuf
+    new_width = max(new_width, 1)
+    new_height = max(new_height, 1)
+    return pixbuf.scale_simple(new_width, new_height, gdk.INTERP_BILINEAR)
 
 def pixbuf_thumbnail(src, w, h, alpha=False):
     """

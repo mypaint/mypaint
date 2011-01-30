@@ -298,6 +298,20 @@ class Document():
     def render_as_pixbuf(self, *args, **kwargs):
         return pixbufsurface.render_as_pixbuf(self, *args, **kwargs)
 
+    def render_thumbnail(self):
+        t0 = time.time()
+        x, y, w, h = self.get_bbox()
+        mipmap_level = 0
+        while mipmap_level < tiledsurface.MAX_MIPMAP_LEVEL and max(w, h) >= 512:
+            mipmap_level += 1
+            x, y, w, h = x/2, y/2, w/2, h/2
+
+        pixbuf = self.render_as_pixbuf(x, y, w, h, mipmap_level=mipmap_level)
+        assert pixbuf.get_width() == w and pixbuf.get_height() == h
+        pixbuf = helpers.scale_proportionally(pixbuf, 256, 256)
+        print 'Rendered thumbnail in', time.time() - t0, 'seconds.'
+        return pixbuf
+
     def save_png(self, filename, alpha=False, multifile=False):
         if multifile:
             self.save_multifile_png(filename)
@@ -412,22 +426,8 @@ class Document():
         t2 = time.time()
         print '  starting to render full image for thumbnail...'
 
-        x, y, w, h = x0, y0, w0, h0
-        mipmap_level = 0
-        while mipmap_level < tiledsurface.MAX_MIPMAP_LEVEL and max(w, h) >= 512:
-            mipmap_level += 1
-            x, y, w, h = x/2, y/2, w/2, h/2
-
-        pixbuf = self.render_as_pixbuf(x, y, w, h, mipmap_level=mipmap_level)
-        assert pixbuf.get_width() == w and pixbuf.get_height() == h
-        if w > h:
-            w, h = 256, max(h*256/w, 1)
-        else:
-            w, h = max(w*256/h, 1), 256
-        t1 = time.time()
-        pixbuf = pixbuf.scale_simple(w, h, gdk.INTERP_BILINEAR)
-        print '  %.3fs scaling thumbnail' % (time.time() - t1)
-        store_pixbuf(pixbuf, 'Thumbnails/thumbnail.png')
+        thumbnail_pixbuf = self.render_thumbnail()
+        store_pixbuf(thumbnail_pixbuf, 'Thumbnails/thumbnail.png')
         print '  total %.3fs spent on thumbnail' % (time.time() - t2)
 
         helpers.indent_etree(image)
@@ -441,6 +441,8 @@ class Document():
         os.rename(filename + '.tmpsave', filename)
 
         print '%.3fs save_ora total' % (time.time() - t0)
+
+        return thumbnail_pixbuf
 
     def load_ora(self, filename):
         """Loads from an OpenRaster file"""
