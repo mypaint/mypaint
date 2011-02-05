@@ -555,6 +555,7 @@ class Window(windowing.MainWindow):
             u'Daniel Korostil (uk)\n'
             u'Julian Aloofi (de)\n'
             u'Tor Egil Hoftun Kvæstad (nn_NO)\n'
+            u'João S. O. Bueno (pt_BR)\n'
             )
         
         d.run()
