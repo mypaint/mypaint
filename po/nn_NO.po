@@ -1,13 +1,16 @@
 # This file is distributed under the same license as the MyPaint package.
 # Copyright (C) 2009 Jon Nordby
+# Tor Egil Hoftun Kvæstad <toregilhk@hotmail.com>, 2011.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-12 18:33+0200\n"
-"PO-Revision-Date: 2010-10-12 19:31+0200\n"
+"POT-Creation-Date: 2011-02-16 19:02+0100\n"
+"PO-Revision-Date: 2011-02-16 19:03+0100\n"
 "Last-Translator: Tor Egil Hoftun Kvæstad <toregilhk@hotmail.com>\n"
 "Language-Team: Norwegian Nynorsk <>\n"
+"Language: nn\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -117,7 +120,7 @@ msgstr ""
 #. internal name, displayed name, constant, minimum, default, maximum, tooltip
 #: ../brushlib/brushsettings.py:40
 msgid "Opacity"
-msgstr "Gjennomsiktigheit"
+msgstr "Dekkjeevne"
 
 #: ../brushlib/brushsettings.py:40
 msgid ""
@@ -412,7 +415,7 @@ msgid ""
 msgstr ""
 "Endre fargevaløren (luminans) ved å bruke HSL-fargemodellen.\n"
 "-1.0 svartare\n"
-" 0.0 slå av\n"
+" 0.0 avslått\n"
 " 1.0 kvitare"
 
 #: ../brushlib/brushsettings.py:65
@@ -429,7 +432,7 @@ msgid ""
 msgstr ""
 "Endre fargemetninga ved å bruke HSL-fargemodellen.\n"
 " -1.0 meir gråaktig\n"
-" 0.0 slå av\n"
+" 0.0 avslått\n"
 " 1.0 meir metta"
 
 #: ../brushlib/brushsettings.py:66
@@ -623,7 +626,7 @@ msgstr ""
 
 #: ../brushlib/brushsettings.py:81
 msgid "Direction filter"
-msgstr "Rretningsfilter"
+msgstr "Retningsfilter"
 
 #: ../brushlib/brushsettings.py:81
 #, fuzzy
@@ -642,20 +645,20 @@ msgstr "Set som standard"
 msgid "Background"
 msgstr "Bakgrunn"
 
-#: ../gui/backgroundwindow.py:38
+#: ../gui/backgroundwindow.py:37
 msgid "Pattern"
 msgstr "Mønster"
 
-#: ../gui/backgroundwindow.py:45 ../gui/colorselectionwindow.py:25
-#: ../gui/drawwindow.py:116
+#: ../gui/backgroundwindow.py:44 ../gui/colorselectionwindow.py:25
+#: ../gui/drawwindow.py:118
 msgid "Color"
 msgstr "Farge"
 
-#: ../gui/backgroundwindow.py:51
+#: ../gui/backgroundwindow.py:50
 msgid "add color to patterns"
 msgstr "Legg fargen til mønstra"
 
-#: ../gui/backgroundwindow.py:123
+#: ../gui/backgroundwindow.py:122
 #, python-format
 msgid ""
 "The background %s was ignored because it has an alpha channel. Please remove "
@@ -664,25 +667,24 @@ msgstr ""
 "Bakgrunnen %s vart ignorert då den har ein alfakanal (gjennomsiktigheit). "
 "Ver venleg å fjern gjennomsiktigheita."
 
-#: ../gui/backgroundwindow.py:127
+#: ../gui/backgroundwindow.py:126
 #, python-format
 msgid ""
-"The background %s was ignored because it has the wrong size. Only (N*%d)x(M*%"
-"d) is supported."
+"The background %s was ignored because it has the wrong size. Only (N*%d)x(M*"
+"%d) is supported."
 msgstr ""
 "Bakgrunnen %s vart ignorert då den har feil størrelse. Kun (N*%d)x(M*%d) er "
 "støtta."
 
 #: ../gui/brushcreationwidget.py:47
-#, fuzzy
 msgid "Brush icon"
-msgstr "Penselval"
+msgstr "Penselikon"
 
-#: ../gui/brushcreationwidget.py:55 ../gui/drawwindow.py:113
+#: ../gui/brushcreationwidget.py:55 ../gui/drawwindow.py:115
 msgid "Edit"
 msgstr "Rediger"
 
-#: ../gui/brushcreationwidget.py:59 ../gui/document.py:85
+#: ../gui/brushcreationwidget.py:59 ../gui/document.py:94
 msgid "Clear"
 msgstr "Slett"
 
@@ -690,7 +692,7 @@ msgstr "Slett"
 msgid "Save"
 msgstr "Lagre"
 
-#: ../gui/brushcreationwidget.py:72 ../gui/brushcreationwidget.py:236
+#: ../gui/brushcreationwidget.py:72 ../gui/brushcreationwidget.py:247
 msgid "(no name)"
 msgstr "(utan namn)"
 
@@ -718,105 +720,105 @@ msgstr "Om pensel"
 msgid "No README file for this brush!"
 msgstr "Det finnes ingen LESMEG (README)-fil for denne penselen!"
 
-#: ../gui/brushcreationwidget.py:148 ../gui/brushcreationwidget.py:209
+#: ../gui/brushcreationwidget.py:158 ../gui/brushcreationwidget.py:220
 msgid "No brush selected!"
 msgstr "Ingen pensel vald!"
 
-#: ../gui/brushcreationwidget.py:151
+#: ../gui/brushcreationwidget.py:161
 msgid "Rename Brush"
 msgstr "Gje nytt namn til pensel"
 
-#: ../gui/brushcreationwidget.py:163
+#: ../gui/brushcreationwidget.py:173
 msgid "A brush with this name already exists!"
 msgstr "Ein pensel med dette namnet eksisterer allereie!"
 
-#: ../gui/brushcreationwidget.py:190 ../gui/brushcreationwidget.py:201
+#: ../gui/brushcreationwidget.py:201 ../gui/brushcreationwidget.py:212
 msgid "No brush selected, please use \"add as new\" instead."
 msgstr "Ingen pensel vald, ver venleg å nytta «Legg til som ny» i staden."
 
-#: ../gui/brushcreationwidget.py:211
+#: ../gui/brushcreationwidget.py:222
 msgid "Really delete brush from disk?"
 msgstr "Er du sikker på at du vil slette denne penselen?"
 
-#: ../gui/brushmanager.py:29
+#: ../gui/brushmanager.py:67
 msgid "lost&found"
 msgstr ""
 
-#: ../gui/brushmanager.py:30
+#: ../gui/brushmanager.py:68
 msgid "deleted"
 msgstr "sletta"
 
-#: ../gui/brushmanager.py:31
+#: ../gui/brushmanager.py:69
 msgid "favorites"
 msgstr "favorittar"
 
-#: ../gui/brushmanager.py:32
+#: ../gui/brushmanager.py:70
 msgid "ink"
 msgstr "blekk"
 
-#: ../gui/brushmanager.py:33
+#: ../gui/brushmanager.py:71
 msgid "classic"
 msgstr "klassisk"
 
-#: ../gui/brushmanager.py:34
+#: ../gui/brushmanager.py:72
 msgid "experimental"
 msgstr "eksperimentell"
 
-#: ../gui/brushselectionwindow.py:23
+#: ../gui/brushselectionwindow.py:26
 msgid "Brush selection"
 msgstr "Penselval"
 
-#: ../gui/brushselectionwindow.py:212
+#: ../gui/brushselectionwindow.py:231
 msgid "try right click, middle click or Ctrl click"
 msgstr "Prøv høgreklikk, midtklikk eller ctrl+klikk"
 
-#: ../gui/brushselectionwindow.py:352
+#: ../gui/brushselectionwindow.py:371
 msgid "New group..."
 msgstr "Ny gruppe..."
 
-#: ../gui/brushselectionwindow.py:354
+#: ../gui/brushselectionwindow.py:373
 msgid "Rename group..."
 msgstr "Endre gruppenamn..."
 
-#: ../gui/brushselectionwindow.py:355
+#: ../gui/brushselectionwindow.py:374
 msgid "Delete group..."
 msgstr "Slett gruppe..."
 
-#: ../gui/brushselectionwindow.py:356
+#: ../gui/brushselectionwindow.py:375
 msgid "Export group as brush package..."
 msgstr "Eksporter gruppe som penselpakke..."
 
-#: ../gui/brushselectionwindow.py:358 ../gui/drawwindow.py:134
-#: ../gui/drawwindow.py:412
+#: ../gui/brushselectionwindow.py:377 ../gui/drawwindow.py:136
+#: ../gui/drawwindow.py:490
 msgid "Import brush package..."
 msgstr "Importer penselpakke..."
 
-#: ../gui/brushselectionwindow.py:372
+#: ../gui/brushselectionwindow.py:391
 msgid "Create group"
 msgstr "Opprett gruppe"
 
-#: ../gui/brushselectionwindow.py:377
+#: ../gui/brushselectionwindow.py:396
 msgid "Rename group"
 msgstr "Endre gruppenamn"
 
-#: ../gui/brushselectionwindow.py:383
+#: ../gui/brushselectionwindow.py:402
 msgid "A group with this name already exists!"
 msgstr "Ei gruppe med dette namnet eksisterer allereie!"
 
-#: ../gui/brushselectionwindow.py:386
+#: ../gui/brushselectionwindow.py:405
 msgid "Export brush pack..."
 msgstr "Eksporter penselpakke..."
 
-#: ../gui/brushselectionwindow.py:387 ../gui/drawwindow.py:413
+#: ../gui/brushselectionwindow.py:406 ../gui/drawwindow.py:491
 msgid "MyPaint brush package (*.zip)"
 msgstr "MyPaint penselpakke (*.zip)"
 
-#: ../gui/brushselectionwindow.py:393
+#: ../gui/brushselectionwindow.py:412
 #, python-format
 msgid "Really delete group %s?"
 msgstr "Er du sikker på at du vil slette gruppa %s?"
 
-#: ../gui/brushselectionwindow.py:396
+#: ../gui/brushselectionwindow.py:415
 msgid "This group can not be deleted (try to make it empty first)."
 msgstr "Denne gruppa kan ikkje slettast. Prøv å tømme den først."
 
@@ -825,95 +827,165 @@ msgid "Brush settings"
 msgstr "Penselinnstillingar"
 
 #. Expander with brushcreation widget under it
-#: ../gui/brushsettingswindow.py:29
+#: ../gui/brushsettingswindow.py:28
 msgid "Edit and save brush"
 msgstr "Rediger og lagre pensel"
 
-#: ../gui/brushsettingswindow.py:35
+#: ../gui/brushsettingswindow.py:34
 #, fuzzy
 msgid "Live update the last canvas stroke"
 msgstr "Levande oppdatering av det siste penselstroket på lerretet"
 
-#: ../gui/brushsettingswindow.py:65
+#: ../gui/brushsettingswindow.py:64
 msgid "Reset to default value"
 msgstr ""
 
-#: ../gui/brushsettingswindow.py:70
+#: ../gui/brushsettingswindow.py:69
 #, fuzzy
 msgid "No additional configuration"
 msgstr "Ingen ekstrakonfigurering"
 
-#: ../gui/brushsettingswindow.py:75 ../gui/brushsettingswindow.py:135
+#: ../gui/brushsettingswindow.py:74 ../gui/brushsettingswindow.py:134
 msgid "Add input values mapping"
 msgstr ""
 
-#: ../gui/brushsettingswindow.py:137
+#: ../gui/brushsettingswindow.py:136
 msgid "Modify input values mapping"
 msgstr ""
 
-#: ../gui/colorsamplerwindow.py:825
+#: ../gui/colorsamplerwindow.py:163
+msgid "Recently used colors"
+msgstr ""
+
+#. : Background neutral mid grey, intended to permit colour comparisons without theme colours distracting and imposing themselves
+#. : Slightly distinct outlinefor colour pots, intended to reduce "1+1=3 (or more)" effects
+#. : Central saturation/value square
+#. : Grey area inside the rings
+#. : Inner ring of color sampler boxes (hue)
+#. : Outer gradiated ring (hue)
+#. : Current/previous comparison semicircles
+#. : Blank outer area, outer space
+#: ../gui/colorsamplerwindow.py:193
+#, fuzzy
+msgid "Change Saturation and Value"
+msgstr "Endre verdi/metning"
+
+#: ../gui/colorsamplerwindow.py:195
+msgid "Harmony color switcher"
+msgstr ""
+
+#: ../gui/colorsamplerwindow.py:196
+#, fuzzy
+msgid "Change Hue"
+msgstr "Endre fargekulør"
+
+#: ../gui/colorsamplerwindow.py:197
+msgid "Current color vs. Last Used"
+msgstr ""
+
+#: ../gui/colorsamplerwindow.py:796
+#, fuzzy
+msgid "Change Hue, Saturation and Value"
+msgstr "Endre verdi/metning"
+
+#: ../gui/colorsamplerwindow.py:867
+msgid "Change Red, Green and Blue components"
+msgstr ""
+
+#: ../gui/colorsamplerwindow.py:932
 msgid "RGB"
 msgstr "RGB"
 
-#: ../gui/colorsamplerwindow.py:826
+#: ../gui/colorsamplerwindow.py:933
 msgid "HSV"
 msgstr "HSV"
 
 #. Colour history
-#: ../gui/colorsamplerwindow.py:829
+#: ../gui/colorsamplerwindow.py:936
 msgid "Colors history"
 msgstr "Fargehistorikk"
 
 #. Colour details
-#: ../gui/colorsamplerwindow.py:836 ../gui/functionwindow.py:145
+#: ../gui/colorsamplerwindow.py:943 ../gui/functionwindow.py:144
 msgid "Details"
 msgstr "Detaljar"
 
-#: ../gui/colorsamplerwindow.py:848
+#: ../gui/colorsamplerwindow.py:959
 msgid "Harmonies"
 msgstr "Harmoniar"
 
-#: ../gui/colorsamplerwindow.py:850
+#: ../gui/colorsamplerwindow.py:961
 msgid "Analogous"
 msgstr "Analoge"
 
-#: ../gui/colorsamplerwindow.py:851
-msgid "Complimentary color"
+#: ../gui/colorsamplerwindow.py:961
+msgid ""
+"Three nearby hues on the color wheel.\n"
+"Often found in nature, frequently pleasing to the eye."
+msgstr ""
+
+#: ../gui/colorsamplerwindow.py:962
+#, fuzzy
+msgid "Complementary color"
 msgstr "Komplementærfarger"
 
-#: ../gui/colorsamplerwindow.py:852
-msgid "Split complimentary"
+#: ../gui/colorsamplerwindow.py:962
+msgid ""
+"Two opposite hues on the color wheel.\n"
+"Vibrant, and maximally contrasting."
+msgstr ""
+
+#: ../gui/colorsamplerwindow.py:963
+#, fuzzy
+msgid "Split complementary"
 msgstr "Splitta komplementær"
 
-#: ../gui/colorsamplerwindow.py:853
-msgid "Double complimentary"
+#: ../gui/colorsamplerwindow.py:963
+msgid ""
+"Two hues next to the current hue's complement.\n"
+"Contrasting, but adds a possibly pleasing harmony."
+msgstr ""
+
+#: ../gui/colorsamplerwindow.py:964
+#, fuzzy
+msgid "Double complementary"
 msgstr "Dobbelt komplementær"
 
-#: ../gui/colorsamplerwindow.py:854
+#: ../gui/colorsamplerwindow.py:964
+msgid "Four hues in two complementary pairs."
+msgstr ""
+
+#: ../gui/colorsamplerwindow.py:965
 msgid "Square"
 msgstr "Kvadratisk"
 
-#: ../gui/colorsamplerwindow.py:855
+#: ../gui/colorsamplerwindow.py:965
+msgid "Four equally-spaced hues"
+msgstr ""
+
+#: ../gui/colorsamplerwindow.py:966
 msgid "Triadic"
 msgstr "Triadisk"
 
-#: ../gui/colorsamplerwindow.py:857
-msgid "Select harmonies"
-msgstr "Vel harmoniar"
+#: ../gui/colorsamplerwindow.py:966
+msgid ""
+"Three equally-spaced hues.\n"
+"Vibrant with equal tension."
+msgstr ""
 
-#: ../gui/colorsamplerwindow.py:860
+#: ../gui/colorsamplerwindow.py:969
 msgid "Change value/saturation"
 msgstr "Endre verdi/metning"
 
-#: ../gui/colorsamplerwindow.py:863
+#: ../gui/colorsamplerwindow.py:972
 msgid "Blend each color to opposite"
 msgstr "Bland kvar farge til motsett"
 
-#: ../gui/colorsamplerwindow.py:865
+#: ../gui/colorsamplerwindow.py:974
 msgid "Blend each color to negative"
 msgstr "Bland kvar farge til negativ"
 
-#: ../gui/colorsamplerwindow.py:961
+#: ../gui/colorsamplerwindow.py:1064
 msgid "MyPaint color selector"
 msgstr "MyPaint fargeveljar"
 
@@ -971,8 +1043,8 @@ msgid ""
 msgstr ""
 "<b>Ei gruppe med namnet «%s» eksisterer allereie.</b>\n"
 "Vil du erstatte den, eller skal den nye gruppa få eit nytt namn?\n"
-"Dersom du erstattar den, kan penslane verte flytta til ei gruppe med namn «%"
-"s»."
+"Dersom du erstattar den, kan penslane verte flytta til ei gruppe med namn "
+"«%s»."
 
 #: ../gui/dialogs.py:247
 msgid "Import brushes package?"
@@ -983,307 +1055,307 @@ msgstr "Importer penselpakke?"
 msgid "<b>Do you really want to import package `%s'?</b>"
 msgstr "<b>Vil du verkeleg importere pakken «%s»?</b>"
 
-#: ../gui/document.py:65
+#: ../gui/document.py:74
 msgid "Undo"
 msgstr "Angre"
 
-#: ../gui/document.py:66
+#: ../gui/document.py:75
 msgid "Redo"
 msgstr "Gjer om"
 
-#: ../gui/document.py:68
+#: ../gui/document.py:77
 msgid "Brighter"
 msgstr "Lysare"
 
-#: ../gui/document.py:69
+#: ../gui/document.py:78
 msgid "Smaller"
 msgstr "Mindre"
 
 # "opaque" -> ikke gjennomsiktig
 # er dette den beste oversettelsen?
-#: ../gui/document.py:70
+#: ../gui/document.py:79
 msgid "More Opaque"
-msgstr "Mindre gjennomsiktig"
+msgstr "Auk dekkjeevna"
 
-#: ../gui/document.py:71
+#: ../gui/document.py:80
 msgid "Less Opaque"
-msgstr "Meir gjennomsiktig"
+msgstr "Mink dekkjeevna"
 
-#: ../gui/document.py:72
+#: ../gui/document.py:81
 msgid "Toggle Eraser Mode"
 msgstr "Viskelêrmodus av/på"
 
 #. TODO: make toggle action
-#: ../gui/document.py:73
+#: ../gui/document.py:82 ../gui/preferenceswindow.py:36
 msgid "Pick Context (layer, brush and color)"
 msgstr "Plukk verktøy (lag, pensel og farge)"
 
-#: ../gui/document.py:75
+#: ../gui/document.py:84
 msgid "Darker"
 msgstr "Mørkare"
 
-#: ../gui/document.py:76
+#: ../gui/document.py:85
 msgid "Warmer"
 msgstr "Varmare"
 
-#: ../gui/document.py:77
+#: ../gui/document.py:86
 msgid "Cooler"
 msgstr "Kaldare"
 
-#: ../gui/document.py:78
+#: ../gui/document.py:87
 msgid "Purer"
 msgstr "Reinare"
 
-#: ../gui/document.py:79
+#: ../gui/document.py:88
 msgid "Grayer"
 msgstr "Gråare"
 
-#: ../gui/document.py:80
+#: ../gui/document.py:89
 msgid "Bigger"
 msgstr "Større"
 
 #. Context actions are also added in init_context_actions
-#: ../gui/document.py:83
+#: ../gui/document.py:92
 msgid "Save to Most Recently Restored"
 msgstr "Lagre til sist brukte"
 
-#: ../gui/document.py:86
+#: ../gui/document.py:95
 msgid "Copy to Clipboard"
 msgstr "Kopier til utklippstavle"
 
-#: ../gui/document.py:87
+#: ../gui/document.py:96
 msgid "Paste Clipboard (Replace Layer)"
 msgstr "Lim inn (erstattar laget)"
 
-#: ../gui/document.py:88
+#: ../gui/document.py:97 ../gui/preferenceswindow.py:37
 msgid "Select Layer at Cursor"
 msgstr "Vel lag ved peikar"
 
-#: ../gui/document.py:89
+#: ../gui/document.py:98
 msgid "Next (above current)"
 msgstr "Neste (over noverande)"
 
-#: ../gui/document.py:90
+#: ../gui/document.py:99
 msgid "Next (below current)"
 msgstr "Neste (under noverande)"
 
-#: ../gui/document.py:91
+#: ../gui/document.py:100
 msgid "New (above current)"
 msgstr "Nytt (over noverande)"
 
-#: ../gui/document.py:92
+#: ../gui/document.py:101
 msgid "New (below current)"
 msgstr "Nytt (under noverande)"
 
 #. XXX need a batter one, but stay consistent with layerswindow for now
-#: ../gui/document.py:94 ../gui/layerswindow.py:373
+#: ../gui/document.py:103 ../gui/layerswindow.py:372
 msgid "Merge Down"
 msgstr "Flett saman med laga under"
 
-#: ../gui/document.py:95
+#: ../gui/document.py:104
 msgid "Remove"
 msgstr "Fjern"
 
-#: ../gui/document.py:96
+#: ../gui/document.py:105
 msgid "Increase Layer Opacity"
-msgstr "Mink gjennomsiktigheit"
+msgstr "Auk dekkjeevna"
 
-#: ../gui/document.py:97
+#: ../gui/document.py:106
 msgid "Decrease Layer Opacity"
-msgstr "Auk gjennomsiktigheit"
+msgstr "Mink dekkjeevna"
 
-#: ../gui/document.py:99
+#: ../gui/document.py:108
 msgid "Shortcuts"
 msgstr "Snarvegar"
 
-#: ../gui/document.py:101
+#: ../gui/document.py:110
 msgid "Reset (Zoom, Rotation, Mirror)"
 msgstr "Nullstill (skalering, rotasjon, spegling)"
 
-#: ../gui/document.py:102
+#: ../gui/document.py:111
 msgid "Zoom In (at cursor)"
 msgstr "Forstørr (til peikar)"
 
-#: ../gui/document.py:103
+#: ../gui/document.py:112
 msgid "Zoom Out"
 msgstr "Forminsk"
 
-#: ../gui/document.py:104
+#: ../gui/document.py:113
 msgid "Rotate Counterclockwise"
 msgstr "Roter mot klokka"
 
-#: ../gui/document.py:105
+#: ../gui/document.py:114
 msgid "Rotate Clockwise"
 msgstr "Roter med klokka"
 
-#: ../gui/document.py:106
+#: ../gui/document.py:115
 msgid "Mirror Horizontal"
 msgstr "Spegl vassrett"
 
-#: ../gui/document.py:107
+#: ../gui/document.py:116
 msgid "Mirror Vertical"
 msgstr "Spegl loddrett"
 
-#: ../gui/document.py:108
+#: ../gui/document.py:117
 msgid "Layer Solo"
 msgstr "Eittlags-visning"
 
 #. TODO: make toggle action
-#: ../gui/document.py:109
+#: ../gui/document.py:118
 msgid "Hide Layers Above Current"
 msgstr "Vis/skjul laga over"
 
 #. name, stock id, label, accelerator, tooltip, callback, default toggle status
-#: ../gui/document.py:116
+#: ../gui/document.py:125
 msgid "Print Brush Input Values to stdout"
 msgstr "Skriv ut penselen sine innverdiar til standard ut"
 
-#: ../gui/document.py:117
+#: ../gui/document.py:126
 msgid "Visualize Rendering"
 msgstr "Visualiser teikning"
 
-#: ../gui/document.py:118
+#: ../gui/document.py:127
 msgid "Disable GTK Double Buffering"
 msgstr "Slå av GTK Double Buffering"
 
-#: ../gui/document.py:126
+#: ../gui/document.py:135
 #, python-format
 msgid "Restore Brush %d"
 msgstr "Bruk pensel %d"
 
-#: ../gui/document.py:128
+#: ../gui/document.py:137
 #, python-format
 msgid "Save to Brush %d"
 msgstr "Lagre til pensel %d"
 
 #. name, stock id, label, accelerator, tooltip, callback
-#: ../gui/drawwindow.py:110
+#: ../gui/drawwindow.py:112
 msgid "File"
 msgstr "Fil"
 
 #. FIXME: should do this periodically, not only on quit
-#: ../gui/drawwindow.py:111 ../gui/drawwindow.py:405
+#: ../gui/drawwindow.py:113 ../gui/drawwindow.py:483
 msgid "Quit"
 msgstr "Avslutt"
 
-#: ../gui/drawwindow.py:114
+#: ../gui/drawwindow.py:116
 msgid "Preferences..."
 msgstr "Innstillingar"
 
-#: ../gui/drawwindow.py:117
+#: ../gui/drawwindow.py:119 ../gui/preferenceswindow.py:35
 msgid "Pick Color"
 msgstr "Plukk farge"
 
-#: ../gui/drawwindow.py:118
+#: ../gui/drawwindow.py:120 ../gui/preferenceswindow.py:44
 msgid "Color History"
 msgstr "Fargehistorikk"
 
-#: ../gui/drawwindow.py:119
+#: ../gui/drawwindow.py:121 ../gui/preferenceswindow.py:42
 msgid "Color Changer"
 msgstr "Fargeveljar"
 
-#: ../gui/drawwindow.py:120
+#: ../gui/drawwindow.py:122 ../gui/preferenceswindow.py:43
 msgid "Color Ring"
 msgstr "Fargering"
 
-#: ../gui/drawwindow.py:121
+#: ../gui/drawwindow.py:123
 msgid "Color Triangle..."
 msgstr "Fargetriangel"
 
-#: ../gui/drawwindow.py:122
+#: ../gui/drawwindow.py:124
 msgid "Color Sampler..."
 msgstr "Farge..."
 
-#: ../gui/drawwindow.py:124
+#: ../gui/drawwindow.py:126
 msgid "Brushkeys"
 msgstr "Penseltastar"
 
-#: ../gui/drawwindow.py:125
+#: ../gui/drawwindow.py:127
 msgid "Help!"
 msgstr "Hjelp!"
 
-#: ../gui/drawwindow.py:127 ../gui/layerswindow.py:339
+#: ../gui/drawwindow.py:129 ../gui/layerswindow.py:339
 msgid "Layers"
 msgstr "Lag"
 
-#: ../gui/drawwindow.py:128
+#: ../gui/drawwindow.py:130
 msgid "Layers..."
 msgstr "Lag..."
 
-#: ../gui/drawwindow.py:129
+#: ../gui/drawwindow.py:131
 msgid "Background..."
 msgstr "Bakgrunn..."
 
-#: ../gui/drawwindow.py:131
+#: ../gui/drawwindow.py:133
 msgid "Brush"
 msgstr "Pensel"
 
-#: ../gui/drawwindow.py:132
+#: ../gui/drawwindow.py:134
 msgid "Brush List..."
 msgstr "Vel pensel..."
 
-#: ../gui/drawwindow.py:133
+#: ../gui/drawwindow.py:135
 msgid "Brush Editor..."
 msgstr "Penselredigering..."
 
-#: ../gui/drawwindow.py:136 ../gui/drawwindow.py:151
+#: ../gui/drawwindow.py:138 ../gui/drawwindow.py:153
 msgid "Help"
 msgstr "Hjelp"
 
-#: ../gui/drawwindow.py:137
+#: ../gui/drawwindow.py:139
 msgid "Where is the Documentation?"
 msgstr "Kor er dokumentasjonen?"
 
-#: ../gui/drawwindow.py:138
+#: ../gui/drawwindow.py:140
 #, fuzzy
 msgid "Change the Keyboard Shortcuts?"
 msgstr "Endre snøggtastane?"
 
-#: ../gui/drawwindow.py:139
+#: ../gui/drawwindow.py:141
 msgid "About MyPaint"
 msgstr "Om MyPaint"
 
-#: ../gui/drawwindow.py:141
+#: ../gui/drawwindow.py:143
 msgid "Debug"
 msgstr "Feilsøking"
 
-#: ../gui/drawwindow.py:142
+#: ../gui/drawwindow.py:144
 msgid "Print Memory Leak Info to stdout (Slow!)"
 msgstr "Skriv minnelekkasjeinformasjon til standard ut (tregt!)"
 
-#: ../gui/drawwindow.py:143
+#: ../gui/drawwindow.py:145
 msgid "Run Garbage Collector Now"
 msgstr "Køyr søppeltømaren no"
 
-#: ../gui/drawwindow.py:144
+#: ../gui/drawwindow.py:146
 msgid "Start/Stop Python Profiling (cProfile)"
 msgstr ""
 
-#: ../gui/drawwindow.py:145
+#: ../gui/drawwindow.py:147
 msgid "Test input devices..."
 msgstr "Test inneiningar..."
 
-#: ../gui/drawwindow.py:147 ../gui/preferenceswindow.py:107
+#: ../gui/drawwindow.py:149 ../gui/preferenceswindow.py:221
 msgid "View"
 msgstr "Vis"
 
-#: ../gui/drawwindow.py:148
+#: ../gui/drawwindow.py:150
 msgid "Popup Menu"
 msgstr "Vis meny"
 
-#: ../gui/drawwindow.py:149
+#: ../gui/drawwindow.py:151
 msgid "Fullscreen"
 msgstr "Fullskjerm"
 
-#: ../gui/drawwindow.py:150
+#: ../gui/drawwindow.py:152 ../gui/preferenceswindow.py:34
 msgid "Toggle Subwindows"
 msgstr "Slå undervindauge av/på"
 
-#: ../gui/drawwindow.py:405
+#: ../gui/drawwindow.py:483
 msgid "Really Quit?"
 msgstr "Er du sikker på at du vil avslutte?"
 
-#: ../gui/drawwindow.py:431
+#: ../gui/drawwindow.py:502
 msgid ""
 "Copyright (C) 2005-2010\n"
 "Martin Renold and the MyPaint Development Team"
@@ -1292,7 +1364,7 @@ msgstr ""
 "Martin Renold og MyPaint-utviklarteamet"
 
 # lisens: finn ut om det finnes en offisiell oversettelse et sted
-#: ../gui/drawwindow.py:435
+#: ../gui/drawwindow.py:506
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -1303,43 +1375,43 @@ msgid ""
 "ANY WARRANTY. See the COPYING file for more details."
 msgstr ""
 
-#: ../gui/drawwindow.py:445 ../gui/drawwindow.py:449 ../gui/drawwindow.py:451
-#: ../gui/drawwindow.py:452 ../gui/drawwindow.py:454 ../gui/drawwindow.py:458
-#: ../gui/drawwindow.py:459 ../gui/drawwindow.py:460 ../gui/drawwindow.py:461
+#: ../gui/drawwindow.py:516 ../gui/drawwindow.py:520 ../gui/drawwindow.py:522
+#: ../gui/drawwindow.py:523 ../gui/drawwindow.py:525 ../gui/drawwindow.py:529
+#: ../gui/drawwindow.py:530 ../gui/drawwindow.py:531 ../gui/drawwindow.py:532
 msgid "programming"
 msgstr "programmering"
 
-#: ../gui/drawwindow.py:446 ../gui/drawwindow.py:455 ../gui/drawwindow.py:456
-#: ../gui/drawwindow.py:457 ../gui/drawwindow.py:463
+#: ../gui/drawwindow.py:517 ../gui/drawwindow.py:526 ../gui/drawwindow.py:527
+#: ../gui/drawwindow.py:528 ../gui/drawwindow.py:534
 msgid "brushes"
 msgstr "penslar"
 
-#: ../gui/drawwindow.py:447 ../gui/drawwindow.py:453
+#: ../gui/drawwindow.py:518 ../gui/drawwindow.py:524
 msgid "portability"
 msgstr "porting"
 
-#: ../gui/drawwindow.py:448
+#: ../gui/drawwindow.py:519
 msgid "brushes, programming"
 msgstr "penslar, programmering"
 
-#: ../gui/drawwindow.py:450
+#: ../gui/drawwindow.py:521
 msgid "patterns, brushes"
 msgstr "mønster, penslar"
 
-#: ../gui/drawwindow.py:462
+#: ../gui/drawwindow.py:533
 msgid "patterns"
 msgstr "mønster"
 
-#: ../gui/drawwindow.py:466
+#: ../gui/drawwindow.py:537
 msgid "desktop icon"
 msgstr "skrivebordsikon"
 
-#: ../gui/drawwindow.py:495
+#: ../gui/drawwindow.py:567
 msgid "Move your mouse over a menu entry, then press the key to assign."
 msgstr ""
 "Beveg musa over ei handling i menyen og trykk på knappen du ønsker å bruke."
 
-#: ../gui/drawwindow.py:497
+#: ../gui/drawwindow.py:569
 msgid ""
 "You can also drag the canvas with the mouse while holding the middle mouse "
 "button or spacebar. Or with the arrow keys.\n"
@@ -1355,17 +1427,16 @@ msgstr ""
 "minne dersom du målar over store område når du har forminska biletet så "
 "mykje du kan."
 
-#: ../gui/drawwindow.py:504
+#: ../gui/drawwindow.py:576
+#, fuzzy
 msgid ""
-"This is used to quickly save/restore brush settings using keyboard "
+"Brushkeys are used to quickly save/restore brush settings using keyboard "
 "shortcuts. You can paint with one hand and change brushes with the other "
 "without interrupting.\n"
 "\n"
 "There are 10 memory slots to hold brush settings.\n"
 "Those are anonymous brushes, they are not visible in the brush selector "
-"list. But they will stay even if you quit. They will also remember the "
-"selected color. In contrast, selecting a normal brush never changes the "
-"color. "
+"list. But they will stay even if you quit. "
 msgstr ""
 "Denne funksjonen vert brukt for å raskt lagre og gjenopprette penselen sine "
 "innstillingar ved hjelp av tastaturet. På den måten kan du måle med den eine "
@@ -1376,7 +1447,7 @@ msgstr ""
 "lista over penslar. Men dei vil verte hugsa sjølv om du avsluttar "
 "programmet. "
 
-#: ../gui/drawwindow.py:515
+#: ../gui/drawwindow.py:585
 msgid ""
 "There is a tutorial available on the MyPaint homepage. It explains some "
 "features which are hard to discover yourself.\n"
@@ -1395,7 +1466,7 @@ msgstr ""
 msgid "New"
 msgstr "Ny"
 
-#: ../gui/filehandling.py:60 ../gui/filehandling.py:269
+#: ../gui/filehandling.py:60 ../gui/filehandling.py:284
 msgid "Open..."
 msgstr "Opne..."
 
@@ -1438,73 +1509,73 @@ msgid "Open Recent files"
 msgstr "Opne nylege filer"
 
 #. (name, patterns)
-#: ../gui/filehandling.py:92
+#: ../gui/filehandling.py:93
 msgid "All Recognized Formats"
 msgstr "Alle kjende format"
 
 #. 0
-#: ../gui/filehandling.py:93 ../gui/filehandling.py:99
+#: ../gui/filehandling.py:94 ../gui/filehandling.py:100
 msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
 
-#: ../gui/filehandling.py:94
+#: ../gui/filehandling.py:95
 msgid "PNG (*.png)"
 msgstr "PNG (*.png)"
 
-#: ../gui/filehandling.py:95
+#: ../gui/filehandling.py:96
 msgid "JPEG (*.jpg; *.jpeg)"
 msgstr "JPEG (*.jpg; *.jpeg)"
 
 #. (name, extension, options)
-#: ../gui/filehandling.py:98
+#: ../gui/filehandling.py:99
 msgid "By extension (prefer default format)"
 msgstr "Etter ending (føretrekk standardformatet)"
 
 #. 1
-#: ../gui/filehandling.py:100
+#: ../gui/filehandling.py:101
 msgid "PNG solid with background (*.png)"
 msgstr "PNG solid med bakgrunn (*.png)"
 
 #. 2
-#: ../gui/filehandling.py:101
+#: ../gui/filehandling.py:102
 msgid "PNG transparent (*.png)"
 msgstr "PNG gjennomsiktig (*.png)"
 
 #. 3
-#: ../gui/filehandling.py:102
+#: ../gui/filehandling.py:103
 msgid "Multiple PNG transparent (*.XXX.png)"
 msgstr "Fleirfils transparent PNG (*.XXX.png)"
 
 #. 4
-#: ../gui/filehandling.py:103
+#: ../gui/filehandling.py:104
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
 msgstr "JPEG 90% kvalitet (*.jpg; *.jpeg)"
 
 # duplication?
-#: ../gui/filehandling.py:138
+#: ../gui/filehandling.py:145
 msgid "Save..."
 msgstr "Lagre..."
 
-#: ../gui/filehandling.py:149
+#: ../gui/filehandling.py:156
 msgid "Format to save as:"
 msgstr "Format å lagre som:"
 
-#: ../gui/filehandling.py:174
+#: ../gui/filehandling.py:182
 msgid "Confirm"
 msgstr "Bekreft"
 
-#: ../gui/filehandling.py:174
+#: ../gui/filehandling.py:182
 msgid "Really continue?"
 msgstr ""
 
-#: ../gui/filehandling.py:182
+#: ../gui/filehandling.py:190
 #, python-format
 msgid "%d minute"
 msgid_plural "%d minutes"
 msgstr[0] "%d minutt"
 msgstr[1] "%d minutter"
 
-#: ../gui/filehandling.py:185
+#: ../gui/filehandling.py:193
 #, python-format
 msgid "%d second"
 msgid_plural "%d seconds"
@@ -1512,11 +1583,11 @@ msgstr[0] "%d sekund"
 msgstr[1] "%d sekunder"
 
 # "Scrap" -> "kladd"
-#: ../gui/filehandling.py:191
+#: ../gui/filehandling.py:199
 msgid "_Save as Scrap"
 msgstr "_Lagre som kladd"
 
-#: ../gui/filehandling.py:197
+#: ../gui/filehandling.py:205
 #, python-format
 msgid ""
 "<b>%s</b>\n"
@@ -1528,16 +1599,16 @@ msgstr ""
 "Du har %s måling som ikkje er lagra."
 
 # "canvas" -> "lerret"
-#: ../gui/filehandling.py:234
+#: ../gui/filehandling.py:242
 msgid "Did not save, the canvas is empty."
 msgstr "Lagra ikkje, lerretet er tomt."
 
-#: ../gui/filehandling.py:462
+#: ../gui/filehandling.py:487
 #, python-format
 msgid "There are no scrap files named \"%s\" yet."
 msgstr "Det er ingen kladdar ved namn «%s» enno."
 
-#: ../gui/functionwindow.py:40
+#: ../gui/functionwindow.py:39
 msgid "Base Value"
 msgstr "Grunnverdi"
 
@@ -1569,29 +1640,29 @@ msgstr "Ei feil oppstod medan feilen vart analysert."
 msgid "Input Device Test"
 msgstr "Inneiningstest"
 
-#: ../gui/inputtestwindow.py:48
+#: ../gui/inputtestwindow.py:47
 msgid "(no pressure)"
 msgstr "(ikkje noko trykk)"
 
-#: ../gui/inputtestwindow.py:49
+#: ../gui/inputtestwindow.py:48
 msgid "Pressure:"
 msgstr "Trykk:"
 
-#: ../gui/inputtestwindow.py:51
+#: ../gui/inputtestwindow.py:50
 msgid "(no tilt)"
 msgstr "(inga helling)"
 
-#: ../gui/inputtestwindow.py:52
+#: ../gui/inputtestwindow.py:51
 msgid "Tilt:"
 msgstr "Helling:"
 
-#: ../gui/inputtestwindow.py:57
+#: ../gui/inputtestwindow.py:56
 msgid "(no device)"
-msgstr ""
+msgstr "(inga eining)"
 
-#: ../gui/inputtestwindow.py:58
+#: ../gui/inputtestwindow.py:57
 msgid "Device:"
-msgstr ""
+msgstr "Eining:"
 
 #: ../gui/layerswindow.py:35
 msgid "Layer visibility"
@@ -1601,52 +1672,156 @@ msgstr "Laget sin synlegheit"
 msgid "<small>Double click to enter name</small>"
 msgstr "<small>Dobbeltklikk for å namngje</small>"
 
-#: ../gui/layerswindow.py:356
+#: ../gui/layerswindow.py:355
 msgid "Opacity:"
-msgstr "Gjennomsiktigheit"
+msgstr "Dekkjeevne"
 
-#: ../gui/preferenceswindow.py:28
+#: ../gui/preferenceswindow.py:19
+msgid "Disabled (no pressure sensitivity)"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:20
+msgid "Screen (normal)"
+msgstr "Skjerm (normal)"
+
+#: ../gui/preferenceswindow.py:21
+msgid "Window (not recommended)"
+msgstr "Vindauge (ikkje anbefalt)"
+
+#. These can be names of actions within ActionGroups defined elsewhere,
+#. or names of actions the handler interprets itself.
+#. NOTE: The translatable strings for actions are duplicated from
+#. their action definition. Please keep in sync (or refactor to get the string from there)
+#. (action_or_whatever, label)
+#: ../gui/preferenceswindow.py:32
+msgid "No action"
+msgstr "Inga handling"
+
+#. [0] is the default for the comboboxes
+#: ../gui/preferenceswindow.py:33
+msgid "Menu"
+msgstr "Meny"
+
+#: ../gui/preferenceswindow.py:38
+msgid "Pan"
+msgstr "Panorer"
+
+#: ../gui/preferenceswindow.py:39
+msgid "Zoom"
+msgstr "Skaler"
+
+#: ../gui/preferenceswindow.py:40
+msgid "Rotate"
+msgstr "Roter"
+
+#: ../gui/preferenceswindow.py:41
+msgid "Straight Line"
+msgstr "Rett linje"
+
+#. Used for creating the menus,
+#. (pref_name, label)
+#: ../gui/preferenceswindow.py:49
+msgid "Button 1 + Shift"
+msgstr "Tast 1 + Shift"
+
+#: ../gui/preferenceswindow.py:50
+msgid "Button 1 + Ctrl (or Alt)"
+msgstr "Tast 1 + Ctrl (eller Alt)"
+
+#: ../gui/preferenceswindow.py:51
+msgid "Button 2"
+msgstr "Tast 2"
+
+#: ../gui/preferenceswindow.py:52
+msgid "Button 2 + Shift"
+msgstr "Tast 2 + Shift"
+
+#: ../gui/preferenceswindow.py:53
+msgid "Button 2 + Ctrl (or Alt)"
+msgstr "Tast 2 + Ctrl (eller Alt)"
+
+#: ../gui/preferenceswindow.py:54
+msgid "Button 3"
+msgstr "Tast 3"
+
+#: ../gui/preferenceswindow.py:55
+msgid "Button 3 + Shift"
+msgstr "Tast 3 + Shift"
+
+#: ../gui/preferenceswindow.py:56
+msgid "Button 3 + Ctrl (or Alt)"
+msgstr "Tast 3 + Ctrl (eller Alt)"
+
+#: ../gui/preferenceswindow.py:66
 msgid "Preferences"
 msgstr "Innstillingar"
 
-#: ../gui/preferenceswindow.py:40
-msgid "Input"
+#. TRANSLATORS: Tab label
+#: ../gui/preferenceswindow.py:86
+msgid "Pen Input"
 msgstr ""
 
-#: ../gui/preferenceswindow.py:44
-msgid "<b><span size=\"large\">Global Pressure Mapping</span></b>"
-msgstr "<b><span size=\"large\">Global trykk-konfigurasjon</span></b>"
+#: ../gui/preferenceswindow.py:92
+msgid "<b>Input Device</b>"
+msgstr "<b>Inndataeining</b>"
 
-#: ../gui/preferenceswindow.py:57
+#: ../gui/preferenceswindow.py:99
 msgid ""
-"0.5\n"
-"(mouse button)"
+"Scale input pressure to brush pressure. This is applied to all input "
+"devices. The mouse button has an input pressure of 0.5 when pressed."
 msgstr ""
-"0,5\n"
-"(museknapp)"
 
-#: ../gui/preferenceswindow.py:68
-msgid "Mode for input devices: "
-msgstr "Modus for inneiningar:"
+#. TRANSLATORS: Graph y-axis label
+#: ../gui/preferenceswindow.py:109
+#, fuzzy
+msgid "Brush Pressure"
+msgstr "Trykk"
 
-#: ../gui/preferenceswindow.py:76
-msgid "Enable right-click color history"
-msgstr "Slå på høgreklikk-fargehistorikk"
+#. TRANSLATORS: Graph x-axis label
+#: ../gui/preferenceswindow.py:119
+#, fuzzy
+msgid "Input Pressure"
+msgstr "Trykk"
 
-#: ../gui/preferenceswindow.py:82
+#: ../gui/preferenceswindow.py:128
+msgid "Mode: "
+msgstr ""
+
+#: ../gui/preferenceswindow.py:145
+msgid "Buttons"
+msgstr "Tastar"
+
+#: ../gui/preferenceswindow.py:151
+msgid "<b>Pen and mouse button mappings</b>"
+msgstr "<b>Oppsett av penne- og musetastar</b>"
+
+#: ../gui/preferenceswindow.py:177
 msgid "Saving"
 msgstr "Lagring"
 
-#: ../gui/preferenceswindow.py:84
-msgid "Default file format for saving"
-msgstr "Standard filformat for lagring"
+#: ../gui/preferenceswindow.py:183
+msgid "<b>Saving</b>"
+msgstr "<b>Lagring</b>"
 
-#: ../gui/preferenceswindow.py:96
-msgid "Path and filename prefix for \"Save Next Scrap\""
-msgstr "Sti og filnamnforstaving for «Lagre neste kladd»"
+#: ../gui/preferenceswindow.py:187
+msgid "Default file format:"
+msgstr "Standard filformat"
 
-#: ../gui/preferenceswindow.py:105
-msgid "Default zoom"
+# "Scrap" -> "kladd"
+#: ../gui/preferenceswindow.py:202
+msgid "<b>Save Next Scrap</b>"
+msgstr "<b>Lagre neste kladd</b>"
+
+#: ../gui/preferenceswindow.py:206
+msgid "Path and filename prefix:"
+msgstr "Sti og filnamnforstaving:"
+
+#: ../gui/preferenceswindow.py:227
+msgid "<b>Default View</b>"
+msgstr "<b>Standard visning</b>"
+
+#: ../gui/preferenceswindow.py:231
+msgid "Default zoom:"
 msgstr "Standard skalering"
 
 #. add a hint due to a very consfusing error message when there is no space left on device
@@ -1688,6 +1863,25 @@ msgstr "Feil ved lasting: IOError %s"
 #, python-format
 msgid "Unknown file format extension: %s"
 msgstr "Ukjend filtype: %s"
+
+#~ msgid "Select harmonies"
+#~ msgstr "Vel harmoniar"
+
+#~ msgid "<b><span size=\"large\">Global Pressure Mapping</span></b>"
+#~ msgstr "<b><span size=\"large\">Global trykk-konfigurasjon</span></b>"
+
+#~ msgid ""
+#~ "0.5\n"
+#~ "(mouse button)"
+#~ msgstr ""
+#~ "0,5\n"
+#~ "(museknapp)"
+
+#~ msgid "Mode for input devices: "
+#~ msgstr "Modus for inneiningar:"
+
+#~ msgid "Enable right-click color history"
+#~ msgstr "Slå på høgreklikk-fargehistorikk"
 
 #, fuzzy
 #~ msgid "opaque"
@@ -1785,9 +1979,6 @@ msgstr "Ukjend filtype: %s"
 
 #~ msgid "Toggle Solo Mode"
 #~ msgstr "Enkeltlagsmodus av/på"
-
-#~ msgid "Zoom In"
-#~ msgstr "Zoom inn"
 
 #~ msgid "MyPaint %s - pressure sensitive painting application\n"
 #~ msgstr "MyPaint %s - trykksensistiv tegneapplikasjon\n"
