@@ -73,8 +73,27 @@ def get_paths():
     homepath =  helpers.expanduser_unicode(u'~')
     if homepath == '~':
         confpath = join(prefix, 'UserData')
-    else:
-        confpath = join(homepath, '.mypaint')
+    #Workaround before glib.get_user_config_dir() fixed in upstream
+    elif sys.platform == 'win32':                                  
+        import _winreg
+        try:
+            HKCU = _winreg.ConnectRegistry(None, _winreg.HKEY_CURRENT_USER)
+        except WindowsError:
+            print "Can't connect to local registry"
+        try:
+            ShellKey = _winreg.OpenKey(HKCU, "Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders")
+        except WindowsError:
+            print "Can't open Shell Folders key"
+            HKCU.Close()
+        try:
+            localappdatapath = _winreg.QueryValueEx(ShellKey, "Local AppData")[0]
+        except WindowsError:
+            print "Can't retrive Local Application Data Path from registry"
+            HKCU.Close()
+            ShellKey.Close()
+        confpath = join(localappdatapath, 'mypaint/')
+    else:                                            
+        confpath = join(homepath, '.mypaint/')
 
     assert isinstance(datapath, unicode)
     assert isinstance(confpath, unicode)
