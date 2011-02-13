@@ -16,7 +16,6 @@ class ColorHistory (object):
         self.color_pushed_observers = []
         saved = app.preferences.get('colorhistory.colors', [])
         for hsv, i in zip(saved, range(self.num_colors)):
-            print "color[%d] = %s" % (i, hsv)
             self.colors[i] = tuple(hsv)
             # tuple([helpers.clamp(c, 0.0, 1.0) for c in hsv])
         self.atomic = False # FIXME: bad name, it has nothing to do with atomic, right?
