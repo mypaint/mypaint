@@ -362,7 +362,7 @@ class Document():
 
     def render_thumbnail(self):
         t0 = time.time()
-        x, y, w, h = self.get_bbox()
+        x, y, w, h = self.get_effective_bbox()
         mipmap_level = 0
         while mipmap_level < tiledsurface.MAX_MIPMAP_LEVEL and max(w, h) >= 512:
             mipmap_level += 1
