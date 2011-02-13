@@ -26,10 +26,12 @@ RESPONSE_REVERT = 1
 mouse_button_actions = [
     # These can be names of actions within ActionGroups defined elsewhere,
     # or names of actions the handler interprets itself.
+    # NOTE: The translatable strings for actions are duplicated from
+    # their action definition. Please keep in sync (or refactor to get the string from there)
     # (action_or_whatever, label)
     ('no_action', _("No action")),  #[0] is the default for the comboboxes
-    ('ColorHistoryPopup', _("Color History")),
     ('popup_menu', _("Menu")),
+    ('ToggleSubwindows', _("Toggle Subwindows")),
     ('ColorPickerPopup', _("Pick Color")),
     ('PickContext', _('Pick Context (layer, brush and color)')),
     ('PickLayer', _('Select Layer at Cursor')),
@@ -38,7 +40,9 @@ mouse_button_actions = [
     ('rotate_canvas', _("Rotate")),
     ('straight_line', _("Straight Line")),
     ('ColorChangerPopup', _("Color Changer")),
-    ('ColorRingPopup', _("Color Ring")),  ]
+    ('ColorRingPopup', _("Color Ring")),
+    ('ColorHistoryPopup', _("Color History")),
+    ]
 mouse_button_prefs = [
     # Used for creating the menus,
     # (pref_name, label)
