@@ -205,6 +205,12 @@ class Document():
             res.expandToIncludeRect(bbox)
         return res
 
+    def get_effective_bbox(self):
+        """Return the effective bounding box of the document.
+        If the frame is enabled, this is the bounding box of the frame, 
+        else the (dynamic) bounding box of the document."""
+        return self.get_frame() if self.frame_enabled else self.get_bbox()
+
     def blit_tile_into(self, dst_8bit, tx, ty, mipmap_level=0, layers=None, background=None):
         if layers is None:
             layers = self.layers
@@ -266,8 +272,10 @@ class Document():
         self.invalidate_all()
 
     def load_from_pixbuf(self, pixbuf):
+        """Load a document from a pixbuf."""
         self.clear()
         self.load_layer_from_pixbuf(pixbuf)
+        self.set_frame(*self.get_bbox())
 
     def is_layered(self):
         count = 0
@@ -339,6 +347,7 @@ class Document():
         return pixbuf
 
     def save_png(self, filename, alpha=False, multifile=False):
+        doc_bbox = self.get_effective_bbox()
         if multifile:
             self.save_multifile_png(filename)
         else:
@@ -346,9 +355,9 @@ class Document():
                 tmp_layer = layer.Layer()
                 for l in self.layers:
                     l.merge_into(tmp_layer)
-                tmp_layer.surface.save(filename)
+                tmp_layer.surface.save(filename, *doc_bbox)
             else:
-                pixbufsurface.save_as_png(self, filename, alpha=False)
+                pixbufsurface.save_as_png(self, filename, *doc_bbox, alpha=False)
 
     def save_multifile_png(self, filename, alpha=False):
         prefix, ext = os.path.splitext(filename)
@@ -356,7 +365,7 @@ class Document():
         l = prefix.rsplit('.', 1)
         if l[-1].isdigit():
             prefix = l[0]
-        doc_bbox = self.get_bbox()
+        doc_bbox = self.get_effective_bbox()
         for i, l in enumerate(self.layers):
             filename = '%s.%03d%s' % (prefix, i+1, ext)
             l.surface.save(filename, *doc_bbox)
@@ -369,7 +378,8 @@ class Document():
     load_jpeg = load_jpg
 
     def save_jpg(self, filename, quality=90):
-        pixbuf = self.render_as_pixbuf()
+        doc_bbox = self.get_effective_bbox()
+        pixbuf = self.render_as_pixbuf(*doc_bbox)
         pixbuf.save(filename, 'jpeg', options={'quality':str(quality)})
     save_jpeg = save_jpg
 
