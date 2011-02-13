@@ -425,7 +425,7 @@ class Document():
         write_file_str('mimetype', 'image/openraster') # must be the first file
         image = ET.Element('image')
         stack = ET.SubElement(image, 'stack')
-        x0, y0, w0, h0 = self.get_bbox()
+        x0, y0, w0, h0 = self.get_effective_bbox()
         a = image.attrib
         a['w'] = str(w0)
         a['h'] = str(h0)
@@ -480,7 +480,8 @@ class Document():
         # save background as layer (solid color or tiled)
         bg = self.background
         # save as fully rendered layer
-        l = add_layer(0, 0, 1.0, bg, 'data/background.png', 'background', rect=(x0, y0, w0, h0))
+        x, y, w, h = self.get_bbox()
+        l = add_layer(x, y, 1.0, bg, 'data/background.png', 'background', rect=(x,y,w,h))
         x, y, w, h = bg.get_pattern_bbox()
         # save as single pattern (with corrected origin)
         store_surface(bg, 'data/background_tile.png', rect=(x+x0, y+y0, w, h))
@@ -518,6 +519,17 @@ class Document():
         xml = z.read('stack.xml')
         image = ET.fromstring(xml)
         stack = image.find('stack')
+
+        w = int(image.attrib['w'])
+        h = int(image.attrib['h'])
+
+        def round_up_to_n(value, n):
+            assert value >= 0, "function undefined for negative numbers"
+
+            residual = value % n
+            if residual:
+                value = value - residual + n
+            return int(value)
 
         def get_pixbuf(filename):
             t1 = time.time()
@@ -557,6 +569,9 @@ class Document():
 
         self.clear() # this leaves one empty layer
         no_background = True
+        # FIXME: don't require tile alignment for frame
+        self.set_frame(width=round_up_to_n(w, N), height=round_up_to_n(h, N))
+
         for layer in get_layers_list(stack):
             a = layer.attrib
 
