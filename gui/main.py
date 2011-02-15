@@ -31,6 +31,8 @@ def main(datapath, confpath):
                     help='start in fullscreen mode')
     options, args = parser.parse_args()
 
+    args = [s.decode(sys.getfilesystemencoding()) for s in args]
+
     if options.logfile:
         print 'Python prints are redirected to', options.logfile, 'after this one.'
         sys.stdout = sys.stderr = open(options.logfile, 'a', 1)
