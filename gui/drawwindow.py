@@ -419,7 +419,15 @@ class Window(windowing.MainWindow):
     def toggleWindow_cb(self, action):
         s = action.get_name()
         window_name = s[0].lower() + s[1:] # WindowName -> windowName
-        w = self.app.windowmanager.get_window(window_name)
+        # If it's a tool, get it to hide/show itself
+        t = self.app.layout_manager.get_tool_by_role(window_name)
+        if t is not None:
+            t.set_hidden(not t.hidden)
+            return
+        # Otherwise, if it's a regular subwindow hide/show+present it./
+        w = self.app.layout_manager.get_subwindow_by_role(window_name)
+        if w is None:
+            return
         if w.window and w.window.is_visible():
             w.hide()
         else:
@@ -445,12 +453,12 @@ class Window(windowing.MainWindow):
         # Respond to changes of the fullscreen state only
         if not event.changed_mask & gdk.WINDOW_STATE_FULLSCREEN:
             return
+        lm = self.app.layout_manager
         self.is_fullscreen = event.new_window_state & gdk.WINDOW_STATE_FULLSCREEN
         if self.is_fullscreen:
-            self.app.windowmanager.user_subwindows.hide()
+            lm.toggle_user_tools(on=False)
             x, y = self.get_position()
             w, h = self.get_size()
-            self.geometry_before_fullscreen = (x, y, w, h)
             self.menubar.hide()
             # fix for fullscreen problem on Windows, https://gna.org/bugs/?15175
             # on X11/Metacity it also helps a bit against flickering during the switch
@@ -462,8 +470,7 @@ class Window(windowing.MainWindow):
                 gtk.main_iteration()
             self.menubar.show()
             #self.app.doc.tdw.set_scroll_at_edges(False)
-            del self.geometry_before_fullscreen
-            self.app.windowmanager.user_subwindows.show()
+            lm.toggle_user_tools(on=True)
 
     def popupmenu_show_cb(self, action):
         self.show_popupmenu()
@@ -494,7 +501,13 @@ class Window(windowing.MainWindow):
         self.popupmenu_last_active = self.popupmenu.get_active()
 
     def toggle_subwindows_cb(self, action):
-        self.app.windowmanager.user_subwindows.toggle()
+        self.app.layout_manager.toggle_user_tools()
+        if self.app.layout_manager.saved_user_tools:
+            if self.is_fullscreen:
+                self.menubar.hide()
+        else:
+            if not self.is_fullscreen:
+                self.menubar.show()
 
     def quit_cb(self, *trash):
         self.app.doc.model.split_stroke()

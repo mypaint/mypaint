@@ -11,7 +11,7 @@ from os.path import join
 import gtk, gobject
 gdk = gtk.gdk
 from lib import brush, helpers, mypaintlib
-import filehandling, keyboard, brushmanager, windowing, document
+import filehandling, keyboard, brushmanager, windowing, document, layout
 import colorhistory
 
 class Application: # singleton
@@ -63,13 +63,27 @@ class Application: # singleton
 
         self.ch = colorhistory.ColorHistory(self)
 
-        self.windowmanager = windowing.WindowManager(self)
-        self.drawWindow = self.windowmanager.main_window # TODO: rename
+        self.layout_manager = layout.LayoutManager(
+            prefs=self.preferences["layout.window_positions"],
+            factory=windowing.window_factory,
+            factory_opts=[self]  )
+        self.drawWindow = self.layout_manager.get_widget_by_role("main-window")
+        self.layout_manager.show_all()
 
         self.kbm.start_listening()
         self.filehandler.doc = self.doc
         self.filehandler.filename = None
         gtk.accel_map_load(join(self.confpath, 'accelmap.conf'))
+
+        # Load the background settings window.
+        # FIXME: this line shouldn't be needed, but we need to load this up
+        # front to get any non-default background that the user has configured
+        # from the preferences.
+        self.layout_manager.get_subwindow_by_role("backgroundWindow")
+
+        # And the brush settings window, or things like eraser mode will break.
+        # FIXME: brush_adjustments should not be dependent on this
+        self.layout_manager.get_subwindow_by_role("brushSettingsWindow")
 
         def at_application_start(*trash):
             if filenames:
@@ -103,7 +117,7 @@ class Application: # singleton
         """Applies the current settings."""
         self.update_input_mapping()
         self.update_input_devices()
-        prefs_win = self.windowmanager.get_window('preferencesWindow')
+        prefs_win = self.layout_manager.get_widget_by_role('preferencesWindow')
         prefs_win.update_ui()
 
     def load_settings(self):
@@ -144,6 +158,7 @@ class Application: # singleton
             "input.button3_action":       'ColorHistoryPopup',
             "input.button3_shift_action": 'no_action',
             "input.button3_ctrl_action":  'no_action',
+            "layout.window_positions": {},
         }
         self.preferences = DEFAULT_CONFIG
         try: 
@@ -240,7 +255,6 @@ class Application: # singleton
 
     def save_gui_config(self):
         gtk.accel_map_save(join(self.confpath, 'accelmap.conf'))
-        self.windowmanager.save_window_positions()
         self.save_settings()
 
     def message_dialog(self, text, type=gtk.MESSAGE_INFO, flags=0):
