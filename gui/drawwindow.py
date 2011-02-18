@@ -69,6 +69,7 @@ class Window(windowing.MainWindow):
         self.connect("button-press-event", self.button_press_cb)
         self.connect("button-release-event", self.button_release_cb)
         self.connect("scroll-event", self.scroll_cb)
+        self.connect("window-state-event", self.window_state_event_cb)
 
         self.app.filehandler.current_file_observers.append(self.update_title)
 
@@ -435,7 +436,16 @@ class Window(windowing.MainWindow):
         state.activate(action)
 
     def fullscreen_cb(self, *trash):
-        self.is_fullscreen = not self.is_fullscreen
+        if not self.is_fullscreen:
+            self.fullscreen()
+        else:
+            self.unfullscreen()
+
+    def window_state_event_cb(self, widget, event):
+        # Respond to changes of the fullscreen state only
+        if not event.changed_mask & gdk.WINDOW_STATE_FULLSCREEN:
+            return
+        self.is_fullscreen = event.new_window_state & gdk.WINDOW_STATE_FULLSCREEN
         if self.is_fullscreen:
             self.app.windowmanager.user_subwindows.hide()
             x, y = self.get_position()
@@ -446,10 +456,8 @@ class Window(windowing.MainWindow):
             # on X11/Metacity it also helps a bit against flickering during the switch
             while gtk.events_pending():
                 gtk.main_iteration()
-            self.fullscreen()
             #self.app.doc.tdw.set_scroll_at_edges(True)
         else:
-            self.unfullscreen()
             while gtk.events_pending():
                 gtk.main_iteration()
             self.menubar.show()
