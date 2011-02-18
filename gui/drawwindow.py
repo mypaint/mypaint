@@ -95,7 +95,7 @@ class Window(windowing.MainWindow):
 
         # Window handling
         self.set_default_size(600, 400)
-        self.fullscreen = False
+        self.is_fullscreen = False
 
     #XXX: Compatability
     def get_doc(self):
@@ -301,7 +301,7 @@ class Window(windowing.MainWindow):
 
     def key_press_event_cb_after(self, win, event):
         key = event.keyval
-        if self.fullscreen and key == keysyms.Escape: self.fullscreen_cb()
+        if self.is_fullscreen and key == keysyms.Escape: self.fullscreen_cb()
         else: return False
         return True
     def key_release_event_cb_after(self, win, event):
@@ -435,8 +435,8 @@ class Window(windowing.MainWindow):
         state.activate(action)
 
     def fullscreen_cb(self, *trash):
-        self.fullscreen = not self.fullscreen
-        if self.fullscreen:
+        self.is_fullscreen = not self.is_fullscreen
+        if self.is_fullscreen:
             self.app.windowmanager.user_subwindows.hide()
             x, y = self.get_position()
             w, h = self.get_size()
@@ -446,10 +446,10 @@ class Window(windowing.MainWindow):
             # on X11/Metacity it also helps a bit against flickering during the switch
             while gtk.events_pending():
                 gtk.main_iteration()
-            self.window.fullscreen()
+            self.fullscreen()
             #self.app.doc.tdw.set_scroll_at_edges(True)
         else:
-            self.window.unfullscreen()
+            self.unfullscreen()
             while gtk.events_pending():
                 gtk.main_iteration()
             self.menubar.show()
