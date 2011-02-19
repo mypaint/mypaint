@@ -158,7 +158,18 @@ class Application: # singleton
             "input.button3_action":       'ColorHistoryPopup',
             "input.button3_shift_action": 'no_action',
             "input.button3_ctrl_action":  'no_action',
-            "layout.window_positions": {},
+            "layout.window_positions": {
+                # Main window default size. -1,-1 means a screen-dependent
+                # position, with a screen-dependent size.
+                'main-window': dict(sbwidth=260, x=-1, y=-1),
+                # Non-hidden entries determine the default set
+                'colorSamplerWindow':   dict(sbindex=0, sbheight=270),
+                'colorSelectionWindow': dict(sbindex=1, hidden=True),
+                'brushSelectionWindow': dict(sbindex=2, sbheight=200),
+                'layersWindow':         dict(sbindex=3),
+                # Can also default to "floating=True" with positions
+                # and/or sizes for the floating window.
+            },
         }
         self.preferences = DEFAULT_CONFIG
         try: 
