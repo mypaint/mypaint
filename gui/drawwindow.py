@@ -21,7 +21,7 @@ from gettext import gettext as _
 import gtk, gobject
 from gtk import gdk, keysyms
 
-import colorselectionwindow, historypopup, stategroup, colorpicker, windowing
+import colorselectionwindow, historypopup, stategroup, colorpicker, windowing, layout
 import dialogs
 from lib import helpers
 import xml.etree.ElementTree as ET
@@ -47,7 +47,8 @@ def with_wait_cursor(func):
     return wrapper
 
 
-class Window(windowing.MainWindow):
+class Window (windowing.MainWindow, layout.MainWindow):
+
     def __init__(self, app):
         windowing.MainWindow.__init__(self, app)
         self.app = app
@@ -75,27 +76,15 @@ class Window(windowing.MainWindow):
 
         self.init_actions()
 
+        layout.MainWindow.__init__(self, app.layout_manager)
+
         kbm = self.app.kbm
         kbm.add_extra_key('Menu', 'ShowPopupMenu')
         kbm.add_extra_key('Tab', 'ToggleSubwindows')
 
         self.init_stategroups()
 
-        # Load Menubar, duplicate into self.popupmenu
-        menupath = os.path.join(self.app.datapath, 'gui/menu.xml')
-        menubar_xml = open(menupath).read()
-        self.app.ui_manager.add_ui_from_string(menubar_xml)
-        self._init_popupmenu(menubar_xml)
-
-        # Set up widgets
-        vbox = gtk.VBox()
-        self.add(vbox)
-        self.menubar = self.app.ui_manager.get_widget('/Menubar')
-        vbox.pack_start(self.menubar, expand=False)
-        vbox.pack_start(self.app.doc.tdw)
-
         # Window handling
-        self.set_default_size(600, 400)
         self.is_fullscreen = False
 
     #XXX: Compatability
@@ -189,6 +178,17 @@ class Window(windowing.MainWindow):
 
         hist.autoleave_timeout = 0.600
         self.history_popup_state = hist
+
+    def init_main_widget(self):  # override
+        self.main_widget = self.app.doc.tdw
+
+    def init_menubar(self):   # override
+        # Load Menubar, duplicate into self.popupmenu
+        menupath = os.path.join(self.app.datapath, 'gui/menu.xml')
+        menubar_xml = open(menupath).read()
+        self.app.ui_manager.add_ui_from_string(menubar_xml)
+        self._init_popupmenu(menubar_xml)
+        self.menubar = self.app.ui_manager.get_widget('/Menubar')
 
     def _init_popupmenu(self, xml):
         """
