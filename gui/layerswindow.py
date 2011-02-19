@@ -305,12 +305,14 @@ class LayersList(gtk.VBox):
         doc = self.app.doc.model
         doc.move_layer(another_widget_idx, target_idx)
 
-class Window(windowing.SubWindow):
+class ToolWidget (gtk.VBox):
+
+    tool_widget_title = _("Layers")
+
     def __init__(self, app):
-        windowing.SubWindow.__init__(self, app)
-        self.set_title(_("Layers"))
-        self.set_role("Layers")
-        self.set_default_size(200, 300)
+        gtk.VBox.__init__(self)
+        self.app = app
+        self.set_size_request(200, 150)
         self.callbacks_active = True # Used to prevent callback loops
 
         # Widgets
@@ -351,11 +353,9 @@ class Window(windowing.SubWindow):
         buttons_hbox.pack_start(del_button)
 
         # Pack and add to toplevel
-        vbox = gtk.VBox()
-        vbox.pack_start(layers_scroll)
-        vbox.pack_start(buttons_hbox, expand=False)
-        vbox.pack_start(opacity_hbox, expand=False)
-        self.add(vbox)
+        self.pack_start(layers_scroll)
+        self.pack_start(buttons_hbox, expand=False)
+        self.pack_start(opacity_hbox, expand=False)
 
         # Updates
         doc = app.doc.model

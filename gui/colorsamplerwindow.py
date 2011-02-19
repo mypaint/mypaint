@@ -4,6 +4,7 @@ from math import pi, sin, cos, sqrt, atan2, ceil
 import struct
 import cairo
 import windowing
+from layout import ElasticExpander
 from lib.helpers import rgb_to_hsv, hsv_to_rgb, clamp
 from gettext import gettext as _
 
@@ -905,24 +906,21 @@ class RGBSelector(gtk.VBox):
 
 class Selector(gtk.VBox):
 
-    CIRCLE_MIN_SIZE = (200, 200)
+    CIRCLE_MIN_SIZE = (150, 150)
 
-    def __init__(self, app, window):
+    def __init__(self, app):
         gtk.VBox.__init__(self)
         self.app = app
-        hbox = gtk.HBox()
-        self.pack_start(hbox, expand=True)
-        vbox = gtk.VBox()
-        hbox.pack_start(vbox,expand=True)
         self.recent = RecentColors(app)
         self.circle = CircleSelector(app)
         self.circle.set_size_request(*self.CIRCLE_MIN_SIZE)
-        vbox.pack_start(self.circle, expand=True)
 
-        self.window_ = window
-        self.window_.connect("configure-event", self.window_configured_cb)
-        self.window_.connect("map-event", self.window_mapped_cb)
-        self.window_mapped = False
+        # The colour circle seems to need its own window to draw sanely when
+        # packed into a Tool wrapper, which probably indicates that something's
+        # amiss somewhere.
+        evbox = gtk.EventBox()
+        evbox.add(self.circle)
+        self.pack_start(evbox, expand=True)
 
         self.rgb_selector = RGBSelector(app)
         self.hsv_selector = HSVSelector(app)
@@ -933,14 +931,14 @@ class Selector(gtk.VBox):
         nb.append_page(self.hsv_selector, gtk.Label(_('HSV')))
 
         # Colour history
-        self.exp_history = expander = gtk.Expander(_('Colors history'))
+        self.exp_history = expander = ElasticExpander(_('Colors history'))
         expander.set_spacing(6)
         expander.add(self.recent)
         expander.connect("notify::expanded", self.expander_expanded_cb, 'history')
         self.pack_start(expander, expand=False)
 
         # Colour details
-        self.exp_details = expander = gtk.Expander(_('Details'))
+        self.exp_details = expander = ElasticExpander(_('Details'))
         expander.set_spacing(6)
         expander.add(nb)
         expander.connect("notify::expanded", self.expander_expanded_cb, 'details')
@@ -956,7 +954,7 @@ class Selector(gtk.VBox):
                 cb.set_tooltip_text(tooltip)
             vbox2.pack_start(cb, expand=False)
 
-        self.exp_config = expander = gtk.Expander(_('Harmonies'))
+        self.exp_config = expander = ElasticExpander(_('Harmonies'))
         vbox2 = gtk.VBox()
         harmony_checkbox('analogous', _('Analogous'), _("Three nearby hues on the color wheel.\nOften found in nature, frequently pleasing to the eye."))
         harmony_checkbox('complementary', _('Complementary color'), _("Two opposite hues on the color wheel.\nVibrant, and maximally contrasting."))
@@ -988,6 +986,9 @@ class Selector(gtk.VBox):
         self.value_blends = True
         self.opposite_blends = False
         self.negative_blends = False
+
+        self.expander_prefs_loaded = False
+        self.connect("show", self.show_cb)
 
     def toggle_blend(self, checkbox, name):
         attr = name+'_blends'
@@ -1026,37 +1027,53 @@ class Selector(gtk.VBox):
         pass
 
     def expander_expanded_cb(self, expander, junk, cfg_stem):
-        if not self.window_mapped:
+        # Save the expander state
+        if not self.expander_prefs_loaded:
             return
-        # After expander activation (both expand and un-expand), don't let the
-        # colour circle shrink smaller than its current size, and force the WM
-        # to shrink-fit the window to the new size.
-        circle_alloc = self.circle.get_allocation()
-        self.circle.set_size_request(circle_alloc.width, circle_alloc.height)
-        self.window_.set_resizable(False)
         self.app.preferences['colorsampler.%s_expanded' % cfg_stem] \
           = bool(expander.get_expanded())
 
-    def window_configured_cb(self, window, event, *param):
-        if not self.window_mapped:
-            return
-        # Undo the expander trick if it's still in effect: the user should be
-        # able to resize the dialog.
-        if not self.window_.get_resizable():
-            self.window_.set_resizable(True)
-            self.circle.set_size_request(*self.CIRCLE_MIN_SIZE)
-
-    def window_mapped_cb(self, window, event, *params):
-        # On the first map event, restore expander state from prefs.
-        if self.window_mapped:
-            return
+    def show_cb(self, widget):
+        # Restore expander state from prefs.
+        # Use "show", not "map", so that it fires before we have a window
+        assert not self.window
+        assert not self.expander_prefs_loaded
+        # If we wait until then, sidebar positions will drift as a result.
         if self.app.preferences.get("colorsampler.history_expanded", False):
             self.exp_history.set_expanded(True)
         if self.app.preferences.get("colorsampler.details_expanded", False):
             self.exp_details.set_expanded(True)
         if self.app.preferences.get("colorsampler.harmonies_expanded", False):
             self.exp_config.set_expanded(True)
-        self.window_mapped = True
+        self.expander_prefs_loaded = True
+
+
+class ToolWidget (Selector):
+
+    tool_widget_title = _("MyPaint color selector")
+
+    def __init__(self, app):
+        Selector.__init__(self, app)
+
+        self.app.brush.settings_observers.append(self.brush_modified_cb)
+        self.stop_callback = False
+
+        # The first callback notification happens before the window is initialized
+        self.set_color(app.brush.get_color_hsv())
+
+    def brush_modified_cb(self):
+        if self.stop_callback:
+            return
+        self.stop_callback = True
+        hsv = self.app.brush.get_color_hsv()
+        self.set_color(hsv)
+        self.stop_callback = False
+
+    def on_select(self, hsv):
+        if self.stop_callback:
+            return
+        self.app.brush.set_color_hsv(hsv)
+
 
 class Window(windowing.SubWindow):
     def __init__(self,app):

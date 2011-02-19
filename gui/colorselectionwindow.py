@@ -16,26 +16,30 @@ import windowing
 from lib import helpers, mypaintlib
 
 
-class Window(windowing.SubWindow):
-    """Window with the standard GTK color selector (triangle)."""
-    def __init__(self, app):
-        windowing.SubWindow.__init__(self, app)
-        self.app.brush.settings_observers.append(self.brush_modified_cb)
-        self.set_resizable(False)
-        self.set_title(_('Color'))
+class ToolWidget (gtk.AspectFrame):
+    """Tool widget with the standard GTK color selector (triangle)."""
 
-        vbox = gtk.VBox()
-        self.add(vbox)
+    tool_widget_title = _('Color')
+
+    def __init__(self, app):
+        gtk.AspectFrame.__init__(self, None, 0.5, 0.5, 1.2)
+        self.set_shadow_type(gtk.SHADOW_NONE)
+        self.app = app
+        self.app.brush.settings_observers.append(self.brush_modified_cb)
 
         self.cs = gtk.ColorSelection()
         self.cs.connect('realize', self.on_cs_realize)
         self.cs.connect('color-changed', self.color_changed_cb)
-        vbox.pack_start(self.cs)
+        self.add(self.cs)
+
+        self.cs.set_size_request(200, 240)
+
         self.in_callback = False
 
 
     def on_cs_realize(self, *ignore):
         # Remove unwanted widgets
+        # FIXME: really we should be using a gtk.HSV instead of all this crap.
         hbox= self.cs.get_children()[0]
         hbox.set_no_show_all(True)
         l,r = hbox.get_children()
@@ -96,9 +100,6 @@ class ColorSelectorPopup(windowing.PopupWindow):
         windowing.PopupWindow.__init__(self, app)
 
         self.backend = self.backend_class()
-
-        #self.set_title('Color')
-        #self.connect('delete-event', self.app.hide_window_cb)
 
         self.image = image = gtk.Image()
         self.add(image)

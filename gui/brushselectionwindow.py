@@ -13,46 +13,53 @@ from gettext import gettext as _
 
 import windowing
 import pixbuflist, dialogs, brushmanager
+from layout import ElasticExpander
 from brushlib import brushsettings
 
-class Window(windowing.SubWindow):
+class ToolWidget (gtk.VBox):
 
     EXPANDER_PREFS_KEY = "brushmanager.common_settings_expanded"
 
-    def __init__(self, app):
-        windowing.SubWindow.__init__(self, app)
-        self.last_selected_brush = None
+    tool_widget_title = _("Brush selection")
 
-        self.set_title(_('Brush selection'))
-        self.set_role('Brush selector')
+    def __init__(self, app):
+        self.app = app
+        gtk.VBox.__init__(self)
+
+        self.last_selected_brush = None
 
         self.groupselector = GroupSelector(self.app)
         self.brushgroups = BrushGroupsList(self.app)
-
-        #main container
-        vbox = gtk.VBox()
-        self.add(vbox)
 
         self.scroll = scroll = gtk.ScrolledWindow()
         scroll.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
         scroll.add_with_viewport(self.brushgroups)
 
-        is_expanded = bool(app.preferences.get(self.EXPANDER_PREFS_KEY, False))
-        expander = self.expander = gtk.Expander(label=None)
-        expander.set_expanded(is_expanded)
+        expander = self.expander = ElasticExpander(label=None)
         expander.add(get_common_settings_widget(app))
         expander.connect("notify::expanded", self.common_settings_expanded_cb)
+        self.expander_prefs_loaded = False
+        self.connect("show", self.show_cb)
 
-        al = gtk.Alignment(0.0, 0.0, 1.0, 1.0)
-        al.add(self.groupselector)
-        al.set_padding(2,2,4,4)
-        vbox.pack_start(al, expand=False)
-        vbox.pack_start(gtk.HSeparator(), expand=False)
-        vbox.pack_start(scroll, expand=True)
-        vbox.pack_start(gtk.HSeparator(), expand=False)
-        vbox.pack_start(expander, expand=False, fill=False)
+        self.pack_start(self.groupselector, expand=False)
+        self.pack_start(gtk.HSeparator(), expand=False)
+        self.pack_start(scroll, expand=True)
+        self.pack_start(gtk.HSeparator(), expand=False)
+        self.pack_start(expander, expand=False, fill=False)
+
+        self.scroll.set_size_request(48, 48)
+        self.expander.set_size_request(48, -1)
+
+    def show_cb(self, widget):
+        assert not self.window
+        assert not self.expander_prefs_loaded
+        is_expanded = bool(self.app.preferences.get(self.EXPANDER_PREFS_KEY, False))
+        self.expander.set_expanded(is_expanded)
+        self.expander_prefs_loaded = True
 
     def common_settings_expanded_cb(self, expander, *junk):
+        if not self.expander_prefs_loaded:
+            return
         is_expanded = bool(expander.get_expanded())
         self.app.preferences[self.EXPANDER_PREFS_KEY] = is_expanded
 
@@ -198,6 +205,9 @@ class BrushGroupsList(gtk.VBox):
         self.show_all()
 
 class GroupSelector(gtk.DrawingArea):
+
+    VERTICAL_MARGIN = 2
+
     def __init__(self, app):
         gtk.DrawingArea.__init__(self)
 
@@ -229,33 +239,27 @@ class GroupSelector(gtk.DrawingArea):
         self.gtkstate_active_group = None
         self.drag_target_group = None
         self.set_tooltip_text(_('try right click, middle click or Ctrl click'))
+        self.connect("size-request", self.on_size_request)
 
     def active_groups_changed_cb(self):
         self.queue_draw()
 
-    def expose_cb(self, widget, event):
-        cr = self.window.cairo_create()
-        width, height = self.window.get_size()
-
+    def lay_out_group_names(self, width):
+        "Typeset the group names into a new Pango layout at a given width"
+        self.ensure_style()
         style = self.get_style()
-
-        c = style.bg[gtk.STATE_NORMAL]
-        cr.set_source_rgb(c.red_float, c.green_float, c.blue_float)
-        cr.rectangle(0, 0, width, height)
-        cr.fill()
-
-        c = style.text[gtk.STATE_NORMAL]
-        cr.set_source_rgb(c.red_float, c.green_float, c.blue_float)
-        layout = cr.create_layout()
+        layout = pango.Layout(self.get_pango_context())
         layout.set_width(width*pango.SCALE)
-        layout.set_font_description(style.font_desc)
+        #layout.set_font_description(style.font_desc) # Needed?
 
         all_groups = list(sorted(self.bm.groups.keys()))
-
         idx = 0
         text = ''
         attr = pango.AttrList()
         self.idx2group = {}
+
+        # Pick separator chars. Platform-dependent, but assume Unicode
+        # for modern OSes first.
         pad_s = u"\u202f"  # NARROW NO-BREAK SPACE
         sp_s = pad_s + u"\u200b"  # ZERO WIDTH SPACE
 
@@ -303,17 +307,49 @@ class GroupSelector(gtk.DrawingArea):
 
         layout.set_text(text)
         layout.set_attributes(attr)
+
+        leading = style.font_desc.get_size() / 6
+        layout.set_spacing(leading)
+        return layout
+
+    def on_size_request(self, widget, req):
+        parent = self.parent.parent
+        parent_width = parent.get_allocation().width
+        # The above is potentially the adopt "natural size" at first, but
+        # we should respect it if it's set. Might result in fewer redraws.
+        layout = self.lay_out_group_names(parent_width)
+        w, h = layout.get_pixel_size()
+        h += 2 * self.VERTICAL_MARGIN
+        req.width = -1
+        req.height = h
+
+    def expose_cb(self, widget, event):
+        cr = self.window.cairo_create()
+        alloc = self.get_allocation()
+        width = alloc.width
+        height = alloc.height
+
+        style = self.get_style()
+
+        c = style.bg[gtk.STATE_NORMAL]
+        cr.set_source_rgb(c.red_float, c.green_float, c.blue_float)
+        cr.rectangle(0, 0, width, height)
+        cr.fill()
+
+        c = style.text[gtk.STATE_NORMAL]
+        cr.set_source_rgb(c.red_float, c.green_float, c.blue_float)
+        layout = self.lay_out_group_names(width)
         
         leading = style.font_desc.get_size() / 6
         vmargin = leading // pango.SCALE
         layout.set_spacing(leading)
         
-        w, h = layout.get_pixel_size()
-        h += 2*vmargin
-        cr.move_to(0, vmargin)
+        cr.move_to(0, self.VERTICAL_MARGIN)
         cr.show_layout(layout)
 
-        self.set_size_request(-1, h)
+        # Catch reflows, which maybe result in more or fewer rows.
+        self.set_size_request(-1, -1)  # "ask again, give me my natural size"
+        self.queue_resize_no_redraw()
 
         self.layout = layout
 
