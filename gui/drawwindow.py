@@ -67,9 +67,6 @@ class Window (windowing.MainWindow, layout.MainWindow):
         self.connect_after('key-press-event', self.key_press_event_cb_after)
         self.connect_after('key-release-event', self.key_release_event_cb_after)
         self.connect("drag-data-received", self.drag_data_received)
-        self.connect("button-press-event", self.button_press_cb)
-        self.connect("button-release-event", self.button_release_cb)
-        self.connect("scroll-event", self.scroll_cb)
         self.connect("window-state-event", self.window_state_event_cb)
 
         self.app.filehandler.current_file_observers.append(self.update_title)
@@ -77,6 +74,9 @@ class Window (windowing.MainWindow, layout.MainWindow):
         self.init_actions()
 
         layout.MainWindow.__init__(self, app.layout_manager)
+        self.main_widget.connect("button-press-event", self.button_press_cb)
+        self.main_widget.connect("button-release-event",self.button_release_cb)
+        self.main_widget.connect("scroll-event", self.scroll_cb)
 
         kbm = self.app.kbm
         kbm.add_extra_key('Menu', 'ShowPopupMenu')
