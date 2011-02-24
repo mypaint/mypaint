@@ -13,6 +13,7 @@ import os, math
 import gtk
 from gtk import gdk
 from gettext import gettext as _
+from bisect import bisect_left
 
 import lib.document
 from lib import backgroundsurface, command, helpers, layer
@@ -36,9 +37,12 @@ class Document(object):
         self.zoomlevel_values = [1.0/8, 2.0/11, 0.25, 1.0/3, 0.50, 2.0/3,  # micro
                                  1.0, 1.5, 2.0, 3.0, 4.0, 5.5, 8.0,        # normal
                                  11.0, 16.0, 23.0, 32.0, 45.0, 64.0]       # macro
+                                 # keep sorted for bisect
 
         default_zoom = self.app.preferences['view.default_zoom']
-        self.zoomlevel = self.zoomlevel_values.index(default_zoom)
+        self.zoomlevel = min(bisect_left(self.zoomlevel_values, default_zoom),
+                             len(self.zoomlevel_values) - 1)
+        default_zoom = self.zoomlevel_values[self.zoomlevel]
         self.tdw.scale = default_zoom
         self.tdw.zoom_min = min(self.zoomlevel_values)
         self.tdw.zoom_max = max(self.zoomlevel_values)
