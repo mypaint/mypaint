@@ -7,6 +7,7 @@
 # (at your option) any later version.
 
 "preferences dialog"
+from bisect import bisect_left
 from gettext import gettext as _
 import gtk, os
 gdk = gtk.gdk
@@ -232,6 +233,7 @@ class Window(windowing.Dialog):
         l.set_alignment(0.0, 0.5)
         combo = self.defaultzoom_combo = gtk.combo_box_new_text()
         # Different from doc.zoomlevel_values because we only want a subset
+        # - keep sorted for bisect
         self.defaultzoom_values = [0.25, 0.50, 1.0, 2.0]
         for val in self.defaultzoom_values:
             combo.append_text('%d%%' % (val*100))
@@ -266,11 +268,13 @@ class Window(windowing.Dialog):
             i += 1
         self.input_devices_combo.set_active(mode_idx)
         zoom = self.app.doc.zoomlevel_values[self.app.doc.zoomlevel]
-        zoomlevel = self.defaultzoom_values.index(zoom)
+        zoomlevel = min(bisect_left(self.defaultzoom_values, zoom),
+                        len(self.defaultzoom_values) - 1)
         self.defaultzoom_combo.set_active(zoomlevel)
         saveformat_config = p['saving.default_format']
         saveformat_idx = self.app.filehandler.config2saveformat[saveformat_config]
         idx = self.defaultsaveformat_values.index(saveformat_idx)
+        # FIXME: ^^^^^^^^^ try/catch/default may be more tolerant & futureproof
         self.defaultsaveformat_combo.set_active(idx)
         # Mouse button
         for pref_name, junk in mouse_button_prefs:
