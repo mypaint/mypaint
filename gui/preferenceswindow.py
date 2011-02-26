@@ -267,7 +267,7 @@ class Window(windowing.Dialog):
                 break
             i += 1
         self.input_devices_combo.set_active(mode_idx)
-        zoom = self.app.doc.zoomlevel_values[self.app.doc.zoomlevel]
+        zoom = p['view.default_zoom']
         zoomlevel = min(bisect_left(self.defaultzoom_values, zoom),
                         len(self.defaultzoom_values) - 1)
         self.defaultzoom_combo.set_active(zoomlevel)
