@@ -131,7 +131,7 @@ class Window(windowing.Dialog):
         self.prefix_entry.set_text(p['saving.scrap_prefix'])
         mode = device_modes.index(p['input.device_mode'])
         self.input_devices_combo.set_active(mode)
-        zoom = self.app.doc.zoomlevel_values[self.app.doc.zoomlevel]
+        zoom = p['view.default_zoom']
         zoomlevel = min(bisect_left(self.defaultzoom_values, zoom),
                         len(self.defaultzoom_values) - 1)
         self.defaultzoom_combo.set_active(zoomlevel)
