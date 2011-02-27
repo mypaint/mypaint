@@ -31,7 +31,12 @@
       <menuitem action='ShowPopupMenu'/>
       <menuitem action='ToggleSubwindows'/>
       <separator/>
-      <menuitem action='ResetView'/>
+      <menu action='ResetMenu'>
+        <menuitem action='ResetRotation'/>
+        <menuitem action='ResetZoom'/>
+        <menuitem action='ResetMirror'/>
+        <menuitem action='ResetView'/>
+      </menu>
       <menuitem action='ZoomIn'/>
       <menuitem action='ZoomOut'/>
       <menuitem action='RotateLeft'/>

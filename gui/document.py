@@ -112,7 +112,11 @@ class Document(object):
 
             ('ShortcutsMenu', None, _('Shortcuts')),
 
-            ('ResetView',   gtk.STOCK_ZOOM_100, _('Reset (Zoom, Rotation, Mirror)'), 'F12', None, self.reset_view_cb),
+            ('ResetMenu',   None, _('Reset')),
+                ('ResetZoom',   gtk.STOCK_ZOOM_100, _('Zoom'), None, None, self.reset_view_cb),
+                ('ResetRotation',   None, _('Rotation'), None, None, self.reset_view_cb),
+                ('ResetMirror', None, _('Mirror'), None, None, self.reset_view_cb),
+                ('ResetView',   gtk.STOCK_ZOOM_FIT, _('All'), 'F12', None, self.reset_view_cb),
             ('ZoomIn',       gtk.STOCK_ZOOM_IN, _('Zoom In (at cursor)'), 'period', None, self.zoom_cb),
             ('ZoomOut',      gtk.STOCK_ZOOM_OUT, _('Zoom Out'), 'comma', None, self.zoom_cb),
             ('RotateLeft',   None, _('Rotate Counterclockwise'), '<control>Left', None, self.rotate_cb),
@@ -546,11 +550,13 @@ class Document(object):
         self.tdw.mirror()
 
     def reset_view_cb(self, command):
-        self.tdw.set_rotation(0.0)
-        default_zoom = self.app.preferences['view.default_zoom']
-        self.zoomlevel = self.zoomlevel_values.index(default_zoom)
-        self.tdw.set_zoom(default_zoom)
-        self.tdw.set_mirrored(False)
+        command_name = command.get_name()
+        if 'Rotation' in command_name or 'View' in command_name : self.tdw.set_rotation(0.0)
+        if 'Zoom' in command_name or 'View' in command_name:
+            default_zoom = self.app.preferences['view.default_zoom']
+            self.zoomlevel = self.zoomlevel_values.index(default_zoom)
+            self.tdw.set_zoom(default_zoom)
+        if 'Mirror' in command_name or 'View' in command_name: self.tdw.set_mirrored(False)
         self.tdw.recenter_document()
 
     # DEBUGGING
