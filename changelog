@@ -1,3 +1,15 @@
+Version 0.9.1:
+- several fixes for non-ascii file names, directories, layer names
+- workaround for tablets reporting invalid tilt values
+- rotation: fix direction while mirrored, change steps to 22.5 degrees
+- store freedesktop thumbnails also when saving (for preview in other apps)
+- reduce the minimal cursor size
+- brush selector: remember state of the expander at the bottom
+- fix glitch when changing the brush/color with a different input device
+- osx: fix compile error
+- windows: use AppData folder for settings
+- some other minor fixes
+
 Version 0.9.0:
 - brush collection: updated better and smaller collection
 - brushset import and export
