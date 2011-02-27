@@ -8,6 +8,9 @@ EnsureSConsVersion(1, 0)
 python = 'python%d.%d' % (sys.version_info[0], sys.version_info[1])
 print 'Building for', python
 
+if sys.platform == "win32":
+    python = 'python' # usually no versioned binaries on Windows
+
 try: 
     import numpy
 except ImportError:
