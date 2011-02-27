@@ -77,7 +77,6 @@ class Widget(gtk.HBox):
         (_('Rename...'), self.rename_brush_cb),
         (_('Remove...'), self.delete_brush_cb),
         (_('Save Settings'), self.update_settings_cb),
-        (_('About brush'),  self.show_about_cb),
         ]
 
         for title, clicked_cb in right_vbox_buttons:
@@ -105,25 +104,6 @@ class Widget(gtk.HBox):
     def get_preview_pixbuf(self):
         pixbuf = self.tdw.doc.render_as_pixbuf(0, 0, brushmanager.preview_w, brushmanager.preview_h)
         return pixbuf
-
-    def show_about_cb(self, window):
-        b = self.bm.selected_brush
-        path = b.get_fileprefix()
-        dir = os.path.dirname(path)
-        found = False
-        while dir not in ['', '/']:
-            for name in ["README", "LICENSE", "LEGAL", "COPYRIGHT"]:
-                for another_name in [name, name + '.txt', name + '.TXT', name.lower(), name.lower() + '.txt']:
-                    filename = os.path.join(dir, another_name)
-                    if os.path.isfile(filename):
-                        startfile(filename)
-                        found = True
-                        break
-            if found:
-                break
-            dir = os.path.dirname(dir)
-        if not found:
-            dialogs.error(self, _('No README file for this brush!'))
 
     def create_brush_cb(self, window):
         """Create and save a new brush based on the current working brush."""
