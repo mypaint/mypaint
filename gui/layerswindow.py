@@ -146,28 +146,26 @@ class LayerWidget(gtk.EventBox):
 #                 gdk.ACTION_MOVE)
 
         self.clicked = 0
-        self.button_pressed = False
-        self.time_pressed = 0
 
         self.set_layer(layer)
 
     def on_button_press(self, widget, event):
-        self.button_pressed = True
+        if event.type == gdk.BUTTON_PRESS:
+            self.clicked = 1
+            return
+        elif event.type == gdk._2BUTTON_PRESS:
+            self.clicked = 2
+            return
+        self.clicked = 0
 
     def on_button_release(self, widget, event):
-        if self.button_pressed:
-            self.list.selected = self
-            self.button_pressed = False
-        if self.clicked == 0:
-            self.time_pressed = event.time
-            self.clicked = 1
-        elif self.clicked == 1 and event.time - self.time_pressed < 700:
-            self.clicked = 2
-        else:
-            self.clicked = 0
-        if self.clicked == 2:
-            self.clicked = 0
-            self.change_name()
+        if self.clicked == 1:
+            if self is not self.list.selected:
+                self.list.selected = self
+        elif self.clicked == 2:
+            if self is self.list.selected:
+                self.change_name()
+        self.clicked = 0
 
     def drag_data(self, widget, context, x,y, selection, targetType, time):
         if targetType==DRAG_LAYER_INDEX:
