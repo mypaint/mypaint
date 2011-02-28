@@ -214,7 +214,12 @@ class LayerWidget(gtk.EventBox):
             return
         self.callbacks_active = False
         self.visibility_button.set_active(layer.visible)
-        layer_text = layer.name or _('<small>Double click to enter name</small>')
+        layer_text = layer.name
+        if not layer_text:
+            if self is self.list.selected:
+                layer_text = _('<small>Double click to enter name</small>')
+            else:
+                layer_text = _('<small>Click to select this layer</small>')
         self.layer_name.set_markup(layer_text)
         self.callbacks_active = True
 
