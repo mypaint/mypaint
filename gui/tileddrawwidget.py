@@ -588,7 +588,9 @@ class TiledDrawWidget(gtk.DrawingArea):
 
     def update_cursor(self):
         if not self.window: return
-
+        if self.doc.layer.locked or not self.doc.layer.visible:
+            self.window.set_cursor(None)
+            return
         b = self.doc.brush
         radius = b.get_actual_radius()*self.scale
         c = cursor.get_brush_cursor(radius, b.is_eraser())
