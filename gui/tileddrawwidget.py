@@ -147,6 +147,11 @@ class TiledDrawWidget(gtk.DrawingArea):
             self.dragfunc(dx, dy, event.x, event.y)
             return
 
+        # Refuse drawing if the layer is locked or hidden
+        if self.doc.layer.locked or not self.doc.layer.visible:
+            return
+            # TODO: some feedback, maybe
+
         cr = self.get_model_coordinates_cairo_context()
         x, y = cr.device_to_user(event.x, event.y)
         

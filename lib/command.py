@@ -225,6 +225,21 @@ class SetLayerVisibility(Action):
         self._notify_canvas_observers(self.layer)
         self._notify_document_observers()
 
+class SetLayerLocked (Action):
+    def __init__(self, doc, locked, layer):
+        self.doc = doc
+        self.new_locked = locked
+        self.layer = layer
+    def redo(self):
+        self.old_locked = self.layer.locked
+        self.layer.locked = self.new_locked
+        self._notify_canvas_observers(self.layer)
+        self._notify_document_observers()
+    def undo(self):
+        self.layer.locked = self.old_locked
+        self._notify_canvas_observers(self.layer)
+        self._notify_document_observers()
+
 class SetLayerOpacity(Action):
     def __init__(self, doc, opacity, layer=None):
         self.doc = doc

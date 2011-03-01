@@ -282,6 +282,12 @@ class Document():
             self.undo()
         self.do(command.SetLayerVisibility(self, visible, layer))
 
+    def set_layer_locked(self, locked, layer):
+        cmd = self.get_last_command()
+        if isinstance(cmd, command.SetLayerLocked) and cmd.layer is layer:
+            self.undo()
+        self.do(command.SetLayerLocked(self, locked, layer))
+
     def set_layer_opacity(self, opacity, layer=None):
         """Sets the opacity of a layer. If layer=None, works on the current layer"""
         cmd = self.get_last_command()

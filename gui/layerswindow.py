@@ -22,84 +22,40 @@ def stock_button(stock_id):
     b.add(img)
     return b
 
+class PixbufToggleButton (gtk.ToggleButton):
 
-alpha = asin(0.8)
-class EyeOnly(gtk.DrawingArea):
-    def __init__(self, size=20):
-        gtk.DrawingArea.__init__(self)
-        self.set_size_request(size,size)
-        self.set_events(gdk.BUTTON_PRESS_MASK | gdk.BUTTON_RELEASE_MASK)
-        self.connect('button-press-event', self.button_press)
-        self.connect('button-release-event', self.on_button_release)
-        self.connect('expose-event', self.draw)
-        self.set_tooltip_text(_('Layer visibility'))
-        self.size = size
-        self.active = False
-        self.button_pressed = False
-
-    def set_active(self, v):
-        self.active = v
-        self.queue_draw()
-
-    def get_active(self):
-        return self.active
-
-    def on_toggle(self, w):
-        pass
-
-    def on_button_press(self):
-        pass
-
-    def button_press(self, w, event):
-        self.button_pressed = True
-        self.on_button_press()
-
-    def on_button_release(self, w, event):
-        if not self.button_pressed:
-            return
-        self.set_active(not self.active)
-        self.on_toggle(w)
-
-    def draw(self,widget, event):
-        cr = self.window.cairo_create()
-        r = self.get_allocation()
-        w,h = r.width, r.height
-        r = w/4.0
-        R = 0.625*w
-        x0 = w/2.0
-        y0 = h/2.0
-        cr.set_line_width(1.4)
-        if self.active:
-            cr.set_source_rgb(0.0,0.0,0.0)
-            cr.arc(x0, y0 - R + r, R, pi/2-alpha, pi/2+alpha)
-            cr.stroke()
-            cr.arc(x0, y0 + R - r, R, -pi/2-alpha, -pi/2+alpha)
-            cr.stroke()
-            cr.arc(x0, y0, r, 0.0, 2*pi)
-            cr.fill()
-        else:
-            cr.set_source_rgb(0.4,0.4,0.4)
-            cr.arc(x0, y0 - R + r, R, pi/2-alpha, pi/2+alpha)
-            cr.stroke()
-            cr.set_source_rgb(0.6,0.6,0.6)
-            cr.arc(x0, y0 + R - r, R, -pi/2-alpha, -pi/2+alpha)
-            cr.stroke()
-
-class Eye(gtk.ToggleButton):
-    def __init__(self):
+    def __init__(self, app, active, tooltip, on_toggle, active_pixbuf, inactive_pixbuf):
         gtk.ToggleButton.__init__(self)
-        self.set_active(True)
-        self.eye = EyeOnly()
-        self.eye.set_active(True)
-        self.add(self.eye)
-        self.connect('toggled', self.toggled)
+        self.app = app
+        self.active_pixbuf = active_pixbuf
+        self.inactive_pixbuf = inactive_pixbuf
+        self.set_active(active)
+        self.image = gtk.Image()
+        self.set_border_width(0)
+        self.set_size_request(24, 24)
+        self.add(self.image)
+        self.on_toggle = on_toggle
+        self.update_image()
+        self.connect('toggled', self.on_toggled)
+        self.set_relief(gtk.RELIEF_NONE)
+        self.set_tooltip_text(tooltip)
+        self.set_focus_on_click(False)
+        self.set_property("can-focus", False)
+        sty = self.get_modifier_style()
+        sty.xthickness = 0
+        sty.ythickness = 0
+        self.modify_style(sty)
 
-    def toggled(self,b):
-        self.eye.set_active(not self.eye.get_active())
+    def update_image(self):
+        if self.get_active():
+            pixbuf = self.active_pixbuf
+        else:
+            pixbuf = self.inactive_pixbuf
+        self.image.set_from_pixbuf(pixbuf)
+
+    def on_toggled(self, b):
+        self.update_image()
         self.on_toggle(b)
-
-    def on_toggle(self,w):
-        pass
 
 def small_pack(box, widget):
     b = box()
@@ -121,12 +77,18 @@ class LayerWidget(gtk.EventBox):
 
         # Widgets
         self.layer_name = gtk.Label()
-        self.visibility_button = Eye()
-        self.visibility_button.on_toggle = self.on_visibility_toggled
+        self.hidden_button = PixbufToggleButton(self.app,
+            False, _('Layer visibility'), self.on_hidden_toggled, 
+            self.app.pixmaps.eye_closed, self.app.pixmaps.eye_open)
+        locked = self.layer and self.layer.locked
+        self.lock_button = PixbufToggleButton(self.app,
+            locked, _('Layer lock'), self.on_lock_toggled, 
+            self.app.pixmaps.lock_closed, self.app.pixmaps.lock_open)
 
         # Pack and add to self
         self.main_hbox = gtk.HBox()
-        self.main_hbox.pack_start(self.visibility_button, expand=False)
+        self.main_hbox.pack_start(self.hidden_button, expand=False)
+        self.main_hbox.pack_start(self.lock_button, expand=False)
         self.main_hbox.pack_start(self.layer_name)
         self.add(self.main_hbox)
 
@@ -213,7 +175,8 @@ class LayerWidget(gtk.EventBox):
         if not layer:
             return
         self.callbacks_active = False
-        self.visibility_button.set_active(layer.visible)
+        self.hidden_button.set_active(not layer.visible)
+        self.lock_button.set_active(layer.locked)
         layer_text = layer.name
         if not layer_text:
             if self is self.list.selected:
@@ -229,11 +192,17 @@ class LayerWidget(gtk.EventBox):
             self.layer.name = layer_name
             self.layer_name.set_text(layer_name)
 
-    def on_visibility_toggled(self, checkbox):
+    def on_hidden_toggled(self, checkbox):
         if not self.callbacks_active:
             return
         visible = not self.layer.visible
         self.app.doc.model.set_layer_visibility(visible, self.layer)
+
+    def on_lock_toggled(self, checkbox):
+        if not self.callbacks_active:
+            return
+        locked = not self.layer.locked
+        self.app.doc.model.set_layer_locked(locked, self.layer)
 
     def set_selected(self):
         style = self.get_style()

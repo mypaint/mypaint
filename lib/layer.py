@@ -17,6 +17,7 @@ class Layer:
         self.opacity = 1.0
         self.name = name
         self.visible = True
+        self.locked = False
         self.clear()
 
     def get_effective_opacity(self):
