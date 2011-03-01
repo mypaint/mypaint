@@ -558,13 +558,20 @@ class Document(object):
         self.tdw.mirror()
 
     def reset_view_cb(self, command):
-        command_name = command.get_name()
-        if 'Rotation' in command_name or 'View' in command_name : self.tdw.set_rotation(0.0)
-        if 'Zoom' in command_name or 'View' in command_name:
+        if command is None:
+            command_name = None
+            reset_all = True
+        else:
+            command_name = command.get_name()
+            reset_all = (command_name is None) or ('View' in command_name)
+        if reset_all or ('Rotation' in command_name):
+            self.tdw.set_rotation(0.0)
+        if reset_all or ('Zoom' in command_name):
             default_zoom = self.app.preferences['view.default_zoom']
             self.zoomlevel = self.zoomlevel_values.index(default_zoom)
             self.tdw.set_zoom(default_zoom)
-        if 'Mirror' in command_name or 'View' in command_name: self.tdw.set_mirrored(False)
+        if reset_all or ('Mirror' in command_name):
+            self.tdw.set_mirrored(False)
         self.tdw.recenter_document()
 
     # DEBUGGING
