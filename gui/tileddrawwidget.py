@@ -23,6 +23,8 @@ class TiledDrawWidget(gtk.DrawingArea):
     passed to the document after applying the inverse transformation.
     """
 
+    CANNOT_DRAW_CURSOR = gdk.Cursor(gdk.CIRCLE)
+
     def __init__(self, document):
         gtk.DrawingArea.__init__(self)
         self.connect("expose-event", self.expose_cb)
@@ -589,7 +591,7 @@ class TiledDrawWidget(gtk.DrawingArea):
     def update_cursor(self):
         if not self.window: return
         if self.doc.layer.locked or not self.doc.layer.visible:
-            self.window.set_cursor(None)
+            self.window.set_cursor(self.CANNOT_DRAW_CURSOR)
             return
         b = self.doc.brush
         radius = b.get_actual_radius()*self.scale
