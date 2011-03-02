@@ -31,11 +31,14 @@
       <menuitem action='ShowPopupMenu'/>
       <menuitem action='ToggleSubwindows'/>
       <separator/>
+      <!-- ResetView is on its own because it also recentres the canvas, -->
+      <menuitem action='ResetView'/>
+      <!-- also it should be more accessible then the following resets -->
       <menu action='ResetMenu'>
         <menuitem action='ResetRotation'/>
         <menuitem action='ResetZoom'/>
         <menuitem action='ResetMirror'/>
-        <menuitem action='ResetView'/>
+        <!-- which all operate around the centre of the viewport. -->
       </menu>
       <menuitem action='ZoomIn'/>
       <menuitem action='ZoomOut'/>
