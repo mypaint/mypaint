@@ -126,7 +126,7 @@ class Application: # singleton
         if sys.platform == 'win32':
             import glib
             scrappre = join(glib.get_user_special_dir(glib.USER_DIRECTORY_DOCUMENTS).decode('utf-8'),'MyPaint','scrap')
-        else :
+        else:
             scrappre = '~/MyPaint/scrap'
         DEFAULT_CONFIG = {
             'saving.scrap_prefix': scrappre,

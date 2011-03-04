@@ -31,16 +31,10 @@ def main(datapath, confpath):
                     help='start in fullscreen mode')
     options, args = parser.parse_args()
 
-    if sys.platform != 'win32':
-        args = [s.decode(sys.getfilesystemencoding()) for s in args]
-
     if options.logfile:
         print 'Python prints are redirected to', options.logfile, 'after this one.'
         sys.stdout = sys.stderr = open(options.logfile, 'a', 1)
         print '--- mypaint log %s ---' % time.strftime('%Y-%m-%d %H:%M:%S')
-
-    if sys.platform != 'win32':
-        confpath = options.config.decode(sys.getfilesystemencoding())
 
     def run():
         print 'confpath =', options.config
