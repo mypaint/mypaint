@@ -6,7 +6,7 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-import os
+import os, sys
 from os.path import join
 import gtk, gobject
 gdk = gtk.gdk
@@ -123,9 +123,13 @@ class Application: # singleton
             settingspath = join(self.confpath, 'settings.json')
             jsonstr = open(settingspath).read()
             return helpers.json_loads(jsonstr)
-
+        if sys.platform == 'win32':
+            import glib
+            scrappre = join(glib.get_user_special_dir(glib.USER_DIRECTORY_DOCUMENTS).decode('utf-8'),'MyPaint','scrap')
+        else :
+            scrappre = '~/MyPaint/scrap'
         DEFAULT_CONFIG = {
-            'saving.scrap_prefix': '~/MyPaint/scrap',
+            'saving.scrap_prefix': scrappre,
             'input.device_mode': 'screen',
             'input.global_pressure_mapping': [(0.0, 1.0), (1.0, 0.0)],
             'view.default_zoom': 1.0,
