@@ -109,7 +109,11 @@ def get_paths():
 
     from lib import helpers
     homepath =  helpers.expanduser_unicode(u'~')
-    if homepath == '~':
+    if sys.platform == 'win32':
+        # using patched win32 glib using correct CSIDL_LOCAL_APPDATA
+        import glib
+        confpath = os.path.join(glib.get_user_config_dir().decode('utf-8'),'mypaint')
+    elif homepath == '~':
         confpath = join(prefix, 'UserData')
     else:
         confpath = join(homepath, '.mypaint/')

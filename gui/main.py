@@ -44,12 +44,6 @@ def main(datapath, confpath):
     def run():
         print 'confpath =', options.config
 
-        # using patched win32 glib using correct CSIDL_LOCAL_APPDATA
-        # FIXME if I put this in mypaint.py confpath changed when get here
-        if sys.platform == 'win32':
-            import os, glib
-            confpath = os.path.join(glib.get_user_config_dir().decode('utf-8'),'mypaint')
-
         app = application.Application(datapath, confpath, args)
         if options.fullscreen:
             def f():
