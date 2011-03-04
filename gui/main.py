@@ -39,7 +39,8 @@ def main(datapath, confpath):
         sys.stdout = sys.stderr = open(options.logfile, 'a', 1)
         print '--- mypaint log %s ---' % time.strftime('%Y-%m-%d %H:%M:%S')
 
-    confpath = options.config.decode(sys.getfilesystemencoding())
+    if sys.platform != 'win32':
+        confpath = options.config.decode(sys.getfilesystemencoding())
 
     def run():
         print 'confpath =', options.config
