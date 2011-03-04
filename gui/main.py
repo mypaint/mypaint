@@ -17,45 +17,8 @@ from gui import application
 from optparse import OptionParser
 import sys, time
 
-def win32_utf16_argv():
-    # fix for https://gna.org/bugs/?17739
-    # code mostly comes from http://code.activestate.com/recipes/572200/
-    """Uses shell32.GetCommandLineArgvW to get sys.argv as a list of Unicode
-    strings.
-
-    Versions 2.x of Python don't support Unicode in sys.argv on
-    Windows, with the underlying Windows API instead replacing multi-byte
-    characters with '?'.
-    """
-    try:
-        from ctypes import POINTER, byref, cdll, c_int, windll
-        from ctypes.wintypes import LPCWSTR, LPWSTR
-
-        GetCommandLineW = cdll.kernel32.GetCommandLineW
-        GetCommandLineW.argtypes = []
-        GetCommandLineW.restype = LPCWSTR
-        CommandLineToArgvW = windll.shell32.CommandLineToArgvW
-        CommandLineToArgvW.argtypes = [LPCWSTR, POINTER(c_int)]
-
-        CommandLineToArgvW.restype = POINTER(LPWSTR)
-        cmd = GetCommandLineW()
-        argc = c_int(0)
-        argv = CommandLineToArgvW(cmd, byref(argc))
-        if argc.value > 0:
-            # Remove Python executable if present
-            if argc.value - len(sys.argv) == 1:
-                start = 1
-            else:
-                start = 0
-            return [argv[i] for i in xrange(start, argc.value)]
-    except Exception:
-        return [s.decode(sys.getfilesystemencoding()) for s in args]
-
 # main entry, called from the "mypaint" script
 def main(datapath, confpath):
-
-    if sys.platform == 'win32':
-        sys.argv = win32_utf16_argv()
 
     parser = OptionParser('usage: %prog [options] [FILE]')
     parser.add_option('-c', '--config', metavar='DIR', default=confpath,
@@ -70,7 +33,6 @@ def main(datapath, confpath):
 
     if sys.platform != 'win32':
         args = [s.decode(sys.getfilesystemencoding()) for s in args]
-    args = [s.decode(sys.getfilesystemencoding()) for s in args]
 
     if options.logfile:
         print 'Python prints are redirected to', options.logfile, 'after this one.'
@@ -81,6 +43,13 @@ def main(datapath, confpath):
 
     def run():
         print 'confpath =', options.config
+
+        # using patched win32 glib using correct CSIDL_LOCAL_APPDATA
+        # FIXME if I put this in mypaint.py confpath changed when get here
+        if sys.platform == 'win32':
+            import os, glib
+            confpath = os.path.join(glib.get_user_config_dir().decode('utf-8'),'mypaint')
+
         app = application.Application(datapath, confpath, args)
         if options.fullscreen:
             def f():

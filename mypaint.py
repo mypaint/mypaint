@@ -12,14 +12,52 @@ to figure out where the python modules are.
 """
 import sys, os
 
+def win32_unicode_argv():
+    # fix for https://gna.org/bugs/?17739
+    # code mostly comes from http://code.activestate.com/recipes/572200/
+    """Uses shell32.GetCommandLineArgvW to get sys.argv as a list of Unicode
+    strings.
+
+    Versions 2.x of Python don't support Unicode in sys.argv on
+    Windows, with the underlying Windows API instead replacing multi-byte
+    characters with '?'.
+    """
+    try:
+        from ctypes import POINTER, byref, cdll, c_int, windll
+        from ctypes.wintypes import LPCWSTR, LPWSTR
+
+        GetCommandLineW = cdll.kernel32.GetCommandLineW
+        GetCommandLineW.argtypes = []
+        GetCommandLineW.restype = LPCWSTR
+        CommandLineToArgvW = windll.shell32.CommandLineToArgvW
+        CommandLineToArgvW.argtypes = [LPCWSTR, POINTER(c_int)]
+
+        CommandLineToArgvW.restype = POINTER(LPWSTR)
+        cmd = GetCommandLineW()
+        argc = c_int(0)
+        argv = CommandLineToArgvW(cmd, byref(argc))
+        if argc.value > 0:
+            # Remove Python executable if present
+            if argc.value - len(sys.argv) == 1:
+                start = 1
+            else:
+                start = 0
+            return [argv[i] for i in xrange(start, argc.value)]
+    except Exception:
+        return [s.decode(sys.getfilesystemencoding()) for s in args]
+
 def get_paths():
     join = os.path.join
 
     lib_shared='share/mypaint/'
     # note: some distros use lib64 instead, they have to edit this...
     lib_compiled='lib/mypaint/'
-    
-    arg0 = sys.argv[0].decode(sys.getfilesystemencoding())
+
+    if sys.platform == 'win32':
+        sys.argv = win32_unicode_argv()
+        arg0 = sys.argv[0]
+    else:
+        arg0 = sys.argv[0].decode(sys.getfilesystemencoding())
     scriptdir=os.path.dirname(arg0)
 
     # this script is installed as $prefix/bin. We just need $prefix to continue.
@@ -73,18 +111,8 @@ def get_paths():
     homepath =  helpers.expanduser_unicode(u'~')
     if homepath == '~':
         confpath = join(prefix, 'UserData')
-    else:                                            
+    else:
         confpath = join(homepath, '.mypaint/')
-    #Workaround before glib.get_user_config_dir() fixed in upstream
-    if sys.platform == 'win32':                                  
-        import _winreg
-        try:
-            HKCU = _winreg.ConnectRegistry(None, _winreg.HKEY_CURRENT_USER)
-            ShellKey = _winreg.OpenKey(HKCU, r"Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders")
-            localappdatapath = _winreg.QueryValueEx(ShellKey, "Local AppData")[0]
-            confpath = join(localappdatapath, 'mypaint/')
-        except WindowsError:
-            print "Can't retrive Local Application Data Path from registry"
 
     assert isinstance(datapath, unicode)
     assert isinstance(confpath, unicode)
@@ -94,9 +122,7 @@ def psyco_opt():
     # This helps on slow PCs where the python overhead dominates.
     # (30% higher framerate measured on 533MHz CPU; startup slowdown below 20%)
     # Note: python -O -O does not help.
-    if os.name in ('nt', 'ce'):
-        # reported to be broken on Windows
-        return
+
     try:
         import psyco
         if sys.platform == 'win32':

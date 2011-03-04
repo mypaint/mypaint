@@ -31,6 +31,7 @@ opts.Add(PathVariable('prefix', 'autotools-style installation prefix', default_p
 opts.Add(BoolVariable('debug', 'enable HEAVY_DEBUG and disable optimizations', False))
 env = Environment(ENV=os.environ, options=opts)
 if sys.platform == "win32":
+    # remove this mingw if trying VisualStudio
     env = Environment(tools=['mingw'], ENV=os.environ, options=opts)
 opts.Update(env)
 
@@ -45,8 +46,10 @@ env.Append(CPPPATH=numpy_path)
 
 
 if sys.platform == "win32":
-    env.ParseConfig('pkg-config --cflags --libs python25') # These two '.pc' files you probably have to make for yourself.
-    env.ParseConfig('pkg-config --cflags --libs numpy')    # Place them among the other '.pc' files ( where the 'glib-2.0.pc' is located .. probably )
+    # official python shipped with no pc file on windows so get from current python
+    from distutils import sysconfig
+    pre,inc = sysconfig.get_config_vars('exec_prefix', 'INCLUDEPY')
+    env.Append(CPPPATH=inc, LIBPATH=pre+'\libs', LIBS='python'+sys.version[0]+sys.version[2])
 elif sys.platform == "darwin":
     env.ParseConfig('python-config --cflags')
     env.ParseConfig('python-config --ldflags')
@@ -76,7 +79,7 @@ languages = SConscript('po/SConscript')
 # Build mypaint.exe for running on windows
 if sys.platform == "win32":
     env2 = Environment(tools=['mingw'], ENV=os.environ)
-    env2.ParseConfig('pkg-config --cflags --libs python25')
+    env2.Append(CPPPATH='-I'+inc, LIBPATH=pre+'\libs', LIBS='python'+sys.version[0]+sys.version[2])
     env2.Program('mypaint', ['mypaint_exe.c'])
 
 def burn_python_version(target, source, env):

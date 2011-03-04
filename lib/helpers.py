@@ -122,8 +122,14 @@ def get_freedesktop_thumbnail(filename):
     """
     uri = filename2uri(filename)
     file_hash = hashlib.md5(uri).hexdigest()
-    tb_filename_normal = os.path.join(expanduser_unicode(u'~/.thumbnails/normal'), file_hash) + '.png'
-    tb_filename_large = os.path.join(expanduser_unicode(u'~/.thumbnails/large'), file_hash) + '.png'
+    # tilde expansion seems doesn't work on some unicode in windows python 2.x
+    if sys.platform == 'win32':
+        import glib
+        tb_filename_normal = os.path.join(glib.get_user_data_dir().decode('utf-8'),'mypaint\\thumbnails\\normal', file_hash) + '.png'
+        tb_filename_large = os.path.join(glib.get_user_data_dir().decode('utf-8'),'mypaint\\thumbnails\\large', file_hash) + '.png'
+    else:
+        tb_filename_normal = os.path.join(expanduser_unicode(u'~/.thumbnails/normal'), file_hash) + '.png'
+        tb_filename_large = os.path.join(expanduser_unicode(u'~/.thumbnails/large'), file_hash) + '.png'
     if os.path.isfile(tb_filename_normal):
         pixbuf = gdk.pixbuf_new_from_file(tb_filename_normal)
     elif os.path.isfile(tb_filename_large):
@@ -137,7 +143,11 @@ def save_freedesktop_thumbnail(pixbuf, filename):
     """
     Saves a thumbnail according to the FDO spec.
     """
-    directory = expanduser_unicode(u'~/.thumbnails/normal')
+    if sys.platform == 'win32':
+        import glib
+        directory = os.path.join(glib.get_user_data_dir().decode('utf-8'),'mypaint\\thumbnails\\normal')
+    else:
+        directory = expanduser_unicode(u'~/.thumbnails/normal')
     if not os.path.exists(directory):
         os.makedirs(directory, 0700)
     uri = filename2uri(filename)
