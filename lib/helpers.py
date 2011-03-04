@@ -132,11 +132,18 @@ def freedesktop_thumbnail(filename, pixbuf=None):
     uri = filename2uri(filename)
     file_hash = hashlib.md5(uri).hexdigest()
 
-    directory = expanduser_unicode(u'~/.thumbnails/normal')
+    if sys.platform == 'win32':
+        import glib
+        base_directory = os.path.join(glib.get_user_data_dir().decode('utf-8'), 'mypaint', 'thumbnails')
+    else:
+        base_directory = expanduser_unicode(u'~/.thumbnails')
+
+    directory = os.path.join(base_directory, 'normal')
     tb_filename_normal = os.path.join(directory, file_hash) + '.png'
+
     if not os.path.exists(directory):
         os.makedirs(directory, 0700)
-    directory = expanduser_unicode(u'~/.thumbnails/large')
+    directory = os.path.join(base_directory, 'large')
     tb_filename_large = os.path.join(directory, file_hash) + '.png'
     if not os.path.exists(directory):
         os.makedirs(directory, 0700)
