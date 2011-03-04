@@ -147,6 +147,8 @@ class Window(windowing.MainWindow):
             ('RunGarbageCollector',  None, _('Run Garbage Collector Now'), None, None, self.run_garbage_collector_cb),
             ('StartProfiling',  gtk.STOCK_EXECUTE, _('Start/Stop Python Profiling (cProfile)'), None, None, self.start_profiling_cb),
             ('InputTestWindow',  None, _('Test input devices...'), None, None, self.toggleWindow_cb),
+            ('GtkInputDialog',  None, _('GTK input devices dialog...'), None, None, self.gtk_input_dialog_cb),
+
 
             ('ViewMenu', None, _('View')),
             ('ShowPopupMenu',    None, _('Popup Menu'), 'Menu', None, self.popupmenu_show_cb),
@@ -262,6 +264,10 @@ class Window(windowing.MainWindow):
             os.system('gprof2dot.py -f pstats profile_fromgui.pstats | dot -Tpng -o profile_fromgui.png && feh profile_fromgui.png &')
 
         gobject.idle_add(doit)
+
+    def gtk_input_dialog_cb(self, action):
+        d = gtk.InputDialog()
+        d.show()
 
     def key_press_event_cb_before(self, win, event):
         key = event.keyval 
