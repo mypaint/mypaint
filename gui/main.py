@@ -18,10 +18,10 @@ from optparse import OptionParser
 import sys, time
 
 # main entry, called from the "mypaint" script
-def main(datapath, confpath):
+def main(datapath, default_confpath):
 
     parser = OptionParser('usage: %prog [options] [FILE]')
-    parser.add_option('-c', '--config', metavar='DIR', default=confpath,
+    parser.add_option('-c', '--config', metavar='DIR', default=default_confpath,
                     help='use config directory DIR instead of ~/.mypaint/')
     parser.add_option('-l', '--logfile', metavar='FILE', default=None,
                     help='append python stdout and stderr to FILE')
@@ -39,7 +39,7 @@ def main(datapath, confpath):
     def run():
         print 'confpath =', options.config
 
-        app = application.Application(datapath, confpath, args)
+        app = application.Application(datapath, options.config, args)
         if options.fullscreen:
             def f():
                 app.drawWindow.fullscreen_cb()
