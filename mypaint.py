@@ -54,11 +54,12 @@ def get_paths():
     lib_compiled='lib/mypaint/'
 
     # convert sys.argv to a list of unicode objects
+    # (actually convertig sys.argv confuses gtk, thus we add a new variable)
     if sys.platform == 'win32':
-        sys.argv = win32_unicode_argv()
+        sys.argv_unicode = win32_unicode_argv()
     else:
-        sys.argv = [s.decode(sys.getfilesystemencoding()) for s in sys.argv]
-    scriptdir=os.path.dirname(sys.argv[0])
+        sys.argv_unicode = [s.decode(sys.getfilesystemencoding()) for s in sys.argv]
+    scriptdir=os.path.dirname(sys.argv_unicode[0])
 
     # this script is installed as $prefix/bin. We just need $prefix to continue.
     #pwd=os.getcwd() # why????
@@ -77,7 +78,7 @@ def get_paths():
         prefix=None
         # this is py2exe point of view, all executables in root of installdir
         # all path must be normalized to absolute path
-        libpath = os.path.abspath(os.path.dirname(os.path.realpath(sys.argv[0])))
+        libpath = os.path.abspath(os.path.dirname(os.path.realpath(sys.argv_unicode[0])))
         sys.path.insert(0, libpath)
         localepath = join(libpath,'share/locale')
     else:

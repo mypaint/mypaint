@@ -251,7 +251,7 @@ class FileHandler(object):
                 gtk.recent_manager_get_default().add_full(helpers.filename2uri(self.filename),
                         {
                             'app_name': 'mypaint',
-                            'app_exec': sys.argv[0].encode('utf-8'), # on windows we manipulated sys.argv to be unicode
+                            'app_exec': sys.argv_unicode[0].encode('utf-8'),
                             # todo: get mime_type
                             'mime_type': 'application/octet-stream'
                         }

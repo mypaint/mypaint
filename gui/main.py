@@ -29,7 +29,7 @@ def main(datapath, default_confpath):
                     help='print all exectued python statements')
     parser.add_option('-f', '--fullscreen', action="store_true",
                     help='start in fullscreen mode')
-    options, args = parser.parse_args()
+    options, args = parser.parse_args(sys.argv_unicode[1:])
 
     if options.logfile:
         print 'Python prints are redirected to', options.logfile, 'after this one.'
