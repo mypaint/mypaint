@@ -1,14 +1,13 @@
 * The MyPaint application and any part of MyPaint not explicitly licensed
-  otherwise, is licensed under the GNU GENERAL PUBLIC LICENSE -- see the
-  'COPYING' file in this directory for details.
+  otherwise, is licensed under the GNU GENERAL PUBLIC LICENSE version 2
+  or later -- see the 'COPYING' file in this directory for details.
 
-* The MyPaint brush library, which can be found in the brushlib directory,
-  is licensed under the GNU LESSER GENERAL PUBLIC LICENSE -- see the
-  'COPYING' file in the brushlib directory for details. The MyPaint brush
-  collection is not part of that library.
+* The MyPaint brush library can be found in the brushlib directory,
+  and is licensed under the ISC license. Read 'brushlib/COPYING' for
+  details. The MyPaint brush collection is not part of that library.
 
 * The icons eye_*.png and lock_*.png in the pixmaps directory are licensed
   under the GNU GENERAL PUBLIC LICENSE VERSION 2, and were extracted from
   tango_icons.svg in the Inkscape distribution. They are created by and 
   copyright 2009 the Inkscape Developers, with contributions by "jEsuSdA 8)
-  www.jesusda.com" -- see the COPYING file in this directory for details. 
+  www.jesusda.com" -- see the 'COPYING' file in this directory for details. 
