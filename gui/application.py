@@ -158,17 +158,35 @@ class Application: # singleton
             "input.button3_action":       'ColorHistoryPopup',
             "input.button3_shift_action": 'no_action',
             "input.button3_ctrl_action":  'no_action',
+
+            # Default window positions.
+            # See gui.layout.set_window_initial_position for the meanings
+            # of the common x, y, w, and h settings
             "layout.window_positions": {
-                # Main window default size. -1,-1 means a screen-dependent
-                # position, with a screen-dependent size.
-                'main-window': dict(sbwidth=260, x=-1, y=-1),
-                # Non-hidden entries determine the default set
-                'colorSamplerWindow':   dict(sbindex=0, sbheight=270),
-                'colorSelectionWindow': dict(sbindex=1, hidden=True),
-                'brushSelectionWindow': dict(sbindex=2, sbheight=200),
-                'layersWindow':         dict(sbindex=3),
-                # Can also default to "floating=True" with positions
-                # and/or sizes for the floating window.
+
+                # Main window default size. Sidebar width is saved here
+                'main-window': dict(sbwidth=270, x=64, y=32, w=-74, h=-96),
+
+                # Tool windows. These can be undocked (floating=True) or set
+                # initially hidden (hidden=True), or be given an initial sidebar
+                # index (sbindex=<int>) or height in the sidebar (sbheight=<int>)
+                # Non-hidden entries determine the default set of tools.
+                'colorSamplerWindow': dict(sbindex=0, floating=True,
+                                           x=-128, y=64,
+                                           w=200, h=300, sbheight=300),
+                'colorSelectionWindow': dict(sbindex=1, floating=True, hidden=True,
+                                             x=-300, y=128,
+                                             w=150, h=150, sbheight=150),
+                'brushSelectionWindow': dict(sbindex=2, floating=True,
+                                             x=-128, y=-128,
+                                             w=250, h=350, sbheight=350),
+                'layersWindow': dict(sbindex=3, floating=True,
+                                     x=128, y=-128,
+                                     w=200, h=200, sbheight=200),
+
+                # Non-tool subwindows. These cannot be docked, and are all
+                # intially hidden.
+                'brushSettingsWindow': dict(x=-460, y=-128, w=300, h=300),
             },
         }
         self.preferences = DEFAULT_CONFIG

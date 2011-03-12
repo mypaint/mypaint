@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2007-2011 by Martin Renold <martinxyz@gmx.ch>
+# Copyright (C) 2007-2011 by Andrew Chadwick <andrewc-git@piffle.org>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -322,7 +322,71 @@ class ElasticExpander (gtk.Expander, ElasticContent):
                                 mirror_vertical=True)
 
 
-class MainWindow:
+class WindowWithSavedPosition:
+    """Mixin for gtk.Windows which load/save their position via a LayoutManager.
+
+    Classes using this interface must provide an attribute named layout_manager
+    which exposes the LayoutManager whose prefs attr this window will read its
+    initial position from and update. As a consequence of how this mixin
+    interacts with the LayoutManager, it must have a meaningful window role at
+    realize time.
+    """
+
+    def __init__(self):
+        """Mixin constructor. Construction order does not matter.
+        """
+        self.__last_conf_pos = None
+        self.__pos_save_timer = None
+        self.__is_fullscreen = False
+        self.__is_maximized = False
+        self.connect("realize", self.__on_realize)
+        self.connect("configure-event", self.__on_configure_event)
+        self.connect("window-state-event", self.__on_window_state_event)
+
+    @property
+    def __pos(self):
+        lm = self.layout_manager
+        role = self.get_role()
+        if not role in lm.prefs:
+            lm.prefs[role] = dict()
+        return lm.prefs[role]
+
+    def __on_realize(self, widget):
+        set_initial_window_position(self, self.__pos)
+
+    def __on_window_state_event(self, widget, event):
+        # Respond to changes of the fullscreen or maximized state only
+        interesting = gdk.WINDOW_STATE_MAXIMIZED | gdk.WINDOW_STATE_FULLSCREEN
+        if not event.changed_mask & interesting:
+            return
+        state = event.new_window_state
+        self.__is_maximized = state & gdk.WINDOW_STATE_MAXIMIZED
+        self.__is_fullscreen = state & gdk.WINDOW_STATE_FULLSCREEN
+
+    def __on_configure_event(self, widget, event):
+        """Store the current size of the window for future launches.
+        """
+        # Save the new position in the prefs...
+        f_ex = self.window.get_frame_extents()
+        conf_pos = dict(x=f_ex.x, y=f_ex.y, w=event.width, h=event.height)
+        self.__last_conf_pos = conf_pos
+        # ... however, wait for a bit so window-state-event has a chance to
+        # fire first if the window is being fullscreened. Compiz in particular
+        # enjoys firing up to three configure-events (at various sizes) before
+        # the window-state-event describing the fullscreen.
+        if not self.__pos_save_timer:
+            self.__pos_save_timer \
+             = gobject.timeout_add_seconds(2, self.__save_position_cb)
+
+    def __save_position_cb(self):
+        if not (self.__is_maximized or self.__is_fullscreen):
+            self.__pos.update(self.__last_conf_pos)
+        self.__pos_save_timer = None
+        return False
+
+
+
+class MainWindow (WindowWithSavedPosition):
     """Mixin for main gtk.Windows in a layout.
 
     Contains slots and initialisation stuff for various widget slots, which
@@ -345,6 +409,7 @@ class MainWindow:
         LayoutManager's prefs.
         """
         assert isinstance(self, gtk.Window)
+        WindowWithSavedPosition.__init__(self)
         self.layout_manager = layout_manager
         self.set_role("main-window")
         self.menubar = None; self.init_menubar()
@@ -365,13 +430,8 @@ class MainWindow:
         if self.statusbar is not None:
             self.layout_vbox.pack_start(self.statusbar, False, False)
         self.add(self.layout_vbox)
-        self.set_position(gtk.WIN_POS_CENTER)
-        self.is_maximized_or_fullscreened = False
-        self.current_size = None
-        self.previous_size = None
-        self.set_initial_position()
+        self.last_conf_size = None
         self.connect("configure-event", self.__on_configure_event)
-        self.connect("window-state-event", self.__on_window_state_event)
         self.sidebar.connect("size-allocate", self.__on_sidebar_size_allocate)
         self.connect("map-event", self.__on_map_event)
 
@@ -391,159 +451,32 @@ class MainWindow:
     def init_main_widget(self):
         self.main_widget = self.layout_manager.get_widget_by_role("main-widget")
 
-    def set_initial_position(self):
-        lm = self.layout_manager
-
-        # Defaults, which should work for 800x600 screens
-        default_xywh = 40, 40, 720, 500
-        x, y, w, h = default_xywh
-
-        # Screen dimensions
-        screen = gdk.screen_get_default()
-        if screen is None:
-            raise RuntimeError, "No default screen"
-        sc_w = screen.get_width()
-        sc_h = screen.get_height()
-        screen_geom = gdk.Rectangle(0, 0, sc_w, sc_h)
-
-        # Load saved sizes from last time
-        good_pos_loaded = False
-        pos = lm.prefs.get("main-window", None)
-        if pos is not None:
-            x = pos.get("x", x)
-            y = pos.get("y", y)
-            w = pos.get("w", w)
-            h = pos.get("h", h)
-            # Check this against the screen geometry and make sure it fits.
-            # Catches users who use the same home dir on more than one sort of
-            # display, or who downsize monitors.
-            # 
-            # Actually, Compiz doesn't allow monitor-spanning startup
-            # positions and will fix the starting position for us so it
-            # all goes on one monitor. But maybe users of other multi-monitor
-            # systems will appreciate being able to fill their entire display.
-            geom = gdk.Rectangle(x, y, w, h)
-            null_rect = gdk.Rectangle(0, 0, 0, 0)
-
-            intersection = geom.intersect(screen_geom)
-            if intersection == null_rect:
-                # Entirely off-screen
-                good_pos_loaded = False
-            elif intersection == geom:
-                # Entirely on-screen
-                good_pos_loaded = True
-            else:
-                # Partly off-screen
-                if x<0 or y<0 or w>screen_geom.width or h>screen_geom.height:
-                    # Reset fully if the user's made the window too big
-                    # for the screen or stuffed it up the top of the screen.
-                    good_pos_loaded = False
-                else:
-                    # Reset partly, just setting x and y to the defaults.
-                    x, y, junk_w, junk_h = default_xywh
-                    good_pos_loaded = True
-
-        if not good_pos_loaded:
-            # No saved prefs, or the saved prefs lay outside the screen.
-            # Default to slightly under the size of the monitor (not screen)
-            # containing the default (x, y) point.
-            x, y, w, h = default_xywh
-            mon_num = screen.get_monitor_at_point(x, y)
-            mon_geom = screen.get_monitor_geometry(mon_num)
-            w = mon_geom.width - 2*x
-            h = mon_geom.height - 3*y  # taskbars and docks are getting bigger
-        
-        # Set a default size and position. Window managers often ignore the
-        # position we set here, but that's not really a huge problem and it's
-        # better then trying to force it.
-        self.set_default_size(w, h)
-        self.move(x, y)
-
-        # Fullscreen or maximize if the window was left in that position
-        if pos is not None:
-            if pos.get("fullscreen", False):
-                gobject.idle_add(self.fullscreen)
-            elif pos.get("maximized", False):
-                gobject.idle_add(self.maximize)
-
-    def __on_window_state_event(self, widget, event):
-        # Respond to changes of the fullscreen or maximized state only
-        interesting = gdk.WINDOW_STATE_MAXIMIZED | gdk.WINDOW_STATE_FULLSCREEN
-        if not event.changed_mask & interesting:
-            return
-        state = event.new_window_state
-        lm = self.layout_manager
-        role = self.get_role()
-        if not role in lm.prefs:
-            lm.prefs[role] = {}
-        maximized = state & gdk.WINDOW_STATE_MAXIMIZED
-        fullscreen = state & gdk.WINDOW_STATE_FULLSCREEN
-        if fullscreen:
-            self.is_maximized_or_fullscreened = True
-            lm.prefs[role]["fullscreen"] = True
-            lm.prefs[role]["maximized"] = False
-        elif maximized:
-            self.is_maximized_or_fullscreened = True
-            lm.prefs[role]["fullscreen"] = False
-            lm.prefs[role]["maximized"] = True
-        else:
-            self.is_maximized_or_fullscreened = False
-            lm.prefs[role]["maximized"] = False
-            lm.prefs[role]["fullscreen"] = False
-        # If we're maximized or fullscreened now, record the position that
-        # was recorded before the current one.
-        if self.is_maximized_or_fullscreened and self.previous_size:
-            lm.prefs[role].update(self.previous_size)
-
     def __on_configure_event(self, widget, event):
-        """Store the current size of the window for future launches.
-        """
-        lm = self.layout_manager
-        role = self.get_role()
-        if not role in lm.prefs:
-            lm.prefs[role] = {}
-        # Restore HPaned position from last time, if necessary
-        # (does this have to live here, or could it be moved earlier
-        # in the window's lifetime?)
-        if not self.hpaned_position_loaded:
-            sbwidth = lm.prefs[role].get("sbwidth", None)
-            if sbwidth is not None:
-                handle_size = self.hpaned.style_get_property("handle-size")
-                pos = event.width - handle_size - sbwidth
-                self.hpaned.set_position(pos)
-                self.hpaned.queue_resize()
-            self.hpaned_position_loaded = True
-        # Save the new position in the prefs
-        frame_ex = self.window.get_frame_extents()
-        conf_pos = dict(x=frame_ex.x, y=frame_ex.y,
-                        w=event.width, h=event.height)
-
-        # Don't record this while we're fullscreened or maximized.  However
-        # some configure events are delivered before we receive the
-        # notification that we are. So record a history of sizes so that the
-        # windows-state-event handler can make an informed decision about the
-        # size to save.
-        if not self.is_maximized_or_fullscreened:
-            if self.current_size is not None:
-                if self.current_size != self.previous_size:
-                    self.previous_size = self.current_size
-            self.current_size = conf_pos
-            lm.prefs[role].update(conf_pos)
-
+        self.last_conf_size = (event.width, event.height)
 
     def __on_sidebar_size_allocate(self, sidebar, allocation):
-        # Save the sidebar's width each time space is allocated to it.
-        # Responds to the user adjusting the HPaned's divider position.
-        if not self.hpaned_position_loaded:
-            return
         lm = self.layout_manager
         role = self.get_role()
         if not role in lm.prefs:
             lm.prefs[role] = {}
-        sbwidth = allocation.width
-        self.layout_manager.prefs["main-window"]["sbwidth"] = sbwidth
-        self.layout_manager.main_window.sidebar.set_tool_widths(sbwidth)
-
+        if self.hpaned_position_loaded:
+            # Save the sidebar's width each time space is allocated to it.
+            # Responds to the user adjusting the HPaned's divider position.
+            sbwidth = allocation.width
+            self.layout_manager.prefs["main-window"]["sbwidth"] = sbwidth
+            self.layout_manager.main_window.sidebar.set_tool_widths(sbwidth)
+        else:
+            # Except, ugh, the first time. If the position isn't loaded yet,
+            # load the main-window's sbwidth from the settings.
+            if self.last_conf_size:
+                width, height = self.last_conf_size
+                sbwidth = lm.prefs[role].get("sbwidth", None)
+                if sbwidth is not None:
+                    handle_size = self.hpaned.style_get_property("handle-size")
+                    pos = width - handle_size - sbwidth
+                    self.hpaned.set_position(pos)
+                    self.hpaned.queue_resize()
+                self.hpaned_position_loaded = True
 
 
 gtk.rc_parse_string ("""
@@ -842,13 +775,14 @@ class ToolDragHandle (gtk.EventBox):
         #    self.set_state(gtk.STATE_PRELIGHT)
 
 
-class ToolWindow (gtk.Window, ElasticContainer):
+class ToolWindow (gtk.Window, ElasticContainer, WindowWithSavedPosition):
     """Window containing a Tool in the floating state.
     """
 
     def __init__(self, title, role, layout_manager):
         gtk.Window.__init__(self)
         ElasticContainer.__init__(self)
+        WindowWithSavedPosition.__init__(self)
         self.layout_manager = layout_manager
         self.set_type_hint(gdk.WINDOW_TYPE_HINT_UTILITY)
         self.set_position(gtk.WIN_POS_MOUSE)
@@ -856,7 +790,6 @@ class ToolWindow (gtk.Window, ElasticContainer):
         self.set_role(role)
         self.set_title(title)
         self.set_transient_for(layout_manager.main_window)
-        self.set_initial_position()
         self.tool = None
         self.connect("configure-event", self.on_configure_event)
         self.pre_hide_pos = None
@@ -869,32 +802,13 @@ class ToolWindow (gtk.Window, ElasticContainer):
         self.tool = None
         gtk.Window.remove(self, tool)
 
-    def set_initial_position(self):
-        lm = self.layout_manager
-        pos = lm.prefs.get(self.role, None)
-        if pos is None:
-            return
-        x = pos.get("x", None)
-        y = pos.get("y", None)
-        w = pos.get("w", None)
-        h = pos.get("h", None)
-        if w is not None and h is not None:
-            self.set_default_size(w, h)
-        if x is not None and y is not None:
-            self.move(x, y)
-
     def on_configure_event(self, widget, event):
         if self.pre_hide_pos:
             return
-        frame_ex = self.window.get_frame_extents()
         role = self.role
         lm = self.layout_manager
         if not lm.prefs.get(role, False):
             lm.prefs[role] = {}
-        lm.prefs[role]['x'] = frame_ex.x
-        lm.prefs[role]['y'] = frame_ex.y
-        lm.prefs[role]['w'] = event.width
-        lm.prefs[role]['h'] = event.height
         lm.prefs[role]['floating'] = True
 
     def show(self):
@@ -1438,4 +1352,99 @@ class Sidebar (gtk.EventBox):
                         # Dubious. Could this lead to an infinite loop?
                     else:
                         tool.set_size_request(max_w, req_h)
+
+
+def set_initial_window_position(win, pos):
+    """Set the position of a gtk.Window, used during initial positioning.
+
+    The pos argument is a dict containing the following optional keys
+
+        "w": <int>
+        "h": <int>
+            If positive, the size of the window.
+            If negative, size is calculated based on the size of the
+            monitor with the pointer on it, and x (or y) if given, e.g.
+
+                width = mouse_mon_w -  abs(x) + abs(w)   # or (if no x)
+                width = mouse_mon_w - (2 * abs(w))
+
+            The same is true of calulated heights.
+
+        "x": <int>
+        "y": <int>
+            If positive, the left/top of the window.
+            If negative, the bottom/right of the window: you MUST provide
+            a positive w,h if you do this!
+
+    If the window's calculated top-left would place it offscreen, it will be
+    placed in its default, window manager provided position. If its calculated
+    size is larger than the screen, the window will be given its natural size
+    instead.
+
+    TODO: should gdk.HINT_USER_SIZE and gdk.HINT_USER_POS be set on the
+    window as appropriate?
+    """
+
+    MIN_USABLE_SIZE = 100
+
+    # Final calculated positions
+    final_x, final_y = None, None
+    final_w, final_h = None, None
+
+    # Positioning arguments
+    x = pos.get("x", None)
+    y = pos.get("y", None)
+    w = pos.get("w", None)
+    h = pos.get("h", None)
+
+    # Where the mouse is right now
+    display = gdk.display_get_default()
+    screen, ptr_x, ptr_y, _modmask = display.get_pointer()
+    if screen is None:
+        raise RuntimeError, "No cursor on the default screen. Eek."
+    screen_w = screen.get_width()
+    screen_h = screen.get_height()
+    assert screen_w > MIN_USABLE_SIZE
+    assert screen_h > MIN_USABLE_SIZE
+
+    if x is not None and y is not None:
+        if x > 0:
+            final_x = x
+        else:
+            assert w is not None
+            assert w > 0
+            final_x = screen_w - w - abs(x)
+        if y > 0:
+            final_y = y
+        else:
+            assert h is not None
+            assert h > 0
+            final_y = screen_h - h - abs(y)
+        if final_x < 0 or final_x > screen_w - MIN_USABLE_SIZE: final_x = None
+        if final_y < 0 or final_y > screen_h - MIN_USABLE_SIZE: final_h = None
+
+    if w is not None and h is not None:
+        final_w = w
+        final_h = h
+        if w < 0 or h < 0:
+            mon_num = screen.get_monitor_at_point(ptr_x, ptr_y)
+            mon_geom = screen.get_monitor_geometry(mon_num)
+            if w < 0:
+                if x is not None:
+                    final_w = max(0, mon_geom.width - abs(x) - abs(w))
+                else:
+                    final_w = max(0, mon_geom.width - 2*abs(w))
+            if h < 0:
+                if x is not None:
+                    final_h = max(0, mon_geom.height - abs(y) - abs(h))
+                else:
+                    final_h = max(0, mon_geom.height - 2*abs(h))
+        if final_w > screen_w or final_w < MIN_USABLE_SIZE: final_w = None
+        if final_h > screen_h or final_h < MIN_USABLE_SIZE: final_h = None
+
+    if final_w and final_h:
+        win.set_default_size(final_w, final_h)
+
+    if final_x and final_y:
+        win.move(final_x, final_y)
 

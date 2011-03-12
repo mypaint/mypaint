@@ -1,5 +1,4 @@
 # Base classes for window types
-# Management of the user's chosen subwindows as a group.
 
 import sys
 import os.path
@@ -7,6 +6,8 @@ import os.path
 import gtk
 import gtk.gdk as gdk
 import gobject
+
+from layout import WindowWithSavedPosition
 
 def hide_window_cb(window, event):
     # used by some of the windows
@@ -24,11 +25,11 @@ def on_tool_widget_map(widget, app, role, connids):
     app.kbm.add_window(window)
 
 def window_factory(role, layout_manager, app):
-    """Window factory method, called by layout.LayoutManager.
+    """Window factory method, for use by app.layout_manager.
 
     Modules are located by lowercasing `role` and importing that. Modules may
     provide either `ToolWidget` or `Window` classes, but not both. The first
-    listed will be initialised and used fotr the returned widget. Both
+    listed will be initialised and used for the returned widget. Both
     ToolWidgets and Windows are instantiated as Constructor(app).
 
     ToolWidget classes must provide a tool_widget_title variable accessible via
@@ -54,6 +55,7 @@ def window_factory(role, layout_manager, app):
         window = module.Window(app)
         return (window, )
 
+
 class Dialog (gtk.Dialog):
     """
     A dialog. Dialogs are a bit of a rough edge at the moment; currently only
@@ -63,17 +65,13 @@ class Dialog (gtk.Dialog):
     def __init__(self, app, *args, **kwargs):
         gtk.Dialog.__init__(self, *args, **kwargs)
         self.app = app
-
         self.connect('delete-event', hide_window_cb)
-
-    # TODO: dialogs should be freely positioned by the window manager
-
 
 
 class MainWindow (gtk.Window):
-    """
-    The main window in the GUI. No code to see here yet, go look at
-    drawwindow.DrawWindow.
+    """The main window in the GUI.
+
+    Not much code to see here yet, go look at drawwindow.DrawWindow.
     """
     def __init__(self, app):
         gtk.Window.__init__(self, type=gtk.WINDOW_TOPLEVEL)
@@ -81,7 +79,16 @@ class MainWindow (gtk.Window):
         self.app.kbm.add_window(self)
 
 
-class SubWindow (gtk.Window):
+class AppWindowWithSavedPosition (WindowWithSavedPosition):
+    """Mixin for windows with LayoutManager-stored positions and an app attr.
+    """
+
+    @property
+    def layout_manager(self):
+        return self.app.layout_manager
+
+
+class SubWindow (gtk.Window, AppWindowWithSavedPosition):
     """
     A subwindow in the GUI. All are utility windows that are transients for
     the main window. Subwindows remember their position when hidden or shown,
@@ -93,6 +100,7 @@ class SubWindow (gtk.Window):
     
     def __init__(self, app, key_input=False):
         gtk.Window.__init__(self, type=gtk.WINDOW_TOPLEVEL)
+        AppWindowWithSavedPosition.__init__(self)
         self.app = app
         if not key_input:
             self.app.kbm.add_window(self)
