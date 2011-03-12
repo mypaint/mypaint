@@ -14,8 +14,9 @@ import mypaintlib
 
 
 try:
-    from json import dumps as json_dumps, loads as json_loads
+    from json import dumps as json_dumps_builtin, loads as json_loads
     print "builtin python 2.6 json support"
+    json_dumps = lambda obj: json_dumps_builtin(obj, indent=2)
 except ImportError:
     try:
         from cjson import encode as json_dumps, decode as json_loads
