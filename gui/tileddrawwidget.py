@@ -24,6 +24,7 @@ class TiledDrawWidget(gtk.DrawingArea):
     """
 
     CANNOT_DRAW_CURSOR = gdk.Cursor(gdk.CIRCLE)
+    SNAPSHOT_REEXPOSE_REQUESTED = 0
 
     def __init__(self, document):
         gtk.DrawingArea.__init__(self)
@@ -31,6 +32,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.connect("enter-notify-event", self.enter_notify_cb)
         self.connect("leave-notify-event", self.leave_notify_cb)
         self.connect("size-allocate", self.size_allocate_cb)
+        self.connect("state-changed", self.state_changed_cb)
 
         # workaround for https://gna.org/bugs/?14372 ([Windows] crash when moving the pen during startup)
         def at_application_start(*trash):
@@ -96,14 +98,24 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.bad_devices = []
         self.motions = []
 
-        self.set_sensitive(True)
+        # Sensitivity; we draw via a cached snapshot while the widget is
+        # insensitive. tdws are generally only insensitive during loading and
+        # saving, and because we now process the GTK main loop during loading
+        # and saving, we need to avoid drawing partially-loaded files.
+
+        self.is_sensitive = True    # just mirrors gtk.STATE_INSENSITIVE
+        self.snapshot_pixmap = None
 
     #def set_scroll_at_edges(self, choice):
     #    self.scroll_at_edges = choice
 
-    def set_sensitive(self, sensitive):
-        """Set if the widget accepts input or not"""
-        self.is_sensitive = sensitive
+    def state_changed_cb(self, widget, oldstate):
+        # Keep is_sensitive up to date. Somewhat pointless.
+        newstate = self.get_state()
+        if newstate == gtk.STATE_NORMAL:
+            self.is_sensitive = True
+        elif newstate == gtk.STATE_INSENSITIVE:
+            self.is_sensitive = False
 
     def enter_notify_cb(self, widget, event):
         self.has_pointer = True
@@ -297,10 +309,31 @@ class TiledDrawWidget(gtk.DrawingArea):
             self.queue_draw_area(*helpers.rotated_rectangle_bbox(corners))
 
     def expose_cb(self, widget, event):
-        self.update_cursor() # hack to get the initial cursor right
-        #print 'expose', tuple(event.area)
-        self.repaint(event.area)
-        return True
+        if self.is_sensitive or self.snapshot_pixmap == self.SNAPSHOT_REEXPOSE_REQUESTED:
+            self.snapshot_pixmap = None
+            if not self.is_sensitive:
+                self.update_cursor() # hack to get the initial cursor right
+            #print 'expose', tuple(event.area)
+            self.repaint(event.area)
+            return True
+        else:
+            pixmap = self.snapshot_pixmap
+            if not pixmap:
+                self.repaint(self.allocation)
+                pixmap = self.get_snapshot()
+            gc = self.get_style().fg_gc[self.get_state()]
+            area = event.area
+            x,y,w,h = area.x, area.y, area.width, area.height
+            self.window.draw_drawable(gc, pixmap, x,y, x,y, w,h)
+            return True
+
+    def get_snapshot(self):
+        print self.snapshot_pixmap
+        assert self.snapshot_pixmap != self.SNAPSHOT_REEXPOSE_REQUESTED
+        if self.snapshot_pixmap is None:
+            self.snapshot_pixmap = self.SNAPSHOT_REEXPOSE_REQUESTED
+            self.snapshot_pixmap = gtk.DrawingArea.get_snapshot(self)
+        return self.snapshot_pixmap
 
     def get_model_coordinates_cairo_context(self, cr=None):
         # OPTIMIZE: check whether this is a bottleneck during painting (many motion events) - if yes, use cache
@@ -589,13 +622,16 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.update_cursor()
 
     def update_cursor(self):
-        if not self.window: return
-        if self.doc.layer.locked or not self.doc.layer.visible:
-            self.window.set_cursor(self.CANNOT_DRAW_CURSOR)
+        if not self.window:
             return
-        b = self.doc.brush
-        radius = b.get_actual_radius()*self.scale
-        c = cursor.get_brush_cursor(radius, b.is_eraser())
+        elif not self.is_sensitive:
+            c = None
+        elif self.doc.layer.locked or not self.doc.layer.visible:
+            c = self.CANNOT_DRAW_CURSOR
+        else:
+            b = self.doc.brush
+            radius = b.get_actual_radius()*self.scale
+            c = cursor.get_brush_cursor(radius, b.is_eraser())
         self.window.set_cursor(c)
 
     def toggle_show_layers_above(self):

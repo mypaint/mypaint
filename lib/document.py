@@ -362,7 +362,7 @@ class Document():
         self.unsaved_painting_time = 0.0
         self.call_doc_observers()
 
-    def unsupported(self, filename):
+    def unsupported(self, filename, *args, **kwargs):
         raise SaveLoadError, _('Unknown file format extension: %s') % repr(filename)
 
     def render_as_pixbuf(self, *args, **kwargs):

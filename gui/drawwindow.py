@@ -26,24 +26,23 @@ import dialogs
 from lib import helpers
 import xml.etree.ElementTree as ET
 
-
-#TODO: make generic by taking the windows as arguments and put in a helper file?
+# TODO: put in a helper file?
 def with_wait_cursor(func):
     """python decorator that adds a wait cursor around a function"""
     def wrapper(self, *args, **kwargs):
-        # process events which might include cursor changes
-        while gtk.events_pending():
-            gtk.main_iteration(False)
-        self.app.drawWindow.window.set_cursor(gdk.Cursor(gdk.WATCH))
-        self.app.doc.tdw.window.set_cursor(None)
-        # make sure it is actually changed before we return
-        while gtk.events_pending():
-            gtk.main_iteration(False)
+        toplevels = [t for t in gtk.window_list_toplevels()
+                     if t.window is not None]
+        for toplevel in toplevels:
+            toplevel.window.set_cursor(gdk.Cursor(gdk.WATCH))
+            toplevel.set_sensitive(False)
+        self.app.doc.tdw.grab_add()
         try:
             func(self, *args, **kwargs)
         finally:
-            self.app.drawWindow.window.set_cursor(None)
-            self.app.doc.tdw.update_cursor()
+            for toplevel in toplevels:
+                toplevel.set_sensitive(True)
+                toplevel.window.set_cursor(None)
+            self.app.doc.tdw.grab_remove()
     return wrapper
 
 
