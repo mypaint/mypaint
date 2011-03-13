@@ -17,7 +17,9 @@ from gettext import gettext as _
 import helpers, tiledsurface, pixbufsurface, backgroundsurface, mypaintlib
 import command, stroke, layer
 import brush
+
 N = tiledsurface.N
+LOAD_CHUNK_SIZE = 64*1024
 
 class SaveLoadError(Exception):
     """Expected errors on loading or saving, like missing permissions or non-existing files."""
@@ -340,7 +342,7 @@ class Document():
             raise SaveLoadError, _('Unable to save: %s') % e.strerror
         self.unsaved_painting_time = 0.0
 
-    def load(self, filename):
+    def load(self, filename, **kwargs):
         if not os.path.isfile(filename):
             raise SaveLoadError, _('File does not exist: %s') % repr(filename)
         if not os.access(filename,os.R_OK):
@@ -349,7 +351,7 @@ class Document():
         ext = ext.lower().replace('.', '')
         load = getattr(self, 'load_' + ext, self.unsupported)
         try:
-            load(filename)
+            load(filename, **kwargs)
         except gobject.GError, e:
             traceback.print_exc()
             raise SaveLoadError, _('Error while loading: GError %s') % e
@@ -380,10 +382,10 @@ class Document():
         print 'Rendered thumbnail in', time.time() - t0, 'seconds.'
         return pixbuf
 
-    def save_png(self, filename, alpha=False, multifile=False):
+    def save_png(self, filename, alpha=False, multifile=False, **kwargs):
         doc_bbox = self.get_effective_bbox()
         if multifile:
-            self.save_multifile_png(filename)
+            self.save_multifile_png(filename, **kwargs)
         else:
             if alpha:
                 tmp_layer = layer.Layer()
@@ -391,9 +393,9 @@ class Document():
                     l.merge_into(tmp_layer)
                 tmp_layer.surface.save(filename, *doc_bbox)
             else:
-                pixbufsurface.save_as_png(self, filename, *doc_bbox, alpha=False)
+                pixbufsurface.save_as_png(self, filename, *doc_bbox, alpha=False, **kwargs)
 
-    def save_multifile_png(self, filename, alpha=False):
+    def save_multifile_png(self, filename, alpha=False, **kwargs):
         prefix, ext = os.path.splitext(filename)
         # if we have a number already, strip it
         l = prefix.rsplit('.', 1)
@@ -402,22 +404,39 @@ class Document():
         doc_bbox = self.get_effective_bbox()
         for i, l in enumerate(self.layers):
             filename = '%s.%03d%s' % (prefix, i+1, ext)
-            l.surface.save(filename, *doc_bbox)
+            l.surface.save(filename, *doc_bbox, **kwargs)
 
-    def load_png(self, filename):
-        self.load_from_pixbuf(gdk.pixbuf_new_from_file(filename))
+    @staticmethod
+    def _pixbuf_from_stream(fp, feedback_cb=None):
+        loader = gdk.PixbufLoader()
+        while True:
+            if feedback_cb is not None:
+                feedback_cb()
+            buf = fp.read(LOAD_CHUNK_SIZE)
+            if buf == '':
+                break
+            loader.write(buf)
+        loader.close()
+        return loader.get_pixbuf()
 
-    def load_jpg(self, filename):
-        self.load_from_pixbuf(gdk.pixbuf_new_from_file(filename))
-    load_jpeg = load_jpg
+    def load_from_pixbuf_file(self, filename, feedback_cb=None):
+        fp = open(filename, 'rb')
+        pixbuf = self._pixbuf_from_stream(fp, feedback_cb)
+        fp.close()
+        self.load_from_pixbuf(pixbuf)
 
-    def save_jpg(self, filename, quality=90):
+    load_png = load_from_pixbuf_file
+    load_jpg = load_from_pixbuf_file
+    load_jpeg = load_from_pixbuf_file
+
+    def save_jpg(self, filename, quality=90, **kwargs):
         doc_bbox = self.get_effective_bbox()
-        pixbuf = self.render_as_pixbuf(*doc_bbox)
+        pixbuf = self.render_as_pixbuf(*doc_bbox, **kwargs)
         pixbuf.save(filename, 'jpeg', options={'quality':str(quality)})
+
     save_jpeg = save_jpg
 
-    def save_ora(self, filename, options=None):
+    def save_ora(self, filename, options=None, **kwargs):
         print 'save_ora:'
         t0 = time.time()
         tempdir = tempfile.mkdtemp('mypaint')
@@ -447,7 +466,7 @@ class Document():
         def store_surface(surface, name, rect=[]):
             tmp = join(tempdir, 'tmp.png')
             t1 = time.time()
-            surface.save(tmp, *rect)
+            surface.save(tmp, *rect, **kwargs)
             print '  %.3fs surface saving %s' % (time.time() - t1, name)
             z.write(tmp, name)
             os.remove(tmp)
@@ -515,11 +534,10 @@ class Document():
 
         return thumbnail_pixbuf
 
-    def load_ora(self, filename):
+    def load_ora(self, filename, feedback_cb=None):
         """Loads from an OpenRaster file"""
         print 'load_ora:'
         t0 = time.time()
-        tempdir = tempfile.mkdtemp('mypaint')
         z = zipfile.ZipFile(filename)
         print 'mimetype:', z.read('mimetype').strip()
         xml = z.read('stack.xml')
@@ -539,20 +557,16 @@ class Document():
 
         def get_pixbuf(filename):
             t1 = time.time()
-            tmp = join(tempdir, 'tmp.png')
-            f = open(tmp, 'wb')
 
             try:
-                data = z.read(filename)
+                fp = z.open(filename, mode='r')
             except KeyError:
                 # support for bad zip files (saved by old versions of the GIMP ORA plugin)
-                data = z.read(filename.encode('utf-8'))
+                fp = z.open(filename.encode('utf-8'), mode='r')
                 print 'WARNING: bad OpenRaster ZIP file. There is an utf-8 encoded filename that does not have the utf-8 flag set:', repr(filename)
 
-            f.write(data)
-            f.close()
-            res = gdk.pixbuf_new_from_file(tmp)
-            os.remove(tmp)
+            res = self._pixbuf_from_stream(fp, feedback_cb)
+            fp.close()
             print '  %.3fs loading %s' % (time.time() - t1, filename)
             return res
 
@@ -619,8 +633,6 @@ class Document():
                     sio = StringIO(z.read(fname))
                     layer.load_strokemap_from_file(sio, x, y)
                     sio.close()
-
-        os.rmdir(tempdir)
 
         if len(self.layers) == 1:
             raise ValueError, 'Could not load any layer.'

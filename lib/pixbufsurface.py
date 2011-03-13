@@ -91,20 +91,29 @@ class Surface:
         assert src.shape[2] == 4, 'alpha required'
         mypaintlib.tile_convert_rgba8_to_rgba16(src, dst)
 
+# throttle excesssive calls to the save/render feedback_cb
+TILES_PER_CALLBACK = 256
+
 def render_as_pixbuf(surface, *rect, **kwargs):
     alpha = kwargs.get('alpha', False)
     mipmap_level = kwargs.get('mipmap_level', 0)
+    feedback_cb = kwargs.get('feedback_cb', None)
     if not rect:
         rect = surface.get_bbox()
     x, y, w, h, = rect
     s = Surface(x, y, w, h, alpha)
+    tn = 0
     for tx, ty in s.get_tiles():
         dst = s.get_tile_memory(tx, ty)
         surface.blit_tile_into(dst, tx, ty, mipmap_level=mipmap_level)
+        if feedback_cb is not None and tn % TILES_PER_CALLBACK == 0:
+            feedback_cb()
+        tn += 1
     return s.pixbuf
 
 def save_as_png(surface, filename, *rect, **kwargs):
     alpha = kwargs['alpha']
+    feedback_cb = kwargs.get('feedback_cb', None)
     if not rect:
         rect = surface.get_bbox()
     x, y, w, h, = rect
@@ -117,6 +126,7 @@ def save_as_png(surface, filename, *rect, **kwargs):
         bpp = 3
     arr = numpy.empty((N, w, bpp), 'uint8')
 
+    tn_ref = [0]   # is there a nicer way of letting callbacks in swig code increment this?
     ty_list = range(y/N, (y+h)/N)
 
     def render_tile_scanline():
@@ -125,6 +135,9 @@ def save_as_png(surface, filename, *rect, **kwargs):
             # OPTIMIZE: shortcut for empty tiles (not in tiledict)?
             dst = arr[:,tx_rel*N:(tx_rel+1)*N,:]
             surface.blit_tile_into(dst, x/N+tx_rel, ty)
+            if feedback_cb is not None and tn_ref[0] % TILES_PER_CALLBACK == 0:
+                feedback_cb()
+            tn_ref[0] += 1
         return arr
 
     if kwargs.get('single_tile_pattern', False):

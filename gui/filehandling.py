@@ -223,10 +223,15 @@ class FileHandler(object):
         self.set_recent_items()
         self.app.doc.reset_view_cb(None)
 
+    @staticmethod
+    def gtk_main_tick():
+        while gtk.events_pending():
+            gtk.main_iteration(False)
+
     @drawwindow.with_wait_cursor
     def open_file(self, filename):
         try:
-            self.doc.model.load(filename)
+            self.doc.model.load(filename, feedback_cb=self.gtk_main_tick)
         except document.SaveLoadError, e:
             self.app.message_dialog(str(e),type=gtk.MESSAGE_ERROR)
         else:
@@ -240,7 +245,7 @@ class FileHandler(object):
             x, y, w, h =  self.doc.model.get_bbox()
             if w == 0 and h == 0:
                 raise document.SaveLoadError, _('Did not save, the canvas is empty.')
-            thumbnail_pixbuf = self.doc.model.save(filename, **options)
+            thumbnail_pixbuf = self.doc.model.save(filename, feedback_cb=self.gtk_main_tick, **options)
         except document.SaveLoadError, e:
             self.app.message_dialog(str(e),type=gtk.MESSAGE_ERROR)
         else:
