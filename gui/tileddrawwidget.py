@@ -309,11 +309,10 @@ class TiledDrawWidget(gtk.DrawingArea):
             self.queue_draw_area(*helpers.rotated_rectangle_bbox(corners))
 
     def expose_cb(self, widget, event):
+        self.update_cursor() # hack to get the initial cursor right
+        #print 'expose', tuple(event.area)
         if self.is_sensitive or self.snapshot_pixmap == self.SNAPSHOT_REEXPOSE_REQUESTED:
             self.snapshot_pixmap = None
-            if not self.is_sensitive:
-                self.update_cursor() # hack to get the initial cursor right
-            #print 'expose', tuple(event.area)
             self.repaint(event.area)
             return True
         else:
