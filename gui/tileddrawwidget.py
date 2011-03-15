@@ -24,7 +24,6 @@ class TiledDrawWidget(gtk.DrawingArea):
     """
 
     CANNOT_DRAW_CURSOR = gdk.Cursor(gdk.CIRCLE)
-    SNAPSHOT_REEXPOSE_REQUESTED = 0
 
     def __init__(self, document):
         gtk.DrawingArea.__init__(self)
@@ -110,12 +109,15 @@ class TiledDrawWidget(gtk.DrawingArea):
     #    self.scroll_at_edges = choice
 
     def state_changed_cb(self, widget, oldstate):
-        # Keep is_sensitive up to date. Somewhat pointless.
-        newstate = self.get_state()
-        if newstate == gtk.STATE_NORMAL:
-            self.is_sensitive = True
-        elif newstate == gtk.STATE_INSENSITIVE:
-            self.is_sensitive = False
+        # Keeps track of the sensitivity state, and regenerates
+        # the snapshot pixbuf on entering it.
+        sensitive = self.get_state() != gtk.STATE_INSENSITIVE
+        if sensitive:
+            self.snapshot_pixmap = None
+        else:
+            if self.snapshot_pixmap is None:
+                self.snapshot_pixmap = self.get_snapshot()
+        self.is_sensitive = sensitive
 
     def enter_notify_cb(self, widget, event):
         self.has_pointer = True
@@ -311,28 +313,14 @@ class TiledDrawWidget(gtk.DrawingArea):
     def expose_cb(self, widget, event):
         self.update_cursor() # hack to get the initial cursor right
         #print 'expose', tuple(event.area)
-        if self.is_sensitive or self.snapshot_pixmap == self.SNAPSHOT_REEXPOSE_REQUESTED:
-            self.snapshot_pixmap = None
-            self.repaint(event.area)
-            return True
-        else:
-            pixmap = self.snapshot_pixmap
-            if not pixmap:
-                self.repaint(self.allocation)
-                pixmap = self.get_snapshot()
+        if self.snapshot_pixmap:
             gc = self.get_style().fg_gc[self.get_state()]
             area = event.area
             x,y,w,h = area.x, area.y, area.width, area.height
-            self.window.draw_drawable(gc, pixmap, x,y, x,y, w,h)
-            return True
-
-    def get_snapshot(self):
-        print self.snapshot_pixmap
-        assert self.snapshot_pixmap != self.SNAPSHOT_REEXPOSE_REQUESTED
-        if self.snapshot_pixmap is None:
-            self.snapshot_pixmap = self.SNAPSHOT_REEXPOSE_REQUESTED
-            self.snapshot_pixmap = gtk.DrawingArea.get_snapshot(self)
-        return self.snapshot_pixmap
+            self.window.draw_drawable(gc, self.snapshot_pixmap, x,y, x,y, w,h)
+        else:
+            self.repaint(event.area)
+        return True
 
     def get_model_coordinates_cairo_context(self, cr=None):
         # OPTIMIZE: check whether this is a bottleneck during painting (many motion events) - if yes, use cache
