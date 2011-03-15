@@ -171,6 +171,10 @@ class LayoutManager:
                     continue
                 tool.set_hidden(True, temporary=True)
                 self.saved_user_tools.append(tool)
+        # Prevent the tool windows from taking keyboard focus from the
+        # main window (in Metacity) by presenting it again.
+        # https://gna.org/bugs/?17899
+        gobject.idle_add(self.main_window.present)
 
     def show_all(self):
         """Displays all initially visible tools.
@@ -199,6 +203,9 @@ class LayoutManager:
             win = tool.floating_window
             tool.set_floating(True)
             win.show_all()
+
+        # Present the main window for consistency with the toggle action.
+        gobject.idle_add(self.main_window.present)
 
 
 class ElasticContainer:
