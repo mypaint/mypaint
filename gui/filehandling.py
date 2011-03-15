@@ -387,6 +387,8 @@ class FileHandler(object):
 
         finally:
             dialog.hide()
+            dialog.destroy()  # avoid GTK crash: https://gna.org/bugs/?17902
+            self.save_dialog = None
 
     def save_scrap_cb(self, action):
         filename = self.filename
