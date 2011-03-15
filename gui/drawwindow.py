@@ -38,10 +38,13 @@ def with_wait_cursor(func):
         self.app.doc.tdw.grab_add()
         try:
             func(self, *args, **kwargs)
+            # gtk main loop may be called in here...
         finally:
             for toplevel in toplevels:
                 toplevel.set_sensitive(True)
-                toplevel.window.set_cursor(None)
+                # ... which is why we need this check:
+                if toplevel.window is not None:
+                    toplevel.window.set_cursor(None)
             self.app.doc.tdw.grab_remove()
     return wrapper
 
