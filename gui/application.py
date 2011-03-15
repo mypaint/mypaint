@@ -24,9 +24,12 @@ class Application: # singleton
         self.confpath = confpath
         self.datapath = datapath
 
-        if not os.path.isdir(self.confpath):
-            os.mkdir(self.confpath)
-            print 'Created', self.confpath
+        # create config directory, and subdirs where the user might drop files
+        for d in ['', 'backgrounds', 'brushes']:
+            d = os.path.join(self.confpath, d)
+            if not os.path.isdir(d):
+                os.mkdir(d)
+                print 'Created', d
 
         self.ui_manager = gtk.UIManager()
 
