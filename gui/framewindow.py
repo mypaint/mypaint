@@ -43,6 +43,11 @@ class Window(windowing.Dialog):
         size_table.attach(width_entry, 1, 2, 0, 1)
         size_table.attach(height_entry, 1, 2, 1, 2)
 
+        crop_layer_button = gtk.Button(_('Crop to active layer bounds'))
+        crop_document_button = gtk.Button(_('Crop to document bounds'))
+        crop_layer_button.connect('clicked', self.crop_frame_cb, 'CropFrameToLayer')
+        crop_document_button.connect('clicked', self.crop_frame_cb, 'CropFrameToDocument')
+
         self.enable_button = gtk.CheckButton(_('Enabled'))
         self.enable_button.connect('toggled', self.on_frame_toggled)
         enabled = self.app.doc.model.frame_enabled
@@ -50,6 +55,8 @@ class Window(windowing.Dialog):
 
         top_vbox = self.get_content_area()
         top_vbox.pack_start(size_table)
+        top_vbox.pack_start(crop_layer_button)
+        top_vbox.pack_start(crop_document_button)
         top_vbox.pack_start(self.enable_button)
 
         self.connect('response', self.on_response)
@@ -57,6 +64,15 @@ class Window(windowing.Dialog):
     def on_response(self, dialog, response_id):
         if response_id == gtk.RESPONSE_ACCEPT:
             self.hide()
+
+    # FRAME
+    def crop_frame_cb(self, button, command):
+        if command == 'CropFrameToLayer':
+            bbox = self.app.doc.model.get_current_layer().surface.get_bbox()
+        elif command == 'CropFrameToDocument':
+            bbox = self.app.doc.model.get_bbox()
+        else: assert 0
+        self.app.doc.model.set_frame(*bbox)
 
     def on_frame_toggled(self, button):
         """Update the frame state in the model."""
