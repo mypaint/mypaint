@@ -16,62 +16,51 @@ import windowing
 from lib import helpers, mypaintlib
 
 
-class ToolWidget (gtk.AspectFrame):
+class ToolWidget (gtk.VBox):
     """Tool widget with the standard GTK color selector (triangle)."""
 
     tool_widget_title = _('Color')
 
     def __init__(self, app):
-        gtk.AspectFrame.__init__(self, None, 0.5, 0.5, 1.2)
-        self.set_shadow_type(gtk.SHADOW_NONE)
+        gtk.VBox.__init__(self)
         self.app = app
         self.app.brush.settings_observers.append(self.brush_modified_cb)
+        self.hsvwidget = hsvwidget = gtk.HSV()
+        hsvwidget.set_size_request(150, 150)
+        hsvwidget.connect("size-allocate", self.on_hsvwidget_size_allocate)
+        hsvwidget.connect("changed", self.on_hsvwidget_changed)
+        self.pack_start(hsvwidget, True, True)
+        self.col_picker = ColorPickerButton(self)
+        self.next_col = ColorPreview()
+        self.next_col.set_tooltip_text(_("Currently chosen color"))
+        self.current_col = ColorPreview()
+        self.current_col.set_tooltip_text(_("Last color painted with"))
+        hbox = gtk.HBox()
+        frame = gtk.Frame()
+        frame.add(hbox)
+        hbox.pack_start(self.current_col, True, True)
+        hbox.pack_start(self.next_col, True, True)
+        hbox.pack_start(self.col_picker, False, False)
+        self.pack_start(frame, False, False)
+        self.picking = False  # updated by col_picker
+        self.in_brush_modified_cb = False
+        self.set_color_hsv(self.app.brush.get_color_hsv())
+        app.ch.color_pushed_observers.append(self.color_pushed_cb)
 
-        self.cs = gtk.ColorSelection()
-        self.cs.connect('realize', self.on_cs_realize)
-        self.cs.connect('color-changed', self.color_changed_cb)
-        self.add(self.cs)
-
-        self.cs.set_size_request(200, 240)
-
-        self.in_callback = False
-
-
-    def on_cs_realize(self, *ignore):
-        # Remove unwanted widgets
-        # FIXME: really we should be using a gtk.HSV instead of all this crap.
-        hbox= self.cs.get_children()[0]
-        hbox.set_no_show_all(True)
-        l,r = hbox.get_children()
-        r.hide()
-        return True
-
-    def color_changed_cb(self, cs):
-        if self.in_callback:
-            return
-        b = self.app.brush
-        b.set_color_hsv(self.get_color_hsv())
+    def color_pushed_cb(self, pushed_color):
+        rgb = self.app.ch.last_color
+        hsv = helpers.rgb_to_hsv(*rgb)
+        self.current_col.set_color_hsv(*hsv)
 
     def brush_modified_cb(self):
         brush_color = self.app.brush.get_color_hsv()
         if brush_color != self.get_color_hsv():
-            self.in_callback = True
+            self.in_brush_modified_cb = True  # do we still need this?
             self.set_color_hsv(brush_color)
-            self.in_callback = False
+            self.in_brush_modified_cb = False
 
     def get_color_hsv(self):
-        c = self.cs.get_current_color()
-        r = float(c.red  ) / 65535
-        g = float(c.green) / 65535
-        b = float(c.blue ) / 65535
-        assert r >= 0.0
-        assert g >= 0.0
-        assert b >= 0.0
-        assert r <= 1.0
-        assert g <= 1.0
-        assert b <= 1.0
-        h, s, v = helpers.rgb_to_hsv(r, g, b)
-        return (h, s, v)
+        return self.hsvwidget.get_color()
 
     def set_color_hsv(self, hsv):
         h, s, v = hsv
@@ -81,15 +70,116 @@ class ToolWidget (gtk.AspectFrame):
         if s < 0.0: s = 0.0
         if v > 1.0: v = 1.0
         if v < 0.0: v = 0.0
-        rgb  = helpers.hsv_to_rgb(h, s, v)
-        self.set_color_rgb(rgb)
+        self.hsvwidget.set_color(h, s, v)
 
     def set_color_rgb(self,rgb):
-        r,g,b = rgb
-        c = gdk.Color(int(r*65535+0.5), int(g*65535+0.5), int(b*65535+0.5))
-        current_color = self.cs.get_current_color()
-        self.cs.set_previous_color(current_color)
-        self.cs.set_current_color(c)
+        hsv = helpers.rgb_to_hsv(*rgb)
+        self.set_color_rgb(hsv)
+
+    def on_hsvwidget_size_allocate(self, hsvwidget, alloc):
+        radius = min(alloc.width, alloc.height) - 4
+        hsvwidget.set_metrics(radius, max(12, int(radius/20)))
+        hsvwidget.queue_draw()
+
+    def on_hsvwidget_changed(self, hsvwidget):
+        hsv = hsvwidget.get_color()
+        self.next_col.set_color_hsv(*hsv)
+        color_finalized = not (hsvwidget.is_adjusting() or self.picking)
+        if color_finalized:
+            if not self.in_brush_modified_cb:
+                b = self.app.brush
+                b.set_color_hsv(self.get_color_hsv())
+
+
+class ColorPreview (gtk.DrawingArea):
+
+    def __init__(self):
+        gtk.DrawingArea.__init__(self)
+        self.rgb = 0, 0, 0
+        self.connect('expose-event', self.on_expose)
+        self.set_size_request(20, 20)
+
+    def set_color_hsv(self, h, s, v):
+        self.rgb = helpers.hsv_to_rgb(h, s, v)
+        self.queue_draw()
+
+    def on_expose(self, widget, event):
+        cr = self.window.cairo_create()
+        cr.set_source_rgb(*self.rgb)
+        cr.paint()
+
+
+class ColorPickerButton (gtk.EventBox):
+    """Button for picking a colour from the screen.
+    """
+
+    def __init__(self, selector):
+        gtk.EventBox.__init__(self)
+        self.set_tooltip_text(_("Pick Colour"))
+        self.button = gtk.Button()
+        self.image = gtk.Image()
+        self.image.set_from_stock(gtk.STOCK_COLOR_PICKER, gtk.ICON_SIZE_BUTTON)
+        self.add(self.button)
+        self.button.add(self.image)
+        # Clicking the button initiates a grab:
+        self.button.connect("clicked", self.on_clicked)
+        self.grabbed = False
+        # While grabbed, the eventbox part listens for these:
+        self.grab_mask = gdk.BUTTON_RELEASE_MASK | gdk.BUTTON1_MOTION_MASK
+        self.connect("motion-notify-event", self.on_motion_notify_event)
+        self.connect("button-release-event", self.on_button_release_event)
+        # Newly picked colours are advertised to the associated selector:
+        self.selector = selector
+
+    def pick_color_at_pointer(self, widget, size=3):
+        screen = widget.get_screen()
+        colormap = screen.get_system_colormap()
+        root = screen.get_root_window()
+        screen_w, screen_h = screen.get_width(), screen.get_height()
+        display = widget.get_display()
+        screen_trash, x_root, y_root, mods = display.get_pointer()
+        image = None
+        x = x_root-size/2
+        y = y_root-size/2
+        if x < 0: x = 0
+        if y < 0: y = 0
+        if x+size > screen_w: x = screen_w-size
+        if y+size > screen_h: y = screen_h-size
+        image = root.get_image(x, y, size, size)
+        color_total = (0, 0, 0)
+        for x, y in helpers.iter_rect(0, 0, size, size):
+            pixel = image.get_pixel(x, y)
+            color = colormap.query_color(pixel)
+            color = [color.red, color.green, color.blue]
+            color_total = (color_total[0]+color[0], color_total[1]+color[1], color_total[2]+color[2])
+        N = size*size
+        color_total = (color_total[0]/N, color_total[1]/N, color_total[2]/N)
+        color_rgb = [ch/65535. for ch in color_total]
+        return color_rgb
+
+    def on_clicked(self, widget):
+        cursor = self.selector.app.cursor_color_picker
+        result = gdk.pointer_grab(self.window, False, self.grab_mask, None, cursor)
+        if result == gdk.GRAB_SUCCESS:
+            self.grabbed = True
+
+    def on_motion_notify_event(self, widget, event):
+        if not event.state & gdk.BUTTON1_MASK:
+            return
+        rgb = self.pick_color_at_pointer(widget)
+        hsv = helpers.rgb_to_hsv(*rgb)
+        self.selector.picking = True
+        self.selector.set_color_hsv(hsv)
+
+    def on_button_release_event(self, widget, event):
+        if not self.grabbed:
+            return False
+        gdk.pointer_ungrab()
+        rgb = self.pick_color_at_pointer(self)
+        hsv = helpers.rgb_to_hsv(*rgb)
+        self.selector.picking = False
+        self.selector.set_color_hsv(hsv)
+
 
 # own color selector
 # see also colorchanger.hpp
