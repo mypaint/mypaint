@@ -37,20 +37,22 @@ class Widget(gtk.HBox):
         self.set_brush_preview_edit_mode(False)
 
     def init_widgets(self):
-        left_vbox = gtk.VBox()
+        brush_icon_frame = gtk.Frame()
         right_vbox = gtk.VBox()
-        self.pack_start(left_vbox, expand=False, fill=False)
+        self.pack_start(brush_icon_frame, expand=False, fill=False)
         self.pack_end(right_vbox, expand=False, fill=False)
 
         # Left side - brush icon actions
-        l = gtk.Label()
-        l.set_text(_("Brush icon"))
-        left_vbox.pack_start(l)
+        brush_icon_frame.set_label(_("Brush icon"))
+        brush_icon_hbox = gtk.HBox()
+        brush_icon_frame.add(brush_icon_hbox)
+        left_vbox = gtk.VBox()
 
         doc = document.Document()
         self.tdw = tileddrawwidget.TiledDrawWidget(doc)
         self.tdw.set_size_request(brushmanager.preview_w, brushmanager.preview_h)
-        left_vbox.pack_start(self.tdw, expand=False, fill=False, padding=3)
+        brush_icon_hbox.pack_start(self.tdw, expand=False, fill=False, padding=3)
+        brush_icon_hbox.pack_start(left_vbox, expand=False, fill=False, padding=3)
 
         self.brush_preview_edit_mode_button = b = gtk.CheckButton(_('Edit'))
         b.connect('toggled', self.brush_preview_edit_mode_cb)
