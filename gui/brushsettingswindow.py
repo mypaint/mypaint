@@ -21,6 +21,11 @@ class Window(windowing.SubWindow):
 
         self.set_title(_('Brush settings'))
 
+        self.adj = {}
+
+        # A list of all brushsettings (cname) which are to be displayed
+        self.visible_settings = []
+
         vbox = gtk.VBox()
         self.add(vbox)
 
@@ -36,49 +41,68 @@ class Window(windowing.SubWindow):
         cb.connect('toggled', self.live_update_cb)
         self.app.brush.settings_observers.append(self.live_update_cb)
 
+        # ScrolledWindow for brushsetting-expanders
         scroll = gtk.ScrolledWindow()
         scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
         vbox.pack_start(scroll, expand=True, fill=True)
 
-        table = gtk.Table(4, len(brushsettings.settings_visible))
-        #table.set_border_width(4)
-        #table.set_col_spacings(15)
-        scroll.add_with_viewport(table)
+        brushsetting_vbox = gtk.VBox()
+        scroll.add_with_viewport(brushsetting_vbox)
 
-        self.adj = {}
-        for i, s in enumerate(brushsettings.settings_visible):
-            l = gtk.Label(s.name)
-            l.set_alignment(0, 0.5)
-            l.set_tooltip_text(s.tooltip)
+        groups = [
+            {'id' : 'basic',    'title' : _('Basic'),   'settings' : [ 'radius_logarithmic', 'radius_by_random', 'hardness', 'offset_by_random', 'elliptical_dab_angle', 'elliptical_dab_ratio', 'direction_filter' ]},
+            {'id' : 'opacity',  'title' : _('Opacity'), 'settings' : [ 'opaque', 'opaque_multiply', 'opaque_linearize' ]},
+            {'id' : 'dabs',     'title' : _('Dabs'),    'settings' : [ 'dabs_per_basic_radius', 'dabs_per_actual_radius', 'dabs_per_second' ]},
+            {'id' : 'smudge',   'title' : _('Smudge'),  'settings' : [ 'smudge', 'smudge_length', 'smudge_radius_log' ]},
+            {'id' : 'speed',    'title' : _('Speed'),   'settings' : [ 'speed1_slowness', 'speed2_slowness', 'speed1_gamma', 'speed2_gamma', 'offset_by_speed', 'offset_by_speed_slowness' ]},
+            {'id' : 'tracking', 'title' : _('Tracking'),'settings' : [ 'slow_tracking', 'slow_tracking_per_dab', 'tracking_noise' ]},
+            {'id' : 'stroke',   'title' : _('Stroke'),  'settings' : [ 'stroke_threshold', 'stroke_duration_logarithmic', 'stroke_holdtime' ]},
+            {'id' : 'color',    'title' : _('Color'),   'settings' : [ 'change_color_h', 'change_color_l', 'change_color_hsl_s', 'change_color_v', 'change_color_hsv_s' ]},
+            {'id' : 'custom',   'title' : _('Custom'),  'settings' : [ 'custom_input', 'custom_input_slowness' ]}
+            ]
 
-            adj = self.app.brush_adjustment[s.cname]
-            adj.connect('value-changed', self.value_changed_cb, s.index, self.app)
-            self.adj[s] = adj
-            h = gtk.HScale(adj)
-            h.set_digits(2)
-            h.set_draw_value(True)
-            h.set_value_pos(gtk.POS_LEFT)
+        for group in groups:
+            self.visible_settings = self.visible_settings + group['settings']
+            group_expander = gtk.Expander(label=group['title'])
+            table = gtk.Table(4, len(group['settings']))
 
-            b = gtk.Button("%.2f" % s.default)
-            b.connect('clicked', self.set_fixed_value_clicked_cb, adj, s.default)
-            b.set_tooltip_text(_('Reset to default value'))
-            adj.default_value_button = b
+            for i, cname in enumerate(group['settings']):
+                s = brushsettings.settings_dict[cname]
+                l = gtk.Label(s.name)
+                l.set_alignment(0, 0.5)
+                l.set_tooltip_text(s.tooltip)
 
-            if s.constant:
-                b2 = gtk.Label("")
-                b2.set_tooltip_text(_("No additional configuration"))
-                b2.set_alignment(0.5, 0.5)
-                adj.three_dots_button = None
-            else:
-                b2 = gtk.Button("...")
-                b2.set_tooltip_text(_("Add input values mapping"))
-                b2.connect('clicked', self.details_clicked_cb, adj, s)
-                adj.three_dots_button = b2
+                adj = self.app.brush_adjustment[s.cname]
+                adj.connect('value-changed', self.value_changed_cb, s.index, self.app)
+                self.adj[s] = adj
+                h = gtk.HScale(adj)
+                h.set_digits(2)
+                h.set_draw_value(True)
+                h.set_value_pos(gtk.POS_LEFT)
 
-            table.attach(l, 0, 1, i, i+1, gtk.FILL, gtk.FILL, 5, 0)
-            table.attach(h, 1, 2, i, i+1, gtk.EXPAND | gtk.FILL, gtk.EXPAND | gtk.FILL)
-            table.attach(b, 2, 3, i, i+1, gtk.FILL, gtk.FILL)
-            table.attach(b2, 3, 4, i, i+1, gtk.FILL, gtk.FILL)
+                b = gtk.Button("%.2f" % s.default)
+                b.connect('clicked', self.set_fixed_value_clicked_cb, adj, s.default)
+                b.set_tooltip_text(_('Reset to default value'))
+                adj.default_value_button = b
+
+                if s.constant:
+                    b2 = gtk.Label("")
+                    b2.set_tooltip_text(_("No additional configuration"))
+                    b2.set_alignment(0.5, 0.5)
+                    adj.three_dots_button = None
+                else:
+                    b2 = gtk.Button("...")
+                    b2.set_tooltip_text(_("Add input values mapping"))
+                    b2.connect('clicked', self.details_clicked_cb, adj, s)
+                    adj.three_dots_button = b2
+
+                table.attach(l, 0, 1, i, i+1, gtk.FILL, gtk.FILL, 5, 0)
+                table.attach(h, 1, 2, i, i+1, gtk.EXPAND | gtk.FILL, gtk.EXPAND | gtk.FILL)
+                table.attach(b, 2, 3, i, i+1, gtk.FILL, gtk.FILL)
+                table.attach(b2, 3, 4, i, i+1, gtk.FILL, gtk.FILL)
+
+            group_expander.add(table)
+            brushsetting_vbox.pack_start(group_expander, expand=False)
 
         self.functionWindows = {}
 
@@ -113,7 +137,8 @@ class Window(windowing.SubWindow):
 
     def update_settings(self):
         """Update all settings; their value and button labels"""
-        for setting in brushsettings.settings_visible:
+        for s in self.visible_settings:
+            setting = brushsettings.settings_dict[s]
             adj = self.adj[setting]
             s = self.app.brush.settings[setting.index]
             self.relabel_setting_buttons(adj, setting, s)
