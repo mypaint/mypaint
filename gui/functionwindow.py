@@ -24,13 +24,11 @@ class BrushInputsWidget(gtk.VBox):
 
     def init_ui(self):
         scroll = gtk.ScrolledWindow()
-        scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
+        scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_ALWAYS)
         self.pack_start(scroll)
 
         vbox = gtk.VBox()
-        vbox.set_spacing(5)
         scroll.add_with_viewport(vbox)
-        vbox.set_border_width(5)
 
         title_hbox = gtk.HBox()
         l = self.title_label = gtk.Label()

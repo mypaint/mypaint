@@ -53,13 +53,13 @@ class Window(windowing.SubWindow):
 
         # Live update
         cb = self.live_update = gtk.CheckButton(_('Live update the last canvas stroke'))
-        vbox.pack_start(cb, expand=False, fill=True, padding=5)
+        vbox.pack_start(cb, expand=False, fill=True)
         cb.connect('toggled', self.live_update_cb)
         self.app.brush.settings_observers.append(self.live_update_cb)
 
         # ScrolledWindow for brushsetting-expanders
         scroll = self.brushsettings_widget = gtk.ScrolledWindow()
-        scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
+        scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_ALWAYS)
 
         self.brushinputs_widget = functionwindow.BrushInputsWidget(self.app)
         nb = self.settings_notebook = gtk.Notebook()
@@ -77,6 +77,11 @@ class Window(windowing.SubWindow):
 
         brushsetting_vbox = gtk.VBox()
         scroll.add_with_viewport(brushsetting_vbox)
+
+        header_label = gtk.Label()
+        header_label.set_markup('<b><span size="large">%s</span></b>' % ('Brush Settings',))
+        header_label.set_alignment(0.0, 0.0)
+        brushsetting_vbox.pack_start(header_label, expand=False)
 
         groups = [
             {'id' : 'basic',    'title' : _('Basic'),   'settings' : [ 'radius_logarithmic', 'radius_by_random', 'hardness', 'offset_by_random', 'elliptical_dab_angle', 'elliptical_dab_ratio', 'direction_filter' ]},
