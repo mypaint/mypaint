@@ -68,6 +68,9 @@ class Window(windowing.SubWindow):
             group_expander.set_use_markup(True)
             table = gtk.Table(4, len(group['settings']))
 
+            if group['id'] == 'basic':
+                group_expander.set_expanded(True)
+
             for i, cname in enumerate(group['settings']):
                 s = brushsettings.settings_dict[cname]
                 l = gtk.Label(s.name)
