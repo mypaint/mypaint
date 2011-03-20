@@ -41,12 +41,17 @@ class Window(windowing.SubWindow):
         self.add(vbox)
 
         # Expander with brushcreation widget under it
-        expander = self.expander = gtk.Expander(label=_('Edit and save brush'))
+        expander = self.expander = gtk.Expander(label=_('Edit brush icon'))
         expander.set_expanded(False)
-        expander.add(brushcreationwidget.Widget(self.app))
-
+        brushicon_editor = brushcreationwidget.BrushIconEditorWidget(self.app)
+        expander.add(brushicon_editor)
         vbox.pack_end(expander, expand=False, fill=False)
 
+        # Header with brush name and actions
+        brush_actions = brushcreationwidget.BrushManipulationWidget(self.app, brushicon_editor)
+        vbox.pack_start(brush_actions, expand=False)
+
+        # Live update
         cb = self.live_update = gtk.CheckButton(_('Live update the last canvas stroke'))
         vbox.pack_start(cb, expand=False, fill=True, padding=5)
         cb.connect('toggled', self.live_update_cb)

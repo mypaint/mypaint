@@ -21,98 +21,62 @@ def startfile(path):
     else:
         os.system("xdg-open " + path)
 
-class Widget(gtk.HBox):
-    def __init__(self, app):
+def stock_button(stock_id):
+    b = gtk.Button()
+    img = gtk.Image()
+    img.set_from_stock(stock_id, gtk.ICON_SIZE_MENU)
+    b.add(img)
+    return b
+
+class BrushManipulationWidget(gtk.HBox):
+    """ """
+    def __init__(self, app, brushicon_editor):
         gtk.HBox.__init__(self)
         self.app = app
         self.bm = app.brushmanager
-
-        self.set_border_width(8)
+        self.brushicon_editor = brushicon_editor
 
         self.init_widgets()
 
         self.bm.selected_brush_observers.append(self.brush_selected_cb)
         self.app.brush.settings_observers.append(self.brush_modified_cb)
 
-        self.set_brush_preview_edit_mode(False)
-
     def init_widgets(self):
-        brush_icon_frame = gtk.Frame()
-        right_vbox = gtk.VBox()
-        self.pack_start(brush_icon_frame, expand=False, fill=False)
-        self.pack_end(right_vbox, expand=False, fill=False)
 
-        # Left side - brush icon actions
-        brush_icon_frame.set_label(_("Brush icon"))
-        brush_icon_hbox = gtk.HBox()
-        brush_icon_frame.add(brush_icon_hbox)
-        left_vbox = gtk.VBox()
-
-        doc = document.Document()
-        self.tdw = tileddrawwidget.TiledDrawWidget(doc)
-        self.tdw.set_size_request(brushmanager.preview_w, brushmanager.preview_h)
-        brush_icon_hbox.pack_start(self.tdw, expand=False, fill=False, padding=3)
-        brush_icon_hbox.pack_start(left_vbox, expand=False, fill=False, padding=3)
-
-        self.brush_preview_edit_mode_button = b = gtk.CheckButton(_('Edit'))
-        b.connect('toggled', self.brush_preview_edit_mode_cb)
-        left_vbox.pack_start(b, expand=False, padding=3)
-
-        self.brush_preview_clear_button = b = gtk.Button(_('Clear'))
-        def clear_cb(window):
-            self.tdw.doc.clear_layer()
-        b.connect('clicked', clear_cb)
-        left_vbox.pack_start(b, expand=False, padding=3)
-
-        self.brush_preview_save_button = b = gtk.Button(_('Save'))
-        b.connect('clicked', self.update_preview_cb)
-        left_vbox.pack_start(b, expand=False, padding=3)
-
-        # Right side - brush actions
         l = self.brush_name_label = gtk.Label()
-        l.set_justify(gtk.JUSTIFY_LEFT)
-        l.set_text(_('(no name)'))
-        right_vbox.pack_start(l, expand=False)
+        l.set_text(_('(unnamed brush)'))
+        self.pack_start(l, expand=True)
 
         right_vbox_buttons = [
-        (_('Add As New'), self.create_brush_cb),
-        (_('Rename...'), self.rename_brush_cb),
-        (_('Remove...'), self.delete_brush_cb),
-        (_('Save Settings'), self.update_settings_cb),
+        (gtk.STOCK_SAVE, self.update_settings_cb, _('Save Settings')),
+        (gtk.STOCK_ADD, self.create_brush_cb, _('Add As New')),
+        (gtk.STOCK_EDIT, self.rename_brush_cb, _('Rename...')),
+        (gtk.STOCK_DELETE, self.delete_brush_cb, _('Remove...')),
         ]
 
-        for title, clicked_cb in right_vbox_buttons:
-            b = gtk.Button(title)
+        for stock_id, clicked_cb, tooltip in reversed(right_vbox_buttons):
+            b = stock_button(stock_id)
             b.connect('clicked', clicked_cb)
-            right_vbox.pack_start(b, expand=False, padding=3)
+            b.set_tooltip_text(tooltip)
+            self.pack_end(b, expand=False)
 
-    def brush_preview_edit_mode_cb(self, button):
-        self.set_brush_preview_edit_mode(button.get_active())
-
-    def set_brush_preview_edit_mode(self, edit_mode):
-        self.brush_preview_edit_mode = edit_mode
-
-        self.brush_preview_edit_mode_button.set_active(edit_mode)
-        self.brush_preview_save_button.set_sensitive(edit_mode)
-        self.brush_preview_clear_button.set_sensitive(edit_mode)
-        self.tdw.set_sensitive(edit_mode)
-
-    def set_preview_pixbuf(self, pixbuf):
-        if pixbuf is None:
-            self.tdw.doc.clear()
+    def brush_selected_cb(self, brush):
+        name = brush.name
+        if name is None:
+            name = _('(unnamed brush)')
         else:
-            self.tdw.doc.load_from_pixbuf(pixbuf)
+            name = name.replace('_', ' ')   # XXX safename/unsafename utils?
+        self.brush_name_label.set_text(name)
 
-    def get_preview_pixbuf(self):
-        pixbuf = self.tdw.doc.render_as_pixbuf(0, 0, brushmanager.preview_w, brushmanager.preview_h)
-        return pixbuf
+    def brush_modified_cb(self):
+        pass
 
     def create_brush_cb(self, window):
         """Create and save a new brush based on the current working brush."""
         b = brushmanager.ManagedBrush(self.bm)
         b.brushinfo = self.app.brush.brushinfo.clone()
         b.brushinfo.pop("parent_brush_name", None) #avoid mis-hilight
-        b.preview = self.get_preview_pixbuf()
+        b.preview = self.brushicon_editor.get_preview_pixbuf()
         b.save()
 
         if self.bm.active_groups:
@@ -176,18 +140,6 @@ class Widget(gtk.HBox):
 
         self.bm.select_brush(dst_brush)
 
-    def update_preview_cb(self, window):
-        pixbuf = self.get_preview_pixbuf()
-        b = self.bm.selected_brush
-        if not b.name:
-            dialogs.error(self, _('No brush selected, please use "add as new" instead.'))
-            return
-        b.preview = pixbuf
-        b.save()
-        for brushes in self.bm.groups.itervalues():
-            if b in brushes:
-                for f in self.bm.brushes_observers: f(brushes)
-
     def update_settings_cb(self, window):
         b = self.bm.selected_brush
         if not b.name:
@@ -223,13 +175,79 @@ class Widget(gtk.HBox):
             deleted_brushes.insert(0, b)
             for f in self.bm.brushes_observers: f(deleted_brushes)
 
-    def brush_selected_cb(self, brush):
-        name = brush.name
-        if name is None:
-            name = _('(no name)')
+class BrushIconEditorWidget(gtk.HBox):
+    def __init__(self, app):
+        gtk.HBox.__init__(self)
+        self.app = app
+        self.bm = app.brushmanager
+
+        self.set_border_width(8)
+
+        self.init_widgets()
+
+        self.bm.selected_brush_observers.append(self.brush_selected_cb)
+        self.app.brush.settings_observers.append(self.brush_modified_cb)
+
+        self.set_brush_preview_edit_mode(False)
+
+    def init_widgets(self):
+        button_box = gtk.VBox()
+
+        doc = document.Document()
+        self.tdw = tileddrawwidget.TiledDrawWidget(doc)
+        self.tdw.set_size_request(brushmanager.preview_w, brushmanager.preview_h)
+
+        self.pack_start(self.tdw, expand=False, fill=False, padding=3)
+        self.pack_start(button_box, expand=False, fill=False, padding=3)
+
+        self.brush_preview_edit_mode_button = b = gtk.CheckButton(_('Edit'))
+        b.connect('toggled', self.brush_preview_edit_mode_cb)
+        button_box.pack_start(b, expand=False, padding=3)
+
+        self.brush_preview_clear_button = b = gtk.Button(_('Clear'))
+        def clear_cb(window):
+            self.tdw.doc.clear_layer()
+        b.connect('clicked', clear_cb)
+        button_box.pack_start(b, expand=False, padding=3)
+
+        self.brush_preview_save_button = b = gtk.Button(_('Save'))
+        b.connect('clicked', self.update_preview_cb)
+        button_box.pack_start(b, expand=False, padding=3)
+
+    def brush_preview_edit_mode_cb(self, button):
+        self.set_brush_preview_edit_mode(button.get_active())
+
+    def set_brush_preview_edit_mode(self, edit_mode):
+        self.brush_preview_edit_mode = edit_mode
+
+        self.brush_preview_edit_mode_button.set_active(edit_mode)
+        self.brush_preview_save_button.set_sensitive(edit_mode)
+        self.brush_preview_clear_button.set_sensitive(edit_mode)
+        self.tdw.set_sensitive(edit_mode)
+
+    def set_preview_pixbuf(self, pixbuf):
+        if pixbuf is None:
+            self.tdw.doc.clear()
         else:
-            name = name.replace('_', ' ')   # XXX safename/unsafename utils?
-        self.brush_name_label.set_text(name)
+            self.tdw.doc.load_from_pixbuf(pixbuf)
+
+    def get_preview_pixbuf(self):
+        pixbuf = self.tdw.doc.render_as_pixbuf(0, 0, brushmanager.preview_w, brushmanager.preview_h)
+        return pixbuf
+
+    def update_preview_cb(self, window):
+        pixbuf = self.get_preview_pixbuf()
+        b = self.bm.selected_brush
+        if not b.name:
+            dialogs.error(self, _('No brush selected, please use "add as new" instead.'))
+            return
+        b.preview = pixbuf
+        b.save()
+        for brushes in self.bm.groups.itervalues():
+            if b in brushes:
+                for f in self.bm.brushes_observers: f(brushes)
+
+    def brush_selected_cb(self, brush):
 
         # Update brush icon preview if it is not in edit mode
         if not self.brush_preview_edit_mode:
