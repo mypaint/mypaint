@@ -63,7 +63,9 @@ class Window(windowing.SubWindow):
 
         for group in groups:
             self.visible_settings = self.visible_settings + group['settings']
-            group_expander = gtk.Expander(label=group['title'])
+            bold_title = '<b>%s</b>' % (group['title'])
+            group_expander = gtk.Expander(label=bold_title)
+            group_expander.set_use_markup(True)
             table = gtk.Table(4, len(group['settings']))
 
             for i, cname in enumerate(group['settings']):
