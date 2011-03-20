@@ -19,7 +19,7 @@ class Window(windowing.SubWindow):
         windowing.SubWindow.__init__(self, app)
         self.app.brushmanager.selected_brush_observers.append(self.brush_selected_cb)
 
-        self.set_title(_('Brush settings'))
+        self.set_title(_('Brush Editor'))
 
         self.adj = {}
 
