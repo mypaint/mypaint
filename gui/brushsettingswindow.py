@@ -19,20 +19,26 @@ class Window(windowing.SubWindow):
         windowing.SubWindow.__init__(self, app)
         self.app.brushmanager.selected_brush_observers.append(self.brush_selected_cb)
 
-        self.set_title(_('Brush Editor'))
-
         self.adj = {}
-
+        self.functionWindows = {}
         # A list of all brushsettings (cname) which are to be displayed
         self.visible_settings = []
 
+        self.set_title(_('Brush Editor'))
+        self.init_ui()
+        self.set_default_size(450, 500)
+
+        self.update_settings()
+
+    def init_ui(self):
+        """Construct and pack widgets."""
         vbox = gtk.VBox()
         self.add(vbox)
 
         # Expander with brushcreation widget under it
         expander = self.expander = gtk.Expander(label=_('Edit and save brush'))
         expander.set_expanded(False)
-        expander.add(brushcreationwidget.Widget(app))
+        expander.add(brushcreationwidget.Widget(self.app))
 
         vbox.pack_end(expander, expand=False, fill=False)
 
@@ -108,12 +114,6 @@ class Window(windowing.SubWindow):
 
             group_expander.add(table)
             brushsetting_vbox.pack_start(group_expander, expand=False)
-
-        self.functionWindows = {}
-
-        self.set_default_size(450, 500)
-
-        self.update_settings()
 
     def set_fixed_value_clicked_cb(self, widget, adj, value):
         adj.set_value(value)
