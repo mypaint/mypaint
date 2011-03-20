@@ -377,13 +377,18 @@ class WindowWithSavedPosition:
         f_ex = self.window.get_frame_extents()
         conf_pos = dict(x=f_ex.x, y=f_ex.y, w=event.width, h=event.height)
         self.__last_conf_pos = conf_pos
-        # ... however, wait for a bit so window-state-event has a chance to
-        # fire first if the window is being fullscreened. Compiz in particular
-        # enjoys firing up to three configure-events (at various sizes) before
-        # the window-state-event describing the fullscreen.
-        if not self.__pos_save_timer:
-            self.__pos_save_timer \
-             = gobject.timeout_add_seconds(2, self.__save_position_cb)
+        if self.get_role() == 'main-window':
+            # ... however, wait for a bit so window-state-event has a chance to
+            # fire first if the window can be meaningfully fullscreened. Compiz
+            # in particular enjoys firing up to three configure-events (at
+            # various sizes) before the window-state-event describing the
+            # fullscreen.
+            if not self.__pos_save_timer:
+                self.__pos_save_timer \
+                 = gobject.timeout_add_seconds(2, self.__save_position_cb)
+        else:
+            # Save the position now for non-main windows
+            self.__save_position_cb()
 
     def __save_position_cb(self):
         if not (self.__is_maximized or self.__is_fullscreen):
