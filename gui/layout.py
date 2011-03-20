@@ -947,7 +947,9 @@ class Tool (gtk.VBox, ElasticContainer):
         else:
             self.set_show_resize_grip(False)
             self.floating_window.add(self)
-            self.floating_window.show_all()
+            # Defer the show_all(), seems to be needed when toggling on a
+            # hidden, floating window which hasn't yet been loaded.
+            gobject.idle_add(self.floating_window.show_all)
             self.floating = lm.prefs[self.role]["floating"] = True
             lm.main_window.sidebar.reassign_indices()
             if lm.main_window.sidebar.is_empty():
@@ -977,7 +979,6 @@ class Tool (gtk.VBox, ElasticContainer):
         else:
             self.set_floating(self.floating)
             # Which will restore it to the correct state
-            self.show_all()
         self.hidden = hidden
         if not temporary:
             lm.prefs[role]["hidden"] = hidden
