@@ -12,28 +12,33 @@ import gtk
 from brushlib import brushsettings
 import windowing
 
-class Window(windowing.SubWindow):
-    def __init__(self, app, setting, adj):
-        windowing.SubWindow.__init__(self, app, key_input=True)
+class BrushInputsWidget(gtk.VBox):
+    def __init__(self, app):
+        gtk.VBox.__init__(self)
+
+        self.app = app
+        self.byinputwidgets = []
+        self.default_value_button_cb_id = 0
         self.app.brushmanager.selected_brush_observers.append(self.brush_selected_cb)
+        self.init_ui()
 
-        self.set_title(setting.name)
-
+    def init_ui(self):
         scroll = gtk.ScrolledWindow()
         scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
-        self.add(scroll)
+        self.pack_start(scroll)
 
         vbox = gtk.VBox()
         vbox.set_spacing(5)
         scroll.add_with_viewport(vbox)
         vbox.set_border_width(5)
 
-        l = gtk.Label()
+        title_hbox = gtk.HBox()
+        l = self.title_label = gtk.Label()
         l.set_alignment(0.0, 0.0)
-        l.set_markup('<b><span size="large">%s</span></b>' % setting.name)
-        l.set_tooltip_text(setting.tooltip)
-        vbox.pack_start(l, expand=False)
-
+        title_hbox.pack_start(l)
+        self.back_button = gtk.Button() # Label and callback set from up outside
+        title_hbox.pack_end(self.back_button, expand=False)
+        vbox.pack_start(title_hbox, expand=False)
         
         l = gtk.Label()
         l.set_markup(_('Base Value'))
@@ -43,29 +48,37 @@ class Window(windowing.SubWindow):
 
         hbox = gtk.HBox()
         vbox.pack_start(hbox, expand=False)
-        scale = self.base_value_hscale = gtk.HScale(adj)
+        scale = self.base_value_hscale = gtk.HScale()
         scale.set_digits(2)
         scale.set_draw_value(True)
         scale.set_value_pos(gtk.POS_LEFT)
         hbox.pack_start(scale, expand=True)
-        b = gtk.Button("%.1f" % setting.default)
-        b.connect('clicked', self.set_fixed_value_clicked_cb, adj, setting.default)
+        b = self.default_value_button = gtk.Button()
         hbox.pack_start(b, expand=False)
 
         vbox.pack_start(gtk.HSeparator(), expand=False)
 
-        self.byinputwidgets = []
         for i in brushsettings.inputs:
-            w = ByInputWidget(self.app, i, setting)
+            w = ByInputWidget(self.app, i)
             self.byinputwidgets.append(w)
             vbox.pack_start(w, expand=False)
             vbox.pack_start(gtk.HSeparator(), expand=False)
 
-        # functionwindows are a little narrower and a little taller than
-        # their parent brushsettingswindow, and will appear over the top
-        # of it. Positions are not saved, though they'll hide and show with
-        # tab
-        self.set_default_size(440, 550)
+    def set_brushsetting(self, setting, adj):
+        self.base_value_hscale.set_adjustment(adj)
+
+        button = self.default_value_button
+        button.set_label("%.1f" % setting.default)
+        if self.default_value_button_cb_id:
+            button.disconnect(self.default_value_button_cb_id)
+        self.default_value_button_cb_id = button.connect('clicked',
+                self.set_fixed_value_clicked_cb, adj, setting.default)
+
+        self.title_label.set_markup('<b><span size="large">%s</span></b>' % setting.name)
+        self.title_label.set_tooltip_text(setting.tooltip)
+
+        for widget in self.byinputwidgets:
+            widget.set_brushsetting(setting)
 
     def set_fixed_value_clicked_cb(self, widget, adj, value):
         adj.set_value(value)
@@ -77,14 +90,14 @@ class Window(windowing.SubWindow):
 
 class ByInputWidget(gtk.VBox):
     "the gui elements that change the response to one input"
-    def __init__(self, app, input, setting):
+    def __init__(self, app, input):
         gtk.VBox.__init__(self)
 
         self.set_spacing(5)
 
         self.app = app
         self.input = input
-        self.setting = setting
+        self.setting = None
 
         self.block_user_changes_cb = True
 
@@ -95,8 +108,7 @@ class ByInputWidget(gtk.VBox):
         self.xmin_adj = gtk.Adjustment(value=input.soft_min, lower=lower, upper=upper-0.1, step_incr=0.01, page_incr=0.1)
         self.xmax_adj = gtk.Adjustment(value=input.soft_max, lower=lower+0.1, upper=upper, step_incr=0.01, page_incr=0.1)
 
-        diff = setting.max - setting.min
-        self.scale_y_adj = gtk.Adjustment(value=diff/4.0, lower=-diff, upper=+diff, step_incr=0.01, page_incr=0.1)
+        self.scale_y_adj = gtk.Adjustment(value=1.0/4.0, lower=-1.0, upper=1.0, step_incr=0.01, page_incr=0.1)
 
         self.xmin_adj.connect('value-changed', self.user_changes_cb)
         self.xmax_adj.connect('value-changed', self.user_changes_cb)
@@ -146,6 +158,18 @@ class ByInputWidget(gtk.VBox):
         expander.set_expanded(False)
 
         self.pack_start(expander, expand=False)
+
+        self.block_user_changes_cb = False
+
+    def set_brushsetting(self, setting):
+        self.setting = setting
+
+        self.block_user_changes_cb = True
+        diff = setting.max - setting.min
+        self.scale_y_adj.set_upper(+diff)
+        self.scale_y_adj.set_lower(-diff)
+        self.scale_y_adj.set_value(diff/4.0)
+        self.block_user_changes_cb = False
 
         self.reread()
 
@@ -227,6 +251,8 @@ class ByInputWidget(gtk.VBox):
         return self.point_real2widget((self.input.normal, 0.0))[0]
 
     def reread(self):
+        if not self.setting:
+            return
 
         brush_points = self.app.brush.settings[self.setting.index].points[self.input.index]
 

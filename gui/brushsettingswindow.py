@@ -14,7 +14,12 @@ import windowing
 from brushlib import brushsettings
 from lib import command
 
+
 class Window(windowing.SubWindow):
+
+    PAGE_BRUSHSETTINGS = 0
+    PAGE_BRUSHINPUTS = 1
+
     def __init__(self, app):
         windowing.SubWindow.__init__(self, app)
         self.app.brushmanager.selected_brush_observers.append(self.brush_selected_cb)
@@ -48,9 +53,22 @@ class Window(windowing.SubWindow):
         self.app.brush.settings_observers.append(self.live_update_cb)
 
         # ScrolledWindow for brushsetting-expanders
-        scroll = gtk.ScrolledWindow()
+        scroll = self.brushsettings_widget = gtk.ScrolledWindow()
         scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
-        vbox.pack_start(scroll, expand=True, fill=True)
+
+        self.brushinputs_widget = functionwindow.BrushInputsWidget(self.app)
+        nb = self.settings_notebook = gtk.Notebook()
+        nb.set_show_tabs(False)
+        nb.insert_page(self.brushsettings_widget, position=self.PAGE_BRUSHSETTINGS)
+        nb.insert_page(self.brushinputs_widget, position=self.PAGE_BRUSHINPUTS)
+        nb.set_current_page(self.PAGE_BRUSHSETTINGS)
+
+        def activate_brushsettings_page(*ignore):
+            nb.set_current_page(self.PAGE_BRUSHSETTINGS)
+        self.brushinputs_widget.back_button.set_label(_('All settings'))
+        self.brushinputs_widget.back_button.connect('clicked', activate_brushsettings_page)
+
+        vbox.pack_start(nb, expand=True, fill=True)
 
         brushsetting_vbox = gtk.VBox()
         scroll.add_with_viewport(brushsetting_vbox)
@@ -119,20 +137,9 @@ class Window(windowing.SubWindow):
         adj.set_value(value)
 
     def details_clicked_cb(self, window, adj, setting):
-        # FIXME: should the old window get closed automatically?
-        #        Hm... probably not.
-        w = self.functionWindows.get(setting)
-        if w is None:
-            w = functionwindow.Window(self.app, setting, adj)
-            self.functionWindows[setting] = w
-            w.show_all()
-            bsw_pos = self.get_position()
-            if bsw_pos:
-                x, y = bsw_pos
-                x += 16
-                y = max(0, y-50)
-                w.move(x, y)
-        w.present() # get to the front
+        """Go to brush input/dynamics page."""
+        self.brushinputs_widget.set_brushsetting(setting, adj)
+        self.settings_notebook.set_current_page(self.PAGE_BRUSHINPUTS)
 
     def value_changed_cb(self, adj, index, app):
         setting = [k for k, v in self.adj.items() if v == adj][0]
