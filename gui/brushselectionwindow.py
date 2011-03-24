@@ -355,6 +355,8 @@ class GroupSelector(gtk.DrawingArea):
 
     def group_at(self, x, y):
         x, y = int(x), int(y) # avoid warning
+        if self.layout is None:
+            return None
         i, d = self.layout.xy_to_index(x*pango.SCALE, y*pango.SCALE)
         return self.idx2group.get(i)
 
