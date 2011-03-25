@@ -24,8 +24,8 @@ preview_w = 128
 preview_h = 128
 
 DEFAULT_STARTUP_GROUP = 'Deevad'  # Suggestion only
-DEFAULT_BRUSH = 'deevad/pencil'  # TODO: phase out and use heruristics?
-DEFAULT_ERASER = 'deevad/eraser'  # TODO: ---------------"--------------
+DEFAULT_BRUSH = 'deevad/artpen'  # TODO: phase out and use heruristics?
+DEFAULT_ERASER = 'deevad/stick'  # TODO: ---------------"--------------
 FOUND_BRUSHES_GROUP = 'lost&found'
 DELETED_BRUSH_GROUP = 'deleted'
 FAVORITES_BRUSH_GROUP = 'favorites'
@@ -197,7 +197,7 @@ class BrushManager:
     def get_default_eraser(self):
         """Returns a suitable default eraser brush."""
         return self.get_matching_brush(name=DEFAULT_ERASER,
-                                keywords=["eraser", "knife", "smudge"],
+                                keywords=["eraser", "kneaded", "smudge"],
                                 fallback_eraser=1.0)
 
 
