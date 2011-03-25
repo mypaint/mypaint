@@ -105,6 +105,8 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.is_sensitive = True    # just mirrors gtk.STATE_INSENSITIVE
         self.snapshot_pixmap = None
 
+        self.override_cursor = None
+
     #def set_scroll_at_edges(self, choice):
     #    self.scroll_at_edges = choice
 
@@ -611,6 +613,8 @@ class TiledDrawWidget(gtk.DrawingArea):
     def update_cursor(self):
         if not self.window:
             return
+        elif self.override_cursor is not None:
+            c = self.override_cursor
         elif not self.is_sensitive:
             c = None
         elif self.doc.layer.locked or not self.doc.layer.visible:
@@ -620,6 +624,16 @@ class TiledDrawWidget(gtk.DrawingArea):
             radius = b.get_actual_radius()*self.scale
             c = cursor.get_brush_cursor(radius, b.is_eraser())
         self.window.set_cursor(c)
+
+    def set_override_cursor(self, cursor):
+        """Set a cursor which will always be used.
+
+        Used by the colour picker. The override cursor will be used regardless
+        of the criteria update_cursor() normally uses. Pass None to let it
+        choose normally again.
+        """
+        self.override_cursor = cursor
+        self.update_cursor()
 
     def toggle_show_layers_above(self):
         self.show_layers_above = not self.show_layers_above

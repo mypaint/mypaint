@@ -51,10 +51,7 @@ class ColorPicker(windowing.PopupWindow):
         # Using a GTK grab rather than a gdk pointer grab seems to
         # fix https://gna.org/bugs/?17940
         self.grab_add()
-        main_win = self.app.layout_manager.main_window
-        main_win.window.set_cursor(self.app.cursor_color_picker)
-        main_widget = main_win.main_widget
-        main_widget.set_sensitive(False)  # so it won't set a cursor
+        self.app.doc.tdw.set_override_cursor(self.app.cursor_color_picker)
 
         self.popup_state.register_mouse_grab(self)
 
@@ -62,10 +59,7 @@ class ColorPicker(windowing.PopupWindow):
     
     def leave(self, reason):
         self.grab_remove()
-        main_win = self.app.layout_manager.main_window
-        main_win.window.set_cursor(None)
-        main_widget = main_win.main_widget
-        main_widget.set_sensitive(True)
+        self.app.doc.tdw.set_override_cursor(None)
 
         if self.idle_handler:
             gobject.source_remove(self.idle_handler)
