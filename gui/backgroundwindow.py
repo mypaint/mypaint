@@ -9,6 +9,7 @@
 from gettext import gettext as _
 import gtk, os
 gdk = gtk.gdk
+from glob import glob
 import pixbuflist
 import windowing
 from lib import tiledsurface, helpers
@@ -102,7 +103,7 @@ class BackgroundList(pixbuflist.PixbufList):
         self.backgrounds = []
 
         def listdir(path):
-            l = [os.path.join(path, filename) for filename in os.listdir(path)]
+            l = glob(os.path.join(path, '*.png')) + glob(os.path.join(path, '*/*.png'))
             l.sort(key=os.path.getmtime)
             return l
 
