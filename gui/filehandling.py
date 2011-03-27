@@ -180,9 +180,10 @@ class FileHandler(object):
                     dialog_set_filename(dialog, filename+ext)
 
     def confirm_destructive_action(self, title=_('Confirm'), question=_('Really continue?')):
+        self.doc.model.split_stroke() # finish stroke in progress
         t = self.doc.model.unsaved_painting_time
-        if t < 30:
-            # no need to ask
+        # enough changes to bother asking? (useful for fast develop-and-test)
+        if t < 8: # (used to be 30, see https://gna.org/bugs/?17955)
             return True
 
         if t > 120:
