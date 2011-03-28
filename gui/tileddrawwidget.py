@@ -284,10 +284,13 @@ class TiledDrawWidget(gtk.DrawingArea):
         for func in self._input_stroke_ended_observers:
             func(event)
 
-    def straight_line_from_last_painting_pos(self):
-        if self.last_painting_pos:
-            dst = self.get_cursor_in_model_coordinates()
-            self.doc.straight_line(self.last_painting_pos, dst)
+    def straight_line_from_last_pos(self, is_sequence=False):
+        if not self.last_painting_pos:
+            return
+        dst = self.get_cursor_in_model_coordinates()
+        self.doc.straight_line(self.last_painting_pos, dst)
+        if is_sequence:
+            self.last_painting_pos = dst
 
     def canvas_modified_cb(self, x1, y1, w, h):
         if not self.window:

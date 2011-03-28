@@ -354,7 +354,10 @@ class Window (windowing.MainWindow, layout.MainWindow):
         # Really belongs in the tdw, but this is the only object with access
         # to the application preferences.
         if action_name == 'straight_line':
-            self.app.doc.tdw.straight_line_from_last_painting_pos()
+            self.app.doc.tdw.straight_line_from_last_pos(is_sequence=False)
+            return True
+        if action_name == 'straight_line_sequence':
+            self.app.doc.tdw.straight_line_from_last_pos(is_sequence=True)
             return True
 
         # View control

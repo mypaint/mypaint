@@ -40,6 +40,7 @@ mouse_button_actions = [
     ('zoom_canvas', _("Zoom")),
     ('rotate_canvas', _("Rotate")),
     ('straight_line', _("Straight Line")),
+    ('straight_line_sequence', _("Sequence of Straight Lines")),
     ('ColorChangerPopup', _("Color Changer")),
     ('ColorRingPopup', _("Color Ring")),
     ('ColorHistoryPopup', _("Color History")),
