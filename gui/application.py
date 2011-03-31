@@ -174,10 +174,10 @@ class Application: # singleton
                 # initially hidden (hidden=True), or be given an initial sidebar
                 # index (sbindex=<int>) or height in the sidebar (sbheight=<int>)
                 # Non-hidden entries determine the default set of tools.
-                'colorSamplerWindow': dict(sbindex=1, floating=False, hidden=True,
+                'colorSamplerWindow': dict(sbindex=1, floating=False, hidden=False,
                                            x=-200, y=128,
                                            w=200, h=300, sbheight=300),
-                'colorSelectionWindow': dict(sbindex=0, floating=True, hidden=False,
+                'colorSelectionWindow': dict(sbindex=0, floating=True, hidden=True,
                                              x=-128, y=64,
                                              w=200, h=250, sbheight=250),
                 'brushSelectionWindow': dict(sbindex=2, floating=True,
