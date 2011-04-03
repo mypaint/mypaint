@@ -797,7 +797,6 @@ class ToolWindow (gtk.Window, ElasticContainer, WindowWithSavedPosition):
         WindowWithSavedPosition.__init__(self)
         self.layout_manager = layout_manager
         self.set_type_hint(gdk.WINDOW_TYPE_HINT_UTILITY)
-        self.set_position(gtk.WIN_POS_MOUSE)
         self.role = role
         self.set_role(role)
         self.set_title(title)
@@ -1236,11 +1235,17 @@ class ToolDragState:
             pass  # Widget has already been reordered,
                   # or snapped in and then reordered.
         else:
-            x, y = self.handle_pos_root
+            # Snap out
             if self.tool in sidebar.tools_vbox:
                 self.tool.set_floating(True)
-                self.tool.floating_window.resize(*self.preview_size)
-            self.tool.floating_window.move(x, y)
+            # Set window position to that of the floating window
+            x, y = self.handle_pos_root
+            w, h = self.preview_size
+            def set_pos(tool):
+                tool.floating_window.resize(w, h)
+                tool.floating_window.move(x, y)
+                return False  #oneshot
+            gobject.idle_add(set_pos, self.tool)
         self.preview.hide()
         self.tool.handle.on_reposition_drag_finished()
         self.tool = None
@@ -1455,9 +1460,12 @@ def set_initial_window_position(win, pos):
         if final_w > screen_w or final_w < MIN_USABLE_SIZE: final_w = None
         if final_h > screen_h or final_h < MIN_USABLE_SIZE: final_h = None
 
-    if final_w and final_h:
-        win.set_default_size(final_w, final_h)
-
-    if final_x and final_y:
-        win.move(final_x, final_y)
+    if None not in (final_w, final_h, final_x, final_y):
+        geom_str = "%dx%d+%d+%d" % (final_w, final_h, final_x, final_y)
+        win.parse_geometry(geom_str)
+    else:
+        if final_w and final_h:
+            win.set_default_size(final_w, final_h)
+        if final_x and final_y:
+            win.move(final_x, final_y)
 
