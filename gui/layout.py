@@ -375,7 +375,9 @@ class WindowWithSavedPosition:
         """
         # Save the new position in the prefs...
         f_ex = self.window.get_frame_extents()
-        conf_pos = dict(x=f_ex.x, y=f_ex.y, w=event.width, h=event.height)
+        x = max(0, f_ex.x)
+        y = max(0, f_ex.y)
+        conf_pos = dict(x=x, y=y, w=event.width, h=event.height)
         self.__last_conf_pos = conf_pos
         if self.get_role() == 'main-window':
             # ... however, wait for a bit so window-state-event has a chance to
@@ -1426,13 +1428,13 @@ def set_initial_window_position(win, pos):
     assert screen_h > MIN_USABLE_SIZE
 
     if x is not None and y is not None:
-        if x > 0:
+        if x >= 0:
             final_x = x
         else:
             assert w is not None
             assert w > 0
             final_x = screen_w - w - abs(x)
-        if y > 0:
+        if y >= 0:
             final_y = y
         else:
             assert h is not None
