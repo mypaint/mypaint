@@ -88,6 +88,16 @@ class Window(windowing.Dialog):
 
         width = int(self.width_adj.get_value())
         height = int(self.height_adj.get_value())
+
+        N = tiledsurface.N
+        rwidth = N * (abs(width) // N)
+        rheight = N * (abs(height) // N)
+        if width != rwidth:
+            width = rwidth
+            self.width_adj.set_value(width)
+        if height != rheight:
+            height = rheight
+            self.height_adj.set_value(height)
         self.app.doc.model.set_frame(width=width, height=height)
 
     def on_frame_changed(self):
