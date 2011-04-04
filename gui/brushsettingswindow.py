@@ -21,7 +21,7 @@ class Window(windowing.SubWindow):
     PAGE_BRUSHINPUTS = 1
 
     def __init__(self, app):
-        windowing.SubWindow.__init__(self, app)
+        windowing.SubWindow.__init__(self, app, key_input=True)
         self.app.brushmanager.selected_brush_observers.append(self.brush_selected_cb)
 
         self.adj = {}
