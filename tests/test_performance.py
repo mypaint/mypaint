@@ -180,6 +180,26 @@ def save_png_layer():
     d.layer.surface.save('test_save.png')
     yield stop_measurement
 
+
+@nogui_test
+def brushengine_paint_hires():
+    from lib import tiledsurface, brush
+    s = tiledsurface.Surface()
+    b = brush.Brush()
+    b.load_from_string(open('brushes/watercolor.myb').read())
+
+    events = loadtxt('painting30sec.dat.gz')
+    t_old = events[0][0]
+    s.begin_atomic()
+    yield start_measurement
+    for t, x, y, pressure in events:
+        dtime = t - t_old
+        t_old = t
+        b.stroke_to (s, x*5, y*5, pressure, 0.0, 0.0, dtime)
+    yield stop_measurement
+    s.end_atomic()
+    #s.save('test_paint_hires.png') # approx. 3000x3000
+
 @gui_test
 def scroll_nozoom(gui):
     gui.wait_for_idle()
