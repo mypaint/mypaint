@@ -74,10 +74,10 @@ def paint(gui):
 
     b = gui.app.brushmanager.get_brush_by_name('redbrush')
     assert b, 'brush not found'
-    gui.app.brushmanager.select_brush(b)
 
     dw.fullscreen_cb()
     gui.wait_for_idle()
+    gui.app.brushmanager.select_brush(b)
     gui.wait_for_duration(1.5) # fullscreen seems to take some time to get through...
     gui.wait_for_idle()
 
