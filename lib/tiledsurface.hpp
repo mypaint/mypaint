@@ -10,23 +10,6 @@
 #define TILE_SIZE 64
 #define MAX_MIPMAP_LEVEL 3
 
-class TiledSurface : public Surface {
-  // the Python half of this class is in tiledsurface.py
-private:
-  PyObject * self;
-  Rect dirty_bbox;
-  int atomic;
-
-  // caching tile memory location (optimization)
-  #define TILE_MEMORY_SIZE 8
-  typedef struct {
-    int tx, ty;
-    uint16_t * rgba_p;
-  } TileMemory;
-  TileMemory tileMemory[TILE_MEMORY_SIZE];
-  int tileMemoryValid;
-  int tileMemoryWrite;
-  
   void draw_dab_pixels_BlendMode_Normal (uint16_t * mask,
                                          uint16_t * rgba,
                                          int w, int h,
@@ -35,15 +18,18 @@ private:
                                          uint32_t color_g_,
                                          uint32_t color_b_,
                                          float opacity2) {
+    uint16_t opacity2_ = opacity2*(1<<15);
     for (int y=0; y<h; y++) {
       for (int x=0; x<w; x++) {
-        uint32_t opa_a = mask[0]*opacity2; // topAlpha
-        uint32_t opa_b = (1<<15)-opa_a; // bottomAlpha
+        uint32_t opa_a = mask[0]*opacity2_/(1<<15); // topAlpha
+        if (opa_a) {
+          uint32_t opa_b = (1<<15)-opa_a; // bottomAlpha
 
-        rgba[3] = opa_a + (opa_b*rgba[3])/(1<<15);
-        rgba[0] = (opa_a*color_r_ + opa_b*rgba[0])/(1<<15);
-        rgba[1] = (opa_a*color_g_ + opa_b*rgba[1])/(1<<15);
-        rgba[2] = (opa_a*color_b_ + opa_b*rgba[2])/(1<<15);
+          rgba[3] = opa_a + (opa_b*rgba[3])/(1<<15);
+          rgba[0] = (opa_a*color_r_ + opa_b*rgba[0])/(1<<15);
+          rgba[1] = (opa_a*color_g_ + opa_b*rgba[1])/(1<<15);
+          rgba[2] = (opa_a*color_b_ + opa_b*rgba[2])/(1<<15);
+        }
 
         mask += 1;
         rgba += 4;
@@ -61,15 +47,19 @@ private:
                                          uint32_t color_g_,
                                          uint32_t color_b_,
                                          float opacity2) {
+    uint16_t opacity2_ = opacity2*(1<<15);
     for (int y=0; y<h; y++) {
       for (int x=0; x<w; x++) {
-        uint32_t opa_b = mask[0]*opacity2; // topAlpha
-        opa_b = (1<<15)-opa_b;
+        uint32_t opa_b = mask[0]*opacity2_/(1<<15); // topAlpha
+
+        if (opa_b) {
+          opa_b = (1<<15)-opa_b;
       
-        rgba[3] = (opa_b*rgba[3])/(1<<15);
-        rgba[0] = (opa_b*rgba[0])/(1<<15);
-        rgba[1] = (opa_b*rgba[1])/(1<<15);
-        rgba[2] = (opa_b*rgba[2])/(1<<15);
+          rgba[3] = (opa_b*rgba[3])/(1<<15);
+          rgba[0] = (opa_b*rgba[0])/(1<<15);
+          rgba[1] = (opa_b*rgba[1])/(1<<15);
+          rgba[2] = (opa_b*rgba[2])/(1<<15);
+        }
 
         mask += 1;
         rgba += 4;
@@ -88,17 +78,20 @@ private:
                                             uint32_t color_b_,
                                             float opacity2) {
 
+    uint16_t opacity2_ = opacity2*(1<<15);
     for (int y=0; y<h; y++) {
       for (int x=0; x<w; x++) {
-        uint32_t opa_a = mask[0]*opacity2; // topAlpha
-        uint32_t opa_b = (1<<15)-opa_a; // bottomAlpha
-
-        opa_a *= rgba[3];
-        opa_a /= (1<<15);
-
-        rgba[0] = (opa_a*color_r_ + opa_b*rgba[0])/(1<<15);
-        rgba[1] = (opa_a*color_g_ + opa_b*rgba[1])/(1<<15);
-        rgba[2] = (opa_a*color_b_ + opa_b*rgba[2])/(1<<15);
+        uint32_t opa_a = mask[0]*opacity2_/(1<<15); // topAlpha
+        if (opa_a) {
+          uint32_t opa_b = (1<<15)-opa_a; // bottomAlpha
+          
+          opa_a *= rgba[3];
+          opa_a /= (1<<15);
+          
+          rgba[0] = (opa_a*color_r_ + opa_b*rgba[0])/(1<<15);
+          rgba[1] = (opa_a*color_g_ + opa_b*rgba[1])/(1<<15);
+          rgba[2] = (opa_a*color_b_ + opa_b*rgba[2])/(1<<15);
+        }
 
         mask += 1;
         rgba += 4;
@@ -108,6 +101,23 @@ private:
     }
   };
 
+class TiledSurface : public Surface {
+  // the Python half of this class is in tiledsurface.py
+private:
+  PyObject * self;
+  Rect dirty_bbox;
+  int atomic;
+
+  // caching tile memory location (optimization)
+  #define TILE_MEMORY_SIZE 8
+  typedef struct {
+    int tx, ty;
+    uint16_t * rgba_p;
+  } TileMemory;
+  TileMemory tileMemory[TILE_MEMORY_SIZE];
+  int tileMemoryValid;
+  int tileMemoryWrite;
+  
 public:
   TiledSurface(PyObject * self_) {
     self = self_; // no need to incref
@@ -238,12 +248,6 @@ public:
     int tx, ty;
     for (ty = ty1; ty <= ty2; ty++) {
       for (tx = tx1; tx <= tx2; tx++) {
-        uint16_t * rgba_p = get_tile_memory(tx, ty, false);
-        if (!rgba_p) {
-          printf("Python exception during draw_dab()!\n");
-          return true;
-        }
-
         float xc = x - tx*TILE_SIZE;
         float yc = y - ty*TILE_SIZE;
 
@@ -306,6 +310,12 @@ public:
         }
 
         // second, we use the mask to stamp a dab for each activated blend mode
+
+        uint16_t * rgba_p = get_tile_memory(tx, ty, false);
+        if (!rgba_p) {
+          printf("Python exception during draw_dab()!\n");
+          return true;
+        }
 
         uint16_t * mask_start = mask_p + 1*(y0*TILE_SIZE + x0);
         uint16_t * rgba_start = rgba_p + 4*(y0*TILE_SIZE + x0);
