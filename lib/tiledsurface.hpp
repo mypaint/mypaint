@@ -12,76 +12,59 @@
 
   void draw_dab_pixels_BlendMode_Normal (uint16_t * mask,
                                          uint16_t * rgba,
-                                         int w, int h,
-                                         //int rowstride, 
                                          uint32_t color_r_,
                                          uint32_t color_g_,
                                          uint32_t color_b_,
                                          float opacity2) {
-    uint16_t opacity2_ = opacity2*(1<<15);
-    for (int y=0; y<h; y++) {
-      for (int x=0; x<w; x++) {
-        uint32_t opa_a = mask[0]*opacity2_/(1<<15); // topAlpha
-        if (opa_a) {
-          uint32_t opa_b = (1<<15)-opa_a; // bottomAlpha
-
-          rgba[3] = opa_a + (opa_b*rgba[3])/(1<<15);
-          rgba[0] = (opa_a*color_r_ + opa_b*rgba[0])/(1<<15);
-          rgba[1] = (opa_a*color_g_ + opa_b*rgba[1])/(1<<15);
-          rgba[2] = (opa_a*color_b_ + opa_b*rgba[2])/(1<<15);
-        }
-
-        mask += 1;
-        rgba += 4;
+    while (1) {
+      for (; mask[0]; mask++, rgba+=4) {
+        //printf("%p %d\n", (void*)mask, mask[0]);
+        uint32_t opa_a = mask[0]*opacity2; // topAlpha
+        uint32_t opa_b = (1<<15)-opa_a; // bottomAlpha
+        rgba[3] = opa_a + (opa_b*rgba[3])/(1<<15);
+        rgba[0] = (opa_a*color_r_ + opa_b*rgba[0])/(1<<15);
+        rgba[1] = (opa_a*color_g_ + opa_b*rgba[1])/(1<<15);
+        rgba[2] = (opa_a*color_b_ + opa_b*rgba[2])/(1<<15);
       }
-      mask += 1*(TILE_SIZE-w);
-      rgba += 4*(TILE_SIZE-w);
+      //printf("-%p %d\n", (void*)mask, mask[0]);
+      //printf("-   %d\n",              mask[1]);
+      if (!mask[1]) break;
+      rgba += mask[1];
+      mask += 2;
     }
   };
 
   void draw_dab_pixels_BlendMode_Eraser (uint16_t * mask,
                                          uint16_t * rgba,
-                                         int w, int h,
-                                         //int rowstride, 
                                          uint32_t color_r_,
                                          uint32_t color_g_,
                                          uint32_t color_b_,
                                          float opacity2) {
-    uint16_t opacity2_ = opacity2*(1<<15);
-    for (int y=0; y<h; y++) {
-      for (int x=0; x<w; x++) {
-        uint32_t opa_b = mask[0]*opacity2_/(1<<15); // topAlpha
-
-        if (opa_b) {
-          opa_b = (1<<15)-opa_b;
-      
-          rgba[3] = (opa_b*rgba[3])/(1<<15);
-          rgba[0] = (opa_b*rgba[0])/(1<<15);
-          rgba[1] = (opa_b*rgba[1])/(1<<15);
-          rgba[2] = (opa_b*rgba[2])/(1<<15);
-        }
-
-        mask += 1;
-        rgba += 4;
+    while (1) {
+      for (; mask[0]; mask++, rgba+=4) {
+        uint32_t opa_b = mask[0]*opacity2; // topAlpha
+        opa_b = (1<<15)-opa_b;
+        rgba[3] = (opa_b*rgba[3])/(1<<15);
+        rgba[0] = (opa_b*rgba[0])/(1<<15);
+        rgba[1] = (opa_b*rgba[1])/(1<<15);
+        rgba[2] = (opa_b*rgba[2])/(1<<15);
       }
-      mask += 1*(TILE_SIZE-w);
-      rgba += 4*(TILE_SIZE-w);
+      if (!mask[1]) break;
+      rgba += mask[1];
+      mask += 2;
     }
   };
 
   void draw_dab_pixels_BlendMode_LockAlpha (uint16_t * mask,
                                             uint16_t * rgba,
-                                            int w, int h,
-                                            //int rowstride, 
                                             uint32_t color_r_,
                                             uint32_t color_g_,
                                             uint32_t color_b_,
                                             float opacity2) {
 
-    uint16_t opacity2_ = opacity2*(1<<15);
-    for (int y=0; y<h; y++) {
-      for (int x=0; x<w; x++) {
-        uint32_t opa_a = mask[0]*opacity2_/(1<<15); // topAlpha
+    while (1) {
+      for (; mask[0]; mask++, rgba+=4) {
+        uint32_t opa_a = mask[0]*opacity2; // topAlpha
         if (opa_a) {
           uint32_t opa_b = (1<<15)-opa_a; // bottomAlpha
           
@@ -92,12 +75,10 @@
           rgba[1] = (opa_a*color_g_ + opa_b*rgba[1])/(1<<15);
           rgba[2] = (opa_a*color_b_ + opa_b*rgba[2])/(1<<15);
         }
-
-        mask += 1;
-        rgba += 4;
       }
-      mask += 1*(TILE_SIZE-w);
-      rgba += 4*(TILE_SIZE-w);
+      if (!mask[1]) break;
+      rgba += mask[1];
+      mask += 2;
     }
   };
 
@@ -265,10 +246,16 @@ public:
 		float sn=sin(angle_rad);
 
         // first, we calculate the mask (opacity for each pixel)
-        static uint16_t mask_p[TILE_SIZE*TILE_SIZE];
+        static uint16_t mask[TILE_SIZE*TILE_SIZE+2*TILE_SIZE];
+        // we do run length encoding: if opacity is zero, the next
+        // value in the mask is the number of pixels that can be skipped.
+        uint16_t * mask_p = mask;
+        int skip=0;
 
+        skip += y0*TILE_SIZE;
         for (yp = y0; yp <= y1; yp++) {
           yy = (yp + 0.5 - yc);
+          skip += x0;
           for (xp = x0; xp <= x1; xp++) {
             xx = (xp + 0.5 - xc);
             // code duplication, see brush::count_dabs_to()
@@ -304,10 +291,22 @@ public:
               assert(eraser_target_alpha >= 0.0 && eraser_target_alpha <= 1.0);
 #endif
             }
-            int idx = yp*TILE_SIZE + xp;
-            mask_p[idx] = (1<<15)*opa;
+            uint16_t opa_ = opa * (1<<15);
+            if (!opa_) {
+              skip++;
+            } else {
+              if (skip) {
+                *mask_p++ = 0;
+                *mask_p++ = skip*4;
+                skip = 0;
+              }
+              *mask_p++ = opa_;
+            }
           }
+          skip += TILE_SIZE-xp;
         }
+        *mask_p++ = 0;
+        *mask_p++ = 0;
 
         // second, we use the mask to stamp a dab for each activated blend mode
 
@@ -317,19 +316,14 @@ public:
           return true;
         }
 
-        uint16_t * mask_start = mask_p + 1*(y0*TILE_SIZE + x0);
-        uint16_t * rgba_start = rgba_p + 4*(y0*TILE_SIZE + x0);
-        int w = x1-x0+1;
-        int h = y1-y0+1;
-        
         if (normal > 0.00001)
-          draw_dab_pixels_BlendMode_Normal(mask_start, rgba_start, w, h,
+          draw_dab_pixels_BlendMode_Normal(mask, rgba_p,
                                            color_r_, color_g_, color_b_, normal);
         if (eraser > 0.00001)
-          draw_dab_pixels_BlendMode_Eraser(mask_start, rgba_start, w, h,
+          draw_dab_pixels_BlendMode_Eraser(mask, rgba_p,
                                            color_r_, color_g_, color_b_, eraser);
         if (lock_alpha > 0.00001)
-          draw_dab_pixels_BlendMode_LockAlpha(mask_start, rgba_start, w, h,
+          draw_dab_pixels_BlendMode_LockAlpha(mask, rgba_p,
                                               color_r_, color_g_, color_b_, lock_alpha);
       }
     }
