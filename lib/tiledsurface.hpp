@@ -27,57 +27,84 @@ private:
   int tileMemoryValid;
   int tileMemoryWrite;
   
-  // Containers for inline functions; with compiler optimization
-  // they will allow for diffrent versions of draw_dab()
-  // without code duplication or performance loss.
+  void draw_dab_pixels_BlendMode_Normal (uint16_t * mask,
+                                         uint16_t * rgba,
+                                         int w, int h,
+                                         //int rowstride, 
+                                         uint32_t color_r_,
+                                         uint32_t color_g_,
+                                         uint32_t color_b_,
+                                         float opacity2) {
+    for (int y=0; y<h; y++) {
+      for (int x=0; x<w; x++) {
+        uint32_t opa_a = mask[0]*opacity2; // topAlpha
+        uint32_t opa_b = (1<<15)-opa_a; // bottomAlpha
 
-  struct BlendMode_Normal {
-    inline static void pixel (uint16_t * rgba,
-                              const uint32_t & color_r_,
-                              const uint32_t & color_g_,
-                              const uint32_t & color_b_,
-                              const float & opa) {
-      uint32_t opa_a = (1<<15)*opa;   // topAlpha
-      uint32_t opa_b = (1<<15)-opa_a; // bottomAlpha
+        rgba[3] = opa_a + (opa_b*rgba[3])/(1<<15);
+        rgba[0] = (opa_a*color_r_ + opa_b*rgba[0])/(1<<15);
+        rgba[1] = (opa_a*color_g_ + opa_b*rgba[1])/(1<<15);
+        rgba[2] = (opa_a*color_b_ + opa_b*rgba[2])/(1<<15);
 
-      rgba[3] = opa_a + (opa_b*rgba[3])/(1<<15);
-      rgba[0] = (opa_a*color_r_ + opa_b*rgba[0])/(1<<15);
-      rgba[1] = (opa_a*color_g_ + opa_b*rgba[1])/(1<<15);
-      rgba[2] = (opa_a*color_b_ + opa_b*rgba[2])/(1<<15);
+        mask += 1;
+        rgba += 4;
+      }
+      mask += 1*(TILE_SIZE-w);
+      rgba += 4*(TILE_SIZE-w);
     }
   };
 
-  struct BlendMode_Eraser {
-    inline static void pixel (uint16_t * rgba,
-                              const uint32_t & color_r_,
-                              const uint32_t & color_g_,
-                              const uint32_t & color_b_,
-                              const float & opa) {
-      uint32_t opa_b = (1<<15)*opa;
-      opa_b = (1<<15)-opa_b;
+  void draw_dab_pixels_BlendMode_Eraser (uint16_t * mask,
+                                         uint16_t * rgba,
+                                         int w, int h,
+                                         //int rowstride, 
+                                         uint32_t color_r_,
+                                         uint32_t color_g_,
+                                         uint32_t color_b_,
+                                         float opacity2) {
+    for (int y=0; y<h; y++) {
+      for (int x=0; x<w; x++) {
+        uint32_t opa_b = mask[0]*opacity2; // topAlpha
+        opa_b = (1<<15)-opa_b;
+      
+        rgba[3] = (opa_b*rgba[3])/(1<<15);
+        rgba[0] = (opa_b*rgba[0])/(1<<15);
+        rgba[1] = (opa_b*rgba[1])/(1<<15);
+        rgba[2] = (opa_b*rgba[2])/(1<<15);
 
-      rgba[3] = (opa_b*rgba[3])/(1<<15);
-      rgba[0] = (opa_b*rgba[0])/(1<<15);
-      rgba[1] = (opa_b*rgba[1])/(1<<15);
-      rgba[2] = (opa_b*rgba[2])/(1<<15);
+        mask += 1;
+        rgba += 4;
+      }
+      mask += 1*(TILE_SIZE-w);
+      rgba += 4*(TILE_SIZE-w);
     }
   };
 
-  struct BlendMode_LockAlpha {
-    inline static void pixel (uint16_t * rgba,
-                              const uint32_t & color_r_,
-                              const uint32_t & color_g_,
-                              const uint32_t & color_b_,
-                              const float & opa) {
-      uint32_t opa_a = (1<<15)*opa;   // topAlpha
-      uint32_t opa_b = (1<<15)-opa_a; // bottomAlpha
+  void draw_dab_pixels_BlendMode_LockAlpha (uint16_t * mask,
+                                            uint16_t * rgba,
+                                            int w, int h,
+                                            //int rowstride, 
+                                            uint32_t color_r_,
+                                            uint32_t color_g_,
+                                            uint32_t color_b_,
+                                            float opacity2) {
 
-      opa_a *= rgba[3];
-      opa_a /= (1<<15);
+    for (int y=0; y<h; y++) {
+      for (int x=0; x<w; x++) {
+        uint32_t opa_a = mask[0]*opacity2; // topAlpha
+        uint32_t opa_b = (1<<15)-opa_a; // bottomAlpha
 
-      rgba[0] = (opa_a*color_r_ + opa_b*rgba[0])/(1<<15);
-      rgba[1] = (opa_a*color_g_ + opa_b*rgba[1])/(1<<15);
-      rgba[2] = (opa_a*color_b_ + opa_b*rgba[2])/(1<<15);
+        opa_a *= rgba[3];
+        opa_a /= (1<<15);
+
+        rgba[0] = (opa_a*color_r_ + opa_b*rgba[0])/(1<<15);
+        rgba[1] = (opa_a*color_g_ + opa_b*rgba[1])/(1<<15);
+        rgba[2] = (opa_a*color_b_ + opa_b*rgba[2])/(1<<15);
+
+        mask += 1;
+        rgba += 4;
+      }
+      mask += 1*(TILE_SIZE-w);
+      rgba += 4*(TILE_SIZE-w);
     }
   };
 
@@ -181,32 +208,10 @@ public:
     normal *= 1.0-lock_alpha;
     eraser *= 1.0-lock_alpha;
 
-    bool surface_modified = false;
-
-    if (normal > 0.00001)
-      surface_modified |= draw_dab_pixels<BlendMode_Normal>
-        (x, y, radius, color_r, color_g, color_b, opaque*normal, hardness,
-         aspect_ratio, angle);
-
-    if (eraser > 0.00001)
-      surface_modified |= draw_dab_pixels<BlendMode_Eraser>
-        (x, y, radius, color_r, color_g, color_b, opaque*eraser, hardness,
-         aspect_ratio, angle);
-
-    if (lock_alpha > 0.00001)
-      surface_modified |= draw_dab_pixels<BlendMode_LockAlpha>
-        (x, y, radius, color_r, color_g, color_b, opaque*lock_alpha, hardness,
-         aspect_ratio, angle);
-
-    return surface_modified;
-  }
-  
-  template<class BlendMode>
-  inline bool draw_dab_pixels (float x, float y, 
-                               float radius, 
-                               float color_r, float color_g, float color_b,
-                               float opaque, float hardness = 0.5,
-                               float aspect_ratio = 1.0, float angle = 0.0) {
+    if (!(normal || eraser || lock_alpha)) {
+      // nothing to do
+      return false;
+    }
 
 	if (aspect_ratio<1.0) aspect_ratio=1.0;
 
@@ -218,7 +223,7 @@ public:
     uint32_t color_r_ = color_r * (1<<15);
     uint32_t color_g_ = color_g * (1<<15);
     uint32_t color_b_ = color_b * (1<<15);
-    color_r = CLAMP(color_r, 0, (1<<15));
+    color_r = CLAMP(color_r, 0, (1<<15)); // <--- FIXME!?!
     color_g = CLAMP(color_g, 0, (1<<15));
     color_b = CLAMP(color_b, 0, (1<<15));
 
@@ -255,6 +260,9 @@ public:
 		float cs=cos(angle_rad);
 		float sn=sin(angle_rad);
 
+        // first, we calculate the mask (opacity for each pixel)
+        static uint16_t mask_p[TILE_SIZE*TILE_SIZE];
+
         for (yp = y0; yp <= y1; yp++) {
           yy = (yp + 0.5 - yc);
           for (xp = x0; xp <= x1; xp++) {
@@ -265,8 +273,9 @@ public:
             rr = (yyr*yyr + xxr*xxr) * one_over_radius2;
             // rr is in range 0.0..1.0*sqrt(2)
 
+            float opa = 0;
             if (rr <= 1.0) {
-              float opa = opaque;
+              opa = opaque;
               if (hardness < 1.0) {
                 if (rr < hardness) {
                   opa *= rr + 1-(rr/hardness);
@@ -290,14 +299,31 @@ public:
               assert(opa >= 0.0 && opa <= 1.0);
               assert(eraser_target_alpha >= 0.0 && eraser_target_alpha <= 1.0);
 #endif
-              int idx = (yp*TILE_SIZE + xp)*4;
-              
-              BlendMode::pixel(rgba_p+idx, color_r_, color_g_, color_b_, opa);
             }
+            int idx = yp*TILE_SIZE + xp;
+            mask_p[idx] = (1<<15)*opa;
           }
         }
+
+        // second, we use the mask to stamp a dab for each activated blend mode
+
+        uint16_t * mask_start = mask_p + 1*(y0*TILE_SIZE + x0);
+        uint16_t * rgba_start = rgba_p + 4*(y0*TILE_SIZE + x0);
+        int w = x1-x0+1;
+        int h = y1-y0+1;
+        
+        if (normal > 0.00001)
+          draw_dab_pixels_BlendMode_Normal(mask_start, rgba_start, w, h,
+                                           color_r_, color_g_, color_b_, normal);
+        if (eraser > 0.00001)
+          draw_dab_pixels_BlendMode_Eraser(mask_start, rgba_start, w, h,
+                                           color_r_, color_g_, color_b_, eraser);
+        if (lock_alpha > 0.00001)
+          draw_dab_pixels_BlendMode_LockAlpha(mask_start, rgba_start, w, h,
+                                              color_r_, color_g_, color_b_, lock_alpha);
       }
     }
+
 
     {
       // expand the bounding box to include the region we just drawed
