@@ -478,7 +478,8 @@ private:
     // the functions below will CLAMP most inputs
     hsv_to_rgb_float (&color_h, &color_s, &color_v);
     return surface->draw_dab (x, y, radius, color_h, color_s, color_v, opaque, hardness, eraser_target_alpha,
-                              states[STATE_ACTUAL_ELLIPTICAL_DAB_RATIO], states[STATE_ACTUAL_ELLIPTICAL_DAB_ANGLE]);
+                              states[STATE_ACTUAL_ELLIPTICAL_DAB_RATIO], states[STATE_ACTUAL_ELLIPTICAL_DAB_ANGLE],
+                              settings_value[BRUSH_LOCK_ALPHA]);
   }
 
   // How many dabs will be drawn between the current and the next (x, y, pressure, +dt) position?

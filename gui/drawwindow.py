@@ -383,7 +383,7 @@ class Window (windowing.MainWindow, layout.MainWindow):
         # then enter them the usual way.
         if action_name in self.popup_states:
             state = self.popup_states[action_name]
-            self.app.doc.end_eraser_mode()
+            self.app.doc.auto_reset_blend_mode()
             state.activate(event)
             return True
 
@@ -443,7 +443,7 @@ class Window (windowing.MainWindow, layout.MainWindow):
         # This doesn't really belong here...
         # just because all popups are color popups now...
         # ...maybe should eraser_mode be a GUI state too?
-        self.app.doc.end_eraser_mode()
+        self.app.doc.auto_reset_blend_mode()
 
         state = self.popup_states[action.get_name()]
         state.activate(action)

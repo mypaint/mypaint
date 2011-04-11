@@ -88,7 +88,11 @@
       <menuitem action='MoreOpaque'/>
       <menuitem action='LessOpaque'/>
       <separator/>
-      <menuitem action='Eraser'/>
+      <menu action='BlendMode'>
+        <menuitem action='BlendModeNormal'/>
+        <menuitem action='BlendModeEraser'/>
+        <menuitem action='BlendModeLockAlpha'/>
+      </menu>
       <separator/>
       <menuitem action='PickContext'/>
       <separator/>

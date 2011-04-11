@@ -26,6 +26,60 @@ private:
   TileMemory tileMemory[TILE_MEMORY_SIZE];
   int tileMemoryValid;
   int tileMemoryWrite;
+  
+  // Containers for inline functions; with compiler optimization
+  // they will allow for diffrent versions of draw_dab()
+  // without code duplication or performance loss.
+
+  struct BlendMode_Normal {
+    inline static void pixel (uint16_t * rgba,
+                              const uint32_t & color_r_,
+                              const uint32_t & color_g_,
+                              const uint32_t & color_b_,
+                              const float & opa) {
+      uint32_t opa_a = (1<<15)*opa;   // topAlpha
+      uint32_t opa_b = (1<<15)-opa_a; // bottomAlpha
+
+      rgba[3] = opa_a + (opa_b*rgba[3])/(1<<15);
+      rgba[0] = (opa_a*color_r_ + opa_b*rgba[0])/(1<<15);
+      rgba[1] = (opa_a*color_g_ + opa_b*rgba[1])/(1<<15);
+      rgba[2] = (opa_a*color_b_ + opa_b*rgba[2])/(1<<15);
+    }
+  };
+
+  struct BlendMode_Eraser {
+    inline static void pixel (uint16_t * rgba,
+                              const uint32_t & color_r_,
+                              const uint32_t & color_g_,
+                              const uint32_t & color_b_,
+                              const float & opa) {
+      uint32_t opa_b = (1<<15)*opa;
+      opa_b = (1<<15)-opa_b;
+
+      rgba[3] = (opa_b*rgba[3])/(1<<15);
+      rgba[0] = (opa_b*rgba[0])/(1<<15);
+      rgba[1] = (opa_b*rgba[1])/(1<<15);
+      rgba[2] = (opa_b*rgba[2])/(1<<15);
+    }
+  };
+
+  struct BlendMode_LockAlpha {
+    inline static void pixel (uint16_t * rgba,
+                              const uint32_t & color_r_,
+                              const uint32_t & color_g_,
+                              const uint32_t & color_b_,
+                              const float & opa) {
+      uint32_t opa_a = (1<<15)*opa;   // topAlpha
+      uint32_t opa_b = (1<<15)-opa_a; // bottomAlpha
+
+      opa_a *= rgba[3];
+      opa_a /= (1<<15);
+
+      rgba[0] = (opa_a*color_r_ + opa_b*rgba[0])/(1<<15);
+      rgba[1] = (opa_a*color_g_ + opa_b*rgba[1])/(1<<15);
+      rgba[2] = (opa_a*color_b_ + opa_b*rgba[2])/(1<<15);
+    }
+  };
 
 public:
   TiledSurface(PyObject * self_) {
@@ -107,7 +161,52 @@ public:
                  float color_r, float color_g, float color_b,
                  float opaque, float hardness = 0.5,
                  float eraser_target_alpha = 1.0,
-                 float aspect_ratio = 1.0, float angle = 0.0) {
+                 float aspect_ratio = 1.0, float angle = 0.0,
+                 float lock_alpha = 0.0
+                 ) {
+
+    opaque = CLAMP(opaque, 0.0, 1.0);
+    hardness = CLAMP(hardness, 0.0, 1.0);
+    if (opaque == 0.0) return false;
+    if (radius < 0.1) return false;
+    if (hardness == 0.0) return false; // infintly small point, rest transparent
+    assert(atomic > 0);
+
+    float normal = 1.0;
+
+    float eraser = CLAMP(1.0 - eraser_target_alpha, 0.0, 1.0);
+    normal *= 1.0-eraser;
+
+    lock_alpha = CLAMP(lock_alpha, 0.0, 1.0);
+    normal *= 1.0-lock_alpha;
+    eraser *= 1.0-lock_alpha;
+
+    bool surface_modified = false;
+
+    if (normal > 0.00001)
+      surface_modified |= draw_dab_pixels<BlendMode_Normal>
+        (x, y, radius, color_r, color_g, color_b, opaque*normal, hardness,
+         aspect_ratio, angle);
+
+    if (eraser > 0.00001)
+      surface_modified |= draw_dab_pixels<BlendMode_Eraser>
+        (x, y, radius, color_r, color_g, color_b, opaque*eraser, hardness,
+         aspect_ratio, angle);
+
+    if (lock_alpha > 0.00001)
+      surface_modified |= draw_dab_pixels<BlendMode_LockAlpha>
+        (x, y, radius, color_r, color_g, color_b, opaque*lock_alpha, hardness,
+         aspect_ratio, angle);
+
+    return surface_modified;
+  }
+  
+  template<class BlendMode>
+  inline bool draw_dab_pixels (float x, float y, 
+                               float radius, 
+                               float color_r, float color_g, float color_b,
+                               float opaque, float hardness = 0.5,
+                               float aspect_ratio = 1.0, float angle = 0.0) {
 
 	if (aspect_ratio<1.0) aspect_ratio=1.0;
 
@@ -116,21 +215,12 @@ public:
     float xx, yy, rr;
     float one_over_radius2;
 
-    eraser_target_alpha = CLAMP(eraser_target_alpha, 0.0, 1.0);
     uint32_t color_r_ = color_r * (1<<15);
     uint32_t color_g_ = color_g * (1<<15);
     uint32_t color_b_ = color_b * (1<<15);
     color_r = CLAMP(color_r, 0, (1<<15));
     color_g = CLAMP(color_g, 0, (1<<15));
     color_b = CLAMP(color_b, 0, (1<<15));
-
-    opaque = CLAMP(opaque, 0.0, 1.0);
-    hardness = CLAMP(hardness, 0.0, 1.0);
-    if (opaque == 0.0) return false;
-    if (radius < 0.1) return false;
-    if (hardness == 0.0) return false; // infintly small point, rest transparent
-
-    assert(atomic > 0);
 
     r_fringe = radius + 1;
     rr = radius*radius;
@@ -194,26 +284,15 @@ public:
               // resultAlpha = topAlpha + (1.0 - topAlpha) * bottomAlpha
               // resultColor = topColor + (1.0 - topAlpha) * bottomColor
               //
-              // (at least for the normal case where eraser_target_alpha == 1.0)
-              // OPTIMIZE: separate function for the standard case without erasing?
               // OPTIMIZE: don't use floats here in the inner loop?
 
 #ifdef HEAVY_DEBUG
               assert(opa >= 0.0 && opa <= 1.0);
               assert(eraser_target_alpha >= 0.0 && eraser_target_alpha <= 1.0);
 #endif
-
-              uint32_t opa_a = (1<<15)*opa;   // topAlpha
-              uint32_t opa_b = (1<<15)-opa_a; // bottomAlpha
-              
-              // only for eraser, or for painting with translucent-making colors
-              opa_a *= eraser_target_alpha;
-              
               int idx = (yp*TILE_SIZE + xp)*4;
-              rgba_p[idx+3] = opa_a + (opa_b*rgba_p[idx+3])/(1<<15);
-              rgba_p[idx+0] = (opa_a*color_r_ + opa_b*rgba_p[idx+0])/(1<<15);
-              rgba_p[idx+1] = (opa_a*color_g_ + opa_b*rgba_p[idx+1])/(1<<15);
-              rgba_p[idx+2] = (opa_a*color_b_ + opa_b*rgba_p[idx+2])/(1<<15);
+              
+              BlendMode::pixel(rgba_p+idx, color_r_, color_g_, color_b_, opa);
             }
           }
         }
