@@ -12,18 +12,18 @@
 
   void draw_dab_pixels_BlendMode_Normal (uint16_t * mask,
                                          uint16_t * rgba,
-                                         uint16_t color_r_,
-                                         uint16_t color_g_,
-                                         uint16_t color_b_,
-                                         float opacity2) {
+                                         uint16_t r,
+                                         uint16_t g,
+                                         uint16_t b,
+                                         uint16_t opacity) {
     while (1) {
       for (; mask[0]; mask++, rgba+=4) {
-        uint32_t opa_a = mask[0]*opacity2; // topAlpha
+        uint32_t opa_a = ((uint32_t)mask[0]*opacity)/(1<<15); // topAlpha
         uint32_t opa_b = (1<<15)-opa_a; // bottomAlpha
         rgba[3] = opa_a + (opa_b*rgba[3])/(1<<15);
-        rgba[0] = (opa_a*color_r_ + opa_b*rgba[0])/(1<<15);
-        rgba[1] = (opa_a*color_g_ + opa_b*rgba[1])/(1<<15);
-        rgba[2] = (opa_a*color_b_ + opa_b*rgba[2])/(1<<15);
+        rgba[0] = (opa_a*r + opa_b*rgba[0])/(1<<15);
+        rgba[1] = (opa_a*g + opa_b*rgba[1])/(1<<15);
+        rgba[2] = (opa_a*b + opa_b*rgba[2])/(1<<15);
       }
       if (!mask[1]) break;
       rgba += mask[1];
@@ -33,13 +33,13 @@
 
   void draw_dab_pixels_BlendMode_Eraser (uint16_t * mask,
                                          uint16_t * rgba,
-                                         uint16_t color_r_,
-                                         uint16_t color_g_,
-                                         uint16_t color_b_,
-                                         float opacity2) {
+                                         uint16_t r,
+                                         uint16_t g,
+                                         uint16_t b,
+                                         uint16_t opacity) {
     while (1) {
       for (; mask[0]; mask++, rgba+=4) {
-        uint32_t opa_b = mask[0]*opacity2; // topAlpha
+        uint32_t opa_b = ((uint32_t)mask[0]*opacity)/(1<<15); // topAlpha
         opa_b = (1<<15)-opa_b;
         rgba[3] = (opa_b*rgba[3])/(1<<15);
         rgba[0] = (opa_b*rgba[0])/(1<<15);
@@ -54,20 +54,20 @@
 
   void draw_dab_pixels_BlendMode_LockAlpha (uint16_t * mask,
                                             uint16_t * rgba,
-                                            uint16_t color_r_,
-                                            uint16_t color_g_,
-                                            uint16_t color_b_,
-                                            float opacity2) {
+                                            uint16_t r,
+                                            uint16_t g,
+                                            uint16_t b,
+                                            uint16_t opacity) {
 
     while (1) {
       for (; mask[0]; mask++, rgba+=4) {
-        uint32_t opa_a = mask[0]*opacity2; // topAlpha
+        uint32_t opa_a = ((uint32_t)mask[0]*opacity)/(1<<15); // topAlpha
         uint32_t opa_b = (1<<15)-opa_a; // bottomAlpha
         opa_a *= rgba[3];
         opa_a /= (1<<15);
-        rgba[0] = (opa_a*color_r_ + opa_b*rgba[0])/(1<<15);
-        rgba[1] = (opa_a*color_g_ + opa_b*rgba[1])/(1<<15);
-        rgba[2] = (opa_a*color_b_ + opa_b*rgba[2])/(1<<15);
+        rgba[0] = (opa_a*r + opa_b*rgba[0])/(1<<15);
+        rgba[1] = (opa_a*g + opa_b*rgba[1])/(1<<15);
+        rgba[2] = (opa_a*b + opa_b*rgba[2])/(1<<15);
       }
       if (!mask[1]) break;
       rgba += mask[1];
@@ -192,7 +192,11 @@ public:
     normal *= 1.0-lock_alpha;
     eraser *= 1.0-lock_alpha;
 
-    if (!(normal || eraser || lock_alpha)) {
+    uint16_t m_normal = normal*(1<<15);
+    uint16_t m_eraser = eraser*(1<<15);
+    uint16_t m_lock_alpha = lock_alpha*(1<<15);
+
+    if (!(m_normal || m_eraser || m_lock_alpha)) {
       // nothing to do
       return false;
     }
@@ -309,15 +313,15 @@ public:
           return true;
         }
 
-        if (normal > 0.00001)
+        if (m_normal)
           draw_dab_pixels_BlendMode_Normal(mask, rgba_p,
-                                           c_r, c_g, c_b, normal);
-        if (eraser > 0.00001)
+                                           c_r, c_g, c_b, m_normal);
+        if (m_eraser)
           draw_dab_pixels_BlendMode_Eraser(mask, rgba_p,
-                                           c_r, c_g, c_b, eraser);
-        if (lock_alpha > 0.00001)
+                                           c_r, c_g, c_b, m_eraser);
+        if (m_lock_alpha)
           draw_dab_pixels_BlendMode_LockAlpha(mask, rgba_p,
-                                              c_r, c_g, c_b, lock_alpha);
+                                              c_r, c_g, c_b, m_lock_alpha);
       }
     }
 
