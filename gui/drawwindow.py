@@ -597,6 +597,7 @@ class Window (windowing.MainWindow, layout.MainWindow):
             u'Tor Egil Hoftun Kvæstad (nn_NO)\n'
             u'João S. O. Bueno (pt_BR)\n'
             u'David Grundberg (sv)\n'
+            u'Elliott Sales de Andrade (en_CA)\n'
             )
         
         d.run()
