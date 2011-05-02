@@ -124,6 +124,9 @@ def docPaint():
     b2 = brush.Brush()
     b2.load_from_string(open('brushes/redbrush.myb').read())
     b2.set_color_hsv((0.3, 0.4, 0.35))
+    b3 = brush.Brush()
+    b3.load_from_string(open('brushes/watercolor.myb').read())
+    b3.set_color_hsv((0.9, 0.2, 0.2))
 
     # test some actions
     doc = document.Document()
@@ -147,7 +150,7 @@ def docPaint():
             assert doc.get_bbox().empty()
         if i == n*3/8:
             doc.undo()
-            doc.set_brush(b1)
+            doc.set_brush(b3)
         if i == n*4/8:
             doc.set_brush(b2)
         if i == n*5/8:
@@ -158,6 +161,14 @@ def docPaint():
         if i == n*7/8:
             doc.add_layer(1)
 
+    # If there is an eraser (or smudging) at work, we might be erasing
+    # tiles that are empty. Those tile get memory allocated and affect
+    # the bouting box of the layer. This shouldn't be a big issue, but
+    # they get dropped when loading a document, which makes a
+    # comparision of the PNG files fail. The hack below is to avoid that.
+    for l in doc.layers:
+        l.surface.remove_empty_tiles()
+
     doc.layers[0].surface.save('test_docPaint_a.png')
     doc.layers[0].surface.save('test_docPaint_a1.png')
     # the resulting images will look slightly different because of dithering
@@ -167,9 +178,11 @@ def docPaint():
     doc.save('test_f1.ora')
     doc2 = document.Document()
     doc2.load('test_f1.ora')
-    print doc.get_bbox(), doc2.get_bbox()
-    # TODO: fix this one?!
+
+    # (We don't preserve the absolute position of the image, only the size.)
     #assert doc.get_bbox() == doc2.get_bbox()
+    print 'doc / doc2 bbox:', doc.get_bbox(), doc2.get_bbox()
+
     doc2.layers[0].surface.save('test_docPaint_b.png')
     assert pngs_equal('test_docPaint_a.png', 'test_docPaint_b.png')
     doc2.save('test_f2.ora')

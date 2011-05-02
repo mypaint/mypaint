@@ -209,3 +209,7 @@ class Surface(mypaintlib.TiledSurface):
     def is_empty(self):
         return not self.tiledict
 
+    def remove_empty_tiles(self):
+        for pos, data in self.tiledict.items():
+            if not data.rgba.any():
+                self.tiledict.pop(pos)
