@@ -9,16 +9,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.8.2-git\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-16 14:31+0600\n"
+"POT-Creation-Date: 2011-05-02 00:07-0400\n"
 "PO-Revision-Date: 2010-10-16 13:35+0600\n"
 "Last-Translator: Ilya Portnov <ilya.portnov@gmail.com>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
+"Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: UTF-8\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
-"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2); 10<=4 && (n%100<10 || n%"
-"100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2); 10<=4 && (n%100<10 || n"
+"%100>=20) ? 1 : 2);\n"
 "X-Generator: Lokalize 1.0\n"
 
 #. name, hard minimum, soft minimum, normal[1], soft maximum, hard maximum, displayed name, tooltip
@@ -70,7 +71,7 @@ msgid ""
 msgstr ""
 "Случайное постоянно меняющееся значение. Равномерно распределено между 0 и 1."
 
-#: ../brushlib/brushsettings.py:26
+#: ../brushlib/brushsettings.py:26 ../gui/brushsettingswindow.py:93
 msgid "Stroke"
 msgstr "Штрих"
 
@@ -121,7 +122,7 @@ msgstr ""
 "повёрнуто на 90 градусов против часовой стрелки."
 
 #. ['motion_strength',0.0,0.0,  0.0,  1.0, 1.0,  "[EXPERIMENTAL] Same as angle, but wraps at 180 degrees. The dynamics are shared with BRUSH_OFFSET_BY_SPEED_FILTER (FIXME: which is a bad thing)."],
-#: ../brushlib/brushsettings.py:31
+#: ../brushlib/brushsettings.py:31 ../gui/brushsettingswindow.py:95
 msgid "Custom"
 msgstr "Пользовательский"
 
@@ -131,14 +132,15 @@ msgid ""
 msgstr "Ввод пользователя. См. также 'Ввод пользователя'"
 
 #. internal name, displayed name, constant, minimum, default, maximum, tooltip
-#: ../brushlib/brushsettings.py:40
+#: ../brushlib/brushsettings.py:40 ../gui/brushsettingswindow.py:88
 msgid "Opacity"
 msgstr "Непрозрачность"
 
 #: ../brushlib/brushsettings.py:40
+#, fuzzy
 msgid ""
 "0 means brush is transparent, 1 fully visible\n"
-"(also known als alpha or opacity)"
+"(also known as alpha or opacity)"
 msgstr "0 означает что кисть прозрачна, 1 - полностью видима"
 
 #: ../brushlib/brushsettings.py:41
@@ -187,8 +189,9 @@ msgid "Radius"
 msgstr "Радиус"
 
 #: ../brushlib/brushsettings.py:43
+#, fuzzy
 msgid ""
-"basic brush radius (logarithmic)\n"
+"Basic brush radius (logarithmic)\n"
 " 0.7 means 2 pixels\n"
 " 3.0 means 20 pixels"
 msgstr ""
@@ -200,7 +203,8 @@ msgid "Hardness"
 msgstr "Жёсткость"
 
 #: ../brushlib/brushsettings.py:44
-msgid "hard brush-circle borders (setting to zero will draw nothing)"
+#, fuzzy
+msgid "Hard brush-circle borders (setting to zero will draw nothing)"
 msgstr "Жёсткость краёв мазка. Если 0, не рисуется ничего."
 
 #: ../brushlib/brushsettings.py:45
@@ -208,8 +212,9 @@ msgid "Dabs per basic radius"
 msgstr "Мазков на основной радиус"
 
 #: ../brushlib/brushsettings.py:45
+#, fuzzy
 msgid ""
-"how many dabs to draw while the pointer moves a distance of one brush radius "
+"How many dabs to draw while the pointer moves a distance of one brush radius "
 "(more precise: the base value of the radius)"
 msgstr ""
 "Сколько мазков рисовать, когда указатель смещается на величину радиуса кисти "
@@ -220,8 +225,9 @@ msgid "Dabs per actual radius"
 msgstr "Мазков на текущий радиус"
 
 #: ../brushlib/brushsettings.py:46
+#, fuzzy
 msgid ""
-"same as above, but the radius actually drawn is used, which can change "
+"Same as above, but the radius actually drawn is used, which can change "
 "dynamically"
 msgstr ""
 "То же, что предыдущее, но используется текущий радиус, который может меняться"
@@ -231,7 +237,8 @@ msgid "Dabs per second"
 msgstr "Мазков в секунду"
 
 #: ../brushlib/brushsettings.py:47
-msgid "dabs to draw each second, no matter how far the pointer moves"
+#, fuzzy
+msgid "Dabs to draw each second, no matter how far the pointer moves"
 msgstr ""
 "Сколько мазков рисовать каждую секунду, вне зависимости от того насколько "
 "смещается указатель"
@@ -254,8 +261,9 @@ msgid "Fine speed filter"
 msgstr "Фильтр точной скорости"
 
 #: ../brushlib/brushsettings.py:49
+#, fuzzy
 msgid ""
-"how slow the input fine speed is following the real speed\n"
+"How slow the input fine speed is following the real speed\n"
 "0.0 change immediately as your speed changes (not recommended, but try it)"
 msgstr ""
 "Насколько медленно ввод 'Точная скорость' следует за реальной скоростью\n"
@@ -267,7 +275,8 @@ msgid "Gross speed filter"
 msgstr "фильтр главной скорости"
 
 #: ../brushlib/brushsettings.py:50
-msgid "same as 'fine speed filter', but note that the range is different"
+#, fuzzy
+msgid "Same as 'fine speed filter', but note that the range is different"
 msgstr ""
 "То же, чо 'фильтр точной скорости', но заметьте, что здесь другой диапазон"
 
@@ -296,7 +305,8 @@ msgid "Gross speed gamma"
 msgstr "Гамма главной скорости"
 
 #: ../brushlib/brushsettings.py:52
-msgid "same as 'fine speed gamma' for gross speed"
+#, fuzzy
+msgid "Same as 'fine speed gamma' for gross speed"
 msgstr "То же, что 'гамма точной скорости', но для главной скорости"
 
 #: ../brushlib/brushsettings.py:53
@@ -304,8 +314,9 @@ msgid "Jitter"
 msgstr "Дрожание"
 
 #: ../brushlib/brushsettings.py:53
+#, fuzzy
 msgid ""
-"add a random offset to the position where each dab is drawn\n"
+"Add a random offset to the position where each dab is drawn\n"
 " 0.0 disabled\n"
 " 1.0 standard deviation is one basic radius away\n"
 "<0.0 negative values produce no jitter"
@@ -319,8 +330,9 @@ msgid "Offset by speed"
 msgstr "Смещение вдоль скорости"
 
 #: ../brushlib/brushsettings.py:54
+#, fuzzy
 msgid ""
-"change position depending on pointer speed\n"
+"Change position depending on pointer speed\n"
 "= 0 disable\n"
 "> 0 draw where the pointer moves to\n"
 "< 0 draw where the pointer comes from"
@@ -335,7 +347,8 @@ msgid "Offset by speed filter"
 msgstr "Фильтр смещения по скорости"
 
 #: ../brushlib/brushsettings.py:55
-msgid "how slow the offset goes back to zero when the cursor stops moving"
+#, fuzzy
+msgid "How slow the offset goes back to zero when the cursor stops moving"
 msgstr ""
 "Насколько быстро смещение возвращается в ноль, когда курсор останавливается"
 
@@ -369,8 +382,9 @@ msgid "Tracking noise"
 msgstr "Дрожание траектории"
 
 #: ../brushlib/brushsettings.py:58
+#, fuzzy
 msgid ""
-"add randomness to the mouse pointer; this usually generates many small lines "
+"Add randomness to the mouse pointer; this usually generates many small lines "
 "in random directions; maybe try this together with 'slow tracking'"
 msgstr ""
 "Добавить случайности к движениям курсора; это обычно создаёт много коротких "
@@ -381,16 +395,8 @@ msgstr ""
 msgid "Color hue"
 msgstr "Оттенок"
 
-#: ../brushlib/brushsettings.py:60
-msgid "color hue"
-msgstr "Оттенок"
-
 #: ../brushlib/brushsettings.py:61
 msgid "Color saturation"
-msgstr "Насыщенность"
-
-#: ../brushlib/brushsettings.py:61
-msgid "color saturation"
 msgstr "Насыщенность"
 
 #: ../brushlib/brushsettings.py:62
@@ -398,7 +404,8 @@ msgid "Color value"
 msgstr "Светлота"
 
 #: ../brushlib/brushsettings.py:62
-msgid "color value (brightness, intensity)"
+#, fuzzy
+msgid "Color value (brightness, intensity)"
 msgstr "Значение цвета (яркость, интенсивность)"
 
 #: ../brushlib/brushsettings.py:63
@@ -485,7 +492,7 @@ msgstr ""
 " 0.0 - отключить\n"
 " 1.0 - более насыщенный"
 
-#: ../brushlib/brushsettings.py:68
+#: ../brushlib/brushsettings.py:68 ../gui/brushsettingswindow.py:90
 msgid "Smudge"
 msgstr "Размазывание"
 
@@ -638,8 +645,9 @@ msgid "Elliptical dab: ratio"
 msgstr "Эллиптический мазок: соотношение"
 
 #: ../brushlib/brushsettings.py:79
+#, fuzzy
 msgid ""
-"aspect ratio of the dabs; must be >= 1.0, where 1.0 means a perfectly round "
+"Aspect ratio of the dabs; must be >= 1.0, where 1.0 means a perfectly round "
 "dab. TODO: linearize? start at 0.0 maybe, or log?"
 msgstr ""
 "1.0 соответствует круглому мазку, чем больше значение тем более вытянут "
@@ -650,8 +658,9 @@ msgid "Elliptical dab: angle"
 msgstr "Эллиптический мазок: угол"
 
 #: ../brushlib/brushsettings.py:80
+#, fuzzy
 msgid ""
-"this defines the angle by which eliptical dabs are tilted\n"
+"Angle by which elliptical dabs are tilted\n"
 " 0.0 horizontal dabs\n"
 " 45.0 45 degrees, turned clockwise\n"
 " 180.0 horizontal again"
@@ -666,18 +675,20 @@ msgid "Direction filter"
 msgstr "Фильтр направления"
 
 #: ../brushlib/brushsettings.py:81
+#, fuzzy
 msgid ""
-"a low value will make the direction input adapt more quickly, a high value "
+"A low value will make the direction input adapt more quickly, a high value "
 "will make it smoother"
 msgstr ""
 "Маленькое значение заставит направление кисти изменяться быстрее, высокое "
 "значение сделает изменения более плавными"
 
-#: ../gui/backgroundwindow.py:22
-msgid "save as default"
+#: ../gui/backgroundwindow.py:23
+#, fuzzy
+msgid "Save as Default"
 msgstr "Использовать по умолчанию"
 
-#: ../gui/backgroundwindow.py:24
+#: ../gui/backgroundwindow.py:25
 msgid "Background"
 msgstr "Фон"
 
@@ -685,13 +696,14 @@ msgstr "Фон"
 msgid "Pattern"
 msgstr "Текстура"
 
-#: ../gui/backgroundwindow.py:45 ../gui/colorselectionwindow.py:25
-#: ../gui/drawwindow.py:116
+#: ../gui/backgroundwindow.py:45 ../gui/brushsettingswindow.py:94
+#: ../gui/colorselectionwindow.py:22 ../gui/drawwindow.py:112
 msgid "Color"
 msgstr "Цвет"
 
 #: ../gui/backgroundwindow.py:51
-msgid "add color to patterns"
+#, fuzzy
+msgid "Add color to Patterns"
 msgstr "Добавить цвет в текстуры"
 
 #: ../gui/backgroundwindow.py:123
@@ -704,259 +716,369 @@ msgstr ""
 "удалите его."
 
 #: ../gui/backgroundwindow.py:127
-#, python-format
+#, fuzzy, python-format
 msgid ""
-"The background %s was ignored because it has the wrong size. Only (N*%d)x(M*%"
-"d) is supported."
+"The background %s was ignored because it is the wrong size. Only (N*%d)x(M*"
+"%d) is supported."
 msgstr ""
 "Фон %s был проигнорирован, потому что он неправильного размера. "
 "Поддерживаются только размеры (N*%d)*(M*%d)."
 
-#: ../gui/brushcreationwidget.py:47
-msgid "Brush icon"
-msgstr "Значок кисти"
+#: ../gui/brushcreationwidget.py:47 ../gui/brushcreationwidget.py:66
+#, fuzzy
+msgid "(unnamed brush)"
+msgstr "Переименовать кисть"
 
-#: ../gui/brushcreationwidget.py:55 ../gui/drawwindow.py:113
-msgid "Edit"
-msgstr "Правка"
-
-#: ../gui/brushcreationwidget.py:59 ../gui/document.py:85
-msgid "Clear"
-msgstr "Очистить"
-
-#: ../gui/brushcreationwidget.py:65 ../gui/filehandling.py:63
-msgid "Save"
-msgstr "Сохранить"
-
-#: ../gui/brushcreationwidget.py:72 ../gui/brushcreationwidget.py:236
-msgid "(no name)"
-msgstr "(без имени)"
-
-#: ../gui/brushcreationwidget.py:76
-msgid "Add As New"
-msgstr "Добавить как новую"
-
-#: ../gui/brushcreationwidget.py:77
-msgid "Rename..."
-msgstr "Переименовать..."
-
-#: ../gui/brushcreationwidget.py:78
-msgid "Remove..."
-msgstr "Удалить..."
-
-#: ../gui/brushcreationwidget.py:79
+#: ../gui/brushcreationwidget.py:51
 msgid "Save Settings"
 msgstr "Сохранить параметры"
 
-#: ../gui/brushcreationwidget.py:80
-msgid "About brush"
-msgstr "О кисти"
+#: ../gui/brushcreationwidget.py:52
+msgid "Add As New"
+msgstr "Добавить как новую"
 
-#: ../gui/brushcreationwidget.py:126
-msgid "No README file for this brush!"
-msgstr "Для этой кисти нет README!"
+#: ../gui/brushcreationwidget.py:53
+msgid "Rename..."
+msgstr "Переименовать..."
 
-#: ../gui/brushcreationwidget.py:148 ../gui/brushcreationwidget.py:209
+#: ../gui/brushcreationwidget.py:54
+msgid "Remove..."
+msgstr "Удалить..."
+
+#: ../gui/brushcreationwidget.py:104 ../gui/brushcreationwidget.py:154
 msgid "No brush selected!"
 msgstr "Кисть не выбрана!"
 
-#: ../gui/brushcreationwidget.py:151
+#: ../gui/brushcreationwidget.py:107
 msgid "Rename Brush"
 msgstr "Переименовать кисть"
 
-#: ../gui/brushcreationwidget.py:163
+#: ../gui/brushcreationwidget.py:119
 msgid "A brush with this name already exists!"
 msgstr "Кисть с таким именем уже существует!"
 
-#: ../gui/brushcreationwidget.py:190 ../gui/brushcreationwidget.py:201
-msgid "No brush selected, please use \"add as new\" instead."
+#: ../gui/brushcreationwidget.py:146 ../gui/brushcreationwidget.py:242
+#, fuzzy
+msgid "No brush selected, please use \"Add As New\" instead."
 msgstr ""
 "Кисть не выбрана. Пожалуйста, используйте вместо этого \"добавить как новую"
 "\"."
 
-#: ../gui/brushcreationwidget.py:211
+#: ../gui/brushcreationwidget.py:156
 msgid "Really delete brush from disk?"
 msgstr "Действительно удалить эту кисть?"
 
-#: ../gui/brushmanager.py:29
-msgid "lost&found"
+#: ../gui/brushcreationwidget.py:203 ../gui/drawwindow.py:109
+msgid "Edit"
+msgstr "Правка"
+
+#: ../gui/brushcreationwidget.py:207 ../gui/document.py:99
+msgid "Clear"
+msgstr "Очистить"
+
+#: ../gui/brushcreationwidget.py:213 ../gui/filehandling.py:63
+msgid "Save"
+msgstr "Сохранить"
+
+#: ../gui/brushmanager.py:67
+#, fuzzy
+msgid "Lost & Found"
 msgstr "потерянные"
 
-#: ../gui/brushmanager.py:30
-msgid "deleted"
+#: ../gui/brushmanager.py:68
+#, fuzzy
+msgid "Deleted"
 msgstr "удалённые"
 
-#: ../gui/brushmanager.py:31
-msgid "favorites"
+#: ../gui/brushmanager.py:69
+#, fuzzy
+msgid "Favorites"
 msgstr "любимые"
 
-#: ../gui/brushmanager.py:32
-msgid "ink"
+#: ../gui/brushmanager.py:70
+#, fuzzy
+msgid "Ink"
 msgstr "чернильные"
 
-#: ../gui/brushmanager.py:33
-msgid "classic"
+#: ../gui/brushmanager.py:71
+#, fuzzy
+msgid "Classic"
 msgstr "классические"
 
-#: ../gui/brushmanager.py:34
-msgid "experimental"
+#: ../gui/brushmanager.py:72
+#, fuzzy
+msgid "Experimental"
 msgstr "экспериментальные"
 
 #: ../gui/brushselectionwindow.py:23
 msgid "Brush selection"
 msgstr "Выбор кисти"
 
-#: ../gui/brushselectionwindow.py:212
-msgid "try right click, middle click or Ctrl click"
+#: ../gui/brushselectionwindow.py:241
+#, fuzzy
+msgid "Try right click, middle click or Ctrl click"
 msgstr "Попробуйте правый щелчок, средний щелчок или Ctrl+щелчок"
 
-#: ../gui/brushselectionwindow.py:352
+#: ../gui/brushselectionwindow.py:409
 msgid "New group..."
 msgstr "Создать группу..."
 
-#: ../gui/brushselectionwindow.py:354
+#: ../gui/brushselectionwindow.py:411
 msgid "Rename group..."
 msgstr "Переименовать группу..."
 
-#: ../gui/brushselectionwindow.py:355
+#: ../gui/brushselectionwindow.py:412
 msgid "Delete group..."
 msgstr "Удалить группу"
 
-#: ../gui/brushselectionwindow.py:356
+#: ../gui/brushselectionwindow.py:413
 msgid "Export group as brush package..."
 msgstr "Экспортировать группу как пакет кистей..."
 
-#: ../gui/brushselectionwindow.py:358 ../gui/drawwindow.py:134
-#: ../gui/drawwindow.py:412
+#: ../gui/brushselectionwindow.py:415 ../gui/drawwindow.py:130
+#: ../gui/drawwindow.py:532
 msgid "Import brush package..."
 msgstr "Импортировать пакет кистей..."
 
-#: ../gui/brushselectionwindow.py:372
+#: ../gui/brushselectionwindow.py:429
 msgid "Create group"
 msgstr "Создать группу"
 
-#: ../gui/brushselectionwindow.py:377
+#: ../gui/brushselectionwindow.py:434
 msgid "Rename group"
 msgstr "Переименовать группу"
 
-#: ../gui/brushselectionwindow.py:383
+#: ../gui/brushselectionwindow.py:440
 msgid "A group with this name already exists!"
 msgstr "Группа с таким именем уже существует!"
 
-#: ../gui/brushselectionwindow.py:386
+#: ../gui/brushselectionwindow.py:443
 msgid "Export brush pack..."
 msgstr "Экспортировать пакет кистей..."
 
-#: ../gui/brushselectionwindow.py:387 ../gui/drawwindow.py:413
+#: ../gui/brushselectionwindow.py:444 ../gui/drawwindow.py:533
 msgid "MyPaint brush package (*.zip)"
 msgstr "Пакет кистей MyPaint (*.zip)"
 
-#: ../gui/brushselectionwindow.py:393
+#: ../gui/brushselectionwindow.py:450
 #, python-format
 msgid "Really delete group %s?"
 msgstr "Действительно удалить группу %s?"
 
-#: ../gui/brushselectionwindow.py:396
-msgid "This group can not be deleted (try to make it empty first)."
+#: ../gui/brushselectionwindow.py:453
+#, fuzzy
+msgid "This group can not be deleted (try to empty it first)."
 msgstr ""
 "Эта группа не может быть удалена. Попробуйте сначала сделать её пустой."
 
-#: ../gui/brushsettingswindow.py:22
-msgid "Brush settings"
-msgstr "Настройки кисти"
+#: ../gui/brushsettingswindow.py:32
+#, fuzzy
+msgid "Brush Editor"
+msgstr "Редактор кистей..."
 
 #. Expander with brushcreation widget under it
-#: ../gui/brushsettingswindow.py:29
-msgid "Edit and save brush"
-msgstr "Редактировать и сохранить кисть"
+#: ../gui/brushsettingswindow.py:44
+#, fuzzy
+msgid "Edit brush icon"
+msgstr "Значок кисти"
 
-#: ../gui/brushsettingswindow.py:35
-msgid "Live update the last canvas stroke"
+#. Live update
+#: ../gui/brushsettingswindow.py:55
+#, fuzzy
+msgid "Update the last canvas stroke in realtime"
 msgstr "Обновлять последний штрих на холсте"
 
-#: ../gui/brushsettingswindow.py:65
+#: ../gui/brushsettingswindow.py:73
+#, fuzzy
+msgid "All settings"
+msgstr "Настройки"
+
+#: ../gui/brushsettingswindow.py:87
+msgid "Basic"
+msgstr ""
+
+#: ../gui/brushsettingswindow.py:89
+msgid "Dabs"
+msgstr ""
+
+#: ../gui/brushsettingswindow.py:91
+msgid "Speed"
+msgstr ""
+
+#: ../gui/brushsettingswindow.py:92
+#, fuzzy
+msgid "Tracking"
+msgstr "Дрожание траектории"
+
+#: ../gui/brushsettingswindow.py:124
 msgid "Reset to default value"
 msgstr "Сбросить к значению по умолчанию"
 
-#: ../gui/brushsettingswindow.py:70
+#: ../gui/brushsettingswindow.py:129
 msgid "No additional configuration"
 msgstr "Без дополнительной настройки"
 
-#: ../gui/brushsettingswindow.py:75 ../gui/brushsettingswindow.py:135
-msgid "Add input values mapping"
+#: ../gui/brushsettingswindow.py:134 ../gui/brushsettingswindow.py:181
+#, fuzzy
+msgid "Add input value mapping"
 msgstr "Добавить отображение входных значений"
 
-#: ../gui/brushsettingswindow.py:137
-msgid "Modify input values mapping"
+#: ../gui/brushsettingswindow.py:183
+#, fuzzy
+msgid "Modify input value mapping"
 msgstr "Изменить отображение входных значений"
 
-#: ../gui/colorsamplerwindow.py:825
+#: ../gui/colorsamplerwindow.py:164
+msgid "Recently used colors"
+msgstr ""
+
+#. : Background neutral mid grey, intended to permit colour comparisons without theme colours distracting and imposing themselves
+#. : Slightly distinct outlinefor colour pots, intended to reduce "1+1=3 (or more)" effects
+#. : Central saturation/value square
+#. : Grey area inside the rings
+#. : Inner ring of color sampler boxes (hue)
+#. : Outer gradiated ring (hue)
+#. : Current/previous comparison semicircles
+#. : Blank outer area, outer space
+#: ../gui/colorsamplerwindow.py:194
+#, fuzzy
+msgid "Change Saturation and Value"
+msgstr "Изменить значение/насыщенность"
+
+#: ../gui/colorsamplerwindow.py:196
+msgid "Harmony color switcher"
+msgstr ""
+
+#: ../gui/colorsamplerwindow.py:197
+#, fuzzy
+msgid "Change Hue"
+msgstr "Изменение оттенка"
+
+#: ../gui/colorsamplerwindow.py:198
+msgid "Current color vs. Last Used"
+msgstr ""
+
+#: ../gui/colorsamplerwindow.py:797
+#, fuzzy
+msgid "Change Hue, Saturation and Value"
+msgstr "Изменить значение/насыщенность"
+
+#: ../gui/colorsamplerwindow.py:868
+msgid "Change Red, Green and Blue components"
+msgstr ""
+
+#: ../gui/colorsamplerwindow.py:930
 msgid "RGB"
 msgstr "RGB"
 
-#: ../gui/colorsamplerwindow.py:826
+#: ../gui/colorsamplerwindow.py:931
 msgid "HSV"
 msgstr "HSV"
 
 #. Colour history
-#: ../gui/colorsamplerwindow.py:829
-msgid "Colors history"
+#: ../gui/colorsamplerwindow.py:934
+#, fuzzy
+msgid "Color history"
 msgstr "История цветов"
 
 #. Colour details
-#: ../gui/colorsamplerwindow.py:836 ../gui/functionwindow.py:145
+#: ../gui/colorsamplerwindow.py:941 ../gui/functionwindow.py:154
 msgid "Details"
 msgstr "Подробнее"
 
-#: ../gui/colorsamplerwindow.py:848
+#: ../gui/colorsamplerwindow.py:957
 msgid "Harmonies"
 msgstr "Гармония"
 
-#: ../gui/colorsamplerwindow.py:850
+#: ../gui/colorsamplerwindow.py:959
 msgid "Analogous"
 msgstr "Аналоговая"
 
-#: ../gui/colorsamplerwindow.py:851
-msgid "Complimentary color"
+#: ../gui/colorsamplerwindow.py:959
+msgid ""
+"Three nearby hues on the color wheel.\n"
+"Often found in nature, frequently pleasing to the eye."
+msgstr ""
+
+#: ../gui/colorsamplerwindow.py:960
+#, fuzzy
+msgid "Complementary"
 msgstr "Противоположный цвет"
 
-#: ../gui/colorsamplerwindow.py:852
-msgid "Split complimentary"
+#: ../gui/colorsamplerwindow.py:960
+msgid ""
+"Two opposite hues on the color wheel.\n"
+"Vibrant, and maximally contrasting."
+msgstr ""
+
+#: ../gui/colorsamplerwindow.py:961
+#, fuzzy
+msgid "Split complementary"
 msgstr "Разделённые противоположные"
 
-#: ../gui/colorsamplerwindow.py:853
-msgid "Double complimentary"
+#: ../gui/colorsamplerwindow.py:961
+msgid ""
+"Two hues next to the current hue's complement.\n"
+"Contrasting, but adds a possibly pleasing harmony."
+msgstr ""
+
+#: ../gui/colorsamplerwindow.py:962
+#, fuzzy
+msgid "Double complementary"
 msgstr "Двойные противоположные"
 
-#: ../gui/colorsamplerwindow.py:854
+#: ../gui/colorsamplerwindow.py:962
+msgid "Four hues in two complementary pairs."
+msgstr ""
+
+#: ../gui/colorsamplerwindow.py:963
 msgid "Square"
 msgstr "Квадрат"
 
-#: ../gui/colorsamplerwindow.py:855
+#: ../gui/colorsamplerwindow.py:963
+msgid "Four equally-spaced hues"
+msgstr ""
+
+#: ../gui/colorsamplerwindow.py:964
 msgid "Triadic"
 msgstr "Триады"
 
-#: ../gui/colorsamplerwindow.py:857
-msgid "Select harmonies"
-msgstr "Выберите гармонии"
+#: ../gui/colorsamplerwindow.py:964
+msgid ""
+"Three equally-spaced hues.\n"
+"Vibrant with equal tension."
+msgstr ""
 
-#: ../gui/colorsamplerwindow.py:860
+#: ../gui/colorsamplerwindow.py:967
 msgid "Change value/saturation"
 msgstr "Изменить значение/насыщенность"
 
-#: ../gui/colorsamplerwindow.py:863
+#: ../gui/colorsamplerwindow.py:970
 msgid "Blend each color to opposite"
 msgstr "Смешивать каждый цвет с дополнительным"
 
-#: ../gui/colorsamplerwindow.py:865
+#: ../gui/colorsamplerwindow.py:972
 msgid "Blend each color to negative"
 msgstr "Смешивать каждый цвет с контрастным"
 
-#: ../gui/colorsamplerwindow.py:961
+#: ../gui/colorsamplerwindow.py:1053 ../gui/colorsamplerwindow.py:1081
 msgid "MyPaint color selector"
 msgstr "Выборщик цветов"
 
-#: ../gui/dialogs.py:45 ../gui/layerswindow.py:224
+#: ../gui/colorselectionwindow.py:35
+msgid "Currently chosen color"
+msgstr ""
+
+#: ../gui/colorselectionwindow.py:37
+msgid "Last color painted with"
+msgstr ""
+
+#: ../gui/colorselectionwindow.py:118
+#, fuzzy
+msgid "Pick Colour"
+msgstr "Выбрать цвет"
+
+#: ../gui/dialogs.py:45 ../gui/layerswindow.py:190
 msgid "Name"
 msgstr "Имя"
 
@@ -1013,7 +1135,8 @@ msgstr ""
 "Если вы замените группу, кисти из неё будут перемещены в группу `%s'."
 
 #: ../gui/dialogs.py:247
-msgid "Import brushes package?"
+#, fuzzy
+msgid "Import brush package?"
 msgstr "Импортировать пакет кистей?"
 
 #: ../gui/dialogs.py:259
@@ -1021,304 +1144,339 @@ msgstr "Импортировать пакет кистей?"
 msgid "<b>Do you really want to import package `%s'?</b>"
 msgstr "<b>Вы действительно хотите импортировать пакет `%s'?</b>"
 
-#: ../gui/document.py:65
+#: ../gui/document.py:79
 msgid "Undo"
 msgstr "Отменить"
 
-#: ../gui/document.py:66
+#: ../gui/document.py:80
 msgid "Redo"
 msgstr "Вернуть"
 
-#: ../gui/document.py:68
+#: ../gui/document.py:82
 msgid "Brighter"
 msgstr "Светлее"
 
-#: ../gui/document.py:69
+#: ../gui/document.py:83
 msgid "Smaller"
 msgstr "Меньше"
 
-#: ../gui/document.py:70
+#: ../gui/document.py:84
 msgid "More Opaque"
 msgstr "Меньше прозрачности"
 
-#: ../gui/document.py:71
+#: ../gui/document.py:85
 msgid "Less Opaque"
 msgstr "Больше прозрачности"
 
-#: ../gui/document.py:72
+#: ../gui/document.py:86
 msgid "Toggle Eraser Mode"
 msgstr "Переключить ластик"
 
 #. TODO: make toggle action
-#: ../gui/document.py:73
+#: ../gui/document.py:87 ../gui/preferenceswindow.py:37
 msgid "Pick Context (layer, brush and color)"
 msgstr "Взять контекст (слой, кисть и цвет)"
 
-#: ../gui/document.py:75
+#: ../gui/document.py:89
 msgid "Darker"
 msgstr "Темнее"
 
-#: ../gui/document.py:76
+#: ../gui/document.py:90
 msgid "Warmer"
 msgstr "Теплее"
 
-#: ../gui/document.py:77
+#: ../gui/document.py:91
 msgid "Cooler"
 msgstr "Холоднее"
 
-#: ../gui/document.py:78
+#: ../gui/document.py:92
 msgid "Purer"
 msgstr "Чище"
 
-#: ../gui/document.py:79
+#: ../gui/document.py:93
 msgid "Grayer"
 msgstr "Серее"
 
-#: ../gui/document.py:80
+#: ../gui/document.py:94
 msgid "Bigger"
 msgstr "Больше"
 
 #. Context actions are also added in init_context_actions
-#: ../gui/document.py:83
+#: ../gui/document.py:97
 msgid "Save to Most Recently Restored"
 msgstr "Сохранить в последнюю взятую"
 
-#: ../gui/document.py:86
+#: ../gui/document.py:100
 msgid "Copy to Clipboard"
 msgstr "Скопировать в буфер обмена"
 
-#: ../gui/document.py:87
+#: ../gui/document.py:101
 msgid "Paste Clipboard (Replace Layer)"
 msgstr "Вставить из буфера обмена (заменить слой)"
 
-#: ../gui/document.py:88
+#: ../gui/document.py:102 ../gui/preferenceswindow.py:38
 msgid "Select Layer at Cursor"
 msgstr "Выбрать слой под курсором"
 
-#: ../gui/document.py:89
+#: ../gui/document.py:103
 msgid "Next (above current)"
 msgstr "Следующий (над выбранным)"
 
-#: ../gui/document.py:90
+#: ../gui/document.py:104
 msgid "Next (below current)"
 msgstr "Следующий (под выбранным)"
 
-#: ../gui/document.py:91
+#: ../gui/document.py:105
 msgid "New (above current)"
 msgstr "Создать (над выбранным)"
 
-#: ../gui/document.py:92
+#: ../gui/document.py:106
 msgid "New (below current)"
 msgstr "Создать (под выбранным)"
 
 #. XXX need a batter one, but stay consistent with layerswindow for now
-#: ../gui/document.py:94 ../gui/layerswindow.py:373
+#: ../gui/document.py:108 ../gui/layerswindow.py:346
 msgid "Merge Down"
 msgstr "Объединить с нижним"
 
-#: ../gui/document.py:95
+#: ../gui/document.py:109
 msgid "Remove"
 msgstr "Удалить"
 
-#: ../gui/document.py:96
+#: ../gui/document.py:110
 msgid "Increase Layer Opacity"
 msgstr "Уменьшить прозрачность слоя"
 
-#: ../gui/document.py:97
+#: ../gui/document.py:111
 msgid "Decrease Layer Opacity"
 msgstr "Увеличить прозрачность слоя"
 
-#: ../gui/document.py:99
+#: ../gui/document.py:113
 msgid "Shortcuts"
 msgstr "Сокращения"
 
-#: ../gui/document.py:101
-msgid "Reset (Zoom, Rotation, Mirror)"
-msgstr "Восстановить (масштаб, вращение, отражение)"
+#: ../gui/document.py:115
+msgid "Reset and Center"
+msgstr ""
 
-#: ../gui/document.py:102
+#: ../gui/document.py:116
+msgid "Reset"
+msgstr ""
+
+#: ../gui/document.py:117 ../gui/preferenceswindow.py:40
+#, fuzzy
+msgid "Zoom"
+msgstr "Увеличить"
+
+#: ../gui/document.py:118
+msgid "Rotation"
+msgstr ""
+
+#: ../gui/document.py:119
+#, fuzzy
+msgid "Mirror"
+msgstr "Отразить изображение"
+
+#: ../gui/document.py:120
 msgid "Zoom In (at cursor)"
 msgstr "Увеличить (под указатель)"
 
-#: ../gui/document.py:103
+#: ../gui/document.py:121
 msgid "Zoom Out"
 msgstr "Уменьшить"
 
-#: ../gui/document.py:104
+#: ../gui/document.py:122
 msgid "Rotate Counterclockwise"
 msgstr "Повернуть против часовой стрелки"
 
-#: ../gui/document.py:105
+#: ../gui/document.py:123
 msgid "Rotate Clockwise"
 msgstr "Повернуть по часовой стрелке"
 
-#: ../gui/document.py:106
+#: ../gui/document.py:124
 msgid "Mirror Horizontal"
 msgstr "Отразить по горизонтали"
 
-#: ../gui/document.py:107
+#: ../gui/document.py:125
 msgid "Mirror Vertical"
 msgstr "Отразить по вертикали"
 
-#: ../gui/document.py:108
+#: ../gui/document.py:126
 msgid "Layer Solo"
 msgstr "Показать только активный слой"
 
 #. TODO: make toggle action
-#: ../gui/document.py:109
+#: ../gui/document.py:127
 msgid "Hide Layers Above Current"
 msgstr "Скрыть слои над активным"
 
 #. name, stock id, label, accelerator, tooltip, callback, default toggle status
-#: ../gui/document.py:116
-msgid "Print Brush Input Values to stdout"
+#: ../gui/document.py:134
+#, fuzzy
+msgid "Print Brush Input Values to Console"
 msgstr "Печатать значения входов кисти на стандартный выход"
 
-#: ../gui/document.py:117
+#: ../gui/document.py:135
 msgid "Visualize Rendering"
 msgstr "Визуализировать рендеринг"
 
-#: ../gui/document.py:118
+#: ../gui/document.py:136
 msgid "Disable GTK Double Buffering"
 msgstr "Отключить двойную буфферизацию GTK"
 
-#: ../gui/document.py:126
+#: ../gui/document.py:144
 #, python-format
 msgid "Restore Brush %d"
 msgstr "Вернуть кисть %d"
 
-#: ../gui/document.py:128
+#: ../gui/document.py:146
 #, python-format
 msgid "Save to Brush %d"
 msgstr "Сохранить в кисть %d"
 
 #. name, stock id, label, accelerator, tooltip, callback
-#: ../gui/drawwindow.py:110
+#: ../gui/drawwindow.py:104
 msgid "File"
 msgstr "Файл"
 
 #. FIXME: should do this periodically, not only on quit
-#: ../gui/drawwindow.py:111 ../gui/drawwindow.py:405
+#: ../gui/drawwindow.py:105 ../gui/drawwindow.py:521
 msgid "Quit"
 msgstr "Выход"
 
-#: ../gui/drawwindow.py:114
+#: ../gui/drawwindow.py:106
+#, fuzzy
+msgid "Document Frame..."
+msgstr "Переименовать..."
+
+#: ../gui/drawwindow.py:107
+#, fuzzy
+msgid "Toggle Document Frame"
+msgstr "Переключить режим редактирования"
+
+#: ../gui/drawwindow.py:110
 msgid "Preferences..."
 msgstr "Параметры"
 
-#: ../gui/drawwindow.py:117
+#: ../gui/drawwindow.py:113 ../gui/preferenceswindow.py:36
 msgid "Pick Color"
 msgstr "Выбрать цвет"
 
-#: ../gui/drawwindow.py:118
+#: ../gui/drawwindow.py:114 ../gui/preferenceswindow.py:46
 msgid "Color History"
 msgstr "История цветов"
 
-#: ../gui/drawwindow.py:119
+#: ../gui/drawwindow.py:115 ../gui/preferenceswindow.py:44
 msgid "Color Changer"
 msgstr "Корректор цветов"
 
-#: ../gui/drawwindow.py:120
+#: ../gui/drawwindow.py:116 ../gui/preferenceswindow.py:45
 msgid "Color Ring"
 msgstr "Цветовой круг"
 
-#: ../gui/drawwindow.py:121
+#: ../gui/drawwindow.py:117
 msgid "Color Triangle..."
 msgstr "Цветовой треугольник..."
 
-#: ../gui/drawwindow.py:122
+#: ../gui/drawwindow.py:118
 msgid "Color Sampler..."
 msgstr "Отбор цветов"
 
-#: ../gui/drawwindow.py:124
+#: ../gui/drawwindow.py:120
 msgid "Brushkeys"
 msgstr "Кисти"
 
-#: ../gui/drawwindow.py:125
+#: ../gui/drawwindow.py:121
 msgid "Help!"
 msgstr "Справка"
 
-#: ../gui/drawwindow.py:127 ../gui/layerswindow.py:339
+#: ../gui/drawwindow.py:123 ../gui/layerswindow.py:310
 msgid "Layers"
 msgstr "Слои"
 
-#: ../gui/drawwindow.py:128
+#: ../gui/drawwindow.py:124
 msgid "Layers..."
 msgstr "Слои..."
 
-#: ../gui/drawwindow.py:129
+#: ../gui/drawwindow.py:125
 msgid "Background..."
 msgstr "Фон..."
 
-#: ../gui/drawwindow.py:131
+#: ../gui/drawwindow.py:127
 msgid "Brush"
 msgstr "Кисти"
 
-#: ../gui/drawwindow.py:132
+#: ../gui/drawwindow.py:128
 msgid "Brush List..."
 msgstr "Список кистей..."
 
-#: ../gui/drawwindow.py:133
+#: ../gui/drawwindow.py:129
 msgid "Brush Editor..."
 msgstr "Редактор кистей..."
 
-#: ../gui/drawwindow.py:136 ../gui/drawwindow.py:151
+#: ../gui/drawwindow.py:132 ../gui/drawwindow.py:149
 msgid "Help"
 msgstr "Справка"
 
-#: ../gui/drawwindow.py:137
+#: ../gui/drawwindow.py:133
 msgid "Where is the Documentation?"
 msgstr "Где документация?"
 
-#: ../gui/drawwindow.py:138
+#: ../gui/drawwindow.py:134
 msgid "Change the Keyboard Shortcuts?"
 msgstr "Сменить горячие клавиши?"
 
-#: ../gui/drawwindow.py:139
+#: ../gui/drawwindow.py:135
 msgid "About MyPaint"
 msgstr "О MyPaint"
 
-#: ../gui/drawwindow.py:141
+#: ../gui/drawwindow.py:137
 msgid "Debug"
 msgstr "Отладка"
 
-#: ../gui/drawwindow.py:142
-msgid "Print Memory Leak Info to stdout (Slow!)"
+#: ../gui/drawwindow.py:138
+#, fuzzy
+msgid "Print Memory Leak Info to Console (Slow!)"
 msgstr "Вывести информацию об утечке памяти в stdout (это долго!)"
 
-#: ../gui/drawwindow.py:143
+#: ../gui/drawwindow.py:139
 msgid "Run Garbage Collector Now"
 msgstr "Запустить сборщик мусора"
 
-#: ../gui/drawwindow.py:144
+#: ../gui/drawwindow.py:140
 msgid "Start/Stop Python Profiling (cProfile)"
 msgstr "Запустить/остановить профайлер Python (cProfile)"
 
-#: ../gui/drawwindow.py:145
+#: ../gui/drawwindow.py:141
 msgid "Test input devices..."
 msgstr "Проверка устройств ввода..."
 
-#: ../gui/drawwindow.py:147 ../gui/preferenceswindow.py:107
+#: ../gui/drawwindow.py:142
+#, fuzzy
+msgid "GTK input device dialog..."
+msgstr "Проверка устройств ввода..."
+
+#: ../gui/drawwindow.py:145 ../gui/preferenceswindow.py:223
 msgid "View"
 msgstr "Вид"
 
-#: ../gui/drawwindow.py:148
+#: ../gui/drawwindow.py:146
 msgid "Popup Menu"
 msgstr "Всплывающее меню"
 
-#: ../gui/drawwindow.py:149
+#: ../gui/drawwindow.py:147
 msgid "Fullscreen"
 msgstr "На весь экран"
 
-#: ../gui/drawwindow.py:150
+#: ../gui/drawwindow.py:148 ../gui/preferenceswindow.py:35
 msgid "Toggle Subwindows"
 msgstr "Переключить видимость диалогов"
 
-#: ../gui/drawwindow.py:405
+#: ../gui/drawwindow.py:521
 msgid "Really Quit?"
 msgstr "Действительно завершить работу?"
 
-#: ../gui/drawwindow.py:431
+#: ../gui/drawwindow.py:544
 msgid ""
 "Copyright (C) 2005-2010\n"
 "Martin Renold and the MyPaint Development Team"
@@ -1326,7 +1484,7 @@ msgstr ""
 "Авторские права © 2005-2010\n"
 "Мартин Ренольд и команда разработчиков MyPaint"
 
-#: ../gui/drawwindow.py:435
+#: ../gui/drawwindow.py:548
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -1344,44 +1502,50 @@ msgstr ""
 "Эта программа распространяется в надежде, что она будет полезной, но БЕЗО "
 "ВСЯКИХ ГАРАНТИЙ. См. файл COPYING за подробностями."
 
-#: ../gui/drawwindow.py:445 ../gui/drawwindow.py:449 ../gui/drawwindow.py:451
-#: ../gui/drawwindow.py:452 ../gui/drawwindow.py:454 ../gui/drawwindow.py:458
-#: ../gui/drawwindow.py:459 ../gui/drawwindow.py:460 ../gui/drawwindow.py:461
+#. (in order of appearance)
+#: ../gui/drawwindow.py:559 ../gui/drawwindow.py:563 ../gui/drawwindow.py:565
+#: ../gui/drawwindow.py:566 ../gui/drawwindow.py:568 ../gui/drawwindow.py:572
+#: ../gui/drawwindow.py:573 ../gui/drawwindow.py:574 ../gui/drawwindow.py:575
 msgid "programming"
 msgstr "программирование"
 
-#: ../gui/drawwindow.py:446 ../gui/drawwindow.py:455 ../gui/drawwindow.py:456
-#: ../gui/drawwindow.py:457 ../gui/drawwindow.py:463
+#: ../gui/drawwindow.py:560 ../gui/drawwindow.py:569 ../gui/drawwindow.py:571
+#: ../gui/drawwindow.py:577
 msgid "brushes"
 msgstr "кисти"
 
-#: ../gui/drawwindow.py:447 ../gui/drawwindow.py:453
+#: ../gui/drawwindow.py:561 ../gui/drawwindow.py:567
 msgid "portability"
 msgstr "портируемость"
 
-#: ../gui/drawwindow.py:448
+#: ../gui/drawwindow.py:562
 msgid "brushes, programming"
 msgstr "кисти, программирование"
 
-#: ../gui/drawwindow.py:450
+#: ../gui/drawwindow.py:564
 msgid "patterns, brushes"
 msgstr "текстуры, кисти"
 
-#: ../gui/drawwindow.py:462
+#: ../gui/drawwindow.py:570
+#, fuzzy
+msgid "brushes, patterns"
+msgstr "кисти, программирование"
+
+#: ../gui/drawwindow.py:576 ../gui/drawwindow.py:578
 msgid "patterns"
 msgstr "шаблоны"
 
-#: ../gui/drawwindow.py:466
+#: ../gui/drawwindow.py:581
 msgid "desktop icon"
 msgstr "значок программы"
 
-#: ../gui/drawwindow.py:495
+#: ../gui/drawwindow.py:611
 msgid "Move your mouse over a menu entry, then press the key to assign."
 msgstr ""
 "Чтобы назначить клавишу элементу меню, поместите указатель мыши над ним и "
 "нажмите эту клавишу."
 
-#: ../gui/drawwindow.py:497
+#: ../gui/drawwindow.py:613
 msgid ""
 "You can also drag the canvas with the mouse while holding the middle mouse "
 "button or spacebar. Or with the arrow keys.\n"
@@ -1397,17 +1561,16 @@ msgstr ""
 "и не приводят к использованию всей памяти. Тем не менее, вам по-прежнему "
 "понадобится много памяти, чтобы работать при минимальном масштабе."
 
-#: ../gui/drawwindow.py:504
+#: ../gui/drawwindow.py:620
+#, fuzzy
 msgid ""
-"This is used to quickly save/restore brush settings using keyboard "
+"Brushkeys are used to quickly save/restore brush settings using keyboard "
 "shortcuts. You can paint with one hand and change brushes with the other "
-"without interrupting.\n"
+"without interruption.\n"
 "\n"
 "There are 10 memory slots to hold brush settings.\n"
-"Those are anonymous brushes, they are not visible in the brush selector "
-"list. But they will stay even if you quit. They will also remember the "
-"selected color. In contrast, selecting a normal brush never changes the "
-"color. "
+"They are anonymous brushes, which are not visible in the brush selector "
+"list. But they are remembered even if you quit."
 msgstr ""
 "Это используется, чтобы быстро сохранять/восстанавливать параметры кистей с "
 "использованием клавиатуры. Вы можете рисовать одной рукой и менять кисти "
@@ -1417,7 +1580,7 @@ msgstr ""
 "сохраняются при выходе. Они также запоминают выбранный цвет --- в отличие от "
 "обычных кистей, которые никогда не меняют цвет при выборе."
 
-#: ../gui/drawwindow.py:515
+#: ../gui/drawwindow.py:629
 msgid ""
 "There is a tutorial available on the MyPaint homepage. It explains some "
 "features which are hard to discover yourself.\n"
@@ -1437,7 +1600,7 @@ msgstr ""
 msgid "New"
 msgstr "Создать"
 
-#: ../gui/filehandling.py:60 ../gui/filehandling.py:269
+#: ../gui/filehandling.py:60 ../gui/filehandling.py:290
 msgid "Open..."
 msgstr "Открыть..."
 
@@ -1478,65 +1641,65 @@ msgid "Open Recent files"
 msgstr "Открыть недавние рисунки"
 
 #. (name, patterns)
-#: ../gui/filehandling.py:92
+#: ../gui/filehandling.py:93
 msgid "All Recognized Formats"
 msgstr "Все известные форматы"
 
 #. 0
-#: ../gui/filehandling.py:93 ../gui/filehandling.py:99
+#: ../gui/filehandling.py:94 ../gui/filehandling.py:100
 msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
 
-#: ../gui/filehandling.py:94
+#: ../gui/filehandling.py:95
 msgid "PNG (*.png)"
 msgstr "PNG (*.png)"
 
-#: ../gui/filehandling.py:95
+#: ../gui/filehandling.py:96
 msgid "JPEG (*.jpg; *.jpeg)"
 msgstr "JPEG (*.jpg; *.jpeg)"
 
 #. (name, extension, options)
-#: ../gui/filehandling.py:98
+#: ../gui/filehandling.py:99
 msgid "By extension (prefer default format)"
 msgstr "По расширению"
 
 #. 1
-#: ../gui/filehandling.py:100
+#: ../gui/filehandling.py:101
 msgid "PNG solid with background (*.png)"
 msgstr "PNG с непрозрачным фоном (*.png)"
 
 #. 2
-#: ../gui/filehandling.py:101
+#: ../gui/filehandling.py:102
 msgid "PNG transparent (*.png)"
 msgstr "Прозрачный PNG (*.png)"
 
 #. 3
-#: ../gui/filehandling.py:102
+#: ../gui/filehandling.py:103
 msgid "Multiple PNG transparent (*.XXX.png)"
 msgstr "Серия прозрачных PNG (*.XXX.png)"
 
 #. 4
-#: ../gui/filehandling.py:103
+#: ../gui/filehandling.py:104
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
 msgstr "JPEG с качеством 90% (*.jpg; *.jpeg)"
 
-#: ../gui/filehandling.py:138
+#: ../gui/filehandling.py:145
 msgid "Save..."
 msgstr "Сохранить..."
 
-#: ../gui/filehandling.py:149
+#: ../gui/filehandling.py:156
 msgid "Format to save as:"
 msgstr "Формат для сохранения:"
 
-#: ../gui/filehandling.py:174
+#: ../gui/filehandling.py:182
 msgid "Confirm"
 msgstr "Подтверждение"
 
-#: ../gui/filehandling.py:174
+#: ../gui/filehandling.py:182
 msgid "Really continue?"
 msgstr "Вы действительно хотите продолжить?"
 
-#: ../gui/filehandling.py:182
+#: ../gui/filehandling.py:191
 #, python-format
 msgid "%d minute"
 msgid_plural "%d minutes"
@@ -1544,7 +1707,7 @@ msgstr[0] "%d минута"
 msgstr[1] "%d минуты"
 msgstr[2] "%d минут"
 
-#: ../gui/filehandling.py:185
+#: ../gui/filehandling.py:194
 #, python-format
 msgid "%d second"
 msgid_plural "%d seconds"
@@ -1552,11 +1715,11 @@ msgstr[0] "%d секунда"
 msgstr[1] "%d секунды"
 msgstr[2] "%d секунд"
 
-#: ../gui/filehandling.py:191
+#: ../gui/filehandling.py:200
 msgid "_Save as Scrap"
 msgstr "Сохранить как _черновик"
 
-#: ../gui/filehandling.py:197
+#: ../gui/filehandling.py:206
 #, python-format
 msgid ""
 "<b>%s</b>\n"
@@ -1567,16 +1730,36 @@ msgstr ""
 "\n"
 "Это отменит %s несохранённого рисования."
 
-#: ../gui/filehandling.py:234
+#: ../gui/filehandling.py:248
 msgid "Did not save, the canvas is empty."
 msgstr "Не сохранено, холст пуст."
 
-#: ../gui/filehandling.py:462
+#: ../gui/filehandling.py:495
 #, python-format
 msgid "There are no scrap files named \"%s\" yet."
 msgstr "Ещё нет файлов черновиков с именем \"%s\"."
 
-#: ../gui/functionwindow.py:40
+#: ../gui/framewindow.py:34
+msgid "Height"
+msgstr ""
+
+#: ../gui/framewindow.py:35
+msgid "Width"
+msgstr ""
+
+#: ../gui/framewindow.py:46
+msgid "Crop to active layer bounds"
+msgstr ""
+
+#: ../gui/framewindow.py:47
+msgid "Crop to document bounds"
+msgstr ""
+
+#: ../gui/framewindow.py:51
+msgid "Enabled"
+msgstr ""
+
+#: ../gui/functionwindow.py:42
 msgid "Base Value"
 msgstr "Основное значение"
 
@@ -1608,89 +1791,217 @@ msgstr "Ошибка при анализе расширения"
 msgid "Input Device Test"
 msgstr "Проверка устройств ввода"
 
-#: ../gui/inputtestwindow.py:48
+#: ../gui/inputtestwindow.py:47
 msgid "(no pressure)"
 msgstr "(нет нажатия)"
 
-#: ../gui/inputtestwindow.py:49
+#: ../gui/inputtestwindow.py:48
 msgid "Pressure:"
 msgstr "Сила нажатия:"
 
-#: ../gui/inputtestwindow.py:51
+#: ../gui/inputtestwindow.py:50
 msgid "(no tilt)"
 msgstr "(нет наклона)"
 
-#: ../gui/inputtestwindow.py:52
+#: ../gui/inputtestwindow.py:51
 msgid "Tilt:"
 msgstr "Наклон:"
 
-#: ../gui/inputtestwindow.py:57
+#: ../gui/inputtestwindow.py:56
 msgid "(no device)"
 msgstr "(нет устройства)"
 
-#: ../gui/inputtestwindow.py:58
+#: ../gui/inputtestwindow.py:57
 msgid "Device:"
 msgstr "Устройство:"
 
-#: ../gui/layerswindow.py:35
+#: ../gui/layerswindow.py:81
 msgid "Layer visibility"
 msgstr "Видимость слоя"
 
-#: ../gui/layerswindow.py:219
+#: ../gui/layerswindow.py:85
+#, fuzzy
+msgid "Layer lock"
+msgstr "Показать только активный слой"
+
+#: ../gui/layerswindow.py:183
 msgid "<small>Double click to enter name</small>"
 msgstr "<small>Дважды щёлкните для ввода имени</small>"
 
-#: ../gui/layerswindow.py:356
+#: ../gui/layerswindow.py:185
+#, fuzzy
+msgid "<small>Click to select this layer</small>"
+msgstr "<small>Дважды щёлкните для ввода имени</small>"
+
+#: ../gui/layerswindow.py:329
 msgid "Opacity:"
 msgstr "Непрозрачность:"
 
-#: ../gui/preferenceswindow.py:28
+#: ../gui/layout.py:650
+msgid "Collapse"
+msgstr ""
+
+#: ../gui/layout.py:651
+msgid "Expand"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:20
+msgid "Disabled (no pressure sensitivity)"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:21
+msgid "Screen (normal)"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:22
+msgid "Window (not recommended)"
+msgstr ""
+
+#. These can be names of actions within ActionGroups defined elsewhere,
+#. or names of actions the handler interprets itself.
+#. NOTE: The translatable strings for actions are duplicated from
+#. their action definition. Please keep in sync (or refactor to get the string from there)
+#. (action_or_whatever, label)
+#: ../gui/preferenceswindow.py:33
+msgid "No action"
+msgstr ""
+
+#. [0] is the default for the comboboxes
+#: ../gui/preferenceswindow.py:34
+msgid "Menu"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:39
+#, fuzzy
+msgid "Pan"
+msgstr "Текстура"
+
+#: ../gui/preferenceswindow.py:41
+msgid "Rotate"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:42
+msgid "Straight Line"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:43
+msgid "Sequence of Straight Lines"
+msgstr ""
+
+#. Used for creating the menus,
+#. (pref_name, label)
+#: ../gui/preferenceswindow.py:51
+msgid "Button 1 + Shift"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:52
+msgid "Button 1 + Ctrl (or Alt)"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:53
+msgid "Button 2"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:54
+msgid "Button 2 + Shift"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:55
+msgid "Button 2 + Ctrl (or Alt)"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:56
+msgid "Button 3"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:57
+msgid "Button 3 + Shift"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:58
+msgid "Button 3 + Ctrl (or Alt)"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:68
 msgid "Preferences"
 msgstr "Параметры MyPaint"
 
-#: ../gui/preferenceswindow.py:40
-msgid "Input"
+#. TRANSLATORS: Tab label
+#: ../gui/preferenceswindow.py:88
+#, fuzzy
+msgid "Pen Input"
 msgstr "Ввод"
 
-#: ../gui/preferenceswindow.py:44
-msgid "<b><span size=\"large\">Global Pressure Mapping</span></b>"
-msgstr ""
-"<b><span size=\"large\">Глобальное преобразование силы нажатия</span></b>"
+#: ../gui/preferenceswindow.py:94
+#, fuzzy
+msgid "<b>Input Device</b>"
+msgstr "Проверка устройств ввода"
 
-#: ../gui/preferenceswindow.py:57
+#: ../gui/preferenceswindow.py:101
 msgid ""
-"0.5\n"
-"(mouse button)"
+"Scale input pressure to brush pressure. This is applied to all input "
+"devices. The mouse button has an input pressure of 0.5 when pressed."
 msgstr ""
-"0.5\n"
-"(кнопка мыши)"
 
-#: ../gui/preferenceswindow.py:68
-msgid "Mode for input devices: "
-msgstr "Режим для устройств ввода:"
+#. TRANSLATORS: Graph y-axis label
+#: ../gui/preferenceswindow.py:111
+#, fuzzy
+msgid "Brush Pressure"
+msgstr "Сила нажатия"
 
-#: ../gui/preferenceswindow.py:76
-msgid "Enable right-click color history"
-msgstr "Включить историю цветов по правому щелчку"
+#. TRANSLATORS: Graph x-axis label
+#: ../gui/preferenceswindow.py:121
+#, fuzzy
+msgid "Input Pressure"
+msgstr "Сила нажатия"
 
-#: ../gui/preferenceswindow.py:82
+#: ../gui/preferenceswindow.py:130
+msgid "Mode: "
+msgstr ""
+
+#: ../gui/preferenceswindow.py:147
+msgid "Buttons"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:153
+msgid "<b>Pen and mouse button mappings</b>"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:179
 msgid "Saving"
 msgstr "Сохранение"
 
-#: ../gui/preferenceswindow.py:84
-msgid "Default file format for saving"
+#: ../gui/preferenceswindow.py:185
+#, fuzzy
+msgid "<b>Saving</b>"
+msgstr "Сохранение"
+
+#: ../gui/preferenceswindow.py:189
+#, fuzzy
+msgid "Default file format:"
 msgstr "Формат для сохранения по умолчанию "
 
-#: ../gui/preferenceswindow.py:96
-msgid "Path and filename prefix for \"Save Next Scrap\""
+#: ../gui/preferenceswindow.py:204
+#, fuzzy
+msgid "<b>Save Next Scrap</b>"
+msgstr "Открыть следующий черновик"
+
+#: ../gui/preferenceswindow.py:208
+#, fuzzy
+msgid "Path and filename prefix:"
 msgstr "Путь и префикс имени файла для 'Сохранить как черновик'"
 
-#: ../gui/preferenceswindow.py:105
-msgid "Default zoom"
+#: ../gui/preferenceswindow.py:229
+msgid "<b>Default View</b>"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:233
+#, fuzzy
+msgid "Default zoom:"
 msgstr "Масштаб по умолчанию"
 
 #. add a hint due to a very consfusing error message when there is no space left on device
-#: ../lib/document.py:267
+#: ../lib/document.py:337
 #, python-format
 msgid ""
 "Unable to save: %s\n"
@@ -1699,35 +2010,79 @@ msgstr ""
 "Не могу сохранить: %s\n"
 "Достаточно ли места на диске?"
 
-#: ../lib/document.py:269 ../lib/document.py:272
+#: ../lib/document.py:339 ../lib/document.py:342
 #, python-format
 msgid "Unable to save: %s"
 msgstr "Не могу сохранить: %s"
 
-#: ../lib/document.py:277
+#: ../lib/document.py:347
 #, python-format
 msgid "File does not exist: %s"
 msgstr "Файл не существует: %s"
 
-#: ../lib/document.py:279
+#: ../lib/document.py:349
 #, python-format
 msgid "You do not have the necessary permissions to open file: %s"
 msgstr "У вас недостаточно прав для открытия файла: %s"
 
-#: ../lib/document.py:287
+#: ../lib/document.py:357
 #, python-format
 msgid "Error while loading: GError %s"
 msgstr "Ошибка при загрузке (GError) %s"
 
-#: ../lib/document.py:290
+#: ../lib/document.py:360
 #, python-format
 msgid "Error while loading: IOError %s"
 msgstr "Ошибка при загрузке: IOError %s"
 
-#: ../lib/document.py:296
+#: ../lib/document.py:366
 #, python-format
 msgid "Unknown file format extension: %s"
 msgstr "Неизвестное расширение: %s"
+
+#~ msgid "color hue"
+#~ msgstr "Оттенок"
+
+#~ msgid "color saturation"
+#~ msgstr "Насыщенность"
+
+#~ msgid "(no name)"
+#~ msgstr "(без имени)"
+
+#~ msgid "About brush"
+#~ msgstr "О кисти"
+
+#~ msgid "No README file for this brush!"
+#~ msgstr "Для этой кисти нет README!"
+
+#~ msgid "Brush settings"
+#~ msgstr "Настройки кисти"
+
+#~ msgid "Edit and save brush"
+#~ msgstr "Редактировать и сохранить кисть"
+
+#~ msgid "Select harmonies"
+#~ msgstr "Выберите гармонии"
+
+#~ msgid "Reset (Zoom, Rotation, Mirror)"
+#~ msgstr "Восстановить (масштаб, вращение, отражение)"
+
+#~ msgid "<b><span size=\"large\">Global Pressure Mapping</span></b>"
+#~ msgstr ""
+#~ "<b><span size=\"large\">Глобальное преобразование силы нажатия</span></b>"
+
+#~ msgid ""
+#~ "0.5\n"
+#~ "(mouse button)"
+#~ msgstr ""
+#~ "0.5\n"
+#~ "(кнопка мыши)"
+
+#~ msgid "Mode for input devices: "
+#~ msgstr "Режим для устройств ввода:"
+
+#~ msgid "Enable right-click color history"
+#~ msgstr "Включить историю цветов по правому щелчку"
 
 #~ msgid "opaque"
 #~ msgstr "Непрозрачность"
@@ -1781,9 +2136,6 @@ msgstr "Неизвестное расширение: %s"
 #~ msgid "MyPaint palette"
 #~ msgstr "Палитра MyPaint"
 
-#~ msgid "Toggle edit mode"
-#~ msgstr "Переключить режим редактирования"
-
 #~ msgid "New group"
 #~ msgstr "Создать группу"
 
@@ -1804,12 +2156,6 @@ msgstr "Неизвестное расширение: %s"
 
 #~ msgid "settings..."
 #~ msgstr "Настройки..."
-
-#~ msgid "Mirror Image"
-#~ msgstr "Отразить изображение"
-
-#~ msgid "Settings"
-#~ msgstr "Настройки"
 
 #~ msgid "Revert"
 #~ msgstr "Вернуть"
@@ -1899,9 +2245,6 @@ msgstr "Неизвестное расширение: %s"
 
 #~ msgid "Toggle Solo Mode"
 #~ msgstr "Переключить 'соло'"
-
-#~ msgid "Zoom In"
-#~ msgstr "Увеличить"
 
 #~ msgid "Brush list"
 #~ msgstr "Список кистей"

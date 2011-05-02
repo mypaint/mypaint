@@ -2,15 +2,15 @@
 # Copyright (C) 2010 Martin Renold
 # This file is distributed under the same license as the MyPaint package.
 # Dong-Jun Wu, 2010
-
 msgid ""
 msgstr ""
 "Project-Id-Version: mypaint\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-09 18:29+0800\n"
+"POT-Creation-Date: 2011-05-02 00:07-0400\n"
 "PO-Revision-Date: 2010-03-09 18:43+0800\n"
 "Last-Translator: Dong-Jun Wu <ziyawu@gmail.com>\n"
 "Language-Team: Chinese Traditional <zh-l10n@linux.org.tw>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -20,28 +20,38 @@ msgstr ""
 
 #. name, hard minimum, soft minimum, normal[1], soft maximum, hard maximum, displayed name, tooltip
 #: ../brushlib/brushsettings.py:22
-#: ../gui/preferenceswindow.py:42
 msgid "Pressure"
 msgstr "壓力"
 
 #: ../brushlib/brushsettings.py:22
-msgid "The pressure reported by the tablet, between 0.0 and 1.0. If you use the mouse, it will be 0.5 when a button is pressed and 0.0 otherwise."
-msgstr "由繪圖板回報的壓力，在 0.0 和 1.0 之間。如果您使用滑鼠，按下右鍵時壓力為 0.5，反之為 0.0。"
+msgid ""
+"The pressure reported by the tablet, between 0.0 and 1.0. If you use the "
+"mouse, it will be 0.5 when a button is pressed and 0.0 otherwise."
+msgstr ""
+"由繪圖板回報的壓力，在 0.0 和 1.0 之間。如果您使用滑鼠，按下右鍵時壓力為 "
+"0.5，反之為 0.0。"
 
 #: ../brushlib/brushsettings.py:23
 msgid "Fine speed"
 msgstr "精細速度"
 
 #: ../brushlib/brushsettings.py:23
-msgid "How fast you currently move. This can change very quickly. Try 'print input values' from the 'help' menu to get a feeling for the range; negative values are rare but possible for very low speed."
-msgstr "您目前移動的速度。這個可以變得非常快。用「說明」選單的「列印輸入值」來感受數值範圍的感覺；負值比較罕見，但可用於非常緩慢的速度。"
+msgid ""
+"How fast you currently move. This can change very quickly. Try 'print input "
+"values' from the 'help' menu to get a feeling for the range; negative values "
+"are rare but possible for very low speed."
+msgstr ""
+"您目前移動的速度。這個可以變得非常快。用「說明」選單的「列印輸入值」來感受數"
+"值範圍的感覺；負值比較罕見，但可用於非常緩慢的速度。"
 
 #: ../brushlib/brushsettings.py:24
 msgid "Gross speed"
 msgstr "總速度"
 
 #: ../brushlib/brushsettings.py:24
-msgid "Same as fine speed, but changes slower. Also look at the 'gross speed filter' setting."
+msgid ""
+"Same as fine speed, but changes slower. Also look at the 'gross speed "
+"filter' setting."
 msgstr "同於精細速度，但變化較慢。也請查看「總速度濾鏡」設定值。"
 
 #: ../brushlib/brushsettings.py:25
@@ -49,76 +59,128 @@ msgid "Random"
 msgstr "隨機"
 
 #: ../brushlib/brushsettings.py:25
-msgid "Fast random noise, changing at each evaluation. Evenly distributed between 0 and 1."
+msgid ""
+"Fast random noise, changing at each evaluation. Evenly distributed between 0 "
+"and 1."
 msgstr "快速隨機雜訊，於每次評估時改變。在 0 和 1 之間均勻分佈。"
 
-#: ../brushlib/brushsettings.py:26
+#: ../brushlib/brushsettings.py:26 ../gui/brushsettingswindow.py:93
 msgid "Stroke"
 msgstr "筆畫"
 
 #: ../brushlib/brushsettings.py:26
-msgid "This input slowly goes from zero to one while you draw a stroke. It can also be configured to jump back to zero periodically while you move. Look at the 'stroke duration' and 'stroke hold time' settings."
-msgstr "當您繪製一道筆畫時，這種輸入會緩慢地從零到一。它也可以設定成移動時週期性跳回零。請查看「筆畫持續時間」和「筆畫維持時間」設定值。"
+msgid ""
+"This input slowly goes from zero to one while you draw a stroke. It can also "
+"be configured to jump back to zero periodically while you move. Look at the "
+"'stroke duration' and 'stroke hold time' settings."
+msgstr ""
+"當您繪製一道筆畫時，這種輸入會緩慢地從零到一。它也可以設定成移動時週期性跳回"
+"零。請查看「筆畫持續時間」和「筆畫維持時間」設定值。"
 
 #: ../brushlib/brushsettings.py:27
 msgid "Direction"
 msgstr "方向"
 
 #: ../brushlib/brushsettings.py:27
-msgid "The angle of the stroke, in degrees. The value will stay between 0.0 and 180.0, effectively ignoring turns of 180 degrees."
-msgstr "筆畫的角度，單位為度。此數值會在 0.0 到 180.0 之間，有效地忽略 180 度轉彎。"
+msgid ""
+"The angle of the stroke, in degrees. The value will stay between 0.0 and "
+"180.0, effectively ignoring turns of 180 degrees."
+msgstr ""
+"筆畫的角度，單位為度。此數值會在 0.0 到 180.0 之間，有效地忽略 180 度轉彎。"
+
+#: ../brushlib/brushsettings.py:28
+#, fuzzy
+msgid "Declination"
+msgstr "方向"
+
+#: ../brushlib/brushsettings.py:28
+msgid ""
+"Declination of stylus tilt. 0 when stylus is parallel to tablet and 90.0 "
+"when it's perpendicular to tablet."
+msgstr ""
+
+#: ../brushlib/brushsettings.py:29
+msgid "Ascension"
+msgstr ""
+
+#: ../brushlib/brushsettings.py:29
+msgid ""
+"Right ascension of stylus tilt. 0 when stylus working end points to you, +90 "
+"when rotated 90 degrees clockwise, -90 when rotated 90 degrees "
+"counterclockwise."
+msgstr ""
 
 #. ['motion_strength',0.0,0.0,  0.0,  1.0, 1.0,  "[EXPERIMENTAL] Same as angle, but wraps at 180 degrees. The dynamics are shared with BRUSH_OFFSET_BY_SPEED_FILTER (FIXME: which is a bad thing)."],
-#: ../brushlib/brushsettings.py:29
+#: ../brushlib/brushsettings.py:31 ../gui/brushsettingswindow.py:95
 msgid "Custom"
 msgstr "自訂"
 
-#: ../brushlib/brushsettings.py:29
-msgid "This is a user defined input. Look at the 'custom input' setting for details."
+#: ../brushlib/brushsettings.py:31
+msgid ""
+"This is a user defined input. Look at the 'custom input' setting for details."
 msgstr "這是使用者定義的輸入。詳見「自訂輸入」設定值來獲得詳細資訊。"
 
 #. internal name, displayed name, constant, minimum, default, maximum, tooltip
-#: ../brushlib/brushsettings.py:38
-msgid "opaque"
-msgstr "不透明"
+#: ../brushlib/brushsettings.py:40 ../gui/brushsettingswindow.py:88
+#, fuzzy
+msgid "Opacity"
+msgstr "不透明度："
 
-#: ../brushlib/brushsettings.py:38
+#: ../brushlib/brushsettings.py:40
+#, fuzzy
 msgid ""
 "0 means brush is transparent, 1 fully visible\n"
-"(also known als alpha or opacity)"
+"(also known as alpha or opacity)"
 msgstr ""
 "0 表示筆刷是透明的，1 則完全不透明\n"
 "(亦稱為 alpha 或 不透明度)"
 
-#: ../brushlib/brushsettings.py:39
-msgid "opaque multiply"
+#: ../brushlib/brushsettings.py:41
+#, fuzzy
+msgid "Opacity multiply"
 msgstr "不透明相乘"
 
-#: ../brushlib/brushsettings.py:39
-msgid "This gets multiplied with opaque. It is used for making opaque depend on pressure (or other inputs)."
-msgstr "這可得到乘以不透明度的值。它會用於由壓力 (或者其他輸入) 決定產生的不透明度。"
+#: ../brushlib/brushsettings.py:41
+msgid ""
+"This gets multiplied with opaque. You should only change the pressure input "
+"of this setting. Use 'opaque' instead to make opacity depend on speed.\n"
+"This setting is responsible to stop painting when there is zero pressure. "
+"This is just a convention, the behaviour is identical to 'opaque'."
+msgstr ""
 
-#: ../brushlib/brushsettings.py:40
-msgid "opaque linearize"
+#: ../brushlib/brushsettings.py:42
+#, fuzzy
+msgid "Opacity linearize"
 msgstr "不透明線性化"
 
-#: ../brushlib/brushsettings.py:40
+#: ../brushlib/brushsettings.py:42
 msgid ""
-"Correct the nonlinearity introduced by blending multiple dabs on top of each other. This correction should get you a linear (\"natural\") pressure response when pressure is mapped to opaque_multiply, as it is usually done. 0.9 is good for standard strokes, set it smaller if your brush scatters a lot, or higher if you use dabs_per_second.\n"
+"Correct the nonlinearity introduced by blending multiple dabs on top of each "
+"other. This correction should get you a linear (\"natural\") pressure "
+"response when pressure is mapped to opaque_multiply, as it is usually done. "
+"0.9 is good for standard strokes, set it smaller if your brush scatters a "
+"lot, or higher if you use dabs_per_second.\n"
 "0.0 the opaque value above is for the individual dabs\n"
-"1.0 the opaque value above is for the final brush stroke, assuming each pixel gets (dabs_per_radius*2) brushdabs on average during a stroke"
+"1.0 the opaque value above is for the final brush stroke, assuming each "
+"pixel gets (dabs_per_radius*2) brushdabs on average during a stroke"
 msgstr ""
-"藉由混合多個筆觸彼此的頂部進行非線性修正。因為通常已經完成，所以當壓力對應到「不透明相乘」時，這項修正應該給您一種線性的 (自然的) 壓力感應。0.9 有利於標準筆畫，如果您的筆刷散佈很廣則設定較小的值，或者您使用「每秒筆觸數量」的話就設定較高的數值。\n"
+"藉由混合多個筆觸彼此的頂部進行非線性修正。因為通常已經完成，所以當壓力對應到"
+"「不透明相乘」時，這項修正應該給您一種線性的 (自然的) 壓力感應。0.9 有利於標"
+"準筆畫，如果您的筆刷散佈很廣則設定較小的值，或者您使用「每秒筆觸數量」的話就"
+"設定較高的數值。\n"
 "0.0 上面的不透明值是針對個別筆觸\n"
-"1.0 上面的不透明值是針對最終筆刷筆畫，假定一道筆畫中每個像素平均獲得 (每半徑筆觸數量*2) 筆刷筆觸數量"
+"1.0 上面的不透明值是針對最終筆刷筆畫，假定一道筆畫中每個像素平均獲得 (每半徑"
+"筆觸數量*2) 筆刷筆觸數量"
 
-#: ../brushlib/brushsettings.py:41
-msgid "radius"
+#: ../brushlib/brushsettings.py:43
+#, fuzzy
+msgid "Radius"
 msgstr "半徑"
 
-#: ../brushlib/brushsettings.py:41
+#: ../brushlib/brushsettings.py:43
+#, fuzzy
 msgid ""
-"basic brush radius (logarithmic)\n"
+"Basic brush radius (logarithmic)\n"
 " 0.7 means 2 pixels\n"
 " 3.0 means 20 pixels"
 msgstr ""
@@ -126,103 +188,131 @@ msgstr ""
 " 0.7 代表 2 像素\n"
 " 3.0 代表 20 像素"
 
-#: ../brushlib/brushsettings.py:42
-msgid "hardness"
+#: ../brushlib/brushsettings.py:44
+#, fuzzy
+msgid "Hardness"
 msgstr "硬度"
 
-#: ../brushlib/brushsettings.py:42
-msgid "hard brush-circle borders (setting to zero will draw nothing)"
+#: ../brushlib/brushsettings.py:44
+#, fuzzy
+msgid "Hard brush-circle borders (setting to zero will draw nothing)"
 msgstr "硬式圓形筆刷邊界 (設定值為零會畫不出東西)"
 
-#: ../brushlib/brushsettings.py:43
-msgid "dabs per basic radius"
+#: ../brushlib/brushsettings.py:45
+#, fuzzy
+msgid "Dabs per basic radius"
 msgstr "每基本半徑的筆觸數量"
 
-#: ../brushlib/brushsettings.py:43
-msgid "how many dabs to draw while the pointer moves a distance of one brush radius (more precise: the base value of the radius)"
+#: ../brushlib/brushsettings.py:45
+#, fuzzy
+msgid ""
+"How many dabs to draw while the pointer moves a distance of one brush radius "
+"(more precise: the base value of the radius)"
 msgstr "當游標移動一段筆刷半徑的距離時繪製的筆觸數量 (更加精確：半徑的基本值)"
 
-#: ../brushlib/brushsettings.py:44
-msgid "dabs per actual radius"
+#: ../brushlib/brushsettings.py:46
+#, fuzzy
+msgid "Dabs per actual radius"
 msgstr "每實際半徑的筆觸數量"
 
-#: ../brushlib/brushsettings.py:44
-msgid "same as above, but the radius actually drawn is used, which can change dynamically"
+#: ../brushlib/brushsettings.py:46
+#, fuzzy
+msgid ""
+"Same as above, but the radius actually drawn is used, which can change "
+"dynamically"
 msgstr "與上面相同，但使用實際半徑繪製，實際半徑可以動態變化"
 
-#: ../brushlib/brushsettings.py:45
-msgid "dabs per second"
+#: ../brushlib/brushsettings.py:47
+#, fuzzy
+msgid "Dabs per second"
 msgstr "每秒的筆觸數量"
 
-#: ../brushlib/brushsettings.py:45
-msgid "dabs to draw each second, no matter how far the pointer moves"
+#: ../brushlib/brushsettings.py:47
+#, fuzzy
+msgid "Dabs to draw each second, no matter how far the pointer moves"
 msgstr "每秒繪製的筆觸數量，與游標移動距離無關"
 
-#: ../brushlib/brushsettings.py:46
-msgid "radius by random"
+#: ../brushlib/brushsettings.py:48
+#, fuzzy
+msgid "Radius by random"
 msgstr "隨機半徑"
 
-#: ../brushlib/brushsettings.py:46
+#: ../brushlib/brushsettings.py:48
 msgid ""
-"Alter the radius randomly each dab. You can also do this with the by_random input on the radius setting. If you do it here, there are two differences:\n"
-"1) the opaque value will be corrected such that a big-radius dabs is more transparent\n"
+"Alter the radius randomly each dab. You can also do this with the by_random "
+"input on the radius setting. If you do it here, there are two differences:\n"
+"1) the opaque value will be corrected such that a big-radius dabs is more "
+"transparent\n"
 "2) it will not change the actual radius seen by dabs_per_actual_radius"
 msgstr ""
-"每個筆觸隨機改變半徑。您也可以用半徑設定值上的「隨機」 輸入來做出這種效果。如果您在這裡執行會有兩點不同的地方：\n"
+"每個筆觸隨機改變半徑。您也可以用半徑設定值上的「隨機」 輸入來做出這種效果。如"
+"果您在這裡執行會有兩點不同的地方：\n"
 "1) 不透明度會進行修正使得大半徑的筆觸更透明。\n"
 "2) 看起來不會受「每實際半徑的筆觸數量」影響而改變實際半徑"
 
-#: ../brushlib/brushsettings.py:47
-msgid "fine speed filter"
+#: ../brushlib/brushsettings.py:49
+#, fuzzy
+msgid "Fine speed filter"
 msgstr "精細速度濾鏡"
 
-#: ../brushlib/brushsettings.py:47
+#: ../brushlib/brushsettings.py:49
+#, fuzzy
 msgid ""
-"how slow the input fine speed is following the real speed\n"
+"How slow the input fine speed is following the real speed\n"
 "0.0 change immediately as your speed changes (not recommended, but try it)"
 msgstr ""
 "輸入精細速度多慢跟上真實速度\n"
 "0.0 您的速度改變時會立即跟著改變 (不推薦，但可以試試)"
 
-#: ../brushlib/brushsettings.py:48
-msgid "gross speed filter"
+#: ../brushlib/brushsettings.py:50
+#, fuzzy
+msgid "Gross speed filter"
 msgstr "總速度濾鏡"
 
-#: ../brushlib/brushsettings.py:48
-msgid "same as 'fine speed filter', but note that the range is different"
+#: ../brushlib/brushsettings.py:50
+#, fuzzy
+msgid "Same as 'fine speed filter', but note that the range is different"
 msgstr "和「精細速度濾鏡」相同，但注意兩者的範圍是不一樣的"
 
-#: ../brushlib/brushsettings.py:49
-msgid "fine speed gamma"
+#: ../brushlib/brushsettings.py:51
+#, fuzzy
+msgid "Fine speed gamma"
 msgstr "精細速度伽瑪值"
 
-#: ../brushlib/brushsettings.py:49
+#: ../brushlib/brushsettings.py:51
 msgid ""
-"This changes the reaction of the 'fine speed' input to extreme physical speed. You will see the difference best if 'fine speed' is mapped to the radius.\n"
+"This changes the reaction of the 'fine speed' input to extreme physical "
+"speed. You will see the difference best if 'fine speed' is mapped to the "
+"radius.\n"
 "-8.0 very fast speed does not increase 'fine speed' much more\n"
 "+8.0 very fast speed increases 'fine speed' a lot\n"
 "For very slow speed the opposite happens."
 msgstr ""
-"這會將「精細速度」的反應變為物理速度的極限。如果「精細速度」對應到半徑，您會看到最佳的差別。\n"
+"這會將「精細速度」的反應變為物理速度的極限。如果「精細速度」對應到半徑，您會"
+"看到最佳的差別。\n"
 "-8.0  非常快的速度不會增加更多「精細速度」\n"
 "+8.0 非常快的速度會大大增加「精細速度」\n"
 "若速度非常慢則為相反情況。"
 
-#: ../brushlib/brushsettings.py:50
-msgid "gross speed gamma"
+#: ../brushlib/brushsettings.py:52
+#, fuzzy
+msgid "Gross speed gamma"
 msgstr "總速度伽瑪值"
 
-#: ../brushlib/brushsettings.py:50
-msgid "same as 'fine speed gamma' for gross speed"
+#: ../brushlib/brushsettings.py:52
+#, fuzzy
+msgid "Same as 'fine speed gamma' for gross speed"
 msgstr "同於總速度的「精細速度伽瑪值」"
 
-#: ../brushlib/brushsettings.py:51
-msgid "jitter"
+#: ../brushlib/brushsettings.py:53
+#, fuzzy
+msgid "Jitter"
 msgstr "抖動"
 
-#: ../brushlib/brushsettings.py:51
+#: ../brushlib/brushsettings.py:53
+#, fuzzy
 msgid ""
-"add a random offset to the position where each dab is drawn\n"
+"Add a random offset to the position where each dab is drawn\n"
 " 0.0 disabled\n"
 " 1.0 standard deviation is one basic radius away\n"
 "<0.0 negative values produce no jitter"
@@ -232,13 +322,15 @@ msgstr ""
 " 1.0 標準差是一個基本半徑的距離\n"
 "<0.0 數值為負則不會產生抖動"
 
-#: ../brushlib/brushsettings.py:52
-msgid "offset by speed"
+#: ../brushlib/brushsettings.py:54
+#, fuzzy
+msgid "Offset by speed"
 msgstr "速度偏移"
 
-#: ../brushlib/brushsettings.py:52
+#: ../brushlib/brushsettings.py:54
+#, fuzzy
 msgid ""
-"change position depending on pointer speed\n"
+"Change position depending on pointer speed\n"
 "= 0 disable\n"
 "> 0 draw where the pointer moves to\n"
 "< 0 draw where the pointer comes from"
@@ -248,59 +340,82 @@ msgstr ""
 "> 0 繪製游標移到的地方\n"
 "< 0 繪製游標過來的地方"
 
-#: ../brushlib/brushsettings.py:53
-msgid "offset by speed filter"
+#: ../brushlib/brushsettings.py:55
+#, fuzzy
+msgid "Offset by speed filter"
 msgstr "速度偏移濾鏡"
 
-#: ../brushlib/brushsettings.py:53
-msgid "how slow the offset goes back to zero when the cursor stops moving"
+#: ../brushlib/brushsettings.py:55
+#, fuzzy
+msgid "How slow the offset goes back to zero when the cursor stops moving"
 msgstr "當游標停止移動時偏移回到零有多慢"
 
-#: ../brushlib/brushsettings.py:54
-msgid "slow position tracking"
+#: ../brushlib/brushsettings.py:56
+#, fuzzy
+msgid "Slow position tracking"
 msgstr "減慢位置描繪"
 
-#: ../brushlib/brushsettings.py:54
-msgid "Slowdown pointer tracking speed. 0 disables it, higher values remove more jitter in cursor movements. Useful for drawing smooth, comic-like outlines."
-msgstr "減慢游標描繪速度。0 為停用，較高的數值會移除游標移動中較多的抖動。對於繪製平滑、類似漫畫輪廓時很有用。"
+#: ../brushlib/brushsettings.py:56
+msgid ""
+"Slowdown pointer tracking speed. 0 disables it, higher values remove more "
+"jitter in cursor movements. Useful for drawing smooth, comic-like outlines."
+msgstr ""
+"減慢游標描繪速度。0 為停用，較高的數值會移除游標移動中較多的抖動。對於繪製平"
+"滑、類似漫畫輪廓時很有用。"
 
-#: ../brushlib/brushsettings.py:55
-msgid "slow tracking per dab"
+#: ../brushlib/brushsettings.py:57
+#, fuzzy
+msgid "Slow tracking per dab"
 msgstr "每個筆觸緩慢描繪"
 
-#: ../brushlib/brushsettings.py:55
-msgid "Similar as above but at brushdab level (ignoring how much time has past, if brushdabs do not depend on time)"
-msgstr "和上面類似，但屬於筆刷筆觸層級 (如果筆刷筆觸不由時間決定，則忽略已經過了多少時間)"
-
-#: ../brushlib/brushsettings.py:56
-msgid "tracking noise"
-msgstr "軌跡雜點"
-
-#: ../brushlib/brushsettings.py:56
-msgid "add randomness to the mouse pointer; this usually generates many small lines in random directions; maybe try this together with 'slow tracking'"
-msgstr "加入隨機性雜點到滑鼠游標；這通常會產生許多隨機方向的小線條；也許試試和「緩慢描繪」一起使用"
+#: ../brushlib/brushsettings.py:57
+msgid ""
+"Similar as above but at brushdab level (ignoring how much time has past, if "
+"brushdabs do not depend on time)"
+msgstr ""
+"和上面類似，但屬於筆刷筆觸層級 (如果筆刷筆觸不由時間決定，則忽略已經過了多少"
+"時間)"
 
 #: ../brushlib/brushsettings.py:58
-msgid "color hue"
+#, fuzzy
+msgid "Tracking noise"
+msgstr "軌跡雜點"
+
+#: ../brushlib/brushsettings.py:58
+#, fuzzy
+msgid ""
+"Add randomness to the mouse pointer; this usually generates many small lines "
+"in random directions; maybe try this together with 'slow tracking'"
+msgstr ""
+"加入隨機性雜點到滑鼠游標；這通常會產生許多隨機方向的小線條；也許試試和「緩慢"
+"描繪」一起使用"
+
+#: ../brushlib/brushsettings.py:60
+#, fuzzy
+msgid "Color hue"
 msgstr "色相"
 
-#: ../brushlib/brushsettings.py:59
-msgid "color saturation"
+#: ../brushlib/brushsettings.py:61
+#, fuzzy
+msgid "Color saturation"
 msgstr "飽和度"
 
-#: ../brushlib/brushsettings.py:60
-msgid "color value"
+#: ../brushlib/brushsettings.py:62
+#, fuzzy
+msgid "Color value"
 msgstr "明度"
 
-#: ../brushlib/brushsettings.py:60
-msgid "color value (brightness, intensity)"
+#: ../brushlib/brushsettings.py:62
+#, fuzzy
+msgid "Color value (brightness, intensity)"
 msgstr "明度 (亮度，光強度)"
 
-#: ../brushlib/brushsettings.py:61
-msgid "change color hue"
+#: ../brushlib/brushsettings.py:63
+#, fuzzy
+msgid "Change color hue"
 msgstr "改變色相"
 
-#: ../brushlib/brushsettings.py:61
+#: ../brushlib/brushsettings.py:63
 msgid ""
 "Change color hue.\n"
 "-0.1 small clockwise color hue shift\n"
@@ -312,11 +427,12 @@ msgstr ""
 " 0.0 停用\n"
 " 0.5 以 180 度逆時針位移色相"
 
-#: ../brushlib/brushsettings.py:62
-msgid "change color lightness (HSL)"
+#: ../brushlib/brushsettings.py:64
+#, fuzzy
+msgid "Change color lightness (HSL)"
 msgstr "改變亮度 (HSL)"
 
-#: ../brushlib/brushsettings.py:62
+#: ../brushlib/brushsettings.py:64
 msgid ""
 "Change the color lightness (luminance) using the HSL color model.\n"
 "-1.0 blacker\n"
@@ -328,11 +444,12 @@ msgstr ""
 " 0.0 停用\n"
 " 1.0 較白"
 
-#: ../brushlib/brushsettings.py:63
-msgid "change color satur. (HSL)"
+#: ../brushlib/brushsettings.py:65
+#, fuzzy
+msgid "Change color satur. (HSL)"
 msgstr "改變飽和度 (HSL)"
 
-#: ../brushlib/brushsettings.py:63
+#: ../brushlib/brushsettings.py:65
 msgid ""
 "Change the color saturation using the HSL color model.\n"
 "-1.0 more grayish\n"
@@ -344,13 +461,15 @@ msgstr ""
 " 0.0 停用\n"
 " 1.0 更飽和"
 
-#: ../brushlib/brushsettings.py:64
-msgid "change color value (HSV)"
+#: ../brushlib/brushsettings.py:66
+#, fuzzy
+msgid "Change color value (HSV)"
 msgstr "改變明度 (HSV)"
 
-#: ../brushlib/brushsettings.py:64
+#: ../brushlib/brushsettings.py:66
 msgid ""
-"Change the color value (brightness, intensity) using the HSV color model. HSV changes are applied before HSL.\n"
+"Change the color value (brightness, intensity) using the HSV color model. "
+"HSV changes are applied before HSL.\n"
 "-1.0 darker\n"
 " 0.0 disable\n"
 " 1.0 brigher"
@@ -360,13 +479,15 @@ msgstr ""
 " 0.0 停用\n"
 " 1.0 更亮"
 
-#: ../brushlib/brushsettings.py:65
-msgid "change color satur. (HSV)"
+#: ../brushlib/brushsettings.py:67
+#, fuzzy
+msgid "Change color satur. (HSV)"
 msgstr "改變飽和度 (HSV)"
 
-#: ../brushlib/brushsettings.py:65
+#: ../brushlib/brushsettings.py:67
 msgid ""
-"Change the color saturation using the HSV color model. HSV changes are applied before HSL.\n"
+"Change the color saturation using the HSV color model. HSV changes are "
+"applied before HSL.\n"
 "-1.0 more grayish\n"
 " 0.0 disable\n"
 " 1.0 more saturated"
@@ -376,13 +497,15 @@ msgstr ""
 " 0.0 停用\n"
 " 1.0 更飽和"
 
-#: ../brushlib/brushsettings.py:66
-msgid "smudge"
+#: ../brushlib/brushsettings.py:68 ../gui/brushsettingswindow.py:90
+#, fuzzy
+msgid "Smudge"
 msgstr "塗抹"
 
-#: ../brushlib/brushsettings.py:66
+#: ../brushlib/brushsettings.py:68
 msgid ""
-"Paint with the smudge color instead of the brush color. The smudge color is slowly changed to the color you are painting on.\n"
+"Paint with the smudge color instead of the brush color. The smudge color is "
+"slowly changed to the color you are painting on.\n"
 " 0.0 do not use the smudge color\n"
 " 0.5 mix the smudge color with the brush color\n"
 " 1.0 use only the smudge color"
@@ -392,13 +515,15 @@ msgstr ""
 " 0.5 塗抹顏色混合筆刷顏色\n"
 " 1.0 只使用塗抹顏色"
 
-#: ../brushlib/brushsettings.py:67
-msgid "smudge length"
+#: ../brushlib/brushsettings.py:69
+#, fuzzy
+msgid "Smudge length"
 msgstr "塗抹長度"
 
-#: ../brushlib/brushsettings.py:67
+#: ../brushlib/brushsettings.py:69
 msgid ""
-"This controls how fast the smudge color becomes the color you are painting on.\n"
+"This controls how fast the smudge color becomes the color you are painting "
+"on.\n"
 "0.0 immediately change the smudge color\n"
 "1.0 never change the smudge color"
 msgstr ""
@@ -406,11 +531,27 @@ msgstr ""
 "0.0 立即改變塗抹顏色\n"
 "1.0 永不改變塗抹顏色"
 
-#: ../brushlib/brushsettings.py:68
-msgid "eraser"
+#: ../brushlib/brushsettings.py:70
+#, fuzzy
+msgid "Smudge radius"
+msgstr "半徑"
+
+#: ../brushlib/brushsettings.py:70
+msgid ""
+"This modifies the radius of the circle where color is picked up for "
+"smudging.\n"
+" 0.0 use the brush radius \n"
+"-0.7 half the brush radius\n"
+"+0.7 twice the brush radius\n"
+"+1.6 five times the brush radius (slow)"
+msgstr ""
+
+#: ../brushlib/brushsettings.py:71
+#, fuzzy
+msgid "Eraser"
 msgstr "橡皮擦"
 
-#: ../brushlib/brushsettings.py:68
+#: ../brushlib/brushsettings.py:71
 msgid ""
 "how much this tool behaves like an eraser\n"
 " 0.0 normal painting\n"
@@ -422,75 +563,108 @@ msgstr ""
 " 1.0 標準橡皮擦\n"
 " 0.5 像素變為 50 % 透明"
 
-#: ../brushlib/brushsettings.py:70
-msgid "stroke threshold"
+#: ../brushlib/brushsettings.py:73
+#, fuzzy
+msgid "Stroke threshold"
 msgstr "筆畫臨界值"
 
-#: ../brushlib/brushsettings.py:70
-msgid "How much pressure is needed to start a stroke. This affects the stroke input only. Mypaint does not need a minimal pressure to start drawing."
-msgstr "需要多少壓力才會開始筆畫。這會只影響筆畫的輸入。Mypaint 不需要開始繪畫的最小壓力值。"
+#: ../brushlib/brushsettings.py:73
+msgid ""
+"How much pressure is needed to start a stroke. This affects the stroke input "
+"only. Mypaint does not need a minimal pressure to start drawing."
+msgstr ""
+"需要多少壓力才會開始筆畫。這會只影響筆畫的輸入。Mypaint 不需要開始繪畫的最小"
+"壓力值。"
 
-#: ../brushlib/brushsettings.py:71
-msgid "stroke duration"
+#: ../brushlib/brushsettings.py:74
+#, fuzzy
+msgid "Stroke duration"
 msgstr "筆畫持續時間"
 
-#: ../brushlib/brushsettings.py:71
-msgid "How far you have to move until the stroke input reaches 1.0. This value is logarithmic (negative values will not inverse the process)."
-msgstr "您必須移動多遠直到筆畫輸入達到 1.0。這項數值為對數 (數值為負不會反向處理)。"
+#: ../brushlib/brushsettings.py:74
+msgid ""
+"How far you have to move until the stroke input reaches 1.0. This value is "
+"logarithmic (negative values will not inverse the process)."
+msgstr ""
+"您必須移動多遠直到筆畫輸入達到 1.0。這項數值為對數 (數值為負不會反向處理)。"
 
-#: ../brushlib/brushsettings.py:72
-msgid "stroke hold time"
+#: ../brushlib/brushsettings.py:75
+#, fuzzy
+msgid "Stroke hold time"
 msgstr "筆畫維持時間"
 
-#: ../brushlib/brushsettings.py:72
+#: ../brushlib/brushsettings.py:75
 msgid ""
-"This defines how long the stroke input stays at 1.0. After that it will reset to 0.0 and start growing again, even if the stroke is not yet finished.\n"
+"This defines how long the stroke input stays at 1.0. After that it will "
+"reset to 0.0 and start growing again, even if the stroke is not yet "
+"finished.\n"
 "2.0 means twice as long as it takes to go from 0.0 to 1.0\n"
 "9.9 and bigger stands for infinite"
 msgstr ""
-"這項數值可定義筆畫輸入會停留在 1.0 多長的時間。從那以後會重設為 0.0 並再一次開始增長，即使這道筆畫還未結束。\n"
+"這項數值可定義筆畫輸入會停留在 1.0 多長的時間。從那以後會重設為 0.0 並再一次"
+"開始增長，即使這道筆畫還未結束。\n"
 "2.0 代表從 0.0 開始到 1.0 期間的兩倍\n"
 "9.9 和更大的數值代表無窮大"
 
-#: ../brushlib/brushsettings.py:73
-msgid "custom input"
+#: ../brushlib/brushsettings.py:76
+#, fuzzy
+msgid "Custom input"
 msgstr "自訂輸入"
 
-#: ../brushlib/brushsettings.py:73
+#: ../brushlib/brushsettings.py:76
 msgid ""
-"Set the custom input to this value. If it is slowed down, move it towards this value (see below). The idea is that you make this input depend on a mixture of pressure/speed/whatever, and then make other settings depend on this 'custom input' instead of repeating this combination everywhere you need it.\n"
-"If you make it change 'by random' you can generate a slow (smooth) random input."
+"Set the custom input to this value. If it is slowed down, move it towards "
+"this value (see below). The idea is that you make this input depend on a "
+"mixture of pressure/speed/whatever, and then make other settings depend on "
+"this 'custom input' instead of repeating this combination everywhere you "
+"need it.\n"
+"If you make it change 'by random' you can generate a slow (smooth) random "
+"input."
 msgstr ""
-"將自訂輸入設為這個數值。如果減速，將它往這個數值移動 (如下面所示)。意思是您讓壓力/速度/其他等的混合因素來決定這個輸入，然後由這個「自訂輸入」決定其他設定值而不是您需要它時重複這種組合。\n"
+"將自訂輸入設為這個數值。如果減速，將它往這個數值移動 (如下面所示)。意思是您讓"
+"壓力/速度/其他等的混合因素來決定這個輸入，然後由這個「自訂輸入」決定其他設定"
+"值而不是您需要它時重複這種組合。\n"
 "如果您讓它「隨機」改變，就可以產生一種緩慢 (平滑) 隨機輸入。"
 
-#: ../brushlib/brushsettings.py:74
-msgid "custom input filter"
+#: ../brushlib/brushsettings.py:77
+#, fuzzy
+msgid "Custom input filter"
 msgstr "自訂輸入濾鏡"
 
-#: ../brushlib/brushsettings.py:74
+#: ../brushlib/brushsettings.py:77
 msgid ""
-"How slow the custom input actually follows the desired value (the one above). This happens at brushdab level (ignoring how much time has past, if brushdabs do not depend on time).\n"
+"How slow the custom input actually follows the desired value (the one "
+"above). This happens at brushdab level (ignoring how much time has past, if "
+"brushdabs do not depend on time).\n"
 "0.0 no slowdown (changes apply instantly)"
 msgstr ""
-"自訂輸入實際上多慢達到期望值 (上面一項)。這發生在筆刷筆觸層級 (如果筆刷筆觸不由時間決定，則忽略已經過了多少時間)。\n"
+"自訂輸入實際上多慢達到期望值 (上面一項)。這發生在筆刷筆觸層級 (如果筆刷筆觸不"
+"由時間決定，則忽略已經過了多少時間)。\n"
 "0.0 不減速 (立即套用變更)"
 
-#: ../brushlib/brushsettings.py:76
-msgid "elliptical dab: ratio"
+#: ../brushlib/brushsettings.py:79
+#, fuzzy
+msgid "Elliptical dab: ratio"
 msgstr "橢圓筆觸：比例"
 
-#: ../brushlib/brushsettings.py:76
-msgid "aspect ratio of the dabs; must be >= 1.0, where 1.0 means a perfectly round dab. TODO: linearize? start at 0.0 maybe, or log?"
-msgstr "筆觸的外觀比例；必須是 >= 1.0，這裡 1.0 代表一個完美圓形的筆觸。提醒：線性化？可能從 0.0 開始，或者對數？"
+#: ../brushlib/brushsettings.py:79
+#, fuzzy
+msgid ""
+"Aspect ratio of the dabs; must be >= 1.0, where 1.0 means a perfectly round "
+"dab. TODO: linearize? start at 0.0 maybe, or log?"
+msgstr ""
+"筆觸的外觀比例；必須是 >= 1.0，這裡 1.0 代表一個完美圓形的筆觸。提醒：線性"
+"化？可能從 0.0 開始，或者對數？"
 
-#: ../brushlib/brushsettings.py:77
-msgid "elliptical dab: angle"
+#: ../brushlib/brushsettings.py:80
+#, fuzzy
+msgid "Elliptical dab: angle"
 msgstr "橢圓筆觸：角度"
 
-#: ../brushlib/brushsettings.py:77
+#: ../brushlib/brushsettings.py:80
+#, fuzzy
 msgid ""
-"this defines the angle by which eliptical dabs are tilted\n"
+"Angle by which elliptical dabs are tilted\n"
 " 0.0 horizontal dabs\n"
 " 45.0 45 degrees, turned clockwise\n"
 " 180.0 horizontal again"
@@ -500,19 +674,24 @@ msgstr ""
 " 45.0 45 度，順時針轉動\n"
 " 180.0 再次水平"
 
-#: ../brushlib/brushsettings.py:78
-msgid "direction filter"
+#: ../brushlib/brushsettings.py:81
+#, fuzzy
+msgid "Direction filter"
 msgstr "方向濾鏡"
 
-#: ../brushlib/brushsettings.py:78
-msgid "a low value will make the direction input adapt more quickly, a high value will make it smoother"
+#: ../brushlib/brushsettings.py:81
+#, fuzzy
+msgid ""
+"A low value will make the direction input adapt more quickly, a high value "
+"will make it smoother"
 msgstr "數值較低會使輸入方向調整更迅速，數值較高則會更平滑"
 
-#: ../gui/backgroundwindow.py:22
-msgid "save as default"
+#: ../gui/backgroundwindow.py:23
+#, fuzzy
+msgid "Save as Default"
 msgstr "儲存為預設值"
 
-#: ../gui/backgroundwindow.py:24
+#: ../gui/backgroundwindow.py:25
 msgid "Background"
 msgstr "背景"
 
@@ -520,516 +699,778 @@ msgstr "背景"
 msgid "Pattern"
 msgstr "圖案"
 
-#: ../gui/backgroundwindow.py:45
-#: ../gui/colorselectionwindow.py:25
-#: ../gui/drawwindow.py:118
+#: ../gui/backgroundwindow.py:45 ../gui/brushsettingswindow.py:94
+#: ../gui/colorselectionwindow.py:22 ../gui/drawwindow.py:112
 msgid "Color"
 msgstr "顏色"
 
 #: ../gui/backgroundwindow.py:51
-msgid "add color to patterns"
+#, fuzzy
+msgid "Add color to Patterns"
 msgstr "加入顏色到圖案"
 
 #: ../gui/backgroundwindow.py:123
 #, python-format
-msgid "The background %s was ignored because it has an alpha channel. Please remove it."
+msgid ""
+"The background %s was ignored because it has an alpha channel. Please remove "
+"it."
 msgstr "因為含有 alpha 色版，所以忽略背景 %s。請移除它。"
 
 #: ../gui/backgroundwindow.py:127
-#, python-format
-msgid "The background %s was ignored because it has the wrong size. Only (N*%d)x(M*%d) is supported."
+#, fuzzy, python-format
+msgid ""
+"The background %s was ignored because it is the wrong size. Only (N*%d)x(M*"
+"%d) is supported."
 msgstr "因為含有錯誤尺寸，所以忽略背景 %s。只支援 (N*%d)x(M*%d)。"
 
-#: ../gui/brushcreationwidget.py:34
-#: ../gui/drawwindow.py:135
-msgid "Clear"
-msgstr "清除"
-
-#: ../gui/brushcreationwidget.py:43
-#: ../gui/brushcreationwidget.py:188
-msgid "(no name)"
-msgstr "(未命名)"
-
-#: ../gui/brushcreationwidget.py:47
-msgid "add as new"
-msgstr "加入新筆刷"
-
-#: ../gui/brushcreationwidget.py:48
-msgid "rename..."
-msgstr "重新命名..."
-
-#: ../gui/brushcreationwidget.py:49
-msgid "remove..."
-msgstr "移除..."
-
-#: ../gui/brushcreationwidget.py:50
-msgid "settings..."
-msgstr "設定值..."
+#: ../gui/brushcreationwidget.py:47 ../gui/brushcreationwidget.py:66
+#, fuzzy
+msgid "(unnamed brush)"
+msgstr "重新命名筆刷"
 
 #: ../gui/brushcreationwidget.py:51
-msgid "save settings"
+#, fuzzy
+msgid "Save Settings"
 msgstr "儲存設定值"
 
 #: ../gui/brushcreationwidget.py:52
-msgid "save preview"
-msgstr "儲存預覽"
+msgid "Add As New"
+msgstr ""
 
-#: ../gui/brushcreationwidget.py:100
-#: ../gui/brushcreationwidget.py:161
+#: ../gui/brushcreationwidget.py:53
+#, fuzzy
+msgid "Rename..."
+msgstr "重新命名..."
+
+#: ../gui/brushcreationwidget.py:54
+#, fuzzy
+msgid "Remove..."
+msgstr "移除..."
+
+#: ../gui/brushcreationwidget.py:104 ../gui/brushcreationwidget.py:154
 msgid "No brush selected!"
 msgstr "沒有選擇筆刷！"
 
-#: ../gui/brushcreationwidget.py:103
+#: ../gui/brushcreationwidget.py:107
 msgid "Rename Brush"
 msgstr "重新命名筆刷"
 
-#: ../gui/brushcreationwidget.py:115
+#: ../gui/brushcreationwidget.py:119
 msgid "A brush with this name already exists!"
 msgstr "已經存在相同名稱的筆刷！"
 
-#: ../gui/brushcreationwidget.py:142
-#: ../gui/brushcreationwidget.py:153
-msgid "No brush selected, please use \"add as new\" instead."
+#: ../gui/brushcreationwidget.py:146 ../gui/brushcreationwidget.py:242
+#, fuzzy
+msgid "No brush selected, please use \"Add As New\" instead."
 msgstr "沒有選擇筆刷，請改用「加入新筆刷」。"
 
-#: ../gui/brushcreationwidget.py:163
+#: ../gui/brushcreationwidget.py:156
 msgid "Really delete brush from disk?"
 msgstr "確定要從磁碟中刪除筆刷？"
 
-#: ../gui/brushmanager.py:26
-msgid "default"
-msgstr "預設"
-
-#: ../gui/brushmanager.py:27
-msgid "deleted"
-msgstr "刪除的"
-
-#: ../gui/brushmanager.py:28
-msgid "favorites"
-msgstr "收藏"
-
-#: ../gui/brushmanager.py:29
-msgid "ink"
-msgstr "墨水"
-
-#: ../gui/brushmanager.py:30
-msgid "classic"
-msgstr "經典"
-
-#: ../gui/brushmanager.py:31
-msgid "experimental"
-msgstr "實驗性"
-
-#: ../gui/brushselectionwindow.py:21
-msgid "Brush selection"
-msgstr "筆刷選擇"
-
-#: ../gui/brushselectionwindow.py:35
-#: ../gui/drawwindow.py:106
+#: ../gui/brushcreationwidget.py:203 ../gui/drawwindow.py:109
 msgid "Edit"
 msgstr "編輯"
 
-#: ../gui/brushselectionwindow.py:165
-msgid "Right click on group to modify"
-msgstr "用右鍵點擊群組進行修改"
+#: ../gui/brushcreationwidget.py:207 ../gui/document.py:99
+msgid "Clear"
+msgstr "清除"
 
-#: ../gui/brushselectionwindow.py:293
+#: ../gui/brushcreationwidget.py:213 ../gui/filehandling.py:63
+msgid "Save"
+msgstr "儲存"
+
+#: ../gui/brushmanager.py:67
+msgid "Lost & Found"
+msgstr ""
+
+#: ../gui/brushmanager.py:68
+#, fuzzy
+msgid "Deleted"
+msgstr "刪除的"
+
+#: ../gui/brushmanager.py:69
+#, fuzzy
+msgid "Favorites"
+msgstr "收藏"
+
+#: ../gui/brushmanager.py:70
+#, fuzzy
+msgid "Ink"
+msgstr "墨水"
+
+#: ../gui/brushmanager.py:71
+#, fuzzy
+msgid "Classic"
+msgstr "經典"
+
+#: ../gui/brushmanager.py:72
+#, fuzzy
+msgid "Experimental"
+msgstr "實驗性"
+
+#: ../gui/brushselectionwindow.py:23
+msgid "Brush selection"
+msgstr "筆刷選擇"
+
+#: ../gui/brushselectionwindow.py:241
+msgid "Try right click, middle click or Ctrl click"
+msgstr ""
+
+#: ../gui/brushselectionwindow.py:409
 msgid "New group..."
 msgstr "新增群組..."
 
-#: ../gui/brushselectionwindow.py:295
+#: ../gui/brushselectionwindow.py:411
 msgid "Rename group..."
 msgstr "重新命名群組..."
 
-#: ../gui/brushselectionwindow.py:296
+#: ../gui/brushselectionwindow.py:412
 msgid "Delete group..."
 msgstr "刪除群組..."
 
-#: ../gui/brushselectionwindow.py:310
+#: ../gui/brushselectionwindow.py:413
+msgid "Export group as brush package..."
+msgstr ""
+
+#: ../gui/brushselectionwindow.py:415 ../gui/drawwindow.py:130
+#: ../gui/drawwindow.py:532
+msgid "Import brush package..."
+msgstr ""
+
+#: ../gui/brushselectionwindow.py:429
 msgid "Create group"
 msgstr "建立群組"
 
-#: ../gui/brushselectionwindow.py:315
+#: ../gui/brushselectionwindow.py:434
 msgid "Rename group"
 msgstr "重新命名群組"
 
-#: ../gui/brushselectionwindow.py:321
+#: ../gui/brushselectionwindow.py:440
 msgid "A group with this name already exists!"
 msgstr "已經存在相同名稱的群組！"
 
-#: ../gui/brushselectionwindow.py:324
+#: ../gui/brushselectionwindow.py:443
+msgid "Export brush pack..."
+msgstr ""
+
+#: ../gui/brushselectionwindow.py:444 ../gui/drawwindow.py:533
+msgid "MyPaint brush package (*.zip)"
+msgstr ""
+
+#: ../gui/brushselectionwindow.py:450
 #, python-format
 msgid "Really delete group %s?"
 msgstr "確定要刪除群組 %s？"
 
-#: ../gui/brushselectionwindow.py:327
-msgid "This group can not be deleted (try to make it empty first)."
+#: ../gui/brushselectionwindow.py:453
+#, fuzzy
+msgid "This group can not be deleted (try to empty it first)."
 msgstr "這個群組無法刪除 (先試著清空這個群組)。"
 
-#: ../gui/brushsettingswindow.py:22
-msgid "Brush settings"
-msgstr "筆刷設定值"
+#: ../gui/brushsettingswindow.py:32
+#, fuzzy
+msgid "Brush Editor"
+msgstr "筆刷清單..."
 
-#: ../gui/brushsettingswindow.py:28
-msgid "live update the last canvas stroke"
+#. Expander with brushcreation widget under it
+#: ../gui/brushsettingswindow.py:44
+msgid "Edit brush icon"
+msgstr ""
+
+#. Live update
+#: ../gui/brushsettingswindow.py:55
+#, fuzzy
+msgid "Update the last canvas stroke in realtime"
 msgstr "即時更新最後畫布筆畫"
 
-#: ../gui/brushsettingswindow.py:64
+#: ../gui/brushsettingswindow.py:73
+#, fuzzy
+msgid "All settings"
+msgstr "儲存設定值"
+
+#: ../gui/brushsettingswindow.py:87
+msgid "Basic"
+msgstr ""
+
+#: ../gui/brushsettingswindow.py:89
+msgid "Dabs"
+msgstr ""
+
+#: ../gui/brushsettingswindow.py:91
+msgid "Speed"
+msgstr ""
+
+#: ../gui/brushsettingswindow.py:92
+#, fuzzy
+msgid "Tracking"
+msgstr "軌跡雜點"
+
+#: ../gui/brushsettingswindow.py:124
+msgid "Reset to default value"
+msgstr ""
+
+#: ../gui/brushsettingswindow.py:129
 msgid "No additional configuration"
 msgstr "沒有附加的組態設定"
 
-#: ../gui/brushsettingswindow.py:69
-#: ../gui/brushsettingswindow.py:117
-msgid "Add input values mapping"
+#: ../gui/brushsettingswindow.py:134 ../gui/brushsettingswindow.py:181
+#, fuzzy
+msgid "Add input value mapping"
 msgstr "加入輸入值對應"
 
-#: ../gui/brushsettingswindow.py:119
-msgid "Modify input values mapping"
+#: ../gui/brushsettingswindow.py:183
+#, fuzzy
+msgid "Modify input value mapping"
 msgstr "修改輸入值對應"
 
-#: ../gui/colorsamplerwindow.py:816
+#: ../gui/colorsamplerwindow.py:164
+msgid "Recently used colors"
+msgstr ""
+
+#. : Background neutral mid grey, intended to permit colour comparisons without theme colours distracting and imposing themselves
+#. : Slightly distinct outlinefor colour pots, intended to reduce "1+1=3 (or more)" effects
+#. : Central saturation/value square
+#. : Grey area inside the rings
+#. : Inner ring of color sampler boxes (hue)
+#. : Outer gradiated ring (hue)
+#. : Current/previous comparison semicircles
+#. : Blank outer area, outer space
+#: ../gui/colorsamplerwindow.py:194
+#, fuzzy
+msgid "Change Saturation and Value"
+msgstr "改變明度/飽和度"
+
+#: ../gui/colorsamplerwindow.py:196
+msgid "Harmony color switcher"
+msgstr ""
+
+#: ../gui/colorsamplerwindow.py:197
+#, fuzzy
+msgid "Change Hue"
+msgstr "改變色相"
+
+#: ../gui/colorsamplerwindow.py:198
+msgid "Current color vs. Last Used"
+msgstr ""
+
+#: ../gui/colorsamplerwindow.py:797
+#, fuzzy
+msgid "Change Hue, Saturation and Value"
+msgstr "改變明度/飽和度"
+
+#: ../gui/colorsamplerwindow.py:868
+msgid "Change Red, Green and Blue components"
+msgstr ""
+
+#: ../gui/colorsamplerwindow.py:930
 msgid "RGB"
 msgstr "RGB"
 
-#: ../gui/colorsamplerwindow.py:817
+#: ../gui/colorsamplerwindow.py:931
 msgid "HSV"
 msgstr "HSV"
 
-#: ../gui/colorsamplerwindow.py:819
-msgid "Colors history"
+#. Colour history
+#: ../gui/colorsamplerwindow.py:934
+#, fuzzy
+msgid "Color history"
 msgstr "顏色記錄"
 
-#: ../gui/colorsamplerwindow.py:823
-#: ../gui/functionwindow.py:145
+#. Colour details
+#: ../gui/colorsamplerwindow.py:941 ../gui/functionwindow.py:154
 msgid "Details"
 msgstr "詳細資訊"
 
-#: ../gui/colorsamplerwindow.py:833
+#: ../gui/colorsamplerwindow.py:957
 msgid "Harmonies"
 msgstr "協調色"
 
-#: ../gui/colorsamplerwindow.py:835
+#: ../gui/colorsamplerwindow.py:959
 msgid "Analogous"
 msgstr "類似色"
 
-#: ../gui/colorsamplerwindow.py:836
-msgid "Complimentary color"
+#: ../gui/colorsamplerwindow.py:959
+msgid ""
+"Three nearby hues on the color wheel.\n"
+"Often found in nature, frequently pleasing to the eye."
+msgstr ""
+
+#: ../gui/colorsamplerwindow.py:960
+#, fuzzy
+msgid "Complementary"
 msgstr "互補色"
 
-#: ../gui/colorsamplerwindow.py:837
-msgid "Split complimentary"
+#: ../gui/colorsamplerwindow.py:960
+msgid ""
+"Two opposite hues on the color wheel.\n"
+"Vibrant, and maximally contrasting."
+msgstr ""
+
+#: ../gui/colorsamplerwindow.py:961
+#, fuzzy
+msgid "Split complementary"
 msgstr "鄰接補色"
 
-#: ../gui/colorsamplerwindow.py:838
-msgid "Double complimentary"
+#: ../gui/colorsamplerwindow.py:961
+msgid ""
+"Two hues next to the current hue's complement.\n"
+"Contrasting, but adds a possibly pleasing harmony."
+msgstr ""
+
+#: ../gui/colorsamplerwindow.py:962
+#, fuzzy
+msgid "Double complementary"
 msgstr "雙補色"
 
-#: ../gui/colorsamplerwindow.py:839
+#: ../gui/colorsamplerwindow.py:962
+msgid "Four hues in two complementary pairs."
+msgstr ""
+
+#: ../gui/colorsamplerwindow.py:963
 msgid "Square"
 msgstr "二元"
 
-#: ../gui/colorsamplerwindow.py:840
+#: ../gui/colorsamplerwindow.py:963
+msgid "Four equally-spaced hues"
+msgstr ""
+
+#: ../gui/colorsamplerwindow.py:964
 msgid "Triadic"
 msgstr "三元"
 
-#: ../gui/colorsamplerwindow.py:842
-msgid "Select harmonies"
-msgstr "選擇協調色"
+#: ../gui/colorsamplerwindow.py:964
+msgid ""
+"Three equally-spaced hues.\n"
+"Vibrant with equal tension."
+msgstr ""
 
-#: ../gui/colorsamplerwindow.py:845
+#: ../gui/colorsamplerwindow.py:967
 msgid "Change value/saturation"
 msgstr "改變明度/飽和度"
 
-#: ../gui/colorsamplerwindow.py:848
+#: ../gui/colorsamplerwindow.py:970
 msgid "Blend each color to opposite"
 msgstr "混合每種顏色為相反"
 
-#: ../gui/colorsamplerwindow.py:850
+#: ../gui/colorsamplerwindow.py:972
 msgid "Blend each color to negative"
 msgstr "混合每種顏色為負值"
 
-#: ../gui/colorsamplerwindow.py:914
+#: ../gui/colorsamplerwindow.py:1053 ../gui/colorsamplerwindow.py:1081
 msgid "MyPaint color selector"
 msgstr "MyPaint 選色器"
 
-#: ../gui/dialogs.py:37
-#: ../gui/layerswindow.py:223
+#: ../gui/colorselectionwindow.py:35
+msgid "Currently chosen color"
+msgstr ""
+
+#: ../gui/colorselectionwindow.py:37
+msgid "Last color painted with"
+msgstr ""
+
+#: ../gui/colorselectionwindow.py:118
+#, fuzzy
+msgid "Pick Colour"
+msgstr "點取顏色"
+
+#: ../gui/dialogs.py:45 ../gui/layerswindow.py:190
 msgid "Name"
 msgstr "名稱"
 
-#. name, stock id, label, accelerator, tooltip, callback
-#: ../gui/drawwindow.py:103
-msgid "File"
-msgstr "檔案"
+#: ../gui/dialogs.py:79
+msgid "Overwrite brush?"
+msgstr ""
 
-#. FIXME: should do this periodically, not only on quit
-#: ../gui/drawwindow.py:104
-#: ../gui/drawwindow.py:637
-msgid "Quit"
-msgstr "離開"
+#: ../gui/dialogs.py:88 ../gui/dialogs.py:146
+msgid "Replace"
+msgstr ""
 
-#: ../gui/drawwindow.py:107
+#: ../gui/dialogs.py:91 ../gui/dialogs.py:149
+#, fuzzy
+msgid "Rename"
+msgstr "重新命名筆刷"
+
+#: ../gui/dialogs.py:94
+msgid "Replace all"
+msgstr ""
+
+#: ../gui/dialogs.py:96
+#, fuzzy
+msgid "Rename all"
+msgstr "重新命名筆刷"
+
+#: ../gui/dialogs.py:111
+msgid "Imported brush"
+msgstr ""
+
+#: ../gui/dialogs.py:112
+msgid "Existing brush"
+msgstr ""
+
+#: ../gui/dialogs.py:114
+#, python-format
+msgid ""
+"<b>A brush named `%s' already exists.</b>\n"
+"Do you want to replace it, or should the new brush be renamed?"
+msgstr ""
+
+#: ../gui/dialogs.py:137
+msgid "Overwrite brush group?"
+msgstr ""
+
+#: ../gui/dialogs.py:159
+#, python-format
+msgid ""
+"<b>A group named `%s' already exists.</b>\n"
+"Do you want to replace it, or should the new group be renamed?\n"
+"If you replace it, the brushes may be moved to a group called `%s'."
+msgstr ""
+
+#: ../gui/dialogs.py:247
+msgid "Import brush package?"
+msgstr ""
+
+#: ../gui/dialogs.py:259
+#, python-format
+msgid "<b>Do you really want to import package `%s'?</b>"
+msgstr ""
+
+#: ../gui/document.py:79
 msgid "Undo"
 msgstr "復原"
 
-#: ../gui/drawwindow.py:108
+#: ../gui/document.py:80
 msgid "Redo"
 msgstr "取消復原"
 
-#: ../gui/drawwindow.py:110
-msgid "Brush"
-msgstr "筆刷"
-
-#: ../gui/drawwindow.py:111
+#: ../gui/document.py:82
 msgid "Brighter"
 msgstr "變亮"
 
-#: ../gui/drawwindow.py:112
+#: ../gui/document.py:83
 msgid "Smaller"
 msgstr "變小"
 
-#: ../gui/drawwindow.py:113
+#: ../gui/document.py:84
 msgid "More Opaque"
 msgstr "增加不透明"
 
-#: ../gui/drawwindow.py:114
+#: ../gui/document.py:85
 msgid "Less Opaque"
 msgstr "減少不透明"
 
-#: ../gui/drawwindow.py:115
+#: ../gui/document.py:86
 msgid "Toggle Eraser Mode"
 msgstr "切換橡皮擦模式"
 
 #. TODO: make toggle action
-#: ../gui/drawwindow.py:116
+#: ../gui/document.py:87 ../gui/preferenceswindow.py:37
 msgid "Pick Context (layer, brush and color)"
 msgstr "點取內容 (圖層、筆刷和顏色)"
 
-#: ../gui/drawwindow.py:119
+#: ../gui/document.py:89
 msgid "Darker"
 msgstr "變暗"
 
-#: ../gui/drawwindow.py:120
+#: ../gui/document.py:90
+msgid "Warmer"
+msgstr ""
+
+#: ../gui/document.py:91
+msgid "Cooler"
+msgstr ""
+
+#: ../gui/document.py:92
+msgid "Purer"
+msgstr ""
+
+#: ../gui/document.py:93
+#, fuzzy
+msgid "Grayer"
+msgstr "圖層"
+
+#: ../gui/document.py:94
 msgid "Bigger"
 msgstr "變大"
 
-#: ../gui/drawwindow.py:121
-msgid "Pick Color"
-msgstr "點取顏色"
-
-#: ../gui/drawwindow.py:122
-msgid "Color History"
-msgstr "顏色記錄"
-
-#: ../gui/drawwindow.py:123
-msgid "Color Changer"
-msgstr "換色器"
-
-#: ../gui/drawwindow.py:124
-msgid "Color Ring"
-msgstr "色圈"
-
-#: ../gui/drawwindow.py:126
-msgid "Brushkeys"
-msgstr "筆刷按鍵"
-
-#. each of the context actions are generated and added below
-#: ../gui/drawwindow.py:128
+#. Context actions are also added in init_context_actions
+#: ../gui/document.py:97
 msgid "Save to Most Recently Restored"
 msgstr "儲存到最近還原的檔案"
 
-#: ../gui/drawwindow.py:129
-msgid "Help!"
-msgstr "說明！"
-
-#: ../gui/drawwindow.py:131
-#: ../gui/layerswindow.py:337
-msgid "Layers"
-msgstr "圖層"
-
-#: ../gui/drawwindow.py:133
-msgid "Layers..."
-msgstr "圖層..."
-
-#: ../gui/drawwindow.py:134
-msgid "Background..."
-msgstr "背景..."
-
-#: ../gui/drawwindow.py:136
+#: ../gui/document.py:100
 msgid "Copy to Clipboard"
 msgstr "複製到剪貼簿"
 
-#: ../gui/drawwindow.py:137
+#: ../gui/document.py:101
 msgid "Paste Clipboard (Replace Layer)"
 msgstr "貼上剪貼簿 (取代圖層)"
 
-#: ../gui/drawwindow.py:138
+#: ../gui/document.py:102 ../gui/preferenceswindow.py:38
 msgid "Select Layer at Cursor"
 msgstr "選擇游標下的圖層"
 
-#: ../gui/drawwindow.py:139
+#: ../gui/document.py:103
 msgid "Next (above current)"
 msgstr "下一個 (目前之上)"
 
-#: ../gui/drawwindow.py:140
+#: ../gui/document.py:104
 msgid "Next (below current)"
 msgstr "下一個 (目前之下)"
 
-#: ../gui/drawwindow.py:141
+#: ../gui/document.py:105
 msgid "New (above current)"
 msgstr "新增 (目前之上)"
 
-#: ../gui/drawwindow.py:142
+#: ../gui/document.py:106
 msgid "New (below current)"
 msgstr "新增 (目前之下)"
 
-#: ../gui/drawwindow.py:143
+#. XXX need a batter one, but stay consistent with layerswindow for now
+#: ../gui/document.py:108 ../gui/layerswindow.py:346
 msgid "Merge Down"
 msgstr "向下合併"
 
-#: ../gui/drawwindow.py:144
+#: ../gui/document.py:109
 msgid "Remove"
 msgstr "移除"
 
-#: ../gui/drawwindow.py:145
+#: ../gui/document.py:110
 msgid "Increase Layer Opacity"
 msgstr "增加圖層不透明度"
 
-#: ../gui/drawwindow.py:146
+#: ../gui/document.py:111
 msgid "Decrease Layer Opacity"
 msgstr "減少圖層不透明度"
 
-#: ../gui/drawwindow.py:148
-msgid "Brush List..."
-msgstr "筆刷清單..."
-
-#: ../gui/drawwindow.py:149
-msgid "Brush Settings..."
-msgstr "筆刷設定值..."
-
-#: ../gui/drawwindow.py:150
-msgid "Color Triangle..."
-msgstr "顏色三角..."
-
-#: ../gui/drawwindow.py:151
-msgid "Color Sampler..."
-msgstr "顏色取樣器..."
-
-#: ../gui/drawwindow.py:152
-msgid "Preferences..."
-msgstr "偏好設定..."
-
-#. TODO: make toggle action
-#: ../gui/drawwindow.py:154
-#: ../gui/drawwindow.py:176
-msgid "Help"
-msgstr "說明"
-
-#: ../gui/drawwindow.py:155
-msgid "Where is the Documentation?"
-msgstr "說明文件？"
-
-#: ../gui/drawwindow.py:156
-msgid "Change the Keyboard Shortcuts?"
-msgstr "變更鍵盤快捷鍵？"
-
-#: ../gui/drawwindow.py:157
-msgid "About MyPaint"
-msgstr "關於 MyPaint"
-
-#: ../gui/drawwindow.py:159
-msgid "Debug"
-msgstr "除錯"
-
-#: ../gui/drawwindow.py:160
-msgid "Print Memory Leak Info to stdout (Slow!)"
-msgstr "列印記憶體溢出資訊到標準輸出 (慢！)"
-
-#: ../gui/drawwindow.py:161
-msgid "Run Garbage Collector Now"
-msgstr "立刻執行垃圾收集器"
-
-#: ../gui/drawwindow.py:163
+#: ../gui/document.py:113
 msgid "Shortcuts"
 msgstr "快捷鍵"
 
-#: ../gui/drawwindow.py:165
-msgid "View"
-msgstr "檢視"
+#: ../gui/document.py:115
+msgid "Reset and Center"
+msgstr ""
 
-#: ../gui/drawwindow.py:166
-msgid "Fullscreen"
-msgstr "全螢幕"
+#: ../gui/document.py:116
+msgid "Reset"
+msgstr ""
 
-#: ../gui/drawwindow.py:167
-msgid "Show Menu"
-msgstr "顯示選單"
+#: ../gui/document.py:117 ../gui/preferenceswindow.py:40
+#, fuzzy
+msgid "Zoom"
+msgstr "縮小"
 
-#: ../gui/drawwindow.py:168
-msgid "Toggle Subwindows"
-msgstr "切換子視窗"
+#: ../gui/document.py:118
+msgid "Rotation"
+msgstr ""
 
-#: ../gui/drawwindow.py:169
-msgid "Reset (Zoom, Rotation, Mirror)"
-msgstr "重設 (縮放、旋轉、鏡像)"
+#: ../gui/document.py:119
+#, fuzzy
+msgid "Mirror"
+msgstr "鏡射圖像"
 
-#: ../gui/drawwindow.py:170
+#: ../gui/document.py:120
 msgid "Zoom In (at cursor)"
 msgstr "放大 (於游標處)"
 
-#: ../gui/drawwindow.py:171
+#: ../gui/document.py:121
 msgid "Zoom Out"
 msgstr "縮小"
 
-#: ../gui/drawwindow.py:172
+#: ../gui/document.py:122
 msgid "Rotate Counterclockwise"
 msgstr "逆時針旋轉"
 
-#: ../gui/drawwindow.py:173
+#: ../gui/document.py:123
 msgid "Rotate Clockwise"
 msgstr "順時針旋轉"
 
-#: ../gui/drawwindow.py:174
+#: ../gui/document.py:124
+msgid "Mirror Horizontal"
+msgstr ""
+
+#: ../gui/document.py:125
+msgid "Mirror Vertical"
+msgstr ""
+
+#: ../gui/document.py:126
 msgid "Layer Solo"
 msgstr "圖層單獨顯示"
 
 #. TODO: make toggle action
-#: ../gui/drawwindow.py:175
+#: ../gui/document.py:127
 msgid "Hide Layers Above Current"
 msgstr "隱藏目前之上的圖層"
 
-#: ../gui/drawwindow.py:182
+#. name, stock id, label, accelerator, tooltip, callback, default toggle status
+#: ../gui/document.py:134
+#, fuzzy
+msgid "Print Brush Input Values to Console"
+msgstr "列印筆刷輸入值到標準輸出"
+
+#: ../gui/document.py:135
+msgid "Visualize Rendering"
+msgstr "視覺化演算"
+
+#: ../gui/document.py:136
+msgid "Disable GTK Double Buffering"
+msgstr "停用 GTK 雙倍緩衝"
+
+#: ../gui/document.py:144
 #, python-format
 msgid "Restore Brush %d"
 msgstr "還原筆刷 %d"
 
-#: ../gui/drawwindow.py:184
+#: ../gui/document.py:146
 #, python-format
 msgid "Save to Brush %d"
 msgstr "儲存到筆刷 %d"
 
-#. name, stock id, label, accelerator, tooltip, callback, default toggle status
-#: ../gui/drawwindow.py:191
-msgid "Print Brush Input Values to stdout"
-msgstr "列印筆刷輸入值到標準輸出"
+#. name, stock id, label, accelerator, tooltip, callback
+#: ../gui/drawwindow.py:104
+msgid "File"
+msgstr "檔案"
 
-#: ../gui/drawwindow.py:192
-msgid "Visualize Rendering"
-msgstr "視覺化演算"
+#. FIXME: should do this periodically, not only on quit
+#: ../gui/drawwindow.py:105 ../gui/drawwindow.py:521
+msgid "Quit"
+msgstr "離開"
 
-#: ../gui/drawwindow.py:193
-msgid "Disable GTK Double Buffering"
-msgstr "停用 GTK 雙倍緩衝"
+#: ../gui/drawwindow.py:106
+#, fuzzy
+msgid "Document Frame..."
+msgstr "重新命名..."
 
-#: ../gui/drawwindow.py:194
-msgid "Mirror Image"
-msgstr "鏡射圖像"
+#: ../gui/drawwindow.py:107
+msgid "Toggle Document Frame"
+msgstr ""
 
-#: ../gui/drawwindow.py:637
+#: ../gui/drawwindow.py:110
+msgid "Preferences..."
+msgstr "偏好設定..."
+
+#: ../gui/drawwindow.py:113 ../gui/preferenceswindow.py:36
+msgid "Pick Color"
+msgstr "點取顏色"
+
+#: ../gui/drawwindow.py:114 ../gui/preferenceswindow.py:46
+msgid "Color History"
+msgstr "顏色記錄"
+
+#: ../gui/drawwindow.py:115 ../gui/preferenceswindow.py:44
+msgid "Color Changer"
+msgstr "換色器"
+
+#: ../gui/drawwindow.py:116 ../gui/preferenceswindow.py:45
+msgid "Color Ring"
+msgstr "色圈"
+
+#: ../gui/drawwindow.py:117
+msgid "Color Triangle..."
+msgstr "顏色三角..."
+
+#: ../gui/drawwindow.py:118
+msgid "Color Sampler..."
+msgstr "顏色取樣器..."
+
+#: ../gui/drawwindow.py:120
+msgid "Brushkeys"
+msgstr "筆刷按鍵"
+
+#: ../gui/drawwindow.py:121
+msgid "Help!"
+msgstr "說明！"
+
+#: ../gui/drawwindow.py:123 ../gui/layerswindow.py:310
+msgid "Layers"
+msgstr "圖層"
+
+#: ../gui/drawwindow.py:124
+msgid "Layers..."
+msgstr "圖層..."
+
+#: ../gui/drawwindow.py:125
+msgid "Background..."
+msgstr "背景..."
+
+#: ../gui/drawwindow.py:127
+msgid "Brush"
+msgstr "筆刷"
+
+#: ../gui/drawwindow.py:128
+msgid "Brush List..."
+msgstr "筆刷清單..."
+
+#: ../gui/drawwindow.py:129
+#, fuzzy
+msgid "Brush Editor..."
+msgstr "筆刷清單..."
+
+#: ../gui/drawwindow.py:132 ../gui/drawwindow.py:149
+msgid "Help"
+msgstr "說明"
+
+#: ../gui/drawwindow.py:133
+msgid "Where is the Documentation?"
+msgstr "說明文件？"
+
+#: ../gui/drawwindow.py:134
+msgid "Change the Keyboard Shortcuts?"
+msgstr "變更鍵盤快捷鍵？"
+
+#: ../gui/drawwindow.py:135
+msgid "About MyPaint"
+msgstr "關於 MyPaint"
+
+#: ../gui/drawwindow.py:137
+msgid "Debug"
+msgstr "除錯"
+
+#: ../gui/drawwindow.py:138
+#, fuzzy
+msgid "Print Memory Leak Info to Console (Slow!)"
+msgstr "列印記憶體溢出資訊到標準輸出 (慢！)"
+
+#: ../gui/drawwindow.py:139
+msgid "Run Garbage Collector Now"
+msgstr "立刻執行垃圾收集器"
+
+#: ../gui/drawwindow.py:140
+msgid "Start/Stop Python Profiling (cProfile)"
+msgstr ""
+
+#: ../gui/drawwindow.py:141
+#, fuzzy
+msgid "Test input devices..."
+msgstr "輸入裝置的模式："
+
+#: ../gui/drawwindow.py:142
+msgid "GTK input device dialog..."
+msgstr ""
+
+#: ../gui/drawwindow.py:145 ../gui/preferenceswindow.py:223
+msgid "View"
+msgstr "檢視"
+
+#: ../gui/drawwindow.py:146
+#, fuzzy
+msgid "Popup Menu"
+msgstr "顯示選單"
+
+#: ../gui/drawwindow.py:147
+msgid "Fullscreen"
+msgstr "全螢幕"
+
+#: ../gui/drawwindow.py:148 ../gui/preferenceswindow.py:35
+msgid "Toggle Subwindows"
+msgstr "切換子視窗"
+
+#: ../gui/drawwindow.py:521
 msgid "Really Quit?"
 msgstr "確定要離開？"
 
-#: ../gui/drawwindow.py:746
+#: ../gui/drawwindow.py:544
 msgid ""
 "Copyright (C) 2005-2010\n"
 "Martin Renold and the MyPaint Development Team"
@@ -1037,175 +1478,234 @@ msgstr ""
 "著作權 (C) 2005-2010\n"
 "Martin Renold 和 MyPaint 開發團隊"
 
-#: ../gui/drawwindow.py:750
+#: ../gui/drawwindow.py:548
 msgid ""
-"This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n"
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version.\n"
 "\n"
-"This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY. See the COPYING file for more details."
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY. See the COPYING file for more details."
 msgstr ""
-"此程式是自由軟體；你可以在遵守由自由軟體基金會發佈的 GNU 通用公共授權條款的情形下重新發行和 (或) 修改這個程式；授權第二版或任何更新的版本 (根據您的選擇)。\n"
+"此程式是自由軟體；你可以在遵守由自由軟體基金會發佈的 GNU 通用公共授權條款的情"
+"形下重新發行和 (或) 修改這個程式；授權第二版或任何更新的版本 (根據您的選"
+"擇)。\n"
 "\n"
-"這個程式發佈的目的是希望它對人們有所幫助，但沒有任何保證。請見 COPYING 檔案獲得更多詳細資訊。"
+"這個程式發佈的目的是希望它對人們有所幫助，但沒有任何保證。請見 COPYING 檔案獲"
+"得更多詳細資訊。"
 
-#: ../gui/drawwindow.py:760
-#: ../gui/drawwindow.py:764
-#: ../gui/drawwindow.py:766
-#: ../gui/drawwindow.py:767
-#: ../gui/drawwindow.py:769
-#: ../gui/drawwindow.py:773
-#: ../gui/drawwindow.py:774
-#: ../gui/drawwindow.py:775
+#. (in order of appearance)
+#: ../gui/drawwindow.py:559 ../gui/drawwindow.py:563 ../gui/drawwindow.py:565
+#: ../gui/drawwindow.py:566 ../gui/drawwindow.py:568 ../gui/drawwindow.py:572
+#: ../gui/drawwindow.py:573 ../gui/drawwindow.py:574 ../gui/drawwindow.py:575
 msgid "programming"
 msgstr "程式"
 
-#: ../gui/drawwindow.py:761
-#: ../gui/drawwindow.py:770
-#: ../gui/drawwindow.py:771
-#: ../gui/drawwindow.py:772
+#: ../gui/drawwindow.py:560 ../gui/drawwindow.py:569 ../gui/drawwindow.py:571
+#: ../gui/drawwindow.py:577
 msgid "brushes"
 msgstr "筆刷"
 
-#: ../gui/drawwindow.py:762
-#: ../gui/drawwindow.py:768
+#: ../gui/drawwindow.py:561 ../gui/drawwindow.py:567
 msgid "portability"
 msgstr "可移植性"
 
-#: ../gui/drawwindow.py:763
+#: ../gui/drawwindow.py:562
 msgid "brushes, programming"
 msgstr "筆刷、程式"
 
-#: ../gui/drawwindow.py:765
+#: ../gui/drawwindow.py:564
 msgid "patterns, brushes"
 msgstr "圖案、筆刷"
 
-#: ../gui/drawwindow.py:778
+#: ../gui/drawwindow.py:570
+#, fuzzy
+msgid "brushes, patterns"
+msgstr "筆刷、程式"
+
+#: ../gui/drawwindow.py:576 ../gui/drawwindow.py:578
+#, fuzzy
+msgid "patterns"
+msgstr "圖案"
+
+#: ../gui/drawwindow.py:581
 msgid "desktop icon"
 msgstr "桌面圖示"
 
-#: ../gui/drawwindow.py:803
+#: ../gui/drawwindow.py:611
 msgid "Move your mouse over a menu entry, then press the key to assign."
 msgstr "將您的滑鼠移動到選單項目上方，然後按滑鼠鍵來指定。"
 
-#: ../gui/drawwindow.py:805
+#: ../gui/drawwindow.py:613
 msgid ""
-"You can also drag the canvas with the mouse while holding the middle mouse button or spacebar. Or with the arrow keys.\n"
+"You can also drag the canvas with the mouse while holding the middle mouse "
+"button or spacebar. Or with the arrow keys.\n"
 "\n"
-"In contrast to earlier versions, scrolling and zooming are harmless now and will not make you run out of memory. But you still require a lot of memory if you paint all over while fully zoomed out."
+"In contrast to earlier versions, scrolling and zooming are harmless now and "
+"will not make you run out of memory. But you still require a lot of memory "
+"if you paint all over while fully zoomed out."
 msgstr ""
 "當按住滑鼠中鍵或空白鍵時您也可以用滑鼠拖曳畫布。或者按方向鍵。\n"
 "\n"
-"相對於早期版本，現在畫面滾動和縮放更為順暢且不會讓您用完記憶體。但如果在畫面縮到相當小時您到處塗繪，仍然需要大量的記憶體。"
+"相對於早期版本，現在畫面滾動和縮放更為順暢且不會讓您用完記憶體。但如果在畫面"
+"縮到相當小時您到處塗繪，仍然需要大量的記憶體。"
 
-#: ../gui/drawwindow.py:812
+#: ../gui/drawwindow.py:620
+#, fuzzy
 msgid ""
-"This is used to quickly save/restore brush settings using keyboard shortcuts. You can paint with one hand and change brushes with the other without interrupting.\n"
+"Brushkeys are used to quickly save/restore brush settings using keyboard "
+"shortcuts. You can paint with one hand and change brushes with the other "
+"without interruption.\n"
 "\n"
 "There are 10 memory slots to hold brush settings.\n"
-"Those are anonymous brushes, they are not visible in the brush selector list. But they will stay even if you quit. They will also remember the selected color. In contrast, selecting a normal brush never changes the color. "
+"They are anonymous brushes, which are not visible in the brush selector "
+"list. But they are remembered even if you quit."
 msgstr ""
-"這用於使用快捷鍵快速儲存/還原筆刷。您可以用一隻手塗繪並用另一隻手變更筆刷而不必中斷。\n"
+"這用於使用快捷鍵快速儲存/還原筆刷。您可以用一隻手塗繪並用另一隻手變更筆刷而不"
+"必中斷。\n"
 "\n"
 "有 10 個記憶槽來保留筆刷設定值。\n"
-"這些不具名稱的筆刷不會顯示在筆刷選擇器清單。但這些筆刷會被留下來，即使您離開程式。這些筆刷也會記住選擇的顏色。相反的，選擇普通筆刷則不會改變顏色。"
+"這些不具名稱的筆刷不會顯示在筆刷選擇器清單。但這些筆刷會被留下來，即使您離開"
+"程式。這些筆刷也會記住選擇的顏色。相反的，選擇普通筆刷則不會改變顏色。"
 
-#: ../gui/drawwindow.py:823
+#: ../gui/drawwindow.py:629
 msgid ""
-"There is a tutorial available on the MyPaint homepage. It explains some features which are hard to discover yourself.\n"
+"There is a tutorial available on the MyPaint homepage. It explains some "
+"features which are hard to discover yourself.\n"
 "\n"
-"Comments about the brush settings (opaque, hardness, etc.) and inputs (pressure, speed, etc.) are available as tooltips. Put your mouse over a label to see them. \n"
+"Comments about the brush settings (opaque, hardness, etc.) and inputs "
+"(pressure, speed, etc.) are available as tooltips. Put your mouse over a "
+"label to see them. \n"
 msgstr ""
 "在 MyPaint 的首頁上有一份教學。這份教學會解釋一些使用者很難自己發現的功能。\n"
 "\n"
-"關於筆刷設定值 (不透明度、硬度等) 和輸入 (壓力、速度等) 會有工具提示。將您的滑鼠移到標籤的上方可看見這些提示。\n"
+"關於筆刷設定值 (不透明度、硬度等) 和輸入 (壓力、速度等) 會有工具提示。將您的"
+"滑鼠移到標籤的上方可看見這些提示。\n"
 
-#: ../gui/filehandling.py:36
+#: ../gui/filehandling.py:59
 msgid "New"
 msgstr "新增"
 
-#: ../gui/filehandling.py:37
-#: ../gui/filehandling.py:198
+#: ../gui/filehandling.py:60 ../gui/filehandling.py:290
 msgid "Open..."
 msgstr "開啟..."
 
-#: ../gui/filehandling.py:38
+#: ../gui/filehandling.py:61
 msgid "Open Last"
 msgstr "最後開啟"
 
-#: ../gui/filehandling.py:39
+#: ../gui/filehandling.py:62
 msgid "Reload"
 msgstr "重新載入"
 
-#: ../gui/filehandling.py:40
-msgid "Save"
-msgstr "儲存"
-
-#: ../gui/filehandling.py:41
+#: ../gui/filehandling.py:64
 msgid "Save As..."
 msgstr "另存新檔..."
 
-#: ../gui/filehandling.py:42
+#: ../gui/filehandling.py:65
+#, fuzzy
+msgid "Export..."
+msgstr "回報..."
+
+#: ../gui/filehandling.py:66
 msgid "Save As Scrap"
 msgstr "另存為廢料"
 
-#: ../gui/filehandling.py:43
+#: ../gui/filehandling.py:67
 msgid "Open Previous Scrap"
 msgstr "開啟上一個廢料"
 
-#: ../gui/filehandling.py:44
+#: ../gui/filehandling.py:68
 msgid "Open Next Scrap"
 msgstr "開啟下一個廢料"
 
-#: ../gui/filehandling.py:50
+#: ../gui/filehandling.py:74
 msgid "Open Recent"
 msgstr "開啟最近的"
 
-#: ../gui/filehandling.py:50
+#: ../gui/filehandling.py:74
 msgid "Open Recent files"
 msgstr "開啟最近的檔案"
 
-#: ../gui/filehandling.py:89
-msgid "Save..."
-msgstr "儲存..."
+#. (name, patterns)
+#: ../gui/filehandling.py:93
+msgid "All Recognized Formats"
+msgstr "所有可辨識的格式"
 
-#. name, patterns, saveopts
-#: ../gui/filehandling.py:101
-msgid "Any format (prefer OpenRaster)"
-msgstr "任何格式 (優先使用 OpenRaster)"
-
-#: ../gui/filehandling.py:102
-#: ../gui/filehandling.py:206
+#. 0
+#: ../gui/filehandling.py:94 ../gui/filehandling.py:100
 msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
 
-#: ../gui/filehandling.py:104
+#: ../gui/filehandling.py:95
+msgid "PNG (*.png)"
+msgstr "PNG (*.png)"
+
+#: ../gui/filehandling.py:96
+msgid "JPEG (*.jpg; *.jpeg)"
+msgstr "JPEG (*.jpg; *.jpeg)"
+
+#. (name, extension, options)
+#: ../gui/filehandling.py:99
+msgid "By extension (prefer default format)"
+msgstr ""
+
+#. 1
+#: ../gui/filehandling.py:101
+msgid "PNG solid with background (*.png)"
+msgstr ""
+
+#. 2
+#: ../gui/filehandling.py:102
 msgid "PNG transparent (*.png)"
 msgstr "PNG 透明圖片 (*.png)"
 
-#: ../gui/filehandling.py:105
+#. 3
+#: ../gui/filehandling.py:103
 msgid "Multiple PNG transparent (*.XXX.png)"
 msgstr "多個 PNG 透明圖片"
 
-#: ../gui/filehandling.py:106
+#. 4
+#: ../gui/filehandling.py:104
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
 msgstr "JPEG 90% 品質 (*.jpg; *.jpeg)"
 
-#: ../gui/filehandling.py:127
+#: ../gui/filehandling.py:145
+msgid "Save..."
+msgstr "儲存..."
+
+#: ../gui/filehandling.py:156
+#, fuzzy
+msgid "Format to save as:"
+msgstr "無法儲存：%s"
+
+#: ../gui/filehandling.py:182
+msgid "Confirm"
+msgstr ""
+
+#: ../gui/filehandling.py:182
+#, fuzzy
+msgid "Really continue?"
+msgstr "確定要離開？"
+
+#: ../gui/filehandling.py:191
 #, python-format
 msgid "%d minute"
 msgid_plural "%d minutes"
 msgstr[0] "%d 分鐘"
 
-#: ../gui/filehandling.py:130
+#: ../gui/filehandling.py:194
 #, python-format
 msgid "%d second"
 msgid_plural "%d seconds"
 msgstr[0] "%d 秒"
 
-#: ../gui/filehandling.py:136
+#: ../gui/filehandling.py:200
 msgid "_Save as Scrap"
 msgstr "另存為廢料(_S)"
 
-#: ../gui/filehandling.py:142
+#: ../gui/filehandling.py:206
 #, python-format
 msgid ""
 "<b>%s</b>\n"
@@ -1216,99 +1716,275 @@ msgstr ""
 "\n"
 "這將會丟棄未儲存圖畫的 %s。"
 
-#: ../gui/filehandling.py:179
+#: ../gui/filehandling.py:248
 msgid "Did not save, the canvas is empty."
 msgstr "沒有儲存，畫布是空白的。"
 
-#. name, patterns
-#: ../gui/filehandling.py:205
-msgid "All Recognized Formats"
-msgstr "所有可辨識的格式"
-
-#: ../gui/filehandling.py:207
-msgid "PNG (*.png)"
-msgstr "PNG (*.png)"
-
-#: ../gui/filehandling.py:208
-msgid "JPEG (*.jpg; *.jpeg)"
-msgstr "JPEG (*.jpg; *.jpeg)"
-
-#: ../gui/filehandling.py:384
+#: ../gui/filehandling.py:495
 #, python-format
 msgid "There are no scrap files named \"%s\" yet."
 msgstr "還沒有廢料檔命名為「%s」。"
 
-#: ../gui/functionwindow.py:40
+#: ../gui/framewindow.py:34
+msgid "Height"
+msgstr ""
+
+#: ../gui/framewindow.py:35
+msgid "Width"
+msgstr ""
+
+#: ../gui/framewindow.py:46
+msgid "Crop to active layer bounds"
+msgstr ""
+
+#: ../gui/framewindow.py:47
+msgid "Crop to document bounds"
+msgstr ""
+
+#: ../gui/framewindow.py:51
+msgid "Enabled"
+msgstr ""
+
+#: ../gui/functionwindow.py:42
 msgid "Base Value"
 msgstr "基本值"
 
-#: ../gui/gtkexcepthook.py:118
+#: ../gui/gtkexcepthook.py:127
 msgid "Bug Detected"
 msgstr "偵測到程式錯誤"
 
-#: ../gui/gtkexcepthook.py:122
+#: ../gui/gtkexcepthook.py:131
 msgid "<big><b>A programming error has been detected.</b></big>"
 msgstr "<big><b>已偵測到一個程式錯誤。</b></big>"
 
-#: ../gui/gtkexcepthook.py:123
-msgid "It probably isn't fatal, but the details should be reported to the developers nonetheless."
+#: ../gui/gtkexcepthook.py:132
+msgid ""
+"It probably isn't fatal, but the details should be reported to the "
+"developers nonetheless."
 msgstr "它可能不是很嚴重的錯誤，儘管如此詳細資訊還是應該回報給開發人員。"
 
-#: ../gui/gtkexcepthook.py:138
-msgid "Report..."
-msgstr "回報..."
-
-#: ../gui/gtkexcepthook.py:142
+#: ../gui/gtkexcepthook.py:155
 msgid "Details..."
 msgstr "詳細資訊..."
 
-#. Show details...
-#: ../gui/gtkexcepthook.py:171
-msgid "Bug Details"
-msgstr "程式錯誤詳細資訊"
+#: ../gui/gtkexcepthook.py:176 ../gui/gtkexcepthook.py:179
+msgid "Exception while analyzing the exception."
+msgstr ""
 
-#: ../gui/layerswindow.py:35
+#: ../gui/inputtestwindow.py:20
+msgid "Input Device Test"
+msgstr ""
+
+#: ../gui/inputtestwindow.py:47
+#, fuzzy
+msgid "(no pressure)"
+msgstr "壓力"
+
+#: ../gui/inputtestwindow.py:48
+#, fuzzy
+msgid "Pressure:"
+msgstr "壓力"
+
+#: ../gui/inputtestwindow.py:50
+msgid "(no tilt)"
+msgstr ""
+
+#: ../gui/inputtestwindow.py:51
+msgid "Tilt:"
+msgstr ""
+
+#: ../gui/inputtestwindow.py:56
+#, fuzzy
+msgid "(no device)"
+msgstr "(未命名)"
+
+#: ../gui/inputtestwindow.py:57
+msgid "Device:"
+msgstr ""
+
+#: ../gui/layerswindow.py:81
 msgid "Layer visibility"
 msgstr "圖層可見度"
 
-#: ../gui/layerswindow.py:354
+#: ../gui/layerswindow.py:85
+#, fuzzy
+msgid "Layer lock"
+msgstr "圖層單獨顯示"
+
+#: ../gui/layerswindow.py:183
+msgid "<small>Double click to enter name</small>"
+msgstr ""
+
+#: ../gui/layerswindow.py:185
+msgid "<small>Click to select this layer</small>"
+msgstr ""
+
+#: ../gui/layerswindow.py:329
 msgid "Opacity:"
 msgstr "不透明度："
 
-#: ../gui/preferenceswindow.py:26
+#: ../gui/layout.py:650
+msgid "Collapse"
+msgstr ""
+
+#: ../gui/layout.py:651
+msgid "Expand"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:20
+msgid "Disabled (no pressure sensitivity)"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:21
+msgid "Screen (normal)"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:22
+msgid "Window (not recommended)"
+msgstr ""
+
+#. These can be names of actions within ActionGroups defined elsewhere,
+#. or names of actions the handler interprets itself.
+#. NOTE: The translatable strings for actions are duplicated from
+#. their action definition. Please keep in sync (or refactor to get the string from there)
+#. (action_or_whatever, label)
+#: ../gui/preferenceswindow.py:33
+msgid "No action"
+msgstr ""
+
+#. [0] is the default for the comboboxes
+#: ../gui/preferenceswindow.py:34
+#, fuzzy
+msgid "Menu"
+msgstr "顯示選單"
+
+#: ../gui/preferenceswindow.py:39
+#, fuzzy
+msgid "Pan"
+msgstr "圖案"
+
+#: ../gui/preferenceswindow.py:41
+msgid "Rotate"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:42
+msgid "Straight Line"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:43
+msgid "Sequence of Straight Lines"
+msgstr ""
+
+#. Used for creating the menus,
+#. (pref_name, label)
+#: ../gui/preferenceswindow.py:51
+msgid "Button 1 + Shift"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:52
+msgid "Button 1 + Ctrl (or Alt)"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:53
+msgid "Button 2"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:54
+msgid "Button 2 + Shift"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:55
+msgid "Button 2 + Ctrl (or Alt)"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:56
+msgid "Button 3"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:57
+msgid "Button 3 + Shift"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:58
+msgid "Button 3 + Ctrl (or Alt)"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:68
 msgid "Preferences"
 msgstr "偏好設定"
 
-#: ../gui/preferenceswindow.py:46
-msgid "<b><span size=\"large\">Global Pressure Mapping</span></b>"
-msgstr "<b><span size=\"large\">整體壓力對應</span></b>"
-
-#: ../gui/preferenceswindow.py:59
-msgid ""
-"0.5\n"
-"(mouse button)"
+#. TRANSLATORS: Tab label
+#: ../gui/preferenceswindow.py:88
+msgid "Pen Input"
 msgstr ""
-"0.5\n"
-"(滑鼠鍵)"
 
-#: ../gui/preferenceswindow.py:70
-msgid "Mode for input devices: "
-msgstr "輸入裝置的模式："
+#: ../gui/preferenceswindow.py:94
+msgid "<b>Input Device</b>"
+msgstr ""
 
-#: ../gui/preferenceswindow.py:81
-msgid "Paths"
-msgstr "路徑"
+#: ../gui/preferenceswindow.py:101
+msgid ""
+"Scale input pressure to brush pressure. This is applied to all input "
+"devices. The mouse button has an input pressure of 0.5 when pressed."
+msgstr ""
 
-#: ../gui/preferenceswindow.py:85
-msgid "<b><span size=\"large\">Save as Scrap</span></b>"
-msgstr "<b><span size=\"large\">另存為廢料</span></b>"
+#. TRANSLATORS: Graph y-axis label
+#: ../gui/preferenceswindow.py:111
+#, fuzzy
+msgid "Brush Pressure"
+msgstr "壓力"
 
-#: ../gui/preferenceswindow.py:87
-msgid "Path and filename prefix for \"Save Next Scrap\""
+#. TRANSLATORS: Graph x-axis label
+#: ../gui/preferenceswindow.py:121
+#, fuzzy
+msgid "Input Pressure"
+msgstr "壓力"
+
+#: ../gui/preferenceswindow.py:130
+msgid "Mode: "
+msgstr ""
+
+#: ../gui/preferenceswindow.py:147
+msgid "Buttons"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:153
+msgid "<b>Pen and mouse button mappings</b>"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:179
+msgid "Saving"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:185
+msgid "<b>Saving</b>"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:189
+msgid "Default file format:"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:204
+#, fuzzy
+msgid "<b>Save Next Scrap</b>"
+msgstr "開啟下一個廢料"
+
+#: ../gui/preferenceswindow.py:208
+#, fuzzy
+msgid "Path and filename prefix:"
 msgstr "「儲存下一個廢料」的路徑和檔名字首"
 
+#: ../gui/preferenceswindow.py:229
+msgid "<b>Default View</b>"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:233
+#, fuzzy
+msgid "Default zoom:"
+msgstr "預設"
+
 #. add a hint due to a very consfusing error message when there is no space left on device
-#: ../lib/document.py:259
+#: ../lib/document.py:337
 #, python-format
 msgid ""
 "Unable to save: %s\n"
@@ -1317,63 +1993,130 @@ msgstr ""
 "無法儲存：%s\n"
 "裝置上是否剩餘足夠的空間？"
 
-#: ../lib/document.py:261
-#: ../lib/document.py:264
+#: ../lib/document.py:339 ../lib/document.py:342
 #, python-format
 msgid "Unable to save: %s"
 msgstr "無法儲存：%s"
 
-#: ../lib/document.py:269
+#: ../lib/document.py:347
 #, python-format
 msgid "File does not exist: %s"
 msgstr "檔案不存在：%s"
 
-#: ../lib/document.py:271
+#: ../lib/document.py:349
 #, python-format
 msgid "You do not have the necessary permissions to open file: %s"
 msgstr "您沒有足夠的權限來開啟檔案：%s"
 
-#: ../lib/document.py:279
+#: ../lib/document.py:357
 #, python-format
 msgid "Error while loading: GError %s"
 msgstr "載入時發生錯誤：GError %s"
 
-#: ../lib/document.py:282
+#: ../lib/document.py:360
 #, python-format
 msgid "Error while loading: IOError %s"
 msgstr "載入時發生錯誤：IOError %s"
 
-#: ../lib/document.py:288
+#: ../lib/document.py:366
 #, python-format
 msgid "Unknown file format extension: %s"
 msgstr "未知的檔案格式副檔名：%s"
 
+#~ msgid "opaque"
+#~ msgstr "不透明"
+
+#~ msgid ""
+#~ "This gets multiplied with opaque. It is used for making opaque depend on "
+#~ "pressure (or other inputs)."
+#~ msgstr ""
+#~ "這可得到乘以不透明度的值。它會用於由壓力 (或者其他輸入) 決定產生的不透明"
+#~ "度。"
+
+#~ msgid "add as new"
+#~ msgstr "加入新筆刷"
+
+#~ msgid "settings..."
+#~ msgstr "設定值..."
+
+#~ msgid "save preview"
+#~ msgstr "儲存預覽"
+
+#~ msgid "Right click on group to modify"
+#~ msgstr "用右鍵點擊群組進行修改"
+
+#~ msgid "Brush settings"
+#~ msgstr "筆刷設定值"
+
+#~ msgid "Select harmonies"
+#~ msgstr "選擇協調色"
+
+#~ msgid "Brush Settings..."
+#~ msgstr "筆刷設定值..."
+
+#~ msgid "Reset (Zoom, Rotation, Mirror)"
+#~ msgstr "重設 (縮放、旋轉、鏡像)"
+
+#~ msgid "Any format (prefer OpenRaster)"
+#~ msgstr "任何格式 (優先使用 OpenRaster)"
+
+#~ msgid "Bug Details"
+#~ msgstr "程式錯誤詳細資訊"
+
+#~ msgid "<b><span size=\"large\">Global Pressure Mapping</span></b>"
+#~ msgstr "<b><span size=\"large\">整體壓力對應</span></b>"
+
+#~ msgid ""
+#~ "0.5\n"
+#~ "(mouse button)"
+#~ msgstr ""
+#~ "0.5\n"
+#~ "(滑鼠鍵)"
+
+#~ msgid "Paths"
+#~ msgstr "路徑"
+
+#~ msgid "<b><span size=\"large\">Save as Scrap</span></b>"
+#~ msgstr "<b><span size=\"large\">另存為廢料</span></b>"
+
 #~ msgid "Settings..."
 #~ msgstr "設定值..."
+
 #~ msgid "Settings"
 #~ msgstr "設定值"
+
 #~ msgid "Name:"
 #~ msgstr "名稱："
+
 #~ msgid "done"
 #~ msgstr "完成"
+
 #~ msgid "R: "
 #~ msgstr "R: "
+
 #~ msgid "G: "
 #~ msgstr "G: "
+
 #~ msgid "B: "
 #~ msgstr "B: "
+
 #~ msgid "H: "
 #~ msgstr "H: "
+
 #~ msgid "S: "
 #~ msgstr "S: "
+
 #~ msgid "V: "
 #~ msgstr "V: "
+
 #~ msgid "V"
 #~ msgstr "V"
+
 #~ msgid "S"
 #~ msgstr "S"
+
 #~ msgid "By <b>%s</b>"
 #~ msgstr "用 <b>%s</b>"
+
 #~ msgid "Revert"
 #~ msgstr "回復"
-

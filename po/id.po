@@ -4,16 +4,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-05 19:24+0100\n"
+"POT-Creation-Date: 2011-05-02 00:07-0400\n"
 "PO-Revision-Date: 2010-01-14 15:45SE Asi\n"
 "Last-Translator: Tumagonx <mr_tiar@gmail.com>\n"
 "Language-Team: Indonesian <id@li.org>\n"
+"Language: id\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #. name, hard minimum, soft minimum, normal[1], soft maximum, hard maximum, displayed name, tooltip
-#: ../brushlib/brushsettings.py:22 ../gui/settingswindow.py:38
+#: ../brushlib/brushsettings.py:22
 msgid "Pressure"
 msgstr "Tekanan"
 
@@ -63,7 +64,7 @@ msgstr ""
 "Noise acak yg cepat, berubah pada setiap evalusi. Diedarkan merata antara 0 "
 "hingga 1."
 
-#: ../brushlib/brushsettings.py:26
+#: ../brushlib/brushsettings.py:26 ../gui/brushsettingswindow.py:93
 msgid "Stroke"
 msgstr "Coretan"
 
@@ -90,46 +91,77 @@ msgstr ""
 "Kemiringan stroke, dalam derajat. Nilainya akan tetap berada antara 0.0 "
 "hingga 180.0, mengabaikan 180 degrees selanjutnya."
 
-#. ['motion_strength',0.0,0.0,  0.0,  1.0, 1.0,  "[EXPERIMENTAL] Same as angle, but wraps at 180 degrees. The dynamics are shared with BRUSH_OFFSET_BY_SPEED_FILTER (FIXME: which is a bad thing)."],
+#: ../brushlib/brushsettings.py:28
+#, fuzzy
+msgid "Declination"
+msgstr "Arah"
+
+#: ../brushlib/brushsettings.py:28
+msgid ""
+"Declination of stylus tilt. 0 when stylus is parallel to tablet and 90.0 "
+"when it's perpendicular to tablet."
+msgstr ""
+"Penurunan dari kemringan stylus. 0 ketika stylus paralel dengan tablet dan "
+"90.0 ketika tegak lurus tablet."
+
 #: ../brushlib/brushsettings.py:29
+msgid "Ascension"
+msgstr ""
+
+#: ../brushlib/brushsettings.py:29
+msgid ""
+"Right ascension of stylus tilt. 0 when stylus working end points to you, +90 "
+"when rotated 90 degrees clockwise, -90 when rotated 90 degrees "
+"counterclockwise."
+msgstr ""
+"Kenaikan dari kemiringan stylus.. 0 ketika ujung stylus mengarah kepadamu, "
+"+90 ketika diputar 90 derajat searah jarum jam, -90 ketika diputar 90 "
+"derajat melawan jarum jam."
+
+#. ['motion_strength',0.0,0.0,  0.0,  1.0, 1.0,  "[EXPERIMENTAL] Same as angle, but wraps at 180 degrees. The dynamics are shared with BRUSH_OFFSET_BY_SPEED_FILTER (FIXME: which is a bad thing)."],
+#: ../brushlib/brushsettings.py:31 ../gui/brushsettingswindow.py:95
 msgid "Custom"
 msgstr "Custom"
 
-#: ../brushlib/brushsettings.py:29
+#: ../brushlib/brushsettings.py:31
 msgid ""
 "This is a user defined input. Look at the 'custom input' setting for details."
 msgstr "Input dari pengguna. Lihat pengaturan 'inputmu' untuk lebih detil."
 
 #. internal name, displayed name, constant, minimum, default, maximum, tooltip
-#: ../brushlib/brushsettings.py:38
-msgid "opaque"
-msgstr "penampakan"
+#: ../brushlib/brushsettings.py:40 ../gui/brushsettingswindow.py:88
+#, fuzzy
+msgid "Opacity"
+msgstr "Kejelasan:"
 
-#: ../brushlib/brushsettings.py:38
+#: ../brushlib/brushsettings.py:40
+#, fuzzy
 msgid ""
 "0 means brush is transparent, 1 fully visible\n"
-"(also known als alpha or opacity)"
+"(also known as alpha or opacity)"
 msgstr ""
 "0 berarti kuas jadi trasparan, 1 terlihat penuh\n"
 "(juga dikenal sebagai alfa atau penampakan)"
 
-#: ../brushlib/brushsettings.py:39
-msgid "opaque multiply"
+#: ../brushlib/brushsettings.py:41
+#, fuzzy
+msgid "Opacity multiply"
 msgstr "Penampakan berlipat"
 
-#: ../brushlib/brushsettings.py:39
+#: ../brushlib/brushsettings.py:41
 msgid ""
-"This gets multiplied with opaque. It is used for making opaque depend on "
-"pressure (or other inputs)."
+"This gets multiplied with opaque. You should only change the pressure input "
+"of this setting. Use 'opaque' instead to make opacity depend on speed.\n"
+"This setting is responsible to stop painting when there is zero pressure. "
+"This is just a convention, the behaviour is identical to 'opaque'."
 msgstr ""
-"Nilai akan dikalikan dgn penampakan with opaque. Juga dipakai untuk membuat "
-"penampakan, tergantung tekanan (atau input lainnya)."
 
-#: ../brushlib/brushsettings.py:40
-msgid "opaque linearize"
+#: ../brushlib/brushsettings.py:42
+#, fuzzy
+msgid "Opacity linearize"
 msgstr "meluruskan penampakan"
 
-#: ../brushlib/brushsettings.py:40
+#: ../brushlib/brushsettings.py:42
 msgid ""
 "Correct the nonlinearity introduced by blending multiple dabs on top of each "
 "other. This correction should get you a linear (\"natural\") pressure "
@@ -149,13 +181,15 @@ msgstr ""
 "1.0 melainkan untuk stroke yg final, dengan asumsi setiap pixel mendapat "
 "(dabs_per_radius*2) brushdabs pada rata2 selesai stroke"
 
-#: ../brushlib/brushsettings.py:41
-msgid "radius"
+#: ../brushlib/brushsettings.py:43
+#, fuzzy
+msgid "Radius"
 msgstr "jari-jari"
 
-#: ../brushlib/brushsettings.py:41
+#: ../brushlib/brushsettings.py:43
+#, fuzzy
 msgid ""
-"basic brush radius (logarithmic)\n"
+"Basic brush radius (logarithmic)\n"
 " 0.7 means 2 pixels\n"
 " 3.0 means 20 pixels"
 msgstr ""
@@ -163,51 +197,60 @@ msgstr ""
 " 0.7 berarti 2 pixels\n"
 " 3.0 berarti 20 pixels"
 
-#: ../brushlib/brushsettings.py:42
-msgid "hardness"
+#: ../brushlib/brushsettings.py:44
+#, fuzzy
+msgid "Hardness"
 msgstr "ketebalan"
 
-#: ../brushlib/brushsettings.py:42
-msgid "hard brush-circle borders (setting to zero will draw nothing)"
+#: ../brushlib/brushsettings.py:44
+#, fuzzy
+msgid "Hard brush-circle borders (setting to zero will draw nothing)"
 msgstr "Kuas tebal-pigiran bulat (nilai 0 tidak akan tergambar"
 
-#: ../brushlib/brushsettings.py:43
-msgid "dabs per basic radius"
+#: ../brushlib/brushsettings.py:45
+#, fuzzy
+msgid "Dabs per basic radius"
 msgstr "dabs per jari-jari"
 
-#: ../brushlib/brushsettings.py:43
+#: ../brushlib/brushsettings.py:45
+#, fuzzy
 msgid ""
-"how many dabs to draw while the pointer moves a distance of one brush radius "
+"How many dabs to draw while the pointer moves a distance of one brush radius "
 "(more precise: the base value of the radius)"
 msgstr ""
 "banyaknya dabs untuk menggambar ketika pointer berpindah pada jarak satu "
 "jari-jari kuas (atau lebih jelasnya: nilai dasar untuk jari-jari)"
 
-#: ../brushlib/brushsettings.py:44
-msgid "dabs per actual radius"
+#: ../brushlib/brushsettings.py:46
+#, fuzzy
+msgid "Dabs per actual radius"
 msgstr "dabs per jari-jari yg sebenarnya"
 
-#: ../brushlib/brushsettings.py:44
+#: ../brushlib/brushsettings.py:46
+#, fuzzy
 msgid ""
-"same as above, but the radius actually drawn is used, which can change "
+"Same as above, but the radius actually drawn is used, which can change "
 "dynamically"
 msgstr ""
 "sama seperti diatas, tapi jari-jari sebenarnya yg dipakai, yg mana dapat "
 "berubah secara dinamis"
 
-#: ../brushlib/brushsettings.py:45
-msgid "dabs per second"
+#: ../brushlib/brushsettings.py:47
+#, fuzzy
+msgid "Dabs per second"
 msgstr "dabs per detik"
 
-#: ../brushlib/brushsettings.py:45
-msgid "dabs to draw each second, no matter how far the pointer moves"
+#: ../brushlib/brushsettings.py:47
+#, fuzzy
+msgid "Dabs to draw each second, no matter how far the pointer moves"
 msgstr "dabs yg tergambar tiap detik, tak peduli sejauh apa pointer bergerak"
 
-#: ../brushlib/brushsettings.py:46
-msgid "radius by random"
+#: ../brushlib/brushsettings.py:48
+#, fuzzy
+msgid "Radius by random"
 msgstr "keacakan jejari"
 
-#: ../brushlib/brushsettings.py:46
+#: ../brushlib/brushsettings.py:48
 msgid ""
 "Alter the radius randomly each dab. You can also do this with the by_random "
 "input on the radius setting. If you do it here, there are two differences:\n"
@@ -223,32 +266,37 @@ msgstr ""
 "2) Ini juga tidak mengubah jejari sebenarnya yg dibaca oleh "
 "dabs_per_actual_radius"
 
-#: ../brushlib/brushsettings.py:47
-msgid "fine speed filter"
+#: ../brushlib/brushsettings.py:49
+#, fuzzy
+msgid "Fine speed filter"
 msgstr "penghambat kecepatan halus"
 
-#: ../brushlib/brushsettings.py:47
+#: ../brushlib/brushsettings.py:49
+#, fuzzy
 msgid ""
-"how slow the input fine speed is following the real speed\n"
+"How slow the input fine speed is following the real speed\n"
 "0.0 change immediately as your speed changes (not recommended, but try it)"
 msgstr ""
 "seberapa lambat input kecepatan halus mengikuti kecepatan yg sebenarnya\n"
 "0.0 langsung mengikuti kecepatan sebenarnya (tidak dianjurkan,tapi cobalah)"
 
-#: ../brushlib/brushsettings.py:48
-msgid "gross speed filter"
+#: ../brushlib/brushsettings.py:50
+#, fuzzy
+msgid "Gross speed filter"
 msgstr "penghambat kecepatan halus"
 
-#: ../brushlib/brushsettings.py:48
-msgid "same as 'fine speed filter', but note that the range is different"
+#: ../brushlib/brushsettings.py:50
+#, fuzzy
+msgid "Same as 'fine speed filter', but note that the range is different"
 msgstr ""
 "sama seperti 'pembatas.kecepatan.halus', tapi dengan jangkauan yg berbeda"
 
-#: ../brushlib/brushsettings.py:49
-msgid "fine speed gamma"
+#: ../brushlib/brushsettings.py:51
+#, fuzzy
+msgid "Fine speed gamma"
 msgstr "gamma dari kecepatan halus"
 
-#: ../brushlib/brushsettings.py:49
+#: ../brushlib/brushsettings.py:51
 msgid ""
 "This changes the reaction of the 'fine speed' input to extreme physical "
 "speed. You will see the difference best if 'fine speed' is mapped to the "
@@ -263,21 +311,25 @@ msgstr ""
 "+8.0 sangat cepat dan menambah kecepatan1 lebih banyak\n"
 "Untuk kecepatan sangat rendah, hal sebaliknya yg terjadi."
 
-#: ../brushlib/brushsettings.py:50
-msgid "gross speed gamma"
+#: ../brushlib/brushsettings.py:52
+#, fuzzy
+msgid "Gross speed gamma"
 msgstr "gamma kecepatan kasar"
 
-#: ../brushlib/brushsettings.py:50
-msgid "same as 'fine speed gamma' for gross speed"
+#: ../brushlib/brushsettings.py:52
+#, fuzzy
+msgid "Same as 'fine speed gamma' for gross speed"
 msgstr "sama seperti 'gamma kecepatan halus' untuk kecepatan kasar"
 
-#: ../brushlib/brushsettings.py:51
-msgid "jitter"
+#: ../brushlib/brushsettings.py:53
+#, fuzzy
+msgid "Jitter"
 msgstr "kerlipan"
 
-#: ../brushlib/brushsettings.py:51
+#: ../brushlib/brushsettings.py:53
+#, fuzzy
 msgid ""
-"add a random offset to the position where each dab is drawn\n"
+"Add a random offset to the position where each dab is drawn\n"
 " 0.0 disabled\n"
 " 1.0 standard deviation is one basic radius away\n"
 "<0.0 negative values produce no jitter"
@@ -287,13 +339,15 @@ msgstr ""
 " 1.0 deviasi standard yakni satu satuan jari-jari dasar\n"
 "<0.0 nilai negatif menjadikan lebih bersih"
 
-#: ../brushlib/brushsettings.py:52
-msgid "offset by speed"
+#: ../brushlib/brushsettings.py:54
+#, fuzzy
+msgid "Offset by speed"
 msgstr "offset oleh kecepatan"
 
-#: ../brushlib/brushsettings.py:52
+#: ../brushlib/brushsettings.py:54
+#, fuzzy
 msgid ""
-"change position depending on pointer speed\n"
+"Change position depending on pointer speed\n"
 "= 0 disable\n"
 "> 0 draw where the pointer moves to\n"
 "< 0 draw where the pointer comes from"
@@ -303,19 +357,22 @@ msgstr ""
 "> 0 gambar sampai dimana pointer bergerak\n"
 "< 0 gambar sampai dimana pointer berasal"
 
-#: ../brushlib/brushsettings.py:53
-msgid "offset by speed filter"
+#: ../brushlib/brushsettings.py:55
+#, fuzzy
+msgid "Offset by speed filter"
 msgstr "offset oleh penghambat kecepatan"
 
-#: ../brushlib/brushsettings.py:53
-msgid "how slow the offset goes back to zero when the cursor stops moving"
+#: ../brushlib/brushsettings.py:55
+#, fuzzy
+msgid "How slow the offset goes back to zero when the cursor stops moving"
 msgstr "seberapa lambat offset kembali ke nol ketika curor berhenti bergerak"
 
-#: ../brushlib/brushsettings.py:54
-msgid "slow position tracking"
+#: ../brushlib/brushsettings.py:56
+#, fuzzy
+msgid "Slow position tracking"
 msgstr "pelacakan posisi scr lamban"
 
-#: ../brushlib/brushsettings.py:54
+#: ../brushlib/brushsettings.py:56
 msgid ""
 "Slowdown pointer tracking speed. 0 disables it, higher values remove more "
 "jitter in cursor movements. Useful for drawing smooth, comic-like outlines."
@@ -324,11 +381,12 @@ msgstr ""
 "tinggi menghapus banyak kerlipan pada pergerakkan cursor. Berguna utuk "
 "menggambar halus, outline seperti komik"
 
-#: ../brushlib/brushsettings.py:55
-msgid "slow tracking per dab"
+#: ../brushlib/brushsettings.py:57
+#, fuzzy
+msgid "Slow tracking per dab"
 msgstr "pelacakan pelan per dab"
 
-#: ../brushlib/brushsettings.py:55
+#: ../brushlib/brushsettings.py:57
 msgid ""
 "Similar as above but at brushdab level (ignoring how much time has past, if "
 "brushdabs do not depend on time)"
@@ -336,39 +394,46 @@ msgstr ""
 "Mirip dengan di atas tapi pada level kuas (mengabaikan berapa lama waktu "
 "berlalu, jika dabs tidak bergantung pada waktu)"
 
-#: ../brushlib/brushsettings.py:56
-msgid "tracking noise"
+#: ../brushlib/brushsettings.py:58
+#, fuzzy
+msgid "Tracking noise"
 msgstr "tracking noise"
 
-#: ../brushlib/brushsettings.py:56
+#: ../brushlib/brushsettings.py:58
+#, fuzzy
 msgid ""
-"add randomness to the mouse pointer; this usually generates many small lines "
+"Add randomness to the mouse pointer; this usually generates many small lines "
 "in random directions; maybe try this together with 'slow tracking'"
 msgstr ""
 "tambah keacakan pada pointer mouse; akan membuat banyak garis kecil pada "
 "arah acak; mungkin bisa dicoba bersama 'pelacakan lamban'"
 
-#: ../brushlib/brushsettings.py:58
-msgid "color hue"
+#: ../brushlib/brushsettings.py:60
+#, fuzzy
+msgid "Color hue"
 msgstr "roda gelombang warna"
 
-#: ../brushlib/brushsettings.py:59
-msgid "color saturation"
+#: ../brushlib/brushsettings.py:61
+#, fuzzy
+msgid "Color saturation"
 msgstr "kejenuhan warna"
 
-#: ../brushlib/brushsettings.py:60
-msgid "color value"
+#: ../brushlib/brushsettings.py:62
+#, fuzzy
+msgid "Color value"
 msgstr "Nilai warna"
 
-#: ../brushlib/brushsettings.py:60
-msgid "color value (brightness, intensity)"
+#: ../brushlib/brushsettings.py:62
+#, fuzzy
+msgid "Color value (brightness, intensity)"
 msgstr "Nilai warna (kecerahan, intensitas)"
 
-#: ../brushlib/brushsettings.py:61
-msgid "change color hue"
+#: ../brushlib/brushsettings.py:63
+#, fuzzy
+msgid "Change color hue"
 msgstr "Ganti roda gelombang warna"
 
-#: ../brushlib/brushsettings.py:61
+#: ../brushlib/brushsettings.py:63
 msgid ""
 "Change color hue.\n"
 "-0.1 small clockwise color hue shift\n"
@@ -380,11 +445,12 @@ msgstr ""
 " 0.0 matikan\n"
 " 0.5 pergeseran 180 derajat berlawanan jarum jam"
 
-#: ../brushlib/brushsettings.py:62
-msgid "change color lightness (HSL)"
+#: ../brushlib/brushsettings.py:64
+#, fuzzy
+msgid "Change color lightness (HSL)"
 msgstr "Ganti pencahayaan warna (HSL)"
 
-#: ../brushlib/brushsettings.py:62
+#: ../brushlib/brushsettings.py:64
 msgid ""
 "Change the color lightness (luminance) using the HSL color model.\n"
 "-1.0 blacker\n"
@@ -396,11 +462,12 @@ msgstr ""
 " 0.0 matikan\n"
 " 1.0 putihkan"
 
-#: ../brushlib/brushsettings.py:63
-msgid "change color satur. (HSL)"
+#: ../brushlib/brushsettings.py:65
+#, fuzzy
+msgid "Change color satur. (HSL)"
 msgstr "Ganti kejenuhan warna (HSL)"
 
-#: ../brushlib/brushsettings.py:63
+#: ../brushlib/brushsettings.py:65
 msgid ""
 "Change the color saturation using the HSL color model.\n"
 "-1.0 more grayish\n"
@@ -412,11 +479,12 @@ msgstr ""
 " 0.0 matikan\n"
 " 1.0 lebih jenuh"
 
-#: ../brushlib/brushsettings.py:64
-msgid "change color value (HSV)"
+#: ../brushlib/brushsettings.py:66
+#, fuzzy
+msgid "Change color value (HSV)"
 msgstr "Ganti nilai warna (HSV)"
 
-#: ../brushlib/brushsettings.py:64
+#: ../brushlib/brushsettings.py:66
 msgid ""
 "Change the color value (brightness, intensity) using the HSV color model. "
 "HSV changes are applied before HSL.\n"
@@ -430,11 +498,12 @@ msgstr ""
 " 0.0 matikan\n"
 " 1.0 lebih terang"
 
-#: ../brushlib/brushsettings.py:65
-msgid "change color satur. (HSV)"
+#: ../brushlib/brushsettings.py:67
+#, fuzzy
+msgid "Change color satur. (HSV)"
 msgstr "Ganti kejenuhan warna (HSV)"
 
-#: ../brushlib/brushsettings.py:65
+#: ../brushlib/brushsettings.py:67
 msgid ""
 "Change the color saturation using the HSV color model. HSV changes are "
 "applied before HSL.\n"
@@ -448,11 +517,12 @@ msgstr ""
 " 0.0 matikan\n"
 " 1.0 lebih jenuh"
 
-#: ../brushlib/brushsettings.py:66
-msgid "smudge"
+#: ../brushlib/brushsettings.py:68 ../gui/brushsettingswindow.py:90
+#, fuzzy
+msgid "Smudge"
 msgstr "smudge"
 
-#: ../brushlib/brushsettings.py:66
+#: ../brushlib/brushsettings.py:68
 msgid ""
 "Paint with the smudge color instead of the brush color. The smudge color is "
 "slowly changed to the color you are painting on.\n"
@@ -466,11 +536,12 @@ msgstr ""
 " 0.5 campur warna smudge dan kuas\n"
 " 1.0 hanya warna smudge"
 
-#: ../brushlib/brushsettings.py:67
-msgid "smudge length"
+#: ../brushlib/brushsettings.py:69
+#, fuzzy
+msgid "Smudge length"
 msgstr "panjang smudge"
 
-#: ../brushlib/brushsettings.py:67
+#: ../brushlib/brushsettings.py:69
 msgid ""
 "This controls how fast the smudge color becomes the color you are painting "
 "on.\n"
@@ -482,11 +553,27 @@ msgstr ""
 "0.0 langsung merubah warna smudge\n"
 "1.0 tanpa merubah warna smudge"
 
-#: ../brushlib/brushsettings.py:68
-msgid "eraser"
+#: ../brushlib/brushsettings.py:70
+#, fuzzy
+msgid "Smudge radius"
+msgstr "jari-jari"
+
+#: ../brushlib/brushsettings.py:70
+msgid ""
+"This modifies the radius of the circle where color is picked up for "
+"smudging.\n"
+" 0.0 use the brush radius \n"
+"-0.7 half the brush radius\n"
+"+0.7 twice the brush radius\n"
+"+1.6 five times the brush radius (slow)"
+msgstr ""
+
+#: ../brushlib/brushsettings.py:71
+#, fuzzy
+msgid "Eraser"
 msgstr "penghapus"
 
-#: ../brushlib/brushsettings.py:68
+#: ../brushlib/brushsettings.py:71
 msgid ""
 "how much this tool behaves like an eraser\n"
 " 0.0 normal painting\n"
@@ -498,11 +585,12 @@ msgstr ""
 " 1.0 standard penghapus\n"
 " 0.5 hasilnya separo transparan"
 
-#: ../brushlib/brushsettings.py:70
-msgid "stroke threshold"
+#: ../brushlib/brushsettings.py:73
+#, fuzzy
+msgid "Stroke threshold"
 msgstr "ambang batas coretan"
 
-#: ../brushlib/brushsettings.py:70
+#: ../brushlib/brushsettings.py:73
 msgid ""
 "How much pressure is needed to start a stroke. This affects the stroke input "
 "only. Mypaint does not need a minimal pressure to start drawing."
@@ -511,11 +599,12 @@ msgstr ""
 "coretan masukan.Mypaint tidak perlu batasan minimal tekanan untuk memulai "
 "menggambar."
 
-#: ../brushlib/brushsettings.py:71
-msgid "stroke duration"
+#: ../brushlib/brushsettings.py:74
+#, fuzzy
+msgid "Stroke duration"
 msgstr "lama stroke"
 
-#: ../brushlib/brushsettings.py:71
+#: ../brushlib/brushsettings.py:74
 msgid ""
 "How far you have to move until the stroke input reaches 1.0. This value is "
 "logarithmic (negative values will not inverse the process)."
@@ -523,11 +612,12 @@ msgstr ""
 "Seberapa jauh kamu harus menggerakan pen sampai masukan mencapai 1.0. "
 "Nilainya logarithmik (nilai minus tidak akan membalikkan proses)."
 
-#: ../brushlib/brushsettings.py:72
-msgid "stroke hold time"
+#: ../brushlib/brushsettings.py:75
+#, fuzzy
+msgid "Stroke hold time"
 msgstr "waktu untuk menahan coretan"
 
-#: ../brushlib/brushsettings.py:72
+#: ../brushlib/brushsettings.py:75
 msgid ""
 "This defines how long the stroke input stays at 1.0. After that it will "
 "reset to 0.0 and start growing again, even if the stroke is not yet "
@@ -541,11 +631,12 @@ msgstr ""
 "2.0 berarti dua kali lebih lama dari 0.0 menuju 1.0\n"
 "9.9 dan nilai yg lebih besar berarti tak terhingga"
 
-#: ../brushlib/brushsettings.py:73
-msgid "custom input"
+#: ../brushlib/brushsettings.py:76
+#, fuzzy
+msgid "Custom input"
 msgstr "masukan custom"
 
-#: ../brushlib/brushsettings.py:73
+#: ../brushlib/brushsettings.py:76
 msgid ""
 "Set the custom input to this value. If it is slowed down, move it towards "
 "this value (see below). The idea is that you make this input depend on a "
@@ -563,11 +654,12 @@ msgstr ""
 "Jika kamu buatnya berubah 'secara acak' kamu bisa membuat input yg lambat "
 "(halus) tapiacak."
 
-#: ../brushlib/brushsettings.py:74
-msgid "custom input filter"
+#: ../brushlib/brushsettings.py:77
+#, fuzzy
+msgid "Custom input filter"
 msgstr "penghambat masukan"
 
-#: ../brushlib/brushsettings.py:74
+#: ../brushlib/brushsettings.py:77
 msgid ""
 "How slow the custom input actually follows the desired value (the one "
 "above). This happens at brushdab level (ignoring how much time has past, if "
@@ -579,25 +671,29 @@ msgstr ""
 "past, if brushdabs do not depend on time).\n"
 "0.0 no slowdown (changes apply instantly)"
 
-#: ../brushlib/brushsettings.py:76
-msgid "elliptical dab: ratio"
+#: ../brushlib/brushsettings.py:79
+#, fuzzy
+msgid "Elliptical dab: ratio"
 msgstr "dab elips: rasio"
 
-#: ../brushlib/brushsettings.py:76
+#: ../brushlib/brushsettings.py:79
+#, fuzzy
 msgid ""
-"aspect ratio of the dabs; must be >= 1.0, where 1.0 means a perfectly round "
+"Aspect ratio of the dabs; must be >= 1.0, where 1.0 means a perfectly round "
 "dab. TODO: linearize? start at 0.0 maybe, or log?"
 msgstr ""
 "aspek rasio dabs; harus >= 1.0, dimana 1.0 adalah bulat penuh dab. TODO: "
 "mendatarakan? mulailah pada 0.0 atau mungkin log?"
 
-#: ../brushlib/brushsettings.py:77
-msgid "elliptical dab: angle"
+#: ../brushlib/brushsettings.py:80
+#, fuzzy
+msgid "Elliptical dab: angle"
 msgstr "Dabs elips: derajat kemiringan"
 
-#: ../brushlib/brushsettings.py:77
+#: ../brushlib/brushsettings.py:80
+#, fuzzy
 msgid ""
-"this defines the angle by which eliptical dabs are tilted\n"
+"Angle by which elliptical dabs are tilted\n"
 " 0.0 horizontal dabs\n"
 " 45.0 45 degrees, turned clockwise\n"
 " 180.0 horizontal again"
@@ -607,508 +703,815 @@ msgstr ""
 " 45.0 45 derajat, arah jarum jam\n"
 " 180.0 horisontal lagi"
 
-#: ../brushlib/brushsettings.py:78
-msgid "direction filter"
+#: ../brushlib/brushsettings.py:81
+#, fuzzy
+msgid "Direction filter"
 msgstr "penghambat arah"
 
-#: ../brushlib/brushsettings.py:78
+#: ../brushlib/brushsettings.py:81
+#, fuzzy
 msgid ""
-"a low value will make the direction input adapt more quickly, a high value "
+"A low value will make the direction input adapt more quickly, a high value "
 "will make it smoother"
 msgstr ""
 "Nilai yg rendah akan membuat arah input menyesuaikan lebih cepat, nilai yg "
 "tinggikam menjadikan lebih halus"
 
-#. set up window
-#: ../gui/backgroundwindow.py:22
+#: ../gui/backgroundwindow.py:23
+#, fuzzy
+msgid "Save as Default"
+msgstr "simpan sebagai keadaan awal"
+
+#: ../gui/backgroundwindow.py:25
 msgid "Background"
 msgstr "Latar"
 
-#: ../gui/backgroundwindow.py:35
-msgid "save as default"
-msgstr "simpan sebagai keadaan awal"
-
-#: ../gui/backgroundwindow.py:39
-msgid "done"
-msgstr "selesai"
-
-#: ../gui/backgroundwindow.py:46
+#: ../gui/backgroundwindow.py:38
 msgid "Pattern"
 msgstr "Pola"
 
-#: ../gui/backgroundwindow.py:53 ../gui/drawwindow.py:118
+#: ../gui/backgroundwindow.py:45 ../gui/brushsettingswindow.py:94
+#: ../gui/colorselectionwindow.py:22 ../gui/drawwindow.py:112
 msgid "Color"
 msgstr "Warna"
 
-#: ../gui/backgroundwindow.py:59
-msgid "add color to patterns"
+#: ../gui/backgroundwindow.py:51
+#, fuzzy
+msgid "Add color to Patterns"
 msgstr "tambahkan warna pada pola"
 
-#: ../gui/backgroundwindow.py:126
+#: ../gui/backgroundwindow.py:123
 #, python-format
 msgid ""
 "The background %s was ignored because it has an alpha channel. Please remove "
 "it."
 msgstr "Latar %s diabaikan karena memiliki nilai ketransparanan Harap dihapus"
 
-#: ../gui/backgroundwindow.py:130
-#, python-format
+#: ../gui/backgroundwindow.py:127
+#, fuzzy, python-format
 msgid ""
-"The background %s was ignored because it has the wrong size. Only (N*%d)x(M*%"
-"d) is supported."
+"The background %s was ignored because it is the wrong size. Only (N*%d)x(M*"
+"%d) is supported."
 msgstr ""
 "Latar %s diabaikan karena memiliki ukuran yg salah. Hanya (N*%d)x(M*%d) yg "
 "didukung"
 
-#: ../gui/brushcreationwidget.py:34 ../gui/drawwindow.py:135
-msgid "Clear"
-msgstr "Kosongkan"
-
-#: ../gui/brushcreationwidget.py:43 ../gui/brushcreationwidget.py:188
-msgid "(no name)"
-msgstr "(no name)"
-
-#: ../gui/brushcreationwidget.py:47
-msgid "add as new"
-msgstr "tambah baru"
-
-#: ../gui/brushcreationwidget.py:48
-msgid "rename..."
-msgstr "ganti nama..."
-
-#: ../gui/brushcreationwidget.py:49
-msgid "remove..."
-msgstr "hapus..."
-
-#: ../gui/brushcreationwidget.py:50
-msgid "settings..."
-msgstr "pengaturan..."
+#: ../gui/brushcreationwidget.py:47 ../gui/brushcreationwidget.py:66
+#, fuzzy
+msgid "(unnamed brush)"
+msgstr "Ganti nama Kuas"
 
 #: ../gui/brushcreationwidget.py:51
-msgid "save settings"
+#, fuzzy
+msgid "Save Settings"
 msgstr "simpan pengaturan"
 
 #: ../gui/brushcreationwidget.py:52
-msgid "save preview"
-msgstr "simpan preview"
+msgid "Add As New"
+msgstr ""
 
-#: ../gui/brushcreationwidget.py:100 ../gui/brushcreationwidget.py:161
+#: ../gui/brushcreationwidget.py:53
+#, fuzzy
+msgid "Rename..."
+msgstr "ganti nama..."
+
+#: ../gui/brushcreationwidget.py:54
+#, fuzzy
+msgid "Remove..."
+msgstr "hapus..."
+
+#: ../gui/brushcreationwidget.py:104 ../gui/brushcreationwidget.py:154
 msgid "No brush selected!"
 msgstr "Tiada kuas yg dipilih"
 
-#: ../gui/brushcreationwidget.py:103
+#: ../gui/brushcreationwidget.py:107
 msgid "Rename Brush"
 msgstr "Ganti nama Kuas"
 
-#: ../gui/brushcreationwidget.py:115
+#: ../gui/brushcreationwidget.py:119
 msgid "A brush with this name already exists!"
 msgstr "Kuas dengan nama ini sudah ada sebelumnya!"
 
-#: ../gui/brushcreationwidget.py:142 ../gui/brushcreationwidget.py:153
-msgid "No brush selected, please use \"add as new\" instead."
+#: ../gui/brushcreationwidget.py:146 ../gui/brushcreationwidget.py:242
+#, fuzzy
+msgid "No brush selected, please use \"Add As New\" instead."
 msgstr "Tiada kuas yg dipilih, harap gunakan \"tambah baru\"."
 
-#: ../gui/brushcreationwidget.py:163
+#: ../gui/brushcreationwidget.py:156
 msgid "Really delete brush from disk?"
 msgstr "Benar akan menghapus kuas ini?"
 
-#: ../gui/brushselectionwindow.py:22
-msgid "Brush selection"
-msgstr "Pilihan Kuas"
-
-#: ../gui/brushselectionwindow.py:36 ../gui/drawwindow.py:106
+#: ../gui/brushcreationwidget.py:203 ../gui/drawwindow.py:109
 msgid "Edit"
 msgstr "Ubah"
 
-#: ../gui/brushselectionwindow.py:152
-msgid "Right click on group to modify"
-msgstr "Klik kanan untuk mengubah grup"
+#: ../gui/brushcreationwidget.py:207 ../gui/document.py:99
+msgid "Clear"
+msgstr "Kosongkan"
 
-#: ../gui/brushselectionwindow.py:234
+#: ../gui/brushcreationwidget.py:213 ../gui/filehandling.py:63
+msgid "Save"
+msgstr "Simpan"
+
+#: ../gui/brushmanager.py:67
+msgid "Lost & Found"
+msgstr ""
+
+#: ../gui/brushmanager.py:68
+msgid "Deleted"
+msgstr ""
+
+#: ../gui/brushmanager.py:69
+msgid "Favorites"
+msgstr ""
+
+#: ../gui/brushmanager.py:70
+msgid "Ink"
+msgstr ""
+
+#: ../gui/brushmanager.py:71
+msgid "Classic"
+msgstr ""
+
+#: ../gui/brushmanager.py:72
+msgid "Experimental"
+msgstr ""
+
+#: ../gui/brushselectionwindow.py:23
+msgid "Brush selection"
+msgstr "Pilihan Kuas"
+
+#: ../gui/brushselectionwindow.py:241
+msgid "Try right click, middle click or Ctrl click"
+msgstr ""
+
+#: ../gui/brushselectionwindow.py:409
 msgid "New group..."
 msgstr "Grup baru"
 
-#: ../gui/brushselectionwindow.py:236
+#: ../gui/brushselectionwindow.py:411
 msgid "Rename group..."
 msgstr "Ganti nama grup..."
 
-#: ../gui/brushselectionwindow.py:237
+#: ../gui/brushselectionwindow.py:412
 msgid "Delete group..."
 msgstr "Hapus grup"
 
-#: ../gui/brushselectionwindow.py:246
+#: ../gui/brushselectionwindow.py:413
+#, fuzzy
+msgid "Export group as brush package..."
+msgstr "Impor paket kuas..."
+
+#: ../gui/brushselectionwindow.py:415 ../gui/drawwindow.py:130
+#: ../gui/drawwindow.py:532
+msgid "Import brush package..."
+msgstr "Impor paket kuas..."
+
+#: ../gui/brushselectionwindow.py:429
 msgid "Create group"
 msgstr "Buat grup"
 
-#: ../gui/brushselectionwindow.py:251
+#: ../gui/brushselectionwindow.py:434
 msgid "Rename group"
 msgstr "Ganti nama grup"
 
-#: ../gui/brushselectionwindow.py:257
+#: ../gui/brushselectionwindow.py:440
 msgid "A group with this name already exists!"
 msgstr "group dengan nama ini sudah ada sebelumnya!"
 
-#: ../gui/brushselectionwindow.py:260
+#: ../gui/brushselectionwindow.py:443
+#, fuzzy
+msgid "Export brush pack..."
+msgstr "Impor paket kuas..."
+
+#: ../gui/brushselectionwindow.py:444 ../gui/drawwindow.py:533
+msgid "MyPaint brush package (*.zip)"
+msgstr "paket kuas MyPaint (*.zip)"
+
+#: ../gui/brushselectionwindow.py:450
 #, python-format
 msgid "Really delete group %s?"
 msgstr "Benar akan menghapus grup %s ini?"
 
-#: ../gui/brushselectionwindow.py:263
-msgid "This group can not be deleted (try to make it empty first)."
+#: ../gui/brushselectionwindow.py:453
+#, fuzzy
+msgid "This group can not be deleted (try to empty it first)."
 msgstr "Grup ini tidak bisa dihapus (coba untuk mengosongkannya dulu) "
 
-#: ../gui/brushsettingswindow.py:23
-msgid "Brush settings"
-msgstr "Pengaturan Kuas"
+#: ../gui/brushsettingswindow.py:32
+#, fuzzy
+msgid "Brush Editor"
+msgstr "Daftar Kuas"
 
-#: ../gui/brushsettingswindow.py:29
-msgid "live update the last canvas stroke"
+#. Expander with brushcreation widget under it
+#: ../gui/brushsettingswindow.py:44
+msgid "Edit brush icon"
+msgstr ""
+
+#. Live update
+#: ../gui/brushsettingswindow.py:55
+#, fuzzy
+msgid "Update the last canvas stroke in realtime"
 msgstr "aplikasikan langsung pada coretan terakhir"
 
-#: ../gui/brushsettingswindow.py:65
+#: ../gui/brushsettingswindow.py:73
+#, fuzzy
+msgid "All settings"
+msgstr "simpan pengaturan"
+
+#: ../gui/brushsettingswindow.py:87
+msgid "Basic"
+msgstr ""
+
+#: ../gui/brushsettingswindow.py:89
+msgid "Dabs"
+msgstr ""
+
+#: ../gui/brushsettingswindow.py:91
+msgid "Speed"
+msgstr ""
+
+#: ../gui/brushsettingswindow.py:92
+#, fuzzy
+msgid "Tracking"
+msgstr "tracking noise"
+
+#: ../gui/brushsettingswindow.py:124
+msgid "Reset to default value"
+msgstr ""
+
+#: ../gui/brushsettingswindow.py:129
 msgid "No additional configuration"
 msgstr "Tiada pengaturan tambahan"
 
-#: ../gui/brushsettingswindow.py:70 ../gui/brushsettingswindow.py:115
-msgid "Add input values mapping"
+#: ../gui/brushsettingswindow.py:134 ../gui/brushsettingswindow.py:181
+#, fuzzy
+msgid "Add input value mapping"
 msgstr "Tambah pemetaan nilai"
 
-#: ../gui/brushsettingswindow.py:117
-msgid "Modify input values mapping"
+#: ../gui/brushsettingswindow.py:183
+#, fuzzy
+msgid "Modify input value mapping"
 msgstr "Ganti pemetaan nilai masukan"
 
-#: ../gui/colorsamplerwindow.py:815
+#: ../gui/colorsamplerwindow.py:164
+msgid "Recently used colors"
+msgstr ""
+
+#. : Background neutral mid grey, intended to permit colour comparisons without theme colours distracting and imposing themselves
+#. : Slightly distinct outlinefor colour pots, intended to reduce "1+1=3 (or more)" effects
+#. : Central saturation/value square
+#. : Grey area inside the rings
+#. : Inner ring of color sampler boxes (hue)
+#. : Outer gradiated ring (hue)
+#. : Current/previous comparison semicircles
+#. : Blank outer area, outer space
+#: ../gui/colorsamplerwindow.py:194
+#, fuzzy
+msgid "Change Saturation and Value"
+msgstr "Ubah nilai/kejenuhan"
+
+#: ../gui/colorsamplerwindow.py:196
+msgid "Harmony color switcher"
+msgstr ""
+
+#: ../gui/colorsamplerwindow.py:197
+#, fuzzy
+msgid "Change Hue"
+msgstr "Ubah warna"
+
+#: ../gui/colorsamplerwindow.py:198
+msgid "Current color vs. Last Used"
+msgstr ""
+
+#: ../gui/colorsamplerwindow.py:797
+#, fuzzy
+msgid "Change Hue, Saturation and Value"
+msgstr "Ubah nilai/kejenuhan"
+
+#: ../gui/colorsamplerwindow.py:868
+msgid "Change Red, Green and Blue components"
+msgstr ""
+
+#: ../gui/colorsamplerwindow.py:930
 msgid "RGB"
 msgstr "RGB"
 
-#: ../gui/colorsamplerwindow.py:816
+#: ../gui/colorsamplerwindow.py:931
 msgid "HSV"
 msgstr "HSV"
 
-#: ../gui/colorsamplerwindow.py:818
-msgid "Colors history"
+#. Colour history
+#: ../gui/colorsamplerwindow.py:934
+#, fuzzy
+msgid "Color history"
 msgstr "Warna yg terpakai"
 
-#: ../gui/colorsamplerwindow.py:822 ../gui/functionwindow.py:137
+#. Colour details
+#: ../gui/colorsamplerwindow.py:941 ../gui/functionwindow.py:154
 msgid "Details"
 msgstr "Detil"
 
-#: ../gui/colorsamplerwindow.py:832
+#: ../gui/colorsamplerwindow.py:957
 msgid "Harmonies"
 msgstr "Harmoni"
 
-#: ../gui/colorsamplerwindow.py:834
+#: ../gui/colorsamplerwindow.py:959
 msgid "Analogous"
 msgstr "Analog"
 
-#: ../gui/colorsamplerwindow.py:835
-msgid "Complimentary color"
+#: ../gui/colorsamplerwindow.py:959
+msgid ""
+"Three nearby hues on the color wheel.\n"
+"Often found in nature, frequently pleasing to the eye."
+msgstr ""
+
+#: ../gui/colorsamplerwindow.py:960
+#, fuzzy
+msgid "Complementary"
 msgstr "Warna senada"
 
-#: ../gui/colorsamplerwindow.py:836
-msgid "Split complimentary"
+#: ../gui/colorsamplerwindow.py:960
+msgid ""
+"Two opposite hues on the color wheel.\n"
+"Vibrant, and maximally contrasting."
+msgstr ""
+
+#: ../gui/colorsamplerwindow.py:961
+#, fuzzy
+msgid "Split complementary"
 msgstr "Senada terbagi"
 
-#: ../gui/colorsamplerwindow.py:837
-msgid "Double complimentary"
+#: ../gui/colorsamplerwindow.py:961
+msgid ""
+"Two hues next to the current hue's complement.\n"
+"Contrasting, but adds a possibly pleasing harmony."
+msgstr ""
+
+#: ../gui/colorsamplerwindow.py:962
+#, fuzzy
+msgid "Double complementary"
 msgstr "Senada ganda"
 
-#: ../gui/colorsamplerwindow.py:838
+#: ../gui/colorsamplerwindow.py:962
+msgid "Four hues in two complementary pairs."
+msgstr ""
+
+#: ../gui/colorsamplerwindow.py:963
 msgid "Square"
 msgstr "Kotak"
 
-#: ../gui/colorsamplerwindow.py:839
+#: ../gui/colorsamplerwindow.py:963
+msgid "Four equally-spaced hues"
+msgstr ""
+
+#: ../gui/colorsamplerwindow.py:964
 msgid "Triadic"
 msgstr "Triadic"
 
-#: ../gui/colorsamplerwindow.py:841
-msgid "Select harmonies"
-msgstr "Pilih harmoni"
+#: ../gui/colorsamplerwindow.py:964
+msgid ""
+"Three equally-spaced hues.\n"
+"Vibrant with equal tension."
+msgstr ""
 
-#: ../gui/colorsamplerwindow.py:844
+#: ../gui/colorsamplerwindow.py:967
 msgid "Change value/saturation"
 msgstr "Ubah nilai/kejenuhan"
 
-#: ../gui/colorsamplerwindow.py:847
+#: ../gui/colorsamplerwindow.py:970
 msgid "Blend each color to opposite"
 msgstr "Campur tiap warna menjadi kebalikannya"
 
-#: ../gui/colorsamplerwindow.py:849
+#: ../gui/colorsamplerwindow.py:972
 msgid "Blend each color to negative"
 msgstr "Campur tiap warna menjadi negatif"
 
-#: ../gui/colorsamplerwindow.py:914
+#: ../gui/colorsamplerwindow.py:1053 ../gui/colorsamplerwindow.py:1081
 msgid "MyPaint color selector"
 msgstr "Pemilih Warna MyPaint"
 
-#: ../gui/dialogs.py:37
+#: ../gui/colorselectionwindow.py:35
+msgid "Currently chosen color"
+msgstr ""
+
+#: ../gui/colorselectionwindow.py:37
+msgid "Last color painted with"
+msgstr ""
+
+#: ../gui/colorselectionwindow.py:118
+#, fuzzy
+msgid "Pick Colour"
+msgstr "Pungut warna"
+
+#: ../gui/dialogs.py:45 ../gui/layerswindow.py:190
 msgid "Name"
 msgstr "Nama:"
 
-#. name, stock id, label, accelerator, tooltip, callback
-#: ../gui/drawwindow.py:103
-msgid "File"
-msgstr "Berkas"
+#: ../gui/dialogs.py:79
+msgid "Overwrite brush?"
+msgstr ""
 
-#. FIXME: should do this periodically, not only on quit
-#: ../gui/drawwindow.py:104 ../gui/drawwindow.py:618
-msgid "Quit"
-msgstr "Keluar"
+#: ../gui/dialogs.py:88 ../gui/dialogs.py:146
+msgid "Replace"
+msgstr ""
 
-#: ../gui/drawwindow.py:107
+#: ../gui/dialogs.py:91 ../gui/dialogs.py:149
+#, fuzzy
+msgid "Rename"
+msgstr "Ganti nama Kuas"
+
+#: ../gui/dialogs.py:94
+msgid "Replace all"
+msgstr ""
+
+#: ../gui/dialogs.py:96
+#, fuzzy
+msgid "Rename all"
+msgstr "Ganti nama Kuas"
+
+#: ../gui/dialogs.py:111
+#, fuzzy
+msgid "Imported brush"
+msgstr "Impor paket kuas..."
+
+#: ../gui/dialogs.py:112
+msgid "Existing brush"
+msgstr ""
+
+#: ../gui/dialogs.py:114
+#, python-format
+msgid ""
+"<b>A brush named `%s' already exists.</b>\n"
+"Do you want to replace it, or should the new brush be renamed?"
+msgstr ""
+
+#: ../gui/dialogs.py:137
+msgid "Overwrite brush group?"
+msgstr ""
+
+#: ../gui/dialogs.py:159
+#, python-format
+msgid ""
+"<b>A group named `%s' already exists.</b>\n"
+"Do you want to replace it, or should the new group be renamed?\n"
+"If you replace it, the brushes may be moved to a group called `%s'."
+msgstr ""
+
+#: ../gui/dialogs.py:247
+#, fuzzy
+msgid "Import brush package?"
+msgstr "Impor paket kuas..."
+
+#: ../gui/dialogs.py:259
+#, python-format
+msgid "<b>Do you really want to import package `%s'?</b>"
+msgstr ""
+
+#: ../gui/document.py:79
 msgid "Undo"
 msgstr "Undo"
 
-#: ../gui/drawwindow.py:108
+#: ../gui/document.py:80
 msgid "Redo"
 msgstr "Redo"
 
-#: ../gui/drawwindow.py:110
-msgid "Brush"
-msgstr "Kuas"
-
-#: ../gui/drawwindow.py:111
+#: ../gui/document.py:82
 msgid "Brighter"
 msgstr "Lebih terang"
 
-#: ../gui/drawwindow.py:112
+#: ../gui/document.py:83
 msgid "Smaller"
 msgstr "Lebih kecil"
 
-#: ../gui/drawwindow.py:113
+#: ../gui/document.py:84
 msgid "More Opaque"
 msgstr "Tambah Tingkat Kejelasan"
 
-#: ../gui/drawwindow.py:114
+#: ../gui/document.py:85
 msgid "Less Opaque"
 msgstr "Kurangi Tingkat Kejelasan"
 
-#: ../gui/drawwindow.py:115
+#: ../gui/document.py:86
 msgid "Toggle Eraser Mode"
 msgstr "Modus penghapus"
 
-#: ../gui/drawwindow.py:116
+#. TODO: make toggle action
+#: ../gui/document.py:87 ../gui/preferenceswindow.py:37
 msgid "Pick Context (layer, brush and color)"
 msgstr "Pungut.Konteks (lapisan,kuas dan warna)"
 
-#: ../gui/drawwindow.py:119
+#: ../gui/document.py:89
 msgid "Darker"
 msgstr "Pergelap"
 
-#: ../gui/drawwindow.py:120
+#: ../gui/document.py:90
+msgid "Warmer"
+msgstr ""
+
+#: ../gui/document.py:91
+msgid "Cooler"
+msgstr ""
+
+#: ../gui/document.py:92
+msgid "Purer"
+msgstr ""
+
+#: ../gui/document.py:93
+#, fuzzy
+msgid "Grayer"
+msgstr "Lapisan"
+
+#: ../gui/document.py:94
 msgid "Bigger"
 msgstr "Perbesar"
 
-#: ../gui/drawwindow.py:121
-msgid "Pick Color"
-msgstr "Pungut warna"
-
-#: ../gui/drawwindow.py:122
-msgid "Color History"
-msgstr "Warna yg terpakai"
-
-#: ../gui/drawwindow.py:123
-msgid "Color Changer"
-msgstr "Pengubah Warna"
-
-#: ../gui/drawwindow.py:124
-msgid "Color Ring"
-msgstr "Cincin Warna"
-
-#: ../gui/drawwindow.py:126
-msgid "Brushkeys"
-msgstr "Tombol pintas kuas"
-
-#. each of the context actions are generated and added below
-#: ../gui/drawwindow.py:128
+#. Context actions are also added in init_context_actions
+#: ../gui/document.py:97
 msgid "Save to Most Recently Restored"
 msgstr "Simpan yg terakhir tadi terpakai"
 
-#: ../gui/drawwindow.py:129
-msgid "Help!"
-msgstr "Bantuan!"
-
-#: ../gui/drawwindow.py:131 ../gui/layerswindow.py:456
-msgid "Layers"
-msgstr "Lapisan"
-
-#: ../gui/drawwindow.py:133
-msgid "Layers..."
-msgstr "Lapisan..."
-
-#: ../gui/drawwindow.py:134
-msgid "Background..."
-msgstr "Latar..."
-
-#: ../gui/drawwindow.py:136
+#: ../gui/document.py:100
 msgid "Copy to Clipboard"
 msgstr "Salin ke Clipboard"
 
-#: ../gui/drawwindow.py:137
+#: ../gui/document.py:101
 msgid "Paste Clipboard (Replace Layer)"
 msgstr "Tempel Clipboard (Mengganti Lapisan)"
 
-#: ../gui/drawwindow.py:138
+#: ../gui/document.py:102 ../gui/preferenceswindow.py:38
 msgid "Select Layer at Cursor"
 msgstr "Pilih lapisan oleh cursor"
 
-#: ../gui/drawwindow.py:139
+#: ../gui/document.py:103
 msgid "Next (above current)"
 msgstr "Berikut (diatasnya)"
 
-#: ../gui/drawwindow.py:140
+#: ../gui/document.py:104
 msgid "Next (below current)"
 msgstr "Berikut (dibawhnya)"
 
-#: ../gui/drawwindow.py:141
+#: ../gui/document.py:105
 msgid "New (above current)"
 msgstr "Baru (diatasnya)"
 
-#: ../gui/drawwindow.py:142
+#: ../gui/document.py:106
 msgid "New (below current)"
 msgstr "Baru (dibawahnya)"
 
-#: ../gui/drawwindow.py:143
+#. XXX need a batter one, but stay consistent with layerswindow for now
+#: ../gui/document.py:108 ../gui/layerswindow.py:346
 msgid "Merge Down"
 msgstr "Gabung kebawah"
 
-#: ../gui/drawwindow.py:144
+#: ../gui/document.py:109
 msgid "Remove"
 msgstr "Hapus"
 
-#: ../gui/drawwindow.py:145
+#: ../gui/document.py:110
 msgid "Increase Layer Opacity"
 msgstr "Tambah Kejelasan Lapisan"
 
-#: ../gui/drawwindow.py:146
+#: ../gui/document.py:111
 msgid "Decrease Layer Opacity"
 msgstr "Kurangi Kejelasan Lapisan"
 
-#: ../gui/drawwindow.py:148
-msgid "Brush List..."
-msgstr "Daftar Kuas..."
-
-#: ../gui/drawwindow.py:149
-msgid "Brush Settings..."
-msgstr "Pengaturan Kuas"
-
-#: ../gui/drawwindow.py:150
-msgid "Color Triangle..."
-msgstr "Segitiga Warna..."
-
-#: ../gui/drawwindow.py:151
-msgid "Color Sampler..."
-msgstr "Pengambil Warna..."
-
-#: ../gui/drawwindow.py:152
-msgid "Settings..."
-msgstr "Pengaturan..."
-
-#. TODO: make toggle action
-#: ../gui/drawwindow.py:154 ../gui/drawwindow.py:174
-msgid "Help"
-msgstr "Bantuan"
-
-#: ../gui/drawwindow.py:155
-msgid "Where is the Documentation?"
-msgstr "Dimana dokumentasinya?"
-
-#: ../gui/drawwindow.py:156
-msgid "Change the Keyboard Shortcuts?"
-msgstr "Ubah tombol pintas"
-
-#: ../gui/drawwindow.py:157
-msgid "About MyPaint"
-msgstr "Tentang MyPaint"
-
-#: ../gui/drawwindow.py:159
-msgid "Debug"
-msgstr "Debug"
-
-#: ../gui/drawwindow.py:162
+#: ../gui/document.py:113
 msgid "Shortcuts"
 msgstr "Tombol pintas"
 
-#: ../gui/drawwindow.py:164
-msgid "View"
-msgstr "Pandangan"
+#: ../gui/document.py:115
+msgid "Reset and Center"
+msgstr ""
 
-#: ../gui/drawwindow.py:165
-msgid "Fullscreen"
-msgstr "Penuhi Layar"
+#: ../gui/document.py:116
+msgid "Reset"
+msgstr ""
 
-#: ../gui/drawwindow.py:166
-msgid "Show Menu"
-msgstr "Perlihatkan Menu"
+#: ../gui/document.py:117 ../gui/preferenceswindow.py:40
+#, fuzzy
+msgid "Zoom"
+msgstr "Perbesar"
 
-#: ../gui/drawwindow.py:167
-msgid "Reset (Zoom, Rotation, Mirror)"
-msgstr "Set Ulang (Perbesaran, Rotasi, Cermin)"
+#: ../gui/document.py:118
+msgid "Rotation"
+msgstr ""
 
-#: ../gui/drawwindow.py:168
+#: ../gui/document.py:119
+#, fuzzy
+msgid "Mirror"
+msgstr "Cerminkan Gambar"
+
+#: ../gui/document.py:120
 msgid "Zoom In (at cursor)"
 msgstr "Perbesar pada kursor"
 
-#: ../gui/drawwindow.py:169
+#: ../gui/document.py:121
 msgid "Zoom Out"
 msgstr "Perkecil"
 
-#: ../gui/drawwindow.py:170
+#: ../gui/document.py:122
 msgid "Rotate Counterclockwise"
 msgstr "Putar Berlawanan Jarum Jam"
 
-#: ../gui/drawwindow.py:171
+#: ../gui/document.py:123
 msgid "Rotate Clockwise"
 msgstr "Putar Searah Jarum Jam"
 
-#: ../gui/drawwindow.py:172
+#: ../gui/document.py:124
+msgid "Mirror Horizontal"
+msgstr ""
+
+#: ../gui/document.py:125
+msgid "Mirror Vertical"
+msgstr ""
+
+#: ../gui/document.py:126
 msgid "Layer Solo"
 msgstr "Lapisan sendiri"
 
-#: ../gui/drawwindow.py:173
+#. TODO: make toggle action
+#: ../gui/document.py:127
 msgid "Hide Layers Above Current"
 msgstr "Sembunyikan Lapisan Diatasnya"
 
-#: ../gui/drawwindow.py:180
+#. name, stock id, label, accelerator, tooltip, callback, default toggle status
+#: ../gui/document.py:134
+#, fuzzy
+msgid "Print Brush Input Values to Console"
+msgstr "Cetak nilai input kuas pada konsol"
+
+#: ../gui/document.py:135
+msgid "Visualize Rendering"
+msgstr "Gambarkan Prosesnya"
+
+#: ../gui/document.py:136
+msgid "Disable GTK Double Buffering"
+msgstr "Matikan GTK Double Rendering"
+
+#: ../gui/document.py:144
 #, python-format
 msgid "Restore Brush %d"
 msgstr "Pilih Kuas %d"
 
-#: ../gui/drawwindow.py:182
+#: ../gui/document.py:146
 #, python-format
 msgid "Save to Brush %d"
 msgstr "Simpan sbg Kuas %d"
 
-#. name, stock id, label, accelerator, tooltip, callback, default toggle status
-#: ../gui/drawwindow.py:189
-msgid "Print Brush Input Values to stdout"
-msgstr "Cetak nilai input kuas pada konsol"
+#. name, stock id, label, accelerator, tooltip, callback
+#: ../gui/drawwindow.py:104
+msgid "File"
+msgstr "Berkas"
 
-#: ../gui/drawwindow.py:190
-msgid "Visualize Rendering"
-msgstr "Gambarkan Prosesnya"
+#. FIXME: should do this periodically, not only on quit
+#: ../gui/drawwindow.py:105 ../gui/drawwindow.py:521
+msgid "Quit"
+msgstr "Keluar"
 
-#: ../gui/drawwindow.py:191
-msgid "Disable GTK Double Buffering"
-msgstr "Matikan GTK Double Rendering"
+#: ../gui/drawwindow.py:106
+#, fuzzy
+msgid "Document Frame..."
+msgstr "ganti nama..."
 
-#: ../gui/drawwindow.py:192
-msgid "Mirror Image"
-msgstr "Cerminkan Gambar"
+#: ../gui/drawwindow.py:107
+#, fuzzy
+msgid "Toggle Document Frame"
+msgstr "Nyalakan modus ubah"
 
-#: ../gui/drawwindow.py:618
+#: ../gui/drawwindow.py:110
+msgid "Preferences..."
+msgstr ""
+
+#: ../gui/drawwindow.py:113 ../gui/preferenceswindow.py:36
+msgid "Pick Color"
+msgstr "Pungut warna"
+
+#: ../gui/drawwindow.py:114 ../gui/preferenceswindow.py:46
+msgid "Color History"
+msgstr "Warna yg terpakai"
+
+#: ../gui/drawwindow.py:115 ../gui/preferenceswindow.py:44
+msgid "Color Changer"
+msgstr "Pengubah Warna"
+
+#: ../gui/drawwindow.py:116 ../gui/preferenceswindow.py:45
+msgid "Color Ring"
+msgstr "Cincin Warna"
+
+#: ../gui/drawwindow.py:117
+msgid "Color Triangle..."
+msgstr "Segitiga Warna..."
+
+#: ../gui/drawwindow.py:118
+msgid "Color Sampler..."
+msgstr "Pengambil Warna..."
+
+#: ../gui/drawwindow.py:120
+msgid "Brushkeys"
+msgstr "Tombol pintas kuas"
+
+#: ../gui/drawwindow.py:121
+msgid "Help!"
+msgstr "Bantuan!"
+
+#: ../gui/drawwindow.py:123 ../gui/layerswindow.py:310
+msgid "Layers"
+msgstr "Lapisan"
+
+#: ../gui/drawwindow.py:124
+msgid "Layers..."
+msgstr "Lapisan..."
+
+#: ../gui/drawwindow.py:125
+msgid "Background..."
+msgstr "Latar..."
+
+#: ../gui/drawwindow.py:127
+msgid "Brush"
+msgstr "Kuas"
+
+#: ../gui/drawwindow.py:128
+msgid "Brush List..."
+msgstr "Daftar Kuas..."
+
+#: ../gui/drawwindow.py:129
+#, fuzzy
+msgid "Brush Editor..."
+msgstr "Daftar Kuas..."
+
+#: ../gui/drawwindow.py:132 ../gui/drawwindow.py:149
+msgid "Help"
+msgstr "Bantuan"
+
+#: ../gui/drawwindow.py:133
+msgid "Where is the Documentation?"
+msgstr "Dimana dokumentasinya?"
+
+#: ../gui/drawwindow.py:134
+msgid "Change the Keyboard Shortcuts?"
+msgstr "Ubah tombol pintas"
+
+#: ../gui/drawwindow.py:135
+msgid "About MyPaint"
+msgstr "Tentang MyPaint"
+
+#: ../gui/drawwindow.py:137
+msgid "Debug"
+msgstr "Debug"
+
+#: ../gui/drawwindow.py:138
+msgid "Print Memory Leak Info to Console (Slow!)"
+msgstr ""
+
+#: ../gui/drawwindow.py:139
+msgid "Run Garbage Collector Now"
+msgstr ""
+
+#: ../gui/drawwindow.py:140
+msgid "Start/Stop Python Profiling (cProfile)"
+msgstr ""
+
+#: ../gui/drawwindow.py:141
+#, fuzzy
+msgid "Test input devices..."
+msgstr "Modus untuk media input"
+
+#: ../gui/drawwindow.py:142
+msgid "GTK input device dialog..."
+msgstr ""
+
+#: ../gui/drawwindow.py:145 ../gui/preferenceswindow.py:223
+msgid "View"
+msgstr "Pandangan"
+
+#: ../gui/drawwindow.py:146
+#, fuzzy
+msgid "Popup Menu"
+msgstr "Perlihatkan Menu"
+
+#: ../gui/drawwindow.py:147
+msgid "Fullscreen"
+msgstr "Penuhi Layar"
+
+#: ../gui/drawwindow.py:148 ../gui/preferenceswindow.py:35
+msgid "Toggle Subwindows"
+msgstr ""
+
+#: ../gui/drawwindow.py:521
 msgid "Really Quit?"
 msgstr "Benar akan berhenti?"
 
-#: ../gui/drawwindow.py:719
+#: ../gui/drawwindow.py:544
+#, fuzzy
 msgid ""
-"Copyright (C) 2005-2009\n"
+"Copyright (C) 2005-2010\n"
 "Martin Renold and the MyPaint Development Team"
 msgstr ""
 "Hak Cipta (C) 2005-2009\n"
 "Martin Renold dan Tim Pengembangan MyPaint"
 
-#: ../gui/drawwindow.py:723
+#: ../gui/drawwindow.py:548
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -1126,38 +1529,50 @@ msgstr ""
 "Perangkat lunak is diedarkan dengan harapan akan berguna, tapi TANPA JAMINAN "
 "APAPUN. Lihat berkas COPYING untuk lebih detilnya."
 
-#: ../gui/drawwindow.py:733 ../gui/drawwindow.py:737 ../gui/drawwindow.py:739
-#: ../gui/drawwindow.py:740 ../gui/drawwindow.py:742
+#. (in order of appearance)
+#: ../gui/drawwindow.py:559 ../gui/drawwindow.py:563 ../gui/drawwindow.py:565
+#: ../gui/drawwindow.py:566 ../gui/drawwindow.py:568 ../gui/drawwindow.py:572
+#: ../gui/drawwindow.py:573 ../gui/drawwindow.py:574 ../gui/drawwindow.py:575
 msgid "programming"
 msgstr "pemrograman"
 
-#: ../gui/drawwindow.py:734 ../gui/drawwindow.py:743 ../gui/drawwindow.py:744
-#: ../gui/drawwindow.py:745
+#: ../gui/drawwindow.py:560 ../gui/drawwindow.py:569 ../gui/drawwindow.py:571
+#: ../gui/drawwindow.py:577
 msgid "brushes"
 msgstr "kuas"
 
-#: ../gui/drawwindow.py:735 ../gui/drawwindow.py:741
+#: ../gui/drawwindow.py:561 ../gui/drawwindow.py:567
 msgid "portability"
 msgstr "portabilitas"
 
-#: ../gui/drawwindow.py:736
+#: ../gui/drawwindow.py:562
 msgid "brushes, programming"
 msgstr "kuas, pemrograman"
 
-#: ../gui/drawwindow.py:738
+#: ../gui/drawwindow.py:564
 msgid "patterns, brushes"
 msgstr "pola,kuas"
 
-#: ../gui/drawwindow.py:748
+#: ../gui/drawwindow.py:570
+#, fuzzy
+msgid "brushes, patterns"
+msgstr "kuas, pemrograman"
+
+#: ../gui/drawwindow.py:576 ../gui/drawwindow.py:578
+#, fuzzy
+msgid "patterns"
+msgstr "Pola"
+
+#: ../gui/drawwindow.py:581
 msgid "desktop icon"
 msgstr "icon desktop"
 
-#: ../gui/drawwindow.py:770
+#: ../gui/drawwindow.py:611
 msgid "Move your mouse over a menu entry, then press the key to assign."
 msgstr ""
 "Pindahkan mouse pada isian menu, lalu tekan tombol pintas yg diinginkan"
 
-#: ../gui/drawwindow.py:772
+#: ../gui/drawwindow.py:613
 msgid ""
 "You can also drag the canvas with the mouse while holding the middle mouse "
 "button or spacebar. Or with the arrow keys.\n"
@@ -1173,17 +1588,16 @@ msgstr ""
 "ada gangguan yg menyebabkan komputermu kehabisan memori. Tetapi kamu tetap "
 "memerlukan banyak memori jika kamu melukis penuh ketika gambar diperkecil."
 
-#: ../gui/drawwindow.py:779
+#: ../gui/drawwindow.py:620
+#, fuzzy
 msgid ""
-"This is used to quickly save/restore brush settings using keyboard "
+"Brushkeys are used to quickly save/restore brush settings using keyboard "
 "shortcuts. You can paint with one hand and change brushes with the other "
-"without interrupting.\n"
+"without interruption.\n"
 "\n"
 "There are 10 memory slots to hold brush settings.\n"
-"Those are anonymous brushes, they are not visible in the brush selector "
-"list. But they will stay even if you quit. They will also remember the "
-"selected color. In contrast, selecting a normal brush never changes the "
-"color. "
+"They are anonymous brushes, which are not visible in the brush selector "
+"list. But they are remembered even if you quit."
 msgstr ""
 "Ini untuk menyimpan dan kemudian memakai pengaturan kuas dengan tombol-"
 "pintas kibor. Kamu dapat melukis dengan satu tangan dan mengganti kuas "
@@ -1195,7 +1609,7 @@ msgstr ""
 "juga warna yg dipilih. Sebaliknya, memilih warna kuas yg dari daftar kuas "
 "tidak mengubah warna kuas tersebut. "
 
-#: ../gui/drawwindow.py:790
+#: ../gui/drawwindow.py:629
 msgid ""
 "There is a tutorial available on the MyPaint homepage. It explains some "
 "features which are hard to discover yourself.\n"
@@ -1211,94 +1625,132 @@ msgstr ""
 "(tekanan, kecepatan, dll.) tersdia sebagai tooltips. Cukup arahkan mouse "
 "diatas label untuk melihatnya. \n"
 
-#: ../gui/filehandling.py:36
+#: ../gui/filehandling.py:59
 msgid "New"
 msgstr "Baru"
 
-#: ../gui/filehandling.py:37 ../gui/filehandling.py:199
+#: ../gui/filehandling.py:60 ../gui/filehandling.py:290
 msgid "Open..."
 msgstr "Buka..."
 
-#: ../gui/filehandling.py:38
+#: ../gui/filehandling.py:61
 msgid "Open Last"
 msgstr "Buka Terdahulu"
 
-#: ../gui/filehandling.py:39
+#: ../gui/filehandling.py:62
 msgid "Reload"
 msgstr "Muat kembali"
 
-#: ../gui/filehandling.py:40 ../gui/settingswindow.py:96
-msgid "Save"
-msgstr "Simpan"
-
-#: ../gui/filehandling.py:41
+#: ../gui/filehandling.py:64
 msgid "Save As..."
 msgstr "Simpan Sebagai..."
 
-#: ../gui/filehandling.py:42
+#: ../gui/filehandling.py:65
+#, fuzzy
+msgid "Export..."
+msgstr "Laporkan..."
+
+#: ../gui/filehandling.py:66
 msgid "Save As Scrap"
 msgstr "Simpan Sebagai Scrap"
 
-#: ../gui/filehandling.py:43
+#: ../gui/filehandling.py:67
 msgid "Open Previous Scrap"
 msgstr "Buka Scrap Terdahulu"
 
-#: ../gui/filehandling.py:44
+#: ../gui/filehandling.py:68
 msgid "Open Next Scrap"
 msgstr "Simpan Scrap Selanjutnya"
 
-#: ../gui/filehandling.py:50
+#: ../gui/filehandling.py:74
 msgid "Open Recent"
 msgstr "Buka yg Terdahulu"
 
-#: ../gui/filehandling.py:50
+#: ../gui/filehandling.py:74
 msgid "Open Recent files"
 msgstr "Buka Berkas Terdahulu"
 
-#: ../gui/filehandling.py:89
-msgid "Save.."
-msgstr "Simpan.."
+#. (name, patterns)
+#: ../gui/filehandling.py:93
+msgid "All Recognized Formats"
+msgstr "Semua Format yg dikenal"
 
-#. name, patterns, saveopts
-#: ../gui/filehandling.py:101
-msgid "Any format (prefer OpenRaster)"
-msgstr "Format apapun (biasanya Openraster)"
-
-#: ../gui/filehandling.py:102 ../gui/filehandling.py:207
+#. 0
+#: ../gui/filehandling.py:94 ../gui/filehandling.py:100
 msgid "OpenRaster (*.ora)"
 msgstr "Openraster (*.ora)"
 
-#: ../gui/filehandling.py:104
+#: ../gui/filehandling.py:95
+msgid "PNG (*.png)"
+msgstr "PNG (*.png)"
+
+#: ../gui/filehandling.py:96
+msgid "JPEG (*.jpg; *.jpeg)"
+msgstr "JPEG (*.jpg; *.jpeg)"
+
+#. (name, extension, options)
+#: ../gui/filehandling.py:99
+msgid "By extension (prefer default format)"
+msgstr ""
+
+#. 1
+#: ../gui/filehandling.py:101
+msgid "PNG solid with background (*.png)"
+msgstr "PNG dengan latar solid (*.png)"
+
+#. 2
+#: ../gui/filehandling.py:102
 msgid "PNG transparent (*.png)"
 msgstr "PNG transparan (*.png)"
 
-#: ../gui/filehandling.py:105
+#. 3
+#: ../gui/filehandling.py:103
 msgid "Multiple PNG transparent (*.XXX.png)"
 msgstr "Beberapa PNG transparen (*.xxx.png)"
 
-#: ../gui/filehandling.py:106
+#. 4
+#: ../gui/filehandling.py:104
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
 msgstr "JPEG kualitas 90% (*.jpg; *.jpeg)"
 
-#: ../gui/filehandling.py:127
+#: ../gui/filehandling.py:145
+#, fuzzy
+msgid "Save..."
+msgstr "Simpan.."
+
+#: ../gui/filehandling.py:156
+#, fuzzy
+msgid "Format to save as:"
+msgstr "Gagal menyimpan: %s"
+
+#: ../gui/filehandling.py:182
+msgid "Confirm"
+msgstr ""
+
+#: ../gui/filehandling.py:182
+#, fuzzy
+msgid "Really continue?"
+msgstr "Benar akan berhenti?"
+
+#: ../gui/filehandling.py:191
 #, python-format
 msgid "%d minute"
 msgid_plural "%d minutes"
 msgstr[0] "%d menit"
 msgstr[1] "%d menit"
 
-#: ../gui/filehandling.py:130
+#: ../gui/filehandling.py:194
 #, python-format
 msgid "%d second"
 msgid_plural "%d seconds"
 msgstr[0] "%d detik"
 msgstr[1] "%d detik"
 
-#: ../gui/filehandling.py:136
+#: ../gui/filehandling.py:200
 msgid "_Save as Scrap"
 msgstr "_Simpan sebagai Scrap"
 
-#: ../gui/filehandling.py:142
+#: ../gui/filehandling.py:206
 #, python-format
 msgid ""
 "<b>%s</b>\n"
@@ -1309,42 +1761,49 @@ msgstr ""
 "\n"
 "Akan mengabaikan %s lukisan yg tak tersimpan."
 
-#: ../gui/filehandling.py:180
+#: ../gui/filehandling.py:248
 msgid "Did not save, the canvas is empty."
 msgstr "Tidak menyimpan, kanvas kosong"
 
-#. name, patterns
-#: ../gui/filehandling.py:206
-msgid "All Recognized Formats"
-msgstr "Semua Format yg dikenal"
-
-#: ../gui/filehandling.py:208
-msgid "PNG (*.png)"
-msgstr "PNG (*.png)"
-
-#: ../gui/filehandling.py:209
-msgid "JPEG (*.jpg; *.jpeg)"
-msgstr "JPEG (*.jpg; *.jpeg)"
-
-#: ../gui/filehandling.py:383
+#: ../gui/filehandling.py:495
 #, python-format
 msgid "There are no scrap files named \"%s\" yet."
 msgstr "Tiada berkas scrap dengan nama \"%s\".saat ini"
 
-#: ../gui/functionwindow.py:40
+#: ../gui/framewindow.py:34
+msgid "Height"
+msgstr ""
+
+#: ../gui/framewindow.py:35
+msgid "Width"
+msgstr ""
+
+#: ../gui/framewindow.py:46
+msgid "Crop to active layer bounds"
+msgstr ""
+
+#: ../gui/framewindow.py:47
+msgid "Crop to document bounds"
+msgstr ""
+
+#: ../gui/framewindow.py:51
+msgid "Enabled"
+msgstr ""
+
+#: ../gui/functionwindow.py:42
 msgid "Base Value"
 msgstr "Nilai dasar"
 
-#: ../gui/gtkexcepthook.py:115
+#: ../gui/gtkexcepthook.py:127
 msgid "Bug Detected"
 msgstr "Bug terdeteksi"
 
-#: ../gui/gtkexcepthook.py:119
+#: ../gui/gtkexcepthook.py:131
 msgid "<big><b>A programming error has been detected.</b></big>"
 msgstr ""
 "<big><b>Kesalahan pemrograman terjadi saat mengeksekusi program.</b></big>"
 
-#: ../gui/gtkexcepthook.py:120
+#: ../gui/gtkexcepthook.py:132
 msgid ""
 "It probably isn't fatal, but the details should be reported to the "
 "developers nonetheless."
@@ -1352,75 +1811,345 @@ msgstr ""
 "Mungkin tak fatal, tapi bagaimanapun juga lebih baik dilaporkan pada "
 "pengembang "
 
-#: ../gui/gtkexcepthook.py:135
-msgid "Report..."
-msgstr "Laporkan..."
-
-#: ../gui/gtkexcepthook.py:139
+#: ../gui/gtkexcepthook.py:155
 msgid "Details..."
 msgstr "Detil..."
 
-#. Show details...
-#: ../gui/gtkexcepthook.py:168
-msgid "Bug Details"
-msgstr "Detil bug"
+#: ../gui/gtkexcepthook.py:176 ../gui/gtkexcepthook.py:179
+msgid "Exception while analyzing the exception."
+msgstr ""
 
-#: ../gui/layerswindow.py:108
+#: ../gui/inputtestwindow.py:20
+msgid "Input Device Test"
+msgstr ""
+
+#: ../gui/inputtestwindow.py:47
+#, fuzzy
+msgid "(no pressure)"
+msgstr "Tekanan"
+
+#: ../gui/inputtestwindow.py:48
+#, fuzzy
+msgid "Pressure:"
+msgstr "Tekanan"
+
+#: ../gui/inputtestwindow.py:50
+msgid "(no tilt)"
+msgstr ""
+
+#: ../gui/inputtestwindow.py:51
+msgid "Tilt:"
+msgstr ""
+
+#: ../gui/inputtestwindow.py:56
+#, fuzzy
+msgid "(no device)"
+msgstr "(no name)"
+
+#: ../gui/inputtestwindow.py:57
+msgid "Device:"
+msgstr ""
+
+#: ../gui/layerswindow.py:81
 msgid "Layer visibility"
 msgstr "Layer "
 
-#: ../gui/layerswindow.py:207
-msgid "Name:"
-msgstr "Nama:"
+#: ../gui/layerswindow.py:85
+#, fuzzy
+msgid "Layer lock"
+msgstr "Lapisan sendiri"
 
-#: ../gui/layerswindow.py:213
+#: ../gui/layerswindow.py:183
+msgid "<small>Double click to enter name</small>"
+msgstr ""
+
+#: ../gui/layerswindow.py:185
+msgid "<small>Click to select this layer</small>"
+msgstr ""
+
+#: ../gui/layerswindow.py:329
 msgid "Opacity:"
 msgstr "Kejelasan:"
 
-#: ../gui/settingswindow.py:24
-msgid "Settings"
-msgstr "Pengaturan"
-
-#: ../gui/settingswindow.py:42
-msgid "<b><span size=\"large\">Global Pressure Mapping</span></b>"
-msgstr "<b><span size=\"large\">Pemetaan Tekanan Global</span></b>"
-
-#: ../gui/settingswindow.py:55
-msgid ""
-"0.5\n"
-"(mouse button)"
+#: ../gui/layout.py:650
+msgid "Collapse"
 msgstr ""
-"0.5\n"
-"(tombol mouse)"
 
-#: ../gui/settingswindow.py:66
-msgid "Mode for input devices: "
-msgstr "Modus untuk media input"
+#: ../gui/layout.py:651
+msgid "Expand"
+msgstr ""
 
-#: ../gui/settingswindow.py:77
-msgid "Paths"
-msgstr "Lokasi"
+#: ../gui/preferenceswindow.py:20
+msgid "Disabled (no pressure sensitivity)"
+msgstr ""
 
-#: ../gui/settingswindow.py:81
-msgid "<b><span size=\"large\">Save as Scrap</span></b>"
-msgstr "<b><span size=\"large\">Simpan sebagai Scrap</span></b>"
+#: ../gui/preferenceswindow.py:21
+msgid "Screen (normal)"
+msgstr ""
 
-#: ../gui/settingswindow.py:83
-msgid "Path and filename prefix for \"Save Next Scrap\""
+#: ../gui/preferenceswindow.py:22
+msgid "Window (not recommended)"
+msgstr ""
+
+#. These can be names of actions within ActionGroups defined elsewhere,
+#. or names of actions the handler interprets itself.
+#. NOTE: The translatable strings for actions are duplicated from
+#. their action definition. Please keep in sync (or refactor to get the string from there)
+#. (action_or_whatever, label)
+#: ../gui/preferenceswindow.py:33
+msgid "No action"
+msgstr ""
+
+#. [0] is the default for the comboboxes
+#: ../gui/preferenceswindow.py:34
+#, fuzzy
+msgid "Menu"
+msgstr "Perlihatkan Menu"
+
+#: ../gui/preferenceswindow.py:39
+#, fuzzy
+msgid "Pan"
+msgstr "Pola"
+
+#: ../gui/preferenceswindow.py:41
+msgid "Rotate"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:42
+msgid "Straight Line"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:43
+msgid "Sequence of Straight Lines"
+msgstr ""
+
+#. Used for creating the menus,
+#. (pref_name, label)
+#: ../gui/preferenceswindow.py:51
+#, fuzzy
+msgid "Button 1 + Shift"
+msgstr "Tombol untuk daftar warna yg terpakai"
+
+#: ../gui/preferenceswindow.py:52
+msgid "Button 1 + Ctrl (or Alt)"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:53
+msgid "Button 2"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:54
+#, fuzzy
+msgid "Button 2 + Shift"
+msgstr "Tombol untuk daftar warna yg terpakai"
+
+#: ../gui/preferenceswindow.py:55
+msgid "Button 2 + Ctrl (or Alt)"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:56
+msgid "Button 3"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:57
+#, fuzzy
+msgid "Button 3 + Shift"
+msgstr "Tombol untuk daftar warna yg terpakai"
+
+#: ../gui/preferenceswindow.py:58
+msgid "Button 3 + Ctrl (or Alt)"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:68
+msgid "Preferences"
+msgstr ""
+
+#. TRANSLATORS: Tab label
+#: ../gui/preferenceswindow.py:88
+msgid "Pen Input"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:94
+msgid "<b>Input Device</b>"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:101
+msgid ""
+"Scale input pressure to brush pressure. This is applied to all input "
+"devices. The mouse button has an input pressure of 0.5 when pressed."
+msgstr ""
+
+#. TRANSLATORS: Graph y-axis label
+#: ../gui/preferenceswindow.py:111
+#, fuzzy
+msgid "Brush Pressure"
+msgstr "Tekanan"
+
+#. TRANSLATORS: Graph x-axis label
+#: ../gui/preferenceswindow.py:121
+#, fuzzy
+msgid "Input Pressure"
+msgstr "Tekanan"
+
+#: ../gui/preferenceswindow.py:130
+msgid "Mode: "
+msgstr ""
+
+#: ../gui/preferenceswindow.py:147
+msgid "Buttons"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:153
+msgid "<b>Pen and mouse button mappings</b>"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:179
+msgid "Saving"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:185
+msgid "<b>Saving</b>"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:189
+msgid "Default file format:"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:204
+#, fuzzy
+msgid "<b>Save Next Scrap</b>"
+msgstr "Simpan Scrap Selanjutnya"
+
+#: ../gui/preferenceswindow.py:208
+#, fuzzy
+msgid "Path and filename prefix:"
 msgstr "Path and filename prefix for \"Simpan Scrap Berikut\""
 
-#: ../gui/settingswindow.py:100
-msgid "Revert"
-msgstr "Kembali semula"
+#: ../gui/preferenceswindow.py:229
+msgid "<b>Default View</b>"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:233
+#, fuzzy
+msgid "Default zoom:"
+msgstr "Ukaran awal slot"
+
+#. add a hint due to a very consfusing error message when there is no space left on device
+#: ../lib/document.py:337
+#, python-format
+msgid ""
+"Unable to save: %s\n"
+"Do you have enough space left on the device?"
+msgstr ""
+"Gagal menyimpan: %s\n"
+"Apa masih ada sisa ruang di tempat penyimpanan?"
+
+#: ../lib/document.py:339 ../lib/document.py:342
+#, python-format
+msgid "Unable to save: %s"
+msgstr "Gagal menyimpan: %s"
+
+#: ../lib/document.py:347
+#, python-format
+msgid "File does not exist: %s"
+msgstr "Berkas tidak ada: %s"
+
+#: ../lib/document.py:349
+#, python-format
+msgid "You do not have the necessary permissions to open file: %s"
+msgstr "Kamu tidak punya ijin cukup untuk membuka berkas: %s "
+
+#: ../lib/document.py:357
+#, python-format
+msgid "Error while loading: GError %s"
+msgstr ""
+
+#: ../lib/document.py:360
+#, python-format
+msgid "Error while loading: IOError %s"
+msgstr ""
+
+#: ../lib/document.py:366
+#, python-format
+msgid "Unknown file format extension: %s"
+msgstr "format berkas tidak dikenal, ekstensi: %s"
+
+#~ msgid "opaque"
+#~ msgstr "penampakan"
+
+#~ msgid ""
+#~ "This gets multiplied with opaque. It is used for making opaque depend on "
+#~ "pressure (or other inputs)."
+#~ msgstr ""
+#~ "Nilai akan dikalikan dgn penampakan with opaque. Juga dipakai untuk "
+#~ "membuat penampakan, tergantung tekanan (atau input lainnya)."
+
+#~ msgid "done"
+#~ msgstr "selesai"
+
+#~ msgid "add as new"
+#~ msgstr "tambah baru"
+
+#~ msgid "settings..."
+#~ msgstr "pengaturan..."
+
+#~ msgid "save preview"
+#~ msgstr "simpan preview"
+
+#~ msgid "Right click on group to modify"
+#~ msgstr "Klik kanan untuk mengubah grup"
+
+#~ msgid "Brush settings"
+#~ msgstr "Pengaturan Kuas"
+
+#~ msgid "Select harmonies"
+#~ msgstr "Pilih harmoni"
+
+#~ msgid "Brush Settings..."
+#~ msgstr "Pengaturan Kuas"
+
+#~ msgid "Settings..."
+#~ msgstr "Pengaturan..."
+
+#~ msgid "Reset (Zoom, Rotation, Mirror)"
+#~ msgstr "Set Ulang (Perbesaran, Rotasi, Cermin)"
+
+#~ msgid "Any format (prefer OpenRaster)"
+#~ msgstr "Format apapun (biasanya Openraster)"
+
+#~ msgid "Bug Details"
+#~ msgstr "Detil bug"
+
+#~ msgid "Name:"
+#~ msgstr "Nama:"
+
+#~ msgid "Settings"
+#~ msgstr "Pengaturan"
+
+#~ msgid "<b><span size=\"large\">Global Pressure Mapping</span></b>"
+#~ msgstr "<b><span size=\"large\">Pemetaan Tekanan Global</span></b>"
+
+#~ msgid ""
+#~ "0.5\n"
+#~ "(mouse button)"
+#~ msgstr ""
+#~ "0.5\n"
+#~ "(tombol mouse)"
+
+#~ msgid "Paths"
+#~ msgstr "Lokasi"
+
+#~ msgid "<b><span size=\"large\">Save as Scrap</span></b>"
+#~ msgstr "<b><span size=\"large\">Simpan sebagai Scrap</span></b>"
+
+#~ msgid "Revert"
+#~ msgstr "Kembali semula"
 
 #~ msgid "Copy layer"
 #~ msgstr "Salin lapisan"
 
 #~ msgid "Paste layer"
 #~ msgstr "Tempel lapisan"
-
-#~ msgid "Change Color"
-#~ msgstr "Ubah warna"
 
 #~ msgid "Open palette..."
 #~ msgstr "Buka palet"
@@ -1497,23 +2226,11 @@ msgstr "Kembali semula"
 #~ msgid "Toggle layer is mask"
 #~ msgstr "Nyalakan lapisan sebagai topeng"
 
-#~ msgid "Import brush package..."
-#~ msgstr "Impor paket kuas..."
-
-#~ msgid "Zoom In"
-#~ msgstr "Perbesar"
-
-#~ msgid "PNG solid with background (*.png)"
-#~ msgstr "PNG dengan latar solid (*.png)"
-
 #~ msgid "Save palette..."
 #~ msgstr "Simpan palet..."
 
 #~ msgid "Gimp palettes (*.gpl)"
 #~ msgstr "Palet Gimp (*.gpl)"
-
-#~ msgid "MyPaint brush package (*.zip)"
-#~ msgstr "paket kuas MyPaint (*.zip)"
 
 #~ msgid "An error occured while importing brush package. Error was: %s"
 #~ msgstr "Kesalahan terjadi ketika mengimpor paket kuas. Pesannya: %s"
@@ -1530,9 +2247,6 @@ msgstr "Kembali semula"
 
 #~ msgid "MyPaint palette"
 #~ msgstr "palet MyPaint"
-
-#~ msgid "Toggle edit mode"
-#~ msgstr "Nyalakan modus ubah"
 
 #~ msgid ""
 #~ "`Edit' button in left up corner toggles edit mode. When not in edit mode, "
@@ -1572,12 +2286,6 @@ msgstr "Kembali semula"
 #~ msgid "Button to drag canvas"
 #~ msgstr "Tombol utuk menggeser kanvas"
 
-#~ msgid "Button for color history"
-#~ msgstr "Tombol untuk daftar warna yg terpakai"
-
-#~ msgid "Default slot size"
-#~ msgstr "Ukaran awal slot"
-
 #~ msgid "Button to select a color"
 #~ msgstr "Tombol untuk memilih warna"
 
@@ -1586,9 +2294,6 @@ msgstr "Kembali semula"
 
 #~ msgid "Button to mark color as user chosen"
 #~ msgstr "Tombol untuk menandai warna sebagai pilihan pengguna"
-
-#~ msgid "Brush list"
-#~ msgstr "Daftar Kuas"
 
 #~ msgid "Thumbnail size"
 #~ msgstr "Ukuran Thumbnail"
@@ -1620,22 +2325,6 @@ msgstr "Kembali semula"
 #~ msgid "Disable"
 #~ msgstr "Matikan"
 
-#~ msgid ""
-#~ "Declination of stylus tilt. 0 when stylus is parallel to tablet and 90.0 "
-#~ "when it's perpendicular to tablet."
-#~ msgstr ""
-#~ "Penurunan dari kemringan stylus. 0 ketika stylus paralel dengan tablet "
-#~ "dan 90.0 ketika tegak lurus tablet."
-
-#~ msgid ""
-#~ "Right ascension of stylus tilt. 0 when stylus working end points to you, "
-#~ "+90 when rotated 90 degrees clockwise, -90 when rotated 90 degrees "
-#~ "counterclockwise."
-#~ msgstr ""
-#~ "Kenaikan dari kemiringan stylus.. 0 ketika ujung stylus mengarah "
-#~ "kepadamu, +90 ketika diputar 90 derajat searah jarum jam, -90 ketika "
-#~ "diputar 90 derajat melawan jarum jam."
-
 #~ msgid "Value of the mask layer"
 #~ msgstr "Nilai dari lapisan topeng"
 
@@ -1660,22 +2349,3 @@ msgstr "Kembali semula"
 #~ "-1.0 darker\n"
 #~ " 0.0 disable\n"
 #~ " 1.0 brigher"
-
-#~ msgid ""
-#~ "Unable to save: %s\n"
-#~ "Do you have enough space left on the device?"
-#~ msgstr ""
-#~ "Gagal menyimpan: %s\n"
-#~ "Apa masih ada sisa ruang di tempat penyimpanan?"
-
-#~ msgid "Unable to save: %s"
-#~ msgstr "Gagal menyimpan: %s"
-
-#~ msgid "File does not exist: %s"
-#~ msgstr "Berkas tidak ada: %s"
-
-#~ msgid "You do not have the necessary permissions to open file: %s"
-#~ msgstr "Kamu tidak punya ijin cukup untuk membuka berkas: %s "
-
-#~ msgid "Unknown file format extension: %s"
-#~ msgstr "format berkas tidak dikenal, ekstensi: %s"
