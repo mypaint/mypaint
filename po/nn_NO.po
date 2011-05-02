@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-05-02 00:07-0400\n"
+"POT-Creation-Date: 2011-05-02 00:28-0400\n"
 "PO-Revision-Date: 2011-02-16 19:03+0100\n"
 "Last-Translator: Tor Egil Hoftun Kvæstad <toregilhk@hotmail.com>\n"
 "Language-Team: Norwegian Nynorsk <>\n"
@@ -1547,7 +1547,7 @@ msgstr ""
 msgid "New"
 msgstr "Ny"
 
-#: ../gui/filehandling.py:60 ../gui/filehandling.py:290
+#: ../gui/filehandling.py:60 ../gui/filehandling.py:294
 msgid "Open..."
 msgstr "Opne..."
 
@@ -1650,41 +1650,30 @@ msgid "Really continue?"
 msgstr ""
 
 #: ../gui/filehandling.py:191
-#, python-format
-msgid "%d minute"
-msgid_plural "%d minutes"
-msgstr[0] "%d minutt"
-msgstr[1] "%d minutter"
+#, fuzzy, python-format
+msgid "This will discard %d minute of unsaved painting."
+msgid_plural "This will discard %d minutes of unsaved painting."
+msgstr[0] "Du har %d minutt måling som ikkje er lagra."
+msgstr[1] "Du har %d minutter måling som ikkje er lagra."
 
-#: ../gui/filehandling.py:194
-#, python-format
-msgid "%d second"
-msgid_plural "%d seconds"
-msgstr[0] "%d sekund"
-msgstr[1] "%d sekunder"
+#: ../gui/filehandling.py:196
+#, fuzzy, python-format
+msgid "This will discard %d second of unsaved painting."
+msgid_plural "This will discard %d seconds of unsaved painting."
+msgstr[0] "Du har %d sekund måling som ikkje er lagra."
+msgstr[1] "Du har %d sekunder måling som ikkje er lagra."
 
 # "Scrap" -> "kladd"
-#: ../gui/filehandling.py:200
+#: ../gui/filehandling.py:204
 msgid "_Save as Scrap"
 msgstr "_Lagre som kladd"
 
-#: ../gui/filehandling.py:206
-#, python-format
-msgid ""
-"<b>%s</b>\n"
-"\n"
-"This will discard %s of unsaved painting."
-msgstr ""
-"<b>%s</b>\n"
-"\n"
-"Du har %s måling som ikkje er lagra."
-
 # "canvas" -> "lerret"
-#: ../gui/filehandling.py:248
+#: ../gui/filehandling.py:252
 msgid "Did not save, the canvas is empty."
 msgstr "Lagra ikkje, lerretet er tomt."
 
-#: ../gui/filehandling.py:495
+#: ../gui/filehandling.py:499
 #, python-format
 msgid "There are no scrap files named \"%s\" yet."
 msgstr "Det er ingen kladdar ved namn «%s» enno."

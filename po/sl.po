@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.9.0-git\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-05-02 00:07-0400\n"
+"POT-Creation-Date: 2011-05-02 00:28-0400\n"
 "PO-Revision-Date: 2010-10-16 20:21+0200\n"
 "Last-Translator: Luka Čehovin <luka.cehovin@gmail.com>\n"
 "Language-Team: Ubuntu Slovenia <ubuntu-l10n-slv@lists.ubuntu.com>\n"
@@ -1454,7 +1454,7 @@ msgstr ""
 msgid "New"
 msgstr "Nova slika"
 
-#: ../gui/filehandling.py:60 ../gui/filehandling.py:290
+#: ../gui/filehandling.py:60 ../gui/filehandling.py:294
 msgid "Open..."
 msgstr "Odpri ..."
 
@@ -1554,41 +1554,30 @@ msgid "Really continue?"
 msgstr "Res želite končati? "
 
 #: ../gui/filehandling.py:191
-#, python-format
-msgid "%d minute"
-msgid_plural "%d minutes"
-msgstr[0] "%d minuta"
-msgstr[1] "%d minuti"
-msgstr[2] "%d minut"
+#, fuzzy, python-format
+msgid "This will discard %d minute of unsaved painting."
+msgid_plural "This will discard %d minutes of unsaved painting."
+msgstr[0] "S tem bo opuščenih %d minuta ne-shranjenega risanja."
+msgstr[1] "S tem bo opuščenih %d minuti ne-shranjenega risanja."
+msgstr[2] "S tem bo opuščenih %d minut ne-shranjenega risanja."
 
-#: ../gui/filehandling.py:194
-#, python-format
-msgid "%d second"
-msgid_plural "%d seconds"
-msgstr[0] "%d sekunda"
-msgstr[1] "%d sekundi"
-msgstr[2] "%d sekund"
+#: ../gui/filehandling.py:196
+#, fuzzy, python-format
+msgid "This will discard %d second of unsaved painting."
+msgid_plural "This will discard %d seconds of unsaved painting."
+msgstr[0] "S tem bo opuščenih %d sekunda ne-shranjenega risanja."
+msgstr[1] "S tem bo opuščenih %d sekundi ne-shranjenega risanja."
+msgstr[2] "S tem bo opuščenih %d sekund ne-shranjenega risanja."
 
-#: ../gui/filehandling.py:200
+#: ../gui/filehandling.py:204
 msgid "_Save as Scrap"
 msgstr "_Shrani kot skico"
 
-#: ../gui/filehandling.py:206
-#, python-format
-msgid ""
-"<b>%s</b>\n"
-"\n"
-"This will discard %s of unsaved painting."
-msgstr ""
-"<b>%s</b>\n"
-"\n"
-"S tem bo opuščenih %s ne-shranjenega risanja."
-
-#: ../gui/filehandling.py:248
+#: ../gui/filehandling.py:252
 msgid "Did not save, the canvas is empty."
 msgstr "Zapis na disk ni bil opravljen, ker je platno prazno."
 
-#: ../gui/filehandling.py:495
+#: ../gui/filehandling.py:499
 #, python-format
 msgid "There are no scrap files named \"%s\" yet."
 msgstr "Zaenkrat datoteka z osnutkom \"%s\" ne obstaja."

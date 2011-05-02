@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-05-02 00:07-0400\n"
+"POT-Creation-Date: 2011-05-02 00:28-0400\n"
 "PO-Revision-Date: 2011-02-17 23:44+0100\n"
 "Last-Translator: Popolon <popolon@popolon.org>\n"
 "Language-Team: Français <fr@li.org>\n"
@@ -1633,7 +1633,7 @@ msgstr ""
 msgid "New"
 msgstr "Nouveau"
 
-#: ../gui/filehandling.py:60 ../gui/filehandling.py:290
+#: ../gui/filehandling.py:60 ../gui/filehandling.py:294
 msgid "Open..."
 msgstr "Ouvrir..."
 
@@ -1734,38 +1734,27 @@ msgstr "Désirez-vous vraiment continuer ?"
 
 #: ../gui/filehandling.py:191
 #, python-format
-msgid "%d minute"
-msgid_plural "%d minutes"
-msgstr[0] "%d minute"
-msgstr[1] "%d minutes"
+msgid "This will discard %d minute of unsaved painting."
+msgid_plural "This will discard %d minutes of unsaved painting."
+msgstr[0] "Cela va détruire %d minute actions non-enregistrée."
+msgstr[1] "Cela va détruire %d minutes actions non-enregistrées."
 
-#: ../gui/filehandling.py:194
+#: ../gui/filehandling.py:196
 #, python-format
-msgid "%d second"
-msgid_plural "%d seconds"
-msgstr[0] "%d seconde"
-msgstr[1] "%d secondes"
+msgid "This will discard %d second of unsaved painting."
+msgid_plural "This will discard %d seconds of unsaved painting."
+msgstr[0] "Cela va détruire %d seconde actions non-enregistrée."
+msgstr[1] "Cela va détruire %d secondes actions non-enregistrées."
 
-#: ../gui/filehandling.py:200
+#: ../gui/filehandling.py:204
 msgid "_Save as Scrap"
 msgstr "Enregistrer comme Croquis"
 
-#: ../gui/filehandling.py:206
-#, python-format
-msgid ""
-"<b>%s</b>\n"
-"\n"
-"This will discard %s of unsaved painting."
-msgstr ""
-"<b>%s</b>\n"
-"\n"
-"Cela va détruire %s actions non-enregistrées."
-
-#: ../gui/filehandling.py:248
+#: ../gui/filehandling.py:252
 msgid "Did not save, the canvas is empty."
 msgstr "Non-enregistré, la toile est vide."
 
-#: ../gui/filehandling.py:495
+#: ../gui/filehandling.py:499
 #, python-format
 msgid "There are no scrap files named \"%s\" yet."
 msgstr "Il n'y a pas encore de fichier de croquis nommé \"%s\"."

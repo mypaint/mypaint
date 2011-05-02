@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-05-02 00:07-0400\n"
+"POT-Creation-Date: 2011-05-02 00:28-0400\n"
 "PO-Revision-Date: 2010-10-12 18:01+0100\n"
 "Last-Translator: Lamberto Tedaldi <lamberto.tedaldi@officinepixel.com>\n"
 "Language-Team: Lamberto Tedaldi <lamberto.tedaldi@officinepixel.com>\n"
@@ -1631,7 +1631,7 @@ msgstr ""
 msgid "New"
 msgstr "Nuovo"
 
-#: ../gui/filehandling.py:60 ../gui/filehandling.py:290
+#: ../gui/filehandling.py:60 ../gui/filehandling.py:294
 msgid "Open..."
 msgstr "Apri..."
 
@@ -1731,39 +1731,28 @@ msgid "Really continue?"
 msgstr "Vuoi veramente continuare?"
 
 #: ../gui/filehandling.py:191
-#, python-format
-msgid "%d minute"
-msgid_plural "%d minutes"
-msgstr[0] "%d minuto"
-msgstr[1] "%d minuti"
+#, fuzzy, python-format
+msgid "This will discard %d minute of unsaved painting."
+msgid_plural "This will discard %d minutes of unsaved painting."
+msgstr[0] "Questa azione porterà alla perdita di %d minuto di lavoro non salvato."
+msgstr[1] "Questa azione porterà alla perdita di %d minuti di lavoro non salvato."
 
-#: ../gui/filehandling.py:194
-#, python-format
-msgid "%d second"
-msgid_plural "%d seconds"
-msgstr[0] "%d secondo"
-msgstr[1] "%d secondi"
+#: ../gui/filehandling.py:196
+#, fuzzy, python-format
+msgid "This will discard %d second of unsaved painting."
+msgid_plural "This will discard %d seconds of unsaved painting."
+msgstr[0] "Questa azione porterà alla perdita di %d secondo di lavoro non salvato."
+msgstr[1] "Questa azione porterà alla perdita di %d secondi di lavoro non salvato."
 
-#: ../gui/filehandling.py:200
+#: ../gui/filehandling.py:204
 msgid "_Save as Scrap"
 msgstr "_Salva come Schizzo"
 
-#: ../gui/filehandling.py:206
-#, python-format
-msgid ""
-"<b>%s</b>\n"
-"\n"
-"This will discard %s of unsaved painting."
-msgstr ""
-"<b>%s</b>\n"
-"\n"
-"Questa azione porterà alla perdita di %s di lavoro non salvato."
-
-#: ../gui/filehandling.py:248
+#: ../gui/filehandling.py:252
 msgid "Did not save, the canvas is empty."
 msgstr "Non salvato, l'immagine è vuota."
 
-#: ../gui/filehandling.py:495
+#: ../gui/filehandling.py:499
 #, python-format
 msgid "There are no scrap files named \"%s\" yet."
 msgstr "Non esiste ancora uno schizzo chiamato \"%s\"."

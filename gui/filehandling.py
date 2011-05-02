@@ -188,10 +188,14 @@ class FileHandler(object):
 
         if t > 120:
             t = int(round(t/60))
-            t = ngettext('%d minute', '%d minutes', t) % t
+            t = ngettext('This will discard %d minute of unsaved painting.',
+                         'This will discard %d minutes of unsaved painting.',
+                         t) % t
         else:
             t = int(round(t))
-            t = ngettext('%d second', '%d seconds', t) % t
+            t = ngettext('This will discard %d second of unsaved painting.',
+                         'This will discard %d seconds of unsaved painting.',
+                         t) % t
         d = gtk.Dialog(title, self.app.drawWindow, gtk.DIALOG_MODAL)
 
         b = d.add_button(gtk.STOCK_DISCARD, gtk.RESPONSE_OK)
@@ -203,7 +207,7 @@ class FileHandler(object):
         d.set_has_separator(False)
         d.set_default_response(gtk.RESPONSE_CANCEL)
         l = gtk.Label()
-        l.set_markup(_("<b>%s</b>\n\nThis will discard %s of unsaved painting.") % (question,t))
+        l.set_markup("<b>%s</b>\n\n%s" % (question,t))
         l.set_padding(10, 10)
         l.show()
         d.vbox.pack_start(l)
