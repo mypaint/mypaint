@@ -20,7 +20,7 @@ RESPONSE_SAVE_AS_DEFAULT = 1
 class Window(windowing.Dialog):
     def __init__(self, app):
         flags = gtk.DIALOG_DESTROY_WITH_PARENT
-        buttons = (_('save as default'), RESPONSE_SAVE_AS_DEFAULT,
+        buttons = (_('Save as Default'), RESPONSE_SAVE_AS_DEFAULT,
                    gtk.STOCK_OK, gtk.RESPONSE_ACCEPT)
         windowing.Dialog.__init__(self, app=app, title=_('Background'),
                                   parent=app.drawWindow, flags=flags,
@@ -48,7 +48,7 @@ class Window(windowing.Dialog):
         self.cs.connect('color-changed', self.color_changed_cb)
         color_vbox.pack_start(self.cs, expand=True)
 
-        b = gtk.Button(_('add color to patterns'))
+        b = gtk.Button(_('Add color to Patterns'))
         b.connect('clicked', self.add_color_to_patterns_cb)
         color_vbox.pack_start(b, expand=False)
 
@@ -124,7 +124,7 @@ class BackgroundList(pixbuflist.PixbufList):
                 continue
             w, h = pixbuf.get_width(), pixbuf.get_height()
             if w % N != 0 or h % N != 0 or w == 0 or h == 0:
-                error(_('The background %s was ignored because it has the wrong size. Only (N*%d)x(M*%d) is supported.') % (filename, N, N))
+                error(_('The background %s was ignored because it is the wrong size. Only (N*%d)x(M*%d) is supported.') % (filename, N, N))
                 continue
 
             if os.path.basename(filename).lower() == 'default.png':

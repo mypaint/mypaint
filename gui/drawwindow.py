@@ -137,11 +137,11 @@ class Window (windowing.MainWindow, layout.MainWindow):
             ('About', gtk.STOCK_ABOUT, _('About MyPaint'), None, None, self.about_cb),
 
             ('DebugMenu',    None, _('Debug')),
-            ('PrintMemoryLeak',  None, _('Print Memory Leak Info to stdout (Slow!)'), None, None, self.print_memory_leak_cb),
+            ('PrintMemoryLeak',  None, _('Print Memory Leak Info to Console (Slow!)'), None, None, self.print_memory_leak_cb),
             ('RunGarbageCollector',  None, _('Run Garbage Collector Now'), None, None, self.run_garbage_collector_cb),
             ('StartProfiling',  gtk.STOCK_EXECUTE, _('Start/Stop Python Profiling (cProfile)'), None, None, self.start_profiling_cb),
             ('InputTestWindow',  None, _('Test input devices...'), None, None, self.toggleWindow_cb),
-            ('GtkInputDialog',  None, _('GTK input devices dialog...'), None, None, self.gtk_input_dialog_cb),
+            ('GtkInputDialog',  None, _('GTK input device dialog...'), None, None, self.gtk_input_dialog_cb),
 
 
             ('ViewMenu', None, _('View')),
@@ -616,16 +616,16 @@ class Window (windowing.MainWindow, layout.MainWindow):
         'ContextHelp':
                 _("Brushkeys are used to quickly save/restore brush settings "
                  "using keyboard shortcuts. You can paint with one hand and "
-                 "change brushes with the other without interrupting."
+                 "change brushes with the other without interruption."
                  "\n\n"
                  "There are 10 memory slots to hold brush settings.\n"
-                 "Those are anonymous "
-                 "brushes, they are not visible in the brush selector list. "
-                 "But they will stay even if you quit. "),
+                 "They are anonymous brushes, which are not visible in the "
+                 "brush selector list. But they are remembered even if you "
+                 "quit."),
         'Docu':
-                _("There is a tutorial available "
-                 "on the MyPaint homepage. It explains some features which are "
-                 "hard to discover yourself.\n\n"
+                _("There is a tutorial available on the MyPaint homepage. It "
+                 "explains some features which are hard to discover yourself."
+                 "\n\n"
                  "Comments about the brush settings (opaque, hardness, etc.) and "
                  "inputs (pressure, speed, etc.) are available as tooltips. "
                  "Put your mouse over a label to see them. "

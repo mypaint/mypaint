@@ -1062,7 +1062,7 @@ class Selector(gtk.VBox):
         nb.append_page(self.hsv_selector, gtk.Label(_('HSV')))
 
         # Colour history
-        self.exp_history = expander = ElasticExpander(_('Colors history'))
+        self.exp_history = expander = ElasticExpander(_('Color history'))
         expander.set_spacing(6)
         expander.add(self.recent)
         expander.connect("notify::expanded", self.expander_expanded_cb, 'history')
@@ -1088,7 +1088,7 @@ class Selector(gtk.VBox):
         self.exp_config = expander = ElasticExpander(_('Harmonies'))
         vbox2 = gtk.VBox()
         harmony_checkbox('analogous', _('Analogous'), _("Three nearby hues on the color wheel.\nOften found in nature, frequently pleasing to the eye."))
-        harmony_checkbox('complementary', _('Complementary color'), _("Two opposite hues on the color wheel.\nVibrant, and maximally contrasting."))
+        harmony_checkbox('complementary', _('Complementary'), _("Two opposite hues on the color wheel.\nVibrant, and maximally contrasting."))
         harmony_checkbox('split_comp', _('Split complementary'), _("Two hues next to the current hue's complement.\nContrasting, but adds a possibly pleasing harmony."))
         harmony_checkbox('double_comp', _('Double complementary'), _("Four hues in two complementary pairs."))
         harmony_checkbox('square', _('Square'), _("Four equally-spaced hues"))

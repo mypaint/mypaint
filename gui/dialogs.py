@@ -249,7 +249,7 @@ def confirm_brushpack_import(packname, window=None, readme=None):
         tv.get_buffer().set_text(text)
         return tv
 
-    dialog = gtk.Dialog(_("Import brushes package?"),
+    dialog = gtk.Dialog(_("Import brush package?"),
                        window,
                        gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
                        (gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT,

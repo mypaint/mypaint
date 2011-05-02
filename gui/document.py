@@ -122,7 +122,7 @@ class Document(object):
 
         toggle_actions = [
             # name, stock id, label, accelerator, tooltip, callback, default toggle status
-            ('PrintInputs', None, _('Print Brush Input Values to stdout'), None, None, self.print_inputs_cb),
+            ('PrintInputs', None, _('Print Brush Input Values to Console'), None, None, self.print_inputs_cb),
             ('VisualizeRendering', None, _('Visualize Rendering'), None, None, self.visualize_rendering_cb),
             ('NoDoubleBuffereing', None, _('Disable GTK Double Buffering'), None, None, self.no_double_buffering_cb),
             ]

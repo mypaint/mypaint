@@ -141,7 +141,7 @@ class BrushManipulationWidget(gtk.HBox):
     def update_settings_cb(self, window):
         b = self.bm.selected_brush
         if not b.name:
-            dialogs.error(self, _('No brush selected, please use "add as new" instead.'))
+            dialogs.error(self, _('No brush selected, please use "Add As New" instead.'))
             return
         b.brushinfo = self.app.brush.clone()
         b.save()
@@ -241,7 +241,7 @@ class BrushIconEditorWidget(gtk.VBox):
         pixbuf = self.get_preview_pixbuf()
         b = self.bm.selected_brush
         if not b.name:
-            dialogs.error(self, _('No brush selected, please use "add as new" instead.'))
+            dialogs.error(self, _('No brush selected, please use "Add As New" instead.'))
             return
         b.preview = pixbuf
         b.save()

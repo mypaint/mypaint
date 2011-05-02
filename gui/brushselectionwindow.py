@@ -233,7 +233,7 @@ class GroupSelector(gtk.DrawingArea):
         self.gtkstate_prelight_group = None
         self.gtkstate_active_group = None
         self.drag_target_group = None
-        self.set_tooltip_text(_('try right click, middle click or Ctrl click'))
+        self.set_tooltip_text(_('Try right click, middle click or Ctrl click'))
         self.connect("size-request", self.on_size_request)
 
     def active_groups_changed_cb(self):
@@ -445,7 +445,7 @@ class GroupSelector(gtk.DrawingArea):
         if dialogs.confirm(self, _('Really delete group %s?') % brushmanager.translate_group_name(group)):
             self.bm.delete_group(group)
             if group in self.bm.groups:
-                dialogs.error(self, _('This group can not be deleted (try to make it empty first).'))
+                dialogs.error(self, _('This group can not be deleted (try to empty it first).'))
 
     def drag_data_received_cb(self, widget, context, x, y, selection, targetType, time):
         """

@@ -64,12 +64,12 @@ def devbrush_unquote(devbrush_name, prefix=DEVBRUSH_NAME_PREFIX):
     return unicode(u8bytes.decode("utf-8"))
 
 def translate_group_name(name):
-    d = {FOUND_BRUSHES_GROUP: _('lost&found'),
-         DELETED_BRUSH_GROUP: _('deleted'),
-         FAVORITES_BRUSH_GROUP: _('favorites'),
-         'ink': _('ink'),
-         'classic': _('classic'),
-         'experimental': _('experimental'),
+    d = {FOUND_BRUSHES_GROUP: _('Lost & Found'),
+         DELETED_BRUSH_GROUP: _('Deleted'),
+         FAVORITES_BRUSH_GROUP: _('Favorites'),
+         'ink': _('Ink'),
+         'classic': _('Classic'),
+         'experimental': _('Experimental'),
          }
     return d.get(name, name)
 

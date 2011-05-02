@@ -61,7 +61,7 @@ class Window(windowing.SubWindow):
         vbox.pack_start(header_hbox, expand=False)
 
         # Live update (goes to the end)
-        cb = self.live_update = gtk.CheckButton(_('Live update the last canvas stroke'))
+        cb = self.live_update = gtk.CheckButton(_('Update the last canvas stroke in realtime'))
         vbox.pack_end(cb, expand=False, fill=True)
         cb.connect('toggled', self.live_update_cb)
         cb.set_no_show_all(True)
@@ -145,7 +145,7 @@ class Window(windowing.SubWindow):
                     adj.three_dots_button = None
                 else:
                     b2 = gtk.Button("...")
-                    b2.set_tooltip_text(_("Add input values mapping"))
+                    b2.set_tooltip_text(_("Add input value mapping"))
                     b2.connect('clicked', self.details_clicked_cb, adj, s)
                     adj.three_dots_button = b2
 
@@ -188,9 +188,9 @@ class Window(windowing.SubWindow):
                     adj.three_dots_button.set_label(s)
                     adj.three_dots_button.set_tooltip_text(t)
                 if self.app.brush.has_only_base_value(cname):
-                    set_label("...", _("Add input values mapping"))
+                    set_label("...", _("Add input value mapping"))
                 else:
-                    set_label("X", _("Modify input values mapping"))
+                    set_label("X", _("Modify input value mapping"))
 
             # Make "reset to default value" button insensitive
             # if the value is already the default (the button will have no effect)
