@@ -1,5 +1,5 @@
 /* This file is part of MyPaint.
- * Copyright (C) 2008 by Martin Renold <martinxyz@gmx.ch>
+ * Copyright (C) 2008-2011 by Martin Renold <martinxyz@gmx.ch>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -9,71 +9,6 @@
 
 #define TILE_SIZE 64
 #define MAX_MIPMAP_LEVEL 3
-
-  void draw_dab_pixels_BlendMode_Normal (uint16_t * mask,
-                                         uint16_t * rgba,
-                                         uint16_t r,
-                                         uint16_t g,
-                                         uint16_t b,
-                                         uint16_t opacity) {
-    while (1) {
-      for (; mask[0]; mask++, rgba+=4) {
-        uint32_t opa_a = ((uint32_t)mask[0]*opacity)/(1<<15); // topAlpha
-        uint32_t opa_b = (1<<15)-opa_a; // bottomAlpha
-        rgba[3] = opa_a + (opa_b*rgba[3])/(1<<15);
-        rgba[0] = (opa_a*r + opa_b*rgba[0])/(1<<15);
-        rgba[1] = (opa_a*g + opa_b*rgba[1])/(1<<15);
-        rgba[2] = (opa_a*b + opa_b*rgba[2])/(1<<15);
-      }
-      if (!mask[1]) break;
-      rgba += mask[1];
-      mask += 2;
-    }
-  };
-
-  void draw_dab_pixels_BlendMode_Eraser (uint16_t * mask,
-                                         uint16_t * rgba,
-                                         uint16_t r,
-                                         uint16_t g,
-                                         uint16_t b,
-                                         uint16_t opacity) {
-    while (1) {
-      for (; mask[0]; mask++, rgba+=4) {
-        uint32_t opa_b = ((uint32_t)mask[0]*opacity)/(1<<15); // topAlpha
-        opa_b = (1<<15)-opa_b;
-        rgba[3] = (opa_b*rgba[3])/(1<<15);
-        rgba[0] = (opa_b*rgba[0])/(1<<15);
-        rgba[1] = (opa_b*rgba[1])/(1<<15);
-        rgba[2] = (opa_b*rgba[2])/(1<<15);
-      }
-      if (!mask[1]) break;
-      rgba += mask[1];
-      mask += 2;
-    }
-  };
-
-  void draw_dab_pixels_BlendMode_LockAlpha (uint16_t * mask,
-                                            uint16_t * rgba,
-                                            uint16_t r,
-                                            uint16_t g,
-                                            uint16_t b,
-                                            uint16_t opacity) {
-
-    while (1) {
-      for (; mask[0]; mask++, rgba+=4) {
-        uint32_t opa_a = ((uint32_t)mask[0]*opacity)/(1<<15); // topAlpha
-        uint32_t opa_b = (1<<15)-opa_a; // bottomAlpha
-        opa_a *= rgba[3];
-        opa_a /= (1<<15);
-        rgba[0] = (opa_a*r + opa_b*rgba[0])/(1<<15);
-        rgba[1] = (opa_a*g + opa_b*rgba[1])/(1<<15);
-        rgba[2] = (opa_a*b + opa_b*rgba[2])/(1<<15);
-      }
-      if (!mask[1]) break;
-      rgba += mask[1];
-      mask += 2;
-    }
-  };
 
 class TiledSurface : public Surface {
   // the Python half of this class is in tiledsurface.py
@@ -171,35 +106,32 @@ public:
                  float radius, 
                  float color_r, float color_g, float color_b,
                  float opaque, float hardness = 0.5,
-                 float eraser_target_alpha = 1.0,
+                 float color_a = 1.0,
                  float aspect_ratio = 1.0, float angle = 0.0,
                  float lock_alpha = 0.0
                  ) {
 
     opaque = CLAMP(opaque, 0.0, 1.0);
     hardness = CLAMP(hardness, 0.0, 1.0);
+    lock_alpha = CLAMP(lock_alpha, 0.0, 1.0);
+    if (radius < 0.1) return false; // don't bother with dabs smaller than 0.1 pixel
+    if (hardness == 0.0) return false; // infintly small center point, fully transparent outside
     if (opaque == 0.0) return false;
-    if (radius < 0.1) return false;
-    if (hardness == 0.0) return false; // infintly small point, rest transparent
     assert(atomic > 0);
 
+    color_r = CLAMP(color_r, 0.0, 1.0);
+    color_g = CLAMP(color_g, 0.0, 1.0);
+    color_b = CLAMP(color_b, 0.0, 1.0);
+    color_a = CLAMP(color_a, 0.0, 1.0);
+
+    uint16_t color_r_ = color_r * (1<<15);
+    uint16_t color_g_ = color_g * (1<<15);
+    uint16_t color_b_ = color_b * (1<<15);
+
+    // blending mode preparation
     float normal = 1.0;
 
-    float eraser = CLAMP(1.0 - eraser_target_alpha, 0.0, 1.0);
-    normal *= 1.0-eraser;
-
-    lock_alpha = CLAMP(lock_alpha, 0.0, 1.0);
     normal *= 1.0-lock_alpha;
-    eraser *= 1.0-lock_alpha;
-
-    uint16_t m_normal = normal*(1<<15);
-    uint16_t m_eraser = eraser*(1<<15);
-    uint16_t m_lock_alpha = lock_alpha*(1<<15);
-
-    if (!(m_normal || m_eraser || m_lock_alpha)) {
-      // nothing to do
-      return false;
-    }
 
 	if (aspect_ratio<1.0) aspect_ratio=1.0;
 
@@ -207,13 +139,6 @@ public:
     int xp, yp;
     float xx, yy, rr;
     float one_over_radius2;
-
-    uint16_t c_r = color_r * (1<<15);
-    uint16_t c_g = color_g * (1<<15);
-    uint16_t c_b = color_b * (1<<15);
-    c_r = CLAMP(c_r, 0, (1<<15));
-    c_g = CLAMP(c_g, 0, (1<<15));
-    c_b = CLAMP(c_b, 0, (1<<15));
 
     r_fringe = radius + 1;
     rr = radius*radius;
@@ -263,7 +188,7 @@ public:
 
             float opa = 0;
             if (rr <= 1.0) {
-              opa = opaque;
+              opa = 1.0;
               if (hardness < 1.0) {
                 if (rr < hardness) {
                   opa *= rr + 1-(rr/hardness);
@@ -285,7 +210,6 @@ public:
 
 #ifdef HEAVY_DEBUG
               assert(opa >= 0.0 && opa <= 1.0);
-              assert(eraser_target_alpha >= 0.0 && eraser_target_alpha <= 1.0);
 #endif
             }
             uint16_t opa_ = opa * (1<<15);
@@ -313,15 +237,22 @@ public:
           return true;
         }
 
-        if (m_normal)
-          draw_dab_pixels_BlendMode_Normal(mask, rgba_p,
-                                           c_r, c_g, c_b, m_normal);
-        if (m_eraser)
-          draw_dab_pixels_BlendMode_Eraser(mask, rgba_p,
-                                           c_r, c_g, c_b, m_eraser);
-        if (m_lock_alpha)
+
+        if (normal) {
+          if (color_a == 1.0) {
+            draw_dab_pixels_BlendMode_Normal(mask, rgba_p,
+                                             color_r_, color_g_, color_b_, normal*opaque*(1<<15));
+          } else {
+            // normal case for brushes that use smudging (eg. watercolor)
+            draw_dab_pixels_BlendMode_Normal_and_Eraser(mask, rgba_p,
+                                                        color_r_, color_g_, color_b_, color_a*(1<<15), normal*opaque*(1<<15));
+          }
+        }
+
+        if (lock_alpha) {
           draw_dab_pixels_BlendMode_LockAlpha(mask, rgba_p,
-                                              c_r, c_g, c_b, m_lock_alpha);
+                                              color_r_, color_g_, color_b_, lock_alpha*opaque*(1<<15));
+        }
       }
     }
 
