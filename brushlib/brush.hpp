@@ -61,6 +61,8 @@ private:
   // cached calculation results
   float speed_mapping_gamma[2], speed_mapping_m[2], speed_mapping_q[2];
 
+  bool reset_requested;
+
 public:
   Brush() {
     for (int i=0; i<BRUSH_SETTINGS_COUNT; i++) {
@@ -75,6 +77,8 @@ public:
     new_stroke();
 
     settings_base_values_have_changed();
+
+    reset_requested = true;
   }
 
   ~Brush() {
@@ -82,6 +86,11 @@ public:
       delete settings[i];
     }
     g_rand_free (rng); rng = NULL;
+  }
+
+  void reset()
+  {
+    reset_requested = true;
   }
 
   void new_stroke()
@@ -611,7 +620,8 @@ public:
     float dist_todo = count_dabs_to (x, y, pressure, dtime);
 
     //if (dtime > 5 || dist_todo > 300) {
-    if (dtime > 5) {
+    if (dtime > 5 || reset_requested) {
+      reset_requested = false;
 
       /*
         TODO:

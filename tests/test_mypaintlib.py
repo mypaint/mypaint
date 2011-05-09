@@ -163,7 +163,7 @@ def docPaint():
 
     # If there is an eraser (or smudging) at work, we might be erasing
     # tiles that are empty. Those tile get memory allocated and affect
-    # the bouting box of the layer. This shouldn't be a big issue, but
+    # the bounding box of the layer. This shouldn't be a big issue, but
     # they get dropped when loading a document, which makes a
     # comparision of the PNG files fail. The hack below is to avoid that.
     for l in doc.layers:
