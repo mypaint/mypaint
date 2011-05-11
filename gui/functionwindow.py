@@ -30,14 +30,6 @@ class BrushInputsWidget(gtk.VBox):
         vbox = gtk.VBox()
         scroll.add_with_viewport(vbox)
 
-        title_hbox = gtk.HBox()
-        l = self.title_label = gtk.Label()
-        l.set_alignment(0.0, 0.0)
-        title_hbox.pack_start(l)
-        self.back_button = gtk.Button() # Label and callback set from up outside
-        title_hbox.pack_end(self.back_button, expand=False)
-        vbox.pack_start(title_hbox, expand=False)
-        
         l = gtk.Label()
         l.set_markup(_('Base Value'))
         l.set_alignment(0.0, 0.0)
@@ -71,9 +63,6 @@ class BrushInputsWidget(gtk.VBox):
             button.disconnect(self.default_value_button_cb_id)
         self.default_value_button_cb_id = button.connect('clicked',
                 self.set_fixed_value_clicked_cb, adj, setting.default)
-
-        self.title_label.set_markup('<b><span size="large">%s</span></b>' % setting.name)
-        self.title_label.set_tooltip_text(setting.tooltip)
 
         for widget in self.byinputwidgets:
             widget.set_brushsetting(setting)

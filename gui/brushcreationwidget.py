@@ -50,6 +50,7 @@ class BrushManipulationWidget(gtk.HBox):
         right_vbox_buttons = [
         (gtk.STOCK_SAVE, self.update_settings_cb, _('Save Settings')),
         (gtk.STOCK_ADD, self.create_brush_cb, _('Add As New')),
+        (gtk.STOCK_PROPERTIES, self.edit_brush_cb, _('Edit Brush Icon')),
         (gtk.STOCK_EDIT, self.rename_brush_cb, _('Rename...')),
         (gtk.STOCK_DELETE, self.delete_brush_cb, _('Remove...')),
         ]
@@ -70,6 +71,9 @@ class BrushManipulationWidget(gtk.HBox):
 
     def brush_modified_cb(self):
         pass
+
+    def edit_brush_cb(self, window):
+        self.edit_brush_properties_cb()
 
     def create_brush_cb(self, window):
         """Create and save a new brush based on the current working brush."""
@@ -175,9 +179,9 @@ class BrushManipulationWidget(gtk.HBox):
             deleted_brushes.insert(0, b)
             for f in self.bm.brushes_observers: f(deleted_brushes)
 
-class BrushIconEditorWidget(gtk.HBox):
+class BrushIconEditorWidget(gtk.VBox):
     def __init__(self, app):
-        gtk.HBox.__init__(self)
+        gtk.VBox.__init__(self)
         self.app = app
         self.bm = app.brushmanager
 
@@ -191,13 +195,18 @@ class BrushIconEditorWidget(gtk.HBox):
         self.set_brush_preview_edit_mode(False)
 
     def init_widgets(self):
-        button_box = gtk.VBox()
+        button_box = gtk.HBox()
 
         doc = document.Document()
         self.tdw = tileddrawwidget.TiledDrawWidget(doc)
-        self.tdw.set_size_request(brushmanager.preview_w, brushmanager.preview_h)
+        self.tdw.set_size_request(brushmanager.preview_w*2, brushmanager.preview_h*2)
+        self.tdw.scale = 2.0
 
-        self.pack_start(self.tdw, expand=False, fill=False, padding=3)
+        tdw_box = gtk.HBox()
+        tdw_box.pack_start(self.tdw, expand=False, fill=False)
+        tdw_box.pack_start(gtk.Label(), expand=True)
+
+        self.pack_start(tdw_box, expand=False, fill=False, padding=3)
         self.pack_start(button_box, expand=False, fill=False, padding=3)
 
         self.brush_preview_edit_mode_button = b = gtk.CheckButton(_('Edit'))

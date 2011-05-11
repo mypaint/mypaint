@@ -14,11 +14,11 @@ import windowing
 from brushlib import brushsettings
 from lib import command
 
-
 class Window(windowing.SubWindow):
 
     PAGE_BRUSHSETTINGS = 0
     PAGE_BRUSHINPUTS = 1
+    PAGE_BRUSHPROPERTIES = 2
 
     def __init__(self, app):
         windowing.SubWindow.__init__(self, app, key_input=True)
@@ -40,48 +40,63 @@ class Window(windowing.SubWindow):
         vbox = gtk.VBox()
         self.add(vbox)
 
-        # Expander with brushcreation widget under it
-        expander = self.expander = gtk.Expander(label=_('Edit brush icon'))
-        expander.set_expanded(False)
         brushicon_editor = brushcreationwidget.BrushIconEditorWidget(self.app)
-        expander.add(brushicon_editor)
-        vbox.pack_end(expander, expand=False, fill=False)
+        self.brushinputs_widget = functionwindow.BrushInputsWidget(self.app)
 
         # Header with brush name and actions
         brush_actions = brushcreationwidget.BrushManipulationWidget(self.app, brushicon_editor)
         vbox.pack_start(brush_actions, expand=False)
 
-        # Live update
+        # Header with current page name
+        header_hbox = gtk.HBox()
+        self.header_label = gtk.Label()
+        self.header_label.set_markup('<b><span size="large">%s</span></b>' % ('Brush Settings',))
+        self.header_label.set_alignment(0.0, 0.0)
+
+        self.header_button = gtk.Button(_('Back to settings'))
+        self.header_button.set_no_show_all(True)
+
+        header_hbox.pack_start(self.header_label, expand=False)
+        header_hbox.pack_end(self.header_button, expand=False)
+        vbox.pack_start(header_hbox, expand=False)
+
+        # Live update (goes to the end)
         cb = self.live_update = gtk.CheckButton(_('Live update the last canvas stroke'))
-        vbox.pack_start(cb, expand=False, fill=True)
+        vbox.pack_end(cb, expand=False, fill=True)
         cb.connect('toggled', self.live_update_cb)
+        cb.set_no_show_all(True)
         self.app.brush.settings_observers.append(self.live_update_cb)
 
         # ScrolledWindow for brushsetting-expanders
         scroll = self.brushsettings_widget = gtk.ScrolledWindow()
         scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_ALWAYS)
 
-        self.brushinputs_widget = functionwindow.BrushInputsWidget(self.app)
         nb = self.settings_notebook = gtk.Notebook()
         nb.set_show_tabs(False)
         nb.insert_page(self.brushsettings_widget, position=self.PAGE_BRUSHSETTINGS)
         nb.insert_page(self.brushinputs_widget, position=self.PAGE_BRUSHINPUTS)
-        nb.set_current_page(self.PAGE_BRUSHSETTINGS)
-
-        def activate_brushsettings_page(*ignore):
-            nb.set_current_page(self.PAGE_BRUSHSETTINGS)
-        self.brushinputs_widget.back_button.set_label(_('All settings'))
-        self.brushinputs_widget.back_button.connect('clicked', activate_brushsettings_page)
+        nb.insert_page(brushicon_editor, position=self.PAGE_BRUSHPROPERTIES)
 
         vbox.pack_start(nb, expand=True, fill=True)
 
+        def activate_brushsettings_page(*ignore):
+            nb.set_current_page(self.PAGE_BRUSHSETTINGS)
+            self.header_label.set_markup('<b><span size="large">%s</span></b>' % ('Brush Settings',))
+            self.header_button.hide()
+            self.live_update.show()
+        def activate_brushproperties_page(*ignore):
+            nb.set_current_page(self.PAGE_BRUSHPROPERTIES)
+            self.header_label.set_markup('<b><span size="large">%s</span></b>' % ('Brush Icon',))
+            self.header_button.show()
+            self.live_update.hide()
+
+        activate_brushsettings_page() # Default page
+
+        brush_actions.edit_brush_properties_cb = activate_brushproperties_page
+        self.header_button.connect('clicked', activate_brushsettings_page)
+
         brushsetting_vbox = gtk.VBox()
         scroll.add_with_viewport(brushsetting_vbox)
-
-        header_label = gtk.Label()
-        header_label.set_markup('<b><span size="large">%s</span></b>' % ('Brush Settings',))
-        header_label.set_alignment(0.0, 0.0)
-        brushsetting_vbox.pack_start(header_label, expand=False)
 
         groups = [
             {'id' : 'basic',    'title' : _('Basic'),   'settings' : [ 'radius_logarithmic', 'radius_by_random', 'hardness', 'eraser', 'offset_by_random', 'elliptical_dab_angle', 'elliptical_dab_ratio', 'direction_filter' ]},
@@ -150,6 +165,10 @@ class Window(windowing.SubWindow):
         """Go to brush input/dynamics page."""
         self.brushinputs_widget.set_brushsetting(setting, adj)
         self.settings_notebook.set_current_page(self.PAGE_BRUSHINPUTS)
+        self.header_label.set_markup('<b><span size="large">%s</span></b>' % setting.name)
+        self.header_label.set_tooltip_text(setting.tooltip)
+        self.header_button.show()
+        self.live_update.show()
 
     def value_changed_cb(self, adj, index, app):
         setting = [k for k, v in self.adj.items() if v == adj][0]
