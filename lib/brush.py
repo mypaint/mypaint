@@ -9,12 +9,13 @@
 import mypaintlib
 from brushlib import brushsettings
 import helpers
-import urllib
-import copy
+import urllib, copy, math
 
 string_value_settings = set(("parent_brush_name", "group"))
 current_brushfile_version = 2
 
+brush_settings = set([s.cname for s in brushsettings.settings])
+all_settings = brush_settings.union(string_value_settings)
 
 def brushinfo_quote(string):
     """Quote a string for serialisation of brushes.
@@ -47,8 +48,8 @@ def brushinfo_unquote(quoted):
     return unicode(u8bytes.decode("utf-8"))
 
 
-class BrushInfo(dict):
-    """Lightweight but fully parsed description of a brush.
+class BrushInfo:
+    """Fully parsed description of a brush.
 
     Just the strings, numbers and inputs/points hashes in a dict-based wrapper
     without any special interpretation other than a free upgrade to the newest
@@ -56,14 +57,45 @@ class BrushInfo(dict):
 
     def __init__(self, string=None):
         """Construct a BrushInfo object, optionally parsing it."""
-        dict.__init__(self)
-        self._cache_str = None
-        if string is not None:
-            self.parse(string)
+        self.settings = None
+        self.cache_str = None
+        self.observers = [self.settings_changed_cb]
+        self.observers_hidden = []
+        self.pending_updates = set()
+        if string:
+            self.load_from_string(string)
+
+    def settings_changed_cb(self, settings):
+        self.cache_str = None
 
     def clone(self):
         """Returns a deep-copied duplicate."""
-        return copy.deepcopy(self)
+        res = BrushInfo()
+        res.load_from_brushinfo(self)
+        return res
+
+    def load_from_brushinfo(self, other):
+        """Updates the brush's Settings from (a clone of) ``brushinfo``."""
+        self.settings = copy.deepcopy(other.settings)
+        for f in self.observers:
+            f(all_settings)
+        self.cache_str = other.cache_str
+
+    def load_defaults(self):
+        """Load default brush settings, dropping all current settings."""
+        self.settings = {}
+
+        for s in brushsettings.settings:
+            basevalue = s.default
+            if s.cname == 'opaque_multiply':
+                # make opaque depend on pressure by default
+                input_points = {'pressure': [(0.0, 0.0), (1.0, 1.0)]}
+            else:
+                input_points = {}
+            self.settings[s.cname] = [s.default, input_points]
+
+        for f in self.observers:
+            f(all_settings)
 
     class ParseError(Exception):
         pass
@@ -71,7 +103,7 @@ class BrushInfo(dict):
     class Obsolete(ParseError):
         pass
 
-    def parse(self, settings_str):
+    def load_from_string(self, settings_str):
         """Load a setting string, overwriting all current settings."""
 
         def parse_value(rawvalue, cname, version):
@@ -82,7 +114,7 @@ class BrushInfo(dict):
             elif version <= 1 and cname == 'color':
                 rgb = [int(c)/255.0 for c in rawvalue.split(" ")]
                 h, s, v = helpers.rgb_to_hsv(*rgb)
-                return [('color_h', (h, {})), ('color_s', (s, {})), ('color_v', (v, {}))]
+                return [('color_h', [h, {}]), ('color_s', [s, {}]), ('color_v', [v, {}])]
             elif version <= 1 and cname == 'change_radius':
                 if rawvalue == '0.0':
                     return []
@@ -107,8 +139,8 @@ class BrushInfo(dict):
                 else:
                     points = parse_points_v2(rawpoints)
                 assert len(points) >= 2
-                input_points.update({ inputname: points })
-            return [(cname, (float(basevalue), input_points))]
+                input_points[inputname] = points
+            return [(cname, [float(basevalue), input_points])]
 
         def parse_points_v1(rawpoints):
             """Parses the points list format from versions prior to version 2."""
@@ -146,7 +178,7 @@ class BrushInfo(dict):
             for inputname, points in input_points.iteritems():
                 points_new = [(x, func(y)) for x, y in points]
                 input_points_new[inputname] = points_new
-            return (basevalue, input_points_new)
+            return [basevalue, input_points_new]
 
         # Split out the raw settings and grab the version we're dealing with
         rawsettings = []
@@ -168,7 +200,7 @@ class BrushInfo(dict):
                 errors.append((line, str(e)))
 
         # Parse each pair
-        self.clear()
+        self.load_defaults()
         num_parsed = 0
         for rawcname, rawvalue in rawsettings:
             try:
@@ -179,7 +211,7 @@ class BrushInfo(dict):
                         cname, func = brushsettings.settings_migrate[cname]
                         if func:
                             value = transform_y(value, func)
-                    self[cname] = value
+                    self.settings[cname] = value
             except Exception, e:
                 line = "%s %s" % (rawcname, rawvalue)
                 errors.append((line, str(e)))
@@ -188,16 +220,19 @@ class BrushInfo(dict):
         if errors:
             for error in errors:
                 print error
-        self._cache_str = settings_str   # Maybe. It could still be old format...
+        for f in self.observers:
+            f(all_settings)
+        self.cache_str = settings_str   # Maybe. It could still be old format...
 
-    def serialize(self):
+    def save_to_string(self):
         """Serialise brush information to a string. Result is cached."""
-        if self._cache_str is not None:
-            return self._cache_str
+        if self.cache_str:
+            return self.cache_str
         res = '# mypaint brush file\n'
         res += '# you can edit this file and then select the brush in mypaint (again) to reload\n'
         res += 'version %d\n' % current_brushfile_version
-        for cname, data in self.iteritems():
+
+        for cname, data in self.settings.iteritems():
             if cname in string_value_settings:
                 if data is not None:
                     res += cname + " " + brushinfo_quote(data)
@@ -210,183 +245,87 @@ class BrushInfo(dict):
                         res += " | " + inputname + ' '
                         res += ', '.join(['(%f %f)' % xy for xy in points])
             res += "\n"
-        self._cache_str = res
+        self.cache_str = res
         return res
 
-    def clear(self):
-        """Erases all keys of the underlying dict, invalidating cached strings."""
-        self._cache_str = None
-        dict.clear(self)
+    def get_base_value(self, cname):
+        return self.settings[cname][0]
 
-    def __setitem__(self, key, value):
-        """Set an item via the dict interface, also invalidating cached strings.
+    def get_points(self, cname, input):
+        return self.settings[cname][1].get(input, ())
 
-        BrushInfo objects should map setting names to tuples of the form
-        (base_value, input_points) where input_points is a hash mapping input
-        names to lists of (x, y) pairs and at least length 2.
-        """
-        self._cache_str = None
-        dict.__setitem__(self, key, value)
-
-    def __delitem__(self, key):
-        """Delete an item via the dict interface, also invalidating cached strings."""
-        self._cache_str = None
-        dict.__delitem__(self, key, value)
-
-    def engine_settings_iter(self):
-        """Iterate across the settings that are meaningful to the brush engine.
-
-        Yields tuples of the form (cname, base_value, input_points)."""
-        for cname, data in self.iteritems():
-            if cname in string_value_settings:
-                continue
-            basevalue, input_points = data
-            yield (cname, basevalue, input_points)
-
-# points = [(x1, y1), (x2, y2), ...] (at least two points, or None)
-class Setting:
-    "a specific setting for a specific brush"
-    def __init__(self, setting, parent_brush, observers):
-        self.setting = setting
-        self.brush = parent_brush
-        self.observers = observers
-        self.base_value = None
-        self.points = [[] for i in xrange(len(brushsettings.inputs))]
-        self.restore_defaults()
-    def restore_defaults(self):
-        self.set_base_value(self.setting.default)
-        for i in brushsettings.inputs:
-            if self.setting.cname == 'opaque_multiply' and i.name == 'pressure':
-                # make opaque depend on pressure by default
-                self.set_points(i, [(0.0, 0.0), (1.0, 1.0)])
-            else:
-                self.set_points(i, [])
-    def set_base_value(self, value):
-        if self.base_value == value: return
-        self.base_value = value
-        self.brush.set_base_value(self.setting.index, value)
-        self.brush.brushinfo_pending_changes[self.setting.cname] = self.save_to_tuple()
+    def set_base_value(self, cname, value):
+        assert cname in brush_settings
+        self.settings[cname][0] = value
         for f in self.observers:
-            f()
+            f(set([cname]))
 
-    def has_only_base_value(self):
+    def set_points(self, cname, input, points):
+        assert cname in brush_settings
+        points = tuple(points)
+        d = self.settings[cname][1]
+        if points:
+            d[input] = points
+        elif input in d:
+            d.pop(input)
+
+        for f in self.observers:
+            f(set([cname]))
+
+    def get_string_property(self, name):
+        tmp = self.settings.get(name, None)
+        return self.settings.get(name, None)
+
+    def set_string_property(self, name, value):
+        assert name in string_value_settings
+        if value is None:
+            self.settings.pop(name, None)
+        else:
+            assert isinstance(value, str) or isinstance(value, unicode)
+            self.settings[name] = value
+        for f in self.observers:
+            f(set([name]))
+
+    def has_only_base_value(self, cname):
+        """Return whether a setting is constant for this brush."""
         for i in brushsettings.inputs:
-            if self.has_input(i):
+            if self.has_input(cname, i.name):
                 return False
         return True
 
-    def has_input(self, input):
-        return self.points[input.index]
-
-    def has_input_nonlinear(self, input):
-        points = self.points[input.index]
-        if not points: return False
-        if len(points) > 2: return True
-        # also if it is linear but the x-axis was changed (hm, bad function name)
-        if abs(points[0][0] - input.soft_min) > 0.001: return True
-        if abs(points[1][0] - input.soft_max) > 0.001: return True
-        return False
-
-    def set_points(self, input, points):
-        assert len(points) != 1
-        if self.points[input.index] == points: return
-        #if len(points) > 2:
-        #    print 'set_points[%s](%s, %s)' % (self.setting.cname, input.name, points)
-
-        self.brush.set_mapping_n(self.setting.index, input.index, len(points))
-        for i, (x, y) in enumerate(points):
-            self.brush.set_mapping_point(self.setting.index, input.index, i, x, y)
-        self.points[input.index] = points[:] # copy
-        for f in self.observers:
-            f()
-        self.brush.brushinfo_pending_changes[self.setting.cname] = self.save_to_tuple()
-
-    def save_to_tuple(self):
-        # Equivalent of the old save_to_string().
-        input_hash = {}
-        for i in brushsettings.inputs:
-            points = self.points[i.index]
-            if points:
-                input_vector = []
-                for x, y in points:
-                    input_vector.append((x, y))
-                input_hash[i.name] = input_vector
-        return (self.base_value, input_hash)
-
-class Brush(mypaintlib.Brush):
-    def __init__(self):
-        mypaintlib.Brush.__init__(self)
-        self.brushinfo = BrushInfo()
-        self.brushinfo_pending_changes = {}
-        self.settings_observers = []
-        self.settings_observers_hidden = []
-        self.settings = []
-        for s in brushsettings.settings:
-            self.settings.append(Setting(s, self, self.settings_observers))
-        self.settings_observers.append(self._update_brushinfo)
-
-    def _update_brushinfo(self):
-        """Mirror changed settings into the BrushInfo tracking this Brush."""
-        for cname, tup in self.brushinfo_pending_changes.iteritems():
-            self.brushinfo[cname] = tup
-        self.brushinfo_pending_changes = {}
+    def has_input(self, cname, input):
+        """Return whether a given input is used by some setting."""
+        return self.get_points(cname, input)
 
     def begin_atomic(self):
-        self.settings_observers_hidden.append(self.settings_observers[:])
-        del self.settings_observers[:]
+        self.observers_hidden.append(self.observers[:])
+        del self.observers[:]
+        self.observers.append(self.add_pending_update)
+
+    def add_pending_update(self, settings):
+        self.pending_updates.update(settings)
 
     def end_atomic(self):
-        self.settings_observers[:] = self.settings_observers_hidden.pop()
-        for f in self.settings_observers: f()
-
-
-    def get_stroke_bbox(self):
-        bbox = self.stroke_bbox
-        return bbox.x, bbox.y, bbox.w, bbox.h
-
-    def setting_by_cname(self, cname):
-        s = brushsettings.settings_dict[cname]
-        return self.settings[s.index]
-
-    def save_to_string(self):
-        return self.brushinfo.serialize()
-
-    def load_from_string(self, s):
-        self.load_from_brushinfo(BrushInfo(s))
-
-    def load_from_brushinfo(self, brushinfo):
-        """Updates the brush's Settings from (a clone of) ``brushinfo``."""
-        self.begin_atomic()
-        try:
-            self.brushinfo = brushinfo.clone()
-            for setting in self.settings:
-                setting.restore_defaults()
-            engine_settings = self.brushinfo.engine_settings_iter()
-            for cname, basevalue, input_points in engine_settings:
-                setting = self.setting_by_cname(cname)
-                setting.set_base_value(basevalue)
-                for inputname, points in input_points.iteritems():
-                    brushinput = brushsettings.inputs_dict.get(inputname)
-                    setting.set_points(brushinput, points)
-        finally:
-            self.end_atomic()
-
-    def copy_settings_from(self, other):
-        self.load_from_brushinfo(other.brushinfo)
+        self.observers[:] = self.observers_hidden.pop()
+        pending = self.pending_updates.copy()
+        if pending:
+            self.pending_updates.clear()
+            for f in self.observers:
+                f(pending)
 
     def get_color_hsv(self):
-        h = self.setting_by_cname('color_h').base_value
-        s = self.setting_by_cname('color_s').base_value
-        v = self.setting_by_cname('color_v').base_value
+        h = self.get_base_value('color_h')
+        s = self.get_base_value('color_s')
+        v = self.get_base_value('color_v')
         return (h, s, v)
 
     def set_color_hsv(self, hsv):
         self.begin_atomic()
         try:
             h, s, v = hsv
-            self.setting_by_cname('color_h').set_base_value(h)
-            self.setting_by_cname('color_s').set_base_value(s)
-            self.setting_by_cname('color_v').set_base_value(v)
+            self.set_base_value('color_h', h)
+            self.set_base_value('color_s', s)
+            self.set_base_value('color_v', v)
         finally:
             self.end_atomic()
 
@@ -398,7 +337,52 @@ class Brush(mypaintlib.Brush):
         return helpers.hsv_to_rgb(*hsv)
 
     def is_eraser(self):
-        return self.setting_by_cname('eraser').base_value > 0.9
+        return self.get_base_value('eraser') > 0.9
+
+    def get_effective_radius(self):
+        """Return brush radius in pixels for cursor shape."""
+        base_radius = math.exp(self.get_base_value('radius_logarithmic'))
+        r = base_radius
+        r += 2*base_radius*self.get_base_value('offset_by_random')
+        return r
+
+
+class Brush(mypaintlib.Brush):
+    """
+    Low-level extension of the C brush class, propagating all changes of
+    a brushinfo instance down into the C code.
+    """
+    def __init__(self, brushinfo):
+        mypaintlib.Brush.__init__(self)
+        self.brushinfo = brushinfo
+        brushinfo.observers.append(self.update_brushinfo)
+        self.update_brushinfo(all_settings)
+
+    def update_brushinfo(self, settings):
+        """Mirror changed settings into the BrushInfo tracking this Brush."""
+
+        for cname in settings:
+            setting = brushsettings.settings_dict.get(cname)
+            if not setting:
+                continue
+
+            base = self.brushinfo.get_base_value(cname)
+            self.set_base_value(setting.index, base)
+
+            for input in brushsettings.inputs:
+                points = self.brushinfo.get_points(cname, input.name)
+
+                assert len(points) != 1
+                #if len(points) > 2:
+                #    print 'set_points[%s](%s, %s)' % (cname, input.name, points)
+
+                self.set_mapping_n(setting.index, input.index, len(points))
+                for i, (x, y) in enumerate(points):
+                    self.set_mapping_point(setting.index, input.index, i, x, y)
+
+    def get_stroke_bbox(self):
+        bbox = self.stroke_bbox
+        return bbox.x, bbox.y, bbox.w, bbox.h
 
 
 if __name__ == "__main__":

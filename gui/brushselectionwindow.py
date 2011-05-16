@@ -70,14 +70,13 @@ def get_common_settings_widget(app):
     common_settings = [s for s in brushsettings.settings_visible if s.cname in cmn]
     settings_box = gtk.VBox()
 
-    def value_changed_cb(adj, index, app):
-        app.brush.settings[index].set_base_value(adj.get_value())
+    def value_changed_cb(adj, cname, app):
+        app.brush.set_base_value(cname, adj.get_value())
 
     def get_setting_widget(setting):
         """Return a widget to control a single setting"""
-
         adj = app.brush_adjustment[s.cname]
-        adj.connect('value-changed', value_changed_cb, s.index, app)
+        adj.connect('value-changed', value_changed_cb, s.cname, app)
 
         l = gtk.Label(s.name)
         l.set_alignment(0, 0.5)
@@ -119,7 +118,7 @@ class BrushList(pixbuflist.PixbufList):
         Highlights the Application instance's active brush in the list, or something
         close to it along its chain of ancestors.
         """
-        active_brush_parent_name = self.app.brush.brushinfo.get("parent_brush_name")
+        active_brush_parent_name = self.app.brush.get_string_property("parent_brush_name")
         parent_brush = self.bm.get_brush_by_name(active_brush_parent_name)
         list_brush = self.bm.find_brushlist_ancestor(parent_brush)
         self.set_selected(list_brush)

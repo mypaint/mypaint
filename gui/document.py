@@ -27,8 +27,7 @@ ERASER_MODE_RADIUS_CHANGE_PREF = 'document.eraser_mode_radius_change'
 class Document(object):
     def __init__(self, app):
         self.app = app
-        self.model = lib.document.Document()
-        self.model.set_brush(self.app.brush)
+        self.model = lib.document.Document(self.app.brush)
 
         # View
         self.tdw = tileddrawwidget.TiledDrawWidget(self.model)
@@ -51,10 +50,6 @@ class Document(object):
         self.tdw.scale = default_zoom
         self.tdw.zoom_min = min(self.zoomlevel_values)
         self.tdw.zoom_max = max(self.zoomlevel_values)
-
-        # Brush
-        self.app.brush.settings_observers.append(self.brush_modified_cb)
-        self.app.brushmanager.selected_brush_observers.append(self.brush_selected_cb)
 
         # Device change management & pen-stroke watching
         self.tdw.device_observers.append(self.device_changed_cb)
@@ -244,13 +239,6 @@ class Document(object):
             self.model.load_layer_from_pixbuf(pixbuf, x, y)
         cb.request_image(callback)
 
-    def brush_modified_cb(self):
-        # called at every brush setting modification, should return fast
-        self.model.set_brush(self.app.brush)
-
-    def brush_selected_cb(self, brush):
-        self.auto_reset_blend_mode()
-
     def pick_context_cb(self, action):
         x, y = self.tdw.get_cursor_in_model_coordinates()
         for idx, layer in reversed(list(enumerate(self.model.layers))):
@@ -269,9 +257,9 @@ class Document(object):
                 si = self.model.layer.get_stroke_info_at(x, y)
 
                 if si:
-                    picked_brush = ManagedBrush(self.app.brushmanager)
-                    picked_brush.brushinfo.parse(si.brush_string)
-                    self.app.brushmanager.select_brush(picked_brush)
+                    mb = ManagedBrush(self.app.brushmanager)
+                    mb.brushinfo.load_from_string(si.brush_string)
+                    self.app.brushmanager.select_brush(mb)
                     self.si = si # FIXME: should be a method parameter?
                     self.strokeblink_state.activate(action)
                 return
@@ -436,7 +424,7 @@ class Document(object):
             context = bm.contexts[i]
         bm.selected_context = context
         if store:
-            context.brushinfo = self.app.brush.brushinfo.clone()
+            context.brushinfo = self.app.brush.clone()
             context.preview = bm.selected_brush.preview
             context.save()
         else:

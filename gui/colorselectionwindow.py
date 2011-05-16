@@ -24,7 +24,7 @@ class ToolWidget (gtk.VBox):
     def __init__(self, app):
         gtk.VBox.__init__(self)
         self.app = app
-        self.app.brush.settings_observers.append(self.brush_modified_cb)
+        self.app.brush.observers.append(self.brush_modified_cb)
         self.hsvwidget = hsvwidget = gtk.HSV()
         hsvwidget.set_size_request(150, 150)
         hsvwidget.connect("size-allocate", self.on_hsvwidget_size_allocate)
@@ -52,7 +52,9 @@ class ToolWidget (gtk.VBox):
         hsv = helpers.rgb_to_hsv(*rgb)
         self.current_col.set_color_hsv(*hsv)
 
-    def brush_modified_cb(self):
+    def brush_modified_cb(self, settings):
+        if not settings.intersection(('color_h', 'color_s', 'color_v')):
+            return
         brush_color = self.app.brush.get_color_hsv()
         if brush_color != self.get_color_hsv():
             self.in_brush_modified_cb = True  # do we still need this?

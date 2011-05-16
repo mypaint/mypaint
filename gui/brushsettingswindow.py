@@ -22,7 +22,6 @@ class Window(windowing.SubWindow):
 
     def __init__(self, app):
         windowing.SubWindow.__init__(self, app, key_input=True)
-        self.app.brushmanager.selected_brush_observers.append(self.brush_selected_cb)
 
         self.adj = {}
         self.functionWindows = {}
@@ -33,7 +32,7 @@ class Window(windowing.SubWindow):
         self.init_ui()
         self.set_default_size(450, 500)
 
-        self.update_settings()
+        self.app.brush.observers.append(self.brush_modified_cb)
 
     def init_ui(self):
         """Construct and pack widgets."""
@@ -65,7 +64,6 @@ class Window(windowing.SubWindow):
         vbox.pack_end(cb, expand=False, fill=True)
         cb.connect('toggled', self.live_update_cb)
         cb.set_no_show_all(True)
-        self.app.brush.settings_observers.append(self.live_update_cb)
 
         # ScrolledWindow for brushsetting-expanders
         scroll = self.brushsettings_widget = gtk.ScrolledWindow()
@@ -127,8 +125,8 @@ class Window(windowing.SubWindow):
                 l.set_tooltip_text(s.tooltip)
 
                 adj = self.app.brush_adjustment[s.cname]
-                adj.connect('value-changed', self.value_changed_cb, s.index, self.app)
-                self.adj[s] = adj
+                adj.connect('value-changed', self.value_changed_cb, cname)
+                self.adj[cname] = adj
                 h = gtk.HScale(adj)
                 h.set_digits(2)
                 h.set_draw_value(True)
@@ -170,46 +168,39 @@ class Window(windowing.SubWindow):
         self.header_button.show()
         self.live_update.show()
 
-    def value_changed_cb(self, adj, index, app):
-        setting = [k for k, v in self.adj.items() if v == adj][0]
-        s = app.brush.settings[index]
-        s.set_base_value(adj.get_value())
-        self.relabel_setting_buttons(adj, setting, s)
+    def value_changed_cb(self, adj, cname):
+        value = adj.get_value()
+        self.app.brush.set_base_value(cname, value)
 
-    def update_settings(self):
-        """Update all settings; their value and button labels"""
-        for s in self.visible_settings:
-            setting = brushsettings.settings_dict[s]
-            adj = self.adj[setting]
-            s = self.app.brush.settings[setting.index]
-            self.relabel_setting_buttons(adj, setting, s)
-            adj.set_value(s.base_value)
+    def update_settings(self, settings):
+        """Update adjustment and button labels"""
+        for cname in settings.intersection(self.visible_settings):
+            # Update slider
+            adj = self.adj[cname]
+            adj.set_value(self.app.brush.get_base_value(cname))
 
-    def relabel_setting_buttons(self, adj, setting, brushsetting):
-        """Relabel the buttons of a setting"""
-        s = brushsetting
+            # Make the "input value mapping" button reflect whether
+            # this brush already has a mapping or not
+            if adj.three_dots_button:
+                def set_label(s, t):
+                    if adj.three_dots_button.get_label() == s: return
+                    adj.three_dots_button.set_label(s)
+                    adj.three_dots_button.set_tooltip_text(t)
+                if self.app.brush.has_only_base_value(cname):
+                    set_label("...", _("Add input values mapping"))
+                else:
+                    set_label("X", _("Modify input values mapping"))
 
-        # Make "input value mapping" button reflect if this brush
-        # allready has a mapping or not
-        if adj.three_dots_button:
-            def set_label(s, t):
-                if adj.three_dots_button.get_label() == s: return
-                adj.three_dots_button.set_label(s)
-                adj.three_dots_button.set_tooltip_text(t)
-            if s.has_only_base_value():
-                set_label("...", _("Add input values mapping"))
+            # Make "reset to default value" button insensitive
+            # if the value is already the default (the button will have no effect)
+            if adj.get_value() == brushsettings.settings_dict[cname].default:
+                adj.default_value_button.set_sensitive(False)
             else:
-                set_label("X", _("Modify input values mapping"))
+                adj.default_value_button.set_sensitive(True)
 
-        # Make "reset to default value" button insensitive
-        # if the value is already the default (the button will have no effect)
-        if adj.get_value() == setting.default:
-            adj.default_value_button.set_sensitive(False)
-        else:
-            adj.default_value_button.set_sensitive(True)
-
-    def brush_selected_cb(self, brush):
-        self.update_settings()
+    def brush_modified_cb(self, settings):
+        self.update_settings(settings)
+        self.live_update_cb()
 
     def live_update_cb(self, *trash):
         if self.live_update.get_active():

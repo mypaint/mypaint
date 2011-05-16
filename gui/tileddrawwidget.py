@@ -59,7 +59,7 @@ class TiledDrawWidget(gtk.DrawingArea):
 
         self.doc = document
         self.doc.canvas_observers.append(self.canvas_modified_cb)
-        self.doc.brush.settings_observers.append(self.brush_modified_cb)
+        self.doc.brush.brushinfo.observers.append(self.brush_modified_cb)
 
         self.cursor_info = None
 
@@ -610,7 +610,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.translation_y += (cy_user - desired_cy_user)*self.scale
         self.queue_draw()
 
-    def brush_modified_cb(self):
+    def brush_modified_cb(self, settings):
         self.update_cursor()
 
     def update_cursor(self):
@@ -623,8 +623,8 @@ class TiledDrawWidget(gtk.DrawingArea):
         elif self.doc.layer.locked or not self.doc.layer.visible:
             c = self.CANNOT_DRAW_CURSOR
         else:
-            b = self.doc.brush
-            radius = b.get_actual_radius()*self.scale
+            b = self.doc.brush.brushinfo
+            radius = b.get_effective_radius()*self.scale
             c = cursor.get_brush_cursor(radius, b.is_eraser())
         self.window.set_cursor(c)
 

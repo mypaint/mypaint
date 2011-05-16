@@ -1055,13 +1055,15 @@ class ToolWidget (Selector):
     def __init__(self, app):
         Selector.__init__(self, app)
 
-        self.app.brush.settings_observers.append(self.brush_modified_cb)
+        self.app.brush.observers.append(self.brush_modified_cb)
         self.stop_callback = False
 
         # The first callback notification happens before the window is initialized
         self.set_color(app.brush.get_color_hsv())
 
-    def brush_modified_cb(self):
+    def brush_modified_cb(self, settings):
+        if not settings.intersection(('color_h', 'color_s', 'color_v')):
+            return
         if self.stop_callback:
             return
         self.stop_callback = True
@@ -1087,13 +1089,15 @@ class Window(windowing.SubWindow):
         self.exp_config = self.selector.exp_config
 
         self.add(self.selector)
-        self.app.brush.settings_observers.append(self.brush_modified_cb)
+        self.app.brush.observers.append(self.brush_modified_cb)
         self.stop_callback = False
 
         # The first callback notification happens before the window is initialized
         self.selector.set_color(app.brush.get_color_hsv())
 
-    def brush_modified_cb(self):
+    def brush_modified_cb(self, settings):
+        if not settings.intersection(('color_h', 'color_s', 'color_v')):
+            return
         if self.stop_callback:
             return
         self.stop_callback = True

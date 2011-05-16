@@ -785,16 +785,4 @@ public:
     }
   }
 
-  double get_actual_radius() {
-
-    double base_radius = expf(settings[BRUSH_RADIUS_LOGARITHMIC]->base_value);
-    //double base_radius = states[STATE_ACTUAL_RADIUS];
-
-    double r = base_radius;
-
-    r += 2*base_radius*settings[BRUSH_OFFSET_BY_RANDOM]->base_value;
-    //r += 2*base_radius*settings_value[BRUSH_OFFSET_BY_RANDOM];
-
-    return r;
-  }
 };

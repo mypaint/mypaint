@@ -185,8 +185,8 @@ def save_png_layer():
 def brushengine_paint_hires():
     from lib import tiledsurface, brush
     s = tiledsurface.Surface()
-    b = brush.Brush()
-    b.load_from_string(open('brushes/watercolor.myb').read())
+    bi = brush.BrushInfo(open('brushes/watercolor.myb').read())
+    b = brush.Brush(bi)
 
     events = loadtxt('painting30sec.dat.gz')
     t_old = events[0][0]

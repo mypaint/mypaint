@@ -49,7 +49,8 @@ class Application: # singleton
 
         # unmanaged main brush; always the same instance (we can attach settings_observers)
         # this brush is where temporary changes (color, size...) happen
-        self.brush = brush.Brush()
+        self.brush = brush.BrushInfo()
+        self.brush.load_defaults()
 
         self.preferences = {}
         self.load_settings()
@@ -59,7 +60,6 @@ class Application: # singleton
         self.filehandler = filehandling.FileHandler(self)
         self.doc = document.Document(self)
 
-        self.set_current_brush(self.brushmanager.selected_brush)
         self.brush.set_color_hsv((0, 0, 0))
         self.brushmanager.selected_brush_observers.append(self.brush_selected_cb)
         self.init_brush_adjustments()
@@ -89,6 +89,7 @@ class Application: # singleton
         self.layout_manager.get_subwindow_by_role("brushSettingsWindow")
 
         def at_application_start(*trash):
+            self.brushmanager.select_initial_brush()
             if filenames:
                 # Open only the first file, no matter how many has been specified
                 # If the file does not exist just set it as the file to save to
@@ -199,7 +200,7 @@ class Application: # singleton
             user_config = get_legacy_config()
         self.preferences.update(user_config)
 
-    def init_brush_adjustments(self, ):
+    def init_brush_adjustments(self):
         """Initializes all the brush adjustments for the current brush"""
         self.brush_adjustment = {}
         from brushlib import brushsettings
@@ -266,24 +267,15 @@ class Application: # singleton
                         device.set_mode(mode)
                     break
 
-    def set_current_brush(self, managed_brush):
-        """
-        Copies a ManagedBrush's settings into the brush settings currently used
-        for painting. Sets the parent brush name to the closest ancestor brush
-        currently in the brushlist.
-        """
-        if managed_brush is None:
+    def brush_selected_cb(self, managed_brush):
+        if not managed_brush:
             return
         self.brush.load_from_brushinfo(managed_brush.brushinfo)
         parent_name = None
         list_brush = self.brushmanager.find_brushlist_ancestor(managed_brush)
         if list_brush and list_brush.name is not None:
             parent_name = list_brush.name
-        self.brush.brushinfo["parent_brush_name"] = parent_name
-
-    def brush_selected_cb(self, brush):
-        assert brush is not self.brush
-        self.set_current_brush(brush)
+        self.brush.set_string_property("parent_brush_name", parent_name)
 
     def save_gui_config(self):
         gtk.accel_map_save(join(self.confpath, 'accelmap.conf'))

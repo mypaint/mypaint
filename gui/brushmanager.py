@@ -101,7 +101,7 @@ class BrushManager:
         self.user_brushpath = user_brushpath
         self.app = app
 
-        self.selected_brush = ManagedBrush(self)
+        self.selected_brush = None
         self.groups = {}
         self.contexts = []
         self.active_groups = []
@@ -134,6 +134,7 @@ class BrushManager:
 
         self.brushes_observers.append(self.brushes_modified_cb)
 
+    def select_initial_brush(self):
         initial_brush = None
         # If we recorded which devbrush was last in use, restore it and assume
         # that most of the time the user will continue to work with the same
@@ -148,11 +149,7 @@ class BrushManager:
         # Fallback
         if initial_brush is None:
             initial_brush = self.get_default_brush()
-
-        def at_application_start():
-            self.select_brush(initial_brush)
-        gobject.idle_add(at_application_start)
-
+        self.select_brush(initial_brush)
 
     def get_matching_brush(self, name=None, keywords=None,
                            favored_group=DEFAULT_STARTUP_GROUP,
@@ -184,7 +181,7 @@ class BrushManager:
         if fallback_eraser != 0.0:
             name += '-eraser'
         brush = ManagedBrush(self, name)
-        brush.brushinfo["eraser"] = (fallback_eraser, {})
+        brush.brushinfo.set_base_value("eraser", fallback_eraser)
         return brush
 
 
@@ -499,7 +496,7 @@ class BrushManager:
         while brush is not None:
             if brush.in_brushlist:
                 return brush
-            parent_name = brush.brushinfo.get("parent_brush_name", None)
+            parent_name = brush.brushinfo.get_string_property("parent_brush_name")
             brush = self.get_brush_by_name(parent_name)
         return None
 
@@ -521,13 +518,14 @@ class BrushManager:
         brush in the brushlist and the currently active lib.brush.
         """
         clone = ManagedBrush(self, name, persistent=False)
-        clone.brushinfo = self.app.brush.brushinfo.clone()
+        clone.brushinfo = self.app.brush.clone()
         clone.preview = self.selected_brush.preview
         list_brush = self.find_brushlist_ancestor(self.selected_brush)
-        if list_brush is not None:
-            clone.brushinfo["parent_brush_name"] = list_brush.name
+        if list_brush:
+            parent = list_brush.name
         else:
-            clone.brushinfo["parent_brush_name"] = None
+            parent = None
+        clone.brushinfo.set_string_property("parent_brush_name", parent)
         return clone
 
     def store_brush_for_device(self, device_name, managed_brush):
@@ -670,9 +668,10 @@ class ManagedBrush(object):
         target.brushinfo = self.brushinfo.clone()
         list_brush = self.bm.find_brushlist_ancestor(self)
         if list_brush:
-            target.brushinfo["parent_brush_name"] = list_brush.name
+            parent = list_brush.name
         else:
-            target.brushinfo["parent_brush_name"] = None
+            parent = None
+        target.brushinfo.set_string_property("parent_brush_name", parent)
         target.preview = self.preview
         target.name = name
 
@@ -708,7 +707,7 @@ class ManagedBrush(object):
             self.preview.fill(0xffffffff) # white
         self.preview.save(prefix + '_prev.png', 'png')
         brushinfo = self.brushinfo.clone()
-        open(prefix + '.myb', 'w').write(brushinfo.serialize())
+        open(prefix + '.myb', 'w').write(brushinfo.save_to_string())
         self.remember_mtimes()
 
     def load(self, retain_parent=False):
@@ -730,11 +729,11 @@ class ManagedBrush(object):
         prefix = self.get_fileprefix()
         filename = prefix + '.myb'
         brushinfo_str = open(filename).read()
-        self.brushinfo.parse(brushinfo_str)
+        self.brushinfo.load_from_string(brushinfo_str)
         self.remember_mtimes()
         self.settings_loaded = True
         if not retain_parent:
-            self.brushinfo.pop("parent_brush_name", None)
+            self.brushinfo.set_string_property("parent_brush_name", None)
         self.persistent = True
 
     def reload_if_changed(self):
@@ -747,7 +746,10 @@ class ManagedBrush(object):
         return True
 
     def __str__(self):
-        return "<ManagedBrush %s p=%s>" % (self.name, self.brushinfo.get("parent_brush_name", None))
+        if self.brushinfo.settings:
+            return "<ManagedBrush %s p=%s>" % (self.name, self.brushinfo.get_string_property("parent_brush_name"))
+        else:
+            return "<ManagedBrush %s (settings not loaded yet)>" % self.name
 
 
 if __name__ == '__main__':

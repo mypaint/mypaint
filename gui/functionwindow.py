@@ -6,7 +6,10 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-"window to model a single brush property function"
+"""
+Widgets to manipulate the input dependency of a single brush setting.
+"""
+
 from gettext import gettext as _
 import gtk
 from brushlib import brushsettings
@@ -17,9 +20,8 @@ class BrushInputsWidget(gtk.VBox):
         gtk.VBox.__init__(self)
 
         self.app = app
-        self.byinputwidgets = []
-        self.default_value_button_cb_id = 0
-        self.app.brushmanager.selected_brush_observers.append(self.brush_selected_cb)
+        self.byinputwidgets = {}
+        self.setting = None
         self.init_ui()
 
     def init_ui(self):
@@ -44,36 +46,39 @@ class BrushInputsWidget(gtk.VBox):
         scale.set_value_pos(gtk.POS_LEFT)
         hbox.pack_start(scale, expand=True)
         b = self.default_value_button = gtk.Button()
+        b.connect('clicked', self.set_default_value_cb)
         hbox.pack_start(b, expand=False)
 
         vbox.pack_start(gtk.HSeparator(), expand=False)
 
         for i in brushsettings.inputs:
             w = ByInputWidget(self.app, i)
-            self.byinputwidgets.append(w)
+            self.byinputwidgets[i.name] = w
             vbox.pack_start(w, expand=False)
             vbox.pack_start(gtk.HSeparator(), expand=False)
 
     def set_brushsetting(self, setting, adj):
+        self.setting = setting
         self.base_value_hscale.set_adjustment(adj)
 
-        button = self.default_value_button
-        button.set_label("%.1f" % setting.default)
-        if self.default_value_button_cb_id:
-            button.disconnect(self.default_value_button_cb_id)
-        self.default_value_button_cb_id = button.connect('clicked',
-                self.set_fixed_value_clicked_cb, adj, setting.default)
+        b = self.default_value_button
+        b.set_label("%.1f" % setting.default)
 
-        for widget in self.byinputwidgets:
+        for widget in self.byinputwidgets.itervalues():
             widget.set_brushsetting(setting)
 
-    def set_fixed_value_clicked_cb(self, widget, adj, value):
-        adj.set_value(value)
+    def set_default_value_cb(self, widget):
+        self.app.brush.set_base_value(self.setting.cname, self.setting.default)
 
-    def brush_selected_cb(self, brush):
-        # update curves
-        for w in self.byinputwidgets:
-            w.reread()
+
+def points_equal(points_a, points_b):
+    if len(points_a) != len(points_b):
+        return False
+    for a, b in zip(points_a, points_b):
+        for v1, v2 in zip(a, b):
+            if abs(v1-v2) > 0.0001:
+                return False
+    return True
 
 class ByInputWidget(gtk.VBox):
     "the gui elements that change the response to one input"
@@ -86,7 +91,11 @@ class ByInputWidget(gtk.VBox):
         self.input = input
         self.setting = None
 
-        self.block_user_changes_cb = True
+        self.app.brush.observers.append(self.brush_modified_cb)
+        self.app.brushmanager.selected_brush_observers.append(self.brush_selected_cb)
+
+        self.points = None
+        self.disable_scale_changes_cb = True
 
         lower = -20.0
         upper = +20.0
@@ -97,9 +106,9 @@ class ByInputWidget(gtk.VBox):
 
         self.scale_y_adj = gtk.Adjustment(value=1.0/4.0, lower=-1.0, upper=1.0, step_incr=0.01, page_incr=0.1)
 
-        self.xmin_adj.connect('value-changed', self.user_changes_cb)
-        self.xmax_adj.connect('value-changed', self.user_changes_cb)
-        self.scale_y_adj.connect('value-changed', self.user_changes_cb)
+        self.xmin_adj.connect('value-changed', self.scale_changes_cb)
+        self.xmax_adj.connect('value-changed', self.scale_changes_cb)
+        self.scale_y_adj.connect('value-changed', self.scale_changes_cb)
 
         l = gtk.Label()
         l.set_markup(input.dname)
@@ -120,7 +129,7 @@ class ByInputWidget(gtk.VBox):
         hbox.pack_start(b, expand=False)
 
         t = gtk.Table(4, 4)
-        c = self.curve_widget = CurveWidget(self.user_changes_cb)
+        c = self.curve_widget = CurveWidget(self.curvewidget_points_modified_cb)
         t.attach(c, 0, 3, 0, 3, gtk.EXPAND | gtk.FILL, gtk.EXPAND | gtk.FILL, 5, 0)
         l1 = gtk.SpinButton(self.scale_y_adj); l1.set_digits(2)
         l2 = gtk.Label('+0.0')
@@ -146,28 +155,26 @@ class ByInputWidget(gtk.VBox):
 
         self.pack_start(expander, expand=False)
 
-        self.block_user_changes_cb = False
+        self.disable_scale_changes_cb = False
 
     def set_brushsetting(self, setting):
         self.setting = setting
+        self.reset_gui()
 
-        self.block_user_changes_cb = True
-        diff = setting.max - setting.min
-        self.scale_y_adj.set_upper(+diff)
-        self.scale_y_adj.set_lower(-diff)
-        self.scale_y_adj.set_value(diff/4.0)
-        self.block_user_changes_cb = False
-
-        self.reread()
+    def brush_selected_cb(self, managed_brush):
+        if not self.setting:
+            return
+        self.reset_gui()
 
     def set_fixed_value_clicked_cb(self, widget, adj, value):
         adj.set_value(value)
 
-    def user_changes_cb(self, widget):
-        if self.block_user_changes_cb:
+    def scale_changes_cb(self, widget):
+        if self.disable_scale_changes_cb:
             return
+        # MVC: this is part of the controller
 
-        # 1. verify and constrain the changes
+        # 1. verify and constrain the adjustment changes
         scale_y = self.scale_y_adj.get_value()
         xmax = self.xmax_adj.get_value()
         xmin = self.xmin_adj.get_value()
@@ -179,35 +186,29 @@ class ByInputWidget(gtk.VBox):
                 self.xmax_adj.set_value(xmin + 0.1)
             else:
                 assert False
-            return # this function caused itself to be called
+            return # the adjustment change causes another call of this function
 
         assert xmax > xmin
 
-        # 2. update the brush
-        if scale_y:
-            brush_points = [self.point_widget2real(p) for p in self.curve_widget.points]
-            nonzero = [True for x, y in brush_points if y != 0]
-            if not nonzero:
-                brush_points = []
-        else:
-            brush_points = []
-        self.app.brush.settings[self.setting.index].set_points(self.input, brush_points)
+        # 2. interpret the points displayed in the curvewidget
+        #    according to the new scale (update the brush)
+        self.curvewidget_points_modified_cb(None)
+        
+    def get_brushpoints_from_curvewidget(self):
+        scale_y = self.scale_y_adj.get_value()
+        if not scale_y:
+            return []
+        brush_points = [self.point_widget2real(p) for p in self.curve_widget.points]
+        nonzero = [True for x, y in brush_points if y != 0]
+        if not nonzero:
+            return []
+        return brush_points
 
-        # 3. update display
-        self.update_graypoint()
-
-    def update_graypoint(self):
-        # highlight (x_normal, 0)
-        # the user should make the curve go through this point
-        self.curve_widget.graypoint = (self.get_x_normal(), 0.5)
-        self.curve_widget.queue_draw()
-
-    def reconsider_details(self):
-        s = self.app.brush.settings[self.setting.index]
-        if s.has_input_nonlinear(self.input):
-            self.expander.set_expanded(True)
-        else:
-            self.expander.set_expanded(False)
+    def curvewidget_points_modified_cb(self, widget):
+        # MVC: this is part of the controller
+        # update the brush with the points from curve_widget
+        points = self.get_brushpoints_from_curvewidget()
+        self.app.brush.set_points(self.setting.cname, self.input.name, points)
 
     def point_real2widget(self, (x, y)):
         scale_y = self.scale_y_adj.get_value()
@@ -233,19 +234,16 @@ class ByInputWidget(gtk.VBox):
         y = (0.5-y) * 2.0 * scale_y
         return (x, y)
 
-    def get_x_normal(self):
-        # return widget x coordinate of the "normal" input value
-        return self.point_real2widget((self.input.normal, 0.0))[0]
-
-    def reread(self):
-        if not self.setting:
-            return
-
-        brush_points = self.app.brush.settings[self.setting.index].points[self.input.index]
+    def reset_gui(self):
+        "update scales (adjustments) to fit the brush curve into view"
+        # MVC: this is part of the view
+        brush_points = self.app.brush.get_points(self.setting.cname, self.input.name)
 
         brush_points_zero = [(self.input.soft_min, 0.0), (self.input.soft_max, 0.0)]
         if not brush_points:
             brush_points = brush_points_zero
+
+        # 1. update the scale
 
         xmin, xmax = brush_points[0][0], brush_points[-1][0]
         assert xmax > xmin
@@ -266,39 +264,83 @@ class ByInputWidget(gtk.VBox):
             xmin = self.input.soft_min
             xmax = self.input.soft_max
 
-        # xmin, xmax, scale_y are fixed now
-        self.block_user_changes_cb = True
+        self.disable_scale_changes_cb = True
+        # set adjustment limits imposed by brush setting
+        diff = self.setting.max - self.setting.min
+        self.scale_y_adj.set_upper(+diff)
+        self.scale_y_adj.set_lower(-diff)
+        self.scale_y_adj.set_value(scale_y)
+        # set adjustment values such that all points are visible
         self.xmax_adj.set_value(xmax)
         self.xmin_adj.set_value(xmin)
-        self.scale_y_adj.set_value(scale_y)
-        self.block_user_changes_cb = False
+        self.disable_scale_changes_cb = False
 
-        curve_points = [self.point_real2widget(p) for p in brush_points]
 
-        if not scale_y:
-            # note, curve_points has undefined y values (None)
-            y0 = -1.0
-            y1 = +1.0
-            x_normal = self.get_x_normal()
+        # 2. calculate the default curve (the one we display if there is no curve)
 
-            # the default line should go through zero at x_normal
-            # change one of the border points to achieve this
-            if x_normal >= 0.0 and x_normal <= 1.0:
-                if x_normal < 0.5:
-                    y0 = -0.5/(x_normal-1.0)
-                    y1 = 0.0
-                else:
-                    y0 = 1.0
-                    y1 = -0.5/x_normal + 1.0
+        curve_points_zero = [self.point_real2widget(p) for p in brush_points_zero]
 
-            (x0, trash0), (x1, trash1) = curve_points
-            curve_points = [(x0, y0), (x1, y1)]
+        # widget x coordinate of the "normal" input value
+        x_normal = self.get_x_normal()
 
+        y0 = -1.0
+        y1 = +1.0
+        # the default line should go through zero at x_normal
+        # change one of the border points to achieve this
+        if x_normal >= 0.0 and x_normal <= 1.0:
+            if x_normal < 0.5:
+                y0 = -0.5/(x_normal-1.0)
+                y1 = 0.0
+            else:
+                y0 = 1.0
+                y1 = -0.5/x_normal + 1.0
+
+        (x0, trash0), (x1, trash1) = curve_points_zero
+        curve_points_zero = [(x0, y0), (x1, y1)]
+
+        # 3. display the curve
+
+        if scale_y:
+            curve_points = [self.point_real2widget(p) for p in brush_points]
+        else:
+            curve_points = curve_points_zero
+
+        assert len(curve_points) >= 2
         self.curve_widget.points = curve_points
         self.curve_widget.queue_draw()
+        self.update_graypoint()
+
+        # 4. reset the expander
+
+        interesting = not points_equal(curve_points, curve_points_zero)
+        self.expander.set_expanded(interesting)
+
+    def get_x_normal(self):
+        "returns the widget x coordinate of the 'normal' value of the input"
+        return self.point_real2widget((self.input.normal, 0.0))[0]
+
+    def update_graypoint(self):
+        self.curve_widget.graypoint = (self.get_x_normal(), 0.5)
+        self.curve_widget.queue_draw()
+
+    def brush_modified_cb(self, settings):
+        "update gui when the brush has been modified (by this widget or externally)"
+        if not self.setting:
+            return
+        if self.setting.cname not in settings:
+            return
+
+        # check whether we really need to update anything
+        points_old = self.get_brushpoints_from_curvewidget()
+        points_new = self.app.brush.get_points(self.setting.cname, self.input.name)
+
+        # try not to destroy changes that the user made to the widget
+        # (not all gui states are stored inside the brush)
+        if not points_equal(points_old, points_new):
+            self.reset_gui()
 
         self.update_graypoint()
-        self.reconsider_details()
+
 
 RADIUS = 4
 class CurveWidget(gtk.DrawingArea):

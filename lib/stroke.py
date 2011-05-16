@@ -27,7 +27,7 @@ class Stroke:
     def start_recording(self, brush):
         assert not self.finished
 
-        self.brush_settings = brush.save_to_string() # fast (brush caches this string)
+        self.brush_settings = brush.brushinfo.save_to_string() # fast (brush caches this string)
 
         states = brush.get_state()
         assert states.dtype == 'float32'
@@ -66,8 +66,8 @@ class Stroke:
     def render(self, surface):
         assert self.finished
 
-        b = brush.Brush()
-        b.load_from_string(self.brush_settings) # OPTIMIZE: check if this is a performance bottleneck
+        # OPTIMIZE: check if parsing of settings is a performance bottleneck
+        b = brush.Brush(brush.BrushInfo(self.brush_settings))
 
         states = numpy.fromstring(self.brush_state, dtype='float32')
         b.set_state(states)

@@ -42,8 +42,11 @@ class Document():
     #   or discarded as empty before any other action is possible.
     #   (split_stroke)
 
-    def __init__(self):
-        self.brush = brush.Brush()
+    def __init__(self, brushinfo=None):
+        if not brushinfo:
+            brushinfo = brush.BrushInfo()
+            brushinfo.load_defaults()
+        self.brush = brush.Brush(brushinfo)
         self.stroke = None
         self.canvas_observers = []
         self.stroke_observers = [] # callback arguments: stroke, brush (brush is a temporary read-only convenience object)
@@ -171,10 +174,7 @@ class Document():
 
     def straight_line(self, src, dst):
         self.split_stroke()
-        # TODO: undo last stroke if it was very short... (but not at document level?)
-        real_brush = self.brush
-        self.brush = brush.Brush()
-        self.brush.copy_settings_from(real_brush)
+        self.brush.reset() # reset dynamic states (eg. filtered velocity)
 
         duration = 3.0
         pressure = 0.3
@@ -188,7 +188,7 @@ class Document():
         for i in xrange(N):
             self.stroke_to(duration/N, x[i], y[i], pressure, 0.0, 0.0)
         self.split_stroke()
-        self.brush = real_brush
+        self.brush.reset()
 
 
     def layer_modified_cb(self, *args):
@@ -221,10 +221,6 @@ class Document():
     def get_last_command(self):
         self.split_stroke()
         return self.command_stack.get_last_command()
-
-    def set_brush(self, brush):
-        self.split_stroke()
-        self.brush.copy_settings_from(brush)
 
     def get_bbox(self):
         res = helpers.Rect()
