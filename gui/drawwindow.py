@@ -576,6 +576,8 @@ class Window (windowing.MainWindow, layout.MainWindow):
             u"Nicola Lunghi (%s)" % _('patterns'),
             u"Toni Kasurinen (%s)" % _('brushes'),
             u"Сан Саныч (%s)" % _('patterns'),
+            u'David Grundberg (%s)' % ('programming'),
+            u"guciek (%s)" % _('programming'),
             ])
         d.set_artists([
             u'Sebastian Kraft (%s)' % _('desktop icon'),
@@ -600,6 +602,7 @@ class Window (windowing.MainWindow, layout.MainWindow):
             u'Julian Aloofi (de)\n'
             u'Tor Egil Hoftun Kvæstad (nn_NO)\n'
             u'João S. O. Bueno (pt_BR)\n'
+            u'David Grundberg (sv)\n'
             )
         
         d.run()
