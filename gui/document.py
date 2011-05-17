@@ -621,8 +621,11 @@ class Document(object):
         # using the sliders.
 
     def blend_mode_normal_cb(self, action):
-        self.app.brushmodifier.eraser_mode.leave()
-        self.app.brushmodifier.lock_alpha.leave()
+        bm = self.app.brushmodifier
+        if bm.eraser_mode.active:
+            bm.eraser_mode.leave()
+        if bm.lock_alpha.active:
+            bm.lock_alpha.leave()
 
     def blend_mode_eraser_cb(self, action):
         self.app.brushmodifier.eraser_mode.toggle(action)
