@@ -83,19 +83,22 @@ class BrushInfo:
 
     def load_defaults(self):
         """Load default brush settings, dropping all current settings."""
+        self.begin_atomic()
         self.settings = {}
-
         for s in brushsettings.settings:
-            basevalue = s.default
-            if s.cname == 'opaque_multiply':
-                # make opaque depend on pressure by default
-                input_points = {'pressure': [(0.0, 0.0), (1.0, 1.0)]}
-            else:
-                input_points = {}
-            self.settings[s.cname] = [s.default, input_points]
+            self.reset_setting(s.cname)
+        self.end_atomic()
 
+    def reset_setting(self, cname):
+        basevalue = brushsettings.settings_dict[cname].default
+        if cname == 'opaque_multiply':
+            # make opaque depend on pressure by default
+            input_points = {'pressure': [(0.0, 0.0), (1.0, 1.0)]}
+        else:
+            input_points = {}
+        self.settings[cname] = [basevalue, input_points]
         for f in self.observers:
-            f(all_settings)
+            f(set([cname]))
 
     class ParseError(Exception):
         pass
@@ -252,7 +255,7 @@ class BrushInfo:
         return self.settings[cname][0]
 
     def get_points(self, cname, input):
-        return self.settings[cname][1].get(input, ())
+        return copy.deepcopy(self.settings[cname][1].get(input, ()))
 
     def set_base_value(self, cname, value):
         assert cname in brush_settings
@@ -265,12 +268,20 @@ class BrushInfo:
         points = tuple(points)
         d = self.settings[cname][1]
         if points:
-            d[input] = points
+            d[input] = copy.deepcopy(points)
         elif input in d:
             d.pop(input)
 
         for f in self.observers:
             f(set([cname]))
+
+    def set_setting(self, cname, value):
+        self.settings[cname] = copy.deepcopy(value)
+        for f in self.observers:
+            f(set([cname]))
+
+    def get_setting(self, cname):
+        return copy.deepcopy(self.settings[cname])
 
     def get_string_property(self, name):
         tmp = self.settings.get(name, None)

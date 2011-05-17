@@ -12,7 +12,7 @@ import gtk, gobject
 gdk = gtk.gdk
 from lib import brush, helpers, mypaintlib
 import filehandling, keyboard, brushmanager, windowing, document, layout
-import colorhistory
+import colorhistory, brushmodifier
 
 class Application: # singleton
     """
@@ -58,10 +58,10 @@ class Application: # singleton
         self.brushmanager = brushmanager.BrushManager(join(datapath, 'brushes'), join(confpath, 'brushes'), self)
         self.kbm = keyboard.KeyboardManager()
         self.filehandler = filehandling.FileHandler(self)
+        self.brushmodifier = brushmodifier.BrushModifier(self)
         self.doc = document.Document(self)
 
         self.brush.set_color_hsv((0, 0, 0))
-        self.brushmanager.selected_brush_observers.append(self.brush_selected_cb)
         self.init_brush_adjustments()
 
         self.ch = colorhistory.ColorHistory(self)
@@ -266,16 +266,6 @@ class Application: # singleton
                         print 'Setting %s mode for "%s"' % (modesetting, device.name)
                         device.set_mode(mode)
                     break
-
-    def brush_selected_cb(self, managed_brush):
-        if not managed_brush:
-            return
-        self.brush.load_from_brushinfo(managed_brush.brushinfo)
-        parent_name = None
-        list_brush = self.brushmanager.find_brushlist_ancestor(managed_brush)
-        if list_brush and list_brush.name is not None:
-            parent_name = list_brush.name
-        self.brush.set_string_property("parent_brush_name", parent_name)
 
     def save_gui_config(self):
         gtk.accel_map_save(join(self.confpath, 'accelmap.conf'))

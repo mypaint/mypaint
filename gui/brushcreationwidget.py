@@ -250,7 +250,6 @@ class BrushIconEditorWidget(gtk.VBox):
                 for f in self.bm.brushes_observers: f(brushes)
 
     def brush_selected_cb(self, brush):
-
         # Update brush icon preview if it is not in edit mode
         if not self.brush_preview_edit_mode:
             self.set_preview_pixbuf(brush.preview)

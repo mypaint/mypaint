@@ -20,10 +20,6 @@ from lib import backgroundsurface, command, helpers, layer
 import tileddrawwidget, stategroup
 from brushmanager import ManagedBrush
 
-# This value allows the user to go back to the exact original size with brush_smaller_cb().
-ERASER_MODE_RADIUS_CHANGE_DEFAULT = 3*(0.3)
-ERASER_MODE_RADIUS_CHANGE_PREF = 'document.eraser_mode_radius_change'
-
 class Document(object):
     def __init__(self, app):
         self.app = app
@@ -55,9 +51,6 @@ class Document(object):
         self.tdw.device_observers.append(self.device_changed_cb)
         self.input_stroke_ended_observers.append(self.input_stroke_ended_cb)
         self.last_pen_device = None
-
-        # Eraser mode
-        self.eraser_mode_original_radius = None
 
         self.init_actions()
         self.init_context_actions()
@@ -120,9 +113,9 @@ class Document(object):
             ('ToggleAbove',  None, _('Hide Layers Above Current'), 'End', None, self.toggle_layers_above_cb), # TODO: make toggle action
 
             ('BlendMode',    None, _('Blend Mode')),
-            ('BlendModeNormal', None, _('Normal'), None, None, self.blend_mode_cb),
-            ('BlendModeEraser', None, _('Eraser'), 'e', None, self.blend_mode_cb),
-            ('BlendModeLockAlpha', None, _('Lock alpha channel'), None, None, self.blend_mode_cb),
+            ('BlendModeNormal', None, _('Normal'), 'n', None, self.blend_mode_normal_cb),
+            ('BlendModeEraser', None, _('Eraser'), 'e', None, self.blend_mode_eraser_cb),
+            ('BlendModeLockAlpha', None, _('Lock alpha channel'), '<shift>l', None, self.blend_mode_lock_alpha_cb),
         ]
         ag = self.action_group = gtk.ActionGroup('DocumentActions')
         ag.add_actions(actions)
@@ -260,6 +253,7 @@ class Document(object):
                     mb = ManagedBrush(self.app.brushmanager)
                     mb.brushinfo.load_from_string(si.brush_string)
                     self.app.brushmanager.select_brush(mb)
+                    self.app.brushmodifier.restore_context_of_selected_brush()
                     self.si = si # FIXME: should be a method parameter?
                     self.strokeblink_state.activate(action)
                 return
@@ -351,14 +345,12 @@ class Document(object):
         adj.set_value(adj.get_value() / 1.8)
 
     def brighter_cb(self, action):
-        self.auto_reset_blend_mode()
         h, s, v = self.app.brush.get_color_hsv()
         v += 0.08
         if v > 1.0: v = 1.0
         self.app.brush.set_color_hsv((h, s, v))
 
     def darker_cb(self, action):
-        self.auto_reset_blend_mode()
         h, s, v = self.app.brush.get_color_hsv()
         v -= 0.08
         # stop a little higher than 0.0, to avoid resetting hue to 0
@@ -366,7 +358,6 @@ class Document(object):
         self.app.brush.set_color_hsv((h, s, v))
 
     def warmer_cb(self,action):
-        self.end_eraser_mode()
         h, s, v = self.app.brush.get_color_hsv()
         # using about 40 degrees (0.111 +- e) as warmest and
         # 130 deg (0.611 +- e) as coolest
@@ -380,7 +371,6 @@ class Document(object):
         self.app.brush.set_color_hsv((h, s, v))
 
     def cooler_cb(self,action):
-        self.end_eraser_mode()
         h, s, v = self.app.brush.get_color_hsv()
         e = 0.015
         if 0.111 < h < 0.611 - e:
@@ -392,14 +382,12 @@ class Document(object):
         self.app.brush.set_color_hsv((h, s, v))
 
     def purer_cb(self,action):
-        self.end_eraser_mode()
         h, s, v = self.app.brush.get_color_hsv()
         s += 0.08
         if s > 1.0: s = 1.0
         self.app.brush.set_color_hsv((h, s, v))
 
     def grayer_cb(self,action):
-        self.end_eraser_mode()
         h, s, v = self.app.brush.get_color_hsv()
         s -= 0.08
         # stop a little higher than 0.0, to avoid resetting hue to 0
@@ -632,35 +620,18 @@ class Document(object):
         # real-world tool that you're dipping into a palette, or modifying
         # using the sliders.
 
-    def blend_mode_cb(self, action):
-        self.set_blend_mode(action.get_name()[9:])
+    def blend_mode_normal_cb(self, action):
+        self.app.brushmodifier.eraser_mode.leave()
+        self.app.brushmodifier.lock_alpha.leave()
 
-    def auto_reset_blend_mode(self):
-        self.set_blend_mode('Normal')
+    def blend_mode_eraser_cb(self, action):
+        self.app.brushmodifier.eraser_mode.toggle(action)
 
-    def set_blend_mode(self, blend_mode):
-        adjs = {
-            'Eraser': self.app.brush_adjustment['eraser'],
-            'LockAlpha': self.app.brush_adjustment['lock_alpha'],
-        }
-
-        on = blend_mode in adjs and adjs[blend_mode].get_value() < 0.9
-	for adj in adjs.values():
-	    adj.set_value(0.0)
-        if on:
-            adjs[blend_mode].set_value(1.0)
-
-        r = self.app.brush_adjustment['radius_logarithmic']
-
-        if adjs['Eraser'].get_value() < 0.9 and self.eraser_mode_original_radius:
-            self.eraser_mode_radius_change = r.get_value() - self.eraser_mode_original_radius
-            r.set_value(self.eraser_mode_original_radius)
-            self.eraser_mode_original_radius = None
-
-        if adjs['Eraser'].get_value() >= 0.9 and not self.eraser_mode_original_radius:
-            self.eraser_mode_original_radius = r.get_value()
-            dr = self.app.preferences.get(ERASER_MODE_RADIUS_CHANGE_PREF, ERASER_MODE_RADIUS_CHANGE_DEFAULT)
-            r.set_value(r.get_value() + dr)
+    def blend_mode_lock_alpha_cb(self, action):
+        bm = self.app.brushmodifier
+        if bm.eraser_mode.active:
+            bm.eraser_mode.leave()
+        bm.lock_alpha.toggle(action)
 
     def frame_changed_cb(self):
         self.tdw.queue_draw()
