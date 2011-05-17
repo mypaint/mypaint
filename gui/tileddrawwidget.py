@@ -625,7 +625,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         else:
             b = self.doc.brush.brushinfo
             radius = b.get_effective_radius()*self.scale
-            c = cursor.get_brush_cursor(radius, b.is_eraser())
+            c = cursor.get_brush_cursor(radius, b.is_eraser(), b.get_base_value('lock_alpha') > 0.9)
         self.window.set_cursor(c)
 
     def set_override_cursor(self, cursor):
