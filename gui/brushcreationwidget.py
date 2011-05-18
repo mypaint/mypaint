@@ -143,7 +143,7 @@ class BrushManipulationWidget(gtk.HBox):
         if not b.name:
             dialogs.error(self, _('No brush selected, please use "add as new" instead.'))
             return
-        b.brushinfo = self.app.brush.brushinfo.clone()
+        b.brushinfo = self.app.brush.clone()
         b.save()
 
     def delete_brush_cb(self, window):
