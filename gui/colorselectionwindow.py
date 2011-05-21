@@ -74,10 +74,6 @@ class ToolWidget (gtk.VBox):
         if v < 0.0: v = 0.0
         self.hsvwidget.set_color(h, s, v)
 
-    def set_color_rgb(self,rgb):
-        hsv = helpers.rgb_to_hsv(*rgb)
-        self.set_color_rgb(hsv)
-
     def on_hsvwidget_size_allocate(self, hsvwidget, alloc):
         radius = min(alloc.width, alloc.height) - 4
         hsvwidget.set_metrics(radius, max(12, int(radius/20)))
