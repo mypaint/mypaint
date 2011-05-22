@@ -568,8 +568,8 @@ class Window (windowing.MainWindow, layout.MainWindow):
             u"Nicola Lunghi (%s)" % _('patterns'),
             u"Toni Kasurinen (%s)" % _('brushes'),
             u"Сан Саныч (%s)" % _('patterns'),
-            u'David Grundberg (%s)' % ('programming'),
-            u"guciek (%s)" % _('programming'),
+            u'David Grundberg (%s)' % _('programming'),
+            u"Krzysztof Pasek (%s)" % _('programming'),
             ])
         d.set_artists([
             u'Sebastian Kraft (%s)' % _('desktop icon'),
