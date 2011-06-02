@@ -214,7 +214,7 @@ class Window(windowing.Dialog):
         current_row += 1
 
         ### View tab
-        table = gtk.Table(2, 3)
+        table = gtk.Table(2, 4)
         table.set_border_width(12)
         table.set_col_spacing(0, 12)
         table.set_col_spacing(1, 12)
@@ -241,6 +241,11 @@ class Window(windowing.Dialog):
         combo.connect('changed', self.defaultzoom_combo_changed_cb)
         table.attach(l, 1, 2, current_row, current_row + 1, xopt, yopt)
         table.attach(combo, 2, 3, current_row, current_row + 1, xopt, yopt)
+        current_row += 1
+
+        b = self.highqualityzoom_checkbox = gtk.CheckButton(_('High quality zoom (may result in slow scrolling)'))
+        b.connect('toggled', self.highqualityzoom_checkbox_changed_cb)
+        table.attach(b, 0, 3, current_row, current_row + 1, xopt, yopt)
         current_row += 1
 
     def on_response(self, dialog, response, *args):
@@ -272,6 +277,7 @@ class Window(windowing.Dialog):
         zoomlevel = min(bisect_left(self.defaultzoom_values, zoom),
                         len(self.defaultzoom_values) - 1)
         self.defaultzoom_combo.set_active(zoomlevel)
+        self.highqualityzoom_checkbox.set_active(p['view.high_quality_zoom'])
         saveformat_config = p['saving.default_format']
         saveformat_idx = self.app.filehandler.config2saveformat[saveformat_config]
         idx = self.defaultsaveformat_values.index(saveformat_idx)
@@ -315,6 +321,10 @@ class Window(windowing.Dialog):
         zoomlevel = self.defaultzoom_combo.get_active()
         zoom = self.defaultzoom_values[zoomlevel]
         self.app.preferences['view.default_zoom'] = zoom
+
+    def highqualityzoom_checkbox_changed_cb(self, widget):
+        self.app.preferences['view.high_quality_zoom'] = bool(widget.get_active())
+        self.app.doc.tdw.queue_draw()
 
     def defaultsaveformat_combo_changed_cb(self, widget):
         idx = self.defaultsaveformat_combo.get_active()

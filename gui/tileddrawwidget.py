@@ -25,7 +25,7 @@ class TiledDrawWidget(gtk.DrawingArea):
 
     CANNOT_DRAW_CURSOR = gdk.Cursor(gdk.CIRCLE)
 
-    def __init__(self, document):
+    def __init__(self, app, document):
         gtk.DrawingArea.__init__(self)
         self.connect("expose-event", self.expose_cb)
         self.connect("enter-notify-event", self.enter_notify_cb)
@@ -57,6 +57,7 @@ class TiledDrawWidget(gtk.DrawingArea):
 
         self.set_extension_events (gdk.EXTENSION_EVENTS_ALL)
 
+        self.app = app
         self.doc = document
         self.doc.canvas_observers.append(self.canvas_modified_cb)
         self.doc.brush.brushinfo.observers.append(self.brush_modified_cb)
@@ -405,8 +406,12 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.get_model_coordinates_cairo_context(cr)
 
         # choose best mipmap
-        mipmap_level = max(0, int(ceil(log(1/self.scale,2))))
-        #mipmap_level = max(0, int(floor(log(1.0/self.scale,2)))) # slightly better quality but clearly slower
+        if self.app.preferences['view.high_quality_zoom']:
+            # can cause a very clear slowdown on some hardware
+            # (we probably could avoid this by doing rendering differently)
+            mipmap_level = max(0, int(floor(log(1.0/self.scale,2))))
+        else:
+            mipmap_level = max(0, int(ceil(log(1/self.scale,2))))
         # OPTIMIZE: if we would render tile scanlines, we could probably use the better one above...
         mipmap_level = min(mipmap_level, tiledsurface.MAX_MIPMAP_LEVEL)
         cr.scale(2**mipmap_level, 2**mipmap_level)

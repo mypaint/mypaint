@@ -151,6 +151,7 @@ class Application: # singleton
             'input.device_mode': 'screen',
             'input.global_pressure_mapping': [(0.0, 1.0), (1.0, 0.0)],
             'view.default_zoom': 1.0,
+            'view.high_quality_zoom': True,
             'saving.default_format': 'openraster',
             'brushmanager.selected_brush' : None,
             'brushmanager.selected_groups' : [],

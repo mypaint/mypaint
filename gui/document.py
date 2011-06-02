@@ -26,7 +26,7 @@ class Document(object):
         self.model = lib.document.Document(self.app.brush)
 
         # View
-        self.tdw = tileddrawwidget.TiledDrawWidget(self.model)
+        self.tdw = tileddrawwidget.TiledDrawWidget(self.app, self.model)
         self.model.frame_observers.append(self.frame_changed_cb)
 
         # FIXME: hack, to be removed

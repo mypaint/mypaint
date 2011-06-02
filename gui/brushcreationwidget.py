@@ -191,7 +191,7 @@ class BrushIconEditorWidget(gtk.VBox):
         button_box = gtk.HBox()
 
         doc = document.Document(self.app.brush)
-        self.tdw = tileddrawwidget.TiledDrawWidget(doc)
+        self.tdw = tileddrawwidget.TiledDrawWidget(self.app, doc)
         self.tdw.set_size_request(brushmanager.preview_w*2, brushmanager.preview_h*2)
         self.tdw.scale = 2.0
 
