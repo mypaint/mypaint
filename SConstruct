@@ -71,6 +71,8 @@ if env['debug']:
     env.Append(CPPDEFINES='HEAVY_DEBUG')
     env.Append(CCFLAGS='-O0', LINKFLAGS='-O0')
 
+#env.Append(CCFLAGS='-fno-inline', LINKFLAGS='-fno-inline')
+
 Export('env', 'python')
 module = SConscript('lib/SConscript')
 SConscript('brushlib/SConscript')

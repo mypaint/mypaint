@@ -104,11 +104,10 @@ public:
   void render_dab_mask (uint16_t * mask,
                         float x, float y,
                         float radius,
-                        float opaque, float hardness = 0.5,
-                        float aspect_ratio = 1.0, float angle = 0.0
+                        float hardness,
+                        float aspect_ratio, float angle
                         ) {
 
-    opaque = CLAMP(opaque, 0.0, 1.0);
     hardness = CLAMP(hardness, 0.0, 1.0);
 	if (aspect_ratio<1.0) aspect_ratio=1.0;
 
@@ -238,7 +237,7 @@ public:
                         x - tx*TILE_SIZE,
                         y - ty*TILE_SIZE,
                         radius,
-                        opaque, hardness,
+                        hardness,
                         aspect_ratio, angle
                         );
 
@@ -292,13 +291,11 @@ public:
                   ) {
 
     float r_fringe;
-    int xp, yp;
-    float xx, yy, rr;
-    float one_over_radius2;
 
     if (radius < 1.0) radius = 1.0;
     const float hardness = 0.5;
-    const float opaque = 1.0;
+    const float aspect_ratio = 1.0;
+    const float angle = 0.0;
 
     float sum_r, sum_g, sum_b, sum_a, sum_weight;
     sum_r = sum_g = sum_b = sum_a = sum_weight = 0.0;
@@ -311,8 +308,6 @@ public:
     // WARNING: some code duplication with draw_dab
 
     r_fringe = radius + 1;
-    rr = radius*radius;
-    one_over_radius2 = 1.0/rr;
 
     int tx1 = floor(floor(x - r_fringe) / TILE_SIZE);
     int tx2 = floor(floor(x + r_fringe) / TILE_SIZE);
@@ -327,49 +322,49 @@ public:
           return;
         }
 
-        float xc = x - tx*TILE_SIZE;
-        float yc = y - ty*TILE_SIZE;
+        // first, we calculate the mask (opacity for each pixel)
+        static uint16_t mask[TILE_SIZE*TILE_SIZE+2*TILE_SIZE];
 
-        int x0 = floor (xc - r_fringe);
-        int y0 = floor (yc - r_fringe);
-        int x1 = ceil (xc + r_fringe);
-        int y1 = ceil (yc + r_fringe);
-        if (x0 < 0) x0 = 0;
-        if (y0 < 0) y0 = 0;
-        if (x1 > TILE_SIZE-1) x1 = TILE_SIZE-1;
-        if (y1 > TILE_SIZE-1) y1 = TILE_SIZE-1;
+        render_dab_mask(mask,
+                        x - tx*TILE_SIZE,
+                        y - ty*TILE_SIZE,
+                        radius,
+                        hardness,
+                        aspect_ratio, angle
+                        );
 
-        for (yp = y0; yp <= y1; yp++) {
-          yy = (yp + 0.5 - yc);
-          yy *= yy;
-          for (xp = x0; xp <= x1; xp++) {
-            xx = (xp + 0.5 - xc);
-            xx *= xx;
-            rr = (yy + xx) * one_over_radius2;
-            // rr is in range 0.0..1.0*sqrt(2)
+        // accumulate
 
-            if (rr <= 1.0) {
-              float opa = opaque;
-              if (hardness < 1.0) {
-                if (rr < hardness) {
-                  opa *= rr + 1-(rr/hardness);
-                  // hardness == 0 is nonsense, excluded above
-                } else {
-                  opa *= hardness/(1-hardness)*(1-rr);
-                }
-              }
+        // the sum of a 64x64 tile fits into a 32 bit integer
+        // (but not the sum of an arbitrary number of tiles)
+        uint32_t sum_weight_tmp = 0;
+        uint32_t sum_a_tmp = 0;
+        uint32_t sum_r_tmp = 0;
+        uint32_t sum_g_tmp = 0;
+        uint32_t sum_b_tmp = 0;
 
-              // note that we are working on premultiplied alpha
-              // we do not un-premultiply it yet, so colors are weighted with their alpha
-              int idx = (yp*TILE_SIZE + xp)*4;
-              sum_weight += opa;
-              sum_r      += opa*rgba_p[idx+0]/(1<<15);
-              sum_g      += opa*rgba_p[idx+1]/(1<<15);
-              sum_b      += opa*rgba_p[idx+2]/(1<<15);
-              sum_a      += opa*rgba_p[idx+3]/(1<<15);
-            }
+        uint16_t * mask_p = mask;
+        while (1) {
+          for (; mask_p[0]; mask_p++, rgba_p+=4) {
+            uint32_t opa = mask_p[0];
+            sum_weight_tmp += opa;
+            sum_r_tmp      += opa*rgba_p[0]/(1<<15);
+            sum_g_tmp      += opa*rgba_p[1]/(1<<15);
+            sum_b_tmp      += opa*rgba_p[2]/(1<<15);
+            sum_a_tmp      += opa*rgba_p[3]/(1<<15);
+            
           }
+          if (!mask_p[1]) break;
+          rgba_p += mask_p[1];
+          mask_p += 2;
         }
+
+        // conver to float outside the critical loop
+        sum_weight += sum_weight_tmp;
+        sum_r += sum_r_tmp;
+        sum_g += sum_g_tmp;
+        sum_b += sum_b_tmp;
+        sum_a += sum_a_tmp;
       }
     }
 
