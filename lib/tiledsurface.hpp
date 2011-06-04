@@ -296,8 +296,8 @@ public:
     const float aspect_ratio = 1.0;
     const float angle = 0.0;
 
-    float sum_r, sum_g, sum_b, sum_a, sum_weight;
-    sum_r = sum_g = sum_b = sum_a = sum_weight = 0.0;
+    float sum_weight, sum_r, sum_g, sum_b, sum_a;
+    sum_weight = sum_r = sum_g = sum_b = sum_a = 0.0;
 
     // in case we return with an error
     *color_r = 0.0;
@@ -332,38 +332,9 @@ public:
                         aspect_ratio, angle
                         );
 
-        // accumulate
+        get_color_pixels_accumulate (mask, rgba_p,
+                                     &sum_weight, &sum_r, &sum_g, &sum_b, &sum_a);
 
-        // the sum of a 64x64 tile fits into a 32 bit integer
-        // (but not the sum of an arbitrary number of tiles)
-        uint32_t sum_weight_tmp = 0;
-        uint32_t sum_a_tmp = 0;
-        uint32_t sum_r_tmp = 0;
-        uint32_t sum_g_tmp = 0;
-        uint32_t sum_b_tmp = 0;
-
-        uint16_t * mask_p = mask;
-        while (1) {
-          for (; mask_p[0]; mask_p++, rgba_p+=4) {
-            uint32_t opa = mask_p[0];
-            sum_weight_tmp += opa;
-            sum_r_tmp      += opa*rgba_p[0]/(1<<15);
-            sum_g_tmp      += opa*rgba_p[1]/(1<<15);
-            sum_b_tmp      += opa*rgba_p[2]/(1<<15);
-            sum_a_tmp      += opa*rgba_p[3]/(1<<15);
-            
-          }
-          if (!mask_p[1]) break;
-          rgba_p += mask_p[1];
-          mask_p += 2;
-        }
-
-        // conver to float outside the critical loop
-        sum_weight += sum_weight_tmp;
-        sum_r += sum_r_tmp;
-        sum_g += sum_g_tmp;
-        sum_b += sum_b_tmp;
-        sum_a += sum_a_tmp;
       }
     }
 
