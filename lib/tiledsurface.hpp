@@ -101,6 +101,92 @@ public:
     return rgba_p;
   }
 
+  void render_dab_mask (uint16_t * mask,
+                        float x, float y,
+                        float radius,
+                        float opaque, float hardness = 0.5,
+                        float aspect_ratio = 1.0, float angle = 0.0
+                        ) {
+
+    opaque = CLAMP(opaque, 0.0, 1.0);
+    hardness = CLAMP(hardness, 0.0, 1.0);
+	if (aspect_ratio<1.0) aspect_ratio=1.0;
+
+    float r_fringe;
+    int xp, yp;
+    float xx, yy, rr;
+    float one_over_radius2;
+
+    r_fringe = radius + 1;
+    rr = radius*radius;
+    one_over_radius2 = 1.0/rr;
+
+    int x0 = floor (x - r_fringe);
+    int y0 = floor (y - r_fringe);
+    int x1 = ceil (x + r_fringe);
+    int y1 = ceil (y + r_fringe);
+    if (x0 < 0) x0 = 0;
+    if (y0 < 0) y0 = 0;
+    if (x1 > TILE_SIZE-1) x1 = TILE_SIZE-1;
+    if (y1 > TILE_SIZE-1) y1 = TILE_SIZE-1;
+    
+    float angle_rad=angle/360*2*M_PI;
+    float cs=cos(angle_rad);
+    float sn=sin(angle_rad);
+    
+    // we do run length encoding: if opacity is zero, the next
+    // value in the mask is the number of pixels that can be skipped.
+    uint16_t * mask_p = mask;
+    int skip=0;
+    
+    skip += y0*TILE_SIZE;
+    for (yp = y0; yp <= y1; yp++) {
+      yy = (yp + 0.5 - y);
+      skip += x0;
+      for (xp = x0; xp <= x1; xp++) {
+        xx = (xp + 0.5 - x);
+        // code duplication, see brush::count_dabs_to()
+        float yyr=(yy*cs-xx*sn)*aspect_ratio;
+        float xxr=yy*sn+xx*cs;
+        rr = (yyr*yyr + xxr*xxr) * one_over_radius2;
+        // rr is in range 0.0..1.0*sqrt(2)
+        
+        float opa = 0;
+        if (rr <= 1.0) {
+          opa = 1.0;
+          if (hardness < 1.0) {
+            if (rr < hardness) {
+              opa *= rr + 1-(rr/hardness);
+              // hardness == 0 is nonsense, excluded above
+            } else {
+              opa *= hardness/(1-hardness)*(1-rr);
+            }
+          }
+          
+          // OPTIMIZE: don't use floats here in the inner loop?
+          
+#ifdef HEAVY_DEBUG
+          assert(opa >= 0.0 && opa <= 1.0);
+#endif
+        }
+        uint16_t opa_ = opa * (1<<15);
+        if (!opa_) {
+          skip++;
+        } else {
+          if (skip) {
+            *mask_p++ = 0;
+            *mask_p++ = skip*4;
+            skip = 0;
+          }
+          *mask_p++ = opa_;
+        }
+      }
+      skip += TILE_SIZE-xp;
+    }
+    *mask_p++ = 0;
+    *mask_p++ = 0;
+  }
+  
   // returns true if the surface was modified
   bool draw_dab (float x, float y, 
                  float radius, 
@@ -135,14 +221,7 @@ public:
 
 	if (aspect_ratio<1.0) aspect_ratio=1.0;
 
-    float r_fringe;
-    int xp, yp;
-    float xx, yy, rr;
-    float one_over_radius2;
-
-    r_fringe = radius + 1;
-    rr = radius*radius;
-    one_over_radius2 = 1.0/rr;
+    float r_fringe = radius + 1;
 
     int tx1 = floor(floor(x - r_fringe) / TILE_SIZE);
     int tx2 = floor(floor(x + r_fringe) / TILE_SIZE);
@@ -151,83 +230,17 @@ public:
     int tx, ty;
     for (ty = ty1; ty <= ty2; ty++) {
       for (tx = tx1; tx <= tx2; tx++) {
-        float xc = x - tx*TILE_SIZE;
-        float yc = y - ty*TILE_SIZE;
-
-        int x0 = floor (xc - r_fringe);
-        int y0 = floor (yc - r_fringe);
-        int x1 = ceil (xc + r_fringe);
-        int y1 = ceil (yc + r_fringe);
-        if (x0 < 0) x0 = 0;
-        if (y0 < 0) y0 = 0;
-        if (x1 > TILE_SIZE-1) x1 = TILE_SIZE-1;
-        if (y1 > TILE_SIZE-1) y1 = TILE_SIZE-1;
-
-		float angle_rad=angle/360*2*M_PI;
-		float cs=cos(angle_rad);
-		float sn=sin(angle_rad);
 
         // first, we calculate the mask (opacity for each pixel)
         static uint16_t mask[TILE_SIZE*TILE_SIZE+2*TILE_SIZE];
-        // we do run length encoding: if opacity is zero, the next
-        // value in the mask is the number of pixels that can be skipped.
-        uint16_t * mask_p = mask;
-        int skip=0;
 
-        skip += y0*TILE_SIZE;
-        for (yp = y0; yp <= y1; yp++) {
-          yy = (yp + 0.5 - yc);
-          skip += x0;
-          for (xp = x0; xp <= x1; xp++) {
-            xx = (xp + 0.5 - xc);
-            // code duplication, see brush::count_dabs_to()
-          	float yyr=(yy*cs-xx*sn)*aspect_ratio;
-			float xxr=yy*sn+xx*cs;
-            rr = (yyr*yyr + xxr*xxr) * one_over_radius2;
-            // rr is in range 0.0..1.0*sqrt(2)
-
-            float opa = 0;
-            if (rr <= 1.0) {
-              opa = 1.0;
-              if (hardness < 1.0) {
-                if (rr < hardness) {
-                  opa *= rr + 1-(rr/hardness);
-                  // hardness == 0 is nonsense, excluded above
-                } else {
-                  opa *= hardness/(1-hardness)*(1-rr);
-                }
-              }
-
-              // We are manipulating pixels with premultiplied alpha directly.
-              // This is an "over" operation (opa = topAlpha).
-              // In the formula below, topColor is assumed to be premultiplied.
-              //
-              //               opa_a      <   opa_b      >
-              // resultAlpha = topAlpha + (1.0 - topAlpha) * bottomAlpha
-              // resultColor = topColor + (1.0 - topAlpha) * bottomColor
-              //
-              // OPTIMIZE: don't use floats here in the inner loop?
-
-#ifdef HEAVY_DEBUG
-              assert(opa >= 0.0 && opa <= 1.0);
-#endif
-            }
-            uint16_t opa_ = opa * (1<<15);
-            if (!opa_) {
-              skip++;
-            } else {
-              if (skip) {
-                *mask_p++ = 0;
-                *mask_p++ = skip*4;
-                skip = 0;
-              }
-              *mask_p++ = opa_;
-            }
-          }
-          skip += TILE_SIZE-xp;
-        }
-        *mask_p++ = 0;
-        *mask_p++ = 0;
+        render_dab_mask(mask,
+                        x - tx*TILE_SIZE,
+                        y - ty*TILE_SIZE,
+                        radius,
+                        opaque, hardness,
+                        aspect_ratio, angle
+                        );
 
         // second, we use the mask to stamp a dab for each activated blend mode
 
