@@ -230,6 +230,12 @@ public:
     for (ty = ty1; ty <= ty2; ty++) {
       for (tx = tx1; tx <= tx2; tx++) {
 
+        uint16_t * rgba_p = get_tile_memory(tx, ty, false);
+        if (!rgba_p) {
+          printf("Python exception during draw_dab()!\n");
+          return true;
+        }
+
         // first, we calculate the mask (opacity for each pixel)
         static uint16_t mask[TILE_SIZE*TILE_SIZE+2*TILE_SIZE];
 
@@ -242,13 +248,6 @@ public:
                         );
 
         // second, we use the mask to stamp a dab for each activated blend mode
-
-        uint16_t * rgba_p = get_tile_memory(tx, ty, false);
-        if (!rgba_p) {
-          printf("Python exception during draw_dab()!\n");
-          return true;
-        }
-
 
         if (normal) {
           if (color_a == 1.0) {
