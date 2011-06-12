@@ -110,6 +110,7 @@ public:
 
     hardness = CLAMP(hardness, 0.0, 1.0);
 	if (aspect_ratio<1.0) aspect_ratio=1.0;
+    assert(hardness != 0.0); // assured by caller
 
     float r_fringe;
     int xp, yp;
@@ -120,6 +121,29 @@ public:
     rr = radius*radius;
     one_over_radius2 = 1.0/rr;
 
+    // Dab opacity gradually fades out from the center (rr=0) to
+    // fringe (rr=1) of the dab. How exactly depends on the hardness.
+    // We use two linear segments, for which we pre-calculate slope
+    // and offset here.
+    //
+    // opa
+    // ^
+    // *   .
+    // |        *
+    // |          .
+    // +-----------*> rr = (distance_from_center/radius)^2
+    // 0           1
+    //
+    float segment1_offset = 1.0;
+    float segment1_slope  = -(1.0/hardness - 1.0);
+    float segment2_offset = hardness/(1.0-hardness);
+    float segment2_slope  = -hardness/(1.0-hardness);
+    // for hardness == 1.0, segment2 will never be used
+
+    float angle_rad=angle/360*2*M_PI;
+    float cs=cos(angle_rad);
+    float sn=sin(angle_rad);
+
     int x0 = floor (x - r_fringe);
     int y0 = floor (y - r_fringe);
     int x1 = ceil (x + r_fringe);
@@ -129,9 +153,6 @@ public:
     if (x1 > TILE_SIZE-1) x1 = TILE_SIZE-1;
     if (y1 > TILE_SIZE-1) y1 = TILE_SIZE-1;
     
-    float angle_rad=angle/360*2*M_PI;
-    float cs=cos(angle_rad);
-    float sn=sin(angle_rad);
     
     // we do run length encoding: if opacity is zero, the next
     // value in the mask is the number of pixels that can be skipped.
@@ -150,24 +171,26 @@ public:
         rr = (yyr*yyr + xxr*xxr) * one_over_radius2;
         // rr is in range 0.0..1.0*sqrt(2)
         
-        float opa = 0;
+        float opa;
         if (rr <= 1.0) {
-          opa = 1.0;
-          if (hardness < 1.0) {
-            if (rr < hardness) {
-              opa *= rr + 1-(rr/hardness);
-              // hardness == 0 is nonsense, excluded above
-            } else {
-              opa *= hardness/(1-hardness)*(1-rr);
-            }
+          float fac;
+          if (rr <= hardness) {
+            opa = segment1_offset;
+            fac = segment1_slope;
+          } else {
+            opa = segment2_offset;
+            fac = segment2_slope;
           }
-          
-          // OPTIMIZE: don't use floats here in the inner loop?
+          opa += rr*fac;
           
 #ifdef HEAVY_DEBUG
+          assert(isfinite(opa));
           assert(opa >= 0.0 && opa <= 1.0);
 #endif
+        } else {
+          opa = 0.0;
         }
+
         uint16_t opa_ = opa * (1<<15);
         if (!opa_) {
           skip++;
