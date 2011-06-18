@@ -94,7 +94,7 @@ def get_paths():
     except ImportError:
         print
         print "We are not correctly installed or compiled!"
-        print 'script: "%s"' % arg0
+        print 'script: "%s"' % sys.argv[0]
         if prefix:
             print 'deduced prefix: "%s"' % prefix
             print 'lib_shared: "%s"' % libpath
