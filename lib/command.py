@@ -48,7 +48,7 @@ class CommandStack:
             self.undo_stack.insert(0, item)
             if not item.automatic_undo:
                 steps += 1
-            if steps == 20: # and memory > ...
+            if steps == 30: # and memory > ...
                 break
 
     def get_last_command(self):
