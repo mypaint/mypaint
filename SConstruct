@@ -78,12 +78,6 @@ module = SConscript('lib/SConscript')
 SConscript('brushlib/SConscript')
 languages = SConscript('po/SConscript')
 
-# Build mypaint.exe for running on windows
-if sys.platform == "win32":
-    env2 = Environment(tools=['mingw'], ENV=os.environ)
-    env2.Append(CPPPATH='-I'+inc, LIBPATH=pre+'\libs', LIBS='python'+sys.version[0]+sys.version[2])
-    env2.Program('mypaint', ['mypaint_exe.c'])
-
 def burn_python_version(target, source, env):
     # make sure we run the python version that we built the extension modules for
     s =  '#!/usr/bin/env ' + python + '\n'
