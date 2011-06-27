@@ -59,7 +59,8 @@ class Window (windowing.MainWindow, layout.MainWindow):
         self.drag_dest_set(gtk.DEST_DEFAULT_MOTION | 
                             gtk.DEST_DEFAULT_HIGHLIGHT | 
                             gtk.DEST_DEFAULT_DROP, 
-                            [("text/uri-list", 0, 1)], 
+                            [("text/uri-list", 0, 1),
+                             ("application/x-color", 0, 2)],
                             gtk.gdk.ACTION_DEFAULT|gtk.gdk.ACTION_COPY)
 
         # Connect events
@@ -234,12 +235,18 @@ class Window (windowing.MainWindow, layout.MainWindow):
 
     # INPUT EVENT HANDLING
     def drag_data_received(self, widget, context, x, y, selection, info, t):
-        if selection.data:
-            uri = selection.data.split("\r\n")[0]
-            fn = helpers.uri2filename(uri)
-            if os.path.exists(fn):
-                if self.app.filehandler.confirm_destructive_action():
-                    self.app.filehandler.open_file(fn)
+        if info == 1:
+            if selection.data:
+                uri = selection.data.split("\r\n")[0]
+                fn = helpers.uri2filename(uri)
+                if os.path.exists(fn):
+                    if self.app.filehandler.confirm_destructive_action():
+                        self.app.filehandler.open_file(fn)
+        elif info == 2: # color
+            color = [((ord(selection.data[v]) | (ord(selection.data[v+1]) << 8)) / 65535.0)  for v in range(0,8,2)]
+            self.app.brush.set_color_rgb(color[:3])
+            self.app.ch.push_color(self.app.brush.get_color_hsv())
+            # Don't popup the color history for now, as I haven't managed to get it to cooperate.
 
     def print_memory_leak_cb(self, action):
         helpers.record_memory_leak_status(print_diff = True)
