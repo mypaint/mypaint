@@ -756,8 +756,16 @@ class ToolDragHandle (gtk.EventBox):
     def set_floating(self, floating):
         if floating:
             stock_id = gtk.STOCK_GOTO_LAST
+            if self.roll_up_button in self.hbox:
+                self.roll_up_button.hide()
+                self.hbox.remove(self.roll_up_button)
         else:
             stock_id = gtk.STOCK_GOTO_FIRST
+            if self.roll_up_button not in self.hbox:
+                self.hbox.pack_start(self.roll_up_button, False, False)
+                self.hbox.reorder_child(self.roll_up_button, 0)
+                self.roll_up_button.show_all()
+                self.queue_resize()
         self.snap_button.set_image_from_stock(stock_id)
 
     def set_rolled_up(self, rolled_up):
