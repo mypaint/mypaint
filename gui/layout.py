@@ -17,6 +17,7 @@ from gtk import gdk
 from math import sqrt
 from warnings import warn
 import pango
+import cairo
 from gettext import gettext as _
 
 
@@ -576,8 +577,8 @@ class ToolResizeGrip (gtk.DrawingArea):
         self.window.begin_paint_rect(event.area)
         x = (self.width - self.handle_size) / 2
         y = (self.height - self.handle_size) / 2
-
-        self.style.paint_handle(self.window, gtk.STATE_NORMAL, 
+        state = self.get_state()
+        self.style.paint_handle(self.window, state,
             gtk.SHADOW_NONE, event.area, self, 'paned',
             0, 0, self.width, self.height,
             gtk.ORIENTATION_HORIZONTAL)
@@ -661,13 +662,15 @@ class ToolDragHandle (gtk.EventBox):
     """
 
     min_drag_distance = 10
+    spacing = 2
 
     def __init__(self, tool, label_text):
         gtk.EventBox.__init__(self)
         self.tool = tool
         self.frame = frame = gtk.Frame()
-        frame.set_shadow_type(gtk.SHADOW_NONE)
-        self.hbox = hbox = gtk.HBox()
+        frame.set_shadow_type(gtk.SHADOW_OUT)
+        self.hbox = hbox = gtk.HBox(spacing=self.spacing)
+        self.hbox.set_border_width(self.spacing)
         self.roll_up_button = FoldOutArrow(self.tool)
         hbox.pack_start(self.roll_up_button, False, False)
         self.label = label = gtk.Label(label_text)
@@ -700,9 +703,26 @@ class ToolDragHandle (gtk.EventBox):
         alloc = self.get_allocation()
         w = alloc.width
         h = alloc.height
-        self.style.paint_box(widget.window, state,
-            gtk.SHADOW_OUT, event.area, widget,
-            'button', 0, 0, w, h)
+
+        # Draw a subtle vertical gradient
+        def _col2rgba(col, alpha=0.3):
+            return col.red_float, col.green_float, col.blue_float, alpha
+        light_rgba = _col2rgba(self.style.light[state])
+        mid_rgba = _col2rgba(self.style.bg[state])
+        dark_rgba = _col2rgba(self.style.dark[state])
+        cr = widget.window.cairo_create()
+        lg = cairo.LinearGradient(0, 0, 0, h)
+        lg.add_color_stop_rgba(0.0, *light_rgba)
+        lg.add_color_stop_rgba(0.5, *mid_rgba)
+        lg.add_color_stop_rgba(1.0, *dark_rgba)
+        cr.set_source(lg)
+        cr.paint()
+
+        #self.style.paint_flat_box(widget.window, state,
+        #    gtk.SHADOW_OUT, event.area, widget,
+        #    'button', 0, 0, w, h)
+
+        return False   # let the normal handler draw the frame outline too
 
     def set_floating(self, floating):
         if floating:
@@ -806,18 +826,28 @@ class ToolWindow (gtk.Window, ElasticContainer, WindowWithSavedPosition):
         lm.prefs[role]['floating'] = True
 
     def show(self):
+        """Shows or re-shows the window.
+
+        If a previous position was set by hide(), it will be restored.
+        """
         gtk.Window.show(self)
         if self.pre_hide_pos:
             self.move(*self.pre_hide_pos)
         self.pre_hide_pos = None
 
     def show_all(self):
+        """Shows or re-shows the window and all its descendents.
+
+        If a previous position was set by hide(), it will be restored.
+        """
         gtk.Window.show_all(self)
         if self.pre_hide_pos:
             self.move(*self.pre_hide_pos)
         self.pre_hide_pos = None
 
     def hide(self):
+        """Hides the window, remembering its position.
+        """
         self.pre_hide_pos = self.get_position()
         gtk.Window.hide(self)
 
