@@ -589,7 +589,6 @@ class ToolResizeGrip (gtk.DrawingArea):
         self.grab_add()
     
     def on_button_release_event(self, widget, event):
-        self.in_resize_drag = False
         self.resize = None
         self.grab_remove()
     
@@ -626,23 +625,6 @@ class ToolResizeGrip (gtk.DrawingArea):
         self.window.set_cursor(gdk.Cursor(gdk.SB_V_DOUBLE_ARROW))
 
 
-class GripDecoration (gtk.Label):
-    
-    def __init__(self):
-        gtk.Label.__init__(self)
-        settings = gtk.settings_get_default()
-        size = gtk.icon_size_lookup_for_settings(settings, gtk.ICON_SIZE_MENU)
-        self.set_size_request(*size)
-        self.connect("expose-event", self.on_expose_event)
-
-    def on_expose_event(self, widget, event):
-        widget.ensure_style()
-        alloc = widget.get_allocation()
-        state = widget.get_state()
-        self.style.paint_handle(self.window, state,
-            gtk.SHADOW_NONE, event.area, self,
-            'handlebox', alloc.x, alloc.y, alloc.width, alloc.height,
-            gtk.ORIENTATION_VERTICAL)
 
 
 class FoldOutArrow (gtk.Button):
@@ -685,17 +667,15 @@ class ToolDragHandle (gtk.EventBox):
         self.frame = frame = gtk.Frame()
         frame.set_shadow_type(gtk.SHADOW_NONE)
         self.hbox = hbox = gtk.HBox()
-        self.gripdeco = GripDecoration()
-        hbox.pack_start(self.gripdeco, False, False)
         self.roll_up_button = FoldOutArrow(self.tool)
         hbox.pack_start(self.roll_up_button, False, False)
         self.label = label = gtk.Label(label_text)
         #self.label.set_alignment(0.0, 0.5)
         self.label.set_ellipsize(pango.ELLIPSIZE_END)
         hbox.pack_start(label, True, True)
-        self.snap_button = SmallImageButton(tooltip="Snap out")  # XX update this when pressed
+        self.snap_button = SmallImageButton(tooltip=_("Snap in/out"))  # TODO: update this when pressed
         self.snap_button.connect("clicked", tool.on_snap_button_pressed)
-        self.close_button = SmallImageButton(gtk.STOCK_CLOSE, "Close")
+        self.close_button = SmallImageButton(gtk.STOCK_CLOSE, _("Close"))
         self.close_button.connect("clicked", tool.on_close_button_pressed)
         hbox.pack_start(self.snap_button, False, False)
         hbox.pack_start(self.close_button, False, False)
@@ -925,10 +905,6 @@ class Tool (gtk.VBox, ElasticContainer):
             if wid.get_visible():
                 wid.set_size_request(-1, -1)
                 wid.queue_resize()
-
-        # When changing states, the size is changed and the tool is
-        # repacked. Forget the size mirroring history because it doesn't
-        # make sense any more.
 
         if self.parent:
             self.parent.remove(self)
@@ -1377,7 +1353,9 @@ class Sidebar (gtk.EventBox):
 def set_initial_window_position(win, pos):
     """Set the position of a gtk.Window, used during initial positioning.
 
-    The pos argument is a dict containing the following optional keys
+    This is used both for restoring a saved window position, and for the
+    application-wide defaults. The ``pos`` argument is a dict containing the
+    following optional keys
 
         "w": <int>
         "h": <int>
@@ -1400,9 +1378,6 @@ def set_initial_window_position(win, pos):
     placed in its default, window manager provided position. If its calculated
     size is larger than the screen, the window will be given its natural size
     instead.
-
-    TODO: should gdk.HINT_USER_SIZE and gdk.HINT_USER_POS be set on the
-    window as appropriate?
     """
 
     MIN_USABLE_SIZE = 100
@@ -1461,6 +1436,9 @@ def set_initial_window_position(win, pos):
                     final_h = max(0, mon_geom.height - 2*abs(h))
         if final_w > screen_w or final_w < MIN_USABLE_SIZE: final_w = None
         if final_h > screen_h or final_h < MIN_USABLE_SIZE: final_h = None
+
+    # TODO: check that the final position makes sense for the current
+    # screen (or monitor)
 
     if None not in (final_w, final_h, final_x, final_y):
         geom_str = "%dx%d+%d+%d" % (final_w, final_h, final_x, final_y)
