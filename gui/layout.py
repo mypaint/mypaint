@@ -62,6 +62,7 @@ class LayoutManager:
         self.subwindows = {}   # {role: <gtk.Window>}
         self.main_window = None
         self.saved_user_tools = []
+        self.sidebar_state_observers = []
 
     def set_main_window_title(self, title):
         """Set the title for the main window.
@@ -1282,6 +1283,21 @@ class Sidebar (gtk.EventBox):
         """True if there are no tools in the sidebar."""
         num_children = len(self.tools_vbox.get_children())
         return num_children == 1
+
+    def show_all(self):
+        for func in self.layout_manager.sidebar_state_observers:
+            func(visible=True)
+        gtk.EventBox.show_all(self)
+
+    def show(self):
+        for func in self.layout_manager.sidebar_state_observers:
+            func(visible=True)
+        gtk.EventBox.show(self)
+
+    def hide(self):
+        for func in self.layout_manager.sidebar_state_observers:
+            func(visible=False)
+        gtk.EventBox.hide(self)
 
     def insertion_point_at_pointer(self):
         """Returns where in the sidebar a tool would be inserted.

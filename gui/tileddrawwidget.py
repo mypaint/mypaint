@@ -106,6 +106,8 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.is_sensitive = True    # just mirrors gtk.STATE_INSENSITIVE
         self.snapshot_pixmap = None
 
+        self.recenter_on_resize = True
+
         self.override_cursor = None
 
     #def set_scroll_at_edges(self, choice):
@@ -128,6 +130,9 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.has_pointer = False
 
     def size_allocate_cb(self, widget, allocation):
+        if not self.recenter_on_resize:
+            self.recenter_on_resize = True
+            return
         new_size = tuple(allocation)[2:4]
         old_size = getattr(self, 'current_size', new_size)
         self.current_size = new_size
