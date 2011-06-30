@@ -348,7 +348,10 @@ class WindowWithSavedPosition:
         self.__pos_save_timer = None
         self.__is_fullscreen = False
         self.__is_maximized = False
+        self.__mapped_once = False
+        self.__initial_xy = None
         self.connect("realize", self.__on_realize)
+        self.connect("map", self.__on_map)
         self.connect("configure-event", self.__on_configure_event)
         self.connect("window-state-event", self.__on_window_state_event)
 
@@ -361,7 +364,33 @@ class WindowWithSavedPosition:
         return lm.prefs[role]
 
     def __on_realize(self, widget):
-        set_initial_window_position(self, self.__pos)
+        xy = set_initial_window_position(self, self.__pos)
+        self.__initial_xy = xy
+
+    def __force_initial_xy(self):
+        """Revolting hack to force the initial x,y position after mapping.
+
+        It's cosmetically necessary to do this for tool windows at least, since
+        otherwise snapping out an initially docked window using the button can
+        look really weird if the WM forces a position on you (most *ix ones
+        do), and we really do have a better idea than the WM about what the
+        user meant. The WM is given a sporting chance to help position the
+        main-window sensibly though.
+        """
+        role = self.get_role()
+        if role == 'main-window':
+            return
+        try:
+            x, y = self.__initial_xy
+        except TypeError:
+            return
+        self.move(x, y)
+
+    def __on_map(self, widget):
+        if self.__mapped_once:
+            return
+        self.__mapped_once = True
+        gobject.idle_add(self.__force_initial_xy)
 
     def __on_window_state_event(self, widget, event):
         # Respond to changes of the fullscreen or maximized state only
@@ -851,6 +880,40 @@ class ToolWindow (gtk.Window, ElasticContainer, WindowWithSavedPosition):
         self.pre_hide_pos = self.get_position()
         gtk.Window.hide(self)
 
+    def place(self, x, y, w, h):
+        """Places a window at a position, either now or when mapped.
+
+        This is intended to be called before a show() or show_all() by
+        code that lets the user pick a position for a tool window before it's
+        shown: for example when snapping a tool free from the sidebar using
+        the preview window.
+
+        The pre-hide position will be forgotten and not used by the override
+        for show() or show_all().
+        """
+        self.pre_hide_pos = None
+
+        # Constrain x and y so negative positions passed in don't look like
+        # the funky right or bottom edge positioning magic (to the realize
+        # handler; move() doesn't care, but be symmetrical in behaviour).
+        x = max(x, 0)
+        y = max(y, 0)
+
+        if self.window is not None:
+            # It's mapped, so this will probably work even if the window
+            # is not viewable right now.
+            self.move(x, y)
+            self.resize(w, h)
+        else:
+            # No window yet, not mapped.
+            # Update prefs ready for the superclass's realize handler.
+            role = self.role
+            lm = self.layout_manager
+            if not lm.prefs.get(role, False):
+                lm.prefs[role] = {}
+            new_size = dict(x=x, y=y, w=w, h=h)
+            lm.prefs[role].update(new_size)
+
 
 class Tool (gtk.VBox, ElasticContainer):
     """Container for a dockable tool widget.
@@ -1031,9 +1094,24 @@ class Tool (gtk.VBox, ElasticContainer):
         self.set_hidden(True)
     
     def on_snap_button_pressed(self, window):
+        # Mouse position
+        display = gdk.display_get_default()
+        screen, ptr_x, ptr_y, _modmask = display.get_pointer()
+        if self.rolled_up:
+            self.set_rolled_up(False)    # pending events will be processed
+        alloc = self.allocation
+        w = alloc.width
+        h = alloc.height
+        titlebar_h = self.handle.allocation.height
+
         def handle_snap():
             sidebar = self.layout_manager.main_window.sidebar
+            n = sidebar.num_tools()
+            m = 5
             if not self.floating:
+                x = ptr_x - (w + (n*w/m))  # cascade effect
+                y = ptr_y + ((m - n) * (titlebar_h + 6))
+                self.floating_window.place(x, y, w, h)
                 self.set_floating(True)
                 self.handle.snap_button.set_state(gtk.STATE_NORMAL)
                 if sidebar.is_empty():
@@ -1244,17 +1322,13 @@ class ToolDragState:
             pass  # Widget has already been reordered,
                   # or snapped in and then reordered.
         else:
-            # Snap out
-            if self.tool in sidebar.tools_vbox:
-                self.tool.set_floating(True)
             # Set window position to that of the floating window
             x, y = self.handle_pos_root
             w, h = self.preview_size
-            def set_pos(tool):
-                tool.floating_window.resize(w, h)
-                tool.floating_window.move(x, y)
-                return False  #oneshot
-            gobject.idle_add(set_pos, self.tool)
+            self.tool.floating_window.place(x, y, w, h)
+            # Snap out
+            if self.tool in sidebar.tools_vbox:
+                self.tool.set_floating(True)
         self.preview.hide()
         self.tool.handle.on_reposition_drag_finished()
         self.tool = None
@@ -1309,10 +1383,21 @@ class Sidebar (gtk.EventBox):
         self.tools_vbox.reorder_child(self.slack, -1)
         self.reassign_indices()
 
+    def get_tools(self):
+        tools = []
+        for widget in self.tools_vbox:
+            if widget is self.slack:
+                continue
+            tools.append(widget)
+        return tools
+
+    def num_tools(self):
+        """Returns the number of tools in the sidebar"""
+        return len(self.get_tools())
+
     def is_empty(self):
         """True if there are no tools in the sidebar."""
-        num_children = len(self.tools_vbox.get_children())
-        return num_children == 1
+        return self.num_tools() == 0
 
     def show_all(self):
         for func in self.layout_manager.sidebar_state_observers:
@@ -1424,6 +1509,9 @@ def set_initial_window_position(win, pos):
     placed in its default, window manager provided position. If its calculated
     size is larger than the screen, the window will be given its natural size
     instead.
+
+    Returns the final, chosen (x, y) pair for forcing the window position on
+    first map, or None if defaults are being used.
     """
 
     MIN_USABLE_SIZE = 100
@@ -1489,9 +1577,12 @@ def set_initial_window_position(win, pos):
     if None not in (final_w, final_h, final_x, final_y):
         geom_str = "%dx%d+%d+%d" % (final_w, final_h, final_x, final_y)
         win.parse_geometry(geom_str)
-    else:
-        if final_w and final_h:
-            win.set_default_size(final_w, final_h)
-        if final_x and final_y:
-            win.move(final_x, final_y)
+        return final_x, final_y
 
+    if final_w and final_h:
+        win.set_default_size(final_w, final_h)
+    if final_x and final_y:
+        win.move(final_x, final_y)
+        return final_x, final_y
+
+    return None
