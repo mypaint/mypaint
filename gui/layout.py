@@ -25,7 +25,7 @@ class LayoutManager:
     """Keeps track of tool positions, and main window state.
     """
 
-    def __init__(self, factory, factory_opts=[], prefs=None):
+    def __init__(self, app, factory, factory_opts=[], prefs=None):
         """Constructor.
 
             "prefs"
@@ -54,6 +54,7 @@ class LayoutManager:
 
         if prefs is None:
             prefs = {}
+        self.app = app
         self.prefs = prefs
         self.window_group = gtk.WindowGroup()
         self.factory = factory
@@ -748,10 +749,14 @@ class ToolDragHandle (gtk.EventBox):
         frame.set_shadow_type(gtk.SHADOW_OUT)
         self.hbox = hbox = gtk.HBox(spacing=self.spacing)
         self.hbox.set_border_width(self.spacing)
+        self.img = gtk.Image()
+        pixbuf = getattr(self.tool.layout_manager.app.pixmaps, "tool_%s" % self.tool.role)
+        self.img.set_from_pixbuf(pixbuf)
+        hbox.pack_start(self.img, False, False)
         self.roll_up_button = FoldOutArrow(self.tool)
         hbox.pack_start(self.roll_up_button, False, False)
         self.label = label = gtk.Label(label_text)
-        #self.label.set_alignment(0.0, 0.5)
+        self.label.set_alignment(0.0, 0.5)
         self.label.set_ellipsize(pango.ELLIPSIZE_END)
         hbox.pack_start(label, True, True)
         self.snap_button = SmallImageButton(tooltip=_("Snap in/out"))  # TODO: update this when pressed
@@ -811,7 +816,7 @@ class ToolDragHandle (gtk.EventBox):
             stock_id = gtk.STOCK_GOTO_FIRST
             if self.roll_up_button not in self.hbox:
                 self.hbox.pack_start(self.roll_up_button, False, False)
-                self.hbox.reorder_child(self.roll_up_button, 0)
+                self.hbox.reorder_child(self.roll_up_button, 1)
                 self.roll_up_button.show_all()
                 self.queue_resize()
         self.snap_button.set_image_from_stock(stock_id)
@@ -983,9 +988,9 @@ class Tool (gtk.VBox, ElasticContainer):
         gtk.VBox.__init__(self)
         ElasticContainer.__init__(self)
         self.role = role
+        self.layout_manager = layout_manager
         self.handle = ToolDragHandle(self, gloss)
         self.pack_start(self.handle, False, False)
-        self.layout_manager = layout_manager
         self.widget_frame = frame = gtk.Frame()
         frame.set_shadow_type(gtk.SHADOW_IN)
         frame.add(widget)

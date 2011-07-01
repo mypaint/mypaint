@@ -67,6 +67,7 @@ class Application: # singleton
         self.ch = colorhistory.ColorHistory(self)
 
         self.layout_manager = layout.LayoutManager(
+            app=self,
             prefs=self.preferences["layout.window_positions"],
             factory=windowing.window_factory,
             factory_opts=[self]  )
