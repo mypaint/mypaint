@@ -885,6 +885,7 @@ class ToolWindow (gtk.Window, ElasticContainer, WindowWithSavedPosition):
         WindowWithSavedPosition.__init__(self)
         self.layout_manager = layout_manager
         self.set_type_hint(gdk.WINDOW_TYPE_HINT_UTILITY)
+        self.set_decorated(False)
         self.role = role
         self.set_role(role)
         self.set_title(title)
