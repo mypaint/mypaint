@@ -585,6 +585,11 @@ class ToolResizeGrip (gtk.DrawingArea):
     handle_size = gtk.HPaned().style_get_property("handle-size") + 2
     corner_width = 4*handle_size
 
+    window_edge_map = {
+            AREA_RIGHT: gdk.WINDOW_EDGE_SOUTH_EAST,
+            AREA_MIDDLE: gdk.WINDOW_EDGE_SOUTH,
+            AREA_LEFT: gdk.WINDOW_EDGE_SOUTH_WEST,
+        }
     floating_cursor_map = {
             AREA_LEFT: gdk.Cursor(gdk.BOTTOM_LEFT_CORNER),
             AREA_MIDDLE: gdk.Cursor(gdk.BOTTOM_SIDE),
@@ -635,31 +640,24 @@ class ToolResizeGrip (gtk.DrawingArea):
     def on_button_press_event(self, widget, event):
         if event.button != 1:
             return
-
-        area = self.get_area(event.x, event.y)
-        # Would like to use a "real" resize drag, but
-        # gtk.Window.begin_resize_drag is too broken in Ubuntu Natty to be
-        # useful.
-
-        # Constraints and info for the upcoming resize.
-        min_w, min_h = self.tool.get_minimum_size()
         if self.tool.floating:
+            area = self.get_area(event.x, event.y)
             win = self.tool.floating_window.window
-            win_x_root, win_y_root = win.get_root_origin()
-            max_w, max_h = 2048, 2048   # what's the max size of a GTK widget?
+            edge = self.window_edge_map[area]
+            win.begin_resize_drag(edge, event.button,
+                                  int(event.x_root), int(event.y_root),
+                                  event.time)
         else:
+            min_w, min_h = self.tool.get_minimum_size()
             lm = self.tool.layout_manager
-            win_x_root, win_y_root = 0, 0
             max_w, max_h = lm.main_window.sidebar.max_tool_size()
             min_w = max_w
-
-        alloc = self.tool.allocation
-        w = alloc.width
-        h = alloc.height
-
-        self.resize = event.x_root, event.y_root, area, w, h, \
-                      min_w, min_h, max_w, max_h, win_x_root, win_y_root
-        self.grab_add()
+            alloc = self.tool.allocation
+            w = alloc.width
+            h = alloc.height
+            self.resize = event.x_root, event.y_root, w, h, \
+                          min_w, min_h, max_w, max_h
+            self.grab_add()
     
     def on_button_release_event(self, widget, event):
         self.resize = None
@@ -678,30 +676,16 @@ class ToolResizeGrip (gtk.DrawingArea):
             area = self.get_area(event.x, event.y)
             self.window.set_cursor(self.get_cursor(area))
             return
-        (ptr_x_root0, ptr_y_root0, area0, w0, h0,
-         min_w, min_h, max_w, max_h,
-         win_x_root0, win_y_root0) = self.resize
-        cursor = self.get_cursor(area0)
+        assert not self.tool.floating
+        (ptr_x_root0, ptr_y_root0, w0, h0,
+         min_w, min_h, max_w, max_h) = self.resize
+        cursor = self.nonfloating_cursor
         self.window.set_cursor(cursor)
         dh = event.y_root - ptr_y_root0
         h = int(min(max(min_h, h0+dh), max_h))
-        if self.tool.floating:
-            dw = event.x_root - ptr_x_root0
-            dx = 0
-            if area0 == self.AREA_RIGHT:
-                w = int(min(max(min_w, w0+dw), max_w))
-            elif area0 == self.AREA_MIDDLE:
-                w = int(min(max(min_w, w0), max_w))
-            else: # area0 == self.AREA_LEFT:
-                w = int(min(max(min_w, w0-dw), max_w))
-                dx = w0 - w
-            x = win_x_root0 + dx
-            y = win_y_root0
-            self.tool.floating_window.window.move_resize(x, y, w, h)
-        else:
-            w = -1   # constrained horizontally anyway, better to not care
-            self.tool.set_size_request(w, h)
-            self.tool.queue_resize()
+        w = -1   # constrained horizontally anyway, better to not care
+        self.tool.set_size_request(w, h)
+        self.tool.queue_resize()
     
     def on_leave_notify_event(self, widget, event):
         self.window.set_cursor(None)
