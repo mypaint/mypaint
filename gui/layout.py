@@ -943,7 +943,10 @@ class Tool (gtk.VBox, ElasticContainer):
         self.widget = widget
         self.pack_start(frame, True, True)
         self.resize_grip = ToolResizeGrip(self)
-        self.pack_start(self.resize_grip, False, False)
+        self.resize_grip_frame = gtk.Frame()
+        self.resize_grip_frame.set_shadow_type(gtk.SHADOW_OUT)
+        self.resize_grip_frame.add(self.resize_grip)
+        self.pack_start(self.resize_grip_frame, False, False)
         self.floating_window = ToolWindow(title, role, layout_manager)
         self.floating_window.connect("delete-event", self.on_floating_window_delete_event)
         self.layout_manager.window_group.add_window(self.floating_window)
@@ -968,24 +971,28 @@ class Tool (gtk.VBox, ElasticContainer):
         return True   # Suppress ordinary deletion. We'll be wanting it again.
 
     def set_show_resize_grip(self, show):
+        widget = self.resize_grip_frame
         if not show:
-            if self.resize_grip in self:
-                self.resize_grip.hide()
-                self.remove(self.resize_grip)
+            if widget in self:
+                widget.hide()
+                self.remove(widget)
         else:
-            if self.resize_grip not in self:
-                self.pack_start(self.resize_grip, False, False)
-                self.resize_grip.show()
+            if widget not in self:
+                self.pack_start(widget, False, False)
+                self.reorder_child(widget, -1)
+                widget.show()
 
     def set_show_widget_frame(self, show):
+        widget = self.widget_frame
         if not show:
-            if self.widget_frame in self:
-                self.widget_frame.hide()
-                self.remove(self.widget_frame)
+            if widget in self:
+                widget.hide()
+                self.remove(widget)
         else:
-            if self.widget_frame not in self:
-                self.pack_start(self.widget_frame, True, True)
-                self.widget_frame.show()
+            if widget not in self:
+                self.pack_start(widget, True, True)
+                self.reorder_child(widget, 1)
+                widget.show()
 
     def restore_sbheight(self):
         """Restore the height of the tool when docked."""
