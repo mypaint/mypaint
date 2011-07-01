@@ -577,23 +577,33 @@ class SmallImageButton (gtk.Button):
 class ToolResizeGrip (gtk.DrawingArea): 
     """A draggable bar for resizing a Tool vertically."""
 
+    AREA_LEFT = 0
+    AREA_MIDDLE = 1
+    AREA_RIGHT = 2
+
     handle_size = gtk.HPaned().style_get_property("handle-size") + 2
+    corner_width = 4*handle_size
+
+    floating_cursor_map = {
+            AREA_LEFT: gdk.Cursor(gdk.BOTTOM_LEFT_CORNER),
+            AREA_MIDDLE: gdk.Cursor(gdk.BOTTOM_SIDE),
+            AREA_RIGHT: gdk.Cursor(gdk.BOTTOM_RIGHT_CORNER),
+        }
+    nonfloating_cursor = gdk.Cursor(gdk.SB_V_DOUBLE_ARROW)
 
     def __init__(self, tool):
         gtk.DrawingArea.__init__(self)
         self.tool = tool
-        self.set_size_request(self.handle_size, self.handle_size)
+        self.set_size_request(4*self.corner_width, self.handle_size)
         self.connect("configure-event", self.on_configure_event)
         self.connect("expose-event", self.on_expose_event)
         self.connect("button-press-event", self.on_button_press_event)
         self.connect("button-release-event", self.on_button_release_event)
         self.connect("motion-notify-event", self.on_motion_notify_event)
-        self.connect("enter-notify-event", self.on_enter_notify_event)
         self.connect("leave-notify-event", self.on_leave_notify_event)
         self.width = self.height = self.handle_size
         mask = gdk.BUTTON_PRESS_MASK | gdk.BUTTON_RELEASE_MASK \
-            | gdk.BUTTON1_MOTION_MASK | gdk.ENTER_NOTIFY_MASK \
-            | gdk.LEAVE_NOTIFY_MASK
+            | gdk.LEAVE_NOTIFY_MASK | gdk.POINTER_MOTION_MASK
         self.set_events(mask)
         self.resize = None
     
@@ -612,50 +622,88 @@ class ToolResizeGrip (gtk.DrawingArea):
             0, 0, self.width, self.height,
             gtk.ORIENTATION_HORIZONTAL)
         self.window.end_paint()
-    
+
+    def get_area(self, x, y):
+        if self.tool.floating:
+            if x <= self.corner_width:
+                return self.AREA_LEFT
+            elif x >= self.width - self.corner_width:
+                return self.AREA_RIGHT
+        return self.AREA_MIDDLE
+
     def on_button_press_event(self, widget, event):
         if event.button != 1:
             return
-        self.resize = (event.x, event.y)
+
+        area = self.get_area(event.x, event.y)
+        # Would like to use a "real" resize drag, but
+        # gtk.Window.begin_resize_drag is too broken in Ubuntu Natty to be
+        # useful.
+
+        # Constraints and info for the upcoming resize.
+        min_w, min_h = self.tool.get_minimum_size()
+        if self.tool.floating:
+            win = self.tool.floating_window.window
+            win_x_root, win_y_root = win.get_root_origin()
+            max_w, max_h = 2048, 2048   # what's the max size of a GTK widget?
+        else:
+            lm = self.tool.layout_manager
+            win_x_root, win_y_root = 0, 0
+            max_w, max_h = lm.main_window.sidebar.max_tool_size()
+            min_w = max_w
+
+        alloc = self.tool.allocation
+        w = alloc.width
+        h = alloc.height
+
+        self.resize = event.x_root, event.y_root, area, w, h, \
+                      min_w, min_h, max_w, max_h, win_x_root, win_y_root
         self.grab_add()
     
     def on_button_release_event(self, widget, event):
         self.resize = None
         self.grab_remove()
+        self.window.set_cursor(None)
     
+    def get_cursor(self, area):
+        if self.tool.floating:
+            cursor = self.floating_cursor_map.get(area)
+        else:
+            cursor = self.nonfloating_cursor
+        return cursor
+
     def on_motion_notify_event(self, widget, event):
         if not self.resize:
+            area = self.get_area(event.x, event.y)
+            self.window.set_cursor(self.get_cursor(area))
             return
-        (x0, y0) = self.resize
-        tool_alloc = self.tool.allocation
-        w, h = tool_alloc.width, tool_alloc.height
-
-        lm = self.tool.layout_manager
-        max_w, max_h = lm.main_window.sidebar.max_tool_size()
-
-        min_w, min_h = max_w, 0
-        for child in self.tool.handle, self.tool.resize_grip, self.tool.widget:
-            child_alloc = child.size_request()
-            child_min_w, child_min_h = child_alloc
-            min_w = max(min_w, child_min_w)
-            min_h += child_min_h
-
-        dx = 0 #event.x - x0
-        dy = event.y - y0
-        w += dx
-        h += dy
-        w = int(min(max(min_w, w), max_w))
-        h = int(min(max(min_h, h), max_h))
-        self.tool.set_size_request(w, h)
-        self.tool.queue_resize()
+        (ptr_x_root0, ptr_y_root0, area0, w0, h0,
+         min_w, min_h, max_w, max_h,
+         win_x_root0, win_y_root0) = self.resize
+        cursor = self.get_cursor(area0)
+        self.window.set_cursor(cursor)
+        dh = event.y_root - ptr_y_root0
+        h = int(min(max(min_h, h0+dh), max_h))
+        if self.tool.floating:
+            dw = event.x_root - ptr_x_root0
+            dx = 0
+            if area0 == self.AREA_RIGHT:
+                w = int(min(max(min_w, w0+dw), max_w))
+            elif area0 == self.AREA_MIDDLE:
+                w = int(min(max(min_w, w0), max_w))
+            else: # area0 == self.AREA_LEFT:
+                w = int(min(max(min_w, w0-dw), max_w))
+                dx = w0 - w
+            x = win_x_root0 + dx
+            y = win_y_root0
+            self.tool.floating_window.window.move_resize(x, y, w, h)
+        else:
+            w = -1   # constrained horizontally anyway, better to not care
+            self.tool.set_size_request(w, h)
+            self.tool.queue_resize()
     
     def on_leave_notify_event(self, widget, event):
         self.window.set_cursor(None)
-        
-    def on_enter_notify_event(self, widget, event):
-        self.window.set_cursor(gdk.Cursor(gdk.SB_V_DOUBLE_ARROW))
-
-
 
 
 class FoldOutArrow (gtk.Button):
@@ -1029,9 +1077,8 @@ class Tool (gtk.VBox, ElasticContainer):
             self.floating = lm.prefs[self.role]["floating"] = False
             self.restore_sbheight()
             lm.main_window.sidebar.reassign_indices()
-            self.set_show_resize_grip(True)
+            self.resize_grip_frame.set_shadow_type(gtk.SHADOW_NONE)
         else:
-            self.set_show_resize_grip(False)
             self.floating_window.add(self)
             # Defer the show_all(), seems to be needed when toggling on a
             # hidden, floating window which hasn't yet been loaded.
@@ -1040,6 +1087,7 @@ class Tool (gtk.VBox, ElasticContainer):
             lm.main_window.sidebar.reassign_indices()
             if lm.main_window.sidebar.is_empty():
                 lm.main_window.sidebar.hide()
+            self.resize_grip_frame.set_shadow_type(gtk.SHADOW_OUT)
 
     def set_hidden(self, hidden, temporary=False):
         """Sets a tool as hidden, hiding or showing it as appropriate.
@@ -1142,6 +1190,14 @@ class Tool (gtk.VBox, ElasticContainer):
     def get_preview_size(self):
         alloc = self.get_allocation()
         return alloc.width, alloc.height
+
+    def get_minimum_size(self):
+        min_w, min_h = 0, 0
+        for child in self.handle, self.resize_grip_frame, self.widget_frame:
+            child_min_w, child_min_h = child.size_request()
+            min_w = max(min_w, child_min_w)
+            min_h += child_min_h
+        return min_w, min_h
 
 
 class ToolDragPreviewWindow (gtk.Window):
