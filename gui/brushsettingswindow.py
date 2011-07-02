@@ -8,7 +8,7 @@
 
 "tune brush window"
 from gettext import gettext as _
-import gtk
+import gtk, gobject
 import functionwindow, brushcreationwidget
 import windowing
 from brushlib import brushsettings
@@ -27,6 +27,7 @@ class Window(windowing.SubWindow):
         self.functionWindows = {}
         # A list of all brushsettings (cname) which are to be displayed
         self.visible_settings = []
+        self.live_update_queued = False
 
         self.set_title(_('Brush Editor'))
         self.init_ui()
@@ -203,7 +204,11 @@ class Window(windowing.SubWindow):
         self.live_update_cb()
 
     def live_update_cb(self, *trash):
-        if self.live_update.get_active():
+        if not self.live_update.get_active() or self.live_update_queued:
+            return
+        self.live_update_queued = True
+        def do_update():
+            self.live_update_queued = False
             doc = self.app.doc.model
             cmd = 'something'
             while cmd:
@@ -216,4 +221,5 @@ class Window(windowing.SubWindow):
                     new_stroke.render(doc.layer.surface)
                     doc.do(command.Stroke(doc, new_stroke, snapshot_before))
                     break
+        gobject.idle_add(do_update)
 
