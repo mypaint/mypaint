@@ -43,10 +43,7 @@ def window_factory(role, layout_manager, app):
     if role == 'main-window':
         role = "drawWindow"
     # Load module, and initialize tool widget or subwindow from it
-    try:
-        module = __import__(role.lower(), globals(), locals(), [])
-    except ImportError:
-        return None
+    module = __import__(role.lower(), globals(), locals(), [])
     if hasattr(module, "ToolWidget"):
         widget = module.ToolWidget(app)
         title = widget.tool_widget_title
