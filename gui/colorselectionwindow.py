@@ -129,32 +129,6 @@ class ColorPickerButton (gtk.EventBox):
         # Newly picked colours are advertised to the associated selector:
         self.selector = selector
 
-    def pick_color_at_pointer(self, widget, size=3):
-        screen = widget.get_screen()
-        colormap = screen.get_system_colormap()
-        root = screen.get_root_window()
-        screen_w, screen_h = screen.get_width(), screen.get_height()
-        display = widget.get_display()
-        screen_trash, x_root, y_root, mods = display.get_pointer()
-        image = None
-        x = x_root-size/2
-        y = y_root-size/2
-        if x < 0: x = 0
-        if y < 0: y = 0
-        if x+size > screen_w: x = screen_w-size
-        if y+size > screen_h: y = screen_h-size
-        image = root.get_image(x, y, size, size)
-        color_total = (0, 0, 0)
-        for x, y in helpers.iter_rect(0, 0, size, size):
-            pixel = image.get_pixel(x, y)
-            color = colormap.query_color(pixel)
-            color = [color.red, color.green, color.blue]
-            color_total = (color_total[0]+color[0], color_total[1]+color[1], color_total[2]+color[2])
-        N = size*size
-        color_total = (color_total[0]/N, color_total[1]/N, color_total[2]/N)
-        color_rgb = [ch/65535. for ch in color_total]
-        return color_rgb
-
     def on_clicked(self, widget):
         cursor = self.selector.app.cursor_color_picker
         result = gdk.pointer_grab(self.window, False, self.grab_mask, None, cursor)
@@ -164,19 +138,15 @@ class ColorPickerButton (gtk.EventBox):
     def on_motion_notify_event(self, widget, event):
         if not event.state & gdk.BUTTON1_MASK:
             return
-        rgb = self.pick_color_at_pointer(widget)
-        hsv = helpers.rgb_to_hsv(*rgb)
         self.selector.picking = True
-        self.selector.set_color_hsv(hsv)
+        self.selector.app.pick_color_at_pointer(widget)
 
     def on_button_release_event(self, widget, event):
         if not self.grabbed:
             return False
-        gdk.pointer_ungrab()
-        rgb = self.pick_color_at_pointer(self)
-        hsv = helpers.rgb_to_hsv(*rgb)
+        self.selector.app.pick_color_at_pointer(self)
         self.selector.picking = False
-        self.selector.set_color_hsv(hsv)
+        gdk.pointer_ungrab()
 
 
 # own color selector
