@@ -1181,7 +1181,7 @@ class Selector(gtk.VBox):
 
 class ToolWidget (Selector):
 
-    tool_widget_title = _("MyPaint color selector")
+    tool_widget_title = _("Color Sampler")
 
     def __init__(self, app):
         Selector.__init__(self, app)

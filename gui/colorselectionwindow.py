@@ -19,7 +19,7 @@ from lib import helpers, mypaintlib
 class ToolWidget (gtk.VBox):
     """Tool widget with the standard GTK color selector (triangle)."""
 
-    tool_widget_title = _('Color')
+    tool_widget_title = _('Color Triangle')
 
     def __init__(self, app):
         gtk.VBox.__init__(self)

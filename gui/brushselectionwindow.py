@@ -20,7 +20,7 @@ class ToolWidget (gtk.VBox):
 
     EXPANDER_PREFS_KEY = "brushmanager.common_settings_expanded"
 
-    tool_widget_title = _("Brush selection")
+    tool_widget_title = _("Brushes")
 
     def __init__(self, app):
         self.app = app
