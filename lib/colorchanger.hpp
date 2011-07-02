@@ -52,7 +52,6 @@ public:
     // It does not matter in the end, as long as the result looks good.
 
     int width, height;
-    float width_inv, height_inv;
     int x, y, i;
     int s_radius = size/2.6;
     PrecalcData * result;
@@ -60,9 +59,6 @@ public:
     width = size;
     height = size;
     result = (PrecalcData*)malloc(sizeof(PrecalcData)*width*height);
-
-    width_inv = 1.0/width;
-    height_inv = 1.0/height;
 
     i = 0;
     for (y=0; y<height; y++) {
