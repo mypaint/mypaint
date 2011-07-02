@@ -7,6 +7,7 @@ import windowing
 from layout import ElasticExpander
 from lib.helpers import rgb_to_hsv, hsv_to_rgb, clamp
 from gettext import gettext as _
+import gobject
 
 CSTEP=0.007
 PADDING=4
@@ -38,7 +39,7 @@ class GColorSelector(gtk.DrawingArea):
         self.device_pressed = None
         self.grabbed = False
         self.set_size_request(110, 100)
-        self.has_tooltip_areas = False
+        self.has_hover_areas = False
 
     def test_move(self, x, y):
         """
@@ -61,8 +62,8 @@ class GColorSelector(gtk.DrawingArea):
         self.queue_draw()
 
     def motion(self,w, event):
-        if self.has_tooltip_areas:
-            self.update_tooltip(event.x, event.y)
+        if self.has_hover_areas:
+            self.update_hover_area(event.x, event.y)
         if not self.device_pressed:
             return
         if self.test_move(event.x, event.y):
@@ -188,7 +189,8 @@ AREA_INSIDE = 2  #: Grey area inside the rings
 AREA_SAMPLE = 3  #: Inner ring of color sampler boxes (hue)
 AREA_CIRCLE = 4  #: Outer gradiated ring (hue)
 AREA_COMPARE = 5  #: Current/previous comparison semicircles
-AREA_OUTSIDE = 6  #: Blank outer area, outer space
+AREA_PICKER = 6  #: The picker icon's circle
+AREA_OUTSIDE = 7  #: Blank outer area, outer space
 
 CIRCLE_TOOLTIPS = \
   { AREA_SQUARE: _('Change Saturation and Value'),
@@ -196,6 +198,7 @@ CIRCLE_TOOLTIPS = \
     AREA_SAMPLE: _('Harmony color switcher'),
     AREA_CIRCLE: _('Change Hue'),
     AREA_COMPARE: _('Current color vs. Last Used'),
+    AREA_PICKER: _('Pick a screen color'),
     AREA_OUTSIDE: None,
     }
 
@@ -209,6 +212,10 @@ def try_put(list, item):
         list.append(item)
 
 class CircleSelector(GColorSelector):
+
+    grab_mask = gdk.BUTTON_RELEASE_MASK | gdk.BUTTON1_MOTION_MASK
+    picking = False
+
     def __init__(self,app,color=(1,0,0)):
         GColorSelector.__init__(self,app)
         self.color = color
@@ -218,9 +225,81 @@ class CircleSelector(GColorSelector):
         self.last_line = None  # 
         app.ch.color_pushed_observers.append(self.color_pushed_cb)
 
-        self.has_tooltip_areas = True
-        self.previous_tooltip_area = None
-        self.previous_tooltip_xy = None
+        self.has_hover_areas = True
+        self.hover_area = AREA_OUTSIDE
+        self.previous_hover_area = None
+        self.previous_hover_xy = None
+
+        self.picker_icons = []
+        self.connect("map-event", self.init_picker_icons)
+        self.connect("style-set", self.init_picker_icons)
+
+        self.picker_state = gtk.STATE_NORMAL
+        self.button_press = None
+
+    def on_button_press(self, widget, event):
+        area = self.area_at(event.x, event.y)
+        if area == AREA_PICKER:
+            self.button_press = event
+            self.picker_state = gtk.STATE_ACTIVE
+            self.queue_draw()
+            return True
+        return GColorSelector.on_button_press(self, widget, event)
+
+    def on_button_release(self, widget, event):
+        if self.picking:
+            self.app.pick_color_at_pointer(self)
+            self.picking = False
+            gdk.pointer_ungrab()
+            return True
+        elif self.button_press:
+            area = self.area_at(event.x, event.y)
+            if area == AREA_PICKER:
+                gobject.idle_add(self.begin_color_pick)
+            self.picker_state = gtk.STATE_NORMAL
+            self.queue_draw()
+            self.button_press = None
+            return True
+        return GColorSelector.on_button_release(self, widget, event)
+
+    def motion(self, widget, event):
+        if self.picking:
+            if event.state & gdk.BUTTON1_MASK:
+                self.app.pick_color_at_pointer(self)
+            return True
+        elif self.button_press:
+            area = self.area_at(event.x, event.y)
+            if area == AREA_PICKER:
+                if self.picker_state != gtk.STATE_ACTIVE:
+                    self.picker_state = gtk.STATE_ACTIVE
+                    self.queue_draw()
+            else:
+                if self.picker_state != gtk.STATE_NORMAL:
+                    self.picker_state = gtk.STATE_NORMAL
+                    self.queue_draw()
+            return True
+        return GColorSelector.motion(self, widget, event)
+
+    def begin_color_pick(self):
+        cursor = self.app.cursor_color_picker
+        result = gdk.pointer_grab(self.window, False, self.grab_mask, None, cursor)
+        if result == gdk.GRAB_SUCCESS:
+            self.picking = True
+
+    def init_picker_icons(self, *a, **kw):
+        sizes = [gtk.ICON_SIZE_SMALL_TOOLBAR,
+                 gtk.ICON_SIZE_LARGE_TOOLBAR,
+                 gtk.ICON_SIZE_BUTTON]
+                 # No bigger, to help avoid ugly scaling
+        pixbufs = []
+        for size in sizes:
+            pixbuf = self.render_icon(gtk.STOCK_COLOR_PICKER, size)
+            w = pixbuf.get_width()
+            h = pixbuf.get_height()
+            r = sqrt((w/2)**2 + (h/2)**2)
+            pixbufs.append((r, w, h, pixbuf, size))
+        pixbufs.sort() # in ascending order of size
+        self.picker_icons = pixbufs
 
     def color_pushed_cb(self, pushed_color):
         self.queue_draw()
@@ -236,17 +315,27 @@ class CircleSelector(GColorSelector):
     def get_previous_color(self):
         return self.color
 
-    def update_tooltip(self, x, y):
+    def update_hover_area(self, x, y):
         area = self.area_at(x, y)
-        if self.previous_tooltip_area is None:
+        old_area = area
+        if self.previous_hover_area is None:
+            old_area = None
             tooltip = CIRCLE_TOOLTIPS.get(area, None)
             self.set_tooltip_text(tooltip)
-            self.previous_tooltip_area = area, x, y
+            self.previous_hover_area = area, x, y
         else:
-            old_area, old_x, old_y = self.previous_tooltip_area
+            old_area, old_x, old_y = self.previous_hover_area
             if area != old_area or abs(old_x - x) > 20 or abs(old_y - y) > 20:
                 self.set_tooltip_text(None)
-                self.previous_tooltip_area = None
+                self.previous_hover_area = None
+        if area != old_area:
+            self.hover_area = area
+            if area == AREA_PICKER:
+                self.picker_state = gtk.STATE_PRELIGHT
+            else:
+                self.picker_state = gtk.STATE_NORMAL
+            if AREA_PICKER in (area, old_area):
+                self.queue_draw()
 
     def calc_line(self, angle):
         x1 = self.x0 + self.r2*cos(-angle)
@@ -322,14 +411,21 @@ class CircleSelector(GColorSelector):
         dy = y-self.y0
         d = sqrt(dx*dx+dy*dy)
         sq2 = sqrt(2.0)
-        cmp_M = self.M/2.0
-        cmp_r = (sq2-1)*cmp_M/(2*sq2)
-        cmp_x0 = self.x0+cmp_M-cmp_r
-        cmp_y0 = self.y0+cmp_M-cmp_r
+
+        # Two tools, the picker and the prev/current comparator
+        tool_M = self.M/2.0
+        tool_r = (sq2-1)*tool_M/(2*sq2)
+        tool_y0 = self.y0+tool_M-tool_r
+        cmp_x0 = self.x0+tool_M-tool_r
+        pick_x0 = self.x0-tool_M+tool_r
         cmp_dx = x - cmp_x0
-        cmp_dy = y - cmp_y0
-        if cmp_r > sqrt(cmp_dx*cmp_dx + cmp_dy*cmp_dy):
+        pick_dx = x - pick_x0
+        tool_dy = y - tool_y0
+
+        if tool_r > sqrt(cmp_dx*cmp_dx + tool_dy*tool_dy):
             return AREA_COMPARE
+        if tool_r > sqrt(pick_dx*pick_dx + tool_dy*tool_dy):
+            return AREA_PICKER
         elif d > self.r3:
             return AREA_OUTSIDE
         elif self.r2 < d <= self.r3:
@@ -611,6 +707,40 @@ class CircleSelector(GColorSelector):
         cr.arc(x0, y0, 0.8*r, a0+(pi/2), a0+(3*pi/2))
         cr.fill()
 
+    def draw_picker_icon(self, cr):
+        sq2 = sqrt(2.0)
+        M = self.M/2.0
+        r = (sq2-1)*M/(2*sq2)
+        x0 = self.x0-M+r
+        y0 = self.y0+M-r
+        a0 = pi/4
+
+        # Pick the most suitable themed icon from our sorted cache.
+        # This should be the largest icon that fits in the tool circle,
+        # but we must use the smallest available if the circle is too small.
+        pixbuf = None
+        for pr, pw, ph, ppixbuf, psize in self.picker_icons:
+            if pixbuf is not None and pr > r:
+                break
+            pixbuf = ppixbuf
+            w = pw
+            h = ph
+
+        # Background
+        cr.save()
+        cr.arc(x0, y0, 0.9*r, a0, a0+(2*pi))
+        cr.clip()
+        bg = self.style.bg[self.picker_state]
+        bg_rgb = [bg.red_float, bg.green_float, bg.blue_float]
+        cr.set_source_rgb(*bg_rgb)
+        cr.paint()
+
+        # Picker icon
+        if pixbuf is not None:
+            cr.set_source_pixbuf(pixbuf, int(x0-w/2), int(y0-h/2))
+            cr.paint()
+        cr.restore()
+
     def draw(self,w,event):
         if not self.window:
             return
@@ -624,6 +754,7 @@ class CircleSelector(GColorSelector):
         cr.set_source_surface(self.draw_square(self.w, self.h, self.rd*0.95))
         cr.paint()
         self.draw_comparison_semicircles(cr)
+        self.draw_picker_icon(cr)
 
 class VSelector(GColorSelector):
     def __init__(self, app, color=(1,0,0), height=16):
