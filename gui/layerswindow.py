@@ -179,11 +179,13 @@ class LayerWidget(gtk.EventBox):
         self.lock_button.set_active(layer.locked)
         layer_text = layer.name
         if not layer_text:
-            if self is self.list.selected:
-                layer_text = _('<small>Double click to enter name</small>')
-            else:
-                layer_text = _('<small>Click to select this layer</small>')
+            layer_disp_name = self.list.get_anon_layer_display_name(layer)
+            layer_text = "<small>" + layer_disp_name + "</small>"
         self.layer_name.set_markup(layer_text)
+        if self is self.list.selected:
+            self.set_tooltip_text(_("Double click to enter name"))
+        else:
+            self.set_tooltip_text(None)
         self.callbacks_active = True
 
     def change_name(self, *ignore):
@@ -231,6 +233,8 @@ class LayersList(gtk.VBox):
         self.app = app
         self.disable_selected_callback = False
         self.pack_layers()
+        self.num_anon_layers_seen = 0
+        self.anon_layer_display_names = {}  # {id(layer): name, ...}
 
     def set_layers(self, layers):
         def find_widget(l):
@@ -304,6 +308,18 @@ class LayersList(gtk.VBox):
         target_idx = self.widgets.index(widget)
         doc = self.app.doc.model
         doc.move_layer(another_widget_idx, target_idx)
+
+    def get_anon_layer_display_name(self, layer):
+        """Gets a display name for a layer which hasn't been named yet.
+        """
+        i = id(layer)
+        name = self.anon_layer_display_names.get(i, None)
+        if name is None:
+            self.num_anon_layers_seen += 1
+            name = _("Unnamed layer #%d" % self.num_anon_layers_seen)
+            self.anon_layer_display_names[i] = name
+        return name
+
 
 class ToolWidget (gtk.VBox):
 
