@@ -360,8 +360,7 @@ class WindowWithSavedPosition:
     def __pos(self):
         lm = self.layout_manager
         role = self.get_role()
-        if not role in lm.prefs:
-            lm.prefs[role] = dict()
+        assert role in lm.prefs, 'Window %r is not mentioned in DEFAULT_CONFIG (application.py)' % role
         return lm.prefs[role]
 
     def __on_realize(self, widget):

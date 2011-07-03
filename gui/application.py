@@ -193,14 +193,29 @@ class Application: # singleton
                 # Non-tool subwindows. These cannot be docked, and are all
                 # intially hidden.
                 'brushSettingsWindow': dict(x=-460, y=-128, w=300, h=300),
+                'backgroundWindow': dict(),
+                'inputTestWindow': dict(),
+                'layersWindow': dict(),
+                'preferencesWindow': dict(),
             },
         }
+        window_pos = DEFAULT_CONFIG["layout.window_positions"]
+        self.window_names = window_pos.keys()
         self.preferences = DEFAULT_CONFIG
         try: 
             user_config = get_json_config()
         except IOError:
             user_config = get_legacy_config()
+        user_window_pos = user_config.get("layout.window_positions", {})
+        # note: .update() replaces the window position dict, but we want to update it
         self.preferences.update(user_config)
+        # update window_pos, and drop window names that don't exist any more
+        # (we need to drop them because otherwise we will try to show a non-existing window)
+        for role in self.window_names:
+            if role in user_window_pos:
+                window_pos[role] = user_window_pos[role]
+        self.preferences["layout.window_positions"] = window_pos
+
 
     def init_brush_adjustments(self):
         """Initializes all the brush adjustments for the current brush"""

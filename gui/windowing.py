@@ -35,13 +35,16 @@ def window_factory(role, layout_manager, app):
     ToolWidget classes must provide a tool_widget_title variable accessible via
     the instance, which contains the title used in the titlebar. """
 
-    if role in ['main-toolbar','main-widget','main-statusbar','main-menubar','null']:
+    if role in ['main-toolbar','main-widget','main-statusbar','main-menubar']:
         # These slots are either unused, or are populated internally right now.
         return None
     # Layout will build of these at startup; we load it through the same
     # mechanismas below, but with a specific rather than a generic name.
     if role == 'main-window':
         role = "drawWindow"
+    else:
+        if role not in app.window_names:
+            raise ValueError, 'Window %r is missing in DEFAULT_CONFIG (application.py)' % role
     # Load module, and initialize tool widget or subwindow from it
     module = __import__(role.lower(), globals(), locals(), [])
     if hasattr(module, "ToolWidget"):
