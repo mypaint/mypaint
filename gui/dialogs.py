@@ -39,19 +39,24 @@ def ask_for_name(widget, title, default):
                    gtk.DIALOG_MODAL,
                    (gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT,
                     gtk.STOCK_OK, gtk.RESPONSE_ACCEPT))
+    d.set_position(gtk.WIN_POS_MOUSE)
 
     hbox = gtk.HBox()
+    hbox.set_property("spacing", 12)
+    hbox.set_border_width(12)
+
     d.vbox.pack_start(hbox)
-    hbox.pack_start(gtk.Label(_('Name')))
+    hbox.pack_start(gtk.Label(_('Name')), False, False)
 
     d.e = e = gtk.Entry()
+    e.set_size_request(250, -1)
     e.set_text(default)
     e.select_region(0, len(default))
     def responseToDialog(entry, dialog, response):  
         dialog.response(response)  
     e.connect("activate", responseToDialog, d, gtk.RESPONSE_ACCEPT)  
 
-    hbox.pack_start(e)
+    hbox.pack_start(e, True, True)
     d.vbox.show_all()
     if d.run() == gtk.RESPONSE_ACCEPT:
         result = d.e.get_text().decode('utf-8')
