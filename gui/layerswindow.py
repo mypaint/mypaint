@@ -330,11 +330,11 @@ class ToolWidget (gtk.VBox):
         opacity_hbox.pack_start(opacity_lbl, expand=False)
         opacity_hbox.pack_start(self.opacity_scale, expand=True)
 
-        add_button = stock_button(gtk.STOCK_ADD)
-        move_up_button = stock_button(gtk.STOCK_GO_UP)
-        move_down_button = stock_button(gtk.STOCK_GO_DOWN)
-        merge_down_button = stock_button(gtk.STOCK_DND_MULTIPLE)  # XXX need a better one
-        del_button = stock_button(gtk.STOCK_DELETE)
+        add_button = self.add_button = stock_button(gtk.STOCK_ADD)
+        move_up_button = self.move_up_button = stock_button(gtk.STOCK_GO_UP)
+        move_down_button = self.move_down_button = stock_button(gtk.STOCK_GO_DOWN)
+        merge_down_button = self.merge_down_button = stock_button(gtk.STOCK_DND_MULTIPLE)  # XXX need a better one
+        del_button = self.del_button = stock_button(gtk.STOCK_DELETE)
 
         add_button.connect('clicked', self.on_layer_add)
         move_up_button.connect('clicked', self.move_layer, 'up')
@@ -374,6 +374,21 @@ class ToolWidget (gtk.VBox):
         self.callbacks_active = False
         self.opacity_scale.set_value(doc.get_current_layer().opacity*100)
         self.callbacks_active = True
+
+        # Reflect position of current layer in the list
+        sel_is_top = sel_is_bottom = False
+        layer_num = 0
+        for w in self.layers_list:
+            if w is self.layers_list.selected:
+                if layer_num == 0:
+                    sel_is_top = True
+                sel_is_bottom = True
+            else:
+                sel_is_bottom = False
+            layer_num += 1
+        self.move_up_button.set_sensitive(not sel_is_top)
+        self.move_down_button.set_sensitive(not sel_is_bottom)
+        self.merge_down_button.set_sensitive(not sel_is_bottom)
 
     def on_opacity_changed(self, *ignore):
         if not self.callbacks_active:
