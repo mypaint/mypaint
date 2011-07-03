@@ -206,23 +206,6 @@ class LayerWidget(gtk.EventBox):
         locked = not self.layer.locked
         self.app.doc.model.set_layer_locked(locked, self.layer)
 
-    def set_selected(self):
-        style = self.get_style()
-        color = style.bg[gtk.STATE_SELECTED]
-        def mark(w):
-            w.modify_bg(gtk.STATE_NORMAL, color)
-            if isinstance(w, gtk.Box):
-                w.foreach(mark)
-        mark(self)
-        self.main_hbox.foreach(mark)
-
-    def set_unselected(self):
-        def unmark(w):
-            w.modify_bg(gtk.STATE_NORMAL, None)
-            if isinstance(w, gtk.Box):
-                w.foreach(unmark)
-        unmark(self)
-        self.main_hbox.foreach(unmark)
 
 class LayersList(gtk.VBox):
     def __init__(self, app, layers=[]):
@@ -290,9 +273,9 @@ class LayersList(gtk.VBox):
         if widget:
             for item in self.widgets:
                 if item is widget:
-                    item.set_selected()
+                    item.set_state(gtk.STATE_SELECTED)
                 else:
-                    item.set_unselected()
+                    item.set_state(gtk.STATE_NORMAL)
         if widget in self.widgets and not self.disable_selected_callback:
             idx = self.widgets.index(widget)
             doc = self.app.doc
