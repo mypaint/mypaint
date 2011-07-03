@@ -35,7 +35,7 @@ def window_factory(role, layout_manager, app):
     ToolWidget classes must provide a tool_widget_title variable accessible via
     the instance, which contains the title used in the titlebar. """
 
-    if role in ["main-toolbar",'main-widget','main-statusbar','main-menubar']:
+    if role in ['main-toolbar','main-widget','main-statusbar','main-menubar','null']:
         # These slots are either unused, or are populated internally right now.
         return None
     # Layout will build of these at startup; we load it through the same
