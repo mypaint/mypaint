@@ -9,6 +9,7 @@ from math import asin, pi
 from lib import command
 import dialogs
 import windowing
+import pango
 
 DRAG_LAYER_INDEX = 100
 DRAG_LAYER_PNG = 101
@@ -77,6 +78,7 @@ class LayerWidget(gtk.EventBox):
 
         # Widgets
         self.layer_name = gtk.Label()
+        self.layer_name.set_use_markup(False)
         self.hidden_button = PixbufToggleButton(self.app,
             False, _('Layer visibility'), self.on_hidden_toggled, 
             self.app.pixmaps.eye_closed, self.app.pixmaps.eye_open)
@@ -177,22 +179,26 @@ class LayerWidget(gtk.EventBox):
         self.callbacks_active = False
         self.hidden_button.set_active(not layer.visible)
         self.lock_button.set_active(layer.locked)
-        layer_text = layer.name
-        if not layer_text:
-            layer_disp_name = self.list.get_anon_layer_display_name(layer)
-            layer_text = "<small>" + layer_disp_name + "</small>"
-        self.layer_name.set_markup(layer_text)
+        text = layer.name
+        text_attrs = pango.AttrList()
+        if not text:
+            text = self.list.get_anon_layer_display_name(layer)
+            text_attrs.change(pango.AttrScale(pango.SCALE_SMALL, 0, -1))
+            #text_attrs.change(pango.AttrStyle(pango.STYLE_ITALIC, 0, -1))
         if self is self.list.selected:
             self.set_tooltip_text(_("Double click to enter name"))
+            text_attrs.change(pango.AttrWeight(pango.WEIGHT_BOLD, 0, -1))
         else:
             self.set_tooltip_text(None)
+        self.layer_name.set_text(text)
+        self.layer_name.set_attributes(text_attrs)
         self.callbacks_active = True
 
     def change_name(self, *ignore):
         layer_name = dialogs.ask_for_name(self, _("Name"), self.layer.name)
         if layer_name:
             self.layer.name = layer_name
-            self.layer_name.set_text(layer_name)
+            self.set_layer(self.layer)
 
     def on_hidden_toggled(self, checkbox):
         if not self.callbacks_active:
