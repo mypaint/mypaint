@@ -634,6 +634,15 @@ class Document(object):
         bm = self.app.brushmodifier
         if bm.eraser_mode.active:
             bm.eraser_mode.leave()
+
+        b = self.app.brush
+        
+        if not bm.lock_alpha.active and b.get_base_value('lock_alpha') > 0.9:
+            # brush using lock_alpha setting, but we are not in lock_alpha mode
+            # (FIXME: hackish to handle this case here)
+            b.reset_setting('lock_alpha')
+            return
+
         bm.lock_alpha.toggle(action)
 
     def frame_changed_cb(self):
