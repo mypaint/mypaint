@@ -150,6 +150,12 @@ class TiledDrawWidget(gtk.DrawingArea):
             func(self.last_event_device, device)
         self.last_event_device = device
 
+        # Do not interpolate between motion events from different
+        # devices.  If the final pressure value from the previous
+        # device was not 0.0, the motion event of the new device could
+        # cause a visible stroke, even if pressure is 0.0.
+        self.doc.brush.reset()
+
     def motion_notify_cb(self, widget, event, button1_pressed=None):
         if not self.is_sensitive:
             return
