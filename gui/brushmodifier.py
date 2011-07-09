@@ -100,14 +100,11 @@ class BrushModifier:
                 if 'eraser_mode' not in settings:
                     self.eraser_mode.leave()
 
-    def brush_selected_cb(self, managed_brush):
+    def brush_selected_cb(self, managed_brush, brushinfo):
         """
-        Copies a ManagedBrush's settings into the brush settings currently used
-        for painting. Sets the parent brush name to the closest ancestor brush
-        currently in the brushlist.
+        Copies the selected brush's settings into the settings currently used
+        for painting. Sets the parent brush name.
         """
-        if not managed_brush:
-            return
 
         b = self.app.brush
 
@@ -118,16 +115,12 @@ class BrushModifier:
 
         color = b.get_color_hsv()
 
-        b.load_from_brushinfo(managed_brush.brushinfo)
+        b.load_from_brushinfo(brushinfo)
         self.unmodified_brushinfo = b.clone()
 
         b.set_color_hsv(color)
 
-        parent_name = None
-        list_brush = self.app.brushmanager.find_brushlist_ancestor(managed_brush)
-        if list_brush and list_brush.name is not None:
-            parent_name = list_brush.name
-        b.set_string_property("parent_brush_name", parent_name)
+        b.set_string_property("parent_brush_name", managed_brush.name)
 
         if self.lock_alpha.active:
             self.enforce_lock_alpha()

@@ -60,8 +60,8 @@ class BrushManipulationWidget(gtk.HBox):
             b.set_tooltip_text(tooltip)
             self.pack_end(b, expand=False)
 
-    def brush_selected_cb(self, brush):
-        name = brush.name
+    def brush_selected_cb(self, managed_brush, brushinfo):
+        name = managed_brush.name
         if name is None:
             name = _('(unnamed brush)')
         else:
@@ -249,8 +249,8 @@ class BrushIconEditorWidget(gtk.VBox):
             if b in brushes:
                 for f in self.bm.brushes_observers: f(brushes)
 
-    def brush_selected_cb(self, brush):
+    def brush_selected_cb(self, managed_brush, brushinfo):
         # Update brush icon preview if it is not in edit mode
         if not self.brush_preview_edit_mode:
-            self.set_preview_pixbuf(brush.preview)
+            self.set_preview_pixbuf(managed_brush.preview)
 
