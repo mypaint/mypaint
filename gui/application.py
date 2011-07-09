@@ -199,7 +199,7 @@ class Application: # singleton
                 'brushSettingsWindow': dict(x=-460, y=-128, w=300, h=300),
                 'backgroundWindow': dict(),
                 'inputTestWindow': dict(),
-                'layersWindow': dict(),
+                'frameWindow': dict(),
                 'preferencesWindow': dict(),
             },
         }
