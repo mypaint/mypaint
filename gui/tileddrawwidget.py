@@ -145,27 +145,29 @@ class TiledDrawWidget(gtk.DrawingArea):
     def device_used(self, device):
         """Tell the TDW about a device being used."""
         if device == self.last_event_device:
-            return
+            return True
         for func in self.device_observers:
             func(self.last_event_device, device)
         self.last_event_device = device
+        return False
 
     def motion_notify_cb(self, widget, event, button1_pressed=None):
         if not self.is_sensitive:
             return
-
+        
         if self.last_event_time:
             dtime = (event.time - self.last_event_time)/1000.0
             dx = event.x - self.last_event_x
             dy = event.y - self.last_event_y
         else:
             dtime = None
-        self.device_used(event.device)
         self.last_event_x = event.x
         self.last_event_y = event.y
         self.last_event_time = event.time
         if dtime is None:
             return
+        
+        same_device = self.device_used(event.device)
 
         if self.dragfunc:
             self.dragfunc(dx, dy, event.x, event.y)
@@ -242,6 +244,14 @@ class TiledDrawWidget(gtk.DrawingArea):
 
         if pressure:
             self.last_painting_pos = x, y
+
+        # If the device has changed and the last pressure value from the previous device
+        # is not equal to 0.0, this can leave a visible stroke on the layer even if the 'new'
+        # device is not pressed on the tablet and has a pressure axis == 0.0.
+        # Reseting the brush when the device changes fixes this issue, but there may be a
+        # much more elegant solution that only resets the brush on this edge-case.
+        if not same_device:
+            self.doc.brush.reset()
 
         # On Windows, GTK timestamps have a resolution around
         # 15ms, but tablet events arrive every 8ms.
