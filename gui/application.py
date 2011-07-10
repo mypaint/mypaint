@@ -145,7 +145,12 @@ class Application: # singleton
                 # happens when we saved it with no space left on device
                 print 'Warning: empty settings.json, using defaults'
                 return {}
-            return helpers.json_loads(jsonstr)
+            try:
+                return helpers.json_loads(jsonstr)
+            except Exception, e:
+                print "settings.json: %s" % (str(e),)
+                print "warning: failed to load settings.json, using defaults"
+                return {}
         if sys.platform == 'win32':
             import glib
             scrappre = join(glib.get_user_special_dir(glib.USER_DIRECTORY_DOCUMENTS).decode('utf-8'),'MyPaint','scrap')
