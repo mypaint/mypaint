@@ -149,10 +149,11 @@ class ToolWidget (gtk.VBox):
         if t_iter is None:
             return
         layer = store.get_value(t_iter, 0)
-        doc = self.app.doc.model
-        if doc.get_current_layer() != layer:
-            idx = doc.layers.index(layer)
-            doc.select_layer(idx)
+        doc = self.app.doc
+        if doc.model.get_current_layer() != layer:
+            idx = doc.model.layers.index(layer)
+            doc.model.select_layer(idx)
+            doc.layerblink_state.activate()
 
 
     def treeview_button_press_cb(self, treeview, event):
