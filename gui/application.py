@@ -141,10 +141,6 @@ class Application: # singleton
         def get_json_config():
             settingspath = join(self.confpath, 'settings.json')
             jsonstr = open(settingspath).read()
-            if not jsonstr.strip():
-                # happens when we saved it with no space left on device
-                print 'Warning: empty settings.json, using defaults'
-                return {}
             try:
                 return helpers.json_loads(jsonstr)
             except Exception, e:
