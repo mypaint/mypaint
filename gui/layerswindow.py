@@ -90,6 +90,10 @@ class ToolWidget (gtk.VBox):
         self.pack_start(buttons_hbox, expand=False)
         self.pack_start(opacity_hbox, expand=False)
 
+        # Names for anonymous layers
+        self.init_anon_layer_names()
+        app.filehandler.file_opened_observers.append(self.init_anon_layer_names)
+
         # Updates
         doc = app.doc.model
         doc.doc_observers.append(self.update)
@@ -239,17 +243,33 @@ class ToolWidget (gtk.VBox):
         doc.remove_layer(layer=doc.get_current_layer())
 
 
+    def init_anon_layer_names(self, *a):
+        self.anon_layer_num = {}
+        self.anon_layer_next = 1
+
+
     def layer_name_datafunc(self, column, renderer, model, tree_iter):
         layer = model.get_value(tree_iter, 0)
         path = model.get_path(tree_iter)
-        num_layers = len(model)
-        layer_num = num_layers - path[0]
         name = layer.name
         attrs = pango.AttrList()
         if not name:
+            layer_num = self.anon_layer_num.get(id(layer), None)
+            if layer_num is None:
+                # Name every layer without a name or an entry in the cache now,
+                # in document order (not list order, which is reversed)
+                for l in self.app.doc.model.layers:
+                    if l.name:
+                        continue
+                    n = self.anon_layer_num.get(id(l), None)
+                    if n is None:
+                        n = self.anon_layer_next
+                        self.anon_layer_next += 1
+                        self.anon_layer_num[id(l)] = n
+                layer_num = self.anon_layer_num[id(layer)]
             attrs.change(pango.AttrScale(pango.SCALE_SMALL, 0, -1))
             attrs.change(pango.AttrStyle(pango.STYLE_ITALIC, 0, -1))
-            name = _("Layer %d" % layer_num)
+            name = _("Untitled layer #%d" % layer_num)
         renderer.set_property("attributes", attrs)
         renderer.set_property("text", name)
 

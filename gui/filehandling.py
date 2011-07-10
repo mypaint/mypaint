@@ -86,6 +86,7 @@ class FileHandler(object):
 
         self._filename = None
         self.current_file_observers = []
+        self.file_opened_observers = []
         self.active_scrap_filename = None
         self.set_recent_items()
 
@@ -241,6 +242,8 @@ class FileHandler(object):
             self.app.message_dialog(str(e),type=gtk.MESSAGE_ERROR)
         else:
             self.filename = os.path.abspath(filename)
+            for func in self.file_opened_observers:
+                func(self.filename)
             print 'Loaded from', self.filename
             self.app.doc.reset_view_cb(None)
 
