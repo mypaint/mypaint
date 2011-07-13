@@ -61,6 +61,13 @@ class State:
     #: (None = just leave this state)
     next_state = None
 
+    #: Allowed buttons and their masks for starting and continuing states
+    #: triggered by gdk button press events.
+    allowed_buttons_masks = {
+        1: gdk.BUTTON1_MASK,
+        2: gdk.BUTTON2_MASK,
+        3: gdk.BUTTON3_MASK, }
+
     def __init__(self, stategroup, popup):
         self.sg = stategroup
         self.active = False
@@ -122,8 +129,8 @@ class State:
                 assert e.type == gdk.BUTTON_PRESS
                 # let's just note down what mous button that was
                 assert e.button
-                if e.button in [1]:
-                    self.mouse_button = 1
+                if e.button in self.allowed_buttons_masks:
+                    self.mouse_button = e.button
 
             else:
                 a = action_or_event
@@ -181,10 +188,19 @@ class State:
 
     def motion_notify_cb(self, widget, event):
         assert self.keydown
+
+        # We can't leave the state yet if button 1 is being pressed without
+        # risking putting an accidental dab on the canvas. This happens with
+        # some resistive touchscreens where a logical "button 3" is physically
+        # a stylus button 3 plus a nib press (which is also a button 1).
         pressure = event.get_axis(gdk.AXIS_PRESSURE)
-        painting = (event.state & gdk.BUTTON1_MASK) or pressure
-        if not painting:
-            # we can leave the state without putting an accidental dab on the canvas
+        button1_down = event.state & gdk.BUTTON1_MASK
+        if pressure or button1_down:
+            return
+
+        # Leave if the button we started with is no longer being pressed.
+        button_mask = self.allowed_buttons_masks.get(self.mouse_button, 0)
+        if not event.state & button_mask:
             self.disconnect_motion_handler()
             self.keyup_cb(widget, event)
 
@@ -215,7 +231,7 @@ class State:
             # we are able to wait for a button release now
             self.keydown = True
             # register for events
-            assert self.mouse_button == 1
+            assert self.mouse_button in self.allowed_buttons_masks
             handler_id = widget.connect("motion-notify-event", self.motion_notify_cb)
             assert not self.connected_motion_handler
             self.connected_motion_handler = (widget, handler_id)
