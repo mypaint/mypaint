@@ -10,13 +10,7 @@ import gtk, gobject
 gdk = gtk.gdk
 
 class StateGroup():
-    """
-    Supervisor instance for GUI states.
-
-    A GUI state is a mode which the GUI is in, for example an active
-    popup window or a special (usually short-lived) view on the
-    document. The application defines functions to be called when the
-    state is entered or left.
+    """Supervisor instance for GUI states.
 
     This class mainly deals with the various ways how the user can
     leave such a mode, eg. if the mode is entered by holding down a
@@ -43,13 +37,28 @@ class StateGroup():
         return self.create_state(popup.enter, popup.leave, popup)
 
 class State:
-    "how long a key can be held down to go through as single hit (and not press-and-hold)"
+    """A GUI state.
+
+    A GUI state is a mode which the GUI is in, for example an active
+    popup window or a special (usually short-lived) view on the
+    document. The application defines functions to be called when the
+    state is entered or left.
+    """
+
+    #: How long a key can be held down to go through as single hit (and not
+    #: press-and-hold)
     max_key_hit_duration = 0.250
-    "the state is automatically left after this time (ignored during press-and-hold)"
+
+    #: The state is automatically left after this time (ignored during
+    #: press-and-hold)
     autoleave_timeout = 0.800
-    #"popups only: how long the cursor is allowed outside before closing (ignored during press-and-hold)"
+
+    ##: popups only: how long the cursor is allowed outside before closing
+    ##: (ignored during press-and-hold)"
     #outside_popup_timeout = 0.050
-    "state to activate when this state is activated while already active (None = just leave this state)"
+
+    #: state to activate when this state is activated while already active
+    #: (None = just leave this state)
     next_state = None
 
     def __init__(self, stategroup, popup):
@@ -164,6 +173,10 @@ class State:
         if self.outside_popup_timer:
             gobject.source_remove(self.outside_popup_timer)
         self.outside_popup_timer = gobject.timeout_add(int(1000*self.outside_popup_timeout), self.outside_popup_timeout_cb)
+
+
+
+    # ColorPicker-only stuff (for now)
 
 
     def motion_notify_cb(self, widget, event):
