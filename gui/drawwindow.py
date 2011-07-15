@@ -81,7 +81,6 @@ class Window (windowing.MainWindow, layout.MainWindow):
         self.main_widget.connect("button-press-event", self.button_press_cb)
         self.main_widget.connect("button-release-event",self.button_release_cb)
         self.main_widget.connect("scroll-event", self.scroll_cb)
-        lm.sidebar_state_observers.append(self.app.doc.sidebar_state_cb)
 
         kbm = self.app.kbm
         kbm.add_extra_key('Menu', 'ShowPopupMenu')
