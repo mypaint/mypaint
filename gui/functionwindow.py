@@ -161,7 +161,7 @@ class ByInputWidget(gtk.VBox):
         self.setting = setting
         self.reset_gui()
 
-    def brush_selected_cb(self, managed_brush):
+    def brush_selected_cb(self, *junk):
         if not self.setting:
             return
         self.reset_gui()

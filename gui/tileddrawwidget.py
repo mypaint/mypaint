@@ -106,8 +106,6 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.is_sensitive = True    # just mirrors gtk.STATE_INSENSITIVE
         self.snapshot_pixmap = None
 
-        self.recenter_on_resize = True
-
         self.override_cursor = None
 
     #def set_scroll_at_edges(self, choice):
@@ -130,17 +128,12 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.has_pointer = False
 
     def size_allocate_cb(self, widget, allocation):
-        if not self.recenter_on_resize:
-            self.recenter_on_resize = True
-            return
-        new_size = tuple(allocation)[2:4]
-        old_size = getattr(self, 'current_size', new_size)
-        self.current_size = new_size
-        if new_size != old_size:
-            # recenter
-            dx = old_size[0] - new_size[0]
-            dy = old_size[1] - new_size[1]
-            self.scroll(dx/2, dy/2)
+        old_alloc = getattr(self, 'stored_allocation', allocation)
+        if old_alloc != allocation:
+            dx = allocation.x - old_alloc.x
+            dy = allocation.y - old_alloc.y
+            self.scroll(dx, dy)
+        self.stored_allocation = allocation
 
     def device_used(self, device):
         """Tell the TDW about a device being used."""
@@ -150,6 +143,12 @@ class TiledDrawWidget(gtk.DrawingArea):
             func(self.last_event_device, device)
         self.last_event_device = device
         return False
+
+        # Do not interpolate between motion events from different
+        # devices.  If the final pressure value from the previous
+        # device was not 0.0, the motion event of the new device could
+        # cause a visible stroke, even if pressure is 0.0.
+        self.doc.brush.reset()
 
     def motion_notify_cb(self, widget, event, button1_pressed=None):
         if not self.is_sensitive:

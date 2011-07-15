@@ -647,6 +647,3 @@ class Document(object):
 
     def frame_changed_cb(self):
         self.tdw.queue_draw()
-
-    def sidebar_state_cb(self, visible):
-        self.tdw.recenter_on_resize = False

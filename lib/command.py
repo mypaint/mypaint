@@ -7,6 +7,7 @@
 # (at your option) any later version.
 
 import layer
+import helpers
 
 class CommandStack:
     def __init__(self):
@@ -68,10 +69,13 @@ class Action:
         raise NotImplementedError
 
     # Utility functions
-    def _notify_canvas_observers(self, affected_layer):
-        bbox = affected_layer.surface.get_bbox()
-        for f in self.doc.canvas_observers:
-            f(*bbox)
+    def _notify_canvas_observers(self, affected_layers):
+        bbox = helpers.Rect()
+        for layer in affected_layers:
+            layer_bbox = layer.surface.get_bbox()
+            bbox.expandToIncludeRect(layer_bbox)
+        for func in self.doc.canvas_observers:
+            func(*bbox)
 
     def _notify_document_observers(self):
         self.doc.call_doc_observers()
@@ -170,12 +174,12 @@ class RemoveLayer(Action):
             self.layer = self.doc.layers.pop(self.doc.layer_idx)
         if self.doc.layer_idx == len(self.doc.layers):
             self.doc.layer_idx -= 1
-        self._notify_canvas_observers(self.layer)
+        self._notify_canvas_observers([self.layer])
         self._notify_document_observers()
     def undo(self):
         self.doc.layers.insert(self.idx, self.layer)
         self.doc.layer_idx = self.idx
-        self._notify_canvas_observers(self.layer)
+        self._notify_canvas_observers([self.layer])
         self._notify_document_observers()
 
 class SelectLayer(Action):
@@ -193,21 +197,48 @@ class SelectLayer(Action):
         self._notify_document_observers()
 
 class MoveLayer(Action):
-    def __init__(self, doc, was_idx, new_idx):
+    def __init__(self, doc, was_idx, new_idx, select_new=False):
         self.doc = doc
         self.was_idx = was_idx
         self.new_idx = new_idx
+        self.select_new = select_new
     def redo(self):
         moved_layer = self.doc.layers[self.was_idx]
         self.doc.layers.remove(moved_layer)
         self.doc.layers.insert(self.new_idx, moved_layer)
-        self._notify_canvas_observers(moved_layer)
+        if self.select_new:
+            self.was_selected = self.doc.layer_idx
+            self.doc.layer_idx = self.new_idx
+        self._notify_canvas_observers([moved_layer])
         self._notify_document_observers()
     def undo(self):
         moved_layer = self.doc.layers[self.new_idx]
         self.doc.layers.remove(moved_layer)
         self.doc.layers.insert(self.was_idx, moved_layer)
-        self._notify_canvas_observers(moved_layer)
+        if self.select_new:
+            self.doc.layer_idx = self.was_selected
+            self.was_selected = None
+        self._notify_canvas_observers([moved_layer])
+        self._notify_document_observers()
+
+class ReorderLayers(Action):
+    def __init__(self, doc, new_order):
+        self.doc = doc
+        self.old_order = doc.layers[:]
+        self.selection = self.old_order[doc.layer_idx]
+        self.new_order = new_order
+        for layer in new_order:
+            assert layer in self.old_order
+        assert len(self.old_order) == len(new_order)
+    def redo(self):
+        self.doc.layers[:] = self.new_order
+        self.doc.layer_idx = self.doc.layers.index(self.selection)
+        self._notify_canvas_observers(self.doc.layers)
+        self._notify_document_observers()
+    def undo(self):
+        self.doc.layers[:] = self.old_order
+        self.doc.layer_idx = self.doc.layers.index(self.selection)
+        self._notify_canvas_observers(self.doc.layers)
         self._notify_document_observers()
 
 class SetLayerVisibility(Action):
@@ -218,11 +249,11 @@ class SetLayerVisibility(Action):
     def redo(self):
         self.old_visibility = self.layer.visible
         self.layer.visible = self.new_visibility
-        self._notify_canvas_observers(self.layer)
+        self._notify_canvas_observers([self.layer])
         self._notify_document_observers()
     def undo(self):
         self.layer.visible = self.old_visibility
-        self._notify_canvas_observers(self.layer)
+        self._notify_canvas_observers([self.layer])
         self._notify_document_observers()
 
 class SetLayerLocked (Action):
@@ -233,11 +264,11 @@ class SetLayerLocked (Action):
     def redo(self):
         self.old_locked = self.layer.locked
         self.layer.locked = self.new_locked
-        self._notify_canvas_observers(self.layer)
+        self._notify_canvas_observers([self.layer])
         self._notify_document_observers()
     def undo(self):
         self.layer.locked = self.old_locked
-        self._notify_canvas_observers(self.layer)
+        self._notify_canvas_observers([self.layer])
         self._notify_document_observers()
 
 class SetLayerOpacity(Action):
@@ -252,7 +283,7 @@ class SetLayerOpacity(Action):
             l = self.doc.layer
         self.old_opacity = l.opacity
         l.opacity = self.new_opacity
-        self._notify_canvas_observers(l)
+        self._notify_canvas_observers([l])
         self._notify_document_observers()
     def undo(self):
         if self.layer:
@@ -260,6 +291,6 @@ class SetLayerOpacity(Action):
         else:
             l = self.doc.layer
         l.opacity = self.old_opacity
-        self._notify_canvas_observers(l)
+        self._notify_canvas_observers([l])
         self._notify_document_observers()
 

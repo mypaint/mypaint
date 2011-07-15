@@ -486,31 +486,27 @@ class BrushManager:
                 f.write(b.name.encode('utf-8') + '\n')
         f.close()
 
-    def find_brushlist_ancestor(self, brush):
-        """Finds the nearest ancestor of a ManagedBrush having in_brushlist
-
-        Searches a brush's ancestry chain for something which can be
-        highlighted for the user in the brushlist. Returns `brush`, one of its
-        ancestors, or None if nothing suitable can be found.
-        """
-        while brush is not None:
-            if brush.in_brushlist:
-                return brush
-            parent_name = brush.brushinfo.get_string_property("parent_brush_name")
-            brush = self.get_brush_by_name(parent_name)
-        return None
-
     def select_brush(self, brush):
         """Selects a ManagedBrush, highlights it, & updates the live brush."""
         if brush is None:
             brush = self.get_default_brush()
-        self.selected_brush = brush
         if brush.persistent and not brush.settings_loaded:
             brush.load_settings()
+        
+        brushinfo = brush.brushinfo
+        if not brush.in_brushlist:
+            # select parent brush, but keep brushinfo
+            parent_name = brushinfo.get_string_property("parent_brush_name")
+            brush = self.get_brush_by_name(parent_name) # may return None
+            if not brush:
+                # we don't have the parent, select an empty brush instead
+                brush = ManagedBrush(self)
+
+        self.selected_brush = brush
         self.app.preferences['brushmanager.selected_brush'] = brush.name
         # Take care of updating the live brush, amongst other things
         for callback in self.selected_brush_observers:
-            callback(brush)
+            callback(brush, brushinfo)
 
     def clone_selected_brush(self, name):
         """
@@ -520,11 +516,7 @@ class BrushManager:
         clone = ManagedBrush(self, name, persistent=False)
         clone.brushinfo = self.app.brush.clone()
         clone.preview = self.selected_brush.preview
-        list_brush = self.find_brushlist_ancestor(self.selected_brush)
-        if list_brush:
-            parent = list_brush.name
-        else:
-            parent = None
+        parent = self.selected_brush.name
         clone.brushinfo.set_string_property("parent_brush_name", parent)
         return clone
 
@@ -666,12 +658,8 @@ class ManagedBrush(object):
         if not self.settings_loaded:
             self.load()
         target.brushinfo = self.brushinfo.clone()
-        list_brush = self.bm.find_brushlist_ancestor(self)
-        if list_brush:
-            parent = list_brush.name
-        else:
-            parent = None
-        target.brushinfo.set_string_property("parent_brush_name", parent)
+        if self.in_brushlist:
+            target.brushinfo.set_string_property("parent_brush_name", self.name)
         target.preview = self.preview
         target.name = name
 

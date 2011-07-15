@@ -113,15 +113,8 @@ class BrushList(pixbuflist.PixbufList):
         if brushes is self.brushes:
             self.update()
 
-    def brush_selected_cb(self, *junk):
-        """
-        Highlights the Application instance's active brush in the list, or something
-        close to it along its chain of ancestors.
-        """
-        active_brush_parent_name = self.app.brush.get_string_property("parent_brush_name")
-        parent_brush = self.bm.get_brush_by_name(active_brush_parent_name)
-        list_brush = self.bm.find_brushlist_ancestor(parent_brush)
-        self.set_selected(list_brush)
+    def brush_selected_cb(self, managed_brush, brushinfo):
+        self.set_selected(managed_brush)
 
     def remove_brush(self, brush):
         self.brushes.remove(brush)

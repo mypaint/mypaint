@@ -141,7 +141,12 @@ class Application: # singleton
         def get_json_config():
             settingspath = join(self.confpath, 'settings.json')
             jsonstr = open(settingspath).read()
-            return helpers.json_loads(jsonstr)
+            try:
+                return helpers.json_loads(jsonstr)
+            except Exception, e:
+                print "settings.json: %s" % (str(e),)
+                print "warning: failed to load settings.json, using defaults"
+                return {}
         if sys.platform == 'win32':
             import glib
             scrappre = join(glib.get_user_special_dir(glib.USER_DIRECTORY_DOCUMENTS).decode('utf-8'),'MyPaint','scrap')
@@ -195,7 +200,7 @@ class Application: # singleton
                 'brushSettingsWindow': dict(x=-460, y=-128, w=300, h=300),
                 'backgroundWindow': dict(),
                 'inputTestWindow': dict(),
-                'layersWindow': dict(),
+                'frameWindow': dict(),
                 'preferencesWindow': dict(),
             },
         }

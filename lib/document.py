@@ -150,8 +150,11 @@ class Document():
     def select_layer(self, idx):
         self.do(command.SelectLayer(self, idx))
 
-    def move_layer(self, was_idx, new_idx):
-        self.do(command.MoveLayer(self, was_idx, new_idx))
+    def move_layer(self, was_idx, new_idx, select_new=False):
+        self.do(command.MoveLayer(self, was_idx, new_idx, select_new))
+
+    def reorder_layers(self, new_layers):
+        self.do(command.ReorderLayers(self, new_layers))
 
     def clear_layer(self):
         if not self.layer.surface.is_empty():
