@@ -61,10 +61,10 @@ class Application: # singleton
         self.filehandler = filehandling.FileHandler(self)
         self.brushmodifier = brushmodifier.BrushModifier(self)
         self.doc = document.Document(self)
-
+        
         # Scratchpad setup #PALLETTE2
-        self.scratchpad_filename = ""
-        self.scratchpad_doc = document.Scratchpad(self)
+        self.filehandler.scratchpad_filename = ""
+        self.filehandler.scratchpad_doc = document.Scratchpad(self)
 
         self.brush.set_color_hsv((0, 0, 0))
         self.init_brush_adjustments()
@@ -83,7 +83,7 @@ class Application: # singleton
         self.filehandler.doc = self.doc
         self.filehandler.filename = None
         gtk.accel_map_load(join(self.confpath, 'accelmap.conf'))
-
+        
         # Load the background settings window.
         # FIXME: this line shouldn't be needed, but we need to load this up
         # front to get any non-default background that the user has configured

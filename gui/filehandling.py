@@ -88,6 +88,7 @@ class FileHandler(object):
         self.current_file_observers = []
         self.file_opened_observers = []
         self.active_scrap_filename = None
+        self.lastsavefailed = False
         self.set_recent_items()
 
         self.file_filters = [ #(name, patterns)
@@ -249,13 +250,13 @@ class FileHandler(object):
 
     def open_scratchpad(self, filename):
         try:
-            self.app.scratchpad_doc.model.load(filename, feedback_cb=self.gtk_main_tick)
+            self.scratchpad_doc.model.load(filename, feedback_cb=self.gtk_main_tick)
         except document.SaveLoadError, e:
             self.app.message_dialog(str(e), type=gtk.MESSAGE_ERROR)
         else:
-            self.app.scratchpad_filename = os.path.abspath(filename)
-            print 'Loaded scratchpad from', self.app.scratchpad_filename
-            self.app.doc.reset_view_cb(None)
+            self.scratchpad_filename = os.path.abspath(filename)
+            print 'Loaded scratchpad from', self.scratchpad_filename
+            self.scratchpad_doc.reset_view_cb(None)
 
     @drawwindow.with_wait_cursor
     def save_file(self, filename, export=False, **options):
@@ -277,17 +278,20 @@ class FileHandler(object):
 
     @drawwindow.with_wait_cursor
     def save_scratchpad(self, filename, export=False, **options):
-        thumbnail_pixbuf = self.save_doc_to_file(filename, self.app.scratchpad_doc, export=export, **options)
+        thumbnail_pixbuf = self.save_doc_to_file(filename, self.scratchpad_doc, export=export, **options)
         if not export:
             self.scratchpad_filename = os.path.abspath(filename)
 
     def save_doc_to_file(self, filename, doc, export=False, **options):
+        thumbnail_pixbuf = None
         try:
             x, y, w, h =  doc.model.get_bbox()
             if w == 0 and h == 0:
                 raise document.SaveLoadError, _('Did not save, the canvas is empty.')
             thumbnail_pixbuf = doc.model.save(filename, feedback_cb=self.gtk_main_tick, **options)
+            self.lastsavefailed = False
         except document.SaveLoadError, e:
+            self.lastsavefailed = True
             self.app.message_dialog(str(e),type=gtk.MESSAGE_ERROR)
         else:
             file_location = None
@@ -429,9 +433,9 @@ class FileHandler(object):
         self.app.filename = self.save_autoincrement_file(filename, prefix, main_doc = True)
 
     def save_scratchpad_cb(self, action):
-        filename = self.app.scratchpad_filename
+        filename = self.scratchpad_filename
         prefix = self.get_scratchpad_prefix()
-        self.app.scratchpad_filename = self.save_autoincrement_file(filename, prefix, main_doc = False)
+        self.scratchpad_filename = self.save_autoincrement_file(filename, prefix, main_doc = False)
 
     def save_autoincrement_file(self, filename, prefix, main_doc = True):
         # If necessary, create the folder(s) the scraps are stored under
@@ -441,6 +445,15 @@ class FileHandler(object):
 
         number = None
         if filename:
+            _, file_fragment = os.path.split(filename)
+            if file_fragment.startswith("_md5"):
+                #store direct, don't attempt to increment
+                if main_doc:
+                    self.save_file(filename)
+                else:
+                    self.save_scratchpad(filename)
+                return filename
+
             l = re.findall(re.escape(prefix) + '([0-9]+)', filename)
             if l:
                 number = l[0]
@@ -504,13 +517,18 @@ class FileHandler(object):
 
     def list_scratchpads(self):
         prefix = self.get_scratchpad_prefix()
-        return self.list_prefixed_dir(prefix)
+        files = self.list_prefixed_dir(prefix)
+        if os.path.isdir(os.path.join(prefix, "special")):
+            files += self.list_prefixed_dir(os.path.join(prefix, "special") + os.path.sep)
+        return files
 
     def list_prefixed_dir(self, prefix):
         filenames = []
         for ext in ['png', 'ora', 'jpg', 'jpeg']:
             filenames += glob(prefix + '[0-9]*.' + ext)
             filenames += glob(prefix + '[0-9]*.' + ext.upper())
+            # For the special linked scratchpads
+            filenames += glob(prefix + '_md5[0-9a-f]*.' + ext)
         filenames.sort()
         return filenames
 
@@ -526,6 +544,8 @@ class FileHandler(object):
         """return scraps grouped by their major number"""
         def scrap_id(filename):
             s = os.path.basename(filename)
+            if s.startswith("_md5"):
+                return s
             return re.findall('([0-9]+)', s)[0]
         groups = []
         while filenames:

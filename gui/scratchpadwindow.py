@@ -7,13 +7,23 @@ import pango
 import tileddrawwidget, document
 
 import dialogs
+import os
 
-def stock_button(stock_id):
-    b = gtk.Button()
+from hashlib import md5
+
+def stock_button_generic(stock_id, b):
     img = gtk.Image()
     img.set_from_stock(stock_id, gtk.ICON_SIZE_MENU)
     b.add(img)
     return b
+
+def stock_button(stock_id):
+    b = gtk.Button()
+    return stock_button_generic(stock_id, b)
+
+def stock_checkbutton(stock_id):
+    b = gtk.CheckButton()
+    return stock_button_generic(stock_id, b)
 
 class ToolWidget (gtk.VBox):
 
@@ -35,6 +45,7 @@ class ToolWidget (gtk.VBox):
 
         zoom_in_button = self.zoom_in = stock_button(gtk.STOCK_ZOOM_IN)
         zoom_out_button = self.zoom_out = stock_button(gtk.STOCK_ZOOM_OUT)
+        load_special_button = self.load_special = stock_button(gtk.STOCK_HOME)
 
         add_button.connect('clicked', self.add_cb)
         save_button.connect('clicked', self.save_cb)
@@ -44,6 +55,7 @@ class ToolWidget (gtk.VBox):
 
         zoom_in_button.connect('clicked', self.zoom_in_cb)
         zoom_out_button.connect('clicked', self.zoom_out_cb)
+        load_special_button.connect('clicked', self.load_special_cb)
 
         buttons_hbox = gtk.HBox()
         buttons_hbox.pack_start(add_button)
@@ -53,10 +65,11 @@ class ToolWidget (gtk.VBox):
         buttons_hbox.pack_start(delete_button)
 
         zoom_box = gtk.VBox()
+        zoom_box.pack_start(load_special_button)
         zoom_box.pack_start(zoom_in_button)
         zoom_box.pack_start(zoom_out_button)
 
-        scratchpad_view = app.scratchpad_doc.tdw
+        scratchpad_view = app.filehandler.scratchpad_doc.tdw
 
         self.connect("button-press-event", self.button_press_cb)
         self.connect("button-release-event",self.button_release_cb)
@@ -69,7 +82,7 @@ class ToolWidget (gtk.VBox):
         self.pack_start(buttons_hbox, expand=False)
 
         # Updates
-        doc = app.scratchpad_doc.model
+        doc = app.filehandler.scratchpad_doc.model
         doc.doc_observers.append(self.update)
 
         # Load last? scratchpad
@@ -79,17 +92,17 @@ class ToolWidget (gtk.VBox):
         self.started_scratchpads = False
         self.cursor = 0
 
-        self.update(app.scratchpad_doc)
+        self.update(app.filehandler.scratchpad_doc)
 
     def zoom_in_cb(self, action):
-        self.app.scratchpad_doc.zoom("ZoomIn")
+        self.app.filehandler.scratchpad_doc.zoom("ZoomIn")
     
     def zoom_out_cb(self, action):
-        self.app.scratchpad_doc.zoom("ZoomOut")
+        self.app.filehandler.scratchpad_doc.zoom("ZoomOut")
 
     def delete_cb(self, action):
         # Remove all the scratchpads in this group
-        if self.app.scratchpad_filename and self.cursor >= 0 and self.cursor < len(self.scratchpads) and len(self.scratchpads):
+        if self.app.filehandler.scratchpad_filename and self.cursor >= 0 and self.cursor < len(self.scratchpads) and len(self.scratchpads):
             g = self.scratchpads[self.cursor]
             if g:
                 self.app.filehandler.delete_scratchpads(g)
@@ -104,13 +117,65 @@ class ToolWidget (gtk.VBox):
     def save_cb(self, action):
         self.app.filehandler.save_scratchpad_cb(action)
         self.scratchpads = self.app.filehandler.list_scratchpads_grouped()
+        for idx in xrange(len(self.scratchpads)):
+            if self.app.filehandler.scratchpad_filename in self.scratchpads[idx]:
+                self.cursor = idx
 
     def add_cb(self, action):
-        self.app.scratchpad_filename = None
-        self.app.scratchpad_doc.model.clear()
+        self.app.filehandler.scratchpad_filename = None
+        self.app.filehandler.scratchpad_doc.model.clear()
+
+    def load_special_cb(self, action):
+        if self.app.filehandler.scratchpad_filename:
+            scratchpad_prefix, scratchpad_file = os.path.split(self.app.filehandler.scratchpad_filename)
+        else:
+            scratchpad_prefix, scratchpad_file = self.app.filehandler.get_scratchpad_prefix(), None
+        filename = self.app.filehandler.filename
+
+        md5_filename = None
+
+        if filename:
+            md5_filename = "_md5" + md5(filename).hexdigest() + ".ora"
+            if not os.path.isdir(os.path.join(scratchpad_prefix, "special")):
+                os.mkdir(os.path.join(scratchpad_prefix, "special"))
+
+        scratchpads = [t for h,t in map(os.path.split, self.app.filehandler.list_scratchpads())]
+        
+        if not filename:
+            # File hasn't been saved yet
+            # TODO pop up an alert to warn about this
+            print "File hasn't been saved yet and so doesn't have a filename"
+            self.app.message_dialog("You cannot link a scratchpad to the canvas until you save the main canvas.", type=gtk.MESSAGE_ERROR)
+        elif md5_filename == scratchpad_file:
+            # Scratchpad is already linked to current working file
+            # Act as if the 'save' button has been pressed
+            print "Scratchpad is already linked to current working file"
+            # Save
+            self.app.filehandler.scratchpad_filename = os.path.join(scratchpad_prefix, "special", md5_filename)
+            self.save_cb(action)
+            # # Reload file
+            # self.app.filehandler.open_scratchpad(self.app.filehandler.scratchpad_filename)
+        elif md5_filename in scratchpads:
+            if scratchpad_file:
+                print "There is a filename, but it's not the same as the current filename's md5"
+                # There is a filename, and the scratchpad has been saved but under a different name
+                # -> if a scratchpad exists with the same filename, load that after saving current
+                # -> if no scratchpad exists, rename the current one to match
+                if self.app.filehandler.scratchpad_filename:
+                    self.app.filehandler.save_scratchpad(self.app.filehandler.scratchpad_filename)
+            self.app.filehandler.scratchpad_filename = os.path.join(scratchpad_prefix, "special", md5_filename)
+            self.app.filehandler.open_scratchpad(self.app.filehandler.scratchpad_filename)
+        else:
+            # No special scratchpad file exists yet
+            print "No linked scratchpad found for this file - creating it."
+            self.app.message_dialog("Saving the current scratchpad to this canvas.", type=gtk.MESSAGE_INFO)
+            self.app.filehandler.scratchpad_filename = os.path.join(scratchpad_prefix, "special", md5_filename)
+            self.save_cb(action)
+            if self.app.filehandler.lastsavefailed:
+                self.app.filehandler.scratchpad_filename = None
 
     def next_scratchpad_cb(self, action):
-        if self.app.scratchpad_filename:
+        if self.app.filehandler.scratchpad_filename:
             self.save_cb(action)
         if self.started_scratchpads:
             self.cursor += 1
@@ -118,11 +183,11 @@ class ToolWidget (gtk.VBox):
                 self.cursor = 0
         self.started_scratchpads = True
         if len(self.scratchpads) > 0:
-            self.app.scratchpad_filename = self.scratchpads[self.cursor][-1]
-            self.app.filehandler.open_scratchpad(self.app.scratchpad_filename)
+            self.app.filehandler.scratchpad_filename = self.scratchpads[self.cursor][-1]
+            self.app.filehandler.open_scratchpad(self.app.filehandler.scratchpad_filename)
 
     def previous_scratchpad_cb(self, action):
-        if self.app.scratchpad_filename:
+        if self.app.filehandler.scratchpad_filename:
             self.save_cb(action)
         if self.started_scratchpads:
             self.cursor -= 1
@@ -130,8 +195,8 @@ class ToolWidget (gtk.VBox):
                 self.cursor = len(self.scratchpads) - 1
         self.started_scratchpads = True
         if len(self.scratchpads) > 0:
-            self.app.scratchpad_filename = self.scratchpads[self.cursor][-1]
-            self.app.filehandler.open_scratchpad(self.app.scratchpad_filename)
+            self.app.filehandler.scratchpad_filename = self.scratchpads[self.cursor][-1]
+            self.app.filehandler.open_scratchpad(self.app.filehandler.scratchpad_filename)
 
     
     def button_press_cb(self, win, event):
@@ -190,13 +255,13 @@ class ToolWidget (gtk.VBox):
         if action_name.endswith("_canvas"):
             dragfunc = None
             if action_name == "pan_canvas":
-                dragfunc = self.app.scratchpad_doc.dragfunc_translate
+                dragfunc = self.app.filehandler.scratchpad_doc.dragfunc_translate
             elif action_name == "zoom_canvas":
-                dragfunc = self.app.scratchpad_doc.dragfunc_zoom
+                dragfunc = self.app.filehandler.scratchpad_doc.dragfunc_zoom
             elif action_name == "rotate_canvas":
-                dragfunc = self.app.scratchpad_doc.dragfunc_rotate
+                dragfunc = self.app.filehandler.scratchpad_doc.dragfunc_rotate
             if dragfunc is not None:
-                self.app.scratchpad_doc.tdw.start_drag(dragfunc)
+                self.app.filehandler.scratchpad_doc.tdw.start_drag(dragfunc)
                 return True
             return False
         """
@@ -219,7 +284,7 @@ class ToolWidget (gtk.VBox):
 
     def button_release_cb(self, win, event):
         #print event.device, event.button
-        doc = self.app.scratchpad_doc
+        doc = self.app.filehandler.scratchpad_doc
         tdw = doc.tdw
         if tdw.dragfunc is not None:
             tdw.stop_drag(doc.dragfunc_translate)
