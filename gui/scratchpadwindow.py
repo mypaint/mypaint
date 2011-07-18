@@ -108,6 +108,10 @@ class ToolWidget (gtk.VBox):
                 self.app.filehandler.delete_scratchpads(g)
                 self.scratchpads = self.app.filehandler.list_scratchpads_grouped()
                 self.add_cb(action)
+                if self.cursor >= len(self.scratchpads):
+                    self.cursor -=1
+                if self.cursor < 0:
+                    self.cursor = 0
 
     def update(self, doc):
         if self.is_updating:
@@ -276,7 +280,7 @@ class ToolWidget (gtk.VBox):
             return True
         """
         # Dispatch regular GTK events.
-        for ag in self.action_group, self.app.doc.action_group:
+        for ag in [self.app.doc.action_group]:
             action = ag.get_action(action_name)
             if action is not None:
                 action.activate()
