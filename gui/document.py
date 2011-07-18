@@ -234,31 +234,37 @@ class Document(object):
         cb.request_image(callback)
 
     def pick_context_cb(self, action):
-        x, y = self.tdw.get_cursor_in_model_coordinates()
-        for idx, layer in reversed(list(enumerate(self.model.layers))):
-            if layer.locked:
-                continue
-            if not layer.visible:
-                continue
-            alpha = layer.surface.get_alpha (x, y, 5) * layer.effective_opacity
-            if alpha > 0.1:
-                old_layer = self.model.layer
-                self.model.select_layer(idx)
-                if self.model.layer != old_layer:
-                    self.layerblink_state.activate()
+        if self.tdw.has_pointer:
+            x, y = self.tdw.get_cursor_in_model_coordinates()
+            for idx, layer in reversed(list(enumerate(self.model.layers))):
+                if layer.locked:
+                    continue
+                if not layer.visible:
+                    continue
+                alpha = layer.surface.get_alpha (x, y, 5) * layer.effective_opacity
+                if alpha > 0.1:
+                    old_layer = self.model.layer
+                    self.model.select_layer(idx)
+                    if self.model.layer != old_layer:
+                        self.layerblink_state.activate()
 
-                # find the most recent (last) stroke that touches our picking point
-                si = self.model.layer.get_stroke_info_at(x, y)
-
-                if si:
-                    mb = ManagedBrush(self.app.brushmanager)
-                    mb.brushinfo.load_from_string(si.brush_string)
-                    self.app.brushmanager.select_brush(mb)
-                    self.app.brushmodifier.restore_context_of_selected_brush()
-                    self.si = si # FIXME: should be a method parameter?
-                    self.strokeblink_state.activate(action)
-                return
-
+                    # find the most recent (last) stroke that touches our picking point
+                    si = self.model.layer.get_stroke_info_at(x, y)
+    
+                    if si:
+                        mb = ManagedBrush(self.app.brushmanager)
+                        mb.brushinfo.load_from_string(si.brush_string)
+                        self.app.brushmanager.select_brush(mb)
+                        self.app.brushmodifier.restore_context_of_selected_brush()
+                        self.si = si # FIXME: should be a method parameter?
+                        self.strokeblink_state.activate(action)
+                    return
+        else:
+            # Try to fire it at the scratchpad
+            # print "Not in main window, in scratchpad?"
+            if self.app.filehandler.scratchpad_doc.tdw.has_pointer:
+                print "Scratchpad has the pointer"
+                self.app.filehandler.scratchpad_doc.pick_context_cb(action)
     # LAYER
     def clear_layer_cb(self, action):
         self.model.clear_layer()
@@ -693,13 +699,23 @@ class Scratchpad(Document):
         actions = [
         #    ('Undo',         gtk.STOCK_UNDO, _('Undo Scratchpad'), '[', None, self.undo_cb),
         #    ('Redo',         gtk.STOCK_REDO, _('Redo Scratchpad'), ']', None, self.redo_cb),
+        #    ('PickScratchpadContext',  None, _('Pick Context (layer, brush and color)'), 'o', None, self.pick_context_cb),
         ]
         ag = self.action_group = gtk.ActionGroup('DocumentActions')
         ag.add_actions(actions)
         pass
 
     def init_context_actions(self):
-        pass
+        ag = self.action_group
+        context_actions = []
+        for x in range(10):
+            r = ('Context0%d' % x,    None, _('Restore Brush %d') % x, 
+                    '%d' % x, None, self.context_cb)
+            s = ('Context0%ds' % x,   None, _('Save to Brush %d') % x, 
+                    '<control>%d' % x, None, self.context_cb)
+            context_actions.append(s)
+            context_actions.append(r)
+        ag.add_actions(context_actions)
 
     def init_stategroups(self):
         sg = stategroup.StateGroup()
