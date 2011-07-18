@@ -20,6 +20,7 @@ from lib import backgroundsurface, command, helpers, layer
 import tileddrawwidget, stategroup
 from brushmanager import ManagedBrush
 
+
 class Document(object):
     def __init__(self, app):
         self.app = app
@@ -645,3 +646,73 @@ class Document(object):
 
     def frame_changed_cb(self):
         self.tdw.queue_draw()
+
+
+class Scratchpad(Document):
+    def __init__(self, app):
+        self.app = app
+        self.model = lib.document.Document(self.app.brush)
+
+        # View
+        self.tdw = tileddrawwidget.TiledDrawWidget(self.app, self.model)
+        self.model.frame_observers.append(self.frame_changed_cb)
+
+        # FIXME: hack, to be removed
+        fname = os.path.join(self.app.datapath, 'backgrounds', '03_check1.png')
+        pixbuf = gdk.pixbuf_new_from_file(fname)
+        self.tdw.neutral_background_pixbuf = backgroundsurface.Background(pixbuf)
+
+        self.zoomlevel_values = [1.0/8, 2.0/11, 0.25, 1.0/3, 0.50, 2.0/3,  # micro
+                                 1.0, 1.5, 2.0, 3.0, 4.0, 5.5, 8.0,        # normal
+                                 11.0, 16.0, 23.0, 32.0, 45.0, 64.0]       # macro
+                                 # keep sorted for bisect
+
+        default_zoom = self.app.preferences['view.default_zoom']
+        self.zoomlevel = min(bisect_left(self.zoomlevel_values, default_zoom),
+                             len(self.zoomlevel_values) - 1)
+        default_zoom = self.zoomlevel_values[self.zoomlevel]
+        self.tdw.scale = default_zoom
+        self.tdw.zoom_min = min(self.zoomlevel_values)
+        self.tdw.zoom_max = max(self.zoomlevel_values)
+
+        # Device change management & pen-stroke watching
+        self.tdw.device_observers.append(self.device_changed_cb)
+        self.input_stroke_ended_observers.append(self.input_stroke_ended_cb)
+        self.last_pen_device = None
+
+        self.init_actions()
+        self.init_context_actions()
+        self.app.ui_manager.insert_action_group(self.action_group, -1)
+        for action in self.action_group.list_actions():
+            self.app.kbm.takeover_action(action)
+        self.init_stategroups()
+        self.init_extra_keys()
+
+    def init_actions(self):
+        # name, stock id, label, accelerator, tooltip, callback
+        actions = [
+            ('Undo',         gtk.STOCK_UNDO, _('Undo Scratchpad'), '[', None, self.undo_cb),
+            ('Redo',         gtk.STOCK_REDO, _('Redo Scratchpad'), ']', None, self.redo_cb),
+        ]
+        ag = self.action_group = gtk.ActionGroup('DocumentActions')
+        ag.add_actions(actions)
+
+    def init_context_actions(self):
+        pass
+
+    def init_stategroups(self):
+        sg = stategroup.StateGroup()
+        self.layerblink_state = sg.create_state(self.layerblink_state_enter, self.layerblink_state_leave)
+
+        sg = stategroup.StateGroup()
+        self.strokeblink_state = sg.create_state(self.strokeblink_state_enter, self.strokeblink_state_leave)
+        self.strokeblink_state.autoleave_timeout = 0.3
+
+        # separate stategroup...
+        sg2 = stategroup.StateGroup()
+        self.layersolo_state = sg2.create_state(self.layersolo_state_enter, self.layersolo_state_leave)
+        self.layersolo_state.autoleave_timeout = None
+
+    def init_extra_keys(self):
+        pass
+

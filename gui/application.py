@@ -25,7 +25,8 @@ class Application: # singleton
         self.datapath = datapath
 
         # create config directory, and subdirs where the user might drop files
-        for d in ['', 'backgrounds', 'brushes']:
+        # TODO make scratchpad dir something pulled from preferences #PALETTE1
+        for d in ['', 'backgrounds', 'brushes', 'scratchpads']:
             d = os.path.join(self.confpath, d)
             if not os.path.isdir(d):
                 os.mkdir(d)
@@ -60,6 +61,10 @@ class Application: # singleton
         self.filehandler = filehandling.FileHandler(self)
         self.brushmodifier = brushmodifier.BrushModifier(self)
         self.doc = document.Document(self)
+
+        # Scratchpad setup #PALLETTE2
+        self.scratchpad_filename = ""
+        self.scratchpad_doc = document.Scratchpad(self)
 
         self.brush.set_color_hsv((0, 0, 0))
         self.init_brush_adjustments()
@@ -192,6 +197,10 @@ class Application: # singleton
                                              x=-128, y=-128,
                                              w=250, h=350, sbheight=350),
                 'layersWindow': dict(sbindex=3, floating=True,
+                                     x=128, y=-128,
+                                     w=200, h=200, sbheight=200),
+
+                'scratchpadWindow': dict(sbindex=4, floating=True,
                                      x=128, y=-128,
                                      w=200, h=200, sbheight=200),
 

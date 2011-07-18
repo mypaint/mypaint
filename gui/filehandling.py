@@ -247,35 +247,60 @@ class FileHandler(object):
             print 'Loaded from', self.filename
             self.app.doc.reset_view_cb(None)
 
+    def open_scratchpad(self, filename):
+        try:
+            self.app.scratchpad_doc.model.load(filename, feedback_cb=self.gtk_main_tick)
+        except document.SaveLoadError, e:
+            self.app.message_dialog(str(e), type=gtk.MESSAGE_ERROR)
+        else:
+            self.app.scratchpad_filename = os.path.abspath(filename)
+            print 'Loaded scratchpad from', self.app.scratchpad_filename
+            self.app.doc.reset_view_cb(None)
+
     @drawwindow.with_wait_cursor
     def save_file(self, filename, export=False, **options):
+        thumbnail_pixbuf = self.save_doc_to_file(filename, self.doc, export=export, **options)
+        if not export:
+            self.filename = os.path.abspath(filename)
+            gtk.recent_manager_get_default().add_full(helpers.filename2uri(self.filename),
+                    {
+                        'app_name': 'mypaint',
+                        'app_exec': sys.argv_unicode[0].encode('utf-8'),
+                        # todo: get mime_type
+                        'mime_type': 'application/octet-stream'
+                    }
+            )
+
+        if not thumbnail_pixbuf:
+            thumbnail_pixbuf = self.doc.model.render_thumbnail()
+        helpers.freedesktop_thumbnail(self.filename, thumbnail_pixbuf)
+
+    @drawwindow.with_wait_cursor
+    def save_scratchpad(self, filename, export=False, **options):
+        thumbnail_pixbuf = self.save_doc_to_file(filename, self.app.scratchpad_doc, export=export, **options)
+        if not export:
+            self.scratchpad_filename = os.path.abspath(filename)
+
+    def save_doc_to_file(self, filename, doc, export=False, **options):
         try:
-            x, y, w, h =  self.doc.model.get_bbox()
+            x, y, w, h =  doc.model.get_bbox()
             if w == 0 and h == 0:
                 raise document.SaveLoadError, _('Did not save, the canvas is empty.')
-            thumbnail_pixbuf = self.doc.model.save(filename, feedback_cb=self.gtk_main_tick, **options)
+            thumbnail_pixbuf = doc.model.save(filename, feedback_cb=self.gtk_main_tick, **options)
         except document.SaveLoadError, e:
             self.app.message_dialog(str(e),type=gtk.MESSAGE_ERROR)
         else:
             file_location = None
             if not export:
-                file_location = self.filename = os.path.abspath(filename)
-                print 'Saved to', self.filename
-                gtk.recent_manager_get_default().add_full(helpers.filename2uri(self.filename),
-                        {
-                            'app_name': 'mypaint',
-                            'app_exec': sys.argv_unicode[0].encode('utf-8'),
-                            # todo: get mime_type
-                            'mime_type': 'application/octet-stream'
-                        }
-                )
+                file_location = os.path.abspath(filename)
+                print 'Saved to', file_location
             else:
                 file_location = os.path.abspath(filename)
                 print 'Exported to', os.path.abspath(file_location)
 
-            if not thumbnail_pixbuf:
-                thumbnail_pixbuf = self.doc.model.render_thumbnail()
-            helpers.freedesktop_thumbnail(file_location, thumbnail_pixbuf)
+        return thumbnail_pixbuf
+
+
 
     def update_preview_cb(self, file_chooser, preview):
         filename = file_chooser.get_preview_filename()
@@ -401,7 +426,14 @@ class FileHandler(object):
     def save_scrap_cb(self, action):
         filename = self.filename
         prefix = self.get_scrap_prefix()
+        self.app.filename = self.save_autoincrement_file(filename, prefix, main_doc = True)
 
+    def save_scratchpad_cb(self, action):
+        filename = self.app.scratchpad_filename
+        prefix = self.get_scratchpad_prefix()
+        self.app.scratchpad_filename = self.save_autoincrement_file(filename, prefix, main_doc = False)
+
+    def save_autoincrement_file(self, filename, prefix, main_doc = True):
         # If necessary, create the folder(s) the scraps are stored under
         prefix_dir = os.path.dirname(prefix)
         if not os.path.exists(prefix_dir): 
@@ -423,7 +455,7 @@ class FileHandler(object):
             if char > 'z':
                 # out of characters, increase the number
                 self.filename = None
-                return self.save_scrap_cb(action)
+                return self.save_autoincrement_file(filename, prefix, main_doc)
             filename = '%s%s_%c' % (prefix, number, char)
         else:
             # we don't have a scrap filename yet, find the next number
@@ -443,7 +475,11 @@ class FileHandler(object):
         filename += self.saveformats[default_saveformat][1]
 
         assert not os.path.exists(filename)
-        self.save_file(filename)
+        if main_doc:
+            self.save_file(filename)
+        else:
+            self.save_scratchpad(filename)
+        return filename
 
     def get_scrap_prefix(self):
         prefix = self.app.preferences['saving.scrap_prefix']
@@ -454,8 +490,23 @@ class FileHandler(object):
                 prefix += os.path.sep
         return prefix
 
+    def get_scratchpad_prefix(self):
+        # TODO make this something pulled from preferences #PALETTE1
+        prefix = os.path.abspath(os.path.join(self.app.confpath, 'scratchpads'))
+        if os.path.isdir(prefix):
+            if not prefix.endswith(os.path.sep):
+                prefix += os.path.sep
+        return prefix
+
     def list_scraps(self):
         prefix = self.get_scrap_prefix()
+        return self.list_prefixed_dir(prefix)
+
+    def list_scratchpads(self):
+        prefix = self.get_scratchpad_prefix()
+        return self.list_prefixed_dir(prefix)
+
+    def list_prefixed_dir(self, prefix):
         filenames = []
         for ext in ['png', 'ora', 'jpg', 'jpeg']:
             filenames += glob(prefix + '[0-9]*.' + ext)
@@ -464,11 +515,18 @@ class FileHandler(object):
         return filenames
 
     def list_scraps_grouped(self):
+        filenames = self.list_scraps()
+        return self.list_files_grouped(filenames)
+
+    def list_scratchpads_grouped(self):
+        filenames = self.list_scratchpads()
+        return self.list_files_grouped(filenames)
+
+    def list_files_grouped(self, filenames):
         """return scraps grouped by their major number"""
         def scrap_id(filename):
             s = os.path.basename(filename)
             return re.findall('([0-9]+)', s)[0]
-        filenames = self.list_scraps()
         groups = []
         while filenames:
             group = []
@@ -519,3 +577,11 @@ class FileHandler(object):
     def reload_cb(self, action):
         if self.filename and self.confirm_destructive_action():
             self.open_file(self.filename)
+
+    def delete_scratchpads(self, filenames):
+        prefix = self.get_scratchpad_prefix()
+        prefix = os.path.abspath(prefix)
+        for filename in filenames:
+            if os.path.isfile(filename) and os.path.abspath(filename).startswith(prefix):
+                os.remove(filename)
+                print "Removed %s" % filename
