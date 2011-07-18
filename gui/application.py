@@ -105,6 +105,10 @@ class Application: # singleton
                 else:
                     self.filehandler.open_file(fn)
 
+            # Load last scratchpad
+            if os.path.isfile(self.filehandler.scratchpad_filename):
+                self.filehandler.open_scratchpad(self.filehandler.scratchpad_filename)
+
             self.apply_settings()
             if not self.pressure_devices:
                 print 'No pressure sensitive devices found.'
@@ -121,6 +125,7 @@ class Application: # singleton
             f.write(jsonstr)
             f.close()
         self.brushmanager.save_brushes_for_devices()
+        self.filehandler.save_scratchpad(self.filehandler.scratchpad_filename)
         save_config()
 
     def apply_settings(self):
@@ -200,7 +205,11 @@ class Application: # singleton
                                      x=128, y=-128,
                                      w=200, h=200, sbheight=200),
 
-                'scratchpadWindow': dict(sbindex=4, floating=True,
+#                'scratchpadWindow': dict(sbindex=4, floating=True,
+#                                     x=128, y=-128,
+#                                     w=200, h=200, sbheight=200),
+#
+                'scratchWindow': dict(sbindex=5, floating=True,
                                      x=128, y=-128,
                                      w=200, h=200, sbheight=200),
 
@@ -229,7 +238,6 @@ class Application: # singleton
             if role in user_window_pos:
                 window_pos[role] = user_window_pos[role]
         self.preferences["layout.window_positions"] = window_pos
-
 
     def init_brush_adjustments(self):
         """Initializes all the brush adjustments for the current brush"""
