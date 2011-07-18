@@ -690,12 +690,12 @@ class Scratchpad(Document):
 
     def init_actions(self):
         # name, stock id, label, accelerator, tooltip, callback
-        #actions = [
+        actions = [
         #    ('Undo',         gtk.STOCK_UNDO, _('Undo Scratchpad'), '[', None, self.undo_cb),
         #    ('Redo',         gtk.STOCK_REDO, _('Redo Scratchpad'), ']', None, self.redo_cb),
-        #]
-        #ag = self.action_group = gtk.ActionGroup('DocumentActions')
-        #ag.add_actions(actions)
+        ]
+        ag = self.action_group = gtk.ActionGroup('DocumentActions')
+        ag.add_actions(actions)
         pass
 
     def init_context_actions(self):
