@@ -1,0 +1,27 @@
+Scratchpad widget
+-----------------
+
+What?
+-----
+
+An instance of a gui.document.Scratchpad (a cut-back version of gui.document.Document, without key-bindings, etc) embedded in a docakble widget. Key aim is to act as a persistent easel/colour palette.
+
+How?
+----
+
+The widget can save it, and allows prev/next navigation of scratchpads as well as delete, mostly piggybacking on the 'scrap' functionalities - saves to `self.confpath`/scratchpads/. Most of this functionality has been added to gui/filehandler.py
+
+Widget functionality is all within gui/scratchpadwidget.py, but in essence, displays the `tdw` of the document.Scratchpad object and adds in a number of gtk buttons to provide functionality. Button down/up callbacks are on the tdw widget to allow for navigation (translate, zoom, rotate).
+
+Currently, going to the next or previous scratchpad uses the filehandler to load the latest of the next group of scratchpads. This has issues with centring, and seems to cause the main window to recenter as well, for reasons I am not sure of at this time.
+
+Known issues
+------------
+
+It uses a crude 'cursor' to keep track of which pad to display - saving a new scratchpad and clicking on previous or next may not have the effect anticipated.
+
+The scratchpads are not cached, meaning that going forward or back will cause it to be loaded from disc again, and likewise, when moving between pads, it will attempt to save them as it goes to give the impression of the contents being cached.
+
+The scratchpad widget is not added as an option to the menu - I am not sure what would happen when the 'x' is clicked to close the widget, as there is no mechanism as yet to bring it back!
+
+I am unsure about the connection between the main 'document' and the separate one I am trying to call up as a scratchpad - I thought they were separate, but loading a scratchpad causes the main window to recentre as well so there is likely some connection here I have yet to understand. Or there's a typo somewhere :)
