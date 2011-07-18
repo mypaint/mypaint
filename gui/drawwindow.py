@@ -126,6 +126,10 @@ class Window (windowing.MainWindow, layout.MainWindow):
             ('LayersWindow', gtk.STOCK_INDEX, _('Layers...'), 'l', None, self.toggleWindow_cb),
             ('BackgroundWindow', gtk.STOCK_PAGE_SETUP, _('Background...'), None, None, self.toggleWindow_cb),
 
+            ('ScratchpadMenu',    None, _('Scratchpad')),
+            ('ScratchpadWindow',  None, _('Scratchpad...'), None, None, self.toggleWindow_cb),
+
+
             ('BrushMenu',    None, _('Brush')),
             ('BrushSelectionWindow',  None, _('Brush List...'), 'b', None, self.toggleWindow_cb),
             ('BrushSettingsWindow',   gtk.STOCK_PROPERTIES, _('Brush Editor...'), '<control>b', None, self.toggleWindow_cb),

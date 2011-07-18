@@ -135,6 +135,9 @@
       <menuitem action='IncreaseLayerOpacity'/>
       <menuitem action='DecreaseLayerOpacity'/>
     </menu>
+    <menu action="ScratchpadMenu">
+      <menuitem action='ScratchpadWindow'/>
+    </menu>
     <menu action='HelpMenu'>
       <menuitem action='Docu'/>
       <menuitem action='ShortcutHelp'/>
