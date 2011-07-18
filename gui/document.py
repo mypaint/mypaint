@@ -444,9 +444,7 @@ class Document(object):
     def dragfunc_zoom(self, dx, dy, x, y):
         # workaround (should zoom at x=(first click point).x instead of cursor)
         self.tdw.scroll(-dx, -dy)
-        # The meaning of drag direction up/down is a convention from
-        # Blender and probably other 3D tools (Google Earth at least).
-        self.tdw.zoom(math.exp(-dy/100.0))
+        self.tdw.zoom(math.exp(dy/100.0))
 
     #def dragfunc_rotozoom(self, dx, dy, x, y):
     #    self.tdw.scroll(-dx, -dy)
