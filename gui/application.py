@@ -108,6 +108,9 @@ class Application: # singleton
                     self.filehandler.open_file(fn)
 
             # Load last scratchpad
+            if not self.preferences["scratchpad.last_opened_scratchpad"]:
+                self.preferences["scratchpad.last_opened_scratchpad"] = os.path.join(self.filehandler.get_scratchpad_prefix(), "scratchpad_default.ora")
+                self.filehandler.scratchpad_filename = self.preferences["scratchpad.last_opened_scratchpad"]
             if os.path.isfile(self.filehandler.scratchpad_filename):
                 self.filehandler.open_scratchpad(self.filehandler.scratchpad_filename)
 
