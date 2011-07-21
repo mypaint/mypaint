@@ -251,11 +251,13 @@ class FileHandler(object):
     def open_scratchpad(self, filename):
         try:
             self.scratchpad_doc.model.load(filename, feedback_cb=self.gtk_main_tick)
-            self.app.preferences["scratchpad.last_opened_scratchpad"] = filename
+            self.scratchpad_filename = os.path.abspath(filename)
+            self.app.preferences["scratchpad.last_opened_scratchpad"] = self.scratchpad_filename
         except document.SaveLoadError, e:
             self.app.message_dialog(str(e), type=gtk.MESSAGE_ERROR)
         else:
             self.scratchpad_filename = os.path.abspath(filename)
+            self.app.preferences["scratchpad.last_opened_scratchpad"] = self.scratchpad_filename
             print 'Loaded scratchpad from', self.scratchpad_filename
             self.scratchpad_doc.reset_view_cb(None)
 
@@ -388,7 +390,8 @@ class FileHandler(object):
         try:
             if dialog.run() == gtk.RESPONSE_OK:
                 dialog.hide()
-                self.open_scratchpad(dialog.get_filename().decode('utf-8'))
+                self.scratchpad_filename = dialog.get_filename().decode('utf-8')
+                self.open_scratchpad(self.scratchpad_filename)
         finally:
             dialog.destroy()  
 
@@ -508,6 +511,8 @@ class FileHandler(object):
                     assert(filename)
                     dialog.hide()
                     self.save_scratchpad(filename)
+                    self.scratchpad_filename = os.path.abspath(filename)
+                    self.app.preferences["scratchpad.last_opened_scratchpad"] = self.scratchpad_filename
                     break
 
                 filename = name + ext_format
