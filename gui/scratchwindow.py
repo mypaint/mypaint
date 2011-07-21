@@ -210,17 +210,17 @@ class ToolWidget (gtk.VBox):
                 self.app.filehandler.scratchpad_doc.tdw.start_drag(dragfunc)
                 return True
             return False
-        """
+        
         # Application menu
         if action_name == 'popup_menu':
             self.show_popupmenu(event=event)
             return True
 
-        if action_name in self.popup_states:
-            state = self.popup_states[action_name]
+        if action_name in self.app.drawWindow.popup_states:
+            state = self.app.drawWindow.popup_states[action_name]
             state.activate(event)
             return True
-        """
+        
         # Dispatch regular GTK events.
         for ag in [self.app.doc.action_group]:
             action = ag.get_action(action_name)
