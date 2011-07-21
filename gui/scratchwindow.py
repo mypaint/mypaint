@@ -40,7 +40,7 @@ class ToolWidget (gtk.VBox):
         revert_button = self.revert_button = stock_button(gtk.STOCK_UNDO)
         revert_button.set_tooltip_text(_("Revert Scratchpad"))
         new_button = self.delete_button = stock_button(gtk.STOCK_NEW)
-        new_button.set_tooltip_text(_("Clear Scratchpad"))
+        new_button.set_tooltip_text(_("New Scratchpad"))
 
         load_button.connect('clicked', self.load_cb)
         save_as_button.connect('clicked', self.save_as_cb)
@@ -87,7 +87,11 @@ class ToolWidget (gtk.VBox):
     """
 
     def new_cb(self, action):
-        self.app.filehandler.scratchpad_doc.model.clear()
+        if os.path.isfile(self.app.filehandler.get_scratchpad_default()):
+            self.app.filehandler.open_scratchpad(self.app.filehandler.get_scratchpad_default())
+        else:
+            self.app.filehandler.scratchpad_doc.model.clear()
+        self.app.filehandler.scratchpad_filename = self.app.preferences['scratchpad.last_opened'] = self.app.filehandler.get_scratchpad_autosave()
 
     def revert_cb(self, action):
         # Load last scratchpad

@@ -65,8 +65,9 @@ class Application: # singleton
         self.filehandler.scratchpad_filename = ""
         self.filehandler.scratchpad_doc = document.Scratchpad(self)
         
-        if self.preferences["scratchpad.last_opened_scratchpad"]:
-            self.filehandler.scratchpad_filename = self.preferences["scratchpad.last_opened_scratchpad"]
+        if not self.preferences.get("scratchpad.last_opened_scratchpad", None):
+            self.preferences["scratchpad.last_opened_scratchpad"] = self.filehandler.get_scratchpad_autosave()
+        self.filehandler.scratchpad_filename = self.preferences["scratchpad.last_opened_scratchpad"]
 
         self.brush.set_color_hsv((0, 0, 0))
         self.init_brush_adjustments()
@@ -109,7 +110,7 @@ class Application: # singleton
 
             # Load last scratchpad
             if not self.preferences["scratchpad.last_opened_scratchpad"]:
-                self.preferences["scratchpad.last_opened_scratchpad"] = os.path.join(self.filehandler.get_scratchpad_prefix(), "scratchpad_default.ora")
+                self.preferences["scratchpad.last_opened_scratchpad"] = self.filehandler.get_scratchpad_autosave()
                 self.filehandler.scratchpad_filename = self.preferences["scratchpad.last_opened_scratchpad"]
             if os.path.isfile(self.filehandler.scratchpad_filename):
                 self.filehandler.open_scratchpad(self.filehandler.scratchpad_filename)
@@ -185,7 +186,6 @@ class Application: # singleton
             "input.button3_shift_action": 'no_action',
             "input.button3_ctrl_action":  'no_action',
 
-            # Scratchpad
             "scratchpad.last_opened_scratchpad": "",
 
             # Default window positions.

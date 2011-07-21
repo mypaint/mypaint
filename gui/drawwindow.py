@@ -128,6 +128,9 @@ class Window (windowing.MainWindow, layout.MainWindow):
 
             ('ScratchMenu',    None, _('Scratchpad')),
             ('ScratchWindow',  None, _('Scratchpad...'), None, None, self.toggleWindow_cb),
+            ('ScratchSaveNow',  None, _('Save Scratchpad Now'), None, None, self.save_current_scratchpad_cb),
+            ('ScratchSaveAsDefault',  None, _('Save Scratchpad As Default'), None, None, self.save_scratchpad_as_default_cb),
+            ('ScratchClearDefault',  None, _('Clear the Default Scratchpad'), None, None, self.clear_default_scratchpad_cb),
 
 
             ('BrushMenu',    None, _('Brush')),
@@ -517,6 +520,15 @@ class Window (windowing.MainWindow, layout.MainWindow):
         else:
             if not self.is_fullscreen:
                 self.menubar.show()
+
+    def save_scratchpad_as_default_cb(self, action):
+        self.app.filehandler.save_scratchpad(self.app.filehandler.get_scratchpad_default(), export = True)
+    
+    def clear_default_scratchpad_cb(self, action):
+        self.app.filehandler.delete_default_scratchpad()
+
+    def save_current_scratchpad_cb(self, action):
+        self.app.filehandler.save_scratchpad(self.app.filehandler.scratchpad_filename)
 
     def quit_cb(self, *trash):
         self.app.doc.model.split_stroke()

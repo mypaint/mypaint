@@ -137,6 +137,10 @@
     </menu>
     <menu action="ScratchMenu">
       <menuitem action='ScratchWindow'/>
+      <menuitem action='ScratchSaveNow'/>
+      <separator/>
+      <menuitem action='ScratchSaveAsDefault'/>
+      <menuitem action='ScratchClearDefault'/>
     </menu>
     <menu action='HelpMenu'>
       <menuitem action='Docu'/>

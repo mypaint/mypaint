@@ -469,7 +469,7 @@ class FileHandler(object):
             self.save_dialog = None
 
 
-    def save_scratchpad_as_dialog(self):
+    def save_scratchpad_as_dialog(self, export = False):
         if not self.save_dialog:
             self.init_save_dialog()
         dialog = self.save_dialog
@@ -511,8 +511,10 @@ class FileHandler(object):
                     assert(filename)
                     dialog.hide()
                     self.save_scratchpad(filename)
-                    self.scratchpad_filename = os.path.abspath(filename)
-                    self.app.preferences["scratchpad.last_opened_scratchpad"] = self.scratchpad_filename
+                    if not export:
+                        # export = True -> Save a copy, but keep the current filename in the variable.
+                        self.scratchpad_filename = os.path.abspath(filename)
+                        self.app.preferences["scratchpad.last_opened_scratchpad"] = self.scratchpad_filename
                     break
 
                 filename = name + ext_format
@@ -610,6 +612,14 @@ class FileHandler(object):
                 prefix += os.path.sep
         return prefix
 
+    def get_scratchpad_default(self):
+        # TODO get the default name from preferences
+        return os.path.join(self.get_scratchpad_prefix(), "scratchpad_default.ora")
+
+    def get_scratchpad_autosave(self):
+        # TODO get the default name from preferences
+        return os.path.join(self.get_scratchpad_prefix(), "autosave.ora")
+
     def list_scraps(self):
         prefix = self.get_scrap_prefix()
         return self.list_prefixed_dir(prefix)
@@ -704,3 +714,8 @@ class FileHandler(object):
             if os.path.isfile(filename) and os.path.abspath(filename).startswith(prefix):
                 os.remove(filename)
                 print "Removed %s" % filename
+
+    def delete_default_scratchpad(self):
+        if os.path.isfile(self.get_scratchpad_default()):
+            os.remove(self.get_scratchpad_default())
+
