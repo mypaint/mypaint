@@ -33,13 +33,25 @@ class ToolWidget (gtk.VBox):
         self.is_updating = False
         
         # Common controls
-        delete_button = self.delete_button = stock_button(gtk.STOCK_DELETE)
+        load_button = self.load_button = stock_button(gtk.STOCK_OPEN)
+        load_button.set_tooltip_text(_("Load Scratchpad"))
+        save_as_button = self.save_as_button = stock_button(gtk.STOCK_SAVE_AS)
+        save_as_button.set_tooltip_text(_("Save Scratchpad as..."))
+        revert_button = self.revert_button = stock_button(gtk.STOCK_UNDO)
+        revert_button.set_tooltip_text(_("Revert Scratchpad"))
+        new_button = self.delete_button = stock_button(gtk.STOCK_NEW)
+        new_button.set_tooltip_text(_("Clear Scratchpad"))
 
-        delete_button.connect('clicked', self.delete_cb)
-
+        load_button.connect('clicked', self.load_cb)
+        save_as_button.connect('clicked', self.save_as_cb)
+        revert_button.connect('clicked', self.revert_cb)
+        new_button.connect('clicked', self.new_cb)
 
         buttons_hbox = gtk.HBox()
-        buttons_hbox.pack_start(delete_button)
+        buttons_hbox.pack_start(new_button)
+        buttons_hbox.pack_start(load_button)
+        buttons_hbox.pack_start(save_as_button)
+        buttons_hbox.pack_start(revert_button)
 
         scratchpad_view = app.filehandler.scratchpad_doc.tdw
 
@@ -61,7 +73,7 @@ class ToolWidget (gtk.VBox):
         doc.doc_observers.append(self.update)
 
         # FIXME pull the scratchpad filename from preferences instead of this
-        self.app.filehandler.scratchpad_filename = self.scratchpad_filename = os.path.join(self.app.filehandler.get_scratchpad_prefix(), "scratchpad_uni.ora")
+        # self.app.filehandler.scratchpad_filename = self.scratchpad_filename = os.path.join(self.app.filehandler.get_scratchpad_prefix(), "scratchpad_default.ora")
 
         self.update(app.filehandler.scratchpad_doc)
 
@@ -71,15 +83,27 @@ class ToolWidget (gtk.VBox):
     def zoom_out_cb(self, action):
         self.app.filehandler.scratchpad_doc.zoom("ZoomOut")
 
-    def delete_cb(self, action):
-        if os.path.isfile(self.scratchpad_filename):
-            os.remove(self.scratchpad_filename)
+    def new_cb(self, action):
         self.app.filehandler.scratchpad_doc.model.clear()
+
+    def revert_cb(self, action):
+        # Load last scratchpad
+        if os.path.isfile(self.app.filehandler.scratchpad_filename):
+            self.app.filehandler.open_scratchpad(self.app.filehandler.scratchpad_filename)
+            print "Reverted to %s" % self.app.filehandler.scratchpad_filename
+        else:
+            print "No file to revert to yet."
+
+    def load_cb(self, action):
+        self.app.filehandler.open_scratchpad_dialog()
 
     def update(self, doc):
         if self.is_updating:
             return
         self.is_updating = True
+
+    def save_as_cb(self, action):
+        self.app.filehandler.save_scratchpad_as_dialog()
 
     def save_cb(self, action):
         print "Saving the scratchpad"

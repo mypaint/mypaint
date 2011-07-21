@@ -126,7 +126,7 @@ class Window (windowing.MainWindow, layout.MainWindow):
             ('LayersWindow', gtk.STOCK_INDEX, _('Layers...'), 'l', None, self.toggleWindow_cb),
             ('BackgroundWindow', gtk.STOCK_PAGE_SETUP, _('Background...'), None, None, self.toggleWindow_cb),
 
-            ('ScratchpadMenu',    None, _('Scratchpad')),
+            ('ScratchMenu',    None, _('Scratchpad')),
             ('ScratchWindow',  None, _('Scratchpad...'), None, None, self.toggleWindow_cb),
 
 

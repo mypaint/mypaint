@@ -62,9 +62,11 @@ class Application: # singleton
         self.brushmodifier = brushmodifier.BrushModifier(self)
         self.doc = document.Document(self)
         
-        # Scratchpad setup #PALLETTE2
         self.filehandler.scratchpad_filename = ""
         self.filehandler.scratchpad_doc = document.Scratchpad(self)
+        
+        if self.preferences["scratchpad.last_opened_scratchpad"]:
+            self.filehandler.scratchpad_filename = self.preferences["scratchpad.last_opened_scratchpad"]
 
         self.brush.set_color_hsv((0, 0, 0))
         self.init_brush_adjustments()
@@ -180,6 +182,9 @@ class Application: # singleton
             "input.button3_shift_action": 'no_action',
             "input.button3_ctrl_action":  'no_action',
 
+            # Scratchpad
+            "scratchpad.last_opened_scratchpad": "",
+
             # Default window positions.
             # See gui.layout.set_window_initial_position for the meanings
             # of the common x, y, w, and h settings
@@ -205,11 +210,7 @@ class Application: # singleton
                                      x=128, y=-128,
                                      w=200, h=200, sbheight=200),
 
-#                'scratchpadWindow': dict(sbindex=4, floating=True,
-#                                     x=128, y=-128,
-#                                     w=200, h=200, sbheight=200),
-#
-                'scratchWindow': dict(sbindex=5, floating=True,
+                'scratchWindow': dict(sbindex=4, floating=True,
                                      x=128, y=-128,
                                      w=200, h=200, sbheight=200),
 
