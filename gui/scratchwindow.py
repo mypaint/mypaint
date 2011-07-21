@@ -48,11 +48,13 @@ class ToolWidget (gtk.VBox):
         self.connect("destroy-event", self.save_cb)
         self.connect("delete-event", self.save_cb)
 
-        scratchpad_box = gtk.HBox()
-        scratchpad_box.pack_start(scratchpad_view)
+        scratchpad_box = gtk.EventBox()
+        scratchpad_box.add(scratchpad_view)
 
         self.pack_start(scratchpad_box)
         self.pack_start(buttons_hbox, expand=False)
+
+        
 
         # Updates
         doc = app.filehandler.scratchpad_doc.model
