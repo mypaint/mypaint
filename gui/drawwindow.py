@@ -296,24 +296,38 @@ class Window (windowing.MainWindow, layout.MainWindow):
         #if event.state & ANY_MODIFIER:
         #    # allow user shortcuts with modifiers
         #    return False
+
+        # This may need a stateful flag
+        if self.app.filehandler.scratchpad_doc.tdw.has_pointer:
+            thisdoc = self.app.filehandler.scratchpad_doc
+            # Stop dragging on the main window
+            self.app.doc.tdw.dragfunc = None
+        else:
+            thisdoc = self.app.doc
+            # Stop dragging on the other window
+            self.app.filehandler.scratchpad_doc.tdw.dragfunc = None
         if key == keysyms.space:
             if shift:
-                self.app.doc.tdw.start_drag(self.app.doc.dragfunc_rotate)
+                 thisdoc.tdw.start_drag(thisdoc.dragfunc_rotate)
             elif ctrl:
-                self.app.doc.tdw.start_drag(self.app.doc.dragfunc_zoom)
+                thisdoc.tdw.start_drag(thisdoc.dragfunc_zoom)
             elif alt:
-                self.app.doc.tdw.start_drag(self.app.doc.dragfunc_frame)
+                thisdoc.tdw.start_drag(thisdoc.dragfunc_frame)
             else:
-                self.app.doc.tdw.start_drag(self.app.doc.dragfunc_translate)            
+                thisdoc.tdw.start_drag(thisdoc.dragfunc_translate)            
         else: return False
         return True
 
     def key_release_event_cb_before(self, win, event):
+        if self.app.filehandler.scratchpad_doc.tdw.has_pointer:
+            thisdoc = self.app.filehandler.scratchpad_doc
+        else:
+            thisdoc = self.app.doc
         if event.keyval == keysyms.space:
-            self.app.doc.tdw.stop_drag(self.app.doc.dragfunc_translate)
-            self.app.doc.tdw.stop_drag(self.app.doc.dragfunc_rotate)
-            self.app.doc.tdw.stop_drag(self.app.doc.dragfunc_zoom)
-            self.app.doc.tdw.stop_drag(self.app.doc.dragfunc_frame)
+            thisdoc.tdw.stop_drag(thisdoc.dragfunc_translate)
+            thisdoc.tdw.stop_drag(thisdoc.dragfunc_rotate)
+            thisdoc.tdw.stop_drag(thisdoc.dragfunc_zoom)
+            thisdoc.tdw.stop_drag(thisdoc.dragfunc_frame)
             return True
         return False
 
