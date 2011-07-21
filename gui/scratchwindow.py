@@ -95,6 +95,8 @@ class ToolWidget (gtk.VBox):
             print "No file to revert to yet."
 
     def load_cb(self, action):
+        if self.app.filehandler.scratchpad_filename:
+            self.save_cb(action)
         self.app.filehandler.open_scratchpad_dialog()
 
     def update(self, doc):
