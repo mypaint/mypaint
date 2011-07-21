@@ -77,11 +77,14 @@ class ToolWidget (gtk.VBox):
 
         self.update(app.filehandler.scratchpad_doc)
 
+    """
+    # for future reference...
     def zoom_in_cb(self, action):
         self.app.filehandler.scratchpad_doc.zoom("ZoomIn")
     
     def zoom_out_cb(self, action):
         self.app.filehandler.scratchpad_doc.zoom("ZoomOut")
+    """
 
     def new_cb(self, action):
         self.app.filehandler.scratchpad_doc.model.clear()
@@ -98,6 +101,33 @@ class ToolWidget (gtk.VBox):
         if self.app.filehandler.scratchpad_filename:
             self.save_cb(action)
         self.app.filehandler.open_scratchpad_dialog()
+        # Check to see if a file has been opened outside of the scratchpad directory
+        if os.path.abspath(self.app.filehandler.scratchpad_filename).startswith(os.path.abspath(self.app.filehandler.get_scratchpad_prefix())):
+            # file is within the scratchpad directory - no need to warn
+            return
+
+        # Doesn't start with the prefix
+        d = gtk.Dialog(_("Scrachpad autosave warning"), self.app.drawWindow, gtk.DIALOG_MODAL)
+
+        b = d.add_button(_("I understand"), gtk.RESPONSE_OK)
+        b.set_image(gtk.image_new_from_stock(gtk.STOCK_APPLY, gtk.ICON_SIZE_BUTTON))
+        b = d.add_button(_("_Save a copy"), gtk.RESPONSE_APPLY)
+        b.set_image(gtk.image_new_from_stock(gtk.STOCK_SAVE, gtk.ICON_SIZE_BUTTON))
+
+        d.set_has_separator(False)
+        d.set_default_response(gtk.RESPONSE_APPLY)
+        l = gtk.Label()
+        l.set_markup("<b>Warning: the scratchpad automatically saves.</b>\n\nChanges made to the scratchpad will overwrite the file on disc\n As this file is not from the scratchpad directory, this may not be the behaviour you expect. \n\nIt is recommended that you save a copy into the scratchpad directory.")
+        l.set_padding(10, 10)
+        l.show()
+        d.vbox.pack_start(l)
+        response = d.run()
+        d.destroy()
+        if response == gtk.RESPONSE_APPLY:
+            self.app.filehandler.scratchpad_filename = ""
+            self.save_as_cb(None)
+            return True
+        return response == gtk.RESPONSE_OK
 
     def update(self, doc):
         if self.is_updating:
@@ -109,7 +139,7 @@ class ToolWidget (gtk.VBox):
 
     def save_cb(self, action):
         print "Saving the scratchpad"
-        self.app.filehandler.save_scratchpad(self.scratchpad_filename)
+        self.app.filehandler.save_scratchpad(self.app.filehandler.scratchpad_filename)
 
     def button_press_cb(self, win, event):
         #print event.device, event.button

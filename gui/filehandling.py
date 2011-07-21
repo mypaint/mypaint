@@ -361,8 +361,6 @@ class FileHandler(object):
             dialog.destroy()
 
     def open_scratchpad_dialog(self):
-        if not self.confirm_destructive_action():
-            return
         dialog = gtk.FileChooserDialog(_("Open Scratchpad..."), self.app.drawWindow,
                                        gtk.FILE_CHOOSER_ACTION_OPEN,
                                        (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,                            
