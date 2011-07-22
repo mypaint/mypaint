@@ -383,6 +383,17 @@ class WindowWithSavedPosition:
         self.move(x, y)
 
     def __on_map(self, widget):
+        parent = self.get_transient_for()
+        if parent is self.layout_manager.main_window:
+            self.window.set_accept_focus(False)
+            # Prevent all saved-position subwindows from taking keyboard
+            # focus from the main window (in Metacity) by presenting it
+            # again. https://gna.org/bugs/?17899
+            gobject.idle_add(parent.present)
+            ## The alternative is:
+            # gobject.idle_add(self.window.raise_)
+            # gobject.idle_add(parent.window.focus)
+            ## but that doesn't seem to be necessary.
         if self.__mapped_once:
             return
         self.__mapped_once = True
@@ -876,7 +887,6 @@ class ToolWindow (gtk.Window, ElasticContainer, WindowWithSavedPosition):
         self.set_role(role)
         self.set_title(title)
         self.tool = None
-        self.connect("map", self.on_map)
         self.connect("configure-event", self.on_configure_event)
         self.pre_hide_pos = None
 
@@ -896,19 +906,6 @@ class ToolWindow (gtk.Window, ElasticContainer, WindowWithSavedPosition):
         if not lm.prefs.get(role, False):
             lm.prefs[role] = {}
         lm.prefs[role]['floating'] = True
-
-    def on_map(self, widget):
-        self.window.set_accept_focus(False)
-        parent = self.get_transient_for()
-        # Prevent the tool windows from taking keyboard focus from the
-        # main window (in Metacity) by presenting it again.
-        # https://gna.org/bugs/?17899
-        gobject.idle_add(parent.present)
-        # The alternative is:
-        #gobject.idle_add(self.window.raise_)
-        #gobject.idle_add(parent.window.focus)
-        # but that doesn't seem to be necessary.
-
 
     def show(self):
         """Shows or re-shows the window.
