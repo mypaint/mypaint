@@ -50,10 +50,7 @@ def brushinfo_unquote(quoted):
 
 class BrushInfo:
     """Fully parsed description of a brush.
-
-    Just the strings, numbers and inputs/points hashes in a dict-based wrapper
-    without any special interpretation other than a free upgrade to the newest
-    brush format."""
+    """
 
     def __init__(self, string=None):
         """Construct a BrushInfo object, optionally parsing it."""
@@ -284,7 +281,6 @@ class BrushInfo:
         return copy.deepcopy(self.settings[cname])
 
     def get_string_property(self, name):
-        tmp = self.settings.get(name, None)
         return self.settings.get(name, None)
 
     def set_string_property(self, name, value):
@@ -303,6 +299,12 @@ class BrushInfo:
             if self.has_input(cname, i.name):
                 return False
         return True
+
+    def has_large_base_value(self, cname, threshold=0.9):
+        return self.get_base_value(cname) > threshold
+
+    def has_small_base_value(self, cname, threshold=0.1):
+        return self.get_base_value(cname) < threshold
 
     def has_input(self, cname, input):
         """Return whether a given input is used by some setting."""
@@ -348,7 +350,10 @@ class BrushInfo:
         return helpers.hsv_to_rgb(*hsv)
 
     def is_eraser(self):
-        return self.get_base_value('eraser') > 0.9
+        return self.has_large_base_value("eraser")
+
+    def is_alpha_locked(self):
+        return self.has_large_base_value("lock_alpha")
 
     def get_effective_radius(self):
         """Return brush radius in pixels for cursor shape."""
@@ -356,7 +361,6 @@ class BrushInfo:
         r = base_radius
         r += 2*base_radius*self.get_base_value('offset_by_random')
         return r
-
 
 class Brush(mypaintlib.PythonBrush):
     """

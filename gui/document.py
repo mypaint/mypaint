@@ -23,10 +23,6 @@ import stock
 
 class Document(object):
 
-    blend_radio_normal = 0
-    blend_radio_eraser = 1
-    blend_radio_lock_alpha = 2
-
     def __init__(self, app):
         self.app = app
         self.model = lib.document.Document(self.app.brush)
@@ -144,27 +140,16 @@ class Document(object):
         self.update_command_stack_toolitems(self.model.command_stack)
 
         toggle_actions = [
-            # name, stock id, label, accelerator, tooltip, callback, default toggle status
             ('PrintInputs', None, _('Print Brush Input Values to Console'), None, None, self.print_inputs_cb),
             ('VisualizeRendering', None, _('Visualize Rendering'), None, None, self.visualize_rendering_cb),
             ('NoDoubleBuffereing', None, _('Disable GTK Double Buffering'), None, None, self.no_double_buffering_cb),
+
             ]
         ag.add_toggle_actions(toggle_actions)
-
-        radio_actions = [
-            # name, stock, label, accel, toooltip, value
-            ('BlendModeNormal', stock.BRUSH_BLEND_MODE_NORMAL, None, None,
-                _("Paint normally"),
-                self.blend_radio_normal),
-            ('BlendModeEraser', stock.BRUSH_BLEND_MODE_ERASER, None, None,
-                _("Erase strokes quickly with the current brush"),
-                self.blend_radio_eraser),
-            ('BlendModeLockAlpha', stock.BRUSH_BLEND_MODE_ALPHA_LOCK, None, None,
-                _("Paint over existing strokes only"),
-                self.blend_radio_lock_alpha),
-            ]
-        ag.add_radio_actions(radio_actions, self.blend_radio_normal,
-                             self.on_blend_radio_change)
+        # Keyboard handling
+        #for action in self.action_group.list_actions():
+        #    self.app.kbm.takeover_action(action)
+        #self.app.ui_manager.insert_action_group(ag, -1)
 
     def init_context_actions(self):
         ag = self.action_group
@@ -655,27 +640,6 @@ class Document(object):
         # pointer (when you're holding the pen) is special, it's the point of a
         # real-world tool that you're dipping into a palette, or modifying
         # using the sliders.
-
-    def on_blend_radio_change(self, first_radioaction, selected_radioaction):
-        current = selected_radioaction.get_property("value")
-        bm = self.app.brushmodifier
-        if current == self.blend_radio_normal:
-            if bm.eraser_mode.active:
-                bm.eraser_mode.leave()
-            if bm.lock_alpha.active:
-                bm.lock_alpha.leave()
-        elif current == self.blend_radio_eraser:
-            bm.eraser_mode.toggle(selected_radioaction)
-        elif current == self.blend_radio_lock_alpha:
-            if bm.eraser_mode.active:
-                bm.eraser_mode.leave()
-            b = self.app.brush
-            if not bm.lock_alpha.active and b.get_base_value('lock_alpha') > 0.9:
-                # brush using lock_alpha setting, but we are not in lock_alpha mode
-                # (FIXME: hackish to handle this case here)
-                b.reset_setting('lock_alpha')
-                return
-            bm.lock_alpha.toggle(selected_radioaction)
 
     def update_command_stack_toolitems(self, stack):
         ag = self.action_group
