@@ -375,8 +375,8 @@ class Window (windowing.MainWindow, layout.MainWindow):
 
         bar.insert(gtk.SeparatorToolItem(), -1)
         bar.insert(findaction("BlendModeNormal").create_tool_item(), -1)
-        bar.insert(findaction("BlendModeLockAlpha").create_tool_item(), -1)
         bar.insert(findaction("BlendModeEraser").create_tool_item(), -1)
+        bar.insert(findaction("BlendModeLockAlpha").create_tool_item(), -1)
 
         expander = gtk.SeparatorToolItem()
         expander.set_expand(True)
@@ -391,7 +391,7 @@ class Window (windowing.MainWindow, layout.MainWindow):
         if not self.get_show_toolbar():
             gobject.idle_add(self.toolbar.hide)
 
-        
+
     def _init_popupmenu(self, xml):
         """
         Hopefully temporary hack for converting UIManager XML describing the

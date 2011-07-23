@@ -6,128 +6,335 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-"""
-The BrushModifier tracks brush settings like color, eraser and
-blending modes that can be overridden by the GUI.
 
-BrushManager ----select_brush----> BrushModifier --> TiledDrawWidget
-
-The BrushManager provides the brush settings as stored on disk, and
-the BrushModifier passes them via TiledDrawWidget to the brush engine.
-"""
-
-import stategroup
+#import stategroup
+import stock
+import gtk
+from gtk import gdk
+import gobject
+from gettext import gettext as _
 
 class BrushModifier:
+    """Applies changed brush settings to the active brush, with overrides.
+
+    A single instance of this lives within the main `application.Application`
+    instance. The BrushModifier tracks brush settings like color, eraser and
+    lock alpha mode that can be overridden by the GUI.::
+
+      BrushManager ---select_brush---> BrushModifier --> TiledDrawWidget
+
+    The `BrushManager` provides the brush settings as stored on disk, and
+    the BrushModifier passes them via `TiledDrawWidget` to the brush engine.
+    """
+
+    MODE_FORCED_ON_SETTINGS = [1.0, {}]
+    MODE_FORCED_OFF_SETTINGS = [0.0, {}]
+
+
     def __init__(self, app):
         self.app = app
-
-        self.app.brushmanager.selected_brush_observers.append(self.brush_selected_cb)
-        self.app.brush.observers.append(self.brush_modified_cb)
-
+        app.brushmanager.selected_brush_observers.append(self.brush_selected_cb)
+        app.brush.observers.append(self.brush_modified_cb)
         self.unmodified_brushinfo = None
+        self._in_brush_selected_cb = False
+        self._in_internal_radius_change = False
+        self._eraser_mode_original_radius = None
+        self._init_actions()
 
-        sg = stategroup.StateGroup()
-        self.eraser_mode = sg.create_state(enter=self.enter_eraser_mode_cb,
-                                           leave=self.leave_eraser_mode_cb)
-        self.eraser_mode.autoleave_timeout = None
-        sg = stategroup.StateGroup()
-        self.lock_alpha = sg.create_state(enter=self.enter_lock_alpha_cb,
-                                          leave=self.leave_lock_alpha_cb)
-        self.lock_alpha.autoleave_timeout = None
 
-    def enter_eraser_mode_cb(self):
-        b = self.app.brush
+    def _init_actions(self):
+        self.action_group = gtk.ActionGroup('BrushModifierActions')
+        ag = self.action_group
+        toggle_actions = [
+            # name, stock id, label,
+            #   accel, tooltip,
+            #   callback, default state
+            ('BlendModeNormal', stock.BRUSH_BLEND_MODE_NORMAL, None,
+                None, _("Paint normally"),
+                self.blend_mode_normal_cb, True),
+            ('BlendModeEraser', stock.BRUSH_BLEND_MODE_ERASER, None,
+                None, _("Erase strokes quickly with the current brush"),
+                self.blend_mode_eraser_cb),
+            ('BlendModeLockAlpha', stock.BRUSH_BLEND_MODE_ALPHA_LOCK, None,
+                None, _("Paint over existing strokes only"),
+                self.blend_mode_lock_alpha_cb),
+            ]
+        ag.add_toggle_actions(toggle_actions)
+        self.eraser_mode = ag.get_action("BlendModeEraser")
+        self.lock_alpha_mode = ag.get_action("BlendModeLockAlpha")
+        self.normal_mode = ag.get_action("BlendModeNormal")
 
-        self.lock_alpha_before_eraser_mode = self.lock_alpha.active
-        if self.lock_alpha.active:
-            self.lock_alpha.leave()
+        # Each mode ToggleAction has a corresponding setting
+        self.eraser_mode.setting_name = "eraser"
+        self.lock_alpha_mode.setting_name = "lock_alpha"
+        self.normal_mode.setting_name = None
 
-        if b.get_base_value('eraser') > 0.9:
-            # we are entering eraser mode because the selected brush is an eraser
-            self.eraser_mode_original_brush = None
+        for action in self.action_group.list_actions():
+            action.set_draw_as_radio(True)
+            self.app.kbm.takeover_action(action)
+        self.app.ui_manager.insert_action_group(ag, -1)
+
+        # Faking radio items, but ours can be disabled by re-activating them
+        # and backtrack along their history.
+        self._hist = []
+
+
+    def _push_hist(self, justentered):
+        if justentered in self._hist:
+            self._hist.remove(justentered)
+        self._hist.append(justentered)
+
+
+    def _pop_hist(self, justleft):
+        for mode in self.action_group.list_actions():
+            if mode.get_active():
+                return
+        while len(self._hist) > 0:
+            mode = self._hist.pop()
+            if mode is not justleft:
+                mode.set_active(True)
+                return
+        self.normal_mode.set_active(True)
+
+
+    def set_override_setting(self, setting_name, override):
+        """Overrides a boolean setting currently in effect.
+
+        If `override` is true, the named setting will be forced to a base value
+        greater than 0.9, and if it is false a base value less than 0.1 will be
+        applied. Where possible, values from the base brush will be used. The
+        setting from `unmodified_brushinfo`, including any nonlinear
+        components, will be used if its base value is suitably large (or
+        small). If not, a base value of either 1 or 0 and no nonlinear
+        components will be applied.
+        """
+        unmod_b = self.unmodified_brushinfo
+        modif_b = self.app.brush
+        if override:
+            if not modif_b.has_large_base_value(setting_name):
+                settings = self.MODE_FORCED_ON_SETTINGS
+                if unmod_b.has_large_base_value(setting_name):
+                    settings = unmod_b.get_setting(setting_name)
+                modif_b.set_setting(setting_name, settings)
         else:
-            self.eraser_mode_original_brush = b.clone()
-            # create an eraser version of the current brush
-            b.set_base_value('eraser', 1.0)
+            if not modif_b.has_small_base_value(setting_name):
+                settings = self.MODE_FORCED_OFF_SETTINGS
+                if unmod_b.has_small_base_value(setting_name):
+                    settings = unmod_b.get_setting(setting_name)
+                modif_b.set_setting(setting_name, settings)
 
-            # change brush radius
-            r = b.get_base_value('radius_logarithmic')
-            default = 3*(0.3) # this value allows the user to go back to the exact original size with brush_smaller_cb()
-            dr = self.app.preferences.get('document.eraser_mode_radius_change', default)
-            b.set_base_value('radius_logarithmic', r + dr)
 
-    def leave_eraser_mode_cb(self, reason):
-        if self.eraser_mode_original_brush:
-            b = self.app.brush
-            # remember radius change
-            dr = b.get_base_value('radius_logarithmic') - self.eraser_mode_original_brush.get_base_value('radius_logarithmic')
-            self.app.preferences['document.eraser_mode_radius_change'] = dr 
-            b.load_from_brushinfo(self.eraser_mode_original_brush)
-        del self.eraser_mode_original_brush
+    def reset_override_setting(self, setting_name):
+        """Resets an override setting.
 
-        if self.lock_alpha_before_eraser_mode:
-            self.lock_alpha.enter()
-        del self.lock_alpha_before_eraser_mode
+        Resets the setting named `setting_name` to its default values, taken
+        from the base brush `unmodified_brushinfo`.
+        """
+        target_b = self.app.brush
+        settings = unmod_b.get_setting(setting_name)
+        target_b.set_setting(setting_name, settings)
 
-    def enter_lock_alpha_cb(self):
-        self.enforce_lock_alpha()
 
-    def enforce_lock_alpha(self):
-        b = self.app.brush
-        b.begin_atomic()
-        if b.get_base_value('eraser') < 0.9:
-            b.reset_setting('lock_alpha')
-            b.set_base_value('lock_alpha', 1.0)
-        b.end_atomic()
+    def _cancel_other_modes(self, action):
+        for other_action in self.action_group.list_actions():
+            if action is other_action:
+                continue
+            setting_name = other_action.setting_name
+            if setting_name:
+                self.set_override_setting(setting_name, False)
+            if other_action.get_active():
+                other_action.block_activate()
+                other_action.set_active(False)
+                other_action.unblock_activate()
 
-    def leave_lock_alpha_cb(self, reason):
-        data = self.unmodified_brushinfo.get_setting('lock_alpha')
-        self.app.brush.set_setting('lock_alpha', data)
+
+    def blend_mode_normal_cb(self, action):
+        """Callback for the ``BlendModeNormal`` action.
+        """
+        normal_wanted = action.get_active()
+        if normal_wanted:
+            self._cancel_other_modes(action)
+            self._push_hist(action)
+        else:
+            # Disallow cancelling Normal mode unless something else
+            # has become active.
+            other_active = self.eraser_mode.get_active()
+            other_active |= self.lock_alpha_mode.get_active()
+            if not other_active:
+                self.normal_mode.set_active(True)
+
+
+    def blend_mode_eraser_cb(self, action):
+        """Callback for the ``BlendModeEraser`` action.
+
+        This manages the size difference between the eraser-mode version of a
+        normal brush and its normal state. Initially the eraser-mode version is
+        three steps bigger, but that's configurable by the user through simply
+        changing the brush radius as normal while in eraser mode.
+        """
+        unmod_b = self.unmodified_brushinfo
+        modif_b = self.app.brush
+        eraser_wanted = action.get_active()
+        if eraser_wanted:
+            self._cancel_other_modes(action)
+            if not self._in_brush_selected_cb:
+                # We're entering eraser mode because the user activated the
+                # toggleaction, not because the brush changed.
+                if not self._brush_is_dedicated_eraser():
+                    # change brush radius
+                    r = modif_b.get_base_value('radius_logarithmic')
+                    self._eraser_mode_original_radius = r
+                    default = 3*(0.3)
+                    # this value allows the user to go back to the exact
+                    # original size with brush_smaller_cb()
+                    dr = self.app.preferences.get(
+                        'document.eraser_mode_radius_change',
+                        default)
+                    self._set_radius_internal(r + dr)
+            self._push_hist(action)
+        else:
+            if self._brush_is_dedicated_eraser():
+                # No, you may not leave eraser mode with one of these.
+                action.block_activate()
+                action.set_active(True)
+                action.unblock_activate()
+                return
+            if not self._in_brush_selected_cb:
+                # We're leaving eraser mode because the user deactivated the
+                # ToggleAction, not because the brush changed. Might have to
+                # restore the effective brush radius to what it was before.
+                # Also store any changes the user made to the relative radius
+                # change.
+                r0 = self._store_eraser_mode_radius_change()
+                if r0 is not None:
+                    self._set_radius_internal(r0)
+            self._eraser_mode_original_radius = None
+            self._pop_hist(action)
+        self.set_override_setting("eraser", eraser_wanted)
+
+
+    def _set_radius_internal(self, r):
+        self._in_internal_radius_change = True
+        self.app.brush.set_base_value('radius_logarithmic', r)
+        self._in_internal_radius_change = False
+
+
+    def blend_mode_lock_alpha_cb(self, action):
+        """Callback for the ``BlendModeLockAlpha`` action.
+        """
+        lock_alpha_wanted = action.get_active()
+        if lock_alpha_wanted:
+            self._cancel_other_modes(action)
+            self._push_hist(action)
+        else:
+            self._pop_hist(action)
+        self.set_override_setting("lock_alpha", lock_alpha_wanted)
+
 
     def restore_context_of_selected_brush(self):
-        """
-        After a brush has been selected, restore additional brush
-        settings (eg. color) from the brushinfo. This is called after
-        selecting a brush by picking a stroke from the canvas.
+        """Restores color from the unmodified base brush.
+
+        After a brush has been selected, restore additional brush settings -
+        currently just color - from `unmodified_brushinfo`. This is called
+        after selecting a brush by picking a stroke from the canvas.
         """
         c = self.unmodified_brushinfo.get_color_hsv()
         self.app.brush.set_color_hsv(c)
 
-    def brush_modified_cb(self, settings):
-        if settings.intersection(('color_h', 'color_s', 'color_v')):
-            if self.eraser_mode.active:
-                if 'eraser_mode' not in settings:
-                    self.eraser_mode.leave()
 
     def brush_selected_cb(self, managed_brush, brushinfo):
-        """
-        Copies the selected brush's settings into the settings currently used
-        for painting. Sets the parent brush name.
-        """
+        """Responds to the user changing their brush.
 
+        This observer callback is responsible for allocating the current brush
+        settings to the current brush singleton in `self.app`. The Brush
+        Selector, the Pick Context action, and the Brushkeys and
+        Device-specific brush associations all cause this to be invoked.
+        """
+        self._in_brush_selected_cb = True
         b = self.app.brush
+        prev_lock_alpha = b.is_alpha_locked()
 
+        # Changing the effective brush
+        # Preserve colour
         b.begin_atomic()
-
-        if self.eraser_mode.active:
-            self.eraser_mode.leave()
-
         color = b.get_color_hsv()
-
         b.load_from_brushinfo(brushinfo)
         self.unmodified_brushinfo = b.clone()
-
         b.set_color_hsv(color)
-
         b.set_string_property("parent_brush_name", managed_brush.name)
-
-        if self.lock_alpha.active:
-            self.enforce_lock_alpha()
-
+        if b.is_eraser():
+            # User picked a dedicated eraser brush
+            # Unset any lock_alpha state (necessary?)
+            self.set_override_setting("lock_alpha", False)
+        else:
+            # Preserve the old lock_alpha state
+            self.set_override_setting("lock_alpha", prev_lock_alpha)
         b.end_atomic()
 
+        # Updates the blend mode buttons to match the new settings.
+        # First decide which blend mode is active and which aren't.
+        active_blend_mode = self.normal_mode
+        blend_modes = []
+        for mode_action in self.action_group.list_actions():
+            setting_name = mode_action.setting_name
+            if setting_name is not None:
+                if b.has_large_base_value(setting_name):
+                    active_blend_mode = mode_action
+            blend_modes.append(mode_action)
+        blend_modes.remove(active_blend_mode)
+
+        # Twiddle the UI to match without emitting "activate" signals.
+        active_blend_mode.block_activate()
+        active_blend_mode.set_active(True)
+        active_blend_mode.unblock_activate()
+        for other in blend_modes:
+            other.block_activate()
+            other.set_active(False)
+            other.unblock_activate()
+
+        self._in_brush_selected_cb = False
 
 
+    def _store_eraser_mode_radius_change(self):
+        # Store any changes to the radius when a normal brush is in eraser mode.
+        if self._brush_is_dedicated_eraser() \
+                or not self.app.brush.is_eraser() \
+                or self._in_internal_radius_change:
+            return
+        r0 = self._eraser_mode_original_radius
+        if r0 is None:
+            return
+        modif_b = self.app.brush
+        new_dr = modif_b.get_base_value('radius_logarithmic') - r0
+        self.app.preferences['document.eraser_mode_radius_change'] = new_dr
+        # Return what the radius should be reset to on the ordinary version
+        # of the brush if eraser mode were cancelled right now.
+        return r0
 
 
+    def _brush_is_dedicated_eraser(self):
+        if self.unmodified_brushinfo is None:
+            return False
+        return self.unmodified_brushinfo.is_eraser()
+
+
+    def brush_modified_cb(self, changed_settings):
+        """Responds to changes of the brush settings.
+        """
+        modif_b = self.app.brush
+        if self._brush_is_dedicated_eraser():
+            return
+
+        # If we're in eraser mode at the moment the user could be
+        # changing the brush radius: remember the new base-relative
+        # size change associated with an eraser if they are.
+        if self.app.brush.is_eraser() \
+                and "radius_logarithmic" in changed_settings \
+                and not self._in_internal_radius_change:
+            self._store_eraser_mode_radius_change()
+
+        # Cancel eraser mode on ordinary brushes 
+        if changed_settings.intersection(('color_h', 'color_s', 'color_v')) \
+                and self.eraser_mode.get_active() \
+                and 'eraser_mode' not in changed_settings:
+            self.eraser_mode.set_active(False)

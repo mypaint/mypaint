@@ -142,10 +142,16 @@ class State:
         self.enter()
 
     def toggle(self, action=None):
-        if not self.active:
-            self.activate(action)
+        if isinstance(action, gtk.ToggleAction):
+            want_active = action.get_active()
         else:
-            self.leave()
+            want_active = not self.active
+        if want_active:
+            if not self.active:
+                self.activate(action)
+        else:
+            if self.active:
+                self.leave()
 
     def keyup_cb(self, widget, event):
         if not self.active:
