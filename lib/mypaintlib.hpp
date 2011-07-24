@@ -1,6 +1,7 @@
 #include "Python.h"
 #include "numpy/arrayobject.h"
 #include "../brushlib/brushlib.hpp"
+#include "python_brush.hpp"
 #include "brushmodes.hpp"
 #include "tiledsurface.hpp"
 #include "pixops.hpp"

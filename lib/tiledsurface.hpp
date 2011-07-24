@@ -68,9 +68,10 @@ public:
         return tileMemory[i].rgba_p;
       }
     }
+    if (PyErr_Occurred()) return NULL;
     PyObject* rgba = PyObject_CallMethod(self, "get_tile_memory", "(iii)", tx, ty, readonly);
     if (rgba == NULL) {
-      printf("Python exception during get_tile_memory()! The next traceback might be wrong.\n");
+      printf("Python exception during get_tile_memory()!\n");
       return NULL;
     }
 #ifdef HEAVY_DEBUG

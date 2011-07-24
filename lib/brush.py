@@ -358,16 +358,22 @@ class BrushInfo:
         return r
 
 
-class Brush(mypaintlib.Brush):
+class Brush(mypaintlib.PythonBrush):
     """
     Low-level extension of the C brush class, propagating all changes of
     a brushinfo instance down into the C code.
     """
     def __init__(self, brushinfo):
-        mypaintlib.Brush.__init__(self)
+        mypaintlib.PythonBrush.__init__(self)
         self.brushinfo = brushinfo
         brushinfo.observers.append(self.update_brushinfo)
         self.update_brushinfo(all_settings)
+
+        # override some mypaintlib.Brush methods with special wrappers
+        # from python_brush.hpp
+        self.get_state = self.python_get_state
+        self.set_state = self.python_set_state
+        self.stroke_to = self.python_stroke_to
 
     def update_brushinfo(self, settings):
         """Mirror changed settings into the BrushInfo tracking this Brush."""
