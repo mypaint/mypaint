@@ -119,6 +119,9 @@ def save_as_png(surface, filename, *rect, **kwargs):
     x, y, w, h, = rect
     assert x % N == 0 and y % N == 0, 'only saving of full tiles is implemented (for now)'
     assert w % N == 0 and h % N == 0, 'only saving of full tiles is implemented (for now)'
+    if w == 0 or h == 0:
+        # workaround to save empty documents
+        x, y, w, h = 0, 0, N, N
 
     if alpha:
         bpp = 4

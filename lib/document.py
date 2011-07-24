@@ -370,6 +370,9 @@ class Document():
     def render_thumbnail(self):
         t0 = time.time()
         x, y, w, h = self.get_effective_bbox()
+        if w == 0 or h == 0:
+            # workaround to save empty documents
+            x, y, w, h = 0, 0, tiledsurface.N, tiledsurface.N
         mipmap_level = 0
         while mipmap_level < tiledsurface.MAX_MIPMAP_LEVEL and max(w, h) >= 512:
             mipmap_level += 1
@@ -429,8 +432,10 @@ class Document():
     load_jpeg = load_from_pixbuf_file
 
     def save_jpg(self, filename, quality=90, **kwargs):
-        doc_bbox = self.get_effective_bbox()
-        pixbuf = self.render_as_pixbuf(*doc_bbox, **kwargs)
+        x, y, w, h = self.get_effective_bbox()
+        if w == 0 or h == 0:
+            x, y, w, h = 0, 0, N, N # allow to save empty documents
+        pixbuf = self.render_as_pixbuf(x, y, w, h, **kwargs)
         pixbuf.save(filename, 'jpeg', options={'quality':str(quality)})
 
     save_jpeg = save_jpg
@@ -634,7 +639,8 @@ class Document():
                     sio.close()
 
         if len(self.layers) == 1:
-            raise ValueError, 'Could not load any layer.'
+            # no assertion (allow empty documents)
+            print 'Warning: Could not load any layer, document is empty.'
 
         if no_background:
             # recognize solid or tiled background layers, at least those that mypaint <= 0.7.1 saves
