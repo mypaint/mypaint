@@ -104,20 +104,32 @@ public:
   }
 
   void set_base_value (int id, float value) {
-    g_assert (id >= 0 && id < BRUSH_SETTINGS_COUNT);
+    assert (id >= 0 && id < BRUSH_SETTINGS_COUNT);
     settings[id]->base_value = value;
 
     settings_base_values_have_changed ();
   }
 
   void set_mapping_n (int id, int input, int n) {
-    g_assert (id >= 0 && id < BRUSH_SETTINGS_COUNT);
+    assert (id >= 0 && id < BRUSH_SETTINGS_COUNT);
     settings[id]->set_n (input, n);
   }
 
   void set_mapping_point (int id, int input, int index, float x, float y) {
-    g_assert (id >= 0 && id < BRUSH_SETTINGS_COUNT);
+    assert (id >= 0 && id < BRUSH_SETTINGS_COUNT);
     settings[id]->set_point (input, index, x, y);
+  }
+
+  float get_state (int i)
+  {
+    assert (i >= 0 && i < STATE_COUNT);
+    return states[i];
+  }
+
+  void set_state (int i, float value)
+  {
+    assert (i >= 0 && i < STATE_COUNT);
+    states[i] = value;
   }
 
 private:
@@ -765,28 +777,6 @@ public:
       }
     }
     return false;
-  }
-
-  PyObject * get_state ()
-  {
-    npy_intp dims = {STATE_COUNT};
-    PyObject * data = PyArray_SimpleNew(1, &dims, NPY_FLOAT32);
-    npy_float32 * data_p = (npy_float32*)PyArray_DATA(data);
-    for (int i=0; i<STATE_COUNT; i++) {
-      data_p[i] = states[i];
-    }
-    return data;
-  }
-
-  void set_state (PyObject * data)
-  {
-    assert(PyArray_NDIM(data) == 1);
-    assert(PyArray_DIM(data, 0) == STATE_COUNT);
-    assert(PyArray_ISCARRAY(data));
-    npy_float32 * data_p = (npy_float32*)PyArray_DATA(data);
-    for (int i=0; i<STATE_COUNT; i++) {
-      states[i] = data_p[i];
-    }
   }
 
 };
