@@ -14,7 +14,7 @@ import gtk
 from gettext import gettext as _
 from gettext import ngettext
 
-from lib import document, helpers
+from lib import document, helpers, tiledsurface
 import drawwindow
 
 import mimetypes
@@ -252,7 +252,7 @@ class FileHandler(object):
         try:
             x, y, w, h =  self.doc.model.get_bbox()
             if w == 0 and h == 0:
-                raise document.SaveLoadError, _('Did not save, the canvas is empty.')
+                w, h = tiledsurface.N, tiledsurface.N # TODO: support for other sizes
             thumbnail_pixbuf = self.doc.model.save(filename, feedback_cb=self.gtk_main_tick, **options)
         except document.SaveLoadError, e:
             self.app.message_dialog(str(e),type=gtk.MESSAGE_ERROR)
