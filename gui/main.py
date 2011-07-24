@@ -31,6 +31,11 @@ def main(datapath, default_confpath):
                     help='start in fullscreen mode')
     options, args = parser.parse_args(sys.argv_unicode[1:])
 
+    if sys.platform == 'win32':
+        # defaulting mypaint with logfile http://gna.org/bugs/?17999
+        if not options.logfile:
+            options.logfile = default_confpath+"\mypaint_error.log"
+
     if options.logfile:
         print 'Python prints are redirected to', options.logfile, 'after this one.'
         sys.stdout = sys.stderr = open(options.logfile, 'a', 1)
