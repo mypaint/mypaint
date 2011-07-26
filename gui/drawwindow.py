@@ -273,6 +273,7 @@ class Window (windowing.MainWindow, layout.MainWindow):
 
         expander = gtk.SeparatorToolItem()
         expander.set_expand(True)
+        expander.set_draw(False)
         bar.insert(expander, -1)
 
         for name in ["ColorSelectionWindow", "ColorSamplerWindow",
