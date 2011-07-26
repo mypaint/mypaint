@@ -62,9 +62,9 @@ class Window (windowing.MainWindow, layout.MainWindow):
         self.is_fullscreen = False
 
         # Enable drag & drop
-        self.drag_dest_set(gtk.DEST_DEFAULT_MOTION | 
-                            gtk.DEST_DEFAULT_HIGHLIGHT | 
-                            gtk.DEST_DEFAULT_DROP, 
+        self.drag_dest_set(gtk.DEST_DEFAULT_MOTION |
+                            gtk.DEST_DEFAULT_HIGHLIGHT |
+                            gtk.DEST_DEFAULT_DROP,
                             [("text/uri-list", 0, 1),
                              ("application/x-color", 0, 2)],
                             gtk.gdk.ACTION_DEFAULT|gtk.gdk.ACTION_COPY)
@@ -373,7 +373,7 @@ class Window (windowing.MainWindow, layout.MainWindow):
         d.show()
 
     def key_press_event_cb_before(self, win, event):
-        key = event.keyval 
+        key = event.keyval
         ctrl = event.state & gdk.CONTROL_MASK
         shift = event.state & gdk.SHIFT_MASK
         alt = event.state & gdk.MOD1_MASK
@@ -389,7 +389,7 @@ class Window (windowing.MainWindow, layout.MainWindow):
             elif alt:
                 self.app.doc.tdw.start_drag(self.app.doc.dragfunc_frame)
             else:
-                self.app.doc.tdw.start_drag(self.app.doc.dragfunc_translate)            
+                self.app.doc.tdw.start_drag(self.app.doc.dragfunc_translate)
         else: return False
         return True
 
@@ -795,15 +795,15 @@ class Window (windowing.MainWindow, layout.MainWindow):
             u'David Grundberg (sv)\n'
             u'Elliott Sales de Andrade (en_CA)\n'
             )
-        
+
         d.run()
         d.destroy()
 
     def show_infodialog_cb(self, action):
         text = {
-        'ShortcutHelp': 
+        'ShortcutHelp':
                 _("Move your mouse over a menu entry, then press the key to assign."),
-        'ViewHelp': 
+        'ViewHelp':
                 _("You can also drag the canvas with the mouse while holding the middle "
                 "mouse button or spacebar. Or with the arrow keys."
                 "\n\n"
