@@ -12,6 +12,7 @@ gdk = gtk.gdk
 from gettext import gettext as _
 
 import windowing
+import stock
 import pixbuflist, dialogs, brushmanager
 from layout import ElasticExpander
 from brushlib import brushsettings
@@ -20,7 +21,7 @@ class ToolWidget (gtk.VBox):
 
     EXPANDER_PREFS_KEY = "brushmanager.common_settings_expanded"
 
-    tool_widget_title = _("Brushes")
+    stock_id = stock.TOOL_BRUSH
 
     def __init__(self, app):
         self.app = app

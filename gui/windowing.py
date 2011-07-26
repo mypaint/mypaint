@@ -49,11 +49,10 @@ def window_factory(role, layout_manager, app):
     module = __import__(role.lower(), globals(), locals(), [])
     if hasattr(module, "ToolWidget"):
         widget = module.ToolWidget(app)
-        title = widget.tool_widget_title
         connids = []
         connid = widget.connect("map", on_tool_widget_map, app, role, connids)
         connids.append(connid)
-        return (widget, title)
+        return (widget, widget.stock_id)
     else:
         window = module.Window(app)
         return (window, )

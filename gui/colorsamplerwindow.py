@@ -4,6 +4,7 @@ from math import pi, sin, cos, sqrt, atan2, ceil
 import struct
 import cairo
 import windowing
+import stock
 from layout import ElasticExpander
 from lib.helpers import rgb_to_hsv, hsv_to_rgb, clamp
 from gettext import gettext as _
@@ -1181,7 +1182,7 @@ class Selector(gtk.VBox):
 
 class ToolWidget (Selector):
 
-    tool_widget_title = _("Color Sampler")
+    stock_id = stock.TOOL_COLOR_SAMPLER
 
     def __init__(self, app):
         Selector.__init__(self, app)

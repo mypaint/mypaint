@@ -5,6 +5,7 @@ import gobject
 import pango
 
 import dialogs
+import stock
 
 def stock_button(stock_id):
     b = gtk.Button()
@@ -16,7 +17,7 @@ def stock_button(stock_id):
 
 class ToolWidget (gtk.VBox):
 
-    tool_widget_title = _("Layers")
+    stock_id = stock.TOOL_LAYERS
 
     def __init__(self, app):
         gtk.VBox.__init__(self)
