@@ -265,7 +265,7 @@ class GroupSelector(gtk.DrawingArea):
             for c in s:
                 self.idx2group[idx] = group
                 idx += 1
-            
+
             # Note the difference in terminology here
             bg_state = fg_state = gtk.STATE_NORMAL
             if group == self.gtkstate_active_group: # activated the menu
@@ -283,7 +283,7 @@ class GroupSelector(gtk.DrawingArea):
 
             # always use the STATE_SELECTED fg if the group is visible
             if group in self.bm.active_groups:
-                fg_state = gtk.STATE_SELECTED 
+                fg_state = gtk.STATE_SELECTED
 
             c = style_bg[bg_state]
             attr.insert(pango.AttrBackground(c.red, c.green, c.blue, idx_start, idx))
@@ -327,11 +327,11 @@ class GroupSelector(gtk.DrawingArea):
         c = style.text[gtk.STATE_NORMAL]
         cr.set_source_rgb(c.red_float, c.green_float, c.blue_float)
         layout = self.lay_out_group_names(width)
-        
+
         leading = style.font_desc.get_size() / 6
         vmargin = leading // pango.SCALE
         layout.set_spacing(leading)
-        
+
         cr.move_to(0, self.VERTICAL_MARGIN)
         cr.show_layout(layout)
 

@@ -236,7 +236,7 @@ class Application: # singleton
         window_pos = DEFAULT_CONFIG["layout.window_positions"]
         self.window_names = window_pos.keys()
         self.preferences = DEFAULT_CONFIG
-        try: 
+        try:
             user_config = get_json_config()
         except IOError:
             user_config = get_legacy_config()

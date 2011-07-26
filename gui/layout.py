@@ -599,7 +599,7 @@ class SmallImageButton (gtk.Button):
         self.set_size_request(w+4, h+4)
 
 
-class ToolResizeGrip (gtk.DrawingArea): 
+class ToolResizeGrip (gtk.DrawingArea):
     """A draggable bar for resizing a Tool vertically."""
 
     AREA_LEFT = 0
@@ -636,7 +636,7 @@ class ToolResizeGrip (gtk.DrawingArea):
             | gdk.LEAVE_NOTIFY_MASK | gdk.POINTER_MOTION_MASK
         self.set_events(mask)
         self.resize = None
-    
+
     def on_configure_event(self, widget, event):
         self.width = event.width
         self.height = event.height
@@ -682,12 +682,12 @@ class ToolResizeGrip (gtk.DrawingArea):
             self.resize = event.x_root, event.y_root, w, h, \
                           min_w, min_h, max_w, max_h
             self.grab_add()
-    
+
     def on_button_release_event(self, widget, event):
         self.resize = None
         self.grab_remove()
         self.window.set_cursor(None)
-    
+
     def get_cursor(self, area):
         if self.tool.floating:
             cursor = self.floating_cursor_map.get(area)
@@ -710,13 +710,13 @@ class ToolResizeGrip (gtk.DrawingArea):
         w = -1   # constrained horizontally anyway, better to not care
         self.tool.set_size_request(w, h)
         self.tool.queue_resize()
-    
+
     def on_leave_notify_event(self, widget, event):
         self.window.set_cursor(None)
 
 
 class FoldOutArrow (gtk.Button):
-    
+
     TEXT_EXPANDED = _("Collapse")
     TEXT_COLLAPSED = _("Expand")
 
@@ -730,7 +730,7 @@ class FoldOutArrow (gtk.Button):
         self.set_tooltip_text(self.TEXT_EXPANDED)
         self.add(self.arrow)
         self.connect("clicked", self.on_click)
-    
+
     def on_click(self, *a):
         self.tool.set_rolled_up(not self.tool.rolled_up)
 
@@ -881,7 +881,7 @@ class ToolDragHandle (gtk.EventBox):
     def on_leave_notify_event(self, widget, event):
         self.window.set_cursor(None)
         self.set_state(gtk.STATE_NORMAL)
-        
+
     def on_enter_notify_event(self, widget, event):
         self.window.set_cursor(gdk.Cursor(gdk.HAND2))
         #if not self.in_reposition_drag:
@@ -1018,7 +1018,7 @@ class Tool (gtk.VBox, ElasticContainer):
         self.rolled_up = False
         self.rolled_up_prev_size = None
         self.connect("size-allocate", self.on_size_allocate)
-    
+
     def on_size_allocate(self, widget, allocation):
         if self.rolled_up:
             return
@@ -1070,7 +1070,7 @@ class Tool (gtk.VBox, ElasticContainer):
         """
         self.handle.set_floating(floating)
         self.set_rolled_up(False)
-        
+
         # Clear any explicit size requests so that the frame is able to adopt a
         # natural size again.
         for wid in (self.handle, self):
@@ -1172,7 +1172,7 @@ class Tool (gtk.VBox, ElasticContainer):
 
     def on_close_button_pressed(self, window):
         self.set_hidden(True, reason="close-button-pressed")
-    
+
     def on_snap_button_pressed(self, window):
         # Mouse position
         display = gdk.display_get_default()
@@ -1236,7 +1236,7 @@ class ToolDragPreviewWindow (gtk.Window):
     def show_all(self):
         gtk.Window.show_all(self)
         self.window.move_resize(0, 0, 1, 1)
-    
+
     def on_map_event(self, window, event):
         owner_win = self.owner.get_toplevel()
         self.set_transient_for(owner_win)
@@ -1254,7 +1254,7 @@ class ToolDragPreviewWindow (gtk.Window):
             self.bg.draw_points(gc, [(0,0), (1,1)])
             self.window.set_back_pixmap(self.bg, False)
             self.window.clear()
-    
+
     def on_configure_event(self, window, event):
         # Shape the window
         w = event.width
@@ -1277,7 +1277,7 @@ class ToolDragPreviewWindow (gtk.Window):
 
 
 class ToolDragState:
-    
+
     """Manages visual state during tool repositioning.
 
     The resize grip can largely take care of itself, and deploy its own grabs.
