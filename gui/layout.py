@@ -1030,7 +1030,7 @@ class Tool (gtk.VBox, ElasticContainer):
         lm.prefs[self.role]["sbheight"] = allocation.height
 
     def on_floating_window_delete_event(self, window, event):
-        self.set_hidden(True, reason="window-deleted")
+        self.set_hidden(True)
         return True   # Suppress ordinary deletion. We'll be wanting it again.
 
     def set_show_resize_grip(self, show):
@@ -1171,7 +1171,7 @@ class Tool (gtk.VBox, ElasticContainer):
 
 
     def on_close_button_pressed(self, window):
-        self.set_hidden(True, reason="close-button-pressed")
+        self.set_hidden(True)
 
     def on_snap_button_pressed(self, window):
         # Mouse position
