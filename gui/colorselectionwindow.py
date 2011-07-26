@@ -13,13 +13,14 @@ import gtk
 gdk = gtk.gdk
 
 import windowing
+import stock
 from lib import helpers, mypaintlib
 
 
 class ToolWidget (gtk.VBox):
     """Tool widget with the standard GTK color selector (triangle)."""
 
-    tool_widget_title = _('Color Triangle')
+    stock_id = stock.TOOL_COLOR_SELECTOR
 
     def __init__(self, app):
         gtk.VBox.__init__(self)

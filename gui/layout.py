@@ -25,7 +25,7 @@ class LayoutManager:
     """Keeps track of tool positions, and main window state.
     """
 
-    def __init__(self, app, factory, factory_opts=[], prefs=None):
+    def __init__(self, factory, factory_opts=[], prefs=None):
         """Constructor.
 
             "prefs"
@@ -43,7 +43,7 @@ class LayoutManager:
                    1. (None,)
                    2. (window,)
                    3. (widget,)
-                   4. (tool_widget, title_str)
+                   4. (tool_widget, stock_id)
 
                 Form 1 indicates that no matching widget could be found.
                 Form 2 should be used for floating dialog windows, popup
@@ -54,7 +54,6 @@ class LayoutManager:
 
         if prefs is None:
             prefs = {}
-        self.app = app
         self.prefs = prefs
         self.window_group = gtk.WindowGroup()
         self.factory = factory
@@ -750,16 +749,17 @@ class ToolDragHandle (gtk.EventBox):
     min_drag_distance = 10
     spacing = 2
 
-    def __init__(self, tool, label_text):
+    def __init__(self, tool, stock_id):
         gtk.EventBox.__init__(self)
+        stock_info = gtk.stock_lookup(stock_id)
+        self.stock_id = stock_id
+        label_text = stock_info[1]
         self.tool = tool
         self.frame = frame = gtk.Frame()
         frame.set_shadow_type(gtk.SHADOW_OUT)
         self.hbox = hbox = gtk.HBox(spacing=self.spacing)
         self.hbox.set_border_width(self.spacing)
-        self.img = gtk.Image()
-        pixbuf = getattr(self.tool.layout_manager.app.pixmaps, "tool_%s" % self.tool.role)
-        self.img.set_from_pixbuf(pixbuf)
+        self.img = gtk.image_new_from_stock(stock_id, gtk.ICON_SIZE_BUTTON)
         hbox.pack_start(self.img, False, False)
         self.roll_up_button = FoldOutArrow(self.tool)
         hbox.pack_start(self.roll_up_button, False, False)
@@ -997,13 +997,13 @@ class Tool (gtk.VBox, ElasticContainer):
         gtk.VBox.__init__(self)
         ElasticContainer.__init__(self)
         self.role = role
+        self.widget = widget
         self.layout_manager = layout_manager
         self.handle = ToolDragHandle(self, gloss)
         self.pack_start(self.handle, False, False)
         self.widget_frame = frame = gtk.Frame()
         frame.set_shadow_type(gtk.SHADOW_IN)
         frame.add(widget)
-        self.widget = widget
         self.pack_start(frame, True, True)
         self.resize_grip = ToolResizeGrip(self)
         self.resize_grip_frame = gtk.Frame()
