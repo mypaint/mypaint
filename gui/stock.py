@@ -22,10 +22,13 @@ BRUSH_BLEND_MODE_ALPHA_LOCK = "mypaint-brush-blend-mode-alpha-lock"
 
 
 _stock_items = [
-    (TOOL_BRUSH, _("Brush List..."), 0, ord("b"), None),
-    (TOOL_COLOR_SELECTOR, _("Color Triangle..."), 0, ord("g"), None),
-    (TOOL_COLOR_SAMPLER, _("Color Sampler..."), 0, ord("t"), None),
-    (TOOL_LAYERS, _("Layers..."), 0, ord("l"), None),
+    # Tool windows. No trailing ellipses on these since none of them require
+    # further input before they can do anything: see section 4.3.2.1 of the the
+    # GNOME Human Interface Guidelines version 3.0.
+    (TOOL_BRUSH, _("Brush List"), 0, ord("b"), None),
+    (TOOL_COLOR_SELECTOR, _("Color Triangle"), 0, ord("g"), None),
+    (TOOL_COLOR_SAMPLER, _("Color Sampler"), 0, ord("t"), None),
+    (TOOL_LAYERS, _("Layers"), 0, ord("l"), None),
     (ROTATE_LEFT, _("Rotate Counterclockwise"),
         gdk.CONTROL_MASK, gdk.keyval_from_name("Left"), None),
     (ROTATE_RIGHT, _("Rotate Clockwise"),
