@@ -65,6 +65,7 @@ class LayoutManager:
         self.main_window = None
         self.saved_user_tools = []
         self.tool_visibility_observers = []
+        self.subwindow_visibility_observers = []
 
     def set_main_window_title(self, title):
         """Set the title for the main window.
@@ -101,6 +102,9 @@ class LayoutManager:
                     self.widgets[role] = widget
                     widget.set_role(role)
                     widget.set_transient_for(self.main_window)
+                    cb = self.notify_subwindow_visibility_observers
+                    widget.connect("show", cb, True)
+                    widget.connect("hide", cb, False)
                     return widget
                 elif isinstance(widget, gtk.Widget):
                     title = result[1]
@@ -171,14 +175,14 @@ class LayoutManager:
             off = not on
         if on or self.saved_user_tools:
             for tool in self.saved_user_tools:
-                tool.set_hidden(False, temporary=True, reason="toggle-user-tools")
+                tool.set_hidden(False, temporary=True)
                 tool.set_floating(tool.floating)
             self.saved_user_tools = []
         elif off or not self.saved_user_tools:
             for tool in self.get_tools_in_sbindex_order():
                 if tool.hidden:
                     continue
-                tool.set_hidden(True, temporary=True, reason="toggle-user-tools")
+                tool.set_hidden(True, temporary=True)
                 self.saved_user_tools.append(tool)
 
     def show_all(self):
@@ -214,6 +218,10 @@ class LayoutManager:
 
     def notify_tool_visibility_observers(self, *args, **kwargs):
         for func in self.tool_visibility_observers:
+            func(*args, **kwargs)
+
+    def notify_subwindow_visibility_observers(self, *args, **kwargs):
+        for func in self.subwindow_visibility_observers:
             func(*args, **kwargs)
 
 
@@ -1096,7 +1104,7 @@ class Tool (gtk.VBox, ElasticContainer):
                 lm.main_window.sidebar.hide()
             self.resize_grip_frame.set_shadow_type(gtk.SHADOW_OUT)
 
-    def set_hidden(self, hidden, reason=None, temporary=False):
+    def set_hidden(self, hidden, temporary=False):
         """Sets a tool as hidden, hiding or showing it as appropriate.
         
         Note that this does not affect whether the window is floating or not
@@ -1122,7 +1130,7 @@ class Tool (gtk.VBox, ElasticContainer):
             # Which will restore it to the correct state
         self.hidden = hidden
         lm.notify_tool_visibility_observers(role=self.role, active=not hidden,
-                                            reason=reason, temporary=temporary)
+                                            temporary=temporary)
         if not temporary:
             lm.prefs[role]["hidden"] = hidden
         if lm.main_window.sidebar.is_empty():

@@ -282,20 +282,14 @@ class Window (windowing.MainWindow, layout.MainWindow):
             visible = not lm.get_window_hidden_by_role(role)
             spec.append(visible)
             toggle_actions[i] = tuple(spec)
-
         ag.add_toggle_actions(toggle_actions)
 
         # Reflect changes from other places (like tools' close buttons) into
         # the proxys' visible states.
-        self.tool_toggle_items = {}
-        for tup in toggle_actions:
-            name = tup[0]
-            role = name[0].lower() + name[1:]
-            action = ag.get_action(name)
-            tool_item = action.create_tool_item()
-            self.tool_toggle_items[role] = tool_item
-        self.app.layout_manager.tool_visibility_observers\
-            .append(self.on_tool_visibility_changed)
+        lm.tool_visibility_observers.append(
+                self.on_toggle_item_visibility_changed)
+        lm.subwindow_visibility_observers.append(
+                self.on_subwindow_visibility_changed)
 
         # More toggle actions - ones which don't control windows.
         toggle_actions = [
@@ -382,9 +376,10 @@ class Window (windowing.MainWindow, layout.MainWindow):
         expander.set_expand(True)
         bar.insert(expander, -1)
 
-        for role in ["colorSelectionWindow", "colorSamplerWindow",
-                     "brushSelectionWindow", "layersWindow"]:
-            tool_item = self.tool_toggle_items[role]
+        for name in ["ColorSelectionWindow", "ColorSamplerWindow",
+                     "BrushSelectionWindow", "LayersWindow"]:
+            action = self.action_group.get_action(name)
+            tool_item = action.create_tool_item()
             bar.insert(tool_item, -1)
         self.toolbar = bar
 
@@ -564,7 +559,7 @@ class Window (windowing.MainWindow, layout.MainWindow):
         # If it's a tool, get it to hide/itself
         t = self.app.layout_manager.get_tool_by_role(window_name)
         if t is not None:
-            t.set_hidden(hidden=not active, reason="toggle-window-cb")
+            t.set_hidden(not active)
             return
         # Otherwise, if it's a regular subwindow hide/show+present it.
         w = self.app.layout_manager.get_subwindow_by_role(window_name)
@@ -581,13 +576,22 @@ class Window (windowing.MainWindow, layout.MainWindow):
                 return
             w.hide()
 
-    def on_tool_visibility_changed(self, role, active, reason, temporary):
-        if reason is "toggle-window-cb":
+    def on_subwindow_visibility_changed(self, window, active):
+        # Responds to non-tool subwindows being hidden and shown
+        role = window.get_role()
+        self.on_toggle_item_visibility_changed(role, active)
+
+    def on_toggle_item_visibility_changed(self, role, active, *a, **kw):
+        # Responds to any item with a role being hidden or shown by
+        # silently updating its ToggleAction to match.
+        action_name = role[0].upper() + role[1:]
+        action = self.action_group.get_action(action_name)
+        if action is None:
+            warn("Unable to find action %s" % action_name, RuntimeWarning, 1)
             return
-        tool_item = self.tool_toggle_items.get(role, None)
-        if tool_item is None:
-            return
-        tool_item.set_active(active)
+        action.block_activate()
+        action.set_active(active)
+        action.unblock_activate()
 
     def popup_cb(self, action):
         state = self.popup_states[action.get_name()]
