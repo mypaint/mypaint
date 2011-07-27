@@ -9,6 +9,7 @@ class GUI:
     def __init__(self):
         self.app = None
         self.tempdir = None
+        sys.argv_unicode = sys.argv # FileHandler.save_file passes this to gtk.recent_manager
 
     def __del__(self):
         if self.tempdir:
@@ -21,7 +22,7 @@ class GUI:
         self.app = application.Application(datapath=u'..', confpath=unicode(self.tempdir), filenames=[])
 
         # ignore mouse movements during testing (creating extra strokes)
-        def motion_ignore_cb(*trash1, **trash2):
+        def motion_ignore_cb(*junk1, **junk2):
             pass
         self.app.doc.tdw.motion_notify_cb = motion_ignore_cb
 

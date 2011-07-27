@@ -84,7 +84,6 @@ def paint(gui):
     events = loadtxt('painting30sec.dat.gz')
     events = list(events)
     yield start_measurement
-    t0 = time()
     t_old = 0.0
     t_last_redraw = 0.0
     for t, x, y, pressure in events:
