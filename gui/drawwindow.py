@@ -341,6 +341,9 @@ class Window (windowing.MainWindow, layout.MainWindow):
         return False
 
     def button_press_cb(self, win, event):
+        return self.button_press_cb_abstraction(win, event, self.app.doc)
+
+    def button_press_cb_abstraction(self, win, event, doc):
         #print event.device, event.button
 
         ## Ignore accidentals
@@ -384,23 +387,23 @@ class Window (windowing.MainWindow, layout.MainWindow):
         # Really belongs in the tdw, but this is the only object with access
         # to the application preferences.
         if action_name == 'straight_line':
-            self.app.doc.tdw.straight_line_from_last_pos(is_sequence=False)
+            doc.tdw.straight_line_from_last_pos(is_sequence=False)
             return True
         if action_name == 'straight_line_sequence':
-            self.app.doc.tdw.straight_line_from_last_pos(is_sequence=True)
+            doc.tdw.straight_line_from_last_pos(is_sequence=True)
             return True
 
         # View control
         if action_name.endswith("_canvas"):
             dragfunc = None
             if action_name == "pan_canvas":
-                dragfunc = self.app.doc.dragfunc_translate
+                dragfunc = doc.dragfunc_translate
             elif action_name == "zoom_canvas":
-                dragfunc = self.app.doc.dragfunc_zoom
+                dragfunc = doc.dragfunc_zoom
             elif action_name == "rotate_canvas":
-                dragfunc = self.app.doc.dragfunc_rotate
+                dragfunc = doc.dragfunc_rotate
             if dragfunc is not None:
-                self.app.doc.tdw.start_drag(dragfunc)
+                doc.tdw.start_drag(dragfunc)
                 return True
             return False
 
@@ -415,19 +418,22 @@ class Window (windowing.MainWindow, layout.MainWindow):
             return True
 
         # Dispatch regular GTK events.
-        for ag in self.action_group, self.app.doc.action_group:
+        for ag in self.action_group, doc.action_group:
             action = ag.get_action(action_name)
             if action is not None:
                 action.activate()
                 return True
 
     def button_release_cb(self, win, event):
+        return self.button_release_cb_abstraction(win, event, self.app.doc)
+
+    def button_release_cb_abstraction(self, win, event, doc):
         #print event.device, event.button
-        tdw = self.app.doc.tdw
+        tdw = doc.tdw
         if tdw.dragfunc is not None:
-            tdw.stop_drag(self.app.doc.dragfunc_translate)
-            tdw.stop_drag(self.app.doc.dragfunc_rotate)
-            tdw.stop_drag(self.app.doc.dragfunc_zoom)
+            tdw.stop_drag(doc.dragfunc_translate)
+            tdw.stop_drag(doc.dragfunc_rotate)
+            tdw.stop_drag(doc.dragfunc_zoom)
         return False
 
     def scroll_cb(self, win, event):
