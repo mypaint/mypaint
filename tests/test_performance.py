@@ -343,7 +343,7 @@ if __name__ == '__main__':
                     fname = '%s_%s_%d.pstats' % (options.profile, t, i)
                 args[3] = fname
             child = subprocess.Popen(args, stdout=subprocess.PIPE)
-            output, trash = child.communicate()
+            output, junk = child.communicate()
             if child.returncode != 0:
                 print 'FAILED'
                 break

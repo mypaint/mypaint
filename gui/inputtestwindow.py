@@ -65,7 +65,7 @@ class Window(windowing.SubWindow):
         vbox.pack_start(tv, expand=True, fill=True)
         self.log = []
 
-    def map_cb(self, *trash):
+    def map_cb(self, *junk):
         if self.initialized:
             return
         print 'Event statistics enabled.'

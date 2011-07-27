@@ -97,7 +97,7 @@ class Application: # singleton
         # FIXME: brush_adjustments should not be dependent on this
         self.layout_manager.get_subwindow_by_role("brushSettingsWindow")
 
-        def at_application_start(*trash):
+        def at_application_start(*junk):
             self.brushmanager.select_initial_brush()
             if filenames:
                 # Open only the first file, no matter how many has been specified
@@ -329,7 +329,7 @@ class Application: # singleton
         root = screen.get_root_window()
         screen_w, screen_h = screen.get_width(), screen.get_height()
         display = widget.get_display()
-        screen_trash, x_root, y_root, modifiermask_trash = display.get_pointer()
+        screen_junk, x_root, y_root, modifiermask_trash = display.get_pointer()
         image = None
         x = x_root-size/2
         y = y_root-size/2

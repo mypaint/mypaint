@@ -65,7 +65,7 @@ class KeyboardManager:
             # happen is when I put my laptop into sleep mode.
             print 'Warning: translate_keyboard_state() returned None. Strange key pressed?'
             return
-        keyval, trash2, trash3, consumed_modifiers = res
+        keyval, junk2, junk3, consumed_modifiers = res
         # We want to ignore irrelevant modifiers like ScrollLock.
         # The stored key binding does not include modifiers that affected its keyval.
         modifiers = event.state & gtk.accelerator_get_default_mod_mask() & ~consumed_modifiers

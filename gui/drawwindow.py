@@ -470,7 +470,7 @@ class Window (windowing.MainWindow, layout.MainWindow):
         state = self.popup_states[action.get_name()]
         state.activate(action)
 
-    def fullscreen_cb(self, *trash):
+    def fullscreen_cb(self, *junk):
         if not self.is_fullscreen:
             self.fullscreen()
         else:
@@ -548,7 +548,7 @@ class Window (windowing.MainWindow, layout.MainWindow):
     def save_current_scratchpad_cb(self, action):
         self.app.filehandler.save_scratchpad(self.app.filehandler.scratchpad_filename)
 
-    def quit_cb(self, *trash):
+    def quit_cb(self, *junk):
         self.app.doc.model.split_stroke()
         self.app.save_gui_config() # FIXME: should do this periodically, not only on quit
 
@@ -562,7 +562,7 @@ class Window (windowing.MainWindow, layout.MainWindow):
         enabled = self.app.doc.model.frame_enabled
         self.app.doc.model.set_frame_enabled(not enabled)
 
-    def import_brush_pack_cb(self, *trash):
+    def import_brush_pack_cb(self, *junk):
         format_id, filename = dialogs.open_dialog(_("Import brush package..."), self,
                                  [(_("MyPaint brush package (*.zip)"), "*.zip")])
         if filename:

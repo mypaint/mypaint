@@ -324,7 +324,7 @@ class Document():
 
     def save(self, filename, **kwargs):
         self.split_stroke()
-        trash, ext = os.path.splitext(filename)
+        junk, ext = os.path.splitext(filename)
         ext = ext.lower().replace('.', '')
         save = getattr(self, 'save_' + ext, self.unsupported)
         try:        
@@ -346,7 +346,7 @@ class Document():
             raise SaveLoadError, _('File does not exist: %s') % repr(filename)
         if not os.access(filename,os.R_OK):
             raise SaveLoadError, _('You do not have the necessary permissions to open file: %s') % repr(filename)
-        trash, ext = os.path.splitext(filename)
+        junk, ext = os.path.splitext(filename)
         ext = ext.lower().replace('.', '')
         load = getattr(self, 'load_' + ext, self.unsupported)
         try:
