@@ -131,6 +131,7 @@ class Window (windowing.MainWindow, layout.MainWindow):
             ('ScratchSaveNow',  None, _('Save Scratchpad Now'), None, None, self.save_current_scratchpad_cb),
             ('ScratchSaveAsDefault',  None, _('Save Scratchpad As Default'), None, None, self.save_scratchpad_as_default_cb),
             ('ScratchClearDefault',  None, _('Clear the Default Scratchpad'), None, None, self.clear_default_scratchpad_cb),
+            ('ScratchClearAutosave',  None, _('Clear the Autosaved Scratchpad'), None, None, self.clear_autosave_scratchpad_cb),
 
 
             ('BrushMenu',    None, _('Brush')),
@@ -540,6 +541,9 @@ class Window (windowing.MainWindow, layout.MainWindow):
     
     def clear_default_scratchpad_cb(self, action):
         self.app.filehandler.delete_default_scratchpad()
+
+    def clear_autosave_scratchpad_cb(self, action):
+        self.app.filehandler.delete_autosave_scratchpad()
 
     def save_current_scratchpad_cb(self, action):
         self.app.filehandler.save_scratchpad(self.app.filehandler.scratchpad_filename)

@@ -718,4 +718,9 @@ class FileHandler(object):
     def delete_default_scratchpad(self):
         if os.path.isfile(self.get_scratchpad_default()):
             os.remove(self.get_scratchpad_default())
+            print "Removed the scratchpad default file"
 
+    def delete_autosave_scratchpad(self):
+        if os.path.isfile(self.get_scratchpad_autosave()):
+            os.remove(self.get_scratchpad_autosave())
+            print "Removed the scratchpad autosave file"

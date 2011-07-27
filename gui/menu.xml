@@ -140,7 +140,9 @@
       <menuitem action='ScratchSaveNow'/>
       <separator/>
       <menuitem action='ScratchSaveAsDefault'/>
+      <separator/>
       <menuitem action='ScratchClearDefault'/>
+      <menuitem action='ScratchClearAutosave'/>
     </menu>
     <menu action='HelpMenu'>
       <menuitem action='Docu'/>
