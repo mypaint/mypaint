@@ -52,6 +52,7 @@ class Document():
         self.stroke_observers = [] # callback arguments: stroke, brush (brush is a temporary read-only convenience object)
         self.doc_observers = []
         self.frame_observers = []
+        self.command_stack_observers = []
         self.clear(True)
 
         self._frame = [0, 0, 0, 0]
@@ -117,7 +118,9 @@ class Document():
         if not init:
             bbox = self.get_bbox()
         # throw everything away, including undo stack
+
         self.command_stack = command.CommandStack()
+        self.command_stack.stack_observers = self.command_stack_observers
         self.set_background((255, 255, 255))
         self.layers = []
         self.layer_idx = None
