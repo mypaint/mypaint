@@ -48,6 +48,95 @@ def with_wait_cursor(func):
             self.app.doc.tdw.grab_remove()
     return wrapper
 
+def button_press_cb_abstraction(drawwindow, win, event, doc):
+    #print event.device, event.button
+
+    ## Ignore accidentals
+    # Single button-presses only, not 2ble/3ple
+    if event.type != gdk.BUTTON_PRESS:
+        # ignore the extra double-click event
+        return False
+
+    if event.button != 1:
+        # check whether we are painting (accidental)
+        if event.state & gdk.BUTTON1_MASK:
+            # Do not allow dragging in the middle of
+            # painting. This often happens by accident with wacom
+            # tablet's stylus button.
+            #
+            # However we allow dragging if the user's pressure is
+            # still below the click threshold.  This is because
+            # some tablet PCs are not able to produce a
+            # middle-mouse click without reporting pressure.
+            # https://gna.org/bugs/index.php?15907
+            return False
+
+    # Pick a suitable config option
+    ctrl = event.state & gdk.CONTROL_MASK
+    alt  = event.state & gdk.MOD1_MASK
+    shift = event.state & gdk.SHIFT_MASK
+    if shift:
+        modifier_str = "_shift"
+    elif alt or ctrl:
+        modifier_str = "_ctrl"
+    else:
+        modifier_str = ""
+    prefs_name = "input.button%d%s_action" % (event.button, modifier_str)
+    action_name = drawwindow.app.preferences.get(prefs_name, "no_action")
+
+    # No-ops
+    if action_name == 'no_action':
+        return True  # We handled it by doing nothing
+
+    # Straight line
+    # Really belongs in the tdw, but this is the only object with access
+    # to the application preferences.
+    if action_name == 'straight_line':
+        doc.tdw.straight_line_from_last_pos(is_sequence=False)
+        return True
+    if action_name == 'straight_line_sequence':
+        doc.tdw.straight_line_from_last_pos(is_sequence=True)
+        return True
+
+    # View control
+    if action_name.endswith("_canvas"):
+        dragfunc = None
+        if action_name == "pan_canvas":
+            dragfunc = doc.dragfunc_translate
+        elif action_name == "zoom_canvas":
+            dragfunc = doc.dragfunc_zoom
+        elif action_name == "rotate_canvas":
+            dragfunc = doc.dragfunc_rotate
+        if dragfunc is not None:
+            doc.tdw.start_drag(dragfunc)
+            return True
+        return False
+
+    # Application menu
+    if action_name == 'popup_menu':
+        drawwindow.show_popupmenu(event=event)
+        return True
+
+    if action_name in drawwindow.popup_states:
+        state = drawwindow.popup_states[action_name]
+        state.activate(event)
+        return True
+
+    # Dispatch regular GTK events.
+    for ag in drawwindow.action_group, doc.action_group:
+        action = ag.get_action(action_name)
+        if action is not None:
+            action.activate()
+            return True
+
+def button_release_cb_abstraction(win, event, doc):
+    #print event.device, event.button
+    tdw = doc.tdw
+    if tdw.dragfunc is not None:
+        tdw.stop_drag(doc.dragfunc_translate)
+        tdw.stop_drag(doc.dragfunc_rotate)
+        tdw.stop_drag(doc.dragfunc_zoom)
+    return False
 
 class Window (windowing.MainWindow, layout.MainWindow):
 
@@ -341,100 +430,10 @@ class Window (windowing.MainWindow, layout.MainWindow):
         return False
 
     def button_press_cb(self, win, event):
-        return self.button_press_cb_abstraction(win, event, self.app.doc)
-
-    def button_press_cb_abstraction(self, win, event, doc):
-        #print event.device, event.button
-
-        ## Ignore accidentals
-        # Single button-presses only, not 2ble/3ple
-        if event.type != gdk.BUTTON_PRESS:
-            # ignore the extra double-click event
-            return False
-
-        if event.button != 1:
-            # check whether we are painting (accidental)
-            if event.state & gdk.BUTTON1_MASK:
-                # Do not allow dragging in the middle of
-                # painting. This often happens by accident with wacom
-                # tablet's stylus button.
-                #
-                # However we allow dragging if the user's pressure is
-                # still below the click threshold.  This is because
-                # some tablet PCs are not able to produce a
-                # middle-mouse click without reporting pressure.
-                # https://gna.org/bugs/index.php?15907
-                return False
-
-        # Pick a suitable config option
-        ctrl = event.state & gdk.CONTROL_MASK
-        alt  = event.state & gdk.MOD1_MASK
-        shift = event.state & gdk.SHIFT_MASK
-        if shift:
-            modifier_str = "_shift"
-        elif alt or ctrl:
-            modifier_str = "_ctrl"
-        else:
-            modifier_str = ""
-        prefs_name = "input.button%d%s_action" % (event.button, modifier_str)
-        action_name = self.app.preferences.get(prefs_name, "no_action")
-
-        # No-ops
-        if action_name == 'no_action':
-            return True  # We handled it by doing nothing
-
-        # Straight line
-        # Really belongs in the tdw, but this is the only object with access
-        # to the application preferences.
-        if action_name == 'straight_line':
-            doc.tdw.straight_line_from_last_pos(is_sequence=False)
-            return True
-        if action_name == 'straight_line_sequence':
-            doc.tdw.straight_line_from_last_pos(is_sequence=True)
-            return True
-
-        # View control
-        if action_name.endswith("_canvas"):
-            dragfunc = None
-            if action_name == "pan_canvas":
-                dragfunc = doc.dragfunc_translate
-            elif action_name == "zoom_canvas":
-                dragfunc = doc.dragfunc_zoom
-            elif action_name == "rotate_canvas":
-                dragfunc = doc.dragfunc_rotate
-            if dragfunc is not None:
-                doc.tdw.start_drag(dragfunc)
-                return True
-            return False
-
-        # Application menu
-        if action_name == 'popup_menu':
-            self.show_popupmenu(event=event)
-            return True
-
-        if action_name in self.popup_states:
-            state = self.popup_states[action_name]
-            state.activate(event)
-            return True
-
-        # Dispatch regular GTK events.
-        for ag in self.action_group, doc.action_group:
-            action = ag.get_action(action_name)
-            if action is not None:
-                action.activate()
-                return True
+        return button_press_cb_abstraction(self, win, event, self.app.doc)
 
     def button_release_cb(self, win, event):
-        return self.button_release_cb_abstraction(win, event, self.app.doc)
-
-    def button_release_cb_abstraction(self, win, event, doc):
-        #print event.device, event.button
-        tdw = doc.tdw
-        if tdw.dragfunc is not None:
-            tdw.stop_drag(doc.dragfunc_translate)
-            tdw.stop_drag(doc.dragfunc_rotate)
-            tdw.stop_drag(doc.dragfunc_zoom)
-        return False
+        return button_release_cb_abstraction(win, event, self.app.doc)
 
     def scroll_cb(self, win, event):
         d = event.direction
