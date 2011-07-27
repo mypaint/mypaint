@@ -12,11 +12,13 @@ import helpers
 class CommandStack:
     def __init__(self):
         self.call_before_action = []
+        self.stack_observers = []
         self.clear()
     
     def clear(self):
         self.undo_stack = []
         self.redo_stack = []
+        self.notify_stack_observers()
 
     def do(self, command):
         for f in self.call_before_action: f()
@@ -24,6 +26,7 @@ class CommandStack:
         command.redo()
         self.undo_stack.append(command)
         self.reduce_undo_history()
+        self.notify_stack_observers()
     
     def undo(self):
         if not self.undo_stack: return
@@ -31,6 +34,7 @@ class CommandStack:
         command = self.undo_stack.pop()
         command.undo()
         self.redo_stack.append(command)
+        self.notify_stack_observers()
         return command
         
     def redo(self):
@@ -39,6 +43,7 @@ class CommandStack:
         command = self.redo_stack.pop()
         command.redo()
         self.undo_stack.append(command)
+        self.notify_stack_observers()
         return command
 
     def reduce_undo_history(self):
@@ -55,7 +60,10 @@ class CommandStack:
     def get_last_command(self):
         if not self.undo_stack: return None
         return self.undo_stack[-1]
-        
+
+    def notify_stack_observers(self):
+        for func in self.stack_observers:
+            func(self)
 
 class Action:
     '''Base class for all undo/redoable actions. Subclasses must implement the
