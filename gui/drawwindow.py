@@ -573,13 +573,13 @@ class Window (windowing.MainWindow, layout.MainWindow):
                 if filename:
                     #filename = "/home/ben/.gimp-2.6/palettes/Nature_Grass.gpl" # TEMP HACK TO TEST
                     g = GimpPalette(filename)
-                    grid_size = 35.0
+                    grid_size = 30.0
                     off_x = off_y = grid_size
                     column_limit = 7
                     if g.columns != 0:
                         column_limit = g.columns   # use the value for columns in the palette
                     for colour_idx in xrange(len(g)):
-                        gen_events = squiggle(off_x, off_y, scale=10.0)
+                        gen_events = squiggle(off_x, off_y, scale=13.0)
                         # Set the color
                         self.app.brush.set_color_rgb(g.rgb(colour_idx))
                         # simulate strokes on scratchpad
