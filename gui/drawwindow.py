@@ -58,6 +58,7 @@ class Window (windowing.MainWindow, layout.MainWindow):
         self.app = app
 
         # Window handling
+        self._updating_toggled_item = False
         self._show_subwindows = True
         self.is_fullscreen = False
 
@@ -172,23 +173,23 @@ class Window (windowing.MainWindow, layout.MainWindow):
                     None, None, _("Toggle the advanced Colour Sampler"),
                     self.toggle_window_cb),
             ]
-
-        # Initial toggle state
-        lm = self.app.layout_manager
-        for i in xrange(0, len(toggle_actions)):
-            spec = list(toggle_actions[i])
-            role = spec[0][0].lower() + spec[0][1:]
-            visible = not lm.get_window_hidden_by_role(role)
-            spec.append(visible)
-            toggle_actions[i] = tuple(spec)
         ag.add_toggle_actions(toggle_actions)
 
         # Reflect changes from other places (like tools' close buttons) into
         # the proxys' visible states.
-        lm.tool_visibility_observers.append(
-                self.on_toggle_item_visibility_changed)
-        lm.subwindow_visibility_observers.append(
-                self.on_subwindow_visibility_changed)
+        lm = self.app.layout_manager
+        lm.tool_visibility_observers.append(self.update_toggled_item_visibility)
+        lm.subwindow_visibility_observers.append(self.update_subwindow_visibility)
+
+        # Initial toggle state
+        for spec in toggle_actions:
+            name = spec[0]
+            action = ag.get_action(name)
+            role = name[0].lower() + name[1:]
+            visible = not lm.get_window_hidden_by_role(role)
+            # The sidebar machinery won't be up yet, so reveal windows that
+            # should be initially visible only in an idle handler
+            gobject.idle_add(action.set_active, visible)
 
         # More toggle actions - ones which don't control windows.
         toggle_actions = [
@@ -523,10 +524,12 @@ class Window (windowing.MainWindow, layout.MainWindow):
 
     # WINDOW HANDLING
     def toggle_window_cb(self, action):
+        if self._updating_toggled_item:
+            return
         s = action.get_name()
-        active = action.get_property("active")
+        active = action.get_active()
         window_name = s[0].lower() + s[1:] # WindowName -> windowName
-        # If it's a tool, get it to hide/itself
+        # If it's a tool, get it to hide/show itself
         t = self.app.layout_manager.get_tool_by_role(window_name)
         if t is not None:
             t.set_hidden(not active)
@@ -546,12 +549,12 @@ class Window (windowing.MainWindow, layout.MainWindow):
                 return
             w.hide()
 
-    def on_subwindow_visibility_changed(self, window, active):
+    def update_subwindow_visibility(self, window, active):
         # Responds to non-tool subwindows being hidden and shown
         role = window.get_role()
-        self.on_toggle_item_visibility_changed(role, active)
+        self.update_toggled_item_visibility(role, active)
 
-    def on_toggle_item_visibility_changed(self, role, active, *a, **kw):
+    def update_toggled_item_visibility(self, role, active, *a, **kw):
         # Responds to any item with a role being hidden or shown by
         # silently updating its ToggleAction to match.
         action_name = role[0].upper() + role[1:]
@@ -559,9 +562,10 @@ class Window (windowing.MainWindow, layout.MainWindow):
         if action is None:
             warn("Unable to find action %s" % action_name, RuntimeWarning, 1)
             return
-        action.block_activate()
-        action.set_active(active)
-        action.unblock_activate()
+        if action.get_active() != active:
+            self._updating_toggled_item = True
+            action.set_active(active)
+            self._updating_toggled_item = False
 
     def popup_cb(self, action):
         state = self.popup_states[action.get_name()]
@@ -606,27 +610,20 @@ class Window (windowing.MainWindow, layout.MainWindow):
         """Programatically set the Show Subwindows option.
         """
         action = self.action_group.get_action("ToggleSubwindows")
-        if show_subwindows:
-            if not action.get_active():
-                action.set_active(True)
-            self._show_subwindows = True
-        else:
-            if action.get_active():
-                action.set_active(False)
-            self._show_subwindows = False
+        currently_showing = action.get_active()
+        if show_subwindows != currently_showing:
+            action.set_active(show_subwindows)
+        self._show_subwindows = self._show_subwindows
 
     def get_show_subwindows(self):
         return self._show_subwindows
 
     def toggle_subwindows_cb(self, action):
         active = action.get_active()
-        print "toggle subwindows: active=%s" % (active,)
         lm = self.app.layout_manager
         if active:
-            print "toggling user tools on"
             lm.toggle_user_tools(on=True)
         else:
-            print "toggling user tools off"
             lm.toggle_user_tools(on=False)
         self._show_subwindows = active
 
