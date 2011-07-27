@@ -47,7 +47,7 @@ class LayoutManager:
 
                 Form 1 indicates that no matching widget could be found.
                 Form 2 should be used for floating dialog windows, popup
-                windowrs and similar, or for "main-window". Form 3 is
+                windows and similar, or for "main-window". Form 3 is
                 expected when the "role" parameter is "main-widget"; the
                 returned widgets are packed into the main window.
         """
@@ -64,7 +64,7 @@ class LayoutManager:
         self.subwindows = {}   # {role: <gtk.Window>}
         self.main_window = None
         self.saved_user_tools = []
-        self.sidebar_state_observers = []
+        self.tool_visibility_observers = []
 
     def set_main_window_title(self, title):
         """Set the title for the main window.
@@ -127,16 +127,22 @@ class LayoutManager:
         Only valid for roles for which a corresponding packable widget was
         created by the factory method.
         """
-        newly_loaded = role not in self.widgets
+        #newly_loaded = role not in self.widgets
         _junk = self.get_widget_by_role(role)
         tool = self.tools.get(role, None)
-        if tool is not None and newly_loaded:
-            hidden = self.prefs.get(tool.role, {}).get("hidden", True)
-            floating = self.prefs.get(tool.role, {}).get("floating", False)
-            tool.set_floating(floating)
-            tool.set_hidden(hidden)
-            # XXX move the above to get_widget_by_role()?
+        #if tool is not None and newly_loaded:
+        #    hidden = self.get_window_hidden_by_role(tool.role)
+        #    floating = self.get_window_floating_by_role(tool.role)
+        #    tool.set_floating(floating)
+        #    tool.set_hidden(hidden, reason="newly-loaded-prefs")
+        #    # XXX move the above to get_widget_by_role()?
         return tool
+
+    def get_window_hidden_by_role(self, role, default=True):
+        return self.prefs.get(role, {}).get("hidden", default)
+
+    def get_window_floating_by_role(self, role, default=False):
+        return self.prefs.get(role, {}).get("floating", default)
 
     def get_tools_in_sbindex_order(self):
         """Lists all loaded tools in order of ther sbindex setting.
@@ -165,14 +171,14 @@ class LayoutManager:
             off = not on
         if on or self.saved_user_tools:
             for tool in self.saved_user_tools:
-                tool.set_hidden(False, temporary=True)
+                tool.set_hidden(False, temporary=True, reason="toggle-user-tools")
                 tool.set_floating(tool.floating)
             self.saved_user_tools = []
         elif off or not self.saved_user_tools:
             for tool in self.get_tools_in_sbindex_order():
                 if tool.hidden:
                     continue
-                tool.set_hidden(True, temporary=True)
+                tool.set_hidden(True, temporary=True, reason="toggle-user-tools")
                 self.saved_user_tools.append(tool)
 
     def show_all(self):
@@ -205,6 +211,10 @@ class LayoutManager:
 
         # Present the main window for consistency with the toggle action.
         gobject.idle_add(self.main_window.present)
+
+    def notify_tool_visibility_observers(self, *args, **kwargs):
+        for func in self.tool_visibility_observers:
+            func(*args, **kwargs)
 
 
 class ElasticContainer:
@@ -470,10 +480,10 @@ class MainWindow (WindowWithSavedPosition):
         self.main_widget = None; self.init_main_widget()
         self.sidebar = Sidebar(layout_manager)
         self.hpaned = gtk.HPaned()
-        self.layout_vbox = gtk.VBox()
         self.hpaned_position_loaded = False
         self.hpaned.pack1(self.main_widget, True, False)
         self.hpaned.pack2(self.sidebar, False, False)
+        self.layout_vbox = gtk.VBox()
         if self.menubar is not None:
             self.layout_vbox.pack_start(self.menubar, False, False)
         if self.toolbar is not None:
@@ -1012,7 +1022,7 @@ class Tool (gtk.VBox, ElasticContainer):
         lm.prefs[self.role]["sbheight"] = allocation.height
 
     def on_floating_window_delete_event(self, window, event):
-        self.set_hidden(True)
+        self.set_hidden(True, reason="window-deleted")
         return True   # Suppress ordinary deletion. We'll be wanting it again.
 
     def set_show_resize_grip(self, show):
@@ -1086,7 +1096,7 @@ class Tool (gtk.VBox, ElasticContainer):
                 lm.main_window.sidebar.hide()
             self.resize_grip_frame.set_shadow_type(gtk.SHADOW_OUT)
 
-    def set_hidden(self, hidden, temporary=False):
+    def set_hidden(self, hidden, reason=None, temporary=False):
         """Sets a tool as hidden, hiding or showing it as appropriate.
         
         Note that this does not affect whether the window is floating or not
@@ -1111,6 +1121,8 @@ class Tool (gtk.VBox, ElasticContainer):
             self.set_floating(self.floating)
             # Which will restore it to the correct state
         self.hidden = hidden
+        lm.notify_tool_visibility_observers(role=self.role, active=not hidden,
+                                            reason=reason, temporary=temporary)
         if not temporary:
             lm.prefs[role]["hidden"] = hidden
         if lm.main_window.sidebar.is_empty():
@@ -1151,7 +1163,7 @@ class Tool (gtk.VBox, ElasticContainer):
 
 
     def on_close_button_pressed(self, window):
-        self.set_hidden(True)
+        self.set_hidden(True, reason="close-button-pressed")
     
     def on_snap_button_pressed(self, window):
         # Mouse position
@@ -1466,21 +1478,6 @@ class Sidebar (gtk.EventBox):
     def is_empty(self):
         """True if there are no tools in the sidebar."""
         return self.num_tools() == 0
-
-    def show_all(self):
-        for func in self.layout_manager.sidebar_state_observers:
-            func(visible=True)
-        gtk.EventBox.show_all(self)
-
-    def show(self):
-        for func in self.layout_manager.sidebar_state_observers:
-            func(visible=True)
-        gtk.EventBox.show(self)
-
-    def hide(self):
-        for func in self.layout_manager.sidebar_state_observers:
-            func(visible=False)
-        gtk.EventBox.hide(self)
 
     def insertion_point_at_pointer(self):
         """Returns where in the sidebar a tool would be inserted.

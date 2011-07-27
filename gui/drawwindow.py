@@ -24,6 +24,8 @@ from gtk import gdk, keysyms
 import colorselectionwindow, historypopup, stategroup, colorpicker, windowing, layout
 import dialogs
 from lib import helpers
+import stock
+
 import xml.etree.ElementTree as ET
 
 # TODO: put in a helper file?
@@ -54,6 +56,10 @@ class Window (windowing.MainWindow, layout.MainWindow):
     def __init__(self, app):
         windowing.MainWindow.__init__(self, app)
         self.app = app
+
+        # Window handling
+        self._show_subwindows = True
+        self.is_fullscreen = False
 
         # Enable drag & drop
         self.drag_dest_set(gtk.DEST_DEFAULT_MOTION | 
@@ -88,9 +94,6 @@ class Window (windowing.MainWindow, layout.MainWindow):
 
         self.init_stategroups()
 
-        # Window handling
-        self.is_fullscreen = False
-
     #XXX: Compatability
     def get_doc(self):
         print "DeprecationWarning: Use app.doc instead"
@@ -105,30 +108,22 @@ class Window (windowing.MainWindow, layout.MainWindow):
             # name, stock id, label, accelerator, tooltip, callback
             ('FileMenu',    None, _('File')),
             ('Quit',         gtk.STOCK_QUIT, _('Quit'), '<control>q', None, self.quit_cb),
-            ('FrameWindow',  None, _('Document Frame...'), None, None, self.toggleWindow_cb),
             ('FrameToggle',  None, _('Toggle Document Frame'), None, None, self.toggle_frame_cb),
 
             ('EditMenu',        None, _('Edit')),
-            ('PreferencesWindow', gtk.STOCK_PREFERENCES, _('Preferences...'), None, None, self.toggleWindow_cb),
 
             ('ColorMenu',    None, _('Color')),
             ('ColorPickerPopup',    gtk.STOCK_COLOR_PICKER, _('Pick Color'), 'r', None, self.popup_cb),
             ('ColorHistoryPopup',  None, _('Color History'), 'x', None, self.popup_cb),
             ('ColorChangerPopup', None, _('Color Changer'), 'v', None, self.popup_cb),
             ('ColorRingPopup',  None, _('Color Ring'), None, None, self.popup_cb),
-            ('ColorSelectionWindow',  gtk.STOCK_SELECT_COLOR, _('Color Triangle...'), 'g', None, self.toggleWindow_cb),
-            ('ColorSamplerWindow',  gtk.STOCK_SELECT_COLOR, _('Color Sampler...'), 't', None, self.toggleWindow_cb),
 
             ('ContextMenu',  None, _('Brushkeys')),
             ('ContextHelp',  gtk.STOCK_HELP, _('Help!'), None, None, self.show_infodialog_cb),
 
             ('LayerMenu',    None, _('Layers')),
-            ('LayersWindow', gtk.STOCK_INDEX, _('Layers...'), 'l', None, self.toggleWindow_cb),
-            ('BackgroundWindow', gtk.STOCK_PAGE_SETUP, _('Background...'), None, None, self.toggleWindow_cb),
 
             ('BrushMenu',    None, _('Brush')),
-            ('BrushSelectionWindow',  None, _('Brush List...'), 'b', None, self.toggleWindow_cb),
-            ('BrushSettingsWindow',   gtk.STOCK_PROPERTIES, _('Brush Editor...'), '<control>b', None, self.toggleWindow_cb),
             ('ImportBrushPack',       gtk.STOCK_OPEN, _('Import brush package...'), '', None, self.import_brush_pack_cb),
 
             ('HelpMenu',   None, _('Help')),
@@ -140,22 +135,81 @@ class Window (windowing.MainWindow, layout.MainWindow):
             ('PrintMemoryLeak',  None, _('Print Memory Leak Info to Console (Slow!)'), None, None, self.print_memory_leak_cb),
             ('RunGarbageCollector',  None, _('Run Garbage Collector Now'), None, None, self.run_garbage_collector_cb),
             ('StartProfiling',  gtk.STOCK_EXECUTE, _('Start/Stop Python Profiling (cProfile)'), None, None, self.start_profiling_cb),
-            ('InputTestWindow',  None, _('Test input devices...'), None, None, self.toggleWindow_cb),
             ('GtkInputDialog',  None, _('GTK input device dialog...'), None, None, self.gtk_input_dialog_cb),
 
 
             ('ViewMenu', None, _('View')),
             ('ShowPopupMenu',    None, _('Popup Menu'), 'Menu', None, self.popupmenu_show_cb),
             ('Fullscreen',   gtk.STOCK_FULLSCREEN, _('Fullscreen'), 'F11', None, self.fullscreen_cb),
-            ('ToggleSubwindows',    None, _('Toggle Subwindows'), 'Tab', None, self.toggle_subwindows_cb),
             ('ViewHelp',  gtk.STOCK_HELP, _('Help'), None, None, self.show_infodialog_cb),
             ]
         ag = self.action_group = gtk.ActionGroup('WindowActions')
         ag.add_actions(actions)
 
+        # Toggle actions
+        toggle_actions = [
+            ('PreferencesWindow', gtk.STOCK_PREFERENCES,
+                    _('Preferences...'), None, None, self.toggle_window_cb),
+            ('InputTestWindow',  None,
+                    _('Test input devices...'), None, None, self.toggle_window_cb),
+            ('FrameWindow',  None,
+                    _('Document Frame...'), None, None, self.toggle_window_cb),
+            ('LayersWindow', stock.TOOL_LAYERS,
+                    None, None, _("Toggle the Layers list"),
+                    self.toggle_window_cb),
+            ('BackgroundWindow', gtk.STOCK_PAGE_SETUP,
+                    _('Background...'), None, None, self.toggle_window_cb),
+            ('BrushSelectionWindow', stock.TOOL_BRUSH,
+                    None, None, _("Toggle the Brush selector"),
+                    self.toggle_window_cb),
+            ('BrushSettingsWindow', gtk.STOCK_PROPERTIES,
+                    _('Brush Editor...'), '<control>b', None,
+                    self.toggle_window_cb),
+            ('ColorSelectionWindow', stock.TOOL_COLOR_SELECTOR,
+                    None, None, _("Toggle the Colour Triangle"),
+                    self.toggle_window_cb),
+            ('ColorSamplerWindow', stock.TOOL_COLOR_SAMPLER,
+                    None, None, _("Toggle the advanced Colour Sampler"),
+                    self.toggle_window_cb),
+            ]
+
+        # Initial toggle state
+        lm = self.app.layout_manager
+        for i in xrange(0, len(toggle_actions)):
+            spec = list(toggle_actions[i])
+            role = spec[0][0].lower() + spec[0][1:]
+            visible = not lm.get_window_hidden_by_role(role)
+            spec.append(visible)
+            toggle_actions[i] = tuple(spec)
+
+        ag.add_toggle_actions(toggle_actions)
+
+        # Reflect changes from other places (like tools' close buttons) into
+        # the proxys' visible states.
+        self.tool_toggle_items = {}
+        for tup in toggle_actions:
+            name = tup[0]
+            role = name[0].lower() + name[1:]
+            action = ag.get_action(name)
+            tool_item = action.create_tool_item()
+            self.tool_toggle_items[role] = tool_item
+        self.app.layout_manager.tool_visibility_observers\
+            .append(self.on_tool_visibility_changed)
+
+        # More toggle actions - ones which don't control windows.
+        toggle_actions = [
+            ('ToggleToolbar', None, _('Toolbar'), None,
+                    _("Show toolbar"), self.toggle_toolbar_cb,
+                    self.get_show_toolbar()),
+            ('ToggleSubwindows', None, _('Subwindows'), 'Tab',
+                    _("Show subwindows"), self.toggle_subwindows_cb,
+                    self.get_show_subwindows()),
+            ]
+        ag.add_toggle_actions(toggle_actions)
+
+        # Keyboard handling
         for action in self.action_group.list_actions():
             self.app.kbm.takeover_action(action)
-
         self.app.ui_manager.insert_action_group(ag, -1)
 
     def init_stategroups(self):
@@ -194,6 +248,49 @@ class Window (windowing.MainWindow, layout.MainWindow):
         self._init_popupmenu(menubar_xml)
         self.menubar = self.app.ui_manager.get_widget('/Menubar')
 
+    def init_toolbar(self):
+        action_groups = self.app.ui_manager.get_action_groups()
+        def findaction(name):
+            for group in action_groups:
+                action = group.get_action(name)
+                if action is not None:
+                    return action
+            return None
+        bar = gtk.Toolbar()
+        bar.insert(findaction("New").create_tool_item(), -1)
+        bar.insert(findaction("Open").create_tool_item(), -1)
+        bar.insert(findaction("Save").create_tool_item(), -1)
+        bar.insert(findaction("Undo").create_tool_item(), -1)
+        bar.insert(findaction("Redo").create_tool_item(), -1)
+
+        bar.insert(gtk.SeparatorToolItem(), -1)
+        bar.insert(findaction("ResetView").create_tool_item(), -1)
+        bar.insert(findaction("ZoomIn").create_tool_item(), -1)
+        bar.insert(findaction("ZoomOut").create_tool_item(), -1)
+        bar.insert(findaction("RotateLeft").create_tool_item(), -1)
+        bar.insert(findaction("RotateRight").create_tool_item(), -1)
+        bar.insert(findaction("MirrorVertical").create_tool_item(), -1)
+        bar.insert(findaction("MirrorHorizontal").create_tool_item(), -1)
+
+        bar.insert(gtk.SeparatorToolItem(), -1)
+        bar.insert(findaction("BlendModeNormal").create_tool_item(), -1)
+        bar.insert(findaction("BlendModeLockAlpha").create_tool_item(), -1)
+        bar.insert(findaction("BlendModeEraser").create_tool_item(), -1)
+
+        expander = gtk.SeparatorToolItem()
+        expander.set_expand(True)
+        bar.insert(expander, -1)
+
+        for role in ["colorSelectionWindow", "colorSamplerWindow",
+                     "brushSelectionWindow", "layersWindow"]:
+            tool_item = self.tool_toggle_items[role]
+            bar.insert(tool_item, -1)
+        self.toolbar = bar
+
+        if not self.get_show_toolbar():
+            gobject.idle_add(self.toolbar.hide)
+
+        
     def _init_popupmenu(self, xml):
         """
         Hopefully temporary hack for converting UIManager XML describing the
@@ -312,9 +409,12 @@ class Window (windowing.MainWindow, layout.MainWindow):
 
     def key_press_event_cb_after(self, win, event):
         key = event.keyval
-        if self.is_fullscreen and key == keysyms.Escape: self.fullscreen_cb()
-        else: return False
+        if self.is_fullscreen and key == keysyms.Escape:
+            self.fullscreen_cb()
+        else:
+            return False
         return True
+
     def key_release_event_cb_after(self, win, event):
         return False
 
@@ -426,27 +526,110 @@ class Window (windowing.MainWindow, layout.MainWindow):
             self.app.doc.rotate('RotateLeft')
 
     # WINDOW HANDLING
-    def toggleWindow_cb(self, action):
+    def toggle_window_cb(self, action):
         s = action.get_name()
+        active = action.get_property("active")
         window_name = s[0].lower() + s[1:] # WindowName -> windowName
-        # If it's a tool, get it to hide/show itself
+        # If it's a tool, get it to hide/itself
         t = self.app.layout_manager.get_tool_by_role(window_name)
         if t is not None:
-            t.set_hidden(not t.hidden)
+            t.set_hidden(hidden=not active, reason="toggle-window-cb")
             return
-        # Otherwise, if it's a regular subwindow hide/show+present it./
+        # Otherwise, if it's a regular subwindow hide/show+present it.
         w = self.app.layout_manager.get_subwindow_by_role(window_name)
         if w is None:
             return
-        if w.window and w.window.is_visible():
-            w.hide()
-        else:
-            w.show_all() # might be for the first time
+        onscreen = w.window is not None and w.window.is_visible()
+        if active:
+            if onscreen:
+                return
+            w.show_all()
             w.present()
+        else:
+            if not onscreen:
+                return
+            w.hide()
+
+    def on_tool_visibility_changed(self, role, active, reason, temporary):
+        if reason is "toggle-window-cb":
+            return
+        tool_item = self.tool_toggle_items.get(role, None)
+        if tool_item is None:
+            return
+        tool_item.set_active(active)
 
     def popup_cb(self, action):
         state = self.popup_states[action.get_name()]
         state.activate(action)
+
+
+    # Show Toolbar
+    # Saved in the user prefs between sessions.
+    # Controlled via its ToggleAction only.
+
+    def set_show_toolbar(self, show_toolbar):
+        """Programatically set the Show Toolbar option.
+        """
+        action = self.action_group.get_action("ToggleToolbar")
+        if show_toolbar:
+            if not action.get_active():
+                action.set_active(True)
+            self.app.preferences["ui.toolbar"] = True
+        else:
+            if action.get_active():
+                action.set_active(False)
+            self.app.preferences["ui.toolbar"] = False
+
+    def get_show_toolbar(self):
+        return self.app.preferences.get("ui.toolbar", True)
+
+    def toggle_toolbar_cb(self, action):
+        active = action.get_active()
+        if active:
+            self.toolbar.show_all()
+        else:
+            self.toolbar.hide()
+        self.app.preferences["ui.toolbar"] = active
+
+
+    # Show Subwindows
+    # Not saved between sessions, defaults to on.
+    # Controlled via its ToggleAction, and entering or leaving fullscreen mode
+    # according to the setting of ui.hide_in_fullscreen in prefs.
+
+    def set_show_subwindows(self, show_subwindows):
+        """Programatically set the Show Subwindows option.
+        """
+        action = self.action_group.get_action("ToggleSubwindows")
+        if show_subwindows:
+            if not action.get_active():
+                action.set_active(True)
+            self._show_subwindows = True
+        else:
+            if action.get_active():
+                action.set_active(False)
+            self._show_subwindows = False
+
+    def get_show_subwindows(self):
+        return self._show_subwindows
+
+    def toggle_subwindows_cb(self, action):
+        active = action.get_active()
+        print "toggle subwindows: active=%s" % (active,)
+        lm = self.app.layout_manager
+        if active:
+            print "toggling user tools on"
+            lm.toggle_user_tools(on=True)
+        else:
+            print "toggling user tools off"
+            lm.toggle_user_tools(on=False)
+        self._show_subwindows = active
+
+
+    # Fullscreen mode
+    # This implementation requires an ICCCM and EWMH-compliant window manager
+    # which supports the _NET_WM_STATE_FULLSCREEN hint. There are several
+    # available.
 
     def fullscreen_cb(self, *junk):
         if not self.is_fullscreen:
@@ -461,21 +644,33 @@ class Window (windowing.MainWindow, layout.MainWindow):
         lm = self.app.layout_manager
         self.is_fullscreen = event.new_window_state & gdk.WINDOW_STATE_FULLSCREEN
         if self.is_fullscreen:
-            lm.toggle_user_tools(on=False)
-            x, y = self.get_position()
-            w, h = self.get_size()
-            self.menubar.hide()
+            # Subwindow hiding 
+            if self.app.preferences.get("ui.hide_subwindows_in_fullscreen", True):
+                self.set_show_subwindows(False)
+                self._restore_subwindows_on_unfullscreen = True
+            if self.app.preferences.get("ui.hide_menubar_in_fullscreen", True):
+                self.menubar.hide()
+                self._restore_menubar_on_unfullscreen = True
+            if self.app.preferences.get("ui.hide_toolbar_in_fullscreen", True):
+                self.toolbar.hide()
+                self._restore_toolbar_on_unfullscreen = True
             # fix for fullscreen problem on Windows, https://gna.org/bugs/?15175
             # on X11/Metacity it also helps a bit against flickering during the switch
             while gtk.events_pending():
                 gtk.main_iteration()
-            #self.app.doc.tdw.set_scroll_at_edges(True)
         else:
             while gtk.events_pending():
                 gtk.main_iteration()
-            self.menubar.show()
-            #self.app.doc.tdw.set_scroll_at_edges(False)
-            lm.toggle_user_tools(on=True)
+            if getattr(self, "_restore_menubar_on_unfullscreen", False):
+                self.menubar.show()
+                del self._restore_menubar_on_unfullscreen
+            if getattr(self, "_restore_toolbar_on_unfullscreen", False):
+                if self.get_show_toolbar():
+                    self.toolbar.show()
+                del self._restore_toolbar_on_unfullscreen
+            if getattr(self, "_restore_subwindows_on_unfullscreen", False):
+                self.set_show_subwindows(True)
+                del self._restore_subwindows_on_unfullscreen
 
     def popupmenu_show_cb(self, action):
         self.show_popupmenu()
@@ -504,15 +699,6 @@ class Window (windowing.MainWindow, layout.MainWindow):
         # the full menu, maybe.
         self.menubar.set_sensitive(True)
         self.popupmenu_last_active = self.popupmenu.get_active()
-
-    def toggle_subwindows_cb(self, action):
-        self.app.layout_manager.toggle_user_tools()
-        if self.app.layout_manager.saved_user_tools:
-            if self.is_fullscreen:
-                self.menubar.hide()
-        else:
-            if not self.is_fullscreen:
-                self.menubar.show()
 
     def quit_cb(self, *junk):
         self.app.doc.model.split_stroke()

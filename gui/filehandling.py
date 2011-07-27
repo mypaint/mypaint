@@ -56,16 +56,16 @@ class FileHandler(object):
         self.save_dialog = None
 
         file_actions = [ \
-        ('New',          gtk.STOCK_NEW, _('New'), '<control>N', None, self.new_cb),
-        ('Open',         gtk.STOCK_OPEN, _('Open...'), '<control>O', None, self.open_cb),
-        ('OpenLast',     None, _('Open Last'), 'F3', None, self.open_last_cb),
-        ('Reload',       gtk.STOCK_REFRESH, _('Reload'), 'F5', None, self.reload_cb),
-        ('Save',         gtk.STOCK_SAVE, _('Save'), '<control>S', None, self.save_cb),
-        ('SaveAs',       gtk.STOCK_SAVE_AS, _('Save As...'), '<control><shift>S', None, self.save_as_cb),
-        ('Export',       gtk.STOCK_SAVE_AS, _('Export...'), '<control><shift>E', None, self.save_as_cb),
-        ('SaveScrap',    None, _('Save As Scrap'), 'F2', None, self.save_scrap_cb),
-        ('PrevScrap',    None, _('Open Previous Scrap'), 'F6', None, self.open_scrap_cb),
-        ('NextScrap',    None, _('Open Next Scrap'), 'F7', None, self.open_scrap_cb),
+        ('New',          gtk.STOCK_NEW, _('New'), '<control>N', _("Start with a new blank canvas"), self.new_cb),
+        ('Open',         gtk.STOCK_OPEN, _('Open...'), '<control>O', _("Open a file, replacing the current painting"), self.open_cb),
+        ('OpenLast',     None, _('Open Last'), 'F3', _("Open the last file you saved"), self.open_last_cb),
+        ('Reload',       gtk.STOCK_REFRESH, _('Reload'), 'F5', _("Reload the current file"), self.reload_cb),
+        ('Save',         gtk.STOCK_SAVE, _('Save'), '<control>S', _("Save to a file"), self.save_cb),
+        ('SaveAs',       gtk.STOCK_SAVE_AS, _('Save As...'), '<control><shift>S', _("Save to a file with a new name"), self.save_as_cb),
+        ('Export',       gtk.STOCK_SAVE_AS, _('Export...'), '<control><shift>E', _("Export to a file"), self.save_as_cb),
+        ('SaveScrap',    None, _('Save As Scrap'), 'F2', _("Save to a new scrap file"), self.save_scrap_cb),
+        ('PrevScrap',    None, _('Open Previous Scrap'), 'F6', _("Load the previous scrap file, replacing the current drawing"), self.open_scrap_cb),
+        ('NextScrap',    None, _('Open Next Scrap'), 'F7', _("Load the next scrap file, replacing the current drawing"), self.open_scrap_cb),
         ]
         ag = gtk.ActionGroup('FileActions')
         ag.add_actions(file_actions)
