@@ -6,7 +6,8 @@ from helpers import rgb_to_hsv, hsv_to_rgb
 
 class GimpPalette(list):
     # loads a given gimp palette and makes it queriable
-    # Would 'save' functionality be useful at some stage? 
+    # Would 'save' functionality be useful at some stage?
+
     def __init__(self, filename=None):
         self.columns = 0
         self.scheme = "RGB"
@@ -15,6 +16,7 @@ class GimpPalette(list):
 
     def load(self, filename):
         if os.path.isfile(filename):
+            color_number = len(self)
             fp = open(filename, "r")
             header = fp.readline()
             if header[:12] != "GIMP Palette":
@@ -56,7 +58,7 @@ class GimpPalette(list):
 
                 limit -= 1
             fp.close()
-            print "Loaded %s colors from palette %s" % (len(self), filename)
+            print "Palette size:%s - Loaded %s new colors from palette %s" % (len(self), len(self) - color_number, filename)
 
     def hsv(self, index):
         if index < 0 or index > (len(self)-1):
