@@ -546,7 +546,7 @@ class FileHandler(object):
 
         number = None
         if filename:
-            _, file_fragment = os.path.split(filename)
+            junk,  file_fragment = os.path.split(filename)
             if file_fragment.startswith("_md5"):
                 #store direct, don't attempt to increment
                 if main_doc:
