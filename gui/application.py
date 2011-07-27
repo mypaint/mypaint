@@ -13,6 +13,7 @@ gdk = gtk.gdk
 from lib import brush, helpers, mypaintlib
 import filehandling, keyboard, brushmanager, windowing, document, layout
 import colorhistory, brushmodifier
+import stock
 
 class Application: # singleton
     """
@@ -42,6 +43,8 @@ class Application: # singleton
             print 'Warning: Where have all my icons gone?'
             print 'Theme search path:', theme.get_search_path()
         gtk.window_set_default_icon_name('mypaint')
+
+        stock.init_custom_stock_items()
 
         gdk.set_program_class('MyPaint')
 
@@ -174,6 +177,10 @@ class Application: # singleton
             'input.global_pressure_mapping': [(0.0, 1.0), (1.0, 0.0)],
             'view.default_zoom': 1.0,
             'view.high_quality_zoom': True,
+            'ui.hide_menubar_in_fullscreen': True,
+            'ui.hide_toolbar_in_fullscreen': True,
+            'ui.hide_subwindows_in_fullscreen': True,
+            'ui.toolbar': True,
             'saving.default_format': 'openraster',
             'brushmanager.selected_brush' : None,
             'brushmanager.selected_groups' : [],

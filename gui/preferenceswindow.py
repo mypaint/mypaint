@@ -248,6 +248,27 @@ class Window(windowing.Dialog):
         table.attach(b, 0, 3, current_row, current_row + 1, xopt, yopt)
         current_row += 1
 
+        l = gtk.Label()
+        l.set_alignment(0.0, 0.5)
+        l.set_markup(_('<b>Fullscreen</b>'))
+        table.attach(l, 0, 3, current_row, current_row + 1, xopt, yopt)
+        current_row += 1
+
+        b = self.fullscreenhidemenubar_checkbox = gtk.CheckButton(_('Hide menu bar'))
+        b.connect('toggled', self.fullscreenhidemenubar_checkbox_changed_cb)
+        table.attach(b, 0, 3, current_row, current_row + 1, xopt, yopt)
+        current_row += 1
+
+        b = self.fullscreenhidetoolbar_checkbox = gtk.CheckButton(_('Hide toolbar'))
+        b.connect('toggled', self.fullscreenhidetoolbar_checkbox_changed_cb)
+        table.attach(b, 0, 3, current_row, current_row + 1, xopt, yopt)
+        current_row += 1
+
+        b = self.fullscreenhidesubwindows_checkbox = gtk.CheckButton(_('Hide tools'))
+        b.connect('toggled', self.fullscreenhidesubwindows_checkbox_changed_cb)
+        table.attach(b, 0, 3, current_row, current_row + 1, xopt, yopt)
+        current_row += 1
+
     def on_response(self, dialog, response, *args):
         if response == gtk.RESPONSE_ACCEPT:
             self.app.save_settings()
@@ -277,6 +298,9 @@ class Window(windowing.Dialog):
         zoomlevel = min(bisect_left(self.defaultzoom_values, zoom),
                         len(self.defaultzoom_values) - 1)
         self.defaultzoom_combo.set_active(zoomlevel)
+        self.fullscreenhidemenubar_checkbox.set_active(p['ui.hide_menubar_in_fullscreen'])
+        self.fullscreenhidetoolbar_checkbox.set_active(p['ui.hide_toolbar_in_fullscreen'])
+        self.fullscreenhidesubwindows_checkbox.set_active(p['ui.hide_subwindows_in_fullscreen'])
         self.highqualityzoom_checkbox.set_active(p['view.high_quality_zoom'])
         saveformat_config = p['saving.default_format']
         saveformat_idx = self.app.filehandler.config2saveformat[saveformat_config]
@@ -321,6 +345,15 @@ class Window(windowing.Dialog):
         zoomlevel = self.defaultzoom_combo.get_active()
         zoom = self.defaultzoom_values[zoomlevel]
         self.app.preferences['view.default_zoom'] = zoom
+
+    def fullscreenhidemenubar_checkbox_changed_cb(self, widget):
+        self.app.preferences['ui.hide_menubar_in_fullscreen'] = bool(widget.get_active())
+
+    def fullscreenhidetoolbar_checkbox_changed_cb(self, widget):
+        self.app.preferences['ui.hide_toolbar_in_fullscreen'] = bool(widget.get_active())
+
+    def fullscreenhidesubwindows_checkbox_changed_cb(self, widget):
+        self.app.preferences['ui.hide_subwindows_in_fullscreen'] = bool(widget.get_active())
 
     def highqualityzoom_checkbox_changed_cb(self, widget):
         self.app.preferences['view.high_quality_zoom'] = bool(widget.get_active())
