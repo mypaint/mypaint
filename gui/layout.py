@@ -167,17 +167,12 @@ class LayoutManager:
     def toggle_user_tools(self, on=None):
         """Temporarily toggle the user's chosen tools on or off.
         """
-        if on is None:
-            on = False
-            off = False
-        else:
-            off = not on
-        if on or self.saved_user_tools:
+        if on:
             for tool in self.saved_user_tools:
                 tool.set_hidden(False, temporary=True)
                 tool.set_floating(tool.floating)
             self.saved_user_tools = []
-        elif off or not self.saved_user_tools:
+        else:
             for tool in self.get_tools_in_sbindex_order():
                 if tool.hidden:
                     continue
