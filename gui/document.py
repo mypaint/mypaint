@@ -223,7 +223,7 @@ class Document(object):
 
     def paste_cb(self, action):
         cb = gtk.Clipboard()
-        def callback(clipboard, pixbuf, trash):
+        def callback(clipboard, pixbuf, junk):
             if not pixbuf:
                 print 'The clipboard doeas not contain any image to paste!'
                 return

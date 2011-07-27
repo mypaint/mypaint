@@ -203,7 +203,7 @@ class Window(windowing.SubWindow):
         self.update_settings(settings)
         self.live_update_cb()
 
-    def live_update_cb(self, *trash):
+    def live_update_cb(self, *junk):
         if not self.live_update.get_active() or self.live_update_queued:
             return
         self.live_update_queued = True

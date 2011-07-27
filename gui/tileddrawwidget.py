@@ -34,7 +34,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.connect("state-changed", self.state_changed_cb)
 
         # workaround for https://gna.org/bugs/?14372 ([Windows] crash when moving the pen during startup)
-        def at_application_start(*trash):
+        def at_application_start(*junk):
             self.connect("motion-notify-event", self.motion_notify_cb)
             self.connect("button-press-event", self.button_press_cb)
             self.connect("button-release-event", self.button_release_cb)

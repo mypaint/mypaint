@@ -134,7 +134,7 @@ class ByInputWidget(gtk.VBox):
         l1 = gtk.SpinButton(self.scale_y_adj); l1.set_digits(2)
         l2 = gtk.Label('+0.0')
         l3 = gtk.Label()
-        def update_negative_scale(*trash):
+        def update_negative_scale(*junk):
             l3.set_text('%+.2f' % -self.scale_y_adj.get_value())
         self.scale_y_adj.connect('value-changed', update_negative_scale)
         update_negative_scale()
@@ -295,7 +295,7 @@ class ByInputWidget(gtk.VBox):
                 y0 = 1.0
                 y1 = -0.5/x_normal + 1.0
 
-        (x0, trash0), (x1, trash1) = curve_points_zero
+        (x0, junk0), (x1, junk1) = curve_points_zero
         curve_points_zero = [(x0, y0), (x1, y1)]
 
         # 3. display the curve
