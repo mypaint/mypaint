@@ -284,11 +284,11 @@ class FileHandler(object):
         # Check that there is something to save:
         x, y, w, h =  self.scratchpad_doc.model.get_bbox()
         if w == 0 and h == 0:
-            # empty
-            return
+            w, h = tiledsurface.N, tiledsurface.N # TODO: support for other sizes
         thumbnail_pixbuf = self.save_doc_to_file(filename, self.scratchpad_doc, export=export, **options)
         if not export:
             self.scratchpad_filename = os.path.abspath(filename)
+            self.app.preferences["scratchpad.last_opened_scratchpad"] = self.scratchpad_filename
 
     def save_doc_to_file(self, filename, doc, export=False, **options):
         thumbnail_pixbuf = None
@@ -402,13 +402,11 @@ class FileHandler(object):
             self.save_file(self.filename)
 
     def save_as_cb(self, action):
-        if not self.save_dialog:
-            self.init_save_dialog()
-        dialog = self.save_dialog
+        start_in_folder = None
         if self.filename:
-            dialog_set_filename(dialog, self.filename)
+            current_filename = self.filename
         else:
-            dialog_set_filename(dialog, '')
+            current_filename = ''
             # choose the most recent save folder
             self.set_recent_items()
             for item in reversed(self.recent_items):
@@ -416,68 +414,37 @@ class FileHandler(object):
                 fn = helpers.uri2filename(uri)
                 dn = os.path.dirname(fn)
                 if os.path.isdir(dn):
-                    dialog.set_current_folder(dn)
+                    start_in_folder = dn
                     break
 
-        try:
-            # Loop until we have filename with an extension
-            while dialog.run() == gtk.RESPONSE_OK:
-                filename = dialog.get_filename().decode('utf-8')
-                name, ext = os.path.splitext(filename)
-                saveformat = self.saveformat_combo.get_active()
-
-                # If no explicitly selected format, use the extension to figure it out
-                if saveformat == SAVE_FORMAT_ANY:
-                    cfg = self.app.preferences['saving.default_format']
-                    default_saveformat = self.config2saveformat[cfg]
-                    if ext:
-                        try: 
-                            saveformat = self.ext2saveformat[ext]
-                        except KeyError:
-                            saveformat = default_saveformat
-                    else:
-                            saveformat = default_saveformat
-
-                desc, ext_format, options = self.saveformats[saveformat]
-
-                # 
-                if ext:
-                    if ext_format != ext:
-                        # Minor ugliness: if the user types '.png' but
-                        # leaves the default .ora filter selected, we
-                        # use the default options instead of those
-                        # above. However, they are the same at the moment.
-                        options = {}
-                    assert(filename)
-                    dialog.hide()
-                    if action.get_name() == 'Export':
-                        # Do not change working file
-                        self.save_file(filename, True, **options)
-                    else:
-                        self.save_file(filename, **options)
-                    break
-
-                filename = name + ext_format
-
-                # trigger overwrite confirmation for the modified filename
-                dialog_set_filename(dialog, filename)
-                dialog.response(gtk.RESPONSE_OK)
-
-        finally:
-            dialog.hide()
-            dialog.destroy()  # avoid GTK crash: https://gna.org/bugs/?17902
-            self.save_dialog = None
-
+        if action.get_name() == 'Export':
+            # Do not change working file
+            self.save_as_dialog(self.save_file, suggested_filename = current_filename, export=True)
+        else:
+            self.save_as_dialog(self.save_file, suggested_filename = current_filename)
 
     def save_scratchpad_as_dialog(self, export = False):
+        start_in_folder = None
+        if self.scratchpad_filename:
+            current_filename = self.scratchpad_filename
+        else:
+            current_filename = ''
+            start_in_folder = self.get_scratchpad_prefix()
+
+        self.save_as_dialog(self.save_scratchpad, suggested_filename = current_filename, export = export)
+
+    def save_as_dialog(self, save_method_reference, suggested_filename=None, start_in_folder=None, export = False, **options):
         if not self.save_dialog:
             self.init_save_dialog()
         dialog = self.save_dialog
-        if self.scratchpad_filename:
-            dialog_set_filename(dialog, self.scratchpad_filename)
+        # Set the filename in the dialog
+        if suggested_filename:
+            dialog_set_filename(dialog, suggested_filename)
         else:
             dialog_set_filename(dialog, '')
-            dialog.set_current_folder(self.get_scratchpad_prefix())
+            # Recent directory?
+            if start_in_folder:
+                dialog.set_current_folder(start_in_folder)
 
         try:
             # Loop until we have filename with an extension
@@ -510,11 +477,11 @@ class FileHandler(object):
                         options = {}
                     assert(filename)
                     dialog.hide()
-                    self.save_scratchpad(filename)
-                    if not export:
-                        # export = True -> Save a copy, but keep the current filename in the variable.
-                        self.scratchpad_filename = os.path.abspath(filename)
-                        self.app.preferences["scratchpad.last_opened_scratchpad"] = self.scratchpad_filename
+                    if export:
+                        # Do not change working file
+                        save_method_reference(filename, True, **options)
+                    else:
+                        save_method_reference(filename, **options)
                     break
 
                 filename = name + ext_format
@@ -527,6 +494,8 @@ class FileHandler(object):
             dialog.hide()
             dialog.destroy()  # avoid GTK crash: https://gna.org/bugs/?17902
             self.save_dialog = None
+
+
 
     def save_scrap_cb(self, action):
         filename = self.filename
