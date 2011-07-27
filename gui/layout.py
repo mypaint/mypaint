@@ -120,9 +120,8 @@ class LayoutManager:
     def get_subwindow_by_role(self, role):
         """Returns the managed subwindow for a given role, or None
         """
-        if self.get_widget_by_role(role):
-            return self.subwindows.get(role, None)
-        return None
+        self.get_widget_by_role(role)
+        return self.subwindows.get(role, None)
 
     def get_tool_by_role(self, role):
         """Returns the tool wrapper for a given role.
@@ -130,16 +129,8 @@ class LayoutManager:
         Only valid for roles for which a corresponding packable widget was
         created by the factory method.
         """
-        #newly_loaded = role not in self.widgets
-        _junk = self.get_widget_by_role(role)
-        tool = self.tools.get(role, None)
-        #if tool is not None and newly_loaded:
-        #    hidden = self.get_window_hidden_by_role(tool.role)
-        #    floating = self.get_window_floating_by_role(tool.role)
-        #    tool.set_floating(floating)
-        #    tool.set_hidden(hidden, reason="newly-loaded-prefs")
-        #    # XXX move the above to get_widget_by_role()?
-        return tool
+        self.get_widget_by_role(role)
+        return self.tools.get(role, None)
 
     def get_window_hidden_by_role(self, role, default=True):
         return self.prefs.get(role, {}).get("hidden", default)
