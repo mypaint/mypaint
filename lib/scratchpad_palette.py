@@ -4,6 +4,21 @@ import re, os
 
 from helpers import rgb_to_hsv, hsv_to_rgb
 
+def squiggle(off_x=0.0, off_y=0.0, scale=10.0):
+    events = []
+    events.append((0.0, off_x, off_y, 0.0))
+    events.append((0.008, off_x, off_y, 0.0))
+    t = 0.016
+    pressure = 1.0
+    for dx in xrange(3):
+        x = dx % 2
+        pressure -= 0.2
+        for y in xrange(2):
+            events.append((t, scale*(float(x))+off_x, scale*(float(y))+off_y, pressure))
+            t += 0.008
+    events.append((t, scale*(float(x))+off_x, scale*(float(y))+off_y, 0.0))
+    return events
+
 class GimpPalette(list):
     # loads a given gimp palette and makes it queriable
     # Would 'save' functionality be useful at some stage?

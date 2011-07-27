@@ -55,7 +55,7 @@ class FileHandler(object):
         #NOTE: filehandling and drawwindow are very tightly coupled
         self.save_dialog = None
 
-        file_actions = [ \
+        file_actions = [ 
         ('New',          gtk.STOCK_NEW, _('New'), '<control>N', None, self.new_cb),
         ('Open',         gtk.STOCK_OPEN, _('Open...'), '<control>O', None, self.open_cb),
         ('OpenLast',     None, _('Open Last'), 'F3', None, self.open_last_cb),
@@ -328,6 +328,21 @@ class FileHandler(object):
                 #TODO display "no preview available" image
                 pass
 
+    def get_open_dialog(self, filename=None, start_in_folder=None, file_filters=[]):
+        dialog = gtk.FileChooserDialog(_("Open..."), self.app.drawWindow,
+                                       gtk.FILE_CHOOSER_ACTION_OPEN,
+                                       (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
+                                        gtk.STOCK_OPEN, gtk.RESPONSE_OK))
+        dialog.set_default_response(gtk.RESPONSE_OK)
+        add_filters_to_dialog(file_filters, dialog)
+
+        if filename:
+            dialog.set_filename(filename)
+        elif start_in_folder and os.path.isdir(start_in_folder):
+            dialog.set_current_folder(start_in_folder)
+
+        return dialog
+
     def open_cb(self, action):
         if not self.confirm_destructive_action():
             return
@@ -588,6 +603,19 @@ class FileHandler(object):
     def get_scratchpad_autosave(self):
         # TODO get the default name from preferences
         return os.path.join(self.get_scratchpad_prefix(), "autosave.ora")
+
+    def get_gimp_prefix(self):
+        from lib import helpers
+        homepath =  helpers.expanduser_unicode(u'~')
+        if sys.platform == 'win32':
+            # using patched win32 glib using correct CSIDL_LOCAL_APPDATA
+            import glib
+            confpath = os.path.join(glib.get_user_config_dir().decode('utf-8'),'gimp-2.6')
+        elif homepath == '~':
+            confpath = os.path.join(prefix, 'UserData')
+        else:
+            confpath = os.path.join(homepath, '.gimp-2.6')
+        return confpath       
 
     def list_scraps(self):
         prefix = self.get_scrap_prefix()

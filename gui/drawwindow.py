@@ -26,6 +26,9 @@ import dialogs
 from lib import helpers
 import xml.etree.ElementTree as ET
 
+# palette support
+from lib.scratchpad_palette import GimpPalette, squiggle
+
 # TODO: put in a helper file?
 def with_wait_cursor(func):
     """python decorator that adds a wait cursor around a function"""
@@ -221,6 +224,7 @@ class Window (windowing.MainWindow, layout.MainWindow):
             ('ScratchSaveAsDefault',  None, _('Save Scratchpad As Default'), None, None, self.save_scratchpad_as_default_cb),
             ('ScratchClearDefault',  None, _('Clear the Default Scratchpad'), None, None, self.clear_default_scratchpad_cb),
             ('ScratchClearAutosave',  None, _('Clear the Autosaved Scratchpad'), None, None, self.clear_autosave_scratchpad_cb),
+            ('ScratchLoadPalette',  None, _('Draw a palette in the current Scratchpad'), None, None, self.draw_palette_cb),
 
 
             ('BrushMenu',    None, _('Brush')),
@@ -552,6 +556,43 @@ class Window (windowing.MainWindow, layout.MainWindow):
 
     def save_current_scratchpad_cb(self, action):
         self.app.filehandler.save_scratchpad(self.app.filehandler.scratchpad_filename)
+
+    def draw_palette_cb(self, action):
+        # test functionality:
+        file_filters = [
+        (_("Gimp Palette Format"), ("*.gpl",)),
+        (_("All Files"), ("*.*",)),
+        ]
+        gimp_path = os.path.join(self.app.filehandler.get_gimp_prefix(), "palettes")
+        dialog = self.app.filehandler.get_open_dialog(start_in_folder=gimp_path,
+                                                  file_filters = file_filters)
+        try:                                                                                                         
+            if dialog.run() == gtk.RESPONSE_OK:
+                dialog.hide()
+                filename = dialog.get_filename().decode('utf-8')
+                if filename:
+                    #filename = "/home/ben/.gimp-2.6/palettes/Nature_Grass.gpl" # TEMP HACK TO TEST
+                    g = GimpPalette(filename)
+                    grid_size = 35.0
+                    off_x = off_y = grid_size
+                    column_limit = 7
+                    if g.columns != 0:
+                        column_limit = g.columns   # use the value for columns in the palette
+                    for colour_idx in xrange(len(g)):
+                        gen_events = squiggle(off_x, off_y, scale=10.0)
+                        # Set the color
+                        self.app.brush.set_color_rgb(g.rgb(colour_idx))
+                        # simulate strokes on scratchpad
+                        for t, x, y, pressure in gen_events:
+                            cr = self.app.filehandler.scratchpad_doc.tdw.get_model_coordinates_cairo_context()
+                            x, y = cr.device_to_user(x, y)
+                            self.app.filehandler.scratchpad_doc.model.stroke_to(0.008, x, y, pressure, 0.0, 0.0)
+                        self.app.filehandler.scratchpad_doc.model.split_stroke()
+                        off_x = ((colour_idx % column_limit) + 1) * grid_size
+                        if not (colour_idx % column_limit) and colour_idx:
+                            off_y += grid_size
+        finally:
+            dialog.destroy()
 
     def quit_cb(self, *junk):
         self.app.doc.model.split_stroke()
