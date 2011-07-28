@@ -574,7 +574,7 @@ class Window (windowing.MainWindow, layout.MainWindow):
                     #filename = "/home/ben/.gimp-2.6/palettes/Nature_Grass.gpl" # TEMP HACK TO TEST
                     g = GimpPalette(filename)
                     grid_size = 30.0
-                    off_x = off_y = grid_size
+                    off_x = off_y = grid_size / 2.0
                     column_limit = 7
                     if g.columns != 0:
                         column_limit = g.columns   # use the value for columns in the palette
@@ -588,7 +588,7 @@ class Window (windowing.MainWindow, layout.MainWindow):
                             x, y = cr.device_to_user(x, y)
                             self.app.filehandler.scratchpad_doc.model.stroke_to(0.008, x, y, pressure, 0.0, 0.0)
                         self.app.filehandler.scratchpad_doc.model.split_stroke()
-                        off_x = ((colour_idx % column_limit) + 1) * grid_size
+                        off_x = ((colour_idx % column_limit) + 0.5) * grid_size
                         if not (colour_idx % column_limit) and colour_idx:
                             off_y += grid_size
         finally:
