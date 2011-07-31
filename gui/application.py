@@ -40,8 +40,10 @@ class Application: # singleton
         themedir_src = join(self.datapath, 'desktop/icons')
         theme.prepend_search_path(themedir_src)
         if not theme.has_icon('mypaint'):
-            print 'Warning: Where have all my icons gone?'
+            print 'Error: Where have all my icons gone?'
             print 'Theme search path:', theme.get_search_path()
+            print 'I see no point in running without icons! Goodbye!'
+            sys.exit(1)
         gtk.window_set_default_icon_name('mypaint')
 
         stock.init_custom_stock_items()
