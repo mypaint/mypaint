@@ -298,7 +298,6 @@ class BrushModifier:
     def _store_eraser_mode_radius_change(self):
         # Store any changes to the radius when a normal brush is in eraser mode.
         if self._brush_is_dedicated_eraser() \
-                or not self.app.brush.is_eraser() \
                 or self._in_internal_radius_change:
             return
         r0 = self._eraser_mode_original_radius
