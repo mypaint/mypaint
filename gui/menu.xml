@@ -147,6 +147,8 @@
       <separator/>
       <menuitem action='ScratchLoadPalette'/>
       <menuitem action='ScratchDrawSatPalette'/>
+      <separator/>
+      <menuitem action='ScratchCopyBackground'/>
     </menu>
     <menu action='HelpMenu'>
       <menuitem action='Docu'/>

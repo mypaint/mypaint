@@ -75,6 +75,8 @@ class Window(windowing.Dialog):
     def set_background(self, pixbuf):
         doc = self.app.doc.model
         doc.set_background(pixbuf)
+        if self.app.filehandler.scratchpad_doc:
+            self.app.filehandler.scratchpad_doc.model.set_background(pixbuf)
         self.current_background_pixbuf = pixbuf
 
     def add_color_to_patterns_cb(self, widget):

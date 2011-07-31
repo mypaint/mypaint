@@ -226,6 +226,10 @@ class FileHandler(object):
         bg = self.doc.model.background
         self.doc.model.clear()
         self.doc.model.set_background(bg)
+        # Match scratchpad to canvas background
+        # TODO make this into a preference
+        if self.filehandler.scratchpad_doc:
+            self.filehandler.scratchpad_doc.model.set_background(bg)
         self.filename = None
         self.set_recent_items()
         self.app.doc.reset_view_cb(None)
