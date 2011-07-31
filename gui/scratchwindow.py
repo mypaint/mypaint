@@ -19,7 +19,7 @@ from drawwindow import button_press_cb_abstraction, button_release_cb_abstractio
 import dialogs
 import os
 
-from hashlib import md5
+import stock
 
 def stock_button_generic(stock_id, b):
     img = gtk.Image()
@@ -34,6 +34,8 @@ def stock_button(stock_id):
 class ToolWidget (gtk.VBox):
 
     tool_widget_title = _("Scratchpad")
+
+    stock_id = stock.TOOL_SCRATCHPAD
 
     def __init__(self, app):
         gtk.VBox.__init__(self)

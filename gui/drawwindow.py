@@ -217,7 +217,6 @@ class Window (windowing.MainWindow, layout.MainWindow):
             ('LayerMenu',    None, _('Layers')),
 
             ('ScratchMenu',    None, _('Scratchpad')),
-            ('ScratchWindow',  None, _('Scratchpad...'), None, None, self.toggleWindow_cb),
             ('ScratchSaveNow',  None, _('Save Scratchpad Now'), None, None, self.save_current_scratchpad_cb),
             ('ScratchSaveAsDefault',  None, _('Save Scratchpad As Default'), None, None, self.save_scratchpad_as_default_cb),
             ('ScratchClearDefault',  None, _('Clear the Default Scratchpad'), None, None, self.clear_default_scratchpad_cb),
@@ -273,6 +272,9 @@ class Window (windowing.MainWindow, layout.MainWindow):
                     self.toggle_window_cb),
             ('ColorSamplerWindow', stock.TOOL_COLOR_SAMPLER,
                     None, None, _("Toggle the advanced Colour Sampler"),
+                    self.toggle_window_cb),
+            ('ScratchWindow',  stock.TOOL_SCRATCHPAD, 
+                    None, None, _('Toggle the scratchpad'),
                     self.toggle_window_cb),
             ]
         ag.add_toggle_actions(toggle_actions)

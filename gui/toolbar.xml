@@ -33,6 +33,7 @@
       <toolitem action="ColorSamplerWindow"/>
       <toolitem action="BrushSelectionWindow"/>
       <toolitem action="LayersWindow"/>
+      <toolitem action="ScratchWindow"/>
     </placeholder>
   </toolbar>
 </ui>
