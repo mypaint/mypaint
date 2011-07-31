@@ -86,3 +86,24 @@ class GimpPalette(list):
             return None  # should be Exception perhaps?
         else:
             return map(lambda x: x / 255.0, self[index])
+
+    def append_hsv(self, *hsvvals):
+        h,s,v = hsvvals
+        self.append(map(lambda x: int(x * 255), hsv_to_rgb(h,s,v)))
+
+    def append_rgb(self, *rgbvals):
+        self.append(map(lambda x: int(x * 255), rgbvals))
+
+    def append_hue_spectrum(self, rgbbase):
+        h,s,v = rgb_to_hsv(*rgbbase)
+        for hue_idx in xrange(20):
+            hue = (hue_idx*0.05)
+            self.append_hsv(hue, s,v)
+
+    def append_sat_spectrum(self, hsv, number=8):
+        h,s,v = hsv
+        step = 1.0 / float(number)
+        for sat_idx in xrange(number):
+            sat = (sat_idx*step)
+            self.append_hsv(h, sat, v)
+

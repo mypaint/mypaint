@@ -223,6 +223,7 @@ class Window (windowing.MainWindow, layout.MainWindow):
             ('ScratchClearDefault',  None, _('Clear the Default Scratchpad'), None, None, self.clear_default_scratchpad_cb),
             ('ScratchClearAutosave',  None, _('Clear the Autosaved Scratchpad'), None, None, self.clear_autosave_scratchpad_cb),
             ('ScratchLoadPalette',  None, _('Draw a palette in the current Scratchpad'), None, None, self.draw_palette_cb),
+            ('ScratchDrawSatPalette',  None, _('Draw a saturation palette of current color'), None, None, self.draw_sat_spectrum_cb),
 
 
             ('BrushMenu',    None, _('Brush')),
@@ -735,11 +736,14 @@ class Window (windowing.MainWindow, layout.MainWindow):
                     #filename = "/home/ben/.gimp-2.6/palettes/Nature_Grass.gpl" # TEMP HACK TO TEST
                     g = GimpPalette(filename)
                     grid_size = 30.0
-                    off_x = off_y = grid_size / 2.0
+                    off_y = grid_size / 2.0
                     column_limit = 7
                     if g.columns != 0:
                         column_limit = g.columns   # use the value for columns in the palette
                     for colour_idx in xrange(len(g)):
+                        off_x = (colour_idx % column_limit) * grid_size + (grid_size / 2.0)
+                        if not (colour_idx % column_limit) and colour_idx:
+                            off_y += grid_size
                         gen_events = squiggle(off_x, off_y, scale=13.0)
                         # Set the color
                         self.app.brush.set_color_rgb(g.rgb(colour_idx))
@@ -749,11 +753,29 @@ class Window (windowing.MainWindow, layout.MainWindow):
                             x, y = cr.device_to_user(x, y)
                             self.app.filehandler.scratchpad_doc.model.stroke_to(0.008, x, y, pressure, 0.0, 0.0)
                         self.app.filehandler.scratchpad_doc.model.split_stroke()
-                        off_x = ((colour_idx % column_limit) + 0.5) * grid_size
-                        if not (colour_idx % column_limit) and colour_idx:
-                            off_y += grid_size
         finally:
             dialog.destroy()
+
+    def draw_sat_spectrum_cb(self, action):
+        g = GimpPalette()
+        hsv = self.app.brush.get_color_hsv()
+        g.append_sat_spectrum(hsv)
+        grid_size = 30.0
+        off_x = off_y = grid_size / 2.0
+        column_limit = 7
+        for colour_idx in xrange(len(g)):
+            gen_events = squiggle(off_x, off_y, scale=13.0)
+            self.app.brush.set_color_rgb(g.rgb(colour_idx))
+            for t, x, y, pressure in gen_events:
+                cr = self.app.filehandler.scratchpad_doc.tdw.get_model_coordinates_cairo_context()
+                x, y = cr.device_to_user(x, y)
+                self.app.filehandler.scratchpad_doc.model.stroke_to(0.008, x, y, pressure, 0.0, 0.0)
+            self.app.filehandler.scratchpad_doc.model.split_stroke()
+            off_x = ((colour_idx % column_limit) + 0.5) * grid_size
+            if not (colour_idx % column_limit) and colour_idx:
+                off_y += grid_size
+        # restore brush color
+        self.app.brush.set_color_hsv(hsv)
 
     def quit_cb(self, *junk):
         self.app.doc.model.split_stroke()

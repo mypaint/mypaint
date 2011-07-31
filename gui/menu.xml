@@ -146,6 +146,7 @@
       <menuitem action='ScratchClearAutosave'/>
       <separator/>
       <menuitem action='ScratchLoadPalette'/>
+      <menuitem action='ScratchDrawSatPalette'/>
     </menu>
     <menu action='HelpMenu'>
       <menuitem action='Docu'/>
