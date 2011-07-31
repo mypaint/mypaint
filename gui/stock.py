@@ -10,7 +10,7 @@ from gettext import gettext as _
 TOOL_BRUSH = "mypaint-tool-brush"
 TOOL_COLOR_SELECTOR = "mypaint-tool-color-triangle"
 TOOL_COLOR_SAMPLER = "mypaint-tool-hue-wheel"
-TOOL_SCRATCHPAD = "mypaint-tool-hue-wheel"
+TOOL_SCRATCHPAD = "mypaint-tool-scratchpad"
 TOOL_LAYERS = "mypaint-tool-layers"
 ROTATE_LEFT = "object-rotate-left"
 ROTATE_RIGHT = "object-rotate-right"
