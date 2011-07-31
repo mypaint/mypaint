@@ -1,0 +1,38 @@
+<ui>
+  <toolbar name="toolbar1">
+    <placeholder name="file-toolitems">
+      <toolitem action="New"/>
+      <toolitem action="Open"/>
+      <toolitem action="Save"/>
+      <toolitem action="Undo"/>
+      <toolitem action="Redo"/>
+    </placeholder>
+
+    <separator/>
+
+    <placeholder name="view-toolitems">
+      <toolitem action="ResetView"/>
+      <toolitem action="ZoomIn"/>
+      <toolitem action="ZoomOut"/>
+      <toolitem action="RotateLeft"/>
+      <toolitem action="RotateRight"/>
+      <toolitem action="MirrorVertical"/>
+      <toolitem action="MirrorHorizontal"/>
+    </placeholder>
+
+    <separator/>
+
+    <toolitem action="BlendModeNormal"/>
+    <toolitem action="BlendModeEraser"/>
+    <toolitem action="BlendModeLockAlpha"/>
+
+    <separator expand="true" name="expander"/>
+
+    <placeholder action="toolset-toolitems">
+      <toolitem action="ColorSelectionWindow"/>
+      <toolitem action="ColorSamplerWindow"/>
+      <toolitem action="BrushSelectionWindow"/>
+      <toolitem action="LayersWindow"/>
+    </placeholder>
+  </toolbar>
+</ui>

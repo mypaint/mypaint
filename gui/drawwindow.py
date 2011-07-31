@@ -244,46 +244,10 @@ class Window (windowing.MainWindow, layout.MainWindow):
         self.menubar = self.app.ui_manager.get_widget('/Menubar')
 
     def init_toolbar(self):
-        action_groups = self.app.ui_manager.get_action_groups()
-        def findaction(name):
-            for group in action_groups:
-                action = group.get_action(name)
-                if action is not None:
-                    return action
-            return None
-        bar = gtk.Toolbar()
-        bar.insert(findaction("New").create_tool_item(), -1)
-        bar.insert(findaction("Open").create_tool_item(), -1)
-        bar.insert(findaction("Save").create_tool_item(), -1)
-        bar.insert(findaction("Undo").create_tool_item(), -1)
-        bar.insert(findaction("Redo").create_tool_item(), -1)
-
-        bar.insert(gtk.SeparatorToolItem(), -1)
-        bar.insert(findaction("ResetView").create_tool_item(), -1)
-        bar.insert(findaction("ZoomIn").create_tool_item(), -1)
-        bar.insert(findaction("ZoomOut").create_tool_item(), -1)
-        bar.insert(findaction("RotateLeft").create_tool_item(), -1)
-        bar.insert(findaction("RotateRight").create_tool_item(), -1)
-        bar.insert(findaction("MirrorVertical").create_tool_item(), -1)
-        bar.insert(findaction("MirrorHorizontal").create_tool_item(), -1)
-
-        bar.insert(gtk.SeparatorToolItem(), -1)
-        bar.insert(findaction("BlendModeNormal").create_tool_item(), -1)
-        bar.insert(findaction("BlendModeEraser").create_tool_item(), -1)
-        bar.insert(findaction("BlendModeLockAlpha").create_tool_item(), -1)
-
-        expander = gtk.SeparatorToolItem()
-        expander.set_expand(True)
-        expander.set_draw(False)
-        bar.insert(expander, -1)
-
-        for name in ["ColorSelectionWindow", "ColorSamplerWindow",
-                     "BrushSelectionWindow", "LayersWindow"]:
-            action = self.action_group.get_action(name)
-            tool_item = action.create_tool_item()
-            bar.insert(tool_item, -1)
-        self.toolbar = bar
-
+        toolbarpath = os.path.join(self.app.datapath, 'gui/toolbar.xml')
+        toolbarbar_xml = open(toolbarpath).read()
+        self.app.ui_manager.add_ui_from_string(toolbarbar_xml)
+        self.toolbar = self.app.ui_manager.get_widget('/toolbar1')
         if not self.get_show_toolbar():
             gobject.idle_add(self.toolbar.hide)
 
