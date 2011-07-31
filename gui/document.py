@@ -285,9 +285,9 @@ class Document(object):
         else:
             # Try to fire it at the scratchpad
             # print "Not in main window, in scratchpad?"
-            if self.app.filehandler.scratchpad_doc.tdw.has_pointer:
+            if self.app.scratchpad_doc.tdw.has_pointer:
                 print "Scratchpad has the pointer"
-                self.app.filehandler.scratchpad_doc.pick_context_cb(action)
+                self.app.scratchpad_doc.pick_context_cb(action)
     # LAYER
     def clear_layer_cb(self, action):
         self.model.clear_layer()

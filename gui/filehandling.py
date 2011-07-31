@@ -228,8 +228,8 @@ class FileHandler(object):
         self.doc.model.set_background(bg)
         # Match scratchpad to canvas background
         # TODO make this into a preference
-        if self.filehandler.scratchpad_doc:
-            self.filehandler.scratchpad_doc.model.set_background(bg)
+        if self.app.scratchpad_doc:
+            self.app.scratchpad_doc.model.set_background(bg)
         self.filename = None
         self.set_recent_items()
         self.app.doc.reset_view_cb(None)
@@ -254,16 +254,16 @@ class FileHandler(object):
 
     def open_scratchpad(self, filename):
         try:
-            self.scratchpad_doc.model.load(filename, feedback_cb=self.gtk_main_tick)
-            self.scratchpad_filename = os.path.abspath(filename)
-            self.app.preferences["scratchpad.last_opened_scratchpad"] = self.scratchpad_filename
+            self.app.scratchpad_doc.model.load(filename, feedback_cb=self.gtk_main_tick)
+            self.app.scratchpad_filename = os.path.abspath(filename)
+            self.app.preferences["scratchpad.last_opened_scratchpad"] = self.app.scratchpad_filename
         except document.SaveLoadError, e:
             self.app.message_dialog(str(e), type=gtk.MESSAGE_ERROR)
         else:
-            self.scratchpad_filename = os.path.abspath(filename)
-            self.app.preferences["scratchpad.last_opened_scratchpad"] = self.scratchpad_filename
-            print 'Loaded scratchpad from', self.scratchpad_filename
-            self.scratchpad_doc.reset_view_cb(None)
+            self.app.scratchpad_filename = os.path.abspath(filename)
+            self.app.preferences["scratchpad.last_opened_scratchpad"] = self.app.scratchpad_filename
+            print 'Loaded scratchpad from', self.app.scratchpad_filename
+            self.app.scratchpad_doc.reset_view_cb(None)
 
     @drawwindow.with_wait_cursor
     def save_file(self, filename, export=False, **options):
@@ -286,13 +286,13 @@ class FileHandler(object):
     @drawwindow.with_wait_cursor
     def save_scratchpad(self, filename, export=False, **options):
         # Check that there is something to save:
-        x, y, w, h =  self.scratchpad_doc.model.get_bbox()
+        x, y, w, h =  self.app.scratchpad_doc.model.get_bbox()
         if w == 0 and h == 0:
             w, h = tiledsurface.N, tiledsurface.N # TODO: support for other sizes
-        thumbnail_pixbuf = self.save_doc_to_file(filename, self.scratchpad_doc, export=export, **options)
+        thumbnail_pixbuf = self.save_doc_to_file(filename, self.app.scratchpad_doc, export=export, **options)
         if not export:
-            self.scratchpad_filename = os.path.abspath(filename)
-            self.app.preferences["scratchpad.last_opened_scratchpad"] = self.scratchpad_filename
+            self.app.scratchpad_filename = os.path.abspath(filename)
+            self.app.preferences["scratchpad.last_opened_scratchpad"] = self.app.scratchpad_filename
 
     def save_doc_to_file(self, filename, doc, export=False, **options):
         thumbnail_pixbuf = None
@@ -394,8 +394,8 @@ class FileHandler(object):
 
         add_filters_to_dialog(self.file_filters, dialog)
 
-        if self.scratchpad_filename:
-            dialog.set_filename(self.scratchpad_filename)
+        if self.app.scratchpad_filename:
+            dialog.set_filename(self.app.scratchpad_filename)
         else:
             # choose the most recent save folder
             self.set_recent_items()
@@ -409,8 +409,8 @@ class FileHandler(object):
         try:
             if dialog.run() == gtk.RESPONSE_OK:
                 dialog.hide()
-                self.scratchpad_filename = dialog.get_filename().decode('utf-8')
-                self.open_scratchpad(self.scratchpad_filename)
+                self.app.scratchpad_filename = dialog.get_filename().decode('utf-8')
+                self.open_scratchpad(self.app.scratchpad_filename)
         finally:
             dialog.destroy()  
 
@@ -444,8 +444,8 @@ class FileHandler(object):
 
     def save_scratchpad_as_dialog(self, export = False):
         start_in_folder = None
-        if self.scratchpad_filename:
-            current_filename = self.scratchpad_filename
+        if self.app.scratchpad_filename:
+            current_filename = self.app.scratchpad_filename
         else:
             current_filename = ''
             start_in_folder = self.get_scratchpad_prefix()
@@ -522,9 +522,9 @@ class FileHandler(object):
         self.app.filename = self.save_autoincrement_file(filename, prefix, main_doc = True)
 
     def save_scratchpad_cb(self, action):
-        filename = self.scratchpad_filename
+        filename = self.app.scratchpad_filename
         prefix = self.get_scratchpad_prefix()
-        self.scratchpad_filename = self.save_autoincrement_file(filename, prefix, main_doc = False)
+        self.app.scratchpad_filename = self.save_autoincrement_file(filename, prefix, main_doc = False)
 
     def save_autoincrement_file(self, filename, prefix, main_doc = True):
         # If necessary, create the folder(s) the scraps are stored under

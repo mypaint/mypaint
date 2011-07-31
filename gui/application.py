@@ -67,12 +67,12 @@ class Application: # singleton
         self.brushmodifier = brushmodifier.BrushModifier(self)
         self.doc = document.Document(self)
         
-        self.filehandler.scratchpad_filename = ""
-        self.filehandler.scratchpad_doc = document.Scratchpad(self)
+        self.scratchpad_filename = ""
+        self.scratchpad_doc = document.Scratchpad(self)
         
         if not self.preferences.get("scratchpad.last_opened_scratchpad", None):
             self.preferences["scratchpad.last_opened_scratchpad"] = self.filehandler.get_scratchpad_autosave()
-        self.filehandler.scratchpad_filename = self.preferences["scratchpad.last_opened_scratchpad"]
+        self.scratchpad_filename = self.preferences["scratchpad.last_opened_scratchpad"]
 
         self.brush.set_color_hsv((0, 0, 0))
         self.init_brush_adjustments()
@@ -115,10 +115,10 @@ class Application: # singleton
             # Load last scratchpad
             if not self.preferences["scratchpad.last_opened_scratchpad"]:
                 self.preferences["scratchpad.last_opened_scratchpad"] = self.filehandler.get_scratchpad_autosave()
-                self.filehandler.scratchpad_filename = self.preferences["scratchpad.last_opened_scratchpad"]
-            if os.path.isfile(self.filehandler.scratchpad_filename):
+                self.scratchpad_filename = self.preferences["scratchpad.last_opened_scratchpad"]
+            if os.path.isfile(self.scratchpad_filename):
                 try:
-                    self.filehandler.open_scratchpad(self.filehandler.scratchpad_filename)
+                    self.filehandler.open_scratchpad(self.scratchpad_filename)
                 except AttributeError, e:
                     print "Scratchpad widget isn't initialised yet, so cannot centre"
 
@@ -139,7 +139,7 @@ class Application: # singleton
             f.write(jsonstr)
             f.close()
         self.brushmanager.save_brushes_for_devices()
-        self.filehandler.save_scratchpad(self.filehandler.scratchpad_filename)
+        self.filehandler.save_scratchpad(self.scratchpad_filename)
         save_config()
 
     def apply_settings(self):

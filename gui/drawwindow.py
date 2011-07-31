@@ -453,14 +453,14 @@ class Window (windowing.MainWindow, layout.MainWindow):
         #    return False
 
         # This may need a stateful flag
-        if self.app.filehandler.scratchpad_doc.tdw.has_pointer:
-            thisdoc = self.app.filehandler.scratchpad_doc
+        if self.app.scratchpad_doc.tdw.has_pointer:
+            thisdoc = self.app.scratchpad_doc
             # Stop dragging on the main window
             self.app.doc.tdw.dragfunc = None
         else:
             thisdoc = self.app.doc
             # Stop dragging on the other window
-            self.app.filehandler.scratchpad_doc.tdw.dragfunc = None
+            self.app.scratchpad_doc.tdw.dragfunc = None
         if key == keysyms.space:
             if shift:
                  thisdoc.tdw.start_drag(thisdoc.dragfunc_rotate)
@@ -474,8 +474,8 @@ class Window (windowing.MainWindow, layout.MainWindow):
         return True
 
     def key_release_event_cb_before(self, win, event):
-        if self.app.filehandler.scratchpad_doc.tdw.has_pointer:
-            thisdoc = self.app.filehandler.scratchpad_doc
+        if self.app.scratchpad_doc.tdw.has_pointer:
+            thisdoc = self.app.scratchpad_doc
         else:
             thisdoc = self.app.doc
         if event.keyval == keysyms.space:
@@ -719,12 +719,12 @@ class Window (windowing.MainWindow, layout.MainWindow):
         self.app.filehandler.delete_autosave_scratchpad()
 
     def save_current_scratchpad_cb(self, action):
-        self.app.filehandler.save_scratchpad(self.app.filehandler.scratchpad_filename)
+        self.app.filehandler.save_scratchpad(self.app.scratchpad_filename)
 
     def scratchpad_copy_background_cb(self, action):
         bg = self.app.doc.model.background
-        if self.app.filehandler.scratchpad_doc:
-            self.app.filehandler.scratchpad_doc.model.set_background(bg)
+        if self.app.scratchpad_doc:
+            self.app.scratchpad_doc.model.set_background(bg)
 
     def draw_palette_cb(self, action):
         # test functionality:
@@ -756,10 +756,10 @@ class Window (windowing.MainWindow, layout.MainWindow):
                         self.app.brush.set_color_rgb(g.rgb(colour_idx))
                         # simulate strokes on scratchpad
                         for t, x, y, pressure in gen_events:
-                            cr = self.app.filehandler.scratchpad_doc.tdw.get_model_coordinates_cairo_context()
+                            cr = self.app.scratchpad_doc.tdw.get_model_coordinates_cairo_context()
                             x, y = cr.device_to_user(x, y)
-                            self.app.filehandler.scratchpad_doc.model.stroke_to(0.008, x, y, pressure, 0.0, 0.0)
-                        self.app.filehandler.scratchpad_doc.model.split_stroke()
+                            self.app.scratchpad_doc.model.stroke_to(0.008, x, y, pressure, 0.0, 0.0)
+                        self.app.scratchpad_doc.model.split_stroke()
         finally:
             dialog.destroy()
 
@@ -774,10 +774,10 @@ class Window (windowing.MainWindow, layout.MainWindow):
             gen_events = squiggle(off_x, off_y, scale=13.0)
             self.app.brush.set_color_rgb(g.rgb(colour_idx))
             for t, x, y, pressure in gen_events:
-                cr = self.app.filehandler.scratchpad_doc.tdw.get_model_coordinates_cairo_context()
+                cr = self.app.scratchpad_doc.tdw.get_model_coordinates_cairo_context()
                 x, y = cr.device_to_user(x, y)
-                self.app.filehandler.scratchpad_doc.model.stroke_to(0.008, x, y, pressure, 0.0, 0.0)
-            self.app.filehandler.scratchpad_doc.model.split_stroke()
+                self.app.scratchpad_doc.model.stroke_to(0.008, x, y, pressure, 0.0, 0.0)
+            self.app.scratchpad_doc.model.split_stroke()
             off_x = ((colour_idx % column_limit) + 0.5) * grid_size
             if not (colour_idx % column_limit) and colour_idx:
                 off_y += grid_size

@@ -65,7 +65,7 @@ class ToolWidget (gtk.VBox):
         buttons_hbox.pack_start(save_as_button)
         buttons_hbox.pack_start(revert_button)
 
-        scratchpad_view = app.filehandler.scratchpad_doc.tdw
+        scratchpad_view = app.scratchpad_doc.tdw
 
         self.connect("button-press-event", self.button_press_cb)
         self.connect("button-release-event",self.button_release_cb)
@@ -79,35 +79,35 @@ class ToolWidget (gtk.VBox):
         self.pack_start(buttons_hbox, expand=False)
 
         # Updates
-        doc = app.filehandler.scratchpad_doc.model
+        doc = app.scratchpad_doc.model
         doc.doc_observers.append(self.update)
 
         # FIXME pull the scratchpad filename from preferences instead of this
-        # self.app.filehandler.scratchpad_filename = self.scratchpad_filename = os.path.join(self.app.filehandler.get_scratchpad_prefix(), "scratchpad_default.ora")
+        # self.app.scratchpad_filename = self.scratchpad_filename = os.path.join(self.app.filehandler.get_scratchpad_prefix(), "scratchpad_default.ora")
 
-        self.update(app.filehandler.scratchpad_doc)
+        self.update(app.scratchpad_doc)
 
     def new_cb(self, action):
         if os.path.isfile(self.app.filehandler.get_scratchpad_default()):
             self.app.filehandler.open_scratchpad(self.app.filehandler.get_scratchpad_default())
         else:
-            self.app.filehandler.scratchpad_doc.model.clear()
-        self.app.filehandler.scratchpad_filename = self.app.preferences['scratchpad.last_opened'] = self.app.filehandler.get_scratchpad_autosave()
+            self.app.scratchpad_doc.model.clear()
+        self.app.scratchpad_filename = self.app.preferences['scratchpad.last_opened'] = self.app.filehandler.get_scratchpad_autosave()
 
     def revert_cb(self, action):
         # Load last scratchpad
-        if os.path.isfile(self.app.filehandler.scratchpad_filename):
-            self.app.filehandler.open_scratchpad(self.app.filehandler.scratchpad_filename)
-            print "Reverted to %s" % self.app.filehandler.scratchpad_filename
+        if os.path.isfile(self.app.scratchpad_filename):
+            self.app.filehandler.open_scratchpad(self.app.scratchpad_filename)
+            print "Reverted to %s" % self.app.scratchpad_filename
         else:
             print "No file to revert to yet."
 
     def load_cb(self, action):
-        if self.app.filehandler.scratchpad_filename:
+        if self.app.scratchpad_filename:
             self.save_cb(action)
         self.app.filehandler.open_scratchpad_dialog()
         # Check to see if a file has been opened outside of the scratchpad directory
-        if os.path.abspath(self.app.filehandler.scratchpad_filename).startswith(os.path.abspath(self.app.filehandler.get_scratchpad_prefix())):
+        if os.path.abspath(self.app.scratchpad_filename).startswith(os.path.abspath(self.app.filehandler.get_scratchpad_prefix())):
             # file is within the scratchpad directory - no need to warn
             return
 
@@ -129,7 +129,7 @@ class ToolWidget (gtk.VBox):
         response = d.run()
         d.destroy()
         if response == gtk.RESPONSE_APPLY:
-            self.app.filehandler.scratchpad_filename = ""
+            self.app.scratchpad_filename = ""
             self.save_as_cb(None)
             return True
         return response == gtk.RESPONSE_OK
@@ -144,11 +144,11 @@ class ToolWidget (gtk.VBox):
 
     def save_cb(self, action):
         print "Saving the scratchpad"
-        self.app.filehandler.save_scratchpad(self.app.filehandler.scratchpad_filename)
+        self.app.filehandler.save_scratchpad(self.app.scratchpad_filename)
 
     def button_press_cb(self, win, event):
-        return button_press_cb_abstraction(self.app.drawWindow, win, event, self.app.filehandler.scratchpad_doc)
+        return button_press_cb_abstraction(self.app.drawWindow, win, event, self.app.scratchpad_doc)
 
     def button_release_cb(self, win, event):
-        return button_release_cb_abstraction(win, event, self.app.filehandler.scratchpad_doc)
+        return button_release_cb_abstraction(win, event, self.app.scratchpad_doc)
 
