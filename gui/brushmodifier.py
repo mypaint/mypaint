@@ -53,10 +53,10 @@ class BrushModifier:
                 None, _("Paint normally"),
                 self.blend_mode_normal_cb, True),
             ('BlendModeEraser', stock.BRUSH_BLEND_MODE_ERASER, None,
-                None, _("Erase strokes quickly with the current brush"),
+                None, _("Eraser Mode: remove strokes using the current brush"),
                 self.blend_mode_eraser_cb),
             ('BlendModeLockAlpha', stock.BRUSH_BLEND_MODE_ALPHA_LOCK, None,
-                None, _("Paint over existing strokes only"),
+                None, _("Lock Alpha: paint over existing strokes only, using the current brush"),
                 self.blend_mode_lock_alpha_cb),
             ]
         ag.add_toggle_actions(toggle_actions)
