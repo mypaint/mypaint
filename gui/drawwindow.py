@@ -223,7 +223,7 @@ class Window (windowing.MainWindow, layout.MainWindow):
             ('ScratchClearAutosave',  None, _('Clear the Autosaved Scratchpad'), None, None, self.clear_autosave_scratchpad_cb),
             ('ScratchLoadPalette',  None, _('Draw a palette in the current Scratchpad'), None, None, self.draw_palette_cb),
             ('ScratchDrawSatPalette',  None, _('Draw a saturation palette of current color'), None, None, self.draw_sat_spectrum_cb),
-            ('ScratchCopyBackground',  None, _('Change scratchpad background to match canvas background'), None, None, self.scratchpad_copy_background_cb),
+            ('ScratchCopyBackground',  None, _('Match scratchpad bg to canvas bg'), None, None, self.scratchpad_copy_background_cb),
 
             ('BrushMenu',    None, _('Brush')),
             ('ImportBrushPack',       gtk.STOCK_OPEN, _('Import brush package...'), '', None, self.import_brush_pack_cb),
