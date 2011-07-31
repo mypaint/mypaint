@@ -117,7 +117,11 @@ class Application: # singleton
                 self.preferences["scratchpad.last_opened_scratchpad"] = self.filehandler.get_scratchpad_autosave()
                 self.filehandler.scratchpad_filename = self.preferences["scratchpad.last_opened_scratchpad"]
             if os.path.isfile(self.filehandler.scratchpad_filename):
-                self.filehandler.open_scratchpad(self.filehandler.scratchpad_filename)
+                try:
+                    self.filehandler.open_scratchpad(self.filehandler.scratchpad_filename)
+                except AttributeError, e:
+                    print "Scratchpad widget isn't initialised yet, so cannot centre"
+
 
             self.apply_settings()
             if not self.pressure_devices:
