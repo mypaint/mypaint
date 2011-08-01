@@ -19,6 +19,68 @@ def squiggle(off_x=0.0, off_y=0.0, scale=10.0):
     events.append((t, scale*(float(x))+off_x, scale*(float(y))+off_y, 0.0))
     return events
 
+def slash_squiggle(off_x = 0.0, off_y=0.0, scale = 10.0):
+    events = []
+    events.append((0.0, off_x, off_y, 0.0))
+    events.append((0.0, off_x, off_y, 1.0))
+    events.append((0.0, off_x+scale, off_y+scale, 1.0))
+    events.append((0.0, off_x, off_y, 0.0))
+    return events
+
+def box_squiggle(off_x = 0.0, off_y=0.0, scale = 10.0):
+    events = []
+    events.append((0.0, off_x, off_y, 0.0))
+    events.append((0.008, off_x+scale, off_y, 1.0))
+    events.append((0.016, off_x+scale, off_y+scale, 1.0))
+    events.append((0.024, off_x, off_y+scale, 1.0))
+    events.append((0.032, off_x, off_y, 1.0))
+    events.append((0.040, off_x, off_y, 0.0))
+    return events
+
+def hatch_squiggle(off_x = 0.0, off_y=0.0, scale = 10.0):
+    events = []
+    t=0.8
+    events.append((0.0, off_x, off_y, 0.0))
+    slice_width = scale / 3.0 
+    for u in xrange(3):
+        # Horizontal stripes
+        events.append((t, off_x, (u * slice_width) + off_y, 1.0))
+        t += 0.08
+        events.append((t, scale+off_x, (u * slice_width) + off_y, 1.0))
+        t += 0.08
+        events.append((t, scale+off_x, (u * slice_width) + off_y, 0.0))
+        t += 0.08
+        # vertical stripes
+        events.append((t, (u * slice_width) + off_x, off_y, 1.0))
+        t += 0.08
+        events.append((t, (u * slice_width) + off_x, scale + off_y, 1.0))
+        t += 0.08
+        events.append((t, (u * slice_width) + off_x, scale + off_y, 0.0))
+        t += 0.08
+    events.append((t, off_x, off_y, 0.0))
+    return events
+
+def draw_palette(app, palette, doc, columns=8, grid_size = 30.0, scale=13.0,
+                 offset_x = 0.0, offset_y = 0.0,
+                 swatch_method=squiggle):
+    # store the current brush colour:
+    brush_colour = app.brush.get_color_rgb()
+    off_y = offset_y
+    for colour_idx in xrange(len(palette)):
+        off_x = (colour_idx % columns) * grid_size + offset_x
+        if not (colour_idx % columns) and colour_idx:
+            off_y += grid_size
+        gen_events = swatch_method(off_x, off_y, scale=scale)
+        # Set the color
+        app.brush.set_color_rgb(palette.rgb(colour_idx))
+        # simulate strokes on scratchpad
+        for t, x, y, pressure in gen_events:
+            cr = doc.tdw.get_model_coordinates_cairo_context()
+            x, y = cr.device_to_user(x, y)
+            doc.model.stroke_to(0.008, x, y, pressure, 0.0, 0.0)
+        doc.model.split_stroke()
+    app.brush.set_color_rgb(brush_colour)
+
 class GimpPalette(list):
     # loads a given gimp palette and makes it queriable
     # Would 'save' functionality be useful at some stage?

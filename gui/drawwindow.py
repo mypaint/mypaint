@@ -29,7 +29,7 @@ import stock
 import xml.etree.ElementTree as ET
 
 # palette support
-from lib.scratchpad_palette import GimpPalette, squiggle
+from lib.scratchpad_palette import GimpPalette, hatch_squiggle, squiggle, draw_palette
 
 # TODO: put in a helper file?
 def with_wait_cursor(func):
@@ -743,23 +743,11 @@ class Window (windowing.MainWindow, layout.MainWindow):
                     #filename = "/home/ben/.gimp-2.6/palettes/Nature_Grass.gpl" # TEMP HACK TO TEST
                     g = GimpPalette(filename)
                     grid_size = 30.0
-                    off_y = grid_size / 2.0
                     column_limit = 7
-                    if g.columns != 0:
-                        column_limit = g.columns   # use the value for columns in the palette
-                    for colour_idx in xrange(len(g)):
-                        off_x = (colour_idx % column_limit) * grid_size + (grid_size / 2.0)
-                        if not (colour_idx % column_limit) and colour_idx:
-                            off_y += grid_size
-                        gen_events = squiggle(off_x, off_y, scale=13.0)
-                        # Set the color
-                        self.app.brush.set_color_rgb(g.rgb(colour_idx))
-                        # simulate strokes on scratchpad
-                        for t, x, y, pressure in gen_events:
-                            cr = self.app.scratchpad_doc.tdw.get_model_coordinates_cairo_context()
-                            x, y = cr.device_to_user(x, y)
-                            self.app.scratchpad_doc.model.stroke_to(0.008, x, y, pressure, 0.0, 0.0)
-                        self.app.scratchpad_doc.model.split_stroke()
+                    # IGNORE Gimp Palette 'columns'
+                    # if g.columns != 0:
+                    #    column_limit = g.columns   # use the value for columns in the palette
+                    draw_palette(self.app, g, self.app.scratchpad_doc, columns=column_limit, grid_size=grid_size, swatch_method=hatch_squiggle)
         finally:
             dialog.destroy()
 
@@ -770,19 +758,7 @@ class Window (windowing.MainWindow, layout.MainWindow):
         grid_size = 30.0
         off_x = off_y = grid_size / 2.0
         column_limit = 7
-        for colour_idx in xrange(len(g)):
-            gen_events = squiggle(off_x, off_y, scale=13.0)
-            self.app.brush.set_color_rgb(g.rgb(colour_idx))
-            for t, x, y, pressure in gen_events:
-                cr = self.app.scratchpad_doc.tdw.get_model_coordinates_cairo_context()
-                x, y = cr.device_to_user(x, y)
-                self.app.scratchpad_doc.model.stroke_to(0.008, x, y, pressure, 0.0, 0.0)
-            self.app.scratchpad_doc.model.split_stroke()
-            off_x = ((colour_idx % column_limit) + 0.5) * grid_size
-            if not (colour_idx % column_limit) and colour_idx:
-                off_y += grid_size
-        # restore brush color
-        self.app.brush.set_color_hsv(hsv)
+        draw_palette(self.app, g, self.app.scratchpad_doc, columns=column_limit, grid_size=grid_size)
 
     def quit_cb(self, *junk):
         self.app.doc.model.split_stroke()
