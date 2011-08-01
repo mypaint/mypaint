@@ -105,11 +105,21 @@ class ToolWidget (gtk.VBox):
     def load_cb(self, action):
         if self.app.scratchpad_filename:
             self.save_cb(action)
+            current_pad = self.app.scratchpad_filename
+        else:
+            current_pad = self.app.filehandler.get_scratchpad_autosave()
         self.app.filehandler.open_scratchpad_dialog()
         # Check to see if a file has been opened outside of the scratchpad directory
-        if os.path.abspath(self.app.scratchpad_filename).startswith(os.path.abspath(self.app.filehandler.get_scratchpad_prefix())):
-            # file is within the scratchpad directory - no need to warn
-            return
+        if not os.path.abspath(self.app.scratchpad_filename).startswith(os.path.abspath(self.app.filehandler.get_scratchpad_prefix())):
+            # file is NOT within the scratchpad directory - load copy as current scratchpad
+            self.app.scratchpad_filename = self.app.preferences['scratchpad.last_opened'] = current_pad
+
+        """
+        # Altered 'load' functionality:
+        # If the loaded file is not within the scratchpad directory, a copy is placed as the
+        # currently named scratchpad. The external image will not be overwritten.
+        # I can see how reverting this to allow use of external (shared) scratchpads can be 
+        useful, so am keeping the code here, just in case.
 
         # Doesn't start with the prefix
         d = gtk.Dialog(_("Scrachpad autosave warning"), self.app.drawWindow, gtk.DIALOG_MODAL)
@@ -133,6 +143,7 @@ class ToolWidget (gtk.VBox):
             self.save_as_cb(None)
             return True
         return response == gtk.RESPONSE_OK
+        """
 
     def update(self, doc):
         if self.is_updating:

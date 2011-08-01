@@ -701,10 +701,77 @@ class Scratchpad(Document):
 
     def init_actions(self):
         # name, stock id, label, accelerator, tooltip, callback
+        # Altered from above to avoid setting accelerators twice
         actions = [
-        #    ('Undo',         gtk.STOCK_UNDO, _('Undo Scratchpad'), '[', None, self.undo_cb),
-        #    ('Redo',         gtk.STOCK_REDO, _('Redo Scratchpad'), ']', None, self.redo_cb),
-        #    ('PickScratchpadContext',  None, _('Pick Context (layer, brush and color)'), 'o', None, self.pick_context_cb),
+            ('Undo', gtk.STOCK_UNDO, _('Undo'), '',
+                _("Undo the last action"),
+                self.undo_cb),
+            ('Redo', gtk.STOCK_REDO, _('Redo'), '',
+                _("Redo the last undo action"),
+                self.redo_cb),
+
+            ('Brighter',     None, _('Brighter'), None, None, self.brighter_cb),
+            ('Smaller',      None, _('Smaller'), '', None, self.brush_smaller_cb),
+            ('MoreOpaque',   None, _('More Opaque'), '', None, self.more_opaque_cb),
+            ('LessOpaque',   None, _('Less Opaque'), '', None, self.less_opaque_cb),
+            ('PickContext',  None, _('Pick Context (layer, brush and color)'), '', None, self.pick_context_cb),
+
+            ('Darker',       None, _('Darker'), None, None, self.darker_cb),
+            ('Warmer',       None, _('Warmer'), None, None, self.warmer_cb),
+            ('Cooler',       None, _('Cooler'), None, None, self.cooler_cb),
+            ('Purer',        None, _('Purer'), None, None, self.purer_cb),
+            ('Grayer',       None, _('Grayer'), None, None, self.grayer_cb),
+            ('Bigger',       None, _('Bigger'), '', None, self.brush_bigger_cb),
+
+            # Context actions are also added in init_context_actions
+            ('ContextStore', None, _('Save to Most Recently Restored'), '', None, self.context_cb),
+
+            # Disabling layer actions for now:
+            
+            #('ClearLayer',   gtk.STOCK_CLEAR, _('Clear'), '', None, self.clear_layer_cb),
+            #('CopyLayer',          gtk.STOCK_COPY, _('Copy to Clipboard'), '', None, self.copy_cb),
+            #('PasteLayer',         gtk.STOCK_PASTE, _('Paste Clipboard (Replace Layer)'), '', None, self.paste_cb),
+            #('PickLayer',    gtk.STOCK_JUMP_TO, _('Select Layer at Cursor'), '', None, self.pick_layer_cb),
+            #('LayerFG',      gtk.STOCK_GO_UP, _('Next (above current)'),  '', None, self.layer_fg_cb),
+            #('LayerBG',      gtk.STOCK_GO_DOWN, _('Next (below current)'), '', None, self.layer_bg_cb),
+            #('NewLayerFG',   gtk.STOCK_ADD, _('New (above current)'), '', None, self.new_layer_cb),
+            #('NewLayerBG',   None, _('New (below current)'), '', None, self.new_layer_cb),
+            #('MergeLayer',   gtk.STOCK_DND_MULTIPLE, # XXX need a batter one, but stay consistent with layerswindow for now
+            #                 _('Merge Down'), '<control>Delete', None, self.merge_layer_cb),
+            #('RemoveLayer',  gtk.STOCK_DELETE, _('Remove'), '<shift>Delete', None, self.remove_layer_cb),
+            #('IncreaseLayerOpacity', None, _('Increase Layer Opacity'),  'p', None, self.layer_increase_opacity),
+            #('DecreaseLayerOpacity', None, _('Decrease Layer Opacity'),  'o', None, self.layer_decrease_opacity),
+
+            #('ShortcutsMenu', None, _('Shortcuts')),
+
+            ('ResetView',   gtk.STOCK_ZOOM_FIT, _('Reset and Center'), '',
+                _("Reset Zoom, Rotation and Mirroring, and recenter the document"),
+                self.reset_view_cb),
+            ('ResetMenu',   None, _('Reset')),
+            ('ResetZoom',   gtk.STOCK_ZOOM_100, _('Zoom'), None, None, self.reset_view_cb),
+            ('ResetRotation',   None, _('Rotation'), None, None, self.reset_view_cb),
+            ('ResetMirror', None, _('Mirror'), None, None, self.reset_view_cb),
+            ('ZoomIn',       gtk.STOCK_ZOOM_IN, _('Zoom In'), '', 
+                _("Increase magnification"), self.zoom_cb),
+            ('ZoomOut',      gtk.STOCK_ZOOM_OUT, _('Zoom Out'), '',
+                _("Decrease magnification"), self.zoom_cb),
+            ('RotateLeft',   stock.ROTATE_LEFT, None, None,
+                _("Rotate the view left"),
+                self.rotate_cb),
+            ('RotateRight',  stock.ROTATE_RIGHT, None, None,
+                _("Rotate the view right"),
+                self.rotate_cb),
+            ('MirrorHorizontal', stock.MIRROR_HORIZONTAL, None, None,
+                _("Mirror: flip the view left to right"),
+                self.mirror_horizontal_cb),
+            ('MirrorVertical', stock.MIRROR_VERTICAL, None, None,
+                _("Flip the view upside-down"),
+                self.mirror_vertical_cb),
+            # Disabling Layer controls for now
+            # ('SoloLayer',    None, _('Layer Solo'), '', None, self.solo_layer_cb), # TODO: make toggle action
+            # ('ToggleAbove',  None, _('Hide Layers Above Current'), '', None, self.toggle_layers_above_cb), # TODO: make toggle action
+
+            ('BlendMode',    stock.BRUSH_BLEND_MODES),
         ]
         ag = self.action_group = gtk.ActionGroup('DocumentActions')
         ag.add_actions(actions)
