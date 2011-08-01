@@ -717,16 +717,38 @@ class Window (windowing.MainWindow, layout.MainWindow):
     #    self.app.filehandler.delete_autosave_scratchpad()
 
     def new_scratchpad_cb(self, action):
-        pass
+        if os.path.isfile(self.app.filehandler.get_scratchpad_default()):
+            self.app.filehandler.open_scratchpad(self.app.filehandler.get_scratchpad_default())
+        else:
+            self.app.scratchpad_doc.model.clear()
+            # With no default - adopt the currently chosen background
+            bg = self.app.doc.model.background
+            if self.app.scratchpad_doc:
+                self.app.scratchpad_doc.model.set_background(bg)
+            
+        self.app.scratchpad_filename = self.app.preferences['scratchpad.last_opened'] = self.app.filehandler.get_scratchpad_autosave()
 
     def load_scratchpad_cb(self, action):
-        pass
+        if self.app.scratchpad_filename:
+            self.save_current_scratchpad_cb(action)
+            current_pad = self.app.scratchpad_filename
+        else:
+            current_pad = self.app.filehandler.get_scratchpad_autosave()
+        self.app.filehandler.open_scratchpad_dialog()
+        # Check to see if a file has been opened outside of the scratchpad directory
+        if not os.path.abspath(self.app.scratchpad_filename).startswith(os.path.abspath(self.app.filehandler.get_scratchpad_prefix())):
+            # file is NOT within the scratchpad directory - load copy as current scratchpad
+            self.app.scratchpad_filename = self.app.preferences['scratchpad.last_opened'] = current_pad
 
     def save_as_scratchpad_cb(self, action):
-        pass
+        self.app.filehandler.save_scratchpad_as_dialog()
 
     def revert_current_scratchpad_cb(self, action):
-        pass
+        if os.path.isfile(self.app.scratchpad_filename):                                                             
+            self.app.filehandler.open_scratchpad(self.app.scratchpad_filename)
+            print "Reverted to %s" % self.app.scratchpad_filename
+        else:
+            print "No file to revert to yet."
     
     def save_current_scratchpad_cb(self, action):
         self.app.filehandler.save_scratchpad(self.app.scratchpad_filename)

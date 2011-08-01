@@ -92,6 +92,10 @@ class ToolWidget (gtk.VBox):
             self.app.filehandler.open_scratchpad(self.app.filehandler.get_scratchpad_default())
         else:
             self.app.scratchpad_doc.model.clear()
+            # With no default - adopt the currently chosen background
+            bg = self.app.doc.model.background                                                                       
+            if self.app.scratchpad_doc:
+                self.app.scratchpad_doc.model.set_background(bg)
         self.app.scratchpad_filename = self.app.preferences['scratchpad.last_opened'] = self.app.filehandler.get_scratchpad_autosave()
 
     def revert_cb(self, action):
