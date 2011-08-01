@@ -4,7 +4,7 @@ import re, os
 
 from helpers import rgb_to_hsv, hsv_to_rgb
 
-def squiggle(off_x=0.0, off_y=0.0, scale=10.0):
+def squiggle(off_x=0.0, off_y=0.0, scale=20.0):
     events = []
     events.append((0.0, off_x, off_y, 0.0))
     events.append((0.008, off_x, off_y, 0.0))
@@ -14,12 +14,12 @@ def squiggle(off_x=0.0, off_y=0.0, scale=10.0):
         x = dx % 2
         pressure -= 0.2
         for y in xrange(2):
-            events.append((t, scale*(float(x)*1.7)+off_x, scale*(float(y)*2.0)+off_y, pressure))
+            events.append((t, scale*(float(x))+off_x, scale*(float(y))+off_y, pressure))
             t += 0.008
     events.append((t, scale*(float(x))+off_x, scale*(float(y))+off_y, 0.0))
     return events
 
-def slash_squiggle(off_x = 0.0, off_y=0.0, scale = 10.0):
+def slash_squiggle(off_x = 0.0, off_y=0.0, scale = 20.0):
     events = []
     events.append((0.0, off_x, off_y, 0.0))
     events.append((0.0, off_x, off_y, 1.0))
@@ -27,7 +27,7 @@ def slash_squiggle(off_x = 0.0, off_y=0.0, scale = 10.0):
     events.append((0.0, off_x, off_y, 0.0))
     return events
 
-def box_squiggle(off_x = 0.0, off_y=0.0, scale = 10.0):
+def box_squiggle(off_x = 0.0, off_y=0.0, scale = 20.0):
     events = []
     events.append((0.0, off_x, off_y, 0.0))
     events.append((0.008, off_x+scale, off_y, 1.0))
@@ -37,7 +37,7 @@ def box_squiggle(off_x = 0.0, off_y=0.0, scale = 10.0):
     events.append((0.040, off_x, off_y, 0.0))
     return events
 
-def hatch_squiggle(off_x = 0.0, off_y=0.0, scale = 10.0):
+def hatch_squiggle(off_x = 0.0, off_y=0.0, scale = 20.0):
     events = []
     t=0.8
     events.append((0.0, off_x, off_y, 0.0))

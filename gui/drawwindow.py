@@ -744,10 +744,10 @@ class Window (windowing.MainWindow, layout.MainWindow):
                     g = GimpPalette(filename)
                     grid_size = 30.0
                     column_limit = 7
-                    # IGNORE Gimp Palette 'columns'
-                    # if g.columns != 0:
-                    #    column_limit = g.columns   # use the value for columns in the palette
-                    draw_palette(self.app, g, self.app.scratchpad_doc, columns=column_limit, grid_size=grid_size, swatch_method=hatch_squiggle)
+                    # IGNORE Gimp Palette 'columns'?
+                    if g.columns != 0:
+                        column_limit = g.columns   # use the value for columns in the palette
+                    draw_palette(self.app, g, self.app.scratchpad_doc, columns=column_limit, grid_size=grid_size, swatch_method=hatch_squiggle, scale = 25.0)
         finally:
             dialog.destroy()
 
