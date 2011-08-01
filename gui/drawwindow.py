@@ -216,12 +216,17 @@ class Window (windowing.MainWindow, layout.MainWindow):
 
             ('LayerMenu',    None, _('Layers')),
 
+            # Scratchpad menu items
             ('ScratchMenu',    None, _('Scratchpad')),
-            ('ScratchSaveNow',  None, _('Save Scratchpad Now'), None, None, self.save_current_scratchpad_cb),
+            ('ScratchNew',  gtk.STOCK_NEW, _('New scratchpad'), '', None, self.new_scratchpad_cb),
+            ('ScratchLoad',  gtk.STOCK_OPEN, _('Load into scratchpad'), '', None, self.load_scratchpad_cb),
+            ('ScratchSaveNow',  gtk.STOCK_SAVE, _('Save Scratchpad Now'), '', None, self.save_current_scratchpad_cb),
+            ('ScratchSaveAs',  gtk.STOCK_SAVE_AS, _('Save Scratchpad As...'), '', None, self.save_as_scratchpad_cb),
+            ('ScratchRevert',  gtk.STOCK_UNDO, _('Revert scratchpad'), '', None, self.revert_current_scratchpad_cb),
             ('ScratchSaveAsDefault',  None, _('Save Scratchpad As Default'), None, None, self.save_scratchpad_as_default_cb),
             ('ScratchClearDefault',  None, _('Clear the Default Scratchpad'), None, None, self.clear_default_scratchpad_cb),
-            ('ScratchClearAutosave',  None, _('Clear the Autosaved Scratchpad'), None, None, self.clear_autosave_scratchpad_cb),
             ('ScratchLoadPalette',  None, _('Draw a palette in the current Scratchpad'), None, None, self.draw_palette_cb),
+            ('ScratchPaletteOptions',    None, _('Draw a palette...')),
             ('ScratchDrawSatPalette',  None, _('Draw a saturation palette of current color'), None, None, self.draw_sat_spectrum_cb),
             ('ScratchCopyBackground',  None, _('Match scratchpad bg to canvas bg'), None, None, self.scratchpad_copy_background_cb),
 
@@ -700,24 +705,29 @@ class Window (windowing.MainWindow, layout.MainWindow):
         self.menubar.set_sensitive(True)
         self.popupmenu_last_active = self.popupmenu.get_active()
 
-    def toggle_subwindows_cb(self, action):
-        self.app.layout_manager.toggle_user_tools()
-        if self.app.layout_manager.saved_user_tools:
-            if self.is_fullscreen:
-                self.menubar.hide()
-        else:
-            if not self.is_fullscreen:
-                self.menubar.show()
-
+    # BEGIN -- Scratchpad menu options
     def save_scratchpad_as_default_cb(self, action):
         self.app.filehandler.save_scratchpad(self.app.filehandler.get_scratchpad_default(), export = True)
     
     def clear_default_scratchpad_cb(self, action):
         self.app.filehandler.delete_default_scratchpad()
 
-    def clear_autosave_scratchpad_cb(self, action):
-        self.app.filehandler.delete_autosave_scratchpad()
+    # Unneeded since 'Save blank canvas' bug has been addressed.
+    #def clear_autosave_scratchpad_cb(self, action):
+    #    self.app.filehandler.delete_autosave_scratchpad()
 
+    def new_scratchpad_cb(self, action):
+        pass
+
+    def load_scratchpad_cb(self, action):
+        pass
+
+    def save_as_scratchpad_cb(self, action):
+        pass
+
+    def revert_current_scratchpad_cb(self, action):
+        pass
+    
     def save_current_scratchpad_cb(self, action):
         self.app.filehandler.save_scratchpad(self.app.scratchpad_filename)
 
@@ -757,8 +767,10 @@ class Window (windowing.MainWindow, layout.MainWindow):
         g.append_sat_spectrum(hsv)
         grid_size = 30.0
         off_x = off_y = grid_size / 2.0
-        column_limit = 7
+        column_limit = 8
         draw_palette(self.app, g, self.app.scratchpad_doc, columns=column_limit, grid_size=grid_size)
+
+    # END -- Scratchpad menu options
 
     def quit_cb(self, *junk):
         self.app.doc.model.split_stroke()

@@ -138,17 +138,22 @@
     </menu>
     <menu action="ScratchMenu">
       <menuitem action='ScratchWindow'/>
+      <separator/>
+      <menuitem action='ScratchNew'/>
+      <menuitem action='ScratchLoad'/>
       <menuitem action='ScratchSaveNow'/>
+      <menuitem action='ScratchSaveAs'/>
+      <menuitem action='ScratchRevert'/>
       <separator/>
-      <menuitem action='ScratchSaveAsDefault'/>
-      <separator/>
-      <menuitem action='ScratchClearDefault'/>
-      <menuitem action='ScratchClearAutosave'/>
-      <separator/>
-      <menuitem action='ScratchLoadPalette'/>
-      <menuitem action='ScratchDrawSatPalette'/>
+      <menu action="ScratchPaletteOptions">
+        <menuitem action='ScratchLoadPalette'/>
+        <menuitem action='ScratchDrawSatPalette'/>
+      </menu>
       <separator/>
       <menuitem action='ScratchCopyBackground'/>
+      <separator/>
+      <menuitem action='ScratchSaveAsDefault'/>
+      <menuitem action='ScratchClearDefault'/>
     </menu>
     <menu action='HelpMenu'>
       <menuitem action='Docu'/>
