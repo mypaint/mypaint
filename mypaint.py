@@ -74,17 +74,20 @@ def get_paths():
         sys.path.insert(0, libpath)
         sys.path.insert(0, libpath_compiled)
         localepath = join(prefix, 'share/locale')
+        extradata = join(prefix, 'share')
     elif sys.platform == 'win32':
         prefix=None
         # this is py2exe point of view, all executables in root of installdir
         # all path must be normalized to absolute path
         libpath = os.path.abspath(os.path.dirname(os.path.realpath(sys.argv_unicode[0])))
         sys.path.insert(0, libpath)
-        localepath = join(libpath,'share/locale')
+        localepath = join(libpath, 'share/locale')
+        extradata = join(libpath, 'share')
     else:
         # we are not installed
         prefix = None
         libpath = u'.'
+        extradata = u'desktop'
         localepath = 'po'
 
     assert isinstance(libpath, unicode)
@@ -121,7 +124,8 @@ def get_paths():
 
     assert isinstance(datapath, unicode)
     assert isinstance(confpath, unicode)
-    return datapath, confpath, localepath
+    assert isinstance(extradata, unicode)
+    return datapath, extradata, confpath, localepath
 
 def psyco_opt():
     # This helps on slow PCs where the python overhead dominates.
@@ -145,7 +149,7 @@ def psyco_opt():
 if __name__ == '__main__':
     psyco_opt()
 
-    datapath, confpath, localepath = get_paths()
+    datapath, extradata, confpath, localepath = get_paths()
 
     # must be done before importing any translated python modules
     # (to get global strings translated, especially brushsettings.py)
@@ -157,4 +161,4 @@ if __name__ == '__main__':
     gettext.textdomain("mypaint")
 
     from gui import main
-    main.main(datapath, confpath)
+    main.main(datapath, extradata, confpath)

@@ -18,7 +18,7 @@ from optparse import OptionParser
 import sys, time
 
 # main entry, called from the "mypaint" script
-def main(datapath, default_confpath):
+def main(datadir, extradata, default_confpath):
 
     parser = OptionParser('usage: %prog [options] [FILE]')
     parser.add_option('-c', '--config', metavar='DIR', default=default_confpath,
@@ -44,7 +44,7 @@ def main(datapath, default_confpath):
     def run():
         print 'confpath =', options.config
 
-        app = application.Application(datapath, options.config, args)
+        app = application.Application(datadir, extradata, options.config, args)
         if options.fullscreen:
             def f():
                 app.drawWindow.fullscreen_cb()
