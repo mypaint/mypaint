@@ -49,8 +49,6 @@ class Application: # singleton
                 os.mkdir(d)
                 print 'Created', d
 
-        self.ui_manager = gtk.UIManager()
-
         # Default location for our icons. The user's theme can override these.
         icon_theme = gtk.icon_theme_get_default()
         icon_theme.append_search_path(join(extradata, "icons"))
@@ -66,6 +64,8 @@ class Application: # singleton
         gtk.window_set_default_icon_name('mypaint')
 
         stock.init_custom_stock_items()
+
+        self.ui_manager = gtk.UIManager()
 
         gdk.set_program_class('MyPaint')
 

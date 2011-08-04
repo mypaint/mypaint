@@ -106,8 +106,10 @@ class LayoutManager:
                     widget.connect("hide", cb, False)
                     return widget
                 elif isinstance(widget, gtk.Widget):
-                    title = result[1]
-                    tool = Tool(widget, role, title, title, self)
+                    stock_id = result[1]
+                    stock_info = gtk.stock_lookup(stock_id)
+                    stock_id, title, _mods, _key, _tr = stock_info
+                    tool = Tool(widget, role, title, stock_id, self)
                     self.tools[role] = tool
                     self.widgets[role] = tool
                     return widget
@@ -552,7 +554,7 @@ gtk.rc_parse_string ("""
 class SmallImageButton (gtk.Button):
     """A small button containing an image.
 
-    Instances are used for the close button and snap in/snap out buttons in a
+    Instances are used for the close button and snap out buttons in a
     ToolDragHandle.
     """
 
@@ -731,6 +733,31 @@ class FoldOutArrow (gtk.Button):
             self.set_tooltip_text(self.TEXT_EXPANDED)
 
 
+def draw_subtle_gradient(widget):
+    # Draw a subtle vertical gradient over an entire widget
+    state = widget.get_state()
+    alloc = widget.get_allocation()
+    w = alloc.width
+    h = alloc.height
+    def _col2rgba(col, alpha=0.2):
+        return col.red_float, col.green_float, col.blue_float, alpha
+    light_rgba = _col2rgba(widget.style.light[state])
+    mid_rgba = _col2rgba(widget.style.bg[state])
+    dark_rgba = _col2rgba(widget.style.dark[state])
+    cr = widget.window.cairo_create()
+    lg = cairo.LinearGradient(0, 0, 0, h)
+    if state == gtk.STATE_ACTIVE:
+        lg.add_color_stop_rgba(0.0, *dark_rgba)
+        lg.add_color_stop_rgba(0.9, *dark_rgba)
+        lg.add_color_stop_rgba(1.0, *mid_rgba)
+    else:
+        lg.add_color_stop_rgba(0.0, *light_rgba)
+        lg.add_color_stop_rgba(0.5, *mid_rgba)
+        lg.add_color_stop_rgba(1.0, *dark_rgba)
+    cr.set_source(lg)
+    cr.paint()
+
+
 class ToolDragHandle (gtk.EventBox):
     """A draggable handle for repositioning a Tool.
     """
@@ -740,9 +767,8 @@ class ToolDragHandle (gtk.EventBox):
 
     def __init__(self, tool, stock_id):
         gtk.EventBox.__init__(self)
-        stock_info = gtk.stock_lookup(stock_id)
         self.stock_id = stock_id
-        label_text = stock_info[1]
+        stock_id, label_text, _mods, _key, _tr = gtk.stock_lookup(stock_id)
         self.tool = tool
         self.frame = frame = gtk.Frame()
         frame.set_shadow_type(gtk.SHADOW_OUT)
@@ -756,7 +782,7 @@ class ToolDragHandle (gtk.EventBox):
         self.label.set_alignment(0.0, 0.5)
         self.label.set_ellipsize(pango.ELLIPSIZE_END)
         hbox.pack_start(label, True, True)
-        self.snap_button = SmallImageButton(tooltip=_("Snap in/out"))  # TODO: update this when pressed
+        self.snap_button = SmallImageButton(tooltip=_("Snap out"))
         self.snap_button.connect("clicked", tool.on_snap_button_pressed)
         self.close_button = SmallImageButton(gtk.STOCK_CLOSE, _("Close"))
         self.close_button.connect("clicked", tool.on_close_button_pressed)
@@ -778,29 +804,7 @@ class ToolDragHandle (gtk.EventBox):
         self.frame.connect("expose-event", self.on_frame_expose_event)
 
     def on_frame_expose_event(self, widget, event):
-        state = self.get_state()
-        alloc = self.get_allocation()
-        w = alloc.width
-        h = alloc.height
-
-        # Draw a subtle vertical gradient
-        def _col2rgba(col, alpha=0.3):
-            return col.red_float, col.green_float, col.blue_float, alpha
-        light_rgba = _col2rgba(self.style.light[state])
-        mid_rgba = _col2rgba(self.style.bg[state])
-        dark_rgba = _col2rgba(self.style.dark[state])
-        cr = widget.window.cairo_create()
-        lg = cairo.LinearGradient(0, 0, 0, h)
-        lg.add_color_stop_rgba(0.0, *light_rgba)
-        lg.add_color_stop_rgba(0.5, *mid_rgba)
-        lg.add_color_stop_rgba(1.0, *dark_rgba)
-        cr.set_source(lg)
-        cr.paint()
-
-        #self.style.paint_flat_box(widget.window, state,
-        #    gtk.SHADOW_OUT, event.area, widget,
-        #    'button', 0, 0, w, h)
-
+        draw_subtle_gradient(widget)
         return False   # let the normal handler draw the frame outline too
 
     def set_floating(self, floating):
@@ -877,6 +881,83 @@ class ToolDragHandle (gtk.EventBox):
         #    self.set_state(gtk.STATE_PRELIGHT)
 
 
+class ToolSnapBackBar (gtk.DrawingArea):
+
+    ARROW_SIZE = 10
+    TEAR_LENGTH = 5
+
+    def __init__(self, tool):
+        gtk.DrawingArea.__init__(self)
+        self.tool = tool
+        self.set_size_request(-1, self.ARROW_SIZE)
+        self.connect("expose-event", self.on_expose_event)
+        self.connect("button-press-event", self.on_button_down)
+        self.connect("button-release-event", self.on_button_up)
+        self.connect("enter-notify-event", self.on_enter)
+        self.connect("leave-notify-event", self.on_leave)
+        self.add_events(gdk.BUTTON_PRESS_MASK|gdk.BUTTON_RELEASE_MASK)
+        self.add_events(gdk.ENTER_NOTIFY_MASK|gdk.LEAVE_NOTIFY_MASK)
+        self._button = None
+
+    def on_click(self, event):
+        if event.button != 1:
+            return
+        self.tool.set_floating(False)
+
+    def on_button_down(self, widget, event):
+        self._button = event.button
+        self.set_state(gtk.STATE_ACTIVE)
+
+    def on_button_up(self, widget, event):
+        if event.button == self._button \
+                and self.get_state() == gtk.STATE_ACTIVE:
+            self.on_click(event)
+        self.set_state(gtk.STATE_NORMAL)
+        self._button = None
+
+    def on_enter(self, widget, event):
+        if self._button:
+            self.set_state(gtk.STATE_ACTIVE)
+        else:
+            self.set_state(gtk.STATE_PRELIGHT)
+        self.queue_draw()
+
+    def on_leave(self, widget, event):
+        self.set_state(gtk.STATE_NORMAL)
+
+    def on_expose_event(self, widget, event):
+        alloc = self.get_allocation()
+        w = alloc.width
+        h = alloc.height
+        sty = self.get_style()
+        state = self.get_state()
+        if state == gtk.STATE_ACTIVE:
+            shadow_type = gtk.SHADOW_IN
+        elif state == gtk.STATE_PRELIGHT:
+            shadow_type = gtk.SHADOW_OUT
+        else:
+            shadow_type = gtk.SHADOW_NONE
+
+        #sty.paint_box(self.window, state, shadow_type, event.area,
+        #    self, None, 0, 0, w, h)
+        draw_subtle_gradient(widget)
+
+        sty.paint_arrow(self.window, state, gtk.SHADOW_IN, event.area,
+            self, "tearoffmenuitem", gtk.ARROW_RIGHT, True, w-h, 0, h, h)
+
+
+        right_max = w - h
+        x = self.TEAR_LENGTH
+        while x < right_max:
+            x1 = x
+            x2 = min(x+self.TEAR_LENGTH, right_max)
+            sty.paint_hline(self.window, gtk.STATE_NORMAL, event.area,
+                       widget, "tearoffmenuitem",
+                       x1, x2, (h - sty.ythickness)//2)
+            x += 2 * self.TEAR_LENGTH
+        # cribbed from http://git.gnome.org/browse/gtk+/tree/gtk/gtktearoffmenuitem.c?id=5361490db88974b529bf5a1ba79711fcb1c7249b
+
+
 class ToolWindow (gtk.Window, ElasticContainer, WindowWithSavedPosition):
     """Window containing a Tool in the floating state.
     """
@@ -889,13 +970,17 @@ class ToolWindow (gtk.Window, ElasticContainer, WindowWithSavedPosition):
         self.set_transient_for(layout_manager.main_window)
         self.set_type_hint(gdk.WINDOW_TYPE_HINT_UTILITY)
         self.set_focus_on_map(False)
-        self.set_decorated(False)
         self.role = role
         self.set_role(role)
         self.set_title(title)
         self.tool = None
         self.connect("configure-event", self.on_configure_event)
         self.pre_hide_pos = None
+        ## More of a reminder to myself than anything else.
+        #self.set_opacity(0.5)
+        # We could make them ghost on focus-in and focus-out like Inkscape's
+        # new setup. Potentially rather annoying though unless done right.
+        # Animated, fading in fast and fading out slow would probably be best.
 
     def add(self, tool):
         self.tool = tool
@@ -982,14 +1067,15 @@ class Tool (gtk.VBox, ElasticContainer):
     floating ToolWindow.
     """
 
-    def __init__(self, widget, role, title, gloss, layout_manager):
+    def __init__(self, widget, role, title, stock_id, layout_manager):
         gtk.VBox.__init__(self)
         ElasticContainer.__init__(self)
         self.role = role
         self.widget = widget
         self.layout_manager = layout_manager
-        self.handle = ToolDragHandle(self, gloss)
-        self.pack_start(self.handle, False, False)
+        self.handle = ToolDragHandle(self, stock_id)
+        self.stock_id = stock_id
+        self.snap_back_bar = ToolSnapBackBar(self)
         self.widget_frame = frame = gtk.Frame()
         frame.set_shadow_type(gtk.SHADOW_IN)
         frame.add(widget)
@@ -1007,6 +1093,8 @@ class Tool (gtk.VBox, ElasticContainer):
         self.rolled_up = False
         self.rolled_up_prev_size = None
         self.connect("size-allocate", self.on_size_allocate)
+        self.connect("style-set", self.on_style_set)
+
 
     def on_size_allocate(self, widget, allocation):
         if self.rolled_up:
@@ -1017,6 +1105,22 @@ class Tool (gtk.VBox, ElasticContainer):
         if not lm.prefs.get(self.role, False):
             lm.prefs[self.role] = {}
         lm.prefs[self.role]["sbheight"] = allocation.height
+
+
+    def on_style_set(self, widget, oldstyle):
+        """Updates the floating window's icon in response to ``style-set``.
+        """
+        sizes = (gtk.ICON_SIZE_INVALID, gtk.ICON_SIZE_MENU,
+            gtk.ICON_SIZE_SMALL_TOOLBAR, gtk.ICON_SIZE_LARGE_TOOLBAR,
+            gtk.ICON_SIZE_BUTTON, gtk.ICON_SIZE_DND, gtk.ICON_SIZE_DIALOG)
+        pixbufs = []
+        for size in sizes:
+            pixbuf = widget.render_icon(self.stock_id, size, None)
+            if pixbuf is not None:
+                pixbufs.append(pixbuf)
+        if pixbufs != []:
+            self.floating_window.set_icon_list(*pixbufs)
+
 
     def on_floating_window_delete_event(self, window, event):
         self.set_hidden(True)
@@ -1073,6 +1177,8 @@ class Tool (gtk.VBox, ElasticContainer):
         if lm.prefs.get(self.role, None) is None:
             lm.prefs[self.role] = {}
         if not floating:
+            new_item0 = self.handle
+            old_item0 = self.snap_back_bar
             if lm.main_window.sidebar.is_empty():
                 lm.main_window.sidebar.show_all()
             sbindex = lm.prefs[self.role].get("sbindex", None)
@@ -1081,8 +1187,13 @@ class Tool (gtk.VBox, ElasticContainer):
             self.floating = lm.prefs[self.role]["floating"] = False
             self.restore_sbheight()
             lm.main_window.sidebar.reassign_indices()
+            if self.resize_grip_frame not in self.get_children():
+                self.pack_start(self.resize_grip_frame, False, False)
+                self.resize_grip_frame.show_all()
             self.resize_grip_frame.set_shadow_type(gtk.SHADOW_NONE)
         else:
+            new_item0 = self.snap_back_bar
+            old_item0 = self.handle
             self.floating_window.add(self)
             # Defer the show_all(), seems to be needed when toggling on a
             # hidden, floating window which hasn't yet been loaded.
@@ -1091,7 +1202,18 @@ class Tool (gtk.VBox, ElasticContainer):
             lm.main_window.sidebar.reassign_indices()
             if lm.main_window.sidebar.is_empty():
                 lm.main_window.sidebar.hide()
-            self.resize_grip_frame.set_shadow_type(gtk.SHADOW_OUT)
+            if self.resize_grip_frame in self.get_children():
+                self.resize_grip_frame.hide()
+                self.remove(self.resize_grip_frame)
+
+        # Display the appropriate widget in slot 0
+        if old_item0 in self.get_children():
+            old_item0.hide()
+            self.remove(old_item0)
+        if new_item0 not in self.get_children():
+            self.pack_start(new_item0, False, False)
+            self.reorder_child(new_item0, 0)
+            new_item0.show_all()
 
     def set_hidden(self, hidden, temporary=False):
         """Sets a tool as hidden, hiding or showing it as appropriate.
@@ -1177,19 +1299,14 @@ class Tool (gtk.VBox, ElasticContainer):
             sidebar = self.layout_manager.main_window.sidebar
             n = sidebar.num_tools()
             m = 5
-            if not self.floating:
-                x = ptr_x - (w + (n*w/m))  # cascade effect
-                y = ptr_y + ((m - n) * (titlebar_h + 6))
-                self.floating_window.place(x, y, w, h)
-                self.set_floating(True)
-                self.handle.snap_button.set_state(gtk.STATE_NORMAL)
-                if sidebar.is_empty():
-                    sidebar.hide()
-            else:
-                if sidebar.is_empty():
-                   sidebar.show()
-                self.set_floating(False)
-                self.handle.snap_button.set_state(gtk.STATE_NORMAL)
+            assert not self.floating
+            x = ptr_x - (w + (n*w/m))  # cascade effect
+            y = ptr_y + ((m - n) * (titlebar_h + 6))
+            self.floating_window.place(x, y, w, h)
+            self.set_floating(True)
+            self.handle.snap_button.set_state(gtk.STATE_NORMAL)
+            if sidebar.is_empty():
+                sidebar.hide()
             return False
         gobject.idle_add(handle_snap)
 
@@ -1353,12 +1470,9 @@ class ToolDragState:
         x_root = event.x_root
         y_root = event.y_root
         w, h = self.preview_size
-        # Show the sidebar if it's not currently visible
-        sidebar = self.layout_manager.main_window.sidebar
-        if sidebar.is_empty():
-            sidebar.show_all()
-        # Moving into or out of the box defined by the sidebar
+        # Moving out of the box defined by the sidebar
         # changes the mode of the current drag.
+        sidebar = self.layout_manager.main_window.sidebar
         sb_left, sb_top = sidebar.window.get_origin()
         sb_alloc = sidebar.allocation
         sb_right = sb_left + sb_alloc.width
@@ -1374,13 +1488,7 @@ class ToolDragState:
             ins = sidebar.insertion_point_at_pointer()
             if ins is not None and ins != self.insert_pos:
                 self.insert_pos = ins
-                if not tool in sidebar.tools_vbox:
-                    tool.set_floating(False)
-                    # Update preview size: the widget will be a different
-                    # size after being shoved in the sidebar.
-                    while gtk.events_pending():
-                        gtk.main_iteration(False)
-                    w, h = self.preview_size = tool.get_preview_size()
+                assert tool in sidebar.tools_vbox
                 sidebar.reorder_item(tool, ins)
                 sidebar.reassign_indices()
             x, y = tool.handle.window.get_origin()
@@ -1395,10 +1503,7 @@ class ToolDragState:
         """Invoked at the end of repositioning. Snapping out happens here.
         """
         sidebar = self.layout_manager.main_window.sidebar
-        if self.pointer_inside_sidebar:
-            pass  # Widget has already been reordered,
-                  # or snapped in and then reordered.
-        else:
+        if not self.pointer_inside_sidebar:
             # Set window position to that of the floating window
             x, y = self.handle_pos_root
             w, h = self.preview_size
