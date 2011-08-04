@@ -251,6 +251,13 @@ class Window (windowing.MainWindow, layout.MainWindow):
         if not self.get_show_toolbar():
             gobject.idle_add(self.toolbar.hide)
 
+        # Respect the user's style defaults, up to a point.
+        # We have too many icons to fit on this thing for some styles.
+        def __toolbar_style_never_both(tb, style):
+            if style == gtk.TOOLBAR_BOTH:
+                tb.set_style(gtk.TOOLBAR_BOTH_HORIZ)
+        self.toolbar.connect("style-changed", __toolbar_style_never_both)
+
 
     def _init_popupmenu(self, xml):
         """
