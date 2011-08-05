@@ -45,7 +45,7 @@ class StrokeShape:
                 # calculate the "perceptual" amount of difference
                 absdiff = zeros((N, N), 'uint32')
                 for i in range(4): # RGBA
-                    absdiff += abs(a_data[:,:,i].astype('uint32') - b_data[:,:,i])
+                    absdiff += abs(a_data[:,:,i].astype('int32') - b_data[:,:,i])
                 # ignore badly visible (parts of) strokes, eg. very faint strokes
                 #
                 # This is an arbitrary threshold. If it is too high, an
