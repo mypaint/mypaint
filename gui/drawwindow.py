@@ -250,7 +250,7 @@ class Window (windowing.MainWindow, layout.MainWindow):
         self.toolbar = self.app.ui_manager.get_widget('/toolbar1')
         if not self.get_show_toolbar():
             gobject.idle_add(self.toolbar.hide)
-        tb.set_style(gtk.TOOLBAR_ICONS)
+        self.toolbar.set_style(gtk.TOOLBAR_ICONS)
 
     def _init_popupmenu(self, xml):
         """
