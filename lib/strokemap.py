@@ -55,8 +55,8 @@ class StrokeShape:
                 #
                 threshold = (1<<15)*4 / 16 # require 1/16 of the max difference (also not bad: 1/8)
                 is_different = absdiff > threshold
-                # except if there is no previous stroke below it
-                is_different |= (absdiff > 0) #& (brushmap_data == 0) --- FIXME: not possible any more
+                # except if there is no previous stroke below it (that is, layer had zero alpha)
+                is_different |= (absdiff > 0) & (a_data[:,:,3] == 0)
                 data = is_different.astype('uint8')
 
                 data_compressed = zlib.compress(data.tostring())
