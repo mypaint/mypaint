@@ -388,3 +388,78 @@ void tile_convert_rgba8_to_rgba16(PyObject * src, PyObject * dst) {
     }
   }
 }
+
+// used in strokemap.py
+//
+// Calculates a 1-bit bitmap of the stroke shape using two snapshots
+// of the layer (the layer before and after the stroke).
+//
+// If the alpha increases a lot, we want the stroke to appear in
+// the strokemap, even if the color did not change. If the alpha
+// decreases a lot, we want to ignore the stroke (eraser). If
+// the alpha decreases just a little, but the color changes a
+// lot (eg. heavy smudging or watercolor brushes) we want the
+// stroke still to be pickable.
+//
+// If the layer alpha was (near) zero, we record the stroke even if it
+// is barely visible. This gives a bigger target to point-and-select.
+//
+void tile_perceptual_change_strokemap(PyObject * a, PyObject * b, PyObject * res) {
+
+  assert(PyArray_TYPE(a) == NPY_UINT16);
+  assert(PyArray_TYPE(b) == NPY_UINT16);
+  assert(PyArray_TYPE(res) == NPY_UINT8);
+  assert(PyArray_ISCARRAY(a));
+  assert(PyArray_ISCARRAY(b));
+  assert(PyArray_ISCARRAY(res));
+
+  uint16_t * a_p  = (uint16_t*)PyArray_DATA(a);
+  uint16_t * b_p  = (uint16_t*)PyArray_DATA(b);
+  uint8_t * res_p = (uint8_t*)PyArray_DATA(res);
+
+  for (int y=0; y<TILE_SIZE; y++) {
+    for (int x=0; x<TILE_SIZE; x++) {
+
+      int32_t color_change = 0;
+      // We want to compare a.color with b.color, but we only know
+      // (a.color * a.alpha) and (b.color * b.alpha).  We multiply
+      // each component with the alpha of the other image, so they are
+      // scaled the same and can be compared.
+
+      for (int i=0; i<3; i++) {
+        int32_t a_col = (uint32_t)a_p[i] * b_p[3] / (1<<15); // a.color * a.alpha*b.alpha
+        int32_t b_col = (uint32_t)b_p[i] * a_p[3] / (1<<15); // b.color * a.alpha*b.alpha
+        color_change += abs(b_col - a_col);
+      }
+      // "color_change" is in the range [0, 3*a_a]
+      // if either old or new alpha is (near) zero, "color_change" is (near) zero
+
+      int32_t alpha_old = a_p[3];
+      int32_t alpha_new = b_p[3];
+
+      // Note: the thresholds below are arbitrary choices found to work okay
+
+      // We report a color change only if both old and new color are
+      // well-defined (big enough alpha).
+      bool is_perceptual_color_change = color_change > MAX(alpha_old, alpha_new)/16;
+
+      int32_t alpha_diff = alpha_new - alpha_old; // no abs() here (ignore erasers)
+      // We check the alpha increase relative to the previous alpha.
+      bool is_perceptual_alpha_increase = alpha_diff > (1<<15)/4;
+
+      // this one is responsible for making fat big ugly easy-to-hit pointer targets
+      bool is_big_relative_alpha_increase  = alpha_diff > (1<<15)/64 && alpha_diff > alpha_old/2;
+
+      if (is_perceptual_alpha_increase || is_big_relative_alpha_increase || is_perceptual_color_change) {
+        res_p[0] = 1;
+      } else {
+        res_p[0] = 0;
+      }
+
+      a_p += 4;
+      b_p += 4;
+      res_p += 1;
+    }
+  }
+}
+
