@@ -151,6 +151,45 @@ void tile_blit_rgb16_into_rgb16(PyObject * src, PyObject * dst) {
   */
 }
 
+void tile_clear(PyObject * dst) {
+  PyArrayObject* dst_arr = ((PyArrayObject*)dst);
+
+#ifdef HEAVY_DEBUG
+  assert(PyArray_DIM(dst, 0) == TILE_SIZE);
+  assert(PyArray_DIM(dst, 1) == TILE_SIZE);
+  assert(PyArray_TYPE(dst) == NPY_UINT8);
+  assert(PyArray_ISBEHAVED(dst));
+  assert(dst_arr->strides[1] <= 8);
+#endif
+
+  for (int y=0; y<TILE_SIZE; y++) {
+    uint8_t  * dst_p = (uint8_t*)(dst_arr->data + y*dst_arr->strides[0]);
+    memset(dst_p, 0, TILE_SIZE*dst_arr->strides[1]);
+    dst_p += dst_arr->strides[0];
+  }
+}
+
+// noise used for dithering (the same for each tile)
+static const int dithering_noise_size = 64*64*2;
+static uint16_t dithering_noise[dithering_noise_size];
+static void precalculate_dithering_noise_if_required()
+{
+  static bool have_noise = false;
+  if (!have_noise) {
+    // let's make some noise
+    for (int i=0; i<dithering_noise_size; i++) {
+      // random number in range [0.03 .. 0.97] * (1<<15)
+      //
+      // We could use the full range, but like this it is much easier
+      // to guarantee 8bpc load-save roundtrips don't alter the
+      // image. With the full range we would have to pay a lot
+      // attention to rounding converting 8bpc to our internal format.
+      dithering_noise[i] = (rand() % (1<<15)) * 240/256 + (1<<15) * 8/256;
+    }
+    have_noise = true;
+  }
+}
+
 // used mainly for saving layers (transparent PNG)
 void tile_convert_rgba16_to_rgba8(PyObject * src, PyObject * dst) {
   PyArrayObject* src_arr = ((PyArrayObject*)src);
@@ -173,18 +212,8 @@ void tile_convert_rgba16_to_rgba8(PyObject * src, PyObject * dst) {
   assert(src_arr->strides[1] == 4*sizeof(uint16_t));
   assert(src_arr->strides[2] ==   sizeof(uint16_t));
 #endif
-  
-  // noise used for dithering (the same for each tile)
-  const int static_noise_size = 64*64*2;
-  static uint16_t static_noise[static_noise_size];
-  static bool have_noise = false;
-  if (!have_noise) {
-    // let's make some noise
-    for (int i=0; i<static_noise_size; i++) {
-      static_noise[i] = (rand() % (1<<15)) * 240/256 + (1<<15) * 8/256;
-    }
-    have_noise = true;
-  }
+
+  precalculate_dithering_noise_if_required();
   int noise_idx = 0;
 
   for (int y=0; y<TILE_SIZE; y++) {
@@ -241,7 +270,6 @@ void tile_convert_rgba16_to_rgba8(PyObject * src, PyObject * dst) {
       // Variant C) slightly better dithering
       // make sure we don't dither rounding errors (those did occur when converting 8bit-->16bit)
       // this preserves the alpha channel, but we still add noise to the highly transparent colors
-      // OPTIMIZE: calling rand() slows us down...
       const uint32_t add_r = (rand() % (1<<15)) * 240/256 + (1<<15) * 8/256;
       const uint32_t add_g = add_r; // hm... do not produce too much color noise
       const uint32_t add_b = add_r;
@@ -249,17 +277,17 @@ void tile_convert_rgba16_to_rgba8(PyObject * src, PyObject * dst) {
       // TODO: error diffusion might work better than random dithering...
       */
 
-      // Variant D) same as variant C but with precalculated noise (much faster)
+      // Variant C) but with precalculated noise (much faster)
       //
-      const uint32_t add_r = static_noise[noise_idx++];
+      const uint32_t add_r = dithering_noise[noise_idx++];
       const uint32_t add_g = add_r; // hm... do not produce too much color noise
       const uint32_t add_b = add_r;
-      const uint32_t add_a = static_noise[noise_idx++];
+      const uint32_t add_a = dithering_noise[noise_idx++];
 
 #ifdef HEAVY_DEBUG
       assert(add_a < (1<<15));
       assert(add_a >= 0);
-      assert(noise_idx <= static_noise_size);
+      assert(noise_idx <= dithering_noise_size);
 #endif
 
       *dst_p++ = (r * 255 + add_r) / (1<<15);
@@ -272,25 +300,7 @@ void tile_convert_rgba16_to_rgba8(PyObject * src, PyObject * dst) {
   }
 }
 
-void tile_clear(PyObject * dst) {
-  PyArrayObject* dst_arr = ((PyArrayObject*)dst);
-
-#ifdef HEAVY_DEBUG
-  assert(PyArray_DIM(dst, 0) == TILE_SIZE);
-  assert(PyArray_DIM(dst, 1) == TILE_SIZE);
-  assert(PyArray_TYPE(dst) == NPY_UINT8);
-  assert(PyArray_ISBEHAVED(dst));
-  assert(dst_arr->strides[1] <= 8);
-#endif
-
-  for (int y=0; y<TILE_SIZE; y++) {
-    uint8_t  * dst_p = (uint8_t*)(dst_arr->data + y*dst_arr->strides[0]);
-    memset(dst_p, 0, TILE_SIZE*dst_arr->strides[1]);
-    dst_p += dst_arr->strides[0];
-  }
-}
-
-// used after compositing
+// used after compositing (when displaying, or when saving solid PNG or JPG)
 void tile_convert_rgb16_to_rgb8(PyObject * src, PyObject * dst) {
   PyArrayObject* src_arr = ((PyArrayObject*)src);
   PyArrayObject* dst_arr = ((PyArrayObject*)dst);
@@ -312,6 +322,9 @@ void tile_convert_rgb16_to_rgb8(PyObject * src, PyObject * dst) {
   assert(src_arr->strides[2] ==   sizeof(uint16_t));
 #endif
 
+  precalculate_dithering_noise_if_required();
+  int noise_idx = 0;
+
   bool dst_has_alpha = PyArray_DIM(dst, 2) == 4;
 
   for (int y=0; y<TILE_SIZE; y++) {
@@ -329,9 +342,12 @@ void tile_convert_rgb16_to_rgb8(PyObject * src, PyObject * dst) {
         assert(b<=(1<<15));
 #endif
           
-        // Doing rounding for now.
-        // TODO: error diffusion / dithering? (but watch the performance benchmarks)
+        /*
+        // rounding
         const uint32_t add = (1<<15)/2;
+        */
+        // dithering
+        const uint32_t add = dithering_noise[noise_idx++];
           
         *dst_p++ = (r * 255 + add) / (1<<15);
         *dst_p++ = (g * 255 + add) / (1<<15);
@@ -350,15 +366,21 @@ void tile_convert_rgb16_to_rgb8(PyObject * src, PyObject * dst) {
         assert(b<=(1<<15));
 #endif
           
-        // Doing rounding for now.
-        // TODO: error diffusion / dithering? (but watch the performance benchmarks)
+        /*
+        // rounding
         const uint32_t add = (1<<15)/2;
+        */
+        // dithering
+        const uint32_t add = dithering_noise[noise_idx++];
           
         *dst_p++ = (r * 255 + add) / (1<<15);
         *dst_p++ = (g * 255 + add) / (1<<15);
         *dst_p++ = (b * 255 + add) / (1<<15);
       }
     }
+#ifdef HEAVY_DEBUG
+    assert(noise_idx <= dithering_noise_size);
+#endif
     src_p += src_arr->strides[0];
     dst_p += dst_arr->strides[0];
   }
