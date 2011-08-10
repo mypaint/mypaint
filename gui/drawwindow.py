@@ -359,7 +359,7 @@ class Window (windowing.MainWindow, layout.MainWindow):
         self.toolbar = self.app.ui_manager.get_widget('/toolbar1')
         if not self.get_show_toolbar():
             gobject.idle_add(self.toolbar.hide)
-
+        self.toolbar.set_style(gtk.TOOLBAR_ICONS)
 
     def _init_popupmenu(self, xml):
         """
@@ -708,7 +708,7 @@ class Window (windowing.MainWindow, layout.MainWindow):
     # BEGIN -- Scratchpad menu options
     def save_scratchpad_as_default_cb(self, action):
         self.app.filehandler.save_scratchpad(self.app.filehandler.get_scratchpad_default(), export = True)
-    
+
     def clear_default_scratchpad_cb(self, action):
         self.app.filehandler.delete_default_scratchpad()
 
@@ -725,7 +725,7 @@ class Window (windowing.MainWindow, layout.MainWindow):
             bg = self.app.doc.model.background
             if self.app.scratchpad_doc:
                 self.app.scratchpad_doc.model.set_background(bg)
-            
+
         self.app.scratchpad_filename = self.app.preferences['scratchpad.last_opened'] = self.app.filehandler.get_scratchpad_autosave()
 
     def load_scratchpad_cb(self, action):
@@ -744,12 +744,12 @@ class Window (windowing.MainWindow, layout.MainWindow):
         self.app.filehandler.save_scratchpad_as_dialog()
 
     def revert_current_scratchpad_cb(self, action):
-        if os.path.isfile(self.app.scratchpad_filename):                                                             
+        if os.path.isfile(self.app.scratchpad_filename):
             self.app.filehandler.open_scratchpad(self.app.scratchpad_filename)
             print "Reverted to %s" % self.app.scratchpad_filename
         else:
             print "No file to revert to yet."
-    
+
     def save_current_scratchpad_cb(self, action):
         self.app.filehandler.save_scratchpad(self.app.scratchpad_filename)
 

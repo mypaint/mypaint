@@ -19,7 +19,10 @@ class GUI:
         self.tempdir = tempfile.mkdtemp()
         from gui import application
         os.system('cp -a brushes ' + self.tempdir)
-        self.app = application.Application(datapath=u'..', confpath=unicode(self.tempdir), filenames=[])
+        self.app = application.Application(datapath=u'..',
+                                           extradata='../desktop',
+                                           confpath=unicode(self.tempdir),
+                                           filenames=[])
 
         # ignore mouse movements during testing (creating extra strokes)
         def motion_ignore_cb(*junk1, **junk2):

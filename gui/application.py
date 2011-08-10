@@ -21,7 +21,23 @@ class Application: # singleton
     to be shared in the GUI. Its constructor is the last part of the
     initialization, called by main.py or by the testing scripts.
     """
-    def __init__(self, datapath, confpath, filenames):
+    def __init__(self, datapath, extradata, confpath, filenames):
+        """Construct, but do not run.
+
+        :`datapath`:
+            Usually ``$PREFIX/share/mypaint``. Where MyPaint should find its
+            app-specific read-only data, e.g. UI definition XML, backgrounds
+            and brush defintions.
+        :`extradata`:
+            Where to find the defaults for MyPaint's themeable UI icons. This
+            will be effectively used in addition to ``$XDG_DATA_DIRS`` for the
+            purposes of icon lookup. Normally it's ``$PREFIX/share``, to support
+            unusual installations outside the usual locations. It should contain
+            an ``icons/`` subdirectory.
+        :`confpath`:
+            Where the user's configuration is stored. ``$HOME/.mypaint`` is
+            typical on Unix-like OSes.
+        """
         self.confpath = confpath
         self.datapath = datapath
 
@@ -35,14 +51,17 @@ class Application: # singleton
 
         self.ui_manager = gtk.UIManager()
 
-        # if we are not installed, use the icons from the source
-        theme = gtk.icon_theme_get_default()
-        themedir_src = join(self.datapath, 'desktop/icons')
-        theme.prepend_search_path(themedir_src)
-        if not theme.has_icon('mypaint'):
-            print 'Error: Where have all my icons gone?'
-            print 'Theme search path:', theme.get_search_path()
-            print 'I see no point in running without icons! Goodbye!'
+        # Default location for our icons. The user's theme can override these.
+        icon_theme = gtk.icon_theme_get_default()
+        icon_theme.append_search_path(join(extradata, "icons"))
+
+        # Icon sanity check
+        if not icon_theme.has_icon('mypaint') \
+                or not icon_theme.has_icon('mypaint-tool-brush'):
+            print 'Error: Where have my icons gone?'
+            print 'Icon search path:', icon_theme.get_search_path()
+            print "Mypaint can't run sensibly without its icons; " \
+                + "please check your installation."
             sys.exit(1)
         gtk.window_set_default_icon_name('mypaint')
 
@@ -66,10 +85,10 @@ class Application: # singleton
         self.filehandler = filehandling.FileHandler(self)
         self.brushmodifier = brushmodifier.BrushModifier(self)
         self.doc = document.Document(self)
-        
+
         self.scratchpad_filename = ""
         self.scratchpad_doc = document.Scratchpad(self)
-        
+
         if not self.preferences.get("scratchpad.last_opened_scratchpad", None):
             self.preferences["scratchpad.last_opened_scratchpad"] = self.filehandler.get_scratchpad_autosave()
         self.scratchpad_filename = self.preferences["scratchpad.last_opened_scratchpad"]
@@ -90,7 +109,7 @@ class Application: # singleton
         self.filehandler.doc = self.doc
         self.filehandler.filename = None
         gtk.accel_map_load(join(self.confpath, 'accelmap.conf'))
-        
+
         # Load the background settings window.
         # FIXME: this line shouldn't be needed, but we need to load this up
         # front to get any non-default background that the user has configured

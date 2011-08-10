@@ -29,7 +29,7 @@ _stock_items = [
     (TOOL_BRUSH, _("Brush List"), 0, ord("b"), None),
     (TOOL_COLOR_SELECTOR, _("Color Triangle"), 0, ord("g"), None),
     (TOOL_COLOR_SAMPLER, _("Color Sampler"), 0, ord("t"), None),
-    (TOOL_SCRATCHPAD, _("Scratchpad"), 0, ord("]"), None),
+    (TOOL_SCRATCHPAD, _("Scratchpad"), gdk.SHIFT_MASK, ord("s"), None),
     (TOOL_LAYERS, _("Layers"), 0, ord("l"), None),
     (ROTATE_LEFT, _("Rotate Counterclockwise"),
         gdk.CONTROL_MASK, gdk.keyval_from_name("Left"), None),

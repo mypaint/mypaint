@@ -9,6 +9,7 @@
 import time, struct
 import zlib
 from numpy import *
+import mypaintlib
 
 import tiledsurface, idletask
 N = tiledsurface.N
@@ -42,22 +43,8 @@ class StrokeShape:
                 a_data = a.get((tx, ty), tiledsurface.transparent_tile).rgba
                 b_data = b.get((tx, ty), tiledsurface.transparent_tile).rgba
 
-                # calculate the "perceptual" amount of difference
-                absdiff = zeros((N, N), 'uint32')
-                for i in range(4): # RGBA
-                    absdiff += abs(a_data[:,:,i].astype('uint32') - b_data[:,:,i])
-                # ignore badly visible (parts of) strokes, eg. very faint strokes
-                #
-                # This is an arbitrary threshold. If it is too high, an
-                # ink stroke with slightly different color than the one
-                # below will not be pickable.  If it is too high, barely
-                # visible strokes will make things below unpickable.
-                #
-                threshold = (1<<15)*4 / 16 # require 1/16 of the max difference (also not bad: 1/8)
-                is_different = absdiff > threshold
-                # except if there is no previous stroke below it
-                is_different |= (absdiff > 0) #& (brushmap_data == 0) --- FIXME: not possible any more
-                data = is_different.astype('uint8')
+                data = empty((N, N), 'uint8')
+                mypaintlib.tile_perceptual_change_strokemap(a_data, b_data, data)
 
                 data_compressed = zlib.compress(data.tostring())
                 self.strokemap[tx, ty] = data_compressed

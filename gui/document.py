@@ -21,7 +21,6 @@ import tileddrawwidget, stategroup
 from brushmanager import ManagedBrush
 import stock
 
-
 class Document(object):
 
     def __init__(self, app):
