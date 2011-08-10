@@ -87,7 +87,7 @@ class Application: # singleton
         self.doc = document.Document(self)
 
         self.scratchpad_filename = ""
-        self.scratchpad_doc = document.Scratchpad(self)
+        self.scratchpad_doc = document.Document(self, leader=self.doc)
 
         if not self.preferences.get("scratchpad.last_opened_scratchpad", None):
             self.preferences["scratchpad.last_opened_scratchpad"] = self.filehandler.get_scratchpad_autosave()

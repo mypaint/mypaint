@@ -23,9 +23,10 @@ import stock
 
 class Document(object):
 
-    def __init__(self, app):
+    def __init__(self, app, leader=None):
         self.app = app
         self.model = lib.document.Document(self.app.brush)
+        self.followers = []
 
         # View
         self.tdw = tileddrawwidget.TiledDrawWidget(self.app, self.model)
@@ -54,13 +55,23 @@ class Document(object):
         self.input_stroke_ended_observers.append(self.input_stroke_ended_cb)
         self.last_pen_device = None
 
-        self.init_actions()
-        self.init_context_actions()
-        self.app.ui_manager.insert_action_group(self.action_group, -1)
-        for action in self.action_group.list_actions():
-            self.app.kbm.takeover_action(action)
         self.init_stategroups()
-        self.init_extra_keys()
+        if leader is not None:
+            # This is a side doc (e.g. the scratchpad) which plays follow-the-
+            # leader for some events.
+            assert isinstance(leader, Document)
+            leader.followers.append(self)
+            self.action_group = leader.action_group # hack, but needed by tdw
+        else:
+            # This doc owns the Actions which are (sometimes) passed on to
+            # followers to perform. It's also the main document being worked on
+            # by the user.
+            self.init_actions()
+            self.init_context_actions()
+            self.app.ui_manager.insert_action_group(self.action_group, -1)
+            for action in self.action_group.list_actions():
+                self.app.kbm.takeover_action(action)
+            self.init_extra_keys()
 
     def init_actions(self):
         # name, stock id, label, accelerator, tooltip, callback
@@ -146,10 +157,6 @@ class Document(object):
 
             ]
         ag.add_toggle_actions(toggle_actions)
-        # Keyboard handling
-        #for action in self.action_group.list_actions():
-        #    self.app.kbm.takeover_action(action)
-        #self.app.ui_manager.insert_action_group(ag, -1)
 
     def init_context_actions(self):
         ag = self.action_group
@@ -256,37 +263,38 @@ class Document(object):
         cb.request_image(callback)
 
     def pick_context_cb(self, action):
-        if self.tdw.has_pointer:
-            x, y = self.tdw.get_cursor_in_model_coordinates()
-            for idx, layer in reversed(list(enumerate(self.model.layers))):
-                if layer.locked:
-                    continue
-                if not layer.visible:
-                    continue
-                alpha = layer.surface.get_alpha (x, y, 5) * layer.effective_opacity
-                if alpha > 0.1:
-                    old_layer = self.model.layer
-                    self.model.select_layer(idx)
-                    if self.model.layer != old_layer:
-                        self.layerblink_state.activate()
-
-                    # find the most recent (last) stroke that touches our picking point
-                    si = self.model.layer.get_stroke_info_at(x, y)
-    
-                    if si:
-                        mb = ManagedBrush(self.app.brushmanager)
-                        mb.brushinfo.load_from_string(si.brush_string)
-                        self.app.brushmanager.select_brush(mb)
-                        self.app.brushmodifier.restore_context_of_selected_brush()
-                        self.si = si # FIXME: should be a method parameter?
-                        self.strokeblink_state.activate(action)
+        if not self.tdw.has_pointer:
+            for follower in self.followers:
+                if follower.tdw.has_pointer:
+                    print "passing %s action to %s" % (action.get_name(), follower)
+                    follower.pick_context_cb(action)
                     return
-        else:
-            # Try to fire it at the scratchpad
-            # print "Not in main window, in scratchpad?"
-            if self.app.scratchpad_doc.tdw.has_pointer:
-                print "Scratchpad has the pointer"
-                self.app.scratchpad_doc.pick_context_cb(action)
+            return
+        x, y = self.tdw.get_cursor_in_model_coordinates()
+        for idx, layer in reversed(list(enumerate(self.model.layers))):
+            if layer.locked:
+                continue
+            if not layer.visible:
+                continue
+            alpha = layer.surface.get_alpha (x, y, 5) * layer.effective_opacity
+            if alpha > 0.1:
+                old_layer = self.model.layer
+                self.model.select_layer(idx)
+                if self.model.layer != old_layer:
+                    self.layerblink_state.activate()
+
+                # find the most recent (last) stroke that touches our picking point
+                si = self.model.layer.get_stroke_info_at(x, y)
+
+                if si:
+                    mb = ManagedBrush(self.app.brushmanager)
+                    mb.brushinfo.load_from_string(si.brush_string)
+                    self.app.brushmanager.select_brush(mb)
+                    self.app.brushmodifier.restore_context_of_selected_brush()
+                    self.si = si # FIXME: should be a method parameter?
+                    self.strokeblink_state.activate(action)
+                return
+
     # LAYER
     def clear_layer_cb(self, action):
         self.model.clear_layer()
@@ -656,151 +664,3 @@ class Document(object):
 
     def frame_changed_cb(self):
         self.tdw.queue_draw()
-
-
-class Scratchpad(Document):
-    def __init__(self, app):
-        self.app = app
-        self.model = lib.document.Document(self.app.brush)
-
-        # View
-        self.tdw = tileddrawwidget.TiledDrawWidget(self.app, self.model)
-        self.model.frame_observers.append(self.frame_changed_cb)
-
-        # FIXME: hack, to be removed
-        fname = os.path.join(self.app.datapath, 'backgrounds', '03_check1.png')
-        pixbuf = gdk.pixbuf_new_from_file(fname)
-        self.tdw.neutral_background_pixbuf = backgroundsurface.Background(pixbuf)
-
-        self.zoomlevel_values = [1.0/8, 2.0/11, 0.25, 1.0/3, 0.50, 2.0/3,  # micro
-                                 1.0, 1.5, 2.0, 3.0, 4.0, 5.5, 8.0,        # normal
-                                 11.0, 16.0, 23.0, 32.0, 45.0, 64.0]       # macro
-                                 # keep sorted for bisect
-
-        default_zoom = self.app.preferences['view.default_zoom']
-        self.zoomlevel = min(bisect_left(self.zoomlevel_values, default_zoom),
-                             len(self.zoomlevel_values) - 1)
-        default_zoom = self.zoomlevel_values[self.zoomlevel]
-        self.tdw.scale = default_zoom
-        self.tdw.zoom_min = min(self.zoomlevel_values)
-        self.tdw.zoom_max = max(self.zoomlevel_values)
-
-        # Device change management & pen-stroke watching
-        self.tdw.device_observers.append(self.device_changed_cb)
-        self.input_stroke_ended_observers.append(self.input_stroke_ended_cb)
-        self.last_pen_device = None
-
-        self.init_actions()
-        self.init_context_actions()
-        self.app.ui_manager.insert_action_group(self.action_group, -1)
-        for action in self.action_group.list_actions():
-            self.app.kbm.takeover_action(action)
-        self.init_stategroups()
-        self.init_extra_keys()
-
-    def init_actions(self):
-        # name, stock id, label, accelerator, tooltip, callback
-        # Altered from above to avoid setting accelerators twice
-        actions = [
-            ('Undo', gtk.STOCK_UNDO, _('Undo'), '',
-                _("Undo the last action"),
-                self.undo_cb),
-            ('Redo', gtk.STOCK_REDO, _('Redo'), '',
-                _("Redo the last undo action"),
-                self.redo_cb),
-
-            ('Brighter',     None, _('Brighter'), None, None, self.brighter_cb),
-            ('Smaller',      None, _('Smaller'), '', None, self.brush_smaller_cb),
-            ('MoreOpaque',   None, _('More Opaque'), '', None, self.more_opaque_cb),
-            ('LessOpaque',   None, _('Less Opaque'), '', None, self.less_opaque_cb),
-            ('PickContext',  None, _('Pick Context (layer, brush and color)'), '', None, self.pick_context_cb),
-
-            ('Darker',       None, _('Darker'), None, None, self.darker_cb),
-            ('Warmer',       None, _('Warmer'), None, None, self.warmer_cb),
-            ('Cooler',       None, _('Cooler'), None, None, self.cooler_cb),
-            ('Purer',        None, _('Purer'), None, None, self.purer_cb),
-            ('Grayer',       None, _('Grayer'), None, None, self.grayer_cb),
-            ('Bigger',       None, _('Bigger'), '', None, self.brush_bigger_cb),
-
-            # Context actions are also added in init_context_actions
-            ('ContextStore', None, _('Save to Most Recently Restored'), '', None, self.context_cb),
-
-            # Disabling layer actions for now:
-            
-            #('ClearLayer',   gtk.STOCK_CLEAR, _('Clear'), '', None, self.clear_layer_cb),
-            #('CopyLayer',          gtk.STOCK_COPY, _('Copy to Clipboard'), '', None, self.copy_cb),
-            #('PasteLayer',         gtk.STOCK_PASTE, _('Paste Clipboard (Replace Layer)'), '', None, self.paste_cb),
-            #('PickLayer',    gtk.STOCK_JUMP_TO, _('Select Layer at Cursor'), '', None, self.pick_layer_cb),
-            #('LayerFG',      gtk.STOCK_GO_UP, _('Next (above current)'),  '', None, self.layer_fg_cb),
-            #('LayerBG',      gtk.STOCK_GO_DOWN, _('Next (below current)'), '', None, self.layer_bg_cb),
-            #('NewLayerFG',   gtk.STOCK_ADD, _('New (above current)'), '', None, self.new_layer_cb),
-            #('NewLayerBG',   None, _('New (below current)'), '', None, self.new_layer_cb),
-            #('MergeLayer',   gtk.STOCK_DND_MULTIPLE, # XXX need a batter one, but stay consistent with layerswindow for now
-            #                 _('Merge Down'), '<control>Delete', None, self.merge_layer_cb),
-            #('RemoveLayer',  gtk.STOCK_DELETE, _('Remove'), '<shift>Delete', None, self.remove_layer_cb),
-            #('IncreaseLayerOpacity', None, _('Increase Layer Opacity'),  'p', None, self.layer_increase_opacity),
-            #('DecreaseLayerOpacity', None, _('Decrease Layer Opacity'),  'o', None, self.layer_decrease_opacity),
-
-            #('ShortcutsMenu', None, _('Shortcuts')),
-
-            ('ResetView',   gtk.STOCK_ZOOM_FIT, _('Reset and Center'), '',
-                _("Reset Zoom, Rotation and Mirroring, and recenter the document"),
-                self.reset_view_cb),
-            ('ResetMenu',   None, _('Reset')),
-            ('ResetZoom',   gtk.STOCK_ZOOM_100, _('Zoom'), None, None, self.reset_view_cb),
-            ('ResetRotation',   None, _('Rotation'), None, None, self.reset_view_cb),
-            ('ResetMirror', None, _('Mirror'), None, None, self.reset_view_cb),
-            ('ZoomIn',       gtk.STOCK_ZOOM_IN, _('Zoom In'), '', 
-                _("Increase magnification"), self.zoom_cb),
-            ('ZoomOut',      gtk.STOCK_ZOOM_OUT, _('Zoom Out'), '',
-                _("Decrease magnification"), self.zoom_cb),
-            ('RotateLeft',   stock.ROTATE_LEFT, None, None,
-                _("Rotate the view left"),
-                self.rotate_cb),
-            ('RotateRight',  stock.ROTATE_RIGHT, None, None,
-                _("Rotate the view right"),
-                self.rotate_cb),
-            ('MirrorHorizontal', stock.MIRROR_HORIZONTAL, None, None,
-                _("Mirror: flip the view left to right"),
-                self.mirror_horizontal_cb),
-            ('MirrorVertical', stock.MIRROR_VERTICAL, None, None,
-                _("Flip the view upside-down"),
-                self.mirror_vertical_cb),
-            # Disabling Layer controls for now
-            # ('SoloLayer',    None, _('Layer Solo'), '', None, self.solo_layer_cb), # TODO: make toggle action
-            # ('ToggleAbove',  None, _('Hide Layers Above Current'), '', None, self.toggle_layers_above_cb), # TODO: make toggle action
-
-            ('BlendMode',    stock.BRUSH_BLEND_MODES),
-        ]
-        ag = self.action_group = gtk.ActionGroup('DocumentActions')
-        ag.add_actions(actions)
-        pass
-
-    def init_context_actions(self):
-        ag = self.action_group
-        context_actions = []
-        for x in range(10):
-            r = ('Context0%d' % x,    None, _('Restore Brush %d') % x, 
-                    '%d' % x, None, self.context_cb)
-            s = ('Context0%ds' % x,   None, _('Save to Brush %d') % x, 
-                    '<control>%d' % x, None, self.context_cb)
-            context_actions.append(s)
-            context_actions.append(r)
-        ag.add_actions(context_actions)
-
-    def init_stategroups(self):
-        sg = stategroup.StateGroup()
-        self.layerblink_state = sg.create_state(self.layerblink_state_enter, self.layerblink_state_leave)
-
-        sg = stategroup.StateGroup()
-        self.strokeblink_state = sg.create_state(self.strokeblink_state_enter, self.strokeblink_state_leave)
-        self.strokeblink_state.autoleave_timeout = 0.3
-
-        # separate stategroup...
-        sg2 = stategroup.StateGroup()
-        self.layersolo_state = sg2.create_state(self.layersolo_state_enter, self.layersolo_state_leave)
-        self.layersolo_state.autoleave_timeout = None
-
-    def init_extra_keys(self):
-        pass
-
