@@ -8,15 +8,37 @@ A list of contributors can be found in the about dialog.
 Building on Linux:
 
     Compile and run:
-    scons && ./mypaint
+
+        $ scons && ./mypaint
 
     Install:
-    scons prefix=/usr/local install
+
+        # scons prefix=/usr/local install
+
+    Install (for packagers)
+
+        $ scons prefix=/usr --install-sandbox=path/to/sandbox
 
     Required: pygtk, python, swig, gtk, numpy, pycairo(>=1.4), libpng
-    Debian users: apt-get install g++ python-dev libglib2.0-dev python-numpy swig scons gettext libpng12-dev
+
+    Debian users can fetch these dependencies by running:
+
+        # apt-get install g++ python-dev libglib2.0-dev python-numpy \
+                          swig scons gettext libpng12-dev
 
     Recommended: a pressure sensitive input device (graphic tablet)
+
+    Take care to update the central icon theme cache if you're installing
+    mypaint to a standard system prefix. If you install new icons, the icon
+    cache must be updated too if it exists. For example for an install into
+    /usr, you should run
+
+        $ gtk-update-icon-cache /usr/share/icons/hicolor
+        $ chmod a+r /usr/share/icons/hicolor/icon-theme.cache
+
+    after installation to ensure that the cache is up to date. Scons won't
+    do this for you because the cache file is optional.
+
 
 Building on Windows:
 
