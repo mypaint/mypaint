@@ -837,32 +837,34 @@ class Window (windowing.MainWindow, layout.MainWindow):
         d.set_authors([
             # (in order of appearance)
             u"Martin Renold (%s)" % _('programming'),
-            u"Artis Rozentāls (%s)" % _('brushes'),
             u"Yves Combe (%s)" % _('portability'),
-            u"Popolon (%s)" % _('brushes, programming'),
+            u"Popolon (%s)" % _('programming'),
             u"Clement Skau (%s)" % _('programming'),
-            u"Marcelo 'Tanda' Cerviño (%s)" % _('patterns, brushes'),
             u"Jon Nordby (%s)" % _('programming'),
             u"Álinson Santos (%s)" % _('programming'),
             u"Tumagonx (%s)" % _('portability'),
             u"Ilya Portnov (%s)" % _('programming'),
+            u"Jonas Wagner (%s)" % _('programming'),
+            u"Luka Čehovin (%s)" % _('programming'),
+            u"Andrew Chadwick (%s)" % _('programming'),
+            u"Till Hartmann (%s)" % _('programming'),
+            u'David Grundberg (%s)' % _('programming'),
+            u"Krzysztof Pasek (%s)" % _('programming'),
+            u"Ben O'Steen (%s)" % _('programming'),
+            ])
+        d.set_artists([
+            u"Artis Rozentāls (%s)" % _('brushes'),
+            u"Popolon (%s)" % _('brushes'),
+            u"Marcelo 'Tanda' Cerviño (%s)" % _('patterns, brushes'),
             u"David Revoy (%s)" % _('brushes'),
             u"Ramón Miranda (%s)" % _('brushes, patterns'),
             u"Enrico Guarnieri 'Ico_dY' (%s)" % _('brushes'),
-            u"Jonas Wagner (%s)" % _('programming'),
-            u"Luka Čehovin (%s)" % _('programming'),
-            u"Andrew Chadwick (%s)" % _('programming, tool icons'),
-            u"Till Hartmann (%s)" % _('programming'),
+            u'Sebastian Kraft (%s)' % _('desktop icon'),
             u"Nicola Lunghi (%s)" % _('patterns'),
             u"Toni Kasurinen (%s)" % _('brushes'),
-            u"Сан Саныч (%s)" % _('patterns'),
-            u'David Grundberg (%s)' % _('programming'),
-            u"Krzysztof Pasek (%s)" % _('programming'),
-            u"Ben O'Steen (%s)" % _('programming, tool icons'),
-            ])
-        d.set_artists([
-            u'Sebastian Kraft (%s)' % _('desktop icon'),
-            u'MrMamurk (%s)' % _('patterns'),
+            u"Сан Саныч 'MrMamurk' (%s)" % _('patterns'),
+            u"Andrew Chadwick (%s)" % _('tool icons'),
+            u"Ben O'Steen (%s)" % _('tool icons'),
             ])
         # list all translators, not only those of the current language
         d.set_translator_credits(
