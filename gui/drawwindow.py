@@ -851,16 +851,18 @@ class Window (windowing.MainWindow, layout.MainWindow):
             u"Enrico Guarnieri 'Ico_dY' (%s)" % _('brushes'),
             u"Jonas Wagner (%s)" % _('programming'),
             u"Luka Čehovin (%s)" % _('programming'),
-            u"Andrew Chadwick (%s)" % _('programming'),
+            u"Andrew Chadwick (%s)" % _('programming, tool icons'),
             u"Till Hartmann (%s)" % _('programming'),
             u"Nicola Lunghi (%s)" % _('patterns'),
             u"Toni Kasurinen (%s)" % _('brushes'),
             u"Сан Саныч (%s)" % _('patterns'),
             u'David Grundberg (%s)' % _('programming'),
             u"Krzysztof Pasek (%s)" % _('programming'),
+            u"Ben O'Steen (%s)" % _('programming, tool icons'),
             ])
         d.set_artists([
             u'Sebastian Kraft (%s)' % _('desktop icon'),
+            u'MrMamurk (%s)' % _('patterns'),
             ])
         # list all translators, not only those of the current language
         d.set_translator_credits(
