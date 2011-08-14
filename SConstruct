@@ -1,5 +1,6 @@
 import os, sys
 from os.path import join, basename
+from SCons.Script.SConscript import SConsEnvironment
 
 EnsureSConsVersion(1, 0)
 
@@ -11,7 +12,7 @@ print 'Building for', python
 if sys.platform == "win32":
     python = 'python' # usually no versioned binaries on Windows
 
-try: 
+try:
     import numpy
 except ImportError:
     print 'You need to have numpy installed.'
@@ -89,33 +90,84 @@ def burn_python_version(target, source, env):
     f.write(s)
     f.close()
 
-env.Command('mypaint', 'mypaint.py', [burn_python_version, Chmod('$TARGET', 0755)])
+try:
+    new_umask = 022
+    old_umask = os.umask(new_umask)
+    print "set umask to 0%03o (was 0%03o)" % (new_umask, old_umask)
+except OSError:
+    # Systems like Win32...
+    pass
+
+env.Command('mypaint', 'mypaint.py', [burn_python_version])
 
 env.Clean('.', Glob('*.pyc'))
 env.Clean('.', Glob('gui/*.pyc'))
 env.Clean('.', Glob('lib/*.pyc'))
 
-env.Alias('install', env['prefix'])
-def install(dst, pattern):
-    files = Glob(pattern)
-    assert files, "Glob expression did not match any files"
-    env.Install(join(env['prefix'], dst), files)
-install('bin', 'mypaint')
-install('share/mypaint/brushes', 'brushes/*')
-install('share/mypaint/backgrounds', 'backgrounds/*')
-install('share/mypaint/pixmaps', 'pixmaps/*')
 
-install('share', 'desktop/icons')
-install('share/applications', 'desktop/mypaint.desktop')
+set_dir_postaction = {}
+def install_perms(target, sources, perms=0644, dirperms=0755):
+    """As a normal env.Install, but with Chmod postactions.
+    """
+    install_targs = env.Install(target, sources)
+    # Set file permissions...
+    for targ in install_targs:
+        env.AddPostAction(targ, Chmod(targ, perms))
+    # Set permissions on superdirs, back to $prefix (but not including it) Not
+    # sure if this is necessary with the umask forcing. It might help fix some
+    # broken installs.
+    prefix = os.path.normpath(env['prefix'])
+    for file_targ in install_targs:
+        d = os.path.normpath(os.path.dirname(file_targ.get_path()))
+        d_prev = None
+        while d != d_prev and d != prefix and d != '/':
+            d_prev = d
+            if not set_dir_postaction.has_key(d):
+                env.AddPostAction(file_targ, Chmod(d, dirperms))
+                set_dir_postaction[d] = True
+            d = os.path.dirname(d)
+    return install_targs
+
+
+def install_tree(dest, path, perms=0644, dirperms=0755):
+    assert os.path.isdir(path)
+    target_root = join(dest, os.path.basename(path))
+    for dirpath, dirnames, filenames in os.walk(path):
+        reltarg = os.path.relpath(dirpath, path)
+        target_dir = join(target_root, reltarg)
+        target_dir = os.path.normpath(target_dir)
+        filepaths = [join(dirpath, basename) for basename in filenames]
+        install_perms(target_dir, filepaths, perms=perms, dirperms=dirperms)
+
+
+# Painting resources
+install_tree('$prefix/share/mypaint', 'brushes')
+install_tree('$prefix/share/mypaint', 'backgrounds')
+install_tree('$prefix/share/mypaint', 'pixmaps')
+
+# Desktop resources and themeable internal icons
+install_tree('$prefix/share', 'desktop/icons')
+install_perms('$prefix/share/applications', 'desktop/mypaint.desktop')
 
 # location for achitecture-dependent modules
-env.Install(join(env['prefix'], 'lib/mypaint'), module)
-install('share/mypaint/lib', 'lib/*.py')
-install('share/mypaint/gui', 'gui/*.py')
-install('share/mypaint/gui', 'gui/menu.xml')
-install('share/mypaint/gui', 'gui/toolbar.xml')
-install('share/mypaint/brushlib', 'brushlib/*.py')
+env.Install('$prefix/lib/mypaint', module)
+
+# Program and supporting UI XML
+install_perms('$prefix/bin', 'mypaint', perms=0755)
+install_perms('$prefix/share/mypaint/gui', Glob('gui/*.xml'))
+install_perms("$prefix/share/mypaint/lib",      Glob("lib/*.py"))
+install_perms("$prefix/share/mypaint/brushlib", Glob("brushlib/*.py"))
+install_perms("$prefix/share/mypaint/gui",      Glob("gui/*.py"))
 
 # translations
 for lang in languages:
-    install('share/locale/%s/LC_MESSAGES' % lang, 'po/%s/LC_MESSAGES/mypaint.mo' % lang)
+    install_perms('$prefix/share/locale/%s/LC_MESSAGES' % lang,
+                 'po/%s/LC_MESSAGES/mypaint.mo' % lang)
+
+# These hierarchies belong entirely to us, so unmake if asked.
+env.Clean('$prefix', '$prefix/lib/mypaint')
+env.Clean('$prefix', '$prefix/share/mypaint')
+
+# Convenience alias for installing to $prefix
+env.Alias('install', '$prefix')
+

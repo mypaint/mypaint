@@ -9,15 +9,21 @@ Building on Linux:
 
     Compile and run:
 
-        $ scons && ./mypaint
+        $ scons
+        $ ./mypaint
 
     Install:
 
         # scons prefix=/usr/local install
 
-    Install (for packagers)
+    Uninstall:
+
+        # scons prefix=/usr/local install --clean
+
+    Install (for packagers):
 
         $ scons prefix=/usr --install-sandbox=path/to/sandbox
+
 
     Required: pygtk, python, swig, gtk, numpy, pycairo(>=1.4), libpng
 
@@ -28,10 +34,13 @@ Building on Linux:
 
     Recommended: a pressure sensitive input device (graphic tablet)
 
-    Take care to update the central icon theme cache if you're installing
-    mypaint to a standard system prefix. If you install new icons, the icon
-    cache must be updated too if it exists. For example for an install into
-    /usr, you should run
+
+    Take care to update the icon theme cache for your $prefix if you're
+    installing mypaint to a location which has one of these files already. If
+    you install new icons, any existing icon cache must be updated too,
+    otherwise MyPaint won't be able to find its icons even if it looks in the
+    right place. For example for an install into /usr (which has one on most
+    systems), you should run
 
         $ gtk-update-icon-cache /usr/share/icons/hicolor
         $ chmod a+r /usr/share/icons/hicolor/icon-theme.cache
