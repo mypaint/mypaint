@@ -286,7 +286,7 @@ class Document(object):
                 # find the most recent (last) stroke that touches our picking point
                 si = self.model.layer.get_stroke_info_at(x, y)
                 if si:
-                    self.restore_brush_from_stroke_info()
+                    self.restore_brush_from_stroke_info(si)
                     self.si = si # FIXME: should be a method parameter?
                     self.strokeblink_state.activate(action)
                 return
