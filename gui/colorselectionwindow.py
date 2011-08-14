@@ -15,7 +15,7 @@ gdk = gtk.gdk
 import windowing
 import stock
 from lib import mypaintlib
-from lib.helpers import clamp
+from lib.helpers import clamp,gdkpixbuf2numpy
 
 
 DEBUG_HSV_WIDGET_NOT_WRAPPED = False
@@ -213,7 +213,7 @@ class ColorSelectorPopup(windowing.PopupWindow):
     def update_image(self):
         size = self.backend.get_size()
         pixbuf = gdk.Pixbuf(gdk.COLORSPACE_RGB, True, 8, size, size)
-        arr = helpers.gdkpixbuf2numpy(pixbuf)
+        arr = gdkpixbuf2numpy(pixbuf)
         self.backend.set_brush_color(*self.app.brush.get_color_hsv())
         self.backend.render(arr)
         pixmap, mask = pixbuf.render_pixmap_and_mask()
