@@ -285,15 +285,17 @@ class Document(object):
 
                 # find the most recent (last) stroke that touches our picking point
                 si = self.model.layer.get_stroke_info_at(x, y)
-
                 if si:
-                    mb = ManagedBrush(self.app.brushmanager)
-                    mb.brushinfo.load_from_string(si.brush_string)
-                    self.app.brushmanager.select_brush(mb)
-                    self.app.brushmodifier.restore_context_of_selected_brush()
+                    self.restore_brush_from_stroke_info()
                     self.si = si # FIXME: should be a method parameter?
                     self.strokeblink_state.activate(action)
                 return
+
+    def restore_brush_from_stroke_info(self, strokeinfo):
+        mb = ManagedBrush(self.app.brushmanager)
+        mb.brushinfo.load_from_string(strokeinfo.brush_string)
+        self.app.brushmanager.select_brush(mb)
+        self.app.brushmodifier.restore_context_of_selected_brush()
 
     # LAYER
     def clear_layer_cb(self, action):

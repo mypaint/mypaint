@@ -113,5 +113,7 @@ class Layer:
             if s.touches_pixel(x, y):
                 return s
 
-
-
+    def get_last_stroke_info(self):
+        if not self.strokes:
+            return None
+        return self.strokes[-1]
