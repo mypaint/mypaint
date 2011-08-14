@@ -150,7 +150,7 @@ install_tree('$prefix/share', 'desktop/icons')
 install_perms('$prefix/share/applications', 'desktop/mypaint.desktop')
 
 # location for achitecture-dependent modules
-env.Install('$prefix/lib/mypaint', module)
+install_perms('$prefix/lib/mypaint', module)
 
 # Program and supporting UI XML
 install_perms('$prefix/bin', 'mypaint', perms=0755)
