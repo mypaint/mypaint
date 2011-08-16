@@ -398,26 +398,22 @@ class Document(object):
 
     def warmer_cb(self,action):
         h, s, v = self.app.brush.get_color_hsv()
-        # using about 40 degrees (0.111 +- e) as warmest and
-        # 130 deg (0.611 +- e) as coolest
+        # this version goes all the way around; so should
+        # probably be called Hue rather than warmer/colder
         e = 0.015
-        if 0.111 + e < h < 0.611:
-            h -= 0.015
-        elif 0.0 <= h < 0.111 - e or 0.611<= h <= 1.0:
-            h += 0.015
-        if h > 1.0: h -= 1.0
-        if h < 0.0: h += 1.0
+        if h + e > 1.0:
+            h = h - 1.0 + e
+        else:
+            h = h + e
         self.app.brush.set_color_hsv((h, s, v))
 
     def cooler_cb(self,action):
         h, s, v = self.app.brush.get_color_hsv()
         e = 0.015
-        if 0.111 < h < 0.611 - e:
-            h += 0.015
-        elif 0.0 <= h <= 0.111 or 0.611 + e < h <= 1.0:
-            h -= 0.015
-        if h > 1.0: h -= 1.0
-        if h < 0.0: h += 1.0
+        if h - e < 0:
+            h = h + 1.0 - e
+        else:
+            h = h - e
         self.app.brush.set_color_hsv((h, s, v))
 
     def purer_cb(self,action):
