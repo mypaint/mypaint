@@ -98,7 +98,7 @@ except OSError:
     # Systems like Win32...
     pass
 
-env.Command('mypaint', 'mypaint.py', [burn_python_version])
+env.Command('mypaint', 'mypaint.py', [burn_python_version, Chmod('$TARGET', 0755)])
 
 env.Clean('.', Glob('*.pyc'))
 env.Clean('.', Glob('gui/*.pyc'))
