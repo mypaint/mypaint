@@ -90,8 +90,8 @@ class Document(object):
             ('PickContext',  None, _('Pick Context (layer, brush and color)'), 'w', None, self.pick_context_cb),
 
             ('Darker',       None, _('Darker'), None, None, self.darker_cb),
-            ('Warmer',       None, _('Warmer'), None, None, self.warmer_cb),
-            ('Cooler',       None, _('Cooler'), None, None, self.cooler_cb),
+            ('IncreaseHue',  None, _('Change Color Hue (counter-clockwise)'), None, None, self.increase_hue_cb),
+            ('DecreaseHue',  None, _('Change Color Hue (clockwise)'), None, None, self.decrease_hue_cb),
             ('Purer',        None, _('Purer'), None, None, self.purer_cb),
             ('Grayer',       None, _('Grayer'), None, None, self.grayer_cb),
             ('Bigger',       None, _('Bigger'), 'f', None, self.brush_bigger_cb),
@@ -396,24 +396,16 @@ class Document(object):
         if v < 0.005: v = 0.005
         self.app.brush.set_color_hsv((h, s, v))
 
-    def warmer_cb(self,action):
+    def increase_hue_cb(self,action):
         h, s, v = self.app.brush.get_color_hsv()
-        # this version goes all the way around; so should
-        # probably be called Hue rather than warmer/colder
         e = 0.015
-        if h + e > 1.0:
-            h = h - 1.0 + e
-        else:
-            h = h + e
+        h = (h + e) % 1.0
         self.app.brush.set_color_hsv((h, s, v))
 
-    def cooler_cb(self,action):
+    def decrease_hue_cb(self,action):
         h, s, v = self.app.brush.get_color_hsv()
         e = 0.015
-        if h - e < 0:
-            h = h + 1.0 - e
-        else:
-            h = h - e
+        h = (h - e) % 1.0
         self.app.brush.set_color_hsv((h, s, v))
 
     def purer_cb(self,action):

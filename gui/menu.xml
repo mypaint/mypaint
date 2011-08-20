@@ -109,8 +109,8 @@
       <separator/>
       <menuitem action='Brighter'/>
       <menuitem action='Darker'/>
-      <menuitem action='Warmer'/>
-      <menuitem action='Cooler'/>
+      <menuitem action='IncreaseHue'/>
+      <menuitem action='DecreaseHue'/>
       <menuitem action='Purer'/>
       <menuitem action='Grayer'/>
     </menu>
