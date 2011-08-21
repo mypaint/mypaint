@@ -156,9 +156,9 @@ class Surface(mypaintlib.TiledSurface):
         return sshot
 
     def load_snapshot(self, sshot):
-        old = set(self.tiledict.items())
+        old = set(self.tiledict.iteritems())
         self.tiledict = sshot.tiledict.copy()
-        new = set(self.tiledict.items())
+        new = set(self.tiledict.iteritems())
         dirty = old.symmetric_difference(new)
         for pos, tile in dirty:
             self.mark_mipmap_dirty(*pos)

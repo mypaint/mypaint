@@ -30,8 +30,8 @@ class StrokeShape:
         # extract the layer from each snapshot
         a, b = snapshot_before.tiledict, snapshot_after.tiledict
         # enumerate all tiles that have changed
-        a_tiles = set(a.items())
-        b_tiles = set(b.items())
+        a_tiles = set(a.iteritems())
+        b_tiles = set(b.iteritems())
         changes = a_tiles.symmetric_difference(b_tiles)
         tiles_modified = set([pos for pos, data in changes])
 
