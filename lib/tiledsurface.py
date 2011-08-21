@@ -156,6 +156,10 @@ class Surface(mypaintlib.TiledSurface):
         return sshot
 
     def load_snapshot(self, sshot):
+        if sshot.tiledict == self.tiledict:
+            # common case optimization, called from split_stroke() via stroke.redo()
+            # testcase: comparison above (if equal) takes 0.6ms, code below 30ms
+            return
         old = set(self.tiledict.iteritems())
         self.tiledict = sshot.tiledict.copy()
         new = set(self.tiledict.iteritems())
