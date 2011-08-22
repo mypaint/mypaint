@@ -388,7 +388,10 @@ class WindowWithSavedPosition:
     def __on_map(self, widget):
         parent = self.get_transient_for()
         if parent is self.layout_manager.main_window:
-            self.window.set_accept_focus(False)
+            # The following was causing too much wierdness. Nice idea, but
+            # maybe not. See https://gna.org/bugs/?18293
+            # self.window.set_accept_focus(False)
+
             # Prevent all saved-position subwindows from taking keyboard
             # focus from the main window (in Metacity) by presenting it
             # again. https://gna.org/bugs/?17899
