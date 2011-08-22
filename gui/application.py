@@ -205,6 +205,7 @@ class Application: # singleton
             'ui.hide_toolbar_in_fullscreen': True,
             'ui.hide_subwindows_in_fullscreen': True,
             'ui.toolbar': True,
+            'ui.menubar': False,
             'saving.default_format': 'openraster',
             'brushmanager.selected_brush' : None,
             'brushmanager.selected_groups' : [],
