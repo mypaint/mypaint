@@ -28,8 +28,11 @@
     </menu>
     <menu action='ViewMenu'>
       <menuitem action='Fullscreen'/>
-      <menuitem action='ToggleMenubar'/>
-      <menuitem action='ToggleToolbar'/>
+      <menu action='MenuishBarMenu'>
+        <menuitem action='MenuishBarRadioMenubar'/>
+        <menuitem action='MenuishBarRadioMainToolbar'/>
+        <menuitem action='MenuishBarRadioMenubarAndMainToolbar'/>
+      </menu>
       <menuitem action='ShowPopupMenu'/>
       <menuitem action='ToggleSubwindows'/>
       <separator/>
