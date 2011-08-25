@@ -16,6 +16,7 @@ import windowing
 import stock
 from lib import mypaintlib
 from lib.helpers import clamp,gdkpixbuf2numpy
+import dialogs
 
 
 DEBUG_HSV_WIDGET_NOT_WRAPPED = False
@@ -88,29 +89,10 @@ class ToolWidget (gtk.VBox):
             b.set_color_hsv((h, s, v))
 
 
-    def on_dialog_ok_clicked(self, button, dialog):
-        color = dialog.colorsel.get_current_color()
-        self.color_sel.set_current_color(color)
-        dialog.destroy()
-
-
-    def on_dialog_cancel_clicked(self, button, dialog):
-        dialog.destroy()
-
-
     def on_color_swatch_button_press(self, swatch, event):
         if event.type != gdk._2BUTTON_PRESS:
             return False
-        dialog = gtk.ColorSelectionDialog(_("Color details"))
-        dialog.set_position(gtk.WIN_POS_MOUSE)
-        dialog.colorsel.set_current_color(self.color_sel.get_current_color())
-        dialog.colorsel.set_previous_color(self.color_sel.get_previous_color())
-
-        dialog.ok_button.connect("clicked", self.on_dialog_ok_clicked, dialog)
-        dialog.cancel_button.connect("clicked", self.on_dialog_cancel_clicked,
-                                     dialog)
-        dialog.run()
-        return True
+        dialogs.change_current_color_detailed(self.app)
 
 
     def add_details_dialogs(self, hsv_container):
