@@ -22,7 +22,7 @@ import gtk, gobject
 from gtk import gdk, keysyms
 import pango
 
-import colorselectionwindow, historypopup, stategroup, colorpicker, windowing, layout
+import colorselectionwindow, historypopup, stategroup, colorpicker, windowing, layout, toolbar
 import dialogs
 from lib import helpers
 import stock
@@ -379,26 +379,7 @@ class Window (windowing.MainWindow, layout.MainWindow):
         self.menubar = self.app.ui_manager.get_widget('/Menubar')
 
     def init_toolbar(self):
-        toolbarpath = os.path.join(self.app.datapath, 'gui/toolbar.xml')
-        toolbarbar_xml = open(toolbarpath).read()
-        self.app.ui_manager.add_ui_from_string(toolbarbar_xml)
-        self.toolbar1 = self.app.ui_manager.get_widget('/toolbar1')
-        self.toolbar1.set_style(gtk.TOOLBAR_ICONS)
-        self.toolbar1.set_border_width(0)
-        self.toolbar1.connect("style-set", self.on_toolbar1_style_set)
-        self.toolbar = gtk.HBox()
-        self.menu_button = FakeMenuButton(_("MyPaint"), self.popupmenu)
-        self.menu_button.set_border_width(0)
-        self.toolbar.pack_start(self.menu_button, False, False)
-        self.toolbar.pack_start(self.toolbar1, True, True)
-        self.menu_button.set_flags(gtk.CAN_DEFAULT)
-        self.set_default(self.menu_button)
-
-    def on_toolbar1_style_set(self, widget, oldstyle):
-        style = widget.style.copy()
-        self.menu_button.set_style(style)
-        style = widget.style.copy()
-        self.toolbar.set_style(style)
+        self.toolbar = toolbar.MainToolbar(self)
 
     def _clone_menu(self, xml, name, owner=None):
         """
@@ -664,9 +645,9 @@ class Window (windowing.MainWindow, layout.MainWindow):
         toolbar_visible = self.toolbar.get_property("visible")
         menubar_visible = self.menubar.get_property("visible")
         if toolbar_visible and menubar_visible:
-            self.menu_button.hide()
+            self.toolbar.menu_button.hide()
         else:
-            self.menu_button.show_all()
+            self.toolbar.menu_button.show_all()
 
 
     def on_menuishbar_radio_change(self, radioaction, current):
@@ -783,7 +764,7 @@ class Window (windowing.MainWindow, layout.MainWindow):
         # the other. Makes it clear that the popups are the same thing as
         # the full menu, maybe.
         self.menubar.set_sensitive(True)
-        self.menu_button.set_sensitive(True)
+        self.toolbar.menu_button.set_sensitive(True)
         self.popupmenu_last_active = self.popupmenu.get_active()
 
     # BEGIN -- Scratchpad menu options
@@ -1006,106 +987,3 @@ class Window (windowing.MainWindow, layout.MainWindow):
         self.app.message_dialog(text[action.get_name()])
 
 
-class FakeMenuButton(gtk.EventBox):
-    """Launches the popup menu when clicked.
-
-    One of these sits to the left of the real toolbar when the main menu bar is
-    hidden. In addition to providing access to a popup menu associated with the
-    main view, this is a little more compliant with Fitts's Law than a normal
-    `gtk.MenuBar`: when the window is fullscreened with only the "toolbar"
-    present the ``(0, 0)`` screen pixel hits this button. Support note: Compiz
-    edge bindings sometimes get in the way of this, so turn those off if you
-    want Fitts's compliance.
-    """
-
-    def __init__(self, text, menu):
-        gtk.EventBox.__init__(self)
-        self.menu = menu
-        self.label = gtk.Label(text)
-        self.label.set_padding(8, 0)
-
-        # Text settings
-        #self.label.set_angle(5)
-        attrs = pango.AttrList()
-        attrs.change(pango.AttrWeight(pango.WEIGHT_HEAVY, 0, -1))
-        self.label.set_attributes(attrs)
-
-        # Intercept mouse clicks and use them for activating the togglebutton
-        # even if they're in its border, or (0, 0). Fitts would approve.
-        invis = self.invis_window = gtk.EventBox()
-        invis.set_visible_window(False)
-        invis.set_above_child(True)
-        invis.connect("button-press-event", self.on_button_press)
-        invis.connect("enter-notify-event", self.on_enter)
-        invis.connect("leave-notify-event", self.on_leave)
-
-        # The underlying togglebutton can default and focus. Might as well make
-        # the Return key do something useful rather than invoking the 1st
-        # toolbar item.
-        self.togglebutton = gtk.ToggleButton()
-        self.togglebutton.add(self.label)
-        self.togglebutton.set_relief(gtk.RELIEF_HALF)
-        self.togglebutton.set_flags(gtk.CAN_FOCUS)
-        self.togglebutton.set_flags(gtk.CAN_DEFAULT)
-        self.togglebutton.connect("toggled", self.on_togglebutton_toggled)
-
-        invis.add(self.togglebutton)
-        self.add(invis)
-        for sig in "selection-done", "deactivate", "cancel":
-            menu.connect(sig, self.on_menu_dismiss)
-
-
-    def on_enter(self, widget, event):
-        # Not this set_state(). That one.
-        #self.togglebutton.set_state(gtk.STATE_PRELIGHT)
-        gtk.Widget.set_state(self.togglebutton, gtk.STATE_PRELIGHT)
-
-
-    def on_leave(self, widget, event):
-        #self.togglebutton.set_state(gtk.STATE_NORMAL)
-        gtk.Widget.set_state(self.togglebutton, gtk.STATE_NORMAL)
-
-
-    def on_button_press(self, widget, event):
-        # Post the menu. Menu operation is much more convincing if we call
-        # popup() with event details here rather than leaving it to the toggled
-        # handler.
-        pos_func = self._get_popup_menu_position
-        self.menu.popup(None, None, pos_func, event.button, event.time)
-        self.togglebutton.set_active(True)
-
-
-    def on_togglebutton_toggled(self, togglebutton):
-        # Post the menu from a keypress. Dismiss handler untoggles it.
-        if togglebutton.get_active():
-            if not self.menu.get_property("visible"):
-                pos_func = self._get_popup_menu_position
-                self.menu.popup(None, None, pos_func, 1, 0)
-
-
-    def on_menu_dismiss(self, *a, **kw):
-        # Reset the button state when the user's finished, and
-        # park focus back on the menu button.
-        self.set_state(gtk.STATE_NORMAL)
-        self.togglebutton.set_active(False)
-        self.togglebutton.grab_focus()
-
-
-    def _get_popup_menu_position(self, menu, *junk):
-        # Underneath the button, at the same x position.
-        x, y = self.window.get_origin()
-        y += self.allocation.height
-        return x, y, True
-
-
-    def set_style(self, style):
-        # Propagate style changes to all children as well. Since this button is
-        # stored on the toolbar, the main window makes it share a style with
-        # it. Looks prettier.
-        gtk.EventBox.set_style(self, style)
-        style = style.copy()
-        widget = self.togglebutton
-        widget.set_style(style)
-        style = style.copy()
-        widget = widget.get_child()
-        widget.set_style(style)

@@ -22,9 +22,16 @@
 
     <separator/>
 
-    <toolitem action="BlendModeNormal"/>
-    <toolitem action="BlendModeEraser"/>
-    <toolitem action="BlendModeLockAlpha"/>
+    <placeholder name="brush-settings-toolitems">
+      <toolitem action="ColorMenuToolButton"/>
+      <!-- TODO: a similar control for brushes -->
+
+      <!-- FIXME: the following are fairly obscure features, and should
+           probably go in the menu part of a BrushMenuToolButton -->
+      <toolitem action="BlendModeNormal"/>
+      <toolitem action="BlendModeEraser"/>
+      <toolitem action="BlendModeLockAlpha"/>
+    </placeholder>
 
     <separator expand="true" name="expander"/>
 
