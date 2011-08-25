@@ -1110,7 +1110,7 @@ class Tool (gtk.VBox, ElasticContainer):
     def on_style_set(self, widget, oldstyle):
         """Updates the floating window's icon in response to ``style-set``.
         """
-        sizes = (gtk.ICON_SIZE_INVALID, gtk.ICON_SIZE_MENU,
+        sizes = (gtk.ICON_SIZE_MENU,
             gtk.ICON_SIZE_SMALL_TOOLBAR, gtk.ICON_SIZE_LARGE_TOOLBAR,
             gtk.ICON_SIZE_BUTTON, gtk.ICON_SIZE_DND, gtk.ICON_SIZE_DIALOG)
         pixbufs = []
