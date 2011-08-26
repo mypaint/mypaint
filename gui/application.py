@@ -226,28 +226,27 @@ class Application: # singleton
             "layout.window_positions": {
 
                 # Main window default size. Sidebar width is saved here
-                'main-window': dict(sbwidth=270, x=64, y=32, w=-74, h=-96),
+                'main-window': dict(sbwidth=250, x=50, y=32, w=-50, h=-100),
 
                 # Tool windows. These can be undocked (floating=True) or set
                 # initially hidden (hidden=True), or be given an initial sidebar
                 # index (sbindex=<int>) or height in the sidebar (sbheight=<int>)
                 # Non-hidden entries determine the default set of tools.
-                'colorSamplerWindow': dict(sbindex=1, floating=False, hidden=False,
-                                           x=-200, y=128,
-                                           w=200, h=300, sbheight=300),
-                'colorSelectionWindow': dict(sbindex=0, floating=True, hidden=True,
-                                             x=-128, y=64,
-                                             w=200, h=250, sbheight=250),
-                'brushSelectionWindow': dict(sbindex=2, floating=True,
-                                             x=-128, y=-128,
-                                             w=250, h=350, sbheight=350),
-                'layersWindow': dict(sbindex=3, floating=True,
-                                     x=128, y=-128,
-                                     w=200, h=200, sbheight=200),
-
-                'scratchWindow': dict(sbindex=4, floating=True,
-                                     x=128, y=-128,
-                                     w=200, h=200, sbheight=200),
+                'colorSelectionWindow': dict(
+                        sbindex=0, floating=True, hidden=True,
+                        x=-100, y=125, w=160, h=200, sbheight=200),
+                'colorSamplerWindow': dict(
+                        sbindex=1, floating=True, hidden=True,
+                        x=-270, y=125, w=200, h=275, sbheight=275),
+                'brushSelectionWindow': dict(
+                        sbindex=2, floating=True, hidden=True,
+                        x=-100, y=-150, w=250, h=350, sbheight=350),
+                'layersWindow': dict(
+                        sbindex=3, floating=True, hidden=True,
+                        x=-460, y=-150, w=200, h=200, sbheight=200),
+                'scratchWindow': dict(
+                        sbindex=4, floating=True, hidden=True,
+                        x=-555, y=125, w=300, h=250, sbheight=250),
 
                 # Non-tool subwindows. These cannot be docked, and are all
                 # intially hidden.

@@ -137,7 +137,7 @@ class LayoutManager:
     def get_window_hidden_by_role(self, role, default=True):
         return self.prefs.get(role, {}).get("hidden", default)
 
-    def get_window_floating_by_role(self, role, default=False):
+    def get_window_floating_by_role(self, role, default=True):
         return self.prefs.get(role, {}).get("floating", default)
 
     def get_tools_in_sbindex_order(self):
@@ -177,7 +177,7 @@ class LayoutManager:
         """
         # Ensure that everything not hidden in prefs is loaded up front
         for role, win_pos in self.prefs.iteritems():
-            hidden = win_pos.get("hidden", False)
+            hidden = self.get_window_hidden_by_role(role)
             if not hidden:
                 self.get_widget_by_role(role)
 
@@ -185,7 +185,7 @@ class LayoutManager:
         # free as appropriate
         floating_tools = []
         for tool in self.get_tools_in_sbindex_order():
-            floating = self.prefs.get(tool.role, {}).get("floating", False)
+            floating = self.get_window_floating_by_role(tool.role)
             if floating:
                 floating_tools.append(tool)
             else:
@@ -1088,8 +1088,8 @@ class Tool (gtk.VBox, ElasticContainer):
         self.floating_window = ToolWindow(title, role, layout_manager)
         self.floating_window.connect("delete-event", self.on_floating_window_delete_event)
         self.layout_manager.window_group.add_window(self.floating_window)
-        self.floating = False
-        self.hidden = False
+        self.floating = layout_manager.get_window_floating_by_role(role)
+        self.hidden = layout_manager.get_window_hidden_by_role(role)
         self.rolled_up = False
         self.rolled_up_prev_size = None
         self.connect("size-allocate", self.on_size_allocate)
@@ -1161,6 +1161,7 @@ class Tool (gtk.VBox, ElasticContainer):
     def set_floating(self, floating):
         """Flips the widget beween floating and non-floating, reparenting it.
         """
+        floating = bool(floating)
         self.handle.set_floating(floating)
         self.set_rolled_up(False)
 
@@ -1184,7 +1185,6 @@ class Tool (gtk.VBox, ElasticContainer):
             sbindex = lm.prefs[self.role].get("sbindex", None)
             lm.main_window.sidebar.add_tool(self, index=sbindex)
             self.floating_window.hide()
-            self.floating = lm.prefs[self.role]["floating"] = False
             self.restore_sbheight()
             lm.main_window.sidebar.reassign_indices()
             if self.resize_grip_frame not in self.get_children():
@@ -1198,13 +1198,13 @@ class Tool (gtk.VBox, ElasticContainer):
             # Defer the show_all(), seems to be needed when toggling on a
             # hidden, floating window which hasn't yet been loaded.
             gobject.idle_add(self.floating_window.show_all)
-            self.floating = lm.prefs[self.role]["floating"] = True
             lm.main_window.sidebar.reassign_indices()
             if lm.main_window.sidebar.is_empty():
                 lm.main_window.sidebar.hide()
             if self.resize_grip_frame in self.get_children():
                 self.resize_grip_frame.hide()
                 self.remove(self.resize_grip_frame)
+        self.floating = lm.prefs[self.role]["floating"] = floating
 
         # Display the appropriate widget in slot 0
         if old_item0 in self.get_children():
