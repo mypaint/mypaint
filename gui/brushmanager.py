@@ -24,22 +24,25 @@ preview_w = 128
 preview_h = 128
 
 DEFAULT_STARTUP_GROUP = 'Deevad'  # Suggestion only
-DEFAULT_BRUSH = 'deevad/artpen'  # TODO: phase out and use heruristics?
+DEFAULT_BRUSH = 'deevad/artpen'  # TODO: phase out and use heuristics?
 DEFAULT_ERASER = 'deevad/stick'  # TODO: ---------------"--------------
 FOUND_BRUSHES_GROUP = 'lost&found'
 DELETED_BRUSH_GROUP = 'deleted'
 FAVORITES_BRUSH_GROUP = 'favorites'
 DEVBRUSH_NAME_PREFIX = "devbrush_"
+BRUSH_HISTORY_NAME_PREFIX = "history_"
+BRUSH_HISTORY_SIZE = 5
+NUM_BRUSHKEYS = 10
 
 def devbrush_quote(device_name, prefix=DEVBRUSH_NAME_PREFIX):
     """
     Quotes an arbitrary device name for use as the basename of a
     device-specific brush.
 
-    >>> devbrush_quote(u'Heavy Metal Umlaut D\u00ebvice')
-    'devbrush_Heavy+Metal+Umlaut+D%C3%ABvice'
-    >>> devbrush_quote(u'unsafe/device\u005Cname') # U+005C == backslash
-    'devbrush_unsafe%2Fdevice%5Cname'
+        >>> devbrush_quote(u'Heavy Metal Umlaut D\u00ebvice')
+        'devbrush_Heavy+Metal+Umlaut+D%C3%ABvice'
+        >>> devbrush_quote(u'unsafe/device\u005Cname') # U+005C == backslash
+        'devbrush_unsafe%2Fdevice%5Cname'
 
     Hopefully this is OK for Windows, UNIX and Mac OS X names.
     """
@@ -52,10 +55,10 @@ def devbrush_unquote(devbrush_name, prefix=DEVBRUSH_NAME_PREFIX):
     """
     Unquotes the basename of a devbrush for use when matching device names.
 
-    >>> expected = "My sister was bitten by a m\u00f8\u00f8se..."
-    >>> quoted = 'devbrush_My+sister+was+bitten+by+a+m%5Cu00f8%5Cu00f8se...'
-    >>> devbrush_unquote(quoted) == expected
-    True
+        >>> expected = "My sister was bitten by a m\u00f8\u00f8se..."
+        >>> quoted = 'devbrush_My+sister+was+bitten+by+a+m%5Cu00f8%5Cu00f8se...'
+        >>> devbrush_unquote(quoted) == expected
+        True
     """
     devbrush_name = str(devbrush_name)
     assert devbrush_name.startswith(prefix)
@@ -134,6 +137,8 @@ class BrushManager:
 
         self.brushes_observers.append(self.brushes_modified_cb)
 
+        self.app.doc.input_stroke_ended_observers.append(self.input_stroke_ended_cb)
+
     def select_initial_brush(self):
         initial_brush = None
         # If we recorded which devbrush was last in use, restore it and assume
@@ -200,7 +205,8 @@ class BrushManager:
 
 
     def load_groups(self):
-        self.contexts = [None for i in xrange(10)]
+        self.contexts = [None for i in xrange(NUM_BRUSHKEYS)]
+        self.history = [None for i in xrange(BRUSH_HISTORY_SIZE)]
 
         brush_by_name = {}
         def get_brush(name):
@@ -299,24 +305,38 @@ class BrushManager:
                 self.brush_by_device[device_name] = b
                 b.load_settings(retain_parent=True)
                 b.in_brushlist = False
+            elif name.startswith(BRUSH_HISTORY_NAME_PREFIX):
+                i_str = name.replace(BRUSH_HISTORY_NAME_PREFIX, '')
+                i = int(i_str)
+                self.history[i] = b
+                b.load_settings(retain_parent=True)
+                b.in_brushlist = False
             if b.in_brushlist:
                 if not [True for group in our.itervalues() if b in group]:
                     brushes = self.groups.setdefault(FOUND_BRUSHES_GROUP, [])
                     brushes.insert(0, b)
 
-        # Sensible defaults for brushkeys: clone brushes 1 through 10 from the
-        # default startup group if we need to and if we can.
-        for i in xrange(10):
-            if self.contexts[i] is not None:
-                continue
-            name = unicode('context%02d') % i
-            c = ManagedBrush(self, name=name, persistent=False)
+        # Sensible defaults for brushkeys and history: clone the first few
+        # brushes from the default startup group if we need to and if we can.
+        for i in xrange(max(NUM_BRUSHKEYS, BRUSH_HISTORY_SIZE)):
             group = self.groups.get(DEFAULT_STARTUP_GROUP, [])
             idx = (i+9) % 10 # keyboard order
-            if idx < len(group):
-                b = group[idx]
-                b.clone_into(c, name)
-            self.contexts[i] = c
+            if idx < NUM_BRUSHKEYS:
+                c_name = unicode('context%02d') % i
+                c = ManagedBrush(self, name=c_name, persistent=False)
+                if self.contexts[i] is None:
+                    if idx < len(group):
+                        b = group[idx]
+                        b.clone_into(c, c_name)
+                    self.contexts[i] = c
+            if i < BRUSH_HISTORY_SIZE:
+                h_name = unicode('%s%d') % (BRUSH_HISTORY_NAME_PREFIX, i)
+                h = ManagedBrush(self, name=h_name, persistent=False)
+                if self.history[i] is None:
+                    if i < len(group):
+                        b = group[i]
+                        b.clone_into(h, h_name)
+                    self.history[i] = h
 
         # clean up legacy stuff
         fn = os.path.join(self.user_brushpath, 'deleted.conf')
@@ -486,13 +506,36 @@ class BrushManager:
                 f.write(b.name.encode('utf-8') + '\n')
         f.close()
 
+
+    def input_stroke_ended_cb(self, *junk):
+        """Update brush history at the end of an input stroke.
+        """
+        b = self.app.brush
+        b_parent = b.get_string_property("parent_brush_name")
+        for i, h in enumerate(self.history):
+            h_parent = h.brushinfo.get_string_property("parent_brush_name")
+            # Possibly we should use a tighter equality check than this, but
+            # then we'd need icons showing modifications from the parent.
+            if b_parent == h_parent:
+                del self.history[i]
+                break
+        h = ManagedBrush(self, name=None, persistent=False)
+        h.brushinfo = b.clone()
+        h.preview = self.selected_brush.preview
+        self.history.append(h)
+        while len(self.history) > BRUSH_HISTORY_SIZE:
+            del self.history[0]
+        for i, h in enumerate(self.history):
+            h.name = u"%s%d" % (BRUSH_HISTORY_NAME_PREFIX, i)
+
+
     def select_brush(self, brush):
         """Selects a ManagedBrush, highlights it, & updates the live brush."""
         if brush is None:
             brush = self.get_default_brush()
         if brush.persistent and not brush.settings_loaded:
             brush.load_settings()
-        
+
         brushinfo = brush.brushinfo
         if not brush.in_brushlist:
             # select parent brush, but keep brushinfo
@@ -546,13 +589,24 @@ class BrushManager:
         for device_name, devbrush in self.brush_by_device.iteritems():
             devbrush.save()
 
+    def save_brush_history(self):
+        for brush in self.history:
+            # Ensure we save the preview we saved last time even if it hasn't
+            # been loaded yet (hist menu not opened, brush not painted with...)
+            if not brush.preview:
+                brush.load_preview()
+            brush.save()
+
+    def ensure_group_previews(self, groupname):
+        if groupname in self.loaded_groups:
+            return
+        for brush in self.groups[groupname]:
+            brush.load_preview()
+
     def set_active_groups(self, groups):
         """Set active groups, loading them first if neccesary."""
         for groupname in groups:
-            if not groupname in self.loaded_groups:
-                for brush in self.groups[groupname]:
-                    brush.load_preview()
-            self.loaded_groups.append(groupname)
+            self.ensure_group_previews(groupname)
         self.active_groups = groups
         self.app.preferences['brushmanager.selected_groups'] = groups
         for f in self.groups_observers: f()
@@ -722,6 +776,7 @@ class ManagedBrush(object):
         self.settings_loaded = True
         if not retain_parent:
             self.brushinfo.set_string_property("parent_brush_name", None)
+        parent = self.brushinfo.get_string_property("parent_brush_name")
         self.persistent = True
 
     def reload_if_changed(self):

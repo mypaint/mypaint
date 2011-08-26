@@ -1,16 +1,23 @@
 <ui>
   <toolbar name="toolbar1">
+    <placeholder name="brush-settings-toolitems">
+      <toolitem action="ColorMenuToolButton"/>
+      <toolitem action="BrushMenuToolButton"/>
+    </placeholder>
+
     <placeholder name="file-toolitems">
+      <separator/>
+    <!--
       <toolitem action="New"/>
       <toolitem action="Open"/>
       <toolitem action="Save"/>
+    -->
       <toolitem action="Undo"/>
       <toolitem action="Redo"/>
     </placeholder>
 
-    <separator/>
-
     <placeholder name="view-toolitems">
+      <separator/>
       <toolitem action="ResetView"/>
       <toolitem action="ZoomIn"/>
       <toolitem action="ZoomOut"/>
@@ -20,22 +27,8 @@
       <toolitem action="MirrorHorizontal"/>
     </placeholder>
 
-    <separator/>
-
-    <placeholder name="brush-settings-toolitems">
-      <toolitem action="ColorMenuToolButton"/>
-      <!-- TODO: a similar control for brushes -->
-
-      <!-- FIXME: the following are fairly obscure features, and should
-           probably go in the menu part of a BrushMenuToolButton -->
-      <toolitem action="BlendModeNormal"/>
-      <toolitem action="BlendModeEraser"/>
-      <toolitem action="BlendModeLockAlpha"/>
-    </placeholder>
-
-    <separator expand="true" name="expander"/>
-
     <placeholder action="toolset-toolitems">
+      <separator expand="true" name="expander"/>
       <toolitem action="ColorSelectionWindow"/>
       <toolitem action="ColorSamplerWindow"/>
       <toolitem action="BrushSelectionWindow"/>

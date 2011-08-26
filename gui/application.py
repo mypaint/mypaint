@@ -80,14 +80,14 @@ class Application: # singleton
         self.preferences = {}
         self.load_settings()
 
-        self.brushmanager = brushmanager.BrushManager(join(datapath, 'brushes'), join(confpath, 'brushes'), self)
+        self.scratchpad_filename = ""
         self.kbm = keyboard.KeyboardManager()
+        self.doc = document.Document(self)
+        self.scratchpad_doc = document.Document(self, leader=self.doc)
+        self.brushmanager = brushmanager.BrushManager(join(datapath, 'brushes'), join(confpath, 'brushes'), self)
         self.filehandler = filehandling.FileHandler(self)
         self.brushmodifier = brushmodifier.BrushModifier(self)
-        self.doc = document.Document(self)
 
-        self.scratchpad_filename = ""
-        self.scratchpad_doc = document.Document(self, leader=self.doc)
 
         if not self.preferences.get("scratchpad.last_opened_scratchpad", None):
             self.preferences["scratchpad.last_opened_scratchpad"] = self.filehandler.get_scratchpad_autosave()
@@ -158,6 +158,7 @@ class Application: # singleton
             f.write(jsonstr)
             f.close()
         self.brushmanager.save_brushes_for_devices()
+        self.brushmanager.save_brush_history()
         self.filehandler.save_scratchpad(self.scratchpad_filename)
         save_config()
 

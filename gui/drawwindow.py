@@ -742,7 +742,7 @@ class Window (windowing.MainWindow, layout.MainWindow):
 
     def show_popupmenu(self, event=None):
         self.menubar.set_sensitive(False)   # excessive feedback?
-        self.menu_button.set_sensitive(False)
+        self.toolbar.menu_button.set_sensitive(False)
         button = 1
         time = 0
         if event is not None:
