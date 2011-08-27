@@ -317,26 +317,35 @@ class BrushManager:
                     brushes.insert(0, b)
 
         # Sensible defaults for brushkeys and history: clone the first few
-        # brushes from the default startup group if we need to and if we can.
-        for i in xrange(max(NUM_BRUSHKEYS, BRUSH_HISTORY_SIZE)):
-            group = self.groups.get(DEFAULT_STARTUP_GROUP, [])
-            idx = (i+9) % 10 # keyboard order
-            if idx < NUM_BRUSHKEYS:
+        # brushes from a normal group if we need to and if we can.
+        # Try the default startup group first.
+        default_group = self.groups.get(DEFAULT_STARTUP_GROUP, None)
+
+        # Otherwise, use the biggest group to minimise the chance
+        # of repetition.
+        if default_group is None:
+            groups_by_len = [(len(g),n,g) for n,g in self.groups.items()]
+            groups_by_len.sort()
+            _len, _name, default_group = groups_by_len[-1]
+
+        # Populate blank entries.
+        for i in xrange(NUM_BRUSHKEYS):
+            if self.contexts[i] is None:
+                idx = (i+9) % 10 # keyboard order
                 c_name = unicode('context%02d') % i
                 c = ManagedBrush(self, name=c_name, persistent=False)
-                if self.contexts[i] is None:
-                    if idx < len(group):
-                        b = group[idx]
-                        b.clone_into(c, c_name)
-                    self.contexts[i] = c
-            if i < BRUSH_HISTORY_SIZE:
+                group_idx = idx % len(default_group)
+                b = default_group[group_idx]
+                b.clone_into(c, c_name)
+                self.contexts[i] = c
+        for i in xrange(BRUSH_HISTORY_SIZE):
+            if self.history[i] is None:
                 h_name = unicode('%s%d') % (BRUSH_HISTORY_NAME_PREFIX, i)
                 h = ManagedBrush(self, name=h_name, persistent=False)
-                if self.history[i] is None:
-                    if i < len(group):
-                        b = group[i]
-                        b.clone_into(h, h_name)
-                    self.history[i] = h
+                group_i = i % len(default_group)
+                b = default_group[group_i]
+                b.clone_into(h, h_name)
+                self.history[i] = h
 
         # clean up legacy stuff
         fn = os.path.join(self.user_brushpath, 'deleted.conf')
