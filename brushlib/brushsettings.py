@@ -54,7 +54,7 @@ settings_list = [
     ['speed2_slowness', _('Gross speed filter'), False, 0.0, 0.8, 3.0, _("Same as 'fine speed filter', but note that the range is different")],
     ['speed1_gamma', _('Fine speed gamma'), True, -8.0, 4.0, 8.0, _("This changes the reaction of the 'fine speed' input to extreme physical speed. You will see the difference best if 'fine speed' is mapped to the radius.\n-8.0 very fast speed does not increase 'fine speed' much more\n+8.0 very fast speed increases 'fine speed' a lot\nFor very slow speed the opposite happens.")],
     ['speed2_gamma', _('Gross speed gamma'), True, -8.0, 4.0, 8.0, _("Same as 'fine speed gamma' for gross speed")],
-    ['offset_by_random', _('Jitter'), False, 0.0, 0.0, 2.0, _("Add a random offset to the position where each dab is drawn\n 0.0 disabled\n 1.0 standard deviation is one basic radius away\n<0.0 negative values produce no jitter")],
+    ['offset_by_random', _('Jitter'), False, 0.0, 0.0, 25.0, _("Add a random offset to the position where each dab is drawn\n 0.0 disabled\n 1.0 standard deviation is one basic radius away\n<0.0 negative values produce no jitter")],
     ['offset_by_speed', _('Offset by speed'), False, -3.0, 0.0, 3.0, _("Change position depending on pointer speed\n= 0 disable\n> 0 draw where the pointer moves to\n< 0 draw where the pointer comes from")],
     ['offset_by_speed_slowness', _('Offset by speed filter'), False, 0.0, 1.0, 15.0, _("How slow the offset goes back to zero when the cursor stops moving")],
     ['slow_tracking', _('Slow position tracking'), True, 0.0, 0.0, 10.0, _("Slowdown pointer tracking speed. 0 disables it, higher values remove more jitter in cursor movements. Useful for drawing smooth, comic-like outlines.")],
