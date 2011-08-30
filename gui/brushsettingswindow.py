@@ -210,16 +210,6 @@ class Window(windowing.SubWindow):
         def do_update():
             self.live_update_queued = False
             doc = self.app.doc.model
-            cmd = 'something'
-            while cmd:
-                cmd = doc.undo()
-                if isinstance(cmd, command.Stroke):
-                    # found it
-                    # bad design that we need to touch internals document.py here...
-                    new_stroke = cmd.stroke.copy_using_different_brush(self.app.brush)
-                    snapshot_before = doc.layer.save_snapshot()
-                    new_stroke.render(doc.layer.surface)
-                    doc.do(command.Stroke(doc, new_stroke, snapshot_before))
-                    break
+            doc.redo_last_stroke_with_different_brush(self.app.brush)
         gobject.idle_add(do_update)
 

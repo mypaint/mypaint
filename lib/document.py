@@ -178,6 +178,17 @@ class Document():
         if split:
             self.split_stroke()
 
+    def redo_last_stroke_with_different_brush(self, brush):
+        cmd = self.get_last_command()
+        if not isinstance(cmd, command.Stroke):
+            return
+        cmd = self.undo()
+        assert isinstance(cmd, command.Stroke)
+        new_stroke = cmd.stroke.copy_using_different_brush(brush)
+        snapshot_before = self.layer.save_snapshot()
+        new_stroke.render(self.layer.surface)
+        self.do(command.Stroke(self, new_stroke, snapshot_before))
+
     def straight_line(self, src, dst):
         self.split_stroke()
         self.brush.reset() # reset dynamic states (eg. filtered velocity)
