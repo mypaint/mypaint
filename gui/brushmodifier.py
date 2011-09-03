@@ -13,6 +13,7 @@ import gtk
 from gtk import gdk
 import gobject
 from gettext import gettext as _
+from lib.helpers import rgb_to_hsv, hsv_to_rgb
 
 class BrushModifier:
     """Applies changed brush settings to the active brush, with overrides.
@@ -260,6 +261,14 @@ class BrushModifier:
         color = b.get_color_hsv()
         b.load_from_brushinfo(brushinfo)
         self.unmodified_brushinfo = b.clone()
+
+        mix = b.get_base_value('restore_color')
+        if mix:
+            c1 = hsv_to_rgb(*color)
+            c2 = hsv_to_rgb(*b.get_color_hsv())
+            c3 = [(1.0-mix)*v1 + mix*v2 for v1, v2 in zip(c1, c2)]
+            color = rgb_to_hsv(*c3)
+
         b.set_color_hsv(color)
         b.set_string_property("parent_brush_name", managed_brush.name)
         if b.is_eraser():

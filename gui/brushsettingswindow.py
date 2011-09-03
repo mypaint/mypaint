@@ -105,7 +105,7 @@ class Window(windowing.SubWindow):
             {'id' : 'speed',    'title' : _('Speed'),   'settings' : [ 'speed1_slowness', 'speed2_slowness', 'speed1_gamma', 'speed2_gamma', 'offset_by_speed', 'offset_by_speed_slowness' ]},
             {'id' : 'tracking', 'title' : _('Tracking'),'settings' : [ 'slow_tracking', 'slow_tracking_per_dab', 'tracking_noise' ]},
             {'id' : 'stroke',   'title' : _('Stroke'),  'settings' : [ 'stroke_threshold', 'stroke_duration_logarithmic', 'stroke_holdtime' ]},
-            {'id' : 'color',    'title' : _('Color'),   'settings' : [ 'change_color_h', 'change_color_l', 'change_color_hsl_s', 'change_color_v', 'change_color_hsv_s' ]},
+            {'id' : 'color',    'title' : _('Color'),   'settings' : [ 'change_color_h', 'change_color_l', 'change_color_hsl_s', 'change_color_v', 'change_color_hsv_s', 'restore_color' ]},
             {'id' : 'custom',   'title' : _('Custom'),  'settings' : [ 'custom_input', 'custom_input_slowness' ]}
             ]
 

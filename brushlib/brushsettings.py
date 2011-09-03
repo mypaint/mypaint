@@ -64,6 +64,7 @@ settings_list = [
     ['color_h', _('Color hue'), True, 0.0, 0.0, 1.0, _("Color hue")],
     ['color_s', _('Color saturation'), True, -0.5, 0.0, 1.5, _("Color saturation")],
     ['color_v', _('Color value'), True, -0.5, 0.0, 1.5, _("Color value (brightness, intensity)")],
+    ['restore_color', _('Save color'), True, 0.0, 0.0, 1.0, _("When selecting a brush, the color can be restored to the color that the brush was saved with.\n 0.0 do not modify the active color when selecting this brush\n 0.5 change active color towards brush color\n 1.0 set the active color to the brush color when selected")],
     ['change_color_h', _('Change color hue'), False, -2.0, 0.0, 2.0, _("Change color hue.\n-0.1 small clockwise color hue shift\n 0.0 disable\n 0.5 counterclockwise hue shift by 180 degrees")],
     ['change_color_l', _('Change color lightness (HSL)'), False, -2.0, 0.0, 2.0, _("Change the color lightness (luminance) using the HSL color model.\n-1.0 blacker\n 0.0 disable\n 1.0 whiter")],
     ['change_color_hsl_s', _('Change color satur. (HSL)'), False, -2.0, 0.0, 2.0, _("Change the color saturation using the HSL color model.\n-1.0 more grayish\n 0.0 disable\n 1.0 more saturated")],
