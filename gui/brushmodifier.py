@@ -40,6 +40,7 @@ class BrushModifier:
         self._in_brush_selected_cb = False
         self._in_internal_radius_change = False
         self._eraser_mode_original_radius = None
+        self._last_selected_color = None
         self._init_actions()
 
 
@@ -259,6 +260,8 @@ class BrushModifier:
         # Preserve colour
         b.begin_atomic()
         color = b.get_color_hsv()
+
+        mix_old = b.get_base_value('restore_color')
         b.load_from_brushinfo(brushinfo)
         self.unmodified_brushinfo = b.clone()
 
@@ -268,6 +271,9 @@ class BrushModifier:
             c2 = hsv_to_rgb(*b.get_color_hsv())
             c3 = [(1.0-mix)*v1 + mix*v2 for v1, v2 in zip(c1, c2)]
             color = rgb_to_hsv(*c3)
+        elif mix_old:
+            # switching from a brush with fixed color back to a normal one
+            color = self._last_selected_color
 
         b.set_color_hsv(color)
         b.set_string_property("parent_brush_name", managed_brush.name)
@@ -329,7 +335,6 @@ class BrushModifier:
     def brush_modified_cb(self, changed_settings):
         """Responds to changes of the brush settings.
         """
-        modif_b = self.app.brush
         if self._brush_is_dedicated_eraser():
             return
 
@@ -341,8 +346,10 @@ class BrushModifier:
                 and not self._in_internal_radius_change:
             self._store_eraser_mode_radius_change()
 
-        # Cancel eraser mode on ordinary brushes 
-        if changed_settings.intersection(('color_h', 'color_s', 'color_v')) \
-                and self.eraser_mode.get_active() \
-                and 'eraser_mode' not in changed_settings:
-            self.eraser_mode.set_active(False)
+        if changed_settings.intersection(('color_h', 'color_s', 'color_v')):
+            # Cancel eraser mode on ordinary brushes
+            if self.eraser_mode.get_active() and 'eraser_mode' not in changed_settings:
+                self.eraser_mode.set_active(False)
+
+            if not self._in_brush_selected_cb:
+                self._last_selected_color = self.app.brush.get_color_hsv()
