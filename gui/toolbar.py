@@ -20,12 +20,17 @@ import pango
 
 from lib.helpers import hsv_to_rgb, clamp
 import dialogs
-
+from brushlib import brushsettings
+import stock
+import dropdownpanel
+import widgets
 
 
 class MainToolbar (gtk.HBox):
     """The main 'toolbar': menu button and quick access to painting tools.
     """
+
+    icon_size = gtk.icon_size_register("MYPAINT_TOOLBAR_ICON_SIZE", 32, 32)
 
     def __init__(self, draw_window):
         gtk.HBox.__init__(self)
@@ -37,8 +42,7 @@ class MainToolbar (gtk.HBox):
         self.app.ui_manager.add_ui_from_string(toolbarbar_xml)
         self.toolbar1 = self.app.ui_manager.get_widget('/toolbar1')
         self.toolbar1.set_style(gtk.TOOLBAR_ICONS)
-        icon_size = gtk.icon_size_register("MYPAINT_TOOLBAR_ICON_SIZE", 32, 32)
-        self.toolbar1.set_icon_size(icon_size)
+        self.toolbar1.set_icon_size(self.icon_size)
         self.toolbar1.set_border_width(0)
         self.toolbar1.connect("style-set", self.on_toolbar1_style_set)
         self.menu_button = FakeMenuButton(_("MyPaint"), draw_window.popupmenu)
@@ -55,7 +59,10 @@ class MainToolbar (gtk.HBox):
                 ColorMenuToolAction("ColorMenuToolButton", None,
                     _("Current Color"), None),
                 BrushMenuToolAction("BrushMenuToolButton", None,
-                    _("Current Brush"), None), ]
+                    _("Current Brush"), None),
+                BrushSettingsDropdownToolAction("BrushSettingsDropdown", None,
+                    _("Brush Settings"), None),
+                ]
         for toolaction in self.actions:
             ag.add_action(toolaction)
 
@@ -248,6 +255,191 @@ class BrushMenuToolButton (gtk.MenuToolButton):
         dialogs.change_current_brush_quick(self.app)
 
 
+
+class BrushSettingsDropdownToolItem (gtk.ToolItem):
+    __gtype_name__ = "BrushSettingsDropdownToolItem"
+
+    setting_cnames = ["radius_logarithmic", "slow_tracking", "opaque", "hardness"]
+
+    def __init__(self):
+        gtk.ToolItem.__init__(self)
+        self.set_homogeneous(False)
+        self.button_image = gtk.Image()
+        self.button_image.set_from_stock(stock.BRUSH_MODIFIERS_INACTIVE,
+                                         MainToolbar.icon_size)
+        self.button_shows_modified = False
+        self.button = dropdownpanel.DropdownPanelButton(self.button_image)
+        self.button.set_name(widgets.BORDERLESS_BUTTON_NAME)
+        self.button.set_relief(gtk.RELIEF_NONE)
+        self.button.set_can_default(False)
+        self.button.set_can_focus(False)
+        self.vbox = gtk.VBox()
+        frame = gtk.Frame()
+        frame.add(self.vbox)
+        frame.set_shadow_type(gtk.SHADOW_OUT)
+        self.button.set_panel_widget(frame)
+        self.add(self.button)
+
+    def set_app(self, app):
+        self.app = app
+
+        # A limited subset of the abailable brush settings.
+
+        frame = widgets.section_frame(_("Quick Brush Settings"))
+        table = gtk.Table()
+        table.set_homogeneous(False)
+        table.set_row_spacings(widgets.SPACING_TIGHT)
+        table.set_col_spacings(widgets.SPACING)
+        table.set_border_width(widgets.SPACING)
+        frame.add(table)
+        self.vbox.pack_start(frame, True, True)
+
+        sg_row_height = gtk.SizeGroup(gtk.SIZE_GROUP_VERTICAL)
+        sg_slider_width = gtk.SizeGroup(gtk.SIZE_GROUP_HORIZONTAL)
+        row = 0
+        for setting_cname in self.setting_cnames:
+            scale = gtk.HScale()
+            scale.set_size_request(128, -1)
+            scale.set_draw_value(False)
+            scale.set_can_focus(False)
+            scale.set_can_default(False)
+            s = brushsettings.settings_dict[setting_cname]
+            adj = app.brush_adjustment[setting_cname]
+            scale.set_adjustment(adj)
+            scale.set_tooltip_text(s.tooltip)
+            #scale.set_update_policy(gtk.UPDATE_DISCONTINUOUS)
+            sg_row_height.add_widget(scale)
+            sg_slider_width.add_widget(scale)
+
+            label = gtk.Label(_("%s:") % s.name)
+            label.set_alignment(0.0, 0.5)
+            label.set_tooltip_text(s.tooltip)
+            sg_row_height.add_widget(label)
+
+            reset_button = widgets.borderless_image_button(
+                stock_id=gtk.STOCK_CLEAR,
+                tooltip=_("Reset '%s'") % s.name)
+            reset_button.connect("clicked", self.reset_button_clicked_cb,
+                                 adj, setting_cname)
+            sg_row_height.add_widget(reset_button)
+
+            adj.connect("value-changed", self.adjustment_changed_cb,
+                reset_button, setting_cname)
+            adj.value_changed()
+
+            table.attach(label, 0, 1, row, row+1, gtk.FILL)
+            table.attach(scale, 1, 2, row, row+1, gtk.FILL|gtk.EXPAND)
+            table.attach(reset_button, 2, 3, row, row+1, gtk.FILL)
+            row += 1
+        table.set_col_spacing(1, widgets.SPACING_TIGHT)
+
+        # Access to the brush settings window, and a big reset-all button
+        # aligned with the settings above.
+
+        frame = widgets.section_frame(_("Detailed Brush Settings"))
+        hbox = gtk.HBox()
+        hbox.set_spacing(widgets.SPACING)
+        hbox.set_border_width(widgets.SPACING)
+        frame.add(hbox)
+        self.vbox.pack_start(frame, True, True)
+
+        widget = gtk.ToggleButton()
+        action = self.app.find_action("BrushSettingsWindow")
+        action.connect_proxy(widget)
+        #widget.set_label(_("Edit All Settings"))
+        hbox.pack_start(widget, True, True)
+        widget.connect("toggled", lambda a: self.button.panel_hide())
+        sg_slider_width.add_widget(widget)
+
+        widget = gtk.Button(_("Reset All"))
+        widget.connect("clicked", self.reset_all_clicked_cb)
+        widget.set_tooltip_text(_("Reset the brush's settings"))
+        hbox.pack_start(widget, True, True)
+        sg_slider_width.add_widget(widget)
+        self.reset_all_button = widget
+
+        # Brush blend modes
+
+        vbox = gtk.VBox()
+        vbox.set_border_width(widgets.SPACING)
+        vbox.set_spacing(widgets.SPACING_TIGHT)
+        frame = widgets.section_frame(_("Brush Blend Mode"))
+        frame.add(vbox)
+        self.vbox.pack_start(frame, True, True)
+
+        for a in ["BlendModeNormal", "BlendModeEraser", "BlendModeLockAlpha"]:
+            action = self.app.find_action(a)
+            cb = gtk.CheckButton()
+            action.connect_proxy(cb)
+            vbox.pack_start(cb, False, False)
+            cb.connect("clicked", lambda a: self.button.panel_hide())
+
+        self.vbox.set_border_width(widgets.SPACING)
+        self.vbox.set_spacing(widgets.SPACING)
+
+        self.app.brush.observers.append(self.brush_settings_changed_cb)
+
+
+    def reset_button_clicked_cb(self, widget, adj, setting_cname):
+        default = self._get_current_brush_default(setting_cname)
+        adj.set_value(default)
+
+
+    def reset_all_clicked_cb(self, widget):
+        parent_name = self.app.brush.get_string_property("parent_brush_name")
+        parent_brush = self.app.brushmanager.get_brush_by_name(parent_name)
+        self.app.brushmanager.select_brush(parent_brush)
+        self.app.brushmodifier.normal_mode.activate()
+        self.button.panel_hide()
+
+
+    def adjustment_changed_cb(self, widget, button, cname):
+        default = self._get_current_brush_default(cname)
+        button.set_sensitive(widget.get_value() != default)
+
+
+    def _get_current_brush_default(self, cname):
+        parent_name = self.app.brush.get_string_property("parent_brush_name")
+        if parent_name is None:
+            return brushsettings.settings_dict[cname].default
+        else:
+            parent_brush = self.app.brushmanager.get_brush_by_name(parent_name)
+            if parent_brush.persistent and not parent_brush.settings_loaded:
+                parent_brush.load_settings()
+            assert parent_brush.brushinfo.settings is not None
+            return parent_brush.brushinfo.get_base_value(cname)
+
+
+    def brush_settings_changed_cb(self, *a):
+        stock_id = None
+        if self._current_brush_is_modified():
+            if not self.button_shows_modified:
+                stock_id = stock.BRUSH_MODIFIERS_ACTIVE
+                self.button_shows_modified = True
+            if not self.reset_all_button.get_sensitive():
+                self.reset_all_button.set_sensitive(True)
+        else:
+            if self.button_shows_modified:
+                stock_id = stock.BRUSH_MODIFIERS_INACTIVE
+                self.button_shows_modified = False
+            if self.reset_all_button.get_sensitive():
+                self.reset_all_button.set_sensitive(False)
+        if stock_id is not None:
+            self.button_image.set_from_stock(stock_id, MainToolbar.icon_size)
+
+
+    def _current_brush_is_modified(self):
+        parent_name = self.app.brush.get_string_property("parent_brush_name")
+        if parent_name is None:
+            return True
+        else:
+            parent_brush = self.app.brushmanager.get_brush_by_name(parent_name)
+            if parent_brush.persistent and not parent_brush.settings_loaded:
+                parent_brush.load_settings()
+            return not parent_brush.brushinfo.matches(self.app.brush)
+
+
+
 class ColorMenuToolAction (gtk.Action):
     """Allows `ColorMenuToolButton`s to be added by `gtk.UIManager`.
     """
@@ -262,6 +454,14 @@ class BrushMenuToolAction (gtk.Action):
     __gtype_name__ = "BrushMenuToolAction"
 
 BrushMenuToolAction.set_tool_item_type(BrushMenuToolButton)
+
+
+
+class BrushSettingsDropdownToolAction (gtk.Action):
+    __gtype_name__ = "BrushSettingsDropdownToolAction"
+BrushSettingsDropdownToolAction\
+        .set_tool_item_type(BrushSettingsDropdownToolItem)
+
 
 
 class ManagedBrushPreview (gtk.Image):

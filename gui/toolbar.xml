@@ -9,20 +9,18 @@ the Free Software Foundation; either version 2 of the License, or
 (at your option) any later version.
 -->
   <toolbar name="toolbar1">
-    <placeholder name="brush-settings-toolitems">
-      <toolitem action="ColorMenuToolButton"/>
-      <toolitem action="BrushMenuToolButton"/>
-    </placeholder>
 
     <placeholder name="file-toolitems">
       <separator/>
-    <!--
-      <toolitem action="New"/>
-      <toolitem action="Open"/>
-      <toolitem action="Save"/>
-    -->
       <toolitem action="Undo"/>
       <toolitem action="Redo"/>
+    </placeholder>
+
+    <placeholder name="paint-settings-toolitems">
+      <separator/>
+      <toolitem action="ColorMenuToolButton"/>
+      <toolitem action="BrushMenuToolButton"/>
+      <toolitem action="BrushSettingsDropdown"/>
     </placeholder>
 
     <placeholder name="view-toolitems">
@@ -32,12 +30,12 @@ the Free Software Foundation; either version 2 of the License, or
       <toolitem action="ZoomOut"/>
       <toolitem action="RotateLeft"/>
       <toolitem action="RotateRight"/>
-      <toolitem action="MirrorVertical"/>
       <toolitem action="MirrorHorizontal"/>
+      <toolitem action="MirrorVertical"/>
     </placeholder>
 
     <placeholder action="toolset-toolitems">
-      <separator expand="true" name="expander"/>
+      <separator expand="true"/>
       <toolitem action="ColorSelectionWindow"/>
       <toolitem action="ColorSamplerWindow"/>
       <toolitem action="BrushSelectionWindow"/>

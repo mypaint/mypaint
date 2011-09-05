@@ -28,6 +28,8 @@ BRUSH_BLEND_MODES = "mypaint-brush-blend-modes"
 BRUSH_BLEND_MODE_NORMAL = "mypaint-brush-blend-mode-normal"
 BRUSH_BLEND_MODE_ERASER = "mypaint-brush-blend-mode-eraser"
 BRUSH_BLEND_MODE_ALPHA_LOCK = "mypaint-brush-blend-mode-alpha-lock"
+BRUSH_MODIFIERS_ACTIVE = "mypaint-brush-mods-active"
+BRUSH_MODIFIERS_INACTIVE = "mypaint-brush-mods-inactive"
 
 
 _stock_items = [
@@ -50,6 +52,8 @@ _stock_items = [
     (BRUSH_BLEND_MODE_ERASER, _("Eraser"), 0, ord('e'), None),
     (BRUSH_BLEND_MODE_ALPHA_LOCK, _("Lock Alpha Channel"),
         gdk.SHIFT_MASK, ord('l'), None),
+    (BRUSH_MODIFIERS_ACTIVE, _("Brush Modifiers Active"), 0, 0, None),
+    (BRUSH_MODIFIERS_INACTIVE, _("Brush Modifiers Inactive"), 0, 0, None),
 ]
 
 def init_custom_stock_items():

@@ -362,6 +362,14 @@ class BrushInfo:
         r += 2*base_radius*self.get_base_value('offset_by_random')
         return r
 
+    def matches(self, other, ignore=["color_h", "color_s", "color_v", "parent_brush_name"]):
+        s1 = self.settings.copy()
+        s2 = other.settings.copy()
+        for k in ignore:
+            s1.pop(k, None)
+            s2.pop(k, None)
+        return s1 == s2
+
 class Brush(mypaintlib.PythonBrush):
     """
     Low-level extension of the C brush class, propagating all changes of
