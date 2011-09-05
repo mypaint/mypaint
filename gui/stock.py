@@ -1,10 +1,18 @@
+# This file is part of MyPaint.
+# Copyright (C) 2011 by Andrew Chadwick <andrewc-git@piffle.org>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+
 import gtk
 from gtk import gdk
 from gettext import gettext as _
 
 # Symbolic names for our custom stock items.  The string values are also the
-# names of the icons used, trying to mirror those in stantard or widespread
-# sets.  Mypaint ships with defaults for all of them using the Tango palette
+# names of the icons used, trying to mirror those in standard or widespread
+# sets.  Mypaint ships with defaults for most of them using the Tango palette
 # under the "hicolor" theme.
 
 TOOL_BRUSH = "mypaint-tool-brush"
