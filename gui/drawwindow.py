@@ -129,11 +129,10 @@ def button_press_cb_abstraction(drawwindow, win, event, doc):
         return True
 
     # Dispatch regular GTK events.
-    for ag in drawwindow.action_group, doc.action_group:
-        action = ag.get_action(action_name)
-        if action is not None:
-            action.activate()
-            return True
+    action = drawwindow.app.find_action(action_name)
+    if action is not None:
+        action.activate()
+        return True
 
 def button_release_cb_abstraction(win, event, doc):
     #print event.device, event.button
@@ -257,6 +256,7 @@ class Window (windowing.MainWindow, layout.MainWindow):
             ('ViewHelp',  gtk.STOCK_HELP, _('Help'), None, None, self.show_infodialog_cb),
             ]
         ag = self.action_group = gtk.ActionGroup('WindowActions')
+        self.app.add_action_group(ag)
         ag.add_actions(actions)
 
         # Toggle actions
@@ -340,7 +340,6 @@ class Window (windowing.MainWindow, layout.MainWindow):
         # Keyboard handling
         for action in self.action_group.list_actions():
             self.app.kbm.takeover_action(action)
-        self.app.ui_manager.insert_action_group(ag, -1)
 
     def init_stategroups(self):
         sg = stategroup.StateGroup()

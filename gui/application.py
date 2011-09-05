@@ -274,6 +274,15 @@ class Application: # singleton
                 window_pos[role] = user_window_pos[role]
         self.preferences["layout.window_positions"] = window_pos
 
+    def add_action_group(self, ag):
+        self.ui_manager.insert_action_group(ag, -1)
+
+    def find_action(self, name):
+        for ag in self.ui_manager.get_action_groups():
+            result = ag.get_action(name)
+            if result is not None:
+                return result
+
     def init_brush_adjustments(self):
         """Initializes all the brush adjustments for the current brush"""
         self.brush_adjustment = {}

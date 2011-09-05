@@ -68,7 +68,6 @@ class Document(object):
             # by the user.
             self.init_actions()
             self.init_context_actions()
-            self.app.ui_manager.insert_action_group(self.action_group, -1)
             for action in self.action_group.list_actions():
                 self.app.kbm.takeover_action(action)
             self.init_extra_keys()
@@ -145,6 +144,7 @@ class Document(object):
         ]
         self.action_group = gtk.ActionGroup('DocumentActions')
         ag = self.action_group
+        self.app.add_action_group(ag)
         ag.add_actions(actions)
 
         self.model.command_stack_observers.append(self.update_command_stack_toolitems)

@@ -47,6 +47,7 @@ class BrushModifier:
     def _init_actions(self):
         self.action_group = gtk.ActionGroup('BrushModifierActions')
         ag = self.action_group
+        self.app.add_action_group(ag)
         toggle_actions = [
             # name, stock id, label,
             #   accel, tooltip,
@@ -74,7 +75,6 @@ class BrushModifier:
         for action in self.action_group.list_actions():
             action.set_draw_as_radio(True)
             self.app.kbm.takeover_action(action)
-        self.app.ui_manager.insert_action_group(ag, -1)
 
         # Faking radio items, but ours can be disabled by re-activating them
         # and backtrack along their history.

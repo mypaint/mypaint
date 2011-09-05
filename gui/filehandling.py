@@ -69,7 +69,7 @@ class FileHandler(object):
         ]
         ag = gtk.ActionGroup('FileActions')
         ag.add_actions(file_actions)
-        self.app.ui_manager.insert_action_group(ag, -1)
+        self.app.add_action_group(ag)
 
         ra = gtk.RecentAction('OpenRecent', _('Open Recent'), _('Open Recent files'), None)
         ra.set_show_tips(True)
