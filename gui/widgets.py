@@ -32,9 +32,8 @@ gtk.rc_parse_string ("""
     style "borderless-toolbar-style" {
         # Confuses some theme engines:
         #GtkToolbar::shadow-type = GTK_SHADOW_NONE
-        # Doesn't seem to be necessary:
-        #GtkToolbar::internal-padding = 0
         # Following suffices to comply with Fitts's Law in fullscreen:
+        GtkToolbar::internal-padding = 0
         xthickness = 0
         ythickness = 0
     }
