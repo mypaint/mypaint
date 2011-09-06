@@ -75,19 +75,52 @@ class DropdownPanel (gtk.Window):
         self.connect("grab-broken-event", self._grab_broken_event_cb)
         self.connect("leave-notify-event", self._leave_notify_cb)
 
+
     def _leave_notify_cb(self, widget, event):
-        # If the pointer leaves the panel after something within it grabs the
-        # focus, pop it down to avoid confusion. Sanest thing we can do.
-        if not self._grabbed:
-            # grab went away...
-            if event.mode != gdk.CROSSING_GRAB:
-                # ... and this isn't the leave-notify from the grab breakage itself.
-                self.popdown()
+        # Widgets packed inside the the panel may grab the pointer, breaking
+        # our grab. That's mostly OK provided we arrange to pop the panel down
+        # when the pointer leaves it after the packed widget has done its
+        # thing. This limits the choice of widgets though, since those that pop
+        # up their own stuff can't be reliably used: the pointer may be
+        # naturally outside our panel afterwards as a result of selection.
+        #
+        # Moral: pack simple widgets and not fancy ones with popup menus. Grabs
+        # for things like the colour triangle break ours, but that now might
+        # actually be beneficial.
+
+        if self._grabbed:
+            return
+        if event.mode != gdk.CROSSING_NORMAL:
+            # Not simply leaving/entering a window
+            return
+
+        ## We *could* regrab assertively here in respone to motion, leave and
+        ## enter, but it's fairly unreliable.
+        #if False:
+        #    print "regrabbing"
+        #    self.establish_grab(event.time)
+        #    return
+
+        ex, ey = event.x_root, event.y_root
+        x, y = self.window.get_origin()
+        w, h = self.allocation.width, self.allocation.height
+        is_inside = ex < x or ey < y or ex > x+w or ey > y+h
+
+        # Test is needed because widgets that break grabs vary in what gets
+        # reported after they do their own grab release (GtkComboBox can report
+        # strange is_inside CROSSING_NORMAL leaves when its little menu pops
+        # down, for example). Don't use that (see above), but let's try to be
+        # as sane as we can be even if we see one.
+
+        if is_inside:
+            self.popdown()
+            return True
+
 
     def establish_grab(self, t=0):
         # Grab, permitting normal interaction with the app (i.e. with the widgets
         # in the panel).
-        mask = self.get_events() | gdk.BUTTON_PRESS_MASK
+        mask = gdk.BUTTON_PRESS_MASK
         grab_result = gdk.pointer_grab(self.window, True, mask, None, None, t)
         if grab_result != gdk.GRAB_SUCCESS:
             print "grab failed:", grab_result
