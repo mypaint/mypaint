@@ -347,3 +347,26 @@ class SetLayerOpacity(Action):
         self._notify_canvas_observers([l])
         self._notify_document_observers()
 
+class SetLayerCompositeOp(Action):
+    def __init__(self, doc, compositeop, layer=None):
+        self.doc = doc
+        self.new_compositeop = compositeop
+        self.layer = layer
+    def redo(self):
+        if self.layer:
+            l = self.layer
+        else:
+            l = self.doc.layer
+        self.old_compositeop = l.compositeop
+        l.compositeop = self.new_compositeop
+        self._notify_canvas_observers([l])
+        self._notify_document_observers()
+    def undo(self):
+        if self.layer:
+            l = self.layer
+        else:
+            l = self.doc.layer
+        l.compositeop = self.old_compositeop
+        self._notify_canvas_observers([l])
+        self._notify_document_observers()
+

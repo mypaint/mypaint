@@ -112,6 +112,214 @@ void tile_composite_rgba16_over_rgb16(PyObject * src, PyObject * dst, float alph
   }
 }
 
+void tile_composite_rgba16_multiply_rgb16(PyObject * src, PyObject * dst, float alpha) {
+#ifdef HEAVY_DEBUG
+  assert(PyArray_DIM(src, 0) == TILE_SIZE);
+  assert(PyArray_DIM(src, 1) == TILE_SIZE);
+  assert(PyArray_DIM(src, 2) == 4);
+  assert(PyArray_TYPE(src) == NPY_UINT16);
+  assert(PyArray_ISCARRAY(src));
+
+  assert(PyArray_DIM(dst, 0) == TILE_SIZE);
+  assert(PyArray_DIM(dst, 1) == TILE_SIZE);
+  assert(PyArray_DIM(dst, 2) == 3);
+  assert(PyArray_TYPE(dst) == NPY_UINT16);
+  assert(PyArray_ISBEHAVED(dst));
+#endif
+  
+  PyArrayObject* dst_arr = ((PyArrayObject*)dst);
+#ifdef HEAVY_DEBUG
+  assert(dst_arr->strides[1] == 3*sizeof(uint16_t));
+  assert(dst_arr->strides[2] ==   sizeof(uint16_t));
+#endif
+
+  uint32_t opac  = alpha * (1<<15) + 0.5;
+  opac = CLAMP(opac, 0, 1<<15);
+  if (opac == 0) return;
+
+  uint16_t * src_p  = (uint16_t*)((PyArrayObject*)src)->data;
+  char * p = dst_arr->data;
+  for (int y=0; y<TILE_SIZE; y++) {
+    uint16_t  * dst_p  = (uint16_t*) (p);
+    for (int x=0; x<TILE_SIZE; x++) {
+      // resultAlpha = 1.0 (thus it does not matter if resultColor is premultiplied alpha or not)
+      // resultColor = topColor + (1.0 - topAlpha) * bottomColor
+      const uint32_t one_minus_topAlpha = (1<<15) - src_p[3]*opac/(1<<15);
+      const uint32_t src_col0 = ((uint32_t) src_p[0]*opac) >> 15;
+      const uint32_t src_col1 = ((uint32_t) src_p[1]*opac) >> 15;
+      const uint32_t src_col2 = ((uint32_t) src_p[2]*opac) >> 15;
+      dst_p[0] = CLAMP(((uint32_t)src_col0*dst_p[0] + one_minus_topAlpha*dst_p[0]) / (1<<15), 0, 1<<15);
+      dst_p[1] = CLAMP(((uint32_t)src_col1*dst_p[1] + one_minus_topAlpha*dst_p[1]) / (1<<15), 0, 1<<15);
+      dst_p[2] = CLAMP(((uint32_t)src_col2*dst_p[2] + one_minus_topAlpha*dst_p[2]) / (1<<15), 0, 1<<15);
+      src_p += 4;
+      dst_p += 3;
+    }
+    p += dst_arr->strides[0];
+  }
+}
+
+void tile_composite_rgba16_screen_rgb16(PyObject * src, PyObject * dst, float alpha) {
+#ifdef HEAVY_DEBUG
+  assert(PyArray_DIM(src, 0) == TILE_SIZE);
+  assert(PyArray_DIM(src, 1) == TILE_SIZE);
+  assert(PyArray_DIM(src, 2) == 4);
+  assert(PyArray_TYPE(src) == NPY_UINT16);
+  assert(PyArray_ISCARRAY(src));
+
+  assert(PyArray_DIM(dst, 0) == TILE_SIZE);
+  assert(PyArray_DIM(dst, 1) == TILE_SIZE);
+  assert(PyArray_DIM(dst, 2) == 3);
+  assert(PyArray_TYPE(dst) == NPY_UINT16);
+  assert(PyArray_ISBEHAVED(dst));
+#endif
+  
+  PyArrayObject* dst_arr = ((PyArrayObject*)dst);
+#ifdef HEAVY_DEBUG
+  assert(dst_arr->strides[1] == 3*sizeof(uint16_t));
+  assert(dst_arr->strides[2] ==   sizeof(uint16_t));
+#endif
+
+  uint32_t opac  = alpha * (1<<15) + 0.5;
+  opac = CLAMP(opac, 0, 1<<15);
+  if (opac == 0) return;
+
+  uint16_t * src_p  = (uint16_t*)((PyArrayObject*)src)->data;
+  char * p = dst_arr->data;
+  for (int y=0; y<TILE_SIZE; y++) {
+    uint16_t  * dst_p  = (uint16_t*) (p);
+    for (int x=0; x<TILE_SIZE; x++) {
+      // resultAlpha = 1.0 (thus it does not matter if resultColor is premultiplied alpha or not)
+      // resultColor = topColor + (1.0 - topAlpha) * bottomColor
+      const uint32_t col0   = ((uint32_t)src_p[0] * opac) + (((uint32_t)dst_p[0]) << 15);
+      const uint32_t col1   = ((uint32_t)src_p[1] * opac) + (((uint32_t)dst_p[1]) << 15);
+      const uint32_t col2   = ((uint32_t)src_p[2] * opac) + (((uint32_t)dst_p[2]) << 15);
+      const uint32_t src_col0 = ((uint32_t)src_p[0] * opac) / (1<<15);
+      const uint32_t src_col1 = ((uint32_t)src_p[1] * opac) / (1<<15);
+      const uint32_t src_col2 = ((uint32_t)src_p[2] * opac) / (1<<15);
+      dst_p[0] = (col0 - ((uint32_t)src_col0*dst_p[0])) / (1<<15);
+      dst_p[1] = (col1 - ((uint32_t)src_col1*dst_p[1])) / (1<<15);
+      dst_p[2] = (col2 - ((uint32_t)src_col2*dst_p[2])) / (1<<15);
+      src_p += 4;
+      dst_p += 3;
+    }
+    p += dst_arr->strides[0];
+  }
+}
+
+void tile_composite_rgba16_dodge_rgb16(PyObject * src, PyObject * dst, float alpha) {
+#ifdef HEAVY_DEBUG
+  assert(PyArray_DIM(src, 0) == TILE_SIZE);
+  assert(PyArray_DIM(src, 1) == TILE_SIZE);
+  assert(PyArray_DIM(src, 2) == 4);
+  assert(PyArray_TYPE(src) == NPY_UINT16);
+  assert(PyArray_ISCARRAY(src));
+
+  assert(PyArray_DIM(dst, 0) == TILE_SIZE);
+  assert(PyArray_DIM(dst, 1) == TILE_SIZE);
+  assert(PyArray_DIM(dst, 2) == 3);
+  assert(PyArray_TYPE(dst) == NPY_UINT16);
+  assert(PyArray_ISBEHAVED(dst));
+#endif
+  
+  PyArrayObject* dst_arr = ((PyArrayObject*)dst);
+#ifdef HEAVY_DEBUG
+  assert(dst_arr->strides[1] == 3*sizeof(uint16_t));
+  assert(dst_arr->strides[2] ==   sizeof(uint16_t));
+#endif
+
+  uint32_t opac  = alpha * (1<<15) + 0.5;
+  opac = CLAMP(opac, 0, 1<<15);
+  if (opac == 0) return;
+
+  uint16_t * src_p  = (uint16_t*)((PyArrayObject*)src)->data;
+  char * p = dst_arr->data;
+  for (int y=0; y<TILE_SIZE; y++) {
+    uint16_t  * dst_p  = (uint16_t*) (p);
+    for (int x=0; x<TILE_SIZE; x++) {
+      // resultAlpha = 1.0 (thus it does not matter if resultColor is premultiplied alpha or not)
+      // resultColor = topColor + (1.0 - topAlpha) * bottomColor
+      const uint32_t topAlpha32 = CLAMP((uint32_t)src_p[3]*opac,0,1<<30);
+      const uint32_t topAlpha   = CLAMP((topAlpha32 >> 15), 0, 1<<15);
+      const uint32_t one_minus_topAlpha = (1<<15) - topAlpha;
+      for (int c=0; c < 3; c++) {
+        const uint32_t topAlpha_minus_src = topAlpha32 - (uint32_t)src_p[c]*topAlpha;
+        if ((topAlpha_minus_src >> 15) == 0 && dst_p[c] == 0) {
+          dst_p[c] = 0;
+        } else if ((topAlpha_minus_src >> 15) == 0) {
+          dst_p[c] = CLAMP((topAlpha32 + (uint32_t)dst_p[c] * one_minus_topAlpha)>>15, 0, (1<<15));
+        } else {
+          const uint32_t dst_times_topAlpha = (uint32_t)dst_p[c]*topAlpha;
+          if (dst_times_topAlpha > topAlpha_minus_src)
+            dst_p[c] = CLAMP(topAlpha, 0, 1<<15);
+          else
+            dst_p[c] = CLAMP((uint32_t)topAlpha * (dst_times_topAlpha >> 15) / (topAlpha_minus_src >> 15), 0, 1<<15);
+        }
+      }
+      src_p += 4;
+      dst_p += 3;
+    }
+    p += dst_arr->strides[0];
+  }
+}
+
+void tile_composite_rgba16_burn_rgb16(PyObject * src, PyObject * dst, float alpha) {
+#ifdef HEAVY_DEBUG
+  assert(PyArray_DIM(src, 0) == TILE_SIZE);
+  assert(PyArray_DIM(src, 1) == TILE_SIZE);
+  assert(PyArray_DIM(src, 2) == 4);
+  assert(PyArray_TYPE(src) == NPY_UINT16);
+  assert(PyArray_ISCARRAY(src));
+
+  assert(PyArray_DIM(dst, 0) == TILE_SIZE);
+  assert(PyArray_DIM(dst, 1) == TILE_SIZE);
+  assert(PyArray_DIM(dst, 2) == 3);
+  assert(PyArray_TYPE(dst) == NPY_UINT16);
+  assert(PyArray_ISBEHAVED(dst));
+#endif
+  
+  PyArrayObject* dst_arr = ((PyArrayObject*)dst);
+#ifdef HEAVY_DEBUG
+  assert(dst_arr->strides[1] == 3*sizeof(uint16_t));
+  assert(dst_arr->strides[2] ==   sizeof(uint16_t));
+#endif
+
+  uint32_t opac  = alpha * (1<<15) + 0.5;
+  opac = CLAMP(opac, 0, 1<<15);
+  if (opac == 0) return;
+
+  uint16_t * src_p  = (uint16_t*)((PyArrayObject*)src)->data;
+  char * p = dst_arr->data;
+  for (int y=0; y<TILE_SIZE; y++) {
+    uint16_t  * dst_p  = (uint16_t*) (p);
+    for (int x=0; x<TILE_SIZE; x++) {
+      // resultAlpha = 1.0 (thus it does not matter if resultColor is premultiplied alpha or not)
+      // resultColor = topColor + (1.0 - topAlpha) * bottomColor
+      const uint32_t topAlpha32 = (uint32_t)src_p[3]*opac;
+      const uint32_t topAlpha   = topAlpha32 >> 15;
+      const uint32_t one_minus_topAlpha = (1<<15) - topAlpha;
+      for (int c=0; c<3; c++) {
+        if (src_p[c] == 0 && dst_p[c] >= (1 << 15) - 1) {
+          dst_p[c] = 1<<15;
+        } else if (src_p[0] == 0) {
+          dst_p[c] = (dst_p[c] * one_minus_topAlpha)/(1<<15);
+        } else {
+          const uint32_t src_col32 = (uint32_t)src_p[c]*opac;
+          const uint32_t one_minus_dstcol = (1<<15) - dst_p[c];
+          if (one_minus_dstcol * topAlpha > src_col32)
+            dst_p[c] = (one_minus_topAlpha * dst_p[c]) / (1<<15);
+          else {
+            const uint32_t min_value = one_minus_dstcol * topAlpha / (src_col32>>15);
+            dst_p[c] = (topAlpha32 - topAlpha * min_value + one_minus_topAlpha * dst_p[c]) / (1<<15);
+          }
+        }
+      }
+      src_p += 4;
+      dst_p += 3;
+    }
+    p += dst_arr->strides[0];
+  }
+}
+
 // used to copy the background before starting to composite over it
 //
 // simply array copying (numpy assignment operator is about 13 times slower, sadly)

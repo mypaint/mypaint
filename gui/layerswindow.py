@@ -57,11 +57,17 @@ class ToolWidget (gtk.VBox):
         view.append_column(col)
 
         # Common controls
+        self.layer_mode = gtk.combo_box_new_text()
+        # FIXME: layer modes must be managed in some module or class, and should not be written hard coded.
+        for t in ["normal", "multiply", "screen", "dodge", "burn"]:
+            self.layer_mode.append_text(t)
+        
         adj = gtk.Adjustment(lower=0, upper=100, step_incr=1, page_incr=10)
         self.opacity_scale = gtk.HScale(adj)
         self.opacity_scale.set_value_pos(gtk.POS_RIGHT)
         opacity_lbl = gtk.Label(_('Opacity:'))
         opacity_hbox = gtk.HBox()
+        opacity_hbox.pack_start(self.layer_mode, expand=False)
         opacity_hbox.pack_start(opacity_lbl, expand=False)
         opacity_hbox.pack_start(self.opacity_scale, expand=True)
 
@@ -111,6 +117,7 @@ class ToolWidget (gtk.VBox):
         doc = app.doc.model
         doc.doc_observers.append(self.update)
         self.opacity_scale.connect('value-changed', self.on_opacity_changed)
+        self.layer_mode.connect('changed', self.on_layer_mode_changed)
 
         self.is_updating = False
         self.update(doc)
@@ -138,6 +145,17 @@ class ToolWidget (gtk.VBox):
 
         # Update the common widgets
         self.opacity_scale.set_value(current_layer.opacity*100)
+        mode  = current_layer.compositeop
+        if mode == "over":
+            mode = "normal"
+        layer_mode_combo = self.layer_mode
+        model = layer_mode_combo.get_model()
+        def find_iter(model, path, iter, data):
+            value = model.get_value(iter, 0)
+            if value == mode:
+                layer_mode_combo.set_active_iter(iter)
+#        self.layer_mode.
+        model.foreach(find_iter, None)
         self.is_updating = False
 
 
@@ -314,4 +332,18 @@ class ToolWidget (gtk.VBox):
         else:
             pixbuf = self.app.pixmaps.lock_open
         renderer.set_property("pixbuf", pixbuf)
+
+
+    def on_layer_mode_changed(self,*ignored):
+        if self.is_updating:
+            return
+        self.is_updating = True
+        doc = self.app.doc.model
+        mode = self.layer_mode.get_active_text()
+        if mode == "normal":
+            mode = "over"
+        print ('Change layer mode to : %s' % mode)
+        doc.set_layer_compositeop(mode)
+        self.is_updating = False
+
 

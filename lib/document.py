@@ -270,7 +270,8 @@ class Document():
 
         for layer in layers:
             surface = layer.surface
-            surface.composite_tile_over(dst, tx, ty, mipmap_level=mipmap_level, opacity=layer.effective_opacity)
+            #surface.composite_tile_over(dst, tx, ty, mipmap_level=mipmap_level, opacity=layer.effective_opacity)
+            surface.composite_tile(dst, tx, ty, mipmap_level=mipmap_level, opacity=layer.effective_opacity, mode=layer.compositeop)
 
         mypaintlib.tile_convert_rgb16_to_rgb8(dst, dst_8bit)
 
@@ -312,6 +313,13 @@ class Document():
         if isinstance(cmd, command.SetLayerOpacity):
             self.undo()
         self.do(command.SetLayerOpacity(self, opacity, layer))
+
+    def set_layer_compositeop(self, compositeop, layer=None):
+        """Sets the composition-operation of a layer. If layer=None, works on the current layer"""
+        cmd = self.get_last_command()
+        if isinstance(cmd, command.SetLayerCompositeOp):
+            self.undo()
+        self.do(command.SetLayerCompositeOp(self, compositeop, layer))
 
     def set_background(self, obj):
         # This is not an undoable action. One reason is that dragging
@@ -492,7 +500,7 @@ class Document():
             z.write(tmp, name)
             os.remove(tmp)
 
-        def add_layer(x, y, opac, surface, name, layer_name, visible=True, rect=[]):
+        def add_layer(x, y, opac, surface, name, layer_name, visible=True, compositeop='over', rect=[]):
             layer = ET.Element('layer')
             stack.append(layer)
             store_surface(surface, name, rect)
@@ -503,6 +511,7 @@ class Document():
             a['x'] = str(x)
             a['y'] = str(y)
             a['opacity'] = str(opac)
+            a['composite-op'] = str(compositeop)
             if visible:
                 a['visibility'] = 'visible'
             else:
@@ -514,7 +523,7 @@ class Document():
                 continue
             opac = l.opacity
             x, y, w, h = l.surface.get_bbox()
-            el = add_layer(x-x0, y-y0, opac, l.surface, 'data/layer%03d.png' % idx, l.name, l.visible, rect=(x, y, w, h))
+            el = add_layer(x-x0, y-y0, opac, l.surface, 'data/layer%03d.png' % idx, l.name, l.visible, l.compositeop, rect=(x, y, w, h))
             # strokemap
             sio = StringIO()
             l.save_strokemap_to_file(sio, -x, -y)
@@ -527,7 +536,7 @@ class Document():
         bg = self.background
         # save as fully rendered layer
         x, y, w, h = self.get_bbox()
-        l = add_layer(x-x0, y-y0, 1.0, bg, 'data/background.png', 'background', rect=(x,y,w,h))
+        l = add_layer(x-x0, y-y0, 1.0, bg, 'data/background.png', 'background', 'normal', rect=(x,y,w,h))
         x, y, w, h = bg.get_pattern_bbox()
         # save as single pattern (with corrected origin)
         store_surface(bg, 'data/background_tile.png', rect=(x+x0, y+y0, w, h))
@@ -635,6 +644,7 @@ class Document():
             x = int(a.get('x', '0'))
             y = int(a.get('y', '0'))
             opac = float(a.get('opacity', '1.0'))
+            compositeop = a.get('composite-op', 'over')
             visible = not 'hidden' in a.get('visibility', 'visible')
             self.add_layer(insert_idx=0, name=name)
             last_pixbuf = pixbuf
@@ -643,6 +653,7 @@ class Document():
             layer = self.layers[0]
 
             self.set_layer_opacity(helpers.clamp(opac, 0.0, 1.0), layer)
+            self.set_layer_compositeop(compositeop, layer)
             self.set_layer_visibility(visible, layer)
             print '  %.3fs converting pixbuf to layer format' % (time.time() - t1)
             # strokemap
