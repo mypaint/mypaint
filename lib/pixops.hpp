@@ -298,18 +298,19 @@ void tile_composite_rgba16_burn_rgb16(PyObject * src, PyObject * dst, float alph
       const uint32_t topAlpha   = topAlpha32 >> 15;
       const uint32_t one_minus_topAlpha = (1<<15) - topAlpha;
       for (int c=0; c<3; c++) {
-        if (src_p[c] == 0 && dst_p[c] >= (1 << 15) - 1) {
+        const uint32_t src_col32 = (uint32_t)src_p[c]*opac;
+        const uint32_t src_col   = src_col32 >> 15;
+        if (src_col == 0 && dst_p[c] >= (1 << 15) - 1) {
           dst_p[c] = 1<<15;
-        } else if (src_p[0] == 0) {
+        } else if (src_col == 0) {
           dst_p[c] = (dst_p[c] * one_minus_topAlpha)/(1<<15);
         } else {
-          const uint32_t src_col32 = (uint32_t)src_p[c]*opac;
           const uint32_t one_minus_dstcol = (1<<15) - dst_p[c];
           if (one_minus_dstcol * topAlpha > src_col32)
             dst_p[c] = (one_minus_topAlpha * dst_p[c]) / (1<<15);
           else {
-            const uint32_t min_value = one_minus_dstcol * topAlpha / (src_col32>>15);
-            dst_p[c] = (topAlpha32 - topAlpha * min_value + one_minus_topAlpha * dst_p[c]) / (1<<15);
+            const uint32_t min_value = one_minus_dstcol * topAlpha / src_col;
+            dst_p[c] = CLAMP((topAlpha32 - topAlpha * min_value + one_minus_topAlpha * dst_p[c]) / (1<<15), 0, 1<<15);
           }
         }
       }
