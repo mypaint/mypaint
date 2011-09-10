@@ -250,9 +250,9 @@ void tile_composite_rgba16_dodge_rgb16(PyObject * src, PyObject * dst, float alp
         } else {
           const uint32_t dst_times_topAlpha = (uint32_t)dst_p[c]*topAlpha;
           if (dst_times_topAlpha > topAlpha_minus_src)
-            dst_p[c] = CLAMP(topAlpha, 0, 1<<15);
+            dst_p[c] = CLAMP((topAlpha32 + (uint32_t)dst_p[c]*one_minus_topAlpha) >> 15, 0, 1<<15);
           else
-            dst_p[c] = CLAMP((uint32_t)topAlpha * (dst_times_topAlpha >> 15) / (topAlpha_minus_src >> 15), 0, 1<<15);
+            dst_p[c] = CLAMP((uint32_t)topAlpha * (dst_times_topAlpha >> 15)/ (topAlpha_minus_src >> 15) + ((uint32_t)dst_p[c]*one_minus_topAlpha >> 15), 0, 1<<15);
         }
       }
       src_p += 4;
