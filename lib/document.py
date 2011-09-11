@@ -156,6 +156,9 @@ class Document():
     def move_layer(self, was_idx, new_idx, select_new=False):
         self.do(command.MoveLayer(self, was_idx, new_idx, select_new))
 
+    def duplicate_layer(self, insert_idx=None, name=''):
+        self.do(command.DuplicateLayer(self, insert_idx, name))
+
     def reorder_layers(self, new_layers):
         self.do(command.ReorderLayers(self, new_layers))
 

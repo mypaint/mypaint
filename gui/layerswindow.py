@@ -68,12 +68,23 @@ class ToolWidget (gtk.VBox):
         add_button = self.add_button = stock_button(gtk.STOCK_ADD)
         move_up_button = self.move_up_button = stock_button(gtk.STOCK_GO_UP)
         move_down_button = self.move_down_button = stock_button(gtk.STOCK_GO_DOWN)
+
+        b = gtk.Button()
+        img = gtk.Image()
+        img.set_from_pixbuf(self.app.pixmaps.layer_duplicate)
+        b.add(img)
+        tooltip = gtk.Tooltips()
+        tooltip.set_tip(b, _("Create a duplicate of this channel and add it to the image"))
+        duplicate_button = self.duplicate_button = b
+
+
         merge_down_button = self.merge_down_button = stock_button(gtk.STOCK_DND_MULTIPLE)  # XXX need a better one
         del_button = self.del_button = stock_button(gtk.STOCK_DELETE)
 
         add_button.connect('clicked', self.on_layer_add)
         move_up_button.connect('clicked', self.move_layer, 'up')
         move_down_button.connect('clicked', self.move_layer, 'down')
+        duplicate_button.connect('clicked', self.duplicate_layer)
         merge_down_button.connect('clicked', self.merge_layer_down)
         del_button.connect('clicked', self.on_layer_del)
 
@@ -83,6 +94,7 @@ class ToolWidget (gtk.VBox):
         buttons_hbox.pack_start(add_button)
         buttons_hbox.pack_start(move_up_button)
         buttons_hbox.pack_start(move_down_button)
+        buttons_hbox.pack_start(duplicate_button)
         buttons_hbox.pack_start(merge_down_button)
         buttons_hbox.pack_start(del_button)
 
@@ -229,6 +241,17 @@ class ToolWidget (gtk.VBox):
         if new_layer_pos < len(doc.layers) and new_layer_pos >= 0:
             doc.move_layer(current_layer_pos, new_layer_pos, select_new=True)
 
+    def duplicate_layer(self, widget):
+        doc = self.app.doc.model
+        layer = doc.layers[doc.layer_idx]
+        name = layer.name
+        copy_of = _("Copy of ")
+        if name:
+            name = copy_of+name
+        else:
+            layer_num = self.anon_layer_num.get(id(layer), None)
+            name = copy_of+_("Untitled layer #%d") % layer_num
+        doc.duplicate_layer(doc.layer_idx, name)
 
     def merge_layer_down(self, widget):
         self.app.doc.model.merge_layer_down()
@@ -270,7 +293,7 @@ class ToolWidget (gtk.VBox):
                 layer_num = self.anon_layer_num[id(layer)]
             attrs.change(pango.AttrScale(pango.SCALE_SMALL, 0, -1))
             attrs.change(pango.AttrStyle(pango.STYLE_ITALIC, 0, -1))
-            name = _("Untitled layer #%d" % layer_num)
+            name = _("Untitled layer #%d") % layer_num
         renderer.set_property("attributes", attrs)
         renderer.set_property("text", name)
 
