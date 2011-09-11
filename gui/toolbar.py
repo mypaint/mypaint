@@ -455,18 +455,23 @@ BrushSettingsDropdownToolAction\
         .set_tool_item_type(BrushSettingsDropdownToolItem)
 
 
-
 class ManagedBrushPreview (gtk.Image):
     """Updateable widget displaying a brushmanager.ManagedBrush`'s preview.
     """
+
+    TOOLTIP_ICON_SIZE = 48
 
     def __init__(self, brush=None):
         gtk.Image.__init__(self)
         self.pixbuf = None
         self.image_size = None
+        self.brush_name = None
         self.set_from_managed_brush(brush)
         self.set_size_request(32, 32)
         self.connect("size-allocate", self.on_size_allocate)
+        self.connect("query-tooltip", self.on_query_tooltip)
+        self.set_property("has-tooltip", True)
+
 
     def set_from_managed_brush(self, brush):
         if brush is None:
@@ -474,13 +479,26 @@ class ManagedBrushPreview (gtk.Image):
         if not brush.preview:
             brush.load_preview()
         self.pixbuf = brush.preview.copy()
+        self.brush_name = brush.get_display_name()
         self._update()
+
 
     def on_size_allocate(self, widget, alloc):
         new_size = alloc.width, alloc.height
         if new_size != self.image_size:
             self.image_size = alloc.width, alloc.height
             self._update()
+
+
+    def on_query_tooltip(self, widget, x, y, keyboard_mode, tooltip):
+        if not self.pixbuf:
+            return False
+        s = self.TOOLTIP_ICON_SIZE
+        scaled_pixbuf = self.pixbuf.scale_simple(s, s, gdk.INTERP_BILINEAR)
+        tooltip.set_icon(scaled_pixbuf)
+        tooltip.set_text(self.brush_name)  # XXX markup and summary of changes
+        return True
+
 
     def _update(self):
         if not (self.pixbuf and self.image_size):
@@ -489,6 +507,7 @@ class ManagedBrushPreview (gtk.Image):
         s = min(w, h)
         scaled_pixbuf = self.pixbuf.scale_simple(s, s, gdk.INTERP_BILINEAR)
         self.set_from_pixbuf(scaled_pixbuf)
+
 
 
 class ColorBlob (gtk.DrawingArea):

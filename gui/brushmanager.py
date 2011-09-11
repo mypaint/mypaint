@@ -699,6 +699,21 @@ class ManagedBrush(object):
             # we load the files later, but throw an exception now if they don't exist
             self.get_fileprefix()
 
+
+    def get_display_name(self):
+        """Gets a displayable name for the brush.
+        """
+        if self.in_brushlist:
+            dname = self.name
+        else:
+            if self.persistent and not self.settings_loaded:   # XXX refactor
+                self.load_settings()
+            dname = self.brushinfo.get_string_property("parent_brush_name")
+        if dname is None:
+            return _("Unknown Brush")
+        return dname.replace("_", " ")
+
+
     def get_fileprefix(self, saving=False):
         prefix = 'b'
         if os.path.realpath(self.bm.user_brushpath) == os.path.realpath(self.bm.stock_brushpath):
