@@ -386,8 +386,7 @@ class BrushSettingsDropdownToolItem (gtk.ToolItem):
 
 
     def reset_all_clicked_cb(self, widget):
-        parent_name = self.app.brush.get_string_property("parent_brush_name")
-        parent_brush = self.app.brushmanager.get_brush_by_name(parent_name)
+        parent_brush = self.app.brushmanager.get_parent_brush(brushinfo=self.app.brush)
         self.app.brushmanager.select_brush(parent_brush)
         self.app.brushmodifier.normal_mode.activate()
         self.button.panel_hide()
@@ -399,15 +398,12 @@ class BrushSettingsDropdownToolItem (gtk.ToolItem):
 
 
     def _get_current_brush_default(self, cname):
-        parent_name = self.app.brush.get_string_property("parent_brush_name")
-        if parent_name is None:
+        bm = self.app.brushmanager
+        parent = bm.get_parent_brush(brushinfo=self.app.brush)
+        if parent is None:
             return brushsettings.settings_dict[cname].default
         else:
-            parent_brush = self.app.brushmanager.get_brush_by_name(parent_name)
-            if parent_brush.persistent and not parent_brush.settings_loaded:
-                parent_brush.load_settings()
-            assert parent_brush.brushinfo.settings is not None
-            return parent_brush.brushinfo.get_base_value(cname)
+            return parent.brushinfo.get_base_value(cname)
 
 
     def brush_settings_changed_cb(self, *a):
@@ -429,15 +425,11 @@ class BrushSettingsDropdownToolItem (gtk.ToolItem):
 
 
     def _current_brush_is_modified(self):
-        parent_name = self.app.brush.get_string_property("parent_brush_name")
-        if parent_name is None:
+        current_bi = self.app.brush
+        parent_b = self.app.brushmanager.get_parent_brush(brushinfo=current_bi)
+        if parent_b is None:
             return True
-        else:
-            parent_brush = self.app.brushmanager.get_brush_by_name(parent_name)
-            if parent_brush.persistent and not parent_brush.settings_loaded:
-                parent_brush.load_settings()
-            return not parent_brush.brushinfo.matches(self.app.brush)
-
+        return not parent_b.brushinfo.matches(current_bi)
 
 
 class ColorMenuToolAction (gtk.Action):

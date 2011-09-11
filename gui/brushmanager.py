@@ -542,16 +542,15 @@ class BrushManager:
         """Selects a ManagedBrush, highlights it, & updates the live brush."""
         if brush is None:
             brush = self.get_default_brush()
-        if brush.persistent and not brush.settings_loaded:
+        if brush.persistent and not brush.settings_loaded:   # XXX refactor
             brush.load_settings()
 
         brushinfo = brush.brushinfo
         if not brush.in_brushlist:
-            # select parent brush, but keep brushinfo
-            parent_name = brushinfo.get_string_property("parent_brush_name")
-            brush = self.get_brush_by_name(parent_name) # may return None
+            # select parent brush instead, but keep brushinfo
+            brush = self.get_parent_brush(brush=brush)
             if not brush:
-                # we don't have the parent, select an empty brush instead
+                # no parent, select an empty brush instead
                 brush = ManagedBrush(self)
 
         self.selected_brush = brush
@@ -559,6 +558,28 @@ class BrushManager:
         # Take care of updating the live brush, amongst other things
         for callback in self.selected_brush_observers:
             callback(brush, brushinfo)
+
+
+    def get_parent_brush(self, brush=None, brushinfo=None):
+        """Gets the parent `ManagedBrush` for a brush or a `BrushInfo`.
+        """
+        if brush is not None:
+            if brush.persistent and not brush.settings_loaded:   # XXX refactor
+                brush.load_settings()
+            brushinfo = brush.brushinfo
+        if brushinfo is None:
+            raise RuntimeError, "One of `brush` or `brushinfo` must be defined."
+        parent_name = brushinfo.get_string_property("parent_brush_name")
+        if parent_name is None:
+            return None
+        else:
+            parent_brush = self.get_brush_by_name(parent_name)
+            if parent_brush is None:
+                return None
+            if parent_brush.persistent and not parent_brush.settings_loaded:  # XXX refactor
+                parent_brush.load_settings()
+            return parent_brush
+
 
     def clone_selected_brush(self, name):
         """
@@ -667,12 +688,9 @@ class ManagedBrush(object):
         self.preview = None
         self.name = name
         self.brushinfo = BrushInfo()
-        self.persistent = persistent
-        """If True this brush is stored in the filesystem."""
-        self.settings_loaded = False
-        """If True this brush is fully initialized, ready to paint with."""
-        self.in_brushlist = False
-        """Set to True if this brush is known to be in the brushlist"""
+        self.persistent = persistent #: If True this brush is stored in the filesystem.
+        self.settings_loaded = False  #: If True this brush is fully initialized, ready to paint with.
+        self.in_brushlist = False  #: Set to True if this brush is known to be in the brushlist
 
         self.settings_mtime = None
         self.preview_mtime = None
@@ -718,7 +736,7 @@ class ManagedBrush(object):
 
     def clone_into(self, target, name):
         "Copies all brush settings into another brush, giving it a new name"
-        if not self.settings_loaded:
+        if not self.settings_loaded:   # XXX refactor
             self.load()
         target.brushinfo = self.brushinfo.clone()
         if self.in_brushlist:
@@ -785,7 +803,6 @@ class ManagedBrush(object):
         self.settings_loaded = True
         if not retain_parent:
             self.brushinfo.set_string_property("parent_brush_name", None)
-        parent = self.brushinfo.get_string_property("parent_brush_name")
         self.persistent = True
 
     def reload_if_changed(self):
