@@ -13,6 +13,7 @@ from gettext import gettext as _
 from fnmatch import fnmatch
 import brushmanager
 from pixbuflist import PixbufList
+import widgets
 
 OVERWRITE_THIS = 1
 OVERWRITE_ALL  = 2
@@ -45,8 +46,8 @@ def ask_for_name(widget, title, default):
     d.set_position(gtk.WIN_POS_MOUSE)
 
     hbox = gtk.HBox()
-    hbox.set_property("spacing", 12)
-    hbox.set_border_width(12)
+    hbox.set_property("spacing", widgets.SPACING)
+    hbox.set_border_width(widgets.SPACING)
 
     d.vbox.pack_start(hbox)
     hbox.pack_start(gtk.Label(_('Name')), False, False)
@@ -296,25 +297,87 @@ def change_current_color_detailed(app):
     return app.brush.get_color_hsv()
 
 
-class BrushChooserDialog (gtk.Dialog):
-    """Speedy brush chooser dialog.
-    """
-
-    PREFS_KEY = 'dialogs.brush_changer.selected_group'
+class QuickBrushChooser (gtk.VBox):
+    PREFS_KEY = 'widgets.brush_chooser.selected_group'
     ICON_SIZE = 48
 
-    class BrushList (PixbufList):
-        def __init__(self, dialog, brushes):
-            s = BrushChooserDialog.ICON_SIZE
+    class _BrushList (PixbufList):
+        def __init__(self, chooser, brushes):
+            s = QuickBrushChooser.ICON_SIZE
             PixbufList.__init__(self, brushes, s, s,
                                 namefunc = lambda x: x.name,
                                 pixbuffunc = lambda x: x.preview)
-            self.dialog = dialog
+            self.chooser = chooser
 
         def on_select(self, brush):
-            self.dialog.response_brush = brush
-            self.dialog.response(gtk.RESPONSE_ACCEPT)
+            self.chooser.on_select(brush)
 
+    def __init__(self, app, on_select):
+        gtk.VBox.__init__(self)
+        self.app = app
+        self.on_select = on_select
+        self.bm = app.brushmanager
+
+        active_group_name = app.preferences.get(self.PREFS_KEY, None)
+
+        model = self._make_groups_sb_model()
+        self.groups_sb = widgets.ItemSpinBox(model, self.on_groups_sb_changed,
+                                              active_group_name)
+        active_group_name = self.groups_sb.get_value()
+        self.bm.ensure_group_previews(active_group_name)
+
+        brushes = self.bm.groups[active_group_name][:]
+        self.brushlist = self._BrushList(self, brushes)
+        self.brushlist.dragging_allowed = False
+
+        scrolledwin = gtk.ScrolledWindow()
+        scrolledwin.set_policy(gtk.POLICY_NEVER, gtk.POLICY_ALWAYS)
+        scrolledwin.add_with_viewport(self.brushlist)
+        self.connect("style-set", self._on_style_set, scrolledwin)
+        icon_size = self.ICON_SIZE
+        w = icon_size * 5
+        h = icon_size * 5
+        scrolledwin.set_size_request(-1, h)
+        self.brushlist.set_size_request(w, -1)
+        scrolledwin.get_child().set_size_request(w, -1)
+
+
+
+        self.pack_start(self.groups_sb, False, False)
+        self.pack_start(scrolledwin, True, True)
+        self.set_spacing(widgets.SPACING_TIGHT)
+
+    def _on_style_set(self, widget, event, sw):
+        #vp = sw.get_child()
+        bl_style = self.brushlist.get_style()
+        #vp.modify_bg(gtk.STATE_NORMAL, bl_style.base[gtk.STATE_NORMAL])
+        #sw.modify_bg(gtk.STATE_NORMAL, bl_style.base[gtk.STATE_NORMAL])
+        self.brushlist.modify_bg(gtk.STATE_NORMAL, bl_style.base[gtk.STATE_NORMAL])
+        icon_size = self.ICON_SIZE
+
+    def _make_groups_sb_model(self):
+        group_names = self.bm.groups.keys()
+        group_names.sort()
+        model = []
+        for name in group_names:
+            label_text = brushmanager.translate_group_name(name)
+            model.append((name, label_text))
+        return model
+
+    def update_groups_sb(self):
+        model = self._make_groups_sb_model()
+        self.groups_sb.set_model(model)
+
+    def on_groups_sb_changed(self, group_name):
+        self.app.preferences[self.PREFS_KEY] = group_name
+        self.bm.ensure_group_previews(group_name)
+        self.brushlist.itemlist[:] = self.bm.groups[group_name][:]
+        self.brushlist.update()
+
+
+class BrushChooserDialog (gtk.Dialog):
+    """Speedy brush chooser dialog.
+    """
 
     def __init__(self, app):
         title = _("Change Brush")
@@ -324,50 +387,15 @@ class BrushChooserDialog (gtk.Dialog):
         gtk.Dialog.__init__(self, title, parent, flags, buttons)
         self.set_position(gtk.WIN_POS_MOUSE)
         self.app = app
-        self.bm = app.brushmanager
-
-        self.combo_box = gtk.combo_box_new_text()
-        self.group_names = self.bm.groups.keys()
-        self.group_names.sort()
-        self.active_group = 0
-        active_group_name = app.preferences.get(self.PREFS_KEY, None)
-        if active_group_name in self.group_names:
-            self.active_group = self.group_names.index(active_group_name)
-        for i, group_name in enumerate(self.group_names):
-            group_name_xlated = brushmanager.translate_group_name(group_name)
-            self.combo_box.append_text(group_name_xlated)
-        self.combo_box.set_active(self.active_group)
-        active_group_name = self.group_names[self.active_group]
-        self.bm.ensure_group_previews(active_group_name)
-        self.combo_box.connect("changed", self.on_combo_box_changed)
-
-        brushes = self.bm.groups[active_group_name][:]
-        self.brushlist = BrushChooserDialog.BrushList(self, brushes)
-        self.brushlist.dragging_allowed = False
-
-        scrolledwin = gtk.ScrolledWindow()
-        scrolledwin.add_with_viewport(self.brushlist)
-        icon_size = self.ICON_SIZE
-        w = icon_size * 9   # normally 8 columns after margins, scrollbars
-        h = icon_size * min(6, (int(len(brushes)/8)+2))
-        scrolledwin.set_size_request(w, h)
-        scrolledwin.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
-
+        self.response_brush = None
+        def on_select(brush):
+            self.response_brush = brush
+            self.response(gtk.RESPONSE_ACCEPT)
+        self.chooser = QuickBrushChooser(app, on_select)
         vbox = self.get_content_area()
-        vbox.pack_start(self.combo_box, False, False)
-        vbox.pack_start(scrolledwin, True, True)
+        vbox.pack_start(self.chooser, True, True)
         for w in vbox:
             w.show_all()
-
-        self.response_brush = None
-
-    def on_combo_box_changed(self, combo_box):
-        self.active_group = self.combo_box.get_active()
-        active_group_name = self.group_names[self.active_group]
-        self.app.preferences[self.PREFS_KEY] = active_group_name
-        self.bm.ensure_group_previews(active_group_name)
-        self.brushlist.itemlist[:] = self.bm.groups[active_group_name][:]
-        self.brushlist.update()
 
 def change_current_brush_quick(app):
     dialog = BrushChooserDialog(app)

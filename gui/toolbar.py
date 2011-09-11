@@ -30,7 +30,8 @@ class MainToolbar (gtk.HBox):
     """The main 'toolbar': menu button and quick access to painting tools.
     """
 
-    icon_size = gtk.icon_size_register("MYPAINT_TOOLBAR_ICON_SIZE", 32, 32)
+    # icon_size = gtk.icon_size_register("MYPAINT_TOOLBAR_ICON_SIZE", 32, 32)
+    icon_size = gtk.ICON_SIZE_LARGE_TOOLBAR
 
     def __init__(self, draw_window):
         gtk.HBox.__init__(self)
@@ -58,7 +59,7 @@ class MainToolbar (gtk.HBox):
         self.actions = [
                 ColorMenuToolAction("ColorMenuToolButton", None,
                     _("Current Color"), None),
-                BrushMenuToolAction("BrushMenuToolButton", None,
+                BrushDropdownToolAction("BrushDropdown", None,
                     _("Current Brush"), None),
                 BrushSettingsDropdownToolAction("BrushSettingsDropdown", None,
                     _("Brush Settings"), None),
@@ -159,30 +160,98 @@ class ColorMenuToolButton (gtk.MenuToolButton):
         dialogs.change_current_color_detailed(self.app)
 
 
-class BrushMenuToolButton (gtk.MenuToolButton):
+
+class BrushDropdownToolItem (gtk.ToolItem):
     """Toolbar brush indicator, history access, and changer.
     """
 
-    __gtype_name__ = "BrushMenuToolButton"
+    __gtype_name__ = "BrushDropdownToolItem"
 
-    def __init__(self, *a, **kw):
+    HISTORY_PREVIEW_SIZE = 48
+
+    def __init__(self):
+        gtk.ToolItem.__init__(self)
+        self.history_images = []
         self.main_image = ManagedBrushPreview()
-        gtk.MenuToolButton.__init__(self, self.main_image, None)
+        self.dropdown_button = dropdownpanel.DropdownPanelButton(self.main_image)
         self.app = None
-        self.image_size = 1
+        self.image_size = MainToolbar.icon_size
         self.connect("toolbar-reconfigured", self.on_toolbar_reconf)
-        self.connect("show-menu", self.on_show_menu)
-        self.menu_images = []
-        self.menu_labels = []
-        menu = gtk.Menu()
-        self.set_menu(menu)
-        self.connect("clicked", self.on_clicked)
         self.connect("create-menu-proxy", self.on_create_menu_proxy)
-        self.set_arrow_tooltip_text(_("Brush history etc."))
+        self.set_tooltip_text(_("Brush history etc."))
+        self.add(self.dropdown_button)
+
+    def set_app(self, app):
+        self.app = app
+        bm = self.app.brushmanager
+        bm.selected_brush_observers.append(self.on_selected_brush)
+        self.app.doc.input_stroke_ended_observers\
+            .append(self.doc_input_stroke_ended_cb)
+        self.update_history_images()
+
+        panel_frame = gtk.Frame()
+        panel_frame.set_shadow_type(gtk.SHADOW_OUT)
+        self.dropdown_button.set_panel_widget(panel_frame)
+        panel_vbox = gtk.VBox()
+        panel_vbox.set_spacing(widgets.SPACING_TIGHT)
+        panel_vbox.set_border_width(widgets.SPACING)
+        panel_frame.add(panel_vbox)
+
+        # Quick brush changer
+        section_frame = widgets.section_frame(_("Change Brush"))
+        panel_vbox.pack_start(section_frame, True, True)
+
+        section_vbox = gtk.VBox()
+        section_vbox.set_border_width(widgets.SPACING)
+        section_vbox.set_spacing(widgets.SPACING_TIGHT)
+        section_frame.add(section_vbox)
+
+        quick_changer = dialogs.QuickBrushChooser(app, self.on_quick_change_select)
+        section_vbox.pack_start(quick_changer, True, True)
+
+        # List editor button
+        list_editor_button = gtk.Button()
+        list_editor_action = self.app.find_action("BrushSelectionWindow")
+        list_editor_action.connect_proxy(list_editor_button)
+        close_panel_cb = lambda *a: self.dropdown_button.panel_hide()
+        list_editor_button.connect("clicked", close_panel_cb)
+        section_vbox.pack_start(list_editor_button, False, False)
+
+        # Brush history
+        section_frame = widgets.section_frame(_("Recently Used"))
+        panel_vbox.pack_start(section_frame, True, True)
+
+        history_hbox = gtk.HBox()
+        history_hbox.set_border_width(widgets.SPACING)
+        section_frame.add(history_hbox)
+        for i, image in enumerate(self.history_images):
+            button = widgets.borderless_button()
+            button.add(image)
+            button.connect("clicked", self.on_history_button_clicked, i)
+            history_hbox.pack_end(button, True, True)
+
 
     def on_create_menu_proxy(self, toolitem):
         self.set_proxy_menu_item("", None)
         return True
+
+
+    def doc_input_stroke_ended_cb(self, event):
+        gobject.idle_add(self.update_history_images)
+
+
+    def update_history_images(self):
+        bm = self.app.brushmanager
+        if not self.history_images:
+            s = self.HISTORY_PREVIEW_SIZE
+            for brush in bm.history:
+                image = ManagedBrushPreview()
+                image.set_size_request(s, s)
+                self.history_images.append(image)
+        for i, brush in enumerate(bm.history):
+            image = self.history_images[i]
+            image.set_from_managed_brush(brush)
+
 
     def on_toolbar_reconf(self, toolitem):
         toolbar = self.parent
@@ -190,69 +259,21 @@ class BrushMenuToolButton (gtk.MenuToolButton):
         self.image_size = max(iw, ih)
         self.main_image.set_size_request(iw, ih)
 
-    def set_app(self, app):
-        self.app = app
-        bm = self.app.brushmanager
-        bm.selected_brush_observers.append(self.on_selected_brush)
 
     def on_selected_brush(self, brush, brushinfo):
         self.main_image.set_from_managed_brush(brush)
 
-    def on_show_menu(self, menutoolbutton):
-        if self.app is None:
-            return
-        bm = self.app.brushmanager
-        init = not self.menu_images
-        s = self.image_size
-        menu = self.get_menu()
-        for i, brush in enumerate(bm.history):
-            name = brush.brushinfo.get_string_property("parent_brush_name")
-            if init:
-                hbox = gtk.HBox()
-                label = gtk.Label()
-                label.set_alignment(0, 0.5)
-                label.set_padding(8, 0)
-                image = ManagedBrushPreview()
-                self.menu_images.append(image)
-                self.menu_labels.append(label)
-                hbox.pack_start(image, False, False)
-                hbox.pack_start(label, True, True)
-                menuitem = gtk.MenuItem()
-                menuitem.add(hbox)
-                menu.prepend(menuitem)
-                menuitem.show_all()
-                menuitem.connect("activate", self.on_menuitem_activate, i)
-            else:
-                image = self.menu_images[i]
-                label = self.menu_labels[i]
-            image.set_from_managed_brush(brush)
-            image.set_size_request(s, s)
-            label.set_text(name)
-        if init:
-            ag = self.app.drawWindow.action_group
-            brush_window_action = ag.get_action("BrushSelectionWindow")
-            item = brush_window_action.create_menu_item()
-            menu.append(item)
-            sep = gtk.SeparatorMenuItem()
-            menu.append(sep)
-            sep.show()
-            action_names = ["BlendModeNormal", "BlendModeEraser",
-                            "BlendModeLockAlpha"]
-            ag = self.app.brushmodifier.action_group
-            for action_name in action_names:
-                action = ag.get_action(action_name)
-                item = action.create_menu_item()
-                menu.append(item)
 
-
-
-    def on_menuitem_activate(self, menuitem, i):
+    def on_history_button_clicked(self, button, i):
         bm = self.app.brushmanager
         brush = bm.history[i]
         bm.select_brush(brush)
+        self.dropdown_button.panel_hide()
 
-    def on_clicked(self, toolbutton):
-        dialogs.change_current_brush_quick(self.app)
+
+    def on_quick_change_select(self, brush):
+        self.dropdown_button.panel_hide()
+        self.app.brushmanager.select_brush(brush)
 
 
 
@@ -269,10 +290,6 @@ class BrushSettingsDropdownToolItem (gtk.ToolItem):
                                          MainToolbar.icon_size)
         self.button_shows_modified = False
         self.button = dropdownpanel.DropdownPanelButton(self.button_image)
-        self.button.set_name(widgets.BORDERLESS_BUTTON_NAME)
-        self.button.set_relief(gtk.RELIEF_NONE)
-        self.button.set_can_default(False)
-        self.button.set_can_focus(False)
         self.vbox = gtk.VBox()
         frame = gtk.Frame()
         frame.add(self.vbox)
@@ -316,7 +333,7 @@ class BrushSettingsDropdownToolItem (gtk.ToolItem):
             label.set_tooltip_text(s.tooltip)
             sg_row_height.add_widget(label)
 
-            reset_button = widgets.borderless_image_button(
+            reset_button = widgets.borderless_button(
                 stock_id=gtk.STOCK_CLEAR,
                 tooltip=_("Reset '%s'") % s.name)
             reset_button.connect("clicked", self.reset_button_clicked_cb,
@@ -440,12 +457,10 @@ class ColorMenuToolAction (gtk.Action):
 ColorMenuToolAction.set_tool_item_type(ColorMenuToolButton)
 
 
-class BrushMenuToolAction (gtk.Action):
-    """Allows `BrushMenuToolButton`s to be added by `gtk.UIManager`.
-    """
-    __gtype_name__ = "BrushMenuToolAction"
+class BrushDropdownToolAction (gtk.Action):
+    __gtype_name__ = "BrushDropdownToolAction"
 
-BrushMenuToolAction.set_tool_item_type(BrushMenuToolButton)
+BrushDropdownToolAction.set_tool_item_type(BrushDropdownToolItem)
 
 
 

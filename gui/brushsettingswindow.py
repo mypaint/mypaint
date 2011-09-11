@@ -29,7 +29,7 @@ class Window(windowing.SubWindow):
         self.visible_settings = []
         self.live_update_queued = False
 
-        self.set_title(_('Brush Editor'))
+        self.set_title(_('Brush Settings Editor'))
         self.init_ui()
         self.set_default_size(450, 500)
 

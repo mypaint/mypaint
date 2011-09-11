@@ -36,7 +36,7 @@ _stock_items = [
     # Tool windows. No trailing ellipses on these since none of them require
     # further input before they can do anything: see section 4.3.2.1 of the the
     # GNOME Human Interface Guidelines version 3.0.
-    (TOOL_BRUSH, _("Brush List"), 0, ord("b"), None),
+    (TOOL_BRUSH, _("Brush List Editor"), gdk.SHIFT_MASK, ord("b"), None),
     (TOOL_COLOR_SELECTOR, _("Color Triangle"), 0, ord("g"), None),
     (TOOL_COLOR_SAMPLER, _("Color Sampler"), 0, ord("t"), None),
     (TOOL_SCRATCHPAD, _("Scratchpad"), gdk.SHIFT_MASK, ord("s"), None),

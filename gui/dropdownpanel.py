@@ -9,6 +9,7 @@
 import gtk
 from gtk import gdk
 import gobject
+import widgets
 
 
 class DropdownPanelButton (gtk.ToggleButton):
@@ -31,6 +32,11 @@ class DropdownPanelButton (gtk.ToggleButton):
         self.connect("button-press-event", self._button_press_cb)
         self._panel.connect("hide", lambda *a: self.set_active(False))
         self._panel.connect("show", lambda *a: self.set_active(True))
+        # Common L&F for buttons. Should probably factor out.
+        self.set_name(widgets.BORDERLESS_BUTTON_NAME)
+        self.set_relief(gtk.RELIEF_NONE)
+        self.set_can_default(False)
+        self.set_can_focus(False)
 
 
     def set_panel_widget(self, widget):

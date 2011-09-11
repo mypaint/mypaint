@@ -58,6 +58,7 @@
       <menuitem action='ViewHelp'/>
     </menu>
     <menu action='BrushMenu'>
+      <menuitem action='BrushChooserPopup'/>
       <menuitem action='BrushSelectionWindow'/>
       <menu action='ContextMenu'>
         <menuitem action='ContextStore'/>

@@ -235,6 +235,7 @@ class Window (windowing.MainWindow, layout.MainWindow):
             ('ScratchCopyBackground',  None, _('Copy Background to Scratchpad'), None, None, self.scratchpad_copy_background_cb),
 
             ('BrushMenu',    None, _('Brush')),
+            ('BrushChooserPopup', stock.TOOL_BRUSH, _("Change Brush..."), 'b', None, self.brush_chooser_popup_cb),
             ('ImportBrushPack',       gtk.STOCK_OPEN, _('Import brush package...'), '', None, self.import_brush_pack_cb),
 
             ('HelpMenu',   None, _('Help')),
@@ -273,10 +274,12 @@ class Window (windowing.MainWindow, layout.MainWindow):
             ('BackgroundWindow', gtk.STOCK_PAGE_SETUP,
                     _('Background'), None, None, self.toggle_window_cb),
             ('BrushSelectionWindow', stock.TOOL_BRUSH,
-                    None, None, _("Toggle the Brush selector"),
+                    None, None,
+                    _("Edit and reorganise Brush Lists"),
                     self.toggle_window_cb),
             ('BrushSettingsWindow', gtk.STOCK_PROPERTIES,
-                    _('Brush Editor'), '<control>b', None,
+                    _('Brush Settings Editor'), '<control>b',
+                    _("Change Brush Settings in detail"),
                     self.toggle_window_cb),
             ('ColorSelectionWindow', stock.TOOL_COLOR_SELECTOR,
                     None, None, _("Toggle the Colour Triangle"),
@@ -587,6 +590,13 @@ class Window (windowing.MainWindow, layout.MainWindow):
     def popup_cb(self, action):
         state = self.popup_states[action.get_name()]
         state.activate(action)
+
+
+    def brush_chooser_popup_cb(self, action):
+        # It may be even nicer to do this as a real popup state with
+        # mouse-out to cancel. The Action is named accordingly. For now
+        # though a modal dialog will do as an implementation.
+        dialogs.change_current_brush_quick(self.app)
 
 
     # User-toggleable UI pieces: things like toolbars, status bars, menu bars.
