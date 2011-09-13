@@ -17,9 +17,7 @@ import stock
 from lib import mypaintlib
 from lib.helpers import clamp,gdkpixbuf2numpy
 import dialogs
-
-
-DEBUG_HSV_WIDGET_NOT_WRAPPED = False
+from widgets import find_widgets, ColorChangerHSV
 
 
 class ToolWidget (gtk.VBox):
@@ -29,129 +27,7 @@ class ToolWidget (gtk.VBox):
 
     def __init__(self, app):
         gtk.VBox.__init__(self)
-        self.app = app
-        self.app.brush.observers.append(self.brush_modified_cb)
-        self.color_sel = gtk.ColorSelection()
-        self.hsv_widget = None
-        self.hsv_container = self.extract_hsv_container(self.color_sel)
-        self.add_details_dialogs(self.hsv_container)
-        self.color_sel.connect("color-changed", self.on_color_changed)
-        self.pack_start(self.hsv_container, True, True)
-        self.in_brush_modified_cb = False
-        self.set_color_hsv(self.app.brush.get_color_hsv())
-        app.ch.color_pushed_observers.append(self.color_pushed_cb)
-
-
-    def color_pushed_cb(self, pushed_color):
-        rgb = self.app.ch.last_color
-        color = gdk.Color(*[int(c*65535) for c in rgb])
-        self.color_sel.set_previous_color(color)
-
-
-    def brush_modified_cb(self, settings):
-        if not settings.intersection(('color_h', 'color_s', 'color_v')):
-            return
-        brush_color = self.app.brush.get_color_hsv()
-        if brush_color != self.get_color_hsv():
-            self.in_brush_modified_cb = True  # do we still need this?
-            self.set_color_hsv(brush_color)
-            self.in_brush_modified_cb = False
-
-
-    def get_color_hsv(self):
-        if self.hsv_widget is not None:
-            # if we can, it's better to go to the HSV widget direct
-            return self.hsv_widget.get_color()
-        else:
-            # not as good, loses hue information if saturation == 0
-            color = self.color_sel.get_current_color()
-            return color.hue, color.saturation, color.value
-
-
-    def set_color_hsv(self, hsv):
-        h, s, v = hsv
-        while h > 1.0: h -= 1.0
-        while h < 0.0: h += 1.0
-        s = clamp(s, 0.0, 1.0)
-        v = clamp(v, 0.0, 1.0)
-        if self.hsv_widget is not None:
-            self.hsv_widget.set_color(h, s, v)
-        else:
-            color = gdk.color_from_hsv(h, s, v)
-            self.color_sel.set_current_color(color)
-
-
-    def on_color_changed(self, color_sel):
-        h, s, v = self.get_color_hsv()
-        color_finalized = not color_sel.is_adjusting()
-        if color_finalized and not self.in_brush_modified_cb:
-            b = self.app.brush
-            b.set_color_hsv((h, s, v))
-
-
-    def on_color_swatch_button_press(self, swatch, event):
-        if event.type != gdk._2BUTTON_PRESS:
-            return False
-        dialogs.change_current_color_detailed(self.app)
-
-
-    def add_details_dialogs(self, hsv_container):
-        prev, current = self.find_widgets(hsv_container,
-            lambda w: w.get_name() == 'GtkDrawingArea')
-        current.connect("button-press-event", self.on_color_swatch_button_press)
-        prev.connect("button-press-event", self.on_color_swatch_button_press)
-
-
-    def on_hsvwidget_size_allocate(self, hsvwidget, alloc):
-        # We can only control the GtkHSV's radius if PyGTK exposes it to us
-        # as the undocumented gtk.HSV.
-        if not hasattr(hsvwidget, "set_metrics"):
-            return
-        padding = 5
-        radius = min(alloc.width, alloc.height) - (2 * padding)
-        ring_width = max(12, int(radius/16))
-        hsvwidget.set_metrics(radius, ring_width)
-        hsvwidget.queue_draw()
-
-
-    def extract_hsv_container(self, cs):
-        """Extract the HSV wheel and nearby buttons from a ColorSelector
-
-        This is ugly, but it's useful to support pre-2.18 versions of (py)gtk.
-        """
-        hsv, = self.find_widgets(cs, lambda w: w.get_name() == 'GtkHSV')
-        hsv.unset_flags(gtk.CAN_FOCUS)
-        hsv.unset_flags(gtk.CAN_DEFAULT)
-        hsv.set_size_request(150, 150)
-        container = hsv.parent
-        container.parent.remove(container)
-        # Make the packing box give extra space to the HSV widget
-        container.set_child_packing(hsv, True, True, 0, gtk.PACK_START)
-        container.set_spacing(0)
-        # When extra space is given, grow the HSV wheel.
-        # We can only control the GtkHSV's radius if PyGTK exposes it to us
-        # as the undocumented gtk.HSV.
-        if hasattr(hsv, "set_metrics"):
-            hsv.connect("size-allocate", self.on_hsvwidget_size_allocate)
-            if DEBUG_HSV_WIDGET_NOT_WRAPPED:
-                print "DEBUG: emulating old pygtk where gtk.HSV is not wrapped"
-            else:
-                self.hsv_widget = hsv
-        return container
-
-
-    def find_widgets(self, widget, predicate):
-        queue = [widget]
-        found = []
-        while len(queue) > 0:
-            w = queue.pop(0)
-            if predicate(w):
-                found.append(w)
-            if hasattr(w, "get_children"):
-                for w2 in w.get_children():
-                    queue.append(w2)
-        return found
-
+        self.pack_start(ColorChangerHSV(app), True, True)
 
 
 # own color selector
