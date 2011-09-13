@@ -214,6 +214,7 @@ class Window (windowing.MainWindow, layout.MainWindow):
             ('ColorHistoryPopup',  None, _('Color History'), 'x', None, self.popup_cb),
             ('ColorChangerPopup', None, _('Color Changer'), 'v', None, self.popup_cb),
             ('ColorRingPopup',  None, _('Color Ring'), None, None, self.popup_cb),
+            ('ColorDetailsDialog', None, _("Color Details"), None, None, self.color_details_dialog_cb),
 
             ('ContextMenu',  None, _('Brushkeys')),
             ('ContextHelp',  gtk.STOCK_HELP, _('Help!'), None, None, self.show_infodialog_cb),
@@ -597,6 +598,9 @@ class Window (windowing.MainWindow, layout.MainWindow):
         # mouse-out to cancel. The Action is named accordingly. For now
         # though a modal dialog will do as an implementation.
         dialogs.change_current_brush_quick(self.app)
+
+    def color_details_dialog_cb(self, action):
+        dialogs.change_current_color_detailed(self.app)
 
 
     # User-toggleable UI pieces: things like toolbars, status bars, menu bars.
