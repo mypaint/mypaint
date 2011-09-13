@@ -26,11 +26,17 @@ SPACING_LOOSE = 3*SPACING_TIGHT
 # Useful style defaults for named widgets
 
 gtk.rc_parse_string ("""
-    style "borderless-button-style" {
+    style "borderless-style" {
+        GtkWidget::focus-padding = 0
+        GtkWidget::focus-line-width = 0
+        xthickness = 0
+        ythickness = 0
+    }
+    style "thinborder-style" {
         GtkWidget::focus-padding = 0
         GtkWidget::focus-line-width = 0
         xthickness = 1
-        ythickness = 0
+        ythickness = 1
     }
     style "borderless-toolbar-style" {
         # Confuses some theme engines:
@@ -40,7 +46,8 @@ gtk.rc_parse_string ("""
         xthickness = 0
         ythickness = 0
     }
-    widget "*.borderless-button" style "borderless-button-style"
+    widget "*.borderless*" style "borderless-style"
+    widget "*.thinborder*" style "thinborder-style"
     widget "*.toolbar1" style "borderless-toolbar-style"
     """)
 
