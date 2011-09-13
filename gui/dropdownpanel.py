@@ -25,7 +25,10 @@ class DropdownPanelButton (gtk.ToggleButton):
         gtk.ToggleButton.__init__(self)
         arrow = gtk.Arrow(gtk.ARROW_DOWN, gtk.SHADOW_IN)
         hbox = gtk.HBox()
-        hbox.pack_start(label_widget, True, True)
+        label_alignment = gtk.Alignment(0.0, 0.0, 1.0, 1.0)
+        label_alignment.set_padding(0, 0, widgets.SPACING_TIGHT, 0)
+        label_alignment.add(label_widget)
+        hbox.pack_start(label_alignment, True, True)
         hbox.pack_start(arrow, False, False)
         self.add(hbox)
         self._panel = DropdownPanel(self)
@@ -71,15 +74,15 @@ class DropdownPanel (gtk.Window):
         self.set_focus_on_map(False)
         self.set_can_focus(False)
         self._panel_button = panel_button
-        self._mapped_once = False
-        self._configured = False
         self._grabbed = False
+        self._corrected_pos = False
         self.connect("map-event", self._map_event_cb)
         self.connect("button-press-event", self._button_press_event_cb)
         self.connect("hide", self._hide_cb)
         self.connect("configure-event", self._configure_cb)
         self.connect("grab-broken-event", self._grab_broken_event_cb)
         self.connect("leave-notify-event", self._leave_notify_cb)
+        self.connect("key-press-event", self._key_press_cb)
 
 
     def _leave_notify_cb(self, widget, event):
@@ -123,14 +126,30 @@ class DropdownPanel (gtk.Window):
             return True
 
 
+    def _key_press_cb(self, widget, event):
+        if not self._grabbed:
+            return
+        if gdk.keyval_name(event.keyval).upper() == "ESCAPE":
+            self.popdown()
+            return True
+
+
     def establish_grab(self, t=0):
         # Grab, permitting normal interaction with the app (i.e. with the widgets
         # in the panel).
         mask = gdk.BUTTON_PRESS_MASK
         grab_result = gdk.pointer_grab(self.window, True, mask, None, None, t)
         if grab_result != gdk.GRAB_SUCCESS:
-            print "grab failed:", grab_result
+            print "pointer grab failed:", grab_result
             return False
+
+        # Keyboard grab too, to prevent workspace switching.
+        grab_result = gdk.keyboard_grab(self.window, False, t)
+        if grab_result != gdk.GRAB_SUCCESS:
+            print "keyboard grab failed:", grab_result
+            gdk.pointer_ungrab()
+            return False
+
         # But limit events to just the panel for neatness and a hint of modality.
         self.grab_add()
         self._grabbed = True
@@ -146,9 +165,10 @@ class DropdownPanel (gtk.Window):
         parent_window = self._panel_button.get_toplevel()
         self.set_transient_for(parent_window)
         self.show_all()
-        if not self.establish_grab(t):
-            self.hide()
-            return
+        def deferred_grab():
+            if not self.establish_grab(t):
+                self.hide()
+        gobject.idle_add(deferred_grab)
 
     def popdown(self):
         self.hide()
@@ -169,20 +189,13 @@ class DropdownPanel (gtk.Window):
         y += self._panel_button.allocation.y
         y += self._panel_button.allocation.height
         x, y = int(x), int(y)
-        if self._mapped_once:
-            self.move(x, y)
-        else:
-            self.parse_geometry("+%d+%d" % (x, y))
-        self._mapped_once = True
-        self._configured = False
+        gobject.idle_add(self.move, x, y)
+        self._corrected_pos = False
 
     def _configure_cb(self, widget, event):
-        # Constrain window to fit on the current monitor, if possible.
-        if self._configured:
-            return
-        self._configured = True
+        # Constrain window to fit on its current monitor, if possible.
         screen = event.get_screen()
-        mon = screen.get_monitor_at_window(self.window)
+        mon = screen.get_monitor_at_point(event.x, event.y)
         mon_geom = screen.get_monitor_geometry(mon)
         x, y, w, h = (event.x, event.y, event.width, event.height)
         if y+h > mon_geom.y + mon_geom.height:
@@ -194,7 +207,9 @@ class DropdownPanel (gtk.Window):
         if y < mon_geom.y:
             y = mon_geom.y
         if (x, y) != (event.x, event.y):
-            self.move(x, y)
+            if not self._corrected_pos:
+                gobject.idle_add(self.move, x, y)
+                self._corrected_pos = True
 
     def _button_press_event_cb(self, widget, event):
         # Dismiss if the user clicks outside the panel.
