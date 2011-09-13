@@ -57,7 +57,7 @@ class MainToolbar (gtk.HBox):
     def init_actions(self):
         ag = self.draw_window.action_group
         self.actions = [
-                ColorMenuToolAction("ColorMenuToolButton", None,
+                ColorDropdownToolAction("ColorDropdown", None,
                     _("Current Color"), None),
                 BrushDropdownToolAction("BrushDropdown", None,
                     _("Current Brush"), None),
@@ -79,29 +79,114 @@ class MainToolbar (gtk.HBox):
         self.set_style(style)
 
 
-class ColorMenuToolButton (gtk.MenuToolButton):
+class ColorDropdownToolItem (gtk.ToolItem):
     """Toolbar colour indicator, history access, and changer.
-
-    The button part shows the current colour, and allows it to be changed
-    in detail when clicked. The menu contains the colour history, and
-    a selection of other ways of changing the colour.
     """
 
-    __gtype_name__ = "ColorMenuToolButton"
+    __gtype_name__ = "ColorDropdownToolItem"
+
+    HISTORY_PREVIEW_SIZE = 48
 
     def __init__(self, *a, **kw):
+        gtk.ToolItem.__init__(self)
+        self.history_blobs = []
         self.main_blob = ColorBlob()
-        gtk.MenuToolButton.__init__(self, self.main_blob, None)
+        self.dropdown_button = dropdownpanel.DropdownPanelButton(self.main_blob)
         self.app = None
+        self.blob_size = MainToolbar.icon_size
         self.connect("toolbar-reconfigured", self.on_toolbar_reconf)
-        self.connect("show-menu", self.on_show_menu)
-        self.menu_blobs = []
-        menu = gtk.Menu()
-        self.set_menu(menu)
-        self.blob_size = 1
-        self.connect("clicked", self.on_clicked)
         self.connect("create-menu-proxy", self.on_create_menu_proxy)
-        self.set_arrow_tooltip_text(_("Color History and other tools"))
+        self.set_tooltip_text(_("Color History and other tools"))
+        self.add(self.dropdown_button)
+
+    def set_app(self, app):
+        self.app = app
+        self.app.brush.observers.append(self.on_brush_settings_changed)
+        self.main_blob.hsv = self.app.brush.get_color_hsv()
+
+        panel_frame = gtk.Frame()
+        panel_frame.set_shadow_type(gtk.SHADOW_OUT)
+        self.dropdown_button.set_panel_widget(panel_frame)
+        panel_vbox = gtk.VBox()
+        panel_vbox.set_spacing(widgets.SPACING_TIGHT)
+        panel_vbox.set_border_width(widgets.SPACING)
+        panel_frame.add(panel_vbox)
+
+        def hide_panel_cb(*a):
+            self.dropdown_button.panel_hide()
+
+        def hide_panel_idle_cb(*a):
+            gobject.idle_add(self.dropdown_button.panel_hide)
+
+        # Colour changing
+        section_frame = widgets.section_frame(_("Change Color"))
+        panel_vbox.pack_start(section_frame, True, True)
+
+        section_table = gtk.Table()
+        section_table.set_col_spacings(widgets.SPACING)
+        section_table.set_border_width(widgets.SPACING)
+        section_frame.add(section_table)
+
+        hsv_widget = widgets.ColorChangerHSV(app, details=False)
+        hsv_widget.set_size_request(175, 175)
+        section_table.attach(hsv_widget, 0, 1, 0, 1)
+
+        def is_preview_hbox(w):
+            return isinstance(w, gtk.HBox) and isinstance(w.parent, gtk.VBox)
+        preview_hbox, = widgets.find_widgets(hsv_widget, is_preview_hbox)
+        preview_hbox.parent.remove(preview_hbox)
+
+        def is_color_picker(w):
+            return isinstance(w, gtk.Button)
+        color_picker, = widgets.find_widgets(preview_hbox, is_color_picker)
+        color_picker.connect("clicked", hide_panel_idle_cb)
+
+        side_vbox = gtk.VBox()
+        side_vbox.set_spacing(widgets.SPACING_TIGHT)
+        section_table.attach(side_vbox, 1, 2, 0, 1)
+
+        def init_proxy(widget, action_name):
+            action = self.app.find_action(action_name)
+            action.connect_proxy(widget)
+            widget.connect("clicked", hide_panel_cb)
+            return widget
+
+        button = init_proxy(gtk.Button(), "ColorDetailsDialog")
+        side_vbox.pack_end(button, False, False)
+        side_vbox.pack_end(preview_hbox, False, False)
+
+        side_vbox.pack_end(gtk.Alignment(), True, True)
+        button = init_proxy(gtk.ToggleButton(), "ColorSamplerWindow")
+        side_vbox.pack_end(button, False, False)
+        button = init_proxy(gtk.ToggleButton(), "ColorSelectionWindow")
+        side_vbox.pack_end(button, False, False)
+
+        # History
+        section_frame = widgets.section_frame(_("Recently Used"))
+        panel_vbox.pack_start(section_frame, True, True)
+
+        self.history_blobs = []
+        history_hbox = gtk.HBox()
+        history_hbox.set_border_width(widgets.SPACING)
+        s = self.HISTORY_PREVIEW_SIZE
+        for hsv in app.ch.colors:
+            button = widgets.borderless_button()
+            blob = ColorBlob(hsv)
+            blob.set_size_request(s, s)
+            button.add(blob)
+            button.connect("clicked", self.on_history_button_clicked, blob)
+            history_hbox.pack_end(button, True, True)
+            self.history_blobs.append(blob)
+        app.ch.color_pushed_observers.append(self.color_pushed_cb)
+        section_frame.add(history_hbox)
+
+    def color_pushed_cb(self, color):
+        for blob, hsv in zip(self.history_blobs, self.app.ch.colors):
+            blob.hsv = hsv
+
+    def on_history_button_clicked(self, widget, blob):
+        self.app.brush.set_color_hsv(blob.hsv)
+        self.dropdown_button.panel_hide()
 
     def on_create_menu_proxy(self, toolitem):
         # Do not appear on the overflow menu.
@@ -116,48 +201,10 @@ class ColorMenuToolButton (gtk.MenuToolButton):
         self.blob_size = max(iw, ih)
         self.main_blob.set_size_request(iw, ih)
 
-    def set_app(self, app):
-        self.app = app
-        self.app.brush.observers.append(self.on_brush_settings_changed)
-        self.main_blob.hsv = self.app.brush.get_color_hsv()
-
     def on_brush_settings_changed(self, changes):
         if not changes.intersection(set(['color_h', 'color_s', 'color_v'])):
             return
         self.main_blob.hsv = self.app.brush.get_color_hsv()
-
-    def on_show_menu(self, menutoolbutton):
-        if self.app is None:
-            return
-        init = not self.menu_blobs
-        s = self.blob_size
-        menu = self.get_menu()
-        for i, hsv in enumerate(self.app.ch.colors):
-            if init:
-                blob = ColorBlob(hsv)
-                self.menu_blobs.append(blob)
-                blob_menuitem = gtk.MenuItem()
-                blob_menuitem.add(blob)
-                menu.prepend(blob_menuitem)
-                blob_menuitem.show_all()
-                blob_menuitem.connect("activate", self.on_menuitem_activate, i)
-            else:
-                blob = self.menu_blobs[i]
-            blob.hsv = hsv
-            blob.set_size_request(s, s)
-        if init:
-            for name in ["ColorRingPopup", "ColorChangerPopup",
-                         "ColorSelectionWindow"]:
-                action = self.app.drawWindow.action_group.get_action(name)
-                item = action.create_menu_item()
-                menu.append(item)
-
-    def on_menuitem_activate(self, menuitem, i):
-        hsv = self.app.ch.colors[i]
-        self.app.brush.set_color_hsv(hsv)
-
-    def on_clicked(self, toolbutton):
-        dialogs.change_current_color_detailed(self.app)
 
 
 
@@ -210,7 +257,7 @@ class BrushDropdownToolItem (gtk.ToolItem):
         section_vbox.pack_start(quick_changer, True, True)
 
         # List editor button
-        list_editor_button = gtk.Button()
+        list_editor_button = gtk.ToggleButton()
         list_editor_action = self.app.find_action("BrushSelectionWindow")
         list_editor_action.connect_proxy(list_editor_button)
         close_panel_cb = lambda *a: self.dropdown_button.panel_hide()
@@ -449,19 +496,14 @@ class BrushSettingsDropdownToolItem (gtk.ToolItem):
         return not parent_b.brushinfo.matches(current_bi)
 
 
-class ColorMenuToolAction (gtk.Action):
-    """Allows `ColorMenuToolButton`s to be added by `gtk.UIManager`.
-    """
-    __gtype_name__ = "ColorMenuToolAction"
-
-ColorMenuToolAction.set_tool_item_type(ColorMenuToolButton)
+class ColorDropdownToolAction (gtk.Action):
+    __gtype_name__ = "ColorDropdownToolAction"
+ColorDropdownToolAction.set_tool_item_type(ColorDropdownToolItem)
 
 
 class BrushDropdownToolAction (gtk.Action):
     __gtype_name__ = "BrushDropdownToolAction"
-
 BrushDropdownToolAction.set_tool_item_type(BrushDropdownToolItem)
-
 
 
 class BrushSettingsDropdownToolAction (gtk.Action):
@@ -525,21 +567,25 @@ class ManagedBrushPreview (gtk.Image):
 
 
 
-class ColorBlob (gtk.DrawingArea):
+class ColorBlob (gtk.AspectFrame):
     """Updatable widget displaying a single colour.
     """
 
     def __init__(self, hsv=None):
-        gtk.DrawingArea.__init__(self)
+        gtk.AspectFrame.__init__(self, xalign=0.5, yalign=0.5, ratio=1.0, obey_child=False)
+        self.set_name("thinborder-color-blob-%d" % id(self))
+        self.set_shadow_type(gtk.SHADOW_IN)
+        self.drawingarea = gtk.DrawingArea()
+        self.add(self.drawingarea)
         if hsv is None:
             hsv = 0.0, 0.0, 0.0
         self._hsv = hsv
-        self.set_size_request(1, 1)
-        self.connect("expose-event", self.on_expose)
+        self.drawingarea.set_size_request(1, 1)
+        self.drawingarea.connect("expose-event", self.on_expose)
 
     def set_hsv(self, hsv):
         self._hsv = hsv
-        self.queue_draw()
+        self.drawingarea.queue_draw()
 
     def get_hsv(self):
         return self._hsv
@@ -547,7 +593,7 @@ class ColorBlob (gtk.DrawingArea):
     hsv = property(get_hsv, set_hsv)
 
     def on_expose(self, widget, event):
-        cr = self.window.cairo_create()
+        cr = widget.window.cairo_create()
         cr.set_source_rgb(*hsv_to_rgb(*self._hsv))
         cr.paint()
 
