@@ -24,6 +24,11 @@ Building on Linux:
 
         $ scons prefix=/usr --install-sandbox=path/to/sandbox
 
+            (NOTE: the sandbox location must be located under the
+            current working directory. The above installs the main
+            launch script as "./path/to/sandbox/usr/bin/mypaint".
+            Use a symlink if that's too limiting.)
+
 
     Required: pygtk, python, swig, gtk, numpy, pycairo(>=1.4), libpng
 
