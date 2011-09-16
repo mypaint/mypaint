@@ -10,9 +10,21 @@ import gtk, gobject, cairo, random
 gdk = gtk.gdk
 from math import floor, ceil, pi, log
 from numpy import isfinite
+from warnings import warn
 
 from lib import helpers, tiledsurface, pixbufsurface
 import cursor
+
+
+
+def _make_testbed_model():
+    warn("Creating standalone model for testing", RuntimeWarning, 2)
+    import lib.brush, lib.document
+    brush = lib.brush.BrushInfo()
+    brush.load_defaults()
+    return lib.document.Document(brush)
+
+
 
 class TiledDrawWidget(gtk.DrawingArea):
     """
@@ -23,9 +35,12 @@ class TiledDrawWidget(gtk.DrawingArea):
     passed to the document after applying the inverse transformation.
     """
 
+    # Register a GType name for Glade, GtkBuilder etc.
+    __gtype_name__ = "TiledDrawWidget"
+
     CANNOT_DRAW_CURSOR = gdk.Cursor(gdk.CIRCLE)
 
-    def __init__(self, app, document):
+    def __init__(self, app=None, document=None):
         gtk.DrawingArea.__init__(self)
         self.connect("expose-event", self.expose_cb)
         self.connect("enter-notify-event", self.enter_notify_cb)
@@ -58,6 +73,8 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.set_extension_events (gdk.EXTENSION_EVENTS_ALL)
 
         self.app = app
+        if document is None:
+            document = _make_testbed_model()
         self.doc = document
         self.doc.canvas_observers.append(self.canvas_modified_cb)
         self.doc.brush.brushinfo.observers.append(self.brush_modified_cb)
@@ -332,7 +349,6 @@ class TiledDrawWidget(gtk.DrawingArea):
 
     def expose_cb(self, widget, event):
         self.update_cursor() # hack to get the initial cursor right
-        #print 'expose', tuple(event.area)
         if self.snapshot_pixmap:
             gc = self.get_style().fg_gc[self.get_state()]
             area = event.area
@@ -420,7 +436,10 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.get_model_coordinates_cairo_context(cr)
 
         # choose best mipmap
-        if self.app.preferences['view.high_quality_zoom']:
+        hq_zoom = False
+        if self.app and self.app.preferences['view.high_quality_zoom']:
+            hq_zoom = True
+        if hq_zoom:
             # can cause a very clear slowdown on some hardware
             # (we probably could avoid this by doing rendering differently)
             mipmap_level = max(0, int(floor(log(1.0/self.scale,2))))
@@ -661,3 +680,13 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.show_layers_above = not self.show_layers_above
         self.queue_draw()
 
+
+if __name__ == '__main__':
+    tdw = TiledDrawWidget()
+    tdw.set_size_request(640, 480)
+    win = gtk.Window()
+    win.set_title("tdw test")
+    win.connect("destroy", lambda *a: gtk.main_quit())
+    win.add(tdw)
+    win.show_all()
+    gtk.main()

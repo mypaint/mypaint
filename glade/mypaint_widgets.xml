@@ -12,9 +12,12 @@
   <init-function>glade_python_init</init-function>
 
   <glade-widget-classes>
+    <glade-widget-class name="TiledDrawWidget" title="Tiled Drawing Widget"
+                        generic-name="tdw" />
   </glade-widget-classes>
 
   <glade-widget-group name="MyPaint" title="MyPaint Widgets">
+    <glade-widget-class-ref name="TiledDrawWidget"/>
   </glade-widget-group>
 
 </glade-catalog>
