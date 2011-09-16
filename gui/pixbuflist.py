@@ -10,8 +10,10 @@ import gtk
 gdk = gtk.gdk
 from lib import helpers
 from math import ceil
+from warnings import warn
 
 DRAG_ITEM_NAME = 103
+ITEM_SIZE_DEFAULT = 48
 
 class PixbufList(gtk.DrawingArea):
     # interface to be implemented by children
@@ -24,10 +26,20 @@ class PixbufList(gtk.DrawingArea):
     def drag_end_cb(self, widget, context):
         widget.drag_insertion_index = None
 
+    # GType naming, for GtkBuilder
+    __gtype_name__ = 'PixbufList'
 
-    def __init__(self, itemlist, item_w, item_h, namefunc=None, pixbuffunc=lambda x: x):
+    def __init__(self, itemlist=None,
+                 item_w=ITEM_SIZE_DEFAULT,
+                 item_h=ITEM_SIZE_DEFAULT,
+                 namefunc=None, pixbuffunc=lambda x: x):
         gtk.DrawingArea.__init__(self)
-        self.itemlist = itemlist
+
+        if itemlist is not None:
+            self.itemlist = itemlist
+        else:
+            warn("Creating standalone, empty itemlist for testing", RuntimeWarning, 2)
+            self.itemlist = []
         self.pixbuffunc = pixbuffunc
         self.namefunc = namefunc
         self.dragging_allowed = True
@@ -295,3 +307,14 @@ class PixbufList(gtk.DrawingArea):
             i += 1
 
         return True
+
+
+if __name__ == '__main__':
+    win = gtk.Window()
+    win.set_title("pixbuflist test")
+    test_list = PixbufList()
+    win.add(test_list)
+    test_list.set_size_request(256, 128)
+    win.connect("destroy", lambda *a: gtk.main_quit())
+    win.show_all()
+    gtk.main()

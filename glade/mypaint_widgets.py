@@ -3,4 +3,5 @@
 # do its thing.
 
 from gui.tileddrawwidget import TiledDrawWidget
+from gui.pixbuflist import PixbufList
 

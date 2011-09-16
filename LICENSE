@@ -15,3 +15,8 @@
 * The icons tool_*.png are public domain, and are either taken from the
   the Tango Desktop Project (http://tango.freedesktop.org/) or have been
   drawn specially for MyPaint using the Tango palette.
+
+* The pixel-only icons in glade/icons/ have been adapted from those in the
+  Glade distribution itself. They are licensed under the "GNU General Public
+  License as published by the Free Software Foundation; version 2 dated June,
+  1991".
