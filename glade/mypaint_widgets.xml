@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<glade-catalog name="mypaint_widgets" library="gladepython"
+               depends="gtk+" domain="glade-3" icon-prefix="mypaint">
+<!--
+
+   The icon-prefix defaults to the setting for "name".
+
+   Icons for use in Glade's UI are named widget-<ICON-PREFIX>-<GENERIC-NAME>.
+
+-->
+
+  <init-function>glade_python_init</init-function>
+
+  <glade-widget-classes>
+  </glade-widget-classes>
+
+  <glade-widget-group name="MyPaint" title="MyPaint Widgets">
+  </glade-widget-group>
+
+</glade-catalog>
