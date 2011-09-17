@@ -14,7 +14,7 @@ from gettext import gettext as _
 import windowing
 import stock
 import pixbuflist, dialogs, brushmanager
-from layout import ElasticExpander
+from elastic import ElasticExpander
 from brushlib import brushsettings
 
 class ToolWidget (gtk.VBox):

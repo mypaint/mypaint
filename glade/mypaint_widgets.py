@@ -4,4 +4,4 @@
 
 from gui.tileddrawwidget import TiledDrawWidget
 from gui.pixbuflist import PixbufList
-
+from gui.elastic import ElasticWindow, ElasticVBox, ElasticExpander

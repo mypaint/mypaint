@@ -5,7 +5,7 @@ import struct
 import cairo
 import windowing
 import stock
-from layout import ElasticExpander
+from elastic import ElasticExpander
 from lib.helpers import rgb_to_hsv, hsv_to_rgb, clamp
 from gettext import gettext as _
 import gobject

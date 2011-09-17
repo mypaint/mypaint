@@ -16,11 +16,22 @@
                         generic-name="tdw" />
     <glade-widget-class name="PixbufList" title="Pixbuf List"
                         generic-name="pixbuflist" />
+    <glade-widget-class name="ElasticWindow" title="Elastic Window"
+                        generic-name="elastic-window" />
+    <glade-widget-class name="ElasticVBox" title="Elastic VBox"
+                        generic-name="elastic-vbox" />
+    <glade-widget-class name="ElasticExpander" title="Elastic Expander"
+                        generic-name="elastic-expander" />
   </glade-widget-classes>
 
   <glade-widget-group name="MyPaint" title="MyPaint Widgets">
     <glade-widget-class-ref name="TiledDrawWidget"/>
     <glade-widget-class-ref name="PixbufList"/>
+    <!-- ElasticWindow doesn't behave especially well in Glade, but it
+         can be built. That'll do. -->
+    <glade-widget-class-ref name="ElasticWindow"/>
+    <glade-widget-class-ref name="ElasticVBox"/>
+    <glade-widget-class-ref name="ElasticExpander"/>
   </glade-widget-group>
 
 </glade-catalog>
