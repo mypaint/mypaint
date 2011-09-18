@@ -14,6 +14,7 @@ from fnmatch import fnmatch
 import brushmanager
 from pixbuflist import PixbufList
 import widgets
+import spinbox
 
 OVERWRITE_THIS = 1
 OVERWRITE_ALL  = 2
@@ -321,8 +322,8 @@ class QuickBrushChooser (gtk.VBox):
         active_group_name = app.preferences.get(self.PREFS_KEY, None)
 
         model = self._make_groups_sb_model()
-        self.groups_sb = widgets.ItemSpinBox(model, self.on_groups_sb_changed,
-                                              active_group_name)
+        self.groups_sb = spinbox.ItemSpinBox(model, self.on_groups_sb_changed,
+                                             active_group_name)
         active_group_name = self.groups_sb.get_value()
         self.bm.ensure_group_previews(active_group_name)
 

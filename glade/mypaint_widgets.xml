@@ -24,6 +24,15 @@
                         generic-name="elastic-expander" />
     <glade-widget-class name="CurveWidget" title="Curve Widget"
                         generic-name="curve" />
+    <glade-widget-class name="ItemSpinBox" title="Item SpinBox"
+                        generic-name="spinbox">
+      <properties>
+        <property id="size" save="False" query="False"
+                  default="0" visible="False" />
+      </properties>
+    </glade-widget-class>
+
+
   </glade-widget-classes>
 
   <glade-widget-group name="MyPaint" title="MyPaint Widgets">
@@ -35,6 +44,7 @@
     <glade-widget-class-ref name="ElasticVBox"/>
     <glade-widget-class-ref name="ElasticExpander"/>
     <glade-widget-class-ref name="CurveWidget"/>
+    <glade-widget-class-ref name="ItemSpinBox"/>
   </glade-widget-group>
 
 </glade-catalog>
