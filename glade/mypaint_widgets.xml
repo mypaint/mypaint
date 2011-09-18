@@ -22,6 +22,8 @@
                         generic-name="elastic-vbox" />
     <glade-widget-class name="ElasticExpander" title="Elastic Expander"
                         generic-name="elastic-expander" />
+    <glade-widget-class name="CurveWidget" title="Curve Widget"
+                        generic-name="curve" />
   </glade-widget-classes>
 
   <glade-widget-group name="MyPaint" title="MyPaint Widgets">
@@ -32,6 +34,7 @@
     <glade-widget-class-ref name="ElasticWindow"/>
     <glade-widget-class-ref name="ElasticVBox"/>
     <glade-widget-class-ref name="ElasticExpander"/>
+    <glade-widget-class-ref name="CurveWidget"/>
   </glade-widget-group>
 
 </glade-catalog>

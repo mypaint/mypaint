@@ -12,7 +12,7 @@ from gettext import gettext as _
 import gtk, os
 gdk = gtk.gdk
 
-from functionwindow import CurveWidget
+from curve import CurveWidget
 from lib import mypaintlib
 import windowing, filehandling
 
