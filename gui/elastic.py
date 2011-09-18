@@ -46,9 +46,11 @@ class ElasticContainer:
         w = alloc.width+dx
         h = alloc.height+dy
         if isinstance(self, gtk.Window):
+            self.set_size_request(-1, -1)
             self.resize(w, h)
-        self.set_size_request(w, h)
-        self.queue_resize()
+        else:
+            self.set_size_request(w, h)
+            self.queue_resize()
 
 
 class ElasticContent:
