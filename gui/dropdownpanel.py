@@ -13,17 +13,53 @@ import widgets
 
 
 class DropdownPanelButton (gtk.ToggleButton):
-    """Button which drops down a panel with arbitrary widgets.
+    """Button which drops down a panel with (almost) arbitrary widgets.
 
-    The panel iself is a specialised `gtk.Window` tightly bound to its button.
-    A widget can be added to it using `set_panel_widget()`.
+    The panel iself is a specialised `gtk.Window` bound to its button.
     """
 
-    def __init__(self, label_widget):
+    __gtype_name__ = "DropdownPanelButton"
+    __gproperties__ = {
+        'panel-widget': (gtk.Widget,
+                         "dropdown panel's widget",
+                         'The widget to display in the dropdown panel',
+                         gobject.PARAM_READWRITE),
+        }
+
+    def __init__(self, label_widget=None):
         """Construct with a button label widget.
         """
         gtk.ToggleButton.__init__(self)
+        if label_widget is not None:
+            self.add_label_widget_with_arrow(label_widget)
+        self._panel = DropdownPanel(self)
+        self.connect("button-release-event", self._button_release_cb)
+        self._panel.connect("hide", lambda *a: self.set_active(False))
+        self._panel.connect("show", lambda *a: self.set_active(True))
+        # Common L&F for buttons. Should probably leave to Glade.
+        self.set_name(widgets.BORDERLESS_BUTTON_NAME)
+        self.set_relief(gtk.RELIEF_NONE)
+        self.set_can_default(False)
+        self.set_can_focus(False)
+
+
+    def do_set_property(self, prop, value):
+        if prop.name == 'panel-widget':
+            self._panel.content_widget = value
+        else:
+            raise AttributeError, 'unknown property %s' % prop.name
+
+
+    def do_get_property(self, prop):
+        if prop.name == 'panel-widget':
+            return self._panel.content_widget
+        else:
+            raise AttributeError, 'unknown property %s' % prop.name
+
+
+    def add_label_widget_with_arrow(self, label_widget):
         arrow = gtk.Arrow(gtk.ARROW_DOWN, gtk.SHADOW_IN)
+        old_child = self.get_child()
         hbox = gtk.HBox()
         label_alignment = gtk.Alignment(0.0, 0.0, 1.0, 1.0)
         label_alignment.set_padding(0, 0, widgets.SPACING_TIGHT, 0)
@@ -31,25 +67,6 @@ class DropdownPanelButton (gtk.ToggleButton):
         hbox.pack_start(label_alignment, True, True)
         hbox.pack_start(arrow, False, False)
         self.add(hbox)
-        self._panel = DropdownPanel(self)
-        self.connect("button-release-event", self._button_release_cb)
-        self._panel.connect("hide", lambda *a: self.set_active(False))
-        self._panel.connect("show", lambda *a: self.set_active(True))
-        # Common L&F for buttons. Should probably factor out.
-        self.set_name(widgets.BORDERLESS_BUTTON_NAME)
-        self.set_relief(gtk.RELIEF_NONE)
-        self.set_can_default(False)
-        self.set_can_focus(False)
-
-
-
-    def set_panel_widget(self, widget):
-        """Sets the dropdown panel's content widget.
-        """
-        old = self._panel.get_child()
-        if old:
-            self._panel.remove(old)
-        self._panel.add(widget)
 
 
     def panel_hide(self, immediate=True, release=True, leave=True):
@@ -75,6 +92,7 @@ class DropdownPanel (gtk.Window):
 
     def __init__(self, panel_button):
         gtk.Window.__init__(self, type=gtk.WINDOW_POPUP)
+        self.content_widget = None
         self.set_modal(True)
         self.set_focus_on_map(False)
         self.set_can_focus(False)
@@ -178,6 +196,22 @@ class DropdownPanel (gtk.Window):
         self.set_transient_for(parent_window)
         self.hide_on_leave = False
         self.hide_on_release = False
+        child = self.get_child()
+        if child is None or child is not self.content_widget:
+            if child is not None:
+                self.remove(child)
+            p = self._panel_button
+            child = self.content_widget
+            while p is not None:
+                if "Glade" in p.get_name():
+                    label = "In Glade: cannot show this widget."
+                    if self.content_widget is None:
+                        label += "\n\nPanel Widget is not set.\n"
+                        label += "Please set it to a top-level widget."
+                    child = gtk.Label(label)
+                    break
+                p = p.parent
+            self.add(child)
         self.show_all()
         def deferred_grab():
             if not self.establish_grab(t):
@@ -236,6 +270,7 @@ class DropdownPanel (gtk.Window):
                 self._corrected_pos = True
 
 
+
 if __name__ == '__main__':
     import os, sys
     script = os.path.basename(sys.argv[0])
@@ -260,8 +295,7 @@ if __name__ == '__main__':
     vbox.pack_start(button1, False, False)
     vbox.pack_start(hsv, True, True)
     vbox.pack_start(button2, False, False)
-    dd.set_panel_widget(vbox)
+    dd.set_property('panel-widget', vbox)
     win.add(dd)
     win.show_all()
     gtk.main()
-

@@ -7,3 +7,5 @@ from gui.pixbuflist import PixbufList
 from gui.elastic import ElasticWindow, ElasticVBox, ElasticExpander
 from gui.curve import CurveWidget
 from gui.spinbox import ItemSpinBox
+from gui.dropdownpanel import DropdownPanelButton
+from gui.hsvcompat import ColorChangerHSV

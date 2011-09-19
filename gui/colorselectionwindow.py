@@ -17,7 +17,7 @@ import stock
 from lib import mypaintlib
 from lib.helpers import clamp,gdkpixbuf2numpy
 import dialogs
-from widgets import find_widgets, ColorChangerHSV
+from hsvcompat import ColorChangerHSV
 
 
 class ToolWidget (gtk.VBox):

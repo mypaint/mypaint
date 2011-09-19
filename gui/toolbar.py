@@ -24,6 +24,7 @@ from brushlib import brushsettings
 import stock
 import dropdownpanel
 import widgets
+from hsvcompat import ColorChangerHSV
 
 
 FRAMEWORK_XML = 'gui/toolbar.xml'
@@ -160,7 +161,7 @@ class ColorDropdownToolItem (gtk.ToolItem):
 
         panel_frame = gtk.Frame()
         panel_frame.set_shadow_type(gtk.SHADOW_OUT)
-        self.dropdown_button.set_panel_widget(panel_frame)
+        self.dropdown_button.set_property("panel-widget", panel_frame)
         panel_vbox = gtk.VBox()
         panel_vbox.set_spacing(widgets.SPACING_TIGHT)
         panel_vbox.set_border_width(widgets.SPACING)
@@ -181,7 +182,7 @@ class ColorDropdownToolItem (gtk.ToolItem):
         section_table.set_border_width(widgets.SPACING)
         section_frame.add(section_table)
 
-        hsv_widget = widgets.ColorChangerHSV(app, details=False)
+        hsv_widget = ColorChangerHSV(app, details=False)
         hsv_widget.set_size_request(175, 175)
         section_table.attach(hsv_widget, 0, 1, 0, 1)
 
@@ -292,7 +293,7 @@ class BrushDropdownToolItem (gtk.ToolItem):
 
         panel_frame = gtk.Frame()
         panel_frame.set_shadow_type(gtk.SHADOW_OUT)
-        self.dropdown_button.set_panel_widget(panel_frame)
+        self.dropdown_button.set_property("panel-widget", panel_frame)
         panel_vbox = gtk.VBox()
         panel_vbox.set_spacing(widgets.SPACING_TIGHT)
         panel_vbox.set_border_width(widgets.SPACING)
@@ -397,7 +398,7 @@ class BrushSettingsDropdownToolItem (gtk.ToolItem):
         frame = gtk.Frame()
         frame.add(self.vbox)
         frame.set_shadow_type(gtk.SHADOW_OUT)
-        self.button.set_panel_widget(frame)
+        self.button.set_property("panel-widget", frame)
         self.add(self.button)
 
     def set_app(self, app):

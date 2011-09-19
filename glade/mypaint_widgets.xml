@@ -32,6 +32,25 @@
       </properties>
     </glade-widget-class>
 
+    <glade-widget-class name="DropdownPanelButton" title="Dropdown Panel Button"
+                        generic-name="dropdown-panel-button">
+      <properties>
+        <property id="panel-widget"
+                  save="True"
+                  query="True"
+                  name="Panel Widget"
+                  visible="True">
+          <parameter-spec>
+            <type>GParamObject</type>
+            <value-type>GtkWidget</value-type>
+          </parameter-spec>
+          <tooltip>The window to present when clicked.</tooltip>
+        </property>
+      </properties>
+    </glade-widget-class>
+
+    <glade-widget-class name="ColorChangerHSV" title="ColorChanger's HSV"
+                        generic-name="hsvcompat" />
 
   </glade-widget-classes>
 
@@ -45,6 +64,8 @@
     <glade-widget-class-ref name="ElasticExpander"/>
     <glade-widget-class-ref name="CurveWidget"/>
     <glade-widget-class-ref name="ItemSpinBox"/>
+    <glade-widget-class-ref name="DropdownPanelButton"/>
+    <glade-widget-class-ref name="ColorChangerHSV"/>
   </glade-widget-group>
 
 </glade-catalog>
