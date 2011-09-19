@@ -106,7 +106,7 @@ class Layer:
         for tx, ty in src.surface.get_tiles():
             surf = dst.surface.get_tile_memory(tx, ty, readonly=False)
             #src.surface.composite_tile_over(surf, tx, ty, opacity=self.effective_opacity)
-            src.surface.composite_tile(surf, tx, ty, opacity=self.effective_opacity, compositeop=self.compositeop)
+            src.surface.composite_tile(surf, tx, ty, opacity=self.effective_opacity, mode=self.compositeop)
         dst.opacity = 1.0
 
     def get_stroke_info_at(self, x, y):
