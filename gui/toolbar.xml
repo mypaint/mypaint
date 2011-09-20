@@ -8,39 +8,37 @@ it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2 of the License, or
 (at your option) any later version.
 -->
+  <popup name="toolbar1-settings-menu">
+    <menuitem action="toolbar1_file"/>
+    <menuitem action="toolbar1_scrap"/>
+    <menuitem action="toolbar1_edit"/>
+    <menuitem action="toolbar1_blendmodes"/>
+    <menuitem action="toolbar1_view"/>
+    <menuitem action="toolbar1_subwindows"/>
+  </popup>
+
   <toolbar name="toolbar1">
-
-    <placeholder name="file-toolitems">
-      <separator/>
-      <toolitem action="Undo"/>
-      <toolitem action="Redo"/>
-    </placeholder>
-
+    <placeholder name="file-toolitems"/>
+    <separator/>
+    <placeholder name="scrap-toolitems"/>
+    <separator/>
+    <placeholder name="edit-toolitems"/>
+    <separator/>
     <placeholder name="paint-settings-toolitems">
-      <separator/>
       <toolitem action="ColorDropdown"/>
       <toolitem action="BrushDropdown"/>
       <toolitem action="BrushSettingsDropdown"/>
     </placeholder>
-
-    <placeholder name="view-toolitems">
-      <separator/>
-      <toolitem action="ResetView"/>
-      <toolitem action="ZoomIn"/>
-      <toolitem action="ZoomOut"/>
-      <toolitem action="RotateLeft"/>
-      <toolitem action="RotateRight"/>
-      <toolitem action="MirrorHorizontal"/>
-      <toolitem action="MirrorVertical"/>
-    </placeholder>
-
-    <placeholder action="toolset-toolitems">
-      <separator expand="true"/>
-      <toolitem action="ColorSelectionWindow"/>
-      <toolitem action="ColorSamplerWindow"/>
-      <toolitem action="BrushSelectionWindow"/>
-      <toolitem action="LayersWindow"/>
-      <toolitem action="ScratchWindow"/>
+    <separator/>
+    <placeholder name="blendmodes-toolitems"/>
+    <separator/>
+    <placeholder name="view-toolitems"/>
+    <separator/>
+    <placeholder name="subwindows-toolitems"/>
+    <separator expand="true"/>
+    <placeholder name="end-toolitems">
+      <toolitem action="Fullscreen"/>
     </placeholder>
   </toolbar>
+
 </ui>

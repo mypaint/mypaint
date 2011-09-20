@@ -63,9 +63,13 @@ class FileHandler(object):
         ('Save',         gtk.STOCK_SAVE, _('Save'), '<control>S', _("Save to a file"), self.save_cb),
         ('SaveAs',       gtk.STOCK_SAVE_AS, _('Save As...'), '<control><shift>S', _("Save to a file with a new name"), self.save_as_cb),
         ('Export',       gtk.STOCK_SAVE_AS, _('Export...'), '<control><shift>E', _("Export to a file"), self.save_as_cb),
-        ('SaveScrap',    None, _('Save As Scrap'), 'F2', _("Save to a new scrap file"), self.save_scrap_cb),
-        ('PrevScrap',    None, _('Open Previous Scrap'), 'F6', _("Load the previous scrap file, replacing the current drawing"), self.open_scrap_cb),
-        ('NextScrap',    None, _('Open Next Scrap'), 'F7', _("Load the next scrap file, replacing the current drawing"), self.open_scrap_cb),
+        ('SaveScrap',    gtk.STOCK_ADD, _('Save As Scrap'), 'F2',
+            _("Saves to a new scrap file. "
+              "If this drawing is currently saved as a scrap, this will "
+              "write a new revision of it."),
+            self.save_scrap_cb),
+        ('PrevScrap',    gtk.STOCK_GO_BACK, _('Open Previous Scrap'), 'F6', _("Load the previous scrap file, replacing the current drawing"), self.open_scrap_cb),
+        ('NextScrap',    gtk.STOCK_GO_FORWARD, _('Open Next Scrap'), 'F7', _("Load the next scrap file, replacing the current drawing"), self.open_scrap_cb),
         ]
         ag = gtk.ActionGroup('FileActions')
         ag.add_actions(file_actions)

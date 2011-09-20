@@ -26,6 +26,17 @@ import dropdownpanel
 import widgets
 
 
+FRAMEWORK_XML = 'gui/toolbar.xml'
+MERGEABLE_XML = [
+    ("toolbar1_file", 'gui/toolbar-file.xml', _("File handling")),
+    ("toolbar1_scrap", 'gui/toolbar-scrap.xml', _("Scraps switcher")),
+    ("toolbar1_edit", 'gui/toolbar-edit.xml', _("Undo and Redo")),
+    ("toolbar1_blendmodes", 'gui/toolbar-blendmodes.xml', _("Blend Modes")),
+    ("toolbar1_view", 'gui/toolbar-view.xml', _("View")),
+    ("toolbar1_subwindows", 'gui/toolbar-subwindows.xml', _("Subwindows")),
+    ]
+
+
 class MainToolbar (gtk.HBox):
     """The main 'toolbar': menu button and quick access to painting tools.
     """
@@ -37,15 +48,19 @@ class MainToolbar (gtk.HBox):
         gtk.HBox.__init__(self)
         self.draw_window = draw_window
         self.app = draw_window.app
+        self.toolbar1_ui_loaded = {}  # {name: merge_id, ...}
         self.init_actions()
-        toolbarpath = os.path.join(self.app.datapath, 'gui/toolbar.xml')
-        toolbarbar_xml = open(toolbarpath).read()
-        self.app.ui_manager.add_ui_from_string(toolbarbar_xml)
+        toolbarpath = os.path.join(self.app.datapath, FRAMEWORK_XML)
+        self.app.ui_manager.add_ui_from_file(toolbarpath)
         self.toolbar1 = self.app.ui_manager.get_widget('/toolbar1')
         self.toolbar1.set_style(gtk.TOOLBAR_ICONS)
         self.toolbar1.set_icon_size(self.icon_size)
         self.toolbar1.set_border_width(0)
         self.toolbar1.connect("style-set", self.on_toolbar1_style_set)
+        self.toolbar1.connect("popup-context-menu",
+            self.on_toolbar1_popup_context_menu)
+        self.toolbar1_popup = self.app.ui_manager\
+            .get_widget('/toolbar1-settings-menu')
         self.menu_button = FakeMenuButton(_("MyPaint"), draw_window.popupmenu)
         self.menu_button.set_border_width(0)
         self.pack_start(self.menu_button, False, False)
@@ -56,7 +71,8 @@ class MainToolbar (gtk.HBox):
 
     def init_actions(self):
         ag = self.draw_window.action_group
-        self.actions = [
+        actions = []
+        self.item_actions = [
                 ColorDropdownToolAction("ColorDropdown", None,
                     _("Current Color"), None),
                 BrushDropdownToolAction("BrushDropdown", None,
@@ -64,19 +80,57 @@ class MainToolbar (gtk.HBox):
                 BrushSettingsDropdownToolAction("BrushSettingsDropdown", None,
                     _("Brush Settings"), None),
                 ]
-        for toolaction in self.actions:
-            ag.add_action(toolaction)
+        actions += self.item_actions
+
+        self.settings_actions = []
+        for name, ui_xml, label in MERGEABLE_XML:
+            action = gtk.ToggleAction(name, label, None, None)
+            action.connect("toggled", self.on_settings_toggle, ui_xml)
+            self.settings_actions.append(action)
+        actions += self.settings_actions
+
+        for action in actions:
+            ag.add_action(action)
 
     def init_proxies(self):
-        for action in self.actions:
+        for action in self.item_actions:
             for p in action.get_proxies():
                 p.set_app(self.app)
+        # Merge in UI pieces based on the user's saved preferences
+        for action in self.settings_actions:
+            name = action.get_property("name")
+            active = self.app.preferences["ui.toolbar_items"].get(name, False)
+            action.set_active(active)
+            action.toggled()
 
     def on_toolbar1_style_set(self, widget, oldstyle):
         style = widget.style.copy()
         self.menu_button.set_style(style)
         style = widget.style.copy()
         self.set_style(style)
+
+    def on_toolbar1_popup_context_menu(self, toolbar, x, y, button):
+        menu = self.toolbar1_popup
+        def posfunc(m):
+            return x, y, True
+        menu.popup(None, None, posfunc, button, 0)
+
+    def on_settings_toggle(self, toggleaction, ui_xml_file):
+        name = toggleaction.get_property("name")
+        merge_id = self.toolbar1_ui_loaded.get(name, None)
+        if toggleaction.get_active():
+            self.app.preferences["ui.toolbar_items"][name] = True
+            if merge_id is not None:
+                return
+            ui_xml_path = os.path.join(self.app.datapath, ui_xml_file)
+            merge_id = self.app.ui_manager.add_ui_from_file(ui_xml_path)
+            self.toolbar1_ui_loaded[name] = merge_id
+        else:
+            self.app.preferences["ui.toolbar_items"][name] = False
+            if merge_id is None:
+                return
+            self.app.ui_manager.remove_ui(merge_id)
+            self.toolbar1_ui_loaded.pop(name)
 
 
 class ColorDropdownToolItem (gtk.ToolItem):

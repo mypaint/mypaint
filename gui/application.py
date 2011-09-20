@@ -206,6 +206,12 @@ class Application: # singleton
             'ui.hide_toolbar_in_fullscreen': True,
             'ui.hide_subwindows_in_fullscreen': True,
             'ui.parts': dict(main_toolbar=True, menubar=False),
+            'ui.toolbar_items': dict(
+                toolbar1_file=False,
+                toolbar1_edit=True,
+                toolbar1_view=False,
+                toolbar1_subwindows=True,
+            ),
             'saving.default_format': 'openraster',
             'brushmanager.selected_brush' : None,
             'brushmanager.selected_groups' : [],
