@@ -8,6 +8,7 @@
 
 import layer
 import helpers
+from gettext import gettext as _
 
 class CommandStack:
     def __init__(self):
@@ -70,6 +71,7 @@ class Action:
     undo and redo methods. They should have a reference to the document in 
     self.doc'''
     automatic_undo = False
+    display_name = _("Unknown Action")
 
     def redo(self):
         raise NotImplementedError
@@ -89,6 +91,7 @@ class Action:
         self.doc.call_doc_observers()
 
 class Stroke(Action):
+    display_name = _("Painting")
     def __init__(self, doc, stroke, snapshot_before):
         """called only when the stroke was just completed and is now fully rendered"""
         self.doc = doc
@@ -104,6 +107,7 @@ class Stroke(Action):
         self.doc.layer.load_snapshot(self.after)
 
 class ClearLayer(Action):
+    display_name = _("Clear Layer")
     def __init__(self, doc):
         self.doc = doc
     def redo(self):
@@ -116,6 +120,8 @@ class ClearLayer(Action):
         self._notify_document_observers()
 
 class LoadLayer(Action):
+    display_name = _("Load Layer")
+
     def __init__(self, doc, data, x, y):
         self.doc = doc
         self.data = [x, y, data]
@@ -129,6 +135,7 @@ class LoadLayer(Action):
 
 class MergeLayer(Action):
     """merge the current layer into dst"""
+    display_name = _("Merge Layers")
     def __init__(self, doc, dst_idx):
         self.doc = doc
         self.dst_layer = self.doc.layers[dst_idx]
@@ -150,6 +157,7 @@ class MergeLayer(Action):
         self._notify_document_observers()
 
 class AddLayer(Action):
+    display_name = _("Add Layer")
     def __init__(self, doc, insert_idx=None, after=None, name=''):
         self.doc = doc
         self.insert_idx = insert_idx
@@ -169,6 +177,7 @@ class AddLayer(Action):
         self._notify_document_observers()
 
 class RemoveLayer(Action):
+    display_name = _("Remove Layer")
     def __init__(self, doc,layer=None):
         self.doc = doc
         self.layer = layer
@@ -191,6 +200,7 @@ class RemoveLayer(Action):
         self._notify_document_observers()
 
 class SelectLayer(Action):
+    display_name = _("Select Layer")
     automatic_undo = True
     def __init__(self, doc, idx):
         self.doc = doc
@@ -205,6 +215,7 @@ class SelectLayer(Action):
         self._notify_document_observers()
 
 class MoveLayer(Action):
+    display_name = _("Move Layer")
     def __init__(self, doc, was_idx, new_idx, select_new=False):
         self.doc = doc
         self.was_idx = was_idx
@@ -230,6 +241,7 @@ class MoveLayer(Action):
         self._notify_document_observers()
 
 class DuplicateLayer(Action):
+    display_name = _("Duplicate Layer")
     def __init__(self, doc, insert_idx=None, name=''):
         self.doc = doc
         self.insert_idx = insert_idx
@@ -249,6 +261,7 @@ class DuplicateLayer(Action):
         self._notify_document_observers()
 
 class ReorderLayers(Action):
+    display_name = _("Reorder Layer")
     def __init__(self, doc, new_order):
         self.doc = doc
         self.old_order = doc.layers[:]
@@ -282,6 +295,12 @@ class SetLayerVisibility(Action):
         self.layer.visible = self.old_visibility
         self._notify_canvas_observers([self.layer])
         self._notify_document_observers()
+    @property
+    def display_name(self):
+        if self.new_visibility:
+            return _("Make Layer Visible")
+        else:
+            return _("Make Layer Invisible")
 
 class SetLayerLocked (Action):
     def __init__(self, doc, locked, layer):
@@ -297,8 +316,15 @@ class SetLayerLocked (Action):
         self.layer.locked = self.old_locked
         self._notify_canvas_observers([self.layer])
         self._notify_document_observers()
+    @property
+    def display_name(self):
+        if self.new_locked:
+            return _("Lock Layer")
+        else:
+            return _("Unlock Layer")
 
 class SetLayerOpacity(Action):
+    display_name = _("Change Layer Visibility")
     def __init__(self, doc, opacity, layer=None):
         self.doc = doc
         self.new_opacity = opacity

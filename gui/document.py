@@ -75,12 +75,8 @@ class Document(object):
     def init_actions(self):
         # name, stock id, label, accelerator, tooltip, callback
         actions = [
-            ('Undo', gtk.STOCK_UNDO, _('Undo'), 'Z',
-                _("Undo the last action"),
-                self.undo_cb),
-            ('Redo', gtk.STOCK_REDO, _('Redo'), 'Y',
-                _("Redo the last undo action"),
-                self.redo_cb),
+            ('Undo', gtk.STOCK_UNDO, None, 'Z', None, self.undo_cb),
+            ('Redo', gtk.STOCK_REDO, None, 'Y', None, self.redo_cb),
 
             ('Brighter',     None, _('Brighter'), None, None, self.brighter_cb),
             ('Smaller',      None, _('Smaller'), 'd', None, self.brush_smaller_cb),
@@ -649,8 +645,22 @@ class Document(object):
         ag = self.action_group
         undo_action = ag.get_action("Undo")
         undo_action.set_sensitive(len(stack.undo_stack) > 0)
+        if len(stack.undo_stack) > 0:
+            cmd = stack.undo_stack[-1]
+            desc = _("Undo %s") % cmd.display_name
+        else:
+            desc = _("Undo: nothing to undo")
+        undo_action.set_label(desc)
+        undo_action.set_tooltip(desc)
         redo_action = ag.get_action("Redo")
         redo_action.set_sensitive(len(stack.redo_stack) > 0)
+        if len(stack.redo_stack) > 0:
+            cmd = stack.redo_stack[-1]
+            desc = _("Redo %s") % cmd.display_name
+        else:
+            desc = _("Redo: nothing to redo")
+        redo_action.set_label(desc)
+        redo_action.set_tooltip(desc)
 
     def frame_changed_cb(self):
         self.tdw.queue_draw()
