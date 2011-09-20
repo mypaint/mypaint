@@ -254,12 +254,13 @@ class Window (windowing.MainWindow, layout.MainWindow):
             ('ViewMenu', None, _('View')),
             ('MenuishBarMenu', None, _('Toolbars')),
             ('ShowPopupMenu',    None, _('Popup Menu'), 'Menu', None, self.popupmenu_show_cb),
-            ('Fullscreen',   gtk.STOCK_FULLSCREEN, _('Fullscreen'), 'F11', None, self.fullscreen_cb),
+            ('Fullscreen',   gtk.STOCK_FULLSCREEN, None, 'F11', None, self.fullscreen_cb),
             ('ViewHelp',  gtk.STOCK_HELP, _('Help'), None, None, self.show_infodialog_cb),
             ]
         ag = self.action_group = gtk.ActionGroup('WindowActions')
         self.app.add_action_group(ag)
         ag.add_actions(actions)
+        self.update_fullscreen_action()
 
         # Toggle actions
         toggle_actions = [
@@ -749,6 +750,18 @@ class Window (windowing.MainWindow, layout.MainWindow):
                 self.set_show_subwindows(True)
                 del self._restore_subwindows_on_unfullscreen
         self.update_menu_button()
+        self.update_fullscreen_action()
+
+    def update_fullscreen_action(self):
+        action = self.action_group.get_action("Fullscreen")
+        if self.is_fullscreen:
+            action.set_stock_id(gtk.STOCK_LEAVE_FULLSCREEN)
+            action.set_tooltip(_("Leave Fullscreen Mode"))
+            action.set_label(_("UnFullscreen"))
+        else:
+            action.set_stock_id(gtk.STOCK_FULLSCREEN)
+            action.set_tooltip(_("Enter Fullscreen Mode"))
+            action.set_label(_("Fullscreen"))
 
     def popupmenu_show_cb(self, action):
         self.show_popupmenu()
