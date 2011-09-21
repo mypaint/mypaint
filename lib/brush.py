@@ -54,7 +54,7 @@ class BrushInfo:
 
     def __init__(self, string=None):
         """Construct a BrushInfo object, optionally parsing it."""
-        self.settings = None
+        self.settings = {}
         self.cache_str = None
         self.observers = [self.settings_changed_cb]
         self.observers_hidden = []

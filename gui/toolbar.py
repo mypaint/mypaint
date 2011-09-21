@@ -587,9 +587,12 @@ class ManagedBrushPreview (gtk.Image):
     def set_from_managed_brush(self, brush):
         if brush is None:
             return
+        self.pixbuf = None
         if not brush.preview:
-            brush.load_preview()
-        self.pixbuf = brush.preview.copy()
+            if brush.name is not None:   # e.g. one from a strokemap
+                brush.load_preview()
+        if brush.preview:
+            self.pixbuf = brush.preview.copy()
         self.brush_name = brush.get_display_name()
         self._update()
 
@@ -600,23 +603,26 @@ class ManagedBrushPreview (gtk.Image):
             self.image_size = alloc.width, alloc.height
             self._update()
 
+    def _get_scaled_pixbuf(self, size):
+        if self.pixbuf is None:
+            theme = gtk.icon_theme_get_default()
+            return theme.load_icon(gtk.STOCK_MISSING_IMAGE, size, 0)
+        else:
+            return self.pixbuf.scale_simple(size, size, gdk.INTERP_BILINEAR)
 
     def on_query_tooltip(self, widget, x, y, keyboard_mode, tooltip):
-        if not self.pixbuf:
-            return False
         s = self.TOOLTIP_ICON_SIZE
-        scaled_pixbuf = self.pixbuf.scale_simple(s, s, gdk.INTERP_BILINEAR)
+        scaled_pixbuf = self._get_scaled_pixbuf(s)
         tooltip.set_icon(scaled_pixbuf)
         tooltip.set_text(self.brush_name)  # XXX markup and summary of changes
         return True
 
-
     def _update(self):
-        if not (self.pixbuf and self.image_size):
+        if not self.image_size:
             return
         w, h = self.image_size
         s = min(w, h)
-        scaled_pixbuf = self.pixbuf.scale_simple(s, s, gdk.INTERP_BILINEAR)
+        scaled_pixbuf = self._get_scaled_pixbuf(s)
         self.set_from_pixbuf(scaled_pixbuf)
 
 

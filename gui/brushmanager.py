@@ -19,6 +19,7 @@ from os.path import basename
 import urllib
 import gobject
 from lib.brush import BrushInfo
+from warnings import warn
 
 preview_w = 128
 preview_h = 128
@@ -801,6 +802,10 @@ class ManagedBrush(object):
 
     def load_preview(self):
         """Loads the brush preview as pixbuf into the brush."""
+        if self.name is None:
+            warn("Attempt to load preview for unnamed brush, don't do that.",
+                 RuntimeWarning, 2)
+            return
         prefix = self.get_fileprefix()
 
         filename = prefix + '_prev.png'
