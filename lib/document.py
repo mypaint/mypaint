@@ -22,7 +22,7 @@ N = tiledsurface.N
 LOAD_CHUNK_SIZE = 64*1024
 
 LAYER_MODE_DICT = {
-  "svg:over" : "normal",
+  "svg:src-over" : "normal",
   "svg:multiply" : "multiply",
   "svg:color-burn" : "burn",
   "svg:color-dodge" : "dodge",
