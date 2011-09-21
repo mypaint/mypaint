@@ -154,14 +154,14 @@ class Surface(mypaintlib.TiledSurface):
         if dst.shape[2] == 4 and dst.dtype == 'uint16':
             # rarely used (for merging layers, also when exporting a transparent PNGs)
             # src (premultiplied) OVER dst (premultiplied)
-            # dstColor = srcColor + (1.0 - srcAlpha) * dstColor
-            srcAlpha = (opacity * src[:,:,3:4]).astype('float') / (1 << 15)
-            dstAlpha = (dst[:,:,3:4]).astype('float') / (1 << 15)
-            src_premult = srcAlpha * src[:,:,0:3].astype('float') / (1<<15)
-            dst_premult = dstAlpha * dst[:,:,0:3].astype('float') / (1<<15)
+            # cB = cA + (1.0 - aA) * cB
+            #  where B = dst, A = src
+            srcAlpha = src[:,:,3:4].astype('float') * opacity / (1 << 15)
+            dstAlpha = dst[:,:,3:4].astype('float') / (1 << 15)
+            src_premult = src[:,:,0:3].astype('float') * opacity / (1<<15)
+            dst_premult = dst[:,:,0:3].astype('float') / (1<<15)
             dst_c = clip(src_premult + (1.0 - srcAlpha) * dst_premult, 0.0, 1.0)
             dst_a = clip(srcAlpha + dstAlpha - srcAlpha * dstAlpha, 0.0, 1.0)
-            dst_c = where(dst_a == 0, 1.0, dst_c / dst_a)
             dst[:,:,0:3] = clip(dst_c * (1<<15), 0, (1<<15) - 1).astype('uint16')
             dst[:,:,3:4] = clip(dst_a * (1<<15), 0, (1<<15) - 1).astype('uint16')
         elif dst.shape[2] == 3 and dst.dtype == 'uint16':
@@ -185,11 +185,10 @@ class Surface(mypaintlib.TiledSurface):
             # cA * cB +  cA * (1 - aB) + cB * (1 - aA)
             srcAlpha = (opacity * src[:,:,3:4]).astype('float') / (1 << 15)
             dstAlpha = (dst[:,:,3:4]).astype('float') / (1 << 15)
-            src_premult = srcAlpha * src[:,:,0:3].astype('float') / (1<<15)
-            dst_premult = dstAlpha * dst[:,:,0:3].astype('float') / (1<<15)
+            src_premult = src[:,:,0:3].astype('float') * opacity / (1<<15)
+            dst_premult = dst[:,:,0:3].astype('float') / (1<<15)
             dst_c = clip(src_premult * dst_premult +  src_premult * (1.0 - dstAlpha) + dst_premult * (1.0 - srcAlpha),0.0, 1.0)
             dst_a = clip(srcAlpha + dstAlpha - srcAlpha * dstAlpha, 0.0, 1.0)
-            dst_c = where(dst_a == 0, 1.0, dst_c / dst_a)
             dst[:,:,0:3] = clip(dst_c * (1<<15), 0, (1<<15) - 1).astype('uint16')
             dst[:,:,3:4] = clip(dst_a * (1<<15), 0, (1<<15) - 1).astype('uint16')
         elif dst.shape[2] == 3 and dst.dtype == 'uint16':
@@ -213,11 +212,10 @@ class Surface(mypaintlib.TiledSurface):
             # cA + cB - cA * cB
             srcAlpha = (opacity * src[:,:,3:4]).astype('float') / (1 << 15)
             dstAlpha = (dst[:,:,3:4]).astype('float') / (1 << 15)
-            src_premult = srcAlpha * src[:,:,0:3].astype('float') / (1<<15)
-            dst_premult = dstAlpha * dst[:,:,0:3].astype('float') / (1<<15)
+            src_premult = src[:,:,0:3].astype('float') * opacity / (1<<15)
+            dst_premult = dst[:,:,0:3].astype('float') / (1<<15)
             dst_c = clip(src_premult + dst_premult - src_premult * dst_premult, 0, 1)
             dst_a = clip(srcAlpha + dstAlpha - srcAlpha * dstAlpha, 0, 1)
-            dst_c = where(dst_a == 0, 1.0, dst_c / dst_a)
             dst[:,:,0:3] = clip(dst_c * (1<<15),0, (1<<15) - 1).astype('uint16')
             dst[:,:,3:4] = clip(dst_a * (1<<15),0, (1<<15) - 1).astype('uint16')
         elif dst.shape[2] == 3 and dst.dtype == 'uint16':
@@ -244,15 +242,14 @@ class Surface(mypaintlib.TiledSurface):
             #  where B = dst, A = src
             aA = (opacity * src[:,:,3:4]).astype('float') / (1 << 15)
             aB = (dst[:,:,3:4]).astype('float') / (1 << 15)
-            cA = aA * src[:,:,0:3].astype('float') / (1<<15)
-            cB = aB * dst[:,:,0:3].astype('float') / (1<<15)
+            cA = src[:,:,0:3].astype('float') * opacity / (1<<15)
+            cB = dst[:,:,0:3].astype('float') / (1<<15)
             dst_c = where(cA * aB + cB * aA <= aA * aB,
                          cA * (1 - aB) + cB * (1 - aA),
                          where(cA == 0,
                                1.0,
                                (aA * (cA * aB + cB * aA - aA * aB) / cA) + cA * (1.0 - aB) + cB * (1.0 - aA)))
             dst_a = aA + aB - aA * aB
-            dst_c = where(dst_a == 0, 1.0, dst_c / dst_a)
             dst[:,:,0:3] = clip(dst_c * (1<<15), 0, (1<<15) - 1).astype('uint16')
             dst[:,:,3:4] = clip(dst_a * (1<<15), 0, (1<<15) - 1).astype('uint16')
         elif dst.shape[2] == 3 and dst.dtype == 'uint16':
@@ -279,13 +276,12 @@ class Surface(mypaintlib.TiledSurface):
             #  where B = dst, A = src
             aA = (opacity * src[:,:,3:4]).astype('float') / (1 << 15)
             aB = (dst[:,:,3:4]).astype('float') / (1 << 15)
-            cA = aA * src[:,:,0:3].astype('float') / (1<<15)
-            cB = aB * dst[:,:,0:3].astype('float') / (1<<15)
+            cA = src[:,:,0:3].astype('float') * opacity / (1<<15)
+            cB = dst[:,:,0:3].astype('float') / (1<<15)
             dst_c = where(cA * aB + cB * aA >= aA * aB,
                          aA * aB + cA * (1 - aB) + cB * (1 - aA),
                          where(cA == aA, 1.0, cB * aA / where(aA == 0, 1.0, 1.0 - cA / aA)) + cA * (1.0 - aB) + cB * (1.0 - aA))
             dst_a = (aA + aB - aA * aB)
-            dst_c = where(dst_a == 0, 1.0, dst_c / dst_a)
             dst[:,:,0:3] = clip(dst_c * (1<<15),0, (1<<15) - 1).astype('uint16')
             dst[:,:,3:4] = clip(dst_a * (1<<15),0, (1<<15) - 1).astype('uint16')
         elif dst.shape[2] == 3 and dst.dtype == 'uint16':
