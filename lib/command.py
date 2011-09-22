@@ -348,6 +348,7 @@ class SetLayerOpacity(Action):
         self._notify_document_observers()
 
 class SetLayerCompositeOp(Action):
+    display_name = _("Change Layer Blending Mode")
     def __init__(self, doc, compositeop, layer=None):
         self.doc = doc
         self.new_compositeop = compositeop
