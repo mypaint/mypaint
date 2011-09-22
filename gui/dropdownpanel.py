@@ -76,6 +76,7 @@ class DropdownPanel (gtk.Window):
         self._panel_button = panel_button
         self._grabbed = False
         self._corrected_pos = False
+        self.connect("realize", self._realize_cb)
         self.connect("map-event", self._map_event_cb)
         self.connect("button-press-event", self._button_press_event_cb)
         self.connect("hide", self._hide_cb)
@@ -179,18 +180,26 @@ class DropdownPanel (gtk.Window):
             self._grabbed = False
         self.grab_remove()
 
+    # Positioning and initial geometry
+
     def _realize_cb(self, widget):
         self.window.set_type_hint(gdk.WINDOW_TYPE_HINT_DROPDOWN_MENU)
+        x, y = self._get_panel_pos()
+        self.parse_geometry("+%d+%d" % (x, y))
 
     def _map_event_cb(self, widget, event):
-        # Set initial geometry as best we can.
-        x, y = self._panel_button.window.get_origin()
-        x += self._panel_button.allocation.x
-        y += self._panel_button.allocation.y
-        y += self._panel_button.allocation.height
-        x, y = int(x), int(y)
+        x, y = self._get_panel_pos()
         gobject.idle_add(self.move, x, y)
         self._corrected_pos = False
+
+    def _get_panel_pos(self):
+        button = self._panel_button
+        assert button.get_mapped()
+        x, y = button.window.get_origin()
+        x += button.allocation.x
+        y += button.allocation.y
+        y += button.allocation.height
+        return int(x), int(y)
 
     def _configure_cb(self, widget, event):
         # Constrain window to fit on its current monitor, if possible.
