@@ -11,11 +11,26 @@
 from numpy import *
 import time
 import mypaintlib, helpers
+from gettext import gettext as _
 
 tilesize = N = mypaintlib.TILE_SIZE
 MAX_MIPMAP_LEVEL = mypaintlib.MAX_MIPMAP_LEVEL
 
+COMPOSITE_OPS = [
+    # (internal-name, display-name)
+    ("svg:src-over", _("Normal")),
+    ("svg:multiply", _("Multiply")),
+    ("svg:color-burn", _("Burn")),
+    ("svg:color-dodge", _("Dodge")),
+    ("svg:screen", _("Screen")),
+    ]
+
+VALID_COMPOSITE_OPS = set([n for n, d in COMPOSITE_OPS])
+DEFAULT_COMPOSITE_OP = COMPOSITE_OPS[0][0]
+
+
 import pixbufsurface
+
 
 class Tile:
     def __init__(self, copy_from=None):
@@ -30,7 +45,8 @@ class Tile:
 
     def copy(self):
         return Tile(copy_from=self)
-        
+
+
 # tile for read-only operations on empty spots
 transparent_tile = Tile()
 transparent_tile.readonly = True
@@ -108,7 +124,7 @@ class Surface(mypaintlib.TiledSurface):
             assert self.mipmap_level == 0
             self.mark_mipmap_dirty(tx, ty)
         return t.rgba
-        
+
     def mark_mipmap_dirty(self, tx, ty):
         if self.mipmap_level > 0:
             self.tiledict[(tx, ty)] = mipmap_dirty_tile
@@ -127,25 +143,30 @@ class Surface(mypaintlib.TiledSurface):
         else:
             mypaintlib.tile_convert_rgba16_to_rgba8(src, dst)
 
-    def composite_tile(self, dst, tx, ty, mipmap_level=0, opacity=1.0, mode='normal'):
-        if mode == 'normal' or mode == 'over':
+
+    def composite_tile(self, dst, tx, ty, mipmap_level=0, opacity=1.0,
+                       mode=DEFAULT_COMPOSITE_OP):
+        """Composite one tile of this surface over a NumPy array.
+
+        Composite one tile of this surface over the array dst, modifying only dst.
+        """
+        if mode == 'svg:src-over':
             return self.composite_tile_over(dst, tx, ty, mipmap_level, opacity)
-        elif mode == 'multiply':
+        elif mode == 'svg:multiply':
             return self.composite_tile_multiply(dst, tx, ty, mipmap_level, opacity)
-        elif mode == 'screen':
+        elif mode == 'svg:screen':
             return self.composite_tile_screen(dst, tx, ty, mipmap_level, opacity)
-        elif mode == 'color-burn' or mode == 'burn':
+        elif mode == 'svg:color-burn':
             return self.composite_tile_burn(dst, tx, ty, mipmap_level, opacity)
-        elif mode == 'color-dodge' or mode == 'dodge':
+        elif mode == 'svg:color-dodge':
             return self.composite_tile_dodge(dst, tx, ty, mipmap_level, opacity)
         else:
-            raise NotImplementedError
+            raise NotImplementedError, mode
+
 
     def composite_tile_over(self, dst, tx, ty, mipmap_level=0, opacity=1.0, mode=0):
+        """The default "svg:src-over" layer composite op implementation.
         """
-        composite one tile of this surface over the array dst, modifying only dst
-        """
-
         if self.mipmap_level < mipmap_level:
             return self.mipmap.composite_tile_over(dst, tx, ty, mipmap_level, opacity)
         if not (tx,ty) in self.tiledict:
@@ -169,11 +190,10 @@ class Surface(mypaintlib.TiledSurface):
         else:
             raise NotImplementedError
 
-    def composite_tile_multiply(self, dst, tx, ty, mipmap_level=0, opacity=1.0, mode=0):
-        """
-        composite one tile of this surface over the array dst, modifying only dst
-        """
 
+    def composite_tile_multiply(self, dst, tx, ty, mipmap_level=0, opacity=1.0, mode=0):
+        """The "svg:multiply" layer composite op implementation.
+        """
         if self.mipmap_level < mipmap_level:
             return self.mipmap.composite_tile_multiply(dst, tx, ty, mipmap_level, opacity)
         if not (tx,ty) in self.tiledict:
@@ -196,11 +216,10 @@ class Surface(mypaintlib.TiledSurface):
         else:
             raise NotImplementedError
 
-    def composite_tile_screen(self, dst, tx, ty, mipmap_level=0, opacity=1.0, mode=0):
-        """
-        composite one tile of this surface over the array dst, modifying only dst
-        """
 
+    def composite_tile_screen(self, dst, tx, ty, mipmap_level=0, opacity=1.0, mode=0):
+        """The "svg:screen" layer composite op implementation.
+        """
         if self.mipmap_level < mipmap_level:
             return self.mipmap.composite_tile_screen(dst, tx, ty, mipmap_level, opacity)
         if not (tx,ty) in self.tiledict:
@@ -223,11 +242,10 @@ class Surface(mypaintlib.TiledSurface):
         else:
             raise NotImplementedError
 
-    def composite_tile_burn(self, dst, tx, ty, mipmap_level=0, opacity=1.0, mode=0):
-        """
-        composite one tile of this surface over the array dst, modifying only dst
-        """
 
+    def composite_tile_burn(self, dst, tx, ty, mipmap_level=0, opacity=1.0, mode=0):
+        """The "svg:color-burn" layer composite op implementation.
+        """
         if self.mipmap_level < mipmap_level:
             return self.mipmap.composite_tile_burn(dst, tx, ty, mipmap_level, opacity)
         if not (tx,ty) in self.tiledict:
@@ -257,11 +275,10 @@ class Surface(mypaintlib.TiledSurface):
         else:
             raise NotImplementedError
 
-    def composite_tile_dodge(self, dst, tx, ty, mipmap_level=0, opacity=1.0, mode=0):
-        """
-        composite one tile of this surface over the array dst, modifying only dst
-        """
 
+    def composite_tile_dodge(self, dst, tx, ty, mipmap_level=0, opacity=1.0, mode=0):
+        """The "svg:color-dodge" layer composite op implementation.
+        """
         if self.mipmap_level < mipmap_level:
             return self.mipmap.composite_tile_dodge(dst, tx, ty, mipmap_level, opacity)
         if not (tx,ty) in self.tiledict:
@@ -288,6 +305,7 @@ class Surface(mypaintlib.TiledSurface):
             mypaintlib.tile_composite_rgba16_dodge_rgb16(src, dst, opacity)
         else:
             raise NotImplementedError
+
 
     def save_snapshot(self):
         sshot = SurfaceSnapshot()

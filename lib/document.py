@@ -21,17 +21,7 @@ import brush
 N = tiledsurface.N
 LOAD_CHUNK_SIZE = 64*1024
 
-LAYER_MODE_DICT = {
-  "svg:src-over" : "normal",
-  "svg:multiply" : "multiply",
-  "svg:color-burn" : "burn",
-  "svg:color-dodge" : "dodge",
-  "svg:screen" : "screen"
-}
-
-REVERSE_LAYER_MODE_DICT = {}
-for key in LAYER_MODE_DICT.keys():
-    REVERSE_LAYER_MODE_DICT[LAYER_MODE_DICT[key]] = key
+from tiledsurface import DEFAULT_COMPOSITE_OP, VALID_COMPOSITE_OPS
 
 class SaveLoadError(Exception):
     """Expected errors on loading or saving, like missing permissions or non-existing files."""
@@ -328,6 +318,8 @@ class Document():
 
     def set_layer_compositeop(self, compositeop, layer=None):
         """Sets the composition-operation of a layer. If layer=None, works on the current layer"""
+        if compositeop not in VALID_COMPOSITE_OPS:
+            compositeop = DEFAULT_COMPOSITE_OP
         cmd = self.get_last_command()
         if isinstance(cmd, command.SetLayerCompositeOp):
             self.undo()
@@ -364,7 +356,7 @@ class Document():
         junk, ext = os.path.splitext(filename)
         ext = ext.lower().replace('.', '')
         save = getattr(self, 'save_' + ext, self.unsupported)
-        try:        
+        try:
             save(filename, **kwargs)
         except gobject.GError, e:
             traceback.print_exc()
@@ -512,7 +504,7 @@ class Document():
             z.write(tmp, name)
             os.remove(tmp)
 
-        def add_layer(x, y, opac, surface, name, layer_name, visible=True, compositeop='over', rect=[]):
+        def add_layer(x, y, opac, surface, name, layer_name, visible=True, compositeop=DEFAULT_COMPOSITE_OP, rect=[]):
             layer = ET.Element('layer')
             stack.append(layer)
             store_surface(surface, name, rect)
@@ -523,12 +515,9 @@ class Document():
             a['x'] = str(x)
             a['y'] = str(y)
             a['opacity'] = str(opac)
-            composite_op_str = "svg:over"
-            try:
-                composite_op_str = REVERSE_LAYER_MODE_DICT[compositeop]
-            except KeyError:
-                composite_op_str = "svg:over"
-            a['composite-op'] = composite_op_str
+            if compositeop not in VALID_COMPOSITE_OPS:
+                compositeop = DEFAULT_COMPOSITE_OP
+            a['composite-op'] = compositeop
             if visible:
                 a['visibility'] = 'visible'
             else:
@@ -661,15 +650,10 @@ class Document():
             x = int(a.get('x', '0'))
             y = int(a.get('y', '0'))
             opac = float(a.get('opacity', '1.0'))
-            compositeop_raw = a.get('composite-op', 'svg:over')
-            try:
-                compositeop = LAYER_MODE_DICT[compositeop_raw]
-            except KeyError:
-                if compositeop_raw in REVERSE_LAYER_MODE_DICT:
-                    compositeop = compositeop_raw
-                else:
-                    compositeop = "normal"
-                    
+            compositeop = str(a.get('composite-op', DEFAULT_COMPOSITE_OP))
+            if compositeop not in VALID_COMPOSITE_OPS:
+                compositeop = DEFAULT_COMPOSITE_OP
+
             visible = not 'hidden' in a.get('visibility', 'visible')
             self.add_layer(insert_idx=0, name=name)
             last_pixbuf = pixbuf

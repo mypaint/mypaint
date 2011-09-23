@@ -6,6 +6,7 @@ import pango
 
 import dialogs
 import stock
+from lib.tiledsurface import COMPOSITE_OPS
 
 def stock_button(stock_id):
     b = gtk.Button()
@@ -13,6 +14,13 @@ def stock_button(stock_id):
     img.set_from_stock(stock_id, gtk.ICON_SIZE_MENU)
     b.add(img)
     return b
+
+
+def make_composite_op_model():
+    model = gtk.ListStore(str, str)
+    for name, display_name in COMPOSITE_OPS:
+        model.append([name, display_name])
+    return model
 
 
 class ToolWidget (gtk.VBox):
@@ -57,19 +65,29 @@ class ToolWidget (gtk.VBox):
         view.append_column(col)
 
         # Common controls
-        self.layer_mode = gtk.combo_box_new_text()
-        # FIXME: layer modes must be managed in some module or class, and should not be written hard coded.
-        for t in ["normal", "multiply", "screen", "dodge", "burn"]:
-            self.layer_mode.append_text(t)
-        
+
+        common_table = gtk.Table()
+        row = 0
+
+        layer_mode_lbl = gtk.Label(_('Mode:'))
+        layer_mode_lbl.set_alignment(0, 0.5)
+        self.layer_mode_model = make_composite_op_model()
+        self.layer_mode_combo = gtk.ComboBox(self.layer_mode_model)
+        cell1 = gtk.CellRendererText()
+        self.layer_mode_combo.pack_start(cell1)
+        self.layer_mode_combo.add_attribute(cell1, "text", 1)
+        common_table.attach(layer_mode_lbl, 0, 1, row, row+1, gtk.FILL)
+        common_table.attach(self.layer_mode_combo, 1, 2, row, row+1, gtk.FILL|gtk.EXPAND)
+        row += 1
+
+        opacity_lbl = gtk.Label(_('Opacity:'))
+        opacity_lbl.set_alignment(0, 0.5)
         adj = gtk.Adjustment(lower=0, upper=100, step_incr=1, page_incr=10)
         self.opacity_scale = gtk.HScale(adj)
         self.opacity_scale.set_value_pos(gtk.POS_RIGHT)
-        opacity_lbl = gtk.Label(_('Opacity:'))
-        opacity_hbox = gtk.HBox()
-        opacity_hbox.pack_start(self.layer_mode, expand=False)
-        opacity_hbox.pack_start(opacity_lbl, expand=False)
-        opacity_hbox.pack_start(self.opacity_scale, expand=True)
+        common_table.attach(opacity_lbl, 0, 1, row, row+1, gtk.FILL)
+        common_table.attach(self.opacity_scale, 1, 2, row, row+1, gtk.FILL|gtk.EXPAND)
+        row += 1
 
         add_button = self.add_button = stock_button(gtk.STOCK_ADD)
         move_up_button = self.move_up_button = stock_button(gtk.STOCK_GO_UP)
@@ -107,7 +125,7 @@ class ToolWidget (gtk.VBox):
         # Pack and add to toplevel
         self.pack_start(view_scroll)
         self.pack_start(buttons_hbox, expand=False)
-        self.pack_start(opacity_hbox, expand=False)
+        self.pack_start(common_table, expand=False)
 
         # Names for anonymous layers
         self.init_anon_layer_names()
@@ -117,7 +135,7 @@ class ToolWidget (gtk.VBox):
         doc = app.doc.model
         doc.doc_observers.append(self.update)
         self.opacity_scale.connect('value-changed', self.on_opacity_changed)
-        self.layer_mode.connect('changed', self.on_layer_mode_changed)
+        self.layer_mode_combo.connect('changed', self.on_layer_mode_changed)
 
         self.is_updating = False
         self.update(doc)
@@ -145,17 +163,12 @@ class ToolWidget (gtk.VBox):
 
         # Update the common widgets
         self.opacity_scale.set_value(current_layer.opacity*100)
-        mode  = current_layer.compositeop
-        if mode == "over":
-            mode = "normal"
-        layer_mode_combo = self.layer_mode
-        model = layer_mode_combo.get_model()
+        mode = current_layer.compositeop
         def find_iter(model, path, iter, data):
             value = model.get_value(iter, 0)
             if value == mode:
-                layer_mode_combo.set_active_iter(iter)
-#        self.layer_mode.
-        model.foreach(find_iter, None)
+                self.layer_mode_combo.set_active_iter(iter)
+        self.layer_mode_model.foreach(find_iter, None)
         self.is_updating = False
 
 
@@ -334,16 +347,13 @@ class ToolWidget (gtk.VBox):
         renderer.set_property("pixbuf", pixbuf)
 
 
-    def on_layer_mode_changed(self,*ignored):
+    def on_layer_mode_changed(self, *ignored):
         if self.is_updating:
             return
         self.is_updating = True
         doc = self.app.doc.model
-        mode = self.layer_mode.get_active_text()
-        if mode == "normal":
-            mode = "over"
-        print ('Change layer mode to : %s' % mode)
-        doc.set_layer_compositeop(mode)
+        i = self.layer_mode_combo.get_active_iter()
+        mode_name, display_name = self.layer_mode_model.get(i, 0, 1)
+        print 'Change layer mode to %s (%s)' % (display_name, mode_name)
+        doc.set_layer_compositeop(mode_name)
         self.is_updating = False
-
-

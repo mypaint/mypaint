@@ -10,9 +10,10 @@ import struct, zlib
 from numpy import *
 
 import tiledsurface, strokemap
+from tiledsurface import DEFAULT_COMPOSITE_OP
 
 class Layer:
-    def __init__(self,name="",compositeop = 'over'):
+    def __init__(self, name="", compositeop=DEFAULT_COMPOSITE_OP):
         self.surface = tiledsurface.Surface()
         self.opacity = 1.0
         self.name = name
@@ -105,8 +106,9 @@ class Layer:
             surf[:,:,:] = dst.effective_opacity * surf[:,:,:]
         for tx, ty in src.surface.get_tiles():
             surf = dst.surface.get_tile_memory(tx, ty, readonly=False)
-            #src.surface.composite_tile_over(surf, tx, ty, opacity=self.effective_opacity)
-            src.surface.composite_tile(surf, tx, ty, opacity=self.effective_opacity, mode=self.compositeop)
+            src.surface.composite_tile(surf, tx, ty,
+                opacity=self.effective_opacity,
+                mode=self.compositeop)
         dst.opacity = 1.0
 
     def get_stroke_info_at(self, x, y):
