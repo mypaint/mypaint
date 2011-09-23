@@ -8,7 +8,7 @@
  */
 
 #define TILE_SIZE 64
-#define MAX_MIPMAP_LEVEL 3
+#define MAX_MIPMAP_LEVEL 4
 
 class TiledSurface : public Surface {
   // the Python half of this class is in tiledsurface.py
