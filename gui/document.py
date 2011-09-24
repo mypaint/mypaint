@@ -296,15 +296,9 @@ class Document(object):
     # LAYER
     def clear_layer_cb(self, action):
         self.model.clear_layer()
-        if self.model.is_empty():
-            # the user started a new painting
-            self.app.filehandler.filename = None
 
     def remove_layer_cb(self, action):
         self.model.remove_layer()
-        if self.model.is_empty():
-            # the user started a new painting
-            self.app.filehandler.filename = None
 
     def layer_bg_cb(self, action):
         idx = self.model.layer_idx - 1
