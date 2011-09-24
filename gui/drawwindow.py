@@ -940,6 +940,7 @@ class Window (windowing.MainWindow, layout.MainWindow):
             u"Krzysztof Pasek (%s)" % _('programming'),
             u"Ben O'Steen (%s)" % _('programming'),
             u"Ferry Jérémie (%s)" % _('programming'),
+            u"しげっち 'sigetch' (%s)" % _('programming'),
             ])
         d.set_artists([
             u"Artis Rozentāls (%s)" % _('brushes'),
