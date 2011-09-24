@@ -771,7 +771,7 @@ public:
         // Usually we have pressure==0 here. But some brushes can paint
         // nothing at full pressure (eg gappy lines, or a stroke that
         // fades out). In either case this is the prefered moment to split.
-        if (stroke_total_painting_time+stroke_current_idling_time > 1.2 + 5*pressure) {
+        if (stroke_total_painting_time+stroke_current_idling_time > 0.9 + 5*pressure) {
           return true;
         }
       }
