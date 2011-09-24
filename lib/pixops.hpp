@@ -103,9 +103,9 @@ void tile_composite_rgba16_over_rgb16(PyObject * src, PyObject * dst, float alph
       // resultColor = topColor + (1.0 - topAlpha) * bottomColor
       const uint16_t srcAlpha = CLAMP((uint32_t)(opac * src_p[3]) / (1<<15), 0, 1<<15);
       const uint32_t one_minus_topAlpha = (1<<15) - srcAlpha;
-      dst_p[0] = CLAMP((((uint32_t)src_p[0] *opac) + one_minus_topAlpha*dst_p[0]) / (1<<15), 0, 1 << 15);
-      dst_p[1] = CLAMP((((uint32_t)src_p[1] *opac) + one_minus_topAlpha*dst_p[1]) / (1<<15), 0, 1 << 15);
-      dst_p[2] = CLAMP((((uint32_t)src_p[2] *opac) + one_minus_topAlpha*dst_p[2]) / (1<<15), 0, 1 << 15);
+      dst_p[0] = ((uint32_t)src_p[0]*opac + one_minus_topAlpha*dst_p[0]) / (1<<15);
+      dst_p[1] = ((uint32_t)src_p[1]*opac + one_minus_topAlpha*dst_p[1]) / (1<<15);
+      dst_p[2] = ((uint32_t)src_p[2]*opac + one_minus_topAlpha*dst_p[2]) / (1<<15);
       src_p += 4;
       dst_p += 3;
     }
@@ -149,9 +149,9 @@ void tile_composite_rgba16_multiply_rgb16(PyObject * src, PyObject * dst, float 
       const uint32_t src_col0 = ((uint32_t) src_p[0] * opac) >> 15;
       const uint32_t src_col1 = ((uint32_t) src_p[1] * opac) >> 15;
       const uint32_t src_col2 = ((uint32_t) src_p[2] * opac) >> 15;
-      dst_p[0] = CLAMP(((uint32_t)src_col0*dst_p[0] + one_minus_topAlpha*dst_p[0]) / (1<<15), 0, 1<<15);
-      dst_p[1] = CLAMP(((uint32_t)src_col1*dst_p[1] + one_minus_topAlpha*dst_p[1]) / (1<<15), 0, 1<<15);
-      dst_p[2] = CLAMP(((uint32_t)src_col2*dst_p[2] + one_minus_topAlpha*dst_p[2]) / (1<<15), 0, 1<<15);
+      dst_p[0] = ((uint32_t)src_col0*dst_p[0] + one_minus_topAlpha*dst_p[0]) / (1<<15);
+      dst_p[1] = ((uint32_t)src_col1*dst_p[1] + one_minus_topAlpha*dst_p[1]) / (1<<15);
+      dst_p[2] = ((uint32_t)src_col2*dst_p[2] + one_minus_topAlpha*dst_p[2]) / (1<<15);
       src_p += 4;
       dst_p += 3;
     }

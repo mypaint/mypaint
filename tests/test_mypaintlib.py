@@ -22,6 +22,68 @@ def tileConversions():
     mypaintlib.tile_convert_rgba16_to_rgba8(src, dst)
     assert (dst[:,:,3] == 255).all()
 
+def layerModes():
+    N = mypaintlib.TILE_SIZE
+
+    dst = zeros((N, N, 3), 'uint16')
+    dst_values = []
+    r1 = range(0, 20)
+    r2 = range((1<<15)/2-10, (1<<15)/2+10)
+    r3 = range((1<<15)-19, (1<<15)+1)
+    dst_values = r1 + r2 + r3
+
+    src = zeros((N, N, 4), 'int64')
+    alphas = hstack((
+        arange(N/4)                  ,# low alpha
+        (1<<15)/2 - arange(N/4)      ,# 50% alpha
+        (1<<15) - arange(N/4)        ,# high alpha
+        randint((1<<15)+1, size=N/4) ,# random alpha
+        ))
+    #plot(alphas); show()
+    src[:,:,3] = alphas.reshape(N, 1) # alpha changes along y axis
+
+    src[:,:,0] = alphas # red
+    src[:,N*0/4:N*1/4,0] = arange(N/4) # dark colors
+    src[:,N*1/4:N*2/4,0] = alphas[N*1/4:N*2/4]/2 + arange(N/4) - N/2 # 50% lightness
+    src[:,N*2/4:N*3/4,0] = alphas[N*2/4:N*3/4] - arange(N/4) # bright colors
+    src[:,N*3/4:N*4/4,0] = alphas[N*3/4:N*4/4] * random(N/4) # random colors
+    # clip away colors that are not possible due to low alpha
+    src[:,:,0] = minimum(src[:,:,0], src[:,:,3]).clip(0, 1<<15)
+    src = src.astype('uint16')
+
+    #figure(1)
+    #imshow(src[:,:,3], interpolation='nearest')
+    #colorbar()
+    #figure(2)
+    #imshow(src[:,:,0], interpolation='nearest')
+    #colorbar()
+    #show()
+
+    src[:,:,1] = src[:,:,0] # green
+    src[:,:,2] = src[:,:,0] # blue
+
+    for name in dir(mypaintlib):
+        if not name.startswith('tile_composite_'):
+            continue
+        junk1, junk2, src_format, mode, dst_format = name.split('_')
+        if src_format == 'rgba16' and dst_format == 'rgb16':
+            print 'testing', name, 'for invalid output'
+            f = getattr(mypaintlib, name)
+            for dst_value in dst_values:
+                for alpha in [1.0, 0.999, 0.99, 0.90, 0.51, 0.50, 0.49, 0.01, 0.001, 0.0]:
+                    dst[:] = dst_value
+                    alpha = 1.0
+                    f(src, dst, alpha)
+                    #imshow(dst[:,:,0], interpolation='nearest')
+                    #gray()
+                    #colorbar()
+                    #show()
+                    errors = dst > (1<<15)
+                    assert not errors.any()
+            print 'passed'
+        else:
+            print 'not testing', name
+
 def directPaint():
 
     s = tiledsurface.Surface()
@@ -215,6 +277,7 @@ parser = OptionParser('usage: %prog [options]')
 options, tests = parser.parse_args()
 
 tileConversions()
+layerModes()
 directPaint()
 brushPaint()
 docPaint()
