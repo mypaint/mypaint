@@ -32,7 +32,7 @@ class DropdownPanelButton (gtk.ToggleButton):
         hbox.pack_start(arrow, False, False)
         self.add(hbox)
         self._panel = DropdownPanel(self)
-        self.connect("button-press-event", self._button_press_cb)
+        self.connect("button-release-event", self._button_release_cb)
         self._panel.connect("hide", lambda *a: self.set_active(False))
         self._panel.connect("show", lambda *a: self.set_active(True))
         # Common L&F for buttons. Should probably factor out.
@@ -40,6 +40,7 @@ class DropdownPanelButton (gtk.ToggleButton):
         self.set_relief(gtk.RELIEF_NONE)
         self.set_can_default(False)
         self.set_can_focus(False)
+
 
 
     def set_panel_widget(self, widget):
@@ -51,15 +52,19 @@ class DropdownPanelButton (gtk.ToggleButton):
         self._panel.add(widget)
 
 
-    def panel_hide(self):
+    def panel_hide(self, immediate=True, release=True, leave=True):
         """Hides the panel.
         
         Call this after the user makes a final selection.
         """
-        self._panel.popdown()
+        if immediate:
+            self._panel.popdown()
+        else:
+            self._panel.hide_on_leave = leave
+            self._panel.hide_on_release = release
 
 
-    def _button_press_cb(self, widget, event):
+    def _button_release_cb(self, widget, event):
         if not self.get_active():
             # feels nicer to do this in an idle handler
             gobject.idle_add(self._panel.popup, event.time)
@@ -78,51 +83,43 @@ class DropdownPanel (gtk.Window):
         self._corrected_pos = False
         self.connect("realize", self._realize_cb)
         self.connect("map-event", self._map_event_cb)
-        self.connect("button-press-event", self._button_press_event_cb)
+        self.connect("button-release-event", self._button_release_event_cb)
         self.connect("hide", self._hide_cb)
         self.connect("configure-event", self._configure_cb)
         self.connect("grab-broken-event", self._grab_broken_event_cb)
         self.connect("leave-notify-event", self._leave_notify_cb)
         self.connect("key-press-event", self._key_press_cb)
+        self.hide_on_leave = False
+        self.hide_on_release = False
+
+
+    def _is_outside(self, x, y):
+        wx, wy = self.window.get_origin()
+        ww, wh = self.allocation.width, self.allocation.height
+        return x < wx or y < wy or x > wx+ww or y > wy+wh
 
 
     def _leave_notify_cb(self, widget, event):
-        # Widgets packed inside the the panel may grab the pointer, breaking
-        # our grab. That's mostly OK provided we arrange to pop the panel down
-        # when the pointer leaves it after the packed widget has done its
-        # thing. This limits the choice of widgets though, since those that pop
-        # up their own stuff can't be reliably used: the pointer may be
-        # naturally outside our panel afterwards as a result of selection.
-        #
-        # Moral: pack simple widgets and not fancy ones with popup menus. Grabs
-        # for things like the colour triangle break ours, but that now might
-        # actually be beneficial.
-
-        if self._grabbed:
+        if not self.hide_on_leave:
             return
         if event.mode != gdk.CROSSING_NORMAL:
-            # Not simply leaving/entering a window
+            return
+        if self._is_outside(event.x_root, event.y_root):
+            self.popdown()
             return
 
-        ## We *could* regrab assertively here in respone to motion, leave and
-        ## enter, but it's fairly unreliable.
-        #if False:
-        #    print "regrabbing"
-        #    self.establish_grab(event.time)
-        #    return
 
-        ex, ey = event.x_root, event.y_root
-        x, y = self.window.get_origin()
-        w, h = self.allocation.width, self.allocation.height
-        is_inside = ex < x or ey < y or ex > x+w or ey > y+h
-
-        # Test is needed because widgets that break grabs vary in what gets
-        # reported after they do their own grab release (GtkComboBox can report
-        # strange is_inside CROSSING_NORMAL leaves when its little menu pops
-        # down, for example). Don't use that (see above), but let's try to be
-        # as sane as we can be even if we see one.
-
-        if is_inside:
+    def _button_release_event_cb(self, widget, event):
+        # Dismiss if we've been asked to by an appropriate call to
+        # DropdownPanelButton.panel_hide(). Doing this in the release handler
+        # helps avoid accidental dabs with certain widgets.
+        if self.hide_on_release:
+            self.popdown()
+            return True
+        # Dismiss too if the user clicks outside the panel (during a grab).
+        if not self.window:
+            return
+        if self._is_outside(event.x_root, event.y_root):
             self.popdown()
             return True
 
@@ -156,29 +153,48 @@ class DropdownPanel (gtk.Window):
         self._grabbed = True
         return True
 
+
+    # Widgets packed inside the the panel may grab the pointer, breaking
+    # our grab. That's mostly OK provided we arrange to pop the panel down
+    # when the pointer leaves it after the packed widget has done its
+    # thing. This limits the choice of widgets though, since those that pop
+    # up their own stuff can't be reliably used: the pointer may be
+    # naturally outside our panel afterwards as a result of selection.
+    #
+    # Moral: pack simple widgets and not fancy ones with popup menus. Grabs
+    # for things like the colour triangle break ours, but that now might
+    # actually be beneficial.
+
     def _grab_broken_event_cb(self, widget, event):
         rival = event.grab_window
         if rival is not None:
             print "grab broken by", rival
+        self.hide_on_leave = True
         self._grabbed = False
+
 
     def popup(self, t=0):
         parent_window = self._panel_button.get_toplevel()
         self.set_transient_for(parent_window)
+        self.hide_on_leave = False
+        self.hide_on_release = False
         self.show_all()
         def deferred_grab():
             if not self.establish_grab(t):
-                self.hide()
+                self.popdown()
         gobject.idle_add(deferred_grab)
 
+
     def popdown(self):
-        self.hide()
+        gobject.idle_add(self.hide)
+
 
     def _hide_cb(self, widget):
         if self._grabbed:
             gdk.pointer_ungrab()
             self._grabbed = False
         self.grab_remove()
+
 
     # Positioning and initial geometry
 
@@ -220,18 +236,6 @@ class DropdownPanel (gtk.Window):
                 gobject.idle_add(self.move, x, y)
                 self._corrected_pos = True
 
-    def _button_press_event_cb(self, widget, event):
-        # Dismiss if the user clicks outside the panel.
-        if not self._grabbed:
-            return
-        if not self.window:
-            return
-        x, y = self.window.get_origin()
-        w, h = self.allocation.width, self.allocation.height
-        if event.x_root < x or event.y_root < y \
-                or event.x_root > x+w or event.y_root > y+h:
-            self.popdown()
-            return True
 
 if __name__ == '__main__':
     import os, sys

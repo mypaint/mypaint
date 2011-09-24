@@ -308,7 +308,9 @@ class BrushDropdownToolItem (gtk.ToolItem):
         section_frame.add(section_vbox)
 
         quick_changer = dialogs.QuickBrushChooser(app, self.on_quick_change_select)
-        section_vbox.pack_start(quick_changer, True, True)
+        evbox = gtk.EventBox()
+        evbox.add(quick_changer)
+        section_vbox.pack_start(evbox, True, True)
 
         # List editor button
         list_editor_button = gtk.ToggleButton()
@@ -373,7 +375,7 @@ class BrushDropdownToolItem (gtk.ToolItem):
 
 
     def on_quick_change_select(self, brush):
-        self.dropdown_button.panel_hide()
+        self.dropdown_button.panel_hide(immediate=False)
         self.app.brushmanager.select_brush(brush)
 
 
@@ -513,6 +515,7 @@ class BrushSettingsDropdownToolItem (gtk.ToolItem):
     def adjustment_changed_cb(self, widget, button, cname):
         default = self._get_current_brush_default(cname)
         button.set_sensitive(widget.get_value() != default)
+        self.button.panel_hide(immediate=False, release=False, leave=True)
 
 
     def _get_current_brush_default(self, cname):

@@ -56,19 +56,16 @@ class PixbufList(gtk.DrawingArea):
                         gdk.PROXIMITY_OUT_MASK |
                         gdk.PROXIMITY_IN_MASK)
 
-        # For subclasses that bind pixmap-clicks to input devices
-        self.set_extension_events(gdk.EXTENSION_EVENTS_ALL)
-
         self.get_settings().set_property("gtk-dnd-drag-threshold",
             int(min(item_w, item_h) * 0.75))
 
         self.realized_once = False
         self.connect("realize", self.on_realize)
-        
+
         self.drag_highlighted = False
         self.drag_insertion_index = None
         self.update()
-    
+
     def on_realize(self, widget):
         if self.realized_once:
             return
@@ -94,8 +91,10 @@ class PixbufList(gtk.DrawingArea):
         self.thumbnails = {}
 
     def motion_notify_cb(self, widget, event):
-        i = self.index(event.x, event.y) 
-        over_item = i < len(self.itemlist)
+        over_item = False
+        if self.point_is_inside(event.x, event.y):
+            i = self.index(event.x, event.y)
+            over_item = i < len(self.itemlist)
         if over_item:
             if self.namefunc is not None:
                 item = self.itemlist[i]
@@ -227,8 +226,16 @@ class PixbufList(gtk.DrawingArea):
         if i < 0: i = 0
         return i
 
+    def point_is_inside(self, x, y):
+        w = self.allocation.width
+        h = self.allocation.height
+        return x >= 0 and y >= 0 and x < w and y < h
+
     def button_press_cb(self, widget, event):
-        i = self.index(event.x, event.y)
+        ex, ey = int(event.x), int(event.y)
+        if not self.point_is_inside(ex, ey):
+            return False
+        i = self.index(ex, ey)
         if i >= len(self.itemlist): return
         item = self.itemlist[i]
         self.set_selected(item)

@@ -106,6 +106,9 @@ class BrushList(pixbuflist.PixbufList):
         pixbuflist.PixbufList.__init__(self, self.brushes, 48, 48,
                                        namefunc = lambda x: x.name,
                                        pixbuffunc = lambda x: x.preview)
+        # Support device changing with the same event as that used
+        # for brush choice:
+        self.set_extension_events(gdk.EXTENSION_EVENTS_ALL)
         self.set_selected(self.bm.selected_brush)
         self.bm.brushes_observers.append(self.brushes_modified_cb)
         self.bm.selected_brush_observers.append(self.brush_selected_cb)
