@@ -210,7 +210,6 @@ class DropdownPanel (gtk.Window):
 
     def _get_panel_pos(self):
         button = self._panel_button
-        assert button.get_mapped()
         x, y = button.window.get_origin()
         x += button.allocation.x
         y += button.allocation.y
