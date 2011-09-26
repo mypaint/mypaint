@@ -44,6 +44,8 @@ mouse_button_actions = [
     ('ColorChangerPopup', _("Color Changer")),
     ('ColorRingPopup', _("Color Ring")),
     ('ColorHistoryPopup', _("Color History")),
+    ('Undo', _("Undo")),
+    ('Redo', _("Redo")),
     ]
 mouse_button_prefs = [
     # Used for creating the menus,
