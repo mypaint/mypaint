@@ -542,7 +542,8 @@ class Document():
         bg = self.background
         # save as fully rendered layer
         x, y, w, h = self.get_bbox()
-        l = add_layer(x-x0, y-y0, 1.0, bg, 'data/background.png', 'background', 'normal', rect=(x,y,w,h))
+        l = add_layer(x-x0, y-y0, 1.0, bg, 'data/background.png', 'background',
+                      DEFAULT_COMPOSITE_OP, rect=(x,y,w,h))
         x, y, w, h = bg.get_pattern_bbox()
         # save as single pattern (with corrected origin)
         store_surface(bg, 'data/background_tile.png', rect=(x+x0, y+y0, w, h))
