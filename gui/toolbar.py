@@ -65,8 +65,8 @@ class MainToolbar (gtk.HBox):
         self.menu_button.set_border_width(0)
         self.pack_start(self.menu_button, False, False)
         self.pack_start(self.toolbar1, True, True)
-        self.menu_button.set_flags(gtk.CAN_DEFAULT)
-        draw_window.set_default(self.menu_button)
+        self.toolbar1.unset_flags(gtk.CAN_DEFAULT)
+        self.toolbar1.unset_flags(gtk.CAN_FOCUS)
         self.init_proxies()
 
     def init_actions(self):
@@ -676,14 +676,18 @@ class FakeMenuButton(gtk.EventBox):
     def __init__(self, text, menu):
         gtk.EventBox.__init__(self)
         self.menu = menu
-        self.label = gtk.Label(text)
-        self.label.set_padding(8, 0)
+        hbox1 = gtk.HBox()
+        hbox2 = gtk.HBox()
+        label = gtk.Label(text)
+        hbox1.pack_start(label, True, True)
+        arrow = gtk.Arrow(gtk.ARROW_DOWN, gtk.SHADOW_IN)
+        hbox1.pack_start(arrow, False, False)
+        hbox2.pack_start(hbox1, True, True, widgets.SPACING_TIGHT)
 
         # Text settings
-        #self.label.set_angle(5)
         attrs = pango.AttrList()
-        attrs.change(pango.AttrWeight(pango.WEIGHT_HEAVY, 0, -1))
-        self.label.set_attributes(attrs)
+        attrs.change(pango.AttrWeight(pango.WEIGHT_SEMIBOLD, 0, -1))
+        label.set_attributes(attrs)
 
         # Intercept mouse clicks and use them for activating the togglebutton
         # even if they're in its border, or (0, 0). Fitts would approve.
@@ -698,10 +702,10 @@ class FakeMenuButton(gtk.EventBox):
         # the Return key do something useful rather than invoking the 1st
         # toolbar item.
         self.togglebutton = gtk.ToggleButton()
-        self.togglebutton.add(self.label)
+        self.togglebutton.add(hbox2)
         self.togglebutton.set_relief(gtk.RELIEF_HALF)
-        self.togglebutton.set_flags(gtk.CAN_FOCUS)
-        self.togglebutton.set_flags(gtk.CAN_DEFAULT)
+        self.togglebutton.unset_flags(gtk.CAN_FOCUS)
+        self.togglebutton.unset_flags(gtk.CAN_DEFAULT)
         self.togglebutton.connect("toggled", self.on_togglebutton_toggled)
 
         invis.add(self.togglebutton)
