@@ -438,7 +438,7 @@ class BrushSettingsDropdownToolItem (gtk.ToolItem):
 
             reset_button = widgets.borderless_button(
                 stock_id=gtk.STOCK_CLEAR,
-                tooltip=_("Reset '%s'") % s.name)
+                tooltip=_("Restore '%s' to this brush's saved value") % s.name)
             reset_button.connect("clicked", self.reset_button_clicked_cb,
                                  adj, setting_cname)
             sg_row_height.add_widget(reset_button)
@@ -471,9 +471,9 @@ class BrushSettingsDropdownToolItem (gtk.ToolItem):
         widget.connect("toggled", lambda a: self.button.panel_hide())
         sg_slider_width.add_widget(widget)
 
-        widget = gtk.Button(_("Reset All"))
+        widget = gtk.Button(_("Restore Saved Settings"))
         widget.connect("clicked", self.reset_all_clicked_cb)
-        widget.set_tooltip_text(_("Reset the brush's settings"))
+        widget.set_tooltip_text(_("Reset all brush settings to the current brush's saved values"))
         hbox.pack_start(widget, True, True)
         sg_slider_width.add_widget(widget)
         self.reset_all_button = widget
