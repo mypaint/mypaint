@@ -1,0 +1,78 @@
+Glade and MyPaint
+=================
+
+NOTE: we do not actually build our UI using Glade or GtkBuilder as of
+2011-10-02, version 0.9.1+git, but we might one day for a number of different
+reasons. Using a UI designer makes application UI design more democratic; since
+it forces custom widget coding to be more modular and independently testable,
+it's better for code robustness; if we were to construct the entire UI using
+GtkBuilder it could well grant speed gains; using GtkBuilder may assist the
+effort to migrate MyPaint to GTK 3; and finally the effort to glade-ify a
+widget is fairly minimal for quite a large reward.
+
+Vague Goals
+-----------
+
+It would be nice to have the UI coded in one or more big XML files that could
+be independently edited and just have MyPaint load that, but since we have
+quite a few custom widgets with lots of funky interactions which must often be
+constructed together in Glade/Builder-unfriendly monolithic chunks, it's not
+going to happen overnight. So let's treat this as a vague goal and migrate
+towards it gradually.
+
+Project Directory Structure
+---------------------------
+
+The subdirectory glade/ contains the Glade catalog, glade-specific icons for
+widgets, and a script for running glade in the right way. To run glade with the
+MyPaint catalog for testing, invoke
+
+    $ glade/run.sh
+
+Make sure you've built libglade inside your working MyPaint tree first using
+scons: many of the widgets require it. This seems to work with the stock glade3
+version 3.8.0 distributed as part of Ubuntu 11.04.
+
+Making widgets compatible with Glade
+------------------------------------
+
+Have a look in glade/mypaint_widgets.xml to see how widgets are listed for use
+in the designer. You need to add a class definition, which sometimes uses
+property overrides to either make the widget more useful to glade users, or
+expose some actual GObject property of the object. Also list the widget under
+the "MyPaint Widgets" group.
+
+glade/mypaint_widgets.py just imports all the widget classes from gui/ so that
+Glade's python loader can see them.
+
+Try to split out widgets into separate files, one per widget, and write some
+minimal test code which builds a trivial test GUI containing the widget in a
+fairly basic state. Hide the test code in the usual "if __name__ ==
+'__main__':" block.
+
+Widgets must be constructable on demand by the GObject system. For PyGTK, this
+means declaring a __gtype_name__ inside the class (we just use the class's
+name), and ensuring it can be constructed with no arguments.
+
+If the widget needs a ref to another widget to work in the app, consider
+allowing the other widget to be constructed independently and associated with
+yours via a formally declared GObject property. See gui/dropdownpanel.py for an
+example (search for __gproperties__ and its support machinery). For the
+dropdown button, it's useful to allow its associated panel's content to be
+designable within Glade, but you can't design popup stuff sensibly in glade.
+Therefore we allow any top-level widget in the glade project to be set as panel
+content via the button's "panel-widget" property.
+
+Try to make the widget's module not depend on too much other stuff too:
+minimize its imports list, and make sure loading order doesn't matter.
+
+Widgets need to behave sensibly outside a full MyPaint application. Quite often
+they're constructed with the gui.application.Application as the first
+constructor argument: this can't happen for GObject-constructed instances, but
+for now it's probably acceptable to expose a set_app() method on the object and
+do the right thing if it wasn't called.
+
+Monkeypatching and possibly the pythonic _observers stuff we use everywhere
+might be better done with declared __gsignals__ instead, since those too can be
+hooked up via GtkBuilder.
+

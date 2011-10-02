@@ -2,7 +2,7 @@
 # Runs the Glade UI designer with a local catalog, for design and development
 # purposes. No need to install the catalog files.
 
-TOPDIR=`dirname $0`
+TOPDIR="`dirname $0`/.."
 GLADE_DEFS_FILE="mypaint.glade"
 GLADE_CATALOG_PATH="glade"
 XDG_DATA_DIRS="$GLADE_CATALOG_PATH:$XDG_DATA_DIRS"
