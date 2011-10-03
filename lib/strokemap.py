@@ -84,7 +84,8 @@ class StrokeShape:
             data.shape = (N, N)
             return data[y%N, x%N]
 
-    def render_overlay(self, surf):
+    def render_overlay(self, layer):
+        surf = layer._surface # FIXME: Don't touch inner details of layer
         tasks.finish_all()
         for (tx, ty), data in self.strokemap.iteritems():
             data = fromstring(zlib.decompress(data), dtype='uint8')

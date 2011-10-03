@@ -13,14 +13,30 @@ import tiledsurface, strokemap
 from tiledsurface import DEFAULT_COMPOSITE_OP
 
 class Layer:
+    """Representation of a layer in the document model.
+
+    The actual content of the layer is held by the surface implementation.
+    This is an internal detail that very few consumers should care about."""
+
     def __init__(self, name="", compositeop=DEFAULT_COMPOSITE_OP):
-        self.surface = tiledsurface.Surface()
+        self._surface = tiledsurface.Surface()
         self.opacity = 1.0
         self.name = name
         self.visible = True
         self.locked = False
         self.compositeop = compositeop
+        # Called when contents of layer changed,
+        # with the bounding box of the changed region
+        self.content_observers = []
+
+        # Forward from surface implementation
+        self._surface.observers.append(self._notify_content_observers)
+
         self.clear()
+
+    def _notify_content_observers(self, *args):
+        for f in self.content_observers:
+            f(*args)
 
     def get_effective_opacity(self):
         if self.visible:
@@ -29,25 +45,40 @@ class Layer:
             return 0.0
     effective_opacity = property(get_effective_opacity)
 
+    def get_alpha(self, x, y):
+        return self._surface.get_alpha(x, y)
+
+    def get_bbox(self):
+        return self._surface.get_bbox()
+
+    def is_empty(self):
+        return self._surface.is_empty()
+
+    def save_as_png(self, filename, *args, **kwargs):
+        self._surface.save_as_png(filename, args, kwargs)
+
     def clear(self):
         self.strokes = [] # contains StrokeShape instances (not stroke.Stroke)
-        self.surface.clear()
+        self._surface.clear()
 
     def load_from_pixbuf(self, pixbuf):
         self.strokes = []
-        self.surface.load_from_data(pixbuf)
+        self._surface.load_from_data(pixbuf)
+
+    def render_as_pixbuf(self, *rect, **kwargs):
+        self._surface.render_as_pixbuf(*rect, **kwargs)
 
     def save_snapshot(self):
-        return (self.strokes[:], self.surface.save_snapshot(), self.opacity)
+        return (self.strokes[:], self._surface.save_snapshot(), self.opacity)
 
     def load_snapshot(self, data):
         strokes, data, self.opacity = data
         self.strokes = strokes[:]
-        self.surface.load_snapshot(data)
+        self._surface.load_snapshot(data)
 
     def add_stroke(self, stroke, snapshot_before):
         before = snapshot_before[1] # extract surface snapshot
-        after  = self.surface.save_snapshot()
+        after  = self._surface.save_snapshot()
         shape = strokemap.StrokeShape()
         shape.init_from_snapshots(before, after)
         shape.brush_string = stroke.brush_settings
@@ -101,12 +132,12 @@ class Layer:
         # transparent PNG just calls this function for each layer.
         src = self
         dst.strokes.extend(self.strokes)
-        for tx, ty in dst.surface.get_tiles():
-            surf = dst.surface.get_tile_memory(tx, ty, readonly=False)
+        for tx, ty in dst._surface.get_tiles():
+            surf = dst._surface.get_tile_memory(tx, ty, readonly=False)
             surf[:,:,:] = dst.effective_opacity * surf[:,:,:]
-        for tx, ty in src.surface.get_tiles():
-            surf = dst.surface.get_tile_memory(tx, ty, readonly=False)
-            src.surface.composite_tile(surf, tx, ty,
+        for tx, ty in src._surface.get_tiles():
+            surf = dst._surface.get_tile_memory(tx, ty, readonly=False)
+            src._surface.composite_tile(surf, tx, ty,
                 opacity=self.effective_opacity,
                 mode=self.compositeop)
         dst.opacity = 1.0

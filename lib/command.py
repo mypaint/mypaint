@@ -82,7 +82,7 @@ class Action:
     def _notify_canvas_observers(self, affected_layers):
         bbox = helpers.Rect()
         for layer in affected_layers:
-            layer_bbox = layer.surface.get_bbox()
+            layer_bbox = layer.get_bbox()
             bbox.expandToIncludeRect(layer_bbox)
         for func in self.doc.canvas_observers:
             func(*bbox)
@@ -165,7 +165,7 @@ class AddLayer(Action):
             l_idx = self.doc.layers.index(after)
             self.insert_idx = l_idx + 1
         self.layer = layer.Layer(name)
-        self.layer.surface.observers.append(self.doc.layer_modified_cb)
+        self.layer.content_observers.append(self.doc.layer_modified_cb)
     def redo(self):
         self.doc.layers.insert(self.insert_idx, self.layer)
         self.prev_idx = self.doc.layer_idx
@@ -248,7 +248,7 @@ class DuplicateLayer(Action):
         snapshot = self.doc.layers[self.insert_idx].save_snapshot()
         self.new_layer = layer.Layer(name)
         self.new_layer.load_snapshot(snapshot)
-        self.new_layer.surface.observers.append(self.doc.layer_modified_cb)
+        self.new_layer.content_observers.append(self.doc.layer_modified_cb)
     def redo(self):
         self.doc.layers.insert(self.insert_idx+1, self.new_layer)
         self.duplicate_layer = self.doc.layers[self.insert_idx+1]

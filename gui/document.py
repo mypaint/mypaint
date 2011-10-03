@@ -243,7 +243,7 @@ class Document(object):
             print "WARNING: empty document, nothing copied"
             return
         else:
-            pixbuf = self.model.layer.surface.render_as_pixbuf(*bbox)
+            pixbuf = self.model.layer.render_as_pixbuf(*bbox)
         cb = gtk.Clipboard()
         cb.set_image(pixbuf)
 
@@ -272,7 +272,7 @@ class Document(object):
                 continue
             if not layer.visible:
                 continue
-            alpha = layer.surface.get_alpha (x, y, 5) * layer.effective_opacity
+            alpha = layer.get_alpha (x, y, 5) * layer.effective_opacity
             if alpha > 0.1:
                 old_layer = self.model.layer
                 self.model.select_layer(idx)
@@ -347,7 +347,7 @@ class Document(object):
                 continue
             if not layer.visible:
                 continue
-            alpha = layer.surface.get_alpha (x, y, 5) * layer.effective_opacity
+            alpha = layer.get_alpha (x, y, 5) * layer.effective_opacity
             if alpha > 0.1:
                 self.model.select_layer(idx)
                 self.layerblink_state.activate(action)
@@ -483,7 +483,7 @@ class Document(object):
 
     def strokeblink_state_enter(self):
         l = layer.Layer()
-        self.si.render_overlay(l.surface)
+        self.si.render_overlay(l)
         self.tdw.overlay_layer = l
         self.tdw.queue_draw() # OPTIMIZE: excess
     def strokeblink_state_leave(self, reason):

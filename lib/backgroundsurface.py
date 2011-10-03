@@ -77,7 +77,7 @@ class Background:
     def get_pattern_bbox(self):
         return get_tiles_bbox(self.tiles)
 
-    def save(self, filename, *rect, **kwargs):
+    def save_as_png(self, filename, *rect, **kwargs):
         assert 'alpha' not in kwargs
         kwargs['alpha'] = False
         if len(self.tiles) == 1:

@@ -229,10 +229,10 @@ def docPaint():
     # they get dropped when loading a document, which makes a
     # comparision of the PNG files fail. The hack below is to avoid that.
     for l in doc.layers:
-        l.surface.remove_empty_tiles()
+        l._surface.remove_empty_tiles()
 
-    doc.layers[0].surface.save('test_docPaint_a.png')
-    doc.layers[0].surface.save('test_docPaint_a1.png')
+    doc.layers[0].save_as_png('test_docPaint_a.png')
+    doc.layers[0].save_as_png('test_docPaint_a1.png')
     # the resulting images will look slightly different because of dithering
     assert pngs_equal('test_docPaint_a.png', 'test_docPaint_a1.png')
 
@@ -245,7 +245,7 @@ def docPaint():
     #assert doc.get_bbox() == doc2.get_bbox()
     print 'doc / doc2 bbox:', doc.get_bbox(), doc2.get_bbox()
 
-    doc2.layers[0].surface.save('test_docPaint_b.png')
+    doc2.layers[0].save_as_png('test_docPaint_b.png')
     assert pngs_equal('test_docPaint_a.png', 'test_docPaint_b.png')
     doc2.save('test_f2.ora')
     #check not possible, because PNGs not exactly equal:
@@ -255,7 +255,7 @@ def docPaint():
     doc3 = document.Document()
     doc3.load('test_f2.ora')
     assert doc2.get_bbox() == doc3.get_bbox()
-    doc3.layers[0].surface.save('test_docPaint_c.png')
+    doc3.layers[0].save_as_png('test_docPaint_c.png')
     assert pngs_equal('test_docPaint_b.png', 'test_docPaint_c.png')
     doc2.save('test_f3.ora')
     #check not possible, because PNGs not exactly equal:

@@ -165,7 +165,7 @@ class Document():
         self.do(command.ReorderLayers(self, new_layers))
 
     def clear_layer(self):
-        if not self.layer.surface.is_empty():
+        if not self.layer.is_empty():
             self.do(command.ClearLayer(self))
 
     def stroke_to(self, dtime, x, y, pressure, xtilt,ytilt):
@@ -176,9 +176,9 @@ class Document():
         self.stroke.record_event(dtime, x, y, pressure, xtilt,ytilt)
 
         l = self.layer
-        l.surface.begin_atomic()
-        split = self.brush.stroke_to (l.surface, x, y, pressure, xtilt,ytilt, dtime)
-        l.surface.end_atomic()
+        l._surface.begin_atomic()
+        split = self.brush.stroke_to (l._surface, x, y, pressure, xtilt,ytilt, dtime)
+        l._surface.end_atomic()
 
         if split:
             self.split_stroke()
@@ -191,7 +191,7 @@ class Document():
         assert isinstance(cmd, command.Stroke)
         new_stroke = cmd.stroke.copy_using_different_brush(brush)
         snapshot_before = self.layer.save_snapshot()
-        new_stroke.render(self.layer.surface)
+        new_stroke.render(self.layer._surface)
         self.do(command.Stroke(self, new_stroke, snapshot_before))
 
     def straight_line(self, src, dst):
@@ -249,7 +249,7 @@ class Document():
         for layer in self.layers:
             # OPTIMIZE: only visible layers...
             # careful: currently saving assumes that all layers are included
-            bbox = layer.surface.get_bbox()
+            bbox = layer.get_bbox()
             res.expandToIncludeRect(bbox)
         return res
 
@@ -271,7 +271,7 @@ class Document():
         background.blit_tile_into(dst, tx, ty, mipmap_level)
 
         for layer in layers:
-            surface = layer.surface
+            surface = layer._surface
             #surface.composite_tile_over(dst, tx, ty, mipmap_level=mipmap_level, opacity=layer.effective_opacity)
             surface.composite_tile(dst, tx, ty, mipmap_level=mipmap_level, opacity=layer.effective_opacity, mode=layer.compositeop)
 
@@ -344,12 +344,12 @@ class Document():
     def is_layered(self):
         count = 0
         for l in self.layers:
-            if not l.surface.is_empty():
+            if not l.is_empty():
                 count += 1
         return count > 1
 
     def is_empty(self):
-        return len(self.layers) == 1 and self.layer.surface.is_empty()
+        return len(self.layers) == 1 and self.layer.is_empty()
 
     def save(self, filename, **kwargs):
         self.split_stroke()
@@ -422,7 +422,7 @@ class Document():
                 tmp_layer = layer.Layer()
                 for l in self.layers:
                     l.merge_into(tmp_layer)
-                tmp_layer.surface.save(filename, *doc_bbox)
+                tmp_layer.save_as_png(filename, *doc_bbox)
             else:
                 pixbufsurface.save_as_png(self, filename, *doc_bbox, alpha=False, **kwargs)
 
@@ -435,7 +435,7 @@ class Document():
         doc_bbox = self.get_effective_bbox()
         for i, l in enumerate(self.layers):
             filename = '%s.%03d%s' % (prefix, i+1, ext)
-            l.surface.save(filename, *doc_bbox, **kwargs)
+            l.save_as_png(filename, *doc_bbox, **kwargs)
 
     @staticmethod
     def _pixbuf_from_stream(fp, feedback_cb=None):
@@ -499,7 +499,7 @@ class Document():
         def store_surface(surface, name, rect=[]):
             tmp = join(tempdir, 'tmp.png')
             t1 = time.time()
-            surface.save(tmp, *rect, **kwargs)
+            surface.save_as_png(tmp, *rect, **kwargs)
             print '  %.3fs surface saving %s' % (time.time() - t1, name)
             z.write(tmp, name)
             os.remove(tmp)
@@ -525,11 +525,11 @@ class Document():
             return layer
 
         for idx, l in enumerate(reversed(self.layers)):
-            if l.surface.is_empty():
+            if l.is_empty():
                 continue
             opac = l.opacity
-            x, y, w, h = l.surface.get_bbox()
-            el = add_layer(x-x0, y-y0, opac, l.surface, 'data/layer%03d.png' % idx, l.name, l.visible, l.compositeop, rect=(x, y, w, h))
+            x, y, w, h = l.get_bbox()
+            el = add_layer(x-x0, y-y0, opac, l._surface, 'data/layer%03d.png' % idx, l.name, l.visible, l.compositeop, rect=(x, y, w, h))
             # strokemap
             sio = StringIO()
             l.save_strokemap_to_file(sio, -x, -y)
@@ -685,7 +685,7 @@ class Document():
             t1 = time.time()
             p = last_pixbuf
             if not p.get_has_alpha() and p.get_width() % N == 0 and p.get_height() % N == 0:
-                tiles = self.layers[0].surface.tiledict.values()
+                tiles = self.layers[0]._surface.tiledict.values()
                 if len(tiles) > 1:
                     all_equal = True
                     for tile in tiles[1:]:

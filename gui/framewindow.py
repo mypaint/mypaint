@@ -68,7 +68,7 @@ class Window(windowing.Dialog):
     # FRAME
     def crop_frame_cb(self, button, command):
         if command == 'CropFrameToLayer':
-            bbox = self.app.doc.model.get_current_layer().surface.get_bbox()
+            bbox = self.app.doc.model.get_current_layer().get_bbox()
         elif command == 'CropFrameToDocument':
             bbox = self.app.doc.model.get_bbox()
         else: assert 0
