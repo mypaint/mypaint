@@ -8,9 +8,21 @@
 
 import struct, zlib
 from numpy import *
+from gettext import gettext as _
 
 import tiledsurface, strokemap
-from tiledsurface import DEFAULT_COMPOSITE_OP
+
+COMPOSITE_OPS = [
+    # (internal-name, display-name)
+    ("svg:src-over", _("Normal")),
+    ("svg:multiply", _("Multiply")),
+    ("svg:color-burn", _("Burn")),
+    ("svg:color-dodge", _("Dodge")),
+    ("svg:screen", _("Screen")),
+    ]
+
+DEFAULT_COMPOSITE_OP = COMPOSITE_OPS[0][0]
+VALID_COMPOSITE_OPS = set([n for n, d in COMPOSITE_OPS])
 
 class Layer:
     """Representation of a layer in the document model.

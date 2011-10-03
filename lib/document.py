@@ -21,7 +21,7 @@ import brush
 N = tiledsurface.N
 LOAD_CHUNK_SIZE = 64*1024
 
-from tiledsurface import DEFAULT_COMPOSITE_OP, VALID_COMPOSITE_OPS
+from layer import DEFAULT_COMPOSITE_OP, VALID_COMPOSITE_OPS
 
 class SaveLoadError(Exception):
     """Expected errors on loading or saving, like missing permissions or non-existing files."""

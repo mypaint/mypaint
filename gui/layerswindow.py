@@ -6,7 +6,7 @@ import pango
 
 import dialogs
 import stock
-from lib.tiledsurface import COMPOSITE_OPS
+from lib.layer import COMPOSITE_OPS
 
 def stock_button(stock_id):
     b = gtk.Button()

@@ -11,24 +11,11 @@
 from numpy import *
 import time
 import mypaintlib, helpers
-from gettext import gettext as _
 
-tilesize = N = mypaintlib.TILE_SIZE
+TILE_SIZE = N = mypaintlib.TILE_SIZE
 MAX_MIPMAP_LEVEL = mypaintlib.MAX_MIPMAP_LEVEL
 
-COMPOSITE_OPS = [
-    # (internal-name, display-name)
-    ("svg:src-over", _("Normal")),
-    ("svg:multiply", _("Multiply")),
-    ("svg:color-burn", _("Burn")),
-    ("svg:color-dodge", _("Dodge")),
-    ("svg:screen", _("Screen")),
-    ]
-
-VALID_COMPOSITE_OPS = set([n for n, d in COMPOSITE_OPS])
-DEFAULT_COMPOSITE_OP = COMPOSITE_OPS[0][0]
-
-
+from layer import DEFAULT_COMPOSITE_OP
 import pixbufsurface
 
 
