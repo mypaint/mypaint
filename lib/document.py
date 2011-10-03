@@ -168,17 +168,15 @@ class Document():
         if not self.layer.is_empty():
             self.do(command.ClearLayer(self))
 
-    def stroke_to(self, dtime, x, y, pressure, xtilt,ytilt):
+    def stroke_to(self, dtime, x, y, pressure, xtilt, ytilt):
         if not self.stroke:
             self.stroke = stroke.Stroke()
             self.stroke.start_recording(self.brush)
             self.snapshot_before_stroke = self.layer.save_snapshot()
-        self.stroke.record_event(dtime, x, y, pressure, xtilt,ytilt)
+        self.stroke.record_event(dtime, x, y, pressure, xtilt, ytilt)
 
-        l = self.layer
-        l._surface.begin_atomic()
-        split = self.brush.stroke_to (l._surface, x, y, pressure, xtilt,ytilt, dtime)
-        l._surface.end_atomic()
+        split = self.layer.stroke_to(self.brush, x, y,
+                                pressure, xtilt, ytilt, dtime)
 
         if split:
             self.split_stroke()
@@ -272,8 +270,10 @@ class Document():
 
         for layer in layers:
             surface = layer._surface
-            #surface.composite_tile_over(dst, tx, ty, mipmap_level=mipmap_level, opacity=layer.effective_opacity)
-            surface.composite_tile(dst, tx, ty, mipmap_level=mipmap_level, opacity=layer.effective_opacity, mode=layer.compositeop)
+            surface.composite_tile(dst, tx, ty,
+                    mipmap_level=mipmap_level,
+                    opacity=layer.effective_opacity,
+                    mode=layer.compositeop)
 
         mypaintlib.tile_convert_rgb16_to_rgb8(dst, dst_8bit)
 

@@ -69,6 +69,14 @@ class Layer:
     def save_as_png(self, filename, *args, **kwargs):
         self._surface.save_as_png(filename, args, kwargs)
 
+    def stroke_to(self, brush, x, y, pressure, xtilt, ytilt, dtime):
+        """Render a part of a stroke."""
+        self._surface.begin_atomic()
+        split = brush.stroke_to(self._surface, x, y,
+                                    pressure, xtilt, ytilt, dtime)
+        self._surface.end_atomic()
+        return split
+
     def clear(self):
         self.strokes = [] # contains StrokeShape instances (not stroke.Stroke)
         self._surface.clear()
