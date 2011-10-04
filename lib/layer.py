@@ -57,8 +57,8 @@ class Layer:
             return 0.0
     effective_opacity = property(get_effective_opacity)
 
-    def get_alpha(self, x, y):
-        return self._surface.get_alpha(x, y)
+    def get_alpha(self, x, y, radius):
+        return self._surface.get_alpha(x, y, radius)
 
     def get_bbox(self):
         return self._surface.get_bbox()
