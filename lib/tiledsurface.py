@@ -291,7 +291,7 @@ class Surface(mypaintlib.TiledSurface):
         new = set(self.tiledict.iteritems())
         dirty = old.symmetric_difference(new)
         for pos, tile in dirty:
-            self.mark_mipmap_dirty(*pos)
+            self._mark_mipmap_dirty(*pos)
         bbox = get_tiles_bbox([pos for (pos, tile) in dirty])
         if not bbox.empty():
             self.notify_observers(*bbox)
