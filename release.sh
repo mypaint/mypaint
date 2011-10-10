@@ -22,7 +22,9 @@ rm release.sh
 cd ..
 
 filename=$orig/mypaint-$version.tar.bz2
+filename2=$orig/mypaint-$version.tar.xz
 tar -cvjf $filename mypaint-$version
+tar -cvJf $filename2 mypaint-$version
 
 cd $d
 scons debug=true
@@ -31,6 +33,7 @@ tests/test_performance.py -a -c 1
 tests/test_memory_leak.py -a -e
 
 ls -sSh $filename
+ls -sSh $filename2
 
 echo "you can tag this release with 'git tag -s v$version'"
 
