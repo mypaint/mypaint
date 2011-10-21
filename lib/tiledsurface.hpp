@@ -122,6 +122,11 @@ public:
     rr = radius*radius;
     one_over_radius2 = 1.0/rr;
 
+    // For a graphical explanation, see:
+    // http://wiki.mypaint.info/Development/Documentation/Brushlib
+    //
+    // The hardness calculation is explained below:
+    //
     // Dab opacity gradually fades out from the center (rr=0) to
     // fringe (rr=1) of the dab. How exactly depends on the hardness.
     // We use two linear segments, for which we pre-calculate slope
