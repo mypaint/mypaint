@@ -95,7 +95,7 @@ def directPaint():
         r *= 0.8
         s.draw_dab(x, y, 12, r, g, b, pressure, 0.6)
     s.end_atomic()
-    s.save('test_directPaint.png')
+    s.save_as_png('test_directPaint.png')
 
 def brushPaint():
 
@@ -119,7 +119,7 @@ def brushPaint():
     print 'Brushpaint time:', time()-t0
     print s.get_bbox(), b.stroke_total_painting_time # FIXME: why is this time so different each run?
 
-    s.save('test_brushPaint.png')
+    s.save_as_png('test_brushPaint.png')
 
 def files_equal(a, b):
     return open(a, 'rb').read() == open(b, 'rb').read()

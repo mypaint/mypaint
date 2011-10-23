@@ -67,7 +67,7 @@ class Layer:
         return self._surface.is_empty()
 
     def save_as_png(self, filename, *args, **kwargs):
-        self._surface.save_as_png(filename, args, kwargs)
+        self._surface.save_as_png(filename, *args, **kwargs)
 
     def stroke_to(self, brush, x, y, pressure, xtilt, ytilt, dtime):
         """Render a part of a stroke."""
