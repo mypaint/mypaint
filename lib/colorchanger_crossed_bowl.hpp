@@ -7,9 +7,9 @@
  * (at your option) any later version.
  */
 
-const int size = 256;
+const int ccdb_size = 256;
 
-class ColorChanger {
+class ColorChangerCrossedBowl {
 public:
   float brush_h, brush_s, brush_v;
   void set_brush_color(float h, float s, float v)
@@ -21,7 +21,7 @@ public:
 
   int get_size() 
   {
-    return size;
+    return ccdb_size;
   }
 
 #ifndef SWIG
@@ -37,7 +37,7 @@ public:
   PrecalcData * precalcData[4];
   int precalcDataIndex;
 
-  ColorChanger()
+  ColorChangerCrossedBowl()
   {
     precalcDataIndex = -1;
     for (int i=0; i<4; i++) {
@@ -53,11 +53,11 @@ public:
 
     int width, height;
     int x, y, i;
-    int s_radius = size/2.6;
+    int s_radius = ccdb_size/2.6;
     PrecalcData * result;
 
-    width = size;
-    height = size;
+    width = ccdb_size;
+    height = ccdb_size;
     result = (PrecalcData*)malloc(sizeof(PrecalcData)*width*height);
 
     i = 0;
@@ -79,7 +79,7 @@ public:
 
         int dx = x-width/2;
         int dy = y-height/2;
-        int diag = sqrt(2)*size/2;
+        int diag = sqrt(2)*ccdb_size/2;
 
         int dxs, dys;
         if (dx > 0) 
@@ -165,8 +165,8 @@ public:
 
     assert(PyArray_ISCARRAY(arr));
     assert(PyArray_NDIM(arr) == 3);
-    assert(PyArray_DIM(arr, 0) == size);
-    assert(PyArray_DIM(arr, 1) == size);
+    assert(PyArray_DIM(arr, 0) == ccdb_size);
+    assert(PyArray_DIM(arr, 1) == ccdb_size);
     assert(PyArray_DIM(arr, 2) == 4);
     pixels = (uint8_t*)((PyArrayObject*)arr)->data;
     
@@ -178,14 +178,14 @@ public:
       pre = precalcData[precalcDataIndex] = precalc_data(2*M_PI*(precalcDataIndex/4.0));
     }
 
-    for (y=0; y<size; y++) {
-      for (x=0; x<size; x++) {
+    for (y=0; y<ccdb_size; y++) {
+      for (x=0; x<ccdb_size; x++) {
 
         get_hsv(h, s, v, pre);
         pre++;
 
         hsv_to_rgb_range_one (&h, &s, &v);
-        uint8_t * p = pixels + 4*(y*size + x);
+        uint8_t * p = pixels + 4*(y*ccdb_size + x);
         p[0] = h; p[1] = s; p[2] = v; p[3] = 255;
       }
     }
@@ -197,9 +197,9 @@ public:
     PrecalcData * pre = precalcData[precalcDataIndex];
     assert(precalcDataIndex >= 0);
     assert(pre != NULL);
-    int x = CLAMP(x_, 0, size);
-    int y = CLAMP(y_, 0, size);
-    pre += y*size + x;
+    int x = CLAMP(x_, 0, ccdb_size);
+    int y = CLAMP(y_, 0, ccdb_size);
+    pre += y*ccdb_size + x;
     get_hsv(h, s, v, pre);
     return Py_BuildValue("fff",h,s,v);
   }

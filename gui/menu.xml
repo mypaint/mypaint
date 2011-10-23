@@ -106,11 +106,13 @@
     </menu>
     <menu action='ColorMenu'>
       <menuitem action='ColorSelectionWindow'/>
+      <menuitem action='ColorSamplerWindow'/>
+      <separator/>
+      <menuitem action='ColorChangerCrossedBowlPopup'/>
+      <menuitem action='ColorChangerWashPopup'/>
       <menuitem action='ColorRingPopup'/>
-      <menuitem action='ColorChangerPopup'/>
       <menuitem action='ColorPickerPopup'/>
       <menuitem action='ColorHistoryPopup'/>
-      <menuitem action='ColorSamplerWindow'/>
       <separator/>
       <menuitem action='Brighter'/>
       <menuitem action='Darker'/>

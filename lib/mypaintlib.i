@@ -13,7 +13,8 @@ typedef struct { int x, y, w, h; } Rect;
 %include "tiledsurface.hpp"
 %include "pixops.hpp"
 %include "colorring.hpp"
-%include "colorchanger.hpp"
+%include "colorchanger_wash.hpp"
+%include "colorchanger_crossed_bowl.hpp"
 %include "fastpng.hpp"
 
 //from "gdkpixbuf2numpy.hpp"

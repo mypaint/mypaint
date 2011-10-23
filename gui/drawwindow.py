@@ -212,7 +212,8 @@ class Window (windowing.MainWindow, layout.MainWindow):
             ('ColorMenu',    None, _('Color')),
             ('ColorPickerPopup',    gtk.STOCK_COLOR_PICKER, _('Pick Color'), 'r', None, self.popup_cb),
             ('ColorHistoryPopup',  None, _('Color History'), 'x', None, self.popup_cb),
-            ('ColorChangerPopup', None, _('Color Changer'), 'v', None, self.popup_cb),
+            ('ColorChangerCrossedBowlPopup', None, _('Color Changer (crossed bowl)'), 'v', None, self.popup_cb),
+            ('ColorChangerWashPopup', None, _('Color Changer (washed)'), 'c', None, self.popup_cb),
             ('ColorRingPopup',  None, _('Color Ring'), None, None, self.popup_cb),
             ('ColorDetailsDialog', None, _("Color Details"), None, None, self.color_details_dialog_cb),
 
@@ -349,20 +350,27 @@ class Window (windowing.MainWindow, layout.MainWindow):
     def init_stategroups(self):
         sg = stategroup.StateGroup()
         p2s = sg.create_popup_state
-        changer = p2s(colorselectionwindow.ColorChangerPopup(self.app))
+        changer_crossed_bowl = p2s(colorselectionwindow.ColorChangerCrossedBowlPopup(self.app))
+        changer_wash = p2s(colorselectionwindow.ColorChangerWashPopup(self.app))
         ring = p2s(colorselectionwindow.ColorRingPopup(self.app))
         hist = p2s(historypopup.HistoryPopup(self.app, self.app.doc.model))
         pick = self.colorpick_state = p2s(colorpicker.ColorPicker(self.app, self.app.doc.model))
 
         self.popup_states = {
-            'ColorChangerPopup': changer,
+            'ColorChangerCrossedBowlPopup': changer_crossed_bowl,
+            'ColorChangerWashPopup': changer_wash,
             'ColorRingPopup': ring,
             'ColorHistoryPopup': hist,
             'ColorPickerPopup': pick,
             }
-        changer.next_state = ring
-        ring.next_state = changer
-        changer.autoleave_timeout = None
+
+        # not sure how useful this is; we can't cycle at the moment
+        changer_crossed_bowl.next_state = ring
+        ring.next_state = changer_wash
+        changer_wash.next_state = ring
+
+        changer_wash.autoleave_timeout = None
+        changer_crossed_bowl.autoleave_timeout = None
         ring.autoleave_timeout = None
 
         pick.max_key_hit_duration = 0.0

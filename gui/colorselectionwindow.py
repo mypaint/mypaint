@@ -105,8 +105,12 @@ class ColorSelectorPopup(windowing.PopupWindow):
 
 
 
-class ColorChangerPopup(ColorSelectorPopup):
-    backend_class = mypaintlib.ColorChanger
+class ColorChangerWashPopup(ColorSelectorPopup):
+    backend_class = mypaintlib.ColorChangerWash
+    outside_popup_timeout = 0.050
+
+class ColorChangerCrossedBowlPopup(ColorSelectorPopup):
+    backend_class = mypaintlib.ColorChangerCrossedBowl
     outside_popup_timeout = 0.050
 
 class ColorRingPopup(ColorSelectorPopup):
