@@ -455,17 +455,35 @@ private:
         // optimization, since normal brushes have smudge_length == 0.5 without actually smudging
         (settings_value[BRUSH_SMUDGE] != 0.0 or not settings[BRUSH_SMUDGE]->is_constant())) {
 
-      float smudge_radius = radius * expf(settings_value[BRUSH_SMUDGE_RADIUS_LOG]);
-      smudge_radius = CLAMP(smudge_radius, ACTUAL_RADIUS_MIN, ACTUAL_RADIUS_MAX);
-
       float fac = settings_value[BRUSH_SMUDGE_LENGTH];
       if (fac < 0.0) fac = 0;
       int px, py;
       px = ROUND(x);
       py = ROUND(y);
-      float r, g, b, a;
 
-      surface->get_color (px, py, smudge_radius, &r, &g, &b, &a);
+      // Calling get_color() is almost as expensive as rendering a
+      // dab. Because of this we use the previous value if it is not
+      // expected to hurt quality too much.
+      float r, g, b, a;
+      states[STATE_LAST_GETCOLOR_RECENTNESS] *= fac;
+      if (states[STATE_LAST_GETCOLOR_RECENTNESS] < 0.5*fac) {
+        states[STATE_LAST_GETCOLOR_RECENTNESS] = 1.0;
+
+        float smudge_radius = radius * expf(settings_value[BRUSH_SMUDGE_RADIUS_LOG]);
+        smudge_radius = CLAMP(smudge_radius, ACTUAL_RADIUS_MIN, ACTUAL_RADIUS_MAX);
+        surface->get_color (px, py, smudge_radius, &r, &g, &b, &a);
+
+        states[STATE_LAST_GETCOLOR_R] = r;
+        states[STATE_LAST_GETCOLOR_G] = g;
+        states[STATE_LAST_GETCOLOR_B] = b;
+        states[STATE_LAST_GETCOLOR_A] = a;
+      } else {
+        r = states[STATE_LAST_GETCOLOR_R];
+        g = states[STATE_LAST_GETCOLOR_G];
+        b = states[STATE_LAST_GETCOLOR_B];
+        a = states[STATE_LAST_GETCOLOR_A];
+      }
+
       // updated the smudge color (stored with premultiplied alpha)
       states[STATE_SMUDGE_A ] = fac*states[STATE_SMUDGE_A ] + (1-fac)*a;
       // fix rounding errors

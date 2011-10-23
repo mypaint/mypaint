@@ -72,8 +72,8 @@ settings_list = [
     ['change_color_v', _('Change color value (HSV)'), False, -2.0, 0.0, 2.0, _("Change the color value (brightness, intensity) using the HSV color model. HSV changes are applied before HSL.\n-1.0 darker\n 0.0 disable\n 1.0 brigher")],
     ['change_color_hsv_s', _('Change color satur. (HSV)'), False, -2.0, 0.0, 2.0, _("Change the color saturation using the HSV color model. HSV changes are applied before HSL.\n-1.0 more grayish\n 0.0 disable\n 1.0 more saturated")],
     ['smudge', _('Smudge'), False, 0.0, 0.0, 1.0, _("Paint with the smudge color instead of the brush color. The smudge color is slowly changed to the color you are painting on.\n 0.0 do not use the smudge color\n 0.5 mix the smudge color with the brush color\n 1.0 use only the smudge color")],
-    ['smudge_length', _('Smudge length'), False, 0.0, 0.5, 1.0, _("This controls how fast the smudge color becomes the color you are painting on.\n0.0 immediately change the smudge color\n1.0 never change the smudge color")],
-    ['smudge_radius_log', _('Smudge radius'), False, -1.6, 0.0, 1.6, _("This modifies the radius of the circle where color is picked up for smudging.\n 0.0 use the brush radius \n-0.7 half the brush radius\n+0.7 twice the brush radius\n+1.6 five times the brush radius (slow)")],
+    ['smudge_length', _('Smudge length'), False, 0.0, 0.5, 1.0, _("This controls how fast the smudge color becomes the color you are painting on.\n0.0 immediately update the smudge color (requires more CPU cycles because of the frequent color checks)\n0.5 change the smudge color steadily towards the canvas color\n1.0 never change the smudge color")],
+    ['smudge_radius_log', _('Smudge radius'), False, -1.6, 0.0, 1.6, _("This modifies the radius of the circle where color is picked up for smudging.\n 0.0 use the brush radius\n-0.7 half the brush radius (fast, but not always intuitive)\n+0.7 twice the brush radius\n+1.6 five times the brush radius (slow performance)")],
     ['eraser', _('Eraser'), False, 0.0, 0.0, 1.0, _("how much this tool behaves like an eraser\n 0.0 normal painting\n 1.0 standard eraser\n 0.5 pixels go towards 50% transparency")],
 
     ['stroke_threshold', _('Stroke threshold'), True, 0.0, 0.0, 0.5, _("How much pressure is needed to start a stroke. This affects the stroke input only. Mypaint does not need a minimal pressure to start drawing.")],
@@ -110,7 +110,9 @@ pressure
 dist              # "distance" moved since last dab, a new dab is drawn at 1.0
 actual_radius     # used by count_dabs_to, thus a state!
 
-smudge_ra, smudge_ga, smudge_ba, smudge_a  # smudge color stored with premultiplied alpha
+smudge_ra, smudge_ga, smudge_ba, smudge_a  # smudge color stored with premultiplied alpha (low-pass filtered)
+last_getcolor_r, last_getcolor_g, last_getcolor_b, last_getcolor_a # cached result of last call to get_color()
+last_getcolor_recentness
 
 actual_x, actual_y  # for slow position
 norm_dx_slow, norm_dy_slow # note: now this is dx/dt * (1/radius)
