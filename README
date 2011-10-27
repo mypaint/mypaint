@@ -53,6 +53,10 @@ Building on Linux:
     after installation to ensure that the cache is up to date. Scons won't
     do this for you because the cache file is optional.
 
+    If you install to /usr/local, you may need to run this instead:
+
+        $ gtk-update-icon-cache --ignore-theme-index /usr/local/share/icons/hicolor
+
 
 Building on Windows:
 
