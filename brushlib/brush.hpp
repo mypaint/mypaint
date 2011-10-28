@@ -456,14 +456,15 @@ private:
         (settings_value[BRUSH_SMUDGE] != 0.0 or not settings[BRUSH_SMUDGE]->is_constant())) {
 
       float fac = settings_value[BRUSH_SMUDGE_LENGTH];
-      if (fac < 0.0) fac = 0;
+      if (fac < 0.01) fac = 0.01;
       int px, py;
       px = ROUND(x);
       py = ROUND(y);
 
       // Calling get_color() is almost as expensive as rendering a
       // dab. Because of this we use the previous value if it is not
-      // expected to hurt quality too much.
+      // expected to hurt quality too much. We call it at most every
+      // second dab.
       float r, g, b, a;
       states[STATE_LAST_GETCOLOR_RECENTNESS] *= fac;
       if (states[STATE_LAST_GETCOLOR_RECENTNESS] < 0.5*fac) {
