@@ -15,7 +15,7 @@ Painting is done in tileddrawwidget.py.
 
 MYPAINT_VERSION="0.9.1+git"
 
-import os, math, time
+import os, math, time, webbrowser
 from gettext import gettext as _
 
 import gtk, gobject
@@ -238,7 +238,8 @@ class Window (windowing.MainWindow, layout.MainWindow):
 
             ('BrushMenu',    None, _('Brush')),
             ('BrushChooserPopup', stock.TOOL_BRUSH, _("Change Brush..."), 'b', None, self.brush_chooser_popup_cb),
-            ('ImportBrushPack',       gtk.STOCK_OPEN, _('Import brush package...'), '', None, self.import_brush_pack_cb),
+            ('DownloadBrushPack', gtk.STOCK_OPEN, _('Download more brushes (in web browser)'), '', None, self.download_brush_pack_cb),
+            ('ImportBrushPack', gtk.STOCK_OPEN, _('Import brush package...'), '', None, self.import_brush_pack_cb),
 
             ('HelpMenu',   None, _('Help')),
             ('Docu', gtk.STOCK_INFO, _('Where is the Documentation?'), None, None, self.show_infodialog_cb),
@@ -903,6 +904,11 @@ class Window (windowing.MainWindow, layout.MainWindow):
     def toggle_frame_cb(self, action):
         enabled = self.app.doc.model.frame_enabled
         self.app.doc.model.set_frame_enabled(not enabled)
+
+    def download_brush_pack_cb(self, *junk):
+        url = 'http://wiki.mypaint.info/index.php?title=Brush_Packages/redirect_mypaint_1.0_gui'
+        print 'URL:', url
+        webbrowser.open(url)
 
     def import_brush_pack_cb(self, *junk):
         format_id, filename = dialogs.open_dialog(_("Import brush package..."), self,

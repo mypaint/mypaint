@@ -404,6 +404,7 @@ class GroupSelector(gtk.DrawingArea):
                       (_("Delete group..."), self.delete_group_cb),
                       (_("Export group as brush package..."), self.export_group_cb),
                       ]
+        menu += [ (_("Download brushes (in web browser)"), self.app.drawWindow.download_brush_pack_cb) ]
         menu += [ (_("Import brush package..."), self.app.drawWindow.import_brush_pack_cb) ]
         for label, callback in menu:
             mi = gtk.MenuItem(label)

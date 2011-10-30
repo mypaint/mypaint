@@ -102,6 +102,7 @@
       <separator/>
       <menuitem action='PickContext'/>
       <separator/>
+      <menuitem action='DownloadBrushPack'/>
       <menuitem action='ImportBrushPack'/>
     </menu>
     <menu action='ColorMenu'>
