@@ -215,14 +215,6 @@ class Application: # singleton
             'saving.default_format': 'openraster',
             'brushmanager.selected_brush' : None,
             'brushmanager.selected_groups' : [],
-            "input.button1_shift_action": 'straight_line',
-            "input.button1_ctrl_action":  'ColorPickerPopup',
-            "input.button2_action":       'pan_canvas',
-            "input.button2_shift_action": 'rotate_canvas',
-            "input.button2_ctrl_action":  'zoom_canvas',
-            "input.button3_action":       'ColorHistoryPopup',
-            "input.button3_shift_action": 'no_action',
-            "input.button3_ctrl_action":  'no_action',
 
             "scratchpad.last_opened_scratchpad": "",
 
@@ -263,6 +255,34 @@ class Application: # singleton
                 'preferencesWindow': dict(),
             },
         }
+        if sys.platform == 'win32':
+            # The Linux wacom driver inverts the button numbers of the
+            # pen flip button, because middle-click is the more useful
+            # action on Linux. However one of the two buttons is often
+            # accidentally hit with the thumb while painting. We want
+            # to assign panning to this button by default.
+            DEFAULT_CONFIG.update({
+                "input.button1_shift_action": 'straight_line',
+                "input.button1_ctrl_action":  'ColorPickerPopup',
+                "input.button3_action":       'pan_canvas',
+                "input.button3_shift_action": 'rotate_canvas',
+                "input.button3_ctrl_action":  'zoom_canvas',
+                "input.button2_action":       'ColorHistoryPopup',
+                "input.button2_shift_action": 'no_action',
+                "input.button2_ctrl_action":  'no_action',
+                })
+        else:
+            DEFAULT_CONFIG.update({
+                "input.button1_shift_action": 'straight_line',
+                "input.button1_ctrl_action":  'ColorPickerPopup',
+                "input.button2_action":       'pan_canvas',
+                "input.button2_shift_action": 'rotate_canvas',
+                "input.button2_ctrl_action":  'zoom_canvas',
+                "input.button3_action":       'ColorHistoryPopup',
+                "input.button3_shift_action": 'no_action',
+                "input.button3_ctrl_action":  'no_action',
+                })
+
         window_pos = DEFAULT_CONFIG["layout.window_positions"]
         self.window_names = window_pos.keys()
         self.preferences = DEFAULT_CONFIG
