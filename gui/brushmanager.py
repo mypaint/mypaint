@@ -73,6 +73,11 @@ def translate_group_name(name):
          FAVORITES_BRUSH_GROUP: _('Favorites'),
          'ink': _('Ink'),
          'classic': _('Classic'),
+         'set#1': _('Set#1'),
+         'set#2': _('Set#2'),
+         'set#3': _('Set#3'),
+         'set#4': _('Set#4'),
+         'set#5': _('Set#5'),
          'experimental': _('Experimental'),
          }
     return d.get(name, name)
