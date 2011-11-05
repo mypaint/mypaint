@@ -354,6 +354,11 @@ class Application: # singleton
                 # device.name is usually something like "wacom intuos3 6x8 pad" or just "pad"
                 print 'Ignoring "%s" (probably wacom keypad device)' % device.name
                 continue
+            if last_word == 'touchpad':
+                # eg. "SynPS/2 Synaptics TouchPad"
+                # Cannot paint at all, cannot select brushes, if we enable this one.
+                print 'Ignoring "%s" (probably laptop touchpad which screws up gtk+ if enabled)' % device.name
+                continue
             if last_word == 'cursor':
                 # this is a "normal" mouse and does not work in screen mode
                 print 'Ignoring "%s" (probably wacom mouse device)' % device.name
