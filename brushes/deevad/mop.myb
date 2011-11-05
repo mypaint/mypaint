@@ -14,26 +14,28 @@ change_color_l 0.0
 offset_by_speed_slowness 1.0
 speed1_gamma 4.0
 slow_tracking_per_dab 0.0
-dabs_per_basic_radius 0.44
+dabs_per_basic_radius 0.83
 opaque 0.91 | stroke (0.000000 -1.000000), (0.500000 0.000000), (1.000000 0.000000) | speed1 (0.000000 0.000000), (1.000000 -0.200000)
-color_s 1.0
+color_s 0.998983333938
 opaque_multiply 0.0 | pressure (0.000000 0.000000), (0.077381 0.197917), (0.229167 0.385417), (0.589286 0.510417), (1.000000 1.000000)
 elliptical_dab_angle 90.0
+lock_alpha 0.0
 eraser 0.0
+opaque_linearize 0.9
 stroke_threshold 0.0
-color_h 0.933048498258
-parent_brush_name mop
+color_h 0.0
+parent_brush_name deevad%2Fmop
 smudge_radius_log 0.0
 speed1_slowness 0.04
-smudge 0.56 | pressure (0.000000 -0.000000), (0.344937 -0.062500), (0.566456 -0.166667), (0.740506 -0.354167), (0.857595 -0.593750), (0.939873 -0.791667), (1.000000 -1.000000)
+smudge 0.0 | pressure (0.000000 -0.000000), (0.344937 -0.062500), (0.566456 -0.166667), (0.740506 -0.354167), (0.857595 -0.593750), (0.939873 -0.791667), (1.000000 -1.000000)
 change_color_hsv_s 0.0
 radius_by_random 0.0
-dabs_per_second 14.55
-color_v 1.0
+dabs_per_second 72.0
+color_v 0.420248722057
 custom_input 0.0
 hardness 0.82
-opaque_linearize 0.9
-smudge_length 0.12 | stroke (0.000000 -1.000000), (0.104938 -0.895833), (0.274691 0.697917), (0.580247 1.000000), (1.000000 1.000000)
+restore_color 0.0
+smudge_length 0.5 | stroke (0.000000 -1.000000), (0.104938 -0.895833), (0.274691 0.697917), (0.580247 1.000000), (1.000000 1.000000)
 radius_logarithmic 4.3
 change_color_hsl_s 0.0
 custom_input_slowness 0.0
@@ -41,3 +43,4 @@ offset_by_speed 0.0
 dabs_per_actual_radius 5.37
 offset_by_random 0.0
 direction_filter 2.0
+anti_aliasing 1.0

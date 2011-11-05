@@ -3,40 +3,44 @@
 version 2
 tracking_noise 0.0
 speed2_gamma 4.0
-speed2_slowness 0.8
-stroke_holdtime 10.0
-stroke_duration_logarithmic 6.5
+speed2_slowness 0.9
+stroke_holdtime 0.0
+stroke_duration_logarithmic 4.0
 slow_tracking 0.0
 change_color_v 0.0
-elliptical_dab_ratio 4.0 | pressure (0.000000 -0.000000), (0.750000 -0.000000), (1.000000 -2.700000) | speed1 (0.000000 -0.700000), (4.000000 0.700000)
+elliptical_dab_ratio 10.0 | speed1 (0.000000 -7.500000), (0.962963 -2.031250), (4.000000 0.000000)
 change_color_h 0.0
 change_color_l 0.0
 offset_by_speed_slowness 1.0
 speed1_gamma 4.0
 slow_tracking_per_dab 0.0
 dabs_per_basic_radius 6.0
-opaque 1.0 | random (0.000000 1.000000), (1.000000 1.000000)
+opaque 1.44 | pressure (0.000000 -0.431250), (0.258721 -0.277917), (0.540698 0.000000), (1.000000 0.920000)
 color_s 1.0
-opaque_multiply 0.0 | pressure (0.000000 0.000000), (0.040123 0.885417), (0.138889 1.000000), (1.000000 1.000000)
+opaque_multiply 0.0 | pressure (0.000000 0.000000), (0.058642 0.604167), (1.000000 1.000000)
 elliptical_dab_angle 90.0 | random (0.000000 -180.000000), (1.000000 180.000000)
+lock_alpha 0.0
 eraser 0.0
+opaque_linearize 0.9
 stroke_threshold 0.0
-color_h 0.0
-parent_brush_name b000
+color_h 0.0590291819643
+parent_brush_name deevad%2Fwater3
+smudge_radius_log 0.0
 speed1_slowness 0.04
-smudge 1.0 | speed1 (0.000000 -0.100000), (4.000000 0.100000)
+smudge 0.9
 change_color_hsv_s 0.0
 radius_by_random 0.0
 dabs_per_second 0.0
-color_v 1.0
+color_v 0.874542195901
 custom_input 0.0
-hardness 0.4
-opaque_linearize 0.9
-smudge_length 0.1
-radius_logarithmic 3.2 | pressure (0.000000 0.120833), (1.000000 0.845833)
+hardness 0.41
+restore_color 0.0
+smudge_length 0.5
+radius_logarithmic 2.6 | pressure (0.000000 -0.653333), (1.000000 0.980000)
 change_color_hsl_s 0.0
 custom_input_slowness 0.0
 offset_by_speed 0.0
-dabs_per_actual_radius 2.0
-offset_by_random 0.0 | pressure (0.000000 0.000000), (0.750000 0.000000), (1.000000 0.800000)
+dabs_per_actual_radius 6.0
+offset_by_random 0.0
 direction_filter 2.0
+anti_aliasing 1.0
