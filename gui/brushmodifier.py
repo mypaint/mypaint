@@ -126,17 +126,6 @@ class BrushModifier:
                 modif_b.set_setting(setting_name, settings)
 
 
-    def reset_override_setting(self, setting_name):
-        """Resets an override setting.
-
-        Resets the setting named `setting_name` to its default values, taken
-        from the base brush `unmodified_brushinfo`.
-        """
-        target_b = self.app.brush
-        settings = unmod_b.get_setting(setting_name)
-        target_b.set_setting(setting_name, settings)
-
-
     def _cancel_other_modes(self, action):
         for other_action in self.action_group.list_actions():
             if action is other_action:
