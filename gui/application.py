@@ -60,6 +60,7 @@ class Application: # singleton
             print 'Icon search path:', icon_theme.get_search_path()
             print "Mypaint can't run sensibly without its icons; " \
                 + "please check your installation."
+            print 'see https://gna.org/bugs/?18460 for possible solutions'
             sys.exit(1)
         gtk.window_set_default_icon_name('mypaint')
 
