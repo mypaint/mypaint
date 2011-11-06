@@ -86,7 +86,7 @@ class Layer:
         self._surface.load_from_data(pixbuf)
 
     def render_as_pixbuf(self, *rect, **kwargs):
-        self._surface.render_as_pixbuf(*rect, **kwargs)
+        return self._surface.render_as_pixbuf(*rect, **kwargs)
 
     def save_snapshot(self):
         return (self.strokes[:], self._surface.save_snapshot(), self.opacity)
