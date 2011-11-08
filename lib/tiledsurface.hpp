@@ -222,12 +222,14 @@ public:
                  float opaque, float hardness = 0.5,
                  float color_a = 1.0,
                  float aspect_ratio = 1.0, float angle = 0.0,
-                 float lock_alpha = 0.0
+                 float lock_alpha = 0.0,
+                 float colorize = 0.0
                  ) {
 
     opaque = CLAMP(opaque, 0.0, 1.0);
     hardness = CLAMP(hardness, 0.0, 1.0);
     lock_alpha = CLAMP(lock_alpha, 0.0, 1.0);
+    colorize = CLAMP(colorize, 0.0, 1.0);
     if (radius < 0.1) return false; // don't bother with dabs smaller than 0.1 pixel
     if (hardness == 0.0) return false; // infintly small center point, fully transparent outside
     if (opaque == 0.0) return false;
@@ -246,6 +248,7 @@ public:
     float normal = 1.0;
 
     normal *= 1.0-lock_alpha;
+    normal *= 1.0-colorize;
 
 	if (aspect_ratio<1.0) aspect_ratio=1.0;
 
@@ -292,6 +295,11 @@ public:
         if (lock_alpha) {
           draw_dab_pixels_BlendMode_LockAlpha(mask, rgba_p,
                                               color_r_, color_g_, color_b_, lock_alpha*opaque*(1<<15));
+        }
+        if (colorize) {
+          draw_dab_pixels_BlendMode_Color(mask, rgba_p,
+                                          color_r_, color_g_, color_b_,
+                                          colorize*opaque*(1<<15));
         }
       }
     }

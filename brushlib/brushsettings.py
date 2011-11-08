@@ -87,6 +87,7 @@ settings_list = [
     ['direction_filter', _('Direction filter'), False, 0.0, 2.0, 10.0, _("A low value will make the direction input adapt more quickly, a high value will make it smoother")],
 
     ['lock_alpha', _('Lock alpha'), False, 0.0, 0.0, 1.0, _("Do not modify the alpha channel of the layer (paint only where there is paint already)\n 0.0 normal painting\n 0.5 half of the paint gets applied normally\n 1.0 alpha channel fully locked")],
+    ['colorize', _('Colorize'), False, 0.0, 0.0, 1.0, _("Colorize the target layer, setting its hue and saturation from the active brush colour while retaining its value and alpha.")],
     ]
 
 settings_hidden = 'color_h color_s color_v'.split()

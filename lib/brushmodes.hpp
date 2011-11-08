@@ -53,6 +53,132 @@ void draw_dab_pixels_BlendMode_Normal (uint16_t * mask,
   }
 };
 
+
+
+// Colorize: apply the source hue and saturation, retaining the target
+// brightness. Same thing as in the PDF spec addendum but with different Luma
+// coefficients. Colorize should be used at either 1.0 or 0.0, values in
+// between probably aren't very useful. This blend mode retains the target
+// alpha, and any pure whites and blacks in the target layer.
+//
+// Code is still ugly. Using floating-point arithmetic in here, which maybe
+// isn't very efficient.
+
+#define MAX3(a, b, c) ((a)>(b)?MAX((a),(c)):MAX((b),(c)))
+#define MIN3(a, b, c) ((a)<(b)?MIN((a),(c)):MIN((b),(c)))
+
+/*
+// From ITU Rec. BT.601 (SDTV)
+static const float LUMA_RED_COEFF   = 0.3;
+static const float LUMA_GREEN_COEFF = 0.59;
+static const float LUMA_BLUE_COEFF  = 0.11;
+*/
+
+// From ITU Rec. BT.709 (HDTV and sRGB)
+static const float LUMA_RED_COEFF = 0.2126;
+static const float LUMA_GREEN_COEFF = 0.7152;
+static const float LUMA_BLUE_COEFF = 0.0722;
+
+// See also http://en.wikipedia.org/wiki/YCbCr
+
+
+inline static float
+nonsep_lum (const float r,
+              const float g,
+              const float b)
+{
+    return (r*LUMA_RED_COEFF) + (g*LUMA_GREEN_COEFF) + (b*LUMA_BLUE_COEFF);
+}
+
+
+inline static void
+nonsep_clip_inplace(float *r,
+                    float *g,
+                    float *b)
+{
+    float lum = nonsep_lum(*r, *g, *b);
+    float cmin = MIN3(*r, *g, *b);
+    float cmax = MAX3(*r, *g, *b);
+    if (cmin < 0.0) {
+        *r = lum + (((*r - lum) * lum) / (lum - cmin));
+        *g = lum + (((*g - lum) * lum) / (lum - cmin));
+        *b = lum + (((*b - lum) * lum) / (lum - cmin));
+    }
+    if (cmax > 1.0) {
+        *r = lum + (((*r - lum) * (1-lum)) / (cmax - lum));
+        *g = lum + (((*g - lum) * (1-lum)) / (cmax - lum));
+        *b = lum + (((*b - lum) * (1-lum)) / (cmax - lum));
+    }
+}
+
+
+inline static void
+nonsep_apply_lum(const float topr,
+                 const float topg,
+                 const float topb,
+                 const float botlum,
+                 float *botr,
+                 float *botg,
+                 float *botb)
+{
+    float diff = botlum - nonsep_lum(topr, topg, topb);
+    *botr = topr + diff;
+    *botg = topg + diff;
+    *botb = topb + diff;
+    nonsep_clip_inplace(botr, botg, botb);
+}
+
+
+// The method is an implementation of that described in the official Adobe "PDF
+// Blend Modes: Addendum" document, dated January 23, 2006; specifically it's
+// the "Color" nonseparable blend mode. We do however use different
+// coefficients for the Luma value.
+
+void
+draw_dab_pixels_BlendMode_Color (uint16_t * mask,
+                                 uint16_t * rgba, // b/bottom, premult
+                                 uint16_t color_r,  // }
+                                 uint16_t color_g,  // }-- a/top, !premult
+                                 uint16_t color_b,  // }
+                                 uint16_t opacity)
+{
+  while (1) {
+    for (; mask[0]; mask++, rgba+=4) {
+      // De-multiply (and scale)
+      const float scalefact = rgba[3]; //can't work with premult alpha, sadly
+
+      float r = ((float)rgba[0]) / scalefact;
+      float g = ((float)rgba[1]) / scalefact;
+      float b = ((float)rgba[2]) / scalefact;
+
+      // Input luma, based on the target pixel
+      float lum = nonsep_lum(r, g, b);
+
+      // Output RGB generation
+      r = g = b = 0;
+      nonsep_apply_lum( (float)color_r/(1<<15),
+                        (float)color_g/(1<<15),
+                        (float)color_b/(1<<15),
+                        lum, &r, &g, &b         );
+
+      // Re-premult/scale.
+      r *= scalefact;
+      g *= scalefact;
+      b *= scalefact;
+
+      // And combine as normal.
+      uint32_t opa_a = mask[0]*(uint32_t)opacity/(1<<15); // topAlpha
+      uint32_t opa_b = (1<<15)-opa_a; // bottomAlpha
+      rgba[0] = (opa_a*r + opa_b*rgba[0])/(1<<15);
+      rgba[1] = (opa_a*g + opa_b*rgba[1])/(1<<15);
+      rgba[2] = (opa_a*b + opa_b*rgba[2])/(1<<15);
+    }
+    if (!mask[1]) break;
+    rgba += mask[1];
+    mask += 2;
+  }
+};
+
 // This blend mode is used for smudging and erasing.  Smudging
 // allows to "drag" around transparency as if it was a color.  When
 // smuding over a region that is 60% opaque the result will stay 60%

@@ -26,7 +26,8 @@ public:
                          float opaque, float hardness = 0.5,
                          float alpha_eraser = 1.0,
                          float aspect_ratio = 1.0, float angle = 0.0,
-                         float lock_alpha = 0.0
+                         float lock_alpha = 0.0,
+                         float colorize = 0.0
                          ) = 0;
 
   virtual void get_color (float x, float y, 
