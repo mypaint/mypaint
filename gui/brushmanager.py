@@ -215,9 +215,9 @@ class BrushManager:
         self.history = [None for i in xrange(BRUSH_HISTORY_SIZE)]
 
         brush_by_name = {}
-        def get_brush(name):
+        def get_brush(name, **kwargs):
             if name not in brush_by_name:
-                b = ManagedBrush(self, name, persistent=True)
+                b = ManagedBrush(self, name, persistent=True, **kwargs)
                 brush_by_name[name] = b
             return brush_by_name[name]
 
@@ -299,24 +299,21 @@ class BrushManager:
         # Distinguish between brushes in the brushlist and those that are not;
         # handle lost-and-found ones.
         for name in listbrushes(self.stock_brushpath) + listbrushes(self.user_brushpath):
-            b = get_brush(name)
-            b.in_brushlist = True
             if name.startswith('context'):
+                b = get_brush(name, in_brushlist=False)
                 i = int(name[-2:])
                 self.contexts[i] = b
-                b._load_settings(retain_parent=True) #FIXME: hack
-                b.in_brushlist = False
             elif name.startswith(DEVBRUSH_NAME_PREFIX):
+                b = get_brush(name, in_brushlist=False)
                 device_name = devbrush_unquote(name)
                 self.brush_by_device[device_name] = b
-                b._load_settings(retain_parent=True) #FIXME: hack
-                b.in_brushlist = False
             elif name.startswith(BRUSH_HISTORY_NAME_PREFIX):
+                b = get_brush(name, in_brushlist=False)
                 i_str = name.replace(BRUSH_HISTORY_NAME_PREFIX, '')
                 i = int(i_str)
                 self.history[i] = b
-                b._load_settings(retain_parent=True) #FIXME: hack
-                b.in_brushlist = False
+            else:
+                b = get_brush(name)
             if b.in_brushlist:
                 if not [True for group in our.itervalues() if b in group]:
                     brushes = self.groups.setdefault(FOUND_BRUSHES_GROUP, [])
@@ -466,7 +463,7 @@ class BrushManager:
                             b = self.get_brush_by_name(brushname)
 
                     if not b:
-                        b = ManagedBrush(self, brushname)
+                        b = ManagedBrush(self, brushname, in_brushlist=True)
 
                     # write to disk and reload brush (if overwritten)
                     prefix = b.get_fileprefix(saving=True)
@@ -477,7 +474,6 @@ class BrushManager:
                     preview_f.write(preview_data)
                     preview_f.close()
                     b.load()
-                    b.in_brushlist = True
                 # finally, add it to the group
                 if b not in managed_brushes:
                     managed_brushes.append(b)
@@ -670,14 +666,14 @@ class BrushManager:
 
 class ManagedBrush(object):
     '''Represents a brush, but cannot be selected or painted with directly.'''
-    def __init__(self, brushmanager, name=None, persistent=False):
+    def __init__(self, brushmanager, name=None, persistent=False, in_brushlist=False):
         self.bm = brushmanager
         self._preview = None
         self.name = name
         self._brushinfo = BrushInfo()
         self.persistent = persistent #: If True this brush is stored in the filesystem.
         self.settings_loaded = False  #: If True this brush is fully initialized, ready to paint with.
-        self.in_brushlist = False  #: Set to True if this brush is known to be in the brushlist
+        self.in_brushlist = in_brushlist  #: Set to True if this brush is known to be in the brushlist
 
         self.settings_mtime = None
         self.preview_mtime = None
@@ -796,14 +792,14 @@ class ManagedBrush(object):
         open(prefix + '.myb', 'w').write(brushinfo.save_to_string())
         self.remember_mtimes()
 
-    def load(self, retain_parent=False):
+    def load(self):
         """Loads the brush's preview and settings from disk."""
         if self.name is None:
             warn("Attempt to load an unnamed brush, don't do that.",
                  RuntimeWarning, 2)
             return
         self._load_preview()
-        self._load_settings(retain_parent)
+        self._load_settings()
 
     def _load_preview(self):
         """Loads the brush preview as pixbuf into the brush."""
@@ -815,7 +811,7 @@ class ManagedBrush(object):
         self._preview = pixbuf
         self.remember_mtimes()
 
-    def _load_settings(self, retain_parent=False):
+    def _load_settings(self):
         """Loads the brush settings/dynamics from disk."""
         prefix = self.get_fileprefix()
         filename = prefix + '.myb'
@@ -823,7 +819,7 @@ class ManagedBrush(object):
         self._brushinfo.load_from_string(brushinfo_str)
         self.remember_mtimes()
         self.settings_loaded = True
-        if not retain_parent:
+        if self.in_brushlist:
             self._brushinfo.set_string_property("parent_brush_name", None)
         self.persistent = True
 

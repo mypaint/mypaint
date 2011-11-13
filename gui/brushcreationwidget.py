@@ -73,7 +73,7 @@ class BrushManipulationWidget(gtk.HBox):
 
     def create_brush_cb(self, window):
         """Create and save a new brush based on the current working brush."""
-        b = brushmanager.ManagedBrush(self.bm)
+        b = brushmanager.ManagedBrush(self.bm, in_brushlist=True)
         b.brushinfo = self.app.brush.clone()
         b.brushinfo.set_string_property("parent_brush_name", None) #avoid mis-hilight
         b.preview = self.brushicon_editor.get_preview_pixbuf()
@@ -87,7 +87,6 @@ class BrushManipulationWidget(gtk.HBox):
         brushes = self.bm.get_group_brushes(group, make_active=True)
         brushes.insert(0, b)
         b.persistent = True   # Brush was saved
-        b.in_brushlist = True
         for f in self.bm.brushes_observers: f(brushes)
 
         self.bm.select_brush(b)
@@ -129,9 +128,8 @@ class BrushManipulationWidget(gtk.HBox):
         src_brush.save()
         src_brush.name = src_name
         # load dst
-        dst_brush = brushmanager.ManagedBrush(self.bm, dst_name, persistent=True)
+        dst_brush = brushmanager.ManagedBrush(self.bm, dst_name, persistent=True, in_brushlist=True)
         dst_brush.load()
-        dst_brush.in_brushlist = True
 
         # replace src with dst (but keep src in the deleted list if it is a stock brush)
         self.delete_brush_internal(src_brush, replacement=dst_brush)
