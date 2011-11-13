@@ -1,41 +1,46 @@
 # mypaint brush file
 # you can edit this file and then select the brush in mypaint (again) to reload
 version 2
-opaque 1.0
-opaque_multiply 0.0 | pressure (0.000000 0.000000), (0.324405 0.322917), (0.523810 0.635417), (0.776786 0.885417), (1.000000 0.927083)
-opaque_linearize 0.9
-radius_logarithmic 2.82 | pressure (0.000000 0.049375), (1.000000 -0.790000)
-hardness 0.93 | pressure (0.000000 -0.666667), (1.000000 1.000000)
-dabs_per_basic_radius 0.0
-dabs_per_actual_radius 2.29
-dabs_per_second 0.0
-radius_by_random 0.0
-speed1_slowness 0.04
-speed2_slowness 0.8
-speed1_gamma 4.0
-speed2_gamma 4.0
-offset_by_random 0.0
-offset_by_speed 0.0
-offset_by_speed_slowness 1.0
-slow_tracking 0.0
-slow_tracking_per_dab 0.0
 tracking_noise 0.0
-color_h 0.862332854459
-color_s 0.799628860513
-color_v 0.345357442588
+speed2_gamma 4.0
+speed2_slowness 0.8
+stroke_holdtime 0.0
+stroke_duration_logarithmic 4.0
+slow_tracking 0.0
+change_color_v 0.0
+elliptical_dab_ratio 1.0 | pressure (0.000000 -6.000000), (0.411765 0.562500), (0.467647 7.312500), (1.000000 9.000000)
 change_color_h 0.0
 change_color_l 0.0
-change_color_hsl_s 0.0
-change_color_v 0.0
-change_color_hsv_s 0.0
-smudge 1.0 | pressure (0.000000 0.000000), (0.142857 1.000000), (0.345238 1.000000), (0.422619 0.000000), (1.000000 -1.000000)
-smudge_length 0.85
-eraser 0.0
-stroke_threshold 0.0
-stroke_duration_logarithmic 4.0
-stroke_holdtime 0.0
-custom_input 0.0 | pressure (0.000000 0.000000), (1.000000 1.000000)
-custom_input_slowness 2.09
-elliptical_dab_ratio 1.0 | pressure (0.000000 -6.000000), (0.411765 0.562500), (0.467647 7.312500), (1.000000 9.000000)
+offset_by_speed_slowness 1.0
+speed1_gamma 4.0
+slow_tracking_per_dab 0.0
+dabs_per_basic_radius 0.0
+opaque 1.0
+color_s 0.0
+opaque_multiply 0.0 | pressure (0.000000 0.000000), (0.324405 0.322917), (0.523810 0.635417), (0.776786 0.885417), (1.000000 0.927083)
 elliptical_dab_angle 90.0 | direction (0.000000 0.000000), (180.000000 180.000000)
+lock_alpha 0.0
+eraser 0.0
+opaque_linearize 0.9
+stroke_threshold 0.0
+color_h 0.0
+parent_brush_name ramon%2FRS_blendOP
+smudge_radius_log 0.0
+speed1_slowness 0.04
+smudge 1.0 | pressure (0.000000 0.000000), (0.142857 1.000000), (0.345238 1.000000), (0.422619 0.000000), (1.000000 -1.000000)
+change_color_hsv_s 0.0
+radius_by_random 0.0
+dabs_per_second 0.0
+color_v 0.0
+custom_input 0.0 | pressure (0.000000 0.000000), (1.000000 1.000000)
+hardness 0.93 | pressure (0.000000 -0.666667), (1.000000 1.000000)
+restore_color 0.0
+smudge_length 0.85
+radius_logarithmic 2.82 | pressure (0.000000 0.049375), (1.000000 -0.790000)
+change_color_hsl_s 0.0
+custom_input_slowness 2.09
+offset_by_speed 0.0
+dabs_per_actual_radius 2.29
+offset_by_random 0.0
 direction_filter 0.44
+anti_aliasing 1.0
