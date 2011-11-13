@@ -201,6 +201,8 @@ class BrushInfo:
 
         # Parse each pair
         self.load_defaults()
+        # compatibility hack: keep disabled for old brushes, but still use non-zero default
+        self.settings['anti_aliasing'][0] = 0.0
         num_parsed = 0
         for rawcname, rawvalue in rawsettings:
             try:
