@@ -542,7 +542,7 @@ class FileHandler(object):
 
         number = None
         if filename:
-            junk,  file_fragment = os.path.split(filename)
+            junk, file_fragment = os.path.split(filename)
             if file_fragment.startswith("_md5"):
                 #store direct, don't attempt to increment
                 if main_doc:
@@ -564,7 +564,7 @@ class FileHandler(object):
                     char = chr(ord(c)+1)
             if char > 'z':
                 # out of characters, increase the number
-                self.filename = None
+                filename = None
                 return self.save_autoincrement_file(filename, prefix, main_doc)
             filename = '%s%s_%c' % (prefix, number, char)
         else:
