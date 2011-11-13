@@ -304,18 +304,18 @@ class BrushManager:
             if name.startswith('context'):
                 i = int(name[-2:])
                 self.contexts[i] = b
-                b.load_settings(retain_parent=True)
+                b._load_settings(retain_parent=True) #FIXME: hack
                 b.in_brushlist = False
             elif name.startswith(DEVBRUSH_NAME_PREFIX):
                 device_name = devbrush_unquote(name)
                 self.brush_by_device[device_name] = b
-                b.load_settings(retain_parent=True)
+                b._load_settings(retain_parent=True) #FIXME: hack
                 b.in_brushlist = False
             elif name.startswith(BRUSH_HISTORY_NAME_PREFIX):
                 i_str = name.replace(BRUSH_HISTORY_NAME_PREFIX, '')
                 i = int(i_str)
                 self.history[i] = b
-                b.load_settings(retain_parent=True)
+                b._load_settings(retain_parent=True) #FIXME: hack
                 b.in_brushlist = False
             if b.in_brushlist:
                 if not [True for group in our.itervalues() if b in group]:
@@ -547,8 +547,6 @@ class BrushManager:
         """Selects a ManagedBrush, highlights it, & updates the live brush."""
         if brush is None:
             brush = self.get_default_brush()
-        if brush.persistent and not brush.settings_loaded:   # XXX refactor
-            brush.load_settings()
 
         brushinfo = brush.brushinfo
         if not brush.in_brushlist:
@@ -569,8 +567,6 @@ class BrushManager:
         """Gets the parent `ManagedBrush` for a brush or a `BrushInfo`.
         """
         if brush is not None:
-            if brush.persistent and not brush.settings_loaded:   # XXX refactor
-                brush.load_settings()
             brushinfo = brush.brushinfo
         if brushinfo is None:
             raise RuntimeError, "One of `brush` or `brushinfo` must be defined."
@@ -581,8 +577,6 @@ class BrushManager:
             parent_brush = self.get_brush_by_name(parent_name)
             if parent_brush is None:
                 return None
-            if parent_brush.persistent and not parent_brush.settings_loaded:  # XXX refactor
-                parent_brush.load_settings()
             return parent_brush
 
 
@@ -680,7 +674,7 @@ class ManagedBrush(object):
         self.bm = brushmanager
         self._preview = None
         self.name = name
-        self.brushinfo = BrushInfo()
+        self._brushinfo = BrushInfo()
         self.persistent = persistent #: If True this brush is stored in the filesystem.
         self.settings_loaded = False  #: If True this brush is fully initialized, ready to paint with.
         self.in_brushlist = False  #: Set to True if this brush is known to be in the brushlist
@@ -704,14 +698,21 @@ class ManagedBrush(object):
         self._preview = pixbuf
     preview = property(get_preview, set_preview)
 
+    # load brush settings on demand
+    def get_brushinfo(self):
+        if self.persistent and not self.settings_loaded:
+            self._load_settings()
+        return self._brushinfo
+    def set_brushinfo(self, brushinfo):
+        self._brushinfo = brushinfo
+    brushinfo = property(get_brushinfo, set_brushinfo)
+
     def get_display_name(self):
         """Gets a displayable name for the brush.
         """
         if self.in_brushlist:
             dname = self.name
         else:
-            if self.persistent and not self.settings_loaded:   # XXX refactor
-                self.load_settings()
             dname = self.brushinfo.get_string_property("parent_brush_name")
         if dname is None:
             return _("Unknown Brush")
@@ -802,7 +803,7 @@ class ManagedBrush(object):
                  RuntimeWarning, 2)
             return
         self._load_preview()
-        self.load_settings(retain_parent)
+        self._load_settings(retain_parent)
 
     def _load_preview(self):
         """Loads the brush preview as pixbuf into the brush."""
@@ -814,16 +815,16 @@ class ManagedBrush(object):
         self._preview = pixbuf
         self.remember_mtimes()
 
-    def load_settings(self, retain_parent=False):
+    def _load_settings(self, retain_parent=False):
         """Loads the brush settings/dynamics from disk."""
         prefix = self.get_fileprefix()
         filename = prefix + '.myb'
         brushinfo_str = open(filename).read()
-        self.brushinfo.load_from_string(brushinfo_str)
+        self._brushinfo.load_from_string(brushinfo_str)
         self.remember_mtimes()
         self.settings_loaded = True
         if not retain_parent:
-            self.brushinfo.set_string_property("parent_brush_name", None)
+            self._brushinfo.set_string_property("parent_brush_name", None)
         self.persistent = True
 
     def reload_if_changed(self):
@@ -836,8 +837,8 @@ class ManagedBrush(object):
         return True
 
     def __str__(self):
-        if self.brushinfo.settings:
-            return "<ManagedBrush %s p=%s>" % (self.name, self.brushinfo.get_string_property("parent_brush_name"))
+        if self._brushinfo.settings:
+            return "<ManagedBrush %s p=%s>" % (self.name, self._brushinfo.get_string_property("parent_brush_name"))
         else:
             return "<ManagedBrush %s (settings not loaded yet)>" % self.name
 
