@@ -439,7 +439,6 @@ class BrushManager:
                 if brushname in new_brushes:
                     new_brushes.remove(brushname)
                     if b:
-                        b.load_preview()
                         existing_preview_pixbuf = b.preview
                         if do_ask:
                             answer = dialogs.confirm_rewrite_brush(window, brushname, existing_preview_pixbuf, preview_data)
@@ -627,22 +626,10 @@ class BrushManager:
 
     def save_brush_history(self):
         for brush in self.history:
-            # Ensure we save the preview we saved last time even if it hasn't
-            # been loaded yet (hist menu not opened, brush not painted with...)
-            if not brush.preview:
-                brush.load_preview()
             brush.save()
 
-    def ensure_group_previews(self, groupname):
-        if groupname in self.loaded_groups:
-            return
-        for brush in self.groups[groupname]:
-            brush.load_preview()
-
     def set_active_groups(self, groups):
-        """Set active groups, loading them first if neccesary."""
-        for groupname in groups:
-            self.ensure_group_previews(groupname)
+        """Set active groups."""
         self.active_groups = groups
         self.app.preferences['brushmanager.selected_groups'] = groups
         for f in self.groups_observers: f()
@@ -691,7 +678,7 @@ class ManagedBrush(object):
     '''Represents a brush, but cannot be selected or painted with directly.'''
     def __init__(self, brushmanager, name=None, persistent=False):
         self.bm = brushmanager
-        self.preview = None
+        self._preview = None
         self.name = name
         self.brushinfo = BrushInfo()
         self.persistent = persistent #: If True this brush is stored in the filesystem.
@@ -705,6 +692,17 @@ class ManagedBrush(object):
             # we load the files later, but throw an exception now if they don't exist
             self.get_fileprefix()
 
+    # load preview pixbuf on demand
+    def get_preview(self):
+        if self._preview is None and self.name:
+            self._load_preview()
+        if self._preview is None:
+            self.preview = gdk.Pixbuf(gdk.COLORSPACE_RGB, False, 8, preview_w, preview_h)
+            self.preview.fill(0xffffffff) # white
+        return self._preview
+    def set_preview(self, pixbuf):
+        self._preview = pixbuf
+    preview = property(get_preview, set_preview)
 
     def get_display_name(self):
         """Gets a displayable name for the brush.
@@ -792,9 +790,6 @@ class ManagedBrush(object):
 
     def save(self):
         prefix = self.get_fileprefix(saving=True)
-        if self.preview is None:
-            self.preview = gdk.Pixbuf(gdk.COLORSPACE_RGB, False, 8, preview_w, preview_h)
-            self.preview.fill(0xffffffff) # white
         self.preview.save(prefix + '_prev.png', 'png')
         brushinfo = self.brushinfo.clone()
         open(prefix + '.myb', 'w').write(brushinfo.save_to_string())
@@ -802,20 +797,21 @@ class ManagedBrush(object):
 
     def load(self, retain_parent=False):
         """Loads the brush's preview and settings from disk."""
-        self.load_preview()
-        self.load_settings(retain_parent)
-
-    def load_preview(self):
-        """Loads the brush preview as pixbuf into the brush."""
         if self.name is None:
-            warn("Attempt to load preview for unnamed brush, don't do that.",
+            warn("Attempt to load an unnamed brush, don't do that.",
                  RuntimeWarning, 2)
             return
+        self._load_preview()
+        self.load_settings(retain_parent)
+
+    def _load_preview(self):
+        """Loads the brush preview as pixbuf into the brush."""
+        assert self.name
         prefix = self.get_fileprefix()
 
         filename = prefix + '_prev.png'
         pixbuf = gdk.pixbuf_new_from_file(filename)
-        self.preview = pixbuf
+        self._preview = pixbuf
         self.remember_mtimes()
 
     def load_settings(self, retain_parent=False):

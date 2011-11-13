@@ -591,12 +591,7 @@ class ManagedBrushPreview (gtk.Image):
     def set_from_managed_brush(self, brush):
         if brush is None:
             return
-        self.pixbuf = None
-        if not brush.preview:
-            if brush.name is not None:   # e.g. one from a strokemap
-                brush.load_preview()
-        if brush.preview:
-            self.pixbuf = brush.preview.copy()
+        self.pixbuf = brush.preview.copy()
         self.brush_name = brush.get_display_name()
         self._update()
 

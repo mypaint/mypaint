@@ -325,7 +325,6 @@ class QuickBrushChooser (gtk.VBox):
         self.groups_sb = spinbox.ItemSpinBox(model, self.on_groups_sb_changed,
                                              active_group_name)
         active_group_name = self.groups_sb.get_value()
-        self.bm.ensure_group_previews(active_group_name)
 
         brushes = self.bm.groups[active_group_name][:]
         self.brushlist = self._BrushList(self, brushes)
@@ -371,7 +370,6 @@ class QuickBrushChooser (gtk.VBox):
 
     def on_groups_sb_changed(self, group_name):
         self.app.preferences[self.PREFS_KEY] = group_name
-        self.bm.ensure_group_previews(group_name)
         self.brushlist.itemlist[:] = self.bm.groups[group_name][:]
         self.brushlist.update()
 
