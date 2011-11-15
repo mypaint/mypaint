@@ -181,6 +181,14 @@ class Window (windowing.MainWindow, layout.MainWindow):
 
         lm = app.layout_manager
         layout.MainWindow.__init__(self, lm)
+
+        # Park the focus on the main tdw rather than on the toolbar. Default
+        # activation doesn't really mean much for MyPaint's main window, so
+        # it's safe to do this and it looks better.
+        self.main_widget.set_can_default(True)
+        self.main_widget.set_can_focus(True)
+        self.main_widget.grab_focus()
+
         self.main_widget.connect("button-press-event", self.button_press_cb)
         self.main_widget.connect("button-release-event",self.button_release_cb)
         self.main_widget.connect("scroll-event", self.scroll_cb)
@@ -392,7 +400,8 @@ class Window (windowing.MainWindow, layout.MainWindow):
         self.menubar = self.app.ui_manager.get_widget('/Menubar')
 
     def init_toolbar(self):
-        self.toolbar = toolbar.MainToolbar(self)
+        self.toolbar_manager = toolbar.ToolbarManager(self)
+        self.toolbar = self.toolbar_manager.toolbar1
 
     def _clone_menu(self, xml, name, owner=None):
         """
@@ -668,9 +677,9 @@ class Window (windowing.MainWindow, layout.MainWindow):
         toolbar_visible = self.toolbar.get_property("visible")
         menubar_visible = self.menubar.get_property("visible")
         if toolbar_visible and menubar_visible:
-            self.toolbar.menu_button.hide()
+            self.toolbar_manager.menu_button.hide()
         else:
-            self.toolbar.menu_button.show_all()
+            self.toolbar_manager.menu_button.show_all()
 
 
     def on_menuishbar_radio_change(self, radioaction, current):
@@ -777,7 +786,7 @@ class Window (windowing.MainWindow, layout.MainWindow):
 
     def show_popupmenu(self, event=None):
         self.menubar.set_sensitive(False)   # excessive feedback?
-        self.toolbar.menu_button.set_sensitive(False)
+        self.toolbar_manager.menu_button.set_sensitive(False)
         button = 1
         time = 0
         if event is not None:
@@ -799,7 +808,7 @@ class Window (windowing.MainWindow, layout.MainWindow):
         # the other. Makes it clear that the popups are the same thing as
         # the full menu, maybe.
         self.menubar.set_sensitive(True)
-        self.toolbar.menu_button.set_sensitive(True)
+        self.toolbar_manager.menu_button.set_sensitive(True)
         self.popupmenu_last_active = self.popupmenu.get_active()
 
     # BEGIN -- Scratchpad menu options

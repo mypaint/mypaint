@@ -38,15 +38,17 @@ MERGEABLE_XML = [
     ]
 
 
-class MainToolbar (gtk.HBox):
-    """The main 'toolbar': menu button and quick access to painting tools.
+class ToolbarManager:
+    """Manager for toolbars, currently just the main one.
+
+    The main toolbar, /toolbar1, contains a menu button and quick
+    access to the painting tools.
     """
 
     # icon_size = gtk.icon_size_register("MYPAINT_TOOLBAR_ICON_SIZE", 32, 32)
     icon_size = gtk.ICON_SIZE_LARGE_TOOLBAR
 
     def __init__(self, draw_window):
-        gtk.HBox.__init__(self)
         self.draw_window = draw_window
         self.app = draw_window.app
         self.toolbar1_ui_loaded = {}  # {name: merge_id, ...}
@@ -57,18 +59,16 @@ class MainToolbar (gtk.HBox):
         self.toolbar1.set_style(gtk.TOOLBAR_ICONS)
         self.toolbar1.set_icon_size(self.icon_size)
         self.toolbar1.set_border_width(0)
-        self.toolbar1.connect("style-set", self.on_toolbar1_style_set)
         self.toolbar1.connect("popup-context-menu",
             self.on_toolbar1_popup_context_menu)
         self.toolbar1_popup = self.app.ui_manager\
             .get_widget('/toolbar1-settings-menu')
-        self.menu_button = FakeMenuButton(_("MyPaint"), draw_window.popupmenu)
+        self.menu_button = MainMenuButton(_("MyPaint"), draw_window.popupmenu)
         self.menu_button.set_border_width(0)
-        self.pack_start(self.menu_button, False, False)
-        self.pack_start(self.toolbar1, True, True)
-        self.toolbar1.unset_flags(gtk.CAN_DEFAULT)
-        self.toolbar1.unset_flags(gtk.CAN_FOCUS)
+        menu_toolitem = gtk.ToolItem()
+        menu_toolitem.add(self.menu_button)
         self.init_proxies()
+        self.toolbar1.insert(menu_toolitem, 0)
 
     def init_actions(self):
         ag = self.draw_window.action_group
@@ -103,12 +103,6 @@ class MainToolbar (gtk.HBox):
             active = self.app.preferences["ui.toolbar_items"].get(name, False)
             action.set_active(active)
             action.toggled()
-
-    def on_toolbar1_style_set(self, widget, oldstyle):
-        style = widget.style.copy()
-        self.menu_button.set_style(style)
-        style = widget.style.copy()
-        self.set_style(style)
 
     def on_toolbar1_popup_context_menu(self, toolbar, x, y, button):
         menu = self.toolbar1_popup
@@ -148,7 +142,7 @@ class ColorDropdownToolItem (gtk.ToolItem):
         self.main_blob = ColorBlob()
         self.dropdown_button = dropdownpanel.DropdownPanelButton(self.main_blob)
         self.app = None
-        self.blob_size = MainToolbar.icon_size
+        self.blob_size = ToolbarManager.icon_size
         self.connect("toolbar-reconfigured", self.on_toolbar_reconf)
         self.connect("create-menu-proxy", self.on_create_menu_proxy)
         self.set_tooltip_text(_("Color History and other tools"))
@@ -277,7 +271,7 @@ class BrushDropdownToolItem (gtk.ToolItem):
         self.main_image = ManagedBrushPreview()
         self.dropdown_button = dropdownpanel.DropdownPanelButton(self.main_image)
         self.app = None
-        self.image_size = MainToolbar.icon_size
+        self.image_size = ToolbarManager.icon_size
         self.connect("toolbar-reconfigured", self.on_toolbar_reconf)
         self.connect("create-menu-proxy", self.on_create_menu_proxy)
         self.set_tooltip_text(_("Brush history etc."))
@@ -391,7 +385,7 @@ class BrushSettingsDropdownToolItem (gtk.ToolItem):
         self.set_homogeneous(False)
         self.button_image = gtk.Image()
         self.button_image.set_from_stock(stock.BRUSH_MODIFIERS_INACTIVE,
-                                         MainToolbar.icon_size)
+                                         ToolbarManager.icon_size)
         self.button_shows_modified = False
         self.button = dropdownpanel.DropdownPanelButton(self.button_image)
         self.vbox = gtk.VBox()
@@ -543,7 +537,7 @@ class BrushSettingsDropdownToolItem (gtk.ToolItem):
             if self.reset_all_button.get_sensitive():
                 self.reset_all_button.set_sensitive(False)
         if stock_id is not None:
-            self.button_image.set_from_stock(stock_id, MainToolbar.icon_size)
+            self.button_image.set_from_stock(stock_id, ToolbarManager.icon_size)
 
 
     def _current_brush_is_modified(self):
@@ -657,20 +651,22 @@ class ColorBlob (gtk.AspectFrame):
         cr.paint()
 
 
-class FakeMenuButton(gtk.EventBox):
+class MainMenuButton (gtk.ToggleButton):
     """Launches the popup menu when clicked.
 
-    One of these sits to the left of the real toolbar when the main menu bar is
-    hidden. In addition to providing access to a popup menu associated with the
-    main view, this is a little more compliant with Fitts's Law than a normal
-    `gtk.MenuBar`: when the window is fullscreened with only the "toolbar"
-    present the ``(0, 0)`` screen pixel hits this button. Support note: Compiz
-    edge bindings sometimes get in the way of this, so turn those off if you
-    want Fitts's compliance.
+    This sits inside the main toolbar when the main menu bar is hidden. In
+    addition to providing access to the app's menu associated with the main
+    view, this is a little more compliant with Fitts's Law than a normal
+    `gtk.MenuBar`: our local style modifications mean that for most styles,
+    when the window is fullscreened with only the "toolbar" present the
+    ``(0,0)`` screen pixel hits this button.
+
+    Support note: Compiz edge bindings sometimes get in the way of this, so
+    turn those off if you want Fitts's compliance.
     """
 
     def __init__(self, text, menu):
-        gtk.EventBox.__init__(self)
+        gtk.Button.__init__(self)
         self.menu = menu
         hbox1 = gtk.HBox()
         hbox2 = gtk.HBox()
@@ -685,40 +681,25 @@ class FakeMenuButton(gtk.EventBox):
         attrs.change(pango.AttrWeight(pango.WEIGHT_SEMIBOLD, 0, -1))
         label.set_attributes(attrs)
 
-        # Intercept mouse clicks and use them for activating the togglebutton
-        # even if they're in its border, or (0, 0). Fitts would approve.
-        invis = self.invis_window = gtk.EventBox()
-        invis.set_visible_window(False)
-        invis.set_above_child(True)
-        invis.connect("button-press-event", self.on_button_press)
-        invis.connect("enter-notify-event", self.on_enter)
-        invis.connect("leave-notify-event", self.on_leave)
+        self.add(hbox2)
+        self.set_relief(gtk.RELIEF_NONE)
+        self.set_can_focus(True)
+        self.set_can_default(False)
+        self.connect("toggled", self.on_toggled)
 
-        # The underlying togglebutton can default and focus. Might as well make
-        # the Return key do something useful rather than invoking the 1st
-        # toolbar item.
-        self.togglebutton = gtk.ToggleButton()
-        self.togglebutton.add(hbox2)
-        self.togglebutton.set_relief(gtk.RELIEF_HALF)
-        self.togglebutton.unset_flags(gtk.CAN_FOCUS)
-        self.togglebutton.unset_flags(gtk.CAN_DEFAULT)
-        self.togglebutton.connect("toggled", self.on_togglebutton_toggled)
-
-        invis.add(self.togglebutton)
-        self.add(invis)
         for sig in "selection-done", "deactivate", "cancel":
             menu.connect(sig, self.on_menu_dismiss)
 
 
     def on_enter(self, widget, event):
         # Not this set_state(). That one.
-        #self.togglebutton.set_state(gtk.STATE_PRELIGHT)
-        gtk.Widget.set_state(self.togglebutton, gtk.STATE_PRELIGHT)
+        #self.set_state(gtk.STATE_PRELIGHT)
+        gtk.Widget.set_state(self, gtk.STATE_PRELIGHT)
 
 
     def on_leave(self, widget, event):
-        #self.togglebutton.set_state(gtk.STATE_NORMAL)
-        gtk.Widget.set_state(self.togglebutton, gtk.STATE_NORMAL)
+        #self.set_state(gtk.STATE_NORMAL)
+        gtk.Widget.set_state(self, gtk.STATE_NORMAL)
 
 
     def on_button_press(self, widget, event):
@@ -727,10 +708,10 @@ class FakeMenuButton(gtk.EventBox):
         # handler.
         pos_func = self._get_popup_menu_position
         self.menu.popup(None, None, pos_func, event.button, event.time)
-        self.togglebutton.set_active(True)
+        self.set_active(True)
 
 
-    def on_togglebutton_toggled(self, togglebutton):
+    def on_toggled(self, togglebutton):
         # Post the menu from a keypress. Dismiss handler untoggles it.
         if togglebutton.get_active():
             if not self.menu.get_property("visible"):
@@ -742,8 +723,8 @@ class FakeMenuButton(gtk.EventBox):
         # Reset the button state when the user's finished, and
         # park focus back on the menu button.
         self.set_state(gtk.STATE_NORMAL)
-        self.togglebutton.set_active(False)
-        self.togglebutton.grab_focus()
+        self.set_active(False)
+        self.grab_focus()
 
 
     def _get_popup_menu_position(self, menu, *junk):
@@ -751,16 +732,3 @@ class FakeMenuButton(gtk.EventBox):
         x, y = self.window.get_origin()
         y += self.allocation.height
         return x, y, True
-
-
-    def set_style(self, style):
-        # Propagate style changes to all children as well. Since this button is
-        # stored on the toolbar, the main window makes it share a style with
-        # it. Looks prettier.
-        gtk.EventBox.set_style(self, style)
-        style = style.copy()
-        widget = self.togglebutton
-        widget.set_style(style)
-        style = style.copy()
-        widget = widget.get_child()
-        widget.set_style(style)

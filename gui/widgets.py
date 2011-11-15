@@ -45,7 +45,7 @@ gtk.rc_parse_string ("""
     }
     widget "*.borderless*" style "borderless-style"
     widget "*.thinborder*" style "thinborder-style"
-    widget "*.toolbar1" style "borderless-toolbar-style"
+    class "GtkToolbar" style "borderless-toolbar-style"
     """)
 
 BORDERLESS_BUTTON_NAME = "borderless-button"
