@@ -46,6 +46,9 @@ class Layer:
 
         self.clear()
 
+    def translate(self, dx, dy):
+        self._surface.translate(dx, dy)
+
     def _notify_content_observers(self, *args):
         for f in self.content_observers:
             f(*args)

@@ -99,7 +99,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.mirrored = False
 
         self.has_pointer = False
-        self.dragfunc = None
+        self.drag_op = None
 
         self.current_layer_solo = False
         self.show_layers_above = True
@@ -185,8 +185,8 @@ class TiledDrawWidget(gtk.DrawingArea):
         
         same_device = self.device_used(event.device)
 
-        if self.dragfunc:
-            self.dragfunc(dx, dy, event.x, event.y)
+        if self.drag_op is not None:
+            self.drag_op.on_update(dx, dy, event.x, event.y)
             return
 
         # Refuse drawing if the layer is locked or hidden
@@ -629,11 +629,17 @@ class TiledDrawWidget(gtk.DrawingArea):
         def f(): self.mirrored = mirrored
         self.rotozoom_with_center(f)
 
-    def start_drag(self, dragfunc):
-        self.dragfunc = dragfunc
-    def stop_drag(self, dragfunc):
-        if self.dragfunc == dragfunc:
-            self.dragfunc = None
+    def start_drag(self, drag_op):
+        if self.drag_op is not None:
+            self.stop_drag()
+        assert self.drag_op is None
+        self.drag_op = drag_op
+        self.drag_op.on_start()
+
+    def stop_drag(self):
+        if self.drag_op is not None:
+            self.drag_op.on_stop()
+            self.drag_op = None
 
     def recenter_document(self):
         x, y, w, h = self.doc.get_effective_bbox()

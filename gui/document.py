@@ -438,49 +438,6 @@ class Document(object):
             bm.select_brush(context)
             self.app.brush.set_color_hsv(color)
 
-    # TDW view manipulation
-    def dragfunc_translate(self, dx, dy, x, y):
-        self.tdw.scroll(-dx, -dy)
-        # Accelerated scrolling: Highly comfortable to me, but lots of
-        # negative feedback from users.  Certainly should be disabled
-        # by default. Maybe add it back as preference one day.
-        # https://gna.org/bugs/?16232
-        #
-        #self.tdw.scroll(-dx*3, -dy*3)
-
-    def dragfunc_rotate(self, dx, dy, x, y):
-        # calculate angular velocity from viewport center
-        cx, cy = self.tdw.get_center()
-        x, y = x-cx, y-cy
-        phi2 = math.atan2(y, x)
-        x, y = x-dx, y-dy
-        phi1 = math.atan2(y, x)
-        self.tdw.rotate(phi2-phi1)
-        #self.tdw.rotate(2*math.pi*dx/300.0)
-
-    def dragfunc_zoom(self, dx, dy, x, y):
-        # workaround (should zoom at x=(first click point).x instead of cursor)
-        self.tdw.scroll(-dx, -dy)
-        self.tdw.zoom(math.exp(dy/100.0))
-
-    #def dragfunc_rotozoom(self, dx, dy, x, y):
-    #    self.tdw.scroll(-dx, -dy)
-    #    self.tdw.zoom(math.exp(-dy/100.0))
-    #    self.tdw.rotate(2*math.pi*dx/500.0)
-
-    def dragfunc_frame(self, dx, dy, x, y):
-        if not self.model.frame_enabled:
-            return
-
-        x, y, w, h = self.model.get_frame()
-
-        # Find the difference in document coordinates
-        cr = self.tdw.get_model_coordinates_cairo_context()
-        x0, y0 = cr.device_to_user(x, y)
-        x1, y1 = cr.device_to_user(x+dx, y+dy)
-
-        self.model.move_frame(dx=x1-x0, dy=y1-y0)
-
     def strokeblink_state_enter(self):
         l = layer.Layer()
         self.si.render_overlay(l)

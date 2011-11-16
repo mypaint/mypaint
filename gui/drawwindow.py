@@ -26,6 +26,7 @@ import colorselectionwindow, historypopup, stategroup, colorpicker, windowing, l
 import dialogs
 from lib import helpers
 import stock
+import dragfunc
 
 import xml.etree.ElementTree as ET
 
@@ -106,17 +107,24 @@ def button_press_cb_abstraction(drawwindow, win, event, doc):
 
     # View control
     if action_name.endswith("_canvas"):
-        dragfunc = None
+        drag_op = None
         if action_name == "pan_canvas":
-            dragfunc = doc.dragfunc_translate
+            drag_op = dragfunc.PanViewDragFunc(doc)
         elif action_name == "zoom_canvas":
-            dragfunc = doc.dragfunc_zoom
+            drag_op = dragfunc.ZoomViewDragFunc(doc)
         elif action_name == "rotate_canvas":
-            dragfunc = doc.dragfunc_rotate
-        if dragfunc is not None:
-            doc.tdw.start_drag(dragfunc)
+            drag_op = dragfunc.RotateViewDragFunc(doc)
+        if drag_op is not None:
+            doc.tdw.start_drag(drag_op)
             return True
         return False
+
+    # TODO: add frame manipulation here too
+
+    if action_name == 'move_layer':
+        drag_op = dragfunc.LayerMoveDragFunc(doc)
+        doc.tdw.start_drag(drag_op)
+        return True
 
     # Application menu
     if action_name == 'popup_menu':
@@ -136,11 +144,7 @@ def button_press_cb_abstraction(drawwindow, win, event, doc):
 
 def button_release_cb_abstraction(win, event, doc):
     #print event.device, event.button
-    tdw = doc.tdw
-    if tdw.dragfunc is not None:
-        tdw.stop_drag(doc.dragfunc_translate)
-        tdw.stop_drag(doc.dragfunc_rotate)
-        tdw.stop_drag(doc.dragfunc_zoom)
+    doc.tdw.stop_drag()
     return False
 
 class Window (windowing.MainWindow, layout.MainWindow):
@@ -498,20 +502,23 @@ class Window (windowing.MainWindow, layout.MainWindow):
         if self.app.scratchpad_doc.tdw.has_pointer:
             thisdoc = self.app.scratchpad_doc
             # Stop dragging on the main window
-            self.app.doc.tdw.dragfunc = None
+            self.app.doc.tdw.stop_drag()
         else:
             thisdoc = self.app.doc
             # Stop dragging on the other window
-            self.app.scratchpad_doc.tdw.dragfunc = None
+            self.app.scratchpad_doc.tdw.stop_drag()
         if key == keysyms.space:
-            if shift:
-                 thisdoc.tdw.start_drag(thisdoc.dragfunc_rotate)
+            drag_op = None
+            if (shift and ctrl) or alt:
+                drag_op = dragfunc.MoveFrameDragFunc(thisdoc)
+            elif shift:
+                drag_op = dragfunc.RotateViewDragFunc(thisdoc)
             elif ctrl:
-                thisdoc.tdw.start_drag(thisdoc.dragfunc_zoom)
-            elif alt:
-                thisdoc.tdw.start_drag(thisdoc.dragfunc_frame)
+                drag_op = dragfunc.ZoomViewDragFunc(thisdoc)
             else:
-                thisdoc.tdw.start_drag(thisdoc.dragfunc_translate)
+                drag_op = dragfunc.PanViewDragFunc(thisdoc)
+            assert drag_op is not None
+            thisdoc.tdw.start_drag(drag_op)
         else: return False
         return True
 
@@ -521,10 +528,7 @@ class Window (windowing.MainWindow, layout.MainWindow):
         else:
             thisdoc = self.app.doc
         if event.keyval == keysyms.space:
-            thisdoc.tdw.stop_drag(thisdoc.dragfunc_translate)
-            thisdoc.tdw.stop_drag(thisdoc.dragfunc_rotate)
-            thisdoc.tdw.stop_drag(thisdoc.dragfunc_zoom)
-            thisdoc.tdw.stop_drag(thisdoc.dragfunc_frame)
+            thisdoc.tdw.stop_drag()
             return True
         return False
 

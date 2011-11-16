@@ -404,3 +404,56 @@ class Surface(mypaintlib.TiledSurface):
         for pos, data in self.tiledict.items():
             if not data.rgba.any():
                 self.tiledict.pop(pos)
+
+
+    def translate(self, dx, dy, prune=True):
+        """Translates a tiledict by (dx,dy) pixels.
+        """
+
+        dx = int(dx)
+        dy = int(dy)
+
+        src_tiles = self.tiledict
+        dirty_tiles = set(src_tiles.keys())
+
+        if (dx, dy) == (0, 0):
+            return
+
+        self.tiledict = {}
+
+        def __make_slices(r):
+            if r == 0: #  [(from, to), ...]
+                return [ ((0, N), (0, 0, N)) ]
+            else:
+                return [ ((0, N-r), (0, r, N)) ,
+                         ((N-r, N), (1, 0, r)) ]
+        slices_x = __make_slices(dx % N)
+        slices_y = __make_slices(dy % N)
+        integral = len(slices_x) == 1 and len(slices_y) == 1
+
+        for (src_tx, src_ty), src_tile in src_tiles.iteritems():
+            targ_tx0 = src_tx + (dx // N)
+            targ_ty0 = src_ty + (dy // N)
+            for (src_x0, src_x1), (targ_tdx, targ_x0, targ_x1) in slices_x:
+                for (src_y0, src_y1), (targ_tdy, targ_y0, targ_y1) in slices_y:
+                    targ_tx = targ_tx0 + targ_tdx
+                    targ_ty = targ_ty0 + targ_tdy
+                    if integral:
+                        targ_tile = src_tile
+                        self.tiledict[(targ_tx, targ_ty)] = targ_tile
+                    else:
+                        targ_tile = self.tiledict.get((targ_tx, targ_ty), None)
+                        if targ_tile is None:
+                            targ_tile = Tile()
+                            self.tiledict[(targ_tx, targ_ty)] = targ_tile
+                        targ_tile.rgba[targ_y0:targ_y1, targ_x0:targ_x1] \
+                          = src_tile.rgba[src_y0:src_y1, src_x0:src_x1]
+
+        dirty_tiles.update(self.tiledict.keys())
+        for loc in dirty_tiles:
+            self._mark_mipmap_dirty(*loc)
+        if prune and not integral:
+            self.remove_empty_tiles()
+
+        bbox = get_tiles_bbox(dirty_tiles)
+        self.notify_observers(*bbox)

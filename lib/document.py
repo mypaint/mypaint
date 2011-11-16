@@ -63,6 +63,10 @@ class Document():
         self._frame_dx = 0.0
         self._frame_dy = 0.0
 
+    def move_current_layer(self, dx, dy):
+        layer = self.layers[self.layer_idx]
+        layer.translate(dx, dy)
+
     def get_frame(self):
         return self._frame
 
