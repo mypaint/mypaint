@@ -67,6 +67,9 @@ class ToolbarManager:
         self.menu_button.set_border_width(0)
         menu_toolitem = gtk.ToolItem()
         menu_toolitem.add(self.menu_button)
+        for item in self.toolbar1:
+            if isinstance(item, gtk.SeparatorToolItem):
+                item.set_draw(False)
         self.init_proxies()
         self.toolbar1.insert(menu_toolitem, 0)
 
