@@ -105,10 +105,9 @@ class BrushModifier:
         If `override` is true, the named setting will be forced to a base value
         greater than 0.9, and if it is false a base value less than 0.1 will be
         applied. Where possible, values from the base brush will be used. The
-        setting from `unmodified_brushinfo`, including any nonlinear
-        components, will be used if its base value is suitably large (or
-        small). If not, a base value of either 1 or 0 and no nonlinear
-        components will be applied.
+        setting from `unmodified_brushinfo`, including any input mapping, will
+        be used if its base value is suitably large (or small). If not, a base
+        value of either 1 or 0 and no input mapping will be applied.
         """
         unmod_b = self.unmodified_brushinfo
         modif_b = self.app.brush
@@ -184,12 +183,6 @@ class BrushModifier:
                     self._set_radius_internal(r + dr)
             self._push_hist(action)
         else:
-            if self._brush_is_dedicated_eraser():
-                # No, you may not leave eraser mode with one of these.
-                action.block_activate()
-                action.set_active(True)
-                action.unblock_activate()
-                return
             if not self._in_brush_selected_cb:
                 # We're leaving eraser mode because the user deactivated the
                 # ToggleAction, not because the brush changed. Might have to
