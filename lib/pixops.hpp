@@ -520,16 +520,16 @@ void tile_convert_rgb16_to_rgb8(PyObject * src, PyObject * dst) {
   assert(PyArray_DIM(dst, 1) == TILE_SIZE);
   assert(PyArray_TYPE(dst) == NPY_UINT8);
   assert(PyArray_ISBEHAVED(dst));
-  assert(dst_arr->strides[1] == PyArray_DIM(dst, 2)*sizeof(uint8_t));
-  assert(dst_arr->strides[2] ==   sizeof(uint8_t));
+  assert(PyArray_STRIDE(dst, 1) == PyArray_DIM(dst, 2)*sizeof(uint8_t));
+  assert(PyArray_STRIDE(dst, 2) == sizeof(uint8_t));
 
   assert(PyArray_DIM(src, 0) == TILE_SIZE);
   assert(PyArray_DIM(src, 1) == TILE_SIZE);
   assert(PyArray_DIM(src, 2) == 3);
   assert(PyArray_TYPE(src) == NPY_UINT16);
   assert(PyArray_ISBEHAVED(src));
-  assert(src_arr->strides[1] == 3*sizeof(uint16_t));
-  assert(src_arr->strides[2] ==   sizeof(uint16_t));
+  assert(PyArray_STRIDE(src, 1) == 3*sizeof(uint16_t));
+  assert(PyArray_STRIDE(src, 2) ==   sizeof(uint16_t));
 #endif
 
   precalculate_dithering_noise_if_required();
