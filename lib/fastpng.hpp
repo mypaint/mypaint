@@ -111,7 +111,7 @@ PyObject * save_png_fast_progressive(char * filename, int w, int h, bool has_alp
     assert(y == h);
   }
   
-  png_write_end (png_ptr, info_ptr);
+  png_write_end (png_ptr, NULL);
 
   Py_INCREF(Py_None);
   result = Py_None;
