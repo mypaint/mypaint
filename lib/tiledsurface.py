@@ -320,7 +320,7 @@ class Surface(mypaintlib.TiledSurface):
         s = pixbufsurface.Surface(x, y, w, h, alpha=True, data=arr)
         self._load_from_pixbufsurface(s)
 
-    def load_from_png(self, filename, x, y):
+    def load_from_png(self, filename, x, y, feedback_cb=None):
         """Load from a PNG, one tilerow at a time, discarding empty tiles.
         """
         dirty_tiles = set(self.tiledict.keys())
@@ -331,6 +331,8 @@ class Surface(mypaintlib.TiledSurface):
         state['ty'] = y/N # current tile row being filled into buf
 
         def get_buffer(png_w, png_h):
+            if feedback_cb:
+                feedback_cb()
             buf_x0 = x/N*N
             buf_x1 = ((x+png_w-1)/N+1)*N
             buf_y0 = state['ty']*N

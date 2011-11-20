@@ -299,9 +299,9 @@ class Document():
         s.load_from_numpy(arr, x, y)
         self.do(command.LoadLayer(self, s))
 
-    def load_layer_from_png(self, filename, x=0, y=0):
+    def load_layer_from_png(self, filename, x=0, y=0, feedback_cb=None):
         s = tiledsurface.Surface()
-        s.load_from_png(filename, x, y)
+        s.load_from_png(filename, x, y, feedback_cb)
         self.do(command.LoadLayer(self, s))
 
     def set_layer_visibility(self, visible, layer):
@@ -444,6 +444,11 @@ class Document():
             filename = '%s.%03d%s' % (prefix, i+1, ext)
             l.save_as_png(filename, *doc_bbox, **kwargs)
 
+    def load_png(self, filename, feedback_cb=None):
+        self.clear()
+        self.load_layer_from_png(filename, 0, 0, feedback_cb)
+        self.set_frame(*self.get_bbox())
+
     @staticmethod
     def _pixbuf_from_stream(fp, feedback_cb=None):
         loader = gdk.PixbufLoader()
@@ -463,7 +468,6 @@ class Document():
         fp.close()
         self.load_from_pixbuf(pixbuf)
 
-    load_png = load_from_pixbuf_file
     load_jpg = load_from_pixbuf_file
     load_jpeg = load_from_pixbuf_file
 
@@ -670,7 +674,7 @@ class Document():
             # the overhead for doing so seems to be neglegible (around 5%)
             z.extract(src, tempdir)
             tmp_filename = join(tempdir, src)
-            self.load_layer_from_png(tmp_filename, x, y)
+            self.load_layer_from_png(tmp_filename, x, y, feedback_cb)
             os.remove(tmp_filename)
 
             layer = self.layers[0]
