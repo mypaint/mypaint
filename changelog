@@ -1,3 +1,11 @@
+Version 1.0.0:
+- toolbar with color, brush selector and brush settings dropdown
+- tool windows can be docked instead of floating
+- locked alpha brush mode
+- basic layer compositing modes
+- new scratchpad area
+- lots of other improvements (about 500 commits)
+
 Version 0.9.1:
 - several fixes for non-ascii file names, directories, layer names
 - workaround for tablets reporting invalid tilt values
