@@ -295,7 +295,14 @@ class Document():
 
     def load_layer_from_pixbuf(self, pixbuf, x=0, y=0):
         arr = helpers.gdkpixbuf2numpy(pixbuf)
-        self.do(command.LoadLayer(self, arr, x, y))
+        s = tiledsurface.Surface()
+        s.load_from_numpy(arr, x, y)
+        self.do(command.LoadLayer(self, s))
+
+    def load_layer_from_png(self, filename, x=0, y=0):
+        s = tiledsurface.Surface()
+        s.load_from_png(filename, x, y)
+        self.do(command.LoadLayer(self, s))
 
     def set_layer_visibility(self, visible, layer):
         cmd = self.get_last_command()
@@ -472,7 +479,7 @@ class Document():
     def save_ora(self, filename, options=None, **kwargs):
         print 'save_ora:'
         t0 = time.time()
-        tempdir = tempfile.mkdtemp('mypaint')
+        tempdir = tempfile.mkdtemp(u'mypaint')
         # use .tmp extension, so we don't overwrite a valid file if there is an exception
         z = zipfile.ZipFile(filename + '.tmpsave', 'w', compression=zipfile.ZIP_STORED)
         # work around a permission bug in the zipfile library: http://bugs.python.org/issue3394
@@ -575,6 +582,7 @@ class Document():
         """Loads from an OpenRaster file"""
         print 'load_ora:'
         t0 = time.time()
+        tempdir = tempfile.mkdtemp(u'mypaint')
         z = zipfile.ZipFile(filename)
         print 'mimetype:', z.read('mimetype').strip()
         xml = z.read('stack.xml')
@@ -646,7 +654,6 @@ class Document():
             if not src.lower().endswith('.png'):
                 print 'Warning: ignoring non-png layer'
                 continue
-            pixbuf = get_pixbuf(src)
             name = a.get('name', '')
             x = int(a.get('x', '0'))
             y = int(a.get('y', '0'))
@@ -657,15 +664,21 @@ class Document():
 
             visible = not 'hidden' in a.get('visibility', 'visible')
             self.add_layer(insert_idx=0, name=name)
-            last_pixbuf = pixbuf
             t1 = time.time()
-            self.load_layer_from_pixbuf(pixbuf, x, y)
+
+            # extract the png form the zip into a file first
+            # the overhead for doing so seems to be neglegible (around 5%)
+            z.extract(src, tempdir)
+            tmp_filename = join(tempdir, src)
+            self.load_layer_from_png(tmp_filename, x, y)
+            os.remove(tmp_filename)
+
             layer = self.layers[0]
 
             self.set_layer_opacity(helpers.clamp(opac, 0.0, 1.0), layer)
             self.set_layer_compositeop(compositeop, layer)
             self.set_layer_visibility(visible, layer)
-            print '  %.3fs converting pixbuf to layer format' % (time.time() - t1)
+            print '  %.3fs loading and converting layer png' % (time.time() - t1)
             # strokemap
             fname = a.get('mypaint_strokemap_v2', None)
             if fname:
@@ -680,30 +693,18 @@ class Document():
             # no assertion (allow empty documents)
             print 'Warning: Could not load any layer, document is empty.'
 
-        if no_background:
-            # recognize solid or tiled background layers, at least those that mypaint <= 0.7.1 saves
-            t1 = time.time()
-            p = last_pixbuf
-            if not p.get_has_alpha() and p.get_width() % N == 0 and p.get_height() % N == 0:
-                tiles = self.layers[0]._surface.tiledict.values()
-                if len(tiles) > 1:
-                    all_equal = True
-                    for tile in tiles[1:]:
-                        if (tile.rgba != tiles[0].rgba).any():
-                            all_equal = False
-                            break
-                    if all_equal:
-                        arr = helpers.gdkpixbuf2numpy(p)
-                        tile = arr[0:N,0:N,:]
-                        self.set_background(tile.copy())
-                        self.select_layer(0)
-                        self.remove_layer()
-            print '  %.3fs recognizing tiled background' % (time.time() - t1)
-
         if len(self.layers) > 1:
             # remove the still present initial empty top layer
             self.select_layer(len(self.layers)-1)
             self.remove_layer()
             # this leaves the topmost layer selected
+
+        z.close()
+
+        # remove empty directories created by zipfile's extract()
+        for root, dirs, files in os.walk(tempdir, topdown=False):
+            for name in dirs:
+                os.rmdir(os.path.join(root, name))
+        os.rmdir(tempdir)
 
         print '%.3fs load_ora total' % (time.time() - t0)

@@ -81,9 +81,9 @@ class Layer:
         self.strokes = [] # contains StrokeShape instances (not stroke.Stroke)
         self._surface.clear()
 
-    def load_from_pixbuf(self, pixbuf):
+    def load_from_surface(self, surface):
         self.strokes = []
-        self._surface.load_from_data(pixbuf)
+        self._surface.load_from_surface(surface)
 
     def render_as_pixbuf(self, *rect, **kwargs):
         return self._surface.render_as_pixbuf(*rect, **kwargs)

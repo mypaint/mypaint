@@ -121,14 +121,13 @@ class ClearLayer(Action):
 
 class LoadLayer(Action):
     display_name = _("Load Layer")
-
-    def __init__(self, doc, data, x, y):
+    def __init__(self, doc, tiledsurface):
         self.doc = doc
-        self.data = [x, y, data]
+        self.tiledsurface = tiledsurface
     def redo(self):
         layer = self.doc.layer
         self.before = layer.save_snapshot()
-        layer.load_from_pixbuf(self.data)
+        layer.load_from_surface(self.tiledsurface)
     def undo(self):
         self.doc.layer.load_snapshot(self.before)
         del self.before

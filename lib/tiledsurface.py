@@ -9,7 +9,7 @@
 # This module implements an unbounded tiled surface for painting.
 
 from numpy import *
-import time
+import time, sys
 import mypaintlib, helpers
 
 TILE_SIZE = N = mypaintlib.TILE_SIZE
@@ -282,12 +282,15 @@ class Surface(mypaintlib.TiledSurface):
         return sshot
 
     def load_snapshot(self, sshot):
-        if sshot.tiledict == self.tiledict:
+        self._load_tiledict(sshot.tiledict)
+
+    def _load_tiledict(self, d):
+        if d == self.tiledict:
             # common case optimization, called from split_stroke() via stroke.redo()
             # testcase: comparison above (if equal) takes 0.6ms, code below 30ms
             return
         old = set(self.tiledict.iteritems())
-        self.tiledict = sshot.tiledict.copy()
+        self.tiledict = d.copy()
         new = set(self.tiledict.iteritems())
         dirty = old.symmetric_difference(new)
         for pos, tile in dirty:
@@ -295,6 +298,81 @@ class Surface(mypaintlib.TiledSurface):
         bbox = get_tiles_bbox([pos for (pos, tile) in dirty])
         if not bbox.empty():
             self.notify_observers(*bbox)
+
+    def load_from_surface(self, other):
+        self.load_snapshot(other.save_snapshot())
+
+    def _load_from_pixbufsurface(self, s):
+        dirty_tiles = set(self.tiledict.keys())
+        self.tiledict = {}
+
+        for tx, ty in s.get_tiles():
+            dst = self.get_tile_memory(tx, ty, readonly=False)
+            s.blit_tile_into(dst, tx, ty)
+
+        dirty_tiles.update(self.tiledict.keys())
+        bbox = get_tiles_bbox(dirty_tiles)
+        self.notify_observers(*bbox)
+
+    def load_from_numpy(self, arr, x, y):
+        assert arr.dtype == 'uint8'
+        h, w, channels = arr.shape
+        s = pixbufsurface.Surface(x, y, w, h, alpha=True, data=arr)
+        self._load_from_pixbufsurface(s)
+
+    def load_from_png(self, filename, x, y):
+        """Load from a PNG, one tilerow at a time, discarding empty tiles.
+        """
+        dirty_tiles = set(self.tiledict.keys())
+        self.tiledict = {}
+
+        state = {}
+        state['buf'] = None # array of height N, width depends on image
+        state['ty'] = y/N # current tile row being filled into buf
+
+        def get_buffer(png_w, png_h):
+            buf_x0 = x/N*N
+            buf_x1 = ((x+png_w-1)/N+1)*N
+            buf_y0 = state['ty']*N
+            buf_y1 = buf_y0+N
+            buf_w = buf_x1-buf_x0
+            buf_h = buf_y1-buf_y0
+            assert buf_w % N == 0
+            assert buf_h == N
+            if state['buf'] is not None:
+                consume_buf()
+            else:
+                state['buf'] = empty((buf_h, buf_w, 4), 'uint8')
+
+            png_x0 = x
+            png_x1 = x+png_w
+            subbuf = state['buf'][:,png_x0-buf_x0:png_x1-buf_x0]
+            if 1: # optimize: only needed for first and last
+                state['buf'].fill(0)
+                png_y0 = max(buf_y0, y)
+                png_y1 = min(buf_y0+buf_h, y+png_h)
+                assert png_y1 > png_y0
+                subbuf = subbuf[png_y0-buf_y0:png_y1-buf_y0,:]
+
+            state['ty'] += 1
+            return subbuf
+
+        def consume_buf():
+            ty = state['ty']-1
+            for i in xrange(state['buf'].shape[1]/N):
+                tx = x/N + i
+                src = state['buf'][:,i*N:(i+1)*N,:]
+                if src[:,:,3].any():
+                    dst = self.get_tile_memory(tx, ty, readonly=False)
+                    mypaintlib.tile_convert_rgba8_to_rgba16(src, dst)
+
+        filename_sys = filename.encode(sys.getfilesystemencoding()) # FIXME: should not do that, should use open(unicode_object)
+        mypaintlib.load_png_fast_progressive(filename_sys, get_buffer)
+        consume_buf() # also process the final chunk of data
+        
+        dirty_tiles.update(self.tiledict.keys())
+        bbox = get_tiles_bbox(dirty_tiles)
+        self.notify_observers(*bbox)
 
     def render_as_pixbuf(self, *args, **kwargs):
         if not self.tiledict:
@@ -309,26 +387,6 @@ class Surface(mypaintlib.TiledSurface):
         assert 'alpha' not in kwargs
         kwargs['alpha'] = True
         pixbufsurface.save_as_png(self, filename, *args, **kwargs)
-
-    def _load_from_pixbufsurface(self, s):
-        dirty_tiles = set(self.tiledict.keys())
-        self.tiledict = {}
-
-        for tx, ty in s.get_tiles():
-            dst = self.get_tile_memory(tx, ty, readonly=False)
-            s.blit_tile_into(dst, tx, ty)
-
-        dirty_tiles.update(self.tiledict.keys())
-        bbox = get_tiles_bbox(dirty_tiles)
-        self.notify_observers(*bbox)
-
-    def load_from_data(self, data):
-        x, y, data = data
-        assert data.dtype == 'uint8'
-        h, w, channels = data.shape
-
-        s = pixbufsurface.Surface(x, y, w, h, alpha=True, data=data)
-        self._load_from_pixbufsurface(s)
 
     def get_tiles(self):
         return self.tiledict
