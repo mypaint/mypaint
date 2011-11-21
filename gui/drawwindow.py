@@ -932,7 +932,7 @@ class Window (windowing.MainWindow, layout.MainWindow):
         d.set_transient_for(self)
         d.set_program_name("MyPaint")
         d.set_version(MYPAINT_VERSION)
-        d.set_copyright(_("Copyright (C) 2005-2010\nMartin Renold and the MyPaint Development Team"))
+        d.set_copyright(_("Copyright (C) 2005-2012\nMartin Renold and the MyPaint Development Team"))
         d.set_website("http://mypaint.info/")
         d.set_logo(self.app.pixmaps.mypaint_logo)
         d.set_license(
