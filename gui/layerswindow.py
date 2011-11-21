@@ -98,7 +98,7 @@ class ToolWidget (gtk.VBox):
         img.set_from_pixbuf(self.app.pixmaps.layer_duplicate)
         b.add(img)
         tooltip = gtk.Tooltips()
-        tooltip.set_tip(b, _("Create a duplicate of this channel and add it to the image"))
+        tooltip.set_tip(b, _("Duplicate Layer"))
         duplicate_button = self.duplicate_button = b
 
 
@@ -276,12 +276,11 @@ class ToolWidget (gtk.VBox):
         doc = self.app.doc.model
         layer = doc.layers[doc.layer_idx]
         name = layer.name
-        copy_of = _("Copy of ")
         if name:
-            name = copy_of+name
+            name = _("Copy of %s") % name
         else:
             layer_num = self.anon_layer_num.get(id(layer), None)
-            name = copy_of+_("Untitled layer #%d") % layer_num
+            name = _("Copy of Untitled layer #%d") % layer_num
         doc.duplicate_layer(doc.layer_idx, name)
 
     def merge_layer_down(self, widget):
