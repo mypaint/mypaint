@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: MyPaint 0.7.1+git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-11-10 22:57+0100\n"
-"PO-Revision-Date: 2011-11-20 00:24-0300\n"
+"PO-Revision-Date: 2011-11-22 08:59-0300\n"
 "Last-Translator: Manuel Quiñones <manuq@laptop.org>\n"
 "Language-Team: Español; Castellano <manuq@laptop.org>\n"
 "Language: es\n"
@@ -443,7 +443,7 @@ msgid ""
 " 0.5 change active color towards brush color\n"
 " 1.0 set the active color to the brush color when selected"
 msgstr ""
-"Cuando se selecciona una brocha, el color puede ser recuperado desde el "
+"Cuando se selecciona una brocha, el color puede ser restaurado desde el "
 "color con que se guardó la brocha.\n"
 " 0.0 no modificar el color activo al seleccionar esta brocha\n"
 " 0.5 cambiar el color activo hacia el color de la brocha\n"
@@ -1268,7 +1268,7 @@ msgstr "Más grande"
 #. Context actions are also added in init_context_actions
 #: ../gui/document.py:95
 msgid "Save to Most Recently Restored"
-msgstr "Guardar en la última tecla recuperada"
+msgstr "Guardar en la última restaurada"
 
 #: ../gui/document.py:98
 msgid "Copy to Clipboard"
@@ -1400,7 +1400,7 @@ msgstr "Desactivar \"GTK Double Buffering\""
 #: ../gui/document.py:161
 #, python-format
 msgid "Restore Brush %d"
-msgstr "Recuperar la brocha %d"
+msgstr "Restaurar la brocha %d"
 
 #: ../gui/document.py:163
 #, python-format
@@ -1562,7 +1562,7 @@ msgstr "Imprimir información de Memory Leak en la consola (¡lento!)"
 
 #: ../gui/drawwindow.py:251
 msgid "Run Garbage Collector Now"
-msgstr "Correr Garbage Collector ahora"
+msgstr "Ejecutar Garbage Collector ahora"
 
 #: ../gui/drawwindow.py:252
 msgid "Start/Stop Python Profiling (cProfile)"
@@ -1781,7 +1781,7 @@ msgid ""
 "They are anonymous brushes, which are not visible in the brush selector "
 "list. But they are remembered even if you quit."
 msgstr ""
-"Las teclas de brocha se usan para guardar y recuperar las propiedades de "
+"Las teclas de brocha se usan para guardar y restaurar las propiedades de "
 "brocha usando atajos de teclado. Puede pintar con una mano y cambiar brochas "
 "con la otra, sin interrumpirse.\n"
 "\n"
@@ -2095,7 +2095,7 @@ msgstr "Expandir"
 
 #: ../gui/layout.py:666
 msgid "Snap out"
-msgstr ""
+msgstr "Desacoplar"
 
 #: ../gui/layout.py:668
 msgid "Close"
@@ -2187,7 +2187,7 @@ msgstr "Botón 3"
 
 #: ../gui/preferenceswindow.py:59
 msgid "Button 3 + Shift"
-msgstr "Botón3 + Shift"
+msgstr "Botón 3 + Shift"
 
 #: ../gui/preferenceswindow.py:60
 msgid "Button 3 + Ctrl (or Alt)"
@@ -2264,7 +2264,7 @@ msgstr "Ampliación por defecto:"
 #: ../gui/preferenceswindow.py:248
 msgid "High quality zoom (may result in slow scrolling)"
 msgstr ""
-"Ampliación de alta calidad (puede resultar en desplazamiento más lento)"
+"Ampliación de alta calidad (puede causar lentitud en el desplazamiento)"
 
 #: ../gui/preferenceswindow.py:255
 msgid "<b>Fullscreen</b>"
@@ -2418,7 +2418,7 @@ msgstr "%s:"
 #: ../gui/toolbar.py:442
 #, python-format
 msgid "Restore '%s' to this brush's saved value"
-msgstr "Recuperar '%s' a los valores de brocha guerdados"
+msgstr "Restaurar '%s' a los valores de brocha guerdados"
 
 #. Access to the brush settings window, and a big reset-all button
 #. aligned with the settings above.
@@ -2428,7 +2428,7 @@ msgstr "Propiedades detalladas de brocha"
 
 #: ../gui/toolbar.py:475
 msgid "Restore Saved Settings"
-msgstr "Recuperar los ajustes guardados"
+msgstr "Restaurar los ajustes guardados"
 
 #: ../gui/toolbar.py:477
 msgid "Reset all brush settings to the current brush's saved values"
