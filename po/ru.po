@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: MyPaint 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-11-10 22:58+0100\n"
-"PO-Revision-Date: 2011-11-17 16:21+0400\n"
+"PO-Revision-Date: 2011-11-21 12:30+0400\n"
 "Last-Translator: Александр Прокудин <alexandre.prokoudine@gmail.com>\n"
 "Language-Team: Russian <gnome-cyr@lists.gnome.org>\n"
 "Language: ru\n"
@@ -138,11 +138,12 @@ msgid "Opacity"
 msgstr "Непрозрачность"
 
 #: ../brushlib/brushsettings.py:44
-#, fuzzy
 msgid ""
 "0 means brush is transparent, 1 fully visible\n"
 "(also known as alpha or opacity)"
-msgstr "0 означает что кисть прозрачна, 1 - полностью видима"
+msgstr ""
+"0 означает, что кисть прозрачна, 1 — полностью видима\n"
+"(также известно как альфа-канал или непрозрачность)"
 
 #: ../brushlib/brushsettings.py:45
 msgid "Opacity multiply"
@@ -190,14 +191,14 @@ msgid "Radius"
 msgstr "Радиус"
 
 #: ../brushlib/brushsettings.py:47
-#, fuzzy
 msgid ""
 "Basic brush radius (logarithmic)\n"
 " 0.7 means 2 pixels\n"
 " 3.0 means 20 pixels"
 msgstr ""
-"Основной радиус кисти (логарифмический) 0.7 означает 2 пиксела 3.0 означает "
-"20 пикселов"
+"Основной радиус кисти (логарифмический)\n"
+" 0.7 означает 2 пиксела\n"
+" 3.0 означает 20 пикселов"
 
 #: ../brushlib/brushsettings.py:48
 msgid "Hardness"
@@ -729,7 +730,6 @@ msgid ""
 msgstr ""
 
 #: ../gui/backgroundwindow.py:23
-#, fuzzy
 msgid "Save as Default"
 msgstr "Использовать по умолчанию"
 
@@ -769,9 +769,8 @@ msgstr ""
 "Поддерживаются только размеры (N*%d)*(M*%d)."
 
 #: ../gui/brushcreationwidget.py:46 ../gui/brushcreationwidget.py:66
-#, fuzzy
 msgid "(unnamed brush)"
-msgstr "Переименовать кисть"
+msgstr "(безымянная кисть)"
 
 #: ../gui/brushcreationwidget.py:50
 msgid "Save Settings"
@@ -882,16 +881,16 @@ msgstr ""
 
 #: ../gui/brushmodifier.py:59
 msgid "Eraser Mode: remove strokes using the current brush"
-msgstr ""
+msgstr "Режим ластика: удалять мазки с помощью активной кисти"
 
 #: ../gui/brushmodifier.py:62
 msgid "Lock Alpha: paint over existing strokes only, using the current brush"
-msgstr ""
+msgstr "Блокировать альфа-канал: рисовать только поверх уже нанесённых мазков"
 
 #: ../gui/brushselectionwindow.py:233
-#, fuzzy
 msgid "Try right click, middle click or Ctrl click"
-msgstr "Попробуйте правый щелчок, средний щелчок или Ctrl+щелчок"
+msgstr ""
+"Попробуйте щелчок правой клавишей мыши, средней клавишей или Ctrl+щелчок"
 
 #: ../gui/brushselectionwindow.py:401
 msgid "New group..."
@@ -911,7 +910,7 @@ msgstr "Экспортировать группу как пакет кистей
 
 #: ../gui/brushselectionwindow.py:407
 msgid "Download brushes (in web browser)"
-msgstr ""
+msgstr "Скачать кисти (через веб-браузер)"
 
 #: ../gui/brushselectionwindow.py:408 ../gui/drawwindow.py:242
 #: ../gui/drawwindow.py:914
@@ -944,7 +943,6 @@ msgid "Really delete group %s?"
 msgstr "Действительно удалить группу %s?"
 
 #: ../gui/brushselectionwindow.py:446
-#, fuzzy
 msgid "This group can not be deleted (try to empty it first)."
 msgstr ""
 "Эта группа не может быть удалена. Попробуйте сначала сделать её пустой."
@@ -975,9 +973,8 @@ msgid "Speed"
 msgstr "Скорость"
 
 #: ../gui/brushsettingswindow.py:106
-#, fuzzy
 msgid "Tracking"
-msgstr "Дрожание траектории"
+msgstr "Отслеживание указателя"
 
 #: ../gui/brushsettingswindow.py:138
 msgid "Reset to default value"
@@ -1421,9 +1418,8 @@ msgid "Quit"
 msgstr "Выход"
 
 #: ../gui/drawwindow.py:208
-#, fuzzy
 msgid "Toggle Document Frame"
-msgstr "Переключить режим редактирования"
+msgstr "Переключить рамку документа"
 
 #: ../gui/drawwindow.py:213 ../gui/preferenceswindow.py:36
 msgid "Pick Color"
@@ -1522,7 +1518,7 @@ msgstr "Сменить кисть…"
 
 #: ../gui/drawwindow.py:241
 msgid "Download more brushes (in web browser)"
-msgstr ""
+msgstr "Скачать новые кисти (через веб-браузер)"
 
 #: ../gui/drawwindow.py:244 ../gui/drawwindow.py:260
 msgid "Help"
@@ -1558,9 +1554,8 @@ msgid "Start/Stop Python Profiling (cProfile)"
 msgstr "Запустить/остановить профайлер Python (cProfile)"
 
 #: ../gui/drawwindow.py:253
-#, fuzzy
 msgid "GTK input device dialog"
-msgstr "Проверка устройств ввода..."
+msgstr ""
 
 #: ../gui/drawwindow.py:256 ../gui/preferenceswindow.py:225
 #: ../gui/toolbar.py:36
@@ -1584,23 +1579,20 @@ msgid "Test input devices"
 msgstr "Проверка устройств ввода"
 
 #: ../gui/drawwindow.py:274
-#, fuzzy
 msgid "Document Frame..."
-msgstr "Переименовать..."
+msgstr "Рамка документа…"
 
 #: ../gui/drawwindow.py:276
 msgid "Toggle the Layers list"
 msgstr "Переключить видимость списка слоёв"
 
 #: ../gui/drawwindow.py:282
-#, fuzzy
 msgid "Edit and reorganise Brush Lists"
-msgstr "Редактировать и сохранить кисть"
+msgstr "Изменить и реорганизовать список кистей"
 
 #: ../gui/drawwindow.py:286
-#, fuzzy
 msgid "Change Brush Settings in detail"
-msgstr "Изменить значение/насыщенность"
+msgstr "Изменить любые параметры кисти"
 
 #: ../gui/drawwindow.py:289
 msgid "Toggle the Colour Triangle"
@@ -1644,7 +1636,7 @@ msgstr "Обе панели"
 
 #: ../gui/drawwindow.py:333
 msgid "Show both the menu bar and the toolbar"
-msgstr ""
+msgstr "Показать и панель меню, и панель инструментов"
 
 #: ../gui/drawwindow.py:768
 msgid "Leave Fullscreen Mode"
