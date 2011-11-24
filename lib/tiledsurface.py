@@ -406,26 +406,23 @@ class Surface(mypaintlib.TiledSurface):
             if not data.rgba.any():
                 self.tiledict.pop(pos)
 
+
     def begin_interactive_move(self, x, y):
         snapshot = self.save_snapshot()
         chunks = snapshot.tiledict.keys()
-        tx = x // 64
-        ty = y // 64
-        def _cmp_chebyshev(txy1, txy2):
-            dtx1 = abs(tx - txy1[0])
-            dtx2 = abs(tx - txy2[0])
-            dty1 = abs(ty - txy1[1])
-            dty2 = abs(ty - txy2[1])
-            return cmp(max(dty1,dtx1), max(dty2,dtx2))
-
-        # Blank everything
-        self.tiledict = {}
-        for pos in chunks:
-            self._mark_mipmap_dirty(*pos)
-        bbox = get_tiles_bbox(chunks)
-        self.notify_observers(*bbox)
-
-        chunks.sort(cmp=_cmp_chebyshev)
+        tx = x // N
+        ty = y // N
+        #chebyshev = lambda p: max(abs(tx - p[0]), abs(ty - p[1]))
+        #euclidean = lambda p: math.sqrt((tx - p[0])**2 + (ty - p[1])**2)
+        def mandala(p):
+            # A sort of distance weighted, dithered effect favouring
+            # the area around the mouse pointer.
+            c = max(abs(tx - p[0]), abs(ty - p[1]))
+            for i in (17,13,11,7,5,3,2):
+                if (p[0] % i == 0) and (p[1] % i == 0):
+                    return c // i
+            return c
+        chunks.sort(key=mandala)
         return (snapshot, chunks)
 
 
@@ -472,54 +469,9 @@ class Surface(mypaintlib.TiledSurface):
         self.notify_observers(*bbox)
 
 
-    def translate(self, dx, dy, prune=True):
-        """Translates by (dx,dy) pixels.
-        """
-
-        dx = int(dx)
-        dy = int(dy)
-
-        src_tiles = self.tiledict
-        dirty_tiles = set(src_tiles.keys())
-
-        if (dx, dy) == (0, 0):
-            return
-
-        self.tiledict = {}
-
-        slices_x = calc_translation_slices(dx)
-        slices_y = calc_translation_slices(dy)
-        is_integral = len(slices_x) == 1 and len(slices_y) == 1
-
-        for (src_tx, src_ty), src_tile in src_tiles.iteritems():
-            for (src_x0, src_x1), (targ_tdx, targ_x0, targ_x1) in slices_x:
-                for (src_y0, src_y1), (targ_tdy, targ_y0, targ_y1) in slices_y:
-                    targ_tx = src_tx + targ_tdx
-                    targ_ty = src_ty + targ_tdy
-                    if is_integral:
-                        targ_tile = src_tile
-                        self.tiledict[(targ_tx, targ_ty)] = targ_tile
-                    else:
-                        targ_tile = self.tiledict.get((targ_tx, targ_ty), None)
-                        if targ_tile is None:
-                            targ_tile = Tile()
-                            self.tiledict[(targ_tx, targ_ty)] = targ_tile
-                        targ_tile.rgba[targ_y0:targ_y1, targ_x0:targ_x1] \
-                          = src_tile.rgba[src_y0:src_y1, src_x0:src_x1]
-
-        dirty_tiles.update(self.tiledict.keys())
-        for loc in dirty_tiles:
-            self._mark_mipmap_dirty(*loc)
-        if prune and not is_integral:
-            self.remove_empty_tiles()
-
-        bbox = get_tiles_bbox(dirty_tiles)
-        self.notify_observers(*bbox)
-
-
 def calc_translation_slices(dc):
     """Returns a list of offsets and slice extents for a translation of `dc`.
-    
+
     The returned slice list's members are of the form
 
         ((src_c0, src_c1), (targ_tdc, targ_c0, targ_c1))

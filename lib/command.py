@@ -28,7 +28,7 @@ class CommandStack:
         self.undo_stack.append(command)
         self.reduce_undo_history()
         self.notify_stack_observers()
-    
+
     def undo(self):
         if not self.undo_stack: return
         for f in self.call_before_action: f()
@@ -214,7 +214,32 @@ class SelectLayer(Action):
         self._notify_document_observers()
 
 class MoveLayer(Action):
-    display_name = _("Move Layer")
+    display_name = _("Move Layer on Canvas")
+    # NOT "Move Layer" for now - old translatable string with different sense
+    def __init__(self, doc, layer_idx, dx, dy, ignore_first_redo=True):
+        self.doc = doc
+        self.layer_idx = layer_idx
+        self.dx = dx
+        self.dy = dy
+        self.ignore_first_redo = ignore_first_redo
+    def redo(self):
+        layer = self.doc.layers[self.layer_idx]
+        if self.ignore_first_redo:
+            # these are typically created interactively, after
+            # the entire layer has been moved
+            self.ignore_first_redo = False
+        else:
+            layer.translate(self.dx, self.dy)
+        self._notify_canvas_observers([layer])
+        self._notify_document_observers()
+    def undo(self):
+        layer = self.doc.layers[self.layer_idx]
+        layer.translate(-self.dx, -self.dy)
+        self._notify_canvas_observers([layer])
+        self._notify_document_observers()
+
+class ReorderSingleLayer(Action):
+    display_name = _("Reorder Layer in Stack")
     def __init__(self, doc, was_idx, new_idx, select_new=False):
         self.doc = doc
         self.was_idx = was_idx
@@ -260,7 +285,7 @@ class DuplicateLayer(Action):
         self._notify_document_observers()
 
 class ReorderLayers(Action):
-    display_name = _("Reorder Layer")
+    display_name = _("Reorder Layer Stack")
     def __init__(self, doc, new_order):
         self.doc = doc
         self.old_order = doc.layers[:]

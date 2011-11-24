@@ -46,9 +46,6 @@ class Layer:
 
         self.clear()
 
-    def translate(self, dx, dy):
-        self._surface.translate(dx, dy)
-
     def _notify_content_observers(self, *args):
         for f in self.content_observers:
             f(*args)
@@ -100,12 +97,20 @@ class Layer:
         self._surface.load_snapshot(data)
 
 
+    def translate(self, dx, dy):
+        """Translate a layer non-interactively.
+        """
+        snapshot, chunks = self.begin_interactive_move(0, 0)
+        offsets = self.update_interactive_move(dx, dy)
+        self.process_interactive_move_queue(snapshot, chunks, offsets)
+
+
     def begin_interactive_move(self, x, y):
         """Start an interactive move.
 
-        Returns ``(snapshot, chunks)``, and blanks the current layer. In the
-        current implementation, ``chunks`` is a list of tile indices which
-        is sorted by proximity to the initial position.
+        Returns ``(snapshot, chunks)``. In the current implementation,
+        ``chunks`` is a list of tile indices which is sorted by proximity to
+        the initial position.
         """
         return self._surface.begin_interactive_move(x, y)
 

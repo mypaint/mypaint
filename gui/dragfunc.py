@@ -114,7 +114,7 @@ class LayerMoveDragFunc (DragFunc):
         model_dx = model_x - self.model_x0
         model_dy = model_y - self.model_y0
         self.final_model_dx = model_dx
-        self.final_final_dy = model_dy
+        self.final_model_dy = model_dy
         self.offsets = self.layer.update_interactive_move(model_dx, model_dy)
         self.chunks_i = 0
         if self.idle_srcid is None:
@@ -130,15 +130,17 @@ class LayerMoveDragFunc (DragFunc):
                 layer = self.layer
                 self.tdw.set_sensitive(False)
                 self.tdw.set_override_cursor(gdk.Cursor(gdk.WATCH))
-                def process_remaining():
-                    layer.process_interactive_move_queue(\
-                        self.snapshot, chunks, self.offsets)
-                    self.tdw.set_sensitive(True)
-                    self.tdw.set_override_cursor(None)
-                    self.offsets = None
-                    return False
-                gobject.idle_add(process_remaining)
-            # TODO: make this undoable
+                while gtk.events_pending():
+                    gtk.main_iteration() # HACK to set the cursor
+                # Finish up
+                layer.process_interactive_move_queue(\
+                    self.snapshot, chunks, self.offsets)
+                self.tdw.set_sensitive(True)
+                self.tdw.set_override_cursor(None)
+                self.offsets = None
+            dx = self.final_model_dx
+            dy = self.final_model_dy
+            self.model.record_layer_move(self.layer, dx, dy)
 
     def idle_cb(self, k=200):
         if self.idle_srcid is None:
