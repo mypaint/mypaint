@@ -635,9 +635,12 @@ class TiledDrawWidget(gtk.DrawingArea):
         assert self.drag_op is None
         self.drag_op = drag_op
         self.drag_op.on_start()
+        cursor = gdk.Cursor(drag_op.cursor)
+        self.set_override_cursor(cursor)
 
     def stop_drag(self):
         if self.drag_op is not None:
+            self.set_override_cursor(None)
             self.drag_op.on_stop()
             self.drag_op = None
 

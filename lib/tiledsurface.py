@@ -11,6 +11,7 @@
 from numpy import *
 import time, sys
 import mypaintlib, helpers
+import math
 
 TILE_SIZE = N = mypaintlib.TILE_SIZE
 MAX_MIPMAP_LEVEL = mypaintlib.MAX_MIPMAP_LEVEL
@@ -405,9 +406,74 @@ class Surface(mypaintlib.TiledSurface):
             if not data.rgba.any():
                 self.tiledict.pop(pos)
 
+    def begin_interactive_move(self, x, y):
+        snapshot = self.save_snapshot()
+        chunks = snapshot.tiledict.keys()
+        tx = x // 64
+        ty = y // 64
+        def _cmp_chebyshev(txy1, txy2):
+            dtx1 = abs(tx - txy1[0])
+            dtx2 = abs(tx - txy2[0])
+            dty1 = abs(ty - txy1[1])
+            dty2 = abs(ty - txy2[1])
+            return cmp(max(dty1,dtx1), max(dty2,dtx2))
+
+        # Blank everything
+        self.tiledict = {}
+        for pos in chunks:
+            self._mark_mipmap_dirty(*pos)
+        bbox = get_tiles_bbox(chunks)
+        self.notify_observers(*bbox)
+
+        chunks.sort(cmp=_cmp_chebyshev)
+        return (snapshot, chunks)
+
+
+    def update_interactive_move(self, dx, dy):
+        # Blank everything currently in the layer
+        dirty_tiles = set(self.tiledict.keys())
+        self.tiledict = {}
+        for dirty_pos in dirty_tiles:
+            self._mark_mipmap_dirty(*dirty_pos)
+        bbox = get_tiles_bbox(dirty_tiles)
+        self.notify_observers(*bbox)
+        # Calculate offsets
+        dx = int(dx)
+        dy = int(dy)
+        slices_x = calc_translation_slices(dx)
+        slices_y = calc_translation_slices(dy)
+        return (slices_x, slices_y)
+
+
+    def process_interactive_move_queue(self, snapshot, chunks, offsets):
+        dirty = set()
+        slices_x, slices_y = offsets
+        for tile_pos in chunks:
+            src_tx, src_ty = tile_pos
+            src_tile = snapshot.tiledict[(src_tx, src_ty)]
+            is_integral = len(slices_x) == 1 and len(slices_y) == 1
+            for (src_x0, src_x1), (targ_tdx, targ_x0, targ_x1) in slices_x:
+                for (src_y0, src_y1), (targ_tdy, targ_y0, targ_y1) in slices_y:
+                    targ_tx = src_tx + targ_tdx
+                    targ_ty = src_ty + targ_tdy
+                    if is_integral:
+                        self.tiledict[(targ_tx, targ_ty)] = src_tile.copy()
+                    else:
+                        targ_tile = self.tiledict.get((targ_tx, targ_ty), None)
+                        if targ_tile is None:
+                            targ_tile = Tile()
+                            self.tiledict[(targ_tx, targ_ty)] = targ_tile
+                        targ_tile.rgba[targ_y0:targ_y1, targ_x0:targ_x1] \
+                          = src_tile.rgba[src_y0:src_y1, src_x0:src_x1]
+                    dirty.add((targ_tx, targ_ty))
+        for dirty_pos in dirty:
+            self._mark_mipmap_dirty(*dirty_pos)
+        bbox = get_tiles_bbox(dirty) # hopefully relatively contiguous
+        self.notify_observers(*bbox)
+
 
     def translate(self, dx, dy, prune=True):
-        """Translates a tiledict by (dx,dy) pixels.
+        """Translates by (dx,dy) pixels.
         """
 
         dx = int(dx)
@@ -421,24 +487,16 @@ class Surface(mypaintlib.TiledSurface):
 
         self.tiledict = {}
 
-        def __make_slices(r):
-            if r == 0: #  [(from, to), ...]
-                return [ ((0, N), (0, 0, N)) ]
-            else:
-                return [ ((0, N-r), (0, r, N)) ,
-                         ((N-r, N), (1, 0, r)) ]
-        slices_x = __make_slices(dx % N)
-        slices_y = __make_slices(dy % N)
-        integral = len(slices_x) == 1 and len(slices_y) == 1
+        slices_x = calc_translation_slices(dx)
+        slices_y = calc_translation_slices(dy)
+        is_integral = len(slices_x) == 1 and len(slices_y) == 1
 
         for (src_tx, src_ty), src_tile in src_tiles.iteritems():
-            targ_tx0 = src_tx + (dx // N)
-            targ_ty0 = src_ty + (dy // N)
             for (src_x0, src_x1), (targ_tdx, targ_x0, targ_x1) in slices_x:
                 for (src_y0, src_y1), (targ_tdy, targ_y0, targ_y1) in slices_y:
-                    targ_tx = targ_tx0 + targ_tdx
-                    targ_ty = targ_ty0 + targ_tdy
-                    if integral:
+                    targ_tx = src_tx + targ_tdx
+                    targ_ty = src_ty + targ_tdy
+                    if is_integral:
                         targ_tile = src_tile
                         self.tiledict[(targ_tx, targ_ty)] = targ_tile
                     else:
@@ -452,8 +510,29 @@ class Surface(mypaintlib.TiledSurface):
         dirty_tiles.update(self.tiledict.keys())
         for loc in dirty_tiles:
             self._mark_mipmap_dirty(*loc)
-        if prune and not integral:
+        if prune and not is_integral:
             self.remove_empty_tiles()
 
         bbox = get_tiles_bbox(dirty_tiles)
         self.notify_observers(*bbox)
+
+
+def calc_translation_slices(dc):
+    """Returns a list of offsets and slice extents for a translation of `dc`.
+    
+    The returned slice list's members are of the form
+
+        ((src_c0, src_c1), (targ_tdc, targ_c0, targ_c1))
+
+    where ``src_c0`` and ``src_c1`` determine the extents of the source slice
+    within a tile, their ``targ_`` equivalents specify where to put that slice
+    in the target tile, and ``targ_tdc`` is the tile offset.
+    """
+    dcr = dc % N
+    tdc = (dc // N)
+    if dcr == 0:
+        return [ ((0, N), (tdc, 0, N)) ]
+    else:
+        return [ ((0, N-dcr), (tdc, dcr, N)) ,
+                 ((N-dcr, N), (tdc+1, 0, dcr)) ]
+
