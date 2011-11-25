@@ -6,6 +6,7 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
+import os
 import pygtk
 pygtk.require('2.0')
 import gtk
@@ -34,7 +35,9 @@ def main(datadir, extradata, default_confpath):
     if sys.platform == 'win32':
         # defaulting mypaint with logfile http://gna.org/bugs/?17999
         if not options.logfile:
-            options.logfile = default_confpath+"\mypaint_error.log"
+            options.logfile = os.path.join(default_confpath, "mypaint_error.log")
+            if not os.path.isdir(default_confpath):
+                os.mkdir(default_confpath)
 
     if options.logfile:
         print 'Python prints are redirected to', options.logfile, 'after this one.'
