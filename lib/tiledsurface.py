@@ -406,85 +406,95 @@ class Surface(mypaintlib.TiledSurface):
             if not data.rgba.any():
                 self.tiledict.pop(pos)
 
+    def get_move(self, x, y):
+        return _InteractiveMove(self, x, y)
 
-    def begin_interactive_move(self, x, y):
-        snapshot = self.save_snapshot()
-        chunks = snapshot.tiledict.keys()
+
+class _InteractiveMove:
+
+    def __init__(self, surface, x, y):
+        self.surface = surface
+        self.snapshot = surface.save_snapshot()
+        self.chunks = self.snapshot.tiledict.keys()
         tx = x // N
         ty = y // N
-        #chebyshev = lambda p: max(abs(tx - p[0]), abs(ty - p[1]))
-        #euclidean = lambda p: math.sqrt((tx - p[0])**2 + (ty - p[1])**2)
-        def mandala(p):
-            # A sort of distance weighted, dithered effect favouring
-            # the area around the mouse pointer.
-            c = max(abs(tx - p[0]), abs(ty - p[1]))
-            for i in (17,13,11,7,5,3,2):
-                if (p[0] % i == 0) and (p[1] % i == 0):
-                    return c // i
-            return c
-        chunks.sort(key=mandala)
-        return (snapshot, chunks)
+        chebyshev = lambda p: max(abs(tx - p[0]), abs(ty - p[1]))
+        manhattan = lambda p: abs(tx - p[0]) + abs(ty - p[1])
+        euclidean = lambda p: math.sqrt((tx - p[0])**2 + (ty - p[1])**2)
+        self.chunks.sort(key=manhattan)
+        self.chunks_i = 0
 
-
-    def update_interactive_move(self, dx, dy):
-        # Blank everything currently in the layer
-        dirty_tiles = set(self.tiledict.keys())
-        self.tiledict = {}
-        for dirty_pos in dirty_tiles:
-            self._mark_mipmap_dirty(*dirty_pos)
-        bbox = get_tiles_bbox(dirty_tiles)
-        self.notify_observers(*bbox)
+    def update(self, dx, dy):
+        # Tiles to be blanked at the end of processing
+        self.blanked = set(self.surface.tiledict.keys())
         # Calculate offsets
-        dx = int(dx)
-        dy = int(dy)
-        slices_x = calc_translation_slices(dx)
-        slices_y = calc_translation_slices(dy)
-        return (slices_x, slices_y)
+        self.slices_x = self._calc_slices(int(dx))
+        self.slices_y = self._calc_slices(int(dy))
+        self.chunks_i = 0
 
+    def cleanup(self):
+        # called at the end of each set of processing batches
+        for b in self.blanked:
+            self.surface.tiledict.pop(b, None)
+            self.surface._mark_mipmap_dirty(*b)
+        bbox = get_tiles_bbox(self.blanked)
+        self.surface.notify_observers(*bbox)
 
-    def process_interactive_move_queue(self, snapshot, chunks, offsets):
-        dirty = set()
-        slices_x, slices_y = offsets
-        for tile_pos in chunks:
+    def process(self, n=200):
+        if self.chunks_i > len(self.chunks):
+            return False
+        written = set()
+        if n <= 0:
+            n = len(self.chunks)  # process all remaining
+        for tile_pos in self.chunks[self.chunks_i : self.chunks_i + n]:
             src_tx, src_ty = tile_pos
-            src_tile = snapshot.tiledict[(src_tx, src_ty)]
-            is_integral = len(slices_x) == 1 and len(slices_y) == 1
-            for (src_x0, src_x1), (targ_tdx, targ_x0, targ_x1) in slices_x:
-                for (src_y0, src_y1), (targ_tdy, targ_y0, targ_y1) in slices_y:
+            src_tile = self.snapshot.tiledict[(src_tx, src_ty)]
+            is_integral = len(self.slices_x) == 1 and len(self.slices_y) == 1
+            for (src_x0, src_x1), (targ_tdx, targ_x0, targ_x1) in self.slices_x:
+                for (src_y0, src_y1), (targ_tdy, targ_y0, targ_y1) in self.slices_y:
                     targ_tx = src_tx + targ_tdx
                     targ_ty = src_ty + targ_tdy
                     if is_integral:
-                        self.tiledict[(targ_tx, targ_ty)] = src_tile.copy()
+                        self.surface.tiledict[(targ_tx, targ_ty)] = src_tile.copy()
                     else:
-                        targ_tile = self.tiledict.get((targ_tx, targ_ty), None)
+                        targ_tile = None
+                        if (targ_tx, targ_ty) in self.blanked:
+                            targ_tile = Tile()
+                            self.surface.tiledict[(targ_tx, targ_ty)] = targ_tile
+                            self.blanked.remove( (targ_tx, targ_ty) )
+                        else:
+                            targ_tile = self.surface.tiledict.get((targ_tx, targ_ty), None)
                         if targ_tile is None:
                             targ_tile = Tile()
-                            self.tiledict[(targ_tx, targ_ty)] = targ_tile
+                            self.surface.tiledict[(targ_tx, targ_ty)] = targ_tile
                         targ_tile.rgba[targ_y0:targ_y1, targ_x0:targ_x1] \
                           = src_tile.rgba[src_y0:src_y1, src_x0:src_x1]
-                    dirty.add((targ_tx, targ_ty))
-        for dirty_pos in dirty:
-            self._mark_mipmap_dirty(*dirty_pos)
-        bbox = get_tiles_bbox(dirty) # hopefully relatively contiguous
-        self.notify_observers(*bbox)
+                    written.add((targ_tx, targ_ty))
+        self.blanked -= written
+        for pos in written:
+            self.surface._mark_mipmap_dirty(*pos)
+        bbox = get_tiles_bbox(written) # hopefully relatively contiguous
+        self.surface.notify_observers(*bbox)
+        self.chunks_i += n
+        return self.chunks_i < len(self.chunks)
 
+    @staticmethod
+    def _calc_slices(dc):
+        """Returns a list of offsets and slice extents for a translation of `dc`.
 
-def calc_translation_slices(dc):
-    """Returns a list of offsets and slice extents for a translation of `dc`.
+        The returned slice list's members are of the form
 
-    The returned slice list's members are of the form
+            ((src_c0, src_c1), (targ_tdc, targ_c0, targ_c1))
 
-        ((src_c0, src_c1), (targ_tdc, targ_c0, targ_c1))
-
-    where ``src_c0`` and ``src_c1`` determine the extents of the source slice
-    within a tile, their ``targ_`` equivalents specify where to put that slice
-    in the target tile, and ``targ_tdc`` is the tile offset.
-    """
-    dcr = dc % N
-    tdc = (dc // N)
-    if dcr == 0:
-        return [ ((0, N), (tdc, 0, N)) ]
-    else:
-        return [ ((0, N-dcr), (tdc, dcr, N)) ,
-                 ((N-dcr, N), (tdc+1, 0, dcr)) ]
+        where ``src_c0`` and ``src_c1`` determine the extents of the source slice
+        within a tile, their ``targ_`` equivalents specify where to put that slice
+        in the target tile, and ``targ_tdc`` is the tile offset.
+        """
+        dcr = dc % N
+        tdc = (dc // N)
+        if dcr == 0:
+            return [ ((0, N), (tdc, 0, N)) ]
+        else:
+            return [ ((0, N-dcr), (tdc, dcr, N)) ,
+                     ((N-dcr, N), (tdc+1, 0, dcr)) ]
 

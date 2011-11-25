@@ -97,71 +97,53 @@ class LayerMoveDragFunc (DragFunc):
 
     def on_start(self):
         self.layer = self.model.get_current_layer()
-        self.snapshot = None
-        self.chunks = []
-        self.chunks_i = -1
-        self.offsets = None
+        self.move = None
 
     def on_update(self, dx, dy, x, y):
         cr = self.tdw.get_model_coordinates_cairo_context()
         model_x, model_y = cr.device_to_user(x, y)
-        if self.snapshot is None:
+        if self.move is None:
+            self.move = self.layer.get_move(model_x, model_y)
             self.model_x0 = model_x
             self.model_y0 = model_y
-            self.snapshot, self.chunks \
-              = self.layer.begin_interactive_move(model_x, model_y)
-            self.chunks_i = 0
         model_dx = model_x - self.model_x0
         model_dy = model_y - self.model_y0
         self.final_model_dx = model_dx
         self.final_model_dy = model_dy
-        self.offsets = self.layer.update_interactive_move(model_dx, model_dy)
-        self.chunks_i = 0
+        self.move.update(model_dx, model_dy)
         if self.idle_srcid is None:
             self.idle_srcid = gobject.idle_add(self.idle_cb)
 
     def on_stop(self):
         self.idle_srcid = None
-        if self.offsets is not None:
-            if self.chunks_i < len(self.chunks):
-                chunks = self.chunks[self.chunks_i:]
-                self.chunks = []
-                self.chunks_i = -1
-                layer = self.layer
-                self.tdw.set_sensitive(False)
-                self.tdw.set_override_cursor(gdk.Cursor(gdk.WATCH))
-                while gtk.events_pending():
-                    gtk.main_iteration() # HACK to set the cursor
-                # Finish up
-                layer.process_interactive_move_queue(\
-                    self.snapshot, chunks, self.offsets)
-                self.tdw.set_sensitive(True)
-                self.tdw.set_override_cursor(None)
-                self.offsets = None
-            dx = self.final_model_dx
-            dy = self.final_model_dy
-            self.model.record_layer_move(self.layer, dx, dy)
+        if self.move is None:
+            return
+        self.tdw.set_sensitive(False)
+        self.tdw.set_override_cursor(gdk.Cursor(gdk.WATCH))
+        while gtk.events_pending():
+            gtk.main_iteration() # HACK to set the cursor
+        # Finish up
+        self.move.process(n=-1)
+        self.move.cleanup()
+        self.tdw.set_sensitive(True)
+        self.tdw.set_override_cursor(None)
+        self.offsets = None
+        dx = self.final_model_dx
+        dy = self.final_model_dy
+        self.model.record_layer_move(self.layer, dx, dy)
 
-    def idle_cb(self, k=200):
+    def idle_cb(self):
         if self.idle_srcid is None:
             # Asked to terminate
+            self.move.cleanup()
             return False
-        assert self.chunks_i >= 0
-        assert self.offsets is not None
-        i = self.chunks_i
-        if self.chunks_i >= len(self.chunks):
-            self.idle_srcid = None
-            return False
-        chunks = self.chunks[i:i+k]
-        self.layer.process_interactive_move_queue(
-                self.snapshot, chunks, self.offsets)
-        self.chunks_i += k
-        if self.chunks_i < len(self.chunks):
+        if self.move.process():
             return True
         else:
-            # Stop, but mark as restartable
+            self.move.cleanup()
             self.idle_srcid = None
             return False
+
 
 class MoveFrameDragFunc (DragFunc):
 

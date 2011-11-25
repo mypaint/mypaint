@@ -100,38 +100,16 @@ class Layer:
     def translate(self, dx, dy):
         """Translate a layer non-interactively.
         """
-        snapshot, chunks = self.begin_interactive_move(0, 0)
-        offsets = self.update_interactive_move(dx, dy)
-        self.process_interactive_move_queue(snapshot, chunks, offsets)
+        move = self.get_move(0, 0)
+        move.update(dx, dy)
+        move.process(n=-1)
+        move.cleanup()
 
 
-    def begin_interactive_move(self, x, y):
-        """Start an interactive move.
-
-        Returns ``(snapshot, chunks)``. In the current implementation,
-        ``chunks`` is a list of tile indices which is sorted by proximity to
-        the initial position.
+    def get_move(self, x, y):
+        """Get a translation/move object for this layer.
         """
-        return self._surface.begin_interactive_move(x, y)
-
-
-    def update_interactive_move(self, dx, dy):
-        """Update for a new offset during an interactive move.
-
-        Call whenever there's a new pointer position in the drag. Returns a
-        single offsets object. After calling, reprocess the chunks queue with
-        the new offsets. This method blanks the current layer, so the chunks
-        queue must be processed fully after the final call to it.
-        """
-        surf = self._surface
-        return surf.update_interactive_move(dx, dy)
-
-
-    def process_interactive_move_queue(self, snapshot, chunks, offsets):
-        """Processes part of an interactive move.
-        """
-        surf = self._surface
-        return surf.process_interactive_move_queue(snapshot, chunks, offsets)
+        return self._surface.get_move(x, y)
 
 
     def add_stroke(self, stroke, snapshot_before):
@@ -141,6 +119,7 @@ class Layer:
         shape.init_from_snapshots(before, after)
         shape.brush_string = stroke.brush_settings
         self.strokes.append(shape)
+
 
     def save_strokemap_to_file(self, f, translate_x, translate_y):
         brush2id = {}
