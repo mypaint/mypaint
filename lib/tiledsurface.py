@@ -428,8 +428,8 @@ class _InteractiveMove:
         # Tiles to be blanked at the end of processing
         self.blanked = set(self.surface.tiledict.keys())
         # Calculate offsets
-        self.slices_x = self._calc_slices(int(dx))
-        self.slices_y = self._calc_slices(int(dy))
+        self.slices_x = calc_translation_slices(int(dx))
+        self.slices_y = calc_translation_slices(int(dy))
         self.chunks_i = 0
 
     def cleanup(self):
@@ -478,23 +478,23 @@ class _InteractiveMove:
         self.chunks_i += n
         return self.chunks_i < len(self.chunks)
 
-    @staticmethod
-    def _calc_slices(dc):
-        """Returns a list of offsets and slice extents for a translation of `dc`.
 
-        The returned slice list's members are of the form
+def calc_translation_slices(dc):
+    """Returns a list of offsets and slice extents for a translation of `dc`.
 
-            ((src_c0, src_c1), (targ_tdc, targ_c0, targ_c1))
+    The returned slice list's members are of the form
 
-        where ``src_c0`` and ``src_c1`` determine the extents of the source slice
-        within a tile, their ``targ_`` equivalents specify where to put that slice
-        in the target tile, and ``targ_tdc`` is the tile offset.
-        """
-        dcr = dc % N
-        tdc = (dc // N)
-        if dcr == 0:
-            return [ ((0, N), (tdc, 0, N)) ]
-        else:
-            return [ ((0, N-dcr), (tdc, dcr, N)) ,
-                     ((N-dcr, N), (tdc+1, 0, dcr)) ]
+        ((src_c0, src_c1), (targ_tdc, targ_c0, targ_c1))
+
+    where ``src_c0`` and ``src_c1`` determine the extents of the source slice
+    within a tile, their ``targ_`` equivalents specify where to put that slice
+    in the target tile, and ``targ_tdc`` is the tile offset.
+    """
+    dcr = dc % N
+    tdc = (dc // N)
+    if dcr == 0:
+        return [ ((0, N), (tdc, 0, N)) ]
+    else:
+        return [ ((0, N-dcr), (tdc, dcr, N)) ,
+                 ((N-dcr, N), (tdc+1, 0, dcr)) ]
 

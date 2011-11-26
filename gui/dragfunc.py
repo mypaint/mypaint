@@ -87,7 +87,7 @@ class ZoomViewDragFunc (DragFunc):
 
 class LayerMoveDragFunc (DragFunc):
 
-    cursor = gdk.CROSSHAIR
+    cursor = gdk.FLEUR
 
     model_x0 = None
     model_y0 = None
@@ -125,12 +125,16 @@ class LayerMoveDragFunc (DragFunc):
         # Finish up
         self.move.process(n=-1)
         self.move.cleanup()
-        self.tdw.set_sensitive(True)
-        self.tdw.set_override_cursor(None)
-        self.offsets = None
+
         dx = self.final_model_dx
         dy = self.final_model_dy
+        for stroke in self.layer.strokes:
+            stroke.translate(dx, dy)
+
+        self.offsets = None
         self.model.record_layer_move(self.layer, dx, dy)
+        self.tdw.set_sensitive(True)
+        self.tdw.set_override_cursor(None)
 
     def idle_cb(self):
         if self.idle_srcid is None:

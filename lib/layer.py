@@ -104,12 +104,16 @@ class Layer:
         move.update(dx, dy)
         move.process(n=-1)
         move.cleanup()
+        for shape in self.strokes:
+            shape.translate(dx, dy)
 
 
     def get_move(self, x, y):
         """Get a translation/move object for this layer.
         """
         return self._surface.get_move(x, y)
+        # FIXME: really should return an object that does the strokemap
+        # translates after the drag is complete.
 
 
     def add_stroke(self, stroke, snapshot_before):
