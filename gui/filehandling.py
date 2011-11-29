@@ -289,7 +289,7 @@ class FileHandler(object):
 
         if not thumbnail_pixbuf:
             thumbnail_pixbuf = self.doc.model.render_thumbnail()
-        helpers.freedesktop_thumbnail(self.filename, thumbnail_pixbuf)
+        helpers.freedesktop_thumbnail(filename, thumbnail_pixbuf)
 
     @drawwindow.with_wait_cursor
     def save_scratchpad(self, filename, export=False, **options):
