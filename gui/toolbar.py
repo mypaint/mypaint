@@ -485,7 +485,8 @@ class BrushSettingsDropdownToolItem (gtk.ToolItem):
         frame.add(vbox)
         self.vbox.pack_start(frame, True, True)
 
-        for a in ["BlendModeNormal", "BlendModeEraser", "BlendModeLockAlpha"]:
+        for a in ["BlendModeNormal", "BlendModeEraser",
+                  "BlendModeLockAlpha", "BlendModeColorize"]:
             action = self.app.find_action(a)
             cb = gtk.CheckButton()
             action.connect_proxy(cb)

@@ -98,6 +98,7 @@
         <menuitem action='BlendModeNormal'/>
         <menuitem action='BlendModeEraser'/>
         <menuitem action='BlendModeLockAlpha'/>
+        <menuitem action='BlendModeColorize'/>
       </menu>
       <separator/>
       <menuitem action='PickContext'/>

@@ -61,15 +61,20 @@ class BrushModifier:
             ('BlendModeLockAlpha', stock.BRUSH_BLEND_MODE_ALPHA_LOCK, None,
                 None, _("Lock Alpha: paint over existing strokes only, using the current brush"),
                 self.blend_mode_lock_alpha_cb),
+            ('BlendModeColorize', stock.BRUSH_BLEND_MODE_COLORIZE, None,
+                None, _("Colorize: alter Hue and Saturation with the current brush"),
+                self.blend_mode_colorize_cb),
             ]
         ag.add_toggle_actions(toggle_actions)
         self.eraser_mode = ag.get_action("BlendModeEraser")
         self.lock_alpha_mode = ag.get_action("BlendModeLockAlpha")
         self.normal_mode = ag.get_action("BlendModeNormal")
+        self.colorize_mode = ag.get_action("BlendModeColorize")
 
         # Each mode ToggleAction has a corresponding setting
         self.eraser_mode.setting_name = "eraser"
         self.lock_alpha_mode.setting_name = "lock_alpha"
+        self.colorize_mode.setting_name = "colorize"
         self.normal_mode.setting_name = None
 
         for action in self.action_group.list_actions():
@@ -150,6 +155,7 @@ class BrushModifier:
             # has become active.
             other_active = self.eraser_mode.get_active()
             other_active |= self.lock_alpha_mode.get_active()
+            other_active |= self.colorize_mode.get_active()
             if not other_active:
                 self.normal_mode.set_active(True)
 
@@ -213,6 +219,18 @@ class BrushModifier:
         else:
             self._pop_hist(action)
         self.set_override_setting("lock_alpha", lock_alpha_wanted)
+
+
+    def blend_mode_colorize_cb(self, action):
+        """Callback for the ``BlendModeColorize`` action.
+        """
+        colorize_wanted = action.get_active()
+        if colorize_wanted:
+            self._cancel_other_modes(action)
+            self._push_hist(action)
+        else:
+            self._pop_hist(action)
+        self.set_override_setting("colorize", colorize_wanted)
 
 
     def restore_context_of_selected_brush(self):
