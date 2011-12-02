@@ -300,21 +300,21 @@ class BrushManager:
         # handle lost-and-found ones.
         for name in listbrushes(self.stock_brushpath) + listbrushes(self.user_brushpath):
             if name.startswith('context'):
-                b = get_brush(name, in_brushlist=False)
+                b = get_brush(name)
                 i = int(name[-2:])
                 self.contexts[i] = b
             elif name.startswith(DEVBRUSH_NAME_PREFIX):
-                b = get_brush(name, in_brushlist=False)
+                b = get_brush(name)
                 device_name = devbrush_unquote(name)
                 self.brush_by_device[device_name] = b
             elif name.startswith(BRUSH_HISTORY_NAME_PREFIX):
-                b = get_brush(name, in_brushlist=False)
+                b = get_brush(name)
                 i_str = name.replace(BRUSH_HISTORY_NAME_PREFIX, '')
                 i = int(i_str)
                 self.history[i] = b
             else:
+                # normal brush that will appear in the brushlist
                 b = get_brush(name)
-            if b.in_brushlist:
                 if not [True for group in our.itervalues() if b in group]:
                     brushes = self.groups.setdefault(FOUND_BRUSHES_GROUP, [])
                     brushes.insert(0, b)
@@ -463,7 +463,7 @@ class BrushManager:
                             b = self.get_brush_by_name(brushname)
 
                     if not b:
-                        b = ManagedBrush(self, brushname, in_brushlist=True)
+                        b = ManagedBrush(self, brushname)
 
                     # write to disk and reload brush (if overwritten)
                     prefix = b.get_fileprefix(saving=True)
@@ -538,6 +538,12 @@ class BrushManager:
         for i, h in enumerate(self.history):
             h.name = u"%s%d" % (BRUSH_HISTORY_NAME_PREFIX, i)
 
+    def is_in_brushlist(self, brush):
+        """Returns whether this brush is accessible through the brush selector."""
+        for group, brushes in self.groups.iteritems():
+            if brush in brushes:
+                return True
+        return False
 
     def select_brush(self, brush):
         """Selects a ManagedBrush, highlights it, & updates the live brush."""
@@ -545,7 +551,7 @@ class BrushManager:
             brush = self.get_default_brush()
 
         brushinfo = brush.brushinfo
-        if not brush.in_brushlist:
+        if not self.is_in_brushlist(brush):
             # select parent brush instead, but keep brushinfo
             brush = self.get_parent_brush(brush=brush)
             if not brush:
@@ -666,14 +672,13 @@ class BrushManager:
 
 class ManagedBrush(object):
     '''Represents a brush, but cannot be selected or painted with directly.'''
-    def __init__(self, brushmanager, name=None, persistent=False, in_brushlist=False):
+    def __init__(self, brushmanager, name=None, persistent=False):
         self.bm = brushmanager
         self._preview = None
         self.name = name
         self._brushinfo = BrushInfo()
         self.persistent = persistent #: If True this brush is stored in the filesystem.
         self.settings_loaded = False  #: If True this brush is fully initialized, ready to paint with.
-        self.in_brushlist = in_brushlist  #: Set to True if this brush is known to be in the brushlist
 
         self.settings_mtime = None
         self.preview_mtime = None
@@ -706,7 +711,7 @@ class ManagedBrush(object):
     def get_display_name(self):
         """Gets a displayable name for the brush.
         """
-        if self.in_brushlist:
+        if self.bm.is_in_brushlist(self):  # FIXME: get rid of this check
             dname = self.name
         else:
             dname = self.brushinfo.get_string_property("parent_brush_name")
@@ -755,7 +760,7 @@ class ManagedBrush(object):
         if not self.settings_loaded:   # XXX refactor
             self.load()
         target.brushinfo = self.brushinfo.clone()
-        if self.in_brushlist:
+        if self.bm.is_in_brushlist(self): # FIXME: get rid of this check!
             target.brushinfo.set_string_property("parent_brush_name", self.name)
         target.preview = self.preview
         target.name = name
@@ -819,7 +824,7 @@ class ManagedBrush(object):
         self._brushinfo.load_from_string(brushinfo_str)
         self.remember_mtimes()
         self.settings_loaded = True
-        if self.in_brushlist:
+        if self.bm.is_in_brushlist(self): # FIXME: get rid of this check
             self._brushinfo.set_string_property("parent_brush_name", None)
         self.persistent = True
 
@@ -832,11 +837,11 @@ class ManagedBrush(object):
         self.load()
         return True
 
-    def __str__(self):
+    def __repr__(self):
         if self._brushinfo.settings:
-            return "<ManagedBrush %s p=%s>" % (self.name, self._brushinfo.get_string_property("parent_brush_name"))
+            return "<ManagedBrush %r p=%s>" % (self.name, self._brushinfo.get_string_property("parent_brush_name"))
         else:
-            return "<ManagedBrush %s (settings not loaded yet)>" % self.name
+            return "<ManagedBrush %r (settings not loaded yet)>" % self.name
 
 
 if __name__ == '__main__':

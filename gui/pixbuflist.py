@@ -252,6 +252,9 @@ class PixbufList(gtk.DrawingArea):
         item = self.itemlist[i]
         self.set_selected(item)
         self.on_select(item)
+        if self.selected is not None:
+            # early exception if drag&drop would break
+            assert self.selected in self.itemlist, 'selection failed: the user selected %r by pointing at it, but after calling on_select() %r is active instead!' % (item, self.selected)
         self.in_potential_drag = True
 
     def button_release_cb(self, widget, event):
