@@ -19,6 +19,7 @@
 
 #include <glib.h>
 #include <assert.h>
+#include <stdint.h>
 
 // MAX, MIN, ABS, CLAMP are already available from gmacros.h
 #define ROUND(x) ((int) ((x) + 0.5))
