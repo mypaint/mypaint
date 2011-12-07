@@ -345,7 +345,8 @@ class Application: # singleton
             # Mouse. https://gna.org/bugs/?11215
             # In fact, GTK also just guesses this value from device.name.
 
-            last_word = device.name.split()[-1].lower()
+            name = device.name.lower()
+            last_word = name.split()[-1]
             if last_word == 'pad':
                 # Setting the intuos3 pad into "screen mode" causes
                 # glitches when you press a pad-button in mid-stroke,
@@ -363,6 +364,11 @@ class Application: # singleton
             if last_word == 'cursor':
                 # this is a "normal" mouse and does not work in screen mode
                 print 'Ignoring "%s" (probably wacom mouse device)' % device.name
+                continue
+            if 'transceiver' in name:
+                # eg. "Microsoft Microsoft 2.4GHz Transceiver V1.0"
+                # Cannot paint after moving outside of painting area.
+                print 'Ignoring "%s" (a transceiver is probably not a pressure sensitive tablet, known to screw up gtk+ when enabled)' % device.name
                 continue
 
             for use, val_min, val_max in device.axes:
