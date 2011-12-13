@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # brushlib - The MyPaint Brush Library
 # Copyright (C) 2007-2008 Martin Renold <martinxyz@gmx.ch>
 #
