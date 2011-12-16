@@ -39,6 +39,7 @@
       <!-- ResetView is on its own because it also recentres the canvas, -->
       <menuitem action='ResetView'/>
       <!-- also it should be more accessible then the following resets -->
+      <menuitem action='Fit'/>
       <menu action='ResetMenu'>
         <menuitem action='ResetRotation'/>
         <menuitem action='ResetZoom'/>

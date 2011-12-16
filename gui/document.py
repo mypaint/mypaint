@@ -43,9 +43,6 @@ class Document(object):
                                  # keep sorted for bisect
 
         default_zoom = self.app.preferences['view.default_zoom']
-        self.zoomlevel = min(bisect_left(self.zoomlevel_values, default_zoom),
-                             len(self.zoomlevel_values) - 1)
-        default_zoom = self.zoomlevel_values[self.zoomlevel]
         self.tdw.scale = default_zoom
         self.tdw.zoom_min = min(self.zoomlevel_values)
         self.tdw.zoom_max = max(self.zoomlevel_values)
@@ -113,6 +110,7 @@ class Document(object):
             ('ResetView',   gtk.STOCK_ZOOM_FIT, _('Reset and Center'), 'F12',
                 _("Reset Zoom, Rotation and Mirroring, and recenter the document"),
                 self.reset_view_cb),
+            ('Fit', None, _('Fit'), 'F10', None, self.reset_view_cb),
             ('ResetMenu',   None, _('Reset')),
             ('ResetZoom',   gtk.STOCK_ZOOM_100, _('Zoom'), None, None, self.reset_view_cb),
             ('ResetRotation',   None, _('Rotation'), None, None, self.reset_view_cb),
@@ -479,12 +477,22 @@ class Document(object):
         else: assert 0
 
     def zoom(self, command):
-        if   command == 'ZoomIn' : self.zoomlevel += 1
-        elif command == 'ZoomOut': self.zoomlevel -= 1
+        try:
+            zoom_index = self.zoomlevel_values.index(self.tdw.scale)
+        except ValueError:
+            zoom_levels = self.zoomlevel_values[:]
+            zoom_levels.append(self.tdw.scale)
+            zoom_levels.sort()
+            zoom_index = zoom_levels.index(self.tdw.scale)
+
+        if   command == 'ZoomIn' : zoom_index += 1
+        elif command == 'ZoomOut': zoom_index -= 1
         else: assert 0
-        if self.zoomlevel < 0: self.zoomlevel = 0
-        if self.zoomlevel >= len(self.zoomlevel_values): self.zoomlevel = len(self.zoomlevel_values) - 1
-        z = self.zoomlevel_values[self.zoomlevel]
+        if zoom_index < 0: zoom_index = 0
+        if zoom_index >= len(self.zoomlevel_values):
+            zoom_index = len(self.zoomlevel_values) - 1
+
+        z = self.zoomlevel_values[zoom_index]
         self.tdw.set_zoom(z)
 
     def rotate(self, command):
@@ -516,12 +524,46 @@ class Document(object):
             self.tdw.set_rotation(0.0)
         if reset_all or ('Zoom' in command_name):
             default_zoom = self.app.preferences['view.default_zoom']
-            self.zoomlevel = self.zoomlevel_values.index(default_zoom)
             self.tdw.set_zoom(default_zoom)
         if reset_all or ('Mirror' in command_name):
             self.tdw.set_mirrored(False)
         if reset_all:
             self.tdw.recenter_document()
+        elif 'Fit' in command_name:
+            # View>Fit: fits image within window's borders.
+            junk, junk, w, h = self.tdw.doc.get_effective_bbox()
+            if w == 0:
+                # When there is nothing on the canvas reset zoom to default.
+                self.reset_view_cb(None)
+            else:
+                w1, h1 = self.tdw.window.get_size()
+                # Store radians and reset rotation to zero.
+                radians = self.tdw.rotation
+                self.tdw.set_rotation(0.0)
+                # Store mirror and temporarily it turn off mirror.
+                mirror = self.tdw.mirrored
+                self.tdw.set_mirrored(False)
+                # Using w h as the unrotated bbox, calculate the bbox of the
+                # rotated doc.
+                cos = math.cos(radians)
+                sin = math.sin(radians)
+                wcos = w * cos
+                hsin = h * sin
+                wsin = w * sin
+                hcos = h * cos
+                # We only need to calculate the positions of two corners of the
+                # bbox since it is centered and symetrical, but take the max
+                # value since during rotation one corner's distance along the
+                # x axis shortens while the other lengthens. Same for the y axis.
+                x = max(abs(wcos - hsin), abs(wcos + hsin))
+                y = max(abs(wsin + hcos), abs(wsin - hcos))
+                # Compare the doc and window dimensions and take the best fit
+                zoom = min((w1-20)/x, (h1-20)/y)
+                # Reapply all transformations
+                self.tdw.recenter_document() # Center image
+                self.tdw.set_rotation(radians) # reapply canvas rotation
+                self.tdw.set_mirrored(mirror) #reapply mirror
+                self.tdw.set_zoom(zoom, at_pointer=False) # Set new zoom level
 
     # DEBUGGING
     def print_inputs_cb(self, action):

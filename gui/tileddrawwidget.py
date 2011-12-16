@@ -607,9 +607,9 @@ class TiledDrawWidget(gtk.DrawingArea):
         def f(): self.scale *= zoom_step
         self.rotozoom_with_center(f, at_pointer=True)
 
-    def set_zoom(self, zoom):
+    def set_zoom(self, zoom, at_pointer=True):
         def f(): self.scale = zoom
-        self.rotozoom_with_center(f, at_pointer=True)
+        self.rotozoom_with_center(f, at_pointer)
 
     def rotate(self, angle_step):
         if self.mirrored: angle_step = -angle_step
