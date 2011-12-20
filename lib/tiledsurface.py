@@ -414,8 +414,6 @@ class _InteractiveMove:
 
     def __init__(self, surface, x, y):
         self.surface = surface
-        # Remove empty tiles prior to Layer Move
-        self.surface.remove_empty_tiles()
         self.snapshot = surface.save_snapshot()
         self.chunks = self.snapshot.tiledict.keys()
         # print "Number of Tiledict_keys", len(self.chunks)
@@ -442,6 +440,8 @@ class _InteractiveMove:
             self.surface._mark_mipmap_dirty(*b)
         bbox = get_tiles_bbox(self.blanked)
         self.surface.notify_observers(*bbox)
+        # Remove empty tile created by Layer Move
+        self.surface.remove_empty_tiles()
 
     def process(self, n=200):
         if self.chunks_i > len(self.chunks):
@@ -479,8 +479,6 @@ class _InteractiveMove:
         bbox = get_tiles_bbox(written) # hopefully relatively contiguous
         self.surface.notify_observers(*bbox)
         self.chunks_i += n
-        # Remove empty tile created by Layer Move
-        self.surface.remove_empty_tiles()
         return self.chunks_i < len(self.chunks)
 
 
