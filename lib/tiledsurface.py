@@ -414,8 +414,11 @@ class _InteractiveMove:
 
     def __init__(self, surface, x, y):
         self.surface = surface
+        # Remove empty tiles prior to Layer Move
+        self.surface.remove_empty_tiles()
         self.snapshot = surface.save_snapshot()
         self.chunks = self.snapshot.tiledict.keys()
+        # print "Number of Tiledict_keys", len(self.chunks)
         tx = x // N
         ty = y // N
         chebyshev = lambda p: max(abs(tx - p[0]), abs(ty - p[1]))
@@ -476,6 +479,8 @@ class _InteractiveMove:
         bbox = get_tiles_bbox(written) # hopefully relatively contiguous
         self.surface.notify_observers(*bbox)
         self.chunks_i += n
+        # Remove empty tile created by Layer Move
+        self.surface.remove_empty_tiles()
         return self.chunks_i < len(self.chunks)
 
 
