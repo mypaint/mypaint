@@ -1327,7 +1327,7 @@ msgstr "復原: 無上一步"
 #: ../gui/document.py:653
 #, python-format
 msgid "Redo %s"
-msgstr "取消復原"
+msgstr "取消復原 %s"
 
 #: ../gui/document.py:655
 msgid "Redo: nothing to redo"
