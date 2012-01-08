@@ -58,6 +58,7 @@
       <menuitem action='ZoomOut'/>
       <menuitem action='RotateLeft'/>
       <menuitem action='RotateRight'/>
+      <menuitem action='Symmetry'/>
       <menuitem action='MirrorHorizontal'/>
       <menuitem action='MirrorVertical'/>
       <separator/>

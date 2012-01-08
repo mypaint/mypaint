@@ -10,6 +10,11 @@
 #define TILE_SIZE 64
 #define MAX_MIPMAP_LEVEL 4
 
+// used for symmetrical mirroring, set by toggle_symmetry(axis).
+// Global to affect all surfaces.
+int surface_do_symmetry = 0;
+float surface_center_x = 0;
+
 class TiledSurface : public Surface {
   // the Python half of this class is in tiledsurface.py
 private:
@@ -34,6 +39,12 @@ public:
     dirty_bbox.w = 0;
     tileMemoryValid = 0;
     tileMemoryWrite = 0;
+  }
+
+  int toggle_symmetry(float axis = 0) {
+      surface_do_symmetry = !surface_do_symmetry;
+      surface_center_x = axis;
+      return surface_do_symmetry;
   }
 
   void begin_atomic() {
@@ -111,7 +122,7 @@ public:
                         ) {
 
     hardness = CLAMP(hardness, 0.0, 1.0);
-	if (aspect_ratio<1.0) aspect_ratio=1.0;
+    if (aspect_ratio<1.0) aspect_ratio=1.0;
     assert(hardness != 0.0); // assured by caller
 
     float r_fringe;
@@ -224,7 +235,8 @@ public:
                  float color_a = 1.0,
                  float aspect_ratio = 1.0, float angle = 0.0,
                  float lock_alpha = 0.0,
-                 float colorize = 0.0
+                 float colorize = 0.0,
+                 int recursing = 0 // used for symmetry, internal use only
                  ) {
 
     opaque = CLAMP(opaque, 0.0, 1.0);
@@ -251,7 +263,7 @@ public:
     normal *= 1.0-lock_alpha;
     normal *= 1.0-colorize;
 
-	if (aspect_ratio<1.0) aspect_ratio=1.0;
+    if (aspect_ratio<1.0) aspect_ratio=1.0;
 
     float r_fringe = radius + 1;
 
@@ -317,6 +329,18 @@ public:
 
       ExpandRectToIncludePoint (&dirty_bbox, bb_x, bb_y);
       ExpandRectToIncludePoint (&dirty_bbox, bb_x+bb_w-1, bb_y+bb_h-1);
+    }
+
+    if(!recursing && surface_do_symmetry) {
+      draw_dab (surface_center_x + (surface_center_x - x), y,
+                radius,
+                color_r, color_g, color_b,
+                opaque, hardness,
+                color_a,
+                aspect_ratio, -angle,
+                lock_alpha,
+                colorize,
+                1);
     }
 
     return true;

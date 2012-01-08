@@ -125,6 +125,9 @@ class Document(object):
             ('RotateRight',  stock.ROTATE_RIGHT, None, None,
                 _("Rotate the view right"),
                 self.rotate_cb),
+            ('Symmetry', stock.SYMMETRY, None, None,
+                _("Symmetry: duplicate strokes mirrored horizontally"),
+                self.symmetry_cb),
             ('MirrorHorizontal', stock.MIRROR_HORIZONTAL, None, None,
                 _("Mirror: flip the view left to right"),
                 self.mirror_horizontal_cb),
@@ -511,6 +514,8 @@ class Document(object):
         self.zoom(action.get_name())
     def rotate_cb(self, action):
         self.rotate(action.get_name())
+    def symmetry_cb(self, action):
+        self.tdw.symmetry()
     def mirror_horizontal_cb(self, action):
         self.tdw.mirror()
     def mirror_vertical_cb(self, action):

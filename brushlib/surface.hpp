@@ -27,7 +27,8 @@ public:
                          float alpha_eraser = 1.0,
                          float aspect_ratio = 1.0, float angle = 0.0,
                          float lock_alpha = 0.0,
-                         float colorize = 0.0
+                         float colorize = 0.0,
+                         int recursing = 0 // used for symmetry, internal use only
                          ) = 0;
 
   virtual void get_color (float x, float y, 

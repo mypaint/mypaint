@@ -22,6 +22,7 @@ TOOL_SCRATCHPAD = "mypaint-tool-scratchpad"
 TOOL_LAYERS = "mypaint-tool-layers"
 ROTATE_LEFT = "object-rotate-left"
 ROTATE_RIGHT = "object-rotate-right"
+SYMMETRY = "object-symmetry"
 MIRROR_HORIZONTAL = "object-flip-horizontal"
 MIRROR_VERTICAL = "object-flip-vertical"
 BRUSH_BLEND_MODES = "mypaint-brush-blend-modes"
@@ -46,6 +47,7 @@ _stock_items = [
         gdk.CONTROL_MASK, gdk.keyval_from_name("Left"), None),
     (ROTATE_RIGHT, _("Rotate Clockwise"),
         gdk.CONTROL_MASK, gdk.keyval_from_name("Right"), None),
+    (SYMMETRY, _("Symmetry"), 0, ord("|"), None),
     (MIRROR_HORIZONTAL, _("Mirror Horizontal"), 0, ord("i"), None),
     (MIRROR_VERTICAL, _("Mirror Vertical"), 0, ord("u"), None),
     (BRUSH_BLEND_MODES, _("Blend Mode"), 0, 0, None),
