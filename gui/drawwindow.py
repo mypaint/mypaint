@@ -61,7 +61,7 @@ def button_press_cb_abstraction(drawwindow, win, event, doc):
     ## Ignore accidentals
     # Single button-presses only, not 2ble/3ple
     if event.type != gdk.BUTTON_PRESS:
-        # ignore the extra double-click event
+        # pass through the extra double-click event
         return False
 
     if event.button != 1:
@@ -93,7 +93,7 @@ def button_press_cb_abstraction(drawwindow, win, event, doc):
 
     # No-ops
     if action_name == 'no_action':
-        return True  # We handled it by doing nothing
+        return False  # Pass event through to the tdw
 
     # Straight line
     # Really belongs in the tdw, but this is the only object with access
