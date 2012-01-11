@@ -6,8 +6,13 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-import gtk, gobject, cairo, random
-gdk = gtk.gdk
+import gobject
+import cairo
+import pango
+import gtk
+from gtk import gdk
+
+import random
 from math import floor, ceil, pi, log
 from numpy import isfinite
 from warnings import warn
@@ -24,6 +29,19 @@ def _make_testbed_model():
     brush.load_defaults()
     return lib.document.Document(brush)
 
+
+class Overlay:
+    """Base class/interface for objects which paint things over a TDW.
+    """
+
+    def paint(self, cr):
+        """Paint information onto a TiledDrawWidget.
+
+        The drawing interface is very simple. `cr` is a Cairo context in either
+        display coordinates or model coordinates: which one you get depends on
+        which list the Overlay is appended to on its tdw.
+        """
+        pass
 
 
 class TiledDrawWidget(gtk.DrawingArea):
@@ -88,6 +106,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.last_event_had_pressure_info = False
         self.last_painting_pos = None
         self.device_observers = [] #: Notified during drawing when input devices change
+        self._input_stroke_started_observers = []
         self._input_stroke_ended_observers = [] #: Access via gui.document
 
         self.visualize_rendering = False
@@ -124,6 +143,10 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.snapshot_pixmap = None
 
         self.override_cursor = None
+
+        # Overlays
+        self.model_overlays = []
+        self.display_overlays = []
 
     #def set_scroll_at_edges(self, choice):
     #    self.scroll_at_edges = choice
@@ -301,6 +324,9 @@ class TiledDrawWidget(gtk.DrawingArea):
             return
 
         if event.button == 1:
+            for func in self._input_stroke_started_observers:
+                func(event)
+
             # mouse button pressed (while painting without pressure information)
             if not self.last_event_had_pressure_info:
                 # For the mouse we don't get a motion event for "pressure"
@@ -310,11 +336,12 @@ class TiledDrawWidget(gtk.DrawingArea):
 
     def button_release_cb(self, win, event):
         # (see comment above in button_press_cb)
-        if event.button == 1 and not self.last_event_had_pressure_info:
-            self.motion_notify_cb(win, event, button1_pressed=False)
-        # Outsiders can access this via gui.document
-        for func in self._input_stroke_ended_observers:
-            func(event)
+        if event.button == 1:
+            if not self.last_event_had_pressure_info:
+                self.motion_notify_cb(win, event, button1_pressed=False)
+            # Outsiders can access this via gui.document
+            for func in self._input_stroke_ended_observers:
+                func(event)
 
     def straight_line_from_last_pos(self, is_sequence=False):
         if not self.last_painting_pos:
@@ -408,6 +435,18 @@ class TiledDrawWidget(gtk.DrawingArea):
     def repaint(self, device_bbox=None):
         cr, surface, sparse, mipmap_level, gdk_clip_region = self.render_prepare(device_bbox)
         self.render_execute(cr, surface, sparse, mipmap_level, gdk_clip_region)
+        # Model coordinate space:
+        cr.restore()  # CONTEXT2<<<
+        for overlay in self.model_overlays:
+            cr.save()
+            overlay.paint(cr)
+            cr.restore()
+        # Back to device coordinate space
+        cr.restore()  # CONTEXT1<<<
+        for overlay in self.display_overlays:
+            cr.save()
+            overlay.paint(cr)
+            cr.restore()
 
     def render_prepare(self, device_bbox):
         if device_bbox is None:
@@ -433,7 +472,9 @@ class TiledDrawWidget(gtk.DrawingArea):
             cr.paint()
 
         # bye bye device coordinates
+        cr.save()   # >>>CONTEXT1
         self.get_model_coordinates_cairo_context(cr)
+        cr.save()   # >>>CONTEXT2
 
         # choose best mipmap
         hq_zoom = False

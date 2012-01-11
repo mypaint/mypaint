@@ -14,6 +14,8 @@ from lib import brush, helpers, mypaintlib
 import filehandling, keyboard, brushmanager, windowing, document, layout
 import colorhistory, brushmodifier
 import stock
+from overlays import LastPaintPosOverlay, ScaleOverlay
+
 
 class Application: # singleton
     """
@@ -89,10 +91,13 @@ class Application: # singleton
         self.filehandler = filehandling.FileHandler(self)
         self.brushmodifier = brushmodifier.BrushModifier(self)
 
-
         if not self.preferences.get("scratchpad.last_opened_scratchpad", None):
             self.preferences["scratchpad.last_opened_scratchpad"] = self.filehandler.get_scratchpad_autosave()
         self.scratchpad_filename = self.preferences["scratchpad.last_opened_scratchpad"]
+
+        # Overlays
+        self.doc.tdw.display_overlays.append(LastPaintPosOverlay(self.doc))
+        self.doc.tdw.display_overlays.append(ScaleOverlay(self.doc.tdw))
 
         self.brush.set_color_hsv((0, 0, 0))
         self.init_brush_adjustments()

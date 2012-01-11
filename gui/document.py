@@ -221,6 +221,10 @@ class Document(object):
         """
         return self.tdw._input_stroke_ended_observers
 
+    @property
+    def input_stroke_started_observers(self):
+        return self.tdw._input_stroke_started_observers
+
     # GENERIC
     def undo_cb(self, action):
         cmd = self.model.undo()
