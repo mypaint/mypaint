@@ -33,6 +33,14 @@
         <menuitem action='MenuishBarRadioMainToolbar'/>
         <menuitem action='MenuishBarRadioMenubarAndMainToolbar'/>
       </menu>
+      <menu action='FeedbackMenu'>
+        <menuitem action='ToggleScaleFeedback'/>
+        <menuitem action='ToggleLastPosFeedback'/>
+      </menu>
+      <!--
+        Perhaps the less-important "show/toggle bits of the UI" settings
+        should be merged into one submenu.
+      -->
       <menuitem action='ShowPopupMenu'/>
       <menuitem action='ToggleSubwindows'/>
       <separator/>

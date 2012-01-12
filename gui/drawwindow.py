@@ -33,6 +33,10 @@ import xml.etree.ElementTree as ET
 # palette support
 from lib.scratchpad_palette import GimpPalette, hatch_squiggle, squiggle, draw_palette
 
+from overlays import LastPaintPosOverlay, ScaleOverlay
+
+
+
 # TODO: put in a helper file?
 def with_wait_cursor(func):
     """python decorator that adds a wait cursor around a function"""
@@ -179,6 +183,8 @@ class Window (windowing.MainWindow, layout.MainWindow):
         self.connect("drag-data-received", self.drag_data_received)
         self.connect("window-state-event", self.window_state_event_cb)
 
+        self.update_overlays()
+
         self.app.filehandler.current_file_observers.append(self.update_title)
 
         self.init_actions()
@@ -267,6 +273,7 @@ class Window (windowing.MainWindow, layout.MainWindow):
 
             ('ViewMenu', None, _('View')),
             ('MenuishBarMenu', None, _('Toolbars')),
+            ('FeedbackMenu', None, _('Feedback')),
             ('ShowPopupMenu',    None, _('Popup Menu'), 'Menu', None, self.popupmenu_show_cb),
             ('Fullscreen',   gtk.STOCK_FULLSCREEN, None, 'F11', None, self.fullscreen_cb),
             ('ViewHelp',  gtk.STOCK_HELP, _('Help'), None, None, self.show_infodialog_cb),
@@ -330,6 +337,14 @@ class Window (windowing.MainWindow, layout.MainWindow):
             ('ToggleSubwindows', None, _('Subwindows'), 'Tab',
                     _("Show subwindows"), self.toggle_subwindows_cb,
                     self.get_show_subwindows()),
+            ('ToggleScaleFeedback', None, _("Zoom Level"), None,
+                    _("Reveal the scale % when zooming in or out"),
+                    self.toggle_scale_feedback_cb,
+                    self.app.preferences.get("ui.feedback.scale", False)),
+            ('ToggleLastPosFeedback', None, _("Last Painting Position"), None,
+                    _("Reveal the last painting pos when a stroke ends"),
+                    self.toggle_last_pos_feedback_cb,
+                    self.app.preferences.get("ui.feedback.last_pos", False)),
             ]
         ag.add_toggle_actions(toggle_actions)
 
@@ -610,6 +625,39 @@ class Window (windowing.MainWindow, layout.MainWindow):
             self._updating_toggled_item = True
             action.set_active(active)
             self._updating_toggled_item = False
+
+
+    # Feedback and overlays
+    # It's not intended that all categories of feedback will use overlays, but
+    # they currently all do. This may change if/when we add a conventional
+    # statusbar for textual types of feedback.
+
+    def toggle_scale_feedback_cb(self, action):
+        self.app.preferences['ui.feedback.scale'] = action.get_active()
+        self.update_overlays()
+
+    def toggle_last_pos_feedback_cb(self, action):
+        self.app.preferences['ui.feedback.last_pos'] = action.get_active()
+        self.update_overlays()
+
+    def update_overlays(self):
+        # Updates the list of overlays on the main doc's TDW to match the prefs
+        doc = self.app.doc
+        disp_overlays = [
+            ('ui.feedback.scale', ScaleOverlay),
+            ('ui.feedback.last_pos', LastPaintPosOverlay),
+            ]
+        for key, class_ in disp_overlays:
+            current_instance = None
+            for ov in doc.tdw.display_overlays:
+                if isinstance(ov, class_):
+                    current_instance = ov
+            active = self.app.preferences.get(key, False)
+            if active and not current_instance:
+                doc.tdw.display_overlays.append(class_(doc))
+            elif current_instance and not active:
+                doc.tdw.display_overlays.remove(current_instance)
+
 
     def popup_cb(self, action):
         state = self.popup_states[action.get_name()]

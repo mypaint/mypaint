@@ -28,8 +28,8 @@ class FadingOverlay (Overlay):
     fade_step_delay = 50
     fade_step_amount = 0.075
 
-    def __init__(self, tdw):
-        self.tdw = tdw
+    def __init__(self, doc):
+        self.tdw = doc.tdw
         self.anim_srcid = None
         self.area = None
         self.alpha = 1.0
@@ -144,7 +144,7 @@ class LastPaintPosOverlay (FadingOverlay):
 
 
     def __init__(self, doc):
-        FadingOverlay.__init__(self, doc.tdw)
+        FadingOverlay.__init__(self, doc)
         doc.input_stroke_started_observers.append(self.input_stroke_started)
         doc.input_stroke_ended_observers.append(self.input_stroke_ended)
         self.current_marker_pos = None

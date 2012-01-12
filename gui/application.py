@@ -95,10 +95,6 @@ class Application: # singleton
             self.preferences["scratchpad.last_opened_scratchpad"] = self.filehandler.get_scratchpad_autosave()
         self.scratchpad_filename = self.preferences["scratchpad.last_opened_scratchpad"]
 
-        # Overlays
-        self.doc.tdw.display_overlays.append(LastPaintPosOverlay(self.doc))
-        self.doc.tdw.display_overlays.append(ScaleOverlay(self.doc.tdw))
-
         self.brush.set_color_hsv((0, 0, 0))
         self.init_brush_adjustments()
 
@@ -212,6 +208,8 @@ class Application: # singleton
             'ui.hide_toolbar_in_fullscreen': True,
             'ui.hide_subwindows_in_fullscreen': True,
             'ui.parts': dict(main_toolbar=True, menubar=False),
+            'ui.feedback.scale': True,
+            'ui.feedback.last_pos': False,
             'ui.toolbar_items': dict(
                 toolbar1_file=False,
                 toolbar1_edit=True,
