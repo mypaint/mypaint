@@ -56,6 +56,7 @@ public:
         // OPTIMIZE: send a list tiles for minimal compositing? (but profile the code first)
         res = PyObject_CallMethod(self, "notify_observers", "(iiii)", bbox.x, bbox.y, bbox.w, bbox.h);
         if (!res) return NULL;
+        Py_DECREF(res);
       }
     }
     Py_RETURN_NONE;
