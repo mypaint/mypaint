@@ -22,28 +22,34 @@ from gettext import gettext as _
 
 
 class FadingOverlay (Overlay):
-    """A temporary overlay which fades to alpha over about a second.
+    """Base class for temporary overlays which fade to alpha over a short time
     """
 
-    fade_step_delay = 50
-    fade_step_amount = 0.075
+    # Overridable animation controls
+    fade_fps = 20  #: Nominal frames per second
+    fade_duration = 1.5  #: Time for fading entirely to zero, in seconds
+
+    # Animation and redrawing state
+    tdw = None
+    alpha = 1.0
+    __area = None
+    __anim_srcid = None
 
     def __init__(self, doc):
         self.tdw = doc.tdw
-        self.anim_srcid = None
-        self.area = None
-        self.alpha = 1.0
 
     def paint(self, cr):
         """Repaint the overlay and start animating if necessary.
+
+        Individual frames are handled by `paint_frame()`.
         """
         if self.overlay_changed():
             self.alpha = 1.0
         elif self.alpha <= 0:
             # No need to draw anything.
             return
-        self.restart_anim_if_needed()
-        self.area = self.paint_frame(cr)
+        self.__restart_anim_if_needed()
+        self.__area = self.paint_frame(cr)
 
     def anim_cb(self):
         """Animation callback.
@@ -51,27 +57,67 @@ class FadingOverlay (Overlay):
         Each step fades the alpha multiplier slightly and invalidates the area
         last painted.
         """
-        self.alpha -= self.fade_step_amount
+        self.alpha -= 1.0 / (float(self.fade_fps) * self.fade_duration)
+        self.alpha = clamp(self.alpha, 0.0, 1.0)
         win = self.tdw.get_window()
         if win is not None:
-            if self.area:
-                win.invalidate_rect(gdk.Rectangle(*self.area), True)
+            if self.__area:
+                win.invalidate_rect(gdk.Rectangle(*self.__area), True)
         if self.alpha <= 0.0:
-            self.anim_srcid = None
+            self.__anim_srcid = None
             return False
         else:
             return True
 
-    def restart_anim_if_needed(self):
-        if self.anim_srcid is None:
-            delay = self.fade_step_delay
-            self.anim_srcid = gobject.timeout_add(delay, self.anim_cb)
+    def __restart_anim_if_needed(self):
+        """Restart if not currently running, without changing the alpha.
+        """
+        if self.__anim_srcid is None:
+            delay = int(1000 / self.fade_fps)
+            self.__anim_srcid = gobject.timeout_add(delay, self.anim_cb)
+
+    def stop_anim(self):
+        """Stops the animation after the next frame is drawn.
+        """
+        self.alpha = 0.0
+
+    def start_anim(self):
+        """Restarts the animation, setting alpha to 1.
+        """
+        self.alpha = 1.0
+        self.__restart_anim_if_needed()
 
     def paint_frame(self, cr):
+        """Paint a single frame.
+        """
         raise NotImplementedError
 
     def overlay_changed(self):
+        """Return true if the overlay has changed.
+
+        This virtual method is called by paint() to determine whether the
+        alpha should be reset to 1.0 and the fade begun anew.
+        """
         raise NotImplementedError
+
+
+def rounded_box(cr, x, y, w, h, r):
+    """Paint a rounded box path into a Cairo context.
+
+    The position is given by `x` and `y`, and the size by `w` and `h`. The
+    cornders are of radius `r`, and must be smaller than half the minimum
+    dimension. The path is created as a new, closed subpath.
+    """
+    assert r <= min(w, h) / 2
+    cr.new_sub_path()
+    cr.arc(x+r, y+r, r, pi, pi*1.5)
+    cr.line_to(x+w-r, y)
+    cr.arc(x+w-r, y+r, r, pi*1.5, pi*2)
+    cr.line_to(x+w, y+h-r)
+    cr.arc(x+w-r, y+h-r, r, 0, pi*0.5)
+    cr.line_to(x+r, y+h)
+    cr.arc(x+r, y+h-r, r, pi*0.5, pi)
+    cr.close_path()
 
 
 class ScaleOverlay (FadingOverlay):
@@ -83,9 +129,9 @@ class ScaleOverlay (FadingOverlay):
 
     background_rgba = [0, 0, 0, 0.666]
     text_rgba = [1, 1, 1, 1.0]
-    vmargin = 5
-    hmargin = 10
-    padding = 5
+    vmargin = 6
+    hmargin = 12
+    padding = 6
     shown_scale = None
 
 
@@ -95,14 +141,13 @@ class ScaleOverlay (FadingOverlay):
 
     def paint_frame(self, cr):
         self.shown_scale = self.tdw.scale
-        text = _("%.01f%%") % (100*self.shown_scale)
+        text = _("Zoom: %.01f%%") % (100*self.shown_scale)
         layout = self.tdw.create_pango_layout(text)
         attrs = pango.AttrList()
         attrs.insert(pango.AttrWeight(pango.WEIGHT_BOLD, 0, -1))
         layout.set_attributes(attrs)
         alloc = self.tdw.get_allocation()
         lw, lh = layout.get_pixel_size()
-        alpha = clamp(self.alpha, 0.0, 1.0)
 
         # Background rectangle
         hm = self.hmargin
@@ -110,17 +155,18 @@ class ScaleOverlay (FadingOverlay):
         w = alloc.width
         h = alloc.height
         p = self.padding
-        area = w-lw-hm-p-p, vm, lw+p+p, lh+p+p
-        cr.rectangle(*area)
+        area = bx, by, bw, bh = w-lw-hm-p-p, vm, lw+p+p, lh+p+p
+        rounded_box(cr, bx, by, bw, bh, p)
+        #cr.rectangle(*area)
         rgba = self.background_rgba[:]
-        rgba[3] *= alpha
+        rgba[3] *= self.alpha
         cr.set_source_rgba(*rgba)
         cr.fill()
 
         # Text
         cr.translate(w-lw-hm-p, vm+p)
         rgba = self.text_rgba[:]
-        rgba[3] *= alpha
+        rgba[3] *= self.alpha
         cr.set_source_rgba(*rgba)
         cr.show_layout(layout)
 
@@ -161,7 +207,7 @@ class LastPaintPosOverlay (FadingOverlay):
         area = self._calc_area(x, y)
         self.tdw.queue_draw_area(*area)
         self.current_marker_pos = None
-        self.alpha = 0.0
+        self.stop_anim()
 
     def input_stroke_ended(self, event):
         self.in_input_stroke = False
@@ -174,8 +220,7 @@ class LastPaintPosOverlay (FadingOverlay):
         area = self._calc_area(x, y)
         self.tdw.queue_draw_area(*area)
         self.current_marker_pos = model_x, model_y
-        self.alpha = 1.0
-        self.restart_anim_if_needed()
+        self.start_anim()
 
     def overlay_changed(self):
         return False
