@@ -47,7 +47,7 @@ _stock_items = [
         gdk.CONTROL_MASK, gdk.keyval_from_name("Left"), None),
     (ROTATE_RIGHT, _("Rotate Clockwise"),
         gdk.CONTROL_MASK, gdk.keyval_from_name("Right"), None),
-    (SYMMETRY, _("Symmetry"), 0, ord("|"), None),
+    (SYMMETRY, _("Symmetrical Painting"), gdk.SHIFT_MASK, ord("i"), None),
     (MIRROR_HORIZONTAL, _("Mirror Horizontal"), 0, ord("i"), None),
     (MIRROR_VERTICAL, _("Mirror Vertical"), 0, ord("u"), None),
     (BRUSH_BLEND_MODES, _("Blend Mode"), 0, 0, None),

@@ -10,9 +10,9 @@
 #define TILE_SIZE 64
 #define MAX_MIPMAP_LEVEL 4
 
-// used for symmetrical mirroring, set by toggle_symmetry(axis).
+// used for symmetrical mirroring, set by global_symmetry_toggle(axis).
 // Global to affect all surfaces.
-int surface_do_symmetry = 0;
+bool surface_do_symmetry = false;
 float surface_center_x = 0;
 
 class TiledSurface : public Surface {
@@ -41,10 +41,9 @@ public:
     tileMemoryWrite = 0;
   }
 
-  int toggle_symmetry(float axis = 0) {
+  void global_symmetry_toggle(float axis) {
       surface_do_symmetry = !surface_do_symmetry;
       surface_center_x = axis;
-      return surface_do_symmetry;
   }
 
   void begin_atomic() {

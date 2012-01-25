@@ -201,6 +201,7 @@ class Document(object):
         kbm.add_extra_key('KP_Subtract', 'ZoomOut')
         kbm.add_extra_key('plus', 'ZoomIn')
         kbm.add_extra_key('minus', 'ZoomOut')
+        kbm.add_extra_key('bar', 'Symmetry')
 
         kbm.add_extra_key('Left', lambda(action): self.pan('PanLeft'))
         kbm.add_extra_key('Right', lambda(action): self.pan('PanRight'))

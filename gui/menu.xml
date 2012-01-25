@@ -58,9 +58,10 @@
       <menuitem action='ZoomOut'/>
       <menuitem action='RotateLeft'/>
       <menuitem action='RotateRight'/>
-      <menuitem action='Symmetry'/>
       <menuitem action='MirrorHorizontal'/>
       <menuitem action='MirrorVertical'/>
+      <separator/>
+      <menuitem action='Symmetry'/>
       <separator/>
       <menuitem action='SoloLayer'/>
       <menuitem action='ToggleAbove'/>
