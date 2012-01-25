@@ -588,10 +588,9 @@ class TiledDrawWidget(gtk.DrawingArea):
             cr.paint()
 
         if self.doc.frame_enabled:
-            # Draw a semi-transparent black overlay for
-            # all the area outside the "document area"
+            # Draw a overlay for all the area outside the "document area"
             cr.save()
-            cr.set_source_rgba(0, 0, 0, 0.6)
+            cr.set_source_rgba(0.25, 0.25, 0.25, 1.0)
             cr.set_operator(cairo.OPERATOR_OVER)
             mipmap_factor = 2**mipmap_level
             frame = self.doc.get_frame()
