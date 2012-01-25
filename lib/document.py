@@ -49,6 +49,7 @@ class Document():
             brushinfo = brush.BrushInfo()
             brushinfo.load_defaults()
         self.brush = brush.Brush(brushinfo)
+        self.brush.brushinfo.observers.append(self.brushsettings_changed_cb)
         self.stroke = None
         self.canvas_observers = []
         self.stroke_observers = [] # callback arguments: stroke, brush (brush is a temporary read-only convenience object)
@@ -155,6 +156,18 @@ class Document():
             for f in self.stroke_observers:
                 f(self.stroke, self.brush)
         self.stroke = None
+
+    def brushsettings_changed_cb(self, settings):
+        # The brush settings below are expected to change often in
+        # mid-stroke eg. by heavy keyboard usage. If only those
+        # change, we don't create a new undo step. (And thus als no
+        # separate pickable stroke in the strokemap.)
+        leightweight_brushsettings = set((
+            'radius_logarithmic', 'color_h', 'color_s', 'color_v',
+            'opaque', 'hardness', 'slow_tracking', 'slow_tracking_per_dab'
+            ))
+        if settings - leightweight_brushsettings:
+            self.split_stroke()
 
     def select_layer(self, idx):
         self.do(command.SelectLayer(self, idx))
