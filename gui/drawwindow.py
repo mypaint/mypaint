@@ -1054,6 +1054,7 @@ class Window (windowing.MainWindow, layout.MainWindow):
             u'David Grundberg (sv)\n'
             u'Elliott Sales de Andrade (en_CA)\n'
             u'Ruei-Yuan Lu (zh_TW)\n'
+            u'Cheng-Chia Tseng (zh_TW)\n'
             )
 
         d.run()
