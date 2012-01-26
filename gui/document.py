@@ -125,9 +125,6 @@ class Document(object):
             ('RotateRight',  stock.ROTATE_RIGHT, None, None,
                 _("Rotate the view right"),
                 self.rotate_cb),
-            ('Symmetry', stock.SYMMETRY, None, None,
-                _("Symmetry: duplicate strokes mirrored horizontally"),
-                self.symmetry_cb),
             ('MirrorHorizontal', stock.MIRROR_HORIZONTAL, None, None,
                 _("Mirror: flip the view left to right"),
                 self.mirror_horizontal_cb),
@@ -148,10 +145,11 @@ class Document(object):
         self.update_command_stack_toolitems(self.model.command_stack)
 
         toggle_actions = [
+            # name, [stock-id, [label, [accel, [tooltip, [cb, [is-active]]]]]]
             ('PrintInputs', None, _('Print Brush Input Values to Console'), None, None, self.print_inputs_cb),
             ('VisualizeRendering', None, _('Visualize Rendering'), None, None, self.visualize_rendering_cb),
             ('NoDoubleBuffereing', None, _('Disable GTK Double Buffering'), None, None, self.no_double_buffering_cb),
-
+            ('Symmetry', stock.SYMMETRY, None, None, _("Symmetry: duplicate strokes mirrored horizontally"), self.symmetry_cb),
             ]
         ag.add_toggle_actions(toggle_actions)
 

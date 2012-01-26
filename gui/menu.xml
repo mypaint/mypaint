@@ -24,6 +24,8 @@
       <menuitem action='Undo'/>
       <menuitem action='Redo'/>
       <separator/>
+      <menuitem action='Symmetry'/>
+      <separator/>
       <menuitem action='PreferencesWindow'/>
     </menu>
     <menu action='ViewMenu'>
@@ -60,8 +62,6 @@
       <menuitem action='RotateRight'/>
       <menuitem action='MirrorHorizontal'/>
       <menuitem action='MirrorVertical'/>
-      <separator/>
-      <menuitem action='Symmetry'/>
       <separator/>
       <menuitem action='SoloLayer'/>
       <menuitem action='ToggleAbove'/>

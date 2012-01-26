@@ -212,7 +212,10 @@ class Application: # singleton
             'ui.feedback.last_pos': False,
             'ui.toolbar_items': dict(
                 toolbar1_file=False,
+                toolbar1_scrap=False,
                 toolbar1_edit=True,
+                toolbar1_editmodes=True,
+                toolbar1_blendmodes=False,
                 toolbar1_view=False,
                 toolbar1_subwindows=True,
             ),

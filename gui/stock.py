@@ -20,9 +20,12 @@ TOOL_COLOR_SELECTOR = "mypaint-tool-color-triangle"
 TOOL_COLOR_SAMPLER = "mypaint-tool-hue-wheel"
 TOOL_SCRATCHPAD = "mypaint-tool-scratchpad"
 TOOL_LAYERS = "mypaint-tool-layers"
+# FIXME: our "object-" stock commands aren't about manipulating the current
+# object, they're about the view. Since they're standard-ish names in many
+# themes, the icons may look wrong. TODO: make some MyPaint-specific icons for
+# them, and use new "mypaint-view-" names when we do.
 ROTATE_LEFT = "object-rotate-left"
 ROTATE_RIGHT = "object-rotate-right"
-SYMMETRY = "object-symmetry"
 MIRROR_HORIZONTAL = "object-flip-horizontal"
 MIRROR_VERTICAL = "object-flip-vertical"
 BRUSH_BLEND_MODES = "mypaint-brush-blend-modes"
@@ -32,6 +35,7 @@ BRUSH_BLEND_MODE_ALPHA_LOCK = "mypaint-brush-blend-mode-alpha-lock"
 BRUSH_BLEND_MODE_COLORIZE = "mypaint-brush-blend-mode-colorize"
 BRUSH_MODIFIERS_ACTIVE = "mypaint-brush-mods-active"
 BRUSH_MODIFIERS_INACTIVE = "mypaint-brush-mods-inactive"
+SYMMETRY = "mypaint-symmetry"
 
 
 _stock_items = [
