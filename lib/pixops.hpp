@@ -7,46 +7,24 @@
  * (at your option) any later version.
  */
 
-// downscale a tile to half its size using bilinear interpolation
-// used mainly for generating background mipmaps
-void tile_downscale_rgb16(PyObject *src, PyObject *dst, int dst_x, int dst_y) {
+// make the "heavy_debug" readable from python
 #ifdef HEAVY_DEBUG
-  assert(PyArray_DIM(src, 0) == TILE_SIZE);
-  assert(PyArray_DIM(src, 1) == TILE_SIZE);
-  assert(PyArray_TYPE(src) == NPY_UINT16);
-  assert(PyArray_ISCARRAY(src));
-
-  assert(PyArray_TYPE(dst) == NPY_UINT16);
-  assert(PyArray_ISCARRAY(dst));
+const bool heavy_debug = true;
+#else
+const bool heavy_debug = false;
 #endif
 
-  PyArrayObject* src_arr = ((PyArrayObject*)src);
-  PyArrayObject* dst_arr = ((PyArrayObject*)dst);
-
-  for (int y=0; y<TILE_SIZE/2; y++) {
-    uint16_t * src_p = (uint16_t*)(src_arr->data + (2*y)*src_arr->strides[0]);
-    uint16_t * dst_p = (uint16_t*)(dst_arr->data + (y+dst_y)*dst_arr->strides[0]);
-    dst_p += 3*dst_x;
-    for(int x=0; x<TILE_SIZE/2; x++) {
-      dst_p[0] = src_p[0]/4 + (src_p+3)[0]/4 + (src_p+3*TILE_SIZE)[0]/4 + (src_p+3*TILE_SIZE+3)[0]/4;
-      dst_p[1] = src_p[1]/4 + (src_p+3)[1]/4 + (src_p+3*TILE_SIZE)[1]/4 + (src_p+3*TILE_SIZE+3)[1]/4;
-      dst_p[2] = src_p[2]/4 + (src_p+3)[2]/4 + (src_p+3*TILE_SIZE)[2]/4 + (src_p+3*TILE_SIZE+3)[2]/4;
-      src_p += 6;
-      dst_p += 3;
-    }
-  }
-}
 // downscale a tile to half its size using bilinear interpolation
-// used mainly for generating tiledsurface mipmaps
+// used for generating mipmaps for tiledsurface and background
 void tile_downscale_rgba16(PyObject *src, PyObject *dst, int dst_x, int dst_y) {
 #ifdef HEAVY_DEBUG
   assert(PyArray_DIM(src, 0) == TILE_SIZE);
   assert(PyArray_DIM(src, 1) == TILE_SIZE);
+  assert(PyArray_DIM(src, 2) == 4);
   assert(PyArray_TYPE(src) == NPY_UINT16);
   assert(PyArray_ISCARRAY(src));
 
-  assert(PyArray_DIM(dst, 0) == TILE_SIZE);
-  assert(PyArray_DIM(dst, 1) == TILE_SIZE);
+  assert(PyArray_DIM(dst, 2) == 4);
   assert(PyArray_TYPE(dst) == NPY_UINT16);
   assert(PyArray_ISCARRAY(dst));
 #endif
@@ -69,7 +47,7 @@ void tile_downscale_rgba16(PyObject *src, PyObject *dst, int dst_x, int dst_y) {
   }
 }
 
-void tile_composite_rgba16_over_rgb16(PyObject * src, PyObject * dst, float alpha) {
+void tile_composite_rgba16_over_rgbu16(PyObject * src, PyObject * dst, float alpha) {
 #ifdef HEAVY_DEBUG
   assert(PyArray_DIM(src, 0) == TILE_SIZE);
   assert(PyArray_DIM(src, 1) == TILE_SIZE);
@@ -79,14 +57,14 @@ void tile_composite_rgba16_over_rgb16(PyObject * src, PyObject * dst, float alph
 
   assert(PyArray_DIM(dst, 0) == TILE_SIZE);
   assert(PyArray_DIM(dst, 1) == TILE_SIZE);
-  assert(PyArray_DIM(dst, 2) == 3);
+  assert(PyArray_DIM(dst, 2) == 4);
   assert(PyArray_TYPE(dst) == NPY_UINT16);
   assert(PyArray_ISBEHAVED(dst));
 #endif
   
   PyArrayObject* dst_arr = ((PyArrayObject*)dst);
 #ifdef HEAVY_DEBUG
-  assert(dst_arr->strides[1] == 3*sizeof(uint16_t));
+  assert(dst_arr->strides[1] == 4*sizeof(uint16_t));
   assert(dst_arr->strides[2] ==   sizeof(uint16_t));
 #endif
 
@@ -106,14 +84,15 @@ void tile_composite_rgba16_over_rgb16(PyObject * src, PyObject * dst, float alph
       dst_p[0] = ((uint32_t)src_p[0]*opac + one_minus_topAlpha*dst_p[0]) / (1<<15);
       dst_p[1] = ((uint32_t)src_p[1]*opac + one_minus_topAlpha*dst_p[1]) / (1<<15);
       dst_p[2] = ((uint32_t)src_p[2]*opac + one_minus_topAlpha*dst_p[2]) / (1<<15);
+      // dst_p[3] is not modified
       src_p += 4;
-      dst_p += 3;
+      dst_p += 4;
     }
     p += dst_arr->strides[0];
   }
 }
 
-void tile_composite_rgba16_multiply_rgb16(PyObject * src, PyObject * dst, float alpha) {
+void tile_composite_rgba16_multiply_rgbu16(PyObject * src, PyObject * dst, float alpha) {
 #ifdef HEAVY_DEBUG
   assert(PyArray_DIM(src, 0) == TILE_SIZE);
   assert(PyArray_DIM(src, 1) == TILE_SIZE);
@@ -123,14 +102,14 @@ void tile_composite_rgba16_multiply_rgb16(PyObject * src, PyObject * dst, float 
 
   assert(PyArray_DIM(dst, 0) == TILE_SIZE);
   assert(PyArray_DIM(dst, 1) == TILE_SIZE);
-  assert(PyArray_DIM(dst, 2) == 3);
+  assert(PyArray_DIM(dst, 2) == 4);
   assert(PyArray_TYPE(dst) == NPY_UINT16);
   assert(PyArray_ISBEHAVED(dst));
 #endif
   
   PyArrayObject* dst_arr = ((PyArrayObject*)dst);
 #ifdef HEAVY_DEBUG
-  assert(dst_arr->strides[1] == 3*sizeof(uint16_t));
+  assert(dst_arr->strides[1] == 4*sizeof(uint16_t));
   assert(dst_arr->strides[2] ==   sizeof(uint16_t));
 #endif
 
@@ -152,14 +131,15 @@ void tile_composite_rgba16_multiply_rgb16(PyObject * src, PyObject * dst, float 
       dst_p[0] = ((uint32_t)src_col0*dst_p[0] + one_minus_topAlpha*dst_p[0]) / (1<<15);
       dst_p[1] = ((uint32_t)src_col1*dst_p[1] + one_minus_topAlpha*dst_p[1]) / (1<<15);
       dst_p[2] = ((uint32_t)src_col2*dst_p[2] + one_minus_topAlpha*dst_p[2]) / (1<<15);
+      // dst_p[3] is not modified
       src_p += 4;
-      dst_p += 3;
+      dst_p += 4;
     }
     p += dst_arr->strides[0];
   }
 }
 
-void tile_composite_rgba16_screen_rgb16(PyObject * src, PyObject * dst, float alpha) {
+void tile_composite_rgba16_screen_rgbu16(PyObject * src, PyObject * dst, float alpha) {
 #ifdef HEAVY_DEBUG
   assert(PyArray_DIM(src, 0) == TILE_SIZE);
   assert(PyArray_DIM(src, 1) == TILE_SIZE);
@@ -169,14 +149,14 @@ void tile_composite_rgba16_screen_rgb16(PyObject * src, PyObject * dst, float al
 
   assert(PyArray_DIM(dst, 0) == TILE_SIZE);
   assert(PyArray_DIM(dst, 1) == TILE_SIZE);
-  assert(PyArray_DIM(dst, 2) == 3);
+  assert(PyArray_DIM(dst, 2) == 4);
   assert(PyArray_TYPE(dst) == NPY_UINT16);
   assert(PyArray_ISBEHAVED(dst));
 #endif
   
   PyArrayObject* dst_arr = ((PyArrayObject*)dst);
 #ifdef HEAVY_DEBUG
-  assert(dst_arr->strides[1] == 3*sizeof(uint16_t));
+  assert(dst_arr->strides[1] == 4*sizeof(uint16_t));
   assert(dst_arr->strides[2] ==   sizeof(uint16_t));
 #endif
 
@@ -200,14 +180,15 @@ void tile_composite_rgba16_screen_rgb16(PyObject * src, PyObject * dst, float al
       dst_p[0] = (col0 - ((uint32_t)src_col0*dst_p[0])) / (1<<15);
       dst_p[1] = (col1 - ((uint32_t)src_col1*dst_p[1])) / (1<<15);
       dst_p[2] = (col2 - ((uint32_t)src_col2*dst_p[2])) / (1<<15);
+      // dst_p[3] is not modified
       src_p += 4;
-      dst_p += 3;
+      dst_p += 4;
     }
     p += dst_arr->strides[0];
   }
 }
 
-void tile_composite_rgba16_dodge_rgb16(PyObject * src, PyObject * dst, float alpha) {
+void tile_composite_rgba16_dodge_rgbu16(PyObject * src, PyObject * dst, float alpha) {
 #ifdef HEAVY_DEBUG
   assert(PyArray_DIM(src, 0) == TILE_SIZE);
   assert(PyArray_DIM(src, 1) == TILE_SIZE);
@@ -217,14 +198,14 @@ void tile_composite_rgba16_dodge_rgb16(PyObject * src, PyObject * dst, float alp
 
   assert(PyArray_DIM(dst, 0) == TILE_SIZE);
   assert(PyArray_DIM(dst, 1) == TILE_SIZE);
-  assert(PyArray_DIM(dst, 2) == 3);
+  assert(PyArray_DIM(dst, 2) == 4);
   assert(PyArray_TYPE(dst) == NPY_UINT16);
   assert(PyArray_ISBEHAVED(dst));
 #endif
   
   PyArrayObject* dst_arr = ((PyArrayObject*)dst);
 #ifdef HEAVY_DEBUG
-  assert(dst_arr->strides[1] == 3*sizeof(uint16_t));
+  assert(dst_arr->strides[1] == 4*sizeof(uint16_t));
   assert(dst_arr->strides[2] ==   sizeof(uint16_t));
 #endif
 
@@ -256,14 +237,15 @@ void tile_composite_rgba16_dodge_rgb16(PyObject * src, PyObject * dst, float alp
             dst_p[c] = CLAMP((uint32_t)topAlpha * (dst_times_topAlpha >> 15)/ (topAlpha_minus_src >> 15) + ((uint32_t)dst_p[c]*one_minus_topAlpha >> 15), 0, 1<<15);
         }
       }
+      // dst_p[3] is not modified
       src_p += 4;
-      dst_p += 3;
+      dst_p += 4;
     }
     p += dst_arr->strides[0];
   }
 }
 
-void tile_composite_rgba16_burn_rgb16(PyObject * src, PyObject * dst, float alpha) {
+void tile_composite_rgba16_burn_rgbu16(PyObject * src, PyObject * dst, float alpha) {
 #ifdef HEAVY_DEBUG
   assert(PyArray_DIM(src, 0) == TILE_SIZE);
   assert(PyArray_DIM(src, 1) == TILE_SIZE);
@@ -273,14 +255,14 @@ void tile_composite_rgba16_burn_rgb16(PyObject * src, PyObject * dst, float alph
 
   assert(PyArray_DIM(dst, 0) == TILE_SIZE);
   assert(PyArray_DIM(dst, 1) == TILE_SIZE);
-  assert(PyArray_DIM(dst, 2) == 3);
+  assert(PyArray_DIM(dst, 2) == 4);
   assert(PyArray_TYPE(dst) == NPY_UINT16);
   assert(PyArray_ISBEHAVED(dst));
 #endif
   
   PyArrayObject* dst_arr = ((PyArrayObject*)dst);
 #ifdef HEAVY_DEBUG
-  assert(dst_arr->strides[1] == 3*sizeof(uint16_t));
+  assert(dst_arr->strides[1] == 4*sizeof(uint16_t));
   assert(dst_arr->strides[2] ==   sizeof(uint16_t));
 #endif
 
@@ -315,46 +297,47 @@ void tile_composite_rgba16_burn_rgb16(PyObject * src, PyObject * dst, float alph
           }
         }
       }
+      // dst_p[3] is unmodified
       src_p += 4;
-      dst_p += 3;
+      dst_p += 4;
     }
     p += dst_arr->strides[0];
   }
 }
 
-// used to copy the background before starting to composite over it
+// used to e.g. copy the background before starting to composite over it
 //
-// simply array copying (numpy assignment operator is about 13 times slower, sadly)
+// simply array copying (numpy assignment operator) is about 13 times slower, sadly
 // The above comment is true when the array is sliced; it's only about two
 // times faster now, in the current usecae.
-void tile_blit_rgb16_into_rgb16(PyObject * src, PyObject * dst) {
+void tile_copy_rgba16_into_rgba16(PyObject * src, PyObject * dst) {
   PyArrayObject* src_arr = ((PyArrayObject*)src);
   PyArrayObject* dst_arr = ((PyArrayObject*)dst);
 
 #ifdef HEAVY_DEBUG
   assert(PyArray_DIM(dst, 0) == TILE_SIZE);
   assert(PyArray_DIM(dst, 1) == TILE_SIZE);
-  assert(PyArray_DIM(dst, 2) == 3);
+  assert(PyArray_DIM(dst, 2) == 4);
   assert(PyArray_TYPE(dst) == NPY_UINT16);
   assert(PyArray_ISCARRAY(dst));
-  assert(dst_arr->strides[1] == 3*sizeof(uint16_t));
+  assert(dst_arr->strides[1] == 4*sizeof(uint16_t));
   assert(dst_arr->strides[2] ==   sizeof(uint16_t));
 
   assert(PyArray_DIM(src, 0) == TILE_SIZE);
   assert(PyArray_DIM(src, 1) == TILE_SIZE);
-  assert(PyArray_DIM(src, 2) == 3);
+  assert(PyArray_DIM(src, 2) == 4);
   assert(PyArray_TYPE(src) == NPY_UINT16);
   assert(PyArray_ISCARRAY(dst));
-  assert(src_arr->strides[1] == 3*sizeof(uint16_t));
+  assert(src_arr->strides[1] == 4*sizeof(uint16_t));
   assert(src_arr->strides[2] ==   sizeof(uint16_t));
 #endif
 
-  memcpy(dst_arr->data, src_arr->data, TILE_SIZE*TILE_SIZE*3*sizeof(uint16_t));
+  memcpy(dst_arr->data, src_arr->data, TILE_SIZE*TILE_SIZE*4*sizeof(uint16_t));
   /* the code below can be used if it is not ISCARRAY, but only ISBEHAVED:
   char * src_p = src_arr->data;
   char * dst_p = dst_arr->data;
   for (int y=0; y<TILE_SIZE; y++) {
-    memcpy(dst_p, src_p, TILE_SIZE*3);
+    memcpy(dst_p, src_p, TILE_SIZE*4);
     src_p += src_arr->strides[0];
     dst_p += dst_arr->strides[0];
   }
@@ -511,82 +494,57 @@ void tile_convert_rgba16_to_rgba8(PyObject * src, PyObject * dst) {
 }
 
 // used after compositing (when displaying, or when saving solid PNG or JPG)
-void tile_convert_rgb16_to_rgb8(PyObject * src, PyObject * dst) {
+void tile_convert_rgbu16_to_rgbu8(PyObject * src, PyObject * dst) {
   PyArrayObject* src_arr = ((PyArrayObject*)src);
   PyArrayObject* dst_arr = ((PyArrayObject*)dst);
 
 #ifdef HEAVY_DEBUG
   assert(PyArray_DIM(dst, 0) == TILE_SIZE);
   assert(PyArray_DIM(dst, 1) == TILE_SIZE);
+  assert(PyArray_DIM(dst, 2) == 4);
   assert(PyArray_TYPE(dst) == NPY_UINT8);
   assert(PyArray_ISBEHAVED(dst));
-  assert(PyArray_STRIDE(dst, 1) == PyArray_DIM(dst, 2)*sizeof(uint8_t));
+  assert(PyArray_STRIDE(dst, 1) == 4*sizeof(uint8_t));
   assert(PyArray_STRIDE(dst, 2) == sizeof(uint8_t));
 
   assert(PyArray_DIM(src, 0) == TILE_SIZE);
   assert(PyArray_DIM(src, 1) == TILE_SIZE);
-  assert(PyArray_DIM(src, 2) == 3);
+  assert(PyArray_DIM(src, 2) == 4);
   assert(PyArray_TYPE(src) == NPY_UINT16);
   assert(PyArray_ISBEHAVED(src));
-  assert(PyArray_STRIDE(src, 1) == 3*sizeof(uint16_t));
+  assert(PyArray_STRIDE(src, 1) == 4*sizeof(uint16_t));
   assert(PyArray_STRIDE(src, 2) ==   sizeof(uint16_t));
 #endif
 
   precalculate_dithering_noise_if_required();
   int noise_idx = 0;
 
-  bool dst_has_alpha = PyArray_DIM(dst, 2) == 4;
-
   for (int y=0; y<TILE_SIZE; y++) {
     uint16_t * src_p = (uint16_t*)(src_arr->data + y*src_arr->strides[0]);
     uint8_t  * dst_p = (uint8_t*)(dst_arr->data + y*dst_arr->strides[0]);
-    if (dst_has_alpha) {
-      for (int x=0; x<TILE_SIZE; x++) {
-        uint32_t r, g, b;
-        r = *src_p++;
-        g = *src_p++;
-        b = *src_p++;
+    for (int x=0; x<TILE_SIZE; x++) {
+      uint32_t r, g, b;
+      r = *src_p++;
+      g = *src_p++;
+      b = *src_p++;
+      src_p++; // alpha unused
 #ifdef HEAVY_DEBUG
-        assert(r<=(1<<15));
-        assert(g<=(1<<15));
-        assert(b<=(1<<15));
+      assert(r<=(1<<15));
+      assert(g<=(1<<15));
+      assert(b<=(1<<15));
 #endif
-          
-        /*
-        // rounding
-        const uint32_t add = (1<<15)/2;
-        */
-        // dithering
-        const uint32_t add = dithering_noise[noise_idx++];
-          
-        *dst_p++ = (r * 255 + add) / (1<<15);
-        *dst_p++ = (g * 255 + add) / (1<<15);
-        *dst_p++ = (b * 255 + add) / (1<<15);
-        *dst_p++ = 255;
-      }
-    } else {
-      for (int x=0; x<TILE_SIZE; x++) {
-        uint32_t r, g, b;
-        r = *src_p++;
-        g = *src_p++;
-        b = *src_p++;
-#ifdef HEAVY_DEBUG
-        assert(r<=(1<<15));
-        assert(g<=(1<<15));
-        assert(b<=(1<<15));
-#endif
-          
-        /*
-        // rounding
-        const uint32_t add = (1<<15)/2;
-        */
-        // dithering
-        const uint32_t add = dithering_noise[noise_idx++];
-          
-        *dst_p++ = (r * 255 + add) / (1<<15);
-        *dst_p++ = (g * 255 + add) / (1<<15);
-        *dst_p++ = (b * 255 + add) / (1<<15);
-      }
+      
+      /*
+      // rounding
+      const uint32_t add = (1<<15)/2;
+      */
+      // dithering
+      const uint32_t add = dithering_noise[noise_idx++];
+      
+      *dst_p++ = (r * 255 + add) / (1<<15);
+      *dst_p++ = (g * 255 + add) / (1<<15);
+      *dst_p++ = (b * 255 + add) / (1<<15);
+      *dst_p++ = 255;
     }
 #ifdef HEAVY_DEBUG
     assert(noise_idx <= dithering_noise_size);

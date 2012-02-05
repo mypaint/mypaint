@@ -16,7 +16,7 @@ import sys, numpy
 
 class Surface:
     """
-    This class represents a gdk.Pixbuf (8 bit RGB or RGBA data) with
+    This class represents a gdk.Pixbuf (8 bit RGBU or RGBA data) with
     memory also accessible per-tile, compatible with tiledsurface.Surface.
     """
     def __init__(self, x, y, w, h, alpha=False, data=None):
@@ -40,7 +40,9 @@ class Surface:
         assert self.ew >= w and self.eh >= h
         assert self.ex <= x and self.ey <= y
 
-        self.epixbuf = gdk.Pixbuf(gdk.COLORSPACE_RGB, alpha, 8, self.ew, self.eh)
+        self.has_alpha = alpha
+
+        self.epixbuf = gdk.Pixbuf(gdk.COLORSPACE_RGB, True, 8, self.ew, self.eh)
         dx = x-self.ex
         dy = y-self.ey
         self.pixbuf  = self.epixbuf.subpixbuf(dx, dy, w, h)
@@ -49,8 +51,9 @@ class Surface:
         assert self.eh <= h + 2*N-2
 
         if not alpha:
-            #self.epixbuf.fill(0xff44ff44) # to detect uninitialized memory
-            pass # speeds up scrolling slightly
+            if mypaintlib.heavy_debug:
+                # detect uninitialized memory; slows down scrolling slightly
+                self.epixbuf.fill(0xff44ff44)
         else:
             self.epixbuf.fill(0x00000000) # keep undefined regions transparent
 
@@ -60,12 +63,9 @@ class Surface:
 
         if data is not None:
             dst = arr[dy:dy+h,dx:dx+w,:]
-            if data.shape[2] == 3:
-                # no alpha
-                dst[:,:,0:3] = data
-                dst[:,:,3] = 255
-            else:
-                dst[:,:,:] = data
+            assert data.shape[2] == 4, 'rgbu or rgba expected, not rgb'
+            dst[:,:,:] = data
+            if self.has_alpha:
                 # this surface will be used read-only
                 discard_transparent = True
 
@@ -83,8 +83,9 @@ class Surface:
     def get_tile_memory(self, tx, ty):
         return self.tile_memory_dict[(tx, ty)]
 
-    def blit_tile_into(self, dst, tx, ty):
+    def blit_tile_into(self, dst, dst_has_alpha, tx, ty):
         # (used mainly for loading transparent PNGs)
+        assert dst_has_alpha is True
         assert dst.dtype == 'uint16', '16 bit dst expected'
         src = self.tile_memory_dict[(tx, ty)]
         assert src.shape[2] == 4, 'alpha required'
@@ -104,7 +105,7 @@ def render_as_pixbuf(surface, *rect, **kwargs):
     tn = 0
     for tx, ty in s.get_tiles():
         dst = s.get_tile_memory(tx, ty)
-        surface.blit_tile_into(dst, tx, ty, mipmap_level=mipmap_level)
+        surface.blit_tile_into(dst, alpha, tx, ty, mipmap_level=mipmap_level)
         if feedback_cb is not None and tn % TILES_PER_CALLBACK == 0:
             feedback_cb()
         tn += 1
@@ -122,11 +123,7 @@ def save_as_png(surface, filename, *rect, **kwargs):
         # workaround to save empty documents
         x, y, w, h = 0, 0, N, N
 
-    if alpha:
-        bpp = 4
-    else:
-        bpp = 3
-    arr = numpy.empty((N, w, bpp), 'uint8')
+    arr = numpy.empty((N, w, 4), 'uint8') # rgba or rgbu
 
     tn_ref = [0]   # is there a nicer way of letting callbacks in swig code increment this?
     ty_list = range(y/N, (y+h)/N)
@@ -136,7 +133,7 @@ def save_as_png(surface, filename, *rect, **kwargs):
         for tx_rel in xrange(w/N):
             # OPTIMIZE: shortcut for empty tiles (not in tiledict)?
             dst = arr[:,tx_rel*N:(tx_rel+1)*N,:]
-            surface.blit_tile_into(dst, x/N+tx_rel, ty)
+            surface.blit_tile_into(dst, alpha, x/N+tx_rel, ty)
             if feedback_cb is not None and tn_ref[0] % TILES_PER_CALLBACK == 0:
                 feedback_cb()
             tn_ref[0] += 1

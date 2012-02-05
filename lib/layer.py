@@ -168,6 +168,7 @@ class Layer:
     def merge_into(self, dst):
         """
         Merge this layer into dst, modifying only dst.
+        Dst always has an alpha channel.
         """
         # We must respect layer visibility, because saving a
         # transparent PNG just calls this function for each layer.
@@ -178,7 +179,7 @@ class Layer:
             surf[:,:,:] = dst.effective_opacity * surf[:,:,:]
         for tx, ty in src._surface.get_tiles():
             surf = dst._surface.get_tile_memory(tx, ty, readonly=False)
-            src._surface.composite_tile(surf, tx, ty,
+            src._surface.composite_tile(surf, True, tx, ty,
                 opacity=self.effective_opacity,
                 mode=self.compositeop)
         dst.opacity = 1.0

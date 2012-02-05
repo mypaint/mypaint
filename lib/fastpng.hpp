@@ -82,6 +82,11 @@ PyObject * save_png_fast_progressive(char * filename, int w, int h, bool has_alp
 
   png_write_info(png_ptr, info_ptr);
 
+  if (!has_alpha) {
+    // input array format format is rgbu
+    png_set_filler(png_ptr, 0, PNG_FILLER_AFTER);
+  }
+
   {
     int y = 0;
     while (y < h) {
@@ -94,7 +99,7 @@ PyObject * save_png_fast_progressive(char * filename, int w, int h, bool has_alp
       assert(PyArray_ISCARRAY(arr));
       assert(PyArray_NDIM(arr) == 3);
       assert(PyArray_DIM(arr, 1) == w);
-      assert(PyArray_DIM(arr, 2) == has_alpha?4:3);
+      assert(PyArray_DIM(arr, 2) == 4); // rgbu
       assert(PyArray_TYPE(arr) == NPY_UINT8);
 #endif
 

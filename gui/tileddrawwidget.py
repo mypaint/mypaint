@@ -554,7 +554,7 @@ class TiledDrawWidget(gtk.DrawingArea):
 
 
             dst = surface.get_tile_memory(tx, ty)
-            self.doc.blit_tile_into(dst, tx, ty, mipmap_level, layers, background)
+            self.doc.blit_tile_into(dst, False, tx, ty, mipmap_level, layers, background)
 
         if translation_only:
             # not sure why, but using gdk directly is notably faster than the same via cairo

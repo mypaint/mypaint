@@ -27,9 +27,8 @@ class Background:
 
         self.tw = obj.shape[1]/N
         self.th = obj.shape[0]/N
-        if obj.shape[-1] == 4:
-            raise BackgroundError, 'background tile with alpha channel is not allowed'
-        if obj.shape != (self.th*N, self.tw*N, 3):
+        #print obj
+        if obj.shape[0:2] != (self.th*N, self.tw*N):
             raise BackgroundError, 'unsupported background tile size: %dx%d' % (obj.shape[0], obj.shape[1])
         if obj.dtype == 'uint8':
             obj = (obj.astype('uint32') * (1<<15) / 255).astype('uint16')
@@ -38,32 +37,34 @@ class Background:
         for ty in range(self.th):
             for tx in range(self.tw):
                 # make sure we have linear memory (optimization)
-                tile = numpy.zeros((N, N, 3), dtype='uint16')
-                tile[:,:,:] = obj[N*ty:N*(ty+1), N*tx:N*(tx+1), :]
+                tile = numpy.empty((N, N, 4), dtype='uint16') # rgbu
+                tile[:,:,:3] = obj[N*ty:N*(ty+1), N*tx:N*(tx+1), :3]
                 self.tiles[tx, ty] = tile
         
         # generate mipmap
         self.mipmap_level = mipmap_level
         if mipmap_level < MAX_MIPMAP_LEVEL:
-            mipmap_obj = numpy.zeros((self.th*N, self.tw*N, 3), dtype='uint16')
+            mipmap_obj = numpy.zeros((self.th*N, self.tw*N, 4), dtype='uint16')
             for ty in range(self.th*2):
                 for tx in range(self.tw*2):
                     src = self.get_tile_memory(tx, ty)
-                    mypaintlib.tile_downscale_rgb16(src, mipmap_obj, tx*N/2, ty*N/2)
+                    mypaintlib.tile_downscale_rgba16(src, mipmap_obj, tx*N/2, ty*N/2)
             self.mipmap = Background(mipmap_obj, mipmap_level+1)
 
     def get_tile_memory(self, tx, ty):
         return self.tiles[(tx%self.tw, ty%self.th)]
 
-    def blit_tile_into(self, dst, tx, ty, mipmap_level=0):
+    def blit_tile_into(self, dst, dst_has_alpha, tx, ty, mipmap_level=0):
+        assert dst_has_alpha is False
         if self.mipmap_level < mipmap_level:
-            return self.mipmap.blit_tile_into(dst, tx, ty, mipmap_level)
-        rgb = self.get_tile_memory(tx, ty)
+            return self.mipmap.blit_tile_into(dst, dst_has_alpha, tx, ty, mipmap_level)
+        rgbu = self.get_tile_memory(tx, ty)
         # render solid or tiled background
         #dst[:] = rgb # 13 times slower than below, with some bursts having the same speed as below (huh?)
         # note: optimization for solid colors is not worth it, it gives only 2x speedup (at best)
         if dst.dtype == 'uint16':
-            mypaintlib.tile_blit_rgb16_into_rgb16(rgb, dst)
+            # this will do memcpy, not worth to bother skipping the u channel
+            mypaintlib.tile_copy_rgba16_into_rgba16(rgbu, dst)
         else:
             # this case is for saving the background
             assert dst.dtype == 'uint8'
@@ -72,7 +73,7 @@ class Background:
             # does help much to cache this conversion result. The
             # save_ora speedup when doing this is below 1%, even for a
             # single-layer ora.
-            mypaintlib.tile_convert_rgb16_to_rgb8(rgb, dst)
+            mypaintlib.tile_convert_rgbu16_to_rgbu8(rgbu, dst)
 
     def get_pattern_bbox(self):
         return get_tiles_bbox(self.tiles)
