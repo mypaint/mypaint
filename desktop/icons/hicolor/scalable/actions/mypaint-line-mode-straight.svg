@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   version="1.1"
+   width="48"
+   height="48"
+   id="svg2985">
+  <defs
+     id="defs2987">
+    <linearGradient
+       id="linearGradient5965">
+      <stop
+         id="stop5967"
+         style="stop-color:#555753;stop-opacity:1"
+         offset="0" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient5965-1">
+      <stop
+         id="stop5967-2"
+         style="stop-color:#555753;stop-opacity:1"
+         offset="0" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient5965-8">
+      <stop
+         id="stop5967-7"
+         style="stop-color:#555753;stop-opacity:1"
+         offset="0" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient5965-4">
+      <stop
+         id="stop5967-8"
+         style="stop-color:#555753;stop-opacity:1"
+         offset="0" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient5965-15">
+      <stop
+         id="stop5967-26"
+         style="stop-color:#555753;stop-opacity:1"
+         offset="0" />
+    </linearGradient>
+    <filter
+       color-interpolation-filters="sRGB"
+       id="filter4001">
+      <feGaussianBlur
+         id="feGaussianBlur4003"
+         stdDeviation="0.24355193" />
+    </filter>
+    <filter
+       color-interpolation-filters="sRGB"
+       id="filter4021">
+      <feGaussianBlur
+         id="feGaussianBlur4023"
+         stdDeviation="0.28633487" />
+    </filter>
+    <filter
+       color-interpolation-filters="sRGB"
+       id="filter4041">
+      <feGaussianBlur
+         id="feGaussianBlur4043"
+         stdDeviation="0.28633487" />
+    </filter>
+    <filter
+       color-interpolation-filters="sRGB"
+       id="filter4053">
+      <feGaussianBlur
+         id="feGaussianBlur4055"
+         stdDeviation="0.24355193" />
+    </filter>
+    <filter
+       color-interpolation-filters="sRGB"
+       id="filter4065">
+      <feGaussianBlur
+         id="feGaussianBlur4067"
+         stdDeviation="0.24355193" />
+    </filter>
+    <filter
+       color-interpolation-filters="sRGB"
+       id="filter4085">
+      <feGaussianBlur
+         id="feGaussianBlur4087"
+         stdDeviation="0.28633487" />
+    </filter>
+    <filter
+       color-interpolation-filters="sRGB"
+       id="filter4101">
+      <feGaussianBlur
+         id="feGaussianBlur4103"
+         stdDeviation="0.24355193" />
+    </filter>
+    <filter
+       color-interpolation-filters="sRGB"
+       id="filter4113">
+      <feGaussianBlur
+         id="feGaussianBlur4115"
+         stdDeviation="0.28633487" />
+    </filter>
+  </defs>
+  <metadata
+     id="metadata2990">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title />
+          </cc:Agent>
+        </dc:creator>
+        <cc:license
+           rdf:resource="http://creativecommons.org/licenses/publicdomain/" />
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/licenses/publicdomain/">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(0,-4)"
+     id="layer1"
+     style="display:inline">
+    <rect
+       width="47"
+       height="45.016933"
+       x="1.0271636"
+       y="3.3498635"
+       id="rect3345"
+       style="fill:none;stroke:none" />
+    <rect
+       width="47"
+       height="45.016933"
+       x="1.0271634"
+       y="5.8326592"
+       id="rect4115"
+       style="fill:none;stroke:#000000;stroke-width:0.99999833;stroke-opacity:0" />
+    <g
+       transform="matrix(2.2618793,0,0,2.2618793,-312.68719,-227.97909)"
+       id="g3249"
+       style="display:inline">
+      <path
+         d="m 142.34256,109.59164 c 0.0205,0.0237 0.043,0.0456 0.0674,0.0656 l 4.48151,4.88652 4.44782,4.91932 c 0.0108,0.0113 0.022,0.0222 0.0336,0.0327 l 5.34076,4.03384 c 0.12751,0.0963 0.21522,-0.0489 0.18532,-0.14757 l -2.9036,-5.90038 c -0.0187,-0.0351 0.006,-0.13767 -0.0674,-0.0983 l -4.49343,-4.93092 -4.53963,-4.88595 c -0.0205,-0.0237 -0.043,-0.0456 -0.0674,-0.0656 l -5.97252,-4.06663 c -0.0736,-0.0155 3.48752,6.15735 3.48752,6.15735 z"
+         id="path3251"
+         style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:#babdb6;fill-opacity:1;stroke:none;stroke-width:2.0999999;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans" />
+      <path
+         d="m 139.05628,103.69269 3.7509,5.59312 4.47185,4.90555 4.47185,4.90553 5.04983,4.37051 -3.38724,-5.68564 -4.47185,-4.91225 -4.47185,-4.91224 z"
+         id="path3253"
+         style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:#2e3436;fill-opacity:1;stroke:none;stroke-width:2.0999999;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans" />
+      <path
+         d="m 144.00351,102.95806 c -0.45636,0.15203 -0.21087,0.32871 0.18716,0.59388 2.46408,1.58765 5.39054,2.96233 7.92577,6.36756 2.24466,3.01498 3.26505,3.81396 5.55458,10.42972 0.21691,0.55955 0.68983,0.6681 0.66739,0.0704 -0.26377,-3.90219 -0.11986,-5.95447 -0.62609,-7.74743 -0.50619,-1.79296 -1.2447,-2.97842 -2.27419,-4.51732 -1.1957,-1.78739 -3.28947,-3.06657 -5.44506,-3.97891 -2.1556,-0.91236 -4.09069,-0.99428 -5.68699,-1.23794 -0.1006,-0.0165 -0.20516,-0.009 -0.30256,0.02 z"
+         id="path3255"
+         style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:#babdb6;fill-opacity:1;stroke:none;stroke-width:2.0999999;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans" />
+      <path
+         d="m 144.84375,103.90625 c 2.07432,1.58544 5.94734,3.49125 8,7.1875 1.71975,3.09677 2.30386,4.04762 4,10.5 0.0168,-7.42461 -0.49511,-8.84451 -2.1875,-11.875 -1.78916,-3.20379 -6.9945,-5.17226 -9.8125,-5.8125 z"
+         transform="matrix(1.0757785,-0.07113748,0.07308993,1.0470413,-19.508017,4.6089789)"
+         id="path3257"
+         style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:#2e3436;fill-opacity:1;stroke:none;stroke-width:2.0999999;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans" />
+    </g>
+  </g>
+</svg>
