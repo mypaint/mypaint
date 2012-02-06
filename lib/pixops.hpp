@@ -569,6 +569,110 @@ void tile_convert_rgba8_to_rgba16(PyObject * src, PyObject * dst) {
   }
 }
 
+// Flatten a premultiplied rgba layer, using "bg" as background.
+// (bg is assumed to be flat, bg.alpha is ignored)
+//
+// dst.color = dst OVER bg.color
+// dst.alpha = unmodified
+//
+void tile_rgba2flat(PyObject * dst, PyObject * bg) {
+#ifdef HEAVY_DEBUG
+  assert(PyArray_DIM(dst, 0) == TILE_SIZE);
+  assert(PyArray_DIM(dst, 1) == TILE_SIZE);
+  assert(PyArray_DIM(dst, 2) == 4);
+  assert(PyArray_TYPE(dst) == NPY_UINT16);
+  assert(PyArray_ISCARRAY(dst));
+
+  assert(PyArray_DIM(bg, 0) == TILE_SIZE);
+  assert(PyArray_DIM(bg, 1) == TILE_SIZE);
+  assert(PyArray_DIM(bg, 2) == 4);
+  assert(PyArray_TYPE(bg) == NPY_UINT16);
+  assert(PyArray_ISCARRAY(bg));
+#endif
+  
+  uint16_t * dst_p  = (uint16_t*)PyArray_DATA(dst);
+  uint16_t * bg_p  = (uint16_t*)PyArray_DATA(bg);
+  for (int i=0; i<TILE_SIZE*TILE_SIZE; i++) {
+    // resultAlpha = 1.0 (thus it does not matter if resultColor is premultiplied alpha or not)
+    // resultColor = topColor + (1.0 - topAlpha) * bottomColor
+    const uint32_t one_minus_top_alpha = (1<<15) - dst_p[3];
+    dst_p[0] += ((uint32_t)one_minus_top_alpha*bg_p[0]) / (1<<15);
+    dst_p[1] += ((uint32_t)one_minus_top_alpha*bg_p[1]) / (1<<15);
+    dst_p[2] += ((uint32_t)one_minus_top_alpha*bg_p[2]) / (1<<15);
+    dst_p += 4;
+    bg_p += 4;
+  }
+}
+
+// Make a flat layer translucent again. When calculating the new color
+// and alpha, it is assumed that the layer will be displayed OVER the
+// background "bg". Alpha is increased where required.
+//
+// dst.alpha = MIN(dst.alpha, minimum alpha required for correct result)
+// dst.color = calculated such that (dst_output OVER bg = dst_input.color)
+//
+void tile_flat2rgba(PyObject * dst, PyObject * bg) {
+#ifdef HEAVY_DEBUG
+  assert(PyArray_DIM(dst, 0) == TILE_SIZE);
+  assert(PyArray_DIM(dst, 1) == TILE_SIZE);
+  assert(PyArray_DIM(dst, 2) == 4);
+  assert(PyArray_TYPE(dst) == NPY_UINT16);
+  assert(PyArray_ISCARRAY(dst));
+
+  assert(PyArray_DIM(bg, 0) == TILE_SIZE);
+  assert(PyArray_DIM(bg, 1) == TILE_SIZE);
+  assert(PyArray_DIM(bg, 2) == 4);
+  assert(PyArray_TYPE(bg) == NPY_UINT16);
+  assert(PyArray_ISCARRAY(bg));
+#endif
+  
+  uint16_t * dst_p  = (uint16_t*)PyArray_DATA(dst);
+  uint16_t * bg_p  = (uint16_t*)PyArray_DATA(bg);
+  for (int i=0; i<TILE_SIZE*TILE_SIZE; i++) {
+
+    // 1. calculate final dst.alpha
+    uint16_t final_alpha = dst_p[3];
+    for (int i=0; i<3;i++) {
+      int32_t color_change = (int32_t)dst_p[i] - bg_p[i];
+      uint16_t minimal_alpha;
+      if (color_change > 0) {
+        minimal_alpha = (int64_t)color_change*(1<<15) / ((1<<15) - bg_p[i]);
+      } else if (color_change < 0) {
+        minimal_alpha = (int64_t)-color_change*(1<<15) / bg_p[i];
+      } else {
+        minimal_alpha = 0;
+      }
+      final_alpha = MAX(final_alpha, minimal_alpha);
+#ifdef HEAVY_DEBUG
+      assert(minimal_alpha <= (1<<15));
+      assert(final_alpha   <= (1<<15));
+#endif
+    }
+    
+    // 2. calculate dst.color and update dst
+    dst_p[3] = final_alpha;
+    if (final_alpha > 0) {
+      for (int i=0; i<3;i++) {
+        int32_t color_change = (int32_t)dst_p[i] - bg_p[i];
+        //int64_t res = bg_p[i] + (int64_t)color_change*(1<<15) / final_alpha;
+        // premultiplied with final_alpha
+        int64_t res = (uint32_t)bg_p[i]*final_alpha/(1<<15) + (int64_t)color_change;
+        res = CLAMP(res, 0, final_alpha); // fix rounding errors
+        dst_p[i] = res;
+#ifdef HEAVY_DEBUG
+        assert(dst_p[i] <= dst_p[3]);
+#endif
+      }
+    } else {
+      dst_p[0] = 0;
+      dst_p[1] = 0;
+      dst_p[2] = 0;
+    }
+    dst_p += 4;
+    bg_p += 4;
+  }
+}
+
 // used in strokemap.py
 //
 // Calculates a 1-bit bitmap of the stroke shape using two snapshots
