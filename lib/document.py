@@ -347,27 +347,33 @@ class Document():
         """
         return self.get_frame() if self.frame_enabled else self.get_bbox()
 
-    def blit_tile_into(self, dst_8bit, dst_has_alpha, tx, ty, mipmap_level=0, layers=None, background=None):
+    def blit_tile_into(self, dst, dst_has_alpha, tx, ty, mipmap_level=0, layers=None, background=None):
         assert dst_has_alpha is False
         if layers is None:
             layers = self.layers
         if background is None:
             background = self.background
 
-        assert dst_8bit.dtype == 'uint8'
-        assert dst_8bit.shape[-1] == 4
-        dst = numpy.empty((N, N, 4), dtype='uint16')
+        assert dst.shape[-1] == 4
+        if dst.dtype == 'uint8':
+            dst_8bit = dst
+            dst = numpy.empty((N, N, 4), dtype='uint16')
+        else:
+            dst_8bit = None
 
         background.blit_tile_into(dst, dst_has_alpha, tx, ty, mipmap_level)
 
         for layer in layers:
-            surface = layer._surface
-            surface.composite_tile(dst, dst_has_alpha, tx, ty,
-                    mipmap_level=mipmap_level,
-                    opacity=layer.effective_opacity,
-                    mode=layer.compositeop)
+            layer.composite_tile(dst, dst_has_alpha, tx, ty, mipmap_level)
 
-        mypaintlib.tile_convert_rgbu16_to_rgbu8(dst, dst_8bit)
+        if dst_8bit is not None:
+            mypaintlib.tile_convert_rgbu16_to_rgbu8(dst, dst_8bit)
+
+    def get_rendered_image_behind_current_layer(self, tx, ty):
+        dst = numpy.empty((N, N, 4), dtype='uint16')
+        l = self.layers[0:self.layer_idx]
+        self.blit_tile_into(dst, False, tx, ty, layers=l)
+        return dst
 
 
     def add_layer(self, insert_idx=None, after=None, name=''):
@@ -375,12 +381,14 @@ class Document():
 
 
     def remove_layer(self,layer=None):
-        self.do(command.RemoveLayer(self,layer))
+        self.do(command.RemoveLayer(self, layer))
 
 
     def rename_layer(self, layer, name):
         self.do(command.RenameLayer(self, name, layer))
 
+    def convert_layer_to_normal_mode(self):
+        self.do(command.ConvertLayerToNormalMode(self, self.layer))
 
     def merge_layer_down(self):
         dst_idx = self.layer_idx - 1

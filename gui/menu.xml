@@ -209,6 +209,7 @@
       <separator/>
       <menuitem action='DuplicateLayer'/>
       <menuitem action='MergeLayer'/>
+      <menuitem action='ConvertLayerToNormalMode'/>
       <!-- Current layer: destructive actions -->
       <separator/>
       <menuitem action='ClearLayer'/>

@@ -10,7 +10,7 @@ import struct, zlib
 from numpy import *
 from gettext import gettext as _
 
-import tiledsurface, strokemap
+import tiledsurface, strokemap, mypaintlib
 
 COMPOSITE_OPS = [
     # (internal-name, display-name, description)
@@ -205,6 +205,14 @@ class Layer:
             else:
                 assert False, 'invalid strokemap'
 
+    def composite_tile(self, dst, dst_has_alpha, tx, ty, mipmap_level=0):
+        self._surface.composite_tile(
+            dst, dst_has_alpha, tx, ty,
+            mipmap_level=mipmap_level,
+            opacity=self.effective_opacity,
+            mode=self.compositeop
+            )
+
     def merge_into(self, dst):
         """
         Merge this layer into dst, modifying only dst.
@@ -223,6 +231,32 @@ class Layer:
                 opacity=self.effective_opacity,
                 mode=self.compositeop)
         dst.opacity = 1.0
+
+    def convert_to_normal_mode(self, get_bg):
+        """
+        Given a background, this layer is updated such that it can be
+        composited over the background in normal blending mode. The
+        result will look as if it were composited with the current
+        blending mode.
+        """
+        if self.compositeop ==  "svg:src-over" and self.effective_opacity == 1.0:
+            return # optimization for merging layers
+
+        N = tiledsurface.N
+        tmp = empty((N, N, 4), dtype='uint16')
+        for tx, ty in self._surface.get_tiles():
+            bg = get_bg(tx, ty)
+            # tmp = bg + layer (composited with its mode)
+            mypaintlib.tile_copy_rgba16_into_rgba16(bg, tmp)
+            self.composite_tile(tmp, False, tx, ty)
+            # overwrite layer data with composited result
+            dst = self._surface.get_tile_memory(tx, ty, readonly=False)
+
+            mypaintlib.tile_copy_rgba16_into_rgba16(tmp, dst)
+            dst[:,:,3] = 0 # minimize alpha (throw away the original alpha)
+
+            # recalculate layer in normal mode
+            mypaintlib.tile_flat2rgba(dst, bg)
 
     def get_stroke_info_at(self, x, y):
         x, y = int(x), int(y)
