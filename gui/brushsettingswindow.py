@@ -204,6 +204,8 @@ class Window(windowing.SubWindow):
         self.live_update_cb()
 
     def live_update_cb(self, *junk):
+        if self.app.doc.tdw.drag_op is not None:
+            return
         if not self.live_update.get_active() or self.live_update_queued:
             return
         self.live_update_queued = True

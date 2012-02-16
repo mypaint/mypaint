@@ -12,7 +12,9 @@ class DragFunc:
     # Currently just an active cursor
     # If these become modes, need to add a cursor for the inactive state too
 
-    def __init__(self, doc):
+    def __init__(self, doc, drawwindow=None, mode=None):
+        self.mode = mode
+        self.drawwindow = drawwindow
         self._doc = doc
 
     @property
@@ -82,6 +84,31 @@ class ZoomViewDragFunc (DragFunc):
         # workaround (should zoom at x=(first click point).x instead of cursor)
         self.tdw.scroll(-dx, -dy)
         self.tdw.zoom(math.exp(dy/100.0))
+
+
+# Straight Lines, Ellipses and Curved Lines
+class DynamicLineDragFunc (DragFunc):
+
+    cursor = gdk.CROSS
+    idle_srcid = None
+
+    def on_start(self):
+        self.lm = self.drawwindow.app.linemode
+        self.lm.start_command(self.mode)
+
+    def on_update(self, junk1, junk2, x, y):
+        self.lm.update_position(x, y)
+        if self.idle_srcid is None:
+            self.idle_srcid = gobject.idle_add(self.idle_cb)
+
+    def on_stop(self):
+        self.idle_srcid = None
+        self.lm.stop_command()
+
+    def idle_cb(self):
+        if self.idle_srcid is not None:
+            self.idle_srcid = None
+            self.lm.process_line()
 
 
 

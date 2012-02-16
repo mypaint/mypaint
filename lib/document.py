@@ -213,25 +213,6 @@ class Document():
         new_stroke.render(self.layer._surface)
         self.do(command.Stroke(self, new_stroke, snapshot_before))
 
-    def straight_line(self, src, dst):
-        self.split_stroke()
-        self.brush.reset() # reset dynamic states (eg. filtered velocity)
-
-        duration = 3.0
-        pressure = 0.3
-        N = 1000
-        x = numpy.linspace(src[0], dst[0], N)
-        y = numpy.linspace(src[1], dst[1], N)
-        # rest the brush in src for a minute, to avoid interpolation
-        # from the upper left corner (states are zero) (FIXME: the
-        # brush should handle this on its own, maybe?)
-        self.stroke_to(60.0, x[0], y[0], 0.0, 0.0, 0.0)
-        for i in xrange(N):
-            self.stroke_to(duration/N, x[i], y[i], pressure, 0.0, 0.0)
-        self.split_stroke()
-        self.brush.reset()
-
-
     def layer_modified_cb(self, *args):
         # for now, any layer modification is assumed to be visible
         for f in self.canvas_observers:

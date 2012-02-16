@@ -36,6 +36,11 @@ BRUSH_BLEND_MODE_COLORIZE = "mypaint-brush-blend-mode-colorize"
 BRUSH_MODIFIERS_ACTIVE = "mypaint-brush-mods-active"
 BRUSH_MODIFIERS_INACTIVE = "mypaint-brush-mods-inactive"
 SYMMETRY = "mypaint-symmetry"
+LINE_MODES = "mypaint-line-mode"
+LINE_MODE_FREEHAND = "mypaint-line-mode-freehand"
+LINE_MODE_STRAIGHT =  "mypaint-line-mode-straight"
+LINE_MODE_SEQUENCE =  "mypaint-line-mode-sequence"
+LINE_MODE_ELLIPSE =  "mypaint-line-mode-ellipse"
 
 
 _stock_items = [
@@ -62,6 +67,11 @@ _stock_items = [
     (BRUSH_BLEND_MODE_COLORIZE, _("Colorize"), 0, ord('k'), None),
     (BRUSH_MODIFIERS_ACTIVE, _("Brush Modifiers Active"), 0, 0, None),
     (BRUSH_MODIFIERS_INACTIVE, _("Brush Modifiers Inactive"), 0, 0, None),
+    (LINE_MODES, _("Line Mode"), 0, 0, None),
+    (LINE_MODE_FREEHAND, _("Freehand"), 0, 0, None),
+    (LINE_MODE_STRAIGHT, _("Straight/Curved Lines"), 0, 0, None),
+    (LINE_MODE_SEQUENCE, _("Sequence of Lines"), 0, 0, None),
+    (LINE_MODE_ELLIPSE, _("Ellipse"), 0, 0, None),
 ]
 
 def init_custom_stock_items():

@@ -112,6 +112,13 @@
         <menuitem action='BlendModeColorize'/>
       </menu>
       <separator/>
+      <menu action='LineMode'>
+        <menuitem action='FreehandMode'/>
+        <menuitem action='StraightMode'/>
+        <menuitem action='SequenceMode'/>
+        <menuitem action='EllipseMode'/>
+      </menu>
+      <separator/>
       <menuitem action='PickContext'/>
       <separator/>
       <menuitem action='DownloadBrushPack'/>

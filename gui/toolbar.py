@@ -25,7 +25,7 @@ import stock
 import dropdownpanel
 import widgets
 from hsvcompat import ColorChangerHSV
-
+import linemode
 
 FRAMEWORK_XML = 'gui/toolbar.xml'
 MERGEABLE_XML = [
@@ -84,6 +84,8 @@ class ToolbarManager:
                     _("Current Brush"), None),
                 BrushSettingsDropdownToolAction("BrushSettingsDropdown", None,
                     _("Brush Settings"), None),
+                LineDropdownToolAction("LineDropdown", None,
+                    _("Line Mode"), None),
                 ]
         actions += self.item_actions
 
@@ -130,6 +132,116 @@ class ToolbarManager:
                 return
             self.app.ui_manager.remove_ui(merge_id)
             self.toolbar1_ui_loaded.pop(name)
+
+
+class LineDropdownToolItem (gtk.ToolItem):
+
+    __gtype_name__ = "LineDropdownToolItem"
+    linemode_settings = ['FreehandMode', 'StraightMode', 'SequenceMode', 'EllipseMode']
+    pressure_settings = ["entry_pressure", "midpoint_pressure", "exit_pressure"]
+    head_tail_settings = ["line_head", "line_tail"]
+    shape_settings = ["entry_pressure", "midpoint_pressure", "exit_pressure", "line_head", "line_tail"]
+    settings_coordinate = {'entry_pressure': (0,1),
+                           'midpoint_pressure': (1,1),
+                           'exit_pressure': (3,1),
+                           'line_head': (1,0),
+                           'line_tail': (2,0),
+                           }
+
+
+
+    def __init__(self):
+        gtk.ToolItem.__init__(self)
+        self.set_homogeneous(False)
+        self.button_image = gtk.Image()
+        self.button_image.set_from_stock(stock.LINE_MODES, ToolbarManager.icon_size)
+        self.line_mode_panel = dropdownpanel.DropdownPanelButton(self.button_image)
+        self.vbox = gtk.VBox()
+        frame = gtk.Frame()
+        frame.add(self.vbox)
+        frame.set_shadow_type(gtk.SHADOW_OUT)
+        self.line_mode_panel.set_property("panel-widget", frame)
+        self.add(self.line_mode_panel)
+
+
+    def set_app(self, app):
+        self.app = app
+
+        # Line modes.
+
+        vbox = gtk.VBox()
+        vbox.set_border_width(widgets.SPACING_TIGHT)
+        vbox.set_spacing(widgets.SPACING_TIGHT)
+        frame = widgets.section_frame(_("Line Mode"))
+        frame.add(vbox)
+        self.vbox.pack_start(frame, True, True)
+        self.vbox.set_border_width(widgets.SPACING_TIGHT)
+        self.vbox.set_spacing(widgets.SPACING_TIGHT)
+
+        # Line Mode Icons
+
+        for mode in self.linemode_settings:
+            action = self.app.find_action(mode)
+            hbox = gtk.HBox()
+            icon = gtk.Image()
+            icon.set_from_stock(action.stock_id, ToolbarManager.icon_size)
+            hbox.pack_start(icon, False, True)
+            label = gtk.ToggleButton()
+            label.set_relief(gtk.RELIEF_NONE)
+            label.set_tooltip_text(action.tooltip)
+            action.connect_proxy(label)
+            label.connect("toggled", lambda m: self.line_mode_panel.panel_hide())
+            hbox.pack_start(label, False, True)
+            vbox.pack_start(hbox, False, False)
+
+        # Pressure settings.
+
+        def settings_frame():
+            self.vbox.pack_start(frame, True, True)
+            from curve import FixedCurveWidget
+            curve = FixedCurveWidget(npoints = 4,
+                                     ylockgroups = ((1,2),),
+                                     changed_cb = self.curve_changed_cb)
+            frame.add(curve)
+            curve.set_tooltip_text('Curve defining the amount of pressure applied at different points in the line.\n'
+                                   '\nX position = distance along the line;\n'
+                                   '    minimum X = start of line;\n'
+                                   '    maximum X = end of line\n'
+                                   '    (only the central two points can be adjusted in X axis)\n'
+                                   'Y position = amount of pressure\n'
+                                   '    The Y position of the central two points is locked together.\n')
+            #vbox.pack_start(w, True, True)
+            curve.show()
+            curve.points = [(0.0,0.2), (0.33,.5),(0.66, .5), (1.0,.33)]
+            for setting in (self.shape_settings):
+                value = app.line_mode_adjustment[setting].get_value()
+                index, subindex = self.settings_coordinate[setting]
+                if not setting.startswith ('line'):#if setting != 'line_head
+                    value = 1.0 - value
+                coord = None
+                if subindex == 0:
+                    coord = (value, curve.points[index][1])
+                else:
+                    coord = (curve.points[index][0], value )
+                curve.set_point(index, coord)
+            self.curve_changed_cb (curve)
+
+        frame = widgets.section_frame(_("Line Shape"))
+        settings_frame()
+
+    def curve_changed_cb(self, curve):
+        for setting in self.shape_settings:
+            coord = self.settings_coordinate [setting]
+            points = curve.points
+            value = curve.points[coord[0]][coord[1]]
+            if not setting.startswith('line'):
+                value = 1.0 - value
+            value = max(0.0001, value)
+            #print ('setting %r (%s) to %f' % (coord, setting, value))
+            #if setting.startswith('line_'):
+            #    setting = {'line_tail':'line_head', 'line_head':'line_tail'}[setting]
+            self.app.linemode.change_line_setting(setting, value)
+        #print (curve.points)
 
 
 class ColorDropdownToolItem (gtk.ToolItem):
@@ -556,6 +668,11 @@ class BrushSettingsDropdownToolItem (gtk.ToolItem):
 class ColorDropdownToolAction (gtk.Action):
     __gtype_name__ = "ColorDropdownToolAction"
 ColorDropdownToolAction.set_tool_item_type(ColorDropdownToolItem)
+
+
+class LineDropdownToolAction (gtk.Action):
+    __gtype_name__ = "LineDropdownToolAction"
+LineDropdownToolAction.set_tool_item_type(LineDropdownToolItem)
 
 
 class BrushDropdownToolAction (gtk.Action):

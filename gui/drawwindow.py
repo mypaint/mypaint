@@ -61,7 +61,6 @@ def with_wait_cursor(func):
 
 def button_press_cb_abstraction(drawwindow, win, event, doc):
     #print event.device, event.button
-
     ## Ignore accidentals
     # Single button-presses only, not 2ble/3ple
     if event.type != gdk.BUTTON_PRESS:
@@ -82,6 +81,15 @@ def button_press_cb_abstraction(drawwindow, win, event, doc):
             # https://gna.org/bugs/index.php?15907
             return False
 
+    # Line Mode event
+    if event.button == 1:
+        line_mode = drawwindow.app.linemode.line_mode
+        # Dynamic Line events from toolbar settings
+        if line_mode != "FreehandMode":
+            drag_op = dragfunc.DynamicLineDragFunc(doc, drawwindow, mode=line_mode)
+            doc.tdw.start_drag(drag_op)
+            return True
+
     # Pick a suitable config option
     ctrl = event.state & gdk.CONTROL_MASK
     alt  = event.state & gdk.MOD1_MASK
@@ -99,14 +107,18 @@ def button_press_cb_abstraction(drawwindow, win, event, doc):
     if action_name == 'no_action':
         return False  # Pass event through to the tdw
 
-    # Straight line
-    # Really belongs in the tdw, but this is the only object with access
-    # to the application preferences.
+    # Line Mode event triggered by preferenced modifier button
     if action_name == 'straight_line':
-        doc.tdw.straight_line_from_last_pos(is_sequence=False)
+        drag_op = dragfunc.DynamicLineDragFunc(doc, drawwindow, mode='StraightMode')
+        doc.tdw.start_drag(drag_op)
         return True
     if action_name == 'straight_line_sequence':
-        doc.tdw.straight_line_from_last_pos(is_sequence=True)
+        drag_op = dragfunc.DynamicLineDragFunc(doc, drawwindow, mode='SequenceMode')
+        doc.tdw.start_drag(drag_op)
+        return True
+    if action_name == 'ellipse':
+        drag_op = dragfunc.DynamicLineDragFunc(doc, drawwindow, mode='EllipseMode')
+        doc.tdw.start_drag(drag_op)
         return True
 
     # View control
@@ -1016,12 +1028,14 @@ class Window (windowing.MainWindow, layout.MainWindow):
             u"Ben O'Steen (%s)" % _('programming'),
             u"Ferry Jérémie (%s)" % _('programming'),
             u"しげっち 'sigetch' (%s)" % _('programming'),
+            u"Richard Jones (%s)" % _('programming'),
+            u"David Gowers (%s)" % _('programming'),
             ])
         d.set_artists([
             u"Artis Rozentāls (%s)" % _('brushes'),
             u"Popolon (%s)" % _('brushes'),
             u"Marcelo 'Tanda' Cerviño (%s)" % _('patterns, brushes'),
-            u"David Revoy (%s)" % _('brushes'),
+            u"David Revoy (%s)" % _('brushes', _('tool icons')),
             u"Ramón Miranda (%s)" % _('brushes, patterns'),
             u"Enrico Guarnieri 'Ico_dY' (%s)" % _('brushes'),
             u'Sebastian Kraft (%s)' % _('desktop icon'),

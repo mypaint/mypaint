@@ -29,6 +29,7 @@ the Free Software Foundation; either version 2 of the License, or
       <toolitem action="ColorDropdown"/>
       <toolitem action="BrushDropdown"/>
       <toolitem action="BrushSettingsDropdown"/>
+      <toolitem action="LineDropdown"/>
     </placeholder>
     <separator/>
     <placeholder name="blendmodes-toolitems"/>

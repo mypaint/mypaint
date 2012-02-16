@@ -167,9 +167,94 @@ class CurveWidget(gtk.DrawingArea):
         return True
 
 
+class FixedCurveWidget(CurveWidget):
+    """CurveWidget subclass with fixed number of points, and support for locking together the Y values of
+       specific points.
+       """
+    snapto = (0.0, 0.25, 0.5, 0.75, 1.0)
+    ylock = {}
+    def __init__(self, npoints=4, ylockgroups = (), changed_cb=None, magnetic=True):
+        CurveWidget.__init__ (self, changed_cb, magnetic)
+        self.points = [(0.0, 0.2), (.25, .5), (.75, .75), (1.0, 1.0)] # doesn't matter
+        self.npoints = npoints
+        if ylockgroups:
+            self.ylock = {}
+        for items in ylockgroups:
+            for thisitem in items:
+                others = list(items)
+                others.remove (thisitem)
+                self.ylock[thisitem] = tuple(others)
+    def set_point (self, index, value):
+        y = value[1]
+        self.points[index] = value
+        if index in self.ylock:
+            for lockedto in self.ylock[index]:
+                self.points[lockedto] = (self.points[lockedto][0], y)
+    def button_press_cb(self, widget, event):
+        if not event.button == 1: return
+        x, y = self.eventpoint(event.x, event.y)
+        nearest = None
+        for i in range(len(self.points)):
+            px, py = self.points[i]
+            dist = abs(px - x) + 0.5*abs(py - y)
+            if nearest is None or dist < mindist:
+                mindist = dist
+                nearest = i
+        self.grabbed = nearest
+
+#    def button_release_cb(self, widget, event):
+#        if not event.button == 1: return
+#        if self.grabbed:
+#            i = self.grabbed
+#            # THE FOLLOWING MEANS WHAT?
+#            if self.points[i] is None:
+#                self.points.pop(i)
+#        self.grabbed = None
+#        # notify user of the widget
+#        self.changed_cb(self)
+    def motion_notify_cb(self, widget, event):
+        if self.grabbed is None: return
+        x, y = self.eventpoint(event.x, event.y)
+        i = self.grabbed
+        # XXX this may fail for non contiguous groups.
+        if i in self.ylock:
+            possiblei = None
+            if x > self.points[max(self.ylock[i])][0]:
+                possiblei = max ((i,) + self.ylock[i])
+            elif x < self.points[min(self.ylock[i])][0]:
+                possiblei = min ((i,) + self.ylock[i])
+            if (possiblei != None and
+               abs (self.points[i][0] - self.points[possiblei][0]) < 0.001):
+                i = possiblei
+        out = False # by default, the point cannot be removed by drawing it out
+        if i == len(self.points)-1:
+            # last point stays right
+            leftbound = rightbound = 1.0
+        elif i == 0:
+            # first point stays left
+            leftbound = rightbound = 0.0
+        else:
+            # other points can be dragged out
+            leftbound  = self.points[i-1][0]
+            rightbound = self.points[i+1][0]
+
+        if y > 1.0: y = 1.0
+        if y < 0.0: y = 0.0
+        if self.magnetic:
+            xdiff = [abs(x - v) for v in self.snapto]
+            ydiff = [abs(y - v) for v in self.snapto]
+            if min (xdiff) < 0.015 and min (ydiff) < 0.015:
+                y = self.snapto[ydiff.index (min (ydiff))]
+                x = self.snapto[xdiff.index (min (xdiff))]
+        if x < leftbound: x = leftbound
+        if x > rightbound: x = rightbound
+        self.set_point(i, (x, y))
+        self.queue_draw()
+
+
 if __name__ == '__main__':
     win = gtk.Window()
-    curve = CurveWidget()
+    curve = FixedCurveWidget(ylockgroups = ((1,2),))
     win.add(curve)
     win.set_title("curve test")
     win.connect("destroy", lambda *a: gtk.main_quit())

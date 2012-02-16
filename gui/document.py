@@ -135,6 +135,7 @@ class Document(object):
             ('ToggleAbove',  None, _('Hide Layers Above Current'), 'End', None, self.toggle_layers_above_cb), # TODO: make toggle action
 
             ('BlendMode',    stock.BRUSH_BLEND_MODES),
+            ('LineMode', stock.LINE_MODES)
         ]
         self.action_group = gtk.ActionGroup('DocumentActions')
         ag = self.action_group

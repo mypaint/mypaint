@@ -12,7 +12,7 @@ import gtk, gobject
 gdk = gtk.gdk
 from lib import brush, helpers, mypaintlib
 import filehandling, keyboard, brushmanager, windowing, document, layout
-import colorhistory, brushmodifier
+import colorhistory, brushmodifier, linemode
 import stock
 from overlays import LastPaintPosOverlay, ScaleOverlay
 
@@ -90,6 +90,7 @@ class Application: # singleton
         self.brushmanager = brushmanager.BrushManager(join(datapath, 'brushes'), join(confpath, 'brushes'), self)
         self.filehandler = filehandling.FileHandler(self)
         self.brushmodifier = brushmodifier.BrushModifier(self)
+        self.linemode = linemode.LineMode(self)
 
         if not self.preferences.get("scratchpad.last_opened_scratchpad", None):
             self.preferences["scratchpad.last_opened_scratchpad"] = self.filehandler.get_scratchpad_autosave()
@@ -97,6 +98,7 @@ class Application: # singleton
 
         self.brush.set_color_hsv((0, 0, 0))
         self.init_brush_adjustments()
+        self.init_line_mode_adjustments()
 
         self.ch = colorhistory.ColorHistory(self)
 
@@ -323,6 +325,12 @@ class Application: # singleton
         for i, s in enumerate(brushsettings.settings_visible):
             adj = gtk.Adjustment(value=s.default, lower=s.min, upper=s.max, step_incr=0.01, page_incr=0.1)
             self.brush_adjustment[s.cname] = adj
+
+    def init_line_mode_adjustments(self):
+        self.line_mode_adjustment = {}
+        for i, s in enumerate(linemode.line_mode_settings):
+            adj = gtk.Adjustment(value=s.default, lower=s.min, upper=s.max, step_incr=0.01, page_incr=0.1)
+            self.line_mode_adjustment[s.cname] = adj
 
     def update_input_mapping(self):
         p = self.preferences['input.global_pressure_mapping']
