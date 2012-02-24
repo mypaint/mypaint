@@ -60,9 +60,6 @@ void draw_dab_pixels_BlendMode_Normal (uint16_t * mask,
 // coefficients. Colorize should be used at either 1.0 or 0.0, values in
 // between probably aren't very useful. This blend mode retains the target
 // alpha, and any pure whites and blacks in the target layer.
-//
-// Code is still ugly. Using floating-point arithmetic in here, which maybe
-// isn't very efficient.
 
 #define MAX3(a, b, c) ((a)>(b)?MAX((a),(c)):MAX((b),(c)))
 #define MIN3(a, b, c) ((a)<(b)?MIN((a),(c)):MIN((b),(c)))
@@ -75,57 +72,67 @@ static const float LUMA_BLUE_COEFF  = 0.11;
 */
 
 // From ITU Rec. BT.709 (HDTV and sRGB)
-static const float LUMA_RED_COEFF = 0.2126;
-static const float LUMA_GREEN_COEFF = 0.7152;
-static const float LUMA_BLUE_COEFF = 0.0722;
+static const uint16_t LUMA_RED_COEFF = 0.2126 * (1<<15);
+static const uint16_t LUMA_GREEN_COEFF = 0.7152 * (1<<15);
+static const uint16_t LUMA_BLUE_COEFF = 0.0722 * (1<<15);
 
 // See also http://en.wikipedia.org/wiki/YCbCr
 
 
-inline static float
-nonsep_lum (const float r,
-              const float g,
-              const float b)
-{
-    return (r*LUMA_RED_COEFF) + (g*LUMA_GREEN_COEFF) + (b*LUMA_BLUE_COEFF);
-}
+/* Returns the sRGB luminance of an RGB triple, expressed as scaled ints. */
+
+#define LUMA(r,g,b) \
+   ((r)*LUMA_RED_COEFF + (g)*LUMA_GREEN_COEFF + (b)*LUMA_BLUE_COEFF)
 
 
-inline static void
-nonsep_clip_inplace(float *r,
-                    float *g,
-                    float *b)
-{
-    float lum = nonsep_lum(*r, *g, *b);
-    float cmin = MIN3(*r, *g, *b);
-    float cmax = MAX3(*r, *g, *b);
-    if (cmin < 0.0) {
-        *r = lum + (((*r - lum) * lum) / (lum - cmin));
-        *g = lum + (((*g - lum) * lum) / (lum - cmin));
-        *b = lum + (((*b - lum) * lum) / (lum - cmin));
-    }
-    if (cmax > 1.0) {
-        *r = lum + (((*r - lum) * (1-lum)) / (cmax - lum));
-        *g = lum + (((*g - lum) * (1-lum)) / (cmax - lum));
-        *b = lum + (((*b - lum) * (1-lum)) / (cmax - lum));
-    }
-}
-
+/*
+ * Sets the output RGB triple's luminance to that of the input, retaining its
+ * colour. Inputs and outputs are scaled ints having factor 2**-15, and must
+ * not store premultiplied alpha.
+ */
 
 inline static void
-nonsep_apply_lum(const float topr,
-                 const float topg,
-                 const float topb,
-                 const float botlum,
-                 float *botr,
-                 float *botg,
-                 float *botb)
+set_rgb16_lum_from_rgb16(const uint16_t topr,
+                         const uint16_t topg,
+                         const uint16_t topb,
+                         uint16_t *botr,
+                         uint16_t *botg,
+                         uint16_t *botb)
 {
-    float diff = botlum - nonsep_lum(topr, topg, topb);
-    *botr = topr + diff;
-    *botg = topg + diff;
-    *botb = topb + diff;
-    nonsep_clip_inplace(botr, botg, botb);
+    // Spec: SetLum()
+    // Colours potentially can go out of band to both sides, hence the
+    // temporary representation inflation.
+    const uint16_t botlum = LUMA(*botr, *botg, *botb) / (1<<15);
+    const uint16_t toplum = LUMA(topr, topg, topb) / (1<<15);
+    const int16_t diff = botlum - toplum;
+    int32_t r = topr + diff;
+    int32_t g = topg + diff;
+    int32_t b = topb + diff;
+
+    // Spec: ClipColor()
+    // Clip out of band values
+    int32_t lum = LUMA(r, g, b) / (1<<15);
+    int32_t cmin = MIN3(r, g, b);
+    int32_t cmax = MAX3(r, g, b);
+    if (cmin < 0) {
+        r = lum + (((r - lum) * lum) / (lum - cmin));
+        g = lum + (((g - lum) * lum) / (lum - cmin));
+        b = lum + (((b - lum) * lum) / (lum - cmin));
+    }
+    if (cmax > (1<<15)) {
+        r = lum + (((r - lum) * ((1<<15)-lum)) / (cmax - lum));
+        g = lum + (((g - lum) * ((1<<15)-lum)) / (cmax - lum));
+        b = lum + (((b - lum) * ((1<<15)-lum)) / (cmax - lum));
+    }
+#ifdef HEAVY_DEBUG
+    assert((0 <= r) && (r <= (1<<15)));
+    assert((0 <= g) && (g <= (1<<15)));
+    assert((0 <= b) && (b <= (1<<15)));
+#endif
+
+    *botr = r;
+    *botg = g;
+    *botb = b;
 }
 
 
@@ -135,40 +142,36 @@ nonsep_apply_lum(const float topr,
 // coefficients for the Luma value.
 
 void
-draw_dab_pixels_BlendMode_Color (uint16_t * mask,
-                                 uint16_t * rgba, // b/bottom, premult
+draw_dab_pixels_BlendMode_Color (uint16_t *mask,
+                                 uint16_t *rgba, // b=bottom, premult
                                  uint16_t color_r,  // }
-                                 uint16_t color_g,  // }-- a/top, !premult
+                                 uint16_t color_g,  // }-- a=top, !premult
                                  uint16_t color_b,  // }
                                  uint16_t opacity)
 {
   while (1) {
     for (; mask[0]; mask++, rgba+=4) {
-      // De-multiply (and scale)
-      const float scalefact = rgba[3]; //can't work with premult alpha, sadly
-
-      float r = ((float)rgba[0]) / scalefact;
-      float g = ((float)rgba[1]) / scalefact;
-      float b = ((float)rgba[2]) / scalefact;
-
-      // Input luma, based on the target pixel
-      float lum = nonsep_lum(r, g, b);
-
-      // Output RGB generation
+      // De-premult
+      uint16_t r, g, b;
+      const uint16_t a = rgba[3];
       r = g = b = 0;
-      nonsep_apply_lum( (float)color_r/(1<<15),
-                        (float)color_g/(1<<15),
-                        (float)color_b/(1<<15),
-                        lum, &r, &g, &b         );
+      if (rgba[3] != 0) {
+        r = ((1<<15)*((uint32_t)rgba[0])) / a;
+        g = ((1<<15)*((uint32_t)rgba[1])) / a;
+        b = ((1<<15)*((uint32_t)rgba[2])) / a;
+      }
 
-      // Re-premult/scale.
-      r *= scalefact;
-      g *= scalefact;
-      b *= scalefact;
+      // Apply luminance
+      set_rgb16_lum_from_rgb16(color_r, color_g, color_b, &r, &g, &b);
+
+      // Re-premult
+      r = ((uint32_t) r) * a / (1<<15);
+      g = ((uint32_t) g) * a / (1<<15);
+      b = ((uint32_t) b) * a / (1<<15);
 
       // And combine as normal.
-      uint32_t opa_a = mask[0]*(uint32_t)opacity/(1<<15); // topAlpha
-      uint32_t opa_b = (1<<15)-opa_a; // bottomAlpha
+      uint32_t opa_a = mask[0] * opacity / (1<<15); // topAlpha
+      uint32_t opa_b = (1<<15) - opa_a; // bottomAlpha
       rgba[0] = (opa_a*r + opa_b*rgba[0])/(1<<15);
       rgba[1] = (opa_a*g + opa_b*rgba[1])/(1<<15);
       rgba[2] = (opa_a*b + opa_b*rgba[2])/(1<<15);
