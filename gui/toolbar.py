@@ -198,25 +198,17 @@ class LineDropdownToolItem (gtk.ToolItem):
 
         def settings_frame():
             self.vbox.pack_start(frame, True, True)
-            from curve import FixedCurveWidget
-            curve = FixedCurveWidget(npoints = 4,
-                                     ylockgroups = ((1,2),),
-                                     changed_cb = self.curve_changed_cb)
+            from curve import CurveWidget
+            curve = CurveWidget(npoints = 4,
+                                ylockgroups = ((1,2),),
+                                changed_cb = self.curve_changed_cb)
             frame.add(curve)
-            curve.set_tooltip_text('Curve defining the amount of pressure applied at different points in the line.\n'
-                                   '\nX position = distance along the line;\n'
-                                   '    minimum X = start of line;\n'
-                                   '    maximum X = end of line\n'
-                                   '    (only the central two points can be adjusted in X axis)\n'
-                                   'Y position = amount of pressure\n'
-                                   '    The Y position of the central two points is locked together.\n')
-            #vbox.pack_start(w, True, True)
             curve.show()
             curve.points = [(0.0,0.2), (0.33,.5),(0.66, .5), (1.0,.33)]
             for setting in (self.shape_settings):
                 value = app.line_mode_adjustment[setting].get_value()
                 index, subindex = self.settings_coordinate[setting]
-                if not setting.startswith ('line'):#if setting != 'line_head
+                if not setting.startswith ('line'):
                     value = 1.0 - value
                 coord = None
                 if subindex == 0:
@@ -226,7 +218,7 @@ class LineDropdownToolItem (gtk.ToolItem):
                 curve.set_point(index, coord)
             self.curve_changed_cb (curve)
 
-        frame = widgets.section_frame(_("Line Shape"))
+        frame = widgets.section_frame(_("Line Pressure"))
         settings_frame()
 
     def curve_changed_cb(self, curve):
@@ -237,11 +229,7 @@ class LineDropdownToolItem (gtk.ToolItem):
             if not setting.startswith('line'):
                 value = 1.0 - value
             value = max(0.0001, value)
-            #print ('setting %r (%s) to %f' % (coord, setting, value))
-            #if setting.startswith('line_'):
-            #    setting = {'line_tail':'line_head', 'line_head':'line_tail'}[setting]
             self.app.linemode.change_line_setting(setting, value)
-        #print (curve.points)
 
 
 class ColorDropdownToolItem (gtk.ToolItem):
