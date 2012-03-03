@@ -14,7 +14,7 @@ from gtk import gdk
 import gobject
 import cairo
 import pango
-from math import floor, ceil, pi
+from math import pi
 from tileddrawwidget import Overlay
 from lib.helpers import clamp
 

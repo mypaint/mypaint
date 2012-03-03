@@ -11,7 +11,6 @@ import gtk, pango
 gdk = gtk.gdk
 from gettext import gettext as _
 
-import windowing
 import stock
 import pixbuflist, dialogs, brushmanager
 from elastic import ElasticExpander

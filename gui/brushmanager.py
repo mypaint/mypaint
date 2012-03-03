@@ -17,7 +17,6 @@ from gettext import gettext as _
 import os, zipfile
 from os.path import basename
 import urllib
-import gobject
 from lib.brush import BrushInfo
 from warnings import warn
 

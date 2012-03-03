@@ -13,7 +13,6 @@ Widgets to manipulate the input dependency of a single brush setting.
 from gettext import gettext as _
 import gtk
 from brushlib import brushsettings
-import windowing
 
 from curve import CurveWidget
 

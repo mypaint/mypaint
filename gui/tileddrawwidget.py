@@ -8,12 +8,11 @@
 
 import gobject
 import cairo
-import pango
 import gtk
 from gtk import gdk
 
 import random
-from math import floor, ceil, pi, log
+from math import floor, ceil, log
 from numpy import isfinite
 from warnings import warn
 
@@ -671,8 +670,8 @@ class TiledDrawWidget(gtk.DrawingArea):
         assert self.drag_op is None
         self.drag_op = drag_op
         self.drag_op.on_start()
-        cursor = gdk.Cursor(drag_op.cursor)
-        self.set_override_cursor(cursor)
+        c = gdk.Cursor(drag_op.cursor)
+        self.set_override_cursor(c)
 
     def stop_drag(self):
         if self.drag_op is not None:

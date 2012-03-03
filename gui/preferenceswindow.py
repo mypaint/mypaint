@@ -9,11 +9,10 @@
 "preferences dialog"
 from bisect import bisect_left
 from gettext import gettext as _
-import gtk, os
+import gtk
 gdk = gtk.gdk
 
 from curve import CurveWidget
-from lib import mypaintlib
 import windowing, filehandling
 
 device_modes = [

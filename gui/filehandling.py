@@ -17,8 +17,6 @@ from gettext import ngettext
 from lib import document, helpers, tiledsurface
 import drawwindow
 
-import mimetypes
-
 SAVE_FORMAT_ANY = 0
 SAVE_FORMAT_ORA = 1
 SAVE_FORMAT_PNGSOLID = 2
@@ -490,7 +488,7 @@ class FileHandler(object):
                         except KeyError:
                             saveformat = default_saveformat
                     else:
-                            saveformat = default_saveformat
+                        saveformat = default_saveformat
 
                 desc, ext_format, options = self.saveformats[saveformat]
 

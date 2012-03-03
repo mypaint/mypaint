@@ -42,10 +42,10 @@ class CurveWidget(gtk.DrawingArea):
         self.connect("button-press-event", self.button_press_cb)
         self.connect("button-release-event", self.button_release_cb)
         self.connect("motion-notify-event", self.motion_notify_cb)
-        self.set_events(gtk.gdk.EXPOSURE_MASK |
-                        gtk.gdk.BUTTON_PRESS_MASK |
-                        gtk.gdk.BUTTON_RELEASE_MASK |
-                        gtk.gdk.POINTER_MOTION_MASK
+        self.set_events(gdk.EXPOSURE_MASK |
+                        gdk.BUTTON_PRESS_MASK |
+                        gdk.BUTTON_RELEASE_MASK |
+                        gdk.POINTER_MOTION_MASK
                         )
         self.set_size_request(300, 200)
 
@@ -98,7 +98,7 @@ class CurveWidget(gtk.DrawingArea):
 
         #if nearest == 0:
         #    # first point cannot be grabbed
-        #    display = gtk.gdk.display_get_default()
+        #    display = gdk.display_get_default()
         #    display.beep()
         #else:
         #assert self.grabbed is None # This did happen. I think it's save to ignore?
@@ -203,7 +203,7 @@ class CurveWidget(gtk.DrawingArea):
 
 if __name__ == '__main__':
     win = gtk.Window()
-    curve = FixedCurveWidget(ylockgroups = ((1,2),))
+    curve = CurveWidget(ylockgroups = ((1,2),))
     win.add(curve)
     win.set_title("curve test")
     win.connect("destroy", lambda *a: gtk.main_quit())

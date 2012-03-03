@@ -7,16 +7,12 @@
 # (at your option) any later version.
 
 "select color window (GTK and an own window)"
-from gettext import gettext as _
-
 import gtk
 gdk = gtk.gdk
 
-import windowing
-import stock
+import windowing, stock
 from lib import mypaintlib
-from lib.helpers import clamp,gdkpixbuf2numpy
-import dialogs
+from lib.helpers import gdkpixbuf2numpy
 from hsvcompat import ColorChangerHSV
 
 

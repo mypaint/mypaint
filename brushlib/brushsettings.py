@@ -154,7 +154,6 @@ for s_list in settings_list:
     s.index = len(settings)
     settings.append(s)
     settings_dict[s.cname] = s
-    globals()[s.cname] = s
 
 settings_visible = [s for s in settings if s.cname not in settings_hidden]
 

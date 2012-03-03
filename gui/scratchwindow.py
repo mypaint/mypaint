@@ -9,16 +9,8 @@
 import gtk
 gdk = gtk.gdk
 from gettext import gettext as _
-import gobject
-import pango
-
-import tileddrawwidget, document
-
 from drawwindow import button_press_cb_abstraction, button_release_cb_abstraction
-
-import dialogs
 import os
-
 import stock
 
 def stock_button_generic(stock_id, b):

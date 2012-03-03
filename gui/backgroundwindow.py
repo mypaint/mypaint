@@ -54,7 +54,7 @@ class Window(windowing.Dialog):
 
     def on_response(self, dialog, response, *args):
         if response == RESPONSE_SAVE_AS_DEFAULT:
-             self.save_as_default_cb()
+            self.save_as_default_cb()
         elif response == gtk.RESPONSE_ACCEPT:
             self.hide()
 

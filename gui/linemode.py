@@ -631,9 +631,7 @@ def distance(x1, y1, x2, y2):
     return length
 
 def dot_product(x1, y1, x2, y2):
-    # Dot product
-    dot_product = x1*x2 + y1*y2
-    return dot_product
+    return x1*x2 + y1*y2
 
 def multiply_add(x1, y1, x2, y2, d):
     x3, y3 = multiply(x2, y2, d)

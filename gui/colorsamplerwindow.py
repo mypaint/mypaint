@@ -1,7 +1,6 @@
 import gtk
 gdk = gtk.gdk
 from math import pi, sin, cos, sqrt, atan2, ceil
-import struct
 import cairo
 import windowing
 import stock

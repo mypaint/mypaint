@@ -10,8 +10,6 @@
 #import stategroup
 import stock
 import gtk
-from gtk import gdk
-import gobject
 from gettext import gettext as _
 from lib.helpers import rgb_to_hsv, hsv_to_rgb
 

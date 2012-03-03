@@ -12,7 +12,6 @@ import gtk, gobject
 import functionwindow, brushcreationwidget
 import windowing
 from brushlib import brushsettings
-from lib import command
 
 class Window(windowing.SubWindow):
 

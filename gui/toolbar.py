@@ -10,7 +10,6 @@
 """
 
 import os
-from math import pi
 
 import gtk
 from gtk import gdk
@@ -18,14 +17,13 @@ import gobject
 from gettext import gettext as _
 import pango
 
-from lib.helpers import hsv_to_rgb, clamp
+from lib.helpers import hsv_to_rgb
 import dialogs
 from brushlib import brushsettings
 import stock
 import dropdownpanel
 import widgets
 from hsvcompat import ColorChangerHSV
-import linemode
 
 FRAMEWORK_XML = 'gui/toolbar.xml'
 MERGEABLE_XML = [

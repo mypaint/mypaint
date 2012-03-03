@@ -15,12 +15,11 @@ Painting is done in tileddrawwidget.py.
 
 MYPAINT_VERSION="1.0.0+git"
 
-import os, math, time, webbrowser
+import os, time, webbrowser
 from gettext import gettext as _
 
 import gtk, gobject
 from gtk import gdk, keysyms
-import pango
 
 import colorselectionwindow, historypopup, stategroup, colorpicker, windowing, layout, toolbar
 import dialogs

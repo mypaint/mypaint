@@ -10,10 +10,9 @@
 # It is used for rendering updates, but also for save/load.
 
 from gtk import gdk
-import mypaintlib, tiledsurface, helpers
+import mypaintlib,  helpers
+from tiledsurface import N
 import sys, numpy
-
-N = tiledsurface.N
 
 class Surface:
     """

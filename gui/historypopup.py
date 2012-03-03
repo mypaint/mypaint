@@ -9,8 +9,7 @@
 import gtk
 gdk = gtk.gdk
 
-import random
-import numpy, cairo
+import cairo
 from lib import helpers
 import windowing
 
