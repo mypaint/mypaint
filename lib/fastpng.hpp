@@ -161,6 +161,7 @@ PyObject * load_png_fast_progressive(char * filename,
   int width, height;
   int rows_left;
   int color_type, bit_depth;
+  bool have_alpha;
 
   fp = fopen(filename, "rb");
   if (!fp) {
@@ -195,6 +196,7 @@ PyObject * load_png_fast_progressive(char * filename,
 
   color_type = png_get_color_type(png_ptr, info_ptr);
   bit_depth = png_get_bit_depth(png_ptr, info_ptr);
+  have_alpha = color_type & PNG_COLOR_MASK_ALPHA;
 
   if (color_type == PNG_COLOR_TYPE_PALETTE) {
     png_set_palette_to_rgb(png_ptr);
@@ -206,13 +208,13 @@ PyObject * load_png_fast_progressive(char * filename,
 
   if (png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS)) {
     png_set_tRNS_to_alpha(png_ptr);
+    have_alpha = true;
   }
 
   if (bit_depth == 16) png_set_strip_16(png_ptr);
   if (bit_depth < 8) png_set_packing(png_ptr);
 
-  if (color_type == PNG_COLOR_TYPE_RGB ||
-      color_type == PNG_COLOR_TYPE_GRAY) {
+  if (!have_alpha) {
     png_set_add_alpha(png_ptr, 0xFF, PNG_FILLER_AFTER);
   }
 
