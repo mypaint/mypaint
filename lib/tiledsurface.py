@@ -35,130 +35,12 @@ class Tile:
         return Tile(copy_from=self)
 
 
-def composite_array_src_over(dst, dst_has_alpha, src, mipmap_level=0, opacity=1.0):
-    """The default "svg:src-over" layer composite op implementation.
-    """
-    assert dst.shape[2] == 4 # rgba or rgbu
-    assert dst.dtype == 'uint16'
-    if dst_has_alpha:
-        # rarely used (for merging layers, also when exporting a transparent PNGs)
-        # src (premultiplied) OVER dst (premultiplied)
-        # cB = cA + (1.0 - aA) * cB
-        #  where B = dst, A = src
-        srcAlpha = src[:,:,3:4].astype('float') * opacity / (1 << 15)
-        dstAlpha = dst[:,:,3:4].astype('float') / (1 << 15)
-        src_premult = src[:,:,0:3].astype('float') * opacity / (1<<15)
-        dst_premult = dst[:,:,0:3].astype('float') / (1<<15)
-        dst_c = clip(src_premult + (1.0 - srcAlpha) * dst_premult, 0.0, 1.0)
-        dst_a = clip(srcAlpha + dstAlpha - srcAlpha * dstAlpha, 0.0, 1.0)
-        dst[:,:,0:3] = clip(dst_c * (1<<15), 0, (1<<15) - 1).astype('uint16')
-        dst[:,:,3:4] = clip(dst_a * (1<<15), 0, (1<<15) - 1).astype('uint16')
-    else:
-        mypaintlib.tile_composite_rgba16_over_rgbu16(src, dst, opacity)
-
-
-def composite_array_multiply(dst, dst_has_alpha, src, mipmap_level=0, opacity=1.0):
-    """The "svg:multiply" layer composite op implementation.
-    """
-    assert dst.shape[2] == 4 # rgba or rgbu
-    assert dst.dtype == 'uint16'
-    if dst_has_alpha:
-        # rarely used (for merging layers, also when exporting a transparent PNGs)
-        # src (premultiplied) MULTIPLY dst (premultiplied)
-        # cA * cB +  cA * (1 - aB) + cB * (1 - aA)
-        srcAlpha = (opacity * src[:,:,3:4]).astype('float') / (1 << 15)
-        dstAlpha = (dst[:,:,3:4]).astype('float') / (1 << 15)
-        src_premult = src[:,:,0:3].astype('float') * opacity / (1<<15)
-        dst_premult = dst[:,:,0:3].astype('float') / (1<<15)
-        dst_c = clip(src_premult * dst_premult +  src_premult * (1.0 - dstAlpha) + dst_premult * (1.0 - srcAlpha),0.0, 1.0)
-        dst_a = clip(srcAlpha + dstAlpha - srcAlpha * dstAlpha, 0.0, 1.0)
-        dst[:,:,0:3] = clip(dst_c * (1<<15), 0, (1<<15) - 1).astype('uint16')
-        dst[:,:,3:4] = clip(dst_a * (1<<15), 0, (1<<15) - 1).astype('uint16')
-    else:
-        mypaintlib.tile_composite_rgba16_multiply_rgbu16(src, dst, opacity)
-
-
-def composite_array_screen(dst, dst_has_alpha, src, mipmap_level=0, opacity=1.0):
-    """The "svg:screen" layer composite op implementation.
-    """
-    assert dst.shape[2] == 4 # rgba or rgbu
-    assert dst.dtype == 'uint16'
-    if dst_has_alpha:
-        # rarely used (for merging layers, also when exporting a transparent PNGs)
-        # src (premultiplied) SCREEN dst (premultiplied)
-        # cA + cB - cA * cB
-        srcAlpha = (opacity * src[:,:,3:4]).astype('float') / (1 << 15)
-        dstAlpha = (dst[:,:,3:4]).astype('float') / (1 << 15)
-        src_premult = src[:,:,0:3].astype('float') * opacity / (1<<15)
-        dst_premult = dst[:,:,0:3].astype('float') / (1<<15)
-        dst_c = clip(src_premult + dst_premult - src_premult * dst_premult, 0, 1)
-        dst_a = clip(srcAlpha + dstAlpha - srcAlpha * dstAlpha, 0, 1)
-        dst[:,:,0:3] = clip(dst_c * (1<<15),0, (1<<15) - 1).astype('uint16')
-        dst[:,:,3:4] = clip(dst_a * (1<<15),0, (1<<15) - 1).astype('uint16')
-    else:
-        mypaintlib.tile_composite_rgba16_screen_rgbu16(src, dst, opacity)
-
-
-def composite_array_burn(dst, dst_has_alpha, src, mipmap_level=0, opacity=1.0):
-    """The "svg:color-burn" layer composite op implementation.
-    """
-    assert dst.shape[2] == 4 # rgba or rgbu
-    assert dst.dtype == 'uint16'
-    if dst_has_alpha:
-        # rarely used (for merging layers, also when exporting a transparent PNGs)
-        # src (premultiplied) OVER dst (premultiplied)
-        # if cA * aB + cB * aA <= aA * aB :
-        #   cA * (1 - aB) + cB * (1 - aA)
-        #   (cA == 0 ? 1 : (aA * (cA * aB + cB * aA - aA * aB) / cA) + cA * (1 - aB) + cB * (1 - aA))
-        #  where B = dst, A = src
-        aA = (opacity * src[:,:,3:4]).astype('float') / (1 << 15)
-        aB = (dst[:,:,3:4]).astype('float') / (1 << 15)
-        cA = src[:,:,0:3].astype('float') * opacity / (1<<15)
-        cB = dst[:,:,0:3].astype('float') / (1<<15)
-        dst_c = where(cA * aB + cB * aA <= aA * aB,
-                     cA * (1 - aB) + cB * (1 - aA),
-                     where(cA == 0,
-                           1.0,
-                           (aA * (cA * aB + cB * aA - aA * aB) / cA) + cA * (1.0 - aB) + cB * (1.0 - aA)))
-        dst_a = aA + aB - aA * aB
-        dst[:,:,0:3] = clip(dst_c * (1<<15), 0, (1<<15) - 1).astype('uint16')
-        dst[:,:,3:4] = clip(dst_a * (1<<15), 0, (1<<15) - 1).astype('uint16')
-    else:
-        mypaintlib.tile_composite_rgba16_burn_rgbu16(src, dst, opacity)
-
-
-def composite_array_dodge(dst, dst_has_alpha, src, mipmap_level=0, opacity=1.0):
-    """The "svg:color-dodge" layer composite op implementation.
-    """
-    assert dst.shape[2] == 4 # rgba or rgbu
-    assert dst.dtype == 'uint16'
-    if dst_has_alpha:
-        # rarely used (for merging layers, also when exporting a transparent PNGs)
-        # src (premultiplied) OVER dst (premultiplied)
-        # if cA * aB + cB * aA >= aA * aB :
-        #   aA * aB + cA * (1 - aB) + cB * (1 - aA)
-        #   (cA == aA ? 1 : cB * aA / (aA == 0 ? 1 : 1 - cA / aA)) + cA * (1 - aB) + cB * (1 - aA)
-        #  where B = dst, A = src
-        aA = (opacity * src[:,:,3:4]).astype('float') / (1 << 15)
-        aB = (dst[:,:,3:4]).astype('float') / (1 << 15)
-        cA = src[:,:,0:3].astype('float') * opacity / (1<<15)
-        cB = dst[:,:,0:3].astype('float') / (1<<15)
-        dst_c = where(cA * aB + cB * aA >= aA * aB,
-                     aA * aB + cA * (1 - aB) + cB * (1 - aA),
-                     where(cA == aA, 1.0, cB * aA / where(aA == 0, 1.0, 1.0 - cA / aA)) + cA * (1.0 - aB) + cB * (1.0 - aA))
-        dst_a = (aA + aB - aA * aB)
-        dst[:,:,0:3] = clip(dst_c * (1<<15),0, (1<<15) - 1).astype('uint16')
-        dst[:,:,3:4] = clip(dst_a * (1<<15),0, (1<<15) - 1).astype('uint16')
-    else:
-        mypaintlib.tile_composite_rgba16_dodge_rgbu16(src, dst, opacity)
-
-
 svg2composite_func = {
-    'svg:src-over': composite_array_src_over,
-    'svg:multiply': composite_array_multiply,
-    'svg:screen': composite_array_screen,
-    'svg:color-burn': composite_array_burn,
-    'svg:color-dodge': composite_array_dodge,
+    'svg:src-over': mypaintlib.tile_composite_src_over,
+    'svg:multiply': mypaintlib.tile_composite_multiply,
+    'svg:screen': mypaintlib.tile_composite_screen,
+    'svg:color-burn': mypaintlib.tile_composite_color_burn,
+    'svg:color-dodge': mypaintlib.tile_composite_color_dodge,
     }
 
 # tile for read-only operations on empty spots
@@ -272,7 +154,7 @@ class Surface(mypaintlib.TiledSurface):
         src = self.get_tile_memory(tx, ty, readonly=True)
 
         func = svg2composite_func[mode]
-        func(dst, dst_has_alpha, src, mipmap_level, opacity)
+        func(src, dst, dst_has_alpha, opacity)
 
     def save_snapshot(self):
         sshot = SurfaceSnapshot()
