@@ -222,7 +222,8 @@ class PixbufList(gtk.DrawingArea):
             if pixbuf not in self.thumbnails:
                 self.thumbnails[pixbuf] = helpers.pixbuf_thumbnail(pixbuf, self.item_w, self.item_h)
             pixbuf = self.thumbnails[pixbuf]
-            pixbuf.copy_area(0, 0, self.item_w, self.item_h, self.pixbuf, x, y)
+            pixbuf.composite(self.pixbuf, x, y, self.item_w, self.item_h, x, y, 1, 1, gdk.INTERP_BILINEAR, 255)
+
         self.queue_draw()
 
     def set_selected(self, item):

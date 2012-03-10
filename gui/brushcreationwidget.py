@@ -232,8 +232,8 @@ class BrushIconEditorWidget(gtk.VBox):
             self.tdw.doc.load_from_pixbuf(pixbuf)
 
     def get_preview_pixbuf(self):
-        pixbuf = self.tdw.doc.render_as_pixbuf(0, 0, brushmanager.preview_w, brushmanager.preview_h)
-        return pixbuf
+        w, h = brushmanager.preview_w, brushmanager.preview_h
+        return self.tdw.doc.render_as_pixbuf(0, 0, w, h, alpha=False)
 
     def update_preview_cb(self, window):
         pixbuf = self.get_preview_pixbuf()

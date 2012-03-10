@@ -221,7 +221,7 @@ def pixbuf_thumbnail(src, w, h, alpha=False):
         dst.fill(0xffffff00) # transparent background
     else:
         dst.fill(0xffffffff) # white background
-    src2.copy_area(0, 0, w2, h2, dst, (w-w2)/2, (h-h2)/2)
+    src2.composite(dst, (w-w2)/2, (h-h2)/2, w2, h2, (w-w2)/2, (h-h2)/2, 1, 1, gdk.INTERP_BILINEAR, 255)
     return dst
 
 def uri2filename(uri):

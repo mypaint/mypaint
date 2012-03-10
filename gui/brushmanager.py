@@ -791,6 +791,15 @@ class ManagedBrush(object):
 
     def save(self):
         prefix = self.get_fileprefix(saving=True)
+
+        if self.preview.get_has_alpha():
+            # remove it (previous mypaint versions would display an empty image)
+            w, h = preview_w, preview_h
+            tmp = gdk.Pixbuf(gdk.COLORSPACE_RGB, False, 8, w, h)
+            tmp.fill(0xffffffff)
+            self.preview.composite(tmp, 0, 0, w, h, 0, 0, 1, 1, gdk.INTERP_BILINEAR, 255)
+            self.preview = tmp
+
         self.preview.save(prefix + '_prev.png', 'png')
         brushinfo = self.brushinfo.clone()
         open(prefix + '.myb', 'w').write(brushinfo.save_to_string())
