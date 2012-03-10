@@ -1034,7 +1034,7 @@ class Window (windowing.MainWindow, layout.MainWindow):
             u"Artis Rozentāls (%s)" % _('brushes'),
             u"Popolon (%s)" % _('brushes'),
             u"Marcelo 'Tanda' Cerviño (%s)" % _('patterns, brushes'),
-            u"David Revoy (%s)" % _('brushes', _('tool icons')),
+            u"David Revoy (%s)" % _('brushes, tool icons'),
             u"Ramón Miranda (%s)" % _('brushes, patterns'),
             u"Enrico Guarnieri 'Ico_dY' (%s)" % _('brushes'),
             u'Sebastian Kraft (%s)' % _('desktop icon'),
