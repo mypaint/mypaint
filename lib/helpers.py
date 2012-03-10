@@ -6,7 +6,7 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-from math import floor, ceil
+from math import floor, ceil, isnan
 import os, sys, hashlib, zipfile, colorsys, urllib, gc
 
 from gtk import gdk # for gdk_pixbuf stuff
@@ -258,10 +258,13 @@ def filename2uri(path):
     return 'file:///' + path
 
 def rgb_to_hsv(r, g, b):
+    assert not isnan(r)
     r = clamp(r, 0.0, 1.0)
     g = clamp(g, 0.0, 1.0)
     b = clamp(b, 0.0, 1.0)
-    return colorsys.rgb_to_hsv(r, g, b)
+    h, s, v = colorsys.rgb_to_hsv(r, g, b)
+    assert not isnan(h)
+    return h, s, v
 
 def hsv_to_rgb(h, s, v):
     h = clamp(h, 0.0, 1.0)

@@ -258,6 +258,8 @@ class BrushInfo:
 
     def set_base_value(self, cname, value):
         assert cname in brush_settings
+        assert not math.isnan(value)
+        assert not math.isinf(value)
         self.settings[cname][0] = value
         for f in self.observers:
             f(set([cname]))
@@ -332,6 +334,7 @@ class BrushInfo:
         h = self.get_base_value('color_h')
         s = self.get_base_value('color_s')
         v = self.get_base_value('color_v')
+        assert not math.isnan(h)
         return (h, s, v)
 
     def set_color_hsv(self, hsv):
