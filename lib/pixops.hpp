@@ -48,6 +48,36 @@ void tile_downscale_rgba16(PyObject *src, PyObject *dst, int dst_x, int dst_y) {
 }
 
 
+#include "composite.hpp"
+
+#define _COMPOSITE_TILES(src, dst, dst_has_alpha, opac, opname)     \
+  uint16_t *src_p  = (uint16_t*)((PyArrayObject*)src)->data;        \
+  char *p = dst_arr->data;                                          \
+  if (dst_has_alpha) {                                              \
+    for (int y=0; y<TILE_SIZE; y++) {                               \
+      uint16_t *dst_p  = (uint16_t*) (p);                           \
+      for (int x=0; x<TILE_SIZE; x++) {                             \
+        rgba_composite_ ## opname ## _rgba(src_p, dst_p, opac);     \
+        src_p += 4;                                                 \
+        dst_p += 4;                                                 \
+      }                                     \
+      p += dst_arr->strides[0];             \
+    }                                       \
+  }                                         \
+  else {                                                            \
+    for (int y=0; y<TILE_SIZE; y++) {                               \
+      uint16_t *dst_p  = (uint16_t*) (p);                           \
+      for (int x=0; x<TILE_SIZE; x++) {                             \
+        rgba_composite_ ## opname ## _rgbu(src_p, dst_p, opac);     \
+        src_p += 4;                                                 \
+        dst_p += 4;                                                 \
+      }                                     \
+      p += dst_arr->strides[0];             \
+    }                                       \
+  }                                         //_COMPOSITE_TILES loop macro
+
+
+
 /**
  * tile_composite_src_over:
  *
@@ -100,36 +130,7 @@ tile_composite_src_over (PyObject *src,
   const uint32_t opac = CLAMP(src_opacity * (1<<15) + 0.5, 0, (1<<15));
   if (opac == 0) return;
 
-  uint16_t *src_p  = (uint16_t*)((PyArrayObject*)src)->data;
-  char *p = dst_arr->data;
-  for (int y=0; y<TILE_SIZE; y++) {
-    uint16_t  *dst_p  = (uint16_t*) (p);
-    for (int x=0; x<TILE_SIZE; x++) {
-      const uint16_t src_alpha = CLAMP((uint32_t)(opac*src_p[3])>>15, 0, 1<<15);
-      const uint32_t one_minus_src_alpha = (1<<15) - src_alpha;
-
-      // Dca: destination component with premult alpha
-      // Da: destination alpha channel
-      // 
-      // Dca' = Sca*Da + Sca*(1 - Da) + Dca*(1 - Sa)
-      //      = Sca + Dca*(1 - Sa)
-      //
-      dst_p[0] = ((uint32_t)src_p[0]*opac + one_minus_src_alpha*dst_p[0]) >> 15;
-      dst_p[1] = ((uint32_t)src_p[1]*opac + one_minus_src_alpha*dst_p[1]) >> 15;
-      dst_p[2] = ((uint32_t)src_p[2]*opac + one_minus_src_alpha*dst_p[2]) >> 15;
-
-      // Da' = Sa*Da + Sa*(1 - Da) + Da*(1 - Sa)
-      //     = (Sa*Da + Sa - Sa*Da) + Da*(1 - Sa)
-      //     = Sa + Da*(1 - Sa)
-      //
-      if (dst_has_alpha) {
-        dst_p[3] = src_alpha + ((one_minus_src_alpha*dst_p[3]) / (1<<15));
-      }
-      src_p += 4;
-      dst_p += 4;
-    }
-    p += dst_arr->strides[0];
-  }
+  _COMPOSITE_TILES(src, dst, dst_has_alpha, opac, src_over);
 }
 
 
@@ -178,48 +179,7 @@ tile_composite_multiply (PyObject *src,
   const uint32_t opac = CLAMP(src_opacity * (1<<15) + 0.5, 0, (1<<15));
   if (opac == 0) return;
 
-  uint16_t *src_p  = (uint16_t*)((PyArrayObject*)src)->data;
-  char *p = dst_arr->data;
-  for (int y=0; y<TILE_SIZE; y++) {
-    uint16_t  * dst_p  = (uint16_t*) (p);
-    for (int x=0; x<TILE_SIZE; x++) {
-
-      // Dca' = Sca*Dca + Sca*(1 - Da) + Dca*(1 - Sa)
-      //
-      // If Da == 1, which is the case without dst_has_alpha, this becomes
-      //
-      // Dca' = Sca*Dca + 0 + Dca*(1 - Sa)
-      //      = Dca * (Sca + (1 - Sa))
-      //
-      const uint16_t src_alpha = CLAMP((uint32_t)(opac * src_p[3]) / (1<<15),
-                                       0, 1<<15);
-      const uint32_t one_minus_src_alpha = (1<<15) - src_alpha;
-      const uint32_t src_col0 = ((uint32_t) src_p[0] * opac) >> 15;
-      const uint32_t src_col1 = ((uint32_t) src_p[1] * opac) >> 15;
-      const uint32_t src_col2 = ((uint32_t) src_p[2] * opac) >> 15;
-      dst_p[0] = ((uint32_t)src_col0*dst_p[0] + one_minus_src_alpha*dst_p[0])
-                 / (1<<15);
-      dst_p[1] = ((uint32_t)src_col1*dst_p[1] + one_minus_src_alpha*dst_p[1])
-                 / (1<<15);
-      dst_p[2] = ((uint32_t)src_col2*dst_p[2] + one_minus_src_alpha*dst_p[2])
-                 / (1<<15);
-      if (dst_has_alpha) {
-        // Sca*(1 - Da) != 0, add it in
-        const uint32_t one_minus_dst_alpha = (1<<15) - dst_p[3];
-        dst_p[0] += (((uint32_t)src_col0 * one_minus_dst_alpha) >> 15);
-        dst_p[1] += (((uint32_t)src_col1 * one_minus_dst_alpha) >> 15);
-        dst_p[2] += (((uint32_t)src_col2 * one_minus_dst_alpha) >> 15);
-
-        // Da'  = Sa*Da + Sa*(1 - Da) + Da*(1 - Sa)
-        //      = (Sa*Da + Sa - Sa*Da) + Da*(1 - Sa)
-        //      = Sa + (1 - Sa)*Da
-        dst_p[3] = src_alpha + ((one_minus_src_alpha*dst_p[3]) / (1<<15));
-      }
-      src_p += 4;
-      dst_p += 4;
-    }
-    p += dst_arr->strides[0];
-  }
+  _COMPOSITE_TILES(src, dst, dst_has_alpha, opac, multiply);
 }
 
 
@@ -268,36 +228,7 @@ tile_composite_screen (PyObject *src,
   const uint32_t opac = CLAMP(src_opacity * (1<<15) + 0.5, 0, (1<<15));
   if (opac == 0) return;
 
-  uint16_t *src_p  = (uint16_t*)((PyArrayObject*)src)->data;
-  char *p = dst_arr->data;
-  for (int y=0; y<TILE_SIZE; y++) {
-    uint16_t  * dst_p  = (uint16_t*) (p);
-    for (int x=0; x<TILE_SIZE; x++) {
-      // Dca' = (Sca*Da + Dca*Sa - Sca*Dca) + Sca*(1 - Da) + Dca*(1 - Sa)
-      //      = Sca + Dca - Sca*Dca
-      const uint32_t col0 = ((uint32_t)src_p[0]*opac)
-                            + (((uint32_t)dst_p[0]) << 15);
-      const uint32_t col1 = ((uint32_t)src_p[1]*opac)
-                            + (((uint32_t)dst_p[1]) << 15);
-      const uint32_t col2 = ((uint32_t)src_p[2]*opac)
-                            + (((uint32_t)dst_p[2]) << 15);
-      const uint32_t src_col0 = ((uint32_t)src_p[0] * opac) >> 15;
-      const uint32_t src_col1 = ((uint32_t)src_p[1] * opac) >> 15;
-      const uint32_t src_col2 = ((uint32_t)src_p[2] * opac) >> 15;
-      dst_p[0] = (col0 - ((uint32_t)src_col0*dst_p[0])) / (1<<15);
-      dst_p[1] = (col1 - ((uint32_t)src_col1*dst_p[1])) / (1<<15);
-      dst_p[2] = (col2 - ((uint32_t)src_col2*dst_p[2])) / (1<<15);
-      if (dst_has_alpha) {
-        // Da'  = Sa + Da - Sa*Da
-        const uint32_t src_alpha = ((uint32_t)src_p[3] * opac) >> 15;
-        dst_p[3] =   src_alpha + (uint32_t)dst_p[3]
-                 - ((src_alpha * (uint32_t)dst_p[3]) >> 15);
-      }
-      src_p += 4;
-      dst_p += 4;
-    }
-    p += dst_arr->strides[0];
-  }
+  _COMPOSITE_TILES(src, dst, dst_has_alpha, opac, screen);
 }
 
 
@@ -347,97 +278,7 @@ tile_composite_color_dodge (PyObject *src,
   const uint32_t opac = CLAMP(src_opacity * (1<<15) + 0.5, 0, (1<<15));
   if (opac == 0) return;
 
-  uint16_t *src_p  = (uint16_t*)((PyArrayObject*)src)->data;
-  char *p = dst_arr->data;
-  for (int y=0; y<TILE_SIZE; y++) {
-    uint16_t *dst_p  = (uint16_t*) (p);
-    for (int x=0; x<TILE_SIZE; x++) {
-      const uint32_t src_alpha = ((uint32_t)src_p[3]*opac)>>15;
-      const uint32_t one_minus_src_alpha = (1<<15) - src_alpha;
-      const uint32_t dst_alpha = dst_has_alpha ? dst_p[3] : (1<<15);
-      const uint32_t one_minus_dst_alpha = (1<<15) - dst_alpha;
-
-      for (int c=0; c < 3; c++) {
-        const uint32_t s = ((uint32_t)src_p[c]*opac)>>15;
-        const uint32_t d = dst_p[c];
-        const uint32_t src_alpha_minus_src = src_alpha - s;
-        if (src_alpha_minus_src == 0 && d == 0) {
-          // Sca == Sa and Dca == 0
-          //  Dca' = Sca*(1 - Da) + Dca*(1 - Sa)
-          //       = Sca*(1 - Da)
-          dst_p[c] = CLAMP((s * one_minus_dst_alpha) >> 15, 0, (1<<15));
-        }
-        else if (src_alpha_minus_src == 0) {
-          // otherwise if Sca == Sa
-          //  Dca' = Sa*Da + Sca*(1 - Da) + Dca*(1 - Sa)
-          //       = Sca*Da + Sca*(1 - Da) + Dca*(1 - Sa)
-          //       = Sca*(Da + 1 - Da) + Dca*(1 - Sa)
-          //       = Sca + Dca*(1 - Sa)
-          dst_p[c] = CLAMP( s + ((d * one_minus_src_alpha)>>15),
-                            0, (1<<15) );
-        }
-        else {
-          // Sca < Sa
-          //    Dca' = Sa*Da * min(1, Dca/Da * Sa/(Sa - Sca))
-          //          + Sca*(1 - Da) + Dca*(1 - Sa)
-          const uint32_t dst_times_src_alpha_B30 = d*src_alpha;
-          // when 1 < Dca/Da * Sa/(Sa - Sca) 
-          //      1 < (Dca*Sa) / (Da*(Sa - Sca)
-          //  (Da*(Sa - Sca) < (Dca*Sa)   because Sca - Sa is -ve and nonzero
-          if (dst_times_src_alpha_B30 > (dst_alpha * src_alpha_minus_src)) {
-            // min(...)==1
-            //    Dca' = Sa * Da * min(...) + Sca*(1 - Da) + Dca*(1 - Sa)
-            //    Dca' = Sa * Da + Sca*(1 - Da) + Dca*(1 - Sa)
-            dst_p[c] = CLAMP(
-                    (  (src_alpha * dst_alpha)   // B30
-                     + (s * one_minus_dst_alpha) // B30
-                     + (d * one_minus_src_alpha) // B30
-                    ) >> 15,
-                0, 1<<15);
-          }
-          else {
-            // min(...) == Dca/Da * Sa/(Sa - Sca)
-            //    Dca' = Sa * Da * min(...) + Sca*(1 - Da) + Dca*(1 - Sa)
-            //    Dca' = Sa * Da * Dca/Da * Sa/(Sa - Sca)
-            //            + Sca*(1 - Da) + Dca*(1 - Sa)
-            //    Dca' = Sa * Dca * Sa/(Sa - Sca)
-            //            + Sca*(1 - Da) + Dca*(1 - Sa)
-            dst_p[c] = CLAMP(
-                     ( src_alpha * (dst_times_src_alpha_B30>>15)
-                       / src_alpha_minus_src )
-                     + ((s * one_minus_dst_alpha) >> 15)
-                     + ((d * one_minus_src_alpha) >> 15),
-                 0, 1<<15);
-          }
-        }
-#ifdef HEAVY_DEBUG
-        assert(dst_p[c] <= (1<<15));
-        assert(src_p[c] <= (1<<15));
-#endif
-      }
-      if (dst_has_alpha) {
-         // Da'  = Sa + Da - Sa*Da
-         dst_p[3] = CLAMP(src_alpha + dst_alpha - ((src_alpha*dst_alpha)>>15),
-                          0, (1<<15));
-#ifdef HEAVY_DEBUG
-         assert(src_p[0] <= src_p[3]);
-         assert(dst_p[0] <= dst_p[3]);
-         assert(src_p[1] <= src_p[3]);
-         assert(dst_p[1] <= dst_p[3]);
-         assert(src_p[2] <= src_p[3]);
-         assert(dst_p[2] <= dst_p[3]);
-#endif
-      }
-#ifdef HEAVY_DEBUG
-      assert(dst_p[3] <= (1<<15));
-      assert(src_p[3] <= (1<<15));
-#endif
-      src_p += 4;
-      dst_p += 4;
-    }
-
-    p += dst_arr->strides[0];
-  }
+  _COMPOSITE_TILES(src, dst, dst_has_alpha, opac, color_dodge);
 }
 
 
@@ -487,85 +328,7 @@ tile_composite_color_burn (PyObject *src,
   const uint32_t opac = CLAMP(src_opacity * (1<<15) + 0.5, 0, (1<<15));
   if (opac == 0) return;
 
-  uint16_t * src_p  = (uint16_t*)((PyArrayObject*)src)->data;
-  char * p = dst_arr->data;
-  for (int y=0; y<TILE_SIZE; y++) {
-    uint16_t  * dst_p  = (uint16_t*) (p);
-    for (int x=0; x<TILE_SIZE; x++) {
-      const uint32_t src_alpha30 = (uint32_t)src_p[3]*opac;
-      const uint32_t src_alpha = src_alpha30>>15;
-      const uint32_t one_minus_src_alpha = (1<<15) - src_alpha;
-      const uint32_t dst_alpha = dst_has_alpha ? dst_p[3] : (1<<15);
-      const uint32_t one_minus_dst_alpha = (1<<15) - dst_alpha;
-
-      for (int c=0; c<3; c++) {
-        const uint32_t s30 = (uint32_t)src_p[c] * opac;
-        const uint32_t s = s30 >> 15;
-        const uint32_t d = dst_p[c];
-        if (s == 0) {
-          if (d != dst_alpha) {
-            //if Sca == 0 and Dca == Da
-            //  Dca' = Sa*Da + Sca*(1 - Da) + Dca*(1 - Sa)
-            //       = Sa*Dca + Dca*(1 - Sa)
-            //       = Sa*Dca + Dca - Sa*Dca
-            //       = Dca
-
-            //otherwise if Sca == 0
-            //  Dca' = Sca*(1 - Da) + Dca*(1 - Sa)
-            //       = Dca*(1 - Sa)
-            dst_p[c] = CLAMP(((d * one_minus_src_alpha) >> 15), 0, (1<<15));
-          }
-        }
-        else {
-#ifdef HEAVY_DEBUG
-          assert(s <= (1<<15));
-          assert(s > 0);
-#endif
-          //otherwise if Sca > 0
-          //  let i = Sca*(1 - Da) + Dca*(1 - Sa)
-          //  let m = (1 - Dca/Da) * Sa/Sca
-          //
-          //  Dca' = Sa*Da - Sa*Da * min(1, (1 - Dca/Da) * Sa/Sca) + i
-          //       = Sa*Da * (1 - min(1, (1 - Dca/Da) * Sa/Sca)) + i
-
-          uint32_t res = (s*one_minus_dst_alpha + d*one_minus_src_alpha)>>15;
-          if (dst_alpha > 0) {
-            const uint32_t m = (  ((1<<15) - ((d << 15) / dst_alpha))
-                                * src_alpha) / s;
-            if (m < (1<<15)) {
-              res += (  ((src_alpha * dst_alpha) >> 15)
-                      * ((1<<15) - m) ) >> 15;
-            }
-          }
-          dst_p[c] = CLAMP(res, 0, (1<<15));
-        }
-#ifdef HEAVY_DEBUG
-        assert(dst_p[c] <= (1<<15));
-        assert(src_p[c] <= (1<<15));
-#endif
-      }
-      if (dst_has_alpha) {
-         // Da'  = Sa + Da - Sa*Da
-         dst_p[3] = CLAMP(src_alpha + dst_alpha - ((src_alpha*dst_alpha)>>15),
-                          0, (1<<15));
-#ifdef HEAVY_DEBUG
-         assert(src_p[0] <= src_p[3]);
-         assert(dst_p[0] <= dst_p[3]);
-         assert(src_p[1] <= src_p[3]);
-         assert(dst_p[1] <= dst_p[3]);
-         assert(src_p[2] <= src_p[3]);
-         assert(dst_p[2] <= dst_p[3]);
-#endif
-      }
-#ifdef HEAVY_DEBUG
-      assert(dst_p[3] <= (1<<15));
-      assert(src_p[3] <= (1<<15));
-#endif
-      src_p += 4;
-      dst_p += 4;
-    }
-    p += dst_arr->strides[0];
-  }
+  _COMPOSITE_TILES(src, dst, dst_has_alpha, opac, color_burn);
 }
 
 // used to e.g. copy the background before starting to composite over it
