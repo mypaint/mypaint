@@ -519,7 +519,9 @@ class Document():
             z.write(tmp, name)
             os.remove(tmp)
 
-        def add_layer(x, y, opac, surface, name, layer_name, visible=True, compositeop=DEFAULT_COMPOSITE_OP, rect=[]):
+        def add_layer(x, y, opac, surface, name, layer_name, visible=True,
+                      locked=False, selected=False,
+                      compositeop=DEFAULT_COMPOSITE_OP, rect=[]):
             layer = ET.Element('layer')
             stack.append(layer)
             store_surface(surface, name, rect)
@@ -537,6 +539,10 @@ class Document():
                 a['visibility'] = 'visible'
             else:
                 a['visibility'] = 'hidden'
+            if locked:
+                a['edit-locked'] = 'true'
+            if selected:
+                a['selected'] = 'true'
             return layer
 
         for idx, l in enumerate(reversed(self.layers)):
@@ -544,7 +550,11 @@ class Document():
                 continue
             opac = l.opacity
             x, y, w, h = l.get_bbox()
-            el = add_layer(x-x0, y-y0, opac, l._surface, 'data/layer%03d.png' % idx, l.name, l.visible, l.compositeop, rect=(x, y, w, h))
+            sel = (idx == self.layer_idx)
+            el = add_layer(x-x0, y-y0, opac, l._surface,
+                           'data/layer%03d.png' % idx, l.name, l.visible,
+                           locked=l.locked, selected=sel,
+                           compositeop=l.compositeop, rect=(x, y, w, h))
             # strokemap
             sio = StringIO()
             l.save_strokemap_to_file(sio, -x, -y)
@@ -558,7 +568,9 @@ class Document():
         # save as fully rendered layer
         x, y, w, h = self.get_bbox()
         l = add_layer(x-x0, y-y0, 1.0, bg, 'data/background.png', 'background',
-                      DEFAULT_COMPOSITE_OP, rect=(x,y,w,h))
+                      locked=True, selected=False,
+                      compositeop=DEFAULT_COMPOSITE_OP,
+                      rect=(x,y,w,h))
         x, y, w, h = bg.get_pattern_bbox()
         # save as single pattern (with corrected origin)
         store_surface(bg, 'data/background_tile.png', rect=(x+x0, y+y0, w, h))
@@ -585,6 +597,12 @@ class Document():
         print '%.3fs save_ora total' % (time.time() - t0)
 
         return thumbnail_pixbuf
+
+    @staticmethod
+    def __xsd2bool(v):
+        v = str(v).lower()
+        if v in ['true', '1']: return True
+        else: return False
 
     def load_ora(self, filename, feedback_cb=None):
         """Loads from an OpenRaster file"""
@@ -645,6 +663,7 @@ class Document():
         # FIXME: don't require tile alignment for frame
         self.set_frame(width=round_up_to_n(w, N), height=round_up_to_n(h, N))
 
+        selected_layer = None
         for layer in get_layers_list(stack):
             a = layer.attrib
 
@@ -669,6 +688,8 @@ class Document():
             compositeop = str(a.get('composite-op', DEFAULT_COMPOSITE_OP))
             if compositeop not in VALID_COMPOSITE_OPS:
                 compositeop = DEFAULT_COMPOSITE_OP
+            selected = self.__xsd2bool(a.get("selected", 'false'))
+            locked = self.__xsd2bool(a.get("edit-locked", 'false'))
 
             visible = not 'hidden' in a.get('visibility', 'visible')
             self.add_layer(insert_idx=0, name=name)
@@ -686,6 +707,9 @@ class Document():
             self.set_layer_opacity(helpers.clamp(opac, 0.0, 1.0), layer)
             self.set_layer_compositeop(compositeop, layer)
             self.set_layer_visibility(visible, layer)
+            self.set_layer_locked(locked, layer)
+            if selected:
+                selected_layer = layer
             print '  %.3fs loading and converting layer png' % (time.time() - t1)
             # strokemap
             fname = a.get('mypaint_strokemap_v2', None)
@@ -706,6 +730,12 @@ class Document():
             self.select_layer(len(self.layers)-1)
             self.remove_layer()
             # this leaves the topmost layer selected
+
+        if selected_layer is not None:
+            for i, layer in zip(range(len(self.layers)), self.layers):
+                if layer is selected_layer:
+                    self.select_layer(i)
+                    break
 
         z.close()
 
