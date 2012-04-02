@@ -110,6 +110,7 @@ def render_as_pixbuf(surface, *rect, **kwargs):
 def save_as_png(surface, filename, *rect, **kwargs):
     alpha = kwargs['alpha']
     feedback_cb = kwargs.get('feedback_cb', None)
+    write_legacy_png = kwargs.get("write_legacy_png", False)
     if not rect:
         rect = surface.get_bbox()
     x, y, w, h = rect
@@ -158,5 +159,8 @@ def save_as_png(surface, filename, *rect, **kwargs):
                 res = res[y-render_ty*N:,:,:]
             yield res
 
-    filename_sys = filename.encode(sys.getfilesystemencoding()) # FIXME: should not do that, should use open(unicode_object)
-    mypaintlib.save_png_fast_progressive(filename_sys, w, h, alpha, render_tile_scanlines())
+    filename_sys = filename.encode(sys.getfilesystemencoding())
+    # FIXME: should not do that, should use open(unicode_object)
+    mypaintlib.save_png_fast_progressive(filename_sys, w, h, alpha,
+                                         render_tile_scanlines(),
+                                         write_legacy_png)

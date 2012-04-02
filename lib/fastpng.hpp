@@ -1,5 +1,6 @@
 #define PNG_SKIP_SETJMP_CHECK
 #include "png.h"
+#include "lcms2.h"
 
 #ifndef SWIG
 static void png_write_error_callback(png_structp png_save_ptr, png_const_charp error_msg)
@@ -17,8 +18,12 @@ static void png_write_error_callback(png_structp png_save_ptr, png_const_charp e
 }
 #endif
 
-PyObject * save_png_fast_progressive(char * filename, int w, int h, bool has_alpha,
-                                     PyObject * data_generator)
+PyObject *
+save_png_fast_progressive (char *filename,
+                           int w, int h,
+                           bool has_alpha,
+                           PyObject *data_generator,
+                           bool write_legacy_png)
 {
   png_structp png_ptr = NULL;
   png_infop info_ptr = NULL;
@@ -51,7 +56,7 @@ PyObject * save_png_fast_progressive(char * filename, int w, int h, bool has_alp
     PyErr_SetString(PyExc_MemoryError, "png_create_write_struct() failed");
     goto cleanup;
   }
-  
+
   info_ptr = png_create_info_struct(png_ptr);
   if (!info_ptr) {
     PyErr_SetString(PyExc_MemoryError, "png_create_info_struct() failed");
@@ -70,6 +75,12 @@ PyObject * save_png_fast_progressive(char * filename, int w, int h, bool has_alp
                 PNG_INTERLACE_NONE,
                 PNG_COMPRESSION_TYPE_BASE,
                 PNG_FILTER_TYPE_BASE);
+
+  if (! write_legacy_png) {
+    // Internal data is sRGB by the time it gets here.
+    // Explicitly save with the recommended chunks to advertise that fact.
+    png_set_sRGB_gAMA_and_cHRM (png_ptr, info_ptr, PNG_sRGB_INTENT_PERCEPTUAL);
+  }
 
   // default (all filters enabled):                 1350ms, 3.4MB
   //png_set_filter(png_ptr, 0, PNG_FILTER_NONE);  // 790ms, 3.8MB
@@ -121,11 +132,10 @@ PyObject * save_png_fast_progressive(char * filename, int w, int h, bool has_alp
     assert(!obj); // iterator should be finished
     if (PyErr_Occurred()) goto cleanup;
   }
-  
+
   png_write_end (png_ptr, NULL);
 
-  Py_INCREF(Py_None);
-  result = Py_None;
+  result = Py_BuildValue("{}");
 
  cleanup:
   if (iterator) Py_DECREF(iterator);
@@ -135,7 +145,9 @@ PyObject * save_png_fast_progressive(char * filename, int w, int h, bool has_alp
 }
 
 #ifndef SWIG
-static void png_read_error_callback(png_structp png_read_ptr, png_const_charp error_msg)
+static void
+png_read_error_callback (png_structp png_read_ptr,
+                         png_const_charp error_msg)
 {
   // we don't trust libpng to call the error callback only once, so
   // check for already-set error
@@ -150,15 +162,43 @@ static void png_read_error_callback(png_structp png_read_ptr, png_const_charp er
 }
 #endif
 
-// Read a PNG progressively as 8bit RGBA. Signature of the callback:
-//
-// numpy_array = callback(full_image_width, full_image_height)
-//
-// The callback must return a writeable array of the image width.  If
-// the height is smaller than the image height, the callback will be
-// called again until the full image has been processed.
-PyObject * load_png_fast_progressive(char * filename,
-                                     PyObject * get_buffer_callback)
+
+static const double PNG_gAMA_scale = 100000;
+static const double PNG_cHRM_scale = 100000;
+
+static void
+log_lcms2_error (cmsContext context_id, cmsUInt32Number err_code,
+                 const char *err_text)
+{
+    printf("lcms: ERROR: %d %s\n", err_code, err_text);
+}
+
+
+/** load_png_fast_progressive:
+ *
+ * @filename: filename to load, in the system encoding
+ * @get_buffer_callback: a Python callable returning writeable arrays
+ * returns: a dict of flags describing what was read.
+ *
+ * Read a PNG progressively as 8bit RGBA. The callback must have the signature
+ *
+ *   numpy_array = callback(full_image_width, full_image_height)
+ *
+ * @get_buffer_callback  must return a writeable array of the image width.  If
+ * the height is smaller than the image height, the callback will be called
+ * again until the full image has been processed. The buffer will be written
+ * with 8-bit RGBA data
+ *
+ * In the return dict, a true value for the "possible_legacy_png" key means
+ * that no colour management chunks were found. This *might* be due to the PNG
+ * file being a file written by an old version of MyPaint. Those versions
+ * assumed sRGB in, sRGB out, but also used incorrect nonlinear compositing.
+ * The flag is meaningful in (some) ORA files, not so much when loading a PNG.
+ */
+
+PyObject *
+load_png_fast_progressive (char *filename,
+                           PyObject *get_buffer_callback)
 {
   // Note: we are not using the method that libpng calls "Reading PNG
   // files progressively". That method would involve feeding the data
@@ -168,26 +208,65 @@ PyObject * load_png_fast_progressive(char * filename,
   png_structp png_ptr = NULL;
   png_infop info_ptr = NULL;
   PyObject * result = NULL;
-  //int bpc;
-  FILE * fp = NULL;
-  int width, height;
-  int rows_left;
-  int color_type, bit_depth;
+  FILE *fp = NULL;
+  uint32_t width, height;
+  uint32_t rows_left;
+  png_byte color_type;
+  png_byte bit_depth;
   bool have_alpha;
+
+  // ICC profile-based colour conversion data.
+  png_charp icc_profile_name = NULL;
+  int icc_compression_type = 0;
+  png_charp icc_profile = NULL;
+  png_uint_32 icc_proflen = 0;
+
+  // The sRGB flag has an intent field, which we ignore - 
+  // the target gamut is sRGB already.
+  int srgb_intent = 0;
+
+  // Generic RGB space conversion params.
+  // The assumptions we're making are those of sRGB,
+  // but they'll be overridden by gammas or primaries in the file if used.
+  bool generic_rgb_have_gAMA = false;
+  bool generic_rgb_have_cHRM = false;
+  double generic_rgb_file_gamma = 45455 / PNG_gAMA_scale;
+  double generic_rgb_white_x = 31270 / PNG_cHRM_scale;
+  double generic_rgb_white_y = 32900 / PNG_cHRM_scale;
+  double generic_rgb_red_x   = 64000 / PNG_cHRM_scale;
+  double generic_rgb_red_y   = 33000 / PNG_cHRM_scale;
+  double generic_rgb_green_x = 30000 / PNG_cHRM_scale;
+  double generic_rgb_green_y = 60000 / PNG_cHRM_scale;
+  double generic_rgb_blue_x  = 15000 / PNG_cHRM_scale;
+  double generic_rgb_blue_y  =  6000 / PNG_cHRM_scale;
+
+  // Indicates the case where no CM information was present in the file and we
+  // treated it as sRGB.
+  bool possible_legacy_png = false;
+
+  // LCMS stuff
+  cmsHPROFILE input_buffer_profile = NULL;
+  cmsHPROFILE nparray_data_profile = cmsCreate_sRGBProfile();
+  cmsHTRANSFORM input_buffer_to_nparray = NULL;
+  cmsToneCurve *gamma_transfer_func = NULL;
+
+  cmsSetLogErrorHandler(log_lcms2_error);
 
   fp = fopen(filename, "rb");
   if (!fp) {
     PyErr_SetFromErrno(PyExc_IOError);
-    //PyErr_Format(PyExc_IOError, "Could not open PNG file for writing: %s", filename);
+    //PyErr_Format(PyExc_IOError, "Could not open PNG file for writing: %s",
+    //             filename);
     goto cleanup;
   }
 
-  png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, (png_voidp)NULL, png_read_error_callback, NULL);
+  png_ptr = png_create_read_struct (PNG_LIBPNG_VER_STRING, (png_voidp)NULL,
+                                    png_read_error_callback, NULL);
   if (!png_ptr) {
     PyErr_SetString(PyExc_MemoryError, "png_create_write_struct() failed");
     goto cleanup;
   }
-  
+
   info_ptr = png_create_info_struct(png_ptr);
   if (!info_ptr) {
     PyErr_SetString(PyExc_MemoryError, "png_create_info_struct() failed");
@@ -201,10 +280,73 @@ PyObject * load_png_fast_progressive(char * filename,
   png_init_io(png_ptr, fp);
 
   png_read_info(png_ptr, info_ptr);
-  
-  if (png_get_interlace_type(png_ptr, info_ptr) != PNG_INTERLACE_NONE) {
-    PyErr_SetString(PyExc_RuntimeError, "Interlaced PNG files are not supported!");
-  } 
+
+  // If there's an embedded ICC profile, use it in preference to any other
+  // colour management information present.
+  if (png_get_iCCP (png_ptr, info_ptr, &icc_profile_name,
+                    &icc_compression_type, &icc_profile,
+                    &icc_proflen))
+  {
+    printf("fastpng: iCCP name: \"%s\"\n", icc_profile_name);
+    printf("fastpng: iCCP length: %ld\n", icc_proflen);
+    input_buffer_profile = cmsOpenProfileFromMem(icc_profile, icc_proflen);
+    if (! input_buffer_profile) {
+      PyErr_SetString(PyExc_MemoryError, "cmsOpenProfileFromMem() failed");
+      goto cleanup;
+    }
+  }
+
+  // Shorthand for sRGB.
+  else if (png_get_sRGB (png_ptr, info_ptr, &srgb_intent)) {
+    printf("fastpng: data is explicitly sRGB (intent=%d)\n", srgb_intent);
+    input_buffer_profile = cmsCreate_sRGBProfile();
+  }
+
+  else {
+    // We might have generic RGB transformation information in the form of
+    // the chromaticities for R, G and B and a generic gamma curve.
+
+    if (png_get_cHRM (png_ptr, info_ptr,
+                      &generic_rgb_white_x, &generic_rgb_white_y,
+                      &generic_rgb_red_x, &generic_rgb_red_y,
+                      &generic_rgb_green_x, &generic_rgb_green_y,
+                      &generic_rgb_blue_x, &generic_rgb_blue_y))
+    {
+      printf("fastpng: found cHRM (generic rgb primaries and white point)\n");
+      generic_rgb_have_cHRM = true;
+    }
+    if (png_get_gAMA(png_ptr, info_ptr, &generic_rgb_file_gamma)) {
+      printf("fastpng: found generic rgb gAMA %0.3f\n", generic_rgb_file_gamma);
+      generic_rgb_have_gAMA = true;
+    }
+    if (generic_rgb_have_gAMA || generic_rgb_have_cHRM) {
+      cmsCIExyYTRIPLE primaries = {{generic_rgb_red_x, generic_rgb_red_y},
+                                   {generic_rgb_green_x, generic_rgb_green_y},
+                                   {generic_rgb_blue_x, generic_rgb_blue_y}};
+      cmsCIExyY white_point = {generic_rgb_white_x, generic_rgb_white_y};
+      gamma_transfer_func = cmsBuildGamma(NULL, generic_rgb_file_gamma);
+      cmsToneCurve *transfer_funcs[3] = {gamma_transfer_func,
+                                         gamma_transfer_func,
+                                         gamma_transfer_func };
+      input_buffer_profile = cmsCreateRGBProfile(&white_point, &primaries,
+                                                transfer_funcs);
+    }
+
+    // Possible legacy PNG, or rather one which might have been written with an
+    // old version of MyPaint. Treat as sRGB, but flag the strangeness because
+    // it might be important for PNGs in old OpenRaster files.
+    else {
+      printf("fastpng: no iCCP, sRGB, cHRM, or gAMA.\n");
+      possible_legacy_png = true;
+      input_buffer_profile = cmsCreate_sRGBProfile();
+    }
+  }
+
+  if (png_get_interlace_type (png_ptr, info_ptr) != PNG_INTERLACE_NONE) {
+    PyErr_SetString(PyExc_RuntimeError,
+                    "Interlaced PNG files are not supported!");
+    goto cleanup;
+  }
 
   color_type = png_get_color_type(png_ptr, info_ptr);
   bit_depth = png_get_bit_depth(png_ptr, info_ptr);
@@ -213,7 +355,7 @@ PyObject * load_png_fast_progressive(char * filename,
   if (color_type == PNG_COLOR_TYPE_PALETTE) {
     png_set_palette_to_rgb(png_ptr);
   }
-  
+
   if (color_type == PNG_COLOR_TYPE_GRAY && bit_depth < 8) {
     png_set_expand_gray_1_2_4_to_8(png_ptr);
   }
@@ -223,8 +365,9 @@ PyObject * load_png_fast_progressive(char * filename,
     have_alpha = true;
   }
 
-  if (bit_depth == 16) png_set_strip_16(png_ptr);
-  if (bit_depth < 8) png_set_packing(png_ptr);
+  if (bit_depth < 8) {
+    png_set_packing(png_ptr);
+  }
 
   if (!have_alpha) {
     png_set_add_alpha(png_ptr, 0xFF, PNG_FILLER_AFTER);
@@ -235,72 +378,118 @@ PyObject * load_png_fast_progressive(char * filename,
     png_set_gray_to_rgb(png_ptr);
   }
 
-  // TODO: do we need gamma transformation, or can we just assume
-  //       sRGB in, sRGB out?
-
   png_read_update_info(png_ptr, info_ptr);
 
   // Verify what we have done
-  if (png_get_bit_depth(png_ptr, info_ptr) != 8) {
-    PyErr_SetString(PyExc_RuntimeError, "Failed to convince libpng to convert to 8 bits per channel");
+  bit_depth = png_get_bit_depth(png_ptr, info_ptr);
+  if (! (bit_depth == 8 || bit_depth == 16)) {
+    PyErr_SetString(PyExc_RuntimeError, "Failed to convince libpng to convert "
+                                        "to 8 or 16 bits per channel");
     goto cleanup;
   }
   if (png_get_color_type(png_ptr, info_ptr) != PNG_COLOR_TYPE_RGB_ALPHA) {
-    PyErr_SetString(PyExc_RuntimeError, "Failed to convince libpng to convert to RGBA (wrong color_type)");
+    PyErr_SetString(PyExc_RuntimeError, "Failed to convince libpng to convert "
+                                        "to RGBA (wrong color_type)");
     goto cleanup;
   }
   if (png_get_channels(png_ptr, info_ptr) != 4) {
-    PyErr_SetString(PyExc_RuntimeError, "Failed to convince libpng to convert to RGBA (wrong number of channels)");
+    PyErr_SetString(PyExc_RuntimeError, "Failed to convince libpng to convert "
+                                        "to RGBA (wrong number of channels)");
     goto cleanup;
   }
+
+  input_buffer_to_nparray = cmsCreateTransform
+        (input_buffer_profile, ((bit_depth == 8) ? TYPE_RGBA_8 : TYPE_RGBA_16),
+         nparray_data_profile, TYPE_RGBA_8,
+         INTENT_PERCEPTUAL, 0);
 
   width = png_get_image_width(png_ptr, info_ptr);
   height = png_get_image_height(png_ptr, info_ptr);
   rows_left = height;
-  
-  while (rows_left) {
-    PyObject * arr;
-    int rows, row;
-    png_bytep * row_pointers;
-    
-    arr = PyObject_CallFunction(get_buffer_callback, "ii", width, height);
-    if (!arr) goto cleanup;
-#ifdef HEAVY_DEBUG
-    //assert(PyArray_ISCARRAY(arr));
-    assert(PyArray_NDIM(arr) == 3);
-    assert(PyArray_DIM(arr, 1) == width);
-    assert(PyArray_DIM(arr, 2) == 4);
-    assert(PyArray_TYPE(arr) == NPY_UINT8);
-    assert(PyArray_ISBEHAVED(arr));
-    assert(PyArray_STRIDE(arr, 1) == 4*sizeof(uint8_t));
-    assert(PyArray_STRIDE(arr, 2) ==   sizeof(uint8_t));
-#endif
-    rows = PyArray_DIM(arr, 0);
 
-    if (rows > rows_left) {
-      PyErr_Format(PyExc_RuntimeError, "Attempt to read %d rows from the PNG, but only %d are left", rows, rows_left);
+  while (rows_left) {
+    PyObject *pyarr = NULL;
+    uint32_t rows = 0;
+    uint32_t row = 0;
+    const uint8_t input_buf_bytes_per_pixel = (bit_depth==8) ? 4 : 8;
+    const uint32_t input_buf_row_stride = sizeof(png_byte) * width
+                                          * input_buf_bytes_per_pixel;
+    png_byte *input_buffer = NULL;
+    png_bytep *input_buf_row_pointers = NULL;
+
+    pyarr = PyObject_CallFunction(get_buffer_callback, "ii", width, height);
+    if (! pyarr) {
+      PyErr_Format(PyExc_RuntimeError, "Get-buffer callback failed");
       goto cleanup;
     }
-    
-    row_pointers = (png_bytep*)malloc(rows*sizeof(png_bytep));
-    for (row=0; row<rows; row++) {
-      row_pointers[row] = (png_bytep)PyArray_DATA(arr) + row*PyArray_STRIDE(arr, 0);
+#ifdef HEAVY_DEBUG
+    //assert(PyArray_ISCARRAY(arr));
+    assert(PyArray_NDIM(pyarr) == 3);
+    assert(PyArray_DIM(pyarr, 1) == width);
+    assert(PyArray_DIM(pyarr, 2) == 4);
+    assert(PyArray_TYPE(pyarr) == NPY_UINT8);
+    assert(PyArray_ISBEHAVED(ppyarr));
+    assert(PyArray_STRIDE(pyarr, 1) == 4*sizeof(uint8_t));
+    assert(PyArray_STRIDE(pyarr, 2) ==   sizeof(uint8_t));
+#endif
+    rows = PyArray_DIM(pyarr, 0);
+
+    if (rows > rows_left) {
+      PyErr_Format(PyExc_RuntimeError,
+                   "Attempt to read %d rows from the PNG, "
+                   "but only %d are left",
+                   rows, rows_left);
+      goto cleanup;
     }
 
-    png_read_rows(png_ptr, row_pointers, NULL, rows);
+    input_buffer = (png_byte *) malloc(rows * input_buf_row_stride);
+    input_buf_row_pointers = (png_bytep *)malloc(rows * sizeof(png_bytep));
+    for (row=0; row<rows; row++) {
+      input_buf_row_pointers[row] = input_buffer + (row * input_buf_row_stride);
+    }
+
+    png_read_rows(png_ptr, input_buf_row_pointers, NULL, rows);
     rows_left -= rows;
 
-    free(row_pointers);
-    Py_DECREF(arr);
+    for (row=0; row<rows; row++) {
+      uint8_t *pyarr_row = (uint8_t *)PyArray_DATA(pyarr)
+                         + row*PyArray_STRIDE(pyarr, 0);
+      uint8_t *input_row = input_buf_row_pointers[row];
+      // Really minimal fake colour management. Just remaps to sRGB.
+      cmsDoTransform(input_buffer_to_nparray, input_row, pyarr_row, width);
+      // lcms2 ignores alpha, so copy that verbatim
+      // If it's 8bpc RGBA, use A.
+      // If it's 16bpc RrGgBbAa, use A (hopefully it's big-endian).
+      for (uint32_t i=0; i<width; ++i) {
+        const uint32_t pyarr_alpha_byte = (i*4) + 3;
+        const uint32_t buf_alpha_byte = (i*input_buf_bytes_per_pixel)
+                                       + ((bit_depth==8) ? 3 : 6);
+        pyarr_row[pyarr_alpha_byte] = input_row[buf_alpha_byte];
+      }
+    }
+
+    free(input_buf_row_pointers);
+    free(input_buffer);
+
+    Py_DECREF(pyarr);
   }
-  
+
   png_read_end(png_ptr, NULL);
 
-  Py_INCREF(Py_None);
-  result = Py_None;
+  result = Py_BuildValue("{s:b,s:i,s:i}",
+                         "possible_legacy_png", possible_legacy_png,
+                         "width", width,
+                         "height", height);
 
  cleanup:
   if (info_ptr) png_destroy_read_struct (&png_ptr, &info_ptr, NULL);
+  // libpng's style is to free internally allocated stuff like the icc
+  // tables in png_destroy_*(). I think.
   if (fp) fclose(fp);
+  if (input_buffer_profile) cmsCloseProfile(input_buffer_profile);
+  if (nparray_data_profile) cmsCloseProfile(nparray_data_profile);
+  if (input_buffer_to_nparray) cmsDeleteTransform(input_buffer_to_nparray);
+  if (gamma_transfer_func) cmsFreeToneCurve(gamma_transfer_func);
+
   return result;
 }

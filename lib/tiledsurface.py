@@ -254,9 +254,10 @@ class Surface(mypaintlib.TiledSurface):
                     mypaintlib.tile_convert_rgba8_to_rgba16(src, dst)
 
         filename_sys = filename.encode(sys.getfilesystemencoding()) # FIXME: should not do that, should use open(unicode_object)
-        mypaintlib.load_png_fast_progressive(filename_sys, get_buffer)
+        flags = mypaintlib.load_png_fast_progressive(filename_sys, get_buffer)
         consume_buf() # also process the final chunk of data
-        
+        print flags
+
         dirty_tiles.update(self.tiledict.keys())
         bbox = get_tiles_bbox(dirty_tiles)
         self.notify_observers(*bbox)

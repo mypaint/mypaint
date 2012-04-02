@@ -38,6 +38,7 @@ opts.Update(env)
 
 env.ParseConfig('pkg-config --cflags --libs glib-2.0')
 env.ParseConfig('pkg-config --cflags --libs libpng')
+env.ParseConfig('pkg-config --cflags --libs lcms2')
 
 env.Append(CXXFLAGS=' -Wall -Wno-sign-compare -Wno-write-strings')
 
