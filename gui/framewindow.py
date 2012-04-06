@@ -48,6 +48,8 @@ class Window(windowing.Dialog):
         crop_layer_button.connect('clicked', self.crop_frame_cb, 'CropFrameToLayer')
         crop_document_button.connect('clicked', self.crop_frame_cb, 'CropFrameToDocument')
 
+        hint_label = gtk.Label(_('Hold Ctrl-Shift-Space to move the frame.'))
+
         self.enable_button = gtk.CheckButton(_('Enabled'))
         self.enable_button.connect('toggled', self.on_frame_toggled)
         enabled = self.app.doc.model.frame_enabled
@@ -55,6 +57,7 @@ class Window(windowing.Dialog):
 
         top_vbox = self.get_content_area()
         top_vbox.pack_start(size_table)
+        top_vbox.pack_start(hint_label)
         top_vbox.pack_start(crop_layer_button)
         top_vbox.pack_start(crop_document_button)
         top_vbox.pack_start(self.enable_button)
