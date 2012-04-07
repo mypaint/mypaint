@@ -202,7 +202,7 @@ class Surface(mypaintlib.TiledSurface):
         print 'load_from_numpy', arr.shape
         s = pixbufsurface.Surface(x, y, w, h, data=arr)
         self._load_from_pixbufsurface(s)
-        return (x, y, h, w)
+        return (x, y, w, h)
 
     def load_from_png(self, filename, x, y, feedback_cb=None):
         """Load from a PNG, one tilerow at a time, discarding empty tiles.
