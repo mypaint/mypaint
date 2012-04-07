@@ -110,7 +110,7 @@ def render_as_pixbuf(surface, *rect, **kwargs):
 def save_as_png(surface, filename, *rect, **kwargs):
     alpha = kwargs['alpha']
     feedback_cb = kwargs.get('feedback_cb', None)
-    write_legacy_png = kwargs.get("write_legacy_png", False)
+    write_legacy_png = kwargs.get("write_legacy_png", True)
     if not rect:
         rect = surface.get_bbox()
     x, y, w, h = rect
