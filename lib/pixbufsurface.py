@@ -19,7 +19,7 @@ class Surface:
     This class represents a gdk.Pixbuf (8 bit RGBU or RGBA data) with
     memory also accessible per-tile, compatible with tiledsurface.Surface.
     """
-    def __init__(self, x, y, w, h, alpha=False, data=None):
+    def __init__(self, x, y, w, h, data=None):
         assert w>0 and h>0
         # We create and use a pixbuf enlarged to the tile boundaries internally.
         # Variables ex, ey, ew, eh and epixbuf store the enlarged version.
@@ -40,8 +40,6 @@ class Surface:
         assert self.ew >= w and self.eh >= h
         assert self.ex <= x and self.ey <= y
 
-        self.has_alpha = alpha
-
         self.epixbuf = gdk.Pixbuf(gdk.COLORSPACE_RGB, True, 8, self.ew, self.eh)
         dx = x-self.ex
         dy = y-self.ey
@@ -50,12 +48,7 @@ class Surface:
         assert self.ew <= w + 2*N-2
         assert self.eh <= h + 2*N-2
 
-        if not alpha:
-            if mypaintlib.heavy_debug:
-                # detect uninitialized memory; slows down scrolling slightly
-                self.epixbuf.fill(0xff44ff44)
-        else:
-            self.epixbuf.fill(0x00000000) # keep undefined regions transparent
+        self.epixbuf.fill(0x00000000) # keep undefined regions transparent
 
         arr = helpers.gdkpixbuf2numpy(self.epixbuf)
 
@@ -63,11 +56,16 @@ class Surface:
 
         if data is not None:
             dst = arr[dy:dy+h,dx:dx+w,:]
-            assert data.shape[2] == 4, 'rgbu or rgba expected, not rgb'
-            dst[:,:,:] = data
-            if self.has_alpha:
-                # this surface will be used read-only
+            if data.shape[2] == 4:
+                dst[:,:,:] = data
+                print 'discard_tr'
                 discard_transparent = True
+            else:
+                assert data.shape[2] == 3
+                print 'no alpha'
+                # no alpha channel
+                dst[:,:,:3] = data
+                dst[:,:,3] = 255
 
         self.tile_memory_dict = {}
         for ty in range(th):
@@ -101,7 +99,7 @@ def render_as_pixbuf(surface, *rect, **kwargs):
     if not rect:
         rect = surface.get_bbox()
     x, y, w, h, = rect
-    s = Surface(x, y, w, h, alpha)
+    s = Surface(x, y, w, h)
     tn = 0
     for tx, ty in s.get_tiles():
         dst = s.get_tile_memory(tx, ty)

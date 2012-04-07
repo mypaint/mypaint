@@ -199,17 +199,10 @@ class Surface(mypaintlib.TiledSurface):
     def load_from_numpy(self, arr, x, y):
         assert arr.dtype == 'uint8'
         h, w, channels = arr.shape
-        if channels == 3:
-            if h > 512 or w > 512:
-                # this happens when loading JPEG
-                print 'WARNING: tiledsurface.py load_from_numpy: converting %dx%d array from RGB to RGBU, this could be avoided' % (w, h)
-            arr2 = empty((h, w, 4), dtype='uint8')
-            arr2[:,:,:3] = arr
-            arr2[:,:,3] = 255
-            s = pixbufsurface.Surface(x, y, w, h, alpha=False, data=arr2)
-        else:
-            s = pixbufsurface.Surface(x, y, w, h, alpha=True, data=arr)
+        print 'load_from_numpy', arr.shape
+        s = pixbufsurface.Surface(x, y, w, h, data=arr)
         self._load_from_pixbufsurface(s)
+        return (x, y, h, w)
 
     def load_from_png(self, filename, x, y, feedback_cb=None):
         """Load from a PNG, one tilerow at a time, discarding empty tiles.
@@ -220,8 +213,10 @@ class Surface(mypaintlib.TiledSurface):
         state = {}
         state['buf'] = None # array of height N, width depends on image
         state['ty'] = y/N # current tile row being filled into buf
+        state['frame_size'] = None
 
         def get_buffer(png_w, png_h):
+            state['frame_size'] = x, y, png_w, png_h
             if feedback_cb:
                 feedback_cb()
             buf_x0 = x/N*N
@@ -266,6 +261,9 @@ class Surface(mypaintlib.TiledSurface):
         dirty_tiles.update(self.tiledict.keys())
         bbox = get_tiles_bbox(dirty_tiles)
         self.notify_observers(*bbox)
+
+        # return the bbox of the loaded image
+        return state['frame_size']
 
     def render_as_pixbuf(self, *args, **kwargs):
         if not self.tiledict:

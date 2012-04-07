@@ -495,11 +495,11 @@ class TiledDrawWidget(gtk.DrawingArea):
         x1, y1 = int(floor(x1)), int(floor(y1))
         x2, y2 = int(ceil (x2)), int(ceil (y2))
 
-        # alpha=True is just to get hardware acceleration, we don't
-        # actually use the alpha channel. Speedup factor 3 for
+        # We render with alpha just to get hardware acceleration, we
+        # don't actually use the alpha channel. Speedup factor 3 for
         # ATI/Radeon Xorg driver (and hopefully others).
         # https://bugs.freedesktop.org/show_bug.cgi?id=28670
-        surface = pixbufsurface.Surface(x1, y1, x2-x1+1, y2-y1+1, alpha=True)
+        surface = pixbufsurface.Surface(x1, y1, x2-x1+1, y2-y1+1)
 
         del x1, y1, x2, y2, w, h
 

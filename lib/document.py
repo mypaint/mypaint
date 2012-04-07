@@ -295,13 +295,15 @@ class Document():
     def load_layer_from_pixbuf(self, pixbuf, x=0, y=0):
         arr = helpers.gdkpixbuf2numpy(pixbuf)
         s = tiledsurface.Surface()
-        s.load_from_numpy(arr, x, y)
+        bbox = s.load_from_numpy(arr, x, y)
         self.do(command.LoadLayer(self, s))
+        return bbox
 
     def load_layer_from_png(self, filename, x=0, y=0, feedback_cb=None):
         s = tiledsurface.Surface()
-        s.load_from_png(filename, x, y, feedback_cb)
+        bbox = s.load_from_png(filename, x, y, feedback_cb)
         self.do(command.LoadLayer(self, s))
+        return bbox
 
     def set_layer_visibility(self, visible, layer):
         cmd = self.get_last_command()
@@ -344,8 +346,8 @@ class Document():
     def load_from_pixbuf(self, pixbuf):
         """Load a document from a pixbuf."""
         self.clear()
-        self.load_layer_from_pixbuf(pixbuf)
-        self.set_frame(*self.get_bbox())
+        bbox = self.load_layer_from_pixbuf(pixbuf)
+        self.set_frame(*bbox)
 
     def is_layered(self):
         count = 0
@@ -445,8 +447,8 @@ class Document():
 
     def load_png(self, filename, feedback_cb=None):
         self.clear()
-        self.load_layer_from_png(filename, 0, 0, feedback_cb)
-        self.set_frame(*self.get_bbox())
+        bbox = self.load_layer_from_png(filename, 0, 0, feedback_cb)
+        self.set_frame(*bbox)
 
     @staticmethod
     def _pixbuf_from_stream(fp, feedback_cb=None):
