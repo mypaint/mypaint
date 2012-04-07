@@ -249,6 +249,7 @@ load_png_fast_progressive (char *filename,
   cmsHPROFILE nparray_data_profile = cmsCreate_sRGBProfile();
   cmsHTRANSFORM input_buffer_to_nparray = NULL;
   cmsToneCurve *gamma_transfer_func = NULL;
+  cmsUInt32Number input_buffer_format = 0;
 
   cmsSetLogErrorHandler(log_lcms2_error);
 
@@ -398,8 +399,22 @@ load_png_fast_progressive (char *filename,
     goto cleanup;
   }
 
+  // PNGs use network byte order, i.e. big-endian in descending order
+  // of bit significance. LittleCMS uses whatever's detected for the compiler.
+  // ref: http://www.w3.org/TR/2003/REC-PNG-20031110/#7Integers-and-byte-order
+  if (bit_depth == 16) {
+#ifdef CMS_USE_BIG_ENDIAN
+    input_buffer_format = TYPE_RGBA_16;
+#else
+    input_buffer_format = TYPE_RGBA_16_SE;
+#endif
+  }
+  else {
+    input_buffer_format = TYPE_RGBA_8;
+  }
+
   input_buffer_to_nparray = cmsCreateTransform
-        (input_buffer_profile, ((bit_depth == 8) ? TYPE_RGBA_8 : TYPE_RGBA_16),
+        (input_buffer_profile, input_buffer_format,
          nparray_data_profile, TYPE_RGBA_8,
          INTENT_PERCEPTUAL, 0);
 
@@ -459,7 +474,7 @@ load_png_fast_progressive (char *filename,
       cmsDoTransform(input_buffer_to_nparray, input_row, pyarr_row, width);
       // lcms2 ignores alpha, so copy that verbatim
       // If it's 8bpc RGBA, use A.
-      // If it's 16bpc RrGgBbAa, use A (hopefully it's big-endian).
+      // If it's 16bpc RrGgBbAa, use A.
       for (uint32_t i=0; i<width; ++i) {
         const uint32_t pyarr_alpha_byte = (i*4) + 3;
         const uint32_t buf_alpha_byte = (i*input_buf_bytes_per_pixel)
