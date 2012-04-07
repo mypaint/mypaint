@@ -58,11 +58,9 @@ class Surface:
             dst = arr[dy:dy+h,dx:dx+w,:]
             if data.shape[2] == 4:
                 dst[:,:,:] = data
-                print 'discard_tr'
                 discard_transparent = True
             else:
                 assert data.shape[2] == 3
-                print 'no alpha'
                 # no alpha channel
                 dst[:,:,:3] = data
                 dst[:,:,3] = 255

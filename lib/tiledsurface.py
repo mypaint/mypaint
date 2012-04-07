@@ -199,7 +199,6 @@ class Surface(mypaintlib.TiledSurface):
     def load_from_numpy(self, arr, x, y):
         assert arr.dtype == 'uint8'
         h, w, channels = arr.shape
-        print 'load_from_numpy', arr.shape
         s = pixbufsurface.Surface(x, y, w, h, data=arr)
         self._load_from_pixbufsurface(s)
         return (x, y, w, h)

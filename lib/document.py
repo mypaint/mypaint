@@ -615,14 +615,6 @@ class Document():
         w = int(image.attrib['w'])
         h = int(image.attrib['h'])
 
-        def round_up_to_n(value, n):
-            assert value >= 0, "function undefined for negative numbers"
-
-            residual = value % n
-            if residual:
-                value = value - residual + n
-            return int(value)
-
         def get_pixbuf(filename):
             t1 = time.time()
 
@@ -657,8 +649,7 @@ class Document():
 
         self.clear() # this leaves one empty layer
         no_background = True
-        # FIXME: don't require tile alignment for frame
-        self.set_frame(width=round_up_to_n(w, N), height=round_up_to_n(h, N))
+        self.set_frame(width=w, height=h)
 
         selected_layer = None
         for layer in get_layers_list(stack):
