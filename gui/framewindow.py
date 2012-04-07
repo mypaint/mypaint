@@ -15,13 +15,8 @@ class Window(windowing.Dialog):
 
         x, y, w, h = self.app.doc.model.get_frame()
 
-        # FIXME: don't limit frame to multiples of N
-        # Requires PNG saving to support saving of partial tiles
-        # See lib/pixbufsurface.py save_as_png()
-        tile_size = tiledsurface.N
-        max_size = tile_size*500
-        self.width_adj = gtk.Adjustment(w, upper=max_size, step_incr=tile_size, page_incr=tile_size*4)
-        self.height_adj = gtk.Adjustment(h, upper=max_size, step_incr=tile_size, page_incr=tile_size*4)
+        self.width_adj  = gtk.Adjustment(w, upper=32000, lower=1, step_incr=1, page_incr=128)
+        self.height_adj = gtk.Adjustment(h, upper=32000, lower=1, step_incr=1, page_incr=128)
 
         self.width_adj.connect('value-changed', self.on_size_adjustment_changed)
         self.height_adj.connect('value-changed', self.on_size_adjustment_changed)
@@ -92,15 +87,6 @@ class Window(windowing.Dialog):
         width = int(self.width_adj.get_value())
         height = int(self.height_adj.get_value())
 
-        N = tiledsurface.N
-        rwidth = N * (abs(width) // N)
-        rheight = N * (abs(height) // N)
-        if width != rwidth:
-            width = rwidth
-            self.width_adj.set_value(width)
-        if height != rheight:
-            height = rheight
-            self.height_adj.set_value(height)
         self.app.doc.model.set_frame(width=width, height=height)
 
     def on_frame_changed(self):

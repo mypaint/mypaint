@@ -71,12 +71,9 @@ class Document():
     def get_frame(self):
         return self._frame
 
-    def move_frame(self, dx=0.0, dy=0.0):
+    def move_frame(self, dx, dy):
         """Move the frame. Accumulates changes and moves the frame once
-        the accumulated change reaches the minimum move step."""
-        # FIXME: Should be 1 (pixel aligned), not tile aligned
-        # This is due to PNG saving having to be tile aligned
-        min_step = N
+        the accumulated change reaches one pixel."""
 
         def round_to_n(value, n):
             return int(round(value/n)*n)
@@ -85,8 +82,8 @@ class Document():
 
         self._frame_dx += dx
         self._frame_dy += dy
-        step_x = round_to_n(self._frame_dx, min_step)
-        step_y = round_to_n(self._frame_dy, min_step)
+        step_x = int(round(self._frame_dx))
+        step_y = int(round(self._frame_dy))
 
         if step_x:
             self.set_frame(x=x+step_x)
@@ -101,9 +98,7 @@ class Document():
 
         for i, var in enumerate([x, y, width, height]):
             if not var is None:
-                # FIXME: must be aligned to tile size due to PNG saving
-                assert not var % N, "Frame size must be aligned to tile size"
-                self._frame[i] = var
+                self._frame[i] = int(var)
 
         for f in self.frame_observers: f()
 

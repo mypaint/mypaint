@@ -270,6 +270,32 @@ def docPaint():
     assert pngs_equal('test_docPaint_flat.png', 'correct_docPaint_flat.png')
     assert pngs_equal('test_docPaint_alpha.png', 'correct_docPaint_alpha.png')
 
+def saveFrame():
+    print 'test-saving various frame sizes...'
+    cnt=0
+    doc = document.Document()
+    #doc.load('bigimage.ora')
+    doc.set_frame_enabled(True)
+    s = tiledsurface.Surface()
+
+    N = mypaintlib.TILE_SIZE
+    positions = range(-1, +2) + range(-N-1, -N+2) + range(+N-1, +N+2)
+    for x1 in positions:
+        for x2 in positions:
+            for y1 in positions:
+                for y2 in positions:
+                    if x2 <= x1 or y2 <= y1:
+                        continue
+                    cnt += 1
+                    x, y, w, h = x1, y1, x2-x1, y2-y1
+                    #print x, y, w, h
+                    s.save_as_png('test_saveFrame_s.png', x, y, w, h)
+                    doc.set_frame(x=x, y=y, width=w, height=h)
+                    #doc.save('test_saveFrame_doc_%dx%d.png' % (w,h))
+                    doc.save('test_saveFrame_doc.png')
+                    doc.save('test_saveFrame_doc.jpg')
+    print 'checked', cnt, 'different rectangles'
+
 from optparse import OptionParser
 parser = OptionParser('usage: %prog [options]')
 options, tests = parser.parse_args()
@@ -279,5 +305,6 @@ layerModes()
 directPaint()
 brushPaint()
 docPaint()
+saveFrame()
 
 print 'Tests passed.'

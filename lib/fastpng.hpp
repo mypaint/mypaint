@@ -18,13 +18,14 @@ static void png_write_error_callback(png_structp png_save_ptr, png_const_charp e
 #endif
 
 PyObject * save_png_fast_progressive(char * filename, int w, int h, bool has_alpha,
-                                     PyObject * get_data_callback)
+                                     PyObject * data_generator)
 {
   png_structp png_ptr = NULL;
   png_infop info_ptr = NULL;
   PyObject * result = NULL;
   int bpc;
   FILE * fp = NULL;
+  PyObject *iterator = NULL;
 
   /* TODO: try if this silliness helps
 #if defined(PNG_LIBPNG_VER) && (PNG_LIBPNG_VER >= 10200)
@@ -88,20 +89,22 @@ PyObject * save_png_fast_progressive(char * filename, int w, int h, bool has_alp
   }
 
   {
+    iterator = PyObject_GetIter(data_generator);
+    if (!iterator) goto cleanup;
+
     int y = 0;
     while (y < h) {
-      PyObject * arr;
       int rows;
-      arr = PyObject_CallObject(get_data_callback, NULL);
-
-      if (!arr) goto cleanup;
-#ifdef HEAVY_DEBUG
-      assert(PyArray_ISCARRAY(arr));
+      PyObject * arr = PyIter_Next(iterator);
+      if (PyErr_Occurred()) goto cleanup;
+      assert(arr); // iterator should have data
+      assert(PyArray_ISALIGNED(arr));
       assert(PyArray_NDIM(arr) == 3);
       assert(PyArray_DIM(arr, 1) == w);
       assert(PyArray_DIM(arr, 2) == 4); // rgbu
       assert(PyArray_TYPE(arr) == NPY_UINT8);
-#endif
+      assert(PyArray_STRIDE(arr, 1) == 4);
+      assert(PyArray_STRIDE(arr, 2) == 1);
 
       rows = PyArray_DIM(arr, 0);
       assert(rows > 0);
@@ -109,11 +112,14 @@ PyObject * save_png_fast_progressive(char * filename, int w, int h, bool has_alp
       png_bytep p = (png_bytep)PyArray_DATA(arr);
       for (int row=0; row<rows; row++) {
         png_write_row (png_ptr, p);
-        p += w * PyArray_DIM(arr, 2);
+        p += PyArray_STRIDE(arr, 0);
       }
       Py_DECREF(arr);
     }
     assert(y == h);
+    PyObject * obj = PyIter_Next(iterator);
+    assert(!obj); // iterator should be finished
+    if (PyErr_Occurred()) goto cleanup;
   }
   
   png_write_end (png_ptr, NULL);
@@ -122,7 +128,8 @@ PyObject * save_png_fast_progressive(char * filename, int w, int h, bool has_alp
   result = Py_None;
 
  cleanup:
-  if (info_ptr) png_destroy_write_struct (&png_ptr, &info_ptr);
+  if (iterator) Py_DECREF(iterator);
+  if (info_ptr) png_destroy_write_struct(&png_ptr, &info_ptr);
   if (fp) fclose(fp);
   return result;
 }
