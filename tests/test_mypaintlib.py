@@ -25,7 +25,7 @@ def tileConversions():
 def layerModes():
     N = mypaintlib.TILE_SIZE
 
-    dst = zeros((N, N, 3), 'uint16')
+    dst = zeros((N, N, 4), 'uint16') # rgbu
     dst_values = []
     r1 = range(0, 20)
     r2 = range((1<<15)/2-10, (1<<15)/2+10)
@@ -65,24 +65,22 @@ def layerModes():
     for name in dir(mypaintlib):
         if not name.startswith('tile_composite_'):
             continue
-        junk1, junk2, src_format, mode, dst_format = name.split('_')
-        if src_format == 'rgba16' and dst_format == 'rgb16':
-            print 'testing', name, 'for invalid output'
-            f = getattr(mypaintlib, name)
-            for dst_value in dst_values:
-                for alpha in [1.0, 0.999, 0.99, 0.90, 0.51, 0.50, 0.49, 0.01, 0.001, 0.0]:
-                    dst[:] = dst_value
-                    alpha = 1.0
-                    f(src, dst, alpha)
-                    #imshow(dst[:,:,0], interpolation='nearest')
-                    #gray()
-                    #colorbar()
-                    #show()
-                    errors = dst > (1<<15)
-                    assert not errors.any()
-            print 'passed'
-        else:
-            print 'not testing', name
+        junk1, junk2, mode = name.split('_', 2)
+        print 'testing', name, 'for invalid output'
+        f = getattr(mypaintlib, name)
+        for dst_value in dst_values:
+            for alpha in [1.0, 0.999, 0.99, 0.90, 0.51, 0.50, 0.49, 0.01, 0.001, 0.0]:
+                dst[:] = dst_value
+                dst_has_alpha = False
+                src_opacity = alpha
+                f(src, dst, dst_has_alpha, src_opacity)
+                #imshow(dst[:,:,0], interpolation='nearest')
+                #gray()
+                #colorbar()
+                #show()
+                errors = dst > (1<<15)
+                assert not errors.any()
+        print 'passed'
 
 def directPaint():
 
