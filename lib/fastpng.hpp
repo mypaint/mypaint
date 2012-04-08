@@ -214,6 +214,7 @@ load_png_fast_progressive (char *filename,
   png_byte color_type;
   png_byte bit_depth;
   bool have_alpha;
+  char *cm_processing = NULL;
 
   // ICC profile-based colour conversion data.
   png_charp icc_profile_name = NULL;
@@ -288,19 +289,18 @@ load_png_fast_progressive (char *filename,
                     &icc_compression_type, &icc_profile,
                     &icc_proflen))
   {
-    printf("fastpng: iCCP name: \"%s\"\n", icc_profile_name);
-    printf("fastpng: iCCP length: %ld\n", icc_proflen);
     input_buffer_profile = cmsOpenProfileFromMem(icc_profile, icc_proflen);
     if (! input_buffer_profile) {
       PyErr_SetString(PyExc_MemoryError, "cmsOpenProfileFromMem() failed");
       goto cleanup;
     }
+    cm_processing = "iCCP (use embedded colour profile)";
   }
 
   // Shorthand for sRGB.
   else if (png_get_sRGB (png_ptr, info_ptr, &srgb_intent)) {
-    printf("fastpng: data is explicitly sRGB (intent=%d)\n", srgb_intent);
     input_buffer_profile = cmsCreate_sRGBProfile();
+    cm_processing = "sRGB (explicit sRGB chunk)";
   }
 
   else {
@@ -313,11 +313,9 @@ load_png_fast_progressive (char *filename,
                       &generic_rgb_green_x, &generic_rgb_green_y,
                       &generic_rgb_blue_x, &generic_rgb_blue_y))
     {
-      printf("fastpng: found cHRM (generic rgb primaries and white point)\n");
       generic_rgb_have_cHRM = true;
     }
     if (png_get_gAMA(png_ptr, info_ptr, &generic_rgb_file_gamma)) {
-      printf("fastpng: found generic rgb gAMA %0.3f\n", generic_rgb_file_gamma);
       generic_rgb_have_gAMA = true;
     }
     if (generic_rgb_have_gAMA || generic_rgb_have_cHRM) {
@@ -331,15 +329,16 @@ load_png_fast_progressive (char *filename,
                                          gamma_transfer_func };
       input_buffer_profile = cmsCreateRGBProfile(&white_point, &primaries,
                                                 transfer_funcs);
+      cm_processing = "cHRM and/or gAMA (generic RGB space)";
     }
 
     // Possible legacy PNG, or rather one which might have been written with an
     // old version of MyPaint. Treat as sRGB, but flag the strangeness because
     // it might be important for PNGs in old OpenRaster files.
     else {
-      printf("fastpng: no iCCP, sRGB, cHRM, or gAMA.\n");
       possible_legacy_png = true;
       input_buffer_profile = cmsCreate_sRGBProfile();
+      cm_processing = "sRGB (no CM chunks present)";
     }
   }
 
@@ -491,10 +490,11 @@ load_png_fast_progressive (char *filename,
 
   png_read_end(png_ptr, NULL);
 
-  result = Py_BuildValue("{s:b,s:i,s:i}",
+  result = Py_BuildValue("{s:b,s:i,s:i,s:s}",
                          "possible_legacy_png", possible_legacy_png,
                          "width", width,
-                         "height", height);
+                         "height", height,
+                         "cm_conversions_applied", cm_processing);
 
  cleanup:
   if (info_ptr) png_destroy_read_struct (&png_ptr, &info_ptr, NULL);
