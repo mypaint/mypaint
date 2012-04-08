@@ -219,7 +219,11 @@ load_png_fast_progressive (char *filename,
   // ICC profile-based colour conversion data.
   png_charp icc_profile_name = NULL;
   int icc_compression_type = 0;
+#if PNG_LIBPNG_VER < 10500    // 1.5.0beta36, according to libpng CHANGES
   png_charp icc_profile = NULL;
+#else
+  png_bytep icc_profile = NULL;
+#endif
   png_uint_32 icc_proflen = 0;
 
   // The sRGB flag has an intent field, which we ignore - 
