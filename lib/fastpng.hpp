@@ -446,7 +446,7 @@ load_png_fast_progressive (char *filename,
     assert(PyArray_DIM(pyarr, 1) == width);
     assert(PyArray_DIM(pyarr, 2) == 4);
     assert(PyArray_TYPE(pyarr) == NPY_UINT8);
-    assert(PyArray_ISBEHAVED(ppyarr));
+    assert(PyArray_ISBEHAVED(pyarr));
     assert(PyArray_STRIDE(pyarr, 1) == 4*sizeof(uint8_t));
     assert(PyArray_STRIDE(pyarr, 2) ==   sizeof(uint8_t));
 #endif
