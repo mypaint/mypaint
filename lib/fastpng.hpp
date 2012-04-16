@@ -327,7 +327,7 @@ load_png_fast_progressive (char *filename,
                                    {generic_rgb_green_x, generic_rgb_green_y},
                                    {generic_rgb_blue_x, generic_rgb_blue_y}};
       cmsCIExyY white_point = {generic_rgb_white_x, generic_rgb_white_y};
-      gamma_transfer_func = cmsBuildGamma(NULL, generic_rgb_file_gamma);
+      gamma_transfer_func = cmsBuildGamma(NULL, 1.0/generic_rgb_file_gamma);
       cmsToneCurve *transfer_funcs[3] = {gamma_transfer_func,
                                          gamma_transfer_func,
                                          gamma_transfer_func };
