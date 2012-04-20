@@ -127,8 +127,7 @@ class LayerMoveDragFunc (DragFunc):
         self.move = None
 
     def on_update(self, dx, dy, x, y):
-        cr = self.tdw.get_model_coordinates_cairo_context()
-        model_x, model_y = cr.device_to_user(x, y)
+        model_x, model_y = self.tdw.display_to_model(x, y)
         if self.move is None:
             self.move = self.layer.get_move(model_x, model_y)
             self.model_x0 = model_x
@@ -187,9 +186,8 @@ class MoveFrameDragFunc (DragFunc):
         x, y, w, h = self.model.get_frame()
 
         # Find the difference in document coordinates
-        cr = self.tdw.get_model_coordinates_cairo_context()
-        x0, y0 = cr.device_to_user(x, y)
-        x1, y1 = cr.device_to_user(x+dx, y+dy)
+        x0, y0 = self.tdw.display_to_model(x, y)
+        x1, y1 = self.tdw.display_to_model(x+dx, y+dy)
 
         self.model.move_frame(dx=x1-x0, dy=y1-y0)
 

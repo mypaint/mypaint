@@ -153,8 +153,7 @@ def paint_gui(gui):
             t_last_redraw = t
         dtime = t - t_old
         t_old = t
-        cr = tdw.get_model_coordinates_cairo_context()
-        x, y = cr.device_to_user(x, y)
+        x, y = tdw.display_to_model(x, y)
         gui_doc.model.stroke_to(dtime, x, y, pressure, 0.0, 0.0)
 
 @leaktest

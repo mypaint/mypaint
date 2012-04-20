@@ -257,9 +257,7 @@ Rotate holding the Control key."),
                 self.sx, self.sy = self.tdw.last_painting_pos
 
     def update_position(self, x, y):
-        cr = self.tdw.get_model_coordinates_cairo_context()
-        x, y = cr.device_to_user(x, y)
-        self.lx, self.ly = x, y
+        self.lx, self.ly = self.tdw.display_to_model(x, y)
 
     def stop_command(self):
     # End dragfunc
@@ -302,8 +300,7 @@ Rotate holding the Control key."),
         x, y, kbmods = self.tdw.window.get_pointer()
         if last_update:
             return self.lx, self.ly, kbmods
-        cr = self.tdw.get_model_coordinates_cairo_context()
-        x, y = cr.device_to_user(x, y)
+        x, y = self.tdw.display_to_model(x, y)
         return x, y, kbmods
 
     def process_line(self):

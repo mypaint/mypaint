@@ -202,8 +202,7 @@ class LastPaintPosOverlay (FadingOverlay):
             return
         # Clear the current marker
         model_x, model_y = self.current_marker_pos
-        model_cr = self.tdw.get_model_coordinates_cairo_context()
-        x, y = model_cr.user_to_device(model_x, model_y)
+        x, y = self.tdw.model_to_display(model_x, model_y)
         area = self._calc_area(x, y)
         self.tdw.queue_draw_area(*area)
         self.current_marker_pos = None
@@ -215,8 +214,7 @@ class LastPaintPosOverlay (FadingOverlay):
             return
         # Record the new marker position
         model_x, model_y = self.tdw.last_painting_pos
-        model_cr = self.tdw.get_model_coordinates_cairo_context()
-        x, y = model_cr.user_to_device(model_x, model_y)
+        x, y = self.tdw.model_to_display(model_x, model_y)
         area = self._calc_area(x, y)
         self.tdw.queue_draw_area(*area)
         self.current_marker_pos = model_x, model_y
@@ -235,8 +233,7 @@ class LastPaintPosOverlay (FadingOverlay):
             return
         if self.current_marker_pos is None:
             return
-        model_cr = self.tdw.get_model_coordinates_cairo_context()
-        x, y = model_cr.user_to_device(*self.current_marker_pos)
+        x, y = self.tdw.model_to_display(*self.current_marker_pos)
         area = self._calc_area(x, y)
         x = int(x) + 0.5
         y = int(y) + 0.5

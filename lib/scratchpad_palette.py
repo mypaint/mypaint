@@ -41,7 +41,7 @@ def hatch_squiggle(off_x = 0.0, off_y=0.0, scale = 20.0):
     events = []
     t=0.8
     events.append((0.0, off_x, off_y, 0.0))
-    slice_width = scale / 3.0 
+    slice_width = scale / 3.0
     for u in xrange(3):
         # Horizontal stripes
         events.append((t, off_x, (u * slice_width) + off_y, 1.0))
@@ -75,8 +75,7 @@ def draw_palette(app, palette, doc, columns=8, grid_size = 30.0, scale=13.0,
         app.brush.set_color_rgb(palette.rgb(colour_idx))
         # simulate strokes on scratchpad
         for t, x, y, pressure in gen_events:
-            cr = doc.tdw.get_model_coordinates_cairo_context()
-            x, y = cr.device_to_user(x, y)
+            x, y = doc.tdw.display_to_model(x, y)
             doc.model.stroke_to(0.008, x, y, pressure, 0.0, 0.0)
         doc.model.split_stroke()
     app.brush.set_color_rgb(brush_colour)
@@ -98,12 +97,12 @@ class GimpPalette(list):
             header = fp.readline()
             if header[:12] != "GIMP Palette":
                 raise SyntaxError, "not a valid GIMP palette"
-            
+
             limit = 500    # not sure what the max colours are in a Gimp Palette
 
             while (limit != 0):
                 color_line = fp.readline()
-            
+
                 if not color_line:
                     # Empty line = EOF?
                     break

@@ -189,10 +189,11 @@ class TiledDrawWidget(gtk.DrawingArea):
         # cause a visible stroke, even if pressure is 0.0.
         self.doc.brush.reset()
 
+
     def motion_notify_cb(self, widget, event, button1_pressed=None):
         if not self.is_sensitive:
             return
-        
+
         if self.last_event_time:
             dtime = (event.time - self.last_event_time)/1000.0
             dx = event.x - self.last_event_x
@@ -204,7 +205,7 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.last_event_time = event.time
         if dtime is None:
             return
-        
+
         same_device = self.device_used(event.device)
 
         if self.drag_op is not None:
@@ -216,9 +217,8 @@ class TiledDrawWidget(gtk.DrawingArea):
             return
             # TODO: some feedback, maybe
 
-        cr = self.get_model_coordinates_cairo_context()
-        x, y = cr.device_to_user(event.x, event.y)
-        
+        x, y = self.display_to_model(event.x, event.y)
+
         pressure = event.get_axis(gdk.AXIS_PRESSURE)
 
         if pressure is not None and (pressure > 1.0 or pressure < 0.0 or not isfinite(pressure)):
@@ -249,12 +249,12 @@ class TiledDrawWidget(gtk.DrawingArea):
         if xtilt is None or ytilt is None or not isfinite(xtilt+ytilt):
             xtilt = 0.0
             ytilt = 0.0
-        
+
         if event.state & gdk.CONTROL_MASK or event.state & gdk.MOD1_MASK:
             # color picking, do not paint
             # Don't simply return; this is a workaround for unwanted lines in https://gna.org/bugs/?16169
             pressure = 0.0
-            
+
         ### CSS experimental - scroll when touching the edge of the screen in fullscreen mode
         #
         # Disabled for the following reasons:
@@ -345,24 +345,23 @@ class TiledDrawWidget(gtk.DrawingArea):
     def canvas_modified_cb(self, x1, y1, w, h):
         if not self.window:
             return
-        
+
         if w == 0 and h == 0:
-            # full redraw (used when background has changed)
+            # Full redraw (used when background has changed).
             #print 'full redraw'
             self.queue_draw()
             return
 
-        cr = self.get_model_coordinates_cairo_context()
-
         if self.is_translation_only():
-            x, y = cr.user_to_device(x1, y1)
+            x, y = self.model_to_display(x1, y1)
             self.queue_draw_area(int(x), int(y), w, h)
         else:
-            # create an expose event with the event bbox rotated/zoomed
-            # OPTIMIZE: this is estimated to cause at least twice more rendering work than neccessary
-            # transform 4 bbox corners to screen coordinates
+            # Create an expose event with the event bbox rotated/zoomed.
+            # OPTIMIZE: This is estimated to cause at least twice as much
+            #           rendering work as neccessary.
+            # Transform 4 bbox corners to screen coordinates.
             corners = [(x1, y1), (x1+w-1, y1), (x1, y1+h-1), (x1+w-1, y1+h-1)]
-            corners = [cr.user_to_device(x, y) for (x, y) in corners]
+            corners = [self.model_to_display(x, y) for (x, y) in corners]
             self.queue_draw_area(*helpers.rotated_rectangle_bbox(corners))
 
     def expose_cb(self, widget, event):
@@ -376,8 +375,24 @@ class TiledDrawWidget(gtk.DrawingArea):
             self.repaint(event.area)
         return True
 
-    def get_model_coordinates_cairo_context(self, cr=None):
-        # OPTIMIZE: check whether this is a bottleneck during painting (many motion events) - if yes, use cache
+
+    def display_to_model(self, disp_x, disp_y):
+        """Converts display coordinates to model coordinates.
+        """
+        cr = self.__get_model_cairo_context()
+        return cr.device_to_user(disp_x, disp_y)
+
+
+    def model_to_display(self, model_x, model_y):
+        """Converts model coordinates to display coordinates.
+        """
+        cr = self.__get_model_cairo_context()
+        return cr.user_to_device(model_x, model_y)
+
+
+    def __get_model_cairo_context(self, cr=None):
+        # OPTIMIZE: Check whether this is a bottleneck during
+        #           painting (many motion events) - if yes, use cache.
         if cr is None:
             cr = self.window.cairo_create()
 
@@ -388,7 +403,8 @@ class TiledDrawWidget(gtk.DrawingArea):
         if abs(scale_log2-scale_log2_rounded) < 0.01:
             scale = 2.0**scale_log2_rounded
 
-        rotation = self.rotation # maybe we should check if rotation is almost a multiple of 90 degrees?
+        rotation = self.rotation
+        # maybe we should check if rotation is almost a multiple of 90 degrees?
 
         cr.translate(self.translation_x, self.translation_y)
         cr.rotate(rotation)
@@ -412,8 +428,7 @@ class TiledDrawWidget(gtk.DrawingArea):
 
     def get_cursor_in_model_coordinates(self):
         x, y, modifiers = self.window.get_pointer()
-        cr = self.get_model_coordinates_cairo_context()
-        return cr.device_to_user(x, y)
+        return self.display_to_model(x, y)
 
     def get_visible_layers(self):
         # FIXME: tileddrawwidget should not need to know whether the document has layers
@@ -464,7 +479,7 @@ class TiledDrawWidget(gtk.DrawingArea):
 
         # bye bye device coordinates
         cr.save()   # >>>CONTEXT1
-        self.get_model_coordinates_cairo_context(cr)
+        self.__get_model_cairo_context(cr)
         cr.save()   # >>>CONTEXT2
 
         # choose best mipmap
@@ -614,6 +629,8 @@ class TiledDrawWidget(gtk.DrawingArea):
             self.queue_draw()
 
     def get_center(self):
+        """Return the centre position in display coordinates.
+        """
         w, h = self.window.get_size()
         return w/2.0, h/2.0
 
@@ -623,15 +640,12 @@ class TiledDrawWidget(gtk.DrawingArea):
         else:
             w, h = self.window.get_size()
             cx, cy = self.get_center()
-        cr = self.get_model_coordinates_cairo_context()
-        cx_device, cy_device = cr.device_to_user(cx, cy)
+        cx_model, cy_model = self.display_to_model(cx, cy)
         function()
         self.scale = helpers.clamp(self.scale, self.zoom_min, self.zoom_max)
-        cr = self.get_model_coordinates_cairo_context()
-        cx_new, cy_new = cr.user_to_device(cx_device, cy_device)
+        cx_new, cy_new = self.model_to_display(cx_model, cy_model)
         self.translation_x += cx - cx_new
         self.translation_y += cy - cy_new
-
         self.queue_draw()
 
     def zoom(self, zoom_step):
@@ -680,16 +694,15 @@ class TiledDrawWidget(gtk.DrawingArea):
             self.drag_op = None
 
     def recenter_document(self):
+        """Recentres the view onto the document's centre.
+        """
         x, y, w, h = self.doc.get_effective_bbox()
-        desired_cx_user = x+w/2
-        desired_cy_user = y+h/2
-
-        cr = self.get_model_coordinates_cairo_context()
-        w, h = self.window.get_size()
-        cx_user, cy_user = cr.device_to_user(w/2, h/2)
-
-        self.translation_x += (cx_user - desired_cx_user)*self.scale
-        self.translation_y += (cy_user - desired_cy_user)*self.scale
+        desired_cx_model = x+w/2.0
+        desired_cy_model = y+h/2.0
+        cx, cy = self.get_center()
+        cx_model, cy_model = self.display_to_model(cx, cy)
+        self.translation_x += (cx_model - desired_cx_model)*self.scale
+        self.translation_y += (cy_model - desired_cy_model)*self.scale
         self.queue_draw()
 
     def brush_modified_cb(self, settings):
