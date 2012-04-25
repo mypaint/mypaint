@@ -159,42 +159,60 @@ class CurveWidget(gtk.DrawingArea):
         self.queue_draw()
 
     def expose_cb(self, widget, event):
-        window = widget.window
-        state = gtk.STATE_NORMAL
-        gray  = widget.style.bg_gc[state]
-        dark  = widget.style.dark_gc[state]
-        black  = widget.style.fg_gc[state]
+        cr = self.window.cairo_create()
 
-        width, height = window.get_size()
-        window.draw_rectangle(gray, True, 0, 0, width, height)
+        def gtk2rgb(c):
+            return (c.red_float, c.green_float, c.blue_float)
+
+        state = gtk.STATE_NORMAL
+        gray  = gtk2rgb(widget.style.bg[state])
+        dark  = gtk2rgb(widget.style.dark[state])
+        black = gtk2rgb(widget.style.fg[state])
+
+        width, height = self.window.get_size()
+        cr.set_source_rgb(*gray)
+        cr.rectangle(0, 0, width, height)
+        cr.fill()
         width  -= 2*RADIUS
         height -= 2*RADIUS
         width  = width / 4 * 4
         height = height / 4 * 4
         if width <= 0 or height <= 0: return
 
+        # 1-pixel width, align lines with pixels
+        # (but filled rectangles are off by 0.5px now)
+        cr.set_line_width(1.0)
+        cr.translate(0.5, 0.5)
+
         # draw grid lines
+        cr.set_source_rgb(*dark)
         for i in range(5):
-            window.draw_line(dark,  RADIUS, i*height/4 + RADIUS,
-                             width + RADIUS, i*height/4 + RADIUS)
-            window.draw_line(dark, i*width/4 + RADIUS, RADIUS,
-                                    i*width/4 + RADIUS, height + RADIUS)
+            cr.move_to(RADIUS, i*height/4 + RADIUS)
+            cr.line_to(width + RADIUS, i*height/4 + RADIUS)
+            cr.move_to(i*width/4 + RADIUS, RADIUS)
+            cr.line_to(i*width/4 + RADIUS, height + RADIUS)
+            cr.stroke()
 
         if self.graypoint:
             x1, y1 = self.graypoint
             x1 = int(x1*width) + RADIUS
             y1 = int(y1*height) + RADIUS
-            window.draw_rectangle(dark, True, x1-RADIUS-1, y1-RADIUS-1, 2*RADIUS+1, 2*RADIUS+1)
+            cr.rectangle(x1-RADIUS-1+0.5, y1-RADIUS-1+0.5, 2*RADIUS+1, 2*RADIUS+1)
+            cr.fill()
 
+        cr.set_source_rgb(*black)
         # draw points
         for p in self.points:
             if p is None: continue
             x1, y1 = p
             x1 = int(x1*width) + RADIUS
             y1 = int(y1*height) + RADIUS
-            window.draw_rectangle(black, True, x1-RADIUS-1, y1-RADIUS-1, 2*RADIUS+1, 2*RADIUS+1)
+            cr.rectangle(x1-RADIUS-1+0.5, y1-RADIUS-1+0.5, 2*RADIUS+1, 2*RADIUS+1)
+            cr.fill()
             if p is not self.points[0]:
-                window.draw_line(black, x0, y0, x1, y1)
+                cr.move_to(x0, y0)
+                cr.line_to(x1, y1)
+                cr.stroke()
             x0, y0 = x1, y1
 
         return True
