@@ -10,17 +10,11 @@
 #define TILE_SIZE 64
 #define MAX_MIPMAP_LEVEL 4
 
-// used for symmetrical mirroring, set by global_symmetry_toggle(axis).
-// Global to affect all surfaces.
-bool surface_do_symmetry = false;
-float surface_center_x = 0;
-
 class TiledSurface : public Surface {
   // the Python half of this class is in tiledsurface.py
+
 private:
   PyObject * self;
-  Rect dirty_bbox;
-  int atomic;
 
   // caching tile memory location (optimization)
   #define TILE_MEMORY_SIZE 8
@@ -31,7 +25,13 @@ private:
   TileMemory tileMemory[TILE_MEMORY_SIZE];
   int tileMemoryValid;
   int tileMemoryWrite;
-  
+
+protected:
+  bool surface_do_symmetry;
+  float surface_center_x;
+  Rect dirty_bbox;
+  int atomic;
+
 public:
   TiledSurface(PyObject * self_) {
     self = self_; // no need to incref
@@ -39,6 +39,9 @@ public:
     dirty_bbox.w = 0;
     tileMemoryValid = 0;
     tileMemoryWrite = 0;
+
+    surface_do_symmetry = false;
+    surface_center_x = 0.0;
   }
 
   void global_symmetry_toggle(float axis) {
@@ -46,14 +49,14 @@ public:
       surface_center_x = axis;
   }
 
-  void begin_atomic() {
+  virtual void begin_atomic() {
     if (atomic == 0) {
       assert(dirty_bbox.w == 0);
       assert(tileMemoryValid == 0);
     }
     atomic++;
   }
-  PyObject* end_atomic() {
+  virtual PyObject* end_atomic() {
     assert(atomic > 0);
     atomic--;
     if (atomic == 0) {
@@ -72,7 +75,7 @@ public:
     Py_RETURN_NONE;
   }
 
-  uint16_t * get_tile_memory(int tx, int ty, bool readonly) {
+  virtual uint16_t * get_tile_memory(int tx, int ty, bool readonly) {
     // We assume that the memory location does not change between begin_atomic() and end_atomic().
     for (int i=0; i<tileMemoryValid; i++) {
       if (tileMemory[i].tx == tx and tileMemory[i].ty == ty) {
@@ -226,6 +229,10 @@ public:
     *mask_p++ = 0;
   }
   
+  virtual void complete_tile_modification(int tx, int ty, uint16_t * tile_buffer) {
+      // We modify tiles directly, so don't need to do anything here
+  }
+
   // returns true if the surface was modified
   bool draw_dab (float x, float y, 
                  float radius, 
@@ -313,6 +320,8 @@ public:
                                           color_r_, color_g_, color_b_,
                                           colorize*opaque*(1<<15));
         }
+
+      complete_tile_modification(tx, ty, rgba_p);
       }
     }
 
@@ -432,4 +441,3 @@ public:
     return color_a;
   }
 };
-
