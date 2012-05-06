@@ -6,6 +6,11 @@
 #include "python_brush.hpp"
 #include "helpers2.hpp"
 #include "tiledsurface.hpp"
+
+#ifdef HAVE_GEGL
+#include "geglbackedsurface.hpp"
+#endif
+
 #include "pixops.hpp"
 #include "colorring.hpp"
 #include "colorchanger_wash.hpp"

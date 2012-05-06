@@ -17,7 +17,8 @@ env = mypaintlib_env
 # 
 # I have given up. Scons just can't get the dependencies right with those
 # code generators. Let's give scons a "normal" c++ project to dependency-scan.
-if env.Execute('swig -o mypaintlib_wrap.cpp -noproxydel -python -c++ mypaintlib.i'):
+swig_opts = '-DHAVE_GEGL' if env['enable_gegl'] else ''
+if env.Execute('swig -o mypaintlib_wrap.cpp -noproxydel -python -c++ %s mypaintlib.i' % swig_opts):
     Exit(1)
 env.Clean('.', 'mypaintlib_wrap.cpp')
 env.Clean('.', 'mypaintlib.py')
@@ -35,6 +36,12 @@ def build_py_module(env, *args, **kwargs):
 env.ParseConfig('pkg-config --cflags --libs glib-2.0')
 env.ParseConfig('pkg-config --cflags --libs libpng')
 env.ParseConfig('pkg-config --cflags --libs lcms2')
+
+if env['enable_gegl']:
+    env.ParseConfig('pkg-config --cflags --libs gegl-0.2')
+    env.ParseConfig('pkg-config --cflags --libs pygobject-2.0')
+
+    env.Append(CPPDEFINES=['HAVE_GEGL'])
 
 # Get the numpy include path (for numpy/arrayobject.h).
 numpy_path = numpy.get_include()
@@ -69,6 +76,11 @@ else:
 env.Append(LIBS="mypaint-brushlib")
 env.Append(LIBPATH="../")
 env.Append(CPPPATH='../brushlib')
+
+# Optional: Build against gegl brushlib
+if env['enable_gegl']:
+    env.Append(CPPPATH='../brushlib/gegl')
+    env.Append(LIBS="mypaint-brushlib-gegl")
 
 # python extension module
 src = 'mypaintlib_wrap.cpp'

@@ -9,7 +9,7 @@
 # This module implements an unbounded tiled surface for painting.
 
 from numpy import *
-import time, sys
+import time, sys, os
 import mypaintlib, helpers
 import math
 
@@ -60,7 +60,6 @@ def get_tiles_bbox(tiles):
 class SurfaceSnapshot:
     pass
 
-class Surface(mypaintlib.TiledSurface):
 class GeglSurface(mypaintlib.GeglBackedSurface):
 
     def __init__(self, mipmap_level=0):
@@ -114,7 +113,7 @@ class GeglSurface(mypaintlib.GeglBackedSurface):
     def set_symmetry_state(self, enabled, center_axis):
         pass
 
-class Surface(mypaintlib.TiledSurface):
+class MyPaintSurface(mypaintlib.TiledSurface):
     # the C++ half of this class is in tiledsurface.hpp
     def __init__(self, mipmap_level=0):
         mypaintlib.TiledSurface.__init__(self, self)
@@ -443,3 +442,6 @@ def calc_translation_slices(dc):
         return [ ((0, N-dcr), (tdc, dcr, N)) ,
                  ((N-dcr, N), (tdc+1, 0, dcr)) ]
 
+# Set which surface backend to use
+use_gegl = True if os.environ.get('MYPAINT_ENABLE_GEGL', 0) else False
+Surface = GeglSurface if use_gegl else MyPaintSurface

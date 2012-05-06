@@ -3,6 +3,13 @@
 #include "mypaintlib.hpp"
 %}
 
+%include "std_vector.i"
+
+namespace std {
+   %template(IntVector) vector<int>;
+   %template(DoubleVector) vector<double>;
+}
+
 typedef struct { int x, y, w, h; } Rect;
 
 %include "surface.hpp"
@@ -11,6 +18,11 @@ typedef struct { int x, y, w, h; } Rect;
 
 %include "python_brush.hpp"
 %include "tiledsurface.hpp"
+
+#ifdef HAVE_GEGL
+%include "geglbackedsurface.hpp"
+#endif
+
 %include "pixops.hpp"
 %include "colorring.hpp"
 %include "colorchanger_wash.hpp"
