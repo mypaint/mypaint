@@ -29,7 +29,7 @@ class DragFunc:
     def model(self):
         return self._doc.model
 
-    def on_start(self):
+    def on_start(self, modifier):
         pass
 
     def on_update(self, dx, dy, x, y):
@@ -92,9 +92,9 @@ class DynamicLineDragFunc (DragFunc):
     cursor = gdk.CROSS
     idle_srcid = None
 
-    def on_start(self):
+    def on_start(self, modifier):
         self.lm = self.drawwindow.app.linemode
-        self.lm.start_command(self.mode)
+        self.lm.start_command(self.mode, modifier)
 
     def on_update(self, junk1, junk2, x, y):
         self.lm.update_position(x, y)
@@ -122,7 +122,7 @@ class LayerMoveDragFunc (DragFunc):
     final_model_dy = None
     idle_srcid = None
 
-    def on_start(self):
+    def on_start(self, modifier):
         self.layer = self.model.get_current_layer()
         self.move = None
 

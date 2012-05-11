@@ -63,18 +63,18 @@ class LineMode:
                 self.line_mode_cb, True),
             ('StraightMode', stock.LINE_MODE_STRAIGHT, _("Straight/Curved Lines"),
                 None, _("Draw straight or curved lines.\n\
-Constrain angle by holding the Shift key.\n\
-Add curves to your last line with the Control key."),
+Constrain angle by holding the Control key.\n\
+Add curves to your last line with the Shift key."),
                 self.line_mode_cb),
             ('SequenceMode', stock.LINE_MODE_SEQUENCE, _("Sequence of Lines"),
                 None, _("Draw a sequence straight or curved lines.\n\
-Constrain angle by holding the Shift key.\n\
-Add curves to your last line with the Control key."),
+Constrain angle by holding the Control key.\n\
+Add curves to your last line with the Shift key."),
                 self.line_mode_cb),
             ('EllipseMode', stock.LINE_MODE_ELLIPSE, _("Ellipse"),
                 None, _("Draw circles and ellipes.\n\
-Constrain shape or roation by holding the Shift key.\n\
-Rotate holding the Control key."),
+Constrain shape or roation by holding the Control key.\n\
+Rotate holding the Shift key."),
                 self.line_mode_cb),
             ]
         ag.add_toggle_actions(toggle_actions)
@@ -184,7 +184,7 @@ Rotate holding the Control key."),
 ###
 
     # Called from dragfunc.py
-    def start_command(self, mode):
+    def start_command(self, mode, modifier):
 
         # Check for scratchpad under pointer
         if self.app.scratchpad_doc.tdw.has_pointer:
@@ -198,9 +198,17 @@ Rotate holding the Control key."),
         self.model.split_stroke() # split stroke here
         self.snapshot = self.model.layer.save_snapshot()
 
+        x, y, kbmods = self.local_mouse_state()
+        # ignore the modifier used to start this action (don't make it change the action)
+        self.ignore_kbmods = modifier
+        kbmods &= ~self.ignore_kbmods
+        ctrl = kbmods & gdk.CONTROL_MASK
+        shift = kbmods & gdk.SHIFT_MASK
+
         # line_mode is the type of line to be drawn eg. "EllipseMode"
         self.mode = self.line_mode
         if self.mode == "FreehandMode":
+            # starting with the configured modifier (e.g. Shift for "StraightMode")
             self.mode = mode
 
         self.undo = False
@@ -215,8 +223,6 @@ Rotate holding the Control key."),
         # ex, ey = end point
         # kx, ky = curve point from last line
         # lx, ly = last point from DragFunc update
-
-        x, y, kbmods = self.local_mouse_state()
         self.sx, self.sy = x, y
         self.lx, self.ly = x, y
 
@@ -226,10 +232,9 @@ Rotate holding the Control key."),
             # Vector to measure any rotation from. Assigned when ratation begins.
             self.ellipse_vec = None
             return
-
         # If not Ellipse, command must be Straight Line or Sequence
         # First check if the user intends to Curve an existing Line
-        if kbmods & gdk.CONTROL_MASK:
+        if shift:
             last_line = self.last_line_data
             last_stroke = self.model.layer.get_last_stroke_info()
             if last_line is not None:
@@ -306,6 +311,7 @@ Rotate holding the Control key."),
     def process_line(self):
         sx, sy = self.sx, self.sy
         x, y, kbmods = self.local_mouse_state(last_update=True)
+        kbmods &= ~self.ignore_kbmods # remove ignored modifiers
 
         if self.mode == "CurveLine1":
             self.dynamic_curve_1(x, y, sx, sy, self.ex, self.ey)
@@ -320,17 +326,17 @@ Rotate holding the Control key."),
 
         elif self.mode == "EllipseMode":
             constrain = False
-            if kbmods & gdk.SHIFT_MASK:
+            if kbmods & gdk.CONTROL_MASK:
                 x, y = constrain_to_angle(x, y, sx, sy)
                 constrain = True
-            if kbmods & gdk.CONTROL_MASK:
+            if kbmods & gdk.SHIFT_MASK:
                 self.ellipse_rotation_angle(x, y, sx, sy, constrain)
             else:
                 self.ellipse_vec = None
             self.dynamic_ellipse(x, y, sx, sy)
 
         else: # if "StraightMode" or "SequenceMode"
-            if kbmods & gdk.SHIFT_MASK:
+            if kbmods & gdk.CONTROL_MASK:
                 x, y = constrain_to_angle(x, y, sx, sy)
             self.dynamic_straight_line(x, y, sx, sy)
         return x, y

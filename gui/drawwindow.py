@@ -86,7 +86,7 @@ def button_press_cb_abstraction(drawwindow, win, event, doc):
         # Dynamic Line events from toolbar settings
         if line_mode != "FreehandMode":
             drag_op = dragfunc.DynamicLineDragFunc(doc, drawwindow, mode=line_mode)
-            doc.tdw.start_drag(drag_op)
+            doc.tdw.start_drag(drag_op, modifier=0)
             return True
 
     # Pick a suitable config option
@@ -95,10 +95,16 @@ def button_press_cb_abstraction(drawwindow, win, event, doc):
     shift = event.state & gdk.SHIFT_MASK
     if shift:
         modifier_str = "_shift"
+        modifier = gdk.SHIFT_MASK
     elif alt or ctrl:
         modifier_str = "_ctrl"
+        if alt:
+            modifier = gdk.MOD1_MASK
+        elif ctrl:
+            modifier = gdk.CONTROL_MASK
     else:
         modifier_str = ""
+        modifier = 0
     prefs_name = "input.button%d%s_action" % (event.button, modifier_str)
     action_name = drawwindow.app.preferences.get(prefs_name, "no_action")
 
@@ -109,15 +115,15 @@ def button_press_cb_abstraction(drawwindow, win, event, doc):
     # Line Mode event triggered by preferenced modifier button
     if action_name == 'straight_line':
         drag_op = dragfunc.DynamicLineDragFunc(doc, drawwindow, mode='StraightMode')
-        doc.tdw.start_drag(drag_op)
+        doc.tdw.start_drag(drag_op, modifier)
         return True
     if action_name == 'straight_line_sequence':
         drag_op = dragfunc.DynamicLineDragFunc(doc, drawwindow, mode='SequenceMode')
-        doc.tdw.start_drag(drag_op)
+        doc.tdw.start_drag(drag_op, modifier)
         return True
     if action_name == 'ellipse':
         drag_op = dragfunc.DynamicLineDragFunc(doc, drawwindow, mode='EllipseMode')
-        doc.tdw.start_drag(drag_op)
+        doc.tdw.start_drag(drag_op, modifier)
         return True
 
     # View control
@@ -130,7 +136,7 @@ def button_press_cb_abstraction(drawwindow, win, event, doc):
         elif action_name == "rotate_canvas":
             drag_op = dragfunc.RotateViewDragFunc(doc)
         if drag_op is not None:
-            doc.tdw.start_drag(drag_op)
+            doc.tdw.start_drag(drag_op, modifier)
             return True
         return False
 
@@ -138,7 +144,7 @@ def button_press_cb_abstraction(drawwindow, win, event, doc):
 
     if action_name == 'move_layer':
         drag_op = dragfunc.LayerMoveDragFunc(doc)
-        doc.tdw.start_drag(drag_op)
+        doc.tdw.start_drag(drag_op, modifier)
         return True
 
     # Application menu
@@ -544,7 +550,7 @@ class Window (windowing.MainWindow, layout.MainWindow):
             else:
                 drag_op = dragfunc.PanViewDragFunc(thisdoc)
             assert drag_op is not None
-            thisdoc.tdw.start_drag(drag_op)
+            thisdoc.tdw.start_drag(drag_op, modifier=0)
         else: return False
         return True
 

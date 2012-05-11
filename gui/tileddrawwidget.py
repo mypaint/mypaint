@@ -678,12 +678,12 @@ class TiledDrawWidget(gtk.DrawingArea):
         def f(): self.mirrored = mirrored
         self.rotozoom_with_center(f)
 
-    def start_drag(self, drag_op):
+    def start_drag(self, drag_op, modifier):
         if self.drag_op is not None:
             self.stop_drag()
         assert self.drag_op is None
         self.drag_op = drag_op
-        self.drag_op.on_start()
+        self.drag_op.on_start(modifier)
         c = gdk.Cursor(drag_op.cursor)
         self.set_override_cursor(c)
 
