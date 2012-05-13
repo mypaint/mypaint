@@ -519,9 +519,10 @@ class Document(object):
         """
         alloc = self.tdw.get_allocation()
         if action.get_active():
-            xmid, yjunk = self.tdw.display_to_model(alloc.width/2.0, 0)
-            if self.model.get_symmetry_axis() != xmid:
-                self.model.set_symmetry_axis(xmid)
+            xmid_d, ymid_d = alloc.width/2.0, alloc.height/2.0
+            xmid_m, ymid_m = self.tdw.display_to_model(xmid_d, ymid_d)
+            if self.model.get_symmetry_axis() != xmid_m:
+                self.model.set_symmetry_axis(xmid_m)
         else:
             if self.model.get_symmetry_axis() is not None:
                 self.model.set_symmetry_axis(None)
