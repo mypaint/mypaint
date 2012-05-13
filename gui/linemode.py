@@ -200,8 +200,8 @@ Rotate holding the Shift key."),
 
         x, y, kbmods = self.local_mouse_state()
         # ignore the modifier used to start this action (don't make it change the action)
-        self.ignore_kbmods = modifier
-        kbmods &= ~self.ignore_kbmods
+        self.invert_kbmods = modifier
+        kbmods ^= self.invert_kbmods # invert using bitwise xor
         ctrl = kbmods & gdk.CONTROL_MASK
         shift = kbmods & gdk.SHIFT_MASK
 
@@ -311,7 +311,9 @@ Rotate holding the Shift key."),
     def process_line(self):
         sx, sy = self.sx, self.sy
         x, y, kbmods = self.local_mouse_state(last_update=True)
-        kbmods &= ~self.ignore_kbmods # remove ignored modifiers
+        kbmods ^= self.invert_kbmods # invert using bitwise xor
+        ctrl = kbmods & gdk.CONTROL_MASK
+        shift = kbmods & gdk.SHIFT_MASK
 
         if self.mode == "CurveLine1":
             self.dynamic_curve_1(x, y, sx, sy, self.ex, self.ey)
@@ -326,17 +328,17 @@ Rotate holding the Shift key."),
 
         elif self.mode == "EllipseMode":
             constrain = False
-            if kbmods & gdk.CONTROL_MASK:
+            if ctrl:
                 x, y = constrain_to_angle(x, y, sx, sy)
                 constrain = True
-            if kbmods & gdk.SHIFT_MASK:
+            if shift:
                 self.ellipse_rotation_angle(x, y, sx, sy, constrain)
             else:
                 self.ellipse_vec = None
             self.dynamic_ellipse(x, y, sx, sy)
 
         else: # if "StraightMode" or "SequenceMode"
-            if kbmods & gdk.CONTROL_MASK:
+            if ctrl or shift:
                 x, y = constrain_to_angle(x, y, sx, sy)
             self.dynamic_straight_line(x, y, sx, sy)
         return x, y
