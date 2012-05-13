@@ -30,6 +30,7 @@ class Document(object):
         # View
         self.tdw = tileddrawwidget.TiledDrawWidget(self.app, self.model)
         self.model.frame_observers.append(self.frame_changed_cb)
+        self.model.symmetry_observers.append(self.update_symmetry_toolitem)
 
         # FIXME: hack, to be removed
         fname = os.path.join(self.app.datapath, 'backgrounds', '03_check1.png')
@@ -148,7 +149,7 @@ class Document(object):
             ('PrintInputs', None, _('Print Brush Input Values to Console'), None, None, self.print_inputs_cb),
             ('VisualizeRendering', None, _('Visualize Rendering'), None, None, self.visualize_rendering_cb),
             ('NoDoubleBuffereing', None, _('Disable GTK Double Buffering'), None, None, self.no_double_buffering_cb),
-            ('Symmetry', stock.SYMMETRY, None, None, _("Symmetry: duplicate strokes mirrored horizontally"), self.symmetry_cb),
+            ('Symmetry', stock.SYMMETRY, None, None, _("Symmetry: duplicate strokes mirrored horizontally"), self.symmetry_action_toggled_cb),
             ]
         ag.add_toggle_actions(toggle_actions)
 
@@ -512,8 +513,30 @@ class Document(object):
         self.zoom(action.get_name())
     def rotate_cb(self, action):
         self.rotate(action.get_name())
-    def symmetry_cb(self, action):
-        self.tdw.symmetry()
+
+    def symmetry_action_toggled_cb(self, action):
+        """Change the model's symmetry state in response to UI events.
+        """
+        alloc = self.tdw.get_allocation()
+        if action.get_active():
+            xmid, yjunk = self.tdw.display_to_model(alloc.width/2.0, 0)
+            if self.model.get_symmetry_axis() != xmid:
+                self.model.set_symmetry_axis(xmid)
+        else:
+            if self.model.get_symmetry_axis() is not None:
+                self.model.set_symmetry_axis(None)
+
+    def update_symmetry_toolitem(self):
+        """Updates the UI to reflect changes to the model's symmetry state.
+        """
+        ag = self.action_group
+        action = ag.get_action("Symmetry")
+        new_xmid = self.model.get_symmetry_axis()
+        if new_xmid is None and action.get_active():
+            action.set_active(False)
+        elif (new_xmid is not None) and (not action.get_active()):
+            action.set_active(True)
+
     def mirror_horizontal_cb(self, action):
         self.tdw.mirror()
     def mirror_vertical_cb(self, action):

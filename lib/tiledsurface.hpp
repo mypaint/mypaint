@@ -44,9 +44,9 @@ public:
     surface_center_x = 0.0;
   }
 
-  void global_symmetry_toggle(float axis) {
-      surface_do_symmetry = !surface_do_symmetry;
-      surface_center_x = axis;
+  void set_symmetry_state(bool active, float center_x) {
+    surface_do_symmetry = active;
+    surface_center_x = center_x;
   }
 
   virtual void begin_atomic() {

@@ -165,6 +165,7 @@ class AddLayer(Action):
             self.insert_idx = l_idx + 1
         self.layer = layer.Layer(name)
         self.layer.content_observers.append(self.doc.layer_modified_cb)
+        self.layer.set_symmetry_axis(self.doc.get_symmetry_axis())
     def redo(self):
         self.doc.layers.insert(self.insert_idx, self.layer)
         self.prev_idx = self.doc.layer_idx
@@ -273,6 +274,7 @@ class DuplicateLayer(Action):
         self.new_layer = layer.Layer(name)
         self.new_layer.load_snapshot(snapshot)
         self.new_layer.content_observers.append(self.doc.layer_modified_cb)
+        self.new_layer.set_symmetry_axis(doc.get_symmetry_axis())
     def redo(self):
         self.doc.layers.insert(self.insert_idx+1, self.new_layer)
         self.duplicate_layer = self.doc.layers[self.insert_idx+1]

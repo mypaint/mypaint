@@ -194,3 +194,9 @@ class Layer:
         if not self.strokes:
             return None
         return self.strokes[-1]
+
+    def set_symmetry_axis(self, center_x):
+        if center_x is None:
+            self._surface.set_symmetry_state(False, 0.0)
+        else:
+            self._surface.set_symmetry_state(True, center_x)

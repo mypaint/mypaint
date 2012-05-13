@@ -48,6 +48,7 @@ class Document():
         if not brushinfo:
             brushinfo = brush.BrushInfo()
             brushinfo.load_defaults()
+        self.layers = []
         self.brush = brush.Brush(brushinfo)
         self.brush.brushinfo.observers.append(self.brushsettings_changed_cb)
         self.stroke = None
@@ -56,6 +57,8 @@ class Document():
         self.doc_observers = []
         self.frame_observers = []
         self.command_stack_observers = []
+        self.symmetry_observers = []
+        self.__symmetry_axis = None
         self.clear(True)
 
         self._frame = [0, 0, 0, 0]
@@ -115,8 +118,29 @@ class Document():
             f(self)
         return True
 
+
+    def get_symmetry_axis(self):
+        """Gets the active painting symmetry X axis value.
+        """
+        return self.__symmetry_axis
+
+
+    def set_symmetry_axis(self, x):
+        """Sets the active painting symmetry X axis value.
+
+        A value of `None` inactivates symmetrical painting. After setting, all
+        registered `symmetry_observers` are called without arguments.
+        """
+        for layer in self.layers:
+            layer.set_symmetry_axis(x)
+        self.__symmetry_axis = x
+        for func in self.symmetry_observers:
+            func()
+
+
     def clear(self, init=False):
         self.split_stroke()
+        self.set_symmetry_axis(None)
         if not init:
             bbox = self.get_bbox()
         # throw everything away, including undo stack

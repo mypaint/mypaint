@@ -666,10 +666,6 @@ class TiledDrawWidget(gtk.DrawingArea):
         def f(): self.rotation = angle
         self.rotozoom_with_center(f)
 
-    def symmetry(self):
-        # FIXME: refactor?
-        self.doc.layer._surface.global_symmetry_toggle(self.get_allocation()[2]/2)
-
     def mirror(self):
         def f(): self.mirrored = not self.mirrored
         self.rotozoom_with_center(f)
