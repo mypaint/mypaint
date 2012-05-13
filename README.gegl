@@ -1,0 +1,43 @@
+How to test the proof-of-concept MyPaint+GEGL work.
+
+The status of this work is tracked in
+https://gna.org/bugs/index.php?19732
+
+== Prerequsites ==
+These are in addition to the normal prerequsites for MyPaint.
+
+1. BABL from git master
+2. GEGL from git master
+3. GEGL-GTK from git master
+
+All projects must be built with GObject Introspection support.
+Pass --enable-introspection to configure to enable. 
+
+It is recommended that the projects are installed into
+a custom prefix. Pass --prefix $prefix to configure,
+and set the following env vars.
+
+ export XDG_DATA_DIRS=$prefix/share/:$XDG_DATA_DIRS
+ export GI_TYPELIB_PATH=$prefix/lib/girepository-1.0
+ export PKG_CONFIG_PATH=$prefix/lib/pkgconfig
+ export LD_LIBRARY_PATH=$prefix/lib
+
+After this build MyPaint with the enable_gegl flag
+ 
+ scons enable_gegl=true
+
+== Testing ==
+Currently MyPaint + GEGL can run a couple of test, and power
+a simple test application.
+
+ export MYPAINT_ENABLE_GEGL=1
+
+ python tests/test_mypaintlib.py
+
+ python mypaint-gegl.py
+
+Currently the normal MyPaint application will not work correctly
+when built together with GEGL. But for the daring, here is how to try:
+
+  export MYPAINT_ENABLE_GEGL=1
+ ./mypaint
