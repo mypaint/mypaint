@@ -43,27 +43,19 @@ class Overlay:
         pass
 
 
-class TiledDrawWidget(gtk.DrawingArea):
-    """
-    This widget displays a document (../lib/document*.py).
+class CanvasEventBox(gtk.EventBox):
+    """Handle events on the canvas."""
     
-    It can show the document translated, rotated or zoomed. It does
-    not respond to user input except for painting. Painting events are
-    passed to the document after applying the inverse transformation.
-    """
+    def __init__(self, application=None, document=None, drag_handler=None):
+        gtk.EventBox.__init__(self)
 
-    # Register a GType name for Glade, GtkBuilder etc.
-    __gtype_name__ = "TiledDrawWidget"
+        self.doc = document
+        self.app = application
 
-    CANNOT_DRAW_CURSOR = gdk.Cursor(gdk.CIRCLE)
+        self.drag_handler_update = drag_handler
 
-    def __init__(self, app=None, document=None):
-        gtk.DrawingArea.__init__(self)
-        self.connect("expose-event", self.expose_cb)
         self.connect("enter-notify-event", self.enter_notify_cb)
         self.connect("leave-notify-event", self.leave_notify_cb)
-        self.connect("size-allocate", self.size_allocate_cb)
-        self.connect("state-changed", self.state_changed_cb)
 
         # workaround for https://gna.org/bugs/?14372 ([Windows] crash when moving the pen during startup)
         def at_application_start(*junk):
@@ -89,15 +81,6 @@ class TiledDrawWidget(gtk.DrawingArea):
 
         self.set_extension_events (gdk.EXTENSION_EVENTS_ALL)
 
-        self.app = app
-        if document is None:
-            document = _make_testbed_model()
-        self.doc = document
-        self.doc.canvas_observers.append(self.canvas_modified_cb)
-        self.doc.brush.brushinfo.observers.append(self.brush_modified_cb)
-
-        self.cursor_info = None
-
         self.last_event_time = None
         self.last_event_x = None
         self.last_event_y = None
@@ -105,75 +88,23 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.last_event_had_pressure_info = False
         self.last_painting_pos = None
         self.device_observers = [] #: Notified during drawing when input devices change
-        self._input_stroke_started_observers = []
-        self._input_stroke_ended_observers = [] #: Access via gui.document
-
-        self.visualize_rendering = False
-
-        self.translation_x = 0.0
-        self.translation_y = 0.0
-        self.scale = 1.0
-        self.rotation = 0.0
-        self.mirrored = False
-
-        self.has_pointer = False
-        self.drag_op = None
-
-        self.current_layer_solo = False
-        self.show_layers_above = True
-
-        self.overlay_layer = None
-
-        # gets overwritten for the main window
-        self.zoom_max = 5.0
-        self.zoom_min = 1/5.0
 
         #self.scroll_at_edges = False
         self.pressure_mapping = None
+
+        self.has_pointer = False
+
         self.bad_devices = []
         self.motions = []
 
-        # Sensitivity; we draw via a cached snapshot while the widget is
-        # insensitive. tdws are generally only insensitive during loading and
-        # saving, and because we now process the GTK main loop during loading
-        # and saving, we need to avoid drawing partially-loaded files.
-
-        self.is_sensitive = True    # just mirrors gtk.STATE_INSENSITIVE
-        self.snapshot_pixmap = None
-
-        self.override_cursor = None
-
-        # Overlays
-        self.model_overlays = []
-        self.display_overlays = []
-
-    #def set_scroll_at_edges(self, choice):
-    #    self.scroll_at_edges = choice
-
-    def state_changed_cb(self, widget, oldstate):
-        # Keeps track of the sensitivity state, and regenerates
-        # the snapshot pixbuf on entering it.
-        sensitive = self.get_state() != gtk.STATE_INSENSITIVE
-        if sensitive:
-            self.snapshot_pixmap = None
-        else:
-            if self.snapshot_pixmap is None:
-                self.snapshot_pixmap = self.get_snapshot()
-        self.is_sensitive = sensitive
+        self._input_stroke_started_observers = []
+        self._input_stroke_ended_observers = [] #: Access via gui.document
 
     def enter_notify_cb(self, widget, event):
         self.has_pointer = True
     def leave_notify_cb(self, widget, event):
         self.has_pointer = False
-
-    def size_allocate_cb(self, widget, allocation):
-        old_alloc = getattr(self, 'stored_allocation', allocation)
-        if old_alloc != allocation:
-            dx = allocation.x - old_alloc.x
-            dy = allocation.y - old_alloc.y
-            self.scroll(dx, dy)
-        self.stored_allocation = allocation
-
+        
     def device_used(self, device):
         """Tell the TDW about a device being used."""
         if device == self.last_event_device:
@@ -208,9 +139,11 @@ class TiledDrawWidget(gtk.DrawingArea):
 
         same_device = self.device_used(event.device)
 
-        if self.drag_op is not None:
-            self.drag_op.on_update(dx, dy, event.x, event.y)
-            return
+        if self.drag_handler_update is not None:
+            in_drag_mode = self.drag_handler_update(dx, dy, event.x, event.y)
+            if in_drag_mode:
+                # Don't draw in drag mode
+                return
 
         # Refuse drawing if the layer is locked or hidden
         if self.doc.layer.locked or not self.doc.layer.visible:
@@ -342,6 +275,291 @@ class TiledDrawWidget(gtk.DrawingArea):
             for func in self._input_stroke_ended_observers:
                 func(event)
 
+class DragHandler(object):
+    """Handle drag logic and cursor updates."""
+    
+    CANNOT_DRAW_CURSOR = gdk.Cursor(gdk.CIRCLE)
+
+    
+    def __init__(self, doc, widget):
+        
+        self.doc = doc
+        self.widget = widget
+        self.drag_op = None
+        self.override_cursor = None
+
+    @property
+    def window(self):
+        return self.widget.window
+
+    def update(self, dx, dy, x, y):
+        if self.drag_op:
+            self.drag_op.on_update(dx, dy, x, y)
+            return True
+            
+        return False
+
+    def start_drag(self, drag_op, modifier):
+        if self.drag_op is not None:
+            self.stop_drag()
+        assert self.drag_op is None
+        self.drag_op = drag_op
+        self.drag_op.on_start(modifier)
+        c = gdk.Cursor(drag_op.cursor)
+        self.set_override_cursor(c)
+
+    def stop_drag(self):
+        if self.drag_op is not None:
+            self.set_override_cursor(None)
+            self.drag_op.on_stop()
+            self.drag_op = None
+
+    def update_cursor(self):        
+        if not self.window:
+            return
+
+        if self.override_cursor is not None:
+            c = self.override_cursor
+        elif not self.widget.is_sensitive:
+            c = None
+        elif self.doc.layer.locked or not self.doc.layer.visible:
+            c = self.CANNOT_DRAW_CURSOR
+        else:
+            b = self.doc.brush.brushinfo
+            radius = b.get_effective_radius()*self.widget.scale
+            c = cursor.get_brush_cursor(radius, b.is_eraser(), b.get_base_value('lock_alpha') > 0.9)
+        self.window.set_cursor(c)
+
+    def set_override_cursor(self, cursor):
+        """Set a cursor which will always be used.
+
+        Used by the colour picker. The override cursor will be used regardless
+        of the criteria update_cursor() normally uses. Pass None to let it
+        choose normally again.
+        """
+        self.override_cursor = cursor
+        self.update_cursor()
+
+    def brush_modified_cb(self, settings):
+        self.update_cursor()
+    
+
+class TiledDrawWidget(gtk.VBox):
+    """Widget for showing a lib.document.Document 
+    
+    Most aspects are delegated to dedicated classes. See CanvasEventBox,
+    DragHandler and CanvasRenderer."""
+
+    # Register a GType name for Glade, GtkBuilder etc.
+    __gtype_name__ = "TiledDrawWidget"
+
+    def __init__(self, app=None, document=None):
+        gtk.VBox.__init__(self)
+
+        self.app = app
+        if document is None:
+            document = _make_testbed_model()
+        self.doc = document
+
+        self.renderer = CanvasRenderer(self.app, self.doc)
+        self.drag_handler = DragHandler(self.doc, self.renderer)
+        self.event_box = CanvasEventBox(self.app, self.doc, self.drag_handler.update)
+
+        
+        # HACK
+        self.event_box.display_to_model = self.renderer.display_to_model
+        
+        self.event_box.add(self.renderer)
+        self.pack_start(self.event_box)
+
+        self.doc.canvas_observers.append(self.renderer.canvas_modified_cb)
+        self.doc.brush.brushinfo.observers.append(self.drag_handler.brush_modified_cb)
+
+        self.drag_handler.update_cursor() # hack to get the initial cursor right
+
+    # Forward public API to delegates
+    # TODO: attempt to reduce this interface
+    @property
+    def start_drag(self):
+        return self.drag_handler.start_drag
+ 
+    @property
+    def stop_drag(self):
+        return self.drag_handler.stop_drag
+
+    @property
+    def drag_op(self):
+        return self.drag_handler.drag_op
+
+    @property
+    def has_pointer(self):
+        return self.event_box.has_pointer
+
+    @property
+    def display_overlays(self):
+        return self.renderer.display_overlays
+
+    @property
+    def model_overlays(self):
+        return self.renderer.model_overlays        
+
+    @property
+    def device_observers(self):
+        return self.event_box.device_observers
+
+    @property
+    def _input_stroke_ended_observers(self):
+        return self.event_box._input_stroke_ended_observers
+
+    @property
+    def recenter_document(self):
+        return self.renderer.recenter_document
+
+    @property
+    def display_to_model(self):
+        return self.renderer.display_to_model
+
+    @property
+    def set_override_cursor(self):
+        return self.drag_handler.set_override_cursor
+
+    @property
+    def device_used(self):
+        return self.event_box.device_used
+
+    @property
+    def get_cursor_in_model_coordinates(self):
+        return self.renderer.get_cursor_in_model_coordinates
+
+    @property
+    def scroll(self):
+        return self.renderer.scroll
+
+    @property
+    def get_center(self):
+        return self.renderer.get_center
+
+    @property
+    def toggle_show_layers_above(self):
+        return self.renderer.toggle_show_layers_above
+
+    def get_current_layer_solo(self):
+        return self.renderer.current_layer_solo
+    def set_current_layer_solo(self, enabled):
+        self.renderer.current_layer_solo = enabled
+    current_layer_solo = property(get_current_layer_solo, set_current_layer_solo)
+
+    def get_neutral_background_pixbuf(self):
+        return self.renderer.neutral_background_pixbuf
+    def set_neutral_background_pixbuf(self, pixbuf):
+        self.renderer.neutral_background_pixbuf = pixbuf
+    neutral_background_pixbuf = property(get_neutral_background_pixbuf, set_neutral_background_pixbuf)
+
+    # Transform logic
+    def rotozoom_with_center(self, function, at_pointer=False):
+        if at_pointer and self.has_pointer and self.event_box.last_event_x is not None:
+            cx, cy = self.event_box.last_event_x, self.event_box.last_event_y
+        else:
+            w, h = self.window.get_size()
+            cx, cy = self.renderer.get_center()
+        cx_model, cy_model = self.renderer.display_to_model(cx, cy)
+        function()
+        self.renderer.scale = helpers.clamp(self.renderer.scale, self.renderer.zoom_min, self.renderer.zoom_max)
+        cx_new, cy_new = self.renderer.model_to_display(cx_model, cy_model)
+        self.renderer.translation_x += cx - cx_new
+        self.renderer.translation_y += cy - cy_new
+        self.renderer.queue_draw()
+
+    def zoom(self, zoom_step):
+        def f(): self.renderer.scale *= zoom_step
+        self.rotozoom_with_center(f, at_pointer=True)
+
+    def set_zoom(self, zoom, at_pointer=True):
+        def f(): self.renderer.scale = zoom
+        self.rotozoom_with_center(f, at_pointer)
+
+    def rotate(self, angle_step):
+        if self.renderer.mirrored: angle_step = -angle_step
+        def f(): self.renderer.rotation += angle_step
+        self.rotozoom_with_center(f)
+
+    def set_rotation(self, angle):
+        if self.renderer.mirrored: angle = -angle
+        def f(): self.renderer.rotation = angle
+        self.rotozoom_with_center(f)
+
+    def mirror(self):
+        def f(): self.renderer.mirrored = not self.renderer.mirrored
+        self.rotozoom_with_center(f)
+
+    def set_mirrored(self, mirrored):
+        def f(): self.renderer.mirrored = mirrored
+        self.rotozoom_with_center(f)
+
+class CanvasRenderer(gtk.DrawingArea):
+    """Render the document model to screen.
+    
+    Can render the document in a transformed way, including translation,
+    scaling and rotation."""
+
+    def __init__(self, app=None, document=None):
+        gtk.DrawingArea.__init__(self)
+        self.connect("expose-event", self.expose_cb)
+        self.connect("size-allocate", self.size_allocate_cb)
+        self.connect("state-changed", self.state_changed_cb)
+
+        self.app = app
+        self.doc = document
+        
+        self.cursor_info = None
+        self.visualize_rendering = False
+
+        self.translation_x = 0.0
+        self.translation_y = 0.0
+        self.scale = 1.0
+        self.rotation = 0.0
+        self.mirrored = False
+
+        self.current_layer_solo = False
+        self.show_layers_above = True
+
+        self.overlay_layer = None
+
+        # gets overwritten for the main window
+        self.zoom_max = 5.0
+        self.zoom_min = 1/5.0
+
+        # Sensitivity; we draw via a cached snapshot while the widget is
+        # insensitive. tdws are generally only insensitive during loading and
+        # saving, and because we now process the GTK main loop during loading
+        # and saving, we need to avoid drawing partially-loaded files.
+
+        self.is_sensitive = True    # just mirrors gtk.STATE_INSENSITIVE
+        self.snapshot_pixmap = None
+
+        # Overlays
+        self.model_overlays = []
+        self.display_overlays = []
+
+    def state_changed_cb(self, widget, oldstate):
+        # Keeps track of the sensitivity state, and regenerates
+        # the snapshot pixbuf on entering it.
+        sensitive = self.get_state() != gtk.STATE_INSENSITIVE
+        if sensitive:
+            self.snapshot_pixmap = None
+        else:
+            if self.snapshot_pixmap is None:
+                self.snapshot_pixmap = self.get_snapshot()
+        self.is_sensitive = sensitive
+
+    def size_allocate_cb(self, widget, allocation):
+        old_alloc = getattr(self, 'stored_allocation', allocation)
+        if old_alloc != allocation:
+            dx = allocation.x - old_alloc.x
+            dy = allocation.y - old_alloc.y
+            self.scroll(dx, dy)
+        self.stored_allocation = allocation
+
     def canvas_modified_cb(self, x1, y1, w, h):
         if not self.window:
             return
@@ -365,7 +583,7 @@ class TiledDrawWidget(gtk.DrawingArea):
             self.queue_draw_area(*helpers.rotated_rectangle_bbox(corners))
 
     def expose_cb(self, widget, event):
-        self.update_cursor() # hack to get the initial cursor right
+        
         if self.snapshot_pixmap:
             gc = self.get_style().fg_gc[self.get_state()]
             area = event.area
@@ -634,61 +852,6 @@ class TiledDrawWidget(gtk.DrawingArea):
         w, h = self.window.get_size()
         return w/2.0, h/2.0
 
-    def rotozoom_with_center(self, function, at_pointer=False):
-        if at_pointer and self.has_pointer and self.last_event_x is not None:
-            cx, cy = self.last_event_x, self.last_event_y
-        else:
-            w, h = self.window.get_size()
-            cx, cy = self.get_center()
-        cx_model, cy_model = self.display_to_model(cx, cy)
-        function()
-        self.scale = helpers.clamp(self.scale, self.zoom_min, self.zoom_max)
-        cx_new, cy_new = self.model_to_display(cx_model, cy_model)
-        self.translation_x += cx - cx_new
-        self.translation_y += cy - cy_new
-        self.queue_draw()
-
-    def zoom(self, zoom_step):
-        def f(): self.scale *= zoom_step
-        self.rotozoom_with_center(f, at_pointer=True)
-
-    def set_zoom(self, zoom, at_pointer=True):
-        def f(): self.scale = zoom
-        self.rotozoom_with_center(f, at_pointer)
-
-    def rotate(self, angle_step):
-        if self.mirrored: angle_step = -angle_step
-        def f(): self.rotation += angle_step
-        self.rotozoom_with_center(f)
-
-    def set_rotation(self, angle):
-        if self.mirrored: angle = -angle
-        def f(): self.rotation = angle
-        self.rotozoom_with_center(f)
-
-    def mirror(self):
-        def f(): self.mirrored = not self.mirrored
-        self.rotozoom_with_center(f)
-
-    def set_mirrored(self, mirrored):
-        def f(): self.mirrored = mirrored
-        self.rotozoom_with_center(f)
-
-    def start_drag(self, drag_op, modifier):
-        if self.drag_op is not None:
-            self.stop_drag()
-        assert self.drag_op is None
-        self.drag_op = drag_op
-        self.drag_op.on_start(modifier)
-        c = gdk.Cursor(drag_op.cursor)
-        self.set_override_cursor(c)
-
-    def stop_drag(self):
-        if self.drag_op is not None:
-            self.set_override_cursor(None)
-            self.drag_op.on_stop()
-            self.drag_op = None
-
     def recenter_document(self):
         """Recentres the view onto the document's centre.
         """
@@ -700,34 +863,6 @@ class TiledDrawWidget(gtk.DrawingArea):
         self.translation_x += (cx_model - desired_cx_model)*self.scale
         self.translation_y += (cy_model - desired_cy_model)*self.scale
         self.queue_draw()
-
-    def brush_modified_cb(self, settings):
-        self.update_cursor()
-
-    def update_cursor(self):
-        if not self.window:
-            return
-        elif self.override_cursor is not None:
-            c = self.override_cursor
-        elif not self.is_sensitive:
-            c = None
-        elif self.doc.layer.locked or not self.doc.layer.visible:
-            c = self.CANNOT_DRAW_CURSOR
-        else:
-            b = self.doc.brush.brushinfo
-            radius = b.get_effective_radius()*self.scale
-            c = cursor.get_brush_cursor(radius, b.is_eraser(), b.get_base_value('lock_alpha') > 0.9)
-        self.window.set_cursor(c)
-
-    def set_override_cursor(self, cursor):
-        """Set a cursor which will always be used.
-
-        Used by the colour picker. The override cursor will be used regardless
-        of the criteria update_cursor() normally uses. Pass None to let it
-        choose normally again.
-        """
-        self.override_cursor = cursor
-        self.update_cursor()
 
     def toggle_show_layers_above(self):
         self.show_layers_above = not self.show_layers_above
