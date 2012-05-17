@@ -302,7 +302,7 @@ Rotate holding the Shift key."),
         self.model.brush.reset()
 
     def local_mouse_state(self, last_update=False):
-        x, y, kbmods = self.tdw.window.get_pointer()
+        x, y, kbmods = self.tdw.renderer.window.get_pointer()
         if last_update:
             return self.lx, self.ly, kbmods
         x, y = self.tdw.display_to_model(x, y)
