@@ -275,7 +275,7 @@ Rotate holding the Shift key."),
 
     def record_last_stroke(self, cmd, x, y):
         last_line = None
-        self.tdw.last_painting_pos = x, y
+        self.tdw.last_painting_pos = x, y # FIXME: should probably not set that from here
         last_stroke = self.model.layer.get_last_stroke_info()
         sx, sy = self.sx, self.sy
 

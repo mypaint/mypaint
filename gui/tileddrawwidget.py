@@ -408,6 +408,10 @@ class TiledDrawWidget(gtk.VBox):
         return self.event_box.device_observers
 
     @property
+    def _input_stroke_started_observers(self):
+        return self.event_box._input_stroke_started_observers
+
+    @property
     def _input_stroke_ended_observers(self):
         return self.event_box._input_stroke_ended_observers
 
@@ -420,12 +424,22 @@ class TiledDrawWidget(gtk.VBox):
         return self.renderer.display_to_model
 
     @property
+    def model_to_display(self):
+        return self.renderer.model_to_display
+
+    @property
     def set_override_cursor(self):
         return self.drag_handler.set_override_cursor
 
     @property
     def device_used(self):
         return self.event_box.device_used
+
+    def get_last_painting_pos(self):
+        return self.event_box.last_painting_pos
+    def set_last_painting_pos(self, value):
+        self.event_box.last_painting_pos = value
+    last_painting_pos = property(get_last_painting_pos, set_last_painting_pos)
 
     @property
     def get_cursor_in_model_coordinates(self):
