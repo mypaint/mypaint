@@ -179,35 +179,45 @@ class Document(object):
         self.layersolo_state.autoleave_timeout = None
 
     def init_extra_keys(self):
-        kbm = self.app.kbm
         # The keyboard shortcuts below are not visible in the menu.
         # Shortcuts assigned through the menu will take precedence.
         # If we assign the same key twice, the last one will work.
+        k = self.app.kbm.add_extra_key
 
-        kbm.add_extra_key('bracketleft', 'Smaller') # GIMP, Photoshop, Painter
-        kbm.add_extra_key('bracketright', 'Bigger') # GIMP, Photoshop, Painter
-        kbm.add_extra_key('equal', 'ZoomIn') # (on US keyboard next to minus)
-        kbm.add_extra_key('comma', 'Smaller') # Krita
-        kbm.add_extra_key('period', 'Bigger') # Krita
+        k('bracketleft', 'Smaller') # GIMP, Photoshop, Painter
+        k('bracketright', 'Bigger') # GIMP, Photoshop, Painter
+        k('<control>bracketleft', 'RotateLeft') # Krita
+        k('<control>bracketright', 'RotateRight') # Krita
+        k('less', 'LessOpaque') # GIMP
+        k('greater', 'MoreOpaque') # GIMP
+        k('equal', 'ZoomIn') # (on US keyboard next to minus)
+        k('comma', 'Smaller') # Krita
+        k('period', 'Bigger') # Krita
 
-        kbm.add_extra_key('BackSpace', 'ClearLayer')
+        k('BackSpace', 'ClearLayer')
 
-        kbm.add_extra_key('<control>z', 'Undo')
-        kbm.add_extra_key('<control>y', 'Redo')
-        kbm.add_extra_key('<control><shift>z', 'Redo')
-        kbm.add_extra_key('KP_Add', 'ZoomIn')
-        kbm.add_extra_key('KP_Subtract', 'ZoomOut')
-        kbm.add_extra_key('plus', 'ZoomIn')
-        kbm.add_extra_key('minus', 'ZoomOut')
-        kbm.add_extra_key('bar', 'Symmetry')
+        k('<control>z', 'Undo')
+        k('<control>y', 'Redo')
+        k('<control><shift>z', 'Redo')
+        k('<control>w', lambda(action): self.app.drawWindow.quit_cb())
+        k('KP_Add', 'ZoomIn')
+        k('KP_Subtract', 'ZoomOut')
+        k('KP_4', 'RotateLeft') # Blender
+        k('KP_6', 'RotateRight') # Blender
+        k('KP_5', 'ResetRotation')
+        k('plus', 'ZoomIn')
+        k('minus', 'ZoomOut')
+        k('<control>plus', 'ZoomIn') # Krita
+        k('<control>minus', 'ZoomOut') # Krita
+        k('bar', 'Symmetry')
 
-        kbm.add_extra_key('Left', lambda(action): self.pan('PanLeft'))
-        kbm.add_extra_key('Right', lambda(action): self.pan('PanRight'))
-        kbm.add_extra_key('Down', lambda(action): self.pan('PanDown'))
-        kbm.add_extra_key('Up', lambda(action): self.pan('PanUp'))
+        k('Left', lambda(action): self.pan('PanLeft'))
+        k('Right', lambda(action): self.pan('PanRight'))
+        k('Down', lambda(action): self.pan('PanDown'))
+        k('Up', lambda(action): self.pan('PanUp'))
 
-        kbm.add_extra_key('<control>Left', 'RotateLeft')
-        kbm.add_extra_key('<control>Right', 'RotateRight')
+        k('<control>Left', 'RotateLeft')
+        k('<control>Right', 'RotateRight')
 
     @property
     def input_stroke_ended_observers(self):
