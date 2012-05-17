@@ -19,8 +19,6 @@ from warnings import warn
 from lib import helpers, tiledsurface, pixbufsurface
 import cursor
 
-
-
 def _make_testbed_model():
     warn("Creating standalone model for testing", RuntimeWarning, 2)
     import lib.brush, lib.document
@@ -54,9 +52,6 @@ class CanvasEventBox(gtk.EventBox):
 
         self.drag_handler_update = drag_handler
 
-        self.connect("enter-notify-event", self.enter_notify_cb)
-        self.connect("leave-notify-event", self.leave_notify_cb)
-
         # workaround for https://gna.org/bugs/?14372 ([Windows] crash when moving the pen during startup)
         def at_application_start(*junk):
             self.connect("motion-notify-event", self.motion_notify_cb)
@@ -64,10 +59,7 @@ class CanvasEventBox(gtk.EventBox):
             self.connect("button-release-event", self.button_release_cb)
         gobject.idle_add(at_application_start)
 
-        self.set_events(gdk.EXPOSURE_MASK
-                        | gdk.POINTER_MOTION_MASK
-                        | gdk.ENTER_NOTIFY_MASK
-                        | gdk.LEAVE_NOTIFY_MASK
+        self.add_events(gdk.POINTER_MOTION_MASK
                         # Workaround for https://gna.org/bugs/index.php?16253
                         # Mypaint doesn't use proximity-*-event for anything
                         # yet, but this seems to be needed for scrollwheels
@@ -92,18 +84,11 @@ class CanvasEventBox(gtk.EventBox):
         #self.scroll_at_edges = False
         self.pressure_mapping = None
 
-        self.has_pointer = False
-
         self.bad_devices = []
         self.motions = []
 
         self._input_stroke_started_observers = []
         self._input_stroke_ended_observers = [] #: Access via gui.document
-
-    def enter_notify_cb(self, widget, event):
-        self.has_pointer = True
-    def leave_notify_cb(self, widget, event):
-        self.has_pointer = False
         
     def device_used(self, device):
         """Tell the TDW about a device being used."""
@@ -365,7 +350,6 @@ class TiledDrawWidget(gtk.VBox):
         self.drag_handler = DragHandler(self.doc, self.renderer)
         self.event_box = CanvasEventBox(self.app, self.doc, self.drag_handler.update)
 
-        
         # HACK
         self.event_box.display_to_model = self.renderer.display_to_model
         
@@ -376,6 +360,24 @@ class TiledDrawWidget(gtk.VBox):
         self.doc.brush.brushinfo.observers.append(self.drag_handler.brush_modified_cb)
 
         self.drag_handler.update_cursor() # hack to get the initial cursor right
+
+        self.has_pointer = False
+
+        def track_pointer(widget):
+            """Track pointer enter/leave on widget."""
+            widget.add_events(gdk.ENTER_NOTIFY_MASK | gdk.LEAVE_NOTIFY_MASK)
+            widget.connect("enter-notify-event", self.enter_notify_cb)
+            widget.connect("leave-notify-event", self.leave_notify_cb)
+
+        # We track both renderer and event_box because when pressing and releasing
+        # mouse button the event_box gets leave event, but the renderer gets the enter event
+        track_pointer(self.event_box)
+        track_pointer(self.renderer)
+
+    def enter_notify_cb(self, widget, event):
+        self.has_pointer = True
+    def leave_notify_cb(self, widget, event):
+        self.has_pointer = False
 
     # Forward public API to delegates
     # TODO: attempt to reduce this interface
@@ -390,10 +392,6 @@ class TiledDrawWidget(gtk.VBox):
     @property
     def drag_op(self):
         return self.drag_handler.drag_op
-
-    @property
-    def has_pointer(self):
-        return self.event_box.has_pointer
 
     @property
     def display_overlays(self):
