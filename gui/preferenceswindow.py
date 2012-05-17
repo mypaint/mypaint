@@ -39,7 +39,7 @@ mouse_button_actions = [
     ('zoom_canvas', _("Zoom")),
     ('rotate_canvas', _("Rotate")),
     ('move_layer', _("Move Current Layer")),
-    ('straight_line', _("Straight/Curved Line")),
+    ('straight_line', _("Straight Line")),
     ('straight_line_sequence', _("Sequence of Lines")),
     ('ellipse', _("Ellipse")),
     ('ColorChangerPopup', _("Color Changer")),

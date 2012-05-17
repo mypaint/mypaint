@@ -17,10 +17,10 @@ import math
 # internal name, displayed name, constant, minimum, default, maximum, tooltip
 line_mode_settings_list = [
     ['entry_pressure', _('Entrance Pressure'), False, 0.0001, 0.3, 1.0, _("Stroke entrance pressure for line tools")],
-    ['midpoint_pressure', _('Midpoint Pressure'), False, 0.0001, 0.75, 1.0, _("Mid-Stroke pressure for line tools")],
+    ['midpoint_pressure', _('Midpoint Pressure'), False, 0.0001, 1.0, 1.0, _("Mid-Stroke pressure for line tools")],
     ['exit_pressure', _('Exit Pressure'), False, 0.0001, 0.3, 1.0, _("Stroke exit pressure for line tools")],
-    ['line_head', _('Head'), False, 0.0001, 0.3, 1.0, _("Stroke lead-in end")],
-    ['line_tail', _('Tail'), False, 0.0001, 0.7, 1.0, _("Stroke trail-off beginning")],
+    ['line_head', _('Head'), False, 0.0001, 0.25, 1.0, _("Stroke lead-in end")],
+    ['line_tail', _('Tail'), False, 0.0001, 0.75, 1.0, _("Stroke trail-off beginning")],
     ]
 
 class LineModeSettings:
