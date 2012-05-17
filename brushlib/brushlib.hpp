@@ -4,4 +4,6 @@
 #include "surface.hpp"
 #include "mypaint-brush.c"
 #include "mypaint-surface.c"
+#include "brushmodes.h"
+#include "mypaint-tiled-surface.c"
 #include "brush.hpp"

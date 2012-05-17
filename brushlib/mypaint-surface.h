@@ -75,6 +75,9 @@ mypaint_surface_get_color(MyPaintSurface *self,
                         float * color_r, float * color_g, float * color_b, float * color_a
                         );
 
+float
+mypaint_surface_get_alpha (MyPaintSurface *self, float x, float y, float radius);
+
 void
 mypaint_surface_destroy(MyPaintSurface *self);
 

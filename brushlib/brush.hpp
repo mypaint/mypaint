@@ -64,9 +64,8 @@ public:
 
   bool stroke_to (Surface * surface, float x, float y, float pressure, float xtilt, float ytilt, double dtime)
   {
-      MyPaintSurface *c_surface = mypaint_compatibility_surface_new(surface);
+      MyPaintSurface *c_surface = surface->get_surface_interface();
       bool retval = mypaint_brush_stroke_to(c_brush, c_surface, x, y, pressure, xtilt, ytilt, dtime);
-      mypaint_surface_destroy(c_surface);
       return retval;
   }
 

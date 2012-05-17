@@ -17,6 +17,8 @@
 #ifndef SURFACE_HPP
 #define SURFACE_HPP
 
+typedef struct _MyPaintSurface MyPaintSurface;
+
 // surface interface required by brush.hpp
 class Surface {
 public:
@@ -38,6 +40,8 @@ public:
                           float radius, 
                           float * color_r, float * color_g, float * color_b, float * color_a
                           ) = 0;
+
+  virtual MyPaintSurface *get_surface_interface() = 0;
 };
 
 #endif //SURFACE_HPP
