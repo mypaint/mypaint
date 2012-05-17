@@ -115,7 +115,7 @@ def brushPaint():
             b.stroke_to (s, x, y, pressure, 0.0, 0.0, dtime)
         s.end_atomic()
     print 'Brushpaint time:', time()-t0
-    print s.get_bbox(), b.stroke_total_painting_time # FIXME: why is this time so different each run?
+    print s.get_bbox(), b.get_total_stroke_painting_time() # FIXME: why is this time so different each run?
 
     s.save_as_png('test_brushPaint.png')
 

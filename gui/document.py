@@ -610,7 +610,7 @@ class Document(object):
 
     # DEBUGGING
     def print_inputs_cb(self, action):
-        self.model.brush.print_inputs = action.get_active()
+        self.model.brush.set_print_inputs(action.get_active())
     def visualize_rendering_cb(self, action):
         self.tdw.visualize_rendering = action.get_active()
     def no_double_buffering_cb(self, action):

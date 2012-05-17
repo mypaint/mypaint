@@ -2,4 +2,6 @@
 #include "numpy/arrayobject.h"
 #include "helpers.hpp"
 #include "surface.hpp"
+#include "mypaint-brush.c"
+#include "mypaint-surface.c"
 #include "brush.hpp"

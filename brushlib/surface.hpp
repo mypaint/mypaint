@@ -14,6 +14,9 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
+#ifndef SURFACE_HPP
+#define SURFACE_HPP
+
 // surface interface required by brush.hpp
 class Surface {
 public:
@@ -36,3 +39,5 @@ public:
                           float * color_r, float * color_g, float * color_b, float * color_a
                           ) = 0;
 };
+
+#endif //SURFACE_HPP

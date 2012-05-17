@@ -82,6 +82,8 @@ if env['debug']:
 
 #env.Append(CCFLAGS='-fno-inline', LINKFLAGS='-fno-inline')
 
+env.Append(CPPPATH='../brushlib')
+
 Export('env', 'python')
 module = SConscript('lib/SConscript')
 SConscript('brushlib/SConscript')

@@ -52,7 +52,7 @@ class Stroke:
         version = '2'
         self.stroke_data = version + data
 
-        self.total_painting_time = self.brush.stroke_total_painting_time
+        self.total_painting_time = self.brush.get_total_stroke_painting_time()
         #if not self.empty:
         #    print 'Recorded', len(self.stroke_data), 'bytes. (painting time: %.2fs)' % self.total_painting_time
         #print 'Compressed size:', len(zlib.compress(self.stroke_data)), 'bytes.'
