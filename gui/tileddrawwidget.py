@@ -472,7 +472,8 @@ class TiledDrawWidget(gtk.VBox):
         if at_pointer and self.has_pointer and self.event_box.last_event_x is not None:
             cx, cy = self.event_box.last_event_x, self.event_box.last_event_y
         else:
-            w, h = self.window.get_size()
+            allocation = self.get_allocation()
+            w, h = allocation.width, allocation.height
             cx, cy = self.renderer.get_center()
         cx_model, cy_model = self.renderer.display_to_model(cx, cy)
         function()
@@ -686,7 +687,8 @@ class CanvasRenderer(gtk.DrawingArea):
 
     def render_prepare(self, device_bbox):
         if device_bbox is None:
-            w, h = self.window.get_size()
+            allocation = self.get_allocation()
+            w, h = allocation.width, allocation.height
             device_bbox = (0, 0, w, h)
         #print 'device bbox', tuple(device_bbox)
 
@@ -861,8 +863,8 @@ class CanvasRenderer(gtk.DrawingArea):
     def get_center(self):
         """Return the centre position in display coordinates.
         """
-        w, h = self.window.get_size()
-        return w/2.0, h/2.0
+        alloc = self.get_allocation()
+        return alloc.width/2.0, alloc.height/2.0
 
     def recenter_document(self):
         """Recentres the view onto the document's centre.

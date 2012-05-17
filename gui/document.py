@@ -485,7 +485,8 @@ class Document(object):
 
     def pan(self, command):
         self.model.split_stroke()
-        step = min(self.tdw.window.get_size()) / 5
+        allocation = self.tdw.get_allocation()
+        step = min((allocation.width, allocation.height)) / 5
         if   command == 'PanLeft' : self.tdw.scroll(-step, 0)
         elif command == 'PanRight': self.tdw.scroll(+step, 0)
         elif command == 'PanUp'   : self.tdw.scroll(0, -step)
@@ -577,7 +578,8 @@ class Document(object):
                 # When there is nothing on the canvas reset zoom to default.
                 self.reset_view_cb(None)
             else:
-                w1, h1 = self.tdw.window.get_size()
+                allocation = self.tdw.get_allocation()
+                w1, h1 = allocation.width, allocation.height
                 # Store radians and reset rotation to zero.
                 radians = self.tdw.rotation
                 self.tdw.set_rotation(0.0)
