@@ -59,10 +59,9 @@ class FadingOverlay (Overlay):
         """
         self.alpha -= 1.0 / (float(self.fade_fps) * self.fade_duration)
         self.alpha = clamp(self.alpha, 0.0, 1.0)
-        win = self.tdw.get_window()
-        if win is not None:
-            if self.__area:
-                win.invalidate_rect(gdk.Rectangle(*self.__area), True)
+
+        if self.__area:
+            self.tdw.queue_draw_area(*self.__area)
         if self.alpha <= 0.0:
             self.__anim_srcid = None
             return False

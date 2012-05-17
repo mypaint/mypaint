@@ -455,6 +455,10 @@ class TiledDrawWidget(gtk.VBox):
     def toggle_show_layers_above(self):
         return self.renderer.toggle_show_layers_above
 
+    @property
+    def queue_draw_area(self):
+        return self.renderer.queue_draw_area
+
     def get_current_layer_solo(self):
         return self.renderer.current_layer_solo
     def set_current_layer_solo(self, enabled):
