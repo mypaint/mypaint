@@ -1,5 +1,5 @@
 Import('env')
-import sys, functools
+import sys, os
 
 env.Append(CPPPATH='../brushlib')
 
@@ -23,6 +23,6 @@ def build_py_module(*args, **kwargs):
 
 # python extension module
 src = 'mypaintlib_wrap.cpp'
-module = build_py_module('_mypaintlib', Split(src), SHLIBPREFIX="", LIBS="mypaint-brushlib", LIBPATH="../brushlib")
+module = build_py_module('../_mypaintlib', Split(src), SHLIBPREFIX="", LIBS="mypaint-brushlib", LIBPATH="../")
 
 Return('module')

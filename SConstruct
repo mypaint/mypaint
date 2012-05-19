@@ -83,6 +83,10 @@ if env['debug']:
 
 #env.Append(CCFLAGS='-fno-inline', LINKFLAGS='-fno-inline')
 
+# Look up libraries dependencies relative to the library
+env.Append(LINKFLAGS = Split('-z origin'))
+env.Append(RPATH = env.Literal(os.path.join('\\$$ORIGIN')))
+
 Export('env', 'python')
 mypaintlib = SConscript('lib/SConscript')
 brushlib = SConscript('brushlib/SConscript')
@@ -174,6 +178,7 @@ install_perms('$prefix/share/applications', 'desktop/mypaint.desktop')
 
 # location for achitecture-dependent modules
 install_perms('$prefix/lib/mypaint', mypaintlib)
+install_perms('$prefix/lib/mypaint', brushlib)
 
 # Program and supporting UI XML
 install_perms('$prefix/bin', 'mypaint', perms=0755)
