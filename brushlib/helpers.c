@@ -14,36 +14,13 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef __helpers_h__
-#define __helpers_h__
+#ifndef HELPERS_C
+#define HELPERS_C
 
-#include <glib.h>
 #include <assert.h>
 #include <stdint.h>
 
-// MAX, MIN, ABS, CLAMP are already available from gmacros.h
-#define ROUND(x) ((int) ((x) + 0.5))
-#define SIGN(x) ((x)>0?1:(-1))
-#define SQR(x) ((x)*(x))
-
-#define MAX3(a, b, c) ((a)>(b)?MAX((a),(c)):MAX((b),(c)))
-#define MIN3(a, b, c) ((a)<(b)?MIN((a),(c)):MIN((b),(c)))
-
-typedef struct { int x, y, w, h; } Rect;
-// originally from my mass project (mass.sourceforge.net)
-void ExpandRectToIncludePoint(Rect * r, int x, int y) 
-{
-  if (r->w == 0) {
-    r->w = 1; r->h = 1;
-    r->x = x; r->y = y;
-  } else {
-    if (x < r->x) { r->w += r->x-x; r->x = x; } else
-    if (x >= r->x+r->w) { r->w = x - r->x + 1; }
-
-    if (y < r->y) { r->h += r->y-y; r->y = y; } else
-    if (y >= r->y+r->h) { r->h = y - r->y + 1; }
-  }
-}
+#include "helpers.h"
 
 // Optimized version from one in GIMP (noisify.c), where it was
 // adapted from ppmforge.c, which is part of PBMPLUS. The algorithm
@@ -339,4 +316,4 @@ hsl_to_rgb_float (float *h_, float *s_, float *l_)
   *l_ = b;
 }
 
-#endif
+#endif //HELPERS_C

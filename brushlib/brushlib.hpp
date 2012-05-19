@@ -1,5 +1,5 @@
-#include "helpers.hpp"
 #include "mypaint-brush.c"
 #include "mypaint-surface.c"
 #include "brushmodes.h"
 #include "mypaint-tiled-surface.c"
+#include "helpers.c"
