@@ -1,4 +1,3 @@
-#include "../brushlib/brushlib.hpp"
 #include "Python.h"
 #include "numpy/arrayobject.h"
 #include "surface.hpp"

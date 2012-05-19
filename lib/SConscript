@@ -1,5 +1,7 @@
 Import('env')
-import sys
+import sys, functools
+
+env.Append(CPPPATH='../brushlib')
 
 # For the record: I know that scons supports swig. But it doesn't scan for #include in the generated code.
 # 
@@ -10,13 +12,17 @@ if env.Execute('swig -o mypaintlib_wrap.cpp -noproxydel -python -c++ mypaintlib.
 env.Clean('.', 'mypaintlib_wrap.cpp')
 env.Clean('.', 'mypaintlib.py')
 
+def build_py_module(*args, **kwargs):
+    if sys.platform == "win32": # there 's a better way to do this
+        kwargs["SHLIBSUFFIX"]=".pyd"
+    elif sys.platform == "darwin":
+        kwargs["SHLIBSUFFIX"]=".so"
+    else:
+        pass
+    return env.SharedLibrary(*args, **kwargs)
+
 # python extension module
 src = 'mypaintlib_wrap.cpp'
-if sys.platform == "win32": # there 's a better way to do this 
-    module = env.SharedLibrary('_mypaintlib', Split(src), SHLIBPREFIX="", SHLIBSUFFIX=".pyd")
-elif sys.platform == "darwin":
-    module = env.SharedLibrary('_mypaintlib', Split(src), SHLIBPREFIX="", SHLIBSUFFIX=".so")
-else:
-    module = env.SharedLibrary('_mypaintlib', Split(src), SHLIBPREFIX="")
+module = build_py_module('_mypaintlib', Split(src), SHLIBPREFIX="", LIBS="mypaint-brushlib", LIBPATH="../brushlib")
 
 Return('module')

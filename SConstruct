@@ -83,11 +83,9 @@ if env['debug']:
 
 #env.Append(CCFLAGS='-fno-inline', LINKFLAGS='-fno-inline')
 
-env.Append(CPPPATH='../brushlib')
-
 Export('env', 'python')
-module = SConscript('lib/SConscript')
-SConscript('brushlib/SConscript')
+mypaintlib = SConscript('lib/SConscript')
+brushlib = SConscript('brushlib/SConscript')
 languages = SConscript('po/SConscript')
 
 def burn_python_version(target, source, env):
@@ -175,7 +173,7 @@ install_tree('$prefix/share', 'desktop/icons')
 install_perms('$prefix/share/applications', 'desktop/mypaint.desktop')
 
 # location for achitecture-dependent modules
-install_perms('$prefix/lib/mypaint', module)
+install_perms('$prefix/lib/mypaint', mypaintlib)
 
 # Program and supporting UI XML
 install_perms('$prefix/bin', 'mypaint', perms=0755)

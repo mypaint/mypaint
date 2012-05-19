@@ -1,5 +1,8 @@
 *.swp
 *.pyc
+*.so
+*.o
+*.os
 *~
 *#
 .emacs.*
