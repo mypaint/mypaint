@@ -81,9 +81,5 @@ mypaint_surface_get_alpha (MyPaintSurface *self, float x, float y, float radius)
 void
 mypaint_surface_destroy(MyPaintSurface *self);
 
-/* TEMP: compatibility interface wrapping the existing C++ Surface */
-MyPaintSurface *
-mypaint_compatibility_surface_new(Surface *surface);
-
 #endif // MYPAINTSURFACE_H
 

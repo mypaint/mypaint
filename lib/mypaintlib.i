@@ -5,9 +5,11 @@
 
 typedef struct { int x, y, w, h; } Rect;
 
-%include "../brushlib/surface.hpp"
-%include "../brushlib/brush.hpp"
+%include "surface.hpp"
+%include "brush.hpp"
+
 %include "../brushlib/mapping.hpp"
+
 %include "python_brush.hpp"
 %include "brushmodes.hpp"
 %include "tiledsurface.hpp"
