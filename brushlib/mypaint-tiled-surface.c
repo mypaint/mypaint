@@ -13,6 +13,7 @@
 
 #include "mypaint-tiled-surface.h"
 #include "helpers.h"
+#include "brushmodes.h"
 
 #define TILE_SIZE 64
 #define MAX_MIPMAP_LEVEL 4
