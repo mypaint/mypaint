@@ -8,6 +8,7 @@ typedef struct _MyPaintTiledSurface MyPaintTiledSurface;
 typedef uint16_t *(*MyPaintTiledSurfaceGetTileFunction) (MyPaintTiledSurface *self, int tx, int ty, bool readonly);
 typedef void (*MyPaintTiledSurfaceUpdateTileFunction) (MyPaintTiledSurface *self, int tx, int ty, uint16_t * tile_buffer);
 typedef void (*MyPaintTiledSurfaceAtomicChangeFunction) (MyPaintTiledSurface *self);
+typedef void (*MyPaintTiledSurfaceAreaChanged) (MyPaintTiledSurface *self, int bb_x, int bb_y, int bb_w, int bb_h);
 
 /**
   * MyPaintTiledSurface:
@@ -20,8 +21,11 @@ typedef void (*MyPaintTiledSurfaceAtomicChangeFunction) (MyPaintTiledSurface *se
   *
   * Create a new MyPaintTiledSurface.
   */
-MyPaintTiledSurface *
-mypaint_tiled_surface_new(PyObject *);
+void
+mypaint_tiled_surface_init(MyPaintTiledSurface *);
+
+void
+mypaint_tiled_surface_destroy(MyPaintTiledSurface *self);
 
 void
 mypaint_tiled_surface_set_symmetry_state(MyPaintTiledSurface *self, bool active, float center_x);
@@ -32,5 +36,6 @@ void mypaint_tiled_surface_begin_atomic(MyPaintTiledSurface *self);
 void mypaint_tiled_surface_end_atomic(MyPaintTiledSurface *self);
 uint16_t * mypaint_tiled_surface_get_tile(MyPaintTiledSurface *self, int tx, int ty, bool readonly);
 void mypaint_tiled_surface_update_tile(MyPaintTiledSurface *self, int tx, int ty, uint16_t * tile_buffer);
+void mypaint_tiled_surface_area_changed(MyPaintTiledSurface *self, int bb_x, int bb_y, int bb_w, int bb_h);
 
 #endif // MYPAINTTILEDSURFACE_H

@@ -12,31 +12,17 @@
 #define TILE_SIZE 64
 #define MAX_MIPMAP_LEVEL 4
 
-// caching tile memory location (optimization)
-#define TILE_MEMORY_SIZE 8
-typedef struct {
-  int tx, ty;
-  uint16_t * rgba_p;
-} TileMemory;
-
 struct _MyPaintTiledSurface {
     MyPaintSurface parent;
     MyPaintTiledSurfaceGetTileFunction get_tile;
     MyPaintTiledSurfaceUpdateTileFunction update_tile;
     MyPaintTiledSurfaceAtomicChangeFunction begin_atomic;
     MyPaintTiledSurfaceAtomicChangeFunction end_atomic;
-
-    PyObject * py_obj;
-
-    TileMemory tileMemory[TILE_MEMORY_SIZE];
-    int tileMemoryValid;
-    int tileMemoryWrite;
+    MyPaintTiledSurfaceAreaChanged area_changed;
 
     /* protected: */
     bool surface_do_symmetry;
     float surface_center_x;
-    Rect dirty_bbox;
-    int atomic;
 };
 
 void mypaint_tiled_surface_begin_atomic(MyPaintTiledSurface *self)
@@ -59,56 +45,9 @@ void mypaint_tiled_surface_update_tile(MyPaintTiledSurface *self, int tx, int ty
     self->update_tile(self, tx, ty, tile_buffer);
 }
 
-
-// Forward declare
-void destroy_tiledsurf(MyPaintSurface *surface);
-void begin_atomic(MyPaintTiledSurface *self);
-void end_atomic(MyPaintTiledSurface *self);
-uint16_t * get_tile_memory(MyPaintTiledSurface *self, int tx, int ty, bool readonly);
-void update_tile(MyPaintTiledSurface *self, int tx, int ty, uint16_t * tile_buffer);
-int draw_dab (MyPaintSurface *surface, float x, float y,
-                 float radius,
-                 float color_r, float color_g, float color_b,
-                 float opaque, float hardness,
-                 float color_a,
-                 float aspect_ratio, float angle,
-                 float lock_alpha,
-                 float colorize);
-void get_color (MyPaintSurface *surface, float x, float y,
-                  float radius,
-                  float * color_r, float * color_g, float * color_b, float * color_a
-                  );
-
-MyPaintTiledSurface *
-mypaint_tiled_surface_new(PyObject *py_object)
+void mypaint_tiled_surface_area_changed(MyPaintTiledSurface *self, int bb_x, int bb_y, int bb_w, int bb_h)
 {
-    MyPaintTiledSurface *self = (MyPaintTiledSurface *)malloc(sizeof(MyPaintTiledSurface));
-
-    self->parent.draw_dab = draw_dab;
-    self->parent.get_color = get_color;
-    self->parent.destroy = destroy_tiledsurf;
-
-    self->get_tile = get_tile_memory;
-    self->update_tile = update_tile;
-    self->begin_atomic = begin_atomic;
-    self->end_atomic = end_atomic;
-
-    self->py_obj = py_object; // no need to incref
-    self->atomic = 0;
-    self->dirty_bbox.w = 0;
-    self->tileMemoryValid = 0;
-    self->tileMemoryWrite = 0;
-
-    self->surface_do_symmetry = false;
-    self->surface_center_x = 0.0;
-
-    return self;
-}
-
-void destroy_tiledsurf(MyPaintSurface *surface)
-{
-    MyPaintTiledSurface *self = (MyPaintTiledSurface *)surface;
-    free(self);
+    self->area_changed(self, bb_x, bb_y, bb_w, bb_h);
 }
 
 void
@@ -116,82 +55,6 @@ mypaint_tiled_surface_set_symmetry_state(MyPaintTiledSurface *self, bool active,
 {
     self->surface_do_symmetry = active;
     self->surface_center_x = center_x;
-}
-
-/* TEMP: TODO: move the MyPaint specific implementations here into lib/ */
-void begin_atomic(MyPaintTiledSurface *self)
-{
-    if (self->atomic == 0) {
-      assert(self->dirty_bbox.w == 0);
-      assert(self->tileMemoryValid == 0);
-    }
-    self->atomic++;
-}
-
-void end_atomic(MyPaintTiledSurface *self)
-{
-    assert(self->atomic > 0);
-    self->atomic--;
-
-    if (self->atomic == 0) {
-      self->tileMemoryValid = 0;
-      self->tileMemoryWrite = 0;
-      Rect bbox = self->dirty_bbox; // copy to safety before calling python
-      self->dirty_bbox.w = 0;
-      if (bbox.w > 0) {
-        PyObject* res;
-        // OPTIMIZE: send a list tiles for minimal compositing? (but profile the code first)
-        res = PyObject_CallMethod(self->py_obj, "notify_observers", "(iiii)", bbox.x, bbox.y, bbox.w, bbox.h);
-        if (!res) return;
-        Py_DECREF(res);
-      }
-    }
-}
-
-uint16_t * get_tile_memory(MyPaintTiledSurface *self, int tx, int ty, bool readonly)
-{
-    // We assume that the memory location does not change between begin_atomic() and end_atomic().
-    for (int i=0; i<self->tileMemoryValid; i++) {
-      if (self->tileMemory[i].tx == tx and self->tileMemory[i].ty == ty) {
-        return self->tileMemory[i].rgba_p;
-      }
-    }
-    if (PyErr_Occurred()) return NULL;
-    PyObject* rgba = PyObject_CallMethod(self->py_obj, "get_tile_memory", "(iii)", tx, ty, readonly);
-    if (rgba == NULL) {
-      printf("Python exception during get_tile_memory()!\n");
-      return NULL;
-    }
-#ifdef HEAVY_DEBUG
-       assert(PyArray_NDIM(rgba) == 3);
-       assert(PyArray_DIM(rgba, 0) == TILE_SIZE);
-       assert(PyArray_DIM(rgba, 1) == TILE_SIZE);
-       assert(PyArray_DIM(rgba, 2) == 4);
-       assert(PyArray_ISCARRAY(rgba));
-       assert(PyArray_TYPE(rgba) == NPY_UINT16);
-#endif
-    // tiledsurface.py will keep a reference in its tiledict, at least until the final end_atomic()
-    Py_DECREF(rgba);
-    uint16_t * rgba_p = (uint16_t*)((PyArrayObject*)rgba)->data;
-
-    // Cache tiles to speed up small brush strokes with lots of dabs, like charcoal.
-    // Not caching readonly requests; they are alternated with write requests anyway.
-    if (!readonly) {
-      if (self->tileMemoryValid < TILE_MEMORY_SIZE) {
-        self->tileMemoryValid++;
-      }
-      // We always overwrite the oldest cache entry.
-      // We are mainly optimizing for strokes with radius smaller than one tile.
-      self->tileMemory[self->tileMemoryWrite].tx = tx;
-      self->tileMemory[self->tileMemoryWrite].ty = ty;
-      self->tileMemory[self->tileMemoryWrite].rgba_p = rgba_p;
-      self->tileMemoryWrite = (self->tileMemoryWrite + 1) % TILE_MEMORY_SIZE;
-    }
-    return rgba_p;
-}
-
-void update_tile(MyPaintTiledSurface *self, int tx, int ty, uint16_t * tile_buffer) {
-    // We modify tiles directly, so don't need to do anything here
 }
 
 void render_dab_mask (uint16_t * mask,
@@ -328,7 +191,6 @@ bool draw_dab_internal (MyPaintTiledSurface *self, float x, float y,
     if (radius < 0.1) return false; // don't bother with dabs smaller than 0.1 pixel
     if (hardness == 0.0) return false; // infintly small center point, fully transparent outside
     if (opaque == 0.0) return false;
-    assert(self->atomic > 0);
 
     color_r = CLAMP(color_r, 0.0, 1.0);
     color_g = CLAMP(color_g, 0.0, 1.0);
@@ -411,8 +273,7 @@ bool draw_dab_internal (MyPaintTiledSurface *self, float x, float y,
       bb_w = ceil (2*(radius+1));
       bb_h = ceil (2*(radius+1));
 
-      ExpandRectToIncludePoint (&self->dirty_bbox, bb_x, bb_y);
-      ExpandRectToIncludePoint (&self->dirty_bbox, bb_x+bb_w-1, bb_y+bb_h-1);
+      mypaint_tiled_surface_area_changed(self, bb_x, bb_y, bb_w, bb_h);
     }
 
     if(!recursing && self->surface_do_symmetry) {
@@ -527,4 +388,20 @@ void get_color (MyPaintSurface *surface, float x, float y,
     *color_g = CLAMP(*color_g, 0.0, 1.0);
     *color_b = CLAMP(*color_b, 0.0, 1.0);
     *color_a = CLAMP(*color_a, 0.0, 1.0);
+}
+
+void
+mypaint_tiled_surface_init(MyPaintTiledSurface *self)
+{
+    self->parent.draw_dab = draw_dab;
+    self->parent.get_color = get_color;
+
+    self->surface_do_symmetry = false;
+    self->surface_center_x = 0.0;
+}
+
+void
+mypaint_tiled_surface_destroy(MyPaintTiledSurface *self)
+{
+
 }
