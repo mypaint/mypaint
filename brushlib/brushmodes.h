@@ -7,13 +7,6 @@ void draw_dab_pixels_BlendMode_Normal (uint16_t * mask,
                                        uint16_t color_g,
                                        uint16_t color_b,
                                        uint16_t opacity);
-inline static void
-set_rgb16_lum_from_rgb16(const uint16_t topr,
-                         const uint16_t topg,
-                         const uint16_t topb,
-                         uint16_t *botr,
-                         uint16_t *botg,
-                         uint16_t *botb);
 void
 draw_dab_pixels_BlendMode_Color (uint16_t *mask,
                                  uint16_t *rgba, // b=bottom, premult
