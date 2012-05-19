@@ -7,8 +7,7 @@ typedef struct { int x, y, w, h; } Rect;
 
 %include "surface.hpp"
 %include "brush.hpp"
-
-%include "../brushlib/mapping.hpp"
+%include "mapping.hpp"
 
 %include "python_brush.hpp"
 %include "brushmodes.hpp"

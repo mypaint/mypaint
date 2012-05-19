@@ -22,7 +22,7 @@
 #include "mypaint-brush.h"
 
 #include "brushsettings.h"
-#include "mapping.hpp"
+#include "mapping.h"
 #include "helpers.h"
 
 #define ACTUAL_RADIUS_MIN 0.2
@@ -80,7 +80,7 @@ mypaint_brush_new()
     MyPaintBrush *self = (MyPaintBrush *)malloc(sizeof(MyPaintBrush));
 
     for (int i=0; i<BRUSH_SETTINGS_COUNT; i++) {
-      self->settings[i] = new Mapping(INPUT_COUNT);
+      self->settings[i] = mapping_new(INPUT_COUNT);
     }
     self->rng = g_rand_new();
     self->print_inputs = false;
@@ -101,7 +101,7 @@ void
 mypaint_brush_destroy(MyPaintBrush *self)
 {
     for (int i=0; i<BRUSH_SETTINGS_COUNT; i++) {
-      delete self->settings[i];
+        mapping_free(self->settings[i]);
     }
     g_rand_free (self->rng);
     self->rng = NULL;
@@ -136,7 +136,7 @@ void
 mypaint_brush_set_base_value(MyPaintBrush *self, int id, float value)
 {
     assert (id >= 0 && id < BRUSH_SETTINGS_COUNT);
-    self->settings[id]->base_value = value;
+    mapping_set_base_value(self->settings[id], value);
 
     settings_base_values_have_changed (self);
 }
@@ -145,14 +145,14 @@ void
 mypaint_brush_set_mapping_n(MyPaintBrush *self, int id, int input, int n)
 {
     assert (id >= 0 && id < BRUSH_SETTINGS_COUNT);
-    self->settings[id]->set_n (input, n);
+    mapping_set_n(self->settings[id], input, n);
 }
 
 void
 mypaint_brush_set_mapping_point(MyPaintBrush *self, int id, int input, int index, float x, float y)
 {
     assert (id >= 0 && id < BRUSH_SETTINGS_COUNT);
-    self->settings[id]->set_point (input, index, x, y);
+    mapping_set_point(self->settings[id], input, index, x, y);
 }
 
 float
@@ -200,7 +200,7 @@ mypaint_brush_set_state(MyPaintBrush *self, int i, float value)
     //
     for (int i=0; i<2; i++) {
       float gamma;
-      gamma = self->settings[(i==0)?BRUSH_SPEED1_GAMMA:BRUSH_SPEED2_GAMMA]->base_value;
+      gamma = mapping_get_base_value(self->settings[(i==0)?BRUSH_SPEED1_GAMMA:BRUSH_SPEED2_GAMMA]);
       gamma = exp(gamma);
 
       float fix1_x, fix1_y, fix2_x, fix2_dy;
@@ -248,7 +248,7 @@ mypaint_brush_set_state(MyPaintBrush *self, int i, float value)
     self->states[STATE_DECLINATION] += step_declination;
     self->states[STATE_ASCENSION] += step_ascension;
 
-    float base_radius = expf(self->settings[BRUSH_RADIUS_LOGARITHMIC]->base_value);
+    float base_radius = expf(mapping_get_base_value(self->settings[BRUSH_RADIUS_LOGARITHMIC]));
 
     // FIXME: does happen (interpolation problem?)
     self->states[STATE_PRESSURE] = CLAMP(self->states[STATE_PRESSURE], 0.0, 1.0);
@@ -256,14 +256,14 @@ mypaint_brush_set_state(MyPaintBrush *self, int i, float value)
 
     { // start / end stroke (for "stroke" input only)
       if (!self->states[STATE_STROKE_STARTED]) {
-        if (pressure > self->settings[BRUSH_STROKE_THRESHOLD]->base_value + 0.0001) {
+        if (pressure > mapping_get_base_value(self->settings[BRUSH_STROKE_THRESHOLD]) + 0.0001) {
           // start new stroke
           //printf("stroke start %f\n", pressure);
           self->states[STATE_STROKE_STARTED] = 1;
           self->states[STATE_STROKE] = 0.0;
         }
       } else {
-        if (pressure <= self->settings[BRUSH_STROKE_THRESHOLD]->base_value * 0.9 + 0.0001) {
+        if (pressure <= mapping_get_base_value(self->settings[BRUSH_STROKE_THRESHOLD]) * 0.9 + 0.0001) {
           // end stroke
           //printf("stroke end\n");
           self->states[STATE_STROKE_STARTED] = 0;
@@ -295,7 +295,7 @@ mypaint_brush_set_state(MyPaintBrush *self, int i, float value)
     //assert(inputs[INPUT_SPEED1] >= 0.0 && inputs[INPUT_SPEED1] < 1e8); // checking for inf
 
     for (int i=0; i<BRUSH_SETTINGS_COUNT; i++) {
-      self->settings_value[i] = self->settings[i]->calculate (inputs);
+      self->settings_value[i] = mapping_calculate(self->settings[i], (inputs));
     }
 
     {
@@ -405,15 +405,15 @@ mypaint_brush_set_state(MyPaintBrush *self, int i, float value)
       // dabs_per_pixel is just estimated roughly, I didn't think hard
       // about the case when the radius changes during the stroke
       dabs_per_pixel = (
-                        self->settings[BRUSH_DABS_PER_ACTUAL_RADIUS]->base_value +
-                        self->settings[BRUSH_DABS_PER_BASIC_RADIUS]->base_value
+                        mapping_get_base_value(self->settings[BRUSH_DABS_PER_ACTUAL_RADIUS]) +
+                        mapping_get_base_value(self->settings[BRUSH_DABS_PER_BASIC_RADIUS])
                         ) * 2.0;
 
       // the correction is probably not wanted if the dabs don't overlap
       if (dabs_per_pixel < 1.0) dabs_per_pixel = 1.0;
 
       // interpret the user-setting smoothly
-      dabs_per_pixel = 1.0 + self->settings[BRUSH_OPAQUE_LINEARIZE]->base_value*(dabs_per_pixel-1.0);
+      dabs_per_pixel = 1.0 + mapping_get_base_value(self->settings[BRUSH_OPAQUE_LINEARIZE])*(dabs_per_pixel-1.0);
 
       // see doc/brushdab_saturation.png
       //      beta = beta_dab^dabs_per_pixel
@@ -428,7 +428,7 @@ mypaint_brush_set_state(MyPaintBrush *self, int i, float value)
     x = self->states[STATE_ACTUAL_X];
     y = self->states[STATE_ACTUAL_Y];
 
-    float base_radius = expf(self->settings[BRUSH_RADIUS_LOGARITHMIC]->base_value);
+    float base_radius = expf(mapping_get_base_value(self->settings[BRUSH_RADIUS_LOGARITHMIC]));
 
     if (self->settings_value[BRUSH_OFFSET_BY_SPEED]) {
       x += self->states[STATE_NORM_DX_SLOW] * self->settings_value[BRUSH_OFFSET_BY_SPEED] * 0.1 * base_radius;
@@ -460,9 +460,9 @@ mypaint_brush_set_state(MyPaintBrush *self, int i, float value)
 
     // color part
 
-    float color_h = self->settings[BRUSH_COLOR_H]->base_value;
-    float color_s = self->settings[BRUSH_COLOR_S]->base_value;
-    float color_v = self->settings[BRUSH_COLOR_V]->base_value;
+    float color_h = mapping_get_base_value(self->settings[BRUSH_COLOR_H]);
+    float color_s = mapping_get_base_value(self->settings[BRUSH_COLOR_S]);
+    float color_v = mapping_get_base_value(self->settings[BRUSH_COLOR_V]);
     float eraser_target_alpha = 1.0;
     if (self->settings_value[BRUSH_SMUDGE] > 0.0) {
       // mix (in RGB) the smudge color with the brush color
@@ -490,7 +490,7 @@ mypaint_brush_set_state(MyPaintBrush *self, int i, float value)
 
     if (self->settings_value[BRUSH_SMUDGE_LENGTH] < 1.0 and
         // optimization, since normal brushes have smudge_length == 0.5 without actually smudging
-        (self->settings_value[BRUSH_SMUDGE] != 0.0 or not self->settings[BRUSH_SMUDGE]->is_constant())) {
+        (self->settings_value[BRUSH_SMUDGE] != 0.0 or not mapping_is_constant(self->settings[BRUSH_SMUDGE]))) {
 
       float fac = self->settings_value[BRUSH_SMUDGE_LENGTH];
       if (fac < 0.01) fac = 0.01;
@@ -593,13 +593,13 @@ mypaint_brush_set_state(MyPaintBrush *self, int i, float value)
     float res1, res2, res3;
     float dist;
 
-    if (self->states[STATE_ACTUAL_RADIUS] == 0.0) self->states[STATE_ACTUAL_RADIUS] = expf(self->settings[BRUSH_RADIUS_LOGARITHMIC]->base_value);
+    if (self->states[STATE_ACTUAL_RADIUS] == 0.0) self->states[STATE_ACTUAL_RADIUS] = expf(mapping_get_base_value(self->settings[BRUSH_RADIUS_LOGARITHMIC]));
     if (self->states[STATE_ACTUAL_RADIUS] < ACTUAL_RADIUS_MIN) self->states[STATE_ACTUAL_RADIUS] = ACTUAL_RADIUS_MIN;
     if (self->states[STATE_ACTUAL_RADIUS] > ACTUAL_RADIUS_MAX) self->states[STATE_ACTUAL_RADIUS] = ACTUAL_RADIUS_MAX;
 
 
     // OPTIMIZE: expf() called too often
-    float base_radius = expf(self->settings[BRUSH_RADIUS_LOGARITHMIC]->base_value);
+    float base_radius = expf(mapping_get_base_value(self->settings[BRUSH_RADIUS_LOGARITHMIC]));
     if (base_radius < ACTUAL_RADIUS_MIN) base_radius = ACTUAL_RADIUS_MIN;
     if (base_radius > ACTUAL_RADIUS_MAX) base_radius = ACTUAL_RADIUS_MAX;
     //if (base_radius < 0.5) base_radius = 0.5;
@@ -624,9 +624,9 @@ mypaint_brush_set_state(MyPaintBrush *self, int i, float value)
 
     // FIXME: no need for base_value or for the range checks above IF always the interpolation
     //        function will be called before this one
-    res1 = dist / self->states[STATE_ACTUAL_RADIUS] * self->settings[BRUSH_DABS_PER_ACTUAL_RADIUS]->base_value;
-    res2 = dist / base_radius   * self->settings[BRUSH_DABS_PER_BASIC_RADIUS]->base_value;
-    res3 = dt * self->settings[BRUSH_DABS_PER_SECOND]->base_value;
+    res1 = dist / self->states[STATE_ACTUAL_RADIUS] * mapping_get_base_value(self->settings[BRUSH_DABS_PER_ACTUAL_RADIUS]);
+    res2 = dist / base_radius   * mapping_get_base_value(self->settings[BRUSH_DABS_PER_BASIC_RADIUS]);
+    res3 = dt * mapping_get_base_value(self->settings[BRUSH_DABS_PER_SECOND]);
     return res1 + res2 + res3;
   }
 
@@ -696,15 +696,15 @@ mypaint_brush_set_state(MyPaintBrush *self, int i, float value)
     { // calculate the actual "virtual" cursor position
 
       // noise first
-      if (self->settings[BRUSH_TRACKING_NOISE]->base_value) {
+      if (mapping_get_base_value(self->settings[BRUSH_TRACKING_NOISE])) {
         // OPTIMIZE: expf() called too often
-        float base_radius = expf(self->settings[BRUSH_RADIUS_LOGARITHMIC]->base_value);
+        float base_radius = expf(mapping_get_base_value(self->settings[BRUSH_RADIUS_LOGARITHMIC]));
 
-        x += rand_gauss (self->rng) * self->settings[BRUSH_TRACKING_NOISE]->base_value * base_radius;
-        y += rand_gauss (self->rng) * self->settings[BRUSH_TRACKING_NOISE]->base_value * base_radius;
+        x += rand_gauss (self->rng) * mapping_get_base_value(self->settings[BRUSH_TRACKING_NOISE]) * base_radius;
+        y += rand_gauss (self->rng) * mapping_get_base_value(self->settings[BRUSH_TRACKING_NOISE]) * base_radius;
       }
 
-      float fac = 1.0 - exp_decay (self->settings[BRUSH_SLOW_TRACKING]->base_value, 100.0*dtime);
+      float fac = 1.0 - exp_decay (mapping_get_base_value(self->settings[BRUSH_SLOW_TRACKING]), 100.0*dtime);
       x = self->states[STATE_X] + (x - self->states[STATE_X]) * fac;
       y = self->states[STATE_Y] + (y - self->states[STATE_Y]) * fac;
     }

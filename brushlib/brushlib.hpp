@@ -3,3 +3,4 @@
 #include "brushmodes.h"
 #include "mypaint-tiled-surface.c"
 #include "helpers.c"
+#include "mapping.c"
