@@ -21,8 +21,8 @@ else:
 
 opts = Variables()
 opts.Add(PathVariable('prefix', 'autotools-style installation prefix', default_prefix, validator=PathVariable.PathIsDirCreate))
-
 opts.Add(BoolVariable('debug', 'enable HEAVY_DEBUG and disable optimizations', False))
+opts.Add(BoolVariable('brushlib_only', 'only build and install brushlib/', False))
 
 env = Environment(ENV=os.environ, options=opts)
 if sys.platform == "win32":
@@ -48,30 +48,35 @@ env.Append(LINKFLAGS = Split('-z origin'))
 env.Append(RPATH = env.Literal(os.path.join('\\$$ORIGIN')))
 
 Export('env', 'python')
+
+# Brushlib
 brushlib = SConscript('brushlib/SConscript')
-mypaintlib = SConscript('lib/SConscript')
-languages = SConscript('po/SConscript')
 
-def burn_python_version(target, source, env):
-    # make sure we run the python version that we built the extension modules for
-    s =  '#!/usr/bin/env ' + python + '\n'
-    s += 5*'#\n'
-    s += '# DO NOT EDIT - edit %s instead\n' % source[0]
-    s += 5*'#\n'
-    s += open(str(source[0])).read()
-    f = open(str(target[0]), 'w')
-    f.write(s)
-    f.close()
+# Application
+if not env['brushlib_only']:
+    mypaintlib = SConscript('lib/SConscript')
+    languages = SConscript('po/SConscript')
 
-try:
-    new_umask = 022
-    old_umask = os.umask(new_umask)
-    print "set umask to 0%03o (was 0%03o)" % (new_umask, old_umask)
-except OSError:
-    # Systems like Win32...
-    pass
+    try:
+        new_umask = 022
+        old_umask = os.umask(new_umask)
+        print "set umask to 0%03o (was 0%03o)" % (new_umask, old_umask)
+    except OSError:
+        # Systems like Win32...
+        pass
 
-env.Command('mypaint', 'mypaint.py', [burn_python_version, Chmod('$TARGET', 0755)])
+    def burn_python_version(target, source, env):
+        # make sure we run the python version that we built the extension modules for
+        s =  '#!/usr/bin/env ' + python + '\n'
+        s += 5*'#\n'
+        s += '# DO NOT EDIT - edit %s instead\n' % source[0]
+        s += 5*'#\n'
+        s += open(str(source[0])).read()
+        f = open(str(target[0]), 'w')
+        f.write(s)
+        f.close()
+
+    env.Command('mypaint', 'mypaint.py', [burn_python_version, Chmod('$TARGET', 0755)])
 
 env.Clean('.', Glob('*.pyc'))
 env.Clean('.', Glob('gui/*.pyc'))
@@ -127,30 +132,38 @@ def install_tree(dest, path, perms=0644, dirperms=0755):
         install_perms(target_dir, filepaths, perms=perms, dirperms=dirperms)
 
 
-# Painting resources
-install_tree('$prefix/share/mypaint', 'brushes')
-install_tree('$prefix/share/mypaint', 'backgrounds')
-install_tree('$prefix/share/mypaint', 'pixmaps')
-
-# Desktop resources and themeable internal icons
-install_tree('$prefix/share', 'desktop/icons')
-install_perms('$prefix/share/applications', 'desktop/mypaint.desktop')
-
-# location for achitecture-dependent modules
-install_perms('$prefix/lib/mypaint', mypaintlib)
+# Brushlib
 install_perms('$prefix/lib/mypaint', brushlib)
+install_perms('$prefix/include/mypaint', Glob("brushlib/mypaint-*.h"))
 
-# Program and supporting UI XML
-install_perms('$prefix/bin', 'mypaint', perms=0755)
-install_perms('$prefix/share/mypaint/gui', Glob('gui/*.xml'))
-install_perms("$prefix/share/mypaint/lib",      Glob("lib/*.py"))
+# Common
+install_tree('$prefix/share/mypaint', 'brushes')
 install_perms("$prefix/share/mypaint/brushlib", Glob("brushlib/*.py"))
-install_perms("$prefix/share/mypaint/gui",      Glob("gui/*.py"))
 
-# translations
-for lang in languages:
-    install_perms('$prefix/share/locale/%s/LC_MESSAGES' % lang,
-                 'po/%s/LC_MESSAGES/mypaint.mo' % lang)
+# Application
+if not env['brushlib_only']:
+    # Painting resources
+    install_tree('$prefix/share/mypaint', 'backgrounds')
+    install_tree('$prefix/share/mypaint', 'pixmaps')
+
+    # Desktop resources and themeable internal icons
+    install_tree('$prefix/share', 'desktop/icons')
+    install_perms('$prefix/share/applications', 'desktop/mypaint.desktop')
+
+    # location for achitecture-dependent modules
+    install_perms('$prefix/lib/mypaint', mypaintlib)
+
+    # Program and supporting UI XML
+    install_perms('$prefix/bin', 'mypaint', perms=0755)
+    install_perms('$prefix/share/mypaint/gui', Glob('gui/*.xml'))
+    install_perms("$prefix/share/mypaint/lib",      Glob("lib/*.py"))
+    install_perms("$prefix/share/mypaint/gui",      Glob("gui/*.py"))
+
+    # translations
+    for lang in languages:
+        install_perms('$prefix/share/locale/%s/LC_MESSAGES' % lang,
+                     'po/%s/LC_MESSAGES/mypaint.mo' % lang)
+
 
 # These hierarchies belong entirely to us, so unmake if asked.
 env.Clean('$prefix', '$prefix/lib/mypaint')
