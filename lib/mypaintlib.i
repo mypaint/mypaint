@@ -10,7 +10,6 @@ typedef struct { int x, y, w, h; } Rect;
 %include "mapping.hpp"
 
 %include "python_brush.hpp"
-%include "brushmodes.hpp"
 %include "tiledsurface.hpp"
 %include "pixops.hpp"
 %include "colorring.hpp"

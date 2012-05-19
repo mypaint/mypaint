@@ -4,7 +4,6 @@
 #include "surface.hpp"
 #include "brush.hpp"
 #include "python_brush.hpp"
-#include "brushmodes.hpp"
 #include "helpers2.hpp"
 #include "tiledsurface.hpp"
 #include "pixops.hpp"
