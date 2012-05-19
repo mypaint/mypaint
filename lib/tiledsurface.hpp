@@ -182,7 +182,7 @@ public:
       mypaint_tiled_surface_end_atomic((MyPaintTiledSurface *)c_surface);
   }
 
-  virtual uint16_t * get_tile_memory(int tx, int ty, bool readonly) {
+  uint16_t * get_tile_memory(int tx, int ty, bool readonly) {
       return mypaint_tiled_surface_get_tile((MyPaintTiledSurface *)c_surface, tx, ty, readonly);
   }
 
