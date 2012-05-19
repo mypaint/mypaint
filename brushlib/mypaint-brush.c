@@ -18,13 +18,11 @@
 #include <string.h>
 #include <glib.h>
 #include <math.h>
-#include "Python.h"
-
-#include "brushsettings.hpp"
-#include "mapping.hpp"
 
 #include "mypaint-brush.h"
 
+#include "brushsettings.h"
+#include "mapping.hpp"
 #include "helpers.h"
 
 #define ACTUAL_RADIUS_MIN 0.2

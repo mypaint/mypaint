@@ -15,7 +15,7 @@
 
 """Brush Settings / States
 
-This is used to generate brushsettings.hpp (see generate.py)
+This is used to generate brushsettings.h (see generate.py)
 It is also imported at runtime.
 """
 

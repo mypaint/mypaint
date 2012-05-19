@@ -6,7 +6,7 @@
 .sconsign.dblite
 TAGS
 tags
-brushlib/brushsettings.hpp
+brushlib/brushsettings.h
 lib/_mypaintlib.so
 lib/mypaintlib.py
 lib/mypaintlib_wrap.cpp
