@@ -15,7 +15,11 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
+#include <assert.h>
+
 #include "mypaint-surface.h"
+
+#include "helpers.h"
 
 int
 mypaint_surface_draw_dab(MyPaintSurface *self,

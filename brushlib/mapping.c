@@ -17,6 +17,13 @@
 #ifndef MAPPING_C
 #define MAPPING_C
 
+#include <stdlib.h>
+#include <assert.h>
+
+#include "mapping.h"
+
+#include "helpers.h"
+
 // user-defined mappings
 // (the curves you can edit in the brush settings)
 
@@ -44,7 +51,8 @@ mapping_new(int inputs_)
 
     self->inputs = inputs_;
     self->pointsList = (ControlPoints *)malloc(sizeof(ControlPoints)*self->inputs);
-    for (int i=0; i<self->inputs; i++) self->pointsList[i].n = 0;
+    int i = 0;
+    for (i=0; i<self->inputs; i++) self->pointsList[i].n = 0;
 
     self->inputs_used = 0;
     self->base_value = 0;
@@ -99,7 +107,7 @@ void mapping_set_point (Mapping * self, int input, int index, float x, float y)
     p->yvalues[index] = y;
 }
 
-bool mapping_is_constant(Mapping * self)
+gboolean mapping_is_constant(Mapping * self)
 {
     return self->inputs_used == 0;
 }

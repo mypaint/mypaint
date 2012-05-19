@@ -66,7 +66,7 @@ void end_atomic(MyPaintTiledSurface *tiled_surface)
     }
 }
 
-uint16_t * get_tile_memory(MyPaintTiledSurface *tiled_surface, int tx, int ty, bool readonly)
+uint16_t * get_tile_memory(MyPaintTiledSurface *tiled_surface, int tx, int ty, gboolean readonly)
 {
     MyPaintPythonTiledSurface *self = (MyPaintPythonTiledSurface *)tiled_surface;
 

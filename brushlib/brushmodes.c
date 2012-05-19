@@ -7,6 +7,10 @@
  * (at your option) any later version.
  */
 
+#include <stdint.h>
+#include <assert.h>
+
+#include "helpers.h"
 
 // parameters to those methods:
 //

@@ -7,24 +7,15 @@
  * (at your option) any later version.
  */
 
+#include <math.h>
+#include <stdio.h>
+#include <assert.h>
+
 #include "mypaint-tiled-surface.h"
 #include "helpers.h"
 
 #define TILE_SIZE 64
 #define MAX_MIPMAP_LEVEL 4
-
-struct _MyPaintTiledSurface {
-    MyPaintSurface parent;
-    MyPaintTiledSurfaceGetTileFunction get_tile;
-    MyPaintTiledSurfaceUpdateTileFunction update_tile;
-    MyPaintTiledSurfaceAtomicChangeFunction begin_atomic;
-    MyPaintTiledSurfaceAtomicChangeFunction end_atomic;
-    MyPaintTiledSurfaceAreaChanged area_changed;
-
-    /* protected: */
-    bool surface_do_symmetry;
-    float surface_center_x;
-};
 
 void mypaint_tiled_surface_begin_atomic(MyPaintTiledSurface *self)
 {
@@ -38,7 +29,7 @@ void mypaint_tiled_surface_end_atomic(MyPaintTiledSurface *self)
         self->end_atomic(self);
 }
 
-uint16_t * mypaint_tiled_surface_get_tile(MyPaintTiledSurface *self, int tx, int ty, bool readonly)
+uint16_t * mypaint_tiled_surface_get_tile(MyPaintTiledSurface *self, int tx, int ty, gboolean readonly)
 {
     if (!self->get_tile)
         return NULL;
@@ -59,7 +50,7 @@ void mypaint_tiled_surface_area_changed(MyPaintTiledSurface *self, int bb_x, int
 }
 
 void
-mypaint_tiled_surface_set_symmetry_state(MyPaintTiledSurface *self, bool active, float center_x)
+mypaint_tiled_surface_set_symmetry_state(MyPaintTiledSurface *self, gboolean active, float center_x)
 {
     self->surface_do_symmetry = active;
     self->surface_center_x = center_x;
@@ -179,8 +170,8 @@ void render_dab_mask (uint16_t * mask,
     *mask_p++ = 0;
   }
 
-// returns true if the surface was modified
-bool draw_dab_internal (MyPaintTiledSurface *self, float x, float y,
+// returns TRUE if the surface was modified
+gboolean draw_dab_internal (MyPaintTiledSurface *self, float x, float y,
                float radius,
                float color_r, float color_g, float color_b,
                float opaque, float hardness,
@@ -196,9 +187,9 @@ bool draw_dab_internal (MyPaintTiledSurface *self, float x, float y,
     hardness = CLAMP(hardness, 0.0, 1.0);
     lock_alpha = CLAMP(lock_alpha, 0.0, 1.0);
     colorize = CLAMP(colorize, 0.0, 1.0);
-    if (radius < 0.1) return false; // don't bother with dabs smaller than 0.1 pixel
-    if (hardness == 0.0) return false; // infintly small center point, fully transparent outside
-    if (opaque == 0.0) return false;
+    if (radius < 0.1) return FALSE; // don't bother with dabs smaller than 0.1 pixel
+    if (hardness == 0.0) return FALSE; // infintly small center point, fully transparent outside
+    if (opaque == 0.0) return FALSE;
 
     color_r = CLAMP(color_r, 0.0, 1.0);
     color_g = CLAMP(color_g, 0.0, 1.0);
@@ -227,10 +218,10 @@ bool draw_dab_internal (MyPaintTiledSurface *self, float x, float y,
     for (ty = ty1; ty <= ty2; ty++) {
       for (tx = tx1; tx <= tx2; tx++) {
 
-        uint16_t * rgba_p = mypaint_tiled_surface_get_tile(self, tx, ty, false);
+        uint16_t * rgba_p = mypaint_tiled_surface_get_tile(self, tx, ty, FALSE);
         if (!rgba_p) {
           printf("Warning: Unable to get tile!\n");
-          return true;
+          return TRUE;
         }
 
         // first, we calculate the mask (opacity for each pixel)
@@ -296,10 +287,10 @@ bool draw_dab_internal (MyPaintTiledSurface *self, float x, float y,
                 1);
     }
 
-    return true;
+    return TRUE;
   }
 
-// returns true if the surface was modified
+// returns TRUE if the surface was modified
 int draw_dab (MyPaintSurface *surface, float x, float y,
                float radius,
                float color_r, float color_g, float color_b,
@@ -348,7 +339,7 @@ void get_color (MyPaintSurface *surface, float x, float y,
     int tx, ty;
     for (ty = ty1; ty <= ty2; ty++) {
       for (tx = tx1; tx <= tx2; tx++) {
-        uint16_t * rgba_p = mypaint_tiled_surface_get_tile(self, tx, ty, true);
+        uint16_t * rgba_p = mypaint_tiled_surface_get_tile(self, tx, ty, TRUE);
         if (!rgba_p) {
           printf("Warning: Unable to get tile!\n");
           return;
@@ -404,7 +395,7 @@ mypaint_tiled_surface_init(MyPaintTiledSurface *self)
     self->parent.draw_dab = draw_dab;
     self->parent.get_color = get_color;
 
-    self->surface_do_symmetry = false;
+    self->surface_do_symmetry = FALSE;
     self->surface_center_x = 0.0;
 }
 

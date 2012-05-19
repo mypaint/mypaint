@@ -18,14 +18,18 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-typedef struct _MyPaintSurface MyPaintSurface;
+#include <glib.h>
 
-typedef void (*MyPaintSurfaceGetColorFunction) (MyPaintSurface *self,
+G_BEGIN_DECLS
+
+struct _MyPaintSurface;
+
+typedef void (*MyPaintSurfaceGetColorFunction) (struct _MyPaintSurface *self,
                                                 float x, float y,
                                                 float radius,
                                                 float * color_r, float * color_g, float * color_b, float * color_a
                                                 );
-typedef int (*MyPaintSurfaceDrawDabFunction) (MyPaintSurface *self,
+typedef int (*MyPaintSurfaceDrawDabFunction) (struct _MyPaintSurface *self,
                        float x, float y,
                        float radius,
                        float color_r, float color_g, float color_b,
@@ -35,7 +39,7 @@ typedef int (*MyPaintSurfaceDrawDabFunction) (MyPaintSurface *self,
                        float lock_alpha,
                        float colorize);
 
-typedef void (*MyPaintSurfaceDestroyFunction) (MyPaintSurface *self);
+typedef void (*MyPaintSurfaceDestroyFunction) (struct _MyPaintSurface *self);
 
 
 /**
@@ -49,6 +53,8 @@ struct _MyPaintSurface {
     MyPaintSurfaceGetColorFunction get_color;
     MyPaintSurfaceDestroyFunction destroy;
 };
+
+typedef struct _MyPaintSurface MyPaintSurface;
 
 /**
   * mypaint_surface_draw_dab:
@@ -80,6 +86,8 @@ mypaint_surface_get_alpha (MyPaintSurface *self, float x, float y, float radius)
 
 void
 mypaint_surface_destroy(MyPaintSurface *self);
+
+G_END_DECLS
 
 #endif // MYPAINTSURFACE_H
 

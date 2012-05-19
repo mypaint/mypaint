@@ -18,7 +18,10 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
+#include <glib.h>
 #include <mypaint-surface.h>
+
+G_BEGIN_DECLS
 
 /**
   * MyPaintBrush
@@ -54,12 +57,14 @@ float
 mypaint_brush_get_state(MyPaintBrush *self, int i);
 
 void
-mypaint_brush_get_state(MyPaintBrush *self, int i, float value);
+mypaint_brush_set_state(MyPaintBrush *self, int i, float value);
 
 double
 mypaint_brush_get_total_stroke_painting_time(MyPaintBrush *self);
 
 void
-mypaint_brush_set_print_inputs(MyPaintBrush *self, bool enabled);
+mypaint_brush_set_print_inputs(MyPaintBrush *self, gboolean enabled);
+
+G_END_DECLS
 
 #endif // MYPAINTBRUSH_H

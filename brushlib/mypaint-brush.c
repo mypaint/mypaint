@@ -18,6 +18,7 @@
 #include <string.h>
 #include <glib.h>
 #include <math.h>
+#include <assert.h>
 
 #include "mypaint-brush.h"
 
@@ -45,7 +46,7 @@
 
 struct _MyPaintBrush {
 
-    bool print_inputs; // debug menu
+    gboolean print_inputs; // debug menu
     // for stroke splitting (undo/redo)
     double stroke_total_painting_time;
     double stroke_current_idling_time;
@@ -68,7 +69,7 @@ struct _MyPaintBrush {
     float speed_mapping_m[2];
     float speed_mapping_q[2];
 
-    bool reset_requested;
+    gboolean reset_requested;
 };
 
 
@@ -79,20 +80,21 @@ mypaint_brush_new()
 {
     MyPaintBrush *self = (MyPaintBrush *)malloc(sizeof(MyPaintBrush));
 
-    for (int i=0; i<BRUSH_SETTINGS_COUNT; i++) {
+    int i=0;
+    for (i=0; i<BRUSH_SETTINGS_COUNT; i++) {
       self->settings[i] = mapping_new(INPUT_COUNT);
     }
     self->rng = g_rand_new();
-    self->print_inputs = false;
+    self->print_inputs = FALSE;
 
-    for (int i=0; i<STATE_COUNT; i++) {
+    for (i=0; i<STATE_COUNT; i++) {
       self->states[i] = 0;
     }
     mypaint_brush_new_stroke(self);
 
     settings_base_values_have_changed(self);
 
-    self->reset_requested = true;
+    self->reset_requested = TRUE;
 
     return self;
 }
@@ -100,7 +102,8 @@ mypaint_brush_new()
 void
 mypaint_brush_destroy(MyPaintBrush *self)
 {
-    for (int i=0; i<BRUSH_SETTINGS_COUNT; i++) {
+    int i=0;
+    for (i=0; i<BRUSH_SETTINGS_COUNT; i++) {
         mapping_free(self->settings[i]);
     }
     g_rand_free (self->rng);
@@ -114,7 +117,7 @@ mypaint_brush_get_total_stroke_painting_time(MyPaintBrush *self)
 }
 
 void
-mypaint_brush_set_print_inputs(MyPaintBrush *self, bool enabled)
+mypaint_brush_set_print_inputs(MyPaintBrush *self, gboolean enabled)
 {
     self->print_inputs = enabled;
 }
@@ -122,7 +125,7 @@ mypaint_brush_set_print_inputs(MyPaintBrush *self, bool enabled)
 void
 mypaint_brush_reset(MyPaintBrush *self)
 {
-    self->reset_requested = true;
+    self->reset_requested = TRUE;
 }
 
 void
@@ -198,7 +201,8 @@ mypaint_brush_set_state(MyPaintBrush *self, int i, float value)
     //
     // The code below calculates m and q given gamma and two hardcoded constraints.
     //
-    for (int i=0; i<2; i++) {
+    int i=0;
+    for (i=0; i<2; i++) {
       float gamma;
       gamma = mapping_get_base_value(self->settings[(i==0)?BRUSH_SPEED1_GAMMA:BRUSH_SPEED2_GAMMA]);
       gamma = exp(gamma);
@@ -294,7 +298,8 @@ mypaint_brush_set_state(MyPaintBrush *self, int i, float value)
     // FIXME: this one fails!!!
     //assert(inputs[INPUT_SPEED1] >= 0.0 && inputs[INPUT_SPEED1] < 1e8); // checking for inf
 
-    for (int i=0; i<BRUSH_SETTINGS_COUNT; i++) {
+    int i=0;
+    for (i=0; i<BRUSH_SETTINGS_COUNT; i++) {
       self->settings_value[i] = mapping_calculate(self->settings[i], (inputs));
     }
 
@@ -387,8 +392,8 @@ mypaint_brush_set_state(MyPaintBrush *self, int i, float value)
   // draw the dab, then let the surface do the actual drawing.
   //
   // This is only gets called right after update_states_and_setting_values().
-  // Returns true if the surface was modified.
-  bool prepare_and_draw_dab (MyPaintBrush *self, MyPaintSurface * surface)
+  // Returns TRUE if the surface was modified.
+  gboolean prepare_and_draw_dab (MyPaintBrush *self, MyPaintSurface * surface)
   {
     float x, y, opaque;
     float radius;
@@ -397,7 +402,7 @@ mypaint_brush_set_state(MyPaintBrush *self, int i, float value)
     if (self->settings_value[BRUSH_OPAQUE] < 0) self->settings_value[BRUSH_OPAQUE] = 0;
     opaque = self->settings_value[BRUSH_OPAQUE] * self->settings_value[BRUSH_OPAQUE_MULTIPLY];
     opaque = CLAMP(opaque, 0.0, 1.0);
-    //if (opaque == 0.0) return false; <-- cannot do that, since we need to update smudge state.
+    //if (opaque == 0.0) return FALSE; <-- cannot do that, since we need to update smudge state.
     if (self->settings_value[BRUSH_OPAQUE_LINEARIZE]) {
       // OPTIMIZE: no need to recalculate this for each dab
       float alpha, beta, alpha_dab, beta_dab;
@@ -488,9 +493,9 @@ mypaint_brush_set_state(MyPaintBrush *self, int i, float value)
       rgb_to_hsv_float (&color_h, &color_s, &color_v);
     }
 
-    if (self->settings_value[BRUSH_SMUDGE_LENGTH] < 1.0 and
+    if (self->settings_value[BRUSH_SMUDGE_LENGTH] < 1.0 &&
         // optimization, since normal brushes have smudge_length == 0.5 without actually smudging
-        (self->settings_value[BRUSH_SMUDGE] != 0.0 or not mapping_is_constant(self->settings[BRUSH_SMUDGE]))) {
+        (self->settings_value[BRUSH_SMUDGE] != 0.0 || !mapping_is_constant(self->settings[BRUSH_SMUDGE]))) {
 
       float fac = self->settings_value[BRUSH_SMUDGE_LENGTH];
       if (fac < 0.01) fac = 0.01;
@@ -635,7 +640,7 @@ mypaint_brush_set_state(MyPaintBrush *self, int i, float value)
   // - does motion event interpolation
   // - paints zero, one or several dabs
   // - decides whether the stroke is finished (for undo/redo)
-  // returns true if the stroke is finished or empty
+  // returns TRUE if the stroke is finished or empty
   int mypaint_brush_stroke_to (MyPaintBrush *self, MyPaintSurface *surface,
                                 float x, float y, float pressure,
                                 float xtilt, float ytilt, double dtime)
@@ -717,7 +722,7 @@ mypaint_brush_set_state(MyPaintBrush *self, int i, float value)
 
     //if (dtime > 5 || dist_todo > 300) {
     if (dtime > 5 || self->reset_requested) {
-      self->reset_requested = false;
+      self->reset_requested = FALSE;
 
       /*
         TODO:
@@ -732,7 +737,8 @@ mypaint_brush_set_state(MyPaintBrush *self, int i, float value)
       */
 
       //printf("Brush reset.\n");
-      for (int i=0; i<STATE_COUNT; i++) {
+      int i=0;
+      for (i=0; i<STATE_COUNT; i++) {
         self->states[i] = 0;
       }
 
@@ -747,7 +753,7 @@ mypaint_brush_set_state(MyPaintBrush *self, int i, float value)
       self->states[STATE_ACTUAL_Y] = self->states[STATE_Y];
       self->states[STATE_STROKE] = 1.0; // start in a state as if the stroke was long finished
 
-      return true;
+      return TRUE;
     }
 
     //g_print("dist = %f\n", states[STATE_DIST]);
@@ -777,7 +783,7 @@ mypaint_brush_set_state(MyPaintBrush *self, int i, float value)
       }
 
       update_states_and_setting_values (self, step_dx, step_dy, step_dpressure, step_declination, step_ascension, step_dtime);
-      bool painted_now = prepare_and_draw_dab (self, surface);
+      gboolean painted_now = prepare_and_draw_dab (self, surface);
       if (painted_now) {
         painted = YES;
       } else if (painted == UNKNOWN) {
@@ -836,7 +842,7 @@ mypaint_brush_set_state(MyPaintBrush *self, int i, float value)
         // FIXME: use some smoothed state for dpressure, not the output of the interpolation code
         //        (which might easily wrongly give dpressure == 0)
         if (step_dpressure >= 0) {
-          return true;
+          return TRUE;
         }
       }
     } else if (painted == NO) {
@@ -845,16 +851,16 @@ mypaint_brush_set_state(MyPaintBrush *self, int i, float value)
       if (self->stroke_total_painting_time == 0) {
         // not yet painted, start a new stroke if we have accumulated a lot of irrelevant motion events
         if (self->stroke_current_idling_time > 1.0) {
-          return true;
+          return TRUE;
         }
       } else {
         // Usually we have pressure==0 here. But some brushes can paint
         // nothing at full pressure (eg gappy lines, or a stroke that
         // fades out). In either case this is the prefered moment to split.
         if (self->stroke_total_painting_time+self->stroke_current_idling_time > 0.9 + 5*pressure) {
-          return true;
+          return TRUE;
         }
       }
     }
-    return false;
+    return FALSE;
   }
