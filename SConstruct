@@ -41,6 +41,7 @@ env.ParseConfig('pkg-config --cflags --libs libpng')
 env.ParseConfig('pkg-config --cflags --libs lcms2')
 
 env.Append(CXXFLAGS=' -Wall -Wno-sign-compare -Wno-write-strings')
+env.Append(CCFLAGS='-Wall')
 
 # Get the numpy include path (for numpy/arrayobject.h).
 numpy_path = numpy.get_include()
