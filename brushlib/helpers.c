@@ -19,6 +19,7 @@
 
 #include <assert.h>
 #include <stdint.h>
+#include <math.h>
 
 #include "helpers.h"
 
