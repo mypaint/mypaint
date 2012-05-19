@@ -175,10 +175,10 @@ public:
     mypaint_tiled_surface_set_symmetry_state((MyPaintTiledSurface *)c_surface, active, center_x);
   }
 
-  virtual void begin_atomic() {
+  void begin_atomic() {
       mypaint_tiled_surface_begin_atomic((MyPaintTiledSurface *)c_surface);
   }
-  virtual void end_atomic() {
+  void end_atomic() {
       mypaint_tiled_surface_end_atomic((MyPaintTiledSurface *)c_surface);
   }
 
@@ -214,7 +214,7 @@ public:
       return mypaint_surface_get_alpha((MyPaintSurface *)c_surface, x, y, radius);
   }
 
-  virtual MyPaintSurface *get_surface_interface() {
+  MyPaintSurface *get_surface_interface() {
     return (MyPaintSurface*)c_surface;
   }
 
