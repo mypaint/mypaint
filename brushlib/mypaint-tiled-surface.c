@@ -27,27 +27,34 @@ struct _MyPaintTiledSurface {
 
 void mypaint_tiled_surface_begin_atomic(MyPaintTiledSurface *self)
 {
-    self->begin_atomic(self);
+    if (self->begin_atomic)
+        self->begin_atomic(self);
 }
 
 void mypaint_tiled_surface_end_atomic(MyPaintTiledSurface *self)
 {
-    self->end_atomic(self);
+    if (self->end_atomic)
+        self->end_atomic(self);
 }
 
 uint16_t * mypaint_tiled_surface_get_tile(MyPaintTiledSurface *self, int tx, int ty, bool readonly)
 {
+    if (!self->get_tile)
+        return NULL;
+
     return self->get_tile(self, tx, ty, readonly);
 }
 
 void mypaint_tiled_surface_update_tile(MyPaintTiledSurface *self, int tx, int ty, uint16_t * tile_buffer)
 {
-    self->update_tile(self, tx, ty, tile_buffer);
+    if (self->update_tile)
+        self->update_tile(self, tx, ty, tile_buffer);
 }
 
 void mypaint_tiled_surface_area_changed(MyPaintTiledSurface *self, int bb_x, int bb_y, int bb_w, int bb_h)
 {
-    self->area_changed(self, bb_x, bb_y, bb_w, bb_h);
+    if (self->area_changed)
+        self->area_changed(self, bb_x, bb_y, bb_w, bb_h);
 }
 
 void
@@ -221,7 +228,7 @@ bool draw_dab_internal (MyPaintTiledSurface *self, float x, float y,
 
         uint16_t * rgba_p = mypaint_tiled_surface_get_tile(self, tx, ty, false);
         if (!rgba_p) {
-          printf("Python exception during draw_dab()!\n");
+          printf("Warning: Unable to get tile!\n");
           return true;
         }
 
@@ -342,7 +349,7 @@ void get_color (MyPaintSurface *surface, float x, float y,
       for (tx = tx1; tx <= tx2; tx++) {
         uint16_t * rgba_p = mypaint_tiled_surface_get_tile(self, tx, ty, true);
         if (!rgba_p) {
-          printf("Python exception during get_color()!\n");
+          printf("Warning: Unable to get tile!\n");
           return;
         }
 
