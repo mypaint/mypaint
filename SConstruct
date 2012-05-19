@@ -12,13 +12,6 @@ print 'Building for', python
 if sys.platform == "win32":
     python = 'python' # usually no versioned binaries on Windows
 
-try:
-    import numpy
-except ImportError:
-    print 'You need to have numpy installed.'
-    print
-    raise
-
 SConsignFile() # no .scsonsign into $PREFIX please
 
 if sys.platform == "darwin":
@@ -30,48 +23,15 @@ opts = Variables()
 opts.Add(PathVariable('prefix', 'autotools-style installation prefix', default_prefix, validator=PathVariable.PathIsDirCreate))
 
 opts.Add(BoolVariable('debug', 'enable HEAVY_DEBUG and disable optimizations', False))
+
 env = Environment(ENV=os.environ, options=opts)
 if sys.platform == "win32":
     # remove this mingw if trying VisualStudio
     env = Environment(tools=['mingw'], ENV=os.environ, options=opts)
 opts.Update(env)
 
-env.ParseConfig('pkg-config --cflags --libs glib-2.0')
-env.ParseConfig('pkg-config --cflags --libs libpng')
-env.ParseConfig('pkg-config --cflags --libs lcms2')
-
 env.Append(CXXFLAGS=' -Wall -Wno-sign-compare -Wno-write-strings')
 env.Append(CCFLAGS='-Wall')
-
-# Get the numpy include path (for numpy/arrayobject.h).
-numpy_path = numpy.get_include()
-env.Append(CPPPATH=numpy_path)
-
-
-if sys.platform == "win32":
-    # official python shipped with no pc file on windows so get from current python
-    from distutils import sysconfig
-    pre,inc = sysconfig.get_config_vars('exec_prefix', 'INCLUDEPY')
-    env.Append(CPPPATH=inc, LIBPATH=pre+'\libs', LIBS='python'+sys.version[0]+sys.version[2])
-elif sys.platform == "darwin":
-    env.ParseConfig(python + '-config --cflags')
-    ldflags = env.backtick(python + '-config --ldflags').split()
-    # scons does not seem to parse '-u' correctly
-    # put all options after -u in LINKFLAGS
-    if '-u' in ldflags:
-        idx = ldflags.index('-u')
-        env.Append(LINKFLAGS=ldflags[idx:])
-        del ldflags[idx:]
-    env.MergeFlags(' '.join(ldflags))
-else:
-    # some distros use python2.5-config, others python-config2.5
-    try:
-        env.ParseConfig(python + '-config --cflags')
-        env.ParseConfig(python + '-config --ldflags')
-    except OSError:
-        print 'going to try python-config instead'
-        env.ParseConfig('python-config --ldflags')
-        env.ParseConfig('python-config --cflags')
 
 if env.get('CPPDEFINES'):
     # make sure assertions are enabled
@@ -88,8 +48,8 @@ env.Append(LINKFLAGS = Split('-z origin'))
 env.Append(RPATH = env.Literal(os.path.join('\\$$ORIGIN')))
 
 Export('env', 'python')
-mypaintlib = SConscript('lib/SConscript')
 brushlib = SConscript('brushlib/SConscript')
+mypaintlib = SConscript('lib/SConscript')
 languages = SConscript('po/SConscript')
 
 def burn_python_version(target, source, env):

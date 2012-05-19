@@ -1,7 +1,17 @@
-Import('env')
+Import('env', 'python')
 import sys, os
 
-env.Append(CPPPATH='../brushlib')
+try:
+    import numpy
+except ImportError:
+    print 'You need to have numpy installed.'
+    print
+    raise
+
+# NOTE: We use a copy of the environment, to be able to both inherit common options,
+# and also add our own specifics ones without affecting the other builds
+mypaintlib_env = env.Clone()
+env = mypaintlib_env
 
 # For the record: I know that scons supports swig. But it doesn't scan for #include in the generated code.
 # 
@@ -12,7 +22,7 @@ if env.Execute('swig -o mypaintlib_wrap.cpp -noproxydel -python -c++ mypaintlib.
 env.Clean('.', 'mypaintlib_wrap.cpp')
 env.Clean('.', 'mypaintlib.py')
 
-def build_py_module(*args, **kwargs):
+def build_py_module(env, *args, **kwargs):
     if sys.platform == "win32": # there 's a better way to do this
         kwargs["SHLIBSUFFIX"]=".pyd"
     elif sys.platform == "darwin":
@@ -21,8 +31,47 @@ def build_py_module(*args, **kwargs):
         pass
     return env.SharedLibrary(*args, **kwargs)
 
+# Normal dependencies
+env.ParseConfig('pkg-config --cflags --libs glib-2.0')
+env.ParseConfig('pkg-config --cflags --libs libpng')
+env.ParseConfig('pkg-config --cflags --libs lcms2')
+
+# Get the numpy include path (for numpy/arrayobject.h).
+numpy_path = numpy.get_include()
+env.Append(CPPPATH=numpy_path)
+
+if sys.platform == "win32":
+    # official python shipped with no pc file on windows so get from current python
+    from distutils import sysconfig
+    pre,inc = sysconfig.get_config_vars('exec_prefix', 'INCLUDEPY')
+    env.Append(CPPPATH=inc, LIBPATH=pre+'\libs', LIBS='python'+sys.version[0]+sys.version[2])
+elif sys.platform == "darwin":
+    env.ParseConfig(python + '-config --cflags')
+    ldflags = env.backtick(python + '-config --ldflags').split()
+    # scons does not seem to parse '-u' correctly
+    # put all options after -u in LINKFLAGS
+    if '-u' in ldflags:
+        idx = ldflags.index('-u')
+        env.Append(LINKFLAGS=ldflags[idx:])
+        del ldflags[idx:]
+    env.MergeFlags(' '.join(ldflags))
+else:
+    # some distros use python2.5-config, others python-config2.5
+    try:
+        env.ParseConfig(python + '-config --cflags')
+        env.ParseConfig(python + '-config --ldflags')
+    except OSError:
+        print 'going to try python-config instead'
+        env.ParseConfig('python-config --ldflags')
+        env.ParseConfig('python-config --cflags')
+
+# Build against brushlib
+env.Append(LIBS="mypaint-brushlib")
+env.Append(LIBPATH="../")
+env.Append(CPPPATH='../brushlib')
+
 # python extension module
 src = 'mypaintlib_wrap.cpp'
-module = build_py_module('../_mypaintlib', Split(src), SHLIBPREFIX="", LIBS="mypaint-brushlib", LIBPATH="../")
+module = build_py_module(env, '../_mypaintlib', Split(src), SHLIBPREFIX="")
 
 Return('module')
