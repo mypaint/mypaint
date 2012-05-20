@@ -1,57 +1,99 @@
 # This file is part of MyPaint.
-# Copyright (C) 2011 by Andrew Chadwick <andrewc-git@piffle.org>
+# Copyright (C) 2011,2012 by Andrew Chadwick <andrewc-git@piffle.org>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-"""Layout constants and constructor functions for common widgets.
+"""HSV widget compatability layer.
 """
 
 import gtk
 from gtk import gdk
-import dialogs
-from lib.helpers import clamp
-from widgets import find_widgets
+
+from util import clamp
+from gettext import gettext as _
+
+from adjbases import ColorAdjuster, HSVColor, UIColor
+from combined import CombinedAdjusterPage
 
 
-class ColorChangerHSV (gtk.Alignment):
+def find_widgets(widget, predicate):
+    """Finds widgets in a container's tree by predicate.
+    """
+    queue = [widget]
+    found = []
+    while len(queue) > 0:
+        w = queue.pop(0)
+        if predicate(w):
+            found.append(w)
+        if hasattr(w, "get_children"):
+            for w2 in w.get_children():
+                queue.append(w2)
+    return found
+
+
+class HSVTrianglePage (CombinedAdjusterPage):
+
+    __table = None
+    __adj = None
+
+    def __init__(self):
+        adj = HSVTriangle(minimal=True)
+        self.__adj = adj
+        self.__table = gtk.Table(rows=1, columns=1)
+        opts = gtk.FILL|gtk.EXPAND
+        self.__table.attach(adj, 0,1, 0,1, opts, opts, 3, 3)
+
+    @classmethod
+    def get_page_icon_name(class_):
+        return "mypaint-tool-color-triangle"
+
+    @classmethod
+    def get_page_title(class_):
+        return _("HSV Triangle")
+
+    @classmethod
+    def get_page_description(class_):
+        return _("The standard GTK color selector")
+
+    def get_page_table(self):
+        return self.__table
+
+    def set_color_manager(self, manager):
+        ColorAdjuster.set_color_manager(self, manager)
+        self.__adj.set_color_manager(manager)
+
+
+class HSVTriangle (gtk.Alignment, ColorAdjuster):
     """Wrapper around a GtkHSV triangle widget, bound to the app instance.
 
     The widget is extracted from a `gtk.ColorSelector` for greater
     compatibility. The code's a bit ugly, but this is necessary to support
     pre-2.18 versions of (Py)GTK.
+
     """
 
-    __gtype_name__ = 'ColorChangerHSV'
+    __gtype_name__ = 'HSVTriangle'
 
-    def __init__(self, app=None, minimal=False, details=True):
-        """Construct, bound to an app instance.
 
-            :`minimal`:
-                Do not show the colour previews or the eyedropper.
-            :`details`:
-                Make double-clicking the colour previews show a colour details
-                dialog. Updating the dialog updates the current colour.
+    def __init__(self, minimal=False, details=True):
+        """Initiailize.
+
+        :`minimal`:
+            Do not show the colour previews or the eyedropper.
+        :`details`:
+            Make double-clicking the colour previews show a colour details
+            dialog. Updating the dialog updates the current colour.
+
         """
         gtk.Alignment.__init__(self, xscale=1.0, yscale=1.0)
         self.hsv_changed_observers = []
-        self.app = None
         self.color_sel = gtk.ColorSelection()
         self.hsv_widget = None   #: an actual `gtk.HSV`, if bound by PyGTK.
         self._init_hsv_widgets(minimal, details)
-        self.color_sel.connect("color-changed", self.on_color_changed)
-        self.in_brush_modified_cb = False
-        if app is not None:
-            self.set_app(app)
-
-
-    def set_app(self, app):
-        self.app = app
-        self.set_color_hsv(self.app.brush.get_color_hsv())
-        self.app.brush.observers.append(self.brush_modified_cb)
-        app.ch.color_pushed_observers.append(self.color_pushed_cb)
+        self.color_sel.connect("color-changed", self.color_changed_cb)
 
 
     def _init_hsv_widgets(self, minimal, details):
@@ -84,20 +126,12 @@ class ColorChangerHSV (gtk.Alignment):
             self.hsv_widget = hsv
 
 
-    def color_pushed_cb(self, pushed_color):
-        rgb = self.app.ch.last_color
-        color = gdk.Color(*[int(c*65535) for c in rgb])
-        self.color_sel.set_previous_color(color)
-
-
-    def brush_modified_cb(self, settings):
-        if not settings.intersection(('color_h', 'color_s', 'color_v')):
-            return
-        brush_color = self.app.brush.get_color_hsv()
-        if brush_color != self.get_color_hsv():
-            self.in_brush_modified_cb = True  # do we still need this?
-            self.set_color_hsv(brush_color)
-            self.in_brush_modified_cb = False
+    def update_cb(self):
+        color = self.get_managed_color()
+        self.set_current_color(color)
+        color = self.get_color_manager().get_previous_color()
+        gdk_color = color.to_gdk_color()
+        self.color_sel.set_previous_color(gdk_color)
 
 
     def get_color_hsv(self):
@@ -110,28 +144,21 @@ class ColorChangerHSV (gtk.Alignment):
             return color.hue, color.saturation, color.value
 
 
-    def set_color_hsv(self, hsv):
-        h, s, v = hsv
-        while h > 1.0: h -= 1.0
-        while h < 0.0: h += 1.0
-        s = clamp(s, 0.0, 1.0)
-        v = clamp(v, 0.0, 1.0)
+    def set_current_color(self, color):
         if self.hsv_widget is not None:
-            self.hsv_widget.set_color(h, s, v)
+            self.hsv_widget.set_color(*color.get_hsv())
         else:
-            color = gdk.color_from_hsv(h, s, v)
-            self.color_sel.set_current_color(color)
+            self.color_sel.set_current_color(color.to_gdk_color())
 
 
-    def on_color_changed(self, color_sel):
+    def color_changed_cb(self, color_sel):
         h, s, v = self.get_color_hsv()
         for cb in self.hsv_changed_observers:
             cb(h, s, v)
         color_finalized = not color_sel.is_adjusting()
-        if color_finalized and not self.in_brush_modified_cb:
-            if self.app is not None:
-                b = self.app.brush
-                b.set_color_hsv((h, s, v))
+        if color_finalized:
+            color = HSVColor(h, s, v)
+            self.set_managed_color(color)
 
 
     def add_details_dialogs(self, hsv_container):
@@ -140,16 +167,23 @@ class ColorChangerHSV (gtk.Alignment):
         def on_button_press(swatch, event):
             if event.type != gdk._2BUTTON_PRESS:
                 return False
-            dialogs.change_current_color_detailed(self.app)
+            mgr = self.get_color_manager()
+            col = mgr.get_color()
+            prev_col = mgr.get_previous_color()
+            col = UIColor.new_from_dialog(title=_("Color details"),
+                                          color=col, previous_color=prev_col,
+                                          parent=self.get_toplevel())
+            if col is not None:
+                self.set_managed_color(col)
         current.connect("button-press-event", on_button_press)
         prev.connect("button-press-event", on_button_press)
 
 
 if __name__ == '__main__':
     win = gtk.Window()
-    win.set_title("hsvcompat test")
+    win.set_title("hsvtriangle test")
     win.connect("destroy", gtk.main_quit)
-    hsv = ColorChangerHSV()
+    hsv = HSVTriangle()
     win.add(hsv)
     win.show_all()
     gtk.main()

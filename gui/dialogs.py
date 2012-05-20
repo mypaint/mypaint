@@ -14,6 +14,7 @@ import brushmanager
 from pixbuflist import PixbufList
 import widgets
 import spinbox
+from colors import HSVColor
 
 OVERWRITE_THIS = 1
 OVERWRITE_ALL  = 2
@@ -272,29 +273,6 @@ def confirm_brushpack_import(packname, window=None, readme=None):
     answer = dialog.run()
     dialog.destroy()
     return answer
-
-def change_current_color_detailed(app):
-    """Presents a `gtk.ColorSelectionDialog` for updating the current colour.
-
-    The dialog isn't particularly simple, but allows colours to be entered as
-    hex strings or using spinners.
-    """
-    previous_hsv = app.ch.colors[-1]
-    current_hsv = app.brush.get_color_hsv()
-    dialog = gtk.ColorSelectionDialog(_("Color details"))
-    dialog.set_position(gtk.WIN_POS_MOUSE)
-    dialog.colorsel.set_previous_color(gdk.color_from_hsv(*previous_hsv))
-    dialog.colorsel.set_current_color(gdk.color_from_hsv(*current_hsv))
-    dialog.ok_button.grab_focus()
-    dialog.set_transient_for(app.drawWindow)
-    dialog.set_resizable(False)
-    dialog.set_modal(True)
-    if dialog.run() == gtk.RESPONSE_OK:
-        col = dialog.colorsel.get_current_color()
-        hsv = (col.hue, col.saturation, col.value)
-        app.brush.set_color_hsv(hsv)
-    dialog.destroy()
-    return app.brush.get_color_hsv()
 
 
 class QuickBrushChooser (gtk.VBox):

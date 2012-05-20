@@ -45,7 +45,8 @@ class HistoryPopup(windowing.PopupWindow):
         self.app = app
         self.app.kbm.add_window(self)
 
-        self.popup_width = bigcolor_width + (self.app.ch.num_colors-1)*smallcolor_width
+        hist_len = len(self.app.brush_color_manager.get_history())
+        self.popup_width = bigcolor_width + (hist_len-1)*smallcolor_width
 
         self.set_events(gdk.BUTTON_PRESS_MASK |
                         gdk.BUTTON_RELEASE_MASK |
@@ -61,25 +62,22 @@ class HistoryPopup(windowing.PopupWindow):
         self.selection = None
 
         self.doc = doc
-        guidoc = app.doc
-        guidoc.input_stroke_ended_observers.append(self.input_stroke_ended_cb)
         self.is_shown = False
 
     def enter(self):
         # finish pending stroke, if any (causes stroke_finished_cb to get called)
         self.doc.split_stroke()
-        ch = self.app.ch
+        mgr = self.app.brush_color_manager
+        hist = mgr.get_history()
         if self.selection is None:
-            self.selection = ch.num_colors - 1
-            color = self.app.brush.get_color_hsv()
-            if ch.hsv_equal(ch.colors[self.selection], color):
+            self.selection = len(hist) - 1
+            color = mgr.get_color()
+            if hist[self.selection] == color:
                 self.selection -= 1
         else:
-            self.selection = (self.selection - 1) % ch.num_colors
+            self.selection = (self.selection - 1) % len(hist)
 
-        ch.atomic = True
-        self.app.brush.set_color_hsv(ch.colors[self.selection])
-        ch.atomic = False
+        mgr.set_color(hist[self.selection])
 
         # popup placement
         x, y = self.get_position()
@@ -89,7 +87,7 @@ class HistoryPopup(windowing.PopupWindow):
         self.is_shown = True
 
         self.window.set_cursor(gdk.Cursor(gdk.CROSSHAIR))
-    
+
     def leave(self, reason):
         self.hide()
         self.is_shown = False
@@ -99,14 +97,6 @@ class HistoryPopup(windowing.PopupWindow):
 
     def button_release_cb(self, widget, event):
         pass
-
-    def input_stroke_ended_cb(self, event):
-        if self.is_shown: return
-        brush = self.app.brush
-        self.selection = None
-        if not brush.is_eraser():
-            color = brush.get_color_hsv()
-            self.app.ch.push_color(color)
 
     def expose_cb(self, widget, event):
         cr = self.window.cairo_create()
@@ -118,7 +108,8 @@ class HistoryPopup(windowing.PopupWindow):
 
         cr.translate(0.0, popup_height/2.0)
 
-        for i, c in enumerate(self.app.ch.colors):
+        hist = self.app.brush_color_manager.get_history()
+        for i, c in enumerate(hist):
             if i != self.selection:
                 cr.scale(0.5, 0.5)
 
@@ -130,7 +121,7 @@ class HistoryPopup(windowing.PopupWindow):
             rect[2] -= distance
             rect[3] -= distance
             cr.rectangle(*rect)
-            cr.set_source_rgb(*helpers.hsv_to_rgb(*c))
+            cr.set_source_rgb(*c.get_rgb())
             cr.fill_preserve()
             cr.set_line_width(line_width)
             cr.set_source_rgb(0, 0, 0)

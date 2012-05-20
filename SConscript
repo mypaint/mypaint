@@ -34,6 +34,7 @@ env.Command('mypaint', 'mypaint.py', [burn_python_version, Chmod('$TARGET', 0755
 
 env.Clean('.', Glob('*.pyc'))
 env.Clean('.', Glob('gui/*.pyc'))
+env.Clean('.', Glob('gui/colors/*.pyc'))
 env.Clean('.', Glob('lib/*.pyc'))
 
 # Painting resources

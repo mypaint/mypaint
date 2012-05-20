@@ -82,7 +82,10 @@ class LayoutManager:
         if role in self.widgets:
             return self.widgets[role]
         else:
-            result = self.factory(role, self, *self.factory_opts)
+            try:
+                result = self.factory(role, self, *self.factory_opts)
+            except ImportError:
+                result = None
             if role == 'main-window':
                 self.main_window = result[0]
                 assert isinstance(self.main_window, MainWindow)

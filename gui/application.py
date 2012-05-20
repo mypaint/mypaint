@@ -12,8 +12,10 @@ import gtk, gobject
 gdk = gtk.gdk
 from lib import brush, helpers, mypaintlib
 import filehandling, keyboard, brushmanager, windowing, document, layout
-import colorhistory, brushmodifier, linemode
+import brushmodifier, linemode
 import stock
+import colors
+from colorwindow import BrushColorManager
 from overlays import LastPaintPosOverlay, ScaleOverlay
 
 
@@ -23,6 +25,7 @@ class Application: # singleton
     to be shared in the GUI. Its constructor is the last part of the
     initialization, called by main.py or by the testing scripts.
     """
+
     def __init__(self, datapath, extradata, confpath, filenames):
         """Construct, but do not run.
 
@@ -73,7 +76,10 @@ class Application: # singleton
         gdk.set_program_class('MyPaint')
 
         self.pixmaps = PixbufDirectory(join(self.datapath, 'pixmaps'))
-        self.cursor_color_picker = gdk.Cursor(gdk.display_get_default(), self.pixmaps.cursor_color_picker, 1, 30)
+        self.cursor_color_picker = gdk.Cursor(
+                  gdk.display_get_default(),
+                  self.pixmaps.cursor_color_picker,
+                  1, 30)
 
         # unmanaged main brush; always the same instance (we can attach settings_observers)
         # this brush is where temporary changes (color, size...) happen
@@ -96,11 +102,11 @@ class Application: # singleton
             self.preferences["scratchpad.last_opened_scratchpad"] = self.filehandler.get_scratchpad_autosave()
         self.scratchpad_filename = self.preferences["scratchpad.last_opened_scratchpad"]
 
-        self.brush.set_color_hsv((0, 0, 0))
+        self.brush_color_manager = BrushColorManager(self)
+        self.brush_color_manager.set_picker_cursor(self.cursor_color_picker)
+
         self.init_brush_adjustments()
         self.init_line_mode_adjustments()
-
-        self.ch = colorhistory.ColorHistory(self)
 
         self.layout_manager = layout.LayoutManager(
             prefs=self.preferences["layout.window_positions"],
@@ -125,7 +131,9 @@ class Application: # singleton
         self.layout_manager.get_subwindow_by_role("brushSettingsWindow")
 
         def at_application_start(*junk):
+            col = self.brush_color_manager.get_color()
             self.brushmanager.select_initial_brush()
+            self.brush_color_manager.set_color(col)
             if filenames:
                 # Open only the first file, no matter how many has been specified
                 # If the file does not exist just set it as the file to save to
@@ -239,12 +247,6 @@ class Application: # singleton
                 # initially hidden (hidden=True), or be given an initial sidebar
                 # index (sbindex=<int>) or height in the sidebar (sbheight=<int>)
                 # Non-hidden entries determine the default set of tools.
-                'colorSelectionWindow': dict(
-                        sbindex=0, floating=True, hidden=True,
-                        x=-100, y=125, w=160, h=200, sbheight=200),
-                'colorSamplerWindow': dict(
-                        sbindex=1, floating=True, hidden=True,
-                        x=-270, y=125, w=200, h=275, sbheight=275),
                 'brushSelectionWindow': dict(
                         sbindex=2, floating=True, hidden=True,
                         x=-100, y=-150, w=250, h=350, sbheight=350),
@@ -254,6 +256,9 @@ class Application: # singleton
                 'scratchWindow': dict(
                         sbindex=4, floating=True, hidden=True,
                         x=-555, y=125, w=300, h=250, sbheight=250),
+                'colorWindow': dict(
+                        sbindex=0, floating=True, hidden=True,
+                        x=-100, y=125, w=250, h=300, sbheight=300),
 
                 # Non-tool subwindows. These cannot be docked, and are all
                 # intially hidden.
@@ -426,6 +431,7 @@ class Application: # singleton
     def pick_color_at_pointer(self, widget, size=3):
         '''Grab screen color at cursor (average of size x size rectangle)'''
         # inspired by gtkcolorsel.c function grab_color_at_mouse()
+        # XXX refactor: use the new-style one
         screen = widget.get_screen()
         colormap = screen.get_system_colormap()
         root = screen.get_root_window()
@@ -448,8 +454,9 @@ class Application: # singleton
             color_total = (color_total[0]+color[0], color_total[1]+color[1], color_total[2]+color[2])
         N = size*size
         color_total = (color_total[0]/N, color_total[1]/N, color_total[2]/N)
-        color_rgb = [ch/65535. for ch in color_total]
-        self.brush.set_color_rgb(color_rgb)
+        color_rgb = colors.RGBColor(*[ch/65535. for ch in color_total])
+        self.brush_color_manager.set_color(color_rgb)
+
 
 class PixbufDirectory:
     def __init__(self, dirname):

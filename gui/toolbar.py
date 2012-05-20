@@ -17,13 +17,12 @@ import gobject
 from gettext import gettext as _
 import pango
 
-from lib.helpers import hsv_to_rgb
 import dialogs
 from brushlib import brushsettings
 import stock
 import dropdownpanel
 import widgets
-from hsvcompat import ColorChangerHSV
+from colors import RGBColor, ColorAdjuster, HSVTriangle
 
 FRAMEWORK_XML = 'gui/toolbar.xml'
 MERGEABLE_XML = [
@@ -35,6 +34,7 @@ MERGEABLE_XML = [
     ("toolbar1_view", 'gui/toolbar-view.xml', _("View")),
     ("toolbar1_subwindows", 'gui/toolbar-subwindows.xml', _("Subwindows")),
     ]
+HISTORY_PREVIEW_SIZE = 48
 
 
 class ToolbarManager:
@@ -230,17 +230,15 @@ class LineDropdownToolItem (gtk.ToolItem):
             self.app.linemode.change_line_setting(setting, value)
 
 
+
 class ColorDropdownToolItem (gtk.ToolItem):
     """Toolbar colour indicator, history access, and changer.
     """
 
     __gtype_name__ = "ColorDropdownToolItem"
 
-    HISTORY_PREVIEW_SIZE = 48
-
     def __init__(self, *a, **kw):
         gtk.ToolItem.__init__(self)
-        self.history_blobs = []
         self.main_blob = ColorBlob()
         self.dropdown_button = dropdownpanel.DropdownPanelButton(self.main_blob)
         self.app = None
@@ -253,7 +251,7 @@ class ColorDropdownToolItem (gtk.ToolItem):
     def set_app(self, app):
         self.app = app
         self.app.brush.observers.append(self.on_brush_settings_changed)
-        self.main_blob.hsv = self.app.brush.get_color_hsv()
+        self.main_blob.color = self.app.brush_color_manager.get_color()
 
         panel_frame = gtk.Frame()
         panel_frame.set_shadow_type(gtk.SHADOW_OUT)
@@ -278,8 +276,9 @@ class ColorDropdownToolItem (gtk.ToolItem):
         section_table.set_border_width(widgets.SPACING)
         section_frame.add(section_table)
 
-        hsv_widget = ColorChangerHSV(app, details=False)
+        hsv_widget = HSVTriangle(details=False)
         hsv_widget.set_size_request(175, 175)
+        hsv_widget.set_color_manager(app.brush_color_manager)
         section_table.attach(hsv_widget, 0, 1, 0, 1)
 
         def is_preview_hbox(w):
@@ -307,36 +306,18 @@ class ColorDropdownToolItem (gtk.ToolItem):
         side_vbox.pack_end(preview_hbox, False, False)
 
         side_vbox.pack_end(gtk.Alignment(), True, True)
-        button = init_proxy(gtk.ToggleButton(), "ColorSamplerWindow")
-        side_vbox.pack_end(button, False, False)
-        button = init_proxy(gtk.ToggleButton(), "ColorSelectionWindow")
+        button = init_proxy(gtk.ToggleButton(), "ColorWindow")
+        button.set_label(_("Color Window"))
         side_vbox.pack_end(button, False, False)
 
         # History
         section_frame = widgets.section_frame(_("Recently Used"))
         panel_vbox.pack_start(section_frame, True, True)
 
-        self.history_blobs = []
-        history_hbox = gtk.HBox()
-        history_hbox.set_border_width(widgets.SPACING)
-        s = self.HISTORY_PREVIEW_SIZE
-        for hsv in app.ch.colors:
-            button = widgets.borderless_button()
-            blob = ColorBlob(hsv)
-            blob.set_size_request(s, s)
-            button.add(blob)
-            button.connect("clicked", self.on_history_button_clicked, blob)
-            history_hbox.pack_end(button, True, True)
-            self.history_blobs.append(blob)
-        app.ch.color_pushed_observers.append(self.color_pushed_cb)
-        section_frame.add(history_hbox)
+        history_view = ColorHistoryView(self)
+        section_frame.add(history_view)
 
-    def color_pushed_cb(self, color):
-        for blob, hsv in zip(self.history_blobs, self.app.ch.colors):
-            blob.hsv = hsv
-
-    def on_history_button_clicked(self, widget, blob):
-        self.app.brush.set_color_hsv(blob.hsv)
+    def on_history_button_clicked(self):
         self.dropdown_button.panel_hide()
 
     def on_create_menu_proxy(self, toolitem):
@@ -355,7 +336,8 @@ class ColorDropdownToolItem (gtk.ToolItem):
     def on_brush_settings_changed(self, changes):
         if not changes.intersection(set(['color_h', 'color_s', 'color_v'])):
             return
-        self.main_blob.hsv = self.app.brush.get_color_hsv()
+        mgr = self.app.brush_color_manager
+        self.main_blob.color = mgr.get_color()
 
 
 
@@ -364,8 +346,6 @@ class BrushDropdownToolItem (gtk.ToolItem):
     """
 
     __gtype_name__ = "BrushDropdownToolItem"
-
-    HISTORY_PREVIEW_SIZE = 48
 
     def __init__(self):
         gtk.ToolItem.__init__(self)
@@ -443,7 +423,7 @@ class BrushDropdownToolItem (gtk.ToolItem):
     def update_history_images(self):
         bm = self.app.brushmanager
         if not self.history_images:
-            s = self.HISTORY_PREVIEW_SIZE
+            s = HISTORY_PREVIEW_SIZE
             for brush in bm.history:
                 image = ManagedBrushPreview()
                 image.set_size_request(s, s)
@@ -727,35 +707,68 @@ class ManagedBrushPreview (gtk.Image):
         self.set_from_pixbuf(scaled_pixbuf)
 
 
+class ColorHistoryView (gtk.HBox, ColorAdjuster):
+    """A set of ColorBlobs showing the usage history.
+    """
+
+    def __init__(self, toolitem):
+        gtk.HBox.__init__(self)
+        self.__history_blobs = []
+        self.__app = toolitem.app
+        self.__toolitem = toolitem
+        self.set_border_width(widgets.SPACING)
+        s = HISTORY_PREVIEW_SIZE
+        mgr = self.__app.brush_color_manager
+        for color in mgr.get_history():
+            button = widgets.borderless_button()
+            blob = ColorBlob(color)
+            blob.set_size_request(s, s)
+            button.add(blob)
+            button.connect("clicked", self.__button_clicked_cb)
+            self.pack_end(button, True, True)
+            self.__history_blobs.append(blob)
+        self.set_color_manager(mgr)
+
+    def update_cb(self):
+        mgr = self.get_color_manager()
+        for blob, color in zip(self.__history_blobs, mgr.get_history()):
+            blob.color = color
+
+    def __button_clicked_cb(self, button):
+        blob = button.get_child()
+        mgr = self.get_color_manager()
+        mgr.set_color(blob.color)
+        self.__toolitem.on_history_button_clicked()
+
 
 class ColorBlob (gtk.AspectFrame):
     """Updatable widget displaying a single colour.
     """
 
-    def __init__(self, hsv=None):
+    def __init__(self, color=None):
         gtk.AspectFrame.__init__(self, xalign=0.5, yalign=0.5, ratio=1.0, obey_child=False)
         self.set_name("thinborder-color-blob-%d" % id(self))
         self.set_shadow_type(gtk.SHADOW_IN)
         self.drawingarea = gtk.DrawingArea()
         self.add(self.drawingarea)
-        if hsv is None:
-            hsv = 0.0, 0.0, 0.0
-        self._hsv = hsv
+        if color is None:
+            color = RGBColor(0, 0, 0)
+        self._color = color
         self.drawingarea.set_size_request(1, 1)
         self.drawingarea.connect("expose-event", self.on_expose)
 
-    def set_hsv(self, hsv):
-        self._hsv = hsv
+    def set_color(self, color):
+        self._color = color
         self.drawingarea.queue_draw()
 
-    def get_hsv(self):
-        return self._hsv
+    def get_color(self):
+        return self._color
 
-    hsv = property(get_hsv, set_hsv)
+    color = property(get_color, set_color)
 
     def on_expose(self, widget, event):
         cr = widget.window.cairo_create()
-        cr.set_source_rgb(*hsv_to_rgb(*self._hsv))
+        cr.set_source_rgb(*self._color.get_rgb())
         cr.paint()
 
 

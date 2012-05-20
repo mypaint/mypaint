@@ -16,8 +16,8 @@ from gettext import gettext as _
 # under the "hicolor" theme.
 
 TOOL_BRUSH = "mypaint-tool-brush"
-TOOL_COLOR_SELECTOR = "mypaint-tool-color-triangle"
 TOOL_COLOR_SAMPLER = "mypaint-tool-hue-wheel"
+TOOL_COLORS = "mypaint-tool-paint-color"
 TOOL_SCRATCHPAD = "mypaint-tool-scratchpad"
 TOOL_LAYERS = "mypaint-tool-layers"
 # FIXME: our "object-" stock commands aren't about manipulating the current
@@ -48,8 +48,8 @@ _stock_items = [
     # further input before they can do anything: see section 4.3.2.1 of the the
     # GNOME Human Interface Guidelines version 3.0.
     (TOOL_BRUSH, _("Brush List Editor"), gdk.SHIFT_MASK, ord("b"), None),
-    (TOOL_COLOR_SELECTOR, _("Color Triangle"), 0, ord("g"), None),
     (TOOL_COLOR_SAMPLER, _("Color Sampler"), 0, ord("t"), None),
+    (TOOL_COLORS, _("Colors"), gdk.SHIFT_MASK, ord("c"), None),
     (TOOL_SCRATCHPAD, _("Scratchpad"), gdk.SHIFT_MASK, ord("s"), None),
     (TOOL_LAYERS, _("Layers"), 0, ord("l"), None),
     (ROTATE_LEFT, _("Rotate Counterclockwise"),

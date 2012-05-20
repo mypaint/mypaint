@@ -125,8 +125,7 @@
       <menuitem action='ImportBrushPack'/>
     </menu>
     <menu action='ColorMenu'>
-      <menuitem action='ColorSelectionWindow'/>
-      <menuitem action='ColorSamplerWindow'/>
+      <menuitem action='ColorWindow'/>
       <separator/>
       <menuitem action='ColorChangerCrossedBowlPopup'/>
       <menuitem action='ColorChangerWashPopup'/>

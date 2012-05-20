@@ -27,6 +27,7 @@ import dialogs
 from lib import helpers
 import stock
 import dragfunc
+from colors import RGBColor
 
 import xml.etree.ElementTree as ET
 
@@ -322,11 +323,8 @@ class Window (windowing.MainWindow, layout.MainWindow):
                     _('Brush Settings Editor'), '<control>b',
                     _("Change Brush Settings in detail"),
                     self.toggle_window_cb),
-            ('ColorSelectionWindow', stock.TOOL_COLOR_SELECTOR,
-                    None, None, _("Toggle the Colour Triangle"),
-                    self.toggle_window_cb),
-            ('ColorSamplerWindow', stock.TOOL_COLOR_SAMPLER,
-                    None, None, _("Toggle the advanced Colour Sampler"),
+            ('ColorWindow', stock.TOOL_COLORS,
+                    None, None, _("Toggle Color Window"),
                     self.toggle_window_cb),
             ('ScratchWindow',  stock.TOOL_SCRATCHPAD, 
                     None, None, _('Toggle the scratchpad'),
@@ -483,10 +481,11 @@ class Window (windowing.MainWindow, layout.MainWindow):
                     if self.app.filehandler.confirm_destructive_action():
                         self.app.filehandler.open_file(fn)
         elif info == 2: # color
-            color = [((ord(selection.data[v]) | (ord(selection.data[v+1]) << 8)) / 65535.0)  for v in range(0,8,2)]
-            self.app.brush.set_color_rgb(color[:3])
-            self.app.ch.push_color(self.app.brush.get_color_hsv())
-            # Don't popup the color history for now, as I haven't managed to get it to cooperate.
+            color = RGBColor.new_from_drag_data(selection.data)
+            self.app.brush_color_manager.set_color(color)
+            self.app.brush_color_manager.push_history(color)
+            # Don't popup the color history for now, as I haven't managed
+            # to get it to cooperate.
 
     def print_memory_leak_cb(self, action):
         helpers.record_memory_leak_status(print_diff = True)
@@ -688,8 +687,16 @@ class Window (windowing.MainWindow, layout.MainWindow):
         # though a modal dialog will do as an implementation.
         dialogs.change_current_brush_quick(self.app)
 
+
     def color_details_dialog_cb(self, action):
-        dialogs.change_current_color_detailed(self.app)
+        mgr = self.app.brush_color_manager
+        new_col = RGBColor.new_from_dialog(
+          title=_("Set current color"),
+          color=mgr.get_color(),
+          previous_color=mgr.get_previous_color(),
+          parent=self)
+        if new_col is not None:
+            mgr.set_color(new_col)
 
 
     # User-toggleable UI pieces: things like toolbars, status bars, menu bars.

@@ -1,33 +1,22 @@
 # This file is part of MyPaint.
-# Copyright (C) 2007 by Martin Renold <martinxyz@gmx.ch>
+# Copyright (C) 2007-2012 by Martin Renold <martinxyz@gmx.ch>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-"select color window (GTK and an own window)"
+"""Various popup colour selectors.
+"""
+
 import gtk
 gdk = gtk.gdk
 
-import windowing, stock
+import windowing
 from lib import mypaintlib
 from lib.helpers import gdkpixbuf2numpy
-from hsvcompat import ColorChangerHSV
 
 
-class ToolWidget (gtk.VBox):
-    """Tool widget with the standard GTK color selector (triangle)."""
-
-    stock_id = stock.TOOL_COLOR_SELECTOR
-
-    def __init__(self, app):
-        gtk.VBox.__init__(self)
-        self.pack_start(ColorChangerHSV(app), True, True)
-
-
-# own color selector
-# see also colorchanger.hpp
 class ColorSelectorPopup(windowing.PopupWindow):
     backend_class = None
     closes_on_picking = True
