@@ -19,6 +19,8 @@ This is used to generate brushsettings.h (see generate.py)
 It is also imported at runtime.
 """
 
+import os
+
 from gettext import gettext as _
 
 settings_hidden = 'color_h color_s color_v'.split()
@@ -55,7 +57,8 @@ def settings_and_input_definitions_from_json(json_string):
 
     return (settings, inputs)
 
-definition_path = "brushsettings.json"
+dir_of_this_file = os.path.abspath(os.path.dirname(__file__))
+definition_path = os.path.join(dir_of_this_file, "brushsettings.json")
 settings_list, inputs_list = settings_and_input_definitions_from_json(open(definition_path, "r").read())
 
 # the states are not (yet?) exposed to the user

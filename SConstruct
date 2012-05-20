@@ -99,7 +99,6 @@ def install_tree(env, dest, path, perms=0644, dirperms=0755):
 
 # Common
 install_tree(env, '$prefix/share/mypaint', 'brushes')
-install_perms(env, "$prefix/share/mypaint/brushlib", Glob("brushlib/*.py"))
 
 # These hierarchies belong entirely to us, so unmake if asked.
 env.Clean('$prefix', '$prefix/lib/mypaint')

@@ -18,4 +18,7 @@ module = env.SharedLibrary('../mypaint-brushlib', Glob("*.c"))
 install_perms(env, '$prefix/lib/mypaint', module)
 install_perms(env, '$prefix/include/mypaint', Glob("brushlib/mypaint-*.h"))
 
+install_perms(env, "$prefix/share/mypaint/brushlib", Glob("brushlib/*.py"))
+install_perms(env, "$prefix/share/mypaint/brushlib", Glob("brushlib/brushsettings.json"))
+
 Return('module')
