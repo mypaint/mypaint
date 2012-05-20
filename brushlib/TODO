@@ -1,0 +1,13 @@
+
+- Generate and install a pkg-config file for the library
+- Document the library concepts and API in the code. Import information from wiki
+- Set up build of documentation. Import diagrams from doc/
+- Implement load/save of brushes from/to JSON
+ * Do the work in MyPaint itself to migrate brushes to JSON instead of custom format
+ * Use these load/save methods in MyPaint
+- Implement a tests and benchmarks suite.
+ * Should be possible to run as a conformance test for a custom Surface implementation
+ * Benchmarks should output the results as JSON
+ * Should have tools to analyze and improve the performance
+- Implement a simple surface backed by a linear buffer as a reference/example
+- Move out to a separate repository "libmypaint" and use as git submodule in MyPaint?

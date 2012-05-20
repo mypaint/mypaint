@@ -1,6 +1,16 @@
 brushlib - The MyPaint Brush Library
 
-This is a self-contained C++ library that is isolated from MyPaint.
+This is a self-contained C library that is isolated from MyPaint.
+It allows other applications to make use of the MyPaint brush engine.
+
+License: ICS, see COPYING for details
+
+== Building ==
+
+From the toplevel MyPaint directory, run:
+ scons brushlib_only=true prefix=/your/application/prefix
+
+== Documentation ==
 
 Documentation can be found in the wiki:
 http://wiki.mypaint.info/Brushlib
