@@ -21,6 +21,9 @@ It is also imported at runtime.
 
 from gettext import gettext as _
 
+def _(string):
+    return string
+
 inputs_list = [
     # name, hard minimum, soft minimum, normal[1], soft maximum, hard maximum, displayed name, tooltip
     ['pressure', 0.0,  0.0,  0.4,  1.0, 1.0,  _("Pressure"), _("The pressure reported by the tablet, between 0.0 and 1.0. If you use the mouse, it will be 0.5 when a button is pressed and 0.0 otherwise.")],
@@ -101,6 +104,66 @@ settings_migrate = {
     'change_color_s'     : ('change_color_hsv_s', None),
     'stroke_treshold'    : ('stroke_threshold', None),
     }
+
+# Mapping between the the index of the parameter and the name
+input_params = ["id", "hard_minimum", "soft_minimum", "normal", "soft_maximum", "hard_maximum", "displayed_name", "tooltip"]
+settings_params = ["internal_name", "displayed_name", "constant", "minimum", "default", "maximum", "tooltip"]
+
+
+def settings_and_input_definitions_as_json():
+
+    def convert_params_to_dict(indexed_list, param_mapping):
+        dictionary = {}
+        for index, param in enumerate(indexed_list):
+            param_name = param_mapping[index]
+            dictionary[param_name] = param
+        return dictionary
+
+    inputs = [convert_params_to_dict(i, input_params) for i in inputs_list]
+    settings = [convert_params_to_dict(s, settings_params) for s in settings_list]
+
+    document = {
+        'inputs': inputs,
+        'settings': settings
+    }
+
+    import json
+    return json.dumps(document, sort_keys=True, indent=4)
+
+
+def settings_and_input_definitions_from_json(json_string):
+
+    import json
+    document = json.loads(json_string)
+
+    def convert_params_from_dict(dictionary, param_mapping):
+        indexed_list = ["XXX" for i in param_mapping]
+        for key, value in dictionary.items():
+            param_index = param_mapping.index(key)
+            indexed_list[param_index] = value
+
+        return indexed_list
+
+    inputs = [convert_params_from_dict(i, input_params) for i in document['inputs']]
+    settings = [convert_params_from_dict(s, settings_params) for s in document['settings']]
+
+    return (settings, inputs)
+
+definition_path = "brushsettings.json"
+
+def test_json_migration():
+
+    open(definition_path, "w").write(settings_and_input_definitions_as_json())
+    string_def = open(definition_path, "r").read()
+
+    imported_definitions = settings_and_input_definitions_from_json(string_def)
+
+    settings, inputs = imported_definitions
+
+    if inputs == inputs_list and settings == settings_list:
+        return True
+
+assert test_json_migration()
 
 # the states are not (yet?) exposed to the user
 # WARNING: only append to this list, for compatibility of replay files (brush.get_state() in stroke.py)
