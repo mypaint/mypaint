@@ -47,44 +47,8 @@ if env['debug']:
 env.Append(LINKFLAGS = Split('-z origin'))
 env.Append(RPATH = env.Literal(os.path.join('\\$$ORIGIN')))
 
-Export('env', 'python')
-
-# Brushlib
-brushlib = SConscript('brushlib/SConscript')
-
-# Application
-if not env['brushlib_only']:
-    mypaintlib = SConscript('lib/SConscript')
-    languages = SConscript('po/SConscript')
-
-    try:
-        new_umask = 022
-        old_umask = os.umask(new_umask)
-        print "set umask to 0%03o (was 0%03o)" % (new_umask, old_umask)
-    except OSError:
-        # Systems like Win32...
-        pass
-
-    def burn_python_version(target, source, env):
-        # make sure we run the python version that we built the extension modules for
-        s =  '#!/usr/bin/env ' + python + '\n'
-        s += 5*'#\n'
-        s += '# DO NOT EDIT - edit %s instead\n' % source[0]
-        s += 5*'#\n'
-        s += open(str(source[0])).read()
-        f = open(str(target[0]), 'w')
-        f.write(s)
-        f.close()
-
-    env.Command('mypaint', 'mypaint.py', [burn_python_version, Chmod('$TARGET', 0755)])
-
-env.Clean('.', Glob('*.pyc'))
-env.Clean('.', Glob('gui/*.pyc'))
-env.Clean('.', Glob('lib/*.pyc'))
-
-
 set_dir_postaction = {}
-def install_perms(target, sources, perms=0644, dirperms=0755):
+def install_perms(env, target, sources, perms=0644, dirperms=0755):
     """As a normal env.Install, but with Chmod postactions.
 
     The `target` parameter must be a string which starts with ``$prefix``.
@@ -121,7 +85,7 @@ def install_perms(target, sources, perms=0644, dirperms=0755):
     return install_targs
 
 
-def install_tree(dest, path, perms=0644, dirperms=0755):
+def install_tree(env, dest, path, perms=0644, dirperms=0755):
     assert os.path.isdir(path)
     target_root = join(dest, os.path.basename(path))
     for dirpath, dirnames, filenames in os.walk(path):
@@ -129,41 +93,13 @@ def install_tree(dest, path, perms=0644, dirperms=0755):
         target_dir = join(target_root, reltarg)
         target_dir = os.path.normpath(target_dir)
         filepaths = [join(dirpath, basename) for basename in filenames]
-        install_perms(target_dir, filepaths, perms=perms, dirperms=dirperms)
+        install_perms(env, target_dir, filepaths, perms=perms, dirperms=dirperms)
 
 
-# Brushlib
-install_perms('$prefix/lib/mypaint', brushlib)
-install_perms('$prefix/include/mypaint', Glob("brushlib/mypaint-*.h"))
 
 # Common
-install_tree('$prefix/share/mypaint', 'brushes')
-install_perms("$prefix/share/mypaint/brushlib", Glob("brushlib/*.py"))
-
-# Application
-if not env['brushlib_only']:
-    # Painting resources
-    install_tree('$prefix/share/mypaint', 'backgrounds')
-    install_tree('$prefix/share/mypaint', 'pixmaps')
-
-    # Desktop resources and themeable internal icons
-    install_tree('$prefix/share', 'desktop/icons')
-    install_perms('$prefix/share/applications', 'desktop/mypaint.desktop')
-
-    # location for achitecture-dependent modules
-    install_perms('$prefix/lib/mypaint', mypaintlib)
-
-    # Program and supporting UI XML
-    install_perms('$prefix/bin', 'mypaint', perms=0755)
-    install_perms('$prefix/share/mypaint/gui', Glob('gui/*.xml'))
-    install_perms("$prefix/share/mypaint/lib",      Glob("lib/*.py"))
-    install_perms("$prefix/share/mypaint/gui",      Glob("gui/*.py"))
-
-    # translations
-    for lang in languages:
-        install_perms('$prefix/share/locale/%s/LC_MESSAGES' % lang,
-                     'po/%s/LC_MESSAGES/mypaint.mo' % lang)
-
+install_tree(env, '$prefix/share/mypaint', 'brushes')
+install_perms(env, "$prefix/share/mypaint/brushlib", Glob("brushlib/*.py"))
 
 # These hierarchies belong entirely to us, so unmake if asked.
 env.Clean('$prefix', '$prefix/lib/mypaint')
@@ -172,3 +108,11 @@ env.Clean('$prefix', '$prefix/share/mypaint')
 # Convenience alias for installing to $prefix
 env.Alias('install', '$prefix')
 
+
+
+Export('env', 'python', 'install_tree', 'install_perms')
+
+brushlib = SConscript('./brushlib/SConscript')
+
+if not env['brushlib_only']:
+    application = SConscript('./SConscript')
