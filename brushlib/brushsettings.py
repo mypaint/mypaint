@@ -88,7 +88,6 @@ settings = []
 settings_dict = {}
 for s_list in settings_list:
     s = BrushSetting()
-    # FIXME: i18n. Need to pass translatable strings through gettext
     s.cname, s.name, s.constant, s.min, s.default, s.max, s.tooltip = s_list
 
     s.name = _(s.name)

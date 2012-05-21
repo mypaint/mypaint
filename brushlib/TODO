@@ -1,5 +1,9 @@
 
 - Generate and install a pkg-config file for the library
+- Move translations for brushlib from po/ into brushlib, and set up build.
+ * Need a way to generate the .pot file from JSON definition
+- Make the information about brush settings and inputs available to C consumers
+ * Needs to have gettext support for i18n of displayed strings
 - Document the library concepts and API in the code. Import information from wiki
 - Set up build of documentation. Import diagrams from doc/
 - Implement load/save of brushes from/to JSON
@@ -10,4 +14,4 @@
  * Benchmarks should output the results as JSON
  * Should have tools to analyze and improve the performance
 - Implement a simple surface backed by a linear buffer as a reference/example
-- Move out to a separate repository "libmypaint" and use as git submodule in MyPaint?
+- Rename to "libmypaint" and install resources to "libmaliit" (not "mypaint")
