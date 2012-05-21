@@ -479,5 +479,38 @@
             "minimum": 0.0, 
             "tooltip": "Colorize the target layer, setting its hue and saturation from the active brush colour while retaining its value and alpha."
         }
+    ],
+    "states__comment": "# WARNING: only append to this list, for compatibility of replay files (brush.get_state() in stroke.py)",
+    "states": [
+        "x",
+        "y",
+        "pressure",
+        "dist",
+        "actual_radius",
+        "smudge_ra",
+        "smudge_ga",
+        "smudge_ba",
+        "smudge_a",
+        "last_getcolor_r",
+        "last_getcolor_g",
+        "last_getcolor_b",
+        "last_getcolor_a",
+        "last_getcolor_recentness",
+        "actual_x",
+        "actual_y",
+        "norm_dx_slow",
+        "norm_dy_slow",
+        "norm_speed1_slow",
+        "norm_speed2_slow",
+        "stroke",
+        "stroke_started",
+        "custom_input",
+        "rng_seed",
+        "actual_elliptical_dab_ratio",
+        "actual_elliptical_dab_angle",
+        "direction_dx",
+        "direction_dy",
+        "declination",
+        "ascension"
     ]
 }

@@ -39,7 +39,7 @@ settings_migrate = {
 input_params = ["id", "hard_minimum", "soft_minimum", "normal", "soft_maximum", "hard_maximum", "displayed_name", "tooltip"]
 settings_params = ["internal_name", "displayed_name", "constant", "minimum", "default", "maximum", "tooltip"]
 
-def settings_and_input_definitions_from_json(json_string):
+def load_brush_definitions_from_json(json_string):
 
     import json
     document = json.loads(json_string)
@@ -54,41 +54,15 @@ def settings_and_input_definitions_from_json(json_string):
 
     inputs = [convert_params_from_dict(i, input_params) for i in document['inputs']]
     settings = [convert_params_from_dict(s, settings_params) for s in document['settings']]
+    states = document['states']
 
-    return (settings, inputs)
+    return (settings, inputs, states)
 
 dir_of_this_file = os.path.abspath(os.path.dirname(__file__))
 definition_path = os.path.join(dir_of_this_file, "brushsettings.json")
-settings_list, inputs_list = settings_and_input_definitions_from_json(open(definition_path, "r").read())
 
-# the states are not (yet?) exposed to the user
-# WARNING: only append to this list, for compatibility of replay files (brush.get_state() in stroke.py)
-states_list = '''
-# lowlevel
-x, y
-pressure
-dist              # "distance" moved since last dab, a new dab is drawn at 1.0
-actual_radius     # used by count_dabs_to, thus a state!
+settings_list, inputs_list, states_list = load_brush_definitions_from_json(open(definition_path, "r").read())
 
-smudge_ra, smudge_ga, smudge_ba, smudge_a  # smudge color stored with premultiplied alpha (low-pass filtered)
-last_getcolor_r, last_getcolor_g, last_getcolor_b, last_getcolor_a # cached result of last call to get_color()
-last_getcolor_recentness
-
-actual_x, actual_y  # for slow position
-norm_dx_slow, norm_dy_slow # note: now this is dx/dt * (1/radius)
-
-norm_speed1_slow, norm_speed2_slow
-
-stroke, stroke_started # stroke_started is used as boolean
-
-custom_input
-rng_seed
-
-actual_elliptical_dab_ratio, actual_elliptical_dab_angle # used by count_dabs_to
-
-direction_dx, direction_dy
-declination, ascension
-'''
 
 class BrushInput:
     pass
@@ -130,7 +104,8 @@ class BrushState:
     pass
 
 states = []
-for line in states_list.split('\n'):
+
+for line in states_list:
     line = line.split('#')[0]
     for cname in line.split(','):
         cname = cname.strip()
