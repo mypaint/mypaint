@@ -41,25 +41,25 @@ public:
   }
 
   void set_base_value (int id, float value) {
-      mypaint_brush_set_base_value(c_brush, id, value);
+      mypaint_brush_set_base_value(c_brush, (MyPaintBrushSetting)id, value);
   }
 
   void set_mapping_n (int id, int input, int n) {
-      mypaint_brush_set_mapping_n(c_brush, id, input, n);
+      mypaint_brush_set_mapping_n(c_brush, (MyPaintBrushSetting)id, (MyPaintBrushInput)input, n);
   }
 
   void set_mapping_point (int id, int input, int index, float x, float y) {
-      mypaint_brush_set_mapping_point(c_brush, id, input, index, x, y);
+      mypaint_brush_set_mapping_point(c_brush, (MyPaintBrushSetting)id, (MyPaintBrushInput)input, index, x, y);
   }
 
   float get_state (int i)
   {
-      return mypaint_brush_get_state(c_brush, i);
+      return mypaint_brush_get_state(c_brush, (MyPaintBrushState)i);
   }
 
   void set_state (int i, float value)
   {
-      mypaint_brush_set_state(c_brush, i, value);
+      mypaint_brush_set_state(c_brush, (MyPaintBrushState)i, value);
   }
 
   bool stroke_to (Surface * surface, float x, float y, float pressure, float xtilt, float ytilt, double dtime)

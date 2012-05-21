@@ -26,19 +26,37 @@ def writefile(filename, s):
         print 'Writing', filename
         open(filename, 'w').write(s)
 
+def generate_enum(enum_name, enum_prefix, count_name, name_list, value_list):
+    # Can only generate an enum which starts at 0, and where each value is 1 more than the former
+    assert len(name_list) == len(value_list)
+    assert value_list == list(xrange(0, len(value_list)))
+
+    indent = " " * 4
+    begin = "typedef enum {\n"
+    end = "} %s;\n" % enum_name
+
+    entries = []
+    for name in name_list:
+        entries.append(indent + enum_prefix + name)
+    entries.append(indent + count_name)
+
+    return begin + ",\n".join(entries) + "\n" + end
 
 content = ''
-for i in brushsettings.inputs:
-    content += '#define MYPAINT_BRUSH_INPUT_%s %d\n' % (i.name.upper(), i.index)
-content += '#define MYPAINT_BRUSH_INPUTS_COUNT %d\n' % len(brushsettings.inputs)
+
+content += generate_enum("MyPaintBrushInput", "MYPAINT_BRUSH_INPUT_", "MYPAINT_BRUSH_INPUTS_COUNT",
+                         [i.name.upper() for i in brushsettings.inputs],
+                         [i.index for i in brushsettings.inputs])
 content += '\n'
-for s in brushsettings.settings:
-    content += '#define MYPAINT_BRUSH_SETTING_%s %d\n' % (s.cname.upper(), s.index)
-content += '#define MYPAINT_BRUSH_SETTINGS_COUNT %d\n' % len(brushsettings.settings)
+content += generate_enum("MyPaintBrushSetting", "MYPAINT_BRUSH_SETTING_", "MYPAINT_BRUSH_SETTINGS_COUNT",
+                         [i.cname.upper() for i in brushsettings.settings],
+                         [i.index for i in brushsettings.settings])
 content += '\n'
-for s in brushsettings.states:
-    content += '#define MYPAINT_BRUSH_STATE_%s %d\n' % (s.cname.upper(), s.index)
-content += '#define MYPAINT_BRUSH_STATES_COUNT %d\n' % len(brushsettings.states)
+content += generate_enum("MyPaintBrushState", "MYPAINT_BRUSH_STATE_", "MYPAINT_BRUSH_STATES_COUNT",
+                         [i.cname.upper() for i in brushsettings.states],
+                         [i.index for i in brushsettings.states])
+content += '\n'
+
 
 writefile('mypaint-brush-settings-gen.h', content)
 

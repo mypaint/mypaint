@@ -26,7 +26,7 @@ public:
     PyObject * data = PyArray_SimpleNew(1, &dims, NPY_FLOAT32);
     npy_float32 * data_p = (npy_float32*)PyArray_DATA(data);
     for (int i=0; i<MYPAINT_BRUSH_STATES_COUNT; i++) {
-      data_p[i] = get_state(i);
+      data_p[i] = get_state((MyPaintBrushState)i);
     }
     return data;
   }
@@ -39,7 +39,7 @@ public:
     assert(PyArray_ISCARRAY(data));
     npy_float32 * data_p = (npy_float32*)PyArray_DATA(data);
     for (int i=0; i<MYPAINT_BRUSH_STATES_COUNT; i++) {
-      set_state(i, data_p[i]);
+      set_state((MyPaintBrushState)i, data_p[i]);
     }
   }
 

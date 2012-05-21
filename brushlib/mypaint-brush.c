@@ -137,7 +137,7 @@ mypaint_brush_new_stroke(MyPaintBrush *self)
 }
 
 void
-mypaint_brush_set_base_value(MyPaintBrush *self, int id, float value)
+mypaint_brush_set_base_value(MyPaintBrush *self, MyPaintBrushSetting id, float value)
 {
     assert (id >= 0 && id < MYPAINT_BRUSH_SETTINGS_COUNT);
     mapping_set_base_value(self->settings[id], value);
@@ -146,28 +146,28 @@ mypaint_brush_set_base_value(MyPaintBrush *self, int id, float value)
 }
 
 void
-mypaint_brush_set_mapping_n(MyPaintBrush *self, int id, int input, int n)
+mypaint_brush_set_mapping_n(MyPaintBrush *self, MyPaintBrushSetting id, MyPaintBrushInput input, int n)
 {
     assert (id >= 0 && id < MYPAINT_BRUSH_SETTINGS_COUNT);
     mapping_set_n(self->settings[id], input, n);
 }
 
 void
-mypaint_brush_set_mapping_point(MyPaintBrush *self, int id, int input, int index, float x, float y)
+mypaint_brush_set_mapping_point(MyPaintBrush *self, MyPaintBrushSetting id, MyPaintBrushInput input, int index, float x, float y)
 {
     assert (id >= 0 && id < MYPAINT_BRUSH_SETTINGS_COUNT);
     mapping_set_point(self->settings[id], input, index, x, y);
 }
 
 float
-mypaint_brush_get_state(MyPaintBrush *self, int i)
+mypaint_brush_get_state(MyPaintBrush *self, MyPaintBrushState i)
 {
     assert (i >= 0 && i < MYPAINT_BRUSH_STATES_COUNT);
     return self->states[i];
 }
 
 void
-mypaint_brush_set_state(MyPaintBrush *self, int i, float value)
+mypaint_brush_set_state(MyPaintBrush *self, MyPaintBrushState i, float value)
 {
     assert (i >= 0 && i < MYPAINT_BRUSH_STATES_COUNT);
     self->states[i] = value;

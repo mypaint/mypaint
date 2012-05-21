@@ -20,6 +20,7 @@
 
 #include <glib.h>
 #include <mypaint-surface.h>
+#include <mypaint-brush-settings.h>
 
 G_BEGIN_DECLS
 
@@ -45,19 +46,19 @@ mypaint_brush_stroke_to(MyPaintBrush *self, MyPaintSurface *surface, float x, fl
                         float pressure, float xtilt, float ytilt, double dtime);
 
 void
-mypaint_brush_set_base_value(MyPaintBrush *self, int id, float value);
+mypaint_brush_set_base_value(MyPaintBrush *self, MyPaintBrushSetting id, float value);
 
 void
-mypaint_brush_set_mapping_n(MyPaintBrush *self, int id, int input, int n);
+mypaint_brush_set_mapping_n(MyPaintBrush *self, MyPaintBrushSetting id, MyPaintBrushInput input, int n);
 
 void
-mypaint_brush_set_mapping_point(MyPaintBrush *self, int id, int input, int index, float x, float y);
+mypaint_brush_set_mapping_point(MyPaintBrush *self, MyPaintBrushSetting id, MyPaintBrushInput input, int index, float x, float y);
 
 float
-mypaint_brush_get_state(MyPaintBrush *self, int i);
+mypaint_brush_get_state(MyPaintBrush *self, MyPaintBrushState i);
 
 void
-mypaint_brush_set_state(MyPaintBrush *self, int i, float value);
+mypaint_brush_set_state(MyPaintBrush *self, MyPaintBrushState i, float value);
 
 double
 mypaint_brush_get_total_stroke_painting_time(MyPaintBrush *self);
