@@ -9,8 +9,8 @@ env.Append(CPPPATH='./')
 
 env.ParseConfig('pkg-config --cflags --libs glib-2.0')
 
-env.Execute(python + ' generate.py')
-env.Clean('.', 'brushsettings.h')
+env.Execute(python + ' generate.py') # TODO: make a proper build rule
+env.Clean('.', 'mypaint-brush-settings-gen.h')
 env.Clean('.', Glob('*.pyc'))
 
 module = env.SharedLibrary('../mypaint-brushlib', Glob("*.c"))

@@ -29,16 +29,16 @@ def writefile(filename, s):
 
 content = ''
 for i in brushsettings.inputs:
-    content += '#define INPUT_%s %d\n' % (i.name.upper(), i.index)
-content += '#define INPUT_COUNT %d\n' % len(brushsettings.inputs)
+    content += '#define MYPAINT_BRUSH_INPUT_%s %d\n' % (i.name.upper(), i.index)
+content += '#define MYPAINT_BRUSH_INPUTS_COUNT %d\n' % len(brushsettings.inputs)
 content += '\n'
 for s in brushsettings.settings:
-    content += '#define BRUSH_%s %d\n' % (s.cname.upper(), s.index)
-content += '#define BRUSH_SETTINGS_COUNT %d\n' % len(brushsettings.settings)
+    content += '#define MYPAINT_BRUSH_SETTING_%s %d\n' % (s.cname.upper(), s.index)
+content += '#define MYPAINT_BRUSH_SETTINGS_COUNT %d\n' % len(brushsettings.settings)
 content += '\n'
 for s in brushsettings.states:
-    content += '#define STATE_%s %d\n' % (s.cname.upper(), s.index)
-content += '#define STATE_COUNT %d\n' % len(brushsettings.states)
+    content += '#define MYPAINT_BRUSH_STATE_%s %d\n' % (s.cname.upper(), s.index)
+content += '#define MYPAINT_BRUSH_STATES_COUNT %d\n' % len(brushsettings.states)
 
-writefile('brushsettings.h', content)
+writefile('mypaint-brush-settings-gen.h', content)
 

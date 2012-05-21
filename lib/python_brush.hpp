@@ -14,7 +14,7 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#include "brushsettings.h"
+#include <mypaint-brush-settings.h>
 
 class PythonBrush : public Brush {
 
@@ -22,10 +22,10 @@ public:
   // get state as numpy array
   PyObject * python_get_state ()
   {
-    npy_intp dims = {STATE_COUNT};
+    npy_intp dims = {MYPAINT_BRUSH_STATES_COUNT};
     PyObject * data = PyArray_SimpleNew(1, &dims, NPY_FLOAT32);
     npy_float32 * data_p = (npy_float32*)PyArray_DATA(data);
-    for (int i=0; i<STATE_COUNT; i++) {
+    for (int i=0; i<MYPAINT_BRUSH_STATES_COUNT; i++) {
       data_p[i] = get_state(i);
     }
     return data;
@@ -35,10 +35,10 @@ public:
   void python_set_state (PyObject * data)
   {
     assert(PyArray_NDIM(data) == 1);
-    assert(PyArray_DIM(data, 0) == STATE_COUNT);
+    assert(PyArray_DIM(data, 0) == MYPAINT_BRUSH_STATES_COUNT);
     assert(PyArray_ISCARRAY(data));
     npy_float32 * data_p = (npy_float32*)PyArray_DATA(data);
-    for (int i=0; i<STATE_COUNT; i++) {
+    for (int i=0; i<MYPAINT_BRUSH_STATES_COUNT; i++) {
       set_state(i, data_p[i]);
     }
   }
