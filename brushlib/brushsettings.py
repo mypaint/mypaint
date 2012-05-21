@@ -97,8 +97,12 @@ inputs = []
 inputs_dict = {}
 for i_list in inputs_list:
     i = BrushInput()
-    # FIXME: i18n. Need to pass translatable strings through gettext
+
     i.name, i.hard_min, i.soft_min, i.normal, i.soft_max, i.hard_max, i.dname, i.tooltip = i_list
+
+    i.dname = _(i.dname)
+    i.tooltip = _(i.tooltip)
+
     i.index = len(inputs)
     inputs.append(i)
     inputs_dict[i.name] = i
@@ -112,6 +116,10 @@ for s_list in settings_list:
     s = BrushSetting()
     # FIXME: i18n. Need to pass translatable strings through gettext
     s.cname, s.name, s.constant, s.min, s.default, s.max, s.tooltip = s_list
+
+    s.name = _(s.name)
+    s.tooltip = _(s.tooltip)
+
     s.index = len(settings)
     settings.append(s)
     settings_dict[s.cname] = s
