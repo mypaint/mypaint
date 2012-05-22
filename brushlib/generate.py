@@ -42,21 +42,76 @@ def generate_enum(enum_name, enum_prefix, count_name, name_list, value_list):
 
     return begin + ",\n".join(entries) + "\n" + end
 
-content = ''
+def generate_static_struct_array(struct_type, instance_name, entries_list):
 
-content += generate_enum("MyPaintBrushInput", "MYPAINT_BRUSH_INPUT_", "MYPAINT_BRUSH_INPUTS_COUNT",
-                         [i.name.upper() for i in brushsettings.inputs],
-                         [i.index for i in brushsettings.inputs])
-content += '\n'
-content += generate_enum("MyPaintBrushSetting", "MYPAINT_BRUSH_SETTING_", "MYPAINT_BRUSH_SETTINGS_COUNT",
-                         [i.cname.upper() for i in brushsettings.settings],
-                         [i.index for i in brushsettings.settings])
-content += '\n'
-content += generate_enum("MyPaintBrushState", "MYPAINT_BRUSH_STATE_", "MYPAINT_BRUSH_STATES_COUNT",
-                         [i.cname.upper() for i in brushsettings.states],
-                         [i.index for i in brushsettings.states])
-content += '\n'
+    indent = " " * 4
+    begin = "static %s %s[] = {\n" % (struct_type, instance_name)
+    end = "};\n"
+
+    entries = []
+    for entry in entries_list:
+        entries.append(indent + "{%s}" % (", ".join(entry)))
+    entries.append("\n")
+
+    return begin + ", \n".join(entries) + end
+
+def generate_internal_settings_code():
+    content = ''
+
+    def stringify(value):
+        value = value.replace("\n", "")
+        value = value.replace('"', '\\"')
+        return "\"%s\"" % value
+
+    def floatify(value, positive_inf=True):
+        if value is None:
+            return "G_MAXFLOAT" if positive_inf else "G_MINFLOAT"
+
+        return str(value)
+
+    def gettextify(value):
+        return "N_(%s)" % stringify(value)
+
+    def boolify(value):
+        return str("TRUE") if value else str("FALSE")
+
+    def input_info_struct(i):
+        return (stringify(i.name), floatify(i.hard_min), floatify(i.soft_min),
+                floatify(i.normal), floatify(i.soft_max), floatify(i.hard_max),
+                gettextify(i.dname), gettextify(i.tooltip))
+
+    def settings_info_struct(s):
+        return (stringify(s.cname), gettextify(s.name), boolify(s.constant),
+                floatify(s.min), floatify(s.default), floatify(s.max), gettextify(s.tooltip))
+
+    content += generate_static_struct_array("MyPaintBrushSettingInfo", "settings_info_array",
+                                            [settings_info_struct(i) for i in brushsettings.settings])
+    content += "\n"
+    content += generate_static_struct_array("MyPaintBrushInputInfo", "inputs_info_array",
+                                            [input_info_struct(i) for i in brushsettings.inputs])
+
+    return content
+
+def generate_public_settings_code():
+    content = ''
+
+    content += generate_enum("MyPaintBrushInput", "MYPAINT_BRUSH_INPUT_", "MYPAINT_BRUSH_INPUTS_COUNT",
+                             [i.name.upper() for i in brushsettings.inputs],
+                             [i.index for i in brushsettings.inputs])
+    content += '\n'
+    content += generate_enum("MyPaintBrushSetting", "MYPAINT_BRUSH_SETTING_", "MYPAINT_BRUSH_SETTINGS_COUNT",
+                             [i.cname.upper() for i in brushsettings.settings],
+                             [i.index for i in brushsettings.settings])
+    content += '\n'
+    content += generate_enum("MyPaintBrushState", "MYPAINT_BRUSH_STATE_", "MYPAINT_BRUSH_STATES_COUNT",
+                             [i.cname.upper() for i in brushsettings.states],
+                             [i.index for i in brushsettings.states])
+    content += '\n'
+
+    return content
 
 
-writefile('mypaint-brush-settings-gen.h', content)
+if __name__ == '__main__':
 
+    writefile('mypaint-brush-settings-gen.h', generate_public_settings_code())
+    writefile('brushsettings-gen.h', generate_internal_settings_code())
