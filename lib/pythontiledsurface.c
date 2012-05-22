@@ -8,9 +8,6 @@
  */
 
 
-#define TILE_SIZE 64
-#define MAX_MIPMAP_LEVEL 4
-
 // caching tile memory location (optimization)
 #define TILE_MEMORY_SIZE 8
 typedef struct {

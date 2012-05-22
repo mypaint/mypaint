@@ -9,6 +9,11 @@
 
 #include <mypaint-tiled-surface.h>
 
+// Used by pythontiledsurface.c,
+// needs to be defined here so that swig and the Python bindings will find it
+#define TILE_SIZE 64
+#define MAX_MIPMAP_LEVEL 4
+
 // Implementation of tiled surface backend
 #include "pythontiledsurface.c"
 
