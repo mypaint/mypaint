@@ -394,6 +394,14 @@ class TiledDrawWidget(gtk.VBox):
         return self.drag_handler.drag_op
 
     @property
+    def scale(self):
+        return self.renderer.scale
+
+    @scale.setter
+    def scale(self, n):
+        self.renderer.scale = n
+
+    @property
     def display_overlays(self):
         return self.renderer.display_overlays
 
