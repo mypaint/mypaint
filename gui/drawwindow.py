@@ -16,6 +16,7 @@ Painting is done in tileddrawwidget.py.
 MYPAINT_VERSION="1.0.0+git"
 
 import os, time, webbrowser
+from warnings import warn
 from gettext import gettext as _
 
 import gtk, gobject
