@@ -1,0 +1,690 @@
+# This file is distributed under the same license as the MyPaint package.
+# Copyright (C) 2009 Jon Nordby
+msgid ""
+msgstr ""
+"Project-Id-Version: 0.9.0 -git\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-05-31 13:57+0200\n"
+"PO-Revision-Date: 2010-10-14 16:49+0900\n"
+"Last-Translator: Geuntak Jeong <beroberos@gmail.com>\n"
+"Language-Team: korea <beroberos@gmail.com>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n>1);\n"
+"X-Poedit-Language: Korean\n"
+"X-Poedit-Country: KOREA, DEMOCRATIC PEOPLE'S REPUBLIC OF\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: ../brushsettings-gen.h:4
+msgid "Opacity"
+msgstr "불투명도:"
+
+#: ../brushsettings-gen.h:4
+#, fuzzy
+msgid ""
+"0 means brush is transparent, 1 fully visible(also known as alpha or opacity)"
+msgstr ""
+"0 에가까울수록 투명, 1 에가까울수록 불투명 해진다.\n"
+"( ALS Alpha/불투명도)"
+
+#: ../brushsettings-gen.h:5
+msgid "Opacity multiply"
+msgstr "불투명도 곱하기"
+
+#: ../brushsettings-gen.h:5
+#, fuzzy
+msgid ""
+"This gets multiplied with opaque. You should only change the pressure input "
+"of this setting. Use 'opaque' instead to make opacity depend on speed.This "
+"setting is responsible to stop painting when there is zero pressure. This is "
+"just a convention, the behaviour is identical to 'opaque'."
+msgstr ""
+"불투명도가 증가한다. 단지 설정 압력 값을 변경하는 것 만으로 사용이 가능하"
+"다 . 일반적인 불투명도와 다르게 투명도의 세기에 다라 적용 정도가 다르다. \n"
+"압력이 0 일 때 오히려 불투명도 가 증가 한다. 이것은 일반적인 불 투명도와 같"
+"은 효과를 적용한다."
+
+#: ../brushsettings-gen.h:6
+msgid "Opacity linearize"
+msgstr "선형 불투명도"
+
+#: ../brushsettings-gen.h:6
+#, fuzzy
+msgid ""
+"Correct the nonlinearity introduced by blending multiple dabs on top of each "
+"other. This correction should get you a linear (\"natural\") pressure "
+"response when pressure is mapped to opaque_multiply, as it is usually done. "
+"0.9 is good for standard strokes, set it smaller if your brush scatters a "
+"lot, or higher if you use dabs_per_second.0.0 the opaque value above is for "
+"the individual dabs1.0 the opaque value above is for the final brush stroke, "
+"assuming each pixel gets (dabs_per_radius*2) brushdabs on average during a "
+"stroke"
+msgstr ""
+"이것을 수정하면 선형 압력의 대응 압력이 불투명도 곱하기에 매핑되어진다."
+
+#: ../brushsettings-gen.h:7
+msgid "Radius"
+msgstr "반경"
+
+#: ../brushsettings-gen.h:7
+#, fuzzy
+msgid "Basic brush radius (logarithmic) 0.7 means 2 pixels 3.0 means 20 pixels"
+msgstr ""
+"브러시의 기본 크기조절(로그값)\n"
+" 0.7 은 2 픽셀\n"
+" 3.0 은 20 픽셀"
+
+#: ../brushsettings-gen.h:8
+msgid "Hardness"
+msgstr "경도"
+
+#: ../brushsettings-gen.h:8
+#, fuzzy
+msgid ""
+"Hard brush-circle borders (setting to zero will draw nothing). To reach the "
+"maximum hardness, you need to disable Anti-aliasing."
+msgstr "브러시 테두리의 거친 정도 설정"
+
+#: ../brushsettings-gen.h:9
+msgid "Anti-aliasing"
+msgstr ""
+
+#: ../brushsettings-gen.h:9
+msgid ""
+"This setting decreases the hardness when necessary to prevent a pixel "
+"staircase effect. 0.0 disable (for very strong erasers and pixel brushes) "
+"1.0 blur one pixel (good value) 5.0 notable blur, thin strokes will disappear"
+msgstr ""
+
+#: ../brushsettings-gen.h:10
+msgid "Dabs per basic radius"
+msgstr "기본 반경당 칠하는 양"
+
+#: ../brushsettings-gen.h:10
+#, fuzzy
+msgid ""
+"How many dabs to draw while the pointer moves a distance of one brush radius "
+"(more precise: the base value of the radius)"
+msgstr "포인터가 하나의 브러시 반경을 이동시 칠하는 양이다"
+
+#: ../brushsettings-gen.h:11
+msgid "Dabs per actual radius"
+msgstr "실제 반경당 칠하는 양"
+
+#: ../brushsettings-gen.h:11
+#, fuzzy
+msgid ""
+"Same as above, but the radius actually drawn is used, which can change "
+"dynamically"
+msgstr ""
+"'기본 반경당 칠하는 양'과 같지만 실제로 그려진 반경을 동적으로 변경 할 수있"
+"다."
+
+#: ../brushsettings-gen.h:12
+msgid "Dabs per second"
+msgstr "초당 칠하는 양"
+
+#: ../brushsettings-gen.h:12
+#, fuzzy
+msgid "Dabs to draw each second, no matter how far the pointer moves"
+msgstr "초당 칠하는 양을 정한다. 다른 분사량 값에 영향을 준다."
+
+#: ../brushsettings-gen.h:13
+msgid "Radius by random"
+msgstr "반경을 무작위로"
+
+#: ../brushsettings-gen.h:13
+#, fuzzy
+msgid ""
+"Alter the radius randomly each dab. You can also do this with the by_random "
+"input on the radius setting. If you do it here, there are two differences:1) "
+"the opaque value will be corrected such that a big-radius dabs is more "
+"transparent2) it will not change the actual radius seen by "
+"dabs_per_actual_radius"
+msgstr ""
+"무작위로 각 칠하는 입자 반경이 변한다. 반경 설정에따라 이 설정 값도 영향을 받"
+"는다.\n"
+" 1) 반경이 크거나 불투명도가 클 경우 입자는 투명해진다.\n"
+" 2) 실제 반경은 변하지 않는다."
+
+#: ../brushsettings-gen.h:14
+msgid "Fine speed filter"
+msgstr "파인 속도 필터"
+
+#: ../brushsettings-gen.h:14
+#, fuzzy
+msgid ""
+"How slow the input fine speed is following the real speed0.0 change "
+"immediately as your speed changes (not recommended, but try it)"
+msgstr ""
+"정밀한 입력시 적용되는 필터의 속도를 정한다.\n"
+"0.0 변경 즉시 (권장하지 않지만 할 수 있다.)"
+
+#: ../brushsettings-gen.h:15
+msgid "Gross speed filter"
+msgstr "그로스 속도 필터"
+
+#: ../brushsettings-gen.h:15
+#, fuzzy
+msgid "Same as 'fine speed filter', but note that the range is different"
+msgstr "'파인 속도 필터'와 효과는 같다. 하지만 범위가 크다."
+
+#: ../brushsettings-gen.h:16
+msgid "Fine speed gamma"
+msgstr "파인 속도 감마"
+
+#: ../brushsettings-gen.h:16
+#, fuzzy
+msgid ""
+"This changes the reaction of the 'fine speed' input to extreme physical "
+"speed. You will see the difference best if 'fine speed' is mapped to the "
+"radius.-8.0 very fast speed does not increase 'fine speed' much more+8.0 "
+"very fast speed increases 'fine speed' a lotFor very slow speed the opposite "
+"happens."
+msgstr ""
+"이러한 변경 사항을 '정밀한 속도'의 극단적인 물리적 반응 속도로 입력. '정밀한 "
+"속도'반경에 매핑되어 최고의 차이가 나타난다."
+
+#: ../brushsettings-gen.h:17
+msgid "Gross speed gamma"
+msgstr "그로스 속도 감마"
+
+#: ../brushsettings-gen.h:17
+#, fuzzy
+msgid "Same as 'fine speed gamma' for gross speed"
+msgstr "'정밀한 속도 감마'보다 범위가 크며 '정밀한 속도 감마'를 포함한다."
+
+#: ../brushsettings-gen.h:18
+msgid "Jitter"
+msgstr "지터"
+
+#: ../brushsettings-gen.h:18
+#, fuzzy
+msgid ""
+"Add a random offset to the position where each dab is drawn 0.0 disabled 1.0 "
+"standard deviation is one basic radius away<0.0 negative values produce no "
+"jitter"
+msgstr ""
+"무작위로 포인터 주위에 입자를 생성한다.\n"
+" 0.0 없음\n"
+" 1.0 하나의 기본 반경내에 표준 편차를 뿌린다."
+
+#: ../brushsettings-gen.h:19
+msgid "Offset by speed"
+msgstr "속도에 의한 오프셋"
+
+#: ../brushsettings-gen.h:19
+#, fuzzy
+msgid ""
+"Change position depending on pointer speed= 0 disable> 0 draw where the "
+"pointer moves to< 0 draw where the pointer comes from"
+msgstr ""
+"포인터 속도에 따라 뿌려지는 입자의 위치를 변경한다.\n"
+" = 0 해제\n"
+" > 0 포인터가 지나가는 곳 \n"
+" < 0 포인터가 지나가는 앞방향"
+
+#: ../brushsettings-gen.h:20
+msgid "Offset by speed filter"
+msgstr "속도필터에 의한 오프셋"
+
+#: ../brushsettings-gen.h:20
+#, fuzzy
+msgid "How slow the offset goes back to zero when the cursor stops moving"
+msgstr "천천히 뒤로 커서를 이동하면 오프셋이 중지 된다."
+
+#: ../brushsettings-gen.h:21
+msgid "Slow position tracking"
+msgstr "포인터를 천천히 따라가기"
+
+#: ../brushsettings-gen.h:21
+msgid ""
+"Slowdown pointer tracking speed. 0 disables it, higher values remove more "
+"jitter in cursor movements. Useful for drawing smooth, comic-like outlines."
+msgstr ""
+"포인터를 천천히 추적하는 속도. 값이 높을수록 선모양이 깨끗해진다. 부드럽고, "
+"만화 같은 그림을 그릴때 유용하다."
+
+#: ../brushsettings-gen.h:22
+msgid "Slow tracking per dab"
+msgstr "칠 당 천천히 따라가기"
+
+#: ../brushsettings-gen.h:22
+msgid ""
+"Similar as above but at brushdab level (ignoring how much time has past, if "
+"brushdabs do not depend on time)"
+msgstr ""
+"브러시 분사레벨에 따라 따라오는 속도가 다르다. 하지만 브러시의 분사 시간에 의"
+"존하지 않는다."
+
+#: ../brushsettings-gen.h:23
+msgid "Tracking noise"
+msgstr "노이즈 따라가기"
+
+#: ../brushsettings-gen.h:23
+#, fuzzy
+msgid ""
+"Add randomness to the mouse pointer; this usually generates many small lines "
+"in random directions; maybe try this together with 'slow tracking'"
+msgstr ""
+"마우스 포인터에 무작위로 추가. 일반적으로 임의의 방향에 여러 개의 작은 라인"
+"을 생성한다. '블러쉬 천천히 따라가기'와 반대되는 효과이다."
+
+#: ../brushsettings-gen.h:24
+msgid "Color hue"
+msgstr "색조"
+
+#: ../brushsettings-gen.h:25
+msgid "Color saturation"
+msgstr "체도"
+
+#: ../brushsettings-gen.h:26
+msgid "Color value"
+msgstr "색상 값"
+
+#: ../brushsettings-gen.h:26
+#, fuzzy
+msgid "Color value (brightness, intensity)"
+msgstr "색상 값 (밝기, 진도)"
+
+#: ../brushsettings-gen.h:27
+#, fuzzy
+msgid "Save color"
+msgstr "색조 바꾸기"
+
+#: ../brushsettings-gen.h:27
+msgid ""
+"When selecting a brush, the color can be restored to the color that the "
+"brush was saved with. 0.0 do not modify the active color when selecting this "
+"brush 0.5 change active color towards brush color 1.0 set the active color "
+"to the brush color when selected"
+msgstr ""
+
+#: ../brushsettings-gen.h:28
+msgid "Change color hue"
+msgstr "색조 바꾸기"
+
+#: ../brushsettings-gen.h:28
+#, fuzzy
+msgid ""
+"Change color hue.-0.1 small clockwise color hue shift 0.0 disable 0.5 "
+"counterclockwise hue shift by 180 degrees"
+msgstr ""
+"색조 변경.\n"
+"-0.1 작은 시계방향으로 색조를 변경\n"
+" 0.0 사용하지 않음\n"
+" 0.5 색조를 180도 변경"
+
+#: ../brushsettings-gen.h:29
+msgid "Change color lightness (HSL)"
+msgstr "밝기 바꾸기 (HSL)"
+
+#: ../brushsettings-gen.h:29
+#, fuzzy
+msgid ""
+"Change the color lightness (luminance) using the HSL color model.-1.0 "
+"blacker 0.0 disable 1.0 whiter"
+msgstr ""
+"밝기(휘도) HSL 컬러 모델을 사용하여 변경한다.\n"
+" -1.0 검은색\n"
+"  0.0 비활성화\n"
+"  1.0 하얀색"
+
+#: ../brushsettings-gen.h:30
+msgid "Change color satur. (HSL)"
+msgstr "체도 바꾸기 (HSL)"
+
+#: ../brushsettings-gen.h:30
+#, fuzzy
+msgid ""
+"Change the color saturation using the HSL color model.-1.0 more grayish 0.0 "
+"disable 1.0 more saturated"
+msgstr ""
+"체도를 HSL 컬러 모델을 사용하여 변경한다.\n"
+"-1.0 회색\n"
+" 0.0 비활성화\n"
+" 1.0 채도포화"
+
+#: ../brushsettings-gen.h:31
+msgid "Change color value (HSV)"
+msgstr "색상 값 바꾸기 (HSV)"
+
+#: ../brushsettings-gen.h:31
+#, fuzzy
+msgid ""
+"Change the color value (brightness, intensity) using the HSV color model. "
+"HSV changes are applied before HSL.-1.0 darker 0.0 disable 1.0 brigher"
+msgstr ""
+"색상 값을 (HSV) 색상 모델을 사용하여 변경한다.\n"
+"-1.0 어두움\n"
+" 0.0 비활성화\n"
+" 1.0 밝음"
+
+#: ../brushsettings-gen.h:32
+msgid "Change color satur. (HSV)"
+msgstr "체도 바꾸기(HSV)"
+
+#: ../brushsettings-gen.h:32
+#, fuzzy
+msgid ""
+"Change the color saturation using the HSV color model. HSV changes are "
+"applied before HSL.-1.0 more grayish 0.0 disable 1.0 more saturated"
+msgstr ""
+"색상의 체도를 HSV는 색상 모델을 사용하여 변경한다.\n"
+"-1.0 회색\n"
+" 0.0 비활성화\n"
+" 1.0 포화 더보기"
+
+#: ../brushsettings-gen.h:33
+msgid "Smudge"
+msgstr "얼룩"
+
+#: ../brushsettings-gen.h:33
+#, fuzzy
+msgid ""
+"Paint with the smudge color instead of the brush color. The smudge color is "
+"slowly changed to the color you are painting on. 0.0 do not use the smudge "
+"color 0.5 mix the smudge color with the brush color 1.0 use only the smudge "
+"color"
+msgstr ""
+"색대신 얼룩으로 그려보아라. 얼룩은 이미 칠해진 색을 브러싱 방향으로 번지게하"
+"는 효과이다.\n"
+" 0.0 비활성화\n"
+" 0.5 색과 얼룩을 함깨 사용\n"
+" 1.0 알파체널 얼룩만 사용"
+
+#: ../brushsettings-gen.h:34
+msgid "Smudge length"
+msgstr "얼룩 길이"
+
+#: ../brushsettings-gen.h:34
+#, fuzzy
+msgid ""
+"This controls how fast the smudge color becomes the color you are painting "
+"on.0.0 immediately update the smudge color (requires more CPU cycles because "
+"of the frequent color checks)0.5 change the smudge color steadily towards "
+"the canvas color1.0 never change the smudge color"
+msgstr ""
+"얼룩의 길이를 조절한다.\n"
+" 0.0 최소얼룩길이\n"
+" 1.0 얼룩이 끝나지 않는다."
+
+#: ../brushsettings-gen.h:35
+msgid "Smudge radius"
+msgstr "얼룩 반경"
+
+#: ../brushsettings-gen.h:35
+#, fuzzy
+msgid ""
+"This modifies the radius of the circle where color is picked up for "
+"smudging. 0.0 use the brush radius-0.7 half the brush radius (fast, but not "
+"always intuitive)+0.7 twice the brush radius+1.6 five times the brush radius "
+"(slow performance)"
+msgstr ""
+"이것은 칠해지는 색상에 포착되는 원의 반경을 수정한다. \n"
+"0.0 사용하는 브러시 반경\n"
+"-0.7 절반 브러시 반경\n"
+"0.7 두 번 브러시 반경\n"
+"1.6 다섯 번 브러시 반경 (느린)"
+
+#: ../brushsettings-gen.h:36
+msgid "Eraser"
+msgstr "지우개"
+
+#: ../brushsettings-gen.h:36
+#, fuzzy
+msgid ""
+"how much this tool behaves like an eraser 0.0 normal painting 1.0 standard "
+"eraser 0.5 pixels go towards 50% transparency"
+msgstr ""
+"브러시를 지우게처럼 사용할 수 있다.\n"
+" 0.0 일반적인 그림\n"
+" 0.5 지우게 효과에 50 % 불투명도 적용\n"
+" 1.0 표준 지우개"
+
+#: ../brushsettings-gen.h:37
+msgid "Stroke threshold"
+msgstr "자획 임계값"
+
+#: ../brushsettings-gen.h:37
+msgid ""
+"How much pressure is needed to start a stroke. This affects the stroke input "
+"only. Mypaint does not need a minimal pressure to start drawing."
+msgstr ""
+"자획를 시작하기 위한 조건 압력을 설정한다. 이항목은 자획 입력에 영향을 미친"
+"다. Mypaint는 블러싱 시작하는 최소 압력을 필요로 하지 않는다."
+
+#: ../brushsettings-gen.h:38
+msgid "Stroke duration"
+msgstr "자획 소요 시간"
+
+#: ../brushsettings-gen.h:38
+msgid ""
+"How far you have to move until the stroke input reaches 1.0. This value is "
+"logarithmic (negative values will not inverse the process)."
+msgstr ""
+"자획이 1.0에 도달하는 시간을 정한다. 이 값은 로그값이다. (음수 값은 반영 되"
+"지 않는다)"
+
+#: ../brushsettings-gen.h:39
+msgid "Stroke hold time"
+msgstr "자획 유지 시간"
+
+#: ../brushsettings-gen.h:39
+#, fuzzy
+msgid ""
+"This defines how long the stroke input stays at 1.0. After that it will "
+"reset to 0.0 and start growing again, even if the stroke is not yet "
+"finished.2.0 means twice as long as it takes to go from 0.0 to 1.09.9 and "
+"bigger stands for infinite"
+msgstr ""
+"자획의 입력을 1.0에 유지하는 시간을 정의한다. 비록 자획이 아직 완성되지 않더"
+"라도 일정시간이 지나면 0.0이된다.\n"
+" 2.0 배만큼 그것을 0.0에서 1.0으로 이동하는 데 걸리는 의미\n"
+" 9.9 와 큰 스탠드 무한"
+
+#: ../brushsettings-gen.h:40
+msgid "Custom input"
+msgstr "사용자 입력"
+
+#: ../brushsettings-gen.h:40
+#, fuzzy
+msgid ""
+"Set the custom input to this value. If it is slowed down, move it towards "
+"this value (see below). The idea is that you make this input depend on a "
+"mixture of pressure/speed/whatever, and then make other settings depend on "
+"this 'custom input' instead of repeating this combination everywhere you "
+"need it.If you make it change 'by random' you can generate a slow (smooth) "
+"random input."
+msgstr ""
+"이 값을 사용자 임력하는 설정이다. 값에 따라 입력이 느려지는 겨우도 있다."
+
+#: ../brushsettings-gen.h:41
+msgid "Custom input filter"
+msgstr "사용자 입력 필터"
+
+#: ../brushsettings-gen.h:41
+#, fuzzy
+msgid ""
+"How slow the custom input actually follows the desired value (the one "
+"above). This happens at brushdab level (ignoring how much time has past, if "
+"brushdabs do not depend on time).0.0 no slowdown (changes apply instantly)"
+msgstr ""
+"사용자 정의 입력 실제로 원하는 값을 상기 (1) 브러시분사 따라가기 수준에서 (브"
+"러시분사량의 경우 시간) 종속되지 않는 시간을 무시합니다.\n"
+" 0.0 부사량 둔화 (변경 사항은 즉시 적용)"
+
+#: ../brushsettings-gen.h:42
+msgid "Elliptical dab: ratio"
+msgstr "타원형 칠 : 원형율"
+
+#: ../brushsettings-gen.h:42
+#, fuzzy
+msgid ""
+"Aspect ratio of the dabs; must be >= 1.0, where 1.0 means a perfectly round "
+"dab. TODO: linearize? start at 0.0 maybe, or log?"
+msgstr ""
+"분사되는 입자모양을 가로대비 세로의 비율을 조정한다.  값이 작을 수록 블러쉬"
+"와 입자의 모양은 납작해진다."
+
+#: ../brushsettings-gen.h:43
+msgid "Elliptical dab: angle"
+msgstr "타원형 칠: 각도"
+
+#: ../brushsettings-gen.h:43
+#, fuzzy
+msgid ""
+"Angle by which elliptical dabs are tilted 0.0 horizontal dabs 45.0 45 "
+"degrees, turned clockwise 180.0 horizontal again"
+msgstr ""
+"분사되는 입자의 각도를 변경할수 있다.(기본적으로 시계방향)\n"
+" 0.0 수평 분사\n"
+" 45.0 45도 시계 방향으로 기울어져 분사\n"
+" 180.0 수평 분사"
+
+#: ../brushsettings-gen.h:44
+msgid "Direction filter"
+msgstr "방향 필터"
+
+#: ../brushsettings-gen.h:44
+#, fuzzy
+msgid ""
+"A low value will make the direction input adapt more quickly, a high value "
+"will make it smoother"
+msgstr ""
+"폰인터 이동에 따라 블러시에 저항이 걸린다. 값이 낮을 경우 블러시에 걸리는 저"
+"항도 작다."
+
+#: ../brushsettings-gen.h:45
+msgid "Lock alpha"
+msgstr ""
+
+#: ../brushsettings-gen.h:45
+msgid ""
+"Do not modify the alpha channel of the layer (paint only where there is "
+"paint already) 0.0 normal painting 0.5 half of the paint gets applied "
+"normally 1.0 alpha channel fully locked"
+msgstr ""
+
+#: ../brushsettings-gen.h:46
+#, fuzzy
+msgid "Colorize"
+msgstr "색상"
+
+#: ../brushsettings-gen.h:46
+msgid ""
+"Colorize the target layer, setting its hue and saturation from the active "
+"brush colour while retaining its value and alpha."
+msgstr ""
+
+#: ../brushsettings-gen.h:51
+msgid "Pressure"
+msgstr "압력"
+
+#: ../brushsettings-gen.h:51
+msgid ""
+"The pressure reported by the tablet, between 0.0 and 1.0. If you use the "
+"mouse, it will be 0.5 when a button is pressed and 0.0 otherwise."
+msgstr ""
+"타블렛의 압력에 의해, 0.0과 1.0 사이에서 자동 반영된다. 마우스를 사용할경우 "
+"0.5만의 압력만 적용된다."
+
+#: ../brushsettings-gen.h:52
+msgid "Fine speed"
+msgstr "정밀한 속도"
+
+#: ../brushsettings-gen.h:52
+msgid ""
+"How fast you currently move. This can change very quickly. Try 'print input "
+"values' from the 'help' menu to get a feeling for the range; negative values "
+"are rare but possible for very low speed."
+msgstr ""
+"커서의 움직임에 따른 속도가 자동으로 반영된다. '도움말'의 '입력 값을 인쇄'를 "
+"통하여 값을 확인 할 수 있다. 일반적으로 - 값일 쓰는 일은 없다. 그러나 아주 느"
+"린속도를 위해 쓸 수 있다."
+
+#: ../brushsettings-gen.h:53
+msgid "Gross speed"
+msgstr "전체적인 속도"
+
+#: ../brushsettings-gen.h:53
+msgid ""
+"Same as fine speed, but changes slower. Also look at the 'gross speed "
+"filter' setting."
+msgstr ""
+"정밀한 속도와 동일 하다. 하지만 변경이 느리다. '전체 속도 필터'설정을 참고 해"
+"라."
+
+#: ../brushsettings-gen.h:54
+msgid "Random"
+msgstr "불규칙"
+
+#: ../brushsettings-gen.h:54
+msgid ""
+"Fast random noise, changing at each evaluation. Evenly distributed between 0 "
+"and 1."
+msgstr "불규칙한 노이즈를 추가한다.  0과 1 사이에서 균일하게 분배된다."
+
+#: ../brushsettings-gen.h:55
+msgid "Stroke"
+msgstr "자획"
+
+#: ../brushsettings-gen.h:55
+msgid ""
+"This input slowly goes from zero to one while you draw a stroke. It can also "
+"be configured to jump back to zero periodically while you move. Look at the "
+"'stroke duration' and 'stroke hold time' settings."
+msgstr ""
+"이값은 블러시 값이 줄어드는 정도을 정한다.(붓의 잉크가 줄어드는 것을 상상해보"
+"아라.) 또 다시 이동하는 동안 주기적으로 값이 0변하도록 구성할 수있다. '자획 "
+"적용 시간'과 '자획 유지 시간'에서 설정해보아라."
+
+#: ../brushsettings-gen.h:56
+msgid "Direction"
+msgstr "방향"
+
+#: ../brushsettings-gen.h:56
+msgid ""
+"The angle of the stroke, in degrees. The value will stay between 0.0 and "
+"180.0, effectively ignoring turns of 180 degrees."
+msgstr ""
+"자획의 각도. 값은 0.0과 180.0 사이 값이 가장 유효한 값이다. 180의 값은 0.0과 "
+"시각적으로 같다."
+
+#: ../brushsettings-gen.h:57
+msgid "Declination"
+msgstr "편위"
+
+#: ../brushsettings-gen.h:57
+msgid ""
+"Declination of stylus tilt. 0 when stylus is parallel to tablet and 90.0 "
+"when it's perpendicular to tablet."
+msgstr ""
+"스타일러스와  팬의 경사도. 팬이 수직일 때  값은 90.0 이며 스타일러스와 수평"
+"에 가까워 질수록 그 값은 0에 가까워진다."
+
+#: ../brushsettings-gen.h:58
+msgid "Ascension"
+msgstr "상승"
+
+#: ../brushsettings-gen.h:58
+msgid ""
+"Right ascension of stylus tilt. 0 when stylus working end points to you, +90 "
+"when rotated 90 degrees clockwise, -90 when rotated 90 degrees "
+"counterclockwise."
+msgstr ""
+"스타일러스 기울기의 적경. 90 때, 90도 시계 방향으로 회전, -90 때 90도 반 시"
+"계 방향 회전한다."
+
+#: ../brushsettings-gen.h:59
+msgid "Custom"
+msgstr "사용자 지정"
+
+#: ../brushsettings-gen.h:59
+msgid ""
+"This is a user defined input. Look at the 'custom input' setting for details."
+msgstr "사용자의 입력을 정의한다. 자세한 내용은 '사용자 입력'설정보라."
+
+#, fuzzy

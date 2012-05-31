@@ -1,0 +1,746 @@
+# MyPaint
+# Copyright (C) 2009 Martin Renold, Ilya Portnov
+# This file is distributed under the same license as the MyPaint package.
+# Martin Renold <martinxyz@gmx.ch> 2009
+# Olivier Gondouin <popolon@popolon.org> 2009-2010
+# updated 2011-11-10 Popolon <popolon@popolon.org>
+# updated 2011-12-02　a3novy <a3novy@gmail.com>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: MyPaint\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-05-31 13:57+0200\n"
+"PO-Revision-Date: 2011-12-02 21:27+0900\n"
+"Last-Translator: a3novy <a3novy@gmail.com>\n"
+"Language-Team: \n"
+"Language: Japanese\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n==1? 0 : 1);\n"
+"X-Poedit-Language: Japanese\n"
+"X-Poedit-Country: JAPAN\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: ../brushsettings-gen.h:4
+msgid "Opacity"
+msgstr "不透明度"
+
+#: ../brushsettings-gen.h:4
+#, fuzzy
+msgid ""
+"0 means brush is transparent, 1 fully visible(also known as alpha or opacity)"
+msgstr ""
+"0 はブラシが透明です。\n"
+"1 は完全に表示されます（またはアルファと呼ばれ、不透明）"
+
+#: ../brushsettings-gen.h:5
+msgid "Opacity multiply"
+msgstr "不透明度への乗算"
+
+#: ../brushsettings-gen.h:5
+#, fuzzy
+msgid ""
+"This gets multiplied with opaque. You should only change the pressure input "
+"of this setting. Use 'opaque' instead to make opacity depend on speed.This "
+"setting is responsible to stop painting when there is zero pressure. This is "
+"just a convention, the behaviour is identical to 'opaque'."
+msgstr ""
+"不透明度に対してこの値が掛け合わされます。この値に関しては筆圧の設定のみ変更"
+"するようにしなければなりません。不透明度を速度に合わせて変化するようにするた"
+"めには、この値の代わりに「不透明度」を使用してください。\n"
+"この設定値は筆圧が0になったときに描画が確実に停止するようにする必要がありま"
+"す。これは単に慣例であり、動作は「不透明度」と同じです。"
+
+#: ../brushsettings-gen.h:6
+msgid "Opacity linearize"
+msgstr "不透明度を線形化"
+
+#: ../brushsettings-gen.h:6
+#, fuzzy
+msgid ""
+"Correct the nonlinearity introduced by blending multiple dabs on top of each "
+"other. This correction should get you a linear (\"natural\") pressure "
+"response when pressure is mapped to opaque_multiply, as it is usually done. "
+"0.9 is good for standard strokes, set it smaller if your brush scatters a "
+"lot, or higher if you use dabs_per_second.0.0 the opaque value above is for "
+"the individual dabs1.0 the opaque value above is for the final brush stroke, "
+"assuming each pixel gets (dabs_per_radius*2) brushdabs on average during a "
+"stroke"
+msgstr ""
+"複数のダブが重なり合い混合することによって引き起こされた非線形を補正します。"
+"通常行われているような、筆圧が「不透明度を乗算」に対応付けられている場合、こ"
+"の補正は線形の(自然な)筆圧の応答を取得する必要があります。\n"
+"0.9 は標準的なストロークに適しています。ブラシが沢山散乱する場合は、より小さ"
+"く、また「ダブ 毎秒」を使用する場合は、もっと高くします。\n"
+"0.0 以上の不透明な値は、個々のダブに向いています。\n"
+"1.0 以上の不透明な値は、ブラシストロークの最後に向いています。各ピクセルをス"
+"トローク間の平均で(ダブ / 半径 *2)ブラシダブと仮定します。"
+
+#: ../brushsettings-gen.h:7
+msgid "Radius"
+msgstr "半径"
+
+#: ../brushsettings-gen.h:7
+#, fuzzy
+msgid "Basic brush radius (logarithmic) 0.7 means 2 pixels 3.0 means 20 pixels"
+msgstr ""
+"基本ブラシ半径(対数的)\n"
+" 0.7 = 2ピクセル\n"
+" 3.0 = 20ピクセル"
+
+#: ../brushsettings-gen.h:8
+msgid "Hardness"
+msgstr "硬さ"
+
+#: ../brushsettings-gen.h:8
+msgid ""
+"Hard brush-circle borders (setting to zero will draw nothing). To reach the "
+"maximum hardness, you need to disable Anti-aliasing."
+msgstr ""
+"円形の縁の硬いブラシ (0に設定すると何も描けません). 最大の硬さにするには、ア"
+"ンチエイリアシングを無効にする必要があります。"
+
+#: ../brushsettings-gen.h:9
+msgid "Anti-aliasing"
+msgstr "アンチエイリアス"
+
+#: ../brushsettings-gen.h:9
+#, fuzzy
+msgid ""
+"This setting decreases the hardness when necessary to prevent a pixel "
+"staircase effect. 0.0 disable (for very strong erasers and pixel brushes) "
+"1.0 blur one pixel (good value) 5.0 notable blur, thin strokes will disappear"
+msgstr ""
+"この設定は、ピクセルのギザギザの状態を防ぐために、縁の硬さを減少させます。\n"
+" 0.0 無効 (非常に強力な消しゴムとピクセルブラシ向け)\n"
+" 1.0 ピクセルを１つぼかす（良質な値)\n"
+" 5.0 著しいぼかし、細い線は消えます。"
+
+#: ../brushsettings-gen.h:10
+msgid "Dabs per basic radius"
+msgstr "基本ブラシ半径あたり描点数"
+
+#: ../brushsettings-gen.h:10
+msgid ""
+"How many dabs to draw while the pointer moves a distance of one brush radius "
+"(more precise: the base value of the radius)"
+msgstr ""
+" ポインタがブラシ半径（より正確には、基本ブラシ半径）の分だけ移動する間の描点"
+"数"
+
+#: ../brushsettings-gen.h:11
+msgid "Dabs per actual radius"
+msgstr "実際のブラシ半径あたりの描点数"
+
+#: ../brushsettings-gen.h:11
+msgid ""
+"Same as above, but the radius actually drawn is used, which can change "
+"dynamically"
+msgstr ""
+"上記の項目と同様のパラメータですが、基本ブラシ半径ではなく、（動的に変化す"
+"る）実際のブラシ半径を使用して描点数を決定します。"
+
+#: ../brushsettings-gen.h:12
+msgid "Dabs per second"
+msgstr "１秒間辺りの描点数"
+
+#: ../brushsettings-gen.h:12
+msgid "Dabs to draw each second, no matter how far the pointer moves"
+msgstr "１秒間辺りの描点数(移動距離に非依存)"
+
+#: ../brushsettings-gen.h:13
+msgid "Radius by random"
+msgstr "ランダムに変化する半径の大きさ"
+
+#: ../brushsettings-gen.h:13
+#, fuzzy
+msgid ""
+"Alter the radius randomly each dab. You can also do this with the by_random "
+"input on the radius setting. If you do it here, there are two differences:1) "
+"the opaque value will be corrected such that a big-radius dabs is more "
+"transparent2) it will not change the actual radius seen by "
+"dabs_per_actual_radius"
+msgstr ""
+"個々の描点の半径をランダムに変化させます。「半径」の詳細設定で「ランダム」パ"
+"ラメータをマッピングして設定しても同様の効果を得ますが、この項目で設定すると"
+"以下の２つの違いがあります。\n"
+"1) 不透明度の値は、半径が大きくなると透明度が高くなるように補正されます。\n"
+"2) 「実際のブラシ半径あたりの描点数」で参照される「実際のブラシ半径」の値には"
+"影響を与えません。"
+
+#: ../brushsettings-gen.h:14
+msgid "Fine speed filter"
+msgstr "「詳細速度」フィルタ"
+
+#: ../brushsettings-gen.h:14
+#, fuzzy
+msgid ""
+"How slow the input fine speed is following the real speed0.0 change "
+"immediately as your speed changes (not recommended, but try it)"
+msgstr ""
+"「詳細速度」パラメータが、実際の速さに対してどの程度敏感に変化するかを指定し"
+"ます\n"
+"0.0: 速度変化に応じ即座に変化します。 (非推奨、しかし試してみて下さい)"
+
+#: ../brushsettings-gen.h:15
+msgid "Gross speed filter"
+msgstr "「大まかな速度」フィルタ"
+
+#: ../brushsettings-gen.h:15
+msgid "Same as 'fine speed filter', but note that the range is different"
+msgstr ""
+"「詳細速度」フィルタと同様に、ブラシの「大まかな速度」パラメータの感度を指定"
+"します。"
+
+#: ../brushsettings-gen.h:16
+msgid "Fine speed gamma"
+msgstr "「詳細速度」のガンマ値"
+
+#: ../brushsettings-gen.h:16
+#, fuzzy
+msgid ""
+"This changes the reaction of the 'fine speed' input to extreme physical "
+"speed. You will see the difference best if 'fine speed' is mapped to the "
+"radius.-8.0 very fast speed does not increase 'fine speed' much more+8.0 "
+"very fast speed increases 'fine speed' a lotFor very slow speed the opposite "
+"happens."
+msgstr ""
+"これは極端な物理的な速度の入力に対する、「詳細速度」パラメータの反応を変更し"
+"ます。「詳細速度」パラメータが「半径」に対してマッピングされていた場合に、最"
+"もよく違いが現れます。\n"
+"-8.0 非常に速い速度では、あまり「詳細速度」を増加しません。\n"
+"+8.0 非常に速い速度では、「詳細速度」を大幅に増加します。\n"
+"ポインタの動きがとても遅いの場合は、逆のことが起こります。"
+
+#: ../brushsettings-gen.h:17
+msgid "Gross speed gamma"
+msgstr "「大まかな速度」のガンマ値"
+
+#: ../brushsettings-gen.h:17
+msgid "Same as 'fine speed gamma' for gross speed"
+msgstr ""
+"「『詳細速度』のガンマ値」と同様に「大まかな速度」のガンマ値を指定します。"
+
+#: ../brushsettings-gen.h:18
+msgid "Jitter"
+msgstr "揺らぎ"
+
+#: ../brushsettings-gen.h:18
+#, fuzzy
+msgid ""
+"Add a random offset to the position where each dab is drawn 0.0 disabled 1.0 "
+"standard deviation is one basic radius away<0.0 negative values produce no "
+"jitter"
+msgstr ""
+"個々の描点の位置をランダムにずらします。\n"
+" 0.0 無効\n"
+" 1.0 標準偏差は1つの基本となる半径範囲の距離です。\n"
+"<0.0 負の値は揺らぎを生成しません。"
+
+#: ../brushsettings-gen.h:19
+msgid "Offset by speed"
+msgstr "速度依存オフセット"
+
+#: ../brushsettings-gen.h:19
+#, fuzzy
+msgid ""
+"Change position depending on pointer speed= 0 disable> 0 draw where the "
+"pointer moves to< 0 draw where the pointer comes from"
+msgstr ""
+"ポインタの速さに応じてポインタの位置を変更します。\n"
+"=0 無効\n"
+"> 0 ポインタの移動先に描く\n"
+"<0 ポインタの移動元に描く"
+
+#: ../brushsettings-gen.h:20
+msgid "Offset by speed filter"
+msgstr "「速度依存オフセット」フィルタ"
+
+#: ../brushsettings-gen.h:20
+msgid "How slow the offset goes back to zero when the cursor stops moving"
+msgstr ""
+"カーソルの動きが止まったときに、「速度依存オフセット」の値が0に戻るまでの速さ"
+"を指定します。"
+
+#: ../brushsettings-gen.h:21
+msgid "Slow position tracking"
+msgstr "手ブレ補正(遅延追加)"
+
+#: ../brushsettings-gen.h:21
+msgid ""
+"Slowdown pointer tracking speed. 0 disables it, higher values remove more "
+"jitter in cursor movements. Useful for drawing smooth, comic-like outlines."
+msgstr ""
+"カーソルの動きに対して遅れて線が引かれるようになります。値を高くすると手ブレ"
+"によるカーソルの動きを滑らかにできます。漫画のような滑らかな線を引くのに適し"
+"ます。"
+
+#: ../brushsettings-gen.h:22
+msgid "Slow tracking per dab"
+msgstr "描点ごとに手ブレ補正(遅延追加)"
+
+#: ../brushsettings-gen.h:22
+msgid ""
+"Similar as above but at brushdab level (ignoring how much time has past, if "
+"brushdabs do not depend on time)"
+msgstr ""
+"手ブレ補正と同様ですが、ブラシの描点ごとに補正します。(時間に依存するブラシを"
+"使っていた場合でも、線を引くためにかかった時間は無視されます)"
+
+#: ../brushsettings-gen.h:23
+msgid "Tracking noise"
+msgstr "手ブレ追加"
+
+#: ../brushsettings-gen.h:23
+msgid ""
+"Add randomness to the mouse pointer; this usually generates many small lines "
+"in random directions; maybe try this together with 'slow tracking'"
+msgstr ""
+"線を引くときにランダムに揺れを追加します。その結果、線がバラバラに別れていろ"
+"んな方向を向いた多数の細かい線を引くようになります。手ブレ補正と一緒に使って"
+"みては？"
+
+#: ../brushsettings-gen.h:24
+msgid "Color hue"
+msgstr "色相"
+
+#: ../brushsettings-gen.h:25
+msgid "Color saturation"
+msgstr "彩度"
+
+#: ../brushsettings-gen.h:26
+msgid "Color value"
+msgstr "明度"
+
+#: ../brushsettings-gen.h:26
+msgid "Color value (brightness, intensity)"
+msgstr "色の値 (明度, 輝度)"
+
+#: ../brushsettings-gen.h:27
+msgid "Save color"
+msgstr "色を保存"
+
+#: ../brushsettings-gen.h:27
+#, fuzzy
+msgid ""
+"When selecting a brush, the color can be restored to the color that the "
+"brush was saved with. 0.0 do not modify the active color when selecting this "
+"brush 0.5 change active color towards brush color 1.0 set the active color "
+"to the brush color when selected"
+msgstr ""
+"ブラシを選択する際、ブラシと一緒に保存されている選択色を復元することができま"
+"す。\n"
+" 0.0 ブラシを選択する際、選択色を変更することはありません。\n"
+" 0.5 ブラシの色に向けて選択色を変化させます。\n"
+" 1.0 ブラシの色は選択色に設定されます。"
+
+#: ../brushsettings-gen.h:28
+msgid "Change color hue"
+msgstr "色相を変更"
+
+#: ../brushsettings-gen.h:28
+#, fuzzy
+msgid ""
+"Change color hue.-0.1 small clockwise color hue shift 0.0 disable 0.5 "
+"counterclockwise hue shift by 180 degrees"
+msgstr ""
+"色相を変更\n"
+"-0.1 色相を時計回りに少しずらす\n"
+" 0.0 無効\n"
+" 0.5 色相を反時計回りに180度ずらす"
+
+#: ../brushsettings-gen.h:29
+msgid "Change color lightness (HSL)"
+msgstr "明るさを変更(HSL)"
+
+#: ../brushsettings-gen.h:29
+#, fuzzy
+msgid ""
+"Change the color lightness (luminance) using the HSL color model.-1.0 "
+"blacker 0.0 disable 1.0 whiter"
+msgstr ""
+"HSLカラーモデルを使用して明るさ（輝度）を変更します。\n"
+"-1.0 より黒く\n"
+" 0.0 無効\n"
+" 1.0 より白く"
+
+#: ../brushsettings-gen.h:30
+msgid "Change color satur. (HSL)"
+msgstr "彩度を変更(HSL)"
+
+#: ../brushsettings-gen.h:30
+#, fuzzy
+msgid ""
+"Change the color saturation using the HSL color model.-1.0 more grayish 0.0 "
+"disable 1.0 more saturated"
+msgstr ""
+"HSLカラーモデルを使用して彩度を変更します。\n"
+"-1.0 よりグレイに\n"
+" 0.0 無効\n"
+" 1.0 より鮮やかに"
+
+#: ../brushsettings-gen.h:31
+msgid "Change color value (HSV)"
+msgstr "明度を変更(HSV)"
+
+#: ../brushsettings-gen.h:31
+#, fuzzy
+msgid ""
+"Change the color value (brightness, intensity) using the HSV color model. "
+"HSV changes are applied before HSL.-1.0 darker 0.0 disable 1.0 brigher"
+msgstr ""
+"HSVカラーモデルを使用して色の値（明るさ、輝度）を変更します。 HSVの変更は HSL"
+"の前に適用されています。\n"
+"-1.0 より暗く\n"
+" 0.0 無効\n"
+" 1.0 より明るく"
+
+#: ../brushsettings-gen.h:32
+msgid "Change color satur. (HSV)"
+msgstr "彩度を変更(HSV)"
+
+#: ../brushsettings-gen.h:32
+#, fuzzy
+msgid ""
+"Change the color saturation using the HSV color model. HSV changes are "
+"applied before HSL.-1.0 more grayish 0.0 disable 1.0 more saturated"
+msgstr ""
+"HSVカラーモデルを使用して彩度を変更します。 HSVの変更は HSLの前に適用されてい"
+"ます。\n"
+"-1.0 よりグレイに\n"
+" 0.0 無効\n"
+" 1.0 より鮮やかに"
+
+#: ../brushsettings-gen.h:33
+msgid "Smudge"
+msgstr "混色"
+
+#: ../brushsettings-gen.h:33
+#, fuzzy
+msgid ""
+"Paint with the smudge color instead of the brush color. The smudge color is "
+"slowly changed to the color you are painting on. 0.0 do not use the smudge "
+"color 0.5 mix the smudge color with the brush color 1.0 use only the smudge "
+"color"
+msgstr ""
+"ブラシの色とキャンバス上の色を混色して色を塗ります。描画色はブラシの色から"
+"キャンバス上の色に次第に変わっていきます。\n"
+" 0.0: 混色なし\n"
+" 0.5: 混色した色とブラシの色を１：１で混合\n"
+" 1.0: 混色した色のみ(ブラシの色が補填されません)"
+
+#: ../brushsettings-gen.h:34
+msgid "Smudge length"
+msgstr "混色する長さ"
+
+#: ../brushsettings-gen.h:34
+#, fuzzy
+msgid ""
+"This controls how fast the smudge color becomes the color you are painting "
+"on.0.0 immediately update the smudge color (requires more CPU cycles because "
+"of the frequent color checks)0.5 change the smudge color steadily towards "
+"the canvas color1.0 never change the smudge color"
+msgstr ""
+"混色時にブラシの色がキャンバス上の色に変わっていく速さを指定します。\n"
+"0.0: ブラシの色がすぐにキャンバス上の色に変化(高負荷)\n"
+"0.5: ブラシの色が徐々にキャンバス上の色に変化\n"
+"1.0: ブラシの色の変化なし"
+
+#: ../brushsettings-gen.h:35
+msgid "Smudge radius"
+msgstr "混色の半径"
+
+#: ../brushsettings-gen.h:35
+#, fuzzy
+msgid ""
+"This modifies the radius of the circle where color is picked up for "
+"smudging. 0.0 use the brush radius-0.7 half the brush radius (fast, but not "
+"always intuitive)+0.7 twice the brush radius+1.6 five times the brush radius "
+"(slow performance)"
+msgstr ""
+"この設定は、キャンバス上の色を取得する際の範囲を指定します。指定した範囲内の"
+"色の平均値をキャンバスの色として利用します。\n"
+" 0.0: ブラシの半径と同じ範囲\n"
+"-0.7: ブラシの半径の半分の範囲 (速いが予想と異なる結果になる可能性あり)\n"
+"+0.7: ブラシの半径の2倍の範囲\n"
+"+1.6: ブラシの半径の5倍の範囲（パフォーマンスが低下）"
+
+#: ../brushsettings-gen.h:36
+msgid "Eraser"
+msgstr "消しゴム"
+
+#: ../brushsettings-gen.h:36
+#, fuzzy
+msgid ""
+"how much this tool behaves like an eraser 0.0 normal painting 1.0 standard "
+"eraser 0.5 pixels go towards 50% transparency"
+msgstr ""
+"どの程度の消しゴムにするか\n"
+" 0.0 標準の描画\n"
+" 1.0 標準的な消しゴム\n"
+" 0.5 ピクセルを 50% 透明にします。"
+
+#: ../brushsettings-gen.h:37
+msgid "Stroke threshold"
+msgstr "開始しきい値"
+
+#: ../brushsettings-gen.h:37
+msgid ""
+"How much pressure is needed to start a stroke. This affects the stroke input "
+"only. Mypaint does not need a minimal pressure to start drawing."
+msgstr ""
+"筆圧が指定した値を超えた場合に、「ストローク」パラメータが増加を開始します。"
+"この項目は「ストローク」のパラメータのみに作用します。Mypaintでは筆圧がない場"
+"合でも（ポインタの動きだけで）描画を行うことができます。"
+
+#: ../brushsettings-gen.h:38
+msgid "Stroke duration"
+msgstr "基準長"
+
+#: ../brushsettings-gen.h:38
+msgid ""
+"How far you have to move until the stroke input reaches 1.0. This value is "
+"logarithmic (negative values will not inverse the process)."
+msgstr ""
+"「ストローク」パラメータが1.0になるまでに必要なポインタの移動距離を指定しま"
+"す。この値は対数値で指定します。（マイナスの値は逆のプロセスをしません）"
+
+#: ../brushsettings-gen.h:39
+msgid "Stroke hold time"
+msgstr "残留期間"
+
+#: ../brushsettings-gen.h:39
+#, fuzzy
+msgid ""
+"This defines how long the stroke input stays at 1.0. After that it will "
+"reset to 0.0 and start growing again, even if the stroke is not yet "
+"finished.2.0 means twice as long as it takes to go from 0.0 to 1.09.9 and "
+"bigger stands for infinite"
+msgstr ""
+"これは「ストローク」パラメータが1.0の値に留まる時間を定義します。この値で指定"
+"した時間が経過すると、(ストロークが終了していなくても)「ストローク」パラメー"
+"タは0.0にリセットされ、再び増加し始めます。\n"
+"2.0 は、0.0から1.0に行くのに 2倍の時間が掛かる事を意味します。\n"
+"9.9 以上の場合、「ストローク」パラメータは一度1.0になると永久に固定されます"
+
+#: ../brushsettings-gen.h:40
+msgid "Custom input"
+msgstr "カスタム入力"
+
+#: ../brushsettings-gen.h:40
+#, fuzzy
+msgid ""
+"Set the custom input to this value. If it is slowed down, move it towards "
+"this value (see below). The idea is that you make this input depend on a "
+"mixture of pressure/speed/whatever, and then make other settings depend on "
+"this 'custom input' instead of repeating this combination everywhere you "
+"need it.If you make it change 'by random' you can generate a slow (smooth) "
+"random input."
+msgstr ""
+"カスタム入力値を設定します。速度低下した場合、この値で移動します。(下記参"
+"照)\n"
+"考え方としては、この入力を筆圧、速度、その他何でも混合し依存させることです。"
+"他の設定は、必要とするあらゆる所の組み合わせを繰り返しているよりは、この「カ"
+"スタム入力」に依存させることです。\n"
+"「ランダム」で変更できるようであれば、ゆっくりな（滑らかな）ランダム入力を生"
+"成することができます。"
+
+#: ../brushsettings-gen.h:41
+msgid "Custom input filter"
+msgstr "「カスタム入力」フィルタ"
+
+#: ../brushsettings-gen.h:41
+#, fuzzy
+msgid ""
+"How slow the custom input actually follows the desired value (the one "
+"above). This happens at brushdab level (ignoring how much time has past, if "
+"brushdabs do not depend on time).0.0 no slowdown (changes apply instantly)"
+msgstr ""
+"「カスタム入力」パラメータ上記で指定された値に達するまでにどの程度遅延するか"
+"を指定します。この遅延は描点を描く度に計算されます。(描点の描画が時間に依存し"
+"ない設定の場合、移動の度に遅延が計算されますが、ストローク開始からの経過時間"
+"は考慮されません)\n"
+"0.0 減速なし(変更が即座に適用されます)"
+
+#: ../brushsettings-gen.h:42
+msgid "Elliptical dab: ratio"
+msgstr "楕円形の描点：縦横比"
+
+#: ../brushsettings-gen.h:42
+msgid ""
+"Aspect ratio of the dabs; must be >= 1.0, where 1.0 means a perfectly round "
+"dab. TODO: linearize? start at 0.0 maybe, or log?"
+msgstr ""
+"描点の縦横比：1.0かそれ以上でなければなりません。\n"
+"1.0は真円の描点を意味します。(TODO: 0.0からはじまる線形値にするか対数値にする"
+"か？)"
+
+#: ../brushsettings-gen.h:43
+msgid "Elliptical dab: angle"
+msgstr "楕円形の描点：角度"
+
+#: ../brushsettings-gen.h:43
+#, fuzzy
+msgid ""
+"Angle by which elliptical dabs are tilted 0.0 horizontal dabs 45.0 45 "
+"degrees, turned clockwise 180.0 horizontal again"
+msgstr ""
+"楕円形状の描点を傾斜させる角度\n"
+" 0.0 水平の描点\n"
+" 45.0 時計回りに45度傾斜\n"
+" 180.0 再び水平の描点に戻る"
+
+#: ../brushsettings-gen.h:44
+msgid "Direction filter"
+msgstr "「方向」フィルタ"
+
+#: ../brushsettings-gen.h:44
+msgid ""
+"A low value will make the direction input adapt more quickly, a high value "
+"will make it smoother"
+msgstr ""
+"「方向」パラメータの変化の度合いを指定します。値が低い場合は「方向」パラメー"
+"タがポインタの動きに合わせて迅速に変化し、値が大きい場合はより滑らかに変化し"
+"ます。"
+
+#: ../brushsettings-gen.h:45
+msgid "Lock alpha"
+msgstr "アルファ値を保護"
+
+#: ../brushsettings-gen.h:45
+#, fuzzy
+msgid ""
+"Do not modify the alpha channel of the layer (paint only where there is "
+"paint already) 0.0 normal painting 0.5 half of the paint gets applied "
+"normally 1.0 alpha channel fully locked"
+msgstr ""
+"レイヤーのアルファチャンネルを変更しません。(既に描かれた所のみ描画)\n"
+" 0.0 標準の描画\n"
+" 0.5 描画の半分が標準に適用されます\n"
+" 1.0 アルファチャンネルを完全にロック"
+
+#: ../brushsettings-gen.h:46
+#, fuzzy
+msgid "Colorize"
+msgstr "色"
+
+#: ../brushsettings-gen.h:46
+msgid ""
+"Colorize the target layer, setting its hue and saturation from the active "
+"brush colour while retaining its value and alpha."
+msgstr ""
+
+#: ../brushsettings-gen.h:51
+msgid "Pressure"
+msgstr "筆圧"
+
+#: ../brushsettings-gen.h:51
+msgid ""
+"The pressure reported by the tablet, between 0.0 and 1.0. If you use the "
+"mouse, it will be 0.5 when a button is pressed and 0.0 otherwise."
+msgstr ""
+"タブレット利用時：デバイスが示す筆圧(0.0〜1.0)マウス利用時：マウスボタンを押"
+"している間＝0.5、その他＝0.0"
+
+#: ../brushsettings-gen.h:52
+msgid "Fine speed"
+msgstr "詳細速度"
+
+#: ../brushsettings-gen.h:52
+msgid ""
+"How fast you currently move. This can change very quickly. Try 'print input "
+"values' from the 'help' menu to get a feeling for the range; negative values "
+"are rare but possible for very low speed."
+msgstr ""
+"現在のポインターの移動がどのくらいの速さかを示します。このパラメータは(カーソ"
+"ルの速度に合わせて)即時に値が変わります。値の範囲の目安を得るためには「ヘル"
+"プ」から「ブラシの入力値をコンソールに表示」をご覧ください。この値がマイナス"
+"値になることは稀ですが、低速でカーソルを動かした場合にマイナス値になることが"
+"あります。"
+
+#: ../brushsettings-gen.h:53
+msgid "Gross speed"
+msgstr "大まかな速度"
+
+#: ../brushsettings-gen.h:53
+msgid ""
+"Same as fine speed, but changes slower. Also look at the 'gross speed "
+"filter' setting."
+msgstr ""
+"「詳細速度」と同様ですが、ゆっくりと変化します。また「『大まかな速度』フィル"
+"タ」の設定もご覧ください。"
+
+#: ../brushsettings-gen.h:54
+msgid "Random"
+msgstr "ランダム"
+
+#: ../brushsettings-gen.h:54
+msgid ""
+"Fast random noise, changing at each evaluation. Evenly distributed between 0 "
+"and 1."
+msgstr ""
+"高速なランダムノイズ、個々の算出で変化します。0と 1の間に均等に分布します。"
+
+#: ../brushsettings-gen.h:55
+msgid "Stroke"
+msgstr "ストローク"
+
+#: ../brushsettings-gen.h:55
+msgid ""
+"This input slowly goes from zero to one while you draw a stroke. It can also "
+"be configured to jump back to zero periodically while you move. Look at the "
+"'stroke duration' and 'stroke hold time' settings."
+msgstr ""
+"ストロークを描画している間、この入力は徐々に 0から 1になります。また、移動し"
+"ている間、定期的にゼロに戻るように設定することもできます。「『ストローク』基"
+"準長」と「『ストローク』残留期間」の設定もご覧ください。"
+
+#: ../brushsettings-gen.h:56
+msgid "Direction"
+msgstr "方向"
+
+#: ../brushsettings-gen.h:56
+msgid ""
+"The angle of the stroke, in degrees. The value will stay between 0.0 and "
+"180.0, effectively ignoring turns of 180 degrees."
+msgstr ""
+"ストロークの角度。値は、実質的には 180度のターンを無視して、0.0〜180.0の間の"
+"ままです。"
+
+#: ../brushsettings-gen.h:57
+msgid "Declination"
+msgstr "ペンの傾斜角度"
+
+#: ../brushsettings-gen.h:57
+msgid ""
+"Declination of stylus tilt. 0 when stylus is parallel to tablet and 90.0 "
+"when it's perpendicular to tablet."
+msgstr ""
+"スタイラスペンの傾きの角度(赤緯)。ペンがタブレットに平行だと 0.0、タブレット"
+"に対して垂直だと 90.0です。"
+
+#: ../brushsettings-gen.h:58
+msgid "Ascension"
+msgstr "ペンの傾斜の方向"
+
+#: ../brushsettings-gen.h:58
+msgid ""
+"Right ascension of stylus tilt. 0 when stylus working end points to you, +90 "
+"when rotated 90 degrees clockwise, -90 when rotated 90 degrees "
+"counterclockwise."
+msgstr ""
+"スタイラスペンの傾きの方向(赤経)。 ペンの先端が自分を差す時は 0, 時計回りに90"
+"度回転させると +90、反時計回りに90度回転させると -90です。"
+
+#: ../brushsettings-gen.h:59
+msgid "Custom"
+msgstr "カスタム"
+
+#: ../brushsettings-gen.h:59
+msgid ""
+"This is a user defined input. Look at the 'custom input' setting for details."
+msgstr ""
+"これはユーザー定義の入力です。詳細は「カスタム入力」の設定をご覧ください。"
+

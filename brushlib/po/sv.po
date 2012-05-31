@@ -1,0 +1,742 @@
+# This file is distributed under the same license as the MyPaint package.
+# Copyright (C) 2009 Griatch
+msgid ""
+msgstr ""
+"Project-Id-Version: 0.7.1-git\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-05-31 13:57+0200\n"
+"PO-Revision-Date: 2011-11-12 14:23+0100\n"
+"Last-Translator: Griatch <griatch@gmail.com>\n"
+"Language-Team: \n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../brushsettings-gen.h:4
+msgid "Opacity"
+msgstr "Opacitet"
+
+#: ../brushsettings-gen.h:4
+#, fuzzy
+msgid ""
+"0 means brush is transparent, 1 fully visible(also known as alpha or opacity)"
+msgstr ""
+"0 betyder penseln är genomskinlig, 1 att den är fullt synlig.\n"
+"(också känt som alfa eller opacitet)"
+
+#: ../brushsettings-gen.h:5
+msgid "Opacity multiply"
+msgstr "Multiplicera opacitet"
+
+#: ../brushsettings-gen.h:5
+#, fuzzy
+msgid ""
+"This gets multiplied with opaque. You should only change the pressure input "
+"of this setting. Use 'opaque' instead to make opacity depend on speed.This "
+"setting is responsible to stop painting when there is zero pressure. This is "
+"just a convention, the behaviour is identical to 'opaque'."
+msgstr ""
+"Detta multipliceras med graden av ogenomskinnlighet. Du bör bara ändra "
+"tryckinställningen; använd 'Opacitet' istället om du önskar få "
+"genomskinnligheten att bero på hastighet.\n"
+"Denna inställning ser till att sluta måla när trycket är 0. Detta är bara en "
+"konvention, beteendet är samma som för 'opacitet'."
+
+#: ../brushsettings-gen.h:6
+msgid "Opacity linearize"
+msgstr "Linjär opacitet"
+
+#: ../brushsettings-gen.h:6
+#, fuzzy
+msgid ""
+"Correct the nonlinearity introduced by blending multiple dabs on top of each "
+"other. This correction should get you a linear (\"natural\") pressure "
+"response when pressure is mapped to opaque_multiply, as it is usually done. "
+"0.9 is good for standard strokes, set it smaller if your brush scatters a "
+"lot, or higher if you use dabs_per_second.0.0 the opaque value above is for "
+"the individual dabs1.0 the opaque value above is for the final brush stroke, "
+"assuming each pixel gets (dabs_per_radius*2) brushdabs on average during a "
+"stroke"
+msgstr ""
+"Korrigerar den ickelinjära effekt som kommer av att smälta samman flera "
+"penselstreck ovanpå varandra. Denna korrigering bör ge en linjär (mer "
+"naturlig) effekt när trycket är knutet till 'opaque multiply' (vilket det "
+"oftast är.)\n"
+"0.9 är ett bra värde för normala penseldrag, sätt värdet lägre om ditt "
+"penseldrag bryts upp för mycket, eller högre om du använder "
+"'dabs_per_second'\n"
+"0.0 - opacitetsvärdet gäller för de individuella delarna av penseldraget\n"
+"1.0 - opacitetsvärdet gäller för det slutgiltiga penseldraget, under "
+"antagandet att varje pixel får (dabs_per_radius*2) pensel-uppdateringar "
+"(dabs) i medeltal under ett penseldrag."
+
+#: ../brushsettings-gen.h:7
+msgid "Radius"
+msgstr "Radius"
+
+#: ../brushsettings-gen.h:7
+#, fuzzy
+msgid "Basic brush radius (logarithmic) 0.7 means 2 pixels 3.0 means 20 pixels"
+msgstr ""
+"Bas-penselradius (logaritmisk)\n"
+" 0.7 betyder 2 pixlar\n"
+" 3.0 betyder 20 pixlar"
+
+#: ../brushsettings-gen.h:8
+msgid "Hardness"
+msgstr "Hårdhet"
+
+#: ../brushsettings-gen.h:8
+msgid ""
+"Hard brush-circle borders (setting to zero will draw nothing). To reach the "
+"maximum hardness, you need to disable Anti-aliasing."
+msgstr ""
+"Pensel-cirklar med hård gräns (om detta sätts till noll ritas ingenting). "
+"För att nå maximal hårdhet måste också antialiasing deaktiveras."
+
+#: ../brushsettings-gen.h:9
+msgid "Anti-aliasing"
+msgstr "Antialiasing"
+
+#: ../brushsettings-gen.h:9
+#, fuzzy
+msgid ""
+"This setting decreases the hardness when necessary to prevent a pixel "
+"staircase effect. 0.0 disable (for very strong erasers and pixel brushes) "
+"1.0 blur one pixel (good value) 5.0 notable blur, thin strokes will disappear"
+msgstr ""
+"Denna inställning minskar hårdheten som används för att minimera effekten av "
+"pixel-stegning.\n"
+" 0.0 deaktivera (för mycket kraftfull suddning och pixel-penslar)\n"
+" 1.0 sudda ut kanterna för en pixel (bra värde)\n"
+" 5.0 tydlig utsuddning, tunna streck kommer att försvinna"
+
+#: ../brushsettings-gen.h:10
+msgid "Dabs per basic radius"
+msgstr "Pensel-uppdateringar per basradius"
+
+#: ../brushsettings-gen.h:10
+msgid ""
+"How many dabs to draw while the pointer moves a distance of one brush radius "
+"(more precise: the base value of the radius)"
+msgstr ""
+"Hur många pensel-uppdateringar som ska ritas medan pekaren rör sig en "
+"penselradius (eller mer korrekt - radiens basvärde)"
+
+#: ../brushsettings-gen.h:11
+msgid "Dabs per actual radius"
+msgstr "Pensel-uppdateringar per verklig radius"
+
+#: ../brushsettings-gen.h:11
+msgid ""
+"Same as above, but the radius actually drawn is used, which can change "
+"dynamically"
+msgstr ""
+"Samma som ovan, men använder den nuvarande radien (vilken kan ändras "
+"dynamiskt)"
+
+#: ../brushsettings-gen.h:12
+msgid "Dabs per second"
+msgstr "Pensel-uppdateringar per sekund"
+
+#: ../brushsettings-gen.h:12
+msgid "Dabs to draw each second, no matter how far the pointer moves"
+msgstr ""
+"Pensel-uppdateringar att rita varje sekund, oberoende av hur långt pekaren "
+"flyttar sig"
+
+#: ../brushsettings-gen.h:13
+msgid "Radius by random"
+msgstr "Slumpmässig justering av radien"
+
+#: ../brushsettings-gen.h:13
+#, fuzzy
+msgid ""
+"Alter the radius randomly each dab. You can also do this with the by_random "
+"input on the radius setting. If you do it here, there are two differences:1) "
+"the opaque value will be corrected such that a big-radius dabs is more "
+"transparent2) it will not change the actual radius seen by "
+"dabs_per_actual_radius"
+msgstr ""
+"Ändra radien slumpmässigt varje pensel-uppdatering. Du kan också göra detta "
+"genom att ändra radien slumpmässigt. Om du använder denna inställning finns "
+"två skillnader:\n"
+"1) De pensel-uppdateringar som råkar ha stor radie blir mer genomskinliga\n"
+"2) Den ändrar inte den 'verkliga radien' använd av vissa inställningar"
+
+#: ../brushsettings-gen.h:14
+msgid "Fine speed filter"
+msgstr "Filter: fin-filtrerad hastighet"
+
+#: ../brushsettings-gen.h:14
+#, fuzzy
+msgid ""
+"How slow the input fine speed is following the real speed0.0 change "
+"immediately as your speed changes (not recommended, but try it)"
+msgstr ""
+"Hur långsamt den finjusterande hastigheten anpassas till den verkliga "
+"hastigheten.\n"
+"0.0 innebär att förändringen sker omedelbart (inte rekommenderat, men värt "
+"att prova)"
+
+#: ../brushsettings-gen.h:15
+msgid "Gross speed filter"
+msgstr "Filter: grov-filtrerad hastighet"
+
+#: ../brushsettings-gen.h:15
+msgid "Same as 'fine speed filter', but note that the range is different"
+msgstr ""
+"Samma som 'filter: fin-filtrerad hastighet', men notera att intervallet är "
+"annorlunda."
+
+#: ../brushsettings-gen.h:16
+msgid "Fine speed gamma"
+msgstr "Gamma: fin-filtrerad hastighet"
+
+#: ../brushsettings-gen.h:16
+#, fuzzy
+msgid ""
+"This changes the reaction of the 'fine speed' input to extreme physical "
+"speed. You will see the difference best if 'fine speed' is mapped to the "
+"radius.-8.0 very fast speed does not increase 'fine speed' much more+8.0 "
+"very fast speed increases 'fine speed' a lotFor very slow speed the opposite "
+"happens."
+msgstr ""
+"Detta ändrar hur den fin-filtrerade hastigheten justeras till extrema "
+"verkliga hastigheter. Du ser skillnaden bäst om denna hastighet är knuten "
+"till radien.\n"
+" -8.0 - mycket hög hastighet ökar inte fin-filtrerad hastighet särskilt "
+"mycket.\n"
+" +0.0 - mycket hög hastighet påverkar fin-filtrerad hastighet väldigt "
+"mycket!.\n"
+"Det motsatta gäller för mycket långsamma hastigheter."
+
+#: ../brushsettings-gen.h:17
+msgid "Gross speed gamma"
+msgstr "Gamma: grov-filtrerad hastighet"
+
+#: ../brushsettings-gen.h:17
+msgid "Same as 'fine speed gamma' for gross speed"
+msgstr ""
+"Samma som 'gamma: fin-filtrerad hastighet' men för grov-filtrerad hastighet"
+
+#: ../brushsettings-gen.h:18
+msgid "Jitter"
+msgstr "Skakning"
+
+#: ../brushsettings-gen.h:18
+#, fuzzy
+msgid ""
+"Add a random offset to the position where each dab is drawn 0.0 disabled 1.0 "
+"standard deviation is one basic radius away<0.0 negative values produce no "
+"jitter"
+msgstr ""
+"Lägg till en slumpmässig skakning som ändrar var penseln ritar.\n"
+" 0.0 (eller < 0.0) ingen skakning\n"
+" 1.0  ger skakningar stora som  en hel radius bort\n"
+" <0.0 ger ingen skakning"
+
+#: ../brushsettings-gen.h:19
+msgid "Offset by speed"
+msgstr "Förskjutning beroende på hastighet"
+
+#: ../brushsettings-gen.h:19
+#, fuzzy
+msgid ""
+"Change position depending on pointer speed= 0 disable> 0 draw where the "
+"pointer moves to< 0 draw where the pointer comes from"
+msgstr ""
+"Ändra position beroende på pekarhastighet\n"
+"= 0 - stäng av\n"
+"> 0 - rita där pekaren flyttar till\n"
+"< 0 - rita där pekaren flyttas från"
+
+#: ../brushsettings-gen.h:20
+msgid "Offset by speed filter"
+msgstr "Förskjutning beroende på hastighetsfilter"
+
+#: ../brushsettings-gen.h:20
+msgid "How slow the offset goes back to zero when the cursor stops moving"
+msgstr ""
+"Hur långsamt förskjutningen går tillbaka till noll efter att pekaren slutat "
+"röra sig"
+
+#: ../brushsettings-gen.h:21
+msgid "Slow position tracking"
+msgstr "Långsam positionsspårning"
+
+#: ../brushsettings-gen.h:21
+msgid ""
+"Slowdown pointer tracking speed. 0 disables it, higher values remove more "
+"jitter in cursor movements. Useful for drawing smooth, comic-like outlines."
+msgstr ""
+"Sänk hastigheten med vilken penseldraget följer pekaren. 0 stänger av "
+"effekten, högre värden tar bort allt mer skakningar i pekarrörelsen. Detta "
+"är användbart för att rita mjuka, serietidningslika linjer."
+
+#: ../brushsettings-gen.h:22
+msgid "Slow tracking per dab"
+msgstr "Långsam spårning per penseluppdatering"
+
+#: ../brushsettings-gen.h:22
+msgid ""
+"Similar as above but at brushdab level (ignoring how much time has past, if "
+"brushdabs do not depend on time)"
+msgstr ""
+"Liknande ovanstående, men verkar på pensel-uppdaterings-nivå (ignorerar hur "
+"mycket tid som gått om pensel-uppdateringen inte beror på tid)"
+
+#: ../brushsettings-gen.h:23
+msgid "Tracking noise"
+msgstr "Spårbrus"
+
+#: ../brushsettings-gen.h:23
+msgid ""
+"Add randomness to the mouse pointer; this usually generates many small lines "
+"in random directions; maybe try this together with 'slow tracking'"
+msgstr ""
+"Lägg till slumpmässig rörelse till muspekaren. Detta skapar oftast många små "
+"linjer i slumpmässiga riktningar; kan vara värt att testa med 'långsam "
+"spårning' i någon form."
+
+#: ../brushsettings-gen.h:24
+msgid "Color hue"
+msgstr "Färgton"
+
+#: ../brushsettings-gen.h:25
+msgid "Color saturation"
+msgstr "Färgmättnad"
+
+#: ../brushsettings-gen.h:26
+msgid "Color value"
+msgstr "Färgens ljusstyrka"
+
+#: ../brushsettings-gen.h:26
+msgid "Color value (brightness, intensity)"
+msgstr "Färgens ljusstyrka, intensitet"
+
+#: ../brushsettings-gen.h:27
+msgid "Save color"
+msgstr "Ändra färgton"
+
+#: ../brushsettings-gen.h:27
+#, fuzzy
+msgid ""
+"When selecting a brush, the color can be restored to the color that the "
+"brush was saved with. 0.0 do not modify the active color when selecting this "
+"brush 0.5 change active color towards brush color 1.0 set the active color "
+"to the brush color when selected"
+msgstr ""
+"När man väljer en pensel kan färgen bli återställd till det värde den "
+"sparades med.\n"
+" 0.0 ändra inte den aktiva färgen när man väljer denna pensel\n"
+" 0.5 ändra den aktiva färgen i riktning mot penselfärgen\n"
+" 1.0 sätt den aktiva färgen till penselfärgen när den väljs"
+
+#: ../brushsettings-gen.h:28
+msgid "Change color hue"
+msgstr "Ändra färgton"
+
+#: ../brushsettings-gen.h:28
+#, fuzzy
+msgid ""
+"Change color hue.-0.1 small clockwise color hue shift 0.0 disable 0.5 "
+"counterclockwise hue shift by 180 degrees"
+msgstr ""
+"Ändrar färgton-\n"
+"-0.1 långsam medsols färgtons-ändring\n"
+" 0.0 avstängd\n"
+" 0.5 ändrar färgtonen 180 grader motsols"
+
+#: ../brushsettings-gen.h:29
+msgid "Change color lightness (HSL)"
+msgstr "Ändra färgens ljusstyrka (HSL)"
+
+#: ../brushsettings-gen.h:29
+#, fuzzy
+msgid ""
+"Change the color lightness (luminance) using the HSL color model.-1.0 "
+"blacker 0.0 disable 1.0 whiter"
+msgstr ""
+"Ändra färgens ljusstyrka (luminans) enligt HSL-modellen.\n"
+"-1.0 svartare\n"
+" 0.0 avstängd\n"
+" 1.0 vitare"
+
+#: ../brushsettings-gen.h:30
+msgid "Change color satur. (HSL)"
+msgstr "Ändra färgmättnad (HSL)"
+
+#: ../brushsettings-gen.h:30
+#, fuzzy
+msgid ""
+"Change the color saturation using the HSL color model.-1.0 more grayish 0.0 "
+"disable 1.0 more saturated"
+msgstr ""
+"Ändra färgmättnaden enligt HSL-modellen.\n"
+"-1.0 mer gråaktig\n"
+" 0.0 avstängd\n"
+" 1.0 mer mättad färg"
+
+#: ../brushsettings-gen.h:31
+msgid "Change color value (HSV)"
+msgstr "Ändra färgens ljusstyrka"
+
+#: ../brushsettings-gen.h:31
+#, fuzzy
+msgid ""
+"Change the color value (brightness, intensity) using the HSV color model. "
+"HSV changes are applied before HSL.-1.0 darker 0.0 disable 1.0 brigher"
+msgstr ""
+"Ändra färgens ljusstyrka och intensitet via HSV-modellen. HSV-förändringar "
+"sker innan HSL-baserade ändringar.-1.0 mörkare\n"
+" 0.0 avstängd\n"
+" 1.0 ljusare"
+
+#: ../brushsettings-gen.h:32
+msgid "Change color satur. (HSV)"
+msgstr "Ändra färgmättnad (HSV)"
+
+#: ../brushsettings-gen.h:32
+#, fuzzy
+msgid ""
+"Change the color saturation using the HSV color model. HSV changes are "
+"applied before HSL.-1.0 more grayish 0.0 disable 1.0 more saturated"
+msgstr ""
+"Ändra färgmättnaden enligt HSV-modellen. HSV-förändringar sker innan HSL-"
+"baserade ändringar.\n"
+"-1.0 mer gråaktig\n"
+" 0.0 avstängd\n"
+" 1.0 mer mättad färg."
+
+#: ../brushsettings-gen.h:33
+msgid "Smudge"
+msgstr "Smeta ut"
+
+#: ../brushsettings-gen.h:33
+#, fuzzy
+msgid ""
+"Paint with the smudge color instead of the brush color. The smudge color is "
+"slowly changed to the color you are painting on. 0.0 do not use the smudge "
+"color 0.5 mix the smudge color with the brush color 1.0 use only the smudge "
+"color"
+msgstr ""
+"Måla med 'smeta ut'-färgen istället för penselfärgen. Denna färg justeras "
+"långsamt till att bli lika med den färg du målar över.\n"
+" 0.0 använd inte 'smeta ut'-färgen\n"
+" 0.5 blanda 'smeta ut'-färgen med penselfärgen\n"
+" 1.0 använd bara 'smeta ut'-färgen"
+
+#: ../brushsettings-gen.h:34
+msgid "Smudge length"
+msgstr "Längd för att smeta ut"
+
+#: ../brushsettings-gen.h:34
+#, fuzzy
+msgid ""
+"This controls how fast the smudge color becomes the color you are painting "
+"on.0.0 immediately update the smudge color (requires more CPU cycles because "
+"of the frequent color checks)0.5 change the smudge color steadily towards "
+"the canvas color1.0 never change the smudge color"
+msgstr ""
+"Detta styr hur snabbt 'smeta ut'-färgen växlar till färgen du målar över.\n"
+" 0.0 ändra omedelbart till dukfärgen\n"
+" 0.5 ända smeta-utfärgen gradvis mot dukfärgen\n"
+" 1.0 ändra aldrig 'smeta ut'-färgen"
+
+#: ../brushsettings-gen.h:35
+msgid "Smudge radius"
+msgstr "Smetningsradius"
+
+#: ../brushsettings-gen.h:35
+#, fuzzy
+msgid ""
+"This modifies the radius of the circle where color is picked up for "
+"smudging. 0.0 use the brush radius-0.7 half the brush radius (fast, but not "
+"always intuitive)+0.7 twice the brush radius+1.6 five times the brush radius "
+"(slow performance)"
+msgstr ""
+"Detta förändrar radien för den cirkel som används för att smeta ut färg.\n"
+"0.0 använd penselns radius\n"
+"-0.7 halva penselradien\n"
+"+0.7 dubbla penselradien\n"
+"+1.6 fem gånger pensel radien (långsamt) "
+
+#: ../brushsettings-gen.h:36
+msgid "Eraser"
+msgstr "Suddgummi"
+
+#: ../brushsettings-gen.h:36
+#, fuzzy
+msgid ""
+"how much this tool behaves like an eraser 0.0 normal painting 1.0 standard "
+"eraser 0.5 pixels go towards 50% transparency"
+msgstr ""
+"hur mycket denna pensel beter sig som ett suddgummi\n"
+" 0.0 normalt penselläge\n"
+" 1.0 normalt suddgummi\n"
+" 0.5 pixlar som målas blir 50% genomskinliga"
+
+#: ../brushsettings-gen.h:37
+msgid "Stroke threshold"
+msgstr "Anslagskänslighet för penseldrag"
+
+#: ../brushsettings-gen.h:37
+msgid ""
+"How much pressure is needed to start a stroke. This affects the stroke input "
+"only. Mypaint does not need a minimal pressure to start drawing."
+msgstr ""
+"Hur mycket tryck som minst behövs för att påbörja ett penseldrag. Detta "
+"påverkar enbart hur färgen appliceras, det finns ingen undre gräns för att "
+"påbörja målningen självt."
+
+#: ../brushsettings-gen.h:38
+msgid "Stroke duration"
+msgstr "Penseldragets längd"
+
+#: ../brushsettings-gen.h:38
+msgid ""
+"How far you have to move until the stroke input reaches 1.0. This value is "
+"logarithmic (negative values will not inverse the process)."
+msgstr ""
+"Hur långt du måste måla innan penseldraget försvinner. Detta värde är "
+"logaritmiskt (negativa värden kommer alltså inte att vända på processen)"
+
+#: ../brushsettings-gen.h:39
+msgid "Stroke hold time"
+msgstr "Penseldragets hållbarhetstid"
+
+#: ../brushsettings-gen.h:39
+#, fuzzy
+msgid ""
+"This defines how long the stroke input stays at 1.0. After that it will "
+"reset to 0.0 and start growing again, even if the stroke is not yet "
+"finished.2.0 means twice as long as it takes to go from 0.0 to 1.09.9 and "
+"bigger stands for infinite"
+msgstr ""
+"Detta definierar hur lång tid penseldraget verkar på max effektivitet (1.0)."
+"Efter denna tid kommer penseldraget att nollställas och börja växa igen, "
+"oavsett om det föregående var färdigt eller inte.\n"
+" 2.0 - dubbelt så lång tid som för att växa från 0-1.0\n"
+">9.9 - infinite time at maximum"
+
+#: ../brushsettings-gen.h:40
+msgid "Custom input"
+msgstr "Användardefinierat filter"
+
+#: ../brushsettings-gen.h:40
+#, fuzzy
+msgid ""
+"Set the custom input to this value. If it is slowed down, move it towards "
+"this value (see below). The idea is that you make this input depend on a "
+"mixture of pressure/speed/whatever, and then make other settings depend on "
+"this 'custom input' instead of repeating this combination everywhere you "
+"need it.If you make it change 'by random' you can generate a slow (smooth) "
+"random input."
+msgstr ""
+"Sätt de användardefinierade ingångsparametern till detta värde. Om det har "
+"saktats ner, justera det mot detta värde (se nedan). Idéen är att ser till "
+"att låta denna parameter bero på tryck/hastighet/etc och kan sedan låta "
+"andra parametrar bero på denna parameter i sin tur istället för att upprepa "
+"denna konfiguration på alla ställen den behövs.\n"
+"Om du låter parametern variera slumpmässigt kan du skapa en mjuk, långsam "
+"rörelse."
+
+#: ../brushsettings-gen.h:41
+msgid "Custom input filter"
+msgstr "Användardefinierat filter"
+
+#: ../brushsettings-gen.h:41
+#, fuzzy
+msgid ""
+"How slow the custom input actually follows the desired value (the one "
+"above). This happens at brushdab level (ignoring how much time has past, if "
+"brushdabs do not depend on time).0.0 no slowdown (changes apply instantly)"
+msgstr ""
+"Hur långsamt den användardefinierade inställningen faktiskt ändras till det "
+"önskade värdet (satt ovan). Detta sker på pensel-uppdateringsnivå och "
+"ignorerar hur mycket tid som gått om uppdateringen inte beror på tid.\n"
+" 0.0 omedelbar uppdatering"
+
+#: ../brushsettings-gen.h:42
+msgid "Elliptical dab: ratio"
+msgstr "Elliptiska penseluppdateringar"
+
+#: ../brushsettings-gen.h:42
+msgid ""
+"Aspect ratio of the dabs; must be >= 1.0, where 1.0 means a perfectly round "
+"dab. TODO: linearize? start at 0.0 maybe, or log?"
+msgstr "Ratio medan ellipsens axlar; måste vara >= 1.0, där 1.0 är en cirkel. "
+
+#: ../brushsettings-gen.h:43
+msgid "Elliptical dab: angle"
+msgstr "Vinkel för elliptiska penseluppdateringar"
+
+#: ../brushsettings-gen.h:43
+#, fuzzy
+msgid ""
+"Angle by which elliptical dabs are tilted 0.0 horizontal dabs 45.0 45 "
+"degrees, turned clockwise 180.0 horizontal again"
+msgstr ""
+"Detta definerar hur mycket elliptiska penseluppdateringar är lutade på "
+"duken.\n"
+" 0.0 - horisontellt\n"
+" 45.0 - 45 grader, medsols\n"
+" 180.0 - horisontell igen"
+
+#: ../brushsettings-gen.h:44
+msgid "Direction filter"
+msgstr "Riktningsfilter"
+
+#: ../brushsettings-gen.h:44
+msgid ""
+"A low value will make the direction input adapt more quickly, a high value "
+"will make it smoother"
+msgstr ""
+"Ett lågt värde gör att riktningen justeras snabbare, ett högt värde gör att "
+"det går långsammare men mjukare."
+
+#: ../brushsettings-gen.h:45
+msgid "Lock alpha"
+msgstr "Lås alfakanal"
+
+#: ../brushsettings-gen.h:45
+#, fuzzy
+msgid ""
+"Do not modify the alpha channel of the layer (paint only where there is "
+"paint already) 0.0 normal painting 0.5 half of the paint gets applied "
+"normally 1.0 alpha channel fully locked"
+msgstr ""
+"Modifiera inte lagrets alfakanal (måla bara där det redan finns färg)\n"
+" 0.0 normal målning\n"
+" 0.5 hälften av färgen apliceras normalt\n"
+" 1.0 full låsning av alfakanalen"
+
+#: ../brushsettings-gen.h:46
+#, fuzzy
+msgid "Colorize"
+msgstr "Färg"
+
+#: ../brushsettings-gen.h:46
+msgid ""
+"Colorize the target layer, setting its hue and saturation from the active "
+"brush colour while retaining its value and alpha."
+msgstr ""
+
+#: ../brushsettings-gen.h:51
+msgid "Pressure"
+msgstr "Tryck"
+
+# brushsettings currently not translated
+#: ../brushsettings-gen.h:51
+msgid ""
+"The pressure reported by the tablet, between 0.0 and 1.0. If you use the "
+"mouse, it will be 0.5 when a button is pressed and 0.0 otherwise."
+msgstr ""
+"Trycket som rapporteras av ritbrädan - mellan 0.0 och 1.0. Om du använder "
+"musen så kommer det att vara 0.5 när en knapp trycks ner och 0.0 annars."
+
+#: ../brushsettings-gen.h:52
+msgid "Fine speed"
+msgstr "Fin-filtrerad hastighet"
+
+#: ../brushsettings-gen.h:52
+msgid ""
+"How fast you currently move. This can change very quickly. Try 'print input "
+"values' from the 'help' menu to get a feeling for the range; negative values "
+"are rare but possible for very low speed."
+msgstr ""
+"Hur snabb du för tillfället rör pekaren. Detta kan ändra sig mycket fort. "
+"Testa 'Skriv ut penselns värden till stdout' för att få en känsla för "
+"intervallet; negativa värden är ovanliga, men möjliga vid mycket låga "
+"hastigheter."
+
+#: ../brushsettings-gen.h:53
+msgid "Gross speed"
+msgstr "Grov-filterad hastighet"
+
+#: ../brushsettings-gen.h:53
+msgid ""
+"Same as fine speed, but changes slower. Also look at the 'gross speed "
+"filter' setting."
+msgstr ""
+"Samma som Fin-filtrerad hastighet, men ändras långsammare. Se också "
+"inställningen för 'Filter: Grov-filtrerad hastighet'. "
+
+#: ../brushsettings-gen.h:54
+msgid "Random"
+msgstr "Slumpmässig"
+
+#: ../brushsettings-gen.h:54
+msgid ""
+"Fast random noise, changing at each evaluation. Evenly distributed between 0 "
+"and 1."
+msgstr ""
+"Snabbt slumpmässigt brus, ändras vid varje uppdatering. Fördelas jämnt "
+"mellan 0 och 1."
+
+#: ../brushsettings-gen.h:55
+msgid "Stroke"
+msgstr "Penseldrag"
+
+#: ../brushsettings-gen.h:55
+msgid ""
+"This input slowly goes from zero to one while you draw a stroke. It can also "
+"be configured to jump back to zero periodically while you move. Look at the "
+"'stroke duration' and 'stroke hold time' settings."
+msgstr ""
+"Varierar långsamt från 0 till 1 medan du för penseln över duken. Kan också "
+"bli inställd till att hoppa tillbaks till noll periodiskt medan du rör "
+"penseln. Se 'stroke duration' och 'stroke hold time'."
+
+#: ../brushsettings-gen.h:56
+msgid "Direction"
+msgstr "Riktning"
+
+#: ../brushsettings-gen.h:56
+msgid ""
+"The angle of the stroke, in degrees. The value will stay between 0.0 and "
+"180.0, effectively ignoring turns of 180 degrees."
+msgstr ""
+"Penseldragets vinkel i grader. Värdet varierar mellan 0.0 och 180.0 och "
+"ignorerar därmed 180-graderssvängar."
+
+#: ../brushsettings-gen.h:57
+msgid "Declination"
+msgstr "Riktning"
+
+#: ../brushsettings-gen.h:57
+msgid ""
+"Declination of stylus tilt. 0 when stylus is parallel to tablet and 90.0 "
+"when it's perpendicular to tablet."
+msgstr ""
+"Pennans lutning relativt ritbrädans yta. Är 0 när pennan är parallell och "
+"90.0 när den hålls vinkelrät."
+
+#: ../brushsettings-gen.h:58
+msgid "Ascension"
+msgstr "Riktning"
+
+#: ../brushsettings-gen.h:58
+msgid ""
+"Right ascension of stylus tilt. 0 when stylus working end points to you, +90 "
+"when rotated 90 degrees clockwise, -90 when rotated 90 degrees "
+"counterclockwise."
+msgstr ""
+"Riktningskomponenten av pennans lutning. 0 när pennans aktiva ände pekar mot "
+"dig. +90 när spetsen är roterad 90 grader medurs. -90 när änden är roterad "
+"90 grader moturs."
+
+#: ../brushsettings-gen.h:59
+msgid "Custom"
+msgstr "Special"
+
+#: ../brushsettings-gen.h:59
+msgid ""
+"This is a user defined input. Look at the 'custom input' setting for details."
+msgstr ""
+"Detta är en användardefinierad inställning. Se 'användardefinierad' för fler "
+"detaljer."
+

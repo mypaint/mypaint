@@ -1,0 +1,743 @@
+# MyPaint
+# Copyright (C) 2009 Martin Renold, Ilya Portnov
+# This file is distributed under the same license as the MyPaint package.
+# Martin Renold <martinxyz@gmx.ch> 2009
+# Manuel Quiñones <manuq@laptop.org>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: MyPaint 0.7.1+git\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-05-31 13:57+0200\n"
+"PO-Revision-Date: 2011-11-22 08:59-0300\n"
+"Last-Translator: Manuel Quiñones <manuq@laptop.org>\n"
+"Language-Team: Español; Castellano <manuq@laptop.org>\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bits\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+
+#: ../brushsettings-gen.h:4
+msgid "Opacity"
+msgstr "Opacidad"
+
+#: ../brushsettings-gen.h:4
+#, fuzzy
+msgid ""
+"0 means brush is transparent, 1 fully visible(also known as alpha or opacity)"
+msgstr ""
+"0 significa que el trazo es transparente, 1 que es completamente visible\n"
+"(también conocido como alfa u opacidad)"
+
+#: ../brushsettings-gen.h:5
+msgid "Opacity multiply"
+msgstr "Multiplicar opacidad"
+
+#: ../brushsettings-gen.h:5
+#, fuzzy
+msgid ""
+"This gets multiplied with opaque. You should only change the pressure input "
+"of this setting. Use 'opaque' instead to make opacity depend on speed.This "
+"setting is responsible to stop painting when there is zero pressure. This is "
+"just a convention, the behaviour is identical to 'opaque'."
+msgstr ""
+"Se multiplica por la opacidad. Sólo debería cambiar la entrada de presión "
+"para este ajuste. Use 'opacidad' en cambio para hacer que la opacidad "
+"dependa de la velocidad.\n"
+"Este ajuste es responsable de hacer que se detenga el pintado cuando hay "
+"presión cero.  Es sólo una convención, el comportamiento es idéntico a "
+"'opacidad'."
+
+#: ../brushsettings-gen.h:6
+msgid "Opacity linearize"
+msgstr "Linealizar opacidad"
+
+#: ../brushsettings-gen.h:6
+#, fuzzy
+msgid ""
+"Correct the nonlinearity introduced by blending multiple dabs on top of each "
+"other. This correction should get you a linear (\"natural\") pressure "
+"response when pressure is mapped to opaque_multiply, as it is usually done. "
+"0.9 is good for standard strokes, set it smaller if your brush scatters a "
+"lot, or higher if you use dabs_per_second.0.0 the opaque value above is for "
+"the individual dabs1.0 the opaque value above is for the final brush stroke, "
+"assuming each pixel gets (dabs_per_radius*2) brushdabs on average during a "
+"stroke"
+msgstr ""
+"Corrige la no linealidad introducida al mezclar varias pinceladas, una sobre "
+"otra. Esta corrección debería proporcionar una respuesta a la presión más "
+"lineal (\"natural\") cuando la presión es mapeada a multiplicar_opacidad, "
+"como se hace frecuentemente. 0.9 está bien para las brochas estándar. Ponga "
+"un valor más pequeño si la brocha tiene mucho temblequeo, o más alto si se "
+"usa pinceladas_por_segundo.\n"
+"0.0 el valor de opacidad de arriba se usa para las pinceladas individuales\n"
+"1.0 el valor de opacidad de arriba se usa para el trazo de brocha final, "
+"asume que cada píxel tiene (pinceladas_por_radio*2) pinceladas en promedio "
+"por cada trazo"
+
+#: ../brushsettings-gen.h:7
+msgid "Radius"
+msgstr "Radio"
+
+#: ../brushsettings-gen.h:7
+#, fuzzy
+msgid "Basic brush radius (logarithmic) 0.7 means 2 pixels 3.0 means 20 pixels"
+msgstr ""
+"Radio base de la brocha (logarítmico)\n"
+" 0.7 significa 2 píxeles\n"
+" 3.0 significa 20 píxeles"
+
+#: ../brushsettings-gen.h:8
+msgid "Hardness"
+msgstr "Dureza"
+
+#: ../brushsettings-gen.h:8
+msgid ""
+"Hard brush-circle borders (setting to zero will draw nothing). To reach the "
+"maximum hardness, you need to disable Anti-aliasing."
+msgstr ""
+"Bordes de brocha circular duros (si se coloca en cero no se dibujará nada). "
+"Para alcanzar la mayor dureza, debe desactivar el Anti-aliasing."
+
+#: ../brushsettings-gen.h:9
+msgid "Anti-aliasing"
+msgstr "Anti-aliasing"
+
+#: ../brushsettings-gen.h:9
+#, fuzzy
+msgid ""
+"This setting decreases the hardness when necessary to prevent a pixel "
+"staircase effect. 0.0 disable (for very strong erasers and pixel brushes) "
+"1.0 blur one pixel (good value) 5.0 notable blur, thin strokes will disappear"
+msgstr ""
+"Este ajuste decrementa la dureza cuando es necesario prevenir el efecto de "
+"pixel escalonado.\n"
+" 0.0 desactiva (para gomas de borrar fuertes y brochas de píxeles)\n"
+" 1.0 difumina un pixel (buen valor)\n"
+" 5.0 notablemente difuminado, pinceladas finas desaparecerán "
+
+#: ../brushsettings-gen.h:10
+msgid "Dabs per basic radius"
+msgstr "Pinceladas por radio base"
+
+#: ../brushsettings-gen.h:10
+msgid ""
+"How many dabs to draw while the pointer moves a distance of one brush radius "
+"(more precise: the base value of the radius)"
+msgstr ""
+"Cuántas pinceladas dibujar mientras el puntero se mueve una distancia de un "
+"radio de la brocha (más precisamente: el valor base de ese radio)."
+
+#: ../brushsettings-gen.h:11
+msgid "Dabs per actual radius"
+msgstr "Pinceladas por radio real"
+
+#: ../brushsettings-gen.h:11
+msgid ""
+"Same as above, but the radius actually drawn is used, which can change "
+"dynamically"
+msgstr ""
+"Como el de arriba, pero se usa el radio actualmente dibujado, que puede "
+"variar dinámicamente"
+
+#: ../brushsettings-gen.h:12
+msgid "Dabs per second"
+msgstr "Pinceladas por segundo"
+
+#: ../brushsettings-gen.h:12
+msgid "Dabs to draw each second, no matter how far the pointer moves"
+msgstr ""
+"Pinceladas a dibujar por segundo, sin importar qué tan lejos se mueva el "
+"puntero"
+
+#: ../brushsettings-gen.h:13
+msgid "Radius by random"
+msgstr "Radio aleatorio"
+
+#: ../brushsettings-gen.h:13
+#, fuzzy
+msgid ""
+"Alter the radius randomly each dab. You can also do this with the by_random "
+"input on the radius setting. If you do it here, there are two differences:1) "
+"the opaque value will be corrected such that a big-radius dabs is more "
+"transparent2) it will not change the actual radius seen by "
+"dabs_per_actual_radius"
+msgstr ""
+"Altera el radio aleatoriamente en cada pincelada. También se puede lograr "
+"esto con la 'entrada por aleatorio' de la propiedad radio. Si se hace aquí, "
+"hay dos diferencias:\n"
+"1) el valor de opacidad será corregido tal que pinceladas de radios grandes "
+"sean más transparentes\n"
+"2) no se modificará el radio actual que se ve en pinceladas_por_radio_actual"
+
+#: ../brushsettings-gen.h:14
+msgid "Fine speed filter"
+msgstr "Filtro de velocidad fina"
+
+#: ../brushsettings-gen.h:14
+#, fuzzy
+msgid ""
+"How slow the input fine speed is following the real speed0.0 change "
+"immediately as your speed changes (not recommended, but try it)"
+msgstr ""
+"Qué tan lento sigue la entrada velocidad fina a la velocidad real.\n"
+"0.0 cambia inmediatamente al variar la velocidad (no recomandado, pero puede "
+"probarse)"
+
+#: ../brushsettings-gen.h:15
+msgid "Gross speed filter"
+msgstr "Filtro de velocidad gruesa"
+
+#: ../brushsettings-gen.h:15
+msgid "Same as 'fine speed filter', but note that the range is different"
+msgstr "Como 'Filtro de velocidad fina', pero note que el rango es diferente"
+
+#: ../brushsettings-gen.h:16
+msgid "Fine speed gamma"
+msgstr "Gama de velocidad fina"
+
+#: ../brushsettings-gen.h:16
+#, fuzzy
+msgid ""
+"This changes the reaction of the 'fine speed' input to extreme physical "
+"speed. You will see the difference best if 'fine speed' is mapped to the "
+"radius.-8.0 very fast speed does not increase 'fine speed' much more+8.0 "
+"very fast speed increases 'fine speed' a lotFor very slow speed the opposite "
+"happens."
+msgstr ""
+"Cambia la reacción de la entrada 'velocidad fina' a los extremos de la "
+"velocidad física. La diferencia se ve mejor si velocidad fina es mapeada al "
+"radio\n"
+"-8.0 velocidades muy altas no incrementan mucho a la velocidad fina\n"
+"+8.0 velocidades muy altas incrementan mucho a la velocidad fina\n"
+"Para velocidades muy bajas ocurre lo opuesto."
+
+#: ../brushsettings-gen.h:17
+msgid "Gross speed gamma"
+msgstr "Gama de velocidad gruesa"
+
+#: ../brushsettings-gen.h:17
+msgid "Same as 'fine speed gamma' for gross speed"
+msgstr "Como 'Gama de velocidad fina' pero para la velocidad gruesa"
+
+#: ../brushsettings-gen.h:18
+msgid "Jitter"
+msgstr "Temblequeo"
+
+#: ../brushsettings-gen.h:18
+#, fuzzy
+msgid ""
+"Add a random offset to the position where each dab is drawn 0.0 disabled 1.0 "
+"standard deviation is one basic radius away<0.0 negative values produce no "
+"jitter"
+msgstr ""
+"Agrega un desfase aleatorio a la posición cuando se da cada pincelada\n"
+" 0.0 desactivado\n"
+" 1.0 desviación estándar está a un radio base de distancia\n"
+"<0.0 valores negativos no producen temblequeo"
+
+#: ../brushsettings-gen.h:19
+msgid "Offset by speed"
+msgstr "Desfase por velocidad"
+
+#: ../brushsettings-gen.h:19
+#, fuzzy
+msgid ""
+"Change position depending on pointer speed= 0 disable> 0 draw where the "
+"pointer moves to< 0 draw where the pointer comes from"
+msgstr ""
+"Cambia la posición dependiendo de la velocidad del puntero\n"
+"= 0 desactivado\n"
+"> 0 dibuja hacia donde va el puntero\n"
+"< 0 dibuja desde donde viene el puntero"
+
+#: ../brushsettings-gen.h:20
+msgid "Offset by speed filter"
+msgstr "Filtro desfase por velocidad"
+
+#: ../brushsettings-gen.h:20
+msgid "How slow the offset goes back to zero when the cursor stops moving"
+msgstr "Qué tan lento el desfase vuelve a cero cuando el cursor se detiene"
+
+#: ../brushsettings-gen.h:21
+msgid "Slow position tracking"
+msgstr "Seguimiento de posición lento"
+
+#: ../brushsettings-gen.h:21
+msgid ""
+"Slowdown pointer tracking speed. 0 disables it, higher values remove more "
+"jitter in cursor movements. Useful for drawing smooth, comic-like outlines."
+msgstr ""
+"Reduce la velocidad de seguimiento al puntero. 0 lo desactiva. Valores más "
+"altos reducen el temblequeo de los movimientos del cursor. Útil para dibujar "
+"líneas de contorno suaves como la de las historietas."
+
+#: ../brushsettings-gen.h:22
+msgid "Slow tracking per dab"
+msgstr "Seguimiento lento por pincelada"
+
+#: ../brushsettings-gen.h:22
+msgid ""
+"Similar as above but at brushdab level (ignoring how much time has past, if "
+"brushdabs do not depend on time)"
+msgstr ""
+"Similar al de arriba, pero a nivel de pincelada (ignora cuánto tiempo ha "
+"pasado si las pinceladas no dependen del tiempo)."
+
+#: ../brushsettings-gen.h:23
+msgid "Tracking noise"
+msgstr "Ruido en seguimiento"
+
+#: ../brushsettings-gen.h:23
+msgid ""
+"Add randomness to the mouse pointer; this usually generates many small lines "
+"in random directions; maybe try this together with 'slow tracking'"
+msgstr ""
+"Añade aleatoriedad al puntero. Esto usualmente genera muchas líneas pequeñas "
+"en direcciones aleatorias. Puede probar esto junto con 'seguimiento lento'"
+
+#: ../brushsettings-gen.h:24
+msgid "Color hue"
+msgstr "Tono del color"
+
+#: ../brushsettings-gen.h:25
+msgid "Color saturation"
+msgstr "Saturación del color"
+
+#: ../brushsettings-gen.h:26
+msgid "Color value"
+msgstr "Valor del color"
+
+#: ../brushsettings-gen.h:26
+msgid "Color value (brightness, intensity)"
+msgstr "Valor del color (brillo, intensidad)"
+
+#: ../brushsettings-gen.h:27
+msgid "Save color"
+msgstr "Guardar color"
+
+#: ../brushsettings-gen.h:27
+#, fuzzy
+msgid ""
+"When selecting a brush, the color can be restored to the color that the "
+"brush was saved with. 0.0 do not modify the active color when selecting this "
+"brush 0.5 change active color towards brush color 1.0 set the active color "
+"to the brush color when selected"
+msgstr ""
+"Cuando se selecciona una brocha, el color puede ser restaurado desde el "
+"color con que se guardó la brocha.\n"
+" 0.0 no modificar el color activo al seleccionar esta brocha\n"
+" 0.5 cambiar el color activo hacia el color de la brocha\n"
+" 1.0 poner el color color de la brocha como color activo al seleccionarla "
+
+#: ../brushsettings-gen.h:28
+msgid "Change color hue"
+msgstr "Cambiar el tono del color"
+
+#: ../brushsettings-gen.h:28
+#, fuzzy
+msgid ""
+"Change color hue.-0.1 small clockwise color hue shift 0.0 disable 0.5 "
+"counterclockwise hue shift by 180 degrees"
+msgstr ""
+"Cambia el tono del color.\n"
+"-0.1 pequeño giro en sentido horario del tono del color\n"
+" 0.0 desactivado\n"
+" 0.5 giro en sentido antihorario del tono por 180 grados"
+
+#: ../brushsettings-gen.h:29
+msgid "Change color lightness (HSL)"
+msgstr "Cambiar la claridad del color (HSL)"
+
+#: ../brushsettings-gen.h:29
+#, fuzzy
+msgid ""
+"Change the color lightness (luminance) using the HSL color model.-1.0 "
+"blacker 0.0 disable 1.0 whiter"
+msgstr ""
+"Cambia la claridad (luminocidad) del color, usando el modelo de color HSL.\n"
+"-1.0 más negro\n"
+" 0.0 desactivado\n"
+" 1.0 más blanco"
+
+#: ../brushsettings-gen.h:30
+msgid "Change color satur. (HSL)"
+msgstr "Cambiar la saturación del color. (HSL)"
+
+#: ../brushsettings-gen.h:30
+#, fuzzy
+msgid ""
+"Change the color saturation using the HSL color model.-1.0 more grayish 0.0 "
+"disable 1.0 more saturated"
+msgstr ""
+"Cambia la saturación del color, usando el modelo de color HSL.\n"
+"-1.0 más gris\n"
+" 0.0 desactivado\n"
+" 1.0 más saturado"
+
+#: ../brushsettings-gen.h:31
+msgid "Change color value (HSV)"
+msgstr "Cambiar el valor del color (HSV)"
+
+#: ../brushsettings-gen.h:31
+#, fuzzy
+msgid ""
+"Change the color value (brightness, intensity) using the HSV color model. "
+"HSV changes are applied before HSL.-1.0 darker 0.0 disable 1.0 brigher"
+msgstr ""
+"Cambia el valor del color (brillo, intensidad), usando el modelo de color "
+"HSV. Los cambios HSV se aplican antes de los cambios HSL.\n"
+"-1.0 más oscuro\n"
+" 0.0 desactivado\n"
+" 1.0 más claro"
+
+#: ../brushsettings-gen.h:32
+msgid "Change color satur. (HSV)"
+msgstr "Cambiar la saturación del color. (HSV)"
+
+#: ../brushsettings-gen.h:32
+#, fuzzy
+msgid ""
+"Change the color saturation using the HSV color model. HSV changes are "
+"applied before HSL.-1.0 more grayish 0.0 disable 1.0 more saturated"
+msgstr ""
+"Cambia la saturación del color, usando el modelo de color HSV. Los cambios "
+"HSV se aplican antes de los cambios HSL.\n"
+"-1.0 más gris\n"
+" 0.0 desactivado\n"
+" 1.0 más saturado"
+
+#: ../brushsettings-gen.h:33
+msgid "Smudge"
+msgstr "Difuminar"
+
+#: ../brushsettings-gen.h:33
+#, fuzzy
+msgid ""
+"Paint with the smudge color instead of the brush color. The smudge color is "
+"slowly changed to the color you are painting on. 0.0 do not use the smudge "
+"color 0.5 mix the smudge color with the brush color 1.0 use only the smudge "
+"color"
+msgstr ""
+"Pinta con el color de difuminado en lugar de hacerlo con el color de la "
+"brocha. El color de difuminado se transforma lentamente en el color con el "
+"que se está pintando.\n"
+" 0.0 no usa el color de difuminado\n"
+" 0.5 mezcla el color de difuminado con el color de la brocha\n"
+" 1.0 usa sólo el color de difuminado"
+
+#: ../brushsettings-gen.h:34
+msgid "Smudge length"
+msgstr "Longitud del difuminado"
+
+#: ../brushsettings-gen.h:34
+#, fuzzy
+msgid ""
+"This controls how fast the smudge color becomes the color you are painting "
+"on.0.0 immediately update the smudge color (requires more CPU cycles because "
+"of the frequent color checks)0.5 change the smudge color steadily towards "
+"the canvas color1.0 never change the smudge color"
+msgstr ""
+"Esto controla qué tan rápido se convierte el color de difuminado en el color "
+"con el que se está pintando.\n"
+"0.0 cambia inmediátamente el color de difuminado (requiere más ciclos de CPU "
+"debido a los frecuentes chequeos de color)\n"
+"0.5 cambia de a poco el color de difuminado al color del lienzo\n"
+"1.0 no cambia nunca el color de difuminado"
+
+#: ../brushsettings-gen.h:35
+msgid "Smudge radius"
+msgstr "Radio del difuminado"
+
+#: ../brushsettings-gen.h:35
+#, fuzzy
+msgid ""
+"This modifies the radius of the circle where color is picked up for "
+"smudging. 0.0 use the brush radius-0.7 half the brush radius (fast, but not "
+"always intuitive)+0.7 twice the brush radius+1.6 five times the brush radius "
+"(slow performance)"
+msgstr ""
+"Esto modifica el radio del círculo en que se obtiene el color para "
+"difuminar.\n"
+" 0.0 usa el radio de la brocha \n"
+"-0.7 mitad del radio de la brocha (rápido, pero no siempre intuitivo)\n"
+"+0.7 dos veces el radio de la brocha\n"
+"+1.6 cinco veces el radio de la brocha (menor performance)"
+
+#: ../brushsettings-gen.h:36
+msgid "Eraser"
+msgstr "Goma de borrar"
+
+#: ../brushsettings-gen.h:36
+#, fuzzy
+msgid ""
+"how much this tool behaves like an eraser 0.0 normal painting 1.0 standard "
+"eraser 0.5 pixels go towards 50% transparency"
+msgstr ""
+"Qué tanto se comporta esta herramienta como una goma de borrar\n"
+" 0.0 pinta normalmente\n"
+" 1.0 goma de borrar estándar\n"
+" 0.5 los píxeles se llevan a un 50% de transparencia"
+
+#: ../brushsettings-gen.h:37
+msgid "Stroke threshold"
+msgstr "Umbral del trazo"
+
+#: ../brushsettings-gen.h:37
+msgid ""
+"How much pressure is needed to start a stroke. This affects the stroke input "
+"only. Mypaint does not need a minimal pressure to start drawing."
+msgstr ""
+"Cuánta presión es necesaria para iniciar un trazo. Esto afecta solamente a "
+"la entrada de trazo. MyPaint no necesita una presión mínima para comenzar a "
+"dibujar."
+
+#: ../brushsettings-gen.h:38
+msgid "Stroke duration"
+msgstr "Duración del trazo"
+
+#: ../brushsettings-gen.h:38
+msgid ""
+"How far you have to move until the stroke input reaches 1.0. This value is "
+"logarithmic (negative values will not inverse the process)."
+msgstr ""
+"Qué tan lejos se debe mover para que la entrada del trazo alcance 1.0. Este "
+"valor es logarítmico (valores negativos no invierten el proceso)."
+
+#: ../brushsettings-gen.h:39
+msgid "Stroke hold time"
+msgstr "Tiempo en que se mantiene el trazo"
+
+#: ../brushsettings-gen.h:39
+#, fuzzy
+msgid ""
+"This defines how long the stroke input stays at 1.0. After that it will "
+"reset to 0.0 and start growing again, even if the stroke is not yet "
+"finished.2.0 means twice as long as it takes to go from 0.0 to 1.09.9 and "
+"bigger stands for infinite"
+msgstr ""
+"Define por cuánto tiempo la entrada del trazo se mantiene en 1.0. Después de "
+"esto se vuelve a 0.0 y comienza a crecer nuevamente, incluso si el trazo no "
+"se ha finalizado.\n"
+"2.0 significa dos veces lo que le toma ir de 0.0 a 1.0\n"
+"9.9 y mayores, se mantiene infinitamente"
+
+#: ../brushsettings-gen.h:40
+msgid "Custom input"
+msgstr "Entrada personalizada"
+
+#: ../brushsettings-gen.h:40
+#, fuzzy
+msgid ""
+"Set the custom input to this value. If it is slowed down, move it towards "
+"this value (see below). The idea is that you make this input depend on a "
+"mixture of pressure/speed/whatever, and then make other settings depend on "
+"this 'custom input' instead of repeating this combination everywhere you "
+"need it.If you make it change 'by random' you can generate a slow (smooth) "
+"random input."
+msgstr ""
+"Pone la entrada personalizada en este valor. Si se reduce, lo lleva hacia "
+"este valor (ver más abajo). La idea es que este valor dependa de una mixtura "
+"de presión, velocidad, lo que sea, y luego hacer que otra propiedad dependa "
+"de ésta, en vez de repetir la combinación en cada lugar que se necesite.\n"
+"Si la hace cambiar 'por aleatorio' puede generar una entrada aleatoria lenta "
+"(suave)."
+
+#: ../brushsettings-gen.h:41
+msgid "Custom input filter"
+msgstr "Filtro personalizado de entrada"
+
+#: ../brushsettings-gen.h:41
+#, fuzzy
+msgid ""
+"How slow the custom input actually follows the desired value (the one "
+"above). This happens at brushdab level (ignoring how much time has past, if "
+"brushdabs do not depend on time).0.0 no slowdown (changes apply instantly)"
+msgstr ""
+"Qué tan lento la entrada personalizada sigue realmente el valor buscado (el "
+"de arriba). Esto sucede a nivel de pincelada (ignorando cuánto tiempo ha "
+"pasado si la pincelada no depende del tiempo).\n"
+"0.0 no reduce la velocidad (los cambios se aplican instantáneamente)"
+
+#: ../brushsettings-gen.h:42
+msgid "Elliptical dab: ratio"
+msgstr "Pincelada elíptica: tasa de aspecto"
+
+#: ../brushsettings-gen.h:42
+msgid ""
+"Aspect ratio of the dabs; must be >= 1.0, where 1.0 means a perfectly round "
+"dab. TODO: linearize? start at 0.0 maybe, or log?"
+msgstr ""
+"Tasa de aspecto de las pinceladas. Debe ser >= 1.0, en donde 1.0 significa "
+"una pincelada perfectamente circular."
+
+#: ../brushsettings-gen.h:43
+msgid "Elliptical dab: angle"
+msgstr "Pincelada elíptica: ángulo"
+
+#: ../brushsettings-gen.h:43
+#, fuzzy
+msgid ""
+"Angle by which elliptical dabs are tilted 0.0 horizontal dabs 45.0 45 "
+"degrees, turned clockwise 180.0 horizontal again"
+msgstr ""
+"El ángulo con que se inclinan las pinceladas elípticas.\n"
+" 0.0 pinceladas horizontales\n"
+" 180.0 horizontal nuevamente\n"
+" 45.0 45 grados, en sentido horario"
+
+#: ../brushsettings-gen.h:44
+msgid "Direction filter"
+msgstr "Filtro dirección"
+
+#: ../brushsettings-gen.h:44
+msgid ""
+"A low value will make the direction input adapt more quickly, a high value "
+"will make it smoother"
+msgstr ""
+"Un valor bajo hace que la entrada de dirección se adapte más rápidamente. Un "
+"valor alto hace que se adapte con más suavidad"
+
+#: ../brushsettings-gen.h:45
+msgid "Lock alpha"
+msgstr "Bloquear alfa"
+
+#: ../brushsettings-gen.h:45
+#, fuzzy
+msgid ""
+"Do not modify the alpha channel of the layer (paint only where there is "
+"paint already) 0.0 normal painting 0.5 half of the paint gets applied "
+"normally 1.0 alpha channel fully locked"
+msgstr ""
+"No modificar el canal alfa de la capa (pinta sólo donde ya hay pintura)\n"
+" 0.0 pintado normal\n"
+" 0.5 la mitad de la pintura se aplica normalmente\n"
+" 1.0 canal alfa completamente bloqueado"
+
+#: ../brushsettings-gen.h:46
+#, fuzzy
+msgid "Colorize"
+msgstr "Color"
+
+#: ../brushsettings-gen.h:46
+msgid ""
+"Colorize the target layer, setting its hue and saturation from the active "
+"brush colour while retaining its value and alpha."
+msgstr ""
+
+#: ../brushsettings-gen.h:51
+msgid "Pressure"
+msgstr "Presión"
+
+#: ../brushsettings-gen.h:51
+msgid ""
+"The pressure reported by the tablet, between 0.0 and 1.0. If you use the "
+"mouse, it will be 0.5 when a button is pressed and 0.0 otherwise."
+msgstr ""
+"La presión reportada por la tableta, entre 0.0 y 1.0. Si usa el ratón será "
+"0.5 cuando se presione un botón y 0.0 en otro caso."
+
+#: ../brushsettings-gen.h:52
+msgid "Fine speed"
+msgstr "Velocidad fina"
+
+#: ../brushsettings-gen.h:52
+msgid ""
+"How fast you currently move. This can change very quickly. Try 'print input "
+"values' from the 'help' menu to get a feeling for the range; negative values "
+"are rare but possible for very low speed."
+msgstr ""
+"Qué tan rápido se mueve actualmente. Puede cambiar muy rápido. Pruebe "
+"'Imprimir los valores de entrada' del menú 'Ayuda' para darse una idea del "
+"rango. Es raro ver valores negativos, pero es posible para velocidades muy "
+"bajas."
+
+#: ../brushsettings-gen.h:53
+msgid "Gross speed"
+msgstr "Velocidad gruesa"
+
+#: ../brushsettings-gen.h:53
+msgid ""
+"Same as fine speed, but changes slower. Also look at the 'gross speed "
+"filter' setting."
+msgstr ""
+"Como velocidad fina, pero cambia más lento. Vea también la propiedad 'Filtro "
+"de velocidad gruesa'."
+
+#: ../brushsettings-gen.h:54
+msgid "Random"
+msgstr "Aleatorio"
+
+#: ../brushsettings-gen.h:54
+msgid ""
+"Fast random noise, changing at each evaluation. Evenly distributed between 0 "
+"and 1."
+msgstr ""
+"Ruido rápido aleatorio, cambia en cada evaluación. Distribuido uniformemente "
+"entre 0 y 1."
+
+#: ../brushsettings-gen.h:55
+msgid "Stroke"
+msgstr "Pincelada"
+
+#: ../brushsettings-gen.h:55
+msgid ""
+"This input slowly goes from zero to one while you draw a stroke. It can also "
+"be configured to jump back to zero periodically while you move. Look at the "
+"'stroke duration' and 'stroke hold time' settings."
+msgstr ""
+"Esta entrada va lentamente de cero a uno mientras se realiza la pincelada. "
+"También puede ser configurada para volver a cero periódicamente al moverse. "
+"Vea las propiedades 'duración del trazo' y 'tiempo en que se mantiene el "
+"trazo'."
+
+#: ../brushsettings-gen.h:56
+msgid "Direction"
+msgstr "Dirección"
+
+#: ../brushsettings-gen.h:56
+msgid ""
+"The angle of the stroke, in degrees. The value will stay between 0.0 and "
+"180.0, effectively ignoring turns of 180 degrees."
+msgstr ""
+"El ángulo del trazo, en grados. El valor permanecerá entre 0.0 y 180.0, "
+"ignorando efectivamente vueltas de 180 grados."
+
+#: ../brushsettings-gen.h:57
+msgid "Declination"
+msgstr "Inclinación"
+
+#: ../brushsettings-gen.h:57
+msgid ""
+"Declination of stylus tilt. 0 when stylus is parallel to tablet and 90.0 "
+"when it's perpendicular to tablet."
+msgstr ""
+"Inclinación del lápiz. Es 0 cuando el lápiz está paralelo a la tableta, y "
+"90.0 cuando está perpendicular."
+
+#: ../brushsettings-gen.h:58
+msgid "Ascension"
+msgstr "Ascenso"
+
+#: ../brushsettings-gen.h:58
+msgid ""
+"Right ascension of stylus tilt. 0 when stylus working end points to you, +90 "
+"when rotated 90 degrees clockwise, -90 when rotated 90 degrees "
+"counterclockwise."
+msgstr ""
+"Ascensión recta del lápiz. Es 0 cuando la punta activa apunta hacia Ud, +90 "
+"cuando el lápiz se rota 90 grados en sentido horario, y -90 cuando se rota "
+"90 grados en sentido antihorario."
+
+#: ../brushsettings-gen.h:59
+msgid "Custom"
+msgstr "Personalizado"
+
+#: ../brushsettings-gen.h:59
+msgid ""
+"This is a user defined input. Look at the 'custom input' setting for details."
+msgstr ""
+"Esta es una entrada definida por el usuario. Vea la propiedad 'entrada "
+"personalizada' para más detalles."
+

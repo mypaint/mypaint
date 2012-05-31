@@ -1,0 +1,707 @@
+# MyPaint
+# Copyright (C) 2009 Martin Renold, Ilya Portnov
+# This file is distributed under the same license as the MyPaint package.
+# Martin Renold <martinxyz@gmx.ch> 2009
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 0.7.1-git\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-05-31 13:57+0200\n"
+"PO-Revision-Date: 2010-02-26 09:26+0100\n"
+"Last-Translator: Martin Tabačan <martin@tabacan.cz>\n"
+"Language-Team: Čeština <cs@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Czech\n"
+"X-Poedit-Country: CZECH REPUBLIC\n"
+
+#: ../brushsettings-gen.h:4
+#, fuzzy
+msgid "Opacity"
+msgstr "Krytí:"
+
+#: ../brushsettings-gen.h:4
+#, fuzzy
+msgid ""
+"0 means brush is transparent, 1 fully visible(also known as alpha or opacity)"
+msgstr ""
+"0 znamená průhledný štětec, 1 plně viditelný\n"
+"(také známé jako alfa nebo neprůhledný)"
+
+#: ../brushsettings-gen.h:5
+#, fuzzy
+msgid "Opacity multiply"
+msgstr "vicenásobné krytí"
+
+#: ../brushsettings-gen.h:5
+msgid ""
+"This gets multiplied with opaque. You should only change the pressure input "
+"of this setting. Use 'opaque' instead to make opacity depend on speed.This "
+"setting is responsible to stop painting when there is zero pressure. This is "
+"just a convention, the behaviour is identical to 'opaque'."
+msgstr ""
+
+#: ../brushsettings-gen.h:6
+#, fuzzy
+msgid "Opacity linearize"
+msgstr "linearizovat neprůhlednost"
+
+#: ../brushsettings-gen.h:6
+#, fuzzy
+msgid ""
+"Correct the nonlinearity introduced by blending multiple dabs on top of each "
+"other. This correction should get you a linear (\"natural\") pressure "
+"response when pressure is mapped to opaque_multiply, as it is usually done. "
+"0.9 is good for standard strokes, set it smaller if your brush scatters a "
+"lot, or higher if you use dabs_per_second.0.0 the opaque value above is for "
+"the individual dabs1.0 the opaque value above is for the final brush stroke, "
+"assuming each pixel gets (dabs_per_radius*2) brushdabs on average during a "
+"stroke"
+msgstr ""
+"Opravuje nelinearitu zavedenou mícháním četných kapek na vrchu každé další. "
+"Tato oprava by vám měla obstarat lineární (\"přirozený\") přítlak, když je "
+"tlakem nanášena vácenásobná neprůhlednost tak, jak se obvykle provádí. 0.9 "
+"je dobrá pro standardní tahy, nastavte ji menší pokud rozptyl vašeho štětce "
+"je velký nebo vyšší, pokud používáte kapky_za_vteřinu.\n"
+"0,0 hodnota neprůhlednosti je pro ojedinělou kapku\n"
+"1,0 hodnota neprůhlednosti je pro konečný tah štětcem za předpokladu, že "
+"každý pixel dostane průměrně (kapky_v_dosahu*2) kapek štětce během tahu."
+
+#: ../brushsettings-gen.h:7
+#, fuzzy
+msgid "Radius"
+msgstr "dosah"
+
+#: ../brushsettings-gen.h:7
+#, fuzzy
+msgid "Basic brush radius (logarithmic) 0.7 means 2 pixels 3.0 means 20 pixels"
+msgstr ""
+"základní dosah štětce (logaritmický)\n"
+" 0,7 znamená 2 pixely\n"
+" 3,0 znamená 20 pixelů"
+
+#: ../brushsettings-gen.h:8
+#, fuzzy
+msgid "Hardness"
+msgstr "tvrdost"
+
+#: ../brushsettings-gen.h:8
+#, fuzzy
+msgid ""
+"Hard brush-circle borders (setting to zero will draw nothing). To reach the "
+"maximum hardness, you need to disable Anti-aliasing."
+msgstr "tvrdý okraj kruhu štětce (nastavením nuly se nebude nic vykreslovat)"
+
+#: ../brushsettings-gen.h:9
+msgid "Anti-aliasing"
+msgstr ""
+
+#: ../brushsettings-gen.h:9
+msgid ""
+"This setting decreases the hardness when necessary to prevent a pixel "
+"staircase effect. 0.0 disable (for very strong erasers and pixel brushes) "
+"1.0 blur one pixel (good value) 5.0 notable blur, thin strokes will disappear"
+msgstr ""
+
+#: ../brushsettings-gen.h:10
+#, fuzzy
+msgid "Dabs per basic radius"
+msgstr "kapky v základním dosahu"
+
+#: ../brushsettings-gen.h:10
+#, fuzzy
+msgid ""
+"How many dabs to draw while the pointer moves a distance of one brush radius "
+"(more precise: the base value of the radius)"
+msgstr ""
+"Kolik kapek bude vykresleno když se ukazatel přemístí o vzdálenost jednoho "
+"dosahu štětce (přesněji: základní hodnoty dosahu)"
+
+#: ../brushsettings-gen.h:11
+#, fuzzy
+msgid "Dabs per actual radius"
+msgstr "kapek v aktuálním dosahu"
+
+#: ../brushsettings-gen.h:11
+#, fuzzy
+msgid ""
+"Same as above, but the radius actually drawn is used, which can change "
+"dynamically"
+msgstr ""
+"stejné jako výše uvedené, ale aktuálně použitý vykreslený dosah se může "
+"dynamicky měnit"
+
+#: ../brushsettings-gen.h:12
+#, fuzzy
+msgid "Dabs per second"
+msgstr "kapek za vteřinu"
+
+#: ../brushsettings-gen.h:12
+#, fuzzy
+msgid "Dabs to draw each second, no matter how far the pointer moves"
+msgstr ""
+"kapek kreslených každou vteřinu nezávisle na rychlsoti pohybu ukazatele"
+
+#: ../brushsettings-gen.h:13
+#, fuzzy
+msgid "Radius by random"
+msgstr "náhodný dolet"
+
+#: ../brushsettings-gen.h:13
+#, fuzzy
+msgid ""
+"Alter the radius randomly each dab. You can also do this with the by_random "
+"input on the radius setting. If you do it here, there are two differences:1) "
+"the opaque value will be corrected such that a big-radius dabs is more "
+"transparent2) it will not change the actual radius seen by "
+"dabs_per_actual_radius"
+msgstr ""
+"Změnit náhodný dolet každé kapky. Můžete to také změnit pomocí vstupu "
+"náhodný_dolet v nastavení dosahu. Existují dvě odlišnsoti při provedení "
+"změny na tomto místě:\n"
+"1) hodnota neprůhlednosti bude opravena tak, aby kapky s větším doletem byly "
+"více průhlednější\n"
+"2) nebude změněn aktuální viděný dolet kapek_v_aktuálním_dosahu"
+
+#: ../brushsettings-gen.h:14
+#, fuzzy
+msgid "Fine speed filter"
+msgstr "filtr jemné rychlosti"
+
+#: ../brushsettings-gen.h:14
+#, fuzzy
+msgid ""
+"How slow the input fine speed is following the real speed0.0 change "
+"immediately as your speed changes (not recommended, but try it)"
+msgstr ""
+"jak pomalu vstup jemné rychlosti následuje skutečnou rychlost\n"
+"0,0 změna nastane okamžitě, jakmile se změní vaše rychlost (není doporučeno, "
+"ale vyzkušejte to)"
+
+#: ../brushsettings-gen.h:15
+#, fuzzy
+msgid "Gross speed filter"
+msgstr "filtr hrubé rychlosti"
+
+#: ../brushsettings-gen.h:15
+#, fuzzy
+msgid "Same as 'fine speed filter', but note that the range is different"
+msgstr ""
+"stejné jako 'filtr jemné rychlosti', ale všiměnte si, že rozsah je odlišný"
+
+#: ../brushsettings-gen.h:16
+#, fuzzy
+msgid "Fine speed gamma"
+msgstr "gamma jemné rychlosti"
+
+#: ../brushsettings-gen.h:16
+#, fuzzy
+msgid ""
+"This changes the reaction of the 'fine speed' input to extreme physical "
+"speed. You will see the difference best if 'fine speed' is mapped to the "
+"radius.-8.0 very fast speed does not increase 'fine speed' much more+8.0 "
+"very fast speed increases 'fine speed' a lotFor very slow speed the opposite "
+"happens."
+msgstr ""
+"Toto změní zpětnou vazbu vstupu 'jemné rychlosti' na extrémní fyzickou "
+"rychlost. Nejlépe rozdíl uvidíte, jestliže je 'jemná rychlost' zobrazena v "
+"kruhu. \n"
+"-8.0 velmi rychlá rychlost nezvýší o moc 'jemnou rychlost'\n"
+"+8.0 velmi rychlá rychlost zvýší o mnoho  'jemnou rychlost'\n"
+"Pro velmi pomalou rychlost nastavte protilehlé."
+
+#: ../brushsettings-gen.h:17
+#, fuzzy
+msgid "Gross speed gamma"
+msgstr "gamma hrubé rychlosti"
+
+#: ../brushsettings-gen.h:17
+#, fuzzy
+msgid "Same as 'fine speed gamma' for gross speed"
+msgstr "pro hrubou rychlost je to stejné jako 'gamma jemné rychlosti'"
+
+#: ../brushsettings-gen.h:18
+#, fuzzy
+msgid "Jitter"
+msgstr "chvění"
+
+#: ../brushsettings-gen.h:18
+msgid ""
+"Add a random offset to the position where each dab is drawn 0.0 disabled 1.0 "
+"standard deviation is one basic radius away<0.0 negative values produce no "
+"jitter"
+msgstr ""
+
+#: ../brushsettings-gen.h:19
+#, fuzzy
+msgid "Offset by speed"
+msgstr "odchylka rychlosti"
+
+#: ../brushsettings-gen.h:19
+msgid ""
+"Change position depending on pointer speed= 0 disable> 0 draw where the "
+"pointer moves to< 0 draw where the pointer comes from"
+msgstr ""
+
+#: ../brushsettings-gen.h:20
+#, fuzzy
+msgid "Offset by speed filter"
+msgstr "odchylka filtru rychlost"
+
+#: ../brushsettings-gen.h:20
+msgid "How slow the offset goes back to zero when the cursor stops moving"
+msgstr ""
+
+#: ../brushsettings-gen.h:21
+msgid "Slow position tracking"
+msgstr ""
+
+#: ../brushsettings-gen.h:21
+msgid ""
+"Slowdown pointer tracking speed. 0 disables it, higher values remove more "
+"jitter in cursor movements. Useful for drawing smooth, comic-like outlines."
+msgstr ""
+
+#: ../brushsettings-gen.h:22
+msgid "Slow tracking per dab"
+msgstr ""
+
+#: ../brushsettings-gen.h:22
+msgid ""
+"Similar as above but at brushdab level (ignoring how much time has past, if "
+"brushdabs do not depend on time)"
+msgstr ""
+
+#: ../brushsettings-gen.h:23
+msgid "Tracking noise"
+msgstr ""
+
+#: ../brushsettings-gen.h:23
+#, fuzzy
+msgid ""
+"Add randomness to the mouse pointer; this usually generates many small lines "
+"in random directions; maybe try this together with 'slow tracking'"
+msgstr ""
+"přidá nahodilost ukazateli myši; toto obvykle generuje mnoho malých linek v "
+"náhodných směrech; můžete vyzkoušet spolu s 'slow tracking'"
+
+#: ../brushsettings-gen.h:24
+#, fuzzy
+msgid "Color hue"
+msgstr "odstín barvy"
+
+#: ../brushsettings-gen.h:25
+#, fuzzy
+msgid "Color saturation"
+msgstr "sytost barvy"
+
+#: ../brushsettings-gen.h:26
+#, fuzzy
+msgid "Color value"
+msgstr "hodnota barvy"
+
+#: ../brushsettings-gen.h:26
+#, fuzzy
+msgid "Color value (brightness, intensity)"
+msgstr "hodnota barvy (jas, intenzita)"
+
+#: ../brushsettings-gen.h:27
+#, fuzzy
+msgid "Save color"
+msgstr "Uložit 1"
+
+#: ../brushsettings-gen.h:27
+msgid ""
+"When selecting a brush, the color can be restored to the color that the "
+"brush was saved with. 0.0 do not modify the active color when selecting this "
+"brush 0.5 change active color towards brush color 1.0 set the active color "
+"to the brush color when selected"
+msgstr ""
+
+#: ../brushsettings-gen.h:28
+#, fuzzy
+msgid "Change color hue"
+msgstr "změnit odstín barvy"
+
+#: ../brushsettings-gen.h:28
+#, fuzzy
+msgid ""
+"Change color hue.-0.1 small clockwise color hue shift 0.0 disable 0.5 "
+"counterclockwise hue shift by 180 degrees"
+msgstr ""
+"Změnit odstín barvy. \n"
+"-0.1 malý posun odstínu ve směru hodinových ručiček 0.0 zakázáno\n"
+" 0.0 bezezměny\n"
+" 0.5 posun odstínu proti směru hodinových ručiček o 180 stupňů"
+
+#: ../brushsettings-gen.h:29
+#, fuzzy
+msgid "Change color lightness (HSL)"
+msgstr "změnit svítivost barvy (HSL)"
+
+#: ../brushsettings-gen.h:29
+#, fuzzy
+msgid ""
+"Change the color lightness (luminance) using the HSL color model.-1.0 "
+"blacker 0.0 disable 1.0 whiter"
+msgstr ""
+"Změnit svítivost barvy (luminanci) použitím barevného modelu HSL.\n"
+"-1.0 černější\n"
+" 0.0 bezezměny\n"
+" 1.0 bělejší"
+
+#: ../brushsettings-gen.h:30
+#, fuzzy
+msgid "Change color satur. (HSL)"
+msgstr "změnit sytost barvy. (HSL)"
+
+#: ../brushsettings-gen.h:30
+#, fuzzy
+msgid ""
+"Change the color saturation using the HSL color model.-1.0 more grayish 0.0 "
+"disable 1.0 more saturated"
+msgstr ""
+"Změnit sytost barvy použitím barevného modelu HSL.\n"
+"-1.0 šedivější\n"
+" 0.0 bezezměny\n"
+" 1.0 sytější"
+
+#: ../brushsettings-gen.h:31
+#, fuzzy
+msgid "Change color value (HSV)"
+msgstr "změnit hodnotu barvy (HSV)"
+
+#: ../brushsettings-gen.h:31
+#, fuzzy
+msgid ""
+"Change the color value (brightness, intensity) using the HSV color model. "
+"HSV changes are applied before HSL.-1.0 darker 0.0 disable 1.0 brigher"
+msgstr ""
+"Změní hodnotu barvy (jas, intenzitu) použitím barevného modelu HSV. Změny "
+"HSV jsou použity před HSL.\n"
+"-1.0 tmavší\n"
+" 0.0 bezezměny\n"
+" 1.0 světlejší"
+
+#: ../brushsettings-gen.h:32
+#, fuzzy
+msgid "Change color satur. (HSV)"
+msgstr "změnit sytost barvy. (HSV)"
+
+#: ../brushsettings-gen.h:32
+#, fuzzy
+msgid ""
+"Change the color saturation using the HSV color model. HSV changes are "
+"applied before HSL.-1.0 more grayish 0.0 disable 1.0 more saturated"
+msgstr ""
+"Změnit sytost barvy použitím barevného modelu HSV. Změny HSV jsou použity "
+"před HSL.\n"
+"-1.0 šedivější\n"
+" 0.0 bezezměny\n"
+" 1.0 sytější"
+
+#: ../brushsettings-gen.h:33
+#, fuzzy
+msgid "Smudge"
+msgstr "šmouha"
+
+#: ../brushsettings-gen.h:33
+#, fuzzy
+msgid ""
+"Paint with the smudge color instead of the brush color. The smudge color is "
+"slowly changed to the color you are painting on. 0.0 do not use the smudge "
+"color 0.5 mix the smudge color with the brush color 1.0 use only the smudge "
+"color"
+msgstr ""
+"Malování rozmazáváním barvy místo barevným štětcem. Rozmazání barvy je "
+"pomalá změna barvy, kterou jste malovali.\n"
+"0.0 nepoužívat rozmazávání barvy\n"
+"0.5 míchání rozmazávání barvy s barvou štětce\n"
+"1.0 použití pouze rozmazávání barvy"
+
+#: ../brushsettings-gen.h:34
+#, fuzzy
+msgid "Smudge length"
+msgstr "délka šmouhy"
+
+#: ../brushsettings-gen.h:34
+#, fuzzy
+msgid ""
+"This controls how fast the smudge color becomes the color you are painting "
+"on.0.0 immediately update the smudge color (requires more CPU cycles because "
+"of the frequent color checks)0.5 change the smudge color steadily towards "
+"the canvas color1.0 never change the smudge color"
+msgstr ""
+"Kontrola rychlosti rozmazání barvy, kterou jste malovali.\n"
+"0.0 okamžitá změna rozmazání barvy\n"
+"1.0 žádná změna rozmazání barvy"
+
+#: ../brushsettings-gen.h:35
+#, fuzzy
+msgid "Smudge radius"
+msgstr "dosah"
+
+#: ../brushsettings-gen.h:35
+msgid ""
+"This modifies the radius of the circle where color is picked up for "
+"smudging. 0.0 use the brush radius-0.7 half the brush radius (fast, but not "
+"always intuitive)+0.7 twice the brush radius+1.6 five times the brush radius "
+"(slow performance)"
+msgstr ""
+
+#: ../brushsettings-gen.h:36
+#, fuzzy
+msgid "Eraser"
+msgstr "guma"
+
+#: ../brushsettings-gen.h:36
+#, fuzzy
+msgid ""
+"how much this tool behaves like an eraser 0.0 normal painting 1.0 standard "
+"eraser 0.5 pixels go towards 50% transparency"
+msgstr ""
+"jak moc se tento nástroj chová jako guma\n"
+" 0.0 normální kreslení\n"
+" 1.0 standardní guma\n"
+" 0.5 pixely dostávají 50% průhlednost"
+
+#: ../brushsettings-gen.h:37
+msgid "Stroke threshold"
+msgstr ""
+
+#: ../brushsettings-gen.h:37
+msgid ""
+"How much pressure is needed to start a stroke. This affects the stroke input "
+"only. Mypaint does not need a minimal pressure to start drawing."
+msgstr ""
+
+#: ../brushsettings-gen.h:38
+#, fuzzy
+msgid "Stroke duration"
+msgstr "délka trvání tahu"
+
+#: ../brushsettings-gen.h:38
+msgid ""
+"How far you have to move until the stroke input reaches 1.0. This value is "
+"logarithmic (negative values will not inverse the process)."
+msgstr ""
+
+#: ../brushsettings-gen.h:39
+msgid "Stroke hold time"
+msgstr ""
+
+#: ../brushsettings-gen.h:39
+msgid ""
+"This defines how long the stroke input stays at 1.0. After that it will "
+"reset to 0.0 and start growing again, even if the stroke is not yet "
+"finished.2.0 means twice as long as it takes to go from 0.0 to 1.09.9 and "
+"bigger stands for infinite"
+msgstr ""
+
+#: ../brushsettings-gen.h:40
+#, fuzzy
+msgid "Custom input"
+msgstr "vlastní zadání"
+
+#: ../brushsettings-gen.h:40
+msgid ""
+"Set the custom input to this value. If it is slowed down, move it towards "
+"this value (see below). The idea is that you make this input depend on a "
+"mixture of pressure/speed/whatever, and then make other settings depend on "
+"this 'custom input' instead of repeating this combination everywhere you "
+"need it.If you make it change 'by random' you can generate a slow (smooth) "
+"random input."
+msgstr ""
+
+#: ../brushsettings-gen.h:41
+#, fuzzy
+msgid "Custom input filter"
+msgstr "filtr vlastního zadání"
+
+#: ../brushsettings-gen.h:41
+msgid ""
+"How slow the custom input actually follows the desired value (the one "
+"above). This happens at brushdab level (ignoring how much time has past, if "
+"brushdabs do not depend on time).0.0 no slowdown (changes apply instantly)"
+msgstr ""
+
+#: ../brushsettings-gen.h:42
+#, fuzzy
+msgid "Elliptical dab: ratio"
+msgstr "eliptická kapka: poměr"
+
+#: ../brushsettings-gen.h:42
+#, fuzzy
+msgid ""
+"Aspect ratio of the dabs; must be >= 1.0, where 1.0 means a perfectly round "
+"dab. TODO: linearize? start at 0.0 maybe, or log?"
+msgstr ""
+"poměr stran kapek; musí být >= 1.0, kdy 1.0 znamená dokonale kulatou kapku. "
+"TODO: linearizovat? Začít na 0.0 nebo vyzkoušet?"
+
+#: ../brushsettings-gen.h:43
+#, fuzzy
+msgid "Elliptical dab: angle"
+msgstr "eliptická kapka: úhel"
+
+#: ../brushsettings-gen.h:43
+#, fuzzy
+msgid ""
+"Angle by which elliptical dabs are tilted 0.0 horizontal dabs 45.0 45 "
+"degrees, turned clockwise 180.0 horizontal again"
+msgstr ""
+"určuje úhel, pod kterým je eliptická kapka nakloněna\n"
+"0.0 vodorovné kapky\n"
+"45.0 45 stupnů, otáčené po směru hodinových ručiček\n"
+"180.0 opět vodorovné"
+
+#: ../brushsettings-gen.h:44
+#, fuzzy
+msgid "Direction filter"
+msgstr "směrový filtr"
+
+#: ../brushsettings-gen.h:44
+#, fuzzy
+msgid ""
+"A low value will make the direction input adapt more quickly, a high value "
+"will make it smoother"
+msgstr ""
+"nízká hodnota způsobí, že směr vstupu rychleji přizpůsobí, vysoká hodnota "
+"bude vyhlazovat"
+
+#: ../brushsettings-gen.h:45
+msgid "Lock alpha"
+msgstr ""
+
+#: ../brushsettings-gen.h:45
+msgid ""
+"Do not modify the alpha channel of the layer (paint only where there is "
+"paint already) 0.0 normal painting 0.5 half of the paint gets applied "
+"normally 1.0 alpha channel fully locked"
+msgstr ""
+
+#: ../brushsettings-gen.h:46
+#, fuzzy
+msgid "Colorize"
+msgstr "Barva"
+
+#: ../brushsettings-gen.h:46
+msgid ""
+"Colorize the target layer, setting its hue and saturation from the active "
+"brush colour while retaining its value and alpha."
+msgstr ""
+
+#: ../brushsettings-gen.h:51
+msgid "Pressure"
+msgstr "Přítlak"
+
+#: ../brushsettings-gen.h:51
+msgid ""
+"The pressure reported by the tablet, between 0.0 and 1.0. If you use the "
+"mouse, it will be 0.5 when a button is pressed and 0.0 otherwise."
+msgstr ""
+"Přítlak udaný tabletem mezi 0,0 a 1,0. Používáte-li myš, bude při stisknutém "
+"tlačítku 0,5 a v ostatních případech 0,0."
+
+#: ../brushsettings-gen.h:52
+msgid "Fine speed"
+msgstr "Jemná rychlost"
+
+#: ../brushsettings-gen.h:52
+msgid ""
+"How fast you currently move. This can change very quickly. Try 'print input "
+"values' from the 'help' menu to get a feeling for the range; negative values "
+"are rare but possible for very low speed."
+msgstr ""
+"Jak rychlý je váš současný pohyb. Může to být změněno velmi rychle. Zkuste "
+"'hodnotu vstupu tiskárny' z menu 'Nápověda', abyste získali rozmezí "
+"citlivosti; záporné hodnoty jsou výjimečné, ale jsou možností pro velmi "
+"malou rychlost."
+
+#: ../brushsettings-gen.h:53
+msgid "Gross speed"
+msgstr "Hrubá rychlost"
+
+#: ../brushsettings-gen.h:53
+msgid ""
+"Same as fine speed, but changes slower. Also look at the 'gross speed "
+"filter' setting."
+msgstr ""
+"Stejné jako jemná rychlost, ale mění se pomaleji. Také se podívejte na "
+"nastavení 'filtru hrubé rychlosti'."
+
+#: ../brushsettings-gen.h:54
+msgid "Random"
+msgstr "Náhodně"
+
+#: ../brushsettings-gen.h:54
+msgid ""
+"Fast random noise, changing at each evaluation. Evenly distributed between 0 "
+"and 1."
+msgstr ""
+"Rychlý náhodný šum, mění se v každém vyhodnocení. Rovnoměrně rozdělen mezi 0 "
+"a 1."
+
+#: ../brushsettings-gen.h:55
+msgid "Stroke"
+msgstr "Tah"
+
+#: ../brushsettings-gen.h:55
+msgid ""
+"This input slowly goes from zero to one while you draw a stroke. It can also "
+"be configured to jump back to zero periodically while you move. Look at the "
+"'stroke duration' and 'stroke hold time' settings."
+msgstr ""
+"Tento vstup jde pomalu od nuly to jedné, pokud je kreslen tah. Může být také "
+"nastaven, aby pravidelně skákal zpět na nulu, když pohybujete kurzorem. "
+"Podívejte se na nastavení 'doby trvání tahu' a 'doby držení tahu'."
+
+#: ../brushsettings-gen.h:56
+msgid "Direction"
+msgstr "Směr"
+
+#: ../brushsettings-gen.h:56
+msgid ""
+"The angle of the stroke, in degrees. The value will stay between 0.0 and "
+"180.0, effectively ignoring turns of 180 degrees."
+msgstr ""
+"Úhel tahu ve stupních. Hodnota bude mezi 0,0 a 180,0 účinně zanedbává "
+"otočení o 180 stupňů."
+
+#: ../brushsettings-gen.h:57
+#, fuzzy
+msgid "Declination"
+msgstr "Směr"
+
+#: ../brushsettings-gen.h:57
+msgid ""
+"Declination of stylus tilt. 0 when stylus is parallel to tablet and 90.0 "
+"when it's perpendicular to tablet."
+msgstr ""
+
+#: ../brushsettings-gen.h:58
+msgid "Ascension"
+msgstr ""
+
+#: ../brushsettings-gen.h:58
+msgid ""
+"Right ascension of stylus tilt. 0 when stylus working end points to you, +90 "
+"when rotated 90 degrees clockwise, -90 when rotated 90 degrees "
+"counterclockwise."
+msgstr ""
+
+#: ../brushsettings-gen.h:59
+msgid "Custom"
+msgstr "Náhodné"
+
+#: ../brushsettings-gen.h:59
+msgid ""
+"This is a user defined input. Look at the 'custom input' setting for details."
+msgstr ""
+"Vstup definovaný uživatelem. Pro více detailů se podívejte do 'zvláštní "
+"vstup'."
+
+#, fuzzy
