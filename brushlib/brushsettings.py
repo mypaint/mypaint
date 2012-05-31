@@ -19,9 +19,8 @@ This is used to generate brushsettings.h (see generate.py)
 It is also imported at runtime.
 """
 
-import os
+import os, gettext
 
-from gettext import gettext as _
 
 settings_hidden = 'color_h color_s color_v'.split()
 
@@ -74,8 +73,8 @@ for i_list in inputs_list:
 
     i.name, i.hard_min, i.soft_min, i.normal, i.soft_max, i.hard_max, i.dname, i.tooltip = i_list
 
-    i.dname = _(i.dname)
-    i.tooltip = _(i.tooltip)
+    i.dname = gettext.dgettext("libmypaint", i.dname)
+    i.tooltip = gettext.dgettext("libmypaint", i.tooltip)
 
     i.index = len(inputs)
     inputs.append(i)
@@ -90,8 +89,8 @@ for s_list in settings_list:
     s = BrushSetting()
     s.cname, s.name, s.constant, s.min, s.default, s.max, s.tooltip = s_list
 
-    s.name = _(s.name)
-    s.tooltip = _(s.tooltip)
+    s.name = gettext.dgettext("libmypaint", s.name)
+    s.tooltip = gettext.dgettext("libmypaint", s.tooltip)
 
     s.index = len(settings)
     settings.append(s)
