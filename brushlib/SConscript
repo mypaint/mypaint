@@ -22,6 +22,8 @@ install_perms(env, '$prefix/include/mypaint', Glob("./mypaint-*.h"))
 install_perms(env, "$prefix/share/mypaint/brushlib", Glob("./*.py"))
 install_perms(env, "$prefix/share/mypaint/brushlib", "./brushsettings.json")
 
+languages = SConscript('po/SConscript')
+
 # Optional: GEGL library
 if env['enable_gegl']:
     gegl_env.ParseConfig('pkg-config --cflags --libs gegl-0.2')

@@ -1,0 +1,29 @@
+Import('env', 'install_perms')
+from os.path import join, basename
+
+languages = []
+for src in env.Glob('*.po'):
+    lang = basename(str(src))[:-3]
+    languages.append(lang)
+    dst = join(lang, "LC_MESSAGES", 'libmypaint.mo')
+    env.Command(dst, src, 'msgfmt $SOURCE -o $TARGET')
+
+# translations
+for lang in languages:
+    install_perms(env, '$prefix/share/locale/%s/LC_MESSAGES' % lang,
+                 'po/%s/LC_MESSAGES/libmypaint.mo' % lang)
+
+lang = ARGUMENTS.get('translate')
+if lang:
+    env.Execute('cd .. && ls *.{h,c} | sort > po/POTFILES.in')
+    env.Execute('intltool-update -g libmypaint --pot')
+    if lang == 'all':
+        translate = languages
+    elif lang == 'pot':
+        translate = []
+    else:
+        translate = [lang]
+    for lang in translate:
+        env.Execute('intltool-update -g libmypaint %s' % lang)
+
+Return('languages')
