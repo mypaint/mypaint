@@ -1,5 +1,6 @@
 #include "Python.h"
 #include "numpy/arrayobject.h"
+#include "mapping.hpp"
 #include "surface.hpp"
 #include "brush.hpp"
 #include "python_brush.hpp"

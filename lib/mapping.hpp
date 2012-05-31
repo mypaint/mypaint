@@ -17,14 +17,17 @@
 #ifndef MAPPING_HPP
 #define MAPPING_HPP
 
+#include "mapping.h"
+
 // user-defined mappings
 // (the curves you can edit in the brush settings)
-class Mapping {
+class MappingWrapper {
 
-  Mapping(int inputs_) {
+public:
+  MappingWrapper(int inputs_) {
       c_mapping = mapping_new(inputs_);
   }
-  ~Mapping() {
+  ~MappingWrapper() {
       mapping_free(c_mapping);
   }
 
@@ -40,7 +43,7 @@ class Mapping {
 
   bool is_constant()
   {
-    return mapping_is_contstant(c_mapping);
+    return mapping_is_constant(c_mapping);
   }
 
   float calculate (float * data)

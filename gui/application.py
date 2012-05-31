@@ -339,7 +339,7 @@ class Application: # singleton
             self.doc.tdw.pressure_mapping = None
         else:
             # TODO: maybe replace this stupid mapping by a hard<-->soft slider?
-            m = mypaintlib.Mapping(1)
+            m = mypaintlib.MappingWrapper(1)
             m.set_n(0, len(p))
             for i, (x, y) in enumerate(p):
                 m.set_point(0, i, x, 1.0-y)
