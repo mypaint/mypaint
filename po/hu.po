@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MyPaint git\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-10 22:57+0100\n"
+"POT-Creation-Date: 2012-05-31 14:46+0200\n"
 "PO-Revision-Date: 2011-11-16 21:21+0100\n"
 "Last-Translator: Gergely Aradszki\n"
 "Language: hu\n"
@@ -15,732 +15,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#. name, hard minimum, soft minimum, normal[1], soft maximum, hard maximum, displayed name, tooltip
-#: ../brushlib/brushsettings.py:26
-msgid "Pressure"
-msgstr "Nyomás"
-
-#: ../brushlib/brushsettings.py:26
-msgid ""
-"The pressure reported by the tablet, between 0.0 and 1.0. If you use the "
-"mouse, it will be 0.5 when a button is pressed and 0.0 otherwise."
-msgstr ""
-"A tábla által közölt nyomásérték, 0.0 és 1.0 között. Ha egeret használsz, az "
-"egérgomb lenyomásakor ez 0.5 lesz, egyébként 0.0."
-
-#: ../brushlib/brushsettings.py:27
-msgid "Fine speed"
-msgstr "Finom sebesség"
-
-#: ../brushlib/brushsettings.py:27
-msgid ""
-"How fast you currently move. This can change very quickly. Try 'print input "
-"values' from the 'help' menu to get a feeling for the range; negative values "
-"are rare but possible for very low speed."
-msgstr ""
-"A pillanatnyi sebesség, ami nagyon gyorsan tud változni. Próbáld ki az "
-"„Ecset bemeneti értékeinek kiírását a „Súgó” menüben, és láthatod az érték "
-"tartományt. Negatív értékek ritkán, de előfordulhatnak, ha nagyon lassú a "
-"mozgás."
-
-#: ../brushlib/brushsettings.py:28
-msgid "Gross speed"
-msgstr "Durva sebesség"
-
-#: ../brushlib/brushsettings.py:28
-msgid ""
-"Same as fine speed, but changes slower. Also look at the 'gross speed "
-"filter' setting."
-msgstr ""
-"Ugyanaz, mint a „finom sebesség” , csak lassabban változik. Érdemes megnézni "
-"a „durva sebesség szűrő” -t is."
-
-#: ../brushlib/brushsettings.py:29
-msgid "Random"
-msgstr "Véletlenszerű"
-
-#: ../brushlib/brushsettings.py:29
-msgid ""
-"Fast random noise, changing at each evaluation. Evenly distributed between 0 "
-"and 1."
-msgstr ""
-"Gyors, véletlenszerű zaj, ami minden lépés során változik. Egyenletes "
-"eloszlású, 0 és 1 között mozog."
-
-#: ../brushlib/brushsettings.py:30 ../gui/brushsettingswindow.py:107
-msgid "Stroke"
-msgstr "Vonás"
-
-#: ../brushlib/brushsettings.py:30
-msgid ""
-"This input slowly goes from zero to one while you draw a stroke. It can also "
-"be configured to jump back to zero periodically while you move. Look at the "
-"'stroke duration' and 'stroke hold time' settings."
-msgstr ""
-"Ez az érték az ecsetvonás közben 0-tól lassan 1-ig nő. Be lehet állítani úgy "
-"is, hogy periodikusan visszaugorjon 0-ra. Nézd meg az „ecsetvonás hossza”  "
-"és az „ecsetvonás tartási ideje” beállításokat!"
-
-#: ../brushlib/brushsettings.py:31
-msgid "Direction"
-msgstr "Irány"
-
-#: ../brushlib/brushsettings.py:31
-msgid ""
-"The angle of the stroke, in degrees. The value will stay between 0.0 and "
-"180.0, effectively ignoring turns of 180 degrees."
-msgstr ""
-"Az ecset szöge fokban. Az érték 0.0 és 180.0 között mozoghat, tehát a 180 "
-"fokos fordulást már figyelmen kívül hagyja."
-
-#: ../brushlib/brushsettings.py:32
-msgid "Declination"
-msgstr "Dőlésszög"
-
-#: ../brushlib/brushsettings.py:32
-msgid ""
-"Declination of stylus tilt. 0 when stylus is parallel to tablet and 90.0 "
-"when it's perpendicular to tablet."
-msgstr ""
-"A toll dőlésszöge. 0, ha a toll párhuzamos a táblával, 90, ha merőleges."
-
-#: ../brushlib/brushsettings.py:33
-msgid "Ascension"
-msgstr "Irányszög"
-
-#: ../brushlib/brushsettings.py:33
-msgid ""
-"Right ascension of stylus tilt. 0 when stylus working end points to you, +90 "
-"when rotated 90 degrees clockwise, -90 when rotated 90 degrees "
-"counterclockwise."
-msgstr ""
-"A toll irányszöge. 0, ha a toll előre mutat. +90, ha a a toll az óramutató "
-"járásával megegyező irányba 90°-kal elfordul; -90, ha ellenkező irányba "
-"fordul 90°-ot."
-
-#. ['motion_strength',0.0,0.0,  0.0,  1.0, 1.0,  "[EXPERIMENTAL] Same as angle, but wraps at 180 degrees. The dynamics are shared with BRUSH_OFFSET_BY_SPEED_FILTER (FIXME: which is a bad thing)."],
-#: ../brushlib/brushsettings.py:35 ../gui/brushsettingswindow.py:109
-msgid "Custom"
-msgstr "Saját"
-
-#: ../brushlib/brushsettings.py:35
-msgid ""
-"This is a user defined input. Look at the 'custom input' setting for details."
-msgstr ""
-"Ez egy felhasználó által meghatározott bemenet. Nézd meg a „saját bemenet”  "
-"beállításait a részletekért!"
-
-#. internal name, displayed name, constant, minimum, default, maximum, tooltip
-#: ../brushlib/brushsettings.py:44 ../gui/brushsettingswindow.py:102
-msgid "Opacity"
-msgstr "Átlátszatlanság:"
-
-#: ../brushlib/brushsettings.py:44
-msgid ""
-"0 means brush is transparent, 1 fully visible\n"
-"(also known as alpha or opacity)"
-msgstr ""
-"A 0 azt jelenti, hogy az ecset átlátszó, az 1 pedig, hogy teljesen látható.\n"
-"(Alpha-ként, vagy átlátszatlanságként is ismert)"
-
-#: ../brushlib/brushsettings.py:45
-msgid "Opacity multiply"
-msgstr "Átlátszatlanság szorzó"
-
-#: ../brushlib/brushsettings.py:45
-msgid ""
-"This gets multiplied with opaque. You should only change the pressure input "
-"of this setting. Use 'opaque' instead to make opacity depend on speed.\n"
-"This setting is responsible to stop painting when there is zero pressure. "
-"This is just a convention, the behaviour is identical to 'opaque'."
-msgstr ""
-"Az átlátszatlanság ezzel az értékkel lesz megszorozva. Ennek a beállításnak "
-"csak a nyomásbemenetét kell megváltoztatni. Ha szeretnéd, hogy az "
-"átlátszatlanság a sebességtől függjön, használd inkább az „átlátszatlanság”  "
-"beállítást.\n"
-"Ez a beállítás felelős azért, hogy 0 nyomás esetén megszakadjon a rajzolás. "
-"A viselkedés megegyezik az „átlátszatlanság”  beállítással."
-
-#: ../brushlib/brushsettings.py:46
-msgid "Opacity linearize"
-msgstr "Átlátszatlanság lineárissá tétele"
-
-#: ../brushlib/brushsettings.py:46
-msgid ""
-"Correct the nonlinearity introduced by blending multiple dabs on top of each "
-"other. This correction should get you a linear (\"natural\") pressure "
-"response when pressure is mapped to opaque_multiply, as it is usually done. "
-"0.9 is good for standard strokes, set it smaller if your brush scatters a "
-"lot, or higher if you use dabs_per_second.\n"
-"0.0 the opaque value above is for the individual dabs\n"
-"1.0 the opaque value above is for the final brush stroke, assuming each "
-"pixel gets (dabs_per_radius*2) brushdabs on average during a stroke"
-msgstr ""
-"Az egymásra rajzolt foltok összemosásakor keletkező egyenetlenséget "
-"korrigálja. Ennek eredményeként lineáris, természetes nyomást kap, ha a "
-"nyomás az „Átlátszatlanság szorzás” -ra van állítva, ahogy általában lenni "
-"szokott. A 0.9 általános beállításként elfogadható, de állítsd inkább "
-"alacsonyabbra, ha az ecsetnek nagy a szórása, vagy magasabbra, ha a „Foltok "
-"száma másodpercenként”  magas.\n"
-"0.0: a fenti átlátszatlanság érték az egyes foltokra vonatkozik\n"
-"1.0 a fenti átlátszatlanság érték a végső ecsetvonásra vonatkozik, "
-"felételezve, hogy minden pixel „Foltok száma sugaranként” *2 foltot kap "
-"átlagosan"
-
-#: ../brushlib/brushsettings.py:47
-msgid "Radius"
-msgstr "Sugár"
-
-#: ../brushlib/brushsettings.py:47
-msgid ""
-"Basic brush radius (logarithmic)\n"
-" 0.7 means 2 pixels\n"
-" 3.0 means 20 pixels"
-msgstr ""
-"Alap ecset-sugár (logaritmikus)\n"
-"0.7 = 2 pixel\n"
-"3.0 = 20 pixel"
-
-#: ../brushlib/brushsettings.py:48
-msgid "Hardness"
-msgstr "Keménység"
-
-#: ../brushlib/brushsettings.py:48
-msgid ""
-"Hard brush-circle borders (setting to zero will draw nothing). To reach the "
-"maximum hardness, you need to disable Anti-aliasing."
-msgstr ""
-"Kemény ecset-körvonal (0-ra állítva az ecset nem fog festeni). A maximális "
-"keménység eléréséhez ki kell kapcsolni az élsimítást."
-
-#: ../brushlib/brushsettings.py:49
-msgid "Anti-aliasing"
-msgstr "Élsimítás"
-
-#: ../brushlib/brushsettings.py:49
-msgid ""
-"This setting decreases the hardness when necessary to prevent a pixel "
-"staircase effect.\n"
-" 0.0 disable (for very strong erasers and pixel brushes)\n"
-" 1.0 blur one pixel (good value)\n"
-" 5.0 notable blur, thin strokes will disappear"
-msgstr ""
-"Ez a beállítás csökkenti a keménységet ha szükséges, hogy megakadályozza az "
-"élek lépcsősödését.\n"
-"0.0 kikapcsolva (nagyon erős radírokhoz és pixelecsetekhez)\n"
-"1.0 egy pixelnyi elmosás (ajánlott érték)\n"
-"5.0 jelentős elmosás, a vékony vonalak eltűnnek"
-
-#: ../brushlib/brushsettings.py:50
-msgid "Dabs per basic radius"
-msgstr "Foltok száma alap sugaranként"
-
-#: ../brushlib/brushsettings.py:50
-msgid ""
-"How many dabs to draw while the pointer moves a distance of one brush radius "
-"(more precise: the base value of the radius)"
-msgstr ""
-"Hány foltot rajzoljon ki, míg az ecset egy ecset-sugárnyit elmozdul "
-"(pontosabban: a sugár alapja a távolság)"
-
-#: ../brushlib/brushsettings.py:51
-msgid "Dabs per actual radius"
-msgstr "A foltok száma pillanatnyi sugaranként"
-
-#: ../brushlib/brushsettings.py:51
-msgid ""
-"Same as above, but the radius actually drawn is used, which can change "
-"dynamically"
-msgstr ""
-"Ugyanaz, mint a fölötte lévő, de a valós, rajzolt sugarat veszi alapul, ami "
-"dinamikusan változhat."
-
-#: ../brushlib/brushsettings.py:52
-msgid "Dabs per second"
-msgstr "Foltok száma másodpercenként"
-
-#: ../brushlib/brushsettings.py:52
-msgid "Dabs to draw each second, no matter how far the pointer moves"
-msgstr "A rajzolandó foltok száma másodpercenként, a megtett úttól függetlenül"
-
-#: ../brushlib/brushsettings.py:53
-msgid "Radius by random"
-msgstr "Véletlenszerű sugár"
-
-#: ../brushlib/brushsettings.py:53
-msgid ""
-"Alter the radius randomly each dab. You can also do this with the by_random "
-"input on the radius setting. If you do it here, there are two differences:\n"
-"1) the opaque value will be corrected such that a big-radius dabs is more "
-"transparent\n"
-"2) it will not change the actual radius seen by dabs_per_actual_radius"
-msgstr ""
-"A sugár foltonként véletlenszerűen változik, hasonlóan ahhoz, mintha a  "
-"„Véletlenszerű bemenet szerint”  bemenetet használnád a sugár beállításánál."
-"Az itteni beállítás két dologban tér el ettől:\n"
-"1. Az átlátszatlanság érték úgy módosul, hogy a nagyobb foltok átlátszóbbak "
-"lesznek\n"
-"2. Nem hat a „valós sugár” bemenet által látott értékre"
-
-#: ../brushlib/brushsettings.py:54
-msgid "Fine speed filter"
-msgstr "Finom sebesség szűrő"
-
-#: ../brushlib/brushsettings.py:54
-msgid ""
-"How slow the input fine speed is following the real speed\n"
-"0.0 change immediately as your speed changes (not recommended, but try it)"
-msgstr ""
-"Milyen lassan követi a finom sebesség bemenet a valós sebességet.\n"
-"A 0.0 érték azonnali változást eredményez, ahogy a sebességed változik (nem "
-"ajánlott, de próbáld csak ki)."
-
-#: ../brushlib/brushsettings.py:55
-msgid "Gross speed filter"
-msgstr "Durva sebesség szűrő"
-
-#: ../brushlib/brushsettings.py:55
-msgid "Same as 'fine speed filter', but note that the range is different"
-msgstr "Ugyanaz, mint a „finom sebesség szűrő” , de más a tartomány. "
-
-#: ../brushlib/brushsettings.py:56
-msgid "Fine speed gamma"
-msgstr "Finom sebesség gamma"
-
-#: ../brushlib/brushsettings.py:56
-msgid ""
-"This changes the reaction of the 'fine speed' input to extreme physical "
-"speed. You will see the difference best if 'fine speed' is mapped to the "
-"radius.\n"
-"-8.0 very fast speed does not increase 'fine speed' much more\n"
-"+8.0 very fast speed increases 'fine speed' a lot\n"
-"For very slow speed the opposite happens."
-msgstr ""
-"Ez a beállítás a „Sebesség1”  extrém fizikai sebességekre adott reakcióját "
-"változtatja meg. A különbség akkor érzékelhető a legjobban, ha a "
-"„Sebesség1”  a Sugarat vezérli.\n"
-"-8.0: a nagyon gyors változás kevésbé hat a „Sebesség1” -re\n"
-"+8.0: a nagyon gyors változás erősebben hat a „Sebesség1” -re\n"
-"Nagyon kis sebességeknél a hatás ellentétes."
-
-#: ../brushlib/brushsettings.py:57
-msgid "Gross speed gamma"
-msgstr "Durva sebesség gamma"
-
-#: ../brushlib/brushsettings.py:57
-msgid "Same as 'fine speed gamma' for gross speed"
-msgstr "Ugyanaz, mint a „Finom sebesség gamma” , csak a „Durva sebesség”-nek"
-
-#: ../brushlib/brushsettings.py:58
-msgid "Jitter"
-msgstr "Szórás"
-
-#: ../brushlib/brushsettings.py:58
-msgid ""
-"Add a random offset to the position where each dab is drawn\n"
-" 0.0 disabled\n"
-" 1.0 standard deviation is one basic radius away\n"
-"<0.0 negative values produce no jitter"
-msgstr ""
-"Véletlen eltolást ad minden egyes foltnak.\n"
-"0.0: nincsen eltolás\n"
-"1.0: a standard deviáció (szórási távolság) egy alap-sugárnyi\n"
-"<0.0: negatív értékek használatakor nincsen szórás"
-
-#: ../brushlib/brushsettings.py:59
-msgid "Offset by speed"
-msgstr "Eltolás sebesség szerint"
-
-#: ../brushlib/brushsettings.py:59
-msgid ""
-"Change position depending on pointer speed\n"
-"= 0 disable\n"
-"> 0 draw where the pointer moves to\n"
-"< 0 draw where the pointer comes from"
-msgstr ""
-"A pozíció változtatása a sebesség függvényében\n"
-"= 0: kikapcsolva\n"
-"> 0: a mozgás céljánál rajzol\n"
-"< 0: a mozgás kiindulási pontjánál rajzol"
-
-#: ../brushlib/brushsettings.py:60
-msgid "Offset by speed filter"
-msgstr "Eltolás a sebesség szűrő szerint"
-
-#: ../brushlib/brushsettings.py:60
-msgid "How slow the offset goes back to zero when the cursor stops moving"
-msgstr "Milyen lassan tér vissza az eltolás 0-ra, miután a kurzor megállt."
-
-#: ../brushlib/brushsettings.py:61
-msgid "Slow position tracking"
-msgstr "Lassú pozíció-követés"
-
-#: ../brushlib/brushsettings.py:61
-msgid ""
-"Slowdown pointer tracking speed. 0 disables it, higher values remove more "
-"jitter in cursor movements. Useful for drawing smooth, comic-like outlines."
-msgstr ""
-"Csökkenti a kurzor követésének sebességét. A 0 kikapcsolja, a nagyobb "
-"értékek csökkentik a kurzor remegését. Hasznos lehet sima, képregényszerű "
-"vonalak rajzolásához."
-
-#: ../brushlib/brushsettings.py:62
-msgid "Slow tracking per dab"
-msgstr "Lassú pozíció-követés foltonként"
-
-#: ../brushlib/brushsettings.py:62
-msgid ""
-"Similar as above but at brushdab level (ignoring how much time has past, if "
-"brushdabs do not depend on time)"
-msgstr ""
-"Hasonló a felette lévőhöz, de folt-szinten. (Nem veszi figyelembe az eltelt "
-"időt, ha a foltok száma nem függ az időtől.)"
-
-#: ../brushlib/brushsettings.py:63
-msgid "Tracking noise"
-msgstr "Követési zaj"
-
-#: ../brushlib/brushsettings.py:63
-msgid ""
-"Add randomness to the mouse pointer; this usually generates many small lines "
-"in random directions; maybe try this together with 'slow tracking'"
-msgstr ""
-"Véletlenszerűséget ad a kurzor mozgásához: ez általában kis, véletlenszerű "
-"irányokba induló vonalakat eredményez. Érdemes lehet kipróbálni a „Lassú "
-"követéssel” együtt."
-
-#: ../brushlib/brushsettings.py:65
-msgid "Color hue"
-msgstr "Szín árnyalata"
-
-#: ../brushlib/brushsettings.py:66
-msgid "Color saturation"
-msgstr "Szín telítettsége"
-
-#: ../brushlib/brushsettings.py:67
-msgid "Color value"
-msgstr "Szín értéke"
-
-#: ../brushlib/brushsettings.py:67
-msgid "Color value (brightness, intensity)"
-msgstr "Árnyalat (világosság, intenzitás)"
-
-#: ../brushlib/brushsettings.py:68
-msgid "Save color"
-msgstr "Szín mentése"
-
-#: ../brushlib/brushsettings.py:68
-msgid ""
-"When selecting a brush, the color can be restored to the color that the "
-"brush was saved with.\n"
-" 0.0 do not modify the active color when selecting this brush\n"
-" 0.5 change active color towards brush color\n"
-" 1.0 set the active color to the brush color when selected"
-msgstr ""
-"Egy ecset kiválasztásakor a színt vissza lehet állítani arra a színre, "
-"amelyikkel korábban elmentetted.\n"
-"0.0 ne módosítsa az aktív színt az ecset kiválasztásakor\n"
-"0.5 a két szín keverése "
-"1.0 az aktív szín átállítása a mentett színre"
-
-#: ../brushlib/brushsettings.py:69
-msgid "Change color hue"
-msgstr "Árnyalat megváltoztatása"
-
-#: ../brushlib/brushsettings.py:69
-msgid ""
-"Change color hue.\n"
-"-0.1 small clockwise color hue shift\n"
-" 0.0 disable\n"
-" 0.5 counterclockwise hue shift by 180 degrees"
-msgstr ""
-"A szín árnyalatát változtatja.\n"
-"-0.1: kis mértékű, óramutató járásával megegyező irányú árnyalat-eltolás\n"
-"0.0: nincsen eltolás\n"
-"0.5: óramutató járásával ellentétes irányú, 180 fokos eltolás."
-
-#: ../brushlib/brushsettings.py:70
-msgid "Change color lightness (HSL)"
-msgstr "Szín világosságának változtatása (HSL)"
-
-#: ../brushlib/brushsettings.py:70
-msgid ""
-"Change the color lightness (luminance) using the HSL color model.\n"
-"-1.0 blacker\n"
-" 0.0 disable\n"
-" 1.0 whiter"
-msgstr ""
-"A szín világosságának (luminancia, fényerő) változtatása a HSL színmodell "
-"szerint.\n"
-"-1.0: feketébb\n"
-"0.0: nincs változás\n"
-"1.0: fehérebb"
-
-#: ../brushlib/brushsettings.py:71
-msgid "Change color satur. (HSL)"
-msgstr "Szín telítettségének változtatása (HSL)"
-
-#: ../brushlib/brushsettings.py:71
-msgid ""
-"Change the color saturation using the HSL color model.\n"
-"-1.0 more grayish\n"
-" 0.0 disable\n"
-" 1.0 more saturated"
-msgstr ""
-"A szín telítettségének változtatása a HSL színmodell szerint.\n"
-"-1.0: szürkébb\n"
-"0.0: nincs változtatás\n"
-"1.0: telítettebb"
-
-#: ../brushlib/brushsettings.py:72
-msgid "Change color value (HSV)"
-msgstr "Szín értékének változtatása (HSV)"
-
-#: ../brushlib/brushsettings.py:72
-msgid ""
-"Change the color value (brightness, intensity) using the HSV color model. "
-"HSV changes are applied before HSL.\n"
-"-1.0 darker\n"
-" 0.0 disable\n"
-" 1.0 brigher"
-msgstr ""
-"A szín értékének változtatása (világosság, intenzitás) a HSV színmodell "
-"szerint. A HSV változtatások a HSL előtt kerülnek alkalmazásra.\n"
-"-1.0: sötétebb\n"
-"0.0: nincs változtatás\n"
-"1.0: világosabb"
-
-#: ../brushlib/brushsettings.py:73
-msgid "Change color satur. (HSV)"
-msgstr "Szín telítettségének változtatása (HSV)"
-
-#: ../brushlib/brushsettings.py:73
-msgid ""
-"Change the color saturation using the HSV color model. HSV changes are "
-"applied before HSL.\n"
-"-1.0 more grayish\n"
-" 0.0 disable\n"
-" 1.0 more saturated"
-msgstr ""
-"A szín telítettségének változtatása a HSV színmodell szerint. A HSV "
-"változtatások a HSL előtt kerülnek alkalmazásra.\n"
-"-1.0: szürkébb\n"
-"0.0: nincs változtatás\n"
-"1.0: telítettebb"
-
-#: ../brushlib/brushsettings.py:74 ../gui/brushsettingswindow.py:104
-msgid "Smudge"
-msgstr "Elkenés"
-
-#: ../brushlib/brushsettings.py:74
-msgid ""
-"Paint with the smudge color instead of the brush color. The smudge color is "
-"slowly changed to the color you are painting on.\n"
-" 0.0 do not use the smudge color\n"
-" 0.5 mix the smudge color with the brush color\n"
-" 1.0 use only the smudge color"
-msgstr ""
-"Az elkenési színnel fest az ecset színe helyett. Az elkenési szín lassan "
-"arra a színre változik, mint amire éppen fest.\n"
-"0.0: ne használja az elkenési színt0.5: az elkenési- és az ecset-szín "
-"keverése1.0: csak az elkenési szín használata"
-
-#: ../brushlib/brushsettings.py:75
-msgid "Smudge length"
-msgstr "Elkenés hossza"
-
-#: ../brushlib/brushsettings.py:75
-msgid ""
-"This controls how fast the smudge color becomes the color you are painting "
-"on.\n"
-"0.0 immediately update the smudge color (requires more CPU cycles because of "
-"the frequent color checks)\n"
-"0.5 change the smudge color steadily towards the canvas color\n"
-"1.0 never change the smudge color"
-msgstr ""
-"Milyen gyorsan veszi fel az elkenés azt a színt, amire éppen fest.\n"
-"0.0: azonnal változzon (nagyobb a processzorigénybevétel a gyakoribb "
-"színellenőrzés miatt)\n"
-"0.5 fokozatosan veszi fel a színt az elkenés\n"
-"1.0: soha nem változik"
-
-#: ../brushlib/brushsettings.py:76
-msgid "Smudge radius"
-msgstr "Elkenés sugara"
-
-#: ../brushlib/brushsettings.py:76
-msgid ""
-"This modifies the radius of the circle where color is picked up for "
-"smudging.\n"
-" 0.0 use the brush radius\n"
-"-0.7 half the brush radius (fast, but not always intuitive)\n"
-"+0.7 twice the brush radius\n"
-"+1.6 five times the brush radius (slow performance)"
-msgstr ""
-"Elkenéskor módosítja a színvétel sugarát.\n"
-" 0.0 ecsetsugár használata \n"
-"-0.7 az ecset sugarának fele(gyors, de nem mindig intuitív)\n"
-"+0.7 az ecset sugarának kétszerese\n"
-"+1.6 az ecset sugarának  ötszöröse (lassú)"
-
-#: ../brushlib/brushsettings.py:77 ../gui/stock.py:52
-msgid "Eraser"
-msgstr "Radír"
-
-#: ../brushlib/brushsettings.py:77
-msgid ""
-"how much this tool behaves like an eraser\n"
-" 0.0 normal painting\n"
-" 1.0 standard eraser\n"
-" 0.5 pixels go towards 50% transparency"
-msgstr ""
-"Mennyire fog ez az eszköz radírként viselkedni.\n"
-"0.0: sima festés\n"
-"1.0: radír\n"
-"0.5 a pixelek az 50%-os átlátszóság felé közelítenek"
-
-#: ../brushlib/brushsettings.py:79
-msgid "Stroke threshold"
-msgstr "Ecsetvonási küszöb"
-
-#: ../brushlib/brushsettings.py:79
-msgid ""
-"How much pressure is needed to start a stroke. This affects the stroke input "
-"only. Mypaint does not need a minimal pressure to start drawing."
-msgstr ""
-"Mekkora nyomás szükséges a vonás elkezdéséhez. Csak az ecsetvonás bemenetre "
-"hat. A MyPaint-nek nincsen szüksége minimális nyomásra sem a rajzolás "
-"megkezdésekor."
-
-#: ../brushlib/brushsettings.py:80
-msgid "Stroke duration"
-msgstr "Ecsetvonás hossza"
-
-#: ../brushlib/brushsettings.py:80
-msgid ""
-"How far you have to move until the stroke input reaches 1.0. This value is "
-"logarithmic (negative values will not inverse the process)."
-msgstr ""
-"Milyen táv után lesz a bemeneti érték 1.0. Ez az érték logaritmikus.\n"
-"(a negatív értékek nem fordítják meg a folyamatot)"
-
-#: ../brushlib/brushsettings.py:81
-msgid "Stroke hold time"
-msgstr "Ecsetvonás tartási ideje"
-
-#: ../brushlib/brushsettings.py:81
-msgid ""
-"This defines how long the stroke input stays at 1.0. After that it will "
-"reset to 0.0 and start growing again, even if the stroke is not yet "
-"finished.\n"
-"2.0 means twice as long as it takes to go from 0.0 to 1.0\n"
-"9.9 and bigger stands for infinite"
-msgstr ""
-"Azt határozza meg, hogy az ecsetvonás bemeneti értéke milyen sokáig marad "
-"1.0. Ezután visszaugrik 0.0-ra, és újból nőni kezd, még akkor is, ha az "
-"ecsetvonás még nem fejeződött be.\n"
-"2.0: kétszer olyan hosszú, míg 0.0-tól 1.0-ig ér\n"
-"a 9.9 és ennél nagyobb számok már a végtelent jelentik"
-
-#: ../brushlib/brushsettings.py:82
-msgid "Custom input"
-msgstr "Saját bemenet"
-
-#: ../brushlib/brushsettings.py:82
-msgid ""
-"Set the custom input to this value. If it is slowed down, move it towards "
-"this value (see below). The idea is that you make this input depend on a "
-"mixture of pressure/speed/whatever, and then make other settings depend on "
-"this 'custom input' instead of repeating this combination everywhere you "
-"need it.\n"
-"If you make it change 'by random' you can generate a slow (smooth) random "
-"input."
-msgstr ""
-"A „Saját bemenetet” erre az értékre állítja. Ha lelassul, efelé az érték "
-"felé közelíti (lásd lejjebb). Ez lehetővé teszi, hogy a bemenet a nyomás/"
-"sebesség/stb. keveréke legyen, majd a többi beállítást ettől függővé lehet "
-"tenni, anélkül, hogy ezt a kombinációt máshol is újra be kellene állítani.\n"
-"Ha a „Véletlenszerű szerinti” változásra állítod, lassú (sima) véletlenszerű "
-"bemenetet tudsz létrehozni."
-
-#: ../brushlib/brushsettings.py:83
-msgid "Custom input filter"
-msgstr "Saját bemenet szűrő"
-
-#: ../brushlib/brushsettings.py:83
-msgid ""
-"How slow the custom input actually follows the desired value (the one "
-"above). This happens at brushdab level (ignoring how much time has past, if "
-"brushdabs do not depend on time).\n"
-"0.0 no slowdown (changes apply instantly)"
-msgstr ""
-"Milyen lassan követi a saját bemenet a kívánt értéket (a fentebb lévőt). Ez "
-"folt szinten működik, figyelmen kívül hagyva az időt, hacsak a foltok száma "
-"nem függ az időtől.\n"
-"0.0: nincsen lassulás (a változásokat azonnal alkalmazza)"
-
-#: ../brushlib/brushsettings.py:85
-msgid "Elliptical dab: ratio"
-msgstr "Elliptikus folt: arány"
-
-#: ../brushlib/brushsettings.py:85
-msgid ""
-"Aspect ratio of the dabs; must be >= 1.0, where 1.0 means a perfectly round "
-"dab. TODO: linearize? start at 0.0 maybe, or log?"
-msgstr ""
-"A foltok átlóinak aránya; >= 1.0, ahol az 1.0 a tökéletes kört jelenti."
-
-#: ../brushlib/brushsettings.py:86
-msgid "Elliptical dab: angle"
-msgstr "Elliptikus folt: szög"
-
-#: ../brushlib/brushsettings.py:86
-msgid ""
-"Angle by which elliptical dabs are tilted\n"
-" 0.0 horizontal dabs\n"
-" 45.0 45 degrees, turned clockwise\n"
-" 180.0 horizontal again"
-msgstr ""
-"Az elliptikus foltok döntésének szöge.\n"
-"0.0: vízszintes foltok\n"
-"45.0: átlós, jobbra döntött\n"
-"180: ez is vízszintes"
-
-#: ../brushlib/brushsettings.py:87
-msgid "Direction filter"
-msgstr "Irány szűrő"
-
-#: ../brushlib/brushsettings.py:87
-msgid ""
-"A low value will make the direction input adapt more quickly, a high value "
-"will make it smoother"
-msgstr ""
-"Alacsony értékeknél az irány bemenet sokkal gyorsabban alkalmazkodik, magas "
-"értékeknél viszont finomabb lesz a vonal."
-
-#: ../brushlib/brushsettings.py:89
-msgid "Lock alpha"
-msgstr "Alpha zárolása"
-
-#: ../brushlib/brushsettings.py:89
-msgid ""
-"Do not modify the alpha channel of the layer (paint only where there is "
-"paint already)\n"
-" 0.0 normal painting\n"
-" 0.5 half of the paint gets applied normally\n"
-" 1.0 alpha channel fully locked"
-msgstr ""
-"Ne módosítsa a réteg alpha csatornáját (csak ott fessen, ahol már most is van "
-"festék)\n"
-"0.0 normál festés\n"
-"0.5 a festék fele normálisan kerül fel\n"
-"1.0 az alpha csatornát teljesen zárolja"
-
 #: ../gui/backgroundwindow.py:23
 msgid "Save as Default"
 msgstr "Mentés alapértelmezettként"
 
-#: ../gui/backgroundwindow.py:25 ../gui/drawwindow.py:279
+#: ../gui/backgroundwindow.py:25 ../gui/drawwindow.py:316
 msgid "Background"
 msgstr "Háttér"
 
@@ -748,8 +27,8 @@ msgstr "Háttér"
 msgid "Pattern"
 msgstr "Minta"
 
-#: ../gui/backgroundwindow.py:45 ../gui/brushsettingswindow.py:108
-#: ../gui/drawwindow.py:212
+#: ../gui/backgroundwindow.py:45 ../gui/brushsettingswindow.py:107
+#: ../gui/drawwindow.py:248
 msgid "Color"
 msgstr "Szín"
 
@@ -772,8 +51,8 @@ msgid ""
 "The background %s was ignored because it is the wrong size. Only (N*%d)x(M*"
 "%d) is supported."
 msgstr ""
-"A %s nevű háttér nem került betöltésre, mert hibás a mérete. "
-"Csak az (N*%d)x(M*%d) méret támogatott."
+"A %s nevű háttér nem került betöltésre, mert hibás a mérete. Csak az (N*%d)x"
+"(M*%d) méret támogatott."
 
 #: ../gui/brushcreationwidget.py:46 ../gui/brushcreationwidget.py:66
 msgid "(unnamed brush)"
@@ -799,207 +78,228 @@ msgstr "Átnevezés..."
 msgid "Remove..."
 msgstr "Törlés..."
 
-#: ../gui/brushcreationwidget.py:102 ../gui/brushcreationwidget.py:152
+#: ../gui/brushcreationwidget.py:101 ../gui/brushcreationwidget.py:150
 msgid "No brush selected!"
 msgstr "Ecsetválasztás"
 
-#: ../gui/brushcreationwidget.py:105
+#: ../gui/brushcreationwidget.py:104
 msgid "Rename Brush"
 msgstr "Ecset átnevezése"
 
-#: ../gui/brushcreationwidget.py:117
+#: ../gui/brushcreationwidget.py:116
 msgid "A brush with this name already exists!"
 msgstr "Már létezik ilyen nevű ecset!"
 
-#: ../gui/brushcreationwidget.py:144 ../gui/brushcreationwidget.py:244
+#: ../gui/brushcreationwidget.py:142 ../gui/brushcreationwidget.py:242
 msgid "No brush selected, please use \"Add As New\" instead."
 msgstr ""
 "Nincsen kiválasztott ecset, használja inkább a „Hozzáadás újként” gombot ."
 
-#: ../gui/brushcreationwidget.py:154
+#: ../gui/brushcreationwidget.py:152
 msgid "Really delete brush from disk?"
 msgstr "Valóban törli ezt az ecsetet?"
 
-#: ../gui/brushcreationwidget.py:205 ../gui/drawwindow.py:210
+#: ../gui/brushcreationwidget.py:203 ../gui/drawwindow.py:246
 msgid "Edit"
 msgstr "Szerkesztés"
 
-#: ../gui/brushcreationwidget.py:209 ../gui/document.py:97
+#: ../gui/brushcreationwidget.py:207 ../gui/document.py:93
 msgid "Clear"
 msgstr "Előnézet törlése"
 
-#: ../gui/brushcreationwidget.py:215 ../gui/filehandling.py:63
+#: ../gui/brushcreationwidget.py:213 ../gui/filehandling.py:61
 msgid "Save"
 msgstr "Mentés"
 
-#: ../gui/brushmanager.py:71
+#: ../gui/brushmanager.py:70
 msgid "Lost & Found"
 msgstr "Megkerült"
 
-#: ../gui/brushmanager.py:72
+#: ../gui/brushmanager.py:71
 msgid "Deleted"
 msgstr "Törölt"
 
-#: ../gui/brushmanager.py:73
+#: ../gui/brushmanager.py:72
 msgid "Favorites"
 msgstr "Kedvencek"
 
-#: ../gui/brushmanager.py:74
+#: ../gui/brushmanager.py:73
 msgid "Ink"
 msgstr "Tinta"
 
-#: ../gui/brushmanager.py:75
+#: ../gui/brushmanager.py:74
 msgid "Classic"
 msgstr "Klasszikus"
 
-#: ../gui/brushmanager.py:76
+#: ../gui/brushmanager.py:75
 msgid "Set#1"
 msgstr "1.Készlet"
 
-#: ../gui/brushmanager.py:77
+#: ../gui/brushmanager.py:76
 msgid "Set#2"
 msgstr "2.Készlet"
 
-#: ../gui/brushmanager.py:78
+#: ../gui/brushmanager.py:77
 msgid "Set#3"
 msgstr "3.Készlet"
 
-#: ../gui/brushmanager.py:79
+#: ../gui/brushmanager.py:78
 msgid "Set#4"
 msgstr "4.Készlet"
 
-#: ../gui/brushmanager.py:80
+#: ../gui/brushmanager.py:79
 msgid "Set#5"
 msgstr "5.Készlet"
 
-#: ../gui/brushmanager.py:81
+#: ../gui/brushmanager.py:80
 msgid "Experimental"
 msgstr "Kísérleti"
 
-#: ../gui/brushmanager.py:719
+#: ../gui/brushmanager.py:718
 msgid "Unknown Brush"
 msgstr "Ismeretlen ecset"
 
-#: ../gui/brushmodifier.py:56
+#: ../gui/brushmodifier.py:54
 msgid "Paint normally"
 msgstr "Normál festés"
 
-#: ../gui/brushmodifier.py:59
+#: ../gui/brushmodifier.py:57
 msgid "Eraser Mode: remove strokes using the current brush"
 msgstr "Radír mód: vonások eltávolítása a jelenlegi ecsettel"
 
-#: ../gui/brushmodifier.py:62
+#: ../gui/brushmodifier.py:60
 msgid "Lock Alpha: paint over existing strokes only, using the current brush"
 msgstr ""
 "Alpha zárolása: festés csak a már létező ecsetvonásokon, a jelenlegi ecset "
 "használatával"
 
-#: ../gui/brushselectionwindow.py:233
+#: ../gui/brushmodifier.py:63
+#, fuzzy
+msgid "Colorize: alter Hue and Saturation with the current brush"
+msgstr "A jelenlegi szín különböző telítettségű változatai"
+
+#: ../gui/brushselectionwindow.py:232
 msgid "Try right click, middle click or Ctrl click"
 msgstr ""
 "Próbáld ki a jobb egér gombot, a középső egérgombot, vagy a Ctrl + bal "
 "egérgombot"
 
-#: ../gui/brushselectionwindow.py:401
+#: ../gui/brushselectionwindow.py:400
 msgid "New group..."
 msgstr "Új csoport..."
 
-#: ../gui/brushselectionwindow.py:403
+#: ../gui/brushselectionwindow.py:402
 msgid "Rename group..."
 msgstr "Csoport átnevezése..."
 
-#: ../gui/brushselectionwindow.py:404
+#: ../gui/brushselectionwindow.py:403
 msgid "Delete group..."
 msgstr "Csoport törlése..."
 
-#: ../gui/brushselectionwindow.py:405
+#: ../gui/brushselectionwindow.py:404
 msgid "Export group as brush package..."
 msgstr "Csoport exportálása ecsetcsomagként"
 
-#: ../gui/brushselectionwindow.py:407
+#: ../gui/brushselectionwindow.py:406
 msgid "Download brushes (in web browser)"
 msgstr "Ecsetek letöltése (böngészőben)"
 
-#: ../gui/brushselectionwindow.py:408 ../gui/drawwindow.py:242
-#: ../gui/drawwindow.py:914
+#: ../gui/brushselectionwindow.py:407 ../gui/drawwindow.py:278
+#: ../gui/drawwindow.py:993
 msgid "Import brush package..."
 msgstr "Ecsetcsomag importálása..."
 
-#: ../gui/brushselectionwindow.py:422
+#: ../gui/brushselectionwindow.py:421
 msgid "Create group"
 msgstr "Csoport létrehozása"
 
-#: ../gui/brushselectionwindow.py:427
+#: ../gui/brushselectionwindow.py:426
 msgid "Rename group"
 msgstr "Csoport átnevezése"
 
-#: ../gui/brushselectionwindow.py:433
+#: ../gui/brushselectionwindow.py:432
 msgid "A group with this name already exists!"
 msgstr "Már létezik ilyen nevű csoport"
 
-#: ../gui/brushselectionwindow.py:436
+#: ../gui/brushselectionwindow.py:435
 msgid "Export brush pack..."
 msgstr "Ecsetcsomag exportálása..."
 
-#: ../gui/brushselectionwindow.py:437 ../gui/drawwindow.py:915
+#: ../gui/brushselectionwindow.py:436 ../gui/drawwindow.py:994
 msgid "MyPaint brush package (*.zip)"
 msgstr "MyPaint ecsetcsomag (*.zip)"
 
-#: ../gui/brushselectionwindow.py:443
+#: ../gui/brushselectionwindow.py:442
 #, python-format
 msgid "Really delete group %s?"
 msgstr "Valóban törlöd a %s csoportot?"
 
-#: ../gui/brushselectionwindow.py:446
+#: ../gui/brushselectionwindow.py:445
 msgid "This group can not be deleted (try to empty it first)."
 msgstr "A csoport nem törölhető (először ki kell üríteni)."
 
-#: ../gui/brushsettingswindow.py:32 ../gui/drawwindow.py:285
+#: ../gui/brushsettingswindow.py:31 ../gui/drawwindow.py:322
 msgid "Brush Settings Editor"
 msgstr "Ecsetbeállítás szerkesztő"
 
-#: ../gui/brushsettingswindow.py:56
+#: ../gui/brushsettingswindow.py:55
 msgid "Back to settings"
 msgstr "Vissza a beállításokhoz"
 
 #. Live update (goes to the end)
-#: ../gui/brushsettingswindow.py:64
+#: ../gui/brushsettingswindow.py:63
 msgid "Update the last canvas stroke in realtime"
 msgstr "Az utolsó ecsetvonás valós idejű frissítése"
 
-#: ../gui/brushsettingswindow.py:101
+#: ../gui/brushsettingswindow.py:100
 msgid "Basic"
 msgstr "Alap"
 
-#: ../gui/brushsettingswindow.py:103
+#: ../gui/brushsettingswindow.py:101
+msgid "Opacity"
+msgstr "Átlátszatlanság:"
+
+#: ../gui/brushsettingswindow.py:102
 msgid "Dabs"
 msgstr "Foltok"
 
-#: ../gui/brushsettingswindow.py:105
+#: ../gui/brushsettingswindow.py:103
+msgid "Smudge"
+msgstr "Elkenés"
+
+#: ../gui/brushsettingswindow.py:104
 msgid "Speed"
 msgstr "Sebesség"
 
-#: ../gui/brushsettingswindow.py:106
+#: ../gui/brushsettingswindow.py:105
 msgid "Tracking"
 msgstr "Követés"
 
-#: ../gui/brushsettingswindow.py:138
+#: ../gui/brushsettingswindow.py:106
+msgid "Stroke"
+msgstr "Vonás"
+
+#: ../gui/brushsettingswindow.py:108
+msgid "Custom"
+msgstr "Saját"
+
+#: ../gui/brushsettingswindow.py:137
 msgid "Reset to default value"
 msgstr "Visszaállítás az alapértelmezett értékre"
 
-#: ../gui/brushsettingswindow.py:143
+#: ../gui/brushsettingswindow.py:142
 msgid "No additional configuration"
 msgstr "Nincs további beállítás"
 
-#: ../gui/brushsettingswindow.py:148 ../gui/brushsettingswindow.py:191
+#: ../gui/brushsettingswindow.py:147 ../gui/brushsettingswindow.py:190
 msgid "Add input value mapping"
 msgstr "Bemeneti érték leképezés hozzáadása"
 
-#: ../gui/brushsettingswindow.py:193
+#: ../gui/brushsettingswindow.py:192
 msgid "Modify input value mapping"
 msgstr "Bemeneti értékek leképezésének módosítása"
 
-#: ../gui/colorsamplerwindow.py:166
+#: ../gui/colorsamplerwindow.py:165
 msgid "Recently used colors"
 msgstr "Legutóbb használt színek"
 
@@ -1012,61 +312,61 @@ msgstr "Legutóbb használt színek"
 #. : Current/previous comparison semicircles
 #. : The picker icon's circle
 #. : Blank outer area, outer space
-#: ../gui/colorsamplerwindow.py:197
+#: ../gui/colorsamplerwindow.py:196
 msgid "Change Saturation and Value"
 msgstr "Telítettség és Érték módosítása"
 
-#: ../gui/colorsamplerwindow.py:199
+#: ../gui/colorsamplerwindow.py:198
 msgid "Harmony color switcher"
 msgstr "Harmony színválasztó"
 
-#: ../gui/colorsamplerwindow.py:200
+#: ../gui/colorsamplerwindow.py:199
 msgid "Change Hue"
 msgstr "Árnyalat változtatása"
 
-#: ../gui/colorsamplerwindow.py:201
+#: ../gui/colorsamplerwindow.py:200
 msgid "Current color vs. Last Used"
 msgstr "Jelenlegi szín vs. Legutóbb használt"
 
-#: ../gui/colorsamplerwindow.py:202
+#: ../gui/colorsamplerwindow.py:201
 msgid "Pick a screen color"
 msgstr "Színmintavétel a képernyőről"
 
-#: ../gui/colorsamplerwindow.py:929
+#: ../gui/colorsamplerwindow.py:928
 msgid "Change Hue, Saturation and Value"
 msgstr "Árnyalat, Telítettség és Érték módosítása"
 
-#: ../gui/colorsamplerwindow.py:1000
+#: ../gui/colorsamplerwindow.py:999
 msgid "Change Red, Green and Blue components"
 msgstr "Vörös, Zöld és Kék komponensek változtatása"
 
-#: ../gui/colorsamplerwindow.py:1062
+#: ../gui/colorsamplerwindow.py:1061
 msgid "RGB"
 msgstr "RGB"
 
-#: ../gui/colorsamplerwindow.py:1063
+#: ../gui/colorsamplerwindow.py:1062
 msgid "HSV"
 msgstr "HSV"
 
 #. Colour history
-#: ../gui/colorsamplerwindow.py:1066
+#: ../gui/colorsamplerwindow.py:1065
 msgid "Color history"
 msgstr "Színtörténet"
 
 #. Colour details
-#: ../gui/colorsamplerwindow.py:1073 ../gui/functionwindow.py:154
+#: ../gui/colorsamplerwindow.py:1072 ../gui/functionwindow.py:153
 msgid "Details"
 msgstr "Részletek"
 
-#: ../gui/colorsamplerwindow.py:1089
+#: ../gui/colorsamplerwindow.py:1088
 msgid "Harmonies"
 msgstr "Harmóniák"
 
-#: ../gui/colorsamplerwindow.py:1091
+#: ../gui/colorsamplerwindow.py:1090
 msgid "Analogous"
 msgstr "Analóg"
 
-#: ../gui/colorsamplerwindow.py:1091
+#: ../gui/colorsamplerwindow.py:1090
 msgid ""
 "Three nearby hues on the color wheel.\n"
 "Often found in nature, frequently pleasing to the eye."
@@ -1074,11 +374,11 @@ msgstr ""
 "Három egymáshoz közeli árnyalat a színkörön.\n"
 "Gyakran fordul elő a természetben, általában kellemes."
 
-#: ../gui/colorsamplerwindow.py:1092
+#: ../gui/colorsamplerwindow.py:1091
 msgid "Complementary"
 msgstr "Komplementer"
 
-#: ../gui/colorsamplerwindow.py:1092
+#: ../gui/colorsamplerwindow.py:1091
 msgid ""
 "Two opposite hues on the color wheel.\n"
 "Vibrant, and maximally contrasting."
@@ -1086,11 +386,11 @@ msgstr ""
 "Két, egymással szemközti szín a színkörön.\n"
 "Vibráló és maximális kontrasztot ad."
 
-#: ../gui/colorsamplerwindow.py:1093
+#: ../gui/colorsamplerwindow.py:1092
 msgid "Split complementary"
 msgstr "Osztott komplementer"
 
-#: ../gui/colorsamplerwindow.py:1093
+#: ../gui/colorsamplerwindow.py:1092
 msgid ""
 "Two hues next to the current hue's complement.\n"
 "Contrasting, but adds a possibly pleasing harmony."
@@ -1098,27 +398,27 @@ msgstr ""
 "Két árnyalat a jelenlegi szín komlementere mellett.\n"
 "Kontrasztos, de néha kellemes harmóniát nyújt."
 
-#: ../gui/colorsamplerwindow.py:1094
+#: ../gui/colorsamplerwindow.py:1093
 msgid "Double complementary"
 msgstr "Dupla komplementer"
 
-#: ../gui/colorsamplerwindow.py:1094
+#: ../gui/colorsamplerwindow.py:1093
 msgid "Four hues in two complementary pairs."
 msgstr "Négy árnyalat két komplementerpárban."
 
-#: ../gui/colorsamplerwindow.py:1095
+#: ../gui/colorsamplerwindow.py:1094
 msgid "Square"
 msgstr "Négyzet"
 
-#: ../gui/colorsamplerwindow.py:1095
+#: ../gui/colorsamplerwindow.py:1094
 msgid "Four equally-spaced hues"
 msgstr "Négy, egymástól azonos távolságra lévő árnyalat."
 
-#: ../gui/colorsamplerwindow.py:1096
+#: ../gui/colorsamplerwindow.py:1095
 msgid "Triadic"
 msgstr "Triád"
 
-#: ../gui/colorsamplerwindow.py:1096
+#: ../gui/colorsamplerwindow.py:1095
 msgid ""
 "Three equally-spaced hues.\n"
 "Vibrant with equal tension."
@@ -1126,55 +426,55 @@ msgstr ""
 "Három, egymástól azonos távolságra lévő árnyalat.\n"
 "Vibráló, egyenletes feszültséggel."
 
-#: ../gui/colorsamplerwindow.py:1099
+#: ../gui/colorsamplerwindow.py:1098
 msgid "Change value/saturation"
 msgstr "Érték/telítettség módosítása"
 
-#: ../gui/colorsamplerwindow.py:1102
+#: ../gui/colorsamplerwindow.py:1101
 msgid "Blend each color to opposite"
 msgstr "Mindegyik szín keverése az ellentettjével"
 
-#: ../gui/colorsamplerwindow.py:1104
+#: ../gui/colorsamplerwindow.py:1103
 msgid "Blend each color to negative"
 msgstr "Mindegyik szín keverése az inverzével"
 
-#: ../gui/colorsamplerwindow.py:1215
+#: ../gui/colorsamplerwindow.py:1214
 msgid "MyPaint color selector"
 msgstr "MyPaint színválasztó"
 
-#: ../gui/dialogs.py:54 ../gui/layerswindow.py:62 ../gui/layerswindow.py:226
+#: ../gui/dialogs.py:53 ../gui/layerswindow.py:62 ../gui/layerswindow.py:226
 msgid "Name"
 msgstr "Név"
 
-#: ../gui/dialogs.py:89
+#: ../gui/dialogs.py:88
 msgid "Overwrite brush?"
 msgstr "Felülírja az ecsetet?"
 
-#: ../gui/dialogs.py:98 ../gui/dialogs.py:156
+#: ../gui/dialogs.py:97 ../gui/dialogs.py:155
 msgid "Replace"
 msgstr "Csere"
 
-#: ../gui/dialogs.py:101 ../gui/dialogs.py:159
+#: ../gui/dialogs.py:100 ../gui/dialogs.py:158
 msgid "Rename"
 msgstr "Átnevezés"
 
-#: ../gui/dialogs.py:104
+#: ../gui/dialogs.py:103
 msgid "Replace all"
 msgstr "Összes lecserélése"
 
-#: ../gui/dialogs.py:106
+#: ../gui/dialogs.py:105
 msgid "Rename all"
 msgstr "Az összes átnevezése"
 
-#: ../gui/dialogs.py:121
+#: ../gui/dialogs.py:120
 msgid "Imported brush"
 msgstr "Importált ecset"
 
-#: ../gui/dialogs.py:122
+#: ../gui/dialogs.py:121
 msgid "Existing brush"
 msgstr "Létező ecset"
 
-#: ../gui/dialogs.py:124
+#: ../gui/dialogs.py:123
 #, python-format
 msgid ""
 "<b>A brush named `%s' already exists.</b>\n"
@@ -1183,11 +483,11 @@ msgstr ""
 "<b>A „%s” nevű ecset már létezik.</b>\n"
 "Ki szeretnéd cserélni, vagy az új ecset kapjon más nevet?"
 
-#: ../gui/dialogs.py:147
+#: ../gui/dialogs.py:146
 msgid "Overwrite brush group?"
 msgstr "Felülírja az ecsetcsoportot?"
 
-#: ../gui/dialogs.py:169
+#: ../gui/dialogs.py:168
 #, python-format
 msgid ""
 "<b>A group named `%s' already exists.</b>\n"
@@ -1198,494 +498,524 @@ msgstr ""
 "Ki szeretnéd cserélni, vagy az új csoport kapjon más nevet?\n"
 "Ha lecseréled, az ecsetek átkerülhetnek a „%s” csoportba."
 
-#: ../gui/dialogs.py:257
+#: ../gui/dialogs.py:256
 msgid "Import brush package?"
 msgstr "Importálod az ecsetcsomagot?"
 
-#: ../gui/dialogs.py:269
+#: ../gui/dialogs.py:268
 #, python-format
 msgid "<b>Do you really want to import package `%s'?</b>"
 msgstr "<b>Biztosan importálod a „%s” csomagot?</b>"
 
-#: ../gui/dialogs.py:285
+#: ../gui/dialogs.py:284
 msgid "Color details"
 msgstr "Szín részletei"
 
 #. Quick brush changer
-#: ../gui/dialogs.py:384 ../gui/toolbar.py:303
+#: ../gui/dialogs.py:381 ../gui/toolbar.py:399
 msgid "Change Brush"
 msgstr "Ecsetváltás"
 
-#: ../gui/document.py:81
+#: ../gui/document.py:77
 msgid "Brighter"
 msgstr "Világosabb"
 
-#: ../gui/document.py:82
+#: ../gui/document.py:78
 msgid "Smaller"
 msgstr "Kisebb"
 
-#: ../gui/document.py:83
+#: ../gui/document.py:79
 msgid "More Opaque"
 msgstr "Átlátszatlanabb"
 
-#: ../gui/document.py:84
+#: ../gui/document.py:80
 msgid "Less Opaque"
 msgstr "Átlátszóbb"
 
-#: ../gui/document.py:85 ../gui/preferenceswindow.py:37
+#: ../gui/document.py:81 ../gui/preferenceswindow.py:36
 msgid "Pick Context (layer, brush and color)"
 msgstr "Mintavételezés (réteg, ecset és szín)"
 
-#: ../gui/document.py:87
+#: ../gui/document.py:83
 msgid "Darker"
 msgstr "Sötétebb"
 
-#: ../gui/document.py:88
+#: ../gui/document.py:84
 msgid "Change Color Hue (counter-clockwise)"
 msgstr "Árnyalat változtatása (óramutató járásával ellentétesen)"
 
-#: ../gui/document.py:89
+#: ../gui/document.py:85
 msgid "Change Color Hue (clockwise)"
 msgstr "Árnyalat változtatása (óramutató járásával megegyezően)"
 
-#: ../gui/document.py:90
+#: ../gui/document.py:86
 msgid "Purer"
 msgstr "Tisztább"
 
-#: ../gui/document.py:91
+#: ../gui/document.py:87
 msgid "Grayer"
 msgstr "Szürkébb"
 
-#: ../gui/document.py:92
+#: ../gui/document.py:88
 msgid "Bigger"
 msgstr "Nagyobb"
 
 #. Context actions are also added in init_context_actions
-#: ../gui/document.py:95
+#: ../gui/document.py:91
 msgid "Save to Most Recently Restored"
 msgstr "Mentés utoljára visszaállítottként"
 
-#: ../gui/document.py:98
+#: ../gui/document.py:94
 msgid "Copy to Clipboard"
 msgstr "Másolás vágólapra"
 
-#: ../gui/document.py:99
+#: ../gui/document.py:95
 msgid "Paste Clipboard (Replace Layer)"
 msgstr "Beillesztés vágólapról (Réteg kicserélése)"
 
-#: ../gui/document.py:100 ../gui/preferenceswindow.py:38
+#: ../gui/document.py:96 ../gui/preferenceswindow.py:37
 msgid "Select Layer at Cursor"
 msgstr "Kurzor alatti réteg kiválasztása"
 
-#: ../gui/document.py:101
+#: ../gui/document.py:97
 msgid "Next (above current)"
 msgstr "Következő (aktuális felett)"
 
-#: ../gui/document.py:102
+#: ../gui/document.py:98
 msgid "Next (below current)"
 msgstr "Következő (aktuális alatt)"
 
-#: ../gui/document.py:103
+#: ../gui/document.py:99
 msgid "New (above current)"
 msgstr "Új réteg (aktuális felett)"
 
-#: ../gui/document.py:104
+#: ../gui/document.py:100
 msgid "New (below current)"
 msgstr "Új réteg (aktuális felett)"
 
 #. XXX need a batter one, but stay consistent with layerswindow for now
-#: ../gui/document.py:106 ../gui/layerswindow.py:115
+#: ../gui/document.py:102 ../gui/layerswindow.py:115
 msgid "Merge Down"
 msgstr "Összefésülés lefelé"
 
-#: ../gui/document.py:107
+#: ../gui/document.py:103
 msgid "Remove"
 msgstr "Törlés"
 
-#: ../gui/document.py:108
+#: ../gui/document.py:104
 msgid "Increase Layer Opacity"
 msgstr "Réteg átlátszatlanabbá tétele"
 
-#: ../gui/document.py:109
+#: ../gui/document.py:105
 msgid "Decrease Layer Opacity"
 msgstr "Réteg átlátszóbbá tétele"
 
-#: ../gui/document.py:111
+#: ../gui/document.py:107
 msgid "Shortcuts"
 msgstr "Gyorsbillentyűk"
 
-#: ../gui/document.py:113
+#: ../gui/document.py:109
 msgid "Reset and Center"
 msgstr "Visszaállítás és középre igazítás"
 
-#: ../gui/document.py:114
+#: ../gui/document.py:110
 msgid "Reset Zoom, Rotation and Mirroring, and recenter the document"
 msgstr ""
 "Nagyítás, forgatás és tükrözés visszaállítása és a dokumentum középre "
 "igazítása"
 
-#: ../gui/document.py:116
+#: ../gui/document.py:112
+msgid "Fit"
+msgstr ""
+
+#: ../gui/document.py:113
 msgid "Reset"
 msgstr "Visszaállítás"
 
-#: ../gui/document.py:117 ../gui/preferenceswindow.py:40
+#: ../gui/document.py:114 ../gui/preferenceswindow.py:39
 msgid "Zoom"
 msgstr "Nagyítás"
 
-#: ../gui/document.py:118
+#: ../gui/document.py:115
 msgid "Rotation"
 msgstr "Forgatás"
 
-#: ../gui/document.py:119
+#: ../gui/document.py:116
 msgid "Mirror"
 msgstr "Tükrözése"
 
-#: ../gui/document.py:120
+#: ../gui/document.py:117
 msgid "Zoom In"
 msgstr "Nagyítás"
 
-#: ../gui/document.py:121
+#: ../gui/document.py:118
 msgid "Increase magnification"
 msgstr "Nagyítás növelése"
 
-#: ../gui/document.py:122
+#: ../gui/document.py:119
 msgid "Zoom Out"
 msgstr "Kicsinyítés"
 
-#: ../gui/document.py:123
+#: ../gui/document.py:120
 msgid "Decrease magnification"
 msgstr "Nagyítás csökkentése"
 
-#: ../gui/document.py:125
+#: ../gui/document.py:122
 msgid "Rotate the view left"
 msgstr "Nézet balra forgatása"
 
-#: ../gui/document.py:128
+#: ../gui/document.py:125
 msgid "Rotate the view right"
 msgstr "Nézet jobbra forgatása"
 
-#: ../gui/document.py:131
+#: ../gui/document.py:128
 msgid "Mirror: flip the view left to right"
 msgstr "Tükrözés: a kép bal és jobb oldalának felcserélése"
 
-#: ../gui/document.py:134
+#: ../gui/document.py:131
 msgid "Flip the view upside-down"
 msgstr "Kép fejjel lefelé tükrözése"
 
-#: ../gui/document.py:136
+#: ../gui/document.py:133
 msgid "Layer Solo"
 msgstr "Réteg szóló módban"
 
 #. TODO: make toggle action
-#: ../gui/document.py:137
+#: ../gui/document.py:134
 msgid "Hide Layers Above Current"
 msgstr "Aktuális feletti rétegek elrejtése"
 
-#: ../gui/document.py:150
+#. name, [stock-id, [label, [accel, [tooltip, [cb, [is-active]]]]]]
+#: ../gui/document.py:149
 msgid "Print Brush Input Values to Console"
 msgstr "Ecset bemeneti értékeinek kiírása a konzolra"
 
-#: ../gui/document.py:151
+#: ../gui/document.py:150
 msgid "Visualize Rendering"
 msgstr "Renderelés megjelenítése"
 
-#: ../gui/document.py:152
+#: ../gui/document.py:151
 msgid "Disable GTK Double Buffering"
 msgstr "GTK Double Buffering kikapcsolása"
 
-#: ../gui/document.py:161
+#: ../gui/document.py:152
+msgid "Symmetry: duplicate strokes mirrored horizontally"
+msgstr ""
+
+#: ../gui/document.py:160
 #, python-format
 msgid "Restore Brush %d"
 msgstr "%d. ecset visszaállítása"
 
-#: ../gui/document.py:163
+#: ../gui/document.py:162
 #, python-format
 msgid "Save to Brush %d"
 msgstr "Mentés %d. ecsetként"
 
-#: ../gui/document.py:644
+#: ../gui/document.py:686
 #, python-format
 msgid "Undo %s"
 msgstr "%s visszavonása"
 
-#: ../gui/document.py:646
+#: ../gui/document.py:688
 msgid "Undo: nothing to undo"
 msgstr "Visszavonás: nincsen mit visszavonni"
 
-#: ../gui/document.py:653
+#: ../gui/document.py:695
 #, python-format
 msgid "Redo %s"
 msgstr "%s újra"
 
-#: ../gui/document.py:655
+#: ../gui/document.py:697
 msgid "Redo: nothing to redo"
 msgstr "Újra: nincsen mit újra végrehajtani"
 
 #. name, stock id, label, accelerator, tooltip, callback
-#: ../gui/drawwindow.py:206
+#: ../gui/drawwindow.py:242
 msgid "File"
 msgstr "Fájl"
 
 #. FIXME: should do this periodically, not only on quit
-#: ../gui/drawwindow.py:207 ../gui/drawwindow.py:898
+#: ../gui/drawwindow.py:243 ../gui/drawwindow.py:977
 msgid "Quit"
 msgstr "Kilépés"
 
-#: ../gui/drawwindow.py:208
+#: ../gui/drawwindow.py:244
 msgid "Toggle Document Frame"
 msgstr "Dokumentum keret be-ki"
 
-#: ../gui/drawwindow.py:213 ../gui/preferenceswindow.py:36
+#: ../gui/drawwindow.py:249 ../gui/preferenceswindow.py:35
 msgid "Pick Color"
 msgstr "Színmintavétel"
 
-#: ../gui/drawwindow.py:214 ../gui/preferenceswindow.py:46
+#: ../gui/drawwindow.py:250 ../gui/preferenceswindow.py:47
 msgid "Color History"
 msgstr "Színtörténet"
 
-#: ../gui/drawwindow.py:215
+#: ../gui/drawwindow.py:251
 msgid "Color Changer (crossed bowl)"
 msgstr "Színváltó („crossed bowl”)"
 
-#: ../gui/drawwindow.py:216
+#: ../gui/drawwindow.py:252
 msgid "Color Changer (washed)"
 msgstr "Színváltó („washed”)"
 
-#: ../gui/drawwindow.py:217 ../gui/preferenceswindow.py:45
+#: ../gui/drawwindow.py:253 ../gui/preferenceswindow.py:46
 msgid "Color Ring"
 msgstr "Színkör"
 
-#: ../gui/drawwindow.py:218
+#: ../gui/drawwindow.py:254
 msgid "Color Details"
 msgstr "Szín részletei"
 
-#: ../gui/drawwindow.py:220
+#: ../gui/drawwindow.py:256
 msgid "Brushkeys"
 msgstr "Ecset billentyűk"
 
-#: ../gui/drawwindow.py:221
+#: ../gui/drawwindow.py:257
 msgid "Help!"
 msgstr "Segítség"
 
-#: ../gui/drawwindow.py:223 ../gui/stock.py:43
+#: ../gui/drawwindow.py:259 ../gui/stock.py:54
 msgid "Layers"
 msgstr "Rétegek"
 
 #. Scratchpad menu items
-#: ../gui/drawwindow.py:226 ../gui/scratchwindow.py:36 ../gui/stock.py:42
+#: ../gui/drawwindow.py:262 ../gui/scratchwindow.py:28 ../gui/stock.py:53
 msgid "Scratchpad"
 msgstr "Vázlattömb"
 
-#: ../gui/drawwindow.py:227 ../gui/scratchwindow.py:55
+#: ../gui/drawwindow.py:263 ../gui/scratchwindow.py:47
 msgid "New Scratchpad"
 msgstr "Új vázlattömb"
 
-#: ../gui/drawwindow.py:228
+#: ../gui/drawwindow.py:264
 msgid "Load Scratchpad..."
 msgstr "Vázlattömb betöltése"
 
-#: ../gui/drawwindow.py:229
+#: ../gui/drawwindow.py:265
 msgid "Save Scratchpad Now"
 msgstr "Vázlattömb mentése most"
 
-#: ../gui/drawwindow.py:230
+#: ../gui/drawwindow.py:266
 msgid "Save Scratchpad As..."
 msgstr "Vázlattömb mentése másként..."
 
-#: ../gui/drawwindow.py:231 ../gui/scratchwindow.py:53
+#: ../gui/drawwindow.py:267 ../gui/scratchwindow.py:45
 msgid "Revert Scratchpad"
 msgstr "Vázlattömb visszaállítása"
 
-#: ../gui/drawwindow.py:232
+#: ../gui/drawwindow.py:268
 msgid "Save Scratchpad as Default"
 msgstr "Vázlattömb mentése alapértelmezettként"
 
-#: ../gui/drawwindow.py:233
+#: ../gui/drawwindow.py:269
 msgid "Clear the Default Scratchpad"
 msgstr "Az alapértelmezett vázlattömb törlése"
 
-#: ../gui/drawwindow.py:234
+#: ../gui/drawwindow.py:270
 msgid "Render a Palette"
 msgstr "Paletta renderelése"
 
-#: ../gui/drawwindow.py:235
+#: ../gui/drawwindow.py:271
 msgid "Load Palette File..."
 msgstr "Palettafájl betöltése..."
 
-#: ../gui/drawwindow.py:236
+#: ../gui/drawwindow.py:272
 msgid "Different Saturations of the current Color"
 msgstr "A jelenlegi szín különböző telítettségű változatai"
 
-#: ../gui/drawwindow.py:237
+#: ../gui/drawwindow.py:273
 msgid "Copy Background to Scratchpad"
 msgstr "Háttér másolása a Vázlattömbbe"
 
-#: ../gui/drawwindow.py:239
+#: ../gui/drawwindow.py:275
 msgid "Brush"
 msgstr "Ecset"
 
-#: ../gui/drawwindow.py:240
+#: ../gui/drawwindow.py:276
 msgid "Change Brush..."
 msgstr "Ecsetváltás..."
 
-#: ../gui/drawwindow.py:241
+#: ../gui/drawwindow.py:277
 msgid "Download more brushes (in web browser)"
 msgstr "További ecsetek letöltése (böngészőben)"
 
-#: ../gui/drawwindow.py:244 ../gui/drawwindow.py:260
+#: ../gui/drawwindow.py:280 ../gui/drawwindow.py:297
 msgid "Help"
 msgstr "Súgó"
 
-#: ../gui/drawwindow.py:245
+#: ../gui/drawwindow.py:281
 msgid "Where is the Documentation?"
 msgstr "Hol van a Dokumentáció?"
 
-#: ../gui/drawwindow.py:246
+#: ../gui/drawwindow.py:282
 msgid "Change the Keyboard Shortcuts?"
 msgstr "Hogyan változtathatom meg a billentyű-parancsokat?"
 
-#: ../gui/drawwindow.py:247
+#: ../gui/drawwindow.py:283
 msgid "About MyPaint"
 msgstr "Névjegy"
 
-#: ../gui/drawwindow.py:249
+#: ../gui/drawwindow.py:285
 msgid "Debug"
 msgstr "Debug"
 
-#: ../gui/drawwindow.py:250
+#: ../gui/drawwindow.py:286
 msgid "Print Memory Leak Info to Console (Slow!)"
 msgstr "Memóriaszivárgás kiírása a konzolba (Lassú!)"
 
-#: ../gui/drawwindow.py:251
+#: ../gui/drawwindow.py:287
 msgid "Run Garbage Collector Now"
 msgstr "Szemétgyűjtő futtatása"
 
-#: ../gui/drawwindow.py:252
+#: ../gui/drawwindow.py:288
 msgid "Start/Stop Python Profiling (cProfile)"
 msgstr "Python Profiling elindítása/leállítása (cProfile)"
 
-#: ../gui/drawwindow.py:253
+#: ../gui/drawwindow.py:289
 msgid "GTK input device dialog"
 msgstr "GTK bemeneti eszközök"
 
-#: ../gui/drawwindow.py:256 ../gui/preferenceswindow.py:225
-#: ../gui/toolbar.py:36
+#: ../gui/drawwindow.py:292 ../gui/preferenceswindow.py:226
+#: ../gui/toolbar.py:35
 msgid "View"
 msgstr "Nézet"
 
-#: ../gui/drawwindow.py:257
+#: ../gui/drawwindow.py:293
 msgid "Toolbars"
 msgstr "Eszköztárak"
 
-#: ../gui/drawwindow.py:258
+#: ../gui/drawwindow.py:294
+msgid "Feedback"
+msgstr ""
+
+#: ../gui/drawwindow.py:295
 msgid "Popup Menu"
 msgstr "Felugró menü"
 
-#: ../gui/drawwindow.py:270 ../gui/preferenceswindow.py:70
+#: ../gui/drawwindow.py:307 ../gui/preferenceswindow.py:71
 msgid "Preferences"
 msgstr "Beállítások"
 
-#: ../gui/drawwindow.py:272
+#: ../gui/drawwindow.py:309
 msgid "Test input devices"
 msgstr "Bemeneti eszközök tesztelése"
 
-#: ../gui/drawwindow.py:274
+#: ../gui/drawwindow.py:311
 msgid "Document Frame..."
 msgstr "Dokumentum keret..."
 
-#: ../gui/drawwindow.py:276
+#: ../gui/drawwindow.py:313
 msgid "Toggle the Layers list"
 msgstr "Réteglista be-ki"
 
-#: ../gui/drawwindow.py:282
+#: ../gui/drawwindow.py:319
 msgid "Edit and reorganise Brush Lists"
 msgstr "Ecsetlisták szerkesztése és rendezése"
 
-#: ../gui/drawwindow.py:286
+#: ../gui/drawwindow.py:323
 msgid "Change Brush Settings in detail"
 msgstr "Ecsetbeállítások részletes módosítása"
 
-#: ../gui/drawwindow.py:289
+#: ../gui/drawwindow.py:326
 msgid "Toggle the Colour Triangle"
 msgstr "Színháromszög be-ki"
 
-#: ../gui/drawwindow.py:292
+#: ../gui/drawwindow.py:329
 msgid "Toggle the advanced Colour Sampler"
 msgstr "Fejlett színmintavételező be-ki"
 
-#: ../gui/drawwindow.py:295
+#: ../gui/drawwindow.py:332
 msgid "Toggle the scratchpad"
 msgstr "Vázlattömb be-ki"
 
-#: ../gui/drawwindow.py:318 ../gui/toolbar.py:37
+#: ../gui/drawwindow.py:355 ../gui/toolbar.py:36
 msgid "Subwindows"
 msgstr "Alablakok"
 
-#: ../gui/drawwindow.py:319
+#: ../gui/drawwindow.py:356
 msgid "Show subwindows"
 msgstr "Alablakok be-ki"
 
-#: ../gui/drawwindow.py:326
+#: ../gui/drawwindow.py:358
+msgid "Zoom Level"
+msgstr ""
+
+#: ../gui/drawwindow.py:359
+msgid "Reveal the scale % when zooming in or out"
+msgstr ""
+
+#: ../gui/drawwindow.py:362
+msgid "Last Painting Position"
+msgstr ""
+
+#: ../gui/drawwindow.py:363
+msgid "Reveal the last painting pos when a stroke ends"
+msgstr ""
+
+#: ../gui/drawwindow.py:371
 msgid "Menubar only"
 msgstr "Csak a menüsáv megjelenítése"
 
-#: ../gui/drawwindow.py:327
+#: ../gui/drawwindow.py:372
 msgid "Show menu bar"
 msgstr "Menüsáv megjelenítése"
 
-#: ../gui/drawwindow.py:329
+#: ../gui/drawwindow.py:374
 msgid "Toolbar only"
 msgstr "Csak az eszköztár megjelenítése"
 
-#: ../gui/drawwindow.py:330
+#: ../gui/drawwindow.py:375
 msgid "Show toolbar"
 msgstr "Eszköztár megjelenítése"
 
-#: ../gui/drawwindow.py:332
+#: ../gui/drawwindow.py:377
 msgid "Both"
 msgstr "Mindkettő"
 
-#: ../gui/drawwindow.py:333
+#: ../gui/drawwindow.py:378
 msgid "Show both the menu bar and the toolbar"
 msgstr "Menüsáv és eszköztár megjelenítése"
 
-#: ../gui/drawwindow.py:768
+#: ../gui/drawwindow.py:847
 msgid "Leave Fullscreen Mode"
 msgstr "Teljes képernyős mód elhagyása"
 
-#: ../gui/drawwindow.py:769
+#: ../gui/drawwindow.py:848
 msgid "UnFullscreen"
 msgstr "Teljes képernyős mód elhagyása"
 
-#: ../gui/drawwindow.py:772
+#: ../gui/drawwindow.py:851
 msgid "Enter Fullscreen Mode"
 msgstr "Teljes képernyős mód"
 
-#: ../gui/drawwindow.py:773
+#: ../gui/drawwindow.py:852
 msgid "Fullscreen"
 msgstr "Teljes képernyő"
 
-#: ../gui/drawwindow.py:861
+#: ../gui/drawwindow.py:940
 msgid "Gimp Palette Format"
 msgstr "Gimp palettaformátum"
 
-#: ../gui/drawwindow.py:862
+#: ../gui/drawwindow.py:941
 msgid "All Files"
 msgstr "Minden fájl"
 
-#: ../gui/drawwindow.py:898
+#: ../gui/drawwindow.py:977
 msgid "Really Quit?"
 msgstr "Valóban ki szeretnél lépni?"
 
-#: ../gui/drawwindow.py:926
+#: ../gui/drawwindow.py:1005
+#, fuzzy
 msgid ""
-"Copyright (C) 2005-2010\n"
+"Copyright (C) 2005-2012\n"
 "Martin Renold and the MyPaint Development Team"
 msgstr ""
 "Copyright (C) 2005-2010\n"
 "Martin Renold és a MyPaint Fejlesztőcsapat"
 
-#: ../gui/drawwindow.py:930
+#: ../gui/drawwindow.py:1009
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -1705,50 +1035,59 @@ msgstr ""
 "részleteket a COPYING fájl tartalmaz."
 
 #. (in order of appearance)
-#: ../gui/drawwindow.py:941 ../gui/drawwindow.py:943 ../gui/drawwindow.py:944
-#: ../gui/drawwindow.py:945 ../gui/drawwindow.py:946 ../gui/drawwindow.py:948
-#: ../gui/drawwindow.py:949 ../gui/drawwindow.py:950 ../gui/drawwindow.py:951
-#: ../gui/drawwindow.py:952 ../gui/drawwindow.py:953 ../gui/drawwindow.py:954
-#: ../gui/drawwindow.py:955 ../gui/drawwindow.py:956 ../gui/drawwindow.py:957
+#: ../gui/drawwindow.py:1020 ../gui/drawwindow.py:1022
+#: ../gui/drawwindow.py:1023 ../gui/drawwindow.py:1024
+#: ../gui/drawwindow.py:1025 ../gui/drawwindow.py:1027
+#: ../gui/drawwindow.py:1028 ../gui/drawwindow.py:1029
+#: ../gui/drawwindow.py:1030 ../gui/drawwindow.py:1031
+#: ../gui/drawwindow.py:1032 ../gui/drawwindow.py:1033
+#: ../gui/drawwindow.py:1034 ../gui/drawwindow.py:1035
+#: ../gui/drawwindow.py:1036 ../gui/drawwindow.py:1037
+#: ../gui/drawwindow.py:1038
 msgid "programming"
 msgstr "programozás"
 
-#: ../gui/drawwindow.py:942 ../gui/drawwindow.py:947
+#: ../gui/drawwindow.py:1021 ../gui/drawwindow.py:1026
 msgid "portability"
 msgstr "hordozhatóság"
 
-#: ../gui/drawwindow.py:960 ../gui/drawwindow.py:961 ../gui/drawwindow.py:963
-#: ../gui/drawwindow.py:965 ../gui/drawwindow.py:968
+#: ../gui/drawwindow.py:1041 ../gui/drawwindow.py:1042
+#: ../gui/drawwindow.py:1046 ../gui/drawwindow.py:1049
 msgid "brushes"
 msgstr "ecsetek"
 
-#: ../gui/drawwindow.py:962
+#: ../gui/drawwindow.py:1043
 msgid "patterns, brushes"
 msgstr "minták, ecsetek"
 
-#: ../gui/drawwindow.py:964
+#: ../gui/drawwindow.py:1044
+#, fuzzy
+msgid "brushes, tool icons"
+msgstr "eszközikonok"
+
+#: ../gui/drawwindow.py:1045
 msgid "brushes, patterns"
 msgstr "ecsetek, minták"
 
-#: ../gui/drawwindow.py:966
+#: ../gui/drawwindow.py:1047
 msgid "desktop icon"
 msgstr "program ikonja"
 
-#: ../gui/drawwindow.py:967 ../gui/drawwindow.py:969
+#: ../gui/drawwindow.py:1048 ../gui/drawwindow.py:1050
 msgid "patterns"
 msgstr "minták"
 
-#: ../gui/drawwindow.py:970 ../gui/drawwindow.py:971
+#: ../gui/drawwindow.py:1051 ../gui/drawwindow.py:1052
 msgid "tool icons"
 msgstr "eszközikonok"
 
-#: ../gui/drawwindow.py:1003
+#: ../gui/drawwindow.py:1086
 msgid "Move your mouse over a menu entry, then press the key to assign."
 msgstr ""
 "Vigye az egeret egy menüpont fölé, majd nyomja meg a hozzárendelendő "
 "billentyűt."
 
-#: ../gui/drawwindow.py:1005
+#: ../gui/drawwindow.py:1088
 msgid ""
 "You can also drag the canvas with the mouse while holding the middle mouse "
 "button or spacebar. Or with the arrow keys.\n"
@@ -1765,7 +1104,7 @@ msgstr ""
 "kicsinyített nézeten és a teljes vásznon festesz, még mindig nagyon sok "
 "memóriára lesz szükséged."
 
-#: ../gui/drawwindow.py:1012
+#: ../gui/drawwindow.py:1095
 msgid ""
 "Brushkeys are used to quickly save/restore brush settings using keyboard "
 "shortcuts. You can paint with one hand and change brushes with the other "
@@ -1776,14 +1115,14 @@ msgid ""
 "list. But they are remembered even if you quit."
 msgstr ""
 "Az ecsetgombok az ecsetbeállítások gyorsbillentyűkkel történő gyors "
-"mentésére/betöltésére szolgálnak. Az egyik kezeddel rajzolva, a "
-"másikkal az ecseteket váltogatva, megszakítások nélkül is tudsz festeni.\n"
+"mentésére/betöltésére szolgálnak. Az egyik kezeddel rajzolva, a másikkal az "
+"ecseteket váltogatva, megszakítások nélkül is tudsz festeni.\n"
 "\n"
 "10 hely áll rendelkezésére, hogy elmentsd ezeket az ecseteket.\n"
 "Ezek anonim, név nélküli eszközök, amik nem jelennek meg az ecset-választó "
 "listában, de a beállításaikat akkor is megőrzik, ha kilépsz a programból."
 
-#: ../gui/drawwindow.py:1021
+#: ../gui/drawwindow.py:1104
 msgid ""
 "There is a tutorial available on the MyPaint homepage. It explains some "
 "features which are hard to discover yourself.\n"
@@ -1799,202 +1138,206 @@ msgstr ""
 "beállításokról (átlátszóság, keménység, stb.) és a bemenetekről (nyomás, "
 "sebesség, stb.)\n"
 
-#: ../gui/filehandling.py:59
+#: ../gui/filehandling.py:57
 msgid "New"
 msgstr "Új"
 
-#: ../gui/filehandling.py:59
+#: ../gui/filehandling.py:57
 msgid "Start with a new blank canvas"
 msgstr "Indítás új üres vászonnal"
 
-#: ../gui/filehandling.py:60 ../gui/filehandling.py:344
-#: ../gui/filehandling.py:361
+#: ../gui/filehandling.py:58 ../gui/filehandling.py:342
+#: ../gui/filehandling.py:359
 msgid "Open..."
 msgstr "Megnyitás"
 
-#: ../gui/filehandling.py:60
+#: ../gui/filehandling.py:58
 msgid "Open a file, replacing the current painting"
 msgstr "Fájl megnyitása a jelenlegi festmény helyett"
 
-#: ../gui/filehandling.py:61
+#: ../gui/filehandling.py:59
 msgid "Open Last"
 msgstr "Legutóbbi megnyitása"
 
-#: ../gui/filehandling.py:61
+#: ../gui/filehandling.py:59
 msgid "Open the last file you saved"
 msgstr "Legutóbb mentett fájl megnyitása"
 
-#: ../gui/filehandling.py:62
+#: ../gui/filehandling.py:60
 msgid "Reload"
 msgstr "Újratöltés"
 
-#: ../gui/filehandling.py:62
+#: ../gui/filehandling.py:60
 msgid "Reload the current file"
 msgstr "Jelenlegi fájl újratöltése"
 
-#: ../gui/filehandling.py:63
+#: ../gui/filehandling.py:61
 msgid "Save to a file"
 msgstr "Mentés fájlba"
 
-#: ../gui/filehandling.py:64
+#: ../gui/filehandling.py:62
 msgid "Save As..."
 msgstr "Mentés másként"
 
-#: ../gui/filehandling.py:64
+#: ../gui/filehandling.py:62
 msgid "Save to a file with a new name"
 msgstr "Mentés fájlba új néven"
 
-#: ../gui/filehandling.py:65
+#: ../gui/filehandling.py:63
 msgid "Export..."
 msgstr "Exportálás..."
 
-#: ../gui/filehandling.py:65
+#: ../gui/filehandling.py:63
 msgid "Export to a file"
 msgstr "Exportálás fájlba"
 
-#: ../gui/filehandling.py:66
+#: ../gui/filehandling.py:64
 msgid "Save As Scrap"
 msgstr "Mentés vázlatként"
 
-#: ../gui/filehandling.py:67
+#: ../gui/filehandling.py:65
 msgid ""
 "Saves to a new scrap file. If this drawing is currently saved as a scrap, "
 "this will write a new revision of it."
 msgstr ""
-"Mentés új vázlatfájlba. Ha a rajzot már vázlatként mentetted, akkor ennek egy "
-"új változataként kerül mentésre. "
+"Mentés új vázlatfájlba. Ha a rajzot már vázlatként mentetted, akkor ennek "
+"egy új változataként kerül mentésre. "
 
-#: ../gui/filehandling.py:71
+#: ../gui/filehandling.py:69
 msgid "Open Previous Scrap"
 msgstr "Előző vázlat betöltése"
 
-#: ../gui/filehandling.py:71
+#: ../gui/filehandling.py:69
 msgid "Load the previous scrap file, replacing the current drawing"
 msgstr "Előző vázlatfájl betöltése a jelenlegi rajz helyett"
 
-#: ../gui/filehandling.py:72
+#: ../gui/filehandling.py:70
 msgid "Open Next Scrap"
 msgstr "Következő vázlat betöltése"
 
-#: ../gui/filehandling.py:72
+#: ../gui/filehandling.py:70
 msgid "Load the next scrap file, replacing the current drawing"
 msgstr "Következő vázlatfájl betöltése a jelenlegi rajz helyett"
 
-#: ../gui/filehandling.py:78
+#: ../gui/filehandling.py:76
 msgid "Open Recent"
 msgstr "Legutóbbi fájlok"
 
-#: ../gui/filehandling.py:78
+#: ../gui/filehandling.py:76
 msgid "Open Recent files"
 msgstr "Legutóbbi fájlok megnyitása"
 
 #. (name, patterns)
-#: ../gui/filehandling.py:99
+#: ../gui/filehandling.py:97
 msgid "All Recognized Formats"
 msgstr "Minden felismert formátum"
 
 #. 0
-#: ../gui/filehandling.py:100 ../gui/filehandling.py:106
+#: ../gui/filehandling.py:98 ../gui/filehandling.py:104
 msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
 
-#: ../gui/filehandling.py:101
+#: ../gui/filehandling.py:99
 msgid "PNG (*.png)"
 msgstr "PNG (*.png)"
 
-#: ../gui/filehandling.py:102
+#: ../gui/filehandling.py:100
 msgid "JPEG (*.jpg; *.jpeg)"
 msgstr "JPEG (*.jpg; *.jpeg)"
 
 #. (name, extension, options)
-#: ../gui/filehandling.py:105
+#: ../gui/filehandling.py:103
 msgid "By extension (prefer default format)"
 msgstr "Kiterjesztés szerint (lehetőleg az alapértelmezett formátum)"
 
 #. 1
-#: ../gui/filehandling.py:107
+#: ../gui/filehandling.py:105
 msgid "PNG solid with background (*.png)"
 msgstr "PNG háttérrel (*.png)"
 
 #. 2
-#: ../gui/filehandling.py:108
+#: ../gui/filehandling.py:106
 msgid "PNG transparent (*.png)"
 msgstr "Átlátszó PNG (*.png)"
 
 #. 3
-#: ../gui/filehandling.py:109
+#: ../gui/filehandling.py:107
 msgid "Multiple PNG transparent (*.XXX.png)"
 msgstr "Több átlátszó PNG (*.XXX.png)"
 
 #. 4
-#: ../gui/filehandling.py:110
+#: ../gui/filehandling.py:108
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
 msgstr "JPEG 90%-os minőség (*.jpg; *.jpeg)"
 
-#: ../gui/filehandling.py:151
+#: ../gui/filehandling.py:149
 msgid "Save..."
 msgstr "Mentés.."
 
-#: ../gui/filehandling.py:162
+#: ../gui/filehandling.py:160
 msgid "Format to save as:"
 msgstr "Mentési formátum:"
 
-#: ../gui/filehandling.py:188
+#: ../gui/filehandling.py:186
 msgid "Confirm"
 msgstr "Elfogadás"
 
-#: ../gui/filehandling.py:188
+#: ../gui/filehandling.py:186
 msgid "Really continue?"
 msgstr "Biztosan folytatod?"
 
-#: ../gui/filehandling.py:197
+#: ../gui/filehandling.py:195
 #, python-format
 msgid "This will discard %d minute of unsaved painting."
 msgid_plural "This will discard %d minutes of unsaved painting."
 msgstr[0] "%d perc mentetlen festés fog elveszni."
 msgstr[1] "%d perc mentetlen festés fog elveszni."
 
-#: ../gui/filehandling.py:202
+#: ../gui/filehandling.py:200
 #, python-format
 msgid "This will discard %d second of unsaved painting."
 msgid_plural "This will discard %d seconds of unsaved painting."
 msgstr[0] "%d másodperc mentetlen festés fog elveszni."
 msgstr[1] "%d másodperc mentetlen festés fog elveszni."
 
-#: ../gui/filehandling.py:210
+#: ../gui/filehandling.py:208
 msgid "_Save as Scrap"
 msgstr "Menté_s vázlatként"
 
-#: ../gui/filehandling.py:393
+#: ../gui/filehandling.py:391
 msgid "Open Scratchpad..."
 msgstr "Vázlattömb megnyitása..."
 
-#: ../gui/filehandling.py:698
+#: ../gui/filehandling.py:696
 #, python-format
 msgid "There are no scrap files named \"%s\" yet."
 msgstr "Még nincsen „%s”  nevű vázlat."
 
-#: ../gui/framewindow.py:34
+#: ../gui/framewindow.py:29
 msgid "Height"
 msgstr "Magasság"
 
-#: ../gui/framewindow.py:35
+#: ../gui/framewindow.py:30
 msgid "Width"
 msgstr "Szélesség"
 
-#: ../gui/framewindow.py:46
+#: ../gui/framewindow.py:41
 msgid "Crop to active layer bounds"
 msgstr "Vágás az aktív rétegek méretére"
 
-#: ../gui/framewindow.py:47
+#: ../gui/framewindow.py:42
 msgid "Crop to document bounds"
 msgstr "Vágás a dokumentumkeret méretére"
 
-#: ../gui/framewindow.py:51
+#: ../gui/framewindow.py:46
+msgid "Hold Ctrl-Shift-Space to move the frame."
+msgstr ""
+
+#: ../gui/framewindow.py:48
 msgid "Enabled"
 msgstr "Bekapcsolva"
 
-#: ../gui/functionwindow.py:38
+#: ../gui/functionwindow.py:37
 msgid "Base Value"
 msgstr "Alapérték"
 
@@ -2066,15 +1409,21 @@ msgstr "Mód: "
 msgid "Opacity:"
 msgstr "Átlátszatlanság:"
 
-#: ../gui/layerswindow.py:101
-msgid "Create a duplicate of this channel and add it to the image"
+#: ../gui/layerswindow.py:101 ../lib/command.py:269
+msgid "Duplicate Layer"
 msgstr "Réteg kétszerezése"
 
-#: ../gui/layerswindow.py:279
-msgid "Copy of "
+#: ../gui/layerswindow.py:280
+#, fuzzy, python-format
+msgid "Copy of %s"
 msgstr "Másolat: "
 
-#: ../gui/layerswindow.py:284 ../gui/layerswindow.py:327
+#: ../gui/layerswindow.py:283
+#, fuzzy, python-format
+msgid "Copy of Untitled layer #%d"
+msgstr "Névtelen réteg %d"
+
+#: ../gui/layerswindow.py:326
 #, python-format
 msgid "Untitled layer #%d"
 msgstr "Névtelen réteg %d"
@@ -2095,15 +1444,110 @@ msgstr "Leválasztás"
 msgid "Close"
 msgstr "Bezár"
 
-#: ../gui/preferenceswindow.py:20
+#: ../gui/linemode.py:19
+#, fuzzy
+msgid "Entrance Pressure"
+msgstr "Bemeneti nyomás"
+
+#: ../gui/linemode.py:19
+msgid "Stroke entrance pressure for line tools"
+msgstr ""
+
+#: ../gui/linemode.py:20
+#, fuzzy
+msgid "Midpoint Pressure"
+msgstr "Bemeneti nyomás"
+
+#: ../gui/linemode.py:20
+msgid "Mid-Stroke pressure for line tools"
+msgstr ""
+
+#: ../gui/linemode.py:21
+#, fuzzy
+msgid "Exit Pressure"
+msgstr "Nyomás"
+
+#: ../gui/linemode.py:21
+msgid "Stroke exit pressure for line tools"
+msgstr ""
+
+#: ../gui/linemode.py:22
+msgid "Head"
+msgstr ""
+
+#: ../gui/linemode.py:22
+#, fuzzy
+msgid "Stroke lead-in end"
+msgstr "Ecsetvonás tartási ideje"
+
+#: ../gui/linemode.py:23
+msgid "Tail"
+msgstr ""
+
+#: ../gui/linemode.py:23
+msgid "Stroke trail-off beginning"
+msgstr ""
+
+#. name, stock id, label,
+#. accel, tooltip,
+#. callback, default state
+#: ../gui/linemode.py:61 ../gui/stock.py:71
+msgid "Freehand"
+msgstr ""
+
+#: ../gui/linemode.py:62
+msgid "Freehand is the default painting mode"
+msgstr ""
+
+#: ../gui/linemode.py:64 ../gui/stock.py:72
+#, fuzzy
+msgid "Straight/Curved Lines"
+msgstr "Egyenes vonal"
+
+#: ../gui/linemode.py:65
+msgid ""
+"Draw straight or curved lines.\n"
+"Constrain angle by holding the Control key.\n"
+"Add curves to your last line with the Shift key."
+msgstr ""
+
+#: ../gui/linemode.py:69 ../gui/preferenceswindow.py:43 ../gui/stock.py:73
+#, fuzzy
+msgid "Sequence of Lines"
+msgstr "Egyenes vonalak sorozata"
+
+#: ../gui/linemode.py:70
+msgid ""
+"Draw a sequence straight or curved lines.\n"
+"Constrain angle by holding the Control key.\n"
+"Add curves to your last line with the Shift key."
+msgstr ""
+
+#: ../gui/linemode.py:74 ../gui/preferenceswindow.py:44 ../gui/stock.py:74
+msgid "Ellipse"
+msgstr ""
+
+#: ../gui/linemode.py:75
+msgid ""
+"Draw circles and ellipes.\n"
+"Constrain shape or roation by holding the Control key.\n"
+"Rotate holding the Shift key."
+msgstr ""
+
+#: ../gui/overlays.py:143
+#, python-format
+msgid "Zoom: %.01f%%"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:19
 msgid "Disabled (no pressure sensitivity)"
 msgstr "Kikapcsolva (nincsen nyomásérzékenység)"
 
-#: ../gui/preferenceswindow.py:21
+#: ../gui/preferenceswindow.py:20
 msgid "Screen (normal)"
 msgstr "Képernyő (normál)"
 
-#: ../gui/preferenceswindow.py:22
+#: ../gui/preferenceswindow.py:21
 msgid "Window (not recommended)"
 msgstr "Ablak (nem ajánlott)"
 
@@ -2112,91 +1556,92 @@ msgstr "Ablak (nem ajánlott)"
 #. NOTE: The translatable strings for actions are duplicated from
 #. their action definition. Please keep in sync (or refactor to get the string from there)
 #. (action_or_whatever, label)
-#: ../gui/preferenceswindow.py:33
+#: ../gui/preferenceswindow.py:32
 msgid "No action"
 msgstr "Nincsen tevékenység"
 
 #. [0] is the default for the comboboxes
-#: ../gui/preferenceswindow.py:34
+#: ../gui/preferenceswindow.py:33
 msgid "Menu"
 msgstr "Menü"
 
-#: ../gui/preferenceswindow.py:35
+#: ../gui/preferenceswindow.py:34
 msgid "Toggle Subwindows"
 msgstr "Ablakok ki-/bekapcsolása"
 
-#: ../gui/preferenceswindow.py:39
+#: ../gui/preferenceswindow.py:38
 msgid "Pan"
 msgstr "Mozgatás"
 
-#: ../gui/preferenceswindow.py:41
+#: ../gui/preferenceswindow.py:40
 msgid "Rotate"
 msgstr "Forgatás"
+
+#: ../gui/preferenceswindow.py:41
+#, fuzzy
+msgid "Move Current Layer"
+msgstr "Réteg mozgatása"
 
 #: ../gui/preferenceswindow.py:42
 msgid "Straight Line"
 msgstr "Egyenes vonal"
 
-#: ../gui/preferenceswindow.py:43
-msgid "Sequence of Straight Lines"
-msgstr "Egyenes vonalak sorozata"
-
-#: ../gui/preferenceswindow.py:44
+#: ../gui/preferenceswindow.py:45
 msgid "Color Changer"
 msgstr "Színváltó"
 
-#: ../gui/preferenceswindow.py:47
+#: ../gui/preferenceswindow.py:48
 msgid "Undo"
 msgstr "Visszavonás"
 
-#: ../gui/preferenceswindow.py:48
+#: ../gui/preferenceswindow.py:49
 msgid "Redo"
 msgstr "Újra"
 
 #. Used for creating the menus,
 #. (pref_name, label)
-#: ../gui/preferenceswindow.py:53
+#: ../gui/preferenceswindow.py:54
 msgid "Button 1 + Shift"
 msgstr "1. Gomb + Shift"
 
-#: ../gui/preferenceswindow.py:54
+#: ../gui/preferenceswindow.py:55
 msgid "Button 1 + Ctrl (or Alt)"
 msgstr "1. Gomb + Ctrl (vagy Alt)"
 
-#: ../gui/preferenceswindow.py:55
+#: ../gui/preferenceswindow.py:56
 msgid "Button 2"
 msgstr "2. Gomb"
 
-#: ../gui/preferenceswindow.py:56
+#: ../gui/preferenceswindow.py:57
 msgid "Button 2 + Shift"
 msgstr "2. Gomb + Shift"
 
-#: ../gui/preferenceswindow.py:57
+#: ../gui/preferenceswindow.py:58
 msgid "Button 2 + Ctrl (or Alt)"
 msgstr "2. Gomb + Ctrl (vagy Alt)"
 
-#: ../gui/preferenceswindow.py:58
+#: ../gui/preferenceswindow.py:59
 msgid "Button 3"
 msgstr "3. Gomb"
 
-#: ../gui/preferenceswindow.py:59
+#: ../gui/preferenceswindow.py:60
 msgid "Button 3 + Shift"
 msgstr "3. Gomb + Shift"
 
-#: ../gui/preferenceswindow.py:60
+#: ../gui/preferenceswindow.py:61
 msgid "Button 3 + Ctrl (or Alt)"
 msgstr "3. Gomb + Ctrl (vagy Alt)"
 
 #. TRANSLATORS: Tab label
-#: ../gui/preferenceswindow.py:90
+#: ../gui/preferenceswindow.py:91
 msgid "Pen Input"
 msgstr "Toll bemenet"
 
-#: ../gui/preferenceswindow.py:96
+#: ../gui/preferenceswindow.py:97
 msgid "<b>Input Device</b>"
 msgstr "<b>Bemeneti eszköz</b>"
 
-#: ../gui/preferenceswindow.py:103
+#: ../gui/preferenceswindow.py:104
 msgid ""
 "Scale input pressure to brush pressure. This is applied to all input "
 "devices. The mouse button has an input pressure of 0.5 when pressed."
@@ -2205,80 +1650,80 @@ msgstr ""
 "alkalmazásra kerül. Az egérgomb lenyomása 0.5-ös értéknek nek felel meg."
 
 #. TRANSLATORS: Graph y-axis label
-#: ../gui/preferenceswindow.py:113
+#: ../gui/preferenceswindow.py:114
 msgid "Brush Pressure"
 msgstr "Ecsetnyomás"
 
 #. TRANSLATORS: Graph x-axis label
-#: ../gui/preferenceswindow.py:123
+#: ../gui/preferenceswindow.py:124
 msgid "Input Pressure"
 msgstr "Bemeneti nyomás"
 
-#: ../gui/preferenceswindow.py:132
+#: ../gui/preferenceswindow.py:133
 msgid "Mode: "
 msgstr "Mód: "
 
-#: ../gui/preferenceswindow.py:149
+#: ../gui/preferenceswindow.py:150
 msgid "Buttons"
 msgstr "Gombok"
 
-#: ../gui/preferenceswindow.py:155
+#: ../gui/preferenceswindow.py:156
 msgid "<b>Pen and mouse button mappings</b>"
 msgstr "<b>Toll és egér gombjai</b>"
 
-#: ../gui/preferenceswindow.py:181
+#: ../gui/preferenceswindow.py:182
 msgid "Saving"
 msgstr "Mentés"
 
-#: ../gui/preferenceswindow.py:187
+#: ../gui/preferenceswindow.py:188
 msgid "<b>Saving</b>"
 msgstr "<b>Mentés</b>"
 
-#: ../gui/preferenceswindow.py:191
+#: ../gui/preferenceswindow.py:192
 msgid "Default file format:"
 msgstr "Alapértelmezett fájlformátum:"
 
-#: ../gui/preferenceswindow.py:206
+#: ../gui/preferenceswindow.py:207
 msgid "<b>Save Next Scrap</b>"
 msgstr "<b>Következő vázlat mentése</b>"
 
-#: ../gui/preferenceswindow.py:210
+#: ../gui/preferenceswindow.py:211
 msgid "Path and filename prefix:"
 msgstr "Útvonal és fájlnév előtag:"
 
-#: ../gui/preferenceswindow.py:231
+#: ../gui/preferenceswindow.py:232
 msgid "<b>Default View</b>"
 msgstr "<b>Alapértelmezett nézet</b>"
 
-#: ../gui/preferenceswindow.py:235
+#: ../gui/preferenceswindow.py:236
 msgid "Default zoom:"
 msgstr "Alapértelmezett nagyítás:"
 
-#: ../gui/preferenceswindow.py:248
+#: ../gui/preferenceswindow.py:249
 msgid "High quality zoom (may result in slow scrolling)"
 msgstr "Jó minőségű nagyítás (lassú görgetést ereményezhet)"
 
-#: ../gui/preferenceswindow.py:255
+#: ../gui/preferenceswindow.py:256
 msgid "<b>Fullscreen</b>"
 msgstr "<b>Teljes képernyő</b>"
 
-#: ../gui/preferenceswindow.py:259
+#: ../gui/preferenceswindow.py:260
 msgid "Hide menu bar"
 msgstr "Menüsáv elrejtése"
 
-#: ../gui/preferenceswindow.py:264
+#: ../gui/preferenceswindow.py:265
 msgid "Hide toolbar"
 msgstr "Eszköztár elrejtése"
 
-#: ../gui/preferenceswindow.py:269
+#: ../gui/preferenceswindow.py:270
 msgid "Hide tools"
 msgstr "Eszközök elrejtése"
 
-#: ../gui/scratchwindow.py:49
+#: ../gui/scratchwindow.py:41
 msgid "Load Scratchpad"
 msgstr "Vázlattömb betöltése"
 
-#: ../gui/scratchwindow.py:51
+#: ../gui/scratchwindow.py:43
 msgid "Save Scratchpad as..."
 msgstr "Vázlattömb mentése más néven..."
 
@@ -2297,138 +1742,165 @@ msgstr "(Nincsen megjeleníthető elem)"
 #. Tool windows. No trailing ellipses on these since none of them require
 #. further input before they can do anything: see section 4.3.2.1 of the the
 #. GNOME Human Interface Guidelines version 3.0.
-#: ../gui/stock.py:39
+#: ../gui/stock.py:50
 msgid "Brush List Editor"
 msgstr "Ecsetlista szerkesztő"
 
-#: ../gui/stock.py:40
+#: ../gui/stock.py:51
 msgid "Color Triangle"
 msgstr "Színháromszög"
 
-#: ../gui/stock.py:41
+#: ../gui/stock.py:52
 msgid "Color Sampler"
 msgstr "Színkeverő"
 
-#: ../gui/stock.py:44
+#: ../gui/stock.py:55
 msgid "Rotate Counterclockwise"
 msgstr "Forgatás balra"
 
-#: ../gui/stock.py:46
+#: ../gui/stock.py:57
 msgid "Rotate Clockwise"
 msgstr "Forgatás jobbra"
 
-#: ../gui/stock.py:48
+#: ../gui/stock.py:59
+msgid "Symmetrical Painting"
+msgstr ""
+
+#: ../gui/stock.py:60
 msgid "Mirror Horizontal"
 msgstr "Vízszintes tükrözés"
 
-#: ../gui/stock.py:49
+#: ../gui/stock.py:61
 msgid "Mirror Vertical"
 msgstr "Függőleges tükrözés"
 
-#: ../gui/stock.py:50
+#: ../gui/stock.py:62
 msgid "Blend Mode"
 msgstr "Keverési mód"
 
 #. (internal-name, display-name)
-#: ../gui/stock.py:51 ../lib/layer.py:17
+#: ../gui/stock.py:63 ../lib/layer.py:17
 msgid "Normal"
 msgstr "Normál"
 
-#: ../gui/stock.py:53
+#: ../gui/stock.py:64
+msgid "Eraser"
+msgstr "Radír"
+
+#: ../gui/stock.py:65
 msgid "Lock Alpha Channel"
 msgstr "Alpha csatorna zárolása"
 
-#: ../gui/stock.py:55
+#: ../gui/stock.py:67
+#, fuzzy
+msgid "Colorize"
+msgstr "Szín"
+
+#: ../gui/stock.py:68
 msgid "Brush Modifiers Active"
 msgstr "Az ecsetmódosítók aktívak"
 
-#: ../gui/stock.py:56
+#: ../gui/stock.py:69
 msgid "Brush Modifiers Inactive"
 msgstr "Az ecsetmódosítók inaktívak"
 
-#: ../gui/toolbar.py:32
+#: ../gui/stock.py:70 ../gui/toolbar.py:86 ../gui/toolbar.py:173
+#, fuzzy
+msgid "Line Mode"
+msgstr "Keverési mód"
+
+#: ../gui/toolbar.py:30
 msgid "File handling"
 msgstr "Fájlkezelés"
 
-#: ../gui/toolbar.py:33
+#: ../gui/toolbar.py:31
 msgid "Scraps switcher"
 msgstr "Vázlatváltó"
 
-#: ../gui/toolbar.py:34
+#: ../gui/toolbar.py:32
 msgid "Undo and Redo"
 msgstr "Visszavonás és Újra"
 
-#: ../gui/toolbar.py:35
+#: ../gui/toolbar.py:33
 msgid "Blend Modes"
 msgstr "Keverési módok"
+
+#: ../gui/toolbar.py:34
+msgid "Editing Modes"
+msgstr ""
 
 #: ../gui/toolbar.py:65
 msgid "MyPaint"
 msgstr "MyPaint"
 
-#: ../gui/toolbar.py:78
+#: ../gui/toolbar.py:80
 msgid "Current Color"
 msgstr "Jelenlegi szín"
 
-#: ../gui/toolbar.py:80
+#: ../gui/toolbar.py:82
 msgid "Current Brush"
 msgstr "Jelenlegi ecset"
 
-#: ../gui/toolbar.py:82
+#: ../gui/toolbar.py:84
 msgid "Brush Settings"
 msgstr "Ecsetbeállítások"
 
-#: ../gui/toolbar.py:154
+#: ../gui/toolbar.py:219
+#, fuzzy
+msgid "Line Pressure"
+msgstr "Nyomás"
+
+#: ../gui/toolbar.py:250
 msgid "Color History and other tools"
 msgstr "Színtörténet és egyéb eszközök"
 
 #. Colour changing
-#: ../gui/toolbar.py:177
+#: ../gui/toolbar.py:273
 msgid "Change Color"
 msgstr "Szín változtatása"
 
 #. History
 #. Brush history
-#: ../gui/toolbar.py:220 ../gui/toolbar.py:325
+#: ../gui/toolbar.py:316 ../gui/toolbar.py:421
 msgid "Recently Used"
 msgstr "Legutóbb használt"
 
-#: ../gui/toolbar.py:283
+#: ../gui/toolbar.py:379
 msgid "Brush history etc."
 msgstr "Ecsettörténet, stb."
 
 #. A limited subset of the abailable brush settings.
-#: ../gui/toolbar.py:409
+#: ../gui/toolbar.py:505
 msgid "Quick Brush Settings"
 msgstr "Gyors ecsetbeállítások"
 
-#: ../gui/toolbar.py:435
+#: ../gui/toolbar.py:531
 #, python-format
 msgid "%s:"
 msgstr "%s:"
 
-#: ../gui/toolbar.py:442
+#: ../gui/toolbar.py:538
 #, python-format
 msgid "Restore '%s' to this brush's saved value"
 msgstr "„%s” visszaállítása az ecset mentett értékeire"
 
 #. Access to the brush settings window, and a big reset-all button
 #. aligned with the settings above.
-#: ../gui/toolbar.py:460
+#: ../gui/toolbar.py:556
 msgid "Detailed Brush Settings"
 msgstr "Ecset részletes beállításai"
 
-#: ../gui/toolbar.py:475
+#: ../gui/toolbar.py:571
 msgid "Restore Saved Settings"
 msgstr "Mentett beállítások visszaállítása"
 
-#: ../gui/toolbar.py:477
+#: ../gui/toolbar.py:573
 msgid "Reset all brush settings to the current brush's saved values"
 msgstr ""
 "Az ecset összes beállításának visszaállítása a jelenlegi ecset mentett "
 "értékeire"
 
-#: ../gui/toolbar.py:487
+#: ../gui/toolbar.py:583
 msgid "Brush Blend Mode"
 msgstr "Ecset keverési módja"
 
@@ -2448,11 +1920,11 @@ msgstr "Réteg kiürítése"
 msgid "Load Layer"
 msgstr "Réteg betöltése"
 
-#: ../lib/command.py:138
+#: ../lib/command.py:137
 msgid "Merge Layers"
 msgstr "Rétegek összeolvasztása"
 
-#: ../lib/command.py:160
+#: ../lib/command.py:159
 msgid "Add Layer"
 msgstr "Réteg hozzáadása"
 
@@ -2465,43 +1937,46 @@ msgid "Select Layer"
 msgstr "Réteg kiválasztása"
 
 #: ../lib/command.py:218
-msgid "Move Layer"
+#, fuzzy
+msgid "Move Layer on Canvas"
 msgstr "Réteg mozgatása"
 
-#: ../lib/command.py:244
-msgid "Duplicate Layer"
-msgstr "Réteg kétszerezése"
-
-#: ../lib/command.py:264
-msgid "Reorder Layer"
+#: ../lib/command.py:243
+#, fuzzy
+msgid "Reorder Layer in Stack"
 msgstr "Réteg átrendezése"
 
-#: ../lib/command.py:301
+#: ../lib/command.py:290
+#, fuzzy
+msgid "Reorder Layer Stack"
+msgstr "Réteg átrendezése"
+
+#: ../lib/command.py:327
 msgid "Make Layer Visible"
 msgstr "Réteg láthatóvá tétele"
 
-#: ../lib/command.py:303
+#: ../lib/command.py:329
 msgid "Make Layer Invisible"
 msgstr "Réteg elrejtése"
 
-#: ../lib/command.py:322
+#: ../lib/command.py:348
 msgid "Lock Layer"
 msgstr "Réteg zárolása"
 
-#: ../lib/command.py:324
+#: ../lib/command.py:350
 msgid "Unlock Layer"
 msgstr "Réteg zárolásának feloldása"
 
-#: ../lib/command.py:327
+#: ../lib/command.py:353
 msgid "Change Layer Visibility"
 msgstr "Réteg láthatóságának változtatása"
 
-#: ../lib/command.py:351
+#: ../lib/command.py:377
 msgid "Change Layer Blending Mode"
 msgstr "Réteg keverési módjának változtatása"
 
 #. add a hint due to a very consfusing error message when there is no space left on device
-#: ../lib/document.py:365
+#: ../lib/document.py:397
 #, python-format
 msgid ""
 "Unable to save: %s\n"
@@ -2510,32 +1985,32 @@ msgstr ""
 "Nem lehetett menteni: %s\n"
 "Van elég hely a meghajtón?"
 
-#: ../lib/document.py:367 ../lib/document.py:370
+#: ../lib/document.py:399 ../lib/document.py:402
 #, python-format
 msgid "Unable to save: %s"
 msgstr "Nem lehetett menteni: %s"
 
-#: ../lib/document.py:375
+#: ../lib/document.py:407
 #, python-format
 msgid "File does not exist: %s"
 msgstr "A fájl nem létezik: %s"
 
-#: ../lib/document.py:377
+#: ../lib/document.py:409
 #, python-format
 msgid "You do not have the necessary permissions to open file: %s"
 msgstr "Nincs jogosultságod a fájl megnyitásához: %s"
 
-#: ../lib/document.py:385
+#: ../lib/document.py:417
 #, python-format
 msgid "Error while loading: GError %s"
 msgstr "Hiba a betöltés közben: GError %s"
 
-#: ../lib/document.py:388
+#: ../lib/document.py:420
 #, python-format
 msgid "Error while loading: IOError %s"
 msgstr "Hiba a betöltés közben: IOError %s"
 
-#: ../lib/document.py:394
+#: ../lib/document.py:426
 #, python-format
 msgid "Unknown file format extension: %s"
 msgstr "Ismeretlen formátum: %s"
@@ -2555,6 +2030,613 @@ msgstr "Fakítás"
 #: ../lib/layer.py:21
 msgid "Screen"
 msgstr "Kivetítés"
+
+#~ msgid ""
+#~ "The pressure reported by the tablet, between 0.0 and 1.0. If you use the "
+#~ "mouse, it will be 0.5 when a button is pressed and 0.0 otherwise."
+#~ msgstr ""
+#~ "A tábla által közölt nyomásérték, 0.0 és 1.0 között. Ha egeret használsz, "
+#~ "az egérgomb lenyomásakor ez 0.5 lesz, egyébként 0.0."
+
+#~ msgid "Fine speed"
+#~ msgstr "Finom sebesség"
+
+#~ msgid ""
+#~ "How fast you currently move. This can change very quickly. Try 'print "
+#~ "input values' from the 'help' menu to get a feeling for the range; "
+#~ "negative values are rare but possible for very low speed."
+#~ msgstr ""
+#~ "A pillanatnyi sebesség, ami nagyon gyorsan tud változni. Próbáld ki az "
+#~ "„Ecset bemeneti értékeinek kiírását a „Súgó” menüben, és láthatod az "
+#~ "érték tartományt. Negatív értékek ritkán, de előfordulhatnak, ha nagyon "
+#~ "lassú a mozgás."
+
+#~ msgid "Gross speed"
+#~ msgstr "Durva sebesség"
+
+#~ msgid ""
+#~ "Same as fine speed, but changes slower. Also look at the 'gross speed "
+#~ "filter' setting."
+#~ msgstr ""
+#~ "Ugyanaz, mint a „finom sebesség” , csak lassabban változik. Érdemes "
+#~ "megnézni a „durva sebesség szűrő” -t is."
+
+#~ msgid "Random"
+#~ msgstr "Véletlenszerű"
+
+#~ msgid ""
+#~ "Fast random noise, changing at each evaluation. Evenly distributed "
+#~ "between 0 and 1."
+#~ msgstr ""
+#~ "Gyors, véletlenszerű zaj, ami minden lépés során változik. Egyenletes "
+#~ "eloszlású, 0 és 1 között mozog."
+
+#~ msgid ""
+#~ "This input slowly goes from zero to one while you draw a stroke. It can "
+#~ "also be configured to jump back to zero periodically while you move. Look "
+#~ "at the 'stroke duration' and 'stroke hold time' settings."
+#~ msgstr ""
+#~ "Ez az érték az ecsetvonás közben 0-tól lassan 1-ig nő. Be lehet állítani "
+#~ "úgy is, hogy periodikusan visszaugorjon 0-ra. Nézd meg az „ecsetvonás "
+#~ "hossza”  és az „ecsetvonás tartási ideje” beállításokat!"
+
+#~ msgid "Direction"
+#~ msgstr "Irány"
+
+#~ msgid ""
+#~ "The angle of the stroke, in degrees. The value will stay between 0.0 and "
+#~ "180.0, effectively ignoring turns of 180 degrees."
+#~ msgstr ""
+#~ "Az ecset szöge fokban. Az érték 0.0 és 180.0 között mozoghat, tehát a 180 "
+#~ "fokos fordulást már figyelmen kívül hagyja."
+
+#~ msgid "Declination"
+#~ msgstr "Dőlésszög"
+
+#~ msgid ""
+#~ "Declination of stylus tilt. 0 when stylus is parallel to tablet and 90.0 "
+#~ "when it's perpendicular to tablet."
+#~ msgstr ""
+#~ "A toll dőlésszöge. 0, ha a toll párhuzamos a táblával, 90, ha merőleges."
+
+#~ msgid "Ascension"
+#~ msgstr "Irányszög"
+
+#~ msgid ""
+#~ "Right ascension of stylus tilt. 0 when stylus working end points to you, "
+#~ "+90 when rotated 90 degrees clockwise, -90 when rotated 90 degrees "
+#~ "counterclockwise."
+#~ msgstr ""
+#~ "A toll irányszöge. 0, ha a toll előre mutat. +90, ha a a toll az "
+#~ "óramutató járásával megegyező irányba 90°-kal elfordul; -90, ha ellenkező "
+#~ "irányba fordul 90°-ot."
+
+#~ msgid ""
+#~ "This is a user defined input. Look at the 'custom input' setting for "
+#~ "details."
+#~ msgstr ""
+#~ "Ez egy felhasználó által meghatározott bemenet. Nézd meg a „saját "
+#~ "bemenet”  beállításait a részletekért!"
+
+#~ msgid ""
+#~ "0 means brush is transparent, 1 fully visible\n"
+#~ "(also known as alpha or opacity)"
+#~ msgstr ""
+#~ "A 0 azt jelenti, hogy az ecset átlátszó, az 1 pedig, hogy teljesen "
+#~ "látható.\n"
+#~ "(Alpha-ként, vagy átlátszatlanságként is ismert)"
+
+#~ msgid "Opacity multiply"
+#~ msgstr "Átlátszatlanság szorzó"
+
+#~ msgid ""
+#~ "This gets multiplied with opaque. You should only change the pressure "
+#~ "input of this setting. Use 'opaque' instead to make opacity depend on "
+#~ "speed.\n"
+#~ "This setting is responsible to stop painting when there is zero pressure. "
+#~ "This is just a convention, the behaviour is identical to 'opaque'."
+#~ msgstr ""
+#~ "Az átlátszatlanság ezzel az értékkel lesz megszorozva. Ennek a "
+#~ "beállításnak csak a nyomásbemenetét kell megváltoztatni. Ha szeretnéd, "
+#~ "hogy az átlátszatlanság a sebességtől függjön, használd inkább az "
+#~ "„átlátszatlanság”  beállítást.\n"
+#~ "Ez a beállítás felelős azért, hogy 0 nyomás esetén megszakadjon a "
+#~ "rajzolás. A viselkedés megegyezik az „átlátszatlanság”  beállítással."
+
+#~ msgid "Opacity linearize"
+#~ msgstr "Átlátszatlanság lineárissá tétele"
+
+#~ msgid ""
+#~ "Correct the nonlinearity introduced by blending multiple dabs on top of "
+#~ "each other. This correction should get you a linear (\"natural\") "
+#~ "pressure response when pressure is mapped to opaque_multiply, as it is "
+#~ "usually done. 0.9 is good for standard strokes, set it smaller if your "
+#~ "brush scatters a lot, or higher if you use dabs_per_second.\n"
+#~ "0.0 the opaque value above is for the individual dabs\n"
+#~ "1.0 the opaque value above is for the final brush stroke, assuming each "
+#~ "pixel gets (dabs_per_radius*2) brushdabs on average during a stroke"
+#~ msgstr ""
+#~ "Az egymásra rajzolt foltok összemosásakor keletkező egyenetlenséget "
+#~ "korrigálja. Ennek eredményeként lineáris, természetes nyomást kap, ha a "
+#~ "nyomás az „Átlátszatlanság szorzás” -ra van állítva, ahogy általában "
+#~ "lenni szokott. A 0.9 általános beállításként elfogadható, de állítsd "
+#~ "inkább alacsonyabbra, ha az ecsetnek nagy a szórása, vagy magasabbra, ha "
+#~ "a „Foltok száma másodpercenként”  magas.\n"
+#~ "0.0: a fenti átlátszatlanság érték az egyes foltokra vonatkozik\n"
+#~ "1.0 a fenti átlátszatlanság érték a végső ecsetvonásra vonatkozik, "
+#~ "felételezve, hogy minden pixel „Foltok száma sugaranként” *2 foltot kap "
+#~ "átlagosan"
+
+#~ msgid "Radius"
+#~ msgstr "Sugár"
+
+#~ msgid ""
+#~ "Basic brush radius (logarithmic)\n"
+#~ " 0.7 means 2 pixels\n"
+#~ " 3.0 means 20 pixels"
+#~ msgstr ""
+#~ "Alap ecset-sugár (logaritmikus)\n"
+#~ "0.7 = 2 pixel\n"
+#~ "3.0 = 20 pixel"
+
+#~ msgid "Hardness"
+#~ msgstr "Keménység"
+
+#~ msgid ""
+#~ "Hard brush-circle borders (setting to zero will draw nothing). To reach "
+#~ "the maximum hardness, you need to disable Anti-aliasing."
+#~ msgstr ""
+#~ "Kemény ecset-körvonal (0-ra állítva az ecset nem fog festeni). A "
+#~ "maximális keménység eléréséhez ki kell kapcsolni az élsimítást."
+
+#~ msgid "Anti-aliasing"
+#~ msgstr "Élsimítás"
+
+#~ msgid ""
+#~ "This setting decreases the hardness when necessary to prevent a pixel "
+#~ "staircase effect.\n"
+#~ " 0.0 disable (for very strong erasers and pixel brushes)\n"
+#~ " 1.0 blur one pixel (good value)\n"
+#~ " 5.0 notable blur, thin strokes will disappear"
+#~ msgstr ""
+#~ "Ez a beállítás csökkenti a keménységet ha szükséges, hogy megakadályozza "
+#~ "az élek lépcsősödését.\n"
+#~ "0.0 kikapcsolva (nagyon erős radírokhoz és pixelecsetekhez)\n"
+#~ "1.0 egy pixelnyi elmosás (ajánlott érték)\n"
+#~ "5.0 jelentős elmosás, a vékony vonalak eltűnnek"
+
+#~ msgid "Dabs per basic radius"
+#~ msgstr "Foltok száma alap sugaranként"
+
+#~ msgid ""
+#~ "How many dabs to draw while the pointer moves a distance of one brush "
+#~ "radius (more precise: the base value of the radius)"
+#~ msgstr ""
+#~ "Hány foltot rajzoljon ki, míg az ecset egy ecset-sugárnyit elmozdul "
+#~ "(pontosabban: a sugár alapja a távolság)"
+
+#~ msgid "Dabs per actual radius"
+#~ msgstr "A foltok száma pillanatnyi sugaranként"
+
+#~ msgid ""
+#~ "Same as above, but the radius actually drawn is used, which can change "
+#~ "dynamically"
+#~ msgstr ""
+#~ "Ugyanaz, mint a fölötte lévő, de a valós, rajzolt sugarat veszi alapul, "
+#~ "ami dinamikusan változhat."
+
+#~ msgid "Dabs per second"
+#~ msgstr "Foltok száma másodpercenként"
+
+#~ msgid "Dabs to draw each second, no matter how far the pointer moves"
+#~ msgstr ""
+#~ "A rajzolandó foltok száma másodpercenként, a megtett úttól függetlenül"
+
+#~ msgid "Radius by random"
+#~ msgstr "Véletlenszerű sugár"
+
+#~ msgid ""
+#~ "Alter the radius randomly each dab. You can also do this with the "
+#~ "by_random input on the radius setting. If you do it here, there are two "
+#~ "differences:\n"
+#~ "1) the opaque value will be corrected such that a big-radius dabs is more "
+#~ "transparent\n"
+#~ "2) it will not change the actual radius seen by dabs_per_actual_radius"
+#~ msgstr ""
+#~ "A sugár foltonként véletlenszerűen változik, hasonlóan ahhoz, mintha a  "
+#~ "„Véletlenszerű bemenet szerint”  bemenetet használnád a sugár "
+#~ "beállításánál.Az itteni beállítás két dologban tér el ettől:\n"
+#~ "1. Az átlátszatlanság érték úgy módosul, hogy a nagyobb foltok "
+#~ "átlátszóbbak lesznek\n"
+#~ "2. Nem hat a „valós sugár” bemenet által látott értékre"
+
+#~ msgid "Fine speed filter"
+#~ msgstr "Finom sebesség szűrő"
+
+#~ msgid ""
+#~ "How slow the input fine speed is following the real speed\n"
+#~ "0.0 change immediately as your speed changes (not recommended, but try it)"
+#~ msgstr ""
+#~ "Milyen lassan követi a finom sebesség bemenet a valós sebességet.\n"
+#~ "A 0.0 érték azonnali változást eredményez, ahogy a sebességed változik "
+#~ "(nem ajánlott, de próbáld csak ki)."
+
+#~ msgid "Gross speed filter"
+#~ msgstr "Durva sebesség szűrő"
+
+#~ msgid "Same as 'fine speed filter', but note that the range is different"
+#~ msgstr "Ugyanaz, mint a „finom sebesség szűrő” , de más a tartomány. "
+
+#~ msgid "Fine speed gamma"
+#~ msgstr "Finom sebesség gamma"
+
+#~ msgid ""
+#~ "This changes the reaction of the 'fine speed' input to extreme physical "
+#~ "speed. You will see the difference best if 'fine speed' is mapped to the "
+#~ "radius.\n"
+#~ "-8.0 very fast speed does not increase 'fine speed' much more\n"
+#~ "+8.0 very fast speed increases 'fine speed' a lot\n"
+#~ "For very slow speed the opposite happens."
+#~ msgstr ""
+#~ "Ez a beállítás a „Sebesség1”  extrém fizikai sebességekre adott "
+#~ "reakcióját változtatja meg. A különbség akkor érzékelhető a legjobban, ha "
+#~ "a „Sebesség1”  a Sugarat vezérli.\n"
+#~ "-8.0: a nagyon gyors változás kevésbé hat a „Sebesség1” -re\n"
+#~ "+8.0: a nagyon gyors változás erősebben hat a „Sebesség1” -re\n"
+#~ "Nagyon kis sebességeknél a hatás ellentétes."
+
+#~ msgid "Gross speed gamma"
+#~ msgstr "Durva sebesség gamma"
+
+#~ msgid "Same as 'fine speed gamma' for gross speed"
+#~ msgstr ""
+#~ "Ugyanaz, mint a „Finom sebesség gamma” , csak a „Durva sebesség”-nek"
+
+#~ msgid "Jitter"
+#~ msgstr "Szórás"
+
+#~ msgid ""
+#~ "Add a random offset to the position where each dab is drawn\n"
+#~ " 0.0 disabled\n"
+#~ " 1.0 standard deviation is one basic radius away\n"
+#~ "<0.0 negative values produce no jitter"
+#~ msgstr ""
+#~ "Véletlen eltolást ad minden egyes foltnak.\n"
+#~ "0.0: nincsen eltolás\n"
+#~ "1.0: a standard deviáció (szórási távolság) egy alap-sugárnyi\n"
+#~ "<0.0: negatív értékek használatakor nincsen szórás"
+
+#~ msgid "Offset by speed"
+#~ msgstr "Eltolás sebesség szerint"
+
+#~ msgid ""
+#~ "Change position depending on pointer speed\n"
+#~ "= 0 disable\n"
+#~ "> 0 draw where the pointer moves to\n"
+#~ "< 0 draw where the pointer comes from"
+#~ msgstr ""
+#~ "A pozíció változtatása a sebesség függvényében\n"
+#~ "= 0: kikapcsolva\n"
+#~ "> 0: a mozgás céljánál rajzol\n"
+#~ "< 0: a mozgás kiindulási pontjánál rajzol"
+
+#~ msgid "Offset by speed filter"
+#~ msgstr "Eltolás a sebesség szűrő szerint"
+
+#~ msgid "How slow the offset goes back to zero when the cursor stops moving"
+#~ msgstr "Milyen lassan tér vissza az eltolás 0-ra, miután a kurzor megállt."
+
+#~ msgid "Slow position tracking"
+#~ msgstr "Lassú pozíció-követés"
+
+#~ msgid ""
+#~ "Slowdown pointer tracking speed. 0 disables it, higher values remove more "
+#~ "jitter in cursor movements. Useful for drawing smooth, comic-like "
+#~ "outlines."
+#~ msgstr ""
+#~ "Csökkenti a kurzor követésének sebességét. A 0 kikapcsolja, a nagyobb "
+#~ "értékek csökkentik a kurzor remegését. Hasznos lehet sima, képregényszerű "
+#~ "vonalak rajzolásához."
+
+#~ msgid "Slow tracking per dab"
+#~ msgstr "Lassú pozíció-követés foltonként"
+
+#~ msgid ""
+#~ "Similar as above but at brushdab level (ignoring how much time has past, "
+#~ "if brushdabs do not depend on time)"
+#~ msgstr ""
+#~ "Hasonló a felette lévőhöz, de folt-szinten. (Nem veszi figyelembe az "
+#~ "eltelt időt, ha a foltok száma nem függ az időtől.)"
+
+#~ msgid "Tracking noise"
+#~ msgstr "Követési zaj"
+
+#~ msgid ""
+#~ "Add randomness to the mouse pointer; this usually generates many small "
+#~ "lines in random directions; maybe try this together with 'slow tracking'"
+#~ msgstr ""
+#~ "Véletlenszerűséget ad a kurzor mozgásához: ez általában kis, "
+#~ "véletlenszerű irányokba induló vonalakat eredményez. Érdemes lehet "
+#~ "kipróbálni a „Lassú követéssel” együtt."
+
+#~ msgid "Color hue"
+#~ msgstr "Szín árnyalata"
+
+#~ msgid "Color saturation"
+#~ msgstr "Szín telítettsége"
+
+#~ msgid "Color value"
+#~ msgstr "Szín értéke"
+
+#~ msgid "Color value (brightness, intensity)"
+#~ msgstr "Árnyalat (világosság, intenzitás)"
+
+#~ msgid "Save color"
+#~ msgstr "Szín mentése"
+
+#~ msgid ""
+#~ "When selecting a brush, the color can be restored to the color that the "
+#~ "brush was saved with.\n"
+#~ " 0.0 do not modify the active color when selecting this brush\n"
+#~ " 0.5 change active color towards brush color\n"
+#~ " 1.0 set the active color to the brush color when selected"
+#~ msgstr ""
+#~ "Egy ecset kiválasztásakor a színt vissza lehet állítani arra a színre, "
+#~ "amelyikkel korábban elmentetted.\n"
+#~ "0.0 ne módosítsa az aktív színt az ecset kiválasztásakor\n"
+#~ "0.5 a két szín keverése 1.0 az aktív szín átállítása a mentett színre"
+
+#~ msgid "Change color hue"
+#~ msgstr "Árnyalat megváltoztatása"
+
+#~ msgid ""
+#~ "Change color hue.\n"
+#~ "-0.1 small clockwise color hue shift\n"
+#~ " 0.0 disable\n"
+#~ " 0.5 counterclockwise hue shift by 180 degrees"
+#~ msgstr ""
+#~ "A szín árnyalatát változtatja.\n"
+#~ "-0.1: kis mértékű, óramutató járásával megegyező irányú árnyalat-eltolás\n"
+#~ "0.0: nincsen eltolás\n"
+#~ "0.5: óramutató járásával ellentétes irányú, 180 fokos eltolás."
+
+#~ msgid "Change color lightness (HSL)"
+#~ msgstr "Szín világosságának változtatása (HSL)"
+
+#~ msgid ""
+#~ "Change the color lightness (luminance) using the HSL color model.\n"
+#~ "-1.0 blacker\n"
+#~ " 0.0 disable\n"
+#~ " 1.0 whiter"
+#~ msgstr ""
+#~ "A szín világosságának (luminancia, fényerő) változtatása a HSL színmodell "
+#~ "szerint.\n"
+#~ "-1.0: feketébb\n"
+#~ "0.0: nincs változás\n"
+#~ "1.0: fehérebb"
+
+#~ msgid "Change color satur. (HSL)"
+#~ msgstr "Szín telítettségének változtatása (HSL)"
+
+#~ msgid ""
+#~ "Change the color saturation using the HSL color model.\n"
+#~ "-1.0 more grayish\n"
+#~ " 0.0 disable\n"
+#~ " 1.0 more saturated"
+#~ msgstr ""
+#~ "A szín telítettségének változtatása a HSL színmodell szerint.\n"
+#~ "-1.0: szürkébb\n"
+#~ "0.0: nincs változtatás\n"
+#~ "1.0: telítettebb"
+
+#~ msgid "Change color value (HSV)"
+#~ msgstr "Szín értékének változtatása (HSV)"
+
+#~ msgid ""
+#~ "Change the color value (brightness, intensity) using the HSV color model. "
+#~ "HSV changes are applied before HSL.\n"
+#~ "-1.0 darker\n"
+#~ " 0.0 disable\n"
+#~ " 1.0 brigher"
+#~ msgstr ""
+#~ "A szín értékének változtatása (világosság, intenzitás) a HSV színmodell "
+#~ "szerint. A HSV változtatások a HSL előtt kerülnek alkalmazásra.\n"
+#~ "-1.0: sötétebb\n"
+#~ "0.0: nincs változtatás\n"
+#~ "1.0: világosabb"
+
+#~ msgid "Change color satur. (HSV)"
+#~ msgstr "Szín telítettségének változtatása (HSV)"
+
+#~ msgid ""
+#~ "Change the color saturation using the HSV color model. HSV changes are "
+#~ "applied before HSL.\n"
+#~ "-1.0 more grayish\n"
+#~ " 0.0 disable\n"
+#~ " 1.0 more saturated"
+#~ msgstr ""
+#~ "A szín telítettségének változtatása a HSV színmodell szerint. A HSV "
+#~ "változtatások a HSL előtt kerülnek alkalmazásra.\n"
+#~ "-1.0: szürkébb\n"
+#~ "0.0: nincs változtatás\n"
+#~ "1.0: telítettebb"
+
+#~ msgid ""
+#~ "Paint with the smudge color instead of the brush color. The smudge color "
+#~ "is slowly changed to the color you are painting on.\n"
+#~ " 0.0 do not use the smudge color\n"
+#~ " 0.5 mix the smudge color with the brush color\n"
+#~ " 1.0 use only the smudge color"
+#~ msgstr ""
+#~ "Az elkenési színnel fest az ecset színe helyett. Az elkenési szín lassan "
+#~ "arra a színre változik, mint amire éppen fest.\n"
+#~ "0.0: ne használja az elkenési színt0.5: az elkenési- és az ecset-szín "
+#~ "keverése1.0: csak az elkenési szín használata"
+
+#~ msgid "Smudge length"
+#~ msgstr "Elkenés hossza"
+
+#~ msgid ""
+#~ "This controls how fast the smudge color becomes the color you are "
+#~ "painting on.\n"
+#~ "0.0 immediately update the smudge color (requires more CPU cycles because "
+#~ "of the frequent color checks)\n"
+#~ "0.5 change the smudge color steadily towards the canvas color\n"
+#~ "1.0 never change the smudge color"
+#~ msgstr ""
+#~ "Milyen gyorsan veszi fel az elkenés azt a színt, amire éppen fest.\n"
+#~ "0.0: azonnal változzon (nagyobb a processzorigénybevétel a gyakoribb "
+#~ "színellenőrzés miatt)\n"
+#~ "0.5 fokozatosan veszi fel a színt az elkenés\n"
+#~ "1.0: soha nem változik"
+
+#~ msgid "Smudge radius"
+#~ msgstr "Elkenés sugara"
+
+#~ msgid ""
+#~ "This modifies the radius of the circle where color is picked up for "
+#~ "smudging.\n"
+#~ " 0.0 use the brush radius\n"
+#~ "-0.7 half the brush radius (fast, but not always intuitive)\n"
+#~ "+0.7 twice the brush radius\n"
+#~ "+1.6 five times the brush radius (slow performance)"
+#~ msgstr ""
+#~ "Elkenéskor módosítja a színvétel sugarát.\n"
+#~ " 0.0 ecsetsugár használata \n"
+#~ "-0.7 az ecset sugarának fele(gyors, de nem mindig intuitív)\n"
+#~ "+0.7 az ecset sugarának kétszerese\n"
+#~ "+1.6 az ecset sugarának  ötszöröse (lassú)"
+
+#~ msgid ""
+#~ "how much this tool behaves like an eraser\n"
+#~ " 0.0 normal painting\n"
+#~ " 1.0 standard eraser\n"
+#~ " 0.5 pixels go towards 50% transparency"
+#~ msgstr ""
+#~ "Mennyire fog ez az eszköz radírként viselkedni.\n"
+#~ "0.0: sima festés\n"
+#~ "1.0: radír\n"
+#~ "0.5 a pixelek az 50%-os átlátszóság felé közelítenek"
+
+#~ msgid "Stroke threshold"
+#~ msgstr "Ecsetvonási küszöb"
+
+#~ msgid ""
+#~ "How much pressure is needed to start a stroke. This affects the stroke "
+#~ "input only. Mypaint does not need a minimal pressure to start drawing."
+#~ msgstr ""
+#~ "Mekkora nyomás szükséges a vonás elkezdéséhez. Csak az ecsetvonás "
+#~ "bemenetre hat. A MyPaint-nek nincsen szüksége minimális nyomásra sem a "
+#~ "rajzolás megkezdésekor."
+
+#~ msgid "Stroke duration"
+#~ msgstr "Ecsetvonás hossza"
+
+#~ msgid ""
+#~ "How far you have to move until the stroke input reaches 1.0. This value "
+#~ "is logarithmic (negative values will not inverse the process)."
+#~ msgstr ""
+#~ "Milyen táv után lesz a bemeneti érték 1.0. Ez az érték logaritmikus.\n"
+#~ "(a negatív értékek nem fordítják meg a folyamatot)"
+
+#~ msgid ""
+#~ "This defines how long the stroke input stays at 1.0. After that it will "
+#~ "reset to 0.0 and start growing again, even if the stroke is not yet "
+#~ "finished.\n"
+#~ "2.0 means twice as long as it takes to go from 0.0 to 1.0\n"
+#~ "9.9 and bigger stands for infinite"
+#~ msgstr ""
+#~ "Azt határozza meg, hogy az ecsetvonás bemeneti értéke milyen sokáig marad "
+#~ "1.0. Ezután visszaugrik 0.0-ra, és újból nőni kezd, még akkor is, ha az "
+#~ "ecsetvonás még nem fejeződött be.\n"
+#~ "2.0: kétszer olyan hosszú, míg 0.0-tól 1.0-ig ér\n"
+#~ "a 9.9 és ennél nagyobb számok már a végtelent jelentik"
+
+#~ msgid "Custom input"
+#~ msgstr "Saját bemenet"
+
+#~ msgid ""
+#~ "Set the custom input to this value. If it is slowed down, move it towards "
+#~ "this value (see below). The idea is that you make this input depend on a "
+#~ "mixture of pressure/speed/whatever, and then make other settings depend "
+#~ "on this 'custom input' instead of repeating this combination everywhere "
+#~ "you need it.\n"
+#~ "If you make it change 'by random' you can generate a slow (smooth) random "
+#~ "input."
+#~ msgstr ""
+#~ "A „Saját bemenetet” erre az értékre állítja. Ha lelassul, efelé az érték "
+#~ "felé közelíti (lásd lejjebb). Ez lehetővé teszi, hogy a bemenet a nyomás/"
+#~ "sebesség/stb. keveréke legyen, majd a többi beállítást ettől függővé "
+#~ "lehet tenni, anélkül, hogy ezt a kombinációt máshol is újra be kellene "
+#~ "állítani.\n"
+#~ "Ha a „Véletlenszerű szerinti” változásra állítod, lassú (sima) "
+#~ "véletlenszerű bemenetet tudsz létrehozni."
+
+#~ msgid "Custom input filter"
+#~ msgstr "Saját bemenet szűrő"
+
+#~ msgid ""
+#~ "How slow the custom input actually follows the desired value (the one "
+#~ "above). This happens at brushdab level (ignoring how much time has past, "
+#~ "if brushdabs do not depend on time).\n"
+#~ "0.0 no slowdown (changes apply instantly)"
+#~ msgstr ""
+#~ "Milyen lassan követi a saját bemenet a kívánt értéket (a fentebb lévőt). "
+#~ "Ez folt szinten működik, figyelmen kívül hagyva az időt, hacsak a foltok "
+#~ "száma nem függ az időtől.\n"
+#~ "0.0: nincsen lassulás (a változásokat azonnal alkalmazza)"
+
+#~ msgid "Elliptical dab: ratio"
+#~ msgstr "Elliptikus folt: arány"
+
+#~ msgid ""
+#~ "Aspect ratio of the dabs; must be >= 1.0, where 1.0 means a perfectly "
+#~ "round dab. TODO: linearize? start at 0.0 maybe, or log?"
+#~ msgstr ""
+#~ "A foltok átlóinak aránya; >= 1.0, ahol az 1.0 a tökéletes kört jelenti."
+
+#~ msgid "Elliptical dab: angle"
+#~ msgstr "Elliptikus folt: szög"
+
+#~ msgid ""
+#~ "Angle by which elliptical dabs are tilted\n"
+#~ " 0.0 horizontal dabs\n"
+#~ " 45.0 45 degrees, turned clockwise\n"
+#~ " 180.0 horizontal again"
+#~ msgstr ""
+#~ "Az elliptikus foltok döntésének szöge.\n"
+#~ "0.0: vízszintes foltok\n"
+#~ "45.0: átlós, jobbra döntött\n"
+#~ "180: ez is vízszintes"
+
+#~ msgid "Direction filter"
+#~ msgstr "Irány szűrő"
+
+#~ msgid ""
+#~ "A low value will make the direction input adapt more quickly, a high "
+#~ "value will make it smoother"
+#~ msgstr ""
+#~ "Alacsony értékeknél az irány bemenet sokkal gyorsabban alkalmazkodik, "
+#~ "magas értékeknél viszont finomabb lesz a vonal."
+
+#~ msgid "Lock alpha"
+#~ msgstr "Alpha zárolása"
+
+#~ msgid ""
+#~ "Do not modify the alpha channel of the layer (paint only where there is "
+#~ "paint already)\n"
+#~ " 0.0 normal painting\n"
+#~ " 0.5 half of the paint gets applied normally\n"
+#~ " 1.0 alpha channel fully locked"
+#~ msgstr ""
+#~ "Ne módosítsa a réteg alpha csatornáját (csak ott fessen, ahol már most is "
+#~ "van festék)\n"
+#~ "0.0 normál festés\n"
+#~ "0.5 a festék fele normálisan kerül fel\n"
+#~ "1.0 az alpha csatornát teljesen zárolja"
+
+#~ msgid "Create a duplicate of this channel and add it to the image"
+#~ msgstr "Réteg kétszerezése"
 
 #~ msgid "Brush selection"
 #~ msgstr "Ecsetválasztás"
