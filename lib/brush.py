@@ -10,6 +10,7 @@ import mypaintlib
 from brushlib import brushsettings
 import helpers
 import urllib, copy, math
+import json
 
 string_value_settings = set(("parent_brush_name", "group"))
 current_brushfile_version = 2
@@ -103,8 +104,60 @@ class BrushInfo:
     class Obsolete(ParseError):
         pass
 
+    def to_json(self):
+        settings = dict(self.settings)
+
+        # Parent brush is not really a brush (engine) setting
+        parent_brush_name = settings.pop('parent_brush_name', '')
+        # Neither is group
+        brush_group = settings.pop('group', '')
+
+        # Make the contents of each setting a bit more explicit
+        for k, v in settings.items():
+            base_value, inputs = v
+            settings[k] = {'base_value': base_value, 'inputs': inputs}
+
+        document = {'version': 3,
+                    'comment': """MyPaint brush file""",
+                    'parent_brush_name': parent_brush_name,
+                    'settings': settings,
+                    'group': brush_group,
+                   }
+        return json.dumps(document, sort_keys=True, indent=4)
+
+    def from_json(self, json_string):
+        brush_def = json.loads(json_string)
+        assert(brush_def['version'] == 3)
+
+        settings = brush_def['settings']
+
+        # MyPaint expects that each setting has an array, where
+        # index 0 is base value, and index 1 is inputs
+        for k, v in settings.items():
+            base_value, inputs = v['base_value'], v['inputs']
+            settings[k] = [base_value, inputs]
+
+        # MyPaint expects parent brush as a setting
+        settings['parent_brush_name'] = brush_def['parent_brush_name']
+        # and group
+        settings['group'] = brush_def['group']
+
+        self.settings = settings
+
     def load_from_string(self, settings_str):
         """Load a setting string, overwriting all current settings."""
+
+        try:
+            self.from_json(settings_str)
+        except Exception, e:
+            print e
+            self._load_old_format(settings_str)
+
+        for f in self.observers:
+            f(all_settings)
+        self.cache_str = settings_str   # Maybe. It could still be old format...
+
+    def _load_old_format(self, settings_str):
 
         def parse_value(rawvalue, cname, version):
             """Parses a setting value, for a given setting name and brushfile version."""
@@ -222,14 +275,19 @@ class BrushInfo:
         if errors:
             for error in errors:
                 print error
-        for f in self.observers:
-            f(all_settings)
-        self.cache_str = settings_str   # Maybe. It could still be old format...
+
 
     def save_to_string(self):
         """Serialise brush information to a string. Result is cached."""
         if self.cache_str:
             return self.cache_str
+
+        res = self.to_json()
+
+        self.cache_str = res
+        return res
+
+    def _save_old_format(self):
         res = '# mypaint brush file\n'
         res += '# you can edit this file and then select the brush in mypaint (again) to reload\n'
         res += 'version %d\n' % current_brushfile_version
@@ -247,7 +305,7 @@ class BrushInfo:
                         res += " | " + inputname + ' '
                         res += ', '.join(['(%f %f)' % xy for xy in points])
             res += "\n"
-        self.cache_str = res
+
         return res
 
     def get_base_value(self, cname):
