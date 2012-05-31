@@ -24,6 +24,7 @@ opts.Add(PathVariable('prefix', 'autotools-style installation prefix', default_p
 opts.Add(BoolVariable('debug', 'enable HEAVY_DEBUG and disable optimizations', False))
 opts.Add(BoolVariable('brushlib_only', 'only build and install brushlib/', False))
 opts.Add(BoolVariable('enable_gegl', 'enable GEGL based code in build', False))
+opts.Add(BoolVariable('enable_introspection', 'enable GObject introspection support', False))
 
 tools = ['default', 'textfile']
 

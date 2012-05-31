@@ -2,6 +2,32 @@ Import('env', 'python', 'install_perms')
 
 import os
 
+def add_gobject_introspection(env, gi_name, version,
+                              func_prefix, type_prefix,
+                              sources, includepath, library, pkgs):
+
+    pkgs = ' '.join('--pkg=%s' % dep for dep in pkgs)
+    library = library[0] # there should be only one Node in the list
+
+    # Strip the library path to get the library name
+    libname = os.path.basename(library.get_path())
+    libname = os.path.splitext(libname)[0]
+    if libname.startswith('lib'):
+        libname = libname[3:]
+
+    scanner_cmd = """g-ir-scanner -o $TARGET --warn-all \
+        --namespace=%(gi_name)s --nsversion=%(version)s \
+        --identifier-prefix=%(type_prefix)s --symbol-prefix=%(func_prefix)s \
+        %(pkgs)s -I%(includepath)s \
+        --library=%(libname)s $SOURCES""" % locals()
+
+    gir_file = env.Command("%s.gir" % gi_name, sources, scanner_cmd)
+    env.Depends(gir_file, library)
+    typelib_file = env.Command("%s.typelib" % gi_name, gir_file,
+                           "g-ir-compiler -o $TARGET $SOURCE")
+
+    return (gir_file, typelib_file)
+
 # NOTE: We use a copy of the environment, to be able to both inherit common options,
 # and also add our own specifics ones without affecting the other builds
 top_env = env
@@ -29,6 +55,14 @@ env.Clean('.', 'mypaint-brush-settings-gen.h')
 env.Clean('.', Glob('*.pyc'))
 
 brushlib = env.SharedLibrary('../mypaint-brushlib', Glob("*.c"))
+
+if env['enable_introspection']:
+    gir, typelib = add_gobject_introspection(env, "MyPaint", pkg_info["@VERSION@"],
+                              "mypaint_", "MyPaint",
+                              Glob("*.c") + Glob("mypaint-*.h"), './brushlib', brushlib, ['glib-2.0'])
+
+    install_perms(env, '$prefix/share/gir-1.0', gir)
+    install_perms(env, '$prefix/lib/girepository-1.0', typelib)
 
 install_perms(env, '$prefix/lib/', brushlib)
 install_perms(env, '$prefix/include/libmypaint', Glob("./mypaint-*.h"))
@@ -61,5 +95,14 @@ if env['enable_gegl']:
     brushlib_gegl = gegl_env.SharedLibrary('../mypaint-brushlib-gegl', Glob("./gegl/*.c"))
     install_perms(env, '$prefix/lib/', brushlib_gegl)
     install_perms(env, '$prefix/include/libmypaint-gegl', Glob("./gegl/mypaint-gegl-*.h"))
+
+    if gegl_env['enable_introspection']:
+        gir, typelib = add_gobject_introspection(gegl_env, "MyPaintGegl", pkg_info["@VERSION@"],
+                                  "mypaint_gegl", "MyPaintGegl",
+                                  Glob("gegl/*.c") + Glob("gegl/mypaint-gegl-*.h"),
+                                  './brushlib/gegl', brushlib_gegl, ['glib-2.0', 'gegl-0.2'])
+
+        install_perms(env, '$prefix/share/gir-1.0', gir)
+        install_perms(env, '$prefix/lib/girepository-1.0', typelib)
 
 Return('brushlib')

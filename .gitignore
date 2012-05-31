@@ -23,3 +23,5 @@ POTFILES.in
 *.pstats
 *.pc
 *.autosave
+*.gir
+*.typelib
