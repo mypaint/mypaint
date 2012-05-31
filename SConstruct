@@ -23,6 +23,7 @@ opts = Variables()
 opts.Add(PathVariable('prefix', 'autotools-style installation prefix', default_prefix, validator=PathVariable.PathIsDirCreate))
 opts.Add(BoolVariable('debug', 'enable HEAVY_DEBUG and disable optimizations', False))
 opts.Add(BoolVariable('brushlib_only', 'only build and install brushlib/', False))
+opts.Add(BoolVariable('enable_gegl', 'enable GEGL based code in build', False))
 
 env = Environment(ENV=os.environ, options=opts)
 if sys.platform == "win32":
