@@ -21,3 +21,4 @@ options.cache
 POTFILES.in
 .#*
 *.pstats
+*.pc

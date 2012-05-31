@@ -25,10 +25,12 @@ opts.Add(BoolVariable('debug', 'enable HEAVY_DEBUG and disable optimizations', F
 opts.Add(BoolVariable('brushlib_only', 'only build and install brushlib/', False))
 opts.Add(BoolVariable('enable_gegl', 'enable GEGL based code in build', False))
 
-env = Environment(ENV=os.environ, options=opts)
+tools = ['default', 'textfile']
+
+env = Environment(ENV=os.environ, options=opts, tools=tools)
 if sys.platform == "win32":
     # remove this mingw if trying VisualStudio
-    env = Environment(tools=['mingw'], ENV=os.environ, options=opts)
+    env = Environment(tools=tools + ['mingw'], ENV=os.environ, options=opts)
 opts.Update(env)
 
 env.Append(CXXFLAGS=' -Wall -Wno-sign-compare -Wno-write-strings')
