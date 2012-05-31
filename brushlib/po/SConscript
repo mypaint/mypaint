@@ -11,7 +11,7 @@ for src in env.Glob('*.po'):
 # translations
 for lang in languages:
     install_perms(env, '$prefix/share/locale/%s/LC_MESSAGES' % lang,
-                 'po/%s/LC_MESSAGES/libmypaint.mo' % lang)
+                 '%s/LC_MESSAGES/libmypaint.mo' % lang)
 
 lang = ARGUMENTS.get('translate')
 if lang:
