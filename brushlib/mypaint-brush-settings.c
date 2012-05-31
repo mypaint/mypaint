@@ -10,7 +10,7 @@
 
 
 const MyPaintBrushSettingInfo *
-maliit_brush_setting_info(MyPaintBrushSetting id)
+mypaint_brush_setting_info(MyPaintBrushSetting id)
 {
     g_return_val_if_fail(id < MYPAINT_BRUSH_SETTINGS_COUNT, NULL);
 
@@ -18,19 +18,19 @@ maliit_brush_setting_info(MyPaintBrushSetting id)
 }
 
 const gchar *
-maliit_brush_setting_info_get_name(const MyPaintBrushSettingInfo *self)
+mypaint_brush_setting_info_get_name(const MyPaintBrushSettingInfo *self)
 {
     return g_dgettext(self->name, GETTEXT_PACKAGE);
 }
 
 const gchar *
-maliit_brush_setting_info_get_tooltip(const MyPaintBrushSettingInfo *self)
+mypaint_brush_setting_info_get_tooltip(const MyPaintBrushSettingInfo *self)
 {
     return g_dgettext(self->tooltip, GETTEXT_PACKAGE);
 }
 
 const MyPaintBrushInputInfo *
-maliit_brush_input_info(MyPaintBrushInput id)
+mypaint_brush_input_info(MyPaintBrushInput id)
 {
     g_return_val_if_fail(id < MYPAINT_BRUSH_INPUTS_COUNT, NULL);
 
@@ -38,13 +38,13 @@ maliit_brush_input_info(MyPaintBrushInput id)
 }
 
 const gchar *
-maliit_brush_input_info_get_name(const MyPaintBrushInputInfo *self)
+mypaint_brush_input_info_get_name(const MyPaintBrushInputInfo *self)
 {
     return g_dgettext(self->name, GETTEXT_PACKAGE);
 }
 
 const gchar *
-maliit_brush_input_info_get_tooltip(const MyPaintBrushInputInfo *self)
+mypaint_brush_input_info_get_tooltip(const MyPaintBrushInputInfo *self)
 {
     return g_dgettext(self->tooltip, GETTEXT_PACKAGE);
 }

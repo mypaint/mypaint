@@ -16,12 +16,12 @@ typedef struct {
 } MyPaintBrushSettingInfo;
 
 const MyPaintBrushSettingInfo *
-maliit_brush_setting_info(MyPaintBrushSetting id);
+mypaint_brush_setting_info(MyPaintBrushSetting id);
 
 const gchar *
-maliit_brush_setting_info_get_name(const MyPaintBrushSettingInfo *self);
+mypaint_brush_setting_info_get_name(const MyPaintBrushSettingInfo *self);
 const gchar *
-maliit_brush_setting_info_get_tooltip(const MyPaintBrushSettingInfo *self);
+mypaint_brush_setting_info_get_tooltip(const MyPaintBrushSettingInfo *self);
 
 typedef struct {
     const gchar *cname;
@@ -35,12 +35,12 @@ typedef struct {
 } MyPaintBrushInputInfo;
 
 const MyPaintBrushInputInfo *
-maliit_brush_input_info(MyPaintBrushInput id);
+mypaint_brush_input_info(MyPaintBrushInput id);
 
 const gchar *
-maliit_brush_input_info_get_name(const MyPaintBrushInputInfo *self);
+mypaint_brush_input_info_get_name(const MyPaintBrushInputInfo *self);
 
 const gchar *
-maliit_brush_input_info_get_tooltip(const MyPaintBrushInputInfo *self);
+mypaint_brush_input_info_get_tooltip(const MyPaintBrushInputInfo *self);
 
 #endif // MYPAINTBRUSHSETTINGS_H
