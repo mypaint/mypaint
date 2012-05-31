@@ -17,7 +17,10 @@ TILE_SIZE = N = mypaintlib.TILE_SIZE
 MAX_MIPMAP_LEVEL = mypaintlib.MAX_MIPMAP_LEVEL
 
 from layer import DEFAULT_COMPOSITE_OP
-import pixbufsurface
+
+# Avoid pulling in PyGTK+ when using GI
+if not os.environ.get('MYPAINT_ENABLE_GEGL', 0):
+    import pixbufsurface
 
 
 class Tile:

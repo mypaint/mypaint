@@ -9,7 +9,10 @@
 from math import floor, ceil, isnan
 import os, sys, hashlib, zipfile, colorsys, urllib, gc
 
-from gtk import gdk # for gdk_pixbuf stuff
+# Avoid pulling in PyGTK+ when using GI
+if not os.environ.get('MYPAINT_ENABLE_GEGL', 0):
+    from gtk import gdk # for gdk_pixbuf stuff
+
 import mypaintlib
 
 
