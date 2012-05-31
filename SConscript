@@ -53,8 +53,3 @@ install_perms(env, '$prefix/share/mypaint/gui', Glob('gui/*.xml'))
 install_perms(env, "$prefix/share/mypaint/lib",      Glob("lib/*.py"))
 install_perms(env, "$prefix/share/mypaint/gui",      Glob("gui/*.py"))
 
-# translations
-for lang in languages:
-    install_perms(env, '$prefix/share/locale/%s/LC_MESSAGES' % lang,
-                 'po/%s/LC_MESSAGES/mypaint.mo' % lang)
-

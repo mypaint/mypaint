@@ -1,4 +1,4 @@
-Import('env')
+Import('env', 'install_perms')
 from os.path import join, basename
 
 languages = []
@@ -7,6 +7,11 @@ for src in env.Glob('*.po'):
     languages.append(lang)
     dst = join(lang, "LC_MESSAGES", 'mypaint.mo')
     env.Command(dst, src, 'msgfmt $SOURCE -o $TARGET')
+
+# translations
+for lang in languages:
+    install_perms(env, '$prefix/share/locale/%s/LC_MESSAGES' % lang,
+                 'po/%s/LC_MESSAGES/mypaint.mo' % lang)
 
 lang = ARGUMENTS.get('translate')
 if lang:
