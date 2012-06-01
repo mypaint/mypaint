@@ -402,6 +402,14 @@ class TiledDrawWidget(gtk.VBox):
         self.renderer.scale = n
 
     @property
+    def rotation(self):
+        return self.renderer.rotation
+
+    @property
+    def mirrored(self):
+        return self.renderer.mirrored
+
+    @property
     def display_overlays(self):
         return self.renderer.display_overlays
 
