@@ -88,6 +88,13 @@ mypaint_brush_get_total_stroke_painting_time(MyPaintBrush *self);
 void
 mypaint_brush_set_print_inputs(MyPaintBrush *self, gboolean enabled);
 
+
+
+
+gboolean
+mypaint_brush_from_string(MyPaintBrush *self, const char *string);
+
+
 G_END_DECLS
 
 #endif // MYPAINTBRUSH_H
