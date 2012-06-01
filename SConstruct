@@ -35,6 +35,7 @@ opts.Update(env)
 
 env.Append(CXXFLAGS=' -Wall -Wno-sign-compare -Wno-write-strings')
 env.Append(CCFLAGS='-Wall')
+env.Append(CFLAGS='-std=c99')
 
 if env.get('CPPDEFINES'):
     # make sure assertions are enabled
