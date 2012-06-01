@@ -27,6 +27,8 @@
 #include "mapping.h"
 #include "helpers.h"
 
+#define M_PI 3.14159265358979323846
+
 #define ACTUAL_RADIUS_MIN 0.2
 #define ACTUAL_RADIUS_MAX 800 // safety guard against radius like 1e20 and against rendering overload with unexpected brush dynamics
 
