@@ -1,0 +1,15 @@
+Import('env')
+
+import os
+
+env = env.Clone()
+
+env.ParseConfig('pkg-config --cflags --libs glib-2.0')
+env.Append(CPPPATH='../', LIBPATH='../..', LIBS='mypaint-brushlib')
+
+tests_sources = os.listdir("./")
+tests_sources = [fn for fn in tests_sources if os.path.splitext(fn)[1] == '.c']
+
+for source in tests_sources:
+    target = os.path.splitext(source)[0]
+    env.Program(target=target, source=source)

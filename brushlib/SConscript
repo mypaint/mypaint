@@ -34,6 +34,8 @@ top_env = env
 env = env.Clone()
 gegl_env = env.Clone()
 
+tests = SConscript('tests/SConscript')
+
 env.Append(CPPPATH='./')
 
 pkg_info = {}
