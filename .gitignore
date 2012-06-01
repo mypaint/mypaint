@@ -22,3 +22,4 @@ POTFILES.in
 .#*
 *.pstats
 *.pc
+*.autosave
