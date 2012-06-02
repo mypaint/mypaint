@@ -48,11 +48,20 @@ mypaint_brush_stroke_to(MyPaintBrush *self, MyPaintSurface *surface, float x, fl
 void
 mypaint_brush_set_base_value(MyPaintBrush *self, MyPaintBrushSetting id, float value);
 
+float
+mypaint_brush_get_base_value(MyPaintBrush *self, MyPaintBrushSetting id);
+
 void
 mypaint_brush_set_mapping_n(MyPaintBrush *self, MyPaintBrushSetting id, MyPaintBrushInput input, int n);
 
+int
+mypaint_brush_get_mapping_n(MyPaintBrush *self, MyPaintBrushSetting id, MyPaintBrushInput input);
+
 void
 mypaint_brush_set_mapping_point(MyPaintBrush *self, MyPaintBrushSetting id, MyPaintBrushInput input, int index, float x, float y);
+
+void
+mypaint_brush_get_mapping_point(MyPaintBrush *self, MyPaintBrushSetting id, MyPaintBrushInput input, int index, float *x, float *y);
 
 float
 mypaint_brush_get_state(MyPaintBrush *self, MyPaintBrushState i);

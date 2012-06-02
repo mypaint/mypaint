@@ -92,6 +92,14 @@ void mapping_set_n (Mapping * self, int input, int n)
     p->n = n;
 }
 
+
+int mapping_get_n (Mapping * self, int input)
+{
+    assert (input >= 0 && input < self->inputs);
+    ControlPoints * p = self->pointsList + input;
+    return p->n;
+}
+
 void mapping_set_point (Mapping * self, int input, int index, float x, float y)
 {
     assert (input >= 0 && input < self->inputs);
@@ -105,6 +113,17 @@ void mapping_set_point (Mapping * self, int input, int index, float x, float y)
 
     p->xvalues[index] = x;
     p->yvalues[index] = y;
+}
+
+void mapping_get_point (Mapping * self, int input, int index, float *x, float *y)
+{
+    assert (input >= 0 && input < self->inputs);
+    assert (index >= 0 && index < 8);
+    ControlPoints * p = self->pointsList + input;
+    assert (index < p->n);
+
+    *x = p->xvalues[index];
+    *y = p->yvalues[index];
 }
 
 gboolean mapping_is_constant(Mapping * self)

@@ -22,6 +22,8 @@ const gchar *
 mypaint_brush_setting_info_get_name(const MyPaintBrushSettingInfo *self);
 const gchar *
 mypaint_brush_setting_info_get_tooltip(const MyPaintBrushSettingInfo *self);
+MyPaintBrushSetting
+mypaint_brush_setting_from_cname(const char *cname);
 
 typedef struct {
     const gchar *cname;
@@ -42,5 +44,8 @@ mypaint_brush_input_info_get_name(const MyPaintBrushInputInfo *self);
 
 const gchar *
 mypaint_brush_input_info_get_tooltip(const MyPaintBrushInputInfo *self);
+
+MyPaintBrushInput
+mypaint_brush_input_from_cname(const char *cname);
 
 #endif // MYPAINTBRUSHSETTINGS_H

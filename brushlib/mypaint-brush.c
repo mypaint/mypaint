@@ -147,6 +147,13 @@ mypaint_brush_set_base_value(MyPaintBrush *self, MyPaintBrushSetting id, float v
     settings_base_values_have_changed (self);
 }
 
+float
+mypaint_brush_get_base_value(MyPaintBrush *self, MyPaintBrushSetting id)
+{
+    assert (id >= 0 && id < MYPAINT_BRUSH_SETTINGS_COUNT);
+    return mapping_get_base_value(self->settings[id]);
+}
+
 void
 mypaint_brush_set_mapping_n(MyPaintBrush *self, MyPaintBrushSetting id, MyPaintBrushInput input, int n)
 {
@@ -154,11 +161,24 @@ mypaint_brush_set_mapping_n(MyPaintBrush *self, MyPaintBrushSetting id, MyPaintB
     mapping_set_n(self->settings[id], input, n);
 }
 
+int
+mypaint_brush_get_mapping_n(MyPaintBrush *self, MyPaintBrushSetting id, MyPaintBrushInput input)
+{
+    return mapping_get_n(self->settings[id], input);
+}
+
 void
 mypaint_brush_set_mapping_point(MyPaintBrush *self, MyPaintBrushSetting id, MyPaintBrushInput input, int index, float x, float y)
 {
     assert (id >= 0 && id < MYPAINT_BRUSH_SETTINGS_COUNT);
     mapping_set_point(self->settings[id], input, index, x, y);
+}
+
+void
+mypaint_brush_get_mapping_point(MyPaintBrush *self, MyPaintBrushSetting id, MyPaintBrushInput input, int index, float *x, float *y)
+{
+    assert (id >= 0 && id < MYPAINT_BRUSH_SETTINGS_COUNT);
+    mapping_get_point(self->settings[id], input, index, x, y);
 }
 
 float
