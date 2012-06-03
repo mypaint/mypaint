@@ -167,6 +167,20 @@ mypaint_brush_get_mapping_n(MyPaintBrush *self, MyPaintBrushSetting id, MyPaintB
     return mapping_get_n(self->settings[id], input);
 }
 
+gboolean
+mypaint_brush_is_constant(MyPaintBrush *self, MyPaintBrushSetting id)
+{
+    assert (id >= 0 && id < MYPAINT_BRUSH_SETTINGS_COUNT);
+    return mapping_is_constant(self->settings[id]);
+}
+
+int
+mypaint_brush_get_inputs_used_n(MyPaintBrush *self, MyPaintBrushSetting id)
+{
+    assert (id >= 0 && id < MYPAINT_BRUSH_SETTINGS_COUNT);
+    return mapping_get_inputs_used_n(self->settings[id]);
+}
+
 void
 mypaint_brush_set_mapping_point(MyPaintBrush *self, MyPaintBrushSetting id, MyPaintBrushInput input, int index, float x, float y)
 {

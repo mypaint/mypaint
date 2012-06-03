@@ -51,6 +51,12 @@ mypaint_brush_set_base_value(MyPaintBrush *self, MyPaintBrushSetting id, float v
 float
 mypaint_brush_get_base_value(MyPaintBrush *self, MyPaintBrushSetting id);
 
+gboolean
+mypaint_brush_is_constant(MyPaintBrush *self, MyPaintBrushSetting id);
+
+int
+mypaint_brush_get_inputs_used_n(MyPaintBrush *self, MyPaintBrushSetting id);
+
 void
 mypaint_brush_set_mapping_n(MyPaintBrush *self, MyPaintBrushSetting id, MyPaintBrushInput input, int n);
 

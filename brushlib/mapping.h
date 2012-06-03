@@ -16,6 +16,7 @@ int mapping_get_n (Mapping * self, int input);
 void mapping_set_point (Mapping * self, int input, int index, float x, float y);
 void mapping_get_point (Mapping * self, int input, int index, float *x, float *y);
 gboolean mapping_is_constant(Mapping * self);
+int mapping_get_inputs_used_n(Mapping *self);
 float mapping_calculate (Mapping * self, float * data);
 float mapping_calculate_single_input (Mapping * self, float input);
 

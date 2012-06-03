@@ -131,6 +131,12 @@ gboolean mapping_is_constant(Mapping * self)
     return self->inputs_used == 0;
 }
 
+int
+mapping_get_inputs_used_n(Mapping *self)
+{
+    return self->inputs_used;
+}
+
 float mapping_calculate (Mapping * self, float * data)
 {
     int j;
