@@ -22,6 +22,8 @@
 
 G_BEGIN_DECLS
 
+typedef struct _MyPaintSurface MyPaintSurface;
+
 struct _MyPaintSurface;
 
 typedef void (*MyPaintSurfaceGetColorFunction) (struct _MyPaintSurface *self,
@@ -53,8 +55,6 @@ struct _MyPaintSurface {
     MyPaintSurfaceGetColorFunction get_color;
     MyPaintSurfaceDestroyFunction destroy;
 };
-
-typedef struct _MyPaintSurface MyPaintSurface;
 
 /**
   * mypaint_surface_draw_dab:
