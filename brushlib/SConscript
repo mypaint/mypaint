@@ -15,7 +15,7 @@ def add_gobject_introspection(env, gi_name, version,
     if libname.startswith('lib'):
         libname = libname[3:]
 
-    scanner_cmd = """g-ir-scanner -o $TARGET --warn-all \
+    scanner_cmd = """LD_LIBRARY_PATH=./ g-ir-scanner -o $TARGET --warn-all \
         --namespace=%(gi_name)s --nsversion=%(version)s \
         --identifier-prefix=%(type_prefix)s --symbol-prefix=%(func_prefix)s \
         %(pkgs)s -I%(includepath)s \
