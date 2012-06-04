@@ -16,6 +16,8 @@ import math
 TILE_SIZE = N = mypaintlib.TILE_SIZE
 MAX_MIPMAP_LEVEL = mypaintlib.MAX_MIPMAP_LEVEL
 
+use_gegl = True if os.environ.get('MYPAINT_ENABLE_GEGL', 0) else False
+
 from layer import DEFAULT_COMPOSITE_OP
 
 # Avoid pulling in PyGTK+ when using GI
@@ -63,58 +65,60 @@ def get_tiles_bbox(tiles):
 class SurfaceSnapshot:
     pass
 
-class GeglSurface(mypaintlib.GeglBackedSurface):
+if use_gegl:
 
-    def __init__(self, mipmap_level=0):
-        mypaintlib.GeglBackedSurface.__init__(self, self)
-        self.observers = []
+    class GeglSurface(mypaintlib.GeglBackedSurface):
 
-    def notify_observers(self, *args):
-        for f in self.observers:
-            f(*args)
+        def __init__(self, mipmap_level=0):
+            mypaintlib.GeglBackedSurface.__init__(self, self)
+            self.observers = []
 
-    def get_bbox(self):
-        rect = helpers.Rect(*self.get_bbox_c())
-        return rect
+        def notify_observers(self, *args):
+            for f in self.observers:
+                f(*args)
 
-    def clear(self):
-        pass
+        def get_bbox(self):
+            rect = helpers.Rect(*self.get_bbox_c())
+            return rect
 
-    def save_as_png(self, path, *args, **kwargs):
-        return self.save_as_png_c(str(path))
+        def clear(self):
+            pass
 
-    def load_from_png(self, path, x, y, *args, **kwargs):
-        return self.load_from_png_c(str(path))
+        def save_as_png(self, path, *args, **kwargs):
+            return self.save_as_png_c(str(path))
 
-    def save_snapshot(self):
-        sshot = SurfaceSnapshot()
-        sshot.tiledict = {}
-        return sshot
+        def load_from_png(self, path, x, y, *args, **kwargs):
+            return self.load_from_png_c(str(path))
 
-    def load_snapshot(self, sshot):
-        pass
+        def save_snapshot(self):
+            sshot = SurfaceSnapshot()
+            sshot.tiledict = {}
+            return sshot
 
-    def is_empty(self):
-        return False
+        def load_snapshot(self, sshot):
+            pass
 
-    def remove_empty_tiles(self):
-        pass
+        def is_empty(self):
+            return False
 
-    def composite_tile(self, dst, dst_has_alpha, tx, ty, mipmap_level=0, opacity=1.0,
-                       mode=DEFAULT_COMPOSITE_OP):
-        pass
+        def remove_empty_tiles(self):
+            pass
 
-    def load_from_numpy(self, arr, x, y):
-        return (0, 0, 0, 0)
+        def composite_tile(self, dst, dst_has_alpha, tx, ty, mipmap_level=0, opacity=1.0,
+                           mode=DEFAULT_COMPOSITE_OP):
+            pass
 
-    def load_from_surface(self, other):
-        pass
+        def load_from_numpy(self, arr, x, y):
+            return (0, 0, 0, 0)
 
-    def get_tiles(self):
-        return {}
+        def load_from_surface(self, other):
+            pass
 
-    def set_symmetry_state(self, enabled, center_axis):
-        pass
+        def get_tiles(self):
+            return {}
+
+        def set_symmetry_state(self, enabled, center_axis):
+            pass
 
 class MyPaintSurface(mypaintlib.TiledSurface):
     # the C++ half of this class is in tiledsurface.hpp
@@ -446,5 +450,4 @@ def calc_translation_slices(dc):
                  ((N-dcr, N), (tdc+1, 0, dcr)) ]
 
 # Set which surface backend to use
-use_gegl = True if os.environ.get('MYPAINT_ENABLE_GEGL', 0) else False
 Surface = GeglSurface if use_gegl else MyPaintSurface
