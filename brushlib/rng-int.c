@@ -17,45 +17,71 @@
 /************ see the book for explanations and caveats! *******************/
 /************ in particular, you need two's complement arithmetic **********/
 
+/* This version has been changed by Jon Nordby to allow to create multiple
+ * independent generator objects. All changes made to this file are considered
+ * to be in the public domain. */
+
+#include "rng-int.h"
+
+#include <malloc.h>
+
 #define KK 100                     /* the long lag */
 #define LL  37                     /* the short lag */
 #define MM (1L<<30)                 /* the modulus */
 #define mod_diff(x,y) (((x)-(y))&(MM-1)) /* subtraction mod MM */
 
-long ran_x[KK];                    /* the generator state */
+#define QUALITY 1009 /* recommended quality level for high-res use */
+#define TT  70   /* guaranteed separation between streams */
+#define is_odd(x)  ((x)&1)          /* units bit of x */
 
-#ifdef __STDC__
-void ran_array(long aa[],int n)
-#else
-void ran_array(aa,n)    /* put n new random numbers in aa */
-  long *aa;   /* destination */
-  int n;      /* array length (must be at least KK) */
-#endif
+const long ran_arr_dummy=-1;
+const long ran_arr_started=-1;
+
+struct _RngInt {
+    long ran_x[KK];                    /* the generator state */
+    long ran_arr_buf[QUALITY];
+    long *ran_arr_ptr; /* the next random number, or -1 */
+};
+
+
+/* put n new random numbers in aa */
+
+void
+rng_int_get_array(RngInt *self, long aa[],int n)
 {
   register int i,j;
-  for (j=0;j<KK;j++) aa[j]=ran_x[j];
+  for (j=0;j<KK;j++) aa[j]=self->ran_x[j];
   for (;j<n;j++) aa[j]=mod_diff(aa[j-KK],aa[j-LL]);
-  for (i=0;i<LL;i++,j++) ran_x[i]=mod_diff(aa[j-KK],aa[j-LL]);
-  for (;i<KK;i++,j++) ran_x[i]=mod_diff(aa[j-KK],ran_x[i-LL]);
+  for (i=0;i<LL;i++,j++) self->ran_x[i]=mod_diff(aa[j-KK],aa[j-LL]);
+  for (;i<KK;i++,j++) self->ran_x[i]=mod_diff(aa[j-KK],self->ran_x[i-LL]);
 }
 
 /* the following routines are from exercise 3.6--15 */
 /* after calling ran_start, get new randoms by, e.g., "x=ran_arr_next()" */
 
-#define QUALITY 1009 /* recommended quality level for high-res use */
-long ran_arr_buf[QUALITY];
-long ran_arr_dummy=-1, ran_arr_started=-1;
-long *ran_arr_ptr=&ran_arr_dummy; /* the next random number, or -1 */
 
-#define TT  70   /* guaranteed separation between streams */
-#define is_odd(x)  ((x)&1)          /* units bit of x */
 
-#ifdef __STDC__
-void ran_start(long seed)
-#else
-void ran_start(seed)    /* do this before using ran_array */
-  long seed;            /* selector for different streams */
-#endif
+/* do this before using ran_array */
+RngInt *
+rng_int_new(long seed)
+{
+  RngInt *self = (RngInt *)malloc(sizeof(RngInt));
+
+  self->ran_arr_ptr=(long *)&ran_arr_dummy;
+
+  rng_int_set_seed(self, seed);
+
+  return self;
+}
+
+void
+rng_int_free(RngInt *self)
+{
+    free(self);
+}
+
+void
+rng_int_set_seed(RngInt *self, long seed)
 {
   register int t,j;
   long x[KK+KK-1];              /* the preparation buffer */
@@ -77,32 +103,24 @@ void ran_start(seed)    /* do this before using ran_array */
     }
     if (ss) ss>>=1; else t--;
   }
-  for (j=0;j<LL;j++) ran_x[j+KK-LL]=x[j];
-  for (;j<KK;j++) ran_x[j-LL]=x[j];
-  for (j=0;j<10;j++) ran_array(x,KK+KK-1); /* warm things up */
-  ran_arr_ptr=&ran_arr_started;
+  for (j=0;j<LL;j++) self->ran_x[j+KK-LL]=x[j];
+  for (;j<KK;j++) self->ran_x[j-LL]=x[j];
+  for (j=0;j<10;j++) rng_int_get_array(self,x,KK+KK-1); /* warm things up */ /* TODO: only run in _new ?*/
+  self->ran_arr_ptr=(long *)&ran_arr_started;
 }
 
-#define ran_arr_next() (*ran_arr_ptr>=0? *ran_arr_ptr++: ran_arr_cycle())
-long ran_arr_cycle()
+long
+rng_int_cycle(RngInt *self)
 {
-  if (ran_arr_ptr==&ran_arr_dummy)
-    ran_start(314159L); /* the user forgot to initialize */
-  ran_array(ran_arr_buf,QUALITY);
-  ran_arr_buf[KK]=-1;
-  ran_arr_ptr=ran_arr_buf+1;
-  return ran_arr_buf[0];
+  rng_int_get_array(self, self->ran_arr_buf,QUALITY);
+  self->ran_arr_buf[KK]=-1;
+  self->ran_arr_ptr=self->ran_arr_buf+1;
+  return self->ran_arr_buf[0];
 }
 
-#include <stdio.h>
-int main()
+long
+rng_int_next(RngInt *self)
 {
-  register int m; long a[2009]; 
-  ran_start(310952L);
-  for (m=0;m<=2009;m++) ran_array(a,1009);
-  printf("%ld\n", a[0]);             /* 995235265 */
-  ran_start(310952L);
-  for (m=0;m<=1009;m++) ran_array(a,2009);
-  printf("%ld\n", a[0]);             /* 995235265 */
-  return 0;
+  return ((*self->ran_arr_ptr>=0) ? *(self->ran_arr_ptr)++ : rng_int_cycle(self));
 }
+

@@ -17,44 +17,64 @@
 /************ see the book for explanations and caveats! *******************/
 /************ in particular, you need two's complement arithmetic **********/
 
-#define KK 100                     /* the long lag */
-#define LL  37                     /* the short lag */
-#define mod_sum(x,y) (((x)+(y))-(int)((x)+(y)))   /* (x+y) mod 1.0 */
+/* This version has been changed by Jon Nordby to allow to create multiple
+ * independent generator objects. All changes made to this file are considered
+ * to be in the public domain. */
 
-double ran_u[KK];           /* the generator state */
+#include "rng-double.h"
 
-#ifdef __STDC__
-void ranf_array(double aa[], int n)
-#else
-void ranf_array(aa,n)    /* put n new random fractions in aa */
-  double *aa;   /* destination */
-  int n;      /* array length (must be at least KK) */
-#endif
-{
-  register int i,j;
-  for (j=0;j<KK;j++) aa[j]=ran_u[j];
-  for (;j<n;j++) aa[j]=mod_sum(aa[j-KK],aa[j-LL]);
-  for (i=0;i<LL;i++,j++) ran_u[i]=mod_sum(aa[j-KK],aa[j-LL]);
-  for (;i<KK;i++,j++) ran_u[i]=mod_sum(aa[j-KK],ran_u[i-LL]);
-}
+#include <malloc.h>
 
 /* the following routines are adapted from exercise 3.6--15 */
 /* after calling ranf_start, get new randoms by, e.g., "x=ranf_arr_next()" */
 
 #define QUALITY 1009 /* recommended quality level for high-res use */
-double ranf_arr_buf[QUALITY];
-double ranf_arr_dummy=-1.0, ranf_arr_started=-1.0;
-double *ranf_arr_ptr=&ranf_arr_dummy; /* the next random fraction, or -1 */
-
 #define TT  70   /* guaranteed separation between streams */
 #define is_odd(s) ((s)&1)
+#define KK 100                     /* the long lag */
+#define LL  37                     /* the short lag */
+#define mod_sum(x,y) (((x)+(y))-(int)((x)+(y)))   /* (x+y) mod 1.0 */
 
-#ifdef __STDC__
-void ranf_start(long seed)
-#else
-void ranf_start(seed)    /* do this before using ranf_array */
-  long seed;            /* selector for different streams */
-#endif
+const double ranf_arr_dummy=-1.0;
+const double ranf_arr_started=-1.0;
+
+struct _RngDouble {
+    double ran_u[KK];           /* the generator state */
+    double ranf_arr_buf[QUALITY];
+    double *ranf_arr_ptr; /* the next random fraction, or -1 */
+};
+
+void
+rng_double_get_array(RngDouble *self, double aa[], int n)
+{
+  register int i,j;
+  for (j=0;j<KK;j++) aa[j]=self->ran_u[j];
+  for (;j<n;j++) aa[j]=mod_sum(aa[j-KK],aa[j-LL]);
+  for (i=0;i<LL;i++,j++) self->ran_u[i]=mod_sum(aa[j-KK],aa[j-LL]);
+  for (;i<KK;i++,j++) self->ran_u[i]=mod_sum(aa[j-KK],self->ran_u[i-LL]);
+}
+
+
+RngDouble *
+rng_double_new(long seed)
+{
+  RngDouble *self = (RngDouble *)malloc(sizeof(RngDouble));
+
+  self->ranf_arr_ptr=(double *)&ranf_arr_dummy;
+
+  rng_double_set_seed(self, seed);
+
+  return self;
+}
+
+void
+rng_double_free(RngDouble *self)
+{
+    free(self);
+}
+
+void
+rng_double_set_seed(RngDouble *self, long seed)
 {
   register int t,s,j;
   double u[KK+KK-1];
@@ -80,33 +100,24 @@ void ranf_start(seed)    /* do this before using ranf_array */
     }
     if (s) s>>=1; else t--;
   }
-  for (j=0;j<LL;j++) ran_u[j+KK-LL]=u[j];
-  for (;j<KK;j++) ran_u[j-LL]=u[j];
-  for (j=0;j<10;j++) ranf_array(u,KK+KK-1);  /* warm things up */
-  ranf_arr_ptr=&ranf_arr_started;
+  for (j=0;j<LL;j++) self->ran_u[j+KK-LL]=u[j];
+  for (;j<KK;j++) self->ran_u[j-LL]=u[j];
+  for (j=0;j<10;j++) rng_double_get_array(self, u,KK+KK-1);  /* warm things up */
+  self->ranf_arr_ptr=(double *)&ranf_arr_started;
 }
 
-#define ranf_arr_next() (*ranf_arr_ptr>=0? *ranf_arr_ptr++: ranf_arr_cycle())
-double ranf_arr_cycle()
+
+double
+rng_double_cycle(RngDouble *self)
 {
-  if (ranf_arr_ptr==&ranf_arr_dummy)
-    ranf_start(314159L); /* the user forgot to initialize */
-  ranf_array(ranf_arr_buf,QUALITY);
-  ranf_arr_buf[KK]=-1;
-  ranf_arr_ptr=ranf_arr_buf+1;
-  return ranf_arr_buf[0];
+  rng_double_get_array(self, self->ranf_arr_buf, QUALITY);
+  self->ranf_arr_buf[KK]=-1;
+  self->ranf_arr_ptr=self->ranf_arr_buf+1;
+  return self->ranf_arr_buf[0];
 }
 
-#include <stdio.h>
-int main()
+double
+rng_double_next(RngDouble *self)
 {
-  register int m; double a[2009]; /* a rudimentary test */
-  ranf_start(310952);
-  for (m=0;m<2009;m++) ranf_array(a,1009);
-  printf("%.20f\n", ran_u[0]);            /* 0.36410514377569680455 */
-     /* beware of buggy printf routines that do not give full accuracy here! */
-  ranf_start(310952);
-  for (m=0;m<1009;m++) ranf_array(a,2009);
-  printf("%.20f\n", ran_u[0]);            /* 0.36410514377569680455 */
-  return 0;
+  return ((*self->ranf_arr_ptr>=0) ? *(self->ranf_arr_ptr)++ : rng_double_cycle(self));
 }
