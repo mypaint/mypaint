@@ -34,7 +34,11 @@ top_env = env
 env = env.Clone()
 gegl_env = env.Clone()
 
-env['use_glib'] = True # FIXME: make optional, only use when building introspection
+if env['enable_introspection']:
+    env['use_glib'] = True
+    print "Enabling glib because of enable_introspection=true"
+else:
+    env['use_glib'] = False
 
 tests = SConscript('tests/SConscript')
 
@@ -42,7 +46,12 @@ env.Append(CPPPATH='./')
 
 pkg_info = {}
 pkg_info['@LIBNAME@'] = 'mypaint'
-pkg_info['@REQUIRES@'] = 'glib-2.0'
+
+if env['use_glib']:
+    pkg_info['@REQUIRES@'] = 'glib-2.0'
+else:
+    pkg_info['@REQUIRES@'] = ''
+
 pkg_info['@DESCRIPTION@'] = 'MyPaint brush engine library'
 pkg_info['@PREFIX@'] = env['prefix']
 pkg_info['@VERSION@'] = '0.1'
@@ -52,11 +61,11 @@ pc_file = env.Substfile("libmypaint.pc", "pkgconfig.pc.in", SUBST_DICT=pkg_info)
 install_perms(env, '$prefix/lib/pkgconfig', pc_file)
 
 env.Append(LIBS='m')
-env.ParseConfig('pkg-config --cflags --libs gobject-2.0')
 env.ParseConfig('pkg-config --cflags --libs json')
 
 config_defines = ''
 if env['use_glib']:
+    env.ParseConfig('pkg-config --cflags --libs gobject-2.0')
     config_defines += '#define MYPAINT_CONFIG_USE_GLIB 1\n'
 else:
     config_defines += '#define MYPAINT_CONFIG_USE_GLIB 0\n'
