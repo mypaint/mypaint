@@ -8,7 +8,7 @@
 
 #define TILE_SIZE 64
 
-typedef struct _MyPaintGeglTiledSurface {
+struct _MyPaintGeglTiledSurface {
     MyPaintTiledSurface parent;
 
     int atomic;
@@ -21,7 +21,7 @@ typedef struct _MyPaintGeglTiledSurface {
     int width; // width in pixels
     int height; // height in pixels
 
-} MyPaintFixedTiledSurface;
+};
 
 void free_simple_tiledsurf(MyPaintSurface *surface);
 
