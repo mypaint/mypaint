@@ -1,9 +1,10 @@
 #ifndef HELPERS_H
 #define HELPERS_H
 
-#include <glib.h>
+#include <glib.h> // for GRand
 
-// MAX, MIN, ABS, CLAMP are already available from gmacros.h
+#define MAX(a, b)  (((a) > (b)) ? (a) : (b))
+#define MIN(a, b)  (((a) < (b)) ? (a) : (b))
 #define ROUND(x) ((int) ((x) + 0.5))
 #define SIGN(x) ((x)>0?1:(-1))
 #define SQR(x) ((x)*(x))

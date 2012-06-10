@@ -18,9 +18,7 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#include <glib.h>
-#include <glib-object.h>
-
+#include <mypaint-glib-compat.h>
 #include <mypaint-surface.h>
 #include <mypaint-brush-settings.h>
 
@@ -31,10 +29,7 @@ G_BEGIN_DECLS
   */
 typedef struct _MyPaintBrush MyPaintBrush;
 
-#define MYPAINT_TYPE_BRUSH               (mypaint_brush_get_type ())
-#define MYPAINT_VALUE_HOLDS_BRUSH(value) (G_TYPE_CHECK_VALUE_TYPE ((value), MYPAINT_TYPE_BRUSH))
-
-GType mypaint_brush_get_type(void);
+#include <glib/mypaint-brush.h>
 
 MyPaintBrush *
 mypaint_brush_new();

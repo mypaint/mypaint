@@ -3,7 +3,7 @@
 
 typedef struct _Mapping Mapping;
 
-#include <glib.h> // For gboolean
+#include <mypaint-glib-compat.h>
 
 G_BEGIN_DECLS
 

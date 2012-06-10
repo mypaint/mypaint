@@ -34,6 +34,8 @@ top_env = env
 env = env.Clone()
 gegl_env = env.Clone()
 
+env['use_glib'] = True # FIXME: make optional, only use when building introspection
+
 tests = SConscript('tests/SConscript')
 
 env.Append(CPPPATH='./')
@@ -53,6 +55,14 @@ env.Append(LIBS='m')
 env.ParseConfig('pkg-config --cflags --libs gobject-2.0')
 env.ParseConfig('pkg-config --cflags --libs json')
 
+config_defines = ''
+if env['use_glib']:
+    config_defines += '#define MYPAINT_CONFIG_USE_GLIB 1\n'
+else:
+    config_defines += '#define MYPAINT_CONFIG_USE_GLIB 0\n'
+
+config_file = env.Substfile("mypaint-config.h", "mypaint-config.h.in", SUBST_DICT={'@DEFINES@': config_defines})
+
 env.Execute(python + ' generate.py') # TODO: make a proper build rule
 env.Clean('.', 'mypaint-brush-settings-gen.h')
 env.Clean('.', Glob('*.pyc'))
@@ -62,7 +72,8 @@ brushlib = env.SharedLibrary('../mypaint-brushlib', Glob("*.c"))
 if env['enable_introspection']:
     gir, typelib = add_gobject_introspection(env, "MyPaint", pkg_info["@VERSION@"],
                               "mypaint_", "MyPaint",
-                              Glob("*.c") + Glob("mypaint-*.h"), './brushlib', brushlib, ['glib-2.0'])
+                              Glob("*.c") + Glob("mypaint-*.h") + Glob("glib/*.c") + Glob("glib/mypaint-*.h"),
+                              './brushlib', brushlib, ['glib-2.0'])
 
     install_perms(env, '$prefix/share/gir-1.0', gir)
     install_perms(env, '$prefix/lib/girepository-1.0', typelib)

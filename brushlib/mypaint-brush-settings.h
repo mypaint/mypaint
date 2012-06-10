@@ -1,8 +1,7 @@
 #ifndef MYPAINTBRUSHSETTINGS_H
 #define MYPAINTBRUSHSETTINGS_H
 
-#include <glib.h>
-
+#include <mypaint-glib-compat.h>
 #include <mypaint-brush-settings-gen.h>
 
 typedef struct {
