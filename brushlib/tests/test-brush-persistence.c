@@ -1,53 +1,7 @@
 
 #include <mypaint-brush.h>
 
-#include <stdio.h>
-#include <malloc.h>
-#include <string.h>
-
-char *
-read_file(char *path)
-{
-    long file_size = -1L;
-    FILE *file = fopen(path, "r");
-
-    fseek(file , 0 , SEEK_END);
-    file_size = ftell(file);
-    rewind(file);
-
-    char *buffer = (char *)malloc(sizeof(char)*file_size);
-    size_t result = fread(buffer, 1, file_size, file);
-
-    fclose(file);
-
-    if (!result) {
-        free(buffer);
-        return NULL;
-    }
-    return buffer;
-}
-
-int
-expect_int(int expected, int actual, const char *description) {
-    int passed = 1;
-    if (expected != actual) {
-        passed = 0;
-        fprintf(stderr, "%s: Expected %d, got %d\n", description, expected, actual);
-    }
-    return passed;
-}
-
-int
-expect_float(float expected, float actual, const char *description) {
-    int passed = 1;
-    if (expected != actual) {
-        passed = 0;
-        fprintf(stderr, "%s: Expected %f, got %f\n", description, expected, actual);
-    }
-
-    return passed;
-}
-
+#include "testutils.h"
 
 typedef struct {
     const char *cname;
@@ -106,10 +60,8 @@ test_brush_load_base_values(void)
     };
     int number_of_expected_base_values = sizeof(expected_base_values) / sizeof(BaseValue);
 
-    if (!number_of_expected_base_values == MYPAINT_BRUSH_SETTINGS_COUNT) {
-        // Would happen if new settings are introduced. Should update the test then
-        fprintf(stderr, "Warning: number of base values tested does not match number of settings.");
-    }
+    expect_int(MYPAINT_BRUSH_SETTINGS_COUNT, number_of_expected_base_values,
+               "Warning: Number of base values tested does not match number of settings. Update the test!");
 
     MyPaintBrush *brush = mypaint_brush_new();
     mypaint_brush_from_string(brush, input_json);
@@ -124,14 +76,14 @@ test_brush_load_base_values(void)
         MyPaintBrushSetting id = mypaint_brush_setting_from_cname(base_value->cname);
         float expected = base_value->base_value;
         float actual = mypaint_brush_get_base_value(brush, id);
-        correct = (expected == actual);
 
-        if (correct != 1) {
-            fprintf(stderr, "Wrong base value for %s: Expected %f, got %f\n", base_value->cname, expected, actual);
+        correct = expect_float(expected, actual,
+                               "Wrong base value for %s"); // TODO: expand %s for nicer errors
+
+        if (!correct) {
             passed = 0;
         }
     }
-
 
     mypaint_brush_destroy(brush);
 
@@ -229,10 +181,8 @@ test_brush_load_inputs(void)
     };
     int number_of_expected_inputs = sizeof(expected_inputs) / sizeof(Inputs);
 
-    if (!number_of_expected_inputs == MYPAINT_BRUSH_SETTINGS_COUNT) {
-        // Would happen if new settings are introduced. Should update the test then
-        fprintf(stderr, "Warning: number of values tested does not match number of settings.");
-    }
+    expect_int(MYPAINT_BRUSH_SETTINGS_COUNT, number_of_expected_inputs,
+               "Warning: number of values tested does not match number of settings. Update test!");
 
     MyPaintBrush *brush = mypaint_brush_new();
     mypaint_brush_from_string(brush, input_json);
@@ -242,15 +192,13 @@ test_brush_load_inputs(void)
     // Check input/dynamics values
     for (int i=0; i<number_of_expected_inputs; i++) {
         const Inputs *inputs = &expected_inputs[i];
-        const char *setting_name = inputs->cname;
+
         MyPaintBrushSetting setting_id = mypaint_brush_setting_from_cname(inputs->cname);
         int correct = 1;
 
         if (inputs->inputs == NULL) {
-            if (!mypaint_brush_is_constant(brush, setting_id)) {
-                fprintf(stderr, "Expected setting %s to be constant (have 0 inputs)", setting_name);
-                correct = 0;
-            }
+            gboolean is_constant = mypaint_brush_is_constant(brush, setting_id);
+            correct = expect_true(is_constant, "Setting %s should be constant (have 0 inputs)"); // TODO: expand %s for nicer errors
 
         } else {
 
@@ -297,33 +245,13 @@ test_brush_load_inputs(void)
     return passed;
 }
 
-typedef int (*TestFunction) (void);
-
-typedef struct {
-    char *id;
-    TestFunction function;
-} TestCase;
-
 int
 main(int argc, char **argv)
 {
-    static const char * const pass = "PASS";
-    static const char * const fail = "FAIL";
-
     TestCase test_cases[] = {
         {"/brush/persistence/load/base_values", test_brush_load_base_values},
         {"/brush/persistence/load/inputs", test_brush_load_inputs},
     };
-    const int no_test_cases = sizeof(test_cases) / sizeof(TestCase);
 
-    int failures = 0;
-    for (int i=0; i<no_test_cases; i++) {
-        const TestCase *test_case = &test_cases[i];
-        int result = test_case->function();
-        if (result != 1); failures++;
-        fprintf(stdout, "%s: %s\n", test_case->id, (result == 1) ? pass : fail);
-        fflush(stdout);
-    }
-
-    return (failures != 0);
+    return test_cases_run(argc, argv, test_cases, TEST_CASES_NUMBER(test_cases));
 }

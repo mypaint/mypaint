@@ -3,13 +3,25 @@ Import('env')
 import os
 
 env = env.Clone()
+testlib_env = env.Clone()
+tests_env = env.Clone()
 
-env.ParseConfig('pkg-config --cflags --libs glib-2.0')
-env.Append(CPPPATH='../', LIBPATH='../..', LIBS='mypaint-brushlib')
+tests_env.ParseConfig('pkg-config --cflags --libs glib-2.0')
+tests_env.Append(CPPPATH='../', LIBPATH='../..', LIBS='mypaint-brushlib')
 
-tests_sources = os.listdir("./")
-tests_sources = [fn for fn in tests_sources if os.path.splitext(fn)[1] == '.c']
+def is_csource(fn):
+    return os.path.isfile(fn) and os.path.splitext(fn)[1] == '.c'
+
+def is_test(fn):
+    return fn.startswith('test-')
+
+tests_sources = [fn for fn in os.listdir("./") if is_test(fn) and is_csource(fn)]
+testlib_sources = [fn for fn in os.listdir("./") if not is_test(fn) and is_csource(fn)]
+
+testlib_env.SharedLibrary(target='../../mypaint-tests', source=testlib_sources)
+tests_env.Append(LIBS='mypaint-tests')
 
 for source in tests_sources:
     target = os.path.splitext(source)[0]
-    env.Program(target=target, source=source)
+    tests_env.Program(target=target, source=source)
+
