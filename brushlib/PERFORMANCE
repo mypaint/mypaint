@@ -1,0 +1,85 @@
+
+The performance of libmypaint/MyPaint is quite good compared to other drawing
+applications but there is still room for improvement.
+
+Note that the ideas proposed here and their implementation will have to
+be judged by benchmarking. Unittests for correctness should also be in
+place before starting to work in this area.
+
+=== Avoid refetching of tiles between a begin_atomic / end_atomic ===
+Currently a draw_dab / get_color operation is executed syncronously. This means
+that when draw_dab is called repeatedly in the same area, the tile will be
+fetched from the tile backend anew on each call. Because fetching a tile
+may be a fairly expensive operation, this may result in overhead.
+Also, if all the processing done on a single tile is instead done at the same time,
+one may also benefit from the required data being in cache more often.
+
+Note: The MyPaint tile backend implements caching of the tile fetching, migating
+the performance impact of this.
+
+Implementation:
+1. On draw_dab calls, store the operation, including all arguments, instead of processing it directly.
+The operation should be added to a queue for each of the tiles it affects.
+
+2. Then on end_atomic, process tile by tile, fetching the tile and computing all
+the operations for that tile in a FIFO manner.
+
+Warning: get_color operations rely on past draw_dab operations to have been
+executed already. This means that on a get_color call one would have to flush
+the draw_dab operations - at least those affecting the area requested by get_color.
+
+Warning: this means that the tile backends get_tile and update_tile vfuncs must
+be thread-safe.
+
+If processing done mainly at end_atomic time results in better performance
+than immediate processing of draw_dab, this effect should increase
+the more draw_dab() calls there are per end_atomic() calls. 
+This can be exploited when replaying entire strokes, by first doing all the 
+mypaint_brush_motion_to() and then calling end_atomic() only at the end
+
+=== Make use of multi-threading ===
+The current code is single-threaded and will not make use of the multiple
+processing units that are common on todays desktops/laptops.
+
+After having moved to a deferred processing model as suggested in the previous
+point, it should be possible in end_atomic to split the processing of tiles
+between several threads.
+
+The number of threads to use should be configurable for testability and debugging,
+but default to the number of processing units available on the system.
+
+Because the proposed task split is purely based on spatiality,
+it should be possible to do without syncronization between threads,
+and should scale near linearly.
+
+Challenge: Finding an equal distribution of work between threads.
+Dividing into the tiles left/right or the four quadrants around origo
+might be a simple working heuteristics, but ideally we'd like to distribute
+the draw_dab operations evenly. Difficult because the tile operation stack are sparse
+and the number of operations per tile may wary alot?
+
+=== Make use of vectorization in dab drawing code ===
+Above suggestion does not parallelize within a single draw_dab operation.
+Instead we could make use of vector operations that are common on X86 architectures.
+
+It may be possible to make use of GCCs auto vectorization:
+  http://stackoverflow.com/questions/409300/how-to-vectorize-with-gcc
+  http://gcc.gnu.org/projects/tree-ssa/vectorization.html
+
+There could be a performance advantage of swithing to using floats instead of ints.
+
+=== Make use of GPU processing: OpenCL and OpenGL ===
+
+Challenge: Migating the high latency of CPU<->GPU transfers
+Challenge: Keeping the amount of branching (at least within warps) in GPU code down
+
+Implementation idea:
+1. Move only the rendering of operations to tiles to the GPU side,
+and trigger this from end_atomic and similar.
+
+Note: for interactive drawing on canvas, this might only result in performance
+improvements if the result does not have to be transferred back to CPU before
+being displayed.
+This can be avoided by integrating the OpenCL operations with OpenGL such that
+changes to the tiles in OpenCL will automatically update an OpenGL texture.
+
