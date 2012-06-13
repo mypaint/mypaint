@@ -4,6 +4,7 @@
 
 // Making the helpers of brushlib also bound by Python
 #include "helpers.c"
+#include <glib.h>
 
 // Special HSV -> RGB converter for use with the color selector classes
 // Takes values in the range [ 0.0 , 1.0 ]
