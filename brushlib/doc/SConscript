@@ -1,0 +1,7 @@
+
+Import('env')
+env = env.Clone()
+
+env.Command('doxygen/index.xml', 'Doxyfile', 'cd $TARGET.dir && doxygen ../$SOURCE.file')
+sphinx_build = env.Command('build/index.html', 'source/index.rst', 'sphinx-build2 $SOURCE.dir $TARGET.dir')
+Depends(sphinx_build, 'doxygen/index.xml')

@@ -25,6 +25,7 @@ opts.Add(BoolVariable('debug', 'enable HEAVY_DEBUG and disable optimizations', F
 opts.Add(BoolVariable('brushlib_only', 'only build and install brushlib/', False))
 opts.Add(BoolVariable('enable_gegl', 'enable GEGL based code in build', False))
 opts.Add(BoolVariable('enable_introspection', 'enable GObject introspection support', False))
+opts.Add(BoolVariable('enable_docs', 'enable documentation build', False))
 
 tools = ['default', 'textfile']
 

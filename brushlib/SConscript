@@ -43,6 +43,9 @@ else:
 Export('env')
 tests = SConscript('tests/SConscript')
 
+if env['enable_docs']:
+    doc = SConscript('doc/SConscript')
+
 env.Append(CPPPATH='./')
 
 pkg_info = {}
