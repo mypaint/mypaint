@@ -100,8 +100,8 @@ rgb_to_hsv_float (float *r_ /*h*/, float *g_ /*s*/, float *b_ /*v*/)
 void
 hsv_to_rgb_float (float *h_, float *s_, float *v_)
 {
-  gint    i;
-  gdouble f, w, q, t;
+  int    i;
+  double f, w, q, t;
   float h, s, v;
   float r, g, b;
   r = g = b = 0.0; // silence gcc warning
@@ -114,7 +114,7 @@ hsv_to_rgb_float (float *h_, float *s_, float *v_)
   s = CLAMP(s, 0.0, 1.0);
   v = CLAMP(v, 0.0, 1.0);
 
-  gdouble hue;
+  double hue;
 
   if (s == 0.0)
     {
@@ -131,7 +131,7 @@ hsv_to_rgb_float (float *h_, float *s_, float *v_)
 
       hue *= 6.0;
 
-      i = (gint) hue;
+      i = (int) hue;
       f = hue - i;
       w = v * (1.0 - s);
       q = v * (1.0 - (s * f));
@@ -181,7 +181,7 @@ hsv_to_rgb_float (float *h_, float *s_, float *v_)
 void
 rgb_to_hsl_float (float *r_, float *g_, float *b_)
 {
-  gdouble max, min, delta;
+  double max, min, delta;
 
   float h, s, l;
   float r, g, b;
@@ -244,11 +244,11 @@ rgb_to_hsl_float (float *r_, float *g_, float *b_)
 }
 
 static double
-hsl_value (gdouble n1,
-           gdouble n2,
-           gdouble hue)
+hsl_value (double n1,
+           double n2,
+           double hue)
 {
-  gdouble val;
+  double val;
 
   if (hue > 6.0)
     hue -= 6.0;
@@ -298,7 +298,7 @@ hsl_to_rgb_float (float *h_, float *s_, float *l_)
     }
   else
     {
-      gdouble m1, m2;
+      double m1, m2;
 
       if (l <= 0.5)
         m2 = l * (1.0 + s);
