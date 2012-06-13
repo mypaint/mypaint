@@ -40,6 +40,7 @@ if env['enable_introspection']:
 else:
     env['use_glib'] = False
 
+Export('env')
 tests = SConscript('tests/SConscript')
 
 env.Append(CPPPATH='./')

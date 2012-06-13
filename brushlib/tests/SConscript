@@ -18,6 +18,9 @@ testlib_sources = [fn for fn in os.listdir("./") if not is_test(fn) and is_csour
 testlib_env.SharedLibrary(target='../../mypaint-tests', source=testlib_sources)
 
 # Build individual tests
+if tests_env['use_glib']:
+    tests_env.ParseConfig('pkg-config --cflags --libs glib-2.0')
+
 tests_env.Append(CPPPATH='../', LIBPATH='../..', LIBS=['mypaint-brushlib', 'mypaint-tests'])
 for source in tests_sources:
     target = os.path.splitext(source)[0]
