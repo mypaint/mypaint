@@ -27,11 +27,11 @@
 // adapted from ppmforge.c, which is part of PBMPLUS. The algorithm
 // comes from: 'The Science Of Fractal Images'. Peitgen, H.-O., and
 // Saupe, D. eds.  Springer Verlag, New York, 1988.
-float rand_gauss (GRand * rng)
+float rand_gauss (RngInt * rng)
 {
   float sum = 0.0;
-  uint32_t rand1 = g_rand_int(rng);
-  uint32_t rand2 = g_rand_int(rng);
+  uint32_t rand1 = rng_int_next(rng);
+  uint32_t rand2 = rng_int_next(rng);
   sum +=  rand1        & 0x7FFF;
   sum += (rand1 >> 16) & 0x7FFF;
   sum +=  rand2        & 0x7FFF;
