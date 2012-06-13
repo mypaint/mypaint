@@ -1,17 +1,23 @@
 
-
 #include "mypaint-brush-settings.h"
 
-// FIXME: should be "libmypaint"
-#define GETTEXT_PACKAGE "mypaint"
-#include <glib/gi18n-lib.h>
+#include <libintl.h>
+#include <string.h>
+#include <assert.h>
+
+#define GETTEXT_PACKAGE "libmypaint"
+
+#define N_(String) (String)
+#define  _(String) gettext (String)
+
+#include <float.h>
 
 #include "brushsettings-gen.h"
 
 const MyPaintBrushSettingInfo *
 mypaint_brush_setting_info(MyPaintBrushSetting id)
 {
-    g_return_val_if_fail(id < MYPAINT_BRUSH_SETTINGS_COUNT, NULL);
+    assert(id < MYPAINT_BRUSH_SETTINGS_COUNT);
 
     return &settings_info_array[id];
 }
@@ -19,13 +25,13 @@ mypaint_brush_setting_info(MyPaintBrushSetting id)
 const gchar *
 mypaint_brush_setting_info_get_name(const MyPaintBrushSettingInfo *self)
 {
-    return g_dgettext(self->name, GETTEXT_PACKAGE);
+    return dgettext(self->name, GETTEXT_PACKAGE);
 }
 
 const gchar *
 mypaint_brush_setting_info_get_tooltip(const MyPaintBrushSettingInfo *self)
 {
-    return g_dgettext(self->tooltip, GETTEXT_PACKAGE);
+    return dgettext(self->tooltip, GETTEXT_PACKAGE);
 }
 
 MyPaintBrushSetting
@@ -43,7 +49,7 @@ mypaint_brush_setting_from_cname(const char *cname)
 const MyPaintBrushInputInfo *
 mypaint_brush_input_info(MyPaintBrushInput id)
 {
-    g_return_val_if_fail(id < MYPAINT_BRUSH_INPUTS_COUNT, NULL);
+    assert(id < MYPAINT_BRUSH_INPUTS_COUNT);
 
     return &inputs_info_array[id];
 }
@@ -51,13 +57,13 @@ mypaint_brush_input_info(MyPaintBrushInput id)
 const gchar *
 mypaint_brush_input_info_get_name(const MyPaintBrushInputInfo *self)
 {
-    return g_dgettext(self->name, GETTEXT_PACKAGE);
+    return dgettext(self->name, GETTEXT_PACKAGE);
 }
 
 const gchar *
 mypaint_brush_input_info_get_tooltip(const MyPaintBrushInputInfo *self)
 {
-    return g_dgettext(self->tooltip, GETTEXT_PACKAGE);
+    return dgettext(self->tooltip, GETTEXT_PACKAGE);
 }
 
 MyPaintBrushInput

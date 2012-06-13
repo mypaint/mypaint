@@ -65,7 +65,7 @@ def generate_internal_settings_code():
 
     def floatify(value, positive_inf=True):
         if value is None:
-            return "G_MAXFLOAT" if positive_inf else "G_MINFLOAT"
+            return "FLT_MAX" if positive_inf else "-FLT_MAX"
 
         return str(value)
 
