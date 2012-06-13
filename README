@@ -30,12 +30,12 @@ Building on Linux:
             Use a symlink if that's too limiting.)
 
 
-    Required: pygtk, python, swig, gtk, numpy, pycairo(>=1.4), libpng, lcms2
+    Required: pygtk, python, swig, gtk, numpy, pycairo(>=1.4), libpng, lcms2, json-c
 
     Debian users can fetch these dependencies by running:
 
         # apt-get install g++ python-dev libglib2.0-dev python-numpy \
-                          swig scons gettext libpng12-dev liblcms2-dev
+                          swig scons gettext libpng12-dev liblcms2-dev libjson0-dev
 
     Recommended: a pressure sensitive input device (graphic tablet)
 
