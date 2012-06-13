@@ -3,6 +3,8 @@
 
 #include "testutils.h"
 
+#include <stddef.h> // For NULL
+
 typedef struct {
     const char *cname;
     float base_value;

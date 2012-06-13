@@ -6,9 +6,6 @@ env = env.Clone()
 testlib_env = env.Clone()
 tests_env = env.Clone()
 
-tests_env.ParseConfig('pkg-config --cflags --libs glib-2.0')
-tests_env.Append(CPPPATH='../', LIBPATH='../..', LIBS='mypaint-brushlib')
-
 def is_csource(fn):
     return os.path.isfile(fn) and os.path.splitext(fn)[1] == '.c'
 
@@ -19,8 +16,9 @@ tests_sources = [fn for fn in os.listdir("./") if is_test(fn) and is_csource(fn)
 testlib_sources = [fn for fn in os.listdir("./") if not is_test(fn) and is_csource(fn)]
 
 testlib_env.SharedLibrary(target='../../mypaint-tests', source=testlib_sources)
-tests_env.Append(LIBS='mypaint-tests')
 
+# Build individual tests
+tests_env.Append(CPPPATH='../', LIBPATH='../..', LIBS=['mypaint-brushlib', 'mypaint-tests'])
 for source in tests_sources:
     target = os.path.splitext(source)[0]
     tests_env.Program(target=target, source=source)

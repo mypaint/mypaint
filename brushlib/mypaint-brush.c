@@ -20,8 +20,6 @@
 #include <math.h>
 #include <assert.h>
 
-#include <json.h>
-
 #include "mypaint-brush.h"
 
 #include "mypaint-brush-settings.h"
@@ -29,6 +27,11 @@
 #include "helpers.h"
 #include "rng-double.h"
 #include "rng-int.h"
+
+// Allow the C99 define from json.h
+#undef TRUE
+#undef FALSE
+#include <json.h>
 
 #define M_PI 3.14159265358979323846
 
@@ -343,7 +346,7 @@ mypaint_brush_set_state(MyPaintBrush *self, MyPaintBrushState i, float value)
     inputs[MYPAINT_BRUSH_INPUT_TILT_ASCENSION] = self->states[MYPAINT_BRUSH_STATE_ASCENSION];
     inputs[MYPAINT_BRUSH_INPUT_CUSTOM] = self->states[MYPAINT_BRUSH_STATE_CUSTOM_INPUT];
     if (self->print_inputs) {
-      g_print("press=% 4.3f, speed1=% 4.4f\tspeed2=% 4.4f\tstroke=% 4.3f\tcustom=% 4.3f\n", (double)inputs[MYPAINT_BRUSH_INPUT_PRESSURE], (double)inputs[MYPAINT_BRUSH_INPUT_SPEED1], (double)inputs[MYPAINT_BRUSH_INPUT_SPEED2], (double)inputs[MYPAINT_BRUSH_INPUT_STROKE], (double)inputs[MYPAINT_BRUSH_INPUT_CUSTOM]);
+      printf("press=% 4.3f, speed1=% 4.4f\tspeed2=% 4.4f\tstroke=% 4.3f\tcustom=% 4.3f\n", (double)inputs[MYPAINT_BRUSH_INPUT_PRESSURE], (double)inputs[MYPAINT_BRUSH_INPUT_SPEED1], (double)inputs[MYPAINT_BRUSH_INPUT_SPEED2], (double)inputs[MYPAINT_BRUSH_INPUT_STROKE], (double)inputs[MYPAINT_BRUSH_INPUT_CUSTOM]);
     }
     // FIXME: this one fails!!!
     //assert(inputs[MYPAINT_BRUSH_INPUT_SPEED1] >= 0.0 && inputs[MYPAINT_BRUSH_INPUT_SPEED1] < 1e8); // checking for inf
@@ -728,7 +731,7 @@ mypaint_brush_set_state(MyPaintBrush *self, MyPaintBrushState i, float value)
     if (!isfinite(x) || !isfinite(y) ||
         (x > 1e10 || y > 1e10 || x < -1e10 || y < -1e10)) {
       // workaround attempt for https://gna.org/bugs/?14372
-      g_print("Warning: ignoring brush::stroke_to with insane inputs (x = %f, y = %f)\n", (double)x, (double)y);
+      printf("Warning: ignoring brush::stroke_to with insane inputs (x = %f, y = %f)\n", (double)x, (double)y);
       x = 0.0;
       y = 0.0;
       pressure = 0.0;
@@ -736,7 +739,7 @@ mypaint_brush_set_state(MyPaintBrush *self, MyPaintBrushState i, float value)
     // the assertion below is better than out-of-memory later at save time
     assert(x < 1e8 && y < 1e8 && x > -1e8 && y > -1e8);
 
-    if (dtime < 0) g_print("Time jumped backwards by dtime=%f seconds!\n", dtime);
+    if (dtime < 0) printf("Time jumped backwards by dtime=%f seconds!\n", dtime);
     if (dtime <= 0) dtime = 0.0001; // protect against possible division by zero bugs
 
     if (dtime > 0.100 && pressure && self->states[MYPAINT_BRUSH_STATE_PRESSURE] == 0) {

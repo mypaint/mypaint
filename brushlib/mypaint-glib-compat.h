@@ -18,6 +18,9 @@
 # define G_END_DECLS
 #endif
 
+#define	FALSE	(0)
+#define	TRUE	(!FALSE)
+
 /* From $INCLUDEPATH/glib-2.0/glib/gtypes.h */
 typedef char gchar;
 typedef int gint;
