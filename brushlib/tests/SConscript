@@ -15,6 +15,7 @@ def is_test(fn):
 tests_sources = [fn for fn in os.listdir("./") if is_test(fn) and is_csource(fn)]
 testlib_sources = [fn for fn in os.listdir("./") if not is_test(fn) and is_csource(fn)]
 
+testlib_env.Append(CPPPATH='../', LIBPATH='../..', LIBS=['mypaint-brushlib'])
 testlib_env.SharedLibrary(target='../../mypaint-tests', source=testlib_sources)
 
 # Build individual tests
