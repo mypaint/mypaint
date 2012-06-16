@@ -1,0 +1,11 @@
+Import('env')
+
+import os
+
+env = env.Clone()
+utils_env = env.Clone()
+
+if utils_env['use_glib']:
+    utils_env.ParseConfig('pkg-config --cflags --libs glib-2.0')
+utils_env.Append(LIBPATH='../..', CPPPATH=['../'], LIBS=['mypaint-brushlib'])
+utils_env.SharedLibrary(target='../../mypaint-utils', source=Glob("*.c"))

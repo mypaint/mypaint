@@ -18,14 +18,14 @@ testlib_sources = [fn for fn in os.listdir("./") if not is_test(fn) and is_csour
 
 if testlib_env['use_glib']:
     testlib_env.ParseConfig('pkg-config --cflags --libs glib-2.0')
-testlib_env.Append(CPPPATH='../', LIBPATH='../..', LIBS=['mypaint-brushlib'])
+testlib_env.Append(CPPPATH=['../', '../utils'], LIBPATH=['../..'], LIBS=['mypaint-brushlib', 'mypaint-utils'])
 testlib_env.SharedLibrary(target='../../mypaint-tests', source=testlib_sources)
 
 # Build individual tests
 if tests_env['use_glib']:
     tests_env.ParseConfig('pkg-config --cflags --libs glib-2.0')
 
-tests_env.Append(CPPPATH='../', LIBPATH='../..', LIBS=['mypaint-brushlib', 'mypaint-tests'])
+tests_env.Append(CPPPATH='../', LIBPATH='../..', LIBS=['mypaint-brushlib', 'mypaint-tests', 'mypaint-utils'])
 
 # Standard tests
 for source in tests_sources:
@@ -35,7 +35,8 @@ for source in tests_sources:
 # Gegl tests
 gegl_tests_sources = [os.path.join('./gegl', fn) for fn in os.listdir("./gegl") if is_test(fn) and is_csource(os.path.join('./gegl', fn))]
 gegl_tests_env.ParseConfig('pkg-config --cflags --libs gegl-0.2')
-gegl_tests_env.Append(CPPPATH=['.', '../', '../gegl'], LIBPATH='../..', LIBS=['mypaint-brushlib', 'mypaint-tests', 'mypaint-brushlib-gegl'])
+gegl_tests_env.Append(CPPPATH=['.', '../', '../gegl', '../utils'], LIBPATH='../..',
+                    LIBS=['mypaint-brushlib', 'mypaint-tests', 'mypaint-brushlib-gegl', 'mypaint-utils'])
 if gegl_tests_env['enable_gegl']:
     for source in gegl_tests_sources:
         target = os.path.splitext(source)[0]
