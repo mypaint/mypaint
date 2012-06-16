@@ -19,6 +19,11 @@ testlib_sources = [fn for fn in os.listdir("./") if not is_test(fn) and is_csour
 if testlib_env['use_glib']:
     testlib_env.ParseConfig('pkg-config --cflags --libs glib-2.0')
 testlib_env.Append(CPPPATH=['../', '../utils'], LIBPATH=['../..'], LIBS=['mypaint-brushlib', 'mypaint-utils'])
+
+if testlib_env['enable_gperftools']:
+    testlib_env.Append(CPPFLAGS='HAVE_GPERFTOOLS')
+    testlib_env.ParseConfig('pkg-config --cflags --libs profiler')
+
 testlib_env.SharedLibrary(target='../../mypaint-tests', source=testlib_sources)
 
 # Build individual tests
