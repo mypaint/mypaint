@@ -10,7 +10,7 @@ def is_csource(fn):
     return os.path.isfile(fn) and os.path.splitext(fn)[1] == '.c'
 
 def is_test(fn):
-    return fn.startswith('test-')
+    return fn.startswith('test-') or fn.startswith('benchmark-')
 
 tests_sources = [fn for fn in os.listdir("./") if is_test(fn) and is_csource(fn)]
 testlib_sources = [fn for fn in os.listdir("./") if not is_test(fn) and is_csource(fn)]
