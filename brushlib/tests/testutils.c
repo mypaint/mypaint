@@ -69,7 +69,7 @@ test_cases_run(int argc, char **argv, TestCase *tests, int tests_n)
     for (int i=0; i<tests_n; i++) {
         const TestCase *test_case = &tests[i];
 
-        int result = test_case->function();
+        int result = test_case->function(test_case->user_data);
         if (result != 1) {
             failures++;
         }

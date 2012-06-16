@@ -11,7 +11,7 @@ typedef struct {
 } BaseValue;
 
 int
-test_brush_load_base_values(void)
+test_brush_load_base_values(void *user_data)
 {
     char *input_json = read_file("brushes/impressionism.myb");
 
@@ -105,7 +105,7 @@ typedef struct {
 } Inputs;
 
 int
-test_brush_load_inputs(void)
+test_brush_load_inputs(void *user_data)
 {
     char *input_json = read_file("brushes/modelling.myb");
 
@@ -251,8 +251,8 @@ int
 main(int argc, char **argv)
 {
     TestCase test_cases[] = {
-        {"/brush/persistence/load/base_values", test_brush_load_base_values},
-        {"/brush/persistence/load/inputs", test_brush_load_inputs},
+        {"/brush/persistence/load/base_values", test_brush_load_base_values, NULL},
+        {"/brush/persistence/load/inputs", test_brush_load_inputs, NULL},
     };
 
     return test_cases_run(argc, argv, test_cases, TEST_CASES_NUMBER(test_cases));

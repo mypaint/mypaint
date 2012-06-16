@@ -1,11 +1,12 @@
 #ifndef TESTUTILS_H
 #define TESTUTILS_H
 
-typedef int (*TestFunction) (void);
+typedef int (*TestFunction) (void *user_data);
 
 typedef struct {
     char *id;
     TestFunction function;
+    void *user_data;
 } TestCase;
 
 int test_cases_run(int argc, char **argv, TestCase *tests, int tests_n);

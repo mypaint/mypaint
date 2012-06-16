@@ -9,7 +9,7 @@
 #include "testutils.h"
 
 int
-test_rng_int_smoke()
+test_rng_int_smoke(void *user_data)
 {
     register int m; long a[2009];
 
@@ -33,7 +33,7 @@ test_rng_int_smoke()
 }
 
 int
-test_rng_double_smoke()
+test_rng_double_smoke(void *user_data)
 {
     register int m; double a[2009];
 
@@ -67,8 +67,8 @@ int
 main(int argc, char **argv)
 {
     TestCase test_cases[] = {
-        {"/rng/int/smoke", test_rng_int_smoke},
-        {"/rng/double/smoke", test_rng_double_smoke}
+        {"/rng/int/smoke", test_rng_int_smoke, NULL},
+        {"/rng/double/smoke", test_rng_double_smoke, NULL}
     };
 
     return test_cases_run(argc, argv, test_cases, TEST_CASES_NUMBER(test_cases));
