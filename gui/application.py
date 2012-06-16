@@ -384,6 +384,10 @@ class Application: # singleton
                 # Cannot paint after moving outside of painting area.
                 print 'Ignoring "%s" (a transceiver is probably not a pressure sensitive tablet, known to screw up gtk+ when enabled)' % device.name
                 continue
+            if 'glidepoint' in name:
+                # AlpsPS/2 ALPS GlidePoint
+                # https://gna.org/bugs/?19790
+                print 'Ignoring "%s" (probably a mouse-like device reporting extra axes)' % device.name
 
             for use, val_min, val_max in device.axes:
                 # Some mice have a third "pressure" axis, but without
