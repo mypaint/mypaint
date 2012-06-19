@@ -107,6 +107,23 @@ void area_changed_gegl(MyPaintTiledSurface *tiled_surface, int bb_x, int bb_y, i
     //ExpandRectToIncludePoint (&self->dirty_bbox, bb_x+bb_w-1, bb_y+bb_h-1);
 }
 
+void
+save_png(MyPaintSurface *surface, const char *path,
+         int x, int y, int width, int height)
+{
+    MyPaintGeglTiledSurface *self = (MyPaintGeglTiledSurface *)surface;
+    GeglNode *graph, *save, *source;
+
+    graph = gegl_node_new();
+    source = gegl_node_new_child(graph, "operation", "gegl:buffer-source",
+                                 "buffer", mypaint_gegl_tiled_surface_get_buffer(self), NULL);
+    save = gegl_node_new_child(graph, "operation", "gegl:png-save", "path", path, NULL);
+    gegl_node_link(source, save);
+
+    gegl_node_process(save);
+    g_object_unref(graph);
+}
+
 GeglBuffer *
 mypaint_gegl_tiled_surface_get_buffer(MyPaintGeglTiledSurface *self)
 {
@@ -148,6 +165,7 @@ mypaint_gegl_tiled_surface_new()
     mypaint_tiled_surface_init(&self->parent);
 
     self->parent.parent.destroy = free_gegl_tiledsurf;
+    self->parent.parent.save_png = save_png;
 
     self->parent.get_tile = get_tile_memory_gegl;
     self->parent.update_tile = update_tile_gegl;

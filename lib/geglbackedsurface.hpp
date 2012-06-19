@@ -106,16 +106,7 @@ public:
   }
 
   void save_as_png_c(const char *path) {
-
-      GeglNode *graph, *save, *source;
-
-      graph = gegl_node_new();
-      source = gegl_node_new_child(graph, "operation", "gegl:buffer-source",
-                                   "buffer", mypaint_gegl_tiled_surface_get_buffer(c_surface), NULL);
-      save = gegl_node_new_child(graph, "operation", "gegl:png-save", "path", path, NULL);
-      gegl_node_link(source, save);
-
-      gegl_node_process(save);
+      mypaint_surface_save_png((MyPaintSurface*)c_surface, path, 0, 0, -1, -1);
   }
 
   void load_from_png_c(const char *path) {
