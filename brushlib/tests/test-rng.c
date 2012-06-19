@@ -71,5 +71,5 @@ main(int argc, char **argv)
         {"/rng/double/smoke", test_rng_double_smoke, NULL}
     };
 
-    return test_cases_run(argc, argv, test_cases, TEST_CASES_NUMBER(test_cases));
+    return test_cases_run(argc, argv, test_cases, TEST_CASES_NUMBER(test_cases), 0);
 }

@@ -255,5 +255,5 @@ main(int argc, char **argv)
         {"/brush/persistence/load/inputs", test_brush_load_inputs, NULL},
     };
 
-    return test_cases_run(argc, argv, test_cases, TEST_CASES_NUMBER(test_cases));
+    return test_cases_run(argc, argv, test_cases, TEST_CASES_NUMBER(test_cases), 0);
 }

@@ -2,6 +2,10 @@
 #include <mypaint-surface.h>
 #include <mypaint-brush.h>
 
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
 #include "testutils.h"
 #include "mypaint-test-surface.h"
 
@@ -52,7 +56,7 @@ mypaint_test_surface_run(int argc, char **argv,
         {test_case_id, test_paint_and_save, &paint_and_save_data},
     };
 
-    int retval = test_cases_run(argc, argv, test_cases, TEST_CASES_NUMBER(test_cases));
+    int retval = test_cases_run(argc, argv, test_cases, TEST_CASES_NUMBER(test_cases), 0);
 
     free(test_case_id);
     return retval;

@@ -2,6 +2,7 @@
 #include <malloc.h>
 #include <stdio.h>
 #include <string.h>
+#include <assert.h>
 
 #include "testutils.h"
 
@@ -62,7 +63,7 @@ expect_true(int actual, const char *description) {
 }
 
 int
-test_cases_run(int argc, char **argv, TestCase *tests, int tests_n)
+test_cases_run(int argc, char **argv, TestCase *tests, int tests_n, TestCaseType type)
 {
     int failures = 0;
 
@@ -70,10 +71,16 @@ test_cases_run(int argc, char **argv, TestCase *tests, int tests_n)
         const TestCase *test_case = &tests[i];
 
         int result = test_case->function(test_case->user_data);
-        if (result != 1) {
-            failures++;
+        if (type == TEST_CASE_NORMAL) {
+            if (result != 1) {
+                failures++;
+            }
+            fprintf(stdout, "%s: %s\n", test_case->id, (result == 1) ? pass : fail);
+        } else if (type == TEST_CASE_BENCHMARK) {
+            fprintf(stdout, "%s: %d ms\n", test_case->id, result);
+        } else {
+            assert(0);
         }
-        fprintf(stdout, "%s: %s\n", test_case->id, (result == 1) ? pass : fail);
         fflush(stdout);
     }
 

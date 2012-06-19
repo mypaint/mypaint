@@ -9,7 +9,12 @@ typedef struct {
     void *user_data;
 } TestCase;
 
-int test_cases_run(int argc, char **argv, TestCase *tests, int tests_n);
+typedef enum {
+    TEST_CASE_NORMAL = 0,
+    TEST_CASE_BENCHMARK
+} TestCaseType;
+
+int test_cases_run(int argc, char **argv, TestCase *tests, int tests_n, TestCaseType type);
 
 char *read_file(char *path);
 
