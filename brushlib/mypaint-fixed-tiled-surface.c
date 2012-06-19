@@ -27,7 +27,7 @@ void free_simple_tiledsurf(MyPaintSurface *surface);
 
 void reset_null_tile(MyPaintFixedTiledSurface *self)
 {
-    for (int i=0; i < self->tile_size; i++) {
+    for (int i=0; i < self->tiles_width * self->tiles_height; i++) {
         self->null_tile[i] = 0;
     }
 }
