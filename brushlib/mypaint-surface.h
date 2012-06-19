@@ -43,6 +43,8 @@ typedef int (*MyPaintSurfaceDrawDabFunction) (struct _MyPaintSurface *self,
 
 typedef void (*MyPaintSurfaceDestroyFunction) (struct _MyPaintSurface *self);
 
+typedef void (*MyPaintSurfaceSavePngFunction) (struct _MyPaintSurface *self, const char *path, int x, int y, int width, int height);
+
 
 /**
   * MyPaintSurface:
@@ -53,6 +55,7 @@ typedef void (*MyPaintSurfaceDestroyFunction) (struct _MyPaintSurface *self);
 struct _MyPaintSurface {
     MyPaintSurfaceDrawDabFunction draw_dab;
     MyPaintSurfaceGetColorFunction get_color;
+    MyPaintSurfaceSavePngFunction save_png;
     MyPaintSurfaceDestroyFunction destroy;
 };
 
@@ -83,6 +86,9 @@ mypaint_surface_get_color(MyPaintSurface *self,
 
 float
 mypaint_surface_get_alpha (MyPaintSurface *self, float x, float y, float radius);
+
+void
+mypaint_surface_save_png(MyPaintSurface *self, const char *path, int x, int y, int width, int height);
 
 void
 mypaint_surface_destroy(MyPaintSurface *self);

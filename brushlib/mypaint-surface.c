@@ -63,3 +63,11 @@ float mypaint_surface_get_alpha (MyPaintSurface *self, float x, float y, float r
     mypaint_surface_get_color (self, x, y, radius, &color_r, &color_g, &color_b, &color_a);
     return color_a;
 }
+
+void
+mypaint_surface_save_png(MyPaintSurface *self, const char *path, int x, int y, int width, int height)
+{
+    if (self->save_png) {
+        self->save_png(self, path, x, y, width, height);
+    }
+}
