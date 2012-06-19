@@ -2,3 +2,5 @@ benchmark-fixed-tiled-surface
 test-fixed-tiled-surface
 test-brush-persistence
 test-rng
+benchmark-gegl-surface
+test-gegl-surface
