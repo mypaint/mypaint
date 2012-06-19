@@ -14,7 +14,9 @@ def run_ctest(executable):
 
     environ = {}
     environ.update(os.environ)
-    environ.update({'LD_LIBRARY_PATH': lib_dir})
+    ld_library_path = environ.get('LD_LIBRARY_PATH', '')
+    ld_library_path += ':%s' % lib_dir
+    environ.update({'LD_LIBRARY_PATH': ld_library_path})
 
     retval = subprocess.call(executable, env=environ, cwd=tests_dir)
     assert (retval == 0)
