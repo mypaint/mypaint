@@ -29,6 +29,7 @@ import stock
 import dragfunc
 from colors import RGBColor
 
+import pygtkcompat
 import xml.etree.ElementTree as ET
 
 # palette support
@@ -186,7 +187,8 @@ class Window (windowing.MainWindow, layout.MainWindow):
         self.is_fullscreen = False
 
         # Enable drag & drop
-        self.drag_dest_set(gtk.DEST_DEFAULT_MOTION |
+        if not pygtkcompat.USE_GTK3:
+            self.drag_dest_set(gtk.DEST_DEFAULT_MOTION |
                             gtk.DEST_DEFAULT_HIGHLIGHT |
                             gtk.DEST_DEFAULT_DROP,
                             [("text/uri-list", 0, 1),

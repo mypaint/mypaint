@@ -24,6 +24,7 @@ import dropdownpanel
 import widgets
 from colors import RGBColor, ColorAdjuster, HSVTriangle
 from colors import PreviousCurrentColorAdjuster, ColorPickerButton
+import pygtkcompat
 
 FRAMEWORK_XML = 'gui/toolbar.xml'
 MERGEABLE_XML = [
@@ -799,7 +800,8 @@ class MainMenuButton (gtk.ToggleButton):
 
         # Text settings
         attrs = pango.AttrList()
-        attrs.change(pango.AttrWeight(pango.WEIGHT_SEMIBOLD, 0, -1))
+        if not pygtkcompat.USE_GTK3:
+            attrs.change(pango.AttrWeight(pango.WEIGHT_SEMIBOLD, 0, -1))
         label.set_attributes(attrs)
 
         self.add(hbox2)

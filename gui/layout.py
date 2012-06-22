@@ -125,6 +125,8 @@ class LayoutManager:
                 elif isinstance(widget, gtk.Widget):
                     stock_id = result[1]
                     stock_info = gtk.stock_lookup(stock_id)
+                    if not stock_info:
+                        return None
                     stock_id, title, _mods, _key, _tr = stock_info
                     tool = Tool(widget, role, title, stock_id, self)
                     self.tools[role] = tool
