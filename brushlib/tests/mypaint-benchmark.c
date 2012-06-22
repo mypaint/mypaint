@@ -6,6 +6,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <limits.h>
 
 #ifdef HAVE_GPERFTOOLS
 #include <profiler.h>
