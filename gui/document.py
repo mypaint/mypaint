@@ -10,6 +10,7 @@
 
 import os, math
 
+import pygtkcompat
 import gtk
 from gtk import gdk
 from gettext import gettext as _
@@ -627,6 +628,13 @@ class Document(object):
 
     def device_changed_cb(self, old_device, new_device):
         # small problem with this code: it doesn't work well with brushes that have (eraser not in [1.0, 0.0])
+
+        print dir(new_device)
+        print dir(new_device.props)
+        if pygtkcompat.USE_GTK3:
+            new_device.name = new_device.props.name
+            new_device.source = new_device.props.input_source
+
         print 'device change:', new_device.name, new_device.source
 
         # When editing brush settings, it is often more convenient to use the mouse.

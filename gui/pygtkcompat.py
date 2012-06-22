@@ -5,7 +5,25 @@ print USE_GTK3
 
 if USE_GTK3:
     import gi
-    from gi.repository import Gdk, Gtk
+    from gi.repository import Gdk, Gtk, GdkPixbuf
+
+class GdkPixbufCompat(object):
+
+    @staticmethod
+    def save(pixbuf, path, type, **kwargs):
+
+        if USE_GTK3:
+            return pixbuf.savev(path, type, kwargs.keys(), kwargs.values())
+        else:
+            return pixbuf.save(path, type, **kwargs)
+
+    @staticmethod
+    def new(colorspace, has_alpha, bps, width, height):
+
+        if USE_GTK3:
+            return GdkPixbuf.Pixbuf.new(colorspace, has_alpha, bps, width, height)
+        else:
+            return orig_gtk.gdk.Pixbuf(colorspace, has_alpha, bps, width, height)
 
 class GdkCompat(object):
 
@@ -17,6 +35,13 @@ class GdkCompat(object):
             return display_manager.get_default_display()
         else:
             return orig_gtk.gdk.display_get_default()
+
+    @staticmethod
+    def keymap_get_default():
+        if USE_GTK3:
+            return Gdk.Keymap.get_default()
+        else:
+            return orig_gtk.gdk.keymap_get_default()
 
 class GtkCompat(object):
 
@@ -58,6 +83,14 @@ class GtkCompat(object):
         else:
             return orig_gtk.accel_map_lookup_entry(key)
 
+    @staticmethod
+    def menu_popup(menu_widget, parent_menu_shell, parent_menu_item,
+                              func, button, time):
+        if USE_GTK3:
+            return menu_widget.popup(parent_menu_shell, parent_menu_item, func, None, button, time)
+        else:
+            return menu_widget.popup(parent_menu_shell, parent_menu_item, func, button, time)
+
 def get_gobject():
     if USE_GTK3:
         from gi.repository import GObject
@@ -86,5 +119,6 @@ def original_gtk():
 
 orig_gtk = original_gtk()
 gdk = GdkCompat()
+gdk.pixbuf = GdkPixbufCompat()
 gtk = GtkCompat()
 gobject = get_gobject()

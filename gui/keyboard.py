@@ -57,7 +57,7 @@ class KeyboardManager:
             return
         # See gtk sourcecode in gtkmenu.c function gtk_menu_key_press,
         # which uses the same code as below when changing an accelerator.
-        keymap = gdk.keymap_get_default()
+        keymap = pygtkcompat.gdk.keymap_get_default()
         # Instead of using event.keyval, we do it the lowlevel way.
         # Reason: ignoring CAPSLOCK and checking if SHIFT was pressed
         res = keymap.translate_keyboard_state(event.hardware_keycode, event.state & ~gdk.LOCK_MASK, event.group)
@@ -67,7 +67,10 @@ class KeyboardManager:
             # happen is when I put my laptop into sleep mode.
             print 'Warning: translate_keyboard_state() returned None. Strange key pressed?'
             return
-        keyval, junk2, junk3, consumed_modifiers = res
+
+        keyval_offset = 1 if pygtkcompat.USE_GTK3 else 0
+        keyval = res[keyval_offset]
+        consumed_modifiers = res[keyval_offset+3]
         # We want to ignore irrelevant modifiers like ScrollLock.
         # The stored key binding does not include modifiers that affected its keyval.
         modifiers = event.state & gtk.accelerator_get_default_mod_mask() & ~consumed_modifiers

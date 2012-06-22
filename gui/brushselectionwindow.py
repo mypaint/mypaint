@@ -7,6 +7,8 @@
 # (at your option) any later version.
 
 "select brush window"
+
+import pygtkcompat
 import gtk, pango
 gdk = gtk.gdk
 from gettext import gettext as _
@@ -107,7 +109,9 @@ class BrushList(pixbuflist.PixbufList):
                                        pixbuffunc = lambda x: x.preview)
         # Support device changing with the same event as that used
         # for brush choice:
-        self.set_extension_events(gdk.EXTENSION_EVENTS_ALL)
+        if not pygtkcompat.USE_GTK3:
+            self.set_extension_events(gdk.EXTENSION_EVENTS_ALL)
+
         self.set_selected(self.bm.selected_brush)
         self.bm.brushes_observers.append(self.brushes_modified_cb)
         self.bm.selected_brush_observers.append(self.brush_selected_cb)
@@ -183,7 +187,7 @@ class BrushGroupsList(gtk.VBox):
                 # (no real problem, this is only when deleting/renaming groups)
                 del self.group_widgets[group]
 
-        self.foreach(self.remove)
+        self.foreach(self.remove, None)
 
         for group in self.bm.active_groups:
             if group in self.group_widgets:
@@ -206,16 +210,22 @@ class GroupSelector(gtk.DrawingArea):
         self.bm = app.brushmanager
         self.bm.groups_observers.append(self.active_groups_changed_cb)
 
-        self.drag_dest_set(gtk.DEST_DEFAULT_MOTION | gtk.DEST_DEFAULT_DROP,
+        if not pygtkcompat.USE_GTK3:
+            self.drag_dest_set(gtk.DEST_DEFAULT_MOTION | gtk.DEST_DEFAULT_DROP,
                 [('LIST_ITEM', gtk.TARGET_SAME_APP, pixbuflist.DRAG_ITEM_NAME)],
                 gdk.ACTION_COPY|gdk.ACTION_MOVE)
+
         self.connect('drag-motion', self.drag_motion_cb)
         self.connect('drag-data-received', self.drag_data_received_cb)
         self.connect('drag-leave', self.drag_clear_cb)
         self.connect('drag-begin', self.drag_clear_cb)
         self.connect('drag-end', self.drag_clear_cb)
 
-        self.connect("expose-event", self.expose_cb)
+        if pygtkcompat.USE_GTK3:
+            pass
+        else:
+            self.connect("expose-event", self.expose_cb)
+
         self.connect("button-press-event", self.button_press_cb)
         self.connect("motion-notify-event", self.motion_notify_cb)
         self.connect("leave-notify-event", self.leave_notify_cb)
@@ -230,7 +240,9 @@ class GroupSelector(gtk.DrawingArea):
         self.gtkstate_active_group = None
         self.drag_target_group = None
         self.set_tooltip_text(_('Try right click, middle click or Ctrl click'))
-        self.connect("size-request", self.on_size_request)
+
+        if not pygtkcompat.USE_GTK3:
+            self.connect("size-request", self.on_size_request)
 
     def active_groups_changed_cb(self):
         self.queue_draw()

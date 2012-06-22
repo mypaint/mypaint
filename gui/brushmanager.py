@@ -10,6 +10,7 @@
 This module does file management for brushes and brush groups.
 """
 
+import pygtkcompat
 import dialogs
 import gtk
 from gtk import gdk # only for gdk.pixbuf
@@ -800,7 +801,7 @@ class ManagedBrush(object):
             self.preview.composite(tmp, 0, 0, w, h, 0, 0, 1, 1, gdk.INTERP_BILINEAR, 255)
             self.preview = tmp
 
-        self.preview.save(prefix + '_prev.png', 'png')
+        pygtkcompat.gdk.pixbuf.save(self.preview, prefix + '_prev.png', 'png')
         brushinfo = self.brushinfo.clone()
         open(prefix + '.myb', 'w').write(brushinfo.save_to_string())
         self.remember_mtimes()

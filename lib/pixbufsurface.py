@@ -9,6 +9,7 @@
 # This class converts between linear 8bit RGB(A) and tiled RGBA storage.
 # It is used for rendering updates, but also for save/load.
 
+from gui import pygtkcompat
 from gtk import gdk
 import mypaintlib,  helpers
 from tiledsurface import N
@@ -40,7 +41,7 @@ class Surface:
         assert self.ew >= w and self.eh >= h
         assert self.ex <= x and self.ey <= y
 
-        self.epixbuf = gdk.Pixbuf(gdk.COLORSPACE_RGB, True, 8, self.ew, self.eh)
+        self.epixbuf = pygtkcompat.gdk.pixbuf.new(gdk.COLORSPACE_RGB, True, 8, self.ew, self.eh)
         dx = x-self.ex
         dy = y-self.ey
         self.pixbuf  = self.epixbuf.subpixbuf(dx, dy, w, h)

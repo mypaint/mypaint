@@ -575,7 +575,7 @@ class CanvasRenderer(gtk.DrawingArea):
         gtk.DrawingArea.__init__(self)
 
         if pygtkcompat.USE_GTK3:
-            pass #FIXME: implement
+            self.connect("draw", self.draw_cb)
         else:
             self.connect("expose-event", self.expose_cb)
 
@@ -656,6 +656,11 @@ class CanvasRenderer(gtk.DrawingArea):
             corners = [self.model_to_display(x, y) for (x, y) in corners]
             self.queue_draw_area(*helpers.rotated_rectangle_bbox(corners))
 
+    def draw_cb(self, widget, cr):
+
+        self.repaint(cr, None)
+        return True
+
     def expose_cb(self, widget, event):
         
         if self.snapshot_pixmap:
@@ -664,29 +669,34 @@ class CanvasRenderer(gtk.DrawingArea):
             x,y,w,h = area.x, area.y, area.width, area.height
             self.window.draw_drawable(gc, self.snapshot_pixmap, x,y, x,y, w,h)
         else:
-            self.repaint(event.area)
+
+            cr = self.window.cairo_create()
+
+            # actually this is only neccessary if we are not answering an expose event
+            cr.rectangle(*device_bbox)
+            cr.clip()
+
+            self.repaint(cr, event.area)
         return True
 
 
     def display_to_model(self, disp_x, disp_y):
         """Converts display coordinates to model coordinates.
         """
-        cr = self.__get_model_cairo_context()
-        return cr.device_to_user(disp_x, disp_y)
+        matrix = self._get_model_view_transformation()
+        assert not matrix.invert()
+        view_model = matrix
+        return view_model.transform_point(disp_x, disp_y)
 
 
     def model_to_display(self, model_x, model_y):
         """Converts model coordinates to display coordinates.
         """
-        cr = self.__get_model_cairo_context()
-        return cr.user_to_device(model_x, model_y)
+        model_view = self._get_model_view_transformation()
+        return model_view.transform_point(model_x, model_y)
 
 
-    def __get_model_cairo_context(self, cr=None):
-        # OPTIMIZE: Check whether this is a bottleneck during
-        #           painting (many motion events) - if yes, use cache.
-        if cr is None:
-            cr = self.window.cairo_create()
+    def _get_model_view_transformation(self):
 
         scale = self.scale
         # check if scale is almost a power of two
@@ -698,22 +708,27 @@ class CanvasRenderer(gtk.DrawingArea):
         rotation = self.rotation
         # maybe we should check if rotation is almost a multiple of 90 degrees?
 
-        cr.translate(self.translation_x, self.translation_y)
-        cr.rotate(rotation)
-        cr.scale(scale, scale)
+        matrix = cairo.Matrix()
+        matrix.translate(self.translation_x, self.translation_y)
+        matrix.rotate(rotation)
+        matrix.scale(scale, scale)
 
         # Align the translation such that (0,0) maps to an integer
         # screen pixel, to keep image rendering fast and sharp.
-        x, y = cr.user_to_device(0, 0)
-        x, y = cr.device_to_user(round(x), round(y))
-        cr.translate(x, y)
+        x, y = matrix.transform_point(0, 0)
+        inverse = cairo.Matrix(*list(matrix))
+        assert not inverse.invert()
+        x, y = inverse.transform_point(round(x), round(y))
+        matrix.translate(x, y)
 
         if self.mirrored:
-            m = list(cr.get_matrix())
+            m = list(matrix)
             m[0] = -m[0]
             m[2] = -m[2]
-            cr.set_matrix(cairo.Matrix(*m))
-        return cr
+            matrix = cairo.Matrix(*m)
+
+        assert not matrix.invert()
+        return matrix
 
     def is_translation_only(self):
         return self.rotation == 0.0 and self.scale == 1.0 and not self.mirrored
@@ -730,8 +745,8 @@ class CanvasRenderer(gtk.DrawingArea):
         layers = [l for l in layers if l.visible]
         return layers
 
-    def repaint(self, device_bbox=None):
-        cr, surface, sparse, mipmap_level, gdk_clip_region = self.render_prepare(device_bbox)
+    def repaint(self, cr, device_bbox=None):
+        surface, sparse, mipmap_level, gdk_clip_region = self.render_prepare(cr, device_bbox)
         self.render_execute(cr, surface, sparse, mipmap_level, gdk_clip_region)
         # Model coordinate space:
         cr.restore()  # CONTEXT2<<<
@@ -746,22 +761,21 @@ class CanvasRenderer(gtk.DrawingArea):
             overlay.paint(cr)
             cr.restore()
 
-    def render_prepare(self, device_bbox):
+    def render_prepare(self, cr, device_bbox):
         if device_bbox is None:
             allocation = self.get_allocation()
             w, h = allocation.width, allocation.height
             device_bbox = (0, 0, w, h)
         #print 'device bbox', tuple(device_bbox)
 
-        gdk_clip_region = self.window.get_clip_region()
         x, y, w, h = device_bbox
-        sparse = not gdk_clip_region.point_in(x+w/2, y+h/2)
 
-        cr = self.window.cairo_create()
-
-        # actually this is only neccessary if we are not answering an expose event
-        cr.rectangle(*device_bbox)
-        cr.clip()
+        if pygtkcompat.USE_GTK3:
+            gdk_clip_region = None
+            sparse = False
+        else:
+            gdk_clip_region = self.window.get_clip_region()
+            sparse = not gdk_clip_region.point_in(x+w/2, y+h/2)
 
         # fill it all white, though not required in the most common case
         if self.visualize_rendering:
@@ -772,7 +786,7 @@ class CanvasRenderer(gtk.DrawingArea):
 
         # bye bye device coordinates
         cr.save()   # >>>CONTEXT1
-        self.__get_model_cairo_context(cr)
+        cr.set_matrix(self._get_model_view_transformation())
         cr.save()   # >>>CONTEXT2
 
         # choose best mipmap
@@ -852,7 +866,7 @@ class CanvasRenderer(gtk.DrawingArea):
                     bbox = (int(x), int(y), N, N)
                 else:
                     #corners = [(tx*N, ty*N), ((tx+1)*N-1, ty*N), (tx*N, (ty+1)*N-1), ((tx+1)*N-1, (ty+1)*N-1)]
-                    # same problem as above: cairo needs to know one extra pixel for interpolation
+                    # same problem as above: m needs to know one extra pixel for interpolation
                     corners = [(tx*N-1, ty*N-1), ((tx+1)*N, ty*N-1), (tx*N-1, (ty+1)*N), ((tx+1)*N, (ty+1)*N)]
                     corners = [cr.user_to_device(x_, y_) for (x_, y_) in corners]
                     bbox = gdk.Rectangle(*helpers.rotated_rectangle_bbox(corners))
@@ -906,8 +920,8 @@ class CanvasRenderer(gtk.DrawingArea):
             cr.paint()
 
     def scroll(self, dx, dy):
-        self.translation_x -= dx
-        self.translation_y -= dy
+        #self.translation_x -= dx
+        #self.translation_y -= dy
         if False:
             # This speeds things up nicely when scrolling is already
             # fast, but produces temporary artefacts and an

@@ -11,6 +11,7 @@
 
 import os
 
+import pygtkcompat
 import gtk
 from gtk import gdk
 import gobject
@@ -24,7 +25,6 @@ import dropdownpanel
 import widgets
 from colors import RGBColor, ColorAdjuster, HSVTriangle
 from colors import PreviousCurrentColorAdjuster, ColorPickerButton
-import pygtkcompat
 
 FRAMEWORK_XML = 'gui/toolbar.xml'
 MERGEABLE_XML = [
@@ -839,7 +839,7 @@ class MainMenuButton (gtk.ToggleButton):
         if togglebutton.get_active():
             if not self.menu.get_property("visible"):
                 pos_func = self._get_popup_menu_position
-                self.menu.popup(None, None, pos_func, 1, 0)
+                pygtkcompat.gtk.menu_popup(self.menu, None, None, pos_func, 1, 0)
 
 
     def on_menu_dismiss(self, *a, **kw):

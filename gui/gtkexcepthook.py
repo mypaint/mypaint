@@ -21,9 +21,8 @@ import inspect, linecache, pydoc, sys, traceback
 from cStringIO import StringIO
 from gettext import gettext as _
 
-import pygtk
-pygtk.require ('2.0')
-import gtk, pango
+import pygtkcompat
+import gtk
 
 # Function that will be called when the user presses "Quit"
 # Return True to confirm quit, False to cancel
@@ -118,8 +117,9 @@ def _info (exctyp, value, tb):
     if exception_dialog_active:
         return
 
-    gtk.gdk.pointer_ungrab()
-    gtk.gdk.keyboard_ungrab()
+    if not pygtkcompat.USE_GTK3:
+        gtk.gdk.pointer_ungrab()
+        gtk.gdk.keyboard_ungrab()
 
     exception_dialog_active = True
     # Create the dialog

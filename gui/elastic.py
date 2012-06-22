@@ -6,6 +6,7 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
+import pygtkcompat
 import gtk
 from gtk import gdk
 
@@ -74,11 +75,13 @@ class ElasticContent:
         self.__horizontal = mirror_horizontal
         if not mirror_horizontal and not mirror_vertical:
             return
-        self.__last_req = None
-        self.__expose_connid = self.connect_after("expose-event",
-            self.__after_expose_event)
-        self.__notify_parent = False
-        self.connect_after("size-request", self.__after_size_request)
+
+        if not pygtkcompat.USE_GTK3:
+            self.__last_req = None
+            self.__expose_connid = self.connect_after("expose-event",
+                self.__after_expose_event)
+            self.__notify_parent = False
+            self.connect_after("size-request", self.__after_size_request)
 
     def __after_expose_event(self, widget, event):
         # Begin notifying changes to the ancestor after the first expose event.
@@ -135,7 +138,7 @@ class ElasticExpander (gtk.Expander, ElasticContent):
     __gtype_name__ = "ElasticExpander"
 
     def __init__(self, *args, **kwargs):
-        gtk.Expander.__init__(self, *args, **kwargs)
+        gtk.Expander.__init__(self)
         ElasticContent.__init__(self, mirror_horizontal=False,
                                 mirror_vertical=True)
 

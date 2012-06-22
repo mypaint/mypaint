@@ -257,8 +257,11 @@ class MyPaintSurface(mypaintlib.TiledSurface):
         self.notify_observers(*bbox)
 
     def load_from_numpy(self, arr, x, y):
-        assert arr.dtype == 'uint8'
         h, w, channels = arr.shape
+        if h <= 0 or w <= 0:
+            return (x, y, w, h)
+
+        assert arr.dtype == 'uint8'
         s = pixbufsurface.Surface(x, y, w, h, data=arr)
         self._load_from_pixbufsurface(s)
         return (x, y, w, h)
