@@ -277,6 +277,11 @@ class DragHandler(object):
 
     @property
     def window(self):
+
+        if pygtkcompat.USE_GTK3:
+            # FIXME: no code can rely on .window in GTK+3
+            return None
+
         return self.widget.window
 
     def update(self, dx, dy, x, y):
@@ -626,7 +631,7 @@ class CanvasRenderer(gtk.DrawingArea):
         self.stored_allocation = allocation
 
     def canvas_modified_cb(self, x1, y1, w, h):
-        if not self.window:
+        if not pygtkcompat.USE_GTK3 and not self.window:
             return
 
         if w == 0 and h == 0:
