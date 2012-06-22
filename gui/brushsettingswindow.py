@@ -71,9 +71,9 @@ class Window(windowing.SubWindow):
 
         nb = self.settings_notebook = gtk.Notebook()
         nb.set_show_tabs(False)
-        nb.insert_page(self.brushsettings_widget, position=self.PAGE_BRUSHSETTINGS)
-        nb.insert_page(self.brushinputs_widget, position=self.PAGE_BRUSHINPUTS)
-        nb.insert_page(brushicon_editor, position=self.PAGE_BRUSHPROPERTIES)
+        nb.insert_page(self.brushsettings_widget, None, self.PAGE_BRUSHSETTINGS)
+        nb.insert_page(self.brushinputs_widget, None, self.PAGE_BRUSHINPUTS)
+        nb.insert_page(brushicon_editor, None, self.PAGE_BRUSHPROPERTIES)
 
         vbox.pack_start(nb, expand=True, fill=True)
 

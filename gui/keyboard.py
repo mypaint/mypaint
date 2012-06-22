@@ -32,7 +32,7 @@ class KeyboardManager:
         self.pressed = {} # hardware_keycode --> gtk.Action (while holding it down)
 
     def start_listening(self):
-        gtk.accel_map_get().connect('changed', self.accel_map_changed_cb)
+        pygtkcompat.gtk.accel_map_get().connect('changed', self.accel_map_changed_cb)
 
     def accel_map_changed_cb(self, object, accel_path, accel_key, accel_mods):
         self.update_keymap(accel_path)
@@ -43,7 +43,8 @@ class KeyboardManager:
         for k, v in self.keymap.items():
             if v.get_accel_path() == accel_path:
                 del self.keymap[k]
-        shortcut = gtk.accel_map_lookup_entry(accel_path)
+
+        shortcut = pygtkcompat.gtk.accel_map_lookup_entry(accel_path)
         if shortcut:
             for action in self.actions:
                 if action.get_accel_path() == accel_path:
