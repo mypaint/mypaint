@@ -6,6 +6,7 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
+import pygtkcompat
 import gtk
 gdk = gtk.gdk
 from lib import helpers
@@ -55,7 +56,11 @@ class PixbufList(gtk.DrawingArea):
         self.tooltip_text = None
         self.in_potential_drag = False
 
-        self.connect("expose-event", self.expose_cb)
+        if pygtkcompat.USE_GTK3:
+            pass #FIXME: implement
+        else:
+            self.connect("expose-event", self.expose_cb)
+
         self.connect("button-press-event", self.button_press_cb)
         self.connect("button-release-event", self.button_release_cb)
         self.connect("configure-event", self.configure_event_cb)

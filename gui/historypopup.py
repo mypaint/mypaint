@@ -6,6 +6,7 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
+import pygtkcompat
 import gtk
 gdk = gtk.gdk
 
@@ -55,7 +56,11 @@ class HistoryPopup(windowing.PopupWindow):
                         )
         self.connect("button-release-event", self.button_release_cb)
         self.connect("button-press-event", self.button_press_cb)
-        self.connect("expose_event", self.expose_cb)
+
+        if pygtkcompat.USE_GTK3:
+            pass #FIXME: implement
+        else:
+            self.connect("expose-event", self.expose_cb)
 
         self.set_size_request(self.popup_width, popup_height)
 

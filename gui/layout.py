@@ -13,11 +13,11 @@ Window sizes and sidebar positions are stored to user preferences.
 
 import os
 
+import pygtkcompat
 import gtk
 from gtk import gdk
 import pango
 import cairo
-import pygtkcompat
 gobject = pygtkcompat.gobject
 
 from math import sqrt
@@ -512,7 +512,12 @@ class ToolResizeGrip (gtk.DrawingArea):
         self.tool = tool
         self.set_size_request(4*self.corner_width, self.handle_size)
         self.connect("configure-event", self.on_configure_event)
-        self.connect("expose-event", self.on_expose_event)
+
+        if pygtkcompat.USE_GTK3:
+            pass #FIXME: implement
+        else:
+            self.connect("expose-event", self.on_expose_event)
+
         self.connect("button-press-event", self.on_button_press_event)
         self.connect("button-release-event", self.on_button_release_event)
         self.connect("motion-notify-event", self.on_motion_notify_event)
@@ -697,7 +702,11 @@ class ToolDragHandle (gtk.EventBox):
         self.in_reposition_drag = False
         # Floating status
         self.set_floating(False)
-        self.frame.connect("expose-event", self.on_frame_expose_event)
+
+        if pygtkcompat.USE_GTK3:
+            pass #FIXME: implement
+        else:
+            self.frame.connect("expose-event", self.on_frame_expose_event)
 
     def on_frame_expose_event(self, widget, event):
         draw_subtle_gradient(widget)
@@ -786,7 +795,12 @@ class ToolSnapBackBar (gtk.DrawingArea):
         gtk.DrawingArea.__init__(self)
         self.tool = tool
         self.set_size_request(-1, self.ARROW_SIZE)
-        self.connect("expose-event", self.on_expose_event)
+
+        if pygtkcompat.USE_GTK3:
+            pass #FIXME: implement
+        else:
+            self.connect("expose-event", self.on_expose_event)
+
         self.connect("button-press-event", self.on_button_down)
         self.connect("button-release-event", self.on_button_up)
         self.connect("enter-notify-event", self.on_enter)
@@ -1230,7 +1244,12 @@ class ToolDragPreviewWindow (gtk.Window):
         self.set_decorated(False)
         self.set_position(gtk.WIN_POS_MOUSE)
         self.connect("map-event", self.on_map_event)
-        self.connect("expose-event", self.on_expose_event)
+
+        if pygtkcompat.USE_GTK3:
+            pass #FIXME: implement
+        else:
+            self.connect("expose-event", self.on_expose_event)
+
         self.connect("configure-event", self.on_configure_event)
         self.bg = None
         self.set_default_size(1,1)

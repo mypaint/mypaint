@@ -6,6 +6,7 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
+import pygtkcompat
 import gtk, gobject
 gdk = gtk.gdk
 import windowing
@@ -23,7 +24,12 @@ class ColorPicker(windowing.PopupWindow):
         self.add_events(gdk.BUTTON_PRESS_MASK |
                         gdk.BUTTON_RELEASE_MASK
                         )
-        self.connect("expose_event", self.expose_cb)
+
+        if pygtkcompat.USE_GTK3:
+            pass #FIXME: implement
+        else:
+            self.connect("expose-event", self.expose_cb)
+
         self.connect("motion-notify-event", self.motion_notify_cb)
 
         self.set_size_request(popup_width, popup_height)

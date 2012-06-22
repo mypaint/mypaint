@@ -6,6 +6,7 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
+import pygtkcompat
 import gtk
 from gtk import gdk
 
@@ -38,7 +39,11 @@ class CurveWidget(gtk.DrawingArea):
             self.changed_cb = changed_cb
         self.magnetic = magnetic
 
-        self.connect("expose-event", self.expose_cb)
+        if pygtkcompat.USE_GTK3:
+            pass #FIXME: implement
+        else:
+            self.connect("expose-event", self.expose_cb)
+
         self.connect("button-press-event", self.button_press_cb)
         self.connect("button-release-event", self.button_release_cb)
         self.connect("motion-notify-event", self.motion_notify_cb)

@@ -10,6 +10,7 @@ import gobject
 import cairo
 import gtk
 from gtk import gdk
+import pygtkcompat
 
 import os
 import random
@@ -563,7 +564,12 @@ class CanvasRenderer(gtk.DrawingArea):
 
     def __init__(self, app=None, document=None):
         gtk.DrawingArea.__init__(self)
-        self.connect("expose-event", self.expose_cb)
+
+        if pygtkcompat.USE_GTK3:
+            pass #FIXME: implement
+        else:
+            self.connect("expose-event", self.expose_cb)
+
         self.connect("size-allocate", self.size_allocate_cb)
         self.connect("state-changed", self.state_changed_cb)
 
