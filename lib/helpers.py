@@ -8,6 +8,9 @@
 
 from math import floor, ceil, isnan
 import os, sys, hashlib, zipfile, colorsys, urllib, gc
+import numpy
+
+from gui import pygtkcompat
 
 # Avoid pulling in PyGTK+ when using GI
 if not os.environ.get('MYPAINT_ENABLE_GEGL', 0):
@@ -111,10 +114,16 @@ def clamp(x, lo, hi):
     return x
 
 def gdkpixbuf2numpy(pixbuf):
-    # workaround for pygtk still returning Numeric instead of numpy arrays
-    # (see gdkpixbuf2numpy.hpp)
-    arr = pixbuf.get_pixels_array()
-    return mypaintlib.gdkpixbuf_numeric2numpy(arr)
+
+    if pygtkcompat.USE_GTK3:
+        #FIXME: implement based on gdk_pixbuf_get_pixels
+        return numpy.zeros((0, 0, 0))
+
+    else:
+        # workaround for pygtk still returning Numeric instead of numpy arrays
+        # (see gdkpixbuf2numpy.hpp)
+        arr = pixbuf.get_pixels_array()
+        return mypaintlib.gdkpixbuf_numeric2numpy(arr)
 
 def freedesktop_thumbnail(filename, pixbuf=None):
     """
