@@ -73,7 +73,11 @@ class CanvasEventBox(gtk.EventBox):
                         | gdk.BUTTON_RELEASE_MASK
                         )
 
-        self.set_extension_events (gdk.EXTENSION_EVENTS_ALL)
+        if pygtkcompat.USE_GTK3:
+            # FIXME: implement extended event handling
+            pass
+        else:
+            self.set_extension_events (gdk.EXTENSION_EVENTS_ALL)
 
         self.last_event_time = None
         self.last_event_x = None
