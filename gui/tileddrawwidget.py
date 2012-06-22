@@ -11,6 +11,7 @@ import cairo
 import gtk
 from gtk import gdk
 
+import os
 import random
 from math import floor, ceil, log
 from numpy import isfinite

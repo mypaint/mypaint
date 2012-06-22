@@ -18,6 +18,7 @@ import colors
 from colorwindow import BrushColorManager
 from overlays import LastPaintPosOverlay, ScaleOverlay
 
+import pygtkcompat
 
 class Application: # singleton
     """
@@ -67,7 +68,11 @@ class Application: # singleton
                 + "please check your installation."
             print 'see https://gna.org/bugs/?18460 for possible solutions'
             sys.exit(1)
-        gtk.window_set_default_icon_name('mypaint')
+
+        if pygtkcompat.USE_GTK3:
+            gtk.Window.set_default_icon_name('mypaint')
+        else:
+            gtk.window_set_default_icon_name('mypaint')
 
         stock.init_custom_stock_items()
 
@@ -77,7 +82,7 @@ class Application: # singleton
 
         self.pixmaps = PixbufDirectory(join(self.datapath, 'pixmaps'))
         self.cursor_color_picker = gdk.Cursor(
-                  gdk.display_get_default(),
+                  pygtkcompat.gdk.display_get_default(),
                   self.pixmaps.cursor_color_picker,
                   1, 30)
 
@@ -119,7 +124,7 @@ class Application: # singleton
         self.kbm.start_listening()
         self.filehandler.doc = self.doc
         self.filehandler.filename = None
-        gtk.accel_map_load(join(self.confpath, 'accelmap.conf'))
+        pygtkcompat.gtk.accel_map_load(join(self.confpath, 'accelmap.conf'))
 
         # Load the background settings window.
         # FIXME: this line shouldn't be needed, but we need to load this up
@@ -419,7 +424,7 @@ class Application: # singleton
                     break
 
     def save_gui_config(self):
-        gtk.accel_map_save(join(self.confpath, 'accelmap.conf'))
+        pygtkcompat.gtk.accel_map_save(join(self.confpath, 'accelmap.conf'))
         self.save_settings()
 
     def message_dialog(self, text, type=gtk.MESSAGE_INFO, flags=0):

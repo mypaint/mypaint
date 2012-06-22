@@ -7,12 +7,14 @@
 # (at your option) any later version.
 
 import os
-import pygtk
-pygtk.require('2.0')
+
+from gui import pygtkcompat
+gobject = pygtkcompat.gobject
 import gtk
-required = (2, 16, 0)
-assert gtk.ver >= required, 'You need to upgrade PyGTK, at least version %d.%d.%d is required.' % required
-import gobject
+
+if not pygtkcompat.USE_GTK3:
+    required = (2, 16, 0)
+    assert gtk.ver >= required, 'You need to upgrade PyGTK, at least version %d.%d.%d is required.' % required
 
 from gui import application
 from optparse import OptionParser
@@ -59,7 +61,7 @@ def main(datadir, extradata, default_confpath):
         # assigning a keyboard shortcut without a complicated dialog
         # clicking marathon must have totally upset the people coming from
         # windows.</rant>
-        gtksettings = gtk.settings_get_default()
+        gtksettings = pygtkcompat.gtk.settings_get_default()
         gtksettings.set_property('gtk-can-change-accels', True)
 
         import gtkexcepthook

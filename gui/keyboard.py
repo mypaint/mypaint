@@ -8,6 +8,7 @@
 
 import gtk
 gdk = gtk.gdk
+import pygtkcompat
 
 class KeyboardManager:
     """

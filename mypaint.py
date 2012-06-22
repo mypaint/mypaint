@@ -105,6 +105,9 @@ def get_paths():
         print
         raise
 
+    # Ensure that pyGTK compatibility is setup before anything else
+    from gui import pygtkcompat
+
     datapath = libpath
     if not os.path.isdir(join(datapath, 'brushes')):
         print 'Default brush collection not found! It should have been here:'

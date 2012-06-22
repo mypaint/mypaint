@@ -132,7 +132,9 @@ class ByInputWidget(gtk.VBox):
         t = gtk.Table(4, 4)
         c = self.curve_widget = CurveWidget(self.curvewidget_points_modified_cb)
         t.attach(c, 0, 3, 0, 3, gtk.EXPAND | gtk.FILL, gtk.EXPAND | gtk.FILL, 5, 0)
-        l1 = gtk.SpinButton(self.scale_y_adj); l1.set_digits(2)
+        l1 = gtk.SpinButton();
+        l1.set_adjustment(self.scale_y_adj)
+        l1.set_digits(2)
         l2 = gtk.Label('+0.0')
         l3 = gtk.Label()
         def update_negative_scale(*junk):
@@ -143,9 +145,13 @@ class ByInputWidget(gtk.VBox):
         t.attach(l1, 3, 4, 0, 1, 0, 0, 5, 0)
         t.attach(l2, 3, 4, 1, 2, 0, gtk.EXPAND, 5, 0)
         t.attach(l3, 3, 4, 2, 3, 0, 0, 5, 0)
-        l4 = gtk.SpinButton(self.xmin_adj); l4.set_digits(2)
+        l4 = gtk.SpinButton()
+        l4.set_adjustment(self.xmin_adj)
+        l4.set_digits(2)
         l5 = gtk.Label('')
-        l6 = gtk.SpinButton(self.xmax_adj); l6.set_digits(2)
+        l6 = gtk.SpinButton();
+        l6.set_adjustment(self.xmax_adj)
+        l6.set_digits(2)
         t.attach(l4, 0, 1, 3, 4, 0, 0, 5, 0)
         t.attach(l5, 1, 2, 3, 4, gtk.EXPAND, 0, 5, 0)
         t.attach(l6, 2, 3, 3, 4, 0, 0, 5, 0)

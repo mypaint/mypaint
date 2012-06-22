@@ -11,17 +11,29 @@ Tools can be snapped in and out of the sidebar.
 Window sizes and sidebar positions are stored to user preferences.
 """
 
+import os
+
 import gtk
-import gobject
 from gtk import gdk
-from math import sqrt
-from warnings import warn
 import pango
 import cairo
+import pygtkcompat
+gobject = pygtkcompat.gobject
+
+from math import sqrt
+from warnings import warn
+
 from gettext import gettext as _
 
 from elastic import ElasticContainer
 
+def style_get_property(widget, property_name):
+
+    if pygtkcompat.USE_GTK3:
+        # FIXME: is the equivalent GI call broken? It seems to take value as an argument..
+        return 10
+    else:
+        return widget.style_get_property(property_name)
 
 class LayoutManager:
     """Keeps track of tool positions, and main window state.
@@ -416,7 +428,7 @@ class MainWindow (WindowWithSavedPosition):
                 width, height = self.last_conf_size
                 sbwidth = lm.prefs[role].get("sbwidth", None)
                 if sbwidth is not None:
-                    handle_size = self.hpaned.style_get_property("handle-size")
+                    handle_size = style_get_property(self.hpaned, "handle-size")
                     pos = width - handle_size - sbwidth
                     self.hpaned.set_position(pos)
                     self.hpaned.queue_resize()
@@ -480,7 +492,7 @@ class ToolResizeGrip (gtk.DrawingArea):
     AREA_MIDDLE = 1
     AREA_RIGHT = 2
 
-    handle_size = gtk.HPaned().style_get_property("handle-size") + 2
+    handle_size = style_get_property(gtk.HPaned(), "handle-size") + 2
     corner_width = 4*handle_size
 
     window_edge_map = {
@@ -1170,7 +1182,7 @@ class Tool (gtk.VBox, ElasticContainer):
 
     def on_snap_button_pressed(self, window):
         # Mouse position
-        display = gdk.display_get_default()
+        display = pygtkcompat.gdk.display_get_default()
         screen, ptr_x, ptr_y, _modmask = display.get_pointer()
         if self.rolled_up:
             self.set_rolled_up(False)    # pending events will be processed
@@ -1494,7 +1506,7 @@ class Sidebar (gtk.EventBox):
         """
         scrwin = self.scrolledwin
         viewpt = scrwin.get_child()
-        sb_pad = 2 * scrwin.style_get_property("scrollbar-spacing")
+        sb_pad = 2 * style_get_property(scrwin, "scrollbar-spacing")
         vp_alloc = viewpt.allocation
         max_size = (vp_alloc.width-sb_pad, vp_alloc.height-sb_pad)
         return max_size
@@ -1578,7 +1590,7 @@ def set_initial_window_position(win, pos):
     h = pos.get("h", None)
 
     # Where the mouse is right now
-    display = gdk.display_get_default()
+    display = pygtkcompat.gdk.display_get_default()
     screen, ptr_x, ptr_y, _modmask = display.get_pointer()
     if screen is None:
         raise RuntimeError, "No cursor on the default screen. Eek."

@@ -14,11 +14,13 @@ last_cursor_info = None
 last_cursor = None
 max_cursor_size = None
 
+import pygtkcompat
+
 def get_brush_cursor(radius, is_eraser, is_lockalpha):
     global last_cursor, last_cursor_info, max_cursor_size
 
     if not max_cursor_size:
-        display = gdk.display_get_default()
+        display = pygtkcompat.gdk.display_get_default()
         max_cursor_size = max(display.get_maximal_cursor_size())
 
     d = int(radius)*2

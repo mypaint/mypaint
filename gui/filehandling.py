@@ -16,6 +16,7 @@ from gettext import ngettext
 
 from lib import document, helpers, tiledsurface
 import drawwindow
+import pygtkcompat
 
 SAVE_FORMAT_ANY = 0
 SAVE_FORMAT_ORA = 1
@@ -126,7 +127,7 @@ class FileHandler(object):
         # with utf-8 characters into this list, I assume this is a
         # gtk bug.  So we use our own test instead of i.exists().
         self.recent_items = [
-                i for i in gtk.recent_manager_get_default().get_items()
+                i for i in pygtkcompat.gtk.recent_manager_get_default().get_items()
                 if "mypaint" in i.get_applications() and os.path.exists(helpers.uri2filename(i.get_uri()))
         ]
         self.recent_items.reverse()
@@ -276,7 +277,7 @@ class FileHandler(object):
         thumbnail_pixbuf = self.save_doc_to_file(filename, self.doc, export=export, **options)
         if not export:
             self.filename = os.path.abspath(filename)
-            gtk.recent_manager_get_default().add_full(helpers.filename2uri(self.filename),
+            pygtkcompat.gtk.recent_manager_get_default().add_full(helpers.filename2uri(self.filename),
                     {
                         'app_name': 'mypaint',
                         'app_exec': sys.argv_unicode[0].encode('utf-8'),

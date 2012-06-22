@@ -72,7 +72,8 @@ class ToolWidget (gtk.VBox):
         layer_mode_lbl = gtk.Label(_('Mode:'))
         layer_mode_lbl.set_alignment(0, 0.5)
         self.layer_mode_model = make_composite_op_model()
-        self.layer_mode_combo = gtk.ComboBox(self.layer_mode_model)
+        self.layer_mode_combo = gtk.ComboBox()
+        self.layer_mode_combo.set_model(self.layer_mode_model)
         cell1 = gtk.CellRendererText()
         self.layer_mode_combo.pack_start(cell1)
         self.layer_mode_combo.add_attribute(cell1, "text", 1)
@@ -97,8 +98,7 @@ class ToolWidget (gtk.VBox):
         img = gtk.Image()
         img.set_from_pixbuf(self.app.pixmaps.layer_duplicate)
         b.add(img)
-        tooltip = gtk.Tooltips()
-        tooltip.set_tip(b, _("Duplicate Layer"))
+        b.set_tooltip_text(_("Duplicate Layer"))
         duplicate_button = self.duplicate_button = b
 
 
