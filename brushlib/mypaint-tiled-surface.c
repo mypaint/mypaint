@@ -9,33 +9,20 @@
 
 #include <math.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <assert.h>
 
 #include "mypaint-tiled-surface.h"
 #include "helpers.h"
 #include "brushmodes.h"
+#include "operationqueue.h"
 
 #define M_PI 3.14159265358979323846
 
 #define TILE_SIZE 64
 #define MAX_MIPMAP_LEVEL 4
 
-typedef struct {
-    float x;
-    float y;
-    float radius;
-    uint16_t color_r;
-    uint16_t color_g;
-    uint16_t color_b;
-    float color_a;
-    float opaque;
-    float hardness;
-    float aspect_ratio;
-    float angle;
-    float normal;
-    float lock_alpha;
-    float colorize;
-} OperationDataDrawDab;
+void process_tile(MyPaintTiledSurface *self, int tx, int ty);
 
 uint16_t * mypaint_tiled_surface_get_tile(MyPaintTiledSurface *self, int tx, int ty, gboolean readonly)
 {
@@ -179,14 +166,8 @@ void render_dab_mask (uint16_t * mask,
   }
 
 void
-process_tile(MyPaintTiledSurface *self, int tx, int ty, OperationDataDrawDab *op)
+process_op(MyPaintTiledSurface *self, uint16_t *rgba_p, int tx, int ty, OperationDataDrawDab *op)
 {
-    uint16_t * rgba_p = mypaint_tiled_surface_get_tile(self, tx, ty, FALSE);
-    if (!rgba_p) {
-      printf("Warning: Unable to get tile!\n");
-      return TRUE;
-    }
-
     // first, we calculate the mask (opacity for each pixel)
     static uint16_t mask[TILE_SIZE*TILE_SIZE+2*TILE_SIZE];
 
@@ -221,7 +202,42 @@ process_tile(MyPaintTiledSurface *self, int tx, int ty, OperationDataDrawDab *op
                                       op->colorize*op->opaque*(1<<15));
     }
 
-  mypaint_tiled_surface_update_tile(self, tx, ty, rgba_p);
+    // FIXME: only emit on end_atomic
+    {
+      // expand the bounding box to include the region we just drawed
+      int bb_x, bb_y, bb_w, bb_h;
+      bb_x = floor (op->x - (op->radius+1));
+      bb_y = floor (op->y - (op->radius+1));
+      /* FIXME: think about it exactly */
+      bb_w = ceil (2*(op->radius+1));
+      bb_h = ceil (2*(op->radius+1));
+
+      mypaint_tiled_surface_area_changed(self, bb_x, bb_y, bb_w, bb_h);
+    }
+}
+
+void
+process_tile(MyPaintTiledSurface *self, int tx, int ty)
+{
+    TileIndex tile_index = {tx, ty};
+    OperationDataDrawDab *op = operation_queue_pop(self->operation_queue, tile_index);
+    if (!op) {
+        return;
+    }
+
+    uint16_t * rgba_p = mypaint_tiled_surface_get_tile(self, tx, ty, FALSE);
+    if (!rgba_p) {
+        printf("Warning: Unable to get tile!\n");
+        return;
+    }
+
+    while (op) {
+        process_op(self, rgba_p, tile_index.x, tile_index.y, op);
+        free(op);
+        op = operation_queue_pop(self->operation_queue, tile_index);
+    }
+
+    mypaint_tiled_surface_update_tile(self, tx, ty, rgba_p);
 }
 
 // returns TRUE if the surface was modified
@@ -270,6 +286,8 @@ gboolean draw_dab_internal (MyPaintTiledSurface *self, float x, float y,
 
     if (op->aspect_ratio<1.0) op->aspect_ratio=1.0;
 
+    // Determine the tiles influenced by operation, and queue it for processing for each tile
+    {
     float r_fringe = op->radius + 1;
 
     int tx1 = floor(floor(x - r_fringe) / TILE_SIZE);
@@ -278,27 +296,28 @@ gboolean draw_dab_internal (MyPaintTiledSurface *self, float x, float y,
     int ty2 = floor(floor(y + r_fringe) / TILE_SIZE);
     int tx, ty;
 
-
     for (ty = ty1; ty <= ty2; ty++) {
       for (tx = tx1; tx <= tx2; tx++) {
-          process_tile(self, tx, ty, op);
+          const TileIndex tile_index = {tx, ty};
+          OperationDataDrawDab *op_copy = (OperationDataDrawDab *)malloc(sizeof(OperationDataDrawDab));
+          *op_copy = *op;
+          operation_queue_add(self->operation_queue, tile_index, op_copy);
       }
     }
 
-
-    {
-      // expand the bounding box to include the region we just drawed
-      int bb_x, bb_y, bb_w, bb_h;
-      bb_x = floor (x - (op->radius+1));
-      bb_y = floor (y - (op->radius+1));
-      /* FIXME: think about it exactly */
-      bb_w = ceil (2*(op->radius+1));
-      bb_h = ceil (2*(op->radius+1));
-
-      mypaint_tiled_surface_area_changed(self, bb_x, bb_y, bb_w, bb_h);
     }
-
+    // FIXME: allocate OP on stack
     free(op);
+
+    // Process tiles
+    TileIndex *tiles;
+    int tiles_n = operation_queue_get_tiles(self->operation_queue, &tiles);
+
+    for (int i = 0; i < tiles_n; i++) {
+        TileIndex tile = tiles[i];
+        process_tile(self, tile.x, tile.y);
+    }
+    free(tiles);
 
     if(!recursing && self->surface_do_symmetry) {
       draw_dab_internal (self, self->surface_center_x + (self->surface_center_x - x), y,
@@ -422,10 +441,11 @@ mypaint_tiled_surface_init(MyPaintTiledSurface *self)
 
     self->surface_do_symmetry = FALSE;
     self->surface_center_x = 0.0;
+    self->operation_queue = operation_queue_new();
 }
 
 void
 mypaint_tiled_surface_destroy(MyPaintTiledSurface *self)
 {
-
+    operation_queue_free(self->operation_queue);
 }

@@ -13,6 +13,8 @@ typedef uint16_t *(*MyPaintTiledSurfaceGetTileFunction) (struct _MyPaintTiledSur
 typedef void (*MyPaintTiledSurfaceUpdateTileFunction) (struct _MyPaintTiledSurface *self, int tx, int ty, uint16_t * tile_buffer);
 typedef void (*MyPaintTiledSurfaceAreaChanged) (struct _MyPaintTiledSurface *self, int bb_x, int bb_y, int bb_w, int bb_h);
 
+typedef struct _OperationQueue OperationQueue;
+
 /**
   * MyPaintTiledSurface:
   *
@@ -27,6 +29,7 @@ struct _MyPaintTiledSurface {
     /* private: */
     gboolean surface_do_symmetry;
     float surface_center_x;
+    OperationQueue *operation_queue;
 };
 
 /**
