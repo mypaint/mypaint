@@ -39,10 +39,13 @@ for source in tests_sources:
 
 # Gegl tests
 gegl_tests_sources = [os.path.join('./gegl', fn) for fn in os.listdir("./gegl") if is_test(fn) and is_csource(os.path.join('./gegl', fn))]
-gegl_tests_env.ParseConfig('pkg-config --cflags --libs gegl-0.2')
-gegl_tests_env.Append(CPPPATH=['.', '../', '../gegl', '../utils'], LIBPATH='../..',
-                    LIBS=['mypaint-brushlib', 'mypaint-tests', 'mypaint-brushlib-gegl', 'mypaint-utils'])
 if gegl_tests_env['enable_gegl']:
+    gegl_tests_env.Append(
+          CPPPATH=['.', '../', '../gegl', '../utils'],
+          LIBPATH='../..',
+          LIBS=['mypaint-brushlib', 'mypaint-tests', 'mypaint-brushlib-gegl',
+                'mypaint-utils'])
+    gegl_tests_env.ParseConfig('pkg-config --cflags --libs gegl-0.2')
     for source in gegl_tests_sources:
         target = os.path.splitext(source)[0]
         target = os.path.basename(target)
