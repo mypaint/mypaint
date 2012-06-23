@@ -20,6 +20,22 @@
 #define TILE_SIZE 64
 #define MAX_MIPMAP_LEVEL 4
 
+typedef struct {
+    float x;
+    float y;
+    float radius;
+    uint16_t color_r;
+    uint16_t color_g;
+    uint16_t color_b;
+    float color_a;
+    float opaque;
+    float hardness;
+    float aspect_ratio;
+    float angle;
+    float normal;
+    float lock_alpha;
+    float colorize;
+} OperationDataDrawDab;
 
 uint16_t * mypaint_tiled_surface_get_tile(MyPaintTiledSurface *self, int tx, int ty, gboolean readonly)
 {
@@ -162,6 +178,52 @@ void render_dab_mask (uint16_t * mask,
     *mask_p++ = 0;
   }
 
+void
+process_tile(MyPaintTiledSurface *self, int tx, int ty, OperationDataDrawDab *op)
+{
+    uint16_t * rgba_p = mypaint_tiled_surface_get_tile(self, tx, ty, FALSE);
+    if (!rgba_p) {
+      printf("Warning: Unable to get tile!\n");
+      return TRUE;
+    }
+
+    // first, we calculate the mask (opacity for each pixel)
+    static uint16_t mask[TILE_SIZE*TILE_SIZE+2*TILE_SIZE];
+
+    render_dab_mask(mask,
+                    op->x - tx*TILE_SIZE,
+                    op->y - ty*TILE_SIZE,
+                    op->radius,
+                    op->hardness,
+                    op->aspect_ratio, op->angle
+                    );
+
+    // second, we use the mask to stamp a dab for each activated blend mode
+
+    if (op->normal) {
+      if (op->color_a == 1.0) {
+        draw_dab_pixels_BlendMode_Normal(mask, rgba_p,
+                                         op->color_r, op->color_g, op->color_b, op->normal*op->opaque*(1<<15));
+      } else {
+        // normal case for brushes that use smudging (eg. watercolor)
+        draw_dab_pixels_BlendMode_Normal_and_Eraser(mask, rgba_p,
+                                                    op->color_r, op->color_g, op->color_b, op->color_a*(1<<15), op->normal*op->opaque*(1<<15));
+      }
+    }
+
+    if (op->lock_alpha) {
+      draw_dab_pixels_BlendMode_LockAlpha(mask, rgba_p,
+                                          op->color_r, op->color_g, op->color_b, op->lock_alpha*op->opaque*(1<<15));
+    }
+    if (op->colorize) {
+      draw_dab_pixels_BlendMode_Color(mask, rgba_p,
+                                      op->color_r, op->color_g, op->color_b,
+                                      op->colorize*op->opaque*(1<<15));
+    }
+
+  mypaint_tiled_surface_update_tile(self, tx, ty, rgba_p);
+}
+
 // returns TRUE if the surface was modified
 gboolean draw_dab_internal (MyPaintTiledSurface *self, float x, float y,
                float radius,
@@ -175,82 +237,52 @@ gboolean draw_dab_internal (MyPaintTiledSurface *self, float x, float y,
                )
 
 {
-    opaque = CLAMP(opaque, 0.0, 1.0);
-    hardness = CLAMP(hardness, 0.0, 1.0);
-    lock_alpha = CLAMP(lock_alpha, 0.0, 1.0);
-    colorize = CLAMP(colorize, 0.0, 1.0);
-    if (radius < 0.1) return FALSE; // don't bother with dabs smaller than 0.1 pixel
-    if (hardness == 0.0) return FALSE; // infintly small center point, fully transparent outside
-    if (opaque == 0.0) return FALSE;
+    OperationDataDrawDab draw_dab;
+    OperationDataDrawDab *op = &draw_dab;
+
+    op->x = x;
+    op->y = y;
+    op->radius = radius;
+    op->aspect_ratio = aspect_ratio;
+    op->angle = angle;
+    op->opaque = CLAMP(opaque, 0.0, 1.0);
+    op->hardness = CLAMP(hardness, 0.0, 1.0);
+    op->lock_alpha = CLAMP(lock_alpha, 0.0, 1.0);
+    op->colorize = CLAMP(colorize, 0.0, 1.0);
+    if (op->radius < 0.1) return FALSE; // don't bother with dabs smaller than 0.1 pixel
+    if (op->hardness == 0.0) return FALSE; // infintly small center point, fully transparent outside
+    if (op->opaque == 0.0) return FALSE;
 
     color_r = CLAMP(color_r, 0.0, 1.0);
     color_g = CLAMP(color_g, 0.0, 1.0);
     color_b = CLAMP(color_b, 0.0, 1.0);
     color_a = CLAMP(color_a, 0.0, 1.0);
 
-    uint16_t color_r_ = color_r * (1<<15);
-    uint16_t color_g_ = color_g * (1<<15);
-    uint16_t color_b_ = color_b * (1<<15);
+    op->color_r = color_r * (1<<15);
+    op->color_g = color_g * (1<<15);
+    op->color_b = color_b * (1<<15);
+    op->color_a = color_a;
 
     // blending mode preparation
-    float normal = 1.0;
+    op->normal = 1.0;
 
-    normal *= 1.0-lock_alpha;
-    normal *= 1.0-colorize;
+    op->normal *= 1.0-op->lock_alpha;
+    op->normal *= 1.0-op->colorize;
 
-    if (aspect_ratio<1.0) aspect_ratio=1.0;
+    if (op->aspect_ratio<1.0) op->aspect_ratio=1.0;
 
-    float r_fringe = radius + 1;
+    float r_fringe = op->radius + 1;
 
     int tx1 = floor(floor(x - r_fringe) / TILE_SIZE);
     int tx2 = floor(floor(x + r_fringe) / TILE_SIZE);
     int ty1 = floor(floor(y - r_fringe) / TILE_SIZE);
     int ty2 = floor(floor(y + r_fringe) / TILE_SIZE);
     int tx, ty;
+
+
     for (ty = ty1; ty <= ty2; ty++) {
       for (tx = tx1; tx <= tx2; tx++) {
-
-        uint16_t * rgba_p = mypaint_tiled_surface_get_tile(self, tx, ty, FALSE);
-        if (!rgba_p) {
-          printf("Warning: Unable to get tile!\n");
-          return TRUE;
-        }
-
-        // first, we calculate the mask (opacity for each pixel)
-        static uint16_t mask[TILE_SIZE*TILE_SIZE+2*TILE_SIZE];
-
-        render_dab_mask(mask,
-                        x - tx*TILE_SIZE,
-                        y - ty*TILE_SIZE,
-                        radius,
-                        hardness,
-                        aspect_ratio, angle
-                        );
-
-        // second, we use the mask to stamp a dab for each activated blend mode
-
-        if (normal) {
-          if (color_a == 1.0) {
-            draw_dab_pixels_BlendMode_Normal(mask, rgba_p,
-                                             color_r_, color_g_, color_b_, normal*opaque*(1<<15));
-          } else {
-            // normal case for brushes that use smudging (eg. watercolor)
-            draw_dab_pixels_BlendMode_Normal_and_Eraser(mask, rgba_p,
-                                                        color_r_, color_g_, color_b_, color_a*(1<<15), normal*opaque*(1<<15));
-          }
-        }
-
-        if (lock_alpha) {
-          draw_dab_pixels_BlendMode_LockAlpha(mask, rgba_p,
-                                              color_r_, color_g_, color_b_, lock_alpha*opaque*(1<<15));
-        }
-        if (colorize) {
-          draw_dab_pixels_BlendMode_Color(mask, rgba_p,
-                                          color_r_, color_g_, color_b_,
-                                          colorize*opaque*(1<<15));
-        }
-
-      mypaint_tiled_surface_update_tile(self, tx, ty, rgba_p);
+          process_tile(self, tx, ty, op);
       }
     }
 
@@ -258,11 +290,11 @@ gboolean draw_dab_internal (MyPaintTiledSurface *self, float x, float y,
     {
       // expand the bounding box to include the region we just drawed
       int bb_x, bb_y, bb_w, bb_h;
-      bb_x = floor (x - (radius+1));
-      bb_y = floor (y - (radius+1));
+      bb_x = floor (x - (op->radius+1));
+      bb_y = floor (y - (op->radius+1));
       /* FIXME: think about it exactly */
-      bb_w = ceil (2*(radius+1));
-      bb_h = ceil (2*(radius+1));
+      bb_w = ceil (2*(op->radius+1));
+      bb_h = ceil (2*(op->radius+1));
 
       mypaint_tiled_surface_area_changed(self, bb_x, bb_y, bb_w, bb_h);
     }
