@@ -237,8 +237,7 @@ gboolean draw_dab_internal (MyPaintTiledSurface *self, float x, float y,
                )
 
 {
-    OperationDataDrawDab draw_dab;
-    OperationDataDrawDab *op = &draw_dab;
+    OperationDataDrawDab *op = (OperationDataDrawDab *)malloc(sizeof(OperationDataDrawDab));
 
     op->x = x;
     op->y = y;
@@ -298,6 +297,8 @@ gboolean draw_dab_internal (MyPaintTiledSurface *self, float x, float y,
 
       mypaint_tiled_surface_area_changed(self, bb_x, bb_y, bb_w, bb_h);
     }
+
+    free(op);
 
     if(!recursing && self->surface_do_symmetry) {
       draw_dab_internal (self, self->surface_center_x + (self->surface_center_x - x), y,
