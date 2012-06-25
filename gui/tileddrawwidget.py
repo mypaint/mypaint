@@ -510,6 +510,7 @@ class TiledDrawWidget(gtk.VBox):
     def set_zoom(self, zoom, at_pointer=True):
         def f(): self.renderer.scale = zoom
         self.rotozoom_with_center(f, at_pointer)
+        self.drag_handler.update_cursor()
 
     def rotate(self, angle_step):
         if self.renderer.mirrored: angle_step = -angle_step
