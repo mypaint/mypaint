@@ -388,6 +388,12 @@ class Application: # singleton
                 # AlpsPS/2 ALPS GlidePoint
                 # https://gna.org/bugs/?19790
                 print 'Ignoring "%s" (probably a mouse-like device reporting extra axes)' % device.name
+                continue
+            if 'keyboard' in name:
+                # e.g "Plus More Entertainment LTD. USB-compliant keyboard."
+                # has a scroll wheel, breaks drawing, color picking and choosing the brush
+                print 'Ignoring "%s" (probably a multifunc keyboard)' % device.name
+                continue
 
             for use, val_min, val_max in device.axes:
                 # Some mice have a third "pressure" axis, but without
