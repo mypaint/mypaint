@@ -968,11 +968,14 @@ class HCYMaskPropertiesDialog (gtk.Dialog):
         mask_shapes = {}
         for i in xrange(len(pal)):
             color = pal.get_color(i)
-            color_name = pal.get_color_name(i)
+            if color is None:
+                continue
             shape_id = 0
-            mask_id_match = mask_id_re.search(color_name)
-            if mask_id_match:
-                shape_id = int(mask_id_match.group(1))
+            color_name = pal.get_color_name(i)
+            if color_name is not None:
+                mask_id_match = mask_id_re.search(color_name)
+                if mask_id_match:
+                    shape_id = int(mask_id_match.group(1))
             if shape_id not in mask_shapes:
                 mask_shapes[shape_id] = []
             mask_shapes[shape_id].append(color)
