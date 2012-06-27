@@ -253,6 +253,8 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
     # Instance vars
     __manager = None
     __button_down = None
+    __drag_start_pos = None
+    __drag_start_color = None
     __realized = False
 
     # Common style elements for subclasses to use
@@ -281,7 +283,7 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
         self.connect("motion-notify-event", self.__motion_notify_cb)
         self.connect("button-release-event", self.__button_release_cb)
         self.add_events(gdk.BUTTON_PRESS_MASK|gdk.BUTTON_RELEASE_MASK)
-        self.add_events(gdk.BUTTON1_MOTION_MASK)
+        self.add_events(gdk.BUTTON_MOTION_MASK)
         self.connect("realize", self.__realize_cb)
 
 
@@ -388,9 +390,11 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
     def __button_press_cb(self, widget, event):
         """Button press handler.
         """
-        if event.button != 1:
-            return
+        self.__button_down = event.button
         color = self.get_color_at_position(event.x, event.y)
+        self.set_managed_color(color)
+
+        # Double-click shows the details adjuster
         if event.type == gdk._2BUTTON_PRESS:
             self.__button_down = None
             if self.is_drag_source:
@@ -405,10 +409,15 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
                 if color is not None:
                     self.set_color_at_position(event.x, event.y, color)
             return
-        self.__button_down = event.button
-        if self.is_editable:
-            self.set_managed_color(color)
-        if self.is_drag_source:
+
+        # Button2 and drag tweaks the current luminance
+        if event.button != 1 and self.is_editable:
+            pos = event.x, event.y
+            self.__drag_start_pos = pos
+            self.__drag_start_color = color
+
+        # Button1 starts DnD drags
+        if event.button == 1 and self.is_drag_source:
             if color is None:
                 self.drag_source_unset()
             else:
@@ -434,24 +443,69 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
     def __motion_notify_cb(self, widget, event):
         """Button1 motion handler.
         """
-        # Non-drag-source widgets update the colour continuously while
-        # the mouse button is held down and the pointer moved.
-        if self.__button_down != 1:
+        if not self.is_editable:
             return
-        if self.is_drag_source:
-            return
-        color = self.get_color_at_position(event.x, event.y)
-        self.set_managed_color(color)
+        if self.__button_down == 1:
+            # Non-drag-source widgets update the colour continuously while
+            # the mouse button is held down and the pointer moved.
+            if self.is_drag_source:
+                return
+            color = self.get_color_at_position(event.x, event.y)
+            self.set_managed_color(color)
+        else:
+            # Relative chroma/luma bending
+            if self.__drag_start_color is None:
+                return
+            col = HCYColor(color=self.__drag_start_color)
+            alloc = self.get_allocation()
+            w, h = alloc.width, alloc.height
+            size = max(w, h)
+            ex, ey = event.x, event.y
+            sx, sy = self.__drag_start_pos
+            dx, dy = sx-ex, sy-ey
+
+            # y axis increases downwards, not upwards
+            dy = -dy
+
+            # Interpretation of dx depends on text direction
+            if widget.get_direction() == gtk.TEXT_DIR_RTL:
+                dx = -dx
+
+            # Use the delta with the largest absolute value
+            dd = dx if abs(dx) > abs(dy) else dy
+
+            if not event.state & gdk.CONTROL_MASK:
+                # Luma adjustment, unless Ctrl is pressed
+                y0 = clamp(col.y, 0., 1.)
+                p = (y0 * size) - dd
+                col.y = clamp(p / size, 0., 1.)
+            if event.state & gdk.SHIFT_MASK:
+                # Relative chroma adjustment
+                c0 = clamp(col.c, 0., 1.)
+                p = (c0 * size) - dd
+                col.c = clamp(p / size, 0., 1.)
+            if event.state & gdk.CONTROL_MASK:
+                # Hue angle rotation
+                # FIXME: for adjusters with markers, there's a leap when this starts.
+                # Probably it should work as dial instead (math.acos2)
+                h0 = clamp(col.c, 0., 1.)
+                p = (h0 * size) - dd
+                h = p / size
+                while h < 0:
+                    h += 1.0
+                col.h = h % 1.0
+            self.set_managed_color(col)
 
 
     def __button_release_cb(self, widget, event):
         """Button release handler.
         """
-        if event.button != 1: return
         manager = self.get_color_manager()
         if manager is not None:
             manager.adjustment_finished_cb() #XXX is this unused?
         self.__button_down = None
+        self.__drag_start_pos = None
+        self.__drag_start_color = None
 
 
     def update_cb(self):
