@@ -91,7 +91,7 @@ class HSVAdjusterPage (CombinedAdjusterPage):
     def get_page_description(self):
         return _("Saturation and Value colour changer.")
 
-    def get_page_table(self):
+    def get_page_widget(self):
         frame = gtk.AspectFrame(obey_child=True)
         frame.set_shadow_type(gtk.SHADOW_NONE)
         frame.add(self.__table)
@@ -121,7 +121,7 @@ if __name__ == '__main__':
         page = HSVAdjusterPage()
         page.set_color_manager(mgr)
         window = gtk.Window()
-        window.add(page.get_page_table())
+        window.add(page.get_page_widget())
         window.set_title(os.path.basename(sys.argv[0]))
         window.set_border_width(6)
         window.connect("destroy", lambda *a: gtk.main_quit())

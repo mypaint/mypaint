@@ -139,6 +139,9 @@
       <menuitem action='DecreaseHue'/>
       <menuitem action='Purer'/>
       <menuitem action='Grayer'/>
+      <separator/>
+      <menuitem action='PalettePrev'/>
+      <menuitem action='PaletteNext'/>
     </menu>
     <menu action='LayerMenu'>
       <menuitem action='LayersWindow'/>

@@ -42,14 +42,14 @@ class PalettePage (CombinedAdjusterPage):
     """
 
     __adj = None
-    __table = None
     __edit_dialog = None
 
 
     def __init__(self):
         view = PaletteView()
-        view.grid.show_managed_color = True
-        view.grid.show_current_index = False
+        view.grid.show_current_index = True
+        view.grid.manage_current_index = True
+        view.can_select_empty = False
         self.__adj = view
 
 
@@ -73,10 +73,12 @@ class PalettePage (CombinedAdjusterPage):
         return _("Set the color from a loadable, editable palette.")
 
 
-    def get_page_table(self):
-        if self.__table is None:
-            self.__table = self.__adj
-        return self.__table
+    def get_page_widget(self):
+        """Page widget: returns the PaletteView adjuster widget itself.
+        """
+        # The PaletteMatchNext and PaletteMatchPrev actions of the main
+        # app require access to the PaletteView itself.
+        return self.__adj
 
 
     def set_color_manager(self, manager):
@@ -132,8 +134,9 @@ class PaletteEditorDialog (gtk.Dialog):
         self.__target = target
         view = PaletteView()
         view.set_size_request(400, 300)
-        view.grid.show_managed_color = False
         view.grid.show_current_index = True
+        view.grid.manage_current_index = True
+        view.grid.can_select_empty = True
         self.__view = view
 
         self.__mgr = ColorManager()
@@ -373,6 +376,7 @@ class PaletteView (ColorAdjuster, gtk.ScrolledWindow):
         self.set_size_request(100, 100)
         self.connect("size-allocate", self.__size_alloc_cb)
         self.set_palette(Palette())
+        self.grid.current_index_observers.append(self.__current_index_changed_cb)
 
     def set_palette(self, palette):
         self.grid.set_palette(palette)
@@ -397,6 +401,50 @@ class PaletteView (ColorAdjuster, gtk.ScrolledWindow):
         self.grid.queue_resize()
         gtk.ScrolledWindow.queue_draw(self)
 
+    def __current_index_changed_cb(self, i):
+        pass
+        # TODO: scroll the vertical adjuster to show i if necessary:
+        # use self.grid.get_allocation() & calculate using the
+        # adjuster's properties.
+
+
+
+def outwards_from(n, i):
+    """Search order for a sequence of len() n, outwards from index i.
+    """
+    assert i < n and i >= 0
+    yield i
+    for j in xrange(n):
+        exhausted = True
+        if i - j >= 0:
+            yield i - j
+            exhausted = False
+        if i + j < n:
+            yield i + j
+            exhausted = False
+        if exhausted:
+            break
+
+
+def color_distance(c1, c2):
+    """Weighted distance metric between UIColors. Favours HCY hue.
+    """
+    c1 = HCYColor(color=c1)
+    c2 = HCYColor(color=c2)
+    c1hx = c1.h
+    c2hx = c2.h
+    while c1hx < c2.h:
+        c1hx += 1
+    while c2hx < c1.h:
+        c2hx += 1
+    n  = 3.0 * min(c2hx - c1.h, c1hx - c2.h)
+    n += 0.5 * abs(c1.c - c2.c)
+    n += 2.0 * abs(c1.y - c2.y)
+    # XXX Maybe a vector difference in (absolute?) chroma space
+    #     would be a better metric for the chroma part?
+    return n
+
+
 
 class _PaletteGridLayout (ColorAdjusterWidget):
     """The palette layout embedded in a scrolling PaletteView.
@@ -413,7 +461,9 @@ class _PaletteGridLayout (ColorAdjusterWidget):
 
     ## Member variables & defaults
     show_current_index = False #: Highlight the current index (last click)
-    show_managed_color = True #: Mark all colors matching the managed one
+    manage_current_index = False  #: Index follows the managed colour
+    can_select_empty = False #: User can click on empty slots
+
     current_index_observers = None  #: List of `callback(int_or_None)`s.
     palette_observers = None
     _palette = None
@@ -423,8 +473,10 @@ class _PaletteGridLayout (ColorAdjusterWidget):
     _sizes = None   #: set() of (w, h) tuples allocated within __parent_size
     _drag_insertion_index = None
     _current_index = None
+    _current_index_approx = False
     _tooltip_index = None
     _swatch_size = _SWATCH_SIZE_NOMINAL
+    _button_down = None
 
 
     def __init__(self):
@@ -434,8 +486,9 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         self.set_size_request(s, s)
         self.connect("size-allocate", self._size_alloc_cb)
         self.connect("button-press-event", self._button_press_cb)
+        self.connect_after("button-release-event", self._button_release_cb)
         self.current_index_observers = []
-        self.current_index_observers.append(lambda i: self.queue_draw())
+        self.current_index_observers.append(self._current_index_changed_cb)
         self.palette_observers = []
         self.palette_observers.append(self._palette_changed_cb)
         self.set_palette(Palette())
@@ -444,14 +497,59 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         self.set_has_tooltip(True)
 
 
-    def set_current_index(self, i):
+    def set_current_index(self, i, approx=False):
         if i is not None:
             if i < 0 or i >= len(self._palette):
                 i = None
+        updated = False
         if i != self._current_index:
             self._current_index = i
+            updated = True
+        if approx != self._current_index_approx:
+            self._current_index_approx = approx
+            updated = True
+        if updated:
             for cb in self.current_index_observers:
                 cb(i)
+
+
+    def _current_index_changed_cb(self, i):
+        self.queue_draw()
+
+
+    def select_next(self):
+        self._match_move_and_select(1)
+
+
+    def select_previous(self):
+        self._match_move_and_select(-1)
+
+
+    def _match_move_and_select(self, delta_i):
+        i = self._current_index
+        new_index = i
+        select_color = False
+        if i is None:
+            if not self.match_managed_color():
+                new_index = None
+        elif self._current_index_approx:
+            new_index = i
+            select_color = True
+        else:
+            while i < len(self._palette) and i >= 0:
+                i += delta_i
+                if self._palette[i] is not None:
+                    new_index = i
+                    select_color = True
+                    break
+            if i >= len(self._palette) or i < 0:
+                new_index = self._current_index
+                select_color = False
+        if select_color:
+            col = self._palette[new_index]
+            if col is not None:
+                self.set_managed_color(col)
+        self.set_current_index(new_index)
 
 
     def _motion_notify_cb(self, widget, event):
@@ -476,11 +574,19 @@ class _PaletteGridLayout (ColorAdjusterWidget):
 
 
     def _button_press_cb(self, widget, event):
-        if event.button == 1:
+        self._button_down = event.button
+        if self._button_down == 1:
             if event.type == gdk.BUTTON_PRESS:
                 x, y = event.x, event.y
                 i = self.get_index_at_pos(x, y)
+                if not self.can_select_empty:
+                    if self._palette.get_color(i) is None:
+                        return
                 self.set_current_index(i)
+
+
+    def _button_release_cb(self, widget, event):
+        self._button_down = None
 
 
     def _set_parent_size(self, w, h):
@@ -593,6 +699,47 @@ class _PaletteGridLayout (ColorAdjusterWidget):
     def update_cb(self):
         self._drag_insertion_index = None
         ColorAdjusterWidget.update_cb(self)
+        if self.manage_current_index and not self._button_down:
+            self.match_managed_color()
+
+
+    def match_managed_color(self):
+        """Moves current index to the most similar colour to the managed one.
+
+        The matching algorithm favours exact matches which are close in index
+        number to the current index. If the current index is unset, this search
+        starts at 0. If there are no exact matches, an approximate match will
+        be used, again favouring matches with nearby index numbers. Returns
+        true if the match succeeded.
+
+        """
+        col_m = self.get_managed_color()
+        if self._current_index is not None:
+            search_order = outwards_from(len(self._palette),
+                                         self._current_index)
+        else:
+            search_order = xrange(len(self._palette))
+        bestmatch_i = None
+        bestmatch_d = None
+        for i in search_order:
+            col = self._palette[i]
+            if col is None:
+                continue
+            # Closest exact match by index distance (according to the
+            # search_order)
+            if col == col_m:
+                self.set_current_index(i)
+                return True
+            d = color_distance(col_m, col)
+            if bestmatch_d is None or d < bestmatch_d:
+                bestmatch_i = i
+                bestmatch_d = d
+        # If there are no exact matches, choose the most similar colour
+        # anywhere in the palette.
+        if bestmatch_i is not None:
+            self.set_current_index(bestmatch_i, True)
+            return True
+        return False
 
 
     def set_palette(self, palette):
@@ -792,16 +939,7 @@ class _PaletteGridLayout (ColorAdjusterWidget):
 
         # Highlights
         cr.set_line_cap(cairo.LINE_CAP_SQUARE)
-        # Mark colours matching the current colour
-        if self.show_managed_color:
-            shown_elsewhere = [self._drag_insertion_index]
-            if self.show_current_index:
-                shown_elsewhere.append(self._current_index)
-            col = self.get_managed_color()
-            for i in self.get_indices_for_color(col):
-                if i not in shown_elsewhere:
-                    x, y = self.get_position_for_index(i)
-                    self._paint_marker(cr, x, y)
+
         # Current drag/drop target
         if self._drag_insertion_index is not None:
             i = self._drag_insertion_index
@@ -812,8 +950,12 @@ class _PaletteGridLayout (ColorAdjusterWidget):
             if self._current_index is not None:
                 i = self._current_index
                 x, y = self.get_position_for_index(i)
-                self._paint_marker(cr, x, y, bg_width=4, fg_width=1,
-                                    bg_dash=[2,3], fg_dash=[2,3])
+                marker_args = [cr, x, y]
+                marker_kw = dict(bg_width=3, fg_width=1,
+                                 bg_dash=[2,3], fg_dash=[2,3])
+                if not self._current_index_approx:
+                    marker_kw.update(dict(bg_width=4, fg_width=1))
+                self._paint_marker(*marker_args, **marker_kw)
 
 
     def get_indices_for_color(self, col):

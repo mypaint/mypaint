@@ -58,7 +58,7 @@ class HSVTrianglePage (CombinedAdjusterPage):
     def get_page_description(class_):
         return _("The standard GTK color selector")
 
-    def get_page_table(self):
+    def get_page_widget(self):
         return self.__table
 
     def set_color_manager(self, manager):

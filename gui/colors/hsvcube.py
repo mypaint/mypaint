@@ -66,7 +66,7 @@ class HSVCubePage (CombinedAdjusterPage):
         return _("An HSV cube which can be rotated to show different "
                  "planar slices.")
 
-    def get_page_table(self):
+    def get_page_widget(self):
         return self.__table
 
     def tumble(self):
@@ -236,7 +236,7 @@ if __name__ == '__main__':
     else:
         # Interactive test
         window = gtk.Window()
-        window.add(cube.get_page_table())
+        window.add(cube.get_page_widget())
         window.set_title(os.path.basename(sys.argv[0]))
         window.connect("destroy", lambda *a: gtk.main_quit())
         window.show_all()

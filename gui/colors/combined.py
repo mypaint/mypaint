@@ -70,7 +70,7 @@ class CombinedAdjusterPage (ColorAdjuster):
         """
         pass
 
-    def get_page_table(self):
+    def get_page_widget(self):
         """Returns the `gtk.Table` instance for the page body.
         """
         raise NotImplementedError
@@ -198,7 +198,7 @@ class CombinedColorAdjuster (gtk.VBox, ColorAdjuster):
             icon_img.set_property("has-tooltip", True)
             page_title = page_class.get_page_title()
             page = page_class()
-            page_table = page.get_page_table()
+            page_table = page.get_page_widget()
 
             picker = ColorPickerButton()
             comparator = PreviousCurrentColorAdjuster()
@@ -252,6 +252,14 @@ class CombinedColorAdjuster (gtk.VBox, ColorAdjuster):
         self.pack_start(nb, True, True)
 
 
+    def get_palette_view(self):
+        return self.__palette_page.get_page_widget()
+
+
+    def show_palette_view(self):
+        self.__notebook.set_current_page(self.__palette_page_index)
+
+
     def __first_show_cb(self, widget):
         if self.__shown:
             return
@@ -272,7 +280,7 @@ class CombinedColorAdjuster (gtk.VBox, ColorAdjuster):
     def __bookmark_button_clicked_cb(self, widget):
         col = self.get_managed_color()
         self.__palette_page.add_color_to_palette(col)
-        self.__notebook.set_current_page(self.__palette_page_index)
+        self.show_palette_view()
 
 
     def __properties_button_clicked_cb(self, widget, page):

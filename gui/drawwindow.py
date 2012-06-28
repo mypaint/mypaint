@@ -253,6 +253,8 @@ class Window (windowing.MainWindow, layout.MainWindow):
             ('ColorChangerWashPopup', None, _('Color Changer (washed)'), 'c', None, self.popup_cb),
             ('ColorRingPopup',  None, _('Color Ring'), None, None, self.popup_cb),
             ('ColorDetailsDialog', None, _("Color Details"), None, None, self.color_details_dialog_cb),
+            ('PaletteNext', None, _("Next palette color"), None, None, self.palette_next_cb),
+            ('PalettePrev', None, _("Previous palette color"), None, None, self.palette_prev_cb),
 
             ('ContextMenu',  None, _('Brushkeys')),
             ('ContextHelp',  gtk.STOCK_HELP, _('Help!'), None, None, self.show_infodialog_cb),
@@ -976,6 +978,23 @@ class Window (windowing.MainWindow, layout.MainWindow):
         draw_palette(self.app, g, self.app.scratchpad_doc, columns=column_limit, grid_size=grid_size)
 
     # END -- Scratchpad menu options
+
+
+    def palette_next_cb(self, action):
+        lm = self.app.layout_manager
+        combined = lm.get_tool_by_role('colorWindow').widget
+        pal_view = combined.get_palette_view()
+        pal_view.grid.select_next()
+        combined.show_palette_view()
+
+
+    def palette_prev_cb(self, action):
+        lm = self.app.layout_manager
+        combined = lm.get_tool_by_role('colorWindow').widget
+        pal_view = combined.get_palette_view()
+        pal_view.grid.select_previous()
+        combined.show_palette_view()
+
 
     def quit_cb(self, *junk):
         self.app.doc.model.split_stroke()

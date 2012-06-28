@@ -91,7 +91,7 @@ class ComponentSlidersAdjusterPage (CombinedAdjusterPage, IconRenderable):
     def get_page_description(self):
         return _('Adjust individual components of the colour.')
 
-    def get_page_table(self):
+    def get_page_widget(self):
         return self.__table
 
     def set_color_manager(self, manager):
@@ -255,7 +255,7 @@ if __name__ == '__main__':
     else:
         # Interactive test
         window = gtk.Window()
-        window.add(cs_adj.get_page_table())
+        window.add(cs_adj.get_page_widget())
         window.set_title(os.path.basename(sys.argv[0]))
         window.connect("destroy", lambda *a: gtk.main_quit())
         window.show_all()
