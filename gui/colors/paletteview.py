@@ -21,6 +21,7 @@ from palette import Palette
 from util import clamp
 from uicolor import RGBColor
 from uicolor import HCYColor
+from uicolor import YCbCrColor
 from adjbases import ColorAdjuster
 from adjbases import ColorAdjusterWidget
 from adjbases import ColorManager
@@ -427,23 +428,18 @@ def outwards_from(n, i):
 
 
 def color_distance(c1, c2):
-    """Weighted distance metric between UIColors. Favours HCY hue.
-    """
-    c1 = HCYColor(color=c1)
-    c2 = HCYColor(color=c2)
-    c1hx = c1.h
-    c2hx = c2.h
-    while c1hx < c2.h:
-        c1hx += 1
-    while c2hx < c1.h:
-        c2hx += 1
-    n  = 3.0 * min(c2hx - c1.h, c1hx - c2.h)
-    n += 0.5 * abs(c1.c - c2.c)
-    n += 2.0 * abs(c1.y - c2.y)
-    # XXX Maybe a vector difference in (absolute?) chroma space
-    #     would be a better metric for the chroma part?
-    return n
+    """Distance metric.
 
+    Use a geometric YCbCr distance, as recommended by Graphics Programming
+    with Perl, chapter 1, Martien Verbruggen.
+
+    """
+    c1 = YCbCrColor(color=c1)
+    c2 = YCbCrColor(color=c2)
+    d_Cb = c1.Cb - c2.Cb
+    d_Cr = c1.Cr - c2.Cr
+    d_Y = c1.Y - c2.Y
+    return ((d_Cb**2) + (d_Cr**2) + (d_Y)**2) ** (1.0/3)
 
 
 class _PaletteGridLayout (ColorAdjusterWidget):
