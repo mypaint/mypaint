@@ -448,6 +448,7 @@ class _PaletteGridLayout (ColorAdjusterWidget):
 
     ## Class settings
     is_drag_source = True
+    has_details_dialog = True
 
     ## Layout constants
     _HIGHLIGHT_DLUMA = 0.025

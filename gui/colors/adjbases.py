@@ -249,6 +249,7 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
     is_drag_source = False  #: Set to True to make press+move do a select+drag
     drag_threshold = 10  #: Drag threshold, in pixels
     _drag_color_id = 1
+    has_details_dialog = False  #: Set true for a double-click details dialog
 
     # Instance vars
     __manager = None
@@ -395,7 +396,8 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
         self.set_managed_color(color)
 
         # Double-click shows the details adjuster
-        if event.type == gdk._2BUTTON_PRESS:
+        if event.type == gdk._2BUTTON_PRESS \
+                    and self.has_details_dialog:
             self.__button_down = None
             if self.is_drag_source:
                 self.drag_source_unset()
@@ -540,6 +542,7 @@ class PreviousCurrentColorAdjuster (ColorAdjusterWidget):
 
     # Class specialisation
     is_drag_source = True
+    has_details_dialog = True
 
 
     def __init__(self):
