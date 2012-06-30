@@ -77,7 +77,7 @@ class PalettePage (CombinedAdjusterPage):
     def get_page_widget(self):
         """Page widget: returns the PaletteView adjuster widget itself.
         """
-        # The PaletteMatchNext and PaletteMatchPrev actions of the main
+        # The PaletteNext and PalettePrev actions of the main
         # app require access to the PaletteView itself.
         return self.__adj
 
@@ -614,6 +614,7 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         if ncolors == 0:
             self._swatch_size = self._SWATCH_SIZE_NOMINAL
             return self._swatch_size
+
         # Attempt to show the palette within this area...
         width = min([w for w,h in self._sizes])
         height = max([h for w,h in self._sizes])
@@ -625,22 +626,25 @@ class _PaletteGridLayout (ColorAdjusterWidget):
             s = math.sqrt(float(width * height) / ncolors)
             s = clamp(s, self._SWATCH_SIZE_MIN, self._SWATCH_SIZE_MAX)
             ncolumns = max(1, int(width/s))
-            nrows = 1 + int(ncolors // ncolumns)
-            if ncolors % nrows == 0 and nrows > 1:
-                nrows -= 1
-        else:
-            nrows = 1 + int(ncolors // ncolumns)
-            if ncolors % nrows == 0 and nrows > 1:
-                nrows -= 1
 
+        # Calculate the number of rows
+        nrows = int(ncolors // ncolumns)
+        if ncolors % ncolumns != 0:
+            nrows += 1
+        nrows = max(1, nrows)
+
+        # Calculate swatch size
         s1 = float(width) / ncolumns
         s2 = float(height) / nrows
         s = min(s1, s2)
+        s = int(s)
         s = clamp(s, self._SWATCH_SIZE_MIN, self._SWATCH_SIZE_MAX)
 
-        # Restrict to multiples of 2 for patterns
-        s = 1 + int(s/2) * 2
+        # Restrict to multiples of 2 for patterns, plus one for the border
+        if s % 2 == 0:
+            s -= 1
         self._swatch_size = int(s)
+
 
 
     def update_layout(self):
@@ -661,12 +665,10 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         ncolors = len(self._palette)
 
         # Decide whether to wrap or show in defined columns
-        wrap_mode = False
         if ncolumns != 0:
             if swatch_w * ncolumns > width:
                 ncolumns = 0
         if ncolumns == 0:
-            wrap_mode = True
             ncolumns = int(width / swatch_w)
 
         # Allow it to be centred horizontally if there's only one row.
@@ -676,9 +678,10 @@ class _PaletteGridLayout (ColorAdjusterWidget):
 
         # Update the layout variables
         self._columns = ncolumns
-        self._rows = ncolors / ncolumns
+        self._rows = int(ncolors // ncolumns)
         if ncolors % ncolumns != 0:
             self._rows += 1
+        self._rows = max(1, self._rows)
 
         # Resize to fit this layout
         height = self._rows*swatch_h
@@ -843,16 +846,6 @@ class _PaletteGridLayout (ColorAdjusterWidget):
             # and lower-right shadow.
             if col is None:
                 # Empty slot, fill with a pattern
-                s_w2 = int(s_w / 2)
-                s_h2 = int(s_h / 2)
-                cr.rectangle(s_x, s_y, s_w, s_h)
-                cr.set_source_rgb(*light_col.get_rgb())
-                cr.fill()
-                cr.set_source_rgb(*dark_col.get_rgb())
-                cr.rectangle(s_x, s_y, s_w2, s_h2)
-                cr.fill()
-                cr.rectangle(s_x+s_w2, s_y+s_h2, s_w2, s_h2)
-                cr.fill()
                 hi_rgb = light_col.get_rgb()
                 fill_bg_rgb = dark_col.get_rgb()
                 fill_fg_rgb = light_col.get_rgb()
@@ -881,8 +874,8 @@ class _PaletteGridLayout (ColorAdjusterWidget):
             cr.rectangle(s_x, s_y, s_w-1, s_h-1)
             cr.fill()
             if fill_fg_rgb is not None:
-                s_w2 = int((s_w-1) / 2)
-                s_h2 = int((s_h-1) / 2)
+                s_w2 = float(s_w-1) / 2.0
+                s_h2 = float(s_h-1) / 2.0
                 cr.set_source_rgb(*fill_fg_rgb)
                 cr.rectangle(s_x, s_y, s_w2, s_h2)
                 cr.fill()
@@ -1109,6 +1102,8 @@ if __name__ == '__main__':
     win.connect("destroy", lambda *a: gtk.main_quit())
     mgr = ColorManager()
     spv = PaletteView()
+    spv.grid.show_current_index = True
+    spv.grid.can_select_empty = True
     spv.set_color_manager(mgr)
     spv.set_size_request(150, 150)
     if len(sys.argv[1:]) > 0:
