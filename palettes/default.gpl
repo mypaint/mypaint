@@ -1,0 +1,104 @@
+GIMP Palette
+Name: mypaint-default
+Columns: 7
+# v2.0 - 06-2012, Deevad
+
+# --- Grey shade ---
+  0   0   0	Black
+ 38  38  38	Gray 15
+ 77  77  77	Grey 30
+128 128 128	Grey 50
+171 171 171	Grey 67
+217 217 217	Grey 85
+255 255 255	White
+#
+# --- Main red-orange-yellow  ---
+128   0   0	Maroon
+209   0   0	English-red
+255  54  34	Tomato
+252  60   3	Orange-red
+255 140 105	Salmon
+252 232  32	Cadium-yellow
+243 253  37	Lemon yellow
+#
+# --- Orange and Crimson variation ---
+121   5  35	Dark crimson
+169  32  62	Deep carmine
+255 140   0	Orange
+255 168  18	Dark tangerine
+217 144  88	Persian orange
+194 178 128	Sand
+255 229 180	Peach
+#
+#  --- Skin tones mini ---
+100  54  46	Bole
+108  41  52	Dark cordovan
+163  65  44	Chestnut
+228 136 100	Dark salmon
+255 195 143	Apricot
+255 219 188	Unbleached silk
+242 227 198	Straw
+#
+#  --- Browns  ---
+ 53  19  13	Bistre
+ 84  42  14	Dark chocolate
+102  51  43	Burnt sienna
+184  66   0	Sienna
+216 153  12	Yellow ochre
+210 180 140	Tan
+232 204 144	Dark wheat
+#
+# --- Main Blue ---
+  0  49  83	Prussian blue
+ 48  69 119	Dark grey blue
+  0  71 171	Cobalt blue
+ 31 117 254	Blue
+120 180 255	Bright french blue
+171 200 255	Bright steel blue
+208 231 255	Ice blue
+#
+#  --- Other variation blue  ---
+ 30  51  58	Medium jungle green
+ 47  79  79	Dark slate grey
+ 74 104  93	Dark grullo green
+  0 128 128	Teal
+ 67 170 176	Turquoise
+109 174 199	Cerulean frost
+173 217 186	Tiffany green
+#
+#  --- Teal and teal green  ---
+ 22  34  29	Gray-asparagus
+ 36  48  45	Medium dark teal
+ 74 104  93	Xanadu
+119 198 121	Mint
+175 205 182	Timberwolf
+185 245 246	Celeste
+193 255 234	Aquamarine
+#
+#  --- Other variation green ---
+ 29  52  35	Cal Poly Pomona
+  1  68  33	Forest green
+ 42 128   0	Napier green
+128 128   0	Olive
+ 65 156 105	Sea green
+189 246  29	Green-yellow
+231 244 134	Bright chartreuse
+#
+# --- Violet Purple and pinks ---
+138  23 137	Purple
+ 78  39 138	Violet
+193  75 110	Dark thulian pink
+222  49  99	Cerise
+255  20 147	Deep pink
+255 102 204	Rose pink
+255 203 219	Pink
+#
+# --- Pure Digital ---
+255 255 255	White
+229  17   1	RGB Red
+  0 255   0	RGB Green
+  0   0 255	RGB Blue
+  0 255 255	CMYK Cyan
+255   0 255	CMYK Magenta
+255 255   0	CMYK Yellow
+#

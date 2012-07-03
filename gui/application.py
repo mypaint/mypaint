@@ -104,6 +104,7 @@ class Application: # singleton
 
         self.brush_color_manager = BrushColorManager(self)
         self.brush_color_manager.set_picker_cursor(self.cursor_color_picker)
+        self.brush_color_manager.set_data_path(datapath)
 
         self.init_brush_adjustments()
         self.init_line_mode_adjustments()

@@ -381,12 +381,19 @@ class Palette:
 
 
     @classmethod
-    def load_via_dialog(class_, title, parent=None, preview=None):
+    def load_via_dialog(class_, title, parent=None, preview=None,
+                        shortcuts=None):
         """Runs a file chooser dialog, returning a palette or `None`.
 
-        The dialog is both modal and blocking. Set `parent` to provide a
-        parent window, and `title` for the dialog title. `preview` can be any
-        preview widget with a ``set_palette()`` method.
+        The dialog is both modal and blocking. A new `Palette` object is
+        returned if the load was successful. The value `None` is returned
+        otherwise.
+
+        :Parameters:
+         - `parent`: specify the parent window
+         - `title`: dialog title
+         - `preview`: any preview widget with a ``set_palette()`` method
+         - `shortcuts`: optional list of shortcut folders
 
         """
         dialog = gtk.FileChooserDialog(
@@ -400,6 +407,9 @@ class Palette:
             dialog.set_preview_widget(preview)
             dialog.connect("update-preview",
                            class_.__dialog_update_preview_cb, preview)
+        if shortcuts is not None:
+            for shortcut in shortcuts:
+                dialog.add_shortcut_folder(shortcut)
         dialog.set_do_overwrite_confirmation(True)
         filter = gtk.FileFilter()
         filter.add_pattern("*.gpl")
@@ -436,10 +446,13 @@ class Palette:
     def save_via_dialog(self, title, parent=None, preview=None):
         """Runs a file chooser dialog for saving.
 
-        The dialog is both modal and blocking. Set `parent` to provide a
-        parent window, and `title` for the dialog title.  `preview` can be
-        any preview widget with a ``set_palette()`` method. This function
-        returns True if the file was saved successfully.
+        The dialog is both modal and blocking. Returns True if the file was
+        saved successfully.
+
+        :Parameters:
+         - `parent`: specify the parent window
+         - `title`: dialog title
+         - `preview`: any preview widget with a ``set_palette()`` method
 
         """
         dialog = gtk.FileChooserDialog(
@@ -483,9 +496,15 @@ class Palette:
                rtl=False):
         """Renders the palette according to a precalculated grid.
 
-        The `bg_color` is used when rendering the patterned placeholder for
-        an empty palette slot. Currently the text direction flag, `rtl`, is
-        ignored and the palette is rendered left to right.
+        :Parameters:
+         - `cr`: a Cairo context
+         - `rows`: number of rows in the layout
+         - `columns`: number of columns in the layout
+         - `swatch_size`: size of each swatch, in pixels
+         - `bg_color`: a `uicolor.UIColor` used when rendering the patterned
+           placeholder for an empty palette slot.
+         - `rtl`: layout direction: set to True to render right to left,
+           instead of left to right. Currently ignored.
 
         """
 

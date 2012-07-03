@@ -45,6 +45,7 @@ class ColorManager (gobject.GObject):
     __adjusters = None  #: The list of registered adjusters.
     __prefs = None   #: Shared preferences dictionary.
     __picker_cursor = gdk.Cursor(gdk.CROSSHAIR) #: Cursor for for picker adjs
+    __datapath = '.'
 
 
     def __init__(self, prefs=None):
@@ -80,6 +81,21 @@ class ColorManager (gobject.GObject):
 
     # TODO: if the color picker function needs to be made partly app-aware,
     # move it here and let BrushColorManager override/extend it.
+
+
+    def set_data_path(self, datapath):
+        """Sets the template/read-only data path for palettes, masks etc.
+        """
+        self.__datapath = datapath
+
+    def get_data_path(self):
+        """Returns the template/read-only data path for palettes, masks etc.
+
+        This is for use by adjusters connected to this manager which need to
+        load template resources, e.g. palette selectors.
+
+        """
+        return self.__datapath
 
 
     def _add_adjuster(self, adjuster):

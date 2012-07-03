@@ -40,6 +40,7 @@ env.Clean('.', Glob('lib/*.pyc'))
 # Painting resources
 install_tree(env, '$prefix/share/mypaint', 'backgrounds')
 install_tree(env, '$prefix/share/mypaint', 'pixmaps')
+install_tree(env, '$prefix/share/mypaint', 'palettes')
 
 # Desktop resources and themeable internal icons
 install_tree(env, '$prefix/share', 'desktop/icons')

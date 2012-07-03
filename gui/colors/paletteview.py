@@ -16,6 +16,7 @@ import cairo
 from gettext import gettext as _
 import math
 from copy import deepcopy
+import os
 
 from palette import Palette
 from util import clamp
@@ -30,6 +31,8 @@ from uimisc import borderless_button
 
 
 PREFS_PALETTE_DICT_KEY = "colors.palette"
+DATAPATH_PALETTES_SUBDIR = 'palettes'
+DEFAULT_PALETTE_FILE = 'default.gpl'
 
 
 # Editor ideas:
@@ -90,19 +93,10 @@ class PalettePage (CombinedAdjusterPage):
         if palette_dict is not None:
             palette = Palette.new_from_simple_dict(palette_dict)
         else:
-            palette = Palette()
-            palette.append(RGBColor(1,1,1), _('White'))
-            palette.append(RGBColor(0.75,0.75,0.75), _('Light grey'))
-            palette.append(RGBColor(0.50,0.50,0.50), _('Mid-grey'))
-            palette.append(RGBColor(0.25,0.25,0.25), _('Dark grey'))
-            palette.append(RGBColor(0,0,0), _('Black'))
-            palette.append(None)
-            palette.append(RGBColor(0.75,0.25,0.25), _('Red'))
-            palette.append(RGBColor(0.75,0.75,0.25), _('Yellow'))
-            palette.append(RGBColor(0.25,0.75,0.25), _('Green'))
-            palette.append(RGBColor(0.25,0.75,0.75), _('Cyan'))
-            palette.append(RGBColor(0.25,0.25,0.75), _('Blue'))
-            palette.append(RGBColor(0.75,0.25,0.75), _('Magenta'))
+            datapath = manager.get_data_path()
+            palettes_dir = os.path.join(datapath, DATAPATH_PALETTES_SUBDIR)
+            default = os.path.join(palettes_dir, DEFAULT_PALETTE_FILE)
+            palette = Palette(filename=default)
         self.__adj.set_palette(palette)
 
 
@@ -341,11 +335,15 @@ class PaletteEditorDialog (gtk.Dialog):
 
     def __load_btn_clicked(self, button):
         preview = _PalettePreview()
-        pal = Palette.load_via_dialog(title=_("Load palette"),
-                                      parent=self,
-                                      preview=preview)
-        if pal is not None:
-            self.__view.set_palette(pal)
+        manager = self.__target.get_color_manager()
+        datapath = manager.get_data_path()
+        palettes_dir = os.path.join(datapath, DATAPATH_PALETTES_SUBDIR)
+        palette = Palette.load_via_dialog(title=_("Load palette"),
+                                          parent=self,
+                                          preview=preview,
+                                          shortcuts=[palettes_dir])
+        if palette is not None:
+            self.__view.set_palette(palette)
 
 
     def __save_btn_clicked(self, button):
