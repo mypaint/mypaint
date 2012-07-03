@@ -161,12 +161,11 @@ def iter_rect(x, y, w, h):
 
 
 class CombinedColorAdjuster (gtk.VBox, ColorAdjuster):
+    """Composite colour adjuster consisting of several tabbed pages.
+    """
 
     __adjusters = None
     __palette_page = None
-
-    #__icon_size = gtk.ICON_SIZE_BUTTON
-    __icon_size = gtk.ICON_SIZE_SMALL_TOOLBAR
 
 
     def __init__(self):
@@ -192,7 +191,7 @@ class CombinedColorAdjuster (gtk.VBox, ColorAdjuster):
         for page_class in page_classes:
             icon_name = page_class.get_page_icon_name()
             icon_img = gtk.Image()
-            icon_img.set_from_icon_name(icon_name, self.__icon_size)
+            icon_img.set_from_icon_name(icon_name, gtk.ICON_SIZE_SMALL_TOOLBAR)
             icon_img.connect("query-tooltip", self.__tab_tooltip_query_cb,
                              page_class)
             icon_img.set_property("has-tooltip", True)
@@ -253,10 +252,14 @@ class CombinedColorAdjuster (gtk.VBox, ColorAdjuster):
 
 
     def get_palette_view(self):
+        """Returns the palette view adjuster.
+        """
         return self.__palette_page.get_page_widget()
 
 
     def show_palette_view(self):
+        """Switches to the palette view tab.
+        """
         self.__notebook.set_current_page(self.__palette_page_index)
 
 

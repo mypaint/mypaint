@@ -113,6 +113,41 @@ class MaskableWheelMixin:
             mask.append(shape_colors)
         return mask
 
+
+    def set_mask_from_palette(self, pal):
+        """Sets the mask from a palette.
+
+        Any `palette.Palette` can be loaded into the wheel widget, and colour
+        names are used for distinguishing mask shapes. If a colour name
+        matches the pattern "``mask #<decimal-int>``", it will be associated
+        with the shape having the ID ``<decimal-int>``.
+
+        """
+        if pal is None:
+            return
+        mask_id_re = re.compile(r'\bmask\s*#?\s*(\d+)\b')
+        mask_shapes = {}
+        for i in xrange(len(pal)):
+            color = pal.get_color(i)
+            if color is None:
+                continue
+            shape_id = 0
+            color_name = pal.get_color_name(i)
+            if color_name is not None:
+                mask_id_match = mask_id_re.search(color_name)
+                if mask_id_match:
+                    shape_id = int(mask_id_match.group(1))
+            if shape_id not in mask_shapes:
+                mask_shapes[shape_id] = []
+            mask_shapes[shape_id].append(color)
+        mask_list = []
+        shape_ids = mask_shapes.keys()
+        shape_ids.sort()
+        for shape_id in shape_ids:
+            mask_list.append(mask_shapes[shape_id])
+        self.set_mask(mask_list)
+
+
     def set_mask(self, mask):
         """Sets the mask (a list of lists of `UIColor`s).
         """
@@ -727,9 +762,13 @@ class HCYMaskPreview (MaskableWheelMixin,
                       HCYHueChromaWheelMixin,
                       HueSaturationWheelAdjuster):
     """Mask preview widget; not scrollable.
+
+    These widgets can be used with `palette.Palette.load_via_dialog()` as
+    preview widgets during mask selection.
+
     """
 
-    def __init__(self, mask):
+    def __init__(self, mask=None):
         MaskableWheelMixin.__init__(self)
         HueSaturationWheelAdjuster.__init__(self)
         self.set_app_paintable(True)
@@ -746,9 +785,15 @@ class HCYMaskPreview (MaskableWheelMixin,
     def paint_foreground_cb(self, cr, wd, ht):
         pass
 
+    def get_background_validity(self):
+        return deepcopy(self.get_mask())
+
     def get_managed_color(self):
         return HCYColor(0, 0, 0.5)
 
+    def set_palette(self, palette):
+        # Compatibility with Palette.load_via_dialog()
+        self.set_mask_from_palette(palette)
 
 
 class HCYMaskTemplateDialog (gtk.Dialog):
@@ -953,38 +998,22 @@ class HCYMaskPropertiesDialog (gtk.Dialog):
             for j, col in enumerate(shape):
                 col_name = "mask#%d primary#%d" % (i, j)  #NOT localised
                 pal.append(col, col_name)
+        preview = HCYMaskPreview()
         pal.save_via_dialog(
           title=_("Save mask as a Gimp palette"),
-          parent=self)
+          parent=self,
+          preview=preview)
 
 
     def __load_clicked(self, button):
+        preview = HCYMaskPreview()
         pal = Palette.load_via_dialog(
           title=_("Load mask from a Gimp palette"),
-          parent=self)
+          parent=self,
+          preview=preview)
         if pal is None:
             return
-        mask_id_re = re.compile(r'\bmask\s*#?\s*(\d+)\b')
-        mask_shapes = {}
-        for i in xrange(len(pal)):
-            color = pal.get_color(i)
-            if color is None:
-                continue
-            shape_id = 0
-            color_name = pal.get_color_name(i)
-            if color_name is not None:
-                mask_id_match = mask_id_re.search(color_name)
-                if mask_id_match:
-                    shape_id = int(mask_id_match.group(1))
-            if shape_id not in mask_shapes:
-                mask_shapes[shape_id] = []
-            mask_shapes[shape_id].append(color)
-        mask_list = []
-        shape_ids = mask_shapes.keys()
-        shape_ids.sort()
-        for shape_id in shape_ids:
-            mask_list.append(mask_shapes[shape_id])
-        self.editor.set_mask(mask_list)
+        self.editor.set_mask_from_palette(pal)
 
 
     def __clear_clicked(self, widget):

@@ -18,9 +18,11 @@ from copy import copy
 import gtk
 from gtk import gdk
 from gettext import gettext as _
+import cairo
 
-from uicolor import RGBColor
+from uicolor import RGBColor, HCYColor
 from adjbases import ColorAdjusterWidget
+from util import clamp
 
 
 
@@ -379,11 +381,12 @@ class Palette:
 
 
     @classmethod
-    def load_via_dialog(class_, title, parent=None):
+    def load_via_dialog(class_, title, parent=None, preview=None):
         """Runs a file chooser dialog, returning a palette or `None`.
 
-        The dialog is both modal and blocking. Set `parent` to provide a parent
-        window, and `title` for the dialog title.
+        The dialog is both modal and blocking. Set `parent` to provide a
+        parent window, and `title` for the dialog title. `preview` can be any
+        preview widget with a ``set_palette()`` method.
 
         """
         dialog = gtk.FileChooserDialog(
@@ -393,6 +396,10 @@ class Palette:
           buttons=(gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT,
                    gtk.STOCK_OPEN, gtk.RESPONSE_ACCEPT),
           )
+        if preview is not None:
+            dialog.set_preview_widget(preview)
+            dialog.connect("update-preview",
+                           class_.__dialog_update_preview_cb, preview)
         dialog.set_do_overwrite_confirmation(True)
         filter = gtk.FileFilter()
         filter.add_pattern("*.gpl")
@@ -411,12 +418,28 @@ class Palette:
         return palette
 
 
-    def save_via_dialog(self, title, parent=None):
+    @classmethod
+    def __dialog_update_preview_cb(self_or_class, dialog, preview):
+        filename = dialog.get_preview_filename()
+        palette = None
+        try:
+            palette = Palette(filename=filename)
+        except Exception, ex:
+            dialog.set_preview_widget_active(False)
+            print ex
+            return
+        preview.set_palette(palette)
+        preview.queue_draw()
+        dialog.set_preview_widget_active(True)
+
+
+    def save_via_dialog(self, title, parent=None, preview=None):
         """Runs a file chooser dialog for saving.
 
-        The dialog is both modal and blocking. Set `parent` to provide a parent
-        window, and `title` for the dialog title. This function returns True if
-        the file was saved successfully.
+        The dialog is both modal and blocking. Set `parent` to provide a
+        parent window, and `title` for the dialog title.  `preview` can be
+        any preview widget with a ``set_palette()`` method. This function
+        returns True if the file was saved successfully.
 
         """
         dialog = gtk.FileChooserDialog(
@@ -426,6 +449,10 @@ class Palette:
           buttons=(gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT,
                    gtk.STOCK_SAVE, gtk.RESPONSE_ACCEPT),
           )
+        if preview is not None:
+            dialog.set_preview_widget(preview)
+            dialog.connect("update-preview",
+                           self.__dialog_update_preview_cb, preview)
         dialog.set_do_overwrite_confirmation(True)
         filter = gtk.FileFilter()
         filter.add_pattern("*.gpl")
@@ -451,8 +478,111 @@ class Palette:
         return result
 
 
+    def render(self, cr, rows, columns, swatch_size,
+               bg_color, offset_x=0, offset_y=0,
+               rtl=False):
+        """Renders the palette according to a precalculated grid.
+
+        The `bg_color` is used when rendering the patterned placeholder for
+        an empty palette slot. Currently the text direction flag, `rtl`, is
+        ignored and the palette is rendered left to right.
+
+        """
+
+        HIGHLIGHT_DLUMA = 0.05
+
+        if len(self.__colors) == 0:
+            return
+        if rows is None or columns is None:
+            return
+
+        cr.save()
+        cr.translate(offset_x, offset_y)
+
+        # Sizes and colours
+        swatch_w = swatch_h = swatch_size
+        light_col = HCYColor(color=bg_color)
+        dark_col = HCYColor(color=bg_color)
+        light_col.y = clamp(light_col.y + HIGHLIGHT_DLUMA, 0, 1)
+        dark_col.y = clamp(dark_col.y - HIGHLIGHT_DLUMA, 0, 1)
+
+        # Upper left outline (bottom right is covered below by the
+        # individual chips' shadows)
+        ul_col = HCYColor(color=bg_color)
+        ul_col.y *= 0.75
+        ul_col.c *= 0.5
+        cr.set_line_join(cairo.LINE_JOIN_ROUND)
+        cr.set_line_cap(cairo.LINE_CAP_ROUND)
+        cr.set_source_rgb(*ul_col.get_rgb())
+        cr.move_to(0.5, rows*swatch_h - 1)
+        cr.line_to(0.5, 0.5)
+        row1cells = min(columns, len(self.__colors)) # needed?
+        cr.line_to(row1cells*swatch_w - 1, 0.5)
+        cr.set_line_width(2)
+        cr.stroke()
+
+        # Draw into the predefined grid
+        r = c = 0
+        cr.set_line_width(1.0)
+        cr.set_line_cap(cairo.LINE_CAP_SQUARE)
+        for col in self.iter_colors():
+            s_x = c*swatch_w
+            s_y = r*swatch_h
+            s_w = swatch_w
+            s_h = swatch_h
+
+            # Select fill bg and pattern fg colours, Tango-style edge highlight
+            # and lower-right shadow.
+            if col is None:
+                # Empty slot, fill with a pattern
+                hi_rgb = light_col.get_rgb()
+                fill_bg_rgb = dark_col.get_rgb()
+                fill_fg_rgb = light_col.get_rgb()
+                sh_col = HCYColor(color=bg_color)
+                sh_col.y *= 0.75
+                sh_col.c *= 0.5
+                sh_rgb = sh_col.get_rgb()
+            else:
+                # Colour swatch
+                hi_col = HCYColor(color=col)
+                hi_col.y = min(hi_col.y * 1.1, 1)
+                hi_col.c = min(hi_col.c * 1.1, 1)
+                sh_col = HCYColor(color=col)
+                sh_col.y *= 0.666
+                sh_col.c *= 0.5
+                hi_rgb = hi_col.get_rgb()
+                fill_bg_rgb = col.get_rgb()
+                fill_fg_rgb = None
+                sh_rgb = sh_col.get_rgb()
+
+            # Draw the swatch / colour chip
+            cr.set_source_rgb(*sh_rgb)
+            cr.rectangle(s_x, s_y, s_w, s_h)
+            cr.fill()
+            cr.set_source_rgb(*fill_bg_rgb)
+            cr.rectangle(s_x, s_y, s_w-1, s_h-1)
+            cr.fill()
+            if fill_fg_rgb is not None:
+                s_w2 = int((s_w-1) / 2)
+                s_h2 = int((s_h-1) / 2)
+                cr.set_source_rgb(*fill_fg_rgb)
+                cr.rectangle(s_x, s_y, s_w2, s_h2)
+                cr.fill()
+                cr.rectangle(s_x+s_w2, s_y+s_h2, s_w2, s_h2)
+                cr.fill()
+            cr.set_source_rgb(*hi_rgb)
+            cr.rectangle(s_x+0.5, s_y+0.5, s_w-2, s_h-2)
+            cr.stroke()
+
+            c += 1
+            if c >= columns:
+                c = 0
+                r += 1
+
+        cr.restore()
+
+
 if __name__ == '__main__':
     import doctest
     doctest.testmod()
-
 

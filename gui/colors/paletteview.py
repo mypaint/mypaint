@@ -119,7 +119,6 @@ class PalettePage (CombinedAdjusterPage):
         self.__edit_dialog.run()
 
 
-
 class PaletteEditorDialog (gtk.Dialog):
     """Dialog for editing, loading and saving the current palette.
     """
@@ -341,14 +340,19 @@ class PaletteEditorDialog (gtk.Dialog):
 
 
     def __load_btn_clicked(self, button):
-        pal = Palette.load_via_dialog(title=_("Load palette"), parent=self)
+        preview = _PalettePreview()
+        pal = Palette.load_via_dialog(title=_("Load palette"),
+                                      parent=self,
+                                      preview=preview)
         if pal is not None:
             self.__view.set_palette(pal)
 
 
     def __save_btn_clicked(self, button):
+        preview = _PalettePreview()
         pal = self.__view.get_palette()
-        pal.save_via_dialog(title=_("Save palette"), parent=self)
+        pal.save_via_dialog(title=_("Save palette"), parent=self,
+                            preview=preview)
 
 
     def __clear_btn_clicked(self, button):
@@ -442,6 +446,63 @@ def color_distance(c1, c2):
     return ((d_Cb**2) + (d_Cr**2) + (d_Y)**2) ** (1.0/3)
 
 
+
+class _PalettePreview (gtk.DrawingArea):
+
+    _palette = None
+
+    def __init__(self):
+        gtk.DrawingArea.__init__(self)
+        self.connect("expose-event", self._expose_event_cb)
+        self.set_size_request(128, 256)
+
+    def _expose_event_cb(self, widget, event):
+        if self._palette is None:
+            return
+        alloc = widget.get_allocation()
+        w, h = alloc.width, alloc.height
+        s_max = 16  # min(w, h)
+        s_min = 4
+        ncolumns = self._palette.get_columns()
+        ncolors = len(self._palette)
+        if ncolors == 0:
+            return
+        if not ncolumns == 0:
+            s = w / ncolumns
+            s = clamp(s, s_min, s_max)
+            s = int(s)
+            if s*ncolumns > w:
+                ncolumns = 0
+        if ncolumns == 0:
+            s = math.sqrt(float(w*h) / ncolors)
+            s = clamp(s, s_min, s_max)
+            s = int(s)
+            ncolumns = max(1, int(w / s))
+        nrows = int(ncolors // ncolumns)
+        if ncolors % ncolumns != 0:
+            nrows += 1
+        nrows = max(1, nrows)
+        dx, dy = 0, 0
+        if nrows*s < h:
+            dy = int(h - nrows*s) / 2
+        if ncolumns*s < w:
+            dx = int(w - ncolumns*s) / 2
+
+        state = self.get_state()
+        style = self.get_style()
+        bg_color = RGBColor.new_from_gdk_color(style.bg[state])
+
+        cr = widget.get_window().cairo_create()
+        self._palette.render(cr, rows=nrows, columns=ncolumns,
+                             swatch_size=s, bg_color=bg_color,
+                             offset_x=dx, offset_y=dy,
+                             rtl=False)
+
+    def set_palette(self, palette):
+        self._palette = palette
+        self.queue_draw()
+
+
 class _PaletteGridLayout (ColorAdjusterWidget):
     """The palette layout embedded in a scrolling PaletteView.
     """
@@ -451,7 +512,6 @@ class _PaletteGridLayout (ColorAdjusterWidget):
     has_details_dialog = True
 
     ## Layout constants
-    _HIGHLIGHT_DLUMA = 0.025
     _SWATCH_SIZE_MIN = 8
     _SWATCH_SIZE_MAX = 50
     _SWATCH_SIZE_NOMINAL = 20
@@ -801,94 +861,17 @@ class _PaletteGridLayout (ColorAdjusterWidget):
 
 
     def _paint_palette_layout(self, cr):
-        if self._palette is None or len(self._palette) == 0:
-            # Probably should draw a "drop some colours here" label
+        if self._palette is None:
             return
-        if self._rows is None or self._columns is None:
-            return
-
-        # Sizes and colours
-        swatch_w = swatch_h = self._swatch_size
         state = self.get_state()
         style = self.get_style()
+        dx, dy = self.get_painting_offset()
         bg_col = RGBColor.new_from_gdk_color(style.bg[state])
-        light_col = HCYColor(color=bg_col)
-        dark_col = HCYColor(color=bg_col)
-        light_col.y = clamp(light_col.y + self._HIGHLIGHT_DLUMA, 0, 1)
-        dark_col.y = clamp(dark_col.y - self._HIGHLIGHT_DLUMA, 0, 1)
-
-        # Upper left outline (bottom right is covered below by the
-        # individual chips' shadows)
-        ul_col = HCYColor(color=bg_col)
-        ul_col.y *= 0.75
-        ul_col.c *= 0.5
-        cr.set_line_join(cairo.LINE_JOIN_ROUND)
-        cr.set_line_cap(cairo.LINE_CAP_ROUND)
-        cr.set_source_rgb(*ul_col.get_rgb())
-        cr.move_to(0.5, self._rows*swatch_h - 1)
-        cr.line_to(0.5, 0.5)
-        row1cells = min(self._columns, len(self._palette)) # needed?
-        cr.line_to(row1cells*swatch_w - 1, 0.5)
-        cr.set_line_width(2)
-        cr.stroke()
-
-        # Draw into the rows+columns grid set up by update_layout()
-        r = c = 0
-        cr.set_line_width(1.0)
-        cr.set_line_cap(cairo.LINE_CAP_SQUARE)
-        for col in self._palette.iter_colors():
-            s_x = c*swatch_w
-            s_y = r*swatch_h
-            s_w = swatch_w
-            s_h = swatch_h
-
-            # Select fill bg and pattern fg colours, Tango-style edge highlight
-            # and lower-right shadow.
-            if col is None:
-                # Empty slot, fill with a pattern
-                hi_rgb = light_col.get_rgb()
-                fill_bg_rgb = dark_col.get_rgb()
-                fill_fg_rgb = light_col.get_rgb()
-                sh_col = HCYColor(color=bg_col)
-                sh_col.y *= 0.75
-                sh_col.c *= 0.5
-                sh_rgb = sh_col.get_rgb()
-            else:
-                # Colour swatch
-                hi_col = HCYColor(color=col)
-                hi_col.y = min(hi_col.y * 1.1, 1)
-                hi_col.c = min(hi_col.c * 1.1, 1)
-                sh_col = HCYColor(color=col)
-                sh_col.y *= 0.666
-                sh_col.c *= 0.5
-                hi_rgb = hi_col.get_rgb()
-                fill_bg_rgb = col.get_rgb()
-                fill_fg_rgb = None
-                sh_rgb = sh_col.get_rgb()
-
-            # Draw the swatch / colour chip
-            cr.set_source_rgb(*sh_rgb)
-            cr.rectangle(s_x, s_y, s_w, s_h)
-            cr.fill()
-            cr.set_source_rgb(*fill_bg_rgb)
-            cr.rectangle(s_x, s_y, s_w-1, s_h-1)
-            cr.fill()
-            if fill_fg_rgb is not None:
-                s_w2 = float(s_w-1) / 2.0
-                s_h2 = float(s_h-1) / 2.0
-                cr.set_source_rgb(*fill_fg_rgb)
-                cr.rectangle(s_x, s_y, s_w2, s_h2)
-                cr.fill()
-                cr.rectangle(s_x+s_w2, s_y+s_h2, s_w2, s_h2)
-                cr.fill()
-            cr.set_source_rgb(*hi_rgb)
-            cr.rectangle(s_x+0.5, s_y+0.5, s_w-2, s_h-2)
-            cr.stroke()
-
-            c += 1
-            if c >= self._columns:
-                c = 0
-                r += 1
+        self._palette.render(cr, rows=self._rows, columns=self._columns,
+                             swatch_size=self._swatch_size,
+                             bg_color=bg_col,
+                             offset_x=dx, offset_y=dy,
+                             rtl=False)
 
 
     def _paint_marker(self, cr, x, y, insert=False,
@@ -918,14 +901,8 @@ class _PaletteGridLayout (ColorAdjusterWidget):
                 self.update_layout()
             return
 
-        # Centre
-        cr.save()
-        dx, dy = self.get_painting_offset()
-        cr.translate(dx, dy)
-
         # Background
         self._paint_palette_layout(cr)
-        cr.restore()
 
         # Highlights
         cr.set_line_cap(cairo.LINE_CAP_SQUARE)
