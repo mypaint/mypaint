@@ -40,6 +40,9 @@ env.Append(CXXFLAGS=' -Wall -Wno-sign-compare -Wno-write-strings')
 env.Append(CCFLAGS='-Wall')
 env.Append(CFLAGS='-std=c99')
 
+# Define strdup() in string.h under glibc >= 2.10 (POSIX.1-2008)
+env.Append(CFLAGS='-D_POSIX_C_SOURCE=200809L')
+
 if env.get('CPPDEFINES'):
     # make sure assertions are enabled
     env['CPPDEFINES'].remove('NDEBUG')
