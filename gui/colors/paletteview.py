@@ -293,16 +293,29 @@ class PaletteEditorDialog (gtk.Dialog):
             else:
                 col_name_entry.set_sensitive(False)
                 col_name_entry.set_text(_("Empty palette slot"))
-            remove_btn.set_sensitive(True)
         else:
-            remove_btn.set_sensitive(False)
             col_name_entry.set_sensitive(False)
             col_name_entry.set_text("")
+        self.__update_buttons()
+
+
+    def __update_buttons(self):
+        palette = self.__view.grid._palette
+        emptyish = len(palette) == 0
+        if len(palette) == 1:
+            if palette[0] is None:
+                emptyish = True
+        can_save = not emptyish
+        can_clear = not emptyish
+        can_remove = True
+        if emptyish or self.__view.grid._current_index is None:
+            can_remove = False
+        self.__save_button.set_sensitive(can_save)
+        self.__remove_button.set_sensitive(can_remove)
+        self.__clear_button.set_sensitive(can_clear)
 
 
     def __palette_changed_cb(self, palette):
-        empty = len(palette) == 0
-        self.__save_button.set_sensitive(not empty)
         new_name = palette.get_name()
         if new_name is None:
             new_name = ""
@@ -310,6 +323,7 @@ class PaletteEditorDialog (gtk.Dialog):
         if old_name != new_name:
             self.__palette_name_entry.set_text(new_name)
         self.__columns_adj.set_value(palette.get_columns())
+        self.__update_buttons()
 
 
     def __add_btn_clicked(self, button):
@@ -332,6 +346,8 @@ class PaletteEditorDialog (gtk.Dialog):
         i = grid._current_index
         if i >= 0 and i < len(palette):
             palette.pop(i)
+            if len(palette) == 0:
+                palette.append(None)
             self.__view.set_palette(palette)
             if i > 0:
                 i -= 1
