@@ -37,6 +37,27 @@ from uimisc import borderless_button
 
 PREFS_MASK_KEY = "colors.hcywheel.mask.gamuts"
 PREFS_ACTIVE_KEY = "colors.hcywheel.mask.active"
+MASK_EDITOR_HELP=_("""<b>Gamut mask editor</b>
+
+Edit the gamut mask here, or turn it off or on. Gamut masks are like a piece of
+tracing paper with cut-out holes, placed over the color wheel to limit the
+range of colors you can select. This allows you to plan your color schemes in
+advance, which is useful for color scripting or to create specific moods. The
+theory is that the corners of each mask shape represent a <i>subjective</i>
+primary color, and that each shape contains all the colors which can be mixed
+using those corner primaries. Subjective secondary colors lie at the midpoints
+of the shape edges, and the center of the shape is the subjective neutral tone
+for the shape.
+
+Click to add shapes if the wheel is blank. Shapes can be dragged around and
+their outlines can be adjusted by adding or moving the control points. Make a
+shape too small to be useful to remove it: dragging a shape to the edge of the
+disc is a quick way of doing this. The entire mask can be rotated by turning
+the edge of the disc to generate new and unexpected color schemes.
+
+Gamut masks can be saved to GIMP-format palette files, and loaded from them.
+The New button lets you choose one of several templates as a starting point.
+""")
 
 
 class MaskableWheelMixin:
@@ -928,7 +949,7 @@ class HCYMaskPropertiesDialog (gtk.Dialog):
     def __init__(self, parent, target):
         gtk.Dialog.__init__(self, _("Gamut mask editor"), parent,
                             gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                            (#gtk.STOCK_HELP, gtk.RESPONSE_HELP,
+                            (gtk.STOCK_HELP, gtk.RESPONSE_HELP,
                              gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT,
                              gtk.STOCK_OK, gtk.RESPONSE_ACCEPT))
         self.set_position(gtk.WIN_POS_MOUSE)
@@ -1044,8 +1065,17 @@ class HCYMaskPropertiesDialog (gtk.Dialog):
             mask_active = self.mask_toggle_ctrl.get_active()
             self.target.mask_toggle.set_active(mask_active)
         if response_id == gtk.RESPONSE_HELP:
-            # TODO: display help, but stay open
-            pass
+            # Sub-sub-sub dialog. Ugh. Still, we have a lot to say.
+            dialog = gtk.MessageDialog(
+              parent=self,
+              flags=gtk.DIALOG_MODAL|gtk.DIALOG_DESTROY_WITH_PARENT,
+              buttons=gtk.BUTTONS_CLOSE,  )
+            markup_paras = re.split(r'\n[\040\t]*\n', MASK_EDITOR_HELP)
+            markup = "\n\n".join([s.replace("\n", " ") for s in markup_paras])
+            dialog.set_markup(markup)
+            dialog.set_title(_("Gamut mask editor help"))
+            dialog.connect("response", lambda *a: dialog.destroy())
+            dialog.run()
         else:
             self.hide()
         return True
