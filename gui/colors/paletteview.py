@@ -155,6 +155,11 @@ class PaletteEditorDialog (gtk.Dialog):
         remove_btn.connect("clicked", self.__remove_btn_clicked)
         add_btn.connect("clicked", self.__add_btn_clicked)
         clear_btn.connect("clicked", self.__clear_btn_clicked)
+        load_btn.set_tooltip_text(_("Load from a GIMP palette file"))
+        save_btn.set_tooltip_text(_("Save to a GIMP palette file"))
+        add_btn.set_tooltip_text(_("Add a new empty swatch"))
+        remove_btn.set_tooltip_text(_("Remove the current swatch"))
+        clear_btn.set_tooltip_text(_("Remove all swatches"))
 
         # Button initial state and subsequent updates
         remove_btn.set_sensitive(False)
@@ -508,6 +513,8 @@ class _PaletteGridLayout (ColorAdjusterWidget):
     ## Class settings
     is_drag_source = True
     has_details_dialog = True
+    tooltip_text = _("Color swatch palette. Drop colors here and "
+                     "drag them around to organize.")
 
     ## Layout constants
     _SWATCH_SIZE_MIN = 8
@@ -610,21 +617,38 @@ class _PaletteGridLayout (ColorAdjusterWidget):
     def _motion_notify_cb(self, widget, event):
         x, y = event.x, event.y
         i = self.get_index_at_pos(x, y)
+        # Set the tooltip.
+        # Passing the tooltip through a value of None is necessary for its
+        # position on the screen to be updated to where the pointer is. Setting
+        # it to None, and then to the desired value must happen in two separate
+        # events for the tooltip window position update to be honoured.
         if i is None:
-            # Not over a colour, so remove tooltip
-            self._tooltip_index = None
-            self.set_tooltip_text(None)
+            # Not over a colour, so use the static default
+            if self._tooltip_index not in (-1, -2):
+                # First such event: reset the tooltip.
+                self._tooltip_index = -1
+                self.set_tooltip_text(None)
+            elif self._tooltip_index != -2:
+                # Second event over a non-colour: set the tooltip text.
+                self._tooltip_index = -2
+                self.set_tooltip_text(self.tooltip_text)
         elif self._tooltip_index != i:
-            # Mouse pointer has moved to a different colour.
+            # Mouse pointer has moved to a different colour, or away
+            # from the two states above.
             if self._tooltip_index is not None:
                 # First event for this i: reset the tooltip.
-                # This is necessary for it to move to where the mouse is.
                 self._tooltip_index = None
                 self.set_tooltip_text(None)
             else:
-                # Second event for this i: set the tooltip text.
+                # Second event for this i: set the desired tooltip text.
                 self._tooltip_index = i
-                self.set_tooltip_text(self._palette.get_color_name(i))
+                tip = self._palette.get_color_name(i)
+                color = self._palette.get_color(i)
+                if color is None:
+                    tip = _("Empty palette slot (drag a color here)")
+                elif tip is None or tip.strip() == "":
+                    tip = self.tooltip_text   # would None be nicer?
+                self.set_tooltip_text(tip)
         return False
 
 

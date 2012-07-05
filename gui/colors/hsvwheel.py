@@ -29,6 +29,9 @@ class HSVHueSaturationWheel (HueSaturationWheelAdjuster):
     """Hue, Saturation and Value wheel.
     """
 
+    tooltip_text = _("HSV Hue and Saturation")
+
+
     def __init__(self):
         HueSaturationWheelAdjuster.__init__(self)
         self.connect("scroll-event", self.__scroll_cb)

@@ -31,6 +31,14 @@ class HSVCubePage (CombinedAdjusterPage):
 
     """
 
+    # Tooltip mappings, indexed by whatever the slider currently represents
+    _slider_tooltip_map = dict(h=_("HSV Hue"),
+                               s=_("HSV Saturation"),
+                               v=_("HSV Value"))
+    _slice_tooltip_map = dict(h=_("HSV Saturation and Value"),
+                              s=_("HSV Hue and Value"),
+                              v=_("HSV Hue and Saturation"))
+
     def __init__(self):
         self._faces = ['h', 's', 'v']
         table = gtk.Table(rows=2, columns=2)
@@ -52,6 +60,7 @@ class HSVCubePage (CombinedAdjusterPage):
         table.attach(button,       0,1, 1,2,  gtk.FILL, gtk.FILL,  3, 3)
         table.attach(self.__slice, 1,2, 0,2, xopts, yopts, 3, 3)
         self.__table = table
+        self._update_tooltips()
 
     @classmethod
     def get_page_icon_name(self):
@@ -74,6 +83,12 @@ class HSVCubePage (CombinedAdjusterPage):
         self._faces.append(f0)
         self.__slider.queue_draw()
         self.__slice.queue_draw()
+        self._update_tooltips()
+
+    def _update_tooltips(self):
+        f0 = self._faces[0]
+        self.__slice.set_tooltip_text(self._slice_tooltip_map[f0])
+        self.__slider.set_tooltip_text(self._slider_tooltip_map[f0])
 
     def set_color_manager(self, manager):
         ColorAdjuster.set_color_manager(self, manager)

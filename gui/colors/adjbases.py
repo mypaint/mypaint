@@ -280,6 +280,7 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
     edge_highlight_width = 1.0
     edge_highlight_rgba = (1, 1, 1, 0.25)
     border = 2    #: Size of the border around the widget.
+    tooltip_text = None  #: Static tooltip text, set during constructor
 
     # gobject integration
     __gtype_name__ = "ColorAdjusterWidget"
@@ -302,6 +303,8 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
         self.add_events(gdk.BUTTON_PRESS_MASK|gdk.BUTTON_RELEASE_MASK)
         self.add_events(gdk.BUTTON_MOTION_MASK)
         self.connect("realize", self.__realize_cb)
+        if self.tooltip_text is not None:
+            self.set_tooltip_text(self.tooltip_text)
 
 
     def __realize_cb(self, widget):
@@ -559,6 +562,9 @@ class PreviousCurrentColorAdjuster (ColorAdjusterWidget):
     # Class specialisation
     is_drag_source = True
     has_details_dialog = True
+    tooltip_text = _("Newly chosen color, and the color "
+                     "most recently used for painting")
+
 
 
     def __init__(self):

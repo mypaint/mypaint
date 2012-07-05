@@ -135,6 +135,7 @@ class ComponentSlidersAdjusterPage (CombinedAdjusterPage, IconRenderable):
 
 
 class RGBRedSlider (SliderColorAdjuster):
+    tooltip_text = _("RGB Red")
     def get_background_validity(self):
         col = self.get_managed_color()
         r,g,b = col.get_rgb()
@@ -147,6 +148,7 @@ class RGBRedSlider (SliderColorAdjuster):
         return col.r
 
 class RGBGreenSlider (SliderColorAdjuster):
+    tooltip_text = _("RGB Green")
     def get_background_validity(self):
         col = self.get_managed_color()
         r,g,b = col.get_rgb()
@@ -159,6 +161,7 @@ class RGBGreenSlider (SliderColorAdjuster):
         return col.g
 
 class RGBBlueSlider (SliderColorAdjuster):
+    tooltip_text = _("RGB Blue")
     def get_background_validity(self):
         col = self.get_managed_color()
         r,g,b = col.get_rgb()
@@ -172,6 +175,7 @@ class RGBBlueSlider (SliderColorAdjuster):
 
 
 class HSVHueSlider (SliderColorAdjuster):
+    tooltip_text = _("HSV Hue")
     samples = 4
     def get_color_for_bar_amount(self, amt):
         col = HSVColor(color=self.get_managed_color())
@@ -181,6 +185,7 @@ class HSVHueSlider (SliderColorAdjuster):
         return col.h
 
 class HSVSaturationSlider (SliderColorAdjuster):
+    tooltip_text = _("HSV Saturation")
     def get_color_for_bar_amount(self, amt):
         col = HSVColor(color=self.get_managed_color())
         col.s = amt
@@ -189,6 +194,7 @@ class HSVSaturationSlider (SliderColorAdjuster):
         return col.s
 
 class HSVValueSlider (SliderColorAdjuster):
+    tooltip_text = _("HSV Value")
     def get_color_for_bar_amount(self, amt):
         col = HSVColor(color=self.get_managed_color())
         col.v = amt
@@ -198,6 +204,7 @@ class HSVValueSlider (SliderColorAdjuster):
 
 
 class HCYHueSlider (SliderColorAdjuster):
+    tooltip_text = _("HCY Hue")
     samples = 4
     def get_color_for_bar_amount(self, amt):
         col = HCYColor(color=self.get_managed_color())
@@ -208,6 +215,7 @@ class HCYHueSlider (SliderColorAdjuster):
         return col.h
 
 class HCYChromaSlider (SliderColorAdjuster):
+    tooltip_text = _("HCY Chroma")
 
     def get_color_for_bar_amount(self, amt):
         col = HCYColor(color=self.get_managed_color())
@@ -219,6 +227,7 @@ class HCYChromaSlider (SliderColorAdjuster):
         return col.c
 
 class HCYLumaSlider (SliderColorAdjuster):
+    tooltip_text = _("HCY Luma (Y')")
 
     @property
     def samples(self):

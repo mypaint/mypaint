@@ -349,6 +349,8 @@ class HCYHueChromaWheel (MaskableWheelMixin,
     """Circular mapping of the H and C terms of the HCY model.
     """
 
+    tooltip_text = _("HCY Hue and Chroma")
+
     def __init__(self):
         """Instantiate, binding events.
         """
@@ -397,6 +399,9 @@ class HCYMaskEditorWheel (HCYHueChromaWheel):
     __ctrlpoint_radius = 2.5
     __ctrlpoint_grab_radius = 10
     __max_num_shapes = 3   # how many shapes are allowed
+    tooltip_text = _("Gamut mask editor. Click in the middle to create "
+                     "or manipulate shapes, or rotate the mask using "
+                     "the edges of the disc.")
 
 
     def __init__(self):
