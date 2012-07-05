@@ -587,10 +587,10 @@ class PreviousCurrentColorAdjuster (ColorAdjusterWidget):
         cr.set_line_width(self.outline_width)
         cr.stroke()
 
-        cr.rectangle(b, b, eff_wd/2, eff_ht)
+        cr.rectangle(b, b, int(eff_wd/2), eff_ht)
         cr.set_source_rgb(*curr.get_rgb())
         cr.fill()
-        cr.rectangle(wd/2, b, eff_wd/2, eff_ht)
+        cr.rectangle(wd/2, b, eff_wd - int(eff_wd/2), eff_ht)
         cr.set_source_rgb(*prev.get_rgb())
         cr.fill()
 
