@@ -804,11 +804,11 @@ class _PaletteGridLayout (ColorAdjusterWidget):
     def match_managed_color(self):
         """Moves current index to the most similar colour to the managed one.
 
-        The matching algorithm favours exact matches which are close in index
-        number to the current index. If the current index is unset, this search
-        starts at 0. If there are no exact matches, an approximate match will
-        be used, again favouring matches with nearby index numbers. Returns
-        true if the match succeeded.
+        The matching algorithm favours exact or near-exact matches which are
+        close in index number to the current index. If the current index is
+        unset, this search starts at 0. If there are no exact or near-exact
+        matches, a looser approximate match will be used, again favouring
+        matches with nearby index numbers. Returns true if the match succeeded.
 
         """
         col_m = self.get_managed_color()
@@ -819,23 +819,35 @@ class _PaletteGridLayout (ColorAdjusterWidget):
             search_order = xrange(len(self._palette))
         bestmatch_i = None
         bestmatch_d = None
+        is_approx = True
         for i in search_order:
             col = self._palette[i]
             if col is None:
                 continue
-            # Closest exact match by index distance (according to the
-            # search_order)
-            if col == col_m:
-                self.set_current_index(i)
-                return True
+            # Closest exact or near-exact match by index distance (according to
+            # the search_order). Considering near-exact matches as equivalent
+            # to exact matches improves the feel of PaletteNext and
+            # PalettePrev.
             d = color_distance(col_m, col)
+            if col == col_m or d < 0.06:
+                # Measuring over a blend into solid equiluminant 0-chroma
+                # grey for the orange #DA5D2E with an opaque but feathered
+                # brush made huge, and picking just inside the point where the
+                # palette widget begins to call it approximate:
+                #
+                # 0.05 is a difference only discernible (to me) by tilting LCD
+                # 0.066 to 0.075 appears slightly greyer for large areas
+                # 0.1 and above is very clearly distinct
+                bestmatch_i = i
+                is_approx = False
+                break
             if bestmatch_d is None or d < bestmatch_d:
                 bestmatch_i = i
                 bestmatch_d = d
-        # If there are no exact matches, choose the most similar colour
-        # anywhere in the palette.
+        # If there are no exact or near-exact matches, choose the most similar
+        # colour anywhere in the palette.
         if bestmatch_i is not None:
-            self.set_current_index(bestmatch_i, True)
+            self.set_current_index(bestmatch_i, is_approx)
             return True
         return False
 
