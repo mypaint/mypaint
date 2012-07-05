@@ -1046,8 +1046,12 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         x -= dx
         y -= dy
         s_wd = s_ht = self._swatch_size
-        r = clamp(int(y // s_ht), 0, self._rows-1)
-        c = clamp(int(x // s_wd), 0, self._columns-1)
+        r = int(y // s_ht)
+        c = int(x // s_wd)
+        if r < 0 or r >= self._rows:
+            return None
+        if c < 0 or c >= self._columns:
+            return None
         i = r*self._columns + c
         if i >= len(self._palette):
             return None
@@ -1062,19 +1066,30 @@ class _PaletteGridLayout (ColorAdjusterWidget):
             return False
         action = None
         source_widget = context.get_source_widget()
+
+        # Assume the target is not an empty swatch for now.
         if source_widget is self:
-            # Only permit moves when dragging within the same widget
             action = gdk.ACTION_MOVE
         else:
-            # A drag from some other widget copies colours
             action = gdk.ACTION_COPY
-        context.drag_status(action, t)
 
-        # Highlight the target if over a colour cell
+        # Update the insertion marker
         i = self.get_index_at_pos(x, y)
-        if i is not None:
-            self._drag_insertion_index = i
+        if i != self._drag_insertion_index:
             self.queue_draw()
+        self._drag_insertion_index = i
+
+        # Dragging around inside the widget allows more feedback
+        if self is source_widget:
+            if i is None:
+                action = gdk.ACTION_DEFAULT  # it'll be ignored
+            else:
+                if self._palette.get_color(i) is None:
+                    # Empty swatch, convert moves to copies
+                    action = gdk.ACTION_COPY
+
+        # Cursor and status update
+        context.drag_status(action, t)
 
 
     def _drag_data_received_cb(self, widget, context, x, y,
@@ -1086,19 +1101,15 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         source_widget = context.get_source_widget()
 
         if self is source_widget:
-            # Always a move
-            assert context.action == gdk.ACTION_MOVE
+            # Move/copy
             assert self._current_index is not None
             self._palette.move(self._current_index, target_index)
         else:
-            # Dragging from other widgets adds the colour, always
-            assert context.action == gdk.ACTION_COPY
             if target_index is None:
-                # Append
+                # Append if the drop wasn't over a swatch
                 target_index = len(self._palette)
             else:
-                # Insert
-                # When inserting, replace empty targets
+                # Insert before populated swatches, or overwrite empties
                 if self._palette.get_color(target_index) is None:
                     self._palette.pop(target_index)
             self._palette.insert(target_index, color)
