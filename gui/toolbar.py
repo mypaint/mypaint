@@ -23,6 +23,7 @@ import stock
 import dropdownpanel
 import widgets
 from colors import RGBColor, ColorAdjuster, HSVTriangle
+from colors import PreviousCurrentColorAdjuster, ColorPickerButton
 
 FRAMEWORK_XML = 'gui/toolbar.xml'
 MERGEABLE_XML = [
@@ -100,7 +101,8 @@ class ToolbarManager:
     def init_proxies(self):
         for action in self.item_actions:
             for p in action.get_proxies():
-                p.set_app(self.app)
+                if hasattr(p, "set_app"):
+                    p.set_app(self.app)
         # Merge in UI pieces based on the user's saved preferences
         for action in self.settings_actions:
             name = action.get_property("name")
@@ -276,20 +278,18 @@ class ColorDropdownToolItem (gtk.ToolItem):
         section_table.set_border_width(widgets.SPACING)
         section_frame.add(section_table)
 
-        hsv_widget = HSVTriangle(details=False)
+        hsv_widget = HSVTriangle()
         hsv_widget.set_size_request(175, 175)
         hsv_widget.set_color_manager(app.brush_color_manager)
         section_table.attach(hsv_widget, 0, 1, 0, 1)
 
-        def is_preview_hbox(w):
-            return isinstance(w, gtk.HBox) and isinstance(w.parent, gtk.VBox)
-        preview_hbox, = widgets.find_widgets(hsv_widget, is_preview_hbox)
-        preview_hbox.parent.remove(preview_hbox)
-
-        def is_color_picker(w):
-            return isinstance(w, gtk.Button)
-        color_picker, = widgets.find_widgets(preview_hbox, is_color_picker)
-        color_picker.connect("clicked", hide_panel_idle_cb)
+        preview_hbox = gtk.HBox()
+        color_picker = ColorPickerButton()
+        preview_adj = PreviousCurrentColorAdjuster()
+        preview_adj.set_color_manager(app.brush_color_manager)
+        color_picker.set_color_manager(app.brush_color_manager)
+        preview_hbox.pack_start(color_picker, False, False)
+        preview_hbox.pack_start(preview_adj, True, True)
 
         side_vbox = gtk.VBox()
         side_vbox.set_spacing(widgets.SPACING_TIGHT)

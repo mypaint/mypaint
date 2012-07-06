@@ -10,8 +10,8 @@
 """Colour manipulation submodule.
 """
 
-from adjbases import ColorManager, ColorAdjuster
-from combined import CombinedColorAdjuster
+from adjbases import ColorManager, ColorAdjuster, PreviousCurrentColorAdjuster
+from combined import CombinedColorAdjuster, ColorPickerButton
 from hsvtriangle import HSVTriangle
 from uicolor import RGBColor, HSVColor, HCYColor
 
