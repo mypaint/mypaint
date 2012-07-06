@@ -32,7 +32,7 @@ from uimisc import borderless_button
 
 PREFS_PALETTE_DICT_KEY = "colors.palette"
 DATAPATH_PALETTES_SUBDIR = 'palettes'
-DEFAULT_PALETTE_FILE = 'default.gpl'
+DEFAULT_PALETTE_FILE = 'MyPaint_Default.gpl'
 
 
 # Editor ideas:

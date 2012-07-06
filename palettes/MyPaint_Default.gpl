@@ -1,7 +1,8 @@
 GIMP Palette
-Name: mypaint-default
+Name: MyPaint Default
 Columns: 7
 # v2.0 - 06-2012, Deevad
+# CC0, https://creativecommons.org/publicdomain/zero/1.0/
 
 # --- Grey shade ---
   0   0   0	Black

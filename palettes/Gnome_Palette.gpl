@@ -1,0 +1,53 @@
+GIMP Palette
+Name: GNOME Icon Palette
+Columns: 4
+# From the Inkscape distribution
+#
+234 232 227    Basic 3D hilight
+186 181 171    Basic 3D medium
+128 125 116    Basic 3D dark
+86 82 72    Basic 3D shadow
+197 210 200    Green hilight
+131 166 127    Green medium
+93 117 85    Green dark
+68 86 50    Green shadow
+224 182 175    Red hilight
+193 102 90    Red medium
+136 70 49    Red dark
+102 56 34    Red shadow
+173 167 200    Purple hilight
+136 127 163    Purple medium
+98 91 129    Purple dark
+73 64 102    Purple shadow
+157 184 210    Blue hilight
+117 144 174    Blue medium
+75 105 131    Blue dark
+49 78 108    Blue shadow
+239 224 205    Face/Skin hilight
+224 195 158    Face/Skin medium
+179 145 105    Face/Skin dark
+130 102 71    Face/Skin shadow
+223 66 30    Accent Red
+153 0 0    Accent Red dark
+238 214 128    Accent yellow
+209 148 12    Accent yellow dark
+70 160 70    Accent green
+38 119 38    Accent green dark
+255 255 255    White
+0 0 0    Black
+186 186 186    light grey
+130 130 130    dark grey
+130 102 71    Bez nazvu
+179 145 105    calendar
+222 201 149    tistak
+0 0 0    __NONE__
+0 0 0    __NONE__
+0 0 0    __NONE__
+0 0 0    __NONE__
+110 158 110    evo todo
+149 146 169    evo contacts
+185 180 170    evo calendar
+196 117 126    evo summary
+235 177 61    evo mailer
+157 184 210    Untitled
+246 178 118    telova

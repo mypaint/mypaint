@@ -20,3 +20,20 @@
   Glade distribution itself. They are licensed under the "GNU General Public
   License as published by the Free Software Foundation; version 2 dated June,
   1991".
+
+* The brushes and their icons from Set #2 are by David Revoy, and are released
+  as cc0/public domain: https://creativecommons.org/publicdomain/zero/1.0/
+
+* The default palette is by David Revoy, and is released as cc0/public domain:
+  https://creativecommons.org/publicdomain/zero/1.0/
+
+* Some palettes are taken from the GIMP distribution.
+  These palettes are Copyright (C) 1995 Spencer Kimball and Peter Mattis, and
+  are distributed under the terms of the GNU GPL, Version 2 or later -- see
+  the 'COPYING' file in this directory for details.
+
+* Some palettes are taken from the Inkscape distribution.
+  These palettes are copyright 2009 the Inkscape Developers, and are
+  distributed under the terms of the GNU GENERAL PUBLIC LICENSE Version 2 --
+  see the 'COPYING' file in this directory for details.
+

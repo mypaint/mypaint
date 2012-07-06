@@ -1,0 +1,11 @@
+GIMP Palette
+Name: Classic 4
+Columns: 4
+# Four classic figure painting colours; pigment approximations.
+# Andrew Chadwick 2012-07-06, CC0
+# https://creativecommons.org/publicdomain/zero/1.0/
+#
+245 250 244    Titanium white
+204 123 34    Ochre
+195 37 8    Vermillion
+24 29 32    Bone black
