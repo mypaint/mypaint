@@ -187,7 +187,8 @@ class BrushGroupsList(gtk.VBox):
                 # (no real problem, this is only when deleting/renaming groups)
                 del self.group_widgets[group]
 
-        self.foreach(self.remove, None)
+        for child in list(self.get_children()):
+            self.remove(child)
 
         for group in self.bm.active_groups:
             if group in self.group_widgets:
