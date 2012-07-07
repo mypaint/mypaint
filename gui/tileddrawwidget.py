@@ -268,12 +268,10 @@ class CanvasEventBox(gtk.EventBox):
 
 class DragHandler(object):
     """Handle drag logic and cursor updates."""
-    
+
     CANNOT_DRAW_CURSOR = gdk.Cursor(gdk.CIRCLE)
 
-    
     def __init__(self, doc, widget):
-        
         self.doc = doc
         self.widget = widget
         self.drag_op = None
@@ -292,7 +290,6 @@ class DragHandler(object):
         if self.drag_op:
             self.drag_op.on_update(dx, dy, x, y)
             return True
-            
         return False
 
     def start_drag(self, drag_op, modifier):
@@ -662,7 +659,7 @@ class CanvasRenderer(gtk.DrawingArea):
         return True
 
     def expose_cb(self, widget, event):
-        
+
         if self.snapshot_pixmap:
             gc = self.get_style().fg_gc[self.get_state()]
             area = event.area
@@ -672,9 +669,9 @@ class CanvasRenderer(gtk.DrawingArea):
 
             cr = self.window.cairo_create()
 
-            # actually this is only neccessary if we are not answering an expose event
-            cr.rectangle(*device_bbox)
-            cr.clip()
+            ## actually this is only neccessary if we are not answering an expose event
+            #cr.rectangle(*device_bbox)
+            #cr.clip()
 
             self.repaint(cr, event.area)
         return True
@@ -727,7 +724,7 @@ class CanvasRenderer(gtk.DrawingArea):
             m[2] = -m[2]
             matrix = cairo.Matrix(*m)
 
-        assert not matrix.invert()
+        #assert not matrix.invert()
         return matrix
 
     def is_translation_only(self):
@@ -746,7 +743,7 @@ class CanvasRenderer(gtk.DrawingArea):
         return layers
 
     def repaint(self, cr, device_bbox=None):
-        surface, sparse, mipmap_level, gdk_clip_region = self.render_prepare(cr, device_bbox)
+        cr, surface, sparse, mipmap_level, gdk_clip_region = self.render_prepare(cr, device_bbox)
         self.render_execute(cr, surface, sparse, mipmap_level, gdk_clip_region)
         # Model coordinate space:
         cr.restore()  # CONTEXT2<<<
@@ -920,8 +917,8 @@ class CanvasRenderer(gtk.DrawingArea):
             cr.paint()
 
     def scroll(self, dx, dy):
-        #self.translation_x -= dx
-        #self.translation_y -= dy
+        self.translation_x -= dx
+        self.translation_y -= dy
         if False:
             # This speeds things up nicely when scrolling is already
             # fast, but produces temporary artefacts and an
