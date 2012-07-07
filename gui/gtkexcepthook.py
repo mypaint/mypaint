@@ -23,6 +23,7 @@ from gettext import gettext as _
 
 import pygtkcompat
 import gtk
+import pango
 
 # Function that will be called when the user presses "Quit"
 # Return True to confirm quit, False to cancel
@@ -117,16 +118,15 @@ def _info (exctyp, value, tb):
     if exception_dialog_active:
         return
 
-    if not pygtkcompat.USE_GTK3:
-        gtk.gdk.pointer_ungrab()
-        gtk.gdk.keyboard_ungrab()
+    gtk.gdk.pointer_ungrab(gtk.gdk.CURRENT_TIME)
+    gtk.gdk.keyboard_ungrab(gtk.gdk.CURRENT_TIME)
 
     exception_dialog_active = True
     # Create the dialog
     dialog = gtk.MessageDialog (parent=None, flags=0, type=gtk.MESSAGE_WARNING, buttons=gtk.BUTTONS_NONE)
     dialog.set_title (_("Bug Detected"))
-    if gtk.check_version (2, 4, 0) is not None:
-        dialog.set_has_separator (False)
+    #if gtk.check_version (2, 4, 0) is not None:
+    #    dialog.set_has_separator (False)
 
     primary = _("<big><b>A programming error has been detected.</b></big>")
     secondary = _("It probably isn't fatal, but the details should be reported to the developers nonetheless.")
@@ -152,7 +152,8 @@ def _info (exctyp, value, tb):
             dialog.set_resizable(True)
         else:
             dialog.set_resizable(False)
-    details_expander = gtk.Expander(_("Details..."))
+    details_expander = gtk.Expander()
+    details_expander.set_label(_("Details..."))
     details_expander.connect("notify::expanded", expander_cb)
 
     textview = gtk.TextView(); textview.show()
@@ -216,3 +217,20 @@ original_excepthook = sys.excepthook
 sys.excepthook = _info
 exception_dialog_active = False
 
+
+
+if __name__ == '__main__':
+    import sys, os
+    def _test_button_clicked_cb(*a):
+        class _TestException (Exception):
+            pass
+        raise _TestException, "That was supposed to happen."
+    win = gtk.Window()
+    win.set_size_request(200, 150)
+    win.set_title(os.path.basename(sys.argv[0]))
+    btn = gtk.Button("Break it")
+    btn.connect("clicked", _test_button_clicked_cb)
+    win.add(btn)
+    win.connect("destroy", lambda *a: gtk.main_quit())
+    win.show_all()
+    gtk.main()
