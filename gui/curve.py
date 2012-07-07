@@ -40,7 +40,7 @@ class CurveWidget(gtk.DrawingArea):
         self.magnetic = magnetic
 
         if pygtkcompat.USE_GTK3:
-            pass #FIXME: implement
+            self.connect("draw", self.draw_cb)
         else:
             self.connect("expose-event", self.expose_cb)
 
@@ -57,18 +57,22 @@ class CurveWidget(gtk.DrawingArea):
         self.graypoint = None
 
     def eventpoint(self, event_x, event_y):
-        # FIXME: very ugly; and code duplication, see expose_cb
-        width, height = self.window.get_size()
-        width  -= 2*RADIUS
-        height -= 2*RADIUS
-        width  = width / 4 * 4
-        height = height / 4 * 4
+        width, height = self.get_display_area()
         x, y = event_x, event_y
         x -= RADIUS
         y -= RADIUS
         x = float(x) / width
         y = float(y) / height
         return (x, y)
+
+    def get_display_area(self):
+        alloc = self.get_allocation()
+        width, height = alloc.width, alloc.height
+        width  -= 2*RADIUS
+        height -= 2*RADIUS
+        width  = width / 4 * 4
+        height = height / 4 * 4
+        return width, height
 
     def set_point (self, index, value):
         y = value[1]
@@ -164,24 +168,22 @@ class CurveWidget(gtk.DrawingArea):
         self.queue_draw()
 
     def expose_cb(self, widget, event):
-        cr = self.window.cairo_create()
+        gdk_win = widget.get_window()
+        cr = gdk_win.cairo_create()
+        self.draw_cb(widget, cr)
+
+    def draw_cb(self, widget, cr):
 
         def gtk2rgb(c):
-            return (c.red_float, c.green_float, c.blue_float)
+            return [float(c)/65535 for c in (c.red, c.green, c.blue)]
 
-        state = gtk.STATE_NORMAL
-        gray  = gtk2rgb(widget.style.bg[state])
-        dark  = gtk2rgb(widget.style.dark[state])
-        black = gtk2rgb(widget.style.fg[state])
+        style = widget.get_style()
+        state = widget.get_state()
+        gray  = gtk2rgb(style.bg[state])
+        dark  = gtk2rgb(style.dark[state])
+        black = gtk2rgb(style.fg[state])
 
-        width, height = self.window.get_size()
-        cr.set_source_rgb(*gray)
-        cr.rectangle(0, 0, width, height)
-        cr.fill()
-        width  -= 2*RADIUS
-        height -= 2*RADIUS
-        width  = width / 4 * 4
-        height = height / 4 * 4
+        width, height = self.get_display_area()
         if width <= 0 or height <= 0: return
 
         # 1-pixel width, align lines with pixels
