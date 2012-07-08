@@ -279,12 +279,7 @@ class DragHandler(object):
 
     @property
     def window(self):
-
-        if pygtkcompat.USE_GTK3:
-            # FIXME: no code can rely on .window in GTK+3
-            return None
-
-        return self.widget.window
+        return self.widget.get_window()
 
     def update(self, dx, dy, x, y):
         if self.drag_op:
@@ -581,7 +576,7 @@ class CanvasRenderer(gtk.DrawingArea):
 
         self.app = app
         self.doc = document
-        
+
         self.cursor_info = None
         self.visualize_rendering = False
 
@@ -632,7 +627,7 @@ class CanvasRenderer(gtk.DrawingArea):
         self.stored_allocation = allocation
 
     def canvas_modified_cb(self, x1, y1, w, h):
-        if not pygtkcompat.USE_GTK3 and not self.window:
+        if not self.get_window():
             return
 
         if w == 0 and h == 0:
@@ -743,8 +738,8 @@ class CanvasRenderer(gtk.DrawingArea):
         return layers
 
     def repaint(self, cr, device_bbox=None):
-        cr, surface, sparse, mipmap_level, gdk_clip_region = self.render_prepare(cr, device_bbox)
-        self.render_execute(cr, surface, sparse, mipmap_level, gdk_clip_region)
+        cr, surface, sparse, mipmap_level, clip_region = self.render_prepare(cr, device_bbox)
+        self.render_execute(cr, surface, sparse, mipmap_level, clip_region)
         # Model coordinate space:
         cr.restore()  # CONTEXT2<<<
         for overlay in self.model_overlays:
@@ -767,12 +762,40 @@ class CanvasRenderer(gtk.DrawingArea):
 
         x, y, w, h = device_bbox
 
+        # Get the area which needs to be updated, in device coordinates, and
+        # determine whether the render is "sparse", [TODO: define what this
+        # means]
+
+        cx, cy = x+w/2, y+h/2
         if pygtkcompat.USE_GTK3:
-            gdk_clip_region = None
-            sparse = False
+            # As of 2012-07-08, Ubuntu Precise (LTS, unfortunately) and Debian
+            # unstable(!) use python-cairo 1.8.8, which is too old to support
+            # the cairo.Region return from Gdk.Window.get_clip_region() we
+            # really need. They'll be important to support for a while, so we
+            # have to use an inefficient workaround using the complete clip
+            # rectangle for the update.
+            #
+            # http://stackoverflow.com/questions/6133622/
+            # http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=653588
+            # http://packages.ubuntu.com/python-cairo
+            # http://packages.debian.org/python-cairo
+
+            clip_exists, rect = gdk.cairo_get_clip_rectangle(cr)
+            if clip_exists:
+                # It's a wrapped cairo_rectangle_int_t, CairoRectangleInt
+                area = (rect.x, rect.y, rect.width, rect.height)
+                clip_region = area
+                sparse = (cx < rect.x or cx > rect.x+rect.width
+                          or cy < rect.y or cy > rect.y+rect.height)
+            else:
+                clip_region = None
+                sparse = False
+
+            # clip_region = self.get_window().get_clip_region()
+            # sparse = not clip_region.contains_point(cx, cy)
         else:
-            gdk_clip_region = self.window.get_clip_region()
-            sparse = not gdk_clip_region.point_in(x+w/2, y+h/2)
+            clip_region = self.window.get_clip_region()
+            sparse = not clip_region.point_in(cx, cy)
 
         # fill it all white, though not required in the most common case
         if self.visualize_rendering:
@@ -822,9 +845,9 @@ class CanvasRenderer(gtk.DrawingArea):
 
         del x1, y1, x2, y2, w, h
 
-        return cr, surface, sparse, mipmap_level, gdk_clip_region
+        return cr, surface, sparse, mipmap_level, clip_region
 
-    def render_execute(self, cr, surface, sparse, mipmap_level, gdk_clip_region):
+    def render_execute(self, cr, surface, sparse, mipmap_level, clip_region):
         translation_only = self.is_translation_only()
         model_bbox = surface.x, surface.y, surface.w, surface.h
 
@@ -866,22 +889,36 @@ class CanvasRenderer(gtk.DrawingArea):
                     # same problem as above: m needs to know one extra pixel for interpolation
                     corners = [(tx*N-1, ty*N-1), ((tx+1)*N, ty*N-1), (tx*N-1, (ty+1)*N), ((tx+1)*N, (ty+1)*N)]
                     corners = [cr.user_to_device(x_, y_) for (x_, y_) in corners]
-                    bbox = gdk.Rectangle(*helpers.rotated_rectangle_bbox(corners))
+                    bbox = helpers.rotated_rectangle_bbox(corners)
 
-                if gdk_clip_region.rect_in(bbox) == gdk.OVERLAP_RECTANGLE_OUT:
-                    continue
+                if pygtkcompat.USE_GTK3:
+                    c_r = gdk.Rectangle()
+                    c_r.x, c_r.y, c_r.width, c_r.height = clip_region
+                    bb_r = gdk.Rectangle()
+                    bb_r.x, bb_r.y, bb_r.width, bb_r.height = bbox
+                    intersects, isect_r = gdk.rectangle_intersect(bb_r, c_r)
+                    if not intersects:
+                        continue
+                else:
+                    if clip_region.rect_in(bbox) == gdk.OVERLAP_RECTANGLE_OUT:
+                        continue
 
 
             dst = surface.get_tile_memory(tx, ty)
             self.doc.blit_tile_into(dst, False, tx, ty, mipmap_level, layers, background)
 
-        if translation_only:
+        if translation_only and not pygtkcompat.USE_GTK3:
             # not sure why, but using gdk directly is notably faster than the same via cairo
             x, y = cr.user_to_device(surface.x, surface.y)
-            self.window.draw_pixbuf(None, surface.pixbuf, 0, 0, int(x), int(y), dither=gdk.RGB_DITHER_MAX)
+            self.window.draw_pixbuf(None, surface.pixbuf, 0, 0, int(x), int(y),
+                                    dither=gdk.RGB_DITHER_MAX)
         else:
             #print 'Position (screen coordinates):', cr.user_to_device(surface.x, surface.y)
-            cr.set_source_pixbuf(surface.pixbuf, round(surface.x), round(surface.y))
+            if pygtkcompat.USE_GTK3:
+                gdk.cairo_set_source_pixbuf(cr, surface.pixbuf,
+                                            round(surface.x), round(surface.y))
+            else:
+                cr.set_source_pixbuf(surface.pixbuf, round(surface.x), round(surface.y))
             pattern = cr.get_source()
 
             # We could set interpolation mode here (eg nearest neighbour)
@@ -958,6 +995,7 @@ class CanvasRenderer(gtk.DrawingArea):
 if __name__ == '__main__':
     tdw = TiledDrawWidget()
     tdw.set_size_request(640, 480)
+    tdw.renderer.visualize_rendering = True
     win = gtk.Window()
     win.set_title("tdw test")
     win.connect("destroy", lambda *a: gtk.main_quit())

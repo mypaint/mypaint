@@ -1,51 +1,55 @@
-// hack needed as long as pygtk returns an old Numeric array instead of a NumPy one
-// http://bugzilla.gnome.org/show_bug.cgi?id=397544
+// Hacks and workarounds bridging the gap between GdkPixbuf & numpy.
+// Copyright (C) 1998-2003  James Henstridge
+// Copyright (C) 2008-2012  Martin Renold
+//
+// This program is free software; you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by the Free
+// Software Foundation; either version 2 of the License, or (at your option)
+// any later version.
+//
+// This program is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+// FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+// more details.
+//
+// You should have received a copy of the GNU General Public License along with
+// this program; if not, write to the Free Software Foundation, Inc., 51
+// Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
 #include "Python.h"
 
-typedef struct {
-  PyObject_HEAD
-  char *data;
-  int nd;
-  int *dimensions, *strides;
-  PyObject *base;
-  void *descr;
-  int flags;
-  PyObject *weakreflist;
-} OldNumeric_PyArrayObject;
+// Should be fine with both gtk2 (the default), and gtk3.
+#include <pygobject.h>
+#include <gtk/gtk.h>
 
-PyObject * gdkpixbuf_numeric2numpy(PyObject * gdk_pixbuf_pixels_array)
+// gdk_pixbuf_get_pixels_array() isn't supported in GI-era Python GTK: it was
+// always a pygtk convenience function.
+
+/*
+ * Near-verbatim lift of gdk_pixbuf_get_pixels_array() from gdkpixbuf.override
+ *
+ * Originally written by James Henstridge, and published under the terms of the
+ * GNU Lesser General Public License, version 2.1.
+ */
+PyObject *
+gdkpixbuf_get_pixels_array(PyObject *pixbuf_pyobject)
 {
-  // in case the bug is fixed in pygtk
-  if (PyArray_Check(gdk_pixbuf_pixels_array)) {
-    Py_INCREF(gdk_pixbuf_pixels_array);
-    return gdk_pixbuf_pixels_array;
-  }
-  // we should type-check our argument, but I guess the assertions below will suffice
+    GdkPixbuf *pixbuf = GDK_PIXBUF(((PyGObject *)pixbuf_pyobject)->obj);
+    PyArrayObject *array;
+    int dims[3] = { 0, 0, 3 };
 
-  OldNumeric_PyArrayObject * arr = (OldNumeric_PyArrayObject*)gdk_pixbuf_pixels_array;
-  assert(arr->nd == 3);
+    dims[0] = gdk_pixbuf_get_height(pixbuf);
+    dims[1] = gdk_pixbuf_get_width(pixbuf);
+    if (gdk_pixbuf_get_has_alpha(pixbuf))
+        dims[2] = 4;
+    array = (PyArrayObject *)PyArray_FromDimsAndData(3, dims, PyArray_UBYTE,
+                                        (char *)gdk_pixbuf_get_pixels(pixbuf));
+    if (array == NULL)
+        return NULL;
 
-  npy_intp dims[3];
-  dims[0] = arr->dimensions[0];
-  dims[1] = arr->dimensions[1];
-  dims[2] = arr->dimensions[2];
-
-  PyArrayObject * result = (PyArrayObject *)PyArray_SimpleNewFromData(arr->nd,
-                                                                      dims, 
-                                                                      PyArray_UBYTE,
-                                                                      arr->data);
-
-  if (result == NULL) return NULL;
-
-  // pygtk sets only strides[0]
-  if (result->strides[0] != arr->strides[0]) {
-    result->strides[0] = arr->strides[0];
-    // note: http://bugzilla.gnome.org/show_bug.cgi?id=447388
-    result->flags &= ~NPY_CONTIGUOUS;
-  }
-
-  Py_INCREF(gdk_pixbuf_pixels_array);
-  result->base = gdk_pixbuf_pixels_array;
-
-  return PyArray_Return(result);
+    array->strides[0] = gdk_pixbuf_get_rowstride(pixbuf);
+    /* the array holds a ref to the pixbuf pixels through this wrapper*/
+    Py_INCREF(pixbuf_pyobject);
+    array->base = (PyObject *)pixbuf_pyobject;
+    return PyArray_Return(array);
 }

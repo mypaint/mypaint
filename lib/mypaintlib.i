@@ -30,7 +30,7 @@ typedef struct { int x, y, w, h; } Rect;
 %include "fastpng.hpp"
 
 //from "gdkpixbuf2numpy.hpp"
-PyObject * gdkpixbuf_numeric2numpy(PyObject * gdk_pixbuf_pixels_array);
+PyObject * gdkpixbuf_get_pixels_array(PyObject *pixbuf_pyobject);
 
 %init %{
 import_array();

@@ -114,16 +114,17 @@ def clamp(x, lo, hi):
     return x
 
 def gdkpixbuf2numpy(pixbuf):
-
-    if pygtkcompat.USE_GTK3:
-        #FIXME: implement based on gdk_pixbuf_get_pixels
-        return numpy.zeros((0, 0, 0))
-
-    else:
-        # workaround for pygtk still returning Numeric instead of numpy arrays
-        # (see gdkpixbuf2numpy.hpp)
-        arr = pixbuf.get_pixels_array()
-        return mypaintlib.gdkpixbuf_numeric2numpy(arr)
+    # gdk.Pixbuf.get_pixels_array() is no longer wrapped; use our own
+    # implementation.
+    return mypaintlib.gdkpixbuf_get_pixels_array(pixbuf)
+    ## Can't do the following - the created generated array is immutable
+    #w, h = pixbuf.get_width(), pixbuf.get_height()
+    #assert pixbuf.get_bits_per_sample() == 8
+    #assert pixbuf.get_has_alpha()
+    #assert pixbuf.get_n_channels() == 4
+    #arr = numpy.frombuffer(pixbuf.get_pixels(), dtype=numpy.uint8)
+    #arr = arr.reshape(h, w, 4)
+    #return arr
 
 def freedesktop_thumbnail(filename, pixbuf=None):
     """

@@ -44,7 +44,10 @@ class Surface:
         self.epixbuf = pygtkcompat.gdk.pixbuf.new(gdk.COLORSPACE_RGB, True, 8, self.ew, self.eh)
         dx = x-self.ex
         dy = y-self.ey
-        self.pixbuf  = self.epixbuf.subpixbuf(dx, dy, w, h)
+        if pygtkcompat.USE_GTK3:
+            self.pixbuf = self.epixbuf.new_subpixbuf(dx, dy, w, h)
+        else:
+            self.pixbuf = self.epixbuf.subpixbuf(dx, dy, w, h)
 
         assert self.ew <= w + 2*N-2
         assert self.eh <= h + 2*N-2
@@ -52,6 +55,7 @@ class Surface:
         self.epixbuf.fill(0x00000000) # keep undefined regions transparent
 
         arr = helpers.gdkpixbuf2numpy(self.epixbuf)
+        assert len(arr) > 0
 
         discard_transparent = False
 
