@@ -1410,7 +1410,7 @@ class Sidebar (gtk.EventBox):
     """Vertical sidebar containing reorderable tools which can be snapped out.
     """
 
-    MIN_SIZE = 150
+    MIN_SIZE = 230
 
     def __init__(self, layout_manager):
         gtk.EventBox.__init__(self)

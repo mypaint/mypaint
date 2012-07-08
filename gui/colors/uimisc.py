@@ -17,8 +17,8 @@ import gtk
 
 # Most pages in the combined adjuster are split into a primary area containing
 # two of the channels, and a secondary area to its left containing the third.
-PRIMARY_ADJUSTERS_MIN_WIDTH = 150
-PRIMARY_ADJUSTERS_MIN_HEIGHT = 150
+PRIMARY_ADJUSTERS_MIN_WIDTH = 100
+PRIMARY_ADJUSTERS_MIN_HEIGHT = 100
 
 # Slider minimum dimensions
 SLIDER_MIN_WIDTH = 18
