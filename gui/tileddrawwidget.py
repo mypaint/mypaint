@@ -618,13 +618,16 @@ class CanvasRenderer(gtk.DrawingArea):
                 self.snapshot_pixmap = self.get_snapshot()
         self.is_sensitive = sensitive
 
-    def size_allocate_cb(self, widget, allocation):
-        old_alloc = getattr(self, 'stored_allocation', allocation)
-        if old_alloc != allocation:
-            dx = allocation.x - old_alloc.x
-            dy = allocation.y - old_alloc.y
+    def size_allocate_cb(self, widget, alloc):
+        # Allowance for changes like toolbars or other UI elements appearing
+        # or disappearing on the left (within the same gdk window)
+        new_pos = alloc.x, alloc.y
+        old_pos = getattr(self, '_stored_pos', new_pos)
+        if old_pos != new_pos:
+            dx = new_pos[0] - old_pos[0]
+            dy = new_pos[1] - old_pos[1]
             self.scroll(dx, dy)
-        self.stored_allocation = allocation
+        self._stored_pos = new_pos
 
     def canvas_modified_cb(self, x1, y1, w, h):
         if not self.get_window():
