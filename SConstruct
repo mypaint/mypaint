@@ -37,7 +37,7 @@ if sys.platform == "win32":
 opts.Update(env)
 
 env.Append(CXXFLAGS=' -Wall -Wno-sign-compare -Wno-write-strings')
-env.Append(CCFLAGS='-Wall -g')
+env.Append(CCFLAGS='-Wall')
 env.Append(CFLAGS='-std=c99')
 
 # Define strdup() in string.h under glibc >= 2.10 (POSIX.1-2008)
@@ -49,7 +49,7 @@ if env.get('CPPDEFINES'):
 
 if env['debug']:
     env.Append(CPPDEFINES='HEAVY_DEBUG')
-    env.Append(CCFLAGS='-O0', LINKFLAGS='-O0')
+    env.Append(CCFLAGS='-O0 -g', LINKFLAGS='-O0')
 
 #env.Append(CCFLAGS='-fno-inline', LINKFLAGS='-fno-inline')
 
