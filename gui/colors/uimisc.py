@@ -44,7 +44,10 @@ def borderless_button(stock_id=None,
     button.set_relief(gtk.RELIEF_NONE)
     button.set_can_default(False)
     button.set_can_focus(False)
-    button.set_tooltip_text(tooltip)
+    has_tooltip = tooltip is not None
+    if has_tooltip:
+        button.set_tooltip_text(tooltip)
+    button.set_has_tooltip(has_tooltip)
     return button
 
 

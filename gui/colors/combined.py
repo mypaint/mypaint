@@ -10,6 +10,7 @@
 """A tabbed, multi-page colour adjuster.
 """
 
+import gui.pygtkcompat
 
 import gtk
 from gtk import gdk

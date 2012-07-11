@@ -416,7 +416,7 @@ class PaletteView (ColorAdjuster, gtk.ScrolledWindow):
         ColorAdjuster.set_color_manager(self, mgr)
 
     def __size_alloc_cb(self, widget, alloc):
-        size = tuple(alloc)
+        size = alloc.width, alloc.height
         if self.__size != size:
             self.__size = size
             self.grid._set_parent_size(alloc.width, alloc.height)
@@ -472,10 +472,20 @@ class _PalettePreview (gtk.DrawingArea):
 
     def __init__(self):
         gtk.DrawingArea.__init__(self)
-        self.connect("expose-event", self._expose_event_cb)
+        try:
+            self.connect("draw", self._draw_cb)
+        except TypeError:
+            self.connect("expose-event", self._expose_event_cb)
         self.set_size_request(128, 256)
 
     def _expose_event_cb(self, widget, event):
+        gdk_window = self.get_window()
+        if gdk_window is None:
+            return
+        cr = gdk_window.cairo_create()
+        self._draw_cb(widget, cr)
+
+    def _draw_cb(self, widget, cr):
         if self._palette is None:
             return
         alloc = widget.get_allocation()
@@ -511,7 +521,6 @@ class _PalettePreview (gtk.DrawingArea):
         style = self.get_style()
         bg_color = RGBColor.new_from_gdk_color(style.bg[state])
 
-        cr = widget.get_window().cairo_create()
         self._palette.render(cr, rows=nrows, columns=ncolumns,
                              swatch_size=s, bg_color=bg_color,
                              offset_x=dx, offset_y=dy,
@@ -643,10 +652,12 @@ class _PaletteGridLayout (ColorAdjusterWidget):
             if self._tooltip_index not in (-1, -2):
                 # First such event: reset the tooltip.
                 self._tooltip_index = -1
-                self.set_tooltip_text(None)
+                self.set_has_tooltip(False)
+                self.set_tooltip_text("")
             elif self._tooltip_index != -2:
                 # Second event over a non-colour: set the tooltip text.
                 self._tooltip_index = -2
+                self.set_has_tooltip(True)
                 self.set_tooltip_text(self.tooltip_text)
         elif self._tooltip_index != i:
             # Mouse pointer has moved to a different colour, or away
@@ -654,7 +665,8 @@ class _PaletteGridLayout (ColorAdjusterWidget):
             if self._tooltip_index is not None:
                 # First event for this i: reset the tooltip.
                 self._tooltip_index = None
-                self.set_tooltip_text(None)
+                self.set_has_tooltip(False)
+                self.set_tooltip_text("")
             else:
                 # Second event for this i: set the desired tooltip text.
                 self._tooltip_index = i
@@ -664,6 +676,7 @@ class _PaletteGridLayout (ColorAdjusterWidget):
                     tip = _("Empty palette slot (drag a color here)")
                 elif tip is None or tip.strip() == "":
                     tip = self.tooltip_text   # would None be nicer?
+                self.set_has_tooltip(True)
                 self.set_tooltip_text(tip)
         return False
 
@@ -753,6 +766,9 @@ class _PaletteGridLayout (ColorAdjusterWidget):
 
         """
         #print "DEBUG:", self._sizes
+        if len(self._sizes) == 0:
+            print "DEBUG: update_layout() called without sizes (hmm. Why?)"
+            return
         width = min([w for w,h in self._sizes])
 
         self._rows = None

@@ -28,7 +28,10 @@ class CachedBgWidgetMixin:
     def __init__(self):
         """Instantiate, binding events; call *after* `gtk.Widget.__init__()`.
         """
-        self.connect("expose-event", self.__expose_cb)
+        try:
+            self.connect("draw", self.__draw_cb)
+        except TypeError:
+            self.connect("expose-event", self.__expose_cb)
         self.connect("size-allocate", self.__size_allocate_cb)
         self.__bg = None
         self.__bg_validity = None
@@ -40,6 +43,10 @@ class CachedBgWidgetMixin:
 
 
     def __expose_cb(self, widget, event):
+        self.__draw_cb(widget, self._get_cairo_context(event))
+
+
+    def __draw_cb(self, widget, cr):
         bg_valid = self.__bg is not None
         if bg_valid:
             validity = self.get_background_validity()
@@ -49,7 +56,6 @@ class CachedBgWidgetMixin:
             self.__rerender_background()
             assert self.__bg is not None
         alloc = self.get_allocation()
-        cr = self._get_cairo_context(event)
         cr.set_source_surface(self.__bg, 0, 0)
         cr.paint()
         self.paint_foreground_cb(cr, alloc.width, alloc.height)

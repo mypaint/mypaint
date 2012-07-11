@@ -208,10 +208,8 @@ class UIColor (object):
     def new_from_gdk_color(gdk_color):
         """Construct a new `UIColor` from a `gdk.Color`.
         """
-        r = gdk_color.red_float
-        g = gdk_color.green_float
-        b = gdk_color.blue_float
-        return RGBColor(r, g, b)
+        rgb16 = (gdk_color.red, gdk_color.green, gdk_color.blue)
+        return RGBColor(*[float(c)/65535 for c in rgb16])
 
 
     def to_gdk_color(self):
