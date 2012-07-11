@@ -6,20 +6,22 @@ and GTK3. Upstream support for pygtk is going away, and we should be using the
 newer GTK anyway given our heavy reliance on fancy input devices. It would be
 nice to see some of the input-related bugs go away. The rough plan is:
 
-1. Update the Python code to support a pygtkcompat layer which permits initial
-   use of PyGI with GTK2 libs and minimal code changes.
+1. Update the Python code to support an internal pygtkcompat abstraction layer,
+   which allows us to carry on using PyGTK while we maintain GTK2 code, while
+   at the same time enabling us to port to PyGI+GTK3 via upstream's
+   pygtkcompat module.
 
 2. In this state we can flip between GTK2 and GTK3 modes with compiler flags
-   and runtime environment variables. Get the code running and flly tested
-   under real GTK3, albeit via the wrapper. New code can be merged, but it
-   must be compatible with both GTK2 and GTK3 in this state and use the old
-   module naming conventions and import semantics.
+   and runtime environment variables. Get the code running and fully tested
+   under PyGI+GTK3, albeit via pygtkcompat. New code can be merged, but it
+   must be compatible with both PyGTK-GTK2 and pygtkcompat-PyGI+GTK3 in this
+   state, using pygtk naming conventions and import blocks.
 
-3. Flip over to GTK3 only, still using pygtkcompat. New code should be written
-   for GTK3 and PyGI only.
+3. Flip over to GTK3 only, still using our abstraction layer. New code should
+   be written for PyGI+GTK3.
 
-4. As and when, rip out pygtkcompat and port individual modules to the new
-   coding conventions.
+4. As and when, rip out our pygtkcompat abstracions and/or pygtkcompat itself
+   and port individual modules to PyGI+GTK3.
 
 As of writing, phase 1 is mostly done. Phases 3 and 4 may happen in master, as
 might reasonable chunks of phase 2 if the code seems stable enough. The status
