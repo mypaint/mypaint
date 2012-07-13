@@ -179,14 +179,16 @@ class CombinedColorAdjuster (gtk.VBox, ColorAdjuster):
         palette_page = None
         page_classes = (hcywheel.HCYAdjusterPage,
                         hsvwheel.HSVAdjusterPage,
+                        palette_class,
                         hsvtriangle.HSVTrianglePage,
-                        sliders.ComponentSlidersAdjusterPage,
                         hsvcube.HSVCubePage,
-                        palette_class)
+                        sliders.ComponentSlidersAdjusterPage,
+                        )
 
         gtk.VBox.__init__(self)
         self.__adjusters = []
         nb = self.__notebook = gtk.Notebook()
+        nb.set_property("scrollable", True)
         page_index = 0
         for page_class in page_classes:
             icon_name = page_class.get_page_icon_name()
