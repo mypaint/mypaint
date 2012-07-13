@@ -22,6 +22,7 @@ else:
 opts = Variables()
 opts.Add(PathVariable('prefix', 'autotools-style installation prefix', default_prefix, validator=PathVariable.PathIsDirCreate))
 opts.Add(BoolVariable('debug', 'enable HEAVY_DEBUG and disable optimizations', False))
+opts.Add(BoolVariable('enable_profiling', 'enable debug symbols for profiling purposes (on by default)', True))
 opts.Add(BoolVariable('brushlib_only', 'only build and install brushlib/', False))
 opts.Add(BoolVariable('enable_gegl', 'enable GEGL based code in build', False))
 opts.Add(BoolVariable('enable_introspection', 'enable GObject introspection support', False))
@@ -49,7 +50,10 @@ if env.get('CPPDEFINES'):
 
 if env['debug']:
     env.Append(CPPDEFINES='HEAVY_DEBUG')
-    env.Append(CCFLAGS='-O0 -g', LINKFLAGS='-O0')
+    env.Append(CCFLAGS='-O0', LINKFLAGS='-O0')
+
+if env['enable_profiling'] or env['debug']:
+    env.Append(CCFLAGS='-g')
 
 #env.Append(CCFLAGS='-fno-inline', LINKFLAGS='-fno-inline')
 
