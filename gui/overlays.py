@@ -9,6 +9,10 @@
 """Overlays for TDWs showing information about the TDW state.
 """
 
+import pygtkcompat
+if pygtkcompat.USE_GTK3:
+    from gi.repository import PangoCairo
+
 import gtk
 from gtk import gdk
 import gobject
@@ -142,9 +146,21 @@ class ScaleOverlay (FadingOverlay):
         self.shown_scale = self.tdw.scale
         text = _("Zoom: %.01f%%") % (100*self.shown_scale)
         layout = self.tdw.create_pango_layout(text)
-        attrs = pango.AttrList()
-        attrs.insert(pango.AttrWeight(pango.WEIGHT_BOLD, 0, -1))
-        layout.set_attributes(attrs)
+
+        # Set a bold font
+        if pygtkcompat.USE_GTK3:
+            font = layout.get_font_description()
+            if font is None: # inherited from context
+                font = layout.get_context().get_font_description()
+                font = font.copy()
+            font.set_weight(pango.Weight.BOLD)
+            layout.set_font_description(font)
+        else:
+            attrs = pango.AttrList()
+            attrs.insert(pango.AttrWeight(pango.WEIGHT_BOLD, 0, -1))
+            layout.set_attributes(attrs)
+
+        # General dimensions
         alloc = self.tdw.get_allocation()
         lw, lh = layout.get_pixel_size()
 
@@ -167,7 +183,10 @@ class ScaleOverlay (FadingOverlay):
         rgba = self.text_rgba[:]
         rgba[3] *= self.alpha
         cr.set_source_rgba(*rgba)
-        cr.show_layout(layout)
+        if pygtkcompat.USE_GTK3:
+            PangoCairo.show_layout(cr, layout)
+        else:
+            cr.show_layout(layout)
 
         # Where to invalidate
         return area
