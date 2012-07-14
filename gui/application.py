@@ -362,6 +362,35 @@ class Application: # singleton
     def update_input_devices(self):
         # init extended input devices
         self.pressure_devices = []
+        modesetting = self.preferences['input.device_mode']
+        if pygtkcompat.USE_GTK3:
+            display = pygtkcompat.gdk.display_get_default()
+            device_mgr = display.get_device_manager()
+            for device in device_mgr.list_devices(gdk.DeviceType.SLAVE):
+                if device.get_source() == gdk.InputSource.KEYBOARD:
+                    continue
+                name = device.get_name().lower()
+                n_axes = device.get_n_axes()
+                if n_axes <= 0:
+                    continue
+                # TODO: may need exception voodoo, min/max checking etc. here
+                #       like the GTK2 code below.
+                for i in xrange(n_axes):
+                    use = device.get_axis_use(i)
+                    if use != gdk.AxisUse.PRESSURE:
+                        continue
+                    # Set preferred device mode
+                    mode = getattr(gdk.InputMode, modesetting.upper())
+                    if device.get_mode() != mode:
+                        print 'Setting %s mode for "%s"' \
+                          % (mode, device.get_name())
+                        device.set_mode(mode)
+                    # Record as a pressure-sensitive device
+                    self.pressure_devices.append(name)
+                    break
+            return
+
+        # GTK2/PyGTK
         for device in gdk.devices_list():
             #print device.name, device.source
 
@@ -416,7 +445,6 @@ class Application: # singleton
                         continue
 
                     self.pressure_devices.append(device.name)
-                    modesetting = self.preferences['input.device_mode']
                     mode = getattr(gdk, 'MODE_' + modesetting.upper())
                     if device.mode != mode:
                         print 'Setting %s mode for "%s"' % (modesetting, device.name)
