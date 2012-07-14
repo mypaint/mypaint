@@ -431,7 +431,15 @@ class TiledDrawWidget(gtk.VBox):
 
     @property
     def model_overlays(self):
-        return self.renderer.model_overlays        
+        return self.renderer.model_overlays
+
+    @property
+    def overlay_layer(self):
+        return self.renderer.overlay_layer
+
+    @overlay_layer.setter
+    def overlay_layer(self, l):
+        self.renderer.overlay_layer = l
 
     @property
     def device_observers(self):
