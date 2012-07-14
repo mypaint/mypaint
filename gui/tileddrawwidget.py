@@ -402,6 +402,22 @@ class TiledDrawWidget(gtk.VBox):
         self.renderer.scale = n
 
     @property
+    def zoom_min(self):
+        return self.renderer.zoom_min
+
+    @zoom_min.setter
+    def zoom_min(self, n):
+        self.renderer.zoom_min = n
+
+    @property
+    def zoom_max(self):
+        return self.renderer.zoom_max
+
+    @zoom_max.setter
+    def zoom_max(self, n):
+        self.renderer.zoom_max = n
+
+    @property
     def rotation(self):
         return self.renderer.rotation
 
