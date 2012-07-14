@@ -615,7 +615,9 @@ class CanvasRenderer(gtk.DrawingArea):
             self.snapshot_pixmap = None
         else:
             if self.snapshot_pixmap is None:
-                self.snapshot_pixmap = self.get_snapshot()
+                if not pygtkcompat.USE_GTK3:
+                    # FIXME: we'll have to come up with a better way of doing this.
+                    self.snapshot_pixmap = self.get_snapshot()
         self.is_sensitive = sensitive
 
     def size_allocate_cb(self, widget, alloc):

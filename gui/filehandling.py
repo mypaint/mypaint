@@ -209,7 +209,7 @@ class FileHandler(object):
         b = d.add_button(_("_Save as Scrap"), gtk.RESPONSE_APPLY)
         b.set_image(gtk.image_new_from_stock(gtk.STOCK_SAVE, gtk.ICON_SIZE_BUTTON))
 
-        d.set_has_separator(False)
+        # d.set_has_separator(False)
         d.set_default_response(gtk.RESPONSE_CANCEL)
         l = gtk.Label()
         l.set_markup("<b>%s</b>\n\n%s" % (question,t))
@@ -239,6 +239,9 @@ class FileHandler(object):
 
     @staticmethod
     def gtk_main_tick():
+        if pygtkcompat.USE_GTK3:
+            # FIXME: use something better
+            return
         while gtk.events_pending():
             gtk.main_iteration(False)
 

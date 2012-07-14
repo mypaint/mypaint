@@ -6,6 +6,10 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
+import gui.pygtkcompat
+if gui.pygtkcompat.USE_GTK3:
+    from gi.repository import GdkPixbuf
+
 import os, zipfile, tempfile, time, traceback
 join = os.path.join
 from cStringIO import StringIO
@@ -476,7 +480,10 @@ class Document():
 
     @staticmethod
     def _pixbuf_from_stream(fp, feedback_cb=None):
-        loader = gdk.PixbufLoader()
+        if gui.pygtkcompat.USE_GTK3:
+            loader = GdkPixbuf.PixbufLoader()
+        else:
+            loader = gdk.PixbufLoader()
         while True:
             if feedback_cb is not None:
                 feedback_cb()
