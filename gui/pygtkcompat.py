@@ -77,11 +77,19 @@ class GtkCompat(object):
         else:
             return orig_gtk.accel_map_get()
 
-    def accel_map_lookup_entry(self, key):
+    def accel_map_lookup_entry(self, accel_path):
+        # Returns "a 2-tuple containing the keyval and modifier mask
+        # corresponding to accel_path or None if not valid", like the GTK2
+        # function.
         if USE_GTK3:
-            return Gtk.AccelMap.lookup_entry(key)
+            found, accel_key = Gtk.AccelMap.get().lookup_entry(accel_path)
+            if not found:
+                return None
+            keyval = accel_key.accel_key
+            mods = accel_key.accel_mods
+            return keyval, mods
         else:
-            return orig_gtk.accel_map_lookup_entry(key)
+            return orig_gtk.accel_map_lookup_entry(accel_path)
 
     @staticmethod
     def menu_popup(menu_widget, parent_menu_shell, parent_menu_item,
