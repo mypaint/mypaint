@@ -280,15 +280,18 @@ class FileHandler(object):
         thumbnail_pixbuf = self.save_doc_to_file(filename, self.doc, export=export, **options)
         if not export:
             self.filename = os.path.abspath(filename)
-            pygtkcompat.gtk.recent_manager_get_default().add_full(helpers.filename2uri(self.filename),
-                    {
-                        'app_name': 'mypaint',
-                        'app_exec': sys.argv_unicode[0].encode('utf-8'),
-                        # todo: get mime_type
-                        'mime_type': 'application/octet-stream'
-                    }
-            )
-
+            recent_mgr = pygtkcompat.gtk.recent_manager_get_default()
+            uri = helpers.filename2uri(self.filename)
+            recent_data = dict(app_name='mypaint',
+                               app_exec=sys.argv_unicode[0].encode('utf-8'),
+                               # todo: get mime_type
+                               mime_type='application/octet-stream')
+            if pygtkcompat.USE_GTK3:
+                # No Gtk.RecentData.new() as of 3.4.2-0ubuntu0.3,
+                # nor can we set the fields of an empty one :(
+                recent_mgr.add_item(uri)
+            else:
+                recent_mgr.add_full(uri, recent_data)
         if not thumbnail_pixbuf:
             thumbnail_pixbuf = self.doc.model.render_thumbnail()
         helpers.freedesktop_thumbnail(filename, thumbnail_pixbuf)

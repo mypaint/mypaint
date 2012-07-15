@@ -189,12 +189,17 @@ def freedesktop_thumbnail(filename, pixbuf=None):
         pixbuf = get_pixbuf(filename)
 
     if pixbuf:
-        pixbuf = scale_proportionally(pixbuf, 256,256)
+        pixbuf = scale_proportionally(pixbuf, 256, 256)
         if save_thumbnail:
-            pixbuf.save(tb_filename_large, 'png', {"tEXt::Thumb::MTime" : file_mtime, "tEXt::Thumb::URI" : uri})
-            # save normal size too, in case some implementations don't bother with large thumbnails
-            pixbuf_normal = scale_proportionally(pixbuf, 128,128)
-            pixbuf_normal.save(tb_filename_normal, 'png', {"tEXt::Thumb::MTime" : file_mtime, "tEXt::Thumb::URI" : uri})
+            png_opts = {"tEXt::Thumb::MTime": file_mtime,
+                        "tEXt::Thumb::URI": uri}
+            pygtkcompat.gdk.pixbuf.save(pixbuf, tb_filename_large,
+                                        'png', **png_opts)
+            # save normal size too, in case some implementations don't
+            # bother with large thumbnails
+            pixbuf_normal = scale_proportionally(pixbuf, 128, 128)
+            pygtkcompat.gdk.pixbuf.save(pixbuf_normal, tb_filename_normal,
+                                        'png', **png_opts)
 
     return pixbuf
 

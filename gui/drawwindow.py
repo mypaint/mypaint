@@ -43,10 +43,15 @@ from overlays import LastPaintPosOverlay, ScaleOverlay
 def with_wait_cursor(func):
     """python decorator that adds a wait cursor around a function"""
     def wrapper(self, *args, **kwargs):
-        toplevels = [t for t in gtk.window_list_toplevels()
-                     if t.window is not None]
+        if pygtkcompat.USE_GTK3:
+            toplevels = gtk.Window.list_toplevels()
+        else:
+            toplevels = gtk.window_list_toplevels()
+        toplevels = [t for t in toplevels if t.get_window() is not None]
         for toplevel in toplevels:
-            toplevel.window.set_cursor(gdk.Cursor(gdk.WATCH))
+            toplevel_win = toplevel.get_window()
+            if toplevel_win is not None:
+                toplevel_win.set_cursor(gdk.Cursor(gdk.WATCH))
             toplevel.set_sensitive(False)
         self.app.doc.tdw.grab_add()
         try:
@@ -56,8 +61,9 @@ def with_wait_cursor(func):
             for toplevel in toplevels:
                 toplevel.set_sensitive(True)
                 # ... which is why we need this check:
-                if toplevel.window is not None:
-                    toplevel.window.set_cursor(None)
+                toplevel_win = toplevel.get_window()
+                if toplevel_win is not None:
+                    toplevel_win.set_cursor(None)
             self.app.doc.tdw.grab_remove()
     return wrapper
 

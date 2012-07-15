@@ -508,7 +508,8 @@ class Document():
         if w == 0 or h == 0:
             x, y, w, h = 0, 0, N, N # allow to save empty documents
         pixbuf = self.render_as_pixbuf(x, y, w, h, **kwargs)
-        pixbuf.save(filename, 'jpeg', options={'quality':str(quality)})
+        options = {"quality": str(quality)}
+        gui.pygtkcompat.gdk.pixbuf.save(pixbuf, filename, 'jpeg', **options)
 
     save_jpeg = save_jpg
 
@@ -534,7 +535,7 @@ class Document():
         def store_pixbuf(pixbuf, name):
             tmp = join(tempdir, 'tmp.png')
             t1 = time.time()
-            pixbuf.save(tmp, 'png')
+            gui.pygtkcompat.gdk.pixbuf.save(pixbuf, tmp, 'png')
             print '  %.3fs pixbuf saving %s' % (time.time() - t1, name)
             z.write(tmp, name)
             os.remove(tmp)

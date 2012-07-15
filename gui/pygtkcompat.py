@@ -15,7 +15,7 @@ class GdkPixbufCompat(object):
         if USE_GTK3:
             return pixbuf.savev(path, type, kwargs.keys(), kwargs.values())
         else:
-            return pixbuf.save(path, type, **kwargs)
+            return pixbuf.save(path, type, kwargs)
 
     @staticmethod
     def new(colorspace, has_alpha, bps, width, height):
@@ -82,7 +82,7 @@ class GtkCompat(object):
         # corresponding to accel_path or None if not valid", like the GTK2
         # function.
         if USE_GTK3:
-            found, accel_key = Gtk.AccelMap.get().lookup_entry(accel_path)
+            found, accel_key = Gtk.AccelMap.lookup_entry(accel_path)
             if not found:
                 return None
             keyval = accel_key.accel_key
