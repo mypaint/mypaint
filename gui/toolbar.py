@@ -852,6 +852,6 @@ class MainMenuButton (gtk.ToggleButton):
 
     def _get_popup_menu_position(self, menu, *junk):
         # Underneath the button, at the same x position.
-        x, y = self.window.get_origin()
-        y += self.allocation.height
+        x, y = self.get_window().get_origin()
+        y += self.get_allocation().height
         return x, y, True

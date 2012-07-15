@@ -60,7 +60,11 @@ class KeyboardManager:
         keymap = pygtkcompat.gdk.keymap_get_default()
         # Instead of using event.keyval, we do it the lowlevel way.
         # Reason: ignoring CAPSLOCK and checking if SHIFT was pressed
-        res = keymap.translate_keyboard_state(event.hardware_keycode, event.state & ~gdk.LOCK_MASK, event.group)
+        state = event.state & ~gdk.LOCK_MASK
+        if pygtkcompat.USE_GTK3:
+            state = gdk.ModifierType(state)
+        res = keymap.translate_keyboard_state(event.hardware_keycode, state,
+                                              event.group)
         if not res:
             # PyGTK returns None when gdk_keymap_translate_keyboard_state() returns false.
             # Not sure if this is a bug or a feature - the only time I have seen this
