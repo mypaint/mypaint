@@ -20,7 +20,6 @@ import pango
 
 import dialogs
 from brushlib import brushsettings
-import stock
 import dropdownpanel
 import widgets
 from colors import RGBColor, ColorAdjuster, HSVTriangle
@@ -155,7 +154,7 @@ class LineDropdownToolItem (gtk.ToolItem):
         gtk.ToolItem.__init__(self)
         self.set_homogeneous(False)
         self.button_image = gtk.Image()
-        self.button_image.set_from_stock(stock.LINE_MODES, ToolbarManager.icon_size)
+        self.button_image.set_from_stock('mypaint-line-mode', ToolbarManager.icon_size)
         self.line_mode_panel = dropdownpanel.DropdownPanelButton(self.button_image)
         self.vbox = gtk.VBox()
         frame = gtk.Frame()
@@ -461,13 +460,16 @@ class BrushDropdownToolItem (gtk.ToolItem):
 class BrushSettingsDropdownToolItem (gtk.ToolItem):
     __gtype_name__ = "BrushSettingsDropdownToolItem"
 
+    active_stock_id = 'mypaint-brush-mods-active'
+    inactive_stock_id = 'mypaint-brush-mods-inactive'
+
     setting_cnames = ["radius_logarithmic", "slow_tracking", "opaque", "hardness"]
 
     def __init__(self):
         gtk.ToolItem.__init__(self)
         self.set_homogeneous(False)
         self.button_image = gtk.Image()
-        self.button_image.set_from_stock(stock.BRUSH_MODIFIERS_INACTIVE,
+        self.button_image.set_from_stock(self.inactive_stock_id,
                                          ToolbarManager.icon_size)
         self.button_shows_modified = False
         self.button = dropdownpanel.DropdownPanelButton(self.button_image)
@@ -610,13 +612,13 @@ class BrushSettingsDropdownToolItem (gtk.ToolItem):
         stock_id = None
         if self._current_brush_is_modified():
             if not self.button_shows_modified:
-                stock_id = stock.BRUSH_MODIFIERS_ACTIVE
+                stock_id = self.active_stock_id
                 self.button_shows_modified = True
             if not self.reset_all_button.get_sensitive():
                 self.reset_all_button.set_sensitive(True)
         else:
             if self.button_shows_modified:
-                stock_id = stock.BRUSH_MODIFIERS_INACTIVE
+                stock_id = self.inactive_stock_id
                 self.button_shows_modified = False
             if self.reset_all_button.get_sensitive():
                 self.reset_all_button.set_sensitive(False)

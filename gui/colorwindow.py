@@ -13,7 +13,6 @@
 import gtk
 from gtk import gdk
 
-import stock
 import colors
 
 
@@ -22,7 +21,7 @@ class ToolWidget (colors.CombinedColorAdjuster):
     """Combined colour adjuster ToolWidget.
     """
 
-    stock_id = stock.TOOL_COLORS
+    stock_id = 'mypaint-tool-color'
 
     def __init__(self, app):
         self.__app = app

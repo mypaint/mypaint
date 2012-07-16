@@ -7,7 +7,6 @@
 # (at your option) any later version.
 
 
-import stock
 import gtk
 from gtk import gdk
 from gettext import gettext as _
@@ -58,21 +57,25 @@ class LineMode:
             # name, stock id, label,
             #   accel, tooltip,
             #   callback, default state
-            ('FreehandMode', stock.LINE_MODE_FREEHAND, _("Freehand"),
-                None, _("Freehand is the default painting mode"),
+            ('FreehandMode', 'mypaint-line-mode-freehand',
+                _("Freehand"), None,
+                _("Freehand is the default painting mode"),
                 self.line_mode_cb, True),
-            ('StraightMode', stock.LINE_MODE_STRAIGHT, _("Straight/Curved Lines"),
-                None, _("Draw straight or curved lines.\n\
+            ('StraightMode', 'mypaint-line-mode-straight',
+                _("Straight/Curved Lines"), None,
+                _("Draw straight or curved lines.\n\
 Constrain angle by holding the Control key.\n\
 Add curves to your last line with the Shift key."),
                 self.line_mode_cb),
-            ('SequenceMode', stock.LINE_MODE_SEQUENCE, _("Sequence of Lines"),
-                None, _("Draw a sequence straight or curved lines.\n\
+            ('SequenceMode', 'mypaint-line-mode-sequence',
+                _("Sequence of Lines"), None,
+                _("Draw a sequence straight or curved lines.\n\
 Constrain angle by holding the Control key.\n\
 Add curves to your last line with the Shift key."),
                 self.line_mode_cb),
-            ('EllipseMode', stock.LINE_MODE_ELLIPSE, _("Ellipse"),
-                None, _("Draw circles and ellipes.\n\
+            ('EllipseMode', 'mypaint-line-mode-ellipse',
+                _("Ellipse"), None,
+                _("Draw circles and ellipes.\n\
 Constrain shape or roation by holding the Control key.\n\
 Rotate holding the Shift key."),
                 self.line_mode_cb),

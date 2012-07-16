@@ -11,7 +11,6 @@ gdk = gtk.gdk
 from gettext import gettext as _
 from drawwindow import button_press_cb_abstraction, button_release_cb_abstraction
 import os
-import stock
 
 def stock_button_generic(stock_id, b):
     img = gtk.Image()
@@ -27,7 +26,7 @@ class ToolWidget (gtk.VBox):
 
     tool_widget_title = _("Scratchpad")
 
-    stock_id = stock.TOOL_SCRATCHPAD
+    stock_id = 'mypaint-tool-scratchpad'
 
     def __init__(self, app):
         gtk.VBox.__init__(self)

@@ -1,0 +1,77 @@
+<!--
+Defines some, but not all, of MyPaint's core UI.
+Perhaps an increasing amount.
+-->
+<interface>
+
+<!--
+Custom stock item names
+
+The string values are typically the names of the icons used, trying to mirror
+those in standard or widespread sets.  Mypaint ships with defaults for most of
+them using the Tango palette under the "hicolor" theme.     
+-->
+<object class="GtkIconFactory" id="stock_icon_factory">
+  <sources>
+    <!-- Tool subwindows -->
+    <source stock-id="mypaint-tool-brush"
+           icon-name="mypaint-tool-brush"/>
+    <source stock-id="mypaint-tool-color"
+           icon-name="mypaint-tool-paint-color"/>
+    <source stock-id="mypaint-tool-scratchpad"
+           icon-name="mypaint-tool-scratchpad"/>
+    <source stock-id="mypaint-tool-layers"
+           icon-name="mypaint-tool-layers"/>
+
+    <!--
+    View manipulation
+    
+    TODO: make some MyPaint-specific icons for these. Not sure the object-
+    names are standard in all sets.
+    -->
+    <source stock-id="mypaint-view-rotate-left"
+           icon-name="object-rotate-left"/>
+    <source stock-id="mypaint-view-rotate-right"
+           icon-name="object-rotate-right"/>
+    <source stock-id="mypaint-view-mirror-horizontal"
+           icon-name="object-flip-horizontal"/>
+    <source stock-id="mypaint-view-mirror-vertical"
+           icon-name="object-flip-vertical"/>
+
+    <!-- Blend modes -->
+    <source stock-id="mypaint-brush-blend-modes"
+           icon-name="mypaint-brush-blend-modes"/>
+    <source stock-id="mypaint-brush-blend-mode-normal"
+           icon-name="mypaint-brush-blend-mode-normal"/>
+    <source stock-id="mypaint-brush-blend-mode-eraser"
+           icon-name="mypaint-brush-blend-mode-eraser"/>
+    <source stock-id="mypaint-brush-blend-mode-alpha-lock"
+           icon-name="mypaint-brush-blend-mode-alpha-lock"/>
+    <source stock-id="mypaint-brush-blend-mode-colorize"
+           icon-name="mypaint-brush-blend-mode-colorize"/>
+
+    <!-- Brush modifications -->
+    <source stock-id="mypaint-brush-mods-active"
+           icon-name="mypaint-brush-mods-active"/>
+    <source stock-id="mypaint-brush-mods-inactive"
+           icon-name="mypaint-brush-mods-inactive"/>
+
+    <!-- Editing modes -->
+    <source stock-id="mypaint-symmetry-mode" icon-name="mypaint-symmetry"/>
+    <source stock-id="mypaint-line-mode" icon-name="mypaint-line-mode"/>
+    <source stock-id="mypaint-line-mode-freehand"
+           icon-name="mypaint-line-mode-freehand"/>
+    <source stock-id="mypaint-line-mode-straight"
+           icon-name="mypaint-line-mode-straight"/>
+    <source stock-id="mypaint-line-mode-sequence"
+           icon-name="mypaint-line-mode-sequence"/>
+    <source stock-id="mypaint-line-mode-ellipse"
+           icon-name="mypaint-line-mode-ellipse"/>
+  </sources>
+</object><!-- stock_iconfactory -->
+
+
+<!-- Core ActionGroups could be stored here too -->
+
+
+</interface>

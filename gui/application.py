@@ -13,7 +13,6 @@ gdk = gtk.gdk
 from lib import brush, helpers, mypaintlib
 import filehandling, keyboard, brushmanager, windowing, document, layout
 import brushmodifier, linemode
-import stock
 import colors
 from colorwindow import BrushColorManager
 from overlays import LastPaintPosOverlay, ScaleOverlay
@@ -74,7 +73,13 @@ class Application: # singleton
         else:
             gtk.window_set_default_icon_name('mypaint')
 
-        stock.init_custom_stock_items()
+        # Stock items,
+        # though we caould expand it to hoise actions or other stuff later
+        builder_xml = join(datapath, "gui", "mypaint.xml")
+        self.builder = gtk.Builder()
+        self.builder.add_from_file(builder_xml)
+        #factory = builder.get_object("stock_icon_factory")
+        #factory.add_default() # unnecessary? Builder seems to do it for us.
 
         self.ui_manager = gtk.UIManager()
 

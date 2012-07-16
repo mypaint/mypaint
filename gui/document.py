@@ -19,7 +19,6 @@ import lib.document
 from lib import backgroundsurface, command, helpers, layer
 import tileddrawwidget, stategroup
 from brushmanager import ManagedBrush
-import stock
 
 class Document(object):
 
@@ -115,27 +114,42 @@ class Document(object):
             ('ResetZoom',   gtk.STOCK_ZOOM_100, _('Zoom'), None, None, self.reset_view_cb),
             ('ResetRotation',   None, _('Rotation'), None, None, self.reset_view_cb),
             ('ResetMirror', None, _('Mirror'), None, None, self.reset_view_cb),
-            ('ZoomIn',       gtk.STOCK_ZOOM_IN, _('Zoom In'), 'period', 
-                _("Increase magnification"), self.zoom_cb),
-            ('ZoomOut',      gtk.STOCK_ZOOM_OUT, _('Zoom Out'), 'comma',
-                _("Decrease magnification"), self.zoom_cb),
-            ('RotateLeft',   stock.ROTATE_LEFT, None, None,
-                _("Rotate the view left"),
+            ('ZoomIn', gtk.STOCK_ZOOM_IN,
+                _('Zoom In'), 'period',
+                _("Increase magnification"),
+                self.zoom_cb),
+            ('ZoomOut', gtk.STOCK_ZOOM_OUT,
+                _('Zoom Out'), 'comma',
+                _("Decrease magnification"),
+                self.zoom_cb),
+            ('RotateLeft', 'mypaint-view-rotate-left',
+                _("Rotate Counterclockwise"), '<control>Left',
+                _("Rotate the view counterclockwise"),
                 self.rotate_cb),
-            ('RotateRight',  stock.ROTATE_RIGHT, None, None,
-                _("Rotate the view right"),
+            ('RotateRight', 'mypaint-view-rotate-right',
+                _("Rotate Clockwise"), '<control>Right',
+                _("Rotate the view clockwise"),
                 self.rotate_cb),
-            ('MirrorHorizontal', stock.MIRROR_HORIZONTAL, None, None,
-                _("Mirror: flip the view left to right"),
+            ('MirrorHorizontal', 'mypaint-view-mirror-horizontal',
+                _("Mirror Horizontal"), 'i',
+                _("Flip the view left to right"),
                 self.mirror_horizontal_cb),
-            ('MirrorVertical', stock.MIRROR_VERTICAL, None, None,
+            ('MirrorVertical', 'mypaint-view-mirror-vertical',
+                _("Mirror Vertical"), 'u',
                 _("Flip the view upside-down"),
                 self.mirror_vertical_cb),
-            ('SoloLayer',    None, _('Layer Solo'), 'Home', None, self.solo_layer_cb), # TODO: make toggle action
-            ('ToggleAbove',  None, _('Hide Layers Above Current'), 'End', None, self.toggle_layers_above_cb), # TODO: make toggle action
-
-            ('BlendMode',    stock.BRUSH_BLEND_MODES),
-            ('LineMode', stock.LINE_MODES)
+            ('SoloLayer', None,
+                _('Layer Solo'), 'Home',
+                None,
+                self.solo_layer_cb), # TODO: make toggle action
+            ('ToggleAbove', None,
+                _('Hide Layers Above Current'), 'End',
+                None,
+                self.toggle_layers_above_cb), # TODO: make toggle action
+            ('BlendMode', 'mypaint-brush-blend-modes',
+                _("Blend Mode")),
+            ('LineMode', 'mypaint-line-mode',
+                _("Line Mode"))
         ]
         self.action_group = gtk.ActionGroup('DocumentActions')
         ag = self.action_group
@@ -147,10 +161,22 @@ class Document(object):
 
         toggle_actions = [
             # name, [stock-id, [label, [accel, [tooltip, [cb, [is-active]]]]]]
-            ('PrintInputs', None, _('Print Brush Input Values to Console'), None, None, self.print_inputs_cb),
-            ('VisualizeRendering', None, _('Visualize Rendering'), None, None, self.visualize_rendering_cb),
-            ('NoDoubleBuffereing', None, _('Disable GTK Double Buffering'), None, None, self.no_double_buffering_cb),
-            ('Symmetry', stock.SYMMETRY, None, None, _("Symmetry: duplicate strokes mirrored horizontally"), self.symmetry_action_toggled_cb),
+            ('PrintInputs', None,
+                _('Print Brush Input Values to Console'), None,
+                None,
+                self.print_inputs_cb),
+            ('VisualizeRendering', None,
+                _('Visualize Rendering'), None,
+                _("Show rendering updates on-screen, for debugging"),
+                self.visualize_rendering_cb),
+            ('NoDoubleBuffereing', None,
+                _('Disable GTK Double Buffering'), None,
+                None,
+                self.no_double_buffering_cb),
+            ('Symmetry', 'mypaint-symmetry-mode',
+                _("Symmetrical Painting"), '<shift>i',
+                _("Mirrors all strokes drawn around the vertical axis"),
+                self.symmetry_action_toggled_cb),
             ]
         ag.add_toggle_actions(toggle_actions)
 

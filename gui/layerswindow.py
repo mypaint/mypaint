@@ -5,7 +5,6 @@ import gobject
 import pango
 
 import dialogs
-import stock
 from lib.layer import COMPOSITE_OPS
 
 def stock_button(stock_id):
@@ -25,7 +24,7 @@ def make_composite_op_model():
 
 class ToolWidget (gtk.VBox):
 
-    stock_id = stock.TOOL_LAYERS
+    stock_id = "mypaint-tool-layers"
 
     def __init__(self, app):
         gtk.VBox.__init__(self)

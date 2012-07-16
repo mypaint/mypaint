@@ -8,7 +8,6 @@
 
 
 #import stategroup
-import stock
 import gtk
 from gettext import gettext as _
 from lib.helpers import rgb_to_hsv, hsv_to_rgb
@@ -50,17 +49,21 @@ class BrushModifier:
             # name, stock id, label,
             #   accel, tooltip,
             #   callback, default state
-            ('BlendModeNormal', stock.BRUSH_BLEND_MODE_NORMAL, None,
-                None, _("Paint normally"),
+            ('BlendModeNormal', 'mypaint-brush-blend-mode-normal',
+                _("Normal"), 'n',
+                _("Paint normally"),
                 self.blend_mode_normal_cb, True),
-            ('BlendModeEraser', stock.BRUSH_BLEND_MODE_ERASER, None,
-                None, _("Eraser Mode: remove strokes using the current brush"),
+            ('BlendModeEraser', 'mypaint-brush-blend-mode-eraser',
+                _("Eraser"), 'e',
+                _("Eraser Mode: remove strokes using the current brush"),
                 self.blend_mode_eraser_cb),
-            ('BlendModeLockAlpha', stock.BRUSH_BLEND_MODE_ALPHA_LOCK, None,
-                None, _("Lock Alpha: paint over existing strokes only, using the current brush"),
+            ('BlendModeLockAlpha', 'mypaint-brush-blend-mode-alpha-lock',
+                _("Lock Alpha Channel"), '<shift>l',
+                _("Lock Alpha: paint over existing strokes only, using the current brush"),
                 self.blend_mode_lock_alpha_cb),
-            ('BlendModeColorize', stock.BRUSH_BLEND_MODE_COLORIZE, None,
-                None, _("Colorize: alter Hue and Saturation with the current brush"),
+            ('BlendModeColorize', 'mypaint-brush-blend-mode-colorize',
+                _("Colorize"), 'k',
+                _("Colorize: alter Hue and Saturation with the current brush"),
                 self.blend_mode_colorize_cb),
             ]
         ag.add_toggle_actions(toggle_actions)

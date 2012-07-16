@@ -25,7 +25,6 @@ from gtk import gdk, keysyms
 import colorselectionwindow, historypopup, stategroup, colorpicker, windowing, layout, toolbar
 import dialogs
 from lib import helpers
-import stock
 import dragfunc
 from colors import RGBColor
 
@@ -283,10 +282,16 @@ class Window (windowing.MainWindow, layout.MainWindow):
             ('ScratchDrawSatPalette',  None, _('Different Saturations of the current Color'), None, None, self.draw_sat_spectrum_cb),
             ('ScratchCopyBackground',  None, _('Copy Background to Scratchpad'), None, None, self.scratchpad_copy_background_cb),
 
-            ('BrushMenu',    None, _('Brush')),
-            ('BrushChooserPopup', stock.TOOL_BRUSH, _("Change Brush..."), 'b', None, self.brush_chooser_popup_cb),
-            ('DownloadBrushPack', gtk.STOCK_OPEN, _('Download more brushes (in web browser)'), '', None, self.download_brush_pack_cb),
-            ('ImportBrushPack', gtk.STOCK_OPEN, _('Import brush package...'), '', None, self.import_brush_pack_cb),
+            ('BrushMenu', None, _('Brush')),
+            ('BrushChooserPopup', 'mypaint-tool-brush',
+                _("Change Brush..."), 'b', None,
+                self.brush_chooser_popup_cb),
+            ('DownloadBrushPack', gtk.STOCK_OPEN,
+                _('Download more brushes (in web browser)'), '', None,
+                self.download_brush_pack_cb),
+            ('ImportBrushPack', gtk.STOCK_OPEN,
+                _('Import brush package...'), '', None,
+                self.import_brush_pack_cb),
 
             ('HelpMenu',   None, _('Help')),
             ('Docu', gtk.STOCK_INFO, _('Where is the Documentation?'), None, None, self.show_infodialog_cb),
@@ -320,24 +325,27 @@ class Window (windowing.MainWindow, layout.MainWindow):
                     _('Test input devices'), None, None, self.toggle_window_cb),
             ('FrameWindow',  None,
                     _('Document Frame...'), None, None, self.toggle_window_cb),
-            ('LayersWindow', stock.TOOL_LAYERS,
-                    None, None, _("Toggle the Layers list"),
+            ('LayersWindow', 'mypaint-tool-layers',
+                    _("Layers"), "l",
+                    _("Toggle the Layers list"),
                     self.toggle_window_cb),
             ('BackgroundWindow', gtk.STOCK_PAGE_SETUP,
                     _('Background'), None, None, self.toggle_window_cb),
-            ('BrushSelectionWindow', stock.TOOL_BRUSH,
-                    None, None,
+            ('BrushSelectionWindow', 'mypaint-tool-brush',
+                    _("Brush Lists"), '<Shift>b',
                     _("Edit and reorganise Brush Lists"),
                     self.toggle_window_cb),
             ('BrushSettingsWindow', gtk.STOCK_PROPERTIES,
                     _('Brush Settings Editor'), '<control>b',
                     _("Change Brush Settings in detail"),
                     self.toggle_window_cb),
-            ('ColorWindow', stock.TOOL_COLORS,
-                    None, None, _("Toggle Color Window"),
+            ('ColorWindow', 'mypaint-tool-color',
+                    _("Colors"), "<shift>c",
+                    _("Toggle Color Window"),
                     self.toggle_window_cb),
-            ('ScratchWindow',  stock.TOOL_SCRATCHPAD, 
-                    None, None, _('Toggle the scratchpad'),
+            ('ScratchWindow', 'mypaint-tool-scratchpad',
+                    _("Scratchpad"), '<shift>s',
+                    _('Toggle the scratchpad'),
                     self.toggle_window_cb),
             ]
         ag.add_toggle_actions(toggle_actions)
