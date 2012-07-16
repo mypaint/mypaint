@@ -52,7 +52,7 @@ def window_factory(role, layout_manager, app):
         connids = []
         connid = widget.connect("map", on_tool_widget_map, app, role, connids)
         connids.append(connid)
-        return (widget, widget.stock_id)
+        return (widget, widget.stock_id, widget.tool_widget_title)
     else:
         window = module.Window(app)
         return (window, )

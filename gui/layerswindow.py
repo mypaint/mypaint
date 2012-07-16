@@ -25,6 +25,7 @@ def make_composite_op_model():
 class ToolWidget (gtk.VBox):
 
     stock_id = "mypaint-tool-layers"
+    tool_widget_title = _("Layers")
 
     def __init__(self, app):
         gtk.VBox.__init__(self)

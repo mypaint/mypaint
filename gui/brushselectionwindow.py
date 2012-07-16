@@ -6,7 +6,12 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-"select brush window"
+"""Brush selection/organizer window
+
+Can be used for selecting brushes, and can be docked into the sidebar.
+Responsible for ordering, loading and saving brush lists.
+
+"""
 
 import pygtkcompat
 import gtk, pango
@@ -22,6 +27,7 @@ class ToolWidget (gtk.VBox):
     EXPANDER_PREFS_KEY = "brushmanager.common_settings_expanded"
 
     stock_id = "mypaint-tool-brush"
+    tool_widget_title = _("Brushes")
 
     def __init__(self, app):
         self.app = app

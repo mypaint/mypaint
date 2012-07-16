@@ -123,11 +123,7 @@ class LayoutManager:
                     widget.connect("hide", cb, False)
                     return widget
                 elif isinstance(widget, gtk.Widget):
-                    stock_id = result[1]
-                    stock_info = gtk.stock_lookup(stock_id)
-                    if not stock_info:
-                        return None
-                    stock_id, title, _mods, _key, _tr = stock_info
+                    stock_id, title = result[1], result[2]
                     tool = Tool(widget, role, title, stock_id, self)
                     self.tools[role] = tool
                     self.widgets[role] = tool
@@ -671,10 +667,9 @@ class ToolDragHandle (gtk.EventBox):
     min_drag_distance = 10
     spacing = 2
 
-    def __init__(self, tool, stock_id):
+    def __init__(self, tool, stock_id, label_text):
         gtk.EventBox.__init__(self)
         self.stock_id = stock_id
-        stock_id, label_text, _mods, _key, _tr = gtk.stock_lookup(stock_id)
         self.tool = tool
         self.frame = frame = gtk.Frame()
         frame.set_shadow_type(gtk.SHADOW_OUT)
@@ -988,7 +983,7 @@ class Tool (gtk.VBox, ElasticContainer):
         self.role = role
         self.widget = widget
         self.layout_manager = layout_manager
-        self.handle = ToolDragHandle(self, stock_id)
+        self.handle = ToolDragHandle(self, stock_id, title)
         self.stock_id = stock_id
         self.snap_back_bar = ToolSnapBackBar(self)
         self.widget_frame = frame = gtk.Frame()
