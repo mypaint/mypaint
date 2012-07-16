@@ -482,8 +482,16 @@ class SmallImageButton (gtk.Button):
 
     def on_style_set(self, widget, prev_style):
         settings = self.get_settings()
-        w, h = gtk.icon_size_lookup_for_settings(settings, gtk.ICON_SIZE_MENU)
-        self.set_size_request(w+4, h+4)
+        size_info = gtk.icon_size_lookup_for_settings(settings,
+                                                      gtk.ICON_SIZE_MENU)
+        if size_info:
+            if pygtkcompat.USE_GTK3:
+                valid, w, h = size_info
+            else:
+                w, h = size_info
+                valid = True
+            if valid:
+                self.set_size_request(w+4, h+4)
 
 
 class ToolResizeGrip (gtk.DrawingArea):
@@ -515,7 +523,7 @@ class ToolResizeGrip (gtk.DrawingArea):
         self.connect("configure-event", self.on_configure_event)
 
         if pygtkcompat.USE_GTK3:
-            pass #FIXME: implement
+            self.connect("draw", self.on_draw)
         else:
             self.connect("expose-event", self.on_expose_event)
 
@@ -533,17 +541,22 @@ class ToolResizeGrip (gtk.DrawingArea):
         self.width = event.width
         self.height = event.height
 
+    def on_draw(self, widget, cr):
+        # FIXME: implement
+        pass
+
     def on_expose_event(self, widget, event):
-        self.window.clear()
-        self.window.begin_paint_rect(event.area)
+        gdk_window = self.get_window()
+        gdk_window.clear()
+        gdk_window.begin_paint_rect(event.area)
         x = (self.width - self.handle_size) / 2
         y = (self.height - self.handle_size) / 2
         state = self.get_state()
-        self.style.paint_handle(self.window, state,
+        self.style.paint_handle(gdk_window, state,
             gtk.SHADOW_NONE, event.area, self, 'paned',
             0, 0, self.width, self.height,
             gtk.ORIENTATION_HORIZONTAL)
-        self.window.end_paint()
+        gdk_window.end_paint()
 
     def get_area(self, x, y):
         if self.tool.floating:
@@ -558,7 +571,7 @@ class ToolResizeGrip (gtk.DrawingArea):
             return
         if self.tool.floating:
             area = self.get_area(event.x, event.y)
-            win = self.tool.floating_window.window
+            win = self.tool.floating_window.get_window()
             edge = self.window_edge_map[area]
             win.begin_resize_drag(edge, event.button,
                                   int(event.x_root), int(event.y_root),
@@ -568,7 +581,7 @@ class ToolResizeGrip (gtk.DrawingArea):
             lm = self.tool.layout_manager
             max_w, max_h = lm.main_window.sidebar.max_tool_size()
             min_w = max_w
-            alloc = self.tool.allocation
+            alloc = self.tool.get_allocation()
             w = alloc.width
             h = alloc.height
             self.resize = event.x_root, event.y_root, w, h, \
@@ -578,7 +591,8 @@ class ToolResizeGrip (gtk.DrawingArea):
     def on_button_release_event(self, widget, event):
         self.resize = None
         self.grab_remove()
-        self.window.set_cursor(None)
+        gdk_window = self.get_window()
+        gdk_window.set_cursor(None)
 
     def get_cursor(self, area):
         if self.tool.floating:
@@ -588,15 +602,16 @@ class ToolResizeGrip (gtk.DrawingArea):
         return cursor
 
     def on_motion_notify_event(self, widget, event):
+        gdk_window = self.get_window()
         if not self.resize:
             area = self.get_area(event.x, event.y)
-            self.window.set_cursor(self.get_cursor(area))
+            gdk_window.set_cursor(self.get_cursor(area))
             return
         assert not self.tool.floating
         (ptr_x_root0, ptr_y_root0, w0, h0,
          min_w, min_h, max_w, max_h) = self.resize
         cursor = self.nonfloating_cursor
-        self.window.set_cursor(cursor)
+        gdk_window.set_cursor(cursor)
         dh = event.y_root - ptr_y_root0
         h = int(min(max(min_h, h0+dh), max_h))
         w = -1   # constrained horizontally anyway, better to not care
@@ -604,7 +619,8 @@ class ToolResizeGrip (gtk.DrawingArea):
         self.tool.queue_resize()
 
     def on_leave_notify_event(self, widget, event):
-        self.window.set_cursor(None)
+        gdk_window = self.get_window()
+        gdk_window.set_cursor(None)
 
 
 class FoldOutArrow (gtk.Button):
@@ -646,7 +662,8 @@ def draw_subtle_gradient(widget):
     light_rgba = _col2rgba(widget.style.light[state])
     mid_rgba = _col2rgba(widget.style.bg[state])
     dark_rgba = _col2rgba(widget.style.dark[state])
-    cr = widget.window.cairo_create()
+    gdk_window = widget.get_window()
+    cr = gdk_window.cairo_create()
     lg = cairo.LinearGradient(0, 0, 0, h)
     if state == gtk.STATE_ACTIVE:
         lg.add_color_stop_rgba(0.0, *dark_rgba)
@@ -739,7 +756,8 @@ class ToolDragHandle (gtk.EventBox):
                 self._reset()
         elif event.type == gdk.BUTTON_PRESS:
             self.set_state(gtk.STATE_ACTIVE)
-            self.window.set_cursor(gdk.Cursor(gdk.FLEUR))
+            gdk_window = self.get_window()
+            gdk_window.set_cursor(gdk.Cursor(gdk.FLEUR))
             self.button_press_xy = event.x, event.y
 
     def on_button_release_event(self, widget, event):
@@ -748,8 +766,9 @@ class ToolDragHandle (gtk.EventBox):
     def _reset(self):
         self.button_press_xy = None
         self.set_state(gtk.STATE_NORMAL)
-        if self.window:
-            self.window.set_cursor(None)
+        gdk_window = self.get_window()
+        if gdk_window:
+            gdk_window.set_cursor(None)
 
     def on_motion_notify_event(self, widget, event):
         if not self.button_press_xy:
@@ -768,7 +787,8 @@ class ToolDragHandle (gtk.EventBox):
         lm = self.tool.layout_manager
         ix, iy = self.button_press_xy
         self.button_press_xy = None
-        self.window.set_cursor(gdk.Cursor(gdk.FLEUR))
+        gdk_window = self.get_window()
+        gdk_window.set_cursor(gdk.Cursor(gdk.FLEUR))
         self.set_state(gtk.STATE_ACTIVE)
         self.tool.layout_manager.drag_state.begin(self.tool, ix, iy)
 
@@ -777,11 +797,13 @@ class ToolDragHandle (gtk.EventBox):
         self._reset()
 
     def on_leave_notify_event(self, widget, event):
-        self.window.set_cursor(None)
+        gdk_window = self.get_window()
+        gdk_window.set_cursor(None)
         self.set_state(gtk.STATE_NORMAL)
 
     def on_enter_notify_event(self, widget, event):
-        self.window.set_cursor(gdk.Cursor(gdk.HAND2))
+        gdk_window = self.get_window()
+        gdk_window.set_cursor(gdk.Cursor(gdk.HAND2))
         #if not self.in_reposition_drag:
         #    self.set_state(gtk.STATE_PRELIGHT)
 
@@ -852,7 +874,8 @@ class ToolSnapBackBar (gtk.DrawingArea):
         #    self, None, 0, 0, w, h)
         draw_subtle_gradient(widget)
 
-        sty.paint_arrow(self.window, state, gtk.SHADOW_IN, event.area,
+        gdk_window = self.get_window()
+        sty.paint_arrow(gdk_window, state, gtk.SHADOW_IN, event.area,
             self, "tearoffmenuitem", gtk.ARROW_RIGHT, True, w-h, 0, h, h)
 
 
@@ -861,7 +884,7 @@ class ToolSnapBackBar (gtk.DrawingArea):
         while x < right_max:
             x1 = x
             x2 = min(x+self.TEAR_LENGTH, right_max)
-            sty.paint_hline(self.window, gtk.STATE_NORMAL, event.area,
+            sty.paint_hline(gdk_window, gtk.STATE_NORMAL, event.area,
                        widget, "tearoffmenuitem",
                        x1, x2, (h - sty.ythickness)//2)
             x += 2 * self.TEAR_LENGTH
@@ -954,7 +977,7 @@ class ToolWindow (gtk.Window, ElasticContainer, WindowWithSavedPosition):
         x = max(x, 0)
         y = max(y, 0)
 
-        if self.window is not None:
+        if self.get_window() is not None:
             # It's mapped, so this will probably work even if the window
             # is not viewable right now.
             self.move(x, y)
@@ -1006,6 +1029,18 @@ class Tool (gtk.VBox, ElasticContainer):
         self.connect("style-set", self.on_style_set)
 
 
+    # Workaround for "widget" being an unsettable field in PyGI+GTK3.
+    # Hopefully this won't break anything and we won't need anything more.
+
+    @property
+    def widget(self):
+        return self._widget
+
+    @widget.setter
+    def widget(self, w):
+        self._widget = w
+
+
     def on_size_allocate(self, widget, allocation):
         if self.rolled_up:
             return
@@ -1029,7 +1064,10 @@ class Tool (gtk.VBox, ElasticContainer):
             if pixbuf is not None:
                 pixbufs.append(pixbuf)
         if pixbufs != []:
-            self.floating_window.set_icon_list(*pixbufs)
+            if pygtkcompat.USE_GTK3:
+                self.floating_window.set_icon_list(pixbufs)
+            else:
+                self.floating_window.set_icon_list(*pixbufs)
 
 
     def on_floating_window_delete_event(self, window, event):
@@ -1082,8 +1120,9 @@ class Tool (gtk.VBox, ElasticContainer):
                 wid.set_size_request(-1, -1)
                 wid.queue_resize()
 
-        if self.parent:
-            self.parent.remove(self)
+        parent = self.get_parent()
+        if parent is not None:
+            parent.remove(self)
         lm = self.layout_manager
         if lm.prefs.get(self.role, None) is None:
             lm.prefs[self.role] = {}
@@ -1142,8 +1181,9 @@ class Tool (gtk.VBox, ElasticContainer):
             lm.prefs[role] = {}
         if hidden:
             self.hide()
-            if self.parent:
-                self.parent.remove(self)
+            parent = self.get_parent()
+            if parent is not None:
+                parent.remove(self)
             if self.floating:
                 self.floating_window.hide()
         else:
@@ -1200,10 +1240,11 @@ class Tool (gtk.VBox, ElasticContainer):
         screen, ptr_x, ptr_y, _modmask = display.get_pointer()
         if self.rolled_up:
             self.set_rolled_up(False)    # pending events will be processed
-        alloc = self.allocation
+        alloc = self.get_allocation()
         w = alloc.width
         h = alloc.height
-        titlebar_h = self.handle.allocation.height
+        handle_alloc = self.handle.get_allocation()
+        titlebar_h = handle_alloc.height
 
         def handle_snap():
             sidebar = self.layout_manager.main_window.sidebar
@@ -1256,15 +1297,17 @@ class ToolDragPreviewWindow (gtk.Window):
 
     def show_all(self):
         gtk.Window.show_all(self)
-        self.window.move_resize(0, 0, 1, 1)
+        gdk_window = self.get_window()
+        gdk_window.move_resize(0, 0, 1, 1)
 
     def on_map_event(self, window, event):
         owner_win = self.owner.get_toplevel()
         self.set_transient_for(owner_win)
         # The first time we're mapped, set a background pixmap.
         # Background pixmap, a checkerboard
+        gdk_window = self.get_window()
         if self.bg is None:
-            self.bg = gdk.Pixmap(drawable=self.window, width=2, height=2)
+            self.bg = gdk.Pixmap(drawable=gdk_window, width=2, height=2)
             cmap = gdk.colormap_get_system()
             black = cmap.alloc_color(gdk.Color(0.0, 0.0, 0.0))
             white = cmap.alloc_color(gdk.Color(1.0, 1.0, 1.0))
@@ -1273,8 +1316,8 @@ class ToolDragPreviewWindow (gtk.Window):
             self.bg.draw_rectangle(gc, True, 0, 0, 2, 2)
             gc = self.bg.new_gc(white, black)
             self.bg.draw_points(gc, [(0,0), (1,1)])
-            self.window.set_back_pixmap(self.bg, False)
-            self.window.clear()
+            gdk_window.set_back_pixmap(self.bg, False)
+            gdk_window.clear()
 
     def on_configure_event(self, window, event):
         # Shape the window
@@ -1286,15 +1329,17 @@ class ToolDragPreviewWindow (gtk.Window):
         r.union_with_rect(gdk.Rectangle(0, 0, s, h))
         r.union_with_rect(gdk.Rectangle(0, h-s, w, s))
         r.union_with_rect(gdk.Rectangle(w-s, 0, s, h))
-        self.window.shape_combine_region(r, 0, 0)
+        gdk_window = self.get_window()
+        gdk_window.shape_combine_region(r, 0, 0)
 
     def on_expose_event(self, window, event):
         # Clear to the backing pixmap established earlier
         if self.bg is not None:
-            self.window.begin_paint_rect(event.area)
-            self.window.set_back_pixmap(self.bg, False)
-            self.window.clear()
-            self.window.end_paint()
+            gdk_window = self.get_window()
+            gdk_window.begin_paint_rect(event.area)
+            gdk_window.set_back_pixmap(self.bg, False)
+            gdk_window.clear()
+            gdk_window.end_paint()
 
 
 class ToolDragState:
@@ -1356,7 +1401,7 @@ class ToolDragState:
         # Establish a pointer grab on the main window (which stays mapped
         # throughout the drag).
         main_win = lm.main_window
-        main_win_gdk = main_win.window
+        main_win_gdk = main_win.get_window()
         events = gdk.BUTTON_PRESS_MASK | gdk.BUTTON_RELEASE_MASK \
             | gdk.BUTTON1_MOTION_MASK
         grab_status = gdk.pointer_grab(main_win_gdk, False, events,
@@ -1388,8 +1433,8 @@ class ToolDragState:
         # Moving out of the box defined by the sidebar
         # changes the mode of the current drag.
         sidebar = self.layout_manager.main_window.sidebar
-        sb_left, sb_top = sidebar.window.get_origin()
-        sb_alloc = sidebar.allocation
+        sb_left, sb_top = sidebar.get_window().get_origin()
+        sb_alloc = sidebar.get_allocation()
         sb_right = sb_left + sb_alloc.width
         sb_bottom = sb_top + sb_alloc.height
         if (x_root < sb_left or x_root > sb_right
@@ -1406,13 +1451,13 @@ class ToolDragState:
                 assert tool in sidebar.tools_vbox
                 sidebar.reorder_item(tool, ins)
                 sidebar.reassign_indices()
-            x, y = tool.handle.window.get_origin()
+            x, y = tool.handle.get_window().get_origin()
         else:
             ix, iy = self.handle_pos
             x = int(x_root - ix)
             y = int(y_root - iy)
         self.handle_pos_root = (x, y)
-        self.preview.window.move_resize(x, y, w, h)
+        self.preview.get_window().move_resize(x, y, w, h)
 
     def end(self):
         """Invoked at the end of repositioning. Snapping out happens here.
@@ -1510,12 +1555,12 @@ class Sidebar (gtk.EventBox):
         i = 0
         for widget in self.tools_vbox:
             if widget is self.slack:
-                if widget.window is pointer_window:
+                if widget.get_window() is pointer_window:
                     return i
             if isinstance(widget, Tool):
                 if widget is not current_tool:
                     dragger = widget.handle
-                    if dragger.window is pointer_window:
+                    if dragger.get_window() is pointer_window:
                         return i
             i += 1
         return None
@@ -1526,7 +1571,7 @@ class Sidebar (gtk.EventBox):
         scrwin = self.scrolledwin
         viewpt = scrwin.get_child()
         sb_pad = 2 * style_get_property(scrwin, "scrollbar-spacing")
-        vp_alloc = viewpt.allocation
+        vp_alloc = viewpt.get_allocation()
         max_size = (vp_alloc.width-sb_pad, vp_alloc.height-sb_pad)
         return max_size
 
