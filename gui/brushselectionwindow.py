@@ -290,9 +290,8 @@ class GroupSelector(gtk.DrawingArea):
         for group in all_groups:
             group_label = brushmanager.translate_group_name(group)
             u = pad_s + group_label + pad_s
-            s = u.encode('utf-8')
             idx_start = idx
-            for c in s:
+            for c in u.encode('utf-8'):
                 self.idx2group[idx] = group
                 idx += 1
 
@@ -316,8 +315,9 @@ class GroupSelector(gtk.DrawingArea):
 
             c_bg = _gdk_color_to_hex(style_bg[bg_state])
             c_fg = _gdk_color_to_hex(style_fg[fg_state])
-            u = "<span fgcolor='%s' bgcolor='%s'>%s</span>" % (c_fg, c_bg, u)
-            markup += u + sp_s
+            m = u.encode('ascii', 'xmlcharrefreplace')
+            m = "<span fgcolor='%s' bgcolor='%s'>%s</span>" % (c_fg, c_bg, m)
+            markup += m + sp_s
             idx += len(sp_s.encode("utf-8"))
 
         layout.set_markup(markup)
@@ -434,7 +434,13 @@ class GroupSelector(gtk.DrawingArea):
             self.gtkstate_active_group = group
             self.queue_draw()
             menu = self.context_menu(group)
-            menu.popup(None,None,None, event.button, event.time, group)
+            data = None
+            def _pos(*a):
+                return int(event.x_root), int(event.y_root), True
+            if pygtkcompat.USE_GTK3:
+                menu.popup(None, None, _pos, data, event.button, event.time)
+            else:
+                menu.popup(None, None, _pos, event.button, event.time, data)
 
     def motion_notify_cb(self, widget, event):
         old_prelight_group = self.gtkstate_prelight_group

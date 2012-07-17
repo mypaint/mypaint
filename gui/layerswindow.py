@@ -1,3 +1,5 @@
+import pygtkcompat
+
 import gtk
 gdk = gtk.gdk
 from gettext import gettext as _
@@ -211,6 +213,8 @@ class ToolWidget (gtk.VBox):
         if path_info is None:
             return False
         clicked_path, clicked_col, cell_x, cell_y = path_info
+        if pygtkcompat.USE_GTK3:
+            clicked_path = clicked_path.get_indices()
         layer, = self.liststore[clicked_path[0]]
         doc = self.app.doc.model
         if clicked_col is self.visible_col:
@@ -302,7 +306,8 @@ class ToolWidget (gtk.VBox):
         self.anon_layer_next = 1
 
 
-    def layer_name_datafunc(self, column, renderer, model, tree_iter):
+    def layer_name_datafunc(self, column, renderer, model, tree_iter,
+                            *data_etc):
         layer = model.get_value(tree_iter, 0)
         path = model.get_path(tree_iter)
         name = layer.name
@@ -321,14 +326,22 @@ class ToolWidget (gtk.VBox):
                         self.anon_layer_next += 1
                         self.anon_layer_num[id(l)] = n
                 layer_num = self.anon_layer_num[id(layer)]
-            attrs.change(pango.AttrScale(pango.SCALE_SMALL, 0, -1))
-            attrs.change(pango.AttrStyle(pango.STYLE_ITALIC, 0, -1))
-            name = _("Untitled layer #%d") % layer_num
+            name = _(u"Untitled layer #%d") % layer_num
+            name = name.encode('ascii', 'xmlcharrefreplace')
+            markup = "<small><i>%s</i></small>" % (name,)
+            if pygtkcompat.USE_GTK3:
+                parse_result = pango.parse_markup(markup, -1, '\000')
+                parse_ok, attrs, name, accel_char = parse_result
+                assert parse_ok
+            else:
+                parse_result = pango.parse_markup(markup)
+                attrs, name, accel_char = parse_result
         renderer.set_property("attributes", attrs)
         renderer.set_property("text", name)
 
 
-    def layer_visible_datafunc(self, column, renderer, model, tree_iter):
+    def layer_visible_datafunc(self, column, renderer, model, tree_iter,
+                               *data_etc):
         layer = model.get_value(tree_iter, 0)
         if layer.visible:
             pixbuf = self.app.pixmaps.eye_open
@@ -337,7 +350,8 @@ class ToolWidget (gtk.VBox):
         renderer.set_property("pixbuf", pixbuf)
 
 
-    def layer_locked_datafunc(self, column, renderer, model, tree_iter):
+    def layer_locked_datafunc(self, column, renderer, model, tree_iter,
+                              *data_etc):
         layer = model.get_value(tree_iter, 0)
         if layer.locked:
             pixbuf = self.app.pixmaps.lock_closed
