@@ -1226,7 +1226,7 @@ class Tool (gtk.VBox, ElasticContainer):
         if resize_needed:
             self.queue_resize()
             while gtk.events_pending():
-                gtk.main_iteration(False)
+                gtk.main_iteration()
         # Notify the indicator arrow
         self.handle.set_rolled_up(rolled_up)
 
@@ -1307,6 +1307,9 @@ class ToolDragPreviewWindow (gtk.Window):
         # Background pixmap, a checkerboard
         gdk_window = self.get_window()
         if self.bg is None:
+            if pygtkcompat.USE_GTK3:
+                # Until we have a non-Pixmap workaround.
+                return
             self.bg = gdk.Pixmap(drawable=gdk_window, width=2, height=2)
             cmap = gdk.colormap_get_system()
             black = cmap.alloc_color(gdk.Color(0.0, 0.0, 0.0))
@@ -1321,6 +1324,9 @@ class ToolDragPreviewWindow (gtk.Window):
 
     def on_configure_event(self, window, event):
         # Shape the window
+        if pygtkcompat.USE_GTK3:
+            # Until we have a non-Region workaround.
+            return
         w = event.width
         h = event.height
         r = gdk.Region()
@@ -1413,14 +1419,14 @@ class ToolDragState:
             self.tool = tool
             self.connect_reposition_handlers()
         except:
-            gdk.pointer_ungrab()
+            gdk.pointer_ungrab(gdk.CURRENT_TIME)
             self.disconnect_reposition_handlers()
             raise
 
     def on_reposition_button_release(self, widget, event):
         """Ends the current tool reposition drag.
         """
-        gdk.pointer_ungrab()
+        gdk.pointer_ungrab(gdk.CURRENT_TIME)
         self.disconnect_reposition_handlers()
         self.end()
 
@@ -1547,7 +1553,8 @@ class Sidebar (gtk.EventBox):
         Returns an integer position for passing to reorder_item(), or None.
         Currently only tool drag handles are valid insertion points.
         """
-        window_info = gdk.window_at_pointer()
+        display = self.get_display()
+        window_info = display.get_window_at_pointer()
         if window_info is None:
             return None
         pointer_window = window_info[0]
