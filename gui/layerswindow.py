@@ -195,7 +195,10 @@ class ToolWidget (gtk.VBox):
     def treeview_cursor_changed_cb(self, treeview, *data):
         if self.is_updating:
             return
-        store, t_iter = treeview.get_selection().get_selected()
+        selection = treeview.get_selection()
+        if selection is None:
+            return
+        store, t_iter = selection.get_selected()
         if t_iter is None:
             return
         layer = store.get_value(t_iter, 0)
