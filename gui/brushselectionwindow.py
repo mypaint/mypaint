@@ -14,6 +14,10 @@ Responsible for ordering, loading and saving brush lists.
 """
 
 import pygtkcompat
+if pygtkcompat.USE_GTK3:
+    import gi
+    from gi.repository import PangoCairo
+
 import gtk, pango
 gdk = gtk.gdk
 from gettext import gettext as _
@@ -58,7 +62,7 @@ class ToolWidget (gtk.VBox):
         self.expander.set_size_request(48, -1)
 
     def show_cb(self, widget):
-        assert not self.window
+        assert self.get_window() is None
         assert not self.expander_prefs_loaded
         is_expanded = bool(self.app.preferences.get(self.EXPANDER_PREFS_KEY, False))
         self.expander.set_expanded(is_expanded)
@@ -228,7 +232,7 @@ class GroupSelector(gtk.DrawingArea):
         self.connect('drag-end', self.drag_clear_cb)
 
         if pygtkcompat.USE_GTK3:
-            pass
+            self.connect("draw", self.draw_cb)
         else:
             self.connect("expose-event", self.expose_cb)
 
@@ -263,7 +267,6 @@ class GroupSelector(gtk.DrawingArea):
 
         all_groups = list(sorted(self.bm.groups.keys()))
         idx = 0
-        text = ''
         attr = pango.AttrList()
         self.idx2group = {}
 
@@ -278,6 +281,12 @@ class GroupSelector(gtk.DrawingArea):
             pad_s = ''
             sp_s = ' '
 
+        def _gdk_color_to_hex(col):
+            rgb = (col.red, col.green, col.blue)
+            rgb = [max(min(c>>8, 255), 0) for c in rgb]
+            return "#%02x%02x%02x" % tuple(rgb)
+
+        markup = ''
         for group in all_groups:
             group_label = brushmanager.translate_group_name(group)
             u = pad_s + group_label + pad_s
@@ -298,42 +307,61 @@ class GroupSelector(gtk.DrawingArea):
 
             style_fg, style_bg = style.fg, style.bg
             if group == self.drag_target_group:
-                # Invert colurs
+                # Invert colours
                 style_fg, style_bg = style.bg, style.fg
-                # attr.insert(pango.AttrUnderline(pango.UNDERLINE_SINGLE, idx_start, idx))
 
             # always use the STATE_SELECTED fg if the group is visible
             if group in self.bm.active_groups:
                 fg_state = gtk.STATE_SELECTED
 
-            c = style_bg[bg_state]
-            attr.insert(pango.AttrBackground(c.red, c.green, c.blue, idx_start, idx))
-            c = style_fg[fg_state]
-            attr.insert(pango.AttrForeground(c.red, c.green, c.blue, idx_start, idx))
-
-            text += u + sp_s
+            c_bg = _gdk_color_to_hex(style_bg[bg_state])
+            c_fg = _gdk_color_to_hex(style_fg[fg_state])
+            u = "<span fgcolor='%s' bgcolor='%s'>%s</span>" % (c_fg, c_bg, u)
+            markup += u + sp_s
             idx += len(sp_s.encode("utf-8"))
 
-        layout.set_text(text)
-        layout.set_attributes(attr)
-
+        layout.set_markup(markup)
         leading = style.font_desc.get_size() / 6
         layout.set_spacing(leading)
         return layout
 
     def on_size_request(self, widget, req):
+        # PyGTK/gtk2 size-request handler
         parent = self.parent.parent
         parent_width = parent.get_allocation().width
-        # The above is potentially the adopt "natural size" at first, but
-        # we should respect it if it's set. Might result in fewer redraws.
+        # The above is potentially the "adopt natural size" value, -1, at
+        # first, but we should respect it if it's set. Doing so might result
+        # in fewer redraws.
         layout = self.lay_out_group_names(parent_width)
         w, h = layout.get_pixel_size()
         h += 2 * self.VERTICAL_MARGIN
         req.width = -1
         req.height = h
 
+    def do_get_request_mode(self):
+        # PyGI/gtk3 sizing
+        # Width first, then height
+        return gtk.SizeRequestMode.HEIGHT_FOR_WIDTH
+
+    def do_get_preferred_width(self):
+        # PyGI/gtk3 sizing
+        # Enough width to lay out 1 or 2 short words, but ideally a little
+        # more. In most cases, the parent determines everything.
+        return (50, 100)
+
+    def do_get_preferred_height_for_width(self, width):
+        # PyGI/gtk3 sizing
+        # Height is determined by the layout once we have a concrrete width.
+        layout = self.lay_out_group_names(width)
+        w, h = layout.get_pixel_size()
+        h += 2 * self.VERTICAL_MARGIN
+        return (h, h)
+
     def expose_cb(self, widget, event):
-        cr = self.window.cairo_create()
+        cr = self.get_window().cairo_create()
+        return self.draw_cb(widget, cr)
+
+    def draw_cb(self, widget, cr):
         alloc = self.get_allocation()
         width = alloc.width
         height = alloc.height
@@ -341,12 +369,14 @@ class GroupSelector(gtk.DrawingArea):
         style = self.get_style()
 
         c = style.bg[gtk.STATE_NORMAL]
-        cr.set_source_rgb(c.red_float, c.green_float, c.blue_float)
+        c_rgb = [float(x)/65535 for x in (c.red, c.green, c.blue)]
+        cr.set_source_rgb(*c_rgb)
         cr.rectangle(0, 0, width, height)
         cr.fill()
 
         c = style.text[gtk.STATE_NORMAL]
-        cr.set_source_rgb(c.red_float, c.green_float, c.blue_float)
+        c = [float(x)/65535 for x in (c.red, c.green, c.blue)]
+        cr.set_source_rgb(*c_rgb)
         layout = self.lay_out_group_names(width)
 
         leading = style.font_desc.get_size() / 6
@@ -354,7 +384,10 @@ class GroupSelector(gtk.DrawingArea):
         layout.set_spacing(leading)
 
         cr.move_to(0, self.VERTICAL_MARGIN)
-        cr.show_layout(layout)
+        if pygtkcompat.USE_GTK3:
+            PangoCairo.show_layout(cr, layout)
+        else:
+            cr.show_layout(layout)
 
         # Catch reflows, which maybe result in more or fewer rows.
         self.set_size_request(-1, -1)  # "ask again, give me my natural size"
@@ -366,7 +399,11 @@ class GroupSelector(gtk.DrawingArea):
         x, y = int(x), int(y) # avoid warning
         if self.layout is None:
             return None
-        i, d = self.layout.xy_to_index(x*pango.SCALE, y*pango.SCALE)
+        index_tup = self.layout.xy_to_index(x*pango.SCALE, y*pango.SCALE)
+        if pygtkcompat.USE_GTK3:
+            inside, i, trailing = index_tup
+        else:
+            i, trailing = index_tup
         return self.idx2group.get(i)
 
     def button_press_cb(self, widget, event):

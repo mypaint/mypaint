@@ -234,7 +234,7 @@ def pixbuf_thumbnail(src, w, h, alpha=False):
     """
     src2 = scale_proportionally(src, w, h)
     w2, h2 = src2.get_width(), src2.get_height()
-    dst = gdk.Pixbuf(gdk.COLORSPACE_RGB, alpha, 8, w, h)
+    dst = pygtkcompat.gdk.pixbuf.new(gdk.COLORSPACE_RGB, alpha, 8, w, h)
     if alpha:
         dst.fill(0xffffff00) # transparent background
     else:
