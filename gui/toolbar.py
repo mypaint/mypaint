@@ -112,9 +112,14 @@ class ToolbarManager:
 
     def on_toolbar1_popup_context_menu(self, toolbar, x, y, button):
         menu = self.toolbar1_popup
-        def posfunc(m):
+        def _posfunc(*a):
             return x, y, True
-        menu.popup(None, None, posfunc, button, 0)
+        time = gdk.CURRENT_TIME
+        data = None
+        if pygtkcompat.USE_GTK3:
+            menu.popup(None, None, _posfunc, data, button, time)
+        else:
+            menu.popup(None, None, _posfunc, button, time, data)
 
     def on_settings_toggle(self, toggleaction, ui_xml_file):
         name = toggleaction.get_property("name")
@@ -162,6 +167,7 @@ class LineDropdownToolItem (gtk.ToolItem):
         frame.set_shadow_type(gtk.SHADOW_OUT)
         self.line_mode_panel.set_property("panel-widget", frame)
         self.add(self.line_mode_panel)
+        self.connect("create-menu-proxy", lambda *a: True)
 
 
     def set_app(self, app):
@@ -186,12 +192,12 @@ class LineDropdownToolItem (gtk.ToolItem):
             icon = gtk.Image()
             icon.set_from_stock(action.stock_id, ToolbarManager.icon_size)
             hbox.pack_start(icon, False, True)
-            label = gtk.ToggleButton()
-            label.set_relief(gtk.RELIEF_NONE)
-            label.set_tooltip_text(action.tooltip)
-            action.connect_proxy(label)
-            label.connect("toggled", lambda m: self.line_mode_panel.panel_hide())
-            hbox.pack_start(label, False, True)
+            toggle = gtk.ToggleButton()
+            toggle.set_relief(gtk.RELIEF_NONE)
+            toggle.set_tooltip_text(action.tooltip)
+            toggle.set_related_action(action)
+            toggle.connect("toggled", lambda m: self.line_mode_panel.panel_hide())
+            hbox.pack_start(toggle, False, True)
             vbox.pack_start(hbox, False, False)
 
         # Pressure settings.
@@ -232,7 +238,6 @@ class LineDropdownToolItem (gtk.ToolItem):
             self.app.linemode.change_line_setting(setting, value)
 
 
-
 class ColorDropdownToolItem (gtk.ToolItem):
     """Toolbar colour indicator, history access, and changer.
     """
@@ -246,7 +251,7 @@ class ColorDropdownToolItem (gtk.ToolItem):
         self.app = None
         self.blob_size = ToolbarManager.icon_size
         self.connect("toolbar-reconfigured", self.on_toolbar_reconf)
-        self.connect("create-menu-proxy", self.on_create_menu_proxy)
+        self.connect("create-menu-proxy", lambda *a: True)
         self.set_tooltip_text(_("Color History and other tools"))
         self.add(self.dropdown_button)
 
@@ -297,7 +302,8 @@ class ColorDropdownToolItem (gtk.ToolItem):
 
         def init_proxy(widget, action_name):
             action = self.app.find_action(action_name)
-            action.connect_proxy(widget)
+            #action.connect_proxy(widget)  # deprecated since 2.16
+            widget.set_related_action(action)
             widget.connect("clicked", hide_panel_cb)
             return widget
 
@@ -320,16 +326,14 @@ class ColorDropdownToolItem (gtk.ToolItem):
     def on_history_button_clicked(self):
         self.dropdown_button.panel_hide()
 
-    def on_create_menu_proxy(self, toolitem):
-        # Do not appear on the overflow menu.
-        # Though possibly just duplicating the custom items into a submenu
-        # would work here.
-        self.set_proxy_menu_item("", None)
-        return True
-
     def on_toolbar_reconf(self, toolitem):
-        toolbar = self.parent
-        iw, ih = gtk.icon_size_lookup(self.get_icon_size())
+        toolbar = self.get_parent()
+        lookup_ret = gtk.icon_size_lookup(self.get_icon_size())
+        if pygtkcompat.USE_GTK3:
+            lookup_succeeded, iw, ih = lookup_ret
+            assert lookup_succeeded
+        else:
+            iw, ih = lookup_ret
         self.blob_size = max(iw, ih)
         self.main_blob.set_size_request(iw, ih)
 
@@ -355,7 +359,7 @@ class BrushDropdownToolItem (gtk.ToolItem):
         self.app = None
         self.image_size = ToolbarManager.icon_size
         self.connect("toolbar-reconfigured", self.on_toolbar_reconf)
-        self.connect("create-menu-proxy", self.on_create_menu_proxy)
+        self.connect("create-menu-proxy", lambda *a: True)
         self.set_tooltip_text(_("Brush history etc."))
         self.add(self.dropdown_button)
 
@@ -392,7 +396,7 @@ class BrushDropdownToolItem (gtk.ToolItem):
         # List editor button
         list_editor_button = gtk.ToggleButton()
         list_editor_action = self.app.find_action("BrushSelectionWindow")
-        list_editor_action.connect_proxy(list_editor_button)
+        list_editor_button.set_related_action(list_editor_action)
         close_panel_cb = lambda *a: self.dropdown_button.panel_hide()
         list_editor_button.connect("clicked", close_panel_cb)
         section_vbox.pack_start(list_editor_button, False, False)
@@ -409,11 +413,6 @@ class BrushDropdownToolItem (gtk.ToolItem):
             button.add(image)
             button.connect("clicked", self.on_history_button_clicked, i)
             history_hbox.pack_end(button, True, True)
-
-
-    def on_create_menu_proxy(self, toolitem):
-        self.set_proxy_menu_item("", None)
-        return True
 
 
     def doc_input_stroke_ended_cb(self, event):
@@ -434,8 +433,13 @@ class BrushDropdownToolItem (gtk.ToolItem):
 
 
     def on_toolbar_reconf(self, toolitem):
-        toolbar = self.parent
-        iw, ih = gtk.icon_size_lookup(self.get_icon_size())
+        toolbar = self.get_parent()
+        lookup_ret = gtk.icon_size_lookup(self.get_icon_size())
+        if pygtkcompat.USE_GTK3:
+            lookup_succeeded, iw, ih = lookup_ret
+            assert lookup_succeeded
+        else:
+            iw, ih = lookup_ret
         self.image_size = max(iw, ih)
         self.main_image.set_size_request(iw, ih)
 
@@ -479,6 +483,7 @@ class BrushSettingsDropdownToolItem (gtk.ToolItem):
         frame.set_shadow_type(gtk.SHADOW_OUT)
         self.button.set_property("panel-widget", frame)
         self.add(self.button)
+        self.connect("create-menu-proxy", lambda *a: True)
 
     def set_app(self, app):
         self.app = app
@@ -545,7 +550,7 @@ class BrushSettingsDropdownToolItem (gtk.ToolItem):
 
         widget = gtk.ToggleButton()
         action = self.app.find_action("BrushSettingsWindow")
-        action.connect_proxy(widget)
+        widget.set_related_action(action)
         #widget.set_label(_("Edit All Settings"))
         hbox.pack_start(widget, True, True)
         widget.connect("toggled", lambda a: self.button.panel_hide())
@@ -570,10 +575,10 @@ class BrushSettingsDropdownToolItem (gtk.ToolItem):
         for a in ["BlendModeNormal", "BlendModeEraser",
                   "BlendModeLockAlpha", "BlendModeColorize"]:
             action = self.app.find_action(a)
-            cb = gtk.CheckButton()
-            action.connect_proxy(cb)
-            vbox.pack_start(cb, False, False)
-            cb.connect("clicked", lambda a: self.button.panel_hide())
+            b = gtk.CheckButton()
+            b.set_related_action(action)
+            vbox.pack_start(b, False, False)
+            b.connect("clicked", lambda a: self.button.panel_hide())
 
         self.vbox.set_border_width(widgets.SPACING)
         self.vbox.set_spacing(widgets.SPACING)
@@ -636,23 +641,26 @@ class BrushSettingsDropdownToolItem (gtk.ToolItem):
 
 class ColorDropdownToolAction (gtk.Action):
     __gtype_name__ = "ColorDropdownToolAction"
-ColorDropdownToolAction.set_tool_item_type(ColorDropdownToolItem)
+    def do_create_tool_item(self):
+        return ColorDropdownToolItem()
 
 
 class LineDropdownToolAction (gtk.Action):
     __gtype_name__ = "LineDropdownToolAction"
-LineDropdownToolAction.set_tool_item_type(LineDropdownToolItem)
+    def do_create_tool_item(self):
+        return LineDropdownToolItem()
 
 
 class BrushDropdownToolAction (gtk.Action):
     __gtype_name__ = "BrushDropdownToolAction"
-BrushDropdownToolAction.set_tool_item_type(BrushDropdownToolItem)
+    def do_create_tool_item(self):
+        return BrushDropdownToolItem()
 
 
 class BrushSettingsDropdownToolAction (gtk.Action):
     __gtype_name__ = "BrushSettingsDropdownToolAction"
-BrushSettingsDropdownToolAction\
-        .set_tool_item_type(BrushSettingsDropdownToolItem)
+    def do_create_tool_item(self):
+        return BrushSettingsDropdownToolItem()
 
 
 class ManagedBrushPreview (gtk.Image):
@@ -758,7 +766,10 @@ class ColorBlob (gtk.AspectFrame):
             color = RGBColor(0, 0, 0)
         self._color = color
         self.drawingarea.set_size_request(1, 1)
-        self.drawingarea.connect("expose-event", self.on_expose)
+        if pygtkcompat.USE_GTK3:
+            self.drawingarea.connect("draw", self.on_draw)
+        else:
+            self.drawingarea.connect("expose-event", self.on_expose)
 
     def set_color(self, color):
         self._color = color
@@ -771,6 +782,9 @@ class ColorBlob (gtk.AspectFrame):
 
     def on_expose(self, widget, event):
         cr = widget.window.cairo_create()
+        self.on_draw(widget, cr)
+
+    def on_draw(self, widget, cr):
         cr.set_source_rgb(*self._color.get_rgb())
         cr.paint()
 
@@ -794,17 +808,17 @@ class MainMenuButton (gtk.ToggleButton):
         self.menu = menu
         hbox1 = gtk.HBox()
         hbox2 = gtk.HBox()
-        label = gtk.Label(text)
+        label = gtk.Label()
         hbox1.pack_start(label, True, True)
         arrow = gtk.Arrow(gtk.ARROW_DOWN, gtk.SHADOW_IN)
         hbox1.pack_start(arrow, False, False)
         hbox2.pack_start(hbox1, True, True, widgets.SPACING_TIGHT)
 
         # Text settings
-        attrs = pango.AttrList()
-        if not pygtkcompat.USE_GTK3:
-            attrs.change(pango.AttrWeight(pango.WEIGHT_SEMIBOLD, 0, -1))
-        label.set_attributes(attrs)
+        text = unicode(text) # + u"\u263A"   # U+263A WHITE SMILING FACE
+        markup = "<b>%s</b>" % text.encode('ascii', 'xmlcharrefreplace')
+        # markup += '&#128049;'   # U+1F431 CAT FACE
+        label.set_markup(markup)
 
         self.add(hbox2)
         self.set_relief(gtk.RELIEF_NONE)

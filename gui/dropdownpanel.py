@@ -112,8 +112,10 @@ class DropdownPanel (gtk.Window):
 
 
     def _is_outside(self, x, y):
-        wx, wy = self.window.get_origin()
-        ww, wh = self.allocation.width, self.allocation.height
+        gdk_window = self.get_window()
+        alloc = self.get_allocation()
+        wx, wy = gdk_window.get_origin()
+        ww, wh = alloc.width, alloc.height
         return x < wx or y < wy or x > wx+ww or y > wy+wh
 
 
@@ -135,7 +137,7 @@ class DropdownPanel (gtk.Window):
             self.popdown()
             return True
         # Dismiss too if the user clicks outside the panel (during a grab).
-        if not self.window:
+        if not self.get_window():
             return
         if self._is_outside(event.x_root, event.y_root):
             self.popdown()
@@ -154,16 +156,17 @@ class DropdownPanel (gtk.Window):
         # Grab, permitting normal interaction with the app (i.e. with the widgets
         # in the panel).
         mask = gdk.BUTTON_PRESS_MASK
-        grab_result = gdk.pointer_grab(self.window, True, mask, None, None, t)
+        gdk_window = self.get_window()
+        grab_result = gdk.pointer_grab(gdk_window, True, mask, None, None, t)
         if grab_result != gdk.GRAB_SUCCESS:
             print "pointer grab failed:", grab_result
             return False
 
         # Keyboard grab too, to prevent workspace switching.
-        grab_result = gdk.keyboard_grab(self.window, False, t)
+        grab_result = gdk.keyboard_grab(gdk_window, False, t)
         if grab_result != gdk.GRAB_SUCCESS:
             print "keyboard grab failed:", grab_result
-            gdk.pointer_ungrab()
+            gdk.pointer_ungrab(gdk.CURRENT_TIME)
             return False
 
         # But limit events to just the panel for neatness and a hint of modality.
@@ -210,7 +213,7 @@ class DropdownPanel (gtk.Window):
                         label += "Please set it to a top-level widget."
                     child = gtk.Label(label)
                     break
-                p = p.parent
+                p = p.get_parent()
             self.add(child)
         self.show_all()
         def deferred_grab():
@@ -225,7 +228,7 @@ class DropdownPanel (gtk.Window):
 
     def _hide_cb(self, widget):
         if self._grabbed:
-            gdk.pointer_ungrab()
+            gdk.pointer_ungrab(gdk.CURRENT_TIME)
             self._grabbed = False
         self.grab_remove()
 
@@ -233,7 +236,8 @@ class DropdownPanel (gtk.Window):
     # Positioning and initial geometry
 
     def _realize_cb(self, widget):
-        self.window.set_type_hint(gdk.WINDOW_TYPE_HINT_DROPDOWN_MENU)
+        gdk_window = self.get_window()
+        gdk_window.set_type_hint(gdk.WINDOW_TYPE_HINT_DROPDOWN_MENU)
         x, y = self._get_panel_pos()
         self.parse_geometry("+%d+%d" % (x, y))
 
@@ -244,10 +248,12 @@ class DropdownPanel (gtk.Window):
 
     def _get_panel_pos(self):
         button = self._panel_button
-        x, y = button.window.get_origin()
-        x += button.allocation.x
-        y += button.allocation.y
-        y += button.allocation.height
+        button_win = button.get_window()
+        x, y = button_win.get_origin()
+        button_alloc = button.get_allocation()
+        x += button_alloc.x
+        y += button_alloc.y
+        y += button_alloc.height
         return int(x), int(y)
 
     def _configure_cb(self, widget, event):
