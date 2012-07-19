@@ -6,8 +6,10 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-import gtk, gobject
-gdk = gtk.gdk
+import pygtkcompat
+import gobject
+import gtk
+from gtk import gdk
 
 class StateGroup():
     """Supervisor instance for GUI states.
@@ -226,7 +228,10 @@ class State:
                           | gdk.PROXIMITY_OUT_MASK
                           | gdk.PROXIMITY_IN_MASK
                           )
-        widget.set_extension_events (gdk.EXTENSION_EVENTS_ALL)
+        if pygtkcompat.USE_GTK3:
+            pass
+        else:
+            widget.set_extension_events (gdk.EXTENSION_EVENTS_ALL)
 
         if self.keydown:
             # we are reacting to a keyboard event, we will not be

@@ -21,6 +21,7 @@ from adjbases import ColorAdjuster
 from adjbases import PreviousCurrentColorAdjuster
 from uicolor import RGBColor
 from uimisc import borderless_button
+from picker import ColorPickerButton
 
 
 PREFS_KEY_CURRENT_TAB = 'colors.tab'
@@ -75,90 +76,6 @@ class CombinedAdjusterPage (ColorAdjuster):
         """Returns the `gtk.Table` instance for the page body.
         """
         raise NotImplementedError
-
-
-
-class ColorPickerButton (gtk.EventBox, ColorAdjuster):
-    """Button for picking a colour from the screen.
-    """
-
-    __grab_mask = gdk.BUTTON_RELEASE_MASK \
-                | gdk.BUTTON1_MOTION_MASK \
-                | gdk.POINTER_MOTION_MASK
-    __picking = False
-
-    def __init__(self):
-        gtk.EventBox.__init__(self)
-        self.connect("button-release-event", self.__button_release_cb)
-        self.connect("motion-notify-event", self.__motion_cb)
-        button = borderless_button(stock_id=gtk.STOCK_COLOR_PICKER,
-                                   tooltip="Pick a color from the screen")
-        button.connect("clicked", self.__clicked_cb)
-        self.add(button)
-
-    def __clicked_cb(self, widget):
-        gobject.idle_add(self.__begin_color_pick)
-
-    def __begin_color_pick(self):
-        mgr = self.get_color_manager()
-        cursor = mgr.get_picker_cursor()
-        window = self.get_window()
-        result = gdk.pointer_grab(window, False, self.__grab_mask,
-                                  None, cursor)
-        if result == gdk.GRAB_SUCCESS:
-            self.__picking = True
-
-    def __motion_cb(self, widget, event):
-        if not self.__picking:
-            return
-        if event.state & gdk.BUTTON1_MASK:
-            self.__pick_color_at_pointer(self)
-
-    def __button_release_cb(self, widget, event):
-        if not self.__picking:
-            return False
-        if event.state & gdk.BUTTON1_MASK:
-            self.__pick_color_at_pointer(self)
-            self.__picking = False
-            gdk.pointer_ungrab()
-
-    def __pick_color_at_pointer(self, widget, size=3):
-        """Grab screen color at cursor (average of size x size rectangle)
-        """
-        # inspired by gtkcolorsel.c function grab_color_at_mouse()
-        screen = widget.get_screen()
-        colormap = screen.get_system_colormap()
-        root = screen.get_root_window()
-        screen_w, screen_h = screen.get_width(), screen.get_height()
-        display = widget.get_display()
-        screen_junk, x_root, y_root, modifiermask_trash = display.get_pointer()
-        image = None
-        x = x_root-size/2
-        y = y_root-size/2
-        if x < 0: x = 0
-        if y < 0: y = 0
-        if x+size > screen_w: x = screen_w-size
-        if y+size > screen_h: y = screen_h-size
-        image = root.get_image(x, y, size, size)
-        color_total = (0, 0, 0)
-        for x, y in iter_rect(0, 0, size, size):
-            pixel = image.get_pixel(x, y)
-            color = colormap.query_color(pixel)
-            color = [color.red, color.green, color.blue]
-            color_total = (color_total[0]+color[0],
-                           color_total[1]+color[1],
-                           color_total[2]+color[2])
-        N = size*size
-        color_total = (color_total[0]/N, color_total[1]/N, color_total[2]/N)
-        color_rgb = [ch/65535. for ch in color_total]
-        color = RGBColor(*color_rgb)
-        self.set_managed_color(color)
-
-
-def iter_rect(x, y, w, h):
-    for ix in xrange(x, x+w):
-        for iy in xrange(y, y+h):
-            yield ix, iy
 
 
 class CombinedColorAdjuster (gtk.VBox, ColorAdjuster):

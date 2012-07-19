@@ -92,13 +92,6 @@ class Rect:
     def __repr__(self):
         return 'Rect(%d, %d, %d, %d)' % (self.x, self.y, self.w, self.h)
 
-def iter_rect(x, y, w, h):
-    assert w>=0 and h>=0
-    for yy in xrange(y, y+h):
-        for xx in xrange(x, x+w):
-            yield (xx, yy)
-
-
 def rotated_rectangle_bbox(corners):
     list_y = [y for (x, y) in corners]
     list_x = [x for (x, y) in corners]

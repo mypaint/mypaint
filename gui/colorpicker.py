@@ -26,7 +26,7 @@ class ColorPicker(windowing.PopupWindow):
                         )
 
         if pygtkcompat.USE_GTK3:
-            pass #FIXME: implement
+            self.connect("draw", self.draw_cb)
         else:
             self.connect("expose-event", self.expose_cb)
 
@@ -89,7 +89,9 @@ class ColorPicker(windowing.PopupWindow):
 
     def expose_cb(self, widget, event):
         cr = self.window.cairo_create()
+        return self.draw_cb(widget, cr)
 
+    def draw_cb(self, widget, cr):
         #cr.set_source_rgb (1.0, 1.0, 1.0)
         cr.set_source_rgba (1.0, 1.0, 1.0, 0.0) # transparent
         cr.set_operator(cairo.OPERATOR_SOURCE)

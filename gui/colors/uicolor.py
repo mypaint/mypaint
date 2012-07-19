@@ -305,6 +305,33 @@ class UIColor (object):
         return result
 
 
+    @classmethod
+    def new_from_pixbuf_average(class_, pixbuf):
+        """Returns the the average of all colours in a pixbuf."""
+        assert pixbuf.get_colorspace() == gdk.COLORSPACE_RGB
+        assert pixbuf.get_bits_per_sample() == 8
+        n_channels = pixbuf.get_n_channels()
+        assert n_channels in (3, 4)
+        if n_channels == 3:
+            assert not pixbuf.get_has_alpha()
+        else:
+            assert pixbuf.get_has_alpha()
+        data = pixbuf.get_pixels()
+        w, h = pixbuf.get_width(), pixbuf.get_height()
+        rowstride = pixbuf.get_rowstride()
+        n_pixels = w*h
+        r = g = b = 0
+        for y in xrange(h):
+            for x in xrange(w):
+                offs = y*rowstride + x*n_channels
+                r += ord(data[offs])
+                g += ord(data[offs+1])
+                b += ord(data[offs+2])
+        r = float(r) / n_pixels
+        g = float(g) / n_pixels
+        b = float(b) / n_pixels
+        return RGBColor(r/255, g/255, b/255)
+
 
 class RGBColor (UIColor):
     """Additive Red/Green/Blue representation of a colour.

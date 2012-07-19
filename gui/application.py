@@ -468,33 +468,15 @@ class Application: # singleton
         d.destroy()
 
     def pick_color_at_pointer(self, widget, size=3):
-        '''Grab screen color at cursor (average of size x size rectangle)'''
-        # inspired by gtkcolorsel.c function grab_color_at_mouse()
-        # XXX refactor: use the new-style one
-        screen = widget.get_screen()
-        colormap = screen.get_system_colormap()
-        root = screen.get_root_window()
-        screen_w, screen_h = screen.get_width(), screen.get_height()
-        display = widget.get_display()
-        screen_junk, x_root, y_root, modifiermask_trash = display.get_pointer()
-        image = None
-        x = x_root-size/2
-        y = y_root-size/2
-        if x < 0: x = 0
-        if y < 0: y = 0
-        if x+size > screen_w: x = screen_w-size
-        if y+size > screen_h: y = screen_h-size
-        image = root.get_image(x, y, size, size)
-        color_total = (0, 0, 0)
-        for x, y in helpers.iter_rect(0, 0, size, size):
-            pixel = image.get_pixel(x, y)
-            color = colormap.query_color(pixel)
-            color = [color.red, color.green, color.blue]
-            color_total = (color_total[0]+color[0], color_total[1]+color[1], color_total[2]+color[2])
-        N = size*size
-        color_total = (color_total[0]/N, color_total[1]/N, color_total[2]/N)
-        color_rgb = colors.RGBColor(*[ch/65535. for ch in color_total])
-        self.brush_color_manager.set_color(color_rgb)
+        """Set the brush colour from the current pointer position on screen.
+
+        This is a wrapper for `gui.colors.get_color_at_pointer()`, and
+        additionally sets the current brush colour.
+
+        """
+        color = colors.get_color_at_pointer(widget, size)
+        self.brush_color_manager.set_color(color)
+
 
 
 class PixbufDirectory:
