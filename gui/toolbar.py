@@ -667,6 +667,7 @@ class ManagedBrushPreview (gtk.Image):
     """Updateable widget displaying a brushmanager.ManagedBrush`'s preview.
     """
 
+    ICON_SIZE = 32
     TOOLTIP_ICON_SIZE = 48
 
     def __init__(self, brush=None):
@@ -675,7 +676,8 @@ class ManagedBrushPreview (gtk.Image):
         self.image_size = None
         self.brush_name = None
         self.set_from_managed_brush(brush)
-        self.set_size_request(32, 32)
+        s = self.ICON_SIZE
+        self.set_size_request(s, s)
         self.connect("size-allocate", self.on_size_allocate)
         self.connect("query-tooltip", self.on_query_tooltip)
         self.set_property("has-tooltip", True)
@@ -691,7 +693,12 @@ class ManagedBrushPreview (gtk.Image):
 
     def on_size_allocate(self, widget, alloc):
         new_size = alloc.width, alloc.height
-        if new_size != self.image_size:
+        # if new_size != self.image_size:
+        if self.image_size is None:
+            # XXX dubious fix: what if the preview receives a new size in the
+            # middle of its lifetime? Under GTK3 however, permitting this makes
+            # the preview keep growing by about 4px each penstroke or brush
+            # selection. Not sure why.
             self.image_size = alloc.width, alloc.height
             self._update()
 
@@ -706,7 +713,7 @@ class ManagedBrushPreview (gtk.Image):
         s = self.TOOLTIP_ICON_SIZE
         scaled_pixbuf = self._get_scaled_pixbuf(s)
         tooltip.set_icon(scaled_pixbuf)
-        tooltip.set_text(self.brush_name)  # XXX markup and summary of changes
+        tooltip.set_text(self.brush_name)  # TODO: use markup, and summarize changes (i18n fun)
         return True
 
     def _update(self):

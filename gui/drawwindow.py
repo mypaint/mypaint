@@ -632,7 +632,8 @@ class Window (windowing.MainWindow, layout.MainWindow):
         w = self.app.layout_manager.get_subwindow_by_role(window_name)
         if w is None:
             return
-        onscreen = w.window is not None and w.window.is_visible()
+        gdk_window = w.get_window()
+        onscreen = gdk_window is not None and gdk_window.is_visible()
         if active:
             if onscreen:
                 return

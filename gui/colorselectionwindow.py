@@ -9,8 +9,9 @@
 """Various popup colour selectors.
 """
 
+import pygtkcompat
 import gtk
-gdk = gtk.gdk
+from gtk import gdk
 
 import windowing
 from lib import mypaintlib
@@ -43,7 +44,7 @@ class ColorSelectorPopup(windowing.PopupWindow):
     def enter(self):
         self.update_image()
         self.show_all()
-        self.window.set_cursor(gdk.Cursor(gdk.CROSSHAIR))
+        self.get_window().set_cursor(gdk.Cursor(gdk.CROSSHAIR))
         self.mouse_pos = None
 
     def leave(self, reason):
@@ -55,13 +56,33 @@ class ColorSelectorPopup(windowing.PopupWindow):
 
     def update_image(self):
         size = self.backend.get_size()
-        pixbuf = gdk.Pixbuf(gdk.COLORSPACE_RGB, True, 8, size, size)
+        pixbuf = pygtkcompat.gdk.pixbuf.new(gdk.COLORSPACE_RGB, True, 8,
+                                            size, size)
         arr = gdkpixbuf2numpy(pixbuf)
         self.backend.set_brush_color(*self.app.brush.get_color_hsv())
         self.backend.render(arr)
-        pixmap, mask = pixbuf.render_pixmap_and_mask()
-        self.image.set_from_pixmap(pixmap, mask)
-        self.shape_combine_mask(mask,0,0)
+        if pygtkcompat.USE_GTK3:
+            # This seems to work, but is pointless until we can get shaped
+            # windows working. Might need a NumPy RGBA => ARGB oneliner.
+            #
+            #   rowstride = arr.strides[0]
+            #   surf = cairo.ImageSurface.create_for_data(arr.data,
+            #                                             cairo.FORMAT_ARGB32,
+            #                                             size, size, rowstride)
+
+            # TODO:FUTURE: Want to be able to do:
+            #
+            #   region = gdk.cairo_region_create_from_surface(surf)
+            #
+            # and then use self.shape_combine_region(), but some Cairo structs
+            # aren't wrapped: http://stackoverflow.com/questions/6133622 is
+            # happening as of python-gi-cairo 3.2.2-1~precise and 
+            pass
+        else:
+            pixmap, mask = pixbuf.render_pixmap_and_mask()
+            self.image.set_from_pixmap(pixmap, mask)
+            self.shape_combine_mask(mask,0,0)
+        self.image.set_from_pixbuf(pixbuf)
 
     def pick_color(self,x,y):
         hsv = self.backend.pick_color_at(x, y)

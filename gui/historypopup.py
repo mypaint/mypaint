@@ -58,7 +58,7 @@ class HistoryPopup(windowing.PopupWindow):
         self.connect("button-press-event", self.button_press_cb)
 
         if pygtkcompat.USE_GTK3:
-            pass #FIXME: implement
+            self.connect("draw", self.draw_cb)
         else:
             self.connect("expose-event", self.expose_cb)
 
@@ -91,7 +91,7 @@ class HistoryPopup(windowing.PopupWindow):
         self.show_all()
         self.is_shown = True
 
-        self.window.set_cursor(gdk.Cursor(gdk.CROSSHAIR))
+        self.get_window().set_cursor(gdk.Cursor(gdk.CROSSHAIR))
 
     def leave(self, reason):
         self.hide()
@@ -104,8 +104,10 @@ class HistoryPopup(windowing.PopupWindow):
         pass
 
     def expose_cb(self, widget, event):
-        cr = self.window.cairo_create()
+        cr = self.get_window().cairo_create()
+        return self.draw_cb(widget, cr)
 
+    def draw_cb(self, widget, cr):
         cr.set_source_rgb(0.9, 0.9, 0.9)
         cr.paint()
 
