@@ -7,6 +7,7 @@
 # (at your option) any later version.
 
 
+import pygtkcompat
 import gtk
 from gtk import gdk
 from gettext import gettext as _
@@ -305,7 +306,11 @@ Rotate holding the Shift key."),
         self.model.brush.reset()
 
     def local_mouse_state(self, last_update=False):
-        x, y, kbmods = self.tdw.renderer.window.get_pointer()
+        tdw_win = self.tdw.renderer.get_window()
+        if pygtkcompat.USE_GTK3:
+            ptr_win, x, y, kbmods = tdw_win.get_pointer()
+        else:
+            x, y, kbmods = tdw_win.get_pointer()
         if last_update:
             return self.lx, self.ly, kbmods
         x, y = self.tdw.display_to_model(x, y)

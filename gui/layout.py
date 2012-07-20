@@ -314,10 +314,10 @@ class WindowWithSavedPosition:
         """Store the current size of the window for future launches.
         """
         # Save the new position in the prefs...
-        if not hasattr(self, 'window'):
+        if not hasattr(self, 'get_window'):
             return
 
-        f_ex = self.window.get_frame_extents()
+        f_ex = self.get_window().get_frame_extents()
         x = max(0, f_ex.x)
         y = max(0, f_ex.y)
         conf_pos = dict(x=x, y=y, w=event.width, h=event.height)

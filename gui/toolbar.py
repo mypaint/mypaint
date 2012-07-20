@@ -788,7 +788,7 @@ class ColorBlob (gtk.AspectFrame):
     color = property(get_color, set_color)
 
     def on_expose(self, widget, event):
-        cr = widget.window.cairo_create()
+        cr = widget.get_window().cairo_create()
         self.on_draw(widget, cr)
 
     def on_draw(self, widget, cr):
