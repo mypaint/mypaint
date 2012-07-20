@@ -692,7 +692,9 @@ class ManagedBrush(object):
         if self._preview is None and self.name:
             self._load_preview()
         if self._preview is None:
-            self.preview = gdk.Pixbuf(gdk.COLORSPACE_RGB, False, 8, preview_w, preview_h)
+            # When does this happen?
+            self.preview = pygtkcompat.gdk.pixbuf.new(gdk.COLORSPACE_RGB,
+                            False, 8, preview_w, preview_h)
             self.preview.fill(0xffffffff) # white
         return self._preview
     def set_preview(self, pixbuf):
@@ -796,7 +798,8 @@ class ManagedBrush(object):
         if self.preview.get_has_alpha():
             # remove it (previous mypaint versions would display an empty image)
             w, h = preview_w, preview_h
-            tmp = gdk.Pixbuf(gdk.COLORSPACE_RGB, False, 8, w, h)
+            tmp = pygtkcompat.gdk.pixbuf.new(gdk.COLORSPACE_RGB, False,
+                                             8, w, h)
             tmp.fill(0xffffffff)
             self.preview.composite(tmp, 0, 0, w, h, 0, 0, 1, 1, gdk.INTERP_BILINEAR, 255)
             self.preview = tmp

@@ -6,6 +6,7 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
+import gui.pygtkcompat
 from gettext import gettext as _
 import gtk, os
 gdk = gtk.gdk
@@ -61,15 +62,17 @@ class Window(windowing.Dialog):
     def color_changed_cb(self, widget):
         rgb = self.cs.get_current_color()
         rgb = rgb.red, rgb.green, rgb.blue
-        rgb = [int(x / 65535.0 * 255.0) for x in rgb] 
-        pixbuf = gdk.Pixbuf(gdk.COLORSPACE_RGB, False, 8, N, N)
+        rgb = [int(x / 65535.0 * 255.0) for x in rgb]
+        pixbuf = gui.pygtkcompat.gdk.pixbuf.new(gdk.COLORSPACE_RGB, False,
+                                                8, N, N)
         arr = helpers.gdkpixbuf2numpy(pixbuf)
         arr[:,:] = rgb
         self.set_background(pixbuf)
 
     def save_as_default_cb(self):
         pixbuf = self.current_background_pixbuf
-        pixbuf.save(os.path.join(self.app.confpath, 'backgrounds', 'default.png'), 'png')
+        path = os.path.join(self.app.confpath, 'backgrounds', 'default.png')
+        gui.pygtkcompat.gdk.pixbuf.save(pixbuf, path, 'png')
         self.hide()
 
     def set_background(self, pixbuf):
