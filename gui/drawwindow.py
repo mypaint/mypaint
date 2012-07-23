@@ -244,111 +244,13 @@ class Window (windowing.MainWindow, layout.MainWindow):
         return self.app.doc.tdw
     tdw, doc = property(get_tdw), property(get_doc)
 
+
     def init_actions(self):
-        actions = [
-            # name, stock id, label, accelerator, tooltip, callback
-            ('FileMenu',    None, _('File')),
-            ('Quit',         gtk.STOCK_QUIT, _('Quit'), '<control>q', None, self.quit_cb),
-            ('FrameToggle',  None, _('Toggle Document Frame'), None, None, self.toggle_frame_cb),
+        # Actions are defined in mypaint.xml: all we need to do here is connect
+        # some extra state management.
 
-            ('EditMenu',        None, _('Edit')),
-
-            ('ColorMenu',    None, _('Color')),
-            ('ColorPickerPopup',    gtk.STOCK_COLOR_PICKER, _('Pick Color'), 'r', None, self.popup_cb),
-            ('ColorHistoryPopup',  None, _('Color History'), 'x', None, self.popup_cb),
-            ('ColorChangerCrossedBowlPopup', None, _('Color Changer (crossed bowl)'), 'v', None, self.popup_cb),
-            ('ColorChangerWashPopup', None, _('Color Changer (washed)'), 'c', None, self.popup_cb),
-            ('ColorRingPopup',  None, _('Color Ring'), None, None, self.popup_cb),
-            ('ColorDetailsDialog', None, _("Color Details"), None, None, self.color_details_dialog_cb),
-            ('PaletteNext', None, _("Next palette color"), None, None, self.palette_next_cb),
-            ('PalettePrev', None, _("Previous palette color"), None, None, self.palette_prev_cb),
-
-            ('ContextMenu',  None, _('Brushkeys')),
-            ('ContextHelp',  gtk.STOCK_HELP, _('Help!'), None, None, self.show_infodialog_cb),
-
-            ('LayerMenu',    None, _('Layers')),
-
-            # Scratchpad menu items
-            ('ScratchMenu',    None, _('Scratchpad')),
-            ('ScratchNew',  gtk.STOCK_NEW, _('New Scratchpad'), '', None, self.new_scratchpad_cb),
-            ('ScratchLoad',  gtk.STOCK_OPEN, _('Load Scratchpad...'), '', None, self.load_scratchpad_cb),
-            ('ScratchSaveNow',  gtk.STOCK_SAVE, _('Save Scratchpad Now'), '', None, self.save_current_scratchpad_cb),
-            ('ScratchSaveAs',  gtk.STOCK_SAVE_AS, _('Save Scratchpad As...'), '', None, self.save_as_scratchpad_cb),
-            ('ScratchRevert',  gtk.STOCK_UNDO, _('Revert Scratchpad'), '', None, self.revert_current_scratchpad_cb),
-            ('ScratchSaveAsDefault',  None, _('Save Scratchpad as Default'), None, None, self.save_scratchpad_as_default_cb),
-            ('ScratchClearDefault',  None, _('Clear the Default Scratchpad'), None, None, self.clear_default_scratchpad_cb),
-            ('ScratchPaletteOptions', None, _('Render a Palette')),
-            ('ScratchLoadPalette',  None, _('Load Palette File...'), None, None, self.draw_palette_cb),
-            ('ScratchDrawSatPalette',  None, _('Different Saturations of the current Color'), None, None, self.draw_sat_spectrum_cb),
-            ('ScratchCopyBackground',  None, _('Copy Background to Scratchpad'), None, None, self.scratchpad_copy_background_cb),
-
-            ('BrushMenu', None, _('Brush')),
-            ('BrushChooserPopup', 'mypaint-tool-brush',
-                _("Change Brush..."), 'b', None,
-                self.brush_chooser_popup_cb),
-            ('DownloadBrushPack', gtk.STOCK_OPEN,
-                _('Download more brushes (in web browser)'), '', None,
-                self.download_brush_pack_cb),
-            ('ImportBrushPack', gtk.STOCK_OPEN,
-                _('Import brush package...'), '', None,
-                self.import_brush_pack_cb),
-
-            ('HelpMenu',   None, _('Help')),
-            ('Docu', gtk.STOCK_INFO, _('Where is the Documentation?'), None, None, self.show_infodialog_cb),
-            ('ShortcutHelp',  gtk.STOCK_INFO, _('Change the Keyboard Shortcuts?'), None, None, self.show_infodialog_cb),
-            ('About', gtk.STOCK_ABOUT, _('About MyPaint'), None, None, self.about_cb),
-
-            ('DebugMenu',    None, _('Debug')),
-            ('PrintMemoryLeak',  None, _('Print Memory Leak Info to Console (Slow!)'), None, None, self.print_memory_leak_cb),
-            ('RunGarbageCollector',  None, _('Run Garbage Collector Now'), None, None, self.run_garbage_collector_cb),
-            ('StartProfiling',  gtk.STOCK_EXECUTE, _('Start/Stop Python Profiling (cProfile)'), None, None, self.start_profiling_cb),
-            ('GtkInputDialog',  None, _('GTK input device dialog'), None, None, self.gtk_input_dialog_cb),
-
-
-            ('ViewMenu', None, _('View')),
-            ('MenuishBarMenu', None, _('Toolbars')),
-            ('FeedbackMenu', None, _('Feedback')),
-            ('ShowPopupMenu',    None, _('Popup Menu'), 'Menu', None, self.popupmenu_show_cb),
-            ('Fullscreen',   gtk.STOCK_FULLSCREEN, None, 'F11', None, self.fullscreen_cb),
-            ('ViewHelp',  gtk.STOCK_HELP, _('Help'), None, None, self.show_infodialog_cb),
-            ]
-        ag = self.action_group = gtk.ActionGroup('WindowActions')
-        self.app.add_action_group(ag)
-        ag.add_actions(actions)
+        ag = self.action_group = self.app.builder.get_object("WindowActions")
         self.update_fullscreen_action()
-
-        # Toggle actions
-        toggle_actions = [
-            ('PreferencesWindow', gtk.STOCK_PREFERENCES,
-                    _('Preferences'), None, None, self.toggle_window_cb),
-            ('InputTestWindow',  None,
-                    _('Test input devices'), None, None, self.toggle_window_cb),
-            ('FrameWindow',  None,
-                    _('Document Frame...'), None, None, self.toggle_window_cb),
-            ('LayersWindow', 'mypaint-tool-layers',
-                    _("Layers"), "l",
-                    _("Toggle the Layers list"),
-                    self.toggle_window_cb),
-            ('BackgroundWindow', gtk.STOCK_PAGE_SETUP,
-                    _('Background'), None, None, self.toggle_window_cb),
-            ('BrushSelectionWindow', 'mypaint-tool-brush',
-                    _("Brush Lists"), '<Shift>b',
-                    _("Edit and reorganise Brush Lists"),
-                    self.toggle_window_cb),
-            ('BrushSettingsWindow', gtk.STOCK_PROPERTIES,
-                    _('Brush Settings Editor'), '<control>b',
-                    _("Change Brush Settings in detail"),
-                    self.toggle_window_cb),
-            ('ColorWindow', 'mypaint-tool-color',
-                    _("Colors"), "<shift>c",
-                    _("Toggle Color Window"),
-                    self.toggle_window_cb),
-            ('ScratchWindow', 'mypaint-tool-scratchpad',
-                    _("Scratchpad"), '<shift>s',
-                    _('Toggle the scratchpad'),
-                    self.toggle_window_cb),
-            ]
-        ag.add_toggle_actions(toggle_actions)
 
         # Reflect changes from other places (like tools' close buttons) into
         # the proxys' visible states.
@@ -357,43 +259,27 @@ class Window (windowing.MainWindow, layout.MainWindow):
         lm.subwindow_visibility_observers.append(self.update_subwindow_visibility)
 
         # Initial toggle state
-        for spec in toggle_actions:
-            name = spec[0]
-            action = ag.get_action(name)
-            role = name[0].lower() + name[1:]
-            visible = not lm.get_window_hidden_by_role(role)
-            # The sidebar machinery won't be up yet, so reveal windows that
-            # should be initially visible only in an idle handler
-            gobject.idle_add(action.set_active, visible)
+        for action in ag.list_actions():
+            name = action.get_property("name")
+            if isinstance(action, gtk.ToggleAction):
+                if name.endswith("Window"):
+                    role = name[0].lower() + name[1:]
+                    visible = not lm.get_window_hidden_by_role(role)
+                    # The sidebar machinery won't be up yet, so reveal windows
+                    # that should be initially visible only in an idle handler
+                    gobject.idle_add(action.set_active, visible)
 
-        # More toggle actions - ones which don't control windows.
-        toggle_actions = [
-            ('ToggleSubwindows', None, _('Subwindows'), 'Tab',
-                    _("Show subwindows"), self.toggle_subwindows_cb,
-                    self.get_show_subwindows()),
-            ('ToggleScaleFeedback', None, _("Zoom Level"), None,
-                    _("Reveal the scale % when zooming in or out"),
-                    self.toggle_scale_feedback_cb,
-                    self.app.preferences.get("ui.feedback.scale", False)),
-            ('ToggleLastPosFeedback', None, _("Last Painting Position"), None,
-                    _("Reveal the last painting pos when a stroke ends"),
-                    self.toggle_last_pos_feedback_cb,
-                    self.app.preferences.get("ui.feedback.last_pos", False)),
-            ]
-        ag.add_toggle_actions(toggle_actions)
+        # Initial state defined in the XML file
+        self._show_subwindows = bool(ag.get_action("ToggleSubwindows")
+                                                  .get_active())
 
-        # Radio actions
-        menuishbar_radio_actions = [
-            ('MenuishBarRadioMenubar', None, _('Menubar only'), None,
-                _("Show menu bar"),
-                self.MENUISHBAR_RADIO_MENUBAR),
-            ('MenuishBarRadioMainToolbar', None, _('Toolbar only'), None,
-                _("Show toolbar"),
-                self.MENUISHBAR_RADIO_MAIN_TOOLBAR),
-            ('MenuishBarRadioMenubarAndMainToolbar', None, _('Both'), None,
-                _("Show both the menu bar and the toolbar"),
-                self.MENUISHBAR_RADIO_BOTH_BARS),
-            ]
+        # Set initial state from user prefs
+        ag.get_action("ToggleScaleFeedback").set_active(
+                self.app.preferences.get("ui.feedback.scale", False))
+        ag.get_action("ToggleLastPosFeedback").set_active(
+                self.app.preferences.get("ui.feedback.last_pos", False))
+
+        # Set initial states of radio actions
         menuishbar_state = 0
         if self.get_ui_part_enabled("menubar"):
             menuishbar_state += self.MENUISHBAR_RADIO_MENUBAR
@@ -401,8 +287,8 @@ class Window (windowing.MainWindow, layout.MainWindow):
             menuishbar_state += self.MENUISHBAR_RADIO_MAIN_TOOLBAR
         if menuishbar_state == 0:
             menuishbar_state = self.MENUISHBAR_RADIO_MAIN_TOOLBAR
-        ag.add_radio_actions(menuishbar_radio_actions,
-            menuishbar_state, self.on_menuishbar_radio_change)
+
+        ag.get_action("MenuishBarRadioMenubar").set_current_value(menuishbar_state)
         gobject.idle_add(lambda: self.update_ui_parts())
 
         # Keyboard handling
@@ -800,9 +686,9 @@ class Window (windowing.MainWindow, layout.MainWindow):
         """
         action = self.action_group.get_action("ToggleSubwindows")
         currently_showing = action.get_active()
-        if show_subwindows != currently_showing:
+        if bool(show_subwindows) != bool(currently_showing):
             action.set_active(show_subwindows)
-        self._show_subwindows = self._show_subwindows
+        self._show_subwindows = action.get_active()
 
     def get_show_subwindows(self):
         return self._show_subwindows

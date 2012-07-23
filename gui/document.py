@@ -69,116 +69,13 @@ class Document(object):
             self.init_extra_keys()
 
     def init_actions(self):
-        # name, stock id, label, accelerator, tooltip, callback
-        actions = [
-            ('Undo', gtk.STOCK_UNDO, None, 'Z', None, self.undo_cb),
-            ('Redo', gtk.STOCK_REDO, None, 'Y', None, self.redo_cb),
-
-            ('Brighter',     None, _('Brighter'), None, None, self.brighter_cb),
-            ('Smaller',      None, _('Smaller'), 'd', None, self.brush_smaller_cb),
-            ('MoreOpaque',   None, _('More Opaque'), 's', None, self.more_opaque_cb),
-            ('LessOpaque',   None, _('Less Opaque'), 'a', None, self.less_opaque_cb),
-            ('PickContext',  None, _('Pick Context (layer, brush and color)'), 'w', None, self.pick_context_cb),
-
-            ('Darker',       None, _('Darker'), None, None, self.darker_cb),
-            ('IncreaseHue',  None, _('Change Color Hue (counter-clockwise)'), None, None, self.increase_hue_cb),
-            ('DecreaseHue',  None, _('Change Color Hue (clockwise)'), None, None, self.decrease_hue_cb),
-            ('Purer',        None, _('Purer'), None, None, self.purer_cb),
-            ('Grayer',       None, _('Grayer'), None, None, self.grayer_cb),
-            ('Bigger',       None, _('Bigger'), 'f', None, self.brush_bigger_cb),
-
-            # Context actions are also added in init_context_actions
-            ('ContextStore', None, _('Save to Most Recently Restored'), 'q', None, self.context_cb),
-
-            ('ClearLayer',   gtk.STOCK_CLEAR, _('Clear'), 'Delete', None, self.clear_layer_cb),
-            ('CopyLayer',          gtk.STOCK_COPY, _('Copy to Clipboard'), '<control>C', None, self.copy_cb),
-            ('PasteLayer',         gtk.STOCK_PASTE, _('Paste Clipboard (Replace Layer)'), '<control>V', None, self.paste_cb),
-            ('PickLayer',    gtk.STOCK_JUMP_TO, _('Select Layer at Cursor'), 'h', None, self.pick_layer_cb),
-            ('LayerFG',      gtk.STOCK_GO_UP, _('Next (above current)'),  'Page_Up', None, self.layer_fg_cb),
-            ('LayerBG',      gtk.STOCK_GO_DOWN, _('Next (below current)'), 'Page_Down', None, self.layer_bg_cb),
-            ('NewLayerFG',   gtk.STOCK_ADD, _('New (above current)'), '<control>Page_Up', None, self.new_layer_cb),
-            ('NewLayerBG',   None, _('New (below current)'), '<control>Page_Down', None, self.new_layer_cb),
-            ('MergeLayer',   gtk.STOCK_DND_MULTIPLE, # XXX need a batter one, but stay consistent with layerswindow for now
-                             _('Merge Down'), '<control>Delete', None, self.merge_layer_cb),
-            ('RemoveLayer',  gtk.STOCK_DELETE, _('Remove'), '<shift>Delete', None, self.remove_layer_cb),
-            ('IncreaseLayerOpacity', None, _('Increase Layer Opacity'),  'p', None, self.layer_increase_opacity),
-            ('DecreaseLayerOpacity', None, _('Decrease Layer Opacity'),  'o', None, self.layer_decrease_opacity),
-
-            ('ShortcutsMenu', None, _('Shortcuts')),
-
-            ('ResetView',   gtk.STOCK_ZOOM_FIT, _('Reset and Center'), 'F12',
-                _("Reset Zoom, Rotation and Mirroring, and recenter the document"),
-                self.reset_view_cb),
-            ('Fit', None, _('Fit'), 'F10', None, self.reset_view_cb),
-            ('ResetMenu',   None, _('Reset')),
-            ('ResetZoom',   gtk.STOCK_ZOOM_100, _('Zoom'), None, None, self.reset_view_cb),
-            ('ResetRotation',   None, _('Rotation'), None, None, self.reset_view_cb),
-            ('ResetMirror', None, _('Mirror'), None, None, self.reset_view_cb),
-            ('ZoomIn', gtk.STOCK_ZOOM_IN,
-                _('Zoom In'), 'period',
-                _("Increase magnification"),
-                self.zoom_cb),
-            ('ZoomOut', gtk.STOCK_ZOOM_OUT,
-                _('Zoom Out'), 'comma',
-                _("Decrease magnification"),
-                self.zoom_cb),
-            ('RotateLeft', 'mypaint-view-rotate-left',
-                _("Rotate Counterclockwise"), '<control>Left',
-                _("Rotate the view counterclockwise"),
-                self.rotate_cb),
-            ('RotateRight', 'mypaint-view-rotate-right',
-                _("Rotate Clockwise"), '<control>Right',
-                _("Rotate the view clockwise"),
-                self.rotate_cb),
-            ('MirrorHorizontal', 'mypaint-view-mirror-horizontal',
-                _("Mirror Horizontal"), 'i',
-                _("Flip the view left to right"),
-                self.mirror_horizontal_cb),
-            ('MirrorVertical', 'mypaint-view-mirror-vertical',
-                _("Mirror Vertical"), 'u',
-                _("Flip the view upside-down"),
-                self.mirror_vertical_cb),
-            ('SoloLayer', None,
-                _('Layer Solo'), 'Home',
-                None,
-                self.solo_layer_cb), # TODO: make toggle action
-            ('ToggleAbove', None,
-                _('Hide Layers Above Current'), 'End',
-                None,
-                self.toggle_layers_above_cb), # TODO: make toggle action
-            ('BlendMode', 'mypaint-brush-blend-modes',
-                _("Blend Mode")),
-            ('LineMode', 'mypaint-line-mode',
-                _("Line Mode"))
-        ]
-        self.action_group = gtk.ActionGroup('DocumentActions')
-        ag = self.action_group
-        self.app.add_action_group(ag)
-        ag.add_actions(actions)
-
-        self.model.command_stack_observers.append(self.update_command_stack_toolitems)
+        # Actions are defined in mypaint.xml, just grab a ref to the group.
+        self.action_group = self.app.builder.get_object('DocumentActions')
+        # Undo and Redo are shown and hidden, and have their labels updated
+        # in response to user commands.
+        self.model.command_stack_observers.append(
+                self.update_command_stack_toolitems)
         self.update_command_stack_toolitems(self.model.command_stack)
-
-        toggle_actions = [
-            # name, [stock-id, [label, [accel, [tooltip, [cb, [is-active]]]]]]
-            ('PrintInputs', None,
-                _('Print Brush Input Values to Console'), None,
-                None,
-                self.print_inputs_cb),
-            ('VisualizeRendering', None,
-                _('Visualize Rendering'), None,
-                _("Show rendering updates on-screen, for debugging"),
-                self.visualize_rendering_cb),
-            ('NoDoubleBuffereing', None,
-                _('Disable GTK Double Buffering'), None,
-                None,
-                self.no_double_buffering_cb),
-            ('Symmetry', 'mypaint-symmetry-mode',
-                _("Symmetrical Painting"), '<shift>i',
-                _("Mirrors all strokes drawn around the vertical axis"),
-                self.symmetry_action_toggled_cb),
-            ]
-        ag.add_toggle_actions(toggle_actions)
 
     def init_context_actions(self):
         ag = self.action_group
@@ -639,9 +536,9 @@ class Document(object):
     def print_inputs_cb(self, action):
         self.model.brush.set_print_inputs(action.get_active())
     def visualize_rendering_cb(self, action):
-        self.tdw.visualize_rendering = action.get_active()
+        self.tdw.renderer.visualize_rendering = action.get_active()
     def no_double_buffering_cb(self, action):
-        self.tdw.set_double_buffered(not action.get_active())
+        self.tdw.renderer.set_double_buffered(not action.get_active())
 
     # BLEND MODES
     def clone_selected_brush_for_saving(self):

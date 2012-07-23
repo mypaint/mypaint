@@ -54,25 +54,7 @@ class FileHandler(object):
         #NOTE: filehandling and drawwindow are very tightly coupled
         self.save_dialog = None
 
-        file_actions = [ \
-        ('New',          gtk.STOCK_NEW, _('New'), '<control>N', _("Start with a new blank canvas"), self.new_cb),
-        ('Open',         gtk.STOCK_OPEN, _('Open...'), '<control>O', _("Open a file, replacing the current painting"), self.open_cb),
-        ('OpenLast',     None, _('Open Last'), 'F3', _("Open the last file you saved"), self.open_last_cb),
-        ('Reload',       gtk.STOCK_REFRESH, _('Reload'), 'F5', _("Reload the current file"), self.reload_cb),
-        ('Save',         gtk.STOCK_SAVE, _('Save'), '<control>S', _("Save to a file"), self.save_cb),
-        ('SaveAs',       gtk.STOCK_SAVE_AS, _('Save As...'), '<control><shift>S', _("Save to a file with a new name"), self.save_as_cb),
-        ('Export',       gtk.STOCK_SAVE_AS, _('Export...'), '<control><shift>E', _("Export to a file"), self.save_as_cb),
-        ('SaveScrap',    gtk.STOCK_ADD, _('Save As Scrap'), 'F2',
-            _("Saves to a new scrap file. "
-              "If this drawing is currently saved as a scrap, this will "
-              "write a new revision of it."),
-            self.save_scrap_cb),
-        ('PrevScrap',    gtk.STOCK_GO_BACK, _('Open Previous Scrap'), 'F6', _("Load the previous scrap file, replacing the current drawing"), self.open_scrap_cb),
-        ('NextScrap',    gtk.STOCK_GO_FORWARD, _('Open Next Scrap'), 'F7', _("Load the next scrap file, replacing the current drawing"), self.open_scrap_cb),
-        ]
-        ag = gtk.ActionGroup('FileActions')
-        ag.add_actions(file_actions)
-        self.app.add_action_group(ag)
+        ag = app.builder.get_object('FileActions')
 
         ra = gtk.RecentAction('OpenRecent', _('Open Recent'), _('Open Recent files'), None)
         ra.set_show_tips(True)

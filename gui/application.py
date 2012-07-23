@@ -73,15 +73,15 @@ class Application: # singleton
         else:
             gtk.window_set_default_icon_name('mypaint')
 
-        # Stock items,
-        # though we caould expand it to hoise actions or other stuff later
+        # Stock items, core actions, and menu structure
         builder_xml = join(datapath, "gui", "mypaint.xml")
         self.builder = gtk.Builder()
         self.builder.add_from_file(builder_xml)
-        #factory = builder.get_object("stock_icon_factory")
-        #factory.add_default() # unnecessary? Builder seems to do it for us.
+        factory = self.builder.get_object("stock_icon_factory")
+        factory.add_default()
 
-        self.ui_manager = gtk.UIManager()
+        self.ui_manager = self.builder.get_object("app_ui_manager")
+        signal_callback_objs = []
 
         gdk.set_program_class('MyPaint')
 
@@ -102,9 +102,11 @@ class Application: # singleton
         self.scratchpad_filename = ""
         self.kbm = keyboard.KeyboardManager()
         self.doc = document.Document(self)
+        signal_callback_objs.append(self.doc)
         self.scratchpad_doc = document.Document(self, leader=self.doc)
         self.brushmanager = brushmanager.BrushManager(join(datapath, 'brushes'), join(confpath, 'brushes'), self)
         self.filehandler = filehandling.FileHandler(self)
+        signal_callback_objs.append(self.filehandler)
         self.brushmodifier = brushmodifier.BrushModifier(self)
         self.linemode = linemode.LineMode(self)
 
@@ -125,6 +127,12 @@ class Application: # singleton
             factory_opts=[self]  )
         self.drawWindow = self.layout_manager.get_widget_by_role("main-window")
         self.layout_manager.show_all()
+
+        signal_callback_objs.append(self.drawWindow)
+
+        # Connect signals defined in mypaint.xml
+        callback_finder = CallbackFinder(signal_callback_objs)
+        self.builder.connect_signals(callback_finder)
 
         self.kbm.start_listening()
         self.filehandler.doc = self.doc
@@ -492,3 +500,40 @@ class PixbufDirectory:
                 raise AttributeError, str(e)
             self.cache[name] = pixbuf
         return self.cache[name]
+
+
+class CallbackFinder:
+    """Finds callbacks amongst a list of objects.
+
+    It's not possible to call `GtkBuilder.connect_signals()` more than once,
+    but we use more tnan one backend object. Thus, this little workaround is
+    necessary during construction.
+
+    See http://stackoverflow.com/questions/4637792
+
+    """
+
+    _SHOW_LOOKUP = False
+    _AMBIGUITY_CHECK = True
+
+    def __init__(self, objects):
+        self._objs = list(objects)
+
+    def __getitem__(self, name):
+        # PyGTK/GTK2 uses getitem
+        name = str(name)
+        found = [getattr(obj, name) for obj in self._objs
+                  if hasattr(obj, name)]
+        if len(found) == 1:
+            return found[0]
+        elif len(found) > 1:
+            print "WARNING: ambiguity: %r resolves to %r" % (name, found)
+            print "WARNING: using first match only."
+            return found[0]
+        else:
+            raise AttributeError, "No method named %r was defined " \
+                "on any of %r" % (name, self._objs)
+
+    # PyGI/GTK3's override uses getattr()
+    __getattr__ = __getitem__
+
