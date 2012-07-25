@@ -177,23 +177,37 @@ class AddLayer(Action):
         self._notify_document_observers()
 
 class RemoveLayer(Action):
+    """Removes a layer, replacing it with a new one if it was the last.
+    """
     display_name = _("Remove Layer")
     def __init__(self, doc,layer=None):
         self.doc = doc
         self.layer = layer
+        self.newlayer0 = None
     def redo(self):
-        assert len(self.doc.layers) > 1
         if self.layer:
             self.idx = self.doc.layers.index(self.layer)
             self.doc.layers.remove(self.layer)
         else:
             self.idx = self.doc.layer_idx
             self.layer = self.doc.layers.pop(self.doc.layer_idx)
-        if self.doc.layer_idx == len(self.doc.layers):
-            self.doc.layer_idx -= 1
+        if len(self.doc.layers) == 0:
+            if self.newlayer0 is None:
+                ly = layer.Layer("")
+                ly.content_observers.append(self.doc.layer_modified_cb)
+                ly.set_symmetry_axis(self.doc.get_symmetry_axis())
+                self.newlayer0 = ly
+            self.doc.layers.append(self.newlayer0)
+            self.doc.layer_idx = 0
+            assert self.idx == 0
+        else:
+            if self.doc.layer_idx == len(self.doc.layers):
+                self.doc.layer_idx -= 1
         self._notify_canvas_observers([self.layer])
         self._notify_document_observers()
     def undo(self):
+        if self.newlayer0 is not None:
+            self.doc.layers.remove(self.newlayer0)
         self.doc.layers.insert(self.idx, self.layer)
         self.doc.layer_idx = self.idx
         self._notify_canvas_observers([self.layer])
@@ -305,6 +319,20 @@ class ReorderLayers(Action):
         self.doc.layers[:] = self.old_order
         self.doc.layer_idx = self.doc.layers.index(self.selection)
         self._notify_canvas_observers(self.doc.layers)
+        self._notify_document_observers()
+
+class RenameLayer(Action):
+    display_name = _("Rename Layer")
+    def __init__(self, doc, name, layer):
+        self.doc = doc
+        self.new_name = name
+        self.layer = layer
+    def redo(self):
+        self.old_name = self.layer.name
+        self.layer.name = self.new_name
+        self._notify_document_observers()
+    def undo(self):
+        self.layer.name = self.old_name
         self._notify_document_observers()
 
 class SetLayerVisibility(Action):

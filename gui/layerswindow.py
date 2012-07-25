@@ -16,6 +16,15 @@ def stock_button(stock_id):
     b.add(img)
     return b
 
+def action_button(action):
+    b = gtk.Button()
+    b.set_related_action(action)
+    if b.get_child() is not None:
+        b.remove(b.get_child())
+    img = action.create_icon(gtk.ICON_SIZE_MENU)
+    img.set_tooltip_text(action.get_tooltip())
+    b.add(img)
+    return b
 
 def make_composite_op_model():
     model = gtk.ListStore(str, str)
@@ -92,29 +101,19 @@ class ToolWidget (gtk.VBox):
         common_table.attach(self.opacity_scale, 1, 2, row, row+1, gtk.FILL|gtk.EXPAND)
         row += 1
 
-        add_button = self.add_button = stock_button(gtk.STOCK_ADD)
-        move_up_button = self.move_up_button = stock_button(gtk.STOCK_GO_UP)
-        move_down_button = self.move_down_button = stock_button(gtk.STOCK_GO_DOWN)
+        add_action = self.app.find_action("NewLayerFG")
+        move_up_action = self.app.find_action("RaiseLayerInStack")
+        move_down_action = self.app.find_action("LowerLayerInStack")
+        merge_down_action = self.app.find_action("MergeLayer")
+        del_action = self.app.find_action("RemoveLayer")
+        duplicate_action = self.app.find_action("DuplicateLayer")
 
-        b = gtk.Button()
-        img = gtk.Image()
-        img.set_from_pixbuf(self.app.pixmaps.layer_duplicate)
-        b.add(img)
-        b.set_tooltip_text(_("Duplicate Layer"))
-        duplicate_button = self.duplicate_button = b
-
-
-        merge_down_button = self.merge_down_button = stock_button(gtk.STOCK_DND_MULTIPLE)  # XXX need a better one
-        del_button = self.del_button = stock_button(gtk.STOCK_DELETE)
-
-        add_button.connect('clicked', self.on_layer_add)
-        move_up_button.connect('clicked', self.move_layer, 'up')
-        move_down_button.connect('clicked', self.move_layer, 'down')
-        duplicate_button.connect('clicked', self.duplicate_layer)
-        merge_down_button.connect('clicked', self.merge_layer_down)
-        del_button.connect('clicked', self.on_layer_del)
-
-        merge_down_button.set_tooltip_text(_('Merge Down'))
+        add_button = self.add_button = action_button(add_action)
+        move_up_button = self.move_up_button = action_button(move_up_action)
+        move_down_button = self.move_down_button = action_button(move_down_action)
+        merge_down_button = self.merge_down_button = action_button(merge_down_action)
+        del_button = self.del_button = action_button(del_action)
+        duplicate_button = self.duplicate_button = action_button(duplicate_action)
 
         buttons_hbox = gtk.HBox()
         buttons_hbox.pack_start(add_button)
@@ -130,8 +129,8 @@ class ToolWidget (gtk.VBox):
         self.pack_start(common_table, expand=False)
 
         # Names for anonymous layers
-        self.init_anon_layer_names()
-        app.filehandler.file_opened_observers.append(self.init_anon_layer_names)
+        # app.filehandler.file_opened_observers.append(self.init_anon_layer_names)
+        ## TODO: may need to reset them with the new system too
 
         # Updates
         doc = app.doc.model
@@ -176,20 +175,11 @@ class ToolWidget (gtk.VBox):
 
     def update_selection(self):
         doc = self.app.doc.model
-
         # ... select_path() ust be queued with gobject.idle_add to avoid
         # glitches in the update after dragging the current row downwards.
         selected_path = (len(doc.layers) - (doc.layer_idx + 1), )
         self.treeview.get_selection().select_path(selected_path)
         self.treeview.scroll_to_cell(selected_path)
-
-        ## Reflect position of current layer in the list
-        sel_is_top = sel_is_bottom = False
-        sel_is_bottom = doc.layer_idx == 0
-        sel_is_top = doc.layer_idx == len(doc.layers)-1
-        self.move_up_button.set_sensitive(not sel_is_top)
-        self.move_down_button.set_sensitive(not sel_is_bottom)
-        self.merge_down_button.set_sensitive(not sel_is_bottom)
 
 
     def treeview_cursor_changed_cb(self, treeview, *data):
@@ -230,10 +220,8 @@ class ToolWidget (gtk.VBox):
             return True
         elif clicked_col is self.name_col:
             if event.type == gdk._2BUTTON_PRESS:
-                new_name = dialogs.ask_for_name(self, _("Name"), layer.name)
-                if new_name:
-                    layer.name = new_name
-                    self.treeview.queue_draw()
+                rename_action = self.app.find_action("RenameLayer")
+                rename_action.activate()
                 return True
         return False
 
@@ -267,46 +255,9 @@ class ToolWidget (gtk.VBox):
         self.is_updating = False
 
 
-    def move_layer(self, widget, action):
-        doc = self.app.doc.model
-        current_layer_pos = doc.layer_idx
-        if action == 'up':
-            new_layer_pos = current_layer_pos + 1
-        elif action == 'down':
-            new_layer_pos = current_layer_pos - 1
-        else:
-            return
-        if new_layer_pos < len(doc.layers) and new_layer_pos >= 0:
-            doc.move_layer(current_layer_pos, new_layer_pos, select_new=True)
-
-    def duplicate_layer(self, widget):
-        doc = self.app.doc.model
-        layer = doc.layers[doc.layer_idx]
-        name = layer.name
-        if name:
-            name = _("Copy of %s") % name
-        else:
-            layer_num = self.anon_layer_num.get(id(layer), None)
-            name = _("Copy of Untitled layer #%d") % layer_num
-        doc.duplicate_layer(doc.layer_idx, name)
-
-    def merge_layer_down(self, widget):
-        self.app.doc.model.merge_layer_down()
-
-
-    def on_layer_add(self, button):
-        doc = self.app.doc.model
-        doc.add_layer(after=doc.get_current_layer())
-
-
     def on_layer_del(self, button):
         doc = self.app.doc.model
         doc.remove_layer(layer=doc.get_current_layer())
-
-
-    def init_anon_layer_names(self, *a):
-        self.anon_layer_num = {}
-        self.anon_layer_next = 1
 
 
     def layer_name_datafunc(self, column, renderer, model, tree_iter,
@@ -316,22 +267,10 @@ class ToolWidget (gtk.VBox):
         name = layer.name
         attrs = pango.AttrList()
         if not name:
-            layer_num = self.anon_layer_num.get(id(layer), None)
-            if layer_num is None:
-                # Name every layer without a name or an entry in the cache now,
-                # in document order (not list order, which is reversed)
-                for l in self.app.doc.model.layers:
-                    if l.name:
-                        continue
-                    n = self.anon_layer_num.get(id(l), None)
-                    if n is None:
-                        n = self.anon_layer_next
-                        self.anon_layer_next += 1
-                        self.anon_layer_num[id(l)] = n
-                layer_num = self.anon_layer_num[id(layer)]
+            layer_num = self.app.doc.get_number_for_nameless_layer(layer)
             name = _(u"Untitled layer #%d") % layer_num
             name = name.encode('ascii', 'xmlcharrefreplace')
-            markup = "<small><i>%s</i></small>" % (name,)
+            markup = "<small><i>%s</i></small> " % (name,)
             if pygtkcompat.USE_GTK3:
                 parse_result = pango.parse_markup(markup, -1, '\000')
                 parse_ok, attrs, name, accel_char = parse_result

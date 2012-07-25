@@ -359,9 +359,9 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkAction" id="PickLayer">
           <property name="label" translatable="1"
-              >Select Layer at Cursor</property>
+              >Go to Layer at Cursor</property>
           <property name="tooltip" translatable="1"
-              >Choose a layer by picking a brushtroke on it</property>
+              >Choose a layer by picking a brushstroke on it</property>
           <signal name="activate" handler="pick_layer_cb"/>
         </object>
         <accelerator key="h"/>
@@ -370,9 +370,9 @@ Perhaps an increasing amount.
         <object class="GtkAction" id="LayerFG">
           <property name="stock_id">gtk-go-up</property>
           <property name="label" translatable="1"
-              >Select Layer Above</property>
+              >Go to Layer Above</property>
           <property name="tooltip" translatable="1"
-              >Move one layer up in the layers stack</property>
+              >Go one layer up in the layers stack</property>
           <signal name="activate" handler="layer_fg_cb"/>
         </object>
         <accelerator key="Page_Up"/>
@@ -381,9 +381,9 @@ Perhaps an increasing amount.
         <object class="GtkAction" id="LayerBG">
           <property name="stock_id">gtk-go-down</property>
           <property name="label" translatable="1"
-              >Select Layer Below</property>
+              >Go to Layer Below</property>
           <property name="tooltip" translatable="1"
-              >Move one layer down in the layers stack</property>
+              >Go one layer down in the layers stack</property>
           <signal name="activate" handler="layer_bg_cb"/>
         </object>
         <accelerator key="Page_Down"/>
@@ -394,7 +394,7 @@ Perhaps an increasing amount.
           <property name="label" translatable="1"
               >New Layer Above</property>
           <property name="tooltip" translatable="1"
-              >Add layer on top of the current layer, and go to it</property>
+              >Add a new layer above the current layer</property>
           <signal name="activate" handler="new_layer_cb"/>
         </object>
         <accelerator key="Page_Up" modifiers="GDK_CONTROL_MASK"/>
@@ -404,7 +404,7 @@ Perhaps an increasing amount.
           <property name="label" translatable="1"
               >New Layer Below</property>
           <property name="tooltip" translatable="1"
-              >Add layer under the current layer, and go to it</property>
+              >Add a new layer below the current layer</property>
           <signal name="activate" handler="new_layer_cb"/>
         </object>
         <accelerator key="Page_Down" modifiers="GDK_CONTROL_MASK"/>
@@ -412,9 +412,8 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkAction" id="MergeLayer">
           <!-- FIXME: need a better icon -->
-          <!-- stay consistent with layers window for now -->
           <property name="icon-name">gtk-dnd-multiple</property>
-          <property name="label" translatable="1">Merge Down</property>
+          <property name="label" translatable="1">Merge Layer Down</property>
           <property name="tooltip" translatable="1"
               >Merge layer with the one beneath it</property>
           <signal name="activate" handler="merge_layer_cb"/>
@@ -424,7 +423,9 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkAction" id="RemoveLayer">
           <property name="stock_id">gtk-delete</property>
-          <property name="label" translatable="1">Remove</property>
+          <property name="label" translatable="1">Remove Layer</property>
+          <property name="tooltip" translatable="1"
+              >Remove layer</property>
           <signal name="activate" handler="remove_layer_cb"/>
         </object>
         <accelerator key="Delete" modifiers="GDK_SHIFT_MASK"/>
@@ -445,6 +446,68 @@ Perhaps an increasing amount.
         </object>
         <accelerator key="o"/>
       </child>
+      <child>
+        <object class="GtkAction" id="RaiseLayerInStack">
+          <property name="label" translatable="1"
+              context="Move the stack position of the layer upwards"
+            >Raise Layer</property>
+          <property name="tooltip" translatable="1"
+            >Raise the current layer one step in the layers stack</property>
+          <property name="icon-name">gtk-go-up</property>
+          <signal name="activate" handler="move_layer_in_stack_cb"/>
+        </object>
+      </child>
+      <child>
+        <object class="GtkAction" id="LowerLayerInStack">
+          <property name="label" translatable="1"
+              context="Move the stack position of the layer downwards"
+            >Lower Layer</property>
+          <property name="tooltip" translatable="1"
+            >Lower the current layer one step in the layers stack</property>
+          <property name="icon-name">gtk-go-down</property>
+          <signal name="activate" handler="move_layer_in_stack_cb"/>
+        </object>
+      </child>
+      <child>
+        <object class="GtkAction" id="DuplicateLayer">
+          <property name="label" translatable="1"
+            >Duplicate Layer</property>
+          <property name="tooltip" translatable="1"
+            >Make an exact duplicate of the current layer</property>
+          <property name="icon-name">mypaint-layer-duplicate</property>
+          <signal name="activate" handler="duplicate_layer_cb"/>
+        </object>
+      </child>
+      <child>
+        <object class="GtkAction" id="RenameLayer">
+          <property name="label" translatable="1"
+            >Rename Layer</property>
+          <property name="tooltip" translatable="1"
+            >Enter a new name for the current layer</property>
+          <signal name="activate" handler="rename_layer_cb"/>
+        </object>
+      </child>
+      <child>
+        <object class="GtkToggleAction" id="LayerLockedToggle">
+          <property name="label" translatable="1"
+            >Layer Locked</property>
+          <property name="tooltip" translatable="1"
+            >The current layer's locked state: locked layers cannot be drawn to</property>
+          <signal name="activate" handler="layer_lock_toggle_cb"/>
+        </object>
+      </child>
+      <child>
+        <object class="GtkToggleAction" id="LayerVisibleToggle">
+          <property name="label" translatable="1"
+            >Layer Visible</property>
+          <property name="tooltip" translatable="1"
+            >The current layer's visibility state</property>
+          <signal name="activate" handler="layer_visible_toggle_cb"/>
+        </object>
+      </child>
+
+
+
       <!-- View manipulation -->
       <child>
         <object class="GtkAction" id="ResetView">

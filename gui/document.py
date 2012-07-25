@@ -19,8 +19,12 @@ import lib.document
 from lib import backgroundsurface, command, helpers, layer
 import tileddrawwidget, stategroup
 from brushmanager import ManagedBrush
+import dialogs
 
 class Document(object):
+
+    # Layers have this attr set temporarily if they don't have a name yet
+    _NONAME_LAYER_REFNUM_ATTR = "_document_noname_ref_number"
 
     def __init__(self, app, leader=None):
         self.app = app
@@ -68,14 +72,18 @@ class Document(object):
                 self.app.kbm.takeover_action(action)
             self.init_extra_keys()
 
+
     def init_actions(self):
         # Actions are defined in mypaint.xml, just grab a ref to the group.
         self.action_group = self.app.builder.get_object('DocumentActions')
-        # Undo and Redo are shown and hidden, and have their labels updated
-        # in response to user commands.
+
+        # Set up certain actions to reflect model state changes
         self.model.command_stack_observers.append(
                 self.update_command_stack_toolitems)
         self.update_command_stack_toolitems(self.model.command_stack)
+        self.model.doc_observers.append(self.model_structure_changed_cb)
+        self.model_structure_changed_cb(self.model)
+
 
     def init_context_actions(self):
         ag = self.action_group
@@ -292,6 +300,57 @@ class Document(object):
                 return
         self.model.select_layer(0)
         self.layerblink_state.activate(action)
+
+
+    def move_layer_in_stack_cb(self, action):
+        """Moves the current layer up or down one slot (action callback)
+
+        The direction the layer moves depends on the action name:
+        "RaiseLayerInStack" or "LowerLayerInStack".
+
+        """
+        current_layer_pos = self.model.layer_idx
+        if action.get_name() == 'RaiseLayerInStack':
+            new_layer_pos = current_layer_pos + 1
+        elif action.get_name() == 'LowerLayerInStack':
+            new_layer_pos = current_layer_pos - 1
+        else:
+            return
+        if new_layer_pos < len(self.model.layers) and new_layer_pos >= 0:
+            self.model.move_layer(current_layer_pos, new_layer_pos,
+                                  select_new=True)
+
+    def duplicate_layer_cb(self, action):
+        """Duplicates the current layer (action callback)"""
+        layer = self.model.get_current_layer()
+        name = layer.name
+        if name:
+            name = _("Copy of %s") % name
+        else:
+            layer_num = self.get_number_for_nameless_layer(layer)
+            name = _("Copy of Untitled layer #%d") % layer_num
+        self.model.duplicate_layer(self.model.layer_idx, name)
+
+
+    def rename_layer_cb(self, action):
+        """Prompts for a new name for the current layer (action callback)"""
+        layer = self.model.get_current_layer()
+        new_name = dialogs.ask_for_name(self.app.drawWindow, _("Layer Name"), layer.name)
+        if new_name:
+            self.model.rename_layer(layer, new_name)
+
+
+    def layer_lock_toggle_cb(self, action):
+        layer = self.model.layer
+        if bool(layer.locked) != bool(action.get_active()):
+            self.model.set_layer_locked(action.get_active(), layer)
+
+
+    def layer_visible_toggle_cb(self, action):
+        layer = self.model.layer
+        if bool(layer.visible) != bool(action.get_active()):
+            self.model.set_layer_visibility(action.get_active(), layer)
+
 
     # BRUSH
     def brush_bigger_cb(self, action):
@@ -608,7 +667,10 @@ class Document(object):
         # real-world tool that you're dipping into a palette, or modifying
         # using the sliders.
 
+
     def update_command_stack_toolitems(self, stack):
+        # Undo and Redo are shown and hidden, and have their labels updated
+        # in response to user commands.
         ag = self.action_group
         undo_action = ag.get_action("Undo")
         undo_action.set_sensitive(len(stack.undo_stack) > 0)
@@ -629,5 +691,62 @@ class Document(object):
         redo_action.set_label(desc)
         redo_action.set_tooltip(desc)
 
+
+    def model_structure_changed_cb(self, doc):
+        # Handle model structural changes.
+        ag = self.action_group
+
+        # Reflect position of current layer in the list.
+        sel_is_top = sel_is_bottom = False
+        sel_is_bottom = doc.layer_idx == 0
+        sel_is_top = doc.layer_idx == len(doc.layers)-1
+        ag.get_action("RaiseLayerInStack").set_sensitive(not sel_is_top)
+        ag.get_action("LowerLayerInStack").set_sensitive(not sel_is_bottom)
+        ag.get_action("LayerFG").set_sensitive(not sel_is_top)
+        ag.get_action("LayerBG").set_sensitive(not sel_is_bottom)
+        ag.get_action("MergeLayer").set_sensitive(not sel_is_bottom)
+        ag.get_action("PickLayer").set_sensitive(len(doc.layers) > 1)
+
+        # The current layer's status
+        layer = doc.layer
+        action = ag.get_action("LayerLockedToggle")
+        if bool(action.get_active()) != bool(layer.locked):
+            action.set_active(bool(layer.locked))
+        action = ag.get_action("LayerVisibleToggle")
+        if bool(action.get_active()) != bool(layer.visible):
+            action.set_active(bool(layer.visible))
+
     def frame_changed_cb(self):
         self.tdw.queue_draw()
+
+
+    def get_number_for_nameless_layer(self, layer):
+        """Assigns a unique integer for otherwise nameless layers
+
+        For use by the layers window, mainly: when presenting the layers stack
+        we need a unique number to make it distinguishable from other layers.
+
+        """
+        assert not layer.name
+        num = getattr(layer, self._NONAME_LAYER_REFNUM_ATTR, None)
+        if num is None:
+            seen_nums = set([0])
+            for l in self.model.layers:
+                if l.name:
+                    continue
+                n = getattr(l, self._NONAME_LAYER_REFNUM_ATTR, None)
+                if n is not None:
+                    seen_nums.add(n)
+            # Hmm. Which method is best?
+            if True:
+                # High water mark
+                num = max(seen_nums) + 1
+            else:
+                # Reuse former IDs
+                num = len(self.model.layers)
+                for i in xrange(1, num):
+                    if i not in seen_nums:
+                        num = i
+                        break
+            setattr(layer, self._NONAME_LAYER_REFNUM_ATTR, num)
+        return num

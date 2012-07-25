@@ -395,10 +395,12 @@ class Document():
 
 
     def remove_layer(self,layer=None):
-        if len(self.layers) > 1:
-            self.do(command.RemoveLayer(self,layer))
-        else:
-            self.clear_layer()
+        self.do(command.RemoveLayer(self,layer))
+
+
+    def rename_layer(self, layer, name):
+        self.do(command.RenameLayer(self, name, layer))
+
 
     def merge_layer_down(self):
         dst_idx = self.layer_idx - 1

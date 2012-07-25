@@ -148,19 +148,24 @@
       <separator/>
       <menuitem action='BackgroundWindow'/>
       <separator/>
-      <menuitem action='ClearLayer'/>
-      <menuitem action='RemoveLayer'/>
-      <menuitem action='MergeLayer'/>
+      <menuitem action='LayerFG'/>
+      <menuitem action='LayerBG'/>
+      <menuitem action='PickLayer'/>
       <separator/>
       <menuitem action='NewLayerFG'/>
       <menuitem action='NewLayerBG'/>
       <separator/>
-      <menuitem action='PickLayer'/>
-      <menuitem action='LayerFG'/>
-      <menuitem action='LayerBG'/>
+      <menuitem action="RaiseLayerInStack"/>
+      <menuitem action="LowerLayerInStack"/>
+      <menuitem action="LayerLockedToggle"/>
+      <menuitem action="LayerVisibleToggle"/>
       <separator/>
       <menuitem action='CopyLayer'/>
       <menuitem action='PasteLayer'/>
+      <menuitem action='RenameLayer'/>
+      <menuitem action='ClearLayer'/>
+      <menuitem action='RemoveLayer'/>
+      <menuitem action='MergeLayer'/>
       <separator/>
       <menuitem action='IncreaseLayerOpacity'/>
       <menuitem action='DecreaseLayerOpacity'/>
