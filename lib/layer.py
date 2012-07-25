@@ -37,8 +37,10 @@ class Layer:
         self.visible = True
         self.locked = False
         self.compositeop = compositeop
-        # Called when contents of layer changed,
-        # with the bounding box of the changed region
+
+        #: List of content observers
+        #: These callbacks are invoked when the contents of the layer change,
+        #: with the bounding box of the changed region (x, y, w, h).
         self.content_observers = []
 
         # Forward from surface implementation

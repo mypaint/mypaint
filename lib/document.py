@@ -27,9 +27,15 @@ LOAD_CHUNK_SIZE = 64*1024
 
 from layer import DEFAULT_COMPOSITE_OP, VALID_COMPOSITE_OPS
 
+
 class SaveLoadError(Exception):
-    """Expected errors on loading or saving, like missing permissions or non-existing files."""
+    """Expected errors on loading or saving
+
+    Covers stuff like missing permissions or non-existing files.
+
+    """
     pass
+
 
 class Document():
     """
@@ -56,12 +62,12 @@ class Document():
         self.brush = brush.Brush(brushinfo)
         self.brush.brushinfo.observers.append(self.brushsettings_changed_cb)
         self.stroke = None
-        self.canvas_observers = []
-        self.stroke_observers = [] # callback arguments: stroke, brush (brush is a temporary read-only convenience object)
-        self.doc_observers = []
+        self.canvas_observers = []  #: See `layer_modified_cb()`
+        self.stroke_observers = [] #: See `split_stroke()`
+        self.doc_observers = [] #: See `call_doc_observers()`
         self.frame_observers = []
         self.command_stack_observers = []
-        self.symmetry_observers = []
+        self.symmetry_observers = []  #: See `set_symmetry_axis()`
         self.__symmetry_axis = None
         self.clear(True)
 
@@ -117,7 +123,15 @@ class Document():
         for f in self.frame_observers: f()
     frame_enabled = property(get_frame_enabled)
 
+
     def call_doc_observers(self):
+        """Announce major structural changes via `doc_observers`.
+
+        This is invoked to announce major structural changes such as the layers
+        changing or a new document being loaded. The callbacks in the list are
+        invoked with a single argument, `self`.
+
+        """
         for f in self.doc_observers:
             f(self)
         return True
@@ -135,6 +149,7 @@ class Document():
         A value of `None` inactivates symmetrical painting. After setting, all
         registered `symmetry_observers` are called without arguments.
         """
+        # TODO: make this undoable?
         for layer in self.layers:
             layer.set_symmetry_axis(x)
         self.__symmetry_axis = x
@@ -169,27 +184,41 @@ class Document():
         return self.layers[self.layer_idx]
     layer = property(get_current_layer)
 
+
     def split_stroke(self):
+        """Splits the current stroke, announcing the newly stacked stroke
+
+        The stroke being drawn is pushed onto to the command stack and the
+        callbacks in the list `self.stroke_observers` are invoked with two
+        arguments: the newly completed stroke, and the brush used. The brush
+        argument is a temporary read-only convenience object.
+
+        This is called every so often when drawing a single long brushstroke on
+        input to allow parts of a long line to be undone.
+
+        """
         if not self.stroke: return
         self.stroke.stop_recording()
         if not self.stroke.empty:
-            self.command_stack.do(command.Stroke(self, self.stroke, self.snapshot_before_stroke))
+            cmd = command.Stroke(self, self.stroke,
+                                 self.snapshot_before_stroke)
+            self.command_stack.do(cmd)
             del self.snapshot_before_stroke
             self.unsaved_painting_time += self.stroke.total_painting_time
             for f in self.stroke_observers:
                 f(self.stroke, self.brush)
         self.stroke = None
 
-    def brushsettings_changed_cb(self, settings):
-        # The brush settings below are expected to change often in
-        # mid-stroke eg. by heavy keyboard usage. If only those
-        # change, we don't create a new undo step. (And thus als no
-        # separate pickable stroke in the strokemap.)
-        leightweight_brushsettings = set((
+
+    def brushsettings_changed_cb(self, settings, lightweight_settings=set([
             'radius_logarithmic', 'color_h', 'color_s', 'color_v',
             'opaque', 'hardness', 'slow_tracking', 'slow_tracking_per_dab'
-            ))
-        if settings - leightweight_brushsettings:
+            ])):
+        # The lightweight brush settings are expected to change often in
+        # mid-stroke e.g. by heavy keyboard usage. If only those change, we
+        # don't create a new undo step. (And thus also no separate pickable
+        # stroke in the strokemap.)
+        if settings - lightweight_settings:
             self.split_stroke()
 
     def select_layer(self, idx):
@@ -212,7 +241,31 @@ class Document():
         if not self.layer.is_empty():
             self.do(command.ClearLayer(self))
 
+
     def stroke_to(self, dtime, x, y, pressure, xtilt, ytilt):
+        """Draws a stroke to the current layer with the current brush.
+
+        This is called by GUI code in response to motion events on the canvas -
+        both with and without pressure. If enough time has elapsed,
+        `split_stroke()` is called.
+
+        :param self:
+            This is an object method.
+        :param float dtime:
+            Floating-point number of seconds since the last call to this,
+            function, for motion interpolation etc.
+        :param float x:
+            Document X position of the end-point of this stroke.
+        :param float y:
+            Document Y position of the end-point of this stroke.
+        :param float pressure:
+            Pressure, ranging from 0.0 to 1.0.
+        :param float xtilt:
+            X-axis tilt, ranging from -1.0 to 1.0.
+        :param float ytilt:
+            Y-axis tilt, ranging from -1.0 to 1.0.
+
+        """
         if not self.stroke:
             self.stroke = stroke.Stroke()
             self.stroke.start_recording(self.brush)
@@ -225,6 +278,7 @@ class Document():
         if split:
             self.split_stroke()
 
+
     def redo_last_stroke_with_different_brush(self, brush):
         cmd = self.get_last_command()
         if not isinstance(cmd, command.Stroke):
@@ -236,14 +290,33 @@ class Document():
         new_stroke.render(self.layer._surface)
         self.do(command.Stroke(self, new_stroke, snapshot_before))
 
+
     def layer_modified_cb(self, *args):
+        """Forwards region modify notifications (area invalidations)
+
+        GUI code can respond to these notifications by appending callbacks to
+        `self.canvas_observers`. Each callback is invoked with the bounding box
+        of the changed region: ``cb(x, y, w, h)``, or ``cb(0, 0, 0, 0)`` to
+        denote that everything needs to be redrawn.
+
+        See also: `invalidate_all()`.
+
+        """
         # for now, any layer modification is assumed to be visible
         for f in self.canvas_observers:
             f(*args)
 
+
     def invalidate_all(self):
+        """Marks everything as invalid.
+
+        Invokes the callbacks in `self.canvas_observers` passing the notation
+        for "everything" as arguments. See `layer_modified_cb()` for details.
+
+        """
         for f in self.canvas_observers:
             f(0, 0, 0, 0)
+
 
     def undo(self):
         self.split_stroke()
@@ -263,11 +336,19 @@ class Document():
         self.split_stroke()
         self.command_stack.do(cmd)
 
+
     def get_last_command(self):
         self.split_stroke()
         return self.command_stack.get_last_command()
 
+
     def get_bbox(self):
+        """Returns the dynamic bounding box of the document.
+
+        This is currently the union of all the bounding boxes of all of the
+        layers. It disregards the user-chosen frame.
+
+        """
         res = helpers.Rect()
         for layer in self.layers:
             # OPTIMIZE: only visible layers...
@@ -276,10 +357,14 @@ class Document():
             res.expandToIncludeRect(bbox)
         return res
 
+
     def get_effective_bbox(self):
         """Return the effective bounding box of the document.
+
         If the frame is enabled, this is the bounding box of the frame, 
-        else the (dynamic) bounding box of the document."""
+        else the (dynamic) bounding box of the document.
+
+        """
         return self.get_frame() if self.frame_enabled else self.get_bbox()
 
     def blit_tile_into(self, dst_8bit, dst_has_alpha, tx, ty, mipmap_level=0, layers=None, background=None):
@@ -304,8 +389,10 @@ class Document():
 
         mypaintlib.tile_convert_rgbu16_to_rgbu8(dst, dst_8bit)
 
+
     def add_layer(self, insert_idx=None, after=None, name=''):
         self.do(command.AddLayer(self, insert_idx, after, name))
+
 
     def remove_layer(self,layer=None):
         if len(self.layers) > 1:
@@ -320,6 +407,7 @@ class Document():
         self.do(command.MergeLayer(self, dst_idx))
         return True
 
+
     def load_layer_from_pixbuf(self, pixbuf, x=0, y=0):
         arr = helpers.gdkpixbuf2numpy(pixbuf)
         s = tiledsurface.Surface()
@@ -327,39 +415,55 @@ class Document():
         self.do(command.LoadLayer(self, s))
         return bbox
 
+
     def load_layer_from_png(self, filename, x=0, y=0, feedback_cb=None):
         s = tiledsurface.Surface()
         bbox = s.load_from_png(filename, x, y, feedback_cb)
         self.do(command.LoadLayer(self, s))
         return bbox
 
+
     def set_layer_visibility(self, visible, layer):
+        """Sets the visibility of a layer."""
         cmd = self.get_last_command()
         if isinstance(cmd, command.SetLayerVisibility) and cmd.layer is layer:
             self.undo()
         self.do(command.SetLayerVisibility(self, visible, layer))
 
+
     def set_layer_locked(self, locked, layer):
+        """Sets the input-locked status of a layer."""
         cmd = self.get_last_command()
         if isinstance(cmd, command.SetLayerLocked) and cmd.layer is layer:
             self.undo()
         self.do(command.SetLayerLocked(self, locked, layer))
 
+
     def set_layer_opacity(self, opacity, layer=None):
-        """Sets the opacity of a layer. If layer=None, works on the current layer"""
+        """Sets the opacity of a layer.
+
+        If layer=None, works on the current layer.
+
+        """
         cmd = self.get_last_command()
         if isinstance(cmd, command.SetLayerOpacity):
             self.undo()
         self.do(command.SetLayerOpacity(self, opacity, layer))
 
+
     def set_layer_compositeop(self, compositeop, layer=None):
-        """Sets the composition-operation of a layer. If layer=None, works on the current layer"""
+        """Sets the compositing operator for a layer.
+
+        If layer=None, works on the current layer.
+
+        """
         if compositeop not in VALID_COMPOSITE_OPS:
             compositeop = DEFAULT_COMPOSITE_OP
         cmd = self.get_last_command()
         if isinstance(cmd, command.SetLayerCompositeOp):
             self.undo()
         self.do(command.SetLayerCompositeOp(self, compositeop, layer))
+
 
     def set_background(self, obj):
         # This is not an undoable action. One reason is that dragging
@@ -371,13 +475,16 @@ class Document():
 
         self.invalidate_all()
 
+
     def load_from_pixbuf(self, pixbuf):
         """Load a document from a pixbuf."""
         self.clear()
         bbox = self.load_layer_from_pixbuf(pixbuf)
         self.set_frame(*bbox)
 
+
     def is_layered(self):
+        """True if there are more than one nonempty layers."""
         count = 0
         for l in self.layers:
             if not l.is_empty():
@@ -385,13 +492,26 @@ class Document():
         return count > 1
 
     def is_empty(self):
+        """True if there is only one layer and it is empty."""
         return len(self.layers) == 1 and self.layer.is_empty()
 
     def save(self, filename, **kwargs):
+        """Save the document to a file.
+
+        :param str filename:
+            The filename to save to. The extension is used to determine format,
+            and a ``save_*()`` method is chosen to perform the save.
+        :param dict kwargs:
+            Passed on to the chosen save method.
+        :raise SaveLoadError:
+            The error string will be set to something descriptive and
+            presentable to the user.
+
+        """
         self.split_stroke()
         junk, ext = os.path.splitext(filename)
         ext = ext.lower().replace('.', '')
-        save = getattr(self, 'save_' + ext, self.unsupported)
+        save = getattr(self, 'save_' + ext, self._unsupported)
         try:
             save(filename, **kwargs)
         except gobject.GError, e:
@@ -406,14 +526,27 @@ class Document():
             raise SaveLoadError, _('Unable to save: %s') % e.strerror
         self.unsaved_painting_time = 0.0
 
+
     def load(self, filename, **kwargs):
+        """Load the document from a file.
+
+        :param str filename:
+            The filename to load from. The extension is used to determine
+            format, and a ``load_*()`` method is chosen to perform the load.
+        :param dict kwargs:
+            Passed on to the chosen loader method.
+        :raise SaveLoadError:
+            The error string will be set to something descriptive and
+            presentable to the user.
+
+        """
         if not os.path.isfile(filename):
             raise SaveLoadError, _('File does not exist: %s') % repr(filename)
         if not os.access(filename,os.R_OK):
             raise SaveLoadError, _('You do not have the necessary permissions to open file: %s') % repr(filename)
         junk, ext = os.path.splitext(filename)
         ext = ext.lower().replace('.', '')
-        load = getattr(self, 'load_' + ext, self.unsupported)
+        load = getattr(self, 'load_' + ext, self._unsupported)
         try:
             load(filename, **kwargs)
         except gobject.GError, e:
@@ -426,7 +559,8 @@ class Document():
         self.unsaved_painting_time = 0.0
         self.call_doc_observers()
 
-    def unsupported(self, filename, *args, **kwargs):
+
+    def _unsupported(self, filename, *args, **kwargs):
         raise SaveLoadError, _('Unknown file format extension: %s') % repr(filename)
 
     def render_as_pixbuf(self, *args, **kwargs):

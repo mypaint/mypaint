@@ -513,9 +513,6 @@ class CallbackFinder:
 
     """
 
-    _SHOW_LOOKUP = False
-    _AMBIGUITY_CHECK = True
-
     def __init__(self, objects):
         self._objs = list(objects)
 
