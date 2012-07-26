@@ -327,3 +327,215 @@ rgba_composite_color_burn_rgbu
 }
 
 
+
+// Non-separable blend modes.
+// http://dvcs.w3.org/hg/FXTF/rawfile/tip/compositing/index.html
+// Same as the ones in Cairo, and in the PDF specs.
+
+
+#ifndef __HAVE_NONSEP_MAPFUNC
+#define __HAVE_NONSEP_MAPFUNC
+typedef void (*_nonseparable_mapfunc) (const uint16_t /* src red in */,
+                                       const uint16_t /* src green in */,
+                                       const uint16_t /* src blue in */,
+                                       uint16_t * /* dst red in/out */,
+                                       uint16_t * /* dst green in/out */,
+                                       uint16_t * /* dst blue in/out */);
+#endif // __HAVE_NONSEP_MAPFUNC
+
+
+
+static inline void
+#ifdef COMPOSITE_MODE_RGBA
+_rgba_composite_nonseparable_over_rgba
+#else
+_rgba_composite_nonseparable_over_rgbu
+#endif
+    (const uint16_t src_p[],
+     uint16_t dst_p[],
+     const uint16_t opac,
+     const _nonseparable_mapfunc mapfunc)
+{
+    uint16_t src_r, src_g, src_b;
+    src_r = src_g = src_b = 0;
+    const uint16_t src_a = src_p[3];
+    if (src_a == 0)
+        return;
+
+    // De-premult
+    src_r = ((1<<15)*((uint32_t)src_p[0])) / src_a;
+    src_g = ((1<<15)*((uint32_t)src_p[1])) / src_a;
+    src_b = ((1<<15)*((uint32_t)src_p[2])) / src_a;
+
+    // Create a temporary "source" colour based on dst_p, colorized in
+    // the desired way by src_p.
+
+    uint16_t tmp_p[4] = { dst_p[0], dst_p[1], dst_p[2], src_a };
+    mapfunc ( src_r, src_g, src_b,
+              &tmp_p[0], &tmp_p[1], &tmp_p[2] );
+
+    // Re-premult
+    tmp_p[0] = ((uint32_t) tmp_p[0]) * src_a / (1<<15);
+    tmp_p[1] = ((uint32_t) tmp_p[1]) * src_a / (1<<15);
+    tmp_p[2] = ((uint32_t) tmp_p[2]) * src_a / (1<<15);
+
+    // Combine it in the normal way with the destination layer.
+#ifdef COMPOSITE_MODE_RGBA
+    rgba_composite_src_over_rgba (tmp_p, dst_p, opac);
+#else
+    rgba_composite_src_over_rgbu (tmp_p, dst_p, opac);
+#endif
+}
+
+
+
+#ifndef __HAVE_SVGFX_BLENDS
+#define __HAVE_SVGFX_BLENDS
+
+// Luma/luminance coefficients, from the spec linked above as of Mercurial
+// revision fc58b9389b07, dated Thu Jul 26 07:27:58 2012. They're similar, but
+// not identical to, the ones defined in Rec. ITU-R BT.601-7 Section 2.5.1.
+
+static const float SVGFX_LUM_R_COEFF = 0.3;
+static const float SVGFX_LUM_G_COEFF = 0.59;
+static const float SVGFX_LUM_B_COEFF = 0.11;
+
+
+// Returns the luma/luminance of an RGB triple, expressed as scaled ints.
+
+#define svgfx_lum(r,g,b) \
+   (  (r) * (uint16_t)(SVGFX_LUM_R_COEFF * (1<<15)) \
+    + (g) * (uint16_t)(SVGFX_LUM_G_COEFF * (1<<15)) \
+    + (b) * (uint16_t)(SVGFX_LUM_B_COEFF * (1<<15))  )
+
+
+#ifndef MIN3
+#define MIN3(a,b,c) ( (a)<(b) ? MIN((a), (c)) : MIN((b), (c)) )
+#endif
+#ifndef MAX3
+#define MAX3(a,b,c) ( (a)>(b) ? MAX((a), (c)) : MAX((b), (c)) )
+#endif
+
+
+
+// Sets the target's luma/luminance to that of the input, retaining its hue
+// angle and clipping the saturation if necessary.
+//
+//
+// All params are scaled ints having factor 2**-15, and must not store
+// premultiplied alpha.
+
+
+inline void
+svgfx_blend_color(const uint16_t r0,
+                  const uint16_t g0,
+                  const uint16_t b0,
+                  uint16_t *r1,
+                  uint16_t *g1,
+                  uint16_t *b1)
+{
+    // Spec: SetLum()
+    // Colours potentially can go out of band to both sides, hence the
+    // temporary representation inflation.
+    const uint16_t lum1 = svgfx_lum(*r1, *g1, *b1) / (1<<15);
+    const uint16_t lum0 = svgfx_lum(r0, g0, b0) / (1<<15);
+    const int16_t diff = lum1 - lum0;
+    int32_t r = r0 + diff;
+    int32_t g = g0 + diff;
+    int32_t b = b0 + diff;
+
+    // Spec: ClipColor()
+    // Trim out of band values, retaining lum.
+    int32_t lum = svgfx_lum(r, g, b) / (1<<15);
+    int32_t cmin = MIN3(r, g, b);
+    int32_t cmax = MAX3(r, g, b);
+
+    if (cmin < 0) {
+        r = lum + (((r - lum) * lum) / (lum - cmin));
+        g = lum + (((g - lum) * lum) / (lum - cmin));
+        b = lum + (((b - lum) * lum) / (lum - cmin));
+    }
+    if (cmax > (1<<15)) {
+        r = lum + (((r - lum) * ((1<<15)-lum)) / (cmax - lum));
+        g = lum + (((g - lum) * ((1<<15)-lum)) / (cmax - lum));
+        b = lum + (((b - lum) * ((1<<15)-lum)) / (cmax - lum));
+    }
+#ifdef HEAVY_DEBUG
+    assert((0 <= r) && (r <= (1<<15)));
+    assert((0 <= g) && (g <= (1<<15)));
+    assert((0 <= b) && (b <= (1<<15)));
+#endif
+
+    *r1 = r;
+    *g1 = g;
+    *b1 = b;
+}
+
+
+
+// The two modes are defined to be symmetrical (whether or not that's really a
+// good idea artistically). The Luminosity blend mode suffers from contrast
+// issues, but it's likely to be used less by artists.
+
+inline void
+svgfx_blend_luminosity(const uint16_t r0,
+                       const uint16_t g0,
+                       const uint16_t b0,
+                       uint16_t *r1,
+                       uint16_t *g1,
+                       uint16_t *b1)
+{
+    uint16_t r = r0;
+    uint16_t g = g0;
+    uint16_t b = b0;
+    svgfx_blend_color(*r1, *g1, *b1, &r, &g, &b);
+    *r1 = r;
+    *g1 = g;
+    *b1 = b;
+}
+
+
+#endif // __HAVE_SVGFX_BLENDS
+
+
+
+static inline void
+#ifdef COMPOSITE_MODE_RGBA
+rgba_composite_color_rgba
+#else
+rgba_composite_color_rgbu
+#endif
+    (const uint16_t src_p[],
+     uint16_t dst_p[],
+     const uint16_t opac)
+{
+#ifdef COMPOSITE_MODE_RGBA
+_rgba_composite_nonseparable_over_rgba
+#else
+_rgba_composite_nonseparable_over_rgbu
+#endif
+                                      (src_p, dst_p, opac,
+                                       svgfx_blend_color);
+}
+
+
+static inline void
+#ifdef COMPOSITE_MODE_RGBA
+rgba_composite_luminosity_rgba
+#else
+rgba_composite_luminosity_rgbu
+#endif
+    (const uint16_t src_p[],
+     uint16_t dst_p[],
+     const uint16_t opac)
+{
+#ifdef COMPOSITE_MODE_RGBA
+_rgba_composite_nonseparable_over_rgba
+#else
+_rgba_composite_nonseparable_over_rgbu
+#endif
+                                      (src_p, dst_p, opac,
+                                       svgfx_blend_luminosity);
+}
+
+

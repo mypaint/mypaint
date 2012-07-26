@@ -331,6 +331,108 @@ tile_composite_color_burn (PyObject *src,
   _COMPOSITE_TILES(src, dst, dst_has_alpha, opac, color_burn);
 }
 
+
+
+/**
+ * tile_composite_color
+ *
+ * @src: upper source tile, unmodified
+ * @dst: lower destination tile, will be modified
+ * @dst_has_alpha: true if @dst's alpha should be processed
+ * @src_opacity: overall multiplier for @src's alpha
+ *
+ * Colorizes @dst with hues and saturations from @src. Colourizing with
+ * pure grey has no effect.
+ *
+ * Dimensions of both arrays must be (TILE_SIZE, TILE_SIZE, 4). If
+ * @dst_has_alpha is false, @dst's alpha is ignored and treated as 100%, which
+ * results in faster operation and generates opaque output.
+ */
+
+void
+tile_composite_color (PyObject *src,
+                      PyObject *dst,
+                      const bool dst_has_alpha,
+                      const float src_opacity)
+{
+#ifdef HEAVY_DEBUG
+  assert(PyArray_DIM(src, 0) == TILE_SIZE);
+  assert(PyArray_DIM(src, 1) == TILE_SIZE);
+  assert(PyArray_DIM(src, 2) == 4);
+  assert(PyArray_TYPE(src) == NPY_UINT16);
+  assert(PyArray_ISCARRAY(src));
+
+  assert(PyArray_DIM(dst, 0) == TILE_SIZE);
+  assert(PyArray_DIM(dst, 1) == TILE_SIZE);
+  assert(PyArray_DIM(dst, 2) == 4);
+  assert(PyArray_TYPE(dst) == NPY_UINT16);
+  assert(PyArray_ISBEHAVED(dst));
+#endif
+
+  PyArrayObject* dst_arr = ((PyArrayObject*)dst);
+#ifdef HEAVY_DEBUG
+  assert(dst_arr->strides[1] == 4*sizeof(uint16_t));
+  assert(dst_arr->strides[2] ==   sizeof(uint16_t));
+#endif
+
+  const uint32_t opac = CLAMP(src_opacity * (1<<15) + 0.5, 0, (1<<15));
+  if (opac == 0) return;
+
+  _COMPOSITE_TILES(src, dst, dst_has_alpha, opac, color);
+}
+
+
+/**
+ * tile_composite_luminosity
+ *
+ * @src: upper source tile, unmodified
+ * @dst: lower destination tile, will be modified
+ * @dst_has_alpha: true if @dst's alpha should be processed
+ * @src_opacity: overall multiplier for @src's alpha
+ *
+ * Sets the lightness of @dst to that of the pixels in @src. This is the
+ * exact inverse of tile_composite_color().
+ *
+ * Dimensions of both arrays must be (TILE_SIZE, TILE_SIZE, 4). If
+ * @dst_has_alpha is false, @dst's alpha is ignored and treated as 100%, which
+ * results in faster operation and generates opaque output.
+ */
+
+void
+tile_composite_luminosity (PyObject *src,
+                           PyObject *dst,
+                           const bool dst_has_alpha,
+                           const float src_opacity)
+{
+#ifdef HEAVY_DEBUG
+  assert(PyArray_DIM(src, 0) == TILE_SIZE);
+  assert(PyArray_DIM(src, 1) == TILE_SIZE);
+  assert(PyArray_DIM(src, 2) == 4);
+  assert(PyArray_TYPE(src) == NPY_UINT16);
+  assert(PyArray_ISCARRAY(src));
+
+  assert(PyArray_DIM(dst, 0) == TILE_SIZE);
+  assert(PyArray_DIM(dst, 1) == TILE_SIZE);
+  assert(PyArray_DIM(dst, 2) == 4);
+  assert(PyArray_TYPE(dst) == NPY_UINT16);
+  assert(PyArray_ISBEHAVED(dst));
+#endif
+
+  PyArrayObject* dst_arr = ((PyArrayObject*)dst);
+#ifdef HEAVY_DEBUG
+  assert(dst_arr->strides[1] == 4*sizeof(uint16_t));
+  assert(dst_arr->strides[2] ==   sizeof(uint16_t));
+#endif
+
+  const uint32_t opac = CLAMP(src_opacity * (1<<15) + 0.5, 0, (1<<15));
+  if (opac == 0) return;
+
+  _COMPOSITE_TILES(src, dst, dst_has_alpha, opac, luminosity);
+}
+
+
+
+
 // used to e.g. copy the background before starting to composite over it
 //
 // simply array copying (numpy assignment operator) is about 13 times slower, sadly

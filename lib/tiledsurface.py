@@ -46,6 +46,8 @@ svg2composite_func = {
     'svg:screen': mypaintlib.tile_composite_screen,
     'svg:color-burn': mypaintlib.tile_composite_color_burn,
     'svg:color-dodge': mypaintlib.tile_composite_color_dodge,
+    'svg:color': mypaintlib.tile_composite_color,
+    'svg:luminosity': mypaintlib.tile_composite_luminosity,
     }
 
 # tile for read-only operations on empty spots
