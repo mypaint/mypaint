@@ -60,25 +60,22 @@ void draw_dab_pixels_BlendMode_Normal (uint16_t * mask,
 
 
 // Colorize: apply the source hue and saturation, retaining the target
-// brightness. Same thing as in the PDF spec addendum but with different Luma
-// coefficients. Colorize should be used at either 1.0 or 0.0, values in
+// brightness. Same thing as in the PDF spec addendum, and upcoming SVG
+// compositing drafts. Colorize should be used at either 1.0 or 0.0, values in
 // between probably aren't very useful. This blend mode retains the target
 // alpha, and any pure whites and blacks in the target layer.
 
 #define MAX3(a, b, c) ((a)>(b)?MAX((a),(c)):MAX((b),(c)))
 #define MIN3(a, b, c) ((a)<(b)?MIN((a),(c)):MIN((b),(c)))
 
-/*
-// From ITU Rec. BT.601 (SDTV)
-static const float LUMA_RED_COEFF   = 0.3;
-static const float LUMA_GREEN_COEFF = 0.59;
-static const float LUMA_BLUE_COEFF  = 0.11;
-*/
+// For consistency, these are the values used by MyPaint's Color and
+// Luminosity layer blend modes, which in turn are defined by
+// http://dvcs.w3.org/hg/FXTF/rawfile/tip/compositing/index.html.
+// Same as ITU Rec. BT.601 (SDTV) rounded to 2 decimal places.
 
-// From ITU Rec. BT.709 (HDTV and sRGB)
-static const uint16_t LUMA_RED_COEFF = 0.2126 * (1<<15);
-static const uint16_t LUMA_GREEN_COEFF = 0.7152 * (1<<15);
-static const uint16_t LUMA_BLUE_COEFF = 0.0722 * (1<<15);
+static const float LUMA_RED_COEFF   = 0.3 * (1<<15);
+static const float LUMA_GREEN_COEFF = 0.59 * (1<<15);
+static const float LUMA_BLUE_COEFF  = 0.11 * (1<<15);
 
 // See also http://en.wikipedia.org/wiki/YCbCr
 

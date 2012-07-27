@@ -782,11 +782,21 @@ def YDbDr_to_RGB(ydbdr):
 # ref https://code.google.com/p/colour-space-viewer/
 # ref Joblove G.H., Greenberg D., Color spaces for computer graphics.
 
+
+# For consistency, use the same weights that the Color and Luminosity layer
+# blend modes use, as also used by brushlib's Colorize brush blend mode. All
+# following http://dvcs.w3.org/hg/FXTF/rawfile/tip/compositing/index.html
+# here. BT.601 YCbCr has a nearly identical definition of luma.
+
+_SVGFX_RED_WEIGHT = 0.3
+_SVGFX_GREEN_WEIGHT = 0.59
+_SVGFX_BLUE_WEIGHT = 0.11
+
 def RGB_to_HCY(rgb):
     _r, _g, _b = rgb
-    r_weight = 0.299
-    g_weight = 0.587
-    b_weight = 0.114
+    r_weight = _SVGFX_RED_WEIGHT
+    g_weight = _SVGFX_GREEN_WEIGHT
+    b_weight = _SVGFX_BLUE_WEIGHT
     M = max(_r, _g, _b)
     m = min(_r, _g, _b)
     y_ = r_weight*_r + g_weight*_g + b_weight*_b
@@ -840,9 +850,9 @@ def RGB_to_HCY(rgb):
 
 def HCY_to_RGB(hcy):
     _h, _c, _y = hcy
-    r_weight = 0.299
-    g_weight = 0.587
-    b_weight = 0.114
+    r_weight = _SVGFX_RED_WEIGHT
+    g_weight = _SVGFX_GREEN_WEIGHT
+    b_weight = _SVGFX_BLUE_WEIGHT
 
     # wtf
     if _h >= 1.0:
