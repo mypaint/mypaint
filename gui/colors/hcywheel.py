@@ -609,7 +609,7 @@ class HCYMaskEditorWheel (HCYHueChromaWheel):
     def __button_release_cb(self, widget, event):
         # Ends the current drag & cleans up, or handle other clicks.
         if self.__drag_func is None:
-            # Clicking when not in a drag add a new shape
+            # Clicking when not in a drag adds a new shape
             if self.__last_cursor is self.__add_cursor:
                 self.__add_void(event.x, event.y)
         else:
@@ -631,6 +631,7 @@ class HCYMaskEditorWheel (HCYHueChromaWheel):
 
     def __cleanup_mask(self):
         mask = self.get_mask()
+
         # Drop points from all shapes which are not part of the convex hulls.
         for shape in mask:
             if len(shape) <= 3:
@@ -641,6 +642,7 @@ class HCYMaskEditorWheel (HCYHueChromaWheel):
                 if point in edge_points:
                     continue
                 shape.remove(col)
+
         # Drop shapes smaller than the minimum size.
         newmask = []
         min_size = self.get_radius() * self.min_shape_size
@@ -801,7 +803,7 @@ class HCYMaskPreview (MaskableWheelMixin,
         self.set_has_window(False)
         self.set_mask(mask)
         self.mask_toggle.set_active(True)
-        self.set_size_request(100, 100)
+        self.set_size_request(64, 64)
 
     def render_background_cb(self, cr, wd, ht):
         sup = HueSaturationWheelAdjuster

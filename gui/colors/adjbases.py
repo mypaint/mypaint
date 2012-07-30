@@ -289,7 +289,7 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
     __gproperties__ = {
         'color-manager': (ColorManager,
                           "Color manager",
-                          "The ColorManager holding the shared color",
+                          "The ColorManager owning the color to be adjusted",
                           gobject.PARAM_READWRITE),
         }
 
