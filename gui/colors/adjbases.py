@@ -482,7 +482,7 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
             color = self.get_color_at_position(event.x, event.y)
             self.set_managed_color(color)
         else:
-            # Relative chroma/luma bending
+            # Relative chroma/luma/hue bending
             if self.__drag_start_color is None:
                 return
             col = HCYColor(color=self.__drag_start_color)
@@ -493,36 +493,39 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
             sx, sy = self.__drag_start_pos
             dx, dy = sx-ex, sy-ey
 
-            # y axis increases downwards, not upwards
-            dy = -dy
+            # Pick a dimension to tweak
+            if event.state & gdk.SHIFT_MASK:
+                bend = "chroma"
+                dy = -dy
+            elif event.state & gdk.CONTROL_MASK:
+                bend = "hue"
+            else:
+                bend = "luma"
+                dy = -dy
 
             # Interpretation of dx depends on text direction
             if widget.get_direction() == gtk.TEXT_DIR_RTL:
                 dx = -dx
 
             # Use the delta with the largest absolute value
+            # FIXME: this has some jarring discontinuities
             dd = dx if abs(dx) > abs(dy) else dy
 
-            if not event.state & gdk.CONTROL_MASK:
-                # Luma adjustment, unless Ctrl is pressed
-                y0 = clamp(col.y, 0., 1.)
-                p = (y0 * size) - dd
-                col.y = clamp(p / size, 0., 1.)
-            if event.state & gdk.SHIFT_MASK:
-                # Relative chroma adjustment
+            if bend == "chroma":
                 c0 = clamp(col.c, 0., 1.)
                 p = (c0 * size) - dd
                 col.c = clamp(p / size, 0., 1.)
-            if event.state & gdk.CONTROL_MASK:
-                # Hue angle rotation
-                # FIXME: for adjusters with markers, there's a leap when this starts.
-                # Probably it should work as dial instead (math.acos2)
-                h0 = clamp(col.c, 0., 1.)
+            elif bend == "hue":
+                h0 = clamp(col.h, 0., 1.)
                 p = (h0 * size) - dd
                 h = p / size
                 while h < 0:
                     h += 1.0
                 col.h = h % 1.0
+            else:   # luma
+                y0 = clamp(col.y, 0., 1.)
+                p = (y0 * size) - dd
+                col.y = clamp(p / size, 0., 1.)
             self.set_managed_color(col)
 
 
