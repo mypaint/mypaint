@@ -52,8 +52,9 @@ for the shape.
 Click to add shapes if the wheel is blank. Shapes can be dragged around and
 their outlines can be adjusted by adding or moving the control points. Make a
 shape too small to be useful to remove it: dragging a shape to the edge of the
-disc is a quick way of doing this. The entire mask can be rotated by turning
-the edge of the disc to generate new and unexpected color schemes.
+disc is a quick way of doing this. You can delete shapes by dragging them
+inside other shapes too. The entire mask can be rotated by turning the edge of
+the disc to generate new and unexpected color schemes.
 
 Gamut masks can be saved to GIMP-format palette files, and loaded from them.
 The New button lets you choose one of several templates as a starting point.
@@ -419,7 +420,7 @@ class HCYMaskEditorWheel (HCYHueChromaWheel):
     # Drawing constraints and activity proximities
     __ctrlpoint_radius = 2.5
     __ctrlpoint_grab_radius = 10
-    __max_num_shapes = 3   # how many shapes are allowed
+    __max_num_shapes = 6   # how many shapes are allowed
     tooltip_text = _("Gamut mask editor. Click in the middle to create "
                      "or manipulate shapes, or rotate the mask using "
                      "the edges of the disc.")
@@ -479,6 +480,8 @@ class HCYMaskEditorWheel (HCYHueChromaWheel):
                 px, py = self.get_pos_for_color(col)
                 dp = math.sqrt((x-px)**2 + (y-py)**2)
                 if dp <= self.__ctrlpoint_grab_radius:
+                    mask.remove(colors)
+                    mask.insert(0, colors)
                     self.__active_shape = colors
                     self.__active_ctrlpoint = col_idx
                     self.__set_cursor(None)
@@ -496,6 +499,8 @@ class HCYMaskEditorWheel (HCYHueChromaWheel):
                     if di <= self.__ctrlpoint_grab_radius:
                         newcol = self.get_color_at_position(ix, iy)
                         self.__tmp_new_ctrlpoint = newcol
+                        mask.remove(colors)
+                        mask.insert(0, colors)
                         self.__active_shape = colors
                         self.__set_cursor(None)
                         return
@@ -503,6 +508,8 @@ class HCYMaskEditorWheel (HCYHueChromaWheel):
             # If the mouse is within a mask void, then dragging would move that
             # shape around within the mask.
             if geom.point_in_convex_poly((x, y), void):
+                mask.remove(colors)
+                mask.insert(0, colors)
                 self.__active_shape = colors
                 self.__set_cursor(None)
                 return
@@ -652,7 +659,31 @@ class HCYMaskEditorWheel (HCYHueChromaWheel):
             size = self._get_void_size(void)
             if size >= min_size:
                 newmask.append(shape)
-        self.set_mask(newmask)
+        mask = newmask
+
+        # Drop shapes whose points entirely lie within other shapes
+        newmask = []
+        maskvoids = [(shape, geom.convex_hull([self.get_pos_for_color(c)
+                                               for c in shape]))
+                     for shape in mask]
+        for shape1, void1 in maskvoids:
+            shape1_subsumed = True
+            for p1 in void1:
+                p1_subsumed = False
+                for shape2, void2 in maskvoids:
+                    if shape1 is shape2:
+                        continue
+                    if geom.point_in_convex_poly(p1, void2):
+                        p1_subsumed = True
+                        break
+                if not p1_subsumed:
+                    shape1_subsumed = False
+                    break
+            if not shape1_subsumed:
+                newmask.append(shape1)
+        mask = newmask
+
+        self.set_mask(mask)
         self.queue_draw()
 
 
@@ -724,23 +755,26 @@ class HCYMaskEditorWheel (HCYHueChromaWheel):
         cr.set_line_width(1.0)
         void = self.colors_to_mask_void(self.__active_shape)
 
-        # Highlight the active shape if it would be dragged or deleted
+        # Highlight the objects that would be directly or indirectly affected
+        # if the shape were dragged, and how.
         min_size = self.get_radius(wd=wd, ht=ht) * self.min_shape_size
         void_rgb = normal_rgb
         if self._get_void_size(void) < min_size:
+            # Shape will be deleted
             void_rgb = delete_rgb
         elif (  (self.__active_ctrlpoint is None) \
           and (self.__tmp_new_ctrlpoint is None) ):
+            # The entire shape would be moved
             void_rgb = active_rgb
-        if void_rgb != normal_rgb:
-            cr.set_source_rgb(*void_rgb)
-            for p_idx, p in enumerate(void):
-                if p_idx == 0:
-                    cr.move_to(*p)
-                else:
-                    cr.line_to(*p)
-            cr.close_path()
-            cr.stroke()
+        # Outline the current shape
+        cr.set_source_rgb(*void_rgb)
+        for p_idx, p in enumerate(void):
+            if p_idx == 0:
+                cr.move_to(*p)
+            else:
+                cr.line_to(*p)
+        cr.close_path()
+        cr.stroke()
 
         # Control points
         colors = self.__active_shape
