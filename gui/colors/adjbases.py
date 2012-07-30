@@ -910,58 +910,55 @@ class HueSaturationWheelMixin:
             border = self.border
         radius = self.get_radius(wd, ht, border)
 
-        # Align to pixel centres
-        cx, cy = self.get_center(wd, ht)
-
         steps = self.hue_slices
         sat_slices = self.sat_slices
         sat_gamma = self.sat_gamma
 
         # Move to the centre
+        cx, cy = self.get_center(wd, ht)
         cr.translate(cx, cy)
 
         # Clip, for a slight speedup
         cr.arc(0, 0, radius+border, 0, 2*math.pi)
         cr.clip()
 
-        # Tangoesque outer border 
+        # Tangoesque outer border
         cr.set_line_width(self.outline_width)
         cr.arc(0, 0, radius, 0, 2*math.pi)
         cr.set_source_rgba(*self.outline_rgba)
         cr.stroke()
 
         # Each slice in turn
-        if True:
-            cr.save()
-            cr.set_line_width(1.0)
-            cr.set_line_join(cairo.LINE_JOIN_ROUND)
-            step_angle = 2.0*math.pi/steps
-            for ih in xrange(steps+1): # overshoot by 1, no solid bit for final
-                h = float(ih)/steps
-                edge_col = self.color_at_normalized_polar_pos(1.0, h)
-                rgb = edge_col.get_rgb()
-                if ih > 0:
-                    # Backwards gradient
-                    cr.arc_negative(0, 0, radius, 0, -step_angle)
-                    x, y = cr.get_current_point()
-                    cr.line_to(0, 0)
-                    cr.close_path()
-                    lg = cairo.LinearGradient(radius, 0, float(x+radius)/2, y)
-                    lg.add_color_stop_rgba(0, rgb[0], rgb[1], rgb[2], 1.0)
-                    lg.add_color_stop_rgba(1, rgb[0], rgb[1], rgb[2], 0.0)
-                    cr.set_source(lg)
-                    cr.fill()
-                if ih < steps:
-                    # Forward solid
-                    cr.arc(0, 0, radius, 0, step_angle)
-                    x, y = cr.get_current_point()
-                    cr.line_to(0, 0)
-                    cr.close_path()
-                    cr.set_source_rgb(*rgb)
-                    cr.stroke_preserve()
-                    cr.fill()
-                cr.rotate(step_angle)
-            cr.restore()
+        cr.save()
+        cr.set_line_width(1.0)
+        cr.set_line_join(cairo.LINE_JOIN_ROUND)
+        step_angle = 2.0*math.pi/steps
+        for ih in xrange(steps+1): # overshoot by 1, no solid bit for final
+            h = float(ih)/steps
+            edge_col = self.color_at_normalized_polar_pos(1.0, h)
+            rgb = edge_col.get_rgb()
+            if ih > 0:
+                # Backwards gradient
+                cr.arc_negative(0, 0, radius, 0, -step_angle)
+                x, y = cr.get_current_point()
+                cr.line_to(0, 0)
+                cr.close_path()
+                lg = cairo.LinearGradient(radius, 0, float(x+radius)/2, y)
+                lg.add_color_stop_rgba(0, rgb[0], rgb[1], rgb[2], 1.0)
+                lg.add_color_stop_rgba(1, rgb[0], rgb[1], rgb[2], 0.0)
+                cr.set_source(lg)
+                cr.fill()
+            if ih < steps:
+                # Forward solid
+                cr.arc(0, 0, radius, 0, step_angle)
+                x, y = cr.get_current_point()
+                cr.line_to(0, 0)
+                cr.close_path()
+                cr.set_source_rgb(*rgb)
+                cr.stroke_preserve()
+                cr.fill()
+            cr.rotate(step_angle)
+        cr.restore()
 
         # Cheeky approximation of the right desaturation gradients
         rg = cairo.RadialGradient(0,0, 0,  0,0,  radius)
@@ -977,6 +974,25 @@ class HueSaturationWheelMixin:
         cr.set_line_width(self.edge_highlight_width)
         cr.arc(0, 0, radius, 0, 2*math.pi)
         cr.stroke()
+
+        # Some small notches on the disc edge for pure colors
+        if wd > 75 or ht > 75:
+            cr.save()
+            cr.arc(0, 0, radius+self.edge_highlight_width, 0, 2*math.pi)
+            cr.clip()
+            pure_cols = [RGBColor(1,0,0), RGBColor(1,1,0), RGBColor(0,1,0),
+                         RGBColor(0,1,1), RGBColor(0,0,1), RGBColor(1,0,1),]
+            for col in pure_cols:
+                x, y = self.get_pos_for_color(col)
+                x = int(x)-cx
+                y = int(y)-cy
+                cr.set_source_rgba(*self.edge_highlight_rgba)
+                cr.arc(x+0.5, y+0.5, 1.0+self.edge_highlight_width, 0, 2*math.pi)
+                cr.fill()
+                cr.set_source_rgba(*self.outline_rgba)
+                cr.arc(x+0.5, y+0.5, self.edge_highlight_width, 0, 2*math.pi)
+                cr.fill()
+            cr.restore()
 
         cr.restore()
 
