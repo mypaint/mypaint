@@ -14,7 +14,7 @@ from gtk import gdk
 
 import os
 import random
-from math import floor, ceil, log
+from math import floor, ceil, log, exp
 from numpy import isfinite
 from warnings import warn
 
@@ -45,7 +45,7 @@ class Overlay:
 
 class CanvasEventBox(gtk.EventBox):
     """Handle events on the canvas."""
-    
+
     def __init__(self, application=None, document=None, drag_handler=None):
         gtk.EventBox.__init__(self)
 
@@ -95,7 +95,7 @@ class CanvasEventBox(gtk.EventBox):
 
         self._input_stroke_started_observers = []
         self._input_stroke_ended_observers = [] #: Access via gui.document
-        
+
     def device_used(self, device):
         """Tell the TDW about a device being used."""
         if device == self.last_event_device:
@@ -266,20 +266,14 @@ class CanvasEventBox(gtk.EventBox):
             for func in self._input_stroke_ended_observers:
                 func(event)
 
-class DragHandler(object):
-    """Handle drag logic and cursor updates."""
 
-    CANNOT_DRAW_CURSOR = gdk.Cursor(gdk.CIRCLE)
+class DragHandler(object):
+    """Handle drag logic."""
 
     def __init__(self, doc, widget):
         self.doc = doc
         self.widget = widget
         self.drag_op = None
-        self.override_cursor = None
-
-    @property
-    def window(self):
-        return self.widget.get_window()
 
     def update(self, dx, dy, x, y):
         if self.drag_op:
@@ -294,43 +288,14 @@ class DragHandler(object):
         self.drag_op = drag_op
         self.drag_op.on_start(modifier)
         c = gdk.Cursor(drag_op.cursor)
-        self.set_override_cursor(c)
+        self.widget.set_override_cursor(c)
 
     def stop_drag(self):
         if self.drag_op is not None:
-            self.set_override_cursor(None)
+            self.widget.set_override_cursor(None)
             self.drag_op.on_stop()
             self.drag_op = None
 
-    def update_cursor(self):        
-        if not self.window:
-            return
-
-        if self.override_cursor is not None:
-            c = self.override_cursor
-        elif not self.widget.is_sensitive:
-            c = None
-        elif self.doc.layer.locked or not self.doc.layer.visible:
-            c = self.CANNOT_DRAW_CURSOR
-        else:
-            b = self.doc.brush.brushinfo
-            radius = b.get_effective_radius()*self.widget.scale
-            c = cursor.get_brush_cursor(radius, b.is_eraser(), b.get_base_value('lock_alpha') > 0.9)
-        self.window.set_cursor(c)
-
-    def set_override_cursor(self, cursor):
-        """Set a cursor which will always be used.
-
-        Used by the colour picker. The override cursor will be used regardless
-        of the criteria update_cursor() normally uses. Pass None to let it
-        choose normally again.
-        """
-        self.override_cursor = cursor
-        self.update_cursor()
-
-    def brush_modified_cb(self, settings):
-        self.update_cursor()
-    
 
 class TiledDrawWidget(gtk.VBox):
     """Widget for showing a lib.document.Document 
@@ -355,14 +320,15 @@ class TiledDrawWidget(gtk.VBox):
 
         # HACK
         self.event_box.display_to_model = self.renderer.display_to_model
-        
+
         self.event_box.add(self.renderer)
         self.pack_start(self.event_box)
 
         self.doc.canvas_observers.append(self.renderer.canvas_modified_cb)
-        self.doc.brush.brushinfo.observers.append(self.drag_handler.brush_modified_cb)
+        self.doc.brush.brushinfo.observers.append(
+                                        self.renderer.brush_modified_cb)
 
-        self.drag_handler.update_cursor() # hack to get the initial cursor right
+        self.renderer.update_cursor() # get the initial cursor right
 
         self.has_pointer = False
 
@@ -387,7 +353,7 @@ class TiledDrawWidget(gtk.VBox):
     @property
     def start_drag(self):
         return self.drag_handler.start_drag
- 
+
     @property
     def stop_drag(self):
         return self.drag_handler.stop_drag
@@ -470,7 +436,7 @@ class TiledDrawWidget(gtk.VBox):
 
     @property
     def set_override_cursor(self):
-        return self.drag_handler.set_override_cursor
+        return self.renderer.set_override_cursor
 
     @property
     def device_used(self):
@@ -540,7 +506,7 @@ class TiledDrawWidget(gtk.VBox):
     def set_zoom(self, zoom, at_pointer=True):
         def f(): self.renderer.scale = zoom
         self.rotozoom_with_center(f, at_pointer)
-        self.drag_handler.update_cursor()
+        self.renderer.update_cursor()
 
     def rotate(self, angle_step):
         if self.renderer.mirrored: angle_step = -angle_step
@@ -560,7 +526,67 @@ class TiledDrawWidget(gtk.VBox):
         def f(): self.renderer.mirrored = mirrored
         self.rotozoom_with_center(f)
 
-class CanvasRenderer(gtk.DrawingArea):
+
+
+class DrawCursorMixin:
+    """Mixin for renderer widgets needing a managed drawing cursor.
+
+    Required members: self.doc, self.scale, gtk.Widget stuff.
+
+    """
+
+    def update_cursor(self):
+        # Callback for updating the cursor
+        window = self.get_window()
+        if window is None:
+            return
+        override_cursor = getattr(self, '_override_cursor', None)
+        if override_cursor is not None:
+            c = self._override_cursor
+        elif self.get_state() == gtk.STATE_INSENSITIVE:
+            c = None
+        elif self.doc.layer.locked or not self.doc.layer.visible:
+            # Cursor to represent that one cannot draw.
+            # Often a red circle with a diagonal bar through it.
+            c = gdk.Cursor(gdk.CIRCLE)
+        else:
+            cursor_info = self._get_cursor_info()
+            c = cursor.get_brush_cursor(*cursor_info)
+        window.set_cursor(c)
+
+
+    def set_override_cursor(self, cursor):
+        """Set a cursor which will always be used.
+
+        Used by the colour picker. The override cursor will be used regardless
+        of the criteria update_cursor() normally uses. Pass None to let it
+        choose normally again.
+        """
+        self._override_cursor = cursor
+        self.update_cursor()
+
+
+    def _get_cursor_info(self):
+        """Return factors determining the cursor size and shape.
+        """
+        b = self.doc.brush.brushinfo
+        base_radius = exp(b.get_base_value('radius_logarithmic'))
+        r = base_radius
+        r += 2 * base_radius * b.get_base_value('offset_by_random')
+        r *= self.scale
+        return (r, b.is_eraser(), b.is_alpha_locked())
+
+
+    def brush_modified_cb(self, settings):
+        """Handles brush modifications: set up by the main TDW.
+        """
+        if settings & set(['radius_logarithmic', 'offset_by_random',
+                           'eraser', 'lock_alpha']):
+            # Reducing the number of updates is probably a good idea
+            self.update_cursor()
+
+
+class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
     """Render the document model to screen.
     
     Can render the document in a transformed way, including translation,
@@ -580,7 +606,6 @@ class CanvasRenderer(gtk.DrawingArea):
         self.app = app
         self.doc = document
 
-        self.cursor_info = None
         self.visualize_rendering = False
 
         self.translation_x = 0.0
@@ -633,6 +658,7 @@ class CanvasRenderer(gtk.DrawingArea):
             dy = new_pos[1] - old_pos[1]
             self.scroll(dx, dy)
         self._stored_pos = new_pos
+
 
     def canvas_modified_cb(self, x1, y1, w, h):
         if not self.get_window():

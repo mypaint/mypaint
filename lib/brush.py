@@ -418,13 +418,6 @@ class BrushInfo:
     def is_alpha_locked(self):
         return self.has_large_base_value("lock_alpha")
 
-    def get_effective_radius(self):
-        """Return brush radius in pixels for cursor shape."""
-        base_radius = math.exp(self.get_base_value('radius_logarithmic'))
-        r = base_radius
-        r += 2*base_radius*self.get_base_value('offset_by_random')
-        return r
-
     def matches(self, other, ignore=["color_h", "color_s", "color_v", "parent_brush_name"]):
         s1 = self.settings.copy()
         s2 = other.settings.copy()
