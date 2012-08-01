@@ -1,4 +1,4 @@
-# This file is part of MyPaint.                                                                                      
+# This file is part of MyPaint.
 # Copyright (C) 2011 by Ben O'Steen <bosteen@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -6,11 +6,11 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-import gtk
-gdk = gtk.gdk
-from gettext import gettext as _
-from drawwindow import button_press_cb_abstraction, button_release_cb_abstraction
 import os
+
+import gtk
+from gtk import gdk
+from gettext import gettext as _
 
 def stock_button_generic(stock_id, b):
     img = gtk.Image()
@@ -21,6 +21,7 @@ def stock_button_generic(stock_id, b):
 def stock_button(stock_id):
     b = gtk.Button()
     return stock_button_generic(stock_id, b)
+
 
 class ToolWidget (gtk.VBox):
 
@@ -34,7 +35,7 @@ class ToolWidget (gtk.VBox):
         #self.set_size_request(200, 250)
 
         self.is_updating = False
-        
+
         # Common controls
         load_button = self.load_button = stock_button(gtk.STOCK_OPEN)
         load_button.set_tooltip_text(_("Load Scratchpad"))
@@ -58,8 +59,6 @@ class ToolWidget (gtk.VBox):
 
         scratchpad_view = app.scratchpad_doc.tdw
 
-        self.connect("button-press-event", self.button_press_cb)
-        self.connect("button-release-event",self.button_release_cb)
         self.connect("destroy-event", self.save_cb)
         self.connect("delete-event", self.save_cb)
 
@@ -148,10 +147,4 @@ class ToolWidget (gtk.VBox):
     def save_cb(self, action):
         print "Saving the scratchpad"
         self.app.filehandler.save_scratchpad(self.app.scratchpad_filename)
-
-    def button_press_cb(self, win, event):
-        return button_press_cb_abstraction(self.app.drawWindow, win, event, self.app.scratchpad_doc)
-
-    def button_release_cb(self, win, event):
-        return button_release_cb_abstraction(win, event, self.app.scratchpad_doc)
 

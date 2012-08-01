@@ -7,11 +7,16 @@
 # (at your option) any later version.
 
 import os
+
 import gtk
-gdk = gtk.gdk
-from lib import document
-import tileddrawwidget, brushmanager, dialogs
+from gtk import gdk
 from gettext import gettext as _
+
+import lib.document
+import tileddrawwidget, brushmanager, dialogs
+from document import CanvasController
+from canvasevent import FreehandOnlyMode
+
 
 def startfile(path):
     import os
@@ -21,12 +26,14 @@ def startfile(path):
     else:
         os.system("xdg-open " + path)
 
+
 def stock_button(stock_id):
     b = gtk.Button()
     img = gtk.Image()
     img.set_from_stock(stock_id, gtk.ICON_SIZE_MENU)
     b.add(img)
     return b
+
 
 class BrushManipulationWidget(gtk.HBox):
     """ """
@@ -171,7 +178,9 @@ class BrushManipulationWidget(gtk.HBox):
             deleted_brushes.insert(0, b)
             for f in self.bm.brushes_observers: f(deleted_brushes)
 
+
 class BrushIconEditorWidget(gtk.VBox):
+
     def __init__(self, app):
         gtk.VBox.__init__(self)
         self.app = app
@@ -188,8 +197,8 @@ class BrushIconEditorWidget(gtk.VBox):
     def init_widgets(self):
         button_box = gtk.HBox()
 
-        doc = document.Document(self.app.brush)
-        self.tdw = tileddrawwidget.TiledDrawWidget(self.app, doc)
+        model = lib.document.Document(self.app.brush)
+        self.tdw = tileddrawwidget.TiledDrawWidget(self.app, model)
         self.tdw.set_size_request(brushmanager.preview_w*2, brushmanager.preview_h*2)
         self.tdw.scale = 2.0
 
@@ -200,19 +209,24 @@ class BrushIconEditorWidget(gtk.VBox):
         self.pack_start(tdw_box, expand=False, fill=False, padding=3)
         self.pack_start(button_box, expand=False, fill=False, padding=3)
 
+        ctrlr = CanvasController(self.tdw)
+        ctrlr.init_pointer_events()
+        ctrlr.modes.default_mode_class = FreehandOnlyMode
+
         self.brush_preview_edit_mode_button = b = gtk.CheckButton(_('Edit'))
         b.connect('toggled', self.brush_preview_edit_mode_cb)
         button_box.pack_start(b, expand=False, padding=3)
 
         self.brush_preview_clear_button = b = gtk.Button(_('Clear'))
-        def clear_cb(window):
-            self.tdw.doc.clear_layer()
-        b.connect('clicked', clear_cb)
+        b.connect('clicked', self.clear_cb)
         button_box.pack_start(b, expand=False, padding=3)
 
         self.brush_preview_save_button = b = gtk.Button(_('Save'))
         b.connect('clicked', self.update_preview_cb)
         button_box.pack_start(b, expand=False, padding=3)
+
+    def clear_cb(self, window):
+        self.tdw.doc.clear_layer()
 
     def brush_preview_edit_mode_cb(self, button):
         self.set_brush_preview_edit_mode(button.get_active())

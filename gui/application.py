@@ -96,6 +96,9 @@ class Application: # singleton
         self.brush = brush.BrushInfo()
         self.brush.load_defaults()
 
+        # Global pressure mapping function, ignored unless set
+        self.pressure_mapping = None
+
         self.preferences = {}
         self.load_settings()
 
@@ -109,6 +112,9 @@ class Application: # singleton
         signal_callback_objs.append(self.filehandler)
         self.brushmodifier = brushmodifier.BrushModifier(self)
         self.linemode = linemode.LineMode(self)
+
+        # Monitors changes of input device & saves device-specific brushes
+        self.device_monitor = DeviceUseMonitor(self)
 
         if not self.preferences.get("scratchpad.last_opened_scratchpad", None):
             self.preferences["scratchpad.last_opened_scratchpad"] = self.filehandler.get_scratchpad_autosave()
@@ -360,7 +366,7 @@ class Application: # singleton
         p = self.preferences['input.global_pressure_mapping']
         if len(p) == 2 and abs(p[0][1]-1.0)+abs(p[1][1]-0.0) < 0.0001:
             # 1:1 mapping (mapping disabled)
-            self.doc.tdw.set_pressure_mapping(None)
+            self.pressure_mapping = None
         else:
             # TODO: maybe replace this stupid mapping by a hard<-->soft slider?
             #       But then we would also need a "minimum pressure" setting,
@@ -373,7 +379,7 @@ class Application: # singleton
 
             def mapping(pressure):
                 return m.calculate_single_input(pressure)
-            self.doc.tdw.set_pressure_mapping(mapping)
+            self.pressure_mapping = mapping
 
     def update_input_devices(self):
         # init extended input devices
@@ -488,6 +494,97 @@ class Application: # singleton
         color = colors.get_color_at_pointer(widget, size)
         self.brush_color_manager.set_color(color)
 
+
+class DeviceUseMonitor (object):
+    """Monitors device uses and detects changes.
+    """
+
+    def __init__(self, app):
+        """Initialize.
+
+        :param app: the main Application singleton.
+        """
+        object.__init__(self)
+        self.app = app
+        self.device_observers = []   #: See `device_used()`.
+        self._last_event_device = None
+        self._last_pen_device = None
+        self.device_observers.append(self.device_changed_cb)
+
+
+    def device_used(self, device):
+        """Notify about a device being used; for use by controllers etc.
+
+        :param device: the device being used
+
+        If the device has changed, this method then notifies the registered
+        observers via callbacks in device_observers. Callbacks are invoked as
+
+            callback(old_device, new_device)
+
+        This method returns True if the device was the same as the previous
+        device, and False if it has changed.
+
+        """
+        if device == self._last_event_device:
+            return True
+        for func in self.device_observers:
+            func(self._last_event_device, device)
+        self._last_event_device = device
+        return False
+
+
+    def device_is_eraser(self, device):
+        if device is None:
+            return False
+        return device.source == gdk.SOURCE_ERASER \
+                or 'eraser' in device.name.lower()
+
+
+    def device_changed_cb(self, old_device, new_device):
+        # small problem with this code: it doesn't work well with brushes that
+        # have (eraser not in [1.0, 0.0])
+
+        if pygtkcompat.USE_GTK3:
+            new_device.name = new_device.props.name
+            new_device.source = new_device.props.input_source
+
+        print 'device change:', new_device.name, new_device.source
+
+        # When editing brush settings, it is often more convenient to use the
+        # mouse. Because of this, we don't restore brushsettings when switching
+        # to/from the mouse. We act as if the mouse was identical to the last
+        # active pen device.
+
+        if new_device.source == gdk.SOURCE_MOUSE and self._last_pen_device:
+            new_device = self._last_pen_device
+        if new_device.source == gdk.SOURCE_PEN:
+            self._last_pen_device = new_device
+        if old_device and old_device.source == gdk.SOURCE_MOUSE \
+                    and self._last_pen_device:
+            old_device = self._last_pen_device
+
+        bm = self.app.brushmanager
+        if old_device:
+            # Clone for saving
+            old_brush = bm.clone_selected_brush(name=None)
+            bm.store_brush_for_device(old_device.name, old_brush)
+
+        if new_device.source == gdk.SOURCE_MOUSE:
+            # Avoid fouling up unrelated devbrushes at stroke end
+            self.app.preferences.pop('devbrush.last_used', None)
+        else:
+            # Select the brush and update the UI.
+            # Use a sane default if there's nothing associated
+            # with the device yet.
+            brush = bm.fetch_brush_for_device(new_device.name)
+            if brush is None:
+                if self.device_is_eraser(new_device):
+                    brush = bm.get_default_eraser()
+                else:
+                    brush = bm.get_default_brush()
+            self.app.preferences['devbrush.last_used'] = new_device.name
+            bm.select_brush(brush)
 
 
 class PixbufDirectory:

@@ -141,7 +141,7 @@ class BrushList(pixbuflist.PixbufList):
         for f in self.bm.brushes_observers: f(self.brushes)
 
     def button_press_cb(self, widget, event):
-        self.app.doc.tdw.device_used(event.device)
+        self.app.device_monitor.device_used(event.device)
         pixbuflist.PixbufList.button_press_cb(self, widget, event)
 
     def drag_begin_cb(self, widget, context):

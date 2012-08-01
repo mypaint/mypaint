@@ -25,7 +25,7 @@ from gtk import gdk, keysyms
 import colorselectionwindow, historypopup, stategroup, colorpicker, windowing, layout, toolbar
 import dialogs
 from lib import helpers
-import dragfunc
+import canvasevent
 from colors import RGBColor
 
 import pygtkcompat
@@ -66,117 +66,10 @@ def with_wait_cursor(func):
             self.app.doc.tdw.grab_remove()
     return wrapper
 
-def button_press_cb_abstraction(drawwindow, win, event, doc):
-    #print event.device, event.button
-    ## Ignore accidentals
-    # Single button-presses only, not 2ble/3ple
-    if event.type != gdk.BUTTON_PRESS:
-        # pass through the extra double-click event
-        return False
-
-    if event.button != 1:
-        # check whether we are painting (accidental)
-        if event.state & gdk.BUTTON1_MASK:
-            # Do not allow dragging in the middle of
-            # painting. This often happens by accident with wacom
-            # tablet's stylus button.
-            #
-            # However we allow dragging if the user's pressure is
-            # still below the click threshold.  This is because
-            # some tablet PCs are not able to produce a
-            # middle-mouse click without reporting pressure.
-            # https://gna.org/bugs/index.php?15907
-            return False
-
-    # Line Mode event
-    if event.button == 1:
-        line_mode = drawwindow.app.linemode.line_mode
-        # Dynamic Line events from toolbar settings
-        if line_mode != "FreehandMode":
-            drag_op = dragfunc.DynamicLineDragFunc(doc, drawwindow, mode=line_mode)
-            doc.tdw.start_drag(drag_op, modifier=0)
-            return True
-
-    # Pick a suitable config option
-    ctrl = event.state & gdk.CONTROL_MASK
-    alt  = event.state & gdk.MOD1_MASK
-    shift = event.state & gdk.SHIFT_MASK
-    if shift:
-        modifier_str = "_shift"
-        modifier = gdk.SHIFT_MASK
-    elif alt or ctrl:
-        modifier_str = "_ctrl"
-        if alt:
-            modifier = gdk.MOD1_MASK
-        elif ctrl:
-            modifier = gdk.CONTROL_MASK
-    else:
-        modifier_str = ""
-        modifier = 0
-    prefs_name = "input.button%d%s_action" % (event.button, modifier_str)
-    action_name = drawwindow.app.preferences.get(prefs_name, "no_action")
-
-    # No-ops
-    if action_name == 'no_action':
-        return False  # Pass event through to the tdw
-
-    # Line Mode event triggered by preferenced modifier button
-    if action_name == 'straight_line':
-        drag_op = dragfunc.DynamicLineDragFunc(doc, drawwindow, mode='StraightMode')
-        doc.tdw.start_drag(drag_op, modifier)
-        return True
-    if action_name == 'straight_line_sequence':
-        drag_op = dragfunc.DynamicLineDragFunc(doc, drawwindow, mode='SequenceMode')
-        doc.tdw.start_drag(drag_op, modifier)
-        return True
-    if action_name == 'ellipse':
-        drag_op = dragfunc.DynamicLineDragFunc(doc, drawwindow, mode='EllipseMode')
-        doc.tdw.start_drag(drag_op, modifier)
-        return True
-
-    # View control
-    if action_name.endswith("_canvas"):
-        drag_op = None
-        if action_name == "pan_canvas":
-            drag_op = dragfunc.PanViewDragFunc(doc)
-        elif action_name == "zoom_canvas":
-            drag_op = dragfunc.ZoomViewDragFunc(doc)
-        elif action_name == "rotate_canvas":
-            drag_op = dragfunc.RotateViewDragFunc(doc)
-        if drag_op is not None:
-            doc.tdw.start_drag(drag_op, modifier)
-            return True
-        return False
-
-    # TODO: add frame manipulation here too
-
-    if action_name == 'move_layer':
-        drag_op = dragfunc.LayerMoveDragFunc(doc)
-        doc.tdw.start_drag(drag_op, modifier)
-        return True
-
-    # Application menu
-    if action_name == 'popup_menu':
-        drawwindow.show_popupmenu(event=event)
-        return True
-
-    if action_name in drawwindow.popup_states:
-        state = drawwindow.popup_states[action_name]
-        state.activate(event)
-        return True
-
-    # Dispatch regular GTK events.
-    action = drawwindow.app.find_action(action_name)
-    if action is not None:
-        action.activate()
-        return True
-
-def button_release_cb_abstraction(win, event, doc):
-    #print event.device, event.button
-    doc.tdw.stop_drag()
-    return False
 
 class Window (windowing.MainWindow, layout.MainWindow):
+    """Main drawing window.
+    """
 
     MENUISHBAR_RADIO_MENUBAR = 1
     MENUISHBAR_RADIO_MAIN_TOOLBAR = 2
@@ -225,23 +118,20 @@ class Window (windowing.MainWindow, layout.MainWindow):
         self.main_widget.set_can_focus(True)
         self.main_widget.grab_focus()
 
-        self.main_widget.connect("button-press-event", self.button_press_cb)
-        self.main_widget.connect("button-release-event",self.button_release_cb)
-        self.main_widget.connect("scroll-event", self.scroll_cb)
-
         kbm = self.app.kbm
         kbm.add_extra_key('Menu', 'ShowPopupMenu')
         kbm.add_extra_key('Tab', 'ToggleSubwindows')
 
         self.init_stategroups()
 
-    #XXX: Compatability
     def get_doc(self):
         print "DeprecationWarning: Use app.doc instead"
         return self.app.doc
+
     def get_tdw(self):
         print "DeprecationWarning: Use app.doc.tdw instead"
         return self.app.doc.tdw
+
     tdw, doc = property(get_tdw), property(get_doc)
 
 
@@ -424,49 +314,39 @@ class Window (windowing.MainWindow, layout.MainWindow):
         d = gtk.InputDialog()
         d.show()
 
-    def key_press_event_cb_before(self, win, event):
-        key = event.keyval
-        ctrl = event.state & gdk.CONTROL_MASK
-        shift = event.state & gdk.SHIFT_MASK
-        alt = event.state & gdk.MOD1_MASK
-        #ANY_MODIFIER = gdk.SHIFT_MASK | gdk.MOD1_MASK | gdk.CONTROL_MASK
-        #if event.state & ANY_MODIFIER:
-        #    # allow user shortcuts with modifiers
-        #    return False
+    def _get_active_doc(self):
+        # Determines which is the active doc for the purposes of keyboard
+        # event dispatch.
+        tdw_class = self.app.scratchpad_doc.tdw.__class__
+        tdw = tdw_class.get_active_tdw()
+        if tdw is not None:
+            if tdw is self.app.scratchpad_doc.tdw:
+                return (self.app.scratchpad_doc, tdw)
+            elif tdw is self.app.doc.tdw:
+                return (self.app.doc, tdw)
+        return (None, None)
 
-        # This may need a stateful flag
-        if self.app.scratchpad_doc.tdw.has_pointer:
-            thisdoc = self.app.scratchpad_doc
-            # Stop dragging on the main window
-            self.app.doc.tdw.stop_drag()
-        else:
-            thisdoc = self.app.doc
-            # Stop dragging on the other window
-            self.app.scratchpad_doc.tdw.stop_drag()
-        if key == keysyms.space:
-            drag_op = None
-            if (shift and ctrl) or alt:
-                drag_op = dragfunc.MoveFrameDragFunc(thisdoc)
-            elif shift:
-                drag_op = dragfunc.RotateViewDragFunc(thisdoc)
-            elif ctrl:
-                drag_op = dragfunc.ZoomViewDragFunc(thisdoc)
-            else:
-                drag_op = dragfunc.PanViewDragFunc(thisdoc)
-            assert drag_op is not None
-            thisdoc.tdw.start_drag(drag_op, modifier=0)
-        else: return False
+    def key_press_event_cb_before(self, win, event):
+        # Process keyboard events
+        target_doc, target_tdw = self._get_active_doc()
+        if target_doc is None:
+            return False
+        # Forward the keypress to the active doc's active InteractionMode.
+        target_doc.modes.top.key_press_cb(win, target_tdw, event)
         return True
 
+
     def key_release_event_cb_before(self, win, event):
-        if self.app.scratchpad_doc.tdw.has_pointer:
-            thisdoc = self.app.scratchpad_doc
-        else:
-            thisdoc = self.app.doc
-        if event.keyval == keysyms.space:
-            thisdoc.tdw.stop_drag()
-            return True
-        return False
+        # Process key-release events
+        target_doc, target_tdw = self._get_active_doc()
+        if target_doc is None:
+            return False
+        # Forward the event (see above)
+        target_doc.modes.top.key_release_cb(win, target_tdw, event)
+        return True
+
+
+    # XXX these can probably stay here for now.
 
     def key_press_event_cb_after(self, win, event):
         key = event.keyval
@@ -479,28 +359,6 @@ class Window (windowing.MainWindow, layout.MainWindow):
     def key_release_event_cb_after(self, win, event):
         return False
 
-    def button_press_cb(self, win, event):
-        return button_press_cb_abstraction(self, win, event, self.app.doc)
-
-    def button_release_cb(self, win, event):
-        return button_release_cb_abstraction(win, event, self.app.doc)
-
-    def scroll_cb(self, win, event):
-        d = event.direction
-        if d == gdk.SCROLL_UP:
-            if event.state & gdk.SHIFT_MASK:
-                self.app.doc.rotate('RotateLeft')
-            else:
-                self.app.doc.zoom('ZoomIn')
-        elif d == gdk.SCROLL_DOWN:
-            if event.state & gdk.SHIFT_MASK:
-                self.app.doc.rotate('RotateRight')
-            else:
-                self.app.doc.zoom('ZoomOut')
-        elif d == gdk.SCROLL_RIGHT:
-            self.app.doc.rotate('RotateRight')
-        elif d == gdk.SCROLL_LEFT:
-            self.app.doc.rotate('RotateLeft')
 
     # WINDOW HANDLING
     def toggle_window_cb(self, action):

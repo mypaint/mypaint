@@ -203,7 +203,9 @@ class Window(windowing.SubWindow):
         self.live_update_cb()
 
     def live_update_cb(self, *junk):
-        if self.app.doc.tdw.drag_op is not None:
+        if not self.app.doc.modes.top.is_live_updateable:
+            # formerly: "not if in a drag"
+            # currrently: only FreehandMode supports it (rest untested)
             return
         if not self.live_update.get_active() or self.live_update_queued:
             return

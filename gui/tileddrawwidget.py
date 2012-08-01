@@ -17,6 +17,7 @@ import random
 from math import floor, ceil, log, exp
 from numpy import isfinite
 from warnings import warn
+import weakref
 
 from lib import helpers, tiledsurface, pixbufsurface
 import cursor
@@ -43,271 +44,76 @@ class Overlay:
         pass
 
 
-class CanvasEventBox(gtk.EventBox):
-    """Handle events on the canvas."""
-
-    def __init__(self, application=None, document=None, drag_handler=None):
-        gtk.EventBox.__init__(self)
-
-        self.doc = document
-        self.app = application
-
-        self.drag_handler_update = drag_handler
-
-        # workaround for https://gna.org/bugs/?14372 ([Windows] crash when moving the pen during startup)
-        def at_application_start(*junk):
-            self.connect("motion-notify-event", self.motion_notify_cb)
-            self.connect("button-press-event", self.button_press_cb)
-            self.connect("button-release-event", self.button_release_cb)
-        gobject.idle_add(at_application_start)
-
-        self.add_events(gdk.POINTER_MOTION_MASK
-                        # Workaround for https://gna.org/bugs/index.php?16253
-                        # Mypaint doesn't use proximity-*-event for anything
-                        # yet, but this seems to be needed for scrollwheels
-                        # etc. to keep working.
-                        | gdk.PROXIMITY_OUT_MASK
-                        | gdk.PROXIMITY_IN_MASK
-                        # for some reason we also need to specify events handled in drawwindow.py:
-                        | gdk.BUTTON_PRESS_MASK
-                        | gdk.BUTTON_RELEASE_MASK
-                        )
-
-        if pygtkcompat.USE_GTK3:
-            # FIXME: implement extended event handling
-            pass
-        else:
-            self.set_extension_events (gdk.EXTENSION_EVENTS_ALL)
-
-        self.last_event_time = None
-        self.last_event_x = None
-        self.last_event_y = None
-        self.last_event_device = None
-        self.last_event_had_pressure_info = False
-        self.last_painting_pos = None
-        self.device_observers = [] #: Notified during drawing when input devices change
-
-        #self.scroll_at_edges = False
-        self.pressure_mapping = None
-
-        self.bad_devices = []
-        self.motions = []
-
-        self._input_stroke_started_observers = []
-        self._input_stroke_ended_observers = [] #: Access via gui.document
-
-    def device_used(self, device):
-        """Tell the TDW about a device being used."""
-        if device == self.last_event_device:
-            return True
-        for func in self.device_observers:
-            func(self.last_event_device, device)
-        self.last_event_device = device
-        return False
-
-        # Do not interpolate between motion events from different
-        # devices.  If the final pressure value from the previous
-        # device was not 0.0, the motion event of the new device could
-        # cause a visible stroke, even if pressure is 0.0.
-        self.doc.brush.reset()
+#class CanvasEventBox(gtk.EventBox):
+#    """Handle events on the canvas."""
+#
+#    def __init__(self, application=None, document=None):
+#        gtk.EventBox.__init__(self)
+#        self.doc = document
+#        self.app = application
 
 
-    def motion_notify_cb(self, widget, event, button1_pressed=None):
-        if not self.is_sensitive:
-            return
+###################
+# FIXME: loose code fragment from an earlier refactor.  looks
+# important, so find its home (it was wrongly tacked onto the end of
+# device_used)
+## Do not interpolate between motion events from different
+## devices.  If the final pressure value from the previous
+## device was not 0.0, the motion event of the new device could
+## cause a visible stroke, even if pressure is 0.0.
+#self.doc.brush.reset()
 
-        if self.last_event_time:
-            dtime = (event.time - self.last_event_time)/1000.0
-            dx = event.x - self.last_event_x
-            dy = event.y - self.last_event_y
-        else:
-            dtime = None
-        self.last_event_x = event.x
-        self.last_event_y = event.y
-        self.last_event_time = event.time
-        if dtime is None:
-            return
 
-        same_device = self.device_used(event.device)
+class TiledDrawWidget (gtk.EventBox):
+    """Widget for showing a lib.document.Document
 
-        if self.drag_handler_update is not None:
-            in_drag_mode = self.drag_handler_update(dx, dy, event.x, event.y)
-            if in_drag_mode:
-                # Don't draw in drag mode
-                return
+    Rendering is delegated to a dedicated class see `CanvasRenderer`.
 
-        # Refuse drawing if the layer is locked or hidden
-        if self.doc.layer.locked or not self.doc.layer.visible:
-            return
-            # TODO: some feedback, maybe
+    """
 
-        x, y = self.display_to_model(event.x, event.y)
+    ## Register a GType name for Glade, GtkBuilder etc.
+    #__gtype_name__ = "TiledDrawWidget"
 
-        pressure = event.get_axis(gdk.AXIS_PRESSURE)
 
-        if pressure is not None and (pressure > 1.0 or pressure < 0.0 or not isfinite(pressure)):
-            if event.device.name not in self.bad_devices:
-                print 'WARNING: device "%s" is reporting bad pressure %+f' % (event.device.name, pressure)
-                self.bad_devices.append(event.device.name)
-            if not isfinite(pressure):
-                # infinity/nan: use button state (instead of clamping in brush.hpp)
-                # https://gna.org/bugs/?14709
-                pressure = None
+    # List of weakrefs to all known TDWs.
+    __tdw_refs = []
 
-        if pressure is None:
-            self.last_event_had_pressure_info = False
-            if button1_pressed is None:
-                button1_pressed = event.state & gdk.BUTTON1_MASK
-            if button1_pressed:
-                pressure = 0.5
-            else:
-                pressure = 0.0
-        else:
-            self.last_event_had_pressure_info = True
 
-        xtilt = event.get_axis(gdk.AXIS_XTILT)
-        ytilt = event.get_axis(gdk.AXIS_YTILT)
-        # Check whether tilt is present.  For some tablets without
-        # tilt support GTK reports a tilt axis with value nan, instead
-        # of None.  https://gna.org/bugs/?17084
-        if xtilt is None or ytilt is None or not isfinite(xtilt+ytilt):
-            xtilt = 0.0
-            ytilt = 0.0
-
-        if event.state & gdk.CONTROL_MASK or event.state & gdk.MOD1_MASK:
-            # color picking, do not paint
-            # Don't simply return; this is a workaround for unwanted lines in https://gna.org/bugs/?16169
-            pressure = 0.0
-
-        ### CSS experimental - scroll when touching the edge of the screen in fullscreen mode
-        #
-        # Disabled for the following reasons:
-        # - causes irritation when doing fast strokes near the edge
-        # - scrolling speed depends on the number of events received (can be a huge difference between tablets/mouse)
-        # - also, mouse button scrolling is usually enough
-        #
-        #if self.scroll_at_edges and pressure <= 0.0:
-        #  screen_w = gdk.screen_width()
-        #  screen_h = gdk.screen_height()
-        #  trigger_area = 10
-        #  if (event.x <= trigger_area):
-        #    self.scroll(-10,0)
-        #  if (event.x >= (screen_w-1)-trigger_area):
-        #    self.scroll(10,0)
-        #  if (event.y <= trigger_area):
-        #    self.scroll(0,-10)
-        #  if (event.y >= (screen_h-1)-trigger_area):
-        #    self.scroll(0,10)
-
-        if self.pressure_mapping:
-            pressure = self.pressure_mapping(pressure)
-        if event.state & gdk.SHIFT_MASK:
-            pressure = 0.0
-
-        if pressure:
-            self.last_painting_pos = x, y
-
-        # If the device has changed and the last pressure value from the previous device
-        # is not equal to 0.0, this can leave a visible stroke on the layer even if the 'new'
-        # device is not pressed on the tablet and has a pressure axis == 0.0.
-        # Reseting the brush when the device changes fixes this issue, but there may be a
-        # much more elegant solution that only resets the brush on this edge-case.
-        if not same_device:
-            self.doc.brush.reset()
-
-        # On Windows, GTK timestamps have a resolution around
-        # 15ms, but tablet events arrive every 8ms.
-        # https://gna.org/bugs/index.php?16569
-        # TODO: proper fix in the brush engine, using only smooth,
-        #       filtered speed inputs, will make this unneccessary
-        if dtime < 0.0:
-            print 'Time is running backwards, dtime=%f' % dtime
-            dtime = 0.0
-        data = (x, y, pressure, xtilt, ytilt)
-        if dtime == 0.0:
-            self.motions.append(data)
-        elif dtime > 0.0:
-            if self.motions:
-                # replay previous events that had identical timestamp
-                if dtime > 0.1:
-                    # really old events, don't associate them with the new one
-                    step = 0.1
+    @classmethod
+    def get_active_tdw(kin):
+        """Returns the most recently created or entered TDW.
+        """
+        # Find and return the first visible, mapped etc. TDW in the list
+        invis_refs = []
+        active_tdw = None
+        while len(kin.__tdw_refs) > 0:
+            tdw_ref = kin.__tdw_refs[0]
+            tdw = tdw_ref()
+            if tdw is not None:
+                if tdw.get_window() is not None and tdw.get_visible():
+                    active_tdw = tdw
+                    break
                 else:
-                    step = dtime
-                step /= len(self.motions)+1
-                for data_old in self.motions:
-                    self.doc.stroke_to(step, *data_old)
-                    dtime -= step
-                self.motions = []
-            self.doc.stroke_to(dtime, *data)
+                    invis_refs.append(tdw_ref)
+            kin.__tdw_refs.pop(0)
+        kin.__tdw_refs.extend(invis_refs)
+        assert active_tdw is not None
+        return active_tdw
 
-    def button_press_cb(self, win, event):
-        if event.type != gdk.BUTTON_PRESS:
-            # ignore the extra double-click event
-            return
-
-        if event.button == 1:
-            for func in self._input_stroke_started_observers:
-                func(event)
-
-            # mouse button pressed (while painting without pressure information)
-            if not self.last_event_had_pressure_info:
-                # For the mouse we don't get a motion event for "pressure"
-                # changes, so we simulate it. (Note: we can't use the
-                # event's button state because it carries the old state.)
-                self.motion_notify_cb(win, event, button1_pressed=True)
-
-    def button_release_cb(self, win, event):
-        # (see comment above in button_press_cb)
-        if event.button == 1:
-            if not self.last_event_had_pressure_info:
-                self.motion_notify_cb(win, event, button1_pressed=False)
-            # Outsiders can access this via gui.document
-            for func in self._input_stroke_ended_observers:
-                func(event)
-
-
-class DragHandler(object):
-    """Handle drag logic."""
-
-    def __init__(self, doc, widget):
-        self.doc = doc
-        self.widget = widget
-        self.drag_op = None
-
-    def update(self, dx, dy, x, y):
-        if self.drag_op:
-            self.drag_op.on_update(dx, dy, x, y)
-            return True
-        return False
-
-    def start_drag(self, drag_op, modifier):
-        if self.drag_op is not None:
-            self.stop_drag()
-        assert self.drag_op is None
-        self.drag_op = drag_op
-        self.drag_op.on_start(modifier)
-        c = gdk.Cursor(drag_op.cursor)
-        self.widget.set_override_cursor(c)
-
-    def stop_drag(self):
-        if self.drag_op is not None:
-            self.widget.set_override_cursor(None)
-            self.drag_op.on_stop()
-            self.drag_op = None
-
-
-class TiledDrawWidget(gtk.VBox):
-    """Widget for showing a lib.document.Document 
-    
-    Most aspects are delegated to dedicated classes. See CanvasEventBox,
-    DragHandler and CanvasRenderer."""
-
-    # Register a GType name for Glade, GtkBuilder etc.
-    __gtype_name__ = "TiledDrawWidget"
 
     def __init__(self, app=None, document=None):
-        gtk.VBox.__init__(self)
+        """Instantiate a TiledDrawWidget.
+
+        :param app: The main application singleton
+        :type app: gui.application.Application
+        :param document: The model the View displays
+        :type document: lib.document.Document
+
+        If the `document` parameter is none, a testbed model will be
+        instantiated automatically.
+
+        """
+        gtk.EventBox.__init__(self)
 
         self.app = app
         if document is None:
@@ -315,14 +121,24 @@ class TiledDrawWidget(gtk.VBox):
         self.doc = document
 
         self.renderer = CanvasRenderer(self.app, self.doc)
-        self.drag_handler = DragHandler(self.doc, self.renderer)
-        self.event_box = CanvasEventBox(self.app, self.doc, self.drag_handler.update)
 
-        # HACK
-        self.event_box.display_to_model = self.renderer.display_to_model
+        self.add_events(gdk.POINTER_MOTION_MASK
+            # Workaround for https://gna.org/bugs/index.php?16253
+            # Mypaint doesn't use proximity-*-event for anything
+            # yet, but this seems to be needed for scrollwheels
+            # etc. to keep working.
+            | gdk.PROXIMITY_OUT_MASK
+            | gdk.PROXIMITY_IN_MASK
+            # For some reason we also need to specify events
+            # handled in drawwindow.py:
+            | gdk.BUTTON_PRESS_MASK
+            | gdk.BUTTON_RELEASE_MASK)
+        if not pygtkcompat.USE_GTK3:
+            self.set_extension_events (gdk.EXTENSION_EVENTS_ALL)
+        self.last_painting_pos = None
 
-        self.event_box.add(self.renderer)
-        self.pack_start(self.event_box)
+
+        self.add(self.renderer)
 
         self.doc.canvas_observers.append(self.renderer.canvas_modified_cb)
         self.doc.brush.brushinfo.observers.append(
@@ -330,37 +146,19 @@ class TiledDrawWidget(gtk.VBox):
 
         self.renderer.update_cursor() # get the initial cursor right
 
-        self.has_pointer = False
+        # Track the active TDW
+        self.add_events(gdk.ENTER_NOTIFY_MASK)
+        self.connect("enter-notify-event", self.enter_notify_cb)
+        self.__tdw_refs.insert(0, weakref.ref(self))
 
-        def track_pointer(widget):
-            """Track pointer enter/leave on widget."""
-            widget.add_events(gdk.ENTER_NOTIFY_MASK | gdk.LEAVE_NOTIFY_MASK)
-            widget.connect("enter-notify-event", self.enter_notify_cb)
-            widget.connect("leave-notify-event", self.leave_notify_cb)
-
-        # We track both renderer and event_box because when pressing and releasing
-        # mouse button the event_box gets leave event, but the renderer gets the enter event
-        track_pointer(self.event_box)
-        track_pointer(self.renderer)
 
     def enter_notify_cb(self, widget, event):
-        self.has_pointer = True
-    def leave_notify_cb(self, widget, event):
-        self.has_pointer = False
+        self_ref = weakref.ref(self)
+        self.__tdw_refs.remove(self_ref)
+        self.__tdw_refs.insert(0, self_ref)
+
 
     # Forward public API to delegates
-    # TODO: attempt to reduce this interface
-    @property
-    def start_drag(self):
-        return self.drag_handler.start_drag
-
-    @property
-    def stop_drag(self):
-        return self.drag_handler.stop_drag
-
-    @property
-    def drag_op(self):
-        return self.drag_handler.drag_op
 
     @property
     def scale(self):
@@ -411,18 +209,6 @@ class TiledDrawWidget(gtk.VBox):
         self.renderer.overlay_layer = l
 
     @property
-    def device_observers(self):
-        return self.event_box.device_observers
-
-    @property
-    def _input_stroke_started_observers(self):
-        return self.event_box._input_stroke_started_observers
-
-    @property
-    def _input_stroke_ended_observers(self):
-        return self.event_box._input_stroke_ended_observers
-
-    @property
     def recenter_document(self):
         return self.renderer.recenter_document
 
@@ -438,15 +224,11 @@ class TiledDrawWidget(gtk.VBox):
     def set_override_cursor(self):
         return self.renderer.set_override_cursor
 
-    @property
-    def device_used(self):
-        return self.event_box.device_used
-
     def get_last_painting_pos(self):
-        return self.event_box.last_painting_pos
+        return self.last_painting_pos
+
     def set_last_painting_pos(self, value):
-        self.event_box.last_painting_pos = value
-    last_painting_pos = property(get_last_painting_pos, set_last_painting_pos)
+        self.last_painting_pos = value
 
     @property
     def get_cursor_in_model_coordinates(self):
@@ -480,38 +262,39 @@ class TiledDrawWidget(gtk.VBox):
         self.renderer.neutral_background_pixbuf = pixbuf
     neutral_background_pixbuf = property(get_neutral_background_pixbuf, set_neutral_background_pixbuf)
 
-    def set_pressure_mapping(self, function):
-        self.event_box.pressure_mapping = function
-
     # Transform logic
-    def rotozoom_with_center(self, function, at_pointer=False):
-        if at_pointer and self.has_pointer and self.event_box.last_event_x is not None:
-            cx, cy = self.event_box.last_event_x, self.event_box.last_event_y
-        else:
+    def rotozoom_with_center(self, function, center=None):
+        cx = None
+        cy = None
+        if center is not None:
+            cx, cy = center
+        if cx is None or cy is None:
             allocation = self.get_allocation()
             w, h = allocation.width, allocation.height
             cx, cy = self.renderer.get_center()
         cx_model, cy_model = self.renderer.display_to_model(cx, cy)
         function()
-        self.renderer.scale = helpers.clamp(self.renderer.scale, self.renderer.zoom_min, self.renderer.zoom_max)
+        self.renderer.scale = helpers.clamp(self.renderer.scale,
+                                            self.renderer.zoom_min,
+                                            self.renderer.zoom_max)
         cx_new, cy_new = self.renderer.model_to_display(cx_model, cy_model)
         self.renderer.translation_x += cx - cx_new
         self.renderer.translation_y += cy - cy_new
         self.renderer.queue_draw()
 
-    def zoom(self, zoom_step):
+    def zoom(self, zoom_step, center=None):
         def f(): self.renderer.scale *= zoom_step
-        self.rotozoom_with_center(f, at_pointer=True)
+        self.rotozoom_with_center(f, center)
 
-    def set_zoom(self, zoom, at_pointer=True):
+    def set_zoom(self, zoom, center=None):
         def f(): self.renderer.scale = zoom
-        self.rotozoom_with_center(f, at_pointer)
+        self.rotozoom_with_center(f, center)
         self.renderer.update_cursor()
 
-    def rotate(self, angle_step):
+    def rotate(self, angle_step, center=None):
         if self.renderer.mirrored: angle_step = -angle_step
         def f(): self.renderer.rotation += angle_step
-        self.rotozoom_with_center(f)
+        self.rotozoom_with_center(f, center)
 
     def set_rotation(self, angle):
         if self.renderer.mirrored: angle = -angle
@@ -993,7 +776,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         if False:
             # This speeds things up nicely when scrolling is already
             # fast, but produces temporary artefacts and an
-            # annoyingliy non-constant framerate otherwise.
+            # annoyingly non-constant framerate otherwise.
             #
             # It might be worth it if it was done only once per
             # redraw, instead of once per motion event. Maybe try to
@@ -1027,9 +810,14 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
 
 
 if __name__ == '__main__':
+    from document import CanvasController
+    from canvasevent import FreehandOnlyMode
     tdw = TiledDrawWidget()
     tdw.set_size_request(640, 480)
     tdw.renderer.visualize_rendering = True
+    ctrlr = CanvasController(tdw)
+    ctrlr.init_pointer_events()
+    ctrlr.modes.default_mode_class = FreehandOnlyMode
     win = gtk.Window()
     win.set_title("tdw test")
     win.connect("destroy", lambda *a: gtk.main_quit())

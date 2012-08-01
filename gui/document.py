@@ -11,6 +11,7 @@
 import os, math
 
 import pygtkcompat
+import gobject
 import gtk
 from gtk import gdk
 from gettext import gettext as _
@@ -20,21 +21,161 @@ from lib import backgroundsurface, command, helpers, layer
 import tileddrawwidget, stategroup
 from brushmanager import ManagedBrush
 import dialogs
+import canvasevent
 
-class Document(object):
+
+class CanvasController (object):
+    """Minimal canvas controller using a stack of modes.
+
+    Basic CanvasController objects can be set up to handle scroll events like
+    zooming or rotation only, pointer events like drawing only, or both.
+
+    The actual interpretation of each event is delegated to the top item on the
+    controller's modes stack: see `gui.canvasevent.CanvasInteractionMode` for
+    details. Simpler modes may assume the basic CanvasController interface,
+    more complex ones 
+
+    """
+
+    # NOTE: if muliple views of a single model are required, this interface
+    # will have to be revised.
+
+
+    def __init__(self, tdw):
+        """Initialize.
+
+        :param tdw: The view widget to attach handlers onto.
+        :type tdw: gui.tileddrawwidget.TiledDrawWidget
+
+        """
+        object.__init__(self)
+        self.tdw = tdw     #: the TiledDrawWidget being controlled.
+        self.modes = canvasevent.ModeStack(self)  #: stack of delegates
+
+
+    def init_pointer_events(self):
+        """Establish TDW event listeners for pointer button presses & drags.
+        """
+        self.tdw.connect("button-press-event", self.button_press_cb)
+        self.tdw.connect("motion-notify-event", self.motion_notify_cb)
+        self.tdw.connect("button-release-event", self.button_release_cb)
+
+
+    def init_scroll_events(self):
+        """Establish TDW event listeners for scroll-wheel actions.
+        """
+        self.tdw.connect("scroll-event", self.scroll_cb)
+
+
+    def button_press_cb(self, tdw, event):
+        """Delegates a ``button-press-event`` to the top mode in the stack.
+        """
+        result = self.modes.top.button_press_cb(tdw, event)
+        self.__update_last_event_info(tdw, event)
+        return result
+
+
+    def button_release_cb(self, tdw, event):
+        """Delegates a ``button-release-event`` to the top mode in the stack.
+        """
+        result = self.modes.top.button_release_cb(tdw, event)
+        self.__update_last_event_info(tdw, event)
+        return result
+
+
+    def motion_notify_cb(self, tdw, event):
+        """Delegates a ``motion-notify-event`` to the top mode in the stack.
+        """
+        result = self.modes.top.motion_notify_cb(tdw, event)
+        self.__update_last_event_info(tdw, event)
+        return result
+
+
+    def scroll_cb(self, tdw, event):
+        """Delegates a ``scroll-event`` to the top mode in the stack.
+        """
+        result = self.modes.top.scroll_cb(tdw, event)
+        self.__update_last_event_info(tdw, event)
+        return result
+
+
+    def __update_last_event_info(self, tdw, event):
+        # Update the stored details of the last event delegated.
+        tdw.__last_event_x = event.x
+        tdw.__last_event_y = event.y
+        tdw.__last_event_time = event.time
+
+
+    def get_last_event_info(self, tdw):
+        """Get details of the last event delegated to a mode in the stack.
+
+        :rtype tuple: ``(time, x, y)``
+
+        """
+        t, x, y = 0, None, None
+        try:
+            t = tdw.__last_event_time
+            x = tdw.__last_event_x
+            y = tdw.__last_event_y
+        except AttributeError:
+            pass
+        return (t, x, y)
+
+
+
+class Document (CanvasController):
+    """Manipulation of a loaded document via the the GUI.
+
+    A `gui.Document` is something like a Controller in the MVC sense: it
+    translates GtkAction activations and keypresses for changing the view into
+    View (`gui.tileddrawwidget`) manipulations. It is also responsible for
+    directly manipulating the Model (`lib.document`) in response to actions
+    and keypresses, for example manipulating the layer stack.
+
+    Some per-application state can be manipulated through this object too: for
+    example the drawing brush which is owned by the main application
+    singleton.
+
+    """
 
     # Layers have this attr set temporarily if they don't have a name yet
     _NONAME_LAYER_REFNUM_ATTR = "_document_noname_ref_number"
 
+
     def __init__(self, app, leader=None):
         self.app = app
         self.model = lib.document.Document(self.app.brush)
+        tdw = tileddrawwidget.TiledDrawWidget(self.app, self.model)
+        CanvasController.__init__(self, tdw)
+        self.init_pointer_events()
+        self.init_scroll_events()
+
+        # Pass on certain actions to other gui.documents.
         self.followers = []
 
-        # View
-        self.tdw = tileddrawwidget.TiledDrawWidget(self.app, self.model)
         self.model.frame_observers.append(self.frame_changed_cb)
         self.model.symmetry_observers.append(self.update_symmetry_toolitem)
+
+        # Deferred until after the app starts (runs in the first idle-
+        # processing phase) as a workaround for https://gna.org/bugs/?14372
+        # ([Windows] crash when moving the pen during startup)
+        gobject.idle_add(self.init_pointer_events)
+
+        # Input stroke observers
+        self.input_stroke_ended_observers = []
+        """Array of callbacks interested in the end of an input stroke.
+
+        Observers are called with the GTK event as their only argument. This
+        is a good place to listen for "just painted something" events;
+        app.brush will contain everything needed about the input stroke which
+        just ended, in the state in which it ended.
+
+        An input stroke is a single pen-down, draw, pen-up action. This sort of
+        stroke is not the same as a brush engine stroke (see ``lib.document``).
+        """
+
+        self.input_stroke_started_observers = []
+        """See `self.input_stroke_ended_observers`"""
 
         # FIXME: hack, to be removed
         fname = os.path.join(self.app.datapath, 'backgrounds', '03_check1.png')
@@ -50,22 +191,20 @@ class Document(object):
         self.tdw.zoom_min = min(self.zoomlevel_values)
         self.tdw.zoom_max = max(self.zoomlevel_values)
 
-        # Device change management & pen-stroke watching
-        self.tdw.device_observers.append(self.device_changed_cb)
+        # Device-specific brushes: save at end of stroke
         self.input_stroke_ended_observers.append(self.input_stroke_ended_cb)
-        self.last_pen_device = None
 
         self.init_stategroups()
         if leader is not None:
-            # This is a side doc (e.g. the scratchpad) which plays follow-the-
-            # leader for some events.
+            # This is a side conteoller (e.g. the scratchpad) which plays
+            # follow-the- leader for some events.
             assert isinstance(leader, Document)
             leader.followers.append(self)
             self.action_group = leader.action_group # hack, but needed by tdw
         else:
             # This doc owns the Actions which are (sometimes) passed on to
-            # followers to perform. It's also the main document being worked on
-            # by the user.
+            # followers to perform. It's model is also the main 'document'
+            # being worked on by the user.
             self.init_actions()
             self.init_context_actions()
             for action in self.action_group.list_actions():
@@ -89,26 +228,30 @@ class Document(object):
         ag = self.action_group
         context_actions = []
         for x in range(10):
-            r = ('Context0%d' % x,    None, _('Restore Brush %d') % x, 
-                    '%d' % x, None, self.context_cb)
-            s = ('Context0%ds' % x,   None, _('Save to Brush %d') % x, 
-                    '<control>%d' % x, None, self.context_cb)
+            r = ('Context0%d' % x, None, _('Restore Brush %d') % x,
+                 '%d' % x, None, self.context_cb)
+            s = ('Context0%ds' % x, None, _('Save to Brush %d') % x,
+                 '<control>%d' % x, None, self.context_cb)
             context_actions.append(s)
             context_actions.append(r)
         ag.add_actions(context_actions)
 
+
     def init_stategroups(self):
         sg = stategroup.StateGroup()
-        self.layerblink_state = sg.create_state(self.layerblink_state_enter, self.layerblink_state_leave)
-
+        self.layerblink_state = sg.create_state(self.layerblink_state_enter,
+                                                self.layerblink_state_leave)
         sg = stategroup.StateGroup()
-        self.strokeblink_state = sg.create_state(self.strokeblink_state_enter, self.strokeblink_state_leave)
+        self.strokeblink_state = sg.create_state(self.strokeblink_state_enter,
+                                                 self.strokeblink_state_leave)
         self.strokeblink_state.autoleave_timeout = 0.3
 
         # separate stategroup...
         sg2 = stategroup.StateGroup()
-        self.layersolo_state = sg2.create_state(self.layersolo_state_enter, self.layersolo_state_leave)
+        self.layersolo_state = sg2.create_state(self.layersolo_state_enter,
+                                                self.layersolo_state_leave)
         self.layersolo_state.autoleave_timeout = None
+
 
     def init_extra_keys(self):
         # The keyboard shortcuts below are not visible in the menu.
@@ -151,23 +294,6 @@ class Document(object):
         k('<control>Left', 'RotateLeft')
         k('<control>Right', 'RotateRight')
 
-    @property
-    def input_stroke_ended_observers(self):
-        """Array of callbacks interested in the end of an input stroke.
-
-        Observers are called with the GTK event as their only argument. This
-        is a good place to listen for "just painted something" events;
-        app.brush will contain everything needed about the input stroke which
-        just ended, in the state in which it ended.
-
-        An input stroke is a single pen-down, draw, pen-up action. This sort of
-        stroke is not the same as a brush engine stroke (see ``lib.document``).
-        """
-        return self.tdw._input_stroke_ended_observers
-
-    @property
-    def input_stroke_started_observers(self):
-        return self.tdw._input_stroke_started_observers
 
     # GENERIC
     def undo_cb(self, action):
@@ -176,14 +302,16 @@ class Document(object):
             # show otherwise invisible change (hack...)
             self.layerblink_state.activate()
 
+
     def redo_cb(self, action):
         cmd = self.model.redo()
         if isinstance(cmd, command.MergeLayer):
             # show otherwise invisible change (hack...)
             self.layerblink_state.activate()
 
+
     def copy_cb(self, action):
-        # use the full document bbox, so we can past layers back to the correct position
+        # use the full document bbox, so we can paste layers back to the correct position
         bbox = self.model.get_bbox()
         if bbox.w == 0 or bbox.h == 0:
             print "WARNING: empty document, nothing copied"
@@ -192,6 +320,7 @@ class Document(object):
             pixbuf = self.model.layer.render_as_pixbuf(*bbox)
         cb = gtk.Clipboard()
         cb.set_image(pixbuf)
+
 
     def paste_cb(self, action):
         cb = gtk.Clipboard()
@@ -204,10 +333,12 @@ class Document(object):
             self.model.load_layer_from_pixbuf(pixbuf, x, y)
         cb.request_image(callback)
 
+
     def pick_context_cb(self, action):
-        if not self.tdw.has_pointer:
+        active_tdw = self.tdw.__class__.get_active_tdw()
+        if not self.tdw is active_tdw:
             for follower in self.followers:
-                if follower.tdw.has_pointer:
+                if follower.tdw is active_tdw:
                     print "passing %s action to %s" % (action.get_name(), follower)
                     follower.pick_context_cb(action)
                     return
@@ -233,18 +364,22 @@ class Document(object):
                     self.strokeblink_state.activate(action)
                 return
 
+
     def restore_brush_from_stroke_info(self, strokeinfo):
         mb = ManagedBrush(self.app.brushmanager)
         mb.brushinfo.load_from_string(strokeinfo.brush_string)
         self.app.brushmanager.select_brush(mb)
         self.app.brushmodifier.restore_context_of_selected_brush()
 
+
     # LAYER
     def clear_layer_cb(self, action):
         self.model.clear_layer()
 
+
     def remove_layer_cb(self, action):
         self.model.remove_layer()
+
 
     def layer_bg_cb(self, action):
         idx = self.model.layer_idx - 1
@@ -253,6 +388,7 @@ class Document(object):
         self.model.select_layer(idx)
         self.layerblink_state.activate(action)
 
+
     def layer_fg_cb(self, action):
         idx = self.model.layer_idx + 1
         if idx >= len(self.model.layers):
@@ -260,16 +396,20 @@ class Document(object):
         self.model.select_layer(idx)
         self.layerblink_state.activate(action)
 
+
     def layer_increase_opacity(self, action):
         opa = helpers.clamp(self.model.layer.opacity + 0.08, 0.0, 1.0)
         self.model.set_layer_opacity(opa)
+
 
     def layer_decrease_opacity(self, action):
         opa = helpers.clamp(self.model.layer.opacity - 0.08, 0.0, 1.0)
         self.model.set_layer_opacity(opa)
 
+
     def solo_layer_cb(self, action):
         self.layersolo_state.toggle(action)
+
 
     def new_layer_cb(self, action):
         insert_idx = self.model.layer_idx
@@ -278,13 +418,16 @@ class Document(object):
         self.model.add_layer(insert_idx)
         self.layerblink_state.activate(action)
 
+
 #     @with_wait_cursor
     def merge_layer_cb(self, action):
         if self.model.merge_layer_down():
             self.layerblink_state.activate(action)
 
+
     def toggle_layers_above_cb(self, action):
         self.tdw.toggle_show_layers_above()
+
 
     def pick_layer_cb(self, action):
         x, y = self.tdw.get_cursor_in_model_coordinates()
@@ -319,6 +462,7 @@ class Document(object):
         if new_layer_pos < len(self.model.layers) and new_layer_pos >= 0:
             self.model.move_layer(current_layer_pos, new_layer_pos,
                                   select_new=True)
+
 
     def duplicate_layer_cb(self, action):
         """Duplicates the current layer (action callback)"""
@@ -357,24 +501,29 @@ class Document(object):
         adj = self.app.brush_adjustment['radius_logarithmic']
         adj.set_value(adj.get_value() + 0.3)
 
+
     def brush_smaller_cb(self, action):
         adj = self.app.brush_adjustment['radius_logarithmic']
         adj.set_value(adj.get_value() - 0.3)
+
 
     def more_opaque_cb(self, action):
         # FIXME: hm, looks this slider should be logarithmic?
         adj = self.app.brush_adjustment['opaque']
         adj.set_value(adj.get_value() * 1.8)
 
+
     def less_opaque_cb(self, action):
         adj = self.app.brush_adjustment['opaque']
         adj.set_value(adj.get_value() / 1.8)
+
 
     def brighter_cb(self, action):
         h, s, v = self.app.brush.get_color_hsv()
         v += 0.08
         if v > 1.0: v = 1.0
         self.app.brush.set_color_hsv((h, s, v))
+
 
     def darker_cb(self, action):
         h, s, v = self.app.brush.get_color_hsv()
@@ -383,11 +532,13 @@ class Document(object):
         if v < 0.005: v = 0.005
         self.app.brush.set_color_hsv((h, s, v))
 
+
     def increase_hue_cb(self,action):
         h, s, v = self.app.brush.get_color_hsv()
         e = 0.015
         h = (h + e) % 1.0
         self.app.brush.set_color_hsv((h, s, v))
+
 
     def decrease_hue_cb(self,action):
         h, s, v = self.app.brush.get_color_hsv()
@@ -395,11 +546,13 @@ class Document(object):
         h = (h - e) % 1.0
         self.app.brush.set_color_hsv((h, s, v))
 
+
     def purer_cb(self,action):
         h, s, v = self.app.brush.get_color_hsv()
         s += 0.08
         if s > 1.0: s = 1.0
         self.app.brush.set_color_hsv((h, s, v))
+
 
     def grayer_cb(self,action):
         h, s, v = self.app.brush.get_color_hsv()
@@ -407,6 +560,7 @@ class Document(object):
         # stop a little higher than 0.0, to avoid resetting hue to 0
         if s < 0.005: s = 0.005
         self.app.brush.set_color_hsv((h, s, v))
+
 
     def context_cb(self, action):
         name = action.get_name()
@@ -435,36 +589,45 @@ class Document(object):
             bm.select_brush(context)
             self.app.brush.set_color_hsv(color)
 
+
     def strokeblink_state_enter(self):
         l = layer.Layer()
         self.si.render_overlay(l)
         self.tdw.overlay_layer = l
         self.tdw.queue_draw() # OPTIMIZE: excess
+
     def strokeblink_state_leave(self, reason):
         self.tdw.overlay_layer = None
         self.tdw.queue_draw() # OPTIMIZE: excess
 
+
     def layerblink_state_enter(self):
         self.tdw.current_layer_solo = True
         self.tdw.queue_draw()
+
     def layerblink_state_leave(self, reason):
         if self.layersolo_state.active:
             # FIXME: use state machine concept, maybe?
             return
         self.tdw.current_layer_solo = False
         self.tdw.queue_draw()
+
+
     def layersolo_state_enter(self):
         s = self.layerblink_state
         if s.active:
             s.leave()
         self.tdw.current_layer_solo = True
         self.tdw.queue_draw()
+
     def layersolo_state_leave(self, reason):
         self.tdw.current_layer_solo = False
         self.tdw.queue_draw()
 
+
     #def blink_layer_cb(self, action):
     #    self.layerblink_state.activate(action)
+
 
     def pan(self, command):
         self.model.split_stroke()
@@ -475,6 +638,7 @@ class Document(object):
         elif command == 'PanUp'   : self.tdw.scroll(0, -step)
         elif command == 'PanDown' : self.tdw.scroll(0, +step)
         else: assert 0
+
 
     def zoom(self, command):
         try:
@@ -493,20 +657,35 @@ class Document(object):
             zoom_index = len(self.zoomlevel_values) - 1
 
         z = self.zoomlevel_values[zoom_index]
-        self.tdw.set_zoom(z)
+        self._set_zoom(z)
+
+
+    def _set_zoom(self, z, at_pointer=True):
+        if at_pointer:
+            etime, ex, ey = self.get_last_event_info(self.tdw)
+            self.tdw.set_zoom(z, (ex, ey))
+        else:
+            self.tdw.set_zoom(z)
+
 
     def rotate(self, command):
         # Allows easy and quick rotation to 45/90/180 degrees
         rotation_step = 2*math.pi/16
+        etime, ex, ey = self.get_last_event_info(self.tdw)
+        center = ex, ey
+        if command == 'RotateRight':
+            self.tdw.rotate(+rotation_step, center)
+        else:   # command == 'RotateLeft'
+            self.tdw.rotate(-rotation_step, center)
 
-        if   command == 'RotateRight': self.tdw.rotate(+rotation_step)
-        elif command == 'RotateLeft' : self.tdw.rotate(-rotation_step)
-        else: assert 0
 
     def zoom_cb(self, action):
         self.zoom(action.get_name())
+
+
     def rotate_cb(self, action):
         self.rotate(action.get_name())
+
 
     def symmetry_action_toggled_cb(self, action):
         """Change the model's symmetry state in response to UI events.
@@ -521,6 +700,7 @@ class Document(object):
             if self.model.get_symmetry_axis() is not None:
                 self.model.set_symmetry_axis(None)
 
+
     def update_symmetry_toolitem(self):
         """Updates the UI to reflect changes to the model's symmetry state.
         """
@@ -532,11 +712,15 @@ class Document(object):
         elif (new_xmid is not None) and (not action.get_active()):
             action.set_active(True)
 
+
     def mirror_horizontal_cb(self, action):
         self.tdw.mirror()
+
+
     def mirror_vertical_cb(self, action):
         self.tdw.rotate(math.pi)
         self.tdw.mirror()
+
 
     def reset_view_cb(self, command):
         if command is None:
@@ -549,7 +733,7 @@ class Document(object):
             self.tdw.set_rotation(0.0)
         if reset_all or ('Zoom' in command_name):
             default_zoom = self.app.preferences['view.default_zoom']
-            self.tdw.set_zoom(default_zoom)
+            self._set_zoom(default_zoom)
         if reset_all or ('Mirror' in command_name):
             self.tdw.set_mirrored(False)
         if reset_all:
@@ -589,66 +773,24 @@ class Document(object):
                 self.tdw.recenter_document() # Center image
                 self.tdw.set_rotation(radians) # reapply canvas rotation
                 self.tdw.set_mirrored(mirror) #reapply mirror
-                self.tdw.set_zoom(zoom, at_pointer=False) # Set new zoom level
+                self._set_zoom(zoom, at_pointer=False) # Set new zoom level
+
 
     # DEBUGGING
+
     def print_inputs_cb(self, action):
         self.model.brush.set_print_inputs(action.get_active())
+
+
     def visualize_rendering_cb(self, action):
         self.tdw.renderer.visualize_rendering = action.get_active()
+
+
     def no_double_buffering_cb(self, action):
         self.tdw.renderer.set_double_buffered(not action.get_active())
 
-    # BLEND MODES
-    def clone_selected_brush_for_saving(self):
-        # Clones the current brush, along with blend mode settings.
-        return self.app.brushmanager.clone_selected_brush(name=None)
 
-    def device_is_eraser(self, device):
-        if device is None: return False
-        return device.source == gdk.SOURCE_ERASER or 'eraser' in device.name.lower()
-
-    def device_changed_cb(self, old_device, new_device):
-        # small problem with this code: it doesn't work well with brushes that have (eraser not in [1.0, 0.0])
-
-        print dir(new_device)
-        print dir(new_device.props)
-        if pygtkcompat.USE_GTK3:
-            new_device.name = new_device.props.name
-            new_device.source = new_device.props.input_source
-
-        print 'device change:', new_device.name, new_device.source
-
-        # When editing brush settings, it is often more convenient to use the mouse.
-        # Because of this, we don't restore brushsettings when switching to/from the mouse.
-        # We act as if the mouse was identical to the last active pen device.
-        if new_device.source == gdk.SOURCE_MOUSE and self.last_pen_device:
-            new_device = self.last_pen_device
-        if new_device.source == gdk.SOURCE_PEN:
-            self.last_pen_device = new_device
-        if old_device and old_device.source == gdk.SOURCE_MOUSE and self.last_pen_device:
-            old_device = self.last_pen_device
-
-        bm = self.app.brushmanager
-        if old_device:
-            old_brush = self.clone_selected_brush_for_saving()
-            bm.store_brush_for_device(old_device.name, old_brush)
-
-        if new_device.source == gdk.SOURCE_MOUSE:
-            # Avoid fouling up unrelated devbrushes at stroke end
-            self.app.preferences.pop('devbrush.last_used', None)
-        else:
-            # Select the brush and update the UI.
-            # Use a sane default if there's nothing associated
-            # with the device yet.
-            brush = bm.fetch_brush_for_device(new_device.name)
-            if brush is None:
-                if self.device_is_eraser(new_device):
-                    brush = bm.get_default_eraser()
-                else:
-                    brush = bm.get_default_brush()
-            self.app.preferences['devbrush.last_used'] = new_device.name
-            bm.select_brush(brush)
+    # LAST-USED BRUSH STATE
 
     def input_stroke_ended_cb(self, event):
         # Store device-specific brush settings at the end of the stroke, not
@@ -659,14 +801,17 @@ class Document(object):
         device_name = self.app.preferences.get('devbrush.last_used', None)
         if device_name is None:
             return
-        selected_brush = self.clone_selected_brush_for_saving()
-        self.app.brushmanager.store_brush_for_device(device_name, selected_brush)
+        bm = self.app.brushmanager
+        selected_brush = bm.clone_selected_brush(name=None) # for saving
+        bm.store_brush_for_device(device_name, selected_brush)
         # However it may be better to reflect any brush settings change into
         # the last-used devbrush immediately. The UI idea here is that the
         # pointer (when you're holding the pen) is special, it's the point of a
         # real-world tool that you're dipping into a palette, or modifying
         # using the sliders.
 
+
+    # MODEL STATE REFLECTION
 
     def update_command_stack_toolitems(self, stack):
         # Undo and Redo are shown and hidden, and have their labels updated
@@ -715,6 +860,7 @@ class Document(object):
         action = ag.get_action("LayerVisibleToggle")
         if bool(action.get_active()) != bool(layer.visible):
             action.set_active(bool(layer.visible))
+
 
     def frame_changed_cb(self):
         self.tdw.queue_draw()

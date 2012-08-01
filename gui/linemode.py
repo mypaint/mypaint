@@ -187,14 +187,16 @@ Rotate holding the Shift key."),
 ### Draw dynamic Line, Curve, or Ellipse
 ###
 
-    # Called from dragfunc.py
+    # Called from canvasevent.py
     def start_command(self, mode, modifier):
 
-        # Check for scratchpad under pointer
-        if self.app.scratchpad_doc.tdw.has_pointer:
+        active_tdw = self.app.doc.tdw.__class__.get_active_tdw()
+        assert active_tdw is not None
+        if active_tdw is self.app.scratchpad_doc.tdw:
             self.model = self.app.scratchpad_doc.model
             self.tdw = self.app.scratchpad_doc.tdw
         else:
+            # unconditionally
             self.model = self.app.doc.model
             self.tdw = self.app.doc.tdw
 
@@ -226,7 +228,7 @@ Rotate holding the Shift key."),
         # sx, sy = starting point
         # ex, ey = end point
         # kx, ky = curve point from last line
-        # lx, ly = last point from DragFunc update
+        # lx, ly = last point from InteractionMode update
         self.sx, self.sy = x, y
         self.lx, self.ly = x, y
 
@@ -269,7 +271,7 @@ Rotate holding the Shift key."),
         self.lx, self.ly = self.tdw.display_to_model(x, y)
 
     def stop_command(self):
-    # End dragfunc
+    # End mode
         self.done = True
         x, y = self.process_line()
         self.model.split_stroke()
