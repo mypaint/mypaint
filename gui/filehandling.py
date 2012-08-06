@@ -280,11 +280,8 @@ class FileHandler(object):
 
     @drawwindow.with_wait_cursor
     def save_scratchpad(self, filename, export=False, **options):
-        # Check that there is something to save:
-        x, y, w, h =  self.app.scratchpad_doc.model.get_bbox()
-        if w == 0 and h == 0:
-            w, h = tiledsurface.N, tiledsurface.N # TODO: support for other sizes
-        thumbnail_pixbuf = self.save_doc_to_file(filename, self.app.scratchpad_doc, export=export, **options)
+        if self.app.scratchpad_doc.model.unsaved_painting_time or export or not os.path.exists(filename):
+            self.save_doc_to_file(filename, self.app.scratchpad_doc, export=export, **options)
         if not export:
             self.app.scratchpad_filename = os.path.abspath(filename)
             self.app.preferences["scratchpad.last_opened_scratchpad"] = self.app.scratchpad_filename
