@@ -514,6 +514,9 @@ class TiledDrawWidget(gtk.VBox):
         self.renderer.neutral_background_pixbuf = pixbuf
     neutral_background_pixbuf = property(get_neutral_background_pixbuf, set_neutral_background_pixbuf)
 
+    def set_pressure_mapping(self, function):
+        self.event_box.pressure_mapping = function
+
     # Transform logic
     def rotozoom_with_center(self, function, at_pointer=False):
         if at_pointer and self.has_pointer and self.event_box.last_event_x is not None:

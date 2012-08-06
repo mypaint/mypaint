@@ -360,9 +360,12 @@ class Application: # singleton
         p = self.preferences['input.global_pressure_mapping']
         if len(p) == 2 and abs(p[0][1]-1.0)+abs(p[1][1]-0.0) < 0.0001:
             # 1:1 mapping (mapping disabled)
-            self.doc.tdw.pressure_mapping = None
+            self.doc.tdw.set_pressure_mapping(None)
         else:
             # TODO: maybe replace this stupid mapping by a hard<-->soft slider?
+            #       But then we would also need a "minimum pressure" setting,
+            #       or else this often used workaround is no longer possible:
+            #       http://wiki.mypaint.info/File:Pressure_workaround.png
             m = mypaintlib.MappingWrapper(1)
             m.set_n(0, len(p))
             for i, (x, y) in enumerate(p):
@@ -370,7 +373,7 @@ class Application: # singleton
 
             def mapping(pressure):
                 return m.calculate_single_input(pressure)
-            self.doc.tdw.pressure_mapping = mapping
+            self.doc.tdw.set_pressure_mapping(mapping)
 
     def update_input_devices(self):
         # init extended input devices
