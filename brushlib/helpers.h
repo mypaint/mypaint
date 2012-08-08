@@ -1,7 +1,7 @@
 #ifndef HELPERS_H
 #define HELPERS_H
 
-#include "rng-int.h"
+#include "rng-double.h"
 
 #define MAX(a, b)  (((a) > (b)) ? (a) : (b))
 #define MIN(a, b)  (((a) < (b)) ? (a) : (b))
@@ -23,6 +23,6 @@ hsv_to_rgb_float (float *h_, float *s_, float *v_);
 void
 rgb_to_hsv_float (float *r_ /*h*/, float *g_ /*s*/, float *b_ /*v*/);
 
-float rand_gauss (RngInt * rng);
+float rand_gauss (RngDouble * rng);
 
 #endif // HELPERS_H

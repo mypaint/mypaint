@@ -26,7 +26,6 @@
 #include "mapping.h"
 #include "helpers.h"
 #include "rng-double.h"
-#include "rng-int.h"
 
 // Allow the C99 define from json.h
 #undef TRUE
@@ -62,8 +61,7 @@ struct _MyPaintBrush {
 
     // the states (get_state, set_state, reset) that change during a stroke
     float states[MYPAINT_BRUSH_STATES_COUNT];
-    RngInt * rng_int;
-    RngDouble * rng_double;
+    RngDouble * rng;
 
     // Those mappings describe how to calculate the current value for each setting.
     // Most of settings will be constant (eg. only their base_value is used).
@@ -97,8 +95,7 @@ mypaint_brush_new()
     for (i=0; i<MYPAINT_BRUSH_SETTINGS_COUNT; i++) {
       self->settings[i] = mapping_new(MYPAINT_BRUSH_INPUTS_COUNT);
     }
-    self->rng_int = rng_int_new(1000);
-    self->rng_double = rng_double_new(1000);
+    self->rng = rng_double_new(1000);
     self->print_inputs = FALSE;
 
     for (i=0; i<MYPAINT_BRUSH_STATES_COUNT; i++) {
@@ -122,10 +119,8 @@ mypaint_brush_destroy(MyPaintBrush *self)
     for (i=0; i<MYPAINT_BRUSH_SETTINGS_COUNT; i++) {
         mapping_free(self->settings[i]);
     }
-    rng_int_free (self->rng_int);
-    rng_double_free (self->rng_double);
-    self->rng_int = NULL;
-    self->rng_double = NULL;
+    rng_double_free (self->rng);
+    self->rng = NULL;
     json_object_put(self->brush_json);
 }
 
@@ -339,7 +334,7 @@ mypaint_brush_set_state(MyPaintBrush *self, MyPaintBrushState i, float value)
     inputs[MYPAINT_BRUSH_INPUT_PRESSURE] = pressure;
     inputs[MYPAINT_BRUSH_INPUT_SPEED1] = log(self->speed_mapping_gamma[0] + self->states[MYPAINT_BRUSH_STATE_NORM_SPEED1_SLOW])*self->speed_mapping_m[0] + self->speed_mapping_q[0];
     inputs[MYPAINT_BRUSH_INPUT_SPEED2] = log(self->speed_mapping_gamma[1] + self->states[MYPAINT_BRUSH_STATE_NORM_SPEED2_SLOW])*self->speed_mapping_m[1] + self->speed_mapping_q[1];
-    inputs[MYPAINT_BRUSH_INPUT_RANDOM] = rng_double_next(self->rng_double);
+    inputs[MYPAINT_BRUSH_INPUT_RANDOM] = rng_double_next(self->rng);
     inputs[MYPAINT_BRUSH_INPUT_STROKE] = MIN(self->states[MYPAINT_BRUSH_STATE_STROKE], 1.0);
     inputs[MYPAINT_BRUSH_INPUT_DIRECTION] = fmodf (atan2f (self->states[MYPAINT_BRUSH_STATE_DIRECTION_DY], self->states[MYPAINT_BRUSH_STATE_DIRECTION_DX])/(2*M_PI)*360 + 180.0, 180.0);
     inputs[MYPAINT_BRUSH_INPUT_TILT_DECLINATION] = self->states[MYPAINT_BRUSH_STATE_DECLINATION];
@@ -496,8 +491,8 @@ mypaint_brush_set_state(MyPaintBrush *self, MyPaintBrushState i, float value)
     if (self->settings_value[MYPAINT_BRUSH_SETTING_OFFSET_BY_RANDOM]) {
       float amp = self->settings_value[MYPAINT_BRUSH_SETTING_OFFSET_BY_RANDOM];
       if (amp < 0.0) amp = 0.0;
-      x += rand_gauss (self->rng_int) * amp * base_radius;
-      y += rand_gauss (self->rng_int) * amp * base_radius;
+      x += rand_gauss (self->rng) * amp * base_radius;
+      y += rand_gauss (self->rng) * amp * base_radius;
     }
 
 
@@ -506,7 +501,7 @@ mypaint_brush_set_state(MyPaintBrush *self, MyPaintBrushState i, float value)
       float radius_log, alpha_correction;
       // go back to logarithmic radius to add the noise
       radius_log  = self->settings_value[MYPAINT_BRUSH_SETTING_RADIUS_LOGARITHMIC];
-      radius_log += rand_gauss (self->rng_int) * self->settings_value[MYPAINT_BRUSH_SETTING_RADIUS_BY_RANDOM];
+      radius_log += rand_gauss (self->rng) * self->settings_value[MYPAINT_BRUSH_SETTING_RADIUS_BY_RANDOM];
       radius = expf(radius_log);
       radius = CLAMP(radius, ACTUAL_RADIUS_MIN, ACTUAL_RADIUS_MAX);
       alpha_correction = self->states[MYPAINT_BRUSH_STATE_ACTUAL_RADIUS] / radius;
@@ -749,8 +744,7 @@ mypaint_brush_set_state(MyPaintBrush *self, MyPaintBrushState i, float value)
       dtime = 0.0001;
     }
 
-    rng_int_set_seed (self->rng_int, self->states[MYPAINT_BRUSH_STATE_RNG_SEED]);
-    rng_double_set_seed (self->rng_double, self->states[MYPAINT_BRUSH_STATE_RNG_SEED]);
+    rng_double_set_seed (self->rng, self->states[MYPAINT_BRUSH_STATE_RNG_SEED]*0x40000000);
 
     { // calculate the actual "virtual" cursor position
 
@@ -759,8 +753,8 @@ mypaint_brush_set_state(MyPaintBrush *self, MyPaintBrushState i, float value)
         // OPTIMIZE: expf() called too often
         float base_radius = expf(mapping_get_base_value(self->settings[MYPAINT_BRUSH_SETTING_RADIUS_LOGARITHMIC]));
 
-        x += rand_gauss (self->rng_int) * mapping_get_base_value(self->settings[MYPAINT_BRUSH_SETTING_TRACKING_NOISE]) * base_radius;
-        y += rand_gauss (self->rng_int) * mapping_get_base_value(self->settings[MYPAINT_BRUSH_SETTING_TRACKING_NOISE]) * base_radius;
+        x += rand_gauss (self->rng) * mapping_get_base_value(self->settings[MYPAINT_BRUSH_SETTING_TRACKING_NOISE]) * base_radius;
+        y += rand_gauss (self->rng) * mapping_get_base_value(self->settings[MYPAINT_BRUSH_SETTING_TRACKING_NOISE]) * base_radius;
       }
 
       float fac = 1.0 - exp_decay (mapping_get_base_value(self->settings[MYPAINT_BRUSH_SETTING_SLOW_TRACKING]), 100.0*dtime);
@@ -872,7 +866,7 @@ mypaint_brush_set_state(MyPaintBrush *self, MyPaintBrushState i, float value)
     //g_print("dist_final = %f\n", states[MYPAINT_BRUSH_STATE_DIST]);
 
     // next seed for the RNG (GRand has no get_state() and states[] must always contain our full state)
-    self->states[MYPAINT_BRUSH_STATE_RNG_SEED] = rng_int_next(self->rng_int);
+    self->states[MYPAINT_BRUSH_STATE_RNG_SEED] = rng_double_next(self->rng);
 
     // stroke separation logic (for undo/redo)
 

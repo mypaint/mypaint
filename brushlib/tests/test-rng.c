@@ -1,5 +1,3 @@
-
-#include "rng-int.h"
 #include "rng-double.h"
 
 #include <stdio.h>
@@ -7,30 +5,6 @@
 #include <assert.h>
 
 #include "testutils.h"
-
-int
-test_rng_int_smoke(void *user_data)
-{
-    register int m; long a[2009];
-
-    RngInt* gen = rng_int_new(310952L);
-    for (m=0;m<=2009;m++) rng_int_get_array(gen, a,1009);
-    printf("%ld\n", a[0]);
-
-    assert(a[0] == 995235265);
-
-    rng_int_free(gen);
-
-    gen = rng_int_new(310952L);
-    for (m=0;m<=1009;m++) rng_int_get_array(gen, a,2009);
-    printf("%ld\n", a[0]);
-
-    assert(a[0] == 995235265);
-
-    rng_int_free(gen);
-
-    return 1;
-}
 
 int
 test_rng_double_smoke(void *user_data)
@@ -67,7 +41,6 @@ int
 main(int argc, char **argv)
 {
     TestCase test_cases[] = {
-        {"/rng/int/smoke", test_rng_int_smoke, NULL},
         {"/rng/double/smoke", test_rng_double_smoke, NULL}
     };
 

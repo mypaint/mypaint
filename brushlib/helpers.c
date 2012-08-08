@@ -23,20 +23,14 @@
 
 #include "helpers.h"
 
-// Optimized version from one in GIMP (noisify.c), where it was
-// adapted from ppmforge.c, which is part of PBMPLUS. The algorithm
-// comes from: 'The Science Of Fractal Images'. Peitgen, H.-O., and
-// Saupe, D. eds.  Springer Verlag, New York, 1988.
-float rand_gauss (RngInt * rng)
+float rand_gauss (RngDouble * rng)
 {
-  float sum = 0.0;
-  uint32_t rand1 = rng_int_next(rng);
-  uint32_t rand2 = rng_int_next(rng);
-  sum +=  rand1        & 0x7FFF;
-  sum += (rand1 >> 16) & 0x7FFF;
-  sum +=  rand2        & 0x7FFF;
-  sum += (rand2 >> 16) & 0x7FFF;
-  return sum * 5.28596089837e-5 - 3.46410161514;
+  double sum = 0.0;
+  sum += rng_double_next(rng);
+  sum += rng_double_next(rng);
+  sum += rng_double_next(rng);
+  sum += rng_double_next(rng);
+  return sum * 1.73205080757 - 3.46410161514;
 }
 
 // stolen from GIMP (gimpcolorspace.c)
