@@ -28,11 +28,22 @@
 /* the following routines are adapted from exercise 3.6--15 */
 /* after calling ranf_start, get new randoms by, e.g., "x=ranf_arr_next()" */
 
+#if 0
+/* original settings */
 #define QUALITY 1009 /* recommended quality level for high-res use */
 #define TT  70   /* guaranteed separation between streams */
-#define is_odd(s) ((s)&1)
 #define KK 100                     /* the long lag */
 #define LL  37                     /* the short lag */
+#else
+/* low quality settings, seems to work for MyPaint */
+/* (Disclaimer: I don't understand what those numbers do, I just reduced them. --maxy) */
+#define QUALITY 19
+#define TT  7
+#define KK 10
+#define LL  7
+#endif
+
+#define is_odd(s) ((s)&1)
 #define mod_sum(x,y) (((x)+(y))-(int)((x)+(y)))   /* (x+y) mod 1.0 */
 
 const double ranf_arr_dummy=-1.0;

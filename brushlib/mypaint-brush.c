@@ -737,14 +737,16 @@ mypaint_brush_set_state(MyPaintBrush *self, MyPaintBrushState i, float value)
     if (dtime < 0) printf("Time jumped backwards by dtime=%f seconds!\n", dtime);
     if (dtime <= 0) dtime = 0.0001; // protect against possible division by zero bugs
 
+    /* way too slow with the new rng, and not working any more anyway...
+    rng_double_set_seed (self->rng, self->states[MYPAINT_BRUSH_STATE_RNG_SEED]*0x40000000);
+    */
+
     if (dtime > 0.100 && pressure && self->states[MYPAINT_BRUSH_STATE_PRESSURE] == 0) {
       // Workaround for tablets that don't report motion events without pressure.
       // This is to avoid linear interpolation of the pressure between two events.
       mypaint_brush_stroke_to (self, surface, x, y, 0.0, 90.0, 0.0, dtime-0.0001);
       dtime = 0.0001;
     }
-
-    rng_double_set_seed (self->rng, self->states[MYPAINT_BRUSH_STATE_RNG_SEED]*0x40000000);
 
     { // calculate the actual "virtual" cursor position
 
@@ -865,8 +867,10 @@ mypaint_brush_set_state(MyPaintBrush *self, MyPaintBrushState i, float value)
     self->states[MYPAINT_BRUSH_STATE_DIST] = dist_moved + dist_todo;
     //g_print("dist_final = %f\n", states[MYPAINT_BRUSH_STATE_DIST]);
 
+    /* not working any more with the new rng...
     // next seed for the RNG (GRand has no get_state() and states[] must always contain our full state)
     self->states[MYPAINT_BRUSH_STATE_RNG_SEED] = rng_double_next(self->rng);
+    */
 
     // stroke separation logic (for undo/redo)
 
