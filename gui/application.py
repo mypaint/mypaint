@@ -106,6 +106,7 @@ class Application: # singleton
         self.kbm = keyboard.KeyboardManager()
         self.doc = document.Document(self)
         signal_callback_objs.append(self.doc)
+        signal_callback_objs.append(self.doc.modes)
         self.scratchpad_doc = document.Document(self, leader=self.doc)
         self.brushmanager = brushmanager.BrushManager(join(datapath, 'brushes'), join(confpath, 'brushes'), self)
         self.filehandler = filehandling.FileHandler(self)

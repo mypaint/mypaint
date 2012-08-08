@@ -122,6 +122,9 @@ class KeyboardManager:
             # emergency exit in case of bugs
             for hardware_keycode in self.pressed.keys():
                 released(hardware_keycode)
+            # Pop all stacked modes; they should release grabs
+            widget.app.doc.modes.reset()
+            # Just in case...
             gdk.pointer_ungrab()
         else:
             # note: event.keyval would not be suited for this because
@@ -130,7 +133,7 @@ class KeyboardManager:
             if event.hardware_keycode in self.pressed:
                 released(event.hardware_keycode)
                 return True
-    
+
     def add_window(self, window):
         window.connect("key-press-event", self.key_press_cb)
         window.connect("key-release-event", self.key_release_cb)

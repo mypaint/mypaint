@@ -25,6 +25,8 @@
       <menuitem action='Redo'/>
       <separator/>
       <menuitem action='Symmetry'/>
+      <menuitem action='SwitchableFreehandMode'/>
+      <menuitem action='PanViewMode'/>
       <separator/>
       <menuitem action='PreferencesWindow'/>
     </menu>

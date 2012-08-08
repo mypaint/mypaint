@@ -1146,6 +1146,53 @@ Perhaps an increasing amount.
       </child>
     </object><!-- /WindowActions -->
   </child>
+  <child>
+    <object class="GtkActionGroup" id="ModeStackActions">
+      <!-- Actions which affect the ModeStack of the primary document -->
+      <child>
+        <object class="GtkRadioAction" id="SwitchableFreehandMode">
+          <property name="label" translatable="1"
+            >Freehand</property>
+          <property name="icon-name">mypaint-line-mode-freehand</property>
+          <property name="tooltip" translatable="1"
+            >Freehand drawing and painting</property>
+          <property name="value">1</property>
+          <property name="current-value">1</property>
+          <signal name="changed" handler="mode_radioaction_changed_cb"/>
+        </object>
+      </child>
+      <child>
+        <object class="GtkRadioAction" id="PanViewMode">
+          <property name="label" translatable="1">Scroll View</property>
+          <property name="icon-name">mypaint-view-pan</property>
+          <property name="tooltip" translatable="1"
+            >Scroll the view by clicking and dragging</property>
+          <property name="group">SwitchableFreehandMode</property>
+          <property name="value">2</property>
+        </object>
+      </child>
+      <child>
+        <object class="GtkRadioAction" id="RotateViewMode">
+          <property name="label" translatable="1">Rotate View</property>
+          <property name="icon-name">mypaint-view-pan</property>
+          <property name="tooltip" translatable="1"
+            >Rotate the view by clicking and dragging</property>
+          <property name="group">PanViewMode</property>
+          <property name="value">3</property>
+        </object>
+      </child>
+      <child>
+        <object class="GtkRadioAction" id="ZoomViewMode">
+          <property name="label" translatable="1">Zoom View</property>
+          <property name="icon-name">mypaint-view-pan</property>
+          <property name="tooltip" translatable="1"
+            >Zoom the view by clicking and dragging</property>
+          <property name="group">RotateViewMode</property>
+          <property name="value">3</property>
+        </object>
+      </child>
+    </object><!-- /ModeStackActions -->
+  </child>
 </object><!-- /app_ui_manager -->
 
 </interface>

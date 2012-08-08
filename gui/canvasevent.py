@@ -19,20 +19,47 @@ from gtk import gdk
 from gtk import keysyms
 
 
+class ModeRegistry (type):
+    """Lookup table for interaction modes and their associated actions
+
+    Operates as the metaclass for `InteractionMode`, so all you need to do to
+    create the association for a mode subclass is to define an
+    ``__action_name__`` entry in the class's namespace containing the name of
+    the associated `gtk.Action` defined in ``mypaint.xml``.
+
+    """
+
+    action_name_to_mode_class = {}
+
+    @classmethod
+    def get_mode_class(cs, action_name):
+        return cs.action_name_to_mode_class.get(action_name, None)
+
+    def __new__(mcs, name, bases, dict):
+        action_name = dict.get("__action_name__", None)
+        mode_class = type.__new__(mcs, name, bases, dict)
+        if action_name is not None:
+            action_name = str(action_name)
+            mcs.action_name_to_mode_class[action_name] = mode_class
+        return mode_class
+
+
 class InteractionMode (object):
     """Base class for temporary interaction modes.
 
-    Active interaction objects process input events, and manipulate ether
+    Active interaction objects process input events, and can manipulate
     document views (TiledDrawWidget), the document model data (lib.document),
-    or the mode stack they sit on. Interactions encapsulate state about their
+    and the mode stack they sit on. Interactions encapsulate state about their
     particular kind of interaction; for example a drag interaction typically
     contains the starting position for the drag.
 
-    Event handler methods can create new sub-modes and `push()` or `replace()`
-    them to the stack. It is conventional to pass the current event to the
-    equivalent method on the new object when this transfer of control happens.
+    Event handler methods can create new sub-modes and `push()` them to the
+    stack. It is conventional to pass the current event to the equivalent
+    method on the new object when this transfer of control happens.
 
     """
+
+    __metaclass__ = ModeRegistry
 
 
     is_live_updateable = False
@@ -42,31 +69,30 @@ class InteractionMode (object):
         object.__init__(self)
 
         #: The `gui.document.Document` this mode should affect.
-        #: Updated by enter()/leave().
+        #: Updated by enter().
         self.doc = None
 
 
     def enter(self, doc):
         """Enters the mode: called by `ModeStack.push()` etc.
 
-        This is called when the mode becomes active, i.e. when it is the tip of
-        the stack and before input is sent to it.
-
         :parameter doc: the `gui.document.Document` this mode should affect.
+            A reference is kept in `self.doc`.
+
+        This is called when the mode becomes active, i.e. when it becomes the
+        top mode on a ModeStack, and before input is sent to it. Note that a
+        mode may be entered only to be left immediately: mode stacks are
+        cleared by repeated pop()ing.
 
         """
         self.doc = doc
 
 
-    # TODO: decide if the semantics when pushing/popping should involve
-    # pause/resume. For now the stack uses enter/leave when a mode is revealed
-    # or hidden.
-
     def leave(self):
         """Leaves the mode: called by `ModeStack.pop()` etc.
 
         This is called when an active mode becomes inactive, i.e. when it is
-        popped from the stack.
+        no longer the top mode on its ModeStack.
 
         """
         self.doc = None
@@ -324,6 +350,8 @@ class SwitchableFreehandMode (FreehandOnlyMode):
     """The default mode: freehand drawing, accepting modifiers to switch modes.
     """
 
+    __action_name__ = 'SwitchableFreehandMode'
+
     def button_press_cb(self, tdw, event):
         app = tdw.app
         drawwindow = app.drawWindow
@@ -466,46 +494,97 @@ class ModeStack (object):
 
 
     def __init__(self, doc):
+        """Initialize.
+
+        :param doc: Controller instance: the main MyPaint app uses an,
+            an instance of `gui.document.Document`. Simpler drawing
+            surfaces can use a basic CanvasController and a
+            simpler `default_mode_class`.
+        :type doc: CanvasController
+        """
         object.__init__(self)
         self._stack = []
         self._doc = doc
+        self.observers = []
+
+
+    def _notify_observers(self):
+        top_mode = self._stack[-1]
+        for func in self.observers:
+            func(top_mode)
+
 
     @property
     def top(self):
-        self._check()
+        """The top node on the stack.
+        """
+        # Perhaps rename to "active()"?
+        new_mode = self._check()
+        if new_mode is not None:
+            new_mode.enter(self._doc)
+            self._notify_observers()
         return self._stack[-1]
 
+
     def pop(self):
-        old_mode = self._stack.pop(-1)
-        old_mode.leave()
-        self._check()
-        self.top.enter(self._doc)
+        """Pops a mode, leaving the old top mode and entering the exposed top.
+        """
+        if len(self._stack) > 0:
+            old_mode = self._stack.pop(-1)
+            old_mode.leave()
+        top_mode = self._check()
+        if top_mode is None:
+            top_mode = self._stack[-1]
+        top_mode.enter(self._doc)
+        self._notify_observers()
+
 
     def push(self, mode):
-        self.top.leave()
-        self._stack.append(mode)
-        mode.enter(self._doc)
-
-    def replace(self, mode):
-        old_mode = self._stack.pop(-1)
-        old_mode.leave()
-        self._stack.append(mode)
-        mode.enter(self._doc)
-
-    def reset(self):
-        """Clears the stack, popping the final element and replacing it.
+        """Pushes a mode, and enters it.
         """
-        while True:
-            self.pop()
-            if len(self._stack) == 1:
-                break
-
-    def _check(self):
         if len(self._stack) > 0:
-            return
-        mode = self.default_mode_class()
+            self._stack[-1].leave()
         self._stack.append(mode)
         mode.enter(self._doc)
+        self._notify_observers()
+
+
+    def reset(self, replacement=None):
+        """Clears the stack, popping the final element and replacing it.
+
+        :param replacement: Optional mode to go on top of the cleared stack.
+        :type replacement: `InteractionMode`.
+
+        """
+        while len(self._stack) > 0:
+            old_mode = self._stack.pop(-1)
+            old_mode.leave()
+            if len(self._stack) > 0:
+                self._stack[-1].enter(self._doc)
+        top_mode = self._check(replacement)
+        assert top_mode is not None
+        self._notify_observers()
+
+
+    def _check(self, replacement=None):
+        # Ensures that the stack is non-empty.
+        # Returns the new top mode if one was pushed.
+        if len(self._stack) > 0:
+            return None
+        if replacement is not None:
+            mode = replacement
+        else:
+            mode = self.default_mode_class()
+        self._stack.append(mode)
+        mode.enter(self._doc)
+        return mode
+
+
+    def __repr__(self):
+        s = '<ModeStack ['
+        s += ", ".join([m.__class__.__name__ for m in self._stack])
+        s += ']>'
+        return s
 
 
 class DragMode (InteractionMode):
@@ -651,6 +730,8 @@ class OneshotDragModeMixin:
 
 class PanViewMode (OneshotDragModeMixin, DragMode):
 
+    __action_name__ = 'PanViewMode'
+
     cursor = gdk.Cursor(gdk.FLEUR)
 
     def __init__(self):
@@ -661,6 +742,8 @@ class PanViewMode (OneshotDragModeMixin, DragMode):
 
 
 class ZoomViewMode (OneshotDragModeMixin, DragMode):
+
+    __action_name__ = 'ZoomViewMode'
 
     cursor = gdk.Cursor(gdk.SIZING)
 
@@ -676,10 +759,13 @@ class ZoomViewMode (OneshotDragModeMixin, DragMode):
             # Experimental: zoom around wherever the drag started
             start_pos = self.start_x, self.start_y
             tdw.zoom(math.exp(dy/100.0), center=start_pos)
+        # TODO: Let modifiers to constrain the zoom amount to 
+        #       the defined steps.
 
 
 class RotateViewMode (OneshotDragModeMixin, DragMode):
 
+    __action_name__ = 'RotateViewMode'
     cursor = gdk.Cursor(gdk.EXCHANGE)
 
     def __init__(self):
@@ -694,6 +780,8 @@ class RotateViewMode (OneshotDragModeMixin, DragMode):
         x, y = x-dx, y-dy
         phi1 = math.atan2(y, x)
         tdw.rotate(phi2-phi1, center=(cx, cy))
+        # TODO: Allow modifiers to constrain the transformation angle
+        #       to 22.5 degree steps.
 
 
 class MoveFrameMode (OneshotDragModeMixin, DragMode):
@@ -712,6 +800,15 @@ class MoveFrameMode (OneshotDragModeMixin, DragMode):
         x0, y0 = tdw.display_to_model(x, y)
         x1, y1 = tdw.display_to_model(x+dx, y+dy)
         model.move_frame(dx=x1-x0, dy=y1-y0)
+
+    # TODO: Define modifiers for adjusting the size of the frame too,
+    #       or make the place on the frame where the button is pressed
+    #       before the drag determine what action is taken (and maybe
+    #       its cursor?)
+
+    # TODO: Perhaps entering and leaving the mode by invoking the GtkAction
+    #       should show and hide the frame dialog. It'd allow the frame to
+    #       be toggled quite conveniently.
 
 
 

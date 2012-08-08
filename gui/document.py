@@ -147,8 +147,7 @@ class Document (CanvasController):
         self.model = lib.document.Document(self.app.brush)
         tdw = tileddrawwidget.TiledDrawWidget(self.app, self.model)
         CanvasController.__init__(self, tdw)
-        self.init_pointer_events()
-        self.init_scroll_events()
+        self.modes.observers.append(self.mode_stack_changed_cb)
 
         # Pass on certain actions to other gui.documents.
         self.followers = []
@@ -160,6 +159,7 @@ class Document (CanvasController):
         # processing phase) as a workaround for https://gna.org/bugs/?14372
         # ([Windows] crash when moving the pen during startup)
         gobject.idle_add(self.init_pointer_events)
+        gobject.idle_add(self.init_scroll_events)
 
         # Input stroke observers
         self.input_stroke_ended_observers = []
@@ -896,3 +896,37 @@ class Document (CanvasController):
                         break
             setattr(layer, self._NONAME_LAYER_REFNUM_ATTR, num)
         return num
+
+
+    def mode_radioaction_changed_cb(self, action, current_action):
+        """Callback: GtkRadioAction controlling the modes stack activated.
+        """
+        # Update the mode stack so that its top element matches the newly
+        # chosen action.
+        action_name = current_action.get_name()
+        mode_class = canvasevent.ModeRegistry.get_mode_class(action_name)
+        assert mode_class is not None
+        if self.modes.top.__class__ is not mode_class:
+            mode = mode_class()
+            print "DEBUG: activated", mode
+            self.modes.reset(replacement=mode)
+            # TODO: perhaps mode classes should list modes they can be
+            # stacked on top of. That would allow things like picker modes
+            # or drags to be invoked in the middle of fancy line modes,
+            # for example.
+
+
+    def mode_stack_changed_cb(self, mode):
+        """Callback: mode stack has changed structure.
+        """
+        # Activate the action corresponding to the current top mode.
+        print "DEBUG: mode stack updated:", self.modes
+        action_name = getattr(mode, '__action_name__', None)
+        if action_name is None:
+            return None
+        action = self.app.builder.get_object(action_name)
+        if action is not None:
+            # Not every mode has a corresponding action
+            if not action.get_active():
+                action.set_active(True)
+
