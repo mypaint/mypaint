@@ -235,6 +235,8 @@ class FreehandOnlyMode (InteractionMode):
         if pressure is not None and (   pressure > 1.0
                                      or pressure < 0.0
                                      or not isfinite(pressure)):
+            if not hasattr(self, 'bad_devices'):
+                self.bad_devices = []
             if event.device.name not in self.bad_devices:
                 print 'WARNING: device "%s" is reporting bad pressure %+f' \
                     % (event.device.name, pressure)
