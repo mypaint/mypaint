@@ -209,12 +209,15 @@ class Document (CanvasController):
             self.init_context_actions()
             for action in self.action_group.list_actions():
                 self.app.kbm.takeover_action(action)
+            for action in self.modes_action_group.list_actions():
+                self.app.kbm.takeover_action(action)
             self.init_extra_keys()
 
 
     def init_actions(self):
-        # Actions are defined in mypaint.xml, just grab a ref to the group.
+        # Actions are defined in mypaint.xml, just grab a ref to the groups
         self.action_group = self.app.builder.get_object('DocumentActions')
+        self.modes_action_group = self.app.builder.get_object("ModeStackActions")
 
         # Set up certain actions to reflect model state changes
         self.model.command_stack_observers.append(

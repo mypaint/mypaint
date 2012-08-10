@@ -9,7 +9,6 @@
 """
 
 import math
-
 from numpy import isfinite
 
 import pygtkcompat
@@ -378,16 +377,6 @@ class SwitchableFreehandMode (FreehandOnlyMode):
                 # https://gna.org/bugs/index.php?15907
                 return FreehandOnlyMode.button_press_cb(self, tdw, event)
 
-        # Line Mode event
-        if event.button == 1:
-            line_mode = app.linemode.line_mode
-            # Dynamic Line events from toolbar settings
-            if line_mode != "FreehandMode":
-                mode = DynamicLineMode(modifier=0)
-                self.doc.modes.push(mode)
-                mode.button_press_cb(tdw, event)
-                return True
-
         # Pick a suitable config option
         ctrl = event.state & gdk.CONTROL_MASK
         alt  = event.state & gdk.MOD1_MASK
@@ -414,11 +403,11 @@ class SwitchableFreehandMode (FreehandOnlyMode):
         # Line Mode event triggered by preferenced modifier button
         mode = None
         if action_name == 'straight_line':
-            mode = DynamicLineMode(mode="StraightMode", modifier=modifier)
+            mode = StraightMode(modifier)
         elif action_name == 'straight_line_sequence':
-            mode = DynamicLineMode(mode="SequenceMode", modifier=modifier)
+            mode = SequenceMode(modifier)
         elif action_name == 'ellipse':
-            mode = DynamicLineMode(mode="EllipseMode", modifier=modifier)
+            mode = EllipseMode(modifier)
         if mode is not None:
             self.doc.modes.push(mode)
             mode.button_press_cb(tdw, event)
@@ -812,39 +801,9 @@ class MoveFrameMode (OneshotDragModeMixin, DragMode):
 
 
 
-class DynamicLineMode (DragMode):
-    """Geometric line drawing."""
-
-    # FIXME: split into multiple modes, one for each thing the linemode code
-    # can do. Maybe some sub-modes for altering Bezier lines.
-
-    cursor = gdk.Cursor(gdk.CROSS)
-
-    def __init__(self, mode=None, modifier=0):
-        DragMode.__init__(self)
-        self.idle_srcid = None
-        self._mode = mode
-        self._modifier = modifier
-
-    def drag_start_cb(self, tdw, event):
-        modifier = self._modifier
-        self.lm = tdw.app.linemode
-        self.lm.start_command(self._mode, modifier)
-
-    def drag_update_cb(self, tdw, event, dx, dy):
-        self.lm.update_position(event.x, event.y)
-        if self.idle_srcid is None:
-            self.idle_srcid = gobject.idle_add(self.idle_cb)
-
-    def drag_stop_cb(self):
-        self.idle_srcid = None
-        self.lm.stop_command()
-        self.doc.modes.pop()
-
-    def idle_cb(self):
-        if self.idle_srcid is not None:
-            self.idle_srcid = None
-            self.lm.process_line()
+from linemode import StraightMode
+from linemode import SequenceMode
+from linemode import EllipseMode
 
 
 class LayerMoveMode (DragMode):
@@ -857,6 +816,7 @@ class LayerMoveMode (DragMode):
 
     """
 
+    __action_name__ = 'LayerMoveMode'
     cursor = gdk.Cursor(gdk.FLEUR)
 
 

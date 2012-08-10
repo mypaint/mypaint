@@ -139,20 +139,17 @@ class ToolbarManager:
             self.toolbar1_ui_loaded.pop(name)
 
 
+
+from curve import CurveWidget
+
 class LineDropdownToolItem (gtk.ToolItem):
 
     __gtype_name__ = "LineDropdownToolItem"
-    linemode_settings = ['FreehandMode', 'StraightMode', 'SequenceMode', 'EllipseMode']
-    pressure_settings = ["entry_pressure", "midpoint_pressure", "exit_pressure"]
-    head_tail_settings = ["line_head", "line_tail"]
-    shape_settings = ["entry_pressure", "midpoint_pressure", "exit_pressure", "line_head", "line_tail"]
-    settings_coordinate = {'entry_pressure': (0,1),
-                           'midpoint_pressure': (1,1),
-                           'exit_pressure': (3,1),
-                           'line_head': (1,0),
-                           'line_tail': (2,0),
-                           }
-
+    settings_coordinate = [('entry_pressure', (0,1)),
+                           ('midpoint_pressure', (1,1)),
+                           ('exit_pressure', (3,1)),
+                           ('line_head', (1,0)),
+                           ('line_tail', (2,0))]
 
 
     def __init__(self):
@@ -162,6 +159,8 @@ class LineDropdownToolItem (gtk.ToolItem):
         self.button_image.set_from_stock('mypaint-line-mode', ToolbarManager.icon_size)
         self.line_mode_panel = dropdownpanel.DropdownPanelButton(self.button_image)
         self.vbox = gtk.VBox()
+        self.vbox.set_border_width(widgets.SPACING_TIGHT)
+        self.vbox.set_spacing(widgets.SPACING_TIGHT)
         frame = gtk.Frame()
         frame.add(self.vbox)
         frame.set_shadow_type(gtk.SHADOW_OUT)
@@ -173,69 +172,39 @@ class LineDropdownToolItem (gtk.ToolItem):
     def set_app(self, app):
         self.app = app
 
-        # Line modes.
-
-        vbox = gtk.VBox()
-        vbox.set_border_width(widgets.SPACING_TIGHT)
-        vbox.set_spacing(widgets.SPACING_TIGHT)
-        frame = widgets.section_frame(_("Line Mode"))
-        frame.add(vbox)
-        self.vbox.pack_start(frame, True, True)
-        self.vbox.set_border_width(widgets.SPACING_TIGHT)
-        self.vbox.set_spacing(widgets.SPACING_TIGHT)
-
-        # Line Mode Icons
-
-        for mode in self.linemode_settings:
-            action = self.app.find_action(mode)
-            hbox = gtk.HBox()
-            icon = gtk.Image()
-            icon.set_from_stock(action.stock_id, ToolbarManager.icon_size)
-            hbox.pack_start(icon, False, True)
-            toggle = gtk.ToggleButton()
-            toggle.set_relief(gtk.RELIEF_NONE)
-            toggle.set_tooltip_text(action.tooltip)
-            toggle.set_related_action(action)
-            toggle.connect("toggled", lambda m: self.line_mode_panel.panel_hide())
-            hbox.pack_start(toggle, False, True)
-            vbox.pack_start(hbox, False, False)
-
         # Pressure settings.
-
-        def settings_frame():
-            self.vbox.pack_start(frame, True, True)
-            from curve import CurveWidget
-            curve = CurveWidget(npoints = 4,
-                                ylockgroups = ((1,2),),
-                                changed_cb = self.curve_changed_cb)
-            frame.add(curve)
-            curve.show()
-            curve.points = [(0.0,0.2), (0.33,.5),(0.66, .5), (1.0,.33)]
-            for setting in (self.shape_settings):
-                value = app.line_mode_adjustment[setting].get_value()
-                index, subindex = self.settings_coordinate[setting]
-                if not setting.startswith ('line'):
-                    value = 1.0 - value
-                coord = None
-                if subindex == 0:
-                    coord = (value, curve.points[index][1])
-                else:
-                    coord = (curve.points[index][0], value )
-                curve.set_point(index, coord)
-            self.curve_changed_cb (curve)
-
         frame = widgets.section_frame(_("Line Pressure"))
-        settings_frame()
+        self.vbox.pack_start(frame, True, True)
+        curve = CurveWidget(npoints=4,
+                            ylockgroups=((1,2),),
+                            changed_cb=self.curve_changed_cb)
+        frame.add(curve)
+        curve.show()
+        curve.points = [(0.0,0.2), (0.33,.5),(0.66, .5), (1.0,.33)]
+        for setting, coord_pair in self.settings_coordinate:
+            adj = app.line_mode_settings.adjustments[setting]
+            value = adj.get_value()
+            index, subindex = coord_pair
+            if not setting.startswith ('line'):
+                value = 1.0 - value
+            coord = None
+            if subindex == 0:
+                coord = (value, curve.points[index][1])
+            else:
+                coord = (curve.points[index][0], value )
+            curve.set_point(index, coord)
+        self.curve_changed_cb (curve)
 
     def curve_changed_cb(self, curve):
-        for setting in self.shape_settings:
-            coord = self.settings_coordinate [setting]
+        for setting, coord_pair in self.settings_coordinate:
+            index, subindex = coord_pair
             points = curve.points
-            value = curve.points[coord[0]][coord[1]]
+            value = curve.points[index][subindex]
             if not setting.startswith('line'):
                 value = 1.0 - value
             value = max(0.0001, value)
-            self.app.linemode.change_line_setting(setting, value)
+            adj = self.app.line_mode_settings.adjustments[setting]
+            adj.set_value(value)
 
 
 class ColorDropdownToolItem (gtk.ToolItem):

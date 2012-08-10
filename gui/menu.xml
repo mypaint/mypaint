@@ -26,7 +26,13 @@
       <separator/>
       <menuitem action='Symmetry'/>
       <menuitem action='SwitchableFreehandMode'/>
+      <menuitem action='StraightMode'/>
+      <menuitem action='SequenceMode'/>
+      <menuitem action='EllipseMode'/>
       <menuitem action='PanViewMode'/>
+      <menuitem action='RotateViewMode'/>
+      <menuitem action='ZoomViewMode'/>
+      <menuitem action='LayerMoveMode'/>
       <separator/>
       <menuitem action='PreferencesWindow'/>
     </menu>
@@ -114,12 +120,6 @@
         <menuitem action='BlendModeColorize'/>
       </menu>
       <separator/>
-      <menu action='LineMode'>
-        <menuitem action='FreehandMode'/>
-        <menuitem action='StraightMode'/>
-        <menuitem action='SequenceMode'/>
-        <menuitem action='EllipseMode'/>
-      </menu>
       <separator/>
       <menuitem action='PickContext'/>
       <separator/>

@@ -6,13 +6,15 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
+import math
 
 import pygtkcompat
 import gtk
 from gtk import gdk
 from gettext import gettext as _
 import gobject
-import math
+
+import canvasevent
 
 # internal name, displayed name, constant, minimum, default, maximum, tooltip
 line_mode_settings_list = [
@@ -23,172 +25,140 @@ line_mode_settings_list = [
     ['line_tail', _('Tail'), False, 0.0001, 0.75, 1.0, _("Stroke trail-off beginning")],
     ]
 
+
 class LineModeSettings:
-    pass
+    """Manage GtkAdjustments for tweaking LineMode settings.
 
-line_mode_settings = []
+    An instance resides in the main application singleton. Changes to the
+    adjustments are reflected into the app preferences.
 
-line_mode_settings_dict = {}
-for line_list in line_mode_settings_list:
-    l = LineModeSettings()
-    l.cname, l.name, l.constant, l.min, l.default, l.max, l.tooltip = line_list
-    l.index = len(line_mode_settings)
-    line_mode_settings.append(l)
-    line_mode_settings_dict[l.cname] = l
+    """
 
-
-class LineMode:
-
-    line_mode = "FreehandMode"
-    last_line_data = None
-    idle_srcid = None
-
-###
-### Toolbar Dialog
-###
     def __init__(self, app):
+        """Initializer; initial settings are loaded from the app prefs.
+        """
+
         self.app = app
-        self._init_actions()
-
-    def _init_actions(self):
-        self.action_group = gtk.ActionGroup('LineModeActions')
-        ag = self.action_group
-        self.app.add_action_group(ag)
-        toggle_actions = [
-            # name, stock id, label,
-            #   accel, tooltip,
-            #   callback, default state
-            ('FreehandMode', 'mypaint-line-mode-freehand',
-                _("Freehand"), None,
-                _("Freehand is the default painting mode"),
-                self.line_mode_cb, True),
-            ('StraightMode', 'mypaint-line-mode-straight',
-                _("Straight/Curved Lines"), None,
-                _("Draw straight or curved lines.\n\
-Constrain angle by holding the Control key.\n\
-Add curves to your last line with the Shift key."),
-                self.line_mode_cb),
-            ('SequenceMode', 'mypaint-line-mode-sequence',
-                _("Sequence of Lines"), None,
-                _("Draw a sequence straight or curved lines.\n\
-Constrain angle by holding the Control key.\n\
-Add curves to your last line with the Shift key."),
-                self.line_mode_cb),
-            ('EllipseMode', 'mypaint-line-mode-ellipse',
-                _("Ellipse"), None,
-                _("Draw circles and ellipes.\n\
-Constrain shape or roation by holding the Control key.\n\
-Rotate holding the Shift key."),
-                self.line_mode_cb),
-            ]
-        ag.add_toggle_actions(toggle_actions)
-        self.freehandmode = ag.get_action("FreehandMode")
-        self.straightmode = ag.get_action("StraightMode")
-        self.sequencemode = ag.get_action("SequenceMode")
-        self.ellipsemode = ag.get_action("EllipseMode")
-
-        # Each mode ToggleAction has a corresponding setting
-        def attribute(mode, entry):
-            mode.line_mode = entry[0]
-            mode.stock_id = entry[1]
-            mode.label = entry[2]
-            mode.tooltip = entry[4]
-
-        for entry in toggle_actions:
-            attribute(getattr(self, entry[0].lower()), entry)
-
-        for action in self.action_group.list_actions():
-            action.set_draw_as_radio(True)
-            # Allows hotkey set in Brush > Line Mode menu
-            self.app.kbm.takeover_action(action)
-
-    def line_mode_cb(self, action):
-        action_wanted = action.get_active()
-        if action_wanted:
-            self._cancel_other_modes(action)
-            self.line_mode = action.line_mode
-        else:
-            # Disallow cancelling Freehand mode unless something else
-            # has become active.
-            other_active =  self.straightmode.get_active()
-            other_active |= self.sequencemode.get_active()
-            other_active |= self.ellipsemode.get_active()
-            if not other_active:
-                self.freehandmode.set_active(True)
-                self.line_mode = "FreehandMode"
-
-    def _cancel_other_modes(self, action):
-        for other_action in self.action_group.list_actions():
-            if action is other_action:
-                continue
-            if other_action.get_active():
-                other_action.block_activate()
-                other_action.set_active(False)
-                other_action.unblock_activate()
-
-    def change_line_setting(self, setting, value):
-        if setting in ('entry_pressure', 'midpoint_pressure',
-                       'exit_pressure', 'line_head', 'line_tail'):
-            if setting in ('line_head', 'line_tail'):
-                setting = setting[5:]
-            old = getattr(self, setting, None)
-            if old == value:
-                return
-            setattr(self, setting, value)
-            self.redraw_with_new_settings()
+        self.adjustments = {}  #: Dictionary of GtkAdjustments
+        self.observers = []  #: List of callbacks
+        self._idle_srcid = None
+        self._changed_settings = set()
+        for line_list in line_mode_settings_list:
+            cname, name, const, min_, default, max_, tooltip = line_list
+            prefs_key = "linemode.%s" % cname
+            value = float(self.app.preferences.get(prefs_key, default))
+            adj = gtk.Adjustment(value=value, lower=min_, upper=max_,
+                                 step_incr=0.01, page_incr=0.1)
+            adj.connect("value-changed", self._value_changed_cb, prefs_key)
+            self.adjustments[cname] = adj
 
 
-###
-### Redraw last_line when settings are adjusted in Toolbar Dialog
-###
-    def redraw_with_new_settings(self):
+    def _value_changed_cb(self, adj, prefs_key):
+        # Direct GtkAdjustment callback for a single adjustment being changed.
+        value = float(adj.get_value())
+        self.app.preferences[prefs_key] = value
+        self._changed_settings.add(prefs_key)
+        if self._idle_srcid is None:
+            self._idle_srcid = gobject.idle_add(self._values_changed_idle_cb)
+
+
+    def _values_changed_idle_cb(self):
+        # Aggregate, idle-state callback for multiple adjustments being changed
+        # in a single event. Queues redraws, and runs observers. The curve sets
+        # multiple settings at once, and we might as well not queue too many
+        # redraws.
+        if self._idle_srcid is not None:
+            current_mode = self.app.doc.modes.top
+            if isinstance(current_mode, LineModeBase):
+                # Redraw last_line when settings are adjusted in the adjustment Curve
+                gobject.idle_add(current_mode.redraw_line_cb)
+            for func in self.observers:
+                func(self._changed_settings)
+            self._changed_settings = set()
+            self._idle_srcid = None
+        return False
+
+
+class LineModeBase (canvasevent.DragMode):
+    """Draws geometric lines.
+
+    """
+
+    ##
+    ## Class configuration.
+    ##
+
+    cursor = gdk.Cursor(gdk.CROSS)
+
+    # FIXME: all of the logic resides in the base class, for historical
+    # reasons, and is decided by line_mode. The differences should be
+    # factored out to the user-facing mode subclasses at some point.
+    line_mode = None
+
+
+    def __init__(self, initial_modifiers=0):
+        """Initialize, possibly as a oneshot mode
+
+        :param initial_modifiers: Modifiers which are being held down as this
+                    mode is being constructed and entered.
+        :type initial_modifiers: a GDK modifiers mask.
+
+        Line modes can be initialized with an optional bitmask of keyboard
+        modifiers which are held as the mode is entered/pushed onto the mode
+        stack. If modifiers are held, the mode is a oneshot mode and is popped
+        from the mode stack automatically at the end of the drag. Currently
+        this style is only used by ``SwitchableFreehandMode``. Without
+        modifiers, line modes may be continued, and some subclasses offer
+        additional options for adjusting control points.
+
+        """
+        canvasevent.DragMode.__init__(self)
+        self.app = None
+        self.last_line_data = None
+        self.idle_srcid = None
+        self.initial_modifiers = initial_modifiers
+
+
+    ##
+    ## InteractionMode/DragMode implementation
+    ##
+
+    def enter(self, doc):
+        canvasevent.DragMode.enter(self, doc)
+        self.app = doc.app
+
+
+    def drag_start_cb(self, tdw, event):
+        self.start_command(self.initial_modifiers)
+
+
+    def drag_update_cb(self, tdw, event, dx, dy):
+        self.update_position(event.x, event.y)
         if self.idle_srcid is None:
-            self.idle_srcid = gobject.idle_add(self.idle_cb)
+            self.idle_srcid = gobject.idle_add(self._drag_idle_cb)
 
-    def redraw_line(self):
-        last_line = self.last_line_data
-        if last_line is not None:
-            last_stroke = self.model.layer.get_last_stroke_info()
-            if last_line[1] is last_stroke:
-                # ignore slow_tracking
-                self.done = True
-                self.adj = self.app.brush_adjustment['slow_tracking']
-                self.slow_tracking = self.adj.get_value()
-                self.adj.set_value(0)
-                self.model.undo()
-                command = last_line[0]
-                self.sx, self.sy = last_line[2], last_line[3]
-                self.ex, self.ey = last_line[4], last_line[5]
-                x, y = self.ex, self.ey
-                if command == "EllipseMode":
-                    self.angle = last_line[6]
-                    self.dynamic_ellipse(self.ex, self.ey, self.sx, self.sy)
-                if command == "CurveLine1":
-                    self.dynamic_straight_line(self.ex, self.ey, self.sx, self.sy)
-                    command = "StraightMode"
-                if command == "CurveLine2":
-                    x, y = last_line[6], last_line[7]
-                    self.kx, self.ky = last_line[8], last_line[9]
-                    if (x, y) == (self.kx, self.ky):
-                        self.dynamic_curve_1(x, y, self.sx, self.sy, self.ex, self.ey)
-                        command = "CurveLine1"
-                    else:
-                        self.flip = False
-                        self.dynamic_curve_2(x, y, self.sx, self.sy, self.ex, self.ey, self.kx, self.ky)
-                self.model.split_stroke()
-                self.record_last_stroke(command, x, y)
 
-    def idle_cb(self):
+    def drag_stop_cb(self):
+        self.idle_srcid = None
+        self.stop_command()
+        if self.initial_modifiers != 0:
+            self.doc.modes.pop()
+
+
+    def _drag_idle_cb(self):
+        # Updates the on-screen line during drags.
         if self.idle_srcid is not None:
             self.idle_srcid = None
-            self.redraw_line()
+            self.process_line()
 
-###
-### Draw dynamic Line, Curve, or Ellipse
-###
 
-    # Called from canvasevent.py
-    def start_command(self, mode, modifier):
+    ###
+    ### Draw dynamic Line, Curve, or Ellipse
+    ###
+
+    def start_command(self, modifier):
+        # :param modifier: the keyboard modifiers which ere in place
+        #                   when the mode was created
 
         active_tdw = self.app.doc.tdw.__class__.get_active_tdw()
         assert active_tdw is not None
@@ -213,9 +183,7 @@ Rotate holding the Shift key."),
 
         # line_mode is the type of line to be drawn eg. "EllipseMode"
         self.mode = self.line_mode
-        if self.mode == "FreehandMode":
-            # starting with the configured modifier (e.g. Shift for "StraightMode")
-            self.mode = mode
+        assert self.mode is not None
 
         self.undo = False
         # Ignore slow_tracking. There are some other sttings that interfere
@@ -369,9 +337,9 @@ Rotate holding the Shift key."),
             angle = constraint_angle(angle)
         self.angle = angle
 
-###
-### Line Functions
-###
+    ###
+    ### Line Functions
+    ###
 
     # Straight Line
     def dynamic_straight_line(self, x, y, sx, sy):
@@ -524,6 +492,37 @@ Rotate holding the Shift key."),
         self.model.layer.stroke_to(brush, sx, sy, 0.0, 0.0, 0.0, 10.0)
         self.model.layer.load_snapshot(self.snapshot)
 
+
+    ##
+    ## Line mode settings
+    ##
+
+    @property
+    def entry_pressure(self):
+        adj = self.app.line_mode_settings.adjustments["entry_pressure"]
+        return adj.get_value()
+
+    @property
+    def midpoint_pressure(self):
+        adj = self.app.line_mode_settings.adjustments["midpoint_pressure"]
+        return adj.get_value()
+
+    @property
+    def exit_pressure(self):
+        adj = self.app.line_mode_settings.adjustments["exit_pressure"]
+        return adj.get_value()
+
+    @property
+    def head(self):
+        adj = self.app.line_mode_settings.adjustments["line_head"]
+        return adj.get_value()
+
+    @property
+    def tail(self):
+        adj = self.app.line_mode_settings.adjustments["line_tail"]
+        return adj.get_value()
+
+
     def line_settings(self):
         p1 = self.entry_pressure
         p2 = self.midpoint_pressure
@@ -533,6 +532,66 @@ Rotate holding the Shift key."),
         prange1 = p2 - p1
         prange2 = p3 - p2
         return p1, p2, prange1, prange2, self.head, self.tail
+
+
+    def redraw_line_cb(self):
+        # Redraws the line when the line_mode_settings change
+        last_line = self.last_line_data
+        if last_line is not None:
+            last_stroke = self.model.layer.get_last_stroke_info()
+            if last_line[1] is last_stroke:
+                # ignore slow_tracking
+                self.done = True
+                self.adj = self.app.brush_adjustment['slow_tracking']
+                self.slow_tracking = self.adj.get_value()
+                self.adj.set_value(0)
+                self.model.undo()
+                command = last_line[0]
+                self.sx, self.sy = last_line[2], last_line[3]
+                self.ex, self.ey = last_line[4], last_line[5]
+                x, y = self.ex, self.ey
+                if command == "EllipseMode":
+                    self.angle = last_line[6]
+                    self.dynamic_ellipse(self.ex, self.ey,
+                                         self.sx, self.sy)
+                if command == "CurveLine1":
+                    self.dynamic_straight_line(self.ex, self.ey,
+                                               self.sx, self.sy)
+                    command = "StraightMode"
+                if command == "CurveLine2":
+                    x, y = last_line[6], last_line[7]
+                    self.kx, self.ky = last_line[8], last_line[9]
+                    if (x, y) == (self.kx, self.ky):
+                        self.dynamic_curve_1(x, y, self.sx, self.sy,
+                                             self.ex, self.ey)
+                        command = "CurveLine1"
+                    else:
+                        self.flip = False
+                        self.dynamic_curve_2(x, y, self.sx, self.sy,
+                                             self.ex, self.ey,
+                                             self.kx, self.ky)
+                self.model.split_stroke()
+                self.record_last_stroke(command, x, y)
+
+
+
+## User-facing modes
+
+
+class StraightMode (LineModeBase):
+    __action_name__ = "StraightMode"
+    line_mode = "StraightMode"
+
+
+class SequenceMode (LineModeBase):
+    __action_name__ = "SequenceMode"
+    line_mode = "SequenceMode"
+
+
+class EllipseMode (LineModeBase):
+    __action_name__ = "EllipseMode"
+    line_mode = "EllipseMode"
+
 
 
 ### Curve Math

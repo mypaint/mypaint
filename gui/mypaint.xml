@@ -1174,7 +1174,7 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkRadioAction" id="RotateViewMode">
           <property name="label" translatable="1">Rotate View</property>
-          <property name="icon-name">mypaint-view-pan</property>
+          <property name="icon-name">mypaint-view-rotate</property>
           <property name="tooltip" translatable="1"
             >Rotate the view by clicking and dragging</property>
           <property name="group">PanViewMode</property>
@@ -1184,11 +1184,61 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkRadioAction" id="ZoomViewMode">
           <property name="label" translatable="1">Zoom View</property>
-          <property name="icon-name">mypaint-view-pan</property>
+          <property name="icon-name">mypaint-view-zoom</property>
           <property name="tooltip" translatable="1"
             >Zoom the view by clicking and dragging</property>
           <property name="group">RotateViewMode</property>
           <property name="value">3</property>
+        </object>
+      </child>
+      <child>
+        <object class="GtkRadioAction" id="StraightMode">
+          <property name="label" translatable="1"
+              >Straight/Curved Lines</property>
+          <property name="icon-name">mypaint-line-mode-straight</property>
+          <property name="tooltip" translatable="1"
+              >Draw straight or curved lines.&#x0a;<!--
+              -->Constrain angle by holding the Control key.&#x0a;<!--
+              -->Add curves to your last line with the Shift key.</property>
+          <property name="group">ZoomViewMode</property>
+          <property name="value">4</property>
+        </object>
+      </child>
+      <child>
+        <object class="GtkRadioAction" id="SequenceMode">
+          <property name="label" translatable="1"
+              >Line Sequence</property>
+          <property name="icon-name">mypaint-line-mode-sequence</property>
+          <property name="tooltip" translatable="1"
+              >Draw a sequence of straight or curved lines.&#x0a;<!--
+              -->Constrain angle by holding the Control key.&#x0a;<!--
+              -->Add curves to your last line with the Shift key</property>
+          <property name="group">StraightMode</property>
+          <property name="value">5</property>
+        </object>
+      </child>
+      <child>
+        <object class="GtkRadioAction" id="EllipseMode">
+          <property name="label" translatable="1"
+              >Ellipse</property>
+          <property name="icon-name">mypaint-line-mode-ellipse</property>
+          <property name="tooltip" translatable="1"
+              >Draw circles and ellipes.&#x0a;<!--
+              -->Constrain shape or angle by holding the Control key.&#x0a;<!--
+              -->Rotate by holding the Shift key.</property>
+          <property name="group">SequenceMode</property>
+          <property name="value">6</property>
+        </object>
+      </child>
+      <child>
+        <object class="GtkRadioAction" id="LayerMoveMode">
+          <property name="label" translatable="1"
+              >Move Layer</property>
+          <property name="icon-name">mypaint-move</property>
+          <property name="tooltip" translatable="1"
+              >Move the current layer by clicking and dragging</property>
+          <property name="group">EllipseMode</property>
+          <property name="value">7</property>
         </object>
       </child>
     </object><!-- /ModeStackActions -->

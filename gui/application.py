@@ -112,7 +112,7 @@ class Application: # singleton
         self.filehandler = filehandling.FileHandler(self)
         signal_callback_objs.append(self.filehandler)
         self.brushmodifier = brushmodifier.BrushModifier(self)
-        self.linemode = linemode.LineMode(self)
+        self.line_mode_settings = linemode.LineModeSettings(self)
 
         # Monitors changes of input device & saves device-specific brushes
         self.device_monitor = DeviceUseMonitor(self)
@@ -126,7 +126,6 @@ class Application: # singleton
         self.brush_color_manager.set_data_path(datapath)
 
         self.init_brush_adjustments()
-        self.init_line_mode_adjustments()
 
         self.layout_manager = layout.LayoutManager(
             prefs=self.preferences["layout.window_positions"],
@@ -356,12 +355,6 @@ class Application: # singleton
         for i, s in enumerate(brushsettings.settings_visible):
             adj = gtk.Adjustment(value=s.default, lower=s.min, upper=s.max, step_incr=0.01, page_incr=0.1)
             self.brush_adjustment[s.cname] = adj
-
-    def init_line_mode_adjustments(self):
-        self.line_mode_adjustment = {}
-        for i, s in enumerate(linemode.line_mode_settings):
-            adj = gtk.Adjustment(value=s.default, lower=s.min, upper=s.max, step_incr=0.01, page_incr=0.1)
-            self.line_mode_adjustment[s.cname] = adj
 
     def update_input_mapping(self):
         p = self.preferences['input.global_pressure_mapping']
