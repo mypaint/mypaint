@@ -430,7 +430,7 @@ class SwitchableFreehandMode (FreehandOnlyMode):
         # TODO: add frame manipulation here too
 
         if action_name == 'move_layer':
-            mode = LayerMoveMode()
+            mode = LayerMoveMode(oneshot=True)
             self.doc.modes.push(mode)
             mode.button_press_cb(tdw, event)
             return True
@@ -820,7 +820,7 @@ class LayerMoveMode (DragMode):
     cursor = gdk.Cursor(gdk.FLEUR)
 
 
-    def __init__(self):
+    def __init__(self, oneshot=False):
         DragMode.__init__(self)
         self.model_x0 = None
         self.model_y0 = None
@@ -829,6 +829,7 @@ class LayerMoveMode (DragMode):
         self.drag_update_idler_srcid = None
         self.layer = None
         self.move = None
+        self.oneshot = oneshot
 
 
     def drag_start_cb(self, tdw, event):
@@ -910,17 +911,23 @@ class LayerMoveMode (DragMode):
         # this happens in its own background idler.
         for stroke in self.layer.strokes:
             stroke.translate(dx, dy)
+            # Minor problem: huge strokemaps take a long time to move, and the
+            # translate must be forced to completion before drawing or any
+            # further layer moves. This can cause apparent hangs for no
+            # reason later on. Perhaps it would be better to process them
+            # fully in this hourglass-cursor phase after all?
 
         # Record move so it can be undone
         self.doc.model.record_layer_move(self.layer, dx, dy)
         self.layer = None
 
-        # Restore sensitivity
+        # Restore sensitivity and original cursor
         tdw.set_sensitive(True)
-        tdw.set_override_cursor(None)
+        tdw.set_override_cursor(self.cursor)
 
-        # Leave mode
-        # Moving a layer's content probably should act as a oneshot, even if
-        # the leave is deferred.
-        self.doc.modes.pop()
+        # Leave mode, if initialized as a oneshot mode
+        if self.oneshot:
+            self.doc.modes.pop()
+
+        # All done, stop idle processing
         return False
