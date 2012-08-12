@@ -1069,6 +1069,7 @@ class HCYMaskPropertiesDialog (gtk.Dialog):
 
     def __load_clicked(self, button):
         preview = HCYMaskPreview()
+        preview.set_size_request(128, 128)
         pal = Palette.load_via_dialog(
           title=_("Load mask from a Gimp palette"),
           parent=self,
