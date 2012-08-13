@@ -8,6 +8,7 @@ import pango
 
 import dialogs
 from lib.layer import COMPOSITE_OPS
+from lib.helpers import escape
 
 def stock_button(stock_id):
     b = gtk.Button()
@@ -269,8 +270,7 @@ class ToolWidget (gtk.VBox):
         if not name:
             layer_num = self.app.doc.get_number_for_nameless_layer(layer)
             name = _(u"Untitled layer #%d") % layer_num
-            name = name.encode('ascii', 'xmlcharrefreplace')
-            markup = "<small><i>%s</i></small> " % (name,)
+            markup = "<small><i>%s</i></small> " % (escape(name),)
             if pygtkcompat.USE_GTK3:
                 parse_result = pango.parse_markup(markup, -1, '\000')
                 parse_ok, attrs, name, accel_char = parse_result

@@ -24,6 +24,7 @@ import dropdownpanel
 import widgets
 from colors import RGBColor, ColorAdjuster, HSVTriangle
 from colors import PreviousCurrentColorAdjuster, ColorPickerButton
+from lib.helpers import escape
 
 FRAMEWORK_XML = 'gui/toolbar.xml'
 MERGEABLE_XML = [
@@ -791,9 +792,8 @@ class MainMenuButton (gtk.ToggleButton):
         hbox2.pack_start(hbox1, True, True, widgets.SPACING_TIGHT)
 
         # Text settings
-        text = unicode(text) # + u"\u263A"   # U+263A WHITE SMILING FACE
-        markup = "<b>%s</b>" % text.encode('ascii', 'xmlcharrefreplace')
-        # markup += '&#128049;'   # U+1F431 CAT FACE
+        text = unicode(text)
+        markup = "<b>%s</b>" % escape(text)
         label.set_markup(markup)
 
         self.add(hbox2)

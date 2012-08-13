@@ -25,6 +25,7 @@ from gettext import gettext as _
 import pixbuflist, dialogs, brushmanager
 from elastic import ElasticExpander
 from brushlib import brushsettings
+from lib.helpers import escape
 
 class ToolWidget (gtk.VBox):
 
@@ -315,7 +316,7 @@ class GroupSelector(gtk.DrawingArea):
 
             c_bg = _gdk_color_to_hex(style_bg[bg_state])
             c_fg = _gdk_color_to_hex(style_fg[fg_state])
-            m = u.encode('ascii', 'xmlcharrefreplace')
+            m = escape(u)
             m = "<span fgcolor='%s' bgcolor='%s'>%s</span>" % (c_fg, c_bg, m)
             markup += m + sp_s
             idx += len(sp_s.encode("utf-8"))
