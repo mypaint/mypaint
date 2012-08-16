@@ -699,10 +699,10 @@ Perhaps an increasing amount.
         <accelerator key="q" modifiers="GDK_CONTROL_MASK"/>
       </child>
       <child>
-        <object class="GtkAction" id="FrameToggle">
-          <!-- FIXME: this should be a ToggleAction -->
+        <object class="GtkToggleAction" id="FrameToggle">
           <property name="label" translatable="1"
-              >Toggle Document Frame</property>
+              >Document Frame</property>
+          <property name="icon-name">mypaint-frame</property>
           <signal name="activate" handler="toggle_frame_cb"/>
         </object>
       </child>
@@ -1241,6 +1241,18 @@ Perhaps an increasing amount.
           <property name="value">7</property>
         </object>
       </child>
+      <child>
+        <object class="GtkRadioAction" id="FrameEditMode">
+          <property name="label" translatable="1"
+              >Edit Frame</property>
+          <property name="icon-name">mypaint-frame</property>
+          <property name="tooltip" translatable="1"
+              >Edit the document frame</property>
+          <property name="group">LayerMoveMode</property>
+          <property name="value">8</property>
+        </object>
+      </child>
+
     </object><!-- /ModeStackActions -->
   </child>
 </object><!-- /app_ui_manager -->

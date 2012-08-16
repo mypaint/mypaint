@@ -15,7 +15,6 @@
       <menuitem action='NextScrap'/>
       <menuitem action='PrevScrap'/>
       <separator/>
-      <menuitem action='FrameWindow'/>
       <menuitem action='FrameToggle'/>
       <separator/>
       <menuitem action='Quit'/>
@@ -33,6 +32,7 @@
       <menuitem action='RotateViewMode'/>
       <menuitem action='ZoomViewMode'/>
       <menuitem action='LayerMoveMode'/>
+      <menuitem action='FrameEditMode'/>
       <separator/>
       <menuitem action='PreferencesWindow'/>
     </menu>

@@ -169,6 +169,9 @@ class Window (windowing.MainWindow, layout.MainWindow):
         ag.get_action("ToggleLastPosFeedback").set_active(
                 self.app.preferences.get("ui.feedback.last_pos", False))
 
+        # Follow frame toggled state
+        self.app.doc.model.frame_observers.append(self.frame_changed_cb)
+
         # Set initial states of radio actions
         menuishbar_state = 0
         if self.get_ui_part_enabled("menubar"):
@@ -768,8 +771,17 @@ class Window (windowing.MainWindow, layout.MainWindow):
         return False
 
     def toggle_frame_cb(self, action):
-        enabled = self.app.doc.model.frame_enabled
-        self.app.doc.model.set_frame_enabled(not enabled)
+        enabled = bool(self.app.doc.model.frame_enabled)
+        desired = bool(action.get_active())
+        if enabled != desired:
+            self.app.doc.model.set_frame_enabled(desired)
+
+    def frame_changed_cb(self):
+        action = self.action_group.get_action("FrameToggle")
+        enabled = bool(self.app.doc.model.frame_enabled)
+        current = bool(action.get_active())
+        if enabled != current:
+            action.set_active(current)
 
     def download_brush_pack_cb(self, *junk):
         url = 'http://wiki.mypaint.info/index.php?title=Brush_Packages/redirect_mypaint_1.0_gui'

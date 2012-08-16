@@ -459,7 +459,7 @@ class SwitchableFreehandMode (FreehandOnlyMode):
         alt = event.state & gdk.MOD1_MASK
         if key == keysyms.space:
             if (shift and ctrl) or alt:
-                mode = MoveFrameMode()
+                mode = FrameEditMode(oneshot=True)
             elif shift:
                 mode = RotateViewMode()
             elif ctrl:
@@ -589,6 +589,9 @@ class DragMode (InteractionMode):
 
     def __init__(self):
         InteractionMode.__init__(self)
+        self._reset_drag_state()
+
+    def _reset_drag_state(self):
         self.last_x = None
         self.last_y = None
         self.start_x = None
@@ -606,6 +609,7 @@ class DragMode (InteractionMode):
         gdk.pointer_ungrab(t)
         self._grab_widget = None
         self.drag_stop_cb()
+        self._reset_drag_state()
 
     def _start_unless_started(self, tdw, event):
         if self._grab_widget is not None:
@@ -614,6 +618,7 @@ class DragMode (InteractionMode):
             self.start_x = event.x
             self.start_y = event.y
         else:
+            #last_x, last_y = tdw.get_pointer()
             last_t, last_x, last_y = self.doc.get_last_event_info(tdw)
             self.start_x = last_x
             self.start_y = last_y
@@ -633,6 +638,10 @@ class DragMode (InteractionMode):
         tdw.grab_add()
         self._grab_widget = tdw
         self.drag_start_cb(tdw, event)
+
+    @property
+    def in_drag(self):
+        return self._grab_widget is not None
 
     def enter(self, doc):
         InteractionMode.enter(self, doc)
@@ -773,37 +782,10 @@ class RotateViewMode (OneshotDragModeMixin, DragMode):
         #       to 22.5 degree steps.
 
 
-class MoveFrameMode (OneshotDragModeMixin, DragMode):
-
-    cursor = gdk.Cursor(gdk.ICON)
-
-    def __init__(self):
-        DragMode.__init__(self)
-
-    def drag_update_cb(self, tdw, event, dx, dy):
-        model = self.doc.model
-        if not model.frame_enabled:
-            # FIXME: this may be a little unintuitive and minimal
-            return
-        x, y, w, h = model.get_frame()
-        x0, y0 = tdw.display_to_model(x, y)
-        x1, y1 = tdw.display_to_model(x+dx, y+dy)
-        model.move_frame(dx=x1-x0, dy=y1-y0)
-
-    # TODO: Define modifiers for adjusting the size of the frame too,
-    #       or make the place on the frame where the button is pressed
-    #       before the drag determine what action is taken (and maybe
-    #       its cursor?)
-
-    # TODO: Perhaps entering and leaving the mode by invoking the GtkAction
-    #       should show and hide the frame dialog. It'd allow the frame to
-    #       be toggled quite conveniently.
-
-
-
 from linemode import StraightMode
 from linemode import SequenceMode
 from linemode import EllipseMode
+from framewindow import FrameEditMode
 
 
 class LayerMoveMode (DragMode):

@@ -73,9 +73,6 @@ class Document():
 
         self._frame = [0, 0, 0, 0]
         self._frame_enabled = False
-        # Used by move_frame() to accumulate values
-        self._frame_dx = 0.0
-        self._frame_dy = 0.0
 
     def move_current_layer(self, dx, dy):
         layer = self.layers[self.layer_idx]
@@ -83,28 +80,6 @@ class Document():
 
     def get_frame(self):
         return self._frame
-
-    def move_frame(self, dx, dy):
-        """Move the frame. Accumulates changes and moves the frame once
-        the accumulated change reaches one pixel."""
-
-        def round_to_n(value, n):
-            return int(round(value/n)*n)
-
-        x, y, w, h = self.get_frame()
-
-        self._frame_dx += dx
-        self._frame_dy += dy
-        step_x = int(round(self._frame_dx))
-        step_y = int(round(self._frame_dy))
-
-        if step_x:
-            self.set_frame(x=x+step_x)
-            self._frame_dx -= step_x
-
-        if step_y:
-            self.set_frame(y=y+step_y)
-            self._frame_dy -= step_y
 
     def set_frame(self, x=None, y=None, width=None, height=None):
         """Set the size of the frame. Pass None to indicate no-change."""

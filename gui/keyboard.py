@@ -125,7 +125,7 @@ class KeyboardManager:
             # Pop all stacked modes; they should release grabs
             widget.app.doc.modes.reset()
             # Just in case...
-            gdk.pointer_ungrab()
+            gdk.pointer_ungrab(event.time)
         else:
             # note: event.keyval would not be suited for this because
             # it can be different from the one we have seen in
