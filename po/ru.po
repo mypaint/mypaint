@@ -1715,11 +1715,11 @@ msgstr "Скрывать панель меню"
 
 #: ../gui/preferenceswindow.py:265
 msgid "Hide toolbar"
-msgstr "Скрывать панель инструментов"
+msgstr "Скрывать горизонтальную панель"
 
 #: ../gui/preferenceswindow.py:270
 msgid "Hide tools"
-msgstr "Скрывать панель инструментов"
+msgstr "Скрывать диалоги"
 
 #: ../gui/scratchwindow.py:41
 msgid "Load Scratchpad"
