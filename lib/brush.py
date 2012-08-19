@@ -311,16 +311,20 @@ class BrushInfo:
     def get_base_value(self, cname):
         return self.settings[cname][0]
 
-    def get_points(self, cname, input):
-        return copy.deepcopy(self.settings[cname][1].get(input, ()))
+    def get_points(self, cname, input, copy=True):
+        res = self.settings[cname][1].get(input, ())
+        if copy: # slow
+            res = copy.deepcopy(res)
+        return res
 
     def set_base_value(self, cname, value):
         assert cname in brush_settings
         assert not math.isnan(value)
         assert not math.isinf(value)
-        self.settings[cname][0] = value
-        for f in self.observers:
-            f(set([cname]))
+        if self.settings[cname][0] != value:
+            self.settings[cname][0] = value
+            for f in self.observers:
+                f(set([cname]))
 
     def set_points(self, cname, input, points):
         assert cname in brush_settings
@@ -370,7 +374,8 @@ class BrushInfo:
 
     def has_input(self, cname, input):
         """Return whether a given input is used by some setting."""
-        return self.get_points(cname, input)
+        points = self.get_points(cname, input, copy=False)
+        return bool(points)
 
     def begin_atomic(self):
         self.observers_hidden.append(self.observers[:])
@@ -455,7 +460,7 @@ class Brush(mypaintlib.PythonBrush):
             self.set_base_value(setting.index, base)
 
             for input in brushsettings.inputs:
-                points = self.brushinfo.get_points(cname, input.name)
+                points = self.brushinfo.get_points(cname, input.name, copy=False)
 
                 assert len(points) != 1
                 #if len(points) > 2:
