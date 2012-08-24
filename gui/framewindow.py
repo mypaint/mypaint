@@ -13,7 +13,8 @@ import windowing
 from colors.uicolor import RGBColor
 
 
-class FrameEditMode (canvasevent.DragMode):
+class FrameEditMode (canvasevent.DragMode, canvasevent.ScrollableModeMixin,
+                     canvasevent.SpringLoadedModeMixin):
     """Stackable interaction mode for editing the document frame.
 
     The frame editing mode has an associated details dialog which is open for
@@ -50,37 +51,35 @@ class FrameEditMode (canvasevent.DragMode):
         }
 
 
-    def __init__(self, oneshot=False):
+    def __init__(self, **kwds):
         """Initialize.
-
-        :param oneshot: Auto-exit when the drag stops.
-        :type oneshot: bool
 
         Oneshot frame adjustment modes do not show the details dialog: they're
         intended for use only while the key or pointer button which initiated
         the drag is held down.
 
         """
-        canvasevent.DragMode.__init__(self)
+        super(FrameEditMode, self).__init__(**kwds)
         self._zone = None
         self._orig_frame = None
-        self._oneshot = oneshot
+        self._oneshot = False
 
 
-    def enter(self, doc):
-        canvasevent.DragMode.enter(self, doc)
+    def enter(self, **kwds):
+        super(FrameEditMode, self).enter(**kwds)
+        self._oneshot = bool(self.held_modifiers) # from SpringLoadedModeMixin
         if not self._oneshot:
             lm = self.doc.app.layout_manager
             dialog = lm.get_subwindow_by_role("frameWindow")
             dialog.show_all()
 
 
-    def leave(self):
+    def leave(self, **kwds):
         if not self._oneshot:
             lm = self.doc.app.layout_manager
             dialog = lm.get_subwindow_by_role("frameWindow")
             dialog.hide()
-        canvasevent.DragMode.leave(self)
+        super(FrameEditMode, self).leave(**kwds)
 
 
     def _get_zone(self, tdw, xd, yd):
@@ -175,7 +174,7 @@ class FrameEditMode (canvasevent.DragMode):
             self._update_cursor(tdw, event.x, event.y)
             tdw.set_override_cursor(self.cursor)
             self._zone = self._get_zone(tdw, event.x, event.y)
-        return canvasevent.DragMode.motion_notify_cb(self, tdw, event)
+        return super(FrameEditMode, self).motion_notify_cb(tdw, event)
 
 
     def drag_start_cb(self, tdw, event):
@@ -186,34 +185,35 @@ class FrameEditMode (canvasevent.DragMode):
             self._zone = self._get_zone(tdw, self.start_x, self.start_y)
         self._update_cursor(tdw, self.start_x, self.start_y)
         tdw.set_override_cursor(self.cursor)
+        return super(FrameEditMode, self).drag_start_cb(tdw, event)
 
 
     def drag_stop_cb(self):
         if self._oneshot:
             self.doc.modes.pop()
+        return super(FrameEditMode, self).drag_stop_cb()
 
 
     def drag_update_cb(self, tdw, event, dx, dy):
         model = self.doc.model
-        if not model.frame_enabled:
-            return
+        if model.frame_enabled:
+            x, y = float(self.last_x), float(self.last_y)
+            x0, y0 = tdw.display_to_model(x, y)
+            x1, y1 = tdw.display_to_model(x+dx, y+dy)
+            fdx = int(x1 - x0)
+            fdy = int(y1 - y0)
 
-        x, y = float(self.last_x), float(self.last_y)
-        x0, y0 = tdw.display_to_model(x, y)
-        x1, y1 = tdw.display_to_model(x+dx, y+dy)
-        fdx = int(x1 - x0)
-        fdy = int(y1 - y0)
-
-        mdx, mdy, mdw, mdh = self.DRAG_EFFECTS[self._zone]
-        x, y, w, h = frame = self._orig_frame
-        x += mdx*fdx
-        y += mdy*fdy
-        w += mdw*fdx
-        h += mdh*fdy
-        new_frame = (x, y, w, h)
-        if new_frame != frame:
-            if w > 0 and h > 0:
-                model.set_frame(*new_frame)
+            mdx, mdy, mdw, mdh = self.DRAG_EFFECTS[self._zone]
+            x, y, w, h = frame = self._orig_frame
+            x += mdx*fdx
+            y += mdy*fdy
+            w += mdw*fdx
+            h += mdh*fdy
+            new_frame = (x, y, w, h)
+            if new_frame != frame:
+                if w > 0 and h > 0:
+                    model.set_frame(*new_frame)
+        return super(FrameEditMode, self).drag_update_cb(tdw, event, dx, dy)
 
 
 class Window (windowing.Dialog):

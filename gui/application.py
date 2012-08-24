@@ -16,6 +16,7 @@ import brushmodifier, linemode
 import colors
 from colorwindow import BrushColorManager
 from overlays import LastPaintPosOverlay, ScaleOverlay
+from buttonmap import ButtonMapping
 
 import pygtkcompat
 
@@ -115,6 +116,9 @@ class Application: # singleton
         self.brushmodifier = brushmodifier.BrushModifier(self)
         self.line_mode_settings = linemode.LineModeSettings(self)
 
+        # Button press mapping
+        self.button_mapping = ButtonMapping()
+
         # Monitors changes of input device & saves device-specific brushes
         self.device_monitor = DeviceUseMonitor(self)
 
@@ -204,6 +208,7 @@ class Application: # singleton
         """Applies the current settings."""
         self.update_input_mapping()
         self.update_input_devices()
+        self.update_button_mapping()
         prefs_win = self.layout_manager.get_widget_by_role('preferencesWindow')
         prefs_win.update_ui()
 
@@ -296,6 +301,22 @@ class Application: # singleton
                 'frameWindow': dict(),
                 'preferencesWindow': dict(),
             },
+            # Linux defaults.
+            # Alt is the normal window resizing/moving key these days,
+            # so provide a Ctrl-based equivalent for all alt actions.
+            'input.button_mapping': {
+                # Note that space is treated as a fake Button2
+                '<Shift>Button1':          'StraightMode',
+                '<Control>Button1':        'ColorPickerPopup',
+                '<Alt>Button1':            'ColorPickerPopup',
+                'Button2':                 'PanViewMode',
+                '<Shift>Button2':          'RotateViewMode',
+                '<Control>Button2':        'ZoomViewMode',
+                '<Alt>Button2':            'ZoomViewMode',
+                '<Control><Shift>Button2': 'FrameEditMode',
+                '<Alt><Shift>Button2':     'FrameEditMode',
+                'Button3':                 'ShowPopupMenu',
+            },
         }
         if sys.platform == 'win32':
             # The Linux wacom driver inverts the button numbers of the
@@ -303,27 +324,14 @@ class Application: # singleton
             # action on Linux. However one of the two buttons is often
             # accidentally hit with the thumb while painting. We want
             # to assign panning to this button by default.
-            DEFAULT_CONFIG.update({
-                "input.button1_shift_action": 'straight_line',
-                "input.button1_ctrl_action":  'ColorPickerPopup',
-                "input.button3_action":       'pan_canvas',
-                "input.button3_shift_action": 'rotate_canvas',
-                "input.button3_ctrl_action":  'zoom_canvas',
-                "input.button2_action":       'ColorHistoryPopup',
-                "input.button2_shift_action": 'no_action',
-                "input.button2_ctrl_action":  'no_action',
-                })
-        else:
-            DEFAULT_CONFIG.update({
-                "input.button1_shift_action": 'straight_line',
-                "input.button1_ctrl_action":  'ColorPickerPopup',
-                "input.button2_action":       'pan_canvas',
-                "input.button2_shift_action": 'rotate_canvas',
-                "input.button2_ctrl_action":  'zoom_canvas',
-                "input.button3_action":       'ColorHistoryPopup',
-                "input.button3_shift_action": 'no_action',
-                "input.button3_ctrl_action":  'no_action',
-                })
+            linux_mapping = DEFAULT_CONFIG["input.button_mapping"]
+            DEFAULT_CONFIG["input.button_mapping"] = {}
+            for bp, actname in linux_mapping.iteritems():
+                bp = bp.replace("Button2", "ButtonTMP")
+                bp = bp.replace("Button3", "Button2")
+                bp = bp.replace("ButtonTMP", "Button3")
+                DEFAULT_CONFIG["input.button_mapping"][bp] = actname
+
 
         window_pos = DEFAULT_CONFIG["layout.window_positions"]
         self.window_names = window_pos.keys()
@@ -358,6 +366,9 @@ class Application: # singleton
         for i, s in enumerate(brushsettings.settings_visible):
             adj = gtk.Adjustment(value=s.default, lower=s.min, upper=s.max, step_incr=0.01, page_incr=0.1)
             self.brush_adjustment[s.cname] = adj
+
+    def update_button_mapping(self):
+        self.button_mapping.update(self.preferences["input.button_mapping"])
 
     def update_input_mapping(self):
         p = self.preferences['input.global_pressure_mapping']

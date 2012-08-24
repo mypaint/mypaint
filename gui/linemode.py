@@ -79,7 +79,8 @@ class LineModeSettings:
         return False
 
 
-class LineModeBase (canvasevent.DragMode):
+class LineModeBase (canvasevent.SpringLoadedModeMixin, canvasevent.DragMode,
+                    canvasevent.ScrollableModeMixin):
     """Draws geometric lines.
 
     """
@@ -96,7 +97,7 @@ class LineModeBase (canvasevent.DragMode):
     line_mode = None
 
 
-    def __init__(self, initial_modifiers=0):
+    def __init__(self, initial_modifiers=0, **kwds):
         """Initialize, possibly as a oneshot mode
 
         :param initial_modifiers: Modifiers which are being held down as this
@@ -112,7 +113,7 @@ class LineModeBase (canvasevent.DragMode):
         additional options for adjusting control points.
 
         """
-        canvasevent.DragMode.__init__(self)
+        super(LineModeBase, self).__init__(**kwds)
         self.app = None
         self.last_line_data = None
         self.idle_srcid = None
@@ -123,19 +124,26 @@ class LineModeBase (canvasevent.DragMode):
     ## InteractionMode/DragMode implementation
     ##
 
-    def enter(self, doc):
-        canvasevent.DragMode.enter(self, doc)
-        self.app = doc.app
+    def enter(self, **kwds):
+        super(LineModeBase, self).enter(**kwds)
+        self.app = self.doc.app
+        display = gdk.display_get_default()
+        screen, x, y, modifiers = display.get_pointer()
+        modifiers &= gtk.accelerator_get_default_mod_mask()
+        self.initial_modifiers = modifiers
 
 
     def drag_start_cb(self, tdw, event):
+        canvasevent.SpringLoadedModeMixin.drag_start_cb(self, tdw, event)
         self.start_command(self.initial_modifiers)
+        return super(LineModeBase, self).drag_start_cb(tdw, event)
 
 
     def drag_update_cb(self, tdw, event, dx, dy):
         self.update_position(event.x, event.y)
         if self.idle_srcid is None:
             self.idle_srcid = gobject.idle_add(self._drag_idle_cb)
+        return super(LineModeBase, self).drag_update_cb(tdw, event, dx, dy)
 
 
     def drag_stop_cb(self):
@@ -143,6 +151,7 @@ class LineModeBase (canvasevent.DragMode):
         self.stop_command()
         if self.initial_modifiers != 0:
             self.doc.modes.pop()
+        return super(LineModeBase, self).drag_stop_cb()
 
 
     def _drag_idle_cb(self):

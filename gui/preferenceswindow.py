@@ -8,12 +8,16 @@
 
 "preferences dialog"
 from bisect import bisect_left
+
 from gettext import gettext as _
 import gtk
 gdk = gtk.gdk
 
 from curve import CurveWidget
 import windowing, filehandling
+import canvasevent
+from buttonmap import button_press_parse, button_press_name, ButtonMappingEditor
+
 
 device_modes = [
     ('disabled', _("Disabled (no pressure sensitivity)")),
@@ -22,45 +26,6 @@ device_modes = [
 
 RESPONSE_REVERT = 1
 
-# Rebindable mouse buttons
-mouse_button_actions = [
-    # These can be names of actions within ActionGroups defined elsewhere,
-    # or names of actions the handler interprets itself.
-    # NOTE: The translatable strings for actions are duplicated from
-    # their action definition. Please keep in sync (or refactor to get the string from there)
-    # (action_or_whatever, label)
-    ('no_action', _("No action")),  #[0] is the default for the comboboxes
-    ('popup_menu', _("Menu")),
-    ('ToggleSubwindows', _("Toggle Subwindows")),
-    ('BlendModeEraser', _("Toggle Eraser")),
-    ('ColorPickerPopup', _("Pick Color")),
-    ('PickContext', _('Pick Context (layer, brush and color)')),
-    ('PickLayer', _('Select Layer at Cursor')),
-    ('pan_canvas', _("Pan")),
-    ('zoom_canvas', _("Zoom")),
-    ('rotate_canvas', _("Rotate")),
-    ('move_layer', _("Move Current Layer")),
-    ('straight_line', _("Straight Line")),
-    ('straight_line_sequence', _("Sequence of Lines")),
-    ('ellipse', _("Ellipse")),
-    ('ColorChangerPopup', _("Color Changer")),
-    ('ColorRingPopup', _("Color Ring")),
-    ('ColorHistoryPopup', _("Color History")),
-    ('Undo', _("Undo")),
-    ('Redo', _("Redo")),
-    ]
-mouse_button_prefs = [
-    # Used for creating the menus,
-    # (pref_name, label)
-    ("input.button1_shift_action", _("Button 1 + Shift")),
-    ("input.button1_ctrl_action",  _("Button 1 + Ctrl (or Alt)")),
-    ("input.button2_action",       _("Button 2")),
-    ("input.button2_shift_action", _("Button 2 + Shift")),
-    ("input.button2_ctrl_action",  _("Button 2 + Ctrl (or Alt)")),
-    ("input.button3_action",       _("Button 3")),
-    ("input.button3_shift_action", _("Button 3 + Shift")),
-    ("input.button3_ctrl_action",  _("Button 3 + Ctrl (or Alt)")),
-    ]
 
 class Window(windowing.Dialog):
     '''Window for manipulating preferences.'''
@@ -141,37 +106,24 @@ class Window(windowing.Dialog):
         table.attach(combo, 2, 3, current_row, current_row + 1, xopt, yopt)
         current_row += 1
 
-        ### Buttons tab
-        table = gtk.Table(5, 3)
-        table.set_border_width(12)
-        table.set_col_spacing(0, 12)
-        table.set_col_spacing(1, 12)
-        table.set_row_spacings(6)
-        current_row = 0
-        nb.append_page(table, gtk.Label(_('Buttons')))
-        xopt = gtk.FILL | gtk.EXPAND
-        yopt = gtk.FILL
-
-        l = gtk.Label()
-        l.set_alignment(0.0, 0.5)
-        l.set_markup(_('<b>Pen and mouse button mappings</b>'))
-        table.attach(l, 0, 3, current_row, current_row + 1, xopt, yopt)
-        current_row += 1
-
-        # Mouse button actions
-        self.mouse_action_comboboxes = {}
-        for pref_name, label_str in mouse_button_prefs:
-            l = gtk.Label(label_str)
-            l.set_alignment(0.0, 0.5)
-            table.attach(l, 1, 2, current_row, current_row + 1, xopt, yopt)
-            action_name = self.app.preferences.get(pref_name, None)
-            c = gtk.combo_box_new_text()
-            self.mouse_action_comboboxes[pref_name] = c
-            for a, s in mouse_button_actions:
-                c.append_text(s)
-            c.connect("changed", self.mouse_button_action_changed, pref_name)
-            table.attach(c, 2, 3, current_row, current_row + 1, xopt, yopt)
-            current_row += 1
+        ### Pointer actions tab
+        assert app.preferences.has_key("input.button_mapping")
+        vbox = gtk.VBox()
+        self.button_map_editor = ButtonMappingEditor(
+                bindings=app.preferences["input.button_mapping"],
+                actions_possible=canvasevent.ModeRegistry.get_action_names()
+                    + canvasevent.extra_actions )
+        self.button_map_editor.bindings_observers.append(
+                self.button_mapping_editor_bindings_edited_cb)
+        vbox.set_border_width(12)
+        vbox.set_spacing(12)
+        vbox.pack_start(self.button_map_editor, True, True)
+        button_map_label = gtk.Label()
+        button_map_label.set_markup(
+            _("<small>Space can be used like Button2. Note that some pads "
+              "have buttons that cannot be held down.</small>"))
+        vbox.pack_start(button_map_label, False, False)
+        nb.append_page(vbox, gtk.Label(_("Buttons")))
 
         ### Saving tab
         table = gtk.Table(5, 3)
@@ -311,32 +263,23 @@ class Window(windowing.Dialog):
         idx = self.defaultsaveformat_values.index(saveformat_idx)
         # FIXME: ^^^^^^^^^ try/catch/default may be more tolerant & futureproof
         self.defaultsaveformat_combo.set_active(idx)
-        # Mouse button
-        for pref_name, junk in mouse_button_prefs:
-            action_config = p.get(pref_name, None)
-            action_idx = i = 0
-            for action_name, junk in mouse_button_actions:
-                if action_config == action_name:
-                    action_idx = i
-                    break
-                i += 1
-            combobox = self.mouse_action_comboboxes[pref_name]
-            combobox.set_active(action_idx)
+        # Button mapping
+        self.button_map_editor.set_bindings(p["input.button_mapping"])
+        # Input curve
         self.cv.queue_draw()
         self.in_update_ui = False
 
+
     # Callbacks for widgets that manipulate settings
+
     def input_devices_combo_changed_cb(self, widget):
         i = widget.get_property("active")
         mode = device_modes[i][0]
         self.app.preferences['input.device_mode'] = mode
         self.app.apply_settings()
 
-    def mouse_button_action_changed(self, widget, pref_name):
-        i = widget.get_property("active")
-        action = mouse_button_actions[i][0]
-        self.app.preferences[pref_name] = action
-        self.app.apply_settings()
+    def button_mapping_editor_bindings_edited_cb(self, editor):
+        self.app.button_mapping.update(editor.bindings)
 
     def pressure_curve_changed_cb(self, widget):
         self.app.preferences['input.global_pressure_mapping'] = self.cv.points[:]
@@ -371,4 +314,5 @@ class Window(windowing.Dialog):
             if val == saveformat:
                 formatstr = key
         self.app.preferences['saving.default_format'] = formatstr
+
 

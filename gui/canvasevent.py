@@ -18,6 +18,27 @@ from gtk import gdk
 from gtk import keysyms
 
 
+# Actions it makes sense to bind to a button.
+# Notably, tablet pads tend to offer many more buttons than the usual 3...
+
+extra_actions = ["ShowPopupMenu",
+                 "Undo", "Redo",
+                 "Bigger", "Smaller",
+                 "MoreOpaque", "LessOpaque",
+                 "PickContext",
+                 "Fullscreen",
+                 "ToggleSubwindows",
+                 "BrushChooserPopup",
+                 "ColorRingPopup",
+                 "ColorDetailsDialog",
+                 "ColorChangerWashPopup",
+                 "ColorChangerCrossedBowlPopup",
+                 "ColorHistoryPopup",
+                 "PalettePrev",
+                 "PaletteNext",
+                 ]
+
+
 class ModeRegistry (type):
     """Lookup table for interaction modes and their associated actions
 
@@ -30,52 +51,92 @@ class ModeRegistry (type):
 
     action_name_to_mode_class = {}
 
-    @classmethod
-    def get_mode_class(cs, action_name):
-        return cs.action_name_to_mode_class.get(action_name, None)
 
-    def __new__(mcs, name, bases, dict):
+    # (Special-cased @staticmethod)
+    def __new__(cls, name, bases, dict):
+        """Creates and records a new (InteractionMode) class.
+
+        :param cls: this metaclass
+        :param name: name of the class under construction
+        :param bases: immediate base classes of the class under construction
+        :param dict: class dict for the class under construction
+        :rtype: the constructed class, a regular InteractionMode class object
+
+        If it exists, the ``__action_name__`` entry in `dict` is recorded,
+        and can be used as a key for lookup of the returned class via the
+        ``@classmethod``s defined on `ModeRegistry`.
+
+        """
         action_name = dict.get("__action_name__", None)
-        mode_class = type.__new__(mcs, name, bases, dict)
+        mode_class = super(ModeRegistry, cls).__new__(cls, name, bases, dict)
         if action_name is not None:
             action_name = str(action_name)
-            mcs.action_name_to_mode_class[action_name] = mode_class
+            cls.action_name_to_mode_class[action_name] = mode_class
         return mode_class
 
 
-class InteractionMode (object):
-    """Base class for temporary interaction modes.
+    @classmethod
+    def get_mode_class(cls, action_name):
+        """Looks up a registered mode class by its associated action's name.
 
-    Active interaction objects process input events, and can manipulate
+        :param action_name: a string containing an action name (see this
+           metaclass's docs regarding the ``__action_name__`` class variable)
+        :rtype: an InteractionMode class object, or `None`.
+
+        """
+        return cls.action_name_to_mode_class.get(action_name, None)
+
+
+    @classmethod
+    def get_action_names(cls):
+        """Returns all action names associated with interaction.
+
+        :rtype: an iterable of action name strings.
+
+        """
+        return cls.action_name_to_mode_class.keys()
+
+
+class InteractionMode (object):
+    """Required base class for temporary interaction modes.
+
+    Active interaction mode objects process input events, and can manipulate
     document views (TiledDrawWidget), the document model data (lib.document),
     and the mode stack they sit on. Interactions encapsulate state about their
     particular kind of interaction; for example a drag interaction typically
     contains the starting position for the drag.
 
-    Event handler methods can create new sub-modes and `push()` them to the
-    stack. It is conventional to pass the current event to the equivalent
-    method on the new object when this transfer of control happens.
+    Event handler methods can create new sub-modes and push them to the stack.
+    It is conventional to pass the current event to the equivalent method on
+    the new object when this transfer of control happens.
+
+    Subclasses may nominate a related `GtkAction` instance in the UI by setting
+    the class-level variable ``__action_name__``: this should be the name of an
+    action defined in `gui.app.Application.builder`'s XML file.
 
     """
 
-    __metaclass__ = ModeRegistry
+    ## Class configuration
 
+    __metaclass__ = ModeRegistry
+    #: All InteractionMode subclasses register themselves.
+
+    __action_name__ = None
+    #: See the docs for `gui.canvasevent.ModeRegistry`.
 
     is_live_updateable = False
+    # CHECK: what's this for?
 
+    ## Defaults for instances (sue me, I'm lazy)
 
-    def __init__(self):
-        object.__init__(self)
-
-        #: The `gui.document.Document` this mode should affect.
-        #: Updated by enter().
-        self.doc = None
+    doc = None
+    #: The `gui.document.Document` this mode affects: see enter()
 
 
     def enter(self, doc):
         """Enters the mode: called by `ModeStack.push()` etc.
 
-        :parameter doc: the `gui.document.Document` this mode should affect.
+        :param doc: the `gui.document.Document` this mode should affect.
             A reference is kept in `self.doc`.
 
         This is called when the mode becomes active, i.e. when it becomes the
@@ -85,6 +146,7 @@ class InteractionMode (object):
 
         """
         self.doc = doc
+        assert not hasattr(super(InteractionMode, self), "enter")
 
 
     def leave(self):
@@ -95,47 +157,28 @@ class InteractionMode (object):
 
         """
         self.doc = None
+        assert not hasattr(super(InteractionMode, self), "leave")
 
 
     def button_press_cb(self, tdw, event):
         """Handler for ``button-press-event``s."""
-        pass
+        assert not hasattr(super(InteractionMode, self), "button_press_cb")
 
 
     def motion_notify_cb(self, tdw, event):
         """Handler for ``motion-notify-event``s."""
-        pass
+        assert not hasattr(super(InteractionMode, self), "motion_notify_cb")
 
 
     def button_release_cb(self, tdw, event):
         """Handler for ``button-release-event``s."""
-        pass
+        assert not hasattr(super(InteractionMode, self), "button_release_cb")
 
 
     def scroll_cb(self, tdw, event):
         """Handler for ``scroll-event``s.
-
-        The base class implements some immediate rotation, and zoom commands
-        for the main up-down scroll wheel: these should be useful to most
-        modes.
-
         """
-        d = event.direction
-        if d == gdk.SCROLL_UP:
-            if event.state & gdk.SHIFT_MASK:
-                self.doc.rotate('RotateLeft')
-            else:
-                self.doc.zoom('ZoomIn')
-        elif d == gdk.SCROLL_DOWN:
-            if event.state & gdk.SHIFT_MASK:
-                self.doc.rotate('RotateRight')
-            else:
-                self.doc.zoom('ZoomOut')
-        elif d == gdk.SCROLL_RIGHT:
-            self.doc.rotate('RotateRight')
-        elif d == gdk.SCROLL_LEFT:
-            self.doc.rotate('RotateLeft')
-        return True
+        assert not hasattr(super(InteractionMode, self), "scroll_cb")
 
 
     def key_press_cb(self, win, tdw, event):
@@ -148,7 +191,7 @@ class InteractionMode (object):
         keypress handlers via `self.doc` and the `tdw` argument.
 
         """
-        pass
+        assert not hasattr(super(InteractionMode, self), "key_press_cb")
 
 
     def key_release_cb(self, win, tdw, event):
@@ -158,7 +201,63 @@ class InteractionMode (object):
         details of the additional arguments.
 
         """
-        pass
+        assert not hasattr(super(InteractionMode, self), "key_release_cb")
+
+
+    ## Drag sub-API (FIXME: this is in the wrong place)
+    # Defined here to allow mixins to provide behaviour for both both drags and
+    # regular events without having to derive from DragMode. Really these
+    # buck-stops-here definitions belong in DragMode, so consider moving them
+    # somewhere more sensible.
+
+    def drag_start_cb(self, tdw, event):
+        assert not hasattr(super(InteractionMode, self), "drag_start_cb")
+
+    def drag_update_cb(self, tdw, event, dx, dy):
+        assert not hasattr(super(InteractionMode, self), "drag_update_cb")
+
+    def drag_stop_cb(self):
+        assert not hasattr(super(InteractionMode, self), "drag_stop_cb")
+
+
+
+class ScrollableModeMixin (InteractionMode):
+    """Mixin for scrollable modes.
+
+    Implements some immediate rotation, and zoom commands for the main up-down
+    scroll wheel: these should be useful in many modes, but perhaps not all.
+
+    """
+
+    def scroll_cb(self, tdw, event):
+        """Handles scroll-wheel events.
+
+        Normal scroll wheel events: zoom.
+        Shift+scroll, or left/right scroll: rotation.
+
+        """
+        d = event.direction
+        if d == gdk.SCROLL_UP:
+            if event.state & gdk.SHIFT_MASK:
+                self.doc.rotate('RotateLeft')
+                return True
+            else:
+                self.doc.zoom('ZoomIn')
+                return True
+        elif d == gdk.SCROLL_DOWN:
+            if event.state & gdk.SHIFT_MASK:
+                self.doc.rotate('RotateRight')
+                return True
+            else:
+                self.doc.zoom('ZoomOut')
+                return True
+        elif d == gdk.SCROLL_RIGHT:
+            self.doc.rotate('RotateRight')
+            return True
+        elif d == gdk.SCROLL_LEFT:
+            self.doc.rotate('RotateLeft')
+            return True
+        return super(ScrollableModeMixin, self).scroll_cb(tdw, event)
 
 
 class FreehandOnlyMode (InteractionMode):
@@ -172,14 +271,14 @@ class FreehandOnlyMode (InteractionMode):
     is_live_updateable = True
 
 
-    def enter(self, doc):
+    def enter(self, **kwds):
+        super(FreehandOnlyMode, self).enter(**kwds)
         self.reset_drawing_state()
-        InteractionMode.enter(self, doc)
 
 
-    def leave(self):
+    def leave(self, **kwds):
         self.reset_drawing_state()
-        InteractionMode.leave(self)
+        super(FreehandOnlyMode, self).leave(**kwds)
 
 
     def reset_drawing_state(self):
@@ -190,10 +289,9 @@ class FreehandOnlyMode (InteractionMode):
 
 
     def button_press_cb(self, tdw, event):
-        if event.type != gdk.BUTTON_PRESS:
-            # Ignore the extra double-click event
-            return
-        if event.button == 1:
+        result = False
+        if event.button == 1 and event.type == gdk.BUTTON_PRESS:
+            # Single button press
             # Stroke started, notify observers
             try:
                 observers = self.doc.input_stroke_started_observers
@@ -209,10 +307,16 @@ class FreehandOnlyMode (InteractionMode):
                 # changes, so we simulate it. (Note: we can't use the
                 # event's button state because it carries the old state.)
                 self.motion_notify_cb(tdw, event, button1_pressed=True)
+            result = True
+
+        # Collaborate, but likely with nothing
+        result |= bool(super(FreehandOnlyMode, self).button_press_cb(tdw, event))
+        return result
 
 
     def button_release_cb(self, tdw, event):
         # (see comment above in button_press_cb)
+        result = False
         if event.button == 1:
             if not self.last_event_had_pressure_info:
                 self.motion_notify_cb(tdw, event, button1_pressed=False)
@@ -224,12 +328,15 @@ class FreehandOnlyMode (InteractionMode):
             else:
                 for func in observers:
                     func(event)
+            result = True
+        result |= bool(super(FreehandOnlyMode, self).button_release_cb(tdw, event))
+        return result
 
 
     def motion_notify_cb(self, tdw, event, button1_pressed=None):
         # Purely responsible for drawing.
         if not tdw.is_sensitive:
-            return
+            return super(FreehandOnlyMode, self).motion_notify_cb(tdw, event)
 
         model = tdw.doc
         app = tdw.app
@@ -242,7 +349,7 @@ class FreehandOnlyMode (InteractionMode):
         else:
             dtime = None
         if dtime is None:
-            return
+            return super(FreehandOnlyMode, self).motion_notify_cb(tdw, event)
 
         same_device = True
         if app is not None:
@@ -250,7 +357,7 @@ class FreehandOnlyMode (InteractionMode):
 
         # Refuse drawing if the layer is locked or hidden
         if model.layer.locked or not model.layer.visible:
-            return
+            return super(FreehandOnlyMode, self).motion_notify_cb(tdw, event)
             # TODO: some feedback, maybe
 
         x, y = tdw.display_to_model(event.x, event.y)
@@ -344,8 +451,11 @@ class FreehandOnlyMode (InteractionMode):
                 self.motions = []
             model.stroke_to(dtime, *data)
 
+        super(FreehandOnlyMode, self).motion_notify_cb(tdw, event)
+        return True
 
-class SwitchableFreehandMode (FreehandOnlyMode):
+
+class SwitchableFreehandMode (FreehandOnlyMode, ScrollableModeMixin):
     """The default mode: freehand drawing, accepting modifiers to switch modes.
     """
 
@@ -354,19 +464,14 @@ class SwitchableFreehandMode (FreehandOnlyMode):
     def button_press_cb(self, tdw, event):
         app = tdw.app
         drawwindow = app.drawWindow
-
-        #print event.device, event.button
-        ## Ignore accidentals
-        # Single button-presses only, not 2ble/3ple
-
+        # Ignore accidental presses
         if event.type != gdk.BUTTON_PRESS:
-            # pass through the extra double-click event
-            return FreehandOnlyMode.button_press_cb(self, tdw, event)
-
+            # Single button-presses only, not 2ble/3ple
+            return super(SwitchableFreehandMode, self).button_press_cb(tdw, event)
         if event.button != 1:
             # check whether we are painting (accidental)
             if event.state & gdk.BUTTON1_MASK:
-                # Do not allow dragging in the middle of
+                # Do not allow mode switching in the middle of
                 # painting. This often happens by accident with wacom
                 # tablet's stylus button.
                 #
@@ -375,99 +480,87 @@ class SwitchableFreehandMode (FreehandOnlyMode):
                 # some tablet PCs are not able to produce a
                 # middle-mouse click without reporting pressure.
                 # https://gna.org/bugs/index.php?15907
-                return FreehandOnlyMode.button_press_cb(self, tdw, event)
-
-        # Pick a suitable config option
-        ctrl = event.state & gdk.CONTROL_MASK
-        alt  = event.state & gdk.MOD1_MASK
-        shift = event.state & gdk.SHIFT_MASK
-        if shift:
-            modifier_str = "_shift"
-            modifier = gdk.SHIFT_MASK
-        elif alt or ctrl:
-            modifier_str = "_ctrl"
-            if alt:
-                modifier = gdk.MOD1_MASK
-            elif ctrl:
-                modifier = gdk.CONTROL_MASK
-        else:
-            modifier_str = ""
-            modifier = 0
-        prefs_name = "input.button%d%s_action" % (event.button, modifier_str)
-        action_name = app.preferences.get(prefs_name, "no_action")
-
-        # No-ops
-        if action_name == 'no_action':
-            return FreehandOnlyMode.button_press_cb(self, tdw, event)
-
-        # Line Mode event triggered by preferenced modifier button
-        mode = None
-        if action_name == 'straight_line':
-            mode = StraightMode(modifier)
-        elif action_name == 'straight_line_sequence':
-            mode = SequenceMode(modifier)
-        elif action_name == 'ellipse':
-            mode = EllipseMode(modifier)
-        if mode is not None:
-            self.doc.modes.push(mode)
-            mode.button_press_cb(tdw, event)
-            return True
-
-        # View control
-        if action_name.endswith("_canvas"):
-            mode = None
-            if action_name == "pan_canvas":
-                mode = PanViewMode()
-            elif action_name == "zoom_canvas":
-                mode = ZoomViewMode()
-            elif action_name == "rotate_canvas":
-                mode = RotateViewMode()
-            assert mode is not None
-            self.doc.modes.push(mode)
-            mode.button_press_cb(tdw, event)
-            return True
-
-        # TODO: add frame manipulation here too
-
-        if action_name == 'move_layer':
-            mode = LayerMoveMode(oneshot=True)
-            self.doc.modes.push(mode)
-            mode.button_press_cb(tdw, event)
-            return True
-
-        # Application menu
-        if action_name == 'popup_menu':
-            drawwindow.show_popupmenu(event=event)
-            return True
-
-        if action_name in drawwindow.popup_states:
-            state = drawwindow.popup_states[action_name]
-            state.activate(event)
-            return True
-
-        # Dispatch regular GTK events.
-        action = app.find_action(action_name)
-        if action is not None:
-            action.activate()
-            return True
+                return super(SwitchableFreehandMode, self).button_press_cb(tdw, event)
+        # Dispatch based on the button mapping
+        btn_map = self.doc.app.button_mapping
+        modifiers = event.state & gtk.accelerator_get_default_mod_mask()
+        action_name = btn_map.lookup(modifiers, event.button)
+        if action_name is not None:
+            return self._dispatch_named_action(None, tdw, event, action_name)
+        # Fall through, presumably to freehand drawing
+        return super(SwitchableFreehandMode, self).button_press_cb(tdw, event)
 
 
     def key_press_cb(self, win, tdw, event):
-        key = event.keyval
-        ctrl = event.state & gdk.CONTROL_MASK
-        shift = event.state & gdk.SHIFT_MASK
-        alt = event.state & gdk.MOD1_MASK
-        if key == keysyms.space:
-            if (shift and ctrl) or alt:
-                mode = FrameEditMode(oneshot=True)
-            elif shift:
-                mode = RotateViewMode()
-            elif ctrl:
-                mode = ZoomViewMode()
-            else:
-                mode = PanViewMode()
+        btn_map = self.doc.app.button_mapping
+        action_name = None
+        if event.is_modifier:
+            # If the keypress is a modifier only, determine the modifier mask a
+            # subsequent Button1 press event would get. This is used for early
+            # spring-loaded mode switching.
+            display = gdk.display_get_default()
+            screen, x, y, modifiers = display.get_pointer()
+            modifiers &= gtk.accelerator_get_default_mod_mask()
+            action_name = btn_map.get_unique_action_for_modifiers(modifiers)
+        else:
+            # Strategy 2: pretend that the space bar is really button 2.
+            if event.keyval == keysyms.space:
+                modifiers = event.state
+                modifiers &= gtk.accelerator_get_default_mod_mask()
+                action_name = btn_map.lookup(modifiers, 2)
+        # Only mode-based immediate dispatch is allowed, however.
+        # Might relax this later.
+        if action_name is not None:
+            if not action_name.endswith("Mode"):
+                action_name = None
+        # If we found something to do, dispatch
+        if action_name is not None:
+            return self._dispatch_named_action(win, tdw, event, action_name)
+        return super(SwitchableFreehandMode, self).key_press_cb(win, tdw, event)
+
+
+    def _dispatch_named_action(self, win, tdw, event, action_name):
+        # Send a named action from the button map to some handler code
+        app = tdw.app
+        drawwindow = app.drawWindow
+        if action_name == 'ShowPopupMenu':
+            # Unfortunately still a special case.
+            # Just firing the action doesn't work well with pads which fire a
+            # button-release event immediately after the button-press.
+            # Name it after the action however, in case we find a fix.
+            drawwindow.show_popupmenu(event=event)
+            return True
+        mode_class = ModeRegistry.get_mode_class(action_name)
+        if mode_class is not None:
+            # Transfer control to another mode temporarily.
+            assert issubclass(mode_class, SpringLoadedModeMixin)
+            mode = mode_class()
             self.doc.modes.push(mode)
-            mode.key_press_cb(win, tdw, event)
+            if win is not None:
+                return mode.key_press_cb(win, tdw, event)
+            else:
+                return mode.button_press_cb(tdw, event)
+        if action_name in drawwindow.popup_states:
+            # Still needed. The code is more tailored to MyPaint's
+            # purposes. The names are action names, but have the more
+            # tailored popup states code shadow generic action activation.
+            state = drawwindow.popup_states[action_name]
+            state.activate(event)
+            return True
+        else:
+            # Generic named action activation. GtkActions trigger without
+            # event details, so they're less flexible.
+            action = self.doc.app.find_action(action_name)
+            if action is not None:
+                # Hack: Firing the action in an idle handler helps with
+                # actions that are sensitive to immediate button-release
+                # events. But not ShowPopupMenu, sadly: we'd break button
+                # hold behaviour for more reasonable devices if we used
+                # this trick.
+                gobject.idle_add(action.activate)
+                return True
+            return False
+
 
 
 class ModeStack (object):
@@ -483,9 +576,9 @@ class ModeStack (object):
 
 
     def __init__(self, doc):
-        """Initialize.
+        """Initialize, associated with a particular CanvasController (doc)
 
-        :param doc: Controller instance: the main MyPaint app uses an,
+        :param doc: Controller instance: the main MyPaint app uses
             an instance of `gui.document.Document`. Simpler drawing
             surfaces can use a basic CanvasController and a
             simpler `default_mode_class`.
@@ -510,9 +603,20 @@ class ModeStack (object):
         # Perhaps rename to "active()"?
         new_mode = self._check()
         if new_mode is not None:
-            new_mode.enter(self._doc)
+            new_mode.enter(doc=self._doc)
             self._notify_observers()
         return self._stack[-1]
+
+
+    def replace(self, mode):
+        """Leave & remove the top mode, then push & enter a new mode.
+        """
+        if len(self._stack) > 0:
+            old_mode = self._stack.pop(-1)
+            old_mode.leave()
+        self._stack.append(mode)
+        mode.enter(doc=self._doc)
+        self._notify_observers()
 
 
     def pop(self):
@@ -524,7 +628,8 @@ class ModeStack (object):
         top_mode = self._check()
         if top_mode is None:
             top_mode = self._stack[-1]
-        top_mode.enter(self._doc)
+        self._doc.model.split_stroke()
+        top_mode.enter(doc=self._doc)
         self._notify_observers()
 
 
@@ -533,8 +638,9 @@ class ModeStack (object):
         """
         if len(self._stack) > 0:
             self._stack[-1].leave()
+        self._doc.model.split_stroke()
         self._stack.append(mode)
-        mode.enter(self._doc)
+        mode.enter(doc=self._doc)
         self._notify_observers()
 
 
@@ -549,7 +655,7 @@ class ModeStack (object):
             old_mode = self._stack.pop(-1)
             old_mode.leave()
             if len(self._stack) > 0:
-                self._stack[-1].enter(self._doc)
+                self._stack[-1].enter(doc=self._doc)
         top_mode = self._check(replacement)
         assert top_mode is not None
         self._notify_observers()
@@ -565,7 +671,7 @@ class ModeStack (object):
         else:
             mode = self.default_mode_class()
         self._stack.append(mode)
-        mode.enter(self._doc)
+        mode.enter(doc=self._doc)
         return mode
 
 
@@ -574,6 +680,78 @@ class ModeStack (object):
         s += ", ".join([m.__class__.__name__ for m in self._stack])
         s += ']>'
         return s
+
+
+class SpringLoadedModeMixin (InteractionMode):
+    """Behavioural add-ons for modes which last as long as modifiers are held.
+
+    When a spring-loaded mode is first entered, it remembers which modifier
+    keys were held down at that time. When keys are released, if the held
+    modifiers are no longer held down, the mode stack is popped and the mode
+    exits.
+
+    """
+
+    def enter(self, **kwds):
+        """Enter the mode, recording the held modifier keys the first time.
+
+        """
+        super(SpringLoadedModeMixin, self).enter(**kwds)
+        assert self.doc is not None
+        try:
+            # This mode might be entered because the mode(s) above it on the
+            # stack has/have been popped. While another mode was handling
+            # keypresses, the user may have changed which modifiers they were
+            # holding down, and we may be re-entered only to have to leave
+            # again.
+            old_modifiers = self.held_modifiers
+        except AttributeError:
+            old_modifiers = None
+        display = gdk.display_get_default()
+        screen, x, y, modifiers = display.get_pointer()
+        modifiers &= gtk.accelerator_get_default_mod_mask()
+        if old_modifiers is not None:
+            if (modifiers & old_modifiers) == 0:
+                gobject.idle_add(self.__pop_modestack_idle_cb, self.doc)
+        else:
+            self.held_modifiers = modifiers
+
+
+    def __pop_modestack_idle_cb(self, doc):
+        # Pop the mode stack when this mode is re-entered but has to leave
+        # straight away because its modifiers are no longer held. Doing it in
+        # an idle function avoids confusing the derived class's enter() method:
+        # a leave() during an enter() would be strange.
+        if self.held_modifiers is not None: # in case key_release_cb() was called
+            self.held_modifiers = None
+            doc.modes.pop()
+        return False
+
+
+    def key_release_cb(self, win, tdw, event):
+        """Leave the mode if the modifiers are no longer held down.
+
+        If the spring-loaded mode leaves because the starting modifiers are no
+        longer held, this method returns True, and so should the supercaller.
+
+        """
+        if self.held_modifiers is not None:
+            display = gdk.display_get_default()
+            screen, x, y, modifiers = display.get_pointer()
+            modifiers &= gtk.accelerator_get_default_mod_mask()
+            if modifiers & self.held_modifiers == 0:
+                self.held_modifiers = None
+                self.doc.modes.pop()
+                return True
+        return super(SpringLoadedModeMixin,self).key_release_cb(win,tdw,event)
+
+
+    def drag_start_cb(self, tdw, event):
+        """When a DragMode starts dragging, stop watching the held modifiers.
+        """
+        self.held_modifiers = None
+        super(SpringLoadedModeMixin, self).drag_start_cb(tdw, event)
+
 
 
 class DragMode (InteractionMode):
@@ -587,8 +765,8 @@ class DragMode (InteractionMode):
     cursor = gdk.Cursor(gdk.BOGOSITY)
     ## XXX two cursors? One for without the button pressed and one for with.
 
-    def __init__(self):
-        InteractionMode.__init__(self)
+    def __init__(self, **kwds):
+        super(DragMode, self).__init__(**kwds)
         self._reset_drag_state()
 
     def _reset_drag_state(self):
@@ -651,131 +829,113 @@ class DragMode (InteractionMode):
     def in_drag(self):
         return self._grab_widget is not None
 
-    def enter(self, doc):
-        InteractionMode.enter(self, doc)
+    def enter(self, **kwds):
+        super(DragMode, self).enter(**kwds)
         self.doc.tdw.set_override_cursor(self.cursor)
 
-    def leave(self):
+    def leave(self, **kwds):
         self._stop_if_started()
         self.doc.tdw.set_override_cursor(None)
-        InteractionMode.leave(self)
+        super(DragMode, self).leave(**kwds)
 
-    def scroll_cb(self, tdw, event):
-        return True
 
     def button_press_cb(self, tdw, event):
-        if self._start_keyval:  # not if keypress-initiated
-            return
-        self._start_unless_started(tdw, event)
-        if self._grab_widget is None:
-            return
-        self.last_x = event.x
-        self.last_y = event.y
-        self._start_button = event.button
-        return True
+        if not self._start_keyval:
+            # Only start drags if not in a keypress-initiated drag
+            self._start_unless_started(tdw, event)
+            if self._grab_widget is not None:
+                # Grab succeeded
+                self.last_x = event.x
+                self.last_y = event.y
+                self._start_button = event.button
+        return super(DragMode, self).button_press_cb(tdw, event)
+
 
     def button_release_cb(self, tdw, event):
-        if self._grab_widget is None:
-            return
-        if event.button == self._start_button:
-            self._stop_if_started()
-            self._start_button = None
+        if self._grab_widget is not None:
+            if event.button == self._start_button:
+                self._stop_if_started()
+                self._start_button = None
+        return super(DragMode, self).button_release_cb(tdw, event)
+
 
     def motion_notify_cb(self, tdw, event):
-        if self._grab_widget is None:
-            return
-        if not (self._start_button or self._start_keyval):
+        if self._grab_widget is not None \
+                and (self._start_button or self._start_keyval):
             # We might be here because an Action manipulated the modes stack
             # but if that's the case then we should wait for a button or
             # a keypress to initiate the drag.
-            return
-        self._start_unless_started(tdw, event)
-        if self.last_x is not None:
-            dx = event.x - self.last_x
-            dy = event.y - self.last_y
-            self.drag_update_cb(tdw, event, dx, dy)
-        self.last_x = event.x
-        self.last_y = event.y
-        return True
+            self._start_unless_started(tdw, event)
+            if self.last_x is not None:
+                dx = event.x - self.last_x
+                dy = event.y - self.last_y
+                self.drag_update_cb(tdw, event, dx, dy)
+            self.last_x = event.x
+            self.last_y = event.y
+        return super(DragMode, self).motion_notify_cb(tdw, event)
+
 
     def key_press_cb(self, win, tdw, event):
-        if self._start_button:  # not if button-initiated
-            return
-        if event.keyval == self._start_keyval:   # ignore repeats
-            return
-        if event.keyval == keysyms.space:
-            self._start_keyval = event.keyval
-            self._start_unless_started(tdw, event)
+        if not self._start_button:
+            # Only start drags if not in a button-initiated drag
+            if event.keyval != self._start_keyval:   # ignore repeats
+                if event.keyval == keysyms.space:
+                    self._start_keyval = event.keyval
+                    self._start_unless_started(tdw, event)
+        return super(DragMode, self).key_press_cb(win, tdw, event)
+
 
     def key_release_cb(self, win, tdw, event):
-        if self._grab_widget is None:
-            return
-        if event.keyval == self._start_keyval:
-            self._stop_if_started()
-            self._start_keyval = None
-
-    ## Default no-op callbacks for the drag sub-API
-
-    def drag_start_cb(self, tdw, event):
-        pass
-
-    def drag_update_cb(self, tdw, event, dx, dy):
-        pass
-
-    def drag_stop_cb(self):
-        pass
+        if self._grab_widget is not None:
+            if event.keyval == self._start_keyval:
+                self._stop_if_started()
+                self._start_keyval = None
+        return super(DragMode, self).key_release_cb(win, tdw, event)
 
 
 
-class OneshotDragModeMixin:
+class OneshotDragModeMixin (InteractionMode):
     """Oneshot drag modes exit & pop the mode stack when the drag stops."""
 
+
     def drag_stop_cb(self):
+        super(OneshotDragModeMixin, self).drag_stop_cb()
         self.doc.modes.pop()
 
 
-class PanViewMode (OneshotDragModeMixin, DragMode):
+
+class PanViewMode (SpringLoadedModeMixin, OneshotDragModeMixin, DragMode):
+    """A oneshot mode for translating the viewport by dragging."""
 
     __action_name__ = 'PanViewMode'
 
     cursor = gdk.Cursor(gdk.FLEUR)
 
-    def __init__(self):
-        DragMode.__init__(self)
-
     def drag_update_cb(self, tdw, event, dx, dy):
         tdw.scroll(-dx, -dy)
+        super(PanViewMode, self).drag_update_cb(tdw, event, dx, dy)
 
 
-class ZoomViewMode (OneshotDragModeMixin, DragMode):
+class ZoomViewMode (SpringLoadedModeMixin, OneshotDragModeMixin, DragMode):
+    """A oneshot mode for zooming the viewport by dragging."""
 
     __action_name__ = 'ZoomViewMode'
 
     cursor = gdk.Cursor(gdk.SIZING)
 
-    def __init__(self):
-        DragMode.__init__(self)
-
     def drag_update_cb(self, tdw, event, dx, dy):
-        if True:
-            # Old style: zoom at wherever the pointer is
-            tdw.scroll(-dx, -dy)
-            tdw.zoom(math.exp(dy/100.0), center=(event.x, event.y))
-        else:
-            # Experimental: zoom around wherever the drag started
-            start_pos = self.start_x, self.start_y
-            tdw.zoom(math.exp(dy/100.0), center=start_pos)
-        # TODO: Let modifiers to constrain the zoom amount to 
+        tdw.scroll(-dx, -dy)
+        tdw.zoom(math.exp(dy/100.0), center=(event.x, event.y))
+        # TODO: Let modifiers constrain the zoom amount to 
         #       the defined steps.
+        super(ZoomViewMode, self).drag_update_cb(tdw, event, dx, dy)
 
 
-class RotateViewMode (OneshotDragModeMixin, DragMode):
+class RotateViewMode (SpringLoadedModeMixin, OneshotDragModeMixin, DragMode):
+    """A oneshot mode for rotating the viewport by dragging."""
 
     __action_name__ = 'RotateViewMode'
     cursor = gdk.Cursor(gdk.EXCHANGE)
-
-    def __init__(self):
-        DragMode.__init__(self)
 
     def drag_update_cb(self, tdw, event, dx, dy):
         # calculate angular velocity from the rotation center
@@ -788,6 +948,7 @@ class RotateViewMode (OneshotDragModeMixin, DragMode):
         tdw.rotate(phi2-phi1, center=(cx, cy))
         # TODO: Allow modifiers to constrain the transformation angle
         #       to 22.5 degree steps.
+        super(RotateViewMode, self).drag_update_cb(tdw, event, dx, dy)
 
 
 from linemode import StraightMode
@@ -796,7 +957,7 @@ from linemode import EllipseMode
 from framewindow import FrameEditMode
 
 
-class LayerMoveMode (DragMode):
+class LayerMoveMode (DragMode, ScrollableModeMixin, SpringLoadedModeMixin):
     """Moving a layer interactively.
 
     MyPaint is tile-based, and tiles must align between layers, so moving
@@ -810,32 +971,36 @@ class LayerMoveMode (DragMode):
     cursor = gdk.Cursor(gdk.FLEUR)
 
 
-    def __init__(self, oneshot=False):
-        DragMode.__init__(self)
+    def __init__(self, **kwds):
+        super(LayerMoveMode, self).__init__(**kwds)
         self.model_x0 = None
         self.model_y0 = None
         self.final_model_dx = None
         self.final_model_dy = None
-        self.drag_update_idler_srcid = None
+        self._drag_update_idler_srcid = None
         self.layer = None
         self.move = None
-        self.oneshot = oneshot
+        self.oneshot = False
+
+
+    def enter(self, **kwds):
+        super(LayerMoveMode, self).enter(**kwds)
+        self.oneshot = bool(self.held_modifiers)
 
 
     def drag_start_cb(self, tdw, event):
-        if self.layer is not None:
-            return
-        self.layer = self.doc.model.get_current_layer()
-        model_x, model_y = tdw.display_to_model(event.x, event.y)
-        self.model_x0 = model_x
-        self.model_y0 = model_y
-        self.drag_start_tdw = tdw
-        self.move = None
+        if self.layer is None:
+            self.layer = self.doc.model.get_current_layer()
+            model_x, model_y = tdw.display_to_model(event.x, event.y)
+            self.model_x0 = model_x
+            self.model_y0 = model_y
+            self.drag_start_tdw = tdw
+            self.move = None
+        return super(LayerMoveMode, self).drag_start_cb(tdw, event)
 
 
     def drag_update_cb(self, tdw, event, dx, dy):
-        if self.layer is None:
-            return
+        assert self.layer is not None
 
         # Begin moving, if we're not already
         if self.move is None:
@@ -850,15 +1015,17 @@ class LayerMoveMode (DragMode):
         self.move.update(model_dx, model_dy)
 
         # Keep showing updates in the background for feedback.
-        if self.drag_update_idler_srcid is None:
-            self.drag_update_idler_srcid = gobject.idle_add(
-                                            self.drag_update_idler)
+        if self._drag_update_idler_srcid is None:
+            idler = self._drag_update_idler
+            self._drag_update_idler_srcid = gobject.idle_add(idler)
+
+        return super(LayerMoveMode, self).drag_update_cb(tdw, event, dx, dy)
 
 
-    def drag_update_idler(self):
+    def _drag_update_idler(self):
         # Process tile moves in chunks in a background idler
         # Terminate if asked
-        if self.drag_update_idler_srcid is None:
+        if self._drag_update_idler_srcid is None:
             self.move.cleanup()
             return False
         # Process some tile moves, and carry on if there's more to do
@@ -866,23 +1033,22 @@ class LayerMoveMode (DragMode):
             return True
         # Nothing more to do for this move
         self.move.cleanup()
-        self.drag_update_idler_srcid = None
+        self._drag_update_idler_srcid = None
         return False
 
 
     def drag_stop_cb(self):
-        self.drag_update_idler_srcid = None   # ask it to finish
-        if self.move is None:
-            return
+        self._drag_update_idler_srcid = None   # ask it to finish
+        if self.move is not None:
+            # Arrange for the background work to be done, and look busy
+            tdw = self.drag_start_tdw
+            tdw.set_sensitive(False)
+            tdw.set_override_cursor(gdk.Cursor(gdk.WATCH))
+            gobject.idle_add(self._finalize_move_idler)
+        return super(LayerMoveMode, self).drag_stop_cb()
 
-        # Arrange for the background work to be done, and look busy
-        tdw = self.drag_start_tdw
-        tdw.set_sensitive(False)
-        tdw.set_override_cursor(gdk.Cursor(gdk.WATCH))
-        gobject.idle_add(self.finalize_move_idler)
 
-
-    def finalize_move_idler(self):
+    def _finalize_move_idler(self):
         # Finalize everything once the drag's finished.
 
         # Keep processing until the move queue is done.
