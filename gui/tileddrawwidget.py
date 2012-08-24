@@ -754,7 +754,9 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         if self.doc.frame_enabled:
             # Draw a overlay for all the area outside the "document area"
             cr.save()
-            cr.set_source_rgba(0.25, 0.25, 0.25, 1.0)
+            frame_rgba = self.app.preferences["frame.color_rgba"]
+            frame_rgba = [helpers.clamp(c, 0, 1) for c in frame_rgba]
+            cr.set_source_rgba(*frame_rgba)
             cr.set_operator(cairo.OPERATOR_OVER)
             mipmap_factor = 2**mipmap_level
             frame = self.doc.get_frame()

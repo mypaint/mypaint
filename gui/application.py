@@ -257,6 +257,7 @@ class Application: # singleton
             'saving.default_format': 'openraster',
             'brushmanager.selected_brush' : None,
             'brushmanager.selected_groups' : [],
+            'frame.color_rgba': (0.12, 0.12, 0.12, 0.92),
 
             "scratchpad.last_opened_scratchpad": "",
 

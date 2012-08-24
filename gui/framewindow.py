@@ -10,6 +10,7 @@ from gettext import gettext as _
 
 import canvasevent
 import windowing
+from colors.uicolor import RGBColor
 
 
 class FrameEditMode (canvasevent.DragMode):
@@ -242,11 +243,25 @@ class Window (windowing.Dialog):
         height_label.set_alignment(0.0, 0.5)
         width_label = gtk.Label(_('Width:'))
         width_label.set_alignment(0.0, 0.5)
+        color_label = gtk.Label(_('Color:'))
+        color_label.set_alignment(0.0, 0.5)
 
         height_entry = gtk.SpinButton()
         height_entry.set_adjustment(self.height_adj)
         width_entry = gtk.SpinButton()
         width_entry.set_adjustment(self.width_adj)
+        color_button = gtk.ColorButton()
+        color_rgba = self.app.preferences.get("frame.color_rgba")
+        color_rgba = [min(max(c, 0), 1) for c in color_rgba]
+        color_gdk = RGBColor(*color_rgba[0:3]).to_gdk_color()
+        color_alpha = int(65535 * color_rgba[3])
+        color_button.set_color(color_gdk)
+        color_button.set_use_alpha(True)
+        color_button.set_alpha(color_alpha)
+        color_button.set_title(_("Frame Color"))
+        color_button.connect("color-set", self._color_set_cb)
+        color_align = gtk.Alignment(0, 0.5, 0, 0)
+        color_align.add(color_button)
 
         size_table = gtk.Table(6, 2)
         size_table.set_border_width(9)
@@ -264,6 +279,14 @@ class Window (windowing.Dialog):
                           xopts, yopts, xpad, ypad)
         size_table.attach(height_entry, 1, 2, row, row+1,
                           xopts, yopts, xpad, ypad)
+
+
+        row += 1
+        size_table.attach(color_label, 0, 1, row, row+1,
+                          xopts, yopts, xpad, ypad)
+        size_table.attach(color_align, 1, 2, row, row+1,
+                          xopts, yopts, xpad, ypad)
+
 
         crop_layer_button = gtk.Button(_('Crop to Current Layer'))
         crop_layer_button.set_tooltip_text(_("Crop frame to the currently "
@@ -323,6 +346,13 @@ class Window (windowing.Dialog):
         else: assert 0
         self.app.doc.model.set_frame_enabled(True)
         self.app.doc.model.set_frame(*bbox)
+
+    def _color_set_cb(self, colorbutton):
+        color_gdk = colorbutton.get_color()
+        r,g,b = RGBColor.new_from_gdk_color(color_gdk).get_rgb()
+        a = float(colorbutton.get_alpha()) / 65535
+        self.app.preferences["frame.color_rgba"] = (r, g, b, a)
+        self.app.doc.tdw.queue_draw()
 
     def on_frame_toggled(self, button):
         """Update the frame state in the model."""
