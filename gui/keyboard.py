@@ -24,12 +24,13 @@ class KeyboardManager:
 
     This class adds extra state attributes to every gtk.Action.
     """
-    def __init__(self):
+    def __init__(self, app):
         self.enabled = True
         self.actions = []
         self.keymap  = {} # (keyval, modifiers) --> gtk.Action
         self.keymap2 = {} # (keyval, modifiers) --> gtk.Action (2nd priority; for hardcoded keys)
         self.pressed = {} # hardware_keycode --> gtk.Action (while holding it down)
+        self.app = app
 
     def start_listening(self):
         pygtkcompat.gtk.accel_map_get().connect('changed', self.accel_map_changed_cb)
@@ -123,7 +124,7 @@ class KeyboardManager:
             for hardware_keycode in self.pressed.keys():
                 released(hardware_keycode)
             # Pop all stacked modes; they should release grabs
-            widget.app.doc.modes.reset()
+            self.app.doc.modes.reset()
             # Just in case...
             gdk.pointer_ungrab(event.time)
         else:

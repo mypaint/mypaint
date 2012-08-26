@@ -103,7 +103,7 @@ class Application: # singleton
         self.load_settings()
 
         self.scratchpad_filename = ""
-        self.kbm = keyboard.KeyboardManager()
+        self.kbm = keyboard.KeyboardManager(self)
         self.doc = document.Document(self)
         signal_callback_objs.append(self.doc)
         signal_callback_objs.append(self.doc.modes)
