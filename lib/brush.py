@@ -311,9 +311,9 @@ class BrushInfo:
     def get_base_value(self, cname):
         return self.settings[cname][0]
 
-    def get_points(self, cname, input, copy=True):
+    def get_points(self, cname, input, readonly=False):
         res = self.settings[cname][1].get(input, ())
-        if copy: # slow
+        if not readonly: # slow
             res = copy.deepcopy(res)
         return res
 
@@ -374,7 +374,7 @@ class BrushInfo:
 
     def has_input(self, cname, input):
         """Return whether a given input is used by some setting."""
-        points = self.get_points(cname, input, copy=False)
+        points = self.get_points(cname, input, readonly=True)
         return bool(points)
 
     def begin_atomic(self):
@@ -460,7 +460,7 @@ class Brush(mypaintlib.PythonBrush):
             self.set_base_value(setting.index, base)
 
             for input in brushsettings.inputs:
-                points = self.brushinfo.get_points(cname, input.name, copy=False)
+                points = self.brushinfo.get_points(cname, input.name, readonly=True)
 
                 assert len(points) != 1
                 #if len(points) > 2:
