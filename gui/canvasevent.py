@@ -629,7 +629,15 @@ class DragMode (InteractionMode):
                                        self.cursor, event.time)
         if grab_status != gdk.GRAB_SUCCESS:
             print "pointer grab failed:", grab_status
-            return
+            print "DEBUG: gdk_pointer_is_grabbed():", gdk.pointer_is_grabbed()
+            # There seems to be a race condition between this grab under
+            # PyGTK/GTK2 and some other grab from the app - possibly just the
+            # implicit grabs on colour selectors: https://gna.org/bugs/?20068
+            # Only pointer events are affected, and PyGI+GTK3 is unaffected.
+            #
+            # As an experimental workaround, just fall through for now and
+            # don't return. After all, we know pointer events are being
+            # delivered if we're here even in the conflicted case (!)
         grab_status = gdk.keyboard_grab(tdw_window, False, event.time)
         if grab_status != gdk.GRAB_SUCCESS:
             print "keyboard grab failed:", grab_status
