@@ -298,6 +298,19 @@ load_png_fast_progressive (char *filename,
       PyErr_SetString(PyExc_MemoryError, "cmsOpenProfileFromMem() failed");
       goto cleanup;
     }
+    cmsColorSpaceSignature cs_sig = cmsGetColorSpace(input_buffer_profile);
+    if (cs_sig != cmsSigRgbData) {
+      printf("lcms: ignoring non-RGB color profile. "
+             "Signature: 0x%08x, '%c%c%c%c'.\n",
+             cs_sig,
+             0xff&(cs_sig>>24), 0xff&(cs_sig>>16),
+             0xff&(cs_sig>>8), 0xff&cs_sig);
+      cmsCloseProfile(input_buffer_profile);
+      input_buffer_profile = NULL;
+    }
+  }
+
+  if (input_buffer_profile) {
     cm_processing = "iCCP (use embedded colour profile)";
   }
 
@@ -342,7 +355,7 @@ load_png_fast_progressive (char *filename,
     else {
       possible_legacy_png = true;
       input_buffer_profile = cmsCreate_sRGBProfile();
-      cm_processing = "sRGB (no CM chunks present)";
+      cm_processing = "sRGB (no usable CM chunks found)";
     }
   }
 
