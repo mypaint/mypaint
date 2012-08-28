@@ -24,6 +24,24 @@
 
 void process_tile(MyPaintTiledSurface *self, int tx, int ty);
 
+void mypaint_tiled_surface_begin_atomic(MyPaintTiledSurface *self)
+{
+
+}
+
+void mypaint_tiled_surface_end_atomic(MyPaintTiledSurface *self)
+{
+    // Process tiles
+    TileIndex *tiles;
+    int tiles_n = operation_queue_get_tiles(self->operation_queue, &tiles);
+
+    for (int i = 0; i < tiles_n; i++) {
+        TileIndex tile = tiles[i];
+        process_tile(self, tile.x, tile.y);
+    }
+    free(tiles);
+}
+
 uint16_t * mypaint_tiled_surface_get_tile(MyPaintTiledSurface *self, int tx, int ty, gboolean readonly)
 {
     if (!self->get_tile)
@@ -253,7 +271,8 @@ gboolean draw_dab_internal (MyPaintTiledSurface *self, float x, float y,
                )
 
 {
-    OperationDataDrawDab *op = (OperationDataDrawDab *)malloc(sizeof(OperationDataDrawDab));
+    OperationDataDrawDab op_struct;
+    OperationDataDrawDab *op = &op_struct;
 
     op->x = x;
     op->y = y;
@@ -306,19 +325,9 @@ gboolean draw_dab_internal (MyPaintTiledSurface *self, float x, float y,
     }
 
     }
-    // FIXME: allocate OP on stack
-    free(op);
 
-    // Process tiles
-    TileIndex *tiles;
-    int tiles_n = operation_queue_get_tiles(self->operation_queue, &tiles);
-
-    for (int i = 0; i < tiles_n; i++) {
-        TileIndex tile = tiles[i];
-        process_tile(self, tile.x, tile.y);
-    }
-    free(tiles);
-
+    // FIXME: move outside to draw_dab as a separate call to draw_dab_internal
+    // there is nothing recursive about this, it just needs to be done once.
     if(!recursing && self->surface_do_symmetry) {
       draw_dab_internal (self, self->surface_center_x + (self->surface_center_x - x), y,
                 radius,

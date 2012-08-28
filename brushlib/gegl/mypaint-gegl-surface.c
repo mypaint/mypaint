@@ -25,6 +25,8 @@ void begin_atomic_gegl(MyPaintSurface *surface)
 {
     MyPaintGeglTiledSurface *self = (MyPaintGeglTiledSurface *)surface;
 
+    mypaint_tiled_surface_begin_atomic((MyPaintTiledSurface *)self);
+
     if (self->atomic == 0) {
       //assert(self->dirty_bbox.w == 0);
     }
@@ -34,6 +36,8 @@ void begin_atomic_gegl(MyPaintSurface *surface)
 void end_atomic_gegl(MyPaintSurface *surface)
 {
     MyPaintGeglTiledSurface *self = (MyPaintGeglTiledSurface *)surface;
+
+    mypaint_tiled_surface_end_atomic((MyPaintTiledSurface *)self);
 
     assert(self->atomic > 0);
     self->atomic--;

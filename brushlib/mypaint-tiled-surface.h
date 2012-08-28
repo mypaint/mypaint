@@ -52,6 +52,9 @@ guint16 * mypaint_tiled_surface_get_tile(MyPaintTiledSurface *self, int tx, int 
 void mypaint_tiled_surface_update_tile(MyPaintTiledSurface *self, int tx, int ty, guint16* tile_buffer);
 void mypaint_tiled_surface_area_changed(MyPaintTiledSurface *self, int bb_x, int bb_y, int bb_w, int bb_h);
 
+void mypaint_tiled_surface_begin_atomic(MyPaintTiledSurface *self);
+void mypaint_tiled_surface_end_atomic(MyPaintTiledSurface *self);
+
 G_END_DECLS
 
 #endif // MYPAINTTILEDSURFACE_H
