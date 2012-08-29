@@ -23,6 +23,9 @@ if env.Execute('swig -o mypaintlib_wrap.cpp -noproxydel -python -c++ %s mypaintl
 env.Clean('.', 'mypaintlib_wrap.cpp')
 env.Clean('.', 'mypaintlib.py')
 
+# fix bug when upgrading git from e.g. v1.0.0 (old module is loaded instead of new)
+env.Execute('rm -f _mypaintlib.so')
+
 def build_py_module(env, *args, **kwargs):
     if sys.platform == "win32": # there 's a better way to do this
         kwargs["SHLIBSUFFIX"]=".pyd"
