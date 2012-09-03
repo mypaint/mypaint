@@ -207,7 +207,7 @@ class Window(windowing.SubWindow):
             # formerly: "not if in a drag"
             # currrently: only FreehandMode supports it (rest untested)
             return
-        if not self.live_update.get_active() or self.live_update_queued:
+        if not self.live_update.get_active() or not self.get_visible() or self.live_update_queued:
             return
         self.live_update_queued = True
         def do_update():
