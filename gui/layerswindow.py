@@ -182,6 +182,10 @@ class ToolWidget (gtk.VBox):
         self.treeview.get_selection().select_path(selected_path)
         self.treeview.scroll_to_cell(selected_path)
 
+        # Queue a redraw too - undoing/redoing lock and visible markers poke
+        # the underlying doc state, and we should always draw that.
+        self.treeview.queue_draw()
+
 
     def treeview_cursor_changed_cb(self, treeview, *data):
         if self.is_updating:
