@@ -15,7 +15,13 @@ class CommandStack:
         self.call_before_action = []
         self.stack_observers = []
         self.clear()
-    
+
+    def __repr__(self):
+        return "<CommandStack\n  <Undo len=%d last3=%r>\n" \
+                "  <Redo len=%d last3=%r> >" % (
+                    len(self.undo_stack), self.undo_stack[-3:],
+                    len(self.redo_stack), self.redo_stack[:3],  )
+
     def clear(self):
         self.undo_stack = []
         self.redo_stack = []
@@ -37,7 +43,7 @@ class CommandStack:
         self.redo_stack.append(command)
         self.notify_stack_observers()
         return command
-        
+
     def redo(self):
         if not self.redo_stack: return
         for f in self.call_before_action: f()
@@ -62,21 +68,74 @@ class CommandStack:
         if not self.undo_stack: return None
         return self.undo_stack[-1]
 
+    def update_last_command(self, **kwargs):
+        cmd = self.get_last_command()
+        if cmd is None:
+            return None
+        cmd.update(**kwargs)
+        self.notify_stack_observers() # the display_name may have changed
+        return cmd
+
     def notify_stack_observers(self):
         for func in self.stack_observers:
             func(self)
 
 class Action:
-    '''Base class for all undo/redoable actions. Subclasses must implement the
+    """An undoable, redoable action.
+
+    Base class for all undo/redoable actions. Subclasses must implement the
     undo and redo methods. They should have a reference to the document in 
-    self.doc'''
+    self.doc.
+
+    """
     automatic_undo = False
     display_name = _("Unknown Action")
 
+    def __repr__(self):
+        return "<%s>" % (self.display_name,)
+
+
     def redo(self):
+        """Callback used to perform, or re-perform the Action.
+        """
         raise NotImplementedError
+
+
     def undo(self):
+        """Callback used to un-perform an already performed Action.
+        """
         raise NotImplementedError
+
+
+    def update(self, **kwargs):
+        """In-place update on the tip of the undo stack.
+
+        This method should update the model in the way specified in `**kwargs`.
+        The interpretation of arguments is left to the concrete implementation.
+
+        Updating the top Action on the command stack is used to prevent
+        situations where an undo() followed by a redo() would result in
+        multiple sendings of GdkEvents by code designed to keep interface state
+        in sync with the model.
+
+        """
+
+        # Updating is used in situations where only the user's final choice of
+        # a state such as layer visibility matters in the command-stream.
+        # Creating a nice workflow for the user by using `undo()` then `do()`
+        # with a replacement Action can sometimes cause GtkAction and
+        # command.Action flurries or loops across multiple GdkEvent callbacks.
+        #
+        # This can make coding difficult elsewhere. For example,
+        # GtkToggleActions must be kept in in sync with undoable boolean model
+        # state, but even when an interlock or check is coded, the fact that
+        # processing happens in multiple GtkEvent handlers can result in,
+        # essentially, a toggle action which turns itself off immediately after
+        # being toggled on. See https://gna.org/bugs/?20096 for a concrete
+        # example.
+
+        raise NotImplementedError
+
 
     # Utility functions
     def _notify_canvas_observers(self, affected_layers):
@@ -349,6 +408,11 @@ class SetLayerVisibility(Action):
         self.layer.visible = self.old_visibility
         self._notify_canvas_observers([self.layer])
         self._notify_document_observers()
+    def update(self, visible):
+        self.layer.visible = visible
+        self.new_visibility = visible
+        self._notify_canvas_observers([self.layer])
+        self._notify_document_observers()
     @property
     def display_name(self):
         if self.new_visibility:
@@ -368,6 +432,11 @@ class SetLayerLocked (Action):
         self._notify_document_observers()
     def undo(self):
         self.layer.locked = self.old_locked
+        self._notify_canvas_observers([self.layer])
+        self._notify_document_observers()
+    def update(self, locked):
+        self.layer.locked = locked
+        self.new_locked = locked
         self._notify_canvas_observers([self.layer])
         self._notify_document_observers()
     @property

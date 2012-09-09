@@ -312,6 +312,11 @@ class Document():
         self.command_stack.do(cmd)
 
 
+    def update_last_command(self, **kwargs):
+        self.split_stroke()
+        return self.command_stack.update_last_command(**kwargs)
+
+
     def get_last_command(self):
         self.split_stroke()
         return self.command_stack.get_last_command()
@@ -404,16 +409,18 @@ class Document():
         """Sets the visibility of a layer."""
         cmd = self.get_last_command()
         if isinstance(cmd, command.SetLayerVisibility) and cmd.layer is layer:
-            self.undo()
-        self.do(command.SetLayerVisibility(self, visible, layer))
+            self.update_last_command(visible=visible)
+        else:
+            self.do(command.SetLayerVisibility(self, visible, layer))
 
 
     def set_layer_locked(self, locked, layer):
         """Sets the input-locked status of a layer."""
         cmd = self.get_last_command()
         if isinstance(cmd, command.SetLayerLocked) and cmd.layer is layer:
-            self.undo()
-        self.do(command.SetLayerLocked(self, locked, layer))
+            self.update_last_command(locked=locked)
+        else:
+            self.do(command.SetLayerLocked(self, locked, layer))
 
 
     def set_layer_opacity(self, opacity, layer=None):
