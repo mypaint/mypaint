@@ -81,7 +81,7 @@ env.Execute(python + ' generate.py') # TODO: make a proper build rule
 env.Clean('.', 'mypaint-brush-settings-gen.h')
 env.Clean('.', Glob('*.pyc'))
 
-brushlib = env.SharedLibrary('../mypaint-brushlib', Glob("*.c"))
+brushlib = env.SharedLibrary('../mypaint', Glob("*.c"))
 
 if env['enable_introspection']:
     gir, typelib = add_gobject_introspection(env, "MyPaint", pkg_info["@VERSION@"],
@@ -116,11 +116,11 @@ if env['enable_gegl']:
 
     gegl_env.ParseConfig('pkg-config --cflags --libs gegl-0.2')
 
-    gegl_env.Append(LIBS="mypaint-brushlib")
+    gegl_env.Append(LIBS="mypaint")
     gegl_env.Append(LIBPATH="../")
     gegl_env.Append(CPPPATH='../brushlib/')
 
-    brushlib_gegl = gegl_env.SharedLibrary('../mypaint-brushlib-gegl', Glob("./gegl/*.c"))
+    brushlib_gegl = gegl_env.SharedLibrary('../mypaint-gegl', Glob("./gegl/*.c"))
     install_perms(env, '$prefix/lib/', brushlib_gegl)
     install_perms(env, '$prefix/include/libmypaint-gegl', Glob("./gegl/mypaint-gegl-*.h"))
 

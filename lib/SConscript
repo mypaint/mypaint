@@ -87,14 +87,14 @@ else:
         env.ParseConfig('python-config --cflags')
 
 # Build against brushlib
-env.Append(LIBS="mypaint-brushlib")
+env.Append(LIBS="mypaint")
 env.Append(LIBPATH="../")
 env.Append(CPPPATH='../brushlib')
 
 # Optional: Build against gegl brushlib
 if env['enable_gegl']:
     env.Append(CPPPATH='../brushlib/gegl')
-    env.Append(LIBS="mypaint-brushlib-gegl")
+    env.Append(LIBS="mypaint-gegl")
 
 # python extension module
 src = 'mypaintlib_wrap.cpp'
