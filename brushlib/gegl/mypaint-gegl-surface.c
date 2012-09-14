@@ -22,9 +22,9 @@ typedef struct _MyPaintGeglTiledSurface {
 
 void free_gegl_tiledsurf(MyPaintSurface *surface);
 
-void begin_atomic_gegl(MyPaintTiledSurface *tiled_surface)
+void begin_atomic_gegl(MyPaintSurface *surface)
 {
-    MyPaintGeglTiledSurface *self = (MyPaintGeglTiledSurface *)tiled_surface;
+    MyPaintGeglTiledSurface *self = (MyPaintGeglTiledSurface *)surface;
 
     if (self->atomic == 0) {
       //assert(self->dirty_bbox.w == 0);
@@ -32,9 +32,9 @@ void begin_atomic_gegl(MyPaintTiledSurface *tiled_surface)
     self->atomic++;
 }
 
-void end_atomic_gegl(MyPaintTiledSurface *tiled_surface)
+void end_atomic_gegl(MyPaintSurface *surface)
 {
-    MyPaintGeglTiledSurface *self = (MyPaintGeglTiledSurface *)tiled_surface;
+    MyPaintGeglTiledSurface *self = (MyPaintGeglTiledSurface *)surface;
 
     assert(self->atomic > 0);
     self->atomic--;
@@ -164,13 +164,15 @@ mypaint_gegl_tiled_surface_new()
 
     mypaint_tiled_surface_init(&self->parent);
 
+    // MyPaintSurface vfuncs
     self->parent.parent.destroy = free_gegl_tiledsurf;
     self->parent.parent.save_png = save_png;
+    self->parent.parent.begin_atomic = begin_atomic_gegl;
+    self->parent.parent.end_atomic = end_atomic_gegl;
 
+    // MyPaintTiledSurface vfuncs
     self->parent.get_tile = get_tile_memory_gegl;
     self->parent.update_tile = update_tile_gegl;
-    self->parent.begin_atomic = begin_atomic_gegl;
-    self->parent.end_atomic = end_atomic_gegl;
     self->parent.area_changed = area_changed_gegl;
 
     self->atomic = 0;

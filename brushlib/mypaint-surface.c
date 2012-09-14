@@ -71,3 +71,15 @@ mypaint_surface_save_png(MyPaintSurface *self, const char *path, int x, int y, i
         self->save_png(self, path, x, y, width, height);
     }
 }
+
+void mypaint_surface_begin_atomic(MyPaintSurface *self)
+{
+    if (self->begin_atomic)
+        self->begin_atomic(self);
+}
+
+void mypaint_surface_end_atomic(MyPaintSurface *self)
+{
+    if (self->end_atomic)
+        self->end_atomic(self);
+}

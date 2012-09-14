@@ -32,9 +32,9 @@ void reset_null_tile(MyPaintFixedTiledSurface *self)
     }
 }
 
-void begin_atomic(MyPaintTiledSurface *tiled_surface)
+void begin_atomic(MyPaintSurface *surface)
 {
-    MyPaintFixedTiledSurface *self = (MyPaintFixedTiledSurface *)tiled_surface;
+    MyPaintFixedTiledSurface *self = (MyPaintFixedTiledSurface *)surface;
 
     if (self->atomic == 0) {
       //assert(self->dirty_bbox.w == 0);
@@ -42,9 +42,9 @@ void begin_atomic(MyPaintTiledSurface *tiled_surface)
     self->atomic++;
 }
 
-void end_atomic(MyPaintTiledSurface *tiled_surface)
+void end_atomic(MyPaintSurface *surface)
 {
-    MyPaintFixedTiledSurface *self = (MyPaintFixedTiledSurface *)tiled_surface;
+    MyPaintFixedTiledSurface *self = (MyPaintFixedTiledSurface *)surface;
 
     assert(self->atomic > 0);
     self->atomic--;
@@ -122,12 +122,14 @@ mypaint_fixed_tiled_surface_new(int width, int height)
 
     mypaint_tiled_surface_init(&self->parent);
 
+    // MyPaintSurface vfuncs
     self->parent.parent.destroy = free_simple_tiledsurf;
+    self->parent.parent.begin_atomic = begin_atomic;
+    self->parent.parent.end_atomic = end_atomic;
 
+    // MyPaintTiledSurface vfuncs
     self->parent.get_tile = get_tile;
     self->parent.update_tile = update_tile;
-    self->parent.begin_atomic = begin_atomic;
-    self->parent.end_atomic = end_atomic;
     self->parent.area_changed = area_changed;
 
     self->atomic = 0;

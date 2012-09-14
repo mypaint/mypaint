@@ -35,10 +35,10 @@ public:
   }
 
   void begin_atomic() {
-      mypaint_tiled_surface_begin_atomic((MyPaintTiledSurface *)c_surface);
+      mypaint_surface_begin_atomic((MyPaintSurface *)c_surface);
   }
   void end_atomic() {
-      mypaint_tiled_surface_end_atomic((MyPaintTiledSurface *)c_surface);
+      mypaint_surface_end_atomic((MyPaintSurface *)c_surface);
   }
 
   uint16_t * get_tile_memory(int tx, int ty, bool readonly) {

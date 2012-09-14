@@ -20,17 +20,6 @@
 #define TILE_SIZE 64
 #define MAX_MIPMAP_LEVEL 4
 
-void mypaint_tiled_surface_begin_atomic(MyPaintTiledSurface *self)
-{
-    if (self->begin_atomic)
-        self->begin_atomic(self);
-}
-
-void mypaint_tiled_surface_end_atomic(MyPaintTiledSurface *self)
-{
-    if (self->end_atomic)
-        self->end_atomic(self);
-}
 
 uint16_t * mypaint_tiled_surface_get_tile(MyPaintTiledSurface *self, int tx, int ty, gboolean readonly)
 {

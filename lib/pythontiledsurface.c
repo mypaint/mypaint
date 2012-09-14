@@ -29,9 +29,9 @@ typedef struct {
 // Forward declare
 void free_tiledsurf(MyPaintSurface *surface);
 
-void begin_atomic(MyPaintTiledSurface *tiled_surface)
+void begin_atomic(MyPaintSurface *surface)
 {
-    MyPaintPythonTiledSurface *self = (MyPaintPythonTiledSurface *)tiled_surface;
+    MyPaintPythonTiledSurface *self = (MyPaintPythonTiledSurface *)surface;
 
     if (self->atomic == 0) {
       assert(self->dirty_bbox.w == 0);
@@ -40,9 +40,9 @@ void begin_atomic(MyPaintTiledSurface *tiled_surface)
     self->atomic++;
 }
 
-void end_atomic(MyPaintTiledSurface *tiled_surface)
+void end_atomic(MyPaintSurface *surface)
 {
-    MyPaintPythonTiledSurface *self = (MyPaintPythonTiledSurface *)tiled_surface;
+    MyPaintPythonTiledSurface *self = (MyPaintPythonTiledSurface *)surface;
 
     assert(self->atomic > 0);
     self->atomic--;
@@ -127,12 +127,14 @@ mypaint_python_tiled_surface_new(PyObject *py_object)
 
     mypaint_tiled_surface_init(&self->parent);
 
+    // MyPaintSurface vfuncs
     self->parent.parent.destroy = free_tiledsurf;
+    self->parent.parent.begin_atomic = begin_atomic;
+    self->parent.parent.end_atomic = end_atomic;
 
+    // MyPaintTiledSurface vfuncs
     self->parent.get_tile = get_tile_memory;
     self->parent.update_tile = update_tile;
-    self->parent.begin_atomic = begin_atomic;
-    self->parent.end_atomic = end_atomic;
     self->parent.area_changed = area_changed;
 
     self->py_obj = py_object; // no need to incref
