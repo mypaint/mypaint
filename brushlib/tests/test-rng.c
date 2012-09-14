@@ -15,7 +15,7 @@ test_rng_double_smoke(void *user_data)
     for (m=0;m<2009;m++) rng_double_get_array(gen, a, 1009);
     printf("%.20f\n", a[0]);
 
-    assert(a[0] == 0.40565695769206500110);
+    assert(a[0] == 0.13283300318196644696);
 
     // XXX: possible issue in original impl:
     // in the original test from D.Knuth, the internal state (ran_u) was tested
@@ -30,7 +30,7 @@ test_rng_double_smoke(void *user_data)
     for (m=0;m<1009;m++) rng_double_get_array(gen, a, 2009);
     printf("%.20f\n", a[0]);
 
-    assert(a[0] == 0.04731923453148767500);
+    assert(a[0] == 0.64694669426788964373);
 
     rng_double_free(gen);
 
