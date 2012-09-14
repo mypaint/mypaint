@@ -267,8 +267,7 @@ gboolean draw_dab_internal (MyPaintTiledSurface *self, float x, float y,
                float color_a,
                float aspect_ratio, float angle,
                float lock_alpha,
-               float colorize,
-               int recursing // used for symmetry, internal use only
+               float colorize
                )
 
 {
@@ -327,20 +326,6 @@ gboolean draw_dab_internal (MyPaintTiledSurface *self, float x, float y,
 
     }
 
-    // FIXME: move outside to draw_dab as a separate call to draw_dab_internal
-    // there is nothing recursive about this, it just needs to be done once.
-    if(!recursing && self->surface_do_symmetry) {
-      draw_dab_internal (self, self->surface_center_x + (self->surface_center_x - x), y,
-                radius,
-                color_r, color_g, color_b,
-                opaque, hardness,
-                color_a,
-                aspect_ratio, -angle,
-                lock_alpha,
-                colorize,
-                1);
-    }
-
     return TRUE;
   }
 
@@ -355,9 +340,29 @@ int draw_dab (MyPaintSurface *surface, float x, float y,
                float colorize)
 {
   MyPaintTiledSurface *self = (MyPaintTiledSurface *)surface;
-  return draw_dab_internal(self, x, y, radius, color_r, color_g, color_b,
-                           opaque, hardness, color_a, aspect_ratio, angle,
-                           lock_alpha, colorize, 0);
+
+  gboolean surface_modified = FALSE;
+
+  // Normal pass
+  if (draw_dab_internal(self, x, y, radius, color_r, color_g, color_b,
+                        opaque, hardness, color_a, aspect_ratio, angle,
+                        lock_alpha, colorize)) {
+      surface_modified = TRUE;
+  }
+
+  // Symmetry pass
+  if(self->surface_do_symmetry) {
+    const int symm_x = self->surface_center_x + (self->surface_center_x - x);
+
+    if (draw_dab_internal(self, symm_x, y, radius, color_r, color_g, color_b,
+                           opaque, hardness, color_a, aspect_ratio, -angle,
+                           lock_alpha, colorize)) {
+        surface_modified = TRUE;
+    }
+
+  }
+
+  return surface_modified;
 }
 
 void get_color (MyPaintSurface *surface, float x, float y,
