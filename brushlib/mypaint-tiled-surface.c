@@ -35,6 +35,7 @@ void mypaint_tiled_surface_end_atomic(MyPaintTiledSurface *self)
     TileIndex *tiles;
     int tiles_n = operation_queue_get_tiles(self->operation_queue, &tiles);
 
+    // TODO: do in parallel using OpenMP directives
     for (int i = 0; i < tiles_n; i++) {
         TileIndex tile = tiles[i];
         process_tile(self, tile.x, tile.y);
@@ -389,9 +390,15 @@ void get_color (MyPaintSurface *surface, float x, float y,
     int tx2 = floor(floor(x + r_fringe) / TILE_SIZE);
     int ty1 = floor(floor(y - r_fringe) / TILE_SIZE);
     int ty2 = floor(floor(y + r_fringe) / TILE_SIZE);
+
+    // TODO: do in parallel using OpenMP directives
     int tx, ty;
     for (ty = ty1; ty <= ty2; ty++) {
       for (tx = tx1; tx <= tx2; tx++) {
+
+        // Flush queued draw_dab operations
+        process_tile(self, tx, ty);
+
         uint16_t * rgba_p = mypaint_tiled_surface_get_tile(self, tx, ty, TRUE);
         if (!rgba_p) {
           printf("Warning: Unable to get tile!\n");
