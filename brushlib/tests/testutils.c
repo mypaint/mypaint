@@ -10,7 +10,7 @@ static const char * const pass = "PASS";
 static const char * const fail = "FAIL";
 
 char *
-read_file(char *path)
+read_file(const char *path)
 {
     long file_size = -1L;
     FILE *file = fopen(path, "r");

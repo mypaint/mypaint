@@ -152,3 +152,9 @@ mypaint_utils_stroke_player_run_sync(MyPaintUtilsStrokePlayer *self)
         ;
     }
 }
+
+void
+mypaint_utils_stroke_player_set_transactions_on_stroke_to(MyPaintUtilsStrokePlayer *self, gboolean value)
+{
+    self->transaction_on_stroke = value;
+}

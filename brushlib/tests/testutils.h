@@ -16,7 +16,7 @@ typedef enum {
 
 int test_cases_run(int argc, char **argv, TestCase *tests, int tests_n, TestCaseType type);
 
-char *read_file(char *path);
+char *read_file(const char *path);
 
 int expect_int(int expected, int actual, const char *description);
 int expect_float(float expected, float actual, const char *description);

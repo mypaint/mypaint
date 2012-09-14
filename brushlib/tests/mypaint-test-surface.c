@@ -8,9 +8,18 @@
 #include "testutils.h"
 #include "mypaint-benchmark.h"
 
+typedef enum {
+    SurfaceTransactionPerStrokeTo,
+    SurfaceTransactionPerStroke
+} SurfaceTransaction;
+
 typedef struct {
+    const char *test_case_id;
     MyPaintTestsSurfaceFactory factory_function;
     gpointer factory_user_data;
+    const char *brush_file;
+    SurfaceTransaction surface_transaction;
+    int iterations;
 } SurfaceTestData;
 
 int
@@ -19,7 +28,7 @@ test_surface_drawing(void *user_data)
     SurfaceTestData *data = (SurfaceTestData *)user_data;
 
     const char * event_data = read_file("events/painting30sec.dat");
-    const char * brush_data = read_file("brushes/modelling.myb");
+    const char * brush_data = read_file(data->brush_file);
 
     assert(event_data);
     assert(brush_data);
@@ -34,15 +43,31 @@ test_surface_drawing(void *user_data)
     mypaint_utils_stroke_player_set_surface(player, surface);
     mypaint_utils_stroke_player_set_source_data(player, event_data);
 
+    if (data->surface_transaction == SurfaceTransactionPerStroke) {
+        mypaint_utils_stroke_player_set_transactions_on_stroke_to(player, FALSE);
+    }
+
     // Actually run benchmark
-    mypaint_benchmark_start("benchmark_surface");
-    for (int i=0; i<10; i++) {
+    mypaint_benchmark_start(data->test_case_id);
+    for (int i=0; i<data->iterations; i++) {
+        if (data->surface_transaction == SurfaceTransactionPerStroke) {
+            mypaint_surface_begin_atomic(surface);
+        }
         mypaint_utils_stroke_player_run_sync(player);
+
+        if (data->surface_transaction == SurfaceTransactionPerStroke) {
+            mypaint_surface_end_atomic(surface);
+        }
     }
     int result = mypaint_benchmark_end();
 
-    mypaint_surface_save_png(surface, "benchmark.png", 0, 0, -1, 1);
+    char *png_filename = malloc(snprintf(NULL, 0, "%s.png", data->test_case_id) + 1);
+    sprintf(png_filename, "%s.png", data->test_case_id);
+
+    mypaint_surface_save_png(surface, png_filename, 0, 0, -1, 1);
     // FIXME: check the correctness of the outputted PNG
+
+    free(png_filename);
 
     mypaint_brush_destroy(brush);
     mypaint_surface_destroy(surface);
@@ -59,12 +84,17 @@ mypaint_test_surface_run(int argc, char **argv,
     SurfaceTestData data;
     data.factory_function = surface_factory;
     data.factory_user_data = user_data;
+    data.brush_file = "brushes/modelling.myb";
+    data.surface_transaction = SurfaceTransactionPerStrokeTo;
+    data.iterations = 10;
 
     // FIXME: use an environment variable or commandline switch to
     // distinguish between running test as a benchmark (multiple iterations and taking the time)
     // or as a test (just verifying correctness)
     char *test_case_id = malloc(snprintf(NULL, 0, "/test/%s/paint", title) + 1);
     sprintf(test_case_id, "/test/%s/paint", title);
+
+    data.test_case_id = test_case_id;
 
     TestCase test_cases[] = {
         {test_case_id, test_surface_drawing, &data},
