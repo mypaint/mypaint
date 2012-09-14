@@ -185,11 +185,11 @@ void render_dab_mask (uint16_t * mask,
   }
 
 void
-process_op(MyPaintTiledSurface *self, uint16_t *rgba_p, int tx, int ty, OperationDataDrawDab *op)
+process_op(MyPaintTiledSurface *self, uint16_t *rgba_p, uint16_t *mask,
+           int tx, int ty, OperationDataDrawDab *op)
 {
-    // first, we calculate the mask (opacity for each pixel)
-    static uint16_t mask[TILE_SIZE*TILE_SIZE+2*TILE_SIZE];
 
+    // first, we calculate the mask (opacity for each pixel)
     render_dab_mask(mask,
                     op->x - tx*TILE_SIZE,
                     op->y - ty*TILE_SIZE,
@@ -250,8 +250,10 @@ process_tile(MyPaintTiledSurface *self, int tx, int ty)
         return;
     }
 
+    uint16_t mask[TILE_SIZE*TILE_SIZE+2*TILE_SIZE];
+
     while (op) {
-        process_op(self, rgba_p, tile_index.x, tile_index.y, op);
+        process_op(self, rgba_p, mask, tile_index.x, tile_index.y, op);
         free(op);
         op = operation_queue_pop(self->operation_queue, tile_index);
     }
@@ -411,7 +413,7 @@ void get_color (MyPaintSurface *surface, float x, float y,
         }
 
         // first, we calculate the mask (opacity for each pixel)
-        static uint16_t mask[TILE_SIZE*TILE_SIZE+2*TILE_SIZE];
+        uint16_t mask[TILE_SIZE*TILE_SIZE+2*TILE_SIZE];
 
         render_dab_mask(mask,
                         x - tx*TILE_SIZE,
