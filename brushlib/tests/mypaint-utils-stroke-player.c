@@ -33,7 +33,8 @@ struct _MyPaintUtilsStrokePlayer {
     MotionEvent *events;
     int current_event_index;
     int number_of_events;
-} ;
+    gboolean transaction_on_stroke; /* If MyPaintBrush::stroke_to should be done between MyPaintSurface::begin_atomic() end_atomic() calls.*/
+};
 
 MyPaintUtilsStrokePlayer *
 mypaint_utils_stroke_player_new()
@@ -45,6 +46,7 @@ mypaint_utils_stroke_player_new()
     self->events = NULL;
     self->number_of_events = 0;
     self->current_event_index = 0;
+    self->transaction_on_stroke = TRUE;
 
     return self;
 }
@@ -115,9 +117,17 @@ mypaint_utils_stroke_player_iterate(MyPaintUtilsStrokePlayer *self)
     const float dtime = event->time - last_event_time;
 
     if (event->valid) {
+        if (self->transaction_on_stroke) {
+            mypaint_surface_begin_atomic(self->surface);
+        }
+
         mypaint_brush_stroke_to(self->brush, self->surface,
                                 event->x, event->y, event->pressure,
                                 event->xtilt, event->ytilt, dtime);
+
+        if (self->transaction_on_stroke) {
+            mypaint_surface_end_atomic(self->surface);
+        }
     }
     self->current_event_index++;
 
