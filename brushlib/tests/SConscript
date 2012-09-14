@@ -21,8 +21,8 @@ if testlib_env['use_glib']:
 testlib_env.Append(CPPPATH=['../'], LIBPATH=['../..'], LIBS=['mypaint'])
 
 if testlib_env['enable_gperftools']:
-    testlib_env.Append(CPPFLAGS='HAVE_GPERFTOOLS')
-    testlib_env.ParseConfig('pkg-config --cflags --libs profiler')
+    testlib_env.ParseConfig('pkg-config --cflags --libs libprofiler')
+    testlib_env.Append(CPPDEFINES='HAVE_GPERFTOOLS')
 
 testlib_env.SharedLibrary(target='../../mypaint-tests', source=testlib_sources)
 

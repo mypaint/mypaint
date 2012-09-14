@@ -9,7 +9,7 @@
 #include <limits.h>
 
 #ifdef HAVE_GPERFTOOLS
-#include <profiler.h>
+#include <gperftools/profiler.h>
 #endif
 
 #ifdef WIN32
@@ -66,11 +66,9 @@ int mypaint_benchmark_end()
     double time_spent = get_time() - g_start_time;
     g_start_time = 0.0;
 
-    fprintf(stderr, "time spent: %f\n", time_spent);
-
     if (profiling_enabled()) {
 #ifdef HAVE_GPERFTOOLS
-        ProfileStop();
+        ProfilerStop();
 #else
         fprintf(stderr, "Warning: Not built with gperftools support.");
 #endif
