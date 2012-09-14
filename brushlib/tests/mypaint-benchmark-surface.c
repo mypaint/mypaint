@@ -2,8 +2,7 @@
 #include <malloc.h>
 #include <assert.h>
 
-#include <mypaint-utils-stroke-player.h>
-
+#include "mypaint-utils-stroke-player.h"
 #include "mypaint-benchmark-surface.h"
 #include "mypaint-test-surface.h"
 #include "testutils.h"

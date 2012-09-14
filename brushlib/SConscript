@@ -41,7 +41,6 @@ else:
     env['use_glib'] = False
 
 Export('env')
-utils = SConscript('utils/SConscript')
 tests = SConscript('tests/SConscript')
 
 if env['enable_docs']:
