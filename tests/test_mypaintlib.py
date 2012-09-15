@@ -108,12 +108,12 @@ def brushPaint():
     t0 = time()
     for i in range(10):
         t_old = events[0][0]
-        s.begin_atomic()
         for t, x, y, pressure in events:
             dtime = t - t_old
             t_old = t
-            b.stroke_to (s, x, y, pressure, 0.0, 0.0, dtime)
-        s.end_atomic()
+            s.begin_atomic()
+            b.stroke_to (s, x*4, y*4, pressure, 0.0, 0.0, dtime)
+            s.end_atomic()
     print 'Brushpaint time:', time()-t0
     print s.get_bbox(), b.get_total_stroke_painting_time() # FIXME: why is this time so different each run?
 
@@ -300,15 +300,15 @@ from optparse import OptionParser
 parser = OptionParser('usage: %prog [options]')
 options, tests = parser.parse_args()
 
-tileConversions()
-layerModes()
+#tileConversions()
+#layerModes()
 directPaint()
 brushPaint()
 
 # FIXME: make these tests pass with MyPaint+GEGL
-if not os.environ.get('MYPAINT_ENABLE_GEGL', 0):
-    docPaint()
+#if not os.environ.get('MYPAINT_ENABLE_GEGL', 0):
+#    docPaint()
 
-saveFrame()
+#saveFrame()
 
 print 'Tests passed.'

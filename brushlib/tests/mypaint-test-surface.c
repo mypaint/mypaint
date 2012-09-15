@@ -14,12 +14,13 @@ typedef enum {
 } SurfaceTransaction;
 
 typedef struct {
-    const char *test_case_id;
+    char *test_case_id;
     MyPaintTestsSurfaceFactory factory_function;
     gpointer factory_user_data;
+    int iterations;
+    float scale;
     const char *brush_file;
     SurfaceTransaction surface_transaction;
-    int iterations;
 } SurfaceTestData;
 
 int
@@ -42,6 +43,7 @@ test_surface_drawing(void *user_data)
     mypaint_utils_stroke_player_set_brush(player, brush);
     mypaint_utils_stroke_player_set_surface(player, surface);
     mypaint_utils_stroke_player_set_source_data(player, event_data);
+    mypaint_utils_stroke_player_set_scale(player, data->scale);
 
     if (data->surface_transaction == SurfaceTransactionPerStroke) {
         mypaint_utils_stroke_player_set_transactions_on_stroke_to(player, FALSE);
@@ -76,33 +78,50 @@ test_surface_drawing(void *user_data)
     return result;
 }
 
+char *
+create_id(const char *templ, const char *title)
+{
+    char *id = malloc(snprintf(NULL, 0, templ, title) + 1);
+    sprintf(id, templ, title);
+    return id;
+}
+
 int
 mypaint_test_surface_run(int argc, char **argv,
                       MyPaintTestsSurfaceFactory surface_factory,
                       gchar *title, gpointer user_data)
 {
-    SurfaceTestData data;
-    data.factory_function = surface_factory;
-    data.factory_user_data = user_data;
-    data.brush_file = "brushes/modelling.myb";
-    data.surface_transaction = SurfaceTransactionPerStrokeTo;
-    data.iterations = 10;
-
     // FIXME: use an environment variable or commandline switch to
     // distinguish between running test as a benchmark (multiple iterations and taking the time)
     // or as a test (just verifying correctness)
-    char *test_case_id = malloc(snprintf(NULL, 0, "/test/%s/paint", title) + 1);
-    sprintf(test_case_id, "/test/%s/paint", title);
 
-    data.test_case_id = test_case_id;
+    MyPaintTestsSurfaceFactory factory = surface_factory;
+    gpointer data = user_data;
+
+    SurfaceTestData test1_data = {create_id("surface=%s,brush=modelling", title),
+                                  factory, data, 1, 4.0,
+                                  "brushes/modelling.myb",
+                                  SurfaceTransactionPerStrokeTo};
+    SurfaceTestData test2_data = {create_id("surface=%s,brush=charcoal", title),
+                                  factory, data, 1, 8.0,
+                                  "brushes/charcoal.myb",
+                                  SurfaceTransactionPerStrokeTo};
+    SurfaceTestData test3_data = {create_id("surface=%s,brush=charcoal,transaction=PerStroke", title),
+                                  factory, data, 1, 8.0,
+                                  "brushes/charcoal.myb",
+                                  SurfaceTransactionPerStroke};
 
     TestCase test_cases[] = {
-        {test_case_id, test_surface_drawing, &data},
+        {test1_data.test_case_id, test_surface_drawing, &test1_data},
+        {test2_data.test_case_id, test_surface_drawing, &test2_data},
+        {test3_data.test_case_id, test_surface_drawing, &test3_data},
     };
 
     int retval = test_cases_run(argc, argv, test_cases, TEST_CASES_NUMBER(test_cases), TEST_CASE_BENCHMARK);
 
-    free(test_case_id);
+    free(test1_data.test_case_id);
+    free(test2_data.test_case_id);
+    free(test3_data.test_case_id);
 
     return retval;
 }
