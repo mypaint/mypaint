@@ -13,10 +13,14 @@ struct _OperationQueue {
     Fifo **tile_map;
     TileIndex origin;
     int tile_map_dim_size;
+
+    TileIndex *dirty_tiles;
+    int dirty_tiles_n;
 };
 
-/* FIXME: Remove hardcoding of tile map size. When an index outside the current map is requested, the map needs to grown dynamically */
-/* FIXME: actually queue, and handle more than one operation per tile index. */
+/* FIXME: Remove hardcoding of tile map size.
+ * When an index outside the current map is requested,
+ * the map needs to grown dynamically. */
 
 OperationQueue *
 operation_queue_new()
@@ -31,6 +35,9 @@ operation_queue_new()
     for(int i = 0; i < tile_map_size; i++) {
         self->tile_map[i] = NULL;
     }
+
+    self->dirty_tiles = (TileIndex *)malloc(tile_map_size*sizeof(TileIndex));
+    self->dirty_tiles_n = 0;
 
     return self;
 }
@@ -55,6 +62,9 @@ operation_queue_free(OperationQueue *self)
         }
     }
     free(self->tile_map);
+
+    free(self->dirty_tiles);
+
     free(self);
 }
 
@@ -69,70 +79,66 @@ tile_map_get(OperationQueue *self, TileIndex index)
     return self->tile_map + offset;
 }
 
-typedef void (*TileMapForeachFunction)(Fifo *op_queue, TileIndex index, void *user_data);
 
-void
-tile_map_foreach(OperationQueue *self, TileMapForeachFunction function, void *user_data)
+int
+tile_equal(TileIndex a, TileIndex b)
 {
-    for(int i = 0; i < self->tile_map_dim_size*2; i++) {
-        for(int j = 0; j < self->tile_map_dim_size*2; j++) {
+    return (a.x == b.x && a.y == b.y);
+}
 
-            TileIndex index;
-            index.x = j - self->origin.x;
-            index.y = i - self->origin.y;
+size_t
+remove_duplicate_tiles(TileIndex *array, size_t length)
+{
+    if (length < 2) {
+        // There cannot be any duplicates
+        return length;
+    }
 
-            Fifo *op_queue = *tile_map_get(self, index);
-            function(op_queue, index, user_data);
+    size_t new_length = 1;
+    size_t i, j;
+
+    for (i = 1; i < length; i++) {
+        for (j = 0; j < new_length; j++) {
+            if (tile_equal(array[j], array[i])) {
+                break;
+            }
+        }
+        if (j == new_length) {
+            array[new_length++] = array[i];
         }
     }
-}
-
-void
-count_tiles_with_ops(Fifo *op_queue, TileIndex index, void *user_data)
-{
-    int *number_of_tiles = (int *)user_data;
-    if (op_queue) {
-        (*number_of_tiles)++;
-    }
-}
-
-typedef struct {
-    TileIndex *tiles;
-    int tile_no;
-} CollectTilesState;
-
-void
-collect_tiles_with_ops(Fifo *op_queue, TileIndex index, void *user_data)
-{
-    CollectTilesState *state = (CollectTilesState *)user_data;
-    if (op_queue) {
-        state->tiles[state->tile_no++] = index;
-    }
+    return new_length;
 }
 
 /* Returns all tiles that are have operations queued
  * The consumer that actually does the processing should iterate over this list
- * of tiles, and use operation_queue_pop() to pop all the operations. */
+ * of tiles, and use operation_queue_pop() to pop all the operations.
+ *
+ * Concurrency: This function is not thread-safe on the same @self instance. */
 int
-operation_queue_get_tiles(OperationQueue *self, TileIndex** tiles_out)
+operation_queue_get_dirty_tiles(OperationQueue *self, TileIndex** tiles_out)
 {
-    int number_of_tiles = 0;
-    tile_map_foreach(self, count_tiles_with_ops, &number_of_tiles);
+    self->dirty_tiles_n = remove_duplicate_tiles(self->dirty_tiles, self->dirty_tiles_n);
 
-    TileIndex *tiles = (TileIndex *)malloc(number_of_tiles*sizeof(TileIndex));
-    CollectTilesState temp_state = {tiles, 0};
-    tile_map_foreach(self, collect_tiles_with_ops, &temp_state);
+    *tiles_out = self->dirty_tiles;
+    return self->dirty_tiles_n;
+}
 
-    assert(temp_state.tile_no == number_of_tiles);
-
-    *tiles_out = tiles;
-    return number_of_tiles;
+/* Clears the list of dirty tiles
+ * Consumers should call this after having processed all the tiles.
+ *
+ * Concurrency: This function is not thread-safe on the same @self instance. */
+void
+operation_queue_clear_dirty_tiles(OperationQueue *self)
+{
+    // operation_queue_add will overwrite the invalid tiles as new dirty tiles comes in
+    self->dirty_tiles_n = 0;
 }
 
 /* Add an operation to the queue for tile @index
  * Note: if an operation affects more than one tile, it must be added once per tile.
  *
- * Concurrency: This function is reentrant (and lock-free) on different @index */
+ * Concurrency: This function is not thread-safe on the same @self instance. */
 void
 operation_queue_add(OperationQueue *self, TileIndex index, OperationDataDrawDab *op)
 {
@@ -145,6 +151,7 @@ operation_queue_add(OperationQueue *self, TileIndex index, OperationDataDrawDab 
     if (op_queue == NULL) {
         // Lazy initialization
         op_queue = fifo_new();
+        self->dirty_tiles[self->dirty_tiles_n++] = index; // Critical section, not thread-safe
     }
 
     fifo_push(op_queue, (void *)op);

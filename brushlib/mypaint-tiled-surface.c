@@ -33,14 +33,14 @@ void mypaint_tiled_surface_end_atomic(MyPaintTiledSurface *self)
 {
     // Process tiles
     TileIndex *tiles;
-    int tiles_n = operation_queue_get_tiles(self->operation_queue, &tiles);
+    int tiles_n = operation_queue_get_dirty_tiles(self->operation_queue, &tiles);
 
     // TODO: do in parallel using OpenMP directives
     for (int i = 0; i < tiles_n; i++) {
-        TileIndex tile = tiles[i];
-        process_tile(self, tile.x, tile.y);
+        process_tile(self, tiles[i].x, tiles[i].y);
     }
-    free(tiles);
+
+    operation_queue_clear_dirty_tiles(self->operation_queue);
 }
 
 uint16_t * mypaint_tiled_surface_get_tile(MyPaintTiledSurface *self, int tx, int ty, gboolean readonly)

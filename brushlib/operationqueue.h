@@ -30,7 +30,8 @@ typedef struct _OperationQueue OperationQueue;
 OperationQueue *operation_queue_new();
 void operation_queue_free(OperationQueue *self);
 
-int operation_queue_get_tiles(OperationQueue *self, TileIndex** tiles_out);
+int operation_queue_get_dirty_tiles(OperationQueue *self, TileIndex** tiles_out);
+void operation_queue_clear_dirty_tiles(OperationQueue *self);
 
 void operation_queue_add(OperationQueue *self, TileIndex index, OperationDataDrawDab *op);
 OperationDataDrawDab *operation_queue_pop(OperationQueue *self, TileIndex index);
