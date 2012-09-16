@@ -426,6 +426,9 @@ void get_color (MyPaintSurface *surface, float x, float y,
         get_color_pixels_accumulate (mask, rgba_p,
                                      &sum_weight, &sum_r, &sum_g, &sum_b, &sum_a);
 
+        // Called so that we have the same semantics for readonly case as for readwrite
+        // XXX: Should this method also have a readonly boolean argument?
+        mypaint_tiled_surface_update_tile(self, tx, ty, rgba_p);
       }
     }
 
