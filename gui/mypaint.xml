@@ -307,6 +307,12 @@ Perhaps an increasing amount.
         <accelerator key="w"/>
       </child>
       <child>
+        <object class="GtkToggleAction" id="ContextRestoreColor">
+          <property name="label" translatable="1">Restore Color</property>
+          <signal name="activate" handler="context_toggle_color_cb"/>
+        </object>
+      </child>
+      <child>
         <object class="GtkAction" id="ContextStore">
           <property name="label" translatable="1"
               >Save to Most Recently Restored</property>

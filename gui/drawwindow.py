@@ -893,12 +893,9 @@ class Window (windowing.MainWindow, layout.MainWindow):
         'ContextHelp':
                 _("Brushkeys are used to quickly save/restore brush settings "
                  "using keyboard shortcuts. You can paint with one hand and "
-                 "change brushes with the other without interruption."
+                 "change brushes with the other, even in mid-stroke."
                  "\n\n"
-                 "There are 10 memory slots to hold brush settings.\n"
-                 "They are anonymous brushes, which are not visible in the "
-                 "brush selector list. But they are remembered even if you "
-                 "quit."),
+                 "There are 10 persistent memory slots available."),
         'Docu':
                 _("There is a tutorial available on the MyPaint homepage. It "
                  "explains some features which are hard to discover yourself."

@@ -258,6 +258,7 @@ class Application: # singleton
             'brushmanager.selected_brush' : None,
             'brushmanager.selected_groups' : [],
             'frame.color_rgba': (0.12, 0.12, 0.12, 0.92),
+            'misc.context_restores_color': True,
 
             "scratchpad.last_opened_scratchpad": "",
 

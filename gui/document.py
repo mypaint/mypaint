@@ -213,6 +213,8 @@ class Document (CanvasController):
                 self.app.kbm.takeover_action(action)
             self.init_extra_keys()
 
+            toggle_action = self.app.builder.get_object('ContextRestoreColor')
+            toggle_action.set_active(self.app.preferences['misc.context_restores_color'])
 
     def init_actions(self):
         # Actions are defined in mypaint.xml, just grab a ref to the groups
@@ -587,11 +589,14 @@ class Document (CanvasController):
             context.preview = bm.selected_brush.preview
             context.save()
         else:
-            # restore (but keep color, see https://gna.org/bugs/index.php?16977)
-            color = self.app.brush.get_color_hsv()
-            bm.select_brush(context)
-            self.app.brush.set_color_hsv(color)
+            if self.app.preferences['misc.context_restores_color']:
+                bm.select_brush(context) # restore brush
+                self.app.brushmodifier.restore_context_of_selected_brush() # restore color
+            else:
+                bm.select_brush(context)
 
+    def context_toggle_color_cb(self, action):
+        self.app.preferences['misc.context_restores_color'] = bool(action.get_active())
 
     def strokeblink_state_enter(self):
         l = layer.Layer()

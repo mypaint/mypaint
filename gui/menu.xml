@@ -80,7 +80,9 @@
       <menuitem action='BrushChooserPopup'/>
       <menuitem action='BrushSelectionWindow'/>
       <menu action='ContextMenu'>
+        <menuitem action='ContextHelp'/>
         <menuitem action='ContextStore'/>
+        <menuitem action='ContextRestoreColor'/>
         <separator/>
         <menuitem action='Context00'/>
         <menuitem action='Context00s'/>
@@ -102,8 +104,6 @@
         <menuitem action='Context08s'/>
         <menuitem action='Context09'/>
         <menuitem action='Context09s'/>
-        <separator/>
-        <menuitem action='ContextHelp'/>
       </menu>
       <separator/>
       <menuitem action='BrushSettingsWindow'/>
