@@ -12,6 +12,10 @@
 #include <stdlib.h>
 #include <assert.h>
 
+#ifdef _OPENMP
+#include <omp.h>
+#endif
+
 #include "mypaint-tiled-surface.h"
 #include "helpers.h"
 #include "brushmodes.h"
@@ -35,7 +39,7 @@ void mypaint_tiled_surface_end_atomic(MyPaintTiledSurface *self)
     TileIndex *tiles;
     int tiles_n = operation_queue_get_dirty_tiles(self->operation_queue, &tiles);
 
-    // TODO: do in parallel using OpenMP directives
+    #pragma omp parallel for schedule(static) if(tiles_n > 3)
     for (int i = 0; i < tiles_n; i++) {
         process_tile(self, tiles[i].x, tiles[i].y);
     }
