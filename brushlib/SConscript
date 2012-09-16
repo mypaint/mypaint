@@ -70,6 +70,10 @@ if sys.platform == "darwin":
 
 env.ParseConfig('pkg-config --cflags --libs json')
 
+if env['enable_openmp']:
+    env.Append(CFLAGS='-fopenmp')
+    env.Append(LINKFLAGS='-fopenmp')
+
 config_defines = ''
 if env['use_glib']:
     env.ParseConfig('pkg-config --cflags --libs gobject-2.0')

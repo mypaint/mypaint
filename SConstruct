@@ -29,6 +29,7 @@ opts.Add(BoolVariable('enable_introspection', 'enable GObject introspection supp
 opts.Add(BoolVariable('enable_docs', 'enable documentation build', False))
 opts.Add(BoolVariable('enable_gperftools', 'enable gperftools in build, for profiling', False))
 opts.Add(BoolVariable('enable_gtk3', 'enable gtk3 in mypaintlib', False))
+opts.Add(BoolVariable('enable_openmp', 'enable OpenMP for libmypaint', False))
 
 tools = ['default', 'textfile']
 
