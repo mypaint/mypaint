@@ -58,7 +58,7 @@ operation_queue_free(OperationQueue *self)
     for(int i = 0; i < tile_map_size; i++) {
         Fifo *op_queue = self->tile_map[i];
         if (op_queue) {
-            // fifo_free(op_queue, operation_delete_func);
+            fifo_free(op_queue, operation_delete_func);
         }
     }
     free(self->tile_map);

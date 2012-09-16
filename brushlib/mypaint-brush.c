@@ -916,7 +916,6 @@ update_settings_from_json_object(MyPaintBrush *self)
     // Check version
     json_object *version_object = json_object_object_get(self->brush_json, "version");
     int version = json_object_get_int(version_object);
-    json_object_put(version_object);
     if (version != 3) {
         fprintf(stderr, "Error: Unsupported brush setting version: %d\n", version);
         return FALSE;
