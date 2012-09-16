@@ -24,6 +24,7 @@ class TiledSurface : public Surface {
 public:
   TiledSurface(PyObject * self_) {
       c_surface = mypaint_python_tiled_surface_new(self_);
+      tile_request_in_progress = false;
   }
 
   ~TiledSurface() {
@@ -42,7 +43,21 @@ public:
   }
 
   uint16_t * get_tile_memory(int tx, int ty, bool readonly) {
-      return mypaint_tiled_surface_get_tile((MyPaintTiledSurface *)c_surface, tx, ty, readonly);
+
+      // Finish previous request
+      if (tile_request_in_progress) {
+          mypaint_tiled_surface_tile_request_end((MyPaintTiledSurface *)c_surface, &tile_request);
+          tile_request_in_progress = false;
+      }
+
+      // Start current request
+      mypaint_tiled_surface_tile_request_init(&tile_request,
+                                              tx, ty, readonly);
+
+      mypaint_tiled_surface_tile_request_start((MyPaintTiledSurface *)c_surface, &tile_request);
+      tile_request_in_progress = true;
+
+      return tile_request.buffer;
   }
 
   // returns true if the surface was modified
@@ -79,6 +94,8 @@ public:
 
 private:
     MyPaintPythonTiledSurface *c_surface;
+    MyPaintTiledSurfaceTileRequestData tile_request;
+    bool tile_request_in_progress;
 };
 
 static PyObject *

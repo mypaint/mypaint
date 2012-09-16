@@ -43,18 +43,17 @@ void mypaint_tiled_surface_end_atomic(MyPaintTiledSurface *self)
     operation_queue_clear_dirty_tiles(self->operation_queue);
 }
 
-uint16_t * mypaint_tiled_surface_get_tile(MyPaintTiledSurface *self, int tx, int ty, gboolean readonly)
+void mypaint_tiled_surface_tile_request_start(MyPaintTiledSurface *self, MyPaintTiledSurfaceTileRequestData *request)
 {
-    if (!self->get_tile)
-        return NULL;
-
-    return self->get_tile(self, tx, ty, readonly);
+    assert(self->tile_request_start);
+    self->tile_request_start(self, request);
 }
 
-void mypaint_tiled_surface_update_tile(MyPaintTiledSurface *self, int tx, int ty, uint16_t * tile_buffer)
+
+void mypaint_tiled_surface_tile_request_end(MyPaintTiledSurface *self, MyPaintTiledSurfaceTileRequestData *request)
 {
-    if (self->update_tile)
-        self->update_tile(self, tx, ty, tile_buffer);
+    assert(self->tile_request_end);
+    self->tile_request_end(self, request);
 }
 
 void mypaint_tiled_surface_area_changed(MyPaintTiledSurface *self, int bb_x, int bb_y, int bb_w, int bb_h)
@@ -68,6 +67,17 @@ mypaint_tiled_surface_set_symmetry_state(MyPaintTiledSurface *self, gboolean act
 {
     self->surface_do_symmetry = active;
     self->surface_center_x = center_x;
+}
+
+void
+mypaint_tiled_surface_tile_request_init(MyPaintTiledSurfaceTileRequestData *data,
+                                        int tx, int ty, gboolean readonly)
+{
+    data->tx = tx;
+    data->ty = ty;
+    data->readonly = readonly;
+    data->buffer = NULL;
+    data->context = NULL;
 }
 
 void render_dab_mask (uint16_t * mask,
@@ -244,7 +254,11 @@ process_tile(MyPaintTiledSurface *self, int tx, int ty)
         return;
     }
 
-    uint16_t * rgba_p = mypaint_tiled_surface_get_tile(self, tx, ty, FALSE);
+    MyPaintTiledSurfaceTileRequestData request_data;
+    mypaint_tiled_surface_tile_request_init(&request_data, tx, ty, FALSE);
+
+    mypaint_tiled_surface_tile_request_start(self, &request_data);
+    uint16_t * rgba_p = request_data.buffer;
     if (!rgba_p) {
         printf("Warning: Unable to get tile!\n");
         return;
@@ -258,7 +272,7 @@ process_tile(MyPaintTiledSurface *self, int tx, int ty)
         op = operation_queue_pop(self->operation_queue, tile_index);
     }
 
-    mypaint_tiled_surface_update_tile(self, tx, ty, rgba_p);
+    mypaint_tiled_surface_tile_request_end(self, &request_data);
 }
 
 // returns TRUE if the surface was modified
@@ -367,6 +381,7 @@ int draw_dab (MyPaintSurface *surface, float x, float y,
   return surface_modified;
 }
 
+
 void get_color (MyPaintSurface *surface, float x, float y,
                   float radius,
                   float * color_r, float * color_g, float * color_b, float * color_a
@@ -406,7 +421,11 @@ void get_color (MyPaintSurface *surface, float x, float y,
         // Flush queued draw_dab operations
         process_tile(self, tx, ty);
 
-        uint16_t * rgba_p = mypaint_tiled_surface_get_tile(self, tx, ty, TRUE);
+        MyPaintTiledSurfaceTileRequestData request_data;
+        mypaint_tiled_surface_tile_request_init(&request_data, tx, ty, TRUE);
+
+        mypaint_tiled_surface_tile_request_start(self, &request_data);
+        uint16_t * rgba_p = request_data.buffer;
         if (!rgba_p) {
           printf("Warning: Unable to get tile!\n");
           return;
@@ -426,9 +445,7 @@ void get_color (MyPaintSurface *surface, float x, float y,
         get_color_pixels_accumulate (mask, rgba_p,
                                      &sum_weight, &sum_r, &sum_g, &sum_b, &sum_a);
 
-        // Called so that we have the same semantics for readonly case as for readwrite
-        // XXX: Should this method also have a readonly boolean argument?
-        mypaint_tiled_surface_update_tile(self, tx, ty, rgba_p);
+        mypaint_tiled_surface_tile_request_end(self, &request_data);
       }
     }
 
@@ -464,6 +481,10 @@ mypaint_tiled_surface_init(MyPaintTiledSurface *self)
 {
     self->parent.draw_dab = draw_dab;
     self->parent.get_color = get_color;
+
+    self->tile_request_end = NULL;
+    self->tile_request_start = NULL;
+    self->area_changed = NULL;
 
     self->surface_do_symmetry = FALSE;
     self->surface_center_x = 0.0;

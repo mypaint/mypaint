@@ -67,21 +67,31 @@ void end_atomic(MyPaintSurface *surface)
     }
 }
 
-uint16_t * get_tile_memory(MyPaintTiledSurface *tiled_surface, int tx, int ty, gboolean readonly)
+static void
+tile_request_start(MyPaintTiledSurface *tiled_surface, MyPaintTiledSurfaceTileRequestData *request)
 {
     MyPaintPythonTiledSurface *self = (MyPaintPythonTiledSurface *)tiled_surface;
+
+    const gboolean readonly = request->readonly;
+    const int tx = request->tx;
+    const int ty = request->ty;
 
     // We assume that the memory location does not change between begin_atomic() and end_atomic().
     for (int i=0; i<self->tileMemoryValid; i++) {
       if (self->tileMemory[i].tx == tx and self->tileMemory[i].ty == ty) {
-        return self->tileMemory[i].rgba_p;
+        request->buffer = self->tileMemory[i].rgba_p;
+        return;
       }
     }
-    if (PyErr_Occurred()) return NULL;
+    if (PyErr_Occurred()) {
+        request->buffer = NULL;
+        return;
+    }
     PyObject* rgba = PyObject_CallMethod(self->py_obj, "get_tile_memory", "(iii)", tx, ty, readonly);
     if (rgba == NULL) {
       printf("Python exception during get_tile_memory()!\n");
-      return NULL;
+      request->buffer = NULL;
+      return;
     }
 #ifdef HEAVY_DEBUG
        assert(PyArray_NDIM(rgba) == 3);
@@ -108,10 +118,12 @@ uint16_t * get_tile_memory(MyPaintTiledSurface *tiled_surface, int tx, int ty, g
       self->tileMemory[self->tileMemoryWrite].rgba_p = rgba_p;
       self->tileMemoryWrite = (self->tileMemoryWrite + 1) % TILE_MEMORY_SIZE;
     }
-    return rgba_p;
+
+    request->buffer = rgba_p;
 }
 
-void update_tile(MyPaintTiledSurface *tiled_surface, int tx, int ty, uint16_t * tile_buffer)
+static void
+tile_request_end(MyPaintTiledSurface *tiled_surface, MyPaintTiledSurfaceTileRequestData *request)
 {
     // We modify tiles directly, so don't need to do anything here
 }
@@ -138,8 +150,8 @@ mypaint_python_tiled_surface_new(PyObject *py_object)
     self->parent.parent.end_atomic = end_atomic;
 
     // MyPaintTiledSurface vfuncs
-    self->parent.get_tile = get_tile_memory;
-    self->parent.update_tile = update_tile;
+    self->parent.tile_request_start = tile_request_start;
+    self->parent.tile_request_end = tile_request_end;
     self->parent.area_changed = area_changed;
 
     self->py_obj = py_object; // no need to incref

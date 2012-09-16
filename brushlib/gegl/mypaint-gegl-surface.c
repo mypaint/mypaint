@@ -16,7 +16,6 @@ typedef struct _MyPaintGeglTiledSurface {
     GeglRectangle extent_rect; // TODO: remove, just use the extent of the buffer
     GeglBuffer *buffer;
     const Babl *format;
-    GeglBufferIterator *buffer_iterator;
 } MyPaintGeglTiledSurface;
 
 void free_gegl_tiledsurf(MyPaintSurface *surface);
@@ -51,17 +50,17 @@ void end_atomic_gegl(MyPaintSurface *surface)
     }
 }
 
-uint16_t *
-get_tile_memory_gegl(MyPaintTiledSurface *tiled_surface, int tx, int ty, gboolean readonly)
+static void
+tile_request_start(MyPaintTiledSurface *tiled_surface, MyPaintTiledSurfaceTileRequestData *request)
 {
     MyPaintGeglTiledSurface *self = (MyPaintGeglTiledSurface *)tiled_surface;
 
     GeglRectangle tile_bbox;
-    gegl_rectangle_set(&tile_bbox, tx * TILE_SIZE, ty * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+    gegl_rectangle_set(&tile_bbox, request->tx * TILE_SIZE, request->ty * TILE_SIZE, TILE_SIZE, TILE_SIZE);
 
     int read_write_flags;
 
-    if (readonly) {
+    if (request->readonly) {
         read_write_flags = GEGL_BUFFER_READ;
     } else {
         read_write_flags = GEGL_BUFFER_READWRITE;
@@ -72,32 +71,33 @@ get_tile_memory_gegl(MyPaintTiledSurface *tiled_surface, int tx, int ty, gboolea
         g_assert(success);
     }
 
-    uint16_t * tile_buffer = NULL;
-    self->buffer_iterator = gegl_buffer_iterator_new(self->buffer, &tile_bbox, 0, self->format,
+    GeglBufferIterator *iterator = gegl_buffer_iterator_new(self->buffer, &tile_bbox, 0, self->format,
                                   read_write_flags, GEGL_ABYSS_NONE);
 
     // Read out
-    gboolean completed = gegl_buffer_iterator_next(self->buffer_iterator);
-
+    gboolean completed = gegl_buffer_iterator_next(iterator);
     g_assert(completed);
 
-    if (self->buffer_iterator->length != TILE_SIZE*TILE_SIZE) {
+    if (iterator->length != TILE_SIZE*TILE_SIZE) {
         g_critical("Unable to get tile aligned access to GeglBuffer");
-        return NULL;
+        request->buffer = NULL;
     } else {
-        tile_buffer = (uint16_t *)(self->buffer_iterator->data[0]);
+        request->buffer = (uint16_t *)(iterator->data[0]);
     }
 
-    return tile_buffer;
+    // So we can finish the iterator in tile_request_end()
+    request->context = (void *)iterator;
 }
 
-void update_tile_gegl(MyPaintTiledSurface *tiled_surface, int tx, int ty, uint16_t * tile_buffer)
+static void
+tile_request_end(MyPaintTiledSurface *tiled_surface, MyPaintTiledSurfaceTileRequestData *request)
 {
     MyPaintGeglTiledSurface *self = (MyPaintGeglTiledSurface *)tiled_surface;
+    GeglBufferIterator *iterator = (GeglBufferIterator *)request->context;
 
-    if (self->buffer_iterator) {
-          gegl_buffer_iterator_next(self->buffer_iterator);
-          self->buffer_iterator = NULL;
+    if (iterator) {
+        gegl_buffer_iterator_next(iterator);
+        request->context = NULL;
     }
 }
 
@@ -174,13 +174,13 @@ mypaint_gegl_tiled_surface_new()
     self->parent.parent.end_atomic = end_atomic_gegl;
 
     // MyPaintTiledSurface vfuncs
-    self->parent.get_tile = get_tile_memory_gegl;
-    self->parent.update_tile = update_tile_gegl;
+    self->parent.tile_request_start = tile_request_start;
+    self->parent.tile_request_end = tile_request_end;
     self->parent.area_changed = area_changed_gegl;
 
     self->atomic = 0;
     //self->dirty_bbox.w = 0;
-    self->buffer_iterator = NULL;
+
     self->buffer = NULL;
 
     gegl_rectangle_set(&self->extent_rect, 0, 0, 0, 0);

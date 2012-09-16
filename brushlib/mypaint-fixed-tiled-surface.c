@@ -57,10 +57,13 @@ void end_atomic(MyPaintSurface *surface)
     }
 }
 
-uint16_t *
-get_tile(MyPaintTiledSurface *tiled_surface, int tx, int ty, gboolean readonly)
+static void
+tile_request_start(MyPaintTiledSurface *tiled_surface, MyPaintTiledSurfaceTileRequestData *request)
 {
     MyPaintFixedTiledSurface *self = (MyPaintFixedTiledSurface *)tiled_surface;
+
+    const int tx = request->tx;
+    const int ty = request->ty;
 
     uint16_t *tile_pointer = NULL;
 
@@ -77,12 +80,16 @@ get_tile(MyPaintTiledSurface *tiled_surface, int tx, int ty, gboolean readonly)
         tile_pointer = self->tile_buffer + tile_offset;
     }
 
-    return tile_pointer;
+    request->buffer = tile_pointer;
 }
 
-void update_tile(MyPaintTiledSurface *tiled_surface, int tx, int ty, uint16_t * tile_buffer)
+static void
+tile_request_end(MyPaintTiledSurface *tiled_surface, MyPaintTiledSurfaceTileRequestData *request)
 {
     MyPaintFixedTiledSurface *self = (MyPaintFixedTiledSurface *)tiled_surface;
+
+    const int tx = request->tx;
+    const int ty = request->ty;
 
     if (tx > self->tiles_width || ty > self->tiles_height) {
         // Wipe any changed done to the null tile
@@ -127,8 +134,8 @@ mypaint_fixed_tiled_surface_new(int width, int height)
     self->parent.parent.end_atomic = end_atomic;
 
     // MyPaintTiledSurface vfuncs
-    self->parent.get_tile = get_tile;
-    self->parent.update_tile = update_tile;
+    self->parent.tile_request_start = tile_request_start;
+    self->parent.tile_request_end = tile_request_end;
     self->parent.area_changed = area_changed;
 
     self->atomic = 0;
