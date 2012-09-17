@@ -416,11 +416,11 @@ void get_color (MyPaintSurface *surface, float x, float y,
     int tx2 = floor(floor(x + r_fringe) / TILE_SIZE);
     int ty1 = floor(floor(y - r_fringe) / TILE_SIZE);
     int ty2 = floor(floor(y + r_fringe) / TILE_SIZE);
+    int tiles_n = (tx2 - tx1) * (ty2 - ty1);
 
-    // TODO: do in parallel using OpenMP directives
-    int tx, ty;
-    for (ty = ty1; ty <= ty2; ty++) {
-      for (tx = tx1; tx <= tx2; tx++) {
+    #pragma omp parallel for schedule(static) if(tiles_n > 3)
+    for (int ty = ty1; ty <= ty2; ty++) {
+      for (int tx = tx1; tx <= tx2; tx++) {
 
         // Flush queued draw_dab operations
         process_tile(self, tx, ty);
@@ -432,7 +432,7 @@ void get_color (MyPaintSurface *surface, float x, float y,
         uint16_t * rgba_p = request_data.buffer;
         if (!rgba_p) {
           printf("Warning: Unable to get tile!\n");
-          return;
+          break;
         }
 
         // first, we calculate the mask (opacity for each pixel)
@@ -446,8 +446,12 @@ void get_color (MyPaintSurface *surface, float x, float y,
                         aspect_ratio, angle
                         );
 
+        // TODO: try atomic operations instead
+        #pragma omp critical
+        {
         get_color_pixels_accumulate (mask, rgba_p,
                                      &sum_weight, &sum_r, &sum_g, &sum_b, &sum_a);
+        }
 
         mypaint_tiled_surface_tile_request_end(self, &request_data);
       }
