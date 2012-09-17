@@ -96,15 +96,6 @@ void render_dab_mask (uint16_t * mask,
     if (aspect_ratio<1.0) aspect_ratio=1.0;
     assert(hardness != 0.0); // assured by caller
 
-    float r_fringe;
-    int xp, yp;
-    float xx, yy, rr;
-    float one_over_radius2;
-
-    r_fringe = radius + 1;
-    rr = radius*radius;
-    one_over_radius2 = 1.0/rr;
-
     // For a graphical explanation, see:
     // http://wiki.mypaint.info/Development/Documentation/Brushlib
     //
@@ -133,6 +124,7 @@ void render_dab_mask (uint16_t * mask,
     float cs=cos(angle_rad);
     float sn=sin(angle_rad);
 
+    float r_fringe = radius + 1;
     int x0 = floor (x - r_fringe);
     int y0 = floor (y - r_fringe);
     int x1 = ceil (x + r_fringe);
@@ -141,7 +133,7 @@ void render_dab_mask (uint16_t * mask,
     if (y0 < 0) y0 = 0;
     if (x1 > TILE_SIZE-1) x1 = TILE_SIZE-1;
     if (y1 > TILE_SIZE-1) y1 = TILE_SIZE-1;
-
+    float one_over_radius2 = 1.0/(radius*radius);
 
     // we do run length encoding: if opacity is zero, the next
     // value in the mask is the number of pixels that can be skipped.
@@ -149,15 +141,17 @@ void render_dab_mask (uint16_t * mask,
     int skip=0;
 
     skip += y0*TILE_SIZE;
-    for (yp = y0; yp <= y1; yp++) {
-      yy = (yp + 0.5 - y);
+    for (int yp = y0; yp <= y1; yp++) {
+      float yy = (yp + 0.5 - y);
       skip += x0;
+
+      int xp;
       for (xp = x0; xp <= x1; xp++) {
-        xx = (xp + 0.5 - x);
+        float xx = (xp + 0.5 - x);
         // code duplication, see brush::count_dabs_to()
         float yyr=(yy*cs-xx*sn)*aspect_ratio;
         float xxr=yy*sn+xx*cs;
-        rr = (yyr*yyr + xxr*xxr) * one_over_radius2;
+        float rr = (yyr*yyr + xxr*xxr) * one_over_radius2;
         // rr is in range 0.0..1.0*sqrt(2)
 
         float opa;
