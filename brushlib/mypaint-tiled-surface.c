@@ -169,11 +169,24 @@ void render_dab_mask (uint16_t * mask,
     if (y1 > TILE_SIZE-1) y1 = TILE_SIZE-1;
     float one_over_radius2 = 1.0/(radius*radius);
 
+    // Pre-calculate rr and put it in the mask.
+    // This an optimization that makes use of auto-vectorization
+    // OPTIMIZE: if using floats for the brush engine, store these directly in the mask
+    float rr_mask[TILE_SIZE*TILE_SIZE+2*TILE_SIZE];
+
+    for (int yp = y0; yp <= y1; yp++) {
+      for (int xp = x0; xp <= x1; xp++) {
+        float rr = calculate_rr(xp, yp,
+                                x, y, aspect_ratio,
+                                sn, cs, one_over_radius2);
+        rr_mask[(yp*TILE_SIZE)+xp] = rr;
+      }
+    }
+
     // we do run length encoding: if opacity is zero, the next
     // value in the mask is the number of pixels that can be skipped.
     uint16_t * mask_p = mask;
     int skip=0;
-
 
     skip += y0*TILE_SIZE;
     for (int yp = y0; yp <= y1; yp++) {
@@ -181,9 +194,7 @@ void render_dab_mask (uint16_t * mask,
 
       int xp;
       for (xp = x0; xp <= x1; xp++) {
-        float rr = calculate_rr(xp, yp,
-                                x, y, aspect_ratio,
-                                sn, cs, one_over_radius2);
+        float rr = rr_mask[(yp*TILE_SIZE)+xp];
         float opa = calculate_opa(rr, hardness,
                                   segment1_offset, segment1_slope,
                                   segment2_offset, segment2_slope);
