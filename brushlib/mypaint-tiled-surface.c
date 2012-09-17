@@ -84,6 +84,40 @@ mypaint_tiled_surface_tile_request_init(MyPaintTiledSurfaceTileRequestData *data
     data->context = NULL;
 }
 
+inline float
+calculate_rr(int xp, int yp, float x, float y, float aspect_ratio,
+                      float sn, float cs, float one_over_radius2)
+{
+    // code duplication, see brush::count_dabs_to()
+    float yy = (yp + 0.5 - y);
+    float xx = (xp + 0.5 - x);
+    float yyr=(yy*cs-xx*sn)*aspect_ratio;
+    float xxr=yy*sn+xx*cs;
+    float rr = (yyr*yyr + xxr*xxr) * one_over_radius2;
+    // rr is in range 0.0..1.0*sqrt(2)
+    return rr;
+}
+
+inline float
+calculate_opa(float rr, float hardness,
+              float segment1_offset, float segment1_slope,
+              float segment2_offset, float segment2_slope) {
+
+    float fac = rr <= hardness ? segment1_slope : segment2_slope;
+    float opa = rr <= hardness ? segment1_offset : segment2_offset;
+    opa += rr*fac;
+
+#ifdef HEAVY_DEBUG
+    assert(isfinite(opa));
+    assert(opa >= 0.0 && opa <= 1.0);
+#endif
+
+    if (rr > 1.0) {
+        opa = 0.0;
+    }
+    return opa;
+}
+
 void render_dab_mask (uint16_t * mask,
                         float x, float y,
                         float radius,
@@ -140,40 +174,19 @@ void render_dab_mask (uint16_t * mask,
     uint16_t * mask_p = mask;
     int skip=0;
 
+
     skip += y0*TILE_SIZE;
     for (int yp = y0; yp <= y1; yp++) {
-      float yy = (yp + 0.5 - y);
       skip += x0;
 
       int xp;
       for (xp = x0; xp <= x1; xp++) {
-        float xx = (xp + 0.5 - x);
-        // code duplication, see brush::count_dabs_to()
-        float yyr=(yy*cs-xx*sn)*aspect_ratio;
-        float xxr=yy*sn+xx*cs;
-        float rr = (yyr*yyr + xxr*xxr) * one_over_radius2;
-        // rr is in range 0.0..1.0*sqrt(2)
-
-        float opa;
-        if (rr <= 1.0) {
-          float fac;
-          if (rr <= hardness) {
-            opa = segment1_offset;
-            fac = segment1_slope;
-          } else {
-            opa = segment2_offset;
-            fac = segment2_slope;
-          }
-          opa += rr*fac;
-
-#ifdef HEAVY_DEBUG
-          assert(isfinite(opa));
-          assert(opa >= 0.0 && opa <= 1.0);
-#endif
-        } else {
-          opa = 0.0;
-        }
-
+        float rr = calculate_rr(xp, yp,
+                                x, y, aspect_ratio,
+                                sn, cs, one_over_radius2);
+        float opa = calculate_opa(rr, hardness,
+                                  segment1_offset, segment1_slope,
+                                  segment2_offset, segment2_slope);
         uint16_t opa_ = opa * (1<<15);
         if (!opa_) {
           skip++;
