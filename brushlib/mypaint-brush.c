@@ -227,9 +227,10 @@ mypaint_brush_set_state(MyPaintBrush *self, MyPaintBrushState i, float value)
     // the argument might not make mathematical sense (whatever.)
     if (T_const <= 0.001) {
       return 0.0;
-    } else {
-      return exp(- t / T_const);
     }
+
+    float arg = -t / T_const;
+    return expf(arg);
   }
 
 
@@ -253,7 +254,7 @@ mypaint_brush_set_state(MyPaintBrush *self, MyPaintBrushState i, float value)
     for (i=0; i<2; i++) {
       float gamma;
       gamma = mapping_get_base_value(self->settings[(i==0)?MYPAINT_BRUSH_SETTING_SPEED1_GAMMA:MYPAINT_BRUSH_SETTING_SPEED2_GAMMA]);
-      gamma = exp(gamma);
+      gamma = expf(gamma);
 
       float fix1_x, fix1_y, fix2_x, fix2_dy;
       fix1_x = 45.0;
@@ -371,7 +372,7 @@ mypaint_brush_set_state(MyPaintBrush *self, MyPaintBrushState i, float value)
       //   Is it broken, non-smooth, system-dependent math?!
       //   A replacement could be a directed random offset.
 
-      float time_constant = exp(self->settings_value[MYPAINT_BRUSH_SETTING_OFFSET_BY_SPEED_SLOWNESS]*0.01)-1.0;
+      float time_constant = expf(self->settings_value[MYPAINT_BRUSH_SETTING_OFFSET_BY_SPEED_SLOWNESS]*0.01)-1.0;
       // Workaround for a bug that happens mainly on Windows, causing
       // individual dabs to be placed far far away. Using the speed
       // with zero filtering is just asking for trouble anyway.
