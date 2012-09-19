@@ -32,6 +32,7 @@ mouse_button_actions = [
     ('no_action', _("No action")),  #[0] is the default for the comboboxes
     ('popup_menu', _("Menu")),
     ('ToggleSubwindows', _("Toggle Subwindows")),
+    ('BlendModeEraser', _("Toggle Eraser")),
     ('ColorPickerPopup', _("Pick Color")),
     ('PickContext', _('Pick Context (layer, brush and color)')),
     ('PickLayer', _('Select Layer at Cursor')),
