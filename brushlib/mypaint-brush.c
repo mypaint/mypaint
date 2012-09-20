@@ -511,6 +511,55 @@ mypaint_brush_set_state(MyPaintBrush *self, MyPaintBrushState i, float value)
       }
     }
 
+    // update smudge color
+    if (self->settings_value[MYPAINT_BRUSH_SETTING_SMUDGE_LENGTH] < 1.0 &&
+        // optimization, since normal brushes have smudge_length == 0.5 without actually smudging
+        (self->settings_value[MYPAINT_BRUSH_SETTING_SMUDGE] != 0.0 || !mapping_is_constant(self->settings[MYPAINT_BRUSH_SETTING_SMUDGE]))) {
+
+      float fac = self->settings_value[MYPAINT_BRUSH_SETTING_SMUDGE_LENGTH];
+      if (fac < 0.01) fac = 0.01;
+      int px, py;
+      px = ROUND(x);
+      py = ROUND(y);
+
+      // Calling get_color() is almost as expensive as rendering a
+      // dab. Because of this we use the previous value if it is not
+      // expected to hurt quality too much. We call it at most every
+      // second dab.
+      float r, g, b, a;
+      self->states[MYPAINT_BRUSH_STATE_LAST_GETCOLOR_RECENTNESS] *= fac;
+      if (self->states[MYPAINT_BRUSH_STATE_LAST_GETCOLOR_RECENTNESS] < 0.5*fac) {
+        if (self->states[MYPAINT_BRUSH_STATE_LAST_GETCOLOR_RECENTNESS] == 0.0) {
+          // first initialization of smudge color
+          fac = 0.0;
+        }
+        self->states[MYPAINT_BRUSH_STATE_LAST_GETCOLOR_RECENTNESS] = 1.0;
+
+        float smudge_radius = radius * expf(self->settings_value[MYPAINT_BRUSH_SETTING_SMUDGE_RADIUS_LOG]);
+        smudge_radius = CLAMP(smudge_radius, ACTUAL_RADIUS_MIN, ACTUAL_RADIUS_MAX);
+        mypaint_surface_get_color(surface, px, py, smudge_radius, &r, &g, &b, &a);
+
+        self->states[MYPAINT_BRUSH_STATE_LAST_GETCOLOR_R] = r;
+        self->states[MYPAINT_BRUSH_STATE_LAST_GETCOLOR_G] = g;
+        self->states[MYPAINT_BRUSH_STATE_LAST_GETCOLOR_B] = b;
+        self->states[MYPAINT_BRUSH_STATE_LAST_GETCOLOR_A] = a;
+      } else {
+        r = self->states[MYPAINT_BRUSH_STATE_LAST_GETCOLOR_R];
+        g = self->states[MYPAINT_BRUSH_STATE_LAST_GETCOLOR_G];
+        b = self->states[MYPAINT_BRUSH_STATE_LAST_GETCOLOR_B];
+        a = self->states[MYPAINT_BRUSH_STATE_LAST_GETCOLOR_A];
+      }
+
+      // updated the smudge color (stored with premultiplied alpha)
+      self->states[MYPAINT_BRUSH_STATE_SMUDGE_A ] = fac*self->states[MYPAINT_BRUSH_STATE_SMUDGE_A ] + (1-fac)*a;
+      // fix rounding errors
+      self->states[MYPAINT_BRUSH_STATE_SMUDGE_A ] = CLAMP(self->states[MYPAINT_BRUSH_STATE_SMUDGE_A], 0.0, 1.0);
+
+      self->states[MYPAINT_BRUSH_STATE_SMUDGE_RA] = fac*self->states[MYPAINT_BRUSH_STATE_SMUDGE_RA] + (1-fac)*r*a;
+      self->states[MYPAINT_BRUSH_STATE_SMUDGE_GA] = fac*self->states[MYPAINT_BRUSH_STATE_SMUDGE_GA] + (1-fac)*g*a;
+      self->states[MYPAINT_BRUSH_STATE_SMUDGE_BA] = fac*self->states[MYPAINT_BRUSH_STATE_SMUDGE_BA] + (1-fac)*b*a;
+    }
+
     // color part
 
     float color_h = mapping_get_base_value(self->settings[MYPAINT_BRUSH_SETTING_COLOR_H]);
@@ -539,50 +588,6 @@ mypaint_brush_set_state(MyPaintBrush *self, MyPaintBrushState i, float value)
         color_v = 0.0;
       }
       rgb_to_hsv_float (&color_h, &color_s, &color_v);
-    }
-
-    if (self->settings_value[MYPAINT_BRUSH_SETTING_SMUDGE_LENGTH] < 1.0 &&
-        // optimization, since normal brushes have smudge_length == 0.5 without actually smudging
-        (self->settings_value[MYPAINT_BRUSH_SETTING_SMUDGE] != 0.0 || !mapping_is_constant(self->settings[MYPAINT_BRUSH_SETTING_SMUDGE]))) {
-
-      float fac = self->settings_value[MYPAINT_BRUSH_SETTING_SMUDGE_LENGTH];
-      if (fac < 0.01) fac = 0.01;
-      int px, py;
-      px = ROUND(x);
-      py = ROUND(y);
-
-      // Calling get_color() is almost as expensive as rendering a
-      // dab. Because of this we use the previous value if it is not
-      // expected to hurt quality too much. We call it at most every
-      // second dab.
-      float r, g, b, a;
-      self->states[MYPAINT_BRUSH_STATE_LAST_GETCOLOR_RECENTNESS] *= fac;
-      if (self->states[MYPAINT_BRUSH_STATE_LAST_GETCOLOR_RECENTNESS] < 0.5*fac) {
-        self->states[MYPAINT_BRUSH_STATE_LAST_GETCOLOR_RECENTNESS] = 1.0;
-
-        float smudge_radius = radius * expf(self->settings_value[MYPAINT_BRUSH_SETTING_SMUDGE_RADIUS_LOG]);
-        smudge_radius = CLAMP(smudge_radius, ACTUAL_RADIUS_MIN, ACTUAL_RADIUS_MAX);
-        mypaint_surface_get_color(surface, px, py, smudge_radius, &r, &g, &b, &a);
-
-        self->states[MYPAINT_BRUSH_STATE_LAST_GETCOLOR_R] = r;
-        self->states[MYPAINT_BRUSH_STATE_LAST_GETCOLOR_G] = g;
-        self->states[MYPAINT_BRUSH_STATE_LAST_GETCOLOR_B] = b;
-        self->states[MYPAINT_BRUSH_STATE_LAST_GETCOLOR_A] = a;
-      } else {
-        r = self->states[MYPAINT_BRUSH_STATE_LAST_GETCOLOR_R];
-        g = self->states[MYPAINT_BRUSH_STATE_LAST_GETCOLOR_G];
-        b = self->states[MYPAINT_BRUSH_STATE_LAST_GETCOLOR_B];
-        a = self->states[MYPAINT_BRUSH_STATE_LAST_GETCOLOR_A];
-      }
-
-      // updated the smudge color (stored with premultiplied alpha)
-      self->states[MYPAINT_BRUSH_STATE_SMUDGE_A ] = fac*self->states[MYPAINT_BRUSH_STATE_SMUDGE_A ] + (1-fac)*a;
-      // fix rounding errors
-      self->states[MYPAINT_BRUSH_STATE_SMUDGE_A ] = CLAMP(self->states[MYPAINT_BRUSH_STATE_SMUDGE_A], 0.0, 1.0);
-
-      self->states[MYPAINT_BRUSH_STATE_SMUDGE_RA] = fac*self->states[MYPAINT_BRUSH_STATE_SMUDGE_RA] + (1-fac)*r*a;
-      self->states[MYPAINT_BRUSH_STATE_SMUDGE_GA] = fac*self->states[MYPAINT_BRUSH_STATE_SMUDGE_GA] + (1-fac)*g*a;
-      self->states[MYPAINT_BRUSH_STATE_SMUDGE_BA] = fac*self->states[MYPAINT_BRUSH_STATE_SMUDGE_BA] + (1-fac)*b*a;
     }
 
     // eraser
@@ -770,21 +775,8 @@ mypaint_brush_set_state(MyPaintBrush *self, MyPaintBrushState i, float value)
     float dist_moved = self->states[MYPAINT_BRUSH_STATE_DIST];
     float dist_todo = count_dabs_to (self, x, y, pressure, dtime);
 
-    //if (dtime > 5 || dist_todo > 300) {
     if (dtime > 5 || self->reset_requested) {
       self->reset_requested = FALSE;
-
-      /*
-        TODO:
-        if (dist_todo > 300) {
-        // this happens quite often, eg when moving the cursor back into the window
-        // FIXME: bad to hardcode a distance treshold here - might look at zoomed image
-        //        better detect leaving/entering the window and reset then.
-        g_print ("Warning: NOT drawing %f dabs.\n", dist_todo);
-        g_print ("dtime=%f, dx=%f\n", dtime, x-states[MYPAINT_BRUSH_STATE_X]);
-        //must_reset = 1;
-        }
-      */
 
       //printf("Brush reset.\n");
       int i=0;
