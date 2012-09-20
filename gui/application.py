@@ -378,9 +378,15 @@ class Application: # singleton
             self.pressure_mapping = mapping
 
     def update_input_devices(self):
+        # avoid doing this 5 times at startup
+        modesetting = self.preferences['input.device_mode']
+        if getattr(self, 'last_modesetting', None) == modesetting:
+            return
+        self.last_modesetting = modesetting
+
         # init extended input devices
         self.pressure_devices = []
-        modesetting = self.preferences['input.device_mode']
+
         if pygtkcompat.USE_GTK3:
             display = pygtkcompat.gdk.display_get_default()
             device_mgr = display.get_device_manager()
@@ -409,6 +415,7 @@ class Application: # singleton
             return
 
         # GTK2/PyGTK
+        print 'Looking for GTK devices with pressure:'
         for device in gdk.devices_list():
             #print device.name, device.source
 
@@ -416,6 +423,22 @@ class Application: # singleton
             # The above contition is True sometimes for a normal USB
             # Mouse. https://gna.org/bugs/?11215
             # In fact, GTK also just guesses this value from device.name.
+
+            #print 'Device "%s" (%s) reports %d axes.' % (device.name, device.source.value_name, len(device.axes))
+
+            pressure = False
+            for use, val_min, val_max in device.axes:
+                if use == gdk.AXIS_PRESSURE:
+                    print 'Device "%s" has a pressure axis' % device.name
+                    # Some mice have a third "pressure" axis, but without minimum or maximum.
+                    if val_min == val_max:
+                        print 'But the pressure range is invalid'
+                    else:
+                        pressure = True
+                    break
+            if not pressure:
+                #print 'Skipping device "%s" because it has no pressure axis' % device.name
+                continue
 
             name = device.name.lower()
             last_word = name.split()[-1]
@@ -426,48 +449,47 @@ class Application: # singleton
                 # axes almost identical to the pen and eraser.
                 #
                 # device.name is usually something like "wacom intuos3 6x8 pad" or just "pad"
-                print 'Ignoring "%s" (probably wacom keypad device)' % device.name
+                print 'Skipping "%s" (probably wacom keypad device)' % device.name
                 continue
             if last_word == 'touchpad':
                 # eg. "SynPS/2 Synaptics TouchPad"
                 # Cannot paint at all, cannot select brushes, if we enable this one.
-                print 'Ignoring "%s" (probably laptop touchpad which screws up gtk+ if enabled)' % device.name
+                print 'Skipping "%s" (probably laptop touchpad which screws up gtk+ if enabled)' % device.name
                 continue
             if last_word == 'cursor':
                 # this is a "normal" mouse and does not work in screen mode
-                print 'Ignoring "%s" (probably wacom mouse device)' % device.name
+                print 'Skipping "%s" (probably wacom mouse device)' % device.name
                 continue
             if 'transceiver' in name:
                 # eg. "Microsoft Microsoft 2.4GHz Transceiver V1.0"
                 # Cannot paint after moving outside of painting area.
-                print 'Ignoring "%s" (a transceiver is probably not a pressure sensitive tablet, known to screw up gtk+ when enabled)' % device.name
+                print 'Skipping "%s" (a transceiver is probably not a pressure sensitive tablet, known to screw up gtk+ when enabled)' % device.name
                 continue
             if 'glidepoint' in name:
                 # AlpsPS/2 ALPS GlidePoint
                 # https://gna.org/bugs/?19790
-                print 'Ignoring "%s" (probably a mouse-like device reporting extra axes)' % device.name
+                print 'Skipping "%s" (probably a mouse-like device reporting extra axes)' % device.name
                 continue
             if 'keyboard' in name:
                 # e.g "Plus More Entertainment LTD. USB-compliant keyboard."
                 # has a scroll wheel, breaks drawing, color picking and choosing the brush
-                print 'Ignoring "%s" (probably a multifunc keyboard)' % device.name
+                print 'Skipping "%s" (probably a multifunc keyboard)' % device.name
+                continue
+            if 'unifying' in name:
+                # e.g "Logitech Unifying Device. Wireless PID:101d"
+                print 'Skipping "%s" (probably a mouse)' % device.name
+                continue
+            if 'mouse' in name:
+                # Fix for the above bug https://gna.org/bugs/?14029
+                print 'Skipping "%s" (probably a mouse)' % device.name
                 continue
 
-            for use, val_min, val_max in device.axes:
-                # Some mice have a third "pressure" axis, but without
-                # minimum or maximum. https://gna.org/bugs/?14029
-                if use == gdk.AXIS_PRESSURE and val_min != val_max:
-                    if 'mouse' in device.name.lower():
-                        # Real fix for the above bug https://gna.org/bugs/?14029
-                        print 'Ignoring "%s" (probably a mouse, but it reports extra axes)' % device.name
-                        continue
-
-                    self.pressure_devices.append(device.name)
-                    mode = getattr(gdk, 'MODE_' + modesetting.upper())
-                    if device.mode != mode:
-                        print 'Setting %s mode for "%s"' % (modesetting, device.name)
-                        device.set_mode(mode)
-                    break
+            self.pressure_devices.append(device.name)
+            mode = getattr(gdk, 'MODE_' + modesetting.upper())
+            if device.mode != mode:
+                print 'Setting %s mode for "%s"' % (modesetting, device.name)
+                device.set_mode(mode)
+        print ''
 
     def save_gui_config(self):
         pygtkcompat.gtk.accel_map_save(join(self.confpath, 'accelmap.conf'))
