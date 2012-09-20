@@ -163,15 +163,18 @@ class Document (CanvasController):
 
         # Input stroke observers
         self.input_stroke_ended_observers = []
-        """Array of callbacks interested in the end of an input stroke.
+        """Callbacks interested in the end of an input stroke.
 
         Observers are called with the GTK event as their only argument. This
-        is a good place to listen for "just painted something" events;
-        app.brush will contain everything needed about the input stroke which
-        just ended, in the state in which it ended.
+        is a good place to listen for "just painted something" events in some
+        cases; app.brush will contain everything needed about the input stroke
+        which is ending.
 
-        An input stroke is a single pen-down, draw, pen-up action. This sort of
-        stroke is not the same as a brush engine stroke (see ``lib.document``).
+        An input stroke is a single button-down, move, button-up
+        action. This sort of stroke is not the same as a brush engine
+        stroke (see ``lib.document``). It is possible that the visible
+        stroke starts earlier and ends later, depending on how the
+        operating system maps pressure to button up/down events.
         """
 
         self.input_stroke_started_observers = []
