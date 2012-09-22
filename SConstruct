@@ -61,7 +61,10 @@ if env['enable_profiling'] or env['debug']:
 #env.Append(CCFLAGS='-fno-inline', LINKFLAGS='-fno-inline')
 
 # Look up libraries dependencies relative to the library
-env.Append(LINKFLAGS = Split('-z origin'))
+
+if sys.platform == "linux2":
+    env.Append(LINKFLAGS = Split('-z origin'))
+
 env.Append(RPATH = env.Literal(os.path.join('\\$$ORIGIN')))
 
 set_dir_postaction = {}

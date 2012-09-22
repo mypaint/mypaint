@@ -1,6 +1,6 @@
 Import('env', 'python', 'install_perms')
 
-import os
+import os, sys
 
 def add_gobject_introspection(env, gi_name, version,
                               func_prefix, type_prefix,
@@ -64,7 +64,10 @@ pkg_info['@INCLUDEDIR@'] = os.path.join(env['prefix'], 'include')
 pc_file = env.Substfile("libmypaint.pc", "pkgconfig.pc.in", SUBST_DICT=pkg_info)
 install_perms(env, '$prefix/lib/pkgconfig', pc_file)
 
-env.Append(LIBS='m')
+env.Append(LIBS=['m', 'gettextlib'])
+if sys.platform == "darwin":
+    env.Append(LIBS=['intl'])
+
 env.ParseConfig('pkg-config --cflags --libs json')
 
 config_defines = ''
