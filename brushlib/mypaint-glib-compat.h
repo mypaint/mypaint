@@ -9,6 +9,8 @@
 
 #else // not MYPAINT_CONFIG_USE_GLIB
 
+#ifndef __G_LIB_H_
+
 /* From $INCLUDEPATH/glib-2.0/glib/gmacros.h */
 #ifdef  __cplusplus
 # define G_BEGIN_DECLS  extern "C" {
@@ -30,6 +32,8 @@ typedef gint gboolean;
 
 /* From $LIBPATH/glib-2.0/include/glibconfig.h */
 typedef unsigned short guint16;
+
+#endif // __G_LIB_H_
 
 #endif // MYPAINT_CONFIG_USE_GLIB
 

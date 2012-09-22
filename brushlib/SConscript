@@ -93,6 +93,7 @@ if env['enable_introspection']:
 
 install_perms(env, '$prefix/lib/', brushlib)
 install_perms(env, '$prefix/include/libmypaint', Glob("./mypaint-*.h"))
+install_perms(env, '$prefix/include/libmypaint/glib', Glob("./glib/mypaint-*.h"))
 
 # FIXME: install to libmypaint
 install_perms(env, "$prefix/share/mypaint/brushlib", Glob("./*.py"))
