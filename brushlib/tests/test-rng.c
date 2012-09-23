@@ -1,7 +1,7 @@
 #include "rng-double.h"
 
 #include <stdio.h>
-#include <malloc.h>
+#include <stdlib.h>
 #include <assert.h>
 
 #include "testutils.h"

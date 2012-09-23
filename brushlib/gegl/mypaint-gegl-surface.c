@@ -1,5 +1,4 @@
-
-#include <malloc.h>
+#include <stdlib.h>
 #include <assert.h>
 
 #include <mypaint-tiled-surface.h>

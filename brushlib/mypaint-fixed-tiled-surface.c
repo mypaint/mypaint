@@ -1,8 +1,7 @@
-
-#include <malloc.h>
+#include <stdlib.h>
 #include <assert.h>
 #include <math.h>
-
+#include <stdio.h>
 #include <mypaint-tiled-surface.h>
 #include <mypaint-fixed-tiled-surface.h>
 

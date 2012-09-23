@@ -23,7 +23,7 @@
 
 #include "rng-double.h"
 
-#include <malloc.h>
+#include <stdlib.h>
 
 /* the following routines are adapted from exercise 3.6--15 */
 /* after calling ranf_start, get new randoms by, e.g., "x=ranf_arr_next()" */
