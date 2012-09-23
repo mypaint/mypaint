@@ -64,9 +64,9 @@ pkg_info['@INCLUDEDIR@'] = os.path.join(env['prefix'], 'include')
 pc_file = env.Substfile("libmypaint.pc", "pkgconfig.pc.in", SUBST_DICT=pkg_info)
 install_perms(env, '$prefix/lib/pkgconfig', pc_file)
 
-env.Append(LIBS=['m', 'gettextlib'])
+env.Append(LIBS=['m'])
 if sys.platform == "darwin":
-    env.Append(LIBS=['intl'])
+    env.Append(LIBS=['intl', 'gettextlib'])
 
 env.ParseConfig('pkg-config --cflags --libs json')
 
