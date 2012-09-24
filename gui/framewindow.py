@@ -268,16 +268,26 @@ class Window (windowing.Dialog):
         xopts = yopts = gtk.FILL|gtk.EXPAND
         xpad = ypad = 3
 
+        def entry_with_label(entry, label_text):
+            entrybox = gtk.HBox()
+            entrybox.set_spacing(3)
+            entrybox.pack_start(entry, True, True, padding=0)
+            unity_label = gtk.Label(label_text)
+            entrybox.pack_start(unity_label, False, False, padding=0)
+            return entrybox
+
         row = 0
+        width_entrybox = entry_with_label(width_entry, _('px'))
         size_table.attach(width_label, 0, 1, row, row+1,
                           xopts, yopts, xpad, ypad)
-        size_table.attach(width_entry, 1, 2, row, row+1,
+        size_table.attach(width_entrybox, 1, 2, row, row+1,
                           xopts, yopts, xpad, ypad)
 
         row += 1
+        height_entrybox = entry_with_label(height_entry, _('px'))
         size_table.attach(height_label, 0, 1, row, row+1,
                           xopts, yopts, xpad, ypad)
-        size_table.attach(height_entry, 1, 2, row, row+1,
+        size_table.attach(height_entrybox, 1, 2, row, row+1,
                           xopts, yopts, xpad, ypad)
 
 
