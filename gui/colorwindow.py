@@ -44,7 +44,7 @@ class BrushColorManager (colors.ColorManager):
         colors.ColorManager.__init__(self, app.preferences)
         self.__brush = app.brush
         app.brush.observers.append(self.__settings_changed_cb)
-        app.doc.input_stroke_ended_observers.append(self.__input_stroke_ended_cb)
+        app.doc.model.stroke_observers.append(self.__stroke_observers_cb)
 
     def set_color(self, color):
         """Propagate user-set colours to the brush too (extension).
@@ -64,11 +64,9 @@ class BrushColorManager (colors.ColorManager):
         self.set_color(brush_color)
         self.__in_callback = False
 
-    def __input_stroke_ended_cb(self, event):
-        # Update the colour usage history when the user paints with
-        # a new colour.
+    def __stroke_observers_cb(self, stroke, brush):
+        # Update the colour usage history whenever the stroke is split
         brush = self.__brush
         if not brush.is_eraser():
             col = colors.HSVColor(*brush.get_color_hsv())
             self.push_history(col)
-

@@ -69,6 +69,9 @@ class HistoryPopup(windowing.PopupWindow):
         self.doc = doc
         self.is_shown = False
 
+        guidoc = app.doc
+        guidoc.model.stroke_observers.append(self.stroke_observers_cb)
+
     def enter(self):
         # finish pending stroke, if any (causes stroke_finished_cb to get called)
         self.doc.split_stroke()
@@ -102,6 +105,9 @@ class HistoryPopup(windowing.PopupWindow):
 
     def button_release_cb(self, widget, event):
         pass
+
+    def stroke_observers_cb(self, stroke, brush):
+        self.selection = None
 
     def expose_cb(self, widget, event):
         cr = self.get_window().cairo_create()

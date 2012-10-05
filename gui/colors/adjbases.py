@@ -141,8 +141,8 @@ class ColorManager (gobject.GObject):
         """
         while color in self.__hist:
             self.__hist.remove(color)
-        self.__hist.insert(0, color)
-        self.__hist = self.__hist[:self.__HIST_LEN]
+        self.__hist.append(color)
+        self.__hist = self.__hist[-self.__HIST_LEN:]
         key = PREFS_KEY_COLOR_HISTORY
         val = []
         for c in self.__hist:
