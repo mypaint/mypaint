@@ -1,4 +1,3 @@
-
 The performance of libmypaint/MyPaint is quite good compared to other drawing
 applications but there is still room for improvement.
 
@@ -6,75 +5,67 @@ Note that the ideas proposed here and their implementation will have to
 be judged by benchmarking. Unittests for correctness should also be in
 place before starting to work in this area.
 
-=== Avoid refetching of tiles between a begin_atomic / end_atomic ===
-Currently a draw_dab / get_color operation is executed syncronously. This means
-that when draw_dab is called repeatedly in the same area, the tile will be
-fetched from the tile backend anew on each call. Because fetching a tile
-may be a fairly expensive operation, this may result in overhead.
-Also, if all the processing done on a single tile is instead done at the same time,
-one may also benefit from the required data being in cache more often.
+=== IMPLEMENTED: Deferred processing, multithreading and vectorization ===
+Implemented as of November 2012:
+https://mail.gna.org/public/mypaint-discuss/2012-11/msg00003.html
 
-Note: The MyPaint tile backend implements caching of the tile fetching, migating
-the performance impact of this.
+=== TODO: Improve vectorization ===
+Currently only a small amount of the tile processing is (auto)vectorized.
+Try to improve the coverage of vectorized code by:
+* Remove run-length encoding of dab mask
+* Using floats instead of uint16_t
+
+Also make sure that GCC is generating efficient vectorized code.
+* C99 restrict keyword
+* __aligned__ attributes
+
+Passing -ftree-vectorizer-verbose=6 to gcc allows to get details about the autovectorizer,
+and -S/-save-temps -fverbose-asm is useful to look at the generated assembler code.
+
+=== TODO: More efficient serial code ===
+It may be possible to optimize the inner loops of dab mask calculation and dab compositing,
+by rewriting the computation or by improving memory layout to have better cache line alignment.
+
+See Ulrich Drepper, 2007: What Every Programmer Should Know About Memory
+
+Try to benchmark these inner functions under an instruction/cache usage analyzer.
+
+=== TODO: Try different tile sizes ===
+It could be that libmypaint will perform better with smaller or bigger tile sizes.
+Smaller size would make it more common that a set of operations span multiple tiles,
+and thus processed in parallel. It may also improve cache locality.
+On the other hand, a smaller tile size will increase the tile get/set overhead.
+
+Implementation: Make the tile size selectable at creation time of a MyPaintTiledSurface
+instead of a #define.
+
+=== IDEA: Dab masks cache ===
+Dab mask generation is one of the most time consuming parts of the rendering.
+_If_ the same dab masks are used over and over again, it could be very beneficial
+to cache and reuse these.
+
+First: Check the calls to draw_dab when using typical brushes. Do they often
+have exactly the same radius, opaque, hardness, aspect_ratio and angle?
+Simulate the cache hit/miss rate for a most-recently used cache of say 32 elements.
+Is it high enough that there could be a benefit?
+Each hit would allow to convert a dab mask calculation to a plain copy, but there will
+be costs associated with looking up in the cache and the extra memory needed.
 
 Implementation:
-1. On draw_dab calls, store the operation, including all arguments, instead of processing it directly.
-The operation should be added to a queue for each of the tiles it affects.
+* Make brush engine request masks handles from the surface, and pass these to draw_dab().
+* In draw_dab(), render the mask for each tile and store it in the operation queue.
+* Cached the rendered masks in the surface, so that they may be returned when an equivalent mask is requested.
 
-2. Then on end_atomic, process tile by tile, fetching the tile and computing all
-the operations for that tile in a FIFO manner.
+Challenge: Keeping memory consumption down.
 
-Warning: get_color operations rely on past draw_dab operations to have been
-executed already. This means that on a get_color call one would have to flush
-the draw_dab operations - at least those affecting the area requested by get_color.
-
-Warning: this means that the tile backends get_tile and update_tile vfuncs must
-be thread-safe.
-
-If processing done mainly at end_atomic time results in better performance
-than immediate processing of draw_dab, this effect should increase
-the more draw_dab() calls there are per end_atomic() calls. 
-This can be exploited when replaying entire strokes, by first doing all the 
-mypaint_brush_motion_to() and then calling end_atomic() only at the end
-
-=== Make use of multi-threading ===
-The current code is single-threaded and will not make use of the multiple
-processing units that are common on todays desktops/laptops.
-
-After having moved to a deferred processing model as suggested in the previous
-point, it should be possible in end_atomic to split the processing of tiles
-between several threads.
-
-The number of threads to use should be configurable for testability and debugging,
-but default to the number of processing units available on the system.
-
-Because the proposed task split is purely based on spatiality,
-it should be possible to do without syncronization between threads,
-and should scale near linearly.
-
-Challenge: Finding an equal distribution of work between threads.
-Dividing into the tiles left/right or the four quadrants around origo
-might be a simple working heuteristics, but ideally we'd like to distribute
-the draw_dab operations evenly. Difficult because the tile operation stack are sparse
-and the number of operations per tile may wary alot?
-
-=== Make use of vectorization in dab drawing code ===
-Above suggestion does not parallelize within a single draw_dab operation.
-Instead we could make use of vector operations that are common on X86 architectures.
-
-It may be possible to make use of GCCs auto vectorization:
-  http://stackoverflow.com/questions/409300/how-to-vectorize-with-gcc
-  http://gcc.gnu.org/projects/tree-ssa/vectorization.html
-
-There could be a performance advantage of swithing to using floats instead of ints.
-
-=== Make use of GPU processing: OpenCL and OpenGL ===
+=== IDEA: Make use of GPU processing: OpenCL and OpenGL ===
 
 Challenge: Migating the high latency of CPU<->GPU transfers
 Challenge: Keeping the amount of branching (at least within warps) in GPU code down
+http://www.nvidia.com/content/cudazone/CUDABrowser/downloads/papers/NVIDIA_OpenCL_BestPracticesGuide.pdf
 
 Implementation idea:
-1. Move only the rendering of operations to tiles to the GPU side,
+1. Move only the rendering of operations and tiles to the GPU side,
 and trigger this from end_atomic and similar.
 
 Note: for interactive drawing on canvas, this might only result in performance
@@ -83,3 +74,4 @@ being displayed.
 This can be avoided by integrating the OpenCL operations with OpenGL such that
 changes to the tiles in OpenCL will automatically update an OpenGL texture.
 
+http://www.dyn-lab.com/articles/cl-gl.html
