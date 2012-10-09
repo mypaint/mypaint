@@ -1,15 +1,23 @@
 
+== MyPaint 1.1 ==
+- Make sure copyright headers exists in all files
 - Document the library concepts and API in the code. Import information from wiki
 - Set up build of documentation. Import diagrams from doc/
+- Document how install, lookup and modification of brush resources should happen
 
 - Implement save/serialization of brushes to JSON
 - Use the libmypaint load/save methods in MyPaint itself
 
-- Implement a tests and benchmarks suite.
- * Should be possible to run as a conformance test for a custom Surface implementation
+- Tests and benchmarks suite.
+ * Implement checks for correctness of rendering
  * Benchmarks should output the results as JSON
- * Should have tools to analyze and improve the performance
 
 - Rename to "libmypaint" and install resources to "libmypaint" (not "mypaint")
+- Allow to build static library instead of shared (maybe make default?)
 
-
+== Later ==
+- Use floats types instead of uint15/uint16
+- Define that surfaces are in linear-light, not gamma-corrected.
+ * Update shipped brushes to be adjusted for this.
+ * Bump the brush version or otherwise annotate this change so that
+   other applications can handle them?
