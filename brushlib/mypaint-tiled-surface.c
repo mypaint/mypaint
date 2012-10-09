@@ -503,14 +503,17 @@ void get_color (MyPaintSurface *surface, float x, float y,
 }
 
 void
-mypaint_tiled_surface_init(MyPaintTiledSurface *self)
+mypaint_tiled_surface_init(MyPaintTiledSurface *self,
+                           MyPaintTiledSurfaceTileRequestStartFunction tile_request_start,
+                           MyPaintTiledSurfaceTileRequestEndFunction tile_request_end)
 {
     self->parent.draw_dab = draw_dab;
     self->parent.get_color = get_color;
+    self->tile_request_end = tile_request_end;
+    self->tile_request_start = tile_request_start;
 
-    self->tile_request_end = NULL;
-    self->tile_request_start = NULL;
     self->area_changed = NULL;
+    self->threadsafe_tile_requests = FALSE;
 
     self->surface_do_symmetry = FALSE;
     self->surface_center_x = 0.0;

@@ -165,7 +165,7 @@ mypaint_gegl_tiled_surface_new()
 {
     MyPaintGeglTiledSurface *self = (MyPaintGeglTiledSurface *)malloc(sizeof(MyPaintGeglTiledSurface));
 
-    mypaint_tiled_surface_init(&self->parent);
+    mypaint_tiled_surface_init(&self->parent, tile_request_start, tile_request_end);
 
     // MyPaintSurface vfuncs
     self->parent.parent.destroy = free_gegl_tiledsurf;
@@ -174,9 +174,8 @@ mypaint_gegl_tiled_surface_new()
     self->parent.parent.end_atomic = end_atomic_gegl;
 
     // MyPaintTiledSurface vfuncs
-    self->parent.tile_request_start = tile_request_start;
-    self->parent.tile_request_end = tile_request_end;
     self->parent.area_changed = area_changed_gegl;
+    self->parent.threadsafe_tile_requests = TRUE;
 
     self->atomic = 0;
     //self->dirty_bbox.w = 0;

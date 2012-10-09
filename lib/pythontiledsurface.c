@@ -142,7 +142,7 @@ mypaint_python_tiled_surface_new(PyObject *py_object)
 {
     MyPaintPythonTiledSurface *self = (MyPaintPythonTiledSurface *)malloc(sizeof(MyPaintPythonTiledSurface));
 
-    mypaint_tiled_surface_init(&self->parent);
+    mypaint_tiled_surface_init(&self->parent, tile_request_start, tile_request_end);
 
     // MyPaintSurface vfuncs
     self->parent.parent.destroy = free_tiledsurf;
@@ -150,8 +150,6 @@ mypaint_python_tiled_surface_new(PyObject *py_object)
     self->parent.parent.end_atomic = end_atomic;
 
     // MyPaintTiledSurface vfuncs
-    self->parent.tile_request_start = tile_request_start;
-    self->parent.tile_request_end = tile_request_end;
     self->parent.area_changed = area_changed;
 
     self->py_obj = py_object; // no need to incref

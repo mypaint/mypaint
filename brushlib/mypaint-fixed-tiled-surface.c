@@ -126,7 +126,7 @@ mypaint_fixed_tiled_surface_new(int width, int height)
 
     MyPaintFixedTiledSurface *self = (MyPaintFixedTiledSurface *)malloc(sizeof(MyPaintFixedTiledSurface));
 
-    mypaint_tiled_surface_init(&self->parent);
+    mypaint_tiled_surface_init(&self->parent, tile_request_start, tile_request_end);
 
     // MyPaintSurface vfuncs
     self->parent.parent.destroy = free_simple_tiledsurf;
@@ -134,8 +134,6 @@ mypaint_fixed_tiled_surface_new(int width, int height)
     self->parent.parent.end_atomic = end_atomic;
 
     // MyPaintTiledSurface vfuncs
-    self->parent.tile_request_start = tile_request_start;
-    self->parent.tile_request_end = tile_request_end;
     self->parent.area_changed = area_changed;
 
     self->atomic = 0;

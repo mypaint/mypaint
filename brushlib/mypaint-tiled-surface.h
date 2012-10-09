@@ -34,14 +34,14 @@ typedef struct _OperationQueue OperationQueue;
   */
 struct _MyPaintTiledSurface {
     MyPaintSurface parent;
+    /* private: */
     MyPaintTiledSurfaceTileRequestStartFunction tile_request_start;
     MyPaintTiledSurfaceTileRequestEndFunction tile_request_end;
     MyPaintTiledSurfaceAreaChanged area_changed;
-
-    /* private: */
     gboolean surface_do_symmetry;
     float surface_center_x;
     OperationQueue *operation_queue;
+    gboolean threadsafe_tile_requests;
 };
 
 
@@ -51,7 +51,9 @@ struct _MyPaintTiledSurface {
   * Create a new MyPaintTiledSurface.
   */
 void
-mypaint_tiled_surface_init(MyPaintTiledSurface *);
+mypaint_tiled_surface_init(MyPaintTiledSurface *self,
+                           MyPaintTiledSurfaceTileRequestStartFunction tile_request_start,
+                           MyPaintTiledSurfaceTileRequestEndFunction tile_request_end);
 
 void
 mypaint_tiled_surface_destroy(MyPaintTiledSurface *self);
