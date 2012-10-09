@@ -2,6 +2,8 @@ Import('env', 'python', 'install_perms')
 
 import os, sys
 
+brushlib_version = '0.1'
+
 def add_gobject_introspection(env, gi_name, version,
                               func_prefix, type_prefix,
                               sources, includepath, library, pkgs):
@@ -28,69 +30,86 @@ def add_gobject_introspection(env, gi_name, version,
 
     return (gir_file, typelib_file)
 
+# Generate a @pkgconfig_name.pc and a @pkgconfig_name-uninstalled.pc
+def create_pkgconfig_files(env, pkgconfig_name, version, description,
+                           libname, deps, libs=[], linkflags=[], cflags=[]):
+
+    pkg_info = {
+        '@LIBNAME@': libname,
+        '@REQUIRES@': ' '.join(deps),
+        '@DESCRIPTION@': description,
+        '@VERSION@': version,
+        '@LIBS@': ''.join('-l'+lib for lib in libs),
+        '@LINKFLAGS@': ' '.join(linkflags),
+        '@PREFIX@': env['prefix'],
+        '@LIBDIR@': os.path.join(env['prefix'], 'lib'),
+        '@INCLUDEDIR@': os.path.join(env['prefix'], 'include'),
+    }
+    pc_file = env.Substfile('%s.pc' % pkgconfig_name,
+                            "pkgconfig.pc.in", SUBST_DICT=pkg_info)
+    install_perms(env, '$prefix/lib/pkgconfig', pc_file)
+
+    return pc_file
+
+
 # NOTE: We use a copy of the environment, to be able to both inherit common options,
 # and also add our own specifics ones without affecting the other builds
 top_env = env
 env = env.Clone()
-gegl_env = env.Clone()
 
 if env['enable_introspection']:
     env['use_glib'] = True
+    env['use_sharedlib'] = True
     print "Enabling glib because of enable_introspection=true"
+    print "Building a shared lib instead of a static lib because of enable_introspection=true"
 else:
+    env['use_sharedlib'] = False
     env['use_glib'] = False
 
 Export('env')
-tests = SConscript('tests/SConscript')
 
 if env['enable_docs']:
     doc = SConscript('doc/SConscript')
 
 env.Append(CPPPATH='./')
 
-pkg_info = {}
-pkg_info['@LIBNAME@'] = 'mypaint'
-
-if env['use_glib']:
-    pkg_info['@REQUIRES@'] = 'glib-2.0'
-else:
-    pkg_info['@REQUIRES@'] = ''
-
-pkg_info['@DESCRIPTION@'] = 'MyPaint brush engine library'
-pkg_info['@PREFIX@'] = env['prefix']
-pkg_info['@VERSION@'] = '0.1'
-pkg_info['@LIBDIR@'] = os.path.join(env['prefix'], 'lib')
-pkg_info['@INCLUDEDIR@'] = os.path.join(env['prefix'], 'include')
-pc_file = env.Substfile("libmypaint.pc", "pkgconfig.pc.in", SUBST_DICT=pkg_info)
-install_perms(env, '$prefix/lib/pkgconfig', pc_file)
-
-env.Append(LIBS=['m'])
-if sys.platform == "darwin":
-    env.Append(LIBS=['intl', 'gettextlib'])
-
-env.ParseConfig('pkg-config --cflags --libs json')
+pkg_deps = ['json']
+libs = ['m']
+linkflags = []
 
 if env['enable_openmp']:
     env.Append(CFLAGS='-fopenmp')
-    env.Append(LINKFLAGS='-fopenmp')
+    linkflags += ['-fopenmp']
+
+if sys.platform == "darwin":
+    libs += ['intl', 'gettextlib']
 
 config_defines = ''
 if env['use_glib']:
-    env.ParseConfig('pkg-config --cflags --libs gobject-2.0')
+    pkg_deps += ['gobject-2.0']
     config_defines += '#define MYPAINT_CONFIG_USE_GLIB 1\n'
 else:
     config_defines += '#define MYPAINT_CONFIG_USE_GLIB 0\n'
 
-config_file = env.Substfile("mypaint-config.h", "mypaint-config.h.in", SUBST_DICT={'@DEFINES@': config_defines})
+config_file = env.Substfile("mypaint-config.h", "mypaint-config.h.in",
+                            SUBST_DICT={'@DEFINES@': config_defines})
 
 env.Execute(python + ' generate.py') # TODO: make a proper build rule
 env.Clean('.', 'mypaint-brush-settings-gen.h')
 env.Clean('.', Glob('*.pyc'))
 
-brushlib = env.SharedLibrary('../mypaint', Glob("*.c"))
+env.Append(LINKFLAGS=linkflags)
+env.Append(LIBS=libs)
+env.ParseConfig('pkg-config --cflags --libs %s' % ' '.join(pkg_deps))
+
+lib_builder = env.SharedLibrary if env['use_sharedlib'] else env.StaticLibrary
+brushlib = lib_builder('../mypaint', Glob("*.c"))
+
+create_pkgconfig_files(env, 'libmypaint', brushlib_version, 'MyPaint brush engine library',
+                       libname='mypaint', deps=pkg_deps, libs=libs, linkflags=linkflags)
 
 if env['enable_introspection']:
-    gir, typelib = add_gobject_introspection(env, "MyPaint", pkg_info["@VERSION@"],
+    gir, typelib = add_gobject_introspection(env, "MyPaint", brushlib_version,
                               "mypaint_", "MyPaint",
                               Glob("*.c") + Glob("mypaint-*.h") + Glob("glib/*.c") + Glob("glib/mypaint-*.h"),
                               './brushlib', brushlib, ['glib-2.0'])
@@ -110,34 +129,29 @@ languages = SConscript('po/SConscript')
 
 # Optional: GEGL library
 if env['enable_gegl']:
-    pkg_info = {}
-    pkg_info['@LIBNAME@'] = 'mypaint-gegl'
-    pkg_info['@REQUIRES@'] = 'gegl-0.2 libmypaint'
-    pkg_info['@DESCRIPTION@'] = 'MyPaint brush engine library, with GEGL integration'
-    pkg_info['@VERSION@'] = '0.1'
-    pkg_info['@PREFIX@'] = env['prefix']
-    pkg_info['@LIBDIR@'] = os.path.join(env['prefix'], 'lib')
-    pkg_info['@INCLUDEDIR@'] = os.path.join(env['prefix'], 'include')
-    pc_file = gegl_env.Substfile("libmypaint-gegl.pc", "pkgconfig.pc.in", SUBST_DICT=pkg_info)
-    install_perms(env, '$prefix/lib/pkgconfig', pc_file)
 
-    gegl_env.ParseConfig('pkg-config --cflags --libs gegl-0.2')
+    gegl_env = env.Clone()
+    deps = ['gegl-0.2', 'libmypaint']
+    gegl_env.ParseConfig('pkg-config --cflags --libs %s' % ' '.join(deps))
 
-    gegl_env.Append(LIBS="mypaint")
-    gegl_env.Append(LIBPATH="../")
-    gegl_env.Append(CPPPATH='../brushlib/')
+    lib_builder = gegl_env.SharedLibrary if env['use_sharedlib'] else gegl_env.StaticLibrary
+    brushlib_gegl = lib_builder('../mypaint-gegl', Glob("./gegl/*.c"))
 
-    brushlib_gegl = gegl_env.SharedLibrary('../mypaint-gegl', Glob("./gegl/*.c"))
     install_perms(env, '$prefix/lib/', brushlib_gegl)
     install_perms(env, '$prefix/include/libmypaint-gegl', Glob("./gegl/mypaint-gegl-*.h"))
 
+    create_pkgconfig_files(env, 'libmypaint-gegl', brushlib_version, 'MyPaint brush engine library, with GEGL integration',
+                           libname='mypaint', deps=deps)
+
     if gegl_env['enable_introspection']:
-        gir, typelib = add_gobject_introspection(gegl_env, "MyPaintGegl", pkg_info["@VERSION@"],
+        gir, typelib = add_gobject_introspection(gegl_env, "MyPaintGegl", brushlib_version,
                                   "mypaint_gegl", "MyPaintGegl",
                                   Glob("gegl/*.c") + Glob("gegl/mypaint-gegl-*.h"),
                                   './brushlib/gegl', brushlib_gegl, ['glib-2.0', 'gegl-0.2'])
 
         install_perms(env, '$prefix/share/gir-1.0', gir)
         install_perms(env, '$prefix/lib/girepository-1.0', typelib)
+
+tests = SConscript('tests/SConscript')
 
 Return('brushlib')

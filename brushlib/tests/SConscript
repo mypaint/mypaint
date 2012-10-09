@@ -4,8 +4,6 @@ import os
 
 env = env.Clone()
 testlib_env = env.Clone()
-tests_env = env.Clone()
-gegl_tests_env = env.Clone()
 
 def is_csource(fn):
     return os.path.isfile(fn) and os.path.splitext(fn)[1] == '.c'
@@ -24,13 +22,17 @@ if testlib_env['enable_gperftools']:
     testlib_env.ParseConfig('pkg-config --cflags --libs libprofiler')
     testlib_env.Append(CPPDEFINES='HAVE_GPERFTOOLS')
 
-testlib_env.SharedLibrary(target='../../mypaint-tests', source=testlib_sources)
+lib_builder = testlib_env.SharedLibrary if env['use_sharedlib'] else testlib_env.StaticLibrary
+lib_builder(target='../../mypaint-tests', source=testlib_sources)
+
+tests_env = testlib_env.Clone()
+gegl_tests_env = testlib_env.Clone()
 
 # Build individual tests
 if tests_env['use_glib']:
     tests_env.ParseConfig('pkg-config --cflags --libs glib-2.0')
 
-tests_env.Append(CPPPATH='../', LIBPATH='../..', LIBS=['mypaint', 'mypaint-tests'])
+tests_env.Append(CPPPATH='../', LIBPATH='../..', LIBS=['mypaint-tests', 'mypaint'])
 
 # Standard tests
 for source in tests_sources:
@@ -43,7 +45,7 @@ if gegl_tests_env['enable_gegl']:
     gegl_tests_env.Append(
           CPPPATH=['.', '../', '../gegl'],
           LIBPATH='../..',
-          LIBS=['mypaint', 'mypaint-tests', 'mypaint-gegl'])
+          LIBS=['mypaint-gegl', 'mypaint-tests', 'mypaint'])
     gegl_tests_env.ParseConfig('pkg-config --cflags --libs gegl-0.2')
     for source in gegl_tests_sources:
         target = os.path.splitext(source)[0]

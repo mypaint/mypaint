@@ -6,8 +6,6 @@ Import('env', 'python', 'install_perms', 'install_tree')
 # Clone the environment to not affect the common one
 env = env.Clone()
 
-print "application SConscript"
-
 mypaintlib = SConscript('lib/SConscript')
 languages = SConscript('po/SConscript')
 

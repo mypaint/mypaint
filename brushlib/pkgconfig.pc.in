@@ -8,5 +8,5 @@ Description: @DESCRIPTION@
 Version: @VERSION@
 Requires: @REQUIRES@
 Cflags: -I${includedir}/lib@LIBNAME@
-Libs: -L${libdir} -l@LIBNAME@
+Libs: -L${libdir} -l@LIBNAME@ @LIBS@ @LINKFLAGS@
 
