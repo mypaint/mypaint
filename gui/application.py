@@ -483,6 +483,9 @@ class Application: # singleton
                 # Fix for the above bug https://gna.org/bugs/?14029
                 print 'Skipping "%s" (probably a mouse)' % device.name
                 continue
+            if 'hid' in name.split():
+                print 'Skipping "%s" (reports as HID, probably not a tablet)' % device.name
+                continue
 
             self.pressure_devices.append(device.name)
             mode = getattr(gdk, 'MODE_' + modesetting.upper())
