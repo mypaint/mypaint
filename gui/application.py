@@ -441,7 +441,10 @@ class Application: # singleton
                 continue
 
             name = device.name.lower()
+            name = name.replace('-', ' ').replace('_', ' ')
             last_word = name.split()[-1]
+
+            # Step 1: BLACKLIST
             if last_word == 'pad':
                 # Setting the intuos3 pad into "screen mode" causes
                 # glitches when you press a pad-button in mid-stroke,
@@ -452,39 +455,39 @@ class Application: # singleton
                 print 'Skipping "%s" (probably wacom keypad device)' % device.name
                 continue
             if last_word == 'touchpad':
-                # eg. "SynPS/2 Synaptics TouchPad"
-                # Cannot paint at all, cannot select brushes, if we enable this one.
-                print 'Skipping "%s" (probably laptop touchpad which screws up gtk+ if enabled)' % device.name
+                print 'Skipping "%s" (probably a laptop touchpad without pressure info)' % device.name
                 continue
             if last_word == 'cursor':
-                # this is a "normal" mouse and does not work in screen mode
+                # for wacom, this is the "normal" mouse and does not work in screen mode
                 print 'Skipping "%s" (probably wacom mouse device)' % device.name
                 continue
-            if 'transceiver' in name:
-                # eg. "Microsoft Microsoft 2.4GHz Transceiver V1.0"
-                # Cannot paint after moving outside of painting area.
-                print 'Skipping "%s" (a transceiver is probably not a pressure sensitive tablet, known to screw up gtk+ when enabled)' % device.name
-                continue
-            if 'glidepoint' in name:
-                # AlpsPS/2 ALPS GlidePoint
-                # https://gna.org/bugs/?19790
-                print 'Skipping "%s" (probably a mouse-like device reporting extra axes)' % device.name
-                continue
             if 'keyboard' in name:
-                # e.g "Plus More Entertainment LTD. USB-compliant keyboard."
-                # has a scroll wheel, breaks drawing, color picking and choosing the brush
-                print 'Skipping "%s" (probably a multifunc keyboard)' % device.name
+                print 'Skipping "%s" (probably a keyboard)' % device.name
                 continue
-            if 'unifying' in name:
-                # e.g "Logitech Unifying Device. Wireless PID:101d"
+            if 'mouse' in name and 'mousepen' not in name:
                 print 'Skipping "%s" (probably a mouse)' % device.name
                 continue
-            if 'mouse' in name:
-                # Fix for the above bug https://gna.org/bugs/?14029
-                print 'Skipping "%s" (probably a mouse)' % device.name
-                continue
-            if 'hid' in name.split():
-                print 'Skipping "%s" (reports as HID, probably not a tablet)' % device.name
+
+            # Step 2: WHITELIST
+            #
+            # Required now as too many input devices report a pressure
+            # axis with recent Xorg versions. Wrongly enabling them
+            # breaks keyboard and/or mouse input in random ways.
+            #
+            # Only whole words are matched.
+            tablet_strings  = '''
+            tablet pressure graphic art pen stylus eraser pencil brush
+            wacom bamboo intuos graphire cintiq
+            hanvon rollick graphicpal artmaster sentip
+            genius mousepen
+            '''
+            match = False
+            words = name.split()
+            for s in tablet_strings.split():
+                if s in words:
+                    match = True
+            if not match:
+                print 'Skipping "%s" (not in the list of known tablets)' % device.name
                 continue
 
             self.pressure_devices.append(device.name)
