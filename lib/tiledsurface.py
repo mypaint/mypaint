@@ -44,6 +44,7 @@ svg2composite_func = {
     'svg:src-over': mypaintlib.tile_composite_src_over,
     'svg:multiply': mypaintlib.tile_composite_multiply,
     'svg:screen': mypaintlib.tile_composite_screen,
+    'svg:overlay': mypaintlib.tile_composite_overlay,
     'svg:color-burn': mypaintlib.tile_composite_color_burn,
     'svg:color-dodge': mypaintlib.tile_composite_color_dodge,
     'svg:color': mypaintlib.tile_composite_color,
