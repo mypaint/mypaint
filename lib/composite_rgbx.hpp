@@ -174,6 +174,83 @@ rgba_composite_overlay_rgbu
 #endif //HEAVY_DEBUG
     }
 
+    // Da'  = Sa + Da - Sa*Da
+#ifdef COMPOSITE_MODE_RGBA
+    dst_p[3] = Sa + Da - SaDa;
+#ifdef HEAVY_DEBUG
+    assert(src_p[0] <= src_p[3]);
+    assert(dst_p[0] <= dst_p[3]);
+    assert(src_p[1] <= src_p[3]);
+    assert(dst_p[1] <= dst_p[3]);
+    assert(src_p[2] <= src_p[3]);
+    assert(dst_p[2] <= dst_p[3]);
+#endif //HEAVY_DEBUG
+#endif //COMPOSITE_MODE_RGBA
+}
+
+
+inline void
+#ifdef COMPOSITE_MODE_RGBA
+rgba_composite_hard_light_rgba
+#else
+rgba_composite_hard_light_rgbu
+#endif
+    (const uint16_t src_p[],
+     uint16_t dst_p[],
+     const uint16_t opac)
+{
+    const uint32_t Sa = ((uint32_t)src_p[3] * opac)>>15;
+    const uint32_t one_minus_Sa = (1<<15) - Sa;
+#ifdef COMPOSITE_MODE_RGBA
+    const uint32_t Da = dst_p[3];
+    const uint32_t one_minus_Da = (1<<15) - Da;
+    const uint32_t SaDa = (Sa * Da) >> 15;
+#else
+    const uint32_t Da = 1<<15;
+#endif
+    // From http://www.w3.org/TR/SVGCompositing/#comp-op-hard-light --
+    // if 2 * Sca <= Da
+    //   Dca' = 2*Sca*Dca + Sca*(1 - Da) + Dca*(1 - Sa)
+    // otherwise
+    //   Dca' = Sa*Da - 2*(Da - Dca)*(Sa - Sca) + Sca*(1 - Da) + Dca*(1 - Sa)
+    //        = Sca*(1 + Da) + Dca*(1 + Sa) - 2*Dca*Sca - Da*Sa
+    //
+    // Identical to Overlay, but with a different test.
+    for (int c=0; c<3; c++) {
+        const uint32_t Dca = dst_p[c];
+        const uint32_t twoDca = Dca * 2;
+        const uint32_t Sca = ((uint32_t)src_p[c] * opac)>>15;
+        const uint32_t twoSca = Sca * 2;
+        uint32_t Dca_out = 0;
+        if (twoSca <= Sa) {
+            Dca_out = ((twoDca * Sca)>>15)
+                    + ((Dca * one_minus_Sa)>>15);
+#ifdef COMPOSITE_MODE_RGBA
+            // (1-Da) != 0
+            Dca_out += ((Sca * one_minus_Da)>>15);
+#endif //COMPOSITE_MODE_RGBA
+        }
+        else {
+#ifdef COMPOSITE_MODE_RGBA
+            Dca_out = ((Sca * ((1<<15) + Da))>>15)
+                    + ((Dca * ((1<<15) + Sa))>>15)
+                    - ((twoDca * Sca) >> 15)
+                    - SaDa;
+#else
+            // Da == 1
+            Dca_out = twoSca
+                    + ((Dca * ((1<<15) + Sa))>>15)
+                    - ((twoDca * Sca) >> 15)
+                    - Sa;
+#endif //COMPOSITE_MODE_RGBA
+        }
+        dst_p[c] = CLAMP(Dca_out, 0, (1<<15));
+#ifdef HEAVY_DEBUG
+        assert(dst_p[c] <= (1<<15));
+        assert(src_p[c] <= (1<<15));
+#endif //HEAVY_DEBUG
+    }
+
 #ifdef COMPOSITE_MODE_RGBA
     dst_p[3] = Sa + Da - SaDa;
 #ifdef HEAVY_DEBUG

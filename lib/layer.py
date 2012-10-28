@@ -20,6 +20,7 @@ COMPOSITE_OPS = [
     ("svg:color-dodge", _("Dodge")),
     ("svg:screen", _("Screen")),
     ("svg:overlay", _("Overlay")),
+    ("svg:hard-light", _("Hard Light")),
     # Non-separable blending modes are Coming Soon to an SVG spec near you
     # https://dvcs.w3.org/hg/FXTF/rawfile/tip/compositing/index.html
     # Good enough for us here. We'll use the names the draft is using for now.
