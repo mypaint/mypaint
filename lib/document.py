@@ -10,7 +10,7 @@ import gui.pygtkcompat
 if gui.pygtkcompat.USE_GTK3:
     from gi.repository import GdkPixbuf
 
-import os, zipfile, tempfile, time, traceback
+import os, sys, zipfile, tempfile, time, traceback
 join = os.path.join
 from cStringIO import StringIO
 import xml.etree.ElementTree as ET
@@ -634,7 +634,9 @@ class Document():
     def save_ora(self, filename, options=None, **kwargs):
         print 'save_ora:'
         t0 = time.time()
-        tempdir = tempfile.mkdtemp(u'mypaint')
+        tempdir = tempfile.mkdtemp('mypaint')
+        if not isinstance(tempdir, unicode):
+            tempdir = tempdir.decode(sys.getfilesystemencoding())
         # use .tmp extension, so we don't overwrite a valid file if there is an exception
         z = zipfile.ZipFile(filename + '.tmpsave', 'w', compression=zipfile.ZIP_STORED)
         # work around a permission bug in the zipfile library: http://bugs.python.org/issue3394
@@ -755,7 +757,9 @@ class Document():
         """Loads from an OpenRaster file"""
         print 'load_ora:'
         t0 = time.time()
-        tempdir = tempfile.mkdtemp(u'mypaint')
+        tempdir = tempfile.mkdtemp('mypaint')
+        if not isinstance(tempdir, unicode):
+            tempdir = tempdir.decode(sys.getfilesystemencoding())
         z = zipfile.ZipFile(filename)
         print 'mimetype:', z.read('mimetype').strip()
         xml = z.read('stack.xml')
