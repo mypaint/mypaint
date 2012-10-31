@@ -271,6 +271,108 @@ rgba_composite_hard_light_rgbu
 
 inline void
 #ifdef COMPOSITE_MODE_RGBA
+rgba_composite_soft_light_rgba
+#else
+rgba_composite_soft_light_rgbu
+#endif
+    (const fix15_short_t src_p[],
+     fix15_short_t dst_p[],
+     const fix15_short_t opac)
+{
+    /* <URI:https://dvcs.w3.org/hg/FXTF/rawfile/tip/compositing/index.html
+            #blendingsoftlight > */
+
+    // Leave the backdrop alone if the source is fully transparent
+    const fix15_t a_s = fix15_mul(src_p[3], opac);
+    if (a_s == 0) {
+        return;
+    }
+
+    // If the backdrop (dst) is fully transparent, it becomes the
+    // source times opacity.
+#ifdef COMPOSITE_MODE_RGBA
+    const fix15_t a_b = dst_p[3];
+    if (a_b == 0) {
+        dst_p[0] = fix15_short_clamp(fix15_mul(opac, src_p[0]));
+        dst_p[1] = fix15_short_clamp(fix15_mul(opac, src_p[1]));
+        dst_p[2] = fix15_short_clamp(fix15_mul(opac, src_p[2]));
+        dst_p[3] = a_s;
+        return;
+    }
+#else
+    const fix15_t a_b = fix15_one;
+#endif //COMPOSITE_MODE_RGBA
+
+#ifdef HEAVY_DEBUG
+    // Underflow is a possibility here
+    assert(a_b <= fix15_one);
+    assert(a_s <= fix15_one);
+    // Confirm we guarded against divisions by zero below
+    assert(a_b > 0);
+    assert(a_s > 0);
+#endif
+
+    for (int i=0; i<3; ++i) {
+        // De-premultiplied input components from premultiplied
+        const fix15_t aC_s = fix15_mul(opac, src_p[i]);
+        const fix15_t aC_b = dst_p[i];
+        const fix15_t C_s = fix15_div(aC_s, a_s);
+        const fix15_t C_b = fix15_div(aC_b, a_b);
+
+        // The guts of it, a blending function B(C_b, C_s) whose output is
+        // used as the input to a regular src-over operation.
+        fix15_t B = 0;
+        const fix15_t two_C_s = C_s << 1;
+        if (two_C_s <= fix15_one) {  // i.e. C_s < 0.5
+            B = fix15_one - fix15_mul(fix15_one - two_C_s,
+                                      fix15_one - C_b);
+            B = fix15_mul(B, C_b);
+        }
+        else {
+            fix15_t D = 0;
+            const fix15_t four_C_b = C_b << 2;
+            if (four_C_b <= fix15_one) {
+                const fix15_t C_b_squared = fix15_mul(C_b, C_b);
+                D = four_C_b; /* which is always greater than... */
+                D += 16 * fix15_mul(C_b_squared, C_b);
+                D -= 12 * C_b_squared;
+                /* ... in the range 0 <= C_b <= 0.25 */
+            }
+            else {
+                D = fix15_sqrt(C_b);
+            }
+#ifdef HEAVY_DEBUG
+            /* Guard against underflows */
+            assert(2*C_s > fix15_one);
+            assert(D >= C_b);
+#endif
+            B = C_b + fix15_mul(2*C_s - fix15_one /* 2*C_s > 1 */,
+                                D - C_b           /* D >= C_b */  );
+        }
+
+        // Composite a premultiplied output component as src-over.
+        fix15_t aC_o = fix15_mul(fix15_one - a_b, aC_s)
+                     + fix15_mul(fix15_one - a_s, aC_b)
+                     + fix15_mul(B, fix15_mul(a_s, a_b));
+        dst_p[i] = fix15_short_clamp(aC_o);
+    }
+
+#ifdef COMPOSITE_MODE_RGBA
+    dst_p[3] = fix15_short_clamp(a_s + a_b - fix15_mul(a_s, a_b));
+#ifdef HEAVY_DEBUG
+    assert(src_p[0] <= src_p[3]);
+    assert(dst_p[0] <= dst_p[3]);
+    assert(src_p[1] <= src_p[3]);
+    assert(dst_p[1] <= dst_p[3]);
+    assert(src_p[2] <= src_p[3]);
+    assert(dst_p[2] <= dst_p[3]);
+#endif //HEAVY_DEBUG
+#endif
+}
+
+
+inline void
+#ifdef COMPOSITE_MODE_RGBA
 rgba_composite_color_dodge_rgba
 #else
 rgba_composite_color_dodge_rgbu
