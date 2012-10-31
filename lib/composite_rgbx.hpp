@@ -8,35 +8,58 @@
  */
 
 
+/*
+Where possible, work in premultiplied-alpha and use the terminology from
+the W3C specifications for compositing modes available at
+
+  http://www.w3.org/TR/SVGCompositing/
+  http://dvcs.w3.org/hg/FXTF/rawfile/tip/compositing/index.html
+
+Namely,
+
+  Sc - source (top) layer channel value, non-premultiplied
+  Sa - source (top) layer alpha: src_p[3] x opac
+  Sca - source (top) layer channel value, premult by Da: src_p[c] x opac
+  Dc - destination layer channel value, non-premultiplied
+  Da - destination layer alpha: dst_p[3]
+  Dca - destination layer channel value, premult by Da: dst_p[c]
+
+Values from src_p[] arguments are almost(?) always multiplied by the layer
+opacity, opac, before use as above.
+
+For now, this file is included twice, once with COMPOSITE_MODE_RGBA defined
+and once without it. In the latter case, assume Da=fix15_one, and don't write
+to the destination alpha.
+
+*/
+
+
+// It's always better to use inline functions rather than than fumble around
+// with scaling factors: the code will be much cleaner. It's OK to define
+// optimal funcs for special cases like a sum of two products.
+#include "fix15.hpp"
+
+
+
+
 inline void
 #ifdef COMPOSITE_MODE_RGBA
 rgba_composite_src_over_rgba
 #else
 rgba_composite_src_over_rgbu
 #endif
-    (const uint16_t src_p[],
-     uint16_t dst_p[],
-     const uint16_t opac)
+    (const fix15_short_t src_p[],
+     fix15_short_t dst_p[],
+     const fix15_short_t opac)
 {
-    const uint16_t src_alpha = CLAMP((uint32_t)(opac*src_p[3])>>15, 0, 1<<15);
-    const uint32_t one_minus_src_alpha = (1<<15) - src_alpha;
-
-    // Dca: destination component with premult alpha
-    // Da: destination alpha channel
-    // 
-    // Dca' = Sca*Da + Sca*(1 - Da) + Dca*(1 - Sa)
-    //      = Sca + Dca*(1 - Sa)
-    //
-    dst_p[0] = ((uint32_t)src_p[0]*opac + one_minus_src_alpha*dst_p[0]) >> 15;
-    dst_p[1] = ((uint32_t)src_p[1]*opac + one_minus_src_alpha*dst_p[1]) >> 15;
-    dst_p[2] = ((uint32_t)src_p[2]*opac + one_minus_src_alpha*dst_p[2]) >> 15;
-
+    // http://www.w3.org/TR/SVGCompositing/#comp-op-src-over
+    const fix15_t Sa = fix15_mul(src_p[3], opac);
+    dst_p[0] = fix15_sumprods( src_p[0], opac,   fix15_one-Sa, dst_p[0] );
+    dst_p[1] = fix15_sumprods( src_p[1], opac,   fix15_one-Sa, dst_p[1] );
+    dst_p[2] = fix15_sumprods( src_p[2], opac,   fix15_one-Sa, dst_p[2] );
 #ifdef COMPOSITE_MODE_RGBA
-    // Da' = Sa*Da + Sa*(1 - Da) + Da*(1 - Sa)
-    //     = (Sa*Da + Sa - Sa*Da) + Da*(1 - Sa)
-    //     = Sa + Da*(1 - Sa)
-    //
-    dst_p[3] = src_alpha + ((one_minus_src_alpha*dst_p[3]) >> 15);
+    const fix15_t Da = dst_p[3];
+    dst_p[3] = Sa + Da - fix15_mul(Sa, Da);
 #endif
 }
 
@@ -47,37 +70,27 @@ rgba_composite_multiply_rgba
 #else
 rgba_composite_multiply_rgbu
 #endif
-    (const uint16_t src_p[],
-     uint16_t dst_p[],
-     const uint16_t opac)
+    (const fix15_short_t src_p[],
+     fix15_short_t dst_p[],
+     const fix15_short_t opac)
 {
+    // http://www.w3.org/TR/SVGCompositing/#comp-op-multiply
+    const fix15_t Sa = fix15_mul(src_p[3], opac);
     // Dca' = Sca*Dca + Sca*(1 - Da) + Dca*(1 - Sa)
-    //
-    // If Da == 1, which is the case in RGBU mode, this becomes
-    //
-    // Dca' = Sca*Dca + 0 + Dca*(1 - Sa)
-    //      = Dca * (Sca + (1 - Sa))
-    //
-    const uint16_t src_alpha = CLAMP((uint32_t)(opac * src_p[3]) / (1<<15),
-                                     0, 1<<15);
-    const uint32_t one_minus_src_alpha = (1<<15) - src_alpha;
-    const uint32_t src_col0 = ((uint32_t) src_p[0] * opac) >> 15;
-    const uint32_t src_col1 = ((uint32_t) src_p[1] * opac) >> 15;
-    const uint32_t src_col2 = ((uint32_t) src_p[2] * opac) >> 15;
-    dst_p[0] = ((uint32_t)src_col0*dst_p[0]+one_minus_src_alpha*dst_p[0])>>15;
-    dst_p[1] = ((uint32_t)src_col1*dst_p[1]+one_minus_src_alpha*dst_p[1])>>15;
-    dst_p[2] = ((uint32_t)src_col2*dst_p[2]+one_minus_src_alpha*dst_p[2])>>15;
+    //      = Dca * (1 + Sca - Sa)                   ; if Da == 1
+    //      = Dca * (1 + Sca - Sa) + Sca*(1 - Da)    ; otherwise
+    const fix15_t Sca0 = fix15_mul(src_p[0], opac);
+    const fix15_t Sca1 = fix15_mul(src_p[1], opac);
+    const fix15_t Sca2 = fix15_mul(src_p[2], opac);
+    dst_p[0] = fix15_mul(dst_p[0], fix15_one + Sca0 - Sa);
+    dst_p[1] = fix15_mul(dst_p[1], fix15_one + Sca1 - Sa);
+    dst_p[2] = fix15_mul(dst_p[2], fix15_one + Sca2 - Sa);
 #ifdef COMPOSITE_MODE_RGBA
-    // Sca*(1 - Da) != 0, add it in
-    const uint32_t one_minus_dst_alpha = (1<<15) - dst_p[3];
-    dst_p[0] += (((uint32_t)src_col0 * one_minus_dst_alpha) >> 15);
-    dst_p[1] += (((uint32_t)src_col1 * one_minus_dst_alpha) >> 15);
-    dst_p[2] += (((uint32_t)src_col2 * one_minus_dst_alpha) >> 15);
-
-    // Da'  = Sa*Da + Sa*(1 - Da) + Da*(1 - Sa)
-    //      = (Sa*Da + Sa - Sa*Da) + Da*(1 - Sa)
-    //      = Sa + (1 - Sa)*Da
-    dst_p[3] = src_alpha + ((one_minus_src_alpha*dst_p[3]) >> 15);
+    const fix15_t Da = dst_p[3];
+    dst_p[0] += fix15_mul(Sca0, fix15_one - Da);
+    dst_p[1] += fix15_mul(Sca1, fix15_one - Da);
+    dst_p[2] += fix15_mul(Sca2, fix15_one - Da);
+    dst_p[3] = Sa + Da - fix15_mul(Sa, Da);
 #endif
 }
 
@@ -88,29 +101,24 @@ rgba_composite_screen_rgba
 #else
 rgba_composite_screen_rgbu
 #endif
-    (const uint16_t src_p[],
-     uint16_t dst_p[],
-     const uint16_t opac)
+    (const fix15_short_t src_p[],
+     fix15_short_t dst_p[],
+     const fix15_short_t opac)
 {
+    // http://www.w3.org/TR/SVGCompositing/#comp-op-multiply
     // Dca' = (Sca*Da + Dca*Sa - Sca*Dca) + Sca*(1 - Da) + Dca*(1 - Sa)
     //      = Sca + Dca - Sca*Dca
-    const uint32_t col0 = ((uint32_t)src_p[0]*opac)
-                          + (((uint32_t)dst_p[0]) << 15);
-    const uint32_t col1 = ((uint32_t)src_p[1]*opac)
-                          + (((uint32_t)dst_p[1]) << 15);
-    const uint32_t col2 = ((uint32_t)src_p[2]*opac)
-                          + (((uint32_t)dst_p[2]) << 15);
-    const uint32_t src_col0 = ((uint32_t)src_p[0] * opac) >> 15;
-    const uint32_t src_col1 = ((uint32_t)src_p[1] * opac) >> 15;
-    const uint32_t src_col2 = ((uint32_t)src_p[2] * opac) >> 15;
-    dst_p[0] = (col0 - ((uint32_t)src_col0*dst_p[0])) >> 15;
-    dst_p[1] = (col1 - ((uint32_t)src_col1*dst_p[1])) >> 15;
-    dst_p[2] = (col2 - ((uint32_t)src_col2*dst_p[2])) >> 15;
+
+    const fix15_t Sca0 = fix15_mul(src_p[0], opac);
+    const fix15_t Sca1 = fix15_mul(src_p[1], opac);
+    const fix15_t Sca2 = fix15_mul(src_p[2], opac);
+    dst_p[0] += Sca0 - fix15_mul(Sca0, dst_p[0]);
+    dst_p[1] += Sca1 - fix15_mul(Sca1, dst_p[1]);
+    dst_p[2] += Sca2 - fix15_mul(Sca2, dst_p[2]);
 #ifdef COMPOSITE_MODE_RGBA
-    // Da'  = Sa + Da - Sa*Da
-    const uint32_t src_alpha = ((uint32_t)src_p[3] * opac) >> 15;
-    dst_p[3] =   src_alpha + (uint32_t)dst_p[3]
-             - ((src_alpha * (uint32_t)dst_p[3]) >> 15);
+    const fix15_t Sa = fix15_mul(src_p[3], opac);
+    const fix15_t Da = fix15_mul(dst_p[3], opac);
+    dst_p[3] = Sa + Da - fix15_mul(Sa, Da);
 #endif
 }
 
@@ -121,60 +129,57 @@ rgba_composite_overlay_rgba
 #else
 rgba_composite_overlay_rgbu
 #endif
-    (const uint16_t src_p[],
-     uint16_t dst_p[],
-     const uint16_t opac)
+    (const fix15_short_t src_p[],
+     fix15_short_t dst_p[],
+     const fix15_short_t opac)
 {
-    const uint32_t Sa = ((uint32_t)src_p[3] * opac)>>15;
-    const uint32_t one_minus_Sa = (1<<15) - Sa;
+    const fix15_t Sa = fix15_mul(src_p[3], opac);
+    const fix15_t one_minus_Sa = fix15_one - Sa;
 #ifdef COMPOSITE_MODE_RGBA
-    const uint32_t Da = dst_p[3];
-    const uint32_t one_minus_Da = (1<<15) - Da;
-    const uint32_t SaDa = (Sa * Da) >> 15;
+    const fix15_t Da = dst_p[3];
+    const fix15_t one_minus_Da = fix15_one - Da;
+    const fix15_t SaDa = fix15_mul(Sa, Da);
 #else
-    const uint32_t Da = 1<<15;
+    const fix15_t Da = fix15_one;
 #endif
-    // From http://www.w3.org/TR/SVGCompositing/#comp-op-overlay --
+    // http://www.w3.org/TR/SVGCompositing/#comp-op-overlay
     // if 2 * Dca <= Da
     //   Dca' = 2*Sca*Dca + Sca*(1 - Da) + Dca*(1 - Sa)
     // otherwise
     //   Dca' = Sa*Da - 2*(Da - Dca)*(Sa - Sca) + Sca*(1 - Da) + Dca*(1 - Sa)
     //        = Sca*(1 + Da) + Dca*(1 + Sa) - 2*Dca*Sca - Da*Sa
     for (int c=0; c<3; c++) {
-        const uint32_t Dca = dst_p[c];
-        const uint32_t twoDca = Dca * 2;
-        const uint32_t Sca = ((uint32_t)src_p[c] * opac)>>15;
-        uint32_t Dca_out = 0;
+        const fix15_t Dca = dst_p[c];
+        const fix15_t twoDca = Dca * 2;
+        const fix15_t Sca = fix15_mul(src_p[c], opac);
+        fix15_t Dca_out = 0;
         if (twoDca <= Da) {
-            Dca_out = ((twoDca * Sca)>>15)
-                    + ((Dca * one_minus_Sa)>>15);
+            Dca_out = fix15_sumprods( twoDca, Sca,  Dca, one_minus_Sa );
 #ifdef COMPOSITE_MODE_RGBA
             // (1-Da) != 0
-            Dca_out += ((Sca * one_minus_Da)>>15);
+            Dca_out += fix15_mul(Sca, one_minus_Da);
 #endif //COMPOSITE_MODE_RGBA
         }
         else {
 #ifdef COMPOSITE_MODE_RGBA
-            Dca_out = ((Sca * ((1<<15) + Da))>>15)
-                    + ((Dca * ((1<<15) + Sa))>>15)
-                    - ((twoDca * Sca) >> 15)
+            Dca_out = fix15_sumprods(Sca, fix15_one+Da,  Dca, fix15_one+Sa)
+                    - fix15_mul(twoDca, Sca)
                     - SaDa;
 #else
             // Da == 1
-            Dca_out = (Sca * 2)
-                    + ((Dca * ((1<<15) + Sa))>>15)
-                    - ((twoDca * Sca) >> 15)
+            Dca_out = Sca * 2
+                    + fix15_mul(Dca, fix15_one+Sa)
+                    - fix15_mul(twoDca, Sca)
                     - Sa;
 #endif //COMPOSITE_MODE_RGBA
         }
-        dst_p[c] = CLAMP(Dca_out, 0, (1<<15));
+        dst_p[c] = fix15_short_clamp(Dca_out);
 #ifdef HEAVY_DEBUG
         assert(dst_p[c] <= (1<<15));
         assert(src_p[c] <= (1<<15));
 #endif //HEAVY_DEBUG
     }
 
-    // Da'  = Sa + Da - Sa*Da
 #ifdef COMPOSITE_MODE_RGBA
     dst_p[3] = Sa + Da - SaDa;
 #ifdef HEAVY_DEBUG
@@ -195,18 +200,16 @@ rgba_composite_hard_light_rgba
 #else
 rgba_composite_hard_light_rgbu
 #endif
-    (const uint16_t src_p[],
-     uint16_t dst_p[],
-     const uint16_t opac)
+    (const fix15_short_t src_p[],
+     fix15_short_t dst_p[],
+     const fix15_short_t opac)
 {
-    const uint32_t Sa = ((uint32_t)src_p[3] * opac)>>15;
-    const uint32_t one_minus_Sa = (1<<15) - Sa;
+    const fix15_t Sa = fix15_mul(src_p[3], opac);
+    const fix15_t one_minus_Sa = fix15_one - Sa;
 #ifdef COMPOSITE_MODE_RGBA
-    const uint32_t Da = dst_p[3];
-    const uint32_t one_minus_Da = (1<<15) - Da;
-    const uint32_t SaDa = (Sa * Da) >> 15;
-#else
-    const uint32_t Da = 1<<15;
+    const fix15_t Da = dst_p[3];
+    const fix15_t one_minus_Da = fix15_one - Da;
+    const fix15_t SaDa = fix15_mul(Sa, Da);
 #endif
     // From http://www.w3.org/TR/SVGCompositing/#comp-op-hard-light --
     // if 2 * Sca <= Da
@@ -217,37 +220,38 @@ rgba_composite_hard_light_rgbu
     //
     // Identical to Overlay, but with a different test.
     for (int c=0; c<3; c++) {
-        const uint32_t Dca = dst_p[c];
-        const uint32_t twoDca = Dca * 2;
-        const uint32_t Sca = ((uint32_t)src_p[c] * opac)>>15;
-        const uint32_t twoSca = Sca * 2;
-        uint32_t Dca_out = 0;
+        const fix15_t Dca = dst_p[c];
+        const fix15_t twoDca = Dca * 2;
+        const fix15_t Sca = fix15_mul(src_p[c], opac);
+        const fix15_t twoSca = Sca * 2;
+        fix15_t Dca_out = 0;
         if (twoSca <= Sa) {
-            Dca_out = ((twoDca * Sca)>>15)
-                    + ((Dca * one_minus_Sa)>>15);
+            Dca_out = fix15_mul(twoDca, Sca)
+                    + fix15_mul(Dca, one_minus_Sa);
 #ifdef COMPOSITE_MODE_RGBA
             // (1-Da) != 0
-            Dca_out += ((Sca * one_minus_Da)>>15);
+            Dca_out += fix15_mul(Sca, one_minus_Da);
 #endif //COMPOSITE_MODE_RGBA
         }
         else {
+            // Dca' = Sca*(1 + Da) + Dca*(1 + Sa) - 2*Dca*Sca - Da*Sa
 #ifdef COMPOSITE_MODE_RGBA
-            Dca_out = ((Sca * ((1<<15) + Da))>>15)
-                    + ((Dca * ((1<<15) + Sa))>>15)
-                    - ((twoDca * Sca) >> 15)
+            Dca_out = fix15_mul(Sca, fix15_one + Da)
+                    + fix15_mul(Dca, fix15_one + Sa)
+                    - fix15_mul(twoDca, Sca)
                     - SaDa;
 #else
             // Da == 1
             Dca_out = twoSca
-                    + ((Dca * ((1<<15) + Sa))>>15)
-                    - ((twoDca * Sca) >> 15)
+                    + fix15_mul(Dca, fix15_one + Sa)
+                    - fix15_mul(twoDca, Sca)
                     - Sa;
 #endif //COMPOSITE_MODE_RGBA
         }
-        dst_p[c] = CLAMP(Dca_out, 0, (1<<15));
+        dst_p[c] = fix15_short_clamp(Dca_out);
 #ifdef HEAVY_DEBUG
-        assert(dst_p[c] <= (1<<15));
-        assert(src_p[c] <= (1<<15));
+        assert(dst_p[c] <= fix15_one);
+        assert(src_p[c] <= fix15_one);
 #endif //HEAVY_DEBUG
     }
 
@@ -271,96 +275,79 @@ rgba_composite_color_dodge_rgba
 #else
 rgba_composite_color_dodge_rgbu
 #endif
-    (const uint16_t src_p[],
-     uint16_t dst_p[],
-     const uint16_t opac)
+    (const fix15_short_t src_p[],
+     fix15_short_t dst_p[],
+     const fix15_short_t opac)
 {
-    const uint32_t src_alpha = ((uint32_t)src_p[3]*opac)>>15;
-    const uint32_t one_minus_src_alpha = (1<<15) - src_alpha;
+    // http://www.w3.org/TR/SVGCompositing/#comp-op-color-dodge
+    const fix15_t Sa = fix15_mul(src_p[3], opac);
+    const fix15_t one_minus_Sa = fix15_one - Sa;
 #ifdef COMPOSITE_MODE_RGBA
-    const uint32_t dst_alpha = dst_p[3];
-    const uint32_t one_minus_dst_alpha = (1<<15) - dst_alpha;
+    const fix15_t Da = dst_p[3];
+    const fix15_t one_minus_Da = fix15_one - Da;
+    const fix15_t SaDa = fix15_mul(Sa, Da);
+#else
+    const fix15_t SaDa = Sa;
 #endif
 
     for (int c=0; c<3; c++) {
-        const uint32_t s = ((uint32_t)src_p[c]*opac)>>15;
-        const uint32_t d = dst_p[c];
-        const uint32_t src_alpha_minus_src = src_alpha - s;
-        if (src_alpha_minus_src == 0 && d == 0) {
-            // Sca == Sa and Dca == 0
-            //  Dca' = Sca*(1 - Da) + Dca*(1 - Sa)
-            //       = Sca*(1 - Da)
+        const fix15_t Sca = fix15_mul(src_p[c], opac);
+        const fix15_t Dca = dst_p[c];
+        fix15_t Dca_out = 0;
+        if (Sca >= Sa) {
+            if (Dca == 0) {
+                // Sca == Sa and Dca == 0
+                //  Dca' = Sca*(1 - Da) + Dca*(1 - Sa)
+                //       = Sca*(1 - Da)
 #ifdef COMPOSITE_MODE_RGBA
-            dst_p[c] = CLAMP((s * one_minus_dst_alpha) >> 15, 0, (1<<15));
+                Dca_out = fix15_mul(Sca, one_minus_Da);
 #else
-            dst_p[c] = 0;
-#endif
-        }
-        else if (src_alpha_minus_src == 0) {
-            // otherwise if Sca == Sa
-            //  Dca' = Sa*Da + Sca*(1 - Da) + Dca*(1 - Sa)
-            //       = Sca*Da + Sca*(1 - Da) + Dca*(1 - Sa)
-            //       = Sca*(Da + 1 - Da) + Dca*(1 - Sa)
-            //       = Sca + Dca*(1 - Sa)
-            dst_p[c] = CLAMP( s + ((d * one_minus_src_alpha)>>15),
-                              0, (1<<15) );
+                Dca_out = 0;
+#endif //COMPOSITE_MODE_RGBA
+            }
+            else {
+                // otherwise if Sca == Sa and Dca > 0
+                //  Dca' = Sa*Da + Sca*(1 - Da) + Dca*(1 - Sa)
+                //       = Sca*Da + Sca*(1 - Da) + Dca*(1 - Sa)
+                //       = Sca*(Da + 1 - Da) + Dca*(1 - Sa)
+                //       = Sca + Dca*(1 - Sa)
+                Dca_out = Sca + fix15_mul(Dca, one_minus_Sa);
+            }
         }
         else {
             // Sca < Sa
-            //    Dca' = Sa*Da * min(1, Dca/Da * Sa/(Sa - Sca))
-            //          + Sca*(1 - Da) + Dca*(1 - Sa)
-            const uint32_t dst_times_src_alpha_B30 = d*src_alpha;
-            // when 1 < Dca/Da * Sa/(Sa - Sca) 
-            //      1 < (Dca*Sa) / (Da*(Sa - Sca)
-            //  (Da*(Sa - Sca) < (Dca*Sa)   because Sca - Sa is -ve and nonzero
+            //    Dca' = Sa*Da * min(1, m) + Sca*(1 - Da) + Dca*(1 - Sa)
+            // Where
+            //       m = Dca/Da * Sa/(Sa - Sca)
+            //         = (Dca*Sa) / (Da*(Sa - Sca))
+            fix15_t m = 0;
 #ifdef COMPOSITE_MODE_RGBA
-            if (dst_times_src_alpha_B30 > (dst_alpha * src_alpha_minus_src))
+            if (Da != 0) {
+                m = fix15_div(fix15_mul(Dca, Sa), fix15_mul(Da, Sa - Sca));
+            }
+            Dca_out = fix15_sumprods(Sca, one_minus_Da, Dca, one_minus_Sa);
 #else
-            if (dst_times_src_alpha_B30 > (src_alpha_minus_src << 15))
+            // Da == 1
+            m = fix15_div(fix15_mul(Dca, Sa), Sa - Sca);
+            Dca_out = fix15_mul(Dca, one_minus_Sa);
 #endif
-            {
-                // min(...)==1
-                //    Dca' = Sa * Da * min(...) + Sca*(1 - Da) + Dca*(1 - Sa)
-                //    Dca' = Sa * Da + Sca*(1 - Da) + Dca*(1 - Sa)
-                dst_p[c] = CLAMP(
-                      (  (d * one_minus_src_alpha) // B30
-#ifdef COMPOSITE_MODE_RGBA
-                       + (s * one_minus_dst_alpha) // B30
-                       + (src_alpha * dst_alpha)   // B30
-#else
-                    // + (s * 0)
-                       + (src_alpha << 15)         // B30
-#endif
-                      ) >> 15,
-                  0, 1<<15);
+            if (m < fix15_one) {
+                Dca_out += fix15_mul(SaDa, m);
             }
             else {
-                // min(...) == Dca/Da * Sa/(Sa - Sca)
-                //    Dca' = Sa * Da * min(...) + Sca*(1 - Da) + Dca*(1 - Sa)
-                //    Dca' = Sa * Da * Dca/Da * Sa/(Sa - Sca)
-                //            + Sca*(1 - Da) + Dca*(1 - Sa)
-                //    Dca' = Sa * Dca * Sa/(Sa - Sca)
-                //            + Sca*(1 - Da) + Dca*(1 - Sa)
-                dst_p[c] = CLAMP(
-                         ( src_alpha * (dst_times_src_alpha_B30>>15)
-                           / src_alpha_minus_src )
-#ifdef COMPOSITE_MODE_RGBA
-                         + ((s * one_minus_dst_alpha) >> 15)
-#endif
-                         + ((d * one_minus_src_alpha) >> 15),
-                     0, 1<<15);
+                Dca_out += SaDa;
             }
         }
+        dst_p[c] = fix15_short_clamp(Dca_out);
 #ifdef HEAVY_DEBUG
-        assert(dst_p[c] <= (1<<15));
-        assert(src_p[c] <= (1<<15));
+        assert(dst_p[c] <= fix15_one);
+        assert(src_p[c] <= fix15_one);
 #endif
     }
 
 #ifdef COMPOSITE_MODE_RGBA
     // Da'  = Sa + Da - Sa*Da
-    dst_p[3] = CLAMP(src_alpha + dst_alpha - ((src_alpha*dst_alpha)>>15),
-                     0, (1<<15));
+    dst_p[3] = fix15_short_clamp(Sa + Da - SaDa);
 #ifdef HEAVY_DEBUG
     assert(src_p[0] <= src_p[3]);
     assert(dst_p[0] <= dst_p[3]);
@@ -372,8 +359,8 @@ rgba_composite_color_dodge_rgbu
 #endif //COMPOSITE_MODE_RGBA
 
 #ifdef HEAVY_DEBUG
-    assert(dst_p[3] <= (1<<15));
-    assert(src_p[3] <= (1<<15));
+    assert(dst_p[3] <= fix15_one);
+    assert(src_p[3] <= fix15_one);
 #endif
 }
 
@@ -385,42 +372,39 @@ rgba_composite_color_burn_rgba
 #else
 rgba_composite_color_burn_rgbu
 #endif
-    (const uint16_t src_p[],
-     uint16_t dst_p[],
-     const uint16_t opac)
+    (const fix15_short_t src_p[],
+     fix15_short_t dst_p[],
+     const fix15_short_t opac)
 {
-    const uint32_t src_alpha30 = (uint32_t)src_p[3]*opac;
-    const uint32_t src_alpha = src_alpha30>>15;
-    const uint32_t one_minus_src_alpha = (1<<15) - src_alpha;
+    // http://www.w3.org/TR/SVGCompositing/#comp-op-color-burn
+    const fix15_t Sa = fix15_mul(src_p[3], opac);
+    const fix15_t one_minus_Sa = fix15_one - Sa;
 #ifdef COMPOSITE_MODE_RGBA
-    const uint32_t dst_alpha = dst_p[3];
-    const uint32_t one_minus_dst_alpha = (1<<15) - dst_alpha;
+    const fix15_t Da = dst_p[3];
+    const fix15_t one_minus_Da = fix15_one - Da;
 #else
-    const uint32_t dst_alpha = 1<<15;
+    const fix15_t Da = fix15_one;
 #endif
     for (int c=0; c<3; c++) {
-        const uint32_t s30 = (uint32_t)src_p[c] * opac;
-        const uint32_t s = s30 >> 15;
-        const uint32_t d = dst_p[c];
-        if (s == 0) {
-            if (d != dst_alpha) {
-                //if Sca == 0 and Dca == Da
-                //  Dca' = Sa*Da + Sca*(1 - Da) + Dca*(1 - Sa)
-                //       = Sa*Dca + Dca*(1 - Sa)
-                //       = Sa*Dca + Dca - Sa*Dca
-                //       = Dca
-
-                //otherwise if Sca == 0
+        const fix15_t Sca = fix15_mul(src_p[c], opac);
+        const fix15_t Dca = dst_p[c];
+        if (Sca == 0) {
+            //if Sca == 0 and Dca == Da
+            //  Dca' = Sa*Da + Sca*(1 - Da) + Dca*(1 - Sa)
+            //       = Sa*Dca + Dca*(1 - Sa)
+            //       = Sa*Dca + Dca - Sa*Dca
+            //       = Dca
+            if (Dca != Da) {
+                //otherwise (when Sca == 0)
                 //  Dca' = Sca*(1 - Da) + Dca*(1 - Sa)
                 //       = Dca*(1 - Sa)
-                dst_p[c] = CLAMP(((d * one_minus_src_alpha) >> 15),
-                                 0, (1<<15));
+                dst_p[c] = fix15_short_clamp(fix15_mul(Dca, one_minus_Sa));
             }
         }
         else {
 #ifdef HEAVY_DEBUG
-            assert(s <= (1<<15));
-            assert(s > 0);
+            assert(Sca <= fix15_one);
+            assert(Sca > 0);
 #endif
             //otherwise if Sca > 0
             //  let i = Sca*(1 - Da) + Dca*(1 - Sa)
@@ -430,36 +414,38 @@ rgba_composite_color_burn_rgbu
             //       = Sa*Da * (1 - min(1, (1 - Dca/Da) * Sa/Sca)) + i
 
 #ifdef COMPOSITE_MODE_RGBA
-            uint32_t res = (s*one_minus_dst_alpha + d*one_minus_src_alpha)>>15;
-            if (dst_alpha > 0) {
-                const uint32_t m = (  ((1<<15) - ((d << 15) / dst_alpha))
-                                    * src_alpha) / s;
-                if (m < (1<<15)) {
-                    res += (  ((src_alpha * dst_alpha) >> 15)
-                            * ((1<<15) - m) ) >> 15;
+            fix15_t res = fix15_sumprods(Sca, one_minus_Da, Dca, one_minus_Sa);
+            if (Da > 0) {
+                const fix15_t m = fix15_div(fix15_mul(
+                                              fix15_one - fix15_div(Dca, Da),
+                                              Sa),
+                                            Sca);
+                if (m < fix15_one) {
+                    res += fix15_mul(fix15_mul(Sa, Da), fix15_one - m);
                 }
             }
 #else
-            uint32_t res = (d*one_minus_src_alpha)>>15;
-            const uint32_t m = (((1<<15) - d)
-                                * src_alpha) / s;
-            if (m < (1<<15)) {
-                res += (  src_alpha
-                        * ((1<<15) - m) ) >> 15;
+            fix15_t res = fix15_mul(Dca, one_minus_Sa);
+            const fix15_t m = fix15_div(fix15_mul(
+                                          fix15_one - Dca,
+                                          Sa),
+                                        Sca);
+            if (m < fix15_one) {
+                res += fix15_mul(Sa, fix15_one - m);
             }
 #endif
-            dst_p[c] = CLAMP(res, 0, (1<<15));
+            dst_p[c] = fix15_short_clamp(res);
         }
 #ifdef HEAVY_DEBUG
-        assert(dst_p[c] <= (1<<15));
-        assert(src_p[c] <= (1<<15));
+        assert(dst_p[c] <= fix15_one);
+        assert(src_p[c] <= fix15_one);
 #endif
     }
 
 #ifdef COMPOSITE_MODE_RGBA
     // Da'  = Sa + Da - Sa*Da
-    dst_p[3] = CLAMP(src_alpha + dst_alpha - ((src_alpha*dst_alpha)>>15),
-                     0, (1<<15));
+    dst_p[3] = fix15_short_clamp(Sa + Da
+                                 - fix15_mul(Sa, Da));
 #ifdef HEAVY_DEBUG
     assert(src_p[0] <= src_p[3]);
     assert(dst_p[0] <= dst_p[3]);
@@ -471,8 +457,8 @@ rgba_composite_color_burn_rgbu
 #endif //COMPOSITE_MODE_RGBA
 
 #ifdef HEAVY_DEBUG
-    assert(dst_p[3] <= (1<<15));
-    assert(src_p[3] <= (1<<15));
+    assert(dst_p[3] <= fix15_one);
+    assert(src_p[3] <= fix15_one);
 #endif
 }
 
