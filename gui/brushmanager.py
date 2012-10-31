@@ -24,9 +24,9 @@ from warnings import warn
 preview_w = 128
 preview_h = 128
 
-DEFAULT_STARTUP_GROUP = 'set#2'  # Suggestion only
-DEFAULT_BRUSH = 'deevad/artpen'  # TODO: phase out and use heuristics?
-DEFAULT_ERASER = 'deevad/stick'  # TODO: ---------------"--------------
+DEFAULT_STARTUP_GROUP = 'set#2'  # Suggestion only (FIXME: no effect?)
+DEFAULT_BRUSH = 'deevad/2B_pencil'  # TODO: phase out and use heuristics?
+DEFAULT_ERASER = 'deevad/kneaded_eraser_large'  # TODO: ---------------"--------------
 FOUND_BRUSHES_GROUP = 'lost&found'
 DELETED_BRUSH_GROUP = 'deleted'
 FAVORITES_BRUSH_GROUP = 'favorites'
