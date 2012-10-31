@@ -52,7 +52,7 @@
             "inputs": {}
         }, 
         "dabs_per_actual_radius": {
-            "base_value": 4.0, 
+            "base_value": 2.0, 
             "inputs": {}
         }, 
         "dabs_per_basic_radius": {
@@ -60,7 +60,7 @@
             "inputs": {}
         }, 
         "dabs_per_second": {
-            "base_value": 0.0, 
+            "base_value": 80.0, 
             "inputs": {}
         }, 
         "direction_filter": {
@@ -76,23 +76,12 @@
             "inputs": {}
         }, 
         "eraser": {
-            "base_value": 0.0, 
+            "base_value": 1.0, 
             "inputs": {}
         }, 
         "hardness": {
-            "base_value": 0.2, 
-            "inputs": {
-                "pressure": [
-                    [
-                        0.0, 
-                        0.0
-                    ], 
-                    [
-                        1.0, 
-                        0.3
-                    ]
-                ]
-            }
+            "base_value": 0.8, 
+            "inputs": {}
         }, 
         "lock_alpha": {
             "base_value": 0.0, 
@@ -100,18 +89,7 @@
         }, 
         "offset_by_random": {
             "base_value": 0.0, 
-            "inputs": {
-                "pressure": [
-                    [
-                        0.0, 
-                        0.354167
-                    ], 
-                    [
-                        1.0, 
-                        -0.0
-                    ]
-                ]
-            }
+            "inputs": {}
         }, 
         "offset_by_speed": {
             "base_value": 0.0, 
@@ -122,7 +100,7 @@
             "inputs": {}
         }, 
         "opaque": {
-            "base_value": 0.2, 
+            "base_value": 1.0, 
             "inputs": {}
         }, 
         "opaque_linearize": {
@@ -138,6 +116,14 @@
                         0.0
                     ], 
                     [
+                        0.015, 
+                        0.0
+                    ], 
+                    [
+                        0.025, 
+                        1.0
+                    ], 
+                    [
                         1.0, 
                         1.0
                     ]
@@ -149,26 +135,28 @@
             "inputs": {}
         }, 
         "radius_logarithmic": {
-            "base_value": 0.8, 
+            "base_value": 1.21, 
             "inputs": {
                 "pressure": [
                     [
                         0.0, 
-                        0.0
+                        -0.255937
+                    ], 
+                    [
+                        0.544304, 
+                        0.060938
+                    ], 
+                    [
+                        0.857595, 
+                        0.402187
+                    ], 
+                    [
+                        0.939873, 
+                        0.743438
                     ], 
                     [
                         1.0, 
-                        0.17
-                    ]
-                ], 
-                "speed2": [
-                    [
-                        0.0, 
-                        -0.0
-                    ], 
-                    [
-                        4.0, 
-                        -0.04
+                        1.17
                     ]
                 ]
             }
@@ -178,11 +166,11 @@
             "inputs": {}
         }, 
         "slow_tracking": {
-            "base_value": 0.0, 
+            "base_value": 0.65, 
             "inputs": {}
         }, 
         "slow_tracking_per_dab": {
-            "base_value": 0.0, 
+            "base_value": 0.8, 
             "inputs": {}
         }, 
         "smudge": {
@@ -198,7 +186,7 @@
             "inputs": {}
         }, 
         "speed1_gamma": {
-            "base_value": 4.0, 
+            "base_value": 2.87, 
             "inputs": {}
         }, 
         "speed1_slowness": {

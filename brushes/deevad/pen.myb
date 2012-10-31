@@ -1,7 +1,7 @@
 {
     "comment": "MyPaint brush file", 
     "group": "", 
-    "parent_brush_name": "deevad/pen", 
+    "parent_brush_name": "", 
     "settings": {
         "anti_aliasing": {
             "base_value": 0.0, 
@@ -52,7 +52,7 @@
             "inputs": {}
         }, 
         "dabs_per_actual_radius": {
-            "base_value": 2.2, 
+            "base_value": 5.24, 
             "inputs": {}
         }, 
         "dabs_per_basic_radius": {
@@ -68,7 +68,7 @@
             "inputs": {}
         }, 
         "elliptical_dab_angle": {
-            "base_value": 90.0, 
+            "base_value": 178.09, 
             "inputs": {}
         }, 
         "elliptical_dab_ratio": {
@@ -80,26 +80,16 @@
             "inputs": {}
         }, 
         "hardness": {
-            "base_value": 0.39, 
+            "base_value": 1.0, 
             "inputs": {
                 "pressure": [
                     [
                         0.0, 
-                        0.0
+                        0.12
                     ], 
                     [
                         1.0, 
-                        0.05
-                    ]
-                ], 
-                "speed1": [
-                    [
-                        0.0, 
-                        -0.0
-                    ], 
-                    [
-                        1.0, 
-                        -0.07
+                        -0.18
                     ]
                 ]
             }
@@ -121,7 +111,7 @@
             "inputs": {}
         }, 
         "opaque": {
-            "base_value": 1.0, 
+            "base_value": 0.0899999999998, 
             "inputs": {}
         }, 
         "opaque_linearize": {
@@ -137,12 +127,20 @@
                         0.0
                     ], 
                     [
-                        0.015, 
-                        0.0
+                        0.302469, 
+                        0.104167
                     ], 
                     [
-                        0.015, 
-                        1.0
+                        0.546296, 
+                        0.333333
+                    ], 
+                    [
+                        0.688272, 
+                        0.729167
+                    ], 
+                    [
+                        0.814815, 
+                        0.927083
                     ], 
                     [
                         1.0, 
@@ -156,26 +154,24 @@
             "inputs": {}
         }, 
         "radius_logarithmic": {
-            "base_value": 0.37, 
+            "base_value": 0.72, 
             "inputs": {
                 "pressure": [
                     [
                         0.0, 
-                        0.0
+                        -0.5
+                    ], 
+                    [
+                        0.326923, 
+                        -0.320312
+                    ], 
+                    [
+                        0.717949, 
+                        0.046875
                     ], 
                     [
                         1.0, 
-                        0.5
-                    ]
-                ], 
-                "speed1": [
-                    [
-                        0.0, 
-                        -0.0
-                    ], 
-                    [
-                        1.0, 
-                        -0.21
+                        0.75
                     ]
                 ]
             }
@@ -185,11 +181,11 @@
             "inputs": {}
         }, 
         "slow_tracking": {
-            "base_value": 0.65, 
+            "base_value": 1.03, 
             "inputs": {}
         }, 
         "slow_tracking_per_dab": {
-            "base_value": 0.8, 
+            "base_value": 1.52, 
             "inputs": {}
         }, 
         "smudge": {
@@ -205,7 +201,7 @@
             "inputs": {}
         }, 
         "speed1_gamma": {
-            "base_value": 2.87, 
+            "base_value": 4.0, 
             "inputs": {}
         }, 
         "speed1_slowness": {

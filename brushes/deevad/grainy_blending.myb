@@ -1,10 +1,10 @@
 {
     "comment": "MyPaint brush file", 
     "group": "", 
-    "parent_brush_name": "", 
+    "parent_brush_name": "grainy_blending", 
     "settings": {
         "anti_aliasing": {
-            "base_value": 0.0, 
+            "base_value": 1.0, 
             "inputs": {}
         }, 
         "change_color_h": {
@@ -32,11 +32,11 @@
             "inputs": {}
         }, 
         "color_s": {
-            "base_value": 0.0, 
+            "base_value": 1.0, 
             "inputs": {}
         }, 
         "color_v": {
-            "base_value": 0.0, 
+            "base_value": 1.0, 
             "inputs": {}
         }, 
         "colorize": {
@@ -52,15 +52,15 @@
             "inputs": {}
         }, 
         "dabs_per_actual_radius": {
-            "base_value": 4.0, 
+            "base_value": 6.0, 
             "inputs": {}
         }, 
         "dabs_per_basic_radius": {
-            "base_value": 0.0, 
+            "base_value": 5.49, 
             "inputs": {}
         }, 
         "dabs_per_second": {
-            "base_value": 0.0, 
+            "base_value": 42.38, 
             "inputs": {}
         }, 
         "direction_filter": {
@@ -80,38 +80,16 @@
             "inputs": {}
         }, 
         "hardness": {
-            "base_value": 0.2, 
-            "inputs": {
-                "pressure": [
-                    [
-                        0.0, 
-                        0.0
-                    ], 
-                    [
-                        1.0, 
-                        0.3
-                    ]
-                ]
-            }
+            "base_value": 0.15, 
+            "inputs": {}
         }, 
         "lock_alpha": {
             "base_value": 0.0, 
             "inputs": {}
         }, 
         "offset_by_random": {
-            "base_value": 0.0, 
-            "inputs": {
-                "pressure": [
-                    [
-                        0.0, 
-                        0.354167
-                    ], 
-                    [
-                        1.0, 
-                        -0.0
-                    ]
-                ]
-            }
+            "base_value": 1.62, 
+            "inputs": {}
         }, 
         "offset_by_speed": {
             "base_value": 0.0, 
@@ -122,8 +100,19 @@
             "inputs": {}
         }, 
         "opaque": {
-            "base_value": 0.2, 
-            "inputs": {}
+            "base_value": 1.17, 
+            "inputs": {
+                "pressure": [
+                    [
+                        0.0, 
+                        0.0
+                    ], 
+                    [
+                        1.0, 
+                        0.4
+                    ]
+                ]
+            }
         }, 
         "opaque_linearize": {
             "base_value": 0.0, 
@@ -145,40 +134,19 @@
             }
         }, 
         "radius_by_random": {
-            "base_value": 0.0, 
+            "base_value": 0.05, 
             "inputs": {}
         }, 
         "radius_logarithmic": {
-            "base_value": 0.8, 
-            "inputs": {
-                "pressure": [
-                    [
-                        0.0, 
-                        0.0
-                    ], 
-                    [
-                        1.0, 
-                        0.17
-                    ]
-                ], 
-                "speed2": [
-                    [
-                        0.0, 
-                        -0.0
-                    ], 
-                    [
-                        4.0, 
-                        -0.04
-                    ]
-                ]
-            }
+            "base_value": 1.6, 
+            "inputs": {}
         }, 
         "restore_color": {
-            "base_value": 0.0, 
+            "base_value": 1.0, 
             "inputs": {}
         }, 
         "slow_tracking": {
-            "base_value": 0.0, 
+            "base_value": 2.0, 
             "inputs": {}
         }, 
         "slow_tracking_per_dab": {
@@ -186,15 +154,15 @@
             "inputs": {}
         }, 
         "smudge": {
-            "base_value": 0.0, 
+            "base_value": 1.0, 
             "inputs": {}
         }, 
         "smudge_length": {
-            "base_value": 0.5, 
+            "base_value": 0.95, 
             "inputs": {}
         }, 
         "smudge_radius_log": {
-            "base_value": 0.0, 
+            "base_value": 1.45, 
             "inputs": {}
         }, 
         "speed1_gamma": {
