@@ -54,7 +54,6 @@ if env['enable_gegl']:
     env.ParseConfig('pkg-config --cflags --libs gegl-0.2')
     env.Append(CPPDEFINES=['HAVE_GEGL'])
 
-
 env.ParseConfig('pkg-config --cflags --libs ' + pygobject)
 
 # Get the numpy include path (for numpy/arrayobject.h).
@@ -85,6 +84,11 @@ else:
         print 'going to try python-config instead'
         env.ParseConfig('python-config --ldflags')
         env.ParseConfig('python-config --cflags')
+
+if env.get('CPPDEFINES'):
+    # make sure assertions are enabled
+    env['CPPDEFINES'].remove('NDEBUG')
+
 
 # Build against brushlib
 env.Append(LIBS="mypaint")
