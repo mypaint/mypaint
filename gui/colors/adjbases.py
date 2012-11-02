@@ -38,12 +38,12 @@ class ColorManager (gobject.GObject):
 
     # Class constants
     __gtype_name__ = "ColorManager" #: GObject integration
-    __DEFAULT_HIST =  ['#666', '#000', '#fff', '#09c', '#c00']
+    __DEFAULT_HIST = ['#ee3333', '#336699', '#44aa66', '#aa6633', '#292929']
     __HIST_LEN = 5
 
     # Instance data (defaults, overridden)
     __color = None     #: Currently edited colour, a UIColor object.
-    __hist = None  #: List of previous colours, most recent 1st
+    __hist = None  #: List of previous colours, most recent last
     __adjusters = None  #: The list of registered adjusters.
     __prefs = None   #: Shared preferences dictionary.
     __picker_cursor = gdk.Cursor(gdk.CROSSHAIR) #: Cursor for for picker adjs
@@ -57,12 +57,19 @@ class ColorManager (gobject.GObject):
         if prefs is None:
             prefs = dict()
         self.__prefs = prefs
-        col = RGBColor.new_from_hex_str(prefs.get(PREFS_KEY_CURRENT_COLOR))
-        self.__color = col
-        hist = list(prefs.get(PREFS_KEY_COLOR_HISTORY, []))
-        hist += self.__DEFAULT_HIST
-        hist = [RGBColor.new_from_hex_str(s) for s in hist]
-        self.__hist = hist[:self.__HIST_LEN]
+
+        # Build history. Last item is most recent.
+        hist_hex = list(prefs.get(PREFS_KEY_COLOR_HISTORY, []))
+        hist_hex = self.__DEFAULT_HIST + hist_hex
+        self.__hist = [RGBColor.new_from_hex_str(s) for s in hist_hex]
+        self.__trim_hist()
+
+        # Restore current colour, or use the most recent colour.
+        col_hex = prefs.get(PREFS_KEY_CURRENT_COLOR, None)
+        if col_hex is None:
+            col_hex = hist_hex[-1]
+        self.__color = RGBColor.new_from_hex_str(col_hex)
+
         self.__adjusters = []
 
 
@@ -136,13 +143,17 @@ class ColorManager (gobject.GObject):
     # color = property(get_color, set_color)
 
 
+    def __trim_hist(self):
+        self.__hist = self.__hist[-self.__HIST_LEN:]
+
+
     def push_history(self, color):
         """Pushes a colour to the user history list.
         """
         while color in self.__hist:
             self.__hist.remove(color)
         self.__hist.append(color)
-        self.__hist = self.__hist[-self.__HIST_LEN:]
+        self.__trim_hist()
         key = PREFS_KEY_COLOR_HISTORY
         val = []
         for c in self.__hist:
@@ -162,7 +173,7 @@ class ColorManager (gobject.GObject):
     def get_previous_color(self):
         """Returns the previously used colour from the user history list.
         """
-        return deepcopy(self.__hist[0])
+        return deepcopy(self.__hist[-1])
 
 
     def adjustment_finished_cb(self):
