@@ -501,10 +501,31 @@ class Application: # singleton
         pygtkcompat.gtk.accel_map_save(join(self.confpath, 'accelmap.conf'))
         self.save_settings()
 
-    def message_dialog(self, text, type=gtk.MESSAGE_INFO, flags=0):
-        """utility function to show a message/information dialog"""
-        d = gtk.MessageDialog(self.drawWindow, flags=flags, buttons=gtk.BUTTONS_OK, type=type)
+    def message_dialog(self, text, type=gtk.MESSAGE_INFO, flags=0,
+                       secondary_text=None, long_text=None, title=None):
+        """Utility function to show a message/information dialog.
+        """
+        d = gtk.MessageDialog(self.drawWindow, flags=flags, type=type,
+                              buttons=gtk.BUTTONS_OK)
         d.set_markup(text)
+        if title is not None:
+            d.set_title(title)
+        if secondary_text is not None:
+            d.format_secondary_markup(secondary_text)
+        if long_text is not None:
+            buf = gtk.TextBuffer()
+            buf.set_text(long_text)
+            tv = gtk.TextView(buf)
+            tv.show()
+            tv.set_editable(False)
+            tv.set_wrap_mode(gtk.WRAP_WORD_CHAR)
+            scrolls = gtk.ScrolledWindow()
+            scrolls.show()
+            scrolls.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_ALWAYS)
+            scrolls.add(tv)
+            scrolls.set_size_request(-1, 300)
+            scrolls.set_shadow_type(gtk.SHADOW_IN)
+            d.get_message_area().pack_start(scrolls)
         d.run()
         d.destroy()
 

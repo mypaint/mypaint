@@ -114,20 +114,34 @@ class BackgroundList(pixbuflist.PixbufList):
         files.sort()
         files += listdir(user_path)
 
+        load_errors = []
         for filename in files:
             if not filename.lower().endswith('.png'):
                 continue
-            pixbuf = gdk.pixbuf_new_from_file(filename)
-
-            # error checking
-            def error(msg):
-                self.app.message_dialog(msg, type = gtk.MESSAGE_WARNING, flags = gtk.DIALOG_MODAL)
-            if pixbuf.get_has_alpha():
-                error(_('The background %s was ignored because it has an alpha channel. Please remove it.') % filename)
+            try:
+                pixbuf = gdk.pixbuf_new_from_file(filename)
+            except Exception, ex:
+                print ex
+                load_errors.append(
+                    _('Gdk-Pixbuf couldn\'t load "%s", and reported "%s"')
+                      % (filename, repr(ex)))
                 continue
+            supported = True
+            if pixbuf.get_has_alpha():
+                load_errors.append(
+                    _('"%s" has an alpha channel. Background images with '
+                      'transparency are not supported.')
+                    % filename)
+                supported = False
             w, h = pixbuf.get_width(), pixbuf.get_height()
             if w % N != 0 or h % N != 0 or w == 0 or h == 0:
-                error(_('The background %s was ignored because it is the wrong size. Only (N*%d)x(M*%d) is supported.') % (filename, N, N))
+                load_errors.append(
+                    _('"%s" has an unsupported size. Background images '
+                      'must have widths and heights which are multiples '
+                      'of %d pixels.')
+                    % (filename, N))
+                supported = False
+            if not supported:
                 continue
 
             if os.path.basename(filename).lower() == 'default.png':
@@ -135,6 +149,17 @@ class BackgroundList(pixbuflist.PixbufList):
                 continue
 
             self.backgrounds.append(pixbuf)
+
+        if load_errors:
+            msg = "\n\n".join(load_errors)
+            self.app.message_dialog(
+                text=_("One or more backgrounds could not be loaded"),
+                title=_("Error loading backgrounds"),
+                secondary_text=_("Please remove the unloadable files, or "
+                                 "check your libgdkpixbuf installation."),
+                long_text=msg,
+                type=gtk.MESSAGE_WARNING,
+                flags=gtk.DIALOG_MODAL)
 
         pixbuflist.PixbufList.__init__(self, self.backgrounds, N, N, pixbuffunc=self.pixbuf_scaler)
         self.dragging_allowed = False
