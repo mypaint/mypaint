@@ -784,7 +784,7 @@ class Window (windowing.MainWindow, layout.MainWindow):
             action.set_active(current)
 
     def download_brush_pack_cb(self, *junk):
-        url = 'http://wiki.mypaint.info/index.php?title=Brush_Packages/redirect_mypaint_1.0_gui'
+        url = 'http://wiki.mypaint.info/index.php?title=Brush_Packages/redirect_mypaint_1.1_gui'
         print 'URL:', url
         webbrowser.open(url)
 
