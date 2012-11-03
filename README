@@ -1,71 +1,101 @@
 MyPaint - drawing program with dynamic brushes for graphic tablets
+==================================================================
 
 The license is described in the file LICENSE.
 Documentation can be found within the program and on the homepage:
 http://mypaint.info/
+
 A list of contributors can be found in the about dialog.
 
-Building on Linux:
 
-    Compile and run:
+Building and installing on Linux
+================================
 
-        $ scons
-        $ ./mypaint
+Compile and run:
 
-    Install:
+    $ scons
+    $ ./mypaint
 
-        # scons prefix=/usr/local install
+Install:
 
-    Uninstall:
+    # scons prefix=/usr/local install
 
-        # scons prefix=/usr/local install --clean
+Uninstall:
 
-    Install (for packagers):
+    # scons prefix=/usr/local install --clean
 
-        $ scons prefix=/usr --install-sandbox=path/to/sandbox
+Install (for packagers):
 
-            (NOTE: the sandbox location must be located under the
-            current working directory. The above installs the main
-            launch script as "./path/to/sandbox/usr/bin/mypaint".
-            Use a symlink if that's too limiting.)
+    $ scons prefix=/usr --install-sandbox=path/to/sandbox
 
-
-    Required: pygtk, python, swig, gtk, numpy, pycairo(>=1.4), libpng,
-                lcms2, json-c
-
-    Debian users can fetch these dependencies by running:
-
-        # apt-get install g++ python-dev libglib2.0-dev python-numpy \
-                          python-gtk2-dev swig scons gettext libpng12-dev \
-                          liblcms2-dev libjson0-dev
-
-    Recommended: a pressure sensitive input device (graphic tablet)
+        (NOTE: the sandbox location must be located under the
+        current working directory. The above installs the main
+        launch script as "./path/to/sandbox/usr/bin/mypaint".
+        Use a symlink if that's too limiting.)
 
 
-    Take care to update the icon theme cache for your $prefix if you're
-    installing mypaint to a location which has one of these files already. If
-    you install new icons, any existing icon cache must be updated too,
-    otherwise MyPaint won't be able to find its icons even if it looks in the
-    right place. For example for an install into /usr (which has one on most
-    systems), you should run
+Required: pygtk, python, swig, gtk, numpy, pycairo(>=1.4), libpng,
+            lcms2, json-c
 
-        $ gtk-update-icon-cache /usr/share/icons/hicolor
-        $ chmod a+r /usr/share/icons/hicolor/icon-theme.cache
+Debian users can fetch these dependencies by running:
 
-    after installation to ensure that the cache is up to date. Scons won't
-    do this for you because the cache file is optional.
+    # apt-get install g++ python-dev libglib2.0-dev python-numpy \
+                      python-gtk2-dev swig scons gettext libpng12-dev \
+                      liblcms2-dev libjson0-dev
 
-    If you install to /usr/local, you may need to run this instead:
-
-        $ gtk-update-icon-cache --ignore-theme-index /usr/local/share/icons/hicolor
+Recommended: a pressure sensitive input device (graphic tablet)
 
 
-Building on Windows:
+Post-installation
+=================
+
+Runtime linker
+--------------
+
+You may need to update ld.so's caches and links after installation on some
+systems. As root,
+
+    # ldconfig
+
+Do this if you get any messages about MyPaint not being able to load
+mypaintlib.so when run on the command line.
+
+If you installed to a $prefix other than the trusted locations, /usr/lib and
+/lib, you may need to add a line for it into /etc/ld.so.conf or ld.so.conf.d
+before running ldconfig. Scons won't do this for you because the need to
+perform the action varies by distribution, and package distributers need to be
+able to defer it to post-installation scripting.
+
+
+Icon theme caches
+-----------------
+
+Take care to update the icon theme cache for your $prefix if you're installing
+mypaint to a location which has one of these files already. If you install new
+icons, any existing icon cache must be updated too, otherwise MyPaint won't be
+able to find its icons even if it looks in the right place. For example for an
+install into /usr (which has one on most systems), you should run
+
+    $ gtk-update-icon-cache /usr/share/icons/hicolor
+    $ chmod a+r /usr/share/icons/hicolor/icon-theme.cache
+
+after installation to ensure that the cache is up to date. Scons won't do this
+for you because the cache file is optional.
+
+If you install to /usr/local, you may need to run this instead:
+
+    $ gtk-update-icon-cache --ignore-theme-index /usr/local/share/icons/hicolor
+
+
+Building on Windows
+===================
 
     Starting point for up-to-date information:
     http://wiki.mypaint.info/Development/Packaging#Windows
 
-Building on Mac:
+
+Building on Mac
+===============
 
     Starting point for up-to-date information:
     http://wiki.mypaint.info/Development/Packaging#OSX
