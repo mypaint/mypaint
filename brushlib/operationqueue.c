@@ -2,6 +2,7 @@
 #include <malloc.h>
 #include <assert.h>
 
+#include <mypaint-glib-compat.h>
 #include "operationqueue.h"
 #include "fifo.h"
 
@@ -18,30 +19,6 @@ struct _OperationQueue {
     int dirty_tiles_n;
 };
 
-/* FIXME: Remove hardcoding of tile map size.
- * When an index outside the current map is requested,
- * the map needs to grown dynamically. */
-
-OperationQueue *
-operation_queue_new()
-{
-    OperationQueue *self = (OperationQueue *)malloc(sizeof(OperationQueue));
-
-    self->tile_map_dim_size = 100;
-    self->origin.x = self->tile_map_dim_size;
-    self->origin.y = self->tile_map_dim_size;
-    const int tile_map_size = 2*self->tile_map_dim_size*2*self->tile_map_dim_size;
-    self->tile_map = (Fifo **)malloc(tile_map_size*sizeof(Fifo *));
-    for(int i = 0; i < tile_map_size; i++) {
-        self->tile_map[i] = NULL;
-    }
-
-    self->dirty_tiles = (TileIndex *)malloc(tile_map_size*sizeof(TileIndex));
-    self->dirty_tiles_n = 0;
-
-    return self;
-}
-
 /* For use with queue_delete */
 void
 operation_delete_func(void *user_data) {
@@ -50,20 +27,76 @@ operation_delete_func(void *user_data) {
     }
 }
 
+gboolean
+operation_queue_resize(OperationQueue *self, int new_size)
+{
+    if (new_size == 0) {
+        if (self->tile_map_dim_size != 0) {
+            assert(self->tile_map);
+            assert(self->dirty_tiles);
+
+            const int tile_map_size = 2*self->tile_map_dim_size*2*self->tile_map_dim_size;
+            for(int i = 0; i < tile_map_size; i++) {
+                Fifo *op_queue = self->tile_map[i];
+                if (op_queue) {
+                    fifo_free(op_queue, operation_delete_func);
+                }
+            }
+            self->dirty_tiles_n = 0;
+            self->tile_map_dim_size = 0;
+            free(self->tile_map);
+            free(self->dirty_tiles);
+        }
+        return TRUE;
+    } else {
+        const int new_map_size = 2*new_size*2*new_size;
+        Fifo **new_tile_map = (Fifo **)malloc(new_map_size*sizeof(Fifo *));
+        for(int i = 0; i < new_map_size; i++) {
+            new_tile_map[i] = NULL;
+        }
+        TileIndex *new_dirty_tiles = (TileIndex *)malloc(new_map_size*sizeof(TileIndex));
+
+        // Copy old values over
+        const int old_map_size = 2*self->tile_map_dim_size*2*self->tile_map_dim_size;
+        for(int i = 0; i < old_map_size; i++) {
+            new_tile_map[i] = self->tile_map[i];
+        }
+        for(int i = 0; i < self->dirty_tiles_n; i++) {
+            new_dirty_tiles[i] = self->dirty_tiles[i];
+        }
+
+        // Set new values
+        self->tile_map_dim_size = new_size;
+        self->origin.x = self->tile_map_dim_size;
+        self->origin.y = self->tile_map_dim_size;
+        self->tile_map = new_tile_map;
+        self->dirty_tiles = new_dirty_tiles;
+
+        return FALSE;
+    }
+}
+
+OperationQueue *
+operation_queue_new()
+{
+    OperationQueue *self = (OperationQueue *)malloc(sizeof(OperationQueue));
+
+    self->tile_map_dim_size = 0;
+    self->tile_map = NULL;
+    self->dirty_tiles_n = 0;
+    self->dirty_tiles = NULL;
+    self->origin.x = 0;
+    self->origin.y = 0;
+
+    operation_queue_resize(self, 10);
+
+    return self;
+}
 
 void
 operation_queue_free(OperationQueue *self)
 {
-    const int tile_map_size = 2*self->tile_map_dim_size*2*self->tile_map_dim_size;
-    for(int i = 0; i < tile_map_size; i++) {
-        Fifo *op_queue = self->tile_map[i];
-        if (op_queue) {
-            fifo_free(op_queue, operation_delete_func);
-        }
-    }
-    free(self->tile_map);
-
-    free(self->dirty_tiles);
+    operation_queue_resize(self, 0); // free the tile map data
 
     free(self);
 }
@@ -135,6 +168,13 @@ operation_queue_clear_dirty_tiles(OperationQueue *self)
     self->dirty_tiles_n = 0;
 }
 
+static gboolean
+index_is_outside_map(OperationQueue *self, TileIndex index)
+{
+    return (abs(index.x) >= self->tile_map_dim_size ||
+            abs(index.y) >= self->tile_map_dim_size);
+}
+
 /* Add an operation to the queue for tile @index
  * Note: if an operation affects more than one tile, it must be added once per tile.
  *
@@ -142,8 +182,9 @@ operation_queue_clear_dirty_tiles(OperationQueue *self)
 void
 operation_queue_add(OperationQueue *self, TileIndex index, OperationDataDrawDab *op)
 {
-    assert(index.x < self->tile_map_dim_size);
-    assert(index.y < self->tile_map_dim_size);
+    while (index_is_outside_map(self, index)) {
+        operation_queue_resize(self, self->tile_map_dim_size*2);
+    }
 
     Fifo **queue_pointer = tile_map_get(self, index);
     Fifo *op_queue = *queue_pointer;
@@ -167,8 +208,10 @@ OperationDataDrawDab *
 operation_queue_pop(OperationQueue *self, TileIndex index)
 {
     OperationDataDrawDab *op = NULL;
-    assert(index.x < self->tile_map_dim_size);
-    assert(index.y < self->tile_map_dim_size);
+
+    if (index_is_outside_map(self, index)) {
+        return NULL;
+    }
 
     Fifo **queue_pointer = tile_map_get(self, index);
     Fifo *op_queue = *queue_pointer;
