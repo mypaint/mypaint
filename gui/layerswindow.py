@@ -28,9 +28,9 @@ def action_button(action):
     return b
 
 def make_composite_op_model():
-    model = gtk.ListStore(str, str)
-    for name, display_name in COMPOSITE_OPS:
-        model.append([name, display_name])
+    model = gtk.ListStore(str, str, str)
+    for name, display_name, description in COMPOSITE_OPS:
+        model.append([name, display_name, description])
     return model
 
 
@@ -38,6 +38,7 @@ class ToolWidget (gtk.VBox):
 
     stock_id = "mypaint-tool-layers"
     tool_widget_title = _("Layers")
+    tooltip_format = _("<b>%s</b>\n%s")
 
     def __init__(self, app):
         gtk.VBox.__init__(self)
@@ -167,9 +168,14 @@ class ToolWidget (gtk.VBox):
         self.opacity_scale.set_value(current_layer.opacity*100)
         mode = current_layer.compositeop
         def find_iter(model, path, iter, data):
-            value = model.get_value(iter, 0)
-            if value == mode:
+            md = model.get_value(iter, 0)
+            md_name = model.get_value(iter, 1)
+            md_desc = model.get_value(iter, 2)
+            if md == mode:
                 self.layer_mode_combo.set_active_iter(iter)
+                tooltip = self.tooltip_format % (
+                        escape(md_name), escape(md_desc))
+                self.layer_mode_combo.set_tooltip_markup(tooltip)
         self.layer_mode_model.foreach(find_iter, None)
         self.is_updating = False
 
@@ -312,7 +318,8 @@ class ToolWidget (gtk.VBox):
         self.is_updating = True
         doc = self.app.doc.model
         i = self.layer_mode_combo.get_active_iter()
-        mode_name, display_name = self.layer_mode_model.get(i, 0, 1)
-        print 'Change layer mode to %s (%s)' % (display_name, mode_name)
+        mode_name, display_name, desc = self.layer_mode_model.get(i, 0, 1, 2)
         doc.set_layer_compositeop(mode_name)
+        tooltip = self.tooltip_format % (escape(display_name), escape(desc))
+        self.layer_mode_combo.set_tooltip_markup(tooltip)
         self.is_updating = False

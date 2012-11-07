@@ -41,14 +41,20 @@ class Tile:
 
 
 svg2composite_func = {
-    'svg:src-over': mypaintlib.tile_composite_src_over,
+    'svg:src-over': mypaintlib.tile_composite_normal,
     'svg:multiply': mypaintlib.tile_composite_multiply,
     'svg:screen': mypaintlib.tile_composite_screen,
     'svg:overlay': mypaintlib.tile_composite_overlay,
+    'svg:darken': mypaintlib.tile_composite_darken,
+    'svg:lighten': mypaintlib.tile_composite_lighten,
     'svg:hard-light': mypaintlib.tile_composite_hard_light,
     'svg:soft-light': mypaintlib.tile_composite_soft_light,
     'svg:color-burn': mypaintlib.tile_composite_color_burn,
     'svg:color-dodge': mypaintlib.tile_composite_color_dodge,
+    'svg:difference': mypaintlib.tile_composite_difference,
+    'svg:exclusion': mypaintlib.tile_composite_exclusion,
+    'svg:hue': mypaintlib.tile_composite_hue,
+    'svg:saturation': mypaintlib.tile_composite_saturation,
     'svg:color': mypaintlib.tile_composite_color,
     'svg:luminosity': mypaintlib.tile_composite_luminosity,
     }

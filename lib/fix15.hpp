@@ -55,6 +55,18 @@ fix15_sumprods (const fix15_t a1, const fix15_t a2,
     return ((a1 * a2) + (b1 * b2)) >> _fix15_fracbits;
 }
 
+static inline fix15_t
+fix15_double (const fix15_t n) {
+    return n<<1;
+}
+
+static inline fix15_t
+fix15_halve (const fix15_t n) {
+    return n>>1;
+}
+
+
+
 // Division of one fix15_t by another.
 static inline fix15_t
 fix15_div (const fix15_t a, const fix15_t b)

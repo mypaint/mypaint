@@ -13,24 +13,54 @@ from gettext import gettext as _
 import tiledsurface, strokemap
 
 COMPOSITE_OPS = [
-    # (internal-name, display-name)
-    ("svg:src-over", _("Normal")),
-    ("svg:multiply", _("Multiply")),
-    ("svg:color-burn", _("Burn")),
-    ("svg:color-dodge", _("Dodge")),
-    ("svg:screen", _("Screen")),
-    ("svg:overlay", _("Overlay")),
-    ("svg:hard-light", _("Hard Light")),
-    ("svg:soft-light", _("Soft Light")),
-    # Non-separable blending modes are Coming Soon to an SVG spec near you
-    # https://dvcs.w3.org/hg/FXTF/rawfile/tip/compositing/index.html
-    # Good enough for us here. We'll use the names the draft is using for now.
-    ("svg:color", _("Color")),
-    ("svg:luminosity", _("Luminosity")),
+    # (internal-name, display-name, description)
+    ("svg:src-over", _("Normal"),
+        _("The top layer only, without blending colors.")),
+    ("svg:multiply", _("Multiply"),
+        _("Similar to loading multiple slides into a single projector's slot "
+          "and projecting the combined result.")),
+    ("svg:screen", _("Screen"),
+        _("Like shining two separate slide projectors onto a screen "
+          "simultaneously. This is the inverse of 'Multiply'.")),
+    ("svg:overlay", _("Overlay"),
+        _("Overlays the backdrop with the top layer, preserving the backdrop's "
+          "highlights and shadows. This is the inverse of 'Hard Light'.")),
+    ("svg:darken", _("Darken"),
+        _("The top layer is used only where it is darker than the backdrop.")),
+    ("svg:lighten", _("Lighten"),
+        _("The top layer is used only where it is lighter than the backdrop.")),
+    ("svg:color-dodge", _("Dodge"),
+        _("Brightens the backdrop using the top layer. The effect is similar "
+          "to the photographic darkroom technique of the same name which is "
+          "used for improving contrast in shadows.")),
+    ("svg:color-burn", _("Burn"),
+        _("Darkens the backdrop using the top layer. The effect looks similar "
+          "to the photographic darkroom technique of the same name which is "
+          "used for reducing over-bright highlights.")),
+    ("svg:hard-light", _("Hard Light"),
+        _("Similar to shining a harsh spotlight onto the backdrop.")),
+    ("svg:soft-light", _("Soft Light"),
+        _("Like shining a diffuse spotlight onto the backdrop.")),
+    ("svg:difference", _("Difference"),
+        _("Subtracts the darker color from the lighter of the two.")),
+    ("svg:exclusion", _("Exclusion"),
+        _("Similar to the 'Difference' mode, but lower in contrast.")),
+    ("svg:hue", _("Hue"),
+        _("Combines the hue of the top layer with the saturation and "
+          "luminosity of the backdrop.")),
+    ("svg:saturation", _("Saturation"),
+        _("Applies the saturation of the top layer's colors to the hue and "
+          "luminosity of the backdrop.")),
+    ("svg:color", _("Color"),
+        _("Applies the hue and saturation of the top layer to the luminosity "
+          "of the backdrop.")),
+    ("svg:luminosity", _("Luminosity"),
+        _("Applies the luminosity of the top layer to the hue and saturation "
+          "of the backdrop.")),
     ]
 
 DEFAULT_COMPOSITE_OP = COMPOSITE_OPS[0][0]
-VALID_COMPOSITE_OPS = set([n for n, d in COMPOSITE_OPS])
+VALID_COMPOSITE_OPS = set([n for n,d,s in COMPOSITE_OPS])
 
 class Layer:
     """Representation of a layer in the document model.
