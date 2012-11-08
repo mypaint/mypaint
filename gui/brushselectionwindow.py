@@ -277,7 +277,7 @@ class GroupSelector(gtk.DrawingArea):
         sp_s = pad_s + u"\u200b"  # ZERO WIDTH SPACE
 
         import platform
-        if platform.system() == 'Windows':
+        if platform.system() == 'Windows' or platform.system() == 'Darwin':
             # workaround for https://gna.org/bugs/?15192
             pad_s = ''
             sp_s = ' '
