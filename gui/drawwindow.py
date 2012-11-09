@@ -335,8 +335,7 @@ class Window (windowing.MainWindow, layout.MainWindow):
         if target_doc is None:
             return False
         # Forward the keypress to the active doc's active InteractionMode.
-        target_doc.modes.top.key_press_cb(win, target_tdw, event)
-        return True
+        return target_doc.modes.top.key_press_cb(win, target_tdw, event)
 
 
     def key_release_event_cb_before(self, win, event):
@@ -345,8 +344,7 @@ class Window (windowing.MainWindow, layout.MainWindow):
         if target_doc is None:
             return False
         # Forward the event (see above)
-        target_doc.modes.top.key_release_cb(win, target_tdw, event)
-        return True
+        return target_doc.modes.top.key_release_cb(win, target_tdw, event)
 
 
     # XXX these can probably stay here for now.
