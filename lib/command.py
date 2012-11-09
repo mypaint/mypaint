@@ -457,17 +457,21 @@ class SetLayerOpacity(Action):
             l = self.layer
         else:
             l = self.doc.layer
+        previous_effective_opacity = l.effective_opacity
         self.old_opacity = l.opacity
         l.opacity = self.new_opacity
-        self._notify_canvas_observers([l])
+        if l.effective_opacity != previous_effective_opacity:
+            self._notify_canvas_observers([l])
         self._notify_document_observers()
     def undo(self):
         if self.layer:
             l = self.layer
         else:
             l = self.doc.layer
+        previous_effective_opacity = l.effective_opacity
         l.opacity = self.old_opacity
-        self._notify_canvas_observers([l])
+        if l.effective_opacity != previous_effective_opacity:
+            self._notify_canvas_observers([l])
         self._notify_document_observers()
 
 class SetLayerCompositeOp(Action):
