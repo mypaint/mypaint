@@ -9,6 +9,7 @@ import pango
 import dialogs
 from lib.layer import COMPOSITE_OPS
 from lib.helpers import escape
+from widgets import SPACING_CRAMPED
 
 def stock_button(stock_id):
     b = gtk.Button()
@@ -44,6 +45,8 @@ class ToolWidget (gtk.VBox):
         gtk.VBox.__init__(self)
         self.app = app
         #self.set_size_request(200, 250)
+        self.set_spacing(SPACING_CRAMPED)
+        self.set_border_width(SPACING_CRAMPED)
 
         # Layer treeview
         # The 'object' column is a layer. All displayed columns use data from it.
@@ -77,12 +80,17 @@ class ToolWidget (gtk.VBox):
         col.set_cell_data_func(renderer, self.layer_name_datafunc)
         view.append_column(col)
 
-        # Common controls
+        # Controls for the current layer
 
-        common_table = gtk.Table()
+        layer_ctrls_table = gtk.Table()
+        layer_ctrls_table.set_row_spacings(SPACING_CRAMPED)
+        layer_ctrls_table.set_col_spacings(SPACING_CRAMPED)
         row = 0
 
         layer_mode_lbl = gtk.Label(_('Mode:'))
+        layer_mode_lbl.set_tooltip_text(
+          _("Blending mode: how the current layer combines with the "
+            "layers underneath it."))
         layer_mode_lbl.set_alignment(0, 0.5)
         self.layer_mode_model = make_composite_op_model()
         self.layer_mode_combo = gtk.ComboBox()
@@ -90,18 +98,22 @@ class ToolWidget (gtk.VBox):
         cell1 = gtk.CellRendererText()
         self.layer_mode_combo.pack_start(cell1)
         self.layer_mode_combo.add_attribute(cell1, "text", 1)
-        common_table.attach(layer_mode_lbl, 0, 1, row, row+1, gtk.FILL)
-        common_table.attach(self.layer_mode_combo, 1, 2, row, row+1, gtk.FILL|gtk.EXPAND)
+        layer_ctrls_table.attach(layer_mode_lbl, 0, 1, row, row+1, gtk.FILL)
+        layer_ctrls_table.attach(self.layer_mode_combo, 1, 2, row, row+1, gtk.FILL|gtk.EXPAND)
         row += 1
 
         opacity_lbl = gtk.Label(_('Opacity:'))
+        opacity_lbl.set_tooltip_text(
+          _("Layer opacity: how much of the current layer to use. Smaller "
+            "values make it more transparent."))
         opacity_lbl.set_alignment(0, 0.5)
         adj = gtk.Adjustment(lower=0, upper=100, step_incr=1, page_incr=10)
         self.opacity_scale = gtk.HScale(adj)
-        self.opacity_scale.set_value_pos(gtk.POS_RIGHT)
-        common_table.attach(opacity_lbl, 0, 1, row, row+1, gtk.FILL)
-        common_table.attach(self.opacity_scale, 1, 2, row, row+1, gtk.FILL|gtk.EXPAND)
-        row += 1
+        self.opacity_scale.set_draw_value(False)
+        layer_ctrls_table.attach(opacity_lbl, 0, 1, row, row+1, gtk.FILL)
+        layer_ctrls_table.attach(self.opacity_scale, 1, 2, row, row+1, gtk.FILL|gtk.EXPAND)
+
+        # Layer list action buttons
 
         add_action = self.app.find_action("NewLayerFG")
         move_up_action = self.app.find_action("RaiseLayerInStack")
@@ -126,9 +138,9 @@ class ToolWidget (gtk.VBox):
         buttons_hbox.pack_start(del_button)
 
         # Pack and add to toplevel
+        self.pack_start(layer_ctrls_table, expand=False)
         self.pack_start(view_scroll)
         self.pack_start(buttons_hbox, expand=False)
-        self.pack_start(common_table, expand=False)
 
         # Names for anonymous layers
         # app.filehandler.file_opened_observers.append(self.init_anon_layer_names)
@@ -166,6 +178,7 @@ class ToolWidget (gtk.VBox):
 
         # Update the common widgets
         self.opacity_scale.set_value(current_layer.opacity*100)
+        self.update_opacity_tooltip()
         mode = current_layer.compositeop
         def find_iter(model, path, iter, data):
             md = model.get_value(iter, 0)
@@ -191,6 +204,11 @@ class ToolWidget (gtk.VBox):
         # Queue a redraw too - undoing/redoing lock and visible markers poke
         # the underlying doc state, and we should always draw that.
         self.treeview.queue_draw()
+
+
+    def update_opacity_tooltip(self):
+        scale = self.opacity_scale
+        scale.set_tooltip_text(_("Layer opacity: %d%%" % (scale.get_value(),)))
 
 
     def treeview_cursor_changed_cb(self, treeview, *data):
@@ -263,6 +281,7 @@ class ToolWidget (gtk.VBox):
         self.is_updating = True
         doc = self.app.doc.model
         doc.set_layer_opacity(self.opacity_scale.get_value()/100.0)
+        self.update_opacity_tooltip()
         self.is_updating = False
 
 

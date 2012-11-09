@@ -15,7 +15,8 @@ from gtk import gdk
 
 # Spacing constants
 
-SPACING_TIGHT = 6
+SPACING_CRAMPED = 3    # for use in dockables only
+SPACING_TIGHT = 2 * SPACING_CRAMPED
 SPACING = 2 * SPACING_TIGHT
 SPACING_LOOSE = 3*SPACING_TIGHT
 
