@@ -39,7 +39,7 @@ void mypaint_tiled_surface_end_atomic(MyPaintTiledSurface *self)
     TileIndex *tiles;
     int tiles_n = operation_queue_get_dirty_tiles(self->operation_queue, &tiles);
 
-    #pragma omp parallel for schedule(static) if(tiles_n > 3)
+    #pragma omp parallel for schedule(static) if(self->threadsafe_tile_requests && tiles_n > 3)
     for (int i = 0; i < tiles_n; i++) {
         process_tile(self, tiles[i].x, tiles[i].y);
     }
@@ -436,7 +436,7 @@ void get_color (MyPaintSurface *surface, float x, float y,
     int ty2 = floor(floor(y + r_fringe) / TILE_SIZE);
     int tiles_n = (tx2 - tx1) * (ty2 - ty1);
 
-    #pragma omp parallel for schedule(static) if(tiles_n > 3)
+    #pragma omp parallel for schedule(static) if(self->threadsafe_tile_requests && tiles_n > 3)
     for (int ty = ty1; ty <= ty2; ty++) {
       for (int tx = tx1; tx <= tx2; tx++) {
 
