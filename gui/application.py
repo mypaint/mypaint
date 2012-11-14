@@ -76,6 +76,7 @@ class Application: # singleton
         # Stock items, core actions, and menu structure
         builder_xml = join(datapath, "gui", "mypaint.xml")
         self.builder = gtk.Builder()
+        self.builder.set_translation_domain("mypaint")
         self.builder.add_from_file(builder_xml)
         factory = self.builder.get_object("stock_icon_factory")
         factory.add_default()
