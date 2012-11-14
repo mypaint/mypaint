@@ -1832,7 +1832,7 @@ msgstr "Editier Modi"
 
 #: ../gui/toolbar.py:65
 msgid "MyPaint"
-msgstr "Über MyPaint"
+msgstr "MyPaint"
 
 #: ../gui/toolbar.py:80
 msgid "Current Color"
