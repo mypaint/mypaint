@@ -81,10 +81,10 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkAction" id="New">
           <property name="stock_id">gtk-new</property>
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
                 context="Create new document"
               >New</property>
-          <property name="tooltip" translatable="1"
+          <property name="tooltip" translatable="yes"
               >Start with a new blank canvas</property>
           <signal name="activate" handler="new_cb"/>
         </object>
@@ -93,10 +93,10 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkAction" id="Open">
           <property name="stock_id">gtk-open</property>
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
                 context="Opening a file"
               >Open...</property>
-          <property name="tooltip" translatable="1"
+          <property name="tooltip" translatable="yes"
               >Open a file, replacing the current painting</property>
           <signal name="activate" handler="open_cb"/>
         </object>
@@ -104,8 +104,8 @@ Perhaps an increasing amount.
       </child>
       <child>
         <object class="GtkAction" id="OpenLast">
-          <property name="label" translatable="1">Open Last</property>
-          <property name="tooltip" translatable="1"
+          <property name="label" translatable="yes">Open Last</property>
+          <property name="tooltip" translatable="yes"
               >Open the last file you saved</property>
           <signal name="activate" handler="open_last_cb"/>
         </object>
@@ -114,8 +114,8 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkAction" id="Reload">
           <property name="stock_id">gtk-revert-to-saved</property>
-          <property name="label" translatable="1">Revert to Saved</property>
-          <property name="tooltip" translatable="1"
+          <property name="label" translatable="yes">Revert to Saved</property>
+          <property name="tooltip" translatable="yes"
               >Reload the current file</property>
           <signal name="activate" handler="reload_cb"/>
         </object>
@@ -124,8 +124,8 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkAction" id="Save">
           <property name="stock_id">gtk-save</property>
-          <property name="label" translatable="1">Save</property>
-          <property name="tooltip" translatable="1"
+          <property name="label" translatable="yes">Save</property>
+          <property name="tooltip" translatable="yes"
               >Save to a file</property>
           <signal name="activate" handler="save_cb"/>
         </object>
@@ -134,9 +134,9 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkAction" id="SaveAs">
           <property name="stock_id">gtk-save-as</property>
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
               >Save As...</property>
-          <property name="tooltip" translatable="1"
+          <property name="tooltip" translatable="yes"
               >Save to a file with a new name</property>
           <signal name="activate" handler="save_as_cb"/>
         </object>
@@ -145,8 +145,8 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkAction" id="Export">
           <property name="icon-name">gtk-save-as</property>
-          <property name="label" translatable="1">Export...</property>
-          <property name="tooltip" translatable="1">Export to a file</property>
+          <property name="label" translatable="yes">Export...</property>
+          <property name="tooltip" translatable="yes">Export to a file</property>
           <signal name="activate" handler="save_as_cb"/>
         </object>
         <accelerator key="e" modifiers="GDK_CONTROL_MASK | GDK_SHIFT_MASK"/>
@@ -154,8 +154,8 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkAction" id="SaveScrap">
           <property name="stock_id">gtk-add</property>
-          <property name="label" translatable="1">Save As Scrap</property>
-          <property name="tooltip" translatable="1"
+          <property name="label" translatable="yes">Save As Scrap</property>
+          <property name="tooltip" translatable="yes"
               >Saves to a new scrap file. If the drawing is currently saved as a scrap, this will write a new revision of it.</property>
           <signal name="activate" handler="save_scrap_cb"/>
         </object>
@@ -164,9 +164,9 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkAction" id="PrevScrap">
           <property name="stock_id">gtk-go-back</property>
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
               >Open Previous Scrap</property>
-          <property name="tooltip" translatable="1"
+          <property name="tooltip" translatable="yes"
               >Load the previous scrap file, replacing the current drawing</property>
           <signal name="activate" handler="open_scrap_cb"/>
         </object>
@@ -175,9 +175,9 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkAction" id="NextScrap">
           <property name="stock_id">gtk-go-forward</property>
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
               >Open Next Scrap</property>
-          <property name="tooltip" translatable="1"
+          <property name="tooltip" translatable="yes"
               >Load the next scrap file, replacing the current drawing</property>
           <signal name="activate" handler="open_scrap_cb"/>
         </object>
@@ -206,10 +206,10 @@ Perhaps an increasing amount.
       <!-- Brush size -->
       <child>
         <object class="GtkAction" id="Bigger">
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
                 context="Larger brush radius"
               >Bigger</property>
-          <property name="tooltip" translatable="1"
+          <property name="tooltip" translatable="yes"
               >Increase the current brush's radius</property>
           <signal name="activate" handler="brush_bigger_cb"/>
         </object>
@@ -217,10 +217,10 @@ Perhaps an increasing amount.
       </child>
       <child>
         <object class="GtkAction" id="Smaller">
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
                 context="Smaller brush radius"
               >Smaller</property>
-          <property name="tooltip" translatable="1"
+          <property name="tooltip" translatable="yes"
               >Decrease the current brush's radius</property>
           <signal name="activate" handler="brush_smaller_cb"/>
         </object>
@@ -229,14 +229,14 @@ Perhaps an increasing amount.
       <!-- Brush opacity -->
       <child>
         <object class="GtkAction" id="MoreOpaque">
-          <property name="label" translatable="1">More Opaque</property>
+          <property name="label" translatable="yes">More Opaque</property>
           <signal name="activate" handler="more_opaque_cb"/>
         </object>
         <accelerator key="s"/>
       </child>
       <child>
         <object class="GtkAction" id="LessOpaque">
-          <property name="label" translatable="1">Less Opaque</property>
+          <property name="label" translatable="yes">Less Opaque</property>
           <signal name="activate" handler="less_opaque_cb"/>
         </object>
         <accelerator key="a"/>
@@ -244,53 +244,53 @@ Perhaps an increasing amount.
       <!-- Brush painting color -->
       <child>
         <object class="GtkAction" id="Brighter">
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
                 context="Raise the painting color's HSV value"
               >Brighter</property>
-          <property name="tooltip" translatable="1"
+          <property name="tooltip" translatable="yes"
             >Brighten the painting color: increases its HSV value</property>
           <signal name="activate" handler="brighter_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="Darker">
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
                 context="Lower the painting color's HSV value"
               >Darker</property>
-          <property name="tooltip" translatable="1"
+          <property name="tooltip" translatable="yes"
               >Darken the painting color: decrease its HSV value</property>
           <signal name="activate" handler="darker_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="IncreaseHue">
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
               >Change Color Hue (counter-clockwise)</property>
           <signal name="activate" handler="increase_hue_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="DecreaseHue">
-          <property name="label" translatable="1">Change Color Hue (clockwise)</property>
+          <property name="label" translatable="yes">Change Color Hue (clockwise)</property>
           <signal name="activate" handler="decrease_hue_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="Purer">
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
                 context="Increase the painting color's HSV saturation"
               >Purer</property>
-          <property name="tooltip" translatable="1"
+          <property name="tooltip" translatable="yes"
               >Make the painting color purer: increase its HSV saturation</property>
           <signal name="activate" handler="purer_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="Grayer">
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
                 context="Decrease the painting color's HSV saturation"
               >Grayer</property>
-          <property name="tooltip" translatable="1"
+          <property name="tooltip" translatable="yes"
               >Make the painting color grayer: decrease its HSV saturation</property>
           <signal name="activate" handler="grayer_cb"/>
         </object>
@@ -299,7 +299,7 @@ Perhaps an increasing amount.
       <!-- More actions are added by doc.init_context_actions() -->
       <child>
         <object class="GtkAction" id="PickContext">
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
               >Pick Layer, Brush and Color</property>
           <property name="stock_id">gtk-jump-to</property>
           <signal name="activate" handler="pick_context_cb"/>
@@ -308,15 +308,15 @@ Perhaps an increasing amount.
       </child>
       <child>
         <object class="GtkToggleAction" id="ContextRestoreColor">
-          <property name="label" translatable="1">Restore Color</property>
+          <property name="label" translatable="yes">Restore Color</property>
           <signal name="activate" handler="context_toggle_color_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="ContextStore">
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
               >Save to Most Recently Restored</property>
-          <property name="tooltip" translatable="1"
+          <property name="tooltip" translatable="yes"
               >Save the active brush to the most recently used brushkey</property>
           <signal name="activate" handler="context_cb"/>
         </object>
@@ -332,10 +332,10 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkAction" id="ClearLayer">
           <property name="stock_id">gtk-clear</property>
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
                 context="Erase or blank fully"
               >Clear</property>
-          <property name="tooltip" translatable="1"
+          <property name="tooltip" translatable="yes"
               >Clear the current layer</property>
           <signal name="activate" handler="clear_layer_cb"/>
         </object>
@@ -344,8 +344,8 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkAction" id="CopyLayer">
           <property name="stock_id">gtk-copy</property>
-          <property name="label" translatable="1">Copy to Clipboard</property>
-          <property name="tooltip" translatable="1"
+          <property name="label" translatable="yes">Copy to Clipboard</property>
+          <property name="tooltip" translatable="yes"
               >Copy the current layer to the clipboard</property>
           <signal name="activate" handler="copy_cb"/>
         </object>
@@ -354,9 +354,9 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkAction" id="PasteLayer">
           <property name="stock_id">gtk-paste</property>
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
               >Paste Clipboard (replace layer)</property>
-          <property name="tooltip" translatable="1"
+          <property name="tooltip" translatable="yes"
               >Replaces the layer with the clipboard's contents</property>
           <signal name="activate" handler="paste_cb"/>
         </object>
@@ -364,9 +364,9 @@ Perhaps an increasing amount.
       </child>
       <child>
         <object class="GtkAction" id="PickLayer">
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
               >Go to Layer at Cursor</property>
-          <property name="tooltip" translatable="1"
+          <property name="tooltip" translatable="yes"
               >Choose a layer by picking a brushstroke on it</property>
           <signal name="activate" handler="pick_layer_cb"/>
         </object>
@@ -375,9 +375,9 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkAction" id="LayerFG">
           <property name="stock_id">gtk-go-up</property>
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
               >Go to Layer Above</property>
-          <property name="tooltip" translatable="1"
+          <property name="tooltip" translatable="yes"
               >Go one layer up in the layers stack</property>
           <signal name="activate" handler="layer_fg_cb"/>
         </object>
@@ -386,9 +386,9 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkAction" id="LayerBG">
           <property name="stock_id">gtk-go-down</property>
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
               >Go to Layer Below</property>
-          <property name="tooltip" translatable="1"
+          <property name="tooltip" translatable="yes"
               >Go one layer down in the layers stack</property>
           <signal name="activate" handler="layer_bg_cb"/>
         </object>
@@ -397,9 +397,9 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkAction" id="NewLayerFG">
           <property name="icon-name">gtk-add</property>
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
               >New Layer Above</property>
-          <property name="tooltip" translatable="1"
+          <property name="tooltip" translatable="yes"
               >Add a new layer above the current layer</property>
           <signal name="activate" handler="new_layer_cb"/>
         </object>
@@ -407,9 +407,9 @@ Perhaps an increasing amount.
       </child>
       <child>
         <object class="GtkAction" id="NewLayerBG">
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
               >New Layer Below</property>
-          <property name="tooltip" translatable="1"
+          <property name="tooltip" translatable="yes"
               >Add a new layer below the current layer</property>
           <signal name="activate" handler="new_layer_cb"/>
         </object>
@@ -419,8 +419,8 @@ Perhaps an increasing amount.
         <object class="GtkAction" id="MergeLayer">
           <!-- FIXME: need a better icon -->
           <property name="icon-name">gtk-dnd-multiple</property>
-          <property name="label" translatable="1">Merge Layer Down</property>
-          <property name="tooltip" translatable="1"
+          <property name="label" translatable="yes">Merge Layer Down</property>
+          <property name="tooltip" translatable="yes"
               >Merge layer with the one beneath it</property>
           <signal name="activate" handler="merge_layer_cb"/>
         </object>
@@ -429,8 +429,8 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkAction" id="RemoveLayer">
           <property name="stock_id">gtk-delete</property>
-          <property name="label" translatable="1">Remove Layer</property>
-          <property name="tooltip" translatable="1"
+          <property name="label" translatable="yes">Remove Layer</property>
+          <property name="tooltip" translatable="yes"
               >Remove layer</property>
           <signal name="activate" handler="remove_layer_cb"/>
         </object>
@@ -438,7 +438,7 @@ Perhaps an increasing amount.
       </child>
       <child>
         <object class="GtkAction" id="IncreaseLayerOpacity">
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
               >Increase Layer Opacity</property>
           <signal name="activate" handler="layer_increase_opacity"/>
         </object>
@@ -446,7 +446,7 @@ Perhaps an increasing amount.
       </child>
       <child>
         <object class="GtkAction" id="DecreaseLayerOpacity">
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
             >Decrease Layer Opacity</property>
           <signal name="activate" handler="layer_decrease_opacity"/>
         </object>
@@ -454,10 +454,10 @@ Perhaps an increasing amount.
       </child>
       <child>
         <object class="GtkAction" id="RaiseLayerInStack">
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
               context="Move the stack position of the layer upwards"
             >Raise Layer</property>
-          <property name="tooltip" translatable="1"
+          <property name="tooltip" translatable="yes"
             >Raise the current layer one step in the layers stack</property>
           <property name="icon-name">gtk-go-up</property>
           <signal name="activate" handler="move_layer_in_stack_cb"/>
@@ -465,10 +465,10 @@ Perhaps an increasing amount.
       </child>
       <child>
         <object class="GtkAction" id="LowerLayerInStack">
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
               context="Move the stack position of the layer downwards"
             >Lower Layer</property>
-          <property name="tooltip" translatable="1"
+          <property name="tooltip" translatable="yes"
             >Lower the current layer one step in the layers stack</property>
           <property name="icon-name">gtk-go-down</property>
           <signal name="activate" handler="move_layer_in_stack_cb"/>
@@ -476,9 +476,9 @@ Perhaps an increasing amount.
       </child>
       <child>
         <object class="GtkAction" id="DuplicateLayer">
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
             >Duplicate Layer</property>
-          <property name="tooltip" translatable="1"
+          <property name="tooltip" translatable="yes"
             >Make an exact duplicate of the current layer</property>
           <property name="icon-name">mypaint-layer-duplicate</property>
           <signal name="activate" handler="duplicate_layer_cb"/>
@@ -486,27 +486,27 @@ Perhaps an increasing amount.
       </child>
       <child>
         <object class="GtkAction" id="RenameLayer">
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
             >Rename Layer</property>
-          <property name="tooltip" translatable="1"
+          <property name="tooltip" translatable="yes"
             >Enter a new name for the current layer</property>
           <signal name="activate" handler="rename_layer_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkToggleAction" id="LayerLockedToggle">
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
             >Layer Locked</property>
-          <property name="tooltip" translatable="1"
+          <property name="tooltip" translatable="yes"
             >The current layer's locked state: locked layers cannot be drawn to</property>
           <signal name="activate" handler="layer_lock_toggle_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkToggleAction" id="LayerVisibleToggle">
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
             >Layer Visible</property>
-          <property name="tooltip" translatable="1"
+          <property name="tooltip" translatable="yes"
             >The current layer's visibility state</property>
           <signal name="activate" handler="layer_visible_toggle_cb"/>
         </object>
@@ -518,9 +518,9 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkAction" id="ResetView">
           <property name="stock_id">gtk-zoom-100</property>
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
               >Reset and Center</property>
-          <property name="tooltip" translatable="1"
+          <property name="tooltip" translatable="yes"
               >Reset Zoom, Rotation and Mirroring, and recenter the document</property>
           <signal name="activate" handler="reset_view_cb"/>
         </object>
@@ -529,40 +529,40 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkAction" id="Fit">
           <property name="stock_id">gtk-zoom-fit</property>
-          <property name="label" translatable="1">Fit</property>
+          <property name="label" translatable="yes">Fit</property>
           <signal name="activate" handler="reset_view_cb"/>
         </object>
         <accelerator key="F10"/>
       </child>
       <child>
         <object class="GtkAction" id="ResetMenu">
-          <property name="label" translatable="1">Reset</property>
+          <property name="label" translatable="yes">Reset</property>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="ResetZoom">
           <property name="icon-name">gtk-zoom-100</property>
-          <property name="label" translatable="1">Zoom</property>
+          <property name="label" translatable="yes">Zoom</property>
           <signal name="activate" handler="reset_view_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="ResetRotation">
-          <property name="label" translatable="1">Rotation</property>
+          <property name="label" translatable="yes">Rotation</property>
           <signal name="activate" handler="reset_view_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="ResetMirror">
-          <property name="label" translatable="1">Mirror</property>
+          <property name="label" translatable="yes">Mirror</property>
           <signal name="activate" handler="reset_view_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="ZoomIn">
           <property name="stock_id">gtk-zoom-in</property>
-          <property name="label" translatable="1">Zoom In</property>
-          <property name="tooltip" translatable="1"
+          <property name="label" translatable="yes">Zoom In</property>
+          <property name="tooltip" translatable="yes"
               >Increase magnification</property>
           <signal name="activate" handler="zoom_cb"/>
         </object>
@@ -571,8 +571,8 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkAction" id="ZoomOut">
           <property name="stock_id">gtk-zoom-out</property>
-          <property name="label" translatable="1">Zoom Out</property>
-          <property name="tooltip" translatable="1"
+          <property name="label" translatable="yes">Zoom Out</property>
+          <property name="tooltip" translatable="yes"
               >Decrease magnification</property>
           <signal name="activate" handler="zoom_cb"/>
         </object>
@@ -581,9 +581,9 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkAction" id="RotateLeft">
           <property name="stock_id">mypaint-view-rotate-left</property>
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
               >Rotate Counterclockwise</property>
-          <property name="tooltip" translatable="1"
+          <property name="tooltip" translatable="yes"
               >Rotate the view counterclockwise</property>
           <signal name="activate" handler="rotate_cb"/>
         </object>
@@ -592,9 +592,9 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkAction" id="RotateRight">
           <property name="stock_id">mypaint-view-rotate-right</property>
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
               >Rotate Clockwise</property>
-          <property name="tooltip" translatable="1"
+          <property name="tooltip" translatable="yes"
               >Rotate the view clockwise</property>
           <signal name="activate" handler="rotate_cb"/>
         </object>
@@ -603,9 +603,9 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkAction" id="MirrorHorizontal">
           <property name="stock_id">mypaint-view-mirror-horizontal</property>
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
               >Mirror Horizontal</property>
-          <property name="tooltip" translatable="1"
+          <property name="tooltip" translatable="yes"
               >Flip the view left to right</property>
           <signal name="activate" handler="mirror_horizontal_cb"/>
         </object>
@@ -614,9 +614,9 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkAction" id="MirrorVertical">
           <property name="stock_id">mypaint-view-mirror-vertical</property>
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
               >Mirror Vertical</property>
-          <property name="tooltip" translatable="1"
+          <property name="tooltip" translatable="yes"
               >Flip the view upside-down</property>
           <signal name="activate" handler="mirror_vertical_cb"/>
         </object>
@@ -624,14 +624,14 @@ Perhaps an increasing amount.
       </child>
       <child>
         <object class="GtkAction" id="SoloLayer">
-          <property name="label" translatable="1">Layer Solo</property>
+          <property name="label" translatable="yes">Layer Solo</property>
           <signal name="activate" handler="solo_layer_cb"/>
         </object>
         <accelerator key="Home"/>
       </child>
       <child>
         <object class="GtkAction" id="ToggleAbove">
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
               >Hide Layers Above Current</property>
           <signal name="activate" handler="toggle_layers_above_cb"/>
         </object>
@@ -641,21 +641,21 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkAction" id="BlendMode">
           <property name="stock_id">mypaint-brush-blend-modes</property>
-          <property name="label" translatable="1">Blend Mode</property>
+          <property name="label" translatable="yes">Blend Mode</property>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="LineMode">
           <property name="stock_id">mypaint-line-mode</property>
-          <property name="label" translatable="1">Line Mode</property>
+          <property name="label" translatable="yes">Line Mode</property>
         </object>
       </child>
       <child>
         <object class="GtkToggleAction" id="Symmetry">
           <property name="stock_id">mypaint-symmetry-mode</property>
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
               >Symmetrical Painting</property>
-          <property name="tooltip" translatable="1"
+          <property name="tooltip" translatable="yes"
               >Mirrors all strokes drawn around the vertical axis</property>
           <signal name="activate" handler="symmetry_action_toggled_cb"/>
         </object>
@@ -664,23 +664,23 @@ Perhaps an increasing amount.
       <!-- Debugging toggles -->
       <child>
         <object class="GtkToggleAction" id="PrintInputs">
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
               >Print Brush Input Values to Console</property>
           <signal name="activate" handler="print_inputs_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkToggleAction" id="VisualizeRendering">
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
               >Visualize Rendering</property>
-          <property name="tooltip" translatable="1"
+          <property name="tooltip" translatable="yes"
               >Show rendering updates on-screen, for debugging</property>
           <signal name="activate" handler="visualize_rendering_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkToggleAction" id="NoDoubleBuffereing">
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
               >Disable GTK Double Buffering</property>
           <signal name="activate" handler="no_double_buffering_cb"/>
         </object>
@@ -693,12 +693,12 @@ Perhaps an increasing amount.
       <!-- Menu: File -->
       <child>
         <object class="GtkAction" id="FileMenu">
-          <property name="label" translatable="1">File</property>
+          <property name="label" translatable="yes">File</property>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="Quit">
-          <property name="label" translatable="1">Quit</property>
+          <property name="label" translatable="yes">Quit</property>
           <property name="stock_id">gtk-quit</property>
           <signal name="activate" handler="quit_cb"/>
         </object>
@@ -706,7 +706,7 @@ Perhaps an increasing amount.
       </child>
       <child>
         <object class="GtkToggleAction" id="FrameToggle">
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
               >Document Frame</property>
           <property name="icon-name">mypaint-frame</property>
           <signal name="activate" handler="toggle_frame_cb"/>
@@ -714,18 +714,18 @@ Perhaps an increasing amount.
       </child>
       <child>
         <object class="GtkAction" id="EditMenu">
-          <property name="label" translatable="1">Edit</property>
+          <property name="label" translatable="yes">Edit</property>
         </object>
       </child>
       <!-- Menu: Color -->
       <child>
         <object class="GtkAction" id="ColorMenu">
-          <property name="label" translatable="1">Color</property>
+          <property name="label" translatable="yes">Color</property>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="ColorPickerPopup">
-          <property name="label" translatable="1">Pick Color</property>
+          <property name="label" translatable="yes">Pick Color</property>
           <property name="stock_id">gtk-color-picker</property>
           <signal name="activate" handler="popup_cb"/>
         </object>
@@ -733,47 +733,47 @@ Perhaps an increasing amount.
       </child>
       <child>
         <object class="GtkAction" id="ColorHistoryPopup">
-          <property name="label" translatable="1">Color History</property>
+          <property name="label" translatable="yes">Color History</property>
           <signal name="activate" handler="popup_cb"/>
         </object>
         <accelerator key="x"/>
       </child>
       <child>
         <object class="GtkAction" id="ColorChangerCrossedBowlPopup">
-          <property name="label" translatable="1">Color Changer (crossed bowl)</property>
+          <property name="label" translatable="yes">Color Changer (crossed bowl)</property>
           <signal name="activate" handler="popup_cb"/>
         </object>
         <accelerator key="v"/>
       </child>
       <child>
         <object class="GtkAction" id="ColorChangerWashPopup">
-          <property name="label" translatable="1">Color Changer (washed)</property>
+          <property name="label" translatable="yes">Color Changer (washed)</property>
           <signal name="activate" handler="popup_cb"/>
         </object>
         <accelerator key="c"/>
       </child>
       <child>
         <object class="GtkAction" id="ColorRingPopup">
-          <property name="label" translatable="1">Color Changer (ring)</property>
+          <property name="label" translatable="yes">Color Changer (ring)</property>
           <signal name="activate" handler="popup_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="ColorDetailsDialog">
-          <property name="label" translatable="1">Color Details</property>
+          <property name="label" translatable="yes">Color Details</property>
           <signal name="activate" handler="color_details_dialog_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="PaletteNext">
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
               >Next Palette Color</property>
           <signal name="activate" handler="palette_next_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="PalettePrev">
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
               >Previous Palette Color</property>
           <signal name="activate" handler="palette_prev_cb"/>
         </object>
@@ -781,83 +781,83 @@ Perhaps an increasing amount.
       <!-- Layer and Scratchpad menus -->
       <child>
         <object class="GtkAction" id="LayerMenu">
-          <property name="label" translatable="1">Layers</property>
+          <property name="label" translatable="yes">Layers</property>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="ScratchMenu">
-          <property name="label" translatable="1">Scratchpad</property>
+          <property name="label" translatable="yes">Scratchpad</property>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="ScratchNew">
-          <property name="label" translatable="1">New Scratchpad</property>
+          <property name="label" translatable="yes">New Scratchpad</property>
           <property name="icon-name">gtk-new</property>
           <signal name="activate" handler="new_scratchpad_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="ScratchLoad">
-          <property name="label" translatable="1">Load Scratchpad...</property>
+          <property name="label" translatable="yes">Load Scratchpad...</property>
           <property name="icon-name">gtk-open</property>
           <signal name="activate" handler="load_scratchpad_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="ScratchSaveNow">
-          <property name="label" translatable="1">Save Scratchpad Now</property>
+          <property name="label" translatable="yes">Save Scratchpad Now</property>
           <property name="icon-name">gtk-save</property>
           <signal name="activate" handler="save_current_scratchpad_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="ScratchSaveAs">
-          <property name="label" translatable="1">Save Scratchpad As...</property>
+          <property name="label" translatable="yes">Save Scratchpad As...</property>
           <property name="icon-name">gtk-save-as</property>
           <signal name="activate" handler="save_as_scratchpad_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="ScratchRevert">
-          <property name="label" translatable="1">Revert Scratchpad</property>
+          <property name="label" translatable="yes">Revert Scratchpad</property>
           <property name="icon-name">gtk-refresh</property>
           <signal name="activate" handler="revert_current_scratchpad_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="ScratchSaveAsDefault">
-          <property name="label" translatable="1">Save Scratchpad as Default</property>
+          <property name="label" translatable="yes">Save Scratchpad as Default</property>
           <signal name="activate" handler="save_scratchpad_as_default_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="ScratchClearDefault">
-          <property name="label" translatable="1">Clear the Default Scratchpad</property>
+          <property name="label" translatable="yes">Clear the Default Scratchpad</property>
           <signal name="activate" handler="clear_default_scratchpad_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="ScratchCopyBackground">
           <property name="label"
-           translatable="1">Copy Background to Scratchpad</property>
+           translatable="yes">Copy Background to Scratchpad</property>
           <signal name="activate" handler="scratchpad_copy_background_cb"/>
         </object>
       </child>
       <!-- Scratchpad palette-rendering submenu actions -->
       <child>
         <object class="GtkAction" id="ScratchPaletteOptions"><!-- Submenu -->
-          <property name="label" translatable="1">Render a Palette</property>
+          <property name="label" translatable="yes">Render a Palette</property>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="ScratchLoadPalette">
-          <property name="label" translatable="1">Load Palette File...</property>
+          <property name="label" translatable="yes">Load Palette File...</property>
           <signal name="activate" handler="draw_palette_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="ScratchDrawSatPalette">
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
               >Different Saturations of the Current Color</property>
           <signal name="activate" handler="draw_sat_spectrum_cb"/>
         </object>
@@ -865,24 +865,24 @@ Perhaps an increasing amount.
       <!-- Brush menu actions -->
       <child>
         <object class="GtkAction" id="BrushMenu">
-          <property name="label" translatable="1">Brush</property>
+          <property name="label" translatable="yes">Brush</property>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="ContextMenu">
-          <property name="label" translatable="1">Brushkeys</property>
+          <property name="label" translatable="yes">Brushkeys</property>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="ContextHelp">
-          <property name="label" translatable="1">Help</property>
+          <property name="label" translatable="yes">Help</property>
           <property name="icon-name">gtk-help</property>
           <signal name="activate" handler="show_infodialog_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="BrushChooserPopup">
-          <property name="label" translatable="1">Change Brush...</property>
+          <property name="label" translatable="yes">Change Brush...</property>
           <property name="icon-name">mypaint-tool-brush</property>
           <signal name="activate" handler="brush_chooser_popup_cb"/>
         </object>
@@ -890,14 +890,14 @@ Perhaps an increasing amount.
       </child>
       <child>
         <object class="GtkAction" id="DownloadBrushPack">
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
             >Download More Brushes (in web browser)</property>
           <signal name="activate" handler="download_brush_pack_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="ImportBrushPack">
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
             >Import Brush Package...</property>
           <property name="icon-name">gtk-open</property>
           <signal name="activate" handler="import_brush_pack_cb"/>
@@ -906,26 +906,26 @@ Perhaps an increasing amount.
       <!-- Help/documentation menu -->
       <child>
         <object class="GtkAction" id="HelpMenu">
-          <property name="label" translatable="1">Help</property>
+          <property name="label" translatable="yes">Help</property>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="Docu">
-          <property name="label" translatable="1">Where is the Documentation?</property>
+          <property name="label" translatable="yes">Where is the Documentation?</property>
           <property name="icon-name">gtk-info</property>
           <signal name="activate" handler="show_infodialog_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="ShortcutHelp">
-          <property name="label" translatable="1">Change the Keyboard Shortcuts?</property>
+          <property name="label" translatable="yes">Change the Keyboard Shortcuts?</property>
           <property name="icon-name">gtk-info</property>
           <signal name="activate" handler="show_infodialog_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="About">
-          <property name="label" translatable="1">About MyPaint</property>
+          <property name="label" translatable="yes">About MyPaint</property>
           <property name="icon-name">gtk-about</property>
           <signal name="activate" handler="about_cb"/>
         </object>
@@ -933,19 +933,19 @@ Perhaps an increasing amount.
       <!-- Debugging menu -->
       <child>
         <object class="GtkAction" id="DebugMenu">
-          <property name="label" translatable="1">Debug</property>
+          <property name="label" translatable="yes">Debug</property>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="PrintMemoryLeak">
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
                 >Print Memory Leak Info to Console (Slow!)</property>
           <signal name="activate" handler="print_memory_leak_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="RunGarbageCollector">
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
               >Run Garbage Collector Now</property>
           <signal name="activate" handler="run_garbage_collector_cb"/>
         </object>
@@ -953,7 +953,7 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkAction" id="StartProfiling">
           <!-- FIXME: convert to a ToggleAction -->
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
               >Start/Stop Python Profiling (cProfile)</property>
           <property name="icon-name">gtk-execute</property>
           <signal name="activate" handler="start_profiling_cb"/>
@@ -962,7 +962,7 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkAction" id="GtkInputDialog">
           <!-- FIXME: convert to a ToggleAction -->
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
               >GTK Input Device Dialog</property>
           <signal name="activate" handler="gtk_input_dialog_cb"/>
         </object>
@@ -970,26 +970,26 @@ Perhaps an increasing amount.
       <!-- View menu and its submenus -->
       <child>
         <object class="GtkAction" id="ViewMenu">
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
                 context="Control over the application display"
               >View</property>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="MenuishBarMenu">
-          <property name="label" translatable="1">Toolbars</property>
+          <property name="label" translatable="yes">Toolbars</property>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="FeedbackMenu">
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
                 context="Feedback for user actions"
               >Feedback</property>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="ShowPopupMenu">
-          <property name="label" translatable="1">Popup Menu</property>
+          <property name="label" translatable="yes">Popup Menu</property>
           <signal name="activate" handler="popupmenu_show_cb"/>
         </object>
         <accelerator key="Menu"/>
@@ -1003,7 +1003,7 @@ Perhaps an increasing amount.
       </child>
       <child>
         <object class="GtkAction" id="ViewHelp">
-          <property name="label" translatable="1">Help</property>
+          <property name="label" translatable="yes">Help</property>
           <property name="icon-name">gtk-help</property>
           <signal name="activate" handler="show_infodialog_cb"/>
         </object>
@@ -1012,31 +1012,31 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkToggleAction" id="PreferencesWindow">
           <property name="stock_id">gtk-preferences</property>
-          <property name="label" translatable="1">Preferences</property>
+          <property name="label" translatable="yes">Preferences</property>
           <signal name="activate" handler="toggle_window_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkToggleAction" id="InputTestWindow">
-          <property name="label" translatable="1">Test Input Devices</property>
+          <property name="label" translatable="yes">Test Input Devices</property>
           <signal name="activate" handler="toggle_window_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkToggleAction" id="FrameWindow">
-          <property name="label" translatable="1">Document Frame...</property>
+          <property name="label" translatable="yes">Document Frame...</property>
           <property name="stock_id">gtk-page-setup</property>
           <property name="tooltip"
-            translatable="1">Set and adjust a frame for the canvas</property>
+            translatable="yes">Set and adjust a frame for the canvas</property>
           <signal name="activate" handler="toggle_window_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkToggleAction" id="LayersWindow">
           <property name="stock_id">mypaint-tool-layers</property>
-          <property name="label" translatable="1">Layers</property>
+          <property name="label" translatable="yes">Layers</property>
           <property name="tooltip"
-            translatable="1">Edit and rearrange layers</property>
+            translatable="yes">Edit and rearrange layers</property>
           <signal name="activate" handler="toggle_window_cb"/>
         </object>
         <accelerator key="l"/>
@@ -1044,16 +1044,16 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkToggleAction" id="BackgroundWindow">
           <property name="icon-name">gtk-page-setup</property>
-          <property name="label" translatable="1">Background</property>
-          <property name="tooltip" translatable="1">Choose a background image</property>
+          <property name="label" translatable="yes">Background</property>
+          <property name="tooltip" translatable="yes">Choose a background image</property>
           <signal name="activate" handler="toggle_window_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkToggleAction" id="BrushSelectionWindow">
           <property name="stock_id">mypaint-tool-brush</property>
-          <property name="label" translatable="1">Brushes</property>
-          <property name="tooltip" translatable="1"
+          <property name="label" translatable="yes">Brushes</property>
+          <property name="tooltip" translatable="yes"
             >Select brushes, and edit brush sets</property>
           <signal name="activate" handler="toggle_window_cb"/>
         </object>
@@ -1062,8 +1062,8 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkToggleAction" id="BrushSettingsWindow">
           <property name="stock_id">gtk-properties</property>
-          <property name="label" translatable="1">Brush Settings</property>
-          <property name="tooltip" translatable="1"
+          <property name="label" translatable="yes">Brush Settings</property>
+          <property name="tooltip" translatable="yes"
             >Edit the active brush's settings</property>
           <signal name="activate" handler="toggle_window_cb"/>
         </object>
@@ -1072,8 +1072,8 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkToggleAction" id="ColorWindow">
           <property name="stock_id">mypaint-tool-color</property>
-          <property name="label" translatable="1">Colors</property>
-          <property name="tooltip" translatable="1"
+          <property name="label" translatable="yes">Colors</property>
+          <property name="tooltip" translatable="yes"
             >Set the color used for painting</property>
           <signal name="activate" handler="toggle_window_cb"/>
         </object>
@@ -1082,8 +1082,8 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkToggleAction" id="ScratchWindow">
           <property name="stock_id">mypaint-tool-scratchpad</property>
-          <property name="label" translatable="1">Scratchpad</property>
-          <property name="tooltip" translatable="1"
+          <property name="label" translatable="yes">Scratchpad</property>
+          <property name="tooltip" translatable="yes"
             >Mix colours and make sketchs on separate scrap pages</property>
           <signal name="activate" handler="toggle_window_cb"/>
         </object>
@@ -1091,8 +1091,8 @@ Perhaps an increasing amount.
       </child>
       <child>
         <object class="GtkToggleAction" id="ToggleSubwindows">
-          <property name="label" translatable="1">Subwindows</property>
-          <property name="tooltip" translatable="1">Show subwindows</property>
+          <property name="label" translatable="yes">Subwindows</property>
+          <property name="tooltip" translatable="yes">Show subwindows</property>
           <property name="active">1</property>
           <signal name="activate" handler="toggle_subwindows_cb"/>
         </object>
@@ -1100,20 +1100,20 @@ Perhaps an increasing amount.
       </child>
       <child>
         <object class="GtkToggleAction" id="ToggleScaleFeedback">
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
               context="GUI feedback: show the zoom level"
             >Zoom Level</property>
-          <property name="tooltip" translatable="1"
+          <property name="tooltip" translatable="yes"
             >Reveal the scale % when zooming in or out</property>
           <signal name="activate" handler="toggle_scale_feedback_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkToggleAction" id="ToggleLastPosFeedback">
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
               context="GUI feedback: show the last painting position"
             >Last Painting Position</property>
-          <property name="tooltip" translatable="1"
+          <property name="tooltip" translatable="yes"
             >Show where strokes end</property>
           <signal name="activate" handler="toggle_last_pos_feedback_cb"/>
         </object>
@@ -1121,30 +1121,30 @@ Perhaps an increasing amount.
       <!-- UI control: menu bar and toolbar -->
       <child>
         <object class="GtkRadioAction" id="MenuishBarRadioMenubar">
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
               context="show only the menubar, and not the toolbar"
             >Menubar Only</property>
-          <property name="tooltip" translatable="1">Show menu bar</property>
+          <property name="tooltip" translatable="yes">Show menu bar</property>
           <property name="value">1</property>
           <signal name="changed" handler="on_menuishbar_radio_change"/>
         </object>
       </child>
       <child>
         <object class="GtkRadioAction" id="MenuishBarRadioMainToolbar">
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
               context="show only the toolbar, and not the menu bar"
             >Toolbar Only</property>
-          <property name="tooltip" translatable="1">Show toolbar</property>
+          <property name="tooltip" translatable="yes">Show toolbar</property>
           <property name="group">MenuishBarRadioMenubar</property>
           <property name="value">2</property>
         </object>
       </child>
       <child>
         <object class="GtkRadioAction" id="MenuishBarRadioMenubarAndMainToolbar">
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
               context="show both toolbar and menu"
             >Both</property>
-          <property name="tooltip" translatable="1"
+          <property name="tooltip" translatable="yes"
             >Show both the menu bar and the toolbar</property>
           <property name="group">MenuishBarRadioMainToolbar</property>
           <property name="value">3</property>
@@ -1157,10 +1157,10 @@ Perhaps an increasing amount.
       <!-- Actions which affect the ModeStack of the primary document -->
       <child>
         <object class="GtkRadioAction" id="SwitchableFreehandMode">
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
             >Freehand</property>
           <property name="icon-name">mypaint-line-mode-freehand</property>
-          <property name="tooltip" translatable="1"
+          <property name="tooltip" translatable="yes"
             >Freehand drawing and painting</property>
           <property name="value">1</property>
           <property name="current-value">1</property>
@@ -1169,9 +1169,9 @@ Perhaps an increasing amount.
       </child>
       <child>
         <object class="GtkRadioAction" id="PanViewMode">
-          <property name="label" translatable="1">Scroll View</property>
+          <property name="label" translatable="yes">Scroll View</property>
           <property name="icon-name">mypaint-view-pan</property>
-          <property name="tooltip" translatable="1"
+          <property name="tooltip" translatable="yes"
             >Scroll the view by clicking and dragging</property>
           <property name="group">SwitchableFreehandMode</property>
           <property name="value">2</property>
@@ -1179,9 +1179,9 @@ Perhaps an increasing amount.
       </child>
       <child>
         <object class="GtkRadioAction" id="RotateViewMode">
-          <property name="label" translatable="1">Rotate View</property>
+          <property name="label" translatable="yes">Rotate View</property>
           <property name="icon-name">mypaint-view-rotate</property>
-          <property name="tooltip" translatable="1"
+          <property name="tooltip" translatable="yes"
             >Rotate the view by clicking and dragging</property>
           <property name="group">PanViewMode</property>
           <property name="value">3</property>
@@ -1189,9 +1189,9 @@ Perhaps an increasing amount.
       </child>
       <child>
         <object class="GtkRadioAction" id="ZoomViewMode">
-          <property name="label" translatable="1">Zoom View</property>
+          <property name="label" translatable="yes">Zoom View</property>
           <property name="icon-name">mypaint-view-zoom</property>
-          <property name="tooltip" translatable="1"
+          <property name="tooltip" translatable="yes"
             >Zoom the view by clicking and dragging</property>
           <property name="group">RotateViewMode</property>
           <property name="value">3</property>
@@ -1199,10 +1199,10 @@ Perhaps an increasing amount.
       </child>
       <child>
         <object class="GtkRadioAction" id="StraightMode">
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
               >Straight/Curved Lines</property>
           <property name="icon-name">mypaint-line-mode-straight</property>
-          <property name="tooltip" translatable="1"
+          <property name="tooltip" translatable="yes"
               >Draw straight or curved lines.&#x0a;<!--
               -->Constrain angle by holding the Control key.&#x0a;<!--
               -->Add curves to your last line with the Shift key.</property>
@@ -1212,10 +1212,10 @@ Perhaps an increasing amount.
       </child>
       <child>
         <object class="GtkRadioAction" id="SequenceMode">
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
               >Line Sequence</property>
           <property name="icon-name">mypaint-line-mode-sequence</property>
-          <property name="tooltip" translatable="1"
+          <property name="tooltip" translatable="yes"
               >Draw a sequence of straight or curved lines.&#x0a;<!--
               -->Constrain angle by holding the Control key.&#x0a;<!--
               -->Add curves to your last line with the Shift key</property>
@@ -1225,10 +1225,10 @@ Perhaps an increasing amount.
       </child>
       <child>
         <object class="GtkRadioAction" id="EllipseMode">
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
               >Ellipse</property>
           <property name="icon-name">mypaint-line-mode-ellipse</property>
-          <property name="tooltip" translatable="1"
+          <property name="tooltip" translatable="yes"
               >Draw circles and ellipes.&#x0a;<!--
               -->Constrain shape or angle by holding the Control key.&#x0a;<!--
               -->Rotate by holding the Shift key.</property>
@@ -1238,10 +1238,10 @@ Perhaps an increasing amount.
       </child>
       <child>
         <object class="GtkRadioAction" id="LayerMoveMode">
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
               >Move Layer</property>
           <property name="icon-name">mypaint-move</property>
-          <property name="tooltip" translatable="1"
+          <property name="tooltip" translatable="yes"
               >Move the current layer by clicking and dragging</property>
           <property name="group">EllipseMode</property>
           <property name="value">7</property>
@@ -1249,10 +1249,10 @@ Perhaps an increasing amount.
       </child>
       <child>
         <object class="GtkRadioAction" id="FrameEditMode">
-          <property name="label" translatable="1"
+          <property name="label" translatable="yes"
               >Edit Frame</property>
           <property name="icon-name">mypaint-frame</property>
-          <property name="tooltip" translatable="1"
+          <property name="tooltip" translatable="yes"
               >Edit the document frame</property>
           <property name="group">LayerMoveMode</property>
           <property name="value">8</property>
