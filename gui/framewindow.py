@@ -1,3 +1,9 @@
+# This file is part of MyPaint.
+# Copyright (C) 2012 by Martin Renold <martinxyz@gmx.ch>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
 
 """Frame manipulation mode and subwindow
 """
@@ -13,8 +19,9 @@ import windowing
 from colors.uicolor import RGBColor
 
 
-class FrameEditMode (canvasevent.DragMode, canvasevent.ScrollableModeMixin,
-                     canvasevent.SpringLoadedModeMixin):
+class FrameEditMode (canvasevent.SpringLoadedDragMode,
+                     canvasevent.ScrollableModeMixin,
+                     canvasevent.OneshotDragModeMixin):
     """Stackable interaction mode for editing the document frame.
 
     The frame editing mode has an associated details dialog which is open for
@@ -22,8 +29,10 @@ class FrameEditMode (canvasevent.DragMode, canvasevent.ScrollableModeMixin,
 
     """
 
+    # Class-level configuration
     __action_name__ = 'FrameEditMode'
     cursor = gdk.Cursor(gdk.ICON)
+    unmodified_persist = True
 
     # Hit zones
     INSIDE  = 0x00
@@ -52,30 +61,32 @@ class FrameEditMode (canvasevent.DragMode, canvasevent.ScrollableModeMixin,
 
 
     def __init__(self, **kwds):
-        """Initialize.
+        """Initialize."""
 
-        Oneshot frame adjustment modes do not show the details dialog: they're
-        intended for use only while the key or pointer button which initiated
-        the drag is held down.
-
-        """
         super(FrameEditMode, self).__init__(**kwds)
         self._zone = None
         self._orig_frame = None
-        self._oneshot = False
 
 
     def enter(self, **kwds):
+        """Enter the mode, showing the dialog unless modifiers are held.
+
+        If modifiers are held down when the mode is entered, its oneshot
+        behaviour kicks in. Oneshot frame adjustment modes do not show the
+        details dialog.
+
+        """
         super(FrameEditMode, self).enter(**kwds)
-        self._oneshot = bool(self.held_modifiers) # from SpringLoadedModeMixin
-        if not self._oneshot:
+        if not self.initial_modifiers:
             lm = self.doc.app.layout_manager
             dialog = lm.get_subwindow_by_role("frameWindow")
             dialog.show_all()
 
 
     def leave(self, **kwds):
-        if not self._oneshot:
+        """Exit the mode, hiding any dialogs.
+        """
+        if not self.initial_modifiers:
             lm = self.doc.app.layout_manager
             dialog = lm.get_subwindow_by_role("frameWindow")
             dialog.hide()
@@ -186,12 +197,6 @@ class FrameEditMode (canvasevent.DragMode, canvasevent.ScrollableModeMixin,
         self._update_cursor(tdw, self.start_x, self.start_y)
         tdw.set_override_cursor(self.cursor)
         return super(FrameEditMode, self).drag_start_cb(tdw, event)
-
-
-    def drag_stop_cb(self):
-        if self._oneshot:
-            self.doc.modes.pop()
-        return super(FrameEditMode, self).drag_stop_cb()
 
 
     def drag_update_cb(self, tdw, event, dx, dy):

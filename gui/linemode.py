@@ -79,8 +79,9 @@ class LineModeSettings:
         return False
 
 
-class LineModeBase (canvasevent.SpringLoadedModeMixin, canvasevent.DragMode,
-                    canvasevent.ScrollableModeMixin):
+class LineModeBase (canvasevent.SpringLoadedDragMode,
+                    canvasevent.ScrollableModeMixin,
+                    canvasevent.OneshotDragModeMixin):
     """Draws geometric lines.
 
     """
@@ -90,6 +91,7 @@ class LineModeBase (canvasevent.SpringLoadedModeMixin, canvasevent.DragMode,
     ##
 
     cursor = gdk.Cursor(gdk.CROSS)
+    unmodified_persist = True
 
     # FIXME: all of the logic resides in the base class, for historical
     # reasons, and is decided by line_mode. The differences should be
@@ -97,27 +99,14 @@ class LineModeBase (canvasevent.SpringLoadedModeMixin, canvasevent.DragMode,
     line_mode = None
 
 
-    def __init__(self, initial_modifiers=0, **kwds):
-        """Initialize, possibly as a oneshot mode
-
-        :param initial_modifiers: Modifiers which are being held down as this
-                    mode is being constructed and entered.
-        :type initial_modifiers: a GDK modifiers mask.
-
-        Line modes can be initialized with an optional bitmask of keyboard
-        modifiers which are held as the mode is entered/pushed onto the mode
-        stack. If modifiers are held, the mode is a oneshot mode and is popped
-        from the mode stack automatically at the end of the drag. Currently
-        this style is only used by ``SwitchableFreehandMode``. Without
-        modifiers, line modes may be continued, and some subclasses offer
-        additional options for adjusting control points.
+    def __init__(self, **kwds):
+        """Initialize.
 
         """
         super(LineModeBase, self).__init__(**kwds)
         self.app = None
         self.last_line_data = None
         self.idle_srcid = None
-        self.initial_modifiers = initial_modifiers
 
 
     ##
@@ -125,12 +114,16 @@ class LineModeBase (canvasevent.SpringLoadedModeMixin, canvasevent.DragMode,
     ##
 
     def enter(self, **kwds):
+        """Enter the mode.
+
+        If modifiers are held when the mode is entered, the mode is a oneshot
+        mode and is popped from the mode stack automatically at the end of the
+        drag. Without modifiers, line modes may be continued, and some
+        subclasses offer additional options for adjusting control points.
+
+        """
         super(LineModeBase, self).enter(**kwds)
         self.app = self.doc.app
-        display = gdk.display_get_default()
-        screen, x, y, modifiers = display.get_pointer()
-        modifiers &= gtk.accelerator_get_default_mod_mask()
-        self.initial_modifiers = modifiers
 
 
     def drag_start_cb(self, tdw, event):
@@ -149,9 +142,7 @@ class LineModeBase (canvasevent.SpringLoadedModeMixin, canvasevent.DragMode,
     def drag_stop_cb(self):
         self.idle_srcid = None
         self.stop_command()
-        if self.initial_modifiers != 0:
-            self.doc.modes.pop()
-        return super(LineModeBase, self).drag_stop_cb()
+        return super(LineModeBase, self).drag_stop_cb() # oneshot exits etc.
 
 
     def _drag_idle_cb(self):

@@ -220,6 +220,23 @@ class InteractionMode (object):
         assert not hasattr(super(InteractionMode, self), "drag_stop_cb")
 
 
+    ## Internal utility functions
+
+    def current_modifiers(self):
+        """Returns the current set of modifier keys as a Gdk bitmask.
+
+        For use in handlers for keypress events when the key in question is
+        itself a modifier, handlers of multiple types of event, and when the
+        triggering event isn't available. Pointer button event handling should
+        use ``event.state & gtk.accelerator_get_default_mod_mask()``.
+
+        """
+        display = gdk.display_get_default()
+        screen, x, y, modifiers = display.get_pointer()
+        modifiers &= gtk.accelerator_get_default_mod_mask()
+        return modifiers
+
+
 
 class ScrollableModeMixin (InteractionMode):
     """Mixin for scrollable modes.
@@ -498,16 +515,13 @@ class SwitchableFreehandMode (FreehandOnlyMode, ScrollableModeMixin):
             # If the keypress is a modifier only, determine the modifier mask a
             # subsequent Button1 press event would get. This is used for early
             # spring-loaded mode switching.
-            display = gdk.display_get_default()
-            screen, x, y, modifiers = display.get_pointer()
-            modifiers &= gtk.accelerator_get_default_mod_mask()
-            action_name = btn_map.get_unique_action_for_modifiers(modifiers)
+            mods = self.current_modifiers()
+            action_name = btn_map.get_unique_action_for_modifiers(mods)
         else:
             # Strategy 2: pretend that the space bar is really button 2.
             if event.keyval == keysyms.space:
-                modifiers = event.state
-                modifiers &= gtk.accelerator_get_default_mod_mask()
-                action_name = btn_map.lookup(modifiers, 2)
+                mods = event.state & gtk.accelerator_get_default_mod_mask()
+                action_name = btn_map.lookup(mods, 2)
         # Only mode-based immediate dispatch is allowed, however.
         # Might relax this later.
         if action_name is not None:
@@ -695,63 +709,55 @@ class SpringLoadedModeMixin (InteractionMode):
     def enter(self, **kwds):
         """Enter the mode, recording the held modifier keys the first time.
 
+        The attribute `self.initial_modifiers` is set the first time the mode
+        is entered.
+
+
         """
         super(SpringLoadedModeMixin, self).enter(**kwds)
         assert self.doc is not None
         try:
-            # This mode might be entered because the mode(s) above it on the
+            # This mode might be re-entered because the mode(s) above it on the
             # stack has/have been popped. While another mode was handling
             # keypresses, the user may have changed which modifiers they were
             # holding down, and we may be re-entered only to have to leave
             # again.
-            old_modifiers = self.held_modifiers
+            old_modifiers = self.initial_modifiers
         except AttributeError:
             old_modifiers = None
-        display = gdk.display_get_default()
-        screen, x, y, modifiers = display.get_pointer()
-        modifiers &= gtk.accelerator_get_default_mod_mask()
+        modifiers = self.current_modifiers()
         if old_modifiers is not None:
             if (modifiers & old_modifiers) == 0:
-                gobject.idle_add(self.__pop_modestack_idle_cb, self.doc)
+                gobject.idle_add(self.__pop_modestack_idle_cb)
+            assert hasattr(self, "initial_modifiers")
         else:
-            self.held_modifiers = modifiers
+            self.initial_modifiers = modifiers
 
 
-    def __pop_modestack_idle_cb(self, doc):
+    def __pop_modestack_idle_cb(self):
         # Pop the mode stack when this mode is re-entered but has to leave
         # straight away because its modifiers are no longer held. Doing it in
         # an idle function avoids confusing the derived class's enter() method:
         # a leave() during an enter() would be strange.
-        if self.held_modifiers is not None: # in case key_release_cb() was called
-            self.held_modifiers = None
-            doc.modes.pop()
+        if self.initial_modifiers is not None:
+            self.doc.modes.pop()
         return False
 
 
     def key_release_cb(self, win, tdw, event):
-        """Leave the mode if the modifiers are no longer held down.
+        """Leave the mode if the initial modifier keys are no longer held.
 
-        If the spring-loaded mode leaves because the starting modifiers are no
-        longer held, this method returns True, and so should the supercaller.
+        If the spring-loaded mode leaves because the modifiers keys held down
+        when it was entered are no longer held, this method returns True, and
+        so should the supercaller.
 
         """
-        if self.held_modifiers is not None:
-            display = gdk.display_get_default()
-            screen, x, y, modifiers = display.get_pointer()
-            modifiers &= gtk.accelerator_get_default_mod_mask()
-            if modifiers & self.held_modifiers == 0:
-                self.held_modifiers = None
+        if self.initial_modifiers:
+            modifiers = self.current_modifiers()
+            if modifiers & self.initial_modifiers == 0:
                 self.doc.modes.pop()
                 return True
         return super(SpringLoadedModeMixin,self).key_release_cb(win,tdw,event)
-
-
-    def drag_start_cb(self, tdw, event):
-        """When a DragMode starts dragging, stop watching the held modifiers.
-        """
-        self.held_modifiers = None
-        super(SpringLoadedModeMixin, self).drag_start_cb(tdw, event)
-
 
 
 class DragMode (InteractionMode):
@@ -893,18 +899,58 @@ class DragMode (InteractionMode):
         return super(DragMode, self).key_release_cb(win, tdw, event)
 
 
+class SpringLoadedDragMode (SpringLoadedModeMixin, DragMode):
+    """Spring-loaded drag mode convenience base, with a key-release refinement
+
+    If modifier keys were held when the mode was entered, a normal
+    spring-loaded mode exits whenever those keys are all released. We don't
+    want that to happen during drags however, so add this little refinement.
+
+    """
+    # XXX: refactor: could this just be merged into SpringLoadedModeMixin?
+
+    def key_release_cb(self, win, tdw, event):
+        if self.in_drag:
+            return False
+        return super(SpringLoadedDragMode, self).key_release_cb(win,tdw,event)
+
 
 class OneshotDragModeMixin (InteractionMode):
-    """Oneshot drag modes exit & pop the mode stack when the drag stops."""
+    """Drag modes that can exit immediately when the drag stops.
+
+    If SpringLoadedModeMixin is not also part of the mode object's class
+    hierarchy, it will always exit at the end of a drag.
+
+    If the mode object does inherit SpringLoadedModeMixin behaviour, what
+    happens at the end of a drag is controlled by a class variable setting.
+
+    """
+
+    unmodified_persist = False
+    #: If true, and spring-loaded, stay active if no modifiers held initially.
 
 
     def drag_stop_cb(self):
         super(OneshotDragModeMixin, self).drag_stop_cb()
-        self.doc.modes.pop()
+        try:
+            initial_modifiers = self.initial_modifiers
+        except AttributeError:
+            # Always exit at the end of a drag if not spring-loaded.
+            self.doc.modes.pop()
+            return
+        if initial_modifiers != 0:
+            # If started with modifiers, keeping the modifiers held keeps
+            # spring-loaded modes active. If not, exit the mode.
+            if (initial_modifiers & self.current_modifiers()) == 0:
+                self.doc.modes.pop()
+        else:
+            # No modifiers were held when this mode was entered.
+            if not self.unmodified_persist:
+                print "OPOPOP"
+                self.doc.modes.pop()
 
 
-
-class PanViewMode (SpringLoadedModeMixin, OneshotDragModeMixin, DragMode):
+class PanViewMode (SpringLoadedDragMode, OneshotDragModeMixin):
     """A oneshot mode for translating the viewport by dragging."""
 
     __action_name__ = 'PanViewMode'
@@ -916,7 +962,7 @@ class PanViewMode (SpringLoadedModeMixin, OneshotDragModeMixin, DragMode):
         super(PanViewMode, self).drag_update_cb(tdw, event, dx, dy)
 
 
-class ZoomViewMode (SpringLoadedModeMixin, OneshotDragModeMixin, DragMode):
+class ZoomViewMode (SpringLoadedDragMode, OneshotDragModeMixin):
     """A oneshot mode for zooming the viewport by dragging."""
 
     __action_name__ = 'ZoomViewMode'
@@ -931,7 +977,7 @@ class ZoomViewMode (SpringLoadedModeMixin, OneshotDragModeMixin, DragMode):
         super(ZoomViewMode, self).drag_update_cb(tdw, event, dx, dy)
 
 
-class RotateViewMode (SpringLoadedModeMixin, OneshotDragModeMixin, DragMode):
+class RotateViewMode (SpringLoadedDragMode, OneshotDragModeMixin):
     """A oneshot mode for rotating the viewport by dragging."""
 
     __action_name__ = 'RotateViewMode'
@@ -957,7 +1003,7 @@ from linemode import EllipseMode
 from framewindow import FrameEditMode
 
 
-class LayerMoveMode (DragMode, ScrollableModeMixin, SpringLoadedModeMixin):
+class LayerMoveMode (SpringLoadedDragMode, ScrollableModeMixin):
     """Moving a layer interactively.
 
     MyPaint is tile-based, and tiles must align between layers, so moving
@@ -969,6 +1015,7 @@ class LayerMoveMode (DragMode, ScrollableModeMixin, SpringLoadedModeMixin):
 
     __action_name__ = 'LayerMoveMode'
     cursor = gdk.Cursor(gdk.FLEUR)
+    unmodified_persist = True
 
 
     def __init__(self, **kwds):
@@ -980,12 +1027,12 @@ class LayerMoveMode (DragMode, ScrollableModeMixin, SpringLoadedModeMixin):
         self._drag_update_idler_srcid = None
         self.layer = None
         self.move = None
-        self.oneshot = False
+        self.final_modifiers = 0
 
 
     def enter(self, **kwds):
         super(LayerMoveMode, self).enter(**kwds)
-        self.oneshot = bool(self.held_modifiers)
+        self.final_modifiers = self.initial_modifiers
 
 
     def drag_start_cb(self, tdw, event):
@@ -1044,6 +1091,7 @@ class LayerMoveMode (DragMode, ScrollableModeMixin, SpringLoadedModeMixin):
             tdw = self.drag_start_tdw
             tdw.set_sensitive(False)
             tdw.set_override_cursor(gdk.Cursor(gdk.WATCH))
+            self.final_modifiers = self.current_modifiers()
             gobject.idle_add(self._finalize_move_idler)
         return super(LayerMoveMode, self).drag_stop_cb()
 
@@ -1081,9 +1129,11 @@ class LayerMoveMode (DragMode, ScrollableModeMixin, SpringLoadedModeMixin):
         tdw.set_sensitive(True)
         tdw.set_override_cursor(self.cursor)
 
-        # Leave mode, if initialized as a oneshot mode
-        if self.oneshot:
-            self.doc.modes.pop()
+        # Leave mode if started with modifiers held and the user had released
+        # them all at the end of the drag.
+        if self.initial_modifiers:
+            if (self.final_modifiers & self.initial_modifiers) == 0:
+                self.doc.modes.pop()
 
         # All done, stop idle processing
         return False
