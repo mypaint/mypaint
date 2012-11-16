@@ -123,8 +123,8 @@ class BackgroundList(pixbuflist.PixbufList):
             except Exception, ex:
                 print ex
                 load_errors.append(
-                    _('Gdk-Pixbuf couldn\'t load "%s", and reported "%s"')
-                      % (filename, repr(ex)))
+                    _('Gdk-Pixbuf couldn\'t load "{filename}", and reported "{error}"').format(
+                    filename=filename, error=repr(ex)))
                 continue
             supported = True
             if pixbuf.get_has_alpha():
@@ -136,10 +136,9 @@ class BackgroundList(pixbuflist.PixbufList):
             w, h = pixbuf.get_width(), pixbuf.get_height()
             if w % N != 0 or h % N != 0 or w == 0 or h == 0:
                 load_errors.append(
-                    _('"%s" has an unsupported size. Background images '
+                    _('{filename} has an unsupported size. Background images '
                       'must have widths and heights which are multiples '
-                      'of %d pixels.')
-                    % (filename, N))
+                      'of {number} pixels.').format(filename=filename, number=N))
                 supported = False
             if not supported:
                 continue

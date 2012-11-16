@@ -166,7 +166,7 @@ def confirm_rewrite_group(window, groupname, deleted_groupname):
     for button, code in buttons:
         dialog.add_action_widget(button, code)
 
-    question = gtk.Label(_("<b>A group named `%s' already exists.</b>\nDo you want to replace it, or should the new group be renamed?\nIf you replace it, the brushes may be moved to a group called `%s'.") % (groupname, deleted_groupname))
+    question = gtk.Label(_("<b>A group named `{groupname}' already exists.</b>\nDo you want to replace it, or should the new group be renamed?\nIf you replace it, the brushes may be moved to a group called `{deleted_groupname}'.").format(groupname=groupname, deleted_groupname=deleted_groupname))
     question.set_use_markup(True)
 
     dialog.vbox.pack_start(question)

@@ -39,7 +39,7 @@ class ToolWidget (gtk.VBox):
 
     stock_id = "mypaint-tool-layers"
     tool_widget_title = _("Layers")
-    tooltip_format = _("<b>%s</b>\n%s")
+    tooltip_format = _("<b>{blendingmode_name}</b>\n{blendingmode_description}")
 
     def __init__(self, app):
         gtk.VBox.__init__(self)
@@ -186,8 +186,9 @@ class ToolWidget (gtk.VBox):
             md_desc = model.get_value(iter, 2)
             if md == mode:
                 self.layer_mode_combo.set_active_iter(iter)
-                tooltip = self.tooltip_format % (
-                        escape(md_name), escape(md_desc))
+                tooltip = self.tooltip_format.format(
+                    blendingmode_name = escape(md_name),
+                    blendingmode_description = escape(md_desc))
                 self.layer_mode_combo.set_tooltip_markup(tooltip)
         self.layer_mode_model.foreach(find_iter, None)
         self.is_updating = False
@@ -339,6 +340,8 @@ class ToolWidget (gtk.VBox):
         i = self.layer_mode_combo.get_active_iter()
         mode_name, display_name, desc = self.layer_mode_model.get(i, 0, 1, 2)
         doc.set_layer_compositeop(mode_name)
-        tooltip = self.tooltip_format % (escape(display_name), escape(desc))
+        tooltip = self.tooltip_format.format(
+            blendingmode_name = escape(display_name),
+            blendingmode_description = escape(desc))
         self.layer_mode_combo.set_tooltip_markup(tooltip)
         self.is_updating = False
