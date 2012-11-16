@@ -910,7 +910,7 @@ class SpringLoadedDragMode (SpringLoadedModeMixin, DragMode):
     # XXX: refactor: could this just be merged into SpringLoadedModeMixin?
 
     def key_release_cb(self, win, tdw, event):
-        if self.in_drag:
+        if event.is_modifier and self.in_drag:
             return False
         return super(SpringLoadedDragMode, self).key_release_cb(win,tdw,event)
 
