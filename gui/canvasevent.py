@@ -241,8 +241,8 @@ class InteractionMode (object):
 class ScrollableModeMixin (InteractionMode):
     """Mixin for scrollable modes.
 
-    Implements some immediate rotation, and zoom commands for the main up-down
-    scroll wheel: these should be useful in many modes, but perhaps not all.
+    Implements some immediate rotation and zoom commands for the scroll wheel.
+    These should be useful in many modes, but perhaps not all.
 
     """
 
@@ -712,8 +712,8 @@ class SpringLoadedModeMixin (InteractionMode):
         The attribute `self.initial_modifiers` is set the first time the mode
         is entered.
 
-
         """
+
         super(SpringLoadedModeMixin, self).enter(**kwds)
         assert self.doc is not None
         try:
