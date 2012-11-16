@@ -1038,7 +1038,7 @@ class LayerMoveMode (SpringLoadedDragMode, ScrollableModeMixin):
     def drag_start_cb(self, tdw, event):
         if self.layer is None:
             self.layer = self.doc.model.get_current_layer()
-            model_x, model_y = tdw.display_to_model(event.x, event.y)
+            model_x, model_y = tdw.display_to_model(self.start_x, self.start_y)
             self.model_x0 = model_x
             self.model_y0 = model_y
             self.drag_start_tdw = tdw
