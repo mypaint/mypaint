@@ -15,6 +15,12 @@
 
 "Code generator, part of the build process."
 import os, sys
+
+import gettext
+# workaround for https://gna.org/bugs/index.php?20281
+def do_not_translate(domain, s):
+    return s
+gettext.dgettext = do_not_translate
 import brushsettings
 
 def writefile(filename, s):
