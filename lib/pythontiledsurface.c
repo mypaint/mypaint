@@ -7,6 +7,7 @@
  * (at your option) any later version.
  */
 
+#include "pythontiledsurface.h"
 
 // caching tile memory location (optimization)
 #define TILE_MEMORY_SIZE 8
@@ -15,7 +16,7 @@ typedef struct {
   uint16_t * rgba_p;
 } TileMemory;
 
-typedef struct {
+struct _MyPaintPythonTiledSurface {
     MyPaintTiledSurface parent;
 
     PyObject * py_obj;
@@ -24,7 +25,7 @@ typedef struct {
     int tileMemoryWrite;
     int atomic;
     Rect dirty_bbox;
-} MyPaintPythonTiledSurface;
+};
 
 // Forward declare
 void free_tiledsurf(MyPaintSurface *surface);

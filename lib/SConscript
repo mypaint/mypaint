@@ -13,6 +13,8 @@ except ImportError:
 mypaintlib_env = env.Clone()
 env = mypaintlib_env
 
+
+
 # For the record: I know that scons supports swig. But it doesn't scan for #include in the generated code.
 # 
 # I have given up. Scons just can't get the dependencies right with those
@@ -89,7 +91,6 @@ if env.get('CPPDEFINES'):
     # make sure assertions are enabled
     env['CPPDEFINES'].remove('NDEBUG')
 
-
 # Build against brushlib
 env.Append(LIBS="mypaint")
 env.Append(LIBPATH="../")
@@ -103,5 +104,16 @@ if env['enable_gegl']:
 # python extension module
 src = 'mypaintlib_wrap.cpp'
 module = build_py_module(env, '../_mypaintlib', Split(src), SHLIBPREFIX="")
+
+tests_env = env.Clone()
+tests_env.Append(CPPPATH=['../brushlib/tests'], LIBS=['mypaint-tests', 'mypaintlib'])
+# Workaround to make it follow expected naming convention for gcc -l
+tests_env.Execute("ln -sf _mypaintlib.so ../libmypaintlib.so")
+
+# Standard tests
+tests_sources = ['test-python-surface.c']
+for source in tests_sources:
+    target = os.path.splitext(source)[0]
+    tests_env.Program(target=target, source=source)
 
 Return('module')

@@ -465,3 +465,6 @@ def calc_translation_slices(dc):
 
 # Set which surface backend to use
 Surface = GeglSurface if use_gegl else MyPaintSurface
+
+def new_surface():
+    return Surface()

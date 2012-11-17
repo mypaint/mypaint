@@ -11,6 +11,7 @@ TAGS
 tags
 brushlib/*-gen.h
 brushlib/mypaint-config.h
+lib/test-python-surface
 lib/_mypaintlib.so
 lib/mypaintlib.py
 lib/mypaintlib_wrap.cpp

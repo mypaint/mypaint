@@ -80,3 +80,58 @@ public:
 private:
     MyPaintPythonTiledSurface *c_surface;
 };
+
+static PyObject *
+get_module(char *name)
+{
+    PyObject *pName = PyString_FromString(name);
+    PyObject *pModule = PyImport_Import(pName);
+    Py_DECREF(pName);
+
+    if (pModule != NULL) {
+
+    }
+    else {
+        PyErr_Print();
+        fprintf(stderr, "Failed to load \"%s\"\n", name);
+        return NULL;
+    }
+    return pModule;
+}
+
+static PyObject *
+new_py_tiled_surface(PyObject *pModule)
+{
+    PyObject *pFunc = PyObject_GetAttrString(pModule, "new_surface");
+
+    assert(pFunc && PyCallable_Check(pFunc));
+
+    PyObject *pArgs = PyTuple_New(0);
+    PyObject *pValue = PyObject_CallObject(pFunc, pArgs);
+    Py_DECREF(pArgs);
+
+    return pValue;
+}
+
+extern "C" {
+
+MyPaintSurface *
+mypaint_python_surface_factory(gpointer user_data)
+{
+    PyObject *module = get_module("tiledsurface");
+    PyObject *instance = new_py_tiled_surface(module);
+    // Py_DECREF(module);
+
+    swig_type_info *info = SWIG_TypeQuery("TiledSurface *");
+    TiledSurface *surf;
+    if (SWIG_ConvertPtr(instance, (void **)&surf, info, SWIG_POINTER_EXCEPTION) == -1) {
+        return NULL;
+    }
+    MyPaintSurface *interface = surf->get_surface_interface();
+
+    // Py_DECREF(instance);
+
+    return interface;
+}
+
+}
