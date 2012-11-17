@@ -481,6 +481,7 @@ class Application: # singleton
             wacom bamboo intuos graphire cintiq
             hanvon rollick graphicpal artmaster sentip
             genius mousepen
+            aiptek
             '''
             match = False
             words = name.split()
