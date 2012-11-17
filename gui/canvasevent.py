@@ -949,7 +949,6 @@ class OneshotDragModeMixin (InteractionMode):
         else:
             # No modifiers were held when this mode was entered.
             if not self.unmodified_persist:
-                print "OPOPOP"
                 self.doc.modes.pop()
 
 

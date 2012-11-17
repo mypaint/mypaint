@@ -919,7 +919,6 @@ class Document (CanvasController):
         assert mode_class is not None
         if self.modes.top.__class__ is not mode_class:
             mode = mode_class()
-            print "DEBUG: activated", mode
             self.modes.reset(replacement=mode)
             # TODO: perhaps mode classes should list modes they can be
             # stacked on top of. That would allow things like picker modes
