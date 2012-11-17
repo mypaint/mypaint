@@ -768,8 +768,8 @@ class DragMode (InteractionMode):
 
     """
 
-    cursor = gdk.Cursor(gdk.BOGOSITY)
-    ## XXX two cursors? One for without the button pressed and one for with.
+    inactive_cursor = gdk.Cursor(gdk.BOGOSITY)
+    active_cursor = None
 
     def __init__(self, **kwds):
         super(DragMode, self).__init__(**kwds)
@@ -809,8 +809,11 @@ class DragMode (InteractionMode):
         tdw_window = tdw.get_window()
         event_mask = gdk.BUTTON_PRESS_MASK | gdk.BUTTON_RELEASE_MASK \
                    | gdk.POINTER_MOTION_MASK
+        cursor = self.active_cursor
+        if cursor is None:
+            cursor = self.inactive_cursor
         grab_status = gdk.pointer_grab(tdw_window, False, event_mask, None,
-                                       self.cursor, event.time)
+                                       cursor, event.time)
         if grab_status != gdk.GRAB_SUCCESS:
             print "pointer grab failed:", grab_status
             print "DEBUG: gdk_pointer_is_grabbed():", gdk.pointer_is_grabbed()
@@ -837,7 +840,7 @@ class DragMode (InteractionMode):
 
     def enter(self, **kwds):
         super(DragMode, self).enter(**kwds)
-        self.doc.tdw.set_override_cursor(self.cursor)
+        self.doc.tdw.set_override_cursor(self.inactive_cursor)
 
     def leave(self, **kwds):
         self._stop_if_started()
@@ -955,7 +958,14 @@ class PanViewMode (SpringLoadedDragMode, OneshotDragModeMixin):
 
     __action_name__ = 'PanViewMode'
 
-    cursor = gdk.Cursor(gdk.FLEUR)
+    @property
+    def inactive_cursor(self):
+        return self.doc.app.cursors.get_action_cursor(
+                self.__action_name__)
+    @property
+    def active_cursor(self):
+        return self.doc.app.cursors.get_action_cursor(
+                self.__action_name__)
 
     def drag_update_cb(self, tdw, event, dx, dy):
         tdw.scroll(-dx, -dy)
@@ -967,7 +977,15 @@ class ZoomViewMode (SpringLoadedDragMode, OneshotDragModeMixin):
 
     __action_name__ = 'ZoomViewMode'
 
-    cursor = gdk.Cursor(gdk.SIZING)
+    @property
+    def active_cursor(self):
+        return self.doc.app.cursors.get_action_cursor(
+                self.__action_name__)
+    @property
+    def inactive_cursor(self):
+        return self.doc.app.cursors.get_action_cursor(
+                self.__action_name__)
+
 
     def drag_update_cb(self, tdw, event, dx, dy):
         tdw.scroll(-dx, -dy)
@@ -981,7 +999,15 @@ class RotateViewMode (SpringLoadedDragMode, OneshotDragModeMixin):
     """A oneshot mode for rotating the viewport by dragging."""
 
     __action_name__ = 'RotateViewMode'
-    cursor = gdk.Cursor(gdk.EXCHANGE)
+
+    @property
+    def active_cursor(self):
+        return self.doc.app.cursors.get_action_cursor(
+                self.__action_name__)
+    @property
+    def inactive_cursor(self):
+        return self.doc.app.cursors.get_action_cursor(
+                self.__action_name__)
 
     def drag_update_cb(self, tdw, event, dx, dy):
         # calculate angular velocity from the rotation center
@@ -1014,10 +1040,18 @@ class LayerMoveMode (SpringLoadedDragMode, ScrollableModeMixin):
     """
 
     __action_name__ = 'LayerMoveMode'
-    cursor = gdk.Cursor(gdk.FLEUR)
+
+
+    @property
+    def active_cursor(self):
+        return self.doc.app.cursors.get_pixmaps_cursor(
+                "layers", "cursor_hand_closed")
+    @property
+    def inactive_cursor(self):
+        return self.doc.app.cursors.get_pixmaps_cursor(
+                "layers", "cursor_hand_open")
+
     unmodified_persist = True
-
-
     def __init__(self, **kwds):
         super(LayerMoveMode, self).__init__(**kwds)
         self.model_x0 = None
@@ -1127,7 +1161,7 @@ class LayerMoveMode (SpringLoadedDragMode, ScrollableModeMixin):
 
         # Restore sensitivity and original cursor
         tdw.set_sensitive(True)
-        tdw.set_override_cursor(self.cursor)
+        tdw.set_override_cursor(self.inactive_cursor)
 
         # Leave mode if started with modifiers held and the user had released
         # them all at the end of the drag.

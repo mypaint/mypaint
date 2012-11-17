@@ -31,7 +31,11 @@ class FrameEditMode (canvasevent.SpringLoadedDragMode,
 
     # Class-level configuration
     __action_name__ = 'FrameEditMode'
-    cursor = gdk.Cursor(gdk.ICON)
+
+    # These will be overridden on enter()
+    inactive_cursor = None
+    active_cursor = None
+
     unmodified_persist = True
 
     # Hit zones
@@ -81,7 +85,20 @@ class FrameEditMode (canvasevent.SpringLoadedDragMode,
             lm = self.doc.app.layout_manager
             dialog = lm.get_subwindow_by_role("frameWindow")
             dialog.show_all()
-
+        self.cursor_move_w_e = self.doc.app.cursors.get_action_cursor(
+            self.__action_name__, "cursor_move_w_e")
+        self.cursor_move_n_s = self.doc.app.cursors.get_action_cursor(
+            self.__action_name__, "cursor_move_n_s")
+        self.cursor_move_nw_se = self.doc.app.cursors.get_action_cursor(
+            self.__action_name__, "cursor_move_nw_se")
+        self.cursor_move_ne_sw = self.doc.app.cursors.get_action_cursor(
+            self.__action_name__, "cursor_move_ne_sw")
+        self.cursor_hand_closed = self.doc.app.cursors.get_action_cursor(
+            self.__action_name__, "cursor_hand_closed")
+        self.cursor_hand_open = self.doc.app.cursors.get_action_cursor(
+            self.__action_name__, "cursor_hand_open")
+        self.cursor_forbidden = self.doc.app.cursors.get_action_cursor(
+            self.__action_name__, "cursor_arrow_forbidden")
 
     def leave(self, **kwds):
         """Exit the mode, hiding any dialogs.
@@ -122,19 +139,22 @@ class FrameEditMode (canvasevent.SpringLoadedDragMode,
         return zone
 
 
-    def _update_cursor(self, tdw, xd, yd):
+    def _update_cursors(self, tdw, xd, yd):
         model = self.doc.model
         if not model.frame_enabled:
-            self.cursor = gdk.Cursor(gdk.ICON)
+            self.active_cursor = self.cursor_forbidden
+            self.inactive_cursor = self.cursor_forbidden
             return
 
         # Simpler interpretations
         zone = self._get_zone(tdw, xd, yd)
         if zone == self.OUTSIDE:
-            self.cursor = gdk.Cursor(gdk.ICON)
+            self.active_cursor = self.cursor_forbidden
+            self.inactive_cursor = self.cursor_forbidden
             return
         elif zone == self.INSIDE:
-            self.cursor = gdk.Cursor(gdk.FLEUR)
+            self.active_cursor = self.cursor_hand_closed
+            self.inactive_cursor = self.cursor_hand_open
             return
 
         # Centre of frame, in display coordinates
@@ -159,21 +179,21 @@ class FrameEditMode (canvasevent.SpringLoadedDragMode,
         assert theta >= 0
         assert theta < 2*math.pi
 
-        # The cursor chosen reflects the frame edge to be moved in display
-        # space. Looks a little funny if the canvas is rotated at a 45 degree
-        # angle, but it's not bad.
-        cursors = [ (1, gdk.RIGHT_SIDE),
-                    (3, gdk.BOTTOM_RIGHT_CORNER),
-                    (5, gdk.BOTTOM_SIDE),
-                    (7, gdk.BOTTOM_LEFT_CORNER),
-                    (9, gdk.LEFT_SIDE),
-                    (11, gdk.TOP_LEFT_CORNER),
-                    (13, gdk.TOP_SIDE),
-                    (15, gdk.TOP_RIGHT_CORNER),
-                    (17, gdk.RIGHT_SIDE),         ]
+        # The cursor chosen reflects how the chosen edge can be moved.
+        cursors = [ (1, self.cursor_move_w_e),     # right side
+                    (3, self.cursor_move_nw_se),   # bottom right corner
+                    (5, self.cursor_move_n_s),     # bottom side
+                    (7, self.cursor_move_ne_sw),   # bottom left corner
+                    (9, self.cursor_move_w_e),     # left side
+                    (11, self.cursor_move_nw_se),  # top left corner
+                    (13, self.cursor_move_n_s),    # top side
+                    (15, self.cursor_move_ne_sw),  # top right corner
+                    (17, self.cursor_move_w_e),    # right side
+                    ]
         for i, cursor in cursors:
             if theta < i*(2.0/16)*math.pi:
-                self.cursor = gdk.Cursor(cursor)
+                self.inactive_cursor = cursor
+                self.active_cursor = cursor
                 return
 
         # This should never happen.
@@ -182,8 +202,8 @@ class FrameEditMode (canvasevent.SpringLoadedDragMode,
 
     def motion_notify_cb(self, tdw, event):
         if not self.in_drag:
-            self._update_cursor(tdw, event.x, event.y)
-            tdw.set_override_cursor(self.cursor)
+            self._update_cursors(tdw, event.x, event.y)
+            tdw.set_override_cursor(self.inactive_cursor)
             self._zone = self._get_zone(tdw, event.x, event.y)
         return super(FrameEditMode, self).motion_notify_cb(tdw, event)
 
@@ -194,8 +214,6 @@ class FrameEditMode (canvasevent.SpringLoadedDragMode,
         if self._zone is None:
             # This can happen if started from another mode with a key-down
             self._zone = self._get_zone(tdw, self.start_x, self.start_y)
-        self._update_cursor(tdw, self.start_x, self.start_y)
-        tdw.set_override_cursor(self.cursor)
         return super(FrameEditMode, self).drag_start_cb(tdw, event)
 
 

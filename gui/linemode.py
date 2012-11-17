@@ -90,7 +90,16 @@ class LineModeBase (canvasevent.SpringLoadedDragMode,
     ## Class configuration.
     ##
 
-    cursor = gdk.Cursor(gdk.CROSS)
+
+    @property
+    def active_cursor(self):
+        return self.doc.app.cursors.get_action_cursor(
+                self.__action_name__, "cursor_pencil")
+    @property
+    def inactive_cursor(self):
+        return self.doc.app.cursors.get_action_cursor(
+                self.__action_name__, "cursor_crosshair_open")
+
     unmodified_persist = True
 
     # FIXME: all of the logic resides in the base class, for historical
