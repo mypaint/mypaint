@@ -472,19 +472,34 @@ class FreehandOnlyMode (InteractionMode):
         return True
 
 
-class SwitchableFreehandMode (FreehandOnlyMode, ScrollableModeMixin):
-    """The default mode: freehand drawing, accepting modifiers to switch modes.
+class SwitchableModeMixin (InteractionMode):
+    """Adds functionality for performing actions via modifiers & ptr buttons
+
+    Mode switching happens in response to button- or key-press events, using
+    the main app's ``button_mapping`` to look up action names. These actions
+    can switch control to other modes by pushing them onto the mode stack;
+    they can invoke popup States; or they can trigger regular GtkActions.
+
+    Not every switchable mode can perform any such action. Subclasses should
+    name actions they can invoke in ``permitted_switch_actions``. If this set
+    is left empty, any action can be performed
+
     """
 
-    __action_name__ = 'SwitchableFreehandMode'
+    permitted_switch_actions = set()  #: Optional whitelist for mode switching
+
 
     def button_press_cb(self, tdw, event):
-        app = tdw.app
-        drawwindow = app.drawWindow
+        """Button-press event handler. Permits switching."""
+
+        # Never switch in the middle of an active drag (see DragMode)
+        if getattr(self, 'in_drag', False):
+            return super(SwitchableModeMixin, self).button_press_cb(tdw, event)
+
         # Ignore accidental presses
         if event.type != gdk.BUTTON_PRESS:
             # Single button-presses only, not 2ble/3ple
-            return super(SwitchableFreehandMode, self).button_press_cb(tdw, event)
+            return super(SwitchableModeMixin, self).button_press_cb(tdw, event)
         if event.button != 1:
             # check whether we are painting (accidental)
             if event.state & gdk.BUTTON1_MASK:
@@ -497,18 +512,35 @@ class SwitchableFreehandMode (FreehandOnlyMode, ScrollableModeMixin):
                 # some tablet PCs are not able to produce a
                 # middle-mouse click without reporting pressure.
                 # https://gna.org/bugs/index.php?15907
-                return super(SwitchableFreehandMode, self).button_press_cb(tdw, event)
-        # Dispatch based on the button mapping
+                return super(SwitchableModeMixin,
+                             self).button_press_cb(tdw, event)
+
+        # Look up action
         btn_map = self.doc.app.button_mapping
         modifiers = event.state & gtk.accelerator_get_default_mod_mask()
         action_name = btn_map.lookup(modifiers, event.button)
+
+        # Forbid actions not named in the whitelist, if it's defined
+        if len(self.permitted_switch_actions) > 0:
+            if action_name not in self.permitted_switch_actions:
+                action_name = None
+
+        # Perform allowed action if one was looked up
         if action_name is not None:
             return self._dispatch_named_action(None, tdw, event, action_name)
-        # Fall through, presumably to freehand drawing
-        return super(SwitchableFreehandMode, self).button_press_cb(tdw, event)
+
+        # Otherwise fall through to the next behaviour
+        return super(SwitchableModeMixin, self).button_press_cb(tdw, event)
 
 
     def key_press_cb(self, win, tdw, event):
+        """Keypress event handler. Permits switching."""
+
+        # Never switch in the middle of an active drag (see DragMode)
+        if getattr(self, 'in_drag', False):
+            return super(SwitchableModeMixin,self).key_press_cb(win,tdw,event)
+
+        # Naively pick an action based on the button map
         btn_map = self.doc.app.button_mapping
         action_name = None
         if event.is_modifier:
@@ -517,20 +549,28 @@ class SwitchableFreehandMode (FreehandOnlyMode, ScrollableModeMixin):
             # spring-loaded mode switching.
             mods = self.current_modifiers()
             action_name = btn_map.get_unique_action_for_modifiers(mods)
+            # Only mode-based immediate dispatch is allowed, however.
+            # Might relax this later.
+            if action_name is not None:
+                if not action_name.endswith("Mode"):
+                    action_name = None
         else:
             # Strategy 2: pretend that the space bar is really button 2.
             if event.keyval == keysyms.space:
                 mods = event.state & gtk.accelerator_get_default_mod_mask()
                 action_name = btn_map.lookup(mods, 2)
-        # Only mode-based immediate dispatch is allowed, however.
-        # Might relax this later.
-        if action_name is not None:
-            if not action_name.endswith("Mode"):
+
+        # Forbid actions not named in the whitelist, if it's defined
+        if len(self.permitted_switch_actions) > 0:
+            if action_name not in self.permitted_switch_actions:
                 action_name = None
+
         # If we found something to do, dispatch
         if action_name is not None:
             return self._dispatch_named_action(win, tdw, event, action_name)
-        return super(SwitchableFreehandMode, self).key_press_cb(win, tdw, event)
+
+        # Otherwise, fall through to the next behaviour
+        return super(SwitchableModeMixin, self).key_press_cb(win, tdw, event)
 
 
     def _dispatch_named_action(self, win, tdw, event, action_name):
@@ -574,6 +614,15 @@ class SwitchableFreehandMode (FreehandOnlyMode, ScrollableModeMixin):
                 gobject.idle_add(action.activate)
                 return True
             return False
+
+
+class SwitchableFreehandMode (SwitchableModeMixin, ScrollableModeMixin,
+                              FreehandOnlyMode):
+    """The default mode: freehand drawing, accepting modifiers to switch modes.
+    """
+
+    __action_name__ = 'SwitchableFreehandMode'
+    permitted_switch_actions = set()   # Any action is permitted
 
 
 
@@ -716,22 +765,20 @@ class SpringLoadedModeMixin (InteractionMode):
 
         super(SpringLoadedModeMixin, self).enter(**kwds)
         assert self.doc is not None
-        try:
-            # This mode might be re-entered because the mode(s) above it on the
-            # stack has/have been popped. While another mode was handling
-            # keypresses, the user may have changed which modifiers they were
-            # holding down, and we may be re-entered only to have to leave
-            # again.
-            old_modifiers = self.initial_modifiers
-        except AttributeError:
-            old_modifiers = None
-        modifiers = self.current_modifiers()
+
+        old_modifiers = getattr(self, "initial_modifiers", None)
         if old_modifiers is not None:
-            if (modifiers & old_modifiers) == 0:
-                gobject.idle_add(self.__pop_modestack_idle_cb)
-            assert hasattr(self, "initial_modifiers")
+            # Re-entering due to an overlying mode being popped from the stack.
+            if old_modifiers != 0:
+                # This mode started with modifiers held the first time round,
+                modifiers = self.current_modifiers()
+                if (modifiers & old_modifiers) == 0:
+                    # But they're not held any more, so queue a further pop.
+                    gobject.idle_add(self.__pop_modestack_idle_cb)
         else:
-            self.initial_modifiers = modifiers
+            # This mode is being entered for the first time; record modifiers
+            modifiers = self.current_modifiers()
+            self.initial_modifiers = self.current_modifiers()
 
 
     def __pop_modestack_idle_cb(self):
@@ -934,22 +981,19 @@ class OneshotDragModeMixin (InteractionMode):
 
 
     def drag_stop_cb(self):
-        super(OneshotDragModeMixin, self).drag_stop_cb()
-        try:
-            initial_modifiers = self.initial_modifiers
-        except AttributeError:
+        if not hasattr(self, "initial_modifiers"):
             # Always exit at the end of a drag if not spring-loaded.
             self.doc.modes.pop()
-            return
-        if initial_modifiers != 0:
+        elif self.initial_modifiers != 0:
             # If started with modifiers, keeping the modifiers held keeps
             # spring-loaded modes active. If not, exit the mode.
-            if (initial_modifiers & self.current_modifiers()) == 0:
+            if (self.initial_modifiers & self.current_modifiers()) == 0:
                 self.doc.modes.pop()
         else:
             # No modifiers were held when this mode was entered.
             if not self.unmodified_persist:
                 self.doc.modes.pop()
+        return super(OneshotDragModeMixin, self).drag_stop_cb()
 
 
 class PanViewMode (SpringLoadedDragMode, OneshotDragModeMixin):
@@ -1028,7 +1072,9 @@ from linemode import EllipseMode
 from framewindow import FrameEditMode
 
 
-class LayerMoveMode (SpringLoadedDragMode, ScrollableModeMixin):
+class LayerMoveMode (SwitchableModeMixin,
+                     ScrollableModeMixin,
+                     SpringLoadedDragMode):
     """Moving a layer interactively.
 
     MyPaint is tile-based, and tiles must align between layers, so moving
@@ -1051,6 +1097,10 @@ class LayerMoveMode (SpringLoadedDragMode, ScrollableModeMixin):
                 "layers", "cursor_hand_open")
 
     unmodified_persist = True
+    permitted_switch_actions = set([
+            'ShowPopupMenu', 'RotateViewMode', 'ZoomViewMode', 'PanViewMode',
+        ])
+
     def __init__(self, **kwds):
         super(LayerMoveMode, self).__init__(**kwds)
         self.model_x0 = None

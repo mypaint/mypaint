@@ -79,7 +79,8 @@ class LineModeSettings:
         return False
 
 
-class LineModeBase (canvasevent.SpringLoadedDragMode,
+class LineModeBase (canvasevent.SwitchableModeMixin,
+                    canvasevent.SpringLoadedDragMode,
                     canvasevent.ScrollableModeMixin,
                     canvasevent.OneshotDragModeMixin):
     """Draws geometric lines.
@@ -101,6 +102,9 @@ class LineModeBase (canvasevent.SpringLoadedDragMode,
                 self.__action_name__, "cursor_crosshair_open")
 
     unmodified_persist = True
+    permitted_switch_actions = set(
+        ['RotateViewMode', 'ZoomViewMode', 'PanViewMode']
+        + canvasevent.extra_actions)
 
     # FIXME: all of the logic resides in the base class, for historical
     # reasons, and is decided by line_mode. The differences should be

@@ -19,7 +19,8 @@ import windowing
 from colors.uicolor import RGBColor
 
 
-class FrameEditMode (canvasevent.SpringLoadedDragMode,
+class FrameEditMode (canvasevent.SwitchableModeMixin,
+                     canvasevent.SpringLoadedDragMode,
                      canvasevent.ScrollableModeMixin,
                      canvasevent.OneshotDragModeMixin):
     """Stackable interaction mode for editing the document frame.
@@ -37,6 +38,9 @@ class FrameEditMode (canvasevent.SpringLoadedDragMode,
     active_cursor = None
 
     unmodified_persist = True
+    permitted_switch_actions = set([
+            'ShowPopupMenu', 'RotateViewMode', 'ZoomViewMode', 'PanViewMode',
+        ])
 
     # Hit zones
     INSIDE  = 0x00
