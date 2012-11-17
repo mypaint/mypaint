@@ -92,6 +92,7 @@ class Application: # singleton
                   pygtkcompat.gdk.display_get_default(),
                   self.pixmaps.cursor_color_picker,
                   1, 30)
+        self.cursors = CursorCache(self)
 
         # unmanaged main brush; always the same instance (we can attach settings_observers)
         # this brush is where temporary changes (color, size...) happen
@@ -658,6 +659,122 @@ class PixbufDirectory:
                 raise AttributeError, str(e)
             self.cache[name] = pixbuf
         return self.cache[name]
+
+
+class CursorCache (object):
+    """Cache of custom cursors for actions."""
+
+    # Known cursor names and their hot pixels
+    CURSOR_HOTSPOTS = {
+        "cursor_arrow": (1, 1),
+        "cursor_arrow_move": (1, 1),
+        "cursor_pencil": (7, 22),
+        "cursor_hand_open": (11, 12),
+        "cursor_hand_closed": (11, 12),
+        "cursor_crosshair_open": (11, 11),
+        "cursor_crosshair_closed": (11, 11),
+        "cursor_move_n_s": (11, 11),
+        "cursor_move_w_e": (11, 11),
+        "cursor_move_nw_se": (11, 11),
+        "cursor_move_ne_sw": (11, 11),
+        "cursor_forbidden_everywhere": (11, 11),
+        "cursor_arrow_forbidden": (7, 4),
+        "cursor_arrow": (7, 4),
+    }
+
+    def __init__(self, app):
+        object.__init__(self)
+        self.app = app
+        self.cache = {}
+
+
+    def get_overlay_cursor(self, icon_pixbuf, cursor_name="cursor_arrow"):
+        """Returns an overlay cursor. Not cached.
+
+        :param icon_pixbuf: a gdk.Pixbuf containing a small (~22px) image.
+        :param cursor_name: name of a pixmaps/ cursor image to use, minus
+           the .png
+
+        The overlay icon will be overlaid to the bottom and right of the
+        returned cursor image.
+
+        """
+        icon_w = icon_pixbuf.get_width()
+        icon_h = icon_pixbuf.get_height()
+        icon_x = 32 - icon_w
+        icon_y = 32 - icon_h
+
+        arrow_pixbuf = getattr(self.app.pixmaps, cursor_name)
+        arrow_w = arrow_pixbuf.get_width()
+        arrow_h = arrow_pixbuf.get_height()
+        hot_x, hot_y = self.CURSOR_HOTSPOTS.get(cursor_name, (None, None))
+        if hot_x is None:
+            hot_x = 1
+            hot_y = 1
+
+        cursor_pixbuf = pygtkcompat.GdkPixbufCompat.new(gdk.COLORSPACE_RGB,
+                                                        True, 8, 32, 32)
+        cursor_pixbuf.fill(0x00000000)
+
+        arrow_pixbuf.composite(cursor_pixbuf, 0, 0, arrow_w, arrow_h,
+                               0, 0, 1, 1, gdk.INTERP_NEAREST, 255)
+        icon_pixbuf.composite(cursor_pixbuf, icon_x, icon_y, icon_w, icon_h,
+                              icon_x, icon_y, 1, 1, gdk.INTERP_NEAREST, 255)
+
+        display = gdk.display_get_default()
+        cursor = gdk.Cursor(display, cursor_pixbuf, hot_x, hot_y)
+        return cursor
+
+
+    def get_pixmaps_cursor(self, pixmaps_dir_name, cursor_name="cursor_arrow"):
+        """Returns and overlay cursor for a named PNG in pixmaps/. Cached.
+        """
+        # Return from cache, if we have an entry
+        cache_key = ".".join(["pixmaps", pixmaps_dir_name, cursor_name])
+        if cache_key in self.cache:
+            return self.cache[cache_key]
+
+        # Build cursor
+        pixbuf = getattr(self.app.pixmaps, pixmaps_dir_name)
+        cursor = self.get_overlay_cursor(pixbuf, cursor_name)
+
+        # Cache and return
+        self.cache[cache_key] = cursor
+        return cursor
+
+
+    def get_action_cursor(self, action_name, cursor_name="cursor_arrow"):
+        """Returns an overlay cursor for a named action. Cached.
+
+        :param action_name: the name of a GtkAction defined in mypaint.xml
+        :param cursor_name: name of a pixmaps/ image to use, minus the .png
+
+        The action's icon will be overlaid at a small size to the bottom and
+        right of the cursor image.
+
+        """
+        # Return from cache, if we have an entry
+        cache_key = ".".join(["actions", action_name, cursor_name])
+        if cache_key in self.cache:
+            return self.cache[cache_key]
+
+        # Find a small action icon for the overlay
+        action = self.app.find_action(action_name)
+        if action is None:
+            return gdk.Cursor(gdk.BOGOSITY)
+        icon_name = action.get_icon_name()
+        if icon_name is None:
+            return gdk.Cursor(gdk.BOGOSITY)
+        icon_theme = gtk.icon_theme_get_default()
+        icon_size = min(gtk.icon_size_lookup(gtk.ICON_SIZE_SMALL_TOOLBAR))
+        icon_pixbuf = icon_theme.load_icon(icon_name, icon_size, 0)
+
+        # Build cursor
+        cursor = self.get_overlay_cursor(icon_pixbuf, cursor_name)
+
+        # Cache and return
+        self.cache[cache_key] = cursor
+        return cursor
 
 
 class CallbackFinder:
