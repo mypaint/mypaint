@@ -577,6 +577,7 @@ class SwitchableModeMixin (InteractionMode):
         # Send a named action from the button map to some handler code
         app = tdw.app
         drawwindow = app.drawWindow
+        tdw.doc.split_stroke()
         if action_name == 'ShowPopupMenu':
             # Unfortunately still a special case.
             # Just firing the action doesn't work well with pads which fire a
@@ -1098,8 +1099,8 @@ class LayerMoveMode (SwitchableModeMixin,
 
     unmodified_persist = True
     permitted_switch_actions = set([
-            'ShowPopupMenu', 'RotateViewMode', 'ZoomViewMode', 'PanViewMode',
-        ])
+            'RotateViewMode', 'ZoomViewMode', 'PanViewMode',
+        ] + extra_actions)
 
     def __init__(self, **kwds):
         super(LayerMoveMode, self).__init__(**kwds)
