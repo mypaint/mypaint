@@ -34,6 +34,7 @@ extra_actions = ["ShowPopupMenu",
                  "ColorChangerWashPopup",
                  "ColorChangerCrossedBowlPopup",
                  "ColorHistoryPopup",
+                 "ColorPickerPopup",
                  "PalettePrev",
                  "PaletteNext",
                  ]
