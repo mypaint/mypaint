@@ -188,14 +188,22 @@ def brushengine_paint_hires():
 
     events = loadtxt('painting30sec.dat.gz')
     t_old = events[0][0]
-    s.begin_atomic()
     yield start_measurement
+    s.begin_atomic()
+    trans_time = 0.0
     for t, x, y, pressure in events:
         dtime = t - t_old
         t_old = t
         b.stroke_to (s, x*5, y*5, pressure, 0.0, 0.0, dtime)
-    yield stop_measurement
+
+        trans_time += dtime
+        if trans_time > 0.05:
+            trans_time = 0.0
+            s.end_atomic()
+            s.begin_atomic()
+
     s.end_atomic()
+    yield stop_measurement
     #s.save('test_paint_hires.png') # approx. 3000x3000
 
 @gui_test
