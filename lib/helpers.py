@@ -10,11 +10,10 @@ from math import floor, ceil, isnan
 import os, sys, hashlib, zipfile, colorsys, urllib, gc
 import numpy
 
-from gui import pygtkcompat
-
 # Avoid pulling in PyGTK+ when using GI
 if not os.environ.get('MYPAINT_ENABLE_GEGL', 0):
     from gtk import gdk # for gdk_pixbuf stuff
+    from gui import pygtkcompat
 
 import mypaintlib
 
