@@ -255,28 +255,40 @@ class Window (windowing.Dialog):
 
         x, y, w, h = self.app.doc.model.get_frame()
 
-        self.width_adj  = gtk.Adjustment(w, upper=32000, lower=1, step_incr=1, page_incr=128)
-        self.height_adj = gtk.Adjustment(h, upper=32000, lower=1, step_incr=1, page_incr=128)
+        self.width_adj  = UnitAdjustment(w, upper=32000, lower=1, step_incr=1, page_incr=128)
+        self.height_adj = UnitAdjustment(h, upper=32000, lower=1, step_incr=1, page_incr=128)
+        self.dpi_adj = gtk.Adjustment(300, upper=9600, lower = 1, step_incr = 20, page_incr=300)
+        self.unit_label = gtk.Label(_('px'))
+        self.unit_label.set_alignment(0, 0.5)
 
         self.width_adj.connect('value-changed', self.on_size_adjustment_changed)
         self.height_adj.connect('value-changed', self.on_size_adjustment_changed)
+        self.dpi_adj.connect('value-changed', self.on_dpi_adjustment_changed)
 
         self.app.doc.model.frame_observers.append(self.on_frame_changed)
 
         self._init_ui()
 
     def _init_ui(self):
+        unit = _('px')
         height_label = gtk.Label(_('Height:'))
         height_label.set_alignment(0.0, 0.5)
         width_label = gtk.Label(_('Width:'))
         width_label.set_alignment(0.0, 0.5)
+        dpi_label = gtk.Label(_('Resolution:'))
+        dpi_label.set_alignment(0.0, 0.5)
         color_label = gtk.Label(_('Color:'))
         color_label.set_alignment(0.0, 0.5)
 
         height_entry = gtk.SpinButton()
         height_entry.set_adjustment(self.height_adj)
+        self.height_adj.set_spin_button(height_entry)
         width_entry = gtk.SpinButton()
         width_entry.set_adjustment(self.width_adj)
+        self.width_adj.set_spin_button(width_entry)
+        dpi_entry = gtk.SpinButton()
+        dpi_entry.set_adjustment(self.dpi_adj)
+        
         color_button = gtk.ColorButton()
         color_rgba = self.app.preferences.get("frame.color_rgba")
         color_rgba = [min(max(c, 0), 1) for c in color_rgba]
@@ -290,31 +302,40 @@ class Window (windowing.Dialog):
         color_align = gtk.Alignment(0, 0.5, 0, 0)
         color_align.add(color_button)
 
-        size_table = gtk.Table(6, 2)
+        size_table = gtk.Table(6, 3)
         size_table.set_border_width(9)
         xopts = yopts = gtk.FILL|gtk.EXPAND
         xpad = ypad = 3
 
-        def entry_with_label(entry, label_text):
-            entrybox = gtk.HBox()
-            entrybox.set_spacing(3)
-            entrybox.pack_start(entry, True, True, padding=0)
-            unity_label = gtk.Label(label_text)
-            entrybox.pack_start(unity_label, False, False, padding=0)
-            return entrybox
+        unit_combobox = gtk.combo_box_new_text();
+        for unit in UnitAdjustment.CONVERT_UNITS.keys():
+            unit_combobox.append_text(unit)
 
+        for i, key in enumerate(UnitAdjustment.CONVERT_UNITS):
+            if key == _('px'):
+                unit_combobox.set_active(i)
+
+        unit_combobox.connect('changed', self.on_unit_changed)
         row = 0
-        width_entrybox = entry_with_label(width_entry, _('px'))
         size_table.attach(width_label, 0, 1, row, row+1,
                           xopts, yopts, xpad, ypad)
-        size_table.attach(width_entrybox, 1, 2, row, row+1,
+        size_table.attach(width_entry, 1, 2, row, row+1,
+                          xopts, yopts, xpad, ypad)
+        size_table.attach(self.unit_label, 2, 3, row, row+1,
+                          xopts, yopts, xpad + 4, ypad)
+
+        row += 1
+        size_table.attach(height_label, 0, 1, row, row+1,
+                          xopts, yopts, xpad, ypad)
+        size_table.attach(height_entry, 1, 2, row, row+1,
+                          xopts, yopts, xpad, ypad)
+        size_table.attach(unit_combobox, 2, 3, row, row+1,
                           xopts, yopts, xpad, ypad)
 
         row += 1
-        height_entrybox = entry_with_label(height_entry, _('px'))
-        size_table.attach(height_label, 0, 1, row, row+1,
+        size_table.attach(dpi_label, 0, 1, row, row+1,
                           xopts, yopts, xpad, ypad)
-        size_table.attach(height_entrybox, 1, 2, row, row+1,
+        size_table.attach(dpi_entry, 1, 2, row, row+1,
                           xopts, yopts, xpad, ypad)
 
 
@@ -346,19 +367,19 @@ class Window (windowing.Dialog):
         self.enable_button.set_active(enabled)
 
         row += 1
-        size_table.attach(self.enable_button, 1, 2, row, row+1,
+        size_table.attach(self.enable_button, 2, 3, row, row+1,
                           xopts, yopts, xpad, ypad+6)
 
         row += 1
-        size_table.attach(hint_label, 0, 2, row, row+1,
+        size_table.attach(hint_label, 0, 3, row, row+1,
                           xopts, yopts, xpad, ypad)
 
         row += 1
-        size_table.attach(crop_layer_button, 0, 2, row, row+1,
+        size_table.attach(crop_layer_button, 0, 3, row, row+1,
                           xopts, yopts, xpad, ypad)
 
         row += 1
-        size_table.attach(crop_document_button, 0, 2, row, row+1,
+        size_table.attach(crop_document_button, 0, 3, row, row+1,
                           xopts, yopts, xpad, ypad)
 
         content_area = self.get_content_area()
@@ -374,6 +395,13 @@ class Window (windowing.Dialog):
         if response_id == gtk.RESPONSE_ACCEPT:
             self.hide()
 
+    def get_active_text(self, combobox):
+        model = combobox.get_model()
+        active = combobox.get_active()
+        if active < 0:
+            return None
+        return model[active][0]
+
     # FRAME
     def crop_frame_cb(self, button, command):
         if command == 'CropFrameToLayer':
@@ -383,6 +411,8 @@ class Window (windowing.Dialog):
         else: assert 0
         self.app.doc.model.set_frame_enabled(True)
         self.app.doc.model.set_frame(*bbox)
+        self.width_adj.set_px_value(bbox.w)
+        self.height_adj.set_px_value(bbox.h)
 
     def _color_set_cb(self, colorbutton):
         color_gdk = colorbutton.get_color()
@@ -398,24 +428,108 @@ class Window (windowing.Dialog):
 
         self.app.doc.model.set_frame_enabled(button.get_active())
 
+    def on_unit_changed(self, unit_combobox):
+        active_unit = self.get_active_text(unit_combobox)
+        self.width_adj.set_unit(active_unit)
+        self.height_adj.set_unit(active_unit)
+        self.unit_label.set_text(active_unit)
+
     def on_size_adjustment_changed(self, adjustment):
         """Update the frame size in the model."""
         if self.callbacks_active:
             return
-
-        width = int(self.width_adj.get_value())
-        height = int(self.height_adj.get_value())
-
+        self.width_adj.update_px_value()
+        self.height_adj.update_px_value()
+        width = int(self.width_adj.get_px_value())
+        height = int(self.height_adj.get_px_value())
         self.app.doc.model.set_frame(width=width, height=height)
+
+    def on_dpi_adjustment_changed(self, adjustment):
+        """Update the resolution used to calculate framesize in px."""
+        if self.callbacks_active:
+            return
+        dpi = self.dpi_adj.get_value()
+        self.width_adj.set_dpi(dpi)
+        self.height_adj.set_dpi(dpi)
+        self.on_size_adjustment_changed(self.width_adj)
+        self.on_size_adjustment_changed(self.height_adj)
 
     def on_frame_changed(self):
         """Update the UI to reflect the model."""
         self.callbacks_active = True # Prevent callback loops
 
         x, y, w, h = self.app.doc.model.get_frame()
-        self.width_adj.set_value(w)
-        self.height_adj.set_value(h)
+        self.width_adj.set_px_value(w)
+        self.height_adj.set_px_value(h)
         enabled = self.app.doc.model.frame_enabled
         self.enable_button.set_active(enabled)
-
         self.callbacks_active = False
+
+class UnitAdjustment(gtk.Adjustment):
+
+    CONVERT_UNITS = { # unit :  (conversion_factor, upper, lower, step_incr, page_incr, digits)
+                      _('px') :   (0.0,     32000,     1,       1, 128, 0),
+                      _('inch') : (1.0,     200,    0.01,    0.01,   1, 2),
+                      _('cm') :   (2.54,    500,     0.1,     0.1,   1, 1),
+                      _('mm') :   (25.4,    5000,      1,       1,  10, 0),
+                    }
+
+
+    def __init__(self, value=0, lower=0, upper=0, step_incr=0, page_incr=0, page_size=0, dpi=300):
+        gtk.Adjustment.__init__(self, value, lower, upper, step_incr, page_incr, page_size)
+        self.px_value = value
+        self.unit_value = value
+        self.active_unit = _('px')
+        self.old_unit = _('px')
+        self.dpi = dpi
+
+    def set_spin_button(self, button):
+        self.spin_button = button
+
+    def set_dpi(self, dpi):
+        self.dpi = dpi
+
+    def set_unit(self, unit):
+        self.old_unit = self.active_unit
+        self.active_unit = unit
+
+        self.set_upper(UnitAdjustment.CONVERT_UNITS[unit][1])
+        self.set_lower(UnitAdjustment.CONVERT_UNITS[unit][2])
+        self.set_step_increment(UnitAdjustment.CONVERT_UNITS[unit][3])
+        self.set_page_increment(UnitAdjustment.CONVERT_UNITS[unit][4])
+        self.spin_button.set_digits(UnitAdjustment.CONVERT_UNITS[unit][5])
+        self.px_value = self.convert_to_px(self.value, self.old_unit)
+        self.unit_value = self.convert_to_unit(self.px_value, self.active_unit)
+        self.value = self.unit_value
+
+    def update_px_value(self):
+        self.px_value = self.convert_to_px(self.value, self.active_unit)
+
+    def get_unit(self):
+        return self.unit
+
+    def get_unit_value(self):
+        return self.unit_value
+
+    def set_px_value(self, value):
+        self.px_value = value
+        self.set_value(self.convert_to_unit(value, self.active_unit))
+
+    def get_px_value(self):
+        self.px_value = self.convert_to_px(self.value, self.active_unit)
+        return self.px_value
+
+    def convert(self, value, unit_from, unit_to):
+        px = self.convert_to_px(value, unit_from)
+        uvalue = self.convert_to_unit(px, unit_to)
+        return uvalue
+
+    def convert_to_px(self, value, unit):
+        if unit == _('px'):
+            return value
+        return value / UnitAdjustment.CONVERT_UNITS[unit][0] * self.dpi
+
+    def convert_to_unit(self, px, unit):
+        if unit == _('px'):
+            return px
+        return px * UnitAdjustment.CONVERT_UNITS[unit][0] / self.dpi
