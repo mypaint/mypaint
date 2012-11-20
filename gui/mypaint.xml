@@ -1240,7 +1240,7 @@ Perhaps an increasing amount.
         <object class="GtkRadioAction" id="LayerMoveMode">
           <property name="label" translatable="yes"
               >Move Layer</property>
-          <property name="icon-name">mypaint-move</property>
+          <property name="icon-name">mypaint-tool-move-layer</property>
           <property name="tooltip" translatable="yes"
               >Move the current layer by clicking and dragging</property>
           <property name="group">EllipseMode</property>

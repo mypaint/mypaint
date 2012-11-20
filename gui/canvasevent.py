@@ -1091,12 +1091,12 @@ class LayerMoveMode (SwitchableModeMixin,
 
     @property
     def active_cursor(self):
-        return self.doc.app.cursors.get_pixmaps_cursor(
-                "layers", "cursor_hand_closed")
+        return self.doc.app.cursors.get_action_cursor(
+                self.__action_name__, "cursor_hand_closed")
     @property
     def inactive_cursor(self):
-        return self.doc.app.cursors.get_pixmaps_cursor(
-                "layers", "cursor_hand_open")
+        return self.doc.app.cursors.get_action_cursor(
+                self.__action_name__, "cursor_hand_open")
 
     unmodified_persist = True
     permitted_switch_actions = set([
