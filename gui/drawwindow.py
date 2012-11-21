@@ -24,7 +24,7 @@ from gettext import gettext as _
 import gtk, gobject
 from gtk import gdk, keysyms
 
-import colorselectionwindow, historypopup, stategroup, windowing, layout, toolbar
+import colorselectionwindow, historypopup, stategroup, colorpicker, windowing, layout, toolbar, previewwindow
 import dialogs
 from lib import helpers
 import canvasevent

@@ -298,6 +298,9 @@ class Application: # singleton
                 'colorWindow': dict(
                         sbindex=0, floating=True, hidden=True,
                         x=-100, y=125, w=250, h=300, sbheight=300),
+                'previewWindow': dict(
+                        sbindex=5, floating=True, hidden=True,
+                        x=-600, y=150, w=250, h=250, sbheight=250),
 
                 # Non-tool subwindows. These cannot be docked, and are all
                 # intially hidden.

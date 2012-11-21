@@ -65,6 +65,7 @@
       -->
       <menuitem action='ShowPopupMenu'/>
       <menuitem action='ToggleSubwindows'/>
+      <menuitem action='PreviewWindow'/>
       <separator/>
       <!-- ResetView is on its own because it also recentres the canvas, -->
       <menuitem action='ResetView'/>

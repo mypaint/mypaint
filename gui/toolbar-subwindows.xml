@@ -15,6 +15,7 @@ the Free Software Foundation; either version 2 of the License, or
       <toolitem action="BrushSelectionWindow"/>
       <toolitem action="LayersWindow"/>
       <toolitem action="ScratchWindow"/>
+      <toolitem action="PreviewWindow"/>
     </placeholder>
 
   </toolbar>

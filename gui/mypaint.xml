@@ -16,6 +16,8 @@ Perhaps an increasing amount.
            icon-name="mypaint-tool-scratchpad"/>
     <source stock-id="mypaint-tool-layers"
            icon-name="mypaint-tool-layers"/>
+    <source stock-id="mypaint-tool-preview-window"
+           icon-name="mypaint-tool-preview-window"/>
     <!-- View manipulation -->
     <!--
     TODO: make some MyPaint-specific icons for these. Not sure the object-
@@ -1170,6 +1172,17 @@ Perhaps an increasing amount.
         </object>
         <accelerator key="s" modifiers="GDK_SHIFT_MASK"/>
       </child>
+      <child>
+        <object class="GtkToggleAction" id="PreviewWindow">
+          <property name="stock_id">mypaint-tool-preview-window</property>
+          <property name="label" translatable="yes">Preview</property>
+          <property name="tooltip" translatable="yes"
+            >Show preview of the whole drawing area</property>
+          <signal name="activate" handler="toggle_window_cb"/>
+        </object>
+        <accelerator key="p" modifiers="GDK_SHIFT_MASK"/>
+      </child>
+
       <child>
         <object class="GtkToggleAction" id="ToggleSubwindows">
           <property name="label" translatable="yes"
