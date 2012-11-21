@@ -23,29 +23,9 @@ class ToolWidget(gtk.VBox):
         gtk.VBox.__init__(self)
         self.set_size_request(250, 250)
 
-        self.doc = app.doc.model
-        self.tdw = tileddrawwidget.TiledDrawWidget(app, self.doc)
-        self.tdw.zoom_min = 1/50.0
+        self.tdw = tileddrawwidget.TiledDrawWidget(app, app.doc.model)
         self.tdw.set_size_request(250, 250)
+        #TODO: perhaps configure this based on used area?
+        self.tdw.scale = 0.03
         self.tdw.set_sensitive(False)
         self.add(self.tdw)
-        self.doc.canvas_observers.append(self.doc_modified_cb)
-
-    def doc_modified_cb(self, x, y, w, h):
-      winx, winy = self.size_request()
-
-      #Calculate new zoom level
-      rect = self.doc.get_bbox()
-      fw = rect.w
-      fh = rect.h
-
-      if fw == 0 or fh == 0:
-        return
-
-      zoom_x = float(winx) / fw
-      zoom_y = float(winy) / fh
-
-      scale = min(zoom_x, zoom_y)
-
-      self.tdw.scale = scale
-      self.tdw.recenter_document()
