@@ -33,7 +33,9 @@ MERGEABLE_XML = [
     ("toolbar1_edit", 'gui/toolbar-edit.xml', _("Undo and Redo")),
     ("toolbar1_blendmodes", 'gui/toolbar-blendmodes.xml', _("Blend Modes")),
     ("toolbar1_editmodes", 'gui/toolbar-editmodes.xml', _("Editing Modes")),
-    ("toolbar1_view", 'gui/toolbar-view.xml', _("View")),
+    ("toolbar1_view_modes", 'gui/toolbar-view-modes.xml', _("View (Main)")),
+    ("toolbar1_view_manips", 'gui/toolbar-view-manips.xml', _("View (Alternative/Secondary)")),
+    ("toolbar1_view_resets", 'gui/toolbar-view-resets.xml', _("View (Resetting)")),
     ("toolbar1_subwindows", 'gui/toolbar-subwindows.xml', _("Subwindows")),
     ]
 HISTORY_PREVIEW_SIZE = 48

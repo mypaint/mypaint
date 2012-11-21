@@ -1,0 +1,25 @@
+<ui>
+<!--
+This file is part of MyPaint.
+Copyright (C) 2011 by Andrew Chadwick <andrewc-git@piffle.org>
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+-->
+
+  <toolbar name="toolbar1">
+
+    <placeholder name="view-modes-toolitems">
+      <!-- Main viewport tweaking buttons -->
+      <!-- general interaction mode radio-items -->
+      <toolitem action="PanViewMode"/>
+      <toolitem action="ZoomViewMode"/>
+      <toolitem action="RotateViewMode"/>
+      <!-- horizontal mirror counts for this -->
+      <toolitem action="MirrorHorizontal"/>
+    </placeholder>
+
+  </toolbar>
+</ui>

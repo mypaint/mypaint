@@ -530,6 +530,8 @@ Perhaps an increasing amount.
         <object class="GtkAction" id="Fit">
           <property name="stock_id">gtk-zoom-fit</property>
           <property name="label" translatable="yes">Fit</property>
+          <property name="tooltip" translatable="yes"
+              >Zoom to fit the document, and recenter</property>
           <signal name="activate" handler="reset_view_cb"/>
         </object>
         <accelerator key="F10"/>

@@ -11,19 +11,13 @@ the Free Software Foundation; either version 2 of the License, or
 
   <toolbar name="toolbar1">
 
-    <placeholder name="view-toolitems">
-      <!-- general interaction mode radio-items -->
-      <toolitem action="PanViewMode"/>
-      <toolitem action="ZoomViewMode"/>
-      <toolitem action="RotateViewMode"/>
-      <!-- single action buttons -->
-      <toolitem action="ResetView"/>
+    <placeholder name="view-manips-toolitems">
+      <!-- single action buttons, as an alternative to the main set -->
+      <!-- toolitem action="MirrorVertical" -->
       <toolitem action="ZoomIn"/>
       <toolitem action="ZoomOut"/>
       <toolitem action="RotateLeft"/>
       <toolitem action="RotateRight"/>
-      <toolitem action="MirrorHorizontal"/>
-      <toolitem action="MirrorVertical"/>
     </placeholder>
 
   </toolbar>
