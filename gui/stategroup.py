@@ -70,6 +70,9 @@ class State:
         2: gdk.BUTTON2_MASK,
         3: gdk.BUTTON3_MASK, }
 
+    #: Human-readable display string for the state.
+    label = None
+
     def __init__(self, stategroup, popup):
         self.sg = stategroup
         self.active = False

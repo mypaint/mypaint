@@ -220,6 +220,10 @@ class Window (windowing.MainWindow, layout.MainWindow):
         hist.autoleave_timeout = 0.600
         self.history_popup_state = hist
 
+        for action_name, popup_state in self.popup_states.iteritems():
+            label = self.app.find_action(action_name).get_label()
+            popup_state.label = label
+
     def init_main_widget(self):  # override
         self.main_widget = self.app.doc.tdw
 
