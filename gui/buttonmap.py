@@ -446,13 +446,20 @@ class ButtonMappingEditor (gtk.EventBox):
     def _bp_edit_box_button_press_cb(self, evbox, event, dialog, editable):
         modifiers = event.state & gtk.accelerator_get_default_mod_mask()
         bp_name = button_press_name(event.button, modifiers)
+        if modifiers == 0 and event.button == 1:
+            self._bp_edit_dialog_set_error(dialog,
+              _("%s cannot be bound by itself, without keyboard modifiers.")
+              % (escape(bp_name),))
+            dialog.ok_btn.set_sensitive(False)
+            return
         action = None
         if bp_name != dialog.bp_name_orig:
             action = self.bindings.get(bp_name, None)
         if action is not None:
+            action_label = self.action_labels.get(action, action)
             self._bp_edit_dialog_set_error(dialog, _(
                   "%s is already bound to the action '%s'")
-                  % (escape(str(bp_name)), escape(str(action))))
+                  % (escape(str(bp_name)), escape(str(action_label))))
             dialog.ok_btn.set_sensitive(False)
         else:
             self._bp_edit_dialog_set_standard_hint(dialog)
