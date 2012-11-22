@@ -301,7 +301,6 @@ class FreehandOnlyMode (InteractionMode):
 
     def reset_drawing_state(self):
         self.last_event_had_pressure_info = False
-        self.last_painting_pos = None
         # Windows stuff
         self.motions = []
 
@@ -431,7 +430,7 @@ class FreehandOnlyMode (InteractionMode):
             pressure = 0.0
 
         if pressure:
-            self.last_painting_pos = x, y
+            tdw.set_last_painting_pos((x, y))
 
         # If the device has changed and the last pressure value from the
         # previous device is not equal to 0.0, this can leave a visible stroke
