@@ -8,10 +8,12 @@
 """Canvas input event handling.
 """
 
+import pygtkcompat
+from buttonmap import get_handler_object
+
 import math
 from numpy import isfinite
 
-import pygtkcompat
 import gobject
 import gtk
 from gtk import gdk
@@ -597,35 +599,33 @@ class SwitchableModeMixin (InteractionMode):
             # Name it after the action however, in case we find a fix.
             drawwindow.show_popupmenu(event=event)
             return True
-        mode_class = ModeRegistry.get_mode_class(action_name)
-        if mode_class is not None:
+        handler_type, handler = get_handler_object(app, action_name)
+        if handler_type == 'mode_class':
             # Transfer control to another mode temporarily.
-            assert issubclass(mode_class, SpringLoadedModeMixin)
-            mode = mode_class()
+            assert issubclass(handler, SpringLoadedModeMixin)
+            mode = handler()
             self.doc.modes.push(mode)
             if win is not None:
                 return mode.key_press_cb(win, tdw, event)
             else:
                 return mode.button_press_cb(tdw, event)
-        if action_name in drawwindow.popup_states:
+        elif handler_type == 'popup_state':
             # Still needed. The code is more tailored to MyPaint's
             # purposes. The names are action names, but have the more
             # tailored popup states code shadow generic action activation.
-            state = drawwindow.popup_states[action_name]
-            state.activate(event)
+            handler.activate(event)
             return True
-        else:
+        elif handler_type == 'gtk_action':
             # Generic named action activation. GtkActions trigger without
             # event details, so they're less flexible.
-            action = self.doc.app.find_action(action_name)
-            if action is not None:
-                # Hack: Firing the action in an idle handler helps with
-                # actions that are sensitive to immediate button-release
-                # events. But not ShowPopupMenu, sadly: we'd break button
-                # hold behaviour for more reasonable devices if we used
-                # this trick.
-                gobject.idle_add(action.activate)
-                return True
+            # Hack: Firing the action in an idle handler helps with
+            # actions that are sensitive to immediate button-release
+            # events. But not ShowPopupMenu, sadly: we'd break button
+            # hold behaviour for more reasonable devices if we used
+            # this trick.
+            gobject.idle_add(handler.activate)
+            return True
+        else:
             return False
 
 

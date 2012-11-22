@@ -54,6 +54,35 @@ def button_press_parse(name):
     return button, mods
 
 
+def get_handler_object(app, action_name):
+    """Find a (nominal) handler for a named buttonmap action.
+
+    :param app: MyPaint application instance to use for the lookup
+    :param action_name: machine-readable action name string.
+    :rtype: tuple of the form (handler_type, handler_obj)
+
+    Defined handler_type strings and their handler_objs are: "mode_class" (an
+    instantiable InteractionMode class), "popup_state" (an activatable popup
+    state), "gtk_action" (an activatable gtk.Action), or "no_handler" (the
+    value None).
+
+    """
+    from canvasevent import ModeRegistry, InteractionMode
+    mode_class = ModeRegistry.get_mode_class(action_name)
+    if mode_class is not None:
+        assert issubclass(mode_class, InteractionMode)
+        return ("mode_class", mode_class)
+    elif action_name in app.drawWindow.popup_states:
+        popup_state = app.drawWindow.popup_states[action_name]
+        return ("popup_state", popup_state)
+    else:
+        action = app.find_action(action_name)
+        if action is not None:
+            return ("gtk_action", action)
+        else:
+            return ("no_handler", None)
+
+
 class ButtonMapping:
     """Button mapping table.
 
