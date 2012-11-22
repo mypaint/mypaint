@@ -884,7 +884,7 @@ Perhaps an increasing amount.
       </child>
       <child>
         <object class="GtkAction" id="BrushChooserPopup">
-          <property name="label" translatable="yes">Change Brush...</property>
+          <property name="label" translatable="yes">Change Brush</property>
           <property name="icon-name">mypaint-tool-brush</property>
           <signal name="activate" handler="brush_chooser_popup_cb"/>
         </object>
@@ -1160,10 +1160,10 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkRadioAction" id="SwitchableFreehandMode">
           <property name="label" translatable="yes"
-            >Freehand</property>
+            >Freehand Drawing</property>
           <property name="icon-name">mypaint-line-mode-freehand</property>
           <property name="tooltip" translatable="yes"
-            >Freehand drawing and painting</property>
+            >Freehand Drawing: draw and paint freely, without geometric constraints</property>
           <property name="value">1</property>
           <property name="current-value">1</property>
           <signal name="changed" handler="mode_radioaction_changed_cb"/>
@@ -1174,7 +1174,7 @@ Perhaps an increasing amount.
           <property name="label" translatable="yes">Scroll View</property>
           <property name="icon-name">mypaint-view-pan</property>
           <property name="tooltip" translatable="yes"
-            >Scroll the view by clicking and dragging</property>
+            >Scroll View: move around the canvas by clicking and dragging</property>
           <property name="group">SwitchableFreehandMode</property>
           <property name="value">2</property>
         </object>
@@ -1184,7 +1184,7 @@ Perhaps an increasing amount.
           <property name="label" translatable="yes">Rotate View</property>
           <property name="icon-name">mypaint-view-rotate</property>
           <property name="tooltip" translatable="yes"
-            >Rotate the view by clicking and dragging</property>
+            >Rotate View: turn the canvas by clicking and dragging</property>
           <property name="group">PanViewMode</property>
           <property name="value">3</property>
         </object>
@@ -1194,7 +1194,7 @@ Perhaps an increasing amount.
           <property name="label" translatable="yes">Zoom View</property>
           <property name="icon-name">mypaint-view-zoom</property>
           <property name="tooltip" translatable="yes"
-            >Zoom the view by clicking and dragging</property>
+            >Zoom View: zoom the canvas by clicking and dragging</property>
           <property name="group">RotateViewMode</property>
           <property name="value">3</property>
         </object>
@@ -1202,12 +1202,12 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkRadioAction" id="StraightMode">
           <property name="label" translatable="yes"
-              >Straight/Curved Lines</property>
+              >Lines and Curves</property>
           <property name="icon-name">mypaint-line-mode-straight</property>
           <property name="tooltip" translatable="yes"
-              >Draw straight or curved lines.&#x0a;<!--
-              -->Constrain angle by holding the Control key.&#x0a;<!--
-              -->Add curves to your last line with the Shift key.</property>
+              >Lines and Curves: draw straight or curved lines.&#x0a;<!--
+              -->Ctrl: constrain angle.&#x0a;<!--
+              -->Shift: add curves to the last line.</property>
           <property name="group">ZoomViewMode</property>
           <property name="value">4</property>
         </object>
@@ -1215,12 +1215,12 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkRadioAction" id="SequenceMode">
           <property name="label" translatable="yes"
-              >Line Sequence</property>
+              >Connected Lines</property>
           <property name="icon-name">mypaint-line-mode-sequence</property>
           <property name="tooltip" translatable="yes"
-              >Draw a sequence of straight or curved lines.&#x0a;<!--
-              -->Constrain angle by holding the Control key.&#x0a;<!--
-              -->Add curves to your last line with the Shift key</property>
+              >Connected Lines: draw sequences of straight or curved lines.&#x0a;<!--
+              -->Ctrl: constrain angle.&#x0a;<!--
+              -->Shift: add curves to the last line.</property>
           <property name="group">StraightMode</property>
           <property name="value">5</property>
         </object>
@@ -1228,12 +1228,13 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkRadioAction" id="EllipseMode">
           <property name="label" translatable="yes"
-              >Ellipse</property>
+              >Ellipses and Circles</property>
           <property name="icon-name">mypaint-line-mode-ellipse</property>
           <property name="tooltip" translatable="yes"
-              >Draw circles and ellipes.&#x0a;<!--
-              -->Constrain shape or angle by holding the Control key.&#x0a;<!--
-              -->Rotate by holding the Shift key.</property>
+              >Ellipses and Circles: draw whole circles and ellipses.&#x0a;<!--
+              -->Shift: rotate.&#x0a;<!--
+              -->Ctrl: constrain ratio.&#x0a;<!--
+              -->Ctrl+Shift: constrain angle.</property>
           <property name="group">SequenceMode</property>
           <property name="value">6</property>
         </object>
@@ -1244,7 +1245,7 @@ Perhaps an increasing amount.
               >Move Layer</property>
           <property name="icon-name">mypaint-tool-move-layer</property>
           <property name="tooltip" translatable="yes"
-              >Move the current layer by clicking and dragging</property>
+              >Move Layer: reposition the current layer on the canvas</property>
           <property name="group">EllipseMode</property>
           <property name="value">7</property>
         </object>
@@ -1255,7 +1256,7 @@ Perhaps an increasing amount.
               >Edit Frame</property>
           <property name="icon-name">mypaint-frame</property>
           <property name="tooltip" translatable="yes"
-              >Edit the document frame</property>
+              >Edit Frame: define a frame around the document to give it a finite size. The frame is used when exporting.</property>
           <property name="group">LayerMoveMode</property>
           <property name="value">8</property>
         </object>
