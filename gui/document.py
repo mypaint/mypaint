@@ -872,6 +872,9 @@ class Document (CanvasController):
         if bool(action.get_active()) != bool(layer.visible):
             action.set_active(bool(layer.visible))
 
+        # Active modes.
+        self.modes.top.model_structure_changed_cb(doc)
+
 
     def frame_changed_cb(self):
         self.tdw.queue_draw()

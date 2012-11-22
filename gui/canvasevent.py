@@ -205,6 +205,18 @@ class InteractionMode (object):
         assert not hasattr(super(InteractionMode, self), "key_release_cb")
 
 
+    def model_structure_changed_cb(self, doc):
+        """Handler for model structural changes.
+
+        Only called for the top mode on the stack, when the document model
+        structure changes, so if a mode depends on the model structure, check
+        in enter() too.
+
+        """
+        assert not hasattr(super(InteractionMode, self),
+                           "model_structure_changed_cb")
+
+
     ## Drag sub-API (FIXME: this is in the wrong place)
     # Defined here to allow mixins to provide behaviour for both both drags and
     # regular events without having to derive from DragMode. Really these
@@ -1090,17 +1102,25 @@ class LayerMoveMode (SwitchableModeMixin,
 
     @property
     def active_cursor(self):
+        cursor_name = "cursor_hand_closed"
+        if not self._move_possible:
+            cursor_name = "cursor_forbidden_everywhere"
         return self.doc.app.cursors.get_action_cursor(
-                self.__action_name__, "cursor_hand_closed")
+                self.__action_name__, cursor_name)
+
     @property
     def inactive_cursor(self):
+        cursor_name = "cursor_hand_open"
+        if not self._move_possible:
+            cursor_name = "cursor_forbidden_everywhere"
         return self.doc.app.cursors.get_action_cursor(
-                self.__action_name__, "cursor_hand_open")
+                self.__action_name__, cursor_name)
 
     unmodified_persist = True
     permitted_switch_actions = set([
             'RotateViewMode', 'ZoomViewMode', 'PanViewMode',
         ] + extra_actions)
+
 
     def __init__(self, **kwds):
         super(LayerMoveMode, self).__init__(**kwds)
@@ -1112,11 +1132,28 @@ class LayerMoveMode (SwitchableModeMixin,
         self.layer = None
         self.move = None
         self.final_modifiers = 0
+        self._move_possible = False
 
 
     def enter(self, **kwds):
         super(LayerMoveMode, self).enter(**kwds)
         self.final_modifiers = self.initial_modifiers
+        self._update_cursors()
+        self.doc.tdw.set_override_cursor(self.inactive_cursor)
+
+
+    def model_structure_changed_cb(self, doc):
+        super(LayerMoveMode, self).model_structure_changed_cb(doc)
+        if self.move is not None:
+            # Cursor update is deferred to the end of the drag
+            return
+        self._update_cursors()
+
+
+    def _update_cursors(self):
+        layer = self.doc.model.get_current_layer()
+        self._move_possible = layer.visible and not layer.locked
+        self.doc.tdw.set_override_cursor(self.inactive_cursor)
 
 
     def drag_start_cb(self, tdw, event):
@@ -1134,7 +1171,7 @@ class LayerMoveMode (SwitchableModeMixin,
         assert self.layer is not None
 
         # Begin moving, if we're not already
-        if self.move is None:
+        if self.move is None and self._move_possible:
             self.move = self.layer.get_move(self.model_x0, self.model_y0)
 
         # Update the active move 
@@ -1143,12 +1180,13 @@ class LayerMoveMode (SwitchableModeMixin,
         model_dy = model_y - self.model_y0
         self.final_model_dx = model_dx
         self.final_model_dy = model_dy
-        self.move.update(model_dx, model_dy)
 
-        # Keep showing updates in the background for feedback.
-        if self._drag_update_idler_srcid is None:
-            idler = self._drag_update_idler
-            self._drag_update_idler_srcid = gobject.idle_add(idler)
+        if self.move is not None:
+            self.move.update(model_dx, model_dy)
+            # Keep showing updates in the background for feedback.
+            if self._drag_update_idler_srcid is None:
+                idler = self._drag_update_idler
+                self._drag_update_idler_srcid = gobject.idle_add(idler)
 
         return super(LayerMoveMode, self).drag_update_cb(tdw, event, dx, dy)
 
@@ -1177,7 +1215,30 @@ class LayerMoveMode (SwitchableModeMixin,
             tdw.set_override_cursor(gdk.Cursor(gdk.WATCH))
             self.final_modifiers = self.current_modifiers()
             gobject.idle_add(self._finalize_move_idler)
+        else:
+            # Still need cleanup for tracking state, cursors etc.
+            self._drag_cleanup()
+
         return super(LayerMoveMode, self).drag_stop_cb()
+
+
+    def _drag_cleanup(self):
+        # Reset drag tracking state
+        self.model_x0 = self.model_y0 = None
+        self.drag_start_tdw = self.move = None
+        self.final_model_dx = self.final_model_dy = None
+        self.layer = None
+
+        # Cursor setting:
+        # Reset busy cursor after drag which performed a move,
+        # catch doc structure changes that happen during a drag
+        self._update_cursors()
+
+        # Leave mode if started with modifiers held and the user had released
+        # them all at the end of the drag.
+        if self.initial_modifiers:
+            if (self.final_modifiers & self.initial_modifiers) == 0:
+                self.doc.modes.pop()
 
 
     def _finalize_move_idler(self):
@@ -1192,8 +1253,6 @@ class LayerMoveMode (SwitchableModeMixin,
         tdw = self.drag_start_tdw
         dx = self.final_model_dx
         dy = self.final_model_dy
-        self.drag_start_tdw = self.move = None
-        self.final_model_dx = self.final_model_dy = None
 
         # Arrange for the strokemap to be moved too;
         # this happens in its own background idler.
@@ -1207,17 +1266,12 @@ class LayerMoveMode (SwitchableModeMixin,
 
         # Record move so it can be undone
         self.doc.model.record_layer_move(self.layer, dx, dy)
-        self.layer = None
 
-        # Restore sensitivity and original cursor
+        # Restore sensitivity
         tdw.set_sensitive(True)
-        tdw.set_override_cursor(self.inactive_cursor)
 
-        # Leave mode if started with modifiers held and the user had released
-        # them all at the end of the drag.
-        if self.initial_modifiers:
-            if (self.final_modifiers & self.initial_modifiers) == 0:
-                self.doc.modes.pop()
+        # Post-drag cleanup: cursor etc.
+        self._drag_cleanup()
 
         # All done, stop idle processing
         return False

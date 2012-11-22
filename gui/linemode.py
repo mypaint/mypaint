@@ -94,12 +94,19 @@ class LineModeBase (canvasevent.SwitchableModeMixin,
 
     @property
     def active_cursor(self):
+        cursor_name = "cursor_pencil"
+        if not self._line_possible:
+            cursor_name = "cursor_forbidden_everywhere"
         return self.doc.app.cursors.get_action_cursor(
-                self.__action_name__, "cursor_pencil")
+                self.__action_name__, cursor_name)
+
     @property
     def inactive_cursor(self):
+        cursor_name = "cursor_crosshair_open"
+        if not self._line_possible:
+            cursor_name = "cursor_forbidden_everywhere"
         return self.doc.app.cursors.get_action_cursor(
-                self.__action_name__, "cursor_crosshair_open")
+                self.__action_name__, cursor_name)
 
     unmodified_persist = True
     permitted_switch_actions = set(
@@ -120,6 +127,7 @@ class LineModeBase (canvasevent.SwitchableModeMixin,
         self.app = None
         self.last_line_data = None
         self.idle_srcid = None
+        self._line_possible = False
 
 
     ##
@@ -137,24 +145,46 @@ class LineModeBase (canvasevent.SwitchableModeMixin,
         """
         super(LineModeBase, self).enter(**kwds)
         self.app = self.doc.app
+        self._update_cursors()
+        self.doc.tdw.set_override_cursor(self.inactive_cursor)
+
+
+    def model_structure_changed_cb(self, doc):
+        super(LineModeBase, self).model_structure_changed_cb(doc)
+        if self.in_drag:
+            # Defer update to the end of the drag
+            return
+        self._update_cursors()
+
+
+    def _update_cursors(self):
+        layer = self.doc.model.get_current_layer()
+        self._line_possible = layer.visible and not layer.locked
+        self.doc.tdw.set_override_cursor(self.inactive_cursor)
 
 
     def drag_start_cb(self, tdw, event):
-        canvasevent.SpringLoadedModeMixin.drag_start_cb(self, tdw, event)
-        self.start_command(self.initial_modifiers)
-        return super(LineModeBase, self).drag_start_cb(tdw, event)
+        super(LineModeBase, self).drag_start_cb(tdw, event)
+        layer = self.doc.model.get_current_layer()
+        if self._line_possible:
+            self.start_command(self.initial_modifiers)
 
 
     def drag_update_cb(self, tdw, event, dx, dy):
-        self.update_position(event.x, event.y)
-        if self.idle_srcid is None:
-            self.idle_srcid = gobject.idle_add(self._drag_idle_cb)
+        layer = self.doc.model.get_current_layer()
+        if self._line_possible:
+            self.update_position(event.x, event.y)
+            if self.idle_srcid is None:
+                self.idle_srcid = gobject.idle_add(self._drag_idle_cb)
         return super(LineModeBase, self).drag_update_cb(tdw, event, dx, dy)
 
 
     def drag_stop_cb(self):
-        self.idle_srcid = None
-        self.stop_command()
+        layer = self.doc.model.get_current_layer()
+        if self._line_possible:
+            self.idle_srcid = None
+            self.stop_command()
+        self._update_cursors() # catch deferred updates
         return super(LineModeBase, self).drag_stop_cb() # oneshot exits etc.
 
 
