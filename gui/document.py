@@ -834,7 +834,7 @@ class Document (CanvasController):
             cmd = stack.undo_stack[-1]
             desc = _("Undo %s") % cmd.display_name
         else:
-            desc = _("Undo: nothing to undo")
+            desc = _("Undo")  # Used when initializing the prefs dialog
         undo_action.set_label(desc)
         undo_action.set_tooltip(desc)
         redo_action = ag.get_action("Redo")
@@ -843,7 +843,7 @@ class Document (CanvasController):
             cmd = stack.redo_stack[-1]
             desc = _("Redo %s") % cmd.display_name
         else:
-            desc = _("Redo: nothing to redo")
+            desc = _("Redo")  # Used when initializing the prefs dialog
         redo_action.set_label(desc)
         redo_action.set_tooltip(desc)
 
