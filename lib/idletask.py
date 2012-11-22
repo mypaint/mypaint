@@ -8,38 +8,64 @@
 
 import gobject
 
+
 class Processor:
+    """Queue of low priority tasks for background processing
+
+    Queued tasks are automatically processed when gtk is idle, or on demand.
+
     """
-    A queue of low priority tasks that are automatically processed
-    when gtk is idle, or on demand.
-    """
+
     def __init__(self, max_pending):
+        """Initialize, specifying maximum overhead.
+
+        :param max_pending: maximum queue weight before `add_work()` starts
+            doing immediate work.
+        """
         self._queue = []
-        self.max_pending = max_pending
+        self.max_pending = float(max_pending)
+
 
     def add_work(self, func, weight=1.0):
+        """Adds work, possibly doing some of it if there's too much overhead.
+
+        :param func: a callable of no arguments; return is ignored.
+        :param weight: weight estimate for `func`.
+
+        The queue will be processed until the sum of its functions' weight
+        estimates is smaller than the processor's ``max_pending`` setting.
+        Further processing happens automatically in the background.
+
+        """
         if not self._queue:
             gobject.idle_add(self._idle_cb)
-        func.__weight = weight
+        func.__weight = float(weight)
         self._queue.append(func)
-        self.finish_downto(self.max_pending)
+        self._finish_downto(self.max_pending)
 
-    def finish_one(self):
+
+    def _finish_one(self):
         func = self._queue.pop(0)
         func()
         return func.__weight
 
-    def finish_downto(self, max_pending):
+
+    def _finish_downto(self, max_pending):
         pending = sum([func.__weight for func in self._queue])
-        while self._queue and pending > max_pending:
-            pending -= self.finish_one()
+        while self._queue and pending > float(max_pending):
+            pending -= self._finish_one()
+
 
     def finish_all(self):
-        self.finish_downto(0)
+        """Finishes all queued tasks."""
+        while self._queue:
+            self._finish_one()
+        assert len(self._queue) == 0
+
 
     def _idle_cb(self):
         if not self._queue:
             return False
-        self.finish_one()
+        self._finish_one()
         return True
 
