@@ -109,10 +109,15 @@ class Window(windowing.Dialog):
         ### Pointer actions tab
         assert app.preferences.has_key("input.button_mapping")
         vbox = gtk.VBox()
-        self.button_map_editor = ButtonMappingEditor(
+
+        actions_possible = canvasevent.ModeRegistry.get_action_names()
+        actions_possible = [n for n in actions_possible
+          if issubclass(canvasevent.ModeRegistry.get_mode_class(n),
+                        canvasevent.SpringLoadedModeMixin) ]
+        actions_possible += canvasevent.extra_actions
+        self.button_map_editor = ButtonMappingEditor(app=app,
                 bindings=app.preferences["input.button_mapping"],
-                actions_possible=canvasevent.ModeRegistry.get_action_names()
-                    + canvasevent.extra_actions )
+                actions_possible=actions_possible)
         self.button_map_editor.bindings_observers.append(
                 self.button_mapping_editor_bindings_edited_cb)
         vbox.set_border_width(12)
