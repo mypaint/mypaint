@@ -141,21 +141,24 @@ class TiledDrawWidget (gtk.EventBox):
         self.add(self.renderer)
 
         self.doc.canvas_observers.append(self.renderer.canvas_modified_cb)
+        self.doc.doc_observers.append(self.renderer.model_structure_changed_cb)
         self.doc.brush.brushinfo.observers.append(
                                         self.renderer.brush_modified_cb)
 
         self.renderer.update_cursor() # get the initial cursor right
 
-        # Track the active TDW
         self.add_events(gdk.ENTER_NOTIFY_MASK)
         self.connect("enter-notify-event", self.enter_notify_cb)
         self.__tdw_refs.insert(0, weakref.ref(self))
 
 
     def enter_notify_cb(self, widget, event):
+        # Track the active TDW
         self_ref = weakref.ref(self)
         self.__tdw_refs.remove(self_ref)
         self.__tdw_refs.insert(0, self_ref)
+        # Ensure the cursor reflects layer-locking changes etc.
+        self.renderer.update_cursor()
 
 
     # Forward public API to delegates
@@ -464,6 +467,10 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
             corners = [(x1, y1), (x1+w-1, y1), (x1, y1+h-1), (x1+w-1, y1+h-1)]
             corners = [self.model_to_display(x, y) for (x, y) in corners]
             self.queue_draw_area(*helpers.rotated_rectangle_bbox(corners))
+
+    def model_structure_changed_cb(self, doc):
+        # Reflect layer locked and visible flag changes
+        self.update_cursor()
 
     def draw_cb(self, widget, cr):
 
