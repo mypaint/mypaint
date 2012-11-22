@@ -183,40 +183,48 @@ class ButtonMappingEditor (gtk.EventBox):
 
     """
 
-    def __init__(self, bindings, actions_possible):
+    def __init__(self, app, bindings, actions_possible):
         """Initialise
 
+        :param app: the main MyPaint Application instance
         :param bindings: Mapping of pointer binding names to their actions. A
           reference is kept internally, and the entries will be
           modified.
-        :type bindings: dict of bingings being edited
+        :type bindings: dict of bindings being edited
         :param actions_possible: List of all possible action strings. The 0th
           entry in the list is the default.
         :type actions_possible: indexable sequence
 
         """
         gtk.EventBox.__init__(self)
+        self.app = app
         self.default_action = actions_possible[0]
         self.actions = set(actions_possible)
         self.vbox = gtk.VBox()
         self.add(self.vbox)
 
         # Canonicalize <Control> -> <Primary>
-        tmp_bindings = dict(bindings)
+        tmp_bindings = dict(bindings) # XXX: maybe access app.preferences instead
         bindings.clear()
         for bp_name, action_name in tmp_bindings.iteritems():
             bp_name = button_press_name(*button_press_parse(bp_name))
             bindings[bp_name] = action_name
         self.bindings = bindings  #: dict of bindings being edited
 
+        # Display strings for action names
+        self.action_labels = dict()
+
         # Model: combo cellrenderer's liststore
-        ls = gtk.ListStore(gobject.TYPE_STRING)
+        ls = gtk.ListStore(gobject.TYPE_STRING, gobject.TYPE_STRING)
         actions_list = list(actions_possible)
         actions_list.sort()
         for act in actions_list:
-            ls.append((act,))
+            label_str = self._get_action_label(act)
+            self.action_labels[act] = label_str
+            ls.append((act, label_str))
         self.action_liststore = ls
-        self.action_liststore_column = 0
+        self.action_liststore_value_column = 0
+        self.action_liststore_display_column = 1
 
         # Model: main list's liststore
         # This is reflected into self.bindings when it changes
@@ -246,19 +254,18 @@ class ButtonMappingEditor (gtk.EventBox):
         # Column 0: action name
         cell = gtk.CellRendererCombo()
         cell.set_property("model", self.action_liststore)
-        cell.set_property("text-column", self.action_liststore_column)
+        cell.set_property("text-column", self.action_liststore_display_column)
         cell.set_property("mode", gtk.CELL_RENDERER_MODE_EDITABLE)
         cell.set_property("editable", True)
         cell.set_property("has-entry", False)
-        cell.connect("edited", self._action_cell_edited_cb)
+        cell.connect("changed", self._action_cell_changed_cb)
         col = gtk.TreeViewColumn(_("Action"), cell)
-        col.add_attribute(cell, "text", self.action_column)
+        col.set_cell_data_func(cell, self._liststore_action_datafunc)
         col.set_min_width(150)
         col.set_resizable(False)
         col.set_expand(False)
         col.set_sort_column_id(self.action_column)
         tv.append_column(col)
-
 
         # Column 1: button press
         cell = gtk.CellRendererText()
@@ -302,6 +309,30 @@ class ButtonMappingEditor (gtk.EventBox):
         # Populate and update the UI
         self._updating_model = False
         self._bindings_changed_cb()
+
+
+    def _liststore_action_datafunc(self, column, cell, model, iter,
+                                   *user_data):
+        action_name = model.get_value(iter, self.action_column)
+        label = self.action_labels.get(action_name, action_name)
+        cell.set_property("text", label)
+
+
+    def _get_action_label(self, action_name):
+        # Get a displayable (and translated) string for an action name
+        handler_type, handler = get_handler_object(self.app, action_name)
+        action_label = action_name
+        if handler_type == 'gtk_action':
+            action_label = handler.get_label()
+        elif handler_type == 'popup_state':
+            action_label = handler.label
+        elif handler_type == 'mode_class':
+            action_label = action_name
+            if handler.__action_name__ is not None:
+                action = self.app.find_action(handler.__action_name__)
+                if action is not None:
+                    action_label = action.get_label()
+        return action_label
 
 
     def set_bindings(self, bindings):
@@ -363,15 +394,18 @@ class ButtonMappingEditor (gtk.EventBox):
 
     ## "Controller" callbacks
 
-    def _action_cell_edited_cb(self, cell, path, action_name):
-        iter = self.liststore.get_iter(path)
+    def _action_cell_changed_cb(self, combo, path_string, new_iter, *etc):
+        action_name = self.action_liststore.get_value(
+                            new_iter, self.action_liststore_value_column)
+        iter = self.liststore.get_iter(path_string)
         self.liststore.set_value(iter, self.action_column, action_name)
         self.treeview.columns_autosize()
         # If we don't have a button-press name yet, edit that next
         bp_name = self.liststore.get_value(iter, self.bp_column)
         if bp_name is None:
             focus_col = self.treeview.get_column(self.bp_column)
-            self.treeview.set_cursor_on_cell(path, focus_col, None, True)
+            self.treeview.set_cursor_on_cell(path_string, focus_col,
+                                             None, True)
 
 
     def _bp_cell_edited_cb(self, cell, path, bp_name):
