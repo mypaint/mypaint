@@ -136,6 +136,19 @@ class InteractionMode (object):
     #: The `gui.document.Document` this mode affects: see enter()
 
 
+    def stackable_on(self, mode):
+        """Tests whether the mode can usefully stack onto an active mode.
+
+        :param mode: another mode object
+        :rtype: bool
+
+        This method should return True if this mode can usefully be stacked
+        onto another mode when switching via toolbars buttons or other actions.
+
+        """
+        return False
+
+
     def enter(self, doc):
         """Enters the mode: called by `ModeStack.push()` etc.
 
@@ -684,12 +697,29 @@ class ModeStack (object):
         return self._stack[-1]
 
 
-    def replace(self, mode):
-        """Leave & remove the top mode, then push & enter a new mode.
+    def context_push(self, mode):
+        """Context-aware push.
+
+        :param mode: mode to be stacked and made active
+        :type mode: `InteractionMode`
+
+        Stacks a mode onto the topmost element in the stack it is compatible
+        with, as determined by its ``stackable_on()`` method. Incompatible
+        top modes are popped one by one until either a compatible mode is
+        found, or the stack is emptied, then the new mode is pushed.
+
         """
+        # Pop until the stack is empty, or the top mode is compatible
+        while len(self._stack) > 0:
+            if mode.stackable_on(self._stack[-1]):
+                break
+            self._stack.pop(-1).leave()
+            if len(self._stack) > 0:
+                self._stack[-1].enter(doc=self._doc)
+        # Stack on top of any remaining compatible mode
         if len(self._stack) > 0:
-            old_mode = self._stack.pop(-1)
-            old_mode.leave()
+            self._stack[-1].leave()
+        self._doc.model.split_stroke()
         self._stack.append(mode)
         mode.enter(doc=self._doc)
         self._notify_observers()
@@ -756,6 +786,10 @@ class ModeStack (object):
         s += ", ".join([m.__class__.__name__ for m in self._stack])
         s += ']>'
         return s
+
+
+    def __len__(self):
+        return len(self._stack)
 
 
 class SpringLoadedModeMixin (InteractionMode):
@@ -1023,6 +1057,9 @@ class PanViewMode (SpringLoadedDragMode, OneshotDragModeMixin):
         return self.doc.app.cursors.get_action_cursor(
                 self.__action_name__)
 
+    def stackable_on(self, mode):
+        return isinstance(mode, SwitchableModeMixin)
+
     def drag_update_cb(self, tdw, event, dx, dy):
         tdw.scroll(-dx, -dy)
         super(PanViewMode, self).drag_update_cb(tdw, event, dx, dy)
@@ -1042,6 +1079,8 @@ class ZoomViewMode (SpringLoadedDragMode, OneshotDragModeMixin):
         return self.doc.app.cursors.get_action_cursor(
                 self.__action_name__)
 
+    def stackable_on(self, mode):
+        return isinstance(mode, SwitchableModeMixin)
 
     def drag_update_cb(self, tdw, event, dx, dy):
         tdw.scroll(-dx, -dy)
@@ -1065,6 +1104,9 @@ class RotateViewMode (SpringLoadedDragMode, OneshotDragModeMixin):
         return self.doc.app.cursors.get_action_cursor(
                 self.__action_name__)
 
+    def stackable_on(self, mode):
+        return isinstance(mode, SwitchableModeMixin)
+
     def drag_update_cb(self, tdw, event, dx, dy):
         # calculate angular velocity from the rotation center
         x, y = event.x, event.y
@@ -1079,6 +1121,7 @@ class RotateViewMode (SpringLoadedDragMode, OneshotDragModeMixin):
         super(RotateViewMode, self).drag_update_cb(tdw, event, dx, dy)
 
 
+import linemode
 from linemode import StraightMode
 from linemode import SequenceMode
 from linemode import EllipseMode
@@ -1120,6 +1163,12 @@ class LayerMoveMode (SwitchableModeMixin,
     permitted_switch_actions = set([
             'RotateViewMode', 'ZoomViewMode', 'PanViewMode',
         ] + extra_actions)
+
+
+    def stackable_on(self, mode):
+        # Any drawing mode
+        return isinstance(mode, linemode.LineModeBase) \
+            or isinstance(mode, SwitchableFreehandMode)
 
 
     def __init__(self, **kwds):

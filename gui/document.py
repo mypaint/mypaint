@@ -22,6 +22,7 @@ import tileddrawwidget, stategroup
 from brushmanager import ManagedBrush
 import dialogs
 import canvasevent
+import linemode
 
 
 class CanvasController (object):
@@ -912,6 +913,17 @@ class Document (CanvasController):
         return num
 
 
+    def mode_flip_action_activated_cb(self, action):
+        flip_action_name = action.get_name()
+        assert flip_action_name.startswith("Flip")
+        radio_action_name = flip_action_name.replace("Flip", "", 1)
+        radio_action = self.app.find_action(radio_action_name)
+        if radio_action.get_active():
+            self.modes.pop()
+        else:
+            radio_action.set_active(True)
+
+
     def mode_radioaction_changed_cb(self, action, current_action):
         """Callback: GtkRadioAction controlling the modes stack activated.
         """
@@ -920,14 +932,10 @@ class Document (CanvasController):
         action_name = current_action.get_name()
         mode_class = canvasevent.ModeRegistry.get_mode_class(action_name)
         assert mode_class is not None
+
         if self.modes.top.__class__ is not mode_class:
             mode = mode_class()
-            self.modes.reset(replacement=mode)
-            # TODO: perhaps mode classes should list modes they can be
-            # stacked on top of. That would allow things like picker modes
-            # or drags to be invoked in the middle of fancy line modes,
-            # for example.
-
+            self.modes.context_push(mode)
 
     def mode_stack_changed_cb(self, mode):
         """Callback: mode stack has changed structure.

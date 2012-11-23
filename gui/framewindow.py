@@ -15,6 +15,7 @@ from gtk import gdk
 from gettext import gettext as _
 
 import canvasevent
+import linemode
 import windowing
 from colors.uicolor import RGBColor
 
@@ -66,6 +67,12 @@ class FrameEditMode (canvasevent.SwitchableModeMixin,
         RIGHT + BOTTOM: ( 0,  0, +1, +1),
         OUTSIDE:        ( 0,  0,  0,  0),
         }
+
+
+    def stackable_on(self, mode):
+        # Any drawing mode
+        return isinstance(mode, linemode.LineModeBase) \
+            or isinstance(mode, canvasevent.SwitchableFreehandMode)
 
 
     def __init__(self, **kwds):

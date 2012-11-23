@@ -113,10 +113,15 @@ class LineModeBase (canvasevent.SwitchableModeMixin,
         ['RotateViewMode', 'ZoomViewMode', 'PanViewMode']
         + canvasevent.extra_actions)
 
+
     # FIXME: all of the logic resides in the base class, for historical
     # reasons, and is decided by line_mode. The differences should be
     # factored out to the user-facing mode subclasses at some point.
     line_mode = None
+
+
+    def stackable_on(self, mode):
+        return isinstance(mode, canvasevent.SwitchableFreehandMode)
 
 
     def __init__(self, **kwds):
