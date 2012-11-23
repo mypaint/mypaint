@@ -15,6 +15,7 @@
       <menuitem action='NextScrap'/>
       <menuitem action='PrevScrap'/>
       <separator/>
+      <menuitem action='FlipFrameEditMode'/>
       <menuitem action='FrameToggle'/>
       <separator/>
       <menuitem action='Quit'/>
@@ -22,17 +23,26 @@
     <menu action='EditMenu'>
       <menuitem action='Undo'/>
       <menuitem action='Redo'/>
+      <!-- Modes which affect drawing -->
       <separator/>
+      <menuitem action='FlipSwitchableFreehandMode'/>
+      <menuitem action='FlipStraightMode'/>
+      <menuitem action='FlipSequenceMode'/>
+      <menuitem action='FlipEllipseMode'/>
       <menuitem action='Symmetry'/>
-      <menuitem action='SwitchableFreehandMode'/>
-      <menuitem action='StraightMode'/>
-      <menuitem action='SequenceMode'/>
-      <menuitem action='EllipseMode'/>
-      <menuitem action='PanViewMode'/>
-      <menuitem action='RotateViewMode'/>
-      <menuitem action='ZoomViewMode'/>
-      <menuitem action='LayerMoveMode'/>
-      <menuitem action='FrameEditMode'/>
+      <!-- All radio modes, in case somebody wants to bind those -->
+      <separator/>
+      <menu action="CurrentModeMenu">
+        <menuitem action='SwitchableFreehandMode'/>
+        <menuitem action='StraightMode'/>
+        <menuitem action='SequenceMode'/>
+        <menuitem action='EllipseMode'/>
+        <menuitem action='LayerMoveMode'/>
+        <menuitem action='FrameEditMode'/>
+        <menuitem action='PanViewMode'/>
+        <menuitem action='ZoomViewMode'/>
+        <menuitem action='RotateViewMode'/>
+      </menu>
       <separator/>
       <menuitem action='PreferencesWindow'/>
     </menu>
@@ -48,8 +58,8 @@
         <menuitem action='ToggleLastPosFeedback'/>
       </menu>
       <!--
-        Perhaps the less-important "show/toggle bits of the UI" settings
-        should be merged into one submenu.
+      Perhaps the less-important "show/toggle bits of the UI" settings
+      should be merged into one submenu.
       -->
       <menuitem action='ShowPopupMenu'/>
       <menuitem action='ToggleSubwindows'/>
@@ -64,12 +74,19 @@
         <menuitem action='ResetMirror'/>
         <!-- which all operate around the centre of the viewport. -->
       </menu>
-      <menuitem action='ZoomIn'/>
-      <menuitem action='ZoomOut'/>
-      <menuitem action='RotateLeft'/>
-      <menuitem action='RotateRight'/>
-      <menuitem action='MirrorHorizontal'/>
-      <menuitem action='MirrorVertical'/>
+      <separator/>
+      <menuitem action='FlipPanViewMode'/>
+      <menuitem action='FlipZoomViewMode'/>
+      <menuitem action='FlipRotateViewMode'/>
+      <menu action='ViewAdjustmentsMenu'>
+        <!-- Detailed view adjustments, for binding to keys -->
+        <menuitem action='ZoomIn'/>
+        <menuitem action='ZoomOut'/>
+        <menuitem action='RotateLeft'/>
+        <menuitem action='RotateRight'/>
+        <menuitem action='MirrorHorizontal'/>
+        <menuitem action='MirrorVertical'/>
+      </menu>
       <separator/>
       <menuitem action='SoloLayer'/>
       <menuitem action='ToggleAbove'/>
@@ -144,31 +161,46 @@
       <menuitem action='PaletteNext'/>
     </menu>
     <menu action='LayerMenu'>
+      <!-- All layers: general -->
+      <separator/>
       <menuitem action='LayersWindow'/>
-      <separator/>
       <menuitem action='BackgroundWindow'/>
+      <!-- Switching layers -->
+      <menu action="LayerGoMenu">
+        <menuitem action='LayerFG'/>
+        <menuitem action='LayerBG'/>
+        <menuitem action='PickLayer'/>
+      </menu>
+      <!-- Current layer properties -->
       <separator/>
-      <menuitem action='LayerFG'/>
-      <menuitem action='LayerBG'/>
-      <menuitem action='PickLayer'/>
+      <menuitem action='RenameLayer'/>
+      <menuitem action="LayerVisibleToggle"/>
+      <menuitem action="LayerLockedToggle"/>
+      <menu action="LayerOpacityMenu">
+        <menuitem action='IncreaseLayerOpacity'/>
+        <menuitem action='DecreaseLayerOpacity'/>
+      </menu>
+      <!-- Current layer: position -->
+      <separator/>
+      <menuitem action='FlipLayerMoveMode'/>
+      <menuitem action="RaiseLayerInStack"/>
+      <menuitem action="LowerLayerInStack"/>
+      <!-- Current layer: creation -->
       <separator/>
       <menuitem action='NewLayerFG'/>
       <menuitem action='NewLayerBG'/>
-      <separator/>
-      <menuitem action="RaiseLayerInStack"/>
-      <menuitem action="LowerLayerInStack"/>
-      <menuitem action="LayerLockedToggle"/>
-      <menuitem action="LayerVisibleToggle"/>
+      <!-- Current layer: Clipboard -->
       <separator/>
       <menuitem action='CopyLayer'/>
       <menuitem action='PasteLayer'/>
-      <menuitem action='RenameLayer'/>
+      <!-- Current layer: Splitting and merging -->
+      <separator/>
+      <menuitem action='DuplicateLayer'/>
+      <menuitem action='MergeLayer'/>
+      <!-- Current layer: destructive actions -->
+      <separator/>
       <menuitem action='ClearLayer'/>
       <menuitem action='RemoveLayer'/>
-      <menuitem action='MergeLayer'/>
-      <separator/>
-      <menuitem action='IncreaseLayerOpacity'/>
-      <menuitem action='DecreaseLayerOpacity'/>
     </menu>
     <menu action="ScratchMenu">
       <menuitem action='ScratchWindow'/>
