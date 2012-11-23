@@ -487,19 +487,22 @@ class Application: # singleton
             # axis with recent Xorg versions. Wrongly enabling them
             # breaks keyboard and/or mouse input in random ways.
             #
-            # Only whole words are matched.
             tablet_strings  = '''
-            tablet pressure graphic art pen stylus eraser pencil brush
+            tablet pressure graphic stylus eraser pencil brush
             wacom bamboo intuos graphire cintiq
             hanvon rollick graphicpal artmaster sentip
             genius mousepen
             aiptek
             '''
             match = False
-            words = name.split()
             for s in tablet_strings.split():
-                if s in words:
+                if s in name:
                     match = True
+
+            words = name.split()
+            if 'pen' in words or 'art' in words:
+                match = True
+
             if not match:
                 print 'Skipping "%s" (not in the list of known tablets)' % device.name
                 continue
