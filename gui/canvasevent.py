@@ -119,21 +119,22 @@ class InteractionMode (object):
 
     """
 
+
     ## Class configuration
 
-    __metaclass__ = ModeRegistry
     #: All InteractionMode subclasses register themselves.
+    __metaclass__ = ModeRegistry
 
-    __action_name__ = None
     #: See the docs for `gui.canvasevent.ModeRegistry`.
+    __action_name__ = None
 
-    is_live_updateable = False
-    # CHECK: what's this for?
+    is_live_updateable = False # CHECK: what's this for?
+
 
     ## Defaults for instances (sue me, I'm lazy)
 
-    doc = None
     #: The `gui.document.Document` this mode affects: see enter()
+    doc = None
 
 
     def stackable_on(self, mode):
