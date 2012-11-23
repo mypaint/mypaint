@@ -84,7 +84,7 @@ mypaint_tiled_surface_tile_request_init(MyPaintTiledSurfaceTileRequestData *data
     data->context = NULL;
 }
 
-inline float
+static inline float
 calculate_rr(int xp, int yp, float x, float y, float aspect_ratio,
                       float sn, float cs, float one_over_radius2)
 {
@@ -98,7 +98,7 @@ calculate_rr(int xp, int yp, float x, float y, float aspect_ratio,
     return rr;
 }
 
-inline float
+static inline float
 calculate_opa(float rr, float hardness,
               float segment1_offset, float segment1_slope,
               float segment2_offset, float segment2_slope) {
@@ -107,14 +107,13 @@ calculate_opa(float rr, float hardness,
     float opa = rr <= hardness ? segment1_offset : segment2_offset;
     opa += rr*fac;
 
-#ifdef HEAVY_DEBUG
-    assert(isfinite(opa));
-    assert(opa >= 0.0 && opa <= 1.0);
-#endif
-
     if (rr > 1.0) {
         opa = 0.0;
     }
+    #ifdef HEAVY_DEBUG
+    assert(isfinite(opa));
+    assert(opa >= 0.0 && opa <= 1.0);
+    #endif
     return opa;
 }
 
