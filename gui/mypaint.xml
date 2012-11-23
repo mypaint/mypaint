@@ -1003,13 +1003,6 @@ Perhaps an increasing amount.
         </object>
         <accelerator key="F11"/>
       </child>
-      <child>
-        <object class="GtkAction" id="ViewHelp">
-          <property name="label" translatable="yes">Help</property>
-          <property name="icon-name">gtk-help</property>
-          <signal name="activate" handler="show_infodialog_cb"/>
-        </object>
-      </child>
       <!-- Subwindow hiding and showing -->
       <child>
         <object class="GtkToggleAction" id="PreferencesWindow">

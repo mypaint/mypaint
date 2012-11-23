@@ -73,8 +73,6 @@
       <separator/>
       <menuitem action='SoloLayer'/>
       <menuitem action='ToggleAbove'/>
-      <separator/>
-      <menuitem action='ViewHelp'/>
     </menu>
     <menu action='BrushMenu'>
       <menuitem action='BrushChooserPopup'/>

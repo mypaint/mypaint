@@ -885,13 +885,6 @@ class Window (windowing.MainWindow, layout.MainWindow):
         text = {
         'ShortcutHelp':
                 _("Move your mouse over a menu entry, then press the key to assign."),
-        'ViewHelp':
-                _("You can also drag the canvas with the mouse while holding the middle "
-                "mouse button or spacebar. Or with the arrow keys."
-                "\n\n"
-                "In contrast to earlier versions, scrolling and zooming are harmless now and "
-                "will not make you run out of memory. But you still require a lot of memory "
-                "if you paint all over while fully zoomed out."),
         'ContextHelp':
                 _("Brushkeys are used to quickly save/restore brush settings "
                  "using keyboard shortcuts. You can paint with one hand and "
