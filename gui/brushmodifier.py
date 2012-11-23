@@ -62,7 +62,7 @@ class BrushModifier:
                 _("Lock Alpha: paint over existing strokes only, using the current brush"),
                 self.blend_mode_lock_alpha_cb),
             ('BlendModeColorize', 'mypaint-brush-blend-mode-colorize',
-                _("Colorize"), 'k',
+                _("Colorize"), '<shift>k',
                 _("Colorize: alter Hue and Saturation with the current brush"),
                 self.blend_mode_colorize_cb),
             ]
