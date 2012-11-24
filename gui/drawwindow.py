@@ -852,31 +852,7 @@ class Window (windowing.MainWindow, layout.MainWindow):
             u"Andrew Chadwick (%s)" % _('tool icons'),
             u"Ben O'Steen (%s)" % _('tool icons'),
             ])
-        # list all translators, not only those of the current language
-        d.set_translator_credits(
-            u'Ilya Portnov (ru)\n'
-            u'Popolon (fr, zh_CN, ja)\n'
-            u'Jon Nordby (nb)\n'
-            u'Griatch (sv)\n'
-            u'Tobias Jakobs (de)\n'
-            u'Martin Tabačan (cs)\n'
-            u'Tumagonx (id)\n'
-            u'Manuel Quiñones (es)\n'
-            u'Gergely Aradszki (hu)\n'
-            u'Lamberto Tedaldi (it)\n'
-            u'Dong-Jun Wu (zh_TW)\n'
-            u'Luka Čehovin (sl)\n'
-            u'Geuntak Jeong (ko)\n'
-            u'Łukasz Lubojański (pl)\n'
-            u'Daniel Korostil (uk)\n'
-            u'Julian Aloofi (de)\n'
-            u'Tor Egil Hoftun Kvæstad (nn_NO)\n'
-            u'João S. O. Bueno (pt_BR)\n'
-            u'David Grundberg (sv)\n'
-            u'Elliott Sales de Andrade (en_CA)\n'
-            u'Ruei-Yuan Lu (zh_TW)\n'
-            u'Cheng-Chia Tseng (zh_TW)\n'
-            )
+        d.set_translator_credits(_("translator-credits"));
 
         d.run()
         d.destroy()
