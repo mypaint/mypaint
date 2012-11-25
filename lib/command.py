@@ -228,7 +228,7 @@ class ConvertLayerToNormalMode(Action):
         self.set_normal_mode = SetLayerCompositeOp(doc, 'svg:src-over', layer)
         self.set_opacity = SetLayerOpacity(doc, 1.0, layer)
     def redo(self):
-        self.before = self.doc.layer.save_snapshot()
+        self.before = self.layer.save_snapshot()
         prev_idx = self.doc.layer_idx
         self.doc.layer_idx = self.doc.layers.index(self.layer)
         get_bg = self.doc.get_rendered_image_behind_current_layer
@@ -239,7 +239,7 @@ class ConvertLayerToNormalMode(Action):
     def undo(self):
         self.set_opacity.undo()
         self.set_normal_mode.undo()
-        self.doc.layer.load_snapshot(self.before)
+        self.layer.load_snapshot(self.before)
         del self.before
 
 class AddLayer(Action):
