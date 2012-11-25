@@ -627,8 +627,16 @@ class SwitchableModeMixin (InteractionMode):
             # Still needed. The code is more tailored to MyPaint's
             # purposes. The names are action names, but have the more
             # tailored popup states code shadow generic action activation.
-            handler.activate(event)
-            return True
+            if win is not None:
+                # WORKAROUND: dispatch keypress events via the kbm so it can
+                # keep track of pressed-down keys. Popup states become upset if
+                # this doesn't happen: https://gna.org/bugs/index.php?20325
+                action = app.find_action(action_name)
+                return app.kbm.activate_keydown_event(action, event)
+            else:
+                # Pointer: popup states handle these themselves sanely.
+                handler.activate(event)
+                return True
         elif handler_type == 'gtk_action':
             # Generic named action activation. GtkActions trigger without
             # event details, so they're less flexible.

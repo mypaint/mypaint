@@ -88,6 +88,14 @@ class KeyboardManager:
             # try hardcoded keys
             action = self.keymap2.get((keyval_lower, modifiers))
 
+        return self.activate_keydown_event(action, event)
+
+    def activate_keydown_event(self, action, event):
+        # The kbm is responsible for activating events which correspond to
+        # keypresses so that it can keep track of which keys are pressed.
+        # Expose this part on a separate method so that canvas "pointer" events
+        # using the Space=Button2 equivalence can invoke popup states via their
+        # action as proper keypresses.
         if action:
             def activate():
                 action.keydown = True
