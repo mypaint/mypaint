@@ -92,8 +92,27 @@
       <menuitem action='ToggleAbove'/>
     </menu>
     <menu action='BrushMenu'>
+      <!-- Brush choice from the user's collection -->
       <menuitem action='BrushChooserPopup'/>
       <menuitem action='BrushSelectionWindow'/>
+      <!-- Basic brush settings -->
+      <separator/>
+      <menuitem action='Bigger'/>
+      <menuitem action='Smaller'/>
+      <menuitem action='MoreOpaque'/>
+      <menuitem action='LessOpaque'/>
+      <!-- Detailed brush settings -->
+      <separator/>
+      <menuitem action='BrushSettingsWindow'/>
+      <separator/>
+      <menu action='BlendMode'>
+        <menuitem action='BlendModeNormal'/>
+        <menuitem action='BlendModeEraser'/>
+        <menuitem action='BlendModeLockAlpha'/>
+        <menuitem action='BlendModeColorize'/>
+      </menu>
+      <!-- Shortcuts for settings -->
+      <separator/>
       <menu action='ContextMenu'>
         <menuitem action='ContextHelp'/>
         <menuitem action='ContextStore'/>
@@ -120,26 +139,11 @@
         <menuitem action='Context09'/>
         <menuitem action='Context09s'/>
       </menu>
-      <separator/>
-      <menuitem action='BrushSettingsWindow'/>
-      <separator/>
-      <menuitem action='Bigger'/>
-      <menuitem action='Smaller'/>
-      <menuitem action='MoreOpaque'/>
-      <menuitem action='LessOpaque'/>
-      <separator/>
-      <menu action='BlendMode'>
-        <menuitem action='BlendModeNormal'/>
-        <menuitem action='BlendModeEraser'/>
-        <menuitem action='BlendModeLockAlpha'/>
-        <menuitem action='BlendModeColorize'/>
-      </menu>
-      <separator/>
-      <separator/>
       <menuitem action='PickContext'/>
+      <!-- Brush pack import -->
       <separator/>
-      <menuitem action='DownloadBrushPack'/>
       <menuitem action='ImportBrushPack'/>
+      <menuitem action='DownloadBrushPack'/>
     </menu>
     <menu action='ColorMenu'>
       <menuitem action='ColorWindow'/>

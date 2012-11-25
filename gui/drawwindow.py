@@ -862,9 +862,9 @@ class Window (windowing.MainWindow, layout.MainWindow):
         'ShortcutHelp':
                 _("Move your mouse over a menu entry, then press the key to assign."),
         'ContextHelp':
-                _("Brushkeys are used to quickly save/restore brush settings "
-                 "using keyboard shortcuts. You can paint with one hand and "
-                 "change brushes with the other, even in mid-stroke."
+                _("Brush shortcut keys are used to quickly save/restore brush "
+                 "settings. You can paint with one hand and change brushes with "
+                 "the other, even in mid-stroke."
                  "\n\n"
                  "There are 10 persistent memory slots available."),
         'Docu':

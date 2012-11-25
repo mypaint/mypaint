@@ -250,7 +250,10 @@ class GroupSelector(gtk.DrawingArea):
         self.gtkstate_prelight_group = None
         self.gtkstate_active_group = None
         self.drag_target_group = None
-        self.set_tooltip_text(_('Try right click, middle click or Ctrl click'))
+        self.set_tooltip_text(_('Brush Groups: click to select\n'
+                                'Ctrl: select multiple\n'
+                                'Middle-click: toggle group\n'
+                                'Right-click: groups menu'))
 
         if not pygtkcompat.USE_GTK3:
             self.connect("size-request", self.on_size_request)
@@ -459,18 +462,25 @@ class GroupSelector(gtk.DrawingArea):
     def context_menu(self, group):
         m = gtk.Menu()
         menu = []
-        menu += [ (_("New group..."), self.create_group_cb) ]
+        menu += [ (_("New Group..."), self.create_group_cb) ]
         if group:
-            menu += [ (_("Rename group..."), self.rename_group_cb),
-                      (_("Delete group..."), self.delete_group_cb),
-                      (_("Export group as brush package..."), self.export_group_cb),
-                      ]
-        menu += [ (_("Download brushes (in web browser)"), self.app.drawWindow.download_brush_pack_cb) ]
-        menu += [ (_("Import brush package..."), self.app.drawWindow.import_brush_pack_cb) ]
-        for label, callback in menu:
-            mi = gtk.MenuItem(label)
-            mi.connect('activate', callback, group)
-            m.append(mi)
+            menu += [ (_("Rename Group..."), self.rename_group_cb),
+                      (_("Delete Group"), self.delete_group_cb),
+                      (_("Export Group..."), self.export_group_cb), ]
+        menu += [ None ]
+        menu += [ (_("Import Brushes..."),
+                   self.app.drawWindow.import_brush_pack_cb) ]
+        menu += [ (_("Get More Brushes..."),
+                   self.app.drawWindow.download_brush_pack_cb) ]
+        for entry in menu:
+            if entry is None:
+                item = gtk.SeparatorMenuItem()
+
+            else:
+                label, callback = entry
+                item = gtk.MenuItem(label)
+                item.connect('activate', callback, group)
+            m.append(item)
         m.connect('selection-done', self.menu_finished_cb)
         m.show_all()
         return m
@@ -480,12 +490,12 @@ class GroupSelector(gtk.DrawingArea):
         self.queue_draw()
 
     def create_group_cb(self, w, group):
-        new_group = dialogs.ask_for_name(self, _('Create group'), '')
+        new_group = dialogs.ask_for_name(self, _('Create Group'), '')
         if new_group:
             self.bm.create_group(new_group)
 
     def rename_group_cb(self, w, old_group):
-        new_group = dialogs.ask_for_name(self, _('Rename group'), old_group)
+        new_group = dialogs.ask_for_name(self, _('Rename Group'), old_group)
         if not new_group:
             return
         if new_group not in self.bm.groups:
@@ -494,7 +504,7 @@ class GroupSelector(gtk.DrawingArea):
             dialogs.error(self, _('A group with this name already exists!'))
 
     def export_group_cb(self, w, group):
-        format_id, filename = dialogs.save_dialog(_("Export brush pack..."), None,
+        format_id, filename = dialogs.save_dialog(_("Export Brushes"), None,
                                  [(_("MyPaint brush package (*.zip)"), "*.zip")],
                                  default_format = (0, ".zip"))
         if filename is not None:

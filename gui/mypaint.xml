@@ -212,7 +212,7 @@ Perhaps an increasing amount.
           <property name="label" translatable="yes"
             context="Menu|Brush|">Bigger</property>
           <property name="tooltip" translatable="yes"
-            >Increase the current brush's radius</property>
+            >Increase brush radius</property>
           <signal name="activate" handler="brush_bigger_cb"/>
         </object>
         <accelerator key="f"/>
@@ -222,7 +222,7 @@ Perhaps an increasing amount.
           <property name="label" translatable="yes"
             context="Menu|Brush|">Smaller</property>
           <property name="tooltip" translatable="yes"
-            >Decrease the current brush's radius</property>
+            >Decrease brush radius</property>
           <signal name="activate" handler="brush_smaller_cb"/>
         </object>
         <accelerator key="d"/>
@@ -231,7 +231,9 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkAction" id="MoreOpaque">
           <property name="label" translatable="yes"
-            context="Menu|Brush|">More Opaque</property>
+            context="Menu|Brush|">Increase Opacity</property>
+          <property name="tooltip" translatable="yes"
+            >Increase brush opacity</property>
           <signal name="activate" handler="more_opaque_cb"/>
         </object>
         <accelerator key="s"/>
@@ -239,7 +241,9 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkAction" id="LessOpaque">
           <property name="label" translatable="yes"
-            context="Menu|Brush|">Less Opaque</property>
+            context="Menu|Brush|">Decrease Opacity</property>
+          <property name="tooltip" translatable="yes"
+            >Decrease brush opacity</property>
           <signal name="activate" handler="less_opaque_cb"/>
         </object>
         <accelerator key="a"/>
@@ -300,7 +304,9 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkAction" id="PickContext">
           <property name="label" translatable="yes"
-              >Pick Layer, Brush and Color</property>
+            context="Menu|Brush|">Pick Stroke and Layer</property>
+          <property name="tooltip" translatable="yes"
+            >Pick brushstroke: settings and layer</property>
           <property name="stock_id">gtk-jump-to</property>
           <signal name="activate" handler="pick_context_cb"/>
         </object>
@@ -308,16 +314,18 @@ Perhaps an increasing amount.
       </child>
       <child>
         <object class="GtkToggleAction" id="ContextRestoreColor">
-          <property name="label" translatable="yes">Restore Color</property>
+          <property name="label" translatable="yes"
+            context="Menu|Brush|Shortcut Keys|">Restore Color</property>
           <signal name="activate" handler="context_toggle_color_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="ContextStore">
           <property name="label" translatable="yes"
-              >Save to Most Recently Restored</property>
+            context="Menu|Brush|Shortcut Keys|"
+            >Save to Most Recent</property>
           <property name="tooltip" translatable="yes"
-              >Save the active brush to the most recently used brushkey</property>
+            >Save brush to the most recent shortcut</property>
           <signal name="activate" handler="context_cb"/>
         </object>
         <accelerator key="q"/>
@@ -890,24 +898,28 @@ Perhaps an increasing amount.
       <!-- Brush menu actions -->
       <child>
         <object class="GtkAction" id="BrushMenu">
-          <property name="label" translatable="yes">Brush</property>
+          <property name="label" translatable="yes"
+            context="Menu|Brush|">Brush</property>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="ContextMenu">
-          <property name="label" translatable="yes">Brushkeys</property>
+          <property name="label" translatable="yes"
+            context="Menu|Brush|">Shortcut Keys</property>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="ContextHelp">
-          <property name="label" translatable="yes">Help</property>
+          <property name="label" translatable="yes"
+            context="Menu|Brush|Shortcut Keys|">Help</property>
           <property name="icon-name">gtk-help</property>
           <signal name="activate" handler="show_infodialog_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="BrushChooserPopup">
-          <property name="label" translatable="yes">Change Brush</property>
+          <property name="label" translatable="yes"
+            context="Menu|Brush|">Change Brush</property>
           <property name="icon-name">mypaint-tool-brush</property>
           <signal name="activate" handler="brush_chooser_popup_cb"/>
         </object>
@@ -916,14 +928,14 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkAction" id="DownloadBrushPack">
           <property name="label" translatable="yes"
-            >Download More Brushes (in web browser)</property>
+            context="Menu|Brush|">Get More Brushes...</property>
           <signal name="activate" handler="download_brush_pack_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="ImportBrushPack">
           <property name="label" translatable="yes"
-            >Import Brush Package...</property>
+            context="Menu|Brush|">Import Brushes...</property>
           <property name="icon-name">gtk-open</property>
           <signal name="activate" handler="import_brush_pack_cb"/>
         </object>
@@ -1080,7 +1092,7 @@ Perhaps an increasing amount.
         <object class="GtkToggleAction" id="BrushSelectionWindow">
           <property name="stock_id">mypaint-tool-brush</property>
           <property name="label" translatable="yes"
-            context="Menu|Brushes|">Brushes Window</property>
+            context="Menu|Brush|">Brushes Window</property>
           <property name="tooltip" translatable="yes"
             >Select brushes, and edit brush sets</property>
           <signal name="activate" handler="toggle_window_cb"/>
