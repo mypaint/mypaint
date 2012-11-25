@@ -252,6 +252,7 @@ class Application: # singleton
             'ui.parts': dict(main_toolbar=True, menubar=False),
             'ui.feedback.scale': True,
             'ui.feedback.last_pos': False,
+            'ui.feedback.symmetry': True,
             'ui.toolbar_items': dict(
                 toolbar1_file=False,
                 toolbar1_scrap=False,

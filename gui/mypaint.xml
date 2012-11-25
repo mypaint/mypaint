@@ -1208,6 +1208,15 @@ Perhaps an increasing amount.
           <signal name="activate" handler="toggle_last_pos_feedback_cb"/>
         </object>
       </child>
+      <child>
+        <object class="GtkToggleAction" id="ToggleSymmetryFeedback">
+          <property name="label" translatable="yes"
+            context="Menu|View|Feedback|">Axis of Symmetry</property>
+          <property name="tooltip" translatable="yes"
+            >Show the symmetry axis</property>
+          <signal name="activate" handler="toggle_symmetry_feedback_cb"/>
+        </object>
+      </child>
       <!-- UI control: menu bar and toolbar -->
       <child>
         <object class="GtkRadioAction" id="MenuishBarRadioMenubar">

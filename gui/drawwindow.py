@@ -35,6 +35,7 @@ import xml.etree.ElementTree as ET
 from lib.scratchpad_palette import GimpPalette, hatch_squiggle, squiggle, draw_palette
 
 from overlays import LastPaintPosOverlay, ScaleOverlay
+from symmetry import SymmetryOverlay
 
 
 
@@ -168,6 +169,8 @@ class Window (windowing.MainWindow, layout.MainWindow):
                 self.app.preferences.get("ui.feedback.scale", False))
         ag.get_action("ToggleLastPosFeedback").set_active(
                 self.app.preferences.get("ui.feedback.last_pos", False))
+        ag.get_action("ToggleSymmetryFeedback").set_active(
+                self.app.preferences.get("ui.feedback.symmetry", False))
 
         # Follow frame toggled state
         self.app.doc.model.frame_observers.append(self.frame_changed_cb)
@@ -425,13 +428,19 @@ class Window (windowing.MainWindow, layout.MainWindow):
         self.app.preferences['ui.feedback.last_pos'] = action.get_active()
         self.update_overlays()
 
+    def toggle_symmetry_feedback_cb(self, action):
+        self.app.preferences['ui.feedback.symmetry'] = action.get_active()
+        self.update_overlays()
+
     def update_overlays(self):
         # Updates the list of overlays on the main doc's TDW to match the prefs
         doc = self.app.doc
         disp_overlays = [
             ('ui.feedback.scale', ScaleOverlay),
             ('ui.feedback.last_pos', LastPaintPosOverlay),
+            ('ui.feedback.symmetry', SymmetryOverlay),
             ]
+        overlays_changed = False
         for key, class_ in disp_overlays:
             current_instance = None
             for ov in doc.tdw.display_overlays:
@@ -440,9 +449,12 @@ class Window (windowing.MainWindow, layout.MainWindow):
             active = self.app.preferences.get(key, False)
             if active and not current_instance:
                 doc.tdw.display_overlays.append(class_(doc))
+                overlays_changed = True
             elif current_instance and not active:
                 doc.tdw.display_overlays.remove(current_instance)
-
+                overlays_changed = True
+        if overlays_changed:
+            doc.tdw.queue_draw()
 
     def popup_cb(self, action):
         state = self.popup_states[action.get_name()]
