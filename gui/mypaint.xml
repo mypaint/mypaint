@@ -682,23 +682,23 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkToggleAction" id="PrintInputs">
           <property name="label" translatable="yes"
-              >Print Brush Input Values to Console</property>
+            context="Menu|Help|Debug|">Print Brush Input Values to Console</property>
           <signal name="activate" handler="print_inputs_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkToggleAction" id="VisualizeRendering">
           <property name="label" translatable="yes"
-              >Visualize Rendering</property>
+            context="Menu|Help|Debug|">Visualize Rendering</property>
           <property name="tooltip" translatable="yes"
-              >Show rendering updates on-screen, for debugging</property>
+            >Show rendering updates on-screen, for debugging</property>
           <signal name="activate" handler="visualize_rendering_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkToggleAction" id="NoDoubleBuffereing">
           <property name="label" translatable="yes"
-              >Disable GTK Double Buffering</property>
+            context="Menu|Help|Debug|">Disable GTK Double Buffering</property>
           <signal name="activate" handler="no_double_buffering_cb"/>
         </object>
       </child>
@@ -978,26 +978,30 @@ Perhaps an increasing amount.
       <!-- Help/documentation menu -->
       <child>
         <object class="GtkAction" id="HelpMenu">
-          <property name="label" translatable="yes">Help</property>
+          <property name="label" translatable="yes"
+            context="Menu|Help|">Help</property>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="Docu">
-          <property name="label" translatable="yes">Where is the Documentation?</property>
+          <property name="label" translatable="yes"
+            context="Menu|Help|">Where is the Documentation?</property>
           <property name="icon-name">gtk-info</property>
           <signal name="activate" handler="show_infodialog_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="ShortcutHelp">
-          <property name="label" translatable="yes">Change the Keyboard Shortcuts?</property>
+          <property name="label" translatable="yes"
+            context="Menu|Help|">Change the Keyboard Shortcuts?</property>
           <property name="icon-name">gtk-info</property>
           <signal name="activate" handler="show_infodialog_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="About">
-          <property name="label" translatable="yes">About MyPaint</property>
+          <property name="label" translatable="yes"
+            context="Menu|Help|">About MyPaint</property>
           <property name="icon-name">gtk-about</property>
           <signal name="activate" handler="about_cb"/>
         </object>
@@ -1005,20 +1009,21 @@ Perhaps an increasing amount.
       <!-- Debugging menu -->
       <child>
         <object class="GtkAction" id="DebugMenu">
-          <property name="label" translatable="yes">Debug</property>
+          <property name="label" translatable="yes"
+            context="Menu|Help|">Debug</property>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="PrintMemoryLeak">
           <property name="label" translatable="yes"
-                >Print Memory Leak Info to Console (Slow!)</property>
+            context="Menu|Help|Debug|">Print Memory Leak Info to Console (Slow!)</property>
           <signal name="activate" handler="print_memory_leak_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="RunGarbageCollector">
           <property name="label" translatable="yes"
-              >Run Garbage Collector Now</property>
+            context="Menu|Help|Debug|">Run Garbage Collector Now</property>
           <signal name="activate" handler="run_garbage_collector_cb"/>
         </object>
       </child>
@@ -1026,7 +1031,7 @@ Perhaps an increasing amount.
         <object class="GtkAction" id="StartProfiling">
           <!-- FIXME: convert to a ToggleAction -->
           <property name="label" translatable="yes"
-              >Start/Stop Python Profiling (cProfile)</property>
+            context="Menu|Help|Debug|">Start/Stop Python Profiling (cProfile)</property>
           <property name="icon-name">gtk-execute</property>
           <signal name="activate" handler="start_profiling_cb"/>
         </object>
@@ -1035,7 +1040,7 @@ Perhaps an increasing amount.
         <object class="GtkAction" id="GtkInputDialog">
           <!-- FIXME: convert to a ToggleAction -->
           <property name="label" translatable="yes"
-              >GTK Input Device Dialog</property>
+            context="Menu|Help|Debug|">GTK Input Device Dialog</property>
           <signal name="activate" handler="gtk_input_dialog_cb"/>
         </object>
       </child>
