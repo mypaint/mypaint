@@ -850,74 +850,83 @@ Perhaps an increasing amount.
       </child>
       <child>
         <object class="GtkAction" id="ScratchNew">
-          <property name="label" translatable="yes">New Scratchpad</property>
+          <property name="label" translatable="yes"
+            context="Menu|Scratchpad|">New</property>
           <property name="icon-name">gtk-new</property>
           <signal name="activate" handler="new_scratchpad_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="ScratchLoad">
-          <property name="label" translatable="yes">Load Scratchpad...</property>
+          <property name="label" translatable="yes"
+            context="Menu|Scratchpad|">Open...</property>
           <property name="icon-name">gtk-open</property>
           <signal name="activate" handler="load_scratchpad_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="ScratchSaveNow">
-          <property name="label" translatable="yes">Save Scratchpad Now</property>
+          <property name="label" translatable="yes"
+            context="Menu|Scratchpad|">Save</property>
           <property name="icon-name">gtk-save</property>
           <signal name="activate" handler="save_current_scratchpad_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="ScratchSaveAs">
-          <property name="label" translatable="yes">Save Scratchpad As...</property>
+          <property name="label" translatable="yes"
+            context="Menu|Scratchpad|">Save As...</property>
           <property name="icon-name">gtk-save-as</property>
           <signal name="activate" handler="save_as_scratchpad_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="ScratchRevert">
-          <property name="label" translatable="yes">Revert Scratchpad</property>
+          <property name="label" translatable="yes"
+            context="Menu|Scratchpad|">Revert</property>
           <property name="icon-name">gtk-refresh</property>
           <signal name="activate" handler="revert_current_scratchpad_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="ScratchSaveAsDefault">
-          <property name="label" translatable="yes">Save Scratchpad as Default</property>
+          <property name="label" translatable="yes"
+            context="Menu|Scratchpad|">Save as Default</property>
           <signal name="activate" handler="save_scratchpad_as_default_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="ScratchClearDefault">
-          <property name="label" translatable="yes">Clear the Default Scratchpad</property>
+          <property name="label" translatable="yes"
+            context="Menu|Scratchpad|">Clear Default</property>
           <signal name="activate" handler="clear_default_scratchpad_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="ScratchCopyBackground">
-          <property name="label"
-           translatable="yes">Copy Background to Scratchpad</property>
+          <property name="label" translatable="yes"
+           context="Menu|Scratchpad|">Use Main Background</property>
           <signal name="activate" handler="scratchpad_copy_background_cb"/>
         </object>
       </child>
       <!-- Scratchpad palette-rendering submenu actions -->
       <child>
         <object class="GtkAction" id="ScratchPaletteOptions"><!-- Submenu -->
-          <property name="label" translatable="yes">Render a Palette</property>
+          <property name="label" translatable="yes"
+            context="Menu|Scratchpad|">Color Dabs</property>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="ScratchLoadPalette">
-          <property name="label" translatable="yes">Load Palette File...</property>
+          <property name="label" translatable="yes"
+            context="Menu|Scratchpad|Color Dabs|">Render from File...</property>
           <signal name="activate" handler="draw_palette_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="ScratchDrawSatPalette">
           <property name="label" translatable="yes"
-              >Different Saturations of the Current Color</property>
+            context="Menu|Scratchpad|Color Dabs|">Saturation Spread for Current Color</property>
           <signal name="activate" handler="draw_sat_spectrum_cb"/>
         </object>
       </child>
@@ -1150,9 +1159,10 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkToggleAction" id="ScratchWindow">
           <property name="stock_id">mypaint-tool-scratchpad</property>
-          <property name="label" translatable="yes">Scratchpad</property>
+          <property name="label" translatable="yes"
+            context="Menu|Scratchpad|">Scratchpad Window</property>
           <property name="tooltip" translatable="yes"
-            >Mix colours and make sketchs on separate scrap pages</property>
+            >Mix colors and make sketches on separate scrap pages</property>
           <signal name="activate" handler="toggle_window_cb"/>
         </object>
         <accelerator key="s" modifiers="GDK_SHIFT_MASK"/>
