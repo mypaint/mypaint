@@ -69,6 +69,7 @@ class Document():
         self.command_stack_observers = []
         self.symmetry_observers = []  #: See `set_symmetry_axis()`
         self.__symmetry_axis = None
+        self.default_background = (255, 255, 255)
         self.clear(True)
 
         self._frame = [0, 0, 0, 0]
@@ -141,7 +142,7 @@ class Document():
 
         self.command_stack = command.CommandStack()
         self.command_stack.stack_observers = self.command_stack_observers
-        self.set_background((255, 255, 255))
+        self.set_background(self.default_background)
         self.layers = []
         self.layer_idx = None
         self.add_layer(0)
@@ -457,14 +458,14 @@ class Document():
         self.do(command.SetLayerCompositeOp(self, compositeop, layer))
 
 
-    def set_background(self, obj):
+    def set_background(self, obj, make_default=False):
         # This is not an undoable action. One reason is that dragging
         # on the color chooser would get tons of undo steps.
-
         if not isinstance(obj, backgroundsurface.Background):
             obj = backgroundsurface.Background(obj)
         self.background = obj
-
+        if make_default:
+            self.default_background = obj
         self.invalidate_all()
 
 
