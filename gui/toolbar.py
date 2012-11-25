@@ -460,7 +460,7 @@ class BrushSettingsDropdownToolItem (gtk.ToolItem):
     def set_app(self, app):
         self.app = app
 
-        # A limited subset of the abailable brush settings.
+        # A limited subset of the available brush settings.
 
         frame = widgets.section_frame(_("Quick Brush Settings"))
         table = gtk.Table()
@@ -800,7 +800,7 @@ class MainMenuButton (gtk.ToggleButton):
 
         self.add(hbox2)
         self.set_relief(gtk.RELIEF_NONE)
-        self.set_can_focus(True)
+        self.set_can_focus(False)
         self.set_can_default(False)
         self.connect("toggled", self.on_toggled)
 

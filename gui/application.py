@@ -249,7 +249,7 @@ class Application: # singleton
             'ui.hide_menubar_in_fullscreen': True,
             'ui.hide_toolbar_in_fullscreen': True,
             'ui.hide_subwindows_in_fullscreen': True,
-            'ui.parts': dict(main_toolbar=True, menubar=False),
+            'ui.parts': dict(main_toolbar=True, menubar=True),
             'ui.feedback.scale': True,
             'ui.feedback.last_pos': False,
             'ui.feedback.symmetry': True,
