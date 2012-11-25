@@ -109,6 +109,7 @@ tests_env = env.Clone()
 tests_env.Append(CPPPATH=['../brushlib/tests'], LIBS=['mypaint-tests', 'mypaintlib'])
 # Workaround to make it follow expected naming convention for gcc -l
 tests_env.Execute("ln -sf _mypaintlib.so ../libmypaintlib.so")
+tests_env.Clean(".", "../libmypaintlib.so")
 
 # Standard tests
 tests_sources = ['test-python-surface.c']
