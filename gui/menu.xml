@@ -146,20 +146,28 @@
       <menuitem action='DownloadBrushPack'/>
     </menu>
     <menu action='ColorMenu'>
+      <!-- Color choice using fancy dialogs -->
       <menuitem action='ColorWindow'/>
+      <!-- Picking and reusing -->
+      <separator/>
+      <menuitem action='ColorPickerPopup'/>
+      <menuitem action='ColorHistoryPopup'/>
+      <!-- Changing and adjusting based on the current color -->
       <separator/>
       <menuitem action='ColorChangerCrossedBowlPopup'/>
       <menuitem action='ColorChangerWashPopup'/>
       <menuitem action='ColorRingPopup'/>
-      <menuitem action='ColorPickerPopup'/>
-      <menuitem action='ColorHistoryPopup'/>
       <separator/>
-      <menuitem action='Brighter'/>
-      <menuitem action='Darker'/>
-      <menuitem action='IncreaseHue'/>
-      <menuitem action='DecreaseHue'/>
-      <menuitem action='Purer'/>
-      <menuitem action='Grayer'/>
+      <menu action="ColorAdjustmentsMenu">
+        <!-- These are only here to be bound to some keypress -->
+        <menuitem action='Brighter'/>
+        <menuitem action='Darker'/>
+        <menuitem action='IncreaseHue'/>
+        <menuitem action='DecreaseHue'/>
+        <menuitem action='Purer'/>
+        <menuitem action='Grayer'/>
+      </menu>
+      <!-- Palette -->
       <separator/>
       <menuitem action='PalettePrev'/>
       <menuitem action='PaletteNext'/>

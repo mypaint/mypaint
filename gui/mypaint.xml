@@ -252,50 +252,54 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkAction" id="Brighter">
           <property name="label" translatable="yes"
-            context="Menu|Color|">Brighter</property>
+            context="Menu|Color|Adjust Color|">Brighter</property>
           <property name="tooltip" translatable="yes"
-            >Brighten the painting color: increases its HSV value</property>
+            >Increase color brightness</property>
           <signal name="activate" handler="brighter_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="Darker">
           <property name="label" translatable="yes"
-            context="Menu|Color|">Darker</property>
+            context="Menu|Color|Adjust Color|">Darker</property>
           <property name="tooltip" translatable="yes"
-            >Darken the painting color: decrease its HSV value</property>
+            >Decrease color brightness</property>
           <signal name="activate" handler="darker_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="IncreaseHue">
           <property name="label" translatable="yes"
-            context="Menu|Color|">Rotate Hue Anticlockwise</property>
+            context="Menu|Color|Adjust Color|">Hue Anticlockwise</property>
+          <property name="tooltip" translatable="yes"
+            >Rotate color hue anticlockwise</property>
           <signal name="activate" handler="increase_hue_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="DecreaseHue">
           <property name="label" translatable="yes"
-            context="Menu|Color|">Rotate Hue Clockwise</property>
+            context="Menu|Color|Adjust Color|">Hue Clockwise</property>
+          <property name="tooltip" translatable="yes"
+            >Rotate color hue clockwise</property>
           <signal name="activate" handler="decrease_hue_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="Purer">
           <property name="label" translatable="yes"
-            context="Menu|Color|">Purer</property>
+            context="Menu|Color|Adjust Color|">Purer</property>
           <property name="tooltip" translatable="yes"
-            >Make the painting color purer: increase its HSV saturation</property>
+            >Increase color saturation</property>
           <signal name="activate" handler="purer_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="Grayer">
           <property name="label" translatable="yes"
-            context="Menu|Color|">Grayer</property>
+            context="Menu|Color|Adjust Color|">Grayer</property>
           <property name="tooltip" translatable="yes"
-            >Make the painting color grayer: decrease its HSV saturation</property>
+            >Decrease color saturation</property>
           <signal name="activate" handler="grayer_cb"/>
         </object>
       </child>
@@ -741,6 +745,12 @@ Perhaps an increasing amount.
         </object>
       </child>
       <child>
+        <object class="GtkAction" id="ColorAdjustmentsMenu">
+          <property name="label" translatable="yes"
+            context="Menu|Color|">Adjust Color</property>
+        </object>
+      </child>
+      <child>
         <object class="GtkAction" id="ColorPickerPopup">
           <property name="label" translatable="yes"
             context="Menu|Color|">Pick Color</property>
@@ -759,41 +769,57 @@ Perhaps an increasing amount.
       </child>
       <child>
         <object class="GtkAction" id="ColorChangerCrossedBowlPopup">
-          <property name="label" translatable="yes">Color Changer (crossed bowl)</property>
+          <property name="label" translatable="yes"
+            context="Menu|Color|">Change Color</property>
+          <property name="tooltip" translatable="yes"
+            >Color changer popup (crossed bowl)</property>
           <signal name="activate" handler="popup_cb"/>
         </object>
         <accelerator key="v"/>
       </child>
       <child>
         <object class="GtkAction" id="ColorChangerWashPopup">
-          <property name="label" translatable="yes">Color Changer (washed)</property>
+          <property name="label" translatable="yes"
+            context="Menu|Color|">Change Color (wash)</property>
+          <property name="tooltip" translatable="yes"
+            >Color changer popup (wash)</property>
           <signal name="activate" handler="popup_cb"/>
         </object>
         <accelerator key="c"/>
       </child>
       <child>
         <object class="GtkAction" id="ColorRingPopup">
-          <property name="label" translatable="yes">Color Changer (ring)</property>
+          <property name="label" translatable="yes"
+            context="Menu|Color|">Change Color (ring)</property>
+          <property name="tooltip" translatable="yes"
+            >Color changer popup (concentric rings)</property>
           <signal name="activate" handler="popup_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="ColorDetailsDialog">
-          <property name="label" translatable="yes">Color Details</property>
+          <property name="label" translatable="yes"
+            context="Menu|Color|">Color Details</property>
+          <property name="tooltip" translatable="yes"
+            >Color details dialog with text entry</property>
           <signal name="activate" handler="color_details_dialog_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="PaletteNext">
           <property name="label" translatable="yes"
-              >Next Palette Color</property>
+            context="Menu|Color">Next Palette Color</property>
+          <property name="tooltip" translatable="yes"
+            >Next color in the palette</property>
           <signal name="activate" handler="palette_next_cb"/>
         </object>
       </child>
       <child>
         <object class="GtkAction" id="PalettePrev">
           <property name="label" translatable="yes"
-              >Previous Palette Color</property>
+            context="Menu|Color|">Previous Palette Color</property>
+          <property name="tooltip" translatable="yes"
+            >Previous color in the palette</property>
           <signal name="activate" handler="palette_prev_cb"/>
         </object>
       </child>
