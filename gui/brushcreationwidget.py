@@ -27,18 +27,10 @@ def startfile(path):
         os.system("xdg-open " + path)
 
 
-def stock_button(stock_id):
-    b = gtk.Button()
-    img = gtk.Image()
-    img.set_from_stock(stock_id, gtk.ICON_SIZE_MENU)
-    b.add(img)
-    return b
-
-
-class BrushManipulationWidget(gtk.HBox):
+class BrushManipulationWidget(gtk.VBox):
     """ """
     def __init__(self, app, brushicon_editor):
-        gtk.HBox.__init__(self)
+        gtk.VBox.__init__(self)
         self.app = app
         self.bm = app.brushmanager
         self.brushicon_editor = brushicon_editor
@@ -48,24 +40,26 @@ class BrushManipulationWidget(gtk.HBox):
         self.bm.selected_brush_observers.append(self.brush_selected_cb)
 
     def init_widgets(self):
-
         l = self.brush_name_label = gtk.Label()
         l.set_text(_('(unnamed brush)'))
-        self.pack_start(l, expand=True)
+        l.set_alignment(0.0, 0.0)
+        self.pack_start(l, expand=False)
 
-        right_vbox_buttons = [
-        (gtk.STOCK_SAVE, self.update_settings_cb, _('Save Settings')),
-        (gtk.STOCK_ADD, self.create_brush_cb, _('Add As New')),
-        (gtk.STOCK_PROPERTIES, self.edit_brush_cb, _('Edit Brush Icon')),
-        (gtk.STOCK_EDIT, self.rename_brush_cb, _('Rename...')),
-        (gtk.STOCK_DELETE, self.delete_brush_cb, _('Remove...')),
+        hbox = gtk.HBox()
+        self.pack_start(hbox, expand=False, padding=2)
+
+        buttons = [
+        (self.update_settings_cb, _('Save Settings')),
+        (self.create_brush_cb, _('Add As New')),
+        (self.edit_brush_cb, _('Edit Brush Icon')),
+        (self.rename_brush_cb, _('Rename...')),
+        (self.delete_brush_cb, _('Remove...')),
         ]
 
-        for stock_id, clicked_cb, tooltip in reversed(right_vbox_buttons):
-            b = stock_button(stock_id)
+        for clicked_cb, tooltip in buttons:
+            b = gtk.Button(tooltip)
             b.connect('clicked', clicked_cb)
-            b.set_tooltip_text(tooltip)
-            self.pack_end(b, expand=False)
+            hbox.pack_start(b, expand=False)
 
     def brush_selected_cb(self, managed_brush, brushinfo):
         name = managed_brush.name

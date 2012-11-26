@@ -38,13 +38,14 @@ class Window(windowing.SubWindow):
         """Construct and pack widgets."""
         vbox = gtk.VBox()
         self.add(vbox)
+        self.set_border_width(5)
 
         brushicon_editor = brushcreationwidget.BrushIconEditorWidget(self.app)
         self.brushinputs_widget = functionwindow.BrushInputsWidget(self.app)
 
         # Header with brush name and actions
         brush_actions = brushcreationwidget.BrushManipulationWidget(self.app, brushicon_editor)
-        vbox.pack_start(brush_actions, expand=False)
+        vbox.pack_start(brush_actions, expand=False, padding=8)
 
         # Header with current page name
         header_hbox = gtk.HBox()
