@@ -295,7 +295,7 @@ class Window (windowing.Dialog):
         self.width_adj.set_spin_button(width_entry)
         dpi_entry = gtk.SpinButton()
         dpi_entry.set_adjustment(self.dpi_adj)
-        
+
         color_button = gtk.ColorButton()
         color_rgba = self.app.preferences.get("frame.color_rgba")
         color_rgba = [min(max(c, 0), 1) for c in color_rgba]
@@ -368,10 +368,10 @@ class Window (windowing.Dialog):
                                  'can be adjusted on the canvas'))
         hint_label.set_padding(0, 6)
 
-        self.enable_button = gtk.CheckButton(_('Enabled'))
-        self.enable_button.connect('toggled', self.on_frame_toggled)
-        enabled = self.app.doc.model.frame_enabled
-        self.enable_button.set_active(enabled)
+        self.enable_button = gtk.CheckButton()
+        frame_toggle_action = self.app.find_action("FrameToggle")
+        frame_toggle_action.connect_proxy(self.enable_button)
+        self.enable_button.set_label(_('Enabled'))
 
         row += 1
         size_table.attach(self.enable_button, 2, 3, row, row+1,
@@ -428,13 +428,6 @@ class Window (windowing.Dialog):
         self.app.preferences["frame.color_rgba"] = (r, g, b, a)
         self.app.doc.tdw.queue_draw()
 
-    def on_frame_toggled(self, button):
-        """Update the frame state in the model."""
-        if self.callbacks_active:
-            return
-
-        self.app.doc.model.set_frame_enabled(button.get_active())
-
     def on_unit_changed(self, unit_combobox):
         active_unit = self.get_active_text(unit_combobox)
         self.width_adj.set_unit(active_unit)
@@ -464,12 +457,9 @@ class Window (windowing.Dialog):
     def on_frame_changed(self):
         """Update the UI to reflect the model."""
         self.callbacks_active = True # Prevent callback loops
-
         x, y, w, h = self.app.doc.model.get_frame()
         self.width_adj.set_px_value(w)
         self.height_adj.set_px_value(h)
-        enabled = self.app.doc.model.frame_enabled
-        self.enable_button.set_active(enabled)
         self.callbacks_active = False
 
 class UnitAdjustment(gtk.Adjustment):

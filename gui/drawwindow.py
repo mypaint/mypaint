@@ -792,10 +792,12 @@ class Window (windowing.MainWindow, layout.MainWindow):
 
     def frame_changed_cb(self):
         action = self.action_group.get_action("FrameToggle")
+        if getattr(action, "in_callback", False):
+            return
+        action.in_callback = True
         enabled = bool(self.app.doc.model.frame_enabled)
-        current = bool(action.get_active())
-        if enabled != current:
-            action.set_active(current)
+        action.set_active(enabled)
+        action.in_callback = False
 
     def download_brush_pack_cb(self, *junk):
         url = 'http://wiki.mypaint.info/index.php?title=Brush_Packages/redirect_mypaint_1.1_gui'
