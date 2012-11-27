@@ -445,6 +445,18 @@ class FreehandOnlyMode (InteractionMode):
             xtilt = 0.0
             ytilt = 0.0
 
+        # Tilt inputs are assumed to be relative to the viewport, but the
+        # canvas may be rotated or mirrored, or both. Compensate before
+        # passing them to the brush engine. https://gna.org/bugs/?19988
+        if not (xtilt == 0 and ytilt == 0):
+            if tdw.mirrored:
+                xtilt *= -1.0
+            if tdw.rotation != 0:
+                tilt_angle = math.atan2(ytilt, xtilt) - tdw.rotation
+                tilt_magnitude = math.sqrt((xtilt**2) + (ytilt**2))
+                xtilt = tilt_magnitude * math.cos(tilt_angle)
+                ytilt = tilt_magnitude * math.sin(tilt_angle)
+
         if event.state & gdk.CONTROL_MASK or event.state & gdk.MOD1_MASK:
             # HACK: color picking, do not paint
             # Don't simply return; this is a workaround for unwanted lines
