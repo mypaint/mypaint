@@ -811,6 +811,29 @@ class SpringLoadedModeMixin (InteractionMode):
 
     """
 
+
+    def __init__(self, ignore_modifiers=False, **kwds):
+        """Construct, possibly ignoring initial modifiers.
+
+        :param ignore_modifiers: If True, ignore the initial set of modifiers.
+
+        Springloaded modes can be instructed to ignore the initial set of
+        modifiers when they're entered. This is appropriate when the mode is
+        being entered in response to a keyboard shortcut. Modifiers don't mean
+        the same thing for keyboard shortcuts. Conversely, toolbar buttons and
+        mode-switching via pointer buttons should use the default behaviour.
+
+        In practice, it's not quite so clear cut. Instead we have keyboard-
+        friendly "Flip*" actions (which allow the mode to be toggled off with a
+        second press) that use the ``ignore_modifiers`` behaviour, and a
+        secondary layer of radioactions which don't (but which reflect the
+        state prettily).
+
+        """
+        super(SpringLoadedModeMixin, self).__init__(**kwds)
+        self.ignore_modifiers = ignore_modifiers
+
+
     def enter(self, **kwds):
         """Enter the mode, recording the held modifier keys the first time.
 
@@ -821,6 +844,10 @@ class SpringLoadedModeMixin (InteractionMode):
 
         super(SpringLoadedModeMixin, self).enter(**kwds)
         assert self.doc is not None
+
+        if self.ignore_modifiers:
+            self.initial_modifiers = 0
+            return
 
         old_modifiers = getattr(self, "initial_modifiers", None)
         if old_modifiers is not None:
@@ -1297,7 +1324,8 @@ class LayerMoveMode (SwitchableModeMixin,
         if self.initial_modifiers:
             if (self.final_modifiers & self.initial_modifiers) == 0:
                 self.doc.modes.pop()
-
+        else:
+            self.doc.modes.pop()
 
     def _finalize_move_idler(self):
         # Finalize everything once the drag's finished.

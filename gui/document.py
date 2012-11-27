@@ -914,19 +914,51 @@ class Document (CanvasController):
         return num
 
 
-    def mode_flip_action_activated_cb(self, action):
-        flip_action_name = action.get_name()
+    def mode_flip_action_activated_cb(self, flip_action):
+        """Callback: mode "flip" action activated.
+
+        :param flip_action: the gtk.Action which was activated
+
+        Mode classes are looked up via `canvasevent.ModeRegistry` based on the
+        name of the action: flip actions are named after the RadioActions they
+        nominally control, with "Flip" prepended.  Activating a FlipAction has
+        the effect of flipping a mode off if it is currently active, or on if
+        another mode is active. Mode flip actions are the usual actions bound
+        to keypresses since being able to toggle off with the same key is
+        useful.
+
+        Because these modes are intended for keyboard activation, they are
+        instructed to ignore the initial keyboard modifier state when entered.
+        See also: `canvasevent.SpringLoadedModeMixin`.
+
+        """
+        flip_action_name = flip_action.get_name()
         assert flip_action_name.startswith("Flip")
-        radio_action_name = flip_action_name.replace("Flip", "", 1)
-        radio_action = self.app.find_action(radio_action_name)
-        if radio_action.get_active():
+        # Find the corresponding gtk.RadioAction
+        action_name = flip_action_name.replace("Flip", "", 1)
+        mode_class = canvasevent.ModeRegistry.get_mode_class(action_name)
+        assert mode_class is not None
+
+        # If a mode object of this exact class is active, pop the stack.
+        # Otherwise, instantiate and enter.
+        if self.modes.top.__class__ is mode_class:
             self.modes.pop()
         else:
-            radio_action.set_active(True)
+            mode = mode_class(ignore_modifiers=True)
+            self.modes.context_push(mode)
 
 
     def mode_radioaction_changed_cb(self, action, current_action):
         """Callback: GtkRadioAction controlling the modes stack activated.
+
+        :param action: the lead gtk.RadioAction
+        :param current_action: the newly active gtk.RadioAction
+
+        Mode classes are looked up via `canvasevent.ModeRegistry` based on the
+        name of the action. This action instantiates the mode and pushes it
+        onto the mode stack unless the active mode is already an instance of
+        the mode class.
+
         """
         # Update the mode stack so that its top element matches the newly
         # chosen action.
