@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-31 14:46+0200\n"
+"POT-Creation-Date: 2012-11-27 18:54+0100\n"
 "PO-Revision-Date: 2010-02-26 09:26+0100\n"
 "Last-Translator: Martin Tabačan <martin@tabacan.cz>\n"
 "Language-Team: Čeština <cs@li.org>\n"
@@ -18,155 +18,173 @@ msgstr ""
 "X-Poedit-Language: Czech\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 
-#: ../gui/backgroundwindow.py:23
+#: ../gui/backgroundwindow.py:24
 #, fuzzy
 msgid "Save as Default"
 msgstr "uložit jako výchozí"
 
-#: ../gui/backgroundwindow.py:25 ../gui/drawwindow.py:316
+#: ../gui/backgroundwindow.py:26
 msgid "Background"
 msgstr "Pozadí"
 
-#: ../gui/backgroundwindow.py:38
+#: ../gui/backgroundwindow.py:39
 msgid "Pattern"
 msgstr "Vzor"
 
-#: ../gui/backgroundwindow.py:45 ../gui/brushsettingswindow.py:107
-#: ../gui/drawwindow.py:248
+#: ../gui/backgroundwindow.py:46 ../gui/brushsettingswindow.py:108
+#: ../lib/layer.py:54
 msgid "Color"
 msgstr "Barva"
 
-#: ../gui/backgroundwindow.py:51
+#: ../gui/backgroundwindow.py:52
 #, fuzzy
 msgid "Add color to Patterns"
 msgstr "přidat barvu do vzorů"
 
-#: ../gui/backgroundwindow.py:123
+#: ../gui/backgroundwindow.py:126
+msgid "Gdk-Pixbuf couldn't load \"{filename}\", and reported \"{error}\""
+msgstr ""
+
+#: ../gui/backgroundwindow.py:132
 #, python-format
 msgid ""
-"The background %s was ignored because it has an alpha channel. Please remove "
-"it."
+"\"%s\" has an alpha channel. Background images with transparency are not "
+"supported."
 msgstr ""
-"Pozadí %s bylo ignorováno, protože obsahuje alfa kanál. Odstraňte ho, prosím."
 
-#: ../gui/backgroundwindow.py:127
-#, fuzzy, python-format
+#: ../gui/backgroundwindow.py:139
 msgid ""
-"The background %s was ignored because it is the wrong size. Only (N*%d)x(M*"
-"%d) is supported."
+"{filename} has an unsupported size. Background images must have widths and "
+"heights which are multiples of {number} pixels."
 msgstr ""
-"Pozadí %s bylo ignorováno, protože má špatnou velikost. Podporováno je pouze "
-"(N*%d)x(M*%d)."
 
-#: ../gui/brushcreationwidget.py:46 ../gui/brushcreationwidget.py:66
+#: ../gui/backgroundwindow.py:155
+msgid "One or more backgrounds could not be loaded"
+msgstr ""
+
+#: ../gui/backgroundwindow.py:156
+msgid "Error loading backgrounds"
+msgstr ""
+
+#: ../gui/backgroundwindow.py:157
+msgid ""
+"Please remove the unloadable files, or check your libgdkpixbuf installation."
+msgstr ""
+
+#: ../gui/brushcreationwidget.py:44 ../gui/brushcreationwidget.py:67
 #, fuzzy
 msgid "(unnamed brush)"
 msgstr "Přejmenovat štětec"
 
-#: ../gui/brushcreationwidget.py:50
+#: ../gui/brushcreationwidget.py:52
 #, fuzzy
 msgid "Save Settings"
 msgstr "uložit nastavení"
 
-#: ../gui/brushcreationwidget.py:51
+#: ../gui/brushcreationwidget.py:53
 msgid "Add As New"
 msgstr ""
 
-#: ../gui/brushcreationwidget.py:52
+#: ../gui/brushcreationwidget.py:54
 #, fuzzy
 msgid "Edit Brush Icon"
 msgstr "Výběr štětce"
 
-#: ../gui/brushcreationwidget.py:53
+#: ../gui/brushcreationwidget.py:55
 #, fuzzy
 msgid "Rename..."
 msgstr "přejmenovat..."
 
-#: ../gui/brushcreationwidget.py:54
+#: ../gui/brushcreationwidget.py:56
 #, fuzzy
 msgid "Remove..."
 msgstr "odstranit..."
 
-#: ../gui/brushcreationwidget.py:101 ../gui/brushcreationwidget.py:150
+#: ../gui/brushcreationwidget.py:102 ../gui/brushcreationwidget.py:151
 msgid "No brush selected!"
 msgstr "Není vybrán štětec!"
 
-#: ../gui/brushcreationwidget.py:104
+#: ../gui/brushcreationwidget.py:105
 msgid "Rename Brush"
 msgstr "Přejmenovat štětec"
 
-#: ../gui/brushcreationwidget.py:116
+#: ../gui/brushcreationwidget.py:117
 msgid "A brush with this name already exists!"
 msgstr "Štětec s tímto názvem již existuje!"
 
-#: ../gui/brushcreationwidget.py:142 ../gui/brushcreationwidget.py:242
+#: ../gui/brushcreationwidget.py:143 ../gui/brushcreationwidget.py:250
 #, fuzzy
 msgid "No brush selected, please use \"Add As New\" instead."
 msgstr ""
 "Není vybrán žádný štětec, prosím, použijte místo toho \"přidat jako nový\"."
 
-#: ../gui/brushcreationwidget.py:152
+#: ../gui/brushcreationwidget.py:153
 msgid "Really delete brush from disk?"
 msgstr "Opravdu smazat štětec z disku?"
 
-#: ../gui/brushcreationwidget.py:203 ../gui/drawwindow.py:246
+#: ../gui/brushcreationwidget.py:210
 msgid "Edit"
 msgstr "Upravit"
 
-#: ../gui/brushcreationwidget.py:207 ../gui/document.py:93
+#: ../gui/brushcreationwidget.py:214
 msgid "Clear"
 msgstr "Vyčistit"
 
-#: ../gui/brushcreationwidget.py:213 ../gui/filehandling.py:61
+#: ../gui/brushcreationwidget.py:218
 msgid "Save"
 msgstr "Uložit"
 
-#: ../gui/brushmanager.py:70
+#: ../gui/brushmanager.py:71
 msgid "Lost & Found"
 msgstr ""
 
-#: ../gui/brushmanager.py:71
+#: ../gui/brushmanager.py:72
 msgid "Deleted"
 msgstr ""
 
-#: ../gui/brushmanager.py:72
+#: ../gui/brushmanager.py:73
 msgid "Favorites"
 msgstr ""
 
-#: ../gui/brushmanager.py:73
+#: ../gui/brushmanager.py:74
 msgid "Ink"
 msgstr ""
 
-#: ../gui/brushmanager.py:74
+#: ../gui/brushmanager.py:75
 msgid "Classic"
 msgstr ""
 
-#: ../gui/brushmanager.py:75
+#: ../gui/brushmanager.py:76
 msgid "Set#1"
 msgstr ""
 
-#: ../gui/brushmanager.py:76
+#: ../gui/brushmanager.py:77
 msgid "Set#2"
 msgstr ""
 
-#: ../gui/brushmanager.py:77
+#: ../gui/brushmanager.py:78
 msgid "Set#3"
 msgstr ""
 
-#: ../gui/brushmanager.py:78
+#: ../gui/brushmanager.py:79
 msgid "Set#4"
 msgstr ""
 
-#: ../gui/brushmanager.py:79
+#: ../gui/brushmanager.py:80
 msgid "Set#5"
 msgstr ""
 
-#: ../gui/brushmanager.py:80
+#: ../gui/brushmanager.py:81
 msgid "Experimental"
 msgstr ""
 
-#: ../gui/brushmanager.py:718
+#: ../gui/brushmanager.py:721
 msgid "Unknown Brush"
+msgstr ""
+
+#. (internal-name, display-name, description)
+#: ../gui/brushmodifier.py:53 ../lib/layer.py:17
+msgid "Normal"
 msgstr ""
 
 #: ../gui/brushmodifier.py:54
@@ -174,881 +192,754 @@ msgid "Paint normally"
 msgstr ""
 
 #: ../gui/brushmodifier.py:57
+#, fuzzy
+msgid "Eraser"
+msgstr "guma"
+
+#: ../gui/brushmodifier.py:58
 msgid "Eraser Mode: remove strokes using the current brush"
 msgstr ""
 
-#: ../gui/brushmodifier.py:60
+#: ../gui/brushmodifier.py:61
+msgid "Lock Alpha Channel"
+msgstr ""
+
+#: ../gui/brushmodifier.py:62
 msgid "Lock Alpha: paint over existing strokes only, using the current brush"
 msgstr ""
 
-#: ../gui/brushmodifier.py:63
+#: ../gui/brushmodifier.py:65
+#, fuzzy
+msgid "Colorize"
+msgstr "Barva"
+
+#: ../gui/brushmodifier.py:66
 msgid "Colorize: alter Hue and Saturation with the current brush"
 msgstr ""
 
-#: ../gui/brushselectionwindow.py:232
-msgid "Try right click, middle click or Ctrl click"
+#: ../gui/brushselectionwindow.py:35
+#, fuzzy
+msgid "Brushes"
+msgstr "Klávesa pro štětec"
+
+#: ../gui/brushselectionwindow.py:253
+msgid ""
+"Brush Groups: click to select\n"
+"Ctrl: select multiple\n"
+"Middle-click: toggle group\n"
+"Right-click: groups menu"
 msgstr ""
 
-#: ../gui/brushselectionwindow.py:400
-msgid "New group..."
+#: ../gui/brushselectionwindow.py:465
+#, fuzzy
+msgid "New Group..."
 msgstr "Nová skupina..."
 
-#: ../gui/brushselectionwindow.py:402
-msgid "Rename group..."
+#: ../gui/brushselectionwindow.py:467
+#, fuzzy
+msgid "Rename Group..."
 msgstr "Přejmenovat skupinu..."
 
-#: ../gui/brushselectionwindow.py:403
-msgid "Delete group..."
+#: ../gui/brushselectionwindow.py:468
+#, fuzzy
+msgid "Delete Group"
 msgstr "Vymazat skupinu..."
 
-#: ../gui/brushselectionwindow.py:404
+#: ../gui/brushselectionwindow.py:469
 #, fuzzy
-msgid "Export group as brush package..."
+msgid "Export Group..."
+msgstr "Hlášení..."
+
+#: ../gui/brushselectionwindow.py:471
+#, fuzzy
+msgid "Import Brushes..."
 msgstr "Importovat sadu štětců..."
 
-#: ../gui/brushselectionwindow.py:406
-msgid "Download brushes (in web browser)"
-msgstr ""
+#: ../gui/brushselectionwindow.py:473
+#, fuzzy
+msgid "Get More Brushes..."
+msgstr "Obnovit štětec %d"
 
-#: ../gui/brushselectionwindow.py:407 ../gui/drawwindow.py:278
-#: ../gui/drawwindow.py:993
-msgid "Import brush package..."
-msgstr "Importovat sadu štětců..."
-
-#: ../gui/brushselectionwindow.py:421
-msgid "Create group"
+#: ../gui/brushselectionwindow.py:493
+#, fuzzy
+msgid "Create Group"
 msgstr "Vytvořit skupinu"
 
-#: ../gui/brushselectionwindow.py:426
-msgid "Rename group"
+#: ../gui/brushselectionwindow.py:498
+#, fuzzy
+msgid "Rename Group"
 msgstr "Přejmenovat skupinu"
 
-#: ../gui/brushselectionwindow.py:432
+#: ../gui/brushselectionwindow.py:504
 msgid "A group with this name already exists!"
 msgstr "Skupina s tímto názvem již existuje!"
 
-#: ../gui/brushselectionwindow.py:435
+#: ../gui/brushselectionwindow.py:507
 #, fuzzy
-msgid "Export brush pack..."
+msgid "Export Brushes"
 msgstr "Importovat sadu štětců..."
 
-#: ../gui/brushselectionwindow.py:436 ../gui/drawwindow.py:994
+#: ../gui/brushselectionwindow.py:508 ../gui/drawwindow.py:809
 msgid "MyPaint brush package (*.zip)"
 msgstr "MyPaint sada štětců (*.zip)"
 
-#: ../gui/brushselectionwindow.py:442
+#: ../gui/brushselectionwindow.py:514
 #, python-format
 msgid "Really delete group %s?"
 msgstr "Opravdu smazat skupinu %s?"
 
-#: ../gui/brushselectionwindow.py:445
+#: ../gui/brushselectionwindow.py:517
 #, fuzzy
 msgid "This group can not be deleted (try to empty it first)."
 msgstr "Tato skupina nemůže být vymazána (zkuste ji nejprve vyprázdnit)."
 
-#: ../gui/brushsettingswindow.py:31 ../gui/drawwindow.py:322
+#: ../gui/brushsettingswindow.py:31
 #, fuzzy
 msgid "Brush Settings Editor"
 msgstr "Nastavení štětců"
 
-#: ../gui/brushsettingswindow.py:55
+#: ../gui/brushsettingswindow.py:56
 #, fuzzy
 msgid "Back to settings"
 msgstr "Nastavení štětců"
 
 #. Live update (goes to the end)
-#: ../gui/brushsettingswindow.py:63
+#: ../gui/brushsettingswindow.py:64
 #, fuzzy
 msgid "Update the last canvas stroke in realtime"
 msgstr "přímá aktualizace posledního tahu na plátně"
 
-#: ../gui/brushsettingswindow.py:100
+#: ../gui/brushsettingswindow.py:101
 msgid "Basic"
 msgstr ""
 
-#: ../gui/brushsettingswindow.py:101
+#: ../gui/brushsettingswindow.py:102
 #, fuzzy
 msgid "Opacity"
 msgstr "Krytí:"
 
-#: ../gui/brushsettingswindow.py:102
+#: ../gui/brushsettingswindow.py:103
 msgid "Dabs"
 msgstr ""
 
-#: ../gui/brushsettingswindow.py:103
+#: ../gui/brushsettingswindow.py:104
 #, fuzzy
 msgid "Smudge"
 msgstr "šmouha"
 
-#: ../gui/brushsettingswindow.py:104
+#: ../gui/brushsettingswindow.py:105
 msgid "Speed"
 msgstr ""
 
-#: ../gui/brushsettingswindow.py:105
+#: ../gui/brushsettingswindow.py:106
 msgid "Tracking"
 msgstr ""
 
-#: ../gui/brushsettingswindow.py:106
+#: ../gui/brushsettingswindow.py:107
 msgid "Stroke"
 msgstr "Tah"
 
-#: ../gui/brushsettingswindow.py:108
+#: ../gui/brushsettingswindow.py:109
 msgid "Custom"
 msgstr "Náhodné"
 
-#: ../gui/brushsettingswindow.py:137
+#: ../gui/brushsettingswindow.py:138
 msgid "Reset to default value"
 msgstr ""
 
-#: ../gui/brushsettingswindow.py:142
+#: ../gui/brushsettingswindow.py:143
 msgid "No additional configuration"
 msgstr "Žádná dodatečná nastavení"
 
-#: ../gui/brushsettingswindow.py:147 ../gui/brushsettingswindow.py:190
+#: ../gui/brushsettingswindow.py:148 ../gui/brushsettingswindow.py:191
 #, fuzzy
 msgid "Add input value mapping"
 msgstr "Přidat vstupní hodnoty pomocí grafů"
 
-#: ../gui/brushsettingswindow.py:192
+#: ../gui/brushsettingswindow.py:193
 #, fuzzy
 msgid "Modify input value mapping"
 msgstr "Upravit vstupní hodnoty pomocí grafů"
 
-#: ../gui/colorsamplerwindow.py:165
-msgid "Recently used colors"
+#: ../gui/buttonmap.py:262
+msgid "Action"
 msgstr ""
 
-#. : Background neutral mid grey, intended to permit colour comparisons without theme colours distracting and imposing themselves
-#. : Slightly distinct outlinefor colour pots, intended to reduce "1+1=3 (or more)" effects
-#. : Central saturation/value square
-#. : Grey area inside the rings
-#. : Inner ring of color sampler boxes (hue)
-#. : Outer gradiated ring (hue)
-#. : Current/previous comparison semicircles
-#. : The picker icon's circle
-#. : Blank outer area, outer space
-#: ../gui/colorsamplerwindow.py:196
-#, fuzzy
-msgid "Change Saturation and Value"
-msgstr "Změnit hodnotu/sytost"
-
-#: ../gui/colorsamplerwindow.py:198
-msgid "Harmony color switcher"
+#: ../gui/buttonmap.py:277
+msgid "Button press"
 msgstr ""
 
-#: ../gui/colorsamplerwindow.py:199
-#, fuzzy
-msgid "Change Hue"
-msgstr "Změnit barvu"
-
-#: ../gui/colorsamplerwindow.py:200
-msgid "Current color vs. Last Used"
+#: ../gui/buttonmap.py:296
+msgid "Add a new binding"
 msgstr ""
 
-#: ../gui/colorsamplerwindow.py:201
+#: ../gui/buttonmap.py:304
 #, fuzzy
-msgid "Pick a screen color"
-msgstr "Vybrat barvu"
+msgid "Remove the current binding"
+msgstr "Naposledy otevřené"
 
-#: ../gui/colorsamplerwindow.py:928
-#, fuzzy
-msgid "Change Hue, Saturation and Value"
-msgstr "Změnit hodnotu/sytost"
-
-#: ../gui/colorsamplerwindow.py:999
-msgid "Change Red, Green and Blue components"
+#: ../gui/buttonmap.py:426
+#, python-format
+msgid "Edit binding for '%s'"
 msgstr ""
 
-#: ../gui/colorsamplerwindow.py:1061
-msgid "RGB"
-msgstr "RGB"
+#: ../gui/buttonmap.py:449
+msgid "Action:"
+msgstr ""
 
-#: ../gui/colorsamplerwindow.py:1062
-msgid "HSV"
-msgstr "HSV"
+#: ../gui/buttonmap.py:460
+msgid "Button press:"
+msgstr ""
 
-#. Colour history
-#: ../gui/colorsamplerwindow.py:1065
-#, fuzzy
-msgid "Color history"
-msgstr "Historie barev"
-
-#. Colour details
-#: ../gui/colorsamplerwindow.py:1072 ../gui/functionwindow.py:153
-msgid "Details"
-msgstr "Detaily"
-
-#: ../gui/colorsamplerwindow.py:1088
-msgid "Harmonies"
-msgstr "Harmonie barev"
-
-#: ../gui/colorsamplerwindow.py:1090
-msgid "Analogous"
-msgstr "Podobné barvy"
-
-#: ../gui/colorsamplerwindow.py:1090
+#: ../gui/buttonmap.py:494
 msgid ""
-"Three nearby hues on the color wheel.\n"
-"Often found in nature, frequently pleasing to the eye."
+"Hold down modifier keys, and press a button over this text to set a new "
+"binding."
 msgstr ""
 
-#: ../gui/colorsamplerwindow.py:1091
+#: ../gui/buttonmap.py:514
+#, python-format
+msgid "%s cannot be bound by itself, without keyboard modifiers."
+msgstr ""
+
+#: ../gui/buttonmap.py:524
+#, python-format
+msgid "%s is already bound to the action '%s'"
+msgstr ""
+
+#: ../gui/colors/adjbases.py:443
+#, fuzzy
+msgid "Color details"
+msgstr "hodnota barvy"
+
+#: ../gui/colors/adjbases.py:587
+msgid "Newly chosen color, and the color most recently used for painting"
+msgstr ""
+
+#: ../gui/colors/combined.py:126
+#, fuzzy
+msgid "Add color to Palette"
+msgstr "přidat barvu do vzorů"
+
+#: ../gui/colors/hcywheel.py:40
+msgid ""
+"<b>Gamut mask editor</b>\n"
+"\n"
+"Edit the gamut mask here, or turn it off or on. Gamut masks are like a piece "
+"of\n"
+"tracing paper with cut-out holes, placed over the color wheel to limit the\n"
+"range of colors you can select. This allows you to plan your color schemes "
+"in\n"
+"advance, which is useful for color scripting or to create specific moods. "
+"The\n"
+"theory is that the corners of each mask shape represent a <i>subjective</i>\n"
+"primary color, and that each shape contains all the colors which can be "
+"mixed\n"
+"using those corner primaries. Subjective secondary colors lie at the "
+"midpoints\n"
+"of the shape edges, and the center of the shape is the subjective neutral "
+"tone\n"
+"for the shape.\n"
+"\n"
+"Click to add shapes if the wheel is blank. Shapes can be dragged around and\n"
+"their outlines can be adjusted by adding or moving the control points. Make "
+"a\n"
+"shape too small to be useful to remove it: dragging a shape to the edge of "
+"the\n"
+"disc is a quick way of doing this. You can delete shapes by dragging them\n"
+"inside other shapes too. The entire mask can be rotated by turning the edge "
+"of\n"
+"the disc to generate new and unexpected color schemes.\n"
+"\n"
+"Gamut masks can be saved to GIMP-format palette files, and loaded from "
+"them.\n"
+"The New button lets you choose one of several templates as a starting "
+"point.\n"
+msgstr ""
+
+#: ../gui/colors/hcywheel.py:95
+msgid "Gamut mask active"
+msgstr ""
+
+#: ../gui/colors/hcywheel.py:96
+msgid "Limit your palette for specific moods using a gamut mask"
+msgstr ""
+
+#: ../gui/colors/hcywheel.py:374
+msgid "HCY Hue and Chroma"
+msgstr ""
+
+#. how many shapes are allowed
+#: ../gui/colors/hcywheel.py:424
+msgid ""
+"Gamut mask editor. Click in the middle to create or manipulate shapes, or "
+"rotate the mask using the edges of the disc."
+msgstr ""
+
+#: ../gui/colors/hcywheel.py:898
+msgid "Atmospheric Triad"
+msgstr ""
+
+#: ../gui/colors/hcywheel.py:899
+msgid ""
+"Moody and subjective, defined by one dominant primary and two primaries "
+"which are less intense."
+msgstr ""
+
+#: ../gui/colors/hcywheel.py:902
+msgid "Shifted Triad"
+msgstr ""
+
+#: ../gui/colors/hcywheel.py:903
+msgid "Weighted more strongly towards the dominant colour."
+msgstr ""
+
+#: ../gui/colors/hcywheel.py:907
 #, fuzzy
 msgid "Complementary"
 msgstr "Kontrastní barvy"
 
-#: ../gui/colorsamplerwindow.py:1091
+#: ../gui/colors/hcywheel.py:908
 msgid ""
-"Two opposite hues on the color wheel.\n"
-"Vibrant, and maximally contrasting."
+"Contrasting opposites, balanced by having central neutrals between them on "
+"the colour wheel."
 msgstr ""
 
-#: ../gui/colorsamplerwindow.py:1092
+#: ../gui/colors/hcywheel.py:917
+msgid "Mood and Accent"
+msgstr ""
+
+#: ../gui/colors/hcywheel.py:918
+msgid ""
+"One main range of colors, with a complementary accent for variation and "
+"highlights."
+msgstr ""
+
+#. [HCYColor((H+0.483)%1, 0.95, Y),
+#. HCYColor((H+0.517)%1, 0.95, Y),
+#. HCYColor((H+0.52)%1, 0.725, Y),
+#. HCYColor((H+0.48)%1, 0.725, Y) ]] ))
+#: ../gui/colors/hcywheel.py:926
 #, fuzzy
-msgid "Split complementary"
+msgid "Split Complementary"
 msgstr "Měkce kontrastní barvy"
 
-#: ../gui/colorsamplerwindow.py:1092
+#: ../gui/colors/hcywheel.py:927
 msgid ""
-"Two hues next to the current hue's complement.\n"
-"Contrasting, but adds a possibly pleasing harmony."
+"Two analogous colours and a complement to them, with no secondary colours "
+"between them."
 msgstr ""
 
-#: ../gui/colorsamplerwindow.py:1093
+#: ../gui/colors/hcywheel.py:934
+msgid "New gamut mask from template"
+msgstr ""
+
+#: ../gui/colors/hcywheel.py:986
+msgid "Gamut mask editor"
+msgstr ""
+
+#: ../gui/colors/hcywheel.py:1014
+msgid "Create mask from template"
+msgstr ""
+
+#: ../gui/colors/hcywheel.py:1015
+msgid "Load mask from a GIMP palette file"
+msgstr ""
+
+#: ../gui/colors/hcywheel.py:1016
 #, fuzzy
-msgid "Double complementary"
-msgstr "Dvojkontrastní barvy"
+msgid "Save mask to a GIMP palette file"
+msgstr "uložit jako výchozí"
 
-#: ../gui/colorsamplerwindow.py:1093
-msgid "Four hues in two complementary pairs."
+#: ../gui/colors/hcywheel.py:1017
+msgid "Erase the mask"
 msgstr ""
 
-#: ../gui/colorsamplerwindow.py:1094
-msgid "Square"
-msgstr "Barevná tetráda"
-
-#: ../gui/colorsamplerwindow.py:1094
-msgid "Four equally-spaced hues"
+#: ../gui/colors/hcywheel.py:1065
+msgid "Save mask as a Gimp palette"
 msgstr ""
 
-#: ../gui/colorsamplerwindow.py:1095
-msgid "Triadic"
-msgstr "Barevná triáda"
+#: ../gui/colors/hcywheel.py:1074
+msgid "Load mask from a Gimp palette"
+msgstr ""
 
-#: ../gui/colorsamplerwindow.py:1095
+#: ../gui/colors/hcywheel.py:1113
+msgid "Gamut mask editor help"
+msgstr ""
+
+#: ../gui/colors/hcywheel.py:1147
+msgid "Set gamut mask"
+msgstr ""
+
+#: ../gui/colors/hcywheel.py:1162
+msgid "HCY Wheel"
+msgstr ""
+
+#: ../gui/colors/hcywheel.py:1166
 msgid ""
-"Three equally-spaced hues.\n"
-"Vibrant with equal tension."
+"Set the color using cylindrical hue/chroma/luma space. The circular slices "
+"are equiluminant."
 msgstr ""
 
-#: ../gui/colorsamplerwindow.py:1098
-msgid "Change value/saturation"
+#. Tooltip mappings, indexed by whatever the slider currently represents
+#: ../gui/colors/hsvcube.py:35 ../gui/colors/sliders.py:178
+msgid "HSV Hue"
+msgstr ""
+
+#: ../gui/colors/hsvcube.py:36 ../gui/colors/sliders.py:188
+msgid "HSV Saturation"
+msgstr ""
+
+#: ../gui/colors/hsvcube.py:37 ../gui/colors/sliders.py:197
+#, fuzzy
+msgid "HSV Value"
+msgstr "Základní hodnota"
+
+#: ../gui/colors/hsvcube.py:38
+#, fuzzy
+msgid "HSV Saturation and Value"
 msgstr "Změnit hodnotu/sytost"
 
-#: ../gui/colorsamplerwindow.py:1101
-msgid "Blend each color to opposite"
-msgstr "Smíchat každou barvu k protější"
+#: ../gui/colors/hsvcube.py:39
+msgid "HSV Hue and Value"
+msgstr ""
 
-#: ../gui/colorsamplerwindow.py:1103
-msgid "Blend each color to negative"
-msgstr "Smíchat každou barvu k negativní"
+#: ../gui/colors/hsvcube.py:40 ../gui/colors/hsvwheel.py:32
+msgid "HSV Hue and Saturation"
+msgstr ""
 
-#: ../gui/colorsamplerwindow.py:1214
-msgid "MyPaint color selector"
+#: ../gui/colors/hsvcube.py:52
+msgid "Rotate cube (show different axes)"
+msgstr ""
+
+#: ../gui/colors/hsvcube.py:71
+msgid "HSV Cube"
+msgstr ""
+
+#: ../gui/colors/hsvcube.py:75
+msgid "An HSV cube which can be rotated to show different planar slices."
+msgstr ""
+
+#: ../gui/colors/hsvtriangle.py:41
+#, fuzzy
+msgid "HSV Triangle"
+msgstr "Barevný trojúhelník..."
+
+#: ../gui/colors/hsvtriangle.py:45
+#, fuzzy
+msgid "The standard GTK color selector"
 msgstr "MyPaint návrhář barev"
 
-#: ../gui/dialogs.py:53 ../gui/layerswindow.py:62 ../gui/layerswindow.py:226
+#: ../gui/colors/hsvwheel.py:91
+msgid "HSV wheel"
+msgstr ""
+
+#: ../gui/colors/hsvwheel.py:95
+#, fuzzy
+msgid "Saturation and Value colour changer."
+msgstr "Změnit hodnotu/sytost"
+
+#: ../gui/colors/palette.py:416 ../gui/colors/palette.py:472
+msgid "GIMP palette file (*.gpl)"
+msgstr ""
+
+#: ../gui/colors/palette.py:420 ../gui/colors/palette.py:476
+#, fuzzy
+msgid "All files (*)"
+msgstr "Soubor"
+
+#: ../gui/colors/paletteview.py:62
+msgid "Palette properties"
+msgstr ""
+
+#: ../gui/colors/paletteview.py:72
+msgid "Palette"
+msgstr ""
+
+#: ../gui/colors/paletteview.py:77
+msgid "Set the color from a loadable, editable palette."
+msgstr ""
+
+#: ../gui/colors/paletteview.py:123
+#, fuzzy
+msgid "Palette Editor"
+msgstr "Gimp palety (*.gpl)"
+
+#: ../gui/colors/paletteview.py:158
+#, fuzzy
+msgid "Load from a GIMP palette file"
+msgstr "Uložit paletu jako..."
+
+#: ../gui/colors/paletteview.py:159
+#, fuzzy
+msgid "Save to a GIMP palette file"
+msgstr "uložit jako výchozí"
+
+#: ../gui/colors/paletteview.py:160
+msgid "Add a new empty swatch"
+msgstr ""
+
+#: ../gui/colors/paletteview.py:161
+#, fuzzy
+msgid "Remove the current swatch"
+msgstr "Naposledy otevřené"
+
+#: ../gui/colors/paletteview.py:162
+msgid "Remove all swatches"
+msgstr ""
+
+#: ../gui/colors/paletteview.py:172
+#, fuzzy
+msgid "Name:"
+msgstr "Název"
+
+#: ../gui/colors/paletteview.py:174
+msgid "Name or description for this palette"
+msgstr ""
+
+#: ../gui/colors/paletteview.py:182
+msgid "Columns:"
+msgstr ""
+
+#: ../gui/colors/paletteview.py:183 ../gui/colors/paletteview.py:184
+msgid "Number of columns"
+msgstr ""
+
+#: ../gui/colors/paletteview.py:197
+#, fuzzy
+msgid "Color name:"
+msgstr "Něvrhář barev..."
+
+#: ../gui/colors/paletteview.py:198
+msgid "Current colour's name"
+msgstr ""
+
+#: ../gui/colors/paletteview.py:295
+#, fuzzy
+msgid "Empty palette slot"
+msgstr "Gimp palety (*.gpl)"
+
+#: ../gui/colors/paletteview.py:362
+#, fuzzy
+msgid "Load palette"
+msgstr "Uložit paletu jako..."
+
+#: ../gui/colors/paletteview.py:373
+#, fuzzy
+msgid "Save palette"
+msgstr "uložit nastavení"
+
+#: ../gui/colors/paletteview.py:541
+msgid ""
+"Color swatch palette. Drop colors here and drag them around to organize."
+msgstr ""
+
+#: ../gui/colors/paletteview.py:676
+msgid "Empty palette slot (drag a color here)"
+msgstr ""
+
+#: ../gui/colors/picker.py:69
+msgid "Pick a color from the screen"
+msgstr ""
+
+#: ../gui/colors/sliders.py:88
+msgid "Component sliders"
+msgstr ""
+
+#: ../gui/colors/sliders.py:92
+msgid "Adjust individual components of the colour."
+msgstr ""
+
+#: ../gui/colors/sliders.py:138
+msgid "RGB Red"
+msgstr ""
+
+#: ../gui/colors/sliders.py:151
+msgid "RGB Green"
+msgstr ""
+
+#: ../gui/colors/sliders.py:164
+msgid "RGB Blue"
+msgstr ""
+
+#: ../gui/colors/sliders.py:207
+msgid "HCY Hue"
+msgstr ""
+
+#: ../gui/colors/sliders.py:218
+msgid "HCY Chroma"
+msgstr ""
+
+#: ../gui/colors/sliders.py:230
+msgid "HCY Luma (Y')"
+msgstr ""
+
+#: ../gui/colorwindow.py:26
+#, fuzzy
+msgid "Colors"
+msgstr "Barva"
+
+#: ../gui/dialogs.py:54 ../gui/layerswindow.py:78
 msgid "Name"
 msgstr "Název"
 
-#: ../gui/dialogs.py:88
+#: ../gui/dialogs.py:89
 msgid "Overwrite brush?"
 msgstr ""
 
-#: ../gui/dialogs.py:97 ../gui/dialogs.py:155
+#: ../gui/dialogs.py:98 ../gui/dialogs.py:156
 msgid "Replace"
 msgstr ""
 
-#: ../gui/dialogs.py:100 ../gui/dialogs.py:158
+#: ../gui/dialogs.py:101 ../gui/dialogs.py:159
 #, fuzzy
 msgid "Rename"
 msgstr "Přejmenovat štětec"
 
-#: ../gui/dialogs.py:103
+#: ../gui/dialogs.py:104
 msgid "Replace all"
 msgstr ""
 
-#: ../gui/dialogs.py:105
+#: ../gui/dialogs.py:106
 #, fuzzy
 msgid "Rename all"
 msgstr "Přejmenovat štětec"
 
-#: ../gui/dialogs.py:120
+#: ../gui/dialogs.py:121
 #, fuzzy
 msgid "Imported brush"
 msgstr "Importovat sadu štětců..."
 
-#: ../gui/dialogs.py:121
+#: ../gui/dialogs.py:122
 msgid "Existing brush"
 msgstr ""
 
-#: ../gui/dialogs.py:123
+#: ../gui/dialogs.py:124
 #, python-format
 msgid ""
 "<b>A brush named `%s' already exists.</b>\n"
 "Do you want to replace it, or should the new brush be renamed?"
 msgstr ""
 
-#: ../gui/dialogs.py:146
+#: ../gui/dialogs.py:147
 msgid "Overwrite brush group?"
 msgstr ""
 
-#: ../gui/dialogs.py:168
-#, python-format
+#: ../gui/dialogs.py:169
 msgid ""
-"<b>A group named `%s' already exists.</b>\n"
+"<b>A group named `{groupname}' already exists.</b>\n"
 "Do you want to replace it, or should the new group be renamed?\n"
-"If you replace it, the brushes may be moved to a group called `%s'."
+"If you replace it, the brushes may be moved to a group called `"
+"{deleted_groupname}'."
 msgstr ""
 
-#: ../gui/dialogs.py:256
+#: ../gui/dialogs.py:257
 #, fuzzy
 msgid "Import brush package?"
 msgstr "Importovat sadu štětců..."
 
-#: ../gui/dialogs.py:268
+#: ../gui/dialogs.py:269
 #, python-format
 msgid "<b>Do you really want to import package `%s'?</b>"
 msgstr ""
 
-#: ../gui/dialogs.py:284
-#, fuzzy
-msgid "Color details"
-msgstr "hodnota barvy"
-
 #. Quick brush changer
-#: ../gui/dialogs.py:381 ../gui/toolbar.py:399
+#: ../gui/dialogs.py:359 ../gui/toolbar.py:355
 #, fuzzy
 msgid "Change Brush"
 msgstr "Změnit barvu"
 
-#: ../gui/document.py:77
-msgid "Brighter"
-msgstr "Světlejší"
-
-#: ../gui/document.py:78
-msgid "Smaller"
-msgstr "Menší"
-
-#: ../gui/document.py:79
-msgid "More Opaque"
-msgstr "Více neprůhledné"
-
-#: ../gui/document.py:80
-msgid "Less Opaque"
-msgstr "Méně neprůhledné"
-
-#: ../gui/document.py:81 ../gui/preferenceswindow.py:36
-msgid "Pick Context (layer, brush and color)"
-msgstr "Menu pro výběr (vrstva, štětec a barva)"
-
-#: ../gui/document.py:83
-msgid "Darker"
-msgstr "Tmavší"
-
-#: ../gui/document.py:84
-#, fuzzy
-msgid "Change Color Hue (counter-clockwise)"
-msgstr "Otočit proti směru hodinových ručiček"
-
-#: ../gui/document.py:85
-#, fuzzy
-msgid "Change Color Hue (clockwise)"
-msgstr "změnit hodnotu barvy (HSV)"
-
-#: ../gui/document.py:86
-msgid "Purer"
-msgstr ""
-
-#: ../gui/document.py:87
-#, fuzzy
-msgid "Grayer"
-msgstr "Vrstvy"
-
-#: ../gui/document.py:88
-msgid "Bigger"
-msgstr "Větší"
-
-#. Context actions are also added in init_context_actions
-#: ../gui/document.py:91
-msgid "Save to Most Recently Restored"
-msgstr "Uložit nejvíce obnovovaný"
-
-#: ../gui/document.py:94
-msgid "Copy to Clipboard"
-msgstr "Kopírovat do schránky"
-
-#: ../gui/document.py:95
-msgid "Paste Clipboard (Replace Layer)"
-msgstr "Vložit ze schránky (Nahradit vrstvu)"
-
-#: ../gui/document.py:96 ../gui/preferenceswindow.py:37
-msgid "Select Layer at Cursor"
-msgstr "Vybrat vrstvu pod kurzorem"
-
-#: ../gui/document.py:97
-msgid "Next (above current)"
-msgstr "Další (nad současnoou)"
-
-#: ../gui/document.py:98
-msgid "Next (below current)"
-msgstr "Další (pod současnou)"
-
-#: ../gui/document.py:99
-msgid "New (above current)"
-msgstr "Nová (nad současnou)"
-
-#: ../gui/document.py:100
-msgid "New (below current)"
-msgstr "Nová (pod současnou)"
-
-#. XXX need a batter one, but stay consistent with layerswindow for now
-#: ../gui/document.py:102 ../gui/layerswindow.py:115
-msgid "Merge Down"
-msgstr "Sloučit dolů"
-
-#: ../gui/document.py:103
-msgid "Remove"
-msgstr "Odstranit"
-
-#: ../gui/document.py:104
-msgid "Increase Layer Opacity"
-msgstr "Zvýšit neprůsvitnost vrstvy"
-
-#: ../gui/document.py:105
-msgid "Decrease Layer Opacity"
-msgstr "Snížit neprůsvitnost vrstvy"
-
-#: ../gui/document.py:107
-msgid "Shortcuts"
-msgstr "Klávesové zkratky"
-
-#: ../gui/document.py:109
-msgid "Reset and Center"
-msgstr ""
-
-#: ../gui/document.py:110
-msgid "Reset Zoom, Rotation and Mirroring, and recenter the document"
-msgstr ""
-
-#: ../gui/document.py:112
-msgid "Fit"
-msgstr ""
-
-#: ../gui/document.py:113
-msgid "Reset"
-msgstr ""
-
-#: ../gui/document.py:114 ../gui/preferenceswindow.py:39
-#, fuzzy
-msgid "Zoom"
-msgstr "Přiblížit"
-
-#: ../gui/document.py:115
-msgid "Rotation"
-msgstr ""
-
-#: ../gui/document.py:116
-#, fuzzy
-msgid "Mirror"
-msgstr "Zrcadlový obraz"
-
-#: ../gui/document.py:117
-#, fuzzy
-msgid "Zoom In"
-msgstr "Přiblížit"
-
-#: ../gui/document.py:118
-msgid "Increase magnification"
-msgstr ""
-
-#: ../gui/document.py:119
-msgid "Zoom Out"
-msgstr "Oddálit"
-
-#: ../gui/document.py:120
-msgid "Decrease magnification"
-msgstr ""
-
-#: ../gui/document.py:122
-msgid "Rotate the view left"
-msgstr ""
-
-#: ../gui/document.py:125
-msgid "Rotate the view right"
-msgstr ""
-
-#: ../gui/document.py:128
-msgid "Mirror: flip the view left to right"
-msgstr ""
-
-#: ../gui/document.py:131
-msgid "Flip the view upside-down"
-msgstr ""
-
-#: ../gui/document.py:133
-msgid "Layer Solo"
-msgstr "Vrstva samostatně"
-
-#. TODO: make toggle action
-#: ../gui/document.py:134
-msgid "Hide Layers Above Current"
-msgstr "Skrýt vrstvy nad současnou"
-
-#. name, [stock-id, [label, [accel, [tooltip, [cb, [is-active]]]]]]
-#: ../gui/document.py:149
-#, fuzzy
-msgid "Print Brush Input Values to Console"
-msgstr "Tisknout vstupní hodnoty štětců do stdout"
-
-#: ../gui/document.py:150
-msgid "Visualize Rendering"
-msgstr "Překreslovat podkladní vrstvu"
-
-#: ../gui/document.py:151
-msgid "Disable GTK Double Buffering"
-msgstr "Zakázat dvojnásobné přetečení GTK"
-
-#: ../gui/document.py:152
-msgid "Symmetry: duplicate strokes mirrored horizontally"
-msgstr ""
-
-#: ../gui/document.py:160
+#: ../gui/document.py:240
 #, python-format
 msgid "Restore Brush %d"
 msgstr "Obnovit štětec %d"
 
-#: ../gui/document.py:162
+#: ../gui/document.py:242
 #, python-format
 msgid "Save to Brush %d"
 msgstr "Uložit mezi štětce %d"
 
-#: ../gui/document.py:686
+#: ../gui/document.py:482
+#, python-format
+msgid "Copy of %s"
+msgstr ""
+
+#: ../gui/document.py:485
+#, python-format
+msgid "Copy of Untitled layer #%d"
+msgstr ""
+
+#: ../gui/document.py:492
+#, fuzzy
+msgid "Layer Name"
+msgstr "Vrstvy"
+
+#: ../gui/document.py:837
 #, fuzzy, python-format
 msgid "Undo %s"
 msgstr "Zpět"
 
-#: ../gui/document.py:688
-msgid "Undo: nothing to undo"
-msgstr ""
+#: ../gui/document.py:839
+msgid "Undo"
+msgstr "Zpět"
 
-#: ../gui/document.py:695
+#: ../gui/document.py:846
 #, fuzzy, python-format
 msgid "Redo %s"
 msgstr "Odvolat zpět"
 
-#: ../gui/document.py:697
-msgid "Redo: nothing to redo"
-msgstr ""
+#: ../gui/document.py:848
+msgid "Redo"
+msgstr "Odvolat zpět"
 
-#. name, stock id, label, accelerator, tooltip, callback
-#: ../gui/drawwindow.py:242
-msgid "File"
-msgstr "Soubor"
-
-#. FIXME: should do this periodically, not only on quit
-#: ../gui/drawwindow.py:243 ../gui/drawwindow.py:977
-msgid "Quit"
-msgstr "Konec"
-
-#: ../gui/drawwindow.py:244
+#: ../gui/drawwindow.py:474
 #, fuzzy
-msgid "Toggle Document Frame"
-msgstr "Přepnout editovací mód"
-
-#: ../gui/drawwindow.py:249 ../gui/preferenceswindow.py:35
-msgid "Pick Color"
+msgid "Set current color"
 msgstr "Vybrat barvu"
 
-#: ../gui/drawwindow.py:250 ../gui/preferenceswindow.py:47
-msgid "Color History"
-msgstr "Historie barev"
-
-#: ../gui/drawwindow.py:251
-#, fuzzy
-msgid "Color Changer (crossed bowl)"
-msgstr "Měnič barev"
-
-#: ../gui/drawwindow.py:252
-#, fuzzy
-msgid "Color Changer (washed)"
-msgstr "Měnič barev"
-
-#: ../gui/drawwindow.py:253 ../gui/preferenceswindow.py:46
-msgid "Color Ring"
-msgstr "Barevný prstenec"
-
-#: ../gui/drawwindow.py:254
-#, fuzzy
-msgid "Color Details"
-msgstr "Detaily"
-
-#: ../gui/drawwindow.py:256
-msgid "Brushkeys"
-msgstr "Klávesa pro štětec"
-
-#: ../gui/drawwindow.py:257
-msgid "Help!"
-msgstr "Nápověda!"
-
-#: ../gui/drawwindow.py:259 ../gui/stock.py:54
-msgid "Layers"
-msgstr "Vrstvy"
-
-#. Scratchpad menu items
-#: ../gui/drawwindow.py:262 ../gui/scratchwindow.py:28 ../gui/stock.py:53
-msgid "Scratchpad"
-msgstr ""
-
-#: ../gui/drawwindow.py:263 ../gui/scratchwindow.py:47
-msgid "New Scratchpad"
-msgstr ""
-
-#: ../gui/drawwindow.py:264
-msgid "Load Scratchpad..."
-msgstr ""
-
-#: ../gui/drawwindow.py:265
-#, fuzzy
-msgid "Save Scratchpad Now"
-msgstr "Uložit jako část"
-
-#: ../gui/drawwindow.py:266
-#, fuzzy
-msgid "Save Scratchpad As..."
-msgstr "Uložit jako..."
-
-#: ../gui/drawwindow.py:267 ../gui/scratchwindow.py:45
-msgid "Revert Scratchpad"
-msgstr ""
-
-#: ../gui/drawwindow.py:268
-#, fuzzy
-msgid "Save Scratchpad as Default"
-msgstr "uložit jako výchozí"
-
-#: ../gui/drawwindow.py:269
-msgid "Clear the Default Scratchpad"
-msgstr ""
-
-#: ../gui/drawwindow.py:270
-msgid "Render a Palette"
-msgstr ""
-
-#: ../gui/drawwindow.py:271
-#, fuzzy
-msgid "Load Palette File..."
-msgstr "Uložit paletu jako..."
-
-#: ../gui/drawwindow.py:272
-msgid "Different Saturations of the current Color"
-msgstr ""
-
-#: ../gui/drawwindow.py:273
-msgid "Copy Background to Scratchpad"
-msgstr ""
-
-#: ../gui/drawwindow.py:275
-msgid "Brush"
-msgstr "Štětec"
-
-#: ../gui/drawwindow.py:276
-#, fuzzy
-msgid "Change Brush..."
-msgstr "Změnit barvu"
-
-#: ../gui/drawwindow.py:277
-msgid "Download more brushes (in web browser)"
-msgstr ""
-
-#: ../gui/drawwindow.py:280 ../gui/drawwindow.py:297
-msgid "Help"
-msgstr "Nápověda"
-
-#: ../gui/drawwindow.py:281
-msgid "Where is the Documentation?"
-msgstr "Kde je dokumentace?"
-
-#: ../gui/drawwindow.py:282
-msgid "Change the Keyboard Shortcuts?"
-msgstr "Změnit klávesové zkratky?"
-
-#: ../gui/drawwindow.py:283
-msgid "About MyPaint"
-msgstr "O MyPaintu"
-
-#: ../gui/drawwindow.py:285
-msgid "Debug"
-msgstr "Ladit"
-
-#: ../gui/drawwindow.py:286
-msgid "Print Memory Leak Info to Console (Slow!)"
-msgstr ""
-
-#: ../gui/drawwindow.py:287
-msgid "Run Garbage Collector Now"
-msgstr ""
-
-#: ../gui/drawwindow.py:288
-msgid "Start/Stop Python Profiling (cProfile)"
-msgstr ""
-
-#: ../gui/drawwindow.py:289
-#, fuzzy
-msgid "GTK input device dialog"
-msgstr "Mód pro vstupní zařízení: "
-
-#: ../gui/drawwindow.py:292 ../gui/preferenceswindow.py:226
-#: ../gui/toolbar.py:35
-msgid "View"
-msgstr "Pohled"
-
-#: ../gui/drawwindow.py:293
-msgid "Toolbars"
-msgstr ""
-
-#: ../gui/drawwindow.py:294
-msgid "Feedback"
-msgstr ""
-
-#: ../gui/drawwindow.py:295
-#, fuzzy
-msgid "Popup Menu"
-msgstr "Ukázat Nabídku"
-
-#: ../gui/drawwindow.py:307 ../gui/preferenceswindow.py:71
-msgid "Preferences"
-msgstr ""
-
-#: ../gui/drawwindow.py:309
-#, fuzzy
-msgid "Test input devices"
-msgstr "Mód pro vstupní zařízení: "
-
-#: ../gui/drawwindow.py:311
-#, fuzzy
-msgid "Document Frame..."
-msgstr "přejmenovat..."
-
-#: ../gui/drawwindow.py:313
-#, fuzzy
-msgid "Toggle the Layers list"
-msgstr "Přepínač vrstvy jako masky"
-
-#: ../gui/drawwindow.py:319
-msgid "Edit and reorganise Brush Lists"
-msgstr ""
-
-#: ../gui/drawwindow.py:323
-#, fuzzy
-msgid "Change Brush Settings in detail"
-msgstr "Změnit hodnotu/sytost"
-
-#: ../gui/drawwindow.py:326
-#, fuzzy
-msgid "Toggle the Colour Triangle"
-msgstr "Barevný trojúhelník..."
-
-#: ../gui/drawwindow.py:329
-msgid "Toggle the advanced Colour Sampler"
-msgstr ""
-
-#: ../gui/drawwindow.py:332
-msgid "Toggle the scratchpad"
-msgstr ""
-
-#: ../gui/drawwindow.py:355 ../gui/toolbar.py:36
-msgid "Subwindows"
-msgstr ""
-
-#: ../gui/drawwindow.py:356
-msgid "Show subwindows"
-msgstr ""
-
-#: ../gui/drawwindow.py:358
-msgid "Zoom Level"
-msgstr ""
-
-#: ../gui/drawwindow.py:359
-msgid "Reveal the scale % when zooming in or out"
-msgstr ""
-
-#: ../gui/drawwindow.py:362
-msgid "Last Painting Position"
-msgstr ""
-
-#: ../gui/drawwindow.py:363
-msgid "Reveal the last painting pos when a stroke ends"
-msgstr ""
-
-#: ../gui/drawwindow.py:371
-msgid "Menubar only"
-msgstr ""
-
-#: ../gui/drawwindow.py:372
-msgid "Show menu bar"
-msgstr ""
-
-#: ../gui/drawwindow.py:374
-msgid "Toolbar only"
-msgstr ""
-
-#: ../gui/drawwindow.py:375
-msgid "Show toolbar"
-msgstr ""
-
-#: ../gui/drawwindow.py:377
-msgid "Both"
-msgstr ""
-
-#: ../gui/drawwindow.py:378
-msgid "Show both the menu bar and the toolbar"
-msgstr ""
-
-#: ../gui/drawwindow.py:847
+#: ../gui/drawwindow.py:634
 #, fuzzy
 msgid "Leave Fullscreen Mode"
 msgstr "Celá obrazovka"
 
-#: ../gui/drawwindow.py:848
+#: ../gui/drawwindow.py:635
 #, fuzzy
 msgid "UnFullscreen"
 msgstr "Celá obrazovka"
 
-#: ../gui/drawwindow.py:851
+#: ../gui/drawwindow.py:638
 #, fuzzy
 msgid "Enter Fullscreen Mode"
 msgstr "Celá obrazovka"
 
-#: ../gui/drawwindow.py:852
+#: ../gui/drawwindow.py:639
 msgid "Fullscreen"
 msgstr "Celá obrazovka"
 
-#: ../gui/drawwindow.py:940
+#: ../gui/drawwindow.py:727
 #, fuzzy
 msgid "Gimp Palette Format"
 msgstr "Gimp palety (*.gpl)"
 
-#: ../gui/drawwindow.py:941
+#: ../gui/drawwindow.py:728
 #, fuzzy
 msgid "All Files"
 msgstr "Soubor"
 
-#: ../gui/drawwindow.py:977
+#. FIXME: should do this periodically, not only on quit
+#: ../gui/drawwindow.py:781
+msgid "Quit"
+msgstr "Konec"
+
+#: ../gui/drawwindow.py:781
 msgid "Really Quit?"
 msgstr "Opravdu ukončit?"
 
-#: ../gui/drawwindow.py:1005
+#: ../gui/drawwindow.py:808
+msgid "Import brush package..."
+msgstr "Importovat sadu štětců..."
+
+#: ../gui/drawwindow.py:820
 #, fuzzy
 msgid ""
 "Copyright (C) 2005-2012\n"
@@ -1057,7 +948,7 @@ msgstr ""
 "Copyright (C) 2005-2009\n"
 "Martin Renold a Mypaint Development team"
 
-#: ../gui/drawwindow.py:1009
+#: ../gui/drawwindow.py:824
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -1076,85 +967,67 @@ msgstr ""
 "Prohlédněte si soubor COPYING pro více podrobností."
 
 #. (in order of appearance)
-#: ../gui/drawwindow.py:1020 ../gui/drawwindow.py:1022
-#: ../gui/drawwindow.py:1023 ../gui/drawwindow.py:1024
-#: ../gui/drawwindow.py:1025 ../gui/drawwindow.py:1027
-#: ../gui/drawwindow.py:1028 ../gui/drawwindow.py:1029
-#: ../gui/drawwindow.py:1030 ../gui/drawwindow.py:1031
-#: ../gui/drawwindow.py:1032 ../gui/drawwindow.py:1033
-#: ../gui/drawwindow.py:1034 ../gui/drawwindow.py:1035
-#: ../gui/drawwindow.py:1036 ../gui/drawwindow.py:1037
-#: ../gui/drawwindow.py:1038
+#: ../gui/drawwindow.py:835 ../gui/drawwindow.py:837 ../gui/drawwindow.py:838
+#: ../gui/drawwindow.py:839 ../gui/drawwindow.py:840 ../gui/drawwindow.py:842
+#: ../gui/drawwindow.py:843 ../gui/drawwindow.py:844 ../gui/drawwindow.py:845
+#: ../gui/drawwindow.py:846 ../gui/drawwindow.py:847 ../gui/drawwindow.py:848
+#: ../gui/drawwindow.py:849 ../gui/drawwindow.py:850 ../gui/drawwindow.py:851
+#: ../gui/drawwindow.py:852 ../gui/drawwindow.py:853
 msgid "programming"
 msgstr "programování"
 
-#: ../gui/drawwindow.py:1021 ../gui/drawwindow.py:1026
+#: ../gui/drawwindow.py:836 ../gui/drawwindow.py:841
 msgid "portability"
 msgstr "přenositelnost"
 
-#: ../gui/drawwindow.py:1041 ../gui/drawwindow.py:1042
-#: ../gui/drawwindow.py:1046 ../gui/drawwindow.py:1049
+#: ../gui/drawwindow.py:856 ../gui/drawwindow.py:857 ../gui/drawwindow.py:861
+#: ../gui/drawwindow.py:864
 msgid "brushes"
 msgstr "štětce"
 
-#: ../gui/drawwindow.py:1043
+#: ../gui/drawwindow.py:858
 msgid "patterns, brushes"
 msgstr "vzory, štětce"
 
-#: ../gui/drawwindow.py:1044
+#: ../gui/drawwindow.py:859
 #, fuzzy
 msgid "brushes, tool icons"
 msgstr "ikona plochy"
 
-#: ../gui/drawwindow.py:1045
+#: ../gui/drawwindow.py:860
 #, fuzzy
 msgid "brushes, patterns"
 msgstr "štětce, programování"
 
-#: ../gui/drawwindow.py:1047
+#: ../gui/drawwindow.py:862
 msgid "desktop icon"
 msgstr "ikona plochy"
 
-#: ../gui/drawwindow.py:1048 ../gui/drawwindow.py:1050
+#: ../gui/drawwindow.py:863 ../gui/drawwindow.py:865
 #, fuzzy
 msgid "patterns"
 msgstr "Vzor"
 
-#: ../gui/drawwindow.py:1051 ../gui/drawwindow.py:1052
+#: ../gui/drawwindow.py:866 ../gui/drawwindow.py:867
 #, fuzzy
 msgid "tool icons"
 msgstr "ikona plochy"
 
-#: ../gui/drawwindow.py:1086
+#: ../gui/drawwindow.py:869
+msgid "translator-credits"
+msgstr ""
+
+#: ../gui/drawwindow.py:877
 msgid "Move your mouse over a menu entry, then press the key to assign."
 msgstr "Posuňte myš na položku menu a pak stiskněte klávesu pro přiřazení."
 
-#: ../gui/drawwindow.py:1088
-msgid ""
-"You can also drag the canvas with the mouse while holding the middle mouse "
-"button or spacebar. Or with the arrow keys.\n"
-"\n"
-"In contrast to earlier versions, scrolling and zooming are harmless now and "
-"will not make you run out of memory. But you still require a lot of memory "
-"if you paint all over while fully zoomed out."
-msgstr ""
-"Plátnem můžete pohybovat pomocí myše, jakmile držíte prostřední tlačítko "
-"myši nebo mezerník. Nebo šipkami.\n"
-"\n"
-"Oproti předchozím verzím, rolování a zvětšování jsou nyní neškodné a "
-"nezatěžují paměť. Stále je však vyžadováno mnoho paměti, kreslíte-li při "
-"plném oddálení po celé ploše."
-
-#: ../gui/drawwindow.py:1095
+#: ../gui/drawwindow.py:879
 #, fuzzy
 msgid ""
-"Brushkeys are used to quickly save/restore brush settings using keyboard "
-"shortcuts. You can paint with one hand and change brushes with the other "
-"without interruption.\n"
+"Brush shortcut keys are used to quickly save/restore brush settings. You can "
+"paint with one hand and change brushes with the other, even in mid-stroke.\n"
 "\n"
-"There are 10 memory slots to hold brush settings.\n"
-"They are anonymous brushes, which are not visible in the brush selector "
-"list. But they are remembered even if you quit."
+"There are 10 persistent memory slots available."
 msgstr ""
 "Toto se používá pro rychlé uložení/nahrání nastavení štětců použitím "
 "klávesové zkratky. Jednou rukou můžete kreslit a druhou měnit štětce bez "
@@ -1165,7 +1038,7 @@ msgstr ""
 "stále, i když skončíte. Také si pamatují vybranou barvu. Na rozdíl od "
 "normálních štětců nikdy nezmění barvu. "
 
-#: ../gui/drawwindow.py:1104
+#: ../gui/drawwindow.py:885
 msgid ""
 "There is a tutorial available on the MyPaint homepage. It explains some "
 "features which are hard to discover yourself.\n"
@@ -1180,219 +1053,191 @@ msgstr ""
 "Poznámky k nastavení štětců (krytí, tvrdost atd.) a vstupy (tlak, rychlost "
 "atd.) jsou přístupné jako tooltipy. Přesuňte myš na náhled a uvidíte je.\n"
 
-#: ../gui/filehandling.py:57
-msgid "New"
-msgstr "Nový"
-
-#: ../gui/filehandling.py:57
-msgid "Start with a new blank canvas"
-msgstr ""
-
-#: ../gui/filehandling.py:58 ../gui/filehandling.py:342
-#: ../gui/filehandling.py:359
-msgid "Open..."
-msgstr "Otevřít..."
-
-#: ../gui/filehandling.py:58
-msgid "Open a file, replacing the current painting"
-msgstr ""
-
 #: ../gui/filehandling.py:59
-msgid "Open Last"
-msgstr "Otevřít poslední"
-
-#: ../gui/filehandling.py:59
-msgid "Open the last file you saved"
-msgstr ""
-
-#: ../gui/filehandling.py:60
-msgid "Reload"
-msgstr "Obnovit"
-
-#: ../gui/filehandling.py:60
-#, fuzzy
-msgid "Reload the current file"
-msgstr "Naposledy otevřené"
-
-#: ../gui/filehandling.py:61
-#, fuzzy
-msgid "Save to a file"
-msgstr "uložit jako výchozí"
-
-#: ../gui/filehandling.py:62
-msgid "Save As..."
-msgstr "Uložit jako..."
-
-#: ../gui/filehandling.py:62
-msgid "Save to a file with a new name"
-msgstr ""
-
-#: ../gui/filehandling.py:63
-#, fuzzy
-msgid "Export..."
-msgstr "Hlášení..."
-
-#: ../gui/filehandling.py:63
-#, fuzzy
-msgid "Export to a file"
-msgstr "Exportovat paletu..."
-
-#: ../gui/filehandling.py:64
-msgid "Save As Scrap"
-msgstr "Uložit jako část"
-
-#: ../gui/filehandling.py:65
-msgid ""
-"Saves to a new scrap file. If this drawing is currently saved as a scrap, "
-"this will write a new revision of it."
-msgstr ""
-
-#: ../gui/filehandling.py:69
-msgid "Open Previous Scrap"
-msgstr "Otevřít předchozí část"
-
-#: ../gui/filehandling.py:69
-msgid "Load the previous scrap file, replacing the current drawing"
-msgstr ""
-
-#: ../gui/filehandling.py:70
-msgid "Open Next Scrap"
-msgstr "Otevřít další část"
-
-#: ../gui/filehandling.py:70
-msgid "Load the next scrap file, replacing the current drawing"
-msgstr ""
-
-#: ../gui/filehandling.py:76
 msgid "Open Recent"
 msgstr "Naposledy otevřené"
 
-#: ../gui/filehandling.py:76
+#: ../gui/filehandling.py:59
 msgid "Open Recent files"
 msgstr "Naposledy otevřené"
 
 #. (name, patterns)
-#: ../gui/filehandling.py:97
+#: ../gui/filehandling.py:80
 msgid "All Recognized Formats"
 msgstr "Všechny známé formáty"
 
 #. 0
-#: ../gui/filehandling.py:98 ../gui/filehandling.py:104
+#: ../gui/filehandling.py:81 ../gui/filehandling.py:87
 msgid "OpenRaster (*.ora)"
 msgstr "OpenRaster (*.ora)"
 
-#: ../gui/filehandling.py:99
+#: ../gui/filehandling.py:82
 msgid "PNG (*.png)"
 msgstr "PNG (*.png)"
 
-#: ../gui/filehandling.py:100
+#: ../gui/filehandling.py:83
 msgid "JPEG (*.jpg; *.jpeg)"
 msgstr "JPEG (*.jpg; *.jpeg)"
 
 #. (name, extension, options)
-#: ../gui/filehandling.py:103
+#: ../gui/filehandling.py:86
 msgid "By extension (prefer default format)"
 msgstr ""
 
 #. 1
-#: ../gui/filehandling.py:105
+#: ../gui/filehandling.py:88
 msgid "PNG solid with background (*.png)"
 msgstr "PNG plný s pozadím (*.png)"
 
 #. 2
-#: ../gui/filehandling.py:106
+#: ../gui/filehandling.py:89
 msgid "PNG transparent (*.png)"
 msgstr "PNG průhledný (*.png)"
 
 #. 3
-#: ../gui/filehandling.py:107
+#: ../gui/filehandling.py:90
 msgid "Multiple PNG transparent (*.XXX.png)"
 msgstr "Složený PNG průhledný (*.XXX.png)"
 
 #. 4
-#: ../gui/filehandling.py:108
+#: ../gui/filehandling.py:91
 msgid "JPEG 90% quality (*.jpg; *.jpeg)"
 msgstr "JPEG 90% kvalita (*.jpg; *.jpeg)"
 
-#: ../gui/filehandling.py:149
+#: ../gui/filehandling.py:132
 #, fuzzy
 msgid "Save..."
 msgstr "Uložit.."
 
-#: ../gui/filehandling.py:160
+#: ../gui/filehandling.py:143
 #, fuzzy
 msgid "Format to save as:"
 msgstr "Není možné uložit: %s"
 
-#: ../gui/filehandling.py:186
+#: ../gui/filehandling.py:169
 msgid "Confirm"
 msgstr ""
 
-#: ../gui/filehandling.py:186
+#: ../gui/filehandling.py:169
 #, fuzzy
 msgid "Really continue?"
 msgstr "Opravdu ukončit?"
 
-#: ../gui/filehandling.py:195
+#: ../gui/filehandling.py:178
 #, fuzzy, python-format
 msgid "This will discard %d minute of unsaved painting."
 msgid_plural "This will discard %d minutes of unsaved painting."
 msgstr[0] "Toto zruší %d minuta neuložených kreseb."
 msgstr[1] "Toto zruší %d minut neuložených kreseb."
 
-#: ../gui/filehandling.py:200
+#: ../gui/filehandling.py:183
 #, fuzzy, python-format
 msgid "This will discard %d second of unsaved painting."
 msgid_plural "This will discard %d seconds of unsaved painting."
 msgstr[0] "Toto zruší %d vteřina neuložených kreseb."
 msgstr[1] "Toto zruší %d vteřin neuložených kreseb."
 
-#: ../gui/filehandling.py:208
+#: ../gui/filehandling.py:191
 msgid "_Save as Scrap"
 msgstr "_Uložit další část"
 
-#: ../gui/filehandling.py:391
+#: ../gui/filehandling.py:326 ../gui/filehandling.py:343
+msgid "Open..."
+msgstr "Otevřít..."
+
+#: ../gui/filehandling.py:375
 #, fuzzy
 msgid "Open Scratchpad..."
 msgstr "Otevřít další část"
 
-#: ../gui/filehandling.py:696
+#: ../gui/filehandling.py:680
 #, python-format
 msgid "There are no scrap files named \"%s\" yet."
 msgstr "Neexistuje žádný soubor s částí nazvaný \"%s\"."
 
-#: ../gui/framewindow.py:29
-msgid "Height"
+#. unit :  (conversion_factor, upper, lower, step_incr, page_incr, digits)
+#: ../gui/framewindow.py:268 ../gui/framewindow.py:280
+#: ../gui/framewindow.py:322 ../gui/framewindow.py:468
+#: ../gui/framewindow.py:479 ../gui/framewindow.py:480
+#: ../gui/framewindow.py:525 ../gui/framewindow.py:530
+msgid "px"
 msgstr ""
 
-#: ../gui/framewindow.py:30
-msgid "Width"
+#: ../gui/framewindow.py:281
+msgid "Height:"
 msgstr ""
 
-#: ../gui/framewindow.py:41
-msgid "Crop to active layer bounds"
+#: ../gui/framewindow.py:283
+msgid "Width:"
 msgstr ""
 
-#: ../gui/framewindow.py:42
-msgid "Crop to document bounds"
+#: ../gui/framewindow.py:285
+msgid "Resolution:"
 msgstr ""
 
-#: ../gui/framewindow.py:46
-msgid "Hold Ctrl-Shift-Space to move the frame."
+#: ../gui/framewindow.py:287
+#, fuzzy
+msgid "Color:"
+msgstr "Barva"
+
+#: ../gui/framewindow.py:307
+#, fuzzy
+msgid "Frame Color"
+msgstr "změnit odstín barvy"
+
+#: ../gui/framewindow.py:356
+#, fuzzy
+msgid "Crop to Current Layer"
+msgstr "Vrstvy"
+
+#: ../gui/framewindow.py:357
+msgid "Crop frame to the currently active layer"
 msgstr ""
 
-#: ../gui/framewindow.py:48
+#: ../gui/framewindow.py:359
+msgid "Crop to Document"
+msgstr ""
+
+#: ../gui/framewindow.py:360
+msgid "Crop frame to the combination of all layers"
+msgstr ""
+
+#: ../gui/framewindow.py:367
+msgid ""
+"While the frame is enabled, it \n"
+"can be adjusted on the canvas"
+msgstr ""
+
+#: ../gui/framewindow.py:374
 msgid "Enabled"
+msgstr ""
+
+#: ../gui/framewindow.py:469
+msgid "inch"
+msgstr ""
+
+#: ../gui/framewindow.py:470
+msgid "cm"
+msgstr ""
+
+#: ../gui/framewindow.py:471
+msgid "mm"
 msgstr ""
 
 #: ../gui/functionwindow.py:37
 msgid "Base Value"
 msgstr "Základní hodnota"
 
+#: ../gui/functionwindow.py:159
+msgid "Details"
+msgstr "Detaily"
+
 #: ../gui/gtkexcepthook.py:127
 msgid "Bug Detected"
 msgstr "Zjišťování chyb"
 
+#. if gtk.check_version (2, 4, 0) is not None:
+#. dialog.set_has_separator (False)
 #: ../gui/gtkexcepthook.py:131
 msgid "<big><b>A programming error has been detected.</b></big>"
 msgstr "<big><b>Byla zjištěna programová chyba.</b></big>"
@@ -1405,11 +1250,11 @@ msgstr ""
 "Pravděpodobně se nejedná o závažnou chybu, ale podrobnosti by měly být "
 "nahlášeny bezprodleně vývojářům."
 
-#: ../gui/gtkexcepthook.py:155
+#: ../gui/gtkexcepthook.py:156
 msgid "Details..."
 msgstr "Detaily..."
 
-#: ../gui/gtkexcepthook.py:176 ../gui/gtkexcepthook.py:179
+#: ../gui/gtkexcepthook.py:177 ../gui/gtkexcepthook.py:180
 msgid "Exception while analyzing the exception."
 msgstr ""
 
@@ -1444,338 +1289,233 @@ msgstr "(bezejména)"
 msgid "Device:"
 msgstr ""
 
-#: ../gui/layerswindow.py:50
+#: ../gui/layerswindow.py:41
+msgid "Layers"
+msgstr "Vrstvy"
+
+#: ../gui/layerswindow.py:42
+msgid ""
+"<b>{blendingmode_name}</b>\n"
+"{blendingmode_description}"
+msgstr ""
+
+#: ../gui/layerswindow.py:66
 msgid "Visible"
 msgstr ""
 
-#: ../gui/layerswindow.py:56
+#: ../gui/layerswindow.py:72
 msgid "Locked"
 msgstr ""
 
-#: ../gui/layerswindow.py:72
+#: ../gui/layerswindow.py:90
 msgid "Mode:"
 msgstr ""
 
-#: ../gui/layerswindow.py:83
+#: ../gui/layerswindow.py:92
+msgid ""
+"Blending mode: how the current layer combines with the layers underneath it."
+msgstr ""
+
+#: ../gui/layerswindow.py:105
 msgid "Opacity:"
 msgstr "Krytí:"
 
-#: ../gui/layerswindow.py:101 ../lib/command.py:269
-#, fuzzy
-msgid "Duplicate Layer"
-msgstr "Vložit vrstvu"
-
-#: ../gui/layerswindow.py:280
-#, python-format
-msgid "Copy of %s"
+#: ../gui/layerswindow.py:107
+msgid ""
+"Layer opacity: how much of the current layer to use. Smaller values make it "
+"more transparent."
 msgstr ""
 
-#: ../gui/layerswindow.py:283
+#: ../gui/layerswindow.py:212
 #, python-format
-msgid "Copy of Untitled layer #%d"
+msgid "Layer opacity: %d%%"
 msgstr ""
 
-#: ../gui/layerswindow.py:326
+#: ../gui/layerswindow.py:302
 #, python-format
 msgid "Untitled layer #%d"
 msgstr ""
 
-#: ../gui/layout.py:591
+#: ../gui/layout.py:628
 msgid "Collapse"
 msgstr ""
 
-#: ../gui/layout.py:592
+#: ../gui/layout.py:629
 msgid "Expand"
 msgstr ""
 
-#: ../gui/layout.py:666
+#: ../gui/layout.py:703
 msgid "Snap out"
 msgstr ""
 
-#: ../gui/layout.py:668
+#: ../gui/layout.py:705
 msgid "Close"
 msgstr ""
 
-#: ../gui/linemode.py:19
+#: ../gui/linemode.py:21
 #, fuzzy
 msgid "Entrance Pressure"
 msgstr "Přítlak"
 
-#: ../gui/linemode.py:19
+#: ../gui/linemode.py:21
 msgid "Stroke entrance pressure for line tools"
 msgstr ""
 
-#: ../gui/linemode.py:20
+#: ../gui/linemode.py:22
 #, fuzzy
 msgid "Midpoint Pressure"
 msgstr "Přítlak"
 
-#: ../gui/linemode.py:20
+#: ../gui/linemode.py:22
 msgid "Mid-Stroke pressure for line tools"
 msgstr ""
 
-#: ../gui/linemode.py:21
+#: ../gui/linemode.py:23
 #, fuzzy
 msgid "Exit Pressure"
 msgstr "Přítlak"
 
-#: ../gui/linemode.py:21
+#: ../gui/linemode.py:23
 msgid "Stroke exit pressure for line tools"
 msgstr ""
 
-#: ../gui/linemode.py:22
+#: ../gui/linemode.py:24
 msgid "Head"
 msgstr ""
 
-#: ../gui/linemode.py:22
+#: ../gui/linemode.py:24
 #, fuzzy
 msgid "Stroke lead-in end"
 msgstr "délka trvání tahu"
 
-#: ../gui/linemode.py:23
+#: ../gui/linemode.py:25
 msgid "Tail"
 msgstr ""
 
-#: ../gui/linemode.py:23
+#: ../gui/linemode.py:25
 msgid "Stroke trail-off beginning"
 msgstr ""
 
-#. name, stock id, label,
-#. accel, tooltip,
-#. callback, default state
-#: ../gui/linemode.py:61 ../gui/stock.py:71
-msgid "Freehand"
-msgstr ""
-
-#: ../gui/linemode.py:62
-msgid "Freehand is the default painting mode"
-msgstr ""
-
-#: ../gui/linemode.py:64 ../gui/stock.py:72
-msgid "Straight/Curved Lines"
-msgstr ""
-
-#: ../gui/linemode.py:65
-msgid ""
-"Draw straight or curved lines.\n"
-"Constrain angle by holding the Control key.\n"
-"Add curves to your last line with the Shift key."
-msgstr ""
-
-#: ../gui/linemode.py:69 ../gui/preferenceswindow.py:43 ../gui/stock.py:73
-msgid "Sequence of Lines"
-msgstr ""
-
-#: ../gui/linemode.py:70
-msgid ""
-"Draw a sequence straight or curved lines.\n"
-"Constrain angle by holding the Control key.\n"
-"Add curves to your last line with the Shift key."
-msgstr ""
-
-#: ../gui/linemode.py:74 ../gui/preferenceswindow.py:44 ../gui/stock.py:74
-msgid "Ellipse"
-msgstr ""
-
-#: ../gui/linemode.py:75
-msgid ""
-"Draw circles and ellipes.\n"
-"Constrain shape or roation by holding the Control key.\n"
-"Rotate holding the Shift key."
-msgstr ""
-
-#: ../gui/overlays.py:143
+#: ../gui/overlays.py:147
 #, python-format
 msgid "Zoom: %.01f%%"
 msgstr ""
 
-#: ../gui/preferenceswindow.py:19
+#: ../gui/preferenceswindow.py:23
 msgid "Disabled (no pressure sensitivity)"
 msgstr ""
 
-#: ../gui/preferenceswindow.py:20
+#: ../gui/preferenceswindow.py:24
 msgid "Screen (normal)"
 msgstr ""
 
-#: ../gui/preferenceswindow.py:21
+#: ../gui/preferenceswindow.py:25
 msgid "Window (not recommended)"
 msgstr ""
 
-#. These can be names of actions within ActionGroups defined elsewhere,
-#. or names of actions the handler interprets itself.
-#. NOTE: The translatable strings for actions are duplicated from
-#. their action definition. Please keep in sync (or refactor to get the string from there)
-#. (action_or_whatever, label)
-#: ../gui/preferenceswindow.py:32
-msgid "No action"
-msgstr ""
-
-#. [0] is the default for the comboboxes
-#: ../gui/preferenceswindow.py:33
-#, fuzzy
-msgid "Menu"
-msgstr "Ukázat Nabídku"
-
-#: ../gui/preferenceswindow.py:34
-msgid "Toggle Subwindows"
-msgstr ""
-
-#: ../gui/preferenceswindow.py:38
-#, fuzzy
-msgid "Pan"
-msgstr "Vzor"
-
-#: ../gui/preferenceswindow.py:40
-msgid "Rotate"
-msgstr ""
-
-#: ../gui/preferenceswindow.py:41
-#, fuzzy
-msgid "Move Current Layer"
-msgstr "Vrstvy"
-
-#: ../gui/preferenceswindow.py:42
-msgid "Straight Line"
-msgstr ""
-
-#: ../gui/preferenceswindow.py:45
-msgid "Color Changer"
-msgstr "Měnič barev"
-
-#: ../gui/preferenceswindow.py:48
-msgid "Undo"
-msgstr "Zpět"
-
-#: ../gui/preferenceswindow.py:49
-msgid "Redo"
-msgstr "Odvolat zpět"
-
-#. Used for creating the menus,
-#. (pref_name, label)
-#: ../gui/preferenceswindow.py:54
-#, fuzzy
-msgid "Button 1 + Shift"
-msgstr "Tlačítko pro historii barev"
-
-#: ../gui/preferenceswindow.py:55
-msgid "Button 1 + Ctrl (or Alt)"
-msgstr ""
-
-#: ../gui/preferenceswindow.py:56
-msgid "Button 2"
-msgstr ""
-
-#: ../gui/preferenceswindow.py:57
-#, fuzzy
-msgid "Button 2 + Shift"
-msgstr "Tlačítko pro historii barev"
-
-#: ../gui/preferenceswindow.py:58
-msgid "Button 2 + Ctrl (or Alt)"
-msgstr ""
-
-#: ../gui/preferenceswindow.py:59
-msgid "Button 3"
-msgstr ""
-
-#: ../gui/preferenceswindow.py:60
-#, fuzzy
-msgid "Button 3 + Shift"
-msgstr "Tlačítko pro historii barev"
-
-#: ../gui/preferenceswindow.py:61
-msgid "Button 3 + Ctrl (or Alt)"
+#: ../gui/preferenceswindow.py:37
+msgid "Preferences"
 msgstr ""
 
 #. TRANSLATORS: Tab label
-#: ../gui/preferenceswindow.py:91
+#: ../gui/preferenceswindow.py:57
 msgid "Pen Input"
 msgstr ""
 
-#: ../gui/preferenceswindow.py:97
+#: ../gui/preferenceswindow.py:63
 msgid "<b>Input Device</b>"
 msgstr ""
 
-#: ../gui/preferenceswindow.py:104
+#: ../gui/preferenceswindow.py:70
 msgid ""
 "Scale input pressure to brush pressure. This is applied to all input "
 "devices. The mouse button has an input pressure of 0.5 when pressed."
 msgstr ""
 
 #. TRANSLATORS: Graph y-axis label
-#: ../gui/preferenceswindow.py:114
+#: ../gui/preferenceswindow.py:80
 #, fuzzy
 msgid "Brush Pressure"
 msgstr "Přítlak"
 
 #. TRANSLATORS: Graph x-axis label
-#: ../gui/preferenceswindow.py:124
+#: ../gui/preferenceswindow.py:90
 #, fuzzy
 msgid "Input Pressure"
 msgstr "Přítlak"
 
-#: ../gui/preferenceswindow.py:133
+#: ../gui/preferenceswindow.py:99
 msgid "Mode: "
 msgstr ""
 
-#: ../gui/preferenceswindow.py:150
+#: ../gui/preferenceswindow.py:128
+msgid ""
+"<small>Space can be used like Button2. Note that some pads have buttons that "
+"cannot be held down.</small>"
+msgstr ""
+
+#: ../gui/preferenceswindow.py:131
 msgid "Buttons"
 msgstr ""
 
-#: ../gui/preferenceswindow.py:156
-msgid "<b>Pen and mouse button mappings</b>"
-msgstr ""
-
-#: ../gui/preferenceswindow.py:182
+#: ../gui/preferenceswindow.py:140
 msgid "Saving"
 msgstr ""
 
-#: ../gui/preferenceswindow.py:188
+#: ../gui/preferenceswindow.py:146
 msgid "<b>Saving</b>"
 msgstr ""
 
-#: ../gui/preferenceswindow.py:192
+#: ../gui/preferenceswindow.py:150
 msgid "Default file format:"
 msgstr ""
 
-#: ../gui/preferenceswindow.py:207
+#: ../gui/preferenceswindow.py:165
 #, fuzzy
 msgid "<b>Save Next Scrap</b>"
 msgstr "Otevřít další část"
 
-#: ../gui/preferenceswindow.py:211
+#: ../gui/preferenceswindow.py:169
 #, fuzzy
 msgid "Path and filename prefix:"
 msgstr "Cesta a přípona souboru pro \"Uložení další části\""
 
-#: ../gui/preferenceswindow.py:232
+#: ../gui/preferenceswindow.py:184
+msgid "View"
+msgstr "Pohled"
+
+#: ../gui/preferenceswindow.py:190
 msgid "<b>Default View</b>"
 msgstr ""
 
-#: ../gui/preferenceswindow.py:236
+#: ../gui/preferenceswindow.py:194
 #, fuzzy
 msgid "Default zoom:"
 msgstr "Základní velikost slotu"
 
-#: ../gui/preferenceswindow.py:249
+#: ../gui/preferenceswindow.py:207
 msgid "High quality zoom (may result in slow scrolling)"
 msgstr ""
 
-#: ../gui/preferenceswindow.py:256
+#: ../gui/preferenceswindow.py:214
 #, fuzzy
 msgid "<b>Fullscreen</b>"
 msgstr "Celá obrazovka"
 
-#: ../gui/preferenceswindow.py:260
+#: ../gui/preferenceswindow.py:218
 msgid "Hide menu bar"
 msgstr ""
 
-#: ../gui/preferenceswindow.py:265
+#: ../gui/preferenceswindow.py:223
 msgid "Hide toolbar"
 msgstr ""
 
-#: ../gui/preferenceswindow.py:270
+#: ../gui/preferenceswindow.py:228
 msgid "Hide tools"
+msgstr ""
+
+#: ../gui/scratchwindow.py:28
+msgid "Scratchpad"
 msgstr ""
 
 #: ../gui/scratchwindow.py:41
@@ -1786,6 +1526,14 @@ msgstr ""
 #, fuzzy
 msgid "Save Scratchpad as..."
 msgstr "Uložit paletu jako..."
+
+#: ../gui/scratchwindow.py:45
+msgid "Revert Scratchpad"
+msgstr ""
+
+#: ../gui/scratchwindow.py:47
+msgid "New Scratchpad"
+msgstr ""
 
 #: ../gui/spinbox.py:32
 #, fuzzy
@@ -1800,263 +1548,231 @@ msgstr ""
 msgid "(Nothing to show)"
 msgstr ""
 
-#. Tool windows. No trailing ellipses on these since none of them require
-#. further input before they can do anything: see section 4.3.2.1 of the the
-#. GNOME Human Interface Guidelines version 3.0.
-#: ../gui/stock.py:50
-#, fuzzy
-msgid "Brush List Editor"
-msgstr "Seznam štětců"
-
-#: ../gui/stock.py:51
-#, fuzzy
-msgid "Color Triangle"
-msgstr "Barevný trojúhelník..."
-
-#: ../gui/stock.py:52
-#, fuzzy
-msgid "Color Sampler"
-msgstr "Něvrhář barev..."
-
-#: ../gui/stock.py:55
-msgid "Rotate Counterclockwise"
-msgstr "Otočit proti směru hodinových ručiček"
-
-#: ../gui/stock.py:57
-msgid "Rotate Clockwise"
-msgstr "Otočit ve směru hodinových ručiček"
-
-#: ../gui/stock.py:59
-msgid "Symmetrical Painting"
-msgstr ""
-
-#: ../gui/stock.py:60
-msgid "Mirror Horizontal"
-msgstr ""
-
-#: ../gui/stock.py:61
-msgid "Mirror Vertical"
-msgstr ""
-
-#: ../gui/stock.py:62
-msgid "Blend Mode"
-msgstr ""
-
-#. (internal-name, display-name)
-#: ../gui/stock.py:63 ../lib/layer.py:17
-msgid "Normal"
-msgstr ""
-
-#: ../gui/stock.py:64
-#, fuzzy
-msgid "Eraser"
-msgstr "guma"
-
-#: ../gui/stock.py:65
-msgid "Lock Alpha Channel"
-msgstr ""
-
-#: ../gui/stock.py:67
-#, fuzzy
-msgid "Colorize"
-msgstr "Barva"
-
-#: ../gui/stock.py:68
-msgid "Brush Modifiers Active"
-msgstr ""
-
-#: ../gui/stock.py:69
-msgid "Brush Modifiers Inactive"
-msgstr ""
-
-#: ../gui/stock.py:70 ../gui/toolbar.py:86 ../gui/toolbar.py:173
-msgid "Line Mode"
-msgstr ""
-
-#: ../gui/toolbar.py:30
+#: ../gui/toolbar.py:31
 msgid "File handling"
 msgstr ""
 
-#: ../gui/toolbar.py:31
+#: ../gui/toolbar.py:32
 msgid "Scraps switcher"
 msgstr ""
 
-#: ../gui/toolbar.py:32
+#: ../gui/toolbar.py:33
 msgid "Undo and Redo"
 msgstr ""
 
-#: ../gui/toolbar.py:33
+#: ../gui/toolbar.py:34
 msgid "Blend Modes"
 msgstr ""
 
-#: ../gui/toolbar.py:34
+#: ../gui/toolbar.py:35
 msgid "Editing Modes"
 msgstr ""
 
-#: ../gui/toolbar.py:65
+#: ../gui/toolbar.py:36
+msgid "View (Main)"
+msgstr ""
+
+#: ../gui/toolbar.py:37
+msgid "View (Alternative/Secondary)"
+msgstr ""
+
+#: ../gui/toolbar.py:38
+msgid "View (Resetting)"
+msgstr ""
+
+#: ../gui/toolbar.py:39
+msgid "Subwindows"
+msgstr ""
+
+#: ../gui/toolbar.py:69
 #, fuzzy
 msgid "MyPaint"
 msgstr "O MyPaintu"
 
-#: ../gui/toolbar.py:80
+#: ../gui/toolbar.py:84
 msgid "Current Color"
 msgstr ""
 
-#: ../gui/toolbar.py:82
+#: ../gui/toolbar.py:86
 #, fuzzy
 msgid "Current Brush"
 msgstr "Přejmenovat štětec"
 
-#: ../gui/toolbar.py:84
+#: ../gui/toolbar.py:88
 #, fuzzy
 msgid "Brush Settings"
 msgstr "Nastavení štětců"
 
-#: ../gui/toolbar.py:219
+#: ../gui/toolbar.py:90
+msgid "Line Mode"
+msgstr ""
+
+#. Pressure settings.
+#: ../gui/toolbar.py:179
 #, fuzzy
 msgid "Line Pressure"
 msgstr "Přítlak"
 
-#: ../gui/toolbar.py:250
+#: ../gui/toolbar.py:227
 #, fuzzy
 msgid "Color History and other tools"
 msgstr "Historie barev"
 
 #. Colour changing
-#: ../gui/toolbar.py:273
+#: ../gui/toolbar.py:250
 #, fuzzy
 msgid "Change Color"
 msgstr "změnit odstín barvy"
 
+#: ../gui/toolbar.py:288
+#, fuzzy
+msgid "Color Window"
+msgstr "Barevný prstenec"
+
 #. History
 #. Brush history
-#: ../gui/toolbar.py:316 ../gui/toolbar.py:421
+#: ../gui/toolbar.py:292 ../gui/toolbar.py:377
 msgid "Recently Used"
 msgstr ""
 
-#: ../gui/toolbar.py:379
+#: ../gui/toolbar.py:335
 #, fuzzy
 msgid "Brush history etc."
 msgstr "Seznam štětců"
 
-#. A limited subset of the abailable brush settings.
-#: ../gui/toolbar.py:505
+#. A limited subset of the available brush settings.
+#: ../gui/toolbar.py:465
 #, fuzzy
 msgid "Quick Brush Settings"
 msgstr "Nastavení štětců"
 
-#: ../gui/toolbar.py:531
+#: ../gui/toolbar.py:491
 #, python-format
 msgid "%s:"
 msgstr ""
 
-#: ../gui/toolbar.py:538
+#: ../gui/toolbar.py:498
 #, python-format
 msgid "Restore '%s' to this brush's saved value"
 msgstr ""
 
 #. Access to the brush settings window, and a big reset-all button
 #. aligned with the settings above.
-#: ../gui/toolbar.py:556
+#: ../gui/toolbar.py:516
 #, fuzzy
 msgid "Detailed Brush Settings"
 msgstr "Nastavení štětců"
 
-#: ../gui/toolbar.py:571
+#: ../gui/toolbar.py:531
 #, fuzzy
 msgid "Restore Saved Settings"
 msgstr "uložit nastavení"
 
-#: ../gui/toolbar.py:573
+#: ../gui/toolbar.py:533
 msgid "Reset all brush settings to the current brush's saved values"
 msgstr ""
 
-#: ../gui/toolbar.py:583
+#: ../gui/toolbar.py:543
 msgid "Brush Blend Mode"
 msgstr ""
 
-#: ../lib/command.py:74
+#: ../lib/command.py:92
 msgid "Unknown Action"
 msgstr ""
 
-#: ../lib/command.py:94
+#: ../lib/command.py:153
 msgid "Painting"
 msgstr ""
 
-#: ../lib/command.py:110
+#: ../lib/command.py:169
 #, fuzzy
 msgid "Clear Layer"
 msgstr "Vyčistit"
 
-#: ../lib/command.py:123
+#: ../lib/command.py:182
 #, fuzzy
 msgid "Load Layer"
 msgstr "Vrstvy"
 
-#: ../lib/command.py:137
+#: ../lib/command.py:196
 #, fuzzy
 msgid "Merge Layers"
 msgstr "Vrstvy"
 
-#: ../lib/command.py:159
+#: ../lib/command.py:224
+#, fuzzy
+msgid "Convert Layer Mode"
+msgstr "Vyčistit"
+
+#: ../lib/command.py:246
 #, fuzzy
 msgid "Add Layer"
 msgstr "Vrstvy"
 
-#: ../lib/command.py:180
+#: ../lib/command.py:269
 #, fuzzy
 msgid "Remove Layer"
 msgstr "Odstranit"
 
-#: ../lib/command.py:203
+#: ../lib/command.py:304
 #, fuzzy
 msgid "Select Layer"
 msgstr "Vybrat vrstvu pod kurzorem"
 
-#: ../lib/command.py:218
+#: ../lib/command.py:319
 #, fuzzy
 msgid "Move Layer on Canvas"
 msgstr "Vrstvy"
 
-#: ../lib/command.py:243
+#: ../lib/command.py:344
 msgid "Reorder Layer in Stack"
 msgstr ""
 
-#: ../lib/command.py:290
+#: ../lib/command.py:370
+#, fuzzy
+msgid "Duplicate Layer"
+msgstr "Vložit vrstvu"
+
+#: ../lib/command.py:391
 #, fuzzy
 msgid "Reorder Layer Stack"
 msgstr "Odstranit"
 
-#: ../lib/command.py:327
+#: ../lib/command.py:412
+#, fuzzy
+msgid "Rename Layer"
+msgstr "Odstranit"
+
+#: ../lib/command.py:447
 #, fuzzy
 msgid "Make Layer Visible"
 msgstr "Viditelnost vrstvy"
 
-#: ../lib/command.py:329
+#: ../lib/command.py:449
 #, fuzzy
 msgid "Make Layer Invisible"
 msgstr "Viditelnost vrstvy"
 
-#: ../lib/command.py:348
+#: ../lib/command.py:473
 #, fuzzy
 msgid "Lock Layer"
 msgstr "Vrstvy"
 
-#: ../lib/command.py:350
+#: ../lib/command.py:475
 msgid "Unlock Layer"
 msgstr ""
 
-#: ../lib/command.py:353
+#: ../lib/command.py:478
 #, fuzzy
 msgid "Change Layer Visibility"
 msgstr "Viditelnost vrstvy"
 
-#: ../lib/command.py:377
+#: ../lib/command.py:506
 msgid "Change Layer Blending Mode"
 msgstr ""
 
 #. add a hint due to a very consfusing error message when there is no space left on device
-#: ../lib/document.py:397
+#: ../lib/document.py:514
 #, python-format
 msgid ""
 "Unable to save: %s\n"
@@ -2065,50 +1781,1519 @@ msgstr ""
 "Není možné uložit: %s\n"
 "Máme dostatek volného místa na zařízení?"
 
-#: ../lib/document.py:399 ../lib/document.py:402
+#: ../lib/document.py:516 ../lib/document.py:519
 #, python-format
 msgid "Unable to save: %s"
 msgstr "Není možné uložit: %s"
 
-#: ../lib/document.py:407
+#: ../lib/document.py:537
 #, python-format
 msgid "File does not exist: %s"
 msgstr "Soubor neexistuje : %s"
 
-#: ../lib/document.py:409
+#: ../lib/document.py:539
 #, python-format
 msgid "You do not have the necessary permissions to open file: %s"
 msgstr "Nemáte nezbytná oprávnění pro otevření souboru: %s"
 
-#: ../lib/document.py:417
+#: ../lib/document.py:547
 #, python-format
 msgid "Error while loading: GError %s"
 msgstr ""
 
-#: ../lib/document.py:420
+#: ../lib/document.py:550
 #, python-format
 msgid "Error while loading: IOError %s"
 msgstr ""
 
-#: ../lib/document.py:426
+#: ../lib/document.py:557
 #, python-format
 msgid "Unknown file format extension: %s"
 msgstr "Neznámá přípona souboru: %s"
 
 #: ../lib/layer.py:18
-msgid "Multiply"
+msgid "The top layer only, without blending colors."
 msgstr ""
 
 #: ../lib/layer.py:19
-msgid "Burn"
+msgid "Multiply"
 msgstr ""
 
 #: ../lib/layer.py:20
-msgid "Dodge"
+msgid ""
+"Similar to loading multiple slides into a single projector's slot and "
+"projecting the combined result."
 msgstr ""
 
-#: ../lib/layer.py:21
+#: ../lib/layer.py:22
 #, fuzzy
 msgid "Screen"
 msgstr "Celá obrazovka"
 
+#: ../lib/layer.py:23
+msgid ""
+"Like shining two separate slide projectors onto a screen simultaneously. "
+"This is the inverse of 'Multiply'."
+msgstr ""
+
+#: ../lib/layer.py:25
+msgid "Overlay"
+msgstr ""
+
+#: ../lib/layer.py:26
+msgid ""
+"Overlays the backdrop with the top layer, preserving the backdrop's "
+"highlights and shadows. This is the inverse of 'Hard Light'."
+msgstr ""
+
+#: ../lib/layer.py:28
+#, fuzzy
+msgid "Darken"
+msgstr "Tmavší"
+
+#: ../lib/layer.py:29
+msgid "The top layer is used only where it is darker than the backdrop."
+msgstr ""
+
+#: ../lib/layer.py:30
+#, fuzzy
+msgid "Lighten"
+msgstr "Světlejší"
+
+#: ../lib/layer.py:31
+msgid "The top layer is used only where it is lighter than the backdrop."
+msgstr ""
+
+#: ../lib/layer.py:32
+msgid "Dodge"
+msgstr ""
+
+#: ../lib/layer.py:33
+msgid ""
+"Brightens the backdrop using the top layer. The effect is similar to the "
+"photographic darkroom technique of the same name which is used for improving "
+"contrast in shadows."
+msgstr ""
+
+#: ../lib/layer.py:36
+msgid "Burn"
+msgstr ""
+
+#: ../lib/layer.py:37
+msgid ""
+"Darkens the backdrop using the top layer. The effect looks similar to the "
+"photographic darkroom technique of the same name which is used for reducing "
+"over-bright highlights."
+msgstr ""
+
+#: ../lib/layer.py:40
+msgid "Hard Light"
+msgstr ""
+
+#: ../lib/layer.py:41
+msgid "Similar to shining a harsh spotlight onto the backdrop."
+msgstr ""
+
+#: ../lib/layer.py:42
+msgid "Soft Light"
+msgstr ""
+
+#: ../lib/layer.py:43
+msgid "Like shining a diffuse spotlight onto the backdrop."
+msgstr ""
+
+#: ../lib/layer.py:44
+msgid "Difference"
+msgstr ""
+
+#: ../lib/layer.py:45
+msgid "Subtracts the darker color from the lighter of the two."
+msgstr ""
+
+#: ../lib/layer.py:46
+msgid "Exclusion"
+msgstr ""
+
+#: ../lib/layer.py:47
+msgid "Similar to the 'Difference' mode, but lower in contrast."
+msgstr ""
+
+#: ../lib/layer.py:48
+msgid "Hue"
+msgstr ""
+
+#: ../lib/layer.py:49
+msgid ""
+"Combines the hue of the top layer with the saturation and luminosity of the "
+"backdrop."
+msgstr ""
+
+#: ../lib/layer.py:51
+msgid "Saturation"
+msgstr ""
+
+#: ../lib/layer.py:52
+msgid ""
+"Applies the saturation of the top layer's colors to the hue and luminosity "
+"of the backdrop."
+msgstr ""
+
+#: ../lib/layer.py:55
+msgid ""
+"Applies the hue and saturation of the top layer to the luminosity of the "
+"backdrop."
+msgstr ""
+
+#: ../lib/layer.py:57
+msgid "Luminosity"
+msgstr ""
+
+#: ../lib/layer.py:58
+msgid ""
+"Applies the luminosity of the top layer to the hue and saturation of the "
+"backdrop."
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:1
+#, fuzzy
+msgctxt "Menu|File|"
+msgid "New"
+msgstr "Nový"
+
+#: ../po/tmp/mypaint.xml.h:2
+msgid "Start with a new blank canvas"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:3
+#, fuzzy
+msgctxt "Menu|File|"
+msgid "Open..."
+msgstr "Otevřít..."
+
+#: ../po/tmp/mypaint.xml.h:4
+msgid "Open a file, replacing the current painting"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:5
+#, fuzzy
+msgctxt "Menu|File|"
+msgid "Open Most Recent"
+msgstr "Naposledy otevřené"
+
+#: ../po/tmp/mypaint.xml.h:6
+msgid "Open the last file you saved"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:7
+msgctxt "Menu|File|"
+msgid "Revert"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:8
+#, fuzzy
+msgid "Reload the current file"
+msgstr "Naposledy otevřené"
+
+#: ../po/tmp/mypaint.xml.h:9
+#, fuzzy
+msgctxt "Menu|File|"
+msgid "Save"
+msgstr "Uložit"
+
+#: ../po/tmp/mypaint.xml.h:10
+#, fuzzy
+msgid "Save to a file"
+msgstr "uložit jako výchozí"
+
+#: ../po/tmp/mypaint.xml.h:11
+#, fuzzy
+msgctxt "Menu|File|"
+msgid "Save As..."
+msgstr "Uložit jako..."
+
+#: ../po/tmp/mypaint.xml.h:12
+msgid "Save to a file with a new name"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:13
+#, fuzzy
+msgctxt "Menu|File|"
+msgid "Export..."
+msgstr "Hlášení..."
+
+#: ../po/tmp/mypaint.xml.h:14
+#, fuzzy
+msgid "Export to a file"
+msgstr "Exportovat paletu..."
+
+#: ../po/tmp/mypaint.xml.h:15
+#, fuzzy
+msgctxt "Menu|File|"
+msgid "Save As Scrap"
+msgstr "Uložit jako část"
+
+#: ../po/tmp/mypaint.xml.h:16
+msgid ""
+"Saves to a new scrap file. If the drawing is currently saved as a scrap, "
+"this will write a new revision of it."
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:17
+#, fuzzy
+msgctxt "Menu|File|"
+msgid "Open Previous Scrap"
+msgstr "Otevřít předchozí část"
+
+#: ../po/tmp/mypaint.xml.h:18
+msgid "Load the previous scrap file, replacing the current drawing"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:19
+#, fuzzy
+msgctxt "Menu|File|"
+msgid "Open Next Scrap"
+msgstr "Otevřít další část"
+
+#: ../po/tmp/mypaint.xml.h:20
+msgid "Load the next scrap file, replacing the current drawing"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:21
+#, fuzzy
+msgctxt "Menu|Brush|"
+msgid "Bigger"
+msgstr "Větší"
+
+#: ../po/tmp/mypaint.xml.h:22
+#, fuzzy
+msgid "Increase brush radius"
+msgstr "Zvýšit neprůsvitnost vrstvy"
+
+#: ../po/tmp/mypaint.xml.h:23
+#, fuzzy
+msgctxt "Menu|Brush|"
+msgid "Smaller"
+msgstr "Menší"
+
+#: ../po/tmp/mypaint.xml.h:24
+#, fuzzy
+msgid "Decrease brush radius"
+msgstr "Snížit neprůsvitnost vrstvy"
+
+#: ../po/tmp/mypaint.xml.h:25
+#, fuzzy
+msgctxt "Menu|Brush|"
+msgid "Increase Opacity"
+msgstr "Zvýšit neprůsvitnost vrstvy"
+
+#: ../po/tmp/mypaint.xml.h:26
+#, fuzzy
+msgid "Increase brush opacity"
+msgstr "Zvýšit neprůsvitnost vrstvy"
+
+#: ../po/tmp/mypaint.xml.h:27
+#, fuzzy
+msgctxt "Menu|Brush|"
+msgid "Decrease Opacity"
+msgstr "Snížit neprůsvitnost vrstvy"
+
+#: ../po/tmp/mypaint.xml.h:28
+#, fuzzy
+msgid "Decrease brush opacity"
+msgstr "Snížit neprůsvitnost vrstvy"
+
+#: ../po/tmp/mypaint.xml.h:29
+#, fuzzy
+msgctxt "Menu|Color|Adjust Color|"
+msgid "Brighter"
+msgstr "Světlejší"
+
+#: ../po/tmp/mypaint.xml.h:30
+msgid "Increase color brightness"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:31
+#, fuzzy
+msgctxt "Menu|Color|Adjust Color|"
+msgid "Darker"
+msgstr "Tmavší"
+
+#: ../po/tmp/mypaint.xml.h:32
+msgid "Decrease color brightness"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:33
+#, fuzzy
+msgctxt "Menu|Color|Adjust Color|"
+msgid "Hue Anticlockwise"
+msgstr "Otočit proti směru hodinových ručiček"
+
+#: ../po/tmp/mypaint.xml.h:34
+#, fuzzy
+msgid "Rotate color hue anticlockwise"
+msgstr "Otočit proti směru hodinových ručiček"
+
+#: ../po/tmp/mypaint.xml.h:35
+#, fuzzy
+msgctxt "Menu|Color|Adjust Color|"
+msgid "Hue Clockwise"
+msgstr "Otočit ve směru hodinových ručiček"
+
+#: ../po/tmp/mypaint.xml.h:36
+#, fuzzy
+msgid "Rotate color hue clockwise"
+msgstr "Otočit proti směru hodinových ručiček"
+
+#: ../po/tmp/mypaint.xml.h:37
+msgctxt "Menu|Color|Adjust Color|"
+msgid "Purer"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:38
+msgid "Increase color saturation"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:39
+#, fuzzy
+msgctxt "Menu|Color|Adjust Color|"
+msgid "Grayer"
+msgstr "Vrstvy"
+
+#: ../po/tmp/mypaint.xml.h:40
+msgid "Decrease color saturation"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:41
+msgctxt "Menu|Brush|"
+msgid "Pick Stroke and Layer"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:42
+msgid "Pick brushstroke: settings and layer"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:43
+#, fuzzy
+msgctxt "Menu|Brush|Shortcut Keys|"
+msgid "Restore Color"
+msgstr "Obnovit štětec %d"
+
+#: ../po/tmp/mypaint.xml.h:44
+#, fuzzy
+msgctxt "Menu|Brush|Shortcut Keys|"
+msgid "Save to Most Recent"
+msgstr "Uložit nejvíce obnovovaný"
+
+#: ../po/tmp/mypaint.xml.h:45
+#, fuzzy
+msgid "Save brush to the most recent shortcut"
+msgstr "Uložit nejvíce obnovovaný"
+
+#: ../po/tmp/mypaint.xml.h:46
+#, fuzzy
+msgctxt "Menu|Layer|"
+msgid "Clear"
+msgstr "Vyčistit"
+
+#: ../po/tmp/mypaint.xml.h:47
+#, fuzzy
+msgid "Clear the current layer"
+msgstr "Naposledy otevřené"
+
+#: ../po/tmp/mypaint.xml.h:48
+msgctxt "Menu|Layer|"
+msgid "Copy"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:49
+msgid "Copy the current layer to the clipboard"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:50
+msgctxt "Menu|Layer|"
+msgid "Paste"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:51
+msgid "Replaces the layer with the clipboard's contents"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:52
+msgctxt "Menu|Layer|Go to Layer|"
+msgid "At Cursor"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:53
+msgid "Choose a layer by picking a brushstroke on it"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:54
+msgctxt "Menu|Layer|Go to Layer|"
+msgid "Above"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:55
+msgid "Go one layer up in the layers stack"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:56
+msgctxt "Menu|Layer|Go to Layer|"
+msgid "Below"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:57
+msgid "Go one layer down in the layers stack"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:58
+#, fuzzy
+msgctxt "Menu|Layer|"
+msgid "New (above)"
+msgstr "Nová (nad současnou)"
+
+#: ../po/tmp/mypaint.xml.h:59
+msgid "Add a new layer above the current layer"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:60
+#, fuzzy
+msgctxt "Menu|Layer|"
+msgid "New (below)"
+msgstr "Nová (pod současnou)"
+
+#: ../po/tmp/mypaint.xml.h:61
+msgid "Add a new layer below the current layer"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:62
+#, fuzzy
+msgctxt "Menu|Layer|"
+msgid "Merge Down"
+msgstr "Sloučit dolů"
+
+#: ../po/tmp/mypaint.xml.h:63
+msgid "Merge layer with the one beneath it"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:64
+msgctxt "Menu|Layer|"
+msgid "Delete"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:65
+#, fuzzy
+msgid "Delete the current layer"
+msgstr "Naposledy otevřené"
+
+#: ../po/tmp/mypaint.xml.h:66
+msgctxt "Menu|Layer"
+msgid "Convert to Normal mode"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:67
+msgctxt "Menu|Layer|Opacity|"
+msgid "Increase"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:68
+msgctxt "Menu|Layer|Opacity|"
+msgid "Decrease"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:69
+msgctxt "Menu|Layer|"
+msgid "Raise"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:70
+msgid "Raise the current layer one step in the layers stack"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:71
+msgctxt "Menu|Layer|"
+msgid "Lower"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:72
+msgid "Lower the current layer one step in the layers stack"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:73
+#, fuzzy
+msgctxt "Menu|Layer|"
+msgid "Duplicate"
+msgstr "Vložit vrstvu"
+
+#: ../po/tmp/mypaint.xml.h:74
+msgid "Make an exact duplicate of the current layer"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:75
+#, fuzzy
+msgctxt "Menu|Layer|"
+msgid "Rename..."
+msgstr "přejmenovat..."
+
+#: ../po/tmp/mypaint.xml.h:76
+msgid "Enter a new name for the current layer"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:77
+#, fuzzy
+msgctxt "Menu|Layer|"
+msgid "Locked"
+msgstr "Vrstvy"
+
+#: ../po/tmp/mypaint.xml.h:78
+msgid "The current layer's locked state: locked layers cannot be drawn to"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:79
+msgctxt "Menu|Layer|"
+msgid "Visible"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:80
+msgid "The current layer's visibility state"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:81
+msgctxt "Menu|View|"
+msgid "Reset and Center"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:82
+msgid "Reset Zoom, Rotation and Mirroring, and recenter the document"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:83
+msgctxt "Menu|View|"
+msgid "Fit"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:84
+msgid "Zoom to fit the document, and recenter"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:85
+msgctxt "Menu|View|"
+msgid "Reset"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:86
+#, fuzzy
+msgctxt "Menu|View|Reset|"
+msgid "Zoom"
+msgstr "Přiblížit"
+
+#: ../po/tmp/mypaint.xml.h:87
+msgctxt "Menu|View|Reset|"
+msgid "Rotation"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:88
+#, fuzzy
+msgctxt "Menu|View|Reset|"
+msgid "Mirror"
+msgstr "Zrcadlový obraz"
+
+#: ../po/tmp/mypaint.xml.h:89
+#, fuzzy
+msgctxt "Menu|View|Adjust View|"
+msgid "Zoom In"
+msgstr "Přiblížit"
+
+#: ../po/tmp/mypaint.xml.h:90
+msgid "Increase magnification"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:91
+#, fuzzy
+msgctxt "Menu|View|Adjust View|"
+msgid "Zoom Out"
+msgstr "Oddálit"
+
+#: ../po/tmp/mypaint.xml.h:92
+msgid "Decrease magnification"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:93
+#, fuzzy
+msgctxt "Menu|View|Adjust View|"
+msgid "Rotate Counterclockwise"
+msgstr "Otočit proti směru hodinových ručiček"
+
+#: ../po/tmp/mypaint.xml.h:94
+#, fuzzy
+msgid "Rotate the view counterclockwise"
+msgstr "Otočit proti směru hodinových ručiček"
+
+#: ../po/tmp/mypaint.xml.h:95
+#, fuzzy
+msgctxt "Menu|View|Adjust View|"
+msgid "Rotate Clockwise"
+msgstr "Otočit ve směru hodinových ručiček"
+
+#: ../po/tmp/mypaint.xml.h:96
+#, fuzzy
+msgid "Rotate the view clockwise"
+msgstr "Otočit proti směru hodinových ručiček"
+
+#: ../po/tmp/mypaint.xml.h:97
+msgctxt "Menu|View|Adjust View|"
+msgid "Mirror Horizontal"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:98
+msgid "Flip the view left to right"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:99
+msgctxt "Menu|View|Adjust View|"
+msgid "Mirror Vertical"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:100
+msgid "Flip the view upside-down"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:101
+#, fuzzy
+msgctxt "Menu|View|"
+msgid "Layer Solo"
+msgstr "Vrstva samostatně"
+
+#: ../po/tmp/mypaint.xml.h:102
+#, fuzzy
+msgctxt "Menu|View|"
+msgid "Hide Layers Above Current"
+msgstr "Skrýt vrstvy nad současnou"
+
+#: ../po/tmp/mypaint.xml.h:103
+msgctxt "Menu|Brush|"
+msgid "Blend Mode"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:104
+msgctxt "Menu|Edit|"
+msgid "Symmetrical Painting"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:105
+msgid "Mirrors all strokes drawn around the vertical axis"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:106
+#, fuzzy
+msgctxt "Menu|Help|Debug|"
+msgid "Print Brush Input Values to Console"
+msgstr "Tisknout vstupní hodnoty štětců do stdout"
+
+#: ../po/tmp/mypaint.xml.h:107
+#, fuzzy
+msgctxt "Menu|Help|Debug|"
+msgid "Visualize Rendering"
+msgstr "Překreslovat podkladní vrstvu"
+
+#: ../po/tmp/mypaint.xml.h:108
+msgid "Show rendering updates on-screen, for debugging"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:109
+#, fuzzy
+msgctxt "Menu|Help|Debug|"
+msgid "Disable GTK Double Buffering"
+msgstr "Zakázat dvojnásobné přetečení GTK"
+
+#: ../po/tmp/mypaint.xml.h:110
+#, fuzzy
+msgctxt "Menu|"
+msgid "File"
+msgstr "Soubor"
+
+#: ../po/tmp/mypaint.xml.h:111
+#, fuzzy
+msgctxt "Menu|File|"
+msgid "Quit"
+msgstr "Konec"
+
+#: ../po/tmp/mypaint.xml.h:112
+msgctxt "Menu|File|"
+msgid "Frame Enabled"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:113
+#, fuzzy
+msgctxt "Menu|"
+msgid "Edit"
+msgstr "Upravit"
+
+#: ../po/tmp/mypaint.xml.h:114
+#, fuzzy
+msgctxt "Menu|"
+msgid "Color"
+msgstr "Barva"
+
+#: ../po/tmp/mypaint.xml.h:115
+msgctxt "Menu|Color|"
+msgid "Adjust Color"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:116
+#, fuzzy
+msgctxt "Menu|Color|"
+msgid "Pick Color"
+msgstr "Vybrat barvu"
+
+#: ../po/tmp/mypaint.xml.h:117
+#, fuzzy
+msgctxt "Menu|Color|"
+msgid "Color History"
+msgstr "Historie barev"
+
+#: ../po/tmp/mypaint.xml.h:118
+#, fuzzy
+msgctxt "Menu|Color|"
+msgid "Change Color"
+msgstr "změnit odstín barvy"
+
+#: ../po/tmp/mypaint.xml.h:119
+#, fuzzy
+msgid "Color changer popup (crossed bowl)"
+msgstr "Měnič barev"
+
+#: ../po/tmp/mypaint.xml.h:120
+#, fuzzy
+msgctxt "Menu|Color|"
+msgid "Change Color (wash)"
+msgstr "změnit odstín barvy"
+
+#: ../po/tmp/mypaint.xml.h:121
+#, fuzzy
+msgid "Color changer popup (wash)"
+msgstr "Měnič barev"
+
+#: ../po/tmp/mypaint.xml.h:122
+#, fuzzy
+msgctxt "Menu|Color|"
+msgid "Change Color (ring)"
+msgstr "změnit odstín barvy"
+
+#: ../po/tmp/mypaint.xml.h:123
+msgid "Color changer popup (concentric rings)"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:124
+#, fuzzy
+msgctxt "Menu|Color|"
+msgid "Color Details"
+msgstr "Detaily"
+
+#: ../po/tmp/mypaint.xml.h:125
+msgid "Color details dialog with text entry"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:126
+msgctxt "Menu|Color"
+msgid "Next Palette Color"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:127
+msgid "Next color in the palette"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:128
+#, fuzzy
+msgctxt "Menu|Color|"
+msgid "Previous Palette Color"
+msgstr "Velikost náhledu"
+
+#: ../po/tmp/mypaint.xml.h:129
+msgid "Previous color in the palette"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:130
+#, fuzzy
+msgctxt "Menu|"
+msgid "Layer"
+msgstr "Vrstvy"
+
+#: ../po/tmp/mypaint.xml.h:131
+#, fuzzy
+msgctxt "Menu|Layer|"
+msgid "Opacity"
+msgstr "Krytí:"
+
+#: ../po/tmp/mypaint.xml.h:132
+#, fuzzy
+msgctxt "Menu|Layer|"
+msgid "Go to Layer"
+msgstr "Vrstvy"
+
+#: ../po/tmp/mypaint.xml.h:133
+#, fuzzy
+msgctxt "Menu|"
+msgid "Scratchpad"
+msgstr "Otevřít další část"
+
+#: ../po/tmp/mypaint.xml.h:134
+#, fuzzy
+msgctxt "Menu|Scratchpad|"
+msgid "New"
+msgstr "Nový"
+
+#: ../po/tmp/mypaint.xml.h:135
+#, fuzzy
+msgctxt "Menu|Scratchpad|"
+msgid "Open..."
+msgstr "Otevřít..."
+
+#: ../po/tmp/mypaint.xml.h:136
+#, fuzzy
+msgctxt "Menu|Scratchpad|"
+msgid "Save"
+msgstr "Uložit"
+
+#: ../po/tmp/mypaint.xml.h:137
+#, fuzzy
+msgctxt "Menu|Scratchpad|"
+msgid "Save As..."
+msgstr "Uložit jako..."
+
+#: ../po/tmp/mypaint.xml.h:138
+msgctxt "Menu|Scratchpad|"
+msgid "Revert"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:139
+#, fuzzy
+msgctxt "Menu|Scratchpad|"
+msgid "Save as Default"
+msgstr "uložit jako výchozí"
+
+#: ../po/tmp/mypaint.xml.h:140
+#, fuzzy
+msgctxt "Menu|Scratchpad|"
+msgid "Clear Default"
+msgstr "uložit jako výchozí"
+
+#: ../po/tmp/mypaint.xml.h:141
+#, fuzzy
+msgctxt "Menu|Scratchpad|"
+msgid "Use Main Background"
+msgstr "Pozadí"
+
+#: ../po/tmp/mypaint.xml.h:142
+#, fuzzy
+msgctxt "Menu|Scratchpad|"
+msgid "Color Dabs"
+msgstr "Detaily"
+
+#: ../po/tmp/mypaint.xml.h:143
+msgctxt "Menu|Scratchpad|Color Dabs|"
+msgid "Render from File..."
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:144
+msgctxt "Menu|Scratchpad|Color Dabs|"
+msgid "Saturation Spread for Current Color"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:145
+#, fuzzy
+msgctxt "Menu|Brush|"
+msgid "Brush"
+msgstr "Štětec"
+
+#: ../po/tmp/mypaint.xml.h:146
+#, fuzzy
+msgctxt "Menu|Brush|"
+msgid "Shortcut Keys"
+msgstr "Klávesové zkratky"
+
+#: ../po/tmp/mypaint.xml.h:147
+#, fuzzy
+msgctxt "Menu|Brush|Shortcut Keys|"
+msgid "Help"
+msgstr "Nápověda"
+
+#: ../po/tmp/mypaint.xml.h:148
+#, fuzzy
+msgctxt "Menu|Brush|"
+msgid "Change Brush"
+msgstr "Změnit barvu"
+
+#: ../po/tmp/mypaint.xml.h:149
+#, fuzzy
+msgctxt "Menu|Brush|"
+msgid "Get More Brushes..."
+msgstr "Obnovit štětec %d"
+
+#: ../po/tmp/mypaint.xml.h:150
+#, fuzzy
+msgctxt "Menu|Brush|"
+msgid "Import Brushes..."
+msgstr "Importovat sadu štětců..."
+
+#: ../po/tmp/mypaint.xml.h:151
+#, fuzzy
+msgctxt "Menu|Help|"
+msgid "Help"
+msgstr "Nápověda"
+
+#: ../po/tmp/mypaint.xml.h:152
+#, fuzzy
+msgctxt "Menu|Help|"
+msgid "Where is the Documentation?"
+msgstr "Kde je dokumentace?"
+
+#: ../po/tmp/mypaint.xml.h:153
+#, fuzzy
+msgctxt "Menu|Help|"
+msgid "Change the Keyboard Shortcuts?"
+msgstr "Změnit klávesové zkratky?"
+
+#: ../po/tmp/mypaint.xml.h:154
+#, fuzzy
+msgctxt "Menu|Help|"
+msgid "About MyPaint"
+msgstr "O MyPaintu"
+
+#: ../po/tmp/mypaint.xml.h:155
+#, fuzzy
+msgctxt "Menu|Help|"
+msgid "Debug"
+msgstr "Ladit"
+
+#: ../po/tmp/mypaint.xml.h:156
+msgctxt "Menu|Help|Debug|"
+msgid "Print Memory Leak Info to Console (Slow!)"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:157
+msgctxt "Menu|Help|Debug|"
+msgid "Run Garbage Collector Now"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:158
+msgctxt "Menu|Help|Debug|"
+msgid "Start/Stop Python Profiling (cProfile)"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:159
+#, fuzzy
+msgctxt "Menu|Help|Debug|"
+msgid "GTK Input Device Dialog"
+msgstr "Mód pro vstupní zařízení: "
+
+#: ../po/tmp/mypaint.xml.h:160
+#, fuzzy
+msgctxt "Menu|"
+msgid "View"
+msgstr "Pohled"
+
+#: ../po/tmp/mypaint.xml.h:161
+msgctxt "Menu|View|"
+msgid "Toolbars"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:162
+msgctxt "Menu|View|"
+msgid "Feedback"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:163
+msgctxt "Menu|View|"
+msgid "Adjust View"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:164
+#, fuzzy
+msgctxt "Menu|View|"
+msgid "Popup Menu"
+msgstr "Ukázat Nabídku"
+
+#: ../po/tmp/mypaint.xml.h:165
+msgctxt "Menu|Edit|"
+msgid "Preferences"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:166
+#, fuzzy
+msgid "Test Input Devices"
+msgstr "Mód pro vstupní zařízení: "
+
+#: ../po/tmp/mypaint.xml.h:167
+#, fuzzy
+msgid "Document Frame..."
+msgstr "přejmenovat..."
+
+#: ../po/tmp/mypaint.xml.h:168
+msgid "Set and adjust a frame for the canvas"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:169
+#, fuzzy
+msgid "Layers Window"
+msgstr "Vrstvy"
+
+#: ../po/tmp/mypaint.xml.h:170
+msgid "Edit and rearrange layers"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:171
+#, fuzzy
+msgctxt "Menu|Layer|"
+msgid "Choose Background"
+msgstr "Pozadí"
+
+#: ../po/tmp/mypaint.xml.h:172
+msgid "Choose a background image"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:173
+#, fuzzy
+msgctxt "Menu|Brush|"
+msgid "Brushes Window"
+msgstr "Klávesa pro štětec"
+
+#: ../po/tmp/mypaint.xml.h:174
+msgid "Select brushes, and edit brush sets"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:175
+#, fuzzy
+msgctxt "Menu|Brush|"
+msgid "Settings Window"
+msgstr "Nastavení štětců"
+
+#: ../po/tmp/mypaint.xml.h:176
+#, fuzzy
+msgid "Edit the active brush's settings"
+msgstr "Nastavení štětců"
+
+#: ../po/tmp/mypaint.xml.h:177
+#, fuzzy
+msgctxt "Menu|Color|"
+msgid "Colors Window"
+msgstr "Barevný prstenec"
+
+#: ../po/tmp/mypaint.xml.h:178
+msgid "Set the color used for painting"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:179
+#, fuzzy
+msgctxt "Menu|Scratchpad|"
+msgid "Scratchpad Window"
+msgstr "Uložit jako část"
+
+#: ../po/tmp/mypaint.xml.h:180
+msgid "Mix colors and make sketches on separate scrap pages"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:181
+msgctxt "Menu|View|"
+msgid "Subwindows"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:182
+msgid "Show subwindows"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:183
+msgctxt "Menu|View|Feedback|"
+msgid "Zoom Level"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:184
+msgid "Show the zoom level when zooming in or out"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:185
+msgctxt "Menu|View|Feedback|"
+msgid "Last Painting Position"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:186
+msgid "Show where strokes end"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:187
+msgctxt "Menu|View|Feedback|"
+msgid "Axis of Symmetry"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:188
+msgid "Show the symmetry axis"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:189
+msgctxt "Menu|View|Toolbars|"
+msgid "Menubar Only"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:190
+msgid "Show menu bar"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:191
+msgctxt "Menu|View|Toolbars|"
+msgid "Toolbar Only"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:192
+msgid "Show toolbar"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:193
+msgctxt "Menu|View|Toolbars|"
+msgid "Both"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:194
+msgid "Show both the menu bar and the toolbar"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:195
+#, fuzzy
+msgctxt "Menu|Edit|"
+msgid "Current Mode"
+msgstr "Přejmenovat štětec"
+
+#: ../po/tmp/mypaint.xml.h:196
+msgctxt "Menu|Edit|Current Mode|"
+msgid "Freehand Drawing"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:197
+msgctxt "Toolbar|"
+msgid "Freehand"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:198
+msgid "Freehand Drawing: draw and paint freely, without geometric constraints"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:199
+msgctxt "Menu|Edit|"
+msgid "Freehand Drawing"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:200
+msgctxt "Menu|Edit|Current Mode|"
+msgid "Scroll View"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:201
+msgctxt "Toolbar|"
+msgid "Scroll"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:202
+msgid "Scroll View: move around the canvas by clicking and dragging"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:203
+msgctxt "Menu|View|"
+msgid "Scroll"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:204
+#, fuzzy
+msgctxt "Menu|Edit|Current Mode|"
+msgid "Rotate View"
+msgstr "Otočit ve směru hodinových ručiček"
+
+#: ../po/tmp/mypaint.xml.h:205
+msgctxt "Toolbar|"
+msgid "Rotate"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:206
+msgid "Rotate View: turn the canvas by clicking and dragging"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:207
+msgctxt "Menu|View|"
+msgid "Rotate"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:208
+#, fuzzy
+msgctxt "Menu|Edit|Current Mode|"
+msgid "Zoom View"
+msgstr "Přiblížit"
+
+#: ../po/tmp/mypaint.xml.h:209
+#, fuzzy
+msgctxt "Toolbar|"
+msgid "Zoom"
+msgstr "Přiblížit"
+
+#: ../po/tmp/mypaint.xml.h:210
+msgid "Zoom View: zoom the canvas by clicking and dragging"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:211
+#, fuzzy
+msgctxt "Menu|View|"
+msgid "Zoom"
+msgstr "Přiblížit"
+
+#: ../po/tmp/mypaint.xml.h:212
+msgctxt "Menu|Edit|Current Mode|"
+msgid "Lines and Curves"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:213
+msgctxt "Toolbar|"
+msgid "Lines"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:214
+msgctxt "Menu|Edit|"
+msgid "Lines and Curves"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:215
+msgctxt "Menu|Edit|Current Mode|"
+msgid "Connected Lines"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:216
+msgctxt "Toolbar|"
+msgid "Line Seq."
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:217
+msgctxt "Menu|Edit|"
+msgid "Connected Lines"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:218
+msgctxt "Menu|Edit|Current Mode|"
+msgid "Ellipses and Circles"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:219
+msgctxt "Toolbar|"
+msgid "Ellipse"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:220
+msgctxt "Menu|Edit|"
+msgid "Ellipses and Circles"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:221
+#, fuzzy
+msgctxt "Menu|Edit|Current Mode|"
+msgid "Move Layer"
+msgstr "Odstranit"
+
+#: ../po/tmp/mypaint.xml.h:222
+msgid "Move Layer: reposition the current layer on the canvas"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:223
+msgctxt "Menu|Layer|"
+msgid "Move"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:224
+msgctxt "Menu|Edit|Current Mode|"
+msgid "Edit Frame"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:225
+msgctxt "Toolbar|"
+msgid "Frame"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:226
+msgid ""
+"Edit Frame: define a frame around the document to give it a finite size. The "
+"frame is used when exporting."
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:227
+msgctxt "Menu|File|"
+msgid "Edit Frame"
+msgstr ""
+
+#~ msgid ""
+#~ "The background %s was ignored because it has an alpha channel. Please "
+#~ "remove it."
+#~ msgstr ""
+#~ "Pozadí %s bylo ignorováno, protože obsahuje alfa kanál. Odstraňte ho, "
+#~ "prosím."
+
+#, fuzzy
+#~ msgid ""
+#~ "The background %s was ignored because it is the wrong size. Only (N*%d)x"
+#~ "(M*%d) is supported."
+#~ msgstr ""
+#~ "Pozadí %s bylo ignorováno, protože má špatnou velikost. Podporováno je "
+#~ "pouze (N*%d)x(M*%d)."
+
+#, fuzzy
+#~ msgid "Export group as brush package..."
+#~ msgstr "Importovat sadu štětců..."
+
+#, fuzzy
+#~ msgid "Change Hue"
+#~ msgstr "Změnit barvu"
+
+#, fuzzy
+#~ msgid "Change Hue, Saturation and Value"
+#~ msgstr "Změnit hodnotu/sytost"
+
+#~ msgid "RGB"
+#~ msgstr "RGB"
+
+#~ msgid "HSV"
+#~ msgstr "HSV"
+
+#, fuzzy
+#~ msgid "Color history"
+#~ msgstr "Historie barev"
+
+#~ msgid "Harmonies"
+#~ msgstr "Harmonie barev"
+
+#~ msgid "Analogous"
+#~ msgstr "Podobné barvy"
+
+#, fuzzy
+#~ msgid "Double complementary"
+#~ msgstr "Dvojkontrastní barvy"
+
+#~ msgid "Square"
+#~ msgstr "Barevná tetráda"
+
+#~ msgid "Triadic"
+#~ msgstr "Barevná triáda"
+
+#~ msgid "Change value/saturation"
+#~ msgstr "Změnit hodnotu/sytost"
+
+#~ msgid "Blend each color to opposite"
+#~ msgstr "Smíchat každou barvu k protější"
+
+#~ msgid "Blend each color to negative"
+#~ msgstr "Smíchat každou barvu k negativní"
+
+#~ msgid "More Opaque"
+#~ msgstr "Více neprůhledné"
+
+#~ msgid "Less Opaque"
+#~ msgstr "Méně neprůhledné"
+
+#~ msgid "Pick Context (layer, brush and color)"
+#~ msgstr "Menu pro výběr (vrstva, štětec a barva)"
+
+#, fuzzy
+#~ msgid "Change Color Hue (counter-clockwise)"
+#~ msgstr "Otočit proti směru hodinových ručiček"
+
+#, fuzzy
+#~ msgid "Change Color Hue (clockwise)"
+#~ msgstr "změnit hodnotu barvy (HSV)"
+
+#~ msgid "Copy to Clipboard"
+#~ msgstr "Kopírovat do schránky"
+
+#~ msgid "Paste Clipboard (Replace Layer)"
+#~ msgstr "Vložit ze schránky (Nahradit vrstvu)"
+
+#~ msgid "Select Layer at Cursor"
+#~ msgstr "Vybrat vrstvu pod kurzorem"
+
+#~ msgid "Next (above current)"
+#~ msgstr "Další (nad současnoou)"
+
+#~ msgid "Next (below current)"
+#~ msgstr "Další (pod současnou)"
+
+#~ msgid "Remove"
+#~ msgstr "Odstranit"
+
+#, fuzzy
+#~ msgid "Toggle Document Frame"
+#~ msgstr "Přepnout editovací mód"
+
+#~ msgid "Help!"
+#~ msgstr "Nápověda!"
+
+#, fuzzy
+#~ msgid "Save Scratchpad As..."
+#~ msgstr "Uložit jako..."
+
+#, fuzzy
+#~ msgid "Save Scratchpad as Default"
+#~ msgstr "uložit jako výchozí"
+
+#, fuzzy
+#~ msgid "Change Brush..."
+#~ msgstr "Změnit barvu"
+
+#, fuzzy
+#~ msgid "Toggle the Layers list"
+#~ msgstr "Přepínač vrstvy jako masky"
+
+#, fuzzy
+#~ msgid "Change Brush Settings in detail"
+#~ msgstr "Změnit hodnotu/sytost"
+
+#, fuzzy
+#~ msgid "Toggle the Colour Triangle"
+#~ msgstr "Barevný trojúhelník..."
+
+#~ msgid ""
+#~ "You can also drag the canvas with the mouse while holding the middle "
+#~ "mouse button or spacebar. Or with the arrow keys.\n"
+#~ "\n"
+#~ "In contrast to earlier versions, scrolling and zooming are harmless now "
+#~ "and will not make you run out of memory. But you still require a lot of "
+#~ "memory if you paint all over while fully zoomed out."
+#~ msgstr ""
+#~ "Plátnem můžete pohybovat pomocí myše, jakmile držíte prostřední tlačítko "
+#~ "myši nebo mezerník. Nebo šipkami.\n"
+#~ "\n"
+#~ "Oproti předchozím verzím, rolování a zvětšování jsou nyní neškodné a "
+#~ "nezatěžují paměť. Stále je však vyžadováno mnoho paměti, kreslíte-li při "
+#~ "plném oddálení po celé ploše."
+
+#~ msgid "Open Last"
+#~ msgstr "Otevřít poslední"
+
+#~ msgid "Reload"
+#~ msgstr "Obnovit"
+
+#, fuzzy
+#~ msgid "Menu"
+#~ msgstr "Ukázat Nabídku"
+
+#, fuzzy
+#~ msgid "Pan"
+#~ msgstr "Vzor"
+
+#~ msgid "Color Changer"
+#~ msgstr "Měnič barev"
+
+#, fuzzy
+#~ msgid "Button 1 + Shift"
+#~ msgstr "Tlačítko pro historii barev"
+
+#, fuzzy
+#~ msgid "Button 2 + Shift"
+#~ msgstr "Tlačítko pro historii barev"
+
+#, fuzzy
+#~ msgid "Button 3 + Shift"
+#~ msgstr "Tlačítko pro historii barev"
+
+#, fuzzy
+#~ msgid "Brush List Editor"
+#~ msgstr "Seznam štětců"
