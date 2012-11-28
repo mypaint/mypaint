@@ -1,13 +1,13 @@
 # MyPaint
-# Copyright (C) 2011 Elliott Sales de Andrade
+# Copyright (C) 2011-2012 Elliott Sales de Andrade
 # This file is distributed under the same license as the MyPaint package.
-# Elliott Sales de Andrade <quantum.analyst@gmail.com> 2011
+# Elliott Sales de Andrade <quantum.analyst@gmail.com> 2011-2012
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-27 18:54+0100\n"
+"POT-Creation-Date: 2012-11-28 01:06-0500\n"
 "PO-Revision-Date: 2011-02-17 23:44+0100\n"
 "Last-Translator: Elliott Sales de Andrade <quantum.analyst@gmail.com>\n"
 "Language: Canadian English\n"
@@ -240,9 +240,8 @@ msgid "Color value (brightness, intensity)"
 msgstr "Colour value (brightness, intensity)"
 
 #: ../brushsettings-gen.h:27
-#, fuzzy
 msgid "Save color"
-msgstr "Change colour hue"
+msgstr "Save colour"
 
 #: ../brushsettings-gen.h:27
 msgid ""
@@ -251,90 +250,76 @@ msgid ""
 "brush 0.5 change active color towards brush color 1.0 set the active color "
 "to the brush color when selected"
 msgstr ""
+"When selecting a brush, the colour can be restored to the colour that the "
+"brush was saved with. 0.0 do not modify the active colour when selecting "
+"this brush 0.5 change active colour towards brush colour 1.0 set the active "
+"colour to the brush colour when selected"
 
 #: ../brushsettings-gen.h:28
 msgid "Change color hue"
 msgstr "Change colour hue"
 
 #: ../brushsettings-gen.h:28
-#, fuzzy
 msgid ""
 "Change color hue.-0.1 small clockwise color hue shift 0.0 disable 0.5 "
 "counterclockwise hue shift by 180 degrees"
 msgstr ""
-"Change colour hue.\n"
-"-0.1 small clockwise colour hue shift\n"
-" 0.0 disable\n"
-" 0.5 counterclockwise hue shift by 180 degrees"
+"Change colour hue.-0.1 small clockwise colour hue shift 0.0 disable 0.5 "
+"counterclockwise hue shift by 180 degrees"
 
 #: ../brushsettings-gen.h:29
 msgid "Change color lightness (HSL)"
 msgstr "Change colour lightness (HSL)"
 
 #: ../brushsettings-gen.h:29
-#, fuzzy
 msgid ""
 "Change the color lightness (luminance) using the HSL color model.-1.0 "
 "blacker 0.0 disable 1.0 whiter"
 msgstr ""
-"Change the colour lightness (luminance) using the HSL colour model.\n"
-"-1.0 blacker\n"
-" 0.0 disable\n"
-" 1.0 whiter"
+"Change the colour lightness (luminance) using the HSL colour model.-1.0 "
+"blacker 0.0 disable 1.0 whiter"
 
 #: ../brushsettings-gen.h:30
 msgid "Change color satur. (HSL)"
 msgstr "Change colour satur. (HSL)"
 
 #: ../brushsettings-gen.h:30
-#, fuzzy
 msgid ""
 "Change the color saturation using the HSL color model.-1.0 more grayish 0.0 "
 "disable 1.0 more saturated"
 msgstr ""
-"Change the colour saturation using the HSL colour model.\n"
-"-1.0 more greyish\n"
-" 0.0 disable\n"
-" 1.0 more saturated"
+"Change the colour saturation using the HSL colour model-1.0 more greyish 0.0 "
+"disable 1.0 more saturated"
 
 #: ../brushsettings-gen.h:31
 msgid "Change color value (HSV)"
 msgstr "Change colour value (HSV)"
 
 #: ../brushsettings-gen.h:31
-#, fuzzy
 msgid ""
 "Change the color value (brightness, intensity) using the HSV color model. "
 "HSV changes are applied before HSL.-1.0 darker 0.0 disable 1.0 brigher"
 msgstr ""
 "Change the colour value (brightness, intensity) using the HSV colour model. "
-"HSV changes are applied before HSL.\n"
-"-1.0 darker\n"
-" 0.0 disable\n"
-" 1.0 brigher"
+"HSV changes are applied before HSL.-1.0 darker 0.0 disable 1.0 brighter"
 
 #: ../brushsettings-gen.h:32
 msgid "Change color satur. (HSV)"
 msgstr "Change colour satur. (HSV)"
 
 #: ../brushsettings-gen.h:32
-#, fuzzy
 msgid ""
 "Change the color saturation using the HSV color model. HSV changes are "
 "applied before HSL.-1.0 more grayish 0.0 disable 1.0 more saturated"
 msgstr ""
 "Change the colour saturation using the HSV colour model. HSV changes are "
-"applied before HSL.\n"
-"-1.0 more greyish\n"
-" 0.0 disable\n"
-" 1.0 more saturated"
+"applied before HSL.-1.0 more greyish 0.0 disable 1.0 more saturated"
 
 #: ../brushsettings-gen.h:33
 msgid "Smudge"
 msgstr ""
 
 #: ../brushsettings-gen.h:33
-#, fuzzy
 msgid ""
 "Paint with the smudge color instead of the brush color. The smudge color is "
 "slowly changed to the color you are painting on. 0.0 do not use the smudge "
@@ -342,17 +327,15 @@ msgid ""
 "color"
 msgstr ""
 "Paint with the smudge colour instead of the brush colour. The smudge colour "
-"is slowly changed to the colour you are painting on.\n"
-" 0.0 do not use the smudge colour\n"
-" 0.5 mix the smudge colour with the brush colour\n"
-" 1.0 use only the smudge colour"
+"is slowly changed to the colour you are painting on. 0.0 do not use the "
+"smudge colour 0.5 mix the smudge colour with the brush colour 1.0 use only "
+"the smudge colour"
 
 #: ../brushsettings-gen.h:34
 msgid "Smudge length"
 msgstr ""
 
 #: ../brushsettings-gen.h:34
-#, fuzzy
 msgid ""
 "This controls how fast the smudge color becomes the color you are painting "
 "on.0.0 immediately update the smudge color (requires more CPU cycles because "
@@ -360,16 +343,13 @@ msgid ""
 "the canvas color1.0 never change the smudge color"
 msgstr ""
 "This controls how fast the smudge colour becomes the colour you are painting "
-"on.\n"
-"0.0 immediately change the smudge colour\n"
-"1.0 never change the smudge colour"
+"on.0.0 immediately change the smudge colour1.0 never change the smudge colour"
 
 #: ../brushsettings-gen.h:35
 msgid "Smudge radius"
 msgstr ""
 
 #: ../brushsettings-gen.h:35
-#, fuzzy
 msgid ""
 "This modifies the radius of the circle where color is picked up for "
 "smudging. 0.0 use the brush radius-0.7 half the brush radius (fast, but not "
@@ -377,11 +357,9 @@ msgid ""
 "(slow performance)"
 msgstr ""
 "This modifies the radius of the circle where colour is picked up for "
-"smudging.\n"
-" 0.0 use the brush radius \n"
-"-0.7 half the brush radius\n"
-"+0.7 twice the brush radius\n"
-"+1.6 five times the brush radius (slow)"
+"smudging. 0.0 use the brush radius-0.7 half the brush radius (fast, but not "
+"always intuitive)+0.7 twice the brush radius+1.6 five times the brush radius "
+"(slow performance)"
 
 #: ../brushsettings-gen.h:36
 msgid "Eraser"
@@ -492,15 +470,16 @@ msgid ""
 msgstr ""
 
 #: ../brushsettings-gen.h:46
-#, fuzzy
 msgid "Colorize"
-msgstr "Colour"
+msgstr "Colourize"
 
 #: ../brushsettings-gen.h:46
 msgid ""
 "Colorize the target layer, setting its hue and saturation from the active "
 "brush colour while retaining its value and alpha."
 msgstr ""
+"Colourize the target layer, setting its hue and saturation from the active "
+"brush colour while retaining its value and alpha."
 
 #: ../brushsettings-gen.h:51
 msgid "Pressure"

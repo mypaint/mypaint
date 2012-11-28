@@ -1,13 +1,13 @@
 # MyPaint
-# Copyright (C) 2011 Elliott Sales de Andrade
+# Copyright (C) 2011-2012 Elliott Sales de Andrade
 # This file is distributed under the same license as the MyPaint package.
-# Elliott Sales de Andrade <quantum.analyst@gmail.com> 2011
+# Elliott Sales de Andrade <quantum.analyst@gmail.com> 2011-2012
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-27 18:54+0100\n"
+"POT-Creation-Date: 2012-11-28 01:06-0500\n"
 "PO-Revision-Date: 2011-02-17 23:44+0100\n"
 "Last-Translator: Elliott Sales de Andrade <quantum.analyst@gmail.com>\n"
 "Language: Canadian English\n"
@@ -135,7 +135,7 @@ msgstr ""
 
 #: ../gui/brushmanager.py:73
 msgid "Favorites"
-msgstr ""
+msgstr "Favourites"
 
 #: ../gui/brushmanager.py:74
 msgid "Ink"
@@ -199,13 +199,12 @@ msgid "Lock Alpha: paint over existing strokes only, using the current brush"
 msgstr ""
 
 #: ../gui/brushmodifier.py:65
-#, fuzzy
 msgid "Colorize"
-msgstr "Colour"
+msgstr "Colourize"
 
 #: ../gui/brushmodifier.py:66
 msgid "Colorize: alter Hue and Saturation with the current brush"
-msgstr ""
+msgstr "Colourize: alter Hue and Saturation with the current brush"
 
 #: ../gui/brushselectionwindow.py:35
 msgid "Brushes"
@@ -379,18 +378,16 @@ msgid "%s is already bound to the action '%s'"
 msgstr ""
 
 #: ../gui/colors/adjbases.py:443
-#, fuzzy
 msgid "Color details"
-msgstr "Colour value"
+msgstr "Colour details"
 
 #: ../gui/colors/adjbases.py:587
 msgid "Newly chosen color, and the color most recently used for painting"
-msgstr ""
+msgstr "Newly chosen colour, and the colour most recently used for painting"
 
 #: ../gui/colors/combined.py:126
-#, fuzzy
 msgid "Add color to Palette"
-msgstr "Add colour to Patterns"
+msgstr "Add colour to Palette"
 
 #: ../gui/colors/hcywheel.py:40
 msgid ""
@@ -427,6 +424,38 @@ msgid ""
 "The New button lets you choose one of several templates as a starting "
 "point.\n"
 msgstr ""
+"<b>Gamut mask editor</b>\n"
+"\n"
+"Edit the gamut mask here, or turn it off or on. Gamut masks are like a piece "
+"of\n"
+"tracing paper with cut-out holes, placed over the colour wheel to limit the\n"
+"range of colours you can select. This allows you to plan your colour schemes "
+"in\n"
+"advance, which is useful for colour scripting or to create specific moods. "
+"The\n"
+"theory is that the corners of each mask shape represent a <i>subjective</i>\n"
+"primary colour, and that each shape contains all the colours which can be "
+"mixed\n"
+"using those corner primaries. Subjective secondary colours lie at the "
+"midpoints\n"
+"of the shape edges, and the center of the shape is the subjective neutral "
+"tone\n"
+"for the shape.\n"
+"\n"
+"Click to add shapes if the wheel is blank. Shapes can be dragged around and\n"
+"their outlines can be adjusted by adding or moving the control points. Make "
+"a\n"
+"shape too small to be useful to remove it: dragging a shape to the edge of "
+"the\n"
+"disc is a quick way of doing this. You can delete shapes by dragging them\n"
+"inside other shapes too. The entire mask can be rotated by turning the edge "
+"of\n"
+"the disc to generate new and unexpected colour schemes.\n"
+"\n"
+"Gamut masks can be saved to GIMP-format palette files, and loaded from "
+"them.\n"
+"The New button lets you choose one of several templates as a starting "
+"point.\n"
 
 #: ../gui/colors/hcywheel.py:95
 msgid "Gamut mask active"
@@ -463,7 +492,7 @@ msgstr ""
 
 #: ../gui/colors/hcywheel.py:903
 msgid "Weighted more strongly towards the dominant colour."
-msgstr ""
+msgstr "Weighted more strongly towards the dominant colour."
 
 #: ../gui/colors/hcywheel.py:907
 msgid "Complementary"
@@ -474,6 +503,8 @@ msgid ""
 "Contrasting opposites, balanced by having central neutrals between them on "
 "the colour wheel."
 msgstr ""
+"Contrasting opposites, balanced by having central neutrals between them on "
+"the colour wheel."
 
 #: ../gui/colors/hcywheel.py:917
 msgid "Mood and Accent"
@@ -484,6 +515,8 @@ msgid ""
 "One main range of colors, with a complementary accent for variation and "
 "highlights."
 msgstr ""
+"One main range of colours, with a complementary accent for variation and "
+"highlights."
 
 #. [HCYColor((H+0.483)%1, 0.95, Y),
 #. HCYColor((H+0.517)%1, 0.95, Y),
@@ -498,6 +531,8 @@ msgid ""
 "Two analogous colours and a complement to them, with no secondary colours "
 "between them."
 msgstr ""
+"Two analogous colours and a complement to them, with no secondary colours "
+"between them."
 
 #: ../gui/colors/hcywheel.py:934
 msgid "New gamut mask from template"
@@ -548,6 +583,8 @@ msgid ""
 "Set the color using cylindrical hue/chroma/luma space. The circular slices "
 "are equiluminant."
 msgstr ""
+"Set the colour using cylindrical hue/chroma/luma space. The circular slices "
+"are equiluminant."
 
 #. Tooltip mappings, indexed by whatever the slider currently represents
 #: ../gui/colors/hsvcube.py:35 ../gui/colors/sliders.py:178
@@ -587,14 +624,12 @@ msgid "An HSV cube which can be rotated to show different planar slices."
 msgstr ""
 
 #: ../gui/colors/hsvtriangle.py:41
-#, fuzzy
 msgid "HSV Triangle"
-msgstr "Colour Triangle..."
+msgstr ""
 
 #: ../gui/colors/hsvtriangle.py:45
-#, fuzzy
 msgid "The standard GTK color selector"
-msgstr "MyPaint colour selector"
+msgstr "The standard GTK colour selector"
 
 #: ../gui/colors/hsvwheel.py:91
 msgid "HSV wheel"
@@ -622,7 +657,7 @@ msgstr ""
 
 #: ../gui/colors/paletteview.py:77
 msgid "Set the color from a loadable, editable palette."
-msgstr ""
+msgstr "Set the colour from a loadable, editable palette."
 
 #: ../gui/colors/paletteview.py:123
 msgid "Palette Editor"
@@ -665,14 +700,12 @@ msgid "Number of columns"
 msgstr ""
 
 #: ../gui/colors/paletteview.py:197
-#, fuzzy
 msgid "Color name:"
-msgstr "Colour Sampler..."
+msgstr "Colour name:"
 
 #: ../gui/colors/paletteview.py:198
-#, fuzzy
 msgid "Current colour's name"
-msgstr "Current colour vs. Last Used"
+msgstr "Current colour's name"
 
 #: ../gui/colors/paletteview.py:295
 msgid "Empty palette slot"
@@ -690,14 +723,15 @@ msgstr ""
 msgid ""
 "Color swatch palette. Drop colors here and drag them around to organize."
 msgstr ""
+"Colour swatch palette. Drop colours here and drag them around to organize."
 
 #: ../gui/colors/paletteview.py:676
 msgid "Empty palette slot (drag a color here)"
-msgstr ""
+msgstr "Empty palette slot (drag a colour here)"
 
 #: ../gui/colors/picker.py:69
 msgid "Pick a color from the screen"
-msgstr ""
+msgstr "Pick a colour from the screen"
 
 #: ../gui/colors/sliders.py:88
 msgid "Component sliders"
@@ -705,7 +739,7 @@ msgstr ""
 
 #: ../gui/colors/sliders.py:92
 msgid "Adjust individual components of the colour."
-msgstr ""
+msgstr "Adjust individual components of the colour."
 
 #: ../gui/colors/sliders.py:138
 msgid "RGB Red"
@@ -732,9 +766,8 @@ msgid "HCY Luma (Y')"
 msgstr ""
 
 #: ../gui/colorwindow.py:26
-#, fuzzy
 msgid "Colors"
-msgstr "Colour"
+msgstr "Colours"
 
 #: ../gui/dialogs.py:54 ../gui/layerswindow.py:78
 msgid "Name"
@@ -798,9 +831,8 @@ msgstr ""
 
 #. Quick brush changer
 #: ../gui/dialogs.py:359 ../gui/toolbar.py:355
-#, fuzzy
 msgid "Change Brush"
-msgstr "Change colour hue"
+msgstr ""
 
 #: ../gui/document.py:240
 #, python-format
@@ -845,9 +877,8 @@ msgid "Redo"
 msgstr ""
 
 #: ../gui/drawwindow.py:474
-#, fuzzy
 msgid "Set current color"
-msgstr "Currently chosen colour"
+msgstr "Set current colour"
 
 #: ../gui/drawwindow.py:634
 msgid "Leave Fullscreen Mode"
@@ -948,7 +979,7 @@ msgstr ""
 
 #: ../gui/drawwindow.py:869
 msgid "translator-credits"
-msgstr ""
+msgstr "Elliott Sales de Andrade"
 
 #: ../gui/drawwindow.py:877
 msgid "Move your mouse over a menu entry, then press the key to assign."
@@ -1089,14 +1120,12 @@ msgid "Resolution:"
 msgstr ""
 
 #: ../gui/framewindow.py:287
-#, fuzzy
 msgid "Color:"
-msgstr "Colour"
+msgstr "Colour:"
 
 #: ../gui/framewindow.py:307
-#, fuzzy
 msgid "Frame Color"
-msgstr "Change colour hue"
+msgstr "Frame Colour"
 
 #: ../gui/framewindow.py:356
 msgid "Crop to Current Layer"
@@ -1484,9 +1513,8 @@ msgid "MyPaint"
 msgstr ""
 
 #: ../gui/toolbar.py:84
-#, fuzzy
 msgid "Current Color"
-msgstr "Currently chosen colour"
+msgstr "Current Colour"
 
 #: ../gui/toolbar.py:86
 msgid "Current Brush"
@@ -1506,27 +1534,23 @@ msgid "Line Pressure"
 msgstr ""
 
 #: ../gui/toolbar.py:227
-#, fuzzy
 msgid "Color History and other tools"
-msgstr "Colour History"
+msgstr "Colour History and other tools"
 
 #. Colour changing
 #: ../gui/toolbar.py:250
-#, fuzzy
 msgid "Change Color"
-msgstr "Change colour hue"
+msgstr "Change Colour"
 
 #: ../gui/toolbar.py:288
-#, fuzzy
 msgid "Color Window"
-msgstr "Colour Ring"
+msgstr "Colour Window"
 
 #. History
 #. Brush history
 #: ../gui/toolbar.py:292 ../gui/toolbar.py:377
-#, fuzzy
 msgid "Recently Used"
-msgstr "Recently used colours"
+msgstr ""
 
 #: ../gui/toolbar.py:335
 msgid "Brush history etc."
@@ -1685,7 +1709,7 @@ msgstr ""
 
 #: ../lib/layer.py:18
 msgid "The top layer only, without blending colors."
-msgstr ""
+msgstr "The top layer only, without blending colours."
 
 #: ../lib/layer.py:19
 msgid "Multiply"
@@ -1777,7 +1801,7 @@ msgstr ""
 
 #: ../lib/layer.py:45
 msgid "Subtracts the darker color from the lighter of the two."
-msgstr ""
+msgstr "Subtracts the darker colour from the lighter of the two."
 
 #: ../lib/layer.py:46
 msgid "Exclusion"
@@ -1806,6 +1830,8 @@ msgid ""
 "Applies the saturation of the top layer's colors to the hue and luminosity "
 "of the backdrop."
 msgstr ""
+"Applies the saturation of the top layer's colours to the hue and luminosity "
+"of the backdrop."
 
 #: ../lib/layer.py:55
 msgid ""
@@ -1824,959 +1850,953 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/mypaint.xml.h:1
-msgctxt "Menu|File|"
-msgid "New"
+msgid "Add a new layer above the current layer"
 msgstr ""
 
 #: ../po/tmp/mypaint.xml.h:2
-msgid "Start with a new blank canvas"
+msgid "Add a new layer below the current layer"
 msgstr ""
 
 #: ../po/tmp/mypaint.xml.h:3
-msgctxt "Menu|File|"
-msgid "Open..."
+msgid "Choose a background image"
 msgstr ""
 
 #: ../po/tmp/mypaint.xml.h:4
-msgid "Open a file, replacing the current painting"
+msgid "Choose a layer by picking a brushstroke on it"
 msgstr ""
 
 #: ../po/tmp/mypaint.xml.h:5
-msgctxt "Menu|File|"
-msgid "Open Most Recent"
+msgid "Clear the current layer"
 msgstr ""
 
 #: ../po/tmp/mypaint.xml.h:6
-msgid "Open the last file you saved"
-msgstr ""
+msgid "Color changer popup (concentric rings)"
+msgstr "Colour changer popup (concentric rings)"
 
 #: ../po/tmp/mypaint.xml.h:7
-msgctxt "Menu|File|"
-msgid "Revert"
-msgstr ""
+msgid "Color changer popup (crossed bowl)"
+msgstr "Colour changer popup (crossed bowl)"
 
 #: ../po/tmp/mypaint.xml.h:8
-msgid "Reload the current file"
-msgstr ""
+msgid "Color changer popup (wash)"
+msgstr "Colour changer popup (wash)"
 
 #: ../po/tmp/mypaint.xml.h:9
-msgctxt "Menu|File|"
-msgid "Save"
-msgstr ""
+msgid "Color details dialog with text entry"
+msgstr "Colour details dialog with text entry"
 
 #: ../po/tmp/mypaint.xml.h:10
-msgid "Save to a file"
+msgid "Copy the current layer to the clipboard"
 msgstr ""
 
 #: ../po/tmp/mypaint.xml.h:11
-msgctxt "Menu|File|"
-msgid "Save As..."
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:12
-msgid "Save to a file with a new name"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:13
-msgctxt "Menu|File|"
-msgid "Export..."
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:14
-msgid "Export to a file"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:15
-msgctxt "Menu|File|"
-msgid "Save As Scrap"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:16
-msgid ""
-"Saves to a new scrap file. If the drawing is currently saved as a scrap, "
-"this will write a new revision of it."
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:17
-msgctxt "Menu|File|"
-msgid "Open Previous Scrap"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:18
-msgid "Load the previous scrap file, replacing the current drawing"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:19
-msgctxt "Menu|File|"
-msgid "Open Next Scrap"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:20
-msgid "Load the next scrap file, replacing the current drawing"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:21
-msgctxt "Menu|Brush|"
-msgid "Bigger"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:22
-msgid "Increase brush radius"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:23
-msgctxt "Menu|Brush|"
-msgid "Smaller"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:24
-msgid "Decrease brush radius"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:25
-msgctxt "Menu|Brush|"
-msgid "Increase Opacity"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:26
-msgid "Increase brush opacity"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:27
-msgctxt "Menu|Brush|"
-msgid "Decrease Opacity"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:28
 msgid "Decrease brush opacity"
 msgstr ""
 
+#: ../po/tmp/mypaint.xml.h:12
+msgid "Decrease brush radius"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:13
+msgid "Decrease color brightness"
+msgstr "Decrease colour brightness"
+
+#: ../po/tmp/mypaint.xml.h:14
+msgid "Decrease color saturation"
+msgstr "Decrease colour saturation"
+
+#: ../po/tmp/mypaint.xml.h:15
+msgid "Decrease magnification"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:16
+msgid "Delete the current layer"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:17
+msgid "Document Frame..."
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:18
+msgid ""
+"Edit Frame: define a frame around the document to give it a finite size. The "
+"frame is used when exporting."
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:19
+msgid "Edit and rearrange layers"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:20
+msgid "Edit the active brush's settings"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:21
+msgid "Enter a new name for the current layer"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:22
+msgid "Export to a file"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:23
+msgid "Flip the view left to right"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:24
+msgid "Flip the view upside-down"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:25
+msgid "Freehand Drawing: draw and paint freely, without geometric constraints"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:26
+msgid "Go one layer down in the layers stack"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:27
+msgid "Go one layer up in the layers stack"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:28
+msgid "Increase brush opacity"
+msgstr ""
+
 #: ../po/tmp/mypaint.xml.h:29
-msgctxt "Menu|Color|Adjust Color|"
-msgid "Brighter"
+msgid "Increase brush radius"
 msgstr ""
 
 #: ../po/tmp/mypaint.xml.h:30
 msgid "Increase color brightness"
-msgstr ""
+msgstr "Increase colour brightness"
 
 #: ../po/tmp/mypaint.xml.h:31
-msgctxt "Menu|Color|Adjust Color|"
-msgid "Darker"
-msgstr ""
+msgid "Increase color saturation"
+msgstr "Increase colour saturation"
 
 #: ../po/tmp/mypaint.xml.h:32
-msgid "Decrease color brightness"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:33
-msgctxt "Menu|Color|Adjust Color|"
-msgid "Hue Anticlockwise"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:34
-#, fuzzy
-msgid "Rotate color hue anticlockwise"
-msgstr "Change colour value (HSV)"
-
-#: ../po/tmp/mypaint.xml.h:35
-msgctxt "Menu|Color|Adjust Color|"
-msgid "Hue Clockwise"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:36
-#, fuzzy
-msgid "Rotate color hue clockwise"
-msgstr "Change colour value (HSV)"
-
-#: ../po/tmp/mypaint.xml.h:37
-msgctxt "Menu|Color|Adjust Color|"
-msgid "Purer"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:38
-msgid "Increase color saturation"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:39
-#, fuzzy
-msgctxt "Menu|Color|Adjust Color|"
-msgid "Grayer"
-msgstr "Greyer"
-
-#: ../po/tmp/mypaint.xml.h:40
-msgid "Decrease color saturation"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:41
-msgctxt "Menu|Brush|"
-msgid "Pick Stroke and Layer"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:42
-msgid "Pick brushstroke: settings and layer"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:43
-#, fuzzy
-msgctxt "Menu|Brush|Shortcut Keys|"
-msgid "Restore Color"
-msgstr "Currently chosen colour"
-
-#: ../po/tmp/mypaint.xml.h:44
-msgctxt "Menu|Brush|Shortcut Keys|"
-msgid "Save to Most Recent"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:45
-msgid "Save brush to the most recent shortcut"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:46
-msgctxt "Menu|Layer|"
-msgid "Clear"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:47
-msgid "Clear the current layer"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:48
-msgctxt "Menu|Layer|"
-msgid "Copy"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:49
-msgid "Copy the current layer to the clipboard"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:50
-msgctxt "Menu|Layer|"
-msgid "Paste"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:51
-msgid "Replaces the layer with the clipboard's contents"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:52
-msgctxt "Menu|Layer|Go to Layer|"
-msgid "At Cursor"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:53
-msgid "Choose a layer by picking a brushstroke on it"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:54
-msgctxt "Menu|Layer|Go to Layer|"
-msgid "Above"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:55
-msgid "Go one layer up in the layers stack"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:56
-msgctxt "Menu|Layer|Go to Layer|"
-msgid "Below"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:57
-msgid "Go one layer down in the layers stack"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:58
-msgctxt "Menu|Layer|"
-msgid "New (above)"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:59
-msgid "Add a new layer above the current layer"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:60
-msgctxt "Menu|Layer|"
-msgid "New (below)"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:61
-msgid "Add a new layer below the current layer"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:62
-msgctxt "Menu|Layer|"
-msgid "Merge Down"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:63
-msgid "Merge layer with the one beneath it"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:64
-msgctxt "Menu|Layer|"
-msgid "Delete"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:65
-msgid "Delete the current layer"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:66
-msgctxt "Menu|Layer"
-msgid "Convert to Normal mode"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:67
-msgctxt "Menu|Layer|Opacity|"
-msgid "Increase"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:68
-msgctxt "Menu|Layer|Opacity|"
-msgid "Decrease"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:69
-msgctxt "Menu|Layer|"
-msgid "Raise"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:70
-msgid "Raise the current layer one step in the layers stack"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:71
-msgctxt "Menu|Layer|"
-msgid "Lower"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:72
-msgid "Lower the current layer one step in the layers stack"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:73
-msgctxt "Menu|Layer|"
-msgid "Duplicate"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:74
-msgid "Make an exact duplicate of the current layer"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:75
-msgctxt "Menu|Layer|"
-msgid "Rename..."
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:76
-msgid "Enter a new name for the current layer"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:77
-msgctxt "Menu|Layer|"
-msgid "Locked"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:78
-msgid "The current layer's locked state: locked layers cannot be drawn to"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:79
-msgctxt "Menu|Layer|"
-msgid "Visible"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:80
-msgid "The current layer's visibility state"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:81
-msgctxt "Menu|View|"
-msgid "Reset and Center"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:82
-msgid "Reset Zoom, Rotation and Mirroring, and recenter the document"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:83
-msgctxt "Menu|View|"
-msgid "Fit"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:84
-msgid "Zoom to fit the document, and recenter"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:85
-msgctxt "Menu|View|"
-msgid "Reset"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:86
-msgctxt "Menu|View|Reset|"
-msgid "Zoom"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:87
-msgctxt "Menu|View|Reset|"
-msgid "Rotation"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:88
-msgctxt "Menu|View|Reset|"
-msgid "Mirror"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:89
-msgctxt "Menu|View|Adjust View|"
-msgid "Zoom In"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:90
 msgid "Increase magnification"
 msgstr ""
 
-#: ../po/tmp/mypaint.xml.h:91
-msgctxt "Menu|View|Adjust View|"
-msgid "Zoom Out"
+#: ../po/tmp/mypaint.xml.h:33
+msgid "Layers Window"
 msgstr ""
 
-#: ../po/tmp/mypaint.xml.h:92
-msgid "Decrease magnification"
+#: ../po/tmp/mypaint.xml.h:34
+msgid "Load the next scrap file, replacing the current drawing"
 msgstr ""
 
-#: ../po/tmp/mypaint.xml.h:93
-#, fuzzy
-msgctxt "Menu|View|Adjust View|"
-msgid "Rotate Counterclockwise"
-msgstr "Change colour value (HSV)"
-
-#: ../po/tmp/mypaint.xml.h:94
-msgid "Rotate the view counterclockwise"
+#: ../po/tmp/mypaint.xml.h:35
+msgid "Load the previous scrap file, replacing the current drawing"
 msgstr ""
 
-#: ../po/tmp/mypaint.xml.h:95
-msgctxt "Menu|View|Adjust View|"
-msgid "Rotate Clockwise"
+#: ../po/tmp/mypaint.xml.h:36
+msgid "Lower the current layer one step in the layers stack"
 msgstr ""
 
-#: ../po/tmp/mypaint.xml.h:96
-msgid "Rotate the view clockwise"
+#: ../po/tmp/mypaint.xml.h:37
+msgid "Make an exact duplicate of the current layer"
 msgstr ""
 
-#: ../po/tmp/mypaint.xml.h:97
-msgctxt "Menu|View|Adjust View|"
-msgid "Mirror Horizontal"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:98
-msgid "Flip the view left to right"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:99
-msgctxt "Menu|View|Adjust View|"
-msgid "Mirror Vertical"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:100
-msgid "Flip the view upside-down"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:101
-msgctxt "Menu|View|"
-msgid "Layer Solo"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:102
-msgctxt "Menu|View|"
-msgid "Hide Layers Above Current"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:103
-msgctxt "Menu|Brush|"
-msgid "Blend Mode"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:104
-msgctxt "Menu|Edit|"
-msgid "Symmetrical Painting"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:105
-msgid "Mirrors all strokes drawn around the vertical axis"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:106
-msgctxt "Menu|Help|Debug|"
-msgid "Print Brush Input Values to Console"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:107
-msgctxt "Menu|Help|Debug|"
-msgid "Visualize Rendering"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:108
-msgid "Show rendering updates on-screen, for debugging"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:109
-msgctxt "Menu|Help|Debug|"
-msgid "Disable GTK Double Buffering"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:110
-msgctxt "Menu|"
-msgid "File"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:111
-msgctxt "Menu|File|"
-msgid "Quit"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:112
-msgctxt "Menu|File|"
-msgid "Frame Enabled"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:113
-msgctxt "Menu|"
-msgid "Edit"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:114
-#, fuzzy
+#: ../po/tmp/mypaint.xml.h:38
 msgctxt "Menu|"
 msgid "Color"
 msgstr "Colour"
 
-#: ../po/tmp/mypaint.xml.h:115
-#, fuzzy
-msgctxt "Menu|Color|"
-msgid "Adjust Color"
-msgstr "Currently chosen colour"
-
-#: ../po/tmp/mypaint.xml.h:116
-#, fuzzy
-msgctxt "Menu|Color|"
-msgid "Pick Color"
-msgstr "Pick Colour"
-
-#: ../po/tmp/mypaint.xml.h:117
-#, fuzzy
-msgctxt "Menu|Color|"
-msgid "Color History"
-msgstr "Colour History"
-
-#: ../po/tmp/mypaint.xml.h:118
-#, fuzzy
-msgctxt "Menu|Color|"
-msgid "Change Color"
-msgstr "Change colour hue"
-
-#: ../po/tmp/mypaint.xml.h:119
-#, fuzzy
-msgid "Color changer popup (crossed bowl)"
-msgstr "Colour Changer"
-
-#: ../po/tmp/mypaint.xml.h:120
-#, fuzzy
-msgctxt "Menu|Color|"
-msgid "Change Color (wash)"
-msgstr "Change colour hue"
-
-#: ../po/tmp/mypaint.xml.h:121
-#, fuzzy
-msgid "Color changer popup (wash)"
-msgstr "Colour Changer"
-
-#: ../po/tmp/mypaint.xml.h:122
-#, fuzzy
-msgctxt "Menu|Color|"
-msgid "Change Color (ring)"
-msgstr "Change colour hue"
-
-#: ../po/tmp/mypaint.xml.h:123
-msgid "Color changer popup (concentric rings)"
+#: ../po/tmp/mypaint.xml.h:39
+msgctxt "Menu|"
+msgid "Edit"
 msgstr ""
 
-#: ../po/tmp/mypaint.xml.h:124
-#, fuzzy
-msgctxt "Menu|Color|"
-msgid "Color Details"
-msgstr "Colour value"
-
-#: ../po/tmp/mypaint.xml.h:125
-msgid "Color details dialog with text entry"
+#: ../po/tmp/mypaint.xml.h:40
+msgctxt "Menu|"
+msgid "File"
 msgstr ""
 
-#: ../po/tmp/mypaint.xml.h:126
-msgctxt "Menu|Color"
-msgid "Next Palette Color"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:127
-msgid "Next color in the palette"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:128
-msgctxt "Menu|Color|"
-msgid "Previous Palette Color"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:129
-msgid "Previous color in the palette"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:130
-#, fuzzy
+#: ../po/tmp/mypaint.xml.h:41
 msgctxt "Menu|"
 msgid "Layer"
-msgstr "Greyer"
-
-#: ../po/tmp/mypaint.xml.h:131
-msgctxt "Menu|Layer|"
-msgid "Opacity"
 msgstr ""
 
-#: ../po/tmp/mypaint.xml.h:132
-msgctxt "Menu|Layer|"
-msgid "Go to Layer"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:133
+#: ../po/tmp/mypaint.xml.h:42
 msgctxt "Menu|"
 msgid "Scratchpad"
 msgstr ""
 
-#: ../po/tmp/mypaint.xml.h:134
-msgctxt "Menu|Scratchpad|"
-msgid "New"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:135
-msgctxt "Menu|Scratchpad|"
-msgid "Open..."
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:136
-msgctxt "Menu|Scratchpad|"
-msgid "Save"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:137
-msgctxt "Menu|Scratchpad|"
-msgid "Save As..."
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:138
-msgctxt "Menu|Scratchpad|"
-msgid "Revert"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:139
-msgctxt "Menu|Scratchpad|"
-msgid "Save as Default"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:140
-#, fuzzy
-msgctxt "Menu|Scratchpad|"
-msgid "Clear Default"
-msgstr "Colour value"
-
-#: ../po/tmp/mypaint.xml.h:141
-msgctxt "Menu|Scratchpad|"
-msgid "Use Main Background"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:142
-#, fuzzy
-msgctxt "Menu|Scratchpad|"
-msgid "Color Dabs"
-msgstr "Colour value"
-
-#: ../po/tmp/mypaint.xml.h:143
-msgctxt "Menu|Scratchpad|Color Dabs|"
-msgid "Render from File..."
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:144
-msgctxt "Menu|Scratchpad|Color Dabs|"
-msgid "Saturation Spread for Current Color"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:145
-msgctxt "Menu|Brush|"
-msgid "Brush"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:146
-msgctxt "Menu|Brush|"
-msgid "Shortcut Keys"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:147
-msgctxt "Menu|Brush|Shortcut Keys|"
-msgid "Help"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:148
-#, fuzzy
-msgctxt "Menu|Brush|"
-msgid "Change Brush"
-msgstr "Change colour hue"
-
-#: ../po/tmp/mypaint.xml.h:149
-msgctxt "Menu|Brush|"
-msgid "Get More Brushes..."
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:150
-msgctxt "Menu|Brush|"
-msgid "Import Brushes..."
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:151
-msgctxt "Menu|Help|"
-msgid "Help"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:152
-msgctxt "Menu|Help|"
-msgid "Where is the Documentation?"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:153
-msgctxt "Menu|Help|"
-msgid "Change the Keyboard Shortcuts?"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:154
-msgctxt "Menu|Help|"
-msgid "About MyPaint"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:155
-msgctxt "Menu|Help|"
-msgid "Debug"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:156
-msgctxt "Menu|Help|Debug|"
-msgid "Print Memory Leak Info to Console (Slow!)"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:157
-msgctxt "Menu|Help|Debug|"
-msgid "Run Garbage Collector Now"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:158
-msgctxt "Menu|Help|Debug|"
-msgid "Start/Stop Python Profiling (cProfile)"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:159
-msgctxt "Menu|Help|Debug|"
-msgid "GTK Input Device Dialog"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:160
+#: ../po/tmp/mypaint.xml.h:43
 msgctxt "Menu|"
 msgid "View"
 msgstr ""
 
-#: ../po/tmp/mypaint.xml.h:161
-msgctxt "Menu|View|"
-msgid "Toolbars"
+#: ../po/tmp/mypaint.xml.h:44
+msgctxt "Menu|Brush|"
+msgid "Bigger"
 msgstr ""
 
-#: ../po/tmp/mypaint.xml.h:162
-msgctxt "Menu|View|"
-msgid "Feedback"
+#: ../po/tmp/mypaint.xml.h:45
+msgctxt "Menu|Brush|"
+msgid "Blend Mode"
 msgstr ""
 
-#: ../po/tmp/mypaint.xml.h:163
-msgctxt "Menu|View|"
-msgid "Adjust View"
+#: ../po/tmp/mypaint.xml.h:46
+msgctxt "Menu|Brush|"
+msgid "Brush"
 msgstr ""
 
-#: ../po/tmp/mypaint.xml.h:164
-msgctxt "Menu|View|"
-msgid "Popup Menu"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:165
-msgctxt "Menu|Edit|"
-msgid "Preferences"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:166
-msgid "Test Input Devices"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:167
-msgid "Document Frame..."
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:168
-msgid "Set and adjust a frame for the canvas"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:169
-msgid "Layers Window"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:170
-msgid "Edit and rearrange layers"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:171
-msgctxt "Menu|Layer|"
-msgid "Choose Background"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:172
-msgid "Choose a background image"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:173
+#: ../po/tmp/mypaint.xml.h:47
 msgctxt "Menu|Brush|"
 msgid "Brushes Window"
 msgstr ""
 
-#: ../po/tmp/mypaint.xml.h:174
-msgid "Select brushes, and edit brush sets"
+#: ../po/tmp/mypaint.xml.h:48
+msgctxt "Menu|Brush|"
+msgid "Change Brush"
 msgstr ""
 
-#: ../po/tmp/mypaint.xml.h:175
+#: ../po/tmp/mypaint.xml.h:49
+msgctxt "Menu|Brush|"
+msgid "Decrease Opacity"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:50
+msgctxt "Menu|Brush|"
+msgid "Get More Brushes..."
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:51
+msgctxt "Menu|Brush|"
+msgid "Import Brushes..."
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:52
+msgctxt "Menu|Brush|"
+msgid "Increase Opacity"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:53
+msgctxt "Menu|Brush|"
+msgid "Pick Stroke and Layer"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:54
 msgctxt "Menu|Brush|"
 msgid "Settings Window"
 msgstr ""
 
-#: ../po/tmp/mypaint.xml.h:176
-msgid "Edit the active brush's settings"
+#: ../po/tmp/mypaint.xml.h:55
+msgctxt "Menu|Brush|"
+msgid "Shortcut Keys"
 msgstr ""
 
-#: ../po/tmp/mypaint.xml.h:177
-#, fuzzy
+#: ../po/tmp/mypaint.xml.h:56
+msgctxt "Menu|Brush|"
+msgid "Smaller"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:57
+msgctxt "Menu|Brush|Shortcut Keys|"
+msgid "Help"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:58
+msgctxt "Menu|Brush|Shortcut Keys|"
+msgid "Restore Color"
+msgstr "Restore Colour"
+
+#: ../po/tmp/mypaint.xml.h:59
+msgctxt "Menu|Brush|Shortcut Keys|"
+msgid "Save to Most Recent"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:60
+msgctxt "Menu|Color"
+msgid "Next Palette Color"
+msgstr "Next Palette Colour"
+
+#: ../po/tmp/mypaint.xml.h:61
+msgctxt "Menu|Color|"
+msgid "Adjust Color"
+msgstr "Adjust Colour"
+
+#: ../po/tmp/mypaint.xml.h:62
+msgctxt "Menu|Color|"
+msgid "Change Color"
+msgstr "Change Colour"
+
+#: ../po/tmp/mypaint.xml.h:63
+msgctxt "Menu|Color|"
+msgid "Change Color (ring)"
+msgstr "Change Colour (ring)"
+
+#: ../po/tmp/mypaint.xml.h:64
+msgctxt "Menu|Color|"
+msgid "Change Color (wash)"
+msgstr "Change Colour (wash)"
+
+#: ../po/tmp/mypaint.xml.h:65
+msgctxt "Menu|Color|"
+msgid "Color Details"
+msgstr "Colour Details"
+
+#: ../po/tmp/mypaint.xml.h:66
+msgctxt "Menu|Color|"
+msgid "Color History"
+msgstr "Colour History"
+
+#: ../po/tmp/mypaint.xml.h:67
 msgctxt "Menu|Color|"
 msgid "Colors Window"
-msgstr "Colour Ring"
+msgstr "Colours Window"
 
-#: ../po/tmp/mypaint.xml.h:178
-msgid "Set the color used for painting"
+#: ../po/tmp/mypaint.xml.h:68
+msgctxt "Menu|Color|"
+msgid "Pick Color"
+msgstr "Pick Colour"
+
+#: ../po/tmp/mypaint.xml.h:69
+msgctxt "Menu|Color|"
+msgid "Previous Palette Color"
+msgstr "Previous Palette Colour"
+
+#: ../po/tmp/mypaint.xml.h:70
+msgctxt "Menu|Color|Adjust Color|"
+msgid "Brighter"
 msgstr ""
 
-#: ../po/tmp/mypaint.xml.h:179
-msgctxt "Menu|Scratchpad|"
-msgid "Scratchpad Window"
+#: ../po/tmp/mypaint.xml.h:71
+msgctxt "Menu|Color|Adjust Color|"
+msgid "Darker"
 msgstr ""
 
-#: ../po/tmp/mypaint.xml.h:180
-msgid "Mix colors and make sketches on separate scrap pages"
+#: ../po/tmp/mypaint.xml.h:72
+msgctxt "Menu|Color|Adjust Color|"
+msgid "Grayer"
+msgstr "Greyer"
+
+#: ../po/tmp/mypaint.xml.h:73
+msgctxt "Menu|Color|Adjust Color|"
+msgid "Hue Anticlockwise"
 msgstr ""
 
-#: ../po/tmp/mypaint.xml.h:181
-msgctxt "Menu|View|"
-msgid "Subwindows"
+#: ../po/tmp/mypaint.xml.h:74
+msgctxt "Menu|Color|Adjust Color|"
+msgid "Hue Clockwise"
 msgstr ""
 
-#: ../po/tmp/mypaint.xml.h:182
-msgid "Show subwindows"
+#: ../po/tmp/mypaint.xml.h:75
+msgctxt "Menu|Color|Adjust Color|"
+msgid "Purer"
 msgstr ""
 
-#: ../po/tmp/mypaint.xml.h:183
-msgctxt "Menu|View|Feedback|"
-msgid "Zoom Level"
+#: ../po/tmp/mypaint.xml.h:76
+msgctxt "Menu|Edit|"
+msgid "Connected Lines"
 msgstr ""
 
-#: ../po/tmp/mypaint.xml.h:184
-msgid "Show the zoom level when zooming in or out"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:185
-msgctxt "Menu|View|Feedback|"
-msgid "Last Painting Position"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:186
-msgid "Show where strokes end"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:187
-msgctxt "Menu|View|Feedback|"
-msgid "Axis of Symmetry"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:188
-msgid "Show the symmetry axis"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:189
-msgctxt "Menu|View|Toolbars|"
-msgid "Menubar Only"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:190
-msgid "Show menu bar"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:191
-msgctxt "Menu|View|Toolbars|"
-msgid "Toolbar Only"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:192
-msgid "Show toolbar"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:193
-msgctxt "Menu|View|Toolbars|"
-msgid "Both"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:194
-msgid "Show both the menu bar and the toolbar"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:195
-#, fuzzy
+#: ../po/tmp/mypaint.xml.h:77
 msgctxt "Menu|Edit|"
 msgid "Current Mode"
-msgstr "Currently chosen colour"
+msgstr ""
 
-#: ../po/tmp/mypaint.xml.h:196
+#: ../po/tmp/mypaint.xml.h:78
+msgctxt "Menu|Edit|"
+msgid "Ellipses and Circles"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:79
+msgctxt "Menu|Edit|"
+msgid "Freehand Drawing"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:80
+msgctxt "Menu|Edit|"
+msgid "Lines and Curves"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:81
+msgctxt "Menu|Edit|"
+msgid "Preferences"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:82
+msgctxt "Menu|Edit|"
+msgid "Symmetrical Painting"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:83
+msgctxt "Menu|Edit|Current Mode|"
+msgid "Connected Lines"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:84
+msgctxt "Menu|Edit|Current Mode|"
+msgid "Edit Frame"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:85
+msgctxt "Menu|Edit|Current Mode|"
+msgid "Ellipses and Circles"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:86
 msgctxt "Menu|Edit|Current Mode|"
 msgid "Freehand Drawing"
 msgstr ""
 
-#: ../po/tmp/mypaint.xml.h:197
-msgctxt "Toolbar|"
-msgid "Freehand"
+#: ../po/tmp/mypaint.xml.h:87
+msgctxt "Menu|Edit|Current Mode|"
+msgid "Lines and Curves"
 msgstr ""
 
-#: ../po/tmp/mypaint.xml.h:198
-msgid "Freehand Drawing: draw and paint freely, without geometric constraints"
+#: ../po/tmp/mypaint.xml.h:88
+msgctxt "Menu|Edit|Current Mode|"
+msgid "Move Layer"
 msgstr ""
 
-#: ../po/tmp/mypaint.xml.h:199
-msgctxt "Menu|Edit|"
-msgid "Freehand Drawing"
+#: ../po/tmp/mypaint.xml.h:89
+msgctxt "Menu|Edit|Current Mode|"
+msgid "Rotate View"
 msgstr ""
 
-#: ../po/tmp/mypaint.xml.h:200
+#: ../po/tmp/mypaint.xml.h:90
 msgctxt "Menu|Edit|Current Mode|"
 msgid "Scroll View"
 msgstr ""
 
-#: ../po/tmp/mypaint.xml.h:201
-msgctxt "Toolbar|"
+#: ../po/tmp/mypaint.xml.h:91
+msgctxt "Menu|Edit|Current Mode|"
+msgid "Zoom View"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:92
+msgctxt "Menu|File|"
+msgid "Edit Frame"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:93
+msgctxt "Menu|File|"
+msgid "Export..."
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:94
+msgctxt "Menu|File|"
+msgid "Frame Enabled"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:95
+msgctxt "Menu|File|"
+msgid "New"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:96
+msgctxt "Menu|File|"
+msgid "Open Most Recent"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:97
+msgctxt "Menu|File|"
+msgid "Open Next Scrap"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:98
+msgctxt "Menu|File|"
+msgid "Open Previous Scrap"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:99
+msgctxt "Menu|File|"
+msgid "Open..."
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:100
+msgctxt "Menu|File|"
+msgid "Quit"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:101
+msgctxt "Menu|File|"
+msgid "Revert"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:102
+msgctxt "Menu|File|"
+msgid "Save"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:103
+msgctxt "Menu|File|"
+msgid "Save As Scrap"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:104
+msgctxt "Menu|File|"
+msgid "Save As..."
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:105
+msgctxt "Menu|Help|"
+msgid "About MyPaint"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:106
+msgctxt "Menu|Help|"
+msgid "Change the Keyboard Shortcuts?"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:107
+msgctxt "Menu|Help|"
+msgid "Debug"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:108
+msgctxt "Menu|Help|"
+msgid "Help"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:109
+msgctxt "Menu|Help|"
+msgid "Where is the Documentation?"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:110
+msgctxt "Menu|Help|Debug|"
+msgid "Disable GTK Double Buffering"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:111
+msgctxt "Menu|Help|Debug|"
+msgid "GTK Input Device Dialog"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:112
+msgctxt "Menu|Help|Debug|"
+msgid "Print Brush Input Values to Console"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:113
+msgctxt "Menu|Help|Debug|"
+msgid "Print Memory Leak Info to Console (Slow!)"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:114
+msgctxt "Menu|Help|Debug|"
+msgid "Run Garbage Collector Now"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:115
+msgctxt "Menu|Help|Debug|"
+msgid "Start/Stop Python Profiling (cProfile)"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:116
+msgctxt "Menu|Help|Debug|"
+msgid "Visualize Rendering"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:117
+msgctxt "Menu|Layer"
+msgid "Convert to Normal mode"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:118
+msgctxt "Menu|Layer|"
+msgid "Choose Background"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:119
+msgctxt "Menu|Layer|"
+msgid "Clear"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:120
+msgctxt "Menu|Layer|"
+msgid "Copy"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:121
+msgctxt "Menu|Layer|"
+msgid "Delete"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:122
+msgctxt "Menu|Layer|"
+msgid "Duplicate"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:123
+msgctxt "Menu|Layer|"
+msgid "Go to Layer"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:124
+msgctxt "Menu|Layer|"
+msgid "Locked"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:125
+msgctxt "Menu|Layer|"
+msgid "Lower"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:126
+msgctxt "Menu|Layer|"
+msgid "Merge Down"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:127
+msgctxt "Menu|Layer|"
+msgid "Move"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:128
+msgctxt "Menu|Layer|"
+msgid "New (above)"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:129
+msgctxt "Menu|Layer|"
+msgid "New (below)"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:130
+msgctxt "Menu|Layer|"
+msgid "Opacity"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:131
+msgctxt "Menu|Layer|"
+msgid "Paste"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:132
+msgctxt "Menu|Layer|"
+msgid "Raise"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:133
+msgctxt "Menu|Layer|"
+msgid "Rename..."
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:134
+msgctxt "Menu|Layer|"
+msgid "Visible"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:135
+msgctxt "Menu|Layer|Go to Layer|"
+msgid "Above"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:136
+msgctxt "Menu|Layer|Go to Layer|"
+msgid "At Cursor"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:137
+msgctxt "Menu|Layer|Go to Layer|"
+msgid "Below"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:138
+msgctxt "Menu|Layer|Opacity|"
+msgid "Decrease"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:139
+msgctxt "Menu|Layer|Opacity|"
+msgid "Increase"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:140
+msgctxt "Menu|Scratchpad|"
+msgid "Clear Default"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:141
+msgctxt "Menu|Scratchpad|"
+msgid "Color Dabs"
+msgstr "Colour Dabs"
+
+#: ../po/tmp/mypaint.xml.h:142
+msgctxt "Menu|Scratchpad|"
+msgid "New"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:143
+msgctxt "Menu|Scratchpad|"
+msgid "Open..."
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:144
+msgctxt "Menu|Scratchpad|"
+msgid "Revert"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:145
+msgctxt "Menu|Scratchpad|"
+msgid "Save"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:146
+msgctxt "Menu|Scratchpad|"
+msgid "Save As..."
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:147
+msgctxt "Menu|Scratchpad|"
+msgid "Save as Default"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:148
+msgctxt "Menu|Scratchpad|"
+msgid "Scratchpad Window"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:149
+msgctxt "Menu|Scratchpad|"
+msgid "Use Main Background"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:150
+msgctxt "Menu|Scratchpad|Color Dabs|"
+msgid "Render from File..."
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:151
+msgctxt "Menu|Scratchpad|Color Dabs|"
+msgid "Saturation Spread for Current Color"
+msgstr "Saturation Spread for Current Colour"
+
+#: ../po/tmp/mypaint.xml.h:152
+msgctxt "Menu|View|"
+msgid "Adjust View"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:153
+msgctxt "Menu|View|"
+msgid "Feedback"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:154
+msgctxt "Menu|View|"
+msgid "Fit"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:155
+msgctxt "Menu|View|"
+msgid "Hide Layers Above Current"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:156
+msgctxt "Menu|View|"
+msgid "Layer Solo"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:157
+msgctxt "Menu|View|"
+msgid "Popup Menu"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:158
+msgctxt "Menu|View|"
+msgid "Reset"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:159
+msgctxt "Menu|View|"
+msgid "Reset and Center"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:160
+msgctxt "Menu|View|"
+msgid "Rotate"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:161
+msgctxt "Menu|View|"
 msgid "Scroll"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:162
+msgctxt "Menu|View|"
+msgid "Subwindows"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:163
+msgctxt "Menu|View|"
+msgid "Toolbars"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:164
+msgctxt "Menu|View|"
+msgid "Zoom"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:165
+msgctxt "Menu|View|Adjust View|"
+msgid "Mirror Horizontal"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:166
+msgctxt "Menu|View|Adjust View|"
+msgid "Mirror Vertical"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:167
+msgctxt "Menu|View|Adjust View|"
+msgid "Rotate Clockwise"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:168
+msgctxt "Menu|View|Adjust View|"
+msgid "Rotate Counterclockwise"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:169
+msgctxt "Menu|View|Adjust View|"
+msgid "Zoom In"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:170
+msgctxt "Menu|View|Adjust View|"
+msgid "Zoom Out"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:171
+msgctxt "Menu|View|Feedback|"
+msgid "Axis of Symmetry"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:172
+msgctxt "Menu|View|Feedback|"
+msgid "Last Painting Position"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:173
+msgctxt "Menu|View|Feedback|"
+msgid "Zoom Level"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:174
+msgctxt "Menu|View|Reset|"
+msgid "Mirror"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:175
+msgctxt "Menu|View|Reset|"
+msgid "Rotation"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:176
+msgctxt "Menu|View|Reset|"
+msgid "Zoom"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:177
+msgctxt "Menu|View|Toolbars|"
+msgid "Both"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:178
+msgctxt "Menu|View|Toolbars|"
+msgid "Menubar Only"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:179
+msgctxt "Menu|View|Toolbars|"
+msgid "Toolbar Only"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:180
+msgid "Merge layer with the one beneath it"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:181
+msgid "Mirrors all strokes drawn around the vertical axis"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:182
+msgid "Mix colors and make sketches on separate scrap pages"
+msgstr "Mix colours and make sketches on separate scrap pages"
+
+#: ../po/tmp/mypaint.xml.h:183
+msgid "Move Layer: reposition the current layer on the canvas"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:184
+msgid "Next color in the palette"
+msgstr "Next colour in the palette"
+
+#: ../po/tmp/mypaint.xml.h:185
+msgid "Open a file, replacing the current painting"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:186
+msgid "Open the last file you saved"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:187
+msgid "Pick brushstroke: settings and layer"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:188
+msgid "Previous color in the palette"
+msgstr "Previous colour in the palette"
+
+#: ../po/tmp/mypaint.xml.h:189
+msgid "Raise the current layer one step in the layers stack"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:190
+msgid "Reload the current file"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:191
+msgid "Replaces the layer with the clipboard's contents"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:192
+msgid "Reset Zoom, Rotation and Mirroring, and recenter the document"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:193
+msgid "Rotate View: turn the canvas by clicking and dragging"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:194
+msgid "Rotate color hue anticlockwise"
+msgstr "Rotate colour hue anticlockwise"
+
+#: ../po/tmp/mypaint.xml.h:195
+msgid "Rotate color hue clockwise"
+msgstr "Rotate colour hue clockwise"
+
+#: ../po/tmp/mypaint.xml.h:196
+msgid "Rotate the view clockwise"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:197
+msgid "Rotate the view counterclockwise"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:198
+msgid "Save brush to the most recent shortcut"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:199
+msgid "Save to a file"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:200
+msgid "Save to a file with a new name"
+msgstr ""
+
+#: ../po/tmp/mypaint.xml.h:201
+msgid ""
+"Saves to a new scrap file. If the drawing is currently saved as a scrap, "
+"this will write a new revision of it."
 msgstr ""
 
 #: ../po/tmp/mypaint.xml.h:202
@@ -2784,167 +2804,109 @@ msgid "Scroll View: move around the canvas by clicking and dragging"
 msgstr ""
 
 #: ../po/tmp/mypaint.xml.h:203
-msgctxt "Menu|View|"
-msgid "Scroll"
+msgid "Select brushes, and edit brush sets"
 msgstr ""
 
 #: ../po/tmp/mypaint.xml.h:204
-msgctxt "Menu|Edit|Current Mode|"
-msgid "Rotate View"
+msgid "Set and adjust a frame for the canvas"
 msgstr ""
 
 #: ../po/tmp/mypaint.xml.h:205
-msgctxt "Toolbar|"
-msgid "Rotate"
-msgstr ""
+msgid "Set the color used for painting"
+msgstr "Set the colour used for painting"
 
 #: ../po/tmp/mypaint.xml.h:206
-msgid "Rotate View: turn the canvas by clicking and dragging"
+msgid "Show both the menu bar and the toolbar"
 msgstr ""
 
 #: ../po/tmp/mypaint.xml.h:207
-msgctxt "Menu|View|"
-msgid "Rotate"
+msgid "Show menu bar"
 msgstr ""
 
 #: ../po/tmp/mypaint.xml.h:208
-msgctxt "Menu|Edit|Current Mode|"
-msgid "Zoom View"
+msgid "Show rendering updates on-screen, for debugging"
 msgstr ""
 
 #: ../po/tmp/mypaint.xml.h:209
-msgctxt "Toolbar|"
-msgid "Zoom"
+msgid "Show subwindows"
 msgstr ""
 
 #: ../po/tmp/mypaint.xml.h:210
-msgid "Zoom View: zoom the canvas by clicking and dragging"
+msgid "Show the symmetry axis"
 msgstr ""
 
 #: ../po/tmp/mypaint.xml.h:211
-msgctxt "Menu|View|"
-msgid "Zoom"
+msgid "Show the zoom level when zooming in or out"
 msgstr ""
 
 #: ../po/tmp/mypaint.xml.h:212
-msgctxt "Menu|Edit|Current Mode|"
-msgid "Lines and Curves"
+msgid "Show toolbar"
 msgstr ""
 
 #: ../po/tmp/mypaint.xml.h:213
-msgctxt "Toolbar|"
-msgid "Lines"
+msgid "Show where strokes end"
 msgstr ""
 
 #: ../po/tmp/mypaint.xml.h:214
-msgctxt "Menu|Edit|"
-msgid "Lines and Curves"
+msgid "Start with a new blank canvas"
 msgstr ""
 
 #: ../po/tmp/mypaint.xml.h:215
-msgctxt "Menu|Edit|Current Mode|"
-msgid "Connected Lines"
+msgid "Test Input Devices"
 msgstr ""
 
 #: ../po/tmp/mypaint.xml.h:216
-msgctxt "Toolbar|"
-msgid "Line Seq."
+msgid "The current layer's locked state: locked layers cannot be drawn to"
 msgstr ""
 
 #: ../po/tmp/mypaint.xml.h:217
-msgctxt "Menu|Edit|"
-msgid "Connected Lines"
+msgid "The current layer's visibility state"
 msgstr ""
 
 #: ../po/tmp/mypaint.xml.h:218
-msgctxt "Menu|Edit|Current Mode|"
-msgid "Ellipses and Circles"
-msgstr ""
-
-#: ../po/tmp/mypaint.xml.h:219
 msgctxt "Toolbar|"
 msgid "Ellipse"
 msgstr ""
 
+#: ../po/tmp/mypaint.xml.h:219
+msgctxt "Toolbar|"
+msgid "Frame"
+msgstr "Frame"
+
 #: ../po/tmp/mypaint.xml.h:220
-msgctxt "Menu|Edit|"
-msgid "Ellipses and Circles"
+msgctxt "Toolbar|"
+msgid "Freehand"
 msgstr ""
 
 #: ../po/tmp/mypaint.xml.h:221
-msgctxt "Menu|Edit|Current Mode|"
-msgid "Move Layer"
+msgctxt "Toolbar|"
+msgid "Line Seq."
 msgstr ""
 
 #: ../po/tmp/mypaint.xml.h:222
-msgid "Move Layer: reposition the current layer on the canvas"
+msgctxt "Toolbar|"
+msgid "Lines"
 msgstr ""
 
 #: ../po/tmp/mypaint.xml.h:223
-msgctxt "Menu|Layer|"
-msgid "Move"
+msgctxt "Toolbar|"
+msgid "Rotate"
 msgstr ""
 
 #: ../po/tmp/mypaint.xml.h:224
-msgctxt "Menu|Edit|Current Mode|"
-msgid "Edit Frame"
+msgctxt "Toolbar|"
+msgid "Scroll"
 msgstr ""
 
 #: ../po/tmp/mypaint.xml.h:225
 msgctxt "Toolbar|"
-msgid "Frame"
+msgid "Zoom"
 msgstr ""
 
 #: ../po/tmp/mypaint.xml.h:226
-msgid ""
-"Edit Frame: define a frame around the document to give it a finite size. The "
-"frame is used when exporting."
+msgid "Zoom View: zoom the canvas by clicking and dragging"
 msgstr ""
 
 #: ../po/tmp/mypaint.xml.h:227
-msgctxt "Menu|File|"
-msgid "Edit Frame"
+msgid "Zoom to fit the document, and recenter"
 msgstr ""
-
-#~ msgid "Recently used colors"
-#~ msgstr "Recently used colours"
-
-#~ msgid "Harmony color switcher"
-#~ msgstr "Harmony colour switcher"
-
-#, fuzzy
-#~ msgid "Pick a screen color"
-#~ msgstr "Pick Colour"
-
-#~ msgid "Color history"
-#~ msgstr "Colour history"
-
-#~ msgid ""
-#~ "Three nearby hues on the color wheel.\n"
-#~ "Often found in nature, frequently pleasing to the eye."
-#~ msgstr ""
-#~ "Three nearby hues on the colour wheel.\n"
-#~ "Often found in nature, frequently pleasing to the eye."
-
-#~ msgid ""
-#~ "Two opposite hues on the color wheel.\n"
-#~ "Vibrant, and maximally contrasting."
-#~ msgstr ""
-#~ "Two opposite hues on the colour wheel.\n"
-#~ "Vibrant, and maximally contrasting."
-
-#~ msgid "Blend each color to opposite"
-#~ msgstr "Blend each colour to opposite"
-
-#~ msgid "Blend each color to negative"
-#~ msgstr "Blend each colour to negative"
-
-#~ msgid "Pick Context (layer, brush and color)"
-#~ msgstr "Pick Context (layer, brush and colour)"
-
-#, fuzzy
-#~ msgid "Toggle the Colour Triangle"
-#~ msgstr "Colour Triangle..."
-
-#~ msgid "Color Changer"
-#~ msgstr "Colour Changer"
