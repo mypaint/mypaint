@@ -6,6 +6,8 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
+import locale
+import gettext
 import os, sys
 from os.path import join
 import gtk, gobject
@@ -54,6 +56,27 @@ class Application: # singleton
             if not os.path.isdir(d):
                 os.mkdir(d)
                 print 'Created', d
+
+        # Internationalization
+        # https://bugzilla.gnome.org/show_bug.cgi?id=574520#c26
+        # locale.setlocale(locale.LC_ALL, '')
+        locale_dir = None
+        locale_paths = []
+        for p in [datapath, extradata]:
+            for d in ['po', 'locale']:
+                locale_paths.append(os.path.join(p, d))
+        for d in locale_paths:
+            if os.path.isdir(d):
+                locale_dir = d
+                break
+        print "DEBUG: getlocale():", locale.getlocale()
+        if locale_dir is not None:
+            print "DEBUG: using path %s for translations" % (locale_dir,)
+            locale.bindtextdomain('mypaint', locale_dir)
+            # gettext.bindtextdomain('mypaint', locale_dir)
+            # gettext.textdomain('mypaint')
+        else:
+            print "WARNING: unable to locate translations in %s" % locale_paths
 
         # Default location for our icons. The user's theme can override these.
         icon_theme = gtk.icon_theme_get_default()
