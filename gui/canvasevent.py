@@ -671,6 +671,10 @@ class SwitchableFreehandMode (SwitchableModeMixin, ScrollableModeMixin,
     __action_name__ = 'SwitchableFreehandMode'
     permitted_switch_actions = set()   # Any action is permitted
 
+    def __init__(self, ignore_modifiers=True, **args):
+        # Ignore the additional arg that flip actions feed us
+        super(SwitchableFreehandMode, self).__init__(**args)
+
 
 
 class ModeStack (object):
