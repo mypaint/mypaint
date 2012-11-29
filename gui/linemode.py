@@ -102,7 +102,7 @@ class LineModeBase (canvasevent.SwitchableModeMixin,
 
     @property
     def inactive_cursor(self):
-        cursor_name = "cursor_crosshair_open"
+        cursor_name = "cursor_crosshair_precise_open"
         if not self._line_possible:
             cursor_name = "cursor_forbidden_everywhere"
         return self.doc.app.cursors.get_action_cursor(

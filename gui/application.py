@@ -679,6 +679,7 @@ class CursorCache (object):
         "cursor_hand_closed": (11, 12),
         "cursor_crosshair_open": (11, 11),
         "cursor_crosshair_closed": (11, 11),
+        "cursor_crosshair_precise_open": (12, 11),
         "cursor_move_n_s": (11, 11),
         "cursor_move_w_e": (11, 11),
         "cursor_move_nw_se": (11, 11),
