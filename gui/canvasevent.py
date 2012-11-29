@@ -919,6 +919,7 @@ class DragMode (InteractionMode):
 
     def __init__(self, **kwds):
         super(DragMode, self).__init__(**kwds)
+        self._grab_broken_conninfo = None
         self._reset_drag_state()
 
     def _reset_drag_state(self):
@@ -929,6 +930,11 @@ class DragMode (InteractionMode):
         self._start_keyval = None
         self._start_button = None
         self._grab_widget = None
+        if self._grab_broken_conninfo is not None:
+            tdw, connid = self._grab_broken_conninfo
+            tdw.disconnect(connid)
+            self._grab_broken_conninfo = None
+
 
     def _stop_if_started(self, t=gdk.CURRENT_TIME):
         if self._grab_widget is None:
@@ -958,45 +964,97 @@ class DragMode (InteractionMode):
         cursor = self.active_cursor
         if cursor is None:
             cursor = self.inactive_cursor
+
+        # Be more assertive; try to work around the condition noted below.
+        gdk.keyboard_ungrab(event.time)
+        gdk.pointer_ungrab(event.time)
+
+        # Grab the pointer
         grab_status = gdk.pointer_grab(tdw_window, False, event_mask, None,
                                        cursor, event.time)
         if grab_status != gdk.GRAB_SUCCESS:
-            print "pointer grab failed:", grab_status
-            print "DEBUG: gdk_pointer_is_grabbed():", gdk.pointer_is_grabbed()
+            print "DEBUG: pointer grab failed:", grab_status
+            print "DEBUG:  gdk_pointer_is_grabbed():", gdk.pointer_is_grabbed()
             # There seems to be a race condition between this grab under
             # PyGTK/GTK2 and some other grab from the app - possibly just the
             # implicit grabs on colour selectors: https://gna.org/bugs/?20068
             # Only pointer events are affected, and PyGI+GTK3 is unaffected.
             #
-            # As an experimental workaround, just fall through for now and
-            # don't return. After all, we know pointer events are being
-            # delivered if we're here even in the conflicted case (!)
+            # It's probably safest to return and not start the grab.
+            return
+
+        # We managed to establish a grab, so watch for it being broken.
+        # This signal is disconnected when the mode leaves.
+        connid = tdw.connect("grab-broken-event", self.tdw_grab_broken_cb)
+        self._grab_broken_conninfo = (tdw, connid)
+
+        # Grab the keyboard too, to be certain of getting the key release event
+        # for a spacebar drag.
         grab_status = gdk.keyboard_grab(tdw_window, False, event.time)
         if grab_status != gdk.GRAB_SUCCESS:
-            print "keyboard grab failed:", grab_status
+            print "DEBUG: keyboard grab failed:", grab_status
             gdk.pointer_ungrab()
             return
+
+        # GTK too...
         tdw.grab_add()
         self._grab_widget = tdw
+
+        # Drag has started, perform whatever action the mode needs.
         self.drag_start_cb(tdw, event)
+
+        ## Break the grab after a while for debugging purposes
+        #gobject.timeout_add_seconds(5, self.__break_own_grab_cb, tdw, False)
+
+
+    def __break_own_grab_cb(self, tdw, fake=False):
+        if fake:
+            ev = gdk.Event(gdk.GRAB_BROKEN)
+            ev.window = tdw.get_window()
+            ev.send_event = True
+            ev.put()
+        else:
+            import os
+            os.system("wmctrl -s 0")
+        return False
+
+
+    def tdw_grab_broken_cb(self, tdw, event):
+        # Cede control as cleanly as possible if something else grabs either
+        # the keyboard or the pointer while a grab is active.
+        # One possible cause for https://gna.org/bugs/?20333
+        print "DEBUG: grab-broken-event on", tdw
+        print "DEBUG:   send_event  :", event.send_event
+        print "DEBUG:   keyboard    :", event.keyboard
+        print "DEBUG:   implicit    :", event.implicit
+        print "DEBUG:   grab_window :", event.grab_window
+        print "DEBUG: exiting", self
+        self.doc.modes.pop()
+        return True
+
 
     @property
     def in_drag(self):
         return self._grab_widget is not None
 
+
     def enter(self, **kwds):
         super(DragMode, self).enter(**kwds)
+        assert self.doc is not None
         self.doc.tdw.set_override_cursor(self.inactive_cursor)
+
 
     def leave(self, **kwds):
         self._stop_if_started()
-        self.doc.tdw.set_override_cursor(None)
+        if self.doc is not None:
+            self.doc.tdw.set_override_cursor(None)
         super(DragMode, self).leave(**kwds)
 
 
     def button_press_cb(self, tdw, event):
-        if not self._start_keyval:
-            # Only start drags if not in a keypress-initiated drag
+        if not self.in_drag:
+            # Only start drags if not in a drag already,
+            # e.g. a keyboard-initiated one
             self._start_unless_started(tdw, event)
             if self._grab_widget is not None:
                 # Grab succeeded
