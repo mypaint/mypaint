@@ -683,13 +683,12 @@ class Document (CanvasController):
 
     def rotate(self, command):
         # Allows easy and quick rotation to 45/90/180 degrees
+        # (Around the window center, not pointer center, seems to be the better default.)
         rotation_step = 2*math.pi/16
-        etime, ex, ey = self.get_last_event_info(self.tdw)
-        center = ex, ey
         if command == 'RotateRight':
-            self.tdw.rotate(+rotation_step, center)
+            self.tdw.rotate(+rotation_step)
         else:   # command == 'RotateLeft'
-            self.tdw.rotate(-rotation_step, center)
+            self.tdw.rotate(-rotation_step)
 
 
     def zoom_cb(self, action):
