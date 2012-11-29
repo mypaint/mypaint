@@ -154,12 +154,26 @@ if __name__ == '__main__':
 
     datapath, extradata, confpath, localepath = get_paths()
 
+    # Locale setting
     # must be done before importing any translated python modules
     # (to get global strings translated, especially brushsettings.py)
     import gettext
+    import locale
     if sys.platform == 'win32':
-        import locale
         os.environ['LANG'] = locale.getdefaultlocale()[0]
+
+    # Internationalization voodoo
+    # https://bugzilla.gnome.org/show_bug.cgi?id=574520#c26
+    #locale.setlocale(locale.LC_ALL, '')  #needed?
+    print "DEBUG: getlocale():", locale.getlocale()
+    print "DEBUG: localepath: ", localepath
+
+    # Low-level bindtextdomain, required for GtkBuilder stuff.
+    locale.bindtextdomain("mypaint", localepath)
+    locale.textdomain("mypaint")
+
+    # Python gettext module.
+    # See http://docs.python.org/release/2.7/library/locale.html
     gettext.bindtextdomain("mypaint", localepath)
     gettext.textdomain("mypaint")
 
