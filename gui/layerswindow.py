@@ -155,25 +155,28 @@ class ToolWidget (gtk.VBox):
         self.is_updating = False
         self.update(doc)
 
+        # Observe strokes, and scroll to the highlighted row when the user
+        # draws something.
+        doc.stroke_observers.append(self.on_stroke)
+
 
     def update(self, doc):
         if self.is_updating:
             return
         self.is_updating = True
 
-        # Update the liststore and the selection to match the master layers
-        # list in doc
+        # Update the liststore to match the master layers list in doc
         current_layer = doc.get_current_layer()
-        self.treeview.get_selection().unselect_all()
         liststore_layers = [row[0] for row in self.liststore]
         liststore_layers.reverse()
         if doc.layers != liststore_layers:
             self.liststore.clear()
             for layer in doc.layers:
                 self.liststore.prepend([layer])
-        selected_path = (len(doc.layers) - (doc.layer_idx + 1), )
 
-        # Queue a selection update too...
+        # Queue a selection update
+        # This must be queued with gobject.idle_add to avoid glitches in the
+        # update after dragging the current row downwards.
         gobject.idle_add(self.update_selection)
 
         # Update the common widgets
@@ -195,21 +198,42 @@ class ToolWidget (gtk.VBox):
 
 
     def update_selection(self):
+        # Updates the selection row in the list to reflect the underlying
+        # document model.
         doc = self.app.doc.model
-        # ... select_path() ust be queued with gobject.idle_add to avoid
-        # glitches in the update after dragging the current row downwards.
-        selected_path = (len(doc.layers) - (doc.layer_idx + 1), )
-        self.treeview.get_selection().select_path(selected_path)
-        self.treeview.scroll_to_cell(selected_path)
 
-        # Queue a redraw too - undoing/redoing lock and visible markers poke
-        # the underlying doc state, and we should always draw that.
+        # Move selection line to the model's current layer and scroll to it
+        model_sel_path = (len(doc.layers) - (doc.layer_idx + 1), )
+        selection = self.treeview.get_selection()
+        if not selection.path_is_selected(model_sel_path):
+            # Only do this if the required layer is not already highlighted to
+            # allow users to scroll and change distant layers' visibility or
+            # locked state in batches: https://gna.org/bugs/?20330
+            selection.unselect_all()
+            selection.select_path(model_sel_path)
+            self.treeview.scroll_to_cell(model_sel_path)
+
+        # Queue a redraw too - undoing/redoing lock and visible Commands
+        # updates the underlying doc state, and we need to present the current
+        # state via the icons at all times.
         self.treeview.queue_draw()
 
 
     def update_opacity_tooltip(self):
         scale = self.opacity_scale
         scale.set_tooltip_text(_("Layer opacity: %d%%" % (scale.get_value(),)))
+
+
+    def on_stroke(self, stroke, brush):
+        self.scroll_to_highlighted_row()
+
+
+    def scroll_to_highlighted_row(self):
+        sel = self.treeview.get_selection()
+        tree_model, sel_row_paths = sel.get_selected_rows()
+        if len(sel_row_paths) > 0:
+            sel_row_path = sel_row_paths[0]
+            self.treeview.scroll_to_cell(sel_row_path)
 
 
     def treeview_cursor_changed_cb(self, treeview, *data):
@@ -283,6 +307,7 @@ class ToolWidget (gtk.VBox):
         doc = self.app.doc.model
         doc.set_layer_opacity(self.opacity_scale.get_value()/100.0)
         self.update_opacity_tooltip()
+        self.scroll_to_highlighted_row()
         self.is_updating = False
 
 
@@ -344,4 +369,5 @@ class ToolWidget (gtk.VBox):
             blendingmode_name = escape(display_name),
             blendingmode_description = escape(desc))
         self.layer_mode_combo.set_tooltip_markup(tooltip)
+        self.scroll_to_highlighted_row()
         self.is_updating = False
