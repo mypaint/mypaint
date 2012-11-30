@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-27 18:54+0100\n"
+"POT-Creation-Date: 2012-11-29 22:00+0100\n"
 "PO-Revision-Date: 2009-08-16 14:40+0200\n"
 "Last-Translator: Jon Nordby <jononor@gmail.com>\n"
 "Language-Team: Norwegian Bokmål <nb@li.org>\n"
@@ -56,14 +56,15 @@ msgid "One or more backgrounds could not be loaded"
 msgstr ""
 
 #: ../gui/backgroundwindow.py:156
-#, fuzzy
 msgid "Error loading backgrounds"
-msgstr "Problem under lasting: GError %s"
+msgstr "Feil under lasting av bakgrunner"
 
 #: ../gui/backgroundwindow.py:157
 msgid ""
 "Please remove the unloadable files, or check your libgdkpixbuf installation."
 msgstr ""
+"Vennligst fjern filene som ikke kunne lastes, eller sjekk din "
+"libgdkpixbuf innstalasjon"
 
 #: ../gui/brushcreationwidget.py:44 ../gui/brushcreationwidget.py:67
 msgid "(unnamed brush)"
@@ -197,19 +198,16 @@ msgstr ""
 "penselen"
 
 #: ../gui/brushmodifier.py:65
-#, fuzzy
 msgid "Colorize"
-msgstr "Farge"
+msgstr "Fargelegg"
 
 #: ../gui/brushmodifier.py:66
-#, fuzzy
 msgid "Colorize: alter Hue and Saturation with the current brush"
-msgstr "Forskjellinge metninger fra nåværende farge"
+msgstr "Fargelegg: endre farge og metning med nåværende pensel"
 
 #: ../gui/brushselectionwindow.py:35
-#, fuzzy
 msgid "Brushes"
-msgstr "Hurtigtaster"
+msgstr "Pensler"
 
 #: ../gui/brushselectionwindow.py:253
 msgid ""
@@ -220,42 +218,34 @@ msgid ""
 msgstr ""
 
 #: ../gui/brushselectionwindow.py:465
-#, fuzzy
 msgid "New Group..."
 msgstr "Ny gruppe..."
 
 #: ../gui/brushselectionwindow.py:467
-#, fuzzy
 msgid "Rename Group..."
 msgstr "Endre gruppenavn..."
 
 #: ../gui/brushselectionwindow.py:468
-#, fuzzy
 msgid "Delete Group"
-msgstr "Slett gruppe..."
+msgstr "Slett gruppe"
 
 #: ../gui/brushselectionwindow.py:469
-#, fuzzy
 msgid "Export Group..."
-msgstr "Eksporter..."
+msgstr "Eksporter gruppe..."
 
 #: ../gui/brushselectionwindow.py:471
-#, fuzzy
 msgid "Import Brushes..."
 msgstr "Importer penselpakke..."
 
 #: ../gui/brushselectionwindow.py:473
-#, fuzzy
 msgid "Get More Brushes..."
-msgstr "Bruk pensel %d"
+msgstr "Last ned flere pensler..."
 
 #: ../gui/brushselectionwindow.py:493
-#, fuzzy
 msgid "Create Group"
 msgstr "Opprett gruppe"
 
 #: ../gui/brushselectionwindow.py:498
-#, fuzzy
 msgid "Rename Group"
 msgstr "Endre gruppenavn"
 
@@ -264,9 +254,8 @@ msgid "A group with this name already exists!"
 msgstr "En gruppe med dette navnet eksisterer allerede!"
 
 #: ../gui/brushselectionwindow.py:507
-#, fuzzy
 msgid "Export Brushes"
-msgstr "Eksporter penselpakke.."
+msgstr "Eksporter penselpakke"
 
 #: ../gui/brushselectionwindow.py:508 ../gui/drawwindow.py:809
 msgid "MyPaint brush package (*.zip)"
@@ -344,14 +333,12 @@ msgid "Modify input value mapping"
 msgstr "Modifiser penseldynamikk"
 
 #: ../gui/buttonmap.py:262
-#, fuzzy
 msgid "Action"
-msgstr "Ingen handling"
+msgstr "Handling"
 
 #: ../gui/buttonmap.py:277
-#, fuzzy
 msgid "Button press"
-msgstr "Knappers"
+msgstr "Knappetrykk"
 
 #: ../gui/buttonmap.py:296
 msgid "Add a new binding"
@@ -370,12 +357,11 @@ msgstr ""
 #: ../gui/buttonmap.py:449
 #, fuzzy
 msgid "Action:"
-msgstr "Ingen handling"
+msgstr "Handling:"
 
 #: ../gui/buttonmap.py:460
-#, fuzzy
 msgid "Button press:"
-msgstr "Knappers"
+msgstr "Knappetrykk:"
 
 #: ../gui/buttonmap.py:494
 msgid ""
@@ -402,7 +388,6 @@ msgid "Newly chosen color, and the color most recently used for painting"
 msgstr ""
 
 #: ../gui/colors/combined.py:126
-#, fuzzy
 msgid "Add color to Palette"
 msgstr "Legg fargen til mønstrene"
 
@@ -504,7 +489,6 @@ msgstr ""
 #. HCYColor((H+0.52)%1, 0.725, Y),
 #. HCYColor((H+0.48)%1, 0.725, Y) ]] ))
 #: ../gui/colors/hcywheel.py:926
-#, fuzzy
 msgid "Split Complementary"
 msgstr "Splittet komplimentær"
 
@@ -531,7 +515,6 @@ msgid "Load mask from a GIMP palette file"
 msgstr ""
 
 #: ../gui/colors/hcywheel.py:1016
-#, fuzzy
 msgid "Save mask to a GIMP palette file"
 msgstr "Lagre som en fil"
 
@@ -628,27 +611,24 @@ msgid "GIMP palette file (*.gpl)"
 msgstr ""
 
 #: ../gui/colors/palette.py:420 ../gui/colors/palette.py:476
-#, fuzzy
 msgid "All files (*)"
-msgstr "Alle filer"
+msgstr "Alle filer (*)"
 
 #: ../gui/colors/paletteview.py:62
 msgid "Palette properties"
 msgstr ""
 
 #: ../gui/colors/paletteview.py:72
-#, fuzzy
 msgid "Palette"
-msgstr "Generer en palett"
+msgstr "Palett"
 
 #: ../gui/colors/paletteview.py:77
 msgid "Set the color from a loadable, editable palette."
 msgstr ""
 
 #: ../gui/colors/paletteview.py:123
-#, fuzzy
 msgid "Palette Editor"
-msgstr "GIMP palettformat"
+msgstr "Palett editor"
 
 #: ../gui/colors/paletteview.py:158
 #, fuzzy
@@ -761,9 +741,8 @@ msgid "HCY Luma (Y')"
 msgstr ""
 
 #: ../gui/colorwindow.py:26
-#, fuzzy
 msgid "Colors"
-msgstr "Farge"
+msgstr "Farger"
 
 #: ../gui/dialogs.py:54 ../gui/layerswindow.py:78
 msgid "Name"
@@ -818,9 +797,10 @@ msgid ""
 "If you replace it, the brushes may be moved to a group called `"
 "{deleted_groupname}'."
 msgstr ""
-"<b>Gruppen `%s' eksisterer allerede.</b>\n"
+"<b>Gruppen `{groupname}' eksisterer allerede.</b>\n"
 "Vil du erstatte den, eller skal den nye penselen bli omdøpt?\n"
-"Dersom du erstatter den, vil penselene muligens bli flyttet til gruppen `%s'."
+"Dersom du erstatter den, vil penselene muligens bli flyttet til gruppen"
+"`{deleted_groupname}'."
 
 #: ../gui/dialogs.py:257
 msgid "Import brush package?"
@@ -847,19 +827,16 @@ msgid "Save to Brush %d"
 msgstr "Lagre til pensel %d"
 
 #: ../gui/document.py:482
-#, fuzzy, python-format
 msgid "Copy of %s"
-msgstr "Kopi av "
+msgstr "Kopi av %s"
 
 #: ../gui/document.py:485
-#, fuzzy, python-format
 msgid "Copy of Untitled layer #%d"
-msgstr "Lag uten navn #%d"
+msgstr "Kopi av Lag uten navn #%d"
 
 #: ../gui/document.py:492
-#, fuzzy
 msgid "Layer Name"
-msgstr "Lag"
+msgstr "Navn på lag"
 
 #: ../gui/document.py:837
 #, python-format
@@ -880,9 +857,8 @@ msgid "Redo"
 msgstr "Gjenta"
 
 #: ../gui/drawwindow.py:474
-#, fuzzy
 msgid "Set current color"
-msgstr "Nåværende farge"
+msgstr "Sett nåværende farge"
 
 #: ../gui/drawwindow.py:634
 msgid "Leave Fullscreen Mode"
@@ -922,12 +898,11 @@ msgid "Import brush package..."
 msgstr "Importer penselpakke..."
 
 #: ../gui/drawwindow.py:820
-#, fuzzy
 msgid ""
 "Copyright (C) 2005-2012\n"
 "Martin Renold and the MyPaint Development Team"
 msgstr ""
-"Opphavsrett (C) 2005-2010\n"
+"Opphavsrett (C) 2005-2012\n"
 "Martin Renold og MyPaint utviklingsteamet"
 
 # lisens: finn ut om det finnes en offisiell oversettelse et sted
@@ -966,9 +941,8 @@ msgid "patterns, brushes"
 msgstr "mønstre, pensler"
 
 #: ../gui/drawwindow.py:859
-#, fuzzy
 msgid "brushes, tool icons"
-msgstr "verktøyikoner"
+msgstr "pensler, verktøyikoner"
 
 #: ../gui/drawwindow.py:860
 msgid "brushes, patterns"
@@ -996,7 +970,6 @@ msgstr ""
 "Beveg musen over en handling i menyen og trykk på knappen du ønsker å bruke."
 
 #: ../gui/drawwindow.py:879
-#, fuzzy
 msgid ""
 "Brush shortcut keys are used to quickly save/restore brush settings. You can "
 "paint with one hand and change brushes with the other, even in mid-stroke.\n"
@@ -1007,9 +980,7 @@ msgstr ""
 "innstillinger ved hjelp av tastaturet. På den måten kan du male med den ene "
 "hånden og endre verktøy uten å forstyrre. \n"
 "\n"
-"Det er 10 minneplasseringer som kan ha penselinstillinger.\n"
-"Dette er \"anonyme\" pensler, som innebærer at de ikke vises i den vanlige "
-"listen over pensler. Men de vil huskes selv om du stenger programmet. "
+"Det er 10 minneplasseringer som kan ha penselinstillinger."
 
 #: ../gui/drawwindow.py:885
 msgid ""
@@ -1136,53 +1107,47 @@ msgid "px"
 msgstr ""
 
 #: ../gui/framewindow.py:281
-#, fuzzy
 msgid "Height:"
-msgstr "Høyde"
+msgstr "Høyde:"
 
 #: ../gui/framewindow.py:283
-#, fuzzy
 msgid "Width:"
-msgstr "Bredde"
+msgstr "Bredde:"
 
 #: ../gui/framewindow.py:285
-#, fuzzy
 msgid "Resolution:"
-msgstr "Rotasjon"
+msgstr "Oppløsning:"
 
 #: ../gui/framewindow.py:287
-#, fuzzy
 msgid "Color:"
-msgstr "Farge"
+msgstr "Farge:"
 
 #: ../gui/framewindow.py:307
-#, fuzzy
 msgid "Frame Color"
-msgstr "Endre farge"
+msgstr "Rammens farge"
 
 #: ../gui/framewindow.py:356
-#, fuzzy
 msgid "Crop to Current Layer"
 msgstr "Flytt lag"
 
 #: ../gui/framewindow.py:357
 msgid "Crop frame to the currently active layer"
-msgstr ""
+msgstr "Kutt rammen til størrelsen på nåværende lag"
 
 #: ../gui/framewindow.py:359
-#, fuzzy
 msgid "Crop to Document"
-msgstr "Kutt til dokument størrelse"
+msgstr "Kutt til dokumentets størrelse"
 
 #: ../gui/framewindow.py:360
 msgid "Crop frame to the combination of all layers"
-msgstr ""
+msgstr "Kutt ramme til kombinasjonen av alle lagene"
 
 #: ../gui/framewindow.py:367
 msgid ""
 "While the frame is enabled, it \n"
 "can be adjusted on the canvas"
 msgstr ""
+"Når rammen er aktiv kan den manipuleres på lerretet"
 
 #: ../gui/framewindow.py:374
 msgid "Enabled"
@@ -1190,15 +1155,15 @@ msgstr "Aktivert"
 
 #: ../gui/framewindow.py:469
 msgid "inch"
-msgstr ""
+msgstr "\""
 
 #: ../gui/framewindow.py:470
 msgid "cm"
-msgstr ""
+msgstr "cm"
 
 #: ../gui/framewindow.py:471
 msgid "mm"
-msgstr ""
+msgstr "mm"
 
 #: ../gui/functionwindow.py:37
 msgid "Base Value"
@@ -1657,9 +1622,8 @@ msgid "Merge Layers"
 msgstr "Spleis lag"
 
 #: ../lib/command.py:224
-#, fuzzy
 msgid "Convert Layer Mode"
-msgstr "Klarer lag"
+msgstr "Endre lagmodus"
 
 #: ../lib/command.py:246
 msgid "Add Layer"
@@ -1674,28 +1638,24 @@ msgid "Select Layer"
 msgstr "Velg lag"
 
 #: ../lib/command.py:319
-#, fuzzy
 msgid "Move Layer on Canvas"
-msgstr "Flytt lag"
+msgstr "Flytt lag på lerret"
 
 #: ../lib/command.py:344
-#, fuzzy
 msgid "Reorder Layer in Stack"
-msgstr "Endre lagets posisjon"
+msgstr "Endre lagets nivå"
 
 #: ../lib/command.py:370
 msgid "Duplicate Layer"
 msgstr "Dupliser lag"
 
 #: ../lib/command.py:391
-#, fuzzy
 msgid "Reorder Layer Stack"
-msgstr "Endre lagets posisjon"
+msgstr "Endre lagenes nivå"
 
 #: ../lib/command.py:412
-#, fuzzy
 msgid "Rename Layer"
-msgstr "Fjern lag"
+msgstr "Døp om lag"
 
 #: ../lib/command.py:447
 msgid "Make Layer Visible"
@@ -1796,7 +1756,6 @@ msgid ""
 msgstr ""
 
 #: ../lib/layer.py:28
-#, fuzzy
 msgid "Darken"
 msgstr "Mørkere"
 
@@ -1805,7 +1764,6 @@ msgid "The top layer is used only where it is darker than the backdrop."
 msgstr ""
 
 #: ../lib/layer.py:30
-#, fuzzy
 msgid "Lighten"
 msgstr "Lysere"
 
@@ -1908,7 +1866,6 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/mypaint.xml.h:1
-#, fuzzy
 msgctxt "Menu|File|"
 msgid "New"
 msgstr "Ny"
@@ -1918,7 +1875,6 @@ msgid "Start with a new blank canvas"
 msgstr "Start med ett blankt lerrett"
 
 #: ../po/tmp/mypaint.xml.h:3
-#, fuzzy
 msgctxt "Menu|File|"
 msgid "Open..."
 msgstr "Åpne..."
@@ -1928,7 +1884,6 @@ msgid "Open a file, replacing the current painting"
 msgstr "Åpne en fil. Erstatter nåværende fil-visning"
 
 #: ../po/tmp/mypaint.xml.h:5
-#, fuzzy
 msgctxt "Menu|File|"
 msgid "Open Most Recent"
 msgstr "Åpne nylig brukte"
@@ -1940,14 +1895,13 @@ msgstr "Åpne den liste filen du lagret"
 #: ../po/tmp/mypaint.xml.h:7
 msgctxt "Menu|File|"
 msgid "Revert"
-msgstr ""
+msgstr "Tilbakestill"
 
 #: ../po/tmp/mypaint.xml.h:8
 msgid "Reload the current file"
 msgstr "Gjennåpne nåværende filen"
 
 #: ../po/tmp/mypaint.xml.h:9
-#, fuzzy
 msgctxt "Menu|File|"
 msgid "Save"
 msgstr "Lagre"
@@ -1957,7 +1911,6 @@ msgid "Save to a file"
 msgstr "Lagre som en fil"
 
 #: ../po/tmp/mypaint.xml.h:11
-#, fuzzy
 msgctxt "Menu|File|"
 msgid "Save As..."
 msgstr "Lagre som..."
@@ -1967,7 +1920,6 @@ msgid "Save to a file with a new name"
 msgstr "Lagre til en fil ved samme navn"
 
 #: ../po/tmp/mypaint.xml.h:13
-#, fuzzy
 msgctxt "Menu|File|"
 msgid "Export..."
 msgstr "Eksporter..."
@@ -1978,13 +1930,11 @@ msgstr "Ekspoter til en fil"
 
 # "Scrap" -> "kladd"
 #: ../po/tmp/mypaint.xml.h:15
-#, fuzzy
 msgctxt "Menu|File|"
 msgid "Save As Scrap"
 msgstr "Lagre som kladd"
 
 #: ../po/tmp/mypaint.xml.h:16
-#, fuzzy
 msgid ""
 "Saves to a new scrap file. If the drawing is currently saved as a scrap, "
 "this will write a new revision of it."
@@ -1993,7 +1943,6 @@ msgstr ""
 "en ny revisjon bli lagret."
 
 #: ../po/tmp/mypaint.xml.h:17
-#, fuzzy
 msgctxt "Menu|File|"
 msgid "Open Previous Scrap"
 msgstr "Åpne forrige kladd"
@@ -2004,7 +1953,6 @@ msgstr "Last forrige kladd, istedet for nåværende dokument"
 
 # "Scrap" -> "kladd"
 #: ../po/tmp/mypaint.xml.h:19
-#, fuzzy
 msgctxt "Menu|File|"
 msgid "Open Next Scrap"
 msgstr "Lagre neste kladd"
@@ -2014,7 +1962,6 @@ msgid "Load the next scrap file, replacing the current drawing"
 msgstr "Last neste kladd, istedet for nåværende dokument"
 
 #: ../po/tmp/mypaint.xml.h:21
-#, fuzzy
 msgctxt "Menu|Brush|"
 msgid "Bigger"
 msgstr "Større"
@@ -2025,7 +1972,6 @@ msgid "Increase brush radius"
 msgstr "Mink gjennomsiktighet"
 
 #: ../po/tmp/mypaint.xml.h:23
-#, fuzzy
 msgctxt "Menu|Brush|"
 msgid "Smaller"
 msgstr "Mindre"
@@ -2036,29 +1982,24 @@ msgid "Decrease brush radius"
 msgstr "Øk gjennomsiktighet"
 
 #: ../po/tmp/mypaint.xml.h:25
-#, fuzzy
 msgctxt "Menu|Brush|"
 msgid "Increase Opacity"
 msgstr "Mink gjennomsiktighet"
 
 #: ../po/tmp/mypaint.xml.h:26
-#, fuzzy
 msgid "Increase brush opacity"
-msgstr "Mink gjennomsiktighet"
+msgstr "Mink penselens gjennomsiktighet"
 
 #: ../po/tmp/mypaint.xml.h:27
-#, fuzzy
 msgctxt "Menu|Brush|"
 msgid "Decrease Opacity"
 msgstr "Øk gjennomsiktighet"
 
 #: ../po/tmp/mypaint.xml.h:28
-#, fuzzy
 msgid "Decrease brush opacity"
-msgstr "Øk gjennomsiktighet"
+msgstr "Øk penselens gjennomsiktighet"
 
 #: ../po/tmp/mypaint.xml.h:29
-#, fuzzy
 msgctxt "Menu|Color|Adjust Color|"
 msgid "Brighter"
 msgstr "Lysere"
@@ -2068,7 +2009,6 @@ msgid "Increase color brightness"
 msgstr ""
 
 #: ../po/tmp/mypaint.xml.h:31
-#, fuzzy
 msgctxt "Menu|Color|Adjust Color|"
 msgid "Darker"
 msgstr "Mørkere"
@@ -2100,7 +2040,6 @@ msgid "Rotate color hue clockwise"
 msgstr "Roter mot klokken"
 
 #: ../po/tmp/mypaint.xml.h:37
-#, fuzzy
 msgctxt "Menu|Color|Adjust Color|"
 msgid "Purer"
 msgstr "Renere"
@@ -2111,7 +2050,6 @@ msgid "Increase color saturation"
 msgstr "Zoom inn"
 
 #: ../po/tmp/mypaint.xml.h:39
-#, fuzzy
 msgctxt "Menu|Color|Adjust Color|"
 msgid "Grayer"
 msgstr "Gråere"
@@ -2137,7 +2075,6 @@ msgid "Restore Color"
 msgstr "Bruk pensel %d"
 
 #: ../po/tmp/mypaint.xml.h:44
-#, fuzzy
 msgctxt "Menu|Brush|Shortcut Keys|"
 msgid "Save to Most Recent"
 msgstr "Lagre til sist brukte"
@@ -2161,7 +2098,7 @@ msgstr "Gjennåpne nåværende filen"
 #: ../po/tmp/mypaint.xml.h:48
 msgctxt "Menu|Layer|"
 msgid "Copy"
-msgstr ""
+msgstr "Kopier"
 
 #: ../po/tmp/mypaint.xml.h:49
 msgid "Copy the current layer to the clipboard"
@@ -2170,7 +2107,7 @@ msgstr ""
 #: ../po/tmp/mypaint.xml.h:50
 msgctxt "Menu|Layer|"
 msgid "Paste"
-msgstr ""
+msgstr "Lim inn"
 
 #: ../po/tmp/mypaint.xml.h:51
 msgid "Replaces the layer with the clipboard's contents"
@@ -2188,56 +2125,52 @@ msgstr ""
 #: ../po/tmp/mypaint.xml.h:54
 msgctxt "Menu|Layer|Go to Layer|"
 msgid "Above"
-msgstr ""
+msgstr "Over"
 
 #: ../po/tmp/mypaint.xml.h:55
 msgid "Go one layer up in the layers stack"
-msgstr ""
+msgstr "Gå til laget over"
 
 #: ../po/tmp/mypaint.xml.h:56
 msgctxt "Menu|Layer|Go to Layer|"
 msgid "Below"
-msgstr ""
+msgstr "Under"
 
 #: ../po/tmp/mypaint.xml.h:57
 msgid "Go one layer down in the layers stack"
-msgstr ""
+msgstr "Gå til laget under"
 
 #: ../po/tmp/mypaint.xml.h:58
-#, fuzzy
 msgctxt "Menu|Layer|"
 msgid "New (above)"
 msgstr "Nytt (over nåværende)"
 
 #: ../po/tmp/mypaint.xml.h:59
 msgid "Add a new layer above the current layer"
-msgstr ""
+msgstr "Legg til ett nytt lag over det nåværende"
 
 #: ../po/tmp/mypaint.xml.h:60
-#, fuzzy
 msgctxt "Menu|Layer|"
 msgid "New (below)"
 msgstr "Nytt (under nåværende)"
 
 #: ../po/tmp/mypaint.xml.h:61
 msgid "Add a new layer below the current layer"
-msgstr ""
+msgstr "Legg til ett nytt lag under det nåværende"
 
 #: ../po/tmp/mypaint.xml.h:62
-#, fuzzy
 msgctxt "Menu|Layer|"
 msgid "Merge Down"
 msgstr "Spleis med underliggende lag"
 
 #: ../po/tmp/mypaint.xml.h:63
 msgid "Merge layer with the one beneath it"
-msgstr ""
+msgstr "Spleis nåværende lag med laget under"
 
 #: ../po/tmp/mypaint.xml.h:64
-#, fuzzy
 msgctxt "Menu|Layer|"
 msgid "Delete"
-msgstr "Slettet"
+msgstr "Slett"
 
 #: ../po/tmp/mypaint.xml.h:65
 #, fuzzy
@@ -3072,10 +3005,9 @@ msgid "Ellipses and Circles"
 msgstr ""
 
 #: ../po/tmp/mypaint.xml.h:221
-#, fuzzy
 msgctxt "Menu|Edit|Current Mode|"
 msgid "Move Layer"
-msgstr "Fjern lag"
+msgstr "Beveg lag"
 
 #: ../po/tmp/mypaint.xml.h:222
 msgid "Move Layer: reposition the current layer on the canvas"
@@ -3089,300 +3021,22 @@ msgstr ""
 #: ../po/tmp/mypaint.xml.h:224
 msgctxt "Menu|Edit|Current Mode|"
 msgid "Edit Frame"
-msgstr ""
+msgstr "Rediger ramme"
 
 #: ../po/tmp/mypaint.xml.h:225
 msgctxt "Toolbar|"
 msgid "Frame"
-msgstr ""
+msgstr "Ramme"
 
 #: ../po/tmp/mypaint.xml.h:226
 msgid ""
 "Edit Frame: define a frame around the document to give it a finite size. The "
 "frame is used when exporting."
-msgstr ""
+msgstr "Rediger ramme: definer en ramme rundt dokumentet for å gi det en bestemt "
+"størrelse. Rammen brukes når bildet eksporteres."
 
 #: ../po/tmp/mypaint.xml.h:227
 msgctxt "Menu|File|"
 msgid "Edit Frame"
-msgstr ""
+msgstr "Rediger ramme"
 
-#~ msgid ""
-#~ "The background %s was ignored because it has an alpha channel. Please "
-#~ "remove it."
-#~ msgstr ""
-#~ "Bakgrunnen %s ble ignorert fordi den har en alfakanal (gjennomsiktighet). "
-#~ "Vennligst fjern gjennomsiktigheten."
-
-#~ msgid ""
-#~ "The background %s was ignored because it is the wrong size. Only (N*%d)x"
-#~ "(M*%d) is supported."
-#~ msgstr ""
-#~ "Bakgrunnen %s ble ignorert fordi den har feil størrelse. Kun (N*%d)x(M*"
-#~ "%d) er støttet."
-
-#~ msgid "Try right click, middle click or Ctrl click"
-#~ msgstr "Forsøk høyreklikk, midtre musetast eller Ctrl klikk"
-
-#~ msgid "Export group as brush package..."
-#~ msgstr "Eksporter gruppe som penselpakke..."
-
-#~ msgid "Download brushes (in web browser)"
-#~ msgstr "Last ned pensler (åpner nettleseren)"
-
-#~ msgid "Recently used colors"
-#~ msgstr "Nylig brukte farger"
-
-#~ msgid "Harmony color switcher"
-#~ msgstr "Harmoni-fargevelger "
-
-#~ msgid "Change Hue"
-#~ msgstr "Endre kulør"
-
-#~ msgid "Pick a screen color"
-#~ msgstr "Plukk farge"
-
-#~ msgid "Change Hue, Saturation and Value"
-#~ msgstr "Endre kulør/metning or verdi"
-
-#~ msgid "Change Red, Green and Blue components"
-#~ msgstr "Endre rød, grønn og blå komponenter"
-
-#~ msgid "RGB"
-#~ msgstr "RGB"
-
-#~ msgid "HSV"
-#~ msgstr "HSV"
-
-#~ msgid "Color history"
-#~ msgstr "Fargehistorikk"
-
-#~ msgid "Harmonies"
-#~ msgstr "Harmonier"
-
-#~ msgid "Analogous"
-#~ msgstr "Analoge"
-
-#~ msgid ""
-#~ "Three nearby hues on the color wheel.\n"
-#~ "Often found in nature, frequently pleasing to the eye."
-#~ msgstr ""
-#~ "Tre nærliggende farger på fargehjulet.\n"
-#~ "Vanlig i naturen, ofte visuelt tiltrekkende."
-
-#~ msgid ""
-#~ "Two opposite hues on the color wheel.\n"
-#~ "Vibrant, and maximally contrasting."
-#~ msgstr ""
-#~ "To motstående farger på fargehjulet.\n"
-#~ "Livlig med maksimal fargekontrast."
-
-#~ msgid ""
-#~ "Two hues next to the current hue's complement.\n"
-#~ "Contrasting, but adds a possibly pleasing harmony."
-#~ msgstr ""
-#~ "To farger nære komplimentærfargen.\n"
-#~ "Sterk fontrast men legger til en harmoni."
-
-#~ msgid "Double complementary"
-#~ msgstr "Dobbelt komplimentær"
-
-#~ msgid "Four hues in two complementary pairs."
-#~ msgstr "Fire farger i to komplimentære par."
-
-#~ msgid "Square"
-#~ msgstr "Kvadratisk"
-
-#~ msgid "Four equally-spaced hues"
-#~ msgstr "Fire jevnt fordelte farger"
-
-#~ msgid "Triadic"
-#~ msgstr "Triadisk"
-
-#~ msgid ""
-#~ "Three equally-spaced hues.\n"
-#~ "Vibrant with equal tension."
-#~ msgstr ""
-#~ "Tre jevnt fordelte farger.\n"
-#~ "Livlig med lik "
-
-#~ msgid "Change value/saturation"
-#~ msgstr "Endre verdi/metning"
-
-#~ msgid "Blend each color to opposite"
-#~ msgstr "Bland farger mot komplimentær"
-
-#~ msgid "Blend each color to negative"
-#~ msgstr "Bland farger mot negativt"
-
-# "opaque" -> ikke gjennomsiktig
-# er dette den beste oversettelsen?
-#~ msgid "More Opaque"
-#~ msgstr "Mindre gjennomsiktig"
-
-#~ msgid "Less Opaque"
-#~ msgstr "Mer gjennomsiktig"
-
-#~ msgid "Pick Context (layer, brush and color)"
-#~ msgstr "Plukk verktøy (lag, pensel og farge)"
-
-#~ msgid "Change Color Hue (counter-clockwise)"
-#~ msgstr "Roter kulør mot klokken"
-
-#~ msgid "Change Color Hue (clockwise)"
-#~ msgstr "Roter kulør med klokken"
-
-#~ msgid "Copy to Clipboard"
-#~ msgstr "Kopier til utklippstavle"
-
-#~ msgid "Paste Clipboard (Replace Layer)"
-#~ msgstr "Lim inn (erstatter laget)"
-
-#~ msgid "Select Layer at Cursor"
-#~ msgstr "Velg lag ved peker"
-
-#~ msgid "Next (above current)"
-#~ msgstr "Neste (over nåværende)"
-
-#~ msgid "Next (below current)"
-#~ msgstr "Neste (under nåværende)"
-
-#~ msgid "Remove"
-#~ msgstr "Fjern"
-
-#~ msgid "Rotate the view right"
-#~ msgstr "Roter visning med klokken"
-
-#~ msgid "Undo: nothing to undo"
-#~ msgstr "Angre: ingenting å angre"
-
-#~ msgid "Redo: nothing to redo"
-#~ msgstr "Gjenta: ingenting å gjenta"
-
-#~ msgid "Toggle Document Frame"
-#~ msgstr "Dokumentramme av/på"
-
-#~ msgid "Help!"
-#~ msgstr "Hjelp!"
-
-#~ msgid "Load Scratchpad..."
-#~ msgstr "Last kladdeblokk..."
-
-# "Scrap" -> "kladd"
-#~ msgid "Save Scratchpad Now"
-#~ msgstr "Lagre kladdeblokk nå"
-
-#~ msgid "Save Scratchpad As..."
-#~ msgstr "Lagre kladdeblokk som..."
-
-#~ msgid "Save Scratchpad as Default"
-#~ msgstr "Sett kladdeblokk som standard"
-
-#~ msgid "Clear the Default Scratchpad"
-#~ msgstr "Nullstill standard kladdeblokk"
-
-#~ msgid "Copy Background to Scratchpad"
-#~ msgstr "Kopier bakgrunn til kladdeblokk"
-
-#~ msgid "Change Brush..."
-#~ msgstr "Velg pensel..."
-
-#~ msgid "Download more brushes (in web browser)"
-#~ msgstr "Last ned flere penseler (åpner nettleser)"
-
-#~ msgid "Toggle the Layers list"
-#~ msgstr "Vis/skul lag-dialog"
-
-#~ msgid "Change Brush Settings in detail"
-#~ msgstr "Endre penselinstillinger i detalj"
-
-#~ msgid "Toggle the Colour Triangle"
-#~ msgstr "Vis/skjul fargetriangel"
-
-#~ msgid "Toggle the advanced Colour Sampler"
-#~ msgstr "Vis/skjul Harmoni fargevelger"
-
-#~ msgid "Toggle the scratchpad"
-#~ msgstr "Vis/skjul kladdeblokk"
-
-#~ msgid ""
-#~ "You can also drag the canvas with the mouse while holding the middle "
-#~ "mouse button or spacebar. Or with the arrow keys.\n"
-#~ "\n"
-#~ "In contrast to earlier versions, scrolling and zooming are harmless now "
-#~ "and will not make you run out of memory. But you still require a lot of "
-#~ "memory if you paint all over while fully zoomed out."
-#~ msgstr ""
-#~ "Du kan dra lerretet med musen ved å holde ned midtre museknapp eller "
-#~ "space. Du kan også bruke piltastene.\n"
-#~ "I motsetning til tidligere versjoner er scrolling og zooming harmløst, og "
-#~ "vil ikke føre til at du går tom for minne. Med det kreves fortsatt mye "
-#~ "minne dersom du maler over store områder når du har zoomet helt ut."
-
-#~ msgid "Open Last"
-#~ msgstr "Åpne forrige"
-
-#~ msgid "Reload"
-#~ msgstr "Gjennåpne"
-
-#~ msgid "Crop to active layer bounds"
-#~ msgstr "Kutt til størrelse for aktivt lag"
-
-#, fuzzy
-#~ msgid "Straight/Curved Lines"
-#~ msgstr "Rett linje fra middelpunkt"
-
-#, fuzzy
-#~ msgid "Sequence of Lines"
-#~ msgstr "Serie av rette linjer"
-
-#~ msgid "Menu"
-#~ msgstr "Meny"
-
-#~ msgid "Toggle Subwindows"
-#~ msgstr "Vis/skjul verktøyvinduer"
-
-#~ msgid "Pan"
-#~ msgstr "Dra"
-
-#~ msgid "Straight Line"
-#~ msgstr "Rett linje fra middelpunkt"
-
-#~ msgid "Color Changer"
-#~ msgstr "Fargevelger"
-
-#~ msgid "Button 1 + Shift"
-#~ msgstr "Knapp 1 + Skift"
-
-#~ msgid "Button 1 + Ctrl (or Alt)"
-#~ msgstr "Knapp 1 + Ctrl (eller Alt)"
-
-#~ msgid "Button 2"
-#~ msgstr "Knapp 2"
-
-#~ msgid "Button 2 + Shift"
-#~ msgstr "Knapp 2 + Skift"
-
-#~ msgid "Button 2 + Ctrl (or Alt)"
-#~ msgstr "Knapp 2 + Ctrl (eller Alt)"
-
-#~ msgid "Button 3"
-#~ msgstr "Knapp 3"
-
-#~ msgid "Button 3 + Shift"
-#~ msgstr "Knapp 3 + Skift"
-
-#~ msgid "Button 3 + Ctrl (or Alt)"
-#~ msgstr "Knapp 3 + Ctrl (eller Alt)"
-
-#~ msgid "<b>Pen and mouse button mappings</b>"
-#~ msgstr "<b>Pen og museknapp instillinger</b>"
-
-#~ msgid "Brush List Editor"
-#~ msgstr "Pensel-liste"
-
-#~ msgid "Brush Modifiers Active"
-#~ msgstr "Penselmodifikatorer aktivert"
-
-#~ msgid "Brush Modifiers Inactive"
-#~ msgstr "Penselmodifikatorer deaktivert"
