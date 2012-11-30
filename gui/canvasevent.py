@@ -924,6 +924,7 @@ class DragMode (InteractionMode):
         self._grab_broken_conninfo = None
         self._reset_drag_state()
 
+
     def _reset_drag_state(self):
         self.last_x = None
         self.last_y = None
@@ -938,8 +939,9 @@ class DragMode (InteractionMode):
             self._grab_broken_conninfo = None
 
 
-    def _stop_if_started(self, t=gdk.CURRENT_TIME):
-        if self._grab_widget is None:
+    def _stop_drag(self, t=gdk.CURRENT_TIME):
+        # Stops any active drag, calls drag_stop_cb(), and cleans up.
+        if not self.in_drag:
             return
         tdw = self._grab_widget
         tdw.grab_remove()
@@ -949,8 +951,10 @@ class DragMode (InteractionMode):
         self.drag_stop_cb()
         self._reset_drag_state()
 
-    def _start_unless_started(self, tdw, event):
-        if self._grab_widget is not None:
+
+    def _start_drag(self, tdw, event):
+        # Attempt to start a new drag, calling drag_start_cb() if successful.
+        if self.in_drag:
             return
         if hasattr(event, "x"):
             self.start_x = event.x
@@ -967,10 +971,6 @@ class DragMode (InteractionMode):
         if cursor is None:
             cursor = self.inactive_cursor
 
-        # Be more assertive; try to work around the condition noted below.
-        gdk.keyboard_ungrab(event.time)
-        gdk.pointer_ungrab(event.time)
-
         # Grab the pointer
         grab_status = gdk.pointer_grab(tdw_window, False, event_mask, None,
                                        cursor, event.time)
@@ -978,11 +978,16 @@ class DragMode (InteractionMode):
             print "DEBUG: pointer grab failed:", grab_status
             print "DEBUG:  gdk_pointer_is_grabbed():", gdk.pointer_is_grabbed()
             # There seems to be a race condition between this grab under
-            # PyGTK/GTK2 and some other grab from the app - possibly just the
-            # implicit grabs on colour selectors: https://gna.org/bugs/?20068
-            # Only pointer events are affected, and PyGI+GTK3 is unaffected.
+            # PyGTK/GTK2 and some other grab - possibly just the implicit grabs
+            # on colour selectors: https://gna.org/bugs/?20068 Only pointer
+            # events are affected, and PyGI+GTK3 is unaffected.
             #
-            # It's probably safest to return and not start the grab.
+            # It's probably safest to exit the mode and not start the drag.
+            # This condition should be rare enough for this to be a valid
+            # approach: the irritation of having to click again to do something
+            # should be far less than that of getting "stuck" in a drag.
+            print "DEBUG: exiting mode"
+            self.doc.modes.pop()
             return
 
         # We managed to establish a grab, so watch for it being broken.
@@ -996,6 +1001,7 @@ class DragMode (InteractionMode):
         if grab_status != gdk.GRAB_SUCCESS:
             print "DEBUG: keyboard grab failed:", grab_status
             gdk.pointer_ungrab()
+            self.doc.modes.pop()
             return
 
         # GTK too...
@@ -1047,7 +1053,7 @@ class DragMode (InteractionMode):
 
 
     def leave(self, **kwds):
-        self._stop_if_started()
+        self._stop_drag()
         if self.doc is not None:
             self.doc.tdw.set_override_cursor(None)
         super(DragMode, self).leave(**kwds)
@@ -1055,21 +1061,22 @@ class DragMode (InteractionMode):
 
     def button_press_cb(self, tdw, event):
         if not self.in_drag:
-            # Only start drags if not in a drag already,
-            # e.g. a keyboard-initiated one
-            self._start_unless_started(tdw, event)
-            if self._grab_widget is not None:
-                # Grab succeeded
-                self.last_x = event.x
-                self.last_y = event.y
-                self._start_button = event.button
+            if event.type == gdk.BUTTON_PRESS:
+                # Only start drags if not in a drag already,
+                # e.g. a keyboard-initiated one
+                self._start_drag(tdw, event)
+                if self.in_drag:
+                    # Grab succeeded
+                    self.last_x = event.x
+                    self.last_y = event.y
+                    self._start_button = event.button
         return super(DragMode, self).button_press_cb(tdw, event)
 
 
     def button_release_cb(self, tdw, event):
         if self.in_drag:
             if event.button == self._start_button:
-                self._stop_if_started()
+                self._stop_drag()
                 self._start_button = None
         return super(DragMode, self).button_release_cb(tdw, event)
 
@@ -1078,14 +1085,14 @@ class DragMode (InteractionMode):
         # We might be here because an Action manipulated the modes stack
         # but if that's the case then we should wait for a button or
         # a keypress to initiate the drag.
-        if self.in_drag and (self._start_button or self._start_keyval):
-            self._start_unless_started(tdw, event)
+        if self.in_drag:
             if self.last_x is not None:
                 dx = event.x - self.last_x
                 dy = event.y - self.last_y
                 self.drag_update_cb(tdw, event, dx, dy)
             self.last_x = event.x
             self.last_y = event.y
+            return True
         # Fall through to other behavioral mixins, just in case
         return super(DragMode, self).motion_notify_cb(tdw, event)
 
@@ -1099,7 +1106,7 @@ class DragMode (InteractionMode):
             # Start drags on space
             if event.keyval != self._start_keyval:
                 self._start_keyval = event.keyval
-                self._start_unless_started(tdw, event)
+                self._start_drag(tdw, event)
             return True
         # Fall through to other behavioral mixins
         return super(DragMode, self).key_press_cb(win, tdw, event)
@@ -1108,7 +1115,7 @@ class DragMode (InteractionMode):
     def key_release_cb(self, win, tdw, event):
         if self.in_drag:
             if event.keyval == self._start_keyval:
-                self._stop_if_started()
+                self._stop_drag()
                 self._start_keyval = None
             return True
         # Fall through to other behavioral mixins
