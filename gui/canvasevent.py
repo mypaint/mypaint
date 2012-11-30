@@ -209,6 +209,7 @@ class InteractionMode (object):
 
         """
         assert not hasattr(super(InteractionMode, self), "key_press_cb")
+        return True
 
 
     def key_release_cb(self, win, tdw, event):
@@ -219,6 +220,7 @@ class InteractionMode (object):
 
         """
         assert not hasattr(super(InteractionMode, self), "key_release_cb")
+        return True
 
 
     def model_structure_changed_cb(self, doc):
@@ -1065,7 +1067,7 @@ class DragMode (InteractionMode):
 
 
     def button_release_cb(self, tdw, event):
-        if self._grab_widget is not None:
+        if self.in_drag:
             if event.button == self._start_button:
                 self._stop_if_started()
                 self._start_button = None
@@ -1073,11 +1075,10 @@ class DragMode (InteractionMode):
 
 
     def motion_notify_cb(self, tdw, event):
-        if self._grab_widget is not None \
-                and (self._start_button or self._start_keyval):
-            # We might be here because an Action manipulated the modes stack
-            # but if that's the case then we should wait for a button or
-            # a keypress to initiate the drag.
+        # We might be here because an Action manipulated the modes stack
+        # but if that's the case then we should wait for a button or
+        # a keypress to initiate the drag.
+        if self.in_drag and (self._start_button or self._start_keyval):
             self._start_unless_started(tdw, event)
             if self.last_x is not None:
                 dx = event.x - self.last_x
@@ -1085,24 +1086,32 @@ class DragMode (InteractionMode):
                 self.drag_update_cb(tdw, event, dx, dy)
             self.last_x = event.x
             self.last_y = event.y
+        # Fall through to other behavioral mixins, just in case
         return super(DragMode, self).motion_notify_cb(tdw, event)
 
 
     def key_press_cb(self, win, tdw, event):
-        if not self._start_button:
-            # Only start drags if not in a button-initiated drag
-            if event.keyval != self._start_keyval:   # ignore repeats
-                if event.keyval == keysyms.space:
-                    self._start_keyval = event.keyval
-                    self._start_unless_started(tdw, event)
+        if self.in_drag:
+            # Eat keypresses in the middle of a drag no matter how
+            # it was started.
+            return True
+        elif event.keyval == keysyms.space:
+            # Start drags on space
+            if event.keyval != self._start_keyval:
+                self._start_keyval = event.keyval
+                self._start_unless_started(tdw, event)
+            return True
+        # Fall through to other behavioral mixins
         return super(DragMode, self).key_press_cb(win, tdw, event)
 
 
     def key_release_cb(self, win, tdw, event):
-        if self._grab_widget is not None:
+        if self.in_drag:
             if event.keyval == self._start_keyval:
                 self._stop_if_started()
                 self._start_keyval = None
+            return True
+        # Fall through to other behavioral mixins
         return super(DragMode, self).key_release_cb(win, tdw, event)
 
 
