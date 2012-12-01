@@ -556,7 +556,7 @@ class Application: # singleton
         additionally sets the current brush colour.
 
         """
-        color = colors.get_color_at_pointer(widget, size)
+        color = colors.get_color_at_pointer(widget.get_display(), size)
         self.brush_color_manager.set_color(color)
 
 
