@@ -110,15 +110,6 @@ class CachedBgWidgetMixin:
         self.queue_draw()
 
 
-#class CachedBgLayout (CachedBgWidgetMixin, gtk.Layout):
-#
-#    def __init__(self):
-#        gtk.Layout.__init__(self)
-#        CachedBgWidgetMixin.__init__(self)
-#
-#    def _get_cairo_context(self, event):
-#        return self.get_bin_window().cairo_create()
-
 
 class CachedBgDrawingArea (CachedBgWidgetMixin, gtk.DrawingArea):
 
