@@ -113,6 +113,16 @@ mypaint_tiled_surface_tile_request_init(MyPaintTiledSurfaceTileRequestData *data
 
 // Must be threadsafe
 static inline float
+calculate_r_sample(float x, float y, float aspect_ratio,
+                      float sn, float cs)
+{
+    float yyr=(y*cs-x*sn)*aspect_ratio;
+    float xxr=y*sn+x*cs;
+    float r = (yyr*yyr + xxr*xxr);
+    return r;
+}
+
+static inline float
 calculate_rr(int xp, int yp, float x, float y, float aspect_ratio,
                       float sn, float cs, float one_over_radius2)
 {
@@ -127,6 +137,72 @@ calculate_rr(int xp, int yp, float x, float y, float aspect_ratio,
 }
 
 // Must be threadsafe
+static inline float
+calculate_rr_subpixel(int xp, int yp, float x, float y, float aspect_ratio,
+                      float sn, float cs, float one_over_radius2)
+{
+    float _pixelLeft = (float)xp;
+    float _pixelTop = (float)yp;
+    float _pixelRight = _pixelLeft + 1.0;
+    float _pixelBottom = _pixelTop + 1.0;
+    float _pixelCenterX = _pixelLeft + 0.5;
+    float _pixelCenterY = _pixelTop + 0.5;
+    const minRadius = 3.0;
+
+    // don't do subpixel calculations if brush radius is bigger than minRadius
+    if( one_over_radius2 < (1.0 / (minRadius*minRadius)) )
+    {
+        float xx = _pixelCenterX - x;
+        float yy = _pixelCenterY - y;
+        return calculate_r_sample( xx, yy, aspect_ratio, sn, cs ) * one_over_radius2;
+    }
+
+    float nearestX, nearestY; // nearest to origin, but still inside pixel
+    float farthestX, farthestY; // fartherst from origin, but still inside pixel
+
+    if( x >= _pixelLeft && x < _pixelRight &&
+        y >= _pixelTop && y < _pixelBottom )
+    {
+        nearestX = x;
+        nearestY = y;
+        farthestX = (x > _pixelCenterX) ? _pixelLeft : _pixelRight;
+        farthestY = (y > _pixelCenterY) ? _pixelTop : _pixelBottom;
+    }
+    else
+    {
+        // get nearest point on the pixel border
+        nearestX = CLAMP( x, _pixelLeft, _pixelRight );
+        nearestY = CLAMP( y, _pixelTop, _pixelBottom );
+        // calculate the farthest
+        farthestX = _pixelRight - (nearestX - _pixelLeft);
+        farthestY = _pixelBottom - (nearestY - _pixelTop);
+    }
+    nearestX -= x;
+    nearestY -= y;
+    farthestX -= x;
+    farthestY -= y;
+
+    float r_near = calculate_r_sample( nearestX, nearestY, aspect_ratio, sn, cs );
+    float rr_near = r_near * one_over_radius2;
+    // if even the nearest point is > 1, there's no use going on
+    if( rr_near > 1.0 )
+        return rr_near;
+
+    float r_far = calculate_r_sample( farthestX, farthestY, aspect_ratio, sn, cs );
+    float rr_far = r_far * one_over_radius2;
+    if( rr_near < 0.01 && rr_far < 0.01 )
+        return rr_near;
+
+    // starting with rr_near, fade out (aproximate to 1.0) as
+    // much as r_far is distant from r_near
+    float visibilityNear = 1.0 - rr_near;
+    float delta = r_far - r_near;
+    float delta2 = 1.0 + delta *one_over_radius2;
+    visibilityNear /= delta2;
+
+    return 1.0 - visibilityNear;
+}
+
 static inline float
 calculate_opa(float rr, float hardness,
               float segment1_offset, float segment1_slope,
@@ -205,7 +281,7 @@ void render_dab_mask (uint16_t * mask,
 
     for (int yp = y0; yp <= y1; yp++) {
       for (int xp = x0; xp <= x1; xp++) {
-        float rr = calculate_rr(xp, yp,
+        float rr = calculate_rr_subpixel(xp, yp,
                                 x, y, aspect_ratio,
                                 sn, cs, one_over_radius2);
         rr_mask[(yp*MYPAINT_TILE_SIZE)+xp] = rr;
