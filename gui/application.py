@@ -496,6 +496,7 @@ class Application: # singleton
             hanvon rollick graphicpal artmaster sentip
             genius mousepen
             aiptek
+            touchcontroller
             '''
             match = False
             for s in tablet_strings.split():
