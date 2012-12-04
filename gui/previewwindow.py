@@ -9,8 +9,37 @@
 from gettext import gettext as _
 import gtk, gobject, pango
 gdk = gtk.gdk
+import cairo
 import dialogs
 import tileddrawwidget
+import overlays
+
+class VisibleOverlay(overlays.Overlay):
+  def __init__(self, doc, tdw):
+    self.doc = doc
+    self.tdw = tdw
+    self.x = 0
+    self.y = 0
+    self.w = 0
+    self.h = 0
+    self.rotation = 0
+
+  def update_location(self, x, y, w, h):
+    self.x = x
+    self.y = y
+    self.w = w
+    self.h = h
+
+  def update_rotation(self, angle):
+    self.rotation = angle
+    self.tdw.queue_draw()
+
+  def paint(self, cr):
+    matrix = cairo.Matrix()
+    matrix.rotate(self.rotation)
+    cr.transform(matrix)
+    cr.rectangle(self.x, self.y, self.w, self.h)
+    cr.stroke()
 
 # import bisect
 
@@ -33,6 +62,11 @@ class ToolWidget(gtk.VBox):
         self.tdw.set_size_request(250, 250)
         self.tdw.set_sensitive(False)
         self.add(self.tdw)
+
+        self.visible_overlay = VisibleOverlay(self.doc, self.tdw)
+        self.tdw.display_overlays.append(self.visible_overlay)
+        self.app.doc.tdw.rotation_observers.append(self.visible_overlay.update_rotation)
+        self.tdw.queue_draw()
 
         ## Supported zoom levels
         ## Not sure if this looks better

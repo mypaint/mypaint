@@ -122,6 +122,8 @@ class TiledDrawWidget (gtk.EventBox):
 
         self.renderer = CanvasRenderer(self.app, self.doc)
 
+        self.rotation_observers = []
+
         self.add_events(gdk.POINTER_MOTION_MASK
             # Workaround for https://gna.org/bugs/index.php?16253
             # Mypaint doesn't use proximity-*-event for anything
@@ -284,6 +286,9 @@ class TiledDrawWidget (gtk.EventBox):
         self.renderer.translation_x += cx - cx_new
         self.renderer.translation_y += cy - cy_new
         self.renderer.queue_draw()
+
+        for f in self.rotation_observers:
+          f(self.rotation)
 
     def zoom(self, zoom_step, center=None):
         def f(): self.renderer.scale *= zoom_step
