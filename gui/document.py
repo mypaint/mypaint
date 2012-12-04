@@ -669,7 +669,6 @@ class Document (CanvasController):
         else: assert 0
         self.clear_saved_view()
 
-
     def zoom(self, command):
         try:
             zoom_index = self.zoomlevel_values.index(self.tdw.scale)

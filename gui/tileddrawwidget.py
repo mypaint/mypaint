@@ -122,8 +122,6 @@ class TiledDrawWidget (gtk.EventBox):
 
         self.renderer = CanvasRenderer(self.app, self.doc)
 
-        self.rotation_observers = []
-
         self.add_events(gdk.POINTER_MOTION_MASK
             # Workaround for https://gna.org/bugs/index.php?16253
             # Mypaint doesn't use proximity-*-event for anything
@@ -146,6 +144,8 @@ class TiledDrawWidget (gtk.EventBox):
         self.doc.doc_observers.append(self.renderer.model_structure_changed_cb)
         self.doc.brush.brushinfo.observers.append(
                                         self.renderer.brush_modified_cb)
+
+        self.rotation_observers = []
 
         self.renderer.update_cursor() # get the initial cursor right
 
@@ -287,27 +287,32 @@ class TiledDrawWidget (gtk.EventBox):
         self.renderer.translation_y += cy - cy_new
         self.renderer.queue_draw()
 
-        for f in self.rotation_observers:
-          f(self.rotation)
-
     def zoom(self, zoom_step, center=None):
         def f(): self.renderer.scale *= zoom_step
         self.rotozoom_with_center(f, center)
+        for f in self.renderer.movement_observers:
+            f()
 
     def set_zoom(self, zoom, center=None):
         def f(): self.renderer.scale = zoom
         self.rotozoom_with_center(f, center)
         self.renderer.update_cursor()
+        for f in self.renderer.movement_observers:
+            f()
 
     def rotate(self, angle_step, center=None):
         if self.renderer.mirrored: angle_step = -angle_step
         def f(): self.renderer.rotation += angle_step
         self.rotozoom_with_center(f, center)
+        for f in self.rotation_observers:
+            f(self.rotation)
 
     def set_rotation(self, angle):
         if self.renderer.mirrored: angle = -angle
         def f(): self.renderer.rotation = angle
         self.rotozoom_with_center(f)
+        for f in self.rotation_observers:
+            f(self.rotation)
 
     def mirror(self):
         def f(): self.renderer.mirrored = not self.renderer.mirrored
@@ -507,6 +512,8 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         # gets overwritten for the main window
         self.zoom_max = 5.0
         self.zoom_min = 1/5.0
+
+        self.movement_observers = []
 
         # Sensitivity; we draw via a cached snapshot while the widget is
         # insensitive. tdws are generally only insensitive during loading and
@@ -863,6 +870,9 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
             self.window.scroll(int(-dx), int(-dy))
         else:
             self.queue_draw()
+
+        for f in self.movement_observers:
+            f()
 
     def get_center(self):
         """Return the centre position in display coordinates.

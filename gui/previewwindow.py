@@ -15,7 +15,8 @@ import tileddrawwidget
 import overlays
 
 class VisibleOverlay(overlays.Overlay):
-  def __init__(self, doc, tdw):
+  def __init__(self, app, doc, tdw):
+    self.app = app
     self.doc = doc
     self.tdw = tdw
     self.x = 0
@@ -24,11 +25,52 @@ class VisibleOverlay(overlays.Overlay):
     self.h = 0
     self.rotation = 0
 
-  def update_location(self, x, y, w, h):
-    self.x = x
-    self.y = y
-    self.w = w
-    self.h = h
+  def update_location(self):
+    # Position visible overlay box
+    # alloc.width/height is size of preview window
+    # bbox is the size of the whole document
+    # self.app.doc.tdw.renderer.get_allocation().width/height is the visible region size
+    # need to get position of visible area from the main tdw
+    # then position/bbox*alloc is the required transform
+    # TODO: consider rotation
+
+    # allocation, in display coords
+    alloc = self.app.doc.tdw.get_allocation()
+    view_x0, view_y0 = 0, 0
+    view_x1, view_y1 = view_x0+alloc.width, view_y0+alloc.height
+
+    print "alloc: (%d, %d)" % (alloc.width, alloc.height)
+
+    # Viewing rectangle extents, in model coords
+    corners = [ (view_x0, view_y0), (view_x0, view_y1),
+                (view_x1, view_y1), (view_x1, view_y0), ]
+    corners_m = [self.app.doc.tdw.display_to_model(*c) for c in corners]
+
+    tx0,ty0 = corners_m[0]
+    tx0,ty1 = corners_m[1]
+    tx1,ty1 = corners_m[2]
+    tx1,ty0 = corners_m[3]
+    print "model: (%d, %d) (%d, %d) (%d, %d) (%d, %d)" % (tx0, ty0, tx0, ty1, tx1, ty1, tx1, ty0)
+
+    # Back to display coords
+    corners_overlay= [self.tdw.model_to_display(*c) for c in corners_m]
+
+    tdx0,tdy0 = corners_m[0]
+    tdx0,tdy1 = corners_m[1]
+    tdx1,tdy1 = corners_m[2]
+    tdx1,tdy0 = corners_m[3]
+    print "overlay: (%d, %d) (%d, %d) (%d, %d) (%d, %d)" % (tdx0, tdy0, tdx0, tdy1, tdx1, tdy1, tdx1, tdy0)
+
+    overlay_x0, overlay_y0 = corners_overlay[0]
+    overlay_x1, overlay_y1 = corners_overlay[2]
+    overlay_w = overlay_x1 - overlay_x0
+    overlay_h = overlay_y1 - overlay_y0
+
+    self.x = overlay_x0
+    self.y = overlay_y0
+    self.w = overlay_w
+    self.h = overlay_h
+    self.tdw.queue_draw()
 
   def update_rotation(self, angle):
     self.rotation = angle
@@ -63,9 +105,10 @@ class ToolWidget(gtk.VBox):
         self.tdw.set_sensitive(False)
         self.add(self.tdw)
 
-        self.visible_overlay = VisibleOverlay(self.doc, self.tdw)
+        self.visible_overlay = VisibleOverlay(self.app, self.doc, self.tdw)
         self.tdw.display_overlays.append(self.visible_overlay)
         self.app.doc.tdw.rotation_observers.append(self.visible_overlay.update_rotation)
+        self.app.doc.tdw.renderer.movement_observers.append(self.visible_overlay.update_location)
         self.tdw.queue_draw()
 
         ## Supported zoom levels
