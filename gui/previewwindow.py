@@ -73,8 +73,15 @@ class VisibleOverlay(overlays.Overlay):
   def paint(self, cr):
     matrix = cairo.Matrix()
     matrix.rotate(self.rotation)
+
+    alloc = self.tdw.get_allocation()
+    cx = alloc.width/2
+    cy = alloc.height/2
+
+    cr.translate(cx, cy)
+
     cr.transform(matrix)
-    cr.rectangle(self.x, self.y, self.w, self.h)
+    cr.rectangle(self.x - cx, self.y - cy, self.w, self.h)
     cr.stroke()
 
 # import bisect
