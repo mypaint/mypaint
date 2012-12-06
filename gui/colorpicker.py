@@ -54,18 +54,23 @@ class ColorPicker(windowing.PopupWindow):
         self.move(x, y + popup_height)
         self.show_all()
 
-        # Using a GTK grab rather than a gdk pointer grab seems to
-        # fix https://gna.org/bugs/?17940
-        self.grab_add()
-        self.app.doc.tdw.set_override_cursor(self.app.cursor_color_picker)
+        # Revert to the older (pre-61cce3b) way of doing a pointer grab, but
+        # set the cursor here for the duration of the grab. I think this is a
+        # smarter way of doing it...
+        result = gdk.pointer_grab(self.window,
+                                  event_mask=gdk.POINTER_MOTION_MASK,
+                                  cursor=self.app.cursor_color_picker)
+        if result != gdk.GRAB_SUCCESS:
+            print 'Warning: pointer grab failed with result', result
+            self.leave(reason=None)
+            return
 
         self.popup_state.register_mouse_grab(self)
 
         self.require_ctrl = False
-    
+
     def leave(self, reason):
-        self.grab_remove()
-        self.app.doc.tdw.set_override_cursor(None)
+        gdk.pointer_ungrab()
 
         if self.idle_handler:
             gobject.source_remove(self.idle_handler)
