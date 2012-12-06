@@ -70,7 +70,7 @@ class Window(windowing.SubWindow):
             return
         print 'Event statistics enabled.'
         self.initialized = True
-        #self.app.doc.tdw.connect("event", self.event_cb)
+        self.app.doc.tdw.connect("event", self.event_cb)
         self.app.drawWindow.connect("event", self.event_cb)
         gobject.timeout_add(1000, self.second_timer_cb, priority=gobject.PRIORITY_HIGH)
 
@@ -88,7 +88,7 @@ class Window(windowing.SubWindow):
         self.motion_dtime_sample = []
         return True
 
-    def event2str(self, event):
+    def event2str(self, widget, event):
         t = str(getattr(event, 'time', '-'))
         msg = '% 6s % 15s' % (t[-6:], event.type.value_name.replace('GDK_', ''))
 
@@ -124,6 +124,11 @@ class Window(windowing.SubWindow):
         if xtilt is not None or ytilt is not None:
             self.tilt_label.set_text('%+4.4f / %+4.4f' % (xtilt, ytilt))
 
+        if widget is not self.app.doc.tdw:
+            if widget is self.app.drawWindow:
+                msg += ' [drawWindow]'
+            else:
+                msg += ' [%r]' % widget
         return msg
 
     def report(self, msg):
@@ -136,7 +141,7 @@ class Window(windowing.SubWindow):
     def event_cb(self, widget, event):
         if event.type == gdk.EXPOSE:
             return False
-        msg = self.event2str(event)
+        msg = self.event2str(widget, event)
         if event.type == gdk.MOTION_NOTIFY:
             # statistics
             self.motion_event_counter += 1
