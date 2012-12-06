@@ -221,6 +221,27 @@ mypaint_brush_set_state(MyPaintBrush *self, MyPaintBrushState i, float value)
 }
 
 
+// Returns the smallest angular difference (counterclockwise or clockwise) a to b, in degrees.
+// Clockwise is positive.
+// a and b must be zero or greater.
+static inline float
+smallest_angular_difference(float a, float b)
+{
+    float d_cw, d_ccw;
+    a = fmodf(a, 360.0);
+    b = fmodf(b, 360.0);
+    if (a > b) {
+        d_cw = a - b;
+        d_ccw = b + 360.0 - a;
+    }
+    else {
+        d_cw = a + 360.0 - b;
+        d_ccw = b - a;
+    }
+    return (d_cw < d_ccw) ? -d_cw : d_ccw;
+}
+
+
   // returns the fraction still left after t seconds
   float exp_decay (float T_const, float t)
   {
@@ -339,7 +360,8 @@ mypaint_brush_set_state(MyPaintBrush *self, MyPaintBrushState i, float value)
     inputs[MYPAINT_BRUSH_INPUT_STROKE] = MIN(self->states[MYPAINT_BRUSH_STATE_STROKE], 1.0);
     inputs[MYPAINT_BRUSH_INPUT_DIRECTION] = fmodf (atan2f (self->states[MYPAINT_BRUSH_STATE_DIRECTION_DY], self->states[MYPAINT_BRUSH_STATE_DIRECTION_DX])/(2*M_PI)*360 + 180.0, 180.0);
     inputs[MYPAINT_BRUSH_INPUT_TILT_DECLINATION] = self->states[MYPAINT_BRUSH_STATE_DECLINATION];
-    inputs[MYPAINT_BRUSH_INPUT_TILT_ASCENSION] = self->states[MYPAINT_BRUSH_STATE_ASCENSION];
+    inputs[MYPAINT_BRUSH_INPUT_TILT_ASCENSION] = fmodf(self->states[MYPAINT_BRUSH_STATE_ASCENSION] + 180.0, 360.0) - 180.0;
+
     inputs[MYPAINT_BRUSH_INPUT_CUSTOM] = self->states[MYPAINT_BRUSH_STATE_CUSTOM_INPUT];
     if (self->print_inputs) {
       printf("press=% 4.3f, speed1=% 4.4f\tspeed2=% 4.4f\tstroke=% 4.3f\tcustom=% 4.3f\n", (double)inputs[MYPAINT_BRUSH_INPUT_PRESSURE], (double)inputs[MYPAINT_BRUSH_INPUT_SPEED1], (double)inputs[MYPAINT_BRUSH_INPUT_SPEED2], (double)inputs[MYPAINT_BRUSH_INPUT_STROKE], (double)inputs[MYPAINT_BRUSH_INPUT_CUSTOM]);
@@ -821,7 +843,7 @@ mypaint_brush_set_state(MyPaintBrush *self, MyPaintBrushState i, float value)
         step_dpressure = frac * (pressure - self->states[MYPAINT_BRUSH_STATE_PRESSURE]);
         step_dtime     = frac * (dtime_left - 0.0);
         step_declination = frac * (tilt_declination - self->states[MYPAINT_BRUSH_STATE_DECLINATION]);
-        step_ascension   = frac * (tilt_ascension - self->states[MYPAINT_BRUSH_STATE_ASCENSION]);
+        step_ascension   = frac * smallest_angular_difference(self->states[MYPAINT_BRUSH_STATE_ASCENSION], tilt_ascension);
         // Though it looks different, time is interpolated exactly like x/y/pressure.
       }
 
