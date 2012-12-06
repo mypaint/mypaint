@@ -223,7 +223,6 @@ mypaint_brush_set_state(MyPaintBrush *self, MyPaintBrushState i, float value)
 
 // Returns the smallest angular difference (counterclockwise or clockwise) a to b, in degrees.
 // Clockwise is positive.
-// a and b must be zero or greater.
 static inline float
 smallest_angular_difference(float a, float b)
 {
@@ -842,9 +841,9 @@ smallest_angular_difference(float a, float b)
         step_dy        = frac * (y - self->states[MYPAINT_BRUSH_STATE_Y]);
         step_dpressure = frac * (pressure - self->states[MYPAINT_BRUSH_STATE_PRESSURE]);
         step_dtime     = frac * (dtime_left - 0.0);
+        // Though it looks different, time is interpolated exactly like x/y/pressure.
         step_declination = frac * (tilt_declination - self->states[MYPAINT_BRUSH_STATE_DECLINATION]);
         step_ascension   = frac * smallest_angular_difference(self->states[MYPAINT_BRUSH_STATE_ASCENSION], tilt_ascension);
-        // Though it looks different, time is interpolated exactly like x/y/pressure.
       }
 
       update_states_and_setting_values (self, step_dx, step_dy, step_dpressure, step_declination, step_ascension, step_dtime);
@@ -870,7 +869,7 @@ smallest_angular_difference(float a, float b)
       step_dy        = y - self->states[MYPAINT_BRUSH_STATE_Y];
       step_dpressure = pressure - self->states[MYPAINT_BRUSH_STATE_PRESSURE];
       step_declination = tilt_declination - self->states[MYPAINT_BRUSH_STATE_DECLINATION];
-      step_ascension = tilt_ascension - self->states[MYPAINT_BRUSH_STATE_ASCENSION];
+      step_ascension = smallest_angular_difference(self->states[MYPAINT_BRUSH_STATE_ASCENSION], tilt_ascension);
       step_dtime     = dtime_left;
 
       //dtime_left = 0; but that value is not used any more
