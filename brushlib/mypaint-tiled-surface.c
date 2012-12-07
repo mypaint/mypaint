@@ -157,11 +157,11 @@ void render_dab_mask (uint16_t * mask,
     float cs=cos(angle_rad);
     float sn=sin(angle_rad);
 
-    float r_fringe = radius + 1;
+    float r_fringe = radius + 1.0; // +1.0 should not be required, only to be sure
     int x0 = floor (x - r_fringe);
     int y0 = floor (y - r_fringe);
-    int x1 = ceil (x + r_fringe);
-    int y1 = ceil (y + r_fringe);
+    int x1 = floor (x + r_fringe);
+    int y1 = floor (y + r_fringe);
     if (x0 < 0) x0 = 0;
     if (y0 < 0) y0 = 0;
     if (x1 > TILE_SIZE-1) x1 = TILE_SIZE-1;
@@ -254,13 +254,13 @@ process_op(MyPaintTiledSurface *self, uint16_t *rgba_p, uint16_t *mask,
 
     // FIXME: only emit on end_atomic
     {
-      // expand the bounding box to include the region we just drawed
+      // expand the bounding box to include the region we just drawn
       int bb_x, bb_y, bb_w, bb_h;
-      bb_x = floor (op->x - (op->radius+1));
-      bb_y = floor (op->y - (op->radius+1));
-      /* FIXME: think about it exactly */
-      bb_w = ceil (2*(op->radius+1));
-      bb_h = ceil (2*(op->radius+1));
+      float r_fringe = op->radius + 1.0; // +1.0 should not be required, only to be sure
+      bb_x = floor (op->x - r_fringe);
+      bb_y = floor (op->y - r_fringe);
+      bb_w = floor (op->x + r_fringe) - bb_x + 1;
+      bb_h = floor (op->y + r_fringe) - bb_y + 1;
 
       mypaint_tiled_surface_area_changed(self, bb_x, bb_y, bb_w, bb_h);
     }
@@ -344,25 +344,25 @@ gboolean draw_dab_internal (MyPaintTiledSurface *self, float x, float y,
 
     // Determine the tiles influenced by operation, and queue it for processing for each tile
     {
-    float r_fringe = op->radius + 1;
-
-    int tx1 = floor(floor(x - r_fringe) / TILE_SIZE);
-    int tx2 = floor(floor(x + r_fringe) / TILE_SIZE);
-    int ty1 = floor(floor(y - r_fringe) / TILE_SIZE);
-    int ty2 = floor(floor(y + r_fringe) / TILE_SIZE);
-    int tx, ty;
-
-    for (ty = ty1; ty <= ty2; ty++) {
-      for (tx = tx1; tx <= tx2; tx++) {
+      float r_fringe = radius + 1.0; // +1.0 should not be required, only to be sure
+      
+      int tx1 = floor(floor(x - r_fringe) / TILE_SIZE);
+      int tx2 = floor(floor(x + r_fringe) / TILE_SIZE);
+      int ty1 = floor(floor(y - r_fringe) / TILE_SIZE);
+      int ty2 = floor(floor(y + r_fringe) / TILE_SIZE);
+      
+      int tx, ty;
+      
+      for (ty = ty1; ty <= ty2; ty++) {
+        for (tx = tx1; tx <= tx2; tx++) {
           const TileIndex tile_index = {tx, ty};
           OperationDataDrawDab *op_copy = (OperationDataDrawDab *)malloc(sizeof(OperationDataDrawDab));
           *op_copy = *op;
           operation_queue_add(self->operation_queue, tile_index, op_copy);
+        }
       }
     }
-
-    }
-
+    
     return TRUE;
   }
 
@@ -410,8 +410,6 @@ void get_color (MyPaintSurface *surface, float x, float y,
 {
     MyPaintTiledSurface *self = (MyPaintTiledSurface *)surface;
 
-    float r_fringe;
-
     if (radius < 1.0) radius = 1.0;
     const float hardness = 0.5;
     const float aspect_ratio = 1.0;
@@ -427,7 +425,7 @@ void get_color (MyPaintSurface *surface, float x, float y,
 
     // WARNING: some code duplication with draw_dab
 
-    r_fringe = radius + 1;
+    float r_fringe = radius + 1.0; // +1 should not be required, only to be sure
 
     int tx1 = floor(floor(x - r_fringe) / TILE_SIZE);
     int tx2 = floor(floor(x + r_fringe) / TILE_SIZE);

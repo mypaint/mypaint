@@ -96,8 +96,8 @@ def rotated_rectangle_bbox(corners):
     list_x = [x for (x, y) in corners]
     x1 = int(floor(min(list_x)))
     y1 = int(floor(min(list_y)))
-    x2 = int(ceil(max(list_x)))
-    y2 = int(ceil(max(list_y)))
+    x2 = int(floor(max(list_x)))
+    y2 = int(floor(max(list_y)))
     return x1, y1, x2-x1+1, y2-y1+1
 
 def clamp(x, lo, hi):

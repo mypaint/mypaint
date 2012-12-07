@@ -446,7 +446,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         self._stored_pos = new_pos
 
 
-    def canvas_modified_cb(self, x1, y1, w, h):
+    def canvas_modified_cb(self, x, y, w, h):
         if not self.get_window():
             return
 
@@ -456,17 +456,10 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
             self.queue_draw()
             return
 
-        if self.is_translation_only():
-            x, y = self.model_to_display(x1, y1)
-            self.queue_draw_area(int(x), int(y), w, h)
-        else:
-            # Create an expose event with the event bbox rotated/zoomed.
-            # OPTIMIZE: This is estimated to cause at least twice as much
-            #           rendering work as neccessary.
-            # Transform 4 bbox corners to screen coordinates.
-            corners = [(x1, y1), (x1+w-1, y1), (x1, y1+h-1), (x1+w-1, y1+h-1)]
-            corners = [self.model_to_display(x, y) for (x, y) in corners]
-            self.queue_draw_area(*helpers.rotated_rectangle_bbox(corners))
+        # Create an expose event with the event bbox rotated/zoomed.
+        corners = [(x, y), (x+w, y), (x, y+h), (x+w, y+h)]
+        corners = [self.model_to_display(x, y) for (x, y) in corners]
+        self.queue_draw_area(*helpers.rotated_rectangle_bbox(corners))
 
     def model_structure_changed_cb(self, doc):
         # Reflect layer locked and visible flag changes
@@ -709,9 +702,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
                     x, y = cr.user_to_device(tx*N, ty*N)
                     bbox = (int(x), int(y), N, N)
                 else:
-                    #corners = [(tx*N, ty*N), ((tx+1)*N-1, ty*N), (tx*N, (ty+1)*N-1), ((tx+1)*N-1, (ty+1)*N-1)]
-                    # same problem as above: m needs to know one extra pixel for interpolation
-                    corners = [(tx*N-1, ty*N-1), ((tx+1)*N, ty*N-1), (tx*N-1, (ty+1)*N), ((tx+1)*N, (ty+1)*N)]
+                    corners = [(tx*N, ty*N), ((tx+1)*N, ty*N), (tx*N, (ty+1)*N), ((tx+1)*N, (ty+1)*N)]
                     corners = [cr.user_to_device(x_, y_) for (x_, y_) in corners]
                     bbox = helpers.rotated_rectangle_bbox(corners)
 
