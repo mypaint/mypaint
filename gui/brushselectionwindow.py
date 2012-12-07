@@ -150,9 +150,9 @@ class BrushList(pixbuflist.PixbufList):
                 win.show_all()
             else:
                 win.hide()
+            return True
         else:
-            pixbuflist.PixbufList.button_press_cb(self, widget, event)
-        return True
+            return pixbuflist.PixbufList.button_press_cb(self, widget, event)
 
     def drag_begin_cb(self, widget, context):
         preview = self.bm.selected_brush.preview
