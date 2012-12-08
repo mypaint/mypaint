@@ -24,7 +24,6 @@ struct _MyPaintPythonTiledSurface {
     int tileMemoryValid;
     int tileMemoryWrite;
     int atomic;
-    Rect dirty_bbox;
 };
 
 // Forward declare
@@ -37,34 +36,33 @@ void begin_atomic(MyPaintSurface *surface)
     mypaint_tiled_surface_begin_atomic((MyPaintTiledSurface *)self);
 
     if (self->atomic == 0) {
-      assert(self->dirty_bbox.w == 0);
       assert(self->tileMemoryValid == 0);
     }
     self->atomic++;
 }
 
-void end_atomic(MyPaintSurface *surface)
+MyPaintRectangle end_atomic(MyPaintSurface *surface)
 {
     MyPaintPythonTiledSurface *self = (MyPaintPythonTiledSurface *)surface;
 
-    mypaint_tiled_surface_end_atomic((MyPaintTiledSurface *)self);
+    MyPaintRectangle bbox = mypaint_tiled_surface_end_atomic((MyPaintTiledSurface *)self);
 
     assert(self->atomic > 0);
     self->atomic--;
 
     if (self->atomic == 0) {
-      self->tileMemoryValid = 0;
-      self->tileMemoryWrite = 0;
-      Rect bbox = self->dirty_bbox; // copy to safety before calling python
-      self->dirty_bbox.w = 0;
-      if (bbox.w > 0) {
-        PyObject* res;
-        // OPTIMIZE: send a list tiles for minimal compositing? (but profile the code first)
-        res = PyObject_CallMethod(self->py_obj, "notify_observers", "(iiii)", bbox.x, bbox.y, bbox.w, bbox.h);
-        if (!res) return;
-        Py_DECREF(res);
-      }
+        self->tileMemoryValid = 0;
+        self->tileMemoryWrite = 0;
+
+        if (bbox.width > 0) {
+            PyObject* res;
+            res = PyObject_CallMethod(self->py_obj, "notify_observers", "(iiii)",
+                                      bbox.x, bbox.y, bbox.width, bbox.height);
+            Py_DECREF(res);
+        }
     }
+
+    return bbox;
 }
 
 static void
@@ -128,15 +126,6 @@ tile_request_end(MyPaintTiledSurface *tiled_surface, MyPaintTiledSurfaceTileRequ
     // We modify tiles directly, so don't need to do anything here
 }
 
-void area_changed(MyPaintTiledSurface *tiled_surface, int bb_x, int bb_y, int bb_w, int bb_h)
-{
-    MyPaintPythonTiledSurface *self = (MyPaintPythonTiledSurface *)tiled_surface;
-
-    ExpandRectToIncludePoint (&self->dirty_bbox, bb_x, bb_y);
-    ExpandRectToIncludePoint (&self->dirty_bbox, bb_x+bb_w-1, bb_y+bb_h-1);
-}
-
-
 MyPaintPythonTiledSurface *
 mypaint_python_tiled_surface_new(PyObject *py_object)
 {
@@ -149,18 +138,10 @@ mypaint_python_tiled_surface_new(PyObject *py_object)
     self->parent.parent.begin_atomic = begin_atomic;
     self->parent.parent.end_atomic = end_atomic;
 
-    // MyPaintTiledSurface vfuncs
-    self->parent.area_changed = area_changed;
-
     self->py_obj = py_object; // no need to incref
     self->atomic = 0;
     self->tileMemoryValid = 0;
     self->tileMemoryWrite = 0;
-
-    self->dirty_bbox.w = 0;
-    self->dirty_bbox.h = 0;
-    self->dirty_bbox.x = 0;
-    self->dirty_bbox.y = 0;
 
     return self;
 }

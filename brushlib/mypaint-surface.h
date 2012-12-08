@@ -45,7 +45,16 @@ typedef void (*MyPaintSurfaceDestroyFunction) (struct _MyPaintSurface *self);
 
 typedef void (*MyPaintSurfaceSavePngFunction) (struct _MyPaintSurface *self, const char *path, int x, int y, int width, int height);
 
-typedef void (*MyPaintSurfaceAtomicChangeFunction) (struct _MyPaintSurface *self);
+typedef void (*MyPaintSurfaceBeginAtomicFunction) (struct _MyPaintSurface *self);
+
+typedef struct {
+    int x;
+    int y;
+    int width;
+    int height;
+} MyPaintRectangle;
+
+typedef MyPaintRectangle (*MyPaintSurfaceEndAtomicFunction) (struct _MyPaintSurface *self);
 
 /**
   * MyPaintSurface:
@@ -57,8 +66,8 @@ struct _MyPaintSurface {
     MyPaintSurfaceDrawDabFunction draw_dab;
     MyPaintSurfaceGetColorFunction get_color;
     MyPaintSurfaceSavePngFunction save_png;
-    MyPaintSurfaceAtomicChangeFunction begin_atomic;
-    MyPaintSurfaceAtomicChangeFunction end_atomic;
+    MyPaintSurfaceBeginAtomicFunction begin_atomic;
+    MyPaintSurfaceEndAtomicFunction end_atomic;
     MyPaintSurfaceDestroyFunction destroy;
 };
 
@@ -95,7 +104,7 @@ mypaint_surface_save_png(MyPaintSurface *self, const char *path, int x, int y, i
 
 void mypaint_surface_begin_atomic(MyPaintSurface *self);
 
-void mypaint_surface_end_atomic(MyPaintSurface *self);
+MyPaintRectangle mypaint_surface_end_atomic(MyPaintSurface *self);
 
 void
 mypaint_surface_destroy(MyPaintSurface *self);

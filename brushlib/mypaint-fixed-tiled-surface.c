@@ -10,8 +10,6 @@
 struct _MyPaintGeglTiledSurface {
     MyPaintTiledSurface parent;
 
-    int atomic;
-    //Rect dirty_bbox; TODO: change into a GeglRectangle
     size_t tile_size; // Size (in bytes) of single tile
     uint16_t *tile_buffer; // Stores tiles in a linear chunk of memory
     uint16_t *null_tile; // Single tile that we hand out and ignore writes to
@@ -28,32 +26,6 @@ void reset_null_tile(MyPaintFixedTiledSurface *self)
 {
     for (int i=0; i < self->tiles_width * self->tiles_height; i++) {
         self->null_tile[i] = 0;
-    }
-}
-
-void begin_atomic(MyPaintSurface *surface)
-{
-    MyPaintFixedTiledSurface *self = (MyPaintFixedTiledSurface *)surface;
-
-    if (self->atomic == 0) {
-      //assert(self->dirty_bbox.w == 0);
-    }
-    self->atomic++;
-}
-
-void end_atomic(MyPaintSurface *surface)
-{
-    MyPaintFixedTiledSurface *self = (MyPaintFixedTiledSurface *)surface;
-
-    assert(self->atomic > 0);
-    self->atomic--;
-
-    if (self->atomic == 0) {
-      //Rect bbox = self->dirty_bbox;
-      //self->dirty_bbox.w = 0;
-      //if (bbox.w > 0) {
-         // TODO: Could notify of changes here instead of for each tile changed
-      //}
     }
 }
 
@@ -99,15 +71,6 @@ tile_request_end(MyPaintTiledSurface *tiled_surface, MyPaintTiledSurfaceTileRequ
     }
 }
 
-void area_changed(MyPaintTiledSurface *tiled_surface, int bb_x, int bb_y, int bb_w, int bb_h)
-{
-    MyPaintFixedTiledSurface *self = (MyPaintFixedTiledSurface *)tiled_surface;
-
-    // TODO: use gegl_rectangle_bounding_box instead
-    //ExpandRectToIncludePoint (&self->dirty_bbox, bb_x, bb_y);
-    //ExpandRectToIncludePoint (&self->dirty_bbox, bb_x+bb_w-1, bb_y+bb_h-1);
-}
-
 MyPaintFixedTiledSurface *
 mypaint_fixed_tiled_surface_new(int width, int height)
 {
@@ -130,14 +93,7 @@ mypaint_fixed_tiled_surface_new(int width, int height)
 
     // MyPaintSurface vfuncs
     self->parent.parent.destroy = free_simple_tiledsurf;
-    self->parent.parent.begin_atomic = begin_atomic;
-    self->parent.parent.end_atomic = end_atomic;
 
-    // MyPaintTiledSurface vfuncs
-    self->parent.area_changed = area_changed;
-
-    self->atomic = 0;
-    //self->dirty_bbox.w = 0;
     self->tile_buffer = buffer;
     self->tile_size = tile_size;
     self->null_tile = (uint16_t *)malloc(tile_size);

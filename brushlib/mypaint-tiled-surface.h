@@ -37,10 +37,10 @@ struct _MyPaintTiledSurface {
     /* private: */
     MyPaintTiledSurfaceTileRequestStartFunction tile_request_start;
     MyPaintTiledSurfaceTileRequestEndFunction tile_request_end;
-    MyPaintTiledSurfaceAreaChanged area_changed;
     gboolean surface_do_symmetry;
     float surface_center_x;
     OperationQueue *operation_queue;
+    MyPaintRectangle dirty_bbox;
     gboolean threadsafe_tile_requests;
 };
 
@@ -66,10 +66,8 @@ mypaint_tiled_surface_get_alpha (MyPaintTiledSurface *self, float x, float y, fl
 void mypaint_tiled_surface_tile_request_start(MyPaintTiledSurface *self, MyPaintTiledSurfaceTileRequestData *request);
 void mypaint_tiled_surface_tile_request_end(MyPaintTiledSurface *self, MyPaintTiledSurfaceTileRequestData *request);
 
-void mypaint_tiled_surface_area_changed(MyPaintTiledSurface *self, int bb_x, int bb_y, int bb_w, int bb_h);
-
 void mypaint_tiled_surface_begin_atomic(MyPaintTiledSurface *self);
-void mypaint_tiled_surface_end_atomic(MyPaintTiledSurface *self);
+MyPaintRectangle mypaint_tiled_surface_end_atomic(MyPaintTiledSurface *self);
 
 G_END_DECLS
 

@@ -24,16 +24,46 @@
 #define M_PI 3.14159265358979323846
 
 #define TILE_SIZE 64
-#define MAX_MIPMAP_LEVEL 4
 
 void process_tile(MyPaintTiledSurface *self, int tx, int ty);
 
-void mypaint_tiled_surface_begin_atomic(MyPaintTiledSurface *self)
+
+void
+mypaint_rectangle_expand_to_include_point(MyPaintRectangle *r, int x, int y)
+{
+    if (r->width == 0) {
+        r->width = 1; r->height = 1;
+        r->x = x; r->y = y;
+    } else {
+        if (x < r->x) { r->width += r->x-x; r->x = x; } else
+        if (x >= r->x+r->width) { r->width = x - r->x + 1; }
+
+        if (y < r->y) { r->height += r->y-y; r->y = y; } else
+        if (y >= r->y+r->height) { r->height = y - r->y + 1; }
+    }
+}
+
+
+void
+begin_atomic_default(MyPaintSurface *surface)
+{
+    mypaint_tiled_surface_begin_atomic((MyPaintTiledSurface *)surface);
+}
+
+MyPaintRectangle
+end_atomic_default(MyPaintSurface *surface)
+{
+    return mypaint_tiled_surface_end_atomic((MyPaintTiledSurface *)surface);
+}
+
+void
+mypaint_tiled_surface_begin_atomic(MyPaintTiledSurface *self)
 {
 
 }
 
-void mypaint_tiled_surface_end_atomic(MyPaintTiledSurface *self)
+MyPaintRectangle
+mypaint_tiled_surface_end_atomic(MyPaintTiledSurface *self)
 {
     // Process tiles
     TileIndex *tiles;
@@ -45,6 +75,8 @@ void mypaint_tiled_surface_end_atomic(MyPaintTiledSurface *self)
     }
 
     operation_queue_clear_dirty_tiles(self->operation_queue);
+
+    return self->dirty_bbox;
 }
 
 void mypaint_tiled_surface_tile_request_start(MyPaintTiledSurface *self, MyPaintTiledSurfaceTileRequestData *request)
@@ -58,12 +90,6 @@ void mypaint_tiled_surface_tile_request_end(MyPaintTiledSurface *self, MyPaintTi
 {
     assert(self->tile_request_end);
     self->tile_request_end(self, request);
-}
-
-void mypaint_tiled_surface_area_changed(MyPaintTiledSurface *self, int bb_x, int bb_y, int bb_w, int bb_h)
-{
-    if (self->area_changed)
-        self->area_changed(self, bb_x, bb_y, bb_w, bb_h);
 }
 
 void
@@ -251,19 +277,6 @@ process_op(MyPaintTiledSurface *self, uint16_t *rgba_p, uint16_t *mask,
                                       op->color_r, op->color_g, op->color_b,
                                       op->colorize*op->opaque*(1<<15));
     }
-
-    // FIXME: only emit on end_atomic
-    {
-      // expand the bounding box to include the region we just drawn
-      int bb_x, bb_y, bb_w, bb_h;
-      float r_fringe = op->radius + 1.0; // +1.0 should not be required, only to be sure
-      bb_x = floor (op->x - r_fringe);
-      bb_y = floor (op->y - r_fringe);
-      bb_w = floor (op->x + r_fringe) - bb_x + 1;
-      bb_h = floor (op->y + r_fringe) - bb_y + 1;
-
-      mypaint_tiled_surface_area_changed(self, bb_x, bb_y, bb_w, bb_h);
-    }
 }
 
 void
@@ -294,6 +307,22 @@ process_tile(MyPaintTiledSurface *self, int tx, int ty)
     }
 
     mypaint_tiled_surface_tile_request_end(self, &request_data);
+}
+
+// OPTIMIZE: send a list of the exact changed rects instead of a bounding box
+// to minimize the area being composited? Profile to see the effect first.
+void
+update_dirty_bbox(MyPaintTiledSurface *self, OperationDataDrawDab *op)
+{
+    int bb_x, bb_y, bb_w, bb_h;
+    float r_fringe = op->radius + 1.0; // +1.0 should not be required, only to be sure
+    bb_x = floor (op->x - r_fringe);
+    bb_y = floor (op->y - r_fringe);
+    bb_w = floor (op->x + r_fringe) - bb_x + 1;
+    bb_h = floor (op->y + r_fringe) - bb_y + 1;
+
+    mypaint_rectangle_expand_to_include_point(&self->dirty_bbox, bb_x, bb_y);
+    mypaint_rectangle_expand_to_include_point(&self->dirty_bbox, bb_x+bb_w-1, bb_y+bb_h-1);
 }
 
 // returns TRUE if the surface was modified
@@ -343,28 +372,26 @@ gboolean draw_dab_internal (MyPaintTiledSurface *self, float x, float y,
     if (op->aspect_ratio<1.0) op->aspect_ratio=1.0;
 
     // Determine the tiles influenced by operation, and queue it for processing for each tile
-    {
-      float r_fringe = radius + 1.0; // +1.0 should not be required, only to be sure
+    float r_fringe = radius + 1.0; // +1.0 should not be required, only to be sure
       
-      int tx1 = floor(floor(x - r_fringe) / TILE_SIZE);
-      int tx2 = floor(floor(x + r_fringe) / TILE_SIZE);
-      int ty1 = floor(floor(y - r_fringe) / TILE_SIZE);
-      int ty2 = floor(floor(y + r_fringe) / TILE_SIZE);
-      
-      int tx, ty;
-      
-      for (ty = ty1; ty <= ty2; ty++) {
-        for (tx = tx1; tx <= tx2; tx++) {
-          const TileIndex tile_index = {tx, ty};
-          OperationDataDrawDab *op_copy = (OperationDataDrawDab *)malloc(sizeof(OperationDataDrawDab));
-          *op_copy = *op;
-          operation_queue_add(self->operation_queue, tile_index, op_copy);
+    int tx1 = floor(floor(x - r_fringe) / TILE_SIZE);
+    int tx2 = floor(floor(x + r_fringe) / TILE_SIZE);
+    int ty1 = floor(floor(y - r_fringe) / TILE_SIZE);
+    int ty2 = floor(floor(y + r_fringe) / TILE_SIZE);
+
+    for (int ty = ty1; ty <= ty2; ty++) {
+        for (int tx = tx1; tx <= tx2; tx++) {
+            const TileIndex tile_index = {tx, ty};
+            OperationDataDrawDab *op_copy = (OperationDataDrawDab *)malloc(sizeof(OperationDataDrawDab));
+            *op_copy = *op;
+            operation_queue_add(self->operation_queue, tile_index, op_copy);
         }
-      }
     }
-    
+
+    update_dirty_bbox(self, op);
+
     return TRUE;
-  }
+}
 
 // returns TRUE if the surface was modified
 int draw_dab (MyPaintSurface *surface, float x, float y,
@@ -509,9 +536,12 @@ mypaint_tiled_surface_init(MyPaintTiledSurface *self,
     self->tile_request_end = tile_request_end;
     self->tile_request_start = tile_request_start;
 
-    self->area_changed = NULL;
     self->threadsafe_tile_requests = FALSE;
 
+    self->dirty_bbox.x = 0;
+    self->dirty_bbox.y = 0;
+    self->dirty_bbox.width = 0;
+    self->dirty_bbox.height = 0;
     self->surface_do_symmetry = FALSE;
     self->surface_center_x = 0.0;
     self->operation_queue = operation_queue_new();

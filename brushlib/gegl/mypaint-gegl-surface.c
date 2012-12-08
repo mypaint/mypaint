@@ -10,45 +10,12 @@
 typedef struct _MyPaintGeglTiledSurface {
     MyPaintTiledSurface parent;
 
-    int atomic;
-    //Rect dirty_bbox; TODO: change into a GeglRectangle
-
     GeglRectangle extent_rect; // TODO: remove, just use the extent of the buffer
     GeglBuffer *buffer;
     const Babl *format;
 } MyPaintGeglTiledSurface;
 
 void free_gegl_tiledsurf(MyPaintSurface *surface);
-
-void begin_atomic_gegl(MyPaintSurface *surface)
-{
-    MyPaintGeglTiledSurface *self = (MyPaintGeglTiledSurface *)surface;
-
-    mypaint_tiled_surface_begin_atomic((MyPaintTiledSurface *)self);
-
-    if (self->atomic == 0) {
-      //assert(self->dirty_bbox.w == 0);
-    }
-    self->atomic++;
-}
-
-void end_atomic_gegl(MyPaintSurface *surface)
-{
-    MyPaintGeglTiledSurface *self = (MyPaintGeglTiledSurface *)surface;
-
-    mypaint_tiled_surface_end_atomic((MyPaintTiledSurface *)self);
-
-    assert(self->atomic > 0);
-    self->atomic--;
-
-    if (self->atomic == 0) {
-      //Rect bbox = self->dirty_bbox;
-      //self->dirty_bbox.w = 0;
-      //if (bbox.w > 0) {
-         // TODO: Could notify of changes here instead of for each tile changed
-      //}
-    }
-}
 
 static void
 tile_request_start(MyPaintTiledSurface *tiled_surface, MyPaintTiledSurfaceTileRequestData *request)
@@ -99,15 +66,6 @@ tile_request_end(MyPaintTiledSurface *tiled_surface, MyPaintTiledSurfaceTileRequ
         gegl_buffer_iterator_next(iterator);
         request->context = NULL;
     }
-}
-
-void area_changed_gegl(MyPaintTiledSurface *tiled_surface, int bb_x, int bb_y, int bb_w, int bb_h)
-{
-    MyPaintGeglTiledSurface *self = (MyPaintGeglTiledSurface *)tiled_surface;
-
-    // TODO: use gegl_rectangle_bounding_box instead
-    //ExpandRectToIncludePoint (&self->dirty_bbox, bb_x, bb_y);
-    //ExpandRectToIncludePoint (&self->dirty_bbox, bb_x+bb_w-1, bb_y+bb_h-1);
 }
 
 void
@@ -170,15 +128,8 @@ mypaint_gegl_tiled_surface_new()
     // MyPaintSurface vfuncs
     self->parent.parent.destroy = free_gegl_tiledsurf;
     self->parent.parent.save_png = save_png;
-    self->parent.parent.begin_atomic = begin_atomic_gegl;
-    self->parent.parent.end_atomic = end_atomic_gegl;
 
-    // MyPaintTiledSurface vfuncs
-    self->parent.area_changed = area_changed_gegl;
     self->parent.threadsafe_tile_requests = TRUE;
-
-    self->atomic = 0;
-    //self->dirty_bbox.w = 0;
 
     self->buffer = NULL;
 
