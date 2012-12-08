@@ -360,14 +360,22 @@ class DrawCursorMixin:
         r = base_radius
         r += 2 * base_radius * b.get_base_value('offset_by_random')
         r *= self.scale
-        return (r, b.is_eraser(), b.is_alpha_locked())
+        if b.is_eraser():
+            style = cursor.BRUSH_CURSOR_STYLE_ERASER
+        elif b.is_alpha_locked():
+            style = cursor.BRUSH_CURSOR_STYLE_LOCK_ALPHA
+        elif b.is_colorize():
+            style = cursor.BRUSH_CURSOR_STYLE_COLORIZE
+        else:
+            style = cursor.BRUSH_CURSOR_STYLE_NORMAL
+        return (r, style)
 
 
     def brush_modified_cb(self, settings):
         """Handles brush modifications: set up by the main TDW.
         """
         if settings & set(['radius_logarithmic', 'offset_by_random',
-                           'eraser', 'lock_alpha']):
+                           'eraser', 'lock_alpha', 'colorize']):
             # Reducing the number of updates is probably a good idea
             self.update_cursor()
 

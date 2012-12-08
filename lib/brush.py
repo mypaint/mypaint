@@ -423,6 +423,9 @@ class BrushInfo:
     def is_alpha_locked(self):
         return self.has_large_base_value("lock_alpha")
 
+    def is_colorize(self):
+        return self.has_large_base_value("colorize")
+
     def matches(self, other, ignore=["color_h", "color_s", "color_v", "parent_brush_name"]):
         s1 = self.settings.copy()
         s2 = other.settings.copy()
