@@ -36,7 +36,6 @@ extra_actions = ["ShowPopupMenu",
                  "ColorChangerWashPopup",
                  "ColorChangerCrossedBowlPopup",
                  "ColorHistoryPopup",
-                 "ColorPickerPopup",
                  "PalettePrev",
                  "PaletteNext",
                  ]
@@ -130,6 +129,12 @@ class InteractionMode (object):
 
     is_live_updateable = False # CHECK: what's this for?
 
+    #: Timeout for Document.mode_flip_action_activated_cb(). How long, in
+    #: milliseconds, it takes for the controller to change the key-up action
+    #: when activated with a keyboard "Flip<ModeName>" action. Set to zero
+    #: for modes where key-up should exit the mode at any time, and to a larger
+    #: number for modes where the behaviour changes.
+    keyup_timeout = 500
 
     ## Defaults for instances (sue me, I'm lazy)
 
@@ -1073,10 +1078,14 @@ class DragMode (InteractionMode):
 
 
     def button_press_cb(self, tdw, event):
-        if not self.in_drag:
-            if event.type == gdk.BUTTON_PRESS:
-                # Only start drags if not in a drag already,
-                # e.g. a keyboard-initiated one
+        if event.type == gdk.BUTTON_PRESS:
+            if self.in_drag:
+                if self._start_button is None:
+                    # Doing this allows single clicks to exit keyboard
+                    # initiated drags, e.g. those forced when handling a
+                    # keyboard event somewhere else.
+                    self._start_button = event.button
+            else:
                 self._start_drag(tdw, event)
                 if self.in_drag:
                     # Grab succeeded
@@ -1090,7 +1099,6 @@ class DragMode (InteractionMode):
         if self.in_drag:
             if event.button == self._start_button:
                 self._stop_drag()
-                self._start_button = None
         return super(DragMode, self).button_release_cb(tdw, event)
 
 
@@ -1133,6 +1141,33 @@ class DragMode (InteractionMode):
             return True
         # Fall through to other behavioral mixins
         return super(DragMode, self).key_release_cb(win, tdw, event)
+
+
+    def _force_drag_start(self):
+        # Attempt to force a drag to start, using the current event.
+        event = gtk.get_current_event()
+        self._fake_drag_start(event)
+
+
+    def _fake_drag_start(self, event):
+        if event is None:
+            print "no event"
+            return
+        if self.in_drag:
+            return
+        tdw = self.doc.tdw
+        if hasattr(event, "keyval"):
+            if event.keyval != self._start_keyval:
+                self._start_keyval = event.keyval
+                self._start_drag(tdw, event)
+        elif ( hasattr(event, "x") and hasattr(event, "y")
+               and hasattr(event, "button") ):
+            self._start_drag(tdw, event)
+            if self.in_drag:
+                # Grab succeeded
+                self.last_x = event.x
+                self.last_y = event.y
+                self._start_button = event.button
 
 
 class SpringLoadedDragMode (SpringLoadedModeMixin, DragMode):

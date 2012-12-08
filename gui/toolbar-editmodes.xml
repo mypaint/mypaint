@@ -17,6 +17,7 @@ the Free Software Foundation; either version 2 of the License, or
       <toolitem action="StraightMode"/>
       <toolitem action="SequenceMode"/>
       <toolitem action="EllipseMode"/>
+      <toolitem action="ColorPickMode"/>
       <toolitem action="LayerMoveMode"/>
       <toolitem action="FrameEditMode"/>
       <toolitem action="Symmetry"/>

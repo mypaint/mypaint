@@ -15,14 +15,16 @@ Painting is done in tileddrawwidget.py.
 
 MYPAINT_VERSION="1.1.0"
 
-import os, time, webbrowser
+import os
+import time
+import webbrowser
 from warnings import warn
 from gettext import gettext as _
 
 import gtk, gobject
 from gtk import gdk, keysyms
 
-import colorselectionwindow, historypopup, stategroup, colorpicker, windowing, layout, toolbar
+import colorselectionwindow, historypopup, stategroup, windowing, layout, toolbar
 import dialogs
 from lib import helpers
 import canvasevent
@@ -196,14 +198,12 @@ class Window (windowing.MainWindow, layout.MainWindow):
         changer_wash = p2s(colorselectionwindow.ColorChangerWashPopup(self.app))
         ring = p2s(colorselectionwindow.ColorRingPopup(self.app))
         hist = p2s(historypopup.HistoryPopup(self.app, self.app.doc.model))
-        pick = self.colorpick_state = p2s(colorpicker.ColorPicker(self.app, self.app.doc.model))
 
         self.popup_states = {
             'ColorChangerCrossedBowlPopup': changer_crossed_bowl,
             'ColorChangerWashPopup': changer_wash,
             'ColorRingPopup': ring,
             'ColorHistoryPopup': hist,
-            'ColorPickerPopup': pick,
             }
 
         # not sure how useful this is; we can't cycle at the moment
@@ -214,9 +214,6 @@ class Window (windowing.MainWindow, layout.MainWindow):
         changer_wash.autoleave_timeout = None
         changer_crossed_bowl.autoleave_timeout = None
         ring.autoleave_timeout = None
-
-        pick.max_key_hit_duration = 0.0
-        pick.autoleave_timeout = None
 
         hist.autoleave_timeout = 0.600
         self.history_popup_state = hist

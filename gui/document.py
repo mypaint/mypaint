@@ -9,6 +9,7 @@
 # (at your option) any later version.
 
 import os, math
+from warnings import warn
 
 import pygtkcompat
 import gobject
@@ -22,6 +23,7 @@ import tileddrawwidget, stategroup
 from brushmanager import ManagedBrush
 import dialogs
 import canvasevent
+import colorpicker   # purely for registration
 import linemode
 
 
@@ -936,15 +938,58 @@ class Document (CanvasController):
         # Find the corresponding gtk.RadioAction
         action_name = flip_action_name.replace("Flip", "", 1)
         mode_class = canvasevent.ModeRegistry.get_mode_class(action_name)
-        assert mode_class is not None
+        if mode_class is None:
+            warn('"%s" not registered: check imports' % action_name, Warning)
+            return
 
         # If a mode object of this exact class is active, pop the stack.
         # Otherwise, instantiate and enter.
         if self.modes.top.__class__ is mode_class:
             self.modes.pop()
+            flip_action.keyup_callback = lambda *a: None  # suppress repeats
         else:
             mode = mode_class(ignore_modifiers=True)
+            if flip_action.keydown:
+                flip_action.__pressed = True
+                # Change what happens on a key-up after a short while.
+                # Distinguishes long presses from short.
+                timeout = getattr(mode, "keyup_timeout", 500)
+                cb = self._modeflip_change_keyup_callback
+                ev = gtk.get_current_event()
+                if ev is not None:
+                    ev = ev.copy()
+                if timeout > 0:
+                    # Queue a change of key-up callback after the timeout
+                    gobject.timeout_add(timeout, cb, mode, flip_action, ev)
+                    def _continue_mode_early_keyup_cb(*a):
+                        # Record early keyup, but otherwise keep in mode
+                        flip_action.__pressed = False
+                    flip_action.keyup_callback = _continue_mode_early_keyup_cb
+                else:
+                    # Key-up exits immediately
+                    def _exit_mode_early_keyup_cb(*a):
+                        if mode is self.modes.top:
+                            self.modes.pop()
+                    flip_action.keyup_callback = _exit_mode_early_keyup_cb
             self.modes.context_push(mode)
+
+
+    def _modeflip_change_keyup_callback(self, mode, flip_action, ev):
+        # Changes the keyup handler to one which will pop the mode stack
+        # if the mode instance is still at the top.
+        if not flip_action.__pressed:
+            return False
+
+        if mode is self.modes.top:
+            def _exit_mode_late_keyup_cb(*a):
+                if mode is self.modes.top:
+                    self.modes.pop()
+            flip_action.keyup_callback = _exit_mode_late_keyup_cb
+
+        ## Could make long-presses start the drag+grab somehow, e.g.
+        #if hasattr(mode, '_start_drag'):
+        #    mode._start_drag(mode.doc.tdw, ev)
+        return False
 
 
     def mode_radioaction_changed_cb(self, action, current_action):
@@ -963,11 +1008,14 @@ class Document (CanvasController):
         # chosen action.
         action_name = current_action.get_name()
         mode_class = canvasevent.ModeRegistry.get_mode_class(action_name)
-        assert mode_class is not None
+        if mode_class is None:
+            warn('"%s" not registered: check imports' % action_name, Warning)
+            return
 
         if self.modes.top.__class__ is not mode_class:
             mode = mode_class()
             self.modes.context_push(mode)
+
 
     def mode_stack_changed_cb(self, mode):
         """Callback: mode stack has changed structure.

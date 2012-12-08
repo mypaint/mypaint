@@ -758,15 +758,6 @@ Perhaps an increasing amount.
         </object>
       </child>
       <child>
-        <object class="GtkAction" id="ColorPickerPopup">
-          <property name="label" translatable="yes"
-            context="Menu|Color|">Pick Color</property>
-          <property name="stock_id">gtk-color-picker</property>
-          <signal name="activate" handler="popup_cb"/>
-        </object>
-        <accelerator key="r"/>
-      </child>
-      <child>
         <object class="GtkAction" id="ColorHistoryPopup">
           <property name="label" translatable="yes"
             context="Menu|Color|">Color History</property>
@@ -1458,6 +1449,33 @@ Ctrl+Shift: constrain angle.</property>
           <signal name="activate" handler="mode_flip_action_activated_cb"/>
         </object>
       </child>
+
+      <child>
+        <object class="GtkRadioAction" id="ColorPickMode">
+          <property name="label" translatable="yes"
+            context="Menu|Color|">Pick Color</property>
+             <!--
+              FIXME: faked context due to string freeze
+                     should be set to "Menu|Edit|Current Mode|"
+              -->
+          <property name="icon-name">gtk-color-picker</property>
+          <property name="tooltip" translatable="yes"
+            >Pick a color from the screen</property>
+          <property name="group">FrameEditMode</property>
+          <property name="value">9</property>
+        </object>
+      </child>
+      <child>
+        <object class="GtkAction" id="FlipColorPickMode">
+          <property name="label" translatable="yes"
+            context="Menu|Color|">Pick Color</property>
+          <property name="icon-name">gtk-color-picker</property>
+          <signal name="activate" handler="mode_flip_action_activated_cb"/>
+        </object>
+        <accelerator key="r"/>
+      </child>
+
+
     </object><!-- /ModeStackActions -->
   </child>
 </object><!-- /app_ui_manager -->

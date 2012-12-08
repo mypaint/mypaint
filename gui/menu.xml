@@ -37,6 +37,7 @@
         <menuitem action='StraightMode'/>
         <menuitem action='SequenceMode'/>
         <menuitem action='EllipseMode'/>
+        <menuitem action='ColorPickMode'/>
         <menuitem action='LayerMoveMode'/>
         <menuitem action='FrameEditMode'/>
         <menuitem action='PanViewMode'/>
@@ -151,7 +152,7 @@
       <menuitem action='ColorWindow'/>
       <!-- Picking and reusing -->
       <separator/>
-      <menuitem action='ColorPickerPopup'/>
+      <menuitem action='FlipColorPickMode'/>
       <menuitem action='ColorHistoryPopup'/>
       <!-- Changing and adjusting based on the current color -->
       <separator/>

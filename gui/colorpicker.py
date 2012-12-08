@@ -1,185 +1,234 @@
 # This file is part of MyPaint.
-# Copyright (C) 2009 by Martin Renold <martinxyz@gmx.ch>
+# Copyright (C) 2009-2012 by Martin Renold <martinxyz@gmx.ch>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
+import math
 import pygtkcompat
-import gtk, gobject
-gdk = gtk.gdk
+import gobject
+import gtk
+from gtk import gdk
 import windowing
 import cairo
-
-popup_width = 80
-popup_height = 80
-
-
-class ColorPicker:
-
-    outside_popup_timeout = 0
+import canvasevent
+import linemode
+from overlays import rounded_box, Overlay
+import colors
 
 
-    def __init__(self, app, doc):
-        self.app = app
-        self.doc = doc
-        self.idle_handler = None
-        self.initial_modifiers = 0
-        # On-demand popup window instance. Destroyed completely then the state
-        # leaves. Freeing it fixes an otherwise intractable problem with stylus
-        # grabs: https://gna.org/bugs/?20358
-        self._win = None
-        self._popup_callbacks = []
+class ColorPickMode (canvasevent.SpringLoadedDragMode,
+                     canvasevent.OneshotDragModeMixin):
+    """Mode for picking colors from the screen, with a preview.
+    """
 
+    # Class configuration
+    __action_name__ = 'ColorPickMode'
+    PICK_SIZE = 6
 
-    def connect(self, event_name, cb):
-        # Keep stategroup.State() happy.
-        # All it tries to connect are some enter/leave notify callbacks. Not
-        # helpful for this window.
-        self._popup_callbacks.append((event_name, cb))
+    # Keyboard activation behaviour (instance defaults)
+    # See keyboard.py and doc.mode_flip_action_activated_cb()
+    keyup_timeout = 0
 
 
     @property
-    def win(self):
-        # Access, creating if needed, the private popup window instance.
-        if self._win is not None:
-            return self._win
-        print "DEBUG: creating picker popup window"
-        self._win = windowing.PopupWindow(self.app)
-        self._win.set_can_focus(False)
-        self.event_mask = gdk.BUTTON_PRESS_MASK | gdk.BUTTON_RELEASE_MASK
-        self._win.add_events(self.event_mask)
-        if pygtkcompat.USE_GTK3:
-            self._win.connect("draw", self.draw_cb)
-        else:
-            self._win.connect("expose-event", self.expose_cb)
-        self._win.connect("show", self.show_cb)
-        self._win.connect("hide", self.hide_cb)
-        self._win.connect("motion-notify-event", self.motion_notify_cb)
-        self._win.set_size_request(popup_width, popup_height)
-        for event_name, cb in self._popup_callbacks:
-            self._win.connect(event_name, cb)
-        return self._win
+    def inactive_cursor(self):
+        return self.doc.app.cursor_color_picker
 
 
-    def pick(self):
-        # fixed size is prefered to brush radius: https://gna.org/bugs/?14794
-        size = 6
-        self.app.pick_color_at_pointer(self.win, size)
+    def stackable_on(self, mode):
+        # Any drawing mode
+        return isinstance(mode, linemode.LineModeBase) \
+            or isinstance(mode, canvasevent.SwitchableFreehandMode)
 
 
-    def enter(self):
-        self.pick()
-        # popup placement
-        x, y = self.win.get_position()
-        self.win.move(x, y + popup_height)
-        self.win.initial_modifiers = 0
-        self.win.show_all()
+    def __init__(self, **kwds):
+        super(ColorPickMode, self).__init__(**kwds)
+        self._overlay = None
+        self._preview_needs_button_press = 'ignore_modifiers' not in kwds
+        self._button_press_seen = False
 
 
-    def leave(self, reason):
-        self.win.hide()
+    def enter(self, **kwds):
+        """Enters the mode, starting the grab immediately.
+        """
+        super(ColorPickMode, self).enter(**kwds)
+        if self._picking():
+            self.doc.app.pick_color_at_pointer(self.doc.tdw, self.PICK_SIZE)
+        self._force_drag_start()
 
 
-    def show_cb(self, widget):
-        assert self._win is not None
+    def leave(self, **kwds):
+        if self._overlay is not None:
+            self._overlay.cleanup()
+            self._overlay = None
+        super(ColorPickMode, self).leave(**kwds)
 
-        # Grab the pointer
-        # This is required for the color picker to pick continuously, and for
-        # the color picker window to disappear after being launched with a
-        # mouse button binding. https://gna.org/bugs/?19710
-        result = gdk.pointer_grab(self._win.get_window(), False,
-                event_mask=self.event_mask | gdk.POINTER_MOTION_MASK,
-                cursor=self.app.cursor_color_picker)
-        if result != gdk.GRAB_SUCCESS:
-            print 'Warning: pointer grab failed with result', result
-            gdk.pointer_ungrab()
-            self.leave(reason=None)
+
+    def button_press_cb(self, tdw, event):
+        self._button_press_seen = True
+        self.doc.app.pick_color_at_pointer(self.doc.tdw, self.PICK_SIZE)
+        return super(ColorPickMode, self).button_press_cb(tdw, event)
+
+
+    def drag_stop_cb(self):
+        if self._overlay is not None:
+            self._overlay.cleanup()
+            self._overlay = None
+        super(ColorPickMode, self).drag_stop_cb()
+
+
+    def _picking(self):
+        return not (self._preview_needs_button_press
+                    and not self._button_press_seen)
+
+
+    def drag_update_cb(self, tdw, event, dx, dy):
+        picking = self._picking()
+        if picking:
+            self.doc.app.pick_color_at_pointer(tdw, self.PICK_SIZE)
+            if self._overlay is None:
+                self._overlay = ColorPickPreviewOverlay(self.doc, tdw,
+                                                        event.x, event.y)
+        if self._overlay is not None:
+            self._overlay.move(event.x, event.y)
+        return super(ColorPickMode, self).drag_update_cb(tdw, event, dx, dy)
+
+
+
+class ColorPickPreviewOverlay (Overlay):
+    """Preview overlay during color picker mode.
+    """
+
+    PREVIEW_SIZE = 70
+    OUTLINE_WIDTH = 3
+    CORNER_RADIUS = 10
+
+
+    def __init__(self, doc, tdw, x, y):
+        """Initialize, attaching to the brush and to the tdw.
+
+        Observer callbacks and canvas overlays are registered by this
+        constructor, so cleanup() must be called when the owning mode leave()s.
+
+        """
+        self._doc = doc
+        self._tdw = tdw
+        self._x = int(x)+0.5
+        self._y = int(y)+0.5
+        alloc = tdw.get_allocation()
+        self._tdw_w = alloc.width
+        self._tdw_h = alloc.height
+        self._color = self._get_app_brush_color()
+        app = doc.app
+        app.brush.observers.append(self._brush_color_changed_cb)
+        tdw.display_overlays.append(self)
+        self._previous_area = None
+        self._queue_tdw_redraw()
+
+
+    def cleanup(self):
+        """Cleans up temporary observer stuff, allowing garbage collection.
+        """
+        app = self._doc.app
+        app.brush.observers.remove(self._brush_color_changed_cb)
+        self._tdw.display_overlays.remove(self)
+        assert self._brush_color_changed_cb not in app.brush.observers
+        assert self not in self._tdw.display_overlays
+        self._queue_tdw_redraw()
+
+
+    def move(self, x, y):
+        """Moves the preview square to a new location, in tdw pointer coords.
+        """
+        self._x = int(x)+0.5
+        self._y = int(y)+0.5
+        self._queue_tdw_redraw()
+
+
+    def _get_app_brush_color(self):
+        app = self._doc.app
+        return colors.HSVColor(*app.brush.get_color_hsv())
+
+
+    def _brush_color_changed_cb(self, settings):
+        if not settings.intersection(('color_h', 'color_s', 'color_v')):
             return
-
-        # A GTK-level grab helps for some reason. Without it, the first time
-        # the window is shown, it doesn't receive motion-notify events as
-        # described in https://gna.org/bugs/?20358
-        self._win.grab_add()
-
-        self.popup_state.register_mouse_grab(self._win)
-
-        # Record the modifiers which were held when the window was shown.
-        display = gdk.display_get_default()
-        screen, x, y, modifiers = display.get_pointer()
-        modifiers &= gtk.accelerator_get_default_mod_mask()
-        self.initial_modifiers = modifiers
+        self._color = self._get_app_brush_color()
+        self._queue_tdw_redraw()
 
 
-    def hide_cb(self, window):
-        assert self._win is not None
-
-        # Being polite: undo open grabs.
-        self._win.grab_remove()
-        gdk.pointer_ungrab()
-
-        # Disconnect update idler
-        if self.idle_handler:
-            gobject.source_remove(self.idle_handler)
-            self.idle_handler = None
-
-        # Being assertive: destroy the hidden window.
-        # Seems to result in better results after picking with a stylus button:
-        # see https://gna.org/bugs/?20358
-        print "DEBUG: destroying picker popup window"
-        self._win.destroy()
-        self._win = None
+    def _queue_tdw_redraw(self):
+        if self._previous_area is not None:
+            self._tdw.queue_draw_area(*self._previous_area)
+            self._previous_area = None
+        area = self._get_area()
+        if area is not None:
+            self._tdw.queue_draw_area(*area)
 
 
-    def motion_notify_cb(self, widget, event):
-        if self.initial_modifiers:
-            modifiers = event.state & gtk.accelerator_get_default_mod_mask()
-            if modifiers & self.initial_modifiers == 0:
-                # stop picking when the user releases CTRL (or ALT)
-                self.leave("initial modifiers no longer held")
-                self.initial_modifiers = 0
-                return
-        if not self.idle_handler:
-            self.idle_handler = gobject.idle_add(self.motion_update_idler)
+    def _get_area(self):
+        # Returns the drawing area for the square
+        size = self.PREVIEW_SIZE
+
+        # Start with the pointer location
+        x = self._x
+        y = self._y
+
+        offset = size // 2
+
+        # Only show if the pointer is inside the tdw
+        alloc = self._tdw.get_allocation()
+        if x < 0 or y < 0 or y > alloc.height or x > alloc.width:
+            return None
+
+        # Convert to preview location
+        # Pick a direction - N,W,E,S - in which to offset the preview
+        if y + size > alloc.height - offset:
+            x -= offset
+            y -= size + offset
+        elif x < offset:
+            x += offset
+            y -= offset
+        elif x > alloc.width - offset:
+            x -= size + offset
+            y -= offset
+        else:
+            x -= offset
+            y += offset
+
+        ## Correct to place within the tdw
+        #if x < 0:
+        #    x = 0
+        #if y < 0:
+        #    y = 0
+        #if x + size > alloc.width:
+        #    x = alloc.width - size
+        #if y + size > alloc.height:
+        #    y = alloc.height - size
+
+        return (int(x), int(y), size, size)
 
 
-    def motion_update_idler(self):
-        self.pick()
-        self.win.queue_draw()
-        self.idle_handler = None
-        return False
+    def paint(self, cr):
+        area = self._get_area()
+        if area is not None:
+            x, y, w, h = area
+            size = self.PREVIEW_SIZE
 
+            cr.set_source_rgb(*self._color.get_rgb())
+            x += (self.OUTLINE_WIDTH // 2) + 1.5
+            y += (self.OUTLINE_WIDTH // 2) + 1.5
+            w -= self.OUTLINE_WIDTH + 3
+            h -= self.OUTLINE_WIDTH + 3
+            rounded_box(cr, x, y, w, h, self.CORNER_RADIUS)
+            cr.fill_preserve()
 
-    def expose_cb(self, widget, event):
-        # PyGTK draw handler.
-        cr = widget.get_window().cairo_create()
-        return self.draw_cb(widget, cr)
+            cr.set_source_rgb(0, 0, 0)
+            cr.set_line_width(self.OUTLINE_WIDTH)
+            cr.stroke()
 
+        self._previous_area = area
 
-    def draw_cb(self, widget, cr):
-        # GTK3+PyGI drawing.
-        #cr.set_source_rgb (1.0, 1.0, 1.0)
-        cr.set_source_rgba (1.0, 1.0, 1.0, 0.0) # transparent
-        cr.set_operator(cairo.OPERATOR_SOURCE)
-        cr.paint()
-        cr.set_operator(cairo.OPERATOR_OVER)
-
-        color = self.app.brush.get_color_rgb()
-
-        line_width = 3.0
-        distance = 2*line_width
-        rect = [0, 0, popup_height, popup_width]
-        rect[0] += distance/2.0
-        rect[1] += distance/2.0
-        rect[2] -= distance
-        rect[3] -= distance
-        cr.set_line_join(cairo.LINE_JOIN_ROUND)
-        cr.rectangle(*rect)
-        cr.set_source_rgb(*color)
-        cr.fill_preserve()
-        cr.set_line_width(line_width)
-        cr.set_source_rgb(0, 0, 0)
-        cr.stroke()
-
-        return True
