@@ -256,7 +256,7 @@ class Window (windowing.Dialog):
 
     def __init__(self, app):
         buttons = (gtk.STOCK_OK, gtk.RESPONSE_ACCEPT)
-        windowing.Dialog.__init__(self, app, ("Frame"), app.drawWindow, buttons=buttons)
+        windowing.Dialog.__init__(self, app, _("Frame"), app.drawWindow, buttons=buttons)
 
         self.callbacks_active = False
 
