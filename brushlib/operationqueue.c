@@ -27,6 +27,51 @@ operation_delete_func(void *user_data) {
     }
 }
 
+Fifo **
+tile_map_new(int new_map_size)
+{
+    Fifo **new_tile_map = (Fifo **)malloc(new_map_size*sizeof(Fifo *));
+    for(int i = 0; i < new_map_size; i++) {
+        new_tile_map[i] = NULL;
+    }
+    return new_tile_map;
+}
+
+void
+tile_map_free(OperationQueue *self)
+{
+    const int tile_map_size = 2*self->tile_map_dim_size*2*self->tile_map_dim_size;
+    for(int i = 0; i < tile_map_size; i++) {
+        Fifo *op_queue = self->tile_map[i];
+        if (op_queue) {
+            fifo_free(op_queue, operation_delete_func);
+        }
+    }
+}
+
+/* Get the data in the tile map for a given tile @index.
+ * Must be reentrant and lock-free on different @index */
+Fifo **
+tile_map_get(OperationQueue *self, TileIndex index)
+{
+    const int offset = ((self->origin.y + index.y) * self->tile_map_dim_size*2) + self->origin.x + index.x;
+    assert(offset < 2*self->tile_map_dim_size*2*self->tile_map_dim_size);
+    assert(offset >= 0);
+    return self->tile_map + offset;
+}
+
+void
+tile_map_copy(OperationQueue *self, Fifo **new_tile_map, int new_size)
+{
+    const int old_map_size = 2*self->tile_map_dim_size*2*self->tile_map_dim_size;
+
+    // FIXME: need to take origin into account to be able to copy to the correct location
+    for(int i = 0; i < old_map_size; i++) {
+        new_tile_map[i] = self->tile_map[i];
+    }
+}
+
+
 gboolean
 operation_queue_resize(OperationQueue *self, int new_size)
 {
@@ -35,35 +80,28 @@ operation_queue_resize(OperationQueue *self, int new_size)
             assert(self->tile_map);
             assert(self->dirty_tiles);
 
-            const int tile_map_size = 2*self->tile_map_dim_size*2*self->tile_map_dim_size;
-            for(int i = 0; i < tile_map_size; i++) {
-                Fifo *op_queue = self->tile_map[i];
-                if (op_queue) {
-                    fifo_free(op_queue, operation_delete_func);
-                }
-            }
-            self->dirty_tiles_n = 0;
+            tile_map_free(self);
             self->tile_map_dim_size = 0;
-            free(self->tile_map);
+
+            self->dirty_tiles_n = 0;
             free(self->dirty_tiles);
         }
         return TRUE;
     } else {
         const int new_map_size = 2*new_size*2*new_size;
-        Fifo **new_tile_map = (Fifo **)malloc(new_map_size*sizeof(Fifo *));
-        for(int i = 0; i < new_map_size; i++) {
-            new_tile_map[i] = NULL;
-        }
+        Fifo **new_tile_map = tile_map_new(new_map_size);
         TileIndex *new_dirty_tiles = (TileIndex *)malloc(new_map_size*sizeof(TileIndex));
 
         // Copy old values over
-        const int old_map_size = 2*self->tile_map_dim_size*2*self->tile_map_dim_size;
-        for(int i = 0; i < old_map_size; i++) {
-            new_tile_map[i] = self->tile_map[i];
-        }
+        tile_map_copy(self, new_tile_map, new_size);
+
         for(int i = 0; i < self->dirty_tiles_n; i++) {
             new_dirty_tiles[i] = self->dirty_tiles[i];
         }
+
+        // Free old values
+        tile_map_free(self);
+        free(self->dirty_tiles);
 
         // Set new values
         self->tile_map_dim_size = new_size;
@@ -100,18 +138,6 @@ operation_queue_free(OperationQueue *self)
 
     free(self);
 }
-
-/* Get the data in the tile map for a given tile @index.
- * Must be reentrant and lock-free on different @index */
-Fifo **
-tile_map_get(OperationQueue *self, TileIndex index)
-{
-    const int offset = ((self->origin.y + index.y) * self->tile_map_dim_size*2) + self->origin.x + index.x;
-    assert(offset < 2*self->tile_map_dim_size*2*self->tile_map_dim_size);
-    assert(offset >= 0);
-    return self->tile_map + offset;
-}
-
 
 int
 tile_equal(TileIndex a, TileIndex b)
@@ -186,6 +212,7 @@ operation_queue_add(OperationQueue *self, TileIndex index, OperationDataDrawDab 
         operation_queue_resize(self, self->tile_map_dim_size*2);
     }
 
+    // FIXME: valgrind says this sometimes causes a write outsize the end of the array
     Fifo **queue_pointer = tile_map_get(self, index);
     Fifo *op_queue = *queue_pointer;
 
@@ -213,6 +240,7 @@ operation_queue_pop(OperationQueue *self, TileIndex index)
         return NULL;
     }
 
+    // FIXME: valgrind says this sometimes causes a write outsize the end of the array
     Fifo **queue_pointer = tile_map_get(self, index);
     Fifo *op_queue = *queue_pointer;
 
