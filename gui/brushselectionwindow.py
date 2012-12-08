@@ -143,16 +143,7 @@ class BrushList(pixbuflist.PixbufList):
 
     def button_press_cb(self, widget, event):
         self.app.device_monitor.device_used(event.device)
-        if event.type == gdk._2BUTTON_PRESS:
-            lm = self.app.layout_manager
-            win = lm.get_subwindow_by_role('brushSettingsWindow')
-            if not win.get_visible():
-                win.show_all()
-            else:
-                win.hide()
-            return True
-        else:
-            return pixbuflist.PixbufList.button_press_cb(self, widget, event)
+        return pixbuflist.PixbufList.button_press_cb(self, widget, event)
 
     def drag_begin_cb(self, widget, context):
         preview = self.bm.selected_brush.preview
