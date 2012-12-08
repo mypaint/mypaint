@@ -74,6 +74,7 @@ def get_paths():
         sys.path.insert(0, libpath)
         sys.path.insert(0, libpath_compiled)
         localepath = join(prefix, 'share/locale')
+        localepath_brushlib = localepath
         extradata = join(prefix, 'share')
     elif sys.platform == 'win32':
         prefix=None
@@ -82,6 +83,7 @@ def get_paths():
         libpath = os.path.abspath(os.path.dirname(os.path.realpath(sys.argv_unicode[0])))
         sys.path.insert(0, libpath)
         localepath = join(libpath, 'share/locale')
+        localepath_brushlib = localepath
         extradata = join(libpath, 'share')
     else:
         # we are not installed
@@ -89,6 +91,7 @@ def get_paths():
         libpath = u'.'
         extradata = u'desktop'
         localepath = 'po'
+        localepath_brushlib = 'brushlib/po'
 
     assert isinstance(libpath, unicode)
 
@@ -128,7 +131,7 @@ def get_paths():
     assert isinstance(datapath, unicode)
     assert isinstance(confpath, unicode)
     assert isinstance(extradata, unicode)
-    return datapath, extradata, confpath, localepath
+    return datapath, extradata, confpath, localepath, localepath_brushlib
 
 def psyco_opt():
     # This helps on slow PCs where the python overhead dominates.
@@ -152,7 +155,7 @@ def psyco_opt():
 if __name__ == '__main__':
     psyco_opt()
 
-    datapath, extradata, confpath, localepath = get_paths()
+    datapath, extradata, confpath, localepath, localepath_brushlib = get_paths()
 
     # Locale setting
     # must be done before importing any translated python modules
@@ -167,16 +170,17 @@ if __name__ == '__main__':
     #locale.setlocale(locale.LC_ALL, '')  #needed?
     print "DEBUG: getlocale():", locale.getlocale()
     print "DEBUG: localepath: ", localepath
+    print "DEBUG: localepath_brushlib: ", localepath_brushlib
 
     # Low-level bindtextdomain, required for GtkBuilder stuff.
     locale.bindtextdomain("mypaint", localepath)
-    locale.bindtextdomain("libmypaint", localepath) # brushlib
+    locale.bindtextdomain("libmypaint", localepath_brushlib)
     locale.textdomain("mypaint")
 
     # Python gettext module.
     # See http://docs.python.org/release/2.7/library/locale.html
     gettext.bindtextdomain("mypaint", localepath)
-    gettext.bindtextdomain("libmypaint", localepath) # brushlib
+    gettext.bindtextdomain("libmypaint", localepath_brushlib)
     gettext.textdomain("mypaint")
 
     from gui import main
