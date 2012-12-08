@@ -6,14 +6,18 @@
 #include "operationqueue.h"
 #include "fifo.h"
 
-static const int OP_QUEUE_SIZE = 10;
-
 typedef struct fifo Fifo;
 
+// A size of 10 means the map spans x=[-10,9], y=[-10,9]
+// The tile with TileIndex (x,y) is stored in the map at offset
+// offset=((self->size + y) * rowstride) + (self->size + index.x)
+typedef struct {
+    Fifo **map;
+    int size;
+} TileMap;
+
 struct _OperationQueue {
-    Fifo **tile_map;
-    TileIndex origin;
-    int tile_map_dim_size;
+    TileMap *tile_map;
 
     TileIndex *dirty_tiles;
     int dirty_tiles_n;
@@ -27,86 +31,101 @@ operation_delete_func(void *user_data) {
     }
 }
 
-Fifo **
-tile_map_new(int new_map_size)
+
+TileMap *
+tile_map_new(int size)
 {
-    Fifo **new_tile_map = (Fifo **)malloc(new_map_size*sizeof(Fifo *));
-    for(int i = 0; i < new_map_size; i++) {
-        new_tile_map[i] = NULL;
+    TileMap *self = (TileMap *)malloc(sizeof(TileMap));
+
+    self->size = size;
+    const int map_size = 2*self->size*2*self->size;
+    self->map = (Fifo **)malloc(map_size*sizeof(Fifo *));
+    for(int i = 0; i < map_size; i++) {
+        self->map[i] = NULL;
     }
-    return new_tile_map;
+
+    return self;
 }
 
 void
-tile_map_free(OperationQueue *self)
+tile_map_free(TileMap *self, gboolean free_items)
 {
-    const int tile_map_size = 2*self->tile_map_dim_size*2*self->tile_map_dim_size;
-    for(int i = 0; i < tile_map_size; i++) {
-        Fifo *op_queue = self->tile_map[i];
-        if (op_queue) {
-            fifo_free(op_queue, operation_delete_func);
+    const int map_size = 2*self->size*2*self->size;
+    if (free_items) {
+        for(int i = 0; i < map_size; i++) {
+            Fifo *op_queue = self->map[i];
+            if (op_queue) {
+                fifo_free(op_queue, operation_delete_func);
+            }
         }
     }
+
+    free(self);
 }
 
 /* Get the data in the tile map for a given tile @index.
  * Must be reentrant and lock-free on different @index */
 Fifo **
-tile_map_get(OperationQueue *self, TileIndex index)
+tile_map_get(TileMap *self, TileIndex index)
 {
-    const int offset = ((self->origin.y + index.y) * self->tile_map_dim_size*2) + self->origin.x + index.x;
-    assert(offset < 2*self->tile_map_dim_size*2*self->tile_map_dim_size);
+    const int rowstride = self->size*2;
+    const int offset = ((self->size + index.y) * rowstride) + self->size + index.x;
+    assert(offset < 2*self->size*2*self->size);
     assert(offset >= 0);
-    return self->tile_map + offset;
+    return self->map + offset;
 }
 
+/* Copy
+ * The size of @other must be equal or larger to that of @self */
 void
-tile_map_copy(OperationQueue *self, Fifo **new_tile_map, int new_size)
+tile_map_copy_to(TileMap *self, TileMap *other)
 {
-    const int old_map_size = 2*self->tile_map_dim_size*2*self->tile_map_dim_size;
+    assert(other->size >= self->size);
 
-    // FIXME: need to take origin into account to be able to copy to the correct location
-    for(int i = 0; i < old_map_size; i++) {
-        new_tile_map[i] = self->tile_map[i];
+    for(int y = -self->size; y < self->size-1; y++) {
+        for(int x = -self->size; x < self->size-1; x++) {
+            TileIndex index = {x, y};
+            *tile_map_get(other, index) = *tile_map_get(self, index);
+        }
     }
 }
 
+/* Must be reentrant and lock-free on different @index */
+static gboolean
+tile_map_contains(TileMap *self, TileIndex index)
+{
+    return (index.x >= -self->size && index.x < self->size
+            && index.y >= -self->size && index.y < self->size);
+}
 
 gboolean
 operation_queue_resize(OperationQueue *self, int new_size)
 {
     if (new_size == 0) {
-        if (self->tile_map_dim_size != 0) {
-            assert(self->tile_map);
+        if (self->tile_map) {
             assert(self->dirty_tiles);
 
-            tile_map_free(self);
-            self->tile_map_dim_size = 0;
-
-            self->dirty_tiles_n = 0;
+            tile_map_free(self->tile_map, TRUE);
+            self->tile_map = NULL;
             free(self->dirty_tiles);
+            self->dirty_tiles_n = 0;
         }
         return TRUE;
     } else {
-        const int new_map_size = 2*new_size*2*new_size;
-        Fifo **new_tile_map = tile_map_new(new_map_size);
+        TileMap *new_tile_map = tile_map_new(new_size);
+        const int new_map_size = new_size*2*new_size*2;
         TileIndex *new_dirty_tiles = (TileIndex *)malloc(new_map_size*sizeof(TileIndex));
 
-        // Copy old values over
-        tile_map_copy(self, new_tile_map, new_size);
+        if (self->tile_map) {
+            tile_map_copy_to(self->tile_map, new_tile_map);
+            for(int i = 0; i < self->dirty_tiles_n; i++) {
+                new_dirty_tiles[i] = self->dirty_tiles[i];
+            }
 
-        for(int i = 0; i < self->dirty_tiles_n; i++) {
-            new_dirty_tiles[i] = self->dirty_tiles[i];
+            tile_map_free(self->tile_map, FALSE);
+            free(self->dirty_tiles);
         }
 
-        // Free old values
-        tile_map_free(self);
-        free(self->dirty_tiles);
-
-        // Set new values
-        self->tile_map_dim_size = new_size;
-        self->origin.x = self->tile_map_dim_size;
-        self->origin.y = self->tile_map_dim_size;
         self->tile_map = new_tile_map;
         self->dirty_tiles = new_dirty_tiles;
 
@@ -119,12 +138,9 @@ operation_queue_new()
 {
     OperationQueue *self = (OperationQueue *)malloc(sizeof(OperationQueue));
 
-    self->tile_map_dim_size = 0;
     self->tile_map = NULL;
     self->dirty_tiles_n = 0;
     self->dirty_tiles = NULL;
-    self->origin.x = 0;
-    self->origin.y = 0;
 
     operation_queue_resize(self, 10);
 
@@ -194,13 +210,6 @@ operation_queue_clear_dirty_tiles(OperationQueue *self)
     self->dirty_tiles_n = 0;
 }
 
-static gboolean
-index_is_outside_map(OperationQueue *self, TileIndex index)
-{
-    return (abs(index.x) >= self->tile_map_dim_size ||
-            abs(index.y) >= self->tile_map_dim_size);
-}
-
 /* Add an operation to the queue for tile @index
  * Note: if an operation affects more than one tile, it must be added once per tile.
  *
@@ -208,12 +217,11 @@ index_is_outside_map(OperationQueue *self, TileIndex index)
 void
 operation_queue_add(OperationQueue *self, TileIndex index, OperationDataDrawDab *op)
 {
-    while (index_is_outside_map(self, index)) {
-        operation_queue_resize(self, self->tile_map_dim_size*2);
+    while (!tile_map_contains(self->tile_map, index)) {
+        operation_queue_resize(self, self->tile_map->size*2);
     }
 
-    // FIXME: valgrind says this sometimes causes a write outsize the end of the array
-    Fifo **queue_pointer = tile_map_get(self, index);
+    Fifo **queue_pointer = tile_map_get(self->tile_map, index);
     Fifo *op_queue = *queue_pointer;
 
     if (op_queue == NULL) {
@@ -236,12 +244,11 @@ operation_queue_pop(OperationQueue *self, TileIndex index)
 {
     OperationDataDrawDab *op = NULL;
 
-    if (index_is_outside_map(self, index)) {
+    if (!tile_map_contains(self->tile_map, index)) {
         return NULL;
     }
 
-    // FIXME: valgrind says this sometimes causes a write outsize the end of the array
-    Fifo **queue_pointer = tile_map_get(self, index);
+    Fifo **queue_pointer = tile_map_get(self->tile_map, index);
     Fifo *op_queue = *queue_pointer;
 
     if (!op_queue) {
