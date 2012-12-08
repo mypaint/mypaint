@@ -1,7 +1,9 @@
 #ifndef MYPAINTCONFIG_H
 #define MYPAINTCONFIG_H
 
+#ifndef MYPAINT_TILE_SIZE
 #define MYPAINT_TILE_SIZE 64
+#endif
 
 // Start generated config
 @DEFINES@
