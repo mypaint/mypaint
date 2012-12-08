@@ -23,8 +23,6 @@
 
 #define M_PI 3.14159265358979323846
 
-#define TILE_SIZE 64
-
 void process_tile(MyPaintTiledSurface *self, int tx, int ty);
 
 
@@ -190,21 +188,21 @@ void render_dab_mask (uint16_t * mask,
     int y1 = floor (y + r_fringe);
     if (x0 < 0) x0 = 0;
     if (y0 < 0) y0 = 0;
-    if (x1 > TILE_SIZE-1) x1 = TILE_SIZE-1;
-    if (y1 > TILE_SIZE-1) y1 = TILE_SIZE-1;
+    if (x1 > MYPAINT_TILE_SIZE-1) x1 = MYPAINT_TILE_SIZE-1;
+    if (y1 > MYPAINT_TILE_SIZE-1) y1 = MYPAINT_TILE_SIZE-1;
     float one_over_radius2 = 1.0/(radius*radius);
 
     // Pre-calculate rr and put it in the mask.
     // This an optimization that makes use of auto-vectorization
     // OPTIMIZE: if using floats for the brush engine, store these directly in the mask
-    float rr_mask[TILE_SIZE*TILE_SIZE+2*TILE_SIZE];
+    float rr_mask[MYPAINT_TILE_SIZE*MYPAINT_TILE_SIZE+2*MYPAINT_TILE_SIZE];
 
     for (int yp = y0; yp <= y1; yp++) {
       for (int xp = x0; xp <= x1; xp++) {
         float rr = calculate_rr(xp, yp,
                                 x, y, aspect_ratio,
                                 sn, cs, one_over_radius2);
-        rr_mask[(yp*TILE_SIZE)+xp] = rr;
+        rr_mask[(yp*MYPAINT_TILE_SIZE)+xp] = rr;
       }
     }
 
@@ -213,13 +211,13 @@ void render_dab_mask (uint16_t * mask,
     uint16_t * mask_p = mask;
     int skip=0;
 
-    skip += y0*TILE_SIZE;
+    skip += y0*MYPAINT_TILE_SIZE;
     for (int yp = y0; yp <= y1; yp++) {
       skip += x0;
 
       int xp;
       for (xp = x0; xp <= x1; xp++) {
-        float rr = rr_mask[(yp*TILE_SIZE)+xp];
+        float rr = rr_mask[(yp*MYPAINT_TILE_SIZE)+xp];
         float opa = calculate_opa(rr, hardness,
                                   segment1_offset, segment1_slope,
                                   segment2_offset, segment2_slope);
@@ -235,7 +233,7 @@ void render_dab_mask (uint16_t * mask,
           *mask_p++ = opa_;
         }
       }
-      skip += TILE_SIZE-xp;
+      skip += MYPAINT_TILE_SIZE-xp;
     }
     *mask_p++ = 0;
     *mask_p++ = 0;
@@ -248,8 +246,8 @@ process_op(MyPaintTiledSurface *self, uint16_t *rgba_p, uint16_t *mask,
 
     // first, we calculate the mask (opacity for each pixel)
     render_dab_mask(mask,
-                    op->x - tx*TILE_SIZE,
-                    op->y - ty*TILE_SIZE,
+                    op->x - tx*MYPAINT_TILE_SIZE,
+                    op->y - ty*MYPAINT_TILE_SIZE,
                     op->radius,
                     op->hardness,
                     op->aspect_ratio, op->angle
@@ -298,7 +296,7 @@ process_tile(MyPaintTiledSurface *self, int tx, int ty)
         return;
     }
 
-    uint16_t mask[TILE_SIZE*TILE_SIZE+2*TILE_SIZE];
+    uint16_t mask[MYPAINT_TILE_SIZE*MYPAINT_TILE_SIZE+2*MYPAINT_TILE_SIZE];
 
     while (op) {
         process_op(self, rgba_p, mask, tile_index.x, tile_index.y, op);
@@ -374,10 +372,10 @@ gboolean draw_dab_internal (MyPaintTiledSurface *self, float x, float y,
     // Determine the tiles influenced by operation, and queue it for processing for each tile
     float r_fringe = radius + 1.0; // +1.0 should not be required, only to be sure
       
-    int tx1 = floor(floor(x - r_fringe) / TILE_SIZE);
-    int tx2 = floor(floor(x + r_fringe) / TILE_SIZE);
-    int ty1 = floor(floor(y - r_fringe) / TILE_SIZE);
-    int ty2 = floor(floor(y + r_fringe) / TILE_SIZE);
+    int tx1 = floor(floor(x - r_fringe) / MYPAINT_TILE_SIZE);
+    int tx2 = floor(floor(x + r_fringe) / MYPAINT_TILE_SIZE);
+    int ty1 = floor(floor(y - r_fringe) / MYPAINT_TILE_SIZE);
+    int ty2 = floor(floor(y + r_fringe) / MYPAINT_TILE_SIZE);
 
     for (int ty = ty1; ty <= ty2; ty++) {
         for (int tx = tx1; tx <= tx2; tx++) {
@@ -454,10 +452,10 @@ void get_color (MyPaintSurface *surface, float x, float y,
 
     float r_fringe = radius + 1.0; // +1 should not be required, only to be sure
 
-    int tx1 = floor(floor(x - r_fringe) / TILE_SIZE);
-    int tx2 = floor(floor(x + r_fringe) / TILE_SIZE);
-    int ty1 = floor(floor(y - r_fringe) / TILE_SIZE);
-    int ty2 = floor(floor(y + r_fringe) / TILE_SIZE);
+    int tx1 = floor(floor(x - r_fringe) / MYPAINT_TILE_SIZE);
+    int tx2 = floor(floor(x + r_fringe) / MYPAINT_TILE_SIZE);
+    int ty1 = floor(floor(y - r_fringe) / MYPAINT_TILE_SIZE);
+    int ty2 = floor(floor(y + r_fringe) / MYPAINT_TILE_SIZE);
     int tiles_n = (tx2 - tx1) * (ty2 - ty1);
 
     #pragma omp parallel for schedule(static) if(self->threadsafe_tile_requests && tiles_n > 3)
@@ -478,11 +476,11 @@ void get_color (MyPaintSurface *surface, float x, float y,
         }
 
         // first, we calculate the mask (opacity for each pixel)
-        uint16_t mask[TILE_SIZE*TILE_SIZE+2*TILE_SIZE];
+        uint16_t mask[MYPAINT_TILE_SIZE*MYPAINT_TILE_SIZE+2*MYPAINT_TILE_SIZE];
 
         render_dab_mask(mask,
-                        x - tx*TILE_SIZE,
-                        y - ty*TILE_SIZE,
+                        x - tx*MYPAINT_TILE_SIZE,
+                        y - ty*MYPAINT_TILE_SIZE,
                         radius,
                         hardness,
                         aspect_ratio, angle
@@ -536,7 +534,7 @@ mypaint_tiled_surface_init(MyPaintTiledSurface *self,
     self->tile_request_end = tile_request_end;
     self->tile_request_start = tile_request_start;
 
-    self->tile_size = TILE_SIZE;
+    self->tile_size = MYPAINT_TILE_SIZE;
     self->threadsafe_tile_requests = FALSE;
 
     self->dirty_bbox.x = 0;

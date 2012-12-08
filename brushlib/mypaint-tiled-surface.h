@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include <mypaint-surface.h>
+#include <mypaint-config.h>
 
 G_BEGIN_DECLS
 

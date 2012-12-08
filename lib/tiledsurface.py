@@ -14,7 +14,7 @@ import mypaintlib, helpers
 import math
 
 TILE_SIZE = N = mypaintlib.TILE_SIZE
-MAX_MIPMAP_LEVEL = mypaintlib.MAX_MIPMAP_LEVEL
+MAX_MIPMAP_LEVEL = 4
 
 use_gegl = True if os.environ.get('MYPAINT_ENABLE_GEGL', 0) else False
 
