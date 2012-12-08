@@ -170,11 +170,13 @@ if __name__ == '__main__':
 
     # Low-level bindtextdomain, required for GtkBuilder stuff.
     locale.bindtextdomain("mypaint", localepath)
+    locale.bindtextdomain("libmypaint", localepath) # brushlib
     locale.textdomain("mypaint")
 
     # Python gettext module.
     # See http://docs.python.org/release/2.7/library/locale.html
     gettext.bindtextdomain("mypaint", localepath)
+    gettext.bindtextdomain("libmypaint", localepath) # brushlib
     gettext.textdomain("mypaint")
 
     from gui import main
