@@ -2,10 +2,10 @@
 #include <assert.h>
 #include <math.h>
 #include <stdio.h>
+
 #include <mypaint-tiled-surface.h>
 #include <mypaint-fixed-tiled-surface.h>
 
-#define TILE_SIZE 64
 
 struct _MyPaintGeglTiledSurface {
     MyPaintTiledSurface parent;
@@ -76,23 +76,26 @@ mypaint_fixed_tiled_surface_new(int width, int height)
 {
     assert(width > 0);
     assert(height > 0);
-    int tiles_width = ceil(width % TILE_SIZE);
-    int tiles_height = ceil(height % TILE_SIZE);
-    size_t tile_size = TILE_SIZE * TILE_SIZE * sizeof(uint16_t);
-    size_t buffer_size = tiles_width * tiles_height * tile_size;
+
+    MyPaintFixedTiledSurface *self = (MyPaintFixedTiledSurface *)malloc(sizeof(MyPaintFixedTiledSurface));
+
+    mypaint_tiled_surface_init(&self->parent, tile_request_start, tile_request_end);
+
+    const int tile_size_pixels = self->parent.tile_size;
+
+    // MyPaintSurface vfuncs
+    self->parent.parent.destroy = free_simple_tiledsurf;
+
+    const int tiles_width = ceil(width % tile_size_pixels);
+    const int tiles_height = ceil(height % tile_size_pixels);
+    const size_t tile_size = tile_size_pixels * tile_size_pixels * sizeof(uint16_t);
+    const size_t buffer_size = tiles_width * tiles_height * tile_size;
 
     uint16_t * buffer = (uint16_t *)malloc(buffer_size);
     if (!buffer) {
         fprintf(stderr, "CRITICAL: unable to allocate enough memory: %Zu bytes", buffer_size);
         return NULL;
     }
-
-    MyPaintFixedTiledSurface *self = (MyPaintFixedTiledSurface *)malloc(sizeof(MyPaintFixedTiledSurface));
-
-    mypaint_tiled_surface_init(&self->parent, tile_request_start, tile_request_end);
-
-    // MyPaintSurface vfuncs
-    self->parent.parent.destroy = free_simple_tiledsurf;
 
     self->tile_buffer = buffer;
     self->tile_size = tile_size;

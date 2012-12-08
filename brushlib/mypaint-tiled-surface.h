@@ -42,6 +42,7 @@ struct _MyPaintTiledSurface {
     OperationQueue *operation_queue;
     MyPaintRectangle dirty_bbox;
     gboolean threadsafe_tile_requests;
+    int tile_size;
 };
 
 

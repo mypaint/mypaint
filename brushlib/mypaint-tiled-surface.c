@@ -536,6 +536,7 @@ mypaint_tiled_surface_init(MyPaintTiledSurface *self,
     self->tile_request_end = tile_request_end;
     self->tile_request_start = tile_request_start;
 
+    self->tile_size = TILE_SIZE;
     self->threadsafe_tile_requests = FALSE;
 
     self->dirty_bbox.x = 0;

@@ -91,10 +91,11 @@ tile_request_start(MyPaintTiledSurface *tiled_surface, MyPaintTiledSurfaceTileRe
       request->buffer = NULL;
       return;
     }
+
 #ifdef HEAVY_DEBUG
        assert(PyArray_NDIM(rgba) == 3);
-       assert(PyArray_DIM(rgba, 0) == TILE_SIZE);
-       assert(PyArray_DIM(rgba, 1) == TILE_SIZE);
+       assert(PyArray_DIM(rgba, 0) == tiled_surface->tile_size);
+       assert(PyArray_DIM(rgba, 1) == tiled_surface->tile_size);
        assert(PyArray_DIM(rgba, 2) == 4);
        assert(PyArray_ISCARRAY(rgba));
        assert(PyArray_TYPE(rgba) == NPY_UINT16);

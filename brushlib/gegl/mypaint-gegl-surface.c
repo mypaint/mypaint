@@ -5,8 +5,6 @@
 #include "mypaint-gegl-surface.h"
 #include <gegl-utils.h>
 
-#define TILE_SIZE 64
-
 typedef struct _MyPaintGeglTiledSurface {
     MyPaintTiledSurface parent;
 
@@ -22,8 +20,9 @@ tile_request_start(MyPaintTiledSurface *tiled_surface, MyPaintTiledSurfaceTileRe
 {
     MyPaintGeglTiledSurface *self = (MyPaintGeglTiledSurface *)tiled_surface;
 
+    const int tile_size = tiled_surface->tile_size;
     GeglRectangle tile_bbox;
-    gegl_rectangle_set(&tile_bbox, request->tx * TILE_SIZE, request->ty * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+    gegl_rectangle_set(&tile_bbox, request->tx * tile_size, request->ty * tile_size, tile_size, tile_size);
 
     int read_write_flags;
 
@@ -45,7 +44,7 @@ tile_request_start(MyPaintTiledSurface *tiled_surface, MyPaintTiledSurfaceTileRe
     gboolean completed = gegl_buffer_iterator_next(iterator);
     g_assert(completed);
 
-    if (iterator->length != TILE_SIZE*TILE_SIZE) {
+    if (iterator->length != tile_size*tile_size) {
         g_critical("Unable to get tile aligned access to GeglBuffer");
         request->buffer = NULL;
     } else {
@@ -112,7 +111,7 @@ mypaint_gegl_tiled_surface_set_buffer(MyPaintGeglTiledSurface *self, GeglBuffer 
                           "x", self->extent_rect.x, "y", self->extent_rect.y,
                           "width", self->extent_rect.width, "height", self->extent_rect.height,
                           "format", self->format,
-                          "tile-width", TILE_SIZE, "tile-height", TILE_SIZE,
+                          "tile-width", self->parent.tile_size, "tile-height", self->parent.tile_size,
                           NULL));
     }
     g_assert(GEGL_IS_BUFFER(self->buffer));
