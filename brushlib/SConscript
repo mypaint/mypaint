@@ -128,11 +128,11 @@ install_perms(env, "$prefix/share/mypaint/brushlib", "./brushsettings.json")
 languages = SConscript('po/SConscript')
 
 # Optional: GEGL library
+gegl_env = env.Clone()
 if env['enable_gegl']:
-
-    gegl_env = env.Clone()
     deps = ['gegl-0.2']
     gegl_env.ParseConfig('pkg-config --cflags --libs %s' % ' '.join(deps))
+    gegl_env.Append(LIBPATH=['..'], LIBS=['mypaint'])
 
     lib_builder = gegl_env.SharedLibrary if env['use_sharedlib'] else gegl_env.StaticPicLibrary
     brushlib_gegl = lib_builder('../mypaint-gegl', Glob("./gegl/*.c"))
@@ -152,6 +152,7 @@ if env['enable_gegl']:
         install_perms(env, '$prefix/share/gir-1.0', gir)
         install_perms(env, '$prefix/lib/girepository-1.0', typelib)
 
+Export('gegl_env', 'env')
 tests = SConscript('tests/SConscript')
 
 Return('brushlib')
