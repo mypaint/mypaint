@@ -994,7 +994,7 @@ class HCYMaskPropertiesDialog (gtk.Dialog):
         self.editor = ed
         ed.set_size_request(300, 300)
         ed.mask_toggle.set_active(True)
-        self.mask_toggle_ctrl = gtk.CheckButton("Active", use_underline=False)
+        self.mask_toggle_ctrl = gtk.CheckButton(_("Active"), use_underline=False)
         self.mask_toggle_ctrl.set_tooltip_text(ed.mask_toggle.get_tooltip())
         ed.mask_observers.append(self.__mask_changed_cb)
 
