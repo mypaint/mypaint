@@ -649,7 +649,19 @@ class SwitchableModeMixin (InteractionMode):
                 return app.kbm.activate_keydown_event(action, event)
             else:
                 # Pointer: popup states handle these themselves sanely.
-                handler.activate(event)
+                # Mostly.
+                if action_name == 'ColorPickerPopup':
+                    # Broken due to unclear device-specific grab issues,
+                    # dispatch as if called using the action.
+                    # See https://gna.org/bugs/?20358
+                    action = app.find_action(action_name)
+                    handler.activate(action)
+                    # You can still pick with this workaround, once, but you
+                    # don't get the preview window.
+                else:
+                    # Other popups behave themselves better in response to
+                    # pointer events.
+                    handler.activate(event)
                 return True
         elif handler_type == 'gtk_action':
             # Generic named action activation. GtkActions trigger without
