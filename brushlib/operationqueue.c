@@ -22,8 +22,6 @@
 #include "operationqueue.h"
 #include "fifo.h"
 
-typedef struct fifo Fifo;
-
 // A size of 10 means the map spans x=[-10,9], y=[-10,9]
 // The tile with TileIndex (x,y) is stored in the map at offset
 // offset=((self->size + y) * rowstride) + (self->size + index.x)

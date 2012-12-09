@@ -26,8 +26,6 @@ typedef void (*MyPaintTiledSurfaceTileRequestStartFunction) (struct _MyPaintTile
 typedef void (*MyPaintTiledSurfaceTileRequestEndFunction) (struct _MyPaintTiledSurface *self, MyPaintTiledSurfaceTileRequestData *request);
 typedef void (*MyPaintTiledSurfaceAreaChanged) (struct _MyPaintTiledSurface *self, int bb_x, int bb_y, int bb_w, int bb_h);
 
-typedef struct _OperationQueue OperationQueue;
-
 /**
   * MyPaintTiledSurface:
   *
@@ -40,7 +38,7 @@ struct _MyPaintTiledSurface {
     MyPaintTiledSurfaceTileRequestEndFunction tile_request_end;
     gboolean surface_do_symmetry;
     float surface_center_x;
-    OperationQueue *operation_queue;
+    struct OperationQueue *operation_queue;
     MyPaintRectangle dirty_bbox;
     gboolean threadsafe_tile_requests;
     int tile_size;
