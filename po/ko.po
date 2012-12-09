@@ -4,23 +4,21 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.9.0 -git\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-27 18:54+0100\n"
-"PO-Revision-Date: 2010-10-14 16:49+0900\n"
+"POT-Creation-Date: 2012-11-29 10:06+0100\n"
+"PO-Revision-Date: 2012-12-04 07:59+0900\n"
 "Last-Translator: Geuntak Jeong <beroberos@gmail.com>\n"
 "Language-Team: korea <beroberos@gmail.com>\n"
-"Language: \n"
+"Language: ko_KP\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
-"X-Poedit-Language: Korean\n"
-"X-Poedit-Country: KOREA, DEMOCRATIC PEOPLE'S REPUBLIC OF\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"X-Generator: Poedit 1.5.4\n"
 
 #: ../gui/backgroundwindow.py:24
-#, fuzzy
 msgid "Save as Default"
-msgstr "기본값으로 저장하기"
+msgstr "기본값으로 저장"
 
 #: ../gui/backgroundwindow.py:26
 msgid "Background"
@@ -36,9 +34,8 @@ msgid "Color"
 msgstr "색상"
 
 #: ../gui/backgroundwindow.py:52
-#, fuzzy
 msgid "Add color to Patterns"
-msgstr "패턴에 색상 추가"
+msgstr "패턴에 색상을 추가"
 
 #: ../gui/backgroundwindow.py:126
 msgid "Gdk-Pixbuf couldn't load \"{filename}\", and reported \"{error}\""
@@ -59,12 +56,11 @@ msgstr ""
 
 #: ../gui/backgroundwindow.py:155
 msgid "One or more backgrounds could not be loaded"
-msgstr ""
+msgstr "하나 이상의 배경을 불러 올 수 없습니다"
 
 #: ../gui/backgroundwindow.py:156
-#, fuzzy
 msgid "Error loading backgrounds"
-msgstr "읽는 동안 오류가 발생했습니다 : GError %s"
+msgstr "배경 불러오는 중 오류가 발생"
 
 #: ../gui/backgroundwindow.py:157
 msgid ""
@@ -72,9 +68,8 @@ msgid ""
 msgstr ""
 
 #: ../gui/brushcreationwidget.py:44 ../gui/brushcreationwidget.py:67
-#, fuzzy
 msgid "(unnamed brush)"
-msgstr "브러시 이름 바꾸기"
+msgstr "(이름 없는 브러시)"
 
 #: ../gui/brushcreationwidget.py:52
 msgid "Save Settings"
@@ -82,12 +77,11 @@ msgstr "설정 저장"
 
 #: ../gui/brushcreationwidget.py:53
 msgid "Add As New"
-msgstr "신규로 추가"
+msgstr "새로 추가"
 
 #: ../gui/brushcreationwidget.py:54
-#, fuzzy
 msgid "Edit Brush Icon"
-msgstr "브러시 아이콘"
+msgstr "브러쉬 아이콘을 수정"
 
 #: ../gui/brushcreationwidget.py:55
 msgid "Rename..."
@@ -133,67 +127,61 @@ msgid "Save"
 msgstr "저장"
 
 #: ../gui/brushmanager.py:71
-#, fuzzy
 msgid "Lost & Found"
-msgstr "분실물 센터"
+msgstr "분실물"
 
 #: ../gui/brushmanager.py:72
-#, fuzzy
 msgid "Deleted"
-msgstr "삭제"
+msgstr "삭제된"
 
 #: ../gui/brushmanager.py:73
-#, fuzzy
 msgid "Favorites"
 msgstr "즐겨찾기"
 
 #: ../gui/brushmanager.py:74
-#, fuzzy
 msgid "Ink"
-msgstr "링크"
+msgstr "잉크"
 
 #: ../gui/brushmanager.py:75
-#, fuzzy
 msgid "Classic"
-msgstr "클래식"
+msgstr "기본"
 
 #: ../gui/brushmanager.py:76
 msgid "Set#1"
-msgstr ""
+msgstr "설정#1"
 
 #: ../gui/brushmanager.py:77
 msgid "Set#2"
-msgstr ""
+msgstr "설정#2"
 
 #: ../gui/brushmanager.py:78
 msgid "Set#3"
-msgstr ""
+msgstr "설정#3"
 
 #: ../gui/brushmanager.py:79
 msgid "Set#4"
-msgstr ""
+msgstr "설정#4"
 
 #: ../gui/brushmanager.py:80
 msgid "Set#5"
-msgstr ""
+msgstr "설정#5"
 
 #: ../gui/brushmanager.py:81
-#, fuzzy
 msgid "Experimental"
 msgstr "실험"
 
 #: ../gui/brushmanager.py:721
 msgid "Unknown Brush"
-msgstr ""
+msgstr "알 수없는 브러쉬"
 
 #. (internal-name, display-name, description)
 #: ../gui/brushmodifier.py:53 ../lib/layer.py:17
 msgid "Normal"
-msgstr ""
+msgstr "표준"
 
 #: ../gui/brushmodifier.py:54
 msgid "Paint normally"
-msgstr ""
+msgstr "일반적 페인트"
 
 #: ../gui/brushmodifier.py:57
 msgid "Eraser"
@@ -201,29 +189,27 @@ msgstr "지우개"
 
 #: ../gui/brushmodifier.py:58
 msgid "Eraser Mode: remove strokes using the current brush"
-msgstr ""
+msgstr "지우개 모드 : 현재 브러시를 사용하여 획 제거 "
 
 #: ../gui/brushmodifier.py:61
 msgid "Lock Alpha Channel"
-msgstr ""
+msgstr "알파 채널 잠금"
 
 #: ../gui/brushmodifier.py:62
 msgid "Lock Alpha: paint over existing strokes only, using the current brush"
 msgstr ""
 
 #: ../gui/brushmodifier.py:65
-#, fuzzy
 msgid "Colorize"
-msgstr "색상"
+msgstr "색상화"
 
 #: ../gui/brushmodifier.py:66
 msgid "Colorize: alter Hue and Saturation with the current brush"
 msgstr ""
 
 #: ../gui/brushselectionwindow.py:35
-#, fuzzy
 msgid "Brushes"
-msgstr "브러시 단축키"
+msgstr "브러시"
 
 #: ../gui/brushselectionwindow.py:253
 msgid ""
@@ -234,42 +220,34 @@ msgid ""
 msgstr ""
 
 #: ../gui/brushselectionwindow.py:465
-#, fuzzy
 msgid "New Group..."
 msgstr "새 그룹..."
 
 #: ../gui/brushselectionwindow.py:467
-#, fuzzy
 msgid "Rename Group..."
 msgstr "그룹 이름 바꾸기..."
 
 #: ../gui/brushselectionwindow.py:468
-#, fuzzy
 msgid "Delete Group"
-msgstr "그룹 삭제..."
+msgstr "그룹 삭제"
 
 #: ../gui/brushselectionwindow.py:469
-#, fuzzy
 msgid "Export Group..."
-msgstr "내보내기..."
+msgstr "그룹 내보내기 ..."
 
 #: ../gui/brushselectionwindow.py:471
-#, fuzzy
 msgid "Import Brushes..."
-msgstr "브러시 패키지 가져오기..."
+msgstr "브러쉬 가져 오기 ..."
 
 #: ../gui/brushselectionwindow.py:473
-#, fuzzy
 msgid "Get More Brushes..."
-msgstr "%d 브러시 복원"
+msgstr "더 많은 브러쉬 가져 오기 ..."
 
 #: ../gui/brushselectionwindow.py:493
-#, fuzzy
 msgid "Create Group"
 msgstr "그룹 만들기"
 
 #: ../gui/brushselectionwindow.py:498
-#, fuzzy
 msgid "Rename Group"
 msgstr "그룹 이름 바꾸기"
 
@@ -278,13 +256,12 @@ msgid "A group with this name already exists!"
 msgstr "이 이름을 가진 그룹이 이미 존재합니다!"
 
 #: ../gui/brushselectionwindow.py:507
-#, fuzzy
 msgid "Export Brushes"
-msgstr "브러시 팩 내보내기..."
+msgstr "브러쉬 내보내기"
 
 #: ../gui/brushselectionwindow.py:508 ../gui/drawwindow.py:809
 msgid "MyPaint brush package (*.zip)"
-msgstr "MyPaint 브러시 팩 (*.zip)"
+msgstr "MyPaint 브러시 패키지 (*.zip)"
 
 #: ../gui/brushselectionwindow.py:514
 #, python-format
@@ -292,37 +269,33 @@ msgid "Really delete group %s?"
 msgstr "%s 그룹을 삭제 합니까?"
 
 #: ../gui/brushselectionwindow.py:517
-#, fuzzy
 msgid "This group can not be deleted (try to empty it first)."
-msgstr "이 그룹은 삭제할 수없습니다."
+msgstr "이 그룹은 삭제할 수 없습니다. (먼저 비우고 시도) "
 
 #: ../gui/brushsettingswindow.py:31
-#, fuzzy
 msgid "Brush Settings Editor"
-msgstr "브러시 설정"
+msgstr "브러시 설정 편집기"
 
 #: ../gui/brushsettingswindow.py:56
-#, fuzzy
 msgid "Back to settings"
-msgstr "브러시 설정"
+msgstr "설정으로 돌아 가기"
 
 #. Live update (goes to the end)
 #: ../gui/brushsettingswindow.py:64
-#, fuzzy
 msgid "Update the last canvas stroke in realtime"
-msgstr "마지막으로 캠퍼스에 사용된 자획을 실시간으로 업데이트"
+msgstr "실시간으로 마지막 캔버스 획 업데이트"
 
 #: ../gui/brushsettingswindow.py:101
 msgid "Basic"
-msgstr ""
+msgstr "기본"
 
 #: ../gui/brushsettingswindow.py:102
 msgid "Opacity"
-msgstr "불투명도:"
+msgstr "불투명도"
 
 #: ../gui/brushsettingswindow.py:103
 msgid "Dabs"
-msgstr ""
+msgstr "칠"
 
 #: ../gui/brushsettingswindow.py:104
 msgid "Smudge"
@@ -330,16 +303,15 @@ msgstr "얼룩"
 
 #: ../gui/brushsettingswindow.py:105
 msgid "Speed"
-msgstr ""
+msgstr "속도"
 
 #: ../gui/brushsettingswindow.py:106
-#, fuzzy
 msgid "Tracking"
-msgstr "노이즈 따라가기"
+msgstr "추적"
 
 #: ../gui/brushsettingswindow.py:107
 msgid "Stroke"
-msgstr "자획"
+msgstr "획"
 
 #: ../gui/brushsettingswindow.py:109
 msgid "Custom"
@@ -354,44 +326,41 @@ msgid "No additional configuration"
 msgstr "추가 구성"
 
 #: ../gui/brushsettingswindow.py:148 ../gui/brushsettingswindow.py:191
-#, fuzzy
 msgid "Add input value mapping"
-msgstr "매핑 입력 값을 추가"
+msgstr "입력 값 매핑을 추가"
 
 #: ../gui/brushsettingswindow.py:193
-#, fuzzy
 msgid "Modify input value mapping"
-msgstr "입력 매핑 값을 수정"
+msgstr "입력 값 매핑을 수정"
 
 #: ../gui/buttonmap.py:262
 msgid "Action"
-msgstr ""
+msgstr "작업"
 
 #: ../gui/buttonmap.py:277
 msgid "Button press"
-msgstr ""
+msgstr "버튼 누르기"
 
 #: ../gui/buttonmap.py:296
 msgid "Add a new binding"
-msgstr ""
+msgstr "새로운 바인딩을 추가"
 
 #: ../gui/buttonmap.py:304
-#, fuzzy
 msgid "Remove the current binding"
-msgstr "최근 파일 열기"
+msgstr "현재 바인딩을 제거"
 
 #: ../gui/buttonmap.py:426
 #, python-format
 msgid "Edit binding for '%s'"
-msgstr ""
+msgstr "'%s'의 바인딩 편집"
 
 #: ../gui/buttonmap.py:449
 msgid "Action:"
-msgstr ""
+msgstr "작업:"
 
 #: ../gui/buttonmap.py:460
 msgid "Button press:"
-msgstr ""
+msgstr "버튼 누르기:"
 
 #: ../gui/buttonmap.py:494
 msgid ""
@@ -402,26 +371,24 @@ msgstr ""
 #: ../gui/buttonmap.py:514
 #, python-format
 msgid "%s cannot be bound by itself, without keyboard modifiers."
-msgstr ""
+msgstr "%s는 키보드 조절없이 자체에 의해 구속 할 수 없습니다."
 
 #: ../gui/buttonmap.py:524
 #, python-format
 msgid "%s is already bound to the action '%s'"
-msgstr ""
+msgstr "%s는 이미 작업 '%s'에 바인딩되어"
 
 #: ../gui/colors/adjbases.py:443
-#, fuzzy
 msgid "Color details"
-msgstr "색상 값"
+msgstr "색상 세부 정보"
 
 #: ../gui/colors/adjbases.py:587
 msgid "Newly chosen color, and the color most recently used for painting"
 msgstr ""
 
 #: ../gui/colors/combined.py:126
-#, fuzzy
 msgid "Add color to Palette"
-msgstr "패턴에 색상 추가"
+msgstr "팔레트에 색상을 추가"
 
 #: ../gui/colors/hcywheel.py:40
 msgid ""
@@ -461,7 +428,7 @@ msgstr ""
 
 #: ../gui/colors/hcywheel.py:95
 msgid "Gamut mask active"
-msgstr ""
+msgstr "영역 마스크 활성"
 
 #: ../gui/colors/hcywheel.py:96
 msgid "Limit your palette for specific moods using a gamut mask"
@@ -469,7 +436,7 @@ msgstr ""
 
 #: ../gui/colors/hcywheel.py:374
 msgid "HCY Hue and Chroma"
-msgstr ""
+msgstr "HCY 색조 및 채도"
 
 #. how many shapes are allowed
 #: ../gui/colors/hcywheel.py:424
@@ -480,7 +447,7 @@ msgstr ""
 
 #: ../gui/colors/hcywheel.py:898
 msgid "Atmospheric Triad"
-msgstr ""
+msgstr "대기 트라이어드"
 
 #: ../gui/colors/hcywheel.py:899
 msgid ""
@@ -490,26 +457,27 @@ msgstr ""
 
 #: ../gui/colors/hcywheel.py:902
 msgid "Shifted Triad"
-msgstr ""
+msgstr "이동된 트라이어드"
 
 #: ../gui/colors/hcywheel.py:903
+#, fuzzy
 msgid "Weighted more strongly towards the dominant colour."
-msgstr ""
+msgstr "지배적 인 색상으로 더 강하게 가중."
 
 #: ../gui/colors/hcywheel.py:907
-#, fuzzy
 msgid "Complementary"
-msgstr "보색"
+msgstr "보완"
 
 #: ../gui/colors/hcywheel.py:908
+#, fuzzy
 msgid ""
 "Contrasting opposites, balanced by having central neutrals between them on "
 "the colour wheel."
-msgstr ""
+msgstr "색상 휠에 그들 사이 중앙 neutrals함으로써 균형을 대조 opposites."
 
 #: ../gui/colors/hcywheel.py:917
 msgid "Mood and Accent"
-msgstr ""
+msgstr "분위기 및 강조"
 
 #: ../gui/colors/hcywheel.py:918
 msgid ""
@@ -522,9 +490,8 @@ msgstr ""
 #. HCYColor((H+0.52)%1, 0.725, Y),
 #. HCYColor((H+0.48)%1, 0.725, Y) ]] ))
 #: ../gui/colors/hcywheel.py:926
-#, fuzzy
 msgid "Split Complementary"
-msgstr "분할 보색"
+msgstr "분할 보완"
 
 #: ../gui/colors/hcywheel.py:927
 msgid ""
@@ -534,48 +501,47 @@ msgstr ""
 
 #: ../gui/colors/hcywheel.py:934
 msgid "New gamut mask from template"
-msgstr ""
+msgstr "템플릿에서 새 영역 마스크"
 
 #: ../gui/colors/hcywheel.py:986
 msgid "Gamut mask editor"
-msgstr ""
+msgstr "영역 마스크 편집기"
 
 #: ../gui/colors/hcywheel.py:1014
 msgid "Create mask from template"
-msgstr ""
+msgstr "템플릿에서 마스크를 만들기"
 
 #: ../gui/colors/hcywheel.py:1015
 msgid "Load mask from a GIMP palette file"
-msgstr ""
+msgstr "김프 팔레트 파일에서 마스크를불러 오기"
 
 #: ../gui/colors/hcywheel.py:1016
-#, fuzzy
 msgid "Save mask to a GIMP palette file"
-msgstr "기본값으로 저장하기"
+msgstr "김프 팔레트 파일에 마스크를 저장"
 
 #: ../gui/colors/hcywheel.py:1017
 msgid "Erase the mask"
-msgstr ""
+msgstr "마스크 지웁기"
 
 #: ../gui/colors/hcywheel.py:1065
 msgid "Save mask as a Gimp palette"
-msgstr ""
+msgstr "김프 팔레트로 마스크를 저장"
 
 #: ../gui/colors/hcywheel.py:1074
 msgid "Load mask from a Gimp palette"
-msgstr ""
+msgstr "김프 팔레트에서 마스크를 불러 오기"
 
 #: ../gui/colors/hcywheel.py:1113
 msgid "Gamut mask editor help"
-msgstr ""
+msgstr "영역 마스크 편집기 도움말"
 
 #: ../gui/colors/hcywheel.py:1147
 msgid "Set gamut mask"
-msgstr ""
+msgstr "영역 마스크를 설정"
 
 #: ../gui/colors/hcywheel.py:1162
 msgid "HCY Wheel"
-msgstr ""
+msgstr "HCY 휠"
 
 #: ../gui/colors/hcywheel.py:1166
 msgid ""
@@ -586,77 +552,71 @@ msgstr ""
 #. Tooltip mappings, indexed by whatever the slider currently represents
 #: ../gui/colors/hsvcube.py:35 ../gui/colors/sliders.py:178
 msgid "HSV Hue"
-msgstr ""
+msgstr "HSV 색상"
 
 #: ../gui/colors/hsvcube.py:36 ../gui/colors/sliders.py:188
 msgid "HSV Saturation"
-msgstr ""
+msgstr "HSV 채도"
 
 #: ../gui/colors/hsvcube.py:37 ../gui/colors/sliders.py:197
-#, fuzzy
 msgid "HSV Value"
-msgstr "기본값"
+msgstr "HSV 값"
 
 #: ../gui/colors/hsvcube.py:38
-#, fuzzy
 msgid "HSV Saturation and Value"
-msgstr "변경 값 / 채도"
+msgstr "HSV 채도 및 값"
 
 #: ../gui/colors/hsvcube.py:39
 msgid "HSV Hue and Value"
-msgstr ""
+msgstr "HSV 색상 및 값"
 
 #: ../gui/colors/hsvcube.py:40 ../gui/colors/hsvwheel.py:32
 msgid "HSV Hue and Saturation"
-msgstr ""
+msgstr "HSV 색조 및 채도"
 
 #: ../gui/colors/hsvcube.py:52
 msgid "Rotate cube (show different axes)"
-msgstr ""
+msgstr "큐브 회전 (다른 축 표시)"
 
 #: ../gui/colors/hsvcube.py:71
 msgid "HSV Cube"
-msgstr ""
+msgstr "HSV 큐브"
 
 #: ../gui/colors/hsvcube.py:75
 msgid "An HSV cube which can be rotated to show different planar slices."
 msgstr ""
 
 #: ../gui/colors/hsvtriangle.py:41
-#, fuzzy
 msgid "HSV Triangle"
-msgstr "삼각 색상환"
+msgstr "HSV 삼각형"
 
 #: ../gui/colors/hsvtriangle.py:45
-#, fuzzy
 msgid "The standard GTK color selector"
-msgstr "MyPaint 색상 선택기"
+msgstr "표준 GTK 색상 선택기"
 
 #: ../gui/colors/hsvwheel.py:91
 msgid "HSV wheel"
-msgstr ""
+msgstr "HSV 휠"
 
 #: ../gui/colors/hsvwheel.py:95
-#, fuzzy
 msgid "Saturation and Value colour changer."
-msgstr "변경 값 / 채도"
+msgstr "채도 및 컬러 값  변환기."
 
 #: ../gui/colors/palette.py:416 ../gui/colors/palette.py:472
 msgid "GIMP palette file (*.gpl)"
-msgstr ""
+msgstr "김프 팔레트 파일 (*.GPL)"
 
 #: ../gui/colors/palette.py:420 ../gui/colors/palette.py:476
-#, fuzzy
 msgid "All files (*)"
-msgstr "파일"
+msgstr "모든 파일 (*)"
 
 #: ../gui/colors/paletteview.py:62
 msgid "Palette properties"
-msgstr ""
+msgstr "팔레트 속성"
 
 #: ../gui/colors/paletteview.py:72
 msgid "Palette"
-msgstr ""
+msgstr "팔레트"
 
 #: ../gui/colors/paletteview.py:77
 msgid "Set the color from a loadable, editable palette."
@@ -664,117 +624,111 @@ msgstr ""
 
 #: ../gui/colors/paletteview.py:123
 msgid "Palette Editor"
-msgstr ""
+msgstr "팔레트 편집기"
 
 #: ../gui/colors/paletteview.py:158
 msgid "Load from a GIMP palette file"
-msgstr ""
+msgstr "김프 팔레트 파일에서 불러 오기"
 
 #: ../gui/colors/paletteview.py:159
-#, fuzzy
 msgid "Save to a GIMP palette file"
-msgstr "기본값으로 저장하기"
+msgstr "김프 팔레트 파일로 저장"
 
 #: ../gui/colors/paletteview.py:160
 msgid "Add a new empty swatch"
-msgstr ""
+msgstr "새로운 빈 견본을 추가"
 
 #: ../gui/colors/paletteview.py:161
-#, fuzzy
 msgid "Remove the current swatch"
-msgstr "최근 파일 열기"
+msgstr "현재 견본을 제거"
 
 #: ../gui/colors/paletteview.py:162
 msgid "Remove all swatches"
-msgstr ""
+msgstr "모든 견본을 제거"
 
 #: ../gui/colors/paletteview.py:172
-#, fuzzy
 msgid "Name:"
-msgstr "이름"
+msgstr "이름 :"
 
 #: ../gui/colors/paletteview.py:174
 msgid "Name or description for this palette"
-msgstr ""
+msgstr "이 팔레트의 이름 또는 설명"
 
 #: ../gui/colors/paletteview.py:182
 msgid "Columns:"
-msgstr ""
+msgstr "열 :"
 
 #: ../gui/colors/paletteview.py:183 ../gui/colors/paletteview.py:184
 msgid "Number of columns"
-msgstr ""
+msgstr "열 번호"
 
 #: ../gui/colors/paletteview.py:197
-#, fuzzy
 msgid "Color name:"
-msgstr "색상 선택도구"
+msgstr "색상 이름 :"
 
 #: ../gui/colors/paletteview.py:198
 msgid "Current colour's name"
-msgstr ""
+msgstr "현재 색상의 이름"
 
 #: ../gui/colors/paletteview.py:295
 msgid "Empty palette slot"
-msgstr ""
+msgstr "빈 팔레트 슬롯"
 
 #: ../gui/colors/paletteview.py:362
-#, fuzzy
 msgid "Load palette"
-msgstr "레이어"
+msgstr "팔레트를 불러 오기"
 
 #: ../gui/colors/paletteview.py:373
-#, fuzzy
 msgid "Save palette"
-msgstr "설정 저장"
+msgstr "팔레트를 저장"
 
 #: ../gui/colors/paletteview.py:541
+#, fuzzy
 msgid ""
 "Color swatch palette. Drop colors here and drag them around to organize."
-msgstr ""
+msgstr "색상 견본 팔레트. 여기에 색상을 내려 구성을 주위 드래그합니다."
 
 #: ../gui/colors/paletteview.py:676
 msgid "Empty palette slot (drag a color here)"
-msgstr ""
+msgstr "빈 팔레트 슬롯 (여기에 색상을 드래그)"
 
 #: ../gui/colors/picker.py:69
 msgid "Pick a color from the screen"
-msgstr ""
+msgstr "화면에서 색상을 선택"
 
 #: ../gui/colors/sliders.py:88
 msgid "Component sliders"
-msgstr ""
+msgstr "구성 요소 슬라이더"
 
 #: ../gui/colors/sliders.py:92
 msgid "Adjust individual components of the colour."
-msgstr ""
+msgstr "색상의 개별 구성 요소를 조정합니다."
 
 #: ../gui/colors/sliders.py:138
 msgid "RGB Red"
-msgstr ""
+msgstr "RGB 레드"
 
 #: ../gui/colors/sliders.py:151
 msgid "RGB Green"
-msgstr ""
+msgstr "RGB 그린"
 
 #: ../gui/colors/sliders.py:164
 msgid "RGB Blue"
-msgstr ""
+msgstr "RGB 블루"
 
 #: ../gui/colors/sliders.py:207
 msgid "HCY Hue"
-msgstr ""
+msgstr "HCY 색조"
 
 #: ../gui/colors/sliders.py:218
 msgid "HCY Chroma"
-msgstr ""
+msgstr "HCY 채도"
 
 #: ../gui/colors/sliders.py:230
 msgid "HCY Luma (Y')"
-msgstr ""
+msgstr "HCY 루마 (Y')"
 
 #: ../gui/colorwindow.py:26
-#, fuzzy
 msgid "Colors"
 msgstr "색상"
 
@@ -836,9 +790,8 @@ msgstr ""
 "구룹을 대체하면, 브러시는 `%s' 그룹으로 포함 됩니다."
 
 #: ../gui/dialogs.py:257
-#, fuzzy
 msgid "Import brush package?"
-msgstr "브러시 패키지를 가져옵니까?"
+msgstr "브러쉬 패키지를 가져 오기?"
 
 #: ../gui/dialogs.py:269
 #, python-format
@@ -847,9 +800,8 @@ msgstr "<b>정말로 `%s'패키지를 가져올까요?</b>"
 
 #. Quick brush changer
 #: ../gui/dialogs.py:359 ../gui/toolbar.py:355
-#, fuzzy
 msgid "Change Brush"
-msgstr "색조 바꾸기"
+msgstr "브러시 변경"
 
 #: ../gui/document.py:240
 #, python-format
@@ -864,55 +816,50 @@ msgstr "%d 브러시 저장"
 #: ../gui/document.py:482
 #, python-format
 msgid "Copy of %s"
-msgstr ""
+msgstr "%s의 사본"
 
 #: ../gui/document.py:485
 #, python-format
 msgid "Copy of Untitled layer #%d"
-msgstr ""
+msgstr "제목 없음 레이어 #%d 의 사본"
 
 #: ../gui/document.py:492
-#, fuzzy
 msgid "Layer Name"
-msgstr "레이어"
+msgstr "레이어 이름"
 
 #: ../gui/document.py:837
-#, fuzzy, python-format
+#, python-format
 msgid "Undo %s"
-msgstr "취소"
+msgstr "취소 %s"
 
 #: ../gui/document.py:839
 msgid "Undo"
 msgstr "취소"
 
 #: ../gui/document.py:846
-#, fuzzy, python-format
+#, python-format
 msgid "Redo %s"
-msgstr "다시"
+msgstr "%s 재실행"
 
 #: ../gui/document.py:848
 msgid "Redo"
-msgstr "다시"
+msgstr "재실행"
 
 #: ../gui/drawwindow.py:474
-#, fuzzy
 msgid "Set current color"
-msgstr "색상 선택"
+msgstr "현재 색상을 설정"
 
 #: ../gui/drawwindow.py:634
-#, fuzzy
 msgid "Leave Fullscreen Mode"
-msgstr "전체 화면"
+msgstr "전체 화면 모드를 종료"
 
 #: ../gui/drawwindow.py:635
-#, fuzzy
 msgid "UnFullscreen"
-msgstr "전체 화면"
+msgstr "전체 화면 취소"
 
 #: ../gui/drawwindow.py:638
-#, fuzzy
 msgid "Enter Fullscreen Mode"
-msgstr "전체 화면"
+msgstr "전체 화면 모드로 전환"
 
 #: ../gui/drawwindow.py:639
 msgid "Fullscreen"
@@ -920,12 +867,11 @@ msgstr "전체 화면"
 
 #: ../gui/drawwindow.py:727
 msgid "Gimp Palette Format"
-msgstr ""
+msgstr "김프 팔레트 형식"
 
 #: ../gui/drawwindow.py:728
-#, fuzzy
 msgid "All Files"
-msgstr "파일"
+msgstr "모든 파일"
 
 #. FIXME: should do this periodically, not only on quit
 #: ../gui/drawwindow.py:781
@@ -938,16 +884,15 @@ msgstr "정말 종료해도 되겠습니까?"
 
 #: ../gui/drawwindow.py:808
 msgid "Import brush package..."
-msgstr "브러시 패키지 가져오기..."
+msgstr "브러쉬 패키지를 가져 오기 ..."
 
 #: ../gui/drawwindow.py:820
-#, fuzzy
 msgid ""
 "Copyright (C) 2005-2012\n"
 "Martin Renold and the MyPaint Development Team"
 msgstr ""
-"저작권 (C) 2005-2010\n"
-"마틴 레이놀드, MyPaint 개발팀"
+"저작권 (C) 2005-2012\n"
+"마틴 레이놀드와 MyPaint 개발팀"
 
 #: ../gui/drawwindow.py:824
 msgid ""
@@ -990,14 +935,12 @@ msgid "patterns, brushes"
 msgstr "패턴, 브러시"
 
 #: ../gui/drawwindow.py:859
-#, fuzzy
 msgid "brushes, tool icons"
-msgstr "데스크탑 아이콘"
+msgstr "브러시, 도구 아이콘"
 
 #: ../gui/drawwindow.py:860
-#, fuzzy
 msgid "brushes, patterns"
-msgstr "브러시, 프로그래밍"
+msgstr "브러시, 패턴"
 
 #: ../gui/drawwindow.py:862
 msgid "desktop icon"
@@ -1008,13 +951,12 @@ msgid "patterns"
 msgstr "패턴"
 
 #: ../gui/drawwindow.py:866 ../gui/drawwindow.py:867
-#, fuzzy
 msgid "tool icons"
-msgstr "데스크탑 아이콘"
+msgstr "도구 아이콘"
 
 #: ../gui/drawwindow.py:869
 msgid "translator-credits"
-msgstr ""
+msgstr "번역 - 크레딧"
 
 #: ../gui/drawwindow.py:877
 msgid "Move your mouse over a menu entry, then press the key to assign."
@@ -1023,20 +965,12 @@ msgstr ""
 "가 등록 됩니다."
 
 #: ../gui/drawwindow.py:879
-#, fuzzy
 msgid ""
 "Brush shortcut keys are used to quickly save/restore brush settings. You can "
 "paint with one hand and change brushes with the other, even in mid-stroke.\n"
 "\n"
 "There are 10 persistent memory slots available."
 msgstr ""
-"이기능은 브러시 설정을 키보드를 이용하여 빠르게 기역하고 저장한 브러시를 필요"
-"한 때에 즉각 사용이 가능하게 합니다. 사용자는 페인팅을 방해 받지 안으면서 한"
-"손으로 필요한 블러쉬를 자유자제로 바꿀 수 있습니다.\n"
-"\n"
-"블러쉬 설정은 최대 10개를 기역할 수 있습니다. 기역되는 브러시는 브러시 선택"
-"기 목록에 표시되지 않습니다. 때문에 사용자는 자신이 기역시킨 브러시를 실수로 "
-"잃지 않도록 주의 할필요가 있습니다."
 
 #: ../gui/drawwindow.py:885
 msgid ""
@@ -1065,7 +999,7 @@ msgstr "최근 파일 열기"
 #. (name, patterns)
 #: ../gui/filehandling.py:80
 msgid "All Recognized Formats"
-msgstr "모든 형식"
+msgstr "모든 인식된 형식"
 
 #. 0
 #: ../gui/filehandling.py:81 ../gui/filehandling.py:87
@@ -1111,7 +1045,7 @@ msgstr "저장하기"
 
 #: ../gui/filehandling.py:143
 msgid "Format to save as:"
-msgstr "저장형식 :"
+msgstr "저장하는 형식 :"
 
 #: ../gui/filehandling.py:169
 msgid "Confirm"
@@ -1125,28 +1059,39 @@ msgstr "정말 계속하시겠습니까?"
 #, fuzzy, python-format
 msgid "This will discard %d minute of unsaved painting."
 msgid_plural "This will discard %d minutes of unsaved painting."
-msgstr[0] "저장하지 않으면 %d 분의 작업 내용을 잃어 버리게 됩니다."
-msgstr[1] "저장하지 않으면 %d 여분의 작업 내용을 잃어 버리게 됩니다."
+msgstr[0] ""
+"<b>%s</b>\n"
+"\n"
+"저장하지 않으면 %s의 작업 내용을 잃어 버리게 됩니다."
+msgstr[1] ""
+"<b>%s</b>\n"
+"\n"
+"저장하지 않으면 %s의 작업 내용을 잃어 버리게 됩니다."
 
 #: ../gui/filehandling.py:183
 #, fuzzy, python-format
 msgid "This will discard %d second of unsaved painting."
 msgid_plural "This will discard %d seconds of unsaved painting."
-msgstr[0] "저장하지 않으면 %d 초의 작업 내용을 잃어 버리게 됩니다."
-msgstr[1] "저장하지 않으면 %d 여초의 작업 내용을 잃어 버리게 됩니다."
+msgstr[0] ""
+"<b>%s</b>\n"
+"\n"
+"저장하지 않으면 %s의 작업 내용을 잃어 버리게 됩니다."
+msgstr[1] ""
+"<b>%s</b>\n"
+"\n"
+"저장하지 않으면 %s의 작업 내용을 잃어 버리게 됩니다."
 
 #: ../gui/filehandling.py:191
 msgid "_Save as Scrap"
-msgstr "스크렙하기(_S)"
+msgstr "스크랩으로 저장(_S)"
 
 #: ../gui/filehandling.py:326 ../gui/filehandling.py:343
 msgid "Open..."
 msgstr "열기..."
 
 #: ../gui/filehandling.py:375
-#, fuzzy
 msgid "Open Scratchpad..."
-msgstr "다음 스크랩 열기"
+msgstr "스크래치 패드 열기 ..."
 
 #: ../gui/filehandling.py:680
 #, python-format
@@ -1159,46 +1104,45 @@ msgstr "스크랩 파일중에 이미 \"%s\"가 있습니다."
 #: ../gui/framewindow.py:479 ../gui/framewindow.py:480
 #: ../gui/framewindow.py:525 ../gui/framewindow.py:530
 msgid "px"
-msgstr ""
+msgstr "px"
 
 #: ../gui/framewindow.py:281
 msgid "Height:"
-msgstr ""
+msgstr "높이 :"
 
 #: ../gui/framewindow.py:283
 msgid "Width:"
-msgstr ""
+msgstr "넓이:"
 
 #: ../gui/framewindow.py:285
 msgid "Resolution:"
-msgstr ""
+msgstr "해상도 :"
 
 #: ../gui/framewindow.py:287
-#, fuzzy
 msgid "Color:"
-msgstr "색상"
+msgstr "색상 :"
 
 #: ../gui/framewindow.py:307
-#, fuzzy
 msgid "Frame Color"
-msgstr "색조 바꾸기"
+msgstr "프레임 색상"
 
 #: ../gui/framewindow.py:356
-#, fuzzy
 msgid "Crop to Current Layer"
-msgstr "레이어"
+msgstr "현재 레이어로 자르기"
 
 #: ../gui/framewindow.py:357
+#, fuzzy
 msgid "Crop frame to the currently active layer"
-msgstr ""
+msgstr "현재 활성화 된 레이어 자르기 프레임"
 
 #: ../gui/framewindow.py:359
 msgid "Crop to Document"
-msgstr ""
+msgstr "문서로 자르기"
 
 #: ../gui/framewindow.py:360
+#, fuzzy
 msgid "Crop frame to the combination of all layers"
-msgstr ""
+msgstr "모든 레이어의 조합으로 자르기 프레임"
 
 #: ../gui/framewindow.py:367
 msgid ""
@@ -1208,19 +1152,19 @@ msgstr ""
 
 #: ../gui/framewindow.py:374
 msgid "Enabled"
-msgstr ""
+msgstr "사용"
 
 #: ../gui/framewindow.py:469
 msgid "inch"
-msgstr ""
+msgstr "인치"
 
 #: ../gui/framewindow.py:470
 msgid "cm"
-msgstr ""
+msgstr "cm"
 
 #: ../gui/framewindow.py:471
 msgid "mm"
-msgstr ""
+msgstr "mm"
 
 #: ../gui/functionwindow.py:37
 msgid "Base Value"
@@ -1295,15 +1239,15 @@ msgstr ""
 
 #: ../gui/layerswindow.py:66
 msgid "Visible"
-msgstr ""
+msgstr "보임"
 
 #: ../gui/layerswindow.py:72
 msgid "Locked"
-msgstr ""
+msgstr "잠금"
 
 #: ../gui/layerswindow.py:90
 msgid "Mode:"
-msgstr ""
+msgstr "모드 :"
 
 #: ../gui/layerswindow.py:92
 msgid ""
@@ -1323,89 +1267,85 @@ msgstr ""
 #: ../gui/layerswindow.py:212
 #, python-format
 msgid "Layer opacity: %d%%"
-msgstr ""
+msgstr "레이어 불투명도: %d%%"
 
 #: ../gui/layerswindow.py:302
 #, python-format
 msgid "Untitled layer #%d"
-msgstr ""
+msgstr "이름 없는 레이어 #%d"
 
 #: ../gui/layout.py:628
 msgid "Collapse"
-msgstr ""
+msgstr "접기"
 
 #: ../gui/layout.py:629
 msgid "Expand"
-msgstr ""
+msgstr "확장"
 
 #: ../gui/layout.py:703
 msgid "Snap out"
-msgstr ""
+msgstr "때어내기"
 
 #: ../gui/layout.py:705
 msgid "Close"
-msgstr ""
+msgstr "닫기"
 
 #: ../gui/linemode.py:21
-#, fuzzy
 msgid "Entrance Pressure"
-msgstr "압력"
+msgstr "입구 압력"
 
 #: ../gui/linemode.py:21
 msgid "Stroke entrance pressure for line tools"
-msgstr ""
+msgstr "선 도구에 대한 획 입구 압력"
 
 #: ../gui/linemode.py:22
-#, fuzzy
 msgid "Midpoint Pressure"
-msgstr "압력"
+msgstr "중간 압력"
 
 #: ../gui/linemode.py:22
 msgid "Mid-Stroke pressure for line tools"
-msgstr ""
+msgstr "선 도구에 대한 중간 획 압력"
 
 #: ../gui/linemode.py:23
-#, fuzzy
 msgid "Exit Pressure"
-msgstr "압력"
+msgstr "압력 종료"
 
 #: ../gui/linemode.py:23
 msgid "Stroke exit pressure for line tools"
-msgstr ""
+msgstr "선 도구에 대한 획 출구 압력"
 
 #: ../gui/linemode.py:24
 msgid "Head"
-msgstr ""
+msgstr "머리"
 
 #: ../gui/linemode.py:24
-#, fuzzy
 msgid "Stroke lead-in end"
-msgstr "자획 유지 시간"
+msgstr "획 리드 인 끝"
 
 #: ../gui/linemode.py:25
 msgid "Tail"
-msgstr ""
+msgstr "꼬리"
 
 #: ../gui/linemode.py:25
 msgid "Stroke trail-off beginning"
-msgstr ""
+msgstr "획 트레일 오프 부터 시작"
 
 #: ../gui/overlays.py:147
 #, python-format
 msgid "Zoom: %.01f%%"
-msgstr ""
+msgstr "줌: %.01f%%"
 
 #: ../gui/preferenceswindow.py:23
 msgid "Disabled (no pressure sensitivity)"
-msgstr ""
+msgstr "비활성화 (압력 감도 없음)"
 
 #: ../gui/preferenceswindow.py:24
 msgid "Screen (normal)"
-msgstr ""
+msgstr "스크린 (표준)"
 
 #: ../gui/preferenceswindow.py:25
 msgid "Window (not recommended)"
-msgstr ""
+msgstr "창 (권장하지 않음)"
 
 #: ../gui/preferenceswindow.py:37
 msgid "Preferences"
@@ -1413,14 +1353,12 @@ msgstr "환경 설정"
 
 #. TRANSLATORS: Tab label
 #: ../gui/preferenceswindow.py:57
-#, fuzzy
 msgid "Pen Input"
-msgstr "입력"
+msgstr "펜 입력"
 
 #: ../gui/preferenceswindow.py:63
-#, fuzzy
 msgid "<b>Input Device</b>"
-msgstr "입력 장치 테스트"
+msgstr "<b>입력 장치</b>"
 
 #: ../gui/preferenceswindow.py:70
 msgid ""
@@ -1430,19 +1368,17 @@ msgstr ""
 
 #. TRANSLATORS: Graph y-axis label
 #: ../gui/preferenceswindow.py:80
-#, fuzzy
 msgid "Brush Pressure"
-msgstr "압력"
+msgstr "브러시 압력"
 
 #. TRANSLATORS: Graph x-axis label
 #: ../gui/preferenceswindow.py:90
-#, fuzzy
 msgid "Input Pressure"
-msgstr "압력"
+msgstr "입력 압력"
 
 #: ../gui/preferenceswindow.py:99
 msgid "Mode: "
-msgstr ""
+msgstr "모드 :"
 
 #: ../gui/preferenceswindow.py:128
 msgid ""
@@ -1452,31 +1388,27 @@ msgstr ""
 
 #: ../gui/preferenceswindow.py:131
 msgid "Buttons"
-msgstr ""
+msgstr "버튼"
 
 #: ../gui/preferenceswindow.py:140
 msgid "Saving"
 msgstr "저장하기"
 
 #: ../gui/preferenceswindow.py:146
-#, fuzzy
 msgid "<b>Saving</b>"
-msgstr "저장하기"
+msgstr "<b>저장 중</b>"
 
 #: ../gui/preferenceswindow.py:150
-#, fuzzy
 msgid "Default file format:"
-msgstr "기본 저장 형식"
+msgstr "기본 파일 형식 :"
 
 #: ../gui/preferenceswindow.py:165
-#, fuzzy
 msgid "<b>Save Next Scrap</b>"
-msgstr "다음 스크랩 열기"
+msgstr "<b>다음 스크랩을 저장</b>"
 
 #: ../gui/preferenceswindow.py:169
-#, fuzzy
 msgid "Path and filename prefix:"
-msgstr "\"스크랩 하기\" 저장위치 및 파일 이름 설정"
+msgstr "경로 및 파일 이름 접두사 :"
 
 #: ../gui/preferenceswindow.py:184
 msgid "View"
@@ -1484,169 +1416,157 @@ msgstr "보기"
 
 #: ../gui/preferenceswindow.py:190
 msgid "<b>Default View</b>"
-msgstr ""
+msgstr "<b>기본보기</b>"
 
 #: ../gui/preferenceswindow.py:194
-#, fuzzy
 msgid "Default zoom:"
-msgstr "기본 확대 축소 비율"
+msgstr "기본보기 :"
 
 #: ../gui/preferenceswindow.py:207
 msgid "High quality zoom (may result in slow scrolling)"
-msgstr ""
+msgstr "고품질 줌 (스크롤이 느려질수 있습니다)"
 
 #: ../gui/preferenceswindow.py:214
-#, fuzzy
 msgid "<b>Fullscreen</b>"
-msgstr "전체 화면"
+msgstr "<b>전체 화면</b>"
 
 #: ../gui/preferenceswindow.py:218
 msgid "Hide menu bar"
-msgstr ""
+msgstr "메뉴 표시 줄 숨기기"
 
 #: ../gui/preferenceswindow.py:223
 msgid "Hide toolbar"
-msgstr ""
+msgstr "도구 모음 숨기기"
 
 #: ../gui/preferenceswindow.py:228
 msgid "Hide tools"
-msgstr ""
+msgstr "도구를 숨기기"
 
 #: ../gui/scratchwindow.py:28
 msgid "Scratchpad"
-msgstr ""
+msgstr "스크래치 패드"
 
 #: ../gui/scratchwindow.py:41
 msgid "Load Scratchpad"
-msgstr ""
+msgstr "스크래치 패드 불러 오기"
 
 #: ../gui/scratchwindow.py:43
 msgid "Save Scratchpad as..."
-msgstr ""
+msgstr "스크래치 패드 저장 ..."
 
 #: ../gui/scratchwindow.py:45
 msgid "Revert Scratchpad"
-msgstr ""
+msgstr "스크래치 패드 되돌리기"
 
 #: ../gui/scratchwindow.py:47
 msgid "New Scratchpad"
-msgstr ""
+msgstr "새로운 스크래치 패드"
 
 #: ../gui/spinbox.py:32
 msgid "Previous item"
-msgstr ""
+msgstr "이전 항목"
 
 #: ../gui/spinbox.py:35
 msgid "Next item"
-msgstr ""
+msgstr "다음 항목"
 
 #: ../gui/spinbox.py:97
 msgid "(Nothing to show)"
-msgstr ""
+msgstr "(표시할 것 없음)"
 
 #: ../gui/toolbar.py:31
 msgid "File handling"
-msgstr ""
+msgstr "파일 처리"
 
 #: ../gui/toolbar.py:32
 msgid "Scraps switcher"
-msgstr ""
+msgstr "스위처를 스크랩"
 
 #: ../gui/toolbar.py:33
 msgid "Undo and Redo"
-msgstr ""
+msgstr "실행 취소 및 다시 실행"
 
 #: ../gui/toolbar.py:34
 msgid "Blend Modes"
-msgstr ""
+msgstr "혼합 모드"
 
 #: ../gui/toolbar.py:35
 msgid "Editing Modes"
-msgstr ""
+msgstr "편집하기 모드"
 
 #: ../gui/toolbar.py:36
 msgid "View (Main)"
-msgstr ""
+msgstr "보기 (메인)"
 
 #: ../gui/toolbar.py:37
 msgid "View (Alternative/Secondary)"
-msgstr ""
+msgstr "보기 (보조 / 대체)"
 
 #: ../gui/toolbar.py:38
 msgid "View (Resetting)"
-msgstr ""
+msgstr "보기 (재설정)"
 
 #: ../gui/toolbar.py:39
-#, fuzzy
 msgid "Subwindows"
-msgstr "보조창 토글"
+msgstr "하위창"
 
 #: ../gui/toolbar.py:69
-#, fuzzy
 msgid "MyPaint"
-msgstr "MyPaint 정보"
+msgstr "MyPaint"
 
 #: ../gui/toolbar.py:84
 msgid "Current Color"
-msgstr ""
+msgstr "현재 색상"
 
 #: ../gui/toolbar.py:86
-#, fuzzy
 msgid "Current Brush"
-msgstr "브러시 이름 바꾸기"
+msgstr "현재 브러시 "
 
 #: ../gui/toolbar.py:88
-#, fuzzy
 msgid "Brush Settings"
 msgstr "브러시 설정"
 
 #: ../gui/toolbar.py:90
 msgid "Line Mode"
-msgstr ""
+msgstr "선 모드"
 
 #. Pressure settings.
 #: ../gui/toolbar.py:179
-#, fuzzy
 msgid "Line Pressure"
-msgstr "압력"
+msgstr "선 압력"
 
 #: ../gui/toolbar.py:227
-#, fuzzy
 msgid "Color History and other tools"
-msgstr "색상 내역"
+msgstr "색상 기록"
 
 #. Colour changing
 #: ../gui/toolbar.py:250
-#, fuzzy
 msgid "Change Color"
-msgstr "색조 바꾸기"
+msgstr "색상 변경"
 
 #: ../gui/toolbar.py:288
-#, fuzzy
 msgid "Color Window"
-msgstr "색상환"
+msgstr "색상 창"
 
 #. History
 #. Brush history
 #: ../gui/toolbar.py:292 ../gui/toolbar.py:377
 msgid "Recently Used"
-msgstr ""
+msgstr "최근 사용"
 
 #: ../gui/toolbar.py:335
-#, fuzzy
 msgid "Brush history etc."
-msgstr "브러시 편집기..."
+msgstr "브러시 내역 기타"
 
 #. A limited subset of the available brush settings.
 #: ../gui/toolbar.py:465
-#, fuzzy
 msgid "Quick Brush Settings"
-msgstr "브러시 설정"
+msgstr "빠른 브러시 설정"
 
 #: ../gui/toolbar.py:491
 #, python-format
 msgid "%s:"
-msgstr ""
+msgstr "%s:"
 
 #: ../gui/toolbar.py:498
 #, python-format
@@ -1656,116 +1576,100 @@ msgstr ""
 #. Access to the brush settings window, and a big reset-all button
 #. aligned with the settings above.
 #: ../gui/toolbar.py:516
-#, fuzzy
 msgid "Detailed Brush Settings"
-msgstr "브러시 설정"
+msgstr "상세한 브러쉬 설정"
 
 #: ../gui/toolbar.py:531
-#, fuzzy
 msgid "Restore Saved Settings"
-msgstr "설정 저장"
+msgstr "저장된 설정을 복원"
 
 #: ../gui/toolbar.py:533
 msgid "Reset all brush settings to the current brush's saved values"
-msgstr ""
+msgstr "현재 브러쉬의 저장 값으로 모든 브러쉬 설정을 재설정합니다."
 
 #: ../gui/toolbar.py:543
 msgid "Brush Blend Mode"
-msgstr ""
+msgstr "브러시 혼합 모드"
 
 #: ../lib/command.py:92
 msgid "Unknown Action"
-msgstr ""
+msgstr "알 수없는 작업"
 
 #: ../lib/command.py:153
 msgid "Painting"
-msgstr ""
+msgstr "페인팅"
 
 #: ../lib/command.py:169
-#, fuzzy
 msgid "Clear Layer"
-msgstr "지우기"
+msgstr "레이어 지우기"
 
 #: ../lib/command.py:182
-#, fuzzy
 msgid "Load Layer"
-msgstr "레이어"
+msgstr "레이어 불러 오기"
 
 #: ../lib/command.py:196
-#, fuzzy
 msgid "Merge Layers"
-msgstr "레이어"
+msgstr "레이어 병합"
 
 #: ../lib/command.py:224
-#, fuzzy
 msgid "Convert Layer Mode"
-msgstr "지우기"
+msgstr "레이어 모드를 변환"
 
 #: ../lib/command.py:246
-#, fuzzy
 msgid "Add Layer"
-msgstr "레이어"
+msgstr "레이어를 추가"
 
 #: ../lib/command.py:269
-#, fuzzy
 msgid "Remove Layer"
-msgstr "제거"
+msgstr "레이어를 제거"
 
 #: ../lib/command.py:304
-#, fuzzy
 msgid "Select Layer"
-msgstr "레이어 선택"
+msgstr "레이어를 선택"
 
 #: ../lib/command.py:319
-#, fuzzy
 msgid "Move Layer on Canvas"
-msgstr "레이어"
+msgstr "캔버스에 레이어를 이동"
 
 #: ../lib/command.py:344
 msgid "Reorder Layer in Stack"
-msgstr ""
+msgstr "스택에서 레이어 순서 변경"
 
 #: ../lib/command.py:370
 msgid "Duplicate Layer"
-msgstr ""
+msgstr "레이어를 복제"
 
 #: ../lib/command.py:391
-#, fuzzy
 msgid "Reorder Layer Stack"
-msgstr "제거"
+msgstr "레이어 스택 순서를 변경"
 
 #: ../lib/command.py:412
-#, fuzzy
 msgid "Rename Layer"
-msgstr "제거"
+msgstr "레이어 이름 바꾸기"
 
 #: ../lib/command.py:447
-#, fuzzy
 msgid "Make Layer Visible"
-msgstr "레이어 가시성"
+msgstr "레이어 표시하기"
 
 #: ../lib/command.py:449
-#, fuzzy
 msgid "Make Layer Invisible"
-msgstr "레이어 가시성"
+msgstr "레이어 숨기기"
 
 #: ../lib/command.py:473
-#, fuzzy
 msgid "Lock Layer"
-msgstr "레이어"
+msgstr "레이어 잠금"
 
 #: ../lib/command.py:475
 msgid "Unlock Layer"
-msgstr ""
+msgstr "레이어 잠금 해제"
 
 #: ../lib/command.py:478
-#, fuzzy
 msgid "Change Layer Visibility"
-msgstr "레이어 가시성"
+msgstr "레이어 가시성을 변경"
 
 #: ../lib/command.py:506
 msgid "Change Layer Blending Mode"
-msgstr ""
+msgstr "레이어 블렌딩 모드를 변경"
 
 #. add a hint due to a very consfusing error message when there is no space left on device
 #: ../lib/document.py:514
@@ -1809,11 +1713,11 @@ msgstr "알 수없는 파일 형식 확장명 : %s"
 
 #: ../lib/layer.py:18
 msgid "The top layer only, without blending colors."
-msgstr ""
+msgstr "혼합 색상이없는 유일한 상단 레이어."
 
 #: ../lib/layer.py:19
 msgid "Multiply"
-msgstr ""
+msgstr "곱하기"
 
 #: ../lib/layer.py:20
 msgid ""
@@ -1822,9 +1726,8 @@ msgid ""
 msgstr ""
 
 #: ../lib/layer.py:22
-#, fuzzy
 msgid "Screen"
-msgstr "전체 화면"
+msgstr "스크린"
 
 #: ../lib/layer.py:23
 msgid ""
@@ -1834,7 +1737,7 @@ msgstr ""
 
 #: ../lib/layer.py:25
 msgid "Overlay"
-msgstr ""
+msgstr "오버레이"
 
 #: ../lib/layer.py:26
 msgid ""
@@ -1843,7 +1746,6 @@ msgid ""
 msgstr ""
 
 #: ../lib/layer.py:28
-#, fuzzy
 msgid "Darken"
 msgstr "어둡게"
 
@@ -1852,7 +1754,6 @@ msgid "The top layer is used only where it is darker than the backdrop."
 msgstr ""
 
 #: ../lib/layer.py:30
-#, fuzzy
 msgid "Lighten"
 msgstr "밝게"
 
@@ -1862,7 +1763,7 @@ msgstr ""
 
 #: ../lib/layer.py:32
 msgid "Dodge"
-msgstr ""
+msgstr "닷지"
 
 #: ../lib/layer.py:33
 msgid ""
@@ -1873,7 +1774,7 @@ msgstr ""
 
 #: ../lib/layer.py:36
 msgid "Burn"
-msgstr ""
+msgstr "번"
 
 #: ../lib/layer.py:37
 msgid ""
@@ -1884,7 +1785,7 @@ msgstr ""
 
 #: ../lib/layer.py:40
 msgid "Hard Light"
-msgstr ""
+msgstr "하드 라이트"
 
 #: ../lib/layer.py:41
 msgid "Similar to shining a harsh spotlight onto the backdrop."
@@ -1892,24 +1793,23 @@ msgstr ""
 
 #: ../lib/layer.py:42
 msgid "Soft Light"
-msgstr ""
+msgstr "소프트 라이트"
 
 #: ../lib/layer.py:43
 msgid "Like shining a diffuse spotlight onto the backdrop."
 msgstr ""
 
 #: ../lib/layer.py:44
-#, fuzzy
 msgid "Difference"
-msgstr "환경 설정"
+msgstr "차이"
 
 #: ../lib/layer.py:45
 msgid "Subtracts the darker color from the lighter of the two."
-msgstr ""
+msgstr "두 가지 라이터에서 어두운 색상을 뺍니다."
 
 #: ../lib/layer.py:46
 msgid "Exclusion"
-msgstr ""
+msgstr "제외"
 
 #: ../lib/layer.py:47
 msgid "Similar to the 'Difference' mode, but lower in contrast."
@@ -1917,17 +1817,18 @@ msgstr ""
 
 #: ../lib/layer.py:48
 msgid "Hue"
-msgstr ""
+msgstr "색조"
 
 #: ../lib/layer.py:49
+#, fuzzy
 msgid ""
 "Combines the hue of the top layer with the saturation and luminosity of the "
 "backdrop."
-msgstr ""
+msgstr "배경의 채도 및 광도와 상단 층의 색상이 조화를 이루고 있습니다."
 
 #: ../lib/layer.py:51
 msgid "Saturation"
-msgstr ""
+msgstr "채도"
 
 #: ../lib/layer.py:52
 msgid ""
@@ -1943,7 +1844,7 @@ msgstr ""
 
 #: ../lib/layer.py:57
 msgid "Luminosity"
-msgstr ""
+msgstr "밝기"
 
 #: ../lib/layer.py:58
 msgid ""
@@ -1952,81 +1853,72 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/mypaint.xml.h:1
-#, fuzzy
 msgctxt "Menu|File|"
 msgid "New"
-msgstr "새로운 캔버스"
+msgstr "새로운"
 
 #: ../po/tmp/mypaint.xml.h:2
 msgid "Start with a new blank canvas"
-msgstr ""
+msgstr "비어있는 새 캔버스로 시작"
 
 #: ../po/tmp/mypaint.xml.h:3
-#, fuzzy
 msgctxt "Menu|File|"
 msgid "Open..."
 msgstr "열기..."
 
 #: ../po/tmp/mypaint.xml.h:4
 msgid "Open a file, replacing the current painting"
-msgstr ""
+msgstr "현재 그림 작업 대신 파일을 엽니다."
 
 #: ../po/tmp/mypaint.xml.h:5
-#, fuzzy
 msgctxt "Menu|File|"
 msgid "Open Most Recent"
-msgstr "최근 열기"
+msgstr "가장 최근 열기"
 
 #: ../po/tmp/mypaint.xml.h:6
 msgid "Open the last file you saved"
-msgstr ""
+msgstr "당신이 저장 한 마지막 파일을 엽니다"
 
 #: ../po/tmp/mypaint.xml.h:7
 msgctxt "Menu|File|"
 msgid "Revert"
-msgstr ""
+msgstr "되돌리기"
 
 #: ../po/tmp/mypaint.xml.h:8
-#, fuzzy
 msgid "Reload the current file"
-msgstr "최근 파일 열기"
+msgstr "현재 파일을 새로 고침"
 
 #: ../po/tmp/mypaint.xml.h:9
-#, fuzzy
 msgctxt "Menu|File|"
 msgid "Save"
 msgstr "저장"
 
 #: ../po/tmp/mypaint.xml.h:10
-#, fuzzy
 msgid "Save to a file"
-msgstr "기본값으로 저장하기"
+msgstr "파일로 저장"
 
 #: ../po/tmp/mypaint.xml.h:11
-#, fuzzy
 msgctxt "Menu|File|"
 msgid "Save As..."
-msgstr "다른 이름으로 저장..."
+msgstr "다른 이름으로 저장 ..."
 
 #: ../po/tmp/mypaint.xml.h:12
 msgid "Save to a file with a new name"
-msgstr ""
+msgstr "새 이름을 가진 파일로 저장"
 
 #: ../po/tmp/mypaint.xml.h:13
-#, fuzzy
 msgctxt "Menu|File|"
 msgid "Export..."
 msgstr "내보내기..."
 
 #: ../po/tmp/mypaint.xml.h:14
 msgid "Export to a file"
-msgstr ""
+msgstr "파일로 내보내기"
 
 #: ../po/tmp/mypaint.xml.h:15
-#, fuzzy
 msgctxt "Menu|File|"
 msgid "Save As Scrap"
-msgstr "스크랩하기"
+msgstr "스크랩으로 저장"
 
 #: ../po/tmp/mypaint.xml.h:16
 msgid ""
@@ -2035,7 +1927,6 @@ msgid ""
 msgstr ""
 
 #: ../po/tmp/mypaint.xml.h:17
-#, fuzzy
 msgctxt "Menu|File|"
 msgid "Open Previous Scrap"
 msgstr "이전 스크랩 열기"
@@ -2045,301 +1936,272 @@ msgid "Load the previous scrap file, replacing the current drawing"
 msgstr ""
 
 #: ../po/tmp/mypaint.xml.h:19
-#, fuzzy
 msgctxt "Menu|File|"
 msgid "Open Next Scrap"
 msgstr "다음 스크랩 열기"
 
 #: ../po/tmp/mypaint.xml.h:20
 msgid "Load the next scrap file, replacing the current drawing"
-msgstr ""
+msgstr "현재 그림을 교체, 다음 스크랩 파일을로드"
 
 #: ../po/tmp/mypaint.xml.h:21
-#, fuzzy
 msgctxt "Menu|Brush|"
 msgid "Bigger"
 msgstr "크게"
 
 #: ../po/tmp/mypaint.xml.h:22
-#, fuzzy
 msgid "Increase brush radius"
-msgstr "레이어 불투명도 증가"
+msgstr "브러쉬 반경 증가"
 
 #: ../po/tmp/mypaint.xml.h:23
-#, fuzzy
 msgctxt "Menu|Brush|"
 msgid "Smaller"
 msgstr "작게"
 
 #: ../po/tmp/mypaint.xml.h:24
-#, fuzzy
 msgid "Decrease brush radius"
-msgstr "레이어 불투명도 감소"
+msgstr "브러시 반경 감소"
 
 #: ../po/tmp/mypaint.xml.h:25
-#, fuzzy
 msgctxt "Menu|Brush|"
 msgid "Increase Opacity"
-msgstr "레이어 불투명도 증가"
+msgstr "불투명도 증가"
 
 #: ../po/tmp/mypaint.xml.h:26
-#, fuzzy
 msgid "Increase brush opacity"
-msgstr "레이어 불투명도 증가"
+msgstr "브러쉬 불투명도 증가"
 
 #: ../po/tmp/mypaint.xml.h:27
-#, fuzzy
 msgctxt "Menu|Brush|"
 msgid "Decrease Opacity"
-msgstr "레이어 불투명도 감소"
+msgstr "불투명도 감소"
 
 #: ../po/tmp/mypaint.xml.h:28
-#, fuzzy
 msgid "Decrease brush opacity"
-msgstr "레이어 불투명도 감소"
+msgstr "브러시 불투명도 감소"
 
 #: ../po/tmp/mypaint.xml.h:29
-#, fuzzy
 msgctxt "Menu|Color|Adjust Color|"
 msgid "Brighter"
 msgstr "밝게"
 
 #: ../po/tmp/mypaint.xml.h:30
 msgid "Increase color brightness"
-msgstr ""
+msgstr "색상 밝기 증가"
 
 #: ../po/tmp/mypaint.xml.h:31
-#, fuzzy
 msgctxt "Menu|Color|Adjust Color|"
 msgid "Darker"
 msgstr "어둡게"
 
 #: ../po/tmp/mypaint.xml.h:32
 msgid "Decrease color brightness"
-msgstr ""
+msgstr "색상 밝기 감소"
 
 #: ../po/tmp/mypaint.xml.h:33
-#, fuzzy
 msgctxt "Menu|Color|Adjust Color|"
 msgid "Hue Anticlockwise"
-msgstr "시계 반대 방향 회전"
+msgstr "색조 반 시계 방향"
 
 #: ../po/tmp/mypaint.xml.h:34
-#, fuzzy
 msgid "Rotate color hue anticlockwise"
-msgstr "시계 반대 방향 회전"
+msgstr "색상 색조 반 시계 회전"
 
 #: ../po/tmp/mypaint.xml.h:35
-#, fuzzy
 msgctxt "Menu|Color|Adjust Color|"
 msgid "Hue Clockwise"
-msgstr "시계 방향 회전"
+msgstr "색조 시계 방향"
 
 #: ../po/tmp/mypaint.xml.h:36
-#, fuzzy
 msgid "Rotate color hue clockwise"
-msgstr "시계 반대 방향 회전"
+msgstr "색상 색조 시계 방향 회전"
 
 #: ../po/tmp/mypaint.xml.h:37
-#, fuzzy
 msgctxt "Menu|Color|Adjust Color|"
 msgid "Purer"
-msgstr "깨끗하게"
+msgstr "순수한"
 
 #: ../po/tmp/mypaint.xml.h:38
 msgid "Increase color saturation"
-msgstr ""
+msgstr "색상 채도 증가"
 
 #: ../po/tmp/mypaint.xml.h:39
-#, fuzzy
 msgctxt "Menu|Color|Adjust Color|"
 msgid "Grayer"
-msgstr "탁해지게"
+msgstr "탁한"
 
 #: ../po/tmp/mypaint.xml.h:40
 msgid "Decrease color saturation"
-msgstr ""
+msgstr "색상 채도 감소"
 
 #: ../po/tmp/mypaint.xml.h:41
 msgctxt "Menu|Brush|"
 msgid "Pick Stroke and Layer"
-msgstr ""
+msgstr "획 및 레이어를 선택"
 
 #: ../po/tmp/mypaint.xml.h:42
 msgid "Pick brushstroke: settings and layer"
-msgstr ""
+msgstr "브러시 획 선택 : 설정 및 레이어"
 
 #: ../po/tmp/mypaint.xml.h:43
-#, fuzzy
 msgctxt "Menu|Brush|Shortcut Keys|"
 msgid "Restore Color"
-msgstr "%d 브러시 복원"
+msgstr "색상을 복원"
 
 #: ../po/tmp/mypaint.xml.h:44
-#, fuzzy
 msgctxt "Menu|Brush|Shortcut Keys|"
 msgid "Save to Most Recent"
-msgstr "가장 최근 저장내용 복원"
+msgstr "가장 최근으로 저장"
 
 #: ../po/tmp/mypaint.xml.h:45
-#, fuzzy
 msgid "Save brush to the most recent shortcut"
-msgstr "가장 최근 저장내용 복원"
+msgstr "가장 최근 바로 가기에 브러쉬를 저장"
 
 #: ../po/tmp/mypaint.xml.h:46
-#, fuzzy
 msgctxt "Menu|Layer|"
 msgid "Clear"
 msgstr "지우기"
 
 #: ../po/tmp/mypaint.xml.h:47
-#, fuzzy
 msgid "Clear the current layer"
-msgstr "최근 파일 열기"
+msgstr "현재 레이어의 선택을 해제합니다"
 
 #: ../po/tmp/mypaint.xml.h:48
 msgctxt "Menu|Layer|"
 msgid "Copy"
-msgstr ""
+msgstr "복사"
 
 #: ../po/tmp/mypaint.xml.h:49
 msgid "Copy the current layer to the clipboard"
-msgstr ""
+msgstr "클립 보드에 현재 레이어를 복사"
 
 #: ../po/tmp/mypaint.xml.h:50
 msgctxt "Menu|Layer|"
 msgid "Paste"
-msgstr ""
+msgstr "붙여 넣기"
 
 #: ../po/tmp/mypaint.xml.h:51
 msgid "Replaces the layer with the clipboard's contents"
-msgstr ""
+msgstr "클립 보드의 내용으로 레이어를 대체합니다."
 
 #: ../po/tmp/mypaint.xml.h:52
 msgctxt "Menu|Layer|Go to Layer|"
 msgid "At Cursor"
-msgstr ""
+msgstr "커서에서"
 
 #: ../po/tmp/mypaint.xml.h:53
 msgid "Choose a layer by picking a brushstroke on it"
-msgstr ""
+msgstr "그 위에 브러시 획을 선택하여 레이어를 선택"
 
 #: ../po/tmp/mypaint.xml.h:54
 msgctxt "Menu|Layer|Go to Layer|"
 msgid "Above"
-msgstr ""
+msgstr "위에"
 
 #: ../po/tmp/mypaint.xml.h:55
 msgid "Go one layer up in the layers stack"
-msgstr ""
+msgstr "레이어 스택에서 하나의 레이어를 위로 이동"
 
 #: ../po/tmp/mypaint.xml.h:56
 msgctxt "Menu|Layer|Go to Layer|"
 msgid "Below"
-msgstr ""
+msgstr "아래"
 
 #: ../po/tmp/mypaint.xml.h:57
 msgid "Go one layer down in the layers stack"
-msgstr ""
+msgstr "레이어 스택에서 하나의 레이어를 아래로 이동"
 
 #: ../po/tmp/mypaint.xml.h:58
-#, fuzzy
 msgctxt "Menu|Layer|"
 msgid "New (above)"
-msgstr "위에 세로운 레이어 추가"
+msgstr "새로운 (위)"
 
 #: ../po/tmp/mypaint.xml.h:59
 msgid "Add a new layer above the current layer"
-msgstr ""
+msgstr "현재 레이어 위에 새 레이어를 추가합니다"
 
 #: ../po/tmp/mypaint.xml.h:60
-#, fuzzy
 msgctxt "Menu|Layer|"
 msgid "New (below)"
-msgstr "아래에 세로운 레이어 추가"
+msgstr "새로운 (아래)"
 
 #: ../po/tmp/mypaint.xml.h:61
 msgid "Add a new layer below the current layer"
-msgstr ""
+msgstr "현재 레이어 아래에 새 레이어를 추가합니다"
 
 #: ../po/tmp/mypaint.xml.h:62
-#, fuzzy
 msgctxt "Menu|Layer|"
 msgid "Merge Down"
 msgstr "아래로 병합"
 
 #: ../po/tmp/mypaint.xml.h:63
 msgid "Merge layer with the one beneath it"
-msgstr ""
+msgstr "그 아래의 하나가 레이어를 병합"
 
 #: ../po/tmp/mypaint.xml.h:64
-#, fuzzy
 msgctxt "Menu|Layer|"
 msgid "Delete"
 msgstr "삭제"
 
 #: ../po/tmp/mypaint.xml.h:65
-#, fuzzy
 msgid "Delete the current layer"
-msgstr "최근 파일 열기"
+msgstr "현재 레이어를 삭제"
 
 #: ../po/tmp/mypaint.xml.h:66
 msgctxt "Menu|Layer"
 msgid "Convert to Normal mode"
-msgstr ""
+msgstr "표준 모드로 변환"
 
 #: ../po/tmp/mypaint.xml.h:67
 msgctxt "Menu|Layer|Opacity|"
 msgid "Increase"
-msgstr ""
+msgstr "증가"
 
 #: ../po/tmp/mypaint.xml.h:68
 msgctxt "Menu|Layer|Opacity|"
 msgid "Decrease"
-msgstr ""
+msgstr "감소"
 
 #: ../po/tmp/mypaint.xml.h:69
 msgctxt "Menu|Layer|"
 msgid "Raise"
-msgstr ""
+msgstr "증가"
 
 #: ../po/tmp/mypaint.xml.h:70
 msgid "Raise the current layer one step in the layers stack"
-msgstr ""
+msgstr "레이어 스택에서 현재 레이어 한 단계 올리기"
 
 #: ../po/tmp/mypaint.xml.h:71
 msgctxt "Menu|Layer|"
 msgid "Lower"
-msgstr ""
+msgstr "낮추기"
 
 #: ../po/tmp/mypaint.xml.h:72
 msgid "Lower the current layer one step in the layers stack"
-msgstr ""
+msgstr "레이어 스택에서 현재 레이어를 한 단계 낮 춥니다"
 
 #: ../po/tmp/mypaint.xml.h:73
 msgctxt "Menu|Layer|"
 msgid "Duplicate"
-msgstr ""
+msgstr "복제"
 
 #: ../po/tmp/mypaint.xml.h:74
 msgid "Make an exact duplicate of the current layer"
-msgstr ""
+msgstr "현재 레이어의 완전 복제 만들기"
 
 #: ../po/tmp/mypaint.xml.h:75
-#, fuzzy
 msgctxt "Menu|Layer|"
 msgid "Rename..."
 msgstr "이름 바꾸기..."
 
 #: ../po/tmp/mypaint.xml.h:76
 msgid "Enter a new name for the current layer"
-msgstr ""
+msgstr "현재 레이어에 대한 새 이름을 입력합니다"
 
 #: ../po/tmp/mypaint.xml.h:77
-#, fuzzy
 msgctxt "Menu|Layer|"
 msgid "Locked"
-msgstr "레이어"
+msgstr "잠금"
 
 #: ../po/tmp/mypaint.xml.h:78
 msgid "The current layer's locked state: locked layers cannot be drawn to"
@@ -2348,16 +2210,16 @@ msgstr ""
 #: ../po/tmp/mypaint.xml.h:79
 msgctxt "Menu|Layer|"
 msgid "Visible"
-msgstr ""
+msgstr "보임"
 
 #: ../po/tmp/mypaint.xml.h:80
 msgid "The current layer's visibility state"
-msgstr ""
+msgstr "현재 레이어의 보이는 상태"
 
 #: ../po/tmp/mypaint.xml.h:81
 msgctxt "Menu|View|"
 msgid "Reset and Center"
-msgstr ""
+msgstr "재설정 및 중앙으로 이동"
 
 #: ../po/tmp/mypaint.xml.h:82
 msgid "Reset Zoom, Rotation and Mirroring, and recenter the document"
@@ -2366,152 +2228,135 @@ msgstr ""
 #: ../po/tmp/mypaint.xml.h:83
 msgctxt "Menu|View|"
 msgid "Fit"
-msgstr ""
+msgstr "맞추기"
 
 #: ../po/tmp/mypaint.xml.h:84
 msgid "Zoom to fit the document, and recenter"
-msgstr ""
+msgstr "문서에 맞게 확대 및 중심으로 이동"
 
 #: ../po/tmp/mypaint.xml.h:85
 msgctxt "Menu|View|"
 msgid "Reset"
-msgstr ""
+msgstr "재설정"
 
 #: ../po/tmp/mypaint.xml.h:86
-#, fuzzy
 msgctxt "Menu|View|Reset|"
 msgid "Zoom"
-msgstr "축소"
+msgstr "줌"
 
 #: ../po/tmp/mypaint.xml.h:87
 msgctxt "Menu|View|Reset|"
 msgid "Rotation"
-msgstr ""
+msgstr "회전"
 
 #: ../po/tmp/mypaint.xml.h:88
-#, fuzzy
 msgctxt "Menu|View|Reset|"
 msgid "Mirror"
-msgstr "Spegl bilete"
+msgstr "미러"
 
 #: ../po/tmp/mypaint.xml.h:89
-#, fuzzy
 msgctxt "Menu|View|Adjust View|"
 msgid "Zoom In"
-msgstr "축소"
+msgstr "확대"
 
 #: ../po/tmp/mypaint.xml.h:90
 msgid "Increase magnification"
-msgstr ""
+msgstr "배율 증가"
 
 #: ../po/tmp/mypaint.xml.h:91
-#, fuzzy
 msgctxt "Menu|View|Adjust View|"
 msgid "Zoom Out"
 msgstr "축소"
 
 #: ../po/tmp/mypaint.xml.h:92
 msgid "Decrease magnification"
-msgstr ""
+msgstr "배율 감소"
 
 #: ../po/tmp/mypaint.xml.h:93
-#, fuzzy
 msgctxt "Menu|View|Adjust View|"
 msgid "Rotate Counterclockwise"
-msgstr "시계 반대 방향 회전"
+msgstr "반 시계 방향 회전"
 
 #: ../po/tmp/mypaint.xml.h:94
-#, fuzzy
 msgid "Rotate the view counterclockwise"
-msgstr "시계 반대 방향 회전"
+msgstr "보기 반 시계 방향 회전"
 
 #: ../po/tmp/mypaint.xml.h:95
-#, fuzzy
 msgctxt "Menu|View|Adjust View|"
 msgid "Rotate Clockwise"
 msgstr "시계 방향 회전"
 
 #: ../po/tmp/mypaint.xml.h:96
-#, fuzzy
 msgid "Rotate the view clockwise"
-msgstr "시계 반대 방향 회전"
+msgstr "보기 시계 방향으로회전"
 
 #: ../po/tmp/mypaint.xml.h:97
-#, fuzzy
 msgctxt "Menu|View|Adjust View|"
 msgid "Mirror Horizontal"
-msgstr "가로 뒤집어 보기"
+msgstr "가로 반전"
 
 #: ../po/tmp/mypaint.xml.h:98
 msgid "Flip the view left to right"
-msgstr ""
+msgstr "좌우 뒤집기"
 
 #: ../po/tmp/mypaint.xml.h:99
-#, fuzzy
 msgctxt "Menu|View|Adjust View|"
 msgid "Mirror Vertical"
-msgstr "세로 뒤집어 보기"
+msgstr "수직 반전"
 
 #: ../po/tmp/mypaint.xml.h:100
 msgid "Flip the view upside-down"
-msgstr ""
+msgstr "상하 뒤집기"
 
 #: ../po/tmp/mypaint.xml.h:101
-#, fuzzy
 msgctxt "Menu|View|"
 msgid "Layer Solo"
-msgstr "하나의 레이어만 보기"
+msgstr "레이어 솔로"
 
 #: ../po/tmp/mypaint.xml.h:102
-#, fuzzy
 msgctxt "Menu|View|"
 msgid "Hide Layers Above Current"
-msgstr "위에 있는 레이어 숨기기"
+msgstr "현재 위의 레이어 숨기기"
 
 #: ../po/tmp/mypaint.xml.h:103
 msgctxt "Menu|Brush|"
 msgid "Blend Mode"
-msgstr ""
+msgstr "혼합 모드"
 
 #: ../po/tmp/mypaint.xml.h:104
 msgctxt "Menu|Edit|"
 msgid "Symmetrical Painting"
-msgstr ""
+msgstr "대칭 페인팅"
 
 #: ../po/tmp/mypaint.xml.h:105
 msgid "Mirrors all strokes drawn around the vertical axis"
-msgstr ""
+msgstr "수직 축을 중심으로 주위에 그려진 모든 획을 좌우로 반사"
 
 #: ../po/tmp/mypaint.xml.h:106
-#, fuzzy
 msgctxt "Menu|Help|Debug|"
 msgid "Print Brush Input Values to Console"
-msgstr "브러시 입력 값을 표준 출력에 출력"
+msgstr "콘솔에 브러시 입력 값을 출력"
 
 #: ../po/tmp/mypaint.xml.h:107
-#, fuzzy
 msgctxt "Menu|Help|Debug|"
 msgid "Visualize Rendering"
-msgstr "렌더링 시각화"
+msgstr "렌더링을 보이기"
 
 #: ../po/tmp/mypaint.xml.h:108
 msgid "Show rendering updates on-screen, for debugging"
-msgstr ""
+msgstr "디버깅을 위해 화면에 렌더링 업데이트를 표시"
 
 #: ../po/tmp/mypaint.xml.h:109
-#, fuzzy
 msgctxt "Menu|Help|Debug|"
 msgid "Disable GTK Double Buffering"
-msgstr "GTK 더블 버퍼링 해제"
+msgstr "GTK 더블 버퍼링을 해제"
 
 #: ../po/tmp/mypaint.xml.h:110
-#, fuzzy
 msgctxt "Menu|"
 msgid "File"
 msgstr "파일"
 
 #: ../po/tmp/mypaint.xml.h:111
-#, fuzzy
 msgctxt "Menu|File|"
 msgid "Quit"
 msgstr "종료"
@@ -2519,16 +2364,14 @@ msgstr "종료"
 #: ../po/tmp/mypaint.xml.h:112
 msgctxt "Menu|File|"
 msgid "Frame Enabled"
-msgstr ""
+msgstr "프레임 사용"
 
 #: ../po/tmp/mypaint.xml.h:113
-#, fuzzy
 msgctxt "Menu|"
 msgid "Edit"
 msgstr "편집"
 
 #: ../po/tmp/mypaint.xml.h:114
-#, fuzzy
 msgctxt "Menu|"
 msgid "Color"
 msgstr "색상"
@@ -2536,259 +2379,224 @@ msgstr "색상"
 #: ../po/tmp/mypaint.xml.h:115
 msgctxt "Menu|Color|"
 msgid "Adjust Color"
-msgstr ""
+msgstr "색상 조정"
 
 #: ../po/tmp/mypaint.xml.h:116
-#, fuzzy
 msgctxt "Menu|Color|"
 msgid "Pick Color"
 msgstr "색상 선택"
 
 #: ../po/tmp/mypaint.xml.h:117
-#, fuzzy
 msgctxt "Menu|Color|"
 msgid "Color History"
-msgstr "색상 내역"
+msgstr "색상 기록"
 
 #: ../po/tmp/mypaint.xml.h:118
-#, fuzzy
 msgctxt "Menu|Color|"
 msgid "Change Color"
-msgstr "색조 바꾸기"
+msgstr "색상 변경"
 
 #: ../po/tmp/mypaint.xml.h:119
-#, fuzzy
 msgid "Color changer popup (crossed bowl)"
-msgstr "색상 변환기"
+msgstr "컬러 변환기 팝업 (교차 그릇)"
 
 #: ../po/tmp/mypaint.xml.h:120
-#, fuzzy
 msgctxt "Menu|Color|"
 msgid "Change Color (wash)"
-msgstr "색조 바꾸기"
+msgstr "색상 변경 (워시)"
 
 #: ../po/tmp/mypaint.xml.h:121
-#, fuzzy
 msgid "Color changer popup (wash)"
-msgstr "색상 변환기"
+msgstr "컬러 변환기 팝업 (워시)"
 
 #: ../po/tmp/mypaint.xml.h:122
-#, fuzzy
 msgctxt "Menu|Color|"
 msgid "Change Color (ring)"
-msgstr "색조 바꾸기"
+msgstr "색상 변경 (링)"
 
 #: ../po/tmp/mypaint.xml.h:123
 msgid "Color changer popup (concentric rings)"
-msgstr ""
+msgstr "컬러 변환기 팝업 (동심 링)"
 
 #: ../po/tmp/mypaint.xml.h:124
-#, fuzzy
 msgctxt "Menu|Color|"
 msgid "Color Details"
-msgstr "세부 정보"
+msgstr "색상 세부 정보"
 
 #: ../po/tmp/mypaint.xml.h:125
+#, fuzzy
 msgid "Color details dialog with text entry"
-msgstr ""
+msgstr "색상 세부 사항 텍스트 입력과 함께 대화 상자"
 
 #: ../po/tmp/mypaint.xml.h:126
 msgctxt "Menu|Color"
 msgid "Next Palette Color"
-msgstr ""
+msgstr "다음 팔레트 색상"
 
 #: ../po/tmp/mypaint.xml.h:127
 msgid "Next color in the palette"
-msgstr ""
+msgstr "팔레트에서 다음 색상"
 
 #: ../po/tmp/mypaint.xml.h:128
 msgctxt "Menu|Color|"
 msgid "Previous Palette Color"
-msgstr ""
+msgstr "이전 팔레트 색상"
 
 #: ../po/tmp/mypaint.xml.h:129
 msgid "Previous color in the palette"
-msgstr ""
+msgstr "팔레트에서 이전 색상"
 
 #: ../po/tmp/mypaint.xml.h:130
-#, fuzzy
 msgctxt "Menu|"
 msgid "Layer"
 msgstr "레이어"
 
 #: ../po/tmp/mypaint.xml.h:131
-#, fuzzy
 msgctxt "Menu|Layer|"
 msgid "Opacity"
-msgstr "불투명도:"
+msgstr "불투명도"
 
 #: ../po/tmp/mypaint.xml.h:132
-#, fuzzy
 msgctxt "Menu|Layer|"
 msgid "Go to Layer"
-msgstr "레이어"
+msgstr "레이어로 이동"
 
 #: ../po/tmp/mypaint.xml.h:133
-#, fuzzy
 msgctxt "Menu|"
 msgid "Scratchpad"
-msgstr "다음 스크랩 열기"
+msgstr "스크래치 패드"
 
 #: ../po/tmp/mypaint.xml.h:134
-#, fuzzy
 msgctxt "Menu|Scratchpad|"
 msgid "New"
-msgstr "새로운 캔버스"
+msgstr "새로운"
 
 #: ../po/tmp/mypaint.xml.h:135
-#, fuzzy
 msgctxt "Menu|Scratchpad|"
 msgid "Open..."
 msgstr "열기..."
 
 #: ../po/tmp/mypaint.xml.h:136
-#, fuzzy
 msgctxt "Menu|Scratchpad|"
 msgid "Save"
 msgstr "저장"
 
 #: ../po/tmp/mypaint.xml.h:137
-#, fuzzy
 msgctxt "Menu|Scratchpad|"
 msgid "Save As..."
-msgstr "다른 이름으로 저장..."
+msgstr "다른 이름으로 저장 ..."
 
 #: ../po/tmp/mypaint.xml.h:138
 msgctxt "Menu|Scratchpad|"
 msgid "Revert"
-msgstr ""
+msgstr "되돌리기"
 
 #: ../po/tmp/mypaint.xml.h:139
-#, fuzzy
 msgctxt "Menu|Scratchpad|"
 msgid "Save as Default"
-msgstr "기본값으로 저장하기"
+msgstr "기본값으로 저장"
 
 #: ../po/tmp/mypaint.xml.h:140
-#, fuzzy
 msgctxt "Menu|Scratchpad|"
 msgid "Clear Default"
-msgstr "기본값으로 저장하기"
+msgstr "기본값 지우기"
 
 #: ../po/tmp/mypaint.xml.h:141
-#, fuzzy
 msgctxt "Menu|Scratchpad|"
 msgid "Use Main Background"
-msgstr "배경"
+msgstr "기본 배경을 사용"
 
 #: ../po/tmp/mypaint.xml.h:142
-#, fuzzy
 msgctxt "Menu|Scratchpad|"
 msgid "Color Dabs"
-msgstr "세부 정보"
+msgstr "색상 칠"
 
 #: ../po/tmp/mypaint.xml.h:143
 msgctxt "Menu|Scratchpad|Color Dabs|"
 msgid "Render from File..."
-msgstr ""
+msgstr "파일에서 렌더 ..."
 
 #: ../po/tmp/mypaint.xml.h:144
 msgctxt "Menu|Scratchpad|Color Dabs|"
 msgid "Saturation Spread for Current Color"
-msgstr ""
+msgstr "현재 색상에 대한 채도 확산"
 
 #: ../po/tmp/mypaint.xml.h:145
-#, fuzzy
 msgctxt "Menu|Brush|"
 msgid "Brush"
 msgstr "브러시"
 
 #: ../po/tmp/mypaint.xml.h:146
-#, fuzzy
 msgctxt "Menu|Brush|"
 msgid "Shortcut Keys"
-msgstr "단축키"
+msgstr "바로 가기 키"
 
 #: ../po/tmp/mypaint.xml.h:147
-#, fuzzy
 msgctxt "Menu|Brush|Shortcut Keys|"
 msgid "Help"
 msgstr "도움말"
 
 #: ../po/tmp/mypaint.xml.h:148
-#, fuzzy
 msgctxt "Menu|Brush|"
 msgid "Change Brush"
-msgstr "색조 바꾸기"
+msgstr "브러시 변경"
 
 #: ../po/tmp/mypaint.xml.h:149
-#, fuzzy
 msgctxt "Menu|Brush|"
 msgid "Get More Brushes..."
-msgstr "%d 브러시 복원"
+msgstr "더 많은 브러쉬 가져 오기 ..."
 
 #: ../po/tmp/mypaint.xml.h:150
-#, fuzzy
 msgctxt "Menu|Brush|"
 msgid "Import Brushes..."
-msgstr "브러시 패키지 가져오기..."
+msgstr "브러쉬 가져 오기 ..."
 
 #: ../po/tmp/mypaint.xml.h:151
-#, fuzzy
 msgctxt "Menu|Help|"
 msgid "Help"
 msgstr "도움말"
 
 #: ../po/tmp/mypaint.xml.h:152
-#, fuzzy
 msgctxt "Menu|Help|"
 msgid "Where is the Documentation?"
 msgstr "설명서는 어디에 있나요?"
 
 #: ../po/tmp/mypaint.xml.h:153
-#, fuzzy
 msgctxt "Menu|Help|"
 msgid "Change the Keyboard Shortcuts?"
-msgstr "키보드 단축키를 변경할려면?"
+msgstr "키보드 단축키를 변경할 수 있습니까?"
 
 #: ../po/tmp/mypaint.xml.h:154
-#, fuzzy
 msgctxt "Menu|Help|"
 msgid "About MyPaint"
 msgstr "MyPaint 정보"
 
 #: ../po/tmp/mypaint.xml.h:155
-#, fuzzy
 msgctxt "Menu|Help|"
 msgid "Debug"
 msgstr "디버그"
 
 #: ../po/tmp/mypaint.xml.h:156
-#, fuzzy
 msgctxt "Menu|Help|Debug|"
 msgid "Print Memory Leak Info to Console (Slow!)"
-msgstr "메모리 누수 정보 표준 출력"
+msgstr "콘솔에 메모리 누수 정보 출력 (느림!)"
 
 #: ../po/tmp/mypaint.xml.h:157
-#, fuzzy
 msgctxt "Menu|Help|Debug|"
 msgid "Run Garbage Collector Now"
-msgstr "가비지 컨트롤러 실행"
+msgstr "지금 가비지 수집기를 실행"
 
 #: ../po/tmp/mypaint.xml.h:158
-#, fuzzy
 msgctxt "Menu|Help|Debug|"
 msgid "Start/Stop Python Profiling (cProfile)"
-msgstr "파이썬 프로 파일링(cProfile) 시작/정지"
+msgstr "시작 / 중지 파이썬 프로파일 (cProfile)"
 
 #: ../po/tmp/mypaint.xml.h:159
-#, fuzzy
 msgctxt "Menu|Help|Debug|"
 msgid "GTK Input Device Dialog"
-msgstr "테스트 입력 장치..."
+msgstr "GTK 입력 장치 대화 상자"
 
 #: ../po/tmp/mypaint.xml.h:160
-#, fuzzy
 msgctxt "Menu|"
 msgid "View"
 msgstr "보기"
@@ -2796,185 +2604,170 @@ msgstr "보기"
 #: ../po/tmp/mypaint.xml.h:161
 msgctxt "Menu|View|"
 msgid "Toolbars"
-msgstr ""
+msgstr "도구 모음"
 
 #: ../po/tmp/mypaint.xml.h:162
 msgctxt "Menu|View|"
 msgid "Feedback"
-msgstr ""
+msgstr "피드백"
 
 #: ../po/tmp/mypaint.xml.h:163
 msgctxt "Menu|View|"
 msgid "Adjust View"
-msgstr ""
+msgstr "보기 조정"
 
 #: ../po/tmp/mypaint.xml.h:164
-#, fuzzy
 msgctxt "Menu|View|"
 msgid "Popup Menu"
 msgstr "팝업 메뉴"
 
 #: ../po/tmp/mypaint.xml.h:165
-#, fuzzy
 msgctxt "Menu|Edit|"
 msgid "Preferences"
 msgstr "환경 설정"
 
 #: ../po/tmp/mypaint.xml.h:166
-#, fuzzy
 msgid "Test Input Devices"
-msgstr "테스트 입력 장치..."
+msgstr "입력 장치 테스트 "
 
 #: ../po/tmp/mypaint.xml.h:167
-#, fuzzy
 msgid "Document Frame..."
-msgstr "이름 바꾸기..."
+msgstr "문서 프레임 ..."
 
 #: ../po/tmp/mypaint.xml.h:168
 msgid "Set and adjust a frame for the canvas"
-msgstr ""
+msgstr "캔버스의 프레임을 설정하고 조정"
 
 #: ../po/tmp/mypaint.xml.h:169
-#, fuzzy
 msgid "Layers Window"
-msgstr "레이어"
+msgstr "레이어 창"
 
 #: ../po/tmp/mypaint.xml.h:170
-#, fuzzy
 msgid "Edit and rearrange layers"
-msgstr "브러시를 편집하고 저장"
+msgstr "레이어를 편집하고 재 배열"
 
 #: ../po/tmp/mypaint.xml.h:171
-#, fuzzy
 msgctxt "Menu|Layer|"
 msgid "Choose Background"
-msgstr "배경"
+msgstr "배경 선택"
 
 #: ../po/tmp/mypaint.xml.h:172
 msgid "Choose a background image"
-msgstr ""
+msgstr "배경 이미지를 선택"
 
 #: ../po/tmp/mypaint.xml.h:173
-#, fuzzy
 msgctxt "Menu|Brush|"
 msgid "Brushes Window"
-msgstr "브러시 단축키"
+msgstr "브러시 창"
 
 #: ../po/tmp/mypaint.xml.h:174
 msgid "Select brushes, and edit brush sets"
-msgstr ""
+msgstr "브러쉬 선택 및 브러시 세트를 편집"
 
 #: ../po/tmp/mypaint.xml.h:175
-#, fuzzy
 msgctxt "Menu|Brush|"
 msgid "Settings Window"
-msgstr "브러시 설정"
+msgstr "설정 창"
 
 #: ../po/tmp/mypaint.xml.h:176
-#, fuzzy
 msgid "Edit the active brush's settings"
-msgstr "브러시 설정"
+msgstr "활성 브러쉬의 설정을 수정합니다"
 
 #: ../po/tmp/mypaint.xml.h:177
-#, fuzzy
 msgctxt "Menu|Color|"
 msgid "Colors Window"
-msgstr "색상환"
+msgstr "색상 창"
 
 #: ../po/tmp/mypaint.xml.h:178
 msgid "Set the color used for painting"
-msgstr ""
+msgstr "페인팅에 사용할 색상을 설정"
 
 #: ../po/tmp/mypaint.xml.h:179
-#, fuzzy
 msgctxt "Menu|Scratchpad|"
 msgid "Scratchpad Window"
-msgstr "스크랩하기"
+msgstr "스크래치 패드 창"
 
 #: ../po/tmp/mypaint.xml.h:180
 msgid "Mix colors and make sketches on separate scrap pages"
 msgstr ""
 
 #: ../po/tmp/mypaint.xml.h:181
-#, fuzzy
 msgctxt "Menu|View|"
 msgid "Subwindows"
-msgstr "보조창 토글"
+msgstr "하위창"
 
 #: ../po/tmp/mypaint.xml.h:182
-#, fuzzy
 msgid "Show subwindows"
-msgstr "보조창 토글"
+msgstr "하위창 보기"
 
 #: ../po/tmp/mypaint.xml.h:183
 msgctxt "Menu|View|Feedback|"
 msgid "Zoom Level"
-msgstr ""
+msgstr "줌 레벨"
 
 #: ../po/tmp/mypaint.xml.h:184
 msgid "Show the zoom level when zooming in or out"
-msgstr ""
+msgstr "확대 또는 축소 할 때 줌 레벨을 표시"
 
 #: ../po/tmp/mypaint.xml.h:185
 msgctxt "Menu|View|Feedback|"
 msgid "Last Painting Position"
-msgstr ""
+msgstr "마지막 페인팅 위치"
 
 #: ../po/tmp/mypaint.xml.h:186
 msgid "Show where strokes end"
-msgstr ""
+msgstr "획이 끝나는 곳보기"
 
 #: ../po/tmp/mypaint.xml.h:187
 msgctxt "Menu|View|Feedback|"
 msgid "Axis of Symmetry"
-msgstr ""
+msgstr "대칭의 축"
 
 #: ../po/tmp/mypaint.xml.h:188
 msgid "Show the symmetry axis"
-msgstr ""
+msgstr "대칭 축 표시"
 
 #: ../po/tmp/mypaint.xml.h:189
 msgctxt "Menu|View|Toolbars|"
 msgid "Menubar Only"
-msgstr ""
+msgstr "메뉴 표시 줄 만"
 
 #: ../po/tmp/mypaint.xml.h:190
 msgid "Show menu bar"
-msgstr ""
+msgstr "메뉴 표시 줄 표시"
 
 #: ../po/tmp/mypaint.xml.h:191
 msgctxt "Menu|View|Toolbars|"
 msgid "Toolbar Only"
-msgstr ""
+msgstr "툴바 만"
 
 #: ../po/tmp/mypaint.xml.h:192
 msgid "Show toolbar"
-msgstr ""
+msgstr "도구 모음 표시"
 
 #: ../po/tmp/mypaint.xml.h:193
 msgctxt "Menu|View|Toolbars|"
 msgid "Both"
-msgstr ""
+msgstr "양쪽"
 
 #: ../po/tmp/mypaint.xml.h:194
 msgid "Show both the menu bar and the toolbar"
-msgstr ""
+msgstr "메뉴 바 및 도구 모음 모두 표시"
 
 #: ../po/tmp/mypaint.xml.h:195
-#, fuzzy
 msgctxt "Menu|Edit|"
 msgid "Current Mode"
-msgstr "브러시 이름 바꾸기"
+msgstr "현재 모드"
 
 #: ../po/tmp/mypaint.xml.h:196
 msgctxt "Menu|Edit|Current Mode|"
 msgid "Freehand Drawing"
-msgstr ""
+msgstr "자유형 드로잉"
 
 #: ../po/tmp/mypaint.xml.h:197
 msgctxt "Toolbar|"
 msgid "Freehand"
-msgstr ""
+msgstr "자유형"
 
 #: ../po/tmp/mypaint.xml.h:198
 msgid "Freehand Drawing: draw and paint freely, without geometric constraints"
@@ -2983,119 +2776,115 @@ msgstr ""
 #: ../po/tmp/mypaint.xml.h:199
 msgctxt "Menu|Edit|"
 msgid "Freehand Drawing"
-msgstr ""
+msgstr "자유형 드로잉"
 
 #: ../po/tmp/mypaint.xml.h:200
 msgctxt "Menu|Edit|Current Mode|"
 msgid "Scroll View"
-msgstr ""
+msgstr "스크롤 보기 "
 
 #: ../po/tmp/mypaint.xml.h:201
 msgctxt "Toolbar|"
 msgid "Scroll"
-msgstr ""
+msgstr "스크롤"
 
 #: ../po/tmp/mypaint.xml.h:202
 msgid "Scroll View: move around the canvas by clicking and dragging"
-msgstr ""
+msgstr "스크롤 보기: 클릭하고 드래그하여 캔버스 주위를 이동"
 
 #: ../po/tmp/mypaint.xml.h:203
 msgctxt "Menu|View|"
 msgid "Scroll"
-msgstr ""
+msgstr "스크롤"
 
 #: ../po/tmp/mypaint.xml.h:204
-#, fuzzy
 msgctxt "Menu|Edit|Current Mode|"
 msgid "Rotate View"
-msgstr "시계 방향 회전"
+msgstr "보기 회전"
 
 #: ../po/tmp/mypaint.xml.h:205
 msgctxt "Toolbar|"
 msgid "Rotate"
-msgstr ""
+msgstr "회전"
 
 #: ../po/tmp/mypaint.xml.h:206
 msgid "Rotate View: turn the canvas by clicking and dragging"
-msgstr ""
+msgstr "보기 회전 : 클릭한 다음 드래그하여 캔버스를 회전"
 
 #: ../po/tmp/mypaint.xml.h:207
 msgctxt "Menu|View|"
 msgid "Rotate"
-msgstr ""
+msgstr "회전"
 
 #: ../po/tmp/mypaint.xml.h:208
-#, fuzzy
 msgctxt "Menu|Edit|Current Mode|"
 msgid "Zoom View"
-msgstr "축소"
+msgstr "줌 보기"
 
 #: ../po/tmp/mypaint.xml.h:209
-#, fuzzy
 msgctxt "Toolbar|"
 msgid "Zoom"
-msgstr "축소"
+msgstr "줌"
 
 #: ../po/tmp/mypaint.xml.h:210
 msgid "Zoom View: zoom the canvas by clicking and dragging"
-msgstr ""
+msgstr "줌 보기 : 클릭하고 드래그하여 캔버스를 확대"
 
 #: ../po/tmp/mypaint.xml.h:211
-#, fuzzy
 msgctxt "Menu|View|"
 msgid "Zoom"
-msgstr "축소"
+msgstr "줌"
 
 #: ../po/tmp/mypaint.xml.h:212
 msgctxt "Menu|Edit|Current Mode|"
 msgid "Lines and Curves"
-msgstr ""
+msgstr "선과 곡선"
 
 #: ../po/tmp/mypaint.xml.h:213
 msgctxt "Toolbar|"
 msgid "Lines"
-msgstr ""
+msgstr "선"
 
 #: ../po/tmp/mypaint.xml.h:214
 msgctxt "Menu|Edit|"
 msgid "Lines and Curves"
-msgstr ""
+msgstr "선과 곡선"
 
 #: ../po/tmp/mypaint.xml.h:215
 msgctxt "Menu|Edit|Current Mode|"
 msgid "Connected Lines"
-msgstr ""
+msgstr "연결된 선"
 
 #: ../po/tmp/mypaint.xml.h:216
+#, fuzzy
 msgctxt "Toolbar|"
 msgid "Line Seq."
-msgstr ""
+msgstr "선 Seq."
 
 #: ../po/tmp/mypaint.xml.h:217
 msgctxt "Menu|Edit|"
 msgid "Connected Lines"
-msgstr ""
+msgstr "연결된 선"
 
 #: ../po/tmp/mypaint.xml.h:218
 msgctxt "Menu|Edit|Current Mode|"
 msgid "Ellipses and Circles"
-msgstr ""
+msgstr "타원과 원"
 
 #: ../po/tmp/mypaint.xml.h:219
 msgctxt "Toolbar|"
 msgid "Ellipse"
-msgstr ""
+msgstr "타원"
 
 #: ../po/tmp/mypaint.xml.h:220
 msgctxt "Menu|Edit|"
 msgid "Ellipses and Circles"
-msgstr ""
+msgstr "타원과 원"
 
 #: ../po/tmp/mypaint.xml.h:221
-#, fuzzy
 msgctxt "Menu|Edit|Current Mode|"
 msgid "Move Layer"
-msgstr "제거"
+msgstr "레이어 이동"
 
 #: ../po/tmp/mypaint.xml.h:222
 msgid "Move Layer: reposition the current layer on the canvas"
@@ -3104,17 +2893,17 @@ msgstr ""
 #: ../po/tmp/mypaint.xml.h:223
 msgctxt "Menu|Layer|"
 msgid "Move"
-msgstr ""
+msgstr "이동"
 
 #: ../po/tmp/mypaint.xml.h:224
 msgctxt "Menu|Edit|Current Mode|"
 msgid "Edit Frame"
-msgstr ""
+msgstr "프레임을 편집"
 
 #: ../po/tmp/mypaint.xml.h:225
 msgctxt "Toolbar|"
 msgid "Frame"
-msgstr ""
+msgstr "프레임"
 
 #: ../po/tmp/mypaint.xml.h:226
 msgid ""
@@ -3125,7 +2914,492 @@ msgstr ""
 #: ../po/tmp/mypaint.xml.h:227
 msgctxt "Menu|File|"
 msgid "Edit Frame"
-msgstr ""
+msgstr "프레임을 편집"
+
+#~ msgid ""
+#~ "The pressure reported by the tablet, between 0.0 and 1.0. If you use the "
+#~ "mouse, it will be 0.5 when a button is pressed and 0.0 otherwise."
+#~ msgstr ""
+#~ "타블렛의 압력에 의해, 0.0과 1.0 사이에서 자동 반영된다. 마우스를 사용할경"
+#~ "우 0.5만의 압력만 적용된다."
+
+#~ msgid "Fine speed"
+#~ msgstr "정밀한 속도"
+
+#~ msgid ""
+#~ "How fast you currently move. This can change very quickly. Try 'print "
+#~ "input values' from the 'help' menu to get a feeling for the range; "
+#~ "negative values are rare but possible for very low speed."
+#~ msgstr ""
+#~ "커서의 움직임에 따른 속도가 자동으로 반영된다. '도움말'의 '입력 값을 인"
+#~ "쇄'를 통하여 값을 확인 할 수 있다. 일반적으로 - 값일 쓰는 일은 없다. 그러"
+#~ "나 아주 느린속도를 위해 쓸 수 있다."
+
+#~ msgid "Gross speed"
+#~ msgstr "전체적인 속도"
+
+#~ msgid ""
+#~ "Same as fine speed, but changes slower. Also look at the 'gross speed "
+#~ "filter' setting."
+#~ msgstr ""
+#~ "정밀한 속도와 동일 하다. 하지만 변경이 느리다. '전체 속도 필터'설정을 참"
+#~ "고 해라."
+
+#~ msgid "Random"
+#~ msgstr "불규칙"
+
+#~ msgid ""
+#~ "Fast random noise, changing at each evaluation. Evenly distributed "
+#~ "between 0 and 1."
+#~ msgstr "불규칙한 노이즈를 추가한다.  0과 1 사이에서 균일하게 분배된다."
+
+#~ msgid ""
+#~ "This input slowly goes from zero to one while you draw a stroke. It can "
+#~ "also be configured to jump back to zero periodically while you move. Look "
+#~ "at the 'stroke duration' and 'stroke hold time' settings."
+#~ msgstr ""
+#~ "이값은 블러시 값이 줄어드는 정도을 정한다.(붓의 잉크가 줄어드는 것을 상상"
+#~ "해보아라.) 또 다시 이동하는 동안 주기적으로 값이 0변하도록 구성할 수있다. "
+#~ "'자획 적용 시간'과 '자획 유지 시간'에서 설정해보아라."
+
+#~ msgid ""
+#~ "The angle of the stroke, in degrees. The value will stay between 0.0 and "
+#~ "180.0, effectively ignoring turns of 180 degrees."
+#~ msgstr ""
+#~ "자획의 각도. 값은 0.0과 180.0 사이 값이 가장 유효한 값이다. 180의 값은 0.0"
+#~ "과 시각적으로 같다."
+
+#~ msgid "Declination"
+#~ msgstr "편위"
+
+#~ msgid ""
+#~ "Declination of stylus tilt. 0 when stylus is parallel to tablet and 90.0 "
+#~ "when it's perpendicular to tablet."
+#~ msgstr ""
+#~ "스타일러스와  팬의 경사도. 팬이 수직일 때  값은 90.0 이며 스타일러스와 수"
+#~ "평에 가까워 질수록 그 값은 0에 가까워진다."
+
+#~ msgid "Ascension"
+#~ msgstr "상승"
+
+#~ msgid ""
+#~ "Right ascension of stylus tilt. 0 when stylus working end points to you, "
+#~ "+90 when rotated 90 degrees clockwise, -90 when rotated 90 degrees "
+#~ "counterclockwise."
+#~ msgstr ""
+#~ "스타일러스 기울기의 적경. 90 때, 90도 시계 방향으로 회전, -90 때 90도 반 "
+#~ "시계 방향 회전한다."
+
+#~ msgid ""
+#~ "This is a user defined input. Look at the 'custom input' setting for "
+#~ "details."
+#~ msgstr "사용자의 입력을 정의한다. 자세한 내용은 '사용자 입력'설정보라."
+
+#~ msgid ""
+#~ "0 means brush is transparent, 1 fully visible\n"
+#~ "(also known als alpha or opacity)"
+#~ msgstr ""
+#~ "브러시의 전체 불투명도를 설정 합니다. 0 에 가가울 수 록 투명해지며 1 에 가"
+#~ "까울수록 부투명해 집니다."
+
+#~ msgid "Opacity multiply"
+#~ msgstr "불투명도 곱하기"
+
+#~ msgid ""
+#~ "This gets multiplied with opaque. You should only change the pressure "
+#~ "input of this setting. Use 'opaque' instead to make opacity depend on "
+#~ "speed.\n"
+#~ "This setting is responsible to stop painting when there is zero pressure. "
+#~ "This is just a convention, the behaviour is identical to 'opaque'."
+#~ msgstr ""
+#~ "불투명도 값에 일력한 값을 곱한다. 값이 입력되면 타블렛 값이 0일지라도 불투"
+#~ "명도가 증가한다."
+
+#~ msgid "Opacity linearize"
+#~ msgstr "선형 불투명도"
+
+#~ msgid ""
+#~ "Correct the nonlinearity introduced by blending multiple dabs on top of "
+#~ "each other. This correction should get you a linear (\"natural\") "
+#~ "pressure response when pressure is mapped to opaque_multiply, as it is "
+#~ "usually done. 0.9 is good for standard strokes, set it smaller if your "
+#~ "brush scatters a lot, or higher if you use dabs_per_second.\n"
+#~ "0.0 the opaque value above is for the individual dabs\n"
+#~ "1.0 the opaque value above is for the final brush stroke, assuming each "
+#~ "pixel gets (dabs_per_radius*2) brushdabs on average during a stroke"
+#~ msgstr ""
+#~ "이것을 수정하면 선형 압력의 대응 압력이 불투명도 곱하기에 매핑되어진다."
+
+#~ msgid "Radius"
+#~ msgstr "반경"
+
+#~ msgid ""
+#~ "basic brush radius (logarithmic)\n"
+#~ " 0.7 means 2 pixels\n"
+#~ " 3.0 means 20 pixels"
+#~ msgstr ""
+#~ "브러시의 기본 크기조절(로그값)\n"
+#~ " 0.7 은 2 픽셀\n"
+#~ " 3.0 은 20 픽셀"
+
+#~ msgid "Hardness"
+#~ msgstr "경도"
+
+#~ msgid "hard brush-circle borders (setting to zero will draw nothing)"
+#~ msgstr "브러시 테두리의 거친 정도 설정"
+
+#~ msgid ""
+#~ "how many dabs to draw while the pointer moves a distance of one brush "
+#~ "radius (more precise: the base value of the radius)"
+#~ msgstr "포인터가 하나의 브러시 반경을 이동시 칠하는 양이다"
+
+#~ msgid "Dabs per actual radius"
+#~ msgstr "실제 반경당 칠하는 양"
+
+#~ msgid ""
+#~ "same as above, but the radius actually drawn is used, which can change "
+#~ "dynamically"
+#~ msgstr ""
+#~ "'기본 반경당 칠하는 양'과 같지만 실제로 그려진 반경을 동적으로 변경 할 수"
+#~ "있다."
+
+#~ msgid "Dabs per second"
+#~ msgstr "초당 칠하는 양"
+
+#~ msgid "dabs to draw each second, no matter how far the pointer moves"
+#~ msgstr "초당 칠하는 양을 정한다. 다른 분사량 값에 영향을 준다."
+
+#~ msgid "Radius by random"
+#~ msgstr "반경을 무작위로"
+
+#~ msgid ""
+#~ "Alter the radius randomly each dab. You can also do this with the "
+#~ "by_random input on the radius setting. If you do it here, there are two "
+#~ "differences:\n"
+#~ "1) the opaque value will be corrected such that a big-radius dabs is more "
+#~ "transparent\n"
+#~ "2) it will not change the actual radius seen by dabs_per_actual_radius"
+#~ msgstr ""
+#~ "무작위로 각 칠하는 입자 반경이 변한다. 반경 설정에따라 이 설정 값도 영향"
+#~ "을 받는다.\n"
+#~ " 1) 반경이 크거나 불투명도가 클 경우 입자는 투명해진다.\n"
+#~ " 2) 실제 반경은 변하지 않는다."
+
+#~ msgid "Fine speed filter"
+#~ msgstr "파인 속도 필터"
+
+#~ msgid ""
+#~ "how slow the input fine speed is following the real speed\n"
+#~ "0.0 change immediately as your speed changes (not recommended, but try it)"
+#~ msgstr ""
+#~ "정밀한 입력시 적용되는 필터의 속도를 정한다.\n"
+#~ "0.0 변경 즉시 (권장하지 않지만 할 수 있다.)"
+
+#~ msgid "Gross speed filter"
+#~ msgstr "그로스 속도 필터"
+
+#~ msgid "same as 'fine speed filter', but note that the range is different"
+#~ msgstr "'파인 속도 필터'와 효과는 같다. 하지만 범위가 크다."
+
+#~ msgid "Fine speed gamma"
+#~ msgstr "파인 속도 감마"
+
+#~ msgid ""
+#~ "This changes the reaction of the 'fine speed' input to extreme physical "
+#~ "speed. You will see the difference best if 'fine speed' is mapped to the "
+#~ "radius.\n"
+#~ "-8.0 very fast speed does not increase 'fine speed' much more\n"
+#~ "+8.0 very fast speed increases 'fine speed' a lot\n"
+#~ "For very slow speed the opposite happens."
+#~ msgstr ""
+#~ "이러한 변경 사항을 '정밀한 속도'의 극단적인 물리적 반응 속도로 입력. '정밀"
+#~ "한 속도'반경에 매핑되어 최고의 차이가 나타난다."
+
+#~ msgid "Gross speed gamma"
+#~ msgstr "그로스 속도 감마"
+
+#~ msgid "same as 'fine speed gamma' for gross speed"
+#~ msgstr "'정밀한 속도 감마'보다 범위가 크며 '정밀한 속도 감마'를 포함한다."
+
+#~ msgid "Jitter"
+#~ msgstr "지터"
+
+#~ msgid ""
+#~ "add a random offset to the position where each dab is drawn\n"
+#~ " 0.0 disabled\n"
+#~ " 1.0 standard deviation is one basic radius away\n"
+#~ "<0.0 negative values produce no jitter"
+#~ msgstr ""
+#~ "무작위로 포인터 주위에 입자를 생성한다.\n"
+#~ " 0.0 없음\n"
+#~ " 1.0 하나의 기본 반경내에 표준 편차를 뿌린다."
+
+#~ msgid "Offset by speed"
+#~ msgstr "속도에 의한 오프셋"
+
+#~ msgid ""
+#~ "change position depending on pointer speed\n"
+#~ "= 0 disable\n"
+#~ "> 0 draw where the pointer moves to\n"
+#~ "< 0 draw where the pointer comes from"
+#~ msgstr ""
+#~ "포인터 속도에 따라 뿌려지는 입자의 위치를 변경한다.\n"
+#~ " = 0 해제\n"
+#~ " > 0 포인터가 지나가는 곳 \n"
+#~ " < 0 포인터가 지나가는 앞방향"
+
+#~ msgid "Offset by speed filter"
+#~ msgstr "속도필터에 의한 오프셋"
+
+#~ msgid "how slow the offset goes back to zero when the cursor stops moving"
+#~ msgstr "천천히 뒤로 커서를 이동하면 오프셋이 중지 된다."
+
+#~ msgid "Slow position tracking"
+#~ msgstr "포인터를 천천히 따라가기"
+
+#~ msgid ""
+#~ "Slowdown pointer tracking speed. 0 disables it, higher values remove more "
+#~ "jitter in cursor movements. Useful for drawing smooth, comic-like "
+#~ "outlines."
+#~ msgstr ""
+#~ "포인터를 천천히 추적하는 속도. 값이 높을수록 선모양이 깨끗해진다. 부드럽"
+#~ "고, 만화 같은 그림을 그릴때 유용하다."
+
+#~ msgid "Slow tracking per dab"
+#~ msgstr "칠 당 천천히 따라가기"
+
+#~ msgid ""
+#~ "Similar as above but at brushdab level (ignoring how much time has past, "
+#~ "if brushdabs do not depend on time)"
+#~ msgstr ""
+#~ "브러시 분사레벨에 따라 따라오는 속도가 다르다. 하지만 브러시의 분사 시간"
+#~ "에 의존하지 않는다."
+
+#~ msgid ""
+#~ "add randomness to the mouse pointer; this usually generates many small "
+#~ "lines in random directions; maybe try this together with 'slow tracking'"
+#~ msgstr ""
+#~ "마우스 포인터에 무작위로 추가. 일반적으로 임의의 방향에 여러 개의 작은 라"
+#~ "인을 생성한다. '블러쉬 천천히 따라가기'와 반대되는 효과이다."
+
+#~ msgid "Color hue"
+#~ msgstr "색조"
+
+#~ msgid "color hue"
+#~ msgstr "색조"
+
+#~ msgid "color value (brightness, intensity)"
+#~ msgstr "색상 값 (밝기, 진도)"
+
+#~ msgid ""
+#~ "Change color hue.\n"
+#~ "-0.1 small clockwise color hue shift\n"
+#~ " 0.0 disable\n"
+#~ " 0.5 counterclockwise hue shift by 180 degrees"
+#~ msgstr ""
+#~ "색조 변경.\n"
+#~ "-0.1 작은 시계방향으로 색조를 변경\n"
+#~ " 0.0 사용하지 않음\n"
+#~ " 0.5 색조를 180도 변경"
+
+#~ msgid ""
+#~ "Change the color lightness (luminance) using the HSL color model.\n"
+#~ "-1.0 blacker\n"
+#~ " 0.0 disable\n"
+#~ " 1.0 whiter"
+#~ msgstr ""
+#~ "밝기(휘도) HSL 컬러 모델을 사용하여 변경한다.\n"
+#~ " -1.0 검은색\n"
+#~ "  0.0 비활성화\n"
+#~ "  1.0 하얀색"
+
+#~ msgid "Change color satur. (HSL)"
+#~ msgstr "체도 바꾸기 (HSL)"
+
+#~ msgid ""
+#~ "Change the color saturation using the HSL color model.\n"
+#~ "-1.0 more grayish\n"
+#~ " 0.0 disable\n"
+#~ " 1.0 more saturated"
+#~ msgstr ""
+#~ "체도를 HSL 컬러 모델을 사용하여 변경한다.\n"
+#~ "-1.0 회색\n"
+#~ " 0.0 비활성화\n"
+#~ " 1.0 채도포화"
+
+#~ msgid "Change color value (HSV)"
+#~ msgstr "색상 값 바꾸기 (HSV)"
+
+#~ msgid ""
+#~ "Change the color value (brightness, intensity) using the HSV color model. "
+#~ "HSV changes are applied before HSL.\n"
+#~ "-1.0 darker\n"
+#~ " 0.0 disable\n"
+#~ " 1.0 brigher"
+#~ msgstr ""
+#~ "색상 값을 (HSV) 색상 모델을 사용하여 변경한다.\n"
+#~ "-1.0 어두움\n"
+#~ " 0.0 비활성화\n"
+#~ " 1.0 밝음"
+
+#~ msgid "Change color satur. (HSV)"
+#~ msgstr "체도 바꾸기(HSV)"
+
+#~ msgid ""
+#~ "Change the color saturation using the HSV color model. HSV changes are "
+#~ "applied before HSL.\n"
+#~ "-1.0 more grayish\n"
+#~ " 0.0 disable\n"
+#~ " 1.0 more saturated"
+#~ msgstr ""
+#~ "색상의 체도를 HSV는 색상 모델을 사용하여 변경한다.\n"
+#~ "-1.0 회색\n"
+#~ " 0.0 비활성화\n"
+#~ " 1.0 포화 더보기"
+
+#~ msgid ""
+#~ "Paint with the smudge color instead of the brush color. The smudge color "
+#~ "is slowly changed to the color you are painting on.\n"
+#~ " 0.0 do not use the smudge color\n"
+#~ " 0.5 mix the smudge color with the brush color\n"
+#~ " 1.0 use only the smudge color"
+#~ msgstr ""
+#~ "색대신 얼룩으로 그려보아라. 얼룩은 이미 칠해진 색을 브러싱 방향으로 번지게"
+#~ "하는 효과이다.\n"
+#~ " 0.0 비활성화\n"
+#~ " 0.5 색과 얼룩을 함깨 사용\n"
+#~ " 1.0 알파체널 얼룩만 사용"
+
+#~ msgid "Smudge length"
+#~ msgstr "얼룩 길이"
+
+#~ msgid ""
+#~ "This controls how fast the smudge color becomes the color you are "
+#~ "painting on.\n"
+#~ "0.0 immediately change the smudge color\n"
+#~ "1.0 never change the smudge color"
+#~ msgstr ""
+#~ "얼룩의 길이를 조절한다.\n"
+#~ " 0.0 최소얼룩길이\n"
+#~ " 1.0 얼룩이 끝나지 않는다."
+
+#~ msgid "Smudge radius"
+#~ msgstr "얼룩 반경"
+
+#~ msgid ""
+#~ "This modifies the radius of the circle where color is picked up for "
+#~ "smudging.\n"
+#~ " 0.0 use the brush radius \n"
+#~ "-0.7 half the brush radius\n"
+#~ "+0.7 twice the brush radius\n"
+#~ "+1.6 five times the brush radius (slow)"
+#~ msgstr ""
+#~ "이것은 칠해지는 색상에 포착되는 원의 반경을 수정한다. \n"
+#~ "0.0 사용하는 브러시 반경\n"
+#~ "-0.7 절반 브러시 반경\n"
+#~ "0.7 두 번 브러시 반경\n"
+#~ "1.6 다섯 번 브러시 반경 (느린)"
+
+#~ msgid ""
+#~ "how much this tool behaves like an eraser\n"
+#~ " 0.0 normal painting\n"
+#~ " 1.0 standard eraser\n"
+#~ " 0.5 pixels go towards 50% transparency"
+#~ msgstr ""
+#~ "브러시를 지우게처럼 사용할 수 있다.\n"
+#~ " 0.0 일반적인 그림\n"
+#~ " 0.5 지우게 효과에 50 % 불투명도 적용\n"
+#~ " 1.0 표준 지우개"
+
+#~ msgid "Stroke threshold"
+#~ msgstr "자획 임계값"
+
+#~ msgid ""
+#~ "How much pressure is needed to start a stroke. This affects the stroke "
+#~ "input only. Mypaint does not need a minimal pressure to start drawing."
+#~ msgstr ""
+#~ "자획를 시작하기 위한 조건 압력을 설정한다. 이항목은 자획 입력에 영향을 미"
+#~ "친다. Mypaint는 블러싱 시작하는 최소 압력을 필요로 하지 않는다."
+
+#~ msgid ""
+#~ "How far you have to move until the stroke input reaches 1.0. This value "
+#~ "is logarithmic (negative values will not inverse the process)."
+#~ msgstr ""
+#~ "자획이 1.0에 도달하는 시간을 정한다. 이 값은 로그값이다. (음수 값은 반영 "
+#~ "되지 않는다)"
+
+#~ msgid ""
+#~ "This defines how long the stroke input stays at 1.0. After that it will "
+#~ "reset to 0.0 and start growing again, even if the stroke is not yet "
+#~ "finished.\n"
+#~ "2.0 means twice as long as it takes to go from 0.0 to 1.0\n"
+#~ "9.9 and bigger stands for infinite"
+#~ msgstr ""
+#~ "자획의 입력을 1.0에 유지하는 시간을 정의한다. 비록 자획이 아직 완성되지 않"
+#~ "더라도 일정시간이 지나면 0.0이된다.\n"
+#~ " 2.0 배만큼 그것을 0.0에서 1.0으로 이동하는 데 걸리는 의미\n"
+#~ " 9.9 와 큰 스탠드 무한"
+
+#~ msgid "Custom input"
+#~ msgstr "사용자 입력"
+
+#~ msgid ""
+#~ "Set the custom input to this value. If it is slowed down, move it towards "
+#~ "this value (see below). The idea is that you make this input depend on a "
+#~ "mixture of pressure/speed/whatever, and then make other settings depend "
+#~ "on this 'custom input' instead of repeating this combination everywhere "
+#~ "you need it.\n"
+#~ "If you make it change 'by random' you can generate a slow (smooth) random "
+#~ "input."
+#~ msgstr ""
+#~ "이 값을 사용자 임력하는 설정이다. 값에 따라 입력이 느려지는 겨우도 있다."
+
+#~ msgid "Custom input filter"
+#~ msgstr "사용자 입력 필터"
+
+#~ msgid ""
+#~ "How slow the custom input actually follows the desired value (the one "
+#~ "above). This happens at brushdab level (ignoring how much time has past, "
+#~ "if brushdabs do not depend on time).\n"
+#~ "0.0 no slowdown (changes apply instantly)"
+#~ msgstr ""
+#~ "사용자 정의 입력 실제로 원하는 값을 상기 (1) 브러시분사 따라가기 수준에서 "
+#~ "(브러시분사량의 경우 시간) 종속되지 않는 시간을 무시합니다.\n"
+#~ " 0.0 부사량 둔화 (변경 사항은 즉시 적용)"
+
+#~ msgid "Elliptical dab: ratio"
+#~ msgstr "타원형 칠 : 원형율"
+
+#~ msgid ""
+#~ "aspect ratio of the dabs; must be >= 1.0, where 1.0 means a perfectly "
+#~ "round dab. TODO: linearize? start at 0.0 maybe, or log?"
+#~ msgstr ""
+#~ "분사되는 입자모양을 가로대비 세로의 비율을 조정한다.  값이 작을 수록 블러"
+#~ "쉬와 입자의 모양은 납작해진다."
+
+#~ msgid "Elliptical dab: angle"
+#~ msgstr "타원형 칠: 각도"
+
+#~ msgid ""
+#~ "this defines the angle by which eliptical dabs are tilted\n"
+#~ " 0.0 horizontal dabs\n"
+#~ " 45.0 45 degrees, turned clockwise\n"
+#~ " 180.0 horizontal again"
+#~ msgstr ""
+#~ "분사되는 입자의 각도를 변경할수 있다.(기본적으로 시계방향)\n"
+#~ " 0.0 수평 분사\n"
+#~ " 45.0 45도 시계 방향으로 기울어져 분사\n"
+#~ " 180.0 수평 분사"
+
+#~ msgid "Direction filter"
+#~ msgstr "방향 필터"
+
+#~ msgid ""
+#~ "a low value will make the direction input adapt more quickly, a high "
+#~ "value will make it smoother"
+#~ msgstr ""
+#~ "폰인터 이동에 따라 블러시에 저항이 걸린다. 값이 낮을 경우 블러시에 걸리는 "
+#~ "저항도 작다."
 
 #~ msgid ""
 #~ "The background %s was ignored because it has an alpha channel. Please "
@@ -3134,28 +3408,30 @@ msgstr ""
 #~ "알파 채널(투명도)을 가지고 있는 배경 %s 을(를) 사용할수 없습니다. 알파 체"
 #~ "널을 제거하세요."
 
-#, fuzzy
 #~ msgid ""
-#~ "The background %s was ignored because it is the wrong size. Only (N*%d)x"
+#~ "The background %s was ignored because it has the wrong size. Only (N*%d)x"
 #~ "(M*%d) is supported."
 #~ msgstr ""
 #~ "잘못된 크기의 배경 %s 을(를) 사용 할수 없습니다. (N*%d)x(M*%d) 크기만 사용"
 #~ "할 수 있습니다."
 
-#, fuzzy
-#~ msgid "Try right click, middle click or Ctrl click"
+#~ msgid "(no name)"
+#~ msgstr "(이름 없음)"
+
+#~ msgid "About brush"
+#~ msgstr "브러시 정보"
+
+#~ msgid "No README file for this brush!"
+#~ msgstr "이 브러시에 대한 설명 파일없음!"
+
+#~ msgid "Brush selection"
+#~ msgstr "브러시 선택"
+
+#~ msgid "try right click, middle click or Ctrl click"
 #~ msgstr "마우스 오른쪽 클릭, 가운데 단추 또는 Ctrl를 클릭하십시오"
 
 #~ msgid "Export group as brush package..."
 #~ msgstr "그룹을 브러시 패키지로 내보내기..."
-
-#, fuzzy
-#~ msgid "Change Hue"
-#~ msgstr "색조 바꾸기"
-
-#, fuzzy
-#~ msgid "Change Hue, Saturation and Value"
-#~ msgstr "변경 값 / 채도"
 
 #~ msgid "RGB"
 #~ msgstr "RGB"
@@ -3163,8 +3439,7 @@ msgstr ""
 #~ msgid "HSV"
 #~ msgstr "HSV"
 
-#, fuzzy
-#~ msgid "Color history"
+#~ msgid "Colors history"
 #~ msgstr "색상 내역"
 
 #~ msgid "Harmonies"
@@ -3173,8 +3448,7 @@ msgstr ""
 #~ msgid "Analogous"
 #~ msgstr "유사색"
 
-#, fuzzy
-#~ msgid "Double complementary"
+#~ msgid "Double complimentary"
 #~ msgstr "이중 보색"
 
 #~ msgid "Square"
@@ -3182,6 +3456,9 @@ msgstr ""
 
 #~ msgid "Triadic"
 #~ msgstr "삼각 기준 색상"
+
+#~ msgid "Select harmonies"
+#~ msgstr "하모니 선택"
 
 #~ msgid "Change value/saturation"
 #~ msgstr "변경 값 / 채도"
@@ -3201,13 +3478,11 @@ msgstr ""
 #~ msgid "Pick Context (layer, brush and color)"
 #~ msgstr "연결 선택(레이어, 브러시 및 색상)"
 
-#, fuzzy
-#~ msgid "Change Color Hue (counter-clockwise)"
-#~ msgstr "시계 반대 방향 회전"
+#~ msgid "Warmer"
+#~ msgstr "따듯하게"
 
-#, fuzzy
-#~ msgid "Change Color Hue (clockwise)"
-#~ msgstr "색상 값 바꾸기 (HSV)"
+#~ msgid "Cooler"
+#~ msgstr "차갑게"
 
 #~ msgid "Copy to Clipboard"
 #~ msgstr "클립 보드로 복사"
@@ -3215,40 +3490,35 @@ msgstr ""
 #~ msgid "Paste Clipboard (Replace Layer)"
 #~ msgstr "클립 보드 붙여넣기 (레이어 교체)"
 
-#~ msgid "Select Layer at Cursor"
-#~ msgstr "레이어 선택"
-
 #~ msgid "Next (above current)"
 #~ msgstr "위 레이어 선택"
 
 #~ msgid "Next (below current)"
 #~ msgstr "아래 레이어 선택"
 
-#~ msgid "Remove"
-#~ msgstr "제거"
+#~ msgid "Reset (Zoom, Rotation, Mirror)"
+#~ msgstr "초기화 (줌, 회전, 미러)"
+
+#~ msgid "Zoom In (at cursor)"
+#~ msgstr "확대(커서기준)"
+
+#~ msgid "Preferences..."
+#~ msgstr "환경설정..."
+
+#~ msgid "Color Sampler..."
+#~ msgstr "색상 선택도구"
 
 #~ msgid "Help!"
 #~ msgstr "도움말!"
 
-#, fuzzy
-#~ msgid "Save Scratchpad As..."
-#~ msgstr "다른 이름으로 저장..."
+#~ msgid "Layers..."
+#~ msgstr "러이어..."
 
-#, fuzzy
-#~ msgid "Save Scratchpad as Default"
-#~ msgstr "기본값으로 저장하기"
+#~ msgid "Background..."
+#~ msgstr "배경..."
 
-#, fuzzy
-#~ msgid "Change Brush..."
-#~ msgstr "색조 바꾸기"
-
-#, fuzzy
-#~ msgid "Change Brush Settings in detail"
-#~ msgstr "변경 값 / 채도"
-
-#, fuzzy
-#~ msgid "Toggle the Colour Triangle"
-#~ msgstr "삼각 색상환"
+#~ msgid "Brush List..."
+#~ msgstr "브러시 목록..."
 
 #~ msgid ""
 #~ "You can also drag the canvas with the mouse while holding the middle "
@@ -3267,22 +3537,128 @@ msgstr ""
 #~ " Mypaint 번역에 대한 오역 및 건의는 'beroberos@gmail.com'으로 문의 해주세"
 #~ "요."
 
+#~ msgid ""
+#~ "This is used to quickly save/restore brush settings using keyboard "
+#~ "shortcuts. You can paint with one hand and change brushes with the other "
+#~ "without interrupting.\n"
+#~ "\n"
+#~ "There are 10 memory slots to hold brush settings.\n"
+#~ "Those are anonymous brushes, they are not visible in the brush selector "
+#~ "list. But they will stay even if you quit. They will also remember the "
+#~ "selected color. In contrast, selecting a normal brush never changes the "
+#~ "color. "
+#~ msgstr ""
+#~ "이기능은 브러시 설정을 키보드를 이용하여 빠르게 기역하고 저장한 브러시를 "
+#~ "필요한 때에 즉각 사용이 가능하게 합니다. 사용자는 페인팅을 방해 받지 안으"
+#~ "면서 한손으로 필요한 블러쉬를 자유자제로 바꿀 수 있습니다.\n"
+#~ "\n"
+#~ "블러쉬 설정은 최대 10개를 기역할 수 있습니다. 기역되는 브러시는 브러시 선"
+#~ "택기 목록에 표시되지 않습니다. 때문에 사용자는 자신이 기역시킨 브러시를 실"
+#~ "수로 잃지 않도록 주의 할필요가 있습니다."
+
 #~ msgid "Open Last"
 #~ msgstr "마지막 열기"
 
 #~ msgid "Reload"
 #~ msgstr "새로고침"
 
-#~ msgid "Toggle Subwindows"
-#~ msgstr "보조창 토글"
+#~ msgid "%d minute"
+#~ msgid_plural "%d minutes"
+#~ msgstr[0] "%d 분"
+#~ msgstr[1] "%d 여분"
+
+#~ msgid "%d second"
+#~ msgid_plural "%d seconds"
+#~ msgstr[0] "%d 초"
+#~ msgstr[1] "%d 여초"
+
+#~ msgid "Did not save, the canvas is empty."
+#~ msgstr "캔버스가 비어있어 저장 할 수 없습니다."
+
+#~ msgid "<small>Double click to enter name</small>"
+#~ msgstr "<small>이름없음</small>"
+
+#~ msgid "<b><span size=\"large\">Global Pressure Mapping</span></b>"
+#~ msgstr "<b><span size=\"large\">기본 압력 설정</span></b>"
+
+#~ msgid ""
+#~ "0.5\n"
+#~ "(mouse button)"
+#~ msgstr ""
+#~ "0.5\n"
+#~ "(마우스 버튼)"
+
+#~ msgid "Mode for input devices: "
+#~ msgstr "입력장치 모드:"
+
+#~ msgid "Enable right-click color history"
+#~ msgstr "마우스 오른쪽 단추로 색상기록 활성"
 
 #, fuzzy
-#~ msgid "Pan"
-#~ msgstr "패턴"
+#~ msgid "opaque"
+#~ msgstr "불투명도"
 
-#~ msgid "Color Changer"
-#~ msgstr "색상 변환기"
+#~ msgid "Settings..."
+#~ msgstr "설정..."
+
+#~ msgid "Save Preview"
+#~ msgstr "미리보기 저장"
+
+#~ msgid "default"
+#~ msgstr "기본"
+
+#~ msgid "imported"
+#~ msgstr "가져오기"
+
+#~ msgid "Simple"
+#~ msgstr "간단"
+
+#~ msgid "Advanced"
+#~ msgstr "고급"
+
+#~ msgid "Don't replace"
+#~ msgstr "교체하지 마십시오"
+
+#~ msgid "Don't replace anything"
+#~ msgstr "아무것도를 교체하지 마십시오"
+
+#~ msgid "%s README:"
+#~ msgstr "%s 설명 :"
+
+#~ msgid "%s license:"
+#~ msgstr "%s 라이센스 :"
+
+#~ msgid "Brush Settings..."
+#~ msgstr "브러시 설정..."
+
+#~ msgid "An error occured while importing brush package. Error was: %s"
+#~ msgstr "브러시 패키지를 가져오는 동안 오류가 발생했습니다. 오류 : %s"
+
+#~ msgid "<b><span size=\"large\">Save as Scrap</span></b>"
+#~ msgstr "<b><span size=\"large\">스크랩하기</span></b>"
 
 #, fuzzy
-#~ msgid "Brush List Editor"
-#~ msgstr "브러시 편집기..."
+#~ msgid ""
+#~ "This gets multiplied with opaque. It is used for making opaque depend on "
+#~ "pressure (or other inputs)."
+#~ msgstr ""
+#~ "Denne vert multiplisert med ugjennomsiktig. Den vert nytta for å gjer "
+#~ "ugjennomsiktig avhengig av press (eller andre inndata)"
+
+#~ msgid "settings..."
+#~ msgstr "innstillingar..."
+
+#~ msgid "Right click on group to modify"
+#~ msgstr "Høgreklikk på gruppa for å endre"
+
+#~ msgid "Any format (prefer OpenRaster)"
+#~ msgstr "Ikkje-spesifisert format (føretrekk OpenRaster)"
+
+#~ msgid "Bug Details"
+#~ msgstr "Feildetaljar"
+
+#~ msgid "Paths"
+#~ msgstr "Stiar"
+
+#~ msgid "done"
+#~ msgstr "Ferdig"
