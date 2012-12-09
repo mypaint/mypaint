@@ -13,8 +13,6 @@ except ImportError:
 mypaintlib_env = env.Clone()
 env = mypaintlib_env
 
-
-
 # For the record: I know that scons supports swig. But it doesn't scan for #include in the generated code.
 # 
 # I have given up. Scons just can't get the dependencies right with those
@@ -36,6 +34,17 @@ def build_py_module(env, *args, **kwargs):
     else:
         pass
     return env.SharedLibrary(*args, **kwargs)
+
+
+# Build against brushlib
+env.Prepend(LIBS=['mypaint-tests', "mypaint"])
+env.Append(LIBPATH="../")
+env.Append(CPPPATH=['../brushlib', '../brushlib/tests'])
+
+# Optional: Build against gegl brushlib
+if env['enable_gegl']:
+    env.Append(CPPPATH='../brushlib/gegl')
+    env.Prepend(LIBS=['mypaint-gegl'])
 
 # Normal dependencies
 env.ParseConfig('pkg-config --cflags --libs glib-2.0')
@@ -90,16 +99,6 @@ else:
 if env.get('CPPDEFINES'):
     # make sure assertions are enabled
     env['CPPDEFINES'].remove('NDEBUG')
-
-# Build against brushlib
-env.Append(LIBS=["mypaint", 'mypaint-tests'])
-env.Append(LIBPATH="../")
-env.Append(CPPPATH=['../brushlib', '../brushlib/tests'])
-
-# Optional: Build against gegl brushlib
-if env['enable_gegl']:
-    env.Append(CPPPATH='../brushlib/gegl')
-    env.Append(LIBS="mypaint-gegl")
 
 # python extension module
 src = 'mypaintlib_wrap.cpp'
