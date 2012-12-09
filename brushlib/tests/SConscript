@@ -41,7 +41,6 @@ if gegl_tests_env['enable_gegl']:
     gegl_tests_env.Append(CPPPATH=['../gegl', '..'])
     gegl_tests_env.Append(LIBPATH=['../..'])
     gegl_tests_env.Append(LIBS=['mypaint-gegl', 'mypaint-tests', 'mypaint'])
-    gegl_tests_env.ParseConfig('pkg-config --cflags --libs gegl-0.2')
     for source in gegl_tests_sources:
         target = os.path.splitext(source)[0]
         target = os.path.basename(target)
