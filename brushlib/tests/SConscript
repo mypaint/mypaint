@@ -27,7 +27,7 @@ tests_env = testlib_env.Clone()
 
 # Build individual tests
 tests_env['LIBS'].remove('mypaint') # Workaround: ordering wrong when using Prepend on some systems
-tests_env.Append(LIBS=['mypaint-tests', 'mypaint'])
+tests_env.Prepend(LIBS=['mypaint-tests', 'mypaint'])
 
 # Standard tests
 for source in tests_sources:
@@ -42,7 +42,7 @@ if gegl_tests_env['enable_gegl']:
     gegl_tests_env.Append(CPPPATH=['../gegl', '..'])
     gegl_tests_env.Append(LIBPATH=['../..'])
     gegl_tests_env['LIBS'].remove('mypaint') # Workaround: ordering wrong when using Prepend on some systems
-    gegl_tests_env.Append(LIBS=['mypaint-gegl', 'mypaint-tests', 'mypaint'])
+    gegl_tests_env.Prepend(LIBS=['mypaint-gegl', 'mypaint-tests', 'mypaint'])
     for source in gegl_tests_sources:
         target = os.path.splitext(source)[0]
         target = os.path.basename(target)
