@@ -8,6 +8,7 @@
  */
 
 #include <mypaint-tiled-surface.h>
+#include <mypaint-test-surface.h>
 
 static const int TILE_SIZE = MYPAINT_TILE_SIZE;
 
@@ -148,4 +149,15 @@ mypaint_python_surface_factory(gpointer user_data)
     return interface;
 }
 
+} // extern "C"
+
+int
+run_brushlib_tests(void)
+{
+    int retval = mypaint_test_surface_run(0, NULL,
+                                          mypaint_python_surface_factory,
+                                          "MyPaintPythonTiledSurface",
+                                          NULL);
+
+    return retval;
 }

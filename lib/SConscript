@@ -92,9 +92,9 @@ if env.get('CPPDEFINES'):
     env['CPPDEFINES'].remove('NDEBUG')
 
 # Build against brushlib
-env.Append(LIBS="mypaint")
+env.Append(LIBS=["mypaint", 'mypaint-tests'])
 env.Append(LIBPATH="../")
-env.Append(CPPPATH='../brushlib')
+env.Append(CPPPATH=['../brushlib', '../brushlib/tests'])
 
 # Optional: Build against gegl brushlib
 if env['enable_gegl']:
@@ -104,17 +104,5 @@ if env['enable_gegl']:
 # python extension module
 src = 'mypaintlib_wrap.cpp'
 module = build_py_module(env, '../_mypaintlib', Split(src), SHLIBPREFIX="")
-
-tests_env = env.Clone()
-tests_env.Append(CPPPATH=['../brushlib/tests'], LIBS=['mypaint-tests', 'mypaintlib'])
-# Workaround to make it follow expected naming convention for gcc -l
-tests_env.Execute("ln -sf _mypaintlib.so ../libmypaintlib.so")
-tests_env.Clean(".", "../libmypaintlib.so")
-
-# Standard tests
-tests_sources = ['test-python-surface.c']
-for source in tests_sources:
-    target = os.path.splitext(source)[0]
-    tests_env.Program(target=target, source=source)
 
 Return('module')
