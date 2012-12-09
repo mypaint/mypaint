@@ -116,7 +116,32 @@ def install_tree(env, dest, path, perms=0644, dirperms=0755):
         filepaths = [join(dirpath, basename) for basename in filenames]
         install_perms(env, target_dir, filepaths, perms=perms, dirperms=dirperms)
 
+def createStaticPicLibraryBuilder(env):
+    """This is a utility function that creates the StaticExtLibrary Builder in
+    an Environment if it is not there already.
 
+    If it is already there, we return the existing one."""
+    import SCons.Action
+
+    try:
+        static_extlib = env['BUILDERS']['StaticPicLibrary']
+    except KeyError:
+        action_list = [ SCons.Action.Action("$ARCOM", "$ARCOMSTR") ]
+        if env.Detect('ranlib'):
+            ranlib_action = SCons.Action.Action("$RANLIBCOM", "$RANLIBCOMSTR")
+            action_list.append(ranlib_action)
+
+    static_extlib = SCons.Builder.Builder(action = action_list,
+                                          emitter = '$LIBEMITTER',
+                                          prefix = '$LIBPREFIX',
+                                          suffix = '$LIBSUFFIX',
+                                          src_suffix = '$OBJSUFFIX',
+                                          src_builder = 'SharedObject')
+
+    env['BUILDERS']['StaticPicLibrary'] = static_extlib
+    return static_extlib
+
+createStaticPicLibraryBuilder(env)
 
 # Common
 install_tree(env, '$prefix/share/mypaint', 'brushes')

@@ -22,7 +22,7 @@ if testlib_env['enable_gperftools']:
     testlib_env.ParseConfig('pkg-config --cflags --libs libprofiler')
     testlib_env.Append(CPPDEFINES='HAVE_GPERFTOOLS')
 
-lib_builder = testlib_env.SharedLibrary if env['use_sharedlib'] else testlib_env.StaticLibrary
+lib_builder = testlib_env.SharedLibrary if env['use_sharedlib'] else testlib_env.StaticPicLibrary
 lib_builder(target='../../mypaint-tests', source=testlib_sources)
 
 tests_env = testlib_env.Clone()

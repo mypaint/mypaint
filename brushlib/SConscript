@@ -102,7 +102,7 @@ env.Append(LINKFLAGS=linkflags)
 env.Append(LIBS=libs)
 env.ParseConfig('pkg-config --cflags --libs %s' % ' '.join(pkg_deps))
 
-lib_builder = env.SharedLibrary if env['use_sharedlib'] else env.StaticLibrary
+lib_builder = env.SharedLibrary if env['use_sharedlib'] else env.StaticPicLibrary
 brushlib = lib_builder('../mypaint', Glob("*.c"))
 
 create_pkgconfig_files(env, 'libmypaint', brushlib_version, 'MyPaint brush engine library',
@@ -131,17 +131,17 @@ languages = SConscript('po/SConscript')
 if env['enable_gegl']:
 
     gegl_env = env.Clone()
-    deps = ['gegl-0.2', 'libmypaint']
+    deps = ['gegl-0.2']
     gegl_env.ParseConfig('pkg-config --cflags --libs %s' % ' '.join(deps))
 
-    lib_builder = gegl_env.SharedLibrary if env['use_sharedlib'] else gegl_env.StaticLibrary
+    lib_builder = gegl_env.SharedLibrary if env['use_sharedlib'] else gegl_env.StaticPicLibrary
     brushlib_gegl = lib_builder('../mypaint-gegl', Glob("./gegl/*.c"))
 
     install_perms(env, '$prefix/lib/', brushlib_gegl)
     install_perms(env, '$prefix/include/libmypaint-gegl', Glob("./gegl/mypaint-gegl-*.h"))
 
     create_pkgconfig_files(env, 'libmypaint-gegl', brushlib_version, 'MyPaint brush engine library, with GEGL integration',
-                           libname='mypaint', deps=deps)
+                           libname='mypaint', deps=deps + ['libmypaint'])
 
     if gegl_env['enable_introspection']:
         gir, typelib = add_gobject_introspection(gegl_env, "MyPaintGegl", brushlib_version,
