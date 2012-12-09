@@ -1,7 +1,6 @@
 
 == MyPaint 1.1 ==
 - Build into a static library instead of shared
-- Make tile size a writeable attribute of MyPaintTiledSurface instead of define
 - Implement support for "foreign" buffers in GeglSurface backend,
   that is buffers which are provided though set_buffer() and may
   not always have the ideal color format and tile size.
