@@ -1000,6 +1000,16 @@ class DragMode (InteractionMode):
             # should be far less than that of getting "stuck" in a drag.
             print "DEBUG: exiting mode"
             self.doc.modes.pop()
+
+            # Sometimes a pointer ungrab is needed even though the grab
+            # apparently failed to avoid the UI partially "locking up" with the
+            # stylus (and only the stylus). Happens when WMs like Xfwm
+            # intercept an <Alt>Button combination for window management
+            # purposes. Results in gdk.GRAB_ALREADY_GRABBED, but this line is
+            # necessary to avoid the rest of the UI becoming unresponsive even
+            # though the canvas can be drawn on with the stylus. Are we
+            # cancelling an implicit grab here, and why is it device specific?
+            gdk.pointer_ungrab()
             return
 
         # We managed to establish a grab, so watch for it being broken.
