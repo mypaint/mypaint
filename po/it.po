@@ -2827,8 +2827,8 @@ msgid "Lines"
 msgstr "Linee"
 
 #: ../po/tmp/mypaint.xml.h:214
-msgid "Lines and Curves: draw straight or curved lines.&#x0a;Ctrl: constrain angle.&#x0a;Shift: add curves to the last line."
-msgstr "Linee and Curve: disegna linee dritte o curve.&#x0a;Ctrl: vincola angolo.&#x0a;Shift: curva l'ultima linea tracciata."
+msgid "Lines and Curves: draw straight or curved lines.\nCtrl: constrain angle.\nShift: add curves to the last line."
+msgstr "Linee and Curve: disegna linee dritte o curve.\nCtrl: vincola angolo.\nShift: curva l'ultima linea tracciata."
 
 #: ../po/tmp/mypaint.xml.h:215
 msgctxt "Menu|Edit|"
@@ -2846,8 +2846,9 @@ msgid "Line Seq."
 msgstr "Sequenza Linee"
 
 #: ../po/tmp/mypaint.xml.h:218
-msgid "Connected Lines: draw sequences of straight or curved lines.&#x0a;Ctrl: constrain angle.&#x0a;Shift: add curves to the last line."
-msgstr "Linee Connesse: disegna una sequenza di linee dritte o curve.&#x0a;Ctrl: vincola angolo.&#x0a;Shift: curva l'ultima linea tracciata."
+msgid "Connected Lines: draw sequences of straight or curved lines.\nCtrl: constrain angle.\nShift: add curves to the last line."
+msgstr "Linee Connesse: disegna una sequenza di linee dritte o curve.\nCtrl: vincola angolo.\nShift: curva l'ultima linea tracciata."
+
 
 #: ../po/tmp/mypaint.xml.h:219
 msgctxt "Menu|Edit|"
@@ -2865,8 +2866,8 @@ msgid "Ellipse"
 msgstr "Ellisse"
 
 #: ../po/tmp/mypaint.xml.h:222
-msgid "Ellipses and Circles: draw whole circles and ellipses.&#x0a;Shift: rotate.&#x0a;Ctrl: constrain ratio.&#x0a;Ctrl+Shift: constrain angle."
-msgstr "Ellissi e Cerchi: disegna interamente cerchi ed ellissi.&#x0a;Shift: ruota.&#x0a;Ctrl: vincola le proporzioni.&#x0a;Ctrl+Shift: vincola l'angolo."
+msgid "Ellipses and Circles: draw whole circles and ellipses.\nShift: rotate.\nCtrl: constrain ratio.\nCtrl+Shift: constrain angle."
+msgstr "Ellissi e Cerchi: disegna interamente cerchi ed ellissi.\nShift: ruota.\nCtrl: vincola le proporzioni.\nCtrl+Shift: vincola l'angolo."
 
 #: ../po/tmp/mypaint.xml.h:223
 msgctxt "Menu|Edit|"
