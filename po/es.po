@@ -51,7 +51,7 @@ msgid ""
 "supported."
 msgstr ""
 "\"%s\" tiene un canal alfa. Las imágenes de fondo con transparencia no están "
-"admitidas.\n"
+"admitidas."
 
 #: ../gui/backgroundwindow.py:139
 msgid ""
@@ -1165,7 +1165,7 @@ msgid ""
 "can be adjusted on the canvas"
 msgstr ""
 "Con el marco activado,\n"
-"se puede ajustar desde el lienzo\n"
+"se puede ajustar desde el lienzo"
 
 #: ../gui/framewindow.py:374
 msgid "Enabled"
@@ -2808,7 +2808,7 @@ msgstr "Mano alzada"
 msgid "Freehand Drawing: draw and paint freely, without geometric constraints"
 msgstr ""
 "Dibujo a mano alzada: dibujar y pintar libremente, sin restricciones "
-"geométricas\n"
+"geométricas"
 
 #: ../po/tmp/mypaint.xml.h:199
 msgctxt "Menu|Edit|"
@@ -2884,11 +2884,11 @@ msgstr "Líneas"
 
 #: ../po/tmp/mypaint.xml.h:214
 msgid ""
-"Lines and Curves: draw straight or curved lines.&#x0a;Ctrl: constrain angle."
-"&#x0a;Shift: add curves to the last line."
+"Lines and Curves: draw straight or curved lines.\nCtrl: constrain angle."
+"\nShift: add curves to the last line."
 msgstr ""
-"Líneas y curvas: dibujar líneas rectas o curvas.&#x0a;Ctrl: restringir"
-"+ángulo.&#x0a;Shift: agregar curvas a la última línea.\n"
+"Líneas y curvas: dibujar líneas rectas o curvas.\nCtrl: restringir"
+"+ángulo.\nShift: agregar curvas a la última línea."
 
 #: ../po/tmp/mypaint.xml.h:215
 msgctxt "Menu|Edit|"
@@ -2908,11 +2908,11 @@ msgstr "Modo de mezcla"
 
 #: ../po/tmp/mypaint.xml.h:218
 msgid ""
-"Connected Lines: draw sequences of straight or curved lines.&#x0a;Ctrl: "
-"constrain angle.&#x0a;Shift: add curves to the last line."
+"Connected Lines: draw sequences of straight or curved lines.\nCtrl: "
+"constrain angle.\nShift: add curves to the last line."
 msgstr ""
-"Líneas conectadas: dibujar secuencias de líneas rectas o curvas.&#x0a;Ctrl: "
-"restringir ángulo.&#x0a;Shift: agregar curvas a la última línea.\n"
+"Líneas conectadas: dibujar secuencias de líneas rectas o curvas.\nCtrl: "
+"restringir ángulo.\nShift: agregar curvas a la última línea."
 
 #: ../po/tmp/mypaint.xml.h:219
 msgctxt "Menu|Edit|"
@@ -2931,11 +2931,11 @@ msgstr "Elipse"
 
 #: ../po/tmp/mypaint.xml.h:222
 msgid ""
-"Ellipses and Circles: draw whole circles and ellipses.&#x0a;Shift: rotate."
-"&#x0a;Ctrl: constrain ratio.&#x0a;Ctrl+Shift: constrain angle."
+"Ellipses and Circles: draw whole circles and ellipses.\nShift: rotate."
+"\nCtrl: constrain ratio.\nCtrl+Shift: constrain angle."
 msgstr ""
-"Elipses y círculos: dibujar círculos y elipses completos.&#x0a;Shift: rotar."
-"&#x0a;Ctrl: restringir proporción.&#x0a;Ctrl+Shift: restrinjir ángulo.\n"
+"Elipses y círculos: dibujar círculos y elipses completos.\nShift: rotar."
+"\nCtrl: restringir proporción.\nCtrl+Shift: restrinjir ángulo."
 
 #: ../po/tmp/mypaint.xml.h:223
 msgctxt "Menu|Edit|"
@@ -2972,7 +2972,7 @@ msgid ""
 "frame is used when exporting."
 msgstr ""
 "Editar marco: definir un marco alrededor del documento para darle un tamaño "
-"finito. El marco se utiliza al exportar.\n"
+"finito. El marco se utiliza al exportar."
 
 #: ../po/tmp/mypaint.xml.h:230
 msgctxt "Menu|File|"
