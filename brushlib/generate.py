@@ -65,7 +65,7 @@ def generate_internal_settings_code():
     content = ''
 
     def stringify(value):
-        value = value.replace("\n", "")
+        value = value.replace("\n", "\\n")
         value = value.replace('"', '\\"')
         return "\"%s\"" % value
 
