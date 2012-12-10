@@ -13,7 +13,6 @@ should be named ll.po where "ll" is your language code given by [1]
 If there are several dialects, the file should be named ll_CC.po where
 "CC" is your country code given by [2]
 
-
 == Update translation ==
 Before working on a translation, update the po file for your language.
 For example, for the french translation, run:
@@ -34,6 +33,10 @@ LANG=ll_CC.utf8 ./mypaint
 where "ll" and "CC" are language/country codes given by [1] and [2] respectivly
 and your working directory is the root directory of mypaint 
 
+To run MyPaint with the original strings, for comparison, you can use
+the LC_MESSAGES variable like this:
+
+LC_MESSAGES=C ./mypaint
 
 == Send changes ==
 Before you send your changes, please make sure that your changes are based 
