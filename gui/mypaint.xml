@@ -1353,7 +1353,9 @@ Perhaps an increasing amount.
             context="Toolbar|">Lines</property>
           <property name="icon-name">mypaint-line-mode-straight</property>
           <property name="tooltip" translatable="yes"
-              >Lines and Curves: draw straight or curved lines.&#x0a;Ctrl: constrain angle.&#x0a;Shift: add curves to the last line.</property>
+              >Lines and Curves: draw straight or curved lines.
+Ctrl: constrain angle.
+Shift: add curves to the last line.</property>
           <property name="group">ZoomViewMode</property>
           <property name="value">4</property>
         </object>
@@ -1375,7 +1377,9 @@ Perhaps an increasing amount.
             context="Toolbar|">Line Seq.</property>
           <property name="icon-name">mypaint-line-mode-sequence</property>
           <property name="tooltip" translatable="yes"
-            >Connected Lines: draw sequences of straight or curved lines.&#x0a;Ctrl: constrain angle.&#x0a;Shift: add curves to the last line.</property>
+            >Connected Lines: draw sequences of straight or curved lines.
+Ctrl: constrain angle.
+Shift: add curves to the last line.</property>
           <property name="group">StraightMode</property>
           <property name="value">5</property>
         </object>
@@ -1397,7 +1401,10 @@ Perhaps an increasing amount.
             context="Toolbar|">Ellipse</property>
           <property name="icon-name">mypaint-line-mode-ellipse</property>
           <property name="tooltip" translatable="yes"
-            >Ellipses and Circles: draw whole circles and ellipses.&#x0a;Shift: rotate.&#x0a;Ctrl: constrain ratio.&#x0a;Ctrl+Shift: constrain angle.</property>
+            >Ellipses and Circles: draw whole circles and ellipses.
+Shift: rotate.
+Ctrl: constrain ratio.
+Ctrl+Shift: constrain angle.</property>
           <property name="group">SequenceMode</property>
           <property name="value">6</property>
         </object>
