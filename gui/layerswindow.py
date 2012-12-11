@@ -204,6 +204,9 @@ class ToolWidget (gtk.VBox):
 
         # Move selection line to the model's current layer and scroll to it
         model_sel_path = (len(doc.layers) - (doc.layer_idx + 1), )
+        if pygtkcompat.USE_GTK3:
+            model_sel_path = ":".join([str(s) for s in model_sel_path])
+            model_sel_path = gtk.TreePath.new_from_string(model_sel_path)
         selection = self.treeview.get_selection()
         if not selection.path_is_selected(model_sel_path):
             # Only do this if the required layer is not already highlighted to

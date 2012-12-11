@@ -262,7 +262,10 @@ class InteractionMode (object):
         use ``event.state & gtk.accelerator_get_default_mod_mask()``.
 
         """
-        display = gdk.display_get_default()
+        if pygtkcompat.USE_GTK3:
+            display = gdk.Display.get_default()
+        else:
+            display = gdk.display_get_default()
         screen, x, y, modifiers = display.get_pointer()
         modifiers &= gtk.accelerator_get_default_mod_mask()
         return modifiers

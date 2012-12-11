@@ -24,6 +24,7 @@ def button_press_name(button, mods):
     mods = int(mods)
     if button <= 0:
         return None
+    mods = gdk.ModifierType(mods)
     modif_name = gtk.accelerator_name(0, mods)
     return modif_name + "Button%d" % (button,)
 

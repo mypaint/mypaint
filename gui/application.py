@@ -729,7 +729,7 @@ class CursorCache (object):
         icon_pixbuf.composite(cursor_pixbuf, icon_x, icon_y, icon_w, icon_h,
                               icon_x, icon_y, 1, 1, gdk.INTERP_NEAREST, 255)
 
-        display = gdk.display_get_default()
+        display = self.app.drawWindow.get_display()
         cursor = gdk.Cursor(display, cursor_pixbuf, hot_x, hot_y)
         return cursor
 
