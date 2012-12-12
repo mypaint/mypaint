@@ -349,6 +349,7 @@ class QuickBrushChooser (gtk.VBox):
         self.brushlist.update()
 
 
+
 class BrushChooserDialog (gtk.Dialog):
     """Speedy brush chooser dialog.
     """
@@ -377,20 +378,33 @@ class BrushChooserDialog (gtk.Dialog):
         self.set_position(gtk.WIN_POS_MOUSE)
         self.app = app
         self.response_brush = None
-        def on_select(brush):
-            self.response_brush = brush
-            self.response(gtk.RESPONSE_ACCEPT)
-        self.chooser = QuickBrushChooser(app, on_select)
+        self.chooser = QuickBrushChooser(app, self.on_select)
+
+        # Only send the response (and close the dialog) on button release to
+        # avoid accidental dabs with the stylus.
+        bl = self.chooser.brushlist
+        bl.connect("button-release-event", self.accept_if_selected)
+
         vbox = self.get_content_area()
         vbox.pack_start(self.chooser, True, True)
         for w in vbox:
             w.show_all()
 
 
+    def on_select(self, brush):
+        self.response_brush = brush
+
+
     def configure_cb(self, widget, event):
         w = max(256, int(event.width))
         h = max(256, int(event.height))
         self.app.preferences[self.prefs_size_key] = (w, h)
+
+
+    def accept_if_selected(self, *junk):
+        if self.response_brush is not None:
+            self.response(gtk.RESPONSE_ACCEPT)
+
 
 
 def change_current_brush_quick(app):
