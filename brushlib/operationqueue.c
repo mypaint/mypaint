@@ -73,6 +73,7 @@ tile_map_free(TileMap *self, gboolean free_items)
             }
         }
     }
+    free(self->map);
 
     free(self);
 }
@@ -122,6 +123,7 @@ operation_queue_resize(OperationQueue *self, int new_size)
             tile_map_free(self->tile_map, TRUE);
             self->tile_map = NULL;
             free(self->dirty_tiles);
+            self->dirty_tiles = NULL;
             self->dirty_tiles_n = 0;
         }
         return TRUE;

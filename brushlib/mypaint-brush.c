@@ -115,13 +115,13 @@ mypaint_brush_new()
 void
 mypaint_brush_destroy(MyPaintBrush *self)
 {
-    int i=0;
-    for (i=0; i<MYPAINT_BRUSH_SETTINGS_COUNT; i++) {
+    for (int i=0; i<MYPAINT_BRUSH_SETTINGS_COUNT; i++) {
         mapping_free(self->settings[i]);
     }
     rng_double_free (self->rng);
     self->rng = NULL;
     json_object_put(self->brush_json);
+    free(self);
 }
 
 double
