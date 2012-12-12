@@ -312,13 +312,11 @@ class QuickBrushChooser (gtk.VBox):
         scrolledwin.add_with_viewport(self.brushlist)
         self.connect("style-set", self._on_style_set, scrolledwin)
         icon_size = self.ICON_SIZE
-        w = icon_size * 5
-        h = icon_size * 5
+        w = icon_size * 4
+        h = icon_size * 4
         scrolledwin.set_size_request(-1, h)
         self.brushlist.set_size_request(w, -1)
         scrolledwin.get_child().set_size_request(w, -1)
-
-
 
         self.pack_start(self.groups_sb, False, False)
         self.pack_start(scrolledwin, True, True)
@@ -355,12 +353,27 @@ class BrushChooserDialog (gtk.Dialog):
     """Speedy brush chooser dialog.
     """
 
+    # TODO: save and restore the size.
+    default_size = (256, 256)
+    prefs_size_key = 'brushchooser.window_size'
+
+
     def __init__(self, app):
         title = _("Change Brush")
         parent = app.drawWindow
+        prefs = app.preferences
+        w, h = prefs.get(self.prefs_size_key, self.default_size)
+
         flags = gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT
         buttons = (gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT)
         gtk.Dialog.__init__(self, title, parent, flags, buttons)
+        self.set_default_size(w, h)
+        self.connect("configure-event", self.configure_cb)
+
+        # Being undecorated might be better for Ubuntu Unity, and closer to
+        # our other popup dialogs. Still want resize though.
+        #   self.set_decorated(False)
+
         self.set_position(gtk.WIN_POS_MOUSE)
         self.app = app
         self.response_brush = None
@@ -372,6 +385,13 @@ class BrushChooserDialog (gtk.Dialog):
         vbox.pack_start(self.chooser, True, True)
         for w in vbox:
             w.show_all()
+
+
+    def configure_cb(self, widget, event):
+        w = max(256, int(event.width))
+        h = max(256, int(event.height))
+        self.app.preferences[self.prefs_size_key] = (w, h)
+
 
 def change_current_brush_quick(app):
     dialog = BrushChooserDialog(app)
