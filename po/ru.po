@@ -2,18 +2,19 @@
 # Copyright (C) 2009 Martin Renold, Ilya Portnov
 # This file is distributed under the same license as the MyPaint package.
 # Martin Renold <martinxyz@gmx.ch> 2009
+#
 # Ilya Portnov <portnov@bk.ru>, 2009, 2010.
 # Ilya Portnov <ilya.portnov@gmail.com>, 2010.
 # Александр Прокудин <alexandre.prokoudine@gmail.com>, 2010, 2011, 2012.
-#
+# Ilya Portnov <portnov84@rambler.ru>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: MyPaint 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-12-09 12:08+0400\n"
-"PO-Revision-Date: 2012-12-09 12:22+0400\n"
-"Last-Translator: Александр Прокудин <alexandre.prokoudine@gmail.com>\n"
-"Language-Team: русский <>\n"
+"PO-Revision-Date: 2012-12-13 23:08+0600\n"
+"Last-Translator: Ilya Portnov <portnov84@rambler.ru>\n"
+"Language-Team: Russian <mypaint-discuss@gna.org>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,7 +22,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2); 10<=4 && (n%100<10 || n"
 "%100>=20) ? 1 : 2);\n"
-"X-Generator: Lokalize 1.0\n"
+"X-Generator: Lokalize 1.2\n"
 
 #: ../gui/backgroundwindow.py:24
 msgid "Save as Default"
@@ -47,6 +48,7 @@ msgstr "Добавить цвет в список текстур"
 #: ../gui/backgroundwindow.py:126
 msgid "Gdk-Pixbuf couldn't load \"{filename}\", and reported \"{error}\""
 msgstr ""
+"Gdk-pixbuf не может загрузить \"{filename}\", сообщение об ошибке: \"{error}\""
 
 #: ../gui/backgroundwindow.py:132
 #, python-format
@@ -54,26 +56,31 @@ msgid ""
 "\"%s\" has an alpha channel. Background images with transparency are not "
 "supported."
 msgstr ""
+"\"%s\" содержит альфа-канал. Фоновые изображения с прозрачностью не "
+"поддерживаются."
 
 #: ../gui/backgroundwindow.py:139
 msgid ""
 "{filename} has an unsupported size. Background images must have widths and "
 "heights which are multiples of {number} pixels."
 msgstr ""
+"{filename} имеет неподдерживаемый размер. Ширина и высота фонового "
+"изображения должны быть кратны {number} пикселам."
 
 #: ../gui/backgroundwindow.py:155
 msgid "One or more backgrounds could not be loaded"
-msgstr ""
+msgstr "Не удалось загрузить одно или несколько фоновых изображений"
 
 #: ../gui/backgroundwindow.py:156
-#, fuzzy
 msgid "Error loading backgrounds"
-msgstr "Ошибка при загрузке (GError) %s"
+msgstr "Ошибка при загрузке фоновых изображений"
 
 #: ../gui/backgroundwindow.py:157
 msgid ""
 "Please remove the unloadable files, or check your libgdkpixbuf installation."
 msgstr ""
+"Пожалуйста, удалите файлы, которые не удалось загрузить, или проверьте вашу "
+"установку libgdkpixbuf."
 
 #: ../gui/brushcreationwidget.py:44 ../gui/brushcreationwidget.py:67
 msgid "(unnamed brush)"
@@ -112,11 +119,9 @@ msgid "A brush with this name already exists!"
 msgstr "Кисть с таким именем уже существует!"
 
 #: ../gui/brushcreationwidget.py:143 ../gui/brushcreationwidget.py:250
-#, fuzzy
 msgid "No brush selected, please use \"Add As New\" instead."
 msgstr ""
-"Кисть не выбрана. Пожалуйста, используйте вместо этого \"добавить как новую"
-"\"."
+"Кисть не выбрана. Пожалуйста, используйте вместо этого \"добавить как новую\"."
 
 #: ../gui/brushcreationwidget.py:153
 msgid "Really delete brush from disk?"
@@ -189,7 +194,7 @@ msgstr "Нормальный"
 
 #: ../gui/brushmodifier.py:54
 msgid "Paint normally"
-msgstr ""
+msgstr "Рисовать как обычно"
 
 #: ../gui/brushmodifier.py:57
 msgid "Eraser"
@@ -208,14 +213,12 @@ msgid "Lock Alpha: paint over existing strokes only, using the current brush"
 msgstr "Блокировать альфа-канал: рисовать только поверх уже нанесённых мазков"
 
 #: ../gui/brushmodifier.py:65
-#, fuzzy
 msgid "Colorize"
 msgstr "Цвет"
 
 #: ../gui/brushmodifier.py:66
-#, fuzzy
 msgid "Colorize: alter Hue and Saturation with the current brush"
-msgstr "Разные варианты насыщенности этого цвета"
+msgstr "Цвет: изменить оттенок и насыщенность, используя текущую кисть"
 
 #: ../gui/brushselectionwindow.py:35
 msgid "Brushes"
@@ -228,6 +231,10 @@ msgid ""
 "Middle-click: toggle group\n"
 "Right-click: groups menu"
 msgstr ""
+"Группы кистей: щёлкните, чтобы выбрать\n"
+"Ctrl: выбрать несколько\n"
+"Щелчок средней кнопкой: включить/выключить группу\n"
+"Щелчок правой кнопкой: меню групп"
 
 #: ../gui/brushselectionwindow.py:465
 msgid "New Group..."
@@ -246,22 +253,18 @@ msgid "Export Group..."
 msgstr "Экспортировать группу..."
 
 #: ../gui/brushselectionwindow.py:471
-#, fuzzy
 msgid "Import Brushes..."
-msgstr "Импортировать пакет кистей..."
+msgstr "Импортировать кисти..."
 
 #: ../gui/brushselectionwindow.py:473
-#, fuzzy
 msgid "Get More Brushes..."
-msgstr "Вернуть кисть %d"
+msgstr "Найти больше кистей..."
 
 #: ../gui/brushselectionwindow.py:493
-#, fuzzy
 msgid "Create Group"
 msgstr "Создать группу"
 
 #: ../gui/brushselectionwindow.py:498
-#, fuzzy
 msgid "Rename Group"
 msgstr "Переименовать группу"
 
@@ -270,9 +273,8 @@ msgid "A group with this name already exists!"
 msgstr "Группа с таким именем уже существует!"
 
 #: ../gui/brushselectionwindow.py:507
-#, fuzzy
 msgid "Export Brushes"
-msgstr "Экспортировать пакет кистей..."
+msgstr "Экспортировать кисти"
 
 #: ../gui/brushselectionwindow.py:508 ../gui/drawwindow.py:809
 msgid "MyPaint brush package (*.zip)"
@@ -342,12 +344,10 @@ msgid "No additional configuration"
 msgstr "Без дополнительной настройки"
 
 #: ../gui/brushsettingswindow.py:148 ../gui/brushsettingswindow.py:191
-#, fuzzy
 msgid "Add input value mapping"
 msgstr "Добавить отображение входных значений"
 
 #: ../gui/brushsettingswindow.py:193
-#, fuzzy
 msgid "Modify input value mapping"
 msgstr "Изменить отображение входных значений"
 
@@ -356,48 +356,47 @@ msgid "Action"
 msgstr "Действие"
 
 #: ../gui/buttonmap.py:277
-#, fuzzy
 msgid "Button press"
-msgstr "Кнопки"
+msgstr "Нажатие кнопки"
 
 #: ../gui/buttonmap.py:296
 msgid "Add a new binding"
-msgstr ""
+msgstr "Добавить новую привязку"
 
 #: ../gui/buttonmap.py:304
-#, fuzzy
 msgid "Remove the current binding"
-msgstr "Заново открыть текущий файл"
+msgstr "Удалить текущую привязку"
 
 #: ../gui/buttonmap.py:426
 #, python-format
 msgid "Edit binding for '%s'"
-msgstr ""
+msgstr "Изменить привязку для '%s'"
 
 #: ../gui/buttonmap.py:449
 msgid "Action:"
 msgstr "Действие:"
 
 #: ../gui/buttonmap.py:460
-#, fuzzy
 msgid "Button press:"
-msgstr "Кнопки"
+msgstr "Нажатие кнопки:"
 
 #: ../gui/buttonmap.py:494
 msgid ""
 "Hold down modifier keys, and press a button over this text to set a new "
 "binding."
 msgstr ""
+"Чтобы создать привязку, зажмите клавиши-модификаторы и нажмите кнопку над "
+"этим текстом."
 
 #: ../gui/buttonmap.py:514
 #, python-format
 msgid "%s cannot be bound by itself, without keyboard modifiers."
-msgstr ""
+msgstr "%s не может быть использована в отдельности, без клавиш-модификаторов."
 
 #: ../gui/buttonmap.py:524
 #, python-format
 msgid "%s is already bound to the action '%s'"
-msgstr ""
+msgstr "%s уже привязана к действию '%s'"
 
 #: ../gui/colors/adjbases.py:443
 msgid "Color details"
@@ -405,7 +404,7 @@ msgstr "Подробнее"
 
 #: ../gui/colors/adjbases.py:587
 msgid "Newly chosen color, and the color most recently used for painting"
-msgstr ""
+msgstr "Вновь выбранный цвет, и цвет, который использовался последним"
 
 #: ../gui/colors/combined.py:126
 msgid "Add color to Palette"
@@ -446,14 +445,51 @@ msgid ""
 "The New button lets you choose one of several templates as a starting "
 "point.\n"
 msgstr ""
+"<b>Редактор маски цветового охвата</b>\n"
+"\n"
+"При помощи этого диалога вы можете редактировать маску цветового охвата, "
+"включать\n"
+"или отключать её.\n"
+"Маски цветового охвата похожи на куски кальки с вырезанными отверстиями, "
+"помещенными\n"
+"поверх цветового круга, чтобы ограничить диапазон цветов, которые можно "
+"выбирать. Это\n"
+"позволяет планировать цветовые схемы заранее, что удобно для цветовых "
+"набросков, или\n"
+"чтобы создать определенный колорит. Теория состоит в том, что каждый угол "
+"каждой фигуры\n"
+"маски представляет <i>субъективно</i> первичный цвет, и каждая фигура "
+"содержит все цвета,\n"
+"которые могут быть получены смешиванием этих первичных цветов из углов фигуры."
+" Субъективно\n"
+"вторичные цвета находятся в серединах рёбер фигур, а центр фигуры "
+"представляет субъективно\n"
+"нейтральный цвет для этой фигуры.\n"
+"\n"
+"Когда на круге нет фигур, щелчок мыши добавляет фигуры. Фигуры можно "
+"перетаскивать, и можно\n"
+"настраивать их форму, добавляя или перемещая контрольные точки. Чтобы удалить "
+"фигуру,\n"
+"сделайте её очень маленькой, или перетащите к самому краю цветового круга. "
+"Кроме того, фигуру\n"
+"можно удалить, перетащив её внутрь другой фигуры. Всю маску целиком можно "
+"поворачивать,\n"
+"перетаскивая край цветового круга — так можно получать новые, неожиданные "
+"цветовые схемы.\n"
+"\n"
+"Маски цветового охвата можно сохранять в файлы формата палитр GIMP, и "
+"загружать из таких файлов.\n"
+"Кнопка Создать позволяет выбрать один из нескольких шаблонов в качестве "
+"отправной точки.\n"
 
 #: ../gui/colors/hcywheel.py:95
 msgid "Gamut mask active"
-msgstr ""
+msgstr "Маска цветового охвата включена"
 
 #: ../gui/colors/hcywheel.py:96
 msgid "Limit your palette for specific moods using a gamut mask"
 msgstr ""
+"Ограничить палитру определенным колоритом при помощи маски цветового охвата"
 
 #: ../gui/colors/hcywheel.py:374
 msgid "HCY Hue and Chroma"
@@ -465,10 +501,12 @@ msgid ""
 "Gamut mask editor. Click in the middle to create or manipulate shapes, or "
 "rotate the mask using the edges of the disc."
 msgstr ""
+"Редактор маски цветового охвата. Щелкните в середине, чтобы создать или "
+"изменить фигуры, или поворачивайте маску с использованием краев диска."
 
 #: ../gui/colors/hcywheel.py:898
 msgid "Atmospheric Triad"
-msgstr ""
+msgstr "Атмосферная триада"
 
 #: ../gui/colors/hcywheel.py:899
 msgid ""
@@ -478,7 +516,7 @@ msgstr ""
 
 #: ../gui/colors/hcywheel.py:902
 msgid "Shifted Triad"
-msgstr ""
+msgstr "Сдвинутая триада"
 
 #: ../gui/colors/hcywheel.py:903
 msgid "Weighted more strongly towards the dominant colour."
@@ -493,23 +531,25 @@ msgid ""
 "Contrasting opposites, balanced by having central neutrals between them on "
 "the colour wheel."
 msgstr ""
+"Контрастные противоположности, уравновешенные нейтральными цветами в середине "
+"цветового круга."
 
 #: ../gui/colors/hcywheel.py:917
 msgid "Mood and Accent"
-msgstr ""
+msgstr "Настроение и акцент"
 
 #: ../gui/colors/hcywheel.py:918
 msgid ""
 "One main range of colors, with a complementary accent for variation and "
 "highlights."
 msgstr ""
+"Один главный диапазон цветов, и дополнительный цвет для вариаций и акцентов."
 
 #. [HCYColor((H+0.483)%1, 0.95, Y),
 #. HCYColor((H+0.517)%1, 0.95, Y),
 #. HCYColor((H+0.52)%1, 0.725, Y),
 #. HCYColor((H+0.48)%1, 0.725, Y) ]] ))
 #: ../gui/colors/hcywheel.py:926
-#, fuzzy
 msgid "Split Complementary"
 msgstr "Разделённые противоположные"
 
@@ -518,10 +558,11 @@ msgid ""
 "Two analogous colours and a complement to them, with no secondary colours "
 "between them."
 msgstr ""
+"Два похожих цвета и дополнительный цвет, без вторичных цветов между ними."
 
 #: ../gui/colors/hcywheel.py:934
 msgid "New gamut mask from template"
-msgstr ""
+msgstr "Создать маску цветового охвата из шаблона"
 
 #: ../gui/colors/hcywheel.py:986
 msgid "Gamut mask editor"
@@ -533,16 +574,15 @@ msgstr "Активно"
 
 #: ../gui/colors/hcywheel.py:1014
 msgid "Create mask from template"
-msgstr ""
+msgstr "Создать маску из шаблона"
 
 #: ../gui/colors/hcywheel.py:1015
 msgid "Load mask from a GIMP palette file"
-msgstr ""
+msgstr "Загрузить маску из файла палитры GIMP"
 
 #: ../gui/colors/hcywheel.py:1016
-#, fuzzy
 msgid "Save mask to a GIMP palette file"
-msgstr "Сохранить в файл"
+msgstr "Сохранить маску в файл палитры GIMP"
 
 #: ../gui/colors/hcywheel.py:1017
 msgid "Erase the mask"
@@ -550,19 +590,19 @@ msgstr "Стереть маску"
 
 #: ../gui/colors/hcywheel.py:1065
 msgid "Save mask as a Gimp palette"
-msgstr ""
+msgstr "Сохранить маску как палитру Gimp"
 
 #: ../gui/colors/hcywheel.py:1074
 msgid "Load mask from a Gimp palette"
-msgstr ""
+msgstr "Загрузить маску из палитры Gimp"
 
 #: ../gui/colors/hcywheel.py:1113
 msgid "Gamut mask editor help"
-msgstr ""
+msgstr "Справка редактора маски цветового охвата"
 
 #: ../gui/colors/hcywheel.py:1147
 msgid "Set gamut mask"
-msgstr ""
+msgstr "Установить маску цветового охвата"
 
 #: ../gui/colors/hcywheel.py:1162
 msgid "HCY Wheel"
@@ -573,6 +613,8 @@ msgid ""
 "Set the color using cylindrical hue/chroma/luma space. The circular slices "
 "are equiluminant."
 msgstr ""
+"Выберите цвет с использованием цилиндрических координат "
+"оттенок/насыщенность/светлота. Круговые срезы имеют одинаковую светлоту."
 
 #. Tooltip mappings, indexed by whatever the slider currently represents
 #: ../gui/colors/hsvcube.py:35 ../gui/colors/sliders.py:178
@@ -601,7 +643,7 @@ msgstr "Тон и насыщенность HSV"
 
 #: ../gui/colors/hsvcube.py:52
 msgid "Rotate cube (show different axes)"
-msgstr ""
+msgstr "Повернуть куб (показать другие оси)"
 
 #: ../gui/colors/hsvcube.py:71
 msgid "HSV Cube"
@@ -610,24 +652,23 @@ msgstr "Куб HSV"
 #: ../gui/colors/hsvcube.py:75
 msgid "An HSV cube which can be rotated to show different planar slices."
 msgstr ""
+"Куб HSV, который можно поворачивать, чтобы использовать разные плоские срезы."
 
 #: ../gui/colors/hsvtriangle.py:41
 msgid "HSV Triangle"
 msgstr "Треугольник HSV"
 
 #: ../gui/colors/hsvtriangle.py:45
-#, fuzzy
 msgid "The standard GTK color selector"
-msgstr "Выборщик цветов"
+msgstr "Стандартный способ выбора цветов GTK"
 
 #: ../gui/colors/hsvwheel.py:91
 msgid "HSV wheel"
 msgstr "Круг HSV"
 
 #: ../gui/colors/hsvwheel.py:95
-#, fuzzy
 msgid "Saturation and Value colour changer."
-msgstr "Изменить насыщенность и значение"
+msgstr "Изменяет насыщенность и оттенок."
 
 #: ../gui/colors/palette.py:416 ../gui/colors/palette.py:472
 msgid "GIMP palette file (*.gpl)"
@@ -647,16 +688,15 @@ msgstr "Палитра"
 
 #: ../gui/colors/paletteview.py:77
 msgid "Set the color from a loadable, editable palette."
-msgstr ""
+msgstr "Выбрать цвет из загружаемой и редактируемой палитры."
 
 #: ../gui/colors/paletteview.py:123
 msgid "Palette Editor"
 msgstr "Редактор палитры"
 
 #: ../gui/colors/paletteview.py:158
-#, fuzzy
 msgid "Load from a GIMP palette file"
-msgstr "Открыть палитру…"
+msgstr "Загрузить из файла палитры GIMP"
 
 #: ../gui/colors/paletteview.py:159
 msgid "Save to a GIMP palette file"
@@ -664,16 +704,15 @@ msgstr "Сохранить в файл палитры GIMP"
 
 #: ../gui/colors/paletteview.py:160
 msgid "Add a new empty swatch"
-msgstr ""
+msgstr "Добавить новую пустую ячейку"
 
 #: ../gui/colors/paletteview.py:161
-#, fuzzy
 msgid "Remove the current swatch"
-msgstr "Заново открыть текущий файл"
+msgstr "Удалить текущую ячейку"
 
 #: ../gui/colors/paletteview.py:162
 msgid "Remove all swatches"
-msgstr ""
+msgstr "Удалить все ячейки"
 
 #: ../gui/colors/paletteview.py:172
 msgid "Name:"
@@ -681,7 +720,7 @@ msgstr "Название:"
 
 #: ../gui/colors/paletteview.py:174
 msgid "Name or description for this palette"
-msgstr ""
+msgstr "Имя или описание для данной палитры"
 
 #: ../gui/colors/paletteview.py:182
 msgid "Columns:"
@@ -689,21 +728,19 @@ msgstr "Столбцов:"
 
 #: ../gui/colors/paletteview.py:183 ../gui/colors/paletteview.py:184
 msgid "Number of columns"
-msgstr ""
+msgstr "Количество столбцов"
 
 #: ../gui/colors/paletteview.py:197
 msgid "Color name:"
 msgstr "Название цвета:"
 
 #: ../gui/colors/paletteview.py:198
-#, fuzzy
 msgid "Current colour's name"
-msgstr "Текущий цвет против предыдущего использованного"
+msgstr "Название текущего цвета"
 
 #: ../gui/colors/paletteview.py:295
-#, fuzzy
 msgid "Empty palette slot"
-msgstr "Палитры GIMP"
+msgstr "Пустая ячейка палитры"
 
 #: ../gui/colors/paletteview.py:362
 msgid "Load palette"
@@ -717,34 +754,36 @@ msgstr "Сохранить палитру"
 msgid ""
 "Color swatch palette. Drop colors here and drag them around to organize."
 msgstr ""
+"Палитра цветовых образцов. Добавляйте цвета сюда и перетаскивайте их, чтобы "
+"упорядочить."
 
 #: ../gui/colors/paletteview.py:676
 msgid "Empty palette slot (drag a color here)"
-msgstr ""
+msgstr "Пустая ячейка палитры (перетащите сюда цвет)"
 
 #: ../gui/colors/picker.py:95
 msgid "Pick a color from the screen"
-msgstr ""
+msgstr "Выбрать цвет с экрана"
 
 #: ../gui/colors/sliders.py:88
 msgid "Component sliders"
-msgstr ""
+msgstr "Ползунки компонентов"
 
 #: ../gui/colors/sliders.py:92
 msgid "Adjust individual components of the colour."
-msgstr ""
+msgstr "Настроить отдельные компоненты цвета."
 
 #: ../gui/colors/sliders.py:138
 msgid "RGB Red"
-msgstr ""
+msgstr "Красный RGB"
 
 #: ../gui/colors/sliders.py:151
 msgid "RGB Green"
-msgstr ""
+msgstr "Зеленый RGB"
 
 #: ../gui/colors/sliders.py:164
 msgid "RGB Blue"
-msgstr ""
+msgstr "Синий RGB"
 
 #: ../gui/colors/sliders.py:207
 msgid "HCY Hue"
@@ -756,7 +795,7 @@ msgstr "Цветность HCY"
 
 #: ../gui/colors/sliders.py:230
 msgid "HCY Luma (Y')"
-msgstr ""
+msgstr "Светлота HCY (Y')"
 
 #: ../gui/colorwindow.py:26
 msgid "Colors"
@@ -808,16 +847,16 @@ msgid "Overwrite brush group?"
 msgstr "Перезаписать группу кистей?"
 
 #: ../gui/dialogs.py:169
-#, fuzzy
 msgid ""
 "<b>A group named `{groupname}' already exists.</b>\n"
 "Do you want to replace it, or should the new group be renamed?\n"
 "If you replace it, the brushes may be moved to a group called `"
 "{deleted_groupname}'."
 msgstr ""
-"<b>Группа под именем `%s' уже существует.</b>\n"
+"<b>Группа под именем `{groupname' уже существует.</b>\n"
 "Хотите ли вы заменить её, или переименовать новую группу?\n"
-"Если вы замените группу, кисти из неё будут перемещены в группу `%s'."
+"Если вы замените группу, кисти из неё будут перемещены в группу "
+"`{deleted_groupname}'."
 
 #: ../gui/dialogs.py:257
 msgid "Import brush package?"
@@ -849,9 +888,9 @@ msgid "Copy of %s"
 msgstr "Копия %s"
 
 #: ../gui/document.py:485
-#, fuzzy, python-format
+#, python-format
 msgid "Copy of Untitled layer #%d"
-msgstr "Безымянный слой #%d"
+msgstr "Копия безымянного слоя #%d"
 
 #: ../gui/document.py:492
 msgid "Layer Name"
@@ -876,18 +915,16 @@ msgid "Redo"
 msgstr "Вернуть"
 
 #: ../gui/drawwindow.py:474
-#, fuzzy
 msgid "Set current color"
-msgstr "Текущий цвет"
+msgstr "Выбрать текущий цвет"
 
 #: ../gui/drawwindow.py:634
 msgid "Leave Fullscreen Mode"
 msgstr "Покинуть полноэкранный режим"
 
 #: ../gui/drawwindow.py:635
-#, fuzzy
 msgid "UnFullscreen"
-msgstr "На весь экран"
+msgstr "Отменить \"на весь экран\""
 
 #: ../gui/drawwindow.py:638
 msgid "Enter Fullscreen Mode"
@@ -919,12 +956,11 @@ msgid "Import brush package..."
 msgstr "Импортировать пакет кистей..."
 
 #: ../gui/drawwindow.py:820
-#, fuzzy
 msgid ""
 "Copyright (C) 2005-2012\n"
 "Martin Renold and the MyPaint Development Team"
 msgstr ""
-"Авторские права © 2005-2010\n"
+"Авторские права © 2005-2012\n"
 "Мартин Ренольд и команда разработчиков MyPaint"
 
 #: ../gui/drawwindow.py:824
@@ -969,9 +1005,8 @@ msgid "patterns, brushes"
 msgstr "текстуры, кисти"
 
 #: ../gui/drawwindow.py:859
-#, fuzzy
 msgid "brushes, tool icons"
-msgstr "значки инструментов"
+msgstr "значки кистей и инструментов"
 
 #: ../gui/drawwindow.py:860
 msgid "brushes, patterns"
@@ -1002,20 +1037,17 @@ msgstr ""
 "нажмите эту клавишу."
 
 #: ../gui/drawwindow.py:879
-#, fuzzy
 msgid ""
 "Brush shortcut keys are used to quickly save/restore brush settings. You can "
 "paint with one hand and change brushes with the other, even in mid-stroke.\n"
 "\n"
 "There are 10 persistent memory slots available."
 msgstr ""
-"Это используется, чтобы быстро сохранять/восстанавливать параметры кистей с "
+"Сокращения используются, чтобы быстро сохранять/восстанавливать параметры "
+"кистей с "
 "использованием клавиатуры. Вы можете рисовать одной рукой и менять кисти "
 "другой, не прерываясь.\n"
-"Есть 10 ячеек памяти для хранения параметров кистей.\n"
-"Это 'анонимные' кисти, они не показываются в списке кистей. Но они "
-"сохраняются при выходе. Они также запоминают выбранный цвет --- в отличие от "
-"обычных кистей, которые никогда не меняют цвет при выборе."
+"Есть 10 ячеек памяти для хранения параметров кистей."
 
 #: ../gui/drawwindow.py:885
 msgid ""
@@ -1143,7 +1175,7 @@ msgstr "Рамка"
 #: ../gui/framewindow.py:479 ../gui/framewindow.py:480
 #: ../gui/framewindow.py:525 ../gui/framewindow.py:530
 msgid "px"
-msgstr ""
+msgstr "пк"
 
 #: ../gui/framewindow.py:281
 msgid "Height:"
@@ -1162,9 +1194,8 @@ msgid "Color:"
 msgstr "Цвет:"
 
 #: ../gui/framewindow.py:307
-#, fuzzy
 msgid "Frame Color"
-msgstr "Выбор цвета"
+msgstr "Цвет рамки"
 
 #: ../gui/framewindow.py:356
 msgid "Crop to Current Layer"
@@ -1172,7 +1203,7 @@ msgstr "По краям слоя"
 
 #: ../gui/framewindow.py:357
 msgid "Crop frame to the currently active layer"
-msgstr ""
+msgstr "Обрезать рамку до размера текущего слоя"
 
 #: ../gui/framewindow.py:359
 msgid "Crop to Document"
@@ -1180,7 +1211,7 @@ msgstr "По краям документа"
 
 #: ../gui/framewindow.py:360
 msgid "Crop frame to the combination of all layers"
-msgstr ""
+msgstr "Обрезать рамку до размера объединения всех слоев"
 
 #: ../gui/framewindow.py:367
 msgid ""
@@ -1277,6 +1308,8 @@ msgid ""
 "<b>{blendingmode_name}</b>\n"
 "{blendingmode_description}"
 msgstr ""
+"<b>{blendingmode_name}</b>\n"
+"{blendingmode_description}"
 
 #: ../gui/layerswindow.py:66
 msgid "Visible"
@@ -1293,7 +1326,7 @@ msgstr "Режим:"
 #: ../gui/layerswindow.py:92
 msgid ""
 "Blending mode: how the current layer combines with the layers underneath it."
-msgstr ""
+msgstr "Режим смешивания: как текущий слой объединяется со слоями под ним."
 
 #: ../gui/layerswindow.py:105
 msgid "Opacity:"
@@ -1304,6 +1337,8 @@ msgid ""
 "Layer opacity: how much of the current layer to use. Smaller values make it "
 "more transparent."
 msgstr ""
+"Непрозрачность слоя: какую долю текущего слоя использовать. Меньшие значения "
+"делают слой более прозрачным."
 
 #: ../gui/layerswindow.py:224
 #, python-format
@@ -1325,38 +1360,35 @@ msgstr "Развернуть"
 
 #: ../gui/layout.py:703
 msgid "Snap out"
-msgstr ""
+msgstr "Отсоединить"
 
 #: ../gui/layout.py:705
 msgid "Close"
 msgstr "Закрыть"
 
 #: ../gui/linemode.py:21
-#, fuzzy
 msgid "Entrance Pressure"
-msgstr "Сила нажатия на входе"
+msgstr "Сила нажатия в начале линии"
 
 #: ../gui/linemode.py:21
 msgid "Stroke entrance pressure for line tools"
-msgstr ""
+msgstr "Сила нажатия в начале для инструментов, проводящих линии"
 
 #: ../gui/linemode.py:22
-#, fuzzy
 msgid "Midpoint Pressure"
-msgstr "Сила нажатия на входе"
+msgstr "Сила нажатия в середине линии"
 
 #: ../gui/linemode.py:22
 msgid "Mid-Stroke pressure for line tools"
-msgstr ""
+msgstr "Сила нажатия в середине для инструментов, проводящих линии"
 
 #: ../gui/linemode.py:23
-#, fuzzy
 msgid "Exit Pressure"
-msgstr "Сила нажатия"
+msgstr "Сила нажатия в конце линии"
 
 #: ../gui/linemode.py:23
 msgid "Stroke exit pressure for line tools"
-msgstr ""
+msgstr "Сила нажатия в конце для инструментов, проводящих линии"
 
 #: ../gui/linemode.py:24
 msgid "Head"
@@ -1410,6 +1442,9 @@ msgid ""
 "Scale input pressure to brush pressure. This is applied to all input "
 "devices. The mouse button has an input pressure of 0.5 when pressed."
 msgstr ""
+"Перевод исходной силы нажатия в  силу нажатия, используемую кистью. Это "
+"применяется ко всем устройствам ввода. Для нажатой кнопки мыши сила нажатия "
+"считается равной 0.5."
 
 #. TRANSLATORS: Graph y-axis label
 #: ../gui/preferenceswindow.py:80
@@ -1430,6 +1465,8 @@ msgid ""
 "<small>Space can be used like Button2. Note that some pads have buttons that "
 "cannot be held down.</small>"
 msgstr ""
+"<small>Пробел можно использовать как Button2. Замечание: что кнопки некоторых "
+"планшетов невозможно зажать.</small>"
 
 #: ../gui/preferenceswindow.py:131
 msgid "Buttons"
@@ -1509,19 +1546,19 @@ msgstr "Создать блокнот"
 
 #: ../gui/spinbox.py:32
 msgid "Previous item"
-msgstr ""
+msgstr "Предыдущий элемент"
 
 #: ../gui/spinbox.py:35
 msgid "Next item"
-msgstr ""
+msgstr "Следующий элемент"
 
 #: ../gui/spinbox.py:97
 msgid "(Nothing to show)"
-msgstr ""
+msgstr "(нечего показывать)"
 
 #: ../gui/toolbar.py:31
 msgid "File handling"
-msgstr ""
+msgstr "Управление файлами"
 
 #: ../gui/toolbar.py:32
 msgid "Scraps switcher"
@@ -1537,19 +1574,19 @@ msgstr "Режимы смешивания"
 
 #: ../gui/toolbar.py:35
 msgid "Editing Modes"
-msgstr ""
+msgstr "Режимы редактирования"
 
 #: ../gui/toolbar.py:36
 msgid "View (Main)"
-msgstr ""
+msgstr "Вид (главная)"
 
 #: ../gui/toolbar.py:37
 msgid "View (Alternative/Secondary)"
-msgstr ""
+msgstr "Вид (вторичная)"
 
 #: ../gui/toolbar.py:38
 msgid "View (Resetting)"
-msgstr ""
+msgstr "Вид (сброс)"
 
 #: ../gui/toolbar.py:39
 msgid "Subwindows"
@@ -1572,15 +1609,13 @@ msgid "Brush Settings"
 msgstr "Параметры кисти"
 
 #: ../gui/toolbar.py:90
-#, fuzzy
 msgid "Line Mode"
-msgstr "Режим смешивания"
+msgstr "Режимы линий"
 
 #. Pressure settings.
 #: ../gui/toolbar.py:179
-#, fuzzy
 msgid "Line Pressure"
-msgstr "Сила нажатия"
+msgstr "Сила нажатия для линий"
 
 #: ../gui/toolbar.py:227
 msgid "Color History and other tools"
@@ -1592,9 +1627,8 @@ msgid "Change Color"
 msgstr "Выбор цвета"
 
 #: ../gui/toolbar.py:288
-#, fuzzy
 msgid "Color Window"
-msgstr "Цветовой круг"
+msgstr "Диалог выбора цвета"
 
 #. History
 #. Brush history
@@ -1603,9 +1637,8 @@ msgid "Recently Used"
 msgstr "Недавно использованные"
 
 #: ../gui/toolbar.py:335
-#, fuzzy
 msgid "Brush history etc."
-msgstr "Редактор кистей..."
+msgstr "История кистей и т.п."
 
 #. A limited subset of the available brush settings.
 #: ../gui/toolbar.py:465
@@ -1620,7 +1653,7 @@ msgstr "%s:"
 #: ../gui/toolbar.py:498
 #, python-format
 msgid "Restore '%s' to this brush's saved value"
-msgstr ""
+msgstr "Вернуть '%s' к значению, сохраненному в текущей кисти"
 
 #. Access to the brush settings window, and a big reset-all button
 #. aligned with the settings above.
@@ -1634,7 +1667,7 @@ msgstr "Восстановить параметры"
 
 #: ../gui/toolbar.py:533
 msgid "Reset all brush settings to the current brush's saved values"
-msgstr ""
+msgstr "Вернуть все настройки кисти к значениям, сохраненным в текущей кисти"
 
 #: ../gui/toolbar.py:543
 msgid "Brush Blend Mode"
@@ -1642,11 +1675,11 @@ msgstr "Режим смешивания кисти"
 
 #: ../lib/command.py:92
 msgid "Unknown Action"
-msgstr ""
+msgstr "Неизвестное действие"
 
 #: ../lib/command.py:153
 msgid "Painting"
-msgstr ""
+msgstr "Рисование"
 
 #: ../lib/command.py:169
 msgid "Clear Layer"
@@ -1677,22 +1710,20 @@ msgid "Select Layer"
 msgstr "Выбрать слой"
 
 #: ../lib/command.py:319
-#, fuzzy
 msgid "Move Layer on Canvas"
-msgstr "Переместить слой"
+msgstr "Переместить слой на холсте"
 
 #: ../lib/command.py:344
 msgid "Reorder Layer in Stack"
-msgstr ""
+msgstr "Переместить слой в стеке"
 
 #: ../lib/command.py:370
 msgid "Duplicate Layer"
 msgstr "Создать копию слоя"
 
 #: ../lib/command.py:391
-#, fuzzy
 msgid "Reorder Layer Stack"
-msgstr "Удалить слой"
+msgstr "Реорганизовать слои в стеке"
 
 #: ../lib/command.py:412
 msgid "Rename Layer"
@@ -1712,7 +1743,7 @@ msgstr "Заблокировать слой"
 
 #: ../lib/command.py:475
 msgid "Unlock Layer"
-msgstr ""
+msgstr "Разблокировать слой"
 
 #: ../lib/command.py:478
 msgid "Change Layer Visibility"
@@ -1764,7 +1795,7 @@ msgstr "Неизвестное расширение: %s"
 
 #: ../lib/layer.py:18
 msgid "The top layer only, without blending colors."
-msgstr ""
+msgstr "Только верхний слой, без смешивания цветов"
 
 #: ../lib/layer.py:19
 msgid "Multiply"
@@ -1775,6 +1806,8 @@ msgid ""
 "Similar to loading multiple slides into a single projector's slot and "
 "projecting the combined result."
 msgstr ""
+"Похоже на работу слайд-проектора, в который вставили несколько слайдов "
+"одновременно."
 
 #: ../lib/layer.py:22
 msgid "Screen"
@@ -1797,22 +1830,20 @@ msgid ""
 msgstr ""
 
 #: ../lib/layer.py:28
-#, fuzzy
 msgid "Darken"
 msgstr "Темнее"
 
 #: ../lib/layer.py:29
 msgid "The top layer is used only where it is darker than the backdrop."
-msgstr ""
+msgstr "Верхний слой используется только там, где он темнее, чем нижний слой."
 
 #: ../lib/layer.py:30
-#, fuzzy
 msgid "Lighten"
 msgstr "Светлее"
 
 #: ../lib/layer.py:31
 msgid "The top layer is used only where it is lighter than the backdrop."
-msgstr ""
+msgstr "Верхний слой используется только там, где он светлее, чем нижний слой."
 
 #: ../lib/layer.py:32
 msgid "Dodge"
@@ -1837,9 +1868,8 @@ msgid ""
 msgstr ""
 
 #: ../lib/layer.py:40
-#, fuzzy
 msgid "Hard Light"
-msgstr "Высота"
+msgstr "Жёсткий свет"
 
 #: ../lib/layer.py:41
 msgid "Similar to shining a harsh spotlight onto the backdrop."
@@ -1847,7 +1877,7 @@ msgstr ""
 
 #: ../lib/layer.py:42
 msgid "Soft Light"
-msgstr ""
+msgstr "Мягкий свет"
 
 #: ../lib/layer.py:43
 msgid "Like shining a diffuse spotlight onto the backdrop."
@@ -1859,7 +1889,7 @@ msgstr "Разница"
 
 #: ../lib/layer.py:45
 msgid "Subtracts the darker color from the lighter of the two."
-msgstr ""
+msgstr "Вычитает более темный цвет из более светлого."
 
 #: ../lib/layer.py:46
 msgid "Exclusion"
@@ -1867,7 +1897,7 @@ msgstr "Исключение"
 
 #: ../lib/layer.py:47
 msgid "Similar to the 'Difference' mode, but lower in contrast."
-msgstr ""
+msgstr "Похоже на слой 'Разница', но результат менее контрастный."
 
 #: ../lib/layer.py:48
 msgid "Hue"
@@ -1878,6 +1908,7 @@ msgid ""
 "Combines the hue of the top layer with the saturation and luminosity of the "
 "backdrop."
 msgstr ""
+"Объединяет оттенок верхнего слоя с насыщенностью и светлотой нижнего слоя."
 
 #: ../lib/layer.py:51
 msgid "Saturation"
@@ -1888,22 +1919,25 @@ msgid ""
 "Applies the saturation of the top layer's colors to the hue and luminosity "
 "of the backdrop."
 msgstr ""
+"Применяет насыщенность цветов верхнего слоя к оттенку и светлоте нижнего слоя."
 
 #: ../lib/layer.py:55
 msgid ""
 "Applies the hue and saturation of the top layer to the luminosity of the "
 "backdrop."
 msgstr ""
+"Применяет оттенок и насыщенность верхнего слоя к светлоте нижнего слоя."
 
 #: ../lib/layer.py:57
 msgid "Luminosity"
-msgstr ""
+msgstr "Светлота"
 
 #: ../lib/layer.py:58
 msgid ""
 "Applies the luminosity of the top layer to the hue and saturation of the "
 "backdrop."
 msgstr ""
+"Применяет светлоту верхнего слоя к оттенку и насыщенности нижнего слоя."
 
 #: ../po/tmp/mypaint.xml.h:1
 msgctxt "Menu|File|"
@@ -1921,22 +1955,21 @@ msgstr "Открыть..."
 
 #: ../po/tmp/mypaint.xml.h:4
 msgid "Open a file, replacing the current painting"
-msgstr ""
+msgstr "Открыть файл, заменив текущий рисунок"
 
 #: ../po/tmp/mypaint.xml.h:5
-#, fuzzy
 msgctxt "Menu|File|"
 msgid "Open Most Recent"
-msgstr "Недавние рисунки"
+msgstr "Открыть последний"
 
 #: ../po/tmp/mypaint.xml.h:6
 msgid "Open the last file you saved"
-msgstr ""
+msgstr "Открыть последний файл, который вы сохраняли"
 
 #: ../po/tmp/mypaint.xml.h:7
 msgctxt "Menu|File|"
 msgid "Revert"
-msgstr ""
+msgstr "Вернуть"
 
 #: ../po/tmp/mypaint.xml.h:8
 msgid "Reload the current file"
@@ -1970,7 +2003,6 @@ msgid "Export to a file"
 msgstr "Экспортировать в файл"
 
 #: ../po/tmp/mypaint.xml.h:15
-#, fuzzy
 msgctxt "Menu|File|"
 msgid "Save As Scrap"
 msgstr "Сохранить как черновик"
@@ -1980,26 +2012,26 @@ msgid ""
 "Saves to a new scrap file. If the drawing is currently saved as a scrap, "
 "this will write a new revision of it."
 msgstr ""
+"Сохраняет в новый файл черновика. Если изображение уже сохранено как "
+"черновик, то это сохранит новую версию черновика."
 
 #: ../po/tmp/mypaint.xml.h:17
-#, fuzzy
 msgctxt "Menu|File|"
 msgid "Open Previous Scrap"
 msgstr "Открыть предыдущий черновик"
 
 #: ../po/tmp/mypaint.xml.h:18
 msgid "Load the previous scrap file, replacing the current drawing"
-msgstr ""
+msgstr "Загрузить предыдущий файл черновика, заменяя текущее изображение"
 
 #: ../po/tmp/mypaint.xml.h:19
-#, fuzzy
 msgctxt "Menu|File|"
 msgid "Open Next Scrap"
 msgstr "Открыть следующий черновик"
 
 #: ../po/tmp/mypaint.xml.h:20
 msgid "Load the next scrap file, replacing the current drawing"
-msgstr ""
+msgstr "Загрузить следующий файл черновика, заменяя текущее изображение"
 
 #: ../po/tmp/mypaint.xml.h:21
 msgctxt "Menu|Brush|"
@@ -2011,15 +2043,13 @@ msgid "Increase brush radius"
 msgstr "Увеличить радиус кисти"
 
 #: ../po/tmp/mypaint.xml.h:23
-#, fuzzy
 msgctxt "Menu|Brush|"
 msgid "Smaller"
 msgstr "Меньше"
 
 #: ../po/tmp/mypaint.xml.h:24
-#, fuzzy
 msgid "Decrease brush radius"
-msgstr "Увеличить прозрачность слоя"
+msgstr "Уменьшить радиус кисти"
 
 #: ../po/tmp/mypaint.xml.h:25
 msgctxt "Menu|Brush|"
@@ -2036,9 +2066,8 @@ msgid "Decrease Opacity"
 msgstr "Увеличить прозрачность"
 
 #: ../po/tmp/mypaint.xml.h:28
-#, fuzzy
 msgid "Decrease brush opacity"
-msgstr "Увеличить прозрачность слоя"
+msgstr "Увеличить прозрачность кисти"
 
 #: ../po/tmp/mypaint.xml.h:29
 msgctxt "Menu|Color|Adjust Color|"
@@ -2050,39 +2079,33 @@ msgid "Increase color brightness"
 msgstr "Увеличить яркость цвета"
 
 #: ../po/tmp/mypaint.xml.h:31
-#, fuzzy
 msgctxt "Menu|Color|Adjust Color|"
 msgid "Darker"
 msgstr "Темнее"
 
 #: ../po/tmp/mypaint.xml.h:32
 msgid "Decrease color brightness"
-msgstr ""
+msgstr "Уменьшить светлоту цвета"
 
 #: ../po/tmp/mypaint.xml.h:33
-#, fuzzy
 msgctxt "Menu|Color|Adjust Color|"
 msgid "Hue Anticlockwise"
-msgstr "Повернуть против часовой стрелки"
+msgstr "Повернуть оттенок против часовой стрелки"
 
 #: ../po/tmp/mypaint.xml.h:34
-#, fuzzy
 msgid "Rotate color hue anticlockwise"
-msgstr "Повернуть против часовой стрелки"
+msgstr "Повернуть оттенок цвета против часовой стрелки"
 
 #: ../po/tmp/mypaint.xml.h:35
-#, fuzzy
 msgctxt "Menu|Color|Adjust Color|"
 msgid "Hue Clockwise"
-msgstr "Повернуть по часовой стрелке"
+msgstr "Повернуть оттенок по часовой стрелке"
 
 #: ../po/tmp/mypaint.xml.h:36
-#, fuzzy
 msgid "Rotate color hue clockwise"
-msgstr "Повернуть против часовой стрелки"
+msgstr "Повернуть оттенок цвета против часовой стрелки"
 
 #: ../po/tmp/mypaint.xml.h:37
-#, fuzzy
 msgctxt "Menu|Color|Adjust Color|"
 msgid "Purer"
 msgstr "Чище"
@@ -2092,41 +2115,36 @@ msgid "Increase color saturation"
 msgstr "Увеличить насыщенность цвета"
 
 #: ../po/tmp/mypaint.xml.h:39
-#, fuzzy
 msgctxt "Menu|Color|Adjust Color|"
 msgid "Grayer"
 msgstr "Серее"
 
 #: ../po/tmp/mypaint.xml.h:40
-#, fuzzy
 msgid "Decrease color saturation"
-msgstr "Уменьшить рисунок"
+msgstr "Уменьшить насыщенность цвета"
 
 #: ../po/tmp/mypaint.xml.h:41
 msgctxt "Menu|Brush|"
 msgid "Pick Stroke and Layer"
-msgstr ""
+msgstr "Выбрать мазок и слой"
 
 #: ../po/tmp/mypaint.xml.h:42
 msgid "Pick brushstroke: settings and layer"
-msgstr ""
+msgstr "Выбрать мазок: настройки и слой"
 
 #: ../po/tmp/mypaint.xml.h:43
-#, fuzzy
 msgctxt "Menu|Brush|Shortcut Keys|"
 msgid "Restore Color"
-msgstr "Вернуть кисть %d"
+msgstr "Вернуть цвет"
 
 #: ../po/tmp/mypaint.xml.h:44
-#, fuzzy
 msgctxt "Menu|Brush|Shortcut Keys|"
 msgid "Save to Most Recent"
-msgstr "Сохранить в последнюю взятую"
+msgstr "Сохранить в последнюю использованную"
 
 #: ../po/tmp/mypaint.xml.h:45
-#, fuzzy
 msgid "Save brush to the most recent shortcut"
-msgstr "Сохранить в последнюю взятую"
+msgstr "Сохранить в последнее сокращение"
 
 #: ../po/tmp/mypaint.xml.h:46
 msgctxt "Menu|Layer|"
@@ -2134,9 +2152,8 @@ msgid "Clear"
 msgstr "Очистить"
 
 #: ../po/tmp/mypaint.xml.h:47
-#, fuzzy
 msgid "Clear the current layer"
-msgstr "Заново открыть текущий файл"
+msgstr "Очистить текущий слой"
 
 #: ../po/tmp/mypaint.xml.h:48
 msgctxt "Menu|Layer|"
@@ -2145,16 +2162,16 @@ msgstr "Скопировать"
 
 #: ../po/tmp/mypaint.xml.h:49
 msgid "Copy the current layer to the clipboard"
-msgstr ""
+msgstr "Скопировать текущий слой в буфер обмена"
 
 #: ../po/tmp/mypaint.xml.h:50
 msgctxt "Menu|Layer|"
 msgid "Paste"
-msgstr ""
+msgstr "Вставить"
 
 #: ../po/tmp/mypaint.xml.h:51
 msgid "Replaces the layer with the clipboard's contents"
-msgstr ""
+msgstr "Заменить слой содержимым буфера обмена"
 
 #: ../po/tmp/mypaint.xml.h:52
 msgctxt "Menu|Layer|Go to Layer|"
@@ -2163,7 +2180,7 @@ msgstr "Под курсором"
 
 #: ../po/tmp/mypaint.xml.h:53
 msgid "Choose a layer by picking a brushstroke on it"
-msgstr ""
+msgstr "Выбрать слой, щелкнув мазок кисти на нем"
 
 #: ../po/tmp/mypaint.xml.h:54
 msgctxt "Menu|Layer|Go to Layer|"
@@ -2172,7 +2189,7 @@ msgstr "Выше"
 
 #: ../po/tmp/mypaint.xml.h:55
 msgid "Go one layer up in the layers stack"
-msgstr ""
+msgstr "Перейти на один уровень выше в стеке слоёе"
 
 #: ../po/tmp/mypaint.xml.h:56
 msgctxt "Menu|Layer|Go to Layer|"
@@ -2181,37 +2198,34 @@ msgstr "Ниже"
 
 #: ../po/tmp/mypaint.xml.h:57
 msgid "Go one layer down in the layers stack"
-msgstr ""
+msgstr "Перейти на один уровень ниже в стеке слоёв"
 
 #: ../po/tmp/mypaint.xml.h:58
-#, fuzzy
 msgctxt "Menu|Layer|"
 msgid "New (above)"
 msgstr "Создать (над выбранным)"
 
 #: ../po/tmp/mypaint.xml.h:59
 msgid "Add a new layer above the current layer"
-msgstr ""
+msgstr "Добавить новый слой над текущим слоем"
 
 #: ../po/tmp/mypaint.xml.h:60
-#, fuzzy
 msgctxt "Menu|Layer|"
 msgid "New (below)"
 msgstr "Создать (под выбранным)"
 
 #: ../po/tmp/mypaint.xml.h:61
 msgid "Add a new layer below the current layer"
-msgstr ""
+msgstr "Добавить новый слой под текущим слоем"
 
 #: ../po/tmp/mypaint.xml.h:62
-#, fuzzy
 msgctxt "Menu|Layer|"
 msgid "Merge Down"
 msgstr "Объединить с нижним"
 
 #: ../po/tmp/mypaint.xml.h:63
 msgid "Merge layer with the one beneath it"
-msgstr ""
+msgstr "Объединить слой с тем, который находится ниже его"
 
 #: ../po/tmp/mypaint.xml.h:64
 msgctxt "Menu|Layer|"
@@ -2240,20 +2254,20 @@ msgstr "Уменьшить"
 #: ../po/tmp/mypaint.xml.h:69
 msgctxt "Menu|Layer|"
 msgid "Raise"
-msgstr ""
+msgstr "Поднять"
 
 #: ../po/tmp/mypaint.xml.h:70
 msgid "Raise the current layer one step in the layers stack"
-msgstr ""
+msgstr "Поднять слой на один уровень в стеке слоёв"
 
 #: ../po/tmp/mypaint.xml.h:71
 msgctxt "Menu|Layer|"
 msgid "Lower"
-msgstr ""
+msgstr "Опустить"
 
 #: ../po/tmp/mypaint.xml.h:72
 msgid "Lower the current layer one step in the layers stack"
-msgstr ""
+msgstr "Опустить слой на один уровень в стеке слоёв"
 
 #: ../po/tmp/mypaint.xml.h:73
 msgctxt "Menu|Layer|"
@@ -2261,9 +2275,8 @@ msgid "Duplicate"
 msgstr "Создать копию"
 
 #: ../po/tmp/mypaint.xml.h:74
-#, fuzzy
 msgid "Make an exact duplicate of the current layer"
-msgstr "Разные варианты насыщенности этого цвета"
+msgstr "Создать точную копию текущего слоя"
 
 #: ../po/tmp/mypaint.xml.h:75
 msgctxt "Menu|Layer|"
@@ -2272,10 +2285,9 @@ msgstr "Переименовать..."
 
 #: ../po/tmp/mypaint.xml.h:76
 msgid "Enter a new name for the current layer"
-msgstr ""
+msgstr "Введите новое имя для текущего слоя"
 
 #: ../po/tmp/mypaint.xml.h:77
-#, fuzzy
 msgctxt "Menu|Layer|"
 msgid "Locked"
 msgstr "Заблокирован"
@@ -2283,16 +2295,17 @@ msgstr "Заблокирован"
 #: ../po/tmp/mypaint.xml.h:78
 msgid "The current layer's locked state: locked layers cannot be drawn to"
 msgstr ""
+"Состояние блокировки текущего слоя: рисование на заблокированных слоях "
+"невозможно"
 
 #: ../po/tmp/mypaint.xml.h:79
-#, fuzzy
 msgctxt "Menu|Layer|"
 msgid "Visible"
 msgstr "Видим"
 
 #: ../po/tmp/mypaint.xml.h:80
 msgid "The current layer's visibility state"
-msgstr ""
+msgstr "Состояние видимости текущего слоя"
 
 #: ../po/tmp/mypaint.xml.h:81
 msgctxt "Menu|View|"
@@ -2310,7 +2323,7 @@ msgstr "Уместить"
 
 #: ../po/tmp/mypaint.xml.h:84
 msgid "Zoom to fit the document, and recenter"
-msgstr ""
+msgstr "Изменить масштаб отображения, чтобы уместить изображение целиком"
 
 #: ../po/tmp/mypaint.xml.h:85
 msgctxt "Menu|View|"
@@ -2333,7 +2346,6 @@ msgid "Mirror"
 msgstr "Зеркальное отражение"
 
 #: ../po/tmp/mypaint.xml.h:89
-#, fuzzy
 msgctxt "Menu|View|Adjust View|"
 msgid "Zoom In"
 msgstr "Приблизить"
@@ -2343,7 +2355,6 @@ msgid "Increase magnification"
 msgstr "Увеличить рисунок"
 
 #: ../po/tmp/mypaint.xml.h:91
-#, fuzzy
 msgctxt "Menu|View|Adjust View|"
 msgid "Zoom Out"
 msgstr "Отдалить"
@@ -2353,26 +2364,22 @@ msgid "Decrease magnification"
 msgstr "Уменьшить рисунок"
 
 #: ../po/tmp/mypaint.xml.h:93
-#, fuzzy
 msgctxt "Menu|View|Adjust View|"
 msgid "Rotate Counterclockwise"
 msgstr "Повернуть против часовой стрелки"
 
 #: ../po/tmp/mypaint.xml.h:94
-#, fuzzy
 msgid "Rotate the view counterclockwise"
-msgstr "Повернуть против часовой стрелки"
+msgstr "Повернуть отображение против часовой стрелки"
 
 #: ../po/tmp/mypaint.xml.h:95
-#, fuzzy
 msgctxt "Menu|View|Adjust View|"
 msgid "Rotate Clockwise"
 msgstr "Повернуть по часовой стрелке"
 
 #: ../po/tmp/mypaint.xml.h:96
-#, fuzzy
 msgid "Rotate the view clockwise"
-msgstr "Повернуть вид влево"
+msgstr "Повернуть отображение по часовой стрелке"
 
 #: ../po/tmp/mypaint.xml.h:97
 msgctxt "Menu|View|Adjust View|"
@@ -2380,9 +2387,8 @@ msgid "Mirror Horizontal"
 msgstr "Отразить по горизонтали"
 
 #: ../po/tmp/mypaint.xml.h:98
-#, fuzzy
 msgid "Flip the view left to right"
-msgstr "Повернуть вид вправо"
+msgstr "Отразить отображение слева направо"
 
 #: ../po/tmp/mypaint.xml.h:99
 msgctxt "Menu|View|Adjust View|"
@@ -2391,16 +2397,14 @@ msgstr "Отразить по вертикали"
 
 #: ../po/tmp/mypaint.xml.h:100
 msgid "Flip the view upside-down"
-msgstr ""
+msgstr "Отразить отображение сверху вниз"
 
 #: ../po/tmp/mypaint.xml.h:101
-#, fuzzy
 msgctxt "Menu|View|"
 msgid "Layer Solo"
 msgstr "Показать только активный слой"
 
 #: ../po/tmp/mypaint.xml.h:102
-#, fuzzy
 msgctxt "Menu|View|"
 msgid "Hide Layers Above Current"
 msgstr "Скрыть слои над активным"
@@ -2413,30 +2417,27 @@ msgstr "Режим смешивания"
 #: ../po/tmp/mypaint.xml.h:104
 msgctxt "Menu|Edit|"
 msgid "Symmetrical Painting"
-msgstr ""
+msgstr "Симметричное рисование"
 
 #: ../po/tmp/mypaint.xml.h:105
 msgid "Mirrors all strokes drawn around the vertical axis"
-msgstr ""
+msgstr "Отражает все мазки относительно вертикальной оси"
 
 #: ../po/tmp/mypaint.xml.h:106
-#, fuzzy
 msgctxt "Menu|Help|Debug|"
 msgid "Print Brush Input Values to Console"
 msgstr "Печатать значения входов кисти на стандартный выход"
 
 #: ../po/tmp/mypaint.xml.h:107
-#, fuzzy
 msgctxt "Menu|Help|Debug|"
 msgid "Visualize Rendering"
 msgstr "Визуализировать рендеринг"
 
 #: ../po/tmp/mypaint.xml.h:108
 msgid "Show rendering updates on-screen, for debugging"
-msgstr ""
+msgstr "Показывать обновления рендеринга на экране, для отладки"
 
 #: ../po/tmp/mypaint.xml.h:109
-#, fuzzy
 msgctxt "Menu|Help|Debug|"
 msgid "Disable GTK Double Buffering"
 msgstr "Отключить двойную буфферизацию GTK"
@@ -2447,7 +2448,6 @@ msgid "File"
 msgstr "Файл"
 
 #: ../po/tmp/mypaint.xml.h:111
-#, fuzzy
 msgctxt "Menu|File|"
 msgid "Quit"
 msgstr "Выход"
@@ -2455,7 +2455,7 @@ msgstr "Выход"
 #: ../po/tmp/mypaint.xml.h:112
 msgctxt "Menu|File|"
 msgid "Frame Enabled"
-msgstr ""
+msgstr "Рамка включена"
 
 #: ../po/tmp/mypaint.xml.h:113
 msgctxt "Menu|"
@@ -2468,82 +2468,73 @@ msgid "Color"
 msgstr "Цвет"
 
 #: ../po/tmp/mypaint.xml.h:115
-#, fuzzy
 msgctxt "Menu|Color|"
 msgid "Adjust Color"
-msgstr "Текущий цвет"
+msgstr "Настроить цвет"
 
 #: ../po/tmp/mypaint.xml.h:116
-#, fuzzy
 msgctxt "Menu|Color|"
 msgid "Pick Color"
 msgstr "Выбрать цвет"
 
 #: ../po/tmp/mypaint.xml.h:117
-#, fuzzy
 msgctxt "Menu|Color|"
 msgid "Color History"
 msgstr "История цветов"
 
 #: ../po/tmp/mypaint.xml.h:118
-#, fuzzy
 msgctxt "Menu|Color|"
 msgid "Change Color"
-msgstr "Выбор цвета"
+msgstr "Изменить цвет"
 
 #: ../po/tmp/mypaint.xml.h:119
-#, fuzzy
 msgid "Color changer popup (crossed bowl)"
-msgstr "Корректор цветов"
+msgstr "Выбор цвета (чаша и перекрестие)"
 
 #: ../po/tmp/mypaint.xml.h:120
-#, fuzzy
 msgctxt "Menu|Color|"
 msgid "Change Color (wash)"
-msgstr "Выбор цвета"
+msgstr "Выбор цвета (смешивание)"
 
 #: ../po/tmp/mypaint.xml.h:121
-#, fuzzy
 msgid "Color changer popup (wash)"
-msgstr "Корректор цветов"
+msgstr "Выбор цветов (смешивание)"
 
 #: ../po/tmp/mypaint.xml.h:122
-#, fuzzy
 msgctxt "Menu|Color|"
 msgid "Change Color (ring)"
-msgstr "Выбор цвета"
+msgstr "Выбор цвета (круг)"
 
 #: ../po/tmp/mypaint.xml.h:123
 msgid "Color changer popup (concentric rings)"
-msgstr ""
+msgstr "Выбор цвета (концентрические круги)"
 
 #: ../po/tmp/mypaint.xml.h:124
-#, fuzzy
 msgctxt "Menu|Color|"
 msgid "Color Details"
-msgstr "Подробнее"
+msgstr "Подробнее о цвете"
 
 #: ../po/tmp/mypaint.xml.h:125
 msgid "Color details dialog with text entry"
-msgstr ""
+msgstr "Диалог настройки цвета с числовым вводом"
 
 #: ../po/tmp/mypaint.xml.h:126
 msgctxt "Menu|Color"
 msgid "Next Palette Color"
-msgstr ""
+msgstr "Следующий цвет в палитре"
 
 #: ../po/tmp/mypaint.xml.h:127
 msgid "Next color in the palette"
-msgstr ""
+msgstr "Следующий цвет в палитре"
 
 #: ../po/tmp/mypaint.xml.h:128
 msgctxt "Menu|Color|"
 msgid "Previous Palette Color"
-msgstr ""
+msgstr "Предыдущий цвет в палитре"
 
 #: ../po/tmp/mypaint.xml.h:129
 msgid "Previous color in the palette"
-msgstr ""
+msgstr "Предыдущий цвет в палитре"
 
 #: ../po/tmp/mypaint.xml.h:130
 msgctxt "Menu|"
@@ -2576,7 +2567,6 @@ msgid "Open..."
 msgstr "Открыть..."
 
 #: ../po/tmp/mypaint.xml.h:136
-#, fuzzy
 msgctxt "Menu|Scratchpad|"
 msgid "Save"
 msgstr "Сохранить"
@@ -2589,39 +2579,34 @@ msgstr "Сохранить как..."
 #: ../po/tmp/mypaint.xml.h:138
 msgctxt "Menu|Scratchpad|"
 msgid "Revert"
-msgstr ""
+msgstr "Отменить все"
 
 #: ../po/tmp/mypaint.xml.h:139
-#, fuzzy
 msgctxt "Menu|Scratchpad|"
 msgid "Save as Default"
 msgstr "Использовать по умолчанию"
 
 #: ../po/tmp/mypaint.xml.h:140
-#, fuzzy
 msgctxt "Menu|Scratchpad|"
 msgid "Clear Default"
-msgstr "Использовать по умолчанию"
+msgstr "Сбросить настройки по умолчанию"
 
 #: ../po/tmp/mypaint.xml.h:141
-#, fuzzy
 msgctxt "Menu|Scratchpad|"
 msgid "Use Main Background"
-msgstr "Фон"
+msgstr "Использовать фон основного изображения"
 
 #: ../po/tmp/mypaint.xml.h:142
-#, fuzzy
 msgctxt "Menu|Scratchpad|"
 msgid "Color Dabs"
-msgstr "Подробнее"
+msgstr "Мазки цветов"
 
 #: ../po/tmp/mypaint.xml.h:143
 msgctxt "Menu|Scratchpad|Color Dabs|"
 msgid "Render from File..."
-msgstr ""
+msgstr "Нарисовать из файла..."
 
 #: ../po/tmp/mypaint.xml.h:144
-#, fuzzy
 msgctxt "Menu|Scratchpad|Color Dabs|"
 msgid "Saturation Spread for Current Color"
 msgstr "Разные варианты насыщенности этого цвета"
@@ -2632,7 +2617,6 @@ msgid "Brush"
 msgstr "Кисть"
 
 #: ../po/tmp/mypaint.xml.h:146
-#, fuzzy
 msgctxt "Menu|Brush|"
 msgid "Shortcut Keys"
 msgstr "Сокращения"
@@ -2643,22 +2627,19 @@ msgid "Help"
 msgstr "Справка"
 
 #: ../po/tmp/mypaint.xml.h:148
-#, fuzzy
 msgctxt "Menu|Brush|"
 msgid "Change Brush"
 msgstr "Выбор кисти"
 
 #: ../po/tmp/mypaint.xml.h:149
-#, fuzzy
 msgctxt "Menu|Brush|"
 msgid "Get More Brushes..."
-msgstr "Вернуть кисть %d"
+msgstr "Найти больше кистей..."
 
 #: ../po/tmp/mypaint.xml.h:150
-#, fuzzy
 msgctxt "Menu|Brush|"
 msgid "Import Brushes..."
-msgstr "Импортировать пакет кистей..."
+msgstr "Импортировать кисти..."
 
 #: ../po/tmp/mypaint.xml.h:151
 msgctxt "Menu|Help|"
@@ -2666,13 +2647,11 @@ msgid "Help"
 msgstr "Справка"
 
 #: ../po/tmp/mypaint.xml.h:152
-#, fuzzy
 msgctxt "Menu|Help|"
 msgid "Where is the Documentation?"
 msgstr "Где документация?"
 
 #: ../po/tmp/mypaint.xml.h:153
-#, fuzzy
 msgctxt "Menu|Help|"
 msgid "Change the Keyboard Shortcuts?"
 msgstr "Сменить горячие клавиши?"
@@ -2683,34 +2662,29 @@ msgid "About MyPaint"
 msgstr "О MyPaint"
 
 #: ../po/tmp/mypaint.xml.h:155
-#, fuzzy
 msgctxt "Menu|Help|"
 msgid "Debug"
 msgstr "Отладка"
 
 #: ../po/tmp/mypaint.xml.h:156
-#, fuzzy
 msgctxt "Menu|Help|Debug|"
 msgid "Print Memory Leak Info to Console (Slow!)"
 msgstr "Вывести информацию об утечке памяти в stdout (это долго!)"
 
 #: ../po/tmp/mypaint.xml.h:157
-#, fuzzy
 msgctxt "Menu|Help|Debug|"
 msgid "Run Garbage Collector Now"
-msgstr "Запустить сборщик мусора"
+msgstr "Запустить сборщик мусора сейчас"
 
 #: ../po/tmp/mypaint.xml.h:158
-#, fuzzy
 msgctxt "Menu|Help|Debug|"
 msgid "Start/Stop Python Profiling (cProfile)"
 msgstr "Запустить/остановить профайлер Python (cProfile)"
 
 #: ../po/tmp/mypaint.xml.h:159
-#, fuzzy
 msgctxt "Menu|Help|Debug|"
 msgid "GTK Input Device Dialog"
-msgstr "Проверка устройств ввода"
+msgstr "Настройка устройств ввода (диалог GTK)"
 
 #: ../po/tmp/mypaint.xml.h:160
 msgctxt "Menu|"
@@ -2730,10 +2704,9 @@ msgstr "Обратная связь"
 #: ../po/tmp/mypaint.xml.h:163
 msgctxt "Menu|View|"
 msgid "Adjust View"
-msgstr ""
+msgstr "Настроить вид"
 
 #: ../po/tmp/mypaint.xml.h:164
-#, fuzzy
 msgctxt "Menu|View|"
 msgid "Popup Menu"
 msgstr "Всплывающее меню"
@@ -2744,7 +2717,6 @@ msgid "Preferences"
 msgstr "Параметры"
 
 #: ../po/tmp/mypaint.xml.h:166
-#, fuzzy
 msgid "Test Input Devices"
 msgstr "Проверка устройств ввода"
 
@@ -2754,16 +2726,15 @@ msgstr "Рамка документа…"
 
 #: ../po/tmp/mypaint.xml.h:168
 msgid "Set and adjust a frame for the canvas"
-msgstr ""
+msgstr "Включить и настроить рамку для холста"
 
 #: ../po/tmp/mypaint.xml.h:169
 msgid "Layers Window"
 msgstr "Диалог слоёв"
 
 #: ../po/tmp/mypaint.xml.h:170
-#, fuzzy
 msgid "Edit and rearrange layers"
-msgstr "Изменить и реорганизовать список кистей"
+msgstr "Изменить и реорганизовать слои"
 
 #: ../po/tmp/mypaint.xml.h:171
 msgctxt "Menu|Layer|"
@@ -2772,7 +2743,7 @@ msgstr "Выбрать фон..."
 
 #: ../po/tmp/mypaint.xml.h:172
 msgid "Choose a background image"
-msgstr ""
+msgstr "Выбрать фоновое изображение"
 
 #: ../po/tmp/mypaint.xml.h:173
 msgctxt "Menu|Brush|"
@@ -2781,40 +2752,36 @@ msgstr "Диалог кистей"
 
 #: ../po/tmp/mypaint.xml.h:174
 msgid "Select brushes, and edit brush sets"
-msgstr ""
+msgstr "Выбрать кисти, и редактировать наборы кистей"
 
 #: ../po/tmp/mypaint.xml.h:175
-#, fuzzy
 msgctxt "Menu|Brush|"
 msgid "Settings Window"
-msgstr "Редактор параметров кистей"
+msgstr "Диалог настроек"
 
 #: ../po/tmp/mypaint.xml.h:176
-#, fuzzy
 msgid "Edit the active brush's settings"
-msgstr "Остальные параметры кисти"
+msgstr "Редактировать настройки текущей кисти"
 
 #: ../po/tmp/mypaint.xml.h:177
-#, fuzzy
 msgctxt "Menu|Color|"
 msgid "Colors Window"
-msgstr "Цветовой круг"
+msgstr "Окно выбора цветов"
 
 #: ../po/tmp/mypaint.xml.h:178
 msgid "Set the color used for painting"
-msgstr ""
+msgstr "Выбрать цвет, используемый для рисования"
 
 #: ../po/tmp/mypaint.xml.h:179
 msgctxt "Menu|Scratchpad|"
 msgid "Scratchpad Window"
-msgstr "Диалог блокнота"
+msgstr "Окно блокнота"
 
 #: ../po/tmp/mypaint.xml.h:180
 msgid "Mix colors and make sketches on separate scrap pages"
-msgstr ""
+msgstr "Смешивайте цвета и делайте наброски на отдельных страницах блокнота"
 
 #: ../po/tmp/mypaint.xml.h:181
-#, fuzzy
 msgctxt "Menu|View|"
 msgid "Subwindows"
 msgstr "Диалоги"
@@ -2830,16 +2797,16 @@ msgstr "Масштаб просмотра"
 
 #: ../po/tmp/mypaint.xml.h:184
 msgid "Show the zoom level when zooming in or out"
-msgstr ""
+msgstr "Показывать масштаб при увеличении или уменьшении"
 
 #: ../po/tmp/mypaint.xml.h:185
 msgctxt "Menu|View|Feedback|"
 msgid "Last Painting Position"
-msgstr ""
+msgstr "Место последнего рисования"
 
 #: ../po/tmp/mypaint.xml.h:186
 msgid "Show where strokes end"
-msgstr ""
+msgstr "Показывать, где заканчиваются мазки"
 
 #: ../po/tmp/mypaint.xml.h:187
 msgctxt "Menu|View|Feedback|"
@@ -2848,10 +2815,9 @@ msgstr "Ось симметрии"
 
 #: ../po/tmp/mypaint.xml.h:188
 msgid "Show the symmetry axis"
-msgstr ""
+msgstr "Показывать ось симметрии"
 
 #: ../po/tmp/mypaint.xml.h:189
-#, fuzzy
 msgctxt "Menu|View|Toolbars|"
 msgid "Menubar Only"
 msgstr "Только панель меню"
@@ -2886,71 +2852,66 @@ msgstr "Текущий режим"
 #: ../po/tmp/mypaint.xml.h:196
 msgctxt "Menu|Edit|Current Mode|"
 msgid "Freehand Drawing"
-msgstr ""
+msgstr "Рисование от руки"
 
 #: ../po/tmp/mypaint.xml.h:197
 msgctxt "Toolbar|"
 msgid "Freehand"
-msgstr ""
+msgstr "От руки"
 
 #: ../po/tmp/mypaint.xml.h:198
 msgid "Freehand Drawing: draw and paint freely, without geometric constraints"
-msgstr ""
+msgstr "Рисование от руки: свободное рисование, без геометрических ограничений"
 
 #: ../po/tmp/mypaint.xml.h:199
 msgctxt "Menu|Edit|"
 msgid "Freehand Drawing"
-msgstr ""
+msgstr "Рисование от руки"
 
 #: ../po/tmp/mypaint.xml.h:200
 msgctxt "Menu|Edit|Current Mode|"
 msgid "Scroll View"
-msgstr ""
+msgstr "Прокрутка"
 
 #: ../po/tmp/mypaint.xml.h:201
 msgctxt "Toolbar|"
 msgid "Scroll"
-msgstr ""
+msgstr "Прокрутка"
 
 #: ../po/tmp/mypaint.xml.h:202
 msgid "Scroll View: move around the canvas by clicking and dragging"
-msgstr ""
+msgstr "Прокрутка: перемещайтесь по холсту, перетаскивая указатель"
 
 #: ../po/tmp/mypaint.xml.h:203
 msgctxt "Menu|View|"
 msgid "Scroll"
-msgstr ""
+msgstr "Прокрутка"
 
 #: ../po/tmp/mypaint.xml.h:204
-#, fuzzy
 msgctxt "Menu|Edit|Current Mode|"
 msgid "Rotate View"
-msgstr "Вращение"
+msgstr "Вращение отображения"
 
 #: ../po/tmp/mypaint.xml.h:205
-#, fuzzy
 msgctxt "Toolbar|"
 msgid "Rotate"
 msgstr "Вращение"
 
 #: ../po/tmp/mypaint.xml.h:206
 msgid "Rotate View: turn the canvas by clicking and dragging"
-msgstr ""
+msgstr "Вращение отображения: повернуть холст, перетаскивая указатель"
 
 #: ../po/tmp/mypaint.xml.h:207
-#, fuzzy
 msgctxt "Menu|View|"
 msgid "Rotate"
 msgstr "Вращение"
 
 #: ../po/tmp/mypaint.xml.h:208
-#, fuzzy
 msgctxt "Menu|Edit|Current Mode|"
 msgid "Zoom View"
-msgstr "Приблизить"
+msgstr "Масштабировать отображение"
 
 #: ../po/tmp/mypaint.xml.h:209
-#, fuzzy
 msgctxt "Toolbar|"
 msgid "Zoom"
 msgstr "Масштаб"
@@ -2960,7 +2921,6 @@ msgid "Zoom View: zoom the canvas by clicking and dragging"
 msgstr ""
 
 #: ../po/tmp/mypaint.xml.h:211
-#, fuzzy
 msgctxt "Menu|View|"
 msgid "Zoom"
 msgstr "Масштаб"
@@ -2980,6 +2940,9 @@ msgid ""
 "Lines and Curves: draw straight or curved lines.&#x0a;Ctrl: constrain angle."
 "&#x0a;Shift: add curves to the last line."
 msgstr ""
+"Прямые и кривые: рисовать прямые или кривые линии.&#x0a; "
+"Ctrl: ограничить угол.&#x0a; "
+"Shift: добавить кривизну к последней линии."
 
 #: ../po/tmp/mypaint.xml.h:215
 msgctxt "Menu|Edit|"
@@ -2989,29 +2952,31 @@ msgstr "Линии и кривые"
 #: ../po/tmp/mypaint.xml.h:216
 msgctxt "Menu|Edit|Current Mode|"
 msgid "Connected Lines"
-msgstr ""
+msgstr "Связанные линии"
 
 #: ../po/tmp/mypaint.xml.h:217
-#, fuzzy
 msgctxt "Toolbar|"
 msgid "Line Seq."
-msgstr "Режим смешивания"
+msgstr "Последовательность линий"
 
 #: ../po/tmp/mypaint.xml.h:218
 msgid ""
 "Connected Lines: draw sequences of straight or curved lines.&#x0a;Ctrl: "
 "constrain angle.&#x0a;Shift: add curves to the last line."
 msgstr ""
+"Связанные линии: рисовать последовательности прямых или кривых линий.&#x0a; "
+"Ctrl: фиксировать угол. "
+"Shift: добавить кривизну к последней линии."
 
 #: ../po/tmp/mypaint.xml.h:219
 msgctxt "Menu|Edit|"
 msgid "Connected Lines"
-msgstr ""
+msgstr "Связанные линии"
 
 #: ../po/tmp/mypaint.xml.h:220
 msgctxt "Menu|Edit|Current Mode|"
 msgid "Ellipses and Circles"
-msgstr ""
+msgstr "Эллипсы и круги"
 
 #: ../po/tmp/mypaint.xml.h:221
 msgctxt "Toolbar|"
@@ -3023,26 +2988,29 @@ msgid ""
 "Ellipses and Circles: draw whole circles and ellipses.&#x0a;Shift: rotate."
 "&#x0a;Ctrl: constrain ratio.&#x0a;Ctrl+Shift: constrain angle."
 msgstr ""
+"Эллипсы и окружности: рисовать целые окружности и эллипсы.&#x0a;"
+"Shift: поворачивать. &#x0a; "
+"Ctrl: ограничить пропорции.&#x0a; "
+"Ctrl+Shift: ограничить угол."
 
 #: ../po/tmp/mypaint.xml.h:223
 msgctxt "Menu|Edit|"
 msgid "Ellipses and Circles"
-msgstr ""
+msgstr "Эллипсы и круги"
 
 #: ../po/tmp/mypaint.xml.h:224
-#, fuzzy
 msgctxt "Menu|Edit|Current Mode|"
 msgid "Move Layer"
-msgstr "Удалить слой"
+msgstr "Переместить слой"
 
 #: ../po/tmp/mypaint.xml.h:225
 msgid "Move Layer: reposition the current layer on the canvas"
-msgstr ""
+msgstr "Переместить слой: переместить слой на холсте"
 
 #: ../po/tmp/mypaint.xml.h:226
 msgctxt "Menu|Layer|"
 msgid "Move"
-msgstr ""
+msgstr "Переместить"
 
 #: ../po/tmp/mypaint.xml.h:227
 msgctxt "Menu|Edit|Current Mode|"
@@ -3059,11 +3027,13 @@ msgid ""
 "Edit Frame: define a frame around the document to give it a finite size. The "
 "frame is used when exporting."
 msgstr ""
+"Редактировать рамку: определить рамку вокруг документа, чтобы задать конечный "
+"размер документа. Рамка используется при экспорте."
 
 #: ../po/tmp/mypaint.xml.h:230
 msgctxt "Menu|File|"
 msgid "Edit Frame"
-msgstr ""
+msgstr "Редактировать рамку:"
 
 #~ msgid ""
 #~ "The background %s was ignored because it has an alpha channel. Please "
