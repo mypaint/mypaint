@@ -138,7 +138,7 @@ calculate_rr(int xp, int yp, float x, float y, float aspect_ratio,
 
 // Must be threadsafe
 static inline float
-calculate_rr_subpixel(int xp, int yp, float x, float y, float aspect_ratio,
+calculate_rr_antialiased(int xp, int yp, float x, float y, float aspect_ratio,
                       float sn, float cs, float one_over_radius2)
 {
     float _pixelLeft = (float)xp;
@@ -147,18 +147,9 @@ calculate_rr_subpixel(int xp, int yp, float x, float y, float aspect_ratio,
     float _pixelBottom = _pixelTop + 1.0;
     float _pixelCenterX = _pixelLeft + 0.5;
     float _pixelCenterY = _pixelTop + 0.5;
-    const minRadius = 3.0;
-
-    // don't do subpixel calculations if brush radius is bigger than minRadius
-    if( one_over_radius2 < (1.0 / (minRadius*minRadius)) )
-    {
-        float xx = _pixelCenterX - x;
-        float yy = _pixelCenterY - y;
-        return calculate_r_sample( xx, yy, aspect_ratio, sn, cs ) * one_over_radius2;
-    }
 
     float nearestX, nearestY; // nearest to origin, but still inside pixel
-    float farthestX, farthestY; // fartherst from origin, but still inside pixel
+    float farthestX, farthestY; // farthest from origin, but still inside pixel
 
     if( x >= _pixelLeft && x < _pixelRight &&
         y >= _pixelTop && y < _pixelBottom )
@@ -182,22 +173,24 @@ calculate_rr_subpixel(int xp, int yp, float x, float y, float aspect_ratio,
     farthestX -= x;
     farthestY -= y;
 
-    float r_near = calculate_r_sample( nearestX, nearestY, aspect_ratio, sn, cs );
-    float rr_near = r_near * one_over_radius2;
+    float rr_near = calculate_r_sample( nearestX, nearestY, aspect_ratio, sn, cs ) * one_over_radius2;
     // if even the nearest point is > 1, there's no use going on
     if( rr_near > 1.0 )
         return rr_near;
 
-    float r_far = calculate_r_sample( farthestX, farthestY, aspect_ratio, sn, cs );
-    float rr_far = r_far * one_over_radius2;
-    if( rr_near < 0.01 && rr_far < 0.01 )
-        return rr_near;
+    float rr_far = calculate_r_sample( farthestX, farthestY, aspect_ratio, sn, cs ) * one_over_radius2;
+
+    // this is commented because it happens so rarely that we win more by not checking
+    //if( rr_near < 0.01 && rr_far < 0.01 )
+    //    return rr_near;
+
+    //printf("slow algo: %f %f\n", rr_near, rr_far);
 
     // starting with rr_near, fade out (aproximate to 1.0) as
     // much as r_far is distant from r_near
     float visibilityNear = 1.0 - rr_near;
-    float delta = r_far - r_near;
-    float delta2 = 1.0 + delta *one_over_radius2;
+    float delta = rr_far - rr_near;
+    float delta2 = 1.0 + delta;
     visibilityNear /= delta2;
 
     return 1.0 - visibilityNear;
@@ -279,12 +272,26 @@ void render_dab_mask (uint16_t * mask,
     // OPTIMIZE: if using floats for the brush engine, store these directly in the mask
     float rr_mask[MYPAINT_TILE_SIZE*MYPAINT_TILE_SIZE+2*MYPAINT_TILE_SIZE];
 
-    for (int yp = y0; yp <= y1; yp++) {
-      for (int xp = x0; xp <= x1; xp++) {
-        float rr = calculate_rr_subpixel(xp, yp,
-                                x, y, aspect_ratio,
-                                sn, cs, one_over_radius2);
-        rr_mask[(yp*MYPAINT_TILE_SIZE)+xp] = rr;
+    if (radius < 3.0)
+    {
+      for (int yp = y0; yp <= y1; yp++) {
+        for (int xp = x0; xp <= x1; xp++) {
+          float rr = calculate_rr_antialiased(xp, yp,
+                                  x, y, aspect_ratio,
+                                  sn, cs, one_over_radius2);
+          rr_mask[(yp*MYPAINT_TILE_SIZE)+xp] = rr;
+        }
+      }
+    }
+    else
+    {
+      for (int yp = y0; yp <= y1; yp++) {
+        for (int xp = x0; xp <= x1; xp++) {
+          float rr = calculate_rr(xp, yp,
+                                  x, y, aspect_ratio,
+                                  sn, cs, one_over_radius2);
+          rr_mask[(yp*MYPAINT_TILE_SIZE)+xp] = rr;
+        }
       }
     }
 
