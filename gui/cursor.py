@@ -15,7 +15,8 @@ import math
 
 # Module config
 BRUSH_CURSOR_MIN_SIZE = 5
-BRUSH_CURSOR_MIN_SIZE_BIG_SCREEN = 8
+BRUSH_CURSOR_MIN_SIZE_BIG_SCREEN = 7
+SCREEN_SIZE_BIG = 1920
 
 # Cursor style constants
 BRUSH_CURSOR_STYLE_NORMAL = 0
@@ -34,11 +35,13 @@ def get_largest_screen_size(display):
     global largest_screen_size
     if not largest_screen_size:
         largest_screen_size = 0
-        for s in xrange(display.get_n_screens()):
-            screen = display.get_screen(s)
-            size = max(screen.get_width(), screen.get_height())
-            if size > largest_screen_size:
-                largest_screen_size = size
+        for s_id in xrange(display.get_n_screens()):
+            screen = display.get_screen(s_id)
+            for m_id in xrange(screen.get_n_monitors()):
+                m_geom = screen.get_monitor_geometry(m_id)
+                size = max(m_geom.height, m_geom.width)
+                if size > largest_screen_size:
+                    largest_screen_size = size
     return largest_screen_size
 
 
@@ -53,7 +56,7 @@ def get_brush_cursor(radius, style):
     d = int(radius)*2
     min_size = BRUSH_CURSOR_MIN_SIZE
     screen_size = get_largest_screen_size(display)
-    if screen_size > 1024:
+    if screen_size >= SCREEN_SIZE_BIG:
         min_size = BRUSH_CURSOR_MIN_SIZE_BIG_SCREEN
     if d < min_size:
         d = min_size
@@ -83,28 +86,18 @@ def draw_brush_cursor(cr, d, screen_size, style=BRUSH_CURSOR_STYLE_NORMAL):
     col_bg = (0, 0, 0)
     col_fg = (1, 1, 1)
 
-    # Outer border width
-    #if d >= 60:
-    #    width1 = 6
-    #    width2 = width1 - 2
-    if d >= 50:
-        width1 = 5
-        width2 = width1 - 1.75
-    elif d >= 30 or screen_size > 1024:
+    # Outer and inner line widths
+    if screen_size >= SCREEN_SIZE_BIG:
         width1 = 4
         width2 = width1 - 1.666
     else:
         width1 = 3
         width2 = width1 - 1.5
 
-    #if screen_size > 1024:
-    #    width1 += 1
-    #    width2 += 1
-
     # Shadow size
     if d > 10:
-        shadow_x = 1
-        shadow_y = 1.5
+        shadow_x = 0.75
+        shadow_y = 0.5
     else:
         shadow_x = shadow_y = 0
 
