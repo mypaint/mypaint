@@ -12,11 +12,10 @@ import gtk
 from gtk import gdk
 import cairo
 import math
+from cStringIO import StringIO
 
-# Module config
-BRUSH_CURSOR_MIN_SIZE = 5
-BRUSH_CURSOR_MIN_SIZE_BIG_SCREEN = 7
-SCREEN_SIZE_BIG = 1920
+# Absolute minimum size
+BRUSH_CURSOR_MIN_SIZE = 3
 
 # Cursor style constants
 BRUSH_CURSOR_STYLE_NORMAL = 0
@@ -28,24 +27,9 @@ BRUSH_CURSOR_STYLE_COLORIZE = 3
 last_cursor_info = None
 last_cursor = None
 max_cursor_size = None
-largest_screen_size = None
 
 
-def get_largest_screen_size(display):
-    global largest_screen_size
-    if not largest_screen_size:
-        largest_screen_size = 0
-        for s_id in xrange(display.get_n_screens()):
-            screen = display.get_screen(s_id)
-            for m_id in xrange(screen.get_n_monitors()):
-                m_geom = screen.get_monitor_geometry(m_id)
-                size = max(m_geom.height, m_geom.width)
-                if size > largest_screen_size:
-                    largest_screen_size = size
-    return largest_screen_size
-
-
-def get_brush_cursor(radius, style):
+def get_brush_cursor(radius, style, prefs={}):
     """Returns a gdk.Cursor for use with a brush of a particular size+type.
     """
     global last_cursor, last_cursor_info, max_cursor_size
@@ -54,62 +38,61 @@ def get_brush_cursor(radius, style):
     if not max_cursor_size:
         max_cursor_size = max(display.get_maximal_cursor_size())
     d = int(radius)*2
-    min_size = BRUSH_CURSOR_MIN_SIZE
-    screen_size = get_largest_screen_size(display)
-    if screen_size >= SCREEN_SIZE_BIG:
-        min_size = BRUSH_CURSOR_MIN_SIZE_BIG_SCREEN
+    min_size = max(prefs.get("cursor.freehand.min_size", 5),
+                   BRUSH_CURSOR_MIN_SIZE)
     if d < min_size:
         d = min_size
     if d+1 > max_cursor_size:
         d = max_cursor_size-1
-    cursor_info = (d, style, screen_size)
+    cursor_info = (d, style, min_size)
     if cursor_info != last_cursor_info:
         last_cursor_info = cursor_info
         surf = cairo.ImageSurface(cairo.FORMAT_ARGB32, d+1, d+1)
         cr = cairo.Context(surf)
-        draw_brush_cursor(cr, d, screen_size, style)
+        cr.set_source_rgba(1, 1, 1, 0)
+        cr.paint()
+        draw_brush_cursor(cr, d, style, prefs)
+        surf.flush()
         hot_x = hot_y = int((d+1)/2)
+        pixbuf = image_surface_to_pixbuf(surf)
         if pygtkcompat.USE_GTK3:
-            pixbuf = gdk.pixbuf_get_from_surface(surf, 0, 0, d+1, d+1)
             last_cursor = gdk.Cursor.new_from_pixbuf(display, pixbuf,
                                                      hot_x, hot_y)
         else:
-            pixbuf = gdk.pixbuf_new_from_data(surf.get_data(),
-                gdk.COLORSPACE_RGB, True, 8, d+1, d+1, surf.get_stride())
             last_cursor = gdk.Cursor(display, pixbuf, hot_x, hot_y)
 
     return last_cursor
 
 
-def draw_brush_cursor(cr, d, screen_size, style=BRUSH_CURSOR_STYLE_NORMAL):
+def image_surface_to_pixbuf(surf):
+    if pygtkcompat.USE_GTK3:
+        w = surf.get_width()
+        h = surf.get_height()
+        return gdk.pixbuf_get_from_surface(surf, 0, 0, w, h)
+    # GTK2.
+    # Ugly PNG-based fudge to work around cairo.ImageSurface.get_data()
+    # returning packed BGRA or ARGB pixels depending on endianness.
+    png_dp = StringIO()
+    surf.write_to_png(png_dp)
+    pixbuf_loader = gdk.PixbufLoader()
+    pixbuf_loader.write(png_dp.getvalue())
+    pixbuf_loader.close()
+    return pixbuf_loader.get_pixbuf()
+
+
+def draw_brush_cursor(cr, d, style=BRUSH_CURSOR_STYLE_NORMAL, prefs={}):
     # Draw a brush cursor into a Cairo context, assumed to be of w=h=d+1
-    col_bg = (0, 0, 0)
-    col_fg = (1, 1, 1)
 
     # Outer and inner line widths
-    if screen_size >= SCREEN_SIZE_BIG:
-        width1 = 4
-        width2 = width1 - 1.666
-    else:
-        width1 = 3
-        width2 = width1 - 1.5
+    width1 = float(prefs.get("cursor.freehand.outer_line_width", 1.25))
+    width2 = float(prefs.get("cursor.freehand.inner_line_width", 1.25))
+    inset = int(prefs.get("cursor.freehand.inner_line_inset", 2))
 
-    # Shadow size
-    if d > 10:
-        shadow_x = 0.75
-        shadow_y = 0.5
-    else:
-        shadow_x = shadow_y = 0
+    # Colors
+    col_bg = tuple(prefs.get("cursor.freehand.outer_line_color", (0,0,0,0.6)))
+    col_fg = tuple(prefs.get("cursor.freehand.inner_line_color", (1,1,1,0.7)))
 
-    # Ensure pixel alignedness for the outer edges of the outer black border
-    assert width1 == int(width1)
-    if int(width1)%2 == 1:
-        rdelta = 0.5
-    else:
-        rdelta = 0
-    rint = int((d-max(shadow_y, shadow_x))/2)
-    cx = cy = rint + rdelta
-
+    # Cursor style
     arcs = []
     if style == BRUSH_CURSOR_STYLE_ERASER:
         # divide into eighths, alternating on and off
@@ -135,30 +118,29 @@ def draw_brush_cursor(cr, d, screen_size, style=BRUSH_CURSOR_STYLE_NORMAL):
         # Regular drawing mode
         arcs.append((0, 2*math.pi))
 
-    # Shadow
-    cr.set_line_cap(cairo.LINE_CAP_BUTT)
-    cr.set_source_rgba(0, 0, 0, 0.2)
-    cr.set_line_width(width1)
-    r = rint - (width1 / 2)
-    for a1, a2 in arcs:
-        cr.new_sub_path()
-        cr.arc(cx+shadow_x, cy+shadow_y, r, a1, a2)
-    cr.stroke()
+    # Pick centre to ensure pixel alignedness for the outer edge of the
+    # black outline.
+    r0 = int(d/2) + 0.5
+    cx = cy = r0
 
-    # Outer borders
+    # Outer "bg" line.
     cr.set_line_cap(cairo.LINE_CAP_BUTT)
-    cr.set_source_rgb(*col_bg)
+    cr.set_source_rgba(*col_bg)
     cr.set_line_width(width1)
-    r = rint - (width1 / 2)
+    r = r0 - (width1 / 2.0)
     for a1, a2 in arcs:
         cr.new_sub_path()
         cr.arc(cx, cy, r, a1, a2)
-    cr.stroke_preserve()
+    cr.stroke()
 
-    # Inner line
+    # Inner line: also pixel aligned, but to its inner edge.
     cr.set_line_cap(cairo.LINE_CAP_ROUND)
-    cr.set_source_rgb(*col_fg)
+    cr.set_source_rgba(*col_fg)
     cr.set_line_width(width2)
+    r = r0 - inset + (width2 / 2.0)
+    for a1, a2 in arcs:
+        cr.new_sub_path()
+        cr.arc(cx, cy, r, a1, a2)
     cr.stroke()
 
 
@@ -167,15 +149,39 @@ if __name__ == '__main__':
     from random import randint
     win = gtk.Window()
     win.set_title("cursor test")
-    label = gtk.Label("Hover and enter/leave to set cursor")
-    label.set_size_request(400, 200)
+
+    min_size = 5
+    max_size = 64
+    nsteps = 8
+    w = nsteps * max_size
+    h = 4 * max_size
+    surf = cairo.ImageSurface(cairo.FORMAT_ARGB32, w, h)
+    cr = cairo.Context(surf)
+    cr.set_source_rgb(.7, .7, .7)
+    cr.paint()
+
+    for style in xrange(4):
+        col = 0
+        for size in xrange(min_size, max_size+1, (max_size-min_size)/nsteps):
+            cr.save()
+            y = (style * max_size) + ((max_size - size)/2)
+            x = (col * max_size) + ((max_size - size)/2)
+            cr.translate(x, y)
+            draw_brush_cursor(cr, size, style)
+            cr.restore()
+            col += 1
+    pixbuf = image_surface_to_pixbuf(surf)
+    image = gtk.Image()
+    image.set_from_pixbuf(pixbuf)
+    image.set_size_request(w, h)
+
+    display = pygtkcompat.gdk.display_get_default()
+    max_size = max(display.get_maximal_cursor_size())
     num_styles = 4
     style = 0
-    display = gdk.display_get_default()
-    m = max(display.get_maximal_cursor_size())
     def _enter_cb(widget, event):
-        global style, m
-        r = randint(3, m/2)
+        global style, max_size
+        r = randint(3, max_size/2)
         e = False
         l = False
         c = False
@@ -186,7 +192,7 @@ if __name__ == '__main__':
         if style >= num_styles:
             style = 0
     win.connect("enter-notify-event", _enter_cb)
-    win.add(label)
+    win.add(image)
     win.connect("destroy", lambda *a: gtk.main_quit())
     win.show_all()
     gtk.main()

@@ -336,8 +336,8 @@ class DrawCursorMixin:
             # Often a red circle with a diagonal bar through it.
             c = gdk.Cursor(gdk.CIRCLE)
         else:
-            cursor_info = self._get_cursor_info()
-            c = cursor.get_brush_cursor(*cursor_info)
+            radius, style = self._get_cursor_info()
+            c = cursor.get_brush_cursor(radius, style, self.app.preferences)
         window.set_cursor(c)
 
 
