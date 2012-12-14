@@ -15,7 +15,7 @@ for lang in languages:
 
 lang = ARGUMENTS.get('translate')
 if lang:
-    env.Execute('cd .. && ls *.{h,c} | sort > po/POTFILES.in')
+    env.Execute('cd .. && ls *.[ch] | sort > po/POTFILES.in')
     env.Execute('intltool-update -g libmypaint --pot')
     if lang == 'all':
         translate = languages
