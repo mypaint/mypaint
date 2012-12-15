@@ -6,11 +6,10 @@ EnsureSConsVersion(1, 0)
 
 # FIXME: sometimes it would be good to build for a different python
 # version than the one running scons. (But how to find all paths then?)
-python = 'python%d.%d' % (sys.version_info[0], sys.version_info[1])
-print 'Building for', python
+default_python_binary = 'python%d.%d' % (sys.version_info[0], sys.version_info[1])
 
 if sys.platform == "win32":
-    python = 'python' # usually no versioned binaries on Windows
+    default_python_binary = 'python' # usually no versioned binaries on Windows
 
 SConsignFile() # no .scsonsign into $PREFIX please
 
@@ -30,10 +29,12 @@ opts.Add(BoolVariable('enable_docs', 'enable documentation build', False))
 opts.Add(BoolVariable('enable_gperftools', 'enable gperftools in build, for profiling', False))
 opts.Add(BoolVariable('enable_gtk3', 'enable gtk3 in mypaintlib', False))
 opts.Add(BoolVariable('enable_openmp', 'enable OpenMP for libmypaint', False))
+opts.Add('python_binary', 'python executable to build for', default_python_binary)
 
 tools = ['default', 'textfile']
 
 env = Environment(ENV=os.environ, options=opts, tools=tools)
+print('building for %r (use scons python_binary=xxx to change)' % env['python_binary'])
 if sys.platform == "win32":
     # remove this mingw if trying VisualStudio
     env = Environment(tools=tools + ['mingw'], ENV=os.environ, options=opts)
@@ -156,7 +157,7 @@ env.Clean('$prefix', '$prefix/share/mypaint')
 # Convenience alias for installing to $prefix
 env.Alias('install', '$prefix')
 
-Export('env', 'python', 'install_tree', 'install_perms')
+Export('env', 'install_tree', 'install_perms')
 
 brushlib = SConscript('./brushlib/SConscript')
 

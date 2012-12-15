@@ -1,4 +1,4 @@
-Import('env', 'python', 'install_perms')
+Import('env', 'install_perms')
 
 import os, sys
 
@@ -95,7 +95,7 @@ config_file = env.Substfile("mypaint-config.h", "mypaint-config.h.in",
                             SUBST_DICT={'@DEFINES@': config_defines})
 
 # just always regenerate (too fast to bother with build dependencies)
-env.Execute(python + ' generate.py')
+env.Execute(env['python_binary'] + ' generate.py')
 env.Clean('.', Glob('*-gen.h'))
 env.Clean('.', Glob('*.pyc'))
 env.Clean('.', Glob('*.o'))

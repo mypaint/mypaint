@@ -1,7 +1,7 @@
 import os, sys
 from os.path import join, basename
 
-Import('env', 'python', 'install_perms', 'install_tree')
+Import('env', 'install_perms', 'install_tree')
 
 # Clone the environment to not affect the common one
 env = env.Clone()
@@ -19,7 +19,7 @@ except OSError:
 
 def burn_python_version(target, source, env):
     # make sure we run the python version that we built the extension modules for
-    s =  '#!/usr/bin/env ' + python + '\n'
+    s =  '#!/usr/bin/env ' + env['python_binary'] + '\n'
     s += 5*'#\n'
     s += '# DO NOT EDIT - edit %s instead\n' % source[0]
     s += 5*'#\n'
