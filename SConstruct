@@ -67,6 +67,10 @@ if sys.platform == "linux2":
 
 env.Append(RPATH = env.Literal(os.path.join('\\$$ORIGIN')))
 
+# remove libraries produced by earlier versions, which are actually
+# being used if they keep lying around, leading to mysterious bugs
+env.Execute('rm -f libmypaint-tests.so libmypaint.so libmypaintlib.so')
+
 set_dir_postaction = {}
 def install_perms(env, target, sources, perms=0644, dirperms=0755):
     """As a normal env.Install, but with Chmod postactions.
@@ -151,8 +155,6 @@ env.Clean('$prefix', '$prefix/share/mypaint')
 
 # Convenience alias for installing to $prefix
 env.Alias('install', '$prefix')
-
-
 
 Export('env', 'python', 'install_tree', 'install_perms')
 

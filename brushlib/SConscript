@@ -94,9 +94,11 @@ else:
 config_file = env.Substfile("mypaint-config.h", "mypaint-config.h.in",
                             SUBST_DICT={'@DEFINES@': config_defines})
 
-env.Execute(python + ' generate.py') # TODO: make a proper build rule
-env.Clean('.', 'mypaint-brush-settings-gen.h')
+# just always regenerate (too fast to bother with build dependencies)
+env.Execute(python + ' generate.py')
+env.Clean('.', Glob('*-gen.h'))
 env.Clean('.', Glob('*.pyc'))
+env.Clean('.', Glob('*.o'))
 
 env.Append(LINKFLAGS=linkflags)
 env.Append(LIBS=libs)
