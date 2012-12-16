@@ -29,6 +29,7 @@ def burn_python_version(target, source, env):
     f.close()
 
 env.Command('mypaint', 'mypaint.py', [burn_python_version, Chmod('$TARGET', 0755)])
+AlwaysBuild('mypaint') # especially if the "python_binary" option was changed
 
 env.Clean('.', Glob('*.pyc'))
 env.Clean('.', Glob('gui/*.pyc'))

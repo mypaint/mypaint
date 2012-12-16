@@ -78,8 +78,8 @@ if sys.platform == "win32":
     pre,inc = sysconfig.get_config_vars('exec_prefix', 'INCLUDEPY')
     env.Append(CPPPATH=inc, LIBPATH=pre+'\libs', LIBS='python'+sys.version[0]+sys.version[2])
 elif sys.platform == "darwin":
-    env.ParseConfig(env['python_binary'] + '-config --cflags')
-    ldflags = env.backtick(env['python_binary'] + '-config --ldflags').split()
+    env.ParseConfig(env['python_config'] + ' --cflags')
+    ldflags = env.backtick(env['python_config'] + ' --ldflags').split()
     # scons does not seem to parse '-u' correctly
     # put all options after -u in LINKFLAGS
     if '-u' in ldflags:
@@ -90,10 +90,10 @@ elif sys.platform == "darwin":
 else:
     # some distros use python2.5-config, others python-config2.5
     try:
-        env.ParseConfig(env['python_binary'] + '-config --cflags')
-        env.ParseConfig(env['python_binary'] + '-config --ldflags')
+        env.ParseConfig(env['python_config'] + ' --cflags')
+        env.ParseConfig(env['python_config'] + ' --ldflags')
     except OSError:
-        print 'trying python-config instead'
+        print '%r does not work, trying python-config instead' % env['python_config']
         env.ParseConfig('python-config --ldflags')
         env.ParseConfig('python-config --cflags')
 

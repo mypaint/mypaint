@@ -4,12 +4,17 @@ from SCons.Script.SConscript import SConsEnvironment
 
 EnsureSConsVersion(1, 0)
 
-# FIXME: sometimes it would be good to build for a different python
-# version than the one running scons. (But how to find all paths then?)
 default_python_binary = 'python%d.%d' % (sys.version_info[0], sys.version_info[1])
+default_python_config = 'python%d.%d-config' % (sys.version_info[0], sys.version_info[1])
 
 if sys.platform == "win32":
-    default_python_binary = 'python' # usually no versioned binaries on Windows
+    # usually no versioned binaries on Windows
+    default_python_binary = 'python'
+    default_python_config = 'python-config'
+
+if os.path.exists('/etc/gentoo-release'):
+     print 'Gentoo: /etc/gentoo-release exists. Must be on a Gentoo based system.'
+     default_python_config = 'python-config-%d.%d'  % (sys.version_info[0],sys.version_info[1])
 
 SConsignFile() # no .scsonsign into $PREFIX please
 
@@ -30,11 +35,13 @@ opts.Add(BoolVariable('enable_gperftools', 'enable gperftools in build, for prof
 opts.Add(BoolVariable('enable_gtk3', 'enable gtk3 in mypaintlib', False))
 opts.Add(BoolVariable('enable_openmp', 'enable OpenMP for libmypaint', False))
 opts.Add('python_binary', 'python executable to build for', default_python_binary)
+opts.Add('python_config', 'python-config to used', default_python_config)
 
 tools = ['default', 'textfile']
 
 env = Environment(ENV=os.environ, options=opts, tools=tools)
 print('building for %r (use scons python_binary=xxx to change)' % env['python_binary'])
+print('using %r (use scons python_config=xxx to change)' % env['python_config'])
 if sys.platform == "win32":
     # remove this mingw if trying VisualStudio
     env = Environment(tools=tools + ['mingw'], ENV=os.environ, options=opts)
