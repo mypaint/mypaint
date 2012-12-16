@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MyPaint 0.7.1+git\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-08 16:39-0300\n"
-"PO-Revision-Date: 2012-12-08 19:45-0300\n"
+"POT-Creation-Date: 2012-12-10 18:09-0300\n"
+"PO-Revision-Date: 2012-12-16 11:21-0300\n"
 "Last-Translator: Manuel Quiñones <manuq@laptop.org>\n"
 "Language-Team: Español; Castellano <manuq@laptop.org>\n"
 "Language: es\n"
@@ -440,14 +440,47 @@ msgid ""
 "The New button lets you choose one of several templates as a starting "
 "point.\n"
 msgstr ""
+"<b>Editor de máscara Gamut</b>\n"
+"\n"
+"Se puede editar la máscara Gamut aquí, así como activarla o desactivarla. "
+"Las\n"
+"máscaras Gamut son como una especie de papeles agujereados, dispuestos "
+"sobre\n"
+"la rueda de color para limitar el rango de colores que se pueden elegir. "
+"Esto\n"
+"permite planificar los esquemas de color de antemano, lo que es útil para\n"
+"crear sensaciones específicas. La teoría es que las esquinas de cada figura "
+"de\n"
+"máscara representan un color primario <i>subjetivo</i>, y que cada figura\n"
+"contiene a todos los colores que pueden mezclarse usando esos colores\n"
+"primarios. Los colores secundarios subjetivos están en los puntos medios de\n"
+"las aristas de la figura, y el centro de la figura es el tono subjetivo "
+"neutro\n"
+"de dicha figura.\n"
+"\n"
+"\n"
+"Clic para añadir figuras si la rueda está vacía. Las figuras pueden\n"
+"arrastrarse y su contorno puede ser ajustado añadiendo o moviendo puntos de\n"
+"control. Se puede encoger una figura para que sea más simple borrarla,\n"
+"arrastrarla hasta el borde del disco es una forma rápida de hacerlo. "
+"También\n"
+"se pueden borrar figuras arrastrándolas dentro de otras. La máscara "
+"completa\n"
+"puede rotarse girando el borde del disco para generar esquemas de colores\n"
+"inesperados.\n"
+"\n"
+"Las máscaras Gamut pueden guardarse en un archivo en el formato de paletas "
+"de\n"
+"GIMP, y cargadas desde los mismos. El botón Nuevo permite escoger una de\n"
+"varias plantillas que sirven como punto de partida.\n"
 
 #: ../gui/colors/hcywheel.py:95
 msgid "Gamut mask active"
-msgstr ""
+msgstr "Máscara Gamut activa"
 
 #: ../gui/colors/hcywheel.py:96
 msgid "Limit your palette for specific moods using a gamut mask"
-msgstr ""
+msgstr "Limitar la paleta a específicas sensaciones usando la máscara Gamut"
 
 #: ../gui/colors/hcywheel.py:374
 msgid "HCY Hue and Chroma"
@@ -459,24 +492,28 @@ msgid ""
 "Gamut mask editor. Click in the middle to create or manipulate shapes, or "
 "rotate the mask using the edges of the disc."
 msgstr ""
+"Editor de máscara Gamut. Clic en el medio para crear o manipular formas, o "
+"usar los ejes del disco para rotar la máscara."
 
 #: ../gui/colors/hcywheel.py:898
 msgid "Atmospheric Triad"
-msgstr ""
+msgstr "Tríada atmosférica"
 
 #: ../gui/colors/hcywheel.py:899
 msgid ""
 "Moody and subjective, defined by one dominant primary and two primaries "
 "which are less intense."
 msgstr ""
+"Intensa y subjetiva, definida por una dominante primaria y dos primarias de "
+"menor intensidad."
 
 #: ../gui/colors/hcywheel.py:902
 msgid "Shifted Triad"
-msgstr ""
+msgstr "Tríada desplazada"
 
 #: ../gui/colors/hcywheel.py:903
 msgid "Weighted more strongly towards the dominant colour."
-msgstr ""
+msgstr "Poniendo más peso hacia el color dominante."
 
 #: ../gui/colors/hcywheel.py:907
 msgid "Complementary"
@@ -487,16 +524,20 @@ msgid ""
 "Contrasting opposites, balanced by having central neutrals between them on "
 "the colour wheel."
 msgstr ""
+"Opuestos que se contrastan, balanceados por tener neutros centrales entre "
+"ellos, en la rueda de color."
 
 #: ../gui/colors/hcywheel.py:917
 msgid "Mood and Accent"
-msgstr ""
+msgstr "Sensación y acento"
 
 #: ../gui/colors/hcywheel.py:918
 msgid ""
 "One main range of colors, with a complementary accent for variation and "
 "highlights."
 msgstr ""
+"Un rango principal de colores, con un acento complementario para variar y "
+"remarcar"
 
 #. [HCYColor((H+0.483)%1, 0.95, Y),
 #. HCYColor((H+0.517)%1, 0.95, Y),
@@ -511,22 +552,28 @@ msgid ""
 "Two analogous colours and a complement to them, with no secondary colours "
 "between them."
 msgstr ""
+"Dos colores análogos y el complemento de los mismos, sin colores secundarios "
+"entr ellos."
 
 #: ../gui/colors/hcywheel.py:934
 msgid "New gamut mask from template"
-msgstr ""
+msgstr "Nueva máscara Gamut desde plantilla"
 
 #: ../gui/colors/hcywheel.py:986
 msgid "Gamut mask editor"
-msgstr ""
+msgstr "Editor de máscara Gamut"
+
+#: ../gui/colors/hcywheel.py:997
+msgid "Active"
+msgstr "Activa"
 
 #: ../gui/colors/hcywheel.py:1014
 msgid "Create mask from template"
-msgstr ""
+msgstr "Crear máscara desde plantilla"
 
 #: ../gui/colors/hcywheel.py:1015
 msgid "Load mask from a GIMP palette file"
-msgstr ""
+msgstr "Cargar máscara desde un archivo de paleta de GIMP"
 
 #: ../gui/colors/hcywheel.py:1016
 msgid "Save mask to a GIMP palette file"
@@ -546,11 +593,11 @@ msgstr "Cargar máscara desde una paleta de Gimp"
 
 #: ../gui/colors/hcywheel.py:1113
 msgid "Gamut mask editor help"
-msgstr ""
+msgstr "Ayuda del editor de máscara Gamut"
 
 #: ../gui/colors/hcywheel.py:1147
 msgid "Set gamut mask"
-msgstr ""
+msgstr "Definir máscara Gamut"
 
 #: ../gui/colors/hcywheel.py:1162
 msgid "HCY Wheel"
@@ -651,16 +698,15 @@ msgstr "Guardar a un archivo de paleta de GIMP"
 
 #: ../gui/colors/paletteview.py:160
 msgid "Add a new empty swatch"
-msgstr ""
+msgstr "Añadir un casillero vacío"
 
 #: ../gui/colors/paletteview.py:161
-#, fuzzy
 msgid "Remove the current swatch"
-msgstr "Recarga el archivo actual"
+msgstr "Quitar el casillero actual"
 
 #: ../gui/colors/paletteview.py:162
 msgid "Remove all swatches"
-msgstr ""
+msgstr "Quitar todos los casilleros"
 
 #: ../gui/colors/paletteview.py:172
 msgid "Name:"
@@ -702,6 +748,8 @@ msgstr "Guardar paleta"
 msgid ""
 "Color swatch palette. Drop colors here and drag them around to organize."
 msgstr ""
+"Paleta de colores con casilleros.  Arrastar colores aquí para agregarlos, y "
+"arrastrarlos dentro de la paleta para organizarlos"
 
 #: ../gui/colors/paletteview.py:676
 msgid "Empty palette slot (drag a color here)"
@@ -974,7 +1022,7 @@ msgstr "iconos de herramientas"
 
 #: ../gui/drawwindow.py:869
 msgid "translator-credits"
-msgstr "créditos-traductor"
+msgstr "Manuel Quiñones"
 
 #: ../gui/drawwindow.py:877
 msgid "Move your mouse over a menu entry, then press the key to assign."
@@ -1342,9 +1390,8 @@ msgid "Head"
 msgstr "Cabeza"
 
 #: ../gui/linemode.py:24
-#, fuzzy
 msgid "Stroke lead-in end"
-msgstr "Tiempo en que se mantiene el trazo"
+msgstr "Hacia dónde va la pincelada al final"
 
 #: ../gui/linemode.py:25
 msgid "Tail"
@@ -1352,7 +1399,7 @@ msgstr "Cola"
 
 #: ../gui/linemode.py:25
 msgid "Stroke trail-off beginning"
-msgstr ""
+msgstr "Desde dónde viene la pincelada al inicio"
 
 #: ../gui/overlays.py:147
 #, python-format
@@ -1743,7 +1790,7 @@ msgstr "Formato de archivo de extensión desconocida: %s"
 
 #: ../lib/layer.py:18
 msgid "The top layer only, without blending colors."
-msgstr ""
+msgstr "Sólo la capa de arriba, sin mezcla de colores."
 
 #: ../lib/layer.py:19
 msgid "Multiply"
@@ -1754,6 +1801,8 @@ msgid ""
 "Similar to loading multiple slides into a single projector's slot and "
 "projecting the combined result."
 msgstr ""
+"Similar a colocar varias diapositivas en una misma hendija de un proyector, "
+"y proyectar el resultado."
 
 #: ../lib/layer.py:22
 msgid "Screen"
@@ -1764,6 +1813,8 @@ msgid ""
 "Like shining two separate slide projectors onto a screen simultaneously. "
 "This is the inverse of 'Multiply'."
 msgstr ""
+"Como proyectar con dos proyectores dos diapositivas distintas, "
+"simultáneamente en una misma pantalla.  Es lo inverso de 'Multiplicar'."
 
 #: ../lib/layer.py:25
 msgid "Overlay"
@@ -1774,6 +1825,8 @@ msgid ""
 "Overlays the backdrop with the top layer, preserving the backdrop's "
 "highlights and shadows. This is the inverse of 'Hard Light'."
 msgstr ""
+"Solapa lo que hay debajo con la capa de arriba, preservando las intensidades "
+"y las sombras de lo que hay debajo.  Es la inversa de 'Claridad fuerte'."
 
 #: ../lib/layer.py:28
 msgid "Darken"
@@ -1782,6 +1835,8 @@ msgstr "Oscurecer"
 #: ../lib/layer.py:29
 msgid "The top layer is used only where it is darker than the backdrop."
 msgstr ""
+"La capa de arriba se usa solamente cuando es más oscura que lo que hay "
+"debajo."
 
 #: ../lib/layer.py:30
 msgid "Lighten"
@@ -1790,6 +1845,7 @@ msgstr "Clarear"
 #: ../lib/layer.py:31
 msgid "The top layer is used only where it is lighter than the backdrop."
 msgstr ""
+"La capa de arriba se usa solamente cuando es más clara que lo que hay debajo."
 
 #: ../lib/layer.py:32
 msgid "Dodge"
@@ -1801,6 +1857,9 @@ msgid ""
 "photographic darkroom technique of the same name which is used for improving "
 "contrast in shadows."
 msgstr ""
+"Blanquea lo que hay debajo usando la capa de arriba. El efecto es similar a "
+"la técnica fotográfica del cuarto oscuro que se usa para mejorar el "
+"contraste en las sombras."
 
 #: ../lib/layer.py:36
 msgid "Burn"
@@ -1812,6 +1871,9 @@ msgid ""
 "photographic darkroom technique of the same name which is used for reducing "
 "over-bright highlights."
 msgstr ""
+"Oscurece lo que hay debajo usando la capa de arriba. El efecto es similar a "
+"la técnica fotográfica del cuarto oscuro que se usa para reducir los puntos "
+"de demasiado brillo."
 
 #: ../lib/layer.py:40
 msgid "Hard Light"
@@ -1819,7 +1881,7 @@ msgstr "Claridad fuerte"
 
 #: ../lib/layer.py:41
 msgid "Similar to shining a harsh spotlight onto the backdrop."
-msgstr ""
+msgstr "Similar a iluminar con una luz spot dura lo que hay debajo."
 
 #: ../lib/layer.py:42
 msgid "Soft Light"
@@ -1827,7 +1889,7 @@ msgstr "Claridad suave"
 
 #: ../lib/layer.py:43
 msgid "Like shining a diffuse spotlight onto the backdrop."
-msgstr ""
+msgstr "Como iluminar con una luz spot difusa lo que hay debajo."
 
 #: ../lib/layer.py:44
 msgid "Difference"
@@ -1835,7 +1897,7 @@ msgstr "Diferencia"
 
 #: ../lib/layer.py:45
 msgid "Subtracts the darker color from the lighter of the two."
-msgstr ""
+msgstr "Sustrae el color más oscuro de el más claro de los dos."
 
 #: ../lib/layer.py:46
 msgid "Exclusion"
@@ -1854,6 +1916,8 @@ msgid ""
 "Combines the hue of the top layer with the saturation and luminosity of the "
 "backdrop."
 msgstr ""
+"Combina el tono de la capa de arriba con la saturación y la luminosidad de "
+"lo que hay debajo."
 
 #: ../lib/layer.py:51
 msgid "Saturation"
@@ -1864,12 +1928,16 @@ msgid ""
 "Applies the saturation of the top layer's colors to the hue and luminosity "
 "of the backdrop."
 msgstr ""
+"Aplica la saturación de los colores de la capa de arriba al tono y "
+"luminosidad de lo que hay debajo."
 
 #: ../lib/layer.py:55
 msgid ""
 "Applies the hue and saturation of the top layer to the luminosity of the "
 "backdrop."
 msgstr ""
+"Aplica el tono y la saturación de la capa de arriba a la luminosidad de lo "
+"que hay debajo."
 
 #: ../lib/layer.py:57
 msgid "Luminosity"
@@ -1880,6 +1948,8 @@ msgid ""
 "Applies the luminosity of the top layer to the hue and saturation of the "
 "backdrop."
 msgstr ""
+"Aplica la luminosidad de la capa de arriba al tono y saturación de lo que "
+"hay debajo."
 
 #: ../po/tmp/mypaint.xml.h:1
 msgctxt "Menu|File|"
@@ -2626,7 +2696,6 @@ msgid "Start/Stop Python Profiling (cProfile)"
 msgstr "Iniciar/detener el perfilado de Python (cProfile)"
 
 #: ../po/tmp/mypaint.xml.h:159
-#, fuzzy
 msgctxt "Menu|Help|Debug|"
 msgid "GTK Input Device Dialog"
 msgstr "Diálogo de dispositivos de entrada GTK"
@@ -2884,89 +2953,96 @@ msgstr "Líneas"
 
 #: ../po/tmp/mypaint.xml.h:214
 msgid ""
-"Lines and Curves: draw straight or curved lines.\nCtrl: constrain angle."
-"\nShift: add curves to the last line."
+"Lines and Curves: draw straight or curved lines.\n"
+"Ctrl: constrain angle.\n"
+"Shift: add curves to the last line."
 msgstr ""
-"Líneas y curvas: dibujar líneas rectas o curvas.\nCtrl: restringir"
-"+ángulo.\nShift: agregar curvas a la última línea."
+"Líneas y curvas: dibujar líneas rectas o curvas.\n"
+"Ctrl: restringir+ángulo.\n"
+"Shift: agregar curvas a la última línea."
 
-#: ../po/tmp/mypaint.xml.h:215
+#: ../po/tmp/mypaint.xml.h:217
 msgctxt "Menu|Edit|"
 msgid "Lines and Curves"
 msgstr "Líneas y curvas"
 
-#: ../po/tmp/mypaint.xml.h:216
+#: ../po/tmp/mypaint.xml.h:218
 msgctxt "Menu|Edit|Current Mode|"
 msgid "Connected Lines"
 msgstr "Líneas conectadas"
 
-#: ../po/tmp/mypaint.xml.h:217
-#, fuzzy
+#: ../po/tmp/mypaint.xml.h:219
 msgctxt "Toolbar|"
 msgid "Line Seq."
-msgstr "Modo de mezcla"
+msgstr "Sec. línea"
 
-#: ../po/tmp/mypaint.xml.h:218
+#: ../po/tmp/mypaint.xml.h:220
 msgid ""
-"Connected Lines: draw sequences of straight or curved lines.\nCtrl: "
-"constrain angle.\nShift: add curves to the last line."
+"Connected Lines: draw sequences of straight or curved lines.\n"
+"Ctrl: constrain angle.\n"
+"Shift: add curves to the last line."
 msgstr ""
-"Líneas conectadas: dibujar secuencias de líneas rectas o curvas.\nCtrl: "
-"restringir ángulo.\nShift: agregar curvas a la última línea."
+"Líneas conectadas: dibujar secuencias de líneas rectas o curvas.\n"
+"Ctrl: restringir ángulo.\n"
+"Shift: agregar curvas a la última línea."
 
-#: ../po/tmp/mypaint.xml.h:219
+#: ../po/tmp/mypaint.xml.h:223
 msgctxt "Menu|Edit|"
 msgid "Connected Lines"
 msgstr "Líneas conectadas"
 
-#: ../po/tmp/mypaint.xml.h:220
+#: ../po/tmp/mypaint.xml.h:224
 msgctxt "Menu|Edit|Current Mode|"
 msgid "Ellipses and Circles"
 msgstr "Elipses y círculos"
 
-#: ../po/tmp/mypaint.xml.h:221
+#: ../po/tmp/mypaint.xml.h:225
 msgctxt "Toolbar|"
 msgid "Ellipse"
 msgstr "Elipse"
 
-#: ../po/tmp/mypaint.xml.h:222
+#: ../po/tmp/mypaint.xml.h:226
 msgid ""
-"Ellipses and Circles: draw whole circles and ellipses.\nShift: rotate."
-"\nCtrl: constrain ratio.\nCtrl+Shift: constrain angle."
+"Ellipses and Circles: draw whole circles and ellipses.\n"
+"Shift: rotate.\n"
+"Ctrl: constrain ratio.\n"
+"Ctrl+Shift: constrain angle."
 msgstr ""
-"Elipses y círculos: dibujar círculos y elipses completos.\nShift: rotar."
-"\nCtrl: restringir proporción.\nCtrl+Shift: restrinjir ángulo."
+"Elipses y círculos: dibujar círculos y elipses completos.\n"
+"Shift: rotar.\n"
+"Ctrl: restringir proporción.\n"
+"Ctrl+Shift: restrinjir ángulo."
 
-#: ../po/tmp/mypaint.xml.h:223
+#: ../po/tmp/mypaint.xml.h:230
 msgctxt "Menu|Edit|"
 msgid "Ellipses and Circles"
 msgstr "Elipses y círculos"
 
-#: ../po/tmp/mypaint.xml.h:224
+#: ../po/tmp/mypaint.xml.h:231
 msgctxt "Menu|Edit|Current Mode|"
 msgid "Move Layer"
 msgstr "Mover capa"
 
-#: ../po/tmp/mypaint.xml.h:225
+#: ../po/tmp/mypaint.xml.h:232
 msgid "Move Layer: reposition the current layer on the canvas"
 msgstr "Mover capa: reposicionar la capa actual en el lienzo"
 
-#: ../po/tmp/mypaint.xml.h:226
+#: ../po/tmp/mypaint.xml.h:233
 msgctxt "Menu|Layer|"
 msgid "Move"
 msgstr "Mover"
 
-#: ../po/tmp/mypaint.xml.h:227
+#: ../po/tmp/mypaint.xml.h:234
 msgctxt "Menu|Edit|Current Mode|"
 msgid "Edit Frame"
 msgstr "Editar marco"
 
-#: ../po/tmp/mypaint.xml.h:228
+#: ../po/tmp/mypaint.xml.h:235
 msgctxt "Toolbar|"
 msgid "Frame"
 msgstr "Marco"
 
-#: ../po/tmp/mypaint.xml.h:229
+#: ../po/tmp/mypaint.xml.h:236
 msgid ""
 "Edit Frame: define a frame around the document to give it a finite size. The "
 "frame is used when exporting."
@@ -2974,7 +3050,7 @@ msgstr ""
 "Editar marco: definir un marco alrededor del documento para darle un tamaño "
 "finito. El marco se utiliza al exportar."
 
-#: ../po/tmp/mypaint.xml.h:230
+#: ../po/tmp/mypaint.xml.h:237
 msgctxt "Menu|File|"
 msgid "Edit Frame"
 msgstr "Editar marco"
