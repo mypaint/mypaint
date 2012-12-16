@@ -2,14 +2,14 @@
 # Copyright (C) 2009 Martin Renold, Ilya Portnov
 # This file is distributed under the same license as the MyPaint package.
 # Martin Renold <martinxyz@gmx.ch> 2009
-# Manuel Quiñones <manuq@laptop.org>, 2011.
+# Manuel Quiñones <manuq@laptop.org>, 2011, 2012.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: MyPaint 0.7.1+git\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-12-10 18:09-0300\n"
-"PO-Revision-Date: 2011-11-22 08:59-0300\n"
+"PO-Revision-Date: 2012-12-16 11:27-0300\n"
 "Last-Translator: Manuel Quiñones <manuq@laptop.org>\n"
 "Language-Team: Español; Castellano <manuq@laptop.org>\n"
 "Language: es\n"
@@ -17,13 +17,13 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bits\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"X-Generator: Gtranslator 2.91.5\n"
 
 #: ../brushsettings-gen.h:4
 msgid "Opacity"
 msgstr "Opacidad"
 
 #: ../brushsettings-gen.h:4
-#, fuzzy
 msgid ""
 "0 means brush is transparent, 1 fully visible\n"
 "(also known as alpha or opacity)"
@@ -36,7 +36,6 @@ msgid "Opacity multiply"
 msgstr "Multiplicar opacidad"
 
 #: ../brushsettings-gen.h:5
-#, fuzzy
 msgid ""
 "This gets multiplied with opaque. You should only change the pressure input "
 "of this setting. Use 'opaque' instead to make opacity depend on speed.\n"
@@ -55,7 +54,6 @@ msgid "Opacity linearize"
 msgstr "Linealizar opacidad"
 
 #: ../brushsettings-gen.h:6
-#, fuzzy
 msgid ""
 "Correct the nonlinearity introduced by blending multiple dabs on top of each "
 "other. This correction should get you a linear (\"natural\") pressure "
@@ -82,7 +80,6 @@ msgid "Radius"
 msgstr "Radio"
 
 #: ../brushsettings-gen.h:7
-#, fuzzy
 msgid ""
 "Basic brush radius (logarithmic)\n"
 " 0.7 means 2 pixels\n"
@@ -109,7 +106,6 @@ msgid "Anti-aliasing"
 msgstr "Anti-aliasing"
 
 #: ../brushsettings-gen.h:9
-#, fuzzy
 msgid ""
 "This setting decreases the hardness when necessary to prevent a pixel "
 "staircase effect.\n"
@@ -162,7 +158,6 @@ msgid "Radius by random"
 msgstr "Radio aleatorio"
 
 #: ../brushsettings-gen.h:13
-#, fuzzy
 msgid ""
 "Alter the radius randomly each dab. You can also do this with the by_random "
 "input on the radius setting. If you do it here, there are two differences:\n"
@@ -182,7 +177,6 @@ msgid "Fine speed filter"
 msgstr "Filtro de velocidad fina"
 
 #: ../brushsettings-gen.h:14
-#, fuzzy
 msgid ""
 "How slow the input fine speed is following the real speed\n"
 "0.0 change immediately as your speed changes (not recommended, but try it)"
@@ -204,7 +198,6 @@ msgid "Fine speed gamma"
 msgstr "Gama de velocidad fina"
 
 #: ../brushsettings-gen.h:16
-#, fuzzy
 msgid ""
 "This changes the reaction of the 'fine speed' input to extreme physical "
 "speed. You will see the difference best if 'fine speed' is mapped to the "
@@ -233,7 +226,6 @@ msgid "Jitter"
 msgstr "Temblequeo"
 
 #: ../brushsettings-gen.h:18
-#, fuzzy
 msgid ""
 "Add a random offset to the position where each dab is drawn\n"
 " 0.0 disabled\n"
@@ -250,7 +242,6 @@ msgid "Offset by speed"
 msgstr "Desfase por velocidad"
 
 #: ../brushsettings-gen.h:19
-#, fuzzy
 msgid ""
 "Change position depending on pointer speed\n"
 "= 0 disable\n"
@@ -328,7 +319,6 @@ msgid "Save color"
 msgstr "Guardar color"
 
 #: ../brushsettings-gen.h:27
-#, fuzzy
 msgid ""
 "When selecting a brush, the color can be restored to the color that the "
 "brush was saved with.\n"
@@ -347,7 +337,6 @@ msgid "Change color hue"
 msgstr "Cambiar el tono del color"
 
 #: ../brushsettings-gen.h:28
-#, fuzzy
 msgid ""
 "Change color hue.\n"
 "-0.1 small clockwise color hue shift\n"
@@ -364,7 +353,6 @@ msgid "Change color lightness (HSL)"
 msgstr "Cambiar la claridad del color (HSL)"
 
 #: ../brushsettings-gen.h:29
-#, fuzzy
 msgid ""
 "Change the color lightness (luminance) using the HSL color model.\n"
 "-1.0 blacker\n"
@@ -381,7 +369,6 @@ msgid "Change color satur. (HSL)"
 msgstr "Cambiar la saturación del color. (HSL)"
 
 #: ../brushsettings-gen.h:30
-#, fuzzy
 msgid ""
 "Change the color saturation using the HSL color model.\n"
 "-1.0 more grayish\n"
@@ -398,7 +385,6 @@ msgid "Change color value (HSV)"
 msgstr "Cambiar el valor del color (HSV)"
 
 #: ../brushsettings-gen.h:31
-#, fuzzy
 msgid ""
 "Change the color value (brightness, intensity) using the HSV color model. "
 "HSV changes are applied before HSL.\n"
@@ -417,7 +403,6 @@ msgid "Change color satur. (HSV)"
 msgstr "Cambiar la saturación del color. (HSV)"
 
 #: ../brushsettings-gen.h:32
-#, fuzzy
 msgid ""
 "Change the color saturation using the HSV color model. HSV changes are "
 "applied before HSL.\n"
@@ -436,7 +421,6 @@ msgid "Smudge"
 msgstr "Difuminar"
 
 #: ../brushsettings-gen.h:33
-#, fuzzy
 msgid ""
 "Paint with the smudge color instead of the brush color. The smudge color is "
 "slowly changed to the color you are painting on.\n"
@@ -456,7 +440,6 @@ msgid "Smudge length"
 msgstr "Longitud del difuminado"
 
 #: ../brushsettings-gen.h:34
-#, fuzzy
 msgid ""
 "This controls how fast the smudge color becomes the color you are painting "
 "on.\n"
@@ -477,7 +460,6 @@ msgid "Smudge radius"
 msgstr "Radio del difuminado"
 
 #: ../brushsettings-gen.h:35
-#, fuzzy
 msgid ""
 "This modifies the radius of the circle where color is picked up for "
 "smudging.\n"
@@ -498,7 +480,6 @@ msgid "Eraser"
 msgstr "Goma de borrar"
 
 #: ../brushsettings-gen.h:36
-#, fuzzy
 msgid ""
 "how much this tool behaves like an eraser\n"
 " 0.0 normal painting\n"
@@ -540,7 +521,6 @@ msgid "Stroke hold time"
 msgstr "Tiempo en que se mantiene el trazo"
 
 #: ../brushsettings-gen.h:39
-#, fuzzy
 msgid ""
 "This defines how long the stroke input stays at 1.0. After that it will "
 "reset to 0.0 and start growing again, even if the stroke is not yet "
@@ -559,7 +539,6 @@ msgid "Custom input"
 msgstr "Entrada personalizada"
 
 #: ../brushsettings-gen.h:40
-#, fuzzy
 msgid ""
 "Set the custom input to this value. If it is slowed down, move it towards "
 "this value (see below). The idea is that you make this input depend on a "
@@ -581,7 +560,6 @@ msgid "Custom input filter"
 msgstr "Filtro personalizado de entrada"
 
 #: ../brushsettings-gen.h:41
-#, fuzzy
 msgid ""
 "How slow the custom input actually follows the desired value (the one "
 "above). This happens at brushdab level (ignoring how much time has past, if "
@@ -610,7 +588,6 @@ msgid "Elliptical dab: angle"
 msgstr "Pincelada elíptica: ángulo"
 
 #: ../brushsettings-gen.h:43
-#, fuzzy
 msgid ""
 "Angle by which elliptical dabs are tilted\n"
 " 0.0 horizontal dabs\n"
@@ -639,7 +616,6 @@ msgid "Lock alpha"
 msgstr "Bloquear alfa"
 
 #: ../brushsettings-gen.h:45
-#, fuzzy
 msgid ""
 "Do not modify the alpha channel of the layer (paint only where there is "
 "paint already)\n"
@@ -653,15 +629,16 @@ msgstr ""
 " 1.0 canal alfa completamente bloqueado"
 
 #: ../brushsettings-gen.h:46
-#, fuzzy
 msgid "Colorize"
-msgstr "Color"
+msgstr "Colorear"
 
 #: ../brushsettings-gen.h:46
 msgid ""
 "Colorize the target layer, setting its hue and saturation from the active "
 "brush colour while retaining its value and alpha."
 msgstr ""
+"Colorea la capa objetivo, cambiando su tono y saturación al color de la "
+"brocha activa, sin modificar su valor y alfa."
 
 #: ../brushsettings-gen.h:51
 msgid "Pressure"
