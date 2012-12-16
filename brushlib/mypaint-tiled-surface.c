@@ -108,6 +108,7 @@ mypaint_tiled_surface_tile_request_init(MyPaintTiledSurfaceTileRequestData *data
     data->context = NULL;
 }
 
+// Must be threadsafe
 static inline float
 calculate_rr(int xp, int yp, float x, float y, float aspect_ratio,
                       float sn, float cs, float one_over_radius2)
@@ -122,6 +123,7 @@ calculate_rr(int xp, int yp, float x, float y, float aspect_ratio,
     return rr;
 }
 
+// Must be threadsafe
 static inline float
 calculate_opa(float rr, float hardness,
               float segment1_offset, float segment1_slope,
@@ -141,6 +143,7 @@ calculate_opa(float rr, float hardness,
     return opa;
 }
 
+// Must be threadsafe
 void render_dab_mask (uint16_t * mask,
                         float x, float y,
                         float radius,
@@ -239,8 +242,9 @@ void render_dab_mask (uint16_t * mask,
     *mask_p++ = 0;
   }
 
+// Must be threadsafe
 void
-process_op(MyPaintTiledSurface *self, uint16_t *rgba_p, uint16_t *mask,
+process_op(uint16_t *rgba_p, uint16_t *mask,
            int tx, int ty, OperationDataDrawDab *op)
 {
 
@@ -277,6 +281,7 @@ process_op(MyPaintTiledSurface *self, uint16_t *rgba_p, uint16_t *mask,
     }
 }
 
+// Must be threadsafe
 void
 process_tile(MyPaintTiledSurface *self, int tx, int ty)
 {
@@ -299,7 +304,7 @@ process_tile(MyPaintTiledSurface *self, int tx, int ty)
     uint16_t mask[MYPAINT_TILE_SIZE*MYPAINT_TILE_SIZE+2*MYPAINT_TILE_SIZE];
 
     while (op) {
-        process_op(self, rgba_p, mask, tile_index.x, tile_index.y, op);
+        process_op(rgba_p, mask, tile_index.x, tile_index.y, op);
         free(op);
         op = operation_queue_pop(self->operation_queue, tile_index);
     }
