@@ -8,21 +8,21 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.9.0-git\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-15 15:58-0200\n"
+"POT-Creation-Date: 2012-12-17 21:24+0100\n"
 "PO-Revision-Date: 2012-12-15 16:16-0200\n"
 "Last-Translator: João S. O. Bueno <jsbueno@python.org.br>\n"
 "Language-Team: Brazilian Portuguese <>\n"
+"Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: pt_BR\n"
 "X-Poedit-Language: Brazilian Portuguese\n"
 "X-Poedit-Country: BRAZIL\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Generator: Lokalize 1.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../gui/backgroundwindow.py:24 ../po/tmp/mypaint.xml.h:177
+#: ../gui/backgroundwindow.py:24
 msgid "Save as Default"
 msgstr "Salvar como padrão"
 
@@ -35,7 +35,7 @@ msgid "Pattern"
 msgstr "Padrão"
 
 #: ../gui/backgroundwindow.py:46 ../gui/brushsettingswindow.py:108
-#: ../lib/layer.py:54 ../po/tmp/mypaint.xml.h:27
+#: ../lib/layer.py:54
 msgid "Color"
 msgstr "Cor"
 
@@ -96,7 +96,7 @@ msgstr "Adicionar como novo"
 msgid "Edit Brush Icon"
 msgstr "Editar ícone do pincel"
 
-#: ../gui/brushcreationwidget.py:55 ../po/tmp/mypaint.xml.h:154
+#: ../gui/brushcreationwidget.py:55
 msgid "Rename..."
 msgstr "Renomear..."
 
@@ -124,15 +124,15 @@ msgstr "Nenhum pincel selecionado - favor usar \"Adicionar como novo\"."
 msgid "Really delete brush from disk?"
 msgstr "Realmente apagar o pincel do disco? "
 
-#: ../gui/brushcreationwidget.py:210 ../po/tmp/mypaint.xml.h:58
+#: ../gui/brushcreationwidget.py:210
 msgid "Edit"
 msgstr "Editar"
 
-#: ../gui/brushcreationwidget.py:214 ../po/tmp/mypaint.xml.h:24
+#: ../gui/brushcreationwidget.py:214
 msgid "Clear"
 msgstr "Limpar"
 
-#: ../gui/brushcreationwidget.py:218 ../po/tmp/mypaint.xml.h:174
+#: ../gui/brushcreationwidget.py:218
 msgid "Save"
 msgstr "Salvar"
 
@@ -250,11 +250,11 @@ msgstr "Remover grupo"
 msgid "Export Group..."
 msgstr "Exportar grupo"
 
-#: ../gui/brushselectionwindow.py:471 ../po/tmp/mypaint.xml.h:92
+#: ../gui/brushselectionwindow.py:471
 msgid "Import Brushes..."
 msgstr "Importar pincéis..."
 
-#: ../gui/brushselectionwindow.py:473 ../po/tmp/mypaint.xml.h:83
+#: ../gui/brushselectionwindow.py:473
 msgid "Get More Brushes..."
 msgstr "Obter mais pincéis..."
 
@@ -304,7 +304,7 @@ msgstr "Atualização ao vivo do último traço na imagem"
 msgid "Basic"
 msgstr "Básico"
 
-#: ../gui/brushsettingswindow.py:102 ../po/tmp/mypaint.xml.h:132
+#: ../gui/brushsettingswindow.py:102
 msgid "Opacity"
 msgstr "Opacidade"
 
@@ -864,7 +864,7 @@ msgid "<b>Do you really want to import package `%s'?</b>"
 msgstr "<b>Você realmente quer importar o pacote `%s'?</b>"
 
 #. Quick brush changer
-#: ../gui/dialogs.py:363 ../gui/toolbar.py:355 ../po/tmp/mypaint.xml.h:16
+#: ../gui/dialogs.py:363 ../gui/toolbar.py:355
 msgid "Change Brush"
 msgstr "Alterar pincel"
 
@@ -939,7 +939,7 @@ msgid "All Files"
 msgstr "Todos os arquivos"
 
 #. FIXME: should do this periodically, not only on quit
-#: ../gui/drawwindow.py:781 ../po/tmp/mypaint.xml.h:150
+#: ../gui/drawwindow.py:781
 msgid "Quit"
 msgstr "Sair"
 
@@ -1143,7 +1143,6 @@ msgid "_Save as Scrap"
 msgstr "_Salvar como rascunho"
 
 #: ../gui/filehandling.py:326 ../gui/filehandling.py:343
-#: ../po/tmp/mypaint.xml.h:138
 msgid "Open..."
 msgstr "Abrir..."
 
@@ -1156,7 +1155,7 @@ msgstr "Abrir painel de rascunho..."
 msgid "There are no scrap files named \"%s\" yet."
 msgstr "Não há arquivos de rascunho com o nome \"%s\" ainda."
 
-#: ../gui/framewindow.py:259 ../po/tmp/mypaint.xml.h:77
+#: ../gui/framewindow.py:259
 msgid "Frame"
 msgstr "Moldura"
 
@@ -1302,11 +1301,11 @@ msgstr ""
 "<b>{blendingmode_name}</b>\n"
 "{blendingmode_description}"
 
-#: ../gui/layerswindow.py:66 ../po/tmp/mypaint.xml.h:213
+#: ../gui/layerswindow.py:66
 msgid "Visible"
 msgstr "Visível"
 
-#: ../gui/layerswindow.py:72 ../po/tmp/mypaint.xml.h:112
+#: ../gui/layerswindow.py:72
 msgid "Locked"
 msgstr "Travado"
 
@@ -1415,7 +1414,7 @@ msgstr "Tela (normal)"
 msgid "Window (not recommended)"
 msgstr "Janela (não recomendado)"
 
-#: ../gui/preferenceswindow.py:37 ../po/tmp/mypaint.xml.h:144
+#: ../gui/preferenceswindow.py:37
 msgid "Preferences"
 msgstr "Preferências"
 
@@ -1483,7 +1482,7 @@ msgstr "<b>Salvar próximo rascunho</b>"
 msgid "Path and filename prefix:"
 msgstr "Caminho e prefixo de arquivo:"
 
-#: ../gui/preferenceswindow.py:184 ../po/tmp/mypaint.xml.h:212
+#: ../gui/preferenceswindow.py:184
 msgid "View"
 msgstr "Visualizar"
 
@@ -1515,7 +1514,7 @@ msgstr "Esconder barra de ferramentas"
 msgid "Hide tools"
 msgstr "Esconder ferramentas"
 
-#: ../gui/scratchwindow.py:28 ../po/tmp/mypaint.xml.h:183
+#: ../gui/scratchwindow.py:28
 msgid "Scratchpad"
 msgstr "Painel de rascunho"
 
@@ -1579,7 +1578,7 @@ msgstr "Visualização (alternativa/secundária)"
 msgid "View (Resetting)"
 msgstr "Visualização (reiniciar)"
 
-#: ../gui/toolbar.py:39 ../po/tmp/mypaint.xml.h:204
+#: ../gui/toolbar.py:39
 msgid "Subwindows"
 msgstr "Sub-janelas"
 
@@ -1613,7 +1612,7 @@ msgid "Color History and other tools"
 msgstr "Histórico de cores e outras ferramentas"
 
 #. Colour changing
-#: ../gui/toolbar.py:250 ../po/tmp/mypaint.xml.h:17
+#: ../gui/toolbar.py:250
 msgid "Change Color"
 msgstr "Alterar cor"
 
@@ -1946,134 +1945,1138 @@ msgstr ""
 "Aplica a luminosidade da camada de cima à matiz e saturação da imagem abaixo."
 
 #: ../po/tmp/mypaint.xml.h:1
-msgid "About MyPaint"
-msgstr "Sobre o MyPaint"
+#, fuzzy
+msgctxt "Menu|File|"
+msgid "New"
+msgstr "Nova"
 
 #: ../po/tmp/mypaint.xml.h:2
-msgid "Above"
-msgstr "Acima"
+msgid "Start with a new blank canvas"
+msgstr "Começar com uma nova tela em branco"
 
 #: ../po/tmp/mypaint.xml.h:3
-msgid "Add a new layer above the current layer"
-msgstr "Adiciona uma nova camada acima da camada atual"
+msgctxt "Menu|File|"
+msgid "Open..."
+msgstr " Abrir.."
 
 #: ../po/tmp/mypaint.xml.h:4
-msgid "Add a new layer below the current layer"
-msgstr "Adiciona uma nova camada abaixo da camada atual"
+msgid "Open a file, replacing the current painting"
+msgstr "Abrir um arquivo, substituindo a pintura atual"
 
 #: ../po/tmp/mypaint.xml.h:5
-msgid "Adjust Color"
-msgstr "Ajustar cor"
+#, fuzzy
+msgctxt "Menu|File|"
+msgid "Open Most Recent"
+msgstr "Abrir mais recente"
 
 #: ../po/tmp/mypaint.xml.h:6
-msgid "Adjust View"
-msgstr "Ajustar visualização"
+msgid "Open the last file you saved"
+msgstr "Abre o último arquivo que você salvou"
 
 #: ../po/tmp/mypaint.xml.h:7
-msgid "At Cursor"
-msgstr "No cursor"
+#, fuzzy
+msgctxt "Menu|File|"
+msgid "Revert"
+msgstr "Reverter "
 
 #: ../po/tmp/mypaint.xml.h:8
-msgid "Axis of Symmetry"
-msgstr "Eixo de simetria"
+msgid "Reload the current file"
+msgstr "Carrega novamente o arquivo atual"
 
 #: ../po/tmp/mypaint.xml.h:9
-msgid "Below"
-msgstr "Abaixo"
+msgctxt "Menu|File|"
+msgid "Save"
+msgstr "Salvar"
 
 #: ../po/tmp/mypaint.xml.h:10
+msgid "Save to a file"
+msgstr "Salvar para um arquivo"
+
+#: ../po/tmp/mypaint.xml.h:11
+#, fuzzy
+msgctxt "Menu|File|"
+msgid "Save As..."
+msgstr "Salvar como..."
+
+#: ../po/tmp/mypaint.xml.h:12
+msgid "Save to a file with a new name"
+msgstr "Salva para um arquivo com um novo nome"
+
+#: ../po/tmp/mypaint.xml.h:13
+#, fuzzy
+msgctxt "Menu|File|"
+msgid "Export..."
+msgstr "Exportar..."
+
+#: ../po/tmp/mypaint.xml.h:14
+msgid "Export to a file"
+msgstr "Exporta para um arquivo"
+
+#: ../po/tmp/mypaint.xml.h:15
+#, fuzzy
+msgctxt "Menu|File|"
+msgid "Save As Scrap"
+msgstr "Salvar como rascunho"
+
+#: ../po/tmp/mypaint.xml.h:16
+msgid ""
+"Saves to a new scrap file. If the drawing is currently saved as a scrap, "
+"this will write a new revision of it."
+msgstr ""
+"Salva para um novo arquivo de rascunho. Se este desenho estiver salvo como "
+"um rascunho, gera uma nova revisão do mesmo"
+
+#: ../po/tmp/mypaint.xml.h:17
+#, fuzzy
+msgctxt "Menu|File|"
+msgid "Open Previous Scrap"
+msgstr "Abrir rascunho anterior"
+
+#: ../po/tmp/mypaint.xml.h:18
+msgid "Load the previous scrap file, replacing the current drawing"
+msgstr "Carrega o arquivo de rascunho anterior, substituindo o desenho atual"
+
+#: ../po/tmp/mypaint.xml.h:19
+#, fuzzy
+msgctxt "Menu|File|"
+msgid "Open Next Scrap"
+msgstr "Abrir próximo rascunho"
+
+#: ../po/tmp/mypaint.xml.h:20
+msgid "Load the next scrap file, replacing the current drawing"
+msgstr "Carrega o próximo arquivo de rascunho, substituindo o desenho atual"
+
+#: ../po/tmp/mypaint.xml.h:21
+#, fuzzy
+msgctxt "Menu|Brush|"
 msgid "Bigger"
 msgstr "Maior"
 
-#: ../po/tmp/mypaint.xml.h:11
-msgid "Blend Mode"
-msgstr "Modo de mistura"
+#: ../po/tmp/mypaint.xml.h:22
+msgid "Increase brush radius"
+msgstr "Aumentar o raio do pincel"
 
-#: ../po/tmp/mypaint.xml.h:12
-msgid "Both"
-msgstr "Ambos"
+#: ../po/tmp/mypaint.xml.h:23
+#, fuzzy
+msgctxt "Menu|Brush|"
+msgid "Smaller"
+msgstr "Menor"
 
-#: ../po/tmp/mypaint.xml.h:13
+#: ../po/tmp/mypaint.xml.h:24
+msgid "Decrease brush radius"
+msgstr "Diminui o raio do pincel"
+
+#: ../po/tmp/mypaint.xml.h:25
+#, fuzzy
+msgctxt "Menu|Brush|"
+msgid "Increase Opacity"
+msgstr "Aumentar a opacidade"
+
+#: ../po/tmp/mypaint.xml.h:26
+msgid "Increase brush opacity"
+msgstr "Aumentar a opacidade do pincel"
+
+#: ../po/tmp/mypaint.xml.h:27
+#, fuzzy
+msgctxt "Menu|Brush|"
+msgid "Decrease Opacity"
+msgstr "Diminuir a opacidade"
+
+#: ../po/tmp/mypaint.xml.h:28
+msgid "Decrease brush opacity"
+msgstr "Diminui a opacidade do pincel"
+
+#: ../po/tmp/mypaint.xml.h:29
+#, fuzzy
+msgctxt "Menu|Color|Adjust Color|"
 msgid "Brighter"
 msgstr "Mais claro"
 
-#: ../po/tmp/mypaint.xml.h:14
-msgid "Brush"
-msgstr "Pincel"
+#: ../po/tmp/mypaint.xml.h:30
+msgid "Increase color brightness"
+msgstr "Aumentar o brilho da cor"
 
-#: ../po/tmp/mypaint.xml.h:15
-msgid "Brushes Window"
-msgstr "Janela de pincéis"
+#: ../po/tmp/mypaint.xml.h:31
+#, fuzzy
+msgctxt "Menu|Color|Adjust Color|"
+msgid "Darker"
+msgstr "Mais escuro"
 
-#: ../po/tmp/mypaint.xml.h:18
-msgid "Change Color (ring)"
-msgstr "Alterar cor (anel)"
+#: ../po/tmp/mypaint.xml.h:32
+msgid "Decrease color brightness"
+msgstr "Diminui o brilho da cor"
 
-#: ../po/tmp/mypaint.xml.h:19
-msgid "Change Color (wash)"
-msgstr "Alterar cor (lavada)"
+#: ../po/tmp/mypaint.xml.h:33
+#, fuzzy
+msgctxt "Menu|Color|Adjust Color|"
+msgid "Hue Anticlockwise"
+msgstr "Matiz no sentido anti-horário"
 
-#: ../po/tmp/mypaint.xml.h:20
-msgid "Change the Keyboard Shortcuts?"
-msgstr "Alterar os atalhos de teclado?"
+#: ../po/tmp/mypaint.xml.h:34
+msgid "Rotate color hue anticlockwise"
+msgstr "Rotaciona o matiz de cor no sentido anti-horário"
 
-#: ../po/tmp/mypaint.xml.h:21
-msgid "Choose Background"
-msgstr "Escolher fundo"
+#: ../po/tmp/mypaint.xml.h:35
+#, fuzzy
+msgctxt "Menu|Color|Adjust Color|"
+msgid "Hue Clockwise"
+msgstr "Matiz no sentido horário"
 
-#: ../po/tmp/mypaint.xml.h:22
-msgid "Choose a background image"
-msgstr "Escolha uma imagem de fundo"
+#: ../po/tmp/mypaint.xml.h:36
+msgid "Rotate color hue clockwise"
+msgstr "Rotaciona o matiz de cor no sentido horário"
 
-#: ../po/tmp/mypaint.xml.h:23
-msgid "Choose a layer by picking a brushstroke on it"
-msgstr "Escolha uma camada clicando numa pincelada na mesma"
+#: ../po/tmp/mypaint.xml.h:37
+#, fuzzy
+msgctxt "Menu|Color|Adjust Color|"
+msgid "Purer"
+msgstr "Mais pura"
 
-#: ../po/tmp/mypaint.xml.h:25
-msgid "Clear Default"
-msgstr "Limpar padrão"
+#: ../po/tmp/mypaint.xml.h:38
+msgid "Increase color saturation"
+msgstr "Aumentar a saturação da cor"
 
-#: ../po/tmp/mypaint.xml.h:26
+#: ../po/tmp/mypaint.xml.h:39
+#, fuzzy
+msgctxt "Menu|Color|Adjust Color|"
+msgid "Grayer"
+msgstr "Mais cinza"
+
+#: ../po/tmp/mypaint.xml.h:40
+msgid "Decrease color saturation"
+msgstr "Diminui a saturação da cor"
+
+#: ../po/tmp/mypaint.xml.h:41
+#, fuzzy
+msgctxt "Menu|Brush|"
+msgid "Pick Stroke and Layer"
+msgstr "Pegar pincelada e camada"
+
+#: ../po/tmp/mypaint.xml.h:42
+msgid "Pick brushstroke: settings and layer"
+msgstr "Pegar pincelada: configurações e camada"
+
+#: ../po/tmp/mypaint.xml.h:43
+#, fuzzy
+msgctxt "Menu|Brush|Shortcut Keys|"
+msgid "Restore Color"
+msgstr "Restaurar cor"
+
+#: ../po/tmp/mypaint.xml.h:44
+#, fuzzy
+msgctxt "Menu|Brush|Shortcut Keys|"
+msgid "Save to Most Recent"
+msgstr "Salvar em mais recentes"
+
+#: ../po/tmp/mypaint.xml.h:45
+msgid "Save brush to the most recent shortcut"
+msgstr "Salva pincel no atalho de mais recente"
+
+#: ../po/tmp/mypaint.xml.h:46
+msgctxt "Menu|Layer|"
+msgid "Clear"
+msgstr "Limpar"
+
+#: ../po/tmp/mypaint.xml.h:47
 msgid "Clear the current layer"
 msgstr "Limpa a camada atual"
 
-#: ../po/tmp/mypaint.xml.h:28
-msgid "Color Dabs"
-msgstr "Amostras coloridas"
+#: ../po/tmp/mypaint.xml.h:48
+#, fuzzy
+msgctxt "Menu|Layer|"
+msgid "Copy"
+msgstr "Copiar"
 
-#: ../po/tmp/mypaint.xml.h:29
-msgid "Color Details"
-msgstr "Detalhes de cor"
+#: ../po/tmp/mypaint.xml.h:49
+msgid "Copy the current layer to the clipboard"
+msgstr "Copia a camada atual para a área de transferência"
 
-#: ../po/tmp/mypaint.xml.h:30
+#: ../po/tmp/mypaint.xml.h:50
+#, fuzzy
+msgctxt "Menu|Layer|"
+msgid "Paste"
+msgstr "Colar"
+
+#: ../po/tmp/mypaint.xml.h:51
+msgid "Replaces the layer with the clipboard's contents"
+msgstr "Substitui a camada atual pelo conteúdo da área de transferência"
+
+#: ../po/tmp/mypaint.xml.h:52
+#, fuzzy
+msgctxt "Menu|Layer|Go to Layer|"
+msgid "At Cursor"
+msgstr "No cursor"
+
+#: ../po/tmp/mypaint.xml.h:53
+msgid "Choose a layer by picking a brushstroke on it"
+msgstr "Escolha uma camada clicando numa pincelada na mesma"
+
+#: ../po/tmp/mypaint.xml.h:54
+#, fuzzy
+msgctxt "Menu|Layer|Go to Layer|"
+msgid "Above"
+msgstr "Acima"
+
+#: ../po/tmp/mypaint.xml.h:55
+msgid "Go one layer up in the layers stack"
+msgstr "Sobe uma camada na pilha de camadas"
+
+#: ../po/tmp/mypaint.xml.h:56
+#, fuzzy
+msgctxt "Menu|Layer|Go to Layer|"
+msgid "Below"
+msgstr "Abaixo"
+
+#: ../po/tmp/mypaint.xml.h:57
+msgid "Go one layer down in the layers stack"
+msgstr "Desce uma camada na pilha de camadas"
+
+#: ../po/tmp/mypaint.xml.h:58
+#, fuzzy
+msgctxt "Menu|Layer|"
+msgid "New (above)"
+msgstr "Nova (acimal) "
+
+#: ../po/tmp/mypaint.xml.h:59
+msgid "Add a new layer above the current layer"
+msgstr "Adiciona uma nova camada acima da camada atual"
+
+#: ../po/tmp/mypaint.xml.h:60
+#, fuzzy
+msgctxt "Menu|Layer|"
+msgid "New (below)"
+msgstr "Nova (abaixol)"
+
+#: ../po/tmp/mypaint.xml.h:61
+msgid "Add a new layer below the current layer"
+msgstr "Adiciona uma nova camada abaixo da camada atual"
+
+#: ../po/tmp/mypaint.xml.h:62
+#, fuzzy
+msgctxt "Menu|Layer|"
+msgid "Merge Down"
+msgstr "Combinar abaixo"
+
+#: ../po/tmp/mypaint.xml.h:63
+msgid "Merge layer with the one beneath it"
+msgstr "Junta a camada com a camada abaixo"
+
+#: ../po/tmp/mypaint.xml.h:64
+#, fuzzy
+msgctxt "Menu|Layer|"
+msgid "Delete"
+msgstr "Excluir"
+
+#: ../po/tmp/mypaint.xml.h:65
+msgid "Delete the current layer"
+msgstr "Remove a camada atual"
+
+#: ../po/tmp/mypaint.xml.h:66
+#, fuzzy
+msgctxt "Menu|Layer"
+msgid "Convert to Normal mode"
+msgstr "Converter para modo normal"
+
+#: ../po/tmp/mypaint.xml.h:67
+#, fuzzy
+msgctxt "Menu|Layer|Opacity|"
+msgid "Increase"
+msgstr "Aumentar"
+
+#: ../po/tmp/mypaint.xml.h:68
+#, fuzzy
+msgctxt "Menu|Layer|Opacity|"
+msgid "Decrease"
+msgstr "Diminuir"
+
+#: ../po/tmp/mypaint.xml.h:69
+#, fuzzy
+msgctxt "Menu|Layer|"
+msgid "Raise"
+msgstr "Subir"
+
+#: ../po/tmp/mypaint.xml.h:70
+msgid "Raise the current layer one step in the layers stack"
+msgstr "Subir a camada atual um passo na pilha de camadas"
+
+#: ../po/tmp/mypaint.xml.h:71
+#, fuzzy
+msgctxt "Menu|Layer|"
+msgid "Lower"
+msgstr "Baixar"
+
+#: ../po/tmp/mypaint.xml.h:72
+msgid "Lower the current layer one step in the layers stack"
+msgstr "Descer a camada atual um passo na pilha de camadas"
+
+#: ../po/tmp/mypaint.xml.h:73
+#, fuzzy
+msgctxt "Menu|Layer|"
+msgid "Duplicate"
+msgstr "Duplicar"
+
+#: ../po/tmp/mypaint.xml.h:74
+msgid "Make an exact duplicate of the current layer"
+msgstr "Fazer uma cópia exata da camada atual"
+
+#: ../po/tmp/mypaint.xml.h:75
+msgctxt "Menu|Layer|"
+msgid "Rename..."
+msgstr "Renomear..."
+
+#: ../po/tmp/mypaint.xml.h:76
+msgid "Enter a new name for the current layer"
+msgstr "Entre um novo nome para a camada atual"
+
+#: ../po/tmp/mypaint.xml.h:77
+msgctxt "Menu|Layer|"
+msgid "Locked"
+msgstr "Travado"
+
+#: ../po/tmp/mypaint.xml.h:78
+msgid "The current layer's locked state: locked layers cannot be drawn to"
+msgstr ""
+"O estado de trava da camada atual: não se pode desenhar em camadas travadas"
+
+#: ../po/tmp/mypaint.xml.h:79
+msgctxt "Menu|Layer|"
+msgid "Visible"
+msgstr "Visível"
+
+#: ../po/tmp/mypaint.xml.h:80
+msgid "The current layer's visibility state"
+msgstr "O estado de visibilidade da camada atual"
+
+#: ../po/tmp/mypaint.xml.h:81
+#, fuzzy
+msgctxt "Menu|View|"
+msgid "Reset and Center"
+msgstr "Restaurar e centralizar"
+
+#: ../po/tmp/mypaint.xml.h:82
+msgid "Reset Zoom, Rotation and Mirroring, and recenter the document"
+msgstr ""
+"Restaura zoom, rotação e espelhamento e centraliza o documento novamente"
+
+#: ../po/tmp/mypaint.xml.h:83
+#, fuzzy
+msgctxt "Menu|View|"
+msgid "Fit"
+msgstr "Tamanho certo"
+
+#: ../po/tmp/mypaint.xml.h:84
+msgid "Zoom to fit the document, and recenter"
+msgstr "Zoom para caber no documento, e recentralizar"
+
+#: ../po/tmp/mypaint.xml.h:85
+#, fuzzy
+msgctxt "Menu|View|"
+msgid "Reset"
+msgstr "Restaurar"
+
+#: ../po/tmp/mypaint.xml.h:86
+msgctxt "Menu|View|Reset|"
+msgid "Zoom"
+msgstr "Zoom"
+
+#: ../po/tmp/mypaint.xml.h:87
+#, fuzzy
+msgctxt "Menu|View|Reset|"
+msgid "Rotation"
+msgstr "Rotação"
+
+#: ../po/tmp/mypaint.xml.h:88
+#, fuzzy
+msgctxt "Menu|View|Reset|"
+msgid "Mirror"
+msgstr "Espelhar"
+
+#: ../po/tmp/mypaint.xml.h:89
+#, fuzzy
+msgctxt "Menu|View|Adjust View|"
+msgid "Zoom In"
+msgstr "Aumentar zoom "
+
+#: ../po/tmp/mypaint.xml.h:90
+msgid "Increase magnification"
+msgstr "Aumentar a ampliação do pincel"
+
+#: ../po/tmp/mypaint.xml.h:91
+#, fuzzy
+msgctxt "Menu|View|Adjust View|"
+msgid "Zoom Out"
+msgstr "Diminuir zoom"
+
+#: ../po/tmp/mypaint.xml.h:92
+msgid "Decrease magnification"
+msgstr "Diminui a ampliação do pincel"
+
+#: ../po/tmp/mypaint.xml.h:93
+#, fuzzy
+msgctxt "Menu|View|Adjust View|"
+msgid "Rotate Counterclockwise"
+msgstr "Rotacionar no sentido anti-horário"
+
+#: ../po/tmp/mypaint.xml.h:94
+msgid "Rotate the view counterclockwise"
+msgstr "Rotaciona a visualização no sentido anti-horário"
+
+#: ../po/tmp/mypaint.xml.h:95
+#, fuzzy
+msgctxt "Menu|View|Adjust View|"
+msgid "Rotate Clockwise"
+msgstr "Rotacionar no sentido horário"
+
+#: ../po/tmp/mypaint.xml.h:96
+msgid "Rotate the view clockwise"
+msgstr "Rotacionar a visualização no sentido horário"
+
+#: ../po/tmp/mypaint.xml.h:97
+#, fuzzy
+msgctxt "Menu|View|Adjust View|"
+msgid "Mirror Horizontal"
+msgstr "Espelhar horizontalmente"
+
+#: ../po/tmp/mypaint.xml.h:98
+msgid "Flip the view left to right"
+msgstr "Espelha a visualização na horizontal"
+
+#: ../po/tmp/mypaint.xml.h:99
+#, fuzzy
+msgctxt "Menu|View|Adjust View|"
+msgid "Mirror Vertical"
+msgstr "Espelhar verticalmente"
+
+#: ../po/tmp/mypaint.xml.h:100
+msgid "Flip the view upside-down"
+msgstr "Espelha de baixo para cima"
+
+#: ../po/tmp/mypaint.xml.h:101
+#, fuzzy
+msgctxt "Menu|View|"
+msgid "Layer Solo"
+msgstr "Camada solo"
+
+#: ../po/tmp/mypaint.xml.h:102
+#, fuzzy
+msgctxt "Menu|View|"
+msgid "Hide Layers Above Current"
+msgstr "Esconder camadas acima da atual"
+
+#: ../po/tmp/mypaint.xml.h:103
+#, fuzzy
+msgctxt "Menu|Brush|"
+msgid "Blend Mode"
+msgstr "Modo de mistura"
+
+#: ../po/tmp/mypaint.xml.h:104
+#, fuzzy
+msgctxt "Menu|Edit|"
+msgid "Symmetrical Painting"
+msgstr "Pintura simétrica"
+
+#: ../po/tmp/mypaint.xml.h:105
+msgid "Mirrors all strokes drawn around the vertical axis"
+msgstr "Espelha todas as pinceladas em torno do eixo vertical"
+
+#: ../po/tmp/mypaint.xml.h:106
+#, fuzzy
+msgctxt "Menu|Help|Debug|"
+msgid "Print Brush Input Values to Console"
+msgstr "Imprimir valores de entrada do pincel para o terminal"
+
+#: ../po/tmp/mypaint.xml.h:107
+#, fuzzy
+msgctxt "Menu|Help|Debug|"
+msgid "Visualize Rendering"
+msgstr "Visualizar renderização"
+
+#: ../po/tmp/mypaint.xml.h:108
+msgid "Show rendering updates on-screen, for debugging"
+msgstr "Exibe atualizações de renderização na tela, para depuração"
+
+#: ../po/tmp/mypaint.xml.h:109
+#, fuzzy
+msgctxt "Menu|Help|Debug|"
+msgid "Disable GTK Double Buffering"
+msgstr "Desabilitar double buffering do GTK."
+
+#: ../po/tmp/mypaint.xml.h:110
+#, fuzzy
+msgctxt "Menu|"
+msgid "File"
+msgstr "Arquivo"
+
+#: ../po/tmp/mypaint.xml.h:111
+msgctxt "Menu|File|"
+msgid "Quit"
+msgstr "Sair"
+
+#: ../po/tmp/mypaint.xml.h:112
+#, fuzzy
+msgctxt "Menu|File|"
+msgid "Frame Enabled"
+msgstr "Moldura ligada"
+
+#: ../po/tmp/mypaint.xml.h:113
+msgctxt "Menu|"
+msgid "Edit"
+msgstr "Editar"
+
+#: ../po/tmp/mypaint.xml.h:114
+msgctxt "Menu|"
+msgid "Color"
+msgstr "Cor"
+
+#: ../po/tmp/mypaint.xml.h:115
+#, fuzzy
+msgctxt "Menu|Color|"
+msgid "Adjust Color"
+msgstr "Ajustar cor"
+
+#: ../po/tmp/mypaint.xml.h:116
+#, fuzzy
+msgctxt "Menu|Color|"
+msgid "Pick Color"
+msgstr "Selecionar cor"
+
+#: ../po/tmp/mypaint.xml.h:117
+#, fuzzy
+msgctxt "Menu|Color|"
 msgid "Color History"
 msgstr "Histórico de cores"
 
-#: ../po/tmp/mypaint.xml.h:31
-msgid "Color changer popup (concentric rings)"
-msgstr "Modificador de cores (anéis concêntricos)"
+#: ../po/tmp/mypaint.xml.h:118
+msgctxt "Menu|Color|"
+msgid "Change Color"
+msgstr "Alterar cor"
 
-#: ../po/tmp/mypaint.xml.h:32
+#: ../po/tmp/mypaint.xml.h:119
 msgid "Color changer popup (crossed bowl)"
 msgstr "Modificador de cores (prato cruzado)"
 
-#: ../po/tmp/mypaint.xml.h:33
+#: ../po/tmp/mypaint.xml.h:120
+#, fuzzy
+msgctxt "Menu|Color|"
+msgid "Change Color (wash)"
+msgstr "Alterar cor (lavada)"
+
+#: ../po/tmp/mypaint.xml.h:121
 msgid "Color changer popup (wash)"
 msgstr "Modificador de cores (lavado)"
 
-#: ../po/tmp/mypaint.xml.h:34
+#: ../po/tmp/mypaint.xml.h:122
+#, fuzzy
+msgctxt "Menu|Color|"
+msgid "Change Color (ring)"
+msgstr "Alterar cor (anel)"
+
+#: ../po/tmp/mypaint.xml.h:123
+msgid "Color changer popup (concentric rings)"
+msgstr "Modificador de cores (anéis concêntricos)"
+
+#: ../po/tmp/mypaint.xml.h:124
+#, fuzzy
+msgctxt "Menu|Color|"
+msgid "Color Details"
+msgstr "Detalhes de cor"
+
+#: ../po/tmp/mypaint.xml.h:125
 msgid "Color details dialog with text entry"
 msgstr "Diálogo de detalhes de cor com entrada de texto"
 
-#: ../po/tmp/mypaint.xml.h:35
+#: ../po/tmp/mypaint.xml.h:126
+#, fuzzy
+msgctxt "Menu|Color"
+msgid "Next Palette Color"
+msgstr "Próxima cor da paleta"
+
+#: ../po/tmp/mypaint.xml.h:127
+msgid "Next color in the palette"
+msgstr "Próxima cor da paleta"
+
+#: ../po/tmp/mypaint.xml.h:128
+#, fuzzy
+msgctxt "Menu|Color|"
+msgid "Previous Palette Color"
+msgstr "Cor anterior da paleta"
+
+#: ../po/tmp/mypaint.xml.h:129
+msgid "Previous color in the palette"
+msgstr "Cor anterior na paleta"
+
+#: ../po/tmp/mypaint.xml.h:130
+#, fuzzy
+msgctxt "Menu|"
+msgid "Layer"
+msgstr "Camada"
+
+#: ../po/tmp/mypaint.xml.h:131
+msgctxt "Menu|Layer|"
+msgid "Opacity"
+msgstr "Opacidade"
+
+#: ../po/tmp/mypaint.xml.h:132
+#, fuzzy
+msgctxt "Menu|Layer|"
+msgid "Go to Layer"
+msgstr "Ir para camada"
+
+#: ../po/tmp/mypaint.xml.h:133
+msgctxt "Menu|"
+msgid "Scratchpad"
+msgstr "Painel de rascunho"
+
+#: ../po/tmp/mypaint.xml.h:134
+msgctxt "Menu|Scratchpad|"
+msgid "New"
+msgstr "Nova"
+
+#: ../po/tmp/mypaint.xml.h:135
+msgctxt "Menu|Scratchpad|"
+msgid "Open..."
+msgstr "Abrir..."
+
+#: ../po/tmp/mypaint.xml.h:136
+msgctxt "Menu|Scratchpad|"
+msgid "Save"
+msgstr "Salvar"
+
+#: ../po/tmp/mypaint.xml.h:137
+msgctxt "Menu|Scratchpad|"
+msgid "Save As..."
+msgstr "Salvar como..."
+
+#: ../po/tmp/mypaint.xml.h:138
+msgctxt "Menu|Scratchpad|"
+msgid "Revert"
+msgstr "Reverter"
+
+#: ../po/tmp/mypaint.xml.h:139
+msgctxt "Menu|Scratchpad|"
+msgid "Save as Default"
+msgstr "Salvar como padrão"
+
+#: ../po/tmp/mypaint.xml.h:140
+#, fuzzy
+msgctxt "Menu|Scratchpad|"
+msgid "Clear Default"
+msgstr "Limpar padrão"
+
+#: ../po/tmp/mypaint.xml.h:141
+#, fuzzy
+msgctxt "Menu|Scratchpad|"
+msgid "Use Main Background"
+msgstr "Usar fundo principal"
+
+#: ../po/tmp/mypaint.xml.h:142
+#, fuzzy
+msgctxt "Menu|Scratchpad|"
+msgid "Color Dabs"
+msgstr "Amostras coloridas"
+
+#: ../po/tmp/mypaint.xml.h:143
+#, fuzzy
+msgctxt "Menu|Scratchpad|Color Dabs|"
+msgid "Render from File..."
+msgstr "Renderizar a partir de arquivo..."
+
+#: ../po/tmp/mypaint.xml.h:144
+#, fuzzy
+msgctxt "Menu|Scratchpad|Color Dabs|"
+msgid "Saturation Spread for Current Color"
+msgstr "Saturações diferentes da cor atual"
+
+#: ../po/tmp/mypaint.xml.h:145
+#, fuzzy
+msgctxt "Menu|Brush|"
+msgid "Brush"
+msgstr "Pincel"
+
+#: ../po/tmp/mypaint.xml.h:146
+#, fuzzy
+msgctxt "Menu|Brush|"
+msgid "Shortcut Keys"
+msgstr "Teclas de atalho"
+
+#: ../po/tmp/mypaint.xml.h:147
+#, fuzzy
+msgctxt "Menu|Brush|Shortcut Keys|"
+msgid "Help"
+msgstr "Ajuda"
+
+#: ../po/tmp/mypaint.xml.h:148
+msgctxt "Menu|Brush|"
+msgid "Change Brush"
+msgstr "Alterar pincel"
+
+#: ../po/tmp/mypaint.xml.h:149
+msgctxt "Menu|Brush|"
+msgid "Get More Brushes..."
+msgstr "Obter mais pinceis..."
+
+#: ../po/tmp/mypaint.xml.h:150
+msgctxt "Menu|Brush|"
+msgid "Import Brushes..."
+msgstr "Importar pincéis..."
+
+#: ../po/tmp/mypaint.xml.h:151
+msgctxt "Menu|Help|"
+msgid "Help"
+msgstr "Ajuda"
+
+#: ../po/tmp/mypaint.xml.h:152
+#, fuzzy
+msgctxt "Menu|Help|"
+msgid "Where is the Documentation?"
+msgstr "Onde está a documentação?"
+
+#: ../po/tmp/mypaint.xml.h:153
+#, fuzzy
+msgctxt "Menu|Help|"
+msgid "Change the Keyboard Shortcuts?"
+msgstr "Alterar os atalhos de teclado?"
+
+#: ../po/tmp/mypaint.xml.h:154
+#, fuzzy
+msgctxt "Menu|Help|"
+msgid "About MyPaint"
+msgstr "Sobre o MyPaint"
+
+#: ../po/tmp/mypaint.xml.h:155
+#, fuzzy
+msgctxt "Menu|Help|"
+msgid "Debug"
+msgstr "Debug"
+
+#: ../po/tmp/mypaint.xml.h:156
+#, fuzzy
+msgctxt "Menu|Help|Debug|"
+msgid "Print Memory Leak Info to Console (Slow!)"
+msgstr ""
+"Imprimir informação de vazamento de memória  para a saída padrão (lento!)"
+
+#: ../po/tmp/mypaint.xml.h:157
+#, fuzzy
+msgctxt "Menu|Help|Debug|"
+msgid "Run Garbage Collector Now"
+msgstr "Executar coletor de lixo agora"
+
+#: ../po/tmp/mypaint.xml.h:158
+#, fuzzy
+msgctxt "Menu|Help|Debug|"
+msgid "Start/Stop Python Profiling (cProfile)"
+msgstr "Iniciar/parar o profiler de Python (cProfile)"
+
+#: ../po/tmp/mypaint.xml.h:159
+#, fuzzy
+msgctxt "Menu|Help|Debug|"
+msgid "GTK Input Device Dialog"
+msgstr "Diálogo de dispositivos de entrada do GTK"
+
+#: ../po/tmp/mypaint.xml.h:160
+msgctxt "Menu|"
+msgid "View"
+msgstr "Visualizar"
+
+#: ../po/tmp/mypaint.xml.h:161
+#, fuzzy
+msgctxt "Menu|View|"
+msgid "Toolbars"
+msgstr "Barras de ferramentas"
+
+#: ../po/tmp/mypaint.xml.h:162
+#, fuzzy
+msgctxt "Menu|View|"
+msgid "Feedback"
+msgstr "Contato"
+
+#: ../po/tmp/mypaint.xml.h:163
+#, fuzzy
+msgctxt "Menu|View|"
+msgid "Adjust View"
+msgstr "Ajustar visualização"
+
+#: ../po/tmp/mypaint.xml.h:164
+#, fuzzy
+msgctxt "Menu|View|"
+msgid "Popup Menu"
+msgstr "Menu destacável"
+
+#: ../po/tmp/mypaint.xml.h:165
+msgctxt "Menu|Edit|"
+msgid "Preferences"
+msgstr "Preferências"
+
+#: ../po/tmp/mypaint.xml.h:166
+msgid "Test Input Devices"
+msgstr "Testar dispositivos de entrada"
+
+#: ../po/tmp/mypaint.xml.h:167
+msgid "Document Frame..."
+msgstr "Moldura do documento..."
+
+#: ../po/tmp/mypaint.xml.h:168
+msgid "Set and adjust a frame for the canvas"
+msgstr "Seleciona e ajusta uma moldura para a tela"
+
+#: ../po/tmp/mypaint.xml.h:169
+msgid "Layers Window"
+msgstr "Janela de camadas"
+
+#: ../po/tmp/mypaint.xml.h:170
+msgid "Edit and rearrange layers"
+msgstr "Editar e reorganizar camadas"
+
+#: ../po/tmp/mypaint.xml.h:171
+#, fuzzy
+msgctxt "Menu|Layer|"
+msgid "Choose Background"
+msgstr "Escolher fundo"
+
+#: ../po/tmp/mypaint.xml.h:172
+msgid "Choose a background image"
+msgstr "Escolha uma imagem de fundo"
+
+#: ../po/tmp/mypaint.xml.h:173
+#, fuzzy
+msgctxt "Menu|Brush|"
+msgid "Brushes Window"
+msgstr "Janela de pincéis"
+
+#: ../po/tmp/mypaint.xml.h:174
+msgid "Select brushes, and edit brush sets"
+msgstr "Seleciona pinceis, e edita conjuntos de pincéis"
+
+#: ../po/tmp/mypaint.xml.h:175
+#, fuzzy
+msgctxt "Menu|Brush|"
+msgid "Settings Window"
+msgstr "Janela de configurações"
+
+#: ../po/tmp/mypaint.xml.h:176
+msgid "Edit the active brush's settings"
+msgstr "Edita as configurações do pincel ativo"
+
+#: ../po/tmp/mypaint.xml.h:177
+#, fuzzy
+msgctxt "Menu|Color|"
 msgid "Colors Window"
 msgstr "Janela de cores"
 
-#: ../po/tmp/mypaint.xml.h:36
+#: ../po/tmp/mypaint.xml.h:178
+msgid "Set the color used for painting"
+msgstr "Seleciona a cor usada para pintura"
+
+#: ../po/tmp/mypaint.xml.h:179
+#, fuzzy
+msgctxt "Menu|Scratchpad|"
+msgid "Scratchpad Window"
+msgstr "Painel de rascunho"
+
+#: ../po/tmp/mypaint.xml.h:180
+msgid "Mix colors and make sketches on separate scrap pages"
+msgstr "Misture cores e faça rabiscos em páginas de rascunho separadas"
+
+#: ../po/tmp/mypaint.xml.h:181
+msgctxt "Menu|View|"
+msgid "Subwindows"
+msgstr "Sub-janelas"
+
+#: ../po/tmp/mypaint.xml.h:182
+msgid "Show subwindows"
+msgstr "Mostra sub-janelas"
+
+#: ../po/tmp/mypaint.xml.h:183
+#, fuzzy
+msgctxt "Menu|View|Feedback|"
+msgid "Zoom Level"
+msgstr "Nível de zoom"
+
+#: ../po/tmp/mypaint.xml.h:184
+msgid "Show the zoom level when zooming in or out"
+msgstr "Exibe o nível de zoom ao ampliar e diminuir"
+
+#: ../po/tmp/mypaint.xml.h:185
+#, fuzzy
+msgctxt "Menu|View|Feedback|"
+msgid "Last Painting Position"
+msgstr "Última posição de pintura"
+
+#: ../po/tmp/mypaint.xml.h:186
+msgid "Show where strokes end"
+msgstr "Mostra onde as pinceladas acabam"
+
+#: ../po/tmp/mypaint.xml.h:187
+#, fuzzy
+msgctxt "Menu|View|Feedback|"
+msgid "Axis of Symmetry"
+msgstr "Eixo de simetria"
+
+#: ../po/tmp/mypaint.xml.h:188
+msgid "Show the symmetry axis"
+msgstr "Exibe o eixo de simetria"
+
+#: ../po/tmp/mypaint.xml.h:189
+#, fuzzy
+msgctxt "Menu|View|Toolbars|"
+msgid "Menubar Only"
+msgstr "Apenas barra de menus"
+
+#: ../po/tmp/mypaint.xml.h:190
+msgid "Show menu bar"
+msgstr "Exibir barra de menus"
+
+#: ../po/tmp/mypaint.xml.h:191
+#, fuzzy
+msgctxt "Menu|View|Toolbars|"
+msgid "Toolbar Only"
+msgstr "Somente barra de ferramentas"
+
+#: ../po/tmp/mypaint.xml.h:192
+msgid "Show toolbar"
+msgstr "Exibir barra de ferramentas"
+
+#: ../po/tmp/mypaint.xml.h:193
+#, fuzzy
+msgctxt "Menu|View|Toolbars|"
+msgid "Both"
+msgstr "Ambos"
+
+#: ../po/tmp/mypaint.xml.h:194
+msgid "Show both the menu bar and the toolbar"
+msgstr "Exibir as barras de menu e de ferramentas"
+
+#: ../po/tmp/mypaint.xml.h:195
+#, fuzzy
+msgctxt "Menu|Edit|"
+msgid "Current Mode"
+msgstr "Modo atual"
+
+#: ../po/tmp/mypaint.xml.h:196
+msgctxt "Menu|Edit|Current Mode|"
+msgid "Freehand Drawing"
+msgstr "Desenhando a mão livre"
+
+#: ../po/tmp/mypaint.xml.h:197
+#, fuzzy
+msgctxt "Toolbar|"
+msgid "Freehand"
+msgstr "Mão-livre"
+
+#: ../po/tmp/mypaint.xml.h:198
+msgid "Freehand Drawing: draw and paint freely, without geometric constraints"
+msgstr ""
+"Desenho a mão livre: desenhe e pinte livremente, sem restrições de geometria"
+
+#: ../po/tmp/mypaint.xml.h:199
+#, fuzzy
+msgctxt "Menu|Edit|"
+msgid "Freehand Drawing"
+msgstr "Desenho a mão livre"
+
+#: ../po/tmp/mypaint.xml.h:200
+#, fuzzy
+msgctxt "Menu|Edit|Current Mode|"
+msgid "Scroll View"
+msgstr "Rolar visualização"
+
+#: ../po/tmp/mypaint.xml.h:201
+msgctxt "Toolbar|"
+msgid "Scroll"
+msgstr "Rolar"
+
+#: ../po/tmp/mypaint.xml.h:202
+msgid "Scroll View: move around the canvas by clicking and dragging"
+msgstr "Rolar visualização: mova a posição da tela clicando e arrastando"
+
+#: ../po/tmp/mypaint.xml.h:203
+#, fuzzy
+msgctxt "Menu|View|"
+msgid "Scroll"
+msgstr "Rolar"
+
+#: ../po/tmp/mypaint.xml.h:204
+#, fuzzy
+msgctxt "Menu|Edit|Current Mode|"
+msgid "Rotate View"
+msgstr "Rotacionar visualização"
+
+#: ../po/tmp/mypaint.xml.h:205
+msgctxt "Toolbar|"
+msgid "Rotate"
+msgstr "Rotacionar"
+
+#: ../po/tmp/mypaint.xml.h:206
+msgid "Rotate View: turn the canvas by clicking and dragging"
+msgstr "Rotacionar visualização: gire a tela clicando e arrastando"
+
+#: ../po/tmp/mypaint.xml.h:207
+#, fuzzy
+msgctxt "Menu|View|"
+msgid "Rotate"
+msgstr "Rotacionar"
+
+#: ../po/tmp/mypaint.xml.h:208
+#, fuzzy
+msgctxt "Menu|Edit|Current Mode|"
+msgid "Zoom View"
+msgstr "Zoom na visualização"
+
+#: ../po/tmp/mypaint.xml.h:209
+msgctxt "Toolbar|"
+msgid "Zoom"
+msgstr "Zoom"
+
+#: ../po/tmp/mypaint.xml.h:210
+msgid "Zoom View: zoom the canvas by clicking and dragging"
+msgstr "Zoom: Amplie e diminua a visualização clicando e arrastando"
+
+#: ../po/tmp/mypaint.xml.h:211
+#, fuzzy
+msgctxt "Menu|View|"
+msgid "Zoom"
+msgstr "Zoom"
+
+#: ../po/tmp/mypaint.xml.h:212
+msgctxt "Menu|Edit|Current Mode|"
+msgid "Lines and Curves"
+msgstr "Linhas e curvas"
+
+#: ../po/tmp/mypaint.xml.h:213
+#, fuzzy
+msgctxt "Toolbar|"
+msgid "Lines"
+msgstr "Linhas"
+
+#: ../po/tmp/mypaint.xml.h:214
+msgid ""
+"Lines and Curves: draw straight or curved lines.\n"
+"Ctrl: constrain angle.\n"
+"Shift: add curves to the last line."
+msgstr ""
+"Linhas e curvas: desenhe linhas retas ou curvas.\n"
+"Ctrl: restringe ângulo.\n"
+"Shift: Adiciona curvas à última linha."
+
+#: ../po/tmp/mypaint.xml.h:217
+#, fuzzy
+msgctxt "Menu|Edit|"
+msgid "Lines and Curves"
+msgstr "Linhas e curvas"
+
+#: ../po/tmp/mypaint.xml.h:218
+msgctxt "Menu|Edit|Current Mode|"
 msgid "Connected Lines"
 msgstr "Linhas conectadas"
 
-#: ../po/tmp/mypaint.xml.h:37
+#: ../po/tmp/mypaint.xml.h:219
+#, fuzzy
+msgctxt "Toolbar|"
+msgid "Line Seq."
+msgstr "Sequência de linhas"
+
+#: ../po/tmp/mypaint.xml.h:220
 msgid ""
 "Connected Lines: draw sequences of straight or curved lines.\n"
 "Ctrl: constrain angle.\n"
@@ -2083,107 +3086,24 @@ msgstr ""
 "Ctrl: restringe ângulo.\n"
 "Shift: Adiciona curvas à última linha."
 
-#: ../po/tmp/mypaint.xml.h:40
-msgid "Convert to Normal mode"
-msgstr "Converter para modo normal"
+#: ../po/tmp/mypaint.xml.h:223
+#, fuzzy
+msgctxt "Menu|Edit|"
+msgid "Connected Lines"
+msgstr "Linhas conectadas"
 
-#: ../po/tmp/mypaint.xml.h:41
-msgid "Copy"
-msgstr "Copiar"
-
-#: ../po/tmp/mypaint.xml.h:42
-msgid "Copy the current layer to the clipboard"
-msgstr "Copia a camada atual para a área de transferência"
-
-#: ../po/tmp/mypaint.xml.h:43
-msgid "Current Mode"
-msgstr "Modo atual"
-
-#: ../po/tmp/mypaint.xml.h:44
-msgid "Darker"
-msgstr "Mais escuro"
-
-#: ../po/tmp/mypaint.xml.h:45
-msgid "Debug"
-msgstr "Debug"
-
-#: ../po/tmp/mypaint.xml.h:46
-msgid "Decrease"
-msgstr "Diminuir"
-
-#: ../po/tmp/mypaint.xml.h:47
-msgid "Decrease Opacity"
-msgstr "Diminuir a opacidade"
-
-#: ../po/tmp/mypaint.xml.h:48
-msgid "Decrease brush opacity"
-msgstr "Diminui a opacidade do pincel"
-
-#: ../po/tmp/mypaint.xml.h:49
-msgid "Decrease brush radius"
-msgstr "Diminui o raio do pincel"
-
-#: ../po/tmp/mypaint.xml.h:50
-msgid "Decrease color brightness"
-msgstr "Diminui o brilho da cor"
-
-#: ../po/tmp/mypaint.xml.h:51
-msgid "Decrease color saturation"
-msgstr "Diminui a saturação da cor"
-
-#: ../po/tmp/mypaint.xml.h:52
-msgid "Decrease magnification"
-msgstr "Diminui a ampliação do pincel"
-
-#: ../po/tmp/mypaint.xml.h:53
-msgid "Delete"
-msgstr "Excluir"
-
-#: ../po/tmp/mypaint.xml.h:54
-msgid "Delete the current layer"
-msgstr "Remove a camada atual"
-
-#: ../po/tmp/mypaint.xml.h:55
-msgid "Disable GTK Double Buffering"
-msgstr "Desabilitar double buffering do GTK."
-
-#: ../po/tmp/mypaint.xml.h:56
-msgid "Document Frame..."
-msgstr "Moldura do documento..."
-
-#: ../po/tmp/mypaint.xml.h:57
-msgid "Duplicate"
-msgstr "Duplicar"
-
-#: ../po/tmp/mypaint.xml.h:59
-msgid "Edit Frame"
-msgstr " Editar moldura"
-
-#: ../po/tmp/mypaint.xml.h:60
-msgid ""
-"Edit Frame: define a frame around the document to give it a finite size. The "
-"frame is used when exporting."
-msgstr ""
-"Editar moldura: define uma moldura em volta do documento para dar ao mesmo "
-"um tamanho finito. A moldura é usada ao exportar."
-
-#: ../po/tmp/mypaint.xml.h:61
-msgid "Edit and rearrange layers"
-msgstr "Editar e reorganizar camadas"
-
-#: ../po/tmp/mypaint.xml.h:62
-msgid "Edit the active brush's settings"
-msgstr "Edita as configurações do pincel ativo"
-
-#: ../po/tmp/mypaint.xml.h:63
-msgid "Ellipse"
-msgstr "Elipse"
-
-#: ../po/tmp/mypaint.xml.h:64
+#: ../po/tmp/mypaint.xml.h:224
+msgctxt "Menu|Edit|Current Mode|"
 msgid "Ellipses and Circles"
 msgstr "Elipses e círculos"
 
-#: ../po/tmp/mypaint.xml.h:65
+#: ../po/tmp/mypaint.xml.h:225
+#, fuzzy
+msgctxt "Toolbar|"
+msgid "Ellipse"
+msgstr "Elipse"
+
+#: ../po/tmp/mypaint.xml.h:226
 msgid ""
 "Ellipses and Circles: draw whole circles and ellipses.\n"
 "Shift: rotate.\n"
@@ -2195,703 +3115,52 @@ msgstr ""
 "Ctrl: Preserva proporção.\n"
 "Ctrl+Shift: Restringe o ângulo."
 
-#: ../po/tmp/mypaint.xml.h:69
-msgid "Enter a new name for the current layer"
-msgstr "Entre um novo nome para a camada atual"
+#: ../po/tmp/mypaint.xml.h:230
+#, fuzzy
+msgctxt "Menu|Edit|"
+msgid "Ellipses and Circles"
+msgstr "Elipses e círculos"
 
-#: ../po/tmp/mypaint.xml.h:70
-msgid "Export to a file"
-msgstr "Exporta para um arquivo"
-
-#: ../po/tmp/mypaint.xml.h:71
-msgid "Export..."
-msgstr "Exportar..."
-
-#: ../po/tmp/mypaint.xml.h:72
-msgid "Feedback"
-msgstr "Contato"
-
-#: ../po/tmp/mypaint.xml.h:73
-msgid "File"
-msgstr "Arquivo"
-
-#: ../po/tmp/mypaint.xml.h:74
-msgid "Fit"
-msgstr "Tamanho certo"
-
-#: ../po/tmp/mypaint.xml.h:75
-msgid "Flip the view left to right"
-msgstr "Espelha a visualização na horizontal"
-
-#: ../po/tmp/mypaint.xml.h:76
-msgid "Flip the view upside-down"
-msgstr "Espelha de baixo para cima"
-
-#: ../po/tmp/mypaint.xml.h:78
-msgid "Frame Enabled"
-msgstr "Moldura ligada"
-
-#: ../po/tmp/mypaint.xml.h:79
-msgid "Freehand"
-msgstr "Mão-livre"
-
-#: ../po/tmp/mypaint.xml.h:80
-msgid "Freehand Drawing"
-msgstr "Desenho a mão livre"
-
-#: ../po/tmp/mypaint.xml.h:81
-msgid "Freehand Drawing: draw and paint freely, without geometric constraints"
-msgstr ""
-"Desenho a mão livre: desenhe e pinte livremente, sem restrições de geometria"
-
-#: ../po/tmp/mypaint.xml.h:82
-msgid "GTK Input Device Dialog"
-msgstr "Diálogo de dispositivos de entrada do GTK"
-
-#: ../po/tmp/mypaint.xml.h:84
-msgid "Go one layer down in the layers stack"
-msgstr "Desce uma camada na pilha de camadas"
-
-#: ../po/tmp/mypaint.xml.h:85
-msgid "Go one layer up in the layers stack"
-msgstr "Sobe uma camada na pilha de camadas"
-
-#: ../po/tmp/mypaint.xml.h:86
-msgid "Go to Layer"
-msgstr "Ir para camada"
-
-#: ../po/tmp/mypaint.xml.h:87
-msgid "Grayer"
-msgstr "Mais cinza"
-
-#: ../po/tmp/mypaint.xml.h:88
-msgid "Help"
-msgstr "Ajuda"
-
-#: ../po/tmp/mypaint.xml.h:89
-msgid "Hide Layers Above Current"
-msgstr "Esconder camadas acima da atual"
-
-#: ../po/tmp/mypaint.xml.h:90
-msgid "Hue Anticlockwise"
-msgstr "Matiz no sentido anti-horário"
-
-#: ../po/tmp/mypaint.xml.h:91
-msgid "Hue Clockwise"
-msgstr "Matiz no sentido horário"
-
-#: ../po/tmp/mypaint.xml.h:93
-msgid "Increase"
-msgstr "Aumentar"
-
-#: ../po/tmp/mypaint.xml.h:94
-msgid "Increase Opacity"
-msgstr "Aumentar a opacidade"
-
-#: ../po/tmp/mypaint.xml.h:95
-msgid "Increase brush opacity"
-msgstr "Aumentar a opacidade do pincel"
-
-#: ../po/tmp/mypaint.xml.h:96
-msgid "Increase brush radius"
-msgstr "Aumentar o raio do pincel"
-
-#: ../po/tmp/mypaint.xml.h:97
-msgid "Increase color brightness"
-msgstr "Aumentar o brilho da cor"
-
-#: ../po/tmp/mypaint.xml.h:98
-msgid "Increase color saturation"
-msgstr "Aumentar a saturação da cor"
-
-#: ../po/tmp/mypaint.xml.h:99
-msgid "Increase magnification"
-msgstr "Aumentar a ampliação do pincel"
-
-#: ../po/tmp/mypaint.xml.h:100
-msgid "Last Painting Position"
-msgstr "Última posição de pintura"
-
-#: ../po/tmp/mypaint.xml.h:101
-msgid "Layer"
-msgstr "Camada"
-
-#: ../po/tmp/mypaint.xml.h:102
-msgid "Layer Solo"
-msgstr "Camada solo"
-
-#: ../po/tmp/mypaint.xml.h:103
-msgid "Layers Window"
-msgstr "Janela de camadas"
-
-#: ../po/tmp/mypaint.xml.h:104
-msgid "Line Seq."
-msgstr "Sequência de linhas"
-
-#: ../po/tmp/mypaint.xml.h:105
-msgid "Lines"
-msgstr "Linhas"
-
-#: ../po/tmp/mypaint.xml.h:106
-msgid "Lines and Curves"
-msgstr "Linhas e curvas"
-
-#: ../po/tmp/mypaint.xml.h:107
-msgid ""
-"Lines and Curves: draw straight or curved lines.\n"
-"Ctrl: constrain angle.\n"
-"Shift: add curves to the last line."
-msgstr ""
-"Linhas e curvas: desenhe linhas retas ou curvas.\n"
-"Ctrl: restringe ângulo.\n"
-"Shift: Adiciona curvas à última linha."
-
-#: ../po/tmp/mypaint.xml.h:110
-msgid "Load the next scrap file, replacing the current drawing"
-msgstr "Carrega o próximo arquivo de rascunho, substituindo o desenho atual"
-
-#: ../po/tmp/mypaint.xml.h:111
-msgid "Load the previous scrap file, replacing the current drawing"
-msgstr "Carrega o arquivo de rascunho anterior, substituindo o desenho atual"
-
-#: ../po/tmp/mypaint.xml.h:113
-msgid "Lower"
-msgstr "Baixar"
-
-#: ../po/tmp/mypaint.xml.h:114
-msgid "Lower the current layer one step in the layers stack"
-msgstr "Descer a camada atual um passo na pilha de camadas"
-
-#: ../po/tmp/mypaint.xml.h:115
-msgid "Make an exact duplicate of the current layer"
-msgstr "Fazer uma cópia exata da camada atual"
-
-#: ../po/tmp/mypaint.xml.h:116
-msgid "Menubar Only"
-msgstr "Apenas barra de menus"
-
-#: ../po/tmp/mypaint.xml.h:117
-msgid "Merge Down"
-msgstr "Combinar abaixo"
-
-#: ../po/tmp/mypaint.xml.h:118
-msgid "Merge layer with the one beneath it"
-msgstr "Junta a camada com a camada abaixo"
-
-#: ../po/tmp/mypaint.xml.h:119
-msgid "Mirror"
-msgstr "Espelhar"
-
-#: ../po/tmp/mypaint.xml.h:120
-msgid "Mirror Horizontal"
-msgstr "Espelhar horizontalmente"
-
-#: ../po/tmp/mypaint.xml.h:121
-msgid "Mirror Vertical"
-msgstr "Espelhar verticalmente"
-
-#: ../po/tmp/mypaint.xml.h:122
-msgid "Mirrors all strokes drawn around the vertical axis"
-msgstr "Espelha todas as pinceladas em torno do eixo vertical"
-
-#: ../po/tmp/mypaint.xml.h:123
-msgid "Mix colors and make sketches on separate scrap pages"
-msgstr "Misture cores e faça rabiscos em páginas de rascunho separadas"
-
-#: ../po/tmp/mypaint.xml.h:124
-msgid "Move"
-msgstr "Mover"
-
-#: ../po/tmp/mypaint.xml.h:125
+#: ../po/tmp/mypaint.xml.h:231
+#, fuzzy
+msgctxt "Menu|Edit|Current Mode|"
 msgid "Move Layer"
 msgstr "Mover camada"
 
-#: ../po/tmp/mypaint.xml.h:126
+#: ../po/tmp/mypaint.xml.h:232
 msgid "Move Layer: reposition the current layer on the canvas"
 msgstr "Mover camada: reposiciona a camada atual na tela"
 
-#: ../po/tmp/mypaint.xml.h:127
-msgid "New"
-msgstr "Nova"
+#: ../po/tmp/mypaint.xml.h:233
+#, fuzzy
+msgctxt "Menu|Layer|"
+msgid "Move"
+msgstr "Mover"
 
-#: ../po/tmp/mypaint.xml.h:128
-msgid "New (above)"
-msgstr "Nova (acimal) "
+#: ../po/tmp/mypaint.xml.h:234
+#, fuzzy
+msgctxt "Menu|Edit|Current Mode|"
+msgid "Edit Frame"
+msgstr " Editar moldura"
 
-#: ../po/tmp/mypaint.xml.h:129
-msgid "New (below)"
-msgstr "Nova (abaixol)"
+#: ../po/tmp/mypaint.xml.h:235
+#, fuzzy
+msgctxt "Toolbar|"
+msgid "Frame"
+msgstr "Moldura"
 
-#: ../po/tmp/mypaint.xml.h:130
-msgid "Next Palette Color"
-msgstr "Próxima cor da paleta"
-
-#: ../po/tmp/mypaint.xml.h:131
-msgid "Next color in the palette"
-msgstr "Próxima cor da paleta"
-
-#: ../po/tmp/mypaint.xml.h:133
-msgid "Open Most Recent"
-msgstr "Abrir mais recente"
-
-#: ../po/tmp/mypaint.xml.h:134
-msgid "Open Next Scrap"
-msgstr "Abrir próximo rascunho"
-
-#: ../po/tmp/mypaint.xml.h:135
-msgid "Open Previous Scrap"
-msgstr "Abrir rascunho anterior"
-
-#: ../po/tmp/mypaint.xml.h:136
-msgid "Open a file, replacing the current painting"
-msgstr "Abrir um arquivo, substituindo a pintura atual"
-
-#: ../po/tmp/mypaint.xml.h:137
-msgid "Open the last file you saved"
-msgstr "Abre o último arquivo que você salvou"
-
-#: ../po/tmp/mypaint.xml.h:139
-msgid "Paste"
-msgstr "Colar"
-
-#: ../po/tmp/mypaint.xml.h:140
-msgid "Pick Color"
-msgstr "Selecionar cor"
-
-#: ../po/tmp/mypaint.xml.h:141
-msgid "Pick Stroke and Layer"
-msgstr "Pegar pincelada e camada"
-
-#: ../po/tmp/mypaint.xml.h:142
-msgid "Pick brushstroke: settings and layer"
-msgstr "Pegar pincelada: configurações e camada"
-
-#: ../po/tmp/mypaint.xml.h:143
-msgid "Popup Menu"
-msgstr "Menu destacável"
-
-#: ../po/tmp/mypaint.xml.h:145
-msgid "Previous Palette Color"
-msgstr "Cor anterior da paleta"
-
-#: ../po/tmp/mypaint.xml.h:146
-msgid "Previous color in the palette"
-msgstr "Cor anterior na paleta"
-
-#: ../po/tmp/mypaint.xml.h:147
-msgid "Print Brush Input Values to Console"
-msgstr "Imprimir valores de entrada do pincel para o terminal"
-
-#: ../po/tmp/mypaint.xml.h:148
-msgid "Print Memory Leak Info to Console (Slow!)"
-msgstr ""
-"Imprimir informação de vazamento de memória  para a saída padrão (lento!)"
-
-#: ../po/tmp/mypaint.xml.h:149
-msgid "Purer"
-msgstr "Mais pura"
-
-#: ../po/tmp/mypaint.xml.h:151
-msgid "Raise"
-msgstr "Subir"
-
-#: ../po/tmp/mypaint.xml.h:152
-msgid "Raise the current layer one step in the layers stack"
-msgstr "Subir a camada atual um passo na pilha de camadas"
-
-#: ../po/tmp/mypaint.xml.h:153
-msgid "Reload the current file"
-msgstr "Carrega novamente o arquivo atual"
-
-#: ../po/tmp/mypaint.xml.h:155
-msgid "Render from File..."
-msgstr "Renderizar a partir de arquivo..."
-
-#: ../po/tmp/mypaint.xml.h:156
-msgid "Replaces the layer with the clipboard's contents"
-msgstr "Substitui a camada atual pelo conteúdo da área de transferência"
-
-#: ../po/tmp/mypaint.xml.h:157
-msgid "Reset"
-msgstr "Restaurar"
-
-#: ../po/tmp/mypaint.xml.h:158
-msgid "Reset Zoom, Rotation and Mirroring, and recenter the document"
-msgstr ""
-"Restaura zoom, rotação e espelhamento e centraliza o documento novamente"
-
-#: ../po/tmp/mypaint.xml.h:159
-msgid "Reset and Center"
-msgstr "Restaurar e centralizar"
-
-#: ../po/tmp/mypaint.xml.h:160
-msgid "Restore Color"
-msgstr "Restaurar cor"
-
-#: ../po/tmp/mypaint.xml.h:161
-msgid "Revert"
-msgstr "Reverter "
-
-#: ../po/tmp/mypaint.xml.h:162
-msgid "Rotate"
-msgstr "Rotacionar"
-
-#: ../po/tmp/mypaint.xml.h:163
-msgid "Rotate Clockwise"
-msgstr "Rotacionar no sentido horário"
-
-#: ../po/tmp/mypaint.xml.h:164
-msgid "Rotate Counterclockwise"
-msgstr "Rotacionar no sentido anti-horário"
-
-#: ../po/tmp/mypaint.xml.h:165
-msgid "Rotate View"
-msgstr "Rotacionar visualização"
-
-#: ../po/tmp/mypaint.xml.h:166
-msgid "Rotate View: turn the canvas by clicking and dragging"
-msgstr "Rotacionar visualização: gire a tela clicando e arrastando"
-
-#: ../po/tmp/mypaint.xml.h:167
-msgid "Rotate color hue anticlockwise"
-msgstr "Rotaciona o matiz de cor no sentido anti-horário"
-
-#: ../po/tmp/mypaint.xml.h:168
-msgid "Rotate color hue clockwise"
-msgstr "Rotaciona o matiz de cor no sentido horário"
-
-#: ../po/tmp/mypaint.xml.h:169
-msgid "Rotate the view clockwise"
-msgstr "Rotacionar a visualização no sentido horário"
-
-#: ../po/tmp/mypaint.xml.h:170
-msgid "Rotate the view counterclockwise"
-msgstr "Rotaciona a visualização no sentido anti-horário"
-
-#: ../po/tmp/mypaint.xml.h:171
-msgid "Rotation"
-msgstr "Rotação"
-
-#: ../po/tmp/mypaint.xml.h:172
-msgid "Run Garbage Collector Now"
-msgstr "Executar coletor de lixo agora"
-
-#: ../po/tmp/mypaint.xml.h:173
-msgid "Saturation Spread for Current Color"
-msgstr "Saturações diferentes da cor atual"
-
-#: ../po/tmp/mypaint.xml.h:175
-msgid "Save As Scrap"
-msgstr "Salvar como rascunho"
-
-#: ../po/tmp/mypaint.xml.h:176
-msgid "Save As..."
-msgstr "Salvar como..."
-
-#: ../po/tmp/mypaint.xml.h:178
-msgid "Save brush to the most recent shortcut"
-msgstr "Salva pincel no atalho de mais recente"
-
-#: ../po/tmp/mypaint.xml.h:179
-msgid "Save to Most Recent"
-msgstr "Salvar em mais recentes"
-
-#: ../po/tmp/mypaint.xml.h:180
-msgid "Save to a file"
-msgstr "Salvar para um arquivo"
-
-#: ../po/tmp/mypaint.xml.h:181
-msgid "Save to a file with a new name"
-msgstr "Salva para um arquivo com um novo nome"
-
-#: ../po/tmp/mypaint.xml.h:182
+#: ../po/tmp/mypaint.xml.h:236
 msgid ""
-"Saves to a new scrap file. If the drawing is currently saved as a scrap, "
-"this will write a new revision of it."
+"Edit Frame: define a frame around the document to give it a finite size. The "
+"frame is used when exporting."
 msgstr ""
-"Salva para um novo arquivo de rascunho. Se este desenho estiver salvo como "
-"um rascunho, gera uma nova revisão do mesmo"
-
-#: ../po/tmp/mypaint.xml.h:184
-msgid "Scratchpad Window"
-msgstr "Painel de rascunho"
-
-#: ../po/tmp/mypaint.xml.h:185
-msgid "Scroll"
-msgstr "Rolar"
-
-#: ../po/tmp/mypaint.xml.h:186
-msgid "Scroll View"
-msgstr "Rolar visualização"
-
-#: ../po/tmp/mypaint.xml.h:187
-msgid "Scroll View: move around the canvas by clicking and dragging"
-msgstr "Rolar visualização: mova a posição da tela clicando e arrastando"
-
-#: ../po/tmp/mypaint.xml.h:188
-msgid "Select brushes, and edit brush sets"
-msgstr "Seleciona pinceis, e edita conjuntos de pincéis"
-
-#: ../po/tmp/mypaint.xml.h:189
-msgid "Set and adjust a frame for the canvas"
-msgstr "Seleciona e ajusta uma moldura para a tela"
-
-#: ../po/tmp/mypaint.xml.h:190
-msgid "Set the color used for painting"
-msgstr "Seleciona a cor usada para pintura"
-
-#: ../po/tmp/mypaint.xml.h:191
-msgid "Settings Window"
-msgstr "Janela de configurações"
-
-#: ../po/tmp/mypaint.xml.h:192
-msgid "Shortcut Keys"
-msgstr "Teclas de atalho"
-
-#: ../po/tmp/mypaint.xml.h:193
-msgid "Show both the menu bar and the toolbar"
-msgstr "Exibir as barras de menu e de ferramentas"
-
-#: ../po/tmp/mypaint.xml.h:194
-msgid "Show menu bar"
-msgstr "Exibir barra de menus"
-
-#: ../po/tmp/mypaint.xml.h:195
-msgid "Show rendering updates on-screen, for debugging"
-msgstr "Exibe atualizações de renderização na tela, para depuração"
-
-#: ../po/tmp/mypaint.xml.h:196
-msgid "Show subwindows"
-msgstr "Mostra sub-janelas"
-
-#: ../po/tmp/mypaint.xml.h:197
-msgid "Show the symmetry axis"
-msgstr "Exibe o eixo de simetria"
-
-#: ../po/tmp/mypaint.xml.h:198
-msgid "Show the zoom level when zooming in or out"
-msgstr "Exibe o nível de zoom ao ampliar e diminuir"
-
-#: ../po/tmp/mypaint.xml.h:199
-msgid "Show toolbar"
-msgstr "Exibir barra de ferramentas"
-
-#: ../po/tmp/mypaint.xml.h:200
-msgid "Show where strokes end"
-msgstr "Mostra onde as pinceladas acabam"
-
-#: ../po/tmp/mypaint.xml.h:201
-msgid "Smaller"
-msgstr "Menor"
-
-#: ../po/tmp/mypaint.xml.h:202
-msgid "Start with a new blank canvas"
-msgstr "Começar com uma nova tela em branco"
-
-#: ../po/tmp/mypaint.xml.h:203
-msgid "Start/Stop Python Profiling (cProfile)"
-msgstr "Iniciar/parar o profiler de Python (cProfile)"
-
-#: ../po/tmp/mypaint.xml.h:205
-msgid "Symmetrical Painting"
-msgstr "Pintura simétrica"
-
-#: ../po/tmp/mypaint.xml.h:206
-msgid "Test Input Devices"
-msgstr "Testar dispositivos de entrada"
-
-#: ../po/tmp/mypaint.xml.h:207
-msgid "The current layer's locked state: locked layers cannot be drawn to"
-msgstr ""
-"O estado de trava da camada atual: não se pode desenhar em camadas travadas"
-
-#: ../po/tmp/mypaint.xml.h:208
-msgid "The current layer's visibility state"
-msgstr "O estado de visibilidade da camada atual"
-
-#: ../po/tmp/mypaint.xml.h:209
-msgid "Toolbar Only"
-msgstr "Somente barra de ferramentas"
-
-#: ../po/tmp/mypaint.xml.h:210
-msgid "Toolbars"
-msgstr "Barras de ferramentas"
-
-#: ../po/tmp/mypaint.xml.h:211
-msgid "Use Main Background"
-msgstr "Usar fundo principal"
-
-#: ../po/tmp/mypaint.xml.h:214
-msgid "Visualize Rendering"
-msgstr "Visualizar renderização"
-
-#: ../po/tmp/mypaint.xml.h:215
-msgid "Where is the Documentation?"
-msgstr "Onde está a documentação?"
-
-#: ../po/tmp/mypaint.xml.h:216
-msgid "Zoom"
-msgstr "Zoom"
-
-#: ../po/tmp/mypaint.xml.h:217
-msgid "Zoom In"
-msgstr "Aumentar zoom "
-
-#: ../po/tmp/mypaint.xml.h:218
-msgid "Zoom Level"
-msgstr "Nível de zoom"
-
-#: ../po/tmp/mypaint.xml.h:219
-msgid "Zoom Out"
-msgstr "Diminuir zoom"
-
-#: ../po/tmp/mypaint.xml.h:220
-msgid "Zoom View"
-msgstr "Zoom na visualização"
-
-#: ../po/tmp/mypaint.xml.h:221
-msgid "Zoom View: zoom the canvas by clicking and dragging"
-msgstr "Zoom: Amplie e diminua a visualização clicando e arrastando"
-
-#: ../po/tmp/mypaint.xml.h:222
-msgid "Zoom to fit the document, and recenter"
-msgstr "Zoom para caber no documento, e recentralizar"
-
-#~ msgctxt "Menu|"
-#~ msgid "Color"
-#~ msgstr "Cor"
-
-#~ msgctxt "Menu|"
-#~ msgid "Edit"
-#~ msgstr "Editar"
-
-#~ msgctxt "Menu|"
-#~ msgid "Scratchpad"
-#~ msgstr "Painel de rascunho"
-
-#~ msgctxt "Menu|"
-#~ msgid "View"
-#~ msgstr "Visualizar"
-
-#~ msgctxt "Menu|Brush|"
-#~ msgid "Change Brush"
-#~ msgstr "Alterar pincel"
-
-#~ msgctxt "Menu|Brush|"
-#~ msgid "Get More Brushes..."
-#~ msgstr "Obter mais pinceis..."
-
-#~ msgctxt "Menu|Brush|"
-#~ msgid "Import Brushes..."
-#~ msgstr "Importar pincéis..."
-
-#~ msgctxt "Menu|Color|"
-#~ msgid "Change Color"
-#~ msgstr "Alterar cor"
-
-#~ msgctxt "Menu|Edit|"
-#~ msgid "Preferences"
-#~ msgstr "Preferências"
-
-#~ msgctxt "Menu|Edit|Current Mode|"
-#~ msgid "Connected Lines"
-#~ msgstr "Linhas conectadas"
-
-#~ msgctxt "Menu|Edit|Current Mode|"
-#~ msgid "Ellipses and Circles"
-#~ msgstr "Elipses e círculos"
-
-#~ msgctxt "Menu|Edit|Current Mode|"
-#~ msgid "Freehand Drawing"
-#~ msgstr "Desenhando a mão livre"
-
-#~ msgctxt "Menu|Edit|Current Mode|"
-#~ msgid "Lines and Curves"
-#~ msgstr "Linhas e curvas"
-
-#~ msgctxt "Menu|File|"
-#~ msgid "Edit Frame"
-#~ msgstr "Editar moldura"
-
-#~ msgctxt "Menu|File|"
-#~ msgid "Open..."
-#~ msgstr " Abrir.."
-
-#~ msgctxt "Menu|File|"
-#~ msgid "Quit"
-#~ msgstr "Sair"
-
-#~ msgctxt "Menu|File|"
-#~ msgid "Save"
-#~ msgstr "Salvar"
-
-#~ msgctxt "Menu|Help|"
-#~ msgid "Help"
-#~ msgstr "Ajuda"
-
-#~ msgctxt "Menu|Layer|"
-#~ msgid "Clear"
-#~ msgstr "Limpar"
-
-#~ msgctxt "Menu|Layer|"
-#~ msgid "Locked"
-#~ msgstr "Travado"
-
-#~ msgctxt "Menu|Layer|"
-#~ msgid "Opacity"
-#~ msgstr "Opacidade"
-
-#~ msgctxt "Menu|Layer|"
-#~ msgid "Rename..."
-#~ msgstr "Renomear..."
-
-#~ msgctxt "Menu|Layer|"
-#~ msgid "Visible"
-#~ msgstr "Visível"
-
-#~ msgctxt "Menu|Scratchpad|"
-#~ msgid "New"
-#~ msgstr "Nova"
-
-#~ msgctxt "Menu|Scratchpad|"
-#~ msgid "Open..."
-#~ msgstr "Abrir..."
-
-#~ msgctxt "Menu|Scratchpad|"
-#~ msgid "Revert"
-#~ msgstr "Reverter"
-
-#~ msgctxt "Menu|Scratchpad|"
-#~ msgid "Save"
-#~ msgstr "Salvar"
-
-#~ msgctxt "Menu|Scratchpad|"
-#~ msgid "Save As..."
-#~ msgstr "Salvar como..."
-
-#~ msgctxt "Menu|Scratchpad|"
-#~ msgid "Save as Default"
-#~ msgstr "Salvar como padrão"
-
-#~ msgctxt "Menu|View|"
-#~ msgid "Subwindows"
-#~ msgstr "Sub-janelas"
-
-#~ msgctxt "Menu|View|Reset|"
-#~ msgid "Zoom"
-#~ msgstr "Zoom"
-
-#~ msgctxt "Toolbar|"
-#~ msgid "Rotate"
-#~ msgstr "Rotacionar"
-
-#~ msgctxt "Toolbar|"
-#~ msgid "Scroll"
-#~ msgstr "Rolar"
-
-#~ msgctxt "Toolbar|"
-#~ msgid "Zoom"
-#~ msgstr "Zoom"
+"Editar moldura: define uma moldura em volta do documento para dar ao mesmo "
+"um tamanho finito. A moldura é usada ao exportar."
+
+#: ../po/tmp/mypaint.xml.h:237
+msgctxt "Menu|File|"
+msgid "Edit Frame"
+msgstr "Editar moldura"
 
 #~ msgid ""
 #~ "The background %s was ignored because it has an alpha channel. Please "
