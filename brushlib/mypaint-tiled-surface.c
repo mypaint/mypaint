@@ -57,7 +57,10 @@ end_atomic_default(MyPaintSurface *surface)
 void
 mypaint_tiled_surface_begin_atomic(MyPaintTiledSurface *self)
 {
-
+    self->dirty_bbox.height = 0;
+    self->dirty_bbox.width = 0;
+    self->dirty_bbox.y = 0;
+    self->dirty_bbox.x = 0;
 }
 
 MyPaintRectangle
