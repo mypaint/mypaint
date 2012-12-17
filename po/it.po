@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.7.1-git\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-10 10:08+0100\n"
-"PO-Revision-Date: 2012-12-10 10:25+0100\n"
+"POT-Creation-Date: 2012-12-14 22:01+0100\n"
+"PO-Revision-Date: 2012-12-14 22:39+0100\n"
 "Last-Translator: Lamberto Tedaldi <lamberto.tedaldi@officinepixel.com>\n"
 "Language-Team: Lamberto Tedaldi <lamberto.tedaldi@officinepixel.com>\n"
 "Language: \n"
@@ -288,7 +288,7 @@ msgstr "Torna alle impostazioni"
 #. Live update (goes to the end)
 #: ../gui/brushsettingswindow.py:64
 msgid "Update the last canvas stroke in realtime"
-msgstr "Aggiorna  in tempo reale l'ultimo tratto sulla superficie dell'immagine"
+msgstr "Aggiorna  in tempo reale l'ultimo tratto sul'area di lavoro"
 
 #: ../gui/brushsettingswindow.py:101
 msgid "Basic"
@@ -339,45 +339,45 @@ msgstr "Aggiungi mappatura dei valori di ingresso"
 msgid "Modify input value mapping"
 msgstr "Modifica mappatura dei valori di ingresso"
 
-#: ../gui/buttonmap.py:262
+#: ../gui/buttonmap.py:263
 msgid "Action"
 msgstr "Azione"
 
-#: ../gui/buttonmap.py:277
+#: ../gui/buttonmap.py:278
 msgid "Button press"
 msgstr "Premi il pulsante"
 
-#: ../gui/buttonmap.py:296
+#: ../gui/buttonmap.py:297
 msgid "Add a new binding"
 msgstr "Aggiungi una nuova associazione"
 
-#: ../gui/buttonmap.py:304
+#: ../gui/buttonmap.py:305
 msgid "Remove the current binding"
 msgstr "Rimuovi l'associazione corrente"
 
-#: ../gui/buttonmap.py:426
+#: ../gui/buttonmap.py:427
 #, python-format
 msgid "Edit binding for '%s'"
 msgstr "Modifica associazione per '%s'"
 
-#: ../gui/buttonmap.py:449
+#: ../gui/buttonmap.py:450
 msgid "Action:"
 msgstr "Azione:"
 
-#: ../gui/buttonmap.py:460
+#: ../gui/buttonmap.py:461
 msgid "Button press:"
 msgstr "Premi il pulsante:"
 
-#: ../gui/buttonmap.py:494
+#: ../gui/buttonmap.py:495
 msgid "Hold down modifier keys, and press a button over this text to set a new binding."
 msgstr "Tieni premuto il tasto modificatore e premi il pulsante del mouse sopra questo testo per impostare una nuova associazione."
 
-#: ../gui/buttonmap.py:514
+#: ../gui/buttonmap.py:515
 #, python-format
 msgid "%s cannot be bound by itself, without keyboard modifiers."
 msgstr "%s non può essere associato da solo senza tasti modificatori."
 
-#: ../gui/buttonmap.py:524
+#: ../gui/buttonmap.py:525
 #, python-format
 msgid "%s is already bound to the action '%s'"
 msgstr "%s è già associato con l'azione '%s'"
@@ -808,7 +808,7 @@ msgid "<b>Do you really want to import package `%s'?</b>"
 msgstr "<b>Vuoi veramente importare il pacchetto `%s'?</b>"
 
 #. Quick brush changer
-#: ../gui/dialogs.py:359
+#: ../gui/dialogs.py:363
 #: ../gui/toolbar.py:355
 msgid "Change Brush"
 msgstr "Cambia Pennello"
@@ -1157,12 +1157,12 @@ msgid ""
 "While the frame is enabled, it \n"
 "can be adjusted on the canvas"
 msgstr ""
-"Finchè l'inquadratura è abilitata\n"
-"può essere modificata sulla superficie del disegno"
+"Se abilitata,  l'inquadratura è  \n"
+"modificabile direttamente sull'area di lavoro"
 
 #: ../gui/framewindow.py:374
 msgid "Enabled"
-msgstr "Abilitato"
+msgstr "Abilitata"
 
 #: ../gui/framewindow.py:469
 msgid "inch"
@@ -1271,12 +1271,12 @@ msgstr "Opacità:"
 msgid "Layer opacity: how much of the current layer to use. Smaller values make it more transparent."
 msgstr "Opacità livello: quanto del livello corrente usare. Valori più piccoli "
 
-#: ../gui/layerswindow.py:224
+#: ../gui/layerswindow.py:227
 #, python-format
 msgid "Layer opacity: %d%%"
 msgstr "Opacità Livello: %d%%"
 
-#: ../gui/layerswindow.py:327
+#: ../gui/layerswindow.py:330
 #, python-format
 msgid "Untitled layer #%d"
 msgstr "Livello senza titolo #%d"
@@ -1369,7 +1369,7 @@ msgstr "<b>Dispositivo di Ingresso</b>"
 
 #: ../gui/preferenceswindow.py:70
 msgid "Scale input pressure to brush pressure. This is applied to all input devices. The mouse button has an input pressure of 0.5 when pressed."
-msgstr "Scala la pressione in ingresso alla pressione dello strumento. Questo è applicato a tutti i dispositivi di ingresso. Il pulsante del mouse ha una pressione di 0.5 quando premuto."
+msgstr "Rapporto tra pressione in ingresso e pressione dello strumento. Questo è applicato a tutti i dispositivi di ingresso. Il pulsante del mouse ha una pressione di 0.5 quando premuto."
 
 #. TRANSLATORS: Graph y-axis label
 #: ../gui/preferenceswindow.py:80
@@ -1633,7 +1633,7 @@ msgstr "Seleziona Livello"
 
 #: ../lib/command.py:319
 msgid "Move Layer on Canvas"
-msgstr "Muovi il Livello sulla Superficie dell'Immagine"
+msgstr "Muovi il Livello sull'Area di Lavoro"
 
 #: ../lib/command.py:344
 msgid "Reorder Layer in Stack"
@@ -2617,7 +2617,7 @@ msgstr "Inquadratura Documento..."
 
 #: ../po/tmp/mypaint.xml.h:168
 msgid "Set and adjust a frame for the canvas"
-msgstr "Imposta e regola un'inquadratura sulla superficie dell'immagine"
+msgstr "Imposta e regola un'inquadratura sull'area di lavoro"
 
 #: ../po/tmp/mypaint.xml.h:169
 msgid "Layers Window"
@@ -2771,7 +2771,7 @@ msgstr "Panoramica"
 
 #: ../po/tmp/mypaint.xml.h:202
 msgid "Scroll View: move around the canvas by clicking and dragging"
-msgstr "Panoramica Visuale: muovi la superficie dell'immagine cliccando e trascinando il mouse."
+msgstr "Panoramica Visuale: muovi l'area di lavoro cliccando e trascinando il mouse."
 
 #: ../po/tmp/mypaint.xml.h:203
 msgctxt "Menu|View|"
@@ -2790,7 +2790,7 @@ msgstr "Ruota"
 
 #: ../po/tmp/mypaint.xml.h:206
 msgid "Rotate View: turn the canvas by clicking and dragging"
-msgstr "Ruota Visuale: ruota la superficie dell'immagine cliccando e trascinando il mouse"
+msgstr "Ruota Visuale: ruota l'area di lavoro cliccando e trascinando il mouse"
 
 #: ../po/tmp/mypaint.xml.h:207
 msgctxt "Menu|View|"
@@ -2809,7 +2809,7 @@ msgstr "Zoom"
 
 #: ../po/tmp/mypaint.xml.h:210
 msgid "Zoom View: zoom the canvas by clicking and dragging"
-msgstr "Zoom Visuale: zoom sulla superficie dell'immagine cliccando e trascinando il mouse"
+msgstr "Zoom Visuale: zoom sull'area di lavoro cliccando e trascinando il mouse"
 
 #: ../po/tmp/mypaint.xml.h:211
 msgctxt "Menu|View|"
@@ -2827,82 +2827,101 @@ msgid "Lines"
 msgstr "Linee"
 
 #: ../po/tmp/mypaint.xml.h:214
-msgid "Lines and Curves: draw straight or curved lines.\nCtrl: constrain angle.\nShift: add curves to the last line."
-msgstr "Linee and Curve: disegna linee dritte o curve.\nCtrl: vincola angolo.\nShift: curva l'ultima linea tracciata."
+msgid ""
+"Lines and Curves: draw straight or curved lines.\n"
+"Ctrl: constrain angle.\n"
+"Shift: add curves to the last line."
+msgstr ""
+"Linee and Curve: disegna linee dritte o curve.\n"
+"Ctrl: vincola angolo.\n"
+"Shift: curva l'ultima linea tracciata."
 
-#: ../po/tmp/mypaint.xml.h:215
+#: ../po/tmp/mypaint.xml.h:217
 msgctxt "Menu|Edit|"
 msgid "Lines and Curves"
 msgstr "Linee e Curve"
 
-#: ../po/tmp/mypaint.xml.h:216
+#: ../po/tmp/mypaint.xml.h:218
 msgctxt "Menu|Edit|Current Mode|"
 msgid "Connected Lines"
 msgstr "Linee Connesse"
 
-#: ../po/tmp/mypaint.xml.h:217
+#: ../po/tmp/mypaint.xml.h:219
 msgctxt "Toolbar|"
 msgid "Line Seq."
 msgstr "Sequenza Linee"
 
-#: ../po/tmp/mypaint.xml.h:218
-msgid "Connected Lines: draw sequences of straight or curved lines.\nCtrl: constrain angle.\nShift: add curves to the last line."
-msgstr "Linee Connesse: disegna una sequenza di linee dritte o curve.\nCtrl: vincola angolo.\nShift: curva l'ultima linea tracciata."
+#: ../po/tmp/mypaint.xml.h:220
+msgid ""
+"Connected Lines: draw sequences of straight or curved lines.\n"
+"Ctrl: constrain angle.\n"
+"Shift: add curves to the last line."
+msgstr ""
+"Linee Connesse: disegna una sequenza di linee dritte o curve.\n"
+"Ctrl: vincola angolo.\n"
+"Shift: curva l'ultima linea tracciata."
 
-
-#: ../po/tmp/mypaint.xml.h:219
+#: ../po/tmp/mypaint.xml.h:223
 msgctxt "Menu|Edit|"
 msgid "Connected Lines"
 msgstr "Linne Connesse"
 
-#: ../po/tmp/mypaint.xml.h:220
+#: ../po/tmp/mypaint.xml.h:224
 msgctxt "Menu|Edit|Current Mode|"
 msgid "Ellipses and Circles"
 msgstr "Ellissi e Cerchi"
 
-#: ../po/tmp/mypaint.xml.h:221
+#: ../po/tmp/mypaint.xml.h:225
 msgctxt "Toolbar|"
 msgid "Ellipse"
 msgstr "Ellisse"
 
-#: ../po/tmp/mypaint.xml.h:222
-msgid "Ellipses and Circles: draw whole circles and ellipses.\nShift: rotate.\nCtrl: constrain ratio.\nCtrl+Shift: constrain angle."
-msgstr "Ellissi e Cerchi: disegna interamente cerchi ed ellissi.\nShift: ruota.\nCtrl: vincola le proporzioni.\nCtrl+Shift: vincola l'angolo."
+#: ../po/tmp/mypaint.xml.h:226
+msgid ""
+"Ellipses and Circles: draw whole circles and ellipses.\n"
+"Shift: rotate.\n"
+"Ctrl: constrain ratio.\n"
+"Ctrl+Shift: constrain angle."
+msgstr ""
+"Ellissi e Cerchi: disegna interamente cerchi ed ellissi.\n"
+"Shift: ruota.\n"
+"Ctrl: vincola le proporzioni.\n"
+"Ctrl+Shift: vincola l'angolo."
 
-#: ../po/tmp/mypaint.xml.h:223
+#: ../po/tmp/mypaint.xml.h:230
 msgctxt "Menu|Edit|"
 msgid "Ellipses and Circles"
 msgstr "Ellissi e Cerchi"
 
-#: ../po/tmp/mypaint.xml.h:224
+#: ../po/tmp/mypaint.xml.h:231
 msgctxt "Menu|Edit|Current Mode|"
 msgid "Move Layer"
 msgstr "Sposta Livello"
 
-#: ../po/tmp/mypaint.xml.h:225
+#: ../po/tmp/mypaint.xml.h:232
 msgid "Move Layer: reposition the current layer on the canvas"
-msgstr "Sposta Livello: muovi il livello corrente sulla superficie dell'immagine"
+msgstr "Sposta Livello: muovi il livello corrente sull'area di lavoro"
 
-#: ../po/tmp/mypaint.xml.h:226
+#: ../po/tmp/mypaint.xml.h:233
 msgctxt "Menu|Layer|"
 msgid "Move"
 msgstr "Muovi"
 
-#: ../po/tmp/mypaint.xml.h:227
+#: ../po/tmp/mypaint.xml.h:234
 msgctxt "Menu|Edit|Current Mode|"
 msgid "Edit Frame"
 msgstr "Impostazioni Inquadratura"
 
-#: ../po/tmp/mypaint.xml.h:228
+#: ../po/tmp/mypaint.xml.h:235
 msgctxt "Toolbar|"
 msgid "Frame"
 msgstr "Inquadratura"
 
-#: ../po/tmp/mypaint.xml.h:229
+#: ../po/tmp/mypaint.xml.h:236
 msgid "Edit Frame: define a frame around the document to give it a finite size. The frame is used when exporting."
 msgstr "Impostazioni Inquadratura: definisci una cornice attorno al documento per dargli una dimensione definita. L'inquadratura è usata al momento dell'esportazione."
 
-#: ../po/tmp/mypaint.xml.h:230
+#: ../po/tmp/mypaint.xml.h:237
 msgctxt "Menu|File|"
 msgid "Edit Frame"
 msgstr "Impostazioni Inquadratura"
