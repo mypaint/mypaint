@@ -78,19 +78,5 @@ void hsv_to_rgb_range_one(float *h_, float *s_, float *v_)
 }
 
 typedef struct { int x, y, w, h; } Rect;
-// originally from my mass project (mass.sourceforge.net)
-void ExpandRectToIncludePoint(Rect * r, int x, int y)
-{
-  if (r->w == 0) {
-    r->w = 1; r->h = 1;
-    r->x = x; r->y = y;
-  } else {
-    if (x < r->x) { r->w += r->x-x; r->x = x; } else
-    if (x >= r->x+r->w) { r->w = x - r->x + 1; }
-
-    if (y < r->y) { r->h += r->y-y; r->y = y; } else
-    if (y >= r->y+r->h) { r->h = y - r->y + 1; }
-  }
-}
 
 #endif //HELPERS2_HPP
