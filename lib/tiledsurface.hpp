@@ -15,6 +15,8 @@ static const int TILE_SIZE = MYPAINT_TILE_SIZE;
 // Implementation of tiled surface backend
 #include "pythontiledsurface.c"
 
+#include <vector>
+
 // Interface class, wrapping the backend the way MyPaint wants to use it
 class TiledSurface : public Surface {
   // the Python half of this class is in tiledsurface.py
@@ -36,8 +38,12 @@ public:
   void begin_atomic() {
       mypaint_surface_begin_atomic((MyPaintSurface *)c_surface);
   }
-  void end_atomic() {
-      mypaint_surface_end_atomic((MyPaintSurface *)c_surface);
+  std::vector<int> end_atomic() {
+      MyPaintRectangle bbox_rect = mypaint_surface_end_atomic((MyPaintSurface *)c_surface);
+      std::vector<int> bbox = std::vector<int>(4, 0);
+      bbox[0] = bbox_rect.x;     bbox[1] = bbox_rect.y;
+      bbox[2] = bbox_rect.width; bbox[3] = bbox_rect.height;
+      return bbox;
   }
 
   uint16_t * get_tile_memory(int tx, int ty, bool readonly) {
