@@ -506,6 +506,8 @@ class Application: # singleton
             words = name.split()
             if 'pen' in words or 'art' in words:
                 match = True
+            if 'uc logic' in name:
+                match = True
 
             if not match:
                 print 'Skipping "%s" (not in the list of known tablets)' % device.name
