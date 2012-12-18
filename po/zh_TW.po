@@ -2,25 +2,25 @@
 # Copyright (C) 2010 Martin Renold
 # This file is distributed under the same license as the MyPaint package.
 # Dong-Jun Wu, 2010.
-# Dongjun Wu <ziyawu@gmail.com>, 2012.
+# Cheng-Chia Tseng, 2011.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: mypaint\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-29 20:46+0100\n"
-"PO-Revision-Date: 2012-11-30 15:52+0800\n"
-"Last-Translator: Ruei-Yuan Lu <RueiYuan.Lu@gmail.com>\n"
+"POT-Creation-Date: 2012-11-29 10:06+0100\n"
+"PO-Revision-Date: 2012-12-09 16:22+0800\n"
+"Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: Chinese Traditional <zh-l10n@linux.org.tw>\n"
-"Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Poedit 1.5.4\n"
 
 #: ../gui/backgroundwindow.py:24
 msgid "Save as Default"
-msgstr "儲存作為預設值"
+msgstr "儲存為預設值"
 
 #: ../gui/backgroundwindow.py:26
 msgid "Background"
@@ -34,28 +34,28 @@ msgstr "圖案"
 #: ../gui/brushsettingswindow.py:108
 #: ../lib/layer.py:54
 msgid "Color"
-msgstr "顏色"
+msgstr "色彩"
 
 #: ../gui/backgroundwindow.py:52
 msgid "Add color to Patterns"
-msgstr "加入顏色到圖案"
+msgstr "將色彩加入圖案"
 
 #: ../gui/backgroundwindow.py:126
 msgid "Gdk-Pixbuf couldn't load \"{filename}\", and reported \"{error}\""
-msgstr "Gdk-Pixbuf 無法載入「{filename}」，並且回報了錯誤訊息「{error}」"
+msgstr "Gdk-Pixbuf 無法載入「{filename}」，並回報「{error}」"
 
 #: ../gui/backgroundwindow.py:132
 #, python-format
 msgid "\"%s\" has an alpha channel. Background images with transparency are not supported."
-msgstr ""
+msgstr "「%s」有 alpha 透明版。尚未支援具透明度的背景影像。"
 
 #: ../gui/backgroundwindow.py:139
 msgid "{filename} has an unsupported size. Background images must have widths and heights which are multiples of {number} pixels."
-msgstr ""
+msgstr "尚未支援 {filename} 的大小。背景影像的長寬必須是 {number} 像素的倍數。"
 
 #: ../gui/backgroundwindow.py:155
 msgid "One or more backgrounds could not be loaded"
-msgstr ""
+msgstr "無法載入一個或多個背景"
 
 #: ../gui/backgroundwindow.py:156
 msgid "Error loading backgrounds"
@@ -63,12 +63,12 @@ msgstr "載入背景時發生錯誤"
 
 #: ../gui/backgroundwindow.py:157
 msgid "Please remove the unloadable files, or check your libgdkpixbuf installation."
-msgstr ""
+msgstr "請移除無法載入的檔案，或是檢查您的 libgdkpixbuf 安裝是否完整。"
 
 #: ../gui/brushcreationwidget.py:44
 #: ../gui/brushcreationwidget.py:67
 msgid "(unnamed brush)"
-msgstr "(未命名筆刷)"
+msgstr "(未命名的筆刷)"
 
 #: ../gui/brushcreationwidget.py:52
 msgid "Save Settings"
@@ -76,7 +76,7 @@ msgstr "儲存設定值"
 
 #: ../gui/brushcreationwidget.py:53
 msgid "Add As New"
-msgstr "加入新筆刷"
+msgstr "加入為新筆刷"
 
 #: ../gui/brushcreationwidget.py:54
 msgid "Edit Brush Icon"
@@ -93,7 +93,7 @@ msgstr "移除..."
 #: ../gui/brushcreationwidget.py:102
 #: ../gui/brushcreationwidget.py:151
 msgid "No brush selected!"
-msgstr "尚未選擇筆刷！"
+msgstr "沒有選擇筆刷！"
 
 #: ../gui/brushcreationwidget.py:105
 msgid "Rename Brush"
@@ -106,7 +106,7 @@ msgstr "已經存在相同名稱的筆刷！"
 #: ../gui/brushcreationwidget.py:143
 #: ../gui/brushcreationwidget.py:250
 msgid "No brush selected, please use \"Add As New\" instead."
-msgstr "尚未選擇任何筆刷，請改用「加入新筆刷」。"
+msgstr "尚未選取筆刷，請改用「加入為新筆刷」。"
 
 #: ../gui/brushcreationwidget.py:153
 msgid "Really delete brush from disk?"
@@ -126,15 +126,15 @@ msgstr "儲存"
 
 #: ../gui/brushmanager.py:71
 msgid "Lost & Found"
-msgstr "遺失和找到的"
+msgstr "遺失與尋回"
 
 #: ../gui/brushmanager.py:72
 msgid "Deleted"
-msgstr "已刪除"
+msgstr "刪除的"
 
 #: ../gui/brushmanager.py:73
 msgid "Favorites"
-msgstr "收藏"
+msgstr "喜愛"
 
 #: ../gui/brushmanager.py:74
 msgid "Ink"
@@ -146,41 +146,41 @@ msgstr "經典"
 
 #: ../gui/brushmanager.py:76
 msgid "Set#1"
-msgstr "筆刷集#1"
+msgstr "組#1"
 
 #: ../gui/brushmanager.py:77
 msgid "Set#2"
-msgstr "筆刷集#2"
+msgstr "組#2"
 
 #: ../gui/brushmanager.py:78
 msgid "Set#3"
-msgstr "筆刷集#3"
+msgstr "組#3"
 
 #: ../gui/brushmanager.py:79
 msgid "Set#4"
-msgstr "筆刷集#4"
+msgstr "組#4"
 
 #: ../gui/brushmanager.py:80
 msgid "Set#5"
-msgstr "筆刷集#5"
+msgstr "組#5"
 
 #: ../gui/brushmanager.py:81
 msgid "Experimental"
-msgstr "實驗階段"
+msgstr "實驗性"
 
 #: ../gui/brushmanager.py:721
 msgid "Unknown Brush"
-msgstr "不明的筆刷"
+msgstr "未知筆刷"
 
 #. (internal-name, display-name, description)
 #: ../gui/brushmodifier.py:53
 #: ../lib/layer.py:17
 msgid "Normal"
-msgstr "標準"
+msgstr "正常"
 
 #: ../gui/brushmodifier.py:54
 msgid "Paint normally"
-msgstr "標準繪畫"
+msgstr "正常繪圖"
 
 #: ../gui/brushmodifier.py:57
 msgid "Eraser"
@@ -188,23 +188,23 @@ msgstr "橡皮擦"
 
 #: ../gui/brushmodifier.py:58
 msgid "Eraser Mode: remove strokes using the current brush"
-msgstr "橡皮擦模式：使用目前筆刷擦除筆劃"
+msgstr "橡皮擦模式：使用目前的筆刷移除筆劃"
 
 #: ../gui/brushmodifier.py:61
 msgid "Lock Alpha Channel"
-msgstr "鎖定透明色版"
+msgstr "鎖定 Alpha 透明版"
 
 #: ../gui/brushmodifier.py:62
 msgid "Lock Alpha: paint over existing strokes only, using the current brush"
-msgstr "鎖定透明色版：使用目前筆刷繪畫時只覆蓋現有的筆劃"
+msgstr "鎖定 Alpha：畫在現有的筆劃上方，使用目前的筆刷"
 
 #: ../gui/brushmodifier.py:65
 msgid "Colorize"
-msgstr "著色"
+msgstr "上色"
 
 #: ../gui/brushmodifier.py:66
 msgid "Colorize: alter Hue and Saturation with the current brush"
-msgstr "著色：用目前筆刷改變色相和飽和度"
+msgstr "上色：以目前的筆刷修改色相與飽和度"
 
 #: ../gui/brushselectionwindow.py:35
 msgid "Brushes"
@@ -217,6 +217,10 @@ msgid ""
 "Middle-click: toggle group\n"
 "Right-click: groups menu"
 msgstr ""
+"筆刷群組：點擊以選取\n"
+"鍵盤 Ctl：多重選取\n"
+"滑鼠中鍵：切換群組\n"
+"滑鼠右鍵：群組選單"
 
 #: ../gui/brushselectionwindow.py:465
 msgid "New Group..."
@@ -224,11 +228,11 @@ msgstr "新增群組..."
 
 #: ../gui/brushselectionwindow.py:467
 msgid "Rename Group..."
-msgstr "重新命名群組..."
+msgstr "重新命名群組"
 
 #: ../gui/brushselectionwindow.py:468
 msgid "Delete Group"
-msgstr "刪除群組..."
+msgstr "刪除群組"
 
 #: ../gui/brushselectionwindow.py:469
 msgid "Export Group..."
@@ -256,12 +260,12 @@ msgstr "已經存在相同名稱的群組！"
 
 #: ../gui/brushselectionwindow.py:507
 msgid "Export Brushes"
-msgstr "匯出筆刷"
+msgstr "匯出筆刷..."
 
 #: ../gui/brushselectionwindow.py:508
 #: ../gui/drawwindow.py:809
 msgid "MyPaint brush package (*.zip)"
-msgstr "MyPaint 筆刷套件 (*.zip)"
+msgstr "MyPaint 筆刷包 (*.zip)"
 
 #: ../gui/brushselectionwindow.py:514
 #, python-format
@@ -270,7 +274,7 @@ msgstr "確定要刪除群組 %s？"
 
 #: ../gui/brushselectionwindow.py:517
 msgid "This group can not be deleted (try to empty it first)."
-msgstr "無法刪除這個群組 (先試著清空此群組)。"
+msgstr "這個群組無法刪除 (先試著清空這個群組)。"
 
 #: ../gui/brushsettingswindow.py:31
 msgid "Brush Settings Editor"
@@ -283,7 +287,7 @@ msgstr "回到設定值"
 #. Live update (goes to the end)
 #: ../gui/brushsettingswindow.py:64
 msgid "Update the last canvas stroke in realtime"
-msgstr "即時更新最新的畫布筆畫"
+msgstr "即時更新最後畫布筆畫"
 
 #: ../gui/brushsettingswindow.py:101
 msgid "Basic"
@@ -303,11 +307,11 @@ msgstr "塗抹"
 
 #: ../gui/brushsettingswindow.py:105
 msgid "Speed"
-msgstr "速率"
+msgstr "速度"
 
 #: ../gui/brushsettingswindow.py:106
 msgid "Tracking"
-msgstr "跟蹤"
+msgstr "曳跡"
 
 #: ../gui/brushsettingswindow.py:107
 msgid "Stroke"
@@ -319,20 +323,20 @@ msgstr "自訂"
 
 #: ../gui/brushsettingswindow.py:138
 msgid "Reset to default value"
-msgstr "重設為預設值"
+msgstr "重設回預設值"
 
 #: ../gui/brushsettingswindow.py:143
 msgid "No additional configuration"
-msgstr "無附加組態設定"
+msgstr "沒有額外的組態設定"
 
 #: ../gui/brushsettingswindow.py:148
 #: ../gui/brushsettingswindow.py:191
 msgid "Add input value mapping"
-msgstr "加入輸入值對應"
+msgstr "加入輸入值映射關係"
 
 #: ../gui/brushsettingswindow.py:193
 msgid "Modify input value mapping"
-msgstr "修改輸入值對應"
+msgstr "修改輸入值映射關係"
 
 #: ../gui/buttonmap.py:262
 msgid "Action"
@@ -340,21 +344,20 @@ msgstr "動作"
 
 #: ../gui/buttonmap.py:277
 msgid "Button press"
-msgstr "按鍵組合"
+msgstr "按鈕按壓"
 
 #: ../gui/buttonmap.py:296
 msgid "Add a new binding"
-msgstr ""
+msgstr "加入新的按鍵綁定"
 
 #: ../gui/buttonmap.py:304
-#, fuzzy
 msgid "Remove the current binding"
-msgstr "重新載入目前檔案"
+msgstr "重新載入目前的按鍵綁定"
 
 #: ../gui/buttonmap.py:426
 #, python-format
 msgid "Edit binding for '%s'"
-msgstr ""
+msgstr "編輯「%s」的按鍵綁定"
 
 #: ../gui/buttonmap.py:449
 msgid "Action:"
@@ -362,34 +365,33 @@ msgstr "動作："
 
 #: ../gui/buttonmap.py:460
 msgid "Button press:"
-msgstr "按鍵組合："
+msgstr "按鈕按壓："
 
 #: ../gui/buttonmap.py:494
 msgid "Hold down modifier keys, and press a button over this text to set a new binding."
-msgstr ""
+msgstr "按住修飾鍵不放，接著在此文字上按壓一個按鈕以設定新的按鍵綁定。"
 
 #: ../gui/buttonmap.py:514
 #, python-format
 msgid "%s cannot be bound by itself, without keyboard modifiers."
-msgstr ""
+msgstr "%s 無法不用鍵盤修飾鍵就和自己綁定在一起。"
 
 #: ../gui/buttonmap.py:524
 #, python-format
 msgid "%s is already bound to the action '%s'"
-msgstr ""
+msgstr "%s 已經與「%s」動作綁定起來"
 
 #: ../gui/colors/adjbases.py:443
 msgid "Color details"
-msgstr "色彩詳細資料"
+msgstr "色彩詳細資訊"
 
 #: ../gui/colors/adjbases.py:587
 msgid "Newly chosen color, and the color most recently used for painting"
-msgstr ""
+msgstr "新選的色彩，以及最近用來繪畫的色彩"
 
 #: ../gui/colors/combined.py:126
-#, fuzzy
 msgid "Add color to Palette"
-msgstr "加入顏色到圖案"
+msgstr "將色彩加入調色板中"
 
 #: ../gui/colors/hcywheel.py:40
 msgid ""
@@ -415,55 +417,73 @@ msgid ""
 "Gamut masks can be saved to GIMP-format palette files, and loaded from them.\n"
 "The New button lets you choose one of several templates as a starting point.\n"
 msgstr ""
+"<b>色域遮罩編輯器</b>\n"
+"\n"
+"在這裡可編輯色域遮罩，或是開啟或關閉。色域遮罩就像是一塊有打洞的\n"
+"追蹤用紙，放在色輪上可限制您選取色彩的範圍。這可讓您進一步規劃想\n"
+"要的配色方案，對於草擬色彩或建立特定氛圍來說很有用。策略是每個遮\n"
+"罩外形的角落代表一個<i>主觀的</i>主色，而每個形狀包含所有用角落主\n"
+"色混合而成的色彩。主觀次色位在外形邊緣的中點，而外形的中央為主觀\n"
+"中立色調。\n"
+"\n"
+"如果色輪是空白的，點擊滑鼠可添加外形。可透過滑鼠四處拖曳來改變外\n"
+"形，而外框可以透過加入或移動控制點來調整外框。\n"
+"若外形變得太小就很難移除：將外形拖曳至圓環的邊緣可以快速解決。\n"
+"您也可以將外形拖曳至其他外形之內來刪除這些外形。\n"
+"整個遮罩可以透過轉動圓盤的邊緣來旋轉而建立出新的、預想外的配色方\n"
+"案。\n"
+"\n"
+"色域遮罩可以儲存為 GIMP 格式的調色板檔，以及從該類型檔案載入。\n"
+"「新增」按鈕讓您從多份樣板中選擇一份作為起點。\n"
 
 #: ../gui/colors/hcywheel.py:95
 msgid "Gamut mask active"
-msgstr ""
+msgstr "色域遮罩使用中"
 
 #: ../gui/colors/hcywheel.py:96
 msgid "Limit your palette for specific moods using a gamut mask"
-msgstr ""
+msgstr "使用色域遮罩來將您的調色板限制在特定基調上"
 
 #: ../gui/colors/hcywheel.py:374
 msgid "HCY Hue and Chroma"
-msgstr ""
+msgstr "HCY 色相與彩度"
 
 #. how many shapes are allowed
 #: ../gui/colors/hcywheel.py:424
 msgid "Gamut mask editor. Click in the middle to create or manipulate shapes, or rotate the mask using the edges of the disc."
-msgstr ""
+msgstr "色域遮罩編輯器。按一下中間可建立或操控外形，或是使用圓盤的邊緣來旋轉遮罩。"
 
 #: ../gui/colors/hcywheel.py:898
 msgid "Atmospheric Triad"
-msgstr ""
+msgstr "氣氛三角"
 
 #: ../gui/colors/hcywheel.py:899
 msgid "Moody and subjective, defined by one dominant primary and two primaries which are less intense."
-msgstr ""
+msgstr "富情緒、主觀，由一個首要主色與兩個較不強烈的主色定義而成。"
 
 #: ../gui/colors/hcywheel.py:902
 msgid "Shifted Triad"
-msgstr ""
+msgstr "偏重三角"
 
 #: ../gui/colors/hcywheel.py:903
 msgid "Weighted more strongly towards the dominant colour."
-msgstr ""
+msgstr "更強烈偏重首色。"
 
 #: ../gui/colors/hcywheel.py:907
 msgid "Complementary"
-msgstr "互補色"
+msgstr "互補"
 
 #: ../gui/colors/hcywheel.py:908
 msgid "Contrasting opposites, balanced by having central neutrals between them on the colour wheel."
-msgstr ""
+msgstr "具對比的相對色，色輪間有中央的中立色在這些色彩間達成平衡。"
 
 #: ../gui/colors/hcywheel.py:917
 msgid "Mood and Accent"
-msgstr ""
+msgstr "基調與強調"
 
 #: ../gui/colors/hcywheel.py:918
 msgid "One main range of colors, with a complementary accent for variation and highlights."
-msgstr ""
+msgstr "一個主要的色彩範圍，加上變化、醒目的互補強調。"
 
 #. [HCYColor((H+0.483)%1, 0.95, Y),
 #. HCYColor((H+0.517)%1, 0.95, Y),
@@ -471,60 +491,59 @@ msgstr ""
 #. HCYColor((H+0.48)%1, 0.725, Y) ]] ))
 #: ../gui/colors/hcywheel.py:926
 msgid "Split Complementary"
-msgstr "鄰接補色"
+msgstr "切分補色"
 
 #: ../gui/colors/hcywheel.py:927
 msgid "Two analogous colours and a complement to them, with no secondary colours between them."
-msgstr ""
+msgstr "兩個類比色與一個前兩者的互補色，它們之間沒有次色。"
 
 #: ../gui/colors/hcywheel.py:934
 msgid "New gamut mask from template"
-msgstr ""
+msgstr "新來自樣板的色域遮罩"
 
 #: ../gui/colors/hcywheel.py:986
 msgid "Gamut mask editor"
-msgstr ""
+msgstr "色域遮罩編輯器"
 
 #: ../gui/colors/hcywheel.py:1014
 msgid "Create mask from template"
-msgstr ""
+msgstr "以樣板建立遮罩"
 
 #: ../gui/colors/hcywheel.py:1015
 msgid "Load mask from a GIMP palette file"
-msgstr ""
+msgstr "從 GIMP 調色板檔載入遮罩"
 
 #: ../gui/colors/hcywheel.py:1016
-#, fuzzy
 msgid "Save mask to a GIMP palette file"
-msgstr "儲存成檔案"
+msgstr "將遮罩儲存至 GIMP 調色板檔"
 
 #: ../gui/colors/hcywheel.py:1017
 msgid "Erase the mask"
-msgstr ""
+msgstr "抹除遮罩"
 
 #: ../gui/colors/hcywheel.py:1065
 msgid "Save mask as a Gimp palette"
-msgstr ""
+msgstr "儲存遮罩為 Gimp 調色板"
 
 #: ../gui/colors/hcywheel.py:1074
 msgid "Load mask from a Gimp palette"
-msgstr ""
+msgstr "從 Gimp 調色板載入遮罩"
 
 #: ../gui/colors/hcywheel.py:1113
 msgid "Gamut mask editor help"
-msgstr ""
+msgstr "色域遮罩編輯器幫助"
 
 #: ../gui/colors/hcywheel.py:1147
 msgid "Set gamut mask"
-msgstr ""
+msgstr "設定色域遮罩"
 
 #: ../gui/colors/hcywheel.py:1162
 msgid "HCY Wheel"
-msgstr ""
+msgstr "HCY 色輪"
 
 #: ../gui/colors/hcywheel.py:1166
 msgid "Set the color using cylindrical hue/chroma/luma space. The circular slices are equiluminant."
-msgstr ""
+msgstr "使用色相/彩度/明度空間圓柱體設定色彩。圓形切塊皆相等。"
 
 #. Tooltip mappings, indexed by whatever the slider currently represents
 #: ../gui/colors/hsvcube.py:35
@@ -557,79 +576,77 @@ msgstr "HSV 色相與飽和度"
 
 #: ../gui/colors/hsvcube.py:52
 msgid "Rotate cube (show different axes)"
-msgstr ""
+msgstr "旋轉方塊 (顯示不同的軸)"
 
 #: ../gui/colors/hsvcube.py:71
 msgid "HSV Cube"
-msgstr ""
+msgstr "HSV 方塊"
 
 #: ../gui/colors/hsvcube.py:75
 msgid "An HSV cube which can be rotated to show different planar slices."
-msgstr ""
+msgstr "可以旋轉 HSV 方塊來顯示不同的平面切塊。"
 
 #: ../gui/colors/hsvtriangle.py:41
 msgid "HSV Triangle"
-msgstr "HSV 三角形"
+msgstr "HSV 三角"
 
 #: ../gui/colors/hsvtriangle.py:45
 msgid "The standard GTK color selector"
-msgstr "標準 GTK 選色器"
+msgstr "標準 GTK 撿色器"
 
 #: ../gui/colors/hsvwheel.py:91
 msgid "HSV wheel"
-msgstr ""
+msgstr "HSV 色輪"
 
 #: ../gui/colors/hsvwheel.py:95
-#, fuzzy
 msgid "Saturation and Value colour changer."
-msgstr "改變飽和度和明度"
+msgstr "飽和度與明度的換色器。"
 
 #: ../gui/colors/palette.py:416
 #: ../gui/colors/palette.py:472
 msgid "GIMP palette file (*.gpl)"
-msgstr "GIMP 調色盤(*.gpl)"
+msgstr "GIMP 調色板檔 (*.gpl)"
 
 #: ../gui/colors/palette.py:420
 #: ../gui/colors/palette.py:476
 msgid "All files (*)"
-msgstr "所有檔案(*)"
+msgstr "所有檔案 (*)"
 
 #: ../gui/colors/paletteview.py:62
 msgid "Palette properties"
-msgstr "調色盤屬性"
+msgstr "調色板屬性"
 
 #: ../gui/colors/paletteview.py:72
 msgid "Palette"
-msgstr "調色盤"
+msgstr "調色板"
 
 #: ../gui/colors/paletteview.py:77
 msgid "Set the color from a loadable, editable palette."
-msgstr ""
+msgstr "從可載入、可編輯的調色板設定色彩。"
 
 #: ../gui/colors/paletteview.py:123
 msgid "Palette Editor"
-msgstr "調色盤編輯器"
+msgstr "調色板編輯器"
 
 #: ../gui/colors/paletteview.py:158
 msgid "Load from a GIMP palette file"
-msgstr "載入 GIMP 調色盤"
+msgstr "載入 GIMP 調色板檔"
 
 #: ../gui/colors/paletteview.py:159
 msgid "Save to a GIMP palette file"
-msgstr "儲存至 GIMP 調色盤"
+msgstr "儲存至 GIMP 調色板檔"
 
 #: ../gui/colors/paletteview.py:160
 msgid "Add a new empty swatch"
-msgstr ""
+msgstr "加入新的空白色票"
 
 #: ../gui/colors/paletteview.py:161
-#, fuzzy
 msgid "Remove the current swatch"
-msgstr "重新載入目前檔案"
+msgstr "移除目前的色票"
 
 #: ../gui/colors/paletteview.py:162
 msgid "Remove all swatches"
-msgstr ""
+msgstr "移除所有色票"
 
 #: ../gui/colors/paletteview.py:172
 msgid "Name:"
@@ -637,85 +654,84 @@ msgstr "名稱："
 
 #: ../gui/colors/paletteview.py:174
 msgid "Name or description for this palette"
-msgstr ""
+msgstr "此調色板的名稱或描述"
 
 #: ../gui/colors/paletteview.py:182
 msgid "Columns:"
-msgstr ""
+msgstr "欄："
 
 #: ../gui/colors/paletteview.py:183
 #: ../gui/colors/paletteview.py:184
 msgid "Number of columns"
-msgstr ""
+msgstr "欄數"
 
 #: ../gui/colors/paletteview.py:197
 msgid "Color name:"
-msgstr "顏色名稱："
+msgstr "色彩名稱："
 
 #: ../gui/colors/paletteview.py:198
-#, fuzzy
 msgid "Current colour's name"
-msgstr "目前顏色對上最後使用的顏色"
+msgstr "目前色彩的名稱"
 
 #: ../gui/colors/paletteview.py:295
 msgid "Empty palette slot"
-msgstr "空的調色盤欄位"
+msgstr "淨空調色板槽"
 
 #: ../gui/colors/paletteview.py:362
 msgid "Load palette"
-msgstr "載入調色盤"
+msgstr "載入調色板"
 
 #: ../gui/colors/paletteview.py:373
 msgid "Save palette"
-msgstr "儲存調色盤"
+msgstr "儲存調色板"
 
 #: ../gui/colors/paletteview.py:541
 msgid "Color swatch palette. Drop colors here and drag them around to organize."
-msgstr ""
+msgstr "色票調色板。將色彩拖放至此處，可四處拖曳進行整理。"
 
 #: ../gui/colors/paletteview.py:676
 msgid "Empty palette slot (drag a color here)"
-msgstr ""
+msgstr "空的調色板槽 (請將色彩拖曳至這裡)"
 
 #: ../gui/colors/picker.py:69
 msgid "Pick a color from the screen"
-msgstr "從畫面上選取顏色"
+msgstr "從畫面挑選色彩"
 
 #: ../gui/colors/sliders.py:88
 msgid "Component sliders"
-msgstr ""
+msgstr "成份滑桿"
 
 #: ../gui/colors/sliders.py:92
 msgid "Adjust individual components of the colour."
-msgstr ""
+msgstr "調整色彩的各個成份。"
 
 #: ../gui/colors/sliders.py:138
 msgid "RGB Red"
-msgstr "RGB 紅色"
+msgstr "RGB 紅"
 
 #: ../gui/colors/sliders.py:151
 msgid "RGB Green"
-msgstr "RGB 綠色"
+msgstr "RGB 綠"
 
 #: ../gui/colors/sliders.py:164
 msgid "RGB Blue"
-msgstr "RGB 藍色"
+msgstr "RGB 藍"
 
 #: ../gui/colors/sliders.py:207
 msgid "HCY Hue"
-msgstr ""
+msgstr "HCY 色相"
 
 #: ../gui/colors/sliders.py:218
 msgid "HCY Chroma"
-msgstr ""
+msgstr "HCY 彩度"
 
 #: ../gui/colors/sliders.py:230
 msgid "HCY Luma (Y')"
-msgstr ""
+msgstr "HCY 明度 (Y')"
 
 #: ../gui/colorwindow.py:26
 msgid "Colors"
-msgstr "顏色"
+msgstr "色彩"
 
 #: ../gui/dialogs.py:54
 #: ../gui/layerswindow.py:78
@@ -742,7 +758,7 @@ msgstr "全部取代"
 
 #: ../gui/dialogs.py:106
 msgid "Rename all"
-msgstr "全部重新命名"
+msgstr "重新命名全部"
 
 #: ../gui/dialogs.py:121
 msgid "Imported brush"
@@ -758,12 +774,12 @@ msgid ""
 "<b>A brush named `%s' already exists.</b>\n"
 "Do you want to replace it, or should the new brush be renamed?"
 msgstr ""
-"<b>已經存在名稱為「%s」的筆刷。</b>\n"
-"你想要取代原來筆刷，或重新命名為新的筆刷？"
+"<b>名為「%s」的筆刷已經存在。</b>\n"
+"您想要取代它，抑或是重新命名新筆刷呢？"
 
 #: ../gui/dialogs.py:147
 msgid "Overwrite brush group?"
-msgstr "覆寫筆刷群組？"
+msgstr "要覆寫筆刷群組嗎？"
 
 #: ../gui/dialogs.py:169
 msgid ""
@@ -771,24 +787,24 @@ msgid ""
 "Do you want to replace it, or should the new group be renamed?\n"
 "If you replace it, the brushes may be moved to a group called `{deleted_groupname}'."
 msgstr ""
-"<b>已經存在名稱為「%s」的群組。</b>\n"
-"您想要取代原來群組，或重新命名為新的群組？\n"
-"若您選擇取代原本群組，群組裡面的筆刷會移動到名為「%s」的群組。"
+"<b>名為「{groupname}」的群組已經存在。</b>\n"
+"您想要取代它，或是重新命名新群組呢？\n"
+"若您取代它的話，這些筆刷會移動至名為「{deleted_groupname}」的群組。"
 
 #: ../gui/dialogs.py:257
 msgid "Import brush package?"
-msgstr "要匯入筆刷套件嗎？"
+msgstr "要匯入筆刷包嗎？"
 
 #: ../gui/dialogs.py:269
 #, python-format
 msgid "<b>Do you really want to import package `%s'?</b>"
-msgstr "<b>你真的要匯入套件「%s」？</b>"
+msgstr "<b>您真的想要匯入「%s」套件嗎？</b>"
 
 #. Quick brush changer
 #: ../gui/dialogs.py:359
 #: ../gui/toolbar.py:355
 msgid "Change Brush"
-msgstr "變更筆刷"
+msgstr "改變筆刷"
 
 #: ../gui/document.py:240
 #, python-format
@@ -803,12 +819,12 @@ msgstr "儲存到筆刷 %d"
 #: ../gui/document.py:482
 #, python-format
 msgid "Copy of %s"
-msgstr "%s 複製"
+msgstr "副本，%s"
 
 #: ../gui/document.py:485
 #, python-format
 msgid "Copy of Untitled layer #%d"
-msgstr "無標題圖層 #%d 複製"
+msgstr "副本，無標題圖層 #%d"
 
 #: ../gui/document.py:492
 msgid "Layer Name"
@@ -817,24 +833,24 @@ msgstr "圖層名稱"
 #: ../gui/document.py:837
 #, python-format
 msgid "Undo %s"
-msgstr "復原 %s"
+msgstr "取消動作 %s"
 
 #: ../gui/document.py:839
 msgid "Undo"
-msgstr "復原"
+msgstr "取消動作"
 
 #: ../gui/document.py:846
 #, python-format
 msgid "Redo %s"
-msgstr "取消復原 %s"
+msgstr "再次動作 %s"
 
 #: ../gui/document.py:848
 msgid "Redo"
-msgstr "取消復原"
+msgstr "再次動作"
 
 #: ../gui/drawwindow.py:474
 msgid "Set current color"
-msgstr "設定目前顏色"
+msgstr "設定目前色彩"
 
 #: ../gui/drawwindow.py:634
 msgid "Leave Fullscreen Mode"
@@ -854,24 +870,24 @@ msgstr "全螢幕"
 
 #: ../gui/drawwindow.py:727
 msgid "Gimp Palette Format"
-msgstr "Gimp 調色盤格式"
+msgstr "Gimp 調色板模式"
 
 #: ../gui/drawwindow.py:728
 msgid "All Files"
-msgstr "全部檔案"
+msgstr "所有檔案"
 
 #. FIXME: should do this periodically, not only on quit
 #: ../gui/drawwindow.py:781
 msgid "Quit"
-msgstr "離開"
+msgstr "退出"
 
 #: ../gui/drawwindow.py:781
 msgid "Really Quit?"
-msgstr "確定要離開？"
+msgstr "確定要退出？"
 
 #: ../gui/drawwindow.py:808
 msgid "Import brush package..."
-msgstr "匯入筆刷套件..."
+msgstr "匯入筆刷包..."
 
 #: ../gui/drawwindow.py:820
 msgid ""
@@ -887,7 +903,7 @@ msgid ""
 "\n"
 "This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY. See the COPYING file for more details."
 msgstr ""
-"此程式是自由軟體；你可以在遵守由自由軟體基金會發佈的 GNU 通用公共授權條款的情形下重新發行和 (或) 修改這個程式；授權第二版或任何更新的版本 (根據您的選擇)。\n"
+"此程式是自由軟體；你可以在遵守由自由軟體基金會發佈的 GNU 通用公共授權條款的情形下重新發行和 (或) 修改這個程式；授權第二版或任何之後的版本 (根據您的選擇)。\n"
 "\n"
 "這個程式發佈的目的是希望它對人們有所幫助，但沒有任何保證。請見 COPYING 檔案獲得更多詳細資訊。"
 
@@ -910,7 +926,7 @@ msgstr ""
 #: ../gui/drawwindow.py:852
 #: ../gui/drawwindow.py:853
 msgid "programming"
-msgstr "程式"
+msgstr "程式設計"
 
 #: ../gui/drawwindow.py:836
 #: ../gui/drawwindow.py:841
@@ -953,22 +969,23 @@ msgstr "工具圖示"
 #: ../gui/drawwindow.py:869
 msgid "translator-credits"
 msgstr ""
+"Dong-Jun Wu <ziyawu@gmail.com>, 2010, 2011, 2012.\n"
+"Ruei-Yuan Lu <RueiYuan.Lu@gmail.com>, 2012.\n"
+"Cheng-Chia Tseng <pswo10680@gmail.com> 2011, 2012."
 
 #: ../gui/drawwindow.py:877
 msgid "Move your mouse over a menu entry, then press the key to assign."
 msgstr "將您的滑鼠移動到選單項目上方，然後按滑鼠鍵來指定。"
 
 #: ../gui/drawwindow.py:879
-#, fuzzy
 msgid ""
 "Brush shortcut keys are used to quickly save/restore brush settings. You can paint with one hand and change brushes with the other, even in mid-stroke.\n"
 "\n"
 "There are 10 persistent memory slots available."
 msgstr ""
-"筆刷按鍵的用途為藉由鍵盤快捷鍵快速地儲存 / 還原筆刷。您可以用一隻手繪畫並用另一隻手變更筆刷而不必中斷。\n"
+"筆刷快捷鍵用來快速儲存/還原筆刷設定值。您可以用一隻手繪畫，並用另一隻手變更筆刷，即使是筆劃中斷也可更換。\n"
 "\n"
-"有 10 個記憶槽來保留筆刷設定值。\n"
-"這些不具名稱的筆刷不會顯示在筆刷選擇器清單。但這些筆刷即使離開程式也會保留下來。"
+"有 10 組永續記憶槽可用。"
 
 #: ../gui/drawwindow.py:885
 msgid ""
@@ -982,7 +999,7 @@ msgstr ""
 
 #: ../gui/filehandling.py:59
 msgid "Open Recent"
-msgstr "開啟最近的"
+msgstr "開啟最近"
 
 #: ../gui/filehandling.py:59
 msgid "Open Recent files"
@@ -1010,12 +1027,12 @@ msgstr "JPEG (*.jpg; *.jpeg)"
 #. (name, extension, options)
 #: ../gui/filehandling.py:86
 msgid "By extension (prefer default format)"
-msgstr "根據副檔名 (優先使用預設格式)"
+msgstr "依副檔名 (偏好預設格式)"
 
 #. 1
 #: ../gui/filehandling.py:88
 msgid "PNG solid with background (*.png)"
-msgstr "含帶背景的 PNG (*.png)"
+msgstr "PNG 不透明背景 (*.png)"
 
 #. 2
 #: ../gui/filehandling.py:89
@@ -1025,7 +1042,7 @@ msgstr "PNG 透明圖片 (*.png)"
 #. 3
 #: ../gui/filehandling.py:90
 msgid "Multiple PNG transparent (*.XXX.png)"
-msgstr "多個 PNG 透明圖片"
+msgstr "多張 PNG 透明圖片 (*.XXX.png)"
 
 #. 4
 #: ../gui/filehandling.py:91
@@ -1038,7 +1055,7 @@ msgstr "儲存..."
 
 #: ../gui/filehandling.py:143
 msgid "Format to save as:"
-msgstr "另存新檔的格式："
+msgstr "要另存的格式："
 
 #: ../gui/filehandling.py:169
 msgid "Confirm"
@@ -1046,23 +1063,23 @@ msgstr "確認"
 
 #: ../gui/filehandling.py:169
 msgid "Really continue?"
-msgstr "確定要繼續？"
+msgstr "真的要繼續嗎？"
 
 #: ../gui/filehandling.py:178
 #, python-format
 msgid "This will discard %d minute of unsaved painting."
 msgid_plural "This will discard %d minutes of unsaved painting."
-msgstr[0] "這將會丟棄 %d 分鐘內未儲存的圖畫。"
+msgstr[0] "這將會丟棄 %d 分鐘內尚未儲存的繪畫。"
 
 #: ../gui/filehandling.py:183
 #, python-format
 msgid "This will discard %d second of unsaved painting."
 msgid_plural "This will discard %d seconds of unsaved painting."
-msgstr[0] "這將會丟棄 %d 秒內未儲存的圖畫。"
+msgstr[0] "這將會丟棄 %d 秒內尚未儲存的繪畫。"
 
 #: ../gui/filehandling.py:191
 msgid "_Save as Scrap"
-msgstr "另存為作廢稿(_S)"
+msgstr "儲存為圖料(_S)"
 
 #: ../gui/filehandling.py:326
 #: ../gui/filehandling.py:343
@@ -1071,12 +1088,12 @@ msgstr "開啟..."
 
 #: ../gui/filehandling.py:375
 msgid "Open Scratchpad..."
-msgstr "開啟便條紙..."
+msgstr "開啟圖畫簿..."
 
 #: ../gui/filehandling.py:680
 #, python-format
 msgid "There are no scrap files named \"%s\" yet."
-msgstr "還沒有作廢稿檔命名為「%s」。"
+msgstr "還沒有圖料檔命名為「%s」。"
 
 #. unit :  (conversion_factor, upper, lower, step_incr, page_incr, digits)
 #: ../gui/framewindow.py:268
@@ -1088,15 +1105,15 @@ msgstr "還沒有作廢稿檔命名為「%s」。"
 #: ../gui/framewindow.py:525
 #: ../gui/framewindow.py:530
 msgid "px"
-msgstr "像素"
+msgstr "px"
 
 #: ../gui/framewindow.py:281
 msgid "Height:"
-msgstr "高度："
+msgstr "高："
 
 #: ../gui/framewindow.py:283
 msgid "Width:"
-msgstr "寬度："
+msgstr "寬："
 
 #: ../gui/framewindow.py:285
 msgid "Resolution:"
@@ -1104,33 +1121,35 @@ msgstr "解析度："
 
 #: ../gui/framewindow.py:287
 msgid "Color:"
-msgstr "顏色："
+msgstr "色彩："
 
 #: ../gui/framewindow.py:307
 msgid "Frame Color"
-msgstr "邊框顏色"
+msgstr "畫框色彩"
 
 #: ../gui/framewindow.py:356
 msgid "Crop to Current Layer"
-msgstr "裁剪至目前圖層"
+msgstr "裁切至目前圖層尺寸"
 
 #: ../gui/framewindow.py:357
 msgid "Crop frame to the currently active layer"
-msgstr ""
+msgstr "將畫框裁切至目前使用中的圖層尺寸"
 
 #: ../gui/framewindow.py:359
 msgid "Crop to Document"
-msgstr "裁剪至文件邊界"
+msgstr "裁切至文件尺寸"
 
 #: ../gui/framewindow.py:360
 msgid "Crop frame to the combination of all layers"
-msgstr ""
+msgstr "裁切畫框至所有圖層結合成的尺寸"
 
 #: ../gui/framewindow.py:367
 msgid ""
 "While the frame is enabled, it \n"
 "can be adjusted on the canvas"
 msgstr ""
+"當畫框啟用時，可以在\n"
+"畫布上調整畫框"
 
 #: ../gui/framewindow.py:374
 msgid "Enabled"
@@ -1142,15 +1161,15 @@ msgstr "英吋"
 
 #: ../gui/framewindow.py:470
 msgid "cm"
-msgstr "公分"
+msgstr "cm"
 
 #: ../gui/framewindow.py:471
 msgid "mm"
-msgstr "公釐"
+msgstr "mm"
 
 #: ../gui/functionwindow.py:37
 msgid "Base Value"
-msgstr "基本值"
+msgstr "基礎值"
 
 #: ../gui/functionwindow.py:159
 msgid "Details"
@@ -1158,17 +1177,17 @@ msgstr "詳細資訊"
 
 #: ../gui/gtkexcepthook.py:127
 msgid "Bug Detected"
-msgstr "偵測到程式錯誤"
+msgstr "偵測到臭蟲"
 
 #. if gtk.check_version (2, 4, 0) is not None:
 #. dialog.set_has_separator (False)
 #: ../gui/gtkexcepthook.py:131
 msgid "<big><b>A programming error has been detected.</b></big>"
-msgstr "<big><b>已偵測到一個程式錯誤。</b></big>"
+msgstr "<big><b>已偵測到一個程式設計上的錯誤。</b></big>"
 
 #: ../gui/gtkexcepthook.py:132
 msgid "It probably isn't fatal, but the details should be reported to the developers nonetheless."
-msgstr "它可能不是很嚴重的錯誤，儘管如此還是應該將詳細資訊回報給開發人員。"
+msgstr "它可能不是嚴重錯誤，儘管如此詳細資訊還是應該回報給開發人員。"
 
 #: ../gui/gtkexcepthook.py:156
 msgid "Details..."
@@ -1185,7 +1204,7 @@ msgstr "輸入裝置測試"
 
 #: ../gui/inputtestwindow.py:47
 msgid "(no pressure)"
-msgstr "(無壓力感應)"
+msgstr "(無壓力)"
 
 #: ../gui/inputtestwindow.py:48
 msgid "Pressure:"
@@ -1193,7 +1212,7 @@ msgstr "壓力："
 
 #: ../gui/inputtestwindow.py:50
 msgid "(no tilt)"
-msgstr "(無傾斜感應)"
+msgstr "(無傾斜)"
 
 #: ../gui/inputtestwindow.py:51
 msgid "Tilt:"
@@ -1221,11 +1240,11 @@ msgstr ""
 
 #: ../gui/layerswindow.py:66
 msgid "Visible"
-msgstr "可見性"
+msgstr "可見"
 
 #: ../gui/layerswindow.py:72
 msgid "Locked"
-msgstr "已鎖定"
+msgstr "已上鎖"
 
 #: ../gui/layerswindow.py:90
 msgid "Mode:"
@@ -1233,20 +1252,20 @@ msgstr "模式："
 
 #: ../gui/layerswindow.py:92
 msgid "Blending mode: how the current layer combines with the layers underneath it."
-msgstr ""
+msgstr "交混模式：目前的圖層要如何與其下的圖層結合。"
 
 #: ../gui/layerswindow.py:105
 msgid "Opacity:"
-msgstr "不透明度："
+msgstr "不透明："
 
 #: ../gui/layerswindow.py:107
 msgid "Layer opacity: how much of the current layer to use. Smaller values make it more transparent."
-msgstr ""
+msgstr "圖層不透明度：目前圖層要顯現的程度有多少。較小的值會變得較透明。"
 
 #: ../gui/layerswindow.py:212
 #, python-format
 msgid "Layer opacity: %d%%"
-msgstr "圖層不透明度：%d％"
+msgstr "圖層不透明度：%d%%"
 
 #: ../gui/layerswindow.py:302
 #, python-format
@@ -1255,7 +1274,7 @@ msgstr "無標題圖層 #%d"
 
 #: ../gui/layout.py:628
 msgid "Collapse"
-msgstr "折疊"
+msgstr "收納"
 
 #: ../gui/layout.py:629
 msgid "Expand"
@@ -1263,7 +1282,7 @@ msgstr "展開"
 
 #: ../gui/layout.py:703
 msgid "Snap out"
-msgstr "彈出"
+msgstr "釋放"
 
 #: ../gui/layout.py:705
 msgid "Close"
@@ -1271,11 +1290,11 @@ msgstr "關閉"
 
 #: ../gui/linemode.py:21
 msgid "Entrance Pressure"
-msgstr "起始壓力"
+msgstr "開端壓力"
 
 #: ../gui/linemode.py:21
 msgid "Stroke entrance pressure for line tools"
-msgstr "線條工具筆劃起始壓力"
+msgstr "線條工具的筆劃開端壓力"
 
 #: ../gui/linemode.py:22
 msgid "Midpoint Pressure"
@@ -1283,15 +1302,15 @@ msgstr "中點壓力"
 
 #: ../gui/linemode.py:22
 msgid "Mid-Stroke pressure for line tools"
-msgstr "線條工具筆劃中間壓力"
+msgstr "線條工具的筆劃中段壓力"
 
 #: ../gui/linemode.py:23
 msgid "Exit Pressure"
-msgstr "結束壓力"
+msgstr "編輯壓力"
 
 #: ../gui/linemode.py:23
 msgid "Stroke exit pressure for line tools"
-msgstr "線條工具筆劃結束壓力"
+msgstr "線條工具的筆劃結尾壓力"
 
 #: ../gui/linemode.py:24
 msgid "Head"
@@ -1299,7 +1318,7 @@ msgstr "頭"
 
 #: ../gui/linemode.py:24
 msgid "Stroke lead-in end"
-msgstr "筆劃引入末端"
+msgstr "筆劃起頭末端"
 
 #: ../gui/linemode.py:25
 msgid "Tail"
@@ -1307,16 +1326,16 @@ msgstr "尾"
 
 #: ../gui/linemode.py:25
 msgid "Stroke trail-off beginning"
-msgstr "筆劃開始逐漸消失"
+msgstr "筆劃結尾開端"
 
 #: ../gui/overlays.py:147
 #, python-format
 msgid "Zoom: %.01f%%"
-msgstr "縮放：%.01f%%"
+msgstr "遠近：%.01f%%"
 
 #: ../gui/preferenceswindow.py:23
 msgid "Disabled (no pressure sensitivity)"
-msgstr "停用 (無壓力感應)"
+msgstr "停用 (無感壓)"
 
 #: ../gui/preferenceswindow.py:24
 msgid "Screen (normal)"
@@ -1333,7 +1352,7 @@ msgstr "偏好設定"
 #. TRANSLATORS: Tab label
 #: ../gui/preferenceswindow.py:57
 msgid "Pen Input"
-msgstr "繪圖筆輸入"
+msgstr "感應筆輸入"
 
 #: ../gui/preferenceswindow.py:63
 msgid "<b>Input Device</b>"
@@ -1341,7 +1360,7 @@ msgstr "<b>輸入裝置</b>"
 
 #: ../gui/preferenceswindow.py:70
 msgid "Scale input pressure to brush pressure. This is applied to all input devices. The mouse button has an input pressure of 0.5 when pressed."
-msgstr "縮放筆刷壓力的輸入壓力。這會套用到全部的輸入裝置。當按下滑鼠按鍵時輸入壓力為 0.5。"
+msgstr "調整輸入壓力力道至筆刷壓力。這會套用至所有的輸入裝置。當按壓時，滑鼠按鈕有 0.5 的壓力輸入。"
 
 #. TRANSLATORS: Graph y-axis label
 #: ../gui/preferenceswindow.py:80
@@ -1359,7 +1378,7 @@ msgstr "模式："
 
 #: ../gui/preferenceswindow.py:128
 msgid "<small>Space can be used like Button2. Note that some pads have buttons that cannot be held down.</small>"
-msgstr "<small>空白鍵可以用來代替滑鼠中鍵。請留意某些裝置可能具有無法按住的按鈕。</small>"
+msgstr "<small>空白鍵可以類同 Button2 般使用。請注意到有些繪圖板按鈕無法持續下按。</small>"
 
 #: ../gui/preferenceswindow.py:131
 msgid "Buttons"
@@ -1379,11 +1398,11 @@ msgstr "預設檔案格式："
 
 #: ../gui/preferenceswindow.py:165
 msgid "<b>Save Next Scrap</b>"
-msgstr "<b>儲存下一張作廢稿</b>"
+msgstr "<b>儲存下一個圖料</b>"
 
 #: ../gui/preferenceswindow.py:169
 msgid "Path and filename prefix:"
-msgstr "路徑和檔名字首："
+msgstr "路徑和檔名前綴："
 
 #: ../gui/preferenceswindow.py:184
 msgid "View"
@@ -1395,11 +1414,11 @@ msgstr "<b>預設檢視</b>"
 
 #: ../gui/preferenceswindow.py:194
 msgid "Default zoom:"
-msgstr "預設畫面縮放："
+msgstr "預設遠近："
 
 #: ../gui/preferenceswindow.py:207
 msgid "High quality zoom (may result in slow scrolling)"
-msgstr "高畫質縮放 (可能會導致捲動速度變慢)"
+msgstr "高品質遠近觀 (可能導致捲動速度緩慢)"
 
 #: ../gui/preferenceswindow.py:214
 msgid "<b>Fullscreen</b>"
@@ -1419,23 +1438,23 @@ msgstr "隱藏工具"
 
 #: ../gui/scratchwindow.py:28
 msgid "Scratchpad"
-msgstr "暫存區"
+msgstr "圖畫簿"
 
 #: ../gui/scratchwindow.py:41
 msgid "Load Scratchpad"
-msgstr "載入暫存區"
+msgstr "載入圖畫簿"
 
 #: ../gui/scratchwindow.py:43
 msgid "Save Scratchpad as..."
-msgstr "另存暫存區..."
+msgstr "儲存圖畫簿為..."
 
 #: ../gui/scratchwindow.py:45
 msgid "Revert Scratchpad"
-msgstr "還原暫存區"
+msgstr "還原圖畫簿"
 
 #: ../gui/scratchwindow.py:47
 msgid "New Scratchpad"
-msgstr "新增暫存區"
+msgstr "新增圖畫簿"
 
 #: ../gui/spinbox.py:32
 msgid "Previous item"
@@ -1447,7 +1466,7 @@ msgstr "下一個項目"
 
 #: ../gui/spinbox.py:97
 msgid "(Nothing to show)"
-msgstr "(沒有東西可顯示)"
+msgstr "(沒有可以顯示的)"
 
 #: ../gui/toolbar.py:31
 msgid "File handling"
@@ -1455,11 +1474,11 @@ msgstr "檔案處理"
 
 #: ../gui/toolbar.py:32
 msgid "Scraps switcher"
-msgstr "作廢稿切換器"
+msgstr "圖料切換器"
 
 #: ../gui/toolbar.py:33
 msgid "Undo and Redo"
-msgstr "復原和取消復原"
+msgstr "取消動作與再次動作"
 
 #: ../gui/toolbar.py:34
 msgid "Blend Modes"
@@ -1471,15 +1490,15 @@ msgstr "編輯模式"
 
 #: ../gui/toolbar.py:36
 msgid "View (Main)"
-msgstr ""
+msgstr "檢視 (主要)"
 
 #: ../gui/toolbar.py:37
 msgid "View (Alternative/Secondary)"
-msgstr ""
+msgstr "檢視 (替代/第二)"
 
 #: ../gui/toolbar.py:38
 msgid "View (Resetting)"
-msgstr ""
+msgstr "檢視 (重設)"
 
 #: ../gui/toolbar.py:39
 msgid "Subwindows"
@@ -1491,7 +1510,7 @@ msgstr "MyPaint"
 
 #: ../gui/toolbar.py:84
 msgid "Current Color"
-msgstr "目前顏色"
+msgstr "目前色彩"
 
 #: ../gui/toolbar.py:86
 msgid "Current Brush"
@@ -1512,27 +1531,27 @@ msgstr "線條壓力"
 
 #: ../gui/toolbar.py:227
 msgid "Color History and other tools"
-msgstr "顏色記錄和其他工具"
+msgstr "色彩歷史與其他工具"
 
 #. Colour changing
 #: ../gui/toolbar.py:250
 msgid "Change Color"
-msgstr "改變顏色"
+msgstr "改變色彩"
 
 #: ../gui/toolbar.py:288
 msgid "Color Window"
-msgstr "選色視窗"
+msgstr "色彩視窗"
 
 #. History
 #. Brush history
 #: ../gui/toolbar.py:292
 #: ../gui/toolbar.py:377
 msgid "Recently Used"
-msgstr "最近使用的"
+msgstr "最近使用"
 
 #: ../gui/toolbar.py:335
 msgid "Brush history etc."
-msgstr "筆刷記錄等等。"
+msgstr "筆刷歷史等。"
 
 #. A limited subset of the available brush settings.
 #: ../gui/toolbar.py:465
@@ -1547,21 +1566,21 @@ msgstr "%s："
 #: ../gui/toolbar.py:498
 #, python-format
 msgid "Restore '%s' to this brush's saved value"
-msgstr "將「%s」還原成筆刷儲存的數值"
+msgstr "還原「%s」回筆刷的儲存值"
 
 #. Access to the brush settings window, and a big reset-all button
 #. aligned with the settings above.
 #: ../gui/toolbar.py:516
 msgid "Detailed Brush Settings"
-msgstr "筆刷詳細設定值"
+msgstr "詳細筆刷設定值"
 
 #: ../gui/toolbar.py:531
 msgid "Restore Saved Settings"
-msgstr "還原儲存設定值"
+msgstr "還原儲存的設定值"
 
 #: ../gui/toolbar.py:533
 msgid "Reset all brush settings to the current brush's saved values"
-msgstr "將全部筆刷設定值重設為目前筆刷儲存的數值"
+msgstr "將所有筆刷設定值重設回目前筆刷儲存的值"
 
 #: ../gui/toolbar.py:543
 msgid "Brush Blend Mode"
@@ -1569,7 +1588,7 @@ msgstr "筆刷混合模式"
 
 #: ../lib/command.py:92
 msgid "Unknown Action"
-msgstr "不明的動作"
+msgstr "未知動作"
 
 #: ../lib/command.py:153
 msgid "Painting"
@@ -1601,23 +1620,23 @@ msgstr "移除圖層"
 
 #: ../lib/command.py:304
 msgid "Select Layer"
-msgstr "選擇圖層"
+msgstr "選取圖層"
 
 #: ../lib/command.py:319
 msgid "Move Layer on Canvas"
-msgstr "移動畫布上的圖層"
+msgstr "在畫布上移動圖層"
 
 #: ../lib/command.py:344
 msgid "Reorder Layer in Stack"
-msgstr "重新排列堆疊裡的圖層"
+msgstr "重新排序堆疊中的圖層"
 
 #: ../lib/command.py:370
 msgid "Duplicate Layer"
-msgstr "複製圖層"
+msgstr "製作圖層副本"
 
 #: ../lib/command.py:391
 msgid "Reorder Layer Stack"
-msgstr "重新排列圖層堆疊"
+msgstr "重新排序圖層堆疊"
 
 #: ../lib/command.py:412
 msgid "Rename Layer"
@@ -1625,11 +1644,11 @@ msgstr "重新命名圖層"
 
 #: ../lib/command.py:447
 msgid "Make Layer Visible"
-msgstr "將圖層設為顯現狀態"
+msgstr "讓圖層看得見"
 
 #: ../lib/command.py:449
 msgid "Make Layer Invisible"
-msgstr "將圖層設為隱形狀態"
+msgstr "讓圖層看不見"
 
 #: ../lib/command.py:473
 msgid "Lock Layer"
@@ -1637,15 +1656,15 @@ msgstr "鎖定圖層"
 
 #: ../lib/command.py:475
 msgid "Unlock Layer"
-msgstr "解除鎖定圖層"
+msgstr "解除圖層鎖"
 
 #: ../lib/command.py:478
 msgid "Change Layer Visibility"
-msgstr "變更圖層可見度"
+msgstr "變更圖層可見性"
 
 #: ../lib/command.py:506
 msgid "Change Layer Blending Mode"
-msgstr "變更圖層混合模式"
+msgstr "改變圖層混合模式"
 
 #. add a hint due to a very consfusing error message when there is no space left on device
 #: ../lib/document.py:514
@@ -1655,7 +1674,7 @@ msgid ""
 "Do you have enough space left on the device?"
 msgstr ""
 "無法儲存：%s\n"
-"裝置上是否剩餘足夠的空間？"
+"裝置上是否有足夠的空間？"
 
 #: ../lib/document.py:516
 #: ../lib/document.py:519
@@ -1671,7 +1690,7 @@ msgstr "檔案不存在：%s"
 #: ../lib/document.py:539
 #, python-format
 msgid "You do not have the necessary permissions to open file: %s"
-msgstr "您沒有足夠的權限來開啟檔案：%s"
+msgstr "您未獲得開啟此檔案的許可：%s"
 
 #: ../lib/document.py:547
 #, python-format
@@ -1690,31 +1709,31 @@ msgstr "未知的檔案格式副檔名：%s"
 
 #: ../lib/layer.py:18
 msgid "The top layer only, without blending colors."
-msgstr ""
+msgstr "僅頂圖層，不混合色彩。"
 
 #: ../lib/layer.py:19
 msgid "Multiply"
-msgstr "色彩增值"
+msgstr "疊加"
 
 #: ../lib/layer.py:20
 msgid "Similar to loading multiple slides into a single projector's slot and projecting the combined result."
-msgstr ""
+msgstr "類似將多張幻燈片載入投影機的單一槽中，然後投影出合併的成像。"
 
 #: ../lib/layer.py:22
 msgid "Screen"
-msgstr "濾色"
+msgstr "螢幕"
 
 #: ../lib/layer.py:23
 msgid "Like shining two separate slide projectors onto a screen simultaneously. This is the inverse of 'Multiply'."
-msgstr ""
+msgstr "像是同時將兩臺獨立的幻燈片投影機照在一個螢幕上。這是「疊加」的反轉。"
 
 #: ../lib/layer.py:25
 msgid "Overlay"
-msgstr ""
+msgstr "覆蓋"
 
 #: ../lib/layer.py:26
 msgid "Overlays the backdrop with the top layer, preserving the backdrop's highlights and shadows. This is the inverse of 'Hard Light'."
-msgstr ""
+msgstr "以頂層覆蓋背幕，但保留背幕的高亮區與陰影。這是「硬光」的反轉。"
 
 #: ../lib/layer.py:28
 msgid "Darken"
@@ -1722,7 +1741,7 @@ msgstr "變暗"
 
 #: ../lib/layer.py:29
 msgid "The top layer is used only where it is darker than the backdrop."
-msgstr ""
+msgstr "僅在頂層較背幕暗時才使用頂層。"
 
 #: ../lib/layer.py:30
 msgid "Lighten"
@@ -1730,49 +1749,47 @@ msgstr "變亮"
 
 #: ../lib/layer.py:31
 msgid "The top layer is used only where it is lighter than the backdrop."
-msgstr ""
+msgstr "僅在頂層較背幕亮時才使用頂層。"
 
 #: ../lib/layer.py:32
 msgid "Dodge"
-msgstr "加亮顏色"
+msgstr "減淡"
 
 #: ../lib/layer.py:33
 msgid "Brightens the backdrop using the top layer. The effect is similar to the photographic darkroom technique of the same name which is used for improving contrast in shadows."
-msgstr ""
+msgstr "使用頂圖層減淡背幕。效果看起來類似攝影中同名的暗房技巧，用來改善陰影區的對比程度。"
 
 #: ../lib/layer.py:36
 msgid "Burn"
-msgstr "加深顏色"
+msgstr "加深"
 
 #: ../lib/layer.py:37
 msgid "Darkens the backdrop using the top layer. The effect looks similar to the photographic darkroom technique of the same name which is used for reducing over-bright highlights."
-msgstr ""
+msgstr "使用頂圖層加深背幕。效果看起來類似攝影中同名的暗房技巧，用來減少高亮度區的過亮程度。"
 
 #: ../lib/layer.py:40
-#, fuzzy
 msgid "Hard Light"
-msgstr "高"
+msgstr "硬光"
 
 #: ../lib/layer.py:41
 msgid "Similar to shining a harsh spotlight onto the backdrop."
-msgstr ""
+msgstr "類似將刺眼的聚光照在背幕上。"
 
 #: ../lib/layer.py:42
 msgid "Soft Light"
-msgstr ""
+msgstr "柔光"
 
 #: ../lib/layer.py:43
 msgid "Like shining a diffuse spotlight onto the backdrop."
-msgstr ""
+msgstr "類似將擴散的聚光照在背幕上。"
 
 #: ../lib/layer.py:44
-#, fuzzy
 msgid "Difference"
-msgstr "偏好設定"
+msgstr "差異"
 
 #: ../lib/layer.py:45
 msgid "Subtracts the darker color from the lighter of the two."
-msgstr ""
+msgstr "兩者中較亮者減去較暗者的色彩。"
 
 #: ../lib/layer.py:46
 msgid "Exclusion"
@@ -1780,7 +1797,7 @@ msgstr "排除"
 
 #: ../lib/layer.py:47
 msgid "Similar to the 'Difference' mode, but lower in contrast."
-msgstr ""
+msgstr "類似「差異」模式，但對比較少。"
 
 #: ../lib/layer.py:48
 msgid "Hue"
@@ -1788,7 +1805,7 @@ msgstr "色相"
 
 #: ../lib/layer.py:49
 msgid "Combines the hue of the top layer with the saturation and luminosity of the backdrop."
-msgstr ""
+msgstr "將頂圖層的色相與背幕的飽和度、明度相結合。"
 
 #: ../lib/layer.py:51
 msgid "Saturation"
@@ -1796,19 +1813,19 @@ msgstr "飽和度"
 
 #: ../lib/layer.py:52
 msgid "Applies the saturation of the top layer's colors to the hue and luminosity of the backdrop."
-msgstr ""
+msgstr "將頂圖層色彩的飽和度套用至背幕的色相與明度上。"
 
 #: ../lib/layer.py:55
 msgid "Applies the hue and saturation of the top layer to the luminosity of the backdrop."
-msgstr ""
+msgstr "將頂圖層的色相與飽和度套用至背幕的明度上。"
 
 #: ../lib/layer.py:57
 msgid "Luminosity"
-msgstr "光亮度"
+msgstr "明度"
 
 #: ../lib/layer.py:58
 msgid "Applies the luminosity of the top layer to the hue and saturation of the backdrop."
-msgstr ""
+msgstr "將頂圖層的明度套用至背幕的色相與飽和度上。"
 
 #: ../po/tmp/mypaint.xml.h:1
 msgctxt "Menu|File|"
@@ -1817,7 +1834,7 @@ msgstr "新增"
 
 #: ../po/tmp/mypaint.xml.h:2
 msgid "Start with a new blank canvas"
-msgstr "用新的空白畫布開始"
+msgstr "以新的空白畫布開始"
 
 #: ../po/tmp/mypaint.xml.h:3
 msgctxt "Menu|File|"
@@ -1826,16 +1843,16 @@ msgstr "開啟..."
 
 #: ../po/tmp/mypaint.xml.h:4
 msgid "Open a file, replacing the current painting"
-msgstr "開啟檔案，取代目前的繪畫"
+msgstr "開啟檔案，替換掉目前的繪畫"
 
 #: ../po/tmp/mypaint.xml.h:5
 msgctxt "Menu|File|"
 msgid "Open Most Recent"
-msgstr "開啟最近的"
+msgstr "開啟最近使用項"
 
 #: ../po/tmp/mypaint.xml.h:6
 msgid "Open the last file you saved"
-msgstr "開啟最後儲存的檔案"
+msgstr "開啟上次您儲存的檔案"
 
 #: ../po/tmp/mypaint.xml.h:7
 msgctxt "Menu|File|"
@@ -1844,7 +1861,7 @@ msgstr "回復"
 
 #: ../po/tmp/mypaint.xml.h:8
 msgid "Reload the current file"
-msgstr "重新載入目前檔案"
+msgstr "重新載入目前的檔案"
 
 #: ../po/tmp/mypaint.xml.h:9
 msgctxt "Menu|File|"
@@ -1853,16 +1870,16 @@ msgstr "儲存"
 
 #: ../po/tmp/mypaint.xml.h:10
 msgid "Save to a file"
-msgstr "儲存成檔案"
+msgstr "儲存至檔案"
 
 #: ../po/tmp/mypaint.xml.h:11
 msgctxt "Menu|File|"
 msgid "Save As..."
-msgstr "另存新檔..."
+msgstr "另存為..."
 
 #: ../po/tmp/mypaint.xml.h:12
 msgid "Save to a file with a new name"
-msgstr "以新的名稱儲存成檔案"
+msgstr "以新的名稱儲存檔案"
 
 #: ../po/tmp/mypaint.xml.h:13
 msgctxt "Menu|File|"
@@ -1871,35 +1888,34 @@ msgstr "匯出..."
 
 #: ../po/tmp/mypaint.xml.h:14
 msgid "Export to a file"
-msgstr "匯出成檔案"
+msgstr "匯出至檔案"
 
 #: ../po/tmp/mypaint.xml.h:15
 msgctxt "Menu|File|"
 msgid "Save As Scrap"
-msgstr "另存作廢稿"
+msgstr "另存為圖料"
 
 #: ../po/tmp/mypaint.xml.h:16
-#, fuzzy
 msgid "Saves to a new scrap file. If the drawing is currently saved as a scrap, this will write a new revision of it."
-msgstr "儲存成新的作廢稿檔案。若此圖畫目前已經儲存成作廢稿，則會寫入新的修訂版本。"
+msgstr "儲存至新的圖料檔。如果本描繪目前已儲存為圖料檔，這會寫入成新的修訂版。"
 
 #: ../po/tmp/mypaint.xml.h:17
 msgctxt "Menu|File|"
 msgid "Open Previous Scrap"
-msgstr "開啟上一個作廢稿"
+msgstr "開啟上一個圖料"
 
 #: ../po/tmp/mypaint.xml.h:18
 msgid "Load the previous scrap file, replacing the current drawing"
-msgstr "載入上一個作廢稿檔案，取代目前圖畫"
+msgstr "載入上一個圖料檔，替換掉目前的描繪"
 
 #: ../po/tmp/mypaint.xml.h:19
 msgctxt "Menu|File|"
 msgid "Open Next Scrap"
-msgstr "開啟下一個作廢稿"
+msgstr "開啟下一個圖料"
 
 #: ../po/tmp/mypaint.xml.h:20
 msgid "Load the next scrap file, replacing the current drawing"
-msgstr "載入下一個作廢稿檔案，取代目前圖畫"
+msgstr "載入下一個圖料檔，替換掉目前的描繪"
 
 #: ../po/tmp/mypaint.xml.h:21
 msgctxt "Menu|Brush|"
@@ -1908,7 +1924,7 @@ msgstr "變大"
 
 #: ../po/tmp/mypaint.xml.h:22
 msgid "Increase brush radius"
-msgstr "增加筆刷半徑"
+msgstr "擴大筆刷半徑"
 
 #: ../po/tmp/mypaint.xml.h:23
 msgctxt "Menu|Brush|"
@@ -1917,7 +1933,7 @@ msgstr "變小"
 
 #: ../po/tmp/mypaint.xml.h:24
 msgid "Decrease brush radius"
-msgstr "減少筆刷半徑"
+msgstr "縮小筆刷半徑"
 
 #: ../po/tmp/mypaint.xml.h:25
 msgctxt "Menu|Brush|"
@@ -1935,7 +1951,7 @@ msgstr "減少不透明度"
 
 #: ../po/tmp/mypaint.xml.h:28
 msgid "Decrease brush opacity"
-msgstr "減少筆刷不透明度"
+msgstr "減少不透明度"
 
 #: ../po/tmp/mypaint.xml.h:29
 msgctxt "Menu|Color|Adjust Color|"
@@ -1944,7 +1960,7 @@ msgstr "變亮"
 
 #: ../po/tmp/mypaint.xml.h:30
 msgid "Increase color brightness"
-msgstr "增加顏色亮度"
+msgstr "提高色彩亮度"
 
 #: ../po/tmp/mypaint.xml.h:31
 msgctxt "Menu|Color|Adjust Color|"
@@ -1953,44 +1969,39 @@ msgstr "變暗"
 
 #: ../po/tmp/mypaint.xml.h:32
 msgid "Decrease color brightness"
-msgstr "減少顏色亮度"
+msgstr "降低色彩亮度"
 
 #: ../po/tmp/mypaint.xml.h:33
-#, fuzzy
 msgctxt "Menu|Color|Adjust Color|"
 msgid "Hue Anticlockwise"
-msgstr "逆時針旋轉"
+msgstr "逆時針色相"
 
 #: ../po/tmp/mypaint.xml.h:34
-#, fuzzy
 msgid "Rotate color hue anticlockwise"
-msgstr "逆時針旋轉"
+msgstr "逆時針旋轉色相"
 
 #: ../po/tmp/mypaint.xml.h:35
-#, fuzzy
 msgctxt "Menu|Color|Adjust Color|"
 msgid "Hue Clockwise"
-msgstr "順時針旋轉"
+msgstr "順時針色相"
 
 #: ../po/tmp/mypaint.xml.h:36
-#, fuzzy
 msgid "Rotate color hue clockwise"
-msgstr "逆時針旋轉"
+msgstr "順時針旋轉色相"
 
 #: ../po/tmp/mypaint.xml.h:37
-#, fuzzy
 msgctxt "Menu|Color|Adjust Color|"
 msgid "Purer"
-msgstr "變白"
+msgstr "較純淨"
 
 #: ../po/tmp/mypaint.xml.h:38
 msgid "Increase color saturation"
-msgstr "提昇色彩飽和度"
+msgstr "提高色彩飽和度"
 
 #: ../po/tmp/mypaint.xml.h:39
 msgctxt "Menu|Color|Adjust Color|"
 msgid "Grayer"
-msgstr "變灰"
+msgstr "較灰暗"
 
 #: ../po/tmp/mypaint.xml.h:40
 msgid "Decrease color saturation"
@@ -1999,27 +2010,25 @@ msgstr "降低色彩飽和度"
 #: ../po/tmp/mypaint.xml.h:41
 msgctxt "Menu|Brush|"
 msgid "Pick Stroke and Layer"
-msgstr ""
+msgstr "揀選筆劃與圖層"
 
 #: ../po/tmp/mypaint.xml.h:42
 msgid "Pick brushstroke: settings and layer"
-msgstr ""
+msgstr "揀選筆刷筆劃：設定值與圖層"
 
 #: ../po/tmp/mypaint.xml.h:43
 msgctxt "Menu|Brush|Shortcut Keys|"
 msgid "Restore Color"
-msgstr "還原顏色"
+msgstr "還原色彩"
 
 #: ../po/tmp/mypaint.xml.h:44
-#, fuzzy
 msgctxt "Menu|Brush|Shortcut Keys|"
 msgid "Save to Most Recent"
-msgstr "儲存到最近還原的檔案"
+msgstr "儲存至最近使用"
 
 #: ../po/tmp/mypaint.xml.h:45
-#, fuzzy
 msgid "Save brush to the most recent shortcut"
-msgstr "儲存到最近還原的檔案"
+msgstr "儲存筆刷至最近使用的捷徑"
 
 #: ../po/tmp/mypaint.xml.h:46
 msgctxt "Menu|Layer|"
@@ -2037,7 +2046,7 @@ msgstr "複製"
 
 #: ../po/tmp/mypaint.xml.h:49
 msgid "Copy the current layer to the clipboard"
-msgstr ""
+msgstr "將目前的圖層複製至剪貼簿"
 
 #: ../po/tmp/mypaint.xml.h:50
 msgctxt "Menu|Layer|"
@@ -2046,34 +2055,34 @@ msgstr "貼上"
 
 #: ../po/tmp/mypaint.xml.h:51
 msgid "Replaces the layer with the clipboard's contents"
-msgstr ""
+msgstr "以剪貼簿的內容置換圖層"
 
 #: ../po/tmp/mypaint.xml.h:52
 msgctxt "Menu|Layer|Go to Layer|"
 msgid "At Cursor"
-msgstr ""
+msgstr "游標處"
 
 #: ../po/tmp/mypaint.xml.h:53
 msgid "Choose a layer by picking a brushstroke on it"
-msgstr "以選擇筆刷筆觸的方式選擇圖層"
+msgstr "揀選圖層上的筆刷筆劃可以選擇該圖層"
 
 #: ../po/tmp/mypaint.xml.h:54
 msgctxt "Menu|Layer|Go to Layer|"
 msgid "Above"
-msgstr "上一層"
+msgstr "往上"
 
 #: ../po/tmp/mypaint.xml.h:55
 msgid "Go one layer up in the layers stack"
-msgstr "往圖層堆疊的上方移動一層"
+msgstr "前往圖層堆疊中的上一圖層"
 
 #: ../po/tmp/mypaint.xml.h:56
 msgctxt "Menu|Layer|Go to Layer|"
 msgid "Below"
-msgstr "下一層"
+msgstr "往下"
 
 #: ../po/tmp/mypaint.xml.h:57
 msgid "Go one layer down in the layers stack"
-msgstr "往圖層堆疊的下方移動一層"
+msgstr "前往圖層堆疊中的下一圖層"
 
 #: ../po/tmp/mypaint.xml.h:58
 msgctxt "Menu|Layer|"
@@ -2082,7 +2091,7 @@ msgstr "新增 (目前之上)"
 
 #: ../po/tmp/mypaint.xml.h:59
 msgid "Add a new layer above the current layer"
-msgstr ""
+msgstr "在目前圖層之上建立新圖層"
 
 #: ../po/tmp/mypaint.xml.h:60
 msgctxt "Menu|Layer|"
@@ -2091,7 +2100,7 @@ msgstr "新增 (目前之下)"
 
 #: ../po/tmp/mypaint.xml.h:61
 msgid "Add a new layer below the current layer"
-msgstr ""
+msgstr "在目前圖層之下建立新圖層"
 
 #: ../po/tmp/mypaint.xml.h:62
 msgctxt "Menu|Layer|"
@@ -2100,7 +2109,7 @@ msgstr "向下合併"
 
 #: ../po/tmp/mypaint.xml.h:63
 msgid "Merge layer with the one beneath it"
-msgstr ""
+msgstr "將此圖層其下的一圖層合併"
 
 #: ../po/tmp/mypaint.xml.h:64
 msgctxt "Menu|Layer|"
@@ -2114,7 +2123,7 @@ msgstr "刪除目前的圖層"
 #: ../po/tmp/mypaint.xml.h:66
 msgctxt "Menu|Layer"
 msgid "Convert to Normal mode"
-msgstr "轉換至正常模式"
+msgstr "轉換為一般模式"
 
 #: ../po/tmp/mypaint.xml.h:67
 msgctxt "Menu|Layer|Opacity|"
@@ -2129,30 +2138,29 @@ msgstr "減少"
 #: ../po/tmp/mypaint.xml.h:69
 msgctxt "Menu|Layer|"
 msgid "Raise"
-msgstr ""
+msgstr "提升"
 
 #: ../po/tmp/mypaint.xml.h:70
 msgid "Raise the current layer one step in the layers stack"
-msgstr ""
+msgstr "讓目前圖層在圖層堆疊中提升一階"
 
 #: ../po/tmp/mypaint.xml.h:71
 msgctxt "Menu|Layer|"
 msgid "Lower"
-msgstr ""
+msgstr "降低"
 
 #: ../po/tmp/mypaint.xml.h:72
 msgid "Lower the current layer one step in the layers stack"
-msgstr ""
+msgstr "讓目前圖層在圖層堆疊中降低一階"
 
 #: ../po/tmp/mypaint.xml.h:73
 msgctxt "Menu|Layer|"
 msgid "Duplicate"
-msgstr "複製"
+msgstr "製作副本"
 
 #: ../po/tmp/mypaint.xml.h:74
-#, fuzzy
 msgid "Make an exact duplicate of the current layer"
-msgstr "目前色彩的不同飽和度"
+msgstr "製作目前圖層的完全副本"
 
 #: ../po/tmp/mypaint.xml.h:75
 msgctxt "Menu|Layer|"
@@ -2161,25 +2169,25 @@ msgstr "重新命名..."
 
 #: ../po/tmp/mypaint.xml.h:76
 msgid "Enter a new name for the current layer"
-msgstr "請輸入目前圖層的新名稱"
+msgstr "為目前圖層輸入新名稱"
 
 #: ../po/tmp/mypaint.xml.h:77
 msgctxt "Menu|Layer|"
 msgid "Locked"
-msgstr "鎖定"
+msgstr "上鎖"
 
 #: ../po/tmp/mypaint.xml.h:78
 msgid "The current layer's locked state: locked layers cannot be drawn to"
-msgstr ""
+msgstr "目前圖層的上鎖狀態：上鎖的圖層無法繪畫"
 
 #: ../po/tmp/mypaint.xml.h:79
 msgctxt "Menu|Layer|"
 msgid "Visible"
-msgstr "顯示"
+msgstr "可見"
 
 #: ../po/tmp/mypaint.xml.h:80
 msgid "The current layer's visibility state"
-msgstr ""
+msgstr "目前圖層的可見與否狀態"
 
 #: ../po/tmp/mypaint.xml.h:81
 msgctxt "Menu|View|"
@@ -2188,16 +2196,16 @@ msgstr "重設並置中"
 
 #: ../po/tmp/mypaint.xml.h:82
 msgid "Reset Zoom, Rotation and Mirroring, and recenter the document"
-msgstr "重設畫面縮放、旋轉和鏡射並且將文件重新置中"
+msgstr "重設遠近、旋轉、鏡像，並且將文件重新置中"
 
 #: ../po/tmp/mypaint.xml.h:83
 msgctxt "Menu|View|"
 msgid "Fit"
-msgstr "填滿"
+msgstr "適應"
 
 #: ../po/tmp/mypaint.xml.h:84
 msgid "Zoom to fit the document, and recenter"
-msgstr ""
+msgstr "調整遠近以適應文件大小，並重新置中"
 
 #: ../po/tmp/mypaint.xml.h:85
 msgctxt "Menu|View|"
@@ -2207,7 +2215,7 @@ msgstr "重設"
 #: ../po/tmp/mypaint.xml.h:86
 msgctxt "Menu|View|Reset|"
 msgid "Zoom"
-msgstr "縮放"
+msgstr "遠近"
 
 #: ../po/tmp/mypaint.xml.h:87
 msgctxt "Menu|View|Reset|"
@@ -2217,25 +2225,25 @@ msgstr "旋轉"
 #: ../po/tmp/mypaint.xml.h:88
 msgctxt "Menu|View|Reset|"
 msgid "Mirror"
-msgstr "鏡射"
+msgstr "鏡像"
 
 #: ../po/tmp/mypaint.xml.h:89
 msgctxt "Menu|View|Adjust View|"
 msgid "Zoom In"
-msgstr "放大"
+msgstr "拉近"
 
 #: ../po/tmp/mypaint.xml.h:90
 msgid "Increase magnification"
-msgstr "增加畫面放大率"
+msgstr "放大"
 
 #: ../po/tmp/mypaint.xml.h:91
 msgctxt "Menu|View|Adjust View|"
 msgid "Zoom Out"
-msgstr "縮小"
+msgstr "拉遠"
 
 #: ../po/tmp/mypaint.xml.h:92
 msgid "Decrease magnification"
-msgstr "減小畫面放大率"
+msgstr "縮小"
 
 #: ../po/tmp/mypaint.xml.h:93
 msgctxt "Menu|View|Adjust View|"
@@ -2243,9 +2251,8 @@ msgid "Rotate Counterclockwise"
 msgstr "逆時針旋轉"
 
 #: ../po/tmp/mypaint.xml.h:94
-#, fuzzy
 msgid "Rotate the view counterclockwise"
-msgstr "逆時針旋轉"
+msgstr "逆時針旋轉視圖"
 
 #: ../po/tmp/mypaint.xml.h:95
 msgctxt "Menu|View|Adjust View|"
@@ -2253,28 +2260,26 @@ msgid "Rotate Clockwise"
 msgstr "順時針旋轉"
 
 #: ../po/tmp/mypaint.xml.h:96
-#, fuzzy
 msgid "Rotate the view clockwise"
-msgstr "向左旋轉檢視"
+msgstr "順時針旋轉視圖"
 
 #: ../po/tmp/mypaint.xml.h:97
 msgctxt "Menu|View|Adjust View|"
 msgid "Mirror Horizontal"
-msgstr "水平鏡射"
+msgstr "水平鏡像"
 
 #: ../po/tmp/mypaint.xml.h:98
-#, fuzzy
 msgid "Flip the view left to right"
-msgstr "鏡射：將檢視由左向右翻轉"
+msgstr "將視圖左右翻轉"
 
 #: ../po/tmp/mypaint.xml.h:99
 msgctxt "Menu|View|Adjust View|"
 msgid "Mirror Vertical"
-msgstr "垂直鏡射"
+msgstr "垂直鏡像"
 
 #: ../po/tmp/mypaint.xml.h:100
 msgid "Flip the view upside-down"
-msgstr "將檢視上下翻轉"
+msgstr "將視圖上下顛倒"
 
 #: ../po/tmp/mypaint.xml.h:101
 msgctxt "Menu|View|"
@@ -2284,40 +2289,40 @@ msgstr "圖層單獨顯示"
 #: ../po/tmp/mypaint.xml.h:102
 msgctxt "Menu|View|"
 msgid "Hide Layers Above Current"
-msgstr "隱藏目前之上的圖層"
+msgstr "隱藏目前圖層之上的圖層"
 
 #: ../po/tmp/mypaint.xml.h:103
 msgctxt "Menu|Brush|"
 msgid "Blend Mode"
-msgstr "混合模式"
+msgstr "交混模式"
 
 #: ../po/tmp/mypaint.xml.h:104
 msgctxt "Menu|Edit|"
 msgid "Symmetrical Painting"
-msgstr "對稱繪圖"
+msgstr "對稱繪畫"
 
 #: ../po/tmp/mypaint.xml.h:105
 msgid "Mirrors all strokes drawn around the vertical axis"
-msgstr ""
+msgstr "延垂直軸作所有描繪筆劃的鏡像"
 
 #: ../po/tmp/mypaint.xml.h:106
 msgctxt "Menu|Help|Debug|"
 msgid "Print Brush Input Values to Console"
-msgstr "列印筆刷輸入值至終端機"
+msgstr "列印筆刷輸入值至主控臺"
 
 #: ../po/tmp/mypaint.xml.h:107
 msgctxt "Menu|Help|Debug|"
 msgid "Visualize Rendering"
-msgstr "顯示筆刷繪圖軌跡"
+msgstr "視覺化算繪"
 
 #: ../po/tmp/mypaint.xml.h:108
 msgid "Show rendering updates on-screen, for debugging"
-msgstr ""
+msgstr "於螢幕上顯示算繪更新，除錯用"
 
 #: ../po/tmp/mypaint.xml.h:109
 msgctxt "Menu|Help|Debug|"
 msgid "Disable GTK Double Buffering"
-msgstr "停用 GTK 雙重緩衝"
+msgstr "停用 GTK 雙倍緩衝"
 
 #: ../po/tmp/mypaint.xml.h:110
 msgctxt "Menu|"
@@ -2327,12 +2332,12 @@ msgstr "檔案"
 #: ../po/tmp/mypaint.xml.h:111
 msgctxt "Menu|File|"
 msgid "Quit"
-msgstr "離開"
+msgstr "退出"
 
 #: ../po/tmp/mypaint.xml.h:112
 msgctxt "Menu|File|"
 msgid "Frame Enabled"
-msgstr "啟用邊框"
+msgstr "已啟用畫框"
 
 #: ../po/tmp/mypaint.xml.h:113
 msgctxt "Menu|"
@@ -2342,80 +2347,76 @@ msgstr "編輯"
 #: ../po/tmp/mypaint.xml.h:114
 msgctxt "Menu|"
 msgid "Color"
-msgstr "顏色"
+msgstr "色彩"
 
 #: ../po/tmp/mypaint.xml.h:115
 msgctxt "Menu|Color|"
 msgid "Adjust Color"
-msgstr "調整顏色"
+msgstr "調整色彩"
 
 #: ../po/tmp/mypaint.xml.h:116
 msgctxt "Menu|Color|"
 msgid "Pick Color"
-msgstr "選取顏色"
+msgstr "挑選色彩"
 
 #: ../po/tmp/mypaint.xml.h:117
 msgctxt "Menu|Color|"
 msgid "Color History"
-msgstr "顏色記錄"
+msgstr "色彩歷史"
 
 #: ../po/tmp/mypaint.xml.h:118
 msgctxt "Menu|Color|"
 msgid "Change Color"
-msgstr "改變顏色"
+msgstr "改變色彩"
 
 #: ../po/tmp/mypaint.xml.h:119
-#, fuzzy
 msgid "Color changer popup (crossed bowl)"
-msgstr "換色器 (米字)"
+msgstr "換色器彈出窗 (米字)"
 
 #: ../po/tmp/mypaint.xml.h:120
-#, fuzzy
 msgctxt "Menu|Color|"
 msgid "Change Color (wash)"
-msgstr "改變顏色"
+msgstr "改變色彩 (水洗)"
 
 #: ../po/tmp/mypaint.xml.h:121
-#, fuzzy
 msgid "Color changer popup (wash)"
-msgstr "換色器 (褪色)"
+msgstr "換色器彈出窗 (水洗)"
 
 #: ../po/tmp/mypaint.xml.h:122
 msgctxt "Menu|Color|"
 msgid "Change Color (ring)"
-msgstr "改變顏色(圓環)"
+msgstr "改變色彩 (環)"
 
 #: ../po/tmp/mypaint.xml.h:123
 msgid "Color changer popup (concentric rings)"
-msgstr ""
+msgstr "換色器彈出窗 (同心環)"
 
 #: ../po/tmp/mypaint.xml.h:124
 msgctxt "Menu|Color|"
 msgid "Color Details"
-msgstr "顏色詳細資訊"
+msgstr "色彩詳細資訊"
 
 #: ../po/tmp/mypaint.xml.h:125
 msgid "Color details dialog with text entry"
-msgstr ""
+msgstr "具文字條目的色彩詳細資訊對話窗"
 
 #: ../po/tmp/mypaint.xml.h:126
 msgctxt "Menu|Color"
 msgid "Next Palette Color"
-msgstr ""
+msgstr "下一個調色板色彩"
 
 #: ../po/tmp/mypaint.xml.h:127
 msgid "Next color in the palette"
-msgstr ""
+msgstr "調色板中的下一個色彩"
 
 #: ../po/tmp/mypaint.xml.h:128
-#, fuzzy
 msgctxt "Menu|Color|"
 msgid "Previous Palette Color"
-msgstr "上一個項目"
+msgstr "上一個調色板色彩"
 
 #: ../po/tmp/mypaint.xml.h:129
 msgid "Previous color in the palette"
-msgstr ""
+msgstr "調色板中的上一個色彩"
 
 #: ../po/tmp/mypaint.xml.h:130
 msgctxt "Menu|"
@@ -2430,12 +2431,12 @@ msgstr "不透明度"
 #: ../po/tmp/mypaint.xml.h:132
 msgctxt "Menu|Layer|"
 msgid "Go to Layer"
-msgstr "切換圖層"
+msgstr "前往圖層"
 
 #: ../po/tmp/mypaint.xml.h:133
 msgctxt "Menu|"
 msgid "Scratchpad"
-msgstr "暫存區"
+msgstr "圖畫簿"
 
 #: ../po/tmp/mypaint.xml.h:134
 msgctxt "Menu|Scratchpad|"
@@ -2455,7 +2456,7 @@ msgstr "儲存"
 #: ../po/tmp/mypaint.xml.h:137
 msgctxt "Menu|Scratchpad|"
 msgid "Save As..."
-msgstr "另存新檔..."
+msgstr "另存為..."
 
 #: ../po/tmp/mypaint.xml.h:138
 msgctxt "Menu|Scratchpad|"
@@ -2475,24 +2476,22 @@ msgstr "清除預設值"
 #: ../po/tmp/mypaint.xml.h:141
 msgctxt "Menu|Scratchpad|"
 msgid "Use Main Background"
-msgstr "使用背景"
+msgstr "使用主背景"
 
 #: ../po/tmp/mypaint.xml.h:142
-#, fuzzy
 msgctxt "Menu|Scratchpad|"
 msgid "Color Dabs"
-msgstr "色彩詳細資訊"
+msgstr "色彩筆觸"
 
 #: ../po/tmp/mypaint.xml.h:143
 msgctxt "Menu|Scratchpad|Color Dabs|"
 msgid "Render from File..."
-msgstr ""
+msgstr "從檔案算繪..."
 
 #: ../po/tmp/mypaint.xml.h:144
-#, fuzzy
 msgctxt "Menu|Scratchpad|Color Dabs|"
 msgid "Saturation Spread for Current Color"
-msgstr "目前色彩的不同飽和度"
+msgstr "目前色彩的不同飽和度渲染"
 
 #: ../po/tmp/mypaint.xml.h:145
 msgctxt "Menu|Brush|"
@@ -2507,12 +2506,12 @@ msgstr "快捷鍵"
 #: ../po/tmp/mypaint.xml.h:147
 msgctxt "Menu|Brush|Shortcut Keys|"
 msgid "Help"
-msgstr "說明"
+msgstr "幫助"
 
 #: ../po/tmp/mypaint.xml.h:148
 msgctxt "Menu|Brush|"
 msgid "Change Brush"
-msgstr "變更筆刷"
+msgstr "改變筆刷"
 
 #: ../po/tmp/mypaint.xml.h:149
 msgctxt "Menu|Brush|"
@@ -2527,17 +2526,17 @@ msgstr "匯入筆刷..."
 #: ../po/tmp/mypaint.xml.h:151
 msgctxt "Menu|Help|"
 msgid "Help"
-msgstr "說明"
+msgstr "幫助"
 
 #: ../po/tmp/mypaint.xml.h:152
 msgctxt "Menu|Help|"
 msgid "Where is the Documentation?"
-msgstr "說明文件？"
+msgstr "哪裡有說明文件？"
 
 #: ../po/tmp/mypaint.xml.h:153
 msgctxt "Menu|Help|"
 msgid "Change the Keyboard Shortcuts?"
-msgstr "變更鍵盤快捷鍵？"
+msgstr "怎麼更改鍵盤快捷鍵？"
 
 #: ../po/tmp/mypaint.xml.h:154
 msgctxt "Menu|Help|"
@@ -2552,7 +2551,7 @@ msgstr "除錯"
 #: ../po/tmp/mypaint.xml.h:156
 msgctxt "Menu|Help|Debug|"
 msgid "Print Memory Leak Info to Console (Slow!)"
-msgstr "列印記憶體溢出資訊至終端機(慢！)"
+msgstr "列印記憶體溢漏資訊到主控臺 (慢！)"
 
 #: ../po/tmp/mypaint.xml.h:157
 msgctxt "Menu|Help|Debug|"
@@ -2562,12 +2561,12 @@ msgstr "立刻執行垃圾收集器"
 #: ../po/tmp/mypaint.xml.h:158
 msgctxt "Menu|Help|Debug|"
 msgid "Start/Stop Python Profiling (cProfile)"
-msgstr "啟動/停止 Python 效能剖析 (cProfile)"
+msgstr "開始/停止 Python 評測 (cProfile)"
 
 #: ../po/tmp/mypaint.xml.h:159
 msgctxt "Menu|Help|Debug|"
 msgid "GTK Input Device Dialog"
-msgstr "GTK 輸入裝置對話視窗"
+msgstr "GTK 輸入裝置對話窗"
 
 #: ../po/tmp/mypaint.xml.h:160
 msgctxt "Menu|"
@@ -2587,12 +2586,12 @@ msgstr "回饋"
 #: ../po/tmp/mypaint.xml.h:163
 msgctxt "Menu|View|"
 msgid "Adjust View"
-msgstr "調整檢視"
+msgstr "調整視圖"
 
 #: ../po/tmp/mypaint.xml.h:164
 msgctxt "Menu|View|"
 msgid "Popup Menu"
-msgstr "右鍵選單"
+msgstr "彈出式選單"
 
 #: ../po/tmp/mypaint.xml.h:165
 msgctxt "Menu|Edit|"
@@ -2605,11 +2604,11 @@ msgstr "測試輸入裝置"
 
 #: ../po/tmp/mypaint.xml.h:167
 msgid "Document Frame..."
-msgstr "文件邊框..."
+msgstr "文件框..."
 
 #: ../po/tmp/mypaint.xml.h:168
 msgid "Set and adjust a frame for the canvas"
-msgstr ""
+msgstr "設定並調整畫布的畫框"
 
 #: ../po/tmp/mypaint.xml.h:169
 msgid "Layers Window"
@@ -2617,7 +2616,7 @@ msgstr "圖層視窗"
 
 #: ../po/tmp/mypaint.xml.h:170
 msgid "Edit and rearrange layers"
-msgstr "編輯並編排圖層"
+msgstr "編輯並重整圖層"
 
 #: ../po/tmp/mypaint.xml.h:171
 msgctxt "Menu|Layer|"
@@ -2635,7 +2634,7 @@ msgstr "筆刷視窗"
 
 #: ../po/tmp/mypaint.xml.h:174
 msgid "Select brushes, and edit brush sets"
-msgstr "選擇筆刷，並編輯筆刷集"
+msgstr "選取筆刷，並編輯筆刷集"
 
 #: ../po/tmp/mypaint.xml.h:175
 msgctxt "Menu|Brush|"
@@ -2649,20 +2648,20 @@ msgstr "編輯使用中筆刷的設定值"
 #: ../po/tmp/mypaint.xml.h:177
 msgctxt "Menu|Color|"
 msgid "Colors Window"
-msgstr "選色視窗"
+msgstr "色彩視窗"
 
 #: ../po/tmp/mypaint.xml.h:178
 msgid "Set the color used for painting"
-msgstr ""
+msgstr "設定用來繪畫的色彩"
 
 #: ../po/tmp/mypaint.xml.h:179
 msgctxt "Menu|Scratchpad|"
 msgid "Scratchpad Window"
-msgstr "暫存區視窗"
+msgstr "圖畫簿視窗"
 
 #: ../po/tmp/mypaint.xml.h:180
 msgid "Mix colors and make sketches on separate scrap pages"
-msgstr ""
+msgstr "在各個圖料頁上混合色彩與製作草圖"
 
 #: ../po/tmp/mypaint.xml.h:181
 msgctxt "Menu|View|"
@@ -2676,21 +2675,20 @@ msgstr "顯示子視窗"
 #: ../po/tmp/mypaint.xml.h:183
 msgctxt "Menu|View|Feedback|"
 msgid "Zoom Level"
-msgstr "縮放等級"
+msgstr "遠近層級"
 
 #: ../po/tmp/mypaint.xml.h:184
-#, fuzzy
 msgid "Show the zoom level when zooming in or out"
-msgstr "放大或縮小畫面時顯示縮放比例 %"
+msgstr "當拉近或拉遠時顯示遠近層級"
 
 #: ../po/tmp/mypaint.xml.h:185
 msgctxt "Menu|View|Feedback|"
 msgid "Last Painting Position"
-msgstr "最後收筆位置"
+msgstr "上個繪畫位置"
 
 #: ../po/tmp/mypaint.xml.h:186
 msgid "Show where strokes end"
-msgstr ""
+msgstr "顯示筆劃的結尾位置"
 
 #: ../po/tmp/mypaint.xml.h:187
 msgctxt "Menu|View|Feedback|"
@@ -2704,7 +2702,7 @@ msgstr "顯示對稱軸"
 #: ../po/tmp/mypaint.xml.h:189
 msgctxt "Menu|View|Toolbars|"
 msgid "Menubar Only"
-msgstr "只有選單列"
+msgstr "僅選單列"
 
 #: ../po/tmp/mypaint.xml.h:190
 msgid "Show menu bar"
@@ -2713,7 +2711,7 @@ msgstr "顯示選單列"
 #: ../po/tmp/mypaint.xml.h:191
 msgctxt "Menu|View|Toolbars|"
 msgid "Toolbar Only"
-msgstr "只有工具列"
+msgstr "僅工具列"
 
 #: ../po/tmp/mypaint.xml.h:192
 msgid "Show toolbar"
@@ -2722,40 +2720,40 @@ msgstr "顯示工具列"
 #: ../po/tmp/mypaint.xml.h:193
 msgctxt "Menu|View|Toolbars|"
 msgid "Both"
-msgstr "兩者都顯示"
+msgstr "兩者"
 
 #: ../po/tmp/mypaint.xml.h:194
 msgid "Show both the menu bar and the toolbar"
-msgstr "同時顯示選單列和工具列"
+msgstr "顯示選單列與工具列"
 
 #: ../po/tmp/mypaint.xml.h:195
 msgctxt "Menu|Edit|"
 msgid "Current Mode"
-msgstr "目前的模式"
+msgstr "目前模式"
 
 #: ../po/tmp/mypaint.xml.h:196
 msgctxt "Menu|Edit|Current Mode|"
 msgid "Freehand Drawing"
-msgstr "手繪"
+msgstr "隨手畫"
 
 #: ../po/tmp/mypaint.xml.h:197
 msgctxt "Toolbar|"
 msgid "Freehand"
-msgstr "手繪"
+msgstr "隨手"
 
 #: ../po/tmp/mypaint.xml.h:198
 msgid "Freehand Drawing: draw and paint freely, without geometric constraints"
-msgstr "手繪：可以不受幾何限制地自由描繪"
+msgstr "隨手畫：自由描繪，沒有幾何限制"
 
 #: ../po/tmp/mypaint.xml.h:199
 msgctxt "Menu|Edit|"
 msgid "Freehand Drawing"
-msgstr "手繪"
+msgstr "隨手畫"
 
 #: ../po/tmp/mypaint.xml.h:200
 msgctxt "Menu|Edit|Current Mode|"
 msgid "Scroll View"
-msgstr "捲動檢視"
+msgstr "捲動視圖"
 
 #: ../po/tmp/mypaint.xml.h:201
 msgctxt "Toolbar|"
@@ -2764,7 +2762,7 @@ msgstr "捲動"
 
 #: ../po/tmp/mypaint.xml.h:202
 msgid "Scroll View: move around the canvas by clicking and dragging"
-msgstr "捲動檢視：以拖曳方式移動畫布"
+msgstr "捲動視圖：透過滑鼠點擊並拖曳來四處移動畫布"
 
 #: ../po/tmp/mypaint.xml.h:203
 msgctxt "Menu|View|"
@@ -2774,7 +2772,7 @@ msgstr "捲動"
 #: ../po/tmp/mypaint.xml.h:204
 msgctxt "Menu|Edit|Current Mode|"
 msgid "Rotate View"
-msgstr "旋轉檢視"
+msgstr "旋轉視圖"
 
 #: ../po/tmp/mypaint.xml.h:205
 msgctxt "Toolbar|"
@@ -2783,7 +2781,7 @@ msgstr "旋轉"
 
 #: ../po/tmp/mypaint.xml.h:206
 msgid "Rotate View: turn the canvas by clicking and dragging"
-msgstr "旋轉檢視：以拖曳方式旋轉畫布"
+msgstr "旋轉視圖：按下滑鼠按鍵並拖曳可轉動畫布"
 
 #: ../po/tmp/mypaint.xml.h:207
 msgctxt "Menu|View|"
@@ -2793,66 +2791,66 @@ msgstr "旋轉"
 #: ../po/tmp/mypaint.xml.h:208
 msgctxt "Menu|Edit|Current Mode|"
 msgid "Zoom View"
-msgstr "縮放檢視"
+msgstr "調整遠近遠近"
 
 #: ../po/tmp/mypaint.xml.h:209
 msgctxt "Toolbar|"
 msgid "Zoom"
-msgstr "縮放"
+msgstr "遠近"
 
 #: ../po/tmp/mypaint.xml.h:210
 msgid "Zoom View: zoom the canvas by clicking and dragging"
-msgstr ""
+msgstr "調整視圖遠近：按下滑鼠按鍵並拖曳可調整畫布遠近"
 
 #: ../po/tmp/mypaint.xml.h:211
 msgctxt "Menu|View|"
 msgid "Zoom"
-msgstr "縮放"
+msgstr "遠近"
 
 #: ../po/tmp/mypaint.xml.h:212
 msgctxt "Menu|Edit|Current Mode|"
 msgid "Lines and Curves"
-msgstr "線段與曲線"
+msgstr "線條與曲線"
 
 #: ../po/tmp/mypaint.xml.h:213
 msgctxt "Toolbar|"
 msgid "Lines"
-msgstr "線段"
+msgstr "線條"
 
 #: ../po/tmp/mypaint.xml.h:214
 msgctxt "Menu|Edit|"
 msgid "Lines and Curves"
-msgstr "線段與曲線"
+msgstr "線條與曲線"
 
 #: ../po/tmp/mypaint.xml.h:215
 msgctxt "Menu|Edit|Current Mode|"
 msgid "Connected Lines"
-msgstr "連續線段"
+msgstr "連接的線條"
 
 #: ../po/tmp/mypaint.xml.h:216
 msgctxt "Toolbar|"
 msgid "Line Seq."
-msgstr "連續線段"
+msgstr "線段"
 
 #: ../po/tmp/mypaint.xml.h:217
 msgctxt "Menu|Edit|"
 msgid "Connected Lines"
-msgstr "連續線段"
+msgstr "連接的線條"
 
 #: ../po/tmp/mypaint.xml.h:218
 msgctxt "Menu|Edit|Current Mode|"
 msgid "Ellipses and Circles"
-msgstr "圓形與橢圓"
+msgstr "橢圓與圓"
 
 #: ../po/tmp/mypaint.xml.h:219
 msgctxt "Toolbar|"
 msgid "Ellipse"
-msgstr "橢圓形"
+msgstr "橢圓"
 
 #: ../po/tmp/mypaint.xml.h:220
 msgctxt "Menu|Edit|"
 msgid "Ellipses and Circles"
-msgstr "圓形與橢圓"
+msgstr "橢圓與圓"
 
 #: ../po/tmp/mypaint.xml.h:221
 msgctxt "Menu|Edit|Current Mode|"
@@ -2861,7 +2859,7 @@ msgstr "移動圖層"
 
 #: ../po/tmp/mypaint.xml.h:222
 msgid "Move Layer: reposition the current layer on the canvas"
-msgstr ""
+msgstr "移動圖層：重新調整目前圖層在畫布上的位置"
 
 #: ../po/tmp/mypaint.xml.h:223
 msgctxt "Menu|Layer|"
@@ -2871,19 +2869,966 @@ msgstr "移動"
 #: ../po/tmp/mypaint.xml.h:224
 msgctxt "Menu|Edit|Current Mode|"
 msgid "Edit Frame"
-msgstr "編輯邊框"
+msgstr "編輯畫框"
 
 #: ../po/tmp/mypaint.xml.h:225
 msgctxt "Toolbar|"
 msgid "Frame"
-msgstr ""
+msgstr "畫框"
 
 #: ../po/tmp/mypaint.xml.h:226
 msgid "Edit Frame: define a frame around the document to give it a finite size. The frame is used when exporting."
-msgstr ""
+msgstr "編輯畫框：在文件的周圍定義畫框可定出一個限制尺寸。匯出時會使用畫框的大小。"
 
 #: ../po/tmp/mypaint.xml.h:227
 msgctxt "Menu|File|"
 msgid "Edit Frame"
-msgstr "編輯邊框"
+msgstr "編輯畫框"
 
+#~ msgid ""
+#~ "The pressure reported by the tablet, between 0.0 and 1.0. If you use the "
+#~ "mouse, it will be 0.5 when a button is pressed and 0.0 otherwise."
+#~ msgstr ""
+#~ "由繪圖板回報的壓力，在 0.0 和 1.0 之間。如果您使用滑鼠，按下右鍵時壓力為 "
+#~ "0.5，反之為 0.0。"
+
+#~ msgid "Fine speed"
+#~ msgstr "精細速度"
+
+#~ msgid ""
+#~ "How fast you currently move. This can change very quickly. Try 'print "
+#~ "input values' from the 'help' menu to get a feeling for the range; "
+#~ "negative values are rare but possible for very low speed."
+#~ msgstr ""
+#~ "您目前移動的速度。這個可以變得非常快。用「說明」選單的「列印輸入值」來感受"
+#~ "數值範圍的感覺；負值比較罕見，但可用於非常緩慢的速度。"
+
+#~ msgid "Gross speed"
+#~ msgstr "粗略速度"
+
+#~ msgid ""
+#~ "Same as fine speed, but changes slower. Also look at the 'gross speed "
+#~ "filter' setting."
+#~ msgstr "同於精細速度，但變化較慢。也請查看「粗略速度過濾」設定值。"
+
+#~ msgid "Random"
+#~ msgstr "隨機"
+
+#~ msgid ""
+#~ "Fast random noise, changing at each evaluation. Evenly distributed "
+#~ "between 0 and 1."
+#~ msgstr "快速隨機噪點，於每次評估時改變。在 0 和 1 之間均勻分佈。"
+
+#~ msgid ""
+#~ "This input slowly goes from zero to one while you draw a stroke. It can "
+#~ "also be configured to jump back to zero periodically while you move. Look "
+#~ "at the 'stroke duration' and 'stroke hold time' settings."
+#~ msgstr ""
+#~ "當您繪製一道筆畫時，這種輸入會緩慢地從零到一。它也可以設定成移動時週期性跳"
+#~ "回零。請查看「筆畫持續時間」和「筆畫維持時間」設定值。"
+
+#~ msgid ""
+#~ "The angle of the stroke, in degrees. The value will stay between 0.0 and "
+#~ "180.0, effectively ignoring turns of 180 degrees."
+#~ msgstr ""
+#~ "筆畫的角度，單位為度。此數值會在 0.0 到 180.0 之間，有效地忽略 180 度轉"
+#~ "彎。"
+
+#~ msgid "Declination"
+#~ msgstr "偏角"
+
+#~ msgid ""
+#~ "Declination of stylus tilt. 0 when stylus is parallel to tablet and 90.0 "
+#~ "when it's perpendicular to tablet."
+#~ msgstr "筆尖傾斜的偏角。0 當筆尖與繪圖板平行；90.0 當它與繪圖板垂直時。"
+
+#~ msgid "Ascension"
+#~ msgstr "增加"
+
+#~ msgid ""
+#~ "Right ascension of stylus tilt. 0 when stylus working end points to you, "
+#~ "+90 when rotated 90 degrees clockwise, -90 when rotated 90 degrees "
+#~ "counterclockwise."
+#~ msgstr ""
+#~ "筆尖傾斜的右增。0 當筆尖的工作端指向您；+90 當筆尖順時鐘旋轉 90 度；-90 當"
+#~ "筆尖逆時鐘旋轉 90 度。"
+
+#~ msgid ""
+#~ "This is a user defined input. Look at the 'custom input' setting for "
+#~ "details."
+#~ msgstr "這是使用者定義的輸入。詳見「自訂輸入」設定值來獲得詳細資訊。"
+
+#~ msgid ""
+#~ "0 means brush is transparent, 1 fully visible\n"
+#~ "(also known as alpha or opacity)"
+#~ msgstr ""
+#~ "0 表示筆刷是透明的，1 則完全不透明\n"
+#~ "(亦稱為 alpha 或不透明度)"
+
+#~ msgid "Opacity multiply"
+#~ msgstr "不透明相乘"
+
+#~ msgid ""
+#~ "This gets multiplied with opaque. You should only change the pressure "
+#~ "input of this setting. Use 'opaque' instead to make opacity depend on "
+#~ "speed.\n"
+#~ "This setting is responsible to stop painting when there is zero pressure. "
+#~ "This is just a convention, the behaviour is identical to 'opaque'."
+#~ msgstr ""
+#~ "這會與不透明度相乘。您應該只需改變此設定值的壓力輸入。使用「不透明」，而不"
+#~ "是根據速度決定不透明度。\n"
+#~ "當壓力為零時，此設定值負責停止繪畫。這只是個慣例，行為與「不透明」相同。"
+
+#~ msgid "Opacity linearize"
+#~ msgstr "不透明線性化"
+
+#~ msgid ""
+#~ "Correct the nonlinearity introduced by blending multiple dabs on top of "
+#~ "each other. This correction should get you a linear (\"natural\") "
+#~ "pressure response when pressure is mapped to opaque_multiply, as it is "
+#~ "usually done. 0.9 is good for standard strokes, set it smaller if your "
+#~ "brush scatters a lot, or higher if you use dabs_per_second.\n"
+#~ "0.0 the opaque value above is for the individual dabs\n"
+#~ "1.0 the opaque value above is for the final brush stroke, assuming each "
+#~ "pixel gets (dabs_per_radius*2) brushdabs on average during a stroke"
+#~ msgstr ""
+#~ "藉由混合多個筆觸彼此的頂部進行非線性修正。因為通常已經完成，所以當壓力對應"
+#~ "到「不透明相乘」時，這項修正應該給您一種線性的 (自然的) 壓力感應。0.9 有利"
+#~ "於標準筆畫，如果您的筆刷散佈很廣則設定較小的值，或者您使用「每秒筆觸數量」"
+#~ "的話就設定較高的數值。\n"
+#~ "0.0 上面的不透明值是針對個別筆觸\n"
+#~ "1.0 上面的不透明值是針對最終筆刷筆畫，假定一道筆畫中每個像素平均獲得 (每半"
+#~ "徑筆觸數量*2) 筆刷筆觸數量"
+
+#~ msgid "Radius"
+#~ msgstr "半徑"
+
+#~ msgid ""
+#~ "Basic brush radius (logarithmic)\n"
+#~ " 0.7 means 2 pixels\n"
+#~ " 3.0 means 20 pixels"
+#~ msgstr ""
+#~ "基本筆刷半徑 (對數)\n"
+#~ " 0.7 代表 2 像素\n"
+#~ " 3.0 代表 20 像素"
+
+#~ msgid "Hardness"
+#~ msgstr "硬度"
+
+#~ msgid ""
+#~ "Hard brush-circle borders (setting to zero will draw nothing). To reach "
+#~ "the maximum hardness, you need to disable Anti-aliasing."
+#~ msgstr ""
+#~ "剛硬圓形筆刷邊緣 (設定值為零會畫不出東西)。若要達到最大硬度，您需要停用防"
+#~ "鋸齒功能。"
+
+#~ msgid "Anti-aliasing"
+#~ msgstr "防鋸齒"
+
+#~ msgid ""
+#~ "This setting decreases the hardness when necessary to prevent a pixel "
+#~ "staircase effect.\n"
+#~ " 0.0 disable (for very strong erasers and pixel brushes)\n"
+#~ " 1.0 blur one pixel (good value)\n"
+#~ " 5.0 notable blur, thin strokes will disappear"
+#~ msgstr ""
+#~ "此設定值可在適當時機降低硬度，可以避免螢幕上呈現像素階梯狀效應。\n"
+#~ " 0.0 停用 (非常堅硬的橡皮擦與像素筆刷)\n"
+#~ " 1.0 模糊 1 像素 (良好的設定值)\n"
+#~ " 5.0 明顯模糊，細的筆劃會消失"
+
+#~ msgid ""
+#~ "How many dabs to draw while the pointer moves a distance of one brush "
+#~ "radius (more precise: the base value of the radius)"
+#~ msgstr ""
+#~ "當指標移動一個筆刷半徑距離時要描繪多少個筆觸 (更精確的說法：半徑的基礎值)"
+
+#~ msgid "Dabs per actual radius"
+#~ msgstr "每實際半徑筆觸數"
+
+#~ msgid ""
+#~ "Same as above, but the radius actually drawn is used, which can change "
+#~ "dynamically"
+#~ msgstr "與上面相同，但依照實際半徑描繪，實際半徑可以動態變化"
+
+#~ msgid "Dabs per second"
+#~ msgstr "每秒筆觸數"
+
+#~ msgid "Dabs to draw each second, no matter how far the pointer moves"
+#~ msgstr "每秒描繪的筆觸數，與指標移動距離無關"
+
+#~ msgid "Radius by random"
+#~ msgstr "隨機半徑"
+
+#~ msgid ""
+#~ "Alter the radius randomly each dab. You can also do this with the "
+#~ "by_random input on the radius setting. If you do it here, there are two "
+#~ "differences:\n"
+#~ "1) the opaque value will be corrected such that a big-radius dabs is more "
+#~ "transparent\n"
+#~ "2) it will not change the actual radius seen by dabs_per_actual_radius"
+#~ msgstr ""
+#~ "每個筆觸隨機改變半徑。您也可以用半徑設定值上的「隨機」 輸入來做出這種效"
+#~ "果。如果您在這裡執行會有兩點不同的地方：\n"
+#~ "1) 不透明度會進行修正使得大半徑的筆觸更透明。\n"
+#~ "2) 看起來不會受「每實際半徑的筆觸數量」影響而改變實際半徑"
+
+#~ msgid "Fine speed filter"
+#~ msgstr "精細速度過濾"
+
+#~ msgid ""
+#~ "How slow the input fine speed is following the real speed\n"
+#~ "0.0 change immediately as your speed changes (not recommended, but try it)"
+#~ msgstr ""
+#~ "跟隨真實速度的輸入精細速度要多慢\n"
+#~ "0.0 您的速度改變時會立刻跟著改變 (不推薦，但可以試試)"
+
+#~ msgid "Gross speed filter"
+#~ msgstr "粗略速度過濾"
+
+#~ msgid "Same as 'fine speed filter', but note that the range is different"
+#~ msgstr "和「精細速度過濾」相同，但注意兩者的範圍不同"
+
+#~ msgid "Fine speed gamma"
+#~ msgstr "精細速度 Gamma 值"
+
+#~ msgid ""
+#~ "This changes the reaction of the 'fine speed' input to extreme physical "
+#~ "speed. You will see the difference best if 'fine speed' is mapped to the "
+#~ "radius.\n"
+#~ "-8.0 very fast speed does not increase 'fine speed' much more\n"
+#~ "+8.0 very fast speed increases 'fine speed' a lot\n"
+#~ "For very slow speed the opposite happens."
+#~ msgstr ""
+#~ "這會將「精細速度」的反應變為物理速度的極限。如果「精細速度」對應到半徑，您"
+#~ "會看到最佳的差別。\n"
+#~ "-8.0  非常快的速度不會增加更多「精細速度」\n"
+#~ "+8.0 非常快的速度會大大增加「精細速度」\n"
+#~ "若速度非常慢則為相反情況。"
+
+#~ msgid "Gross speed gamma"
+#~ msgstr "粗略速度 Gamma 值"
+
+#~ msgid "Same as 'fine speed gamma' for gross speed"
+#~ msgstr "與「精細速度 Gamma 值」功能相同，但是針對粗略速度"
+
+#~ msgid "Jitter"
+#~ msgstr "抖動"
+
+#~ msgid ""
+#~ "Add a random offset to the position where each dab is drawn\n"
+#~ " 0.0 disabled\n"
+#~ " 1.0 standard deviation is one basic radius away\n"
+#~ "<0.0 negative values produce no jitter"
+#~ msgstr ""
+#~ "讓每個筆觸繪製的位置隨機偏移\n"
+#~ " 0.0 停用\n"
+#~ " 1.0 標準差是一個基本半徑的距離\n"
+#~ "<0.0 負值不會產生抖動"
+
+#~ msgid "Offset by speed"
+#~ msgstr "依速度偏移"
+
+#~ msgid ""
+#~ "Change position depending on pointer speed\n"
+#~ "= 0 disable\n"
+#~ "> 0 draw where the pointer moves to\n"
+#~ "< 0 draw where the pointer comes from"
+#~ msgstr ""
+#~ "根據指標速度改變位置\n"
+#~ "= 0 停用\n"
+#~ "> 0 繪製指標移到的地方\n"
+#~ "< 0 繪製指標原來的地方"
+
+#~ msgid "Offset by speed filter"
+#~ msgstr "依速度偏移過濾"
+
+#~ msgid "How slow the offset goes back to zero when the cursor stops moving"
+#~ msgstr "當游標停止移動時偏移回零的速度要多慢"
+
+#~ msgid "Slow position tracking"
+#~ msgstr "緩慢位置曳跡"
+
+#~ msgid ""
+#~ "Slowdown pointer tracking speed. 0 disables it, higher values remove more "
+#~ "jitter in cursor movements. Useful for drawing smooth, comic-like "
+#~ "outlines."
+#~ msgstr ""
+#~ "減慢指標曳跡速度。0 為停用，較高的數值會移除游標移動中較多的抖動。對於繪製"
+#~ "平滑、類似漫畫輪廓時很有用。"
+
+#~ msgid "Slow tracking per dab"
+#~ msgstr "每個筆觸緩慢曳跡"
+
+#~ msgid ""
+#~ "Similar as above but at brushdab level (ignoring how much time has past, "
+#~ "if brushdabs do not depend on time)"
+#~ msgstr ""
+#~ "和上面類似，但屬於筆刷筆觸層級 (如果筆刷筆觸不由時間決定，則忽略已經過了多"
+#~ "少時間)"
+
+#~ msgid "Tracking noise"
+#~ msgstr "曳跡噪點"
+
+#~ msgid ""
+#~ "Add randomness to the mouse pointer; this usually generates many small "
+#~ "lines in random directions; maybe try this together with 'slow tracking'"
+#~ msgstr ""
+#~ "加入隨機性雜點到滑鼠游標；這通常會產生許多隨機方向的小線條；也許試試和「緩"
+#~ "慢曳跡」一起使用"
+
+#~ msgid "Color hue"
+#~ msgstr "色相"
+
+#~ msgid "Color value"
+#~ msgstr "色彩明度"
+
+#~ msgid "Color value (brightness, intensity)"
+#~ msgstr "色彩明度 (亮度，光強度)"
+
+#~ msgid "Save color"
+#~ msgstr "儲存色彩"
+
+#~ msgid ""
+#~ "When selecting a brush, the color can be restored to the color that the "
+#~ "brush was saved with.\n"
+#~ " 0.0 do not modify the active color when selecting this brush\n"
+#~ " 0.5 change active color towards brush color\n"
+#~ " 1.0 set the active color to the brush color when selected"
+#~ msgstr ""
+#~ "當選取筆刷時，色彩可以從儲存的筆刷中還原。\n"
+#~ " 0.0 當選取筆刷時不會修改使用中的色彩\n"
+#~ " 0.5 會根據筆刷色彩改變使用中的色彩\n"
+#~ " 1.0 選取時將使用中的色彩設定至筆刷色彩"
+
+#~ msgid "Change color hue"
+#~ msgstr "改變色相"
+
+#~ msgid ""
+#~ "Change color hue.\n"
+#~ "-0.1 small clockwise color hue shift\n"
+#~ " 0.0 disable\n"
+#~ " 0.5 counterclockwise hue shift by 180 degrees"
+#~ msgstr ""
+#~ "改變色彩色相。\n"
+#~ "-0.1 色相稍微向順時針位移\n"
+#~ " 0.0 停用\n"
+#~ " 0.5 以 180 度逆時針位移色相"
+
+#~ msgid ""
+#~ "Change the color lightness (luminance) using the HSL color model.\n"
+#~ "-1.0 blacker\n"
+#~ " 0.0 disable\n"
+#~ " 1.0 whiter"
+#~ msgstr ""
+#~ "使用 HSL 色彩模型改變色彩亮度。\n"
+#~ "-1.0 較黑\n"
+#~ " 0.0 停用\n"
+#~ " 1.0 較白"
+
+#~ msgid "Change color satur. (HSL)"
+#~ msgstr "改變色彩飽和度 (HSL)"
+
+#~ msgid ""
+#~ "Change the color saturation using the HSL color model.\n"
+#~ "-1.0 more grayish\n"
+#~ " 0.0 disable\n"
+#~ " 1.0 more saturated"
+#~ msgstr ""
+#~ "使用 HSL 色彩模型改變色彩飽和度。\n"
+#~ "-1.0 更灰白\n"
+#~ " 0.0 停用\n"
+#~ " 1.0 更飽和"
+
+#~ msgid "Change color value (HSV)"
+#~ msgstr "改變色彩明度 (HSV)"
+
+#~ msgid ""
+#~ "Change the color value (brightness, intensity) using the HSV color model. "
+#~ "HSV changes are applied before HSL.\n"
+#~ "-1.0 darker\n"
+#~ " 0.0 disable\n"
+#~ " 1.0 brigher"
+#~ msgstr ""
+#~ "使用 HSV 色彩模型改變色彩的明度 (亮度，光強度)。HSV 改變會在 HSL 之前套"
+#~ "用。\n"
+#~ "-1.0 更暗\n"
+#~ " 0.0 停用\n"
+#~ " 1.0 更亮"
+
+#~ msgid "Change color satur. (HSV)"
+#~ msgstr "改變色彩飽和度 (HSV)"
+
+#~ msgid ""
+#~ "Change the color saturation using the HSV color model. HSV changes are "
+#~ "applied before HSL.\n"
+#~ "-1.0 more grayish\n"
+#~ " 0.0 disable\n"
+#~ " 1.0 more saturated"
+#~ msgstr ""
+#~ "使用 HSV 色彩模型改變色彩飽和度。HSV 改變會在 HSL 之前套用。\n"
+#~ "-1.0 更灰白\n"
+#~ " 0.0 停用\n"
+#~ " 1.0 更飽和"
+
+#~ msgid ""
+#~ "Paint with the smudge color instead of the brush color. The smudge color "
+#~ "is slowly changed to the color you are painting on.\n"
+#~ " 0.0 do not use the smudge color\n"
+#~ " 0.5 mix the smudge color with the brush color\n"
+#~ " 1.0 use only the smudge color"
+#~ msgstr ""
+#~ "用塗抹色彩替代筆刷色彩來塗繪。此塗抹色彩會慢慢變成您正在繪畫的色彩。\n"
+#~ " 0.0 不使用塗抹色彩\n"
+#~ " 0.5 塗抹色彩混合筆刷色彩\n"
+#~ " 1.0 只使用塗抹色彩"
+
+#~ msgid "Smudge length"
+#~ msgstr "塗抹長度"
+
+#~ msgid ""
+#~ "This controls how fast the smudge color becomes the color you are "
+#~ "painting on.\n"
+#~ "0.0 immediately update the smudge color (requires more CPU cycles because "
+#~ "of the frequent color checks)\n"
+#~ "0.5 change the smudge color steadily towards the canvas color\n"
+#~ "1.0 never change the smudge color"
+#~ msgstr ""
+#~ "它控制塗抹的色彩變成您正在繪畫的色彩的速度。\n"
+#~ "0.0 立即更新塗抹色彩 (需要更多 CPU 週期，因為色彩檢查的頻率更頻繁)\n"
+#~ "0.5 讓塗抹色彩穩定朝畫布色彩改變\n"
+#~ "1.0 永不改變塗抹色彩"
+
+#~ msgid "Smudge radius"
+#~ msgstr "塗抹半徑"
+
+#~ msgid ""
+#~ "This modifies the radius of the circle where color is picked up for "
+#~ "smudging.\n"
+#~ " 0.0 use the brush radius\n"
+#~ "-0.7 half the brush radius (fast, but not always intuitive)\n"
+#~ "+0.7 twice the brush radius\n"
+#~ "+1.6 five times the brush radius (slow performance)"
+#~ msgstr ""
+#~ "這會修改塗抹色彩圓的半徑。\n"
+#~ " 0.0 採用筆刷半徑\n"
+#~ "-0.7 筆刷半徑一半 (快速，但不是很直覺)\n"
+#~ "+0.7 筆刷半徑兩倍\n"
+#~ "+1.6 筆刷半徑五倍 (效能緩慢)"
+
+#~ msgid ""
+#~ "how much this tool behaves like an eraser\n"
+#~ " 0.0 normal painting\n"
+#~ " 1.0 standard eraser\n"
+#~ " 0.5 pixels go towards 50% transparency"
+#~ msgstr ""
+#~ "橡皮擦的行為模式\n"
+#~ " 0.0 普通塗繪\n"
+#~ " 1.0 標準橡皮擦\n"
+#~ " 0.5 像素變為 50 % 透明"
+
+#~ msgid "Stroke threshold"
+#~ msgstr "筆畫閾值"
+
+#~ msgid ""
+#~ "How much pressure is needed to start a stroke. This affects the stroke "
+#~ "input only. Mypaint does not need a minimal pressure to start drawing."
+#~ msgstr ""
+#~ "需要多少壓力才會開始筆畫。這會只影響筆畫的輸入。Mypaint 不需要開始繪畫的最"
+#~ "小壓力值。"
+
+#~ msgid ""
+#~ "How far you have to move until the stroke input reaches 1.0. This value "
+#~ "is logarithmic (negative values will not inverse the process)."
+#~ msgstr ""
+#~ "您必須移動多遠直到筆畫輸入達到 1.0。這項數值為對數 (數值為負不會反向處"
+#~ "理)。"
+
+#~ msgid ""
+#~ "This defines how long the stroke input stays at 1.0. After that it will "
+#~ "reset to 0.0 and start growing again, even if the stroke is not yet "
+#~ "finished.\n"
+#~ "2.0 means twice as long as it takes to go from 0.0 to 1.0\n"
+#~ "9.9 and bigger stands for infinite"
+#~ msgstr ""
+#~ "這項數值可定義筆畫輸入會停留在 1.0 多長的時間。從那以後會重設為 0.0 並再一"
+#~ "次開始增長，即使這道筆畫還未結束。\n"
+#~ "2.0 代表從 0.0 開始到 1.0 期間的兩倍\n"
+#~ "9.9 和更大的數值代表無窮大"
+
+#~ msgid "Custom input"
+#~ msgstr "自訂輸入"
+
+#~ msgid ""
+#~ "Set the custom input to this value. If it is slowed down, move it towards "
+#~ "this value (see below). The idea is that you make this input depend on a "
+#~ "mixture of pressure/speed/whatever, and then make other settings depend "
+#~ "on this 'custom input' instead of repeating this combination everywhere "
+#~ "you need it.\n"
+#~ "If you make it change 'by random' you can generate a slow (smooth) random "
+#~ "input."
+#~ msgstr ""
+#~ "將自訂輸入設為這個數值。如果減速，將它往這個數值移動 (如下面所示)。意思是"
+#~ "您讓壓力/速度/其他等的混合因素來決定這個輸入，然後由這個「自訂輸入」決定其"
+#~ "他設定值而不是您需要它時重複這種組合。\n"
+#~ "如果您讓它「隨機」改變，就可以產生一種緩慢 (平滑) 隨機輸入。"
+
+#~ msgid "Custom input filter"
+#~ msgstr "自訂輸入過濾"
+
+#~ msgid ""
+#~ "How slow the custom input actually follows the desired value (the one "
+#~ "above). This happens at brushdab level (ignoring how much time has past, "
+#~ "if brushdabs do not depend on time).\n"
+#~ "0.0 no slowdown (changes apply instantly)"
+#~ msgstr ""
+#~ "自訂輸入實際上多慢達到期望值 (上面一項)。這發生在筆刷筆觸層級 (如果筆刷筆"
+#~ "觸不由時間決定，則忽略已經過了多少時間)。\n"
+#~ "0.0 不減速 (立即套用變更)"
+
+#~ msgid "Elliptical dab: ratio"
+#~ msgstr "橢圓筆觸：比例"
+
+#~ msgid ""
+#~ "Aspect ratio of the dabs; must be >= 1.0, where 1.0 means a perfectly "
+#~ "round dab. TODO: linearize? start at 0.0 maybe, or log?"
+#~ msgstr ""
+#~ "筆觸外觀的比例；必須是 >= 1.0，這裡的 1.0 代表一個完美圓形筆觸。待完成：線"
+#~ "性化？可能從 0.0 開始，或者對數？"
+
+#~ msgid "Elliptical dab: angle"
+#~ msgstr "橢圓筆觸：角度"
+
+#~ msgid ""
+#~ "Angle by which elliptical dabs are tilted\n"
+#~ " 0.0 horizontal dabs\n"
+#~ " 45.0 45 degrees, turned clockwise\n"
+#~ " 180.0 horizontal again"
+#~ msgstr ""
+#~ "橢圓筆觸傾斜的角度\n"
+#~ " 0.0 水平筆觸\n"
+#~ " 45.0 45 度，順時針轉動\n"
+#~ " 180.0 再次水平"
+
+#~ msgid "Direction filter"
+#~ msgstr "方向過濾"
+
+#~ msgid ""
+#~ "A low value will make the direction input adapt more quickly, a high "
+#~ "value will make it smoother"
+#~ msgstr "數值較低會使輸入調整方向更迅速，數值較高則會更平滑"
+
+#~ msgid "Lock alpha"
+#~ msgstr "鎖定 alpha"
+
+#~ msgid ""
+#~ "Do not modify the alpha channel of the layer (paint only where there is "
+#~ "paint already)\n"
+#~ " 0.0 normal painting\n"
+#~ " 0.5 half of the paint gets applied normally\n"
+#~ " 1.0 alpha channel fully locked"
+#~ msgstr ""
+#~ "不要修改圖層的 alpha 透明版 (僅會畫在已經有畫過的地方)\n"
+#~ " 0.0 一般繪圖\n"
+#~ " 0.5 一半的繪圖會套用至一般繪圖\n"
+#~ " 1.0 alpha 調色板完全上鎖"
+
+#~ msgid ""
+#~ "The background %s was ignored because it has an alpha channel. Please "
+#~ "remove it."
+#~ msgstr "因為含有 alpha 透明版，所以忽略背景 %s。請移除它。"
+
+#~ msgid ""
+#~ "The background %s was ignored because it is the wrong size. Only (N*%d)x"
+#~ "(M*%d) is supported."
+#~ msgstr "因為背景 %s 尺寸錯誤，所以忽略。只支援 (N*%d)x(M*%d)。"
+
+#~ msgid "Try right click, middle click or Ctrl click"
+#~ msgstr "試著按下右鍵，中鍵，或 Ctrl 加點擊"
+
+#~ msgid "Export group as brush package..."
+#~ msgstr "匯出群組為筆刷包..."
+
+#~ msgid "Download brushes (in web browser)"
+#~ msgstr "下載筆刷 (透過網頁瀏覽器)"
+
+#~ msgid "Recently used colors"
+#~ msgstr "最近使用的色彩"
+
+#~ msgid "Harmony color switcher"
+#~ msgstr "和諧色切換器"
+
+#~ msgid "Change Hue"
+#~ msgstr "改變色相"
+
+#~ msgid "Pick a screen color"
+#~ msgstr "挑選螢幕色彩"
+
+#~ msgid "Change Hue, Saturation and Value"
+#~ msgstr "改變色相、飽和度、明度"
+
+#~ msgid "Change Red, Green and Blue components"
+#~ msgstr "變更紅、綠、藍成份"
+
+#~ msgid "RGB"
+#~ msgstr "RGB"
+
+#~ msgid "HSV"
+#~ msgstr "HSV"
+
+#~ msgid "Color history"
+#~ msgstr "色彩歷史"
+
+#~ msgid "Harmonies"
+#~ msgstr "協調色"
+
+#~ msgid "Analogous"
+#~ msgstr "類似色"
+
+#~ msgid ""
+#~ "Three nearby hues on the color wheel.\n"
+#~ "Often found in nature, frequently pleasing to the eye."
+#~ msgstr ""
+#~ "色環上三個相近的色相。\n"
+#~ "常在大自然中發現的配色，看起來比較舒適。"
+
+#~ msgid ""
+#~ "Two opposite hues on the color wheel.\n"
+#~ "Vibrant, and maximally contrasting."
+#~ msgstr ""
+#~ "色環上兩個相對的色相。\n"
+#~ "活潑、最大的對比。"
+
+#~ msgid ""
+#~ "Two hues next to the current hue's complement.\n"
+#~ "Contrasting, but adds a possibly pleasing harmony."
+#~ msgstr ""
+#~ "相鄰於目前色相互補色的兩個色相。\n"
+#~ "顯示出對比，但是盡可能讓它看起來和諧一點。"
+
+#~ msgid "Double complementary"
+#~ msgstr "雙組補色"
+
+#~ msgid "Four hues in two complementary pairs."
+#~ msgstr "四個色相，兩套互補色。"
+
+#~ msgid "Square"
+#~ msgstr "四方色"
+
+#~ msgid "Four equally-spaced hues"
+#~ msgstr "四個等距的色相"
+
+#~ msgid "Triadic"
+#~ msgstr "三角色"
+
+#~ msgid ""
+#~ "Three equally-spaced hues.\n"
+#~ "Vibrant with equal tension."
+#~ msgstr ""
+#~ "三個等距的色相。\n"
+#~ "有相同張力的變化。"
+
+#~ msgid "Change value/saturation"
+#~ msgstr "改變明度/飽和度"
+
+#~ msgid "Blend each color to opposite"
+#~ msgstr "混合每種色彩為相反"
+
+#~ msgid "Blend each color to negative"
+#~ msgstr "混合每種色彩為負值"
+
+#~ msgid "More Opaque"
+#~ msgstr "增加不透明"
+
+#~ msgid "Less Opaque"
+#~ msgstr "減少不透明"
+
+#~ msgid "Pick Context (layer, brush and color)"
+#~ msgstr "挑選情境 (圖層、筆刷、色彩)"
+
+#~ msgid "Change Color Hue (counter-clockwise)"
+#~ msgstr "改變色相 (順時針)"
+
+#~ msgid "Change Color Hue (clockwise)"
+#~ msgstr "改變色相 (逆時針)"
+
+#~ msgid "Copy to Clipboard"
+#~ msgstr "複製到剪貼簿"
+
+#~ msgid "Paste Clipboard (Replace Layer)"
+#~ msgstr "貼上剪貼簿 (取代圖層)"
+
+#~ msgid "Select Layer at Cursor"
+#~ msgstr "選擇游標下的圖層"
+
+#~ msgid "Next (above current)"
+#~ msgstr "下一個 (目前之上)"
+
+#~ msgid "Next (below current)"
+#~ msgstr "下一個 (目前之下)"
+
+#~ msgid "Remove"
+#~ msgstr "移除"
+
+#~ msgid "Rotate the view right"
+#~ msgstr "將視圖向右旋轉"
+
+#~ msgid "Undo: nothing to undo"
+#~ msgstr "取消動作：無動作可取消"
+
+#~ msgid "Redo: nothing to redo"
+#~ msgstr "再次動作：無動作可重複"
+
+#~ msgid "Toggle Document Frame"
+#~ msgstr "切換文件框"
+
+#~ msgid "Help!"
+#~ msgstr "求助！"
+
+#~ msgid "Load Scratchpad..."
+#~ msgstr "載入圖畫簿..."
+
+#~ msgid "Save Scratchpad Now"
+#~ msgstr "立刻儲存圖畫簿"
+
+#~ msgid "Save Scratchpad As..."
+#~ msgstr "另存圖畫簿為..."
+
+#~ msgid "Save Scratchpad as Default"
+#~ msgstr "將圖畫簿儲存為預設值"
+
+#~ msgid "Clear the Default Scratchpad"
+#~ msgstr "清除預設圖畫簿"
+
+#~ msgid "Copy Background to Scratchpad"
+#~ msgstr "複製背景至圖畫簿"
+
+#~ msgid "Change Brush..."
+#~ msgstr "改變筆刷..."
+
+#~ msgid "Download more brushes (in web browser)"
+#~ msgstr "下載更多筆刷 (透過網路瀏覽器)"
+
+#~ msgid "Toggle the Layers list"
+#~ msgstr "切換圖層清單"
+
+#~ msgid "Change Brush Settings in detail"
+#~ msgstr "改變詳細的筆刷設定值"
+
+#~ msgid "Toggle the Colour Triangle"
+#~ msgstr "切換色彩三角"
+
+#~ msgid "Toggle the advanced Colour Sampler"
+#~ msgstr "切換進階色彩取樣器"
+
+#~ msgid "Toggle the scratchpad"
+#~ msgstr "切換圖畫簿"
+
+#~ msgid ""
+#~ "You can also drag the canvas with the mouse while holding the middle "
+#~ "mouse button or spacebar. Or with the arrow keys.\n"
+#~ "\n"
+#~ "In contrast to earlier versions, scrolling and zooming are harmless now "
+#~ "and will not make you run out of memory. But you still require a lot of "
+#~ "memory if you paint all over while fully zoomed out."
+#~ msgstr ""
+#~ "當按住滑鼠中鍵或空白鍵時您也可以用滑鼠拖曳畫布。或者按方向鍵。\n"
+#~ "\n"
+#~ "相對於早期版本，現在畫面滾動和縮放更為順暢且不會讓您用完記憶體。但如果在畫"
+#~ "面縮到相當小時您到處塗繪，仍然需要大量的記憶體。"
+
+#~ msgid "Open Last"
+#~ msgstr "開啟上個"
+
+#~ msgid "Reload"
+#~ msgstr "重新載入"
+
+#~ msgid "Crop to active layer bounds"
+#~ msgstr "裁切至使用中圖層的邊界"
+
+#~ msgid "No action"
+#~ msgstr "無動作"
+
+#~ msgid "Menu"
+#~ msgstr "選單"
+
+#~ msgid "Toggle Subwindows"
+#~ msgstr "切換子視窗"
+
+#, fuzzy
+#~ msgid "Pan"
+#~ msgstr "展開"
+
+#~ msgid "Straight Line"
+#~ msgstr "直線"
+
+#~ msgid "Sequence of Straight Lines"
+#~ msgstr "直線的序段"
+
+#~ msgid "Color Changer"
+#~ msgstr "換色器"
+
+#~ msgid "Button 1 + Shift"
+#~ msgstr "按鈕 1 + Shift"
+
+#~ msgid "Button 1 + Ctrl (or Alt)"
+#~ msgstr "按鈕 1 + Ctrl (或 Alt)"
+
+#~ msgid "Button 2"
+#~ msgstr "按鈕 2"
+
+#~ msgid "Button 2 + Shift"
+#~ msgstr "按鈕 2 + Shift"
+
+#~ msgid "Button 2 + Ctrl (or Alt)"
+#~ msgstr "按鈕 2 + Ctrl (或 Alt)"
+
+#~ msgid "Button 3"
+#~ msgstr "按紐 3"
+
+#~ msgid "Button 3 + Shift"
+#~ msgstr "按鈕 3 + Shift"
+
+#~ msgid "Button 3 + Ctrl (or Alt)"
+#~ msgstr "按鈕 3 + Ctrl (或 Alt)"
+
+#~ msgid "<b>Pen and mouse button mappings</b>"
+#~ msgstr "<b>感壓筆與滑鼠按鈕映射關係</b>"
+
+#~ msgid "Brush List Editor"
+#~ msgstr "筆刷清單編輯器"
+
+#~ msgid "Brush Modifiers Active"
+#~ msgstr "筆刷修飾子使用中"
+
+#~ msgid "Brush Modifiers Inactive"
+#~ msgstr "筆刷修飾子非使用中"
+
+#, fuzzy
+#~ msgid "All settings"
+#~ msgstr "儲存設定值"
+
+#, fuzzy
+#~ msgid "Pick Colour"
+#~ msgstr "點取色彩"
+
+#~ msgid "Toggle Eraser Mode"
+#~ msgstr "切換橡皮擦模式"
+
+#~ msgid "Zoom In (at cursor)"
+#~ msgstr "放大 (於游標處)"
+
+#~ msgid "Preferences..."
+#~ msgstr "偏好設定..."
+
+#~ msgid "Layers..."
+#~ msgstr "圖層..."
+
+#~ msgid "Background..."
+#~ msgstr "背景..."
+
+#~ msgid "Brush List..."
+#~ msgstr "筆刷清單..."
+
+#, fuzzy
+#~ msgid "Brush Editor..."
+#~ msgstr "筆刷清單..."
+
+#~ msgid "brushes, programming"
+#~ msgstr "筆刷、程式"
+
+#~ msgid "Did not save, the canvas is empty."
+#~ msgstr "沒有儲存，畫布是空白的。"
+
+#, fuzzy
+#~ msgid "Layer lock"
+#~ msgstr "圖層單獨顯示"
+
+#~ msgid "opaque"
+#~ msgstr "不透明"
+
+#~ msgid ""
+#~ "This gets multiplied with opaque. It is used for making opaque depend on "
+#~ "pressure (or other inputs)."
+#~ msgstr ""
+#~ "這可得到乘以不透明度的值。它會用於由壓力 (或者其他輸入) 決定產生的不透明"
+#~ "度。"
+
+#~ msgid "add as new"
+#~ msgstr "加入新筆刷"
+
+#~ msgid "settings..."
+#~ msgstr "設定值..."
+
+#~ msgid "save preview"
+#~ msgstr "儲存預覽"
+
+#~ msgid "Right click on group to modify"
+#~ msgstr "用右鍵點擊群組進行修改"
+
+#~ msgid "Select harmonies"
+#~ msgstr "選擇協調色"
+
+#~ msgid "Brush Settings..."
+#~ msgstr "筆刷設定值..."
+
+#~ msgid "Reset (Zoom, Rotation, Mirror)"
+#~ msgstr "重設 (縮放、旋轉、鏡像)"
+
+#~ msgid "Any format (prefer OpenRaster)"
+#~ msgstr "任何格式 (優先使用 OpenRaster)"
+
+#~ msgid "Bug Details"
+#~ msgstr "程式錯誤詳細資訊"
+
+#~ msgid "<b><span size=\"large\">Global Pressure Mapping</span></b>"
+#~ msgstr "<b><span size=\"large\">整體壓力對應</span></b>"
+
+#~ msgid ""
+#~ "0.5\n"
+#~ "(mouse button)"
+#~ msgstr ""
+#~ "0.5\n"
+#~ "(滑鼠鍵)"
+
+#~ msgid "Paths"
+#~ msgstr "路徑"
+
+#~ msgid "<b><span size=\"large\">Save as Scrap</span></b>"
+#~ msgstr "<b><span size=\"large\">另存為廢料</span></b>"
+
+#~ msgid "Settings..."
+#~ msgstr "設定值..."
+
+#~ msgid "done"
+#~ msgstr "完成"
+
+#~ msgid "R: "
+#~ msgstr "R: "
+
+#~ msgid "G: "
+#~ msgstr "G: "
+
+#~ msgid "B: "
+#~ msgstr "B: "
+
+#~ msgid "H: "
+#~ msgstr "H: "
+
+#~ msgid "S: "
+#~ msgstr "S: "
+
+#~ msgid "V: "
+#~ msgstr "V: "
+
+#~ msgid "V"
+#~ msgstr "V"
+
+#~ msgid "S"
+#~ msgstr "S"
+
+#~ msgid "By <b>%s</b>"
+#~ msgstr "用 <b>%s</b>"
+
+#~ msgid "Create a duplicate of this channel and add it to the image"
+#~ msgstr "建立本調色板的副本，並將它加入影像中"
