@@ -124,7 +124,7 @@
             "default": 2.0, 
             "displayed_name": "Radius", 
             "internal_name": "radius_logarithmic", 
-            "maximum": 5.0, 
+            "maximum": 6.0, 
             "minimum": -2.0, 
             "tooltip": "Basic brush radius (logarithmic)\n 0.7 means 2 pixels\n 3.0 means 20 pixels"
         }, 

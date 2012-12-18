@@ -35,7 +35,7 @@
 #define M_PI 3.14159265358979323846
 
 #define ACTUAL_RADIUS_MIN 0.2
-#define ACTUAL_RADIUS_MAX 800 // safety guard against radius like 1e20 and against rendering overload with unexpected brush dynamics
+#define ACTUAL_RADIUS_MAX 1000 // safety guard against radius like 1e20 and against rendering overload with unexpected brush dynamics
 
 /* The Brush class stores two things:
    b) settings: constant during a stroke (eg. size, spacing, dynamics, color selected by the user)
