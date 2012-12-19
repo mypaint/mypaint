@@ -546,13 +546,13 @@ Perhaps an increasing amount.
         <accelerator key="F12"/>
       </child>
       <child>
-        <object class="GtkAction" id="Fit">
+        <object class="GtkToggleAction" id="FitView">
           <property name="icon-name">mypaint-view-fit</property>
           <property name="label" translatable="yes"
             context="Menu|View|">Fit</property>
           <property name="tooltip" translatable="yes"
               >Zoom to fit the document, and recenter</property>
-          <signal name="activate" handler="reset_view_cb"/>
+          <signal name="activate" handler="fit_view_toggled_cb"/>
         </object>
         <accelerator key="F10"/>
       </child>

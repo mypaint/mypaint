@@ -202,7 +202,7 @@ class Document (CanvasController):
 
         self.init_stategroups()
         if leader is not None:
-            # This is a side conteoller (e.g. the scratchpad) which plays
+            # This is a side controller (e.g. the scratchpad) which plays
             # follow-the- leader for some events.
             assert isinstance(leader, Document)
             leader.followers.append(self)
@@ -221,6 +221,10 @@ class Document (CanvasController):
 
             toggle_action = self.app.builder.get_object('ContextRestoreColor')
             toggle_action.set_active(self.app.preferences['misc.context_restores_color'])
+
+        #: Saved transformation to allow FitView to be toggled.
+        self.saved_view = None
+
 
     def init_actions(self):
         # Actions are defined in mypaint.xml, just grab a ref to the groups
@@ -653,6 +657,7 @@ class Document (CanvasController):
         elif command == 'PanUp'   : self.tdw.scroll(0, -step)
         elif command == 'PanDown' : self.tdw.scroll(0, +step)
         else: assert 0
+        self.clear_saved_view()
 
 
     def zoom(self, command):
@@ -672,15 +677,9 @@ class Document (CanvasController):
             zoom_index = len(self.zoomlevel_values) - 1
 
         z = self.zoomlevel_values[zoom_index]
-        self._set_zoom(z)
-
-
-    def _set_zoom(self, z, at_pointer=True):
-        if at_pointer:
-            etime, ex, ey = self.get_last_event_info(self.tdw)
-            self.tdw.set_zoom(z, (ex, ey))
-        else:
-            self.tdw.set_zoom(z)
+        etime, ex, ey = self.get_last_event_info(self.tdw)
+        self.tdw.set_zoom(z, (ex, ey))
+        self.clear_saved_view()
 
 
     def rotate(self, command):
@@ -691,6 +690,7 @@ class Document (CanvasController):
             self.tdw.rotate(+rotation_step)
         else:   # command == 'RotateLeft'
             self.tdw.rotate(-rotation_step)
+        self.clear_saved_view()
 
 
     def zoom_cb(self, action):
@@ -729,65 +729,126 @@ class Document (CanvasController):
 
     def mirror_horizontal_cb(self, action):
         self.tdw.mirror()
+        self.clear_saved_view()
 
 
     def mirror_vertical_cb(self, action):
         self.tdw.rotate(math.pi)
         self.tdw.mirror()
+        self.clear_saved_view()
 
 
     def reset_view_cb(self, command):
+        """Action callback: resets various aspects of the view.
+
+        The reset chosen depends on the action's name.
+
+        """
         if command is None:
             command_name = None
-            reset_all = True
         else:
             command_name = command.get_name()
-            reset_all = (command_name is None) or ('View' in command_name)
-        if reset_all or ('Rotation' in command_name):
+        zoom = mirror = rotation = False
+        if command_name is None or 'View' in command_name:
+            zoom = mirror = rotation = True
+        elif 'Rotation' in command_name:
+            rotation = True
+        elif 'Zoom' in command_name:
+            zoom = True
+        elif 'Mirror' in command_name:
+            mirror = True
+        if rotation or zoom or mirror:
+            self.reset_view(rotation, zoom, mirror)
+            self.clear_saved_view()
+
+
+    def reset_view(self, rotation=False, zoom=False, mirror=False):
+        """Programatically resets the view to the defaults.
+        """
+        if rotation:
             self.tdw.set_rotation(0.0)
-        if reset_all or ('Zoom' in command_name):
+        if zoom:
             default_zoom = self.app.preferences['view.default_zoom']
-            self._set_zoom(default_zoom)
-        if reset_all or ('Mirror' in command_name):
+            self.tdw.set_zoom(default_zoom)
+        if mirror:
             self.tdw.set_mirrored(False)
-        if reset_all:
+        if rotation and zoom and mirror:
             self.tdw.recenter_document()
-        elif 'Fit' in command_name:
-            # View>Fit: fits image within window's borders.
-            junk, junk, w, h = self.tdw.doc.get_effective_bbox()
-            if w == 0:
-                # When there is nothing on the canvas reset zoom to default.
-                self.reset_view_cb(None)
-            else:
-                allocation = self.tdw.get_allocation()
-                w1, h1 = allocation.width, allocation.height
-                # Store radians and reset rotation to zero.
-                radians = self.tdw.rotation
-                self.tdw.set_rotation(0.0)
-                # Store mirror and temporarily it turn off mirror.
-                mirror = self.tdw.mirrored
-                self.tdw.set_mirrored(False)
-                # Using w h as the unrotated bbox, calculate the bbox of the
-                # rotated doc.
-                cos = math.cos(radians)
-                sin = math.sin(radians)
-                wcos = w * cos
-                hsin = h * sin
-                wsin = w * sin
-                hcos = h * cos
-                # We only need to calculate the positions of two corners of the
-                # bbox since it is centered and symetrical, but take the max
-                # value since during rotation one corner's distance along the
-                # x axis shortens while the other lengthens. Same for the y axis.
-                x = max(abs(wcos - hsin), abs(wcos + hsin))
-                y = max(abs(wsin + hcos), abs(wsin - hcos))
-                # Compare the doc and window dimensions and take the best fit
-                zoom = min((w1-20)/x, (h1-20)/y)
-                # Reapply all transformations
-                self.tdw.recenter_document() # Center image
-                self.tdw.set_rotation(radians) # reapply canvas rotation
-                self.tdw.set_mirrored(mirror) #reapply mirror
-                self._set_zoom(zoom, at_pointer=False) # Set new zoom level
+
+
+    def fit_view_toggled_cb(self, action):
+        """Callback: toggles between fit-document and the current view.
+
+        This callback saves to and restores from the saved view. If the action
+        is toggled off when there is a saved view, the saved view will be
+        restored.
+
+        """
+
+        # View>Fit: fits image within window's borders.
+        if action.get_active():
+            self.saved_view = self.tdw.get_transformation()
+            self.fit_view()
+        else:
+            if self.saved_view is not None:
+                self.tdw.set_transformation(self.saved_view)
+            self.saved_view = None
+
+
+    def fit_view(self):
+        """Programatically fits the view to the document.
+        """
+        bbox = tuple(self.tdw.doc.get_effective_bbox())
+        w, h = bbox[2:4]
+        if w == 0:
+            # When there is nothing on the canvas reset zoom to default.
+            self.reset_view(True, True, True)
+            return
+
+        allocation = self.tdw.get_allocation()
+        w1, h1 = allocation.width, allocation.height
+        # Store radians and reset rotation to zero.
+        radians = self.tdw.rotation
+        self.tdw.set_rotation(0.0)
+        # Store mirror and temporarily it turn off mirror.
+        mirror = self.tdw.mirrored
+        self.tdw.set_mirrored(False)
+        # Using w h as the unrotated bbox, calculate the bbox of the
+        # rotated doc.
+        cos = math.cos(radians)
+        sin = math.sin(radians)
+        wcos = w * cos
+        hsin = h * sin
+        wsin = w * sin
+        hcos = h * cos
+        # We only need to calculate the positions of two corners of the
+        # bbox since it is centered and symetrical, but take the max
+        # value since during rotation one corner's distance along the
+        # x axis shortens while the other lengthens. Same for the y axis.
+        x = max(abs(wcos - hsin), abs(wcos + hsin))
+        y = max(abs(wsin + hcos), abs(wsin - hcos))
+        # Compare the doc and window dimensions and take the best fit
+        zoom = min((w1-20)/x, (h1-20)/y)
+        # Reapply all transformations
+        self.tdw.recenter_document() # Center image
+        self.tdw.set_rotation(radians) # reapply canvas rotation
+        self.tdw.set_mirrored(mirror) #reapply mirror
+        self.tdw.set_zoom(zoom) # Set new zoom level
+
+
+    def clear_saved_view(self):
+        """Discards the saved view, and deactivates any associated view toggle
+
+        This should be called after the user has changed the view
+        interactively, i.e. by dragging or by a simple user Action. Associated
+        view ToggleActions like FitView are made inactive.
+
+        """
+        self.saved_view = None
+        fit_view = self.app.find_action("FitView")
+        if fit_view.get_active():
+            fit_view.set_active(False)
+
 
 
     # DEBUGGING

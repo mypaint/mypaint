@@ -313,6 +313,54 @@ class TiledDrawWidget (gtk.EventBox):
         self.rotozoom_with_center(f)
 
 
+    def get_transformation(self):
+        """Returns a snapshot/memento/record of the current transformation.
+
+        :rtype: a CanvasTransformation initialized with a copy of the current
+          transformation variables.
+
+        """
+        tr = CanvasTransformation()
+        tr.translation_x = self.renderer.translation_x
+        tr.translation_y = self.renderer.translation_y
+        tr.scale = self.renderer.scale
+        tr.rotation = self.renderer.rotation
+        tr.mirrored = self.renderer.mirrored
+        return tr
+
+
+    def set_transformation(self, transformation):
+        """Sets the current transformation, and redraws.
+
+        :param transformation: a CanvasTransformation object.
+
+        """
+        self.renderer.translation_x = transformation.translation_x
+        self.renderer.translation_y = transformation.translation_y
+        self.renderer.scale = transformation.scale
+        self.renderer.rotation = transformation.rotation
+        self.renderer.mirrored = transformation.mirrored
+        self.renderer.queue_draw()
+        self.renderer.update_cursor()
+
+
+class CanvasTransformation (object):
+    """Record of a TiledDrawWidget's canvas (view) transformation.
+    """
+
+    translation_x = 0.0
+    translation_y = 0.0
+    scale = 1.0
+    rotation = 0.0
+    mirrored = False
+
+    def __repr__(self):
+        return "<%s dx=%0.3f dy=%0.3f scale=%0.3f rot=%0.3f%s>" % (
+                    self.__class__.__name__,
+                    self.translation_x, self.translation_y,
+                    self.scale, self.rotation,
+                    (self.mirrored and " mirrored" or ""))
+
 
 class DrawCursorMixin:
     """Mixin for renderer widgets needing a managed drawing cursor.
@@ -413,7 +461,7 @@ def tile_is_visible(cr, tx, ty, clip_region, sparse, translation_only):
 
 class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
     """Render the document model to screen.
-    
+
     Can render the document in a transformed way, including translation,
     scaling and rotation."""
 

@@ -215,7 +215,8 @@ class FileHandler(object):
             self.app.scratchpad_doc.model.set_background(self.doc.model.background)
         self.filename = None
         self.set_recent_items()
-        self.app.doc.reset_view_cb(None)
+        self.app.doc.reset_view(True, True, True)
+        self.app.doc.clear_saved_view()
 
     @staticmethod
     def gtk_main_tick():
@@ -236,7 +237,8 @@ class FileHandler(object):
             for func in self.file_opened_observers:
                 func(self.filename)
             print 'Loaded from', self.filename
-            self.app.doc.reset_view_cb(None)
+            self.app.doc.reset_view(True, True, True)
+            self.app.doc.clear_saved_view()
             # try to restore the last used brush and color
             si = self.doc.model.layer.get_last_stroke_info()
             if si:
@@ -253,7 +255,8 @@ class FileHandler(object):
             self.app.scratchpad_filename = os.path.abspath(filename)
             self.app.preferences["scratchpad.last_opened_scratchpad"] = self.app.scratchpad_filename
             print 'Loaded scratchpad from', self.app.scratchpad_filename
-            self.app.scratchpad_doc.reset_view_cb(None)
+            self.app.scratchpad_doc.reset_view(True, True, True)
+            self.app.scratchpad_doc.clear_saved_view()
 
     @drawwindow.with_wait_cursor
     def save_file(self, filename, export=False, **options):
