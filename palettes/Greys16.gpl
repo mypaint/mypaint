@@ -1,22 +1,21 @@
 GIMP Palette
 Name: Greyscale 16
-# Andrew Chadwick 2012-07, CC0
+# Andrew Chadwick 2012-12, CC0
 # https://creativecommons.org/publicdomain/zero/1.0/
 #
 0 0 0       Black
-16 16 16
-32 32 32
-48 48 48
-64 64 64    Dark grey
-80 80 80
-96 96 96
-112 112 112
-128 128 128 Mid-grey
-144 144 144
-160 160 160
-176 176 176
-192 192 192 Light grey
-208 208 208
-224 224 224
-240 240 240
+17 17 17
+34 34 34
+51 51 51    20% grey
+68 68 68
+85 85 85
+102 102 102 40% grey
+119 119 119
+136 136 136
+153 153 153 60% grey
+170 170 170
+187 187 187
+204 204 204 80% grey
+221 221 221
+238 238 238
 255 255 255 White
