@@ -96,10 +96,8 @@ class Window (windowing.MainWindow, layout.MainWindow):
 
         # Connect events
         self.connect('delete-event', self.quit_cb)
-        self.connect('key-press-event', self.key_press_event_cb_before)
-        self.connect('key-release-event', self.key_release_event_cb_before)
-        self.connect_after('key-press-event', self.key_press_event_cb_after)
-        self.connect_after('key-release-event', self.key_release_event_cb_after)
+        self.connect('key-press-event', self.key_press_event_cb)
+        self.connect('key-release-event', self.key_release_event_cb)
         self.connect("drag-data-received", self.drag_data_received)
         self.connect("window-state-event", self.window_state_event_cb)
 
@@ -336,36 +334,25 @@ class Window (windowing.MainWindow, layout.MainWindow):
                 return (self.app.doc, tdw)
         return (None, None)
 
-    def key_press_event_cb_before(self, win, event):
+    def key_press_event_cb(self, win, event):
         # Process keyboard events
         target_doc, target_tdw = self._get_active_doc()
         if target_doc is None:
             return False
+        # Unfullscreen
+        if self.is_fullscreen and event.keyval == keysyms.Escape:
+            gobject.idle_add(self.unfullscreen)
         # Forward the keypress to the active doc's active InteractionMode.
         return target_doc.modes.top.key_press_cb(win, target_tdw, event)
 
 
-    def key_release_event_cb_before(self, win, event):
+    def key_release_event_cb(self, win, event):
         # Process key-release events
         target_doc, target_tdw = self._get_active_doc()
         if target_doc is None:
             return False
         # Forward the event (see above)
         return target_doc.modes.top.key_release_cb(win, target_tdw, event)
-
-
-    # XXX these can probably stay here for now.
-
-    def key_press_event_cb_after(self, win, event):
-        key = event.keyval
-        if self.is_fullscreen and key == keysyms.Escape:
-            self.fullscreen_cb()
-        else:
-            return False
-        return True
-
-    def key_release_event_cb_after(self, win, event):
-        return False
 
 
     # WINDOW HANDLING
