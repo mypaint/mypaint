@@ -97,8 +97,8 @@ tile_map_copy_to(TileMap *self, TileMap *other)
 {
     assert(other->size >= self->size);
 
-    for(int y = -self->size; y < self->size-1; y++) {
-        for(int x = -self->size; x < self->size-1; x++) {
+    for(int y = -self->size; y < self->size; y++) {
+        for(int x = -self->size; x < self->size; x++) {
             TileIndex index = {x, y};
             *tile_map_get(other, index) = *tile_map_get(self, index);
         }
