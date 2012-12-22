@@ -158,7 +158,11 @@ operation_queue_new()
     self->dirty_tiles_n = 0;
     self->dirty_tiles = NULL;
 
+#ifdef HEAVY_DEBUG
+    operation_queue_resize(self, 1);
+#else
     operation_queue_resize(self, 10);
+#endif
 
     return self;
 }
@@ -234,7 +238,11 @@ void
 operation_queue_add(OperationQueue *self, TileIndex index, OperationDataDrawDab *op)
 {
     while (!tile_map_contains(self->tile_map, index)) {
+#ifdef HEAVY_DEBUG
+        operation_queue_resize(self, self->tile_map->size+1);
+#else
         operation_queue_resize(self, self->tile_map->size*2);
+#endif
     }
 
     Fifo **queue_pointer = tile_map_get(self->tile_map, index);
