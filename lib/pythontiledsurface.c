@@ -9,20 +9,9 @@
 
 #include "pythontiledsurface.h"
 
-// caching tile memory location (optimization)
-#define TILE_MEMORY_SIZE 8
-typedef struct {
-  int tx, ty;
-  uint16_t * rgba_p;
-} TileMemory;
-
 struct _MyPaintPythonTiledSurface {
     MyPaintTiledSurface parent;
-
     PyObject * py_obj;
-    TileMemory tileMemory[TILE_MEMORY_SIZE];
-    int tileMemoryValid;
-    int tileMemoryWrite;
     int atomic;
 };
 
@@ -35,9 +24,6 @@ void begin_atomic(MyPaintSurface *surface)
 
     mypaint_tiled_surface_begin_atomic((MyPaintTiledSurface *)self);
 
-    if (self->atomic == 0) {
-      assert(self->tileMemoryValid == 0);
-    }
     self->atomic++;
 }
 
@@ -51,9 +37,6 @@ MyPaintRectangle end_atomic(MyPaintSurface *surface)
     self->atomic--;
 
     if (self->atomic == 0) {
-        self->tileMemoryValid = 0;
-        self->tileMemoryWrite = 0;
-
         if (bbox.width > 0) {
             PyObject* res;
             res = PyObject_CallMethod(self->py_obj, "notify_observers", "(iiii)",
@@ -74,49 +57,25 @@ tile_request_start(MyPaintTiledSurface *tiled_surface, MyPaintTiledSurfaceTileRe
     const int tx = request->tx;
     const int ty = request->ty;
 
-    // We assume that the memory location does not change between begin_atomic() and end_atomic().
-    for (int i=0; i<self->tileMemoryValid; i++) {
-      if (self->tileMemory[i].tx == tx and self->tileMemory[i].ty == ty) {
-        request->buffer = self->tileMemory[i].rgba_p;
-        return;
-      }
-    }
-    if (PyErr_Occurred()) {
-        request->buffer = NULL;
-        return;
-    }
+    if (PyErr_Occurred()) return;
     PyObject* rgba = PyObject_CallMethod(self->py_obj, "get_tile_memory", "(iii)", tx, ty, readonly);
     if (rgba == NULL) {
-      printf("Python exception during get_tile_memory()!\n");
       request->buffer = NULL;
+      printf("Python exception during get_tile_memory()!\n");
       return;
     }
 
 #ifdef HEAVY_DEBUG
-       assert(PyArray_NDIM(rgba) == 3);
-       assert(PyArray_DIM(rgba, 0) == tiled_surface->tile_size);
-       assert(PyArray_DIM(rgba, 1) == tiled_surface->tile_size);
-       assert(PyArray_DIM(rgba, 2) == 4);
-       assert(PyArray_ISCARRAY(rgba));
-       assert(PyArray_TYPE(rgba) == NPY_UINT16);
+    assert(PyArray_NDIM(rgba) == 3);
+    assert(PyArray_DIM(rgba, 0) == tiled_surface->tile_size);
+    assert(PyArray_DIM(rgba, 1) == tiled_surface->tile_size);
+    assert(PyArray_DIM(rgba, 2) == 4);
+    assert(PyArray_ISCARRAY(rgba));
+    assert(PyArray_TYPE(rgba) == NPY_UINT16);
 #endif
     // tiledsurface.py will keep a reference in its tiledict, at least until the final end_atomic()
     Py_DECREF(rgba);
     uint16_t * rgba_p = (uint16_t*)((PyArrayObject*)rgba)->data;
-
-    // Cache tiles to speed up small brush strokes with lots of dabs, like charcoal.
-    // Not caching readonly requests; they are alternated with write requests anyway.
-    if (!readonly) {
-      if (self->tileMemoryValid < TILE_MEMORY_SIZE) {
-        self->tileMemoryValid++;
-      }
-      // We always overwrite the oldest cache entry.
-      // We are mainly optimizing for strokes with radius smaller than one tile.
-      self->tileMemory[self->tileMemoryWrite].tx = tx;
-      self->tileMemory[self->tileMemoryWrite].ty = ty;
-      self->tileMemory[self->tileMemoryWrite].rgba_p = rgba_p;
-      self->tileMemoryWrite = (self->tileMemoryWrite + 1) % TILE_MEMORY_SIZE;
-    }
 
     request->buffer = rgba_p;
 }
@@ -141,8 +100,6 @@ mypaint_python_tiled_surface_new(PyObject *py_object)
 
     self->py_obj = py_object; // no need to incref
     self->atomic = 0;
-    self->tileMemoryValid = 0;
-    self->tileMemoryWrite = 0;
 
     return self;
 }
