@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MyPaint git\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-27 18:54+0100\n"
+"POT-Creation-Date: 2012-12-28 19:12+0100\n"
 "PO-Revision-Date: 2011-11-16 21:21+0100\n"
 "Last-Translator: Gergely Aradszki\n"
 "Language: hu\n"
@@ -20,9 +20,9 @@ msgid "Opacity"
 msgstr "Átlátszatlanság:"
 
 #: ../brushsettings-gen.h:4
-#, fuzzy
 msgid ""
-"0 means brush is transparent, 1 fully visible(also known as alpha or opacity)"
+"0 means brush is transparent, 1 fully visible\n"
+"(also known as alpha or opacity)"
 msgstr ""
 "A 0 azt jelenti, hogy az ecset átlátszó, az 1 pedig, hogy teljesen látható.\n"
 "(Alpha-ként, vagy átlátszatlanságként is ismert)"
@@ -32,38 +32,37 @@ msgid "Opacity multiply"
 msgstr "Átlátszatlanság szorzó"
 
 #: ../brushsettings-gen.h:5
-#, fuzzy
 msgid ""
 "This gets multiplied with opaque. You should only change the pressure input "
-"of this setting. Use 'opaque' instead to make opacity depend on speed.This "
-"setting is responsible to stop painting when there is zero pressure. This is "
-"just a convention, the behaviour is identical to 'opaque'."
+"of this setting. Use 'opaque' instead to make opacity depend on speed.\n"
+"This setting is responsible to stop painting when there is zero pressure. "
+"This is just a convention, the behaviour is identical to 'opaque'."
 msgstr ""
 "Az átlátszatlanság ezzel az értékkel lesz megszorozva. Ennek a beállításnak "
 "csak a nyomásbemenetét kell megváltoztatni. Ha szeretnéd, hogy az "
 "átlátszatlanság a sebességtől függjön, használd inkább az „átlátszatlanság”  "
 "beállítást.\n"
 "Ez a beállítás felelős azért, hogy 0 nyomás esetén megszakadjon a rajzolás. "
-"A viselkedés megegyezik az „átlátszatlanság”  beállítással."
+"Ez csak egy konvenció, a viselkedése megegyezik az „átlátszatlanság”  "
+"beállítással."
 
 #: ../brushsettings-gen.h:6
 msgid "Opacity linearize"
 msgstr "Átlátszatlanság lineárissá tétele"
 
 #: ../brushsettings-gen.h:6
-#, fuzzy
 msgid ""
 "Correct the nonlinearity introduced by blending multiple dabs on top of each "
 "other. This correction should get you a linear (\"natural\") pressure "
 "response when pressure is mapped to opaque_multiply, as it is usually done. "
 "0.9 is good for standard strokes, set it smaller if your brush scatters a "
-"lot, or higher if you use dabs_per_second.0.0 the opaque value above is for "
-"the individual dabs1.0 the opaque value above is for the final brush stroke, "
-"assuming each pixel gets (dabs_per_radius*2) brushdabs on average during a "
-"stroke"
+"lot, or higher if you use dabs_per_second.\n"
+"0.0 the opaque value above is for the individual dabs\n"
+"1.0 the opaque value above is for the final brush stroke, assuming each "
+"pixel gets (dabs_per_radius*2) brushdabs on average during a stroke"
 msgstr ""
 "Az egymásra rajzolt foltok összemosásakor keletkező egyenetlenséget "
-"korrigálja. Ennek eredményeként lineáris, természetes nyomást kap, ha a "
+"korrigálja. Ennek eredményeként lineáris, természetes nyomást kapsz, ha a "
 "nyomás az „Átlátszatlanság szorzás” -ra van állítva, ahogy általában lenni "
 "szokott. A 0.9 általános beállításként elfogadható, de állítsd inkább "
 "alacsonyabbra, ha az ecsetnek nagy a szórása, vagy magasabbra, ha a „Foltok "
@@ -78,12 +77,14 @@ msgid "Radius"
 msgstr "Sugár"
 
 #: ../brushsettings-gen.h:7
-#, fuzzy
-msgid "Basic brush radius (logarithmic) 0.7 means 2 pixels 3.0 means 20 pixels"
+msgid ""
+"Basic brush radius (logarithmic)\n"
+" 0.7 means 2 pixels\n"
+" 3.0 means 20 pixels"
 msgstr ""
 "Alap ecset-sugár (logaritmikus)\n"
-"0.7 = 2 pixel\n"
-"3.0 = 20 pixel"
+" A 0.7 2 pixelt jelent\n"
+" A 3.0 20 pixel jelent"
 
 #: ../brushsettings-gen.h:8
 msgid "Hardness"
@@ -102,11 +103,12 @@ msgid "Anti-aliasing"
 msgstr "Élsimítás"
 
 #: ../brushsettings-gen.h:9
-#, fuzzy
 msgid ""
 "This setting decreases the hardness when necessary to prevent a pixel "
-"staircase effect. 0.0 disable (for very strong erasers and pixel brushes) "
-"1.0 blur one pixel (good value) 5.0 notable blur, thin strokes will disappear"
+"staircase effect.\n"
+" 0.0 disable (for very strong erasers and pixel brushes)\n"
+" 1.0 blur one pixel (good value)\n"
+" 5.0 notable blur, thin strokes will disappear"
 msgstr ""
 "Ez a beállítás csökkenti a keménységet ha szükséges, hogy megakadályozza az "
 "élek lépcsősödését.\n"
@@ -128,7 +130,7 @@ msgstr ""
 
 #: ../brushsettings-gen.h:11
 msgid "Dabs per actual radius"
-msgstr "A foltok száma pillanatnyi sugaranként"
+msgstr "A foltok száma valódi sugaranként"
 
 #: ../brushsettings-gen.h:11
 msgid ""
@@ -151,32 +153,30 @@ msgid "Radius by random"
 msgstr "Véletlenszerű sugár"
 
 #: ../brushsettings-gen.h:13
-#, fuzzy
 msgid ""
 "Alter the radius randomly each dab. You can also do this with the by_random "
-"input on the radius setting. If you do it here, there are two differences:1) "
-"the opaque value will be corrected such that a big-radius dabs is more "
-"transparent2) it will not change the actual radius seen by "
-"dabs_per_actual_radius"
+"input on the radius setting. If you do it here, there are two differences:\n"
+"1) the opaque value will be corrected such that a big-radius dabs is more "
+"transparent\n"
+"2) it will not change the actual radius seen by dabs_per_actual_radius"
 msgstr ""
 "A sugár foltonként véletlenszerűen változik, hasonlóan ahhoz, mintha a  "
 "„Véletlenszerű bemenet szerint”  bemenetet használnád a sugár beállításánál."
 "Az itteni beállítás két dologban tér el ettől:\n"
 "1. Az átlátszatlanság érték úgy módosul, hogy a nagyobb foltok átlátszóbbak "
 "lesznek\n"
-"2. Nem hat a „valós sugár” bemenet által látott értékre"
+"2. Nem hat az „A foltok száma valódi sugaranként” által látott értékre"
 
 #: ../brushsettings-gen.h:14
 msgid "Fine speed filter"
 msgstr "Finom sebesség szűrő"
 
 #: ../brushsettings-gen.h:14
-#, fuzzy
 msgid ""
-"How slow the input fine speed is following the real speed0.0 change "
-"immediately as your speed changes (not recommended, but try it)"
+"How slow the input fine speed is following the real speed\n"
+"0.0 change immediately as your speed changes (not recommended, but try it)"
 msgstr ""
-"Milyen lassan követi a finom sebesség bemenet a valós sebességet.\n"
+"Milyen lassan követi a finom sebesség bemenet a valós sebességet\n"
 "A 0.0 érték azonnali változást eredményez, ahogy a sebességed változik (nem "
 "ajánlott, de próbáld csak ki)."
 
@@ -193,19 +193,19 @@ msgid "Fine speed gamma"
 msgstr "Finom sebesség gamma"
 
 #: ../brushsettings-gen.h:16
-#, fuzzy
 msgid ""
 "This changes the reaction of the 'fine speed' input to extreme physical "
 "speed. You will see the difference best if 'fine speed' is mapped to the "
-"radius.-8.0 very fast speed does not increase 'fine speed' much more+8.0 "
-"very fast speed increases 'fine speed' a lotFor very slow speed the opposite "
-"happens."
+"radius.\n"
+"-8.0 very fast speed does not increase 'fine speed' much more\n"
+"+8.0 very fast speed increases 'fine speed' a lot\n"
+"For very slow speed the opposite happens."
 msgstr ""
-"Ez a beállítás a „Sebesség1”  extrém fizikai sebességekre adott reakcióját "
-"változtatja meg. A különbség akkor érzékelhető a legjobban, ha a "
-"„Sebesség1”  a Sugarat vezérli.\n"
-"-8.0: a nagyon gyors változás kevésbé hat a „Sebesség1” -re\n"
-"+8.0: a nagyon gyors változás erősebben hat a „Sebesség1” -re\n"
+"Ez a beállítás a „finom sebesség” extrém fizikai sebességekre adott "
+"reakcióját változtatja meg. A különbség akkor érzékelhető a legjobban, ha a "
+"„finom sebesség” a Sugarat vezérli.\n"
+"-8.0: a nagyon gyors változás kevésbé hat a „finom sebesség” -re\n"
+"+8.0: a nagyon gyors változás erősebben hat a „finom sebesség” -re\n"
 "Nagyon kis sebességeknél a hatás ellentétes."
 
 #: ../brushsettings-gen.h:17
@@ -221,26 +221,27 @@ msgid "Jitter"
 msgstr "Szórás"
 
 #: ../brushsettings-gen.h:18
-#, fuzzy
 msgid ""
-"Add a random offset to the position where each dab is drawn 0.0 disabled 1.0 "
-"standard deviation is one basic radius away<0.0 negative values produce no "
-"jitter"
+"Add a random offset to the position where each dab is drawn\n"
+" 0.0 disabled\n"
+" 1.0 standard deviation is one basic radius away\n"
+"<0.0 negative values produce no jitter"
 msgstr ""
 "Véletlen eltolást ad minden egyes foltnak.\n"
-"0.0: nincsen eltolás\n"
-"1.0: a standard deviáció (szórási távolság) egy alap-sugárnyi\n"
-"<0.0: negatív értékek használatakor nincsen szórás"
+" 0.0 nincsen eltolás\n"
+" 1.0 a standard deviáció (szórási távolság) egy alap-sugárnyi\n"
+"<0.0 negatív értékek használatakor nincsen szórás"
 
 #: ../brushsettings-gen.h:19
 msgid "Offset by speed"
 msgstr "Eltolás sebesség szerint"
 
 #: ../brushsettings-gen.h:19
-#, fuzzy
 msgid ""
-"Change position depending on pointer speed= 0 disable> 0 draw where the "
-"pointer moves to< 0 draw where the pointer comes from"
+"Change position depending on pointer speed\n"
+"= 0 disable\n"
+"> 0 draw where the pointer moves to\n"
+"< 0 draw where the pointer comes from"
 msgstr ""
 "A pozíció változtatása a sebesség függvényében\n"
 "= 0: kikapcsolva\n"
@@ -314,163 +315,175 @@ msgid "Save color"
 msgstr "Szín mentése"
 
 #: ../brushsettings-gen.h:27
-#, fuzzy
 msgid ""
 "When selecting a brush, the color can be restored to the color that the "
-"brush was saved with. 0.0 do not modify the active color when selecting this "
-"brush 0.5 change active color towards brush color 1.0 set the active color "
-"to the brush color when selected"
+"brush was saved with.\n"
+" 0.0 do not modify the active color when selecting this brush\n"
+" 0.5 change active color towards brush color\n"
+" 1.0 set the active color to the brush color when selected"
 msgstr ""
 "Egy ecset kiválasztásakor a színt vissza lehet állítani arra a színre, "
 "amelyikkel korábban elmentetted.\n"
-"0.0 ne módosítsa az aktív színt az ecset kiválasztásakor\n"
-"0.5 a két szín keverése 1.0 az aktív szín átállítása a mentett színre"
+" 0.0 ne módosítsa az aktív színt az ecset kiválasztásakor\n"
+" 0.5 a szín változtatása az ecset színe felé\n"
+" 1.0 az aktív szín átállítása az ecset színére"
 
 #: ../brushsettings-gen.h:28
 msgid "Change color hue"
 msgstr "Árnyalat megváltoztatása"
 
 #: ../brushsettings-gen.h:28
-#, fuzzy
 msgid ""
-"Change color hue.-0.1 small clockwise color hue shift 0.0 disable 0.5 "
-"counterclockwise hue shift by 180 degrees"
+"Change color hue.\n"
+"-0.1 small clockwise color hue shift\n"
+" 0.0 disable\n"
+" 0.5 counterclockwise hue shift by 180 degrees"
 msgstr ""
 "A szín árnyalatát változtatja.\n"
-"-0.1: kis mértékű, óramutató járásával megegyező irányú árnyalat-eltolás\n"
-"0.0: nincsen eltolás\n"
-"0.5: óramutató járásával ellentétes irányú, 180 fokos eltolás."
+"-0.1 kis mértékű, óramutató járásával megegyező irányú árnyalat-eltolás\n"
+" 0.0 nincsen eltolás\n"
+" 0.5 óramutató járásával ellentétes irányú, 180 fokos eltolás."
 
 #: ../brushsettings-gen.h:29
 msgid "Change color lightness (HSL)"
 msgstr "Szín világosságának változtatása (HSL)"
 
 #: ../brushsettings-gen.h:29
-#, fuzzy
 msgid ""
-"Change the color lightness (luminance) using the HSL color model.-1.0 "
-"blacker 0.0 disable 1.0 whiter"
+"Change the color lightness (luminance) using the HSL color model.\n"
+"-1.0 blacker\n"
+" 0.0 disable\n"
+" 1.0 whiter"
 msgstr ""
 "A szín világosságának (luminancia, fényerő) változtatása a HSL színmodell "
 "szerint.\n"
-"-1.0: feketébb\n"
-"0.0: nincs változás\n"
-"1.0: fehérebb"
+"-1.0 feketébb\n"
+" 0.0 nincs változás\n"
+" 1.0 fehérebb"
 
 #: ../brushsettings-gen.h:30
 msgid "Change color satur. (HSL)"
 msgstr "Szín telítettségének változtatása (HSL)"
 
 #: ../brushsettings-gen.h:30
-#, fuzzy
 msgid ""
-"Change the color saturation using the HSL color model.-1.0 more grayish 0.0 "
-"disable 1.0 more saturated"
+"Change the color saturation using the HSL color model.\n"
+"-1.0 more grayish\n"
+" 0.0 disable\n"
+" 1.0 more saturated"
 msgstr ""
 "A szín telítettségének változtatása a HSL színmodell szerint.\n"
-"-1.0: szürkébb\n"
-"0.0: nincs változtatás\n"
-"1.0: telítettebb"
+"-1.0 szürkébb\n"
+" 0.0 nincs változtatás\n"
+" 1.0 telítettebb"
 
 #: ../brushsettings-gen.h:31
 msgid "Change color value (HSV)"
 msgstr "Szín értékének változtatása (HSV)"
 
 #: ../brushsettings-gen.h:31
-#, fuzzy
 msgid ""
 "Change the color value (brightness, intensity) using the HSV color model. "
-"HSV changes are applied before HSL.-1.0 darker 0.0 disable 1.0 brigher"
+"HSV changes are applied before HSL.\n"
+"-1.0 darker\n"
+" 0.0 disable\n"
+" 1.0 brigher"
 msgstr ""
 "A szín értékének változtatása (világosság, intenzitás) a HSV színmodell "
 "szerint. A HSV változtatások a HSL előtt kerülnek alkalmazásra.\n"
-"-1.0: sötétebb\n"
-"0.0: nincs változtatás\n"
-"1.0: világosabb"
+"-1.0 sötétebb\n"
+" 0.0 nincs változtatás\n"
+" 1.0 világosabb"
 
 #: ../brushsettings-gen.h:32
 msgid "Change color satur. (HSV)"
 msgstr "Szín telítettségének változtatása (HSV)"
 
 #: ../brushsettings-gen.h:32
-#, fuzzy
 msgid ""
 "Change the color saturation using the HSV color model. HSV changes are "
-"applied before HSL.-1.0 more grayish 0.0 disable 1.0 more saturated"
+"applied before HSL.\n"
+"-1.0 more grayish\n"
+" 0.0 disable\n"
+" 1.0 more saturated"
 msgstr ""
 "A szín telítettségének változtatása a HSV színmodell szerint. A HSV "
 "változtatások a HSL előtt kerülnek alkalmazásra.\n"
-"-1.0: szürkébb\n"
-"0.0: nincs változtatás\n"
-"1.0: telítettebb"
+"-1.0 szürkébb\n"
+" 0.0 nincs változtatás\n"
+" 1.0 telítettebb"
 
 #: ../brushsettings-gen.h:33
 msgid "Smudge"
 msgstr "Elkenés"
 
 #: ../brushsettings-gen.h:33
-#, fuzzy
 msgid ""
 "Paint with the smudge color instead of the brush color. The smudge color is "
-"slowly changed to the color you are painting on. 0.0 do not use the smudge "
-"color 0.5 mix the smudge color with the brush color 1.0 use only the smudge "
-"color"
+"slowly changed to the color you are painting on.\n"
+" 0.0 do not use the smudge color\n"
+" 0.5 mix the smudge color with the brush color\n"
+" 1.0 use only the smudge color"
 msgstr ""
 "Az elkenési színnel fest az ecset színe helyett. Az elkenési szín lassan "
 "arra a színre változik, mint amire éppen fest.\n"
-"0.0: ne használja az elkenési színt0.5: az elkenési- és az ecset-szín "
-"keverése1.0: csak az elkenési szín használata"
+" 0.0 ne használja az elkenési színt\n"
+" 0.5 az elkenési- és az ecset-szín keverése\n"
+" 1.0 csak az elkenési szín használata"
 
 #: ../brushsettings-gen.h:34
 msgid "Smudge length"
 msgstr "Elkenés hossza"
 
 #: ../brushsettings-gen.h:34
-#, fuzzy
 msgid ""
 "This controls how fast the smudge color becomes the color you are painting "
-"on.0.0 immediately update the smudge color (requires more CPU cycles because "
-"of the frequent color checks)0.5 change the smudge color steadily towards "
-"the canvas color1.0 never change the smudge color"
+"on.\n"
+"0.0 immediately update the smudge color (requires more CPU cycles because of "
+"the frequent color checks)\n"
+"0.5 change the smudge color steadily towards the canvas color\n"
+"1.0 never change the smudge color"
 msgstr ""
 "Milyen gyorsan veszi fel az elkenés azt a színt, amire éppen fest.\n"
-"0.0: azonnal változzon (nagyobb a processzorigénybevétel a gyakoribb "
+"0.0 azonnal változzon (nagyobb a processzor-igénybevétel a gyakoribb "
 "színellenőrzés miatt)\n"
 "0.5 fokozatosan veszi fel a színt az elkenés\n"
-"1.0: soha nem változik"
+"1.0 soha nem változik"
 
 #: ../brushsettings-gen.h:35
 msgid "Smudge radius"
 msgstr "Elkenés sugara"
 
 #: ../brushsettings-gen.h:35
-#, fuzzy
 msgid ""
 "This modifies the radius of the circle where color is picked up for "
-"smudging. 0.0 use the brush radius-0.7 half the brush radius (fast, but not "
-"always intuitive)+0.7 twice the brush radius+1.6 five times the brush radius "
-"(slow performance)"
+"smudging.\n"
+" 0.0 use the brush radius\n"
+"-0.7 half the brush radius (fast, but not always intuitive)\n"
+"+0.7 twice the brush radius\n"
+"+1.6 five times the brush radius (slow performance)"
 msgstr ""
 "Elkenéskor módosítja a színvétel sugarát.\n"
 " 0.0 ecsetsugár használata \n"
-"-0.7 az ecset sugarának fele(gyors, de nem mindig intuitív)\n"
+"-0.7 az ecset sugarának fele (gyors, de nem mindig intuitív)\n"
 "+0.7 az ecset sugarának kétszerese\n"
-"+1.6 az ecset sugarának  ötszöröse (lassú)"
+"+1.6 az ecset sugarának ötszöröse (lassú)"
 
 #: ../brushsettings-gen.h:36
 msgid "Eraser"
 msgstr "Radír"
 
 #: ../brushsettings-gen.h:36
-#, fuzzy
 msgid ""
-"how much this tool behaves like an eraser 0.0 normal painting 1.0 standard "
-"eraser 0.5 pixels go towards 50% transparency"
+"how much this tool behaves like an eraser\n"
+" 0.0 normal painting\n"
+" 1.0 standard eraser\n"
+" 0.5 pixels go towards 50% transparency"
 msgstr ""
 "Mennyire fog ez az eszköz radírként viselkedni.\n"
-"0.0: sima festés\n"
-"1.0: radír\n"
-"0.5 a pixelek az 50%-os átlátszóság felé közelítenek"
+" 0.0 sima festés\n"
+" 1.0 radír\n"
+" 0.5 a pixelek az 50%-os átlátszóság felé közelítenek"
 
 #: ../brushsettings-gen.h:37
 msgid "Stroke threshold"
@@ -502,32 +515,32 @@ msgid "Stroke hold time"
 msgstr "Ecsetvonás tartási ideje"
 
 #: ../brushsettings-gen.h:39
-#, fuzzy
 msgid ""
 "This defines how long the stroke input stays at 1.0. After that it will "
 "reset to 0.0 and start growing again, even if the stroke is not yet "
-"finished.2.0 means twice as long as it takes to go from 0.0 to 1.09.9 and "
-"bigger stands for infinite"
+"finished.\n"
+"2.0 means twice as long as it takes to go from 0.0 to 1.0\n"
+"9.9 and bigger stands for infinite"
 msgstr ""
 "Azt határozza meg, hogy az ecsetvonás bemeneti értéke milyen sokáig marad "
 "1.0. Ezután visszaugrik 0.0-ra, és újból nőni kezd, még akkor is, ha az "
 "ecsetvonás még nem fejeződött be.\n"
-"2.0: kétszer olyan hosszú, míg 0.0-tól 1.0-ig ér\n"
-"a 9.9 és ennél nagyobb számok már a végtelent jelentik"
+"2.0 kétszer olyan hosszú, míg 0.0-tól 1.0-ig ér\n"
+"9.9 és ennél nagyobb számok már a végtelent jelentik"
 
 #: ../brushsettings-gen.h:40
 msgid "Custom input"
 msgstr "Saját bemenet"
 
 #: ../brushsettings-gen.h:40
-#, fuzzy
 msgid ""
 "Set the custom input to this value. If it is slowed down, move it towards "
 "this value (see below). The idea is that you make this input depend on a "
 "mixture of pressure/speed/whatever, and then make other settings depend on "
 "this 'custom input' instead of repeating this combination everywhere you "
-"need it.If you make it change 'by random' you can generate a slow (smooth) "
-"random input."
+"need it.\n"
+"If you make it change 'by random' you can generate a slow (smooth) random "
+"input."
 msgstr ""
 "A „Saját bemenetet” erre az értékre állítja. Ha lelassul, efelé az érték "
 "felé közelíti (lásd lejjebb). Ez lehetővé teszi, hogy a bemenet a nyomás/"
@@ -541,16 +554,16 @@ msgid "Custom input filter"
 msgstr "Saját bemenet szűrő"
 
 #: ../brushsettings-gen.h:41
-#, fuzzy
 msgid ""
 "How slow the custom input actually follows the desired value (the one "
 "above). This happens at brushdab level (ignoring how much time has past, if "
-"brushdabs do not depend on time).0.0 no slowdown (changes apply instantly)"
+"brushdabs do not depend on time).\n"
+"0.0 no slowdown (changes apply instantly)"
 msgstr ""
 "Milyen lassan követi a saját bemenet a kívánt értéket (a fentebb lévőt). Ez "
 "folt szinten működik, figyelmen kívül hagyva az időt, hacsak a foltok száma "
 "nem függ az időtől.\n"
-"0.0: nincsen lassulás (a változásokat azonnal alkalmazza)"
+"0.0 nincsen lassulás (a változásokat azonnal alkalmazza)"
 
 #: ../brushsettings-gen.h:42
 msgid "Elliptical dab: ratio"
@@ -568,15 +581,16 @@ msgid "Elliptical dab: angle"
 msgstr "Elliptikus folt: szög"
 
 #: ../brushsettings-gen.h:43
-#, fuzzy
 msgid ""
-"Angle by which elliptical dabs are tilted 0.0 horizontal dabs 45.0 45 "
-"degrees, turned clockwise 180.0 horizontal again"
+"Angle by which elliptical dabs are tilted\n"
+" 0.0 horizontal dabs\n"
+" 45.0 45 degrees, turned clockwise\n"
+" 180.0 horizontal again"
 msgstr ""
 "Az elliptikus foltok döntésének szöge.\n"
-"0.0: vízszintes foltok\n"
-"45.0: átlós, jobbra döntött\n"
-"180: ez is vízszintes"
+" 0.0 vízszintes foltok\n"
+" 45.0 45 fokos, óramutató járásával megegyezően döntött\n"
+" 180 ez is vízszintes"
 
 #: ../brushsettings-gen.h:44
 msgid "Direction filter"
@@ -595,28 +609,30 @@ msgid "Lock alpha"
 msgstr "Alpha zárolása"
 
 #: ../brushsettings-gen.h:45
-#, fuzzy
 msgid ""
 "Do not modify the alpha channel of the layer (paint only where there is "
-"paint already) 0.0 normal painting 0.5 half of the paint gets applied "
-"normally 1.0 alpha channel fully locked"
+"paint already)\n"
+" 0.0 normal painting\n"
+" 0.5 half of the paint gets applied normally\n"
+" 1.0 alpha channel fully locked"
 msgstr ""
 "Ne módosítsa a réteg alpha csatornáját (csak ott fessen, ahol már most is "
 "van festék)\n"
-"0.0 normál festés\n"
-"0.5 a festék fele normálisan kerül fel\n"
-"1.0 az alpha csatornát teljesen zárolja"
+" 0.0 normál festés\n"
+" 0.5 a festék fele normálisan kerül fel\n"
+" 1.0 az alpha csatornát teljesen zárolja"
 
 #: ../brushsettings-gen.h:46
-#, fuzzy
 msgid "Colorize"
-msgstr "Szín"
+msgstr "Színezés"
 
 #: ../brushsettings-gen.h:46
 msgid ""
 "Colorize the target layer, setting its hue and saturation from the active "
 "brush colour while retaining its value and alpha."
 msgstr ""
+"Színezze a célréteget, az aktív ecset alapján módosítva az árnyalatát és "
+"telítettségét, miközben az értéket és az átlátszóságot változatlanul hagyja."
 
 #: ../brushsettings-gen.h:51
 msgid "Pressure"
