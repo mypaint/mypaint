@@ -348,6 +348,14 @@ class Document():
         """
         return self.get_frame() if self.frame_enabled else self.get_bbox()
 
+
+    def render_into(self, surface, tiles, mipmap_level=0, layers=None, background=None):
+
+        # TODO: move this loop down in C/C++
+        for tx, ty in tiles:
+            with surface.tile_request(tx, ty, readonly=False) as dst:
+                self.blit_tile_into(dst, False, tx, ty, mipmap_level, layers, background)
+
     def blit_tile_into(self, dst, dst_has_alpha, tx, ty, mipmap_level=0, layers=None, background=None):
         assert dst_has_alpha is False
         if layers is None:

@@ -380,6 +380,37 @@ class DrawCursorMixin:
             self.update_cursor()
 
 
+
+def tile_is_visible(cr, tx, ty, clip_region, sparse, translation_only):
+    if not sparse:
+        return True
+
+    # it is worth checking whether this tile really will be visible
+    # (to speed up the L-shaped expose event during scrolling)
+    # (speedup clearly visible; slowdown measurable when always executing this code)
+    N = tiledsurface.N
+    if translation_only:
+        x, y = cr.user_to_device(tx*N, ty*N)
+        bbox = (int(x), int(y), N, N)
+    else:
+        corners = [(tx*N, ty*N), ((tx+1)*N, ty*N), (tx*N, (ty+1)*N), ((tx+1)*N, (ty+1)*N)]
+        corners = [cr.user_to_device(x_, y_) for (x_, y_) in corners]
+        bbox = helpers.rotated_rectangle_bbox(corners)
+
+    if pygtkcompat.USE_GTK3:
+        c_r = gdk.Rectangle()
+        c_r.x, c_r.y, c_r.width, c_r.height = clip_region
+        bb_r = gdk.Rectangle()
+        bb_r.x, bb_r.y, bb_r.width, bb_r.height = bbox
+        intersects, isect_r = gdk.rectangle_intersect(bb_r, c_r)
+        if not intersects:
+            return False
+    else:
+        if clip_region.rect_in(bbox) == gdk.OVERLAP_RECTANGLE_OUT:
+            return False
+
+    return True
+
 class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
     """Render the document model to screen.
     
@@ -578,19 +609,12 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
             overlay.paint(cr)
             cr.restore()
 
-    def render_prepare(self, cr, device_bbox):
-        if device_bbox is None:
-            allocation = self.get_allocation()
-            w, h = allocation.width, allocation.height
-            device_bbox = (0, 0, w, h)
-        #print 'device bbox', tuple(device_bbox)
-
-        x, y, w, h = device_bbox
+    def render_get_clip_region(self, cr, device_bbox):
 
         # Get the area which needs to be updated, in device coordinates, and
         # determine whether the render is "sparse", [TODO: define what this
         # means]
-
+        x, y, w, h = device_bbox
         cx, cy = x+w/2, y+h/2
         if pygtkcompat.USE_GTK3:
             # As of 2012-07-08, Ubuntu Precise (LTS, unfortunately) and Debian
@@ -621,6 +645,18 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         else:
             clip_region = self.window.get_clip_region()
             sparse = not clip_region.point_in(cx, cy)
+
+            return clip_region, sparse
+
+    def render_prepare(self, cr, device_bbox):
+        if device_bbox is None:
+            allocation = self.get_allocation()
+            w, h = allocation.width, allocation.height
+            device_bbox = (0, 0, w, h)
+        #print 'device bbox', tuple(device_bbox)
+
+        clip_region, sparse = self.render_get_clip_region(cr, device_bbox)
+        x, y, w, h = device_bbox
 
         # fill it all white, though not required in the most common case
         if self.visualize_rendering:
@@ -688,8 +724,6 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         if self.visualize_rendering:
             surface.pixbuf.fill((int(random.random()*0xff)<<16)+0x00000000)
 
-        tiles = surface.get_tiles()
-
         background = None
         if self.current_layer_solo:
             background = self.neutral_background_pixbuf
@@ -700,35 +734,9 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
             idx = layers.index(self.doc.layer)
             layers.insert(idx+1, self.overlay_layer)
 
-        for tx, ty in tiles:
-            if sparse:
-                # it is worth checking whether this tile really will be visible
-                # (to speed up the L-shaped expose event during scrolling)
-                # (speedup clearly visible; slowdown measurable when always executing this code)
-                N = tiledsurface.N
-                if translation_only:
-                    x, y = cr.user_to_device(tx*N, ty*N)
-                    bbox = (int(x), int(y), N, N)
-                else:
-                    corners = [(tx*N, ty*N), ((tx+1)*N, ty*N), (tx*N, (ty+1)*N), ((tx+1)*N, (ty+1)*N)]
-                    corners = [cr.user_to_device(x_, y_) for (x_, y_) in corners]
-                    bbox = helpers.rotated_rectangle_bbox(corners)
-
-                if pygtkcompat.USE_GTK3:
-                    c_r = gdk.Rectangle()
-                    c_r.x, c_r.y, c_r.width, c_r.height = clip_region
-                    bb_r = gdk.Rectangle()
-                    bb_r.x, bb_r.y, bb_r.width, bb_r.height = bbox
-                    intersects, isect_r = gdk.rectangle_intersect(bb_r, c_r)
-                    if not intersects:
-                        continue
-                else:
-                    if clip_region.rect_in(bbox) == gdk.OVERLAP_RECTANGLE_OUT:
-                        continue
-
-
-            dst = surface.get_tile_memory(tx, ty)
-            self.doc.blit_tile_into(dst, False, tx, ty, mipmap_level, layers, background)
+        # Composite
+        tiles = [(tx, ty) for tx, ty in surface.get_tiles() if tile_is_visible(cr, tx, ty, clip_region, sparse, translation_only)]
+        self.doc.render_into(surface, tiles, mipmap_level, layers, background)
 
         if translation_only and not pygtkcompat.USE_GTK3:
             # not sure why, but using gdk directly is notably faster than the same via cairo
