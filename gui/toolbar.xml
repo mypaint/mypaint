@@ -12,8 +12,8 @@ the Free Software Foundation; either version 2 of the License, or
     <menuitem action="toolbar1_file"/>
     <menuitem action="toolbar1_scrap"/>
     <menuitem action="toolbar1_edit"/>
-    <menuitem action="toolbar1_editmodes"/>
     <menuitem action="toolbar1_blendmodes"/>
+    <menuitem action="toolbar1_editmodes"/>
     <menuitem action="toolbar1_view_modes"/>
     <menuitem action="toolbar1_view_manips"/>
     <menuitem action="toolbar1_view_resets"/>
@@ -32,6 +32,7 @@ the Free Software Foundation; either version 2 of the License, or
       <toolitem action="BrushDropdown"/>
       <toolitem action="BrushSettingsDropdown"/>
       <toolitem action="LineDropdown"/>
+      <toolitem action="BlendModeEraser"/>
     </placeholder>
     <separator/>
     <placeholder name="blendmodes-toolitems"/>

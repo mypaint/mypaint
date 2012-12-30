@@ -13,7 +13,6 @@ the Free Software Foundation; either version 2 of the License, or
     <placeholder name="blendmodes-toolitems">
       <toolitem action="BlendModeNormal"/>
       <toolitem action="BlendModeLockAlpha"/>
-      <toolitem action="BlendModeEraser"/>
       <toolitem action="BlendModeColorize"/>
     </placeholder>
 
