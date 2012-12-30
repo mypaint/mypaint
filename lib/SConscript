@@ -18,7 +18,7 @@ env = mypaintlib_env
 # I have given up. Scons just can't get the dependencies right with those
 # code generators. Let's give scons a "normal" c++ project to dependency-scan.
 swig_opts = '-DHAVE_GEGL' if env['enable_gegl'] else ''
-if env.Execute('swig -o mypaintlib_wrap.cpp -noproxydel -python -c++ %s mypaintlib.i' % swig_opts):
+if env.Execute('swig -Wall -o mypaintlib_wrap.cpp -noproxydel -python -c++ %s mypaintlib.i' % swig_opts):
     Exit(1)
 env.Clean('.', 'mypaintlib_wrap.cpp')
 env.Clean('.', 'mypaintlib.py')
