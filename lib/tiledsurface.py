@@ -8,6 +8,7 @@
 
 # This module implements an unbounded tiled surface for painting.
 
+import numpy
 from numpy import *
 import time, sys, os
 import mypaintlib, helpers
@@ -507,3 +508,36 @@ Surface = GeglSurface if use_gegl else MyPaintSurface
 
 def new_surface():
     return Surface()
+
+
+class BackgroundError(Exception):
+    pass
+
+class Background(Surface):
+    """ """
+
+    def __init__(self, obj, mipmap_level=0):
+
+        if not isinstance(obj, numpy.ndarray):
+            r, g, b = obj
+            obj = numpy.zeros((N, N, 3), dtype='uint8')
+            obj[:,:,:] = r, g, b
+
+        height, width = obj.shape[0:2]
+        if height % N or width % N:
+            raise BackgroundError, 'unsupported background tile size: %dx%d' % (width, height)
+
+        Surface.__init__(self, mipmap_level=0,
+                                      looped=True, looped_size=(width, height))
+        self.load_from_numpy(obj, 0, 0)
+
+        # Generate mipmap
+        if mipmap_level < MAX_MIPMAP_LEVEL:
+            mipmap_obj = numpy.zeros((height, width, 4), dtype='uint16')
+            for ty in range(height/N*2):
+                for tx in range(width/N*2):
+                    src = self.get_tile_memory(tx, ty, readonly=True)
+                    mypaintlib.tile_downscale_rgba16(src, mipmap_obj, tx*N/2, ty*N/2)
+            self.mipmap = Background(mipmap_obj, mipmap_level+1)
+            self.mipmap.parent = self
+            self.mipmap_level = mipmap_level

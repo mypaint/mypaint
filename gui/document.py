@@ -18,7 +18,7 @@ from gtk import gdk
 from gettext import gettext as _
 
 import lib.document
-from lib import backgroundsurface, command, helpers, layer
+from lib import command, helpers, layer, tiledsurface
 import tileddrawwidget, stategroup
 from brushmanager import ManagedBrush
 import dialogs
@@ -186,7 +186,7 @@ class Document (CanvasController):
         # FIXME: hack, to be removed
         fname = os.path.join(self.app.datapath, 'backgrounds', '03_check1.png')
         pixbuf = gdk.pixbuf_new_from_file(fname)
-        self.tdw.neutral_background_pixbuf = backgroundsurface.Background(pixbuf)
+        self.tdw.neutral_background_pixbuf = tiledsurface.Background(helpers.gdkpixbuf2numpy(pixbuf))
 
         self.zoomlevel_values = [1.0/16, 1.0/8, 2.0/11, 0.25, 1.0/3, 0.50, 2.0/3,  # micro
                                  1.0, 1.5, 2.0, 3.0, 4.0, 5.5, 8.0,        # normal

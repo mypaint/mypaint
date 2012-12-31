@@ -18,7 +18,7 @@ from gtk import gdk
 import gobject, numpy
 from gettext import gettext as _
 
-import helpers, tiledsurface, pixbufsurface, backgroundsurface, mypaintlib
+import helpers, tiledsurface, pixbufsurface, mypaintlib
 import command, stroke, layer
 import brush
 
@@ -461,8 +461,10 @@ class Document():
     def set_background(self, obj, make_default=False):
         # This is not an undoable action. One reason is that dragging
         # on the color chooser would get tons of undo steps.
-        if not isinstance(obj, backgroundsurface.Background):
-            obj = backgroundsurface.Background(obj)
+        if not isinstance(obj, tiledsurface.Background):
+            if isinstance(obj, gdk.Pixbuf):
+                obj = helpers.gdkpixbuf2numpy(obj)
+            obj = tiledsurface.Background(obj)
         self.background = obj
         if make_default:
             self.default_background = obj
@@ -825,7 +827,7 @@ class Document():
                     self.set_background(get_pixbuf(a['background_tile']))
                     no_background = False
                     continue
-                except backgroundsurface.BackgroundError, e:
+                except tiledsurface.BackgroundError, e:
                     print 'ORA background tile not usable:', e
 
             src = a.get('src', '')
