@@ -22,13 +22,13 @@ Perhaps an increasing amount.
     names are standard in all sets.
     -->
     <source stock-id="mypaint-view-rotate-left"
-           icon-name="object-rotate-left"/>
+           icon-name="mypaint-view-rotate-anticlockwise"/>
     <source stock-id="mypaint-view-rotate-right"
-           icon-name="object-rotate-right"/>
+           icon-name="mypaint-view-rotate-clockwise"/>
     <source stock-id="mypaint-view-mirror-horizontal"
-           icon-name="object-flip-horizontal"/>
+           icon-name="mypaint-view-mirror-horizontal"/>
     <source stock-id="mypaint-view-mirror-vertical"
-           icon-name="object-flip-vertical"/>
+           icon-name="mypaint-view-mirror-vertical"/>
     <!-- Blend modes -->
     <source stock-id="mypaint-brush-blend-modes"
            icon-name="mypaint-brush-blend-modes"/>
@@ -536,7 +536,7 @@ Perhaps an increasing amount.
       <!-- View manipulation -->
       <child>
         <object class="GtkAction" id="ResetView">
-          <property name="stock_id">gtk-zoom-100</property>
+          <property name="icon-name">mypaint-view-100</property>
           <property name="label" translatable="yes"
             context="Menu|View|">Reset and Center</property>
           <property name="tooltip" translatable="yes"
@@ -547,7 +547,7 @@ Perhaps an increasing amount.
       </child>
       <child>
         <object class="GtkAction" id="Fit">
-          <property name="stock_id">gtk-zoom-fit</property>
+          <property name="icon-name">mypaint-view-fit</property>
           <property name="label" translatable="yes"
             context="Menu|View|">Fit</property>
           <property name="tooltip" translatable="yes"
@@ -564,7 +564,7 @@ Perhaps an increasing amount.
       </child>
       <child>
         <object class="GtkAction" id="ResetZoom">
-          <property name="icon-name">gtk-zoom-100</property>
+          <property name="icon-name">mypaint-view-100</property>
           <property name="label" translatable="yes"
             context="Menu|View|Reset|">Zoom</property>
           <signal name="activate" handler="reset_view_cb"/>
@@ -586,7 +586,7 @@ Perhaps an increasing amount.
       </child>
       <child>
         <object class="GtkAction" id="ZoomIn">
-          <property name="stock_id">gtk-zoom-in</property>
+          <property name="icon-name">mypaint-view-zoom-more</property>
           <property name="label" translatable="yes"
             context="Menu|View|Adjust View|">Zoom In</property>
           <property name="tooltip" translatable="yes"
@@ -597,7 +597,7 @@ Perhaps an increasing amount.
       </child>
       <child>
         <object class="GtkAction" id="ZoomOut">
-          <property name="stock_id">gtk-zoom-out</property>
+          <property name="icon-name">mypaint-view-zoom-less</property>
           <property name="label" translatable="yes"
             context="Menu|View|Adjust View|">Zoom Out</property>
           <property name="tooltip" translatable="yes"

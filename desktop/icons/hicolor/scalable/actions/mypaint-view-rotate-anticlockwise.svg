@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   width="48"
+   height="48"
+   id="svg2985"
+   inkscape:version="0.48.3.1 r9886"
+   sodipodi:docname="mypaint-view-rotate-anticlockwise.svg">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1025"
+     id="namedview109"
+     showgrid="false"
+     inkscape:zoom="10.263158"
+     inkscape:cx="129.86406"
+     inkscape:cy="22.5"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg2985" />
+  <defs
+     id="defs2987" />
+  <metadata
+     id="metadata2990">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+        <dc:creator>
+          <cc:Agent>
+            <dc:title />
+          </cc:Agent>
+        </dc:creator>
+        <cc:license
+           rdf:resource="http://creativecommons.org/licenses/publicdomain/" />
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title />
+          </cc:Agent>
+        </dc:contributor>
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/licenses/publicdomain/">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(2.25,-4.25)"
+     id="layer2"
+     style="opacity:0.5;display:none">
+    <rect
+       width="32"
+       height="32"
+       x="53.75"
+       y="20.25"
+       id="32x32"
+       style="color:#000000;fill:#859f46;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <rect
+       width="24"
+       height="24"
+       x="93.75"
+       y="28.25"
+       id="24x24"
+       style="color:#000000;fill:#859f46;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <rect
+       width="22"
+       height="22"
+       x="125.75"
+       y="30.25"
+       id="22x22"
+       style="color:#000000;fill:#859f46;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <rect
+       width="16"
+       height="16"
+       x="155.75"
+       y="36.25"
+       id="16x16"
+       style="color:#000000;fill:#859f46;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+  </g>
+  <g
+     id="g5522"
+     transform="matrix(2,0,0,2,-23.5,-27.5)">
+    <path
+       style="fill:none;stroke:#73d216;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline"
+       id="path3780-0-2-6-2"
+       inkscape:connector-curvature="0"
+       d="m 13.5,19.5 0,-3 3,0" />
+    <path
+       style="fill:none;stroke:#d3ff17;stroke-width:0.5px;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       id="path3780-9-3-5"
+       inkscape:connector-curvature="0"
+       d="m 13.5,19.5 0,-3 3,0" />
+    <path
+       style="fill:none;stroke:#73d216;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline"
+       id="path3780-0-9-5-2-7"
+       inkscape:connector-curvature="0"
+       d="m 30.5,16.5 3,0 0,3" />
+    <path
+       style="fill:none;stroke:#d3ff17;stroke-width:0.5px;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       id="path3780-1-8-1-4"
+       inkscape:connector-curvature="0"
+       d="m 30.5,16.5 3,0 0,3" />
+    <path
+       style="fill:none;stroke:#73d216;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline"
+       id="path3780-0-0-3-6-8"
+       inkscape:connector-curvature="0"
+       d="m 33.5,31.5 0,3 -3,0" />
+    <path
+       style="fill:none;stroke:#d3ff17;stroke-width:0.5px;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       id="path3780-8-8-6-5"
+       inkscape:connector-curvature="0"
+       d="m 33.5,31.5 0,3 -3,0" />
+    <path
+       style="fill:none;stroke:#73d216;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline"
+       id="path3780-0-9-8-8-8-6"
+       inkscape:connector-curvature="0"
+       d="m 16.5,34.5 -3,0 0,-3" />
+    <path
+       style="fill:none;stroke:#d3ff17;stroke-width:0.5px;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       id="path3780-1-3-9-2-3"
+       inkscape:connector-curvature="0"
+       d="m 16.5,34.5 -3,0 0,-3" />
+  </g>
+  <g
+     id="g4515"
+     transform="matrix(0,1,1,0,-3,3)">
+    <g
+       style="opacity:0.33300003"
+       id="g4554-3"
+       transform="translate(0.5,0.5)">
+      <path
+         inkscape:connector-curvature="0"
+         style="color:#000000;fill:none;stroke:#000000;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         id="path4445-1-2"
+         transform="translate(-3,3)"
+         d="m 23.5,12.5 a 11,11 0 1 1 -11,11" />
+      <path
+         style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
+         id="path4347-0-8"
+         inkscape:connector-curvature="0"
+         d="m 4.5,27.5 10,0 -5,-5 z" />
+    </g>
+    <g
+       id="g4554">
+      <path
+         inkscape:connector-curvature="0"
+         style="color:#000000;fill:none;stroke:#2e3436;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         id="path4445-1"
+         transform="translate(-3,3)"
+         d="m 23.5,12.5 a 11,11 0 1 1 -11,11" />
+      <path
+         style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:#eeeeec;fill-opacity:1;fill-rule:nonzero;stroke:#2e3436;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
+         id="path4347-0"
+         inkscape:connector-curvature="0"
+         d="m 4.5,27.5 10,0 -5,-5 z" />
+      <path
+         inkscape:connector-curvature="0"
+         style="color:#000000;fill:none;stroke:#ffffff;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         id="path4445"
+         transform="translate(-3,3)"
+         d="m 23.5,12.5 a 11,11 0 1 1 -11,11" />
+      <path
+         style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:#eeeeec;stroke:#ffffff;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
+         id="path4410-8"
+         inkscape:connector-curvature="0"
+         d="m 11.999595,26.5 -2.5,-2.5 -2.5000003,2.5 z" />
+      <path
+         inkscape:connector-curvature="0"
+         style="color:#000000;fill:none;stroke:#eeeeec;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         id="path4445-8"
+         transform="translate(-3,3)"
+         d="M 23.5,12.5 A 11,11 0 1 1 12.532081,22.660507" />
+    </g>
+  </g>
+</svg>
