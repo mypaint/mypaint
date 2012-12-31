@@ -13,7 +13,8 @@ from gui import pygtkcompat
 from gtk import gdk
 import mypaintlib,  helpers
 from tiledsurface import N
-import sys, numpy
+import sys, contextlib
+import numpy
 
 class Surface:
     """
@@ -81,8 +82,18 @@ class Surface:
     def get_tiles(self):
         return self.tile_memory_dict.keys()
 
-    def get_tile_memory(self, tx, ty):
+    @contextlib.contextmanager
+    def tile_request(self, tx, ty, readonly):
+        # Interface compatible with that of TiledSurface
+        numpy_tile = self._get_tile_numpy(tx, ty, readonly)
+        yield numpy_tile
+        self._set_tile_numpy(tx, ty, numpy_tile, readonly)
+
+    def _get_tile_numpy(self, tx, ty, readonly):
         return self.tile_memory_dict[(tx, ty)]
+
+    def _set_tile_numpy(self, tx, ty, arr, readonly):
+        pass # Data can be modified directly, no action needed
 
     def blit_tile_into(self, dst, dst_has_alpha, tx, ty):
         # (used mainly for loading transparent PNGs)
@@ -105,11 +116,11 @@ def render_as_pixbuf(surface, *rect, **kwargs):
     s = Surface(x, y, w, h)
     tn = 0
     for tx, ty in s.get_tiles():
-        dst = s.get_tile_memory(tx, ty)
-        surface.blit_tile_into(dst, alpha, tx, ty, mipmap_level=mipmap_level)
-        if feedback_cb and tn % TILES_PER_CALLBACK == 0:
-            feedback_cb()
-        tn += 1
+        with s.tile_request(tx, ty, readonly=False) as dst:
+            surface.blit_tile_into(dst, alpha, tx, ty, mipmap_level=mipmap_level)
+            if feedback_cb and tn % TILES_PER_CALLBACK == 0:
+                feedback_cb()
+            tn += 1
     return s.pixbuf
 
 def save_as_png(surface, filename, *rect, **kwargs):

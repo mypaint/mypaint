@@ -223,13 +223,14 @@ class Layer:
         src = self
         dst.strokes.extend(self.strokes)
         for tx, ty in dst._surface.get_tiles():
-            surf = dst._surface.get_tile_memory(tx, ty, readonly=False)
-            surf[:,:,:] = dst.effective_opacity * surf[:,:,:]
+            with dst._surface.tile_request(tx, ty, readonly=False) as surf:
+                surf[:,:,:] = dst.effective_opacity * surf[:,:,:]
+
         for tx, ty in src._surface.get_tiles():
-            surf = dst._surface.get_tile_memory(tx, ty, readonly=False)
-            src._surface.composite_tile(surf, True, tx, ty,
-                opacity=self.effective_opacity,
-                mode=self.compositeop)
+            with dst._surface.tile_request(tx, ty, readonly=False) as surf:
+                src._surface.composite_tile(surf, True, tx, ty,
+                    opacity=self.effective_opacity,
+                    mode=self.compositeop)
         dst.opacity = 1.0
 
     def convert_to_normal_mode(self, get_bg):
@@ -250,13 +251,13 @@ class Layer:
             mypaintlib.tile_copy_rgba16_into_rgba16(bg, tmp)
             self.composite_tile(tmp, False, tx, ty)
             # overwrite layer data with composited result
-            dst = self._surface.get_tile_memory(tx, ty, readonly=False)
+            with self._surface.tile_request(tx, ty, readonly=False) as dst:
 
-            mypaintlib.tile_copy_rgba16_into_rgba16(tmp, dst)
-            dst[:,:,3] = 0 # minimize alpha (throw away the original alpha)
+                mypaintlib.tile_copy_rgba16_into_rgba16(tmp, dst)
+                dst[:,:,3] = 0 # minimize alpha (throw away the original alpha)
 
-            # recalculate layer in normal mode
-            mypaintlib.tile_flat2rgba(dst, bg)
+                # recalculate layer in normal mode
+                mypaintlib.tile_flat2rgba(dst, bg)
 
     def get_stroke_info_at(self, x, y):
         x, y = int(x), int(y)

@@ -10,7 +10,7 @@
 
 import numpy
 from numpy import *
-import time, sys, os
+import time, sys, os, contextlib
 import mypaintlib, helpers
 import math
 
@@ -163,7 +163,17 @@ class MyPaintSurface(mypaintlib.TiledSurface):
         self.notify_observers(*get_tiles_bbox(tiles))
         if self.mipmap: self.mipmap.clear()
 
-    def get_tile_memory(self, tx, ty, readonly):
+    @contextlib.contextmanager
+    def tile_request(self, tx, ty, readonly):
+        """Context manager that fetches a tile as a NumPy array,
+        and then puts the potentially modified tile back into the
+        tile backing store. To be used with the 'with' statement."""
+
+        numpy_tile = self._get_tile_numpy(tx, ty, readonly)
+        yield numpy_tile
+        self._set_tile_numpy(tx, ty, numpy_tile, readonly)
+
+    def _get_tile_numpy(self, tx, ty, readonly):
         # OPTIMIZE: do some profiling to check if this function is a bottleneck
         #           yes it is
         # Note: we must return memory that stays valid for writing until the
@@ -187,10 +197,10 @@ class MyPaintSurface(mypaintlib.TiledSurface):
             empty = True
             for x in xrange(2):
                 for y in xrange(2):
-                    src = self.parent.get_tile_memory(tx*2 + x, ty*2 + y, True)
-                    mypaintlib.tile_downscale_rgba16(src, t.rgba, x*N/2, y*N/2)
-                    if src is not transparent_tile.rgba:
-                        empty = False
+                    with self.parent.tile_request(tx*2 + x, ty*2 + y, True) as src:
+                        mypaintlib.tile_downscale_rgba16(src, t.rgba, x*N/2, y*N/2)
+                        if src is not transparent_tile.rgba:
+                            empty = False
             if empty:
                 # rare case, no need to speed it up
                 del self.tiledict[(tx, ty)]
@@ -203,6 +213,9 @@ class MyPaintSurface(mypaintlib.TiledSurface):
             # assert self.mipmap_level == 0
             self._mark_mipmap_dirty(tx, ty)
         return t.rgba
+
+    def _set_tile_numpy(self, tx, ty, obj, readonly):
+        pass # Data can be modified directly, no action needed
 
     def _mark_mipmap_dirty(self, tx, ty):
         if self.mipmap_level > 0:
@@ -219,22 +232,24 @@ class MyPaintSurface(mypaintlib.TiledSurface):
             return self.mipmap.blit_tile_into(dst, dst_has_alpha, tx, ty, mipmap_level)
 
         assert dst.shape[2] == 4
-        src = self.get_tile_memory(tx, ty, readonly=True)
-        if src is transparent_tile.rgba:
-            #dst[:] = 0 # <-- notably slower than memset()
-            mypaintlib.tile_clear(dst)
-        else:
 
-            if dst.dtype == 'uint16':
-                # this will do memcpy, not worth to bother skipping the u channel
-                mypaintlib.tile_copy_rgba16_into_rgba16(src, dst)
-            elif dst.dtype == 'uint8':
-                if dst_has_alpha:
-                    mypaintlib.tile_convert_rgba16_to_rgba8(src, dst)
-                else:
-                    mypaintlib.tile_convert_rgbu16_to_rgbu8(src, dst)
+        with self.tile_request(tx, ty, readonly=True) as src:
+
+            if src is transparent_tile.rgba:
+                #dst[:] = 0 # <-- notably slower than memset()
+                mypaintlib.tile_clear(dst)
             else:
-                raise ValueError, 'Unsupported destination buffer type'
+
+                if dst.dtype == 'uint16':
+                    # this will do memcpy, not worth to bother skipping the u channel
+                    mypaintlib.tile_copy_rgba16_into_rgba16(src, dst)
+                elif dst.dtype == 'uint8':
+                    if dst_has_alpha:
+                        mypaintlib.tile_convert_rgba16_to_rgba8(src, dst)
+                    else:
+                        mypaintlib.tile_convert_rgbu16_to_rgbu8(src, dst)
+                else:
+                    raise ValueError, 'Unsupported destination buffer type'
 
     def composite_tile(self, dst, dst_has_alpha, tx, ty, mipmap_level=0, opacity=1.0,
                        mode=DEFAULT_COMPOSITE_OP):
@@ -246,10 +261,10 @@ class MyPaintSurface(mypaintlib.TiledSurface):
             return self.mipmap.composite_tile(dst, dst_has_alpha, tx, ty, mipmap_level, opacity, mode)
         if not (tx,ty) in self.tiledict:
             return
-        src = self.get_tile_memory(tx, ty, readonly=True)
 
-        func = svg2composite_func[mode]
-        func(src, dst, dst_has_alpha, opacity)
+        with self.tile_request(tx, ty, readonly=True) as src:
+            func = svg2composite_func[mode]
+            func(src, dst, dst_has_alpha, opacity)
 
     def save_snapshot(self):
         sshot = SurfaceSnapshot()
@@ -284,8 +299,8 @@ class MyPaintSurface(mypaintlib.TiledSurface):
         self.tiledict = {}
 
         for tx, ty in s.get_tiles():
-            dst = self.get_tile_memory(tx, ty, readonly=False)
-            s.blit_tile_into(dst, True, tx, ty)
+            with self.tile_request(tx, ty, readonly=False) as dst:
+                s.blit_tile_into(dst, True, tx, ty)
 
         dirty_tiles.update(self.tiledict.keys())
         bbox = get_tiles_bbox(dirty_tiles)
@@ -305,10 +320,8 @@ class MyPaintSurface(mypaintlib.TiledSurface):
             assert x == 0 and y == 0
             for ty in range(h/N):
                 for tx in range(w/N):
-                    print ty, tx
-                    dst = self.get_tile_memory(tx, ty, readonly=False)
-                    dst[:,:,:] = arr[ty*N:(ty+1)*N, tx*N:(tx+1)*N, :]
-
+                    with self.tile_request(tx, ty, readonly=False) as dst:
+                        dst[:,:,:] = arr[ty*N:(ty+1)*N, tx*N:(tx+1)*N, :]
         else:
             raise ValueError
 
@@ -361,8 +374,8 @@ class MyPaintSurface(mypaintlib.TiledSurface):
                 tx = x/N + i
                 src = state['buf'][:,i*N:(i+1)*N,:]
                 if src[:,:,3].any():
-                    dst = self.get_tile_memory(tx, ty, readonly=False)
-                    mypaintlib.tile_convert_rgba8_to_rgba16(src, dst)
+                    with self.tile_request(tx, ty, readonly=False) as dst:
+                        mypaintlib.tile_convert_rgba8_to_rgba16(src, dst)
 
         filename_sys = filename.encode(sys.getfilesystemencoding()) # FIXME: should not do that, should use open(unicode_object)
         flags = mypaintlib.load_png_fast_progressive(filename_sys, get_buffer)
@@ -472,8 +485,7 @@ class _InteractiveMove:
                         if targ_tile is None:
                             targ_tile = Tile()
                             self.surface.tiledict[(targ_tx, targ_ty)] = targ_tile
-                        targ_tile.rgba[targ_y0:targ_y1, targ_x0:targ_x1] \
-                          = src_tile.rgba[src_y0:src_y1, src_x0:src_x1]
+                        targ_tile.rgba[targ_y0:targ_y1, targ_x0:targ_x1] = src_tile.rgba[src_y0:src_y1, src_x0:src_x1]
                     written.add((targ_tx, targ_ty))
         self.blanked -= written
         for pos in written:
@@ -536,8 +548,9 @@ class Background(Surface):
             mipmap_obj = numpy.zeros((height, width, 4), dtype='uint16')
             for ty in range(height/N*2):
                 for tx in range(width/N*2):
-                    src = self.get_tile_memory(tx, ty, readonly=True)
-                    mypaintlib.tile_downscale_rgba16(src, mipmap_obj, tx*N/2, ty*N/2)
+                    with self.tile_request(tx, ty, readonly=True) as src:
+                        mypaintlib.tile_downscale_rgba16(src, mipmap_obj, tx*N/2, ty*N/2)
+
             self.mipmap = Background(mipmap_obj, mipmap_level+1)
             self.mipmap.parent = self
             self.mipmap_level = mipmap_level

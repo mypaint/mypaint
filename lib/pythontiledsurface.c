@@ -61,10 +61,10 @@ tile_request_start(MyPaintTiledSurface *tiled_surface, MyPaintTiledSurfaceTileRe
       PyErr_Print();
       return;
     }
-    PyObject* rgba = PyObject_CallMethod(self->py_obj, "get_tile_memory", "(iii)", tx, ty, readonly);
+    PyObject* rgba = PyObject_CallMethod(self->py_obj, "_get_tile_numpy", "(iii)", tx, ty, readonly);
     if (rgba == NULL) {
       request->buffer = NULL;
-      printf("Python exception during get_tile_memory()!\n");
+      printf("Python exception during get_tile_numpy()!\n");
       if (PyErr_Occurred())
         PyErr_Print();
       return;

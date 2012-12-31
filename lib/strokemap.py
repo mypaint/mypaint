@@ -91,12 +91,13 @@ class StrokeShape:
         for (tx, ty), data in self.strokemap.iteritems():
             data = fromstring(zlib.decompress(data), dtype='uint8')
             data.shape = (N, N)
-            rgba = surf.get_tile_memory(tx, ty, readonly=False)
-            # neutral gray, 50% opaque
-            rgba[:,:,3] = data.astype('uint16') * (1<<15)/2
-            rgba[:,:,0] = rgba[:,:,3]/2
-            rgba[:,:,1] = rgba[:,:,3]/2
-            rgba[:,:,2] = rgba[:,:,3]/2
+
+            with surf.tile_request(tx, ty, readonly=False) as rgba:
+                # neutral gray, 50% opaque
+                rgba[:,:,3] = data.astype('uint16') * (1<<15)/2
+                rgba[:,:,0] = rgba[:,:,3]/2
+                rgba[:,:,1] = rgba[:,:,3]/2
+                rgba[:,:,2] = rgba[:,:,3]/2
 
     def translate(self, dx, dy):
         """Translate the shape by (dx, dy).
