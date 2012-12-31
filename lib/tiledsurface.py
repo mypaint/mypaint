@@ -133,10 +133,16 @@ if use_gegl:
 
 class MyPaintSurface(mypaintlib.TiledSurface):
     # the C++ half of this class is in tiledsurface.hpp
-    def __init__(self, mipmap_level=0):
+    def __init__(self, mipmap_level=0, looped=False, looped_size=(0,0)):
         mypaintlib.TiledSurface.__init__(self, self)
         self.tiledict = {}
         self.observers = []
+
+        # Used to implement repeating surfaces, like Background
+        if looped_size[0] % N or looped_size[1] % N:
+            raise ValueError, 'Looped size must be multiples of tile size'
+        self.looped = looped
+        self.looped_size = looped_size
 
         self.mipmap_level = mipmap_level
         self.mipmap = None
@@ -161,6 +167,11 @@ class MyPaintSurface(mypaintlib.TiledSurface):
         #           yes it is
         # Note: we must return memory that stays valid for writing until the
         # last end_atomic(), because of the caching in tiledsurface.hpp.
+
+        if self.looped:
+            tx = tx % (self.looped_size[0] / N)
+            ty = ty % (self.looped_size[1] / N)
+
         t = self.tiledict.get((tx, ty))
         if t is None:
             if readonly:
@@ -188,7 +199,7 @@ class MyPaintSurface(mypaintlib.TiledSurface):
             t = t.copy()
             self.tiledict[(tx, ty)] = t
         if not readonly:
-            assert self.mipmap_level == 0
+            # assert self.mipmap_level == 0
             self._mark_mipmap_dirty(tx, ty)
         return t.rgba
 
@@ -200,17 +211,29 @@ class MyPaintSurface(mypaintlib.TiledSurface):
 
     def blit_tile_into(self, dst, dst_has_alpha, tx, ty, mipmap_level=0):
         # used mainly for saving (transparent PNG)
-        assert dst_has_alpha is True
+
+        #assert dst_has_alpha is True
+
         if self.mipmap_level < mipmap_level:
             return self.mipmap.blit_tile_into(dst, dst_has_alpha, tx, ty, mipmap_level)
+
         assert dst.shape[2] == 4
         src = self.get_tile_memory(tx, ty, readonly=True)
         if src is transparent_tile.rgba:
             #dst[:] = 0 # <-- notably slower than memset()
             mypaintlib.tile_clear(dst)
         else:
-            mypaintlib.tile_convert_rgba16_to_rgba8(src, dst)
 
+            if dst.dtype == 'uint16':
+                # this will do memcpy, not worth to bother skipping the u channel
+                mypaintlib.tile_copy_rgba16_into_rgba16(src, dst)
+            elif dst.dtype == 'uint8':
+                if dst_has_alpha:
+                    mypaintlib.tile_convert_rgba16_to_rgba8(src, dst)
+                else:
+                    mypaintlib.tile_convert_rgbu16_to_rgbu8(src, dst)
+            else:
+                raise ValueError, 'Unsupported destination buffer type'
 
     def composite_tile(self, dst, dst_has_alpha, tx, ty, mipmap_level=0, opacity=1.0,
                        mode=DEFAULT_COMPOSITE_OP):
@@ -272,9 +295,22 @@ class MyPaintSurface(mypaintlib.TiledSurface):
         if h <= 0 or w <= 0:
             return (x, y, w, h)
 
-        assert arr.dtype == 'uint8'
-        s = pixbufsurface.Surface(x, y, w, h, data=arr)
-        self._load_from_pixbufsurface(s)
+        if arr.dtype == 'uint8':
+            s = pixbufsurface.Surface(x, y, w, h, data=arr)
+            self._load_from_pixbufsurface(s)
+        elif arr.dtype == 'uint16':
+            # We only support this for backgrounds, which are tile-aligned
+            assert w % N == 0 and h % N == 0
+            assert x == 0 and y == 0
+            for ty in range(h/N):
+                for tx in range(w/N):
+                    print ty, tx
+                    dst = self.get_tile_memory(tx, ty, readonly=False)
+                    dst[:,:,:] = arr[ty*N:(ty+1)*N, tx*N:(tx+1)*N, :]
+
+        else:
+            raise ValueError
+
         return (x, y, w, h)
 
     def load_from_png(self, filename, x, y, feedback_cb=None):
@@ -349,8 +385,11 @@ class MyPaintSurface(mypaintlib.TiledSurface):
         return res
 
     def save_as_png(self, filename, *args, **kwargs):
-        assert 'alpha' not in kwargs
-        kwargs['alpha'] = True
+        if not 'alpha' in kwargs:
+            kwargs['alpha'] = True
+
+        if len(self.tiledict) == 1:
+            kwargs['single_tile_pattern'] = True
         pixbufsurface.save_as_png(self, filename, *args, **kwargs)
 
     def get_tiles(self):

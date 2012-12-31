@@ -6,18 +6,20 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-import numpy, gtk
+import gtk
 gdk = gtk.gdk
 
-import mypaintlib, helpers
-from tiledsurface import N, MAX_MIPMAP_LEVEL, get_tiles_bbox
-import pixbufsurface
+import numpy
+import tiledsurface
+N = tiledsurface.N
+import helpers, mypaintlib
 
 class BackgroundError(Exception):
     pass
 
-class Background:
+class Background(tiledsurface.Surface):
     def __init__(self, obj, mipmap_level=0):
+
         if isinstance(obj, gdk.Pixbuf):
             obj = helpers.gdkpixbuf2numpy(obj)
         elif not isinstance(obj, numpy.ndarray):
@@ -25,62 +27,21 @@ class Background:
             obj = numpy.zeros((N, N, 3), dtype='uint8')
             obj[:,:,:] = r, g, b
 
-        self.tw = obj.shape[1]/N
-        self.th = obj.shape[0]/N
-        #print obj
-        if obj.shape[0:2] != (self.th*N, self.tw*N):
-            raise BackgroundError, 'unsupported background tile size: %dx%d' % (obj.shape[0], obj.shape[1])
-        if obj.dtype == 'uint8':
-            obj = (obj.astype('uint32') * (1<<15) / 255).astype('uint16')
+        height, width = obj.shape[0:2]
+        if height % N or width % N:
+            raise BackgroundError, 'unsupported background tile size: %dx%d' % (width, height)
 
-        self.tiles = {}
-        for ty in range(self.th):
-            for tx in range(self.tw):
-                # make sure we have linear memory (optimization)
-                tile = numpy.empty((N, N, 4), dtype='uint16') # rgbu
-                tile[:,:,:3] = obj[N*ty:N*(ty+1), N*tx:N*(tx+1), :3]
-                self.tiles[tx, ty] = tile
-        
-        # generate mipmap
-        self.mipmap_level = mipmap_level
-        if mipmap_level < MAX_MIPMAP_LEVEL:
-            mipmap_obj = numpy.zeros((self.th*N, self.tw*N, 4), dtype='uint16')
-            for ty in range(self.th*2):
-                for tx in range(self.tw*2):
-                    src = self.get_tile_memory(tx, ty)
+        tiledsurface.Surface.__init__(self, mipmap_level=0,
+                                      looped=True, looped_size=(width, height))
+        self.load_from_numpy(obj, 0, 0)
+
+        # Generate mipmap
+        if mipmap_level < tiledsurface.MAX_MIPMAP_LEVEL:
+            mipmap_obj = numpy.zeros((height, width, 4), dtype='uint16')
+            for ty in range(height/N*2):
+                for tx in range(width/N*2):
+                    src = self.get_tile_memory(tx, ty, readonly=True)
                     mypaintlib.tile_downscale_rgba16(src, mipmap_obj, tx*N/2, ty*N/2)
             self.mipmap = Background(mipmap_obj, mipmap_level+1)
-
-    def get_tile_memory(self, tx, ty):
-        return self.tiles[(tx%self.tw, ty%self.th)]
-
-    def blit_tile_into(self, dst, dst_has_alpha, tx, ty, mipmap_level=0):
-        assert dst_has_alpha is False
-        if self.mipmap_level < mipmap_level:
-            return self.mipmap.blit_tile_into(dst, dst_has_alpha, tx, ty, mipmap_level)
-        rgbu = self.get_tile_memory(tx, ty)
-        # render solid or tiled background
-        #dst[:] = rgb # 13 times slower than below, with some bursts having the same speed as below (huh?)
-        # note: optimization for solid colors is not worth it, it gives only 2x speedup (at best)
-        if dst.dtype == 'uint16':
-            # this will do memcpy, not worth to bother skipping the u channel
-            mypaintlib.tile_copy_rgba16_into_rgba16(rgbu, dst)
-        else:
-            # this case is for saving the background
-            assert dst.dtype == 'uint8'
-            # note: when saving the background layer we usually
-            # convert here the same tile over and over again. But it
-            # does help much to cache this conversion result. The
-            # save_ora speedup when doing this is below 1%, even for a
-            # single-layer ora.
-            mypaintlib.tile_convert_rgbu16_to_rgbu8(rgbu, dst)
-
-    def get_pattern_bbox(self):
-        return get_tiles_bbox(self.tiles)
-
-    def save_as_png(self, filename, *rect, **kwargs):
-        assert 'alpha' not in kwargs
-        kwargs['alpha'] = False
-        if len(self.tiles) == 1:
-            kwargs['single_tile_pattern'] = True
-        pixbufsurface.save_as_png(self, filename, *rect, **kwargs)
+            self.mipmap.parent = self
+            self.mipmap_level = mipmap_level

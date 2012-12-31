@@ -729,7 +729,7 @@ class Document():
                       locked=True, selected=False,
                       compositeop=DEFAULT_COMPOSITE_OP,
                       rect=(x,y,w,h))
-        x, y, w, h = bg.get_pattern_bbox()
+        x, y, w, h = bg.get_bbox()
         # save as single pattern (with corrected origin)
         store_surface(bg, 'data/background_tile.png', rect=(x+x0, y+y0, w, h))
         l.attrib['background_tile'] = 'data/background_tile.png'
