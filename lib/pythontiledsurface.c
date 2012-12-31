@@ -64,14 +64,11 @@ tile_request_start(MyPaintTiledSurface *tiled_surface, MyPaintTiledSurfaceTileRe
     PyObject* rgba = PyObject_CallMethod(self->py_obj, "get_tile_memory", "(iii)", tx, ty, readonly);
     if (rgba == NULL) {
       request->buffer = NULL;
-      printf("get_tile_memory() returned NULL!\n");
-    }
-    if (PyErr_Occurred()) {
       printf("Python exception during get_tile_memory()!\n");
-      PyErr_Print();
-    }
-    if (rgba == NULL)
+      if (PyErr_Occurred())
+        PyErr_Print();
       return;
+    }
 
 #ifdef HEAVY_DEBUG
     assert(PyArray_NDIM(rgba) == 3);
