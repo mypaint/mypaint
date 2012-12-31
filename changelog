@@ -1,3 +1,15 @@
+Version 1.1.0:
+- geometry tools: sequence of lines, curved lines, ellipses
+- new brush and layer blending modes; different layer merging
+- new color dialog: palette and gamut mapping
+- improved document frame, can be resized on canvas
+- symmetric drawing mode
+- old color changer ("washed") from 0.6 is available again
+- toolbar improvements, e.g. move layer mode, pan/zoom
+- revised cursor and on-canvas color picker
+- better separation of mypaint's brush library; json brush file format
+- translations, performance improvements, bugfixes, and more
+
 Version 1.0.0:
 - toolbar with color, brush selector and brush settings dropdown
 - tool windows can be docked instead of floating
