@@ -251,7 +251,14 @@ operation_queue_add(OperationQueue *self, TileIndex index, OperationDataDrawDab 
     if (op_queue == NULL) {
         // Lazy initialization
         op_queue = fifo_new();
-        self->dirty_tiles[self->dirty_tiles_n++] = index; // Critical section, not thread-safe
+
+         // Critical section, not thread-safe
+        if (!(self->dirty_tiles_n+1 < self->tile_map->size*2*self->tile_map->size*2)) {
+            // Prune duplicate tiles that cause us to almost exceed max
+            self->dirty_tiles_n = remove_duplicate_tiles(self->dirty_tiles, self->dirty_tiles_n);
+        }
+        assert(self->dirty_tiles_n+1 < self->tile_map->size*2*self->tile_map->size*2);
+        self->dirty_tiles[self->dirty_tiles_n++] = index;
     }
 
     fifo_push(op_queue, (void *)op);
