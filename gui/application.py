@@ -260,7 +260,7 @@ class Application: # singleton
                 toolbar1_scrap=False,
                 toolbar1_edit=True,
                 toolbar1_blendmodes=False,
-                toolbar1_editmodes=True,
+                toolbar1_linemodes=False,
                 toolbar1_view_modes=True,
                 toolbar1_view_manips=False,
                 toolbar1_view_resets=True,

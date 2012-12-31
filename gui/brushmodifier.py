@@ -66,6 +66,7 @@ class BrushModifier:
                 _("Colorize: alter Hue and Saturation with the current brush"),
                 self.blend_mode_colorize_cb),
             ]
+            # FIXME: move these to mypaint.xml and give them short names
         ag.add_toggle_actions(toggle_actions)
         self.eraser_mode = ag.get_action("BlendModeEraser")
         self.lock_alpha_mode = ag.get_action("BlendModeLockAlpha")

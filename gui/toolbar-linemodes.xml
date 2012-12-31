@@ -10,18 +10,11 @@ the Free Software Foundation; either version 2 of the License, or
 -->
   <toolbar name="toolbar1">
 
-    <placeholder name="editmodes-toolitems">
+    <placeholder name="linemodes-toolitems">
       <toolitem action="SwitchableFreehandMode"/>
-      <!-- Picker modes here (when they're ported?) -->
-      <!-- Line modes -->
       <toolitem action="StraightMode"/>
       <toolitem action="SequenceMode"/>
       <toolitem action="EllipseMode"/>
-      <toolitem action="ColorPickMode"/>
-      <toolitem action="LayerMoveMode"/>
-      <toolitem action="FrameEditMode"/>
-      <toolitem action="Symmetry"/>
-      <!-- View-changing modes reside in toolbar-view.xml -->
     </placeholder>
 
   </toolbar>

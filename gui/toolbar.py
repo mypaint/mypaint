@@ -32,7 +32,7 @@ MERGEABLE_XML = [
     ("toolbar1_scrap", 'gui/toolbar-scrap.xml', _("Scraps switcher")),
     ("toolbar1_edit", 'gui/toolbar-edit.xml', _("Undo and Redo")),
     ("toolbar1_blendmodes", 'gui/toolbar-blendmodes.xml', _("Blend Modes")),
-    ("toolbar1_editmodes", 'gui/toolbar-editmodes.xml', _("Editing Modes")),
+    ("toolbar1_linemodes", 'gui/toolbar-linemodes.xml', _("Line Mode")), #FIXME: make plural (string freeze hack)
     ("toolbar1_view_modes", 'gui/toolbar-view-modes.xml', _("View (Main)")),
     ("toolbar1_view_manips", 'gui/toolbar-view-manips.xml', _("View (Alternative/Secondary)")),
     ("toolbar1_view_resets", 'gui/toolbar-view-resets.xml', _("View (Resetting)")),
@@ -146,6 +146,8 @@ class ToolbarManager:
 from curve import CurveWidget
 
 class LineDropdownToolItem (gtk.ToolItem):
+    """Dropdown panel on the toolbar for changing line mode.
+    """
 
     __gtype_name__ = "LineDropdownToolItem"
     settings_coordinate = [('entry_pressure', (0,1)),
@@ -153,13 +155,15 @@ class LineDropdownToolItem (gtk.ToolItem):
                            ('exit_pressure', (3,1)),
                            ('line_head', (1,0)),
                            ('line_tail', (2,0))]
+    action_names = ["SwitchableFreehandMode", "StraightMode",
+                    "SequenceMode", "EllipseMode"]
 
 
     def __init__(self):
         gtk.ToolItem.__init__(self)
         self.set_homogeneous(False)
         self.button_image = gtk.Image()
-        self.button_image.set_from_stock('mypaint-line-mode', ToolbarManager.icon_size)
+        self.button_image.set_from_icon_name('mypaint-line-mode', ToolbarManager.icon_size)
         self.line_mode_panel = dropdownpanel.DropdownPanelButton(self.button_image)
         self.vbox = gtk.VBox()
         self.vbox.set_border_width(widgets.SPACING_TIGHT)
@@ -173,7 +177,34 @@ class LineDropdownToolItem (gtk.ToolItem):
 
 
     def set_app(self, app):
+        """Deferred initialization: provides the main app instance.
+        """
+
         self.app = app
+
+        # Action switcher buttons
+        bbox = gtk.HButtonBox()
+        frame = widgets.section_frame(_("Line Mode"))
+        frame.add(bbox)
+        bbox.set_border_width(widgets.SPACING)
+        for action_name in self.action_names:
+            action = app.find_action(action_name)
+            if action.get_active():
+                self.update_icon_from_action(action)
+            action.connect("changed", self.linemode_action_changed_cb)
+            button = gtk.ToggleButton()
+            action.connect_proxy(button)
+            button.connect("clicked", self.linemode_button_clicked_cb)
+            button.set_can_focus(False)
+            button.set_can_default(False)
+            button.set_image_position(gtk.POS_TOP)
+            button.set_relief(gtk.RELIEF_HALF)
+            image = action.create_icon(gtk.ICON_SIZE_LARGE_TOOLBAR)
+            image.set_padding(widgets.SPACING_TIGHT, widgets.SPACING_TIGHT)
+            button.set_image(image)
+            bbox.pack_start(button)
+        self.vbox.pack_start(frame, False, False)
+        bbox.show()
 
         # Pressure settings.
         frame = widgets.section_frame(_("Line Pressure"))
@@ -181,8 +212,12 @@ class LineDropdownToolItem (gtk.ToolItem):
         curve = CurveWidget(npoints=4,
                             ylockgroups=((1,2),),
                             changed_cb=self.curve_changed_cb)
-        frame.add(curve)
-        curve.show()
+        curve_align = gtk.Alignment(0, 0, 1, 1)
+        curve_align.add(curve)
+        curve_align.set_padding(widgets.SPACING, widgets.SPACING,
+                                widgets.SPACING, widgets.SPACING)
+        frame.add(curve_align)
+        curve_align.show()
         curve.points = [(0.0,0.2), (0.33,.5),(0.66, .5), (1.0,.33)]
         for setting, coord_pair in self.settings_coordinate:
             adj = app.line_mode_settings.adjustments[setting]
@@ -198,7 +233,29 @@ class LineDropdownToolItem (gtk.ToolItem):
             curve.set_point(index, coord)
         self.curve_changed_cb (curve)
 
+
+    def update_icon_from_action(self, action):
+        """Updates the icon based on an action's icon.
+        """
+        icon_name = action.get_icon_name()
+        self.button_image.set_from_icon_name(icon_name, ToolbarManager.icon_size)
+
+
+    def linemode_action_changed_cb(self, action, current_action):
+        """Updates the dropdown button when the line mode changes."""
+        if action is current_action:
+            self.update_icon_from_action(action)
+
+
+    def linemode_button_clicked_cb(self, widget):
+        """Dismisses the dropdown panel when a linemode button is clicked.
+        """
+        gobject.idle_add(self.line_mode_panel.panel_hide)
+
+
     def curve_changed_cb(self, curve):
+        """Updates the linemode pressure settings when the curve is altered.
+        """
         for setting, coord_pair in self.settings_coordinate:
             index, subindex = coord_pair
             points = curve.points
@@ -441,6 +498,12 @@ class BrushSettingsDropdownToolItem (gtk.ToolItem):
 
     setting_cnames = ["radius_logarithmic", "slow_tracking", "opaque", "hardness"]
 
+    blend_modes_table = [
+        (0, 1, 0, 1, "BlendModeNormal"),
+        (0, 1, 1, 2, "BlendModeEraser"),
+        (1, 2, 0, 1, "BlendModeLockAlpha"),
+        (1, 2, 1, 2, "BlendModeColorize"),  ]
+
     def __init__(self):
         gtk.ToolItem.__init__(self)
         self.set_homogeneous(False)
@@ -544,18 +607,35 @@ class BrushSettingsDropdownToolItem (gtk.ToolItem):
         frame.add(vbox)
         self.vbox.pack_start(frame, True, True)
 
-        for a in ["BlendModeNormal", "BlendModeEraser",
-                  "BlendModeLockAlpha", "BlendModeColorize"]:
-            action = self.app.find_action(a)
-            b = gtk.CheckButton()
-            b.set_related_action(action)
-            vbox.pack_start(b, False, False)
-            b.connect("clicked", lambda a: self.button.panel_hide())
+        table = gtk.Table(2, 2, homogeneous=True)
+        topts = gtk.EXPAND|gtk.FILL
+        tpad = 0
+        table.set_row_spacings(widgets.SPACING_TIGHT)
+        table.set_col_spacings(widgets.SPACING)
+        for la, ra, ta, ba, action_name in self.blend_modes_table:
+            action = self.app.find_action(action_name)
+            button = gtk.ToggleButton()
+            action.connect_proxy(button)
+            button.set_can_focus(False)
+            button.set_can_default(False)
+            button.set_image_position(gtk.POS_LEFT)
+            button.set_alignment(0.0, 0.5)
+            button.set_relief(gtk.RELIEF_HALF)
+            image = action.create_icon(gtk.ICON_SIZE_BUTTON)
+            image.set_padding(widgets.SPACING_TIGHT, widgets.SPACING_TIGHT)
+            button.set_image(image)
+            table.attach(button, la, ra, ta, ba, topts, topts, tpad, tpad)
+            button.connect("clicked", self.blendmode_button_clicked_cb)
+        vbox.pack_start(table, False, False)
 
         self.vbox.set_border_width(widgets.SPACING)
         self.vbox.set_spacing(widgets.SPACING)
 
         self.app.brush.observers.append(self.brush_settings_changed_cb)
+
+
+    def blendmode_button_clicked_cb(self, widget):
+        self.button.panel_hide()
 
 
     def reset_button_clicked_cb(self, widget, adj, setting_cname):

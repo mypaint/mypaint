@@ -13,7 +13,7 @@ the Free Software Foundation; either version 2 of the License, or
     <menuitem action="toolbar1_scrap"/>
     <menuitem action="toolbar1_edit"/>
     <menuitem action="toolbar1_blendmodes"/>
-    <menuitem action="toolbar1_editmodes"/>
+    <menuitem action="toolbar1_linemodes"/>
     <menuitem action="toolbar1_view_modes"/>
     <menuitem action="toolbar1_view_manips"/>
     <menuitem action="toolbar1_view_resets"/>
@@ -32,12 +32,15 @@ the Free Software Foundation; either version 2 of the License, or
       <toolitem action="BrushDropdown"/>
       <toolitem action="BrushSettingsDropdown"/>
       <toolitem action="LineDropdown"/>
-      <toolitem action="BlendModeEraser"/>
     </placeholder>
     <separator/>
+    <toolitem action="BlendModeEraser"/>
     <placeholder name="blendmodes-toolitems"/>
-    <separator/>
-    <placeholder name="editmodes-toolitems"/>
+    <placeholder name="linemodes-toolitems"/>
+    <toolitem action="ColorPickMode"/>
+    <toolitem action="LayerMoveMode"/>
+    <toolitem action="FrameEditMode"/>
+    <toolitem action="Symmetry"/>
     <separator/>
     <placeholder name="view-modes-toolitems"/>
     <placeholder name="view-manips-toolitems"/>
