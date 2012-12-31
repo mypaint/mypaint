@@ -57,13 +57,21 @@ tile_request_start(MyPaintTiledSurface *tiled_surface, MyPaintTiledSurfaceTileRe
     const int tx = request->tx;
     const int ty = request->ty;
 
-    if (PyErr_Occurred()) return;
+    if (PyErr_Occurred()) {
+      PyErr_Print();
+      return;
+    }
     PyObject* rgba = PyObject_CallMethod(self->py_obj, "get_tile_memory", "(iii)", tx, ty, readonly);
     if (rgba == NULL) {
       request->buffer = NULL;
-      printf("Python exception during get_tile_memory()!\n");
-      return;
+      printf("get_tile_memory() returned NULL!\n");
     }
+    if (PyErr_Occurred()) {
+      printf("Python exception during get_tile_memory()!\n");
+      PyErr_Print();
+    }
+    if (rgba == NULL)
+      return;
 
 #ifdef HEAVY_DEBUG
     assert(PyArray_NDIM(rgba) == 3);
