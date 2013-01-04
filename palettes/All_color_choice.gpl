@@ -1,34 +1,10 @@
 GIMP Palette
-Name: All Color choice (David Revoy, CC-By 3.0)
+Name: All Color choice
 Columns: 16
-# Copyright (C) 25 december 2009, David Revoy
-# License: Creative Commons Attribution 3.0
-#   http://creativecommons.org/licenses/by/3.0/
-#
-#
-# """
-# The distribution and the files are under the creative commons 3.0
-# attribution. [...]
-#
-# Exeption :
-#
-#    You are free to use those palette files to draw / paint a commercial
-#    project without attributing me.
-#
-#    You can show them in a screenshot of your workflow or in a video
-#    screencast freely without attributing me.
-#
-#    You can show them in your school if you are a teacher or a student and do
-#    a presentation about on a CMYK ( paper / print ) support or a RVB ( video
-#    / internet / presentation / Tv ) without attributing me.
-#
-#    If you are a developper of an open source software, you can use them in
-#    your code for your software without attributing me.
-#
-# """
-#
-# Source: http://www.davidrevoy.com/article27/
-#
+# License CC-0 / Public domain
+# By David Revoy, more infos : http://www.davidrevoy.com/article27/
+
+
 255   0   0	Untitled
 255 255   0	Untitled
   0 255   0	Untitled
