@@ -1365,6 +1365,17 @@ class LayerMoveMode (SwitchableModeMixin,
         self.doc.tdw.set_override_cursor(self.inactive_cursor)
 
 
+    def leave(self, **kwds):
+        # Force any remaining moves to a completed state while we still
+        # have a self.doc. It's not enough for _finalize_move_idler() alone
+        # to do this due to a race condition with leave()
+        # https://gna.org/bugs/?20397
+        if self.move is not None:
+            while self._finalize_move_idler():
+                pass
+        return super(LayerMoveMode, self).leave(**kwds)
+
+
     def model_structure_changed_cb(self, doc):
         super(LayerMoveMode, self).model_structure_changed_cb(doc)
         if self.move is not None:
@@ -1416,6 +1427,10 @@ class LayerMoveMode (SwitchableModeMixin,
 
     def _drag_update_idler(self):
         # Process tile moves in chunks in a background idler
+        if self.move is None:
+            # Might have exited, in which case leave() will have cleaned up
+            self._drag_update_idler_srcid = None
+            return False
         # Terminate if asked
         if self._drag_update_idler_srcid is None:
             self.move.cleanup()
@@ -1467,6 +1482,11 @@ class LayerMoveMode (SwitchableModeMixin,
 
     def _finalize_move_idler(self):
         # Finalize everything once the drag's finished.
+        if self.move is None:
+            # Something else cleaned up. That's fine; both mode-leave and
+            # drag-stop can call this. Just exit gracefully.
+            return False
+        assert self.doc is not None
 
         # Keep processing until the move queue is done.
         if self.move.process():
