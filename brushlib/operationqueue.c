@@ -15,7 +15,7 @@
  */
 
 
-#include <malloc.h>
+#include <stdlib.h>
 #include <assert.h>
 
 #include <mypaint-glib-compat.h>

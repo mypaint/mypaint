@@ -15,7 +15,7 @@
  *
  */
 
-#include <malloc.h>
+#include <stdlib.h>
 #include "fifo.h"
 
 struct fifo_item
