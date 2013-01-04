@@ -26,12 +26,14 @@ Uninstall:
 
 Install (for packagers):
 
-    $ scons prefix=/usr --install-sandbox=path/to/sandbox
+    $ scons prefix=/usr --install-sandbox=`pwd`/path/to/sandbox
 
-        (NOTE: the sandbox location must be located under the
-        current working directory. The above installs the main
-        launch script as "./path/to/sandbox/usr/bin/mypaint".
-        Use a symlink if that's too limiting.)
+        (NOTE: the sandbox location must be located under the current working
+        directory, and be specified as an *absolute* path. Using `pwd` or your
+        build environment's absolute path-to-here variable should achieve that.
+        The above installs the main launch script (for example) as
+        "./path/to/sandbox/usr/bin/mypaint".  Use a symlink if that's too
+        limiting.)
 
 
 Required: pygtk, python, swig, gtk, numpy, pycairo(>=1.4), libpng,
