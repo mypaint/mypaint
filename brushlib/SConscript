@@ -94,8 +94,19 @@ else:
 config_file = env.Substfile("mypaint-config.h", "mypaint-config.h.in",
                             SUBST_DICT={'@DEFINES@': config_defines})
 
-# just always regenerate (too fast to bother with build dependencies)
-env.Execute(env['python_binary'] + ' generate.py')
+def generate_cheaders(env, target, source):
+    cmd = ' '.join([
+        env['python_binary'],
+        str(source[0]),
+        str(target[0]),
+        str(target[1]),
+    ])
+    env.Execute(cmd)
+
+env.Command(['mypaint-brush-settings-gen.h', 'brushsettings-gen.h'],
+            ['generate.py', 'brushsettings.py', 'brushsettings.json'],
+            generate_cheaders)
+
 env.Clean('.', Glob('*-gen.h'))
 env.Clean('.', Glob('*.pyc'))
 env.Clean('.', Glob('*.o'))

@@ -119,5 +119,7 @@ def generate_public_settings_code():
 
 if __name__ == '__main__':
 
-    writefile('mypaint-brush-settings-gen.h', generate_public_settings_code())
-    writefile('brushsettings-gen.h', generate_internal_settings_code())
+    args = sys.argv[1:]
+
+    writefile(args[0], generate_public_settings_code())
+    writefile(args[1], generate_internal_settings_code())
