@@ -544,7 +544,7 @@ class Background(Surface):
         self.load_from_numpy(obj, 0, 0)
 
         # Generate mipmap
-        if mipmap_level < MAX_MIPMAP_LEVEL:
+        if mipmap_level <= MAX_MIPMAP_LEVEL:
             mipmap_obj = numpy.zeros((height, width, 4), dtype='uint16')
             for ty in range(height/N*2):
                 for tx in range(width/N*2):
