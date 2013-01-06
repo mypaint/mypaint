@@ -130,20 +130,22 @@ class BrushInfo:
         if brush_def['version'] != 3:
             raise BrushInfo.ParseError, 'brush is not compatible with this version of mypaint (json version=%r)' % brush_def['version']
 
-        settings = brush_def['settings']
+        # settings not in json_string must still be present in self.settings
+        self.load_defaults()
 
         # MyPaint expects that each setting has an array, where
         # index 0 is base value, and index 1 is inputs
-        for k, v in settings.items():
+        for k, v in brush_def['settings'].items():
             base_value, inputs = v['base_value'], v['inputs']
-            settings[k] = [base_value, inputs]
+            if k not in self.settings:
+                print 'ignoring unknown brush setting %r' % k
+                continue
+            self.settings[k] = [base_value, inputs]
 
         # MyPaint expects parent brush as a setting
-        settings['parent_brush_name'] = brush_def['parent_brush_name']
-        # and group
-        settings['group'] = brush_def['group']
-
-        self.settings = settings
+        self.settings['parent_brush_name'] = brush_def['parent_brush_name']
+        # FIXME: who uses this? brush groups are stored externally in order.conf, is this redundant?
+        self.settings['group'] = brush_def['group']
 
     def load_from_string(self, settings_str):
         """Load a setting string, overwriting all current settings."""
