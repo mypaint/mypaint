@@ -147,10 +147,11 @@ class BrushInfo:
     def load_from_string(self, settings_str):
         """Load a setting string, overwriting all current settings."""
 
-        try:
+        if settings_str.startswith('{'):
+            # new json-based brush format
             self.from_json(settings_str)
-        except Exception, e:
-            print e
+        else:
+            # assume it's the old brush format
             self._load_old_format(settings_str)
 
         for f in self.observers:
