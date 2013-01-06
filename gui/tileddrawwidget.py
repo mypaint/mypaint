@@ -759,7 +759,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
             #pattern.set_filter(cairo.FILTER_BEST)     # 3.1s
             #pattern.set_filter(cairo.FILTER_BILINEAR) # 3.1s
 
-            if self.scale > 3.0:
+            if self.scale > 2.8:
                 # pixelize at high zoom-in levels
                 pattern.set_filter(cairo.FILTER_NEAREST)
 
