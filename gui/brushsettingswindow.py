@@ -98,16 +98,30 @@ class Window(windowing.SubWindow):
         scroll.add_with_viewport(brushsetting_vbox)
 
         groups = [
-            {'id' : 'basic',    'title' : _('Basic'),   'settings' : [ 'radius_logarithmic', 'radius_by_random', 'hardness', 'anti_aliasing', 'eraser', 'offset_by_random', 'elliptical_dab_angle', 'elliptical_dab_ratio', 'direction_filter' ]},
-            {'id' : 'opacity',  'title' : _('Opacity'), 'settings' : [ 'opaque', 'opaque_multiply', 'opaque_linearize', 'lock_alpha' ]},
-            {'id' : 'dabs',     'title' : _('Dabs'),    'settings' : [ 'dabs_per_basic_radius', 'dabs_per_actual_radius', 'dabs_per_second' ]},
-            {'id' : 'smudge',   'title' : _('Smudge'),  'settings' : [ 'smudge', 'smudge_length', 'smudge_radius_log' ]},
-            {'id' : 'speed',    'title' : _('Speed'),   'settings' : [ 'speed1_slowness', 'speed2_slowness', 'speed1_gamma', 'speed2_gamma', 'offset_by_speed', 'offset_by_speed_slowness' ]},
-            {'id' : 'tracking', 'title' : _('Tracking'),'settings' : [ 'slow_tracking', 'slow_tracking_per_dab', 'tracking_noise' ]},
-            {'id' : 'stroke',   'title' : _('Stroke'),  'settings' : [ 'stroke_threshold', 'stroke_duration_logarithmic', 'stroke_holdtime' ]},
-            {'id' : 'color',    'title' : _('Color'),   'settings' : [ 'change_color_h', 'change_color_l', 'change_color_hsl_s', 'change_color_v', 'change_color_hsv_s', 'restore_color', 'colorize' ]},
-            {'id' : 'custom',   'title' : _('Custom'),  'settings' : [ 'custom_input', 'custom_input_slowness' ]}
+            {'id' : 'experimental', 'title' : _('Experimental'), 'settings' : []},
+            {'id' : 'basic',        'title' : _('Basic'),        'settings' : [ 'radius_logarithmic', 'radius_by_random', 'hardness', 'anti_aliasing', 'eraser', 'offset_by_random', 'elliptical_dab_angle', 'elliptical_dab_ratio', 'direction_filter' ]},
+            {'id' : 'opacity',      'title' : _('Opacity'),      'settings' : [ 'opaque', 'opaque_multiply', 'opaque_linearize', 'lock_alpha' ]},
+            {'id' : 'dabs',         'title' : _('Dabs'),         'settings' : [ 'dabs_per_basic_radius', 'dabs_per_actual_radius', 'dabs_per_second' ]},
+            {'id' : 'smudge',       'title' : _('Smudge'),       'settings' : [ 'smudge', 'smudge_length', 'smudge_radius_log' ]},
+            {'id' : 'speed',        'title' : _('Speed'),        'settings' : [ 'speed1_slowness', 'speed2_slowness', 'speed1_gamma', 'speed2_gamma', 'offset_by_speed', 'offset_by_speed_slowness' ]},
+            {'id' : 'tracking',     'title' : _('Tracking'),     'settings' : [ 'slow_tracking', 'slow_tracking_per_dab', 'tracking_noise' ]},
+            {'id' : 'stroke',       'title' : _('Stroke'),       'settings' : [ 'stroke_threshold', 'stroke_duration_logarithmic', 'stroke_holdtime' ]},
+            {'id' : 'color',        'title' : _('Color'),        'settings' : [ 'change_color_h', 'change_color_l', 'change_color_hsl_s', 'change_color_v', 'change_color_hsv_s', 'restore_color', 'colorize' ]},
+            {'id' : 'custom',       'title' : _('Custom'),       'settings' : [ 'custom_input', 'custom_input_slowness' ]}
             ]
+        hidden_settings = ['color_h', 'color_s', 'color_v']
+
+        # add new settings to the "experimental" group
+        grouped_settings = hidden_settings[:]
+        for g in groups:
+            grouped_settings.extend(g['settings'])
+        for s in brushsettings.settings:
+            if s.cname not in grouped_settings:
+                groups[0]['settings'].append(s.cname)
+                print 'Warning: setting "%r" should be added to a group in brushsettingswindow.py' % s.cname
+        # hide experimental group if empty
+        if not groups[0]['settings']:
+            groups.pop(0)
 
         for group in groups:
             self.visible_settings = self.visible_settings + group['settings']
@@ -116,7 +130,7 @@ class Window(windowing.SubWindow):
             group_expander.set_use_markup(True)
             table = gtk.Table(4, len(group['settings']))
 
-            if group['id'] == 'basic':
+            if group['id'] in ['basic', 'experimental']:
                 group_expander.set_expanded(True)
 
             for i, cname in enumerate(group['settings']):
