@@ -127,7 +127,8 @@ class BrushInfo:
 
     def from_json(self, json_string):
         brush_def = json.loads(json_string)
-        assert(brush_def['version'] == 3)
+        if brush_def['version'] != 3:
+            raise BrushInfo.ParseError, 'brush is not compatible with this version of mypaint (json version=%r)' % brush_def['version']
 
         settings = brush_def['settings']
 
@@ -150,9 +151,11 @@ class BrushInfo:
         if settings_str.startswith('{'):
             # new json-based brush format
             self.from_json(settings_str)
-        else:
-            # assume it's the old brush format
+        elif settings_str.startswith('#'):
+            # old brush format
             self._load_old_format(settings_str)
+        else:
+            raise BrushInfo.ParseError, 'brush format not recognized'
 
         for f in self.observers:
             f(all_settings)
@@ -271,11 +274,11 @@ class BrushInfo:
             except Exception, e:
                 line = "%s %s" % (rawcname, rawvalue)
                 errors.append((line, str(e)))
-        if num_parsed == 0:
-            errors.append(('', 'there was only garbage in this file, using defaults'))
         if errors:
             for error in errors:
                 print error
+        if num_parsed == 0:
+            raise BrushInfo.ParseError, 'old brush file format parser did not find any brush settings in this file'
 
 
     def save_to_string(self):

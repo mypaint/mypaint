@@ -833,7 +833,11 @@ class ManagedBrush(object):
         prefix = self.get_fileprefix()
         filename = prefix + '.myb'
         brushinfo_str = open(filename).read()
-        self._brushinfo.load_from_string(brushinfo_str)
+        try:
+            self._brushinfo.load_from_string(brushinfo_str)
+        except BrushInfo.ParseError, e:
+            print 'Failed to load brush %r: %s' % (filename, e)
+            self._brushinfo.load_defaults()
         self.remember_mtimes()
         self.settings_loaded = True
         if self.bm.is_in_brushlist(self): # FIXME: get rid of this check
