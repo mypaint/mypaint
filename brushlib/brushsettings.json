@@ -486,7 +486,7 @@
             "internal_name": "snap_to_pixel", 
             "maximum": 1.0, 
             "minimum": 0.0, 
-            "tooltip": "Snap brush dab's center and it's radius to pixels"
+            "tooltip": "Snap brush dab's center and it's radius to pixels. Set this to 1.0 for a thin pixel brush."
         }
     ],
     "states__comment": "# WARNING: only append to this list, for compatibility of replay files (brush.get_state() in stroke.py)",
