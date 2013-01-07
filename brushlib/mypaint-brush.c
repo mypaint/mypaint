@@ -658,6 +658,29 @@ smallest_angular_difference(float a, float b)
       radius = radius_new;
     }
 
+    // snap to pixel
+    float snapToPixel = self->settings_value[MYPAINT_BRUSH_SETTING_SNAP_TO_PIXEL];
+    if (snapToPixel > 0.0)
+    {
+      // linear interpolation between non-snapped and snapped
+      float snapped_x = floor(x) + 0.5;
+      float snapped_y = floor(y) + 0.5;
+      x = x + (snapped_x - x) * snapToPixel;
+      y = y + (snapped_y - y) * snapToPixel;
+
+      float snapped_radius = roundf(radius * 2.0) / 2.0;
+      if (snapped_radius < 0.5)
+        snapped_radius = 0.5;
+
+      if (snapToPixel > 0.9999 )
+      {
+        snapped_radius -= 0.0001; // this fixes precision issues where
+                                  // neighboor pixels could be wrongly painted
+      }
+
+      radius = radius + (snapped_radius - radius) * snapToPixel;
+    }
+
     // the functions below will CLAMP most inputs
     hsv_to_rgb_float (&color_h, &color_s, &color_v);
     return mypaint_surface_draw_dab (surface, x, y, radius, color_h, color_s, color_v, opaque, hardness, eraser_target_alpha,

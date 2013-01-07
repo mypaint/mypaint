@@ -478,6 +478,15 @@
             "maximum": 1.0, 
             "minimum": 0.0, 
             "tooltip": "Colorize the target layer, setting its hue and saturation from the active brush colour while retaining its value and alpha."
+        }, 
+        {
+            "constant": false, 
+            "default": 0.0, 
+            "displayed_name": "Snap to pixel", 
+            "internal_name": "snap_to_pixel", 
+            "maximum": 1.0, 
+            "minimum": 0.0, 
+            "tooltip": "Snap brush dab's center and it's radius to pixels"
         }
     ],
     "states__comment": "# WARNING: only append to this list, for compatibility of replay files (brush.get_state() in stroke.py)",
