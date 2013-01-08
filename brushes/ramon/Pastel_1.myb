@@ -36,7 +36,7 @@
             "inputs": {}
         }, 
         "color_v": {
-            "base_value": 0.0, 
+            "base_value": 0.4980392156862745, 
             "inputs": {}
         }, 
         "colorize": {
@@ -178,6 +178,10 @@
                         -0.3125
                     ], 
                     [
+                        0.0701219512195122, 
+                        -0.10416666666666674
+                    ], 
+                    [
                         1.0, 
                         1.0
                     ]
@@ -213,6 +217,10 @@
             "inputs": {}
         }, 
         "smudge_radius_log": {
+            "base_value": 0.0, 
+            "inputs": {}
+        }, 
+        "snap_to_pixel": {
             "base_value": 0.0, 
             "inputs": {}
         }, 
