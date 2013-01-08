@@ -135,16 +135,16 @@
             "internal_name": "hardness", 
             "maximum": 1.0, 
             "minimum": 0.0, 
-            "tooltip": "Hard brush-circle borders (setting to zero will draw nothing). To reach the maximum hardness, you need to disable Anti-aliasing."
+            "tooltip": "Hard brush-circle borders (setting to zero will draw nothing). To reach the maximum hardness, you need to disable Pixel feather."
         }, 
         {
             "constant": false, 
             "default": 1.0, 
-            "displayed_name": "Anti-aliasing", 
+            "displayed_name": "Pixel feather", 
             "internal_name": "anti_aliasing", 
             "maximum": 5.0, 
             "minimum": 0.0, 
-            "tooltip": "This setting decreases the hardness when necessary to prevent a pixel staircase effect.\n 0.0 disable (for very strong erasers and pixel brushes)\n 1.0 blur one pixel (good value)\n 5.0 notable blur, thin strokes will disappear"
+            "tooltip": "This setting decreases the hardness when necessary to prevent a pixel staircase effect (aliasing) by making the dab more blurred.\n 0.0 disable (for very strong erasers and pixel brushes)\n 1.0 blur one pixel (good value)\n 5.0 notable blur, thin strokes will disappear"
         }, 
         {
             "constant": true, 
