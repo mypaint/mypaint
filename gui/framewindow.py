@@ -370,7 +370,7 @@ class Window (windowing.Dialog):
 
         self.enable_button = gtk.CheckButton()
         frame_toggle_action = self.app.find_action("FrameToggle")
-        frame_toggle_action.connect_proxy(self.enable_button)
+        self.enable_button.set_related_action(frame_toggle_action)
         self.enable_button.set_label(_('Enabled'))
 
         row += 1

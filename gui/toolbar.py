@@ -193,7 +193,7 @@ class LineDropdownToolItem (gtk.ToolItem):
                 self.update_icon_from_action(action)
             action.connect("changed", self.linemode_action_changed_cb)
             button = gtk.ToggleButton()
-            action.connect_proxy(button)
+            button.set_related_action(action)
             button.connect("clicked", self.linemode_button_clicked_cb)
             button.set_can_focus(False)
             button.set_can_default(False)
@@ -331,7 +331,6 @@ class ColorDropdownToolItem (gtk.ToolItem):
 
         def init_proxy(widget, action_name):
             action = self.app.find_action(action_name)
-            #action.connect_proxy(widget)  # deprecated since 2.16
             widget.set_related_action(action)
             widget.connect("clicked", hide_panel_cb)
             return widget
@@ -615,7 +614,7 @@ class BrushSettingsDropdownToolItem (gtk.ToolItem):
         for la, ra, ta, ba, action_name in self.blend_modes_table:
             action = self.app.find_action(action_name)
             button = gtk.ToggleButton()
-            action.connect_proxy(button)
+            button.set_related_action(action)
             button.set_can_focus(False)
             button.set_can_default(False)
             button.set_image_position(gtk.POS_LEFT)
