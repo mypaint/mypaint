@@ -657,6 +657,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
             overlay.paint(cr)
             cr.restore()
 
+
     def render_get_clip_region(self, cr, device_bbox):
 
         # Get the area which needs to be updated, in device coordinates, and
@@ -694,7 +695,8 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
             clip_region = self.window.get_clip_region()
             sparse = not clip_region.point_in(cx, cy)
 
-            return clip_region, sparse
+        return clip_region, sparse
+
 
     def render_prepare(self, cr, device_bbox):
         if device_bbox is None:
