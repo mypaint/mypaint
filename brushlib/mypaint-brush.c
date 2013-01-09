@@ -324,7 +324,7 @@ smallest_angular_difference(float a, float b)
     float base_radius = expf(mapping_get_base_value(self->settings[MYPAINT_BRUSH_SETTING_RADIUS_LOGARITHMIC]));
 
     // FIXME: does happen (interpolation problem?)
-    self->states[MYPAINT_BRUSH_STATE_PRESSURE] = CLAMP(self->states[MYPAINT_BRUSH_STATE_PRESSURE], 0.0, 1.0);
+    if (self->states[MYPAINT_BRUSH_STATE_PRESSURE] <= 0.0) self->states[MYPAINT_BRUSH_STATE_PRESSURE] = 0.0;
     pressure = self->states[MYPAINT_BRUSH_STATE_PRESSURE];
 
     { // start / end stroke (for "stroke" input only)
@@ -772,7 +772,7 @@ smallest_angular_difference(float a, float b)
     // printf("xtilt %f, ytilt %f\n", (double)xtilt, (double)ytilt);
     // printf("ascension %f, declination %f\n", (double)tilt_ascension, (double)tilt_declination);
 
-    pressure = CLAMP(pressure, 0.0, 1.0);
+    if (pressure <= 0.0) pressure = 0.0;
     if (!isfinite(x) || !isfinite(y) ||
         (x > 1e10 || y > 1e10 || x < -1e10 || y < -1e10)) {
       // workaround attempt for https://gna.org/bugs/?14372
