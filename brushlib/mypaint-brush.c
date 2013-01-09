@@ -352,7 +352,7 @@ smallest_angular_difference(float a, float b)
     norm_speed = sqrt(SQR(norm_dx) + SQR(norm_dy));
     norm_dist = norm_speed * step_dtime;
 
-    inputs[MYPAINT_BRUSH_INPUT_PRESSURE] = pressure;
+    inputs[MYPAINT_BRUSH_INPUT_PRESSURE] = pressure * expf(mapping_get_base_value(self->settings[MYPAINT_BRUSH_SETTING_PRESSURE_GAIN_LOG]));
     inputs[MYPAINT_BRUSH_INPUT_SPEED1] = log(self->speed_mapping_gamma[0] + self->states[MYPAINT_BRUSH_STATE_NORM_SPEED1_SLOW])*self->speed_mapping_m[0] + self->speed_mapping_q[0];
     inputs[MYPAINT_BRUSH_INPUT_SPEED2] = log(self->speed_mapping_gamma[1] + self->states[MYPAINT_BRUSH_STATE_NORM_SPEED2_SLOW])*self->speed_mapping_m[1] + self->speed_mapping_q[1];
     inputs[MYPAINT_BRUSH_INPUT_RANDOM] = rng_double_next(self->rng);

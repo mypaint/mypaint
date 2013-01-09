@@ -495,7 +495,7 @@ class BrushSettingsDropdownToolItem (gtk.ToolItem):
     active_stock_id = 'mypaint-brush-mods-active'
     inactive_stock_id = 'mypaint-brush-mods-inactive'
 
-    setting_cnames = ["radius_logarithmic", "slow_tracking", "opaque", "hardness"]
+    setting_cnames = ["radius_logarithmic", "slow_tracking", "opaque", "pressure_gain_log"]
 
     blend_modes_table = [
         (0, 1, 0, 1, "BlendModeNormal"),

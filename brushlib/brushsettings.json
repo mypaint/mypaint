@@ -2,13 +2,13 @@
     "inputs": [
         {
             "displayed_name": "Pressure", 
-            "hard_maximum": 1.0, 
+            "hard_maximum": null, 
             "hard_minimum": 0.0, 
             "id": "pressure", 
             "normal": 0.4, 
             "soft_maximum": 1.0, 
             "soft_minimum": 0.0, 
-            "tooltip": "The pressure reported by the tablet, between 0.0 and 1.0. If you use the mouse, it will be 0.5 when a button is pressed and 0.0 otherwise."
+            "tooltip": "The pressure reported by the tablet. Usually between 0.0 and 1.0, but it may get larger when a pressure gain is used. If you use the mouse, it will be 0.5 when a button is pressed and 0.0 otherwise."
         }, 
         {
             "displayed_name": "Fine speed", 
@@ -487,7 +487,16 @@
             "maximum": 1.0, 
             "minimum": 0.0, 
             "tooltip": "Snap brush dab's center and it's radius to pixels. Set this to 1.0 for a thin pixel brush."
-        }
+        },
+        {
+            "constant": true, 
+            "default": 0.0, 
+            "displayed_name": "Pressure gain", 
+            "internal_name": "pressure_gain_log", 
+            "maximum": 1.8, 
+            "minimum": -1.8, 
+            "tooltip": "This changes how hard you have to press. It multiplies tablet pressure by a constant factor."
+        } 
     ],
     "states__comment": "# WARNING: only append to this list, for compatibility of replay files (brush.get_state() in stroke.py)",
     "states": [
