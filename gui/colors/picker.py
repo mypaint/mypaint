@@ -34,8 +34,10 @@ def get_color_at_pointer(display, size=3):
 
     """
     screen, ptr_x_root, ptr_y_root, mods = display.get_pointer()
-    win_info = display.get_window_at_pointer()
-    if win_info is not None:
+    win_info = display.get_window_at_pointer()  # FIXME: deprecated (GTK3)
+    # PyGTK: returns None if unknown
+    # GI+GTK3: returns (None, -1, -1) if unknown
+    if win_info is not None and win_info[0] is not None:
         # Window is known to GDK, and is a child window of this app for most
         # screen locations. It's most reliable to poll the colour from its
         # toplevel window.

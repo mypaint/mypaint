@@ -1554,8 +1554,10 @@ class Sidebar (gtk.EventBox):
         Currently only tool drag handles are valid insertion points.
         """
         display = self.get_display()
-        window_info = display.get_window_at_pointer()
-        if window_info is None:
+        window_info = display.get_window_at_pointer() #FIXME: deprecated (GTK3)
+        # PyGTK: returns None if unknown (not this app)
+        # GI+GTK3: returns (None, -1, -1) if unknown
+        if window_info is None or window_info[0] is None:
             return None
         pointer_window = window_info[0]
         current_tool = self.layout_manager.drag_state.tool
