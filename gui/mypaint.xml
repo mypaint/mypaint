@@ -551,7 +551,7 @@ Perhaps an increasing amount.
           <property name="label" translatable="yes"
             context="Menu|View|">Fit</property>
           <property name="tooltip" translatable="yes"
-              >Zoom to fit the document, and recenter</property>
+              >View scaled to fit the document</property>
           <signal name="activate" handler="fit_view_toggled_cb"/>
         </object>
         <accelerator key="F10"/>
