@@ -379,6 +379,7 @@ class HCYHueChromaWheel (MaskableWheelMixin,
         MaskableWheelMixin.__init__(self)
         HueSaturationWheelAdjuster.__init__(self)
         self.connect("scroll-event", self.__scroll_cb)
+        self.add_events(gdk.SCROLL_MASK)
 
 
     def __scroll_cb(self, widget, event):

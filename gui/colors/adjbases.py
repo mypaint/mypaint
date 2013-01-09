@@ -674,6 +674,7 @@ class SliderColorAdjuster (ColorAdjusterWidget):
         ColorAdjusterWidget.__init__(self)
         self.connect("realize", self.__realize_cb)
         self.connect("scroll-event", self.__scroll_cb)
+        self.add_events(gdk.SCROLL_MASK)
 
 
     def do_set_property(self, prop, value):

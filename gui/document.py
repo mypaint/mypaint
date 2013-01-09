@@ -68,6 +68,7 @@ class CanvasController (object):
         """Establish TDW event listeners for scroll-wheel actions.
         """
         self.tdw.connect("scroll-event", self.scroll_cb)
+        self.tdw.add_events(gdk.SCROLL_MASK)
 
 
     def button_press_cb(self, tdw, event):
