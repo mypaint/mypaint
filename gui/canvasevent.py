@@ -1145,17 +1145,20 @@ class DragMode (InteractionMode):
 
     def _force_drag_start(self):
         # Attempt to force a drag to start, using the current event.
+
+        # XXX: This is only used by the picker mode, which needs to begin
+        # picking straight away in enter even if this is in response to an
+        # action activation.
         event = gtk.get_current_event()
-        self._fake_drag_start(event)
-
-
-    def _fake_drag_start(self, event):
         if event is None:
             print "no event"
             return
         if self.in_drag:
             return
         tdw = self.doc.tdw
+        # Duck-profile the starting event. If it's a keypress event or a
+        # button-press event, or anything that quacks like those, we can
+        # attempt the grab and start the drag if it succeeded.
         if hasattr(event, "keyval"):
             if event.keyval != self._start_keyval:
                 self._start_keyval = event.keyval
@@ -1167,7 +1170,16 @@ class DragMode (InteractionMode):
                 # Grab succeeded
                 self.last_x = event.x
                 self.last_y = event.y
-                self._start_button = event.button
+                # For the toolbar button, and for menus, it's a button-release
+                # event.
+                # Record which button is being pressed at start
+                if type(event.button) == type(0):
+                    # PyGTK supplies the actual button number ...
+                    self._start_button = event.button
+                else:
+                    # ... but GI+GTK3 supplies a <void at 0xNNNNNNNN> object
+                    # when the event comes from gtk.get_current_event() :(
+                    self._start_button = None
 
 
 class SpringLoadedDragMode (SpringLoadedModeMixin, DragMode):
