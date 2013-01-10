@@ -326,6 +326,15 @@ class Document (CanvasController):
             self.layerblink_state.activate()
 
 
+    def _get_clipboard(self):
+        display = self.tdw.get_display()
+        if pygtkcompat.USE_GTK3:
+            cb = gtk.Clipboard.get_for_display(display, gdk.SELECTION_CLIPBOARD)
+        else:
+            cb = gtk.Clipboard(display, "CLIPBOARD")
+        return cb
+
+
     def copy_cb(self, action):
         # use the full document bbox, so we can paste layers back to the correct position
         bbox = self.model.get_bbox()
@@ -334,12 +343,12 @@ class Document (CanvasController):
             return
         else:
             pixbuf = self.model.layer.render_as_pixbuf(*bbox)
-        cb = gtk.Clipboard()
+        cb = self._get_clipboard()
         cb.set_image(pixbuf)
 
 
     def paste_cb(self, action):
-        cb = gtk.Clipboard()
+        cb = self._get_clipboard()
         def callback(clipboard, pixbuf, junk):
             if not pixbuf:
                 print 'The clipboard doeas not contain any image to paste!'
@@ -347,7 +356,7 @@ class Document (CanvasController):
             # paste to the upper left of our doc bbox (see above)
             x, y, w, h = self.model.get_bbox()
             self.model.load_layer_from_pixbuf(pixbuf, x, y)
-        cb.request_image(callback)
+        cb.request_image(callback, None)
 
 
     def pick_context_cb(self, action):
