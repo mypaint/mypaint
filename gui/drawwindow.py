@@ -634,7 +634,11 @@ class Window (windowing.MainWindow, layout.MainWindow):
             if event.type == gdk.BUTTON_PRESS:
                 button = event.button
                 time = event.time
-        self.popupmenu.popup(None, None, None, button, time)
+        # GTK3: arguments have a different order, and "data" is required.
+        # GTK3: Use keyword arguments for max compatibility.
+        self.popupmenu.popup(parent_menu_shell=None, parent_menu_item=None,
+                             func=None, button=button, activate_time=time,
+                             data=None)
         if event is None:
             # We're responding to an Action, most probably the menu key.
             # Open out the last highlighted menu to speed key navigation up.

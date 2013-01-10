@@ -441,10 +441,11 @@ class GroupSelector(gtk.DrawingArea):
             data = None
             def _pos(*a):
                 return int(event.x_root), int(event.y_root), True
-            if pygtkcompat.USE_GTK3:
-                menu.popup(None, None, _pos, data, event.button, event.time)
-            else:
-                menu.popup(None, None, _pos, event.button, event.time, data)
+            # GTK3: arguments have a different order, and "data" is required.
+            # GTK3: Use keyword arguments for max compatibility.
+            menu.popup(parent_menu_shell=None, parent_menu_item=None,
+                       func=_pos, button=event.button,
+                       activate_time=event.time, data=data)
 
     def motion_notify_cb(self, widget, event):
         old_prelight_group = self.gtkstate_prelight_group

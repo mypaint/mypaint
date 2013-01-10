@@ -91,14 +91,6 @@ class GtkCompat(object):
         else:
             return orig_gtk.accel_map_lookup_entry(accel_path)
 
-    @staticmethod
-    def menu_popup(menu_widget, parent_menu_shell, parent_menu_item,
-                              func, button, time):
-        if USE_GTK3:
-            return menu_widget.popup(parent_menu_shell, parent_menu_item, func, None, button, time)
-        else:
-            return menu_widget.popup(parent_menu_shell, parent_menu_item, func, button, time)
-
 def get_gobject():
     if USE_GTK3:
         from gi.repository import GObject

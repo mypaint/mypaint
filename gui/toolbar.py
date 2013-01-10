@@ -119,10 +119,11 @@ class ToolbarManager:
             return x, y, True
         time = gdk.CURRENT_TIME
         data = None
-        if pygtkcompat.USE_GTK3:
-            menu.popup(None, None, _posfunc, data, button, time)
-        else:
-            menu.popup(None, None, _posfunc, button, time, data)
+        # GTK3: arguments have a different order, and "data" is required.
+        # GTK3: Use keyword arguments for max compatibility.
+        menu.popup(parent_menu_shell=None, parent_menu_item=None,
+                   func=_posfunc, button=button, activate_time=time,
+                   data=None)
 
     def on_settings_toggle(self, toggleaction, ui_xml_file):
         name = toggleaction.get_property("name")
@@ -879,9 +880,12 @@ class MainMenuButton (gtk.ToggleButton):
 
         self.add(hbox2)
         self.set_relief(gtk.RELIEF_NONE)
+        self.connect("button-press-event", self.on_button_press)
+
+        # No keynav.
+        #DISABLED: self.connect("toggled", self.on_toggled)
         self.set_can_focus(False)
         self.set_can_default(False)
-        self.connect("toggled", self.on_toggled)
 
         for sig in "selection-done", "deactivate", "cancel":
             menu.connect(sig, self.on_menu_dismiss)
@@ -902,17 +906,31 @@ class MainMenuButton (gtk.ToggleButton):
         # Post the menu. Menu operation is much more convincing if we call
         # popup() with event details here rather than leaving it to the toggled
         # handler.
-        pos_func = self._get_popup_menu_position
-        self.menu.popup(None, None, pos_func, event.button, event.time)
+        self._show_menu(event)
         self.set_active(True)
+        return True
 
 
-    def on_toggled(self, togglebutton):
-        # Post the menu from a keypress. Dismiss handler untoggles it.
-        if togglebutton.get_active():
-            if not self.menu.get_property("visible"):
-                pos_func = self._get_popup_menu_position
-                pygtkcompat.gtk.menu_popup(self.menu, None, None, pos_func, 1, 0)
+    ## Key nav only. We don't support it right now, so don't compile.
+    #def on_toggled(self, togglebutton):
+    #    # Post the menu from a keypress. Dismiss handler untoggles it.
+    #    if togglebutton.get_active():
+    #        if not self.menu.get_property("visible"):
+    #            self._show_menu()
+
+
+    def _show_menu(self, event=None):
+        button = 1
+        time = 0
+        if event is not None:
+            button = event.button
+            time = event.time
+        pos_func = self._get_popup_menu_position
+        # GTK3: arguments have a different order, and "data" is required.
+        # GTK3: Use keyword arguments for max compatibility.
+        self.menu.popup(parent_menu_shell=None, parent_menu_item=None,
+                        func=pos_func, button=button,
+                        activate_time=time, data=None)
 
 
     def on_menu_dismiss(self, *a, **kw):
