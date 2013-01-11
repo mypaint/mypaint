@@ -37,8 +37,8 @@ def get_brush_cursor(radius, style, prefs={}):
     display = pygtkcompat.gdk.display_get_default()
     if not max_cursor_size:
         max_cursor_size = max(display.get_maximal_cursor_size())
-    d = int(radius)*2
-    min_size = max(prefs.get("cursor.freehand.min_size", 5),
+    d = int(radius*2)
+    min_size = max(prefs.get("cursor.freehand.min_size", 3),
                    BRUSH_CURSOR_MIN_SIZE)
     if d < min_size:
         d = min_size
@@ -53,7 +53,16 @@ def get_brush_cursor(radius, style, prefs={}):
         cr.paint()
         draw_brush_cursor(cr, d, style, prefs)
         surf.flush()
-        hot_x = hot_y = int((d+1)/2)
+
+        # Calculate hotspot. Zero means topmost or leftmost. Cursors with an
+        # even pixel diameter are interesting because they can never be
+        # perfectly centred on their hotspot. Rounding down and not up may be
+        # more "arrow-cursor" like in this case.
+        #
+        # NOTE: is it worth adjusting the freehand drawing code to add half a
+        # pixel to the position passed on to brushlib for the even case?
+        hot_x = hot_y = int(d/2)
+
         pixbuf = image_surface_to_pixbuf(surf)
         if pygtkcompat.USE_GTK3:
             last_cursor = gdk.Cursor.new_from_pixbuf(display, pixbuf,
@@ -89,8 +98,8 @@ def draw_brush_cursor(cr, d, style=BRUSH_CURSOR_STYLE_NORMAL, prefs={}):
     inset = int(prefs.get("cursor.freehand.inner_line_inset", 2))
 
     # Colors
-    col_bg = tuple(prefs.get("cursor.freehand.outer_line_color", (0,0,0,0.6)))
-    col_fg = tuple(prefs.get("cursor.freehand.inner_line_color", (1,1,1,0.7)))
+    col_bg = tuple(prefs.get("cursor.freehand.outer_line_color", (0,0,0,1)))
+    col_fg = tuple(prefs.get("cursor.freehand.inner_line_color", (1,1,1,1)))
 
     # Cursor style
     arcs = []
@@ -120,7 +129,10 @@ def draw_brush_cursor(cr, d, style=BRUSH_CURSOR_STYLE_NORMAL, prefs={}):
 
     # Pick centre to ensure pixel alignedness for the outer edge of the
     # black outline.
-    r0 = int(d/2) + 0.5
+    if d%2 == 0:
+        r0 = int(d/2)
+    else:
+        r0 = int(d/2) + 0.5
     cx = cy = r0
 
     # Outer "bg" line.
