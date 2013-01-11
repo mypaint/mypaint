@@ -228,6 +228,7 @@ class DropdownPanel (gtk.Window):
 
     def _hide_cb(self, widget):
         if self._grabbed:
+            gdk.keyboard_ungrab(gdk.CURRENT_TIME)
             gdk.pointer_ungrab(gdk.CURRENT_TIME)
             self._grabbed = False
         self.grab_remove()
