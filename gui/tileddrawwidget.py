@@ -630,7 +630,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         return self.rotation == 0.0 and self.scale == 1.0 and not self.mirrored
 
     def get_cursor_in_model_coordinates(self):
-        x, y, modifiers = self.window.get_pointer()
+        x, y = self.get_pointer()   # FIXME: deprecated in GTK3
         return self.display_to_model(x, y)
 
     def get_visible_layers(self):
