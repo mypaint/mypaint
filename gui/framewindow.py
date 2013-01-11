@@ -10,6 +10,7 @@
 
 import math
 
+import pygtkcompat
 import gtk
 from gtk import gdk
 from gettext import gettext as _
@@ -314,7 +315,10 @@ class Window (windowing.Dialog):
         xopts = yopts = gtk.FILL|gtk.EXPAND
         xpad = ypad = 3
 
-        unit_combobox = gtk.combo_box_new_text();
+        if pygtkcompat.USE_GTK3:
+            unit_combobox = gtk.ComboBoxText()
+        else:
+            unit_combobox = gtk.combo_box_new_text()
         for unit in UnitAdjustment.CONVERT_UNITS.keys():
             unit_combobox.append_text(unit)
 
@@ -495,12 +499,12 @@ class UnitAdjustment(gtk.Adjustment):
         self.set_step_increment(UnitAdjustment.CONVERT_UNITS[unit][3])
         self.set_page_increment(UnitAdjustment.CONVERT_UNITS[unit][4])
         self.spin_button.set_digits(UnitAdjustment.CONVERT_UNITS[unit][5])
-        self.px_value = self.convert_to_px(self.value, self.old_unit)
+        self.px_value = self.convert_to_px(self.get_value(), self.old_unit)
         self.unit_value = self.convert_to_unit(self.px_value, self.active_unit)
-        self.value = self.unit_value
+        self.set_value(self.unit_value)
 
     def update_px_value(self):
-        self.px_value = self.convert_to_px(self.value, self.active_unit)
+        self.px_value = self.convert_to_px(self.get_value(), self.active_unit)
 
     def get_unit(self):
         return self.unit
@@ -513,7 +517,7 @@ class UnitAdjustment(gtk.Adjustment):
         self.set_value(self.convert_to_unit(value, self.active_unit))
 
     def get_px_value(self):
-        self.px_value = self.convert_to_px(self.value, self.active_unit)
+        self.px_value = self.convert_to_px(self.get_value(), self.active_unit)
         return self.px_value
 
     def convert(self, value, unit_from, unit_to):
