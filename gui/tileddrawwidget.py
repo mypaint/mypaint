@@ -408,6 +408,7 @@ class DrawCursorMixin:
         r = base_radius
         r += 2 * base_radius * b.get_base_value('offset_by_random')
         r *= self.scale
+        r += 0.5
         if b.is_eraser():
             style = cursor.BRUSH_CURSOR_STYLE_ERASER
         elif b.is_alpha_locked():
