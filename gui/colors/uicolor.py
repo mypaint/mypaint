@@ -295,7 +295,7 @@ class UIColor (object):
         dialog.set_resizable(False)
         if parent is not None:
             dialog.set_transient_for(parent)
-        dialog.ok_button.grab_focus()
+        dialog.set_default_response(gtk.RESPONSE_OK)
         response_id = dialog.run()
         result = None
         if response_id == gtk.RESPONSE_OK:
