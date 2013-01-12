@@ -261,6 +261,11 @@ class FileHandler(object):
     @drawwindow.with_wait_cursor
     def save_file(self, filename, export=False, **options):
         thumbnail_pixbuf = self.save_doc_to_file(filename, self.doc, export=export, **options)
+        if "multifile" in options:
+            # Skip thumbnail generation and recentmanager stuff: filename
+            # is not reflective of actual disk filenames in this case, and it
+            # would be incorrect to save a combined thumb for each file.
+            return
         if not export:
             self.filename = os.path.abspath(filename)
             recent_mgr = pygtkcompat.gtk.recent_manager_get_default()
@@ -299,13 +304,13 @@ class FileHandler(object):
             self.lastsavefailed = True
             self.app.message_dialog(str(e),type=gtk.MESSAGE_ERROR)
         else:
-            file_location = None
+            file_location = os.path.abspath(filename)
+            if "multifile" in options:
+                file_location += " (basis; used multiple .XXX.ext names)"
             if not export:
-                file_location = os.path.abspath(filename)
                 print 'Saved to', file_location
             else:
-                file_location = os.path.abspath(filename)
-                print 'Exported to', os.path.abspath(file_location)
+                print 'Exported to', file_location
 
         return thumbnail_pixbuf
 
