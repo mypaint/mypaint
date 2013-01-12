@@ -38,7 +38,7 @@ def get_brush_cursor(radius, style, prefs={}):
     if not max_cursor_size:
         max_cursor_size = max(display.get_maximal_cursor_size())
     d = int(radius*2)
-    min_size = max(prefs.get("cursor.freehand.min_size", 3),
+    min_size = max(prefs.get("cursor.freehand.min_size", 4),
                    BRUSH_CURSOR_MIN_SIZE)
     if d < min_size:
         d = min_size
@@ -90,7 +90,21 @@ def image_surface_to_pixbuf(surf):
 
 
 def draw_brush_cursor(cr, d, style=BRUSH_CURSOR_STYLE_NORMAL, prefs={}):
-    # Draw a brush cursor into a Cairo context, assumed to be of w=h=d+1
+    """Draw a brush cursor into a Cairo context, assumed to be of w=h=d+1
+    """
+
+    # The cursor consists of an inner circle drawn over an outer one. The
+    # inmost edge of the inner ring, and the outmode edge of the outer ring are
+    # pixel-edge aligned. If vertical bars represent pixel edges, then
+    # conceptually,
+    #
+    #   |<--------------    Integer radius
+    #   |OOOOOO             Outer ring pixels
+    #   |------->|          Integer inset
+    #       IIIII|          Inner ring pixels
+    #
+    # Which results in the cleanest possible edges inside and outside. Note the
+    # overlap, and that line widths don't have to be integers.
 
     # Outer and inner line widths
     width1 = float(prefs.get("cursor.freehand.outer_line_width", 1.25))
@@ -99,7 +113,7 @@ def draw_brush_cursor(cr, d, style=BRUSH_CURSOR_STYLE_NORMAL, prefs={}):
 
     # Colors
     col_bg = tuple(prefs.get("cursor.freehand.outer_line_color", (0,0,0,1)))
-    col_fg = tuple(prefs.get("cursor.freehand.inner_line_color", (1,1,1,1)))
+    col_fg = tuple(prefs.get("cursor.freehand.inner_line_color", (1,1,1,0.75)))
 
     # Cursor style
     arcs = []
