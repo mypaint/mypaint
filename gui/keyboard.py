@@ -10,8 +10,10 @@ import gtk
 gdk = gtk.gdk
 import pygtkcompat
 
+
 class KeyboardManager:
-    """
+    """Application-wide key event dispatch.
+
     This class represents all keyboard shortcuts (similar to
     gtk.AccelGroup). It connects to keyboard events of various
     gtk.Window instances to handle hotkeys. It synchronizes with the
@@ -24,19 +26,36 @@ class KeyboardManager:
 
     This class adds extra state attributes to every gtk.Action.
     """
+
     def __init__(self, app):
+        self.app = app
         self.enabled = True
         self.actions = []
-        self.keymap  = {} # (keyval, modifiers) --> gtk.Action
-        self.keymap2 = {} # (keyval, modifiers) --> gtk.Action (2nd priority; for hardcoded keys)
-        self.pressed = {} # hardware_keycode --> gtk.Action (while holding it down)
-        self.app = app
+
+        # Keymap hashes:  (keyval, modifiers) --> GtkAction
+        self.keymap  = {}
+        self.keymap2 = {} # 2nd priority; for hardcoded keys
+
+        # Keypress state
+        self.pressed = {} # hardware_keycode -> GtkAction (while held down)
+
+        # Window-specific sets of actions which can be invoked.
+        # If one of these exists for a window (see `add_window()`), then
+        # only these actions can be dispatched. Other events fall through to
+        # the window.
+        self.window_actions = {} # GtkWindow -> set(['ActionName1', ...)
+
 
     def start_listening(self):
-        pygtkcompat.gtk.accel_map_get().connect('changed', self.accel_map_changed_cb)
+        """Begin listening for changes to the keymap.
+        """
+        accel_map = pygtkcompat.gtk.accel_map_get()
+        accel_map.connect('changed', self.accel_map_changed_cb)
+
 
     def accel_map_changed_cb(self, object, accel_path, accel_key, accel_mods):
         self.update_keymap(accel_path)
+
 
     def update_keymap(self, accel_path):
         if not accel_path:
@@ -53,12 +72,16 @@ class KeyboardManager:
                     return
             print 'Ignoring keybinding for', accel_path
 
+
     def key_press_cb(self, widget, event):
+        """App-wide keypress handler for toplevel windows.
+        """
         if not self.enabled:
             return
         # See gtk sourcecode in gtkmenu.c function gtk_menu_key_press,
         # which uses the same code as below when changing an accelerator.
         keymap = pygtkcompat.gdk.keymap_get_default()
+
         # Instead of using event.keyval, we do it the lowlevel way.
         # Reason: ignoring CAPSLOCK and checking if SHIFT was pressed
         state = event.state & ~gdk.LOCK_MASK
@@ -67,18 +90,23 @@ class KeyboardManager:
         res = keymap.translate_keyboard_state(event.hardware_keycode, state,
                                               event.group)
         if not res:
-            # PyGTK returns None when gdk_keymap_translate_keyboard_state() returns false.
-            # Not sure if this is a bug or a feature - the only time I have seen this
-            # happen is when I put my laptop into sleep mode.
-            print 'Warning: translate_keyboard_state() returned None. Strange key pressed?'
+            # PyGTK returns None when gdk_keymap_translate_keyboard_state()
+            # returns false.  Not sure if this is a bug or a feature - the only
+            # time I have seen this happen is when I put my laptop into sleep
+            # mode.
+            print 'Warning: translate_keyboard_state() returned None. ' \
+                  'Strange key pressed?'
             return
 
         keyval_offset = 1 if pygtkcompat.USE_GTK3 else 0
         keyval = res[keyval_offset]
         consumed_modifiers = res[keyval_offset+3]
-        # We want to ignore irrelevant modifiers like ScrollLock.
-        # The stored key binding does not include modifiers that affected its keyval.
-        modifiers = event.state & gtk.accelerator_get_default_mod_mask() & ~consumed_modifiers
+
+        # We want to ignore irrelevant modifiers like ScrollLock.  The stored
+        # key binding does not include modifiers that affected its keyval.
+        modifiers = event.state & gtk.accelerator_get_default_mod_mask() \
+                  & ~consumed_modifiers
+
         # Except that key bindings are always stored in lowercase.
         keyval_lower = gdk.keyval_to_lower(keyval)
         if keyval_lower != keyval:
@@ -88,7 +116,17 @@ class KeyboardManager:
             # try hardcoded keys
             action = self.keymap2.get((keyval_lower, modifiers))
 
+        # Don't dispatch if the window is only sensitive to a subset of
+        # actions, and the action is not in that set.
+        if action is not None and isinstance(action, gtk.Action):
+            win_actions = self.window_actions.get(widget, None)
+            if win_actions is not None:
+                if action.get_name() not in win_actions:
+                    return False
+
+        # Otherwise, dispatch via our handler.
         return self.activate_keydown_event(action, event)
+
 
     def activate_keydown_event(self, action, event):
         # The kbm is responsible for activating events which correspond to
@@ -96,28 +134,34 @@ class KeyboardManager:
         # Expose this part on a separate method so that canvas "pointer" events
         # using the Space=Button2 equivalence can invoke popup states via their
         # action as proper keypresses.
-        if action:
-            def activate():
-                action.keydown = True
-                action.keyup_callback = None
-                action.activate()
-                action.keydown = False
+        if not action:
+            return False
 
-            if event.hardware_keycode in self.pressed:
-                # allow keyboard autorepeating only if the action
-                # handler is not waiting for the key release event
-                if not action.keyup_callback:
-                    activate()
-            else:
-                #print 'PRESS', action.get_name()
-                self.pressed[event.hardware_keycode] = action
-                ## make sure we also get the corresponding key release event
-                #gdk.keyboard_grab(widget.window, False, event.time)
-                #widget.grab_add() hm? what would this do?
+        def activate():
+            action.keydown = True
+            action.keyup_callback = None
+            action.activate()
+            action.keydown = False
+
+        if event.hardware_keycode in self.pressed:
+            # allow keyboard autorepeating only if the action
+            # handler is not waiting for the key release event
+            if not action.keyup_callback:
                 activate()
-            return True
+        else:
+            #print 'PRESS', action.get_name()
+            self.pressed[event.hardware_keycode] = action
+            ## make sure we also get the corresponding key release event
+            #gdk.keyboard_grab(widget.window, False, event.time)
+            #widget.grab_add() hm? what would this do?
+            activate()
+        return True
+
 
     def key_release_cb(self, widget, event):
+        """Application-wide key release handler.
+        """
+
         def released(hardware_keycode):
             #gdk.keyboard_ungrab(event.time)
             action = self.pressed[hardware_keycode]
@@ -143,9 +187,23 @@ class KeyboardManager:
                 released(event.hardware_keycode)
                 return True
 
-    def add_window(self, window):
+
+    def add_window(self, window, actions=None):
+        """Set up app-wide key event handling for a toplevel window.
+
+        If `actions` is set to an iterable list of names, only those actions
+        will be dispatched if the window has focus. Other keypresses and
+        releases fall through to the window's normal handlers. Ideal for modal
+        dialogs which want keyboard navigation, but also want to pop down when
+        their action key is pressed.
+
+        """
         window.connect("key-press-event", self.key_press_cb)
         window.connect("key-release-event", self.key_release_cb)
+        if actions is not None:
+            action_names = [str(n) for n in actions]
+            self.window_actions[window] = set(action_names)
+
 
     def add_extra_key(self, keystring, action):
         keyval, modifiers = gtk.accelerator_parse(keystring)
@@ -157,15 +215,18 @@ class KeyboardManager:
         else:
             # find an existing gtk.Action by name
             res = [a for a in self.actions if a.get_name() == action]
-            assert len(res) == 1, 'action %s not found, or found more than once' % action
+            assert len(res) == 1, \
+              'action %s not found, or found more than once' % action
             action = res[0]
         self.keymap2[(keyval, modifiers)] = action
+
 
     def takeover_action(self, action):
         assert action not in self.actions
         self.add_custom_attributes(action)
         self.actions.append(action)
         self.update_keymap(action.get_accel_path())
+
 
     def add_custom_attributes(self, action):
         assert not hasattr(action, 'keydown')
