@@ -70,6 +70,55 @@ class Dialog (gtk.Dialog):
         self.connect('delete-event', hide_window_cb)
 
 
+class ChooserDialog (gtk.Dialog):
+    """Partly modal dialog for making a single, fast choice.
+
+    Chooser dialogs are modal, and permit input, but dispatch a subset of
+    events via ``app.kbm``. As such, they're not suited for keyboard data
+    entry, but are fine for clicking on brushes, colours etc. and may have
+    cancel buttons.
+
+    Chooser dialogs save their size to the app preferences, and appear under
+    the mouse.
+
+    """
+
+    MIN_WIDTH = 256
+    MIN_HEIGHT = 256
+
+    def __init__(self, app, title, actions, config_name,
+                 buttons=(gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT)):
+
+        self.app = app
+        parent = app.drawWindow
+        prefs = app.preferences
+        self._prefs_size_key = "%s.window_size" % (config_name,)
+        default_size = (self.MIN_WIDTH, self.MIN_HEIGHT)
+        w, h = prefs.get(self._prefs_size_key, default_size)
+
+        flags = gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT
+        gtk.Dialog.__init__(self, title, parent, flags, buttons)
+        self.set_default_size(w, h)
+        self.connect("configure-event", self._configure_cb)
+
+        if not sys.platform == 'darwin':
+            self.set_type_hint(gdk.WINDOW_TYPE_HINT_UTILITY)
+
+        # Being undecorated might be better for Ubuntu Unity, and closer to
+        # our other popup dialogs. Still want resize though.
+        #self.set_decorated(False)
+
+        self.set_position(gtk.WIN_POS_MOUSE)
+
+        self.app.kbm.add_window(self, actions)
+
+
+    def _configure_cb(self, widget, event):
+        w = max(self.MIN_WIDTH, int(event.width))
+        h = max(self.MIN_HEIGHT, int(event.height))
+        self.app.preferences[self._prefs_size_key] = (w, h)
+
+
 class MainWindow (gtk.Window):
     """The main window in the GUI.
 
