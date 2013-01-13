@@ -28,13 +28,28 @@ def burn_python_version(target, source, env):
     f.write(s)
     f.close()
 
+
+## Build-time customization
+
+# User-facing executable Python code
+# MyPaint app
 env.Command('mypaint', 'mypaint.py', [burn_python_version, Chmod('$TARGET', 0755)])
 AlwaysBuild('mypaint') # especially if the "python_binary" option was changed
+
+# Thumbnailer script
+env.Command('desktop/mypaint-ora-thumbnailer', 'desktop/mypaint-ora-thumbnailer.py', [burn_python_version, Chmod('$TARGET', 0755)])
+AlwaysBuild('desktop/mypaint-ora-thumbnailer')
+
+
+## Additional cleanup
 
 env.Clean('.', Glob('*.pyc'))
 env.Clean('.', Glob('gui/*.pyc'))
 env.Clean('.', Glob('gui/colors/*.pyc'))
 env.Clean('.', Glob('lib/*.pyc'))
+
+
+## Installation
 
 # Painting resources
 install_tree(env, '$prefix/share/mypaint', 'backgrounds')
@@ -44,6 +59,8 @@ install_tree(env, '$prefix/share/mypaint', 'palettes')
 # Desktop resources and themeable internal icons
 install_tree(env, '$prefix/share', 'desktop/icons')
 install_perms(env, '$prefix/share/applications', 'desktop/mypaint.desktop')
+install_perms(env, '$prefix/bin', 'desktop/mypaint-ora-thumbnailer', perms=0755)
+install_perms(env, '$prefix/share/thumbnailers', 'desktop/mypaint-ora.thumbnailer')
 
 # location for achitecture-dependent modules
 install_perms(env, '$prefix/lib/mypaint', mypaintlib)
@@ -54,5 +71,6 @@ install_perms(env, '$prefix/share/mypaint/gui', Glob('gui/*.xml'))
 install_perms(env, "$prefix/share/mypaint/lib",      Glob("lib/*.py"))
 install_perms(env, "$prefix/share/mypaint/gui",      Glob("gui/*.py"))
 install_perms(env, "$prefix/share/mypaint/gui/colors", Glob("gui/colors/*.py"))
+
 
 Return('mypaintlib')

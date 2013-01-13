@@ -1,0 +1,4 @@
+[Thumbnailer Entry]
+TryExec=mypaint-ora-thumbnailer
+Exec=mypaint-ora-thumbnailer %i %o %s
+MimeType=image/openraster
