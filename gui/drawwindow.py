@@ -191,6 +191,9 @@ class Window (windowing.MainWindow, layout.MainWindow):
         for action in self.action_group.list_actions():
             self.app.kbm.takeover_action(action)
 
+        # Brush chooser
+        self._brush_chooser_dialog = None
+
     def init_stategroups(self):
         sg = stategroup.StateGroup()
         p2s = sg.create_popup_state
@@ -440,16 +443,27 @@ class Window (windowing.MainWindow, layout.MainWindow):
         if overlays_changed:
             doc.tdw.queue_draw()
 
+
     def popup_cb(self, action):
         state = self.popup_states[action.get_name()]
         state.activate(action)
 
 
     def brush_chooser_popup_cb(self, action):
-        # It may be even nicer to do this as a real popup state with
-        # mouse-out to cancel. The Action is named accordingly. For now
-        # though a modal dialog will do as an implementation.
-        dialogs.change_current_brush_quick(self.app)
+        dialog = self._brush_chooser_dialog
+        if dialog is None:
+            dialog = dialogs.BrushChooserDialog(self.app)
+            dialog.connect("response", self._brush_chooser_dialog_response_cb)
+            self._brush_chooser_dialog = dialog
+        if not dialog.get_visible():
+            dialog.show_all()
+            dialog.present()
+        else:
+            dialog.response(gtk.RESPONSE_CANCEL)
+
+
+    def _brush_chooser_dialog_response_cb(self, dialog, response_id):
+        dialog.hide()
 
 
     def color_details_dialog_cb(self, action):

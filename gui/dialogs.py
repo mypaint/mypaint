@@ -15,6 +15,8 @@ from pixbuflist import PixbufList
 import widgets
 import spinbox
 from colors import HSVColor
+import windowing
+
 
 OVERWRITE_THIS = 1
 OVERWRITE_ALL  = 2
@@ -349,68 +351,42 @@ class QuickBrushChooser (gtk.VBox):
         self.brushlist.update()
 
 
-
-class BrushChooserDialog (gtk.Dialog):
+class BrushChooserDialog (windowing.ChooserDialog):
     """Speedy brush chooser dialog.
     """
 
-    # TODO: save and restore the size.
-    default_size = (256, 256)
-    prefs_size_key = 'brushchooser.window_size'
-
-
     def __init__(self, app):
-        title = _("Change Brush")
-        parent = app.drawWindow
-        prefs = app.preferences
-        w, h = prefs.get(self.prefs_size_key, self.default_size)
-
-        flags = gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT
-        buttons = (gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT)
-        gtk.Dialog.__init__(self, title, parent, flags, buttons)
-        self.set_default_size(w, h)
-        self.connect("configure-event", self.configure_cb)
-
-        # Being undecorated might be better for Ubuntu Unity, and closer to
-        # our other popup dialogs. Still want resize though.
-        #   self.set_decorated(False)
-
-        self.set_position(gtk.WIN_POS_MOUSE)
-        self.app = app
-        self.response_brush = None
-        self.chooser = QuickBrushChooser(app, self.on_select)
+        windowing.ChooserDialog.__init__(self,
+          app=app, title=_("Change Brush"),
+          actions=['BrushChooserPopup'],
+          config_name="brushchooser")
+        self._response_brush = None
+        self._chooser = QuickBrushChooser(app, self._select_cb)
 
         # Only send the response (and close the dialog) on button release to
         # avoid accidental dabs with the stylus.
-        bl = self.chooser.brushlist
-        bl.connect("button-release-event", self.accept_if_selected)
+        bl = self._chooser.brushlist
+        bl.connect("button-release-event", self._brushlist_button_release_cb)
 
         vbox = self.get_content_area()
-        vbox.pack_start(self.chooser, True, True)
+        vbox.pack_start(self._chooser, True, True)
         for w in vbox:
             w.show_all()
 
-
-    def on_select(self, brush):
-        self.response_brush = brush
+        self.connect("response", self._response_cb)
 
 
-    def configure_cb(self, widget, event):
-        w = max(256, int(event.width))
-        h = max(256, int(event.height))
-        self.app.preferences[self.prefs_size_key] = (w, h)
+    def _select_cb(self, brush):
+        self._response_brush = brush
 
 
-    def accept_if_selected(self, *junk):
-        if self.response_brush is not None:
+    def _brushlist_button_release_cb(self, *junk):
+        if self._response_brush is not None:
             self.response(gtk.RESPONSE_ACCEPT)
 
 
-
-def change_current_brush_quick(app):
-    dialog = BrushChooserDialog(app)
-    result = dialog.run()
-    if result == gtk.RESPONSE_ACCEPT:
-        app.brushmanager.select_brush(dialog.response_brush)
-    dialog.destroy()
+    def _response_cb(self, dialog, response_id):
+        if response_id == gtk.RESPONSE_ACCEPT:
+            bm = self.app.brushmanager
+            bm.select_brush(dialog._response_brush)
 
