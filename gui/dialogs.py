@@ -370,8 +370,6 @@ class BrushChooserDialog (windowing.ChooserDialog):
 
         vbox = self.get_content_area()
         vbox.pack_start(self._chooser, True, True)
-        for w in vbox:
-            w.show_all()
 
         self.connect("response", self._response_cb)
 

@@ -79,44 +79,127 @@ class ChooserDialog (gtk.Dialog):
     cancel buttons.
 
     Chooser dialogs save their size to the app preferences, and appear under
-    the mouse.
+    the mouse. They operate within a grab as well as being modal and issue a
+    gtk.RESPONSE_REJECT response when the pointer leaves the window. There is
+    some slack in the leave behaviour to allow the window to be resized under
+    fancy modern window managers.
+
+    They can (and should) be kept around as references, and can be freely
+    hidden and shown after construction.
 
     """
 
+    #: Minimum dialog width
     MIN_WIDTH = 256
+
+    #: Minimum dialog height
     MIN_HEIGHT = 256
+
+    #: How far outside the window the pointer has to go before the response is
+    #: treated as a reject (see class docs).
+    LEAVE_SLACK = 48
+
 
     def __init__(self, app, title, actions, config_name,
                  buttons=(gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT)):
+        """Initialize.
 
+        :param app: the main Application object.
+        :param title: title for the dialog
+        :param actions: iterable of action names to respect; others are
+           rejected. See `gui.keyboard.KeyboardManager.add_window()`.
+        :param config_name: config string base-name for saving window size;
+           use a simple "lowercase_with_underscores" name.
+        :param buttons: Button list for `gtk.Dialog` construction.
+
+        """
+
+        # Public member vars
         self.app = app
-        parent = app.drawWindow
-        prefs = app.preferences
-        self._prefs_size_key = "%s.window_size" % (config_name,)
-        default_size = (self.MIN_WIDTH, self.MIN_HEIGHT)
-        w, h = prefs.get(self._prefs_size_key, default_size)
 
+        # Internal state
+        self._size = None
+        self._entered = False
+        self._motion_handler_id = None
+        self._prefs_size_key = "%s.window_size" % (config_name,)
+
+        # Superclass construction; default size
+        default_size = (self.MIN_WIDTH, self.MIN_HEIGHT)
+        w, h = app.preferences.get(self._prefs_size_key, default_size)
         flags = gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT
+        parent = app.drawWindow
         gtk.Dialog.__init__(self, title, parent, flags, buttons)
         self.set_default_size(w, h)
-        self.connect("configure-event", self._configure_cb)
+        self.set_position(gtk.WIN_POS_MOUSE)
 
+        # Cosmetic/behavioural hints
         if not sys.platform == 'darwin':
             self.set_type_hint(gdk.WINDOW_TYPE_HINT_UTILITY)
 
-        # Being undecorated might be better for Ubuntu Unity, and closer to
-        # our other popup dialogs. Still want resize though.
-        #self.set_decorated(False)
+        # Register with the keyboard manager, but only let certain actions be
+        # driven from the keyboard.
+        app.kbm.add_window(self, actions)
 
-        self.set_position(gtk.WIN_POS_MOUSE)
+        # Event handlers
+        self.connect("configure-event", self._configure_cb)
+        self.connect("enter-notify-event", self._enter_cb)
+        self.connect("show", self._show_cb)
+        self.connect("hide", self._hide_cb)
 
-        self.app.kbm.add_window(self, actions)
+        # Keep around if the user closes the window.
+        self.connect("delete-event", self.hide_on_delete)
 
 
     def _configure_cb(self, widget, event):
+        # Update _size and prefs when window is adjusted
+        x, y = self.get_position()
+        self._size = (x, y, event.width, event.height)
         w = max(self.MIN_WIDTH, int(event.width))
         h = max(self.MIN_HEIGHT, int(event.height))
         self.app.preferences[self._prefs_size_key] = (w, h)
+
+
+    def _show_cb(self, widget):
+        for w in self.get_content_area():
+            w.show_all()
+        if not self._motion_handler_id:
+            h_id = self.connect("motion-notify-event", self._motion_cb)
+            self._motion_handler_id = h_id
+        self.grab_add()
+
+
+    def _hide_cb(self, widget):
+        self.grab_remove()
+        if self._motion_handler_id is not None:
+            self.disconnect(self._motion_handler_id)
+        self._motion_handler_id = None
+        self._size = None
+        self._entered = None
+
+
+    def _motion_cb(self, widget, event):
+        # Ensure that at some point the user started inside a visible window
+        if not self.get_visible():
+            return
+        if not self._entered:
+            return
+        if self._size is None:
+            return
+        # Moving outside the window is equivalent to rejecting the choices
+        # on offer. Leave some slack so that more recent WMs/themes with
+        # invisible grabs outside the window can resize the window.
+        x, y, w, h = self._size
+        px, py = event.x_root, event.y_root
+        s = self.LEAVE_SLACK
+        moved_outside = px < x-s or py < y-s or px > x+w+s or py > y+h+s
+        if moved_outside:
+            self.response(gtk.RESPONSE_REJECT)
+
+
+    def _enter_cb(self, widget, event):
+        if event.mode != gdk.CROSSING_NORMAL:
+            return
+        self._entered = True
 
 
 class MainWindow (gtk.Window):
