@@ -143,7 +143,7 @@ class MyPaintGeglApplication(object):
     def draw_background(self, widget, cr, rect):
         # Draw white background
         cr.set_source_rgba(1.0, 1.0, 1.0, 1.0);
-        cr.rectangle(0.0, 0.0, rect.width, rect.height);
+        cr.rectangle(rect.x, rect.y, rect.width, rect.height);
         cr.fill();
 
     def load_from_png(self, filename):
@@ -170,7 +170,7 @@ class MyPaintGeglApplication(object):
         
         buttons = (Gtk.STOCK_OK, Gtk.ResponseType.OK,
                    Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL)
-        action = Gtk.FileChooserAction.SAVE
+        action = Gtk.FileChooserAction.OPEN
         chooser = Gtk.FileChooserDialog("Load file", self.window,
                                         action=action, buttons=buttons)
         
