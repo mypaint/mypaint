@@ -40,6 +40,14 @@ opts.Add('python_config', 'python-config to used', default_python_config)
 tools = ['default', 'textfile']
 
 env = Environment(ENV=os.environ, options=opts, tools=tools)
+
+# Additional standard flags that SCons doesn't bother with yet
+# See http://cgit.freedesktop.org/mesa/mesa/tree/scons/gallium.py
+# See https://wiki.gentoo.org/wiki/SCons#Missing_CC.2C_CFLAGS.2C_LDFLAGS
+if 'LDFLAGS' in os.environ:
+    # LDFLAGS is omitted in SHLINKFLAGS, which is derived from LINKFLAGS
+    env.Append(LINKFLAGS=os.environ['LDFLAGS'])
+
 print('building for %r (use scons python_binary=xxx to change)' % env['python_binary'])
 print('using %r (use scons python_config=xxx to change)' % env['python_config'])
 if sys.platform == "win32":
