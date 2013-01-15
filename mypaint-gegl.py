@@ -6,9 +6,13 @@ from gi.repository import GeglGtk3 as GeglGtk
 
 from lib import mypaintlib, tiledsurface, brush
 
-import pylab
 
 def draw_test_data(surface, brush):
+
+    # WARNING: can pull in GTK2, depending on matplotlib config.
+    # This will crash application. Use the Tk backend of matplotlib instead
+    import pylab
+
     events = pylab.loadtxt('tests/painting30sec.dat')
     s, b = surface, brush
 
