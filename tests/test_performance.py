@@ -81,7 +81,7 @@ def paint(gui):
     gui.wait_for_duration(1.5) # fullscreen seems to take some time to get through...
     gui.wait_for_idle()
 
-    events = loadtxt('painting30sec.dat.gz')
+    events = loadtxt('painting30sec.dat')
     events = list(events)
     yield start_measurement
     t_old = 0.0
@@ -186,7 +186,7 @@ def brushengine_paint_hires():
     bi = brush.BrushInfo(open('brushes/watercolor.myb').read())
     b = brush.Brush(bi)
 
-    events = loadtxt('painting30sec.dat.gz')
+    events = loadtxt('painting30sec.dat')
     t_old = events[0][0]
     yield start_measurement
     s.begin_atomic()

@@ -85,7 +85,7 @@ def layerModes():
 def directPaint():
 
     s = tiledsurface.Surface()
-    events = loadtxt('painting30sec.dat.gz')
+    events = loadtxt('painting30sec.dat')
 
     s.begin_atomic()
     for t, x, y, pressure in events:
@@ -101,7 +101,7 @@ def brushPaint():
     bi = brush.BrushInfo(open('brushes/charcoal.myb').read())
     b = brush.Brush(bi)
 
-    events = loadtxt('painting30sec.dat.gz')
+    events = loadtxt('painting30sec.dat')
 
     bi.set_color_rgb((0.0, 0.9, 1.0))
 
@@ -191,7 +191,7 @@ def docPaint():
     # test some actions
     doc = document.Document(b)
     doc.undo() # nop
-    events = loadtxt('painting30sec.dat.gz')
+    events = loadtxt('painting30sec.dat')
     events = events[:len(events)/8]
     t_old = events[0][0]
     n = len(events)

@@ -9,7 +9,7 @@ from lib import mypaintlib, tiledsurface, brush
 import pylab
 
 def draw_test_data(surface, brush):
-    events = pylab.loadtxt('tests/painting30sec.dat.gz')
+    events = pylab.loadtxt('tests/painting30sec.dat')
     s, b = surface, brush
 
     for i in range(10):
