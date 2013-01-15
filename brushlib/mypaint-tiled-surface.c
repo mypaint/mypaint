@@ -622,6 +622,9 @@ mypaint_tiled_surface_init(MyPaintTiledSurface *self,
 {
     self->parent.draw_dab = draw_dab;
     self->parent.get_color = get_color;
+    self->parent.begin_atomic = begin_atomic_default;
+    self->parent.end_atomic = end_atomic_default;
+
     self->tile_request_end = tile_request_end;
     self->tile_request_start = tile_request_start;
 
