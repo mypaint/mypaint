@@ -5,10 +5,23 @@ It allows other applications to make use of the MyPaint brush engine.
 
 License: ICS, see COPYING for details
 
+== Prerequisites ==
+
+Build dependencies:
+json-c: https://github.com/json-c/json-c/wiki
+scons: http://scons.org/
+Python: http://python.org/
+
+Optional dependencies:
+  GEGL + BABL: http://gegl.org/ (for enable_gegl=true)
+  GObjectIntrospection: https://live.gnome.org/GObjectIntrospection (for enable_introspection=true)
+
+
 == Building ==
 
 From the toplevel MyPaint directory, run:
- scons brushlib_only=true prefix=/your/application/prefix
+ scons brushlib_only=true prefix=/your/application/install/prefix
+
 
 == Documentation ==
 
