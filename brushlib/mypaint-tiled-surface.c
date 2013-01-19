@@ -172,6 +172,13 @@ calculate_rr_antialiased(int xp, int yp, float x, float y, float aspect_ratio,
     nearestY -= y;
     farthestX -= x;
     farthestY -= y;
+    
+    // Algorithm works fine only on perfect circles, so we need to counter
+    // the effect given by aspect_ratio>1. This is OK because it's only
+    // done inside the pixel we're currently processing, and doesn't affect
+    // the dab's shape unless it's radius is <0.5, at which point it barely
+    // matters since we only aim at approximate AA and not perfect AA.
+    farthestX = nearestX + (farthestX - nearestX) / aspect_ratio;
 
     float rr_near = calculate_r_sample( nearestX, nearestY, aspect_ratio, sn, cs ) * one_over_radius2;
     // if even the nearest point is > 1, there's no use going on
