@@ -2,7 +2,7 @@ Import('env', 'install_perms')
 
 import os, sys
 
-brushlib_version = '0.1'
+brushlib_version = '1.1'
 
 def add_gobject_introspection(env, gi_name, version,
                               func_prefix, type_prefix,
@@ -23,9 +23,9 @@ def add_gobject_introspection(env, gi_name, version,
         %(pkgs)s -I%(includepath)s \
         --library=%(libname)s $SOURCES""" % locals()
 
-    gir_file = env.Command("%s.gir" % gi_name, sources, scanner_cmd)
+    gir_file = env.Command("%s-%s.gir" % (gi_name, version), sources, scanner_cmd)
     env.Depends(gir_file, library)
-    typelib_file = env.Command("%s.typelib" % gi_name, gir_file,
+    typelib_file = env.Command("%s-%s.typelib" % (gi_name, version), gir_file,
                            "g-ir-compiler -o $TARGET $SOURCE")
 
     return (gir_file, typelib_file)
