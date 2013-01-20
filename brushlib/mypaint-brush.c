@@ -199,6 +199,12 @@ mypaint_brush_set_mapping_point(MyPaintBrush *self, MyPaintBrushSetting id, MyPa
     mapping_set_point(self->settings[id], input, index, x, y);
 }
 
+/**
+ * mypaint_brush_get_mapping_point:
+ * @x: (out)
+ * @y: (out)
+ *
+ **/
 void
 mypaint_brush_get_mapping_point(MyPaintBrush *self, MyPaintBrushSetting id, MyPaintBrushInput input, int index, float *x, float *y)
 {
