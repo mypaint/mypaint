@@ -19,6 +19,7 @@
  */
 
 #include <mypaint-glib-compat.h>
+#include <mypaint-rectangle.h>
 
 G_BEGIN_DECLS
 
@@ -46,13 +47,6 @@ typedef void (*MyPaintSurfaceDestroyFunction) (struct _MyPaintSurface *self);
 typedef void (*MyPaintSurfaceSavePngFunction) (struct _MyPaintSurface *self, const char *path, int x, int y, int width, int height);
 
 typedef void (*MyPaintSurfaceBeginAtomicFunction) (struct _MyPaintSurface *self);
-
-typedef struct {
-    int x;
-    int y;
-    int width;
-    int height;
-} MyPaintRectangle;
 
 typedef MyPaintRectangle (*MyPaintSurfaceEndAtomicFunction) (struct _MyPaintSurface *self);
 

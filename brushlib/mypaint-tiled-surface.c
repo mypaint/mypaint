@@ -25,23 +25,6 @@
 
 void process_tile(MyPaintTiledSurface *self, int tx, int ty);
 
-
-void
-mypaint_rectangle_expand_to_include_point(MyPaintRectangle *r, int x, int y)
-{
-    if (r->width == 0) {
-        r->width = 1; r->height = 1;
-        r->x = x; r->y = y;
-    } else {
-        if (x < r->x) { r->width += r->x-x; r->x = x; } else
-        if (x >= r->x+r->width) { r->width = x - r->x + 1; }
-
-        if (y < r->y) { r->height += r->y-y; r->y = y; } else
-        if (y >= r->y+r->height) { r->height = y - r->y + 1; }
-    }
-}
-
-
 void
 begin_atomic_default(MyPaintSurface *surface)
 {
