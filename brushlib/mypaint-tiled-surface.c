@@ -37,6 +37,14 @@ end_atomic_default(MyPaintSurface *surface)
     return mypaint_tiled_surface_end_atomic((MyPaintTiledSurface *)surface);
 }
 
+/**
+ * mypaint_tiled_surface_begin_atomic: (skip)
+ *
+ * Implementation of #MyPaintSurface::being_atomic vfunc
+ * Note: Only intended to be used from #MyPaintTiledSurface subclasses, which should chain up to this
+ * if implementing their own #MyPaintSurface::begin_atomic vfunc.
+ * Application code should only use mypaint_surface_being_atomic()
+ */
 void
 mypaint_tiled_surface_begin_atomic(MyPaintTiledSurface *self)
 {
@@ -46,6 +54,14 @@ mypaint_tiled_surface_begin_atomic(MyPaintTiledSurface *self)
     self->dirty_bbox.x = 0;
 }
 
+/**
+ * mypaint_tiled_surface_end_atomic: (skip)
+ *
+ * Implementation of #MyPaintSurface::end_atomic vfunc
+ * Note: Only intended to be used from #MyPaintTiledSurface subclasses, which should chain up to this
+ * if implementing their own #MyPaintSurface::end_atomic vfunc.
+ * Application code should only use mypaint_surface_end_atomic().
+ */
 MyPaintRectangle
 mypaint_tiled_surface_end_atomic(MyPaintTiledSurface *self)
 {
@@ -63,19 +79,43 @@ mypaint_tiled_surface_end_atomic(MyPaintTiledSurface *self)
     return self->dirty_bbox;
 }
 
+/**
+ * mypaint_tiled_surface_tile_request_start:
+ *
+ * Fetch a tile out from the underlying tile store.
+ * When successfull, request->data will be set to point to the fetched tile.
+ * Consumers must *always* call mypaint_tiled_surface_tile_request_end() with the same
+ * request to complete the transaction.
+ */
 void mypaint_tiled_surface_tile_request_start(MyPaintTiledSurface *self, MyPaintTiledSurfaceTileRequestData *request)
 {
     assert(self->tile_request_start);
     self->tile_request_start(self, request);
 }
 
-
+/**
+ * mypaint_tiled_surface_tile_request_end:
+ *
+ * Put a (potentially modified) tile back into the underlying tile store.
+ *
+ * Consumers must *always* call mypaint_tiled_surface_tile_request_start() with the same
+ * request to start the transaction before calling this function.
+ */
 void mypaint_tiled_surface_tile_request_end(MyPaintTiledSurface *self, MyPaintTiledSurfaceTileRequestData *request)
 {
     assert(self->tile_request_end);
     self->tile_request_end(self, request);
 }
 
+/* FIXME: either expose this through MyPaintSurface, or move it into the brush engine */
+/**
+ * mypaint_tiled_surface_set_symmetry_state:
+ *
+ * @active: TRUE to enable, FALSE to disable.
+ * @center_x: X axis to mirror events across.
+ *
+ * Enable/Disable symmetric brush painting across an X axis.
+ */
 void
 mypaint_tiled_surface_set_symmetry_state(MyPaintTiledSurface *self, gboolean active, float center_x)
 {
@@ -83,6 +123,12 @@ mypaint_tiled_surface_set_symmetry_state(MyPaintTiledSurface *self, gboolean act
     self->surface_center_x = center_x;
 }
 
+/**
+ * mypaint_tiled_surface_tile_request_init:
+ *
+ * Initialize a request for use with mypaint_tiled_surface_tile_request_start()
+ * and mypaint_tiled_surface_tile_request_end()
+ */
 void
 mypaint_tiled_surface_tile_request_init(MyPaintTiledSurfaceTileRequestData *data,
                                         int tx, int ty, gboolean readonly)
@@ -605,6 +651,12 @@ void get_color (MyPaintSurface *surface, float x, float y,
     *color_a = CLAMP(*color_a, 0.0, 1.0);
 }
 
+/**
+ * mypaint_tiled_surface_init: (skip)
+ *
+ * Initialize the surface, passing in implementations of the tile backend.
+ * Note: Only intended to be called from subclasses of #MyPaintTiledSurface
+ **/
 void
 mypaint_tiled_surface_init(MyPaintTiledSurface *self,
                            MyPaintTiledSurfaceTileRequestStartFunction tile_request_start,
@@ -630,6 +682,13 @@ mypaint_tiled_surface_init(MyPaintTiledSurface *self,
     self->operation_queue = operation_queue_new();
 }
 
+/**
+ * mypaint_tiled_surface_destroy: (skip)
+ *
+ * Deallocate resources set up by mypaint_tiled_surface_init()
+ * Does not free the #MyPaintTiledSurface itself.
+ * Note: Only intended to be called from subclasses of #MyPaintTiledSurface
+ */
 void
 mypaint_tiled_surface_destroy(MyPaintTiledSurface *self)
 {

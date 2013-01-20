@@ -24,9 +24,6 @@
 
 G_BEGIN_DECLS
 
-/**
-  * MyPaintBrush
-  */
 typedef struct _MyPaintBrush MyPaintBrush;
 
 #include <glib/mypaint-brush.h>

@@ -52,6 +52,11 @@
  */
 
 
+/**
+  * MyPaintBrush:
+  *
+  * The MyPaint brush engine class.
+  */
 struct _MyPaintBrush {
 
     gboolean print_inputs; // debug menu
@@ -86,6 +91,12 @@ void settings_base_values_have_changed (MyPaintBrush *self);
 
 #include "glib/mypaint-brush.c"
 
+/**
+  * mypaint_brush_new:
+  *
+  * Create a new MyPaint brush engine instance.
+  * Must be freed using mypaint_brush_destroy()
+  */
 MyPaintBrush *
 mypaint_brush_new()
 {
@@ -112,6 +123,13 @@ mypaint_brush_new()
     return self;
 }
 
+/* FIXME: should be called _free as it frees memory.
+ * Alternatively we should use refcounting and _unref */
+/**
+  * mypaint_brush_destroy:
+  *
+  * Free the #MyPaintBrush instance.
+  */
 void
 mypaint_brush_destroy(MyPaintBrush *self)
 {
@@ -124,24 +142,46 @@ mypaint_brush_destroy(MyPaintBrush *self)
     free(self);
 }
 
+/**
+  * mypaint_brush_get_total_stroke_painting_time:
+  *
+  * Return the total amount of painting time for the current stroke.
+  */
 double
 mypaint_brush_get_total_stroke_painting_time(MyPaintBrush *self)
 {
     return self->stroke_total_painting_time;
 }
 
+/**
+  * mypaint_brush_set_print_inputs:
+  *
+  * Enable/Disable printing of brush engine inputs on stderr. Intended for debugging only.
+  */
 void
 mypaint_brush_set_print_inputs(MyPaintBrush *self, gboolean enabled)
 {
     self->print_inputs = enabled;
 }
 
+/**
+  * mypaint_brush_reset:
+  *
+  * Reset the current brush engine state.
+  * Used when the next mypaint_brush_stroke_to() call is not related to the current state.
+  * Note that the reset request is queued and changes in state will only happen on next stroke_to()
+  */
 void
 mypaint_brush_reset(MyPaintBrush *self)
 {
     self->reset_requested = TRUE;
 }
 
+/**
+  * mypaint_brush_new_stroke:
+  *
+  * Start a new stroke.
+  */
 void
 mypaint_brush_new_stroke(MyPaintBrush *self)
 {
@@ -149,6 +189,11 @@ mypaint_brush_new_stroke(MyPaintBrush *self)
     self->stroke_total_painting_time = 0;
 }
 
+/**
+  * mypaint_brush_set_base_value:
+  *
+  * Set the base value of a brush setting.
+  */
 void
 mypaint_brush_set_base_value(MyPaintBrush *self, MyPaintBrushSetting id, float value)
 {
@@ -158,6 +203,11 @@ mypaint_brush_set_base_value(MyPaintBrush *self, MyPaintBrushSetting id, float v
     settings_base_values_have_changed (self);
 }
 
+/**
+  * mypaint_brush_get_base_value:
+  *
+  * Get the base value of a brush setting.
+  */
 float
 mypaint_brush_get_base_value(MyPaintBrush *self, MyPaintBrushSetting id)
 {
@@ -165,6 +215,11 @@ mypaint_brush_get_base_value(MyPaintBrush *self, MyPaintBrushSetting id)
     return mapping_get_base_value(self->settings[id]);
 }
 
+/**
+  * mypaint_brush_set_mapping_n:
+  *
+  * Set the number of points used for the dynamics mapping between a #MyPaintBrushInput and #MyPaintBrushSetting.
+  */
 void
 mypaint_brush_set_mapping_n(MyPaintBrush *self, MyPaintBrushSetting id, MyPaintBrushInput input, int n)
 {
@@ -172,12 +227,22 @@ mypaint_brush_set_mapping_n(MyPaintBrush *self, MyPaintBrushSetting id, MyPaintB
     mapping_set_n(self->settings[id], input, n);
 }
 
+/**
+  * mypaint_brush_get_mapping_n:
+  *
+  * Get the number of points used for the dynamics mapping between a #MyPaintBrushInput and #MyPaintBrushSetting.
+  */
 int
 mypaint_brush_get_mapping_n(MyPaintBrush *self, MyPaintBrushSetting id, MyPaintBrushInput input)
 {
     return mapping_get_n(self->settings[id], input);
 }
 
+/**
+  * mypaint_brush_is_constant:
+  *
+  * Returns TRUE if the brush has no dynamics for the given #MyPaintBrushSetting
+  */
 gboolean
 mypaint_brush_is_constant(MyPaintBrush *self, MyPaintBrushSetting id)
 {
@@ -185,6 +250,11 @@ mypaint_brush_is_constant(MyPaintBrush *self, MyPaintBrushSetting id)
     return mapping_is_constant(self->settings[id]);
 }
 
+/**
+  * mypaint_brush_get_inputs_used_n:
+  *
+  * Returns how many inputs are used for the dynamics of a #MyPaintBrushSetting
+  */
 int
 mypaint_brush_get_inputs_used_n(MyPaintBrush *self, MyPaintBrushSetting id)
 {
@@ -192,6 +262,12 @@ mypaint_brush_get_inputs_used_n(MyPaintBrush *self, MyPaintBrushSetting id)
     return mapping_get_inputs_used_n(self->settings[id]);
 }
 
+/**
+  * mypaint_brush_set_mapping_point:
+  *
+  * Set a X,Y point of a dynamics mapping.
+  * The index must be within the number of points set using mypaint_brush_set_mapping_n()
+  */
 void
 mypaint_brush_set_mapping_point(MyPaintBrush *self, MyPaintBrushSetting id, MyPaintBrushInput input, int index, float x, float y)
 {
@@ -201,9 +277,10 @@ mypaint_brush_set_mapping_point(MyPaintBrush *self, MyPaintBrushSetting id, MyPa
 
 /**
  * mypaint_brush_get_mapping_point:
- * @x: (out)
- * @y: (out)
+ * @x: (out): Location to return the X value
+ * @y: (out): Location to return the Y value
  *
+ * Get a X,Y point of a dynamics mapping.
  **/
 void
 mypaint_brush_get_mapping_point(MyPaintBrush *self, MyPaintBrushSetting id, MyPaintBrushInput input, int index, float *x, float *y)
@@ -212,6 +289,12 @@ mypaint_brush_get_mapping_point(MyPaintBrush *self, MyPaintBrushSetting id, MyPa
     mapping_get_point(self->settings[id], input, index, x, y);
 }
 
+/**
+ * mypaint_brush_get_state:
+ *
+ * Get an internal brush engine state.
+ * Normally used for debugging, but can be used to implement record & replay functionality.
+ **/
 float
 mypaint_brush_get_state(MyPaintBrush *self, MyPaintBrushState i)
 {
@@ -219,6 +302,12 @@ mypaint_brush_get_state(MyPaintBrush *self, MyPaintBrushState i)
     return self->states[i];
 }
 
+/**
+ * mypaint_brush_set_state:
+ *
+ * Set an internal brush engine state.
+ * Normally used for debugging, but can be used to implement record & replay functionality.
+ **/
 void
 mypaint_brush_set_state(MyPaintBrush *self, MyPaintBrushState i, float value)
 {
