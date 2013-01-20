@@ -40,13 +40,13 @@ mypaint_brush_setting_info(MyPaintBrushSetting id)
 const gchar *
 mypaint_brush_setting_info_get_name(const MyPaintBrushSettingInfo *self)
 {
-    return dgettext(self->name, GETTEXT_PACKAGE);
+    return dgettext(GETTEXT_PACKAGE, self->name);
 }
 
 const gchar *
 mypaint_brush_setting_info_get_tooltip(const MyPaintBrushSettingInfo *self)
 {
-    return dgettext(self->tooltip, GETTEXT_PACKAGE);
+    return dgettext(GETTEXT_PACKAGE, self->tooltip);
 }
 
 MyPaintBrushSetting
