@@ -1,8 +1,10 @@
 
-# from gi.repository import Gegl, GeglGtk3
+from gi.repository import Gegl, GeglGtk3
 from gi.repository import MyPaint, MyPaintGegl
 
 if __name__ == '__main__':
+
+    #MyPaint.init()
 
     # Create a brush, load from disk
     brush = MyPaint.Brush()
@@ -42,12 +44,17 @@ if __name__ == '__main__':
 
 
     # Create a surface to paint on
-    surface = MyPaint.Surface()
-    # FIXME: Must use a real surface here, using just the interface wont paint anything
-    # TypeError: cannot allocate disguised struct MyPaintGegl.TiledSurface;
-    # surface = MyPaintGegl.TiledSurface()
+    Gegl.init(0, "")
+    surface = MyPaintGegl.TiledSurface()
+    s = surface.interface()
 
-    for x, y in [(0.0, 0.0), (10.0, 10.0), (10.0, 20.0)]:
-        dtime = 100.0 # XXX: Important to set correctly for speed calculations
-        brush.stroke_to(surface, x, y, pressure=1.0, xtilt=0.0, ytilt=0.0, dtime=dtime)
+    print surface.get_buffer()
 
+    for x, y in [(0.0, 0.0), (100.0, 100.0), (100.0, 200.0)]:
+        dtime = 0.1 # XXX: Important to set correctly for speed calculations
+        s.begin_atomic()
+        brush.stroke_to(s, x, y, pressure=1.0, xtilt=0.0, ytilt=0.0, dtime=dtime)
+        rect = s.end_atomic()
+        print rect.x, rect.y, rect.width, rect.height
+
+    Gegl.exit()
