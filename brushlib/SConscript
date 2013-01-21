@@ -6,7 +6,8 @@ brushlib_version = '1.1'
 
 def add_gobject_introspection(env, gi_name, version,
                               func_prefix, type_prefix,
-                              sources, includepath, library, pkgs):
+                              sources, includepaths, library,
+                              pkgs, includes):
 
     pkgs = ' '.join('--pkg=%s' % dep for dep in pkgs)
     library = library[0] # there should be only one Node in the list
@@ -17,10 +18,13 @@ def add_gobject_introspection(env, gi_name, version,
     if libname.startswith('lib'):
         libname = libname[3:]
 
+    includeflags = ' '.join(['-I%s' % s for s in includepaths])
+    gi_includes = ' '.join(['--include=%s' % s for s in includes])
+
     scanner_cmd = """LD_LIBRARY_PATH=./ g-ir-scanner -o $TARGET --warn-all \
         --namespace=%(gi_name)s --nsversion=%(version)s \
         --identifier-prefix=%(type_prefix)s --symbol-prefix=%(func_prefix)s \
-        %(pkgs)s -I%(includepath)s \
+        %(pkgs)s %(includeflags)s %(gi_includes)s \
         --library=%(libname)s $SOURCES""" % locals()
 
     gir_file = env.Command("%s-%s.gir" % (gi_name, version), sources, scanner_cmd)
@@ -124,8 +128,9 @@ create_pkgconfig_files(env, 'libmypaint', brushlib_version, 'MyPaint brush engin
 if env['enable_introspection']:
     gir, typelib = add_gobject_introspection(env, "MyPaint", brushlib_version,
                               "mypaint_", "MyPaint",
-                              Glob("*.c") + Glob("mypaint-*.h") + Glob("glib/*.c") + Glob("glib/mypaint-*.h"),
-                              './brushlib', brushlib, ['glib-2.0'])
+                              Glob("*.c") + Glob("mypaint-*.h") +
+                              Glob("glib/mypaint-[!gegl]*.c") + Glob("glib/mypaint-[!gegl]*.h"),
+                              ['./brushlib'], brushlib, ['glib-2.0'], [])
 
     install_perms(env, '$prefix/share/gir-1.0', gir)
     install_perms(env, '$prefix/lib/girepository-1.0', typelib)
@@ -159,8 +164,11 @@ if env['enable_gegl']:
     if gegl_env['enable_introspection']:
         gir, typelib = add_gobject_introspection(gegl_env, "MyPaintGegl", brushlib_version,
                                   "mypaint_gegl", "MyPaintGegl",
-                                  Glob("gegl/*.c") + Glob("gegl/mypaint-gegl-*.h"),
-                                  './brushlib/gegl', brushlib_gegl, ['glib-2.0', 'gegl-0.2'])
+                                  Glob("gegl/*.c") + Glob("gegl/mypaint-gegl-*.h") +
+                                  Glob("glib/mypaint-gegl*"),
+                                  ['brushlib/', './brushlib/gegl'], brushlib_gegl,
+                                  ['glib-2.0', 'gegl-0.2'],
+                                  ['Gegl-0.2', 'MyPaint-%s' % brushlib_version])
 
         install_perms(env, '$prefix/share/gir-1.0', gir)
         install_perms(env, '$prefix/lib/girepository-1.0', typelib)
