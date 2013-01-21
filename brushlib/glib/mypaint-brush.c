@@ -47,4 +47,18 @@ mypaint_fixed_tiled_surface_get_type (void)
     return type;
 }
 
+GType
+mypaint_rectangle_get_type(void)
+{
+    static GType type = 0;
+
+    if (!type) {
+        type = g_boxed_type_register_static("MyPaintRectangle",
+                                            (GBoxedCopyFunc) mypaint_rectangle_copy,
+                                            (GBoxedFreeFunc) free);
+    }
+
+    return type;
+}
+
 #endif

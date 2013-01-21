@@ -63,7 +63,7 @@ void mypaint_tiled_surface_tile_request_start(MyPaintTiledSurface *self, MyPaint
 void mypaint_tiled_surface_tile_request_end(MyPaintTiledSurface *self, MyPaintTiledSurfaceTileRequestData *request);
 
 void mypaint_tiled_surface_begin_atomic(MyPaintTiledSurface *self);
-MyPaintRectangle mypaint_tiled_surface_end_atomic(MyPaintTiledSurface *self);
+MyPaintRectangle *mypaint_tiled_surface_end_atomic(MyPaintTiledSurface *self);
 
 G_END_DECLS
 

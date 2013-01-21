@@ -30,6 +30,8 @@ typedef struct {
 } MyPaintRectangle;
 
 void mypaint_rectangle_expand_to_include_point(MyPaintRectangle *r, int x, int y);
+MyPaintRectangle *
+mypaint_rectangle_copy(MyPaintRectangle *self);
 
 G_END_DECLS
 
