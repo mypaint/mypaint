@@ -22,7 +22,7 @@ def add_gobject_introspection(env, gi_name, version,
     gi_includes = ' '.join(['--include=%s' % s for s in includes])
 
     scanner_cmd = """LD_LIBRARY_PATH=./ g-ir-scanner -o $TARGET --warn-all \
-        --namespace=%(gi_name)s --nsversion=%(version)s \
+        --namespace=%(gi_name)s --nsversion=%(version)s --add-include-path=./brushlib \
         --identifier-prefix=%(type_prefix)s --symbol-prefix=%(func_prefix)s \
         %(pkgs)s %(includeflags)s %(gi_includes)s \
         --library=%(libname)s $SOURCES""" % locals()
@@ -30,7 +30,7 @@ def add_gobject_introspection(env, gi_name, version,
     gir_file = env.Command("%s-%s.gir" % (gi_name, version), sources, scanner_cmd)
     env.Depends(gir_file, library)
     typelib_file = env.Command("%s-%s.typelib" % (gi_name, version), gir_file,
-                           "g-ir-compiler -o $TARGET $SOURCE")
+                           "g-ir-compiler --includedir=./brushlib -o $TARGET $SOURCE")
 
     return (gir_file, typelib_file)
 
