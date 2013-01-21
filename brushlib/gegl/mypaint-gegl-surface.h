@@ -21,6 +21,9 @@
 
 G_BEGIN_DECLS
 
+#include <glib/mypaint-gegl-glib.h>
+#include <mypaint-tiled-surface.h>
+
 typedef struct _MyPaintGeglTiledSurface MyPaintGeglTiledSurface;
 
 GeglBuffer *

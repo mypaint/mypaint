@@ -17,7 +17,6 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#include <mypaint-tiled-surface.h>
 #include "mypaint-gegl-surface.h"
 #include <gegl-utils.h>
 
@@ -28,6 +27,8 @@ typedef struct _MyPaintGeglTiledSurface {
     GeglBuffer *buffer;
     const Babl *format;
 } MyPaintGeglTiledSurface;
+
+#include <glib/mypaint-gegl-glib.c>
 
 void free_gegl_tiledsurf(MyPaintSurface *surface);
 
