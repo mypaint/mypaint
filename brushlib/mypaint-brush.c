@@ -84,6 +84,7 @@ struct _MyPaintBrush {
 
     gboolean reset_requested;
     json_object *brush_json;
+    int refcount;
 };
 
 
@@ -95,13 +96,14 @@ void settings_base_values_have_changed (MyPaintBrush *self);
   * mypaint_brush_new:
   *
   * Create a new MyPaint brush engine instance.
-  * Must be freed using mypaint_brush_destroy()
+  * Initial reference count is 1. Release references using mypaint_brush_unref()
   */
 MyPaintBrush *
 mypaint_brush_new()
 {
     MyPaintBrush *self = (MyPaintBrush *)malloc(sizeof(MyPaintBrush));
 
+    self->refcount = 1;
     int i=0;
     for (i=0; i<MYPAINT_BRUSH_SETTINGS_COUNT; i++) {
       self->settings[i] = mapping_new(MYPAINT_BRUSH_INPUTS_COUNT);
@@ -123,15 +125,8 @@ mypaint_brush_new()
     return self;
 }
 
-/* FIXME: should be called _free as it frees memory.
- * Alternatively we should use refcounting and _unref */
-/**
-  * mypaint_brush_destroy:
-  *
-  * Free the #MyPaintBrush instance.
-  */
 void
-mypaint_brush_destroy(MyPaintBrush *self)
+brush_free(MyPaintBrush *self)
 {
     for (int i=0; i<MYPAINT_BRUSH_SETTINGS_COUNT; i++) {
         mapping_free(self->settings[i]);
@@ -140,6 +135,30 @@ mypaint_brush_destroy(MyPaintBrush *self)
     self->rng = NULL;
     json_object_put(self->brush_json);
     free(self);
+}
+
+/**
+  * mypaint_brush_unref: (skip)
+  *
+  * Decrease the reference count. Will be freed when it hits 0.
+  */
+void
+mypaint_brush_unref(MyPaintBrush *self)
+{
+    self->refcount--;
+    if (self->refcount == 0) {
+        brush_free(self);
+    }
+}
+/**
+  * mypaint_brush_ref: (skip)
+  *
+  * Increase the reference count.
+  */
+void
+mypaint_brush_ref(MyPaintBrush *self)
+{
+    self->refcount++;
 }
 
 /**

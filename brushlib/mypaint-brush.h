@@ -32,7 +32,9 @@ MyPaintBrush *
 mypaint_brush_new();
 
 void
-mypaint_brush_destroy(MyPaintBrush *self);
+mypaint_brush_unref(MyPaintBrush *self);
+void
+mypaint_brush_ref(MyPaintBrush *self);
 
 void
 mypaint_brush_reset(MyPaintBrush *self);

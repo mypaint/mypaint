@@ -91,7 +91,7 @@ test_surface_drawing(void *user_data)
 
     free(png_filename);
 
-    mypaint_brush_destroy(brush);
+    mypaint_brush_unref(brush);
     mypaint_surface_unref(surface);
     mypaint_utils_stroke_player_free(player);
 

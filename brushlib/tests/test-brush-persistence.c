@@ -87,7 +87,7 @@ test_brush_load_base_values(void *user_data)
         }
     }
 
-    mypaint_brush_destroy(brush);
+    mypaint_brush_unref(brush);
 
     return passed;
 }
@@ -242,7 +242,7 @@ test_brush_load_inputs(void *user_data)
     }
 
 
-    mypaint_brush_destroy(brush);
+    mypaint_brush_unref(brush);
 
     return passed;
 }

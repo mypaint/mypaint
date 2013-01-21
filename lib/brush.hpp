@@ -27,7 +27,7 @@ public:
   }
 
   ~Brush() {
-      mypaint_brush_destroy(c_brush);
+      mypaint_brush_unref(c_brush);
   }
 
   void reset()
