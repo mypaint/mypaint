@@ -3,7 +3,6 @@
 #include <math.h>
 #include <stdio.h>
 
-#include <mypaint-tiled-surface.h>
 #include <mypaint-fixed-tiled-surface.h>
 
 

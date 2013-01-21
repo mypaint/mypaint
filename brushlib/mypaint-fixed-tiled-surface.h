@@ -5,6 +5,8 @@
 
 G_BEGIN_DECLS
 
+#include <mypaint-tiled-surface.h>
+
 /**
  * MyPaintFixedTiledSurface:
  *
