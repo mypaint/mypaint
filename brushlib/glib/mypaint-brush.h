@@ -14,6 +14,10 @@ GType mypaint_brush_get_type(void);
 #define MYPAINT_VALUE_HOLDS_SURFACE(value) (G_TYPE_CHECK_VALUE_TYPE ((value), MYPAINT_TYPE_SURFACE))
 GType mypaint_surface_get_type(void);
 
+#define MYPAINT_TYPE_FIXED_TILED_SURFACE               (mypaint_fixed_tiled_surface_get_type ())
+#define MYPAINT_VALUE_HOLDS_FIXED_TILED_SURFACE(value) (G_TYPE_CHECK_VALUE_TYPE ((value), MYPAINT_TYPE_FIXED_TILED_SURFACE))
+GType mypaint_fixed_tiled_surface_get_type(void);
+
 #endif
 
 #endif // MYPAINTBRUSHGLIB_H

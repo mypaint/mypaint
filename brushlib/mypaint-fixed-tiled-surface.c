@@ -71,6 +71,12 @@ tile_request_end(MyPaintTiledSurface *tiled_surface, MyPaintTiledSurfaceTileRequ
     }
 }
 
+MyPaintSurface *
+mypaint_fixed_tiled_surface_interface(MyPaintFixedTiledSurface *self)
+{
+    return (MyPaintSurface *)self;
+}
+
 MyPaintFixedTiledSurface *
 mypaint_fixed_tiled_surface_new(int width, int height)
 {

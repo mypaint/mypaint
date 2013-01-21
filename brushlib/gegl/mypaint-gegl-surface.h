@@ -29,6 +29,9 @@ mypaint_gegl_tiled_surface_get_buffer(MyPaintGeglTiledSurface *self);
 void
 mypaint_gegl_tiled_surface_set_buffer(MyPaintGeglTiledSurface *self, GeglBuffer *buffer);
 
+MyPaintSurface *
+mypaint_gegl_tiled_surface_interface(MyPaintGeglTiledSurface *self);
+
 MyPaintGeglTiledSurface *
 mypaint_gegl_tiled_surface_new();
 

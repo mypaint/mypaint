@@ -169,3 +169,9 @@ void free_gegl_tiledsurf(MyPaintSurface *surface)
 
     free(self);
 }
+
+MyPaintSurface *
+mypaint_gegl_tiled_surface_interface(MyPaintGeglTiledSurface *self)
+{
+    return (MyPaintSurface *)self;
+}

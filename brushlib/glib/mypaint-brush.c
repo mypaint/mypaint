@@ -39,4 +39,19 @@ mypaint_surface_get_type (void)
 
     return type;
 }
+
+GType
+mypaint_fixed_tiled_surface_get_type (void)
+{
+    static GType type = 0;
+
+    if (!type) {
+        type = g_boxed_type_register_static("MyPaintFixedTiledSurface",
+                                            (GBoxedCopyFunc) mypaint_surface_ref,
+                                            (GBoxedFreeFunc) mypaint_surface_unref);
+    }
+
+    return type;
+}
+
 #endif
