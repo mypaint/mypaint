@@ -101,12 +101,22 @@ save_png(MyPaintSurface *surface, const char *path,
     g_object_unref(graph);
 }
 
+/**
+ * mypaint_gegl_tiled_surface_get_buffer:
+ *
+ * Returns: (transfer none): The buffer this surface is backed by.
+ */
 GeglBuffer *
 mypaint_gegl_tiled_surface_get_buffer(MyPaintGeglTiledSurface *self)
 {
     return self->buffer;
 }
 
+/**
+ * mypaint_gegl_tiled_surface_set_buffer:
+ *
+ * @buffer: (transfer full): The buffer which shall back this surface.
+ */
 void
 mypaint_gegl_tiled_surface_set_buffer(MyPaintGeglTiledSurface *self, GeglBuffer *buffer)
 {
