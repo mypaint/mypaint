@@ -35,7 +35,7 @@ public:
   }
 
   ~GeglBackedSurface() {
-      mypaint_surface_destroy((MyPaintSurface *)c_surface);
+      mypaint_surface_unref((MyPaintSurface *)c_surface);
 
       g_object_unref(node);
       Py_DECREF(py_node);

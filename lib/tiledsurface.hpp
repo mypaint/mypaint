@@ -28,7 +28,7 @@ public:
   }
 
   ~TiledSurface() {
-      mypaint_surface_destroy((MyPaintSurface *)c_surface);
+      mypaint_surface_unref((MyPaintSurface *)c_surface);
   }
 
   void set_symmetry_state(bool active, float center_x) {

@@ -59,10 +59,11 @@ typedef MyPaintRectangle (*MyPaintSurfaceEndAtomicFunction) (struct _MyPaintSurf
 struct _MyPaintSurface {
     MyPaintSurfaceDrawDabFunction draw_dab;
     MyPaintSurfaceGetColorFunction get_color;
-    MyPaintSurfaceSavePngFunction save_png;
     MyPaintSurfaceBeginAtomicFunction begin_atomic;
     MyPaintSurfaceEndAtomicFunction end_atomic;
     MyPaintSurfaceDestroyFunction destroy;
+    MyPaintSurfaceSavePngFunction save_png;
+    int refcount;
 };
 
 /**
@@ -100,8 +101,9 @@ void mypaint_surface_begin_atomic(MyPaintSurface *self);
 
 MyPaintRectangle mypaint_surface_end_atomic(MyPaintSurface *self);
 
-void
-mypaint_surface_destroy(MyPaintSurface *self);
+void mypaint_surface_init(MyPaintSurface *self);
+void mypaint_surface_ref(MyPaintSurface *self);
+void mypaint_surface_unref(MyPaintSurface *self);
 
 G_END_DECLS
 

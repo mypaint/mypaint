@@ -50,11 +50,42 @@ mypaint_surface_get_color(MyPaintSurface *self,
     self->get_color(self, x, y, radius, color_r, color_g, color_b, color_a);
 }
 
+/**
+ * mypaint_surface_init: (skip)
+ *
+ * Initialize the surface. The reference count will be set to 1.
+ * Note: Only intended to be called from subclasses of #MyPaintSurface
+ **/
 void
-mypaint_surface_destroy(MyPaintSurface *self)
+mypaint_surface_init(MyPaintSurface *self)
 {
-    assert(self->destroy);
-    self->destroy(self);
+    self->refcount = 1;
+}
+
+/**
+ * mypaint_surface_ref: (skip)
+ *
+ * Increase the reference count.
+ **/
+void
+mypaint_surface_ref(MyPaintSurface *self)
+{
+    self->refcount++;
+}
+
+/**
+ * mypaint_surface_unref: (skip)
+ *
+ * Decrease the reference count.
+ **/
+void
+mypaint_surface_unref(MyPaintSurface *self)
+{
+    self->refcount--;
+    if (self->refcount == 0) {
+        assert(self->destroy);
+        self->destroy(self);
+    }
 }
 
 float mypaint_surface_get_alpha (MyPaintSurface *self, float x, float y, float radius)

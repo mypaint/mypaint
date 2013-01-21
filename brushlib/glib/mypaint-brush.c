@@ -26,4 +26,17 @@ mypaint_brush_get_type (void)
     return brush_type;
 }
 
+GType
+mypaint_surface_get_type (void)
+{
+    static GType type = 0;
+
+    if (!type) {
+        type = g_boxed_type_register_static("MyPaintSurface",
+                                            (GBoxedCopyFunc) mypaint_surface_ref,
+                                            (GBoxedFreeFunc) mypaint_surface_unref);
+    }
+
+    return type;
+}
 #endif
