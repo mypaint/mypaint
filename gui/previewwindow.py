@@ -14,8 +14,10 @@ import dialogs
 import tileddrawwidget
 import overlays
 
-class VisibleOverlay(overlays.Overlay):
+class VisibleOverlay(overlays.Overlay, gtk.EventBox):
   def __init__(self, app, doc, tdw):
+    gtk.EventBox.__init__(self)
+
     self.app = app
     self.doc = doc
     self.tdw = tdw
@@ -24,6 +26,47 @@ class VisibleOverlay(overlays.Overlay):
     self.w = 0
     self.h = 0
     self.rotation = 0
+
+    #TODO: perhaps use the DragMode mixin instead?
+    self.handle_drag = False
+
+    self.add_events(gtk.gdk.BUTTON_PRESS_MASK
+                    | gtk.gdk.BUTTON_RELEASE_MASK
+                    | gtk.gdk.LEAVE_NOTIFY_MASK
+                    | gtk.gdk.POINTER_MOTION_MASK
+                    | gtk.gdk.POINTER_MOTION_HINT_MASK)
+
+    self.connect("motion-notify-event", self.motion_notify_event)
+    self.connect("button-press-event", self.button_press_event)
+    self.connect("button-release-event", self.button_release_event)
+    self.connect("leave-notify-event", self.leave_notify_event)
+
+  def button_press_event(self, event):
+    if event.button == 1:
+      self.handle_drag = True
+    return True
+
+  def button_release_event(self, event):
+    if event.button == 1:
+      self.handle_drag = False
+    return True
+
+  def leave_notify_event(self, event):
+    self.handle_drag = False
+    return True
+
+  def motion_notify_event(self, event):
+    if event.is_hint:
+      x, y, state = event.window.get_pointer()
+    else:
+      x = event.x
+      y = event.y
+      state = event.state
+
+    if state & gtk.gdk.BUTTON1_MASK:
+      self.app.doc.tdw.scroll(x, y)
+
+    return True
 
   def update_location(self):
     # Position visible overlay box
