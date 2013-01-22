@@ -110,7 +110,9 @@ class VisibleOverlay(overlays.Overlay, gtk.EventBox):
     self.tdw.queue_draw()
 
   def update_rotation(self, angle):
-    self.rotation = angle
+    #Flip angle sign due to storing rotation of the viewport, whilst angle
+    #contains the rotation of the canvas
+    self.rotation = -angle
     self.tdw.queue_draw()
 
   def paint(self, cr):
