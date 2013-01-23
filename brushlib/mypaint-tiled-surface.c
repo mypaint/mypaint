@@ -165,65 +165,103 @@ calculate_rr(int xp, int yp, float x, float y, float aspect_ratio,
     return rr;
 }
 
+static inline float
+sign_point_in_line( float px, float py, float vx, float vy )
+{
+    return (px - vx) * (-vy) - (vx) * (py - vy);
+}
+
+static inline void
+closest_point_to_line( float lx, float ly, float px, float py, float *ox, float *oy )
+{
+    float l2 = lx*lx + ly*ly;
+    float ltp_dot = px*lx + py*ly;
+    float t = ltp_dot / l2;
+    *ox = lx * t;
+    *oy = ly * t;
+}
+
 // Must be threadsafe
+//
+// This works by taking the visibility at the nearest point
+// and dividing by 1.0 + delta.
+//
+// - nearest point: point where the dab has more influence
+// - farthest point: point at a fixed distance away from
+//                   the nearest point
+// - delta: how much occluded is the farthest point relative
+//          to the nearest point
 static inline float
 calculate_rr_antialiased(int xp, int yp, float x, float y, float aspect_ratio,
-                      float sn, float cs, float one_over_radius2)
+                      float sn, float cs, float one_over_radius2,
+                      float r_aa_start)
 {
-    float _pixelLeft = (float)xp;
-    float _pixelTop = (float)yp;
-    float _pixelRight = _pixelLeft + 1.0;
-    float _pixelBottom = _pixelTop + 1.0;
-    float _pixelCenterX = _pixelLeft + 0.5;
-    float _pixelCenterY = _pixelTop + 0.5;
+    // calculate pixel position and borders in a way
+    // that the dab's center is always at zero
+    float pixel_right = x - (float)xp;
+    float pixel_bottom = y - (float)yp;
+    float pixel_center_x = pixel_right - 0.5;
+    float pixel_center_y = pixel_bottom - 0.5;
+    float pixel_left = pixel_right - 1.0;
+    float pixel_top = pixel_bottom - 1.0;
 
-    float nearestX, nearestY; // nearest to origin, but still inside pixel
-    float farthestX, farthestY; // farthest from origin, but still inside pixel
-
-    if( x >= _pixelLeft && x < _pixelRight &&
-        y >= _pixelTop && y < _pixelBottom )
+    float nearest_x, nearest_y; // nearest to origin, but still inside pixel
+    float farthest_x, farthest_y; // farthest from origin, but still inside pixel
+    float r_near, r_far, rr_near, rr_far;
+    // Dab's center is inside pixel?
+    if( pixel_left<0 && pixel_right>0 &&
+        pixel_top<0 && pixel_bottom>0 )
     {
-        nearestX = x;
-        nearestY = y;
-        farthestX = (x > _pixelCenterX) ? _pixelLeft : _pixelRight;
-        farthestY = (y > _pixelCenterY) ? _pixelTop : _pixelBottom;
+        nearest_x = 0;
+        nearest_y = 0;
+        r_near = rr_near = 0;
     }
     else
     {
-        // get nearest point on the pixel border
-        nearestX = CLAMP( x, _pixelLeft, _pixelRight );
-        nearestY = CLAMP( y, _pixelTop, _pixelBottom );
-        // calculate the farthest
-        farthestX = _pixelRight - (nearestX - _pixelLeft);
-        farthestY = _pixelBottom - (nearestY - _pixelTop);
+        closest_point_to_line( cs, sn, pixel_center_x, pixel_center_y, &nearest_x, &nearest_y );
+        nearest_x = CLAMP( nearest_x, pixel_left, pixel_right );
+        nearest_y = CLAMP( nearest_y, pixel_top, pixel_bottom );
+        // XXX: precision of "nearest" values could be improved
+        // by intersecting the line that goes from nearest_x/Y to 0
+        // with the pixel's borders here, however the improvements
+        // would probably not justify the perdormance cost.
+        r_near = calculate_r_sample( nearest_x, nearest_y, aspect_ratio, sn, cs );
+        rr_near = r_near * one_over_radius2;
     }
-    nearestX -= x;
-    nearestY -= y;
-    farthestX -= x;
-    farthestY -= y;
-    
-    // Algorithm works fine only on perfect circles, so we need to counter
-    // the effect given by aspect_ratio>1. This is OK because it's only
-    // done inside the pixel we're currently processing, and doesn't affect
-    // the dab's shape unless it's radius is <0.5, at which point it barely
-    // matters since we only aim at approximate AA and not perfect AA.
-    farthestX = nearestX + (farthestX - nearestX) / aspect_ratio;
 
-    float rr_near = calculate_r_sample( nearestX, nearestY, aspect_ratio, sn, cs ) * one_over_radius2;
-    // if even the nearest point is > 1, there's no use going on
-    if( rr_near > 1.0 )
+    // out of dab's reach?
+    if( rr_near > 1.0f )
         return rr_near;
 
-    float rr_far = calculate_r_sample( farthestX, farthestY, aspect_ratio, sn, cs ) * one_over_radius2;
+    // check on which side of the dab's line is the pixel center
+    float center_sign = sign_point_in_line( pixel_center_x, pixel_center_y, cs, -sn );
 
-    // this is commented because it happens so rarely that we win more by not checking
-    //if( rr_near < 0.01 && rr_far < 0.01 )
-    //    return rr_near;
+    // radius of a circle with area=1
+    //   A = pi * r * r
+    //   r = sqrt(1/pi)
+    const float rad_area_1 = sqrtf( 1.0f / M_PI );
 
-    //printf("slow algo: %f %f\n", rr_near, rr_far);
+    // center is below dab
+    if( center_sign < 0 )
+    {
+        farthest_x = nearest_x - sn*rad_area_1;
+        farthest_y = nearest_y + cs*rad_area_1;
+    }
+    // above dab
+    else
+    {
+        farthest_x = nearest_x + sn*rad_area_1;
+        farthest_y = nearest_y - cs*rad_area_1;
+    }
 
-    // starting with rr_near, fade out (aproximate to 1.0) as
-    // much as r_far is distant from r_near
+    r_far = calculate_r_sample( farthest_x, farthest_y, aspect_ratio, sn, cs );
+    rr_far = r_far * one_over_radius2;
+
+    // check if we can skip heavier AA
+    if( r_far < r_aa_start )
+        return (rr_far+rr_near) * 0.5;
+
+    // calculate AA approximate
     float visibilityNear = 1.0 - rr_near;
     float delta = rr_far - rr_near;
     float delta2 = 1.0 + delta;
@@ -310,11 +348,16 @@ void render_dab_mask (uint16_t * mask,
 
     if (radius < 3.0)
     {
+      const float aa_border = 1.0f;
+      float r_aa_start = ((radius>aa_border) ? (radius-aa_border) : 0);
+      r_aa_start *= r_aa_start / aspect_ratio;
+
       for (int yp = y0; yp <= y1; yp++) {
         for (int xp = x0; xp <= x1; xp++) {
           float rr = calculate_rr_antialiased(xp, yp,
                                   x, y, aspect_ratio,
-                                  sn, cs, one_over_radius2);
+                                  sn, cs, one_over_radius2,
+                                  r_aa_start);
           rr_mask[(yp*MYPAINT_TILE_SIZE)+xp] = rr;
         }
       }
