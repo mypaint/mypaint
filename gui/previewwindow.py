@@ -7,6 +7,7 @@
 # (at your option) any later version.
 
 from gettext import gettext as _
+import math
 import gtk, gobject, pango
 gdk = gtk.gdk
 import cairo
@@ -67,14 +68,18 @@ class VisibleOverlay(tileddrawwidget.Overlay):
       y = event.y
       state = event.state
 
-    #Flip signs to correct movement for scroll
-    dx = -(self.prevx - x)*self.scalex
-    dy = -(self.prevy - y)*self.scaley
+    #Scale for difference in size of window, and for rotation
+    dx = -(self.prevx - x) * self.scalex
+    dy = -(self.prevy - y) * self.scaley
+    #TODO: fix properly
+    deltax = dx * abs(math.cos(self.rotation)) - dx * abs(math.sin(self.rotation))
+    deltay = dy * abs(math.cos(self.rotation)) - dy * abs(math.sin(self.rotation))
+
     self.prevx = x
     self.prevy = y
 
     if state & gtk.gdk.BUTTON1_MASK:
-      self.app.doc.tdw.scroll(dx, dy)
+      self.app.doc.tdw.scroll(deltax, deltay)
 
     return True
 
