@@ -27,6 +27,10 @@ class VisibleOverlay(tileddrawwidget.Overlay):
     self.h = 0
     self.rotation = 0
 
+    #Scales for mouse transform
+    self.scalex = 1
+    self.scaley = 1
+
     #Mouse coordinates
     self.prevx = 0
     self.prevy = 0
@@ -64,15 +68,12 @@ class VisibleOverlay(tileddrawwidget.Overlay):
       state = event.state
 
     #Flip signs to correct movement for scroll
-    dx = -(self.prevx - x)
-    dy = -(self.prevy - y)
+    dx = -(self.prevx - x)*self.scalex
+    dy = -(self.prevy - y)*self.scaley
     self.prevx = x
     self.prevy = y
 
-    #TODO: scale mouse movement correctly
-
     if state & gtk.gdk.BUTTON1_MASK:
-      print "scroll (%d, %d)" % (dx, dy)
       self.app.doc.tdw.scroll(dx, dy)
 
     return True
@@ -115,6 +116,10 @@ class VisibleOverlay(tileddrawwidget.Overlay):
 
     #Restore rotation
     self.app.doc.tdw.rotate(currot)
+
+    #Save scales
+    self.scalex = alloc.width/self.w
+    self.scaley = alloc.height/self.h
 
     self.tdw.queue_draw()
 
