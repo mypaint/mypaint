@@ -12,50 +12,50 @@ gdk = gtk.gdk
 import cairo
 import dialogs
 import tileddrawwidget
-import overlays
 
-class VisibleOverlay(overlays.Overlay, gtk.EventBox):
+class VisibleOverlay(tileddrawwidget.Overlay):
   def __init__(self, app, doc, tdw):
-    gtk.EventBox.__init__(self)
 
     self.app = app
     self.doc = doc
     self.tdw = tdw
+
+    #Box Coordinates
     self.x = 0
     self.y = 0
     self.w = 0
     self.h = 0
     self.rotation = 0
 
+    #Mouse coordinates
+    self.prevx = 0
+    self.prevy = 0
+
     #TODO: perhaps use the DragMode mixin instead?
     self.handle_drag = False
 
-    self.add_events(gtk.gdk.BUTTON_PRESS_MASK
-                    | gtk.gdk.BUTTON_RELEASE_MASK
-                    | gtk.gdk.LEAVE_NOTIFY_MASK
-                    | gtk.gdk.POINTER_MOTION_MASK
-                    | gtk.gdk.POINTER_MOTION_HINT_MASK)
+    self.tdw.connect("motion-notify-event", self.motion_notify_event)
+    self.tdw.connect("button-press-event", self.button_press_event)
+    self.tdw.connect("button-release-event", self.button_release_event)
+    self.tdw.connect("leave-notify-event", self.leave_notify_event)
 
-    self.connect("motion-notify-event", self.motion_notify_event)
-    self.connect("button-press-event", self.button_press_event)
-    self.connect("button-release-event", self.button_release_event)
-    self.connect("leave-notify-event", self.leave_notify_event)
-
-  def button_press_event(self, event):
+  def button_press_event(self, window, event):
     if event.button == 1:
+      self.prevx = event.x
+      self.prevy = event.y
       self.handle_drag = True
     return True
 
-  def button_release_event(self, event):
+  def button_release_event(self, window, event):
     if event.button == 1:
       self.handle_drag = False
     return True
 
-  def leave_notify_event(self, event):
+  def leave_notify_event(self, window, event):
     self.handle_drag = False
     return True
 
-  def motion_notify_event(self, event):
+  def motion_notify_event(self, window, event):
     if event.is_hint:
       x, y, state = event.window.get_pointer()
     else:
@@ -63,8 +63,17 @@ class VisibleOverlay(overlays.Overlay, gtk.EventBox):
       y = event.y
       state = event.state
 
+    #Flip signs to correct movement for scroll
+    dx = -(self.prevx - x)
+    dy = -(self.prevy - y)
+    self.prevx = x
+    self.prevy = y
+
+    #TODO: scale mouse movement correctly
+
     if state & gtk.gdk.BUTTON1_MASK:
-      self.app.doc.tdw.scroll(x, y)
+      print "scroll (%d, %d)" % (dx, dy)
+      self.app.doc.tdw.scroll(dx, dy)
 
     return True
 
@@ -76,27 +85,33 @@ class VisibleOverlay(overlays.Overlay, gtk.EventBox):
     view_x0, view_y0 = 0, 0
     view_x1, view_y1 = view_x0+alloc.width, view_y0+alloc.height
 
-    #print "alloc: (%d, %d)" % (alloc.width, alloc.height)
+    print "alloc: (%d, %d, %.2f)" % (alloc.width, alloc.height, float(alloc.width)/alloc.height)
 
     # Viewing rectangle extents, in model coords
     corners = [ (view_x0, view_y0), (view_x0, view_y1),
                 (view_x1, view_y1), (view_x1, view_y0), ]
     corners_m = [self.app.doc.tdw.display_to_model(*c) for c in corners]
 
-    #tx0,ty0 = corners_m[0]
+    tx0,ty0 = corners_m[0]
     #tx0,ty1 = corners_m[1]
-    #tx1,ty1 = corners_m[2]
+    tx1,ty1 = corners_m[2]
     #tx1,ty0 = corners_m[3]
     #print "model: (%d, %d) (%d, %d) (%d, %d) (%d, %d)" % (tx0, ty0, tx0, ty1, tx1, ty1, tx1, ty0)
+    tw = tx1-tx0
+    th = ty1-ty0
+    print "model: (%d, %d) (%d, %d, %.2f)" % (tx0, ty0, tw, th, tw/th)
 
     # Back to display coords
     corners_overlay= [self.tdw.model_to_display(*c) for c in corners_m]
 
-    #tdx0,tdy0 = corners_m[0]
+    tdx0,tdy0 = corners_m[0]
     #tdx0,tdy1 = corners_m[1]
-    #tdx1,tdy1 = corners_m[2]
+    tdx1,tdy1 = corners_m[2]
     #tdx1,tdy0 = corners_m[3]
     #print "overlay: (%d, %d) (%d, %d) (%d, %d) (%d, %d)" % (tdx0, tdy0, tdx0, tdy1, tdx1, tdy1, tdx1, tdy0)
+    tdw = tdx1-tdx0
+    tdh = tdy1-tdy0
+    print "overlay: (%d, %d) (%d, %d, %.2f)" % (tdx0, tdy0, tdw, tdh, tdw/tdh)
 
     overlay_x0, overlay_y0 = corners_overlay[0]
     overlay_x1, overlay_y1 = corners_overlay[2]
@@ -107,6 +122,9 @@ class VisibleOverlay(overlays.Overlay, gtk.EventBox):
     self.y = overlay_y0
     self.w = overlay_w
     self.h = overlay_h
+
+    print "final: %d %d %d %d" % (self.x, self.y, self.w, self.h)
+
     self.tdw.queue_draw()
 
   def update_rotation(self, angle):
@@ -124,7 +142,6 @@ class VisibleOverlay(overlays.Overlay, gtk.EventBox):
     cy = alloc.height/2
 
     cr.translate(cx, cy)
-
     cr.transform(matrix)
     cr.rectangle(self.x - cx, self.y - cy, self.w, self.h)
     cr.stroke()
@@ -148,7 +165,6 @@ class ToolWidget(gtk.VBox):
         self.tdw = tileddrawwidget.TiledDrawWidget(app, self.doc)
         self.tdw.zoom_min = 1/50.0
         self.tdw.set_size_request(250, 250)
-        self.tdw.set_sensitive(False)
         self.add(self.tdw)
 
         self.visible_overlay = VisibleOverlay(self.app, self.doc, self.tdw)
@@ -183,7 +199,6 @@ class ToolWidget(gtk.VBox):
         self.doc.doc_observers.append(self.doc_structure_modified_cb)
         self.doc.frame_observers.append(self.frame_modified_cb)
         self.connect("size-allocate", self.size_alloc_cb)
-
 
     def limit_scale(self, scale):
         scale = min(scale, self.tdw.zoom_max)
