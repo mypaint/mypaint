@@ -85,7 +85,9 @@ class VisibleOverlay(tileddrawwidget.Overlay):
     view_x0, view_y0 = 0, 0
     view_x1, view_y1 = view_x0+alloc.width, view_y0+alloc.height
 
-    print "alloc: (%d, %d, %.2f)" % (alloc.width, alloc.height, float(alloc.width)/alloc.height)
+    # Undo rotation first to ensure these transforms work correctly
+    currot = self.app.doc.tdw.rotation
+    self.app.doc.tdw.rotate(-currot)
 
     # Viewing rectangle extents, in model coords
     corners = [ (view_x0, view_y0), (view_x0, view_y1),
@@ -93,25 +95,13 @@ class VisibleOverlay(tileddrawwidget.Overlay):
     corners_m = [self.app.doc.tdw.display_to_model(*c) for c in corners]
 
     tx0,ty0 = corners_m[0]
-    #tx0,ty1 = corners_m[1]
     tx1,ty1 = corners_m[2]
-    #tx1,ty0 = corners_m[3]
-    #print "model: (%d, %d) (%d, %d) (%d, %d) (%d, %d)" % (tx0, ty0, tx0, ty1, tx1, ty1, tx1, ty0)
-    tw = tx1-tx0
-    th = ty1-ty0
-    print "model: (%d, %d) (%d, %d, %.2f)" % (tx0, ty0, tw, th, tw/th)
 
     # Back to display coords
     corners_overlay= [self.tdw.model_to_display(*c) for c in corners_m]
 
     tdx0,tdy0 = corners_m[0]
-    #tdx0,tdy1 = corners_m[1]
     tdx1,tdy1 = corners_m[2]
-    #tdx1,tdy0 = corners_m[3]
-    #print "overlay: (%d, %d) (%d, %d) (%d, %d) (%d, %d)" % (tdx0, tdy0, tdx0, tdy1, tdx1, tdy1, tdx1, tdy0)
-    tdw = tdx1-tdx0
-    tdh = tdy1-tdy0
-    print "overlay: (%d, %d) (%d, %d, %.2f)" % (tdx0, tdy0, tdw, tdh, tdw/tdh)
 
     overlay_x0, overlay_y0 = corners_overlay[0]
     overlay_x1, overlay_y1 = corners_overlay[2]
@@ -123,7 +113,8 @@ class VisibleOverlay(tileddrawwidget.Overlay):
     self.w = overlay_w
     self.h = overlay_h
 
-    print "final: %d %d %d %d" % (self.x, self.y, self.w, self.h)
+    #Restore rotation
+    self.app.doc.tdw.rotate(currot)
 
     self.tdw.queue_draw()
 
