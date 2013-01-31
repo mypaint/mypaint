@@ -703,22 +703,19 @@ class CursorCache (object):
     def get_overlay_cursor(self, icon_pixbuf, cursor_name="cursor_arrow"):
         """Returns an overlay cursor. Not cached.
 
-        :param icon_pixbuf: a gdk.Pixbuf containing a small (~22px) image.
-        :param cursor_name: name of a pixmaps/ cursor image to use, minus
-           the .png
+        :param icon_pixbuf: a gdk.Pixbuf containing a small (~22px) image,
+           or None
+        :param cursor_name: name of a pixmaps/ cursor image to use for the
+           pointer part, minus the .png
 
         The overlay icon will be overlaid to the bottom and right of the
         returned cursor image.
 
         """
-        icon_w = icon_pixbuf.get_width()
-        icon_h = icon_pixbuf.get_height()
-        icon_x = 32 - icon_w
-        icon_y = 32 - icon_h
 
-        arrow_pixbuf = getattr(self.app.pixmaps, cursor_name)
-        arrow_w = arrow_pixbuf.get_width()
-        arrow_h = arrow_pixbuf.get_height()
+        pointer_pixbuf = getattr(self.app.pixmaps, cursor_name)
+        pointer_w = pointer_pixbuf.get_width()
+        pointer_h = pointer_pixbuf.get_height()
         hot_x, hot_y = self.CURSOR_HOTSPOTS.get(cursor_name, (None, None))
         if hot_x is None:
             hot_x = 1
@@ -728,31 +725,66 @@ class CursorCache (object):
                                                         True, 8, 32, 32)
         cursor_pixbuf.fill(0x00000000)
 
-        arrow_pixbuf.composite(cursor_pixbuf, 0, 0, arrow_w, arrow_h,
+        pointer_pixbuf.composite(cursor_pixbuf, 0, 0, pointer_w, pointer_h,
                                0, 0, 1, 1, gdk.INTERP_NEAREST, 255)
-        icon_pixbuf.composite(cursor_pixbuf, icon_x, icon_y, icon_w, icon_h,
-                              icon_x, icon_y, 1, 1, gdk.INTERP_NEAREST, 255)
+        if icon_pixbuf is not None:
+            icon_w = icon_pixbuf.get_width()
+            icon_h = icon_pixbuf.get_height()
+            icon_x = 32 - icon_w
+            icon_y = 32 - icon_h
+            icon_pixbuf.composite(cursor_pixbuf, icon_x, icon_y, icon_w, icon_h,
+                                  icon_x, icon_y, 1, 1, gdk.INTERP_NEAREST, 255)
 
         display = self.app.drawWindow.get_display()
         cursor = gdk.Cursor(display, cursor_pixbuf, hot_x, hot_y)
         return cursor
 
 
-    def get_pixmaps_cursor(self, pixmaps_dir_name, cursor_name="cursor_arrow"):
-        """Returns and overlay cursor for a named PNG in pixmaps/. Cached.
+    def get_pixmaps_cursor(self, pixmap_name, cursor_name="cursor_arrow"):
+        """Returns an overlay cursor for a named PNG in pixmaps/. Cached.
+
+        :param pixmap_name: the name of a file in pixmaps/, minus the .png,
+           containing a small (~22px) image, or None
+        :param cursor_name: name of a pixmaps/ cursor image to use for the
+           pointer part, minus the .png
+
         """
         # Return from cache, if we have an entry
-        cache_key = ".".join(["pixmaps", pixmaps_dir_name, cursor_name])
+        cache_key = ("pixmaps", pixmap_name, cursor_name)
         if cache_key in self.cache:
             return self.cache[cache_key]
 
         # Build cursor
-        pixbuf = getattr(self.app.pixmaps, pixmaps_dir_name)
+        if pixmap_name is Npne:
+            pixbuf = None
+        else:
+            pixbuf = getattr(self.app.pixmaps, pixmap_name)
         cursor = self.get_overlay_cursor(pixbuf, cursor_name)
 
         # Cache and return
         self.cache[cache_key] = cursor
         return cursor
+
+
+    def get_freehand_cursor(self, cursor_name="cursor_crosshair_precise_open"):
+        """Returns a cursor for the current app.brush. Cached.
+
+        :param cursor_name: name of a pixmaps/ image to use, minus the .png
+
+        An icon for the brush blend mode will be overlaid to the bottom and
+        right of the cursor image.
+
+        """
+        # Pick an icon
+        if self.app.brush.is_eraser():
+            icon_name = "mypaint-brush-blend-mode-eraser"
+        elif self.app.brush.is_alpha_locked():
+            icon_name = "mypaint-brush-blend-mode-alpha-lock"
+        elif self.app.brush.is_colorize():
+            icon_name = "mypaint-brush-blend-mode-colorize"
+        else:
+            icon_name = None
+        return self.get_icon_cursor(icon_name, cursor_name)
 
 
     def get_action_cursor(self, action_name, cursor_name="cursor_arrow"):
@@ -765,11 +797,6 @@ class CursorCache (object):
         right of the cursor image.
 
         """
-        # Return from cache, if we have an entry
-        cache_key = ".".join(["actions", action_name, cursor_name])
-        if cache_key in self.cache:
-            return self.cache[cache_key]
-
         # Find a small action icon for the overlay
         action = self.app.find_action(action_name)
         if action is None:
@@ -777,9 +804,32 @@ class CursorCache (object):
         icon_name = action.get_icon_name()
         if icon_name is None:
             return gdk.Cursor(gdk.BOGOSITY)
-        icon_theme = gtk.icon_theme_get_default()
-        icon_size = min(gtk.icon_size_lookup(gtk.ICON_SIZE_SMALL_TOOLBAR))
-        icon_pixbuf = icon_theme.load_icon(icon_name, icon_size, 0)
+        return self.get_icon_cursor(icon_name, cursor_name)
+
+
+    def get_icon_cursor(self, icon_name, cursor_name="cursor_arrow"):
+        """Returns an overlay cursor for a named icon. Cached.
+
+        :param icon_name: themed icon system name.
+        :param cursor_name: name of a pixmaps/ image to use, minus the .png
+
+        The icon will be overlaid at a small size to the bottom and right of
+        the cursor image.
+
+        """
+
+        # Return from cache, if we have an entry
+        cache_key = ("actions", icon_name, cursor_name)
+        if cache_key in self.cache:
+            return self.cache[cache_key]
+
+        if icon_name is not None:
+            # Look up icon via the user's current theme
+            icon_theme = gtk.icon_theme_get_default()
+            icon_size = min(gtk.icon_size_lookup(gtk.ICON_SIZE_SMALL_TOOLBAR))
+            icon_pixbuf = icon_theme.load_icon(icon_name, icon_size, 0)
+        else:
+            icon_pixbuf = None
 
         # Build cursor
         cursor = self.get_overlay_cursor(icon_pixbuf, cursor_name)

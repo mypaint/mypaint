@@ -372,6 +372,7 @@ class DrawCursorMixin:
     def update_cursor(self):
         # Callback for updating the cursor
         window = self.get_window()
+        app = self.app
         if window is None:
             return
         override_cursor = getattr(self, '_override_cursor', None)
@@ -383,6 +384,11 @@ class DrawCursorMixin:
             # Cursor to represent that one cannot draw.
             # Often a red circle with a diagonal bar through it.
             c = gdk.Cursor(gdk.CIRCLE)
+        # Last two cases only pertain to FreehandOnlyMode cursors.
+        # XXX refactor: bad for separation of responsibilities, put the
+        # special cases in the mode class.
+        elif app.preferences.get("cursor.freehand.style",None) == 'crosshair':
+            c = app.cursors.get_freehand_cursor()
         else:
             radius, style = self._get_cursor_info()
             c = cursor.get_brush_cursor(radius, style, self.app.preferences)

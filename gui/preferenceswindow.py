@@ -24,6 +24,12 @@ device_modes = [
     ('screen', _("Screen (normal)")),
     ('window', _("Window (not recommended)")),  ]
 
+cursor_presets = [
+    ('thin', _("Circle (light outline)")),
+    ('medium', _("Circle (medium outline)")),
+    ('thick', _("Circle (heavy outline)")),
+    ('crosshair', _("Crosshair")),  ]
+
 RESPONSE_REVERT = 1
 
 
@@ -187,11 +193,11 @@ class Window(windowing.Dialog):
 
         l = gtk.Label()
         l.set_alignment(0.0, 0.5)
-        l.set_markup(_('<b>Default View</b>'))
+        l.set_markup(_('<b>Zoom</b>'))
         table.attach(l, 0, 3, current_row, current_row + 1, xopt, yopt)
         current_row += 1
 
-        l = gtk.Label(_('Default zoom:'))
+        l = gtk.Label(_('Default zoom level:'))
         l.set_alignment(0.0, 0.5)
         combo = self.defaultzoom_combo = gtk.combo_box_new_text()
         # Different from doc.zoomlevel_values because we only want a subset
@@ -200,13 +206,13 @@ class Window(windowing.Dialog):
         for val in self.defaultzoom_values:
             combo.append_text('%d%%' % (val*100))
         combo.connect('changed', self.defaultzoom_combo_changed_cb)
-        table.attach(l, 1, 2, current_row, current_row + 1, xopt, yopt)
+        table.attach(l, 1, 2, current_row, current_row + 1, gtk.FILL, yopt)
         table.attach(combo, 2, 3, current_row, current_row + 1, xopt, yopt)
         current_row += 1
 
         b = self.highqualityzoom_checkbox = gtk.CheckButton(_('High quality zoom (may result in slow scrolling)'))
         b.connect('toggled', self.highqualityzoom_checkbox_changed_cb)
-        table.attach(b, 0, 3, current_row, current_row + 1, xopt, yopt)
+        table.attach(b, 2, 3, current_row, current_row + 1, xopt, yopt)
         current_row += 1
 
         l = gtk.Label()
@@ -217,18 +223,76 @@ class Window(windowing.Dialog):
 
         b = self.fullscreenhidemenubar_checkbox = gtk.CheckButton(_('Hide menu bar'))
         b.connect('toggled', self.fullscreenhidemenubar_checkbox_changed_cb)
-        table.attach(b, 0, 3, current_row, current_row + 1, xopt, yopt)
+        table.attach(b, 1, 3, current_row, current_row + 1, xopt, yopt)
         current_row += 1
 
         b = self.fullscreenhidetoolbar_checkbox = gtk.CheckButton(_('Hide toolbar'))
         b.connect('toggled', self.fullscreenhidetoolbar_checkbox_changed_cb)
-        table.attach(b, 0, 3, current_row, current_row + 1, xopt, yopt)
+        table.attach(b, 1, 3, current_row, current_row + 1, xopt, yopt)
         current_row += 1
 
         b = self.fullscreenhidesubwindows_checkbox = gtk.CheckButton(_('Hide tools'))
         b.connect('toggled', self.fullscreenhidesubwindows_checkbox_changed_cb)
-        table.attach(b, 0, 3, current_row, current_row + 1, xopt, yopt)
+        table.attach(b, 1, 3, current_row, current_row + 1, xopt, yopt)
         current_row += 1
+
+        #### Cursor tab
+        #table = gtk.Table(2, 1)
+        #table.set_border_width(12)
+        ##table.set_col_spacing(0, 12)
+        #table.set_row_spacings(6)
+        #current_row = 0
+        #nb.append_page(table, gtk.Label(_('Cursor')))
+        #xopt = gtk.FILL | gtk.EXPAND
+        #yopt = gtk.FILL
+
+        l = gtk.Label()
+        l.set_alignment(0.0, 0.5)
+        l.set_markup(_('<b>Freehand cursor</b>'))
+        table.attach(l, 0, 3, current_row, current_row + 1, xopt, yopt)
+        table.set_row_spacing(current_row-1, 18)
+        current_row += 1
+
+        self.cursor_radio_buttons = {}
+        b = None
+        for cname, label_text in cursor_presets:
+            b = gtk.RadioButton(group=b, label=label_text, use_underline=False)
+            b.connect("toggled", self.cursor_radio_toggled_cb, cname)
+            self.cursor_radio_buttons[cname] = b
+            table.attach(b, 1, 3, current_row, current_row+1, xopt, yopt)
+            current_row += 1
+
+
+    def cursor_radio_toggled_cb(self, togglebutton, cname):
+        if not togglebutton.get_active():
+            return
+        if self.in_update_ui:
+            return
+        p = self.app.preferences
+        p["cursor.freehand.style"] = cname
+        if cname == 'thin':
+            # The default.
+            del p["cursor.freehand.min_size"]
+            del p["cursor.freehand.outer_line_width"]
+            del p["cursor.freehand.inner_line_width"]
+            del p["cursor.freehand.inner_line_inset"]
+            del p["cursor.freehand.outer_line_color"]
+            del p["cursor.freehand.inner_line_color"]
+        elif cname == "medium":
+            p["cursor.freehand.min_size"] = 5
+            p["cursor.freehand.outer_line_width"] = 2.666
+            p["cursor.freehand.inner_line_width"] = 1.333
+            p["cursor.freehand.inner_line_inset"] = 2
+            p["cursor.freehand.outer_line_color"] = (0, 0, 0, 1)
+            p["cursor.freehand.inner_line_color"] = (1, 1, 1, 1)
+        elif cname == "thick":
+            p["cursor.freehand.min_size"] = 7
+            p["cursor.freehand.outer_line_width"] = 3.75
+            p["cursor.freehand.inner_line_width"] = 2.25
+            p["cursor.freehand.inner_line_inset"] = 3
+            p["cursor.freehand.outer_line_color"] = (0, 0, 0, 1)
+            p["cursor.freehand.inner_line_color"] = (1, 1, 1, 1)
+
 
     def on_response(self, dialog, response, *args):
         if response == gtk.RESPONSE_ACCEPT:
@@ -272,7 +336,20 @@ class Window(windowing.Dialog):
         self.button_map_editor.set_bindings(p["input.button_mapping"])
         # Input curve
         self.cv.queue_draw()
+        # Cursor presets
+        self.update_cursor_settings()
         self.in_update_ui = False
+
+
+    def update_cursor_settings(self):
+        if not self.in_update_ui:
+            return
+        p = self.app.preferences
+        style = self.app.preferences.get("cursor.freehand.style", "thin")
+        b = self.cursor_radio_buttons.get(style, None)
+        if not b:
+            return
+        b.set_active(True)
 
 
     # Callbacks for widgets that manipulate settings
