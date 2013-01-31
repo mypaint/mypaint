@@ -272,12 +272,12 @@ class Window(windowing.Dialog):
         p["cursor.freehand.style"] = cname
         if cname == 'thin':
             # The default.
-            del p["cursor.freehand.min_size"]
-            del p["cursor.freehand.outer_line_width"]
-            del p["cursor.freehand.inner_line_width"]
-            del p["cursor.freehand.inner_line_inset"]
-            del p["cursor.freehand.outer_line_color"]
-            del p["cursor.freehand.inner_line_color"]
+            p.pop("cursor.freehand.min_size", None)
+            p.pop("cursor.freehand.outer_line_width", None)
+            p.pop("cursor.freehand.inner_line_width", None)
+            p.pop("cursor.freehand.inner_line_inset", None)
+            p.pop("cursor.freehand.outer_line_color", None)
+            p.pop("cursor.freehand.inner_line_color", None)
         elif cname == "medium":
             p["cursor.freehand.min_size"] = 5
             p["cursor.freehand.outer_line_width"] = 2.666
