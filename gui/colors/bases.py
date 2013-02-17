@@ -103,7 +103,7 @@ class CachedBgWidgetMixin:
 
 
     def clear_background(self):
-        """Clears the cached background makes it invalid.
+        """Clears the cached background, making it invalid.
         """
         self.__bg = None
         self.__bg_validity = None
