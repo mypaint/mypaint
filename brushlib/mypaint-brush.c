@@ -32,6 +32,12 @@
 #undef FALSE
 #include <json.h>
 
+#ifdef _MSC_VER
+  #include <float.h>
+  static inline int    isfinite(double x) { return _finite(x); }
+  static inline float  roundf  (float  x) { return x >= 0.0f ? floorf(x + 0.5f) : ceilf(x - 0.5f); }
+#endif
+
 #define M_PI 3.14159265358979323846
 
 #define ACTUAL_RADIUS_MIN 0.2

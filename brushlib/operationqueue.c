@@ -286,7 +286,7 @@ operation_queue_pop(OperationQueue *self, TileIndex index)
         return NULL;
     }
 
-    op = fifo_pop(op_queue);
+    op = (OperationDataDrawDab *)fifo_pop(op_queue);
     if (!op) {
         // Queue empty
         fifo_free(op_queue, operation_delete_func);

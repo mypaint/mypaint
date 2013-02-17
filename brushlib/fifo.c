@@ -38,7 +38,7 @@ struct fifo
  */
 struct fifo* fifo_new()
 {
-    struct fifo *ret = malloc(sizeof(struct fifo));
+    struct fifo *ret = (struct fifo *) malloc(sizeof(struct fifo));
     ret->first = NULL;
     ret->last = NULL;
     ret->item_count = 0;
@@ -69,7 +69,7 @@ void fifo_free(struct fifo* queue, FifoUserFreeFunction user_free)
  */
 void fifo_push(struct fifo* queue, void* data)
 {
-    struct fifo_item *item = malloc(sizeof(struct fifo_item));
+    struct fifo_item *item = (struct fifo_item*) malloc(sizeof(struct fifo_item));
     item->next = NULL;
     item->payload = data;
     if (!queue->last)

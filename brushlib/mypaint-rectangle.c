@@ -17,6 +17,7 @@
 
 #include <mypaint-rectangle.h>
 #include <stdlib.h>
+#include <string.h>
 
 void *memdup(const void *src, size_t len)
 {
