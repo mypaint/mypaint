@@ -85,7 +85,9 @@ env.Append(RPATH = env.Literal(os.path.join('\\$$ORIGIN')))
 
 # remove libraries produced by earlier versions, which are actually
 # being used if they keep lying around, leading to mysterious bugs
-env.Execute('rm -f libmypaint-tests.so libmypaint.so libmypaintlib.so')
+if sys.platform != "win32":
+    # do not execute this on windows...
+    env.Execute('rm -f libmypaint-tests.so libmypaint.so libmypaintlib.so')
 
 set_dir_postaction = {}
 def install_perms(env, target, sources, perms=0644, dirperms=0755):
