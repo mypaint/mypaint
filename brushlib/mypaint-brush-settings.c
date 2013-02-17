@@ -64,7 +64,7 @@ mypaint_brush_setting_from_cname(const char *cname)
             return id;
         }
     }
-    return -1;
+    return (MyPaintBrushSetting)-1;
 }
 
 const MyPaintBrushInputInfo *
@@ -96,5 +96,5 @@ mypaint_brush_input_from_cname(const char *cname)
             return id;
         }
     }
-    return -1;
+    return (MyPaintBrushInput)-1;
 }
