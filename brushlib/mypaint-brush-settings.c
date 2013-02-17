@@ -16,14 +16,20 @@
 
 #include "mypaint-brush-settings.h"
 
-#include <libintl.h>
 #include <string.h>
 #include <assert.h>
 
 #define GETTEXT_PACKAGE "libmypaint"
 
-#define N_(String) (String)
-#define  _(String) gettext (String)
+#ifdef HAVE_GETTEXT
+  #include <libintl.h>
+  #define N_(String) (String)
+  #define  _(String) gettext (String)
+#else
+  #define dgettext(a,b) (a)
+  #define N_(String) (String)
+  #define  _(String) (String)
+#endif // HAVE_GETTEXT
 
 #include <float.h>
 
