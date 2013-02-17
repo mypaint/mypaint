@@ -437,7 +437,8 @@ class HCYColor (UIColor):
 
           >>> col1 = HCYColor(0, 0.1, 0.2)
           >>> col2 = HCYColor(h=0, c=0.1, y=.2)
-          >>> col1 == col2
+          >>> col3 = HCYColor(hcy=[0, 0.1, .2])
+          >>> col1 == col2 and col2 == col3
           True
           >>> HCYColor(color=RGBColor(0.5, 0.5, 0.5))
           <HCYColor h=0.0000, c=0.0000, y=0.5000>
@@ -452,7 +453,7 @@ class HCYColor (UIColor):
                 h, s, v = color.get_hsv()
                 h_, c, y = RGB_to_HCY(hsv_to_rgb(h, s, v))
         if hcy is not None:
-            h, c, y = hsv
+            h, c, y = hcy
         self.h = h; assert self.h is not None
         self.c = c; assert self.c is not None
         self.y = y; assert self.y is not None
