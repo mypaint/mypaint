@@ -28,6 +28,7 @@ opts.Add(PathVariable('prefix', 'autotools-style installation prefix', default_p
 opts.Add(BoolVariable('debug', 'enable HEAVY_DEBUG and disable optimizations', False))
 opts.Add(BoolVariable('enable_profiling', 'enable debug symbols for profiling purposes (on by default)', True))
 opts.Add(BoolVariable('brushlib_only', 'only build and install brushlib/', False))
+opts.Add(BoolVariable('enable_brushlib_i18n', 'enable i18n support for brushlib (requires gettext)', False))
 opts.Add(BoolVariable('enable_gegl', 'enable GEGL based code in build', False))
 opts.Add(BoolVariable('enable_introspection', 'enable GObject introspection support', False))
 opts.Add(BoolVariable('enable_docs', 'enable documentation build', False))
@@ -175,6 +176,10 @@ env.Clean('$prefix', '$prefix/share/mypaint')
 env.Alias('install', '$prefix')
 
 Export('env', 'install_tree', 'install_perms')
+
+if not env['brushlib_only']:
+    print "Enabling i18n for brushlib in full application build"
+    env['enable_brushlib_i18n'] = True
 
 brushlib = SConscript('./brushlib/SConscript')
 
