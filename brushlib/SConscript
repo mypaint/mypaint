@@ -86,7 +86,7 @@ if env['enable_openmp']:
     linkflags += ['-fopenmp']
 
 if env['enable_brushlib_i18n']:
-    env.Append(CFLAGS='HAVE_GETTEXT')
+    env.Append(CPPDEFINES='HAVE_GETTEXT')
     if sys.platform == "darwin":
         libs += ['intl', 'gettextlib']
 
