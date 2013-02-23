@@ -24,7 +24,7 @@ msgstr ""
 
 #: ../gui/backgroundwindow.py:24
 msgid "Save as Default"
-msgstr "Salvar como padrão"
+msgstr "Salvar como Padrão"
 
 #: ../gui/backgroundwindow.py:26
 msgid "Background"
@@ -32,7 +32,7 @@ msgstr "Fundo"
 
 #: ../gui/backgroundwindow.py:39
 msgid "Pattern"
-msgstr "Padrão"
+msgstr "Textura"
 
 #: ../gui/backgroundwindow.py:46 ../gui/brushsettingswindow.py:108
 #: ../lib/layer.py:54
@@ -41,12 +41,12 @@ msgstr "Cor"
 
 #: ../gui/backgroundwindow.py:52
 msgid "Add color to Patterns"
-msgstr "Adicionar cor às texturas"
+msgstr "Adicionar cor às Texturas"
 
 #: ../gui/backgroundwindow.py:126
 msgid "Gdk-Pixbuf couldn't load \"{filename}\", and reported \"{error}\""
 msgstr ""
-"O Gdk-pixbuf não pode carregar \"{filename}\", e deu a mensagem \"{error}\""
+"Gdk-pixbuf não pôde carregar \"{filename}\", e deu a mensagem \"{error}\""
 
 #: ../gui/backgroundwindow.py:132
 #, python-format
@@ -54,20 +54,19 @@ msgid ""
 "\"%s\" has an alpha channel. Background images with transparency are not "
 "supported."
 msgstr ""
-"\"%s tem um canal alfa. Imagens de fundo com transparência não são suportadas"
-"\""
+"\"%s\" possui um canal alfa. Imagens de fundo com transparência não são suportadas."
 
 #: ../gui/backgroundwindow.py:139
 msgid ""
 "{filename} has an unsupported size. Background images must have widths and "
 "heights which are multiples of {number} pixels."
 msgstr ""
-"{filename} tem um tamanho que não é suportado. Imagens de fundo tem que ter "
+"{filename} tem um tamanho que não é suportado. Imagens de fundo devem ter "
 "larguras e alturas que sejam múltiplos de {number} pixels."
 
 #: ../gui/backgroundwindow.py:155
 msgid "One or more backgrounds could not be loaded"
-msgstr "Uma ou mais das imagens de fundo não pode ser carregada"
+msgstr "Uma ou mais imagens de fundo não puderam ser carregadas"
 
 #: ../gui/backgroundwindow.py:156
 msgid "Error loading backgrounds"
@@ -77,8 +76,8 @@ msgstr "Erro ao carregar imagens de fundo"
 msgid ""
 "Please remove the unloadable files, or check your libgdkpixbuf installation."
 msgstr ""
-"Por favor, remova os arquivos qu enão podem ser carregados, ou verifique a "
-"sua instalação da libgdkpixbuf."
+"Favor remover os arquivos que não puderam ser carregados, ou verifique a "
+"sua instalação de libgdkpixbuf."
 
 #: ../gui/brushcreationwidget.py:44 ../gui/brushcreationwidget.py:67
 msgid "(unnamed brush)"
@@ -86,15 +85,15 @@ msgstr "(pincel sem nome)"
 
 #: ../gui/brushcreationwidget.py:52
 msgid "Save Settings"
-msgstr "Salvar configurações"
+msgstr "Salvar Configurações"
 
 #: ../gui/brushcreationwidget.py:53
 msgid "Add As New"
-msgstr "Adicionar como novo"
+msgstr "Adicionar Como Novo"
 
 #: ../gui/brushcreationwidget.py:54
 msgid "Edit Brush Icon"
-msgstr "Editar ícone do pincel"
+msgstr "Editar Ícone do Pincel"
 
 #: ../gui/brushcreationwidget.py:55
 msgid "Rename..."
@@ -110,7 +109,7 @@ msgstr "Nenhum pincel selecionado!"
 
 #: ../gui/brushcreationwidget.py:105
 msgid "Rename Brush"
-msgstr "Renomear pincel"
+msgstr "Renomear Pincel"
 
 #: ../gui/brushcreationwidget.py:117
 msgid "A brush with this name already exists!"
@@ -118,11 +117,11 @@ msgstr "Um pincel com este nome já existe!"
 
 #: ../gui/brushcreationwidget.py:143 ../gui/brushcreationwidget.py:250
 msgid "No brush selected, please use \"Add As New\" instead."
-msgstr "Nenhum pincel selecionado - favor usar \"Adicionar como novo\"."
+msgstr "Nenhum pincel selecionado, favor usar \"Adicionar Como Novo\"."
 
 #: ../gui/brushcreationwidget.py:153
 msgid "Really delete brush from disk?"
-msgstr "Realmente apagar o pincel do disco? "
+msgstr "Realmente apagar o pincel do disco?"
 
 #: ../gui/brushcreationwidget.py:210
 msgid "Edit"
@@ -138,7 +137,7 @@ msgstr "Salvar"
 
 #: ../gui/brushmanager.py:71
 msgid "Lost & Found"
-msgstr "achados & perdidos"
+msgstr "Achados e Perdidos"
 
 #: ../gui/brushmanager.py:72
 msgid "Deleted"
@@ -158,23 +157,23 @@ msgstr "Clássico"
 
 #: ../gui/brushmanager.py:76
 msgid "Set#1"
-msgstr "Conjunto#1"
+msgstr "Conjunto Nº1"
 
 #: ../gui/brushmanager.py:77
 msgid "Set#2"
-msgstr "Conjunto#2"
+msgstr "Conjunto Nº2"
 
 #: ../gui/brushmanager.py:78
 msgid "Set#3"
-msgstr "Conjunto#3"
+msgstr "Conjunto Nº3"
 
 #: ../gui/brushmanager.py:79
 msgid "Set#4"
-msgstr "Conjunto#4"
+msgstr "Conjunto Nº4"
 
 #: ../gui/brushmanager.py:80
 msgid "Set#5"
-msgstr "Conjunto#5"
+msgstr "Conjunto Nº5"
 
 #: ../gui/brushmanager.py:81
 msgid "Experimental"
@@ -191,7 +190,7 @@ msgstr "Normal"
 
 #: ../gui/brushmodifier.py:54
 msgid "Paint normally"
-msgstr "Pinta normalmente"
+msgstr "Pintar normalmente"
 
 #: ../gui/brushmodifier.py:57
 msgid "Eraser"
@@ -199,16 +198,16 @@ msgstr "Borracha"
 
 #: ../gui/brushmodifier.py:58
 msgid "Eraser Mode: remove strokes using the current brush"
-msgstr "Modo borracha: remove pinceladas utilizando o pincel atual"
+msgstr "Modo Borracha: remover traços usando o pincel atual"
 
 #: ../gui/brushmodifier.py:61
 msgid "Lock Alpha Channel"
-msgstr "Travar canal alfa"
+msgstr "Travar Canal Alfa"
 
 #: ../gui/brushmodifier.py:62
 msgid "Lock Alpha: paint over existing strokes only, using the current brush"
 msgstr ""
-"Travar alfa: Pinta somente sobre as pinceladas já existentes, usando o "
+"Travar Alfa: pintar somente sobre os traços já existentes, usando o "
 "pincel atual"
 
 #: ../gui/brushmodifier.py:65
@@ -217,7 +216,7 @@ msgstr "Colorizar"
 
 #: ../gui/brushmodifier.py:66
 msgid "Colorize: alter Hue and Saturation with the current brush"
-msgstr "Colorizar: Altera a Matiz e a Saturação usando o pincel atual"
+msgstr "Colorizar: alterar a Matiz e a Saturação usando o pincel atual"
 
 #: ../gui/brushselectionwindow.py:35
 msgid "Brushes"
@@ -230,49 +229,50 @@ msgid ""
 "Middle-click: toggle group\n"
 "Right-click: groups menu"
 msgstr ""
-"Grupos de Pincéis: clique para selectionar\n"
-"Ctrl: Seleciona múltiplos Clique com botão do meio: alterna seleção\n"
-"Clique com botão direito: menu de grupos"
+"Grupos de Pincéis: clique para selecionar\n"
+"Ctrl: seleção múltipla\n"
+"Clique com Botão do Meio: alterna seleção\n"
+"Clique com Botão Direito: menu de grupos"
 
 #: ../gui/brushselectionwindow.py:465
 msgid "New Group..."
-msgstr "Novo grupo..."
+msgstr "Novo Grupo..."
 
 #: ../gui/brushselectionwindow.py:467
 msgid "Rename Group..."
-msgstr "Renomear grupo..."
+msgstr "Renomear Grupo..."
 
 #: ../gui/brushselectionwindow.py:468
 msgid "Delete Group"
-msgstr "Remover grupo"
+msgstr "Excluir Grupo"
 
 #: ../gui/brushselectionwindow.py:469
 msgid "Export Group..."
-msgstr "Exportar grupo"
+msgstr "Exportar Grupo..."
 
 #: ../gui/brushselectionwindow.py:471
 msgid "Import Brushes..."
-msgstr "Importar pincéis..."
+msgstr "Importar Pincéis..."
 
 #: ../gui/brushselectionwindow.py:473
 msgid "Get More Brushes..."
-msgstr "Obter mais pincéis..."
+msgstr "Obter Mais Pincéis..."
 
 #: ../gui/brushselectionwindow.py:493
 msgid "Create Group"
-msgstr "Criar grupo"
+msgstr "Criar Grupo"
 
 #: ../gui/brushselectionwindow.py:498
 msgid "Rename Group"
-msgstr "Renomear grupo"
+msgstr "Renomear Grupo"
 
 #: ../gui/brushselectionwindow.py:504
 msgid "A group with this name already exists!"
-msgstr "Um grupo com esse nome já existe!"
+msgstr "Um grupo com este nome já existe!"
 
 #: ../gui/brushselectionwindow.py:507
 msgid "Export Brushes"
-msgstr "Exportar pincéis"
+msgstr "Exportar Pincéis"
 
 #: ../gui/brushselectionwindow.py:508 ../gui/drawwindow.py:809
 msgid "MyPaint brush package (*.zip)"
@@ -285,11 +285,11 @@ msgstr "Realmente excluir grupo %s?"
 
 #: ../gui/brushselectionwindow.py:517
 msgid "This group can not be deleted (try to empty it first)."
-msgstr "Este grupo não pode ser excluído (tente esvazia-lo antes). "
+msgstr "Este grupo não pode ser excluído (tente esvaziá-lo primeiro)."
 
 #: ../gui/brushsettingswindow.py:31
 msgid "Brush Settings Editor"
-msgstr "Editor de configurações de pincel..."
+msgstr "Editor de Configurações de Pincel"
 
 #: ../gui/brushsettingswindow.py:56
 msgid "Back to settings"
@@ -298,7 +298,7 @@ msgstr "Voltar às configurações"
 #. Live update (goes to the end)
 #: ../gui/brushsettingswindow.py:64
 msgid "Update the last canvas stroke in realtime"
-msgstr "Atualização ao vivo do último traço na imagem"
+msgstr "Atualizar o último traço na tela em tempo real"
 
 #: ../gui/brushsettingswindow.py:101
 msgid "Basic"
@@ -310,7 +310,7 @@ msgstr "Opacidade"
 
 #: ../gui/brushsettingswindow.py:103
 msgid "Dabs"
-msgstr "Amostras"
+msgstr "Pinceladas"
 
 #: ../gui/brushsettingswindow.py:104
 msgid "Smudge"
@@ -334,7 +334,7 @@ msgstr "Personalizado"
 
 #: ../gui/brushsettingswindow.py:138
 msgid "Reset to default value"
-msgstr "Restaurar o valor padrão"
+msgstr "Restaurar ao valor padrão"
 
 #: ../gui/brushsettingswindow.py:143
 msgid "No additional configuration"
@@ -342,11 +342,11 @@ msgstr "Sem configuração adicional"
 
 #: ../gui/brushsettingswindow.py:148 ../gui/brushsettingswindow.py:191
 msgid "Add input value mapping"
-msgstr "Adicionar mapeamento de valores de entrada"
+msgstr "Adicionar mapeamento de valor de entrada"
 
 #: ../gui/brushsettingswindow.py:193
 msgid "Modify input value mapping"
-msgstr "Modificar o mapeamento dos valores de entrada"
+msgstr "Modificar o mapeamento dos valor de entrada"
 
 #: ../gui/buttonmap.py:263
 msgid "Action"
@@ -354,20 +354,20 @@ msgstr "Ação"
 
 #: ../gui/buttonmap.py:278
 msgid "Button press"
-msgstr "Pressionar botão"
+msgstr "Botão pressionado"
 
 #: ../gui/buttonmap.py:297
 msgid "Add a new binding"
-msgstr "Adicionar nova ligação"
+msgstr "Adicionar uma nova associação"
 
 #: ../gui/buttonmap.py:305
 msgid "Remove the current binding"
-msgstr "Remover a ligação atual"
+msgstr "Remover a associação atual"
 
 #: ../gui/buttonmap.py:427
 #, python-format
 msgid "Edit binding for '%s'"
-msgstr "Editar ligação para '%s'"
+msgstr "Editar associação para '%s'"
 
 #: ../gui/buttonmap.py:450
 msgid "Action:"
@@ -382,18 +382,18 @@ msgid ""
 "Hold down modifier keys, and press a button over this text to set a new "
 "binding."
 msgstr ""
-"Mantenhas teclas modificadoras pressionadas, e pressione um botão sobre este "
-"texto para criar uma nova ligação"
+"Mantenha teclas modificadoras pressionadas, e pressione um botão sobre "
+"este texto para definir uma nova associação"
 
 #: ../gui/buttonmap.py:515
 #, python-format
 msgid "%s cannot be bound by itself, without keyboard modifiers."
-msgstr "%s não pode ser ligado sozinho, sem teclas modificadoras."
+msgstr "%s não pode ser associado sozinho, sem teclas modificadoras."
 
 #: ../gui/buttonmap.py:525
 #, python-format
 msgid "%s is already bound to the action '%s'"
-msgstr "%s já está ligado à ação '%s'"
+msgstr "%s já está associado à ação '%s'"
 
 #: ../gui/colors/adjbases.py:443
 msgid "Color details"
@@ -401,11 +401,11 @@ msgstr "Detalhes da cor"
 
 #: ../gui/colors/adjbases.py:587
 msgid "Newly chosen color, and the color most recently used for painting"
-msgstr "Cor escolhida mais recentemente, e  a cor usada por último para pintar"
+msgstr "Nova cor escolhida, e a cor mais recentemente usada para pintura"
 
 #: ../gui/colors/combined.py:126
 msgid "Add color to Palette"
-msgstr "Adicionar cor à paleta"
+msgstr "Adicionar cor à Paleta"
 
 #: ../gui/colors/hcywheel.py:40
 msgid ""
@@ -442,51 +442,43 @@ msgid ""
 "The New button lets you choose one of several templates as a starting "
 "point.\n"
 msgstr ""
-"<b>Editor de máscara de Gamut</b>\n"
+"<b>Editor de máscara de gama</b>\n"
 "\n"
-"Edite a máscara de Gamut aqui, ou ligue e desligue-a. Máscaras de Gamut\n"
-"são como um pedaço de papel de desenho com buracos recortados, colocado\n"
-"sobre a roda de cores para limitar as faixas de cor que você pode "
-"selecionar. Isso\n"
-"permite que você planeje seus esquemas de cores com antecedência, o que é\n"
-" bastante útil para roteirizar as cores, ou criar ambientações específicas.\n"
-"A teoria é que os cantos de cada forma de máscara representam uma cor\n"
-"primária <i>subjetiva</i> e que cada forma contém todas as cores que\n"
-"podem ser misturadas fazendo-se uso daquelas cores primárias dos cantos.\n"
-"Cores secundárias subjetivas ficam nos pontos centrais dos lados de cada "
-"forma,\n"
-"e o centro da imagem é o tom neutro subjetivo para a forma.\n"
-"Clique para adicionar formas se a roda estiver em branco. As formas podem "
-"ser \n"
-" arrastadas e suas formas podem ser ajustadas movendo-se os pontos de "
-"controle. \n"
-"Torne uma forma muito pequena  e será útil remove-la: arrasta-la para a\n"
-"  beirada da roda é um jeito rápido de fazer isso. Você também pode apagar "
-"máscaras\n"
-" arrastando-as para cima de outras formas. Toda a máscara pode ser "
-"rotacionada\n"
-" ao virar as beiradas do disco de cores, gerando novos e inesperados "
-"esquemas de cores.\n"
+"Edite a máscara de gama aqui, ou a ligue ou desligue. Máscaras de gama são\n"
+"como um pedaço de papel de desenho com buracos recortados, colocado sobre\n"
+"a roda de cores para limitar as cores que você pode selecionar. Isso permite que\n"
+"você planeje seus esquemas de cores com antecedência, o que é bastante útil\n"
+"para roteirizar as cores, ou criar tons específicos.\n"
+"A teoria é que os cantos de cada figura da máscara representam uma cor\n"
+"primária <i>subjetiva</i>, e que cada figura contém todas as cores que podem\n"
+"ser misturadas usando as cores primárias dos cantos.\n"
+"Cores secundárias subjetivas ficam nos pontos centrais das arestas de cada\n"
+"figura, e o centro da figura é o tom subjetivo neutro para a figura.\n"
+"Clique para adicionar figuras se a roda estiver em branco. As figuras podem ser\n"
+"arrastadas e suas formas podem ser ajustadas adicionando ou movendo os pontos\n"
+"de controle.\n"
+"Torne uma figura pequena demais para ser útil para remove-la: arrastar uma figura\n"
+"para borda da roda é um jeito rápido de fazer isso. Você pode apagar figuras\n"
+"arrastando-as para dentro de outras figuras também. A máscara inteira pode ser\n"
+"girada virando a borda do disco gerando novos e inesperados esquemas de cores.\n"
 "\n"
-"Máscaras de Gamut podem ser salvas para arquivos de Paleta de cores do "
-"GIMP,\n"
-"e carregados a partir deles.\n"
-"O botão de \"Nova\" permite que você escolha um de vários modelos como "
-"ponto\n"
-" inicial.\n"
+"Máscaras de gama podem ser salvas para arquivos de paleta de cores no formato\n"
+"GIMP, e carregados a partir deles.\n"
+"O botão de Novo permite que você escolha um dos vários modelos como ponto\n"
+"de partida.\n"
 
 #: ../gui/colors/hcywheel.py:95
 msgid "Gamut mask active"
-msgstr "Máscara de Gamut ativa"
+msgstr "Máscara de gama ativa"
 
 #: ../gui/colors/hcywheel.py:96
 msgid "Limit your palette for specific moods using a gamut mask"
 msgstr ""
-"Limite a sua paleta a uma mabientação específica usando uma máscara de gamut."
+"Limite sua paleta à tons específicos usando uma máscara de gama."
 
 #: ../gui/colors/hcywheel.py:374
 msgid "HCY Hue and Chroma"
-msgstr "Matiz HCY e Chroma"
+msgstr "Matiz HCY e Pureza"
 
 #. how many shapes are allowed
 #: ../gui/colors/hcywheel.py:424
@@ -494,24 +486,24 @@ msgid ""
 "Gamut mask editor. Click in the middle to create or manipulate shapes, or "
 "rotate the mask using the edges of the disc."
 msgstr ""
-"Editor de máscara de Gamut. Clique no meio para criar ou manipular formas, "
-"ou rotacione a máscara usando a beirada do disco"
+"Editor de máscara de gama. Clique no meio para criar ou manipular figuras, "
+"ou gire a máscara usando as bordas do disco"
 
 #: ../gui/colors/hcywheel.py:898
 msgid "Atmospheric Triad"
-msgstr "Tríade atmosférica"
+msgstr "Tríade Atmosférica"
 
 #: ../gui/colors/hcywheel.py:899
 msgid ""
 "Moody and subjective, defined by one dominant primary and two primaries "
 "which are less intense."
 msgstr ""
-"Subjetiva e cheia de sentimento, definida por uma cor primária dominante e "
-"duas primárias menos intensas."
+"Subjetiva e com forte tom, definida por uma cor primária dominante e "
+"duas primárias que são menos intensas."
 
 #: ../gui/colors/hcywheel.py:902
 msgid "Shifted Triad"
-msgstr "Tríade deslocada"
+msgstr "Tríade Deslocada"
 
 #: ../gui/colors/hcywheel.py:903
 msgid "Weighted more strongly towards the dominant colour."
@@ -526,20 +518,20 @@ msgid ""
 "Contrasting opposites, balanced by having central neutrals between them on "
 "the colour wheel."
 msgstr ""
-"Oposições contrastantes, balanceadas por cores neutras entre ambas na roda "
+"Opostos contrastantes, balanceados por neutras centrais entre eles na roda "
 "de cores."
 
 #: ../gui/colors/hcywheel.py:917
 msgid "Mood and Accent"
-msgstr "Sentimento e complemento"
+msgstr "Tom e Destaque"
 
 #: ../gui/colors/hcywheel.py:918
 msgid ""
 "One main range of colors, with a complementary accent for variation and "
 "highlights."
 msgstr ""
-"Uma faixa principal de cores, com um complemento para variação e tons "
-"brilhantes."
+"Uma faixa principal de cores, com um destaque complemententar para variação e "
+"realçe."
 
 #. [HCYColor((H+0.483)%1, 0.95, Y),
 #. HCYColor((H+0.517)%1, 0.95, Y),
@@ -547,23 +539,23 @@ msgstr ""
 #. HCYColor((H+0.48)%1, 0.725, Y) ]] ))
 #: ../gui/colors/hcywheel.py:926
 msgid "Split Complementary"
-msgstr "Complementares divididos"
+msgstr "Complementares Divididos"
 
 #: ../gui/colors/hcywheel.py:927
 msgid ""
 "Two analogous colours and a complement to them, with no secondary colours "
 "between them."
 msgstr ""
-"Duas cores análogas e um complemento para ambas, sem cores secundárias "
-"intermediárias."
+"Duas cores análogas e um complemento para elas, sem cores secundárias "
+"entre elas."
 
 #: ../gui/colors/hcywheel.py:934
 msgid "New gamut mask from template"
-msgstr "Nova máscara de gamut a partir do modelo"
+msgstr "Nova máscara de gama a partir do modelo"
 
 #: ../gui/colors/hcywheel.py:986
 msgid "Gamut mask editor"
-msgstr "Editor de máscaras de gamut"
+msgstr "Editor de máscaras de gama"
 
 #: ../gui/colors/hcywheel.py:997
 msgid "Active"
@@ -571,11 +563,11 @@ msgstr "Ativo"
 
 #: ../gui/colors/hcywheel.py:1014
 msgid "Create mask from template"
-msgstr "Criar máscara a partir do modelo"
+msgstr "Criar máscara a partir de modelo"
 
 #: ../gui/colors/hcywheel.py:1015
 msgid "Load mask from a GIMP palette file"
-msgstr "Carregar máscara de um arquivo de paleta do GIMP"
+msgstr "Carregar máscara a partir de um arquivo de paleta do GIMP"
 
 #: ../gui/colors/hcywheel.py:1016
 msgid "Save mask to a GIMP palette file"
@@ -591,15 +583,15 @@ msgstr "Salvar máscara como uma paleta do GIMP"
 
 #: ../gui/colors/hcywheel.py:1074
 msgid "Load mask from a Gimp palette"
-msgstr "Carregar máscara de uma paleta do GIMP"
+msgstr "Carregar máscara a partir de uma paleta do GIMP"
 
 #: ../gui/colors/hcywheel.py:1113
 msgid "Gamut mask editor help"
-msgstr "Ajuda do editor de máscaras de gamut"
+msgstr "Ajuda do editor de máscaras de gama"
 
 #: ../gui/colors/hcywheel.py:1147
 msgid "Set gamut mask"
-msgstr "Seleciona máscara de gamut"
+msgstr "Definir máscara de gama"
 
 #: ../gui/colors/hcywheel.py:1162
 msgid "HCY Wheel"
@@ -610,8 +602,8 @@ msgid ""
 "Set the color using cylindrical hue/chroma/luma space. The circular slices "
 "are equiluminant."
 msgstr ""
-"Seleciona a cor usando o espaço cilindrico Matiz/Chroma/Luma. As fatias "
-"circulares são equi-luminantes."
+"Selecionar a cor usando o espaço cilíndrico matiz/pureza/luminosidade. "
+"As fatias circulares são de mesma luminosidade."
 
 #. Tooltip mappings, indexed by whatever the slider currently represents
 #: ../gui/colors/hsvcube.py:35 ../gui/colors/sliders.py:178
@@ -628,19 +620,19 @@ msgstr "Valor HSV"
 
 #: ../gui/colors/hsvcube.py:38
 msgid "HSV Saturation and Value"
-msgstr "Saturação e valor HSV"
+msgstr "Saturação e Valor HSV"
 
 #: ../gui/colors/hsvcube.py:39
 msgid "HSV Hue and Value"
-msgstr "Matiz e valor HSV"
+msgstr "Matiz e Valor HSV"
 
 #: ../gui/colors/hsvcube.py:40 ../gui/colors/hsvwheel.py:32
 msgid "HSV Hue and Saturation"
-msgstr "Matiz e saturação HSV"
+msgstr "Matiz e Saturação HSV"
 
 #: ../gui/colors/hsvcube.py:52
 msgid "Rotate cube (show different axes)"
-msgstr "Rotacionar cubo (exibir eixos diferentes)"
+msgstr "Rodar cubo (exibir eixos diferentes)"
 
 #: ../gui/colors/hsvcube.py:71
 msgid "HSV Cube"
@@ -649,7 +641,7 @@ msgstr "Cubo HSV"
 #: ../gui/colors/hsvcube.py:75
 msgid "An HSV cube which can be rotated to show different planar slices."
 msgstr ""
-"Um cubo HSV que ode ser rotacionado para exibir diferentes fatias planas"
+"Um cubo HSV que pode ser rodado para exibir diferentes fatias planares."
 
 #: ../gui/colors/hsvtriangle.py:41
 msgid "HSV Triangle"
@@ -665,7 +657,7 @@ msgstr "Roda HSV"
 
 #: ../gui/colors/hsvwheel.py:95
 msgid "Saturation and Value colour changer."
-msgstr "Seletor de cores por saturação e valor."
+msgstr "Seletor de cores por Saturação e Valor."
 
 #: ../gui/colors/palette.py:416 ../gui/colors/palette.py:472
 msgid "GIMP palette file (*.gpl)"
@@ -685,15 +677,15 @@ msgstr "Paleta"
 
 #: ../gui/colors/paletteview.py:77
 msgid "Set the color from a loadable, editable palette."
-msgstr "Seleciona a cor de uma paleta que seja carregável e editável"
+msgstr "Selecionar a cor de uma paleta que seja carregável e editável"
 
 #: ../gui/colors/paletteview.py:123
 msgid "Palette Editor"
-msgstr "Editor de paletas"
+msgstr "Editor de Paleta"
 
 #: ../gui/colors/paletteview.py:158
 msgid "Load from a GIMP palette file"
-msgstr "Carregar a partir de arquivo de paleta do GIMP"
+msgstr "Carregar a partir de um arquivo de paleta do GIMP"
 
 #: ../gui/colors/paletteview.py:159
 msgid "Save to a GIMP palette file"
@@ -701,15 +693,15 @@ msgstr "Salvar para um arquivo de paleta do GIMP"
 
 #: ../gui/colors/paletteview.py:160
 msgid "Add a new empty swatch"
-msgstr "Adicionar uma nova paleta vazia"
+msgstr "Adicionar uma nova amostra de cor vazia"
 
 #: ../gui/colors/paletteview.py:161
 msgid "Remove the current swatch"
-msgstr "Remove a paleta atual"
+msgstr "Remover a amostra de cor atual"
 
 #: ../gui/colors/paletteview.py:162
 msgid "Remove all swatches"
-msgstr "Remove todas as paletas"
+msgstr "Remover todas as amostras de cores"
 
 #: ../gui/colors/paletteview.py:172
 msgid "Name:"
@@ -717,7 +709,7 @@ msgstr "Nome:"
 
 #: ../gui/colors/paletteview.py:174
 msgid "Name or description for this palette"
-msgstr "Nome ou descrição desta paleta"
+msgstr "Nome ou descrição para esta paleta"
 
 #: ../gui/colors/paletteview.py:182
 msgid "Columns:"
@@ -737,7 +729,7 @@ msgstr "Nome da cor atual"
 
 #: ../gui/colors/paletteview.py:295
 msgid "Empty palette slot"
-msgstr "Entrada de paleta não ocupada"
+msgstr "Abertura de paleta vazia"
 
 #: ../gui/colors/paletteview.py:362
 msgid "Load palette"
@@ -751,11 +743,11 @@ msgstr "Salvar paleta"
 msgid ""
 "Color swatch palette. Drop colors here and drag them around to organize."
 msgstr ""
-"Paleta de cores: arraste cores para cá, e arraste-as para organiza-las."
+"Paleta de cores. Solte cores aqui e arraste-as para organiza-las."
 
 #: ../gui/colors/paletteview.py:676
 msgid "Empty palette slot (drag a color here)"
-msgstr "Entrada de cor não ocupada (arraste uma cor para cá)"
+msgstr "Abertura de paleta vazia (arraste uma cor para cá)"
 
 #: ../gui/colors/picker.py:95
 msgid "Pick a color from the screen"
@@ -763,11 +755,11 @@ msgstr "Pegar uma cor da tela"
 
 #: ../gui/colors/sliders.py:88
 msgid "Component sliders"
-msgstr "Selecionadores de componente"
+msgstr "Controles deslizantes de componentes"
 
 #: ../gui/colors/sliders.py:92
 msgid "Adjust individual components of the colour."
-msgstr "Ajusta os componentes individuais da cor"
+msgstr "Ajustar componentes individuais da cor."
 
 #: ../gui/colors/sliders.py:138
 msgid "RGB Red"
@@ -787,11 +779,11 @@ msgstr "Matiz HCY"
 
 #: ../gui/colors/sliders.py:218
 msgid "HCY Chroma"
-msgstr "Chroma HCY"
+msgstr "Pureza HCY"
 
 #: ../gui/colors/sliders.py:230
 msgid "HCY Luma (Y')"
-msgstr "Luma HCY (Y')"
+msgstr "Luminosidade HCY (Y')"
 
 #: ../gui/colorwindow.py:26
 msgid "Colors"
@@ -835,24 +827,24 @@ msgid ""
 "<b>A brush named `%s' already exists.</b>\n"
 "Do you want to replace it, or should the new brush be renamed?"
 msgstr ""
-"<b>Um pincel com o nome %s já existe</b>\n"
-"Você quer substitui-lo, ou o novo pincel deve ser renomeado?"
+"<b>Um pincel chamado `%s' já existe</b>\n"
+"Você deseja substituí-lo, ou o novo pincel deve ser renomeado?"
 
 #: ../gui/dialogs.py:147
 msgid "Overwrite brush group?"
-msgstr "Sobrescrever grupo de pinceis?"
+msgstr "Sobrescrever grupo de pincéis?"
 
 #: ../gui/dialogs.py:169
 msgid ""
 "<b>A group named `{groupname}' already exists.</b>\n"
 "Do you want to replace it, or should the new group be renamed?\n"
-"If you replace it, the brushes may be moved to a group called `"
-"{deleted_groupname}'."
+"If you replace it, the brushes may be moved to a group called "
+"`{deleted_groupname}'."
 msgstr ""
-"<b>Um grupo com o nome '{groupname}' já existe</b>\n"
-"Você quer substitui-lo, ou o novo grupo deve ser renomeado?\n"
-"Se você substitui-lo, os pinceis podem ser movidos para um grupo chamado "
-"'{deleted_groupname}'."
+"<b>Um grupo chamado `{groupname}' já existe</b>\n"
+"Você deseja substituí-lo, ou o novo grupo deve ser renomeado?\n"
+"Se você substituí-lo, os pincéis podem ser movidos para um grupo chamado "
+"`{deleted_groupname}'."
 
 #: ../gui/dialogs.py:257
 msgid "Import brush package?"
@@ -866,17 +858,17 @@ msgstr "<b>Você realmente quer importar o pacote `%s'?</b>"
 #. Quick brush changer
 #: ../gui/dialogs.py:363 ../gui/toolbar.py:355
 msgid "Change Brush"
-msgstr "Alterar pincel"
+msgstr "Mudar Pincel"
 
 #: ../gui/document.py:240
 #, python-format
 msgid "Restore Brush %d"
-msgstr "Restaurar pincel %d"
+msgstr "Restaurar Pincel %d"
 
 #: ../gui/document.py:242
 #, python-format
 msgid "Save to Brush %d"
-msgstr "Salvar para pincel %d"
+msgstr "Salvar para Pincel %d"
 
 #: ../gui/document.py:482
 #, python-format
@@ -886,7 +878,7 @@ msgstr "Cópia de %s"
 #: ../gui/document.py:485
 #, python-format
 msgid "Copy of Untitled layer #%d"
-msgstr "Cópia de camada sem título nº %d"
+msgstr "Cópia de camada Sem Título Nº%d"
 
 #: ../gui/document.py:492
 msgid "Layer Name"
@@ -916,27 +908,27 @@ msgstr "Selecionar cor atual"
 
 #: ../gui/drawwindow.py:634
 msgid "Leave Fullscreen Mode"
-msgstr "Sair do modo de tela cheia"
+msgstr "Sair do Modo Tela Cheia"
 
 #: ../gui/drawwindow.py:635
 msgid "UnFullscreen"
-msgstr "Sai da tela cheia"
+msgstr "Sair da Tela Cheia"
 
 #: ../gui/drawwindow.py:638
 msgid "Enter Fullscreen Mode"
-msgstr "Tela-cheia"
+msgstr "Entrar no Modo Tela Cheia"
 
 #: ../gui/drawwindow.py:639
 msgid "Fullscreen"
-msgstr "Tela cheia"
+msgstr "Ir para Tela Cheia"
 
 #: ../gui/drawwindow.py:727
 msgid "Gimp Palette Format"
-msgstr "Formato de paletas do GIMP"
+msgstr "Formato de Paleta do GIMP"
 
 #: ../gui/drawwindow.py:728
 msgid "All Files"
-msgstr "Todos os arquivos"
+msgstr "Todos os Arquivos"
 
 #. FIXME: should do this periodically, not only on quit
 #: ../gui/drawwindow.py:781
@@ -945,7 +937,7 @@ msgstr "Sair"
 
 #: ../gui/drawwindow.py:781
 msgid "Really Quit?"
-msgstr "Realmente sair?"
+msgstr "Realmente Sair?"
 
 #: ../gui/drawwindow.py:808
 msgid "Import brush package..."
@@ -957,7 +949,7 @@ msgid ""
 "Martin Renold and the MyPaint Development Team"
 msgstr ""
 "Copyright (C) 2005-2012\n"
-"Martin Renold e o time de desenvolvimento do MyPaint"
+"Martin Renold e o Time de Desenvolvimento do MyPaint"
 
 #: ../gui/drawwindow.py:824
 msgid ""
@@ -969,9 +961,10 @@ msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY. See the COPYING file for more details."
 msgstr ""
-"Este programa é Software Livre; você pode redistribui-la ou modifica-la nos "
-"termos da Licença Pública Geral da GNU, quer a versão 2 desta Licença, ou, "
-"(a seu critério) qualquer versão posterior.\n"
+"Este programa é Software Livre; você pode redistribui-lo e/ou modifica-lo sob "
+"os termos da Licença Pública Geral GNU conforme publicada pela Free "
+"Software Foundation; seja a versão 2 da Licença, ou (a seu critério)"
+"qualquer versão posterior.\n"
 "\n"
 "Este programa é distribuído na esperança de que será útil, mas SEM NENHUMA "
 "GARANTIA. Veja o arquivo COPYING para mais detalhes."
@@ -1001,7 +994,7 @@ msgstr "padrões, pincéis"
 
 #: ../gui/drawwindow.py:859
 msgid "brushes, tool icons"
-msgstr "pincéis, ícones de ferramenta"
+msgstr "pincéis, ícones de ferramentas"
 
 #: ../gui/drawwindow.py:860
 msgid "brushes, patterns"
@@ -1013,11 +1006,11 @@ msgstr "ícone da área de trabalho"
 
 #: ../gui/drawwindow.py:863 ../gui/drawwindow.py:865
 msgid "patterns"
-msgstr "padrões"
+msgstr "texturas"
 
 #: ../gui/drawwindow.py:866 ../gui/drawwindow.py:867
 msgid "tool icons"
-msgstr "ícones de ferramenta"
+msgstr "ícones de ferramentas"
 
 #: ../gui/drawwindow.py:869
 msgid "translator-credits"
@@ -1026,7 +1019,7 @@ msgstr "Créditos da tradução"
 #: ../gui/drawwindow.py:877
 msgid "Move your mouse over a menu entry, then press the key to assign."
 msgstr ""
-"Mova o mouse sobre uma entrada de menu, e pressione uma nova tecla de atalho"
+"Mova seu mouse sobre uma entrada de menu, então pressione a tecla de atalho a associar."
 
 #: ../gui/drawwindow.py:879
 msgid ""
@@ -1035,11 +1028,11 @@ msgid ""
 "\n"
 "There are 10 persistent memory slots available."
 msgstr ""
-"Teclas de pincel são usadas para salvar/restaurar configurações de pincel "
-"sem interromper o trabalho Você pode pintar com uma mão e mudar o pincel com "
-"a outra, mesmo no meio da pincelada.\n"
+"Teclas de atalho de pincéis são usadas para salvar/restaurar configurações de pincel "
+"rapidamente. Você pode pintar com uma mão e mudar pincéis com "
+"a outra, mesmo no meio do traço.\n"
 "\n"
-"Há 10 slots de memória para as configurações de pincel."
+"Existem 10 espaços de memória persistente que podem ser usados."
 
 #: ../gui/drawwindow.py:885
 msgid ""
@@ -1050,25 +1043,25 @@ msgid ""
 "(pressure, speed, etc.) are available as tooltips. Put your mouse over a "
 "label to see them. \n"
 msgstr ""
-"Há um tutorial disponível na página do MyPaint. Ele explica algumas "
-"funcionalidades que são difíceis de descobrir por você mesmo.\n"
+"Há um tutorial disponível na página do MyPaint. Ele explica alguns "
+"recursos do programa que são difíceis de descobrir por você mesmo.\n"
 "\n"
-"Comentários sobre as configurações de pincel (opacidade, dureza, etc...) e "
-"entradas (pressão, velocidade, etc...) estão disponíveis como dicas "
-"flutuantes. Mantenha o mouse sobre as entradas para vê-las. \n"
+"Comentários sobre as configurações de pincel (opacidade, dureza, etc.) e "
+"entradas (pressão, velocidade, etc.) estão disponíveis como dicas de ferramenta. "
+"Mantenha o mouse sobre uma ferramente para vê-las. \n"
 
 #: ../gui/filehandling.py:59
 msgid "Open Recent"
-msgstr "Abrir recente"
+msgstr "Abrir Recente"
 
 #: ../gui/filehandling.py:59
 msgid "Open Recent files"
-msgstr "Abrir arquivos recentes"
+msgstr "Abrir Arquivos Recentes"
 
 #. (name, patterns)
 #: ../gui/filehandling.py:80
 msgid "All Recognized Formats"
-msgstr "Todos os formatos conhecidos"
+msgstr "Todos os Formatos Conhecidos"
 
 #. 0
 #: ../gui/filehandling.py:81 ../gui/filehandling.py:87
@@ -1101,7 +1094,7 @@ msgstr "PNG transparente (*.png)"
 #. 3
 #: ../gui/filehandling.py:90
 msgid "Multiple PNG transparent (*.XXX.png)"
-msgstr "PNG transparente múltiplo (*.XXX.png)"
+msgstr "Múltiplos PNG transparentes (*.XXX.png)"
 
 #. 4
 #: ../gui/filehandling.py:91
@@ -1114,7 +1107,7 @@ msgstr "Salvar..."
 
 #: ../gui/filehandling.py:143
 msgid "Format to save as:"
-msgstr "Formato para salvar:"
+msgstr "Formato a salvar como:"
 
 #: ../gui/filehandling.py:169
 msgid "Confirm"
@@ -1128,19 +1121,19 @@ msgstr "Realmente continuar?"
 #, python-format
 msgid "This will discard %d minute of unsaved painting."
 msgid_plural "This will discard %d minutes of unsaved painting."
-msgstr[0] "Isso irá descartar %d minuto de pintura não salva."
-msgstr[1] "Isso irá descartar %d minutos de pintura não salva."
+msgstr[0] "Isto irá descartar %d minuto de pintura não salva."
+msgstr[1] "Isto irá descartar %d minutos de pintura não salva."
 
 #: ../gui/filehandling.py:183
 #, python-format
 msgid "This will discard %d second of unsaved painting."
 msgid_plural "This will discard %d seconds of unsaved painting."
-msgstr[0] "Isso irá descartar %d segundo de pintura não salva."
-msgstr[1] "Isso irá descartar %d segundos de pintura não salva."
+msgstr[0] "Isto irá descartar %d segundo de pintura não salva."
+msgstr[1] "Isto irá descartar %d segundos de pintura não salva."
 
 #: ../gui/filehandling.py:191
 msgid "_Save as Scrap"
-msgstr "_Salvar como rascunho"
+msgstr "_Salvar como Rascunho"
 
 #: ../gui/filehandling.py:326 ../gui/filehandling.py:343
 msgid "Open..."
@@ -1148,12 +1141,12 @@ msgstr "Abrir..."
 
 #: ../gui/filehandling.py:375
 msgid "Open Scratchpad..."
-msgstr "Abrir painel de rascunho..."
+msgstr "Abrir Painel de Rascunho..."
 
 #: ../gui/filehandling.py:680
 #, python-format
 msgid "There are no scrap files named \"%s\" yet."
-msgstr "Não há arquivos de rascunho com o nome \"%s\" ainda."
+msgstr "Não há arquivos de rascunho chamados \"%s\" ainda."
 
 #: ../gui/framewindow.py:259
 msgid "Frame"
@@ -1185,35 +1178,35 @@ msgstr "Cor:"
 
 #: ../gui/framewindow.py:307
 msgid "Frame Color"
-msgstr "Cor da moldura"
+msgstr "Cor da Moldura"
 
 #: ../gui/framewindow.py:356
 msgid "Crop to Current Layer"
-msgstr "Cortar na camada atual"
+msgstr "Cortar a Camada Atual"
 
 #: ../gui/framewindow.py:357
 msgid "Crop frame to the currently active layer"
-msgstr "Corta a moldura nos limites da camada ativa atual"
+msgstr "Moldura de corte para a camada atualmente ativa"
 
 #: ../gui/framewindow.py:359
 msgid "Crop to Document"
-msgstr "Cortar documento"
+msgstr "Cortar o Documento"
 
 #: ../gui/framewindow.py:360
 msgid "Crop frame to the combination of all layers"
-msgstr "Corta a moldura incluindo os limites de todas as camadas"
+msgstr "Moldura de corte para a combinação de todas as camadas"
 
 #: ../gui/framewindow.py:367
 msgid ""
 "While the frame is enabled, it \n"
 "can be adjusted on the canvas"
 msgstr ""
-"Enquanto a moldura estiver ativa, ela \n"
-"pode ser ajustada diretamente na janela"
+"Enquanto a moldura estiver ativada, ela \n"
+"pode ser ajustada na tela"
 
 #: ../gui/framewindow.py:374
 msgid "Enabled"
-msgstr "Ligado"
+msgstr "Ativada"
 
 #: ../gui/framewindow.py:469
 msgid "inch"
@@ -1229,7 +1222,7 @@ msgstr "mm"
 
 #: ../gui/functionwindow.py:37
 msgid "Base Value"
-msgstr "Valor base"
+msgstr "Valor Base"
 
 #: ../gui/functionwindow.py:159
 msgid "Details"
@@ -1237,7 +1230,7 @@ msgstr "Detalhes"
 
 #: ../gui/gtkexcepthook.py:127
 msgid "Bug Detected"
-msgstr "Bug detectado"
+msgstr "Bug Detectado"
 
 #. if gtk.check_version (2, 4, 0) is not None:
 #. dialog.set_has_separator (False)
@@ -1250,7 +1243,7 @@ msgid ""
 "It probably isn't fatal, but the details should be reported to the "
 "developers nonetheless."
 msgstr ""
-"Provavelmente não é fatal, mas os detalhes devem enviados para os "
+"Ele provavelmente não é fatal, mas os detalhes devem enviados para os "
 "desenvolvedores de qualquer forma."
 
 #: ../gui/gtkexcepthook.py:156
@@ -1259,11 +1252,11 @@ msgstr "Detalhes..."
 
 #: ../gui/gtkexcepthook.py:177 ../gui/gtkexcepthook.py:180
 msgid "Exception while analyzing the exception."
-msgstr "Exceção ao a analisar a exceção."
+msgstr "Exceção ao analisar a exceção."
 
 #: ../gui/inputtestwindow.py:20
 msgid "Input Device Test"
-msgstr "Teste de dispositivo de entrada"
+msgstr "Teste de Dispositivo de Entrada"
 
 #: ../gui/inputtestwindow.py:47
 msgid "(no pressure)"
@@ -1307,7 +1300,7 @@ msgstr "Visível"
 
 #: ../gui/layerswindow.py:72
 msgid "Locked"
-msgstr "Travado"
+msgstr "Travada"
 
 #: ../gui/layerswindow.py:90
 msgid "Mode:"
@@ -1317,7 +1310,7 @@ msgstr "Modo:"
 msgid ""
 "Blending mode: how the current layer combines with the layers underneath it."
 msgstr ""
-"Modo de combinação: como a camada atual se combina com as camadas abaixo"
+"Modo de mistura: como a camada atual se combina com as camadas abaixo dela."
 
 #: ../gui/layerswindow.py:105
 msgid "Opacity:"
@@ -1328,7 +1321,7 @@ msgid ""
 "Layer opacity: how much of the current layer to use. Smaller values make it "
 "more transparent."
 msgstr ""
-"Opacidade da camada: quanto da camada atual é usado. Valores menores tornam "
+"Opacidade da camada: quanto da camada atual usar. Valores menores tornam "
 "a camada mais transparente."
 
 #: ../gui/layerswindow.py:227
@@ -1339,11 +1332,11 @@ msgstr "Opacidade da camada: %d%%"
 #: ../gui/layerswindow.py:330
 #, python-format
 msgid "Untitled layer #%d"
-msgstr "Camada sem título nº %d"
+msgstr "Camada sem título Nº%d"
 
 #: ../gui/layout.py:628
 msgid "Collapse"
-msgstr "Colapsar"
+msgstr "Recolher"
 
 #: ../gui/layout.py:629
 msgid "Expand"
@@ -1359,27 +1352,27 @@ msgstr "Fechar"
 
 #: ../gui/linemode.py:21
 msgid "Entrance Pressure"
-msgstr "Pressão de entrada"
+msgstr "Pressão à Entrada"
 
 #: ../gui/linemode.py:21
 msgid "Stroke entrance pressure for line tools"
-msgstr "Pressão inicial para ferramentas de linha"
+msgstr "Pressão à entrada do traço para ferramentas de linha"
 
 #: ../gui/linemode.py:22
 msgid "Midpoint Pressure"
-msgstr "Pressão do meio"
+msgstr "Pressão ao Meio"
 
 #: ../gui/linemode.py:22
 msgid "Mid-Stroke pressure for line tools"
-msgstr "Pressão no ponto do meio para ferramentas de linha"
+msgstr "Pressão ao meio do traço para ferramentas de linha"
 
 #: ../gui/linemode.py:23
 msgid "Exit Pressure"
-msgstr "Pressão na saída"
+msgstr "Pressão à Saída"
 
 #: ../gui/linemode.py:23
 msgid "Stroke exit pressure for line tools"
-msgstr "Pressão ao final da pincelada para ferramentas de linha"
+msgstr "Pressão à saída do traço para ferramentas de linha"
 
 #: ../gui/linemode.py:24
 msgid "Head"
@@ -1387,24 +1380,24 @@ msgstr "Cabeça"
 
 #: ../gui/linemode.py:24
 msgid "Stroke lead-in end"
-msgstr "Trecho de passagem para o final"
+msgstr "Traçado indo para o final"
 
 #: ../gui/linemode.py:25
 msgid "Tail"
-msgstr "Final"
+msgstr "Cauda"
 
 #: ../gui/linemode.py:25
 msgid "Stroke trail-off beginning"
-msgstr "Trecho de saída do começo"
+msgstr "Traçado saindo do começo"
 
 #: ../gui/overlays.py:147
 #, python-format
 msgid "Zoom: %.01f%%"
-msgstr "Zoom: %.01f%%"
+msgstr "Ampliação: %.01f%%"
 
 #: ../gui/preferenceswindow.py:23
 msgid "Disabled (no pressure sensitivity)"
-msgstr "Desabilitado (sem sensibilidade a pressão)"
+msgstr "Desabilitado (sem sensibilidade à pressão)"
 
 #: ../gui/preferenceswindow.py:24
 msgid "Screen (normal)"
@@ -1421,30 +1414,30 @@ msgstr "Preferências"
 #. TRANSLATORS: Tab label
 #: ../gui/preferenceswindow.py:57
 msgid "Pen Input"
-msgstr "Entrada de caneta"
+msgstr "Entrada da Caneta"
 
 #: ../gui/preferenceswindow.py:63
 msgid "<b>Input Device</b>"
-msgstr "<b>Dispositivo de entrada</b>"
+msgstr "<b>Dispositivo de Entrada</b>"
 
 #: ../gui/preferenceswindow.py:70
 msgid ""
 "Scale input pressure to brush pressure. This is applied to all input "
 "devices. The mouse button has an input pressure of 0.5 when pressed."
 msgstr ""
-"Dimensiona a pressão de entrada para a pressão de pincel. Se aplica a todos "
-"os dispositivos de entrada. O botão do mouse tem uma pressão de 0.5 quando "
-"pressionado."
+"Dimensiona a pressão de entrada para a pressão no pincel. Se aplica a todos "
+"os dispositivos de entrada. O botão do mouse tem uma pressão de entrada "
+"de 0,5 quando pressionado."
 
 #. TRANSLATORS: Graph y-axis label
 #: ../gui/preferenceswindow.py:80
 msgid "Brush Pressure"
-msgstr "Pressão do pincel"
+msgstr "Pressão no Pincel"
 
 #. TRANSLATORS: Graph x-axis label
 #: ../gui/preferenceswindow.py:90
 msgid "Input Pressure"
-msgstr "Pressão de entrada"
+msgstr "Pressão de Entrada"
 
 #: ../gui/preferenceswindow.py:99
 msgid "Mode: "
@@ -1455,8 +1448,8 @@ msgid ""
 "<small>Space can be used like Button2. Note that some pads have buttons that "
 "cannot be held down.</small>"
 msgstr ""
-"<small>Espaço pode ser usado como o Botão2. Note que alguns tablets tem "
-"botões que não podem ser segurados.</small>"
+"<small>Espaço pode ser usado como Botão2. Note que algumas tablets tem "
+"botões que não podem ser mantidos pressionados.</small>"
 
 #: ../gui/preferenceswindow.py:131
 msgid "Buttons"
@@ -1476,7 +1469,7 @@ msgstr "Formato de arquivo padrão:"
 
 #: ../gui/preferenceswindow.py:165
 msgid "<b>Save Next Scrap</b>"
-msgstr "<b>Salvar próximo rascunho</b>"
+msgstr "<b>Salvar Próximo Rascunho</b>"
 
 #: ../gui/preferenceswindow.py:169
 msgid "Path and filename prefix:"
@@ -1488,19 +1481,19 @@ msgstr "Visualizar"
 
 #: ../gui/preferenceswindow.py:190
 msgid "<b>Default View</b>"
-msgstr "<b>Visualização padrão</b>"
+msgstr "<b>Visualização Padrão</b>"
 
 #: ../gui/preferenceswindow.py:194
 msgid "Default zoom:"
-msgstr "Zoom padrão:"
+msgstr "Ampliação padrão:"
 
 #: ../gui/preferenceswindow.py:207
 msgid "High quality zoom (may result in slow scrolling)"
-msgstr "Zoom de alta qualidade (pode resultar em lentidão ao rolar a tela)"
+msgstr "Ampliação de alta qualidade (pode resultar em lentidão ao mover a tela)"
 
 #: ../gui/preferenceswindow.py:214
 msgid "<b>Fullscreen</b>"
-msgstr "<b>Tela cheia</b>"
+msgstr "<b>Tela Cheia</b>"
 
 #: ../gui/preferenceswindow.py:218
 msgid "Hide menu bar"
@@ -1516,23 +1509,23 @@ msgstr "Esconder ferramentas"
 
 #: ../gui/scratchwindow.py:28
 msgid "Scratchpad"
-msgstr "Painel de rascunho"
+msgstr "Painel de Rascunho"
 
 #: ../gui/scratchwindow.py:41
 msgid "Load Scratchpad"
-msgstr "Carregar painel de rascunho"
+msgstr "Carregar Painel de Rascunho"
 
 #: ../gui/scratchwindow.py:43
 msgid "Save Scratchpad as..."
-msgstr "Salvar painel de rascunho como..."
+msgstr "Salvar Painel de Rascunho como..."
 
 #: ../gui/scratchwindow.py:45
 msgid "Revert Scratchpad"
-msgstr "Reverter painel de rascunho"
+msgstr "Reverter Painel de Rascunho"
 
 #: ../gui/scratchwindow.py:47
 msgid "New Scratchpad"
-msgstr "Novo painel de rascunho"
+msgstr "Novo Painel de Rascunho"
 
 #: ../gui/spinbox.py:32
 msgid "Previous item"
@@ -1544,7 +1537,7 @@ msgstr "Próximo item"
 
 #: ../gui/spinbox.py:97
 msgid "(Nothing to show)"
-msgstr "(Nada para mostrar)"
+msgstr "(Nada a mostrar)"
 
 #: ../gui/toolbar.py:31
 msgid "File handling"
@@ -1556,27 +1549,27 @@ msgstr "Escolhedor de rascunhos"
 
 #: ../gui/toolbar.py:33
 msgid "Undo and Redo"
-msgstr "Desfazer e refazer "
+msgstr "Desfazer e Refazer "
 
 #: ../gui/toolbar.py:34
 msgid "Blend Modes"
-msgstr "Modos de mistura"
+msgstr "Modos de Mistura"
 
 #: ../gui/toolbar.py:35
 msgid "Editing Modes"
-msgstr "Modos de edição"
+msgstr "Modos de Edição"
 
 #: ../gui/toolbar.py:36
 msgid "View (Main)"
-msgstr "Visualização (principal)"
+msgstr "Visualização (Principal)"
 
 #: ../gui/toolbar.py:37
 msgid "View (Alternative/Secondary)"
-msgstr "Visualização (alternativa/secundária)"
+msgstr "Visualização (Alternativa/Secundária)"
 
 #: ../gui/toolbar.py:38
 msgid "View (Resetting)"
-msgstr "Visualização (reiniciar)"
+msgstr "Visualização (Reiniciar)"
 
 #: ../gui/toolbar.py:39
 msgid "Subwindows"
@@ -1588,52 +1581,52 @@ msgstr "MyPaint"
 
 #: ../gui/toolbar.py:84
 msgid "Current Color"
-msgstr "Cor atual"
+msgstr "Cor Atual"
 
 #: ../gui/toolbar.py:86
 msgid "Current Brush"
-msgstr "Pincel atual"
+msgstr "Pincel Atual"
 
 #: ../gui/toolbar.py:88
 msgid "Brush Settings"
-msgstr "Configurações de pincel"
+msgstr "Configurações de Pincel"
 
 #: ../gui/toolbar.py:90
 msgid "Line Mode"
-msgstr "Modo de linha"
+msgstr "Modo de Linha"
 
 #. Pressure settings.
 #: ../gui/toolbar.py:179
 msgid "Line Pressure"
-msgstr "Pressão da linha"
+msgstr "Pressão da Linha"
 
 #: ../gui/toolbar.py:227
 msgid "Color History and other tools"
-msgstr "Histórico de cores e outras ferramentas"
+msgstr "Histórico de Cores e outras ferramentas"
 
 #. Colour changing
 #: ../gui/toolbar.py:250
 msgid "Change Color"
-msgstr "Alterar cor"
+msgstr "Mudar a Cor"
 
 #: ../gui/toolbar.py:288
 msgid "Color Window"
-msgstr "Janela de cores"
+msgstr "Janela de Cores"
 
 #. History
 #. Brush history
 #: ../gui/toolbar.py:292 ../gui/toolbar.py:377
 msgid "Recently Used"
-msgstr "Utilizadas recentemente"
+msgstr "Usados Recentemente"
 
 #: ../gui/toolbar.py:335
 msgid "Brush history etc."
-msgstr "Histórico de pinceis e etc..."
+msgstr "Histórico de pincéis e etc."
 
 #. A limited subset of the available brush settings.
 #: ../gui/toolbar.py:465
 msgid "Quick Brush Settings"
-msgstr "Configurações rápidas de pincel"
+msgstr "Configurações Rápidas do Pincel"
 
 #: ../gui/toolbar.py:491
 #, python-format
@@ -1643,107 +1636,107 @@ msgstr "%s:"
 #: ../gui/toolbar.py:498
 #, python-format
 msgid "Restore '%s' to this brush's saved value"
-msgstr "Restaurar \"%s\" para o valor salvo neste pincel"
+msgstr "Restaurar '%s' para o valor salvo neste pincel"
 
 #. Access to the brush settings window, and a big reset-all button
 #. aligned with the settings above.
 #: ../gui/toolbar.py:516
 msgid "Detailed Brush Settings"
-msgstr "Configurações detalhadas de pincel"
+msgstr "Configurações Detalhadas do Pincel"
 
 #: ../gui/toolbar.py:531
 msgid "Restore Saved Settings"
-msgstr "Restaurar configurações salvas"
+msgstr "Restaurar Configurações Salvas"
 
 #: ../gui/toolbar.py:533
 msgid "Reset all brush settings to the current brush's saved values"
 msgstr ""
-"Restaura todos os parâmetros de pincel para os valores salvos para o pincel "
+"Restaurar todos os parâmetros do pincel para os valores salvos do pincel "
 "atual"
 
 #: ../gui/toolbar.py:543
 msgid "Brush Blend Mode"
-msgstr "Modo de mistura do pincel"
+msgstr "Modo de Mistura do Pincel"
 
 #: ../lib/command.py:92
 msgid "Unknown Action"
-msgstr "Ação desconhecida"
+msgstr "Ação Desconhecida"
 
 #: ../lib/command.py:153
 msgid "Painting"
-msgstr "Pintando"
+msgstr "Pintura"
 
 #: ../lib/command.py:169
 msgid "Clear Layer"
-msgstr "Limpar camada"
+msgstr "Limpar Camada"
 
 #: ../lib/command.py:182
 msgid "Load Layer"
-msgstr "Carregar camada"
+msgstr "Carregar Camada"
 
 #: ../lib/command.py:196
 msgid "Merge Layers"
-msgstr "Mesclar camadas"
+msgstr "Mesclar Camadas"
 
 #: ../lib/command.py:224
 msgid "Convert Layer Mode"
-msgstr "Alterar modo da camada"
+msgstr "Converter Modo da Camada"
 
 #: ../lib/command.py:246
 msgid "Add Layer"
-msgstr "Adicionar camada"
+msgstr "Adicionar Camada"
 
 #: ../lib/command.py:269
 msgid "Remove Layer"
-msgstr "Remover camada"
+msgstr "Remover Camada"
 
 #: ../lib/command.py:304
 msgid "Select Layer"
-msgstr "Selecionar camada"
+msgstr "Selecionar Camada"
 
 #: ../lib/command.py:319
 msgid "Move Layer on Canvas"
-msgstr "Mover camada na tela"
+msgstr "Mover Camada na Tela"
 
 #: ../lib/command.py:344
 msgid "Reorder Layer in Stack"
-msgstr "Reordenar camada na pilha"
+msgstr "Reordenar Camada na Pilha"
 
 #: ../lib/command.py:370
 msgid "Duplicate Layer"
-msgstr "Duplicar camada"
+msgstr "Duplicar Camada"
 
 #: ../lib/command.py:391
 msgid "Reorder Layer Stack"
-msgstr "Reordenar pilha de camadas"
+msgstr "Reordenar Pilha de Camadas"
 
 #: ../lib/command.py:412
 msgid "Rename Layer"
-msgstr "Renomear camada"
+msgstr "Renomear Camada"
 
 #: ../lib/command.py:447
 msgid "Make Layer Visible"
-msgstr "Tornar camada visível"
+msgstr "Tornar Camada Visível"
 
 #: ../lib/command.py:449
 msgid "Make Layer Invisible"
-msgstr "Tornar camada invisível"
+msgstr "Tornar Camada Invisível"
 
 #: ../lib/command.py:473
 msgid "Lock Layer"
-msgstr "Travar camada"
+msgstr "Travar Camada"
 
 #: ../lib/command.py:475
 msgid "Unlock Layer"
-msgstr "Destravar camada"
+msgstr "Destravar Camada"
 
 #: ../lib/command.py:478
 msgid "Change Layer Visibility"
-msgstr "Alterar visibilidade da camada"
+msgstr "Alterar Visibilidade da Camada"
 
 #: ../lib/command.py:506
 msgid "Change Layer Blending Mode"
-msgstr "Alterar modo de combinação da camada"
+msgstr "Alterar Modo de Mistura da Camada"
 
 #. add a hint due to a very consfusing error message when there is no space left on device
 #: ../lib/document.py:514
@@ -1753,7 +1746,7 @@ msgid ""
 "Do you have enough space left on the device?"
 msgstr ""
 "Não foi possível salvar: %s\n"
-"Você tem espaço o suficiente no dispositivo?"
+"Você tem espaço restante o suficiente no dispositivo?"
 
 #: ../lib/document.py:516 ../lib/document.py:519
 #, python-format
@@ -1768,7 +1761,7 @@ msgstr "O arquivo não existe: %s"
 #: ../lib/document.py:539
 #, python-format
 msgid "You do not have the necessary permissions to open file: %s"
-msgstr "Você não tem as permissões necessárias para abrir o arquivo: %s"
+msgstr "Você não possui as permissões necessárias para abrir o arquivo: %s"
 
 #: ../lib/document.py:547
 #, python-format
@@ -1798,20 +1791,20 @@ msgid ""
 "Similar to loading multiple slides into a single projector's slot and "
 "projecting the combined result."
 msgstr ""
-"Similar a colocar múltiplos slides num único projetor e projetar o resultado "
+"Similar a colocar múltiplos slides em um único projetor e projetar o resultado "
 "combinado. "
 
 #: ../lib/layer.py:22
 msgid "Screen"
-msgstr "Ocultar"
+msgstr "Esconder"
 
 #: ../lib/layer.py:23
 msgid ""
 "Like shining two separate slide projectors onto a screen simultaneously. "
 "This is the inverse of 'Multiply'."
 msgstr ""
-"O mesmo que projetar dois slides, de projetores diferentes, numa tela "
-"simultaneamente. É o inverso de 'Multiplicar'."
+"É como projetar dois projetores de slides diferentes em uma tela "
+"simultaneamente. Este é o inverso de 'Multiplicar'."
 
 #: ../lib/layer.py:25
 msgid "Overlay"
@@ -1823,7 +1816,7 @@ msgid ""
 "highlights and shadows. This is the inverse of 'Hard Light'."
 msgstr ""
 "Sobrepõe a imagem abaixo com a camada de cima, preservando as regiões de "
-"altas luzes e sombras da camada de trás.  É o inverso de \"Luz dura\""
+"alto brilho e sombras da imagem abaixo.  É o inverso de 'Luz forte'."
 
 #: ../lib/layer.py:28
 msgid "Darken"
@@ -1832,7 +1825,7 @@ msgstr "Escurecer"
 #: ../lib/layer.py:29
 msgid "The top layer is used only where it is darker than the backdrop."
 msgstr ""
-"A camada de cima é usada apenas onde for mais escura que a imagem abaixo."
+"A camada de cima é usada somente onde ela é mais escura que a imagem abaixo."
 
 #: ../lib/layer.py:30
 msgid "Lighten"
@@ -1841,11 +1834,11 @@ msgstr "Clarear"
 #: ../lib/layer.py:31
 msgid "The top layer is used only where it is lighter than the backdrop."
 msgstr ""
-"A camada de cima é usada apenas onde for mais clara que a imagem abaixo."
+"A camada de cima é usada somente onde ela é mais clara que a imagem abaixo."
 
 #: ../lib/layer.py:32
 msgid "Dodge"
-msgstr "Desviar"
+msgstr "Sub-expor"
 
 #: ../lib/layer.py:33
 msgid ""
@@ -1854,12 +1847,12 @@ msgid ""
 "contrast in shadows."
 msgstr ""
 "Clareia a imagem abaixo usando a camada de cima. O efeito é similar à "
-"técnica fotográfica de mesmo nome que é usada para melhorar o contraste nas "
-"áreas de sombra."
+"técnica fotográfica de mesmo nome que é usada para melhorar "
+"o contraste em sombras."
 
 #: ../lib/layer.py:36
 msgid "Burn"
-msgstr "Queimar"
+msgstr "Super-expor"
 
 #: ../lib/layer.py:37
 msgid ""
@@ -1873,7 +1866,7 @@ msgstr ""
 
 #: ../lib/layer.py:40
 msgid "Hard Light"
-msgstr "Luz dura"
+msgstr "Luz Forte"
 
 #: ../lib/layer.py:41
 msgid "Similar to shining a harsh spotlight onto the backdrop."
@@ -1881,11 +1874,11 @@ msgstr "Similar a fazer brilhar uma luz de spot na imagem abaixo."
 
 #: ../lib/layer.py:42
 msgid "Soft Light"
-msgstr "Luz suave"
+msgstr "Luz Suave"
 
 #: ../lib/layer.py:43
 msgid "Like shining a diffuse spotlight onto the backdrop."
-msgstr "Como fazer brilhar uma luz suave na imagem abaixo."
+msgstr "Como fazer brilhar um holofote na imagem abaixo."
 
 #: ../lib/layer.py:44
 msgid "Difference"
@@ -1893,7 +1886,7 @@ msgstr "Diferença"
 
 #: ../lib/layer.py:45
 msgid "Subtracts the darker color from the lighter of the two."
-msgstr "Subtrai a cor escura da mais clara."
+msgstr "Subtrai a cor mais escura da cor mais clara das duas."
 
 #: ../lib/layer.py:46
 msgid "Exclusion"
@@ -1924,14 +1917,15 @@ msgid ""
 "Applies the saturation of the top layer's colors to the hue and luminosity "
 "of the backdrop."
 msgstr ""
-"Aplica a saturação da camada de cima à matiz e luminosidade da imagem abaixo."
+"Aplica a saturação das cores da camada de cima à matiz e luminosidade "
+"da imagem abaixo."
 
 #: ../lib/layer.py:55
 msgid ""
 "Applies the hue and saturation of the top layer to the luminosity of the "
 "backdrop."
 msgstr ""
-"Aplica a matiz e saturação da camada de cima à luminosidade da imagem abaixo."
+"Aplica a matiz e a saturação da camada de cima à luminosidade da imagem abaixo."
 
 #: ../lib/layer.py:57
 msgid "Luminosity"
@@ -1942,12 +1936,12 @@ msgid ""
 "Applies the luminosity of the top layer to the hue and saturation of the "
 "backdrop."
 msgstr ""
-"Aplica a luminosidade da camada de cima à matiz e saturação da imagem abaixo."
+"Aplica a luminosidade da camada de cima à matiz e a saturação da imagem abaixo."
 
 #: ../po/tmp/mypaint.xml.h:1
 msgctxt "Menu|File|"
 msgid "New"
-msgstr "Nova"
+msgstr "Novo"
 
 #: ../po/tmp/mypaint.xml.h:2
 msgid "Start with a new blank canvas"
@@ -1956,7 +1950,7 @@ msgstr "Começar com uma nova tela em branco"
 #: ../po/tmp/mypaint.xml.h:3
 msgctxt "Menu|File|"
 msgid "Open..."
-msgstr " Abrir.."
+msgstr "Abrir..."
 
 #: ../po/tmp/mypaint.xml.h:4
 msgid "Open a file, replacing the current painting"
@@ -1965,20 +1959,20 @@ msgstr "Abrir um arquivo, substituindo a pintura atual"
 #: ../po/tmp/mypaint.xml.h:5
 msgctxt "Menu|File|"
 msgid "Open Most Recent"
-msgstr "Abrir mais recente"
+msgstr "Abrir Mais Recente"
 
 #: ../po/tmp/mypaint.xml.h:6
 msgid "Open the last file you saved"
-msgstr "Abre o último arquivo que você salvou"
+msgstr "Abrir o último arquivo que você salvou"
 
 #: ../po/tmp/mypaint.xml.h:7
 msgctxt "Menu|File|"
 msgid "Revert"
-msgstr "Reverter "
+msgstr "Reverter"
 
 #: ../po/tmp/mypaint.xml.h:8
 msgid "Reload the current file"
-msgstr "Carrega novamente o arquivo atual"
+msgstr "Recarregar o arquivo atual"
 
 #: ../po/tmp/mypaint.xml.h:9
 msgctxt "Menu|File|"
@@ -1992,11 +1986,11 @@ msgstr "Salvar para um arquivo"
 #: ../po/tmp/mypaint.xml.h:11
 msgctxt "Menu|File|"
 msgid "Save As..."
-msgstr "Salvar como..."
+msgstr "Salvar Como..."
 
 #: ../po/tmp/mypaint.xml.h:12
 msgid "Save to a file with a new name"
-msgstr "Salva para um arquivo com um novo nome"
+msgstr "Salvar para um arquivo com um novo nome"
 
 #: ../po/tmp/mypaint.xml.h:13
 msgctxt "Menu|File|"
@@ -2005,38 +1999,38 @@ msgstr "Exportar..."
 
 #: ../po/tmp/mypaint.xml.h:14
 msgid "Export to a file"
-msgstr "Exporta para um arquivo"
+msgstr "Exportar para um arquivo"
 
 #: ../po/tmp/mypaint.xml.h:15
 msgctxt "Menu|File|"
 msgid "Save As Scrap"
-msgstr "Salvar como rascunho"
+msgstr "Salvar Como Rascunho"
 
 #: ../po/tmp/mypaint.xml.h:16
 msgid ""
 "Saves to a new scrap file. If the drawing is currently saved as a scrap, "
 "this will write a new revision of it."
 msgstr ""
-"Salva para um novo arquivo de rascunho. Se este desenho estiver salvo como "
-"um rascunho, gera uma nova revisão do mesmo"
+"Salvar para um novo arquivo de rascunho. Se o desenho está atualmente "
+"salvo como um rascunho, isto irá gerar uma nova revisão dele."
 
 #: ../po/tmp/mypaint.xml.h:17
 msgctxt "Menu|File|"
 msgid "Open Previous Scrap"
-msgstr "Abrir rascunho anterior"
+msgstr "Abrir Rascunho Anterior"
 
 #: ../po/tmp/mypaint.xml.h:18
 msgid "Load the previous scrap file, replacing the current drawing"
-msgstr "Carrega o arquivo de rascunho anterior, substituindo o desenho atual"
+msgstr "Carregar o arquivo de rascunho anterior, substituindo o desenho atual"
 
 #: ../po/tmp/mypaint.xml.h:19
 msgctxt "Menu|File|"
 msgid "Open Next Scrap"
-msgstr "Abrir próximo rascunho"
+msgstr "Abrir Próximo Rascunho"
 
 #: ../po/tmp/mypaint.xml.h:20
 msgid "Load the next scrap file, replacing the current drawing"
-msgstr "Carrega o próximo arquivo de rascunho, substituindo o desenho atual"
+msgstr "Carregar o próximo arquivo de rascunho, substituindo o desenho atual"
 
 #: ../po/tmp/mypaint.xml.h:21
 msgctxt "Menu|Brush|"
@@ -2054,12 +2048,12 @@ msgstr "Menor"
 
 #: ../po/tmp/mypaint.xml.h:24
 msgid "Decrease brush radius"
-msgstr "Diminui o raio do pincel"
+msgstr "Diminuir o raio do pincel"
 
 #: ../po/tmp/mypaint.xml.h:25
 msgctxt "Menu|Brush|"
 msgid "Increase Opacity"
-msgstr "Aumentar a opacidade"
+msgstr "Aumentar Opacidade"
 
 #: ../po/tmp/mypaint.xml.h:26
 msgid "Increase brush opacity"
@@ -2068,16 +2062,16 @@ msgstr "Aumentar a opacidade do pincel"
 #: ../po/tmp/mypaint.xml.h:27
 msgctxt "Menu|Brush|"
 msgid "Decrease Opacity"
-msgstr "Diminuir a opacidade"
+msgstr "Diminuir Opacidade"
 
 #: ../po/tmp/mypaint.xml.h:28
 msgid "Decrease brush opacity"
-msgstr "Diminui a opacidade do pincel"
+msgstr "Diminuir a opacidade do pincel"
 
 #: ../po/tmp/mypaint.xml.h:29
 msgctxt "Menu|Color|Adjust Color|"
 msgid "Brighter"
-msgstr "Mais claro"
+msgstr "Mais Claro"
 
 #: ../po/tmp/mypaint.xml.h:30
 msgid "Increase color brightness"
@@ -2086,34 +2080,34 @@ msgstr "Aumentar o brilho da cor"
 #: ../po/tmp/mypaint.xml.h:31
 msgctxt "Menu|Color|Adjust Color|"
 msgid "Darker"
-msgstr "Mais escuro"
+msgstr "Mais Escuro"
 
 #: ../po/tmp/mypaint.xml.h:32
 msgid "Decrease color brightness"
-msgstr "Diminui o brilho da cor"
+msgstr "Diminuir o brilho da cor"
 
 #: ../po/tmp/mypaint.xml.h:33
 msgctxt "Menu|Color|Adjust Color|"
 msgid "Hue Anticlockwise"
-msgstr "Matiz no sentido anti-horário"
+msgstr "Matiz no Sentido Anti-horário"
 
 #: ../po/tmp/mypaint.xml.h:34
 msgid "Rotate color hue anticlockwise"
-msgstr "Rotaciona o matiz de cor no sentido anti-horário"
+msgstr "Girar a matiz da cor no sentido anti-horário"
 
 #: ../po/tmp/mypaint.xml.h:35
 msgctxt "Menu|Color|Adjust Color|"
 msgid "Hue Clockwise"
-msgstr "Matiz no sentido horário"
+msgstr "Matiz no Sentido Horário"
 
 #: ../po/tmp/mypaint.xml.h:36
 msgid "Rotate color hue clockwise"
-msgstr "Rotaciona o matiz de cor no sentido horário"
+msgstr "Girar a matiz da cor no sentido horário"
 
 #: ../po/tmp/mypaint.xml.h:37
 msgctxt "Menu|Color|Adjust Color|"
 msgid "Purer"
-msgstr "Mais pura"
+msgstr "Mais Pura"
 
 #: ../po/tmp/mypaint.xml.h:38
 msgid "Increase color saturation"
@@ -2122,16 +2116,16 @@ msgstr "Aumentar a saturação da cor"
 #: ../po/tmp/mypaint.xml.h:39
 msgctxt "Menu|Color|Adjust Color|"
 msgid "Grayer"
-msgstr "Mais cinza"
+msgstr "Mais Cinza"
 
 #: ../po/tmp/mypaint.xml.h:40
 msgid "Decrease color saturation"
-msgstr "Diminui a saturação da cor"
+msgstr "Diminuir a saturação da cor"
 
 #: ../po/tmp/mypaint.xml.h:41
 msgctxt "Menu|Brush|"
 msgid "Pick Stroke and Layer"
-msgstr "Pegar pincelada e camada"
+msgstr "Pegar Traço e Camada"
 
 #: ../po/tmp/mypaint.xml.h:42
 msgid "Pick brushstroke: settings and layer"
@@ -2140,16 +2134,16 @@ msgstr "Pegar pincelada: configurações e camada"
 #: ../po/tmp/mypaint.xml.h:43
 msgctxt "Menu|Brush|Shortcut Keys|"
 msgid "Restore Color"
-msgstr "Restaurar cor"
+msgstr "Restaurar Cor"
 
 #: ../po/tmp/mypaint.xml.h:44
 msgctxt "Menu|Brush|Shortcut Keys|"
 msgid "Save to Most Recent"
-msgstr "Salvar em mais recentes"
+msgstr "Salvar para Mais Recente"
 
 #: ../po/tmp/mypaint.xml.h:45
 msgid "Save brush to the most recent shortcut"
-msgstr "Salva pincel no atalho de mais recente"
+msgstr "Salvar pincel para o atalho mais recente"
 
 #: ../po/tmp/mypaint.xml.h:46
 msgctxt "Menu|Layer|"
@@ -2158,7 +2152,7 @@ msgstr "Limpar"
 
 #: ../po/tmp/mypaint.xml.h:47
 msgid "Clear the current layer"
-msgstr "Limpa a camada atual"
+msgstr "Limpar a camada atual"
 
 #: ../po/tmp/mypaint.xml.h:48
 msgctxt "Menu|Layer|"
@@ -2167,7 +2161,7 @@ msgstr "Copiar"
 
 #: ../po/tmp/mypaint.xml.h:49
 msgid "Copy the current layer to the clipboard"
-msgstr "Copia a camada atual para a área de transferência"
+msgstr "Copiar a camada atual para a área de transferência"
 
 #: ../po/tmp/mypaint.xml.h:50
 msgctxt "Menu|Layer|"
@@ -2176,16 +2170,16 @@ msgstr "Colar"
 
 #: ../po/tmp/mypaint.xml.h:51
 msgid "Replaces the layer with the clipboard's contents"
-msgstr "Substitui a camada atual pelo conteúdo da área de transferência"
+msgstr "Substituir a camada atual pelo conteúdo da área de transferência"
 
 #: ../po/tmp/mypaint.xml.h:52
 msgctxt "Menu|Layer|Go to Layer|"
 msgid "At Cursor"
-msgstr "No cursor"
+msgstr "Ao Cursor"
 
 #: ../po/tmp/mypaint.xml.h:53
 msgid "Choose a layer by picking a brushstroke on it"
-msgstr "Escolha uma camada clicando numa pincelada na mesma"
+msgstr "Escolher uma camada clicando em uma pincelada nela"
 
 #: ../po/tmp/mypaint.xml.h:54
 msgctxt "Menu|Layer|Go to Layer|"
@@ -2194,7 +2188,7 @@ msgstr "Acima"
 
 #: ../po/tmp/mypaint.xml.h:55
 msgid "Go one layer up in the layers stack"
-msgstr "Sobe uma camada na pilha de camadas"
+msgstr "Subir uma camada na pilha de camadas"
 
 #: ../po/tmp/mypaint.xml.h:56
 msgctxt "Menu|Layer|Go to Layer|"
@@ -2203,34 +2197,34 @@ msgstr "Abaixo"
 
 #: ../po/tmp/mypaint.xml.h:57
 msgid "Go one layer down in the layers stack"
-msgstr "Desce uma camada na pilha de camadas"
+msgstr "Descer uma camada na pilha de camadas"
 
 #: ../po/tmp/mypaint.xml.h:58
 msgctxt "Menu|Layer|"
 msgid "New (above)"
-msgstr "Nova (acimal) "
+msgstr "Nova (acima) "
 
 #: ../po/tmp/mypaint.xml.h:59
 msgid "Add a new layer above the current layer"
-msgstr "Adiciona uma nova camada acima da camada atual"
+msgstr "Adicionar uma nova camada acima da camada atual"
 
 #: ../po/tmp/mypaint.xml.h:60
 msgctxt "Menu|Layer|"
 msgid "New (below)"
-msgstr "Nova (abaixol)"
+msgstr "Nova (abaixo)"
 
 #: ../po/tmp/mypaint.xml.h:61
 msgid "Add a new layer below the current layer"
-msgstr "Adiciona uma nova camada abaixo da camada atual"
+msgstr "Adicionar uma nova camada abaixo da camada atual"
 
 #: ../po/tmp/mypaint.xml.h:62
 msgctxt "Menu|Layer|"
 msgid "Merge Down"
-msgstr "Combinar abaixo"
+msgstr "Combinar Abaixo"
 
 #: ../po/tmp/mypaint.xml.h:63
 msgid "Merge layer with the one beneath it"
-msgstr "Junta a camada com a camada abaixo"
+msgstr "Juntar camada com a camada abaixo dela"
 
 #: ../po/tmp/mypaint.xml.h:64
 msgctxt "Menu|Layer|"
@@ -2239,12 +2233,12 @@ msgstr "Excluir"
 
 #: ../po/tmp/mypaint.xml.h:65
 msgid "Delete the current layer"
-msgstr "Remove a camada atual"
+msgstr "Excluir a camada atual"
 
 #: ../po/tmp/mypaint.xml.h:66
 msgctxt "Menu|Layer"
 msgid "Convert to Normal mode"
-msgstr "Converter para modo normal"
+msgstr "Converter para modo Normal"
 
 #: ../po/tmp/mypaint.xml.h:67
 msgctxt "Menu|Layer|Opacity|"
@@ -2290,17 +2284,17 @@ msgstr "Renomear..."
 
 #: ../po/tmp/mypaint.xml.h:76
 msgid "Enter a new name for the current layer"
-msgstr "Entre um novo nome para a camada atual"
+msgstr "Escreva um novo nome para a camada atual"
 
 #: ../po/tmp/mypaint.xml.h:77
 msgctxt "Menu|Layer|"
 msgid "Locked"
-msgstr "Travado"
+msgstr "Travada"
 
 #: ../po/tmp/mypaint.xml.h:78
 msgid "The current layer's locked state: locked layers cannot be drawn to"
 msgstr ""
-"O estado de trava da camada atual: não se pode desenhar em camadas travadas"
+"A camada atual está travada: não se pode desenhar em camadas travadas"
 
 #: ../po/tmp/mypaint.xml.h:79
 msgctxt "Menu|Layer|"
@@ -2314,21 +2308,21 @@ msgstr "O estado de visibilidade da camada atual"
 #: ../po/tmp/mypaint.xml.h:81
 msgctxt "Menu|View|"
 msgid "Reset and Center"
-msgstr "Restaurar e centralizar"
+msgstr "Restaurar e Centralizar"
 
 #: ../po/tmp/mypaint.xml.h:82
 msgid "Reset Zoom, Rotation and Mirroring, and recenter the document"
 msgstr ""
-"Restaura zoom, rotação e espelhamento e centraliza o documento novamente"
+"Restaurar Ampliação, Rotação e Espelhamento, e centralizar o documento novamente"
 
 #: ../po/tmp/mypaint.xml.h:83
 msgctxt "Menu|View|"
 msgid "Fit"
-msgstr "Tamanho certo"
+msgstr "Encaixar"
 
 #: ../po/tmp/mypaint.xml.h:84
 msgid "Zoom to fit the document, and recenter"
-msgstr "Zoom para caber no documento, e recentralizar"
+msgstr "Ampliar para caber o documento, e centralizar novamente"
 
 #: ../po/tmp/mypaint.xml.h:85
 msgctxt "Menu|View|"
@@ -2338,7 +2332,7 @@ msgstr "Restaurar"
 #: ../po/tmp/mypaint.xml.h:86
 msgctxt "Menu|View|Reset|"
 msgid "Zoom"
-msgstr "Zoom"
+msgstr "Ampliação"
 
 #: ../po/tmp/mypaint.xml.h:87
 msgctxt "Menu|View|Reset|"
@@ -2353,99 +2347,99 @@ msgstr "Espelhar"
 #: ../po/tmp/mypaint.xml.h:89
 msgctxt "Menu|View|Adjust View|"
 msgid "Zoom In"
-msgstr "Aumentar zoom "
+msgstr "Ampliar"
 
 #: ../po/tmp/mypaint.xml.h:90
 msgid "Increase magnification"
-msgstr "Aumentar a ampliação do pincel"
+msgstr "Aumentar a ampliação"
 
 #: ../po/tmp/mypaint.xml.h:91
 msgctxt "Menu|View|Adjust View|"
 msgid "Zoom Out"
-msgstr "Diminuir zoom"
+msgstr "Reduzir"
 
 #: ../po/tmp/mypaint.xml.h:92
 msgid "Decrease magnification"
-msgstr "Diminui a ampliação do pincel"
+msgstr "Diminuir a ampliação"
 
 #: ../po/tmp/mypaint.xml.h:93
 msgctxt "Menu|View|Adjust View|"
 msgid "Rotate Counterclockwise"
-msgstr "Rotacionar no sentido anti-horário"
+msgstr "Girar no Sentido Anti-horário"
 
 #: ../po/tmp/mypaint.xml.h:94
 msgid "Rotate the view counterclockwise"
-msgstr "Rotaciona a visualização no sentido anti-horário"
+msgstr "Girar a visualização no sentido anti-horário"
 
 #: ../po/tmp/mypaint.xml.h:95
 msgctxt "Menu|View|Adjust View|"
 msgid "Rotate Clockwise"
-msgstr "Rotacionar no sentido horário"
+msgstr "Girar no sentido horário"
 
 #: ../po/tmp/mypaint.xml.h:96
 msgid "Rotate the view clockwise"
-msgstr "Rotacionar a visualização no sentido horário"
+msgstr "Girar a visualização no sentido horário"
 
 #: ../po/tmp/mypaint.xml.h:97
 msgctxt "Menu|View|Adjust View|"
 msgid "Mirror Horizontal"
-msgstr "Espelhar horizontalmente"
+msgstr "Espelhar Horizontalmente"
 
 #: ../po/tmp/mypaint.xml.h:98
 msgid "Flip the view left to right"
-msgstr "Espelha a visualização na horizontal"
+msgstr "Fazer da esquerda da visualização a direita"
 
 #: ../po/tmp/mypaint.xml.h:99
 msgctxt "Menu|View|Adjust View|"
 msgid "Mirror Vertical"
-msgstr "Espelhar verticalmente"
+msgstr "Espelhar Verticalmente"
 
 #: ../po/tmp/mypaint.xml.h:100
 msgid "Flip the view upside-down"
-msgstr "Espelha de baixo para cima"
+msgstr "Fazer da parte de cima da visualização a parte de baixo"
 
 #: ../po/tmp/mypaint.xml.h:101
 msgctxt "Menu|View|"
 msgid "Layer Solo"
-msgstr "Camada solo"
+msgstr "Camada Solo"
 
 #: ../po/tmp/mypaint.xml.h:102
 msgctxt "Menu|View|"
 msgid "Hide Layers Above Current"
-msgstr "Esconder camadas acima da atual"
+msgstr "Esconder Camadas Acima da Atual"
 
 #: ../po/tmp/mypaint.xml.h:103
 msgctxt "Menu|Brush|"
 msgid "Blend Mode"
-msgstr "Modo de mistura"
+msgstr "Modo de Mistura"
 
 #: ../po/tmp/mypaint.xml.h:104
 msgctxt "Menu|Edit|"
 msgid "Symmetrical Painting"
-msgstr "Pintura simétrica"
+msgstr "Pintura Simétrica"
 
 #: ../po/tmp/mypaint.xml.h:105
 msgid "Mirrors all strokes drawn around the vertical axis"
-msgstr "Espelha todas as pinceladas em torno do eixo vertical"
+msgstr "Espelha todos os traços desenhados em torno do eixo vertical"
 
 #: ../po/tmp/mypaint.xml.h:106
 msgctxt "Menu|Help|Debug|"
 msgid "Print Brush Input Values to Console"
-msgstr "Imprimir valores de entrada do pincel para o terminal"
+msgstr "Imprimir Valores de Entrada do Pincel para o Terminal"
 
 #: ../po/tmp/mypaint.xml.h:107
 msgctxt "Menu|Help|Debug|"
 msgid "Visualize Rendering"
-msgstr "Visualizar renderização"
+msgstr "Visualizar Renderização"
 
 #: ../po/tmp/mypaint.xml.h:108
 msgid "Show rendering updates on-screen, for debugging"
-msgstr "Exibe atualizações de renderização na tela, para depuração"
+msgstr "Mostrar atualizações de renderização na tela, para depuração"
 
 #: ../po/tmp/mypaint.xml.h:109
 msgctxt "Menu|Help|Debug|"
 msgid "Disable GTK Double Buffering"
-msgstr "Desabilitar double buffering do GTK."
+msgstr "Desabilitar Double Buffering da GTK."
 
 #: ../po/tmp/mypaint.xml.h:110
 msgctxt "Menu|"
@@ -2460,7 +2454,7 @@ msgstr "Sair"
 #: ../po/tmp/mypaint.xml.h:112
 msgctxt "Menu|File|"
 msgid "Frame Enabled"
-msgstr "Moldura ligada"
+msgstr "Moldura Ativada"
 
 #: ../po/tmp/mypaint.xml.h:113
 msgctxt "Menu|"
@@ -2475,67 +2469,67 @@ msgstr "Cor"
 #: ../po/tmp/mypaint.xml.h:115
 msgctxt "Menu|Color|"
 msgid "Adjust Color"
-msgstr "Ajustar cor"
+msgstr "Ajustar Cor"
 
 #: ../po/tmp/mypaint.xml.h:116
 msgctxt "Menu|Color|"
 msgid "Pick Color"
-msgstr "Selecionar cor"
+msgstr "Pegar Cor"
 
 #: ../po/tmp/mypaint.xml.h:117
 msgctxt "Menu|Color|"
 msgid "Color History"
-msgstr "Histórico de cores"
+msgstr "Histórico de Cores"
 
 #: ../po/tmp/mypaint.xml.h:118
 msgctxt "Menu|Color|"
 msgid "Change Color"
-msgstr "Alterar cor"
+msgstr "Mudar Cor"
 
 #: ../po/tmp/mypaint.xml.h:119
 msgid "Color changer popup (crossed bowl)"
-msgstr "Modificador de cores (prato cruzado)"
+msgstr "Seletor de cores instantâneo (prato cruzado)"
 
 #: ../po/tmp/mypaint.xml.h:120
 msgctxt "Menu|Color|"
 msgid "Change Color (wash)"
-msgstr "Alterar cor (lavada)"
+msgstr "Mudar Cor (enxaguado)"
 
 #: ../po/tmp/mypaint.xml.h:121
 msgid "Color changer popup (wash)"
-msgstr "Modificador de cores (lavado)"
+msgstr "Seletor de cores instantâneo (enxaguado)"
 
 #: ../po/tmp/mypaint.xml.h:122
 msgctxt "Menu|Color|"
 msgid "Change Color (ring)"
-msgstr "Alterar cor (anel)"
+msgstr "Mudar Cor (anel)"
 
 #: ../po/tmp/mypaint.xml.h:123
 msgid "Color changer popup (concentric rings)"
-msgstr "Modificador de cores (anéis concêntricos)"
+msgstr "Seletor de cores instantâneo (anéis concêntricos)"
 
 #: ../po/tmp/mypaint.xml.h:124
 msgctxt "Menu|Color|"
 msgid "Color Details"
-msgstr "Detalhes de cor"
+msgstr "Detalhes da Cor"
 
 #: ../po/tmp/mypaint.xml.h:125
 msgid "Color details dialog with text entry"
-msgstr "Diálogo de detalhes de cor com entrada de texto"
+msgstr "Diálogo com detalhes da cor com entrada de texto"
 
 #: ../po/tmp/mypaint.xml.h:126
 msgctxt "Menu|Color"
 msgid "Next Palette Color"
-msgstr "Próxima cor da paleta"
+msgstr "Próxima Cor da Paleta"
 
 #: ../po/tmp/mypaint.xml.h:127
 msgid "Next color in the palette"
-msgstr "Próxima cor da paleta"
+msgstr "Próxima cor na paleta"
 
 #: ../po/tmp/mypaint.xml.h:128
 msgctxt "Menu|Color|"
 msgid "Previous Palette Color"
-msgstr "Cor anterior da paleta"
+msgstr "Cor Anterior da Paleta"
 
 #: ../po/tmp/mypaint.xml.h:129
 msgid "Previous color in the palette"
@@ -2554,17 +2548,17 @@ msgstr "Opacidade"
 #: ../po/tmp/mypaint.xml.h:132
 msgctxt "Menu|Layer|"
 msgid "Go to Layer"
-msgstr "Ir para camada"
+msgstr "Ir para Camada"
 
 #: ../po/tmp/mypaint.xml.h:133
 msgctxt "Menu|"
 msgid "Scratchpad"
-msgstr "Painel de rascunho"
+msgstr "Painel de Rascunho"
 
 #: ../po/tmp/mypaint.xml.h:134
 msgctxt "Menu|Scratchpad|"
 msgid "New"
-msgstr "Nova"
+msgstr "Novo"
 
 #: ../po/tmp/mypaint.xml.h:135
 msgctxt "Menu|Scratchpad|"
@@ -2579,7 +2573,7 @@ msgstr "Salvar"
 #: ../po/tmp/mypaint.xml.h:137
 msgctxt "Menu|Scratchpad|"
 msgid "Save As..."
-msgstr "Salvar como..."
+msgstr "Salvar Como..."
 
 #: ../po/tmp/mypaint.xml.h:138
 msgctxt "Menu|Scratchpad|"
@@ -2589,32 +2583,32 @@ msgstr "Reverter"
 #: ../po/tmp/mypaint.xml.h:139
 msgctxt "Menu|Scratchpad|"
 msgid "Save as Default"
-msgstr "Salvar como padrão"
+msgstr "Salvar como Padrão"
 
 #: ../po/tmp/mypaint.xml.h:140
 msgctxt "Menu|Scratchpad|"
 msgid "Clear Default"
-msgstr "Limpar padrão"
+msgstr "Limpar Padrão"
 
 #: ../po/tmp/mypaint.xml.h:141
 msgctxt "Menu|Scratchpad|"
 msgid "Use Main Background"
-msgstr "Usar fundo principal"
+msgstr "Usar Fundo Principal"
 
 #: ../po/tmp/mypaint.xml.h:142
 msgctxt "Menu|Scratchpad|"
 msgid "Color Dabs"
-msgstr "Amostras coloridas"
+msgstr "Pinceladas de Cor"
 
 #: ../po/tmp/mypaint.xml.h:143
 msgctxt "Menu|Scratchpad|Color Dabs|"
 msgid "Render from File..."
-msgstr "Renderizar a partir de arquivo..."
+msgstr "Renderizar a Partir de Arquivo..."
 
 #: ../po/tmp/mypaint.xml.h:144
 msgctxt "Menu|Scratchpad|Color Dabs|"
 msgid "Saturation Spread for Current Color"
-msgstr "Saturações diferentes da cor atual"
+msgstr "Faixa de Saturação para Cor Atual"
 
 #: ../po/tmp/mypaint.xml.h:145
 msgctxt "Menu|Brush|"
@@ -2624,7 +2618,7 @@ msgstr "Pincel"
 #: ../po/tmp/mypaint.xml.h:146
 msgctxt "Menu|Brush|"
 msgid "Shortcut Keys"
-msgstr "Teclas de atalho"
+msgstr "Teclas de Atalho"
 
 #: ../po/tmp/mypaint.xml.h:147
 msgctxt "Menu|Brush|Shortcut Keys|"
@@ -2634,17 +2628,17 @@ msgstr "Ajuda"
 #: ../po/tmp/mypaint.xml.h:148
 msgctxt "Menu|Brush|"
 msgid "Change Brush"
-msgstr "Alterar pincel"
+msgstr "Mudar Pincel"
 
 #: ../po/tmp/mypaint.xml.h:149
 msgctxt "Menu|Brush|"
 msgid "Get More Brushes..."
-msgstr "Obter mais pinceis..."
+msgstr "Obter Mais Pincéis..."
 
 #: ../po/tmp/mypaint.xml.h:150
 msgctxt "Menu|Brush|"
 msgid "Import Brushes..."
-msgstr "Importar pincéis..."
+msgstr "Importar Pincéis..."
 
 #: ../po/tmp/mypaint.xml.h:151
 msgctxt "Menu|Help|"
@@ -2654,17 +2648,17 @@ msgstr "Ajuda"
 #: ../po/tmp/mypaint.xml.h:152
 msgctxt "Menu|Help|"
 msgid "Where is the Documentation?"
-msgstr "Onde está a documentação?"
+msgstr "Onde está a Documentação?"
 
 #: ../po/tmp/mypaint.xml.h:153
 msgctxt "Menu|Help|"
 msgid "Change the Keyboard Shortcuts?"
-msgstr "Alterar os atalhos de teclado?"
+msgstr "Alterar os Atalhos de Teclado?"
 
 #: ../po/tmp/mypaint.xml.h:154
 msgctxt "Menu|Help|"
 msgid "About MyPaint"
-msgstr "Sobre o MyPaint"
+msgstr "Sobre MyPaint"
 
 #: ../po/tmp/mypaint.xml.h:155
 msgctxt "Menu|Help|"
@@ -2675,22 +2669,22 @@ msgstr "Debug"
 msgctxt "Menu|Help|Debug|"
 msgid "Print Memory Leak Info to Console (Slow!)"
 msgstr ""
-"Imprimir informação de vazamento de memória  para a saída padrão (lento!)"
+"Imprimir Informação de Vazamento de Memória para o Terminal (Lento!)"
 
 #: ../po/tmp/mypaint.xml.h:157
 msgctxt "Menu|Help|Debug|"
 msgid "Run Garbage Collector Now"
-msgstr "Executar coletor de lixo agora"
+msgstr "Executar Coletor de Lixo Agora"
 
 #: ../po/tmp/mypaint.xml.h:158
 msgctxt "Menu|Help|Debug|"
 msgid "Start/Stop Python Profiling (cProfile)"
-msgstr "Iniciar/parar o profiler de Python (cProfile)"
+msgstr "Iniciar/Parar o Profiler de Python (cProfile)"
 
 #: ../po/tmp/mypaint.xml.h:159
 msgctxt "Menu|Help|Debug|"
 msgid "GTK Input Device Dialog"
-msgstr "Diálogo de dispositivos de entrada do GTK"
+msgstr "Diálogo de Dispositivos de Entrada da GTK"
 
 #: ../po/tmp/mypaint.xml.h:160
 msgctxt "Menu|"
@@ -2700,7 +2694,7 @@ msgstr "Visualizar"
 #: ../po/tmp/mypaint.xml.h:161
 msgctxt "Menu|View|"
 msgid "Toolbars"
-msgstr "Barras de ferramentas"
+msgstr "Barras de Ferramentas"
 
 #: ../po/tmp/mypaint.xml.h:162
 msgctxt "Menu|View|"
@@ -2710,12 +2704,12 @@ msgstr "Contato"
 #: ../po/tmp/mypaint.xml.h:163
 msgctxt "Menu|View|"
 msgid "Adjust View"
-msgstr "Ajustar visualização"
+msgstr "Ajustar Visualização"
 
 #: ../po/tmp/mypaint.xml.h:164
 msgctxt "Menu|View|"
 msgid "Popup Menu"
-msgstr "Menu destacável"
+msgstr "Menu Destacável"
 
 #: ../po/tmp/mypaint.xml.h:165
 msgctxt "Menu|Edit|"
@@ -2724,19 +2718,19 @@ msgstr "Preferências"
 
 #: ../po/tmp/mypaint.xml.h:166
 msgid "Test Input Devices"
-msgstr "Testar dispositivos de entrada"
+msgstr "Testar Dispositivos de Entrada"
 
 #: ../po/tmp/mypaint.xml.h:167
 msgid "Document Frame..."
-msgstr "Moldura do documento..."
+msgstr "Moldura do Documento..."
 
 #: ../po/tmp/mypaint.xml.h:168
 msgid "Set and adjust a frame for the canvas"
-msgstr "Seleciona e ajusta uma moldura para a tela"
+msgstr "Definir e ajustar uma moldura para a tela"
 
 #: ../po/tmp/mypaint.xml.h:169
 msgid "Layers Window"
-msgstr "Janela de camadas"
+msgstr "Janela de Camadas"
 
 #: ../po/tmp/mypaint.xml.h:170
 msgid "Edit and rearrange layers"
@@ -2745,47 +2739,47 @@ msgstr "Editar e reorganizar camadas"
 #: ../po/tmp/mypaint.xml.h:171
 msgctxt "Menu|Layer|"
 msgid "Choose Background"
-msgstr "Escolher fundo"
+msgstr "Escolher Fundo"
 
 #: ../po/tmp/mypaint.xml.h:172
 msgid "Choose a background image"
-msgstr "Escolha uma imagem de fundo"
+msgstr "Escolher uma imagem de fundo"
 
 #: ../po/tmp/mypaint.xml.h:173
 msgctxt "Menu|Brush|"
 msgid "Brushes Window"
-msgstr "Janela de pincéis"
+msgstr "Janela de Pincéis"
 
 #: ../po/tmp/mypaint.xml.h:174
 msgid "Select brushes, and edit brush sets"
-msgstr "Seleciona pinceis, e edita conjuntos de pincéis"
+msgstr "Selecionar pincéis, e editar conjuntos de pincéis"
 
 #: ../po/tmp/mypaint.xml.h:175
 msgctxt "Menu|Brush|"
 msgid "Settings Window"
-msgstr "Janela de configurações"
+msgstr "Janela de Configurações"
 
 #: ../po/tmp/mypaint.xml.h:176
 msgid "Edit the active brush's settings"
-msgstr "Edita as configurações do pincel ativo"
+msgstr "Editar as configurações do pincel ativo"
 
 #: ../po/tmp/mypaint.xml.h:177
 msgctxt "Menu|Color|"
 msgid "Colors Window"
-msgstr "Janela de cores"
+msgstr "Janela de Cores"
 
 #: ../po/tmp/mypaint.xml.h:178
 msgid "Set the color used for painting"
-msgstr "Seleciona a cor usada para pintura"
+msgstr "Selecionar a cor usada para pintura"
 
 #: ../po/tmp/mypaint.xml.h:179
 msgctxt "Menu|Scratchpad|"
 msgid "Scratchpad Window"
-msgstr "Painel de rascunho"
+msgstr "Painel de Rascunho"
 
 #: ../po/tmp/mypaint.xml.h:180
 msgid "Mix colors and make sketches on separate scrap pages"
-msgstr "Misture cores e faça rabiscos em páginas de rascunho separadas"
+msgstr "Misturar cores e fazer rabiscos em páginas separadas para rascunho"
 
 #: ../po/tmp/mypaint.xml.h:181
 msgctxt "Menu|View|"
@@ -2794,71 +2788,71 @@ msgstr "Sub-janelas"
 
 #: ../po/tmp/mypaint.xml.h:182
 msgid "Show subwindows"
-msgstr "Mostra sub-janelas"
+msgstr "Mostrar sub-janelas"
 
 #: ../po/tmp/mypaint.xml.h:183
 msgctxt "Menu|View|Feedback|"
 msgid "Zoom Level"
-msgstr "Nível de zoom"
+msgstr "Nível de Ampliação"
 
 #: ../po/tmp/mypaint.xml.h:184
 msgid "Show the zoom level when zooming in or out"
-msgstr "Exibe o nível de zoom ao ampliar e diminuir"
+msgstr "Mostrar o nível de ampliação ao ampliar ou reduzir"
 
 #: ../po/tmp/mypaint.xml.h:185
 msgctxt "Menu|View|Feedback|"
 msgid "Last Painting Position"
-msgstr "Última posição de pintura"
+msgstr "Última Posição de Pintura"
 
 #: ../po/tmp/mypaint.xml.h:186
 msgid "Show where strokes end"
-msgstr "Mostra onde as pinceladas acabam"
+msgstr "Mostrar onde os traços acabam"
 
 #: ../po/tmp/mypaint.xml.h:187
 msgctxt "Menu|View|Feedback|"
 msgid "Axis of Symmetry"
-msgstr "Eixo de simetria"
+msgstr "Eixo de Simetria"
 
 #: ../po/tmp/mypaint.xml.h:188
 msgid "Show the symmetry axis"
-msgstr "Exibe o eixo de simetria"
+msgstr "Mostrar o Eixo de Simetria"
 
 #: ../po/tmp/mypaint.xml.h:189
 msgctxt "Menu|View|Toolbars|"
 msgid "Menubar Only"
-msgstr "Apenas barra de menus"
+msgstr "Somente Barra de Menus"
 
 #: ../po/tmp/mypaint.xml.h:190
 msgid "Show menu bar"
-msgstr "Exibir barra de menus"
+msgstr "Mostrar barra de menus"
 
 #: ../po/tmp/mypaint.xml.h:191
 msgctxt "Menu|View|Toolbars|"
 msgid "Toolbar Only"
-msgstr "Somente barra de ferramentas"
+msgstr "Somente Barra de Ferramentas"
 
 #: ../po/tmp/mypaint.xml.h:192
 msgid "Show toolbar"
-msgstr "Exibir barra de ferramentas"
+msgstr "Mostrar barra de ferramentas"
 
 #: ../po/tmp/mypaint.xml.h:193
 msgctxt "Menu|View|Toolbars|"
 msgid "Both"
-msgstr "Ambos"
+msgstr "Ambas"
 
 #: ../po/tmp/mypaint.xml.h:194
 msgid "Show both the menu bar and the toolbar"
-msgstr "Exibir as barras de menu e de ferramentas"
+msgstr "Mostrar ambas as barras de menu e de ferramentas"
 
 #: ../po/tmp/mypaint.xml.h:195
 msgctxt "Menu|Edit|"
 msgid "Current Mode"
-msgstr "Modo atual"
+msgstr "Modo Atual"
 
 #: ../po/tmp/mypaint.xml.h:196
 msgctxt "Menu|Edit|Current Mode|"
 msgid "Freehand Drawing"
-msgstr "Desenhando a mão livre"
+msgstr "Desenhando à Mão Livre"
 
 #: ../po/tmp/mypaint.xml.h:197
 msgctxt "Toolbar|"
@@ -2868,74 +2862,74 @@ msgstr "Mão-livre"
 #: ../po/tmp/mypaint.xml.h:198
 msgid "Freehand Drawing: draw and paint freely, without geometric constraints"
 msgstr ""
-"Desenho a mão livre: desenhe e pinte livremente, sem restrições de geometria"
+"Desenho à Mão Livre: desenhar e pintar livremente, sem restrições de geometria"
 
 #: ../po/tmp/mypaint.xml.h:199
 msgctxt "Menu|Edit|"
 msgid "Freehand Drawing"
-msgstr "Desenho a mão livre"
+msgstr "Desenho à Mão Livre"
 
 #: ../po/tmp/mypaint.xml.h:200
 msgctxt "Menu|Edit|Current Mode|"
 msgid "Scroll View"
-msgstr "Rolar visualização"
+msgstr "Mover Visualização"
 
 #: ../po/tmp/mypaint.xml.h:201
 msgctxt "Toolbar|"
 msgid "Scroll"
-msgstr "Rolar"
+msgstr "Mover"
 
 #: ../po/tmp/mypaint.xml.h:202
 msgid "Scroll View: move around the canvas by clicking and dragging"
-msgstr "Rolar visualização: mova a posição da tela clicando e arrastando"
+msgstr "Mover Visualização: mover ao redor da tela clicando e arrastando"
 
 #: ../po/tmp/mypaint.xml.h:203
 msgctxt "Menu|View|"
 msgid "Scroll"
-msgstr "Rolar"
+msgstr "Mover"
 
 #: ../po/tmp/mypaint.xml.h:204
 msgctxt "Menu|Edit|Current Mode|"
 msgid "Rotate View"
-msgstr "Rotacionar visualização"
+msgstr "Girar Visualização"
 
 #: ../po/tmp/mypaint.xml.h:205
 msgctxt "Toolbar|"
 msgid "Rotate"
-msgstr "Rotacionar"
+msgstr "Girar"
 
 #: ../po/tmp/mypaint.xml.h:206
 msgid "Rotate View: turn the canvas by clicking and dragging"
-msgstr "Rotacionar visualização: gire a tela clicando e arrastando"
+msgstr "Girar Visualização: girar a tela clicando e arrastando"
 
 #: ../po/tmp/mypaint.xml.h:207
 msgctxt "Menu|View|"
 msgid "Rotate"
-msgstr "Rotacionar"
+msgstr "Girar"
 
 #: ../po/tmp/mypaint.xml.h:208
 msgctxt "Menu|Edit|Current Mode|"
 msgid "Zoom View"
-msgstr "Zoom na visualização"
+msgstr "Ampliar Visualização"
 
 #: ../po/tmp/mypaint.xml.h:209
 msgctxt "Toolbar|"
 msgid "Zoom"
-msgstr "Zoom"
+msgstr "Ampliação"
 
 #: ../po/tmp/mypaint.xml.h:210
 msgid "Zoom View: zoom the canvas by clicking and dragging"
-msgstr "Zoom: Amplie e diminua a visualização clicando e arrastando"
+msgstr "Ampliar Visualização: ampliar a tela clicando e arrastando"
 
 #: ../po/tmp/mypaint.xml.h:211
 msgctxt "Menu|View|"
 msgid "Zoom"
-msgstr "Zoom"
+msgstr "Ampliar"
 
 #: ../po/tmp/mypaint.xml.h:212
 msgctxt "Menu|Edit|Current Mode|"
 msgid "Lines and Curves"
-msgstr "Linhas e curvas"
+msgstr "Linhas e Curvas"
 
 #: ../po/tmp/mypaint.xml.h:213
 msgctxt "Toolbar|"
@@ -2948,24 +2942,24 @@ msgid ""
 "Ctrl: constrain angle.\n"
 "Shift: add curves to the last line."
 msgstr ""
-"Linhas e curvas: desenhe linhas retas ou curvas.\n"
-"Ctrl: restringe ângulo.\n"
-"Shift: Adiciona curvas à última linha."
+"Linhas e Curvas: desenhar linhas retas ou curvas.\n"
+"Ctrl: restringir ângulo.\n"
+"Shift: adicionar curvas à última linha."
 
 #: ../po/tmp/mypaint.xml.h:217
 msgctxt "Menu|Edit|"
 msgid "Lines and Curves"
-msgstr "Linhas e curvas"
+msgstr "Linhas e Curvas"
 
 #: ../po/tmp/mypaint.xml.h:218
 msgctxt "Menu|Edit|Current Mode|"
 msgid "Connected Lines"
-msgstr "Linhas conectadas"
+msgstr "Linhas Conectadas"
 
 #: ../po/tmp/mypaint.xml.h:219
 msgctxt "Toolbar|"
 msgid "Line Seq."
-msgstr "Sequência de linhas"
+msgstr "Sequência de Linhas"
 
 #: ../po/tmp/mypaint.xml.h:220
 msgid ""
@@ -2973,19 +2967,19 @@ msgid ""
 "Ctrl: constrain angle.\n"
 "Shift: add curves to the last line."
 msgstr ""
-"Linhas conectadas: desenhe sequências de linhas retas ou curvas.\n"
-"Ctrl: restringe ângulo.\n"
-"Shift: Adiciona curvas à última linha."
+"Linhas conectadas: desenhar sequências de linhas retas ou curvas.\n"
+"Ctrl: restringir ângulo.\n"
+"Shift: adicionar curvas à última linha."
 
 #: ../po/tmp/mypaint.xml.h:223
 msgctxt "Menu|Edit|"
 msgid "Connected Lines"
-msgstr "Linhas conectadas"
+msgstr "Linhas Conectadas"
 
 #: ../po/tmp/mypaint.xml.h:224
 msgctxt "Menu|Edit|Current Mode|"
 msgid "Ellipses and Circles"
-msgstr "Elipses e círculos"
+msgstr "Elipses e Círculos"
 
 #: ../po/tmp/mypaint.xml.h:225
 msgctxt "Toolbar|"
@@ -2999,24 +2993,24 @@ msgid ""
 "Ctrl: constrain ratio.\n"
 "Ctrl+Shift: constrain angle."
 msgstr ""
-"Elipses e círculos: desenhe círculos e elipses inteiros.\n"
-"Shift: rotacionar.\n"
-"Ctrl: Preserva proporção.\n"
-"Ctrl+Shift: Restringe o ângulo."
+"Elipses e Círculos: desenhar círculos e elipses inteiros.\n"
+"Shift: girar.\n"
+"Ctrl: restringir proporção.\n"
+"Ctrl+Shift: restringir ângulo."
 
 #: ../po/tmp/mypaint.xml.h:230
 msgctxt "Menu|Edit|"
 msgid "Ellipses and Circles"
-msgstr "Elipses e círculos"
+msgstr "Elipses e Círculos"
 
 #: ../po/tmp/mypaint.xml.h:231
 msgctxt "Menu|Edit|Current Mode|"
 msgid "Move Layer"
-msgstr "Mover camada"
+msgstr "Mover Camada"
 
 #: ../po/tmp/mypaint.xml.h:232
 msgid "Move Layer: reposition the current layer on the canvas"
-msgstr "Mover camada: reposiciona a camada atual na tela"
+msgstr "Mover Camada: reposicionar a camada atual na tela"
 
 #: ../po/tmp/mypaint.xml.h:233
 msgctxt "Menu|Layer|"
@@ -3026,7 +3020,7 @@ msgstr "Mover"
 #: ../po/tmp/mypaint.xml.h:234
 msgctxt "Menu|Edit|Current Mode|"
 msgid "Edit Frame"
-msgstr " Editar moldura"
+msgstr "Editar Moldura"
 
 #: ../po/tmp/mypaint.xml.h:235
 msgctxt "Toolbar|"
@@ -3038,13 +3032,13 @@ msgid ""
 "Edit Frame: define a frame around the document to give it a finite size. The "
 "frame is used when exporting."
 msgstr ""
-"Editar moldura: define uma moldura em volta do documento para dar ao mesmo "
+"Editar Moldura: definir uma moldura em volta do documento para lhe dar "
 "um tamanho finito. A moldura é usada ao exportar."
 
 #: ../po/tmp/mypaint.xml.h:237
 msgctxt "Menu|File|"
 msgid "Edit Frame"
-msgstr "Editar moldura"
+msgstr "Editar Moldura"
 
 #~ msgid ""
 #~ "The background %s was ignored because it has an alpha channel. Please "
