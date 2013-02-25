@@ -922,7 +922,8 @@ class HueSaturationWheelMixin:
     Adjusters, which might be inconvenient if sub-widgets are required.
 
     This base class is independent of the colour space, but assumes a
-    cylindrical shape with the central axis representing lightness.
+    cylindrical shape with the central axis representing lightness and angle
+    representing hue.
 
     Desaturated colours reside at the centre of the wheel. This makes them
     somewhat harder to pick ordinarily, but desaturated colours are handy for
