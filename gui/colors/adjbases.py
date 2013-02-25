@@ -30,16 +30,35 @@ from uimisc import *
 
 PREFS_KEY_CURRENT_COLOR = 'colors.current'
 PREFS_KEY_COLOR_HISTORY = 'colors.history'
+PREFS_KEY_WHEEL_TYPE = 'colors.wheels.type'
 
 
 class ColorManager (gobject.GObject):
     """Manages updates to a shared `UIColor` from lots of `ColorAdjuster`s.
     """
 
+
     # Class constants
     __gtype_name__ = "ColorManager" #: GObject integration
     __DEFAULT_HIST = ['#ee3333', '#336699', '#44aa66', '#aa6633', '#292929']
     __HIST_LEN = 5
+    __HUE_DISTORTION_TABLES = {
+        # {"PREFS_KEY_WHEEL_TYPE-name": table-of-ranges}
+        "rgb": None,
+        "ryb": [
+                ((0.,   1/6.),  (0.,    1/3.)),  # red -> yellow
+                ((1/6., 1/3.),  (1/3.,  1/2.)),  # yellow -> green
+                ((1/3., 2/3.),  (1/2.,  2/3.)),  # green -> blue
+            ],
+        "rygb": [
+                ((0.,   1/6.),  (0., 0.25)),   # red -> yellow
+                ((1/6., 1/3.),  (0.25, 0.5)),  # yellow -> green
+                ((1/3., 2/3.),  (0.5, 0.75)),  # green -> blue
+                ((2/3., 1.  ),  (0.75, 1.)),   # blue -> red
+            ],
+        }
+    __DEFAULT_WHEEL_TYPE = "rgb"
+
 
     # Instance data (defaults, overridden)
     __color = None     #: Currently edited colour, a UIColor object.
@@ -47,7 +66,8 @@ class ColorManager (gobject.GObject):
     __adjusters = None  #: The list of registered adjusters.
     __prefs = None   #: Shared preferences dictionary.
     __picker_cursor = gdk.Cursor(gdk.CROSSHAIR) #: Cursor for for picker adjs
-    __datapath = '.'
+    __datapath = '.'  #: Base path for saving palettes and masks.
+    __hue_distorts = None  #: Hue-remapping table for colour wheel adjusters.
 
 
     def __init__(self, prefs=None):
@@ -71,6 +91,11 @@ class ColorManager (gobject.GObject):
         self.__color = RGBColor.new_from_hex_str(col_hex)
 
         self.__adjusters = []
+
+        # Initialize angle distort table
+        wheel_type = prefs.get(PREFS_KEY_WHEEL_TYPE,self.__DEFAULT_WHEEL_TYPE)
+        distorts_table = self.__HUE_DISTORTION_TABLES[wheel_type]
+        self.__hue_distorts = distorts_table
 
 
     def set_picker_cursor(self, cursor):
@@ -187,6 +212,68 @@ class ColorManager (gobject.GObject):
         """
         return self.__prefs
 
+
+    def set_wheel_type(self, typename):
+        """Sets the type of attached colour wheels by name.
+
+        :param typename: Wheel type name: "rgb", "ryb", or "rygb".
+        :type typename: str
+
+        This corresponds to a hue-angle remapping, which will be adopted by
+        all wheel-style adjusters attached to this ColorManager.
+
+        """
+        old_typename = self.get_wheel_type()
+        if typename not in self.__HUE_DISTORTION_TABLES:
+            typename = self.__DEFAULT_WHEEL_TYPE
+        if typename == old_typename:
+            return
+        self.__hue_distorts = self.__HUE_DISTORTION_TABLES[typename]
+        self.__prefs[PREFS_KEY_WHEEL_TYPE] = typename
+        for adj in self.__adjusters:
+            if isinstance(adj, HueSaturationWheelAdjuster):
+                adj.update_cb()
+
+
+    def get_wheel_type(self):
+        """Returns the current colour wheel type name.
+        """
+        default = self.__DEFAULT_WHEEL_TYPE
+        return self.__prefs.get(PREFS_KEY_WHEEL_TYPE, default)
+
+
+    def distort_hue(self, h):
+        """Distorts a hue from RGB-wheel angles to the current wheel type's.
+        """
+        if self.__hue_distorts is None:
+            return h
+        h %= 1.0
+        for rgb_wheel_range, distorted_wheel_range in self.__hue_distorts:
+            in0, in1 = rgb_wheel_range
+            out0, out1 = distorted_wheel_range
+            if h > in0 and h <= in1:
+                h -= in0
+                h *= (out1-out0) / (in1-in0)
+                h += out0
+                break
+        return h
+
+
+    def undistort_hue(self, h):
+        """Reverses the mapping imposed by ``distort_hue()``.
+        """
+        if self.__hue_distorts is None:
+            return h
+        h %= 1.0
+        for rgb_wheel_range, distorted_wheel_range in self.__hue_distorts:
+            out0, out1 = rgb_wheel_range
+            in0, in1 = distorted_wheel_range
+            if h > in0 and h <= in1:
+                h -= in0
+                h *= (out1-out0) / (in1-in0)
+                h += out0
+                break
+        return h
 
 
 class ColorAdjuster:
@@ -846,9 +933,15 @@ class HueSaturationWheelMixin:
     """
 
     # Class configuration vars, for overriding
-    hue_slices = 64  #: How many slices to render
-    sat_slices = 5  #: How many divisions of grey to use for gamma interp.
-    sat_gamma = 1.50  #: Greyscale gamma 
+
+    #: How many slices to render
+    HUE_SLICES = 64
+
+    #: How many divisions of grey to use for gamma interp.
+    SAT_SLICES = 5
+
+    #: Greyscale gamma
+    SAT_GAMMA = 1.50
 
 
     def get_radius(self, wd=None, ht=None, border=None, alloc=None):
@@ -900,12 +993,15 @@ class HueSaturationWheelMixin:
         if r > radius:
             r = radius
         r /= radius
-        r **= self.sat_gamma
+        r **= self.SAT_GAMMA
         # Normalized polar angle
         theta = 1.25 - (math.atan2(x-cx, y-cy) / (2*math.pi))
         while theta <= 0:
             theta += 1.0
         theta %= 1.0
+        mgr = self.get_color_manager()
+        if mgr:
+            theta = mgr.undistort_hue(theta)
         return self.color_at_normalized_polar_pos(r, theta)
 
 
@@ -922,9 +1018,9 @@ class HueSaturationWheelMixin:
             border = self.border
         radius = self.get_radius(wd, ht, border)
 
-        steps = self.hue_slices
-        sat_slices = self.sat_slices
-        sat_gamma = self.sat_gamma
+        steps = self.HUE_SLICES
+        sat_slices = self.SAT_SLICES
+        sat_gamma = self.SAT_GAMMA
 
         # Move to the centre
         cx, cy = self.get_center(wd, ht)
@@ -945,8 +1041,11 @@ class HueSaturationWheelMixin:
         cr.set_line_width(1.0)
         cr.set_line_join(cairo.LINE_JOIN_ROUND)
         step_angle = 2.0*math.pi/steps
+        mgr = self.get_color_manager()
         for ih in xrange(steps+1): # overshoot by 1, no solid bit for final
             h = float(ih)/steps
+            if mgr:
+                h = mgr.undistort_hue(h)
             edge_col = self.color_at_normalized_polar_pos(1.0, h)
             rgb = edge_col.get_rgb()
             if ih > 0:
@@ -1012,7 +1111,9 @@ class HueSaturationWheelMixin:
     def color_at_normalized_polar_pos(self, r, theta):
         """Get the colour represented by a polar position.
     
-        The terms `r` and `theta` are normalised to the range 0...1.
+        The terms `r` and `theta` are normalised to the range 0...1 and refer
+        to the undistorted colour space.
+
         """
         raise NotImplementedError
 
@@ -1026,7 +1127,10 @@ class HueSaturationWheelMixin:
 
     def get_pos_for_color(self, col):
         nr, ntheta = self.get_normalized_polar_pos_for_color(col)
-        nr **= 1.0/self.sat_gamma
+        mgr = self.get_color_manager()
+        if mgr:
+            ntheta = mgr.distort_hue(ntheta)
+        nr **= 1.0/self.SAT_GAMMA
         alloc = self.get_allocation()
         wd, ht = alloc.width, alloc.height
         radius = self.get_radius(wd, ht, self.border)

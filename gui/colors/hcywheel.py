@@ -578,13 +578,16 @@ class HCYMaskEditorWheel (HCYHueChromaWheel):
             for shape in self.get_mask():
                 shape_hcy = [HCYColor(color=c) for c in shape]
                 self.__mask_predrag.append(shape_hcy)
+        mgr = self.get_color_manager()
         newmask = []
         for shape in self.__mask_predrag:
             shape_rot = []
             for col in shape:
                 col_r = HCYColor(color=col)
-                col_r.h += dntheta
-                col_r.h %= 1.0
+                h = mgr.distort_hue(col_r.h)
+                h += dntheta
+                h %= 1.0
+                col_r.h = mgr.undistort_hue(h)
                 shape_rot.append(col_r)
             newmask.append(shape_rot)
         self.set_mask(newmask)
