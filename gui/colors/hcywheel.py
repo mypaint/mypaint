@@ -22,6 +22,7 @@ import cairo
 from gettext import gettext as _
 
 from bases import CachedBgDrawingArea
+from adjbases import ColorManager
 from adjbases import ColorAdjuster
 from adjbases import ColorAdjusterWidget
 from adjbases import HueSaturationWheelMixin
@@ -401,7 +402,7 @@ class HCYMaskEditorWheel (HCYHueChromaWheel):
     """
 
     ## Instance vars
-    is_editable = False
+    is_editable = True
     __last_cursor = None   # previously set cursor (determines some actions)
     # Objects which are active or being manipulated
     __tmp_new_ctrlpoint = None   # new control-point colour
@@ -417,6 +418,9 @@ class HCYMaskEditorWheel (HCYHueChromaWheel):
     __move_cursor = gdk.Cursor(gdk.FLEUR)
     __move_point_cursor = gdk.Cursor(gdk.CROSSHAIR)
     __rotate_cursor = gdk.Cursor(gdk.EXCHANGE)
+    # Constrain the range of allowable lumas
+    __MAX_LUMA = 0.75
+    __MIN_LUMA = 0.25
 
     # Drawing constraints and activity proximities
     __ctrlpoint_radius = 2.5
@@ -425,6 +429,7 @@ class HCYMaskEditorWheel (HCYHueChromaWheel):
     tooltip_text = _("Gamut mask editor. Click in the middle to create "
                      "or manipulate shapes, or rotate the mask using "
                      "the edges of the disc.")
+
 
 
     def __init__(self):
@@ -823,6 +828,23 @@ class HCYMaskEditorWheel (HCYHueChromaWheel):
         self.draw_mask_control_points(cr, wd, ht)
 
 
+    def get_managed_color(self):
+        """Override, with a limited range or returned luma.
+        """
+        col = super(HCYMaskEditorWheel, self).get_managed_color()
+        col = HCYColor(color=col)
+        col.y = clamp(col.y, self.__MIN_LUMA, self.__MAX_LUMA)
+        return col
+
+
+    def set_managed_color(self, color):
+        """Override, limiting the luma range.
+        """
+        col = HCYColor(color=color)
+        col.y = clamp(col.y, self.__MIN_LUMA, self.__MAX_LUMA)
+        super(HCYMaskEditorWheel, self).set_managed_color(col)
+
+
 
 class HCYMaskPreview (MaskableWheelMixin,
                       HCYHueChromaWheelMixin,
@@ -854,9 +876,6 @@ class HCYMaskPreview (MaskableWheelMixin,
     def get_background_validity(self):
         return deepcopy(self.get_mask())
 
-    def get_managed_color(self):
-        return HCYColor(0, 0, 0.5)
-
     def set_palette(self, palette):
         # Compatibility with Palette.load_via_dialog()
         self.set_mask_from_palette(palette)
@@ -874,29 +893,29 @@ class HCYMaskTemplateDialog (gtk.Dialog):
         Y = 0.5
         H = 1-0.05
         # Reusable shapes...
-        atmos_triad = [HCYColor( H, 0.95, Y),
-                       HCYColor((  H+0.275)%1, 0.55, Y),
-                       HCYColor((1+H-0.275)%1, 0.55, Y)]
+        atmos_triad = [( H, 0.95, Y),
+                       ((  H+0.275)%1, 0.55, Y),
+                       ((1+H-0.275)%1, 0.55, Y)]
         def __coffin(h):
             # Hexagonal coffin shape with the foot end at the centre
             # of the wheel.
             shape = []
-            shape.append(HCYColor((h     + 0.25)%1, 0.03, Y))
-            shape.append(HCYColor((h + 1 - 0.25)%1, 0.03, Y))
-            shape.append(HCYColor((h     + 0.01)%1, 0.95, Y))
-            shape.append(HCYColor((h + 1 - 0.01)%1, 0.95, Y))
-            shape.append(HCYColor((h     + 0.04)%1, 0.70, Y))
-            shape.append(HCYColor((h + 1 - 0.04)%1, 0.70, Y))
+            shape.append(((h     + 0.25)%1, 0.03, Y))
+            shape.append(((h + 1 - 0.25)%1, 0.03, Y))
+            shape.append(((h     + 0.01)%1, 0.95, Y))
+            shape.append(((h + 1 - 0.01)%1, 0.95, Y))
+            shape.append(((h     + 0.04)%1, 0.70, Y))
+            shape.append(((h + 1 - 0.04)%1, 0.70, Y))
             return shape
         def __complement_blob(h):
             # Small pentagonal blob at the given hue, used for an organic-
             # looking dab of a complementary hue.
             shape = []
-            shape.append(HCYColor((h+0.015)%1, 0.94, Y))
-            shape.append(HCYColor((h+0.985)%1, 0.94, Y))
-            shape.append(HCYColor((h+0.035)%1, 0.71, Y))
-            shape.append(HCYColor((h+0.965)%1, 0.71, Y))
-            shape.append(HCYColor((h      )%1, 0.54, Y))
+            shape.append(((h+0.015)%1, 0.94, Y))
+            shape.append(((h+0.985)%1, 0.94, Y))
+            shape.append(((h+0.035)%1, 0.71, Y))
+            shape.append(((h+0.965)%1, 0.71, Y))
+            shape.append(((h      )%1, 0.54, Y))
             return shape
         templates = []
         templates.append((_("Atmospheric Triad"),
@@ -905,28 +924,28 @@ class HCYMaskTemplateDialog (gtk.Dialog):
           [ deepcopy(atmos_triad) ]))
         templates.append((_("Shifted Triad"),
           _("Weighted more strongly towards the dominant colour."),
-          [[HCYColor( H, 0.95, Y),
-            HCYColor((  H+0.35)%1, 0.4, Y),
-            HCYColor((1+H-0.35)%1, 0.4, Y) ]] ))
+          [[( H, 0.95, Y),
+            ((  H+0.35)%1, 0.4, Y),
+            ((1+H-0.35)%1, 0.4, Y) ]] ))
         templates.append((_("Complementary"),
           _("Contrasting opposites, balanced by having central neutrals "
             "between them on the colour wheel."),
-          [[HCYColor((H+0.005)%1,  0.9, Y),
-            HCYColor((H+0.995)%1,  0.9, Y),
-            HCYColor((H+0.25 )%1,  0.1, Y),
-            HCYColor((H+0.75 )%1,  0.1, Y),
-            HCYColor((H+0.505)%1,  0.9, Y),
-            HCYColor((H+0.495)%1,  0.9, Y),
+          [[((H+0.005)%1,  0.9, Y),
+            ((H+0.995)%1,  0.9, Y),
+            ((H+0.25 )%1,  0.1, Y),
+            ((H+0.75 )%1,  0.1, Y),
+            ((H+0.505)%1,  0.9, Y),
+            ((H+0.495)%1,  0.9, Y),
             ]] ))
         templates.append((_("Mood and Accent"),
           _("One main range of colors, with a complementary accent for "
             "variation and highlights."),
           [ deepcopy(atmos_triad),
             __complement_blob(H+0.5) ] ))
-            #[HCYColor((H+0.483)%1, 0.95, Y),
-            # HCYColor((H+0.517)%1, 0.95, Y),
-            # HCYColor((H+0.52)%1, 0.725, Y),
-            # HCYColor((H+0.48)%1, 0.725, Y) ]] ))
+            #[((H+0.483)%1, 0.95, Y),
+            # ((H+0.517)%1, 0.95, Y),
+            # ((H+0.52)%1, 0.725, Y),
+            # ((H+0.48)%1, 0.725, Y) ]] ))
         templates.append((_("Split Complementary"),
           _("Two analogous colours and a complement to them, with no "
             "secondary colours between them."),
@@ -939,17 +958,26 @@ class HCYMaskTemplateDialog (gtk.Dialog):
                             gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
                             (gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT))
         self.set_position(gtk.WIN_POS_MOUSE)
+        target_mgr = target.get_color_manager()
+        mgr = ColorManager()
+        mgr.set_wheel_type(target_mgr.get_wheel_type())
         self.target = target
-        #self.vbox.set_spacing(6)
         size = 64
-        for name, desc, mask in self.__templates:
-            mask = deepcopy(mask)
+        for name, desc, mask_shapes_float in self.__templates:
+            mask = []
+            for mask_shape_float in mask_shapes_float:
+                shape = []
+                for h, c, y in mask_shape_float:
+                    h = mgr.undistort_hue(h)
+                    shape.append(HCYColor(h, c, y))
+                mask.append(shape)
             label = gtk.Label()
             label.set_markup("<b>%s</b>\n\n%s" % (name, desc))
             label.set_size_request(375, -1)
             label.set_line_wrap(True)
             label.set_alignment(0, 0.5)
-            preview = HCYMaskPreview(deepcopy(mask))
+            preview = HCYMaskPreview(mask)
+            preview.set_color_manager(mgr)
             preview_frame = gtk.AspectFrame(obey_child=True)
             preview_frame.add(preview)
             preview_frame.set_shadow_type(gtk.SHADOW_NONE)
@@ -966,6 +994,8 @@ class HCYMaskTemplateDialog (gtk.Dialog):
         self.connect("show", self.__show_cb)
         for w in self.vbox:
             w.show_all()
+        ref_color = target.get_managed_color()
+        mgr.set_color(ref_color)
 
 
     def __button_clicked_cb(self, widget, mask):
@@ -995,6 +1025,8 @@ class HCYMaskPropertiesDialog (gtk.Dialog):
         self.set_position(gtk.WIN_POS_MOUSE)
         self.target = target
         ed = HCYMaskEditorWheel()
+        ed_mgr = ColorManager()
+        ed.set_color_manager(ed_mgr)
         self.editor = ed
         ed.set_size_request(300, 300)
         ed.mask_toggle.set_active(True)
@@ -1065,6 +1097,10 @@ class HCYMaskPropertiesDialog (gtk.Dialog):
                 col_name = "mask#%d primary#%d" % (i, j)  #NOT localised
                 pal.append(col, col_name)
         preview = HCYMaskPreview()
+        preview.set_size_request(128, 128)
+        mgr = ColorManager()
+        preview.set_color_manager(mgr)
+        preview.set_managed_color(self.editor.get_managed_color())
         pal.save_via_dialog(
           title=_("Save mask as a Gimp palette"),
           parent=self,
@@ -1074,6 +1110,9 @@ class HCYMaskPropertiesDialog (gtk.Dialog):
     def __load_clicked(self, button):
         preview = HCYMaskPreview()
         preview.set_size_request(128, 128)
+        mgr = ColorManager()
+        preview.set_color_manager(mgr)
+        preview.set_managed_color(self.editor.get_managed_color())
         pal = Palette.load_via_dialog(
           title=_("Load mask from a Gimp palette"),
           parent=self,
@@ -1097,6 +1136,18 @@ class HCYMaskPropertiesDialog (gtk.Dialog):
         self.mask_toggle_ctrl.set_active(active)
         mask = deepcopy(self.target.get_mask())
         self.editor.set_mask(mask)
+
+        # The wheel type may have changed elsewhere
+        editor_mgr = self.editor.get_color_manager()
+        wheel_type = self.target.get_color_manager().get_wheel_type()
+        editor_mgr.set_wheel_type(wheel_type)
+
+        # Clone the target's luma too,
+        # but not too bright, not too dark
+        col = HCYColor(color=self.target.get_managed_color())
+        self.editor.set_managed_color(col)
+
+        # Necessary for the content to be displayed
         self.vbox.show_all()
 
 
