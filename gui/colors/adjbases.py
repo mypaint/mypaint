@@ -232,7 +232,7 @@ class ColorManager (gobject.GObject):
         self.__prefs[PREFS_KEY_WHEEL_TYPE] = typename
         for adj in self.__adjusters:
             if isinstance(adj, HueSaturationWheelAdjuster):
-                adj.update_cb()
+                adj.clear_background()
 
 
     def get_wheel_type(self):
