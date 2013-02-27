@@ -40,6 +40,31 @@ CURSOR_PRESETS = [
     # TRANSLATORS: cursor is a crosshair showing the brush center
     ('crosshair', _("Crosshair")),  ]
 
+COLOR_WHEEL_PRESETS = [
+    # TRANSLATORS: "[All the custom MyPaint color wheels' primaries] are ..."
+    ('rgb', _("Standard digital Red/Green/Blue"),
+        # TRANSLATORS: http://en.wikipedia.org/wiki/RGB_color_model
+        _("The red, green, and blue 'computer monitor' primaries, evenly "
+          "arranged around the circle. Green is opposite magenta.")),
+    # TRANSLATORS: "[All the custom MyPaint color wheels' primaries] are ..."
+    ('ryb', _("Traditional artist's Red/Yellow/Blue"),
+        # TRANSLATORS: http://en.wikipedia.org/wiki/RYB_color_model
+        _("The traditionally arranged red/yellow/blue wheel as used by many "
+          "artists since the 18th century, approximated with pure display "
+          "colors evenly arranged around the circle. Green is opposite red.")),
+    # TRANSLATORS: "[All the custom MyPaint color wheels' primaries] are ..."
+    ('rygb', _("Red-Green and Blue-Yellow opponent pairs"),
+        # TRANSLATORS: http://en.wikipedia.org/wiki/Unique_hues
+        _("Quick and dirty approximation of wheels informed by theories of "
+          "color which use four 'psychological primaries' or 'unique hues' "
+          "arranged in opposing pairs at the cardinal points. "
+          "Red is opposite green, and yellow is opposite blue. "
+          "CIECAM02 and NCS present a similar model. "
+          "Here we use pure display red, yellow etc. as the four primaries.")),
+          # In our defence, there's an enormous amount of individual variation
+          # ref: http://aris.ss.uci.edu/~kjameson/KuehniCRA.pdf
+    ]
+
 RESPONSE_REVERT = 1
 
 
@@ -277,6 +302,50 @@ class Window (windowing.Dialog):
             table.attach(b, 1, 3, current_row, current_row+1, xopt, yopt)
             current_row += 1
 
+        #### Color prefs tab
+        table = gtk.Table(2, 2)
+        table.set_border_width(12)
+        table.set_col_spacing(0, 12)
+        table.set_col_spacing(1, 12)
+        table.set_row_spacings(6)
+        current_row = 0
+        # TRANSLATORS: Tab label in preferences dialog
+        nb.append_page(table, gtk.Label(_('Color')))
+        xopt = gtk.FILL | gtk.EXPAND
+        yopt = gtk.FILL
+
+        l = gtk.Label()
+        l.set_alignment(0.0, 0.5)
+        # TRANSLATORS: Options affecting color wheels
+        l.set_markup(_('<b>Color Wheel</b>'))
+        table.attach(l, 0, 3, current_row, current_row + 1, xopt, yopt)
+        current_row += 1
+
+        l = gtk.Label()
+        l.set_alignment(0.0, 0.5)
+        # TRANSLATORS: arrangement of all of MyPaint's custom colour wheels
+        l.set_markup(_('Primaries are:'))
+        table.attach(l, 1, 2, current_row, current_row + 1, gtk.FILL, yopt)
+
+        self.color_wheel_radio_buttons = {}
+        b = None
+        for cname, label_text, tooltip in COLOR_WHEEL_PRESETS:
+            b = gtk.RadioButton(group=b, label=label_text, use_underline=False)
+            b.connect("toggled", self.color_wheel_radio_toggled_cb, cname)
+            b.set_tooltip_text(tooltip)
+            self.color_wheel_radio_buttons[cname] = b
+            table.attach(b, 2, 3, current_row, current_row+1, xopt, yopt)
+            current_row += 1
+
+
+    def color_wheel_radio_toggled_cb(self, togglebutton, cname):
+        if not togglebutton.get_active():
+            return
+        if self.in_update_ui:
+            return
+        cm = self.app.brush_color_manager
+        cm.set_wheel_type(cname)
+
 
     def cursor_radio_toggled_cb(self, togglebutton, cname):
         if not togglebutton.get_active():
@@ -353,6 +422,8 @@ class Window (windowing.Dialog):
         self.cv.queue_draw()
         # Cursor presets
         self.update_cursor_settings()
+        # Colour wheel type
+        self.update_color_settings()
         self.in_update_ui = False
 
 
@@ -362,6 +433,17 @@ class Window (windowing.Dialog):
         p = self.app.preferences
         style = self.app.preferences.get("cursor.freehand.style", "thin")
         b = self.cursor_radio_buttons.get(style, None)
+        if not b:
+            return
+        b.set_active(True)
+
+
+    def update_color_settings(self):
+        if not self.in_update_ui:
+            return
+        cm = self.app.brush_color_manager
+        typename = cm.get_wheel_type()
+        b = self.color_wheel_radio_buttons.get(typename, None)
         if not b:
             return
         b.set_active(True)
