@@ -6,35 +6,46 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-"preferences dialog"
+"""Preferences dialog.
+"""
+
 from bisect import bisect_left
 
 from gettext import gettext as _
 import gtk
-gdk = gtk.gdk
+from gtk import gdk
 
 from curve import CurveWidget
-import windowing, filehandling
+import windowing
+import filehandling
 import canvasevent
 from buttonmap import button_press_parse, button_press_name, ButtonMappingEditor
 
 
-device_modes = [
+DEVICE_MODES = [
+    # TRANSLATORS: tablet input device mode: disabled
     ('disabled', _("Disabled (no pressure sensitivity)")),
+    # TRANSLATORS: tablet input device mode: pen position corresponds to screen
     ('screen', _("Screen (normal)")),
+    # TRANSLATORS: tablet input device mode: pen position fitted to window
     ('window', _("Window (not recommended)")),  ]
 
-cursor_presets = [
+CURSOR_PRESETS = [
+    # TRANSLATORS: cursor is a thin ring reflecting the brush size
     ('thin', _("Circle (light outline)")),
+    # TRANSLATORS: cursor is a medium-weight ring reflecting the brush size
     ('medium', _("Circle (medium outline)")),
+    # TRANSLATORS: cursor is a thick ring reflecting the brush size
     ('thick', _("Circle (heavy outline)")),
+    # TRANSLATORS: cursor is a crosshair showing the brush center
     ('crosshair', _("Crosshair")),  ]
 
 RESPONSE_REVERT = 1
 
 
-class Window(windowing.Dialog):
-    '''Window for manipulating preferences.'''
+class Window (windowing.Dialog):
+    """Window for manipulating preferences.
+    """
 
     def __init__(self, app):
         flags = gtk.DIALOG_DESTROY_WITH_PARENT
@@ -59,7 +70,7 @@ class Window(windowing.Dialog):
         table.set_col_spacing(1, 12)
         table.set_row_spacings(6)
         current_row = 0
-        # TRANSLATORS: Tab label
+        # TRANSLATORS: Tab label in preferences dialog
         nb.append_page(table, gtk.Label(_('Pen Input')))
         xopt = gtk.FILL | gtk.EXPAND
         yopt = gtk.FILL
@@ -106,7 +117,7 @@ class Window(windowing.Dialog):
         l.set_alignment(0.0, 0.5)
         table.attach(l, 1, 2, current_row, current_row + 1, xopt, yopt)
         combo = self.input_devices_combo = gtk.combo_box_new_text()
-        for m, s in device_modes:
+        for m, s in DEVICE_MODES:
             combo.append_text(s)
         combo.connect('changed', self.input_devices_combo_changed_cb)
         table.attach(combo, 2, 3, current_row, current_row + 1, xopt, yopt)
@@ -134,6 +145,7 @@ class Window(windowing.Dialog):
             _("<small>Space can be used like Button2. Note that some pads "
               "have buttons that cannot be held down.</small>"))
         vbox.pack_start(button_map_label, False, False)
+        # TRANSLATORS: Tab label in preferences dialog
         nb.append_page(vbox, gtk.Label(_("Buttons")))
 
         ### Saving tab
@@ -143,6 +155,7 @@ class Window(windowing.Dialog):
         table.set_col_spacing(1, 12)
         table.set_row_spacings(6)
         current_row = 0
+        # TRANSLATORS: Tab label in preferences dialog
         nb.append_page(table, gtk.Label(_('Saving')))
         xopt = gtk.FILL | gtk.EXPAND
         yopt = gtk.FILL
@@ -187,6 +200,7 @@ class Window(windowing.Dialog):
         table.set_col_spacing(1, 12)
         table.set_row_spacings(6)
         current_row = 0
+        # TRANSLATORS: Tab label in preferences dialog
         nb.append_page(table, gtk.Label(_('View')))
         xopt = gtk.FILL | gtk.EXPAND
         yopt = gtk.FILL
@@ -242,6 +256,7 @@ class Window(windowing.Dialog):
         ##table.set_col_spacing(0, 12)
         #table.set_row_spacings(6)
         #current_row = 0
+        ## TRANSLATORS: Tab label in preferences dialog
         #nb.append_page(table, gtk.Label(_('Cursor')))
         #xopt = gtk.FILL | gtk.EXPAND
         #yopt = gtk.FILL
@@ -255,7 +270,7 @@ class Window(windowing.Dialog):
 
         self.cursor_radio_buttons = {}
         b = None
-        for cname, label_text in cursor_presets:
+        for cname, label_text in CURSOR_PRESETS:
             b = gtk.RadioButton(group=b, label=label_text, use_underline=False)
             b.connect("toggled", self.cursor_radio_toggled_cb, cname)
             self.cursor_radio_buttons[cname] = b
@@ -313,7 +328,7 @@ class Window(windowing.Dialog):
         # Device mode
         mode_config = p.get("input.device_mode", None)
         mode_idx = i = 0
-        for mode_name, junk in device_modes:
+        for mode_name, junk in DEVICE_MODES:
             if mode_config == mode_name:
                 mode_idx = i
                 break
@@ -356,7 +371,7 @@ class Window(windowing.Dialog):
 
     def input_devices_combo_changed_cb(self, widget):
         i = widget.get_property("active")
-        mode = device_modes[i][0]
+        mode = DEVICE_MODES[i][0]
         self.app.preferences['input.device_mode'] = mode
         self.app.apply_settings()
 
