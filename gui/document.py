@@ -671,9 +671,15 @@ class Document (CanvasController):
         else: assert 0
         self.clear_saved_view()
 
-    def zoom(self, command):
+    def zoom(self, command, at_pointer=True):
         """Handles named "Zoom{In,Out}" user commands.
         """
+        if at_pointer:
+            etime, ex, ey = self.get_last_event_info(self.tdw)
+            center = (ex, ey)
+        else:
+            center = self.tdw.get_center()
+
         try:
             zoom_index = self.zoomlevel_values.index(self.tdw.scale)
         except ValueError:
@@ -690,21 +696,26 @@ class Document (CanvasController):
             zoom_index = len(self.zoomlevel_values) - 1
 
         z = self.zoomlevel_values[zoom_index]
-        etime, ex, ey = self.get_last_event_info(self.tdw)
-        self.tdw.set_zoom(z, (ex, ey))
+        self.tdw.set_zoom(z, center=center)
         self.clear_saved_view()
 
-
-    def rotate(self, command):
+    def rotate(self, command, at_pointer=True):
         """Handles named "Rotate{Left,Right}" user commands.
         """
+
+        if at_pointer:
+            etime, ex, ey = self.get_last_event_info(self.tdw)
+            center = (ex, ey)
+        else:
+            center = self.tdw.get_center()
+
         # Allows easy and quick rotation to 45/90/180 degrees
-        # (Around the window center, not pointer center, seems to be the better default.)
         rotation_step = 2*math.pi/16
+
         if command == 'RotateRight':
-            self.tdw.rotate(+rotation_step)
+            self.tdw.rotate(+rotation_step, center=center)
         else:   # command == 'RotateLeft'
-            self.tdw.rotate(-rotation_step)
+            self.tdw.rotate(-rotation_step, center=center)
         self.clear_saved_view()
 
 
@@ -778,7 +789,6 @@ class Document (CanvasController):
             mirror = True
         if rotation or zoom or mirror:
             self.reset_view(rotation, zoom, mirror)
-            self.clear_saved_view()
 
 
     def reset_view(self, rotation=False, zoom=False, mirror=False):
