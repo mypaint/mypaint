@@ -248,6 +248,14 @@ class TiledDrawWidget (gtk.EventBox):
         return self.renderer.get_center
 
     @property
+    def get_center_model_coords(self):
+        return self.renderer.get_center_model_coords
+
+    @property
+    def recenter_on_model_coords(self):
+        return self.renderer.recenter_on_model_coords
+
+    @property
     def toggle_show_layers_above(self):
         return self.renderer.toggle_show_layers_above
 
@@ -880,16 +888,34 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         alloc = self.get_allocation()
         return alloc.width/2.0, alloc.height/2.0
 
+
+    def get_center_model_coords(self):
+        """Return the center position in model coordinates.
+        """
+        center = self.get_center()
+        return self.display_to_model(*center)
+
+
     def recenter_document(self):
         """Recentres the view onto the document's centre.
         """
         x, y, w, h = self.doc.get_effective_bbox()
-        desired_cx_model = x+w/2.0
-        desired_cy_model = y+h/2.0
-        cx, cy = self.get_center()
-        cx_model, cy_model = self.display_to_model(cx, cy)
-        self.translation_x += (cx_model - desired_cx_model)*self.scale
-        self.translation_y += (cy_model - desired_cy_model)*self.scale
+        cx = x+w/2.0
+        cy = y+h/2.0
+        self.recenter_on_model_coords(cx, cy)
+
+
+    def recenter_on_model_coords(self, cx, cy):
+        """Recentres the view to a specified point, in model coordinates.
+        """
+        dcx, dcy = self.model_to_display(cx, cy)
+        self.recenter_on_display_coords(dcx, dcy)
+
+
+    def recenter_on_display_coords(self, cx, cy):
+        current_cx, current_cy = self.get_center()
+        self.translation_x += current_cx - cx
+        self.translation_y += current_cy - cy
         self.queue_draw()
 
 
