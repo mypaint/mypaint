@@ -282,8 +282,6 @@ class TiledDrawWidget (gtk.EventBox):
         if center is not None:
             cx, cy = center
         if cx is None or cy is None:
-            allocation = self.get_allocation()
-            w, h = allocation.width, allocation.height
             cx, cy = self.renderer.get_center()
         cx_model, cy_model = self.renderer.display_to_model(cx, cy)
         function()
