@@ -226,6 +226,10 @@ class Document (CanvasController):
         #: Saved transformation to allow FitView to be toggled.
         self.saved_view = None
 
+        #: Viewport change/manipulation observers.
+        self.view_changed_observers = []
+        self.view_changed_observers.append(self._view_changed_cb)
+
 
     def init_actions(self):
         # Actions are defined in mypaint.xml, just grab a ref to the groups
@@ -669,7 +673,8 @@ class Document (CanvasController):
         elif command == 'PanUp'   : self.tdw.scroll(0, -step)
         elif command == 'PanDown' : self.tdw.scroll(0, +step)
         else: assert 0
-        self.clear_saved_view()
+        self.notify_view_changed()
+
 
     def zoom(self, command, at_pointer=True):
         """Handles named "Zoom{In,Out}" user commands.
@@ -697,7 +702,7 @@ class Document (CanvasController):
 
         z = self.zoomlevel_values[zoom_index]
         self.tdw.set_zoom(z, center=center)
-        self.clear_saved_view()
+        self.notify_view_changed()
 
     def rotate(self, command, at_pointer=True):
         """Handles named "Rotate{Left,Right}" user commands.
@@ -716,7 +721,7 @@ class Document (CanvasController):
             self.tdw.rotate(+rotation_step, center=center)
         else:   # command == 'RotateLeft'
             self.tdw.rotate(-rotation_step, center=center)
-        self.clear_saved_view()
+        self.notify_view_changed()
 
 
     def zoom_cb(self, action):
@@ -759,13 +764,13 @@ class Document (CanvasController):
 
     def mirror_horizontal_cb(self, action):
         self.tdw.mirror()
-        self.clear_saved_view()
+        self.notify_view_changed()
 
 
     def mirror_vertical_cb(self, action):
         self.tdw.rotate(math.pi)
         self.tdw.mirror()
-        self.clear_saved_view()
+        self.notify_view_changed()
 
 
     def reset_view_cb(self, command):
@@ -808,6 +813,8 @@ class Document (CanvasController):
             self.tdw.set_mirrored(False)
         if rotation and zoom and mirror:
             self.tdw.recenter_document()
+        if rotation or zoom or mirror:
+            self.notify_view_changed()
 
 
     def fit_view_toggled_cb(self, action):
@@ -819,14 +826,19 @@ class Document (CanvasController):
 
         """
 
-        # View>Fit: fits image within window's borders.
+        # Note: saved_view must be set to None before notify_view_changed() is
+        # called by anything - we use it as an interlock.
+
         if action.get_active():
-            self.saved_view = self.tdw.get_transformation()
-            self.fit_view()
-        else:
-            if self.saved_view is not None:
-                self.tdw.set_transformation(self.saved_view)
+            view = self.tdw.get_transformation()
             self.saved_view = None
+            self.fit_view()
+            self.saved_view = view
+        elif self.saved_view is not None:
+            view = self.saved_view
+            self.tdw.set_transformation(self.saved_view)
+            self.saved_view = None
+            self.notify_view_changed()
 
 
     def fit_view(self):
@@ -869,21 +881,34 @@ class Document (CanvasController):
         self.tdw.set_rotation(radians) # reapply canvas rotation
         self.tdw.set_mirrored(mirror) #reapply mirror
         self.tdw.set_zoom(zoom) # Set new zoom level
+        # Notify interested parties
+        self.notify_view_changed()
 
 
-    def clear_saved_view(self):
-        """Discards the saved view, and deactivates any associated view toggle
+    def notify_view_changed(self):
+        """Notifies all parties interested in the view having changed.
 
-        This should be called after the user has changed the view
-        interactively, i.e. by dragging or by a simple user Action. Associated
-        view ToggleActions like FitView are made inactive.
+        All members of `self.view_changed_observers` are called with a ref to
+        this Document.
 
         """
-        self.saved_view = None
-        fit_view = self.app.find_action("FitView")
-        if fit_view.get_active():
-            fit_view.set_active(False)
+        for cb in self.view_changed_observers:
+            cb(self)
 
+
+    def _view_changed_cb(self, doc):
+        """Callback: clear saved view and reset toggles on viewport changes
+        """
+        if not self.saved_view:
+            return
+        # Clear saved view first...
+        self.saved_view = None
+        # ... it's used as an interlock by toggle callbacks which use it.
+        view_toggle_actions = ["FitView"]
+        for action_name in view_toggle_actions:
+            action = self.app.find_action(action_name)
+            if action.get_active():
+                action.set_active(False)
 
 
     # DEBUGGING

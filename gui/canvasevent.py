@@ -1248,7 +1248,7 @@ class PanViewMode (SpringLoadedDragMode, OneshotDragModeMixin):
 
     def drag_update_cb(self, tdw, event, dx, dy):
         tdw.scroll(-dx, -dy)
-        self.doc.clear_saved_view()
+        self.doc.notify_view_changed()
         super(PanViewMode, self).drag_update_cb(tdw, event, dx, dy)
 
 
@@ -1274,7 +1274,7 @@ class ZoomViewMode (SpringLoadedDragMode, OneshotDragModeMixin):
         tdw.zoom(math.exp(dy/100.0), center=(event.x, event.y))
         # TODO: Let modifiers constrain the zoom amount to 
         #       the defined steps.
-        self.doc.clear_saved_view()
+        self.doc.notify_view_changed()
         super(ZoomViewMode, self).drag_update_cb(tdw, event, dx, dy)
 
 
@@ -1304,7 +1304,7 @@ class RotateViewMode (SpringLoadedDragMode, OneshotDragModeMixin):
         x, y = x-dx, y-dy
         phi1 = math.atan2(y, x)
         tdw.rotate(phi2-phi1, center=(cx, cy))
-        self.doc.clear_saved_view()
+        self.doc.notify_view_changed()
         # TODO: Allow modifiers to constrain the transformation angle
         #       to 22.5 degree steps.
         super(RotateViewMode, self).drag_update_cb(tdw, event, dx, dy)
