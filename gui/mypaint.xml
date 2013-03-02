@@ -19,10 +19,6 @@ Perhaps an increasing amount.
     <source stock-id="mypaint-tool-preview-window"
            icon-name="mypaint-tool-preview-window"/>
     <!-- View manipulation -->
-    <!--
-    TODO: make some MyPaint-specific icons for these. Not sure the object-
-    names are standard in all sets.
-    -->
     <source stock-id="mypaint-view-rotate-left"
            icon-name="mypaint-view-rotate-anticlockwise"/>
     <source stock-id="mypaint-view-rotate-right"
