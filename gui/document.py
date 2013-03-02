@@ -36,7 +36,7 @@ class CanvasController (object):
     The actual interpretation of each event is delegated to the top item on the
     controller's modes stack: see `gui.canvasevent.CanvasInteractionMode` for
     details. Simpler modes may assume the basic CanvasController interface,
-    more complex ones 
+    more complex ones may require the full Document interface.
 
     """
 
@@ -659,6 +659,8 @@ class Document (CanvasController):
 
 
     def pan(self, command):
+        """Handles named "Pan{Left,Right,Up,Down}" user commands.
+        """
         self.model.split_stroke()
         allocation = self.tdw.get_allocation()
         step = min((allocation.width, allocation.height)) / 5
@@ -670,6 +672,8 @@ class Document (CanvasController):
         self.clear_saved_view()
 
     def zoom(self, command):
+        """Handles named "Zoom{In,Out}" user commands.
+        """
         try:
             zoom_index = self.zoomlevel_values.index(self.tdw.scale)
         except ValueError:
@@ -692,6 +696,8 @@ class Document (CanvasController):
 
 
     def rotate(self, command):
+        """Handles named "Rotate{Left,Right}" user commands.
+        """
         # Allows easy and quick rotation to 45/90/180 degrees
         # (Around the window center, not pointer center, seems to be the better default.)
         rotation_step = 2*math.pi/16
@@ -703,10 +709,14 @@ class Document (CanvasController):
 
 
     def zoom_cb(self, action):
+        """Callback for Zoom{In,Out} GtkActions.
+        """
         self.zoom(action.get_name())
 
 
     def rotate_cb(self, action):
+        """Callback for Rotate{Left,Right} GtkActions.
+        """
         self.rotate(action.get_name())
 
 
@@ -773,6 +783,11 @@ class Document (CanvasController):
 
     def reset_view(self, rotation=False, zoom=False, mirror=False):
         """Programatically resets the view to the defaults.
+
+        :param rotation: Reset rotation to zero.
+        :param zoom: Reset rotation to the prefs default zoom.
+        :param mirror: Turn mirroring off
+
         """
         if rotation:
             self.tdw.set_rotation(0.0)
@@ -813,7 +828,8 @@ class Document (CanvasController):
             # When there is nothing on the canvas reset zoom to default.
             self.reset_view(True, True, True)
             return
-
+        # Otherwise, zoom and transform to fit the bounding box, while
+        # preserving the user's rotation and mirroring settings.
         allocation = self.tdw.get_allocation()
         w1, h1 = allocation.width, allocation.height
         # Store radians and reset rotation to zero.

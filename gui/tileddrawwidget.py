@@ -875,7 +875,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
             f()
 
     def get_center(self):
-        """Return the centre position in display coordinates.
+        """Return the center position in display coordinates.
         """
         alloc = self.get_allocation()
         return alloc.width/2.0, alloc.height/2.0
@@ -891,6 +891,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         self.translation_x += (cx_model - desired_cx_model)*self.scale
         self.translation_y += (cy_model - desired_cy_model)*self.scale
         self.queue_draw()
+
 
     def toggle_show_layers_above(self):
         self.show_layers_above = not self.show_layers_above
