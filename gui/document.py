@@ -229,6 +229,7 @@ class Document (CanvasController):
         #: Viewport change/manipulation observers.
         self.view_changed_observers = []
         self.view_changed_observers.append(self._view_changed_cb)
+        self._view_changed_notification_srcid = None
 
 
     def init_actions(self):
@@ -885,15 +886,38 @@ class Document (CanvasController):
         self.notify_view_changed()
 
 
-    def notify_view_changed(self):
+    def notify_view_changed(self, prioritize=False):
         """Notifies all parties interested in the view having changed.
 
-        All members of `self.view_changed_observers` are called with a ref to
-        this Document.
+        These can be slightly expensive, so the callbacks are rate-limited here
+        using an idle routine. All members of `self.view_changed_observers` are
+        guaranteed to be called shortly after this method is called, with a ref
+        to this Document.
 
+        The default idle priority is intentionally very low. To raise it, set
+        `prioritize` to true. This is designed to be used only when this
+        notification indirectly updates a graphical element which is directly
+        under the pointer, or otherwise where the user is looking.
+
+        """
+        # XXX perhaps it should be immediate=True instead?
+        if self._view_changed_notification_srcid:
+            return
+        cb = self._view_changed_notification_idle_cb
+        priority = gobject.PRIORITY_LOW
+        if prioritize:
+            priority = gobject.PRIORITY_HIGH_IDLE
+        srcid = gobject.idle_add(cb, priority=priority)
+        self._view_changed_notification_srcid = srcid
+
+
+    def _view_changed_notification_idle_cb(self):
+        """Background notifier callback used by `notify_view_changed()`.
         """
         for cb in self.view_changed_observers:
             cb(self)
+        self._view_changed_notification_srcid = None
+        return False
 
 
     def _view_changed_cb(self, doc):

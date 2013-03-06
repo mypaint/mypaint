@@ -246,7 +246,8 @@ class ToolWidget (gtk.EventBox):
             mx0, my0 = self._drag_start
             mx, my = self.tdw.display_to_model(event.x, event.y)
             self.main_tdw.recenter_on_model_coords(mx, my)
-            self.app.doc.notify_view_changed()
+            # Upping the priority here keeps it feeling more direct.
+            self.app.doc.notify_view_changed(prioritize=True)
         return True
 
 
