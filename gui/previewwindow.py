@@ -20,16 +20,20 @@ import canvasevent
 import document
 import dialogs
 import tileddrawwidget
+from gui.colors import geom   # XXX refactoring needed! But from here for now.
 
 
-def _points_to_enclosing_rect(corners):
+PHI = (1.+math.sqrt(2))/2.
+
+
+def _points_to_enclosing_rect(points):
     """Convert a list of (x, y) points to their encompassing rect.
     """
-    corners = list(corners)
-    x, y = corners.pop(0)
+    points = list(points)
+    x, y = points.pop(0)
     xmin = xmax = x
     ymin = ymax = y
-    for x, y in corners:
+    for x, y in points:
         if x < xmin: xmin = x
         if x > xmax: xmax = x
         if y < ymin: ymin = y
@@ -41,11 +45,11 @@ class VisibleOverlay (tileddrawwidget.Overlay):
     """Overlay for the preview TDW which shows the extent of the main TDW.
     """
 
-    OUTER_LINE_WIDTH = 5
-    OUTER_LINE_RGBA = 0.0, 0.5, 0.5, 0.2
-    INNER_LINE_WIDTH = 1
-    INNER_LINE_RGBA = 1.0, 1.0, 1.0, 1.0
+    INNER_LINE_WIDTH = 1.5
+    INNER_LINE_RGBA = 0.832, 1.000, 0.090, 1.0
 
+    OUTER_LINE_WIDTH = 3
+    OUTER_LINE_RGBA = 0.451/2, 0.823/2, 0.086/2, 0.5
 
     def __init__(self, app, preview):
 
@@ -57,24 +61,42 @@ class VisibleOverlay (tileddrawwidget.Overlay):
 
         # Painting instructions
         self.paint_rect = None  #: Last-painted region, display coords
-        self.paint_corners = None  #: Preview box, display coords
+        self.paint_shapes = None  #: Preview box, display coords
+        self.paint_topleft = None
 
 
     def paint(self, cr):
-        if not self.paint_corners:
+        if not self.paint_shapes:
             return
-        cr.set_line_width(self.OUTER_LINE_WIDTH)
-        cr.set_source_rgba(*self.OUTER_LINE_RGBA)
-        corners = list(self.paint_corners)
-        x, y = corners.pop(0)
-        cr.move_to(x, y)
-        for x, y in corners:
-            cr.line_to(x, y)
-        cr.close_path()
-        cr.stroke_preserve()
-        cr.set_line_width(self.INNER_LINE_WIDTH)
-        cr.set_source_rgba(*self.INNER_LINE_RGBA)
-        cr.stroke()
+        cr.set_line_join(cairo.LINE_JOIN_ROUND)
+        cr.set_line_cap(cairo.LINE_CAP_ROUND)
+        if self.paint_topleft:
+            tlx, tly = self.paint_topleft
+            r1 = self.OUTER_LINE_WIDTH / 2.
+            r2 = self.INNER_LINE_WIDTH / 2.
+            cr.set_line_width(self.OUTER_LINE_WIDTH)
+            cr.set_source_rgba(*self.OUTER_LINE_RGBA)
+            cr.rectangle(tlx, tly, 1, 1)
+            cr.fill_preserve()
+            cr.stroke_preserve()
+            cr.set_line_width(self.INNER_LINE_WIDTH)
+            cr.set_source_rgba(*self.INNER_LINE_RGBA)
+            cr.fill_preserve()
+            cr.stroke()
+        for shape in self.paint_shapes:
+            points = list(shape)
+            if not points:
+                continue
+            x, y = points.pop(0)
+            cr.move_to(x, y)
+            for x, y in points:
+                cr.line_to(x, y)
+            cr.set_line_width(self.OUTER_LINE_WIDTH)
+            cr.set_source_rgba(*self.OUTER_LINE_RGBA)
+            cr.stroke_preserve()
+            cr.set_line_width(self.INNER_LINE_WIDTH)
+            cr.set_source_rgba(*self.INNER_LINE_RGBA)
+            cr.stroke()
 
 
     def update_location(self):
@@ -85,38 +107,52 @@ class VisibleOverlay (tileddrawwidget.Overlay):
         if self.paint_rect:
             self.preview.tdw.queue_draw_area(*self.paint_rect)
 
-        # Preview rectangle corners, in preview TDW display coords
-        main_view_corners = self.preview._main_view_corners
-        if not main_view_corners:
-            return
-        paint_corners = [self.preview.tdw.model_to_display(*c)
-                         for c in main_view_corners]
-
-        # Pixel edge alignment (for the inner line)
-        d = 0.5 * self.INNER_LINE_WIDTH
-        paint_corners = [(int(x)+d, int(y)+d) for x, y in paint_corners]
-
-        # Drawing area
-        alloc = self.preview.tdw.get_allocation()
-        x, y, w, h = _points_to_enclosing_rect(paint_corners)
-        lw = int(self.OUTER_LINE_WIDTH / 2) + 1
-        x = int(x) - lw
-        y = int(y) - lw
-        w = int(w) + 1 + 2*lw
-        h = int(h) + 1 + 2*lw
-        outside = (x > alloc.width or y > alloc.height or
-                   x+w < alloc.x or y+h < alloc.y)
-        if outside:
-            # No need to redraw
+        # Calculate a shape to paint in preview TDW display coords.
+        viewport_overlay_shapes = None
+        if self.preview.show_viewfinder:
+            viewport_overlay_shapes = self.preview.viewport_overlay_shapes
+        if not viewport_overlay_shapes:
+            self.paint_shapes = None
             self.paint_rect = None
-            self.paint_corners = None
+            return
+        paint_shapes = []
+        shape_points = []
+        alloc = self.preview.tdw.get_allocation()
+        for shape in viewport_overlay_shapes:
+            points = []
+            for x, y in shape:
+                x, y = self.preview.tdw.model_to_display(x, y)
+                points.append((x, y))
+            paint_shapes.append(points)
+            shape_points.extend(points)
+
+        # Top-left (or right) dot
+        topleft = self.preview.viewport_overlay_topleft
+        if topleft:
+            topleft = self.preview.tdw.model_to_display(*topleft)
+
+        # Invalidation rectangle.
+        alloc = self.preview.tdw.get_allocation()
+        x, y, w, h = _points_to_enclosing_rect(shape_points)
+        lw = self.OUTER_LINE_WIDTH
+        x = int(x - lw/2) - 2
+        y = int(y - lw/2) - 2
+        w = int(w + lw) + 4
+        h = int(h + lw) + 4
+        outside = ((x > alloc.width) or (y > alloc.height) or
+                   (x+w < 0) or (y+h < 0))
+        if outside:
+            self.paint_rect = None
+            self.paint_shapes = None
+            self.paint_topleft = None
         else:
             self.preview.tdw.queue_draw_area(x, y, w, h)
             self.paint_rect = x, y, w, h
-            self.paint_corners = paint_corners
+            self.paint_shapes = paint_shapes
+            self.paint_topleft = topleft
 
 
-class ToolWidget (gtk.EventBox):
+class ToolWidget (gtk.VBox):
     """Tool widget for previewing the whole canvas.
 
     We overlay a preview rectangle showing where the main document view is
@@ -127,13 +163,25 @@ class ToolWidget (gtk.EventBox):
     """
 
     stock_id = "mypaint-tool-preview-window"
+
+    #TRANSLATORS: title of subwindow showing an overview of the whole canvas
     tool_widget_title = _("Preview")
 
-    SUPPORTED_ZOOMLEVELS_ONLY = True   # Not sure if this looks better
+    #: Zoom the preview only to a limited number of zoom levels - reduces
+    #: the frequency of zooming, at the expence of a close match.
+    SUPPORTED_ZOOMLEVELS_ONLY = False
+
+    #: The preview's zoom can be fitted to include the whole of the viewport
+    #: highlight rectangle, even if it lies outside the document area.
+    ZOOM_INCLUDES_VIEWPORT_RECT = False
+
+    #: Prefs key for the flag controlling whether the viewport highlight
+    #: rectangle is visible.
+    SHOW_VIEWFINDER_PREFS_KEY = "preview.show_viewfinder"
 
 
     def __init__(self, app):
-        gtk.EventBox.__init__(self)
+        gtk.VBox.__init__(self)
         self.app = app
         self.set_size_request(250, 250)
         self.main_tdw = app.doc.tdw
@@ -142,8 +190,29 @@ class ToolWidget (gtk.EventBox):
         self.tdw = tileddrawwidget.TiledDrawWidget(app, self.model)
         self.tdw.zoom_min = 1/50.0
         self.tdw.set_size_request(250, 250)
-        self.tdw.set_override_cursor(gdk.Cursor(gdk.LEFT_PTR))
-        self.add(self.tdw)
+        self.pack_start(self.tdw, True, True)
+
+        # Cursor property
+        self._cursor = None
+        self.cursor = None
+
+        # Cursors for states
+        cursor_icon = "mypaint-view-pan"
+        self.cursor_move_here = app.cursors.get_icon_cursor(cursor_icon,
+                                 cursor_name="cursor_arrow")
+        self.cursor_drag_ready = app.cursors.get_icon_cursor(cursor_icon,
+                                  cursor_name="cursor_hand_open")
+        self.cursor_drag_active = app.cursors.get_icon_cursor(cursor_icon,
+                                   cursor_name="cursor_hand_closed")
+        self.cursor_no_op = app.cursors.get_icon_cursor(None,
+                             cursor_name="cursor_arrow")
+
+        #TRANSLATORS: shows a zoomed view inside the overview, like a camera
+        checkbtn = gtk.CheckButton(_("Show Viewfinder"))
+        checkbtn.set_active(self.show_viewfinder)
+        self.show_viewport_checkbutton = checkbtn
+        self.pack_start(checkbtn, False, False)
+        checkbtn.connect("toggled", self.show_viewfinder_toggled_cb)
 
         self.visible_overlay = VisibleOverlay(app, self)
         self.tdw.display_overlays.append(self.visible_overlay)
@@ -157,8 +226,7 @@ class ToolWidget (gtk.EventBox):
                 1.0 ]
 
         self.tdw.zoom_min = 1.0 / 128
-        self.tdw.zoom_max = 1.0 / 2
-        self.tdw.scale = self.app.preferences['view.default_zoom'] / 2
+        self.tdw.zoom_max = float(app.preferences.get('view.default_zoom', 1))
 
         # Used for detection of potential effective bbox changes during
         # canvas modify events
@@ -166,103 +234,209 @@ class ToolWidget (gtk.EventBox):
         self.y_min = self.y_max = None
 
         # Used for determining if a potential bbox change is a real one
-        self._last_preview_bbox = None
+        self._last_bbox = None
 
         # Model observers for scale and zoom
         self.model.canvas_observers.append(self.canvas_modified_cb)
         self.model.doc_observers.append(self.doc_structure_modified_cb)
         self.model.frame_observers.append(self.frame_modified_cb)
-        self.connect("size-allocate", self.size_alloc_cb)
+        self.tdw.connect("size-allocate", self.size_alloc_cb)
 
         # Main controller observers, for updating our overlay
-        self._main_view_corners = []
+        self.viewport_overlay_shapes = []
+        self.viewport_overlay_topleft = []
         self.app.doc.view_changed_observers.append(self.main_view_changed_cb)
 
         # Handle clicks and drags
         self._drag_start = None
-        self.add_events(gdk.BUTTON1_MOTION_MASK | gdk.SCROLL_MASK)
-        self.connect("button-press-event", self.button_press_cb)
-        self.connect("button-release-event", self.button_release_cb)
-        self.connect("motion-notify-event", self.motion_notify_cb)
-        self.connect("scroll-event", self.scroll_event_cb)
+        self._button_pressed = None
+        self.tdw.add_events(gdk.BUTTON1_MOTION_MASK | gdk.SCROLL_MASK)
+        self.tdw.connect("button-press-event", self.button_press_cb)
+        self.tdw.connect("button-release-event", self.button_release_cb)
+        self.tdw.connect("motion-notify-event", self.motion_notify_cb)
+        self.tdw.connect("scroll-event", self.scroll_event_cb)
+
+
+    @property
+    def show_viewfinder(self):
+        return self.app.preferences.get(self.SHOW_VIEWFINDER_PREFS_KEY, True)
+
+    @show_viewfinder.setter
+    def show_viewfinder(self, value):
+        old_value = self.show_viewfinder
+        self.app.preferences[self.SHOW_VIEWFINDER_PREFS_KEY] = bool(value)
+        if old_value != value:
+            self.update_preview_transformation(force=True)
+
+
+    @property
+    def cursor(self):
+        """The current cursor - settable by property.
+        """
+        return self._cursor
+
+    @cursor.setter
+    def cursor(self, value):
+        if value == self._cursor:
+            return
+        self._cursor = value
+        self.tdw.set_override_cursor(value)
+
+
+    def show_viewfinder_toggled_cb(self, checkbtn):
+        self.show_viewfinder = checkbtn.get_active()
+        self.cursor = self.cursor_no_op
 
 
     def scroll_event_cb(self, widget, event):
         """Handle scroll events on the preview: manipulates the main view.
         """
 
+        if not self.show_viewfinder:
+            return False
+
         # Zoom or rotate the main document.
         doc = self.app.doc
 
-        # Recenter main doc
+        # Centre of rotation for main tdw
         mx, my = self.tdw.display_to_model(event.x, event.y)
-        doc.tdw.recenter_on_model_coords(mx, my) # notify deferred (see below)
+        cx, cy = doc.tdw.model_to_display(mx, my)
 
         # Handle like ScrollableModeMixin, but affect a different doc.
         d = event.direction
         if d == gdk.SCROLL_UP:
             if event.state & gdk.SHIFT_MASK:
-                doc.rotate('RotateLeft', at_pointer=False)
+                doc.rotate(doc.ROTATE_CLOCKWISE, center=(cx, cy))
             else:
-                doc.zoom('ZoomIn', at_pointer=False)
+                doc.zoom(doc.ZOOM_INWARDS, center=(cx, cy))
         elif d == gdk.SCROLL_DOWN:
             if event.state & gdk.SHIFT_MASK:
-                doc.rotate('RotateRight', at_pointer=False)
+                doc.rotate(doc.ROTATE_ANTICLOCKWISE, center=(cx, cy))
             else:
-                doc.zoom('ZoomOut', at_pointer=False)
+                doc.zoom(doc.ZOOM_OUTWARDS, center=(cx, cy))
         elif d == gdk.SCROLL_RIGHT:
-            doc.rotate('RotateRight', at_pointer=False)
+            doc.rotate(doc.ROTATE_ANTICLOCKWISE, center=(cx, cy))
         elif d == gdk.SCROLL_LEFT:
-            doc.rotate('RotateLeft', at_pointer=False)
-        else:
-            # Deferred call required by recentering block above.
-            # Above calls it, but be ready for future scroll directions.
-            doc.notify_view_changed()
+            doc.rotate(doc.ROTATE_CLOCKWISE, center=(cx, cy))
 
         return True
 
 
     def button_press_cb(self, widget, event):
-        if not self._drag_start:
-            if event.button == 1:
-                mx, my = self.tdw.display_to_model(event.x, event.y)
-                self._drag_start = mx, my
-                self.main_tdw.recenter_on_model_coords(mx, my)
-                self.app.doc.notify_view_changed()
+        if not self.show_viewfinder:
+            return False
+        if not self._drag_start and event.button == 1:
+            if self.viewport_overlay_shapes:
+                points = []
+                for shape in self.viewport_overlay_shapes:
+                    points.extend(shape)
+                pmx, pmy = self.tdw.display_to_model(event.x, event.y)
+                cmx, cmy = self.main_tdw.get_center_model_coords()
+                inside = False
+                shape = geom.convex_hull(points)
+                if geom.point_in_convex_poly((pmx, pmy), shape):
+                    self._drag_start = (cmx, cmy, pmx, pmy)
+                    self.cursor = self.cursor_drag_active
+        self._button_pressed = event.button
         return True
 
 
     def button_release_cb(self, widget, event):
-        if self._drag_start:
-            if event.button == 1:
+        if not self.show_viewfinder:
+            return False
+        if event.button == self._button_pressed:
+            if self._drag_start:
                 self._drag_start = None
+            elif event.button == 1:
+                mx, my = self.tdw.display_to_model(event.x, event.y)
+                self.main_tdw.recenter_on_model_coords(mx, my)
                 self.app.doc.notify_view_changed()
+            # Cursor is now directly over the overlay
+            self.cursor = self.cursor_drag_ready
+        self._button_pressed = None
         return True
 
 
     def motion_notify_cb(self, widget, event):
+        if not self.show_viewfinder:
+            return False
+        pmx, pmy = self.tdw.display_to_model(event.x, event.y)
         if self._drag_start:
-            self.main_tdw = self.app.doc.tdw
-            mx0, my0 = self._drag_start
-            mx, my = self.tdw.display_to_model(event.x, event.y)
-            self.main_tdw.recenter_on_model_coords(mx, my)
-            # Upping the priority here keeps it feeling more direct.
+            cmx0, cmy0, pmx0, pmy0 = self._drag_start
+            dmx, dmy = pmx-pmx0, pmy-pmy0
+            self.main_tdw.recenter_on_model_coords(cmx0+dmx, cmy0+dmy)
             self.app.doc.notify_view_changed(prioritize=True)
+        else:
+            cursor = None
+            if self.viewport_overlay_shapes:
+                points = []
+                for shape in self.viewport_overlay_shapes:
+                    points.extend(shape)
+                shape = geom.convex_hull(points)
+                icon_name = "mypaint-view-pan"
+                if geom.point_in_convex_poly((pmx, pmy), shape):
+                    cursor = self.cursor_drag_ready
+                else:
+                    cursor = self.cursor_move_here
+            self.cursor = cursor
         return True
 
 
     def main_view_changed_cb(self, doc):
         """Callback: viewport changed on the main drawing canvas.
         """
+        self._update_viewport_overlay()
 
+
+    def _update_viewport_overlay(self):
+        """Updates the viewport overlay's position.
+        """
         alloc = self.main_tdw.get_allocation()
-        main_x0, main_y0 = 0., 0.
-        main_x1, main_y1 = main_x0+alloc.width, main_y0+alloc.height
+        x, y = 0., 0.
+        w, h = float(alloc.width), float(alloc.height)
 
-        main_corners = [ (main_x0, main_y0), (main_x0, main_y1),
-                         (main_x1, main_y1), (main_x1, main_y0), ]
-        main_corners = [self.main_tdw.display_to_model(*c) for c in main_corners]
-        self._main_view_corners = main_corners
+        # Start with a list of "viewport corners"
+        n = min(w, h)/4*PHI
+        overlay_shapes_disp = [ [(x, y+n), (x, y), (x+n, y)],
+                                [(x, h-n), (x, h), (x+n, h)],
+                                [(w-n, y), (w, y), (w, x+n)],
+                                [(w-n, h), (w, h), (w, h-n)], ]
+
+        # For very long viewports, add another pair of lines along the
+        # long axis. Not too long, and not too short hopefully.
+        if w > h*PHI:
+            m = h/2*PHI
+            overlay_shapes_disp.extend([
+                    [(x+m, y), (w-m, y)],
+                    [(x+m, h), (w-m, h)],
+                ])
+        elif h > w*PHI:
+            m = h/2*PHI
+            overlay_shapes_disp.extend([
+                    [(x, y+m), (x, h-m)],
+                    [(w, y+m), (w, h-m)],
+                ])
+
+        # To model coords
+        overlay_shapes_model = []
+        for shape in overlay_shapes_disp:
+            shape = [self.main_tdw.display_to_model(*pos)
+                     for pos in shape]
+            overlay_shapes_model.append(shape)
+        self.viewport_overlay_shapes = overlay_shapes_model
+
+        # Top left/right dot, for displaying the orientation
+        if self.main_tdw.rotation == 0.0 and not self.main_tdw.mirrored:
+            self.viewport_overlay_topleft = None
+        else:
+            k = n - n/PHI
+            j = n/PHI
+            direction = self.main_tdw.get_direction()
+            if direction == gtk.TEXT_DIR_RTL:
+                j = w-j
+            topleft = j, k
+            topleft = self.main_tdw.display_to_model(*topleft)
+            self.viewport_overlay_topleft = topleft
 
         if self._drag_start:
             # Too distracting to change the preview transform
@@ -289,7 +463,7 @@ class ToolWidget (gtk.EventBox):
 
 
     def size_alloc_cb(self, widget, alloc):
-        """Callback: preview widget has been resized.
+        """Callback: a preview widget has been resized.
         """
         # Reqires a full transformation update.
         self.update_preview_transformation(force=True)
@@ -303,10 +477,9 @@ class ToolWidget (gtk.EventBox):
 
 
     def doc_structure_modified_cb(self, *args):
-        # Potentially a layer clear, which could affect the bbox.
-        updated = self.update_preview_transformation()
-        if not updated:
-            self.tdw.queue_draw()
+        # Potentially a layer clear or document-new, which could
+        # affect the bbox.
+        self.update_preview_transformation(force=True)
 
 
     def canvas_modified_cb(self, x, y, w, h):
@@ -360,13 +533,16 @@ class ToolWidget (gtk.EventBox):
             self.x_max = None
             self.y_min = None
             self.y_max = None
-            self._last_preview_bbox = None
+            self._last_bbox = None
 
         # Preview TDW's size, into which everything must be fitted
         alloc = self.tdw.get_allocation()
 
         # A list of points in model coords which we want to be all inside
-        defining_points = list(self._main_view_corners)
+        if self.ZOOM_INCLUDES_VIEWPORT_RECT:
+            defining_points = list(self.viewport_overlay_shapes)
+        else:
+            defining_points = []
         model_bbox = tuple(self.model.get_effective_bbox()) # Axis aligned...
         x, y, w, h = model_bbox
         defining_points.extend([(x, y), (x+w, y+h)])      #... so two suffice
@@ -375,9 +551,9 @@ class ToolWidget (gtk.EventBox):
         # Don't resize unless this has actually changed.
         # Avoids juddering.
         bbox = _points_to_enclosing_rect(defining_points)
-        if not force and bbox == self._last_preview_bbox:
+        if not force and bbox == self._last_bbox:
             return False
-        self._last_preview_bbox = bbox
+        self._last_bbox = bbox
         x, y, w, h = bbox
 
         # Avoid a division by zero
