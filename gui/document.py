@@ -831,24 +831,24 @@ class Document (CanvasController):
         self.notify_view_changed()
 
 
-    def reset_view_cb(self, command):
+    def reset_view_cb(self, action):
         """Action callback: resets various aspects of the view.
 
         The reset chosen depends on the action's name.
 
         """
-        if command is None:
-            command_name = None
+        if action is None:
+            action_name = None
         else:
-            command_name = command.get_name()
+            action_name = action.get_name()
         zoom = mirror = rotation = False
-        if command_name is None or 'View' in command_name:
+        if action_name is None or 'View' in action_name:
             zoom = mirror = rotation = True
-        elif 'Rotation' in command_name:
+        elif 'Rotation' in action_name:
             rotation = True
-        elif 'Zoom' in command_name:
+        elif 'Zoom' in action_name:
             zoom = True
-        elif 'Mirror' in command_name:
+        elif 'Mirror' in action_name:
             mirror = True
         if rotation or zoom or mirror:
             self.reset_view(rotation, zoom, mirror)
