@@ -839,7 +839,7 @@ class Document (CanvasController):
             view = self.saved_view
             self.tdw.set_transformation(self.saved_view)
             self.saved_view = None
-            self.notify_view_changed()
+            self.notify_view_changed(immediate=True)
 
 
     def fit_view(self):
@@ -883,16 +883,16 @@ class Document (CanvasController):
         self.tdw.set_mirrored(mirror) #reapply mirror
         self.tdw.set_zoom(zoom) # Set new zoom level
         # Notify interested parties
-        self.notify_view_changed()
+        self.notify_view_changed(immediate=True)
 
 
-    def notify_view_changed(self, prioritize=False):
+    def notify_view_changed(self, prioritize=False, immediate=False):
         """Notifies all parties interested in the view having changed.
 
-        These can be slightly expensive, so the callbacks are rate-limited here
-        using an idle routine. All members of `self.view_changed_observers` are
-        guaranteed to be called shortly after this method is called, with a ref
-        to this Document.
+        These can be slightly expensive, so the callbacks are rate limited
+        using an idle routine when called with default args. All callbacks in
+        `self.view_changed_observers` are guaranteed to be called shortly after
+        this method is called, with a ref to this Document.
 
         The default idle priority is intentionally very low. To raise it, set
         `prioritize` to true. This is designed to be used only when this
@@ -900,7 +900,12 @@ class Document (CanvasController):
         under the pointer, or otherwise where the user is looking.
 
         """
-        # XXX perhaps it should be immediate=True instead?
+        if immediate:
+            if self._view_changed_notification_srcid:
+                gobject.source_remove(self._view_changed_notification_srcid)
+                self._view_changed_notification_srcid = None
+            self._view_changed_notification_idle_cb()
+            return
         if self._view_changed_notification_srcid:
             return
         cb = self._view_changed_notification_idle_cb
