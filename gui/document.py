@@ -251,6 +251,8 @@ class Document (CanvasController):
         self.view_changed_observers = []
         self.view_changed_observers.append(self._view_changed_cb)
         self._view_changed_notification_srcid = None
+        do_notify = lambda *a: self.notify_view_changed()
+        self.tdw.connect_after("size-allocate", do_notify)
 
 
     def init_actions(self):
