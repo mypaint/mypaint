@@ -145,6 +145,27 @@ class Document (CanvasController):
     # Layers have this attr set temporarily if they don't have a name yet
     _NONAME_LAYER_REFNUM_ATTR = "_document_noname_ref_number"
 
+    #: Rotation step amount for single-shot commands.
+    #: Allows easy and quick rotation to 45/90/180 degrees.
+    ROTATION_STEP = 2*math.pi/16
+
+    # Constants for rotating and zooming by increments
+    ROTATE_ANTICLOCKWISE = 4  #: Rotation step direction: RotateLeft
+    ROTATE_CLOCKWISE = 8   #: Rotation step direction: RotateRight
+    ZOOM_INWARDS = 16  #: Zoom step direction: into the canvas
+    ZOOM_OUTWARDS = 32  #: Zoom step direction: out of the canvas
+
+    # Step zoom and rotations can happen at specified locations, or these.
+    CENTER_ON_VIEWPORT = 1  #: Zoom or rotate at the canvas center
+    CENTER_ON_POINTER = 2  #: Zoom/rotate at the last observed pointer pos
+
+    # Constants for panning (movement) by increments
+    PAN_STEP = 0.2 #: Stepwise panning amount: proportion of the canvas size
+    PAN_LEFT = 1   #: Stepwise panning direction: left
+    PAN_RIGHT = 2   #: Stepwise panning direction: right
+    PAN_UP = 3   #: Stepwise panning direction: up
+    PAN_DOWN = 4   #: Stepwise panning direction: down
+
 
     def __init__(self, app, leader=None):
         self.app = app
@@ -307,10 +328,10 @@ class Document (CanvasController):
         k('<control>minus', 'ZoomOut') # Krita
         k('bar', 'Symmetry')
 
-        k('Left', lambda(action): self.pan('PanLeft'))
-        k('Right', lambda(action): self.pan('PanRight'))
-        k('Down', lambda(action): self.pan('PanDown'))
-        k('Up', lambda(action): self.pan('PanUp'))
+        k('Left', lambda(action): self.pan(self.PAN_LEFT))
+        k('Right', lambda(action): self.pan(self.PAN_RIGHT))
+        k('Down', lambda(action): self.pan(self.PAN_DOWN))
+        k('Up', lambda(action): self.pan(self.PAN_UP))
 
         k('<control>Left', 'RotateLeft')
         k('<control>Right', 'RotateRight')
@@ -663,27 +684,40 @@ class Document (CanvasController):
     #    self.layerblink_state.activate(action)
 
 
-    def pan(self, command):
-        """Handles named "Pan{Left,Right,Up,Down}" user commands.
+    def pan(self, direction):
+        """Handles panning (scrolling) in increments.
+
+        :param direction: direction of panning
+        :type direction: `PAN_LEFT`, `PAN_RIGHT`, `PAN_UP`, or `PAN_DOWN`
+
         """
         self.model.split_stroke()
         allocation = self.tdw.get_allocation()
-        step = min((allocation.width, allocation.height)) / 5
-        if   command == 'PanLeft' : self.tdw.scroll(-step, 0)
-        elif command == 'PanRight': self.tdw.scroll(+step, 0)
-        elif command == 'PanUp'   : self.tdw.scroll(0, -step)
-        elif command == 'PanDown' : self.tdw.scroll(0, +step)
-        else: assert 0
+        step = min((allocation.width, allocation.height)) * self.PAN_STEP
+        if direction == self.PAN_LEFT: self.tdw.scroll(-step, 0)
+        elif direction == self.PAN_RIGHT: self.tdw.scroll(+step, 0)
+        elif direction == self.PAN_UP: self.tdw.scroll(0, -step)
+        elif direction == self.PAN_DOWN: self.tdw.scroll(0, +step)
+        else: raise TypeError, 'unsupported direction=%s' % (direction,)
         self.notify_view_changed()
 
 
-    def zoom(self, command, at_pointer=True):
-        """Handles named "Zoom{In,Out}" user commands.
+    def zoom(self, direction, center=CENTER_ON_POINTER):
+        """Handles zoom in increments.
+
+        Zooms the doc's TDW by a set amount, either in or out.
+
+        :param direction: direction of zoom
+        :type direction: `ZOOM_INWARDS` or `ZOOM_OUTWARDS`
+        :param center: zoom center
+        :type center: tuple ``(x, y)`` in model coords, or `CENTER_ON_POINTER`
+            or `CENTER_ON_VIEWPORT`
+
         """
-        if at_pointer:
+        if center == self.CENTER_ON_POINTER:
             etime, ex, ey = self.get_last_event_info(self.tdw)
             center = (ex, ey)
-        else:
+        elif center == self.CENTER_ON_VIEWPORT:
             center = self.tdw.get_center()
 
         try:
@@ -694,10 +728,15 @@ class Document (CanvasController):
             zoom_levels.sort()
             zoom_index = zoom_levels.index(self.tdw.scale)
 
-        if   command == 'ZoomIn' : zoom_index += 1
-        elif command == 'ZoomOut': zoom_index -= 1
-        else: assert 0
-        if zoom_index < 0: zoom_index = 0
+        if direction == self.ZOOM_INWARDS:
+            zoom_index += 1
+        elif direction == self.ZOOM_OUTWARDS:
+            zoom_index -= 1
+        else:
+            raise TypeError, 'unsupported direction=%s' % (direction,)
+
+        if zoom_index < 0:
+            zoom_index = 0
         if zoom_index >= len(self.zoomlevel_values):
             zoom_index = len(self.zoomlevel_values) - 1
 
@@ -705,36 +744,52 @@ class Document (CanvasController):
         self.tdw.set_zoom(z, center=center)
         self.notify_view_changed()
 
-    def rotate(self, command, at_pointer=True):
-        """Handles named "Rotate{Left,Right}" user commands.
+
+    def rotate(self, direction, center=CENTER_ON_POINTER):
+        """Handles rotation in increments.
+
+        Rotates the doc's TDW by a set amount, either left or right.
+
+        :param direction: direction of rotation
+        :type direction: `ROTATE_CLOCKWISE` or `ROTATE_ANTICLOCKWISE`
+        :param center: rotation center
+        :type center: tuple ``(x, y)`` in model coords, or `CENTER_ON_POINTER`
+            or `CENTER_ON_VIEWPORT`
+
         """
 
-        if at_pointer:
+        if center == self.CENTER_ON_POINTER:
             etime, ex, ey = self.get_last_event_info(self.tdw)
             center = (ex, ey)
-        else:
+        elif center == self.CENTER_ON_VIEWPORT:
             center = self.tdw.get_center()
 
-        # Allows easy and quick rotation to 45/90/180 degrees
-        rotation_step = 2*math.pi/16
+        if direction == self.ROTATE_CLOCKWISE:
+            self.tdw.rotate(+self.ROTATION_STEP, center=center)
+        elif direction == self.ROTATE_ANTICLOCKWISE:
+            self.tdw.rotate(-self.ROTATION_STEP, center=center)
+        else:
+            raise TypeError, 'unsupported direction=%s' % (direction,)
 
-        if command == 'RotateRight':
-            self.tdw.rotate(+rotation_step, center=center)
-        else:   # command == 'RotateLeft'
-            self.tdw.rotate(-rotation_step, center=center)
         self.notify_view_changed()
 
 
     def zoom_cb(self, action):
         """Callback for Zoom{In,Out} GtkActions.
         """
-        self.zoom(action.get_name())
+        direction = self.ZOOM_INWARDS
+        if action.get_name() == 'ZoomOut':
+            direction = self.ZOOM_OUTWARDS
+        self.zoom(direction)
 
 
     def rotate_cb(self, action):
         """Callback for Rotate{Left,Right} GtkActions.
         """
-        self.rotate(action.get_name())
+        direction = self.ROTATE_CLOCKWISE
+        if action.get_name() == 'RotateRight':
+            direction = self.ROTATE_ANTICLOCKWISE
+        self.rotate(direction)
 
 
     def symmetry_action_toggled_cb(self, action):

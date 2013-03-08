@@ -292,28 +292,25 @@ class ScrollableModeMixin (InteractionMode):
         Shift+scroll, or left/right scroll: rotation.
 
         """
+        doc = self.doc
         d = event.direction
         if d == gdk.SCROLL_UP:
             if event.state & gdk.SHIFT_MASK:
-                self.doc.rotate('RotateLeft')
-                return True
+                doc.rotate(doc.ROTATE_CLOCKWISE)
             else:
-                self.doc.zoom('ZoomIn')
-                return True
+                doc.zoom(doc.ZOOM_INWARDS)
         elif d == gdk.SCROLL_DOWN:
             if event.state & gdk.SHIFT_MASK:
-                self.doc.rotate('RotateRight')
-                return True
+                doc.rotate(doc.ROTATE_ANTICLOCKWISE)
             else:
-                self.doc.zoom('ZoomOut')
-                return True
+                doc.zoom(doc.ZOOM_OUTWARDS)
         elif d == gdk.SCROLL_RIGHT:
-            self.doc.rotate('RotateRight')
-            return True
+            doc.rotate(doc.ROTATE_ANTICLOCKWISE)
         elif d == gdk.SCROLL_LEFT:
-            self.doc.rotate('RotateLeft')
-            return True
-        return super(ScrollableModeMixin, self).scroll_cb(tdw, event)
+            doc.rotate(doc.ROTATE_CLOCKWISE)
+        else:
+            super(ScrollableModeMixin, self).scroll_cb(tdw, event)
+        return True
 
 
 class FreehandOnlyMode (InteractionMode):
