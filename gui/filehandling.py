@@ -10,6 +10,7 @@ import os, re
 from glob import glob
 import sys
 
+import glib
 import gtk
 from gettext import gettext as _
 from gettext import ngettext
@@ -588,8 +589,9 @@ class FileHandler(object):
         return prefix
 
     def get_scratchpad_prefix(self):
-        # TODO make this something pulled from preferences #PALETTE1
-        prefix = os.path.abspath(os.path.join(self.app.confpath, 'scratchpads'))
+        # TODO allow override via prefs, maybe
+        prefix = os.path.join(self.app.user_datapath, 'scratchpads')
+        prefix = os.path.abspath(prefix)
         if os.path.isdir(prefix):
             if not prefix.endswith(os.path.sep):
                 prefix += os.path.sep
@@ -597,24 +599,13 @@ class FileHandler(object):
 
     def get_scratchpad_default(self):
         # TODO get the default name from preferences
-        return os.path.join(self.get_scratchpad_prefix(), "scratchpad_default.ora")
+        prefix = self.get_scratchpad_prefix()
+        return os.path.join(prefix, "scratchpad_default.ora")
 
     def get_scratchpad_autosave(self):
         # TODO get the default name from preferences
-        return os.path.join(self.get_scratchpad_prefix(), "autosave.ora")
-
-    def get_gimp_prefix(self):
-        from lib import helpers
-        homepath =  helpers.expanduser_unicode(u'~')
-        if sys.platform == 'win32':
-            # using patched win32 glib using correct CSIDL_LOCAL_APPDATA
-            import glib
-            confpath = os.path.join(glib.get_user_config_dir().decode('utf-8'),'gimp-2.6')
-        elif homepath == '~':
-            confpath = os.path.join(prefix, 'UserData')
-        else:
-            confpath = os.path.join(homepath, '.gimp-2.6')
-        return confpath       
+        prefix = self.get_scratchpad_prefix()
+        return os.path.join(prefix, "autosave.ora")
 
     def list_scraps(self):
         prefix = self.get_scrap_prefix()

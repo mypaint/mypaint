@@ -71,7 +71,8 @@ class Window(windowing.Dialog):
 
     def save_as_default_cb(self):
         pixbuf = self.current_background_pixbuf
-        path = os.path.join(self.app.confpath, 'backgrounds', 'default.png')
+        path = os.path.join(self.app.user_datapath,
+                            'backgrounds', 'default.png')
         gui.pygtkcompat.gdk.pixbuf.save(pixbuf, path, 'png')
         self.hide()
 
@@ -84,7 +85,8 @@ class Window(windowing.Dialog):
         pixbuf = self.current_background_pixbuf
         i = 1
         while 1:
-            filename = os.path.join(self.app.confpath, 'backgrounds', 'color%02d.png' % i)
+            filename = os.path.join(self.app.user_datapath,
+                                    'backgrounds', 'color%02d.png' % i)
             if not os.path.exists(filename):
                 break
             i += 1
@@ -100,7 +102,7 @@ class BackgroundList(pixbuflist.PixbufList):
         self.win = win
 
         stock_path = os.path.join(self.app.datapath, 'backgrounds')
-        user_path  = os.path.join(self.app.confpath, 'backgrounds')
+        user_path  = os.path.join(self.app.user_datapath, 'backgrounds')
         if not os.path.isdir(user_path):
             os.mkdir(user_path)
         self.backgrounds = []

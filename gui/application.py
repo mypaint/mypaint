@@ -10,8 +10,9 @@ import locale
 import gettext
 import os, sys
 from os.path import join
-import gtk, gobject
-gdk = gtk.gdk
+import gobject
+import gtk
+from gtk import gdk
 from lib import brush, helpers, mypaintlib
 import filehandling, keyboard, brushmanager, windowing, document, layout
 import brushmodifier, linemode
@@ -29,37 +30,51 @@ class Application: # singleton
     initialization, called by main.py or by the testing scripts.
     """
 
-    def __init__(self, datapath, extradata, confpath, filenames):
+    def __init__(self, filenames, app_datapath, app_extradatapath,
+                 user_datapath, user_confpath, fullscreen=False):
         """Construct, but do not run.
 
-        :`datapath`:
-            Usually ``$PREFIX/share/mypaint``. Where MyPaint should find its
-            app-specific read-only data, e.g. UI definition XML, backgrounds
-            and brush defintions.
-        :`extradata`:
-            Where to find the defaults for MyPaint's themeable UI icons. This
-            will be effectively used in addition to ``$XDG_DATA_DIRS`` for the
-            purposes of icon lookup. Normally it's ``$PREFIX/share``, to support
-            unusual installations outside the usual locations. It should contain
-            an ``icons/`` subdirectory.
-        :`confpath`:
-            Where the user's configuration is stored. ``$HOME/.mypaint`` is
-            typical on Unix-like OSes.
+        :params filenames: The list of files to load.
+          Note: only the first is used.
+        :param app_datapath: App-specific read-only data area.
+          Path used for UI definition XML, and the default sets of backgrounds,
+          palettes, and brush defintions. Often $PREFIX/share/.
+        :param app_extradatapath: Extra search path for themeable UI icons.
+          This will be used in addition to $XDG_DATA_DIRS for the purposes of
+          icon lookup. Normally it's $PREFIX/share, to support unusual
+          installations outside the usual locations. It should contain an
+          icons/ subdirectory.
+        :param user_datapath: Location of the user's app-specific data.
+          For MyPaint, this means the user's brushes, backgrounds, and
+          scratchpads. Commonly $XDG_DATA_HOME/mypaint, i.e.
+          ~/.local/share/mypaint
+        :param user_confpath: Location of the user's app-specific config area.
+          This is where MyPaint will save user preferences data and the
+          keyboard accelerator map. Commonly $XDG_CONFIG_HOME/mypaint, i.e.
+          ~/.config/mypaint
+        :param fullscreen: Go fullscreen after starting.
+
         """
-        self.confpath = confpath
-        self.datapath = datapath
+
+        self.user_confpath = user_confpath #: User configs (see __init__)
+        self.user_datapath = user_datapath #: User data (see __init__)
+
+        self.datapath = app_datapath
 
         # create config directory, and subdirs where the user might drop files
-        # TODO make scratchpad dir something pulled from preferences #PALETTE1
-        for d in ['', 'backgrounds', 'brushes', 'scratchpads']:
-            d = os.path.join(self.confpath, d)
-            if not os.path.isdir(d):
-                os.mkdir(d)
-                print 'Created', d
+        for basedir in [self.user_confpath, self.user_datapath]:
+            if not os.path.isdir(basedir):
+                os.mkdir(basedir)
+                print 'Created basedir', basedir
+        for datasubdir in ['backgrounds', 'brushes', 'scratchpads']:
+            datadir = os.path.join(self.user_datapath, datasubdir)
+            if not os.path.isdir(datadir):
+                os.mkdir(datadir)
+                print 'Created data subdir', datadir
 
         # Default location for our icons. The user's theme can override these.
         icon_theme = gtk.icon_theme_get_default()
-        icon_theme.append_search_path(join(extradata, "icons"))
+        icon_theme.append_search_path(join(app_extradatapath, "icons"))
 
         # Icon sanity check
         if not icon_theme.has_icon('mypaint') \
@@ -77,7 +92,7 @@ class Application: # singleton
             gtk.window_set_default_icon_name('mypaint')
 
         # Stock items, core actions, and menu structure
-        builder_xml = join(datapath, "gui", "mypaint.xml")
+        builder_xml = join(self.datapath, "gui", "mypaint.xml")
         self.builder = gtk.Builder()
         self.builder.set_translation_domain("mypaint")
         self.builder.add_from_file(builder_xml)
@@ -113,7 +128,10 @@ class Application: # singleton
         signal_callback_objs.append(self.doc)
         signal_callback_objs.append(self.doc.modes)
         self.scratchpad_doc = document.Document(self, leader=self.doc)
-        self.brushmanager = brushmanager.BrushManager(join(datapath, 'brushes'), join(confpath, 'brushes'), self)
+        self.brushmanager = brushmanager.BrushManager(
+                join(app_datapath, 'brushes'),
+                join(user_datapath, 'brushes'),
+                self)
         self.filehandler = filehandling.FileHandler(self)
         signal_callback_objs.append(self.filehandler)
         self.brushmodifier = brushmodifier.BrushModifier(self)
@@ -131,7 +149,7 @@ class Application: # singleton
 
         self.brush_color_manager = BrushColorManager(self)
         self.brush_color_manager.set_picker_cursor(self.cursor_color_picker)
-        self.brush_color_manager.set_data_path(datapath)
+        self.brush_color_manager.set_data_path(self.datapath)
 
         self.init_brush_adjustments()
 
@@ -151,7 +169,8 @@ class Application: # singleton
         self.kbm.start_listening()
         self.filehandler.doc = self.doc
         self.filehandler.filename = None
-        pygtkcompat.gtk.accel_map_load(join(self.confpath, 'accelmap.conf'))
+        pygtkcompat.gtk.accel_map_load(join(self.user_confpath,
+                                            'accelmap.conf'))
 
         # Load the background settings window.
         # FIXME: this line shouldn't be needed, but we need to load this up
@@ -170,7 +189,9 @@ class Application: # singleton
             if filenames:
                 # Open only the first file, no matter how many has been specified
                 # If the file does not exist just set it as the file to save to
-                fn = filenames[0].replace('file:///', '/') # some filebrowsers do this (should only happen with outdated mypaint.desktop)
+                fn = filenames[0].replace('file:///', '/')
+                # ^ some filebrowsers do this (should only happen with outdated
+                #   mypaint.desktop)
                 if not os.path.exists(fn):
                     self.filehandler.filename = fn
                 else:
@@ -178,26 +199,31 @@ class Application: # singleton
 
             # Load last scratchpad
             if not self.preferences["scratchpad.last_opened_scratchpad"]:
-                self.preferences["scratchpad.last_opened_scratchpad"] = self.filehandler.get_scratchpad_autosave()
-                self.scratchpad_filename = self.preferences["scratchpad.last_opened_scratchpad"]
+                self.preferences["scratchpad.last_opened_scratchpad"] \
+                         = self.filehandler.get_scratchpad_autosave()
+                self.scratchpad_filename \
+                         = self.preferences["scratchpad.last_opened_scratchpad"]
             if os.path.isfile(self.scratchpad_filename):
                 try:
                     self.filehandler.open_scratchpad(self.scratchpad_filename)
                 except AttributeError, e:
                     print "Scratchpad widget isn't initialised yet, so cannot centre"
 
-
             self.apply_settings()
             if not self.pressure_devices:
                 print 'No pressure sensitive devices found.'
             self.drawWindow.present()
+
+            # Handle fullscreen command line option
+            if fullscreen:
+                self.drawWindow.fullscreen_cb()
 
         gobject.idle_add(at_application_start)
 
     def save_settings(self):
         """Saves the current settings to persistent storage."""
         def save_config():
-            settingspath = join(self.confpath, 'settings.json')
+            settingspath = join(self.user_confpath, 'settings.json')
             jsonstr = helpers.json_dumps(self.preferences)
             f = open(settingspath, 'w')
             f.write(jsonstr)
@@ -221,7 +247,7 @@ class Application: # singleton
         def get_legacy_config():
             dummyobj = {}
             tmpdict = {}
-            settingspath = join(self.confpath, 'settings.conf')
+            settingspath = join(self.user_confpath, 'settings.conf')
             if os.path.exists(settingspath):
                 exec open(settingspath) in dummyobj
                 tmpdict['saving.scrap_prefix'] = dummyobj['save_scrap_prefix']
@@ -229,7 +255,7 @@ class Application: # singleton
                 tmpdict['input.global_pressure_mapping'] = dummyobj['global_pressure_mapping']
             return tmpdict
         def get_json_config():
-            settingspath = join(self.confpath, 'settings.json')
+            settingspath = join(self.user_confpath, 'settings.json')
             jsonstr = open(settingspath).read()
             try:
                 return helpers.json_loads(jsonstr)
@@ -526,7 +552,7 @@ class Application: # singleton
         print ''
 
     def save_gui_config(self):
-        pygtkcompat.gtk.accel_map_save(join(self.confpath, 'accelmap.conf'))
+        pygtkcompat.gtk.accel_map_save(join(self.user_confpath, 'accelmap.conf'))
         self.save_settings()
 
     def message_dialog(self, text, type=gtk.MESSAGE_INFO, flags=0,
