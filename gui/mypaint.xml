@@ -906,23 +906,11 @@ Perhaps an increasing amount.
         </object>
       </child>
       <!-- Scratchpad palette-rendering submenu actions -->
-      <child>
-        <object class="GtkAction" id="ScratchPaletteOptions"><!-- Submenu -->
-          <property name="label" translatable="yes"
-            context="Menu|Scratchpad|">Color Dabs</property>
-        </object>
-      </child>
-      <child>
-        <object class="GtkAction" id="ScratchLoadPalette">
-          <property name="label" translatable="yes"
-            context="Menu|Scratchpad|Color Dabs|">Render from File...</property>
-          <signal name="activate" handler="draw_palette_cb"/>
-        </object>
-      </child>
+      <!-- Diminishing as this fnctionality is moved to the editable palette code -->
       <child>
         <object class="GtkAction" id="ScratchDrawSatPalette">
           <property name="label" translatable="yes"
-            context="Menu|Scratchpad|Color Dabs|">Saturation Spread for Current Color</property>
+            context="Menu|Scratchpad|">Draw Saturation Spread</property>
           <signal name="activate" handler="draw_sat_spectrum_cb"/>
         </object>
       </child>

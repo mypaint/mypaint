@@ -34,7 +34,7 @@ import pygtkcompat
 import xml.etree.ElementTree as ET
 
 # palette support
-from lib.scratchpad_palette import GimpPalette, hatch_squiggle, squiggle, draw_palette
+from lib.scratchpad_palette import GimpPalette, draw_palette
 
 from overlays import LastPaintPosOverlay, ScaleOverlay
 from symmetry import SymmetryOverlay
@@ -722,31 +722,6 @@ class Window (windowing.MainWindow, layout.MainWindow):
         bg = self.app.doc.model.background
         if self.app.scratchpad_doc:
             self.app.scratchpad_doc.model.set_background(bg)
-
-    def draw_palette_cb(self, action):
-        # test functionality:
-        file_filters = [
-        (_("Gimp Palette Format"), ("*.gpl",)),
-        (_("All Files"), ("*.*",)),
-        ]
-        gimp_path = os.path.join(self.app.filehandler.get_gimp_prefix(), "palettes")
-        dialog = self.app.filehandler.get_open_dialog(start_in_folder=gimp_path,
-                                                  file_filters = file_filters)
-        try:
-            if dialog.run() == gtk.RESPONSE_OK:
-                dialog.hide()
-                filename = dialog.get_filename().decode('utf-8')
-                if filename:
-                    #filename = "/home/ben/.gimp-2.6/palettes/Nature_Grass.gpl" # TEMP HACK TO TEST
-                    g = GimpPalette(filename)
-                    grid_size = 30.0
-                    column_limit = 7
-                    # IGNORE Gimp Palette 'columns'?
-                    if g.columns != 0:
-                        column_limit = g.columns   # use the value for columns in the palette
-                    draw_palette(self.app, g, self.app.scratchpad_doc, columns=column_limit, grid_size=grid_size, swatch_method=hatch_squiggle, scale = 25.0)
-        finally:
-            dialog.destroy()
 
     def draw_sat_spectrum_cb(self, action):
         g = GimpPalette()
