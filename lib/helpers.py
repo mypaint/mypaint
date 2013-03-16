@@ -9,6 +9,7 @@
 from math import floor, ceil, isnan
 import os, sys, hashlib, zipfile, colorsys, urllib, gc
 import numpy
+import gio
 
 # Avoid pulling in PyGTK+ when using GI
 if not os.environ.get('MYPAINT_ENABLE_GEGL', 0):
@@ -118,9 +119,9 @@ def gdkpixbuf2numpy(pixbuf):
     #arr = arr.reshape(h, w, 4)
     #return arr
 
+
 def freedesktop_thumbnail(filename, pixbuf=None):
-    """
-    Fetch or (re-)generate the thumbnail in ~/.thumbnails.
+    """Fetch or (re-)generate the thumbnail in ~/.thumbnails.
 
     If there is no thumbnail for the specified filename, a new
     thumbnail will be generated and stored according to the FDO spec.
@@ -135,7 +136,7 @@ def freedesktop_thumbnail(filename, pixbuf=None):
     Returns the thumbnail.
     """
 
-    uri = filename2uri(filename)
+    uri = _filename2uri_freedesktop_canon(filename)
     file_hash = hashlib.md5(uri).hexdigest()
 
     if sys.platform == 'win32':
@@ -269,6 +270,35 @@ def filename2uri(path):
 
     #print 'pathname2url:', repr(path)
     return 'file:///' + path
+
+
+def _filename2uri_freedesktop_canon(path, encoding=None):
+    """Filename-to-URI for the thumbnailer.
+
+      >>> path = u'/tmp/smile (\u263a).ora'
+      >>> _filename2uri_freedesktop_canon(path, encoding='UTF-8')
+      'file:///tmp/smile%20(%E2%98%BA).ora'
+
+    Freedesktop thumbnailing requires the canonical URI for the filename in
+    order for the hashes used it generates to be interoperable with other
+    programs. GIO is the simplest way of generating the right kind. In
+    particular, ``()`` brackets must not be encoded.
+
+    :param path: the path to encode; must be a unicode object.
+    :param encoding: override the filesystem encoding for testing.
+      If left unspecified, then the system filesystem encoding will be assumed:
+      see `sys.getfilesystemencoding()`. Normally that's correct.
+    :rtype: str, containing a canonical URI.
+
+    """
+    # TODO: investigate whether this can be used as a general replacement for
+    # filename2uri().
+    assert type(path) is unicode
+    if encoding is None:
+        encoding = sys.getfilesystemencoding()
+    path_bytes = path.encode(encoding)
+    gfile = gio.File(path_bytes)
+    return gfile.get_uri()
 
 
 def rgb_to_hsv(r, g, b):
