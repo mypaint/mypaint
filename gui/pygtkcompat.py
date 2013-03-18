@@ -1,6 +1,6 @@
 
 import os
-USE_GTK3 = os.environ.get('MYPAINT_ENABLE_GTK3', 0)
+USE_GTK3 = os.environ.get('MYPAINT_ENABLE_GTK3', 1)
 print USE_GTK3
 
 if USE_GTK3:
