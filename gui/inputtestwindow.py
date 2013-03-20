@@ -12,6 +12,7 @@ from gtk import gdk
 import gobject
 import pango
 
+import pygtkcompat
 import windowing
 
 
@@ -98,7 +99,12 @@ class Window(windowing.SubWindow):
         if hasattr(event, 'x') and hasattr(event, 'y'):
             msg += ' x=% 7.2f y=% 7.2f' % (event.x, event.y)
 
-        pressure = event.get_axis(gdk.AXIS_PRESSURE)
+        if pygtkcompat.USE_GTK3:
+            axis_found, pressure = event.get_axis(gdk.AXIS_PRESSURE)
+            if not axis_found:
+                pressure = None
+        else: # PyGTK
+            pressure = event.get_axis(gdk.AXIS_PRESSURE)
         if pressure is not None:
             self.pressure_label.set_text('%4.4f' % pressure)
             msg += ' pressure=% 4.4f' % pressure
@@ -107,7 +113,15 @@ class Window(windowing.SubWindow):
             msg += ' state=0x%04x' % event.state
 
         if hasattr(event, 'button'):
-            msg += ' button=%d' % event.button
+            if pygtkcompat.USE_GTK3:
+                has_button, button = event.get_button()
+                if not has_button:
+                    button = None
+            else:
+                button = event.button
+                has_button = True
+            if has_button:
+                msg += ' button=%d' % button
 
         if hasattr(event, 'keyval'):
             msg += ' keyval=%s' % event.keyval
@@ -117,14 +131,24 @@ class Window(windowing.SubWindow):
 
         device = getattr(event, 'device', None)
         if device:
-            device = device.name
+            if pygtkcompat.USE_GTK3:
+                device = event.get_source_device()
+                device = device.get_name()
+            else: # PyGTK
+                device = device.name
             if self.last_device != device:
                 self.last_device = device
                 self.device_label.set_text(device)
 
-        xtilt = event.get_axis(gdk.AXIS_XTILT)
-        ytilt = event.get_axis(gdk.AXIS_YTILT)
-        if xtilt is not None or ytilt is not None:
+        if pygtkcompat.USE_GTK3:
+            has_xtilt, xtilt = event.get_axis(gdk.AXIS_XTILT)
+            has_ytilt, ytilt = event.get_axis(gdk.AXIS_YTILT)
+            have_tilts = has_xtilt and has_ytilt
+        else: #PyGTK
+            xtilt = event.get_axis(gdk.AXIS_XTILT)
+            ytilt = event.get_axis(gdk.AXIS_YTILT)
+            have_tilts = xtilt is not None and ytilt is not None
+        if have_tilts:
             self.tilt_label.set_text('%+4.4f / %+4.4f' % (xtilt, ytilt))
 
         if widget is not self.app.doc.tdw:
