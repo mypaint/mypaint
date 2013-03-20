@@ -14,15 +14,18 @@ Responsible for ordering, loading and saving brush lists.
 """
 
 import pygtkcompat
+
+from gettext import gettext as _
 if pygtkcompat.USE_GTK3:
     import gi
     from gi.repository import PangoCairo
+import pango
+import gtk
+from gtk import gdk
 
-import gtk, pango
-gdk = gtk.gdk
-from gettext import gettext as _
-
-import pixbuflist, dialogs, brushmanager
+import pixbuflist
+import dialogs
+import brushmanager
 from elastic import ElasticExpander
 from brushlib import brushsettings
 from lib.helpers import escape

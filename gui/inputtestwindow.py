@@ -7,8 +7,11 @@
 # (at your option) any later version.
 
 from gettext import gettext as _
-import gtk, gobject, pango
-gdk = gtk.gdk
+import gtk
+from gtk import gdk
+import gobject
+import pango
+
 import windowing
 
 

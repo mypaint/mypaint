@@ -9,7 +9,7 @@
 import pygtkcompat
 
 import gtk
-gdk = gtk.gdk
+from gtk import gdk
 from gettext import gettext as _
 import gobject
 import pango

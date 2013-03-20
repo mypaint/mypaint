@@ -6,12 +6,13 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
+from warnings import warn
+
 import pygtkcompat
 import gtk
-gdk = gtk.gdk
+from gtk import gdk
 from lib import helpers
 from math import ceil
-from warnings import warn
 
 DRAG_ITEM_NAME = 103
 ITEM_SIZE_DEFAULT = 48

@@ -7,7 +7,7 @@
 # (at your option) any later version.
 
 import gtk
-gdk = gtk.gdk
+from gtk import gdk
 import pygtkcompat
 
 

@@ -6,14 +6,19 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
+import os
+from glob import glob
+
 import gui.pygtkcompat
 from gettext import gettext as _
-import gtk, os
-gdk = gtk.gdk
-from glob import glob
+import gtk
+from gtk import gdk
+
 import pixbuflist
 import windowing
-from lib import tiledsurface, helpers
+from lib import tiledsurface
+from lib import helpers
+
 N = tiledsurface.N
 
 RESPONSE_SAVE_AS_DEFAULT = 1

@@ -8,7 +8,7 @@
 
 import pygtkcompat
 import gtk
-gdk = gtk.gdk
+from gtk import gdk
 
 import cairo
 from lib import helpers
