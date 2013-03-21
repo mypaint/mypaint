@@ -1,71 +1,152 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<glade-catalog name="mypaint_widgets" library="gladepython"
-               depends="gtk+" domain="glade-3" icon-prefix="mypaint">
-<!--
+<glade-catalog name="mypaint_widgets"
+    depends="gtk+" version="3.0"
+    icon-prefix="mypaint">
+  <!--
+  Begin designing with 
 
-   The icon-prefix defaults to the setting for "name".
+   $ glade/run.sh
+   $ glade/run.sh gui/filename.glade
+  
+  There's no equivalent of the old library="gladepython" in glade3 +
+  libgladeui2. libgladegtk is a libgladeui1 module, and it can't be used with
+  Python GTK3 code even if you override GLADE_MODULE_SEARCH_PATH too.
+   
+  Instead, we just fake it sufficiently for the superclass widget to appear by
+  specifying parent=* in each glade-widget-class.
+  
+  The icon-prefix defaults to the setting for "name".
+  
+  Icons for use in Glade's UI are named widget-<ICON-PREFIX>-<GENERIC-NAME>.
+  -->
 
-   Icons for use in Glade's UI are named widget-<ICON-PREFIX>-<GENERIC-NAME>.
-
--->
-
-  <init-function>glade_python_init</init-function>
 
   <glade-widget-classes>
-    <glade-widget-class name="TiledDrawWidget" title="Tiled Drawing Widget"
-                        generic-name="tdw" />
-    <glade-widget-class name="PixbufList" title="Pixbuf List"
-                        generic-name="pixbuflist" />
-    <glade-widget-class name="ElasticWindow" title="Elastic Window"
-                        generic-name="elastic-window" />
-    <glade-widget-class name="ElasticVBox" title="Elastic VBox"
-                        generic-name="elastic-vbox" />
-    <glade-widget-class name="ElasticExpander" title="Elastic Expander"
-                        generic-name="elastic-expander" />
-    <glade-widget-class name="CurveWidget" title="Curve Widget"
-                        generic-name="curve" />
-    <glade-widget-class name="ItemSpinBox" title="Item SpinBox"
-                        generic-name="spinbox">
+    <!--
+    Lots of fakery here. Use GtkSpinner as a placeholder in lots of places,
+    even though it's not in the MyPaint widgets' superclasses: it's visible,
+    and it doesn't have many properties to turn off. And it looks like a
+    loading animation too :-)
+    -->
+
+    <!-- gui/tileddrawwidget.py -->
+    <glade-widget-class name="TiledDrawWidget"
+        title="Tiled Drawing Widget" parent="GtkSpinner"
+        generic-name="tdw">
       <properties>
-        <property id="size" save="False" query="False"
-                  default="0" visible="False" />
+        <!-- All fakery -->
+        <property id="active" visible="False" save="False" />
+        <!-- Representative size for preview -->
+        <property id="width-request" default="250" optional="True"
+            optional-default="True"/>
+        <property id="height-request" default="250" optional="True"
+            optional-default="True"/>
       </properties>
     </glade-widget-class>
 
-    <glade-widget-class name="DropdownPanelButton" title="Dropdown Panel Button"
-                        generic-name="dropdown-panel-button">
+    <!-- gui/pixbuflist.py -->
+    <glade-widget-class name="PixbufList"
+        title="Pixbuf List" parent="GtkSpinner"
+        generic-name="pixbuflist">
       <properties>
-        <property id="panel-widget"
-                  save="True"
-                  query="True"
-                  name="Panel Widget"
-                  visible="True">
+        <!-- All fakery -->
+        <property id="active" visible="False" save="False" />
+        <!-- Representative size for preview -->
+        <property id="width-request" default="350" optional="True"
+            optional-default="True"/>
+        <property id="height-request" default="250" optional="True"
+            optional-default="True"/>
+      </properties>
+    </glade-widget-class>
+
+    <!-- gui/elastic.py -->
+    <glade-widget-class name="ElasticWindow"
+        title="Elastic Window" parent="GtkWindow"
+        generic-name="elasticwindow" />
+    <glade-widget-class name="ElasticVBox"
+        title="Elastic VBox" parent="GtkBox"
+        generic-name="elasticvbox">
+      <properties>
+        <property id="orientation" default="GTK_ORIENTATION_VERTICAL"
+            save="True" query="False" visible="False" />
+      </properties>
+    </glade-widget-class>
+    <glade-widget-class name="ElasticExpander"
+        title="Elastic Expander" parent="GtkExpander"
+        generic-name="elasticexpander" />
+
+    <!-- gui/curve.py -->
+    <glade-widget-class name="CurveWidget"
+        title="Curve Widget" parent="GtkSpinner"
+        generic-name="curve">
+      <properties>
+        <!-- All fakery -->
+        <property id="active" visible="False" save="False" />
+        <!-- Representative size for preview -->
+        <property id="width-request" default="350" optional="True"
+            optional-default="True"/>
+        <property id="height-request" default="250" optional="True"
+            optional-default="True"/>
+      </properties>
+    </glade-widget-class>
+
+    <!-- gui/spinbox.py -->
+    <glade-widget-class name="ItemSpinBox"
+        title="Item SpinBox" parent="GtkSpinner"
+        generic-name="itemspinbox">
+      <properties>
+        <!-- All fakery -->
+        <property id="active" visible="False" save="False" />
+        <!-- Representative size for preview -->
+        <property id="width-request" default="-1" optional="True"
+            optional-default="True"/>
+        <property id="height-request" default="20" optional="True"
+            optional-default="True"/>
+      </properties>
+    </glade-widget-class>
+
+    <!-- gui/dropdownpanel.py -->
+    <glade-widget-class name="DropdownPanelButton"
+        title="Dropdown Panel Button" parent="GtkToggleButton"
+        generic-name="dropdownpanelbutton">
+      <properties>
+        <property id="panel-widget" name="Panel Widget"
+            save="True" query="True" visible="True">
           <parameter-spec>
             <type>GParamObject</type>
             <value-type>GtkWidget</value-type>
           </parameter-spec>
-          <tooltip>The window to present when clicked.</tooltip>
+          <tooltip>The widget to present when clicked.</tooltip>
         </property>
       </properties>
     </glade-widget-class>
 
-    <glade-widget-class name="ColorChangerHSV" title="ColorChanger's HSV"
-                        generic-name="hsvcompat" />
-
+    <!-- gui/buttonmap.py -->
+    <glade-widget-class name="ButtonMappingEditor"
+        title="Button Mapping Editor" parent="GtkSpinner"
+        generic-name="buttonmappingeditor">
+      <properties>
+        <!-- All fakery -->
+        <property id="active" visible="False" save="False" />
+        <!-- Representative size for preview -->
+        <property id="width-request" default="350" optional="True"
+            optional-default="True"/>
+        <property id="height-request" default="250" optional="True"
+            optional-default="True"/>
+      </properties>
+    </glade-widget-class>
   </glade-widget-classes>
 
   <glade-widget-group name="MyPaint" title="MyPaint Widgets">
     <glade-widget-class-ref name="TiledDrawWidget"/>
     <glade-widget-class-ref name="PixbufList"/>
-    <!-- ElasticWindow doesn't behave especially well in Glade, but it
-         can be built. That'll do. -->
     <glade-widget-class-ref name="ElasticWindow"/>
     <glade-widget-class-ref name="ElasticVBox"/>
     <glade-widget-class-ref name="ElasticExpander"/>
     <glade-widget-class-ref name="CurveWidget"/>
     <glade-widget-class-ref name="ItemSpinBox"/>
     <glade-widget-class-ref name="DropdownPanelButton"/>
-    <glade-widget-class-ref name="ColorChangerHSV"/>
+    <glade-widget-class-ref name="ButtonMappingEditor"/>
   </glade-widget-group>
 
 </glade-catalog>

@@ -28,40 +28,19 @@ widgets, and a script for running glade in the right way. To run glade with the
 MyPaint catalog for testing, invoke
 
     $ glade/run.sh
+    $ glade/run.sh gui/something.glade
 
-Make sure you've built libglade inside your working MyPaint tree first using
-scons: many of the widgets require it. This seems to work with the stock glade3
-version 3.8.0 distributed as part of Ubuntu 11.04.
+Making widgets compatible with Glade and GtkBuilder
+---------------------------------------------------
 
-Making widgets compatible with Glade
-------------------------------------
+Prior to glade3, it was possible to run the widget code inside glade itself via
+gladepython; now we have to fake it. It's still possible to set up properties
+which can be edited by glade in the catalog file, but they must be listed out
+explicitly and associated with a type. That's probably enough, in all honesty.
 
-Have a look in glade/mypaint_widgets.xml to see how widgets are listed for use
-in the designer. You need to add a class definition, which sometimes uses
-property overrides to either make the widget more useful to glade users, or
-expose some actual GObject property of the object. Also list the widget under
-the "MyPaint Widgets" group.
-
-glade/mypaint_widgets.py just imports all the widget classes from gui/ so that
-Glade's python loader can see them.
-
-Try to split out widgets into separate files, one per widget, and write some
-minimal test code which builds a trivial test GUI containing the widget in a
-fairly basic state. Hide the test code in the usual "if __name__ ==
-'__main__':" block.
-
-Widgets must be constructable on demand by the GObject system. For PyGTK, this
+Widgets must be constructable on demand by the GObject system. For PyGI, this
 means declaring a __gtype_name__ inside the class (we just use the class's
 name), and ensuring it can be constructed with no arguments.
-
-If the widget needs a ref to another widget to work in the app, consider
-allowing the other widget to be constructed independently and associated with
-yours via a formally declared GObject property. See gui/dropdownpanel.py for an
-example (search for __gproperties__ and its support machinery). For the
-dropdown button, it's useful to allow its associated panel's content to be
-designable within Glade, but you can't design popup stuff sensibly in glade.
-Therefore we allow any top-level widget in the glade project to be set as panel
-content via the button's "panel-widget" property.
 
 Try to make the widget's module not depend on too much other stuff too:
 minimize its imports list, and make sure loading order doesn't matter.
