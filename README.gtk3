@@ -1,31 +1,30 @@
 How to test the GTK3 code
 =========================
 
-As of 2012-07-11, MyPaint is being updated to support GObject-Introspection
-and GTK3. Upstream support for pygtk is going away, and we should be using the
+As of 2013-03-20, MyPaint is being updated to support GObject-Introspection
+and GTK3. Upstream support for PyGTK is going away, and we should be using the
 newer GTK anyway given our heavy reliance on fancy input devices. It would be
 nice to see some of the input-related bugs go away. The rough plan is:
 
-1. Update the Python code to support an internal pygtkcompat abstraction layer,
-   which allows us to carry on using PyGTK while we maintain GTK2 code, while
-   at the same time enabling us to port to PyGI+GTK3 via upstream's
+1. [DONE] Update the Python code to support an internal pygtkcompat abstraction
+   layer, which allows us to carry on using PyGTK while we maintain GTK2 code,
+   while at the same time enabling us to port to PyGI+GTK3 via upstream's
    pygtkcompat module.
 
-2. In this state we can flip between GTK2 and GTK3 modes with compiler flags
-   and runtime environment variables. Get the code running and fully tested
-   under PyGI+GTK3, albeit via pygtkcompat. New code can be merged, but it
-   must be compatible with both PyGTK-GTK2 and pygtkcompat-PyGI+GTK3 in this
-   state, using pygtk naming conventions and import blocks.
+2. [DONE] In this state we can flip between GTK2 and GTK3 modes with compiler
+   flags and runtime environment variables. Get the code running and fully
+   tested under PyGI+GTK3, albeit via pygtkcompat. New code can be merged,
+   but it must be compatible with both PyGTK-GTK2 and pygtkcompat-PyGI+GTK3
+   in this state, using pygtk naming conventions and import blocks.
 
-3. Flip over to GTK3 only, still using our abstraction layer. New code should
-   be written for PyGI+GTK3.
+3. [ONGOING] Flip over to GTK3 by default, still using our abstraction layer.
+   New code should be written for PyGI+GTK3.
 
-4. As and when, rip out our pygtkcompat abstracions and/or pygtkcompat itself
-   and port individual modules to PyGI+GTK3.
+4. [TODO] As and when, rip out our pygtkcompat abstractions and/or pygtkcompat
+   itself and port individual modules to PyGI+GTK3.
 
-As of writing, phase 1 is mostly done. Phases 3 and 4 may happen in master, as
-might reasonable chunks of phase 2 if the code seems stable enough. The status
-of this work is tracked in https://gna.org/bugs/?19230
+As of writing, we are at stage 3. The status of this work is tracked in
+https://gna.org/bugs/?19230
 
 
 Prerequisites
@@ -53,24 +52,16 @@ Precise setup. YMMV.
 Testing and porting to GTK3
 ---------------------------
 
-To test the GTK2 code with pygtkcompat, build MyPaint and run it as normal. Fr
-GTK3, build as normal, but with the "enable_gtk3" option, e.g. ::
+We now build in GI+GTK3 mode by default, so if you want to build the binary
+parts of MyPaint for GTK2 and PyGTK, you need to request it explicitly::
 
     $ cd path/to/mypaint-src
-    $ scons enable_gtk3=1
+    $ scons enable_gtk3=no
 
-Right now, our wrapper modules need be told to run in GTK3 mode as well: set
-the environment variable "MYPAINT_ENABLE_GTK3" to do this. In theory you
-should just be able to build MyPaint and run it like this, however only a few
-modules have been ported across as yet. To try out a module which has been
-ported, and which has its own test case when run standalone, build as above
-and run it like ::
+Right now, our wrapper modules need be told to run in PyGTK mode as well: set
+the environment variable "MYPAINT_ENABLE_GTK3" to "no" to do this.
 
-    $ MYPAINT_ENABLE_GTK3=1 PYTHONPATH=. python gui/curve.py
+    $ MYPAINT_ENABLE_GTK3=no ./mypaint
 
-You'll see confirmation you're using GTK3. If an important module doesn't have
-a test case yet and can be sensibly tested on its own, please write one!  To
-find the next thing to port, try:
-
-    $ MYPAINT_ENABLE_GTK3=1 ./mypaint
+However, note that support for running like this will be dropped shortly.
 
