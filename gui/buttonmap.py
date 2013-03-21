@@ -1,5 +1,15 @@
+# This file is part of MyPaint.
+# Copyright (C) 2012 by Andrew Chadwick <a.t.chadwick@gmail.com>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+
 """Button press mapping.
 """
+
+import pygtkcompat
 
 import gtk
 from gtk import gdk
@@ -405,8 +415,11 @@ class ButtonMappingEditor (gtk.EventBox):
         bp_name = self.liststore.get_value(iter, self.bp_column)
         if bp_name is None:
             focus_col = self.treeview.get_column(self.bp_column)
-            self.treeview.set_cursor_on_cell(path_string, focus_col,
-                                             None, True)
+            if pygtkcompat.USE_GTK3:
+                tree_path = gtk.TreePath(path_string)
+            else:
+                tree_path = path_string
+            self.treeview.set_cursor_on_cell(tree_path, focus_col, None, True)
 
 
     def _bp_cell_edited_cb(self, cell, path, bp_name):
@@ -422,7 +435,8 @@ class ButtonMappingEditor (gtk.EventBox):
 
         editable.set_sensitive(False)
         dialog = gtk.Dialog()
-        dialog.set_extension_events(gdk.EXTENSION_EVENTS_ALL)
+        if not pygtkcompat.USE_GTK3:
+            dialog.set_extension_events(gdk.EXTENSION_EVENTS_ALL)
         dialog.set_modal(True)
         dialog.set_title(_("Edit binding for '%s'") % action_name)
         dialog.set_transient_for(self.get_toplevel())
