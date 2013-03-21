@@ -404,8 +404,13 @@ class FreehandOnlyMode (InteractionMode):
             return super(FreehandOnlyMode, self).motion_notify_cb(tdw, event)
 
         same_device = True
+        device = None
         if app is not None:
-            same_device = app.device_monitor.device_used(event.device)
+            if pygtkcompat.USE_GTK3:
+                device = event.get_source_device()
+            else:
+                device = event.device
+            same_device = app.device_monitor.device_used(device)
 
         # Refuse drawing if the layer is locked or hidden
         if model.layer.locked or not model.layer.visible:
@@ -421,10 +426,10 @@ class FreehandOnlyMode (InteractionMode):
                                      or not isfinite(pressure)):
             if not hasattr(self, 'bad_devices'):
                 self.bad_devices = []
-            if event.device.name not in self.bad_devices:
+            if device.name not in self.bad_devices:
                 print 'WARNING: device "%s" is reporting bad pressure %+f' \
-                    % (event.device.name, pressure)
-                self.bad_devices.append(event.device.name)
+                    % (device.name, pressure)
+                self.bad_devices.append(device.name)
             if not isfinite(pressure):
                 # infinity/nan: use button state (instead of clamping in
                 # brush.hpp) https://gna.org/bugs/?14709

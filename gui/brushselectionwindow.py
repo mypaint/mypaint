@@ -145,7 +145,11 @@ class BrushList(pixbuflist.PixbufList):
         for f in self.bm.brushes_observers: f(self.brushes)
 
     def button_press_cb(self, widget, event):
-        self.app.device_monitor.device_used(event.device)
+        if pygtkcompat.USE_GTK3:
+            device = event.get_source_device()
+        else:
+            device = event.device
+        self.app.device_monitor.device_used(device)
         return pixbuflist.PixbufList.button_press_cb(self, widget, event)
 
     def drag_begin_cb(self, widget, context):
