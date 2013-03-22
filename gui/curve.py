@@ -6,32 +6,32 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
+from warnings import warn
+
 import pygtkcompat
 import gtk
 from gtk import gdk
 
 
 RADIUS = 4
+
+
 class CurveWidget(gtk.DrawingArea):
     """Widget for modifying a (restricted) nonlinear curve.
     """
     __gtype_name__ = 'CurveWidget'
     snapto = (0.0, 0.25, 0.5, 0.75, 1.0)
-    ylock = {}
 
-    def __init__(self, changed_cb=None, magnetic=True, npoints = None, ylockgroups = ()):
+    def __init__(self, changed_cb=None, magnetic=True, npoints=None,
+                 ylockgroups=()):
         gtk.DrawingArea.__init__(self)
         self.points = [(0.0, 0.2), (.25, .5), (.75, .75), (1.0, 1.0)] # doesn't matter
-        self.npoints = npoints
-        if ylockgroups:
-            self.ylock = {}
-        for items in ylockgroups:
-            for thisitem in items:
-                others = list(items)
-                others.remove (thisitem)
-                self.ylock[thisitem] = tuple(others)
+        self._ylock = {}
+        self.ylockgroups = ylockgroups
 
-        self.maxpoints = 8 if not npoints else npoints
+        self.maxpoints = None
+        self._npoints = None
+        self.npoints = npoints
         self.grabbed = None
         if changed_cb is None:
             self.changed_cb = lambda *a: None
@@ -55,6 +55,36 @@ class CurveWidget(gtk.DrawingArea):
         self.set_size_request(300, 200)
 
         self.graypoint = None
+
+
+    @property
+    def npoints(self):
+        return self._npoints
+
+    @npoints.setter
+    def npoints(self, n):
+        self._npoints = n
+        self.maxpoints = 8 if not n else n
+
+
+    @property
+    def ylock(self):
+        warn("Deprecated, use ylockgroups instead", DeprecationWarning)
+        return self._ylock
+
+    @property
+    def ylockgroups(self):
+        return keys(self._ylock)
+
+    @ylockgroups.setter
+    def ylockgroups(self, ylockgroups):
+        self._ylock.clear()
+        for items in ylockgroups:
+            for thisitem in items:
+                others = list(items)
+                others.remove (thisitem)
+                self._ylock[thisitem] = tuple(others)
+
 
     def eventpoint(self, event_x, event_y):
         width, height = self.get_display_area()
@@ -225,10 +255,12 @@ class CurveWidget(gtk.DrawingArea):
         return True
 
 
-
 if __name__ == '__main__':
     win = gtk.Window()
-    curve = CurveWidget(ylockgroups = ((1,2),))
+    curve = CurveWidget()
+    curve.ylockgroups = [(1,2), (3,4)]
+    curve.npoints = 6
+    curve.points = [(0., 0.), (.2, .5), (.4, .75), (.6, .5), (.8, .3), (1., 1.)]
     win.add(curve)
     win.set_title("curve test")
     win.connect("destroy", lambda *a: gtk.main_quit())
