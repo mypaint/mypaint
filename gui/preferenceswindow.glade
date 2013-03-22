@@ -1,0 +1,902 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <!-- interface-requires gtk+ 3.0 -->
+  <!-- interface-requires mypaint_widgets 3.0 -->
+  <object class="GtkListStore" id="default_save_format_liststore">
+    <columns>
+      <!-- column-name format -->
+      <column type="gchararray"/>
+      <!-- column-name format-label -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0">openraster</col>
+        <col id="1" translatable="yes" context="Prefs Dialog|Saving|Save Formats and Locations|Default|">OpenRaster (*.ora)</col>
+      </row>
+      <row>
+        <col id="0">png-solid</col>
+        <col id="1" translatable="yes" context="Prefs Dialog|Saving|Save Formats and Locations|Default|">PNG solid with background (*.png)</col>
+      </row>
+      <row>
+        <col id="0">jpeg-90%</col>
+        <col id="1" translatable="yes" context="Prefs Dialog|Saving|Save Formats and Locations|Default|">JPEG 90% quality (*.jpg; *.jpeg)</col>
+      </row>
+    </data>
+  </object>
+  <object class="GtkListStore" id="default_zoom_level_liststore">
+    <columns>
+      <!-- column-name zoom -->
+      <column type="gchararray"/>
+      <!-- column-name zoom-label -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0">0.25</col>
+        <col id="1" translatable="yes" context="Prefs Dialog|View|Zoom|Default|">25%</col>
+      </row>
+      <row>
+        <col id="0">0.50</col>
+        <col id="1" translatable="yes" context="Prefs Dialog|View|Zoom|Default|">50%</col>
+      </row>
+      <row>
+        <col id="0">1.00</col>
+        <col id="1" translatable="yes" context="Prefs Dialog|View|Zoom|Default|">100%</col>
+      </row>
+      <row>
+        <col id="0">2.00</col>
+        <col id="1" translatable="yes" context="Prefs Dialog|View|Zoom|Default|">200%</col>
+      </row>
+    </data>
+  </object>
+  <object class="GtkListStore" id="freehand_cursor_liststore">
+    <columns>
+      <!-- column-name cursor-type -->
+      <column type="gchararray"/>
+      <!-- column-name cursor-type-label -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0">thin</col>
+        <col id="1" translatable="yes" context="Prefs Dialog|View|Cursors|Freehand Cursor|Type|">Circle with light outline</col>
+      </row>
+      <row>
+        <col id="0">medium</col>
+        <col id="1" translatable="yes" context="Prefs Dialog|View|Cursors|Freehand Cursor|Type|">Circle with medium outline</col>
+      </row>
+      <row>
+        <col id="0">thick</col>
+        <col id="1" translatable="yes" context="Prefs Dialog|View|Cursors|Freehand Cursor|Type|">Circle with heavy outline</col>
+      </row>
+      <row>
+        <col id="0">crosshair</col>
+        <col id="1" translatable="yes" context="Prefs Dialog|View|Cursors|Freehand Cursor|Type|">Crosshair</col>
+      </row>
+    </data>
+  </object>
+  <object class="GtkListStore" id="input_mode_liststore">
+    <columns>
+      <!-- column-name input-mode -->
+      <column type="gchararray"/>
+      <!-- column-name input-mode-label -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0">screen</col>
+        <col id="1" translatable="yes" context="Prefs Dialog|Pen Input|Mode|">Screen (normal)</col>
+      </row>
+      <row>
+        <col id="0">disabled</col>
+        <col id="1" translatable="yes" context="Prefs Dialog|Pen Input|Mode|">Disabled (no pressure sensitivity)</col>
+      </row>
+      <row>
+        <col id="0">window</col>
+        <col id="1" translatable="yes" context="Prefs Dialog|Pen Input|Mode|">Window (not recommended)</col>
+      </row>
+    </data>
+  </object>
+  <object class="GtkNotebook" id="prefs_notebook">
+    <property name="visible">True</property>
+    <property name="can_focus">True</property>
+    <property name="border_width">12</property>
+    <child>
+      <object class="GtkFrame" id="frame7">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="border_width">12</property>
+        <property name="label_xalign">0</property>
+        <property name="shadow_type">none</property>
+        <child>
+          <object class="GtkAlignment" id="alignment1">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="left_padding">12</property>
+            <child>
+              <object class="GtkGrid" id="grid1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="margin_top">12</property>
+                <property name="row_spacing">12</property>
+                <property name="column_spacing">6</property>
+                <child>
+                  <object class="GtkLabel" id="label3">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="has_tooltip">True</property>
+                    <property name="tooltip_markup" translatable="yes">Pointer input mode.
+This is applied to all pressure-sensitve devices.
+&amp;quot;Screen&amp;quot; mode is recommended for tablets.</property>
+                    <property name="tooltip_text" translatable="yes">Pointer input mode.
+This is applied to all pressure-sensitve devices.
+"Screen" mode is recommended for tablets.</property>
+                    <property name="xalign">0</property>
+                    <property name="label" translatable="yes" context="Prefs Dialog|Pen Input|Input Device Settings|">Mode:</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">1</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkComboBox" id="input_mode_combobox">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="hexpand">True</property>
+                    <property name="model">input_mode_liststore</property>
+                    <property name="active">0</property>
+                    <property name="id_column">0</property>
+                    <signal name="changed" handler="input_mode_combobox_changed_cb" swapped="no"/>
+                    <child>
+                      <object class="GtkCellRendererText" id="cellrenderertext1"/>
+                      <attributes>
+                        <attribute name="text">1</attribute>
+                      </attributes>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">1</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label2">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="has_tooltip">True</property>
+                    <property name="tooltip_text" translatable="yes">Converts the input pressure to brush pressure. This is applied to all input devices.
+The mouse button has an input pressure of 0.5 when pressed.</property>
+                    <property name="xalign">0</property>
+                    <property name="yalign">0</property>
+                    <property name="label" translatable="yes" context="Prefs Dialog|Pen Input|Input Device Settings|">Pressure mapping:</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">0</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkGrid" id="grid6">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="row_spacing">6</property>
+                    <child>
+                      <object class="CurveWidget" id="mapping_curve">
+                        <property name="width_request">300</property>
+                        <property name="height_request">215</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">0</property>
+                        <property name="width">3</property>
+                        <property name="height">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="label20">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="hexpand">True</property>
+                        <property name="label" translatable="yes" context="Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|" comments="Graph x-axis label">Input Pressure</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="top_attach">3</property>
+                        <property name="width">1</property>
+                        <property name="height">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="label21">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="vexpand">True</property>
+                        <property name="label" translatable="yes" context="Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|" comments="Graph y-axis label">Brush Pressure</property>
+                        <property name="angle">90</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">3</property>
+                        <property name="top_attach">1</property>
+                        <property name="width">1</property>
+                        <property name="height">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="label22">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes" context="Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|" comments="Graph label, range (0...1)">0.0</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">3</property>
+                        <property name="width">1</property>
+                        <property name="height">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="label23">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes" context="Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|" comments="Graph label, range (0...1)">1.0</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">2</property>
+                        <property name="top_attach">3</property>
+                        <property name="width">1</property>
+                        <property name="height">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="label24">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes" context="Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|" comments="Graph label, range (0...1)">0.0</property>
+                        <property name="angle">90</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">3</property>
+                        <property name="top_attach">2</property>
+                        <property name="width">1</property>
+                        <property name="height">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="label25">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes" context="Prefs Dialog|Pen Input|Input Device Settings|Pressure Mapping|" comments="Graph label, range (0...1)">1.0</property>
+                        <property name="angle">90</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">3</property>
+                        <property name="top_attach">0</property>
+                        <property name="width">1</property>
+                        <property name="height">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">0</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child type="label">
+          <object class="GtkLabel" id="label19">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes" context="Prefs Dialog|Pen Input|">&lt;b&gt;Input Device Settings&lt;/b&gt;</property>
+            <property name="use_markup">True</property>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child type="tab">
+      <object class="GtkLabel" id="label15">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes" context="Prefs Dialog|" comments="Tab label in preferences dialog">Pen Input</property>
+      </object>
+      <packing>
+        <property name="tab_fill">False</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkFrame" id="frame6">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="border_width">12</property>
+        <property name="label_xalign">0</property>
+        <property name="shadow_type">none</property>
+        <child>
+          <object class="GtkAlignment" id="alignment6">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_left">12</property>
+            <property name="margin_top">12</property>
+            <child>
+              <object class="GtkBox" id="box1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="orientation">vertical</property>
+                <property name="spacing">6</property>
+                <child>
+                  <object class="ButtonMappingEditor" id="button_mapping_editor">
+                    <property name="width_request">350</property>
+                    <property name="height_request">250</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="xalign">0</property>
+                    <property name="yalign">0</property>
+                    <property name="label" translatable="yes" context="Prefs Dialog|Button|Pointer Button Mappings|">• The space bar can be used like Button2.
+• Note: some tablet pads' buttons cannot be held down when pressed.</property>
+                    <property name="wrap">True</property>
+                    <property name="wrap_mode">word-char</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child type="label">
+          <object class="GtkLabel" id="label4">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes" context="Prefs Dialog|Button|">&lt;b&gt;Pointer Button Mappings&lt;/b&gt;</property>
+            <property name="use_markup">True</property>
+          </object>
+        </child>
+      </object>
+      <packing>
+        <property name="position">1</property>
+      </packing>
+    </child>
+    <child type="tab">
+      <object class="GtkLabel" id="label16">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes" context="Prefs Dialog|" comments="Tab label in preferences dialog">Buttons</property>
+      </object>
+      <packing>
+        <property name="position">1</property>
+        <property name="tab_fill">False</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkFrame" id="frame1">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="border_width">12</property>
+        <property name="label_xalign">0</property>
+        <property name="shadow_type">none</property>
+        <child>
+          <object class="GtkAlignment" id="alignment2">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="top_padding">12</property>
+            <property name="left_padding">12</property>
+            <child>
+              <object class="GtkGrid" id="grid2">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="row_spacing">12</property>
+                <property name="column_spacing">6</property>
+                <child>
+                  <object class="GtkLabel" id="label5">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="xalign">0</property>
+                    <property name="label" translatable="yes" context="Prefs Dialog|Saving|Save Formats and Locations|">Default file format:</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">0</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label6">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="xalign">0</property>
+                    <property name="label" translatable="yes" context="Prefs Dialog|Saving|Save Formats and Locations|">Prefix when saving scraps:</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">1</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkEntry" id="scrap_prefix_entry">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="hexpand">True</property>
+                    <property name="invisible_char">•</property>
+                    <signal name="changed" handler="scrap_prefix_entry_changed_cb" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">1</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkComboBox" id="default_save_format_combobox">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="hexpand">True</property>
+                    <property name="model">default_save_format_liststore</property>
+                    <property name="active">0</property>
+                    <property name="id_column">0</property>
+                    <signal name="changed" handler="default_save_format_combobox_changed_cb" swapped="no"/>
+                    <child>
+                      <object class="GtkCellRendererText" id="cellrenderertext2"/>
+                      <attributes>
+                        <attribute name="text">1</attribute>
+                      </attributes>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">0</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child type="label">
+          <object class="GtkLabel" id="label7">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes" context="Prefs Dialog|Saving|">&lt;b&gt;Save Formats and Locations&lt;/b&gt;</property>
+            <property name="use_markup">True</property>
+          </object>
+        </child>
+      </object>
+      <packing>
+        <property name="position">2</property>
+      </packing>
+    </child>
+    <child type="tab">
+      <object class="GtkLabel" id="label17">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes" context="Prefs Dialog|" comments="Tab label in preferences dialog">Saving</property>
+      </object>
+      <packing>
+        <property name="position">2</property>
+        <property name="tab_fill">False</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkGrid" id="grid3">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="valign">start</property>
+        <property name="border_width">12</property>
+        <property name="row_spacing">6</property>
+        <property name="column_spacing">6</property>
+        <child>
+          <object class="GtkLabel" id="label8">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="xalign">0</property>
+            <property name="label" translatable="yes" context="Prefs Dialog|View|">&lt;b&gt;Zoom&lt;/b&gt;</property>
+            <property name="use_markup">True</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">0</property>
+            <property name="width">3</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label10">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_left">12</property>
+            <property name="xalign">0</property>
+            <property name="label" translatable="yes">Default zoom level:</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">1</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkComboBox" id="default_zoom_combobox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="hexpand">True</property>
+            <property name="model">default_zoom_level_liststore</property>
+            <property name="active">2</property>
+            <property name="id_column">0</property>
+            <signal name="changed" handler="default_zoom_combobox_changed_cb" swapped="no"/>
+            <child>
+              <object class="GtkCellRendererText" id="cellrenderertext3"/>
+              <attributes>
+                <attribute name="text">1</attribute>
+              </attributes>
+            </child>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">1</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkCheckButton" id="hq_zoom_checkbutton">
+            <property name="label" translatable="yes" context="Prefs Dialog|View|Zoom|">High quality zoom (may result in slow scrolling)</property>
+            <property name="use_action_appearance">False</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">False</property>
+            <property name="hexpand">True</property>
+            <property name="use_action_appearance">False</property>
+            <property name="xalign">0</property>
+            <property name="draw_indicator">True</property>
+            <signal name="toggled" handler="hq_zoom_checkbutton_toggled_cb" swapped="no"/>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">2</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label26">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_top">18</property>
+            <property name="xalign">0</property>
+            <property name="label" translatable="yes" context="Prefs Dialog|View|">&lt;b&gt;Fullscreen&lt;/b&gt;</property>
+            <property name="use_markup">True</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">3</property>
+            <property name="width">3</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label9">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_left">12</property>
+            <property name="xalign">0</property>
+            <property name="label" translatable="yes" context="Prefs Dialog|View|">In fullscreen mode, hide:</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">4</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkCheckButton" id="fullscreen_hide_menubar_checkbutton">
+            <property name="label" translatable="yes">Menu bar</property>
+            <property name="use_action_appearance">False</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">False</property>
+            <property name="hexpand">True</property>
+            <property name="use_action_appearance">False</property>
+            <property name="xalign">0</property>
+            <property name="draw_indicator">True</property>
+            <signal name="toggled" handler="fullscreen_hide_menubar_checkbutton_toggled_cb" swapped="no"/>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">4</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkCheckButton" id="fullscreen_hide_toolbar_checkbutton">
+            <property name="label" translatable="yes">Toolbar</property>
+            <property name="use_action_appearance">False</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">False</property>
+            <property name="hexpand">True</property>
+            <property name="use_action_appearance">False</property>
+            <property name="xalign">0</property>
+            <property name="draw_indicator">True</property>
+            <signal name="toggled" handler="fullscreen_hide_toolbar_checkbutton_toggled_cb" swapped="no"/>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">5</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkCheckButton" id="fullscreen_hide_subwindows_checkbutton">
+            <property name="label" translatable="yes">Floating tool windows</property>
+            <property name="use_action_appearance">False</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">False</property>
+            <property name="hexpand">True</property>
+            <property name="use_action_appearance">False</property>
+            <property name="xalign">0</property>
+            <property name="draw_indicator">True</property>
+            <signal name="toggled" handler="fullscreen_hide_subwindows_checkbutton_toggled_cb" swapped="no"/>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">6</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label11">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_top">18</property>
+            <property name="xalign">0</property>
+            <property name="label" translatable="yes" context="Prefs Dialog|View|">&lt;b&gt;Cursors&lt;/b&gt;</property>
+            <property name="use_markup">True</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">7</property>
+            <property name="width">3</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label27">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_left">12</property>
+            <property name="xalign">0</property>
+            <property name="label" translatable="yes" context="Prefs Dialog|View|Cursors|">Freehand cursor type:</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">8</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkComboBox" id="freehand_cursor_combobox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="hexpand">True</property>
+            <property name="model">freehand_cursor_liststore</property>
+            <property name="active">0</property>
+            <property name="id_column">0</property>
+            <signal name="changed" handler="freehand_cursor_combobox_changed_cb" swapped="no"/>
+            <child>
+              <object class="GtkCellRendererText" id="cellrenderertext4"/>
+              <attributes>
+                <attribute name="text">1</attribute>
+              </attributes>
+            </child>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">8</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+      <packing>
+        <property name="position">3</property>
+      </packing>
+    </child>
+    <child type="tab">
+      <object class="GtkLabel" id="label18">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes" context="Prefs Dialog|" comments="Tab label in preferences dialog&#10;">View</property>
+      </object>
+      <packing>
+        <property name="position">3</property>
+        <property name="tab_fill">False</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkFrame" id="frame5">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="valign">start</property>
+        <property name="border_width">12</property>
+        <property name="label_xalign">0</property>
+        <property name="shadow_type">none</property>
+        <child>
+          <object class="GtkAlignment" id="alignment7">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="top_padding">12</property>
+            <property name="left_padding">12</property>
+            <child>
+              <object class="GtkGrid" id="grid5">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="row_spacing">6</property>
+                <property name="column_spacing">12</property>
+                <property name="row_homogeneous">True</property>
+                <child>
+                  <object class="GtkRadioButton" id="color_wheel_rgb_radiobutton">
+                    <property name="label" translatable="yes" context="Prefs Dialog|Color|Color Wheel|Primaries|">Standard digital Red/Green/Blue</property>
+                    <property name="use_action_appearance">False</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="tooltip_text" translatable="yes" context="Prefs Dialog|Color|Color Wheel|Primaries|RGB|">The red, green, and blue 'computer monitor' primaries, evenly arranged around the circle. Green is opposite magenta.</property>
+                    <property name="hexpand">True</property>
+                    <property name="use_action_appearance">False</property>
+                    <property name="xalign">0</property>
+                    <property name="active">True</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="color_wheel_rgb_radiobutton_toggled_cb" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">0</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkRadioButton" id="color_wheel_ryb_radiobutton">
+                    <property name="label" translatable="yes" context="Prefs Dialog|Color|Color Wheel|Primaries|">Traditional artist's Red/Yellow/Blue</property>
+                    <property name="use_action_appearance">False</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="tooltip_text" translatable="yes" context="Prefs Dialog|Color|Color Wheel|Primaries|RYB|">The traditionally arranged red/yellow/blue wheel as used by many artists since the 18th century, approximated with pure display colors evenly arranged around the circle. Green is opposite red.</property>
+                    <property name="hexpand">True</property>
+                    <property name="use_action_appearance">False</property>
+                    <property name="xalign">0</property>
+                    <property name="draw_indicator">True</property>
+                    <property name="group">color_wheel_rgb_radiobutton</property>
+                    <signal name="toggled" handler="color_wheel_ryb_radiobutton_toggled_cb" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">1</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkRadioButton" id="color_wheel_rygb_radiobutton">
+                    <property name="label" translatable="yes" context="Prefs Dialog|Color|Color Wheel|Primaries|">Red-Green and Blue-Yellow opponent pairs</property>
+                    <property name="use_action_appearance">False</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="tooltip_text" translatable="yes" context="Prefs Dialog|Color|Color Wheel|Primaries|RYGB|">Quick and dirty approximation of wheels informed by theories of  color which use four 'psychological primaries' or 'unique hues' arranged in opposing pairs at the cardinal points. Red is opposite green, and yellow is opposite blue. CIECAM02 and NCS present a similar model. Here we use pure display red, yellow etc. as the four primaries.</property>
+                    <property name="hexpand">True</property>
+                    <property name="use_action_appearance">False</property>
+                    <property name="xalign">0</property>
+                    <property name="draw_indicator">True</property>
+                    <property name="group">color_wheel_rgb_radiobutton</property>
+                    <signal name="toggled" handler="color_wheel_rygb_radiobutton_toggled_cb" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">2</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label12">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="tooltip_text" translatable="yes" context="Prefs Dialog|Color|Color Wheel|Primaries|">The set of colors to show as primary on disk-style color wheels.
+Different traditions have different color harmonies.</property>
+                    <property name="xalign">0</property>
+                    <property name="label" translatable="yes" context="Prefs Dialog|Color|Color Wheel|" comments="Arrangement of MyPaint's custom colour wheels">Primaries are:</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">0</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child type="label">
+          <object class="GtkLabel" id="label13">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes" context="Prefs Dialog|Color|" comments="Options affecting color wheels">&lt;b&gt;Color Wheel&lt;/b&gt;</property>
+            <property name="use_markup">True</property>
+          </object>
+        </child>
+      </object>
+      <packing>
+        <property name="position">4</property>
+      </packing>
+    </child>
+    <child type="tab">
+      <object class="GtkLabel" id="label14">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes" context="Prefs Dialog|" comments="Tab label in preferences dialog">Color</property>
+      </object>
+      <packing>
+        <property name="position">4</property>
+        <property name="tab_fill">False</property>
+      </packing>
+    </child>
+  </object>
+</interface>

@@ -19,6 +19,7 @@ import pango
 from gettext import gettext as _
 
 from lib.helpers import escape
+from application import get_app
 
 
 def button_press_name(button, mods):
@@ -94,7 +95,7 @@ def get_handler_object(app, action_name):
             return ("no_handler", None)
 
 
-class ButtonMapping:
+class ButtonMapping (object):
     """Button mapping table.
 
     An instance resides in the application, and is updated by the preferences
@@ -103,6 +104,7 @@ class ButtonMapping:
     """
 
     def __init__(self):
+        super(ButtonMapping, self).__init__()
         self._mapping = {}
         self._modifiers = []
 
@@ -194,45 +196,25 @@ class ButtonMappingEditor (gtk.EventBox):
 
     """
 
-    def __init__(self, app, bindings, actions_possible):
-        """Initialise
+    __gtype_name__ = 'ButtonMappingEditor'
 
-        :param app: the main MyPaint Application instance
-        :param bindings: Mapping of pointer binding names to their actions. A
-          reference is kept internally, and the entries will be
-          modified.
-        :type bindings: dict of bindings being edited
-        :param actions_possible: List of all possible action strings. The 0th
-          entry in the list is the default.
-        :type actions_possible: indexable sequence
 
+    def __init__(self):
+        """Initialise.
         """
         gtk.EventBox.__init__(self)
-        self.app = app
-        self.default_action = actions_possible[0]
-        self.actions = set(actions_possible)
+        self.app = get_app()
+        self.actions = set()
+        self.default_action = None
+        self.bindings = None  #: dict of bindings being edited
         self.vbox = gtk.VBox()
         self.add(self.vbox)
-
-        # Canonicalize <Control> -> <Primary>
-        tmp_bindings = dict(bindings) # XXX: maybe access app.preferences instead
-        bindings.clear()
-        for bp_name, action_name in tmp_bindings.iteritems():
-            bp_name = button_press_name(*button_press_parse(bp_name))
-            bindings[bp_name] = action_name
-        self.bindings = bindings  #: dict of bindings being edited
 
         # Display strings for action names
         self.action_labels = dict()
 
         # Model: combo cellrenderer's liststore
         ls = gtk.ListStore(gobject.TYPE_STRING, gobject.TYPE_STRING)
-        actions_list = list(actions_possible)
-        actions_list.sort()
-        for act in actions_list:
-            label_str = self._get_action_label(act)
-            self.action_labels[act] = label_str
-            ls.append((act, label_str))
         self.action_liststore = ls
         self.action_liststore_value_column = 0
         self.action_liststore_display_column = 1
@@ -317,9 +299,25 @@ class ButtonMappingEditor (gtk.EventBox):
         list_tools.add(btn)
         self.remove_button = btn
 
-        # Populate and update the UI
         self._updating_model = False
-        self._bindings_changed_cb()
+
+
+    def set_actions(self, actions):
+        """Sets the internal list of possible actions.
+
+        :param actions: List of all possible action strings. The 0th
+          entry in the list is the default.
+        :type actions: indexable sequence
+
+        """
+        self.default_action = actions[0]
+        self.actions = set(actions)
+        labels_list = [(self._get_action_label(a), a) for a in actions]
+        labels_list.sort()
+        self.action_liststore.clear()
+        for label, act in labels_list:
+            self.action_labels[act] = label
+            self.action_liststore.append((act, label))
 
 
     def _liststore_action_datafunc(self, column, cell, model, iter,
@@ -347,6 +345,22 @@ class ButtonMappingEditor (gtk.EventBox):
 
 
     def set_bindings(self, bindings):
+        """Sets the mapping of binding names to actions.
+
+        :param bindings: Mapping of pointer binding names to their actions. A
+          reference is kept internally, and the entries will be
+          modified.
+        :type bindings: dict of bindings being edited
+
+        The binding names in ``bindings`` will be canonicalized from the older
+        ``<Control>`` prefix to ``<Primary>`` if supported by this Gtk.
+
+        """
+        tmp_bindings = dict(bindings)
+        bindings.clear()
+        for bp_name, action_name in tmp_bindings.iteritems():
+            bp_name = button_press_name(*button_press_parse(bp_name))
+            bindings[bp_name] = action_name
         self.bindings = bindings
         self._bindings_changed_cb()
 

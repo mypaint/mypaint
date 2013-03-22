@@ -17,6 +17,7 @@ lang = ARGUMENTS.get('translate')
 if lang:
     env.Execute('git grep --full-name --files-with-matches "^from gettext import" .. | sort > POTFILES.in')
     env.Execute('intltool-extract --local --type=gettext/glade ../gui/mypaint.xml')
+    env.Execute('intltool-extract --local --type=gettext/glade ../gui/*.glade')
     env.Execute('echo po/tmp/mypaint.xml.h >> POTFILES.in')
     env.Execute('intltool-update -g mypaint --pot')
     if lang == 'all':
