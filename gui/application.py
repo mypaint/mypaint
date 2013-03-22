@@ -8,27 +8,57 @@
 
 import locale
 import gettext
-import os, sys
+import os
+import sys
 from os.path import join
+
 import gobject
 import gtk
 from gtk import gdk
-from lib import brush, helpers, mypaintlib
-import filehandling, keyboard, brushmanager, windowing, document, layout
-import brushmodifier, linemode
-import colors
-from colorwindow import BrushColorManager
-from overlays import LastPaintPosOverlay, ScaleOverlay
-from buttonmap import ButtonMapping
+
+from lib import brush
+from lib import helpers
+from lib import mypaintlib
+
+
+# Define this up front: gui.* requires the singleton object pretty much
+# everywhere, and the app instance carries them as members.
+
+def get_app():
+    """Returns the `gui.application.Application` singleton object."""
+    return Application._INSTANCE
+
 
 import pygtkcompat
+import filehandling
+import keyboard
+import brushmanager
+import windowing
+import document
+import layout
+import brushmodifier
+import linemode
+import colors
+from colorwindow import BrushColorManager
+from overlays import LastPaintPosOverlay
+from overlays import ScaleOverlay
+from buttonmap import ButtonMapping
 
-class Application: # singleton
-    """
+
+class Application (object):
+    """Main application singleton.
+
     This class serves as a global container for everything that needs
     to be shared in the GUI. Its constructor is the last part of the
     initialization, called by main.py or by the testing scripts.
+
+    Access via `gui.application.get_app()`.
+
     """
+
+    #: Singleton instance
+    _INSTANCE = None
+
 
     def __init__(self, filenames, app_datapath, app_extradatapath,
                  user_datapath, user_confpath, fullscreen=False):
@@ -55,6 +85,9 @@ class Application: # singleton
         :param fullscreen: Go fullscreen after starting.
 
         """
+        assert Application._INSTANCE is None
+        super(Application, self).__init__()
+        Application._INSTANCE = self
 
         self.user_confpath = user_confpath #: User configs (see __init__)
         self.user_datapath = user_datapath #: User data (see __init__)
