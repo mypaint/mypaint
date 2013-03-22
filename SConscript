@@ -68,6 +68,7 @@ install_perms(env, '$prefix/lib/mypaint', mypaintlib)
 # Program and supporting UI XML
 install_perms(env, '$prefix/bin', 'mypaint', perms=0755)
 install_perms(env, '$prefix/share/mypaint/gui', Glob('gui/*.xml'))
+install_perms(env, '$prefix/share/mypaint/gui', Glob('gui/*.glade'))
 install_perms(env, "$prefix/share/mypaint/lib",      Glob("lib/*.py"))
 install_perms(env, "$prefix/share/mypaint/gui",      Glob("gui/*.py"))
 install_perms(env, "$prefix/share/mypaint/gui/colors", Glob("gui/colors/*.py"))
