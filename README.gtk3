@@ -30,27 +30,51 @@ https://gna.org/bugs/?19230
 Prerequisites
 -------------
 
-Support for PyGTK < 2.18 has been discontinued. We need to be using the 2.24
-API as described in https://live.gnome.org/PyGObject/IntrospectionPorting
+Packages and version numbers required on a Debian testing/wheezy setup as of
+2013-03-22:
 
-======================  =======
-Package                 Version
-======================  =======
+======================  ====================  ================================
+Package                 Version               Compile-time dep (+pkgconfig)
+======================  ====================  ================================
+libglib2.0-0            2.33.12
+libglib2.0-dev          2.33.12               yes, glib-2.0.pc
+libpng12-0              1.2.49
+libpng12-dev            1.2.49                yes, libpng.pc
+liblcms2-2              2.2+git20110628
+liblcms2-dev            2.2+git20110628       yes, lcms2.pc
 python-gi               3.2.2
+python-gi-dev           3.2.2                 yes, pygobject-3.0.pc
 python-gi-cairo         3.2.2
-gir1.2-gtk-2.0          2.24.10
+(gir1.2-gtk-2.0)        (2.24.10)             (only if PyGTK compat needed)
+libgtk-3-0              3.4.2
+libgtk-3-dev            3.4.2                 yes, gtk+-3.0.pc
 gir1.2-gtk-3.0          3.4.2
-gir1.2-pango-1.0        1.30.0  
-gir1.2-glib-2.0         1.32.0
-gir1.2-gdkpixbuf-2.0    2.26.1
-======================  =======
+(gir1.2-pango-1.0)      (1.30.0)              (dep of gir1.2-gtk-3.0)
+(gir1.2-glib-2.0)       (1.32.0)              (dep of gir1.2-gtk-3.0)
+(gir1.2-gdkpixbuf-2.0)  (2.26.1)              (dep of gir1.2-gtk-3.0)
+python-numpy            1.6.2                 yes, headers
+python-numpy            1.6.2                 runtime too :-)
+python                  2.7.3
+python-dev              2.7.3                 yes, python-2.7.pc
+swig                    2.0.7                 yes
+scons                   2.1.0                 yes
+gettext                 0.18.1.1              yes
+libjson0                0.10
+libjson0-dev            0.10                  yes, json.pc
+g++                     4.7.2                 yes, successes reported w/ clang
+======================  ====================  ================================
 
-Packages and version numbers are guesstimates based on a working Ubuntu
-Precise setup. YMMV.
+These can be installed on a Debian-based system by running::
+
+  # apt-get install g++ python-dev python-numpy \
+      libgtk-3-dev python-gi-dev gir1.2-gtk-3.0 python-gi-cairo \
+      swig scons gettext libpng12-dev liblcms2-dev
 
 
 Testing and porting to GTK3
 ---------------------------
+
+See https://live.gnome.org/PyGObject/IntrospectionPorting
 
 We now build in GI+GTK3 mode by default, so if you want to build the binary
 parts of MyPaint for GTK2 and PyGTK, you need to request it explicitly::
