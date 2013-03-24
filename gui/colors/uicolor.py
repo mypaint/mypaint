@@ -218,6 +218,22 @@ class UIColor (object):
         return gdk.Color(*[int(c*65535) for c in self.get_rgb()])
 
 
+    @staticmethod
+    def new_from_gdk_rgba(gdk_rgba):
+        """Construct a new `UIColor` from a ``GdkRGBA`` (omitting alpha)
+        """
+        rgbflt = (gdk_rgba.red, gdk_rgba.green, gdk_rgba.blue)
+        return RGBColor(*[clamp(c, 0., 1.) for c in rgbflt])
+
+
+    def to_gdk_rgba(self):
+        """Convert to a `GdkRGBA` (with alpha=1.0).
+        """
+        rgba = list(self.get_rgb())
+        rgba.append(1.0)
+        return gdk.RGBA(*rgba)
+
+
     __HEX_PARSE_TABLE = [
       (re.compile('^(?:#|0x)' + '([0-9a-fA-F]{2})' * 3 + '$'), 0xff ),
       (re.compile('^(?:#|0x)' + '([0-9a-fA-F])' * 3    + '$'), 0xf  ),  ]
@@ -238,7 +254,7 @@ class UIColor (object):
 
 
     def to_hex_str(self, prefix='#'):
-        """Converts to an RGB hext string of the form ``#RRGGBB``
+        """Converts to an RGB hex string of the form ``#RRGGBB``
         """
         r, g, b = [int(c * 0xff) for c in self.get_rgb()]
         return "%s%02x%02x%02x" % (prefix, r, g, b)
