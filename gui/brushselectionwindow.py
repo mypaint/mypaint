@@ -32,6 +32,8 @@ import brushmanager
 from elastic import ElasticExpander
 from brushlib import brushsettings
 from lib.helpers import escape
+from colors import RGBColor
+
 
 class ToolWidget (gtk.VBox):
 
@@ -286,14 +288,34 @@ class GroupSelector (gtk.DrawingArea):
         if not pygtkcompat.USE_GTK3:
             self.connect("size-request", self.on_size_request)
 
+        # Style change detection, and default styles.
+        # Layout colors, represented independently of GTK/GDK.
+        self._text_colors = {
+            "normal":     (RGBColor(0., 0., 0.), RGBColor(.8, .8, .8)),
+            "normal_pre": (RGBColor(0., 0., 0.), RGBColor(.9, .9, .9)),
+            "selected":     (RGBColor(1., 1., 1.), RGBColor(0., .5, .8)),
+            "selected_pre": (RGBColor(1., 1., 1.), RGBColor(.1, .6, .9)),
+            "active":     (RGBColor(.8, .8, .8), RGBColor(0., 0., 0.)),
+            "active_pre":   (RGBColor(.9, .9, .9), RGBColor(0., 0., 0.)),
+            }
+        self._leading = 2 * pango.SCALE
+        if pygtkcompat.USE_GTK3:
+            self.connect("style-updated", self._style_updated_cb)
+            # Fake a style
+            style_context = self.get_style_context()
+            style_context.add_class(gtk.STYLE_CLASS_VIEW)
+        else:
+            # No new PyGTK code.
+            pass
+
+
     def active_groups_changed_cb(self):
         self.queue_draw()
 
 
     def lay_out_group_names(self, width):
-        "Typeset the group names into a new Pango layout at a given width"
-        self.ensure_style()
-        style = self.get_style()
+        """Typeset the group names into a new Pango layout at a given width.
+        """
         layout = pango.Layout(self.get_pango_context())
         layout.set_width(width*pango.SCALE)
 
@@ -312,11 +334,6 @@ class GroupSelector (gtk.DrawingArea):
             pad_s = ''
             sp_s = ' '
 
-        def _gdk_color_to_hex(col):
-            rgb = (col.red, col.green, col.blue)
-            rgb = [max(min(c>>8, 255), 0) for c in rgb]
-            return "#%02x%02x%02x" % tuple(rgb)
-
         markup = ''
         for group in all_groups:
             group_label = brushmanager.translate_group_name(group)
@@ -327,33 +344,36 @@ class GroupSelector (gtk.DrawingArea):
                 idx += 1
 
             # Note the difference in terminology here
-            bg_state = fg_state = gtk.STATE_NORMAL
+            colors_name = "normal"
+            set_bgcolor = False
             if group == self.gtkstate_active_group: # activated the menu
-                bg_state = fg_state = gtk.STATE_ACTIVE
+                colors_name = "active"
+                set_bgcolor = True
             elif group in self.bm.active_groups: # those groups visible
-                bg_state = fg_state = gtk.STATE_SELECTED
-            elif group == self.gtkstate_prelight_group:
-                bg_state = fg_state = gtk.STATE_PRELIGHT
+                colors_name = "selected"
+                set_bgcolor = True
+            if group == self.gtkstate_prelight_group:
+                colors_name += "_pre"
+                set_bgcolor = True
+            fg, bg = self._text_colors[colors_name]
 
-            style_fg, style_bg = style.fg, style.bg
             if group == self.drag_target_group:
                 # Invert colours
-                style_fg, style_bg = style.bg, style.fg
+                fg, bg = bg, fg
 
-            # always use the STATE_SELECTED fg if the group is visible
-            if group in self.bm.active_groups:
-                fg_state = gtk.STATE_SELECTED
-
-            c_bg = _gdk_color_to_hex(style_bg[bg_state])
-            c_fg = _gdk_color_to_hex(style_fg[fg_state])
+            c_fg = fg.to_hex_str()
             m = escape(u)
-            m = "<span fgcolor='%s' bgcolor='%s'>%s</span>" % (c_fg, c_bg, m)
+            if set_bgcolor:
+                c_bg = bg.to_hex_str()
+                bgcolor = " bgcolor='%s'" % (c_bg,)
+            else:
+                bgcolor = ""
+            m = "<span fgcolor='%s'%s>%s</span>" % (c_fg, bgcolor, m)
             markup += m + sp_s
             idx += len(sp_s.encode("utf-8"))
 
         layout.set_markup(markup)
-        leading = style.font_desc.get_size() / 6
-        layout.set_spacing(leading)
+        layout.set_spacing(self._leading)
         return layout
 
 
@@ -390,6 +410,45 @@ class GroupSelector (gtk.DrawingArea):
         h += 2 * self.VERTICAL_MARGIN
         return (h, h)
 
+
+    def _style_updated_cb(self, widget, *a):
+        """Callback: updates colors in response to the style changing.
+        """
+        style_context = widget.get_style_context()
+
+        text_colors_new = self._text_colors.copy()
+        f_norm = gtk.StateFlags.NORMAL
+        f_pre = gtk.StateFlags.PRELIGHT
+        f_active = gtk.StateFlags.ACTIVE
+        f_sel = gtk.StateFlags.SELECTED
+        style_info = [ ("normal", f_norm, False),
+                       ("normal_pre", f_norm|f_pre, False),
+                       ("active", f_active, True),
+                       ("active_pre", f_active|f_pre, True),
+                       ("selected", f_sel, False),
+                       ("selected_pre", f_sel|f_pre, False), ]
+        for key, flags, inverse_video in style_info:
+            fg_rgba = style_context.get_color(flags)
+            bg_rgba = style_context.get_background_color(flags)
+            fg = RGBColor.new_from_gdk_rgba(fg_rgba)
+            bg = RGBColor.new_from_gdk_rgba(bg_rgba)
+            if inverse_video:
+                fg, bg = bg, fg
+            text_colors_new[key] = (fg, bg)
+
+        leading_new = self._leading
+        font_description = style_context.get_font(gtk.StateFlags.NORMAL)
+        if font_description:
+            leading_new = font_description.get_size() / 6
+
+        style_changed = (self._leading != leading_new or
+                         self._text_colors != text_colors_new)
+        if style_changed:
+            self._leading = leading_new
+            self._text_colors = text_colors_new
+            self.queue_draw()
+
+
     def expose_cb(self, widget, event):
         cr = self.get_window().cairo_create()
         return self.draw_cb(widget, cr)
@@ -400,22 +459,15 @@ class GroupSelector (gtk.DrawingArea):
         width = alloc.width
         height = alloc.height
 
-        style = self.get_style()
+        fg, bg = self._text_colors["normal"]
+        #cr.set_source_rgb(*bg.get_rgb())
+        #cr.paint()
 
-        c = style.bg[gtk.STATE_NORMAL]
-        c_rgb = [float(x)/65535 for x in (c.red, c.green, c.blue)]
-        cr.set_source_rgb(*c_rgb)
-        cr.rectangle(0, 0, width, height)
-        cr.fill()
-
-        c = style.text[gtk.STATE_NORMAL]
-        c = [float(x)/65535 for x in (c.red, c.green, c.blue)]
-        cr.set_source_rgb(*c_rgb)
+        cr.set_source_rgb(*fg.get_rgb())
         layout = self.lay_out_group_names(width)
 
-        leading = style.font_desc.get_size() / 6
-        vmargin = leading // pango.SCALE
-        layout.set_spacing(leading)
+        vmargin = self._leading // pango.SCALE
+        layout.set_spacing(self._leading)
 
         cr.move_to(0, self.VERTICAL_MARGIN)
         if pygtkcompat.USE_GTK3:

@@ -20,7 +20,7 @@ import pango
 import cairo
 gobject = pygtkcompat.gobject
 
-from math import sqrt
+import math
 from warnings import warn
 
 from gettext import gettext as _
@@ -524,6 +524,8 @@ class ToolResizeGrip (gtk.DrawingArea):
 
         if pygtkcompat.USE_GTK3:
             self.connect("draw", self.on_draw)
+            style_context = self.get_style_context()
+            style_context.add_class(gtk.STYLE_CLASS_PANE_SEPARATOR)
         else:
             self.connect("expose-event", self.on_expose_event)
 
@@ -542,8 +544,12 @@ class ToolResizeGrip (gtk.DrawingArea):
         self.height = event.height
 
     def on_draw(self, widget, cr):
-        # FIXME: implement
-        pass
+        style = self.get_style_context()
+        gtk.render_background(style, cr, 0, 0, self.width, self.height)
+        gtk.render_handle(style, cr, 0, 0, self.width, self.height)
+        #x = (self.width - self.handle_size) / 2
+        #y = (self.height - self.handle_size) / 2
+        #gtk.render_handle(style, cr, x, y, self.handle_size, self.handle_size)
 
     def on_expose_event(self, widget, event):
         gdk_window = self.get_window()
@@ -721,7 +727,10 @@ class ToolDragHandle (gtk.EventBox):
         self.set_floating(False)
 
         if pygtkcompat.USE_GTK3:
-            pass #FIXME: implement
+            #self.frame.connect("draw", self.on_draw)
+            style_context = self.get_style_context()
+            style_context.add_class(gtk.STYLE_CLASS_BUTTON)
+            self.hbox.set_border_width(4)
         else:
             self.frame.connect("expose-event", self.on_frame_expose_event)
 
@@ -778,7 +787,7 @@ class ToolDragHandle (gtk.EventBox):
         lm = self.tool.layout_manager
         ix, iy = self.button_press_xy
         dx, dy = event.x - ix, event.y - iy
-        dd = sqrt(dx**2 + dy**2)
+        dd = math.sqrt(dx**2 + dy**2)
         if dd > self.min_drag_distance:
             self.start_reposition_drag()
 
@@ -819,7 +828,9 @@ class ToolSnapBackBar (gtk.DrawingArea):
         self.set_size_request(-1, self.ARROW_SIZE)
 
         if pygtkcompat.USE_GTK3:
-            pass #FIXME: implement
+            self.connect("draw", self.on_draw)
+            style_context = self.get_style_context()
+            style_context.add_class(gtk.STYLE_CLASS_SEPARATOR)
         else:
             self.connect("expose-event", self.on_expose_event)
 
@@ -856,6 +867,17 @@ class ToolSnapBackBar (gtk.DrawingArea):
 
     def on_leave(self, widget, event):
         self.set_state(gtk.STATE_NORMAL)
+
+    def on_draw(self, widget, cr):
+        alloc = self.get_allocation()
+        w = alloc.width
+        h = alloc.height
+        style = self.get_style_context()
+        m = min(w, h)
+        n = int(m/2.)
+        gtk.render_background(style, cr, 0, 0, w, h)
+        gtk.render_line(style, cr, n, n, w-m-n, n)
+        gtk.render_arrow(style, cr, math.pi/2, w-m, 0, m)
 
     def on_expose_event(self, widget, event):
         alloc = self.get_allocation()

@@ -7,15 +7,20 @@
 # (at your option) any later version.
 
 from warnings import warn
+from math import ceil
 
 import pygtkcompat
+import gobject
 import gtk
 from gtk import gdk
+
 from lib import helpers
-from math import ceil
+from colors import RGBColor
+
 
 DRAG_ITEM_NAME = 103
 ITEM_SIZE_DEFAULT = 48
+
 
 class PixbufList(gtk.DrawingArea):
     # interface to be implemented by children
@@ -82,6 +87,12 @@ class PixbufList(gtk.DrawingArea):
 
         self.drag_highlighted = False
         self.drag_insertion_index = None
+
+        if pygtkcompat.USE_GTK3:
+            # Fake a nicer style
+            style_context = self.get_style_context()
+            style_context.add_class(gtk.STYLE_CLASS_VIEW)
+
         self.update()
 
     def on_realize(self, widget):
@@ -220,7 +231,8 @@ class PixbufList(gtk.DrawingArea):
         self.tiles_h = max(1, int( ceil( float(len(self.itemlist)) / self.tiles_w ) ))
 
         height = self.tiles_h * self.total_h
-        self.set_size_request(self.total_w, height)
+        #self.set_size_request(-1, -1)
+        gobject.idle_add(self.set_size_request, self.total_w, height)
 
         self.pixbuf = pygtkcompat.gdk.pixbuf.new(gdk.COLORSPACE_RGB, True,
                                                  8, width, height)
@@ -284,22 +296,36 @@ class PixbufList(gtk.DrawingArea):
 
     def draw_cb(self, widget, cr):
         # Paint the base colour, and the list's pixbuf.
-        state = widget.get_state()
-        style = widget.get_style()
-        bg_color = style.base[state]
         if pygtkcompat.USE_GTK3:
-            gdk.cairo_set_source_color(cr, bg_color)
+            state_flags = widget.get_state_flags()
+            style_context = widget.get_style_context()
+            bg_color_gdk = style_context.get_background_color(state_flags)
+            bg_color = RGBColor.new_from_gdk_rgba(bg_color_gdk)
+            cr.set_source_rgb(*bg_color.get_rgb())
             cr.paint()
             gdk.cairo_set_source_pixbuf(cr, self.pixbuf, 0, 0)
             cr.paint()
+            # border colors
+            gdkrgba = style_context.get_background_color(
+                        state_flags|gtk.StateFlags.SELECTED)
+            selected_color = RGBColor.new_from_gdk_rgba(gdkrgba)
+            gdkrgba = style_context.get_background_color(
+                        state_flags|gtk.StateFlags.NORMAL)
+            insertion_color = RGBColor.new_from_gdk_rgba(gdkrgba)
         else:
+            state = widget.get_state()
+            style = widget.get_style()   # get_style_context used for gtk3
+            bg_color = style.base[state]
             cr.set_source_color(bg_color)
             cr.paint()
             cr.set_source_pixbuf(self.pixbuf, 0, 0)
             cr.paint()
+            # border colors
+            gdkcolor = style.bg[gtk.STATE_SELECTED]
+            selected_color = RGBColor.new_from_gdk_color(gdkcolor)
+            gdkcolor = style.bg[gtk.STATE_NORMAL]
+            insertion_color = RGBColor.new_from_gdk_color(gdkcolor)
         # Draw borders
-        selected_color = style.bg[gtk.STATE_SELECTED]
-        insertion_color = style.bg[gtk.STATE_NORMAL]
         last_i = len(self.itemlist) - 1
         for i, b in enumerate(self.itemlist):
             rect_color = None
@@ -324,10 +350,7 @@ class PixbufList(gtk.DrawingArea):
             for j in range(self.border_visible_outside_cell):
                 x, y, w, h = shrink(-1, x, y, w, h)
             for j in xrange(self.border_visible + self.border_visible_outside_cell):
-                if pygtkcompat.USE_GTK3:
-                    gdk.cairo_set_source_color(cr, rect_color)
-                else:
-                    cr.set_source_color(rect_color)
+                cr.set_source_rgb(*rect_color.get_rgb())
                 cr.rectangle(x, y, w-1, h-1)   # FIXME: check pixel alignment
                 cr.stroke()
                 x, y, w, h = shrink(1, x, y, w, h)

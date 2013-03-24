@@ -10,6 +10,8 @@
 """Viewer and editor widgets for palettes.
 """
 
+import gui.pygtkcompat as pygtkcompat
+
 import gtk
 from gtk import gdk
 import cairo
@@ -517,9 +519,15 @@ class _PalettePreview (gtk.DrawingArea):
         if ncolumns*s < w:
             dx = int(w - ncolumns*s) / 2
 
-        state = self.get_state()
-        style = self.get_style()
-        bg_color = RGBColor.new_from_gdk_color(style.bg[state])
+        if pygtkcompat.USE_GTK3:
+            state = self.get_state_flags()
+            style = self.get_style_context()
+            bg_rgba = style.get_background_color(state)
+            bg_color = RGBColor.new_from_gdk_rgba(bg_rgba)
+        else:
+            state = self.get_state()
+            style = self.get_style() # get_style_context now used for GTK3
+            bg_color = RGBColor.new_from_gdk_color(style.bg[state])
 
         self._palette.render(cr, rows=nrows, columns=ncolumns,
                              swatch_size=s, bg_color=bg_color,
@@ -929,10 +937,16 @@ class _PaletteGridLayout (ColorAdjusterWidget):
     def _paint_palette_layout(self, cr):
         if self._palette is None:
             return
-        state = self.get_state()
-        style = self.get_style()
+        if pygtkcompat.USE_GTK3:
+            state = self.get_state_flags()
+            style = self.get_style_context()
+            bg_rgba = style.get_background_color(state)
+            bg_col = RGBColor.new_from_gdk_rgba(bg_rgba)
+        else:
+            state = self.get_state()
+            style = self.get_style() # get_style_context now used for GTK3
+            bg_col = RGBColor.new_from_gdk_color(style.bg[state])
         dx, dy = self.get_painting_offset()
-        bg_col = RGBColor.new_from_gdk_color(style.bg[state])
         self._palette.render(cr, rows=self._rows, columns=self._columns,
                              swatch_size=self._swatch_size,
                              bg_color=bg_col,

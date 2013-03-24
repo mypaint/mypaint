@@ -12,7 +12,6 @@ import pygtkcompat
 import gtk
 from gtk import gdk
 
-
 RADIUS = 4
 
 
@@ -204,17 +203,30 @@ class CurveWidget(gtk.DrawingArea):
 
     def draw_cb(self, widget, cr):
 
-        def gtk2rgb(c):
-            return [float(c)/65535 for c in (c.red, c.green, c.blue)]
-
-        style = widget.get_style()
-        state = widget.get_state()
-        gray  = gtk2rgb(style.bg[state])
-        dark  = gtk2rgb(style.dark[state])
-        black = gtk2rgb(style.fg[state])
+        if pygtkcompat.USE_GTK3:
+            def gdk2rgb(c):
+                return (c.red, c.green, c.blue)
+            style = widget.get_style_context()
+            state = widget.get_state_flags()
+            bg = gdk2rgb(style.get_background_color(state))
+            fg = gdk2rgb(style.get_color(state))
+            lines = [(bg_c*3 + fg_c)/4. for (bg_c, fg_c) in zip(bg, fg)]
+        else:
+            def gtk2rgb(c):
+                return [float(c)/65535 for c in (c.red, c.green, c.blue)]
+            style = widget.get_style() # get_style_context now used for GTK3
+            state = widget.get_state()
+            bg = gtk2rgb(style.bg[state])
+            fg = gtk2rgb(style.fg[state])
+            lines = gtk2rgb(style.dark[state])
 
         width, height = self.get_display_area()
-        if width <= 0 or height <= 0: return
+        if width <= 0 or height <= 0:
+            return
+
+        # background
+        cr.set_source_rgb(*bg)
+        cr.paint()
 
         # 1-pixel width, align lines with pixels
         # (but filled rectangles are off by 0.5px now)
@@ -222,7 +234,7 @@ class CurveWidget(gtk.DrawingArea):
         cr.translate(0.5, 0.5)
 
         # draw grid lines
-        cr.set_source_rgb(*dark)
+        cr.set_source_rgb(*lines)
         for i in range(5):
             cr.move_to(RADIUS, i*height/4 + RADIUS)
             cr.line_to(width + RADIUS, i*height/4 + RADIUS)
@@ -237,7 +249,7 @@ class CurveWidget(gtk.DrawingArea):
             cr.rectangle(x1-RADIUS-1+0.5, y1-RADIUS-1+0.5, 2*RADIUS+1, 2*RADIUS+1)
             cr.fill()
 
-        cr.set_source_rgb(*black)
+        cr.set_source_rgb(*fg)
         # draw points
         for p in self.points:
             if p is None: continue

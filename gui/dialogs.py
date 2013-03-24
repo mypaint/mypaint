@@ -312,7 +312,6 @@ class QuickBrushChooser (gtk.VBox):
         scrolledwin = gtk.ScrolledWindow()
         scrolledwin.set_policy(gtk.POLICY_NEVER, gtk.POLICY_ALWAYS)
         scrolledwin.add_with_viewport(self.brushlist)
-        self.connect("style-set", self._on_style_set, scrolledwin)
         icon_size = self.ICON_SIZE
         w = icon_size * 4
         h = icon_size * 4
@@ -323,14 +322,6 @@ class QuickBrushChooser (gtk.VBox):
         self.pack_start(self.groups_sb, False, False)
         self.pack_start(scrolledwin, True, True)
         self.set_spacing(widgets.SPACING_TIGHT)
-
-    def _on_style_set(self, widget, event, sw):
-        #vp = sw.get_child()
-        bl_style = self.brushlist.get_style()
-        #vp.modify_bg(gtk.STATE_NORMAL, bl_style.base[gtk.STATE_NORMAL])
-        #sw.modify_bg(gtk.STATE_NORMAL, bl_style.base[gtk.STATE_NORMAL])
-        self.brushlist.modify_bg(gtk.STATE_NORMAL, bl_style.base[gtk.STATE_NORMAL])
-        icon_size = self.ICON_SIZE
 
     def _make_groups_sb_model(self):
         group_names = self.bm.groups.keys()
