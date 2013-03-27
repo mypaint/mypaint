@@ -9,13 +9,13 @@
 from math import floor, ceil, isnan
 import os, sys, hashlib, zipfile, colorsys, urllib, gc
 import numpy
-import gio
 
 # Avoid pulling in PyGTK+ when using GI
 if not os.environ.get('MYPAINT_ENABLE_GEGL', 0):
-    from gtk import gdk # for gdk_pixbuf stuff
     from gui import pygtkcompat
+    from gtk import gdk # for gdk_pixbuf stuff
 
+import glib
 import mypaintlib
 
 
@@ -281,8 +281,7 @@ def _filename2uri_freedesktop_canon(path, encoding=None):
 
     Freedesktop thumbnailing requires the canonical URI for the filename in
     order for the hashes used it generates to be interoperable with other
-    programs. GIO is the simplest way of generating the right kind. In
-    particular, ``()`` brackets must not be encoded.
+    programs. In particular, ``()`` brackets must not be encoded.
 
     :param path: the path to encode; must be a unicode object.
     :param encoding: override the filesystem encoding for testing.
@@ -297,8 +296,7 @@ def _filename2uri_freedesktop_canon(path, encoding=None):
     if encoding is None:
         encoding = sys.getfilesystemencoding()
     path_bytes = path.encode(encoding)
-    gfile = gio.File(path_bytes)
-    return gfile.get_uri()
+    return glib.filename_to_uri(path_bytes, None)
 
 
 def rgb_to_hsv(r, g, b):
