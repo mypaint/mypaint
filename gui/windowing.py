@@ -147,7 +147,15 @@ class ChooserDialog (gtk.Dialog):
         self.connect("hide", self._hide_cb)
 
         # Keep around if the user closes the window.
-        self.connect("delete-event", self.hide_on_delete)
+        self.connect("delete-event", self._hide_on_delete)
+
+
+    def _hide_on_delete(self, widget, event):
+        # Can't use gtk_widget_hide_on_delete via bound method in GTK3 due to
+        # args mismatch. Oh well, just reinvent the wheel: hide the dialog and
+        # eat the event.
+        self.hide()
+        return True
 
 
     def _configure_cb(self, widget, event):
