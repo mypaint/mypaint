@@ -38,6 +38,8 @@ Install (for packagers):
 
 Required: pygobject, gtk3, python, swig, numpy, pycairo(>=1.4), libpng,
             lcms2, json-c
+    (NOTE: pygobject must be built with --enable-cairo)
+
 
 Debian users can fetch these dependencies by running:
 
