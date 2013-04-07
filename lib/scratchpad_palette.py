@@ -1,8 +1,17 @@
-import re, os
-# is importing os too heavyweight here? move the file test/open code into
-# gui/filehandler?
+# This file is part of MyPaint.
+# Copyright (C) 2011 by Ben O'Steen <bosteen@gmail.com>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
 
-from helpers import rgb_to_hsv, hsv_to_rgb
+import re
+import os
+
+from helpers import rgb_to_hsv
+from helpers import hsv_to_rgb
+
 
 def squiggle(off_x=0.0, off_y=0.0, scale=20.0):
     events = []

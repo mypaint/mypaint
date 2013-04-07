@@ -9,7 +9,9 @@
 import mypaintlib
 from brushlib import brushsettings
 import helpers
-import urllib, copy, math
+import urllib
+import copy
+import math
 import json
 
 string_value_settings = set(("parent_brush_name", "group"))

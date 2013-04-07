@@ -10,8 +10,13 @@
 
 import numpy
 from numpy import *
-import time, sys, os, contextlib
-import mypaintlib, helpers
+import time
+import sys
+import os
+import contextlib
+
+import mypaintlib
+import helpers
 import math
 
 TILE_SIZE = N = mypaintlib.TILE_SIZE

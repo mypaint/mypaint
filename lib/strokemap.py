@@ -6,12 +6,15 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-import time, struct
+import time
+import struct
 import zlib
 from numpy import *
 import mypaintlib
 
-import tiledsurface, idletask
+import tiledsurface
+import idletask
+
 N = tiledsurface.N
 
 

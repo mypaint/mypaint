@@ -6,11 +6,14 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-import struct, zlib
+import struct
+import zlib
 from numpy import *
 from gettext import gettext as _
 
-import tiledsurface, strokemap, mypaintlib
+import tiledsurface
+import strokemap
+import mypaintlib
 
 COMPOSITE_OPS = [
     # (internal-name, display-name, description)
