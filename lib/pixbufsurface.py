@@ -6,21 +6,29 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-# This class converts between linear 8bit RGB(A) and tiled RGBA storage.
-# It is used for rendering updates, but also for save/load.
-
-from gui import pygtkcompat
-from gtk import gdk
-import mypaintlib,  helpers
-from tiledsurface import N
-import sys, contextlib
+import sys
+import contextlib
 import numpy
 
+from gi.repository import GdkPixbuf
+
+import mypaintlib
+import helpers
+
+from tiledsurface import N
+
+
 class Surface:
+    """Wrapper for a GdkPixbuf, with memory accessible by tile.
+
+    Wraps a GdkPixbuf.Pixbuf (8 bit RGBU or RGBA data) with memory also
+    accessible per-tile, compatible with tiledsurface.Surface.
+
+    This class converts between linear 8bit RGB(A) and tiled RGBA storage. It
+    is used for rendering updates, but also for save/load.
+
     """
-    This class represents a gdk.Pixbuf (8 bit RGBU or RGBA data) with
-    memory also accessible per-tile, compatible with tiledsurface.Surface.
-    """
+
     def __init__(self, x, y, w, h, data=None):
         assert w>0 and h>0
         # We create and use a pixbuf enlarged to the tile boundaries internally.
@@ -42,13 +50,11 @@ class Surface:
         assert self.ew >= w and self.eh >= h
         assert self.ex <= x and self.ey <= y
 
-        self.epixbuf = pygtkcompat.gdk.pixbuf.new(gdk.COLORSPACE_RGB, True, 8, self.ew, self.eh)
+        self.epixbuf = GdkPixbuf.Pixbuf.new(GdkPixbuf.Colorspace.RGB, True, 8,
+                                            self.ew, self.eh)
         dx = x-self.ex
         dy = y-self.ey
-        if pygtkcompat.USE_GTK3:
-            self.pixbuf = self.epixbuf.new_subpixbuf(dx, dy, w, h)
-        else:
-            self.pixbuf = self.epixbuf.subpixbuf(dx, dy, w, h)
+        self.pixbuf = self.epixbuf.new_subpixbuf(dx, dy, w, h)
 
         assert self.ew <= w + 2*N-2
         assert self.eh <= h + 2*N-2

@@ -10,12 +10,9 @@ from math import floor, ceil, isnan
 import os, sys, hashlib, zipfile, colorsys, urllib, gc
 import numpy
 
-# Avoid pulling in PyGTK+ when using GI
-if not os.environ.get('MYPAINT_ENABLE_GEGL', 0):
-    from gui import pygtkcompat
-    from gtk import gdk # for gdk_pixbuf stuff
+from gi.repository import GdkPixbuf
+from gi.repository import GLib
 
-import glib
 import mypaintlib
 
 
@@ -140,8 +137,8 @@ def freedesktop_thumbnail(filename, pixbuf=None):
     file_hash = hashlib.md5(uri).hexdigest()
 
     if sys.platform == 'win32':
-        import glib
-        base_directory = os.path.join(glib.get_user_data_dir().decode('utf-8'), 'mypaint', 'thumbnails')
+        base_directory = os.path.join(GLib.get_user_data_dir().decode('utf-8'),
+                                      'mypaint', 'thumbnails')
     else:
         base_directory = expanduser_unicode(u'~/.thumbnails')
 
@@ -171,7 +168,7 @@ def freedesktop_thumbnail(filename, pixbuf=None):
     for fn in acceptable_tb_filenames:
         if not pixbuf and os.path.isfile(fn):
             # use the largest stored thumbnail that isn't obsolete
-            pixbuf = gdk.pixbuf_new_from_file(fn)
+            pixbuf = GdkPixbuf.Pixbuf.new_from_file(fn)
             if file_mtime == pixbuf.get_option("tEXt::Thumb::MTime"):
                 save_thumbnail = False
             else:
@@ -186,31 +183,33 @@ def freedesktop_thumbnail(filename, pixbuf=None):
         if save_thumbnail:
             png_opts = {"tEXt::Thumb::MTime": file_mtime,
                         "tEXt::Thumb::URI": uri}
-            pygtkcompat.gdk.pixbuf.save(pixbuf, tb_filename_large,
-                                        'png', **png_opts)
+            pixbuf.savev(tb_filename_large, 'png',
+                         png_opts.keys(), png_opts.values())
             # save normal size too, in case some implementations don't
             # bother with large thumbnails
             pixbuf_normal = scale_proportionally(pixbuf, 128, 128)
-            pygtkcompat.gdk.pixbuf.save(pixbuf_normal, tb_filename_normal,
-                                        'png', **png_opts)
-
+            pixbuf_normal.savev(tb_filename_normal, 'png',
+                                png_opts.keys(), png_opts.values())
     return pixbuf
 
 
 def get_pixbuf(filename):
+    """Returns a thumbnail pixbuf from a file.
+    """
     try:
         if os.path.splitext(filename)[1].lower() == ".ora":
             ora = zipfile.ZipFile(filename)
             data = ora.read("Thumbnails/thumbnail.png")
-            loader = gdk.PixbufLoader("png")
+            loader = GdkPixbuf.PixbufLoader("png")
             loader.write(data)
             loader.close()
             return loader.get_pixbuf()
         else:
-            return gdk.pixbuf_new_from_file(filename)
+            return GdkPixbuf.Pixbuf.new_from_file(filename)
     except:
         # filename is a directory, or just nothing image-like
         return
+
 
 def scale_proportionally(pixbuf, w, h, shrink_only=True):
     width, height = pixbuf.get_width(), pixbuf.get_height()
@@ -220,25 +219,27 @@ def scale_proportionally(pixbuf, w, h, shrink_only=True):
     new_width, new_height = int(width * scale), int(height * scale)
     new_width = max(new_width, 1)
     new_height = max(new_height, 1)
-    return pixbuf.scale_simple(new_width, new_height, gdk.INTERP_BILINEAR)
+    return pixbuf.scale_simple(new_width, new_height,
+                               GdkPixbuf.InterpType.BILINEAR)
 
 
 def pixbuf_thumbnail(src, w, h, alpha=False):
-    """Creates a centered thumbnail of a gdk.pixbuf.
+    """Creates a centered thumbnail of a GdkPixbuf.
     """
     src2 = scale_proportionally(src, w, h)
     w2, h2 = src2.get_width(), src2.get_height()
-    dst = pygtkcompat.gdk.pixbuf.new(gdk.COLORSPACE_RGB, alpha, 8, w, h)
+    dst = GdkPixbuf.Pixbuf.new(GdkPixbuf.Colorspace.RGB, alpha, 8, w, h)
     if alpha:
         dst.fill(0xffffff00) # transparent background
     else:
         dst.fill(0xffffffff) # white background
-    src2.composite(dst, (w-w2)/2, (h-h2)/2, w2, h2, (w-w2)/2, (h-h2)/2, 1, 1, gdk.INTERP_BILINEAR, 255)
+    src2.composite(dst, (w-w2)/2, (h-h2)/2, w2, h2, (w-w2)/2, (h-h2)/2, 1, 1,
+                   GdkPixbuf.InterpType.BILINEAR, 255)
     return dst
 
 
 def uri2filename(uri):
-    # code from http://faq.pygtk.org/index.py?req=show&file=faq23.031.htp
+    # code from http://faq.pyGtk.org/index.py?req=show&file=faq23.031.htp
     # get the path to file
     path = ""
     if uri.startswith('file:\\\\\\'): # windows
@@ -296,7 +297,7 @@ def _filename2uri_freedesktop_canon(path, encoding=None):
     if encoding is None:
         encoding = sys.getfilesystemencoding()
     path_bytes = path.encode(encoding)
-    return glib.filename_to_uri(path_bytes, None)
+    return GLib.filename_to_uri(path_bytes, None)
 
 
 def rgb_to_hsv(r, g, b):

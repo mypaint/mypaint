@@ -6,26 +6,38 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-import gui.pygtkcompat
-if gui.pygtkcompat.USE_GTK3:
-    from gi.repository import GdkPixbuf
-
-import os, sys, zipfile, tempfile, time, traceback
-join = os.path.join
+import os
+import sys
+import zipfile
+import tempfile
+import time
+import traceback
+from os.path import join
 from cStringIO import StringIO
 import xml.etree.ElementTree as ET
-from gtk import gdk
-import gobject, numpy
+
+from gi.repository import Gdk
+from gi.repository import GdkPixbuf
+from gi.repository import GObject
+
+import numpy
 from gettext import gettext as _
 
-import helpers, tiledsurface, pixbufsurface, mypaintlib
-import command, stroke, layer
+import helpers
+import tiledsurface
+import pixbufsurface
+import mypaintlib
+import command
+import stroke
+import layer
 import brush
+
 
 N = tiledsurface.N
 LOAD_CHUNK_SIZE = 64*1024
 
-from layer import DEFAULT_COMPOSITE_OP, VALID_COMPOSITE_OPS
+from layer import DEFAULT_COMPOSITE_OP
+from layer import VALID_COMPOSITE_OPS
 
 
 class SaveLoadError(Exception):
@@ -470,7 +482,7 @@ class Document():
         # This is not an undoable action. One reason is that dragging
         # on the color chooser would get tons of undo steps.
         if not isinstance(obj, tiledsurface.Background):
-            if isinstance(obj, gdk.Pixbuf):
+            if isinstance(obj, GdkPixbuf.Pixbuf):
                 obj = helpers.gdkpixbuf2numpy(obj)
             obj = tiledsurface.Background(obj)
         self.background = obj
@@ -517,7 +529,7 @@ class Document():
         save = getattr(self, 'save_' + ext, self._unsupported)
         try:
             save(filename, **kwargs)
-        except gobject.GError, e:
+        except GObject.GError, e:
             traceback.print_exc()
             if e.code == 5:
                 #add a hint due to a very consfusing error message when there is no space left on device
@@ -552,7 +564,7 @@ class Document():
         load = getattr(self, 'load_' + ext, self._unsupported)
         try:
             load(filename, **kwargs)
-        except gobject.GError, e:
+        except GObject.GError, e:
             traceback.print_exc()
             raise SaveLoadError, _('Error while loading: GError %s') % e
         except IOError, e:
@@ -617,10 +629,7 @@ class Document():
 
     @staticmethod
     def _pixbuf_from_stream(fp, feedback_cb=None):
-        if gui.pygtkcompat.USE_GTK3:
-            loader = GdkPixbuf.PixbufLoader()
-        else:
-            loader = gdk.PixbufLoader()
+        loader = GdkPixbuf.PixbufLoader()
         while True:
             if feedback_cb is not None:
                 feedback_cb()
@@ -646,7 +655,7 @@ class Document():
             x, y, w, h = 0, 0, N, N # allow to save empty documents
         pixbuf = self.render_as_pixbuf(x, y, w, h, **kwargs)
         options = {"quality": str(quality)}
-        gui.pygtkcompat.gdk.pixbuf.save(pixbuf, filename, 'jpeg', **options)
+        pixbuf.savev(filename, 'jpeg', options.keys(), options.values())
 
     save_jpeg = save_jpg
 
@@ -674,7 +683,7 @@ class Document():
         def store_pixbuf(pixbuf, name):
             tmp = join(tempdir, 'tmp.png')
             t1 = time.time()
-            gui.pygtkcompat.gdk.pixbuf.save(pixbuf, tmp, 'png')
+            pixbuf.savev(tmp, 'png', [], [])
             print '  %.3fs pixbuf saving %s' % (time.time() - t1, name)
             z.write(tmp, name)
             os.remove(tmp)

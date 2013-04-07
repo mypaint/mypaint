@@ -26,9 +26,7 @@ use_gegl = True if os.environ.get('MYPAINT_ENABLE_GEGL', 0) else False
 
 from layer import DEFAULT_COMPOSITE_OP
 
-# Avoid pulling in PyGTK+ when using GI
-if not os.environ.get('MYPAINT_ENABLE_GEGL', 0):
-    import pixbufsurface
+import pixbufsurface
 
 
 class Tile:

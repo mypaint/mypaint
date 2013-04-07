@@ -6,7 +6,7 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-import gobject
+from gi.repository import GObject
 
 
 class Processor:
@@ -38,7 +38,7 @@ class Processor:
 
         """
         if not self._queue:
-            gobject.idle_add(self._idle_cb)
+            GObject.idle_add(self._idle_cb)
         func.__weight = float(weight)
         self._queue.append(func)
         self._finish_downto(self.max_pending)
