@@ -54,14 +54,12 @@ env.ParseConfig('pkg-config --cflags --libs lcms2')
 
 pygobject = 'pygobject-2.0'
 
-if env['enable_gtk3']:
-    env.ParseConfig('pkg-config --cflags --libs gtk+-3.0')
-    env.Append(CPPDEFINES=['HAVE_GTK3']) # possibly useful while we're porting
-    pygobject = 'pygobject-3.0'   # keep in step?
-else:
-    env.ParseConfig('pkg-config --cflags --libs gtk+-2.0')
+env.ParseConfig('pkg-config --cflags --libs gtk+-3.0')
+env.Append(CPPDEFINES=['HAVE_GTK3']) # possibly useful while we're porting
+pygobject = 'pygobject-3.0'   # keep in step?
 
 if env['enable_gegl']:
+    # FIXME: this is now lagging.
     assert pygobject == 'pygobject-2.0'
     env.ParseConfig('pkg-config --cflags --libs gegl-0.2')
     env.Append(CPPDEFINES=['HAVE_GEGL'])

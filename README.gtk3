@@ -17,13 +17,13 @@ nice to see some of the input-related bugs go away. The rough plan is:
    but it must be compatible with both PyGTK-GTK2 and pygtkcompat-PyGI+GTK3
    in this state, using pygtk naming conventions and import blocks.
 
-3. [ONGOING] Flip over to GTK3 by default, still using our abstraction layer.
+3. [DONE] Flip over to GTK3 by default, still using our abstraction layer.
    New code should be written for PyGI+GTK3.
 
-4. [TODO] As and when, rip out our pygtkcompat abstractions and/or pygtkcompat
+4. [ONGOING] As and when, rip out our pygtkcompat abstractions and/or pygtkcompat
    itself and port individual modules to PyGI+GTK3.
 
-As of writing, we are at stage 3. The status of this work is tracked in
+As of writing, we are at stage 4. The status of this work is tracked in
 https://gna.org/bugs/?19230
 
 
@@ -69,23 +69,4 @@ These can be installed on a Debian-based system by running::
   # apt-get install g++ python-dev python-numpy \
       libgtk-3-dev python-gi-dev gir1.2-gtk-3.0 python-gi-cairo \
       swig scons gettext libpng12-dev liblcms2-dev
-
-
-Testing and porting to GTK3
----------------------------
-
-See https://live.gnome.org/PyGObject/IntrospectionPorting
-
-We now build in GI+GTK3 mode by default, so if you want to build the binary
-parts of MyPaint for GTK2 and PyGTK, you need to request it explicitly::
-
-    $ cd path/to/mypaint-src
-    $ scons enable_gtk3=no
-
-Right now, our wrapper modules need be told to run in PyGTK mode as well: set
-the environment variable "MYPAINT_ENABLE_GTK3" to "no" to do this.
-
-    $ MYPAINT_ENABLE_GTK3=no ./mypaint
-
-However, note that support for running like this will be dropped shortly.
 
