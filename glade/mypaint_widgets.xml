@@ -20,7 +20,6 @@
   Icons for use in Glade's UI are named widget-<ICON-PREFIX>-<GENERIC-NAME>.
   -->
 
-
   <glade-widget-classes>
     <!--
     Lots of fakery here. Use GtkSpinner as a placeholder in lots of places,
@@ -29,13 +28,143 @@
     loading animation too :-)
     -->
 
+    <!-- Central workspace area flanked by two tabbed stacked sidebars -->
+    <glade-widget-class name="MyPaintWorkspace"
+                        title="Workspace"
+                        generic-name="workspace"
+                        parent="GtkHBox">
+      <properties>
+        <!-- Fake properties of a workspace -->
+        <property id="floating-window-title-suffix"
+                  name="Subw. title suffix"
+                  optional="True">
+          <spec>glade_standard_string_spec</spec>
+          <tooltip>Title suffix for floating windows</tooltip>
+        </property>
+        <property id="floating-window-title-separator"
+                  name="Subw. title sep."
+                  default=", "
+                  optional="True">
+          <spec>glade_standard_string_spec</spec>
+          <tooltip>Separator for floating window titles</tooltip>
+        </property>
+        <property id="header-bar"
+                  name="Header bar widget"
+                  save="True"
+                  optional="False"
+                  visible="True">
+          <parameter-spec>
+            <type>GParamObject</type>
+            <value-type>GtkWidget</value-type>
+          </parameter-spec>
+          <tooltip>External menu/toolbar widget, for auto-hide</tooltip>
+        </property>
+        <property id="footer-bar"
+                  name="Footer bar widget"
+                  save="True"
+                  optional="False"
+                  visible="True">
+          <parameter-spec>
+            <type>GParamObject</type>
+            <value-type>GtkWidget</value-type>
+          </parameter-spec>
+          <tooltip>External footer bar widget, for auto-hide</tooltip>
+        </property>
+        <!-- Support one HBox child via the hidden Glade-specific "size" -->
+        <!-- When running for real, this child is set as the canvas widget -->
+        <property id="size"
+                  save="False"
+                  visible="False"
+                  query="False"
+                  default="1"/>
+        <!-- Other HBox props to hide -->
+        <property id="homogeneous"
+                  visible="False"
+                  save="False"
+                  query="False"
+                  default="False"/>
+        <property id="spacing"
+                  visible="False"
+                  save="False"
+                  query="False"
+                  default="0"/>
+        <!-- Representative size for preview -->
+        <property id="width-request"
+                  default="500"
+                  optional="True"
+                  optional-default="True"/>
+        <property id="height-request"
+                  default="350"
+                  optional="True"
+                  optional-default="True"/>
+      </properties>
+
+      <!-- Defaults for any canvas widget added to the workspace -->
+      <packing-properties>
+        <property save="True"
+                  id="expand"
+                  save-always="True"
+                  transfer-on-paste="True"
+                  default="True" />
+      </packing-properties>
+
+      <!-- Defaults for workspaces when placed inside certain containers -->
+      <packing-defaults>
+        <parent-class name="GtkBox">
+          <child-property id="expand" default="True"/>
+        </parent-class>
+      </packing-defaults>
+
+    </glade-widget-class>
+
+    <!-- Combined toolbar and menubar with a compact mode for fullscreen -->
+    <glade-widget-class name="MyPaintTopBar"
+                        title="Top Bar"
+                        parent="GtkSpinner"
+                        generic-name="topbar">
+      <properties>
+        <!-- Fake properties of a TopBar -->
+        <property id="menubar"
+                  name="MenuBar widget"
+                  save="True"
+                  optional="True"
+                  visible="True">
+          <parameter-spec>
+            <type>GParamObject</type>
+            <value-type>GtkMenuBar</value-type>
+          </parameter-spec>
+          <tooltip>The GtkMenuBar to present</tooltip>
+        </property>
+        <property id="toolbar"
+                  name="Toolbar widget"
+                  save="True"
+                  optional="True"
+                  visible="True">
+          <parameter-spec>
+            <type>GParamObject</type>
+            <value-type>GtkToolbar</value-type>
+          </parameter-spec>
+          <tooltip>The GtkToolbar to present</tooltip>
+        </property>
+        <!-- Hide spinner props  -->
+        <property id="active" visible="False" save="False"/>
+        <!-- Representative size for preview -->
+        <property id="width-request"
+                  default="100"
+                  optional="True"
+                  optional-default="True"/>
+        <property id="height-request"
+                  default="24"
+                  optional="True"
+                  optional-default="True"/>
+      </properties>
+    </glade-widget-class>
+
     <!-- gui/tileddrawwidget.py -->
     <glade-widget-class name="TiledDrawWidget"
-        title="Tiled Drawing Widget" parent="GtkSpinner"
+        title="Tiled Drawing Widget" parent="GtkDrawingArea"
         generic-name="tdw">
       <properties>
-        <!-- All fakery -->
-        <property id="active" visible="False" save="False" />
         <!-- Representative size for preview -->
         <property id="width-request" default="250" optional="True"
             optional-default="True"/>
@@ -122,6 +251,8 @@
   </glade-widget-classes>
 
   <glade-widget-group name="MyPaint" title="MyPaint Widgets">
+    <glade-widget-class-ref name="MyPaintWorkspace"/>
+    <glade-widget-class-ref name="MyPaintTopBar"/>
     <glade-widget-class-ref name="TiledDrawWidget"/>
     <glade-widget-class-ref name="PixbufList"/>
     <glade-widget-class-ref name="CurveWidget"/>
