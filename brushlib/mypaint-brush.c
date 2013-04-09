@@ -27,10 +27,12 @@
 #include "helpers.h"
 #include "rng-double.h"
 
+#ifdef HAVE_JSON_C
 // Allow the C99 define from json.h
 #undef TRUE
 #undef FALSE
 #include <json.h>
+#endif // HAVE_JSON_C
 
 #ifdef _MSC_VER
   #include <float.h>
@@ -89,7 +91,9 @@ struct _MyPaintBrush {
     float speed_mapping_q[2];
 
     gboolean reset_requested;
+#ifdef HAVE_JSON_C
     json_object *brush_json;
+#endif
     int refcount;
 };
 
@@ -126,7 +130,9 @@ mypaint_brush_new()
 
     self->reset_requested = TRUE;
 
+#ifdef HAVE_JSON_C
     self->brush_json = json_object_new_object();
+#endif
 
     return self;
 }
@@ -139,7 +145,11 @@ brush_free(MyPaintBrush *self)
     }
     rng_double_free (self->rng);
     self->rng = NULL;
+
+#ifdef HAVE_JSON_C
     json_object_put(self->brush_json);
+#endif
+
     free(self);
 }
 
@@ -1074,6 +1084,7 @@ smallest_angular_difference(float a, float b)
     return FALSE;
   }
 
+#ifdef HAVE_JSON_C
 gboolean
 update_settings_from_json_object(MyPaintBrush *self)
 {
@@ -1131,14 +1142,19 @@ update_settings_from_json_object(MyPaintBrush *self)
     }
     return TRUE;
 }
+#endif // HAVE_JSON_C
 
 gboolean
 mypaint_brush_from_string(MyPaintBrush *self, const char *string)
 {
+#ifdef HAVE_JSON_C
     if (self->brush_json) {
         // Free
         json_object_put(self->brush_json);
     }
     self->brush_json = json_tokener_parse(string);
     return update_settings_from_json_object(self);
+#else
+    return FALSE;
+#endif
 }

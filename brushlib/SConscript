@@ -77,6 +77,7 @@ if env['enable_docs']:
 
 env.Append(CPPPATH='./')
 
+env.Append(CPPDEFINES='HAVE_JSON_C')
 pkg_deps = ['json']
 libs = ['m']
 linkflags = []
