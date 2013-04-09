@@ -1007,7 +1007,7 @@ class DragMode (InteractionMode):
             # necessary to avoid the rest of the UI becoming unresponsive even
             # though the canvas can be drawn on with the stylus. Are we
             # cancelling an implicit grab here, and why is it device specific?
-            gdk.pointer_ungrab()
+            gdk.pointer_ungrab(event.time)
             return
 
         # We managed to establish a grab, so watch for it being broken.
@@ -1020,7 +1020,7 @@ class DragMode (InteractionMode):
         grab_status = gdk.keyboard_grab(tdw_window, False, event.time)
         if grab_status != gdk.GRAB_SUCCESS:
             print "DEBUG: keyboard grab failed:", grab_status
-            gdk.pointer_ungrab()
+            gdk.pointer_ungrab(event.time)
             self.doc.modes.pop()
             return
 
