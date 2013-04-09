@@ -124,7 +124,9 @@ env.Append(LIBS=libs)
 env.ParseConfig('pkg-config --cflags --libs %s' % ' '.join(pkg_deps))
 
 lib_builder = env.SharedLibrary if env['use_sharedlib'] else env.StaticPicLibrary
-brushlib = lib_builder('../mypaint', Glob("*.c"))
+sources = Glob("*.c")
+sources = [n for n in sources if not n.name == "libmypaint.c"]
+brushlib = lib_builder('../mypaint', sources)
 
 create_pkgconfig_files(env, 'libmypaint', brushlib_version, 'MyPaint brush engine library',
                        libname='mypaint', deps=pkg_deps, libs=libs, linkflags=linkflags)
