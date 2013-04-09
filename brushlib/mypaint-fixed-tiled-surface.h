@@ -19,6 +19,13 @@ typedef struct _MyPaintGeglTiledSurface MyPaintFixedTiledSurface;
 MyPaintFixedTiledSurface *
 mypaint_fixed_tiled_surface_new(int width, int height);
 
+int
+mypaint_fixed_tiled_surface_get_width(MyPaintFixedTiledSurface *self);
+
+int
+mypaint_fixed_tiled_surface_get_height(MyPaintFixedTiledSurface *self);
+
+
 MyPaintSurface *
 mypaint_fixed_tiled_surface_interface(MyPaintFixedTiledSurface *self);
 

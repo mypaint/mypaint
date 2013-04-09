@@ -76,6 +76,18 @@ mypaint_fixed_tiled_surface_interface(MyPaintFixedTiledSurface *self)
     return (MyPaintSurface *)self;
 }
 
+int
+mypaint_fixed_tiled_surface_get_width(MyPaintFixedTiledSurface *self)
+{
+    return self->width;
+}
+
+int
+mypaint_fixed_tiled_surface_get_height(MyPaintFixedTiledSurface *self)
+{
+    return self->height;
+}
+
 MyPaintFixedTiledSurface *
 mypaint_fixed_tiled_surface_new(int width, int height)
 {
