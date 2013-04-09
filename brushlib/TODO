@@ -1,6 +1,5 @@
 
-== MyPaint 1.1 ==
-- Build into a static library instead of shared
+== MyPaint 1.2 ==
 - Implement support for "foreign" buffers in GeglSurface backend,
   that is buffers which are provided though set_buffer() and may
   not always have the ideal color format and tile size.
@@ -8,16 +7,23 @@
 - Make sure copyright headers exists in all files
 - Document the library concepts and API in the code. Import information from wiki
 - Set up build of documentation. Import diagrams from doc/
+
 - Document how install, lookup and modification of brush resources should happen
+- Make sure all resources are installed to "libmypaint" (not "mypaint")
 
 - Implement save/serialization of brushes to JSON
 - Use the libmypaint load/save methods in MyPaint itself
+
+- Allow to build minimal build with just a Makefile
+  Check in the generated headers on changes to avoid Python dependency.
+  Make json-c dependency opt-in.
+  Maybe include a "mypaint.c" file, which can be used to just drop code into project?
 
 - Tests and benchmarks suite.
  * Implement checks for correctness of rendering
  * Benchmarks should output the results as JSON
 
-- Rename to "libmypaint" and install resources to "libmypaint" (not "mypaint")
+
 
 == Later ==
 - Use floats types instead of uint15/uint16
