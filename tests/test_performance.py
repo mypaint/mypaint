@@ -1,10 +1,9 @@
 #!/usr/bin/env python
-
 import sys, os, tempfile, subprocess, gc, cProfile
 from time import time, sleep
 
-import gtk, glib
-from pylab import math, linspace, loadtxt
+from gi.repository import Gtk, Gdk
+from numpy import math, linspace, loadtxt
 
 os.chdir(os.path.dirname(sys.argv[0]))
 sys.path.insert(0, '..')
@@ -100,8 +99,7 @@ def paint(gui):
 def paint_zoomed_out_5x(gui):
     gui.wait_for_idle()
     gui_doc = gui.app.doc
-    for i in range(5):
-        gui_doc.zoom('ZoomOut')
+    gui.zoom_out(5)
     for res in paint(gui):
         yield res
 
@@ -121,8 +119,7 @@ def layerpaint_zoomed_out_5x(gui):
     gui.app.filehandler.open_file('bigimage.ora')
     gui_doc.tdw.scroll(800, 1000)
     gui_doc.model.select_layer(len(gui_doc.model.layers)/3)
-    for i in range(5):
-        gui_doc.zoom('ZoomOut')
+    gui.zoom_out(5)
     for res in paint(gui):
         yield res
 
@@ -234,8 +231,7 @@ def scroll_zoomed_out_1x_onelayer(gui):
     dw = gui.app.drawWindow
     dw.fullscreen_cb()
     gui.app.filehandler.open_file('biglayer.png')
-    for i in range(1):
-        gui.app.doc.zoom('ZoomOut')
+    gui.zoom_out(1)
     gui.wait_for_idle()
     yield start_measurement
     gui.scroll()
@@ -247,8 +243,7 @@ def scroll_zoomed_out_2x_onelayer(gui):
     dw = gui.app.drawWindow
     dw.fullscreen_cb()
     gui.app.filehandler.open_file('biglayer.png')
-    for i in range(2):
-        gui.app.doc.zoom('ZoomOut')
+    gui.zoom_out(2)
     gui.wait_for_idle()
     yield start_measurement
     gui.scroll()
@@ -260,8 +255,7 @@ def scroll_zoomed_out_5x(gui):
     dw = gui.app.drawWindow
     dw.fullscreen_cb()
     gui.app.filehandler.open_file('bigimage.ora')
-    for i in range(5):
-        gui.app.doc.zoom('ZoomOut')
+    gui.zoom_out(5)
     gui.wait_for_idle()
     yield start_measurement
     gui.scroll()
@@ -273,8 +267,7 @@ def memory_zoomed_out_5x(gui):
     dw = gui.app.drawWindow
     dw.fullscreen_cb()
     gui.app.filehandler.open_file('bigimage.ora')
-    for i in range(5):
-        gui.app.doc.zoom('ZoomOut')
+    gui.zoom_out(5)
     gui.wait_for_idle()
     gui.scroll()
     print 'result =', open('/proc/self/statm').read().split()[0]

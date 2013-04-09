@@ -57,9 +57,9 @@ class GtkCompat(object):
     @staticmethod
     def settings_get_default():
         if USE_GTK3:
-          return Gtk.Settings.get_default()
+            return Gtk.Settings.get_default()
         else:
-          return orig_gtk.settings_get_default()
+            return orig_gtk.settings_get_default()
 
     def accel_map_load(self, file):
         if USE_GTK3:

@@ -1,5 +1,6 @@
 #!/usr/bin/env python
-from pylab import *
+#from pylab import * # doesn't work any more, GTK version conflict (--> no plots on error)
+from numpy import *
 from time import time
 import sys, os, gc
 
