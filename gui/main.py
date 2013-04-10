@@ -79,6 +79,8 @@ def main(datapath, extradata, oldstyle_confpath=None, version=MYPAINT_VERSION):
       help='print all executed Python statements')
     parser.add_option('-f', '--fullscreen', action="store_true",
       help='start in fullscreen mode')
+    parser.add_option("-V", '--version', action="store_true",
+      help='print version information and exit')
     options, args = parser.parse_args(sys.argv_unicode[1:])
 
     # XDG support for new users on POSIX platforms
@@ -103,6 +105,10 @@ def main(datapath, extradata, oldstyle_confpath=None, version=MYPAINT_VERSION):
         print 'Python prints are redirected to %s after this one.' % logfilepath
         sys.stdout = sys.stderr = open(logfilepath, 'a', 1)
         print '--- mypaint log %s ---' % time.strftime('%Y-%m-%d %H:%M:%S')
+
+    if options.version:
+        print "MyPaint version %s" % (version,)
+        sys.exit(0)
 
     def run():
         print 'DEBUG: user_datapath:', userdatapath
