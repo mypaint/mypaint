@@ -28,7 +28,14 @@ from optparse import OptionParser
 import sys, time
 
 
-def main(datapath, extradata, oldstyle_confpath=None):
+#: Base version.
+#: If this string ends with +git, it will be expanded by the wrapper script to
+#: e.g. '1.1.0+gitSHORTCOMMITID' when built from inside a git repository.
+MYPAINT_VERSION='1.1.0+git'
+# ^ This is used by release.sh, so it must be a valid POSIX shell line too.
+
+
+def main(datapath, extradata, oldstyle_confpath=None, version=MYPAINT_VERSION):
     """Run MyPaint with `sys.argv`, called from the "mypaint" script.
 
     :param datapath: The app's read-only data location.
@@ -46,6 +53,7 @@ def main(datapath, extradata, oldstyle_confpath=None):
       for brushes and backgrounds. On Windows, these will be the same location.
       On POSIX systems, $HOME/.config/mypaint and $HOME/.local/share/mypaint
       are a typical division.
+    :param version: full version string for display in the about box.
 
     The oldstyle_confpath parameter can also be overridden by command-line
     parameters. To support legacy MyPaint configuration dirs, call with
@@ -103,7 +111,7 @@ def main(datapath, extradata, oldstyle_confpath=None):
         app = application.Application(args,
                 app_datapath=datapath, app_extradatapath=extradata,
                 user_datapath=userdatapath, user_confpath=userconfpath,
-                fullscreen=options.fullscreen)
+                version=version, fullscreen=options.fullscreen)
 
         # Recent gtk versions don't allow changing those menu shortcuts by
         # default. <rant>Sigh. This very useful feature used to be the

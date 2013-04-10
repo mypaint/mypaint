@@ -13,8 +13,6 @@ This is the main drawing window, containing menu actions.
 Painting is done in tileddrawwidget.py.
 """
 
-MYPAINT_VERSION="1.1.0+git"
-
 import os
 import time
 import webbrowser
@@ -793,7 +791,7 @@ class Window (windowing.MainWindow, layout.MainWindow):
         d = gtk.AboutDialog()
         d.set_transient_for(self)
         d.set_program_name("MyPaint")
-        d.set_version(MYPAINT_VERSION)
+        d.set_version(self.app.version)
         d.set_copyright(_("Copyright (C) 2005-2012\nMartin Renold and the MyPaint Development Team"))
         d.set_website("http://mypaint.info/")
         d.set_logo(self.app.pixmaps.mypaint_logo)

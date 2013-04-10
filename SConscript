@@ -1,4 +1,5 @@
 import os, sys
+import time
 from os.path import join, basename
 
 Import('env', 'install_perms', 'install_tree')
@@ -17,12 +18,29 @@ except OSError:
     # Systems like Win32...
     pass
 
-def burn_python_version(target, source, env):
-    # make sure we run the python version that we built the extension modules for
+def burn_versions(target, source, env):
+    # Burn versions into the generated Python target.
+    # Make sure we run the python version that we built the extension
+    # modules for:
     s =  '#!/usr/bin/env ' + env['python_binary'] + '\n'
     s += 5*'#\n'
     s += '# DO NOT EDIT - edit %s instead\n' % source[0]
     s += 5*'#\n'
+    # Also burn in the last git revision number
+    if os.path.isdir(".git"):
+        git_in, git_out = os.popen2("git rev-parse --short HEAD")
+        git_in.close()
+        git_rev = str(git_out.read()).strip()
+        git_out.close()
+        s += "_MYPAINT_BUILD_GIT_REVISION = %r\n" % (git_rev,)
+    else:
+        s += "_MYPAINT_BUILD_GIT_REVISION = ''\n"
+    # And a timestamp.
+    now_utc = time.gmtime()
+    timestamp = time.strftime("%Y-%m-%dT%H:%M:%SZ", now_utc)
+    s += "_MYPAINT_BUILD_TIME_ISO = %r\n" % (timestamp,)
+    s += "_MYPAINT_BUILD_GMTIME_TUPLE = %r\n" % (tuple(now_utc),)
+    s += "\n\n"
     s += open(str(source[0])).read()
     f = open(str(target[0]), 'w')
     f.write(s)
@@ -33,11 +51,11 @@ def burn_python_version(target, source, env):
 
 # User-facing executable Python code
 # MyPaint app
-env.Command('mypaint', 'mypaint.py', [burn_python_version, Chmod('$TARGET', 0755)])
+env.Command('mypaint', 'mypaint.py', [burn_versions, Chmod('$TARGET', 0755)])
 AlwaysBuild('mypaint') # especially if the "python_binary" option was changed
 
 # Thumbnailer script
-env.Command('desktop/mypaint-ora-thumbnailer', 'desktop/mypaint-ora-thumbnailer.py', [burn_python_version, Chmod('$TARGET', 0755)])
+env.Command('desktop/mypaint-ora-thumbnailer', 'desktop/mypaint-ora-thumbnailer.py', [burn_versions, Chmod('$TARGET', 0755)])
 AlwaysBuild('desktop/mypaint-ora-thumbnailer')
 
 

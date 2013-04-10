@@ -195,4 +195,10 @@ if __name__ == '__main__':
     gettext.textdomain("mypaint")
 
     from gui import main
-    main.main(datapath, extradata, old_confpath)
+    version = main.MYPAINT_VERSION
+    if version.endswith("+git"):
+        try:
+            version += _MYPAINT_BUILD_GIT_REVISION
+        except NameError:
+            pass
+    main.main(datapath, extradata, old_confpath, version)

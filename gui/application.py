@@ -61,7 +61,7 @@ class Application (object):
 
 
     def __init__(self, filenames, app_datapath, app_extradatapath,
-                 user_datapath, user_confpath, fullscreen=False):
+                 user_datapath, user_confpath, version, fullscreen=False):
         """Construct, but do not run.
 
         :params filenames: The list of files to load.
@@ -82,6 +82,7 @@ class Application (object):
           This is where MyPaint will save user preferences data and the
           keyboard accelerator map. Commonly $XDG_CONFIG_HOME/mypaint, i.e.
           ~/.config/mypaint
+        :param version: Version string for the about dialog.
         :param fullscreen: Go fullscreen after starting.
 
         """
@@ -93,6 +94,8 @@ class Application (object):
         self.user_datapath = user_datapath #: User data (see __init__)
 
         self.datapath = app_datapath
+
+        self.version = version  #: version string for the app.
 
         # create config directory, and subdirs where the user might drop files
         for basedir in [self.user_confpath, self.user_datapath]:

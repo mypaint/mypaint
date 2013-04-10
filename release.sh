@@ -7,7 +7,7 @@ if ! git diff --quiet; then
     exit 1
 fi
 
-eval $(grep MYPAINT_VERSION= gui/drawwindow.py)
+eval $(grep '^MYPAINT_VERSION=' gui/main.py)
 version=$MYPAINT_VERSION
 echo "Version $version"
 
