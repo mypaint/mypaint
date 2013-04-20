@@ -584,7 +584,7 @@ int draw_dab (MyPaintSurface *surface, float x, float y,
 
   // Symmetry pass
   if(self->surface_do_symmetry) {
-    const int symm_x = self->surface_center_x + (self->surface_center_x - x);
+    const float symm_x = self->surface_center_x + (self->surface_center_x - x);
 
     if (draw_dab_internal(self, symm_x, y, radius, color_r, color_g, color_b,
                            opaque, hardness, color_a, aspect_ratio, -angle,
