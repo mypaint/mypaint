@@ -1,6 +1,7 @@
 import os, sys
 from os.path import join, basename
 from SCons.Script.SConscript import SConsEnvironment
+import SCons.Util
 
 EnsureSConsVersion(1, 0)
 
@@ -41,18 +42,32 @@ tools = ['default', 'textfile']
 
 env = Environment(ENV=os.environ, options=opts, tools=tools)
 
-# Additional standard flags that SCons doesn't bother with yet
-# See http://cgit.freedesktop.org/mesa/mesa/tree/scons/gallium.py
-# See https://wiki.gentoo.org/wiki/SCons#Missing_CC.2C_CFLAGS.2C_LDFLAGS
-if 'LDFLAGS' in os.environ:
-    # LDFLAGS is omitted in SHLINKFLAGS, which is derived from LINKFLAGS
-    env.Append(LINKFLAGS=os.environ['LDFLAGS'])
-
 print('building for %r (use scons python_binary=xxx to change)' % env['python_binary'])
 print('using %r (use scons python_config=xxx to change)' % env['python_config'])
 if sys.platform == "win32":
     # remove this mingw if trying VisualStudio
     env = Environment(tools=tools + ['mingw'], ENV=os.environ, options=opts)
+
+# Respect some standard build environment stuff
+# See http://cgit.freedesktop.org/mesa/mesa/tree/scons/gallium.py
+# See https://wiki.gentoo.org/wiki/SCons#Missing_CC.2C_CFLAGS.2C_LDFLAGS
+if os.environ.has_key('CC'):
+   env['CC'] = os.environ['CC']
+if os.environ.has_key('CFLAGS'):
+   env['CCFLAGS'] += SCons.Util.CLVar(os.environ['CFLAGS'])
+if os.environ.has_key('CXX'):
+   env['CXX'] = os.environ['CXX']
+if os.environ.has_key('CXXFLAGS'):
+   env['CXXFLAGS'] += SCons.Util.CLVar(os.environ['CXXFLAGS'])
+if os.environ.has_key('CPPFLAGS'):
+   env['CCFLAGS'] += SCons.Util.CLVar(os.environ['CPPFLAGS'])
+   env['CXXFLAGS'] += SCons.Util.CLVar(os.environ['CPPFLAGS'])
+if os.environ.has_key('LDFLAGS'):
+    # LDFLAGS is omitted in SHLINKFLAGS, which is derived from LINKFLAGS
+   env['LINKFLAGS'] += SCons.Util.CLVar(os.environ['LDFLAGS'])
+if "$CCFLAGS" in env['CXXCOM']:
+   env['CXXCOM'] = env['CXXCOM'].replace("$CCFLAGS","")
+
 opts.Update(env)
 
 env.Append(CXXFLAGS=' -Wall -Wno-sign-compare -Wno-write-strings')
