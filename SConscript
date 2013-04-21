@@ -93,3 +93,5 @@ install_perms(env, "$prefix/share/mypaint/gui/colors", Glob("gui/colors/*.py"))
 
 
 Return('mypaintlib')
+
+# vim:syntax=python

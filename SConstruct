@@ -185,3 +185,5 @@ brushlib = SConscript('./brushlib/SConscript')
 if not env['brushlib_only']:
     application = SConscript('./SConscript')
     Depends(application, brushlib)
+
+# vim:syntax=python

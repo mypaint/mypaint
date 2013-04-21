@@ -33,3 +33,5 @@ if lang:
     Exit()
 
 Return('languages')
+
+# vim:syntax=python

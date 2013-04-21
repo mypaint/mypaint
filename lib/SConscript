@@ -104,3 +104,5 @@ src = 'mypaintlib_wrap.cpp'
 module = build_py_module(env, '../_mypaintlib', Split(src), SHLIBPREFIX="")
 
 Return('module')
+
+# vim:syntax=python

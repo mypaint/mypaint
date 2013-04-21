@@ -184,3 +184,5 @@ Export('gegl_env', 'env')
 tests = SConscript('tests/SConscript')
 
 Return('brushlib')
+
+# vim:syntax=python
