@@ -26,6 +26,7 @@ class GUI:
                                            app_extradatapath='../desktop',
                                            user_datapath=unicode(self.tempdir),
                                            user_confpath=unicode(self.tempdir),
+                                           version='guicontrol_testing',
                                            filenames=[])
 
         # ignore mouse movements during testing (creating extra strokes)
