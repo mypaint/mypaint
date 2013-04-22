@@ -26,7 +26,7 @@ from util import clamp
 
 
 
-class Palette:
+class Palette (object):
     """A flat list of colour swatches.
 
     As a (sideways-compatible) extension to the GIMP's format, MyPaint supports
@@ -56,6 +56,7 @@ class Palette:
           >>> Palette()
           <Palette colors=0, columns=0, name=None>
         """
+        super(Palette, self).__init__()
         self.clear()
         if filehandle:
             self.load(filehandle)
@@ -113,9 +114,9 @@ class Palette:
                 print "warning: expected R G B [Name]"
                 continue
             r, g, b, col_name = match.groups()
-            r = float(r)/256
-            g = float(g)/256
-            b = float(b)/256
+            r = float(clamp(int(r), 0, 0xff))/0xff
+            g = float(clamp(int(g), 0, 0xff))/0xff
+            b = float(clamp(int(b), 0, 0xff))/0xff
             if r == g == b == 0 and col_name == self.__EMPTY_SLOT_NAME:
                 self.append(None)
             else:
@@ -308,7 +309,7 @@ class Palette:
                 r = g = b = 0
             else:
                 col_name = col.__name
-                r, g, b = [int(c*256) for c in col.get_rgb()]
+                r, g, b = [clamp(int(c*0xff), 0, 0xff) for c in col.get_rgb()]
             result += u"%d %d %d    %s\n" % (r, g, b, col_name)
         return result
 
