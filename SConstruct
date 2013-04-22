@@ -85,7 +85,8 @@ if env['debug']:
     env.Append(CPPDEFINES='HEAVY_DEBUG')
     env.Append(CCFLAGS='-O0', LINKFLAGS='-O0')
 else:
-    env.Append(CCFLAGS='-O3', LINKFLAGS='-O3')
+    # Overridable defaults
+    env.Prepend(CCFLAGS='-O3', LINKFLAGS='-O3')
 
 if env['enable_profiling'] or env['debug']:
     env.Append(CCFLAGS='-g')
