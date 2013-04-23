@@ -59,22 +59,6 @@
       </properties>
     </glade-widget-class>
 
-    <!-- gui/elastic.py -->
-    <glade-widget-class name="ElasticWindow"
-        title="Elastic Window" parent="GtkWindow"
-        generic-name="elasticwindow" />
-    <glade-widget-class name="ElasticVBox"
-        title="Elastic VBox" parent="GtkBox"
-        generic-name="elasticvbox">
-      <properties>
-        <property id="orientation" default="GTK_ORIENTATION_VERTICAL"
-            save="True" query="False" visible="False" />
-      </properties>
-    </glade-widget-class>
-    <glade-widget-class name="ElasticExpander"
-        title="Elastic Expander" parent="GtkExpander"
-        generic-name="elasticexpander" />
-
     <!-- gui/curve.py -->
     <glade-widget-class name="CurveWidget"
         title="Curve Widget" parent="GtkSpinner"
@@ -140,9 +124,6 @@
   <glade-widget-group name="MyPaint" title="MyPaint Widgets">
     <glade-widget-class-ref name="TiledDrawWidget"/>
     <glade-widget-class-ref name="PixbufList"/>
-    <glade-widget-class-ref name="ElasticWindow"/>
-    <glade-widget-class-ref name="ElasticVBox"/>
-    <glade-widget-class-ref name="ElasticExpander"/>
     <glade-widget-class-ref name="CurveWidget"/>
     <glade-widget-class-ref name="ItemSpinBox"/>
     <glade-widget-class-ref name="DropdownPanelButton"/>

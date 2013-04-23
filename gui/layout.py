@@ -25,7 +25,6 @@ from warnings import warn
 
 from gettext import gettext as _
 
-from elastic import ElasticContainer
 
 def style_get_property(widget, property_name):
 
@@ -913,13 +912,12 @@ class ToolSnapBackBar (gtk.DrawingArea):
         # cribbed from http://git.gnome.org/browse/gtk+/tree/gtk/gtktearoffmenuitem.c?id=5361490db88974b529bf5a1ba79711fcb1c7249b
 
 
-class ToolWindow (gtk.Window, ElasticContainer, WindowWithSavedPosition):
+class ToolWindow (gtk.Window, WindowWithSavedPosition):
     """Window containing a Tool in the floating state.
     """
 
     def __init__(self, title, role, layout_manager):
         gtk.Window.__init__(self)
-        ElasticContainer.__init__(self)
         WindowWithSavedPosition.__init__(self)
         self.layout_manager = layout_manager
         self.set_transient_for(layout_manager.main_window)
@@ -1015,7 +1013,7 @@ class ToolWindow (gtk.Window, ElasticContainer, WindowWithSavedPosition):
             lm.prefs[role].update(new_size)
 
 
-class Tool (gtk.VBox, ElasticContainer):
+class Tool (gtk.VBox):
     """Container for a dockable tool widget.
     
     The widget may be packed into a Sidebar, or snapped out into its own
@@ -1024,7 +1022,6 @@ class Tool (gtk.VBox, ElasticContainer):
 
     def __init__(self, widget, role, title, stock_id, layout_manager):
         gtk.VBox.__init__(self)
-        ElasticContainer.__init__(self)
         self.role = role
         self.widget = widget
         self.layout_manager = layout_manager

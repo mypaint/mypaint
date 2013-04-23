@@ -29,7 +29,6 @@ from application import get_app
 import pixbuflist
 import dialogs
 import brushmanager
-from elastic import ElasticExpander
 from brushlib import brushsettings
 from lib.helpers import escape
 from colors import RGBColor
@@ -55,9 +54,10 @@ class ToolWidget (gtk.VBox):
         scroll.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
         scroll.add_with_viewport(self.brushgroups)
 
-        expander = self.expander = ElasticExpander(label=None)
+        expander = gtk.Expander(label=None)
         expander.add(get_common_settings_widget(app))
         expander.connect("notify::expanded", self.common_settings_expanded_cb)
+        self.expander = expander
         self.expander_prefs_loaded = False
         self.connect("show", self.show_cb)
 
