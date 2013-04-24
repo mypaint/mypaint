@@ -392,8 +392,6 @@ class PaletteView (ColorAdjuster, gtk.ScrolledWindow):
         self.grid = _PaletteGridLayout()
         self.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
         self.add_with_viewport(self.grid)
-        self.set_size_request(100, 100)
-        self.connect("size-allocate", self.__size_alloc_cb)
         self.set_palette(Palette())
         self.grid.current_index_observers.append(self._current_index_changed_cb)
 
@@ -410,22 +408,11 @@ class PaletteView (ColorAdjuster, gtk.ScrolledWindow):
         self.grid.set_color_manager(mgr)
         ColorAdjuster.set_color_manager(self, mgr)
 
-    def __size_alloc_cb(self, widget, alloc):
-        size = alloc.width, alloc.height
-        if self.__size != size:
-            self.__size = size
-            self.grid._set_parent_size(alloc.width, alloc.height)
-
-    def queue_draw(self):
-        self.grid.queue_resize()
-        gtk.ScrolledWindow.queue_draw(self)
-
     def _current_index_changed_cb(self, i):
         pass
         # TODO: scroll the vertical adjuster to show i if necessary:
         # use self.grid.get_allocation() & calculate using the
         # adjuster's properties.
-
 
 
 def outwards_from(n, i):
@@ -467,18 +454,8 @@ class _PalettePreview (gtk.DrawingArea):
 
     def __init__(self):
         gtk.DrawingArea.__init__(self)
-        try:
-            self.connect("draw", self._draw_cb)
-        except TypeError:
-            self.connect("expose-event", self._expose_event_cb)
+        self.connect("draw", self._draw_cb)
         self.set_size_request(128, 256)
-
-    def _expose_event_cb(self, widget, event):
-        gdk_window = self.get_window()
-        if gdk_window is None:
-            return
-        cr = gdk_window.cairo_create()
-        self._draw_cb(widget, cr)
 
     def _draw_cb(self, widget, cr):
         if self._palette is None:
@@ -512,15 +489,10 @@ class _PalettePreview (gtk.DrawingArea):
         if ncolumns*s < w:
             dx = int(w - ncolumns*s) / 2
 
-        if pygtkcompat.USE_GTK3:
-            state = self.get_state_flags()
-            style = self.get_style_context()
-            bg_rgba = style.get_background_color(state)
-            bg_color = RGBColor.new_from_gdk_rgba(bg_rgba)
-        else:
-            state = self.get_state()
-            style = self.get_style() # get_style_context now used for GTK3
-            bg_color = RGBColor.new_from_gdk_color(style.bg[state])
+        state = self.get_state_flags()
+        style = self.get_style_context()
+        bg_rgba = style.get_background_color(state)
+        bg_color = RGBColor.new_from_gdk_rgba(bg_rgba)
 
         self._palette.render(cr, rows=nrows, columns=ncolumns,
                              swatch_size=s, bg_color=bg_color,
@@ -546,46 +518,89 @@ class _PaletteGridLayout (ColorAdjusterWidget):
     _SWATCH_SIZE_MIN = 8
     _SWATCH_SIZE_MAX = 50
     _SWATCH_SIZE_NOMINAL = 20
+    _PREFERRED_COLUMNS = 5 #: Preferred width in cells for free-flow mode.
 
     ## Member variables & defaults
     show_current_index = False #: Highlight the current index (last click)
     manage_current_index = False  #: Index follows the managed colour
     can_select_empty = False #: User can click on empty slots
 
-    current_index_observers = None  #: List of `callback(int_or_None)`s.
-    palette_observers = None
-    _palette = None
-    _rows = None
-    _columns = None
-    _parent_size = None   #: (w, h) of the outer PaletteView
-    _sizes = None   #: set() of (w, h) tuples allocated within __parent_size
-    _drag_insertion_index = None
-    _current_index = None
-    _current_index_approx = False
-    _tooltip_index = None
-    _swatch_size = _SWATCH_SIZE_NOMINAL
-    _button_down = None
-
 
     def __init__(self):
         ColorAdjusterWidget.__init__(self)
-        self._sizes = set()
+        # Sizing
         s = self._SWATCH_SIZE_NOMINAL
         self.set_size_request(s, s)
         self.connect("size-allocate", self._size_alloc_cb)
+        # Current index
+        self._current_index = None
+        self._current_index_approx = False
+        self._button_down = None
         self.connect("button-press-event", self._button_press_cb)
         self.connect_after("button-release-event", self._button_release_cb)
         self.current_index_observers = []
         self.current_index_observers.append(self._current_index_changed_cb)
+        # Dragging
+        self._drag_insertion_index = None
+        self.connect("motion-notify-event", self._motion_notify_cb)
+        self.add_events(gdk.POINTER_MOTION_MASK)
+        # Palette to display
+        self._palette = None
         self.palette_observers = []
         self.palette_observers.append(self._palette_changed_cb)
         self.set_palette(Palette())
-        self.connect("motion-notify-event", self._motion_notify_cb)
-        self.add_events(gdk.POINTER_MOTION_MASK)
+        # Tooltips
+        self_tooltip_index = None
         self.set_has_tooltip(True)
+        # Cached layout details
+        self._rows = None
+        self._columns = None
+        self._swatch_size = self._SWATCH_SIZE_NOMINAL
+
+
+    def _size_alloc_cb(self, widget, alloc):
+        """Caches layout details after size negotiation.
+        """
+        width = alloc.width
+        height = alloc.height
+        ncolors, nrows, ncolumns = self._get_palette_dimensions()
+        if nrows and ncolumns:
+            # Fitted to the major dimension
+            size = int( min(width/ncolumns, height/nrows) )
+            size = self._constrain_swatch_size(size)
+        else:
+            # Free-flowing
+            if ncolors > 0:
+                size = int(math.sqrt(float(width*height) / ncolors))
+                size = self._constrain_swatch_size(size)
+                ncolumns = max(1, min(ncolors, width / size))
+                nrows = max(1, int(ncolors / ncolumns))
+                if int(ncolors % ncolumns) > 0:
+                    nrows += 1
+                if nrows * size > height or ncolumns * size > width:
+                    size = max(1, min(int(height / nrows),
+                                      int(width / ncolumns)))
+                    size = self._constrain_swatch_size(size)
+                    ncolumns = max(1, min(ncolors, width / size))
+                    nrows = max(1, int(ncolors / ncolumns))
+                    if int(ncolors % ncolumns) > 0:
+                        nrows += 1
+            else:
+                nrows = 0
+                ncolumns = 0
+                size = self._SWATCH_SIZE_NOMINAL
+        self._rows = nrows
+        self._columns = ncolumns
+        self._swatch_size = size
 
 
     def set_current_index(self, i, approx=False):
+        """Sets the current swatch to the given index.
+
+        The current swatch is drawn with a dashed border. It can be marked as
+        an approximate match, meaning it's drawn with a lighter outline.
+
+        """
         if i is not None:
             if i < 0 or i >= len(self._palette):
                 i = None
@@ -698,120 +713,111 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         self._button_down = None
 
 
-    def _set_parent_size(self, w, h):
-        self._parent_size = w, h
-        self._sizes = set()
-        self.queue_resize()
-
-
-    def _size_alloc_cb(self, widget, alloc):
-        # Keeps track of sizes allocated for a particular parent widget
-        # width. This is important to avoid reallocation loops when the
-        # scrollbar is shown and hidden.
-        size = (alloc.width, alloc.height)
-        self._sizes.add(size)
-        self.update_layout()
-
-
-    def _update_swatch_size(self):
-        # Recalculates the best swatch size for the current palette. We try to
-        # fit all the colours into the area available.
-
-        assert self._sizes is not None
-        assert len(self._sizes) > 0
-
-        alloc = self.get_allocation()
-        ncolumns = self._palette.get_columns()
-        ncolors = len(self._palette)
-        if ncolors == 0:
-            self._swatch_size = self._SWATCH_SIZE_NOMINAL
-            return self._swatch_size
-
-        # Attempt to show the palette within this area...
-        width = min([w for w,h in self._sizes])
-        height = max([h for w,h in self._sizes])
-        if self._parent_size is not None:
-            pw, ph = self._parent_size
-            height = min(ph, height)
-        if ncolumns == 0:
-            # Try to fit everything in 
-            s = math.sqrt(float(width * height) / ncolors)
-            s = clamp(s, self._SWATCH_SIZE_MIN, self._SWATCH_SIZE_MAX)
-            ncolumns = max(1, int(width/s))
-
-        # Calculate the number of rows
-        nrows = int(ncolors // ncolumns)
-        if ncolors % ncolumns != 0:
-            nrows += 1
-        nrows = max(1, nrows)
-
-        # Calculate swatch size
-        s1 = float(width) / ncolumns
-        s2 = float(height) / nrows
-        s = min(s1, s2)
-        s = int(s)
-        s = clamp(s, self._SWATCH_SIZE_MIN, self._SWATCH_SIZE_MAX)
-
+    @classmethod
+    def _constrain_swatch_size(cls, size):
+        size = min(cls._SWATCH_SIZE_MAX, max(cls._SWATCH_SIZE_MIN, size))
         # Restrict to multiples of 2 for patterns, plus one for the border
-        if s % 2 == 0:
-            s -= 1
-        self._swatch_size = int(s)
+        if size % 2 == 0:
+            size -= 1
+        return size
 
 
+    def _get_palette_dimensions(self):
+        """Normalized palette dimensions: (ncolors, nrows, ncolumns).
 
-    def update_layout(self):
-        """Recalculate rows and column count for the current size.
-
-        This is called whenever the palette changes with `set_palette()`, and
-        whenever the allocation changes via an event handler.
+        Row and columns figures are None if the layout it to be free-flowing.
 
         """
-        #print "DEBUG:", self._sizes
-        if len(self._sizes) == 0:
-            print "DEBUG: update_layout() called without sizes (hmm. Why?)"
-            return
-        width = min([w for w,h in self._sizes])
-
-        self._rows = None
-        self._columns = None
-        self._update_swatch_size()
-        swatch_w = swatch_h = self._swatch_size
         ncolumns = self._palette.get_columns()
         ncolors = len(self._palette)
+        if ncolumns is None or ncolumns < 1:
+            nrows = None
+            ncolumns = None
+        else:
+            ncolumns = min(int(ncolumns), ncolors)
+            nrows = max(1, int(ncolors / ncolumns))
+            if int(ncolors % ncolumns) > 0:
+                nrows += 1
+        return (ncolors, nrows, ncolumns)
 
-        # Decide whether to wrap or show in defined columns
-        if ncolumns != 0:
-            if swatch_w * ncolumns > width:
-                ncolumns = 0
-        if ncolumns == 0:
-            ncolumns = int(width / swatch_w)
 
-        # Allow it to be centred horizontally if there's only one row.
-        if ncolumns > ncolors:
-            ncolumns = ncolors
-        ncolumns = max(1, ncolumns)
+    def do_get_request_mode(self):
+        """GtkWidget size negotiation implementation
+        """
+        ncolors, nrows, ncolumns = self._get_palette_dimensions()
+        mode = gtk.SizeRequestMode.HEIGHT_FOR_WIDTH
+        if nrows and ncolumns:
+            if nrows > ncolumns:
+                mode = gtk.SizeRequestMode.WIDTH_FOR_HEIGHT
+        return mode
 
-        # Update the layout variables
-        self._columns = ncolumns
-        self._rows = int(ncolors // ncolumns)
-        if ncolors % ncolumns != 0:
-            self._rows += 1
-        self._rows = max(1, self._rows)
 
-        # Resize to fit this layout
-        height = self._rows*swatch_h
-        old_width, old_height = self.get_size_request()
-        if (width, height) != (old_width, old_height):
-            if (width, height) not in self._sizes:
-                #print "DEBUG: set_size_request", (-1, height)
-                self.set_size_request(-1, height)
+    def do_get_preferred_width(self):
+        """GtkWidget size negotiation implementation.
+        """
+        ncolors, nrows, ncolumns = self._get_palette_dimensions()
+        if ncolumns and ncolumns:
+            # Horizontal fit, assume rows <= columns
+            min_w = self._SWATCH_SIZE_MIN * ncolumns
+            nat_w = self._SWATCH_SIZE_NOMINAL * ncolumns
+        else:
+            # Free-flowing, across and then down
+            ncolumns = max(1, min(self._PREFERRED_COLUMNS, ncolors))
+            min_w = self._SWATCH_SIZE_MIN
+            nat_w = self._SWATCH_SIZE_NOMINAL * ncolumns
+        return min_w, nat_w
 
-        # FWIW. We don't actually use the cached background.
-        #self.clear_background()
-        self.queue_draw()
+
+    def do_get_preferred_height_for_width(self, width):
+        """GtkWidget size negotiation implementation.
+        """
+        ncolors, nrows, ncolumns = self._get_palette_dimensions()
+        if nrows and ncolumns:
+            # Horizontal fit
+            swatch_size = self._constrain_swatch_size(int(width / ncolumns))
+            min_h = self._SWATCH_SIZE_MIN * nrows
+            nat_h = swatch_size * nrows
+        else:
+            # Free-flowing, across and then down
+            # Since s = sqrt((w*h)/n),
+            min_h = int((((self._SWATCH_SIZE_MIN)**2)*ncolors) / width)
+            nat_h = int((((self._SWATCH_SIZE_NOMINAL)**2)*ncolors) / width)
+        return min_h, nat_h
+
+
+    def do_get_preferred_height(self):
+        """GtkWidget size negotiation implementation.
+        """
+        ncolors, nrows, ncolumns = self._get_palette_dimensions()
+        if nrows and ncolumns:
+            # Vertical fit, assume rows > columns
+            min_h = self._SWATCH_SIZE_MIN * nrows
+            nat_h = self._SWATCH_SIZE_NOMINAL * nrows
+        else:
+            # Height required for our own minimum width (note do_())
+            min_w, nat_w = self.do_get_preferred_width()
+            min_h, nat_h = self.do_get_preferred_height_for_width(min_w)
+        return min_h, nat_h
+
+
+    def do_get_preferred_width_for_height(self, height):
+        """GtkWidget size negotiation implementation.
+        """
+        ncolors, nrows, ncolumns = self._get_palette_dimensions()
+        if nrows and ncolumns:
+            # Vertical fit
+            swatch_size = self._constrain_swatch_size(int(height / nrows))
+            min_w = self._SWATCH_SIZE_MIN * ncolumns
+            nat_w = swatch_size * ncolumns
+        else:
+            # Just the minimum and natural width (note do_())
+            min_w, nat_w = self.do_get_preferred_width()
+        return min_w, nat_w
 
 
     def update_cb(self):
+        """Callback: managed color updated.
+        """
         self._drag_insertion_index = None
         ColorAdjusterWidget.update_cb(self)
         if self.manage_current_index and not self._button_down:
@@ -890,6 +896,7 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         self._swatch_size = None
         self._rows = None
         self._columns = None
+        self.queue_resize()  # maybe?
         self.queue_draw()
         # Store the changed palette to the prefs
         prefs = self._get_prefs()
@@ -930,15 +937,10 @@ class _PaletteGridLayout (ColorAdjusterWidget):
     def _paint_palette_layout(self, cr):
         if self._palette is None:
             return
-        if pygtkcompat.USE_GTK3:
-            state = self.get_state_flags()
-            style = self.get_style_context()
-            bg_rgba = style.get_background_color(state)
-            bg_col = RGBColor.new_from_gdk_rgba(bg_rgba)
-        else:
-            state = self.get_state()
-            style = self.get_style() # get_style_context now used for GTK3
-            bg_col = RGBColor.new_from_gdk_color(style.bg[state])
+        state = self.get_state_flags()
+        style = self.get_style_context()
+        bg_rgba = style.get_background_color(state)
+        bg_col = RGBColor.new_from_gdk_rgba(bg_rgba)
         dx, dy = self.get_painting_offset()
         self._palette.render(cr, rows=self._rows, columns=self._columns,
                              swatch_size=self._swatch_size,
@@ -969,12 +971,7 @@ class _PaletteGridLayout (ColorAdjusterWidget):
 
 
     def paint_foreground_cb(self, cr, wd, ht):
-        if self._rows is None or self._columns is None:
-            if self._palette is not None and len(self._palette) > 0:
-                self.update_layout()
-            return
-
-        # Background
+        # Palette cells
         self._paint_palette_layout(cr)
 
         # Highlights
@@ -1137,7 +1134,6 @@ class _PaletteGridLayout (ColorAdjusterWidget):
                     self._palette.pop(target_index)
             self._palette.insert(target_index, color)
         self._call_palette_observers()
-        self.update_layout()
         self.queue_draw()
         self._drag_insertion_index = None
         context.finish(True, True, t)
