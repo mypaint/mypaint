@@ -47,16 +47,14 @@ class PalettePage (CombinedAdjusterPage):
     """User-editable palette, as a `CombinedAdjuster` element.
     """
 
-    __adj = None
-    __edit_dialog = None
-
 
     def __init__(self):
         view = PaletteView()
         view.grid.show_current_index = True
         view.grid.manage_current_index = True
         view.can_select_empty = False
-        self.__adj = view
+        self._adj = view
+        self._edit_dialog = None
 
 
     @classmethod
@@ -84,12 +82,12 @@ class PalettePage (CombinedAdjusterPage):
         """
         # The PaletteNext and PalettePrev actions of the main
         # app require access to the PaletteView itself.
-        return self.__adj
+        return self._adj
 
 
     def set_color_manager(self, manager):
         CombinedAdjusterPage.set_color_manager(self, manager)
-        self.__adj.set_color_manager(manager)
+        self._adj.set_color_manager(manager)
         prefs = self._get_prefs()
         palette_dict = prefs.get(PREFS_PALETTE_DICT_KEY, None)
         if palette_dict is not None:
@@ -99,27 +97,25 @@ class PalettePage (CombinedAdjusterPage):
             palettes_dir = os.path.join(datapath, DATAPATH_PALETTES_SUBDIR)
             default = os.path.join(palettes_dir, DEFAULT_PALETTE_FILE)
             palette = Palette(filename=default)
-        self.__adj.set_palette(palette)
+        self._adj.set_palette(palette)
 
 
     def add_color_to_palette(self, color):
         # Used for "bookmarking" the current colour.
-        self.__adj.append_color(color)
+        self._adj.append_color(color)
 
 
     def show_properties(self):
-        if self.__edit_dialog is None:
-            toplevel = self.__adj.get_toplevel()
-            dialog = PaletteEditorDialog(toplevel, self.__adj)
-            self.__edit_dialog = dialog
-        self.__edit_dialog.run()
+        if self._edit_dialog is None:
+            toplevel = self._adj.get_toplevel()
+            dialog = PaletteEditorDialog(toplevel, self._adj)
+            self._edit_dialog = dialog
+        self._edit_dialog.run()
 
 
 class PaletteEditorDialog (gtk.Dialog):
     """Dialog for editing, loading and saving the current palette.
     """
-
-    __target = None  #: The target PaletteView, where changes are sent
 
     def __init__(self, parent, target):
         gtk.Dialog.__init__(self, _("Palette Editor"), parent,
@@ -127,36 +123,36 @@ class PaletteEditorDialog (gtk.Dialog):
                             (gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT,
                              gtk.STOCK_OK, gtk.RESPONSE_ACCEPT))
         self.set_position(gtk.WIN_POS_MOUSE)
-        self.__target = target
+        self._target = target #: The target PaletteView, where changes are sent
         view = PaletteView()
         view.set_size_request(400, 300)
         view.grid.show_current_index = True
         view.grid.manage_current_index = True
         view.grid.can_select_empty = True
-        self.__view = view
+        self._view = view
 
-        self.__mgr = ColorManager()
-        self.__mgr.set_color(RGBColor(1,1,1))
-        view.set_color_manager(self.__mgr)
+        self._mgr = ColorManager()
+        self._mgr.set_color(RGBColor(1,1,1))
+        view.set_color_manager(self._mgr)
 
         # Action buttons, positiopned down the right hand side
         action_bbox = gtk.VButtonBox()
-        load_btn = self.__load_button = gtk.Button(stock=gtk.STOCK_OPEN)
-        save_btn = self.__save_button = gtk.Button(stock=gtk.STOCK_SAVE)
-        add_btn = self.__add_button = gtk.Button(stock=gtk.STOCK_ADD)
-        remove_btn = self.__remove_button = gtk.Button(stock=gtk.STOCK_REMOVE)
-        clear_btn = self.__clear_button = gtk.Button(stock=gtk.STOCK_CLEAR)
+        load_btn = self._load_button = gtk.Button(stock=gtk.STOCK_OPEN)
+        save_btn = self._save_button = gtk.Button(stock=gtk.STOCK_SAVE)
+        add_btn = self._add_button = gtk.Button(stock=gtk.STOCK_ADD)
+        remove_btn = self._remove_button = gtk.Button(stock=gtk.STOCK_REMOVE)
+        clear_btn = self._clear_button = gtk.Button(stock=gtk.STOCK_CLEAR)
         action_bbox.pack_start(load_btn)
         action_bbox.pack_start(save_btn)
         action_bbox.pack_start(add_btn)
         action_bbox.pack_start(remove_btn)
         action_bbox.pack_start(clear_btn)
         action_bbox.set_layout(gtk.BUTTONBOX_START)
-        load_btn.connect("clicked", self.__load_btn_clicked)
-        save_btn.connect("clicked", self.__save_btn_clicked)
-        remove_btn.connect("clicked", self.__remove_btn_clicked)
-        add_btn.connect("clicked", self.__add_btn_clicked)
-        clear_btn.connect("clicked", self.__clear_btn_clicked)
+        load_btn.connect("clicked", self._load_btn_clicked)
+        save_btn.connect("clicked", self._save_btn_clicked)
+        remove_btn.connect("clicked", self._remove_btn_clicked)
+        add_btn.connect("clicked", self._add_btn_clicked)
+        clear_btn.connect("clicked", self._clear_btn_clicked)
         load_btn.set_tooltip_text(_("Load from a GIMP palette file"))
         save_btn.set_tooltip_text(_("Save to a GIMP palette file"))
         add_btn.set_tooltip_text(_("Add a new empty swatch"))
@@ -166,8 +162,8 @@ class PaletteEditorDialog (gtk.Dialog):
         # Button initial state and subsequent updates
         remove_btn.set_sensitive(False)
         view.grid.current_index_observers.append(
-          self.__current_index_changed_cb)
-        view.grid.palette_observers.append(self.__palette_changed_cb)
+          self._current_index_changed_cb)
+        view.grid.palette_observers.append(self._palette_changed_cb)
 
         # Palette name and number of entries
         palette_details_hbox = gtk.HBox()
@@ -175,17 +171,17 @@ class PaletteEditorDialog (gtk.Dialog):
         palette_name_label.set_tooltip_text(
           _("Name or description for this palette"))
         palette_name_entry = gtk.Entry()
-        palette_name_entry.connect("changed", self.__palette_name_changed_cb)
-        self.__palette_name_entry = palette_name_entry
-        self.__columns_adj = gtk.Adjustment(
+        palette_name_entry.connect("changed", self._palette_name_changed_cb)
+        self._palette_name_entry = palette_name_entry
+        self._columns_adj = gtk.Adjustment(
           value=0, lower=0, upper=99,
           step_incr=1, page_incr=1, page_size=0 )
-        self.__columns_adj.connect("value-changed", self.__columns_changed_cb)
+        self._columns_adj.connect("value-changed", self._columns_changed_cb)
         columns_label = gtk.Label(_("Columns:"))
         columns_label.set_tooltip_text(_("Number of columns"))
         columns_label.set_tooltip_text(_("Number of columns"))
         columns_spinbutton = gtk.SpinButton(
-          adjustment=self.__columns_adj,
+          adjustment=self._columns_adj,
           climb_rate=1.5,
           digits=0 )
         palette_details_hbox.set_spacing(0)
@@ -199,9 +195,9 @@ class PaletteEditorDialog (gtk.Dialog):
         color_name_label = gtk.Label(_("Color name:"))
         color_name_label.set_tooltip_text(_("Current colour's name"))
         color_name_entry = gtk.Entry()
-        color_name_entry.connect("changed", self.__color_name_changed_cb)
+        color_name_entry.connect("changed", self._color_name_changed_cb)
         color_name_entry.set_sensitive(False)
-        self.__color_name_entry = color_name_entry
+        self._color_name_entry = color_name_entry
         color_name_hbox.set_spacing(6)
         color_name_hbox.pack_start(color_name_label, False, False, 0)
         color_name_hbox.pack_start(color_name_entry, True, True, 0)
@@ -225,42 +221,42 @@ class PaletteEditorDialog (gtk.Dialog):
         for w in self.vbox:
             w.show_all()
 
-        self.connect("response", self.__response_cb)
-        self.connect("show", self.__show_cb)
+        self.connect("response", self._response_cb)
+        self.connect("show", self._show_cb)
 
 
-    def __show_cb(self, widget, *a):
+    def _show_cb(self, widget, *a):
         # Each time the dialog is shown, clone the target's palette for
         # editing.
         self.vbox.show_all()
-        palette = deepcopy(self.__target.get_palette())
+        palette = deepcopy(self._target.get_palette())
         name = palette.get_name()
         if name is None:
             name = ""
-        self.__palette_name_entry.set_text(name)
-        self.__columns_adj.set_value(palette.get_columns())
-        self.__view.set_palette(palette)
+        self._palette_name_entry.set_text(name)
+        self._columns_adj.set_value(palette.get_columns())
+        self._view.set_palette(palette)
 
 
-    def __palette_name_changed_cb(self, editable):
+    def _palette_name_changed_cb(self, editable):
         name = editable.get_chars(0, -1)
         if name == "":
             name = None
-        pal = self.__view.get_palette()
+        pal = self._view.get_palette()
         pal.set_name(name)
-        self.__view.set_palette(pal)
+        self._view.set_palette(pal)
 
 
-    def __columns_changed_cb(self, adj):
+    def _columns_changed_cb(self, adj):
         ncolumns = int(adj.get_value())
-        pal = self.__view.get_palette()
+        pal = self._view.get_palette()
         pal.set_columns(ncolumns)
-        self.__view.set_palette(pal)
+        self._view.set_palette(pal)
 
 
-    def __color_name_changed_cb(self, editable):
+    def _color_name_changed_cb(self, editable):
         name = editable.get_chars(0, -1)
-        grid = self.__view.grid
+        grid = self._view.grid
         palette = grid._palette
         i = grid._current_index
         if i is None:
@@ -272,18 +268,18 @@ class PaletteEditorDialog (gtk.Dialog):
             palette.set_color_name(i, name)
 
 
-    def __response_cb(self, widget, response_id):
+    def _response_cb(self, widget, response_id):
         if response_id == gtk.RESPONSE_ACCEPT:
-            palette = self.__view.get_palette()
-            self.__target.set_palette(palette)
+            palette = self._view.get_palette()
+            self._target.set_palette(palette)
         self.hide()
         return True
 
 
-    def __current_index_changed_cb(self, i):
-        col_name_entry = self.__color_name_entry
-        remove_btn = self.__remove_button
-        palette = self.__view.get_palette()
+    def _current_index_changed_cb(self, i):
+        col_name_entry = self._color_name_entry
+        remove_btn = self._remove_button
+        palette = self._view.get_palette()
         if i is not None:
             col = palette.get_color(i)
             if col is not None:
@@ -298,11 +294,11 @@ class PaletteEditorDialog (gtk.Dialog):
         else:
             col_name_entry.set_sensitive(False)
             col_name_entry.set_text("")
-        self.__update_buttons()
+        self._update_buttons()
 
 
-    def __update_buttons(self):
-        palette = self.__view.grid._palette
+    def _update_buttons(self):
+        palette = self._view.grid._palette
         emptyish = len(palette) == 0
         if len(palette) == 1:
             if palette[0] is None:
@@ -310,27 +306,27 @@ class PaletteEditorDialog (gtk.Dialog):
         can_save = not emptyish
         can_clear = not emptyish
         can_remove = True
-        if emptyish or self.__view.grid._current_index is None:
+        if emptyish or self._view.grid._current_index is None:
             can_remove = False
-        self.__save_button.set_sensitive(can_save)
-        self.__remove_button.set_sensitive(can_remove)
-        self.__clear_button.set_sensitive(can_clear)
+        self._save_button.set_sensitive(can_save)
+        self._remove_button.set_sensitive(can_remove)
+        self._clear_button.set_sensitive(can_clear)
 
 
-    def __palette_changed_cb(self, palette):
+    def _palette_changed_cb(self, palette):
         new_name = palette.get_name()
         if new_name is None:
             new_name = ""
-        old_name = self.__palette_name_entry.get_chars(0, -1)
+        old_name = self._palette_name_entry.get_chars(0, -1)
         if old_name != new_name:
-            self.__palette_name_entry.set_text(new_name)
-        self.__columns_adj.set_value(palette.get_columns())
-        self.__update_buttons()
+            self._palette_name_entry.set_text(new_name)
+        self._columns_adj.set_value(palette.get_columns())
+        self._update_buttons()
 
 
-    def __add_btn_clicked(self, button):
-        grid = self.__view.grid
-        palette = self.__view.get_palette()
+    def _add_btn_clicked(self, button):
+        grid = self._view.grid
+        palette = self._view.get_palette()
         i = grid._current_index
         if i is None:
             i = len(palette)
@@ -338,27 +334,27 @@ class PaletteEditorDialog (gtk.Dialog):
         else:
             palette.insert(i, None)
             i += 1
-        self.__view.set_palette(palette)
+        self._view.set_palette(palette)
         grid.set_current_index(i)
 
 
-    def __remove_btn_clicked(self, button):
-        grid = self.__view.grid
-        palette = self.__view.get_palette()
+    def _remove_btn_clicked(self, button):
+        grid = self._view.grid
+        palette = self._view.get_palette()
         i = grid._current_index
         if i >= 0 and i < len(palette):
             palette.pop(i)
             if len(palette) == 0:
                 palette.append(None)
-            self.__view.set_palette(palette)
+            self._view.set_palette(palette)
             if i > 0:
                 i -= 1
             grid.set_current_index(i)
 
 
-    def __load_btn_clicked(self, button):
+    def _load_btn_clicked(self, button):
         preview = _PalettePreview()
-        manager = self.__target.get_color_manager()
+        manager = self._target.get_color_manager()
         datapath = manager.get_data_path()
         palettes_dir = os.path.join(datapath, DATAPATH_PALETTES_SUBDIR)
         palette = Palette.load_via_dialog(title=_("Load palette"),
@@ -366,20 +362,20 @@ class PaletteEditorDialog (gtk.Dialog):
                                           preview=preview,
                                           shortcuts=[palettes_dir])
         if palette is not None:
-            self.__view.set_palette(palette)
+            self._view.set_palette(palette)
 
 
-    def __save_btn_clicked(self, button):
+    def _save_btn_clicked(self, button):
         preview = _PalettePreview()
-        pal = self.__view.get_palette()
+        pal = self._view.get_palette()
         pal.save_via_dialog(title=_("Save palette"), parent=self,
                             preview=preview)
 
 
-    def __clear_btn_clicked(self, button):
+    def _clear_btn_clicked(self, button):
         pal = Palette()
         pal.append(None)
-        self.__view.set_palette(pal)
+        self._view.set_palette(pal)
 
 
 
@@ -391,9 +387,6 @@ class PaletteView (ColorAdjuster, gtk.ScrolledWindow):
 
     """
 
-    __size = None
-
-
     def __init__(self):
         gtk.ScrolledWindow.__init__(self)
         self.grid = _PaletteGridLayout()
@@ -402,7 +395,7 @@ class PaletteView (ColorAdjuster, gtk.ScrolledWindow):
         self.set_size_request(100, 100)
         self.connect("size-allocate", self.__size_alloc_cb)
         self.set_palette(Palette())
-        self.grid.current_index_observers.append(self.__current_index_changed_cb)
+        self.grid.current_index_observers.append(self._current_index_changed_cb)
 
     def set_palette(self, palette):
         self.grid.set_palette(palette)
@@ -427,7 +420,7 @@ class PaletteView (ColorAdjuster, gtk.ScrolledWindow):
         self.grid.queue_resize()
         gtk.ScrolledWindow.queue_draw(self)
 
-    def __current_index_changed_cb(self, i):
+    def _current_index_changed_cb(self, i):
         pass
         # TODO: scroll the vertical adjuster to show i if necessary:
         # use self.grid.get_allocation() & calculate using the
