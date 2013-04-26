@@ -420,7 +420,6 @@ class MainWindow (WindowWithSavedPosition):
             # Responds to the user adjusting the HPaned's divider position.
             sbwidth = allocation.width
             self.layout_manager.prefs["main-window"]["sbwidth"] = sbwidth
-            self.layout_manager.main_window.sidebar.set_tool_widths(sbwidth)
         else:
             # Except, ugh, the first time. If the position isn't loaded yet,
             # load the main-window's sbwidth from the settings.
@@ -1550,26 +1549,6 @@ class Sidebar (gtk.EventBox):
                 lm.prefs[role] = {}
             lm.prefs[role]["sbindex"] = i
             i += 1
-
-    def set_tool_widths(self, width):
-        """Constrain all packed tools' widths to a certain size.
-        """
-        lm = self.layout_manager
-        max_w, max_h = self.max_tool_size()
-        for tool in [t for t in self.tools_vbox if t is not self.slack]:
-            natural_w, natural_h = tool.size_request()
-            req_w, req_h = tool.get_size_request()
-            if req_w == -1:
-                # Only constrain if the natual width is larger than permitted
-                if natural_w > max_w:
-                    tool.set_size_request(max_w, req_h)
-            else:
-                if req_w > max_w:
-                    if natural_w <= max_w:
-                        tool.set_size_request(-1, req_h)
-                        # Dubious. Could this lead to an infinite loop?
-                    else:
-                        tool.set_size_request(max_w, req_h)
 
 
 def set_initial_window_position(win, pos):
