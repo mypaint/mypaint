@@ -62,10 +62,7 @@ class PixbufList(gtk.DrawingArea):
         self.tooltip_text = None
         self.in_potential_drag = False
 
-        if pygtkcompat.USE_GTK3:
-            self.connect("draw", self.draw_cb)
-        else:
-            self.connect("expose-event", self.expose_cb)
+        self.connect("draw", self.draw_cb)
 
         self.connect("button-press-event", self.button_press_cb)
         self.connect("button-release-event", self.button_release_cb)
@@ -88,10 +85,9 @@ class PixbufList(gtk.DrawingArea):
         self.drag_highlighted = False
         self.drag_insertion_index = None
 
-        if pygtkcompat.USE_GTK3:
-            # Fake a nicer style
-            style_context = self.get_style_context()
-            style_context.add_class(gtk.STYLE_CLASS_VIEW)
+        # Fake a nicer style
+        style_context = self.get_style_context()
+        style_context.add_class(gtk.STYLE_CLASS_VIEW)
 
         self.update()
 
@@ -109,8 +105,7 @@ class PixbufList(gtk.DrawingArea):
             self.connect('drag-data-received', self.drag_data_received_cb)
             # Users can drag pixbufs *to* anywhere on a pixbuflist at all times.
             targets_list = [('LIST_ITEM', gtk.TARGET_SAME_APP, DRAG_ITEM_NAME)]
-            if pygtkcompat.USE_GTK3:
-                targets_list = [gtk.TargetEntry.new(*e) for e in targets_list]
+            targets_list = [gtk.TargetEntry.new(*e) for e in targets_list]
             self.drag_dest_set(gtk.DEST_DEFAULT_ALL, targets_list,
                                gdk.ACTION_MOVE | gdk.ACTION_COPY)
             # Dragging *from* a list can only happen over a pixbuf: see motion_notify_cb
@@ -144,9 +139,8 @@ class PixbufList(gtk.DrawingArea):
                 if not self.drag_source_sensitive:
                     targets_list = [ ('LIST_ITEM', gtk.TARGET_SAME_APP,
                                       DRAG_ITEM_NAME) ]
-                    if pygtkcompat.USE_GTK3:
-                        targets_list = [ gtk.TargetEntry.new(*e)
-                                         for e in targets_list  ]
+                    targets_list = [ gtk.TargetEntry.new(*e)
+                                     for e in targets_list  ]
                     self.drag_source_set(gtk.gdk.BUTTON1_MASK, targets_list,
                                          gdk.ACTION_COPY|gdk.ACTION_MOVE)
                     self.drag_source_sensitive = True
@@ -296,35 +290,21 @@ class PixbufList(gtk.DrawingArea):
 
     def draw_cb(self, widget, cr):
         # Paint the base colour, and the list's pixbuf.
-        if pygtkcompat.USE_GTK3:
-            state_flags = widget.get_state_flags()
-            style_context = widget.get_style_context()
-            bg_color_gdk = style_context.get_background_color(state_flags)
-            bg_color = RGBColor.new_from_gdk_rgba(bg_color_gdk)
-            cr.set_source_rgb(*bg_color.get_rgb())
-            cr.paint()
-            gdk.cairo_set_source_pixbuf(cr, self.pixbuf, 0, 0)
-            cr.paint()
-            # border colors
-            gdkrgba = style_context.get_background_color(
-                        state_flags|gtk.StateFlags.SELECTED)
-            selected_color = RGBColor.new_from_gdk_rgba(gdkrgba)
-            gdkrgba = style_context.get_background_color(
-                        state_flags|gtk.StateFlags.NORMAL)
-            insertion_color = RGBColor.new_from_gdk_rgba(gdkrgba)
-        else:
-            state = widget.get_state()
-            style = widget.get_style()   # get_style_context used for gtk3
-            bg_color = style.base[state]
-            cr.set_source_color(bg_color)
-            cr.paint()
-            cr.set_source_pixbuf(self.pixbuf, 0, 0)
-            cr.paint()
-            # border colors
-            gdkcolor = style.bg[gtk.STATE_SELECTED]
-            selected_color = RGBColor.new_from_gdk_color(gdkcolor)
-            gdkcolor = style.bg[gtk.STATE_NORMAL]
-            insertion_color = RGBColor.new_from_gdk_color(gdkcolor)
+        state_flags = widget.get_state_flags()
+        style_context = widget.get_style_context()
+        bg_color_gdk = style_context.get_background_color(state_flags)
+        bg_color = RGBColor.new_from_gdk_rgba(bg_color_gdk)
+        cr.set_source_rgb(*bg_color.get_rgb())
+        cr.paint()
+        gdk.cairo_set_source_pixbuf(cr, self.pixbuf, 0, 0)
+        cr.paint()
+        # border colors
+        gdkrgba = style_context.get_background_color(
+                    state_flags|gtk.StateFlags.SELECTED)
+        selected_color = RGBColor.new_from_gdk_rgba(gdkrgba)
+        gdkrgba = style_context.get_background_color(
+                    state_flags|gtk.StateFlags.NORMAL)
+        insertion_color = RGBColor.new_from_gdk_rgba(gdkrgba)
         # Draw borders
         last_i = len(self.itemlist) - 1
         for i, b in enumerate(self.itemlist):
@@ -354,53 +334,6 @@ class PixbufList(gtk.DrawingArea):
                 cr.rectangle(x, y, w-1, h-1)   # FIXME: check pixel alignment
                 cr.stroke()
                 x, y, w, h = shrink(1, x, y, w, h)
-        return True
-
-
-    def expose_cb(self, widget, event):
-        # PyGTK/GTK2 drawing code
-        # cut to maximal size
-        p_w, p_h = self.pixbuf.get_width(), self.pixbuf.get_height()
-
-        self.window.draw_rectangle(widget.style.base_gc[gtk.STATE_NORMAL],
-                                   True, 0, 0, p_w, p_h)
-
-        if self.drag_highlighted:
-            self.window.draw_rectangle(widget.style.black_gc, False, 0, 0, p_w-1, p_h-1)
-
-        widget.window.draw_pixbuf(widget.style.black_gc,
-                                  self.pixbuf,
-                                  0, 0, 0, 0)
-
-        # draw borders
-        i = 0
-        last_i = len(self.itemlist) - 1
-        for b in self.itemlist:
-            rect_gc = None
-            if b is self.selected:
-                rect_gc = widget.style.bg_gc[gtk.STATE_SELECTED]
-            elif  i == self.drag_insertion_index \
-              or (i == last_i and self.drag_insertion_index > i):
-                rect_gc = widget.style.fg_gc[gtk.STATE_NORMAL]
-            x = (i % self.tiles_w) * self.total_w
-            y = (i / self.tiles_w) * self.total_h
-            w = self.total_w
-            h = self.total_h
-            def shrink(pixels, x, y, w, h):
-                x += pixels
-                y += pixels
-                w -= 2*pixels
-                h -= 2*pixels
-                return (x, y, w, h)
-            x, y, w, h = shrink(self.spacing_outside, x, y, w, h)
-            for j in range(self.border_visible_outside_cell):
-                x, y, w, h = shrink(-1, x, y, w, h)
-            for j in range(self.border_visible + self.border_visible_outside_cell):
-                if rect_gc:
-                    widget.window.draw_rectangle(rect_gc, False, x, y, w-1, h-1)
-                x, y, w, h = shrink(1, x, y, w, h)
-            i += 1
-
         return True
 
 
