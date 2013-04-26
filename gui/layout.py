@@ -26,13 +26,12 @@ from warnings import warn
 from gettext import gettext as _
 
 
-def style_get_property(widget, property_name):
+def _style_get_property(widget, property_name):
+    val = gobject.Value()
+    val.init(int)
+    widget.style_get_property(property_name, val)
+    return val.get_int()
 
-    if pygtkcompat.USE_GTK3:
-        # FIXME: is the equivalent GI call broken? It seems to take value as an argument..
-        return 10
-    else:
-        return widget.style_get_property(property_name)
 
 class LayoutManager:
     """Keeps track of tool positions, and main window state.
@@ -427,10 +426,10 @@ class MainWindow (WindowWithSavedPosition):
                 width, height = self.last_conf_size
                 sbwidth = lm.prefs[role].get("sbwidth", None)
                 if sbwidth is not None:
-                    handle_size = style_get_property(self.hpaned, "handle-size")
+                    handle_size = _style_get_property(self.hpaned, "handle-size")
                     pos = width - handle_size - sbwidth
+                    print pos, pos+handle_size
                     self.hpaned.set_position(pos)
-                    self.hpaned.queue_resize()
                 self.hpaned_position_loaded = True
 
 
@@ -499,7 +498,7 @@ class ToolResizeGrip (gtk.DrawingArea):
     AREA_MIDDLE = 1
     AREA_RIGHT = 2
 
-    handle_size = style_get_property(gtk.HPaned(), "handle-size") + 2
+    handle_size = _style_get_property(gtk.HPaned(), "handle-size") + 2
     corner_width = 4*handle_size
 
     window_edge_map = {
@@ -1533,7 +1532,7 @@ class Sidebar (gtk.EventBox):
         """
         scrwin = self.scrolledwin
         viewpt = scrwin.get_child()
-        sb_pad = 2 * style_get_property(scrwin, "scrollbar-spacing")
+        sb_pad = 2 * _style_get_property(scrwin, "scrollbar-spacing")
         vp_alloc = viewpt.get_allocation()
         max_size = (vp_alloc.width-sb_pad, vp_alloc.height-sb_pad)
         return max_size
