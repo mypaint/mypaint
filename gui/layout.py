@@ -656,31 +656,6 @@ class FoldOutArrow (gtk.Button):
             self.set_tooltip_text(self.TEXT_EXPANDED)
 
 
-def draw_subtle_gradient(widget):
-    # Draw a subtle vertical gradient over an entire widget
-    state = widget.get_state()
-    alloc = widget.get_allocation()
-    w = alloc.width
-    h = alloc.height
-    def _col2rgba(col, alpha=0.2):
-        return col.red_float, col.green_float, col.blue_float, alpha
-    light_rgba = _col2rgba(widget.style.light[state])
-    mid_rgba = _col2rgba(widget.style.bg[state])
-    dark_rgba = _col2rgba(widget.style.dark[state])
-    gdk_window = widget.get_window()
-    cr = gdk_window.cairo_create()
-    lg = cairo.LinearGradient(0, 0, 0, h)
-    if state == gtk.STATE_ACTIVE:
-        lg.add_color_stop_rgba(0.0, *dark_rgba)
-        lg.add_color_stop_rgba(0.9, *dark_rgba)
-        lg.add_color_stop_rgba(1.0, *mid_rgba)
-    else:
-        lg.add_color_stop_rgba(0.0, *light_rgba)
-        lg.add_color_stop_rgba(0.5, *mid_rgba)
-        lg.add_color_stop_rgba(1.0, *dark_rgba)
-    cr.set_source(lg)
-    cr.paint()
-
 
 class ToolDragHandle (gtk.EventBox):
     """A draggable handle for repositioning a Tool.
@@ -724,18 +699,10 @@ class ToolDragHandle (gtk.EventBox):
         self.in_reposition_drag = False
         # Floating status
         self.set_floating(False)
-
-        if pygtkcompat.USE_GTK3:
-            #self.frame.connect("draw", self.on_draw)
-            style_context = self.get_style_context()
-            style_context.add_class(gtk.STYLE_CLASS_BUTTON)
-            self.hbox.set_border_width(4)
-        else:
-            self.frame.connect("expose-event", self.on_frame_expose_event)
-
-    def on_frame_expose_event(self, widget, event):
-        draw_subtle_gradient(widget)
-        return False   # let the normal handler draw the frame outline too
+        # Appearance
+        style_context = self.get_style_context()
+        style_context.add_class(gtk.STYLE_CLASS_BUTTON)
+        self.hbox.set_border_width(4)
 
     def set_floating(self, floating):
         if floating:
@@ -826,12 +793,9 @@ class ToolSnapBackBar (gtk.DrawingArea):
         self.tool = tool
         self.set_size_request(-1, self.ARROW_SIZE)
 
-        if pygtkcompat.USE_GTK3:
-            self.connect("draw", self.on_draw)
-            style_context = self.get_style_context()
-            style_context.add_class(gtk.STYLE_CLASS_SEPARATOR)
-        else:
-            self.connect("expose-event", self.on_expose_event)
+        self.connect("draw", self.on_draw)
+        style_context = self.get_style_context()
+        style_context.add_class(gtk.STYLE_CLASS_SEPARATOR)
 
         self.connect("button-press-event", self.on_button_down)
         self.connect("button-release-event", self.on_button_up)
@@ -878,38 +842,6 @@ class ToolSnapBackBar (gtk.DrawingArea):
         gtk.render_line(style, cr, n, n, w-m-n, n)
         gtk.render_arrow(style, cr, math.pi/2, w-m, 0, m)
 
-    def on_expose_event(self, widget, event):
-        alloc = self.get_allocation()
-        w = alloc.width
-        h = alloc.height
-        sty = self.get_style()
-        state = self.get_state()
-        if state == gtk.STATE_ACTIVE:
-            shadow_type = gtk.SHADOW_IN
-        elif state == gtk.STATE_PRELIGHT:
-            shadow_type = gtk.SHADOW_OUT
-        else:
-            shadow_type = gtk.SHADOW_NONE
-
-        #sty.paint_box(self.window, state, shadow_type, event.area,
-        #    self, None, 0, 0, w, h)
-        draw_subtle_gradient(widget)
-
-        gdk_window = self.get_window()
-        sty.paint_arrow(gdk_window, state, gtk.SHADOW_IN, event.area,
-            self, "tearoffmenuitem", gtk.ARROW_RIGHT, True, w-h, 0, h, h)
-
-
-        right_max = w - h
-        x = self.TEAR_LENGTH
-        while x < right_max:
-            x1 = x
-            x2 = min(x+self.TEAR_LENGTH, right_max)
-            sty.paint_hline(gdk_window, gtk.STATE_NORMAL, event.area,
-                       widget, "tearoffmenuitem",
-                       x1, x2, (h - sty.ythickness)//2)
-            x += 2 * self.TEAR_LENGTH
-        # cribbed from http://git.gnome.org/browse/gtk+/tree/gtk/gtktearoffmenuitem.c?id=5361490db88974b529bf5a1ba79711fcb1c7249b
 
 
 class ToolWindow (gtk.Window, WindowWithSavedPosition):
@@ -1083,10 +1015,7 @@ class Tool (gtk.VBox):
             if pixbuf is not None:
                 pixbufs.append(pixbuf)
         if pixbufs != []:
-            if pygtkcompat.USE_GTK3:
-                self.floating_window.set_icon_list(pixbufs)
-            else:
-                self.floating_window.set_icon_list(*pixbufs)
+            self.floating_window.set_icon_list(pixbufs)
 
 
     def on_floating_window_delete_event(self, window, event):
