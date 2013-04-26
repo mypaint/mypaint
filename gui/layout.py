@@ -1342,20 +1342,27 @@ class ToolDragPreviewWindow (gtk.Window):
             gdk_window.clear()
 
     def on_configure_event(self, window, event):
-        # Shape the window
-        if pygtkcompat.USE_GTK3:
-            # Until we have a non-Region workaround.
-            return
+        # Attempt to shape the window
         w = event.width
         h = event.height
-        r = gdk.Region()
-        s = 4
-        r.union_with_rect(gdk.Rectangle(0, 0, w, s))
-        r.union_with_rect(gdk.Rectangle(0, 0, s, h))
-        r.union_with_rect(gdk.Rectangle(0, h-s, w, s))
-        r.union_with_rect(gdk.Rectangle(w-s, 0, s, h))
-        gdk_window = self.get_window()
-        gdk_window.shape_combine_region(r, 0, 0)
+        mask = cairo.ImageSurface(cairo.FORMAT_ARGB32, w, h)
+        cr = cairo.Context(mask)
+        cr.set_source_rgba(0, 0, 0, 0)
+        cr.paint()
+        s = 4.0
+        cr.set_line_width(s)
+        cr.rectangle(s/2, s/2, w-s, h-s)
+        cr.set_source_rgba(1, 1, 1, 0)
+        cr.stroke()
+        mask.flush()
+        try:
+            r = gdk.cairo_region_create_from_surface(mask)
+        except TypeError:
+            # "Couldn't find conversion for foreign struct 'cairo.Region'"
+            print "INFO: no conversion for cairo_region_t: no shaped windows for you"
+        else:
+            self.shape_combine_region(r, 0, 0)
+
 
     def on_expose_event(self, window, event):
         # Clear to the backing pixmap established earlier
