@@ -80,10 +80,13 @@ class HSVTriangle (gtk.VBox, ColorAdjuster):
 
     def _hsv_alloc_cb(self, hsv, alloc):
         # When extra space is given, grow the HSV wheel.
-        radius = min(alloc.width, alloc.height)
-        ring_width = max(12, int(radius/16))
-        hsv.set_metrics(radius, ring_width)
-        hsv.queue_draw()
+        old_radius, ring_width = hsv.get_metrics()
+        new_radius = min(alloc.width, alloc.height)
+        new_radius = clamp(new_radius, 50, 200)
+        new_radius -= ring_width
+        if new_radius != old_radius:
+            hsv.set_metrics(new_radius, ring_width)
+            hsv.queue_draw()
 
 
     def update_cb(self):
