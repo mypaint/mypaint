@@ -82,7 +82,8 @@ mypaint_brush_get_total_stroke_painting_time(MyPaintBrush *self);
 void
 mypaint_brush_set_print_inputs(MyPaintBrush *self, gboolean enabled);
 
-
+void
+mypaint_brush_from_defaults(MyPaintBrush *self);
 
 
 gboolean

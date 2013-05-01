@@ -863,12 +863,14 @@ smallest_angular_difference(float a, float b)
     return res1 + res2 + res3;
   }
 
-  // This function:
-  // - is called once for each motion event
-  // - does motion event interpolation
-  // - paints zero, one or several dabs
-  // - decides whether the stroke is finished (for undo/redo)
-  // returns TRUE if the stroke is finished or empty
+  /** 
+   * mypaint_brush_stroke_to:
+   * Should be called once for each motion event.
+   *
+   * @dtime: Time since last motion event, in seconds.
+   *
+   * Returns: non-0 if the stroke is finished or empty, else 0.
+   */
   int mypaint_brush_stroke_to (MyPaintBrush *self, MyPaintSurface *surface,
                                 float x, float y, float pressure,
                                 float xtilt, float ytilt, double dtime)
@@ -1157,4 +1159,21 @@ mypaint_brush_from_string(MyPaintBrush *self, const char *string)
 #else
     return FALSE;
 #endif
+}
+
+
+void
+mypaint_brush_from_defaults(MyPaintBrush *self) {
+    for (int s = 0; s < MYPAINT_BRUSH_SETTINGS_COUNT; s++) {
+        for (int i = 0; i < MYPAINT_BRUSH_INPUTS_COUNT; i++) {
+            mypaint_brush_set_mapping_n(self, s, i, 0);
+        }
+
+        const float def = mypaint_brush_setting_info(s)->def;
+        mypaint_brush_set_base_value(self, s, def);
+    }
+
+    mypaint_brush_set_mapping_n(self, MYPAINT_BRUSH_SETTING_OPAQUE_MULTIPLY, MYPAINT_BRUSH_INPUT_PRESSURE, 2);
+    mypaint_brush_set_mapping_point(self, MYPAINT_BRUSH_SETTING_OPAQUE_MULTIPLY, MYPAINT_BRUSH_INPUT_PRESSURE, 0, 0.0, 0.0);
+    mypaint_brush_set_mapping_point(self, MYPAINT_BRUSH_SETTING_OPAQUE_MULTIPLY, MYPAINT_BRUSH_INPUT_PRESSURE, 1, 1.0, 1.0);
 }
