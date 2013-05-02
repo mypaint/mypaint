@@ -100,7 +100,7 @@ class Window(windowing.Dialog):
             if not os.path.exists(filename):
                 break
             i += 1
-        pixbuf.save(filename, 'png')
+        gui.gtk2compat.gdk.pixbuf.save(pixbuf, filename, 'png')
         self.bgl.backgrounds.append(pixbuf)
         self.bgl.update()
         self.bgl.set_selected(pixbuf)
