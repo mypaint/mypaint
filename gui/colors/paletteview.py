@@ -88,7 +88,7 @@ class PalettePage (CombinedAdjusterPage):
     def set_color_manager(self, manager):
         CombinedAdjusterPage.set_color_manager(self, manager)
         self._adj.set_color_manager(manager)
-        prefs = self._get_prefs()
+        prefs = self.get_prefs()
         palette_dict = prefs.get(PREFS_PALETTE_DICT_KEY, None)
         if palette_dict is not None:
             palette = Palette.new_from_simple_dict(palette_dict)
@@ -509,10 +509,10 @@ class _PaletteGridLayout (ColorAdjusterWidget):
     """
 
     ## Class settings
-    is_drag_source = True
-    has_details_dialog = True
-    tooltip_text = _("Color swatch palette. Drop colors here and "
-                     "drag them around to organize.")
+    IS_DRAG_SOURCE = True
+    HAS_DETAILS_DIALOG = True
+    STATIC_TOOLTIP_TEXT = _("Color swatch palette.\nDrop colors here,\n"
+                            "drag them to organize.")
 
     ## Layout constants
     _SWATCH_SIZE_MIN = 8
@@ -674,7 +674,7 @@ class _PaletteGridLayout (ColorAdjusterWidget):
                 # Second event over a non-colour: set the tooltip text.
                 self._tooltip_index = -2
                 self.set_has_tooltip(True)
-                self.set_tooltip_text(self.tooltip_text)
+                self.set_tooltip_text(self.STATIC_TOOLTIP_TEXT)
         elif self._tooltip_index != i:
             # Mouse pointer has moved to a different colour, or away
             # from the two states above.
@@ -691,7 +691,7 @@ class _PaletteGridLayout (ColorAdjusterWidget):
                 if color is None:
                     tip = _("Empty palette slot (drag a color here)")
                 elif tip is None or tip.strip() == "":
-                    tip = self.tooltip_text   # would None be nicer?
+                    tip = ""  # Anonymous colors don't get tooltips
                 self.set_has_tooltip(True)
                 self.set_tooltip_text(tip)
         return False
@@ -815,11 +815,11 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         return min_w, nat_w
 
 
-    def update_cb(self):
-        """Callback: managed color updated.
+    def color_updated(self):
+        """Managed color updated.
         """
         self._drag_insertion_index = None
-        ColorAdjusterWidget.update_cb(self)
+        ColorAdjusterWidget.color_updated(self)
         if self.manage_current_index and not self._button_down:
             self.match_managed_color()
 
@@ -899,7 +899,7 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         self.queue_resize()  # maybe?
         self.queue_draw()
         # Store the changed palette to the prefs
-        prefs = self._get_prefs()
+        prefs = self.get_prefs()
         prefs[PREFS_PALETTE_DICT_KEY] = palette.to_simple_dict()
 
 
@@ -1081,7 +1081,7 @@ class _PaletteGridLayout (ColorAdjusterWidget):
     ## Drag handling overrides
 
 
-    def _drag_motion_cb(self, widget, context, x, y, t):
+    def drag_motion_cb(self, widget, context, x, y, t):
         if "application/x-color" not in context.targets:
             return False
         action = None
@@ -1112,7 +1112,7 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         context.drag_status(action, t)
 
 
-    def _drag_data_received_cb(self, widget, context, x, y,
+    def drag_data_received_cb(self, widget, context, x, y,
                                selection, info, t):
         if "application/x-color" not in context.targets:
             return False
@@ -1141,12 +1141,12 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         self.set_current_index(target_index)
 
 
-    def _drag_end_cb(self, widget, context):
+    def drag_end_cb(self, widget, context):
         self._drag_insertion_index = None
         self.queue_draw()
 
 
-    def _drag_leave_cb(self, widget, context, time):
+    def drag_leave_cb(self, widget, context, time):
         self._drag_insertion_index = None
         self.queue_draw()
 

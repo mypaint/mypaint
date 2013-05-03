@@ -799,7 +799,7 @@ class ColorHistoryView (gtk.HBox, ColorAdjuster):
             self.__history_blobs.append(blob)
         self.set_color_manager(mgr)
 
-    def update_cb(self):
+    def color_history_updated(self):
         mgr = self.get_color_manager()
         for blob, color in zip(self.__history_blobs, mgr.get_history()):
             blob.color = color

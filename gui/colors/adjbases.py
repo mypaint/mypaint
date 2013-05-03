@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2012 by Andrew Chadwick <andrewc-git@piffle.org>
+# Copyright (C) 2012-2013 by Andrew Chadwick <a.t.chadwick@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -10,10 +10,12 @@
 """Manager+adjuster bases for tweaking a single colour via many widgets.
 """
 
+## Imports
 import gui.gtk2compat as gtk2compat
 
 import math
 from copy import deepcopy, copy
+from warnings import warn
 
 import gtk
 from gtk import gdk
@@ -28,21 +30,72 @@ from bases import IconRenderable
 from uimisc import *
 
 
+## Module constants
+
+
 PREFS_KEY_CURRENT_COLOR = 'colors.current'
 PREFS_KEY_COLOR_HISTORY = 'colors.history'
 PREFS_KEY_WHEEL_TYPE = 'colors.wheels.type'
 
 
+
+## To-do list :)
+
+# TODO: move palette & its management to the central ColorManager
+# TODO: update palette_next_cb/palette_prev_cb (DrawWindow) to point here
+
+
+## API deprecation support
+
+class DeprecatedAPIWarning (UserWarning):
+    pass
+
+
+def deprecated(replacement=None):
+    """Decorator for deprecated calls, with an optional suggested replacement.
+    """
+    def owrapper(func):
+        if replacement is not None:
+            def iwrapper(*a, **kw):
+                msg = "%s is deprecated: use %s() instead" % \
+                                    (func.__name__, replacement.__name__)
+                warn(msg, DeprecatedAPIWarning, stacklevel=2)
+                return replacement(*a, **kw)
+        else:
+            def iwrapper(*a, **kw):
+                msg = "%s is deprecated" % (func.__name__,)
+                warn(msg, DeprecatedAPIWarning, stacklevel=2)
+                return func(*a, **kw)
+        iwrapper.__name__ = func.__name__
+        iwrapper.__doc__ = func.__doc__
+        return iwrapper
+    return owrapper
+
+
+## Class definitions
+
+
 class ColorManager (gobject.GObject):
-    """Manages updates to a shared `UIColor` from lots of `ColorAdjuster`s.
+    ## Class docs
+    """Manages the data common to several attached `ColorAdjuster`s.
+
+    This data is basically everything that one or more adjusters might want to
+    display. It includes a working color (used by the main app as the active
+    brush color), a short history of previously-painted-with colors, tables of
+    angular distortions for color wheels etc.
+
     """
 
+    ## GObject integration (type name)
 
-    # Class constants
     __gtype_name__ = "ColorManager" #: GObject integration
-    __DEFAULT_HIST = ['#ee3333', '#336699', '#44aa66', '#aa6633', '#292929']
-    __HIST_LEN = 5
-    __HUE_DISTORTION_TABLES = {
+
+
+    ## Behavioural constants
+
+    _DEFAULT_HIST = ['#ee3333', '#336699', '#44aa66', '#aa6633', '#292929']
+    _HIST_LEN = 5
+    _HUE_DISTORTION_TABLES = {
         # {"PREFS_KEY_WHEEL_TYPE-name": table-of-ranges}
         "rgb": None,
         "ryb": [
@@ -57,51 +110,57 @@ class ColorManager (gobject.GObject):
                 ((2/3., 1.  ),  (0.75, 1.)),   # blue -> red
             ],
         }
-    __DEFAULT_WHEEL_TYPE = "rgb"
+    _DEFAULT_WHEEL_TYPE = "rgb"
 
 
-    # Instance data (defaults, overridden)
-    __color = None     #: Currently edited colour, a UIColor object.
-    __hist = None  #: List of previous colours, most recent last
-    __adjusters = None  #: The list of registered adjusters.
-    __prefs = None   #: Shared preferences dictionary.
-    __picker_cursor = gdk.Cursor(gdk.CROSSHAIR) #: Cursor for for picker adjs
-    __datapath = '.'  #: Base path for saving palettes and masks.
-    __hue_distorts = None  #: Hue-remapping table for colour wheel adjusters.
+    ## Construction
 
 
-    def __init__(self, prefs=None):
+    def __init__(self, prefs=None, datapath=u'.'):
         """Initialises with default colours and an empty adjuster list.
+
+        :param prefs: Prefs dict for saving settings.
+        :param datapath: Base path for saving palettes and masks.
+
         """
         gobject.GObject.__init__(self)
         if prefs is None:
-            prefs = dict()
-        self.__prefs = prefs
+            prefs = {}
 
-        # Build history. Last item is most recent.
+        # Defaults
+        self._color = None  #: Currently edited color, a UIColor object
+        self._hist = []  #: List of previous colors, most recent last
+        self._adjusters = [] #: The list of registered adjusters
+        self._picker_cursor = gdk.Cursor(gdk.CROSSHAIR) #: Cursor for pickers
+        self._datapath = datapath #: Base path for saving palettes and masks
+        self._hue_distorts = None #: Hue-remapping table for color wheels
+        self._prefs = prefs #: Shared preferences dictionary
+
+        # Build the history. Last item is most recent.
         hist_hex = list(prefs.get(PREFS_KEY_COLOR_HISTORY, []))
-        hist_hex = self.__DEFAULT_HIST + hist_hex
-        self.__hist = [RGBColor.new_from_hex_str(s) for s in hist_hex]
-        self.__trim_hist()
+        hist_hex = self._DEFAULT_HIST + hist_hex
+        self._hist = [RGBColor.new_from_hex_str(s) for s in hist_hex]
+        self._trim_hist()
 
         # Restore current colour, or use the most recent colour.
         col_hex = prefs.get(PREFS_KEY_CURRENT_COLOR, None)
         if col_hex is None:
             col_hex = hist_hex[-1]
-        self.__color = RGBColor.new_from_hex_str(col_hex)
-
-        self.__adjusters = []
+        self._color = RGBColor.new_from_hex_str(col_hex)
 
         # Initialize angle distort table
-        wheel_type = prefs.get(PREFS_KEY_WHEEL_TYPE,self.__DEFAULT_WHEEL_TYPE)
-        distorts_table = self.__HUE_DISTORTION_TABLES[wheel_type]
-        self.__hue_distorts = distorts_table
+        wheel_type = prefs.get(PREFS_KEY_WHEEL_TYPE, self._DEFAULT_WHEEL_TYPE)
+        distorts_table = self._HUE_DISTORTION_TABLES[wheel_type]
+        self._hue_distorts = distorts_table
+
+
+    ## Picker cursor
 
 
     def set_picker_cursor(self, cursor):
         """Sets the color picker cursor.
         """
-        self.__picker_cursor = cursor
+        self._picker_cursor = cursor
 
 
     def get_picker_cursor(self):
@@ -111,16 +170,20 @@ class ColorManager (gobject.GObject):
         which have a screen color picker. The default is a crosshair.
 
         """
-        return self.__picker_cursor
+        return self._picker_cursor
+
 
     # TODO: if the color picker function needs to be made partly app-aware,
     # move it here and let BrushColorManager override/extend it.
 
 
+    ## Template/read-only data path for palettes, masks etc.
+
+
     def set_data_path(self, datapath):
         """Sets the template/read-only data path for palettes, masks etc.
         """
-        self.__datapath = datapath
+        self._datapath = datapath
 
     def get_data_path(self):
         """Returns the template/read-only data path for palettes, masks etc.
@@ -129,88 +192,123 @@ class ColorManager (gobject.GObject):
         load template resources, e.g. palette selectors.
 
         """
-        return self.__datapath
+        return self._datapath
 
 
-    def _add_adjuster(self, adjuster):
-        if adjuster in self.__adjusters:
+    datapath = property(get_data_path, set_data_path)
+
+
+    ## Attached ColorAdjusters
+
+    
+    def add_adjuster(self, adjuster):
+        if adjuster in self._adjusters:
             return
-        self.__adjusters.append(adjuster)
+        self._adjusters.append(adjuster)
 
 
+    @deprecated(add_adjuster)
+    def _add_adjuster(self, adjuster):
+        pass
+
+
+    def remove_adjuster(self, adjuster):
+        self._adjusters.remove(adjuster)
+
+
+    @deprecated(remove_adjuster)
     def _remove_adjuster(self, adjuster):
-        self.__adjusters.remove(adjuster)
+        pass
 
 
     def get_adjusters(self):
         """Returns an iterator over the set of registered adjusters.
         """
-        return iter(self.__adjusters)
+        return iter(self._adjusters)
+
+
+    ## Main shared UIColor object
 
 
     def set_color(self, color):
-        """Sets the shared `UIColor`, and updates all registered adjusters.
+        """Sets the shared `UIColor`, and notifies all registered adjusters.
+
+        Calling this invokes the `color_updated()` method on each registered
+        color adjuster after the color has been updated.
+
         """
-        if color == self.__color:
+        if color == self._color:
             return
-        self.__color = copy(color)
-        self.__prefs[PREFS_KEY_CURRENT_COLOR] = color.to_hex_str()
-        for adj in self.__adjusters:
-            adj.update_cb()
+        self._color = copy(color)
+        self._prefs[PREFS_KEY_CURRENT_COLOR] = color.to_hex_str()
+        for adj in self._adjusters:
+            adj.color_updated()
 
 
     def get_color(self):
         """Gets a copy of the shared `UIColor`.
         """
-        return copy(self.__color)
+        return copy(self._color)
 
 
-    # color = property(get_color, set_color)
+    color = property(get_color, set_color)
 
 
-    def __trim_hist(self):
-        self.__hist = self.__hist[-self.__HIST_LEN:]
+    ## History of colors used for painting
+
+
+    def _trim_hist(self):
+        self._hist = self._hist[-self._HIST_LEN:]
 
 
     def push_history(self, color):
         """Pushes a colour to the user history list.
+
+        Calling this invokes the `color_history_updated()` method on each
+        registered color adjuster after the history has been updated.
+
         """
-        while color in self.__hist:
-            self.__hist.remove(color)
-        self.__hist.append(color)
-        self.__trim_hist()
+        while color in self._hist:
+            self._hist.remove(color)
+        self._hist.append(color)
+        self._trim_hist()
         key = PREFS_KEY_COLOR_HISTORY
         val = []
-        for c in self.__hist:
+        for c in self._hist:
             s = c.to_hex_str()
             val.append(s)
-        self.__prefs[key] = val
-        for adj in self.__adjusters:
-            adj.update_cb()
+        self._prefs[key] = val
+        for adj in self._adjusters:
+            adj.color_history_updated()
 
 
     def get_history(self):
-        """Returns a copy of the colour history.
+        """Returns a copy of the color history.
         """
-        return deepcopy(self.__hist)
+        return deepcopy(self._hist)
 
 
     def get_previous_color(self):
-        """Returns the previously used colour from the user history list.
+        """Returns the most recently used color from the user history list.
         """
-        return deepcopy(self.__hist[-1])
+        return deepcopy(self._hist[-1])
 
 
-    def adjustment_finished_cb(self):
-        """Called at the end of an adjustment by drag or click.
+    ## Prefs access
+
+
+    def get_prefs(self):
+        """Returns the current preferences hash.
         """
+        return self._prefs
+
+
+    @deprecated(get_prefs)
+    def _get_prefs(self):
         pass
 
 
-    def _get_prefs(self):
-        """Returns the current preferences hash.
-        """
-        return self.__prefs
+    ## Color wheel distortion table (support for RYGB/RGB/RYB-wheels)
 
 
     def set_wheel_type(self, typename):
@@ -224,13 +322,13 @@ class ColorManager (gobject.GObject):
 
         """
         old_typename = self.get_wheel_type()
-        if typename not in self.__HUE_DISTORTION_TABLES:
-            typename = self.__DEFAULT_WHEEL_TYPE
+        if typename not in self._HUE_DISTORTION_TABLES:
+            typename = self._DEFAULT_WHEEL_TYPE
         if typename == old_typename:
             return
-        self.__hue_distorts = self.__HUE_DISTORTION_TABLES[typename]
-        self.__prefs[PREFS_KEY_WHEEL_TYPE] = typename
-        for adj in self.__adjusters:
+        self._hue_distorts = self._HUE_DISTORTION_TABLES[typename]
+        self._prefs[PREFS_KEY_WHEEL_TYPE] = typename
+        for adj in self._adjusters:
             if isinstance(adj, HueSaturationWheelAdjuster):
                 adj.clear_background()
 
@@ -238,17 +336,17 @@ class ColorManager (gobject.GObject):
     def get_wheel_type(self):
         """Returns the current colour wheel type name.
         """
-        default = self.__DEFAULT_WHEEL_TYPE
-        return self.__prefs.get(PREFS_KEY_WHEEL_TYPE, default)
+        default = self._DEFAULT_WHEEL_TYPE
+        return self._prefs.get(PREFS_KEY_WHEEL_TYPE, default)
 
 
     def distort_hue(self, h):
         """Distorts a hue from RGB-wheel angles to the current wheel type's.
         """
-        if self.__hue_distorts is None:
+        if self._hue_distorts is None:
             return h
         h %= 1.0
-        for rgb_wheel_range, distorted_wheel_range in self.__hue_distorts:
+        for rgb_wheel_range, distorted_wheel_range in self._hue_distorts:
             in0, in1 = rgb_wheel_range
             out0, out1 = distorted_wheel_range
             if h > in0 and h <= in1:
@@ -262,10 +360,10 @@ class ColorManager (gobject.GObject):
     def undistort_hue(self, h):
         """Reverses the mapping imposed by ``distort_hue()``.
         """
-        if self.__hue_distorts is None:
+        if self._hue_distorts is None:
             return h
         h %= 1.0
-        for rgb_wheel_range, distorted_wheel_range in self.__hue_distorts:
+        for rgb_wheel_range, distorted_wheel_range in self._hue_distorts:
             out0, out1 = rgb_wheel_range
             in0, in1 = distorted_wheel_range
             if h > in0 and h <= in1:
@@ -276,21 +374,22 @@ class ColorManager (gobject.GObject):
         return h
 
 
+
 class ColorAdjuster:
     """Base class for any object which can manipulate a shared `UIColor`.
 
     Color adjusters are used for changing one or more elements of a colour.
-    Several are bound to a a central `ColorManager`, and broadcast
+    Several are bound to a central `ColorManager`, and broadcast
     changes to it.
 
     """
 
-    # Class-leval variables
-    __default_color = RGBColor(0.55, 0.55, 0.55)
+    ## Constants
 
-    # Instance data (defaults and documentation)
-    __manager = None   #: Central manager.
-    is_editable = True  #: Colour can be changed with the adjuster
+    _DEFAULT_COLOR = RGBColor(0.55, 0.55, 0.55)
+
+
+    ## Central ColorManager instance (accessors)
 
 
     def set_color_manager(self, manager):
@@ -299,50 +398,78 @@ class ColorAdjuster:
         if manager is not None:
             if self in manager.get_adjusters():
                 return
-        if self.__manager is not None:
-            self.__manager._remove_adjuster(self)
+        existing = self.get_color_manager()
+        if existing is not None:
+            existing.remove_adjuster(self)
         self.__manager = manager
         if self.__manager is not None:
-            self.__manager._add_adjuster(self)
+            self.__manager.add_adjuster(self)
 
 
     def get_color_manager(self):
         """Gets the shared colour adjustment manager.
         """
-        return self.__manager
+        try:
+            return self.__manager
+        except AttributeError:
+            self.__manager = None
+            return None
+
+
+    color_manager = property(get_color_manager, set_color_manager)
+
+
+    ## Access to the central managed UIColor (convenience methods)
 
 
     def get_managed_color(self):
         """Gets the managed color. Convenience method for use by subclasses.
         """
-        if self.__manager is None:
-            return RGBColor(color=self.__default_color)
-        return self.__manager.get_color()
+        if self.color_manager is None:
+            return RGBColor(color=self._DEFAULT_COLOR)
+        return self.color_manager.get_color()
 
 
     def set_managed_color(self, color):
         """Sets the managed color. Convenience method for use by subclasses.
         """
-        if self.__manager is None:
-            return
-        if not self.is_editable:
+        if self.color_manager is None:
             return
         if color is not None:
-            self.__manager.set_color(color)
+            self.color_manager.set_color(color)
 
 
-    def _get_prefs(self):
-        if self.__manager is not None:
-            return self.__manager._get_prefs()
+    managed_color = property(get_managed_color, set_managed_color)
+
+
+    ## Central shared prefs access (convenience methods)
+
+
+    def get_prefs(self):
+        if self.color_manager is not None:
+            return self.color_manager.get_prefs()
         return {}
 
 
-    # managed_color = property(get_managed_color, set_managed_color)
+    @deprecated(get_prefs)
+    def _get_prefs(self):
+        pass
 
-    def update_cb(self):
-        """Called by the manager in response to the shared `UIColor` changing.
+
+    ## Update notification
+
+
+    def color_updated(self):
+        """Called by the manager when the shared `UIColor` changes.
         """
         pass
+
+
+    def color_history_updated(self):
+        """Called by the manager when the color usage history changes.
+        """
+        pass
+        
 
 
 class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
@@ -355,34 +482,61 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
     here happy by implementing `get_color_at_position()`.
 
     Colour adjusters can operate as sources for dragging colours: subclasses
-    should set `is_drag_source` to `True` before the object is realized to
+    should set `IS_DRAG_SOURCE` to `True` before the object is realized to
     enable this.
 
     """
 
-    # Behavioural settings and constants; class-level
-    scroll_delta = 0.015   #: Delta for a scroll event
-    is_drag_source = False  #: Set to True to make press+move do a select+drag
-    drag_threshold = 10  #: Drag threshold, in pixels
-    _drag_color_id = 1
-    has_details_dialog = False  #: Set true for a double-click details dialog
+    ## Behavioural and stylistic class constants
 
-    # Instance vars
-    __manager = None
-    __button_down = None
-    __drag_start_pos = None
-    __drag_start_color = None
-    __realized = False
+    SCROLL_DELTA = 0.015   #: Delta for a scroll event
+    IS_DRAG_SOURCE = False  #: Set to True to make press+move do a select+drag
+    DRAG_THRESHOLD = 10  #: Drag threshold, in pixels
+    _DRAG_COLOR_ID = 1
+    HAS_DETAILS_DIALOG = False  #: Set true for a double-click details dialog
+    BORDER_WIDTH = 2    #: Size of the border around the widget.
+    STATIC_TOOLTIP_TEXT = None #: Static tooltip, used during constructor
+    OUTLINE_WIDTH = 3  #: Dark outline around shapes: size
+    OUTLINE_RGBA = (0, 0, 0, 0.4)  #: Dark shape outline: color
+    EDGE_HIGHLIGHT_WIDTH = 1.0  #: Light Tango-ish border for shapes: size
+    EDGE_HIGHLIGHT_RGBA = (1, 1, 1, 0.25) #: Light Tango-ish border: xolor
 
-    # Common style elements for subclasses to use
-    outline_width = 3
-    outline_rgba = (0, 0, 0, 0.4)
-    edge_highlight_width = 1.0
-    edge_highlight_rgba = (1, 1, 1, 0.25)
-    border = 2    #: Size of the border around the widget.
-    tooltip_text = None  #: Static tooltip text, set during constructor
 
-    # gobject integration
+    ## Deprecated property names
+
+    @property
+    def border(self):
+        warn("Use BORDER_WIDTH instead", DeprecatedAPIWarning, 2)
+        return self.BORDER_WIDTH
+
+    @property
+    def outline_width(self):
+        warn("Use OUTLINE_WIDTH instead", DeprecatedAPIWarning, 2)
+        return self.OUTLINE_WIDTH
+
+    @property
+    def outline_rgba(self):
+        warn("Use OUTLINE_RGBA instead", DeprecatedAPIWarning, 2)
+        return self.OUTLINE_RGBA
+
+    @property
+    def edge_highlight_rgba(self):
+        warn("Use EDGE_HIGHLIGHT_RGBA instead", DeprecatedAPIWarning, 2)
+        return self.EDGE_HIGHLIGHT_RGBA
+
+    @property
+    def edge_highlight_width(self):
+        warn("Use EDGE_HIGHLIGHT_WIDTH instead", DeprecatedAPIWarning, 2)
+        return self.EDGE_HIGHLIGHT_WIDTH
+
+    @property
+    def tooltip_text(self):
+        warn("Use STATIC_TOOLTIP_TEXT instead", DeprecatedAPIWarning, 2)
+        return self.STATIC_TOOLTIP_TEXT
+
+
+    ## GObject integration (type name, properties)
+
     __gtype_name__ = "ColorAdjusterWidget"
     __gproperties__ = {
         'color-manager': (ColorManager,
@@ -391,57 +545,58 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
                           gobject.PARAM_READWRITE),
         }
 
+    ## Construction (TODO: rename internals at some point)
 
     def __init__(self):
         """Initializes, and registers click and drag handlers.
         """
         CachedBgDrawingArea.__init__(self)
-        self._manager = None
+        self.__button_down = None
+        self.__drag_start_pos = None
+        self.__drag_start_color = None
         self.connect("button-press-event", self.__button_press_cb)
         self.connect("motion-notify-event", self.__motion_notify_cb)
         self.connect("button-release-event", self.__button_release_cb)
         self.add_events(gdk.BUTTON_PRESS_MASK|gdk.BUTTON_RELEASE_MASK)
         self.add_events(gdk.BUTTON_MOTION_MASK)
-        self.connect("realize", self.__realize_cb)
-        if self.tooltip_text is not None:
-            self.set_tooltip_text(self.tooltip_text)
+        self.connect("realize", self._init_color_drag)
+        if self.STATIC_TOOLTIP_TEXT is not None:
+            self.set_tooltip_text(self.STATIC_TOOLTIP_TEXT)
 
 
-    def __realize_cb(self, widget):
-        if self.__realized:
-            return
-        self.__realized = True
-        self.__init_drag()
+    ## Color drag and drop
 
 
-    def __init_drag(self):
-        targets_list = [("application/x-color", 0, self._drag_color_id)]
+    def _init_color_drag(self, *_junk):
+        # Drag init, postponed to realize time to allow subclasses to
+        # configure behaviour during construction.
+        targets_list = [("application/x-color", 0, self._DRAG_COLOR_ID)]
         if gtk2compat.USE_GTK3:
             targets_list = [gtk.TargetEntry.new(*e) for e in targets_list]
         self.drag_dest_set(
           gtk.DEST_DEFAULT_MOTION | gtk.DEST_DEFAULT_DROP,
           targets_list,
           gdk.ACTION_DEFAULT | gdk.ACTION_COPY)
-        self.connect("drag-motion", self._drag_motion_cb)
-        self.connect('drag-leave', self._drag_leave_cb)
-        self.connect('drag-begin', self._drag_begin_cb)
-        self.connect('drag-end', self._drag_end_cb)
-        if self.is_drag_source:
-            self.connect("drag-data-get", self._drag_data_get_cb)
-        self.connect("drag-data-received", self._drag_data_received_cb)
+        self.connect("drag-motion", self.drag_motion_cb)
+        self.connect('drag-leave', self.drag_leave_cb)
+        self.connect('drag-begin', self.drag_begin_cb)
+        self.connect('drag-end', self.drag_end_cb)
+        if self.IS_DRAG_SOURCE:
+            self.connect("drag-data-get", self.drag_data_get_cb)
+        self.connect("drag-data-received", self.drag_data_received_cb)
         settings = self.get_settings()
-        settings.set_property("gtk-dnd-drag-threshold", self.drag_threshold)
+        settings.set_property("gtk-dnd-drag-threshold", self.DRAG_THRESHOLD)
 
 
-    def _drag_motion_cb(self, widget, context, x, y, t):
+    def drag_motion_cb(self, widget, context, x, y, t):
         pass
 
 
-    def _drag_leave_cb(self, widget, context, time):
+    def drag_leave_cb(self, widget, context, time):
         pass
 
 
-    def _drag_begin_cb(self, widget, context):
+    def drag_begin_cb(self, widget, context):
         color = self.get_managed_color()
         preview = gtk2compat.gdk.pixbuf.new(gdk.COLORSPACE_RGB,
                                              has_alpha=False, bps=8,
@@ -451,11 +606,12 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
         self.drag_source_set_icon_pixbuf(preview)
 
 
-    def _drag_end_cb(self, widget, context):
+    def drag_end_cb(self, widget, context):
         self._drag_start_pos = None
 
 
-    def _drag_data_get_cb(self, widget, context, selection, target_type, time):
+    def drag_data_get_cb(self, widget, context, selection, target_type,
+                         time):
         """Gets the current colour when a successful drop happens somewhere.
         """
         if "application/x-color" not in context.targets:
@@ -466,13 +622,17 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
         return True
 
 
-    def _drag_data_received_cb(self, widget, context, x, y, selection, info, t):
+    def drag_data_received_cb(self, widget, context, x, y, selection,
+                               info, time):
         if "application/x-color" not in context.targets:
             return False
         color = RGBColor.new_from_drag_data(selection.data)
-        context.finish(True, True, t)
+        context.finish(True, True, time)
         self.set_managed_color(color)
         return True
+
+
+    ## GObject properties (TODO: use decorator syntax instead)
 
 
     def do_set_property(self, prop, value):
@@ -489,14 +649,31 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
             raise AttributeError, 'unknown property %s' % prop.name
 
 
+    ## Color-at-position interface (for subclasses, primarily)
+
+
     def get_color_at_position(self, x, y):
-        """Return which colour a pixel position represents.
+        """Get the color a position represents. Subclasses must override.
 
         Can be legitimately used by drawing routines, but at this level
         it's used only by the private handlers for button presses etc.
 
         """
         raise NotImplementedError
+
+
+    def set_color_at_position(self, x, y, color):
+        """Handles colours set by the double-click color selection dialog.
+
+        Certain subclasses which are sensitive to the `x` and `y` position of
+        the double click that launches the dialog override this. At this level
+        these parameters are ignored.
+
+        """
+        self.set_managed_color(color)
+
+
+    ## CachedBgDrawingArea implementation: bg validity determined by color
 
 
     def get_background_validity(self):
@@ -511,6 +688,9 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
         return repr(self.get_managed_color())
 
 
+    ## Pointer event handling
+
+
     def __button_press_cb(self, widget, event):
         """Button press handler.
         """
@@ -520,33 +700,32 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
 
         # Double-click shows the details adjuster
         if event.type == gdk._2BUTTON_PRESS \
-                    and self.has_details_dialog:
+                    and self.HAS_DETAILS_DIALOG:
             self.__button_down = None
-            if self.is_drag_source:
+            if self.IS_DRAG_SOURCE:
                 self.drag_source_unset()
-            if self.is_editable:
-                prev_color = self.get_color_manager().get_previous_color()
-                color = RGBColor.new_from_dialog(
-                  title=_("Color details"),
-                  color=color,
-                  previous_color=prev_color,
-                  parent=self.get_toplevel())
-                if color is not None:
-                    self.set_color_at_position(event.x, event.y, color)
+            prev_color = self.get_color_manager().get_previous_color()
+            color = RGBColor.new_from_dialog(
+              title=_("Color details"),
+              color=color,
+              previous_color=prev_color,
+              parent=self.get_toplevel())
+            if color is not None:
+                self.set_color_at_position(event.x, event.y, color)
             return
 
-        # Button2 and drag tweaks the current luminance
-        if event.button != 1 and self.is_editable:
+        # Button2 and drag tweaks the current luma
+        if event.button != 1:
             pos = event.x, event.y
             self.__drag_start_pos = pos
             self.__drag_start_color = color
 
         # Button1 starts DnD drags
-        if event.button == 1 and self.is_drag_source:
+        if event.button == 1 and self.IS_DRAG_SOURCE:
             if color is None:
                 self.drag_source_unset()
             else:
-                targets = [("application/x-color", 0, self._drag_color_id)]
+                targets = [("application/x-color", 0, self._DRAG_COLOR_ID)]
                 if gtk2compat.USE_GTK3:
                     targets = [gtk.TargetEntry.new(*e) for e in targets]
                 self.drag_source_set(gdk.BUTTON1_MASK,
@@ -554,28 +733,13 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
             return
 
 
-    def set_color_at_position(self, x, y, color):
-        """Handles colours set by the double-click `gtk.ColorSelectionDialog`.
-
-        Certain subclasses which are sensitive to the `x` and `y` position of
-        the double click which launches the dialog override this. At this level
-        these parameters are ignored.
-
-        """
-        if not self.is_editable:
-            return
-        self.set_managed_color(color)
-
-
     def __motion_notify_cb(self, widget, event):
         """Button1 motion handler.
         """
-        if not self.is_editable:
-            return
         if self.__button_down == 1:
             # Non-drag-source widgets update the colour continuously while
             # the mouse button is held down and the pointer moved.
-            if self.is_drag_source:
+            if self.IS_DRAG_SOURCE:
                 return
             color = self.get_color_at_position(event.x, event.y)
             self.set_managed_color(color)
@@ -631,17 +795,18 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
         """Button release handler.
         """
         manager = self.get_color_manager()
-        if manager is not None:
-            manager.adjustment_finished_cb() #XXX is this unused?
         self.__button_down = None
         self.__drag_start_pos = None
         self.__drag_start_color = None
 
 
-    def update_cb(self):
+    ## Update notification
+
+    def color_updated(self):
         """Called in response to the managed colour changing: queues a redraw.
         """
         self.queue_draw()
+
 
 
 class IconRenderableColorAdjusterWidget (ColorAdjusterWidget, IconRenderable):
@@ -651,6 +816,9 @@ class IconRenderableColorAdjusterWidget (ColorAdjusterWidget, IconRenderable):
     useful part for the purposes of icon making.
 
     """
+
+
+    ## Rendering
 
     def render_as_icon(self, cr, size):
         """Renders the background into an icon.
@@ -664,36 +832,42 @@ class IconRenderableColorAdjusterWidget (ColorAdjusterWidget, IconRenderable):
         self.render_background_cb(cr, wd=size, ht=size, icon_border=b)
 
 
+
 class PreviousCurrentColorAdjuster (ColorAdjusterWidget):
     """Shows the current and previous colour side by side for comparison.
     """
 
+    ## Constants (behavioural specialization)
+
     # Class specialisation
-    is_drag_source = True
-    has_details_dialog = True
-    tooltip_text = _("Newly chosen color, and the color "
-                     "most recently used for painting")
+    IS_DRAG_SOURCE = True
+    HAS_DETAILS_DIALOG = True
+    STATIC_TOOLTIP_TEXT = _("Newly chosen color, and the color "
+                            "most recently used for painting")
 
-
+    ## Construction
 
     def __init__(self):
         ColorAdjusterWidget.__init__(self)
-        s = self.border*2 + 4
+        s = self.BORDER_WIDTH*2 + 4
         self.set_size_request(s, s)
+
+
+    ## Rendering
 
     def render_background_cb(self, cr, wd, ht):
         mgr = self.get_color_manager()
         curr = mgr.get_color()
         prev = mgr.get_previous_color()
-        b = self.border
+        b = self.BORDER_WIDTH
 
         eff_wd = wd-b-b
         eff_ht = ht-b-b
 
         cr.rectangle(b+0.5, b+0.5, eff_wd-1, eff_ht-1)
         cr.set_line_join(cairo.LINE_JOIN_ROUND)
-        cr.set_source_rgba(*self.outline_rgba)
-        cr.set_line_width(self.outline_width)
+        cr.set_source_rgba(*self.OUTLINE_RGBA)
+        cr.set_line_width(self.OUTLINE_WIDTH)
         cr.stroke()
 
         cr.rectangle(b, b, int(eff_wd/2), eff_ht)
@@ -704,8 +878,8 @@ class PreviousCurrentColorAdjuster (ColorAdjusterWidget):
         cr.fill()
 
         cr.rectangle(b+0.5, b+0.5, eff_wd-1, eff_ht-1)
-        cr.set_source_rgba(*self.edge_highlight_rgba)
-        cr.set_line_width(self.edge_highlight_width)
+        cr.set_source_rgba(*self.EDGE_HIGHLIGHT_RGBA)
+        cr.set_line_width(self.EDGE_HIGHLIGHT_WIDTH)
         cr.set_line_join(cairo.LINE_JOIN_ROUND)
         cr.stroke()
 
@@ -718,6 +892,9 @@ class PreviousCurrentColorAdjuster (ColorAdjusterWidget):
     def paint_foreground_cb(self, cr, wd, ht):
         pass
 
+
+    ## Color-at-position
+
     def get_color_at_position(self, x, y):
         alloc = self.get_allocation()
         mgr = self.get_color_manager()
@@ -726,6 +903,13 @@ class PreviousCurrentColorAdjuster (ColorAdjusterWidget):
         else:
             color = mgr.get_previous_color()
         return deepcopy(color)
+
+
+    ## Update notifications
+
+    def color_history_updated(self):
+        self.queue_draw()
+
 
 
 class SliderColorAdjuster (ColorAdjusterWidget):
@@ -740,13 +924,6 @@ class SliderColorAdjuster (ColorAdjusterWidget):
 
     # GObject integration
     __gtype_name__ = "SliderColorAdjuster"
-    __gproperties__ = {
-      'vertical': (bool,
-                   "Vertical",
-                   "Vertical orientation",
-                   True,
-                   gobject.PARAM_READWRITE),
-      }
 
     vertical = False  #: Bar orientation.
     samples = 0       #: How many extra samples to use along the bar length.
@@ -764,24 +941,10 @@ class SliderColorAdjuster (ColorAdjusterWidget):
         self.add_events(gdk.SCROLL_MASK)
 
 
-    def do_set_property(self, prop, value):
-        if prop.name == 'vertical':
-            self.vertical = bool(value)
-            self.queue_draw()
-        else:
-            ColorAdjusterWidget.do_set_property(self, prop, value)
-
-    def do_get_property(self, prop):
-        if prop.name == 'vertical':
-            return self.vertical
-        else:
-            return ColorAdjusterWidget.do_get_property(self, prop, value)
-
-
     def __realize_cb(self, widget):
         """Realize handler; establishes sizes based on `vertical` etc.
         """
-        b = self.border
+        b = self.BORDER_WIDTH
         bw = SLIDER_MIN_WIDTH
         bl = SLIDER_MIN_LENGTH
         if self.vertical:
@@ -792,7 +955,7 @@ class SliderColorAdjuster (ColorAdjusterWidget):
 
     def render_background_cb(self, cr, wd, ht):
         ref_col = self.get_managed_color()
-        b = self.border
+        b = self.BORDER_WIDTH
         bar_length = (self.vertical and ht or wd) - b - b
         b_x = b+0.5
         b_y = b+0.5
@@ -815,8 +978,8 @@ class SliderColorAdjuster (ColorAdjusterWidget):
 
         # Paint bar with Tango-like edges
         cr.set_line_join(cairo.LINE_JOIN_ROUND)
-        cr.set_source_rgba(*self.outline_rgba)
-        cr.set_line_width(self.outline_width)
+        cr.set_source_rgba(*self.OUTLINE_RGBA)
+        cr.set_line_width(self.OUTLINE_WIDTH)
         cr.rectangle(b_x, b_y, b_w, b_h)
         cr.stroke()
 
@@ -827,8 +990,8 @@ class SliderColorAdjuster (ColorAdjusterWidget):
 
         ## Highlighted edge
         if b_w > 5 and b_h > 5:
-            cr.set_line_width(self.edge_highlight_width)
-            cr.set_source_rgba(*self.edge_highlight_rgba)
+            cr.set_line_width(self.EDGE_HIGHLIGHT_WIDTH)
+            cr.set_source_rgba(*self.EDGE_HIGHLIGHT_RGBA)
             cr.rectangle(b_x, b_y, b_w, b_h)
             cr.stroke()
 
@@ -853,7 +1016,7 @@ class SliderColorAdjuster (ColorAdjusterWidget):
 
 
     def paint_foreground_cb(self, cr, wd, ht):
-        b = int(self.border)
+        b = int(self.BORDER_WIDTH)
         col = self.get_managed_color()
         amt = self.get_bar_amount_for_color(col)
         amt = float(clamp(amt, 0, 1))
@@ -887,12 +1050,12 @@ class SliderColorAdjuster (ColorAdjusterWidget):
     def point_to_amount(self, x, y):
         alloc = self.get_allocation()
         if self.vertical:
-            len = alloc.height - 2*self.border
+            len = alloc.height - 2*self.BORDER_WIDTH
             p = y
         else:
-            len = alloc.width - 2*self.border
+            len = alloc.width - 2*self.BORDER_WIDTH
             p = x
-        p = clamp(p - self.border, 0, len)
+        p = clamp(p - self.BORDER_WIDTH, 0, len)
         amt = float(p)/len
         if self.vertical:
             amt = 1 - amt
@@ -900,7 +1063,7 @@ class SliderColorAdjuster (ColorAdjusterWidget):
 
 
     def __scroll_cb(self, widget, event):
-        d = self.scroll_delta
+        d = self.SCROLL_DELTA
         if not self.vertical:
             d *= -1
         if event.direction in (gdk.SCROLL_DOWN, gdk.SCROLL_LEFT):
@@ -954,7 +1117,7 @@ class HueSaturationWheelMixin:
             wd = alloc.width
             ht = alloc.height
         if border is None:
-            border = self.border
+            border = self.BORDER_WIDTH
         return int((min(wd, ht) / 2.0)) - int(border) + 0.5
 
 
@@ -1016,7 +1179,7 @@ class HueSaturationWheelMixin:
 
         border = icon_border
         if border is None:
-            border = self.border
+            border = self.BORDER_WIDTH
         radius = self.get_radius(wd, ht, border)
 
         steps = self.HUE_SLICES
@@ -1032,9 +1195,9 @@ class HueSaturationWheelMixin:
         cr.clip()
 
         # Tangoesque outer border
-        cr.set_line_width(self.outline_width)
+        cr.set_line_width(self.OUTLINE_WIDTH)
         cr.arc(0, 0, radius, 0, 2*math.pi)
-        cr.set_source_rgba(*self.outline_rgba)
+        cr.set_source_rgba(*self.OUTLINE_RGBA)
         cr.stroke()
 
         # Each slice in turn
@@ -1082,15 +1245,15 @@ class HueSaturationWheelMixin:
         cr.fill()
 
         # Tangoesque inner border 
-        cr.set_source_rgba(*self.edge_highlight_rgba)
-        cr.set_line_width(self.edge_highlight_width)
+        cr.set_source_rgba(*self.EDGE_HIGHLIGHT_RGBA)
+        cr.set_line_width(self.EDGE_HIGHLIGHT_WIDTH)
         cr.arc(0, 0, radius, 0, 2*math.pi)
         cr.stroke()
 
         # Some small notches on the disc edge for pure colors
         if wd > 75 or ht > 75:
             cr.save()
-            cr.arc(0, 0, radius+self.edge_highlight_width, 0, 2*math.pi)
+            cr.arc(0, 0, radius+self.EDGE_HIGHLIGHT_WIDTH, 0, 2*math.pi)
             cr.clip()
             pure_cols = [RGBColor(1,0,0), RGBColor(1,1,0), RGBColor(0,1,0),
                          RGBColor(0,1,1), RGBColor(0,0,1), RGBColor(1,0,1),]
@@ -1098,11 +1261,11 @@ class HueSaturationWheelMixin:
                 x, y = self.get_pos_for_color(col)
                 x = int(x)-cx
                 y = int(y)-cy
-                cr.set_source_rgba(*self.edge_highlight_rgba)
-                cr.arc(x+0.5, y+0.5, 1.0+self.edge_highlight_width, 0, 2*math.pi)
+                cr.set_source_rgba(*self.EDGE_HIGHLIGHT_RGBA)
+                cr.arc(x+0.5, y+0.5, 1.0+self.EDGE_HIGHLIGHT_WIDTH, 0, 2*math.pi)
                 cr.fill()
-                cr.set_source_rgba(*self.outline_rgba)
-                cr.arc(x+0.5, y+0.5, self.edge_highlight_width, 0, 2*math.pi)
+                cr.set_source_rgba(*self.OUTLINE_RGBA)
+                cr.arc(x+0.5, y+0.5, self.EDGE_HIGHLIGHT_WIDTH, 0, 2*math.pi)
                 cr.fill()
             cr.restore()
 
@@ -1134,7 +1297,7 @@ class HueSaturationWheelMixin:
         nr **= 1.0/self.SAT_GAMMA
         alloc = self.get_allocation()
         wd, ht = alloc.width, alloc.height
-        radius = self.get_radius(wd, ht, self.border)
+        radius = self.get_radius(wd, ht, self.BORDER_WIDTH)
         cx, cy = self.get_center(wd, ht)
         r = radius * clamp(nr, 0, 1)
         t = clamp(ntheta, 0, 1) * 2 * math.pi
@@ -1147,7 +1310,7 @@ class HueSaturationWheelMixin:
         """Fg marker painting, for `ColorAdjusterWidget` impls.
         """
         col = self.get_managed_color()
-        radius = self.get_radius(wd, ht, self.border)
+        radius = self.get_radius(wd, ht, self.BORDER_WIDTH)
         cx = int(wd/2)
         cy = int(ht/2)
         cr.arc(cx, cy, radius+0.5, 0, 2*math.pi)

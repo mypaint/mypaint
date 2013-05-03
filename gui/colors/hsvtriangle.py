@@ -89,7 +89,7 @@ class HSVTriangle (gtk.VBox, ColorAdjuster):
             hsv.queue_draw()
 
 
-    def update_cb(self):
+    def color_updated(self):
         if self._updating:
             return
         self._updating = True

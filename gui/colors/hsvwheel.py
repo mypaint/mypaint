@@ -29,7 +29,7 @@ class HSVHueSaturationWheel (HueSaturationWheelAdjuster):
     """Hue, Saturation and Value wheel.
     """
 
-    tooltip_text = _("HSV Hue and Saturation")
+    STATIC_TOOLTIP_TEXT = _("HSV Hue and Saturation")
 
 
     def __init__(self):
@@ -39,7 +39,7 @@ class HSVHueSaturationWheel (HueSaturationWheelAdjuster):
 
 
     def __scroll_cb(self, widget, event):
-        d = self.scroll_delta
+        d = self.SCROLL_DELTA
         if event.direction in (gdk.SCROLL_DOWN, gdk.SCROLL_LEFT):
             d *= -1
         col = HSVColor(color=self.get_managed_color())

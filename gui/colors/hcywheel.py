@@ -102,7 +102,7 @@ class MaskableWheelMixin:
 
     def __mask_toggled_cb(self, action):
         active = action.get_active()
-        prefs = self._get_prefs()
+        prefs = self.get_prefs()
         prefs[PREFS_ACTIVE_KEY] = active
         self.queue_draw()
 
@@ -114,7 +114,7 @@ class MaskableWheelMixin:
 
         """
         ColorAdjuster.set_color_manager(self, manager)
-        prefs = self._get_prefs()
+        prefs = self.get_prefs()
         mask_flat = prefs.get(PREFS_MASK_KEY, None)
         mask_active = prefs.get(PREFS_ACTIVE_KEY, False)
         if mask_flat is not None:
@@ -176,7 +176,7 @@ class MaskableWheelMixin:
         """Sets the mask (a list of lists of `UIColor`s).
         """
         mgr = self.get_color_manager()
-        prefs = self._get_prefs()
+        prefs = self.get_prefs()
         if mask is None:
             self.__mask = None
             self.mask_toggle.set_active(False)
@@ -315,7 +315,7 @@ class MaskableWheelMixin:
 
         radius = self.get_radius(wd=wd, ht=ht)
         cx, cy = self.get_center(wd=wd, ht=ht)
-        cr.arc(cx, cy, radius+self.border, 0, 2*math.pi)
+        cr.arc(cx, cy, radius+self.BORDER_WIDTH, 0, 2*math.pi)
         cr.clip()
 
         bg_rgb = self._get_mask_bg()
@@ -385,7 +385,8 @@ class HCYHueChromaWheel (MaskableWheelMixin,
     """Circular mapping of the H and C terms of the HCY model.
     """
 
-    tooltip_text = _("HCY Hue and Chroma")
+    STATIC_TOOLTIP_TEXT = _("HCY Hue and Chroma")
+
 
     def __init__(self):
         """Instantiate, binding events.
@@ -398,7 +399,7 @@ class HCYHueChromaWheel (MaskableWheelMixin,
 
     def __scroll_cb(self, widget, event):
         # Scrolling controls luma.
-        d = self.scroll_delta
+        d = self.SCROLL_DELTA
         if event.direction in (gdk.SCROLL_DOWN, gdk.SCROLL_LEFT):
             d *= -1
         col = HCYColor(color=self.get_managed_color())
@@ -415,7 +416,6 @@ class HCYMaskEditorWheel (HCYHueChromaWheel):
     """
 
     ## Instance vars
-    is_editable = True
     __last_cursor = None   # previously set cursor (determines some actions)
     # Objects which are active or being manipulated
     __tmp_new_ctrlpoint = None   # new control-point colour
@@ -439,10 +439,12 @@ class HCYMaskEditorWheel (HCYHueChromaWheel):
     __ctrlpoint_radius = 2.5
     __ctrlpoint_grab_radius = 10
     __max_num_shapes = 6   # how many shapes are allowed
-    tooltip_text = _("Gamut mask editor. Click in the middle to create "
-                     "or manipulate shapes, or rotate the mask using "
-                     "the edges of the disc.")
 
+    # Tooltip text. Is here a better way of explaining this? It obscures the
+    # editor quite a lot.
+    STATIC_TOOLTIP_TEXT = _("Gamut mask editor. Click in the middle to create "
+                            "or manipulate shapes, or rotate the mask using "
+                            "the edges of the disc.")
 
 
     def __init__(self):
@@ -1211,7 +1213,7 @@ class HCYAdjusterPage (CombinedAdjusterPage):
         self.__table = table
 
     @classmethod
-    def get_properties_description(class_):
+    def get_properties_description(cls):
         return _("Set gamut mask")
 
     def show_properties(self):
@@ -1222,15 +1224,15 @@ class HCYAdjusterPage (CombinedAdjusterPage):
         self.__mask_dialog.run()
 
     @classmethod
-    def get_page_icon_name(class_):
+    def get_page_icon_name(cls):
         return 'mypaint-tool-hcywheel'
 
     @classmethod
-    def get_page_title(class_):
+    def get_page_title(cls):
         return _('HCY Wheel')
 
     @classmethod
-    def get_page_description(class_):
+    def get_page_description(cls):
         return _("Set the color using cylindrical hue/chroma/luma space. "
                  "The circular slices are equiluminant.")
 

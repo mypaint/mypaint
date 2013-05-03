@@ -146,7 +146,7 @@ class HSVCubeSlice (IconRenderableColorAdjusterWidget):
         col = HSVColor(color=self.get_managed_color())
         b = icon_border
         if b is None:
-            b = self.border
+            b = self.BORDER_WIDTH
         eff_wd = int(wd - 2*b)
         eff_ht = int(ht - 2*b)
         f1, f2 = self.__get_faces()
@@ -177,8 +177,8 @@ class HSVCubeSlice (IconRenderableColorAdjusterWidget):
         # Tango-like outline
         cr.set_line_join(cairo.LINE_JOIN_ROUND)
         cr.rectangle(rect_x, rect_y, rect_w, rect_h)
-        cr.set_line_width(self.outline_width)
-        cr.set_source_rgba(*self.outline_rgba)
+        cr.set_line_width(self.OUTLINE_WIDTH)
+        cr.set_source_rgba(*self.OUTLINE_RGBA)
         cr.stroke()
 
         # The main area
@@ -187,8 +187,8 @@ class HSVCubeSlice (IconRenderableColorAdjusterWidget):
 
         # Tango-like highlight over the top
         cr.rectangle(rect_x, rect_y, rect_w, rect_h)
-        cr.set_line_width(self.edge_highlight_width)
-        cr.set_source_rgba(*self.edge_highlight_rgba)
+        cr.set_line_width(self.EDGE_HIGHLIGHT_WIDTH)
+        cr.set_source_rgba(*self.EDGE_HIGHLIGHT_RGBA)
         cr.stroke()
 
     def get_background_validity(self):
@@ -198,7 +198,7 @@ class HSVCubeSlice (IconRenderableColorAdjusterWidget):
 
     def get_color_at_position(self, x, y):
         alloc = self.get_allocation()
-        b = self.border
+        b = self.BORDER_WIDTH
         wd = alloc.width
         ht = alloc.height
         eff_wd = wd - 2*b
@@ -221,7 +221,7 @@ class HSVCubeSlice (IconRenderableColorAdjusterWidget):
         f1_amt = 1.0 - f1_amt
         f2_amt = 1.0 - f2_amt
         alloc = self.get_allocation()
-        b = self.border
+        b = self.BORDER_WIDTH
         wd = alloc.width
         ht = alloc.height
         eff_wd = wd - 2*b

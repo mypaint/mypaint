@@ -115,7 +115,7 @@ class ComponentSlidersAdjusterPage (CombinedAdjusterPage, IconRenderable):
         if size <= 16:
             cr.save()
             for adj in adjs:
-                adj.border = 1
+                adj.BORDER_WIDTH = 1
                 adj.render_background_cb(cr, wd=16, ht=5)
                 cr.translate(0, 5)
             cr.restore()
@@ -125,7 +125,7 @@ class ComponentSlidersAdjusterPage (CombinedAdjusterPage, IconRenderable):
             offset = int((size - bar_ht*3) / 2)
             cr.translate(0, offset)
             for adj in adjs:
-                adj.border = max(2, int(size/16))
+                adj.BORDER_WIDTH = max(2, int(size/16))
                 adj.render_background_cb(cr, wd=size, ht=bar_ht)
                 cr.translate(0, bar_ht)
             cr.restore()
@@ -135,7 +135,7 @@ class ComponentSlidersAdjusterPage (CombinedAdjusterPage, IconRenderable):
 
 
 class RGBRedSlider (SliderColorAdjuster):
-    tooltip_text = _("RGB Red")
+    STATIC_TOOLTIP_TEXT = _("RGB Red")
     def get_background_validity(self):
         col = self.get_managed_color()
         r,g,b = col.get_rgb()
@@ -148,7 +148,7 @@ class RGBRedSlider (SliderColorAdjuster):
         return col.r
 
 class RGBGreenSlider (SliderColorAdjuster):
-    tooltip_text = _("RGB Green")
+    STATIC_TOOLTIP_TEXT = _("RGB Green")
     def get_background_validity(self):
         col = self.get_managed_color()
         r,g,b = col.get_rgb()
@@ -161,7 +161,7 @@ class RGBGreenSlider (SliderColorAdjuster):
         return col.g
 
 class RGBBlueSlider (SliderColorAdjuster):
-    tooltip_text = _("RGB Blue")
+    STATIC_TOOLTIP_TEXT = _("RGB Blue")
     def get_background_validity(self):
         col = self.get_managed_color()
         r,g,b = col.get_rgb()
@@ -175,7 +175,7 @@ class RGBBlueSlider (SliderColorAdjuster):
 
 
 class HSVHueSlider (SliderColorAdjuster):
-    tooltip_text = _("HSV Hue")
+    STATIC_TOOLTIP_TEXT = _("HSV Hue")
     samples = 4
     def get_color_for_bar_amount(self, amt):
         col = HSVColor(color=self.get_managed_color())
@@ -185,7 +185,7 @@ class HSVHueSlider (SliderColorAdjuster):
         return col.h
 
 class HSVSaturationSlider (SliderColorAdjuster):
-    tooltip_text = _("HSV Saturation")
+    STATIC_TOOLTIP_TEXT = _("HSV Saturation")
     def get_color_for_bar_amount(self, amt):
         col = HSVColor(color=self.get_managed_color())
         col.s = amt
@@ -194,7 +194,7 @@ class HSVSaturationSlider (SliderColorAdjuster):
         return col.s
 
 class HSVValueSlider (SliderColorAdjuster):
-    tooltip_text = _("HSV Value")
+    STATIC_TOOLTIP_TEXT = _("HSV Value")
     def get_color_for_bar_amount(self, amt):
         col = HSVColor(color=self.get_managed_color())
         col.v = amt
@@ -204,7 +204,7 @@ class HSVValueSlider (SliderColorAdjuster):
 
 
 class HCYHueSlider (SliderColorAdjuster):
-    tooltip_text = _("HCY Hue")
+    STATIC_TOOLTIP_TEXT = _("HCY Hue")
     samples = 4
     def get_color_for_bar_amount(self, amt):
         col = HCYColor(color=self.get_managed_color())
@@ -215,7 +215,7 @@ class HCYHueSlider (SliderColorAdjuster):
         return col.h
 
 class HCYChromaSlider (SliderColorAdjuster):
-    tooltip_text = _("HCY Chroma")
+    STATIC_TOOLTIP_TEXT = _("HCY Chroma")
 
     def get_color_for_bar_amount(self, amt):
         col = HCYColor(color=self.get_managed_color())
@@ -227,13 +227,13 @@ class HCYChromaSlider (SliderColorAdjuster):
         return col.c
 
 class HCYLumaSlider (SliderColorAdjuster):
-    tooltip_text = _("HCY Luma (Y')")
+    STATIC_TOOLTIP_TEXT = _("HCY Luma (Y')")
 
     @property
     def samples(self):
         alloc = self.get_allocation()
         len = self.vertical and alloc.height or alloc.width
-        len -= self.border * 2
+        len -= self.BORDER_WIDTH * 2
         return min(int(len / 3), 64)
 
     def get_color_for_bar_amount(self, amt):

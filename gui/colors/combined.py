@@ -188,7 +188,7 @@ class CombinedColorAdjuster (gtk.VBox, ColorAdjuster):
             return
         self.__shown = True
         nb = self.__notebook
-        prefs = self.get_color_manager()._get_prefs()
+        prefs = self.get_color_manager().get_prefs()
         if PREFS_KEY_CURRENT_TAB in prefs:
             prev_tab_icon_name = prefs[PREFS_KEY_CURRENT_TAB]
             for page_num, page_vbox in enumerate(nb):
@@ -233,7 +233,7 @@ class CombinedColorAdjuster (gtk.VBox, ColorAdjuster):
         #  GPointers are not usable in pygtk
         page = page_vbox.__page
         icon_name = page.get_page_icon_name()
-        prefs = self.get_color_manager()._get_prefs()
+        prefs = self.get_color_manager().get_prefs()
         prefs[PREFS_KEY_CURRENT_TAB] = icon_name
 
 
