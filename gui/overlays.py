@@ -19,10 +19,23 @@ import gobject
 import cairo
 import pango
 from math import pi
-from tileddrawwidget import Overlay
 from lib.helpers import clamp
 
 from gettext import gettext as _
+
+
+class Overlay:
+    """Base class/interface for objects which paint things over a TDW.
+    """
+
+    def paint(self, cr):
+        """Paint information onto a TiledDrawWidget.
+
+        The drawing interface is very simple. `cr` is a Cairo context in either
+        display coordinates or model coordinates: which one you get depends on
+        which list the Overlay is appended to on its tdw.
+        """
+        pass
 
 
 class FadingOverlay (Overlay):

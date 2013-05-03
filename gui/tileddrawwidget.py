@@ -30,18 +30,6 @@ def _make_testbed_model():
     return lib.document.Document(brush)
 
 
-class Overlay:
-    """Base class/interface for objects which paint things over a TDW.
-    """
-
-    def paint(self, cr):
-        """Paint information onto a TiledDrawWidget.
-
-        The drawing interface is very simple. `cr` is a Cairo context in either
-        display coordinates or model coordinates: which one you get depends on
-        which list the Overlay is appended to on its tdw.
-        """
-        pass
 
 
 #class CanvasEventBox(gtk.EventBox):

@@ -19,7 +19,9 @@ import cairo
 import canvasevent
 import document
 import dialogs
+import overlays
 import tileddrawwidget
+
 from gui.colors import geom   # XXX refactoring needed! But from here for now.
 
 
@@ -41,7 +43,7 @@ def _points_to_enclosing_rect(points):
     return xmin, ymin, xmax-xmin, ymax-ymin
 
 
-class VisibleOverlay (tileddrawwidget.Overlay):
+class VisibleOverlay (overlays.Overlay):
     """Overlay for the preview TDW which shows the extent of the main TDW.
     """
 
