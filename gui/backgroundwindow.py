@@ -20,7 +20,8 @@ from lib import tiledsurface
 from lib import helpers
 
 N = tiledsurface.N
-
+DEFAULT_BACKGROUND = 'default.png'
+BACKGROUNDS_SUBDIR = 'backgrounds'
 RESPONSE_SAVE_AS_DEFAULT = 1
 
 class Window(windowing.Dialog):
@@ -82,7 +83,8 @@ class Window(windowing.Dialog):
     def save_as_default_cb(self):
         pixbuf = self.current_background_pixbuf
         path = os.path.join(self.app.user_datapath,
-                            'backgrounds', 'default.png')
+                            BACKGROUNDS_SUBDIR,
+                            DEFAULT_BACKGROUND)
         gui.gtk2compat.gdk.pixbuf.save(pixbuf, path, 'png')
         self.hide()
 
@@ -96,7 +98,8 @@ class Window(windowing.Dialog):
         i = 1
         while 1:
             filename = os.path.join(self.app.user_datapath,
-                                    'backgrounds', 'color%02d.png' % i)
+                                    BACKGROUNDS_SUBDIR,
+                                    'color%02d.png' % i)
             if not os.path.exists(filename):
                 break
             i += 1
@@ -106,13 +109,51 @@ class Window(windowing.Dialog):
         self.bgl.set_selected(pixbuf)
         self.nb.set_current_page(0)
 
+
+
+def load_background(filename):
+    """Loads a pixbuf from a file, testing it for suitability as a background
+
+    :param filename: Full path to the filename to load.
+    :type filename: str
+    :rtype: tuple
+
+    The returned tuple is of the form ``(PIXBUF, ERRORS)`` where ``ERRORS`` is
+    a list of localized strings describing the errors encountered. If any
+    errors were encountered, PIXBUF is None.
+
+    """
+    load_errors = []
+    try:
+        pixbuf = gdk.pixbuf_new_from_file(filename)
+    except Exception, ex:
+        print ex
+        load_errors.append(
+            _('Gdk-Pixbuf couldn\'t load "{filename}", and reported '
+              '"{error}"').format(filename=filename, error=repr(ex)))
+    else:
+        if pixbuf.get_has_alpha():
+            load_errors.append(
+                _('"%s" has an alpha channel. Background images with '
+                  'transparency are not supported.')
+                % filename)
+        w, h = pixbuf.get_width(), pixbuf.get_height()
+        if w % N != 0 or h % N != 0 or w == 0 or h == 0:
+            load_errors.append(
+                _('{filename} has an unsupported size. Background images '
+                  'must have widths and heights which are multiples '
+                  'of {number} pixels.').format(filename=filename, number=N))
+    if load_errors:
+        pixbuf = None
+    return pixbuf, load_errors
+
+
+
 class BackgroundList(pixbuflist.PixbufList):
     def __init__(self, win):
         pixbuflist.PixbufList.__init__(self, None, N, N, pixbuffunc=self.pixbuf_scaler)
         self.app = win.app
         self.win = win
-
-        self.dragging_allowed = False
 
         stock_path = os.path.join(self.app.datapath, 'backgrounds')
         user_path  = os.path.join(self.app.user_datapath, 'backgrounds')
@@ -156,31 +197,12 @@ class BackgroundList(pixbuflist.PixbufList):
         for filename in files:
             if not filename.lower().endswith('.png'):
                 continue
-            try:
-                pixbuf = gdk.pixbuf_new_from_file(filename)
-            except Exception, ex:
-                print ex
-                load_errors.append(
-                    _('Gdk-Pixbuf couldn\'t load "{filename}", and reported "{error}"').format(
-                    filename=filename, error=repr(ex)))
+            pixbuf, errors = load_background(filename)
+            if errors:
+                load_errors.extend(errors)
                 continue
-            supported = True
-            if pixbuf.get_has_alpha():
-                load_errors.append(
-                    _('"%s" has an alpha channel. Background images with '
-                      'transparency are not supported.')
-                    % filename)
-                supported = False
-            w, h = pixbuf.get_width(), pixbuf.get_height()
-            if w % N != 0 or h % N != 0 or w == 0 or h == 0:
-                load_errors.append(
-                    _('{filename} has an unsupported size. Background images '
-                      'must have widths and heights which are multiples '
-                      'of {number} pixels.').format(filename=filename, number=N))
-                supported = False
-            if not supported:
+            if os.path.basename(filename).lower() == DEFAULT_BACKGROUND:
                 continue
-
             pixbufs.append(pixbuf)
 
         if load_errors:

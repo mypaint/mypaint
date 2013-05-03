@@ -36,6 +36,7 @@ import brushmanager
 import windowing
 import document
 import layout
+import backgroundwindow
 import brushmodifier
 import linemode
 import colors
@@ -205,11 +206,21 @@ class Application (object):
         gtk2compat.gtk.accel_map_load(join(self.user_confpath,
                                             'accelmap.conf'))
 
-        # Load the background settings window.
-        # FIXME: this line shouldn't be needed, but we need to load this up
-        # front to get any non-default background that the user has configured
-        # from the preferences.
-        self.layout_manager.get_subwindow_by_role("backgroundWindow")
+        # Load the default background
+        for datapath in [self.user_datapath, self.datapath]:
+            bg_path = join(datapath, backgroundwindow.BACKGROUNDS_SUBDIR,
+                           backgroundwindow.DEFAULT_BACKGROUND)
+            if not os.path.exists(bg_path):
+                continue
+            bg, errors = backgroundwindow.load_background(bg_path)
+            if bg:
+                self.doc.model.set_background(bg, make_default=True)
+                break
+            else:
+                print "warning: failed to load default bg %r" % (bg_path,)
+                if errors:
+                    for error in errors:
+                        print u"warning: %s" % (error,)
 
         # And the brush settings window, or things like eraser mode will break.
         # FIXME: brush_adjustments should not be dependent on this
