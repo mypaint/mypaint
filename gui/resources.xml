@@ -189,6 +189,31 @@ Perhaps an increasing amount.
   <child>
     <object class="GtkActionGroup" id="DocumentActions">
       <!-- Actions affecting the current document -->
+      <!-- Dropdown ToolActions: defined in gui.toolbar -->
+      <child>
+        <object class="MyPaintCustomToolAction" id="ColorDropdown">
+          <property name="tooltip" translatable="yes" context="toolbar|"
+            >Current Color</property>
+        </object>
+      </child>
+      <child>
+        <object class="MyPaintCustomToolAction" id="BrushDropdown">
+          <property name="tooltip" translatable="yes" context="toolbar|"
+            >Current Brush</property>
+        </object>
+      </child>
+      <child>
+        <object class="MyPaintCustomToolAction" id="BrushSettingsDropdown">
+          <property name="tooltip" translatable="yes" context="toolbar|"
+            >Brush settings</property>
+        </object>
+      </child>
+      <child>
+        <object class="MyPaintCustomToolAction" id="LineDropdown">
+          <property name="tooltip" translatable="yes" context="toolbar|"
+            >Line Mode</property>
+        </object>
+      </child>
       <!-- Undo stack -->
       <child>
         <object class="GtkAction" id="Undo">

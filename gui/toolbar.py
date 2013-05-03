@@ -41,7 +41,7 @@ MERGEABLE_XML = [
 HISTORY_PREVIEW_SIZE = 48
 
 
-class ToolbarManager:
+class ToolbarManager (object):
     """Manager for toolbars, currently just the main one.
 
     The main toolbar, /toolbar1, contains a menu button and quick
@@ -52,6 +52,7 @@ class ToolbarManager:
     icon_size = gtk.ICON_SIZE_LARGE_TOOLBAR
 
     def __init__(self, draw_window):
+        super(ToolbarManager, self).__init__()
         self.draw_window = draw_window
         self.app = draw_window.app
         self.toolbar1_ui_loaded = {}  # {name: merge_id, ...}
@@ -73,23 +74,19 @@ class ToolbarManager:
         for item in self.toolbar1:
             if isinstance(item, gtk.SeparatorToolItem):
                 item.set_draw(False)
-        self.init_proxies()
         self.toolbar1.insert(menu_toolitem, 0)
+
+        # Merge in UI pieces based on the user's saved preferences
+        for action in self.settings_actions:
+            name = action.get_property("name")
+            active = self.app.preferences["ui.toolbar_items"].get(name, False)
+            action.set_active(active)
+            action.toggled()
+
 
     def init_actions(self):
         ag = self.draw_window.action_group
         actions = []
-        self.item_actions = [
-                ColorDropdownToolAction("ColorDropdown", None,
-                    _("Current Color"), None),
-                BrushDropdownToolAction("BrushDropdown", None,
-                    _("Current Brush"), None),
-                BrushSettingsDropdownToolAction("BrushSettingsDropdown", None,
-                    _("Brush Settings"), None),
-                LineDropdownToolAction("LineDropdown", None,
-                    _("Line Mode"), None),
-                ]
-        actions += self.item_actions
 
         self.settings_actions = []
         for name, ui_xml, label in MERGEABLE_XML:
@@ -101,17 +98,6 @@ class ToolbarManager:
         for action in actions:
             ag.add_action(action)
 
-    def init_proxies(self):
-        for action in self.item_actions:
-            for p in action.get_proxies():
-                if hasattr(p, "set_app"):
-                    p.set_app(self.app)
-        # Merge in UI pieces based on the user's saved preferences
-        for action in self.settings_actions:
-            name = action.get_property("name")
-            active = self.app.preferences["ui.toolbar_items"].get(name, False)
-            action.set_active(active)
-            action.toggled()
 
     def on_toolbar1_popup_context_menu(self, toolbar, x, y, button):
         menu = self.toolbar1_popup
@@ -150,7 +136,7 @@ class LineDropdownToolItem (gtk.ToolItem):
     """Dropdown panel on the toolbar for changing line mode.
     """
 
-    __gtype_name__ = "LineDropdownToolItem"
+    __gtype_name__ = "MyPaintLineDropdownToolItem"
     settings_coordinate = [('entry_pressure', (0,1)),
                            ('midpoint_pressure', (1,1)),
                            ('exit_pressure', (3,1)),
@@ -176,11 +162,8 @@ class LineDropdownToolItem (gtk.ToolItem):
         self.add(self.line_mode_panel)
         self.connect("create-menu-proxy", lambda *a: True)
 
-
-    def set_app(self, app):
-        """Deferred initialization: provides the main app instance.
-        """
-
+        from application import get_app
+        app = get_app()
         self.app = app
 
         # Action switcher buttons
@@ -272,9 +255,9 @@ class ColorDropdownToolItem (gtk.ToolItem):
     """Toolbar colour indicator, history access, and changer.
     """
 
-    __gtype_name__ = "ColorDropdownToolItem"
+    __gtype_name__ = "MyPaintColorDropdownToolItem"
 
-    def __init__(self, *a, **kw):
+    def __init__(self):
         gtk.ToolItem.__init__(self)
         self.main_blob = ColorBlob()
         self.dropdown_button = dropdownpanel.DropdownPanelButton(self.main_blob)
@@ -285,7 +268,8 @@ class ColorDropdownToolItem (gtk.ToolItem):
         self.set_tooltip_text(_("Color History and other tools"))
         self.add(self.dropdown_button)
 
-    def set_app(self, app):
+        from application import get_app
+        app = get_app()
         self.app = app
         self.app.brush.observers.append(self.on_brush_settings_changed)
         self.main_blob.color = self.app.brush_color_manager.get_color()
@@ -332,6 +316,8 @@ class ColorDropdownToolItem (gtk.ToolItem):
 
         def init_proxy(widget, action_name):
             action = self.app.find_action(action_name)
+            assert action is not None, \
+                    "Must be able to find action %s" % (action_name,)
             widget.set_related_action(action)
             widget.connect("clicked", hide_panel_cb)
             return widget
@@ -378,7 +364,7 @@ class BrushDropdownToolItem (gtk.ToolItem):
     """Toolbar brush indicator, history access, and changer.
     """
 
-    __gtype_name__ = "BrushDropdownToolItem"
+    __gtype_name__ = "MyPaintBrushDropdownToolItem"
 
     def __init__(self):
         gtk.ToolItem.__init__(self)
@@ -392,7 +378,8 @@ class BrushDropdownToolItem (gtk.ToolItem):
         self.set_tooltip_text(_("Brush history etc."))
         self.add(self.dropdown_button)
 
-    def set_app(self, app):
+        from application import get_app
+        app = get_app()
         self.app = app
         bm = self.app.brushmanager
         bm.selected_brush_observers.append(self.on_selected_brush)
@@ -491,7 +478,7 @@ class BrushDropdownToolItem (gtk.ToolItem):
 
 
 class BrushSettingsDropdownToolItem (gtk.ToolItem):
-    __gtype_name__ = "BrushSettingsDropdownToolItem"
+    __gtype_name__ = "MyPaintBrushSettingsDropdownToolItem"
 
     active_stock_id = 'mypaint-brush-mods-active'
     inactive_stock_id = 'mypaint-brush-mods-inactive'
@@ -520,7 +507,8 @@ class BrushSettingsDropdownToolItem (gtk.ToolItem):
         self.add(self.button)
         self.connect("create-menu-proxy", lambda *a: True)
 
-    def set_app(self, app):
+        from application import get_app
+        app = get_app()
         self.app = app
 
         # A limited subset of the available brush settings.
@@ -691,28 +679,51 @@ class BrushSettingsDropdownToolItem (gtk.ToolItem):
         return not parent_b.brushinfo.matches(current_bi)
 
 
-class ColorDropdownToolAction (gtk.Action):
-    __gtype_name__ = "ColorDropdownToolAction"
+class CustomToolAction (gtk.Action):
+    """Instantiates a custom ToolItem named after the action's own name.
+    """
+
+    __gtype_name__ = "MyPaintCustomToolAction"
+
+    #: The pattern to use when instantiating.
+    NAME_PATTERN = "MyPaint%sToolItem"
+
+
+    def __init__(self, *a):
+        # GtkAction's own constructor requires params which are all set up
+        # by Builder. It warns noisily, so bypass it and do its parents.
+        super(gtk.Action, self).__init__()
+
+
     def do_create_tool_item(self):
-        return ColorDropdownToolItem()
+        """Returns a new ToolItem
+
+        A widget named after the action's own name is instantiated via GObject,
+        and returned. See `NAME_PATTERN`.
+
+        """
+        gtype_name = self.NAME_PATTERN % (self.get_name(),)
+        try:
+            gtype = gobject.type_from_name(gtype_name)
+        except RuntimeError:
+            warn("Cannot construct a new %s: not loaded?" % (gtype_name,),
+                 RuntimeWarning)
+            return None
+        if not gtype.is_a(gtk.Widget):
+            warn("%s is not a Gtk.Widget subclass" % (gtype_name,),
+                 RuntimeWarning)
+            return None
+        tool_item_class = gtype.pytype
+        self._tool_item = tool_item_class()
+        self._tool_item.connect("parent-set", self._tool_item_parent_set)
+        return self._tool_item
 
 
-class LineDropdownToolAction (gtk.Action):
-    __gtype_name__ = "LineDropdownToolAction"
-    def do_create_tool_item(self):
-        return LineDropdownToolItem()
+    def _tool_item_parent_set(self, widget, old_parent):
+        parent = widget.get_parent()
+        if parent and parent.get_visible():
+            widget.show_all()
 
-
-class BrushDropdownToolAction (gtk.Action):
-    __gtype_name__ = "BrushDropdownToolAction"
-    def do_create_tool_item(self):
-        return BrushDropdownToolItem()
-
-
-class BrushSettingsDropdownToolAction (gtk.Action):
-    __gtype_name__ = "BrushSettingsDropdownToolAction"
-    def do_create_tool_item(self):
-        return BrushSettingsDropdownToolItem()
 
 
 class ManagedBrushPreview (gtk.Image):
