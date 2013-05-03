@@ -125,10 +125,10 @@ class Application (object):
         gtk.Window.set_default_icon_name('mypaint')
 
         # Stock items, core actions, and menu structure
-        builder_xml = join(self.datapath, "gui", "mypaint.xml")
+        resources_xml = join(self.datapath, "gui", "resources.xml")
         self.builder = gtk.Builder()
         self.builder.set_translation_domain("mypaint")
-        self.builder.add_from_file(builder_xml)
+        self.builder.add_from_file(resources_xml)
         factory = self.builder.get_object("stock_icon_factory")
         factory.add_default()
 
