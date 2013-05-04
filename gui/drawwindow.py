@@ -305,7 +305,7 @@ class Window (windowing.MainWindow, layout.MainWindow):
             self.profiler_active = True
             print '--- GUI Profiling starts ---'
             while self.profiler_active:
-                profile.runcall(gtk.main_iteration, False)
+                profile.runcall(gtk.main_iteration_do, False)
                 if not gtk.events_pending():
                     time.sleep(0.050) # ugly trick to remove "user does nothing" from profile
             print '--- GUI Profiling ends ---'
