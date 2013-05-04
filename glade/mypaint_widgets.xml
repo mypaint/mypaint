@@ -28,11 +28,20 @@
     loading animation too :-)
     -->
 
+
+    <!--  Main drawing window -->
+    <glade-widget-class name="MyPaintDrawWindow"
+                        title="Draw Window"
+                        generic-name="drawwindow"
+                        parent="GtkWindow" />
+
+
     <!-- Central workspace area flanked by two tabbed stacked sidebars -->
     <glade-widget-class name="MyPaintWorkspace"
                         title="Workspace"
                         generic-name="workspace"
                         parent="GtkHBox">
+
       <properties>
         <!-- Fake properties of a workspace -->
         <property id="floating-window-title-suffix"
@@ -251,6 +260,7 @@
   </glade-widget-classes>
 
   <glade-widget-group name="MyPaint" title="MyPaint Widgets">
+    <glade-widget-class-ref name="MyPaintDrawWindow"/>
     <glade-widget-class-ref name="MyPaintWorkspace"/>
     <glade-widget-class-ref name="MyPaintTopBar"/>
     <glade-widget-class-ref name="TiledDrawWidget"/>

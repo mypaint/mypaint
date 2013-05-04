@@ -69,6 +69,8 @@ class Window (windowing.MainWindow, layout.MainWindow):
     """Main drawing window.
     """
 
+    __gtype_name__ = 'MyPaintDrawWindow'
+
 
     def __init__(self, app):
         windowing.MainWindow.__init__(self, app)

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <!-- interface-requires gtk+ 3.0 -->
+  <!-- interface-requires mypaint_widgets 3.0 -->
+  <object class="MyPaintDrawWindow" id="drawwindow">
+    <property name="can_focus">False</property>
+    <property name="title" translatable="yes">MyPaint</property>
+    <child>
+      <object class="GtkBox" id="drawwindow_layout_vbox">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="MyPaintTopBar" id="app_topbar">
+            <property name="width_request">100</property>
+            <property name="height_request">24</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="MyPaintWorkspace" id="app_workspace">
+            <property name="width_request">500</property>
+            <property name="height_request">350</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="header_bar">app_topbar</property>
+            <property name="footer_bar">app_statusbar</property>
+            <child>
+              <object class="TiledDrawWidget" id="app_canvas">
+                <property name="width_request">250</property>
+                <property name="height_request">250</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkStatusbar" id="app_statusbar">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="orientation">vertical</property>
+            <property name="spacing">2</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>
