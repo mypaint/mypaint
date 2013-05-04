@@ -282,16 +282,15 @@ class Application (object):
 
     def save_settings(self):
         """Saves the current settings to persistent storage."""
-        def save_config():
-            settingspath = join(self.user_confpath, 'settings.json')
-            jsonstr = helpers.json_dumps(self.preferences)
-            f = open(settingspath, 'w')
-            f.write(jsonstr)
-            f.close()
         self.brushmanager.save_brushes_for_devices()
         self.brushmanager.save_brush_history()
         self.filehandler.save_scratchpad(self.scratchpad_filename)
-        save_config()
+        settingspath = join(self.user_confpath, 'settings.json')
+        jsonstr = helpers.json_dumps(self.preferences)
+        f = open(settingspath, 'w')
+        f.write(jsonstr)
+        f.close()
+
 
     def apply_settings(self):
         """Applies the current settings."""
@@ -302,18 +301,11 @@ class Application (object):
         prefs_win.update_ui()
 
     def load_settings(self):
-        '''Loads the settings from persistent storage. Uses defaults if
-        not explicitly configured'''
-        def get_legacy_config():
-            dummyobj = {}
-            tmpdict = {}
-            settingspath = join(self.user_confpath, 'settings.conf')
-            if os.path.exists(settingspath):
-                exec open(settingspath) in dummyobj
-                tmpdict['saving.scrap_prefix'] = dummyobj['save_scrap_prefix']
-                tmpdict['input.device_mode'] = dummyobj['input_devices_mode']
-                tmpdict['input.global_pressure_mapping'] = dummyobj['global_pressure_mapping']
-            return tmpdict
+        """Loads the settings from persistent storage.
+
+        Uses defaults if not explicitly configured.
+
+        """
         def get_json_config():
             settingspath = join(self.user_confpath, 'settings.json')
             jsonstr = open(settingspath).read()
@@ -434,7 +426,7 @@ class Application (object):
         try:
             user_config = get_json_config()
         except IOError:
-            user_config = get_legacy_config()
+            user_config = {}
         user_window_pos = user_config.get("layout.window_positions", {})
         # note: .update() replaces the window position dict, but we want to update it
         self.preferences.update(user_config)
@@ -466,8 +458,10 @@ class Application (object):
             adj = gtk.Adjustment(value=s.default, lower=s.min, upper=s.max, step_incr=0.01, page_incr=0.1)
             self.brush_adjustment[s.cname] = adj
 
+
     def update_button_mapping(self):
         self.button_mapping.update(self.preferences["input.button_mapping"])
+
 
     def update_input_mapping(self):
         p = self.preferences['input.global_pressure_mapping']
@@ -615,9 +609,11 @@ class Application (object):
                 device.set_mode(mode)
         print ''
 
+
     def save_gui_config(self):
         gtk2compat.gtk.accel_map_save(join(self.user_confpath, 'accelmap.conf'))
         self.save_settings()
+
 
     def message_dialog(self, text, type=gtk.MESSAGE_INFO, flags=0,
                        secondary_text=None, long_text=None, title=None):
@@ -939,6 +935,7 @@ class CursorCache (object):
         # Cache and return
         self.cache[cache_key] = cursor
         return cursor
+
 
 
 class CallbackFinder:
