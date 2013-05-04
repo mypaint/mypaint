@@ -257,21 +257,28 @@ class Window (windowing.Dialog):
 
     def __init__(self, app):
         buttons = (gtk.STOCK_OK, gtk.RESPONSE_ACCEPT)
-        windowing.Dialog.__init__(self, app, _("Frame"), app.drawWindow, buttons=buttons)
+        windowing.Dialog.__init__(self, app, _("Frame"), app.drawWindow,
+                                  buttons=buttons)
 
         self.callbacks_active = False
 
         x, y, w, h = self.app.doc.model.get_frame()
 
-        self.width_adj  = UnitAdjustment(w, upper=32000, lower=1, step_incr=1, page_incr=128)
-        self.height_adj = UnitAdjustment(h, upper=32000, lower=1, step_incr=1, page_incr=128)
-        self.dpi_adj = gtk.Adjustment(300, upper=9600, lower = 1, step_incr = 20, page_incr=300)
+        self.width_adj  = UnitAdjustment(w, upper=32000, lower=1,
+                                         step_incr=1, page_incr=128)
+        self.height_adj = UnitAdjustment(h, upper=32000, lower=1,
+                                         step_incr=1, page_incr=128)
+        self.dpi_adj = gtk.Adjustment(300, upper=9600, lower = 1,
+                                      step_incr=20, page_incr=300)
         self.unit_label = gtk.Label(_('px'))
         self.unit_label.set_alignment(0, 0.5)
 
-        self.width_adj.connect('value-changed', self.on_size_adjustment_changed)
-        self.height_adj.connect('value-changed', self.on_size_adjustment_changed)
-        self.dpi_adj.connect('value-changed', self.on_dpi_adjustment_changed)
+        self.width_adj.connect('value-changed',
+                               self.on_size_adjustment_changed)
+        self.height_adj.connect('value-changed',
+                                self.on_size_adjustment_changed)
+        self.dpi_adj.connect('value-changed',
+                             self.on_dpi_adjustment_changed)
 
         self.app.doc.model.frame_observers.append(self.on_frame_changed)
 
@@ -465,6 +472,7 @@ class Window (windowing.Dialog):
         self.width_adj.set_px_value(w)
         self.height_adj.set_px_value(h)
         self.callbacks_active = False
+
 
 class UnitAdjustment(gtk.Adjustment):
 
