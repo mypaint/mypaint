@@ -16,6 +16,7 @@ import gobject
 import gtk
 from gtk import gdk
 
+import lib.document
 from lib import brush
 from lib import helpers
 from lib import mypaintlib
@@ -36,6 +37,7 @@ import brushmanager
 import windowing
 import document
 import layout
+import tileddrawwidget
 import backgroundwindow
 import brushmodifier
 import linemode
@@ -156,12 +158,26 @@ class Application (object):
         self.preferences = {}
         self.load_settings()
 
-        self.scratchpad_filename = ""
         self.kbm = keyboard.KeyboardManager(self)
-        self.doc = document.Document(self)
+
+        # Working document: viewer widget
+        app_canvas = tileddrawwidget.TiledDrawWidget()
+
+        # Working document: model and controller
+        model = lib.document.Document(self.brush)
+        self.doc = document.Document(self, app_canvas, model)
+        app_canvas.set_model(model)
+
         signal_callback_objs.append(self.doc)
         signal_callback_objs.append(self.doc.modes)
-        self.scratchpad_doc = document.Document(self, leader=self.doc)
+
+        self.scratchpad_filename = ""
+        scratchpad_model = lib.document.Document(self.brush)
+        scratchpad_tdw = tileddrawwidget.TiledDrawWidget()
+        scratchpad_tdw.set_model(scratchpad_model)
+        self.scratchpad_doc = document.Document(self, scratchpad_tdw,
+                                                scratchpad_model,
+                                                leader=self.doc)
         self.brushmanager = brushmanager.BrushManager(
                 join(app_datapath, 'brushes'),
                 join(user_datapath, 'brushes'),

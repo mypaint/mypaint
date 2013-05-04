@@ -22,35 +22,6 @@ import weakref
 from lib import helpers, tiledsurface, pixbufsurface
 import cursor
 
-def _make_testbed_model():
-    warn("Creating standalone model for testing", RuntimeWarning, 2)
-    import lib.brush, lib.document
-    brush = lib.brush.BrushInfo()
-    brush.load_defaults()
-    return lib.document.Document(brush)
-
-
-
-
-#class CanvasEventBox(gtk.EventBox):
-#    """Handle events on the canvas."""
-#
-#    def __init__(self, application=None, document=None):
-#        gtk.EventBox.__init__(self)
-#        self.doc = document
-#        self.app = application
-
-
-###################
-# FIXME: loose code fragment from an earlier refactor.  looks
-# important, so find its home (it was wrongly tacked onto the end of
-# device_used)
-## Do not interpolate between motion events from different
-## devices.  If the final pressure value from the previous
-## device was not 0.0, the motion event of the new device could
-## cause a visible stroke, even if pressure is 0.0.
-#self.doc.brush.reset()
-
 
 class TiledDrawWidget (gtk.EventBox):
     """Widget for showing a lib.document.Document
@@ -60,7 +31,7 @@ class TiledDrawWidget (gtk.EventBox):
     """
 
     ## Register a GType name for Glade, GtkBuilder etc.
-    #__gtype_name__ = "TiledDrawWidget"
+    __gtype_name__ = "TiledDrawWidget"
 
 
     # List of weakrefs to all known TDWs.
@@ -89,26 +60,19 @@ class TiledDrawWidget (gtk.EventBox):
         return active_tdw
 
 
-    def __init__(self, app=None, document=None):
+    def __init__(self):
         """Instantiate a TiledDrawWidget.
-
-        :param app: The main application singleton
-        :type app: gui.application.Application
-        :param document: The model the View displays
-        :type document: lib.document.Document
-
-        If the `document` parameter is none, a testbed model will be
-        instantiated automatically.
 
         """
         gtk.EventBox.__init__(self)
 
+        if __name__ == '__main__':
+            app = None
+        else:
+            import application
+            app = application.get_app()
         self.app = app
-        if document is None:
-            document = _make_testbed_model()
-        self.doc = document
-
-        self.renderer = CanvasRenderer(self.app, self.doc)
+        self.doc = None
 
         self.add_events(gdk.POINTER_MOTION_MASK
             # Workaround for https://gna.org/bugs/index.php?16253
@@ -123,19 +87,23 @@ class TiledDrawWidget (gtk.EventBox):
             | gdk.BUTTON_RELEASE_MASK)
         self.last_painting_pos = None
 
-
+        self.renderer = CanvasRenderer(self)
         self.add(self.renderer)
-
-        self.doc.canvas_observers.append(self.renderer.canvas_modified_cb)
-        self.doc.doc_observers.append(self.renderer.model_structure_changed_cb)
-        self.doc.brush.brushinfo.observers.append(
-                                        self.renderer.brush_modified_cb)
-
         self.renderer.update_cursor() # get the initial cursor right
 
         self.add_events(gdk.ENTER_NOTIFY_MASK)
         self.connect("enter-notify-event", self.enter_notify_cb)
         self.__tdw_refs.insert(0, weakref.ref(self))
+
+
+    def set_model(self, model):
+        assert self.doc is None
+        renderer = self.renderer
+        model.canvas_observers.append(renderer.canvas_modified_cb)
+        model.doc_observers.append(renderer.model_structure_changed_cb)
+        model.brush.brushinfo.observers.append(renderer.brush_modified_cb)
+        self.doc = model
+        self.renderer.queue_draw()
 
 
     def enter_notify_cb(self, widget, event):
@@ -372,10 +340,14 @@ class DrawCursorMixin:
             c = self._override_cursor
         elif self.get_state() == gtk.STATE_INSENSITIVE:
             c = None
+        elif self.doc is None:
+            return
         elif self.doc.layer.locked or not self.doc.layer.visible:
             # Cursor to represent that one cannot draw.
             # Often a red circle with a diagonal bar through it.
             c = gdk.Cursor(gdk.CIRCLE)
+        elif app is None:
+            return
         # Last two cases only pertain to FreehandOnlyMode cursors.
         # XXX refactor: bad for separation of responsibilities, put the
         # special cases in the mode class.
@@ -465,7 +437,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
     Can render the document in a transformed way, including translation,
     scaling and rotation."""
 
-    def __init__(self, app=None, document=None):
+    def __init__(self, tdw):
         gtk.DrawingArea.__init__(self)
 
         self.connect("draw", self.draw_cb)
@@ -473,8 +445,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         self.connect("size-allocate", self.size_allocate_cb)
         self.connect("state-changed", self.state_changed_cb)
 
-        self.app = app
-        self.doc = document
+        self._tdw = tdw
 
         self.visualize_rendering = False
 
@@ -505,6 +476,16 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         # Overlays
         self.model_overlays = []
         self.display_overlays = []
+
+
+    @property
+    def app(self):
+        return self._tdw.app
+
+
+    @property
+    def doc(self):
+        return self._tdw.doc
 
 
     def _invalidate_cached_transform_matrix(self):
@@ -623,22 +604,33 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         
         return self.cached_transformation_matrix
 
+
     def is_translation_only(self):
         return self.rotation == 0.0 and self.scale == 1.0 and not self.mirrored
+
 
     def get_cursor_in_model_coordinates(self):
         x, y = self.get_pointer()   # FIXME: deprecated in GTK3
         return self.display_to_model(x, y)
 
+
     def get_visible_layers(self):
-        # FIXME: tileddrawwidget should not need to know whether the document has layers
+        # FIXME: tileddrawwidget should not need to know whether the
+        # model has layers
+        if not self.doc:
+            return []
         layers = self.doc.layers
         if not self.show_layers_above:
             layers = self.doc.layers[0:self.doc.layer_idx+1]
         layers = [l for l in layers if l.visible]
         return layers
 
+
     def repaint(self, cr, device_bbox=None):
+        if not self.doc:
+            cr.set_source_rgb(0, 0, 0)
+            cr.paint()
+            return
         transformation, surface, sparse, mipmap_level, clip_region = self.render_prepare(cr, device_bbox)
         self.render_execute(cr, transformation, surface, sparse, mipmap_level, clip_region)
         # Model coordinate space:
@@ -917,10 +909,19 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         self.queue_draw()
 
 
-if __name__ == '__main__':
+def _make_testbed_model():
+    import lib.brush, lib.document
+    brush = lib.brush.BrushInfo()
+    brush.load_defaults()
+    return lib.document.Document(brush)
+
+
+def _test():
     from document import CanvasController
     from canvasevent import FreehandOnlyMode
+    model = _make_testbed_model()
     tdw = TiledDrawWidget()
+    tdw.set_model(model)
     tdw.set_size_request(640, 480)
     tdw.renderer.visualize_rendering = True
     ctrlr = CanvasController(tdw)
@@ -932,3 +933,7 @@ if __name__ == '__main__':
     win.add(tdw)
     win.show_all()
     gtk.main()
+
+
+if __name__ == '__main__':
+    _test()

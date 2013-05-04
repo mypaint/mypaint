@@ -189,7 +189,8 @@ class ToolWidget (gtk.VBox):
         self.main_tdw = app.doc.tdw
 
         self.model = app.doc.model
-        self.tdw = tileddrawwidget.TiledDrawWidget(app, self.model)
+        self.tdw = tileddrawwidget.TiledDrawWidget()
+        self.tdw.set_model(self.model)
         self.tdw.zoom_min = 1/50.0
         self.tdw.set_size_request(250, 250)
         self.pack_start(self.tdw, True, True)
