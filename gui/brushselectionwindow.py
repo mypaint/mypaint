@@ -285,9 +285,6 @@ class GroupSelector (gtk.DrawingArea):
                                 'Middle-click: toggle group\n'
                                 'Right-click: groups menu'))
 
-        if not gtk2compat.USE_GTK3:
-            self.connect("size-request", self.on_size_request)
-
         # Style change detection, and default styles.
         # Layout colors, represented independently of GTK/GDK.
         self._text_colors = {
@@ -377,34 +374,13 @@ class GroupSelector (gtk.DrawingArea):
         return layout
 
 
-    def on_size_request(self, widget, req):
-        # PyGTK/gtk2 size-request handler
-        parent = self.parent.parent
-        parent_width = parent.get_allocation().width
-        # The above is potentially the "adopt natural size" value, -1, at
-        # first, but we should respect it if it's set. Doing so might result
-        # in fewer redraws.
-        layout = self.lay_out_group_names(parent_width)
-        w, h = layout.get_pixel_size()
-        h += 2 * self.VERTICAL_MARGIN
-        req.width = -1
-        req.height = h
-
-
     def do_get_request_mode(self):
-        # PyGI/gtk3 sizing
-        # Width first, then height
         return gtk.SizeRequestMode.HEIGHT_FOR_WIDTH
 
     def do_get_preferred_width(self):
-        # PyGI/gtk3 sizing
-        # Enough width to lay out 1 or 2 short words, but ideally a little
-        # more. In most cases, the parent determines everything.
         return (50, 100)
 
     def do_get_preferred_height_for_width(self, width):
-        # PyGI/gtk3 sizing
-        # Height is determined by the layout once we have a concrrete width.
         layout = self.lay_out_group_names(width)
         w, h = layout.get_pixel_size()
         h += 2 * self.VERTICAL_MARGIN

@@ -10,8 +10,7 @@
 """
 
 import gtk2compat
-if gtk2compat.USE_GTK3:
-    from gi.repository import PangoCairo
+from gi.repository import PangoCairo
 
 import gtk
 from gtk import gdk

@@ -535,9 +535,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
             self.snapshot_pixmap = None
         else:
             if self.snapshot_pixmap is None:
-                if not gtk2compat.USE_GTK3:
-                    # FIXME: we'll have to come up with a better way of doing this.
-                    self.snapshot_pixmap = self.get_snapshot()
+                print "TODO: generate a static snapshot pixmap"
         self.is_sensitive = sensitive
 
     def size_allocate_cb(self, widget, alloc):
@@ -573,10 +571,10 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
 
     def draw_cb(self, widget, cr):
         #TODO: (GTK3 migration fallout)
-        #if self.snapshot_pixmap:
         #  ...should display snapshot instead of normal content, I think
         #  (if it's only during loading, we could also just render blank instead?)
-        #else:
+        if self.snapshot_pixmap:
+            print "TODO: paint static snapshot pixmap"
         self.repaint(cr, None)
         return True
 
@@ -659,10 +657,6 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         # means]
         x, y, w, h = device_bbox
         cx, cy = x+w/2, y+h/2
-
-        # This was from the GTK2 version:
-        # clip_region = self.get_window().get_clip_region()
-        # sparse = not clip_region.contains_point(cx, cy)
 
         # As of 2012-07-08, Ubuntu Precise (LTS, unfortunately) and Debian
         # unstable(!) use python-cairo 1.8.8, which is too old to support
