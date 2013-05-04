@@ -259,10 +259,9 @@ class FileHandler(object):
     @drawwindow.with_wait_cursor
     def save_file(self, filename, export=False, **options):
         thumbnail_pixbuf = self.save_doc_to_file(filename, self.doc, export=export, **options)
-        if "multifile" in options:
-            # Skip thumbnail generation and recentmanager stuff: filename
-            # is not reflective of actual disk filenames in this case, and it
-            # would be incorrect to save a combined thumb for each file.
+        if "multifile" in options or not os.path.isfile(filename):
+            # Multifile save, or failed save (error dialog was already shown).
+            # Skip thumbnail generation attempt and recentmanager stuff.
             return
         if not export:
             self.filename = os.path.abspath(filename)
