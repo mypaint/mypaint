@@ -49,11 +49,6 @@
     </menu>
     <menu action='ViewMenu'>
       <menuitem action='Fullscreen'/>
-      <menu action='MenuishBarMenu'>
-        <menuitem action='MenuishBarRadioMenubar'/>
-        <menuitem action='MenuishBarRadioMainToolbar'/>
-        <menuitem action='MenuishBarRadioMenubarAndMainToolbar'/>
-      </menu>
       <menu action='FeedbackMenu'>
         <menuitem action='ToggleScaleFeedback'/>
         <menuitem action='ToggleLastPosFeedback'/>

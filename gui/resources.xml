@@ -1053,12 +1053,6 @@ Perhaps an increasing amount.
         </object>
       </child>
       <child>
-        <object class="GtkAction" id="MenuishBarMenu">
-          <property name="label" translatable="yes"
-            context="Menu|View|">Toolbars</property>
-        </object>
-      </child>
-      <child>
         <object class="GtkAction" id="FeedbackMenu">
           <property name="label" translatable="yes"
             context="Menu|View|">Feedback</property>
@@ -1220,37 +1214,6 @@ Perhaps an increasing amount.
           <property name="tooltip" translatable="yes"
             >Show the symmetry axis</property>
           <signal name="activate" handler="toggle_symmetry_feedback_cb"/>
-        </object>
-      </child>
-      <!-- UI control: menu bar and toolbar -->
-      <child>
-        <object class="GtkRadioAction" id="MenuishBarRadioMenubar">
-          <property name="label" translatable="yes"
-            context="Menu|View|Toolbars|">Menubar Only</property>
-          <property name="tooltip" translatable="yes"
-            >Show menu bar</property>
-          <property name="value">1</property>
-          <signal name="changed" handler="on_menuishbar_radio_change"/>
-        </object>
-      </child>
-      <child>
-        <object class="GtkRadioAction" id="MenuishBarRadioMainToolbar">
-          <property name="label" translatable="yes"
-            context="Menu|View|Toolbars|">Toolbar Only</property>
-          <property name="tooltip" translatable="yes"
-            >Show toolbar</property>
-          <property name="group">MenuishBarRadioMenubar</property>
-          <property name="value">2</property>
-        </object>
-      </child>
-      <child>
-        <object class="GtkRadioAction" id="MenuishBarRadioMenubarAndMainToolbar">
-          <property name="label" translatable="yes"
-            context="Menu|View|Toolbars|">Both</property>
-          <property name="tooltip" translatable="yes"
-            >Show both the menu bar and the toolbar</property>
-          <property name="group">MenuishBarRadioMainToolbar</property>
-          <property name="value">3</property>
         </object>
       </child>
     </object><!-- /WindowActions -->

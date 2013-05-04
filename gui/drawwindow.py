@@ -69,9 +69,6 @@ class Window (windowing.MainWindow, layout.MainWindow):
     """Main drawing window.
     """
 
-    MENUISHBAR_RADIO_MENUBAR = 1
-    MENUISHBAR_RADIO_MAIN_TOOLBAR = 2
-    MENUISHBAR_RADIO_BOTH_BARS = 3
 
     def __init__(self, app):
         windowing.MainWindow.__init__(self, app)
@@ -169,18 +166,6 @@ class Window (windowing.MainWindow, layout.MainWindow):
 
         # Follow frame toggled state
         self.app.doc.model.frame_observers.append(self.frame_changed_cb)
-
-        # Set initial states of radio actions
-        menuishbar_state = 0
-        if self.get_ui_part_enabled("menubar"):
-            menuishbar_state += self.MENUISHBAR_RADIO_MENUBAR
-        if self.get_ui_part_enabled("main_toolbar"):
-            menuishbar_state += self.MENUISHBAR_RADIO_MAIN_TOOLBAR
-        if menuishbar_state == 0:
-            menuishbar_state = self.MENUISHBAR_RADIO_MAIN_TOOLBAR
-
-        ag.get_action("MenuishBarRadioMenubar").set_current_value(menuishbar_state)
-        gobject.idle_add(lambda: self.update_ui_parts())
 
         # Keyboard handling
         for action in self.action_group.list_actions():
@@ -468,50 +453,6 @@ class Window (windowing.MainWindow, layout.MainWindow):
             mgr.set_color(new_col)
 
 
-    # User-toggleable UI pieces: things like toolbars, status bars, menu bars.
-    # Saved between sessions.
-
-
-    def get_ui_part_enabled(self, part_name):
-        """Returns whether the named UI part is enabled in the prefs.
-        """
-        parts = self.app.preferences["ui.parts"]
-        return bool(parts.get(part_name, False))
-
-
-    def update_ui_parts(self, **updates):
-        """Updates the UI part prefs, then hide/show widgets to match.
-
-        Called without arguments, this updates the UI to match the
-        boolean-valued hash ``ui.parts`` in the app preferences. With keyword
-        arguments, the prefs are updated first, then changes are reflected in
-        the set of visible widgets. Current known parts:
-
-            :``main_toolbar``:
-                The primary toolbar and its menu button.
-            :``menubar``:
-                A conventional menu bar.
-
-        Currently the user cannot turn off both the main toolbar and the
-        menubar: the toolbar will be forced on if an attempt is made.
-        """
-        new_state = self.app.preferences["ui.parts"].copy()
-        new_state.update(updates)
-        # Menu bar
-        if new_state.get("menubar", False):
-            self.menubar.show_all()
-        else:
-            self.menubar.hide()
-            if not new_state.get("main_toolbar", False):
-                new_state["main_toolbar"] = True
-        # Toolbar
-        if new_state.get("main_toolbar", False):
-            self.toolbar.show_all()
-        else:
-            self.toolbar.hide()
-        self.app.preferences["ui.parts"] = new_state
-        self.update_menu_button()
-
 
     def update_menu_button(self):
         """Updates the menu button to match toolbar and menubar visibility.
@@ -526,19 +467,6 @@ class Window (windowing.MainWindow, layout.MainWindow):
             self.toolbar_manager.menu_button.hide()
         else:
             self.toolbar_manager.menu_button.show_all()
-
-
-    def on_menuishbar_radio_change(self, radioaction, current):
-        """Respond to a change of the 'menu bar/toolbar' radio menu items.
-        """
-        value = radioaction.get_current_value()
-        if value == self.MENUISHBAR_RADIO_MENUBAR:
-            self.update_ui_parts(main_toolbar=False, menubar=True)
-        elif value == self.MENUISHBAR_RADIO_MAIN_TOOLBAR:
-            self.update_ui_parts(main_toolbar=True, menubar=False)
-        else:
-            self.update_ui_parts(main_toolbar=True, menubar=True)
-
 
     # Show Subwindows
     # Not saved between sessions, defaults to on.
@@ -603,12 +531,10 @@ class Window (windowing.MainWindow, layout.MainWindow):
             while gtk.events_pending():
                 gtk.main_iteration()
             if getattr(self, "_restore_menubar_on_unfullscreen", False):
-                if self.get_ui_part_enabled("menubar"):
-                    self.menubar.show()
+                self.menubar.show()
                 del self._restore_menubar_on_unfullscreen
             if getattr(self, "_restore_toolbar_on_unfullscreen", False):
-                if self.get_ui_part_enabled("main_toolbar"):
-                    self.toolbar.show()
+                self.toolbar.show()
                 del self._restore_toolbar_on_unfullscreen
             if getattr(self, "_restore_subwindows_on_unfullscreen", False):
                 self.set_show_subwindows(True)
