@@ -109,8 +109,15 @@ class ColorPickerButton (gtk.EventBox, ColorAdjuster):
         if not self.__picking:
             return
         if event.state & gdk.BUTTON1_MASK:
-            color = get_color_at_pointer(self.get_display())
-            self.set_managed_color(color)
+            # Due to a performance bug, color picking can take more time
+            # than we have between two motion events (about 8ms), see above.
+            if hasattr(self, 'delayed_color_pick_id'):
+                gobject.source_remove(self.delayed_color_pick_id)
+            def delayed_color_pick():
+                del self.delayed_color_pick_id
+                color = get_color_at_pointer(self.get_display())
+                self.set_managed_color(color)
+            self.delayed_color_pick_id = gobject.idle_add(delayed_color_pick)
 
     def __button_release_cb(self, widget, event):
         if not self.__picking:
