@@ -4,6 +4,7 @@
 #include "mypaint-fixed-tiled-surface.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 
 // Naive conversion code from the internal MyPaint format and 8 bit RGB
 void
