@@ -35,9 +35,7 @@ def get_color_at_pointer(display, size=3):
     """
     screen, ptr_x_root, ptr_y_root, mods = display.get_pointer()
     win_info = display.get_window_at_pointer()  # FIXME: deprecated (GTK3)
-    # PyGTK: returns None if unknown
-    # GI+GTK3: returns (None, -1, -1) if unknown
-    if win_info is not None and win_info[0] is not None:
+    if win_info[0]:
         # Window is known to GDK, and is a child window of this app for most
         # screen locations. It's most reliable to poll the colour from its
         # toplevel window.
@@ -59,9 +57,7 @@ def get_color_in_window(win, x, y, size=3):
     """Attempts to get the color from a position within a GDK window.
     """
 
-    # [GTK3] GDK2 and GDK3 return different tuples: no bitdepth in GDK3
-    geom_tuple = win.get_geometry()
-    win_x, win_y, win_w, win_h = geom_tuple[0:4]
+    win_x, win_y, win_w, win_h = win.get_geometry()
 
     x = int(max(0, x - size/2))
     y = int(max(0, y - size/2))
@@ -69,13 +65,9 @@ def get_color_in_window(win, x, y, size=3):
     h = int(min(size, win_h - y))
     if w <= 0 or h <= 0:
         return RGBColor(0, 0, 0)
-    if gui.pygtkcompat.USE_GTK3:
-        pixbuf = gdk.pixbuf_get_from_window(win, x, y, w, h)
-    else:
-        screen = win.get_screen()
-        colormap = screen.get_system_colormap()
-        pixbuf = gdk.Pixbuf(gdk.COLORSPACE_RGB, False, 8, w, h)
-        pixbuf = pixbuf.get_from_drawable(win, colormap, x, y, 0, 0, w, h)
+    # The call below can take over 20ms, and it depends on the window size!
+    # It must be causing a full-window pixmap copy somewhere.
+    pixbuf = gdk.pixbuf_get_from_window(win, x, y, w, h)
     if pixbuf is None:
         errcol = RGBColor(1, 0, 0)
         print "warning: failed to get pixbuf from screen; returning", errcol

@@ -626,8 +626,17 @@ class Application (object):
         additionally sets the current brush colour.
 
         """
-        color = colors.get_color_at_pointer(widget.get_display(), size)
-        self.brush_color_manager.set_color(color)
+        # Due to a performance bug, color picking can take more time
+        # than we have between two motion events (about 8ms).
+        if hasattr(self, 'delayed_color_pick_id'):
+            gobject.source_remove(self.delayed_color_pick_id)
+
+        def delayed_color_pick():
+            del self.delayed_color_pick_id
+            color = colors.get_color_at_pointer(widget.get_display(), size)
+            self.brush_color_manager.set_color(color)
+
+        self.delayed_color_pick_id = gobject.idle_add(delayed_color_pick)
 
 
 class DeviceUseMonitor (object):
