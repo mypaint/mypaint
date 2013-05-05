@@ -406,7 +406,7 @@ class Application (object):
 
         window_pos = DEFAULT_CONFIG["layout.window_positions"]
         self.window_names = window_pos.keys()
-        self.preferences = DEFAULT_CONFIG
+        self.preferences = DEFAULT_CONFIG.copy()
         try:
             user_config = get_json_config()
         except IOError:
@@ -420,6 +420,10 @@ class Application (object):
             if role in user_window_pos:
                 window_pos[role] = user_window_pos[role]
         self.preferences["layout.window_positions"] = window_pos
+        if 'ColorPickerPopup' in self.preferences["input.button_mapping"].values():
+            # old config file; users who never assigned any buttons would
+            # end up with Ctrl-Click color picker broken after upgrade
+            self.preferences["input.button_mapping"] = DEFAULT_CONFIG["input.button_mapping"]
 
     def add_action_group(self, ag):
         self.ui_manager.insert_action_group(ag, -1)
