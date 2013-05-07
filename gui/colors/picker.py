@@ -57,7 +57,11 @@ def get_color_in_window(win, x, y, size=3):
     """Attempts to get the color from a position within a GDK window.
     """
 
-    win_x, win_y, win_w, win_h = win.get_geometry()
+    # [GTK3] GDK2 and GDK3 return different tuples: no bitdepth in GDK3
+    # We use GTK3 now but for some reason users still get different results,
+    # see https://gna.org/bugs/?20791
+    geom_tuple = win.get_geometry()
+    win_x, win_y, win_w, win_h = geom_tuple[0:4]
 
     x = int(max(0, x - size/2))
     y = int(max(0, y - size/2))
