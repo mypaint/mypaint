@@ -25,7 +25,6 @@ import pango
 import gtk
 from gtk import gdk
 
-from application import get_app
 import pixbuflist
 import dialogs
 import brushmanager
@@ -198,6 +197,7 @@ class BrushGroupsList(gtk.VBox):
 
     def __init__(self):
         gtk.VBox.__init__(self)
+        from application import get_app
         app = get_app()
         self.app = app
         self.bm = app.brushmanager
@@ -245,7 +245,7 @@ class GroupSelector (gtk.DrawingArea):
 
     def __init__(self):
         gtk.DrawingArea.__init__(self)
-
+        from application import get_app
         app = get_app()
         self.app = app
         self.bm = app.brushmanager

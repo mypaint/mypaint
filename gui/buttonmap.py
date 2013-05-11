@@ -19,7 +19,6 @@ import pango
 from gettext import gettext as _
 
 from lib.helpers import escape
-from application import get_app
 
 
 def button_press_name(button, mods):
@@ -203,7 +202,8 @@ class ButtonMappingEditor (gtk.EventBox):
         """Initialise.
         """
         gtk.EventBox.__init__(self)
-        self.app = get_app()
+        import application
+        self.app = application.get_app()
         self.actions = set()
         self.default_action = None
         self.bindings = None  #: dict of bindings being edited
