@@ -14,7 +14,6 @@ from gtk import gdk
 import windowing
 import cairo
 import canvasevent
-import linemode
 from overlays import rounded_box, Overlay
 import colors
 
@@ -40,6 +39,7 @@ class ColorPickMode (canvasevent.SpringLoadedDragMode,
 
     def stackable_on(self, mode):
         # Any drawing mode
+        import linemode
         return isinstance(mode, linemode.LineModeBase) \
             or isinstance(mode, canvasevent.SwitchableFreehandMode)
 

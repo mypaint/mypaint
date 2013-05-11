@@ -1312,12 +1312,6 @@ class RotateViewMode (SpringLoadedDragMode, OneshotDragModeMixin):
         super(RotateViewMode, self).drag_update_cb(tdw, event, dx, dy)
 
 
-import linemode
-from linemode import StraightMode
-from linemode import SequenceMode
-from linemode import EllipseMode
-from framewindow import FrameEditMode
-
 
 class LayerMoveMode (SwitchableModeMixin,
                      ScrollableModeMixin,
@@ -1358,6 +1352,7 @@ class LayerMoveMode (SwitchableModeMixin,
 
     def stackable_on(self, mode):
         # Any drawing mode
+        import linemode
         return isinstance(mode, linemode.LineModeBase) \
             or isinstance(mode, SwitchableFreehandMode)
 
