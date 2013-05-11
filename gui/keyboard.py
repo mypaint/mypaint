@@ -195,14 +195,32 @@ class KeyboardManager:
         will be dispatched if the window has focus. Other keypresses and
         releases fall through to the window's normal handlers. Ideal for modal
         dialogs which want keyboard navigation, but also want to pop down when
-        their action key is pressed.
+        their action is invoked by a keypress.
 
         """
-        window.connect("key-press-event", self.key_press_cb)
-        window.connect("key-release-event", self.key_release_cb)
+        handler_ids = []
+        for name, cb in [ ("key-press-event", self.key_press_cb),
+                          ("key-release-event", self.key_release_cb), ]:
+            handler_id = window.connect(name, cb)
+            handler_ids.append(handler_id)
         if actions is not None:
             action_names = [str(n) for n in actions]
             self.window_actions[window] = set(action_names)
+        handler_id = window.connect("destroy", self._added_window_destroy_cb,
+                                    handler_ids)
+        handler_ids.append(handler_id)
+
+
+    def _added_window_destroy_cb(self, window, handler_ids):
+        """Clean up references to a window when it's destroyed.
+
+        The main Workspace's undocked toolstack windows are created and
+        destroyed as needed, so we need this.
+
+        """
+        self.window_actions.pop(window, None)
+        for handler_id in handler_ids:
+            window.disconnect(handler_id)   # is this needed?
 
 
     def add_extra_key(self, keystring, action):
