@@ -67,14 +67,9 @@ class ToolbarManager (object):
             self.on_toolbar1_popup_context_menu)
         self.toolbar1_popup = self.app.ui_manager\
             .get_widget('/toolbar1-settings-menu')
-        self.menu_button = MainMenuButton(_("MyPaint"), draw_window.popupmenu)
-        self.menu_button.set_border_width(0)
-        menu_toolitem = gtk.ToolItem()
-        menu_toolitem.add(self.menu_button)
         for item in self.toolbar1:
             if isinstance(item, gtk.SeparatorToolItem):
                 item.set_draw(False)
-        self.toolbar1.insert(menu_toolitem, 0)
 
         # Merge in UI pieces based on the user's saved preferences
         for action in self.settings_actions:
