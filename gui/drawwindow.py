@@ -19,10 +19,19 @@ import webbrowser
 from warnings import warn
 from gettext import gettext as _
 
-import gtk, gobject
-from gtk import gdk, keysyms
+import gtk
+import gobject
+from gtk import gdk
+from gtk import keysyms
 
-import colorselectionwindow, historypopup, stategroup, colorpicker, windowing, layout, toolbar, previewwindow
+import colorselectionwindow
+import historypopup
+import stategroup
+import colorpicker
+import windowing
+import layout
+import toolbar
+import previewwindow
 import dialogs
 from lib import helpers
 import canvasevent

@@ -22,11 +22,10 @@ from lib import helpers
 from lib import mypaintlib
 
 
-# Define this up front: gui.* requires the singleton object pretty much
-# everywhere, and the app instance carries them as members.
-
 def get_app():
     """Returns the `gui.application.Application` singleton object."""
+    # Define this up front: gui.* requires the singleton object pretty much
+    # everywhere, and the app instance carries them as members.
     return Application._INSTANCE
 
 

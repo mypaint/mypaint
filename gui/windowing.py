@@ -9,11 +9,6 @@ import gobject
 
 from layout import WindowWithSavedPosition
 
-def hide_window_cb(window, event):
-    # used by some of the windows
-    window.hide()
-    return True
-
 def on_tool_widget_map(widget, app, role, connids):
     # Ensure that tool widgets' floating windows are added to the kbm when
     # mapped for the first time.
@@ -59,18 +54,20 @@ def window_factory(role, layout_manager, app):
 
 
 class Dialog (gtk.Dialog):
-    """
-    A dialog. Dialogs are a bit of a rough edge at the moment; currently only
-    the preferences window is one. Dialogs accept keyboard input, and hide and
-    show with Tab (though it's arguable that they shouldn't).
+    """Base dialog accepting all keyboard input.
+
+    Dialogs hide when closed. By default, they accept all keyboard input and
+    are not modal. They can (and should) be kept around as references, and can
+    be freely hidden and shown after construction.
+
     """
     def __init__(self, app, *args, **kwargs):
         gtk.Dialog.__init__(self, *args, **kwargs)
         self.app = app
-        self.connect('delete-event', hide_window_cb)
+        self.connect('delete-event', lambda w,e: self.hide_on_delete())
 
 
-class ChooserDialog (gtk.Dialog):
+class ChooserDialog (Dialog):
     """Partly modal dialog for making a single, fast choice.
 
     Chooser dialogs are modal, and permit input, but dispatch a subset of
@@ -83,9 +80,6 @@ class ChooserDialog (gtk.Dialog):
     gtk.RESPONSE_REJECT response when the pointer leaves the window. There is
     some slack in the leave behaviour to allow the window to be resized under
     fancy modern window managers.
-
-    They can (and should) be kept around as references, and can be freely
-    hidden and shown after construction.
 
     """
 
@@ -114,9 +108,6 @@ class ChooserDialog (gtk.Dialog):
 
         """
 
-        # Public member vars
-        self.app = app
-
         # Internal state
         self._size = None
         self._entered = False
@@ -128,7 +119,8 @@ class ChooserDialog (gtk.Dialog):
         w, h = app.preferences.get(self._prefs_size_key, default_size)
         flags = gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT
         parent = app.drawWindow
-        gtk.Dialog.__init__(self, title, parent, flags, buttons)
+        Dialog.__init__(self, app, title=title, parent=parent,
+                        flags=flags, buttons=buttons)
         self.set_default_size(w, h)
         self.set_position(gtk.WIN_POS_MOUSE)
 
@@ -145,17 +137,6 @@ class ChooserDialog (gtk.Dialog):
         self.connect("enter-notify-event", self._enter_cb)
         self.connect("show", self._show_cb)
         self.connect("hide", self._hide_cb)
-
-        # Keep around if the user closes the window.
-        self.connect("delete-event", self._hide_on_delete)
-
-
-    def _hide_on_delete(self, widget, event):
-        # Can't use gtk_widget_hide_on_delete via bound method in GTK3 due to
-        # args mismatch. Oh well, just reinvent the wheel: hide the dialog and
-        # eat the event.
-        self.hide()
-        return True
 
 
     def _configure_cb(self, widget, event):
@@ -251,7 +232,7 @@ class SubWindow (gtk.Window, AppWindowWithSavedPosition):
             # they all be implmented as dialogs?)
         self.pre_hide_pos = None
         self.connect("realize", self.on_realize)
-        self.connect('delete-event', hide_window_cb)
+        self.connect('delete-event', lambda w,e: self.hide_on_delete())
 
     def on_realize(self, widget):
         # Mark subwindows as utility windows: many X11 WMs handle this sanely
