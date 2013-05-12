@@ -7,8 +7,6 @@ import gtk
 import gtk.gdk as gdk
 import gobject
 
-from layout import WindowWithSavedPosition
-
 def on_tool_widget_map(widget, app, role, connids):
     # Ensure that tool widgets' floating windows are added to the kbm when
     # mapped for the first time.
@@ -202,28 +200,17 @@ class MainWindow (gtk.Window):
         self.app.kbm.add_window(self)
 
 
-class AppWindowWithSavedPosition (WindowWithSavedPosition):
-    """Mixin for windows with LayoutManager-stored positions and an app attr.
-    """
+class SubWindow (gtk.Window):
+    """A subwindow in the GUI.
 
-    @property
-    def layout_manager(self):
-        return self.app.layout_manager
+    SubWindows don't accept keyboard input by default, but if your subclass
+    requires it, pass key_input to the constructor.
 
-
-class SubWindow (gtk.Window, AppWindowWithSavedPosition):
-    """
-    A subwindow in the GUI. All are utility windows that are transients for
-    the main window. Subwindows remember their position when hidden or shown,
-    in a way that keeps as many window managers as possible happy.
-
-    Most SubWindows don't accept keyboard input, but if your subclass requires
-    it, pass key_input to the constructor.
     """
 
     def __init__(self, app, key_input=False):
         gtk.Window.__init__(self, type=gtk.WINDOW_TOPLEVEL)
-        AppWindowWithSavedPosition.__init__(self)
+        self.layout_manager = app.layout_manager
         self.app = app
         if not key_input:
             self.app.kbm.add_window(self)
@@ -231,18 +218,16 @@ class SubWindow (gtk.Window, AppWindowWithSavedPosition):
             # windows? Do they share anything in common with dialogs (could
             # they all be implmented as dialogs?)
         self.pre_hide_pos = None
-        self.connect("realize", self.on_realize)
         self.connect('delete-event', lambda w,e: self.hide_on_delete())
-
-    def on_realize(self, widget):
         # Mark subwindows as utility windows: many X11 WMs handle this sanely
-        # OSX with x11.app does not handle this well; https://gna.org/bugs/?15838
-        if not sys.platform == 'darwin':
-            gdk_window = widget.get_window()
-            gdk_window.set_type_hint(gdk.WINDOW_TYPE_HINT_UTILITY)
-        # Win32 is responsive to the following: keeps the utility
+        # This has caused issues with OSX and X11.app under GTK2/PyGTK in the
+        # past. OSX builds no longer use X11.app, so this should no longer
+        # need special-casing. Testers: use if not sys.platform == 'darwin':
+        # if needed, and please submit a patch. https://gna.org/bugs/?15838
+        self.set_type_hint(gdk.WINDOW_TYPE_HINT_UTILITY)
+        # Win32 and some Linux DEs are responsive to the following: keeps the
         # window above the main window in fullscreen.
-        widget.set_transient_for(self.app.drawWindow)
+        self.set_transient_for(app.drawWindow)
 
     def show_all(self):
         pos = self.pre_hide_pos
