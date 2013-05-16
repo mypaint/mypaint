@@ -175,11 +175,11 @@ class BrushList(pixbuflist.PixbufList):
 
     def remove_brush(self, brush):
         self.brushes.remove(brush)
-        for f in self.bm.brushes_observers: f(self.brushes)
+        self.bm.notify_brushes_observers(self.brushes)
 
     def insert_brush(self, idx, brush):
         self.brushes.insert(idx, brush)
-        for f in self.bm.brushes_observers: f(self.brushes)
+        self.bm.notify_brushes_observers(self.brushes)
 
     def button_press_cb(self, widget, event):
         if gtk2compat.USE_GTK3:
@@ -218,8 +218,7 @@ class BrushList(pixbuflist.PixbufList):
         # brush changed on harddisk?
         if brush.reload_if_changed():
             for brushes in self.bm.groups.itervalues():
-                for f in self.bm.brushes_observers: f(brushes)
-
+                self.bm.notify_brushes_observers(brushes)
         self.bm.select_brush(brush)
 
 
@@ -645,7 +644,7 @@ class GroupSelector (gtk.DrawingArea):
                 changed = target
         else:
             context.finish(False, False, time)
-        for f in self.bm.brushes_observers: f(changed)
+        self.bm.notify_brushes_observers(changed)
         context.finish(True, False, time)
 
 
