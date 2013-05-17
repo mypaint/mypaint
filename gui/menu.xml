@@ -240,7 +240,6 @@
       <separator/>
       <menu action='DebugMenu'>
         <menuitem action='InputTestWindow'/>
-        <menuitem action='GtkInputDialog'/>
         <menuitem action='PrintInputs'/>
         <separator/>
         <menuitem action='VisualizeRendering'/>

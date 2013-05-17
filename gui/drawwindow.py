@@ -316,10 +316,6 @@ class Window (windowing.MainWindow, layout.MainWindow):
 
         gobject.idle_add(doit)
 
-    def gtk_input_dialog_cb(self, action):
-        d = gtk.InputDialog()
-        d.show()
-
     def _get_active_doc(self):
         # Determines which is the active doc for the purposes of keyboard
         # event dispatch.

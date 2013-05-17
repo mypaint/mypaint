@@ -1020,14 +1020,6 @@ Perhaps an increasing amount.
           <signal name="activate" handler="start_profiling_cb"/>
         </object>
       </child>
-      <child>
-        <object class="GtkAction" id="GtkInputDialog">
-          <!-- FIXME: convert to a ToggleAction -->
-          <property name="label" translatable="yes"
-            context="Menu|Help|Debug|">GTK Input Device Dialog</property>
-          <signal name="activate" handler="gtk_input_dialog_cb"/>
-        </object>
-      </child>
       <!-- View menu and its submenus -->
       <child>
         <object class="GtkAction" id="ViewMenu">
