@@ -109,9 +109,14 @@ class State:
         self.on_leave(reason)
 
     def activate(self, action_or_event=None):
-        """
-        Called from the GUI code, eg. when a gtk.Action is
-        activated. The action is used to figure out the key.
+        """Activate a State from an action or a button press event.
+
+        Only button press events are supported by this code.  When a GtkAction
+        is activated, custom attributes are used to figure out whether the
+        action was invoked from a menu, or using a keypress.  This requires the
+        action to have been registered with the app's keyboard manager: see
+        `keyboard.KeyboardManager.takeover_event()`.
+
         """
         if self.active:
             # pressing the key again
@@ -128,7 +133,7 @@ class State:
         self.mouse_button = None
 
         if action_or_event:
-            if isinstance(action_or_event, gdk.Event):
+            if not isinstance(action_or_event, gtk.Action):
                 e = action_or_event
                 # currently, we only support mouse buttons being pressed here
                 assert e.type == gdk.BUTTON_PRESS
