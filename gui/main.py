@@ -7,6 +7,8 @@
 # (at your option) any later version.
 
 import os
+import logging
+logger = logging.getLogger(__name__)
 
 from gui import gtk2compat
 gobject = gtk2compat.gobject
@@ -102,17 +104,20 @@ def main(datapath, extradata, oldstyle_confpath=None, version=MYPAINT_VERSION):
         logdirpath, logfilebasename = os.path.split(logfilepath)
         if not os.path.isdir(logdirpath):
             os.makedirs(logdirpath)
-        print 'Python prints are redirected to %s after this one.' % logfilepath
+        logger.info('Python prints are redirected to %r after this one.'
+                     % (logfilepath,))
         sys.stdout = sys.stderr = open(logfilepath, 'a', 1)
-        print '--- mypaint log %s ---' % time.strftime('%Y-%m-%d %H:%M:%S')
+        logger.info('--- mypaint log %s ---'
+                     % time.strftime('%Y-%m-%d %H:%M:%S'))
 
     if options.version:
+        # Output (rather than log) the version
         print "MyPaint version %s" % (version,)
         sys.exit(0)
 
     def run():
-        print 'DEBUG: user_datapath:', userdatapath
-        print 'DEBUG: user_confpath:', userconfpath
+        logger.debug('user_datapath: %r', userdatapath)
+        logger.debug('user_confpath: %r', userconfpath)
 
         app = application.Application(args,
                 app_datapath=datapath, app_extradatapath=extradata,

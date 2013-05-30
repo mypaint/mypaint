@@ -7,6 +7,8 @@
 # (at your option) any later version.
 
 import os
+import logging
+logger = logging.getLogger(__name__)
 
 import gtk
 from gtk import gdk
@@ -117,7 +119,7 @@ class BrushManipulationWidget(gtk.VBox):
                         dialogs.error(self, _('A brush with this name already exists!'))
                         return
 
-        print 'renaming brush', repr(src_brush.name), '-->', repr(dst_name)
+        logger.info("Renaming brush %r --> %r", src_brush.name, dst_name)
         if dst_deleted:
             deleted_brushes = self.bm.get_group_brushes(brushmanager.DELETED_BRUSH_GROUP)
             deleted_brushes.remove(dst_deleted)

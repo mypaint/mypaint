@@ -9,11 +9,12 @@
 """Workspaces with a central canvas, sidebars and saved layouts.
 """
 
-
 ## Imports
 
 import os
 from warnings import warn
+import logging
+logger = logging.getLogger(__name__)
 
 from gettext import gettext as _
 import cairo
@@ -344,7 +345,7 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
 
 
     def _complete_initial_layout_map_cb(self, widget):
-        #print "DEBUG: completing layout (mapped)"
+        logger.debug("Completing layout (mapped)")
         GObject.idle_add(self._complete_initial_layout)
         widget.disconnect(self._complete_initial_layout_cb_id)
         self._complete_initial_layout_cb_id = None
@@ -355,7 +356,7 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         # Wait for the window to transition to the right initial state
         if event.changed_mask & expected_state:
             if event.new_window_state & expected_state:
-                #print "DEBUG: completing layout (toplevel state trans.)"
+                logger.debug("Completing layout (toplevel state-transition)")
                 GObject.idle_add(self._complete_initial_layout)
                 toplevel.disconnect(self._complete_initial_layout_cb_id)
                 self._complete_initial_layout_cb_id = None
@@ -368,7 +369,8 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         toplevel = self.get_toplevel()
         toplevel.disconnect(self._complete_initial_layout_cb_id)
         self._complete_initial_layout_cb_id = None
-        #print "DEBUG: completing layout (toplevel state trans. timeout)"
+        logger.debug("Completing layout (expected toplevel state-transition "
+                     "didn't happen within the timeout)")
         GObject.idle_add(self._complete_initial_layout)
         return False
 
@@ -430,6 +432,7 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         visible to receive the new widget.
 
         """
+        logger.debug("Adding a %r to the most favorable stack", gtype_name)
         stacks = list(self._get_tool_stacks())
         assert stacks
         stack = None
@@ -448,8 +451,11 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
                     break
             maxpages += 1
             if maxpages > 99:
+                logger.warning("All stacks appear to have 100+ pages. "
+                               "Probably untrue, but giving up anyway.")
                 break
         if not widget:
+            logger.error("Cant find space for a %r in any stack", gtype_name)
             return None
         assert stack.has_tool_widget(gtype_name)
         stack_toplevel = stack.get_toplevel()
@@ -461,6 +467,7 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
                 for floating in self._floating:
                     floating.show_all()
         assert self.has_tool_widget(gtype_name)
+        logger.debug("Added %r successfully", gtype_name)
         return widget
 
 
@@ -520,7 +527,6 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         if self._rstack.is_empty():
             return
         width = max(width, 100)
-        print width
         handle_size = GObject.Value()
         handle_size.init(int)
         self._rpaned.style_get_property("handle-size", handle_size)
@@ -1654,7 +1660,7 @@ class ToolStackWindow (Gtk.Window):
     def build_from_layout(self, layout):
         """Build the window's contents from a layout description.
         """
-        print "DEBUG: build_from_layout", id(self)
+        logger.debug("build_from_layout %r", self)
         self.stack.build_from_layout(layout.get("contents", {}))
         pos = layout.get("position", None)
         if pos:
@@ -1672,7 +1678,7 @@ class ToolStackWindow (Gtk.Window):
 
 
     def _realize_cb(self, widget):
-        #print "DEBUG: realize", id(self)
+        logger.debug("Realize %r", self)
         if not self._pos:
             return
         xy = set_initial_window_position(self, self._pos)
@@ -1680,7 +1686,7 @@ class ToolStackWindow (Gtk.Window):
 
 
     def _map_cb(self, widget):
-        #print "DEBUG: map", id(self)
+        logger.debug("map %r", self)
         workspace = self.stack.workspace
         if workspace:
             # Prevent subwindows from taking keyboard focus from the main
@@ -1893,8 +1899,8 @@ def set_initial_window_position(win, pos):
                 on_existing_mon = True
                 break
         if not on_existing_mon:
-            print "warning: calculated window position is offscreen; " \
-                  "ignoring %r" % ((final_x, final_y), )
+            logger.warning("Calculated window position is offscreen; "
+                           "ignoring %r" % ((final_x, final_y), ))
             final_x = None
             final_y = None
 
@@ -1920,6 +1926,7 @@ def set_initial_window_position(win, pos):
 
 
 def _test():
+    logging.basicConfig(level=logging.DEBUG)
     import os, sys
     class _TestLabel (Gtk.Label):
         __gtype_name__ = 'TestLabel'
@@ -1937,9 +1944,9 @@ def _test():
             self.set_size_request(150, 150)
             self.set_property("active", True)
     def _tool_added_cb(*a):
-        print "TOOL-ADDED", a
+        logger.debug("TOOL-ADDED %r", a)
     def _tool_removed_cb(*a):
-        print "TOOL-REMOVED", a
+        logger.debug("TOOL-REMOVED %r", a)
     workspace = Workspace()
     workspace.floating_window_title_suffix = u" - Test"
     canvas = Gtk.Label("<Placeholder>")
@@ -1972,6 +1979,7 @@ def _test():
     })
     window.show_all()
     def _quit_cb(*a):
+        logger.info("Demo quit, workspace dump follows")
         print workspace.get_layout()
         Gtk.main_quit()
     window.connect("destroy", _quit_cb)

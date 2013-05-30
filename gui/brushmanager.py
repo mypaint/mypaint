@@ -15,6 +15,7 @@ import os, zipfile
 from os.path import basename
 import urllib
 from warnings import warn
+import logging
 
 from gettext import gettext as _
 import gtk2compat
@@ -44,6 +45,7 @@ _BRUSH_HISTORY_NAME_PREFIX = "history_"
 _BRUSH_HISTORY_SIZE = 5
 _NUM_BRUSHKEYS = 10
 
+logger = logging.getLogger(__name__)
 
 ## Helper functions
 
@@ -101,7 +103,7 @@ def translate_group_name(name):
 
 def _parse_order_conf(file_content):
     """Parse order.conf file data.
-    
+
     Returns a dict of the form ``{'group1' : ['brush1', 'brush2'],
     'group2' : ['brush3']}``.
 
@@ -120,7 +122,8 @@ def _parse_order_conf(file_content):
             continue
         groups.setdefault(curr_group, [])
         if name in groups[curr_group]:
-            print name + ': Warning: brush appears twice in the same group, ignored'
+            logger.warning('%r: brush appears twice in the same group, ignored'
+                           % (name,))
             continue
         groups[curr_group].append(name)
     return groups
@@ -223,7 +226,7 @@ class BrushManager (object):
                         try:
                             b = get_brush(name)
                         except IOError, e:
-                            print e, '(removed from group)'
+                            logger.warn('%r (removed from group)' % (e,))
                             continue
                         brushes.append(b)
                     groups[group] = brushes
@@ -242,7 +245,7 @@ class BrushManager (object):
         if base == their:
             self.groups = our
         else:
-            print 'Merging upstream brush changes into your collection.'
+            logger.info('Merging upstream brush changes into your collection.')
             groups = set(base).union(our).union(their)
             for group in groups:
                 # treat the non-existing groups as if empty
@@ -474,7 +477,8 @@ class BrushManager (object):
             for brush in brushes:
                 if brush not in new_brushes:
                     new_brushes.append(brush)
-        print len(new_brushes), 'different brushes found in order.conf of brushpack'
+        logger.info("%d different brushes found in order.conf of brushpack"
+                    % (len(new_brushes),))
 
         # Validate file content. The names in order.conf and the
         # brushes found in the zip must match. This should catch
@@ -1103,7 +1107,7 @@ class ManagedBrush(object):
         try:
             self._brushinfo.load_from_string(brushinfo_str)
         except BrushInfo.ParseError, e:
-            print 'Failed to load brush %r: %s' % (filename, e)
+            logger.warning('Failed to load brush %r: %s' % (filename, e))
             self._brushinfo.load_defaults()
         self._remember_mtimes()
         self.settings_loaded = True
@@ -1123,7 +1127,8 @@ class ManagedBrush(object):
         if self.preview_mtime is None: return
         if not self.name: return
         if not self._has_changed_on_disk(): return False
-        print 'Brush "' + self.name + '" has changed on disk, reloading it.'
+        logger.info('Brush %r has changed on disk, reloading it.'
+                    % (self.name,))
         self.load()
         return True
 

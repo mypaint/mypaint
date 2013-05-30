@@ -7,6 +7,8 @@
 # (at your option) any later version.
 
 import os
+import logging
+logger = logging.getLogger(__name__)
 
 import gtk
 from gtk import gdk
@@ -94,9 +96,10 @@ class ScratchpadTool (gtk.VBox):
         # Load last scratchpad
         if os.path.isfile(self.app.scratchpad_filename):
             self.app.filehandler.open_scratchpad(self.app.scratchpad_filename)
-            print "Reverted to %s" % self.app.scratchpad_filename
+            logger.info("Reverted to %r", self.app.scratchpad_filename)
         else:
-            print "No file to revert to yet."
+            logger.info("No file to revert to yet.")
+
 
     def load_cb(self, action):
         if self.app.scratchpad_filename:
@@ -150,6 +153,6 @@ class ScratchpadTool (gtk.VBox):
         self.app.filehandler.save_scratchpad_as_dialog()
 
     def save_cb(self, action):
-        print "Saving the scratchpad"
+        logger.info("Saving the scratchpad")
         self.app.filehandler.save_scratchpad(self.app.scratchpad_filename)
 

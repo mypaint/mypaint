@@ -9,6 +9,8 @@
 from math import floor, ceil, isnan
 import os, sys, hashlib, zipfile, colorsys, urllib, gc
 import numpy
+import logging
+logger = logging.getLogger(__name__)
 
 from gi.repository import GdkPixbuf
 from gi.repository import GLib
@@ -18,20 +20,20 @@ import mypaintlib
 
 try:
     from json import dumps as json_dumps_builtin, loads as json_loads
-    print "builtin python 2.6 json support"
+    logger.debug("Using builtin python 2.6 json support")
     json_dumps = lambda obj: json_dumps_builtin(obj, indent=2)
 except ImportError:
     try:
         from cjson import encode as json_dumps, decode as json_loads
-        print "external python-cjson"
+        logger.debug("Using external python-cjson")
     except ImportError:
         try:
             from json import write as json_dumps, read as json_loads
-            print "external python-json"
+            logger.debug("Using external python-json")
         except ImportError:
             try:
                 from simplejson import dumps as json_dumps, loads as json_loads
-                print "external python-simplejson"
+                logger.debug("Using external python-simplejson")
             except ImportError:
                 raise ImportError("Could not import json. You either need to use python >= 2.6 or install one of python-cjson, python-json or python-simplejson.")
 
@@ -258,7 +260,7 @@ def uri2filename(uri):
 
 def filename2uri(path):
     path = os.path.abspath(path)
-    #print 'encode', repr(path.encode('utf-8'))
+    #logger.debug('encode %r', path.encode('utf-8'))
     path = urllib.pathname2url(path.encode('utf-8'))
 
     # Workaround for Windows. For some reason (wtf?) urllib adds
@@ -269,7 +271,7 @@ def filename2uri(path):
     while path.startswith('/'):
         path = path[1:]
 
-    #print 'pathname2url:', repr(path)
+    #logger.debug('pathname2url: %r', path)
     return 'file:///' + path
 
 
@@ -338,20 +340,22 @@ def indent_etree(elem, level=0):
             elem.tail = i
 
 def run_garbage_collector():
-    print 'MEM: garbage collector run, collected', gc.collect(), 'objects'
-    print 'MEM: gc.garbage contains', len(gc.garbage), 'items of uncollectible garbage'
+    logger.info('MEM: garbage collector run, collected %d objects',
+                gc.collect())
+    logger.info('MEM: gc.garbage contains %d items of uncollectible garbage',
+                len(gc.garbage))
 
 old_stats = []
 def record_memory_leak_status(print_diff=False):
     run_garbage_collector()
-    print 'MEM: collecting info (can take some time)...'
+    logger.info('MEM: collecting info (can take some time)...')
     new_stats = []
     for obj in gc.get_objects():
         if 'A' <= getattr(obj, '__name__', ' ')[0] <= 'Z':
             cnt = len(gc.get_referrers(obj))
             new_stats.append((obj.__name__ + ' ' + str(obj), cnt))
     new_stats.sort()
-    print 'MEM: ...done collecting.'
+    logger.info('MEM: ...done collecting.')
     global old_stats
     if old_stats:
         if print_diff:
@@ -361,9 +365,10 @@ def record_memory_leak_status(print_diff=False):
             for obj, cnt in new_stats:
                 cnt_old = d.get(obj, 0)
                 if cnt != cnt_old:
-                    print 'MEM: DELTA %+d %s' % (cnt - cnt_old, obj)
+                    logger.info('MEM: DELTA %+d %s', cnt - cnt_old, obj)
     else:
-        print 'MEM: Stored stats to compare with the next info collection.'
+        logger.info('MEM: Stored stats to compare with the next '
+                    'info collection.')
     old_stats = new_stats
 
 def expanduser_unicode(s):

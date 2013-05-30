@@ -12,6 +12,9 @@
 
 import gui.gtk2compat
 
+import logging
+logger = logging.getLogger(__name__)
+
 import gtk
 from gtk import gdk
 import gobject
@@ -74,7 +77,8 @@ def get_color_in_window(win, x, y, size=3):
     pixbuf = gdk.pixbuf_get_from_window(win, x, y, w, h)
     if pixbuf is None:
         errcol = RGBColor(1, 0, 0)
-        print "warning: failed to get pixbuf from screen; returning", errcol
+        logger.warning("Failed to get pixbuf from screen; returning "
+                       "error indicator color %r", errcol)
         return errcol
     return RGBColor.new_from_pixbuf_average(pixbuf)
 

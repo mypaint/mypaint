@@ -6,6 +6,9 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
+import logging
+logger = logging.getLogger(__name__)
+
 import gtk
 from gtk import gdk
 import gobject
@@ -159,13 +162,13 @@ class DropdownPanel (gtk.Window):
         gdk_window = self.get_window()
         grab_result = gdk.pointer_grab(gdk_window, True, mask, None, None, t)
         if grab_result != gdk.GRAB_SUCCESS:
-            print "pointer grab failed:", grab_result
+            logger.warning("pointer grab failed: %r", grab_result)
             return False
 
         # Keyboard grab too, to prevent workspace switching.
         grab_result = gdk.keyboard_grab(gdk_window, False, t)
         if grab_result != gdk.GRAB_SUCCESS:
-            print "keyboard grab failed:", grab_result
+            logger.warning("keyboard grab failed: %r", grab_result)
             gdk.pointer_ungrab(gdk.CURRENT_TIME)
             return False
 
@@ -189,7 +192,7 @@ class DropdownPanel (gtk.Window):
     def _grab_broken_event_cb(self, widget, event):
         rival = event.grab_window
         if rival is not None:
-            print "grab broken by", rival
+            logger.warning("grab broken by %r", rival)
         self.hide_on_leave = True
         self._grabbed = False
 
@@ -295,7 +298,7 @@ if __name__ == '__main__':
     def _on_hsv_changed(hsv):
         if hsv.is_adjusting():
             return
-        print "HSV:", hsv.get_color()
+        logger.info("HSV: %r", hsv.get_color())
         #dd.panel_hide()
     hsv.connect("changed", _on_hsv_changed)
     vbox = gtk.VBox()

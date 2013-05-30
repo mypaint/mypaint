@@ -8,6 +8,9 @@
 """Canvas input event handling.
 """
 
+import logging
+logger = logging.getLogger(__name__)
+
 import gtk2compat
 from buttonmap import get_handler_object
 
@@ -427,8 +430,8 @@ class FreehandOnlyMode (InteractionMode):
             if not hasattr(self, 'bad_devices'):
                 self.bad_devices = []
             if device.name not in self.bad_devices:
-                print 'WARNING: device "%s" is reporting bad pressure %+f' \
-                    % (device.name, pressure)
+                logger.warning('device %r is reporting bad pressure %+f',
+                               device.name, pressure)
                 self.bad_devices.append(device.name)
             if not isfinite(pressure):
                 # infinity/nan: use button state (instead of clamping in
@@ -500,7 +503,7 @@ class FreehandOnlyMode (InteractionMode):
         # TODO: proper fix in the brush engine, using only smooth,
         #       filtered speed inputs, will make this unneccessary
         if dtime < 0.0:
-            print 'Time is running backwards, dtime=%f' % dtime
+            logger.warning('Time is running backwards, dtime=%f', dtime)
             dtime = 0.0
         data = (x, y, pressure, xtilt, ytilt)
         if dtime == 0.0:
@@ -985,8 +988,9 @@ class DragMode (InteractionMode):
         grab_status = gdk.pointer_grab(tdw_window, False, event_mask, None,
                                        cursor, event.time)
         if grab_status != gdk.GRAB_SUCCESS:
-            print "DEBUG: pointer grab failed:", grab_status
-            print "DEBUG:  gdk_pointer_is_grabbed():", gdk.pointer_is_grabbed()
+            logger.warning("pointer grab failed: %r", grab_status)
+            logger.debug("gdk_pointer_is_grabbed(): %r",
+                         gdk.pointer_is_grabbed())
             # There seems to be a race condition between this grab under
             # PyGTK/GTK2 and some other grab - possibly just the implicit grabs
             # on colour selectors: https://gna.org/bugs/?20068 Only pointer
@@ -996,7 +1000,7 @@ class DragMode (InteractionMode):
             # This condition should be rare enough for this to be a valid
             # approach: the irritation of having to click again to do something
             # should be far less than that of getting "stuck" in a drag.
-            print "DEBUG: exiting mode"
+            logger.debug("Exiting mode")
             self.doc.modes.pop()
 
             # Sometimes a pointer ungrab is needed even though the grab
@@ -1019,7 +1023,7 @@ class DragMode (InteractionMode):
         # for a spacebar drag.
         grab_status = gdk.keyboard_grab(tdw_window, False, event.time)
         if grab_status != gdk.GRAB_SUCCESS:
-            print "DEBUG: keyboard grab failed:", grab_status
+            logger.warning("Keyboard grab failed: %r", grab_status)
             gdk.pointer_ungrab(event.time)
             self.doc.modes.pop()
             return
@@ -1051,12 +1055,12 @@ class DragMode (InteractionMode):
         # Cede control as cleanly as possible if something else grabs either
         # the keyboard or the pointer while a grab is active.
         # One possible cause for https://gna.org/bugs/?20333
-        print "DEBUG: grab-broken-event on", tdw
-        print "DEBUG:   send_event  :", event.send_event
-        print "DEBUG:   keyboard    :", event.keyboard
-        print "DEBUG:   implicit    :", event.implicit
-        print "DEBUG:   grab_window :", event.grab_window
-        print "DEBUG: exiting", self
+        logger.debug("grab-broken-event on %r", tdw)
+        logger.debug(" send_event  : %r", event.send_event)
+        logger.debug(" keyboard    : %r", event.keyboard)
+        logger.debug(" implicit    : %r", event.implicit)
+        logger.debug(" grab_window : %r", event.grab_window)
+        logger.debug("exiting %r", self)
         self.doc.modes.pop()
         return True
 
@@ -1153,7 +1157,7 @@ class DragMode (InteractionMode):
         # action activation.
         event = gtk.get_current_event()
         if event is None:
-            print "no event"
+            logger.warning("no event")
             return
         if self.in_drag:
             return

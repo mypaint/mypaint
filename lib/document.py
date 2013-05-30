@@ -15,6 +15,8 @@ import traceback
 from os.path import join
 from cStringIO import StringIO
 import xml.etree.ElementTree as ET
+import logging
+logger = logging.getLogger(__name__)
 
 from gi.repository import Gdk
 from gi.repository import GdkPixbuf
@@ -595,7 +597,8 @@ class Document():
         pixbuf = self.render_as_pixbuf(x, y, w, h, mipmap_level=mipmap_level)
         assert pixbuf.get_width() == w and pixbuf.get_height() == h
         pixbuf = helpers.scale_proportionally(pixbuf, 256, 256)
-        print 'Rendered thumbnail in', time.time() - t0, 'seconds.'
+        logger.info('Rendered thumbnail in %d seconds.',
+                    time.time() - t0)
         return pixbuf
 
     def save_png(self, filename, alpha=False, multifile=False, **kwargs):
@@ -660,7 +663,7 @@ class Document():
     save_jpeg = save_jpg
 
     def save_ora(self, filename, options=None, **kwargs):
-        print 'save_ora:'
+        logger.info('save_ora: %r (%r, %r)', filename, options, kwargs)
         t0 = time.time()
         tempdir = tempfile.mkdtemp('mypaint')
         if not isinstance(tempdir, unicode):
@@ -684,7 +687,7 @@ class Document():
             tmp = join(tempdir, 'tmp.png')
             t1 = time.time()
             pixbuf.savev(tmp, 'png', [], [])
-            print '  %.3fs pixbuf saving %s' % (time.time() - t1, name)
+            logger.debug('%.3fs pixbuf saving %s', time.time() - t1, name)
             z.write(tmp, name)
             os.remove(tmp)
 
@@ -692,7 +695,7 @@ class Document():
             tmp = join(tempdir, 'tmp.png')
             t1 = time.time()
             surface.save_as_png(tmp, *rect, **kwargs)
-            print '  %.3fs surface saving %s' % (time.time() - t1, name)
+            logger.debug('%.3fs surface saving %s', time.time() - t1, name)
             z.write(tmp, name)
             os.remove(tmp)
 
@@ -755,11 +758,11 @@ class Document():
 
         # preview (256x256)
         t2 = time.time()
-        print '  starting to render full image for thumbnail...'
+        logger.debug('starting to render full image for thumbnail...')
 
         thumbnail_pixbuf = self.render_thumbnail()
         store_pixbuf(thumbnail_pixbuf, 'Thumbnails/thumbnail.png')
-        print '  total %.3fs spent on thumbnail' % (time.time() - t2)
+        logger.debug('total %.3fs spent on thumbnail', time.time() - t2)
 
         helpers.indent_etree(image)
         xml = ET.tostring(image, encoding='UTF-8')
@@ -771,7 +774,7 @@ class Document():
             os.remove(filename) # windows needs that
         os.rename(filename + '.tmpsave', filename)
 
-        print '%.3fs save_ora total' % (time.time() - t0)
+        logger.info('%.3fs save_ora total', time.time() - t0)
 
         return thumbnail_pixbuf
 
@@ -783,13 +786,13 @@ class Document():
 
     def load_ora(self, filename, feedback_cb=None):
         """Loads from an OpenRaster file"""
-        print 'load_ora:'
+        logger.info('load_ora: %r', filename)
         t0 = time.time()
         tempdir = tempfile.mkdtemp('mypaint')
         if not isinstance(tempdir, unicode):
             tempdir = tempdir.decode(sys.getfilesystemencoding())
         z = zipfile.ZipFile(filename)
-        print 'mimetype:', z.read('mimetype').strip()
+        logger.debug('mimetype: %r', z.read('mimetype').strip())
         xml = z.read('stack.xml')
         image = ET.fromstring(xml)
         stack = image.find('stack')
@@ -805,11 +808,13 @@ class Document():
             except KeyError:
                 # support for bad zip files (saved by old versions of the GIMP ORA plugin)
                 fp = z.open(filename.encode('utf-8'), mode='r')
-                print 'WARNING: bad OpenRaster ZIP file. There is an utf-8 encoded filename that does not have the utf-8 flag set:', repr(filename)
+                logger.warning('Bad OpenRaster ZIP file. There is an utf-8 '
+                               'encoded filename that does not have the '
+                               'utf-8 flag set: %r', filename)
 
             res = self._pixbuf_from_stream(fp, feedback_cb)
             fp.close()
-            print '  %.3fs loading %s' % (time.time() - t1, filename)
+            logger.debug('%.3fs loading pixbuf %s', time.time() - t1, filename)
             return res
 
         def get_layers_list(root, x=0,y=0):
@@ -826,7 +831,7 @@ class Document():
                     stack_y = int( item.attrib.get('y', 0) )
                     res += get_layers_list(item, stack_x, stack_y)
                 else:
-                    print 'Warning: ignoring unsupported tag:', item.tag
+                    logger.warning('ignoring unsupported tag %r', item.tag)
             return res
 
         self.clear() # this leaves one empty layer
@@ -840,16 +845,16 @@ class Document():
             if 'background_tile' in a:
                 assert no_background
                 try:
-                    print a['background_tile']
+                    logger.debug("background tile: %r", a['background_tile'])
                     self.set_background(get_pixbuf(a['background_tile']))
                     no_background = False
                     continue
                 except tiledsurface.BackgroundError, e:
-                    print 'ORA background tile not usable:', e
+                    logger.warning('ORA background tile not usable: %r', e)
 
             src = a.get('src', '')
             if not src.lower().endswith('.png'):
-                print 'Warning: ignoring non-png layer'
+                logger.warning('Ignoring non-png layer %r', src)
                 continue
             name = a.get('name', '')
             x = int(a.get('x', '0'))
@@ -880,12 +885,13 @@ class Document():
             self.set_layer_locked(locked, layer)
             if selected:
                 selected_layer = layer
-            print '  %.3fs loading and converting layer png' % (time.time() - t1)
+            logger.debug('%.3fs loading and converting layer png',
+                         time.time() - t1)
             # strokemap
             fname = a.get('mypaint_strokemap_v2', None)
             if fname:
                 if x % N or y % N:
-                    print 'Warning: dropping non-aligned strokemap'
+                    logger.warning('Dropping non-aligned strokemap')
                 else:
                     sio = StringIO(z.read(fname))
                     layer.load_strokemap_from_file(sio, x, y)
@@ -893,7 +899,7 @@ class Document():
 
         if len(self.layers) == 1:
             # no assertion (allow empty documents)
-            print 'Warning: Could not load any layer, document is empty.'
+            logger.error('Could not load any layer, document is empty.')
 
         if len(self.layers) > 1:
             # remove the still present initial empty top layer
@@ -915,4 +921,4 @@ class Document():
                 os.rmdir(os.path.join(root, name))
         os.rmdir(tempdir)
 
-        print '%.3fs load_ora total' % (time.time() - t0)
+        logger.info('%.3fs load_ora total', time.time() - t0)

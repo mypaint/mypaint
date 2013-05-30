@@ -10,10 +10,11 @@
 """Palette: a list of swatch colours.
 """
 
-
 import re
 import os
 from copy import copy
+import logging
+logger = logging.getLogger(__name__)
 
 import gtk
 from gtk import gdk
@@ -105,13 +106,13 @@ class Palette (object):
                     elif key == 'columns':
                         self.__columns = int(value)
                     else:
-                        print "warning: unknown 'key: value' pair '%s'" % line
+                        logger.warning("Unknown 'key:value' pair %r", line)
                     continue
                 else:
                     header_done = True
             match = color_line_re.match(line)
             if not match:
-                print "warning: expected R G B [Name]"
+                logger.warning("Expected 'R G B [Name]', not %r", line)
                 continue
             r, g, b, col_name = match.groups()
             r = float(clamp(int(r), 0, 0xff))/0xff
@@ -433,15 +434,19 @@ class Palette (object):
     def __dialog_update_preview_cb(self_or_class, dialog, preview):
         filename = dialog.get_preview_filename()
         palette = None
-        try:
-            palette = Palette(filename=filename)
-        except Exception, ex:
+        if filename is not None and os.path.isfile(filename):
+            try:
+                palette = Palette(filename=filename)
+            except Exception, ex:
+                logger.warning("Couldn't update preview widget: %s",
+                               str(ex))
+                return
+        if palette:
+            dialog.set_preview_widget_active(True)
+            preview.set_palette(palette)
+            preview.queue_draw()
+        else:
             dialog.set_preview_widget_active(False)
-            print ex
-            return
-        preview.set_palette(palette)
-        preview.queue_draw()
-        dialog.set_preview_widget_active(True)
 
 
     def save_via_dialog(self, title, parent=None, preview=None):

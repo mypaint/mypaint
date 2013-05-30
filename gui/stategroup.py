@@ -6,6 +6,9 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
+import logging
+logger = logging.getLogger(__name__)
+
 import gtk2compat
 import gobject
 import gtk
@@ -86,7 +89,7 @@ class State:
             self.outside_popup_timeout = popup.outside_popup_timeout
 
     def enter(self):
-        #print 'entering state, calling', self.on_enter.__name__
+        logger.debug('Entering State, calling %s', self.on_enter.__name__)
         assert not self.active
         self.active = True
         self.enter_time = gtk.get_current_event_time()/1000.0
@@ -96,7 +99,7 @@ class State:
         self.on_enter()
 
     def leave(self, reason=None):
-        #print 'leaving state, calling', self.on_leave.__name__
+        logger.debug('Leaving State, calling %s', self.on_leave.__name__)
         assert self.active
         self.active = False
         if self.autoleave_timer:
@@ -260,6 +263,6 @@ class State:
             #
             # Stop everything, release the pointer grab.
             # (TODO: wait for a click instead, or show an instruction dialog)
-            print 'COV'
+            logger.warning('Releasing grab ("COV")')
             self.leave(None)
 

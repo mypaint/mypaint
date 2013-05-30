@@ -6,6 +6,9 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
+import logging
+logger = logging.getLogger(__name__)
+
 from gettext import gettext as _
 import gtk
 from gtk import gdk
@@ -75,7 +78,7 @@ class InputTestWindow (windowing.SubWindow):
     def map_cb(self, *junk):
         if self.initialized:
             return
-        print 'Event statistics enabled.'
+        logger.info('Event statistics enabled.')
         self.initialized = True
         self.app.doc.tdw.connect("event", self.event_cb)
         self.app.drawWindow.connect("event", self.event_cb)
@@ -162,7 +165,7 @@ class InputTestWindow (windowing.SubWindow):
         return msg
 
     def report(self, msg):
-        print msg
+        logger.info(msg)
         self.log.append(msg)
         self.log = self.log[-28:]
         buf = self.tv.get_buffer()

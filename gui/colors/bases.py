@@ -10,6 +10,9 @@
 """Base widgets for the colour selector module.
 """
 
+import logging
+logger = logging.getLogger(__name__)
+
 import gtk
 from gtk import gdk
 import cairo
@@ -180,6 +183,6 @@ class IconRenderable:
             surf.flush()
             if size != 'scalable':
                 surf.write_to_png(filename)
-            print "rendered \"%s\" (size=%s)..." % (filename, size)
+            logger.info("rendered %r (size=%s)...", filename, size)
 
 

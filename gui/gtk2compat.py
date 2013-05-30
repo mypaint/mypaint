@@ -7,6 +7,9 @@ clauses in code elsewhere.
 """
 
 from __future__ import absolute_import
+import logging
+logger = logging.getLogger(__name__)
+
 import gi
 from gi.repository import GObject
 from gi.repository import Gdk
@@ -74,13 +77,14 @@ def get_gobject():
 
 
 def original_gtk():
-    print "Using GTK3"
+    logger.debug("Using GTK3")
     try:
         import pygtkcompat
         pygtkcompat.enable()
         pygtkcompat.enable_gtk(version='3.0')
     except ImportError:
-        print '"import pygtkcompat" did not work, trying old deprecated way'
+        logger.warning('"import pygtkcompat" did not work, trying old '
+                       'deprecated way')
         import gi.pygtkcompat
         gi.pygtkcompat.enable()
         gi.pygtkcompat.enable_gtk(version='3.0')

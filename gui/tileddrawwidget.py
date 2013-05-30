@@ -18,6 +18,8 @@ from math import floor, ceil, log, exp
 from numpy import isfinite
 from warnings import warn
 import weakref
+import logging
+logger = logging.getLogger(__name__)
 
 from lib import helpers, tiledsurface, pixbufsurface
 import cursor
@@ -535,7 +537,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
             self.snapshot_pixmap = None
         else:
             if self.snapshot_pixmap is None:
-                print "TODO: generate a static snapshot pixmap"
+                logger.debug("TODO: generate a static snapshot pixmap")
         self.is_sensitive = sensitive
 
     def size_allocate_cb(self, widget, alloc):
@@ -556,7 +558,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
 
         if w == 0 and h == 0:
             # Full redraw (used when background has changed).
-            #print 'full redraw'
+            #logger.debug('Full redraw')
             self.queue_draw()
             return
 
@@ -574,7 +576,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         #  ...should display snapshot instead of normal content, I think
         #  (if it's only during loading, we could also just render blank instead?)
         if self.snapshot_pixmap:
-            print "TODO: paint static snapshot pixmap"
+            logger.debug("TODO: paint static snapshot pixmap")
         self.repaint(cr, None)
         return True
 
@@ -712,7 +714,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
             allocation = self.get_allocation()
             w, h = allocation.width, allocation.height
             device_bbox = (0, 0, w, h)
-        #print 'device bbox', tuple(device_bbox)
+        # logger.debug('device bbox: %r', tuple(device_bbox))
 
         clip_region, sparse = self.render_get_clip_region(cr, device_bbox)
         x, y, w, h = device_bbox
@@ -769,6 +771,8 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         translation_only = self.is_translation_only()
         model_bbox = surface.x, surface.y, surface.w, surface.h
 
+        #logger.debug('model bbox: %r', model_bbox)
+
         # not sure if it is a good idea to clip so tightly
         # has no effect right now because device_bbox is always smaller
         cr.rectangle(*model_bbox)
@@ -803,7 +807,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         #    self.window.draw_pixbuf(None, surface.pixbuf, 0, 0, int(x), int(y),
         #                            dither=gdk.RGB_DITHER_MAX)
 
-        #print 'Position (screen coordinates):', cr.model_to_display(surface.x, surface.y)
+        #logger.debug('Position (screen coordinates): %r', cr.model_to_display(surface.x, surface.y))
         gdk.cairo_set_source_pixbuf(cr, surface.pixbuf,
                                     round(surface.x), round(surface.y))
         pattern = cr.get_source()

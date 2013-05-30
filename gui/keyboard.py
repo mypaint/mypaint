@@ -6,6 +6,9 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
+import logging
+logger = logging.getLogger(__name__)
+
 import gtk
 from gtk import gdk
 import gtk2compat
@@ -70,7 +73,7 @@ class KeyboardManager:
                 if action.get_accel_path() == accel_path:
                     self.keymap[shortcut] = action
                     return
-            print 'Ignoring keybinding for', accel_path
+            logger.warning('Ignoring keybinding for %r', accel_path)
 
 
     def key_press_cb(self, widget, event):
@@ -94,8 +97,8 @@ class KeyboardManager:
             # returns false.  Not sure if this is a bug or a feature - the only
             # time I have seen this happen is when I put my laptop into sleep
             # mode.
-            print 'Warning: translate_keyboard_state() returned None. ' \
-                  'Strange key pressed?'
+            logger.warning('translate_keyboard_state() returned None. '
+                           'Strange key pressed?')
             return
 
         keyval_offset = 1 if gtk2compat.USE_GTK3 else 0
@@ -149,9 +152,9 @@ class KeyboardManager:
             if not action.keyup_callback:
                 activate()
         else:
-            #print 'PRESS', action.get_name()
+            #logger.debug('PRESS %r', action.get_name())
             self.pressed[event.hardware_keycode] = action
-            ## make sure we also get the corresponding key release event
+            # Make sure we also get the corresponding key release event
             #gdk.keyboard_grab(widget.window, False, event.time)
             #widget.grab_add() hm? what would this do?
             activate()
@@ -166,7 +169,7 @@ class KeyboardManager:
             #gdk.keyboard_ungrab(event.time)
             action = self.pressed[hardware_keycode]
             del self.pressed[hardware_keycode]
-            #print 'RELEASE', action.get_name()
+            #logger.debug('RELEASE %r', action.get_name())
             if action.keyup_callback:
                 action.keyup_callback(widget, event)
                 action.keyup_callback = None

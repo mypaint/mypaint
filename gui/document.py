@@ -8,8 +8,12 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
+## Imports
+
 import os, math
 from warnings import warn
+import logging
+logger = logging.getLogger(__name__)
 
 import gtk2compat
 import gobject
@@ -25,6 +29,10 @@ import dialogs
 import canvasevent
 import colorpicker   # purely for registration
 import linemode
+
+
+
+## Class definitions
 
 
 class CanvasController (object):
@@ -366,7 +374,7 @@ class Document (CanvasController):
         # use the full document bbox, so we can paste layers back to the correct position
         bbox = self.model.get_bbox()
         if bbox.w == 0 or bbox.h == 0:
-            print "WARNING: empty document, nothing copied"
+            logger.error("Empty document, nothing copied")
             return
         else:
             pixbuf = self.model.layer.render_as_pixbuf(*bbox)
@@ -378,7 +386,8 @@ class Document (CanvasController):
         cb = self._get_clipboard()
         def callback(clipboard, pixbuf, junk):
             if not pixbuf:
-                print 'The clipboard doeas not contain any image to paste!'
+                logger.error("The clipboard does not contain "
+                             "any image to paste!")
                 return
             # paste to the upper left of our doc bbox (see above)
             x, y, w, h = self.model.get_bbox()
@@ -391,7 +400,8 @@ class Document (CanvasController):
         if not self.tdw is active_tdw:
             for follower in self.followers:
                 if follower.tdw is active_tdw:
-                    print "passing %s action to %s" % (action.get_name(), follower)
+                    logger.debug("passing %s action to %s",
+                                 action.get_name(), follower)
                     follower.pick_context_cb(action)
                     return
             return
@@ -622,7 +632,7 @@ class Document (CanvasController):
         if name == 'ContextStore':
             context = bm.selected_context
             if not context:
-                print 'No context was selected, ignoring store command.'
+                logger.error('No context was selected, ignoring store command.')
                 return
             store = True
         else:
@@ -1227,7 +1237,7 @@ class Document (CanvasController):
         """Callback: mode stack has changed structure.
         """
         # Activate the action corresponding to the current top mode.
-        print "DEBUG: mode stack updated:", self.modes
+        logger.debug("Mode changed: %r", self.modes)
         action_name = getattr(mode, '__action_name__', None)
         if action_name is None:
             return None

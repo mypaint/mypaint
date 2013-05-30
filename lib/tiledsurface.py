@@ -15,6 +15,8 @@ import sys
 import os
 import contextlib
 import functools
+import logging
+logger = logging.getLogger(__name__)
 
 import mypaintlib
 import helpers
@@ -442,7 +444,7 @@ class MyPaintSurface():
         filename_sys = filename.encode(sys.getfilesystemencoding()) # FIXME: should not do that, should use open(unicode_object)
         flags = mypaintlib.load_png_fast_progressive(filename_sys, get_buffer)
         consume_buf() # also process the final chunk of data
-        print flags
+        logger.debug("PNG loader flags: %r", flags)
 
         dirty_tiles.update(self.tiledict.keys())
         bbox = get_tiles_bbox(dirty_tiles)
@@ -453,11 +455,11 @@ class MyPaintSurface():
 
     def render_as_pixbuf(self, *args, **kwargs):
         if not self.tiledict:
-            print 'WARNING: empty surface'
+            logger.warning('empty surface')
         t0 = time.time()
         kwargs['alpha'] = True
         res = pixbufsurface.render_as_pixbuf(self, *args, **kwargs)
-        print '  %.3fs rendering layer as pixbuf' % (time.time() - t0)
+        logger.debug('%.3fs rendering layer as pixbuf', time.time() - t0)
         return res
 
     def save_as_png(self, filename, *args, **kwargs):
@@ -493,7 +495,7 @@ class _InteractiveMove:
         self.surface = surface
         self.snapshot = surface.save_snapshot()
         self.chunks = self.snapshot.tiledict.keys()
-        # print "Number of Tiledict_keys", len(self.chunks)
+        # logger.debug("Number of Tiledict_keys: %r", len(self.chunks))
         tx = x // N
         ty = y // N
         chebyshev = lambda p: max(abs(tx - p[0]), abs(ty - p[1]))

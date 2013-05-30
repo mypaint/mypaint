@@ -11,6 +11,8 @@ import gettext
 import os
 import sys
 from os.path import join
+import logging
+logger = logging.getLogger(__name__)
 
 import gobject
 import gtk
@@ -113,12 +115,13 @@ class Application (object):
         for basedir in [self.user_confpath, self.user_datapath]:
             if not os.path.isdir(basedir):
                 os.mkdir(basedir)
-                print 'Created basedir', basedir
+                logger.info('Created basedir %r', basedir)
         for datasubdir in ['backgrounds', 'brushes', 'scratchpads']:
             datadir = os.path.join(self.user_datapath, datasubdir)
             if not os.path.isdir(datadir):
                 os.mkdir(datadir)
-                print 'Created data subdir', datadir
+                logger.info('Created data subdir %r', datadir)
+
 
         # Default location for our icons. The user's theme can override these.
         icon_theme = gtk.icon_theme_get_default()
@@ -127,11 +130,11 @@ class Application (object):
         # Icon sanity check
         if not icon_theme.has_icon('mypaint') \
                 or not icon_theme.has_icon('mypaint-tool-brush'):
-            print 'Error: Where have my icons gone?'
-            print 'Icon search path:', icon_theme.get_search_path()
-            print "Mypaint can't run sensibly without its icons; " \
-                + "please check your installation."
-            print 'see https://gna.org/bugs/?18460 for possible solutions'
+            logger.error('Error: Where have my icons gone?')
+            logger.error('Icon search path: %r', icon_theme.get_search_path())
+            logger.error("Mypaint can't run sensibly without its icons; "
+                         "please check your installation. See "
+                         "https://gna.org/bugs/?18460 for possible solutions")
             sys.exit(1)
 
         gtk.Window.set_default_icon_name('mypaint')
@@ -253,10 +256,11 @@ class Application (object):
                 self.doc.model.set_background(bg, make_default=True)
                 break
             else:
-                print "warning: failed to load default bg %r" % (bg_path,)
+                logger.warning("Failed to load default background image %r",
+                               bg_path)
                 if errors:
                     for error in errors:
-                        print u"warning: %s" % (error,)
+                        logger.warning("warning: %r", error)
 
         # Non-dockable subwindows
         # Loading is deferred as late as possible
@@ -305,7 +309,7 @@ class Application (object):
 
         self.apply_settings()
         if not self.pressure_devices:
-            print 'No pressure sensitive devices found.'
+            logger.warning('No pressure sensitive devices found.')
         self.drawWindow.present()
 
         # Handle fullscreen command line option
@@ -350,8 +354,8 @@ class Application (object):
             try:
                 return helpers.json_loads(jsonstr)
             except Exception, e:
-                print "settings.json: %s" % (str(e),)
-                print "warning: failed to load settings.json, using defaults"
+                logger.warning("settings.json: %s", str(e))
+                logger.warning("Failed to load settings: using defaults")
                 return {}
         if sys.platform == 'win32':
             import glib
@@ -489,35 +493,34 @@ class Application (object):
         # init extended input devices
         self.pressure_devices = []
 
-        if gtk2compat.USE_GTK3:
-            display = gtk2compat.gdk.display_get_default()
-            device_mgr = display.get_device_manager()
-            for device in device_mgr.list_devices(gdk.DeviceType.SLAVE):
-                if device.get_source() == gdk.InputSource.KEYBOARD:
+        logger.info('Looking for GTK devices with pressure')
+        display = gtk2compat.gdk.display_get_default()
+        device_mgr = display.get_device_manager()
+        for device in device_mgr.list_devices(gdk.DeviceType.SLAVE):
+            if device.get_source() == gdk.InputSource.KEYBOARD:
+                continue
+            name = device.get_name().lower()
+            n_axes = device.get_n_axes()
+            if n_axes <= 0:
+                continue
+            # TODO: may need exception voodoo, min/max checking etc. here
+            #       like the GTK2 code below.
+            for i in xrange(n_axes):
+                use = device.get_axis_use(i)
+                if use != gdk.AxisUse.PRESSURE:
                     continue
-                name = device.get_name().lower()
-                n_axes = device.get_n_axes()
-                if n_axes <= 0:
-                    continue
-                # TODO: may need exception voodoo, min/max checking etc. here
-                #       like the GTK2 code below.
-                for i in xrange(n_axes):
-                    use = device.get_axis_use(i)
-                    if use != gdk.AxisUse.PRESSURE:
-                        continue
-                    # Set preferred device mode
-                    mode = getattr(gdk.InputMode, modesetting.upper())
-                    if device.get_mode() != mode:
-                        print 'Setting %s mode for "%s"' \
-                          % (mode, device.get_name())
-                        device.set_mode(mode)
-                    # Record as a pressure-sensitive device
-                    self.pressure_devices.append(name)
-                    break
-            return
+                # Set preferred device mode
+                mode = getattr(gdk.InputMode, modesetting.upper())
+                if device.get_mode() != mode:
+                    logger.info('Setting %s mode for %r',
+                                mode.value_name, device.get_name())
+                    device.set_mode(mode)
+                # Record as a pressure-sensitive device
+                self.pressure_devices.append(name)
+                break
+        return
 
-        # GTK2/PyGTK
-        print 'Looking for GTK devices with pressure:'
+        # GTK2/PyGTK (unused, but consider porting fully to GTK3)
         for device in gdk.devices_list():
             #print device.name, device.source
 
@@ -782,7 +785,8 @@ class DeviceUseMonitor (object):
             new_device.name = new_device.props.name
             new_device.source = new_device.props.input_source
 
-        print 'device change:', new_device.name, new_device.source
+        logger.debug('Device change: name=%r source=%s',
+                     new_device.name, new_device.source.value_name)
 
         # When editing brush settings, it is often more convenient to use the
         # mouse. Because of this, we don't restore brushsettings when switching
@@ -1017,21 +1021,18 @@ class CallbackFinder:
     def __init__(self, objects):
         self._objs = list(objects)
 
-    def __getitem__(self, name):
-        # PyGTK/GTK2 uses getitem
+    def __getattr__(self, name):
         name = str(name)
         found = [getattr(obj, name) for obj in self._objs
                   if hasattr(obj, name)]
         if len(found) == 1:
             return found[0]
         elif len(found) > 1:
-            print "WARNING: ambiguity: %r resolves to %r" % (name, found)
-            print "WARNING: using first match only."
+            logger.warning("ambiguity: %r resolves to %r", name, found)
+            logger.warning("using first match only.")
             return found[0]
         else:
-            raise AttributeError, "No method named %r was defined " \
-                "on any of %r" % (name, self._objs)
-
-    # PyGI/GTK3's override uses getattr()
-    __getattr__ = __getitem__
+            raise AttributeError, \
+                ( "No method named %r was defined on any of %r"
+                  % (name, self._objs) )
 

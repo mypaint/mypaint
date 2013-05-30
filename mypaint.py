@@ -11,6 +11,10 @@ This script does all the platform dependent stuff. Its main task is
 to figure out where the python modules are.
 """
 import sys, os
+import logging
+
+# Standard logging module.
+logger = logging.getLogger("MyPaint")
 
 def win32_unicode_argv():
     # fix for https://gna.org/bugs/?17739
@@ -98,14 +102,12 @@ def get_paths():
     try: # just for a nice error message
         from lib import mypaintlib
     except ImportError:
-        print
-        print "We are not correctly installed or compiled!"
-        print 'script: "%s"' % sys.argv[0]
+        logger.critical("We are not correctly installed or compiled!")
+        logger.critical('script: %r', sys.argv[0])
         if prefix:
-            print 'deduced prefix: "%s"' % prefix
-            print 'lib_shared: "%s"' % libpath
-            print 'lib_compiled: "%s"' % libpath_compiled
-        print
+            logger.critical('deduced prefix: %r', prefix)
+            logger.critical('lib_shared: %r', libpath)
+            logger.critical('lib_compiled: %r', libpath_compiled)
         raise
 
     # Ensure that pyGTK compatibility is setup before anything else
@@ -113,9 +115,9 @@ def get_paths():
 
     datapath = libpath
     if not os.path.isdir(join(datapath, 'brushes')):
-        print 'Default brush collection not found! It should have been here:'
-        print datapath
-        raise sys.exit(1)
+        logger.critical('Default brush collection not found!')
+        logger.critical('It should have been here: %r', datapath)
+        sys.exit(1)
 
     # Old style config file and user data locations.
     # Return None if using XDG will be correct.
@@ -130,10 +132,10 @@ def get_paths():
         if not os.path.isdir(old_confpath):
             old_confpath = None
         else:
-            print "INFO: Found old-style configuration in %s." % old_confpath
-            print "INFO: This can be migrated to $XDG_CONFIG_HOME and " \
-                  "$XDG_DATA_HOME if you wish."
-            print "INFO: See the XDG Base Directory Specification for info."
+            logger.info("Found old-style configuration in %r", old_confpath)
+            logger.info("This can be migrated to $XDG_CONFIG_HOME and "
+                        "$XDG_DATA_HOME if you wish.")
+            logger.info("See the XDG Base Directory Specification for info.")
 
     assert isinstance(old_confpath, unicode) or old_confpath is None
     assert isinstance(datapath, unicode)
@@ -152,17 +154,21 @@ def psyco_opt():
         if sys.platform == 'win32':
             if psyco.hexversion >= 0x020000f0 :
                 psyco.full()
-                print 'Psyco being used'
+                logger.info('Psyco being used')
             else:
-                print "Need at least psyco 2.0 to run"
+                logger.warning("Need at least psyco 2.0 to run")
         else:
             psyco.full()
-            print 'Psyco being used'
+            logger.info('Psyco being used')
     except ImportError:
         pass
 
 
 if __name__ == '__main__':
+    if os.environ.get("MYPAINT_DEBUG", False):
+        logging.basicConfig(level=logging.DEBUG)
+    else:
+        logging.basicConfig(level=logging.INFO)
     psyco_opt()
 
     datapath, extradata, old_confpath, localepath, localepath_brushlib \
@@ -179,9 +185,9 @@ if __name__ == '__main__':
     # Internationalization voodoo
     # https://bugzilla.gnome.org/show_bug.cgi?id=574520#c26
     #locale.setlocale(locale.LC_ALL, '')  #needed?
-    print "DEBUG: getlocale():", locale.getlocale()
-    print "DEBUG: localepath: ", localepath
-    print "DEBUG: localepath_brushlib: ", localepath_brushlib
+    logger.debug("getlocale(): %r", locale.getlocale())
+    logger.debug("localepath: %r", localepath)
+    logger.debug("localepath_brushlib: %r", localepath_brushlib)
 
     # Low-level bindtextdomain, required for GtkBuilder stuff.
     locale.bindtextdomain("mypaint", localepath)
@@ -201,4 +207,6 @@ if __name__ == '__main__':
             version += _MYPAINT_BUILD_GIT_REVISION
         except NameError:
             pass
+
+    # Start the app.
     main.main(datapath, extradata, old_confpath, version)

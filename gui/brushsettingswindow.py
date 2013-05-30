@@ -7,6 +7,10 @@
 # (at your option) any later version.
 
 "tune brush window"
+
+import logging
+logger = logging.getLogger(__name__)
+
 from gettext import gettext as _
 import gtk, gobject
 import functionwindow, brushcreationwidget
@@ -122,7 +126,8 @@ class BrushSettingsWindow (windowing.SubWindow):
         for s in brushsettings.settings:
             if s.cname not in grouped_settings:
                 groups[0]['settings'].append(s.cname)
-                print 'Warning: setting "%r" should be added to a group in brushsettingswindow.py' % s.cname
+                logger.warning('Setting %r should be added to a group',
+                               s.cname)
         # hide experimental group if empty
         if not groups[0]['settings']:
             groups.pop(0)

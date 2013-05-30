@@ -8,6 +8,8 @@
 
 import os
 from glob import glob
+import logging
+logger = logging.getLogger(__name__)
 
 import gui.gtk2compat
 from gettext import gettext as _
@@ -133,7 +135,7 @@ def load_background(filename):
     try:
         pixbuf = gdk.pixbuf_new_from_file(filename)
     except Exception, ex:
-        print ex
+        logger.error("Failed to load background %r: %s", filename, ex)
         load_errors.append(
             _('Gdk-Pixbuf couldn\'t load "{filename}", and reported '
               '"{error}"').format(filename=filename, error=repr(ex)))

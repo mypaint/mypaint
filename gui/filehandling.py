@@ -9,6 +9,8 @@
 import os, re
 from glob import glob
 import sys
+import logging
+logger = logging.getLogger(__name__)
 
 import glib
 import gtk
@@ -236,7 +238,7 @@ class FileHandler(object):
             self.filename = os.path.abspath(filename)
             for func in self.file_opened_observers:
                 func(self.filename)
-            print 'Loaded from', self.filename
+            logger.info('Loaded from %r', self.filename)
             self.app.doc.reset_view(True, True, True)
             # try to restore the last used brush and color
             si = self.doc.model.layer.get_last_stroke_info()
@@ -253,7 +255,8 @@ class FileHandler(object):
         else:
             self.app.scratchpad_filename = os.path.abspath(filename)
             self.app.preferences["scratchpad.last_opened_scratchpad"] = self.app.scratchpad_filename
-            print 'Loaded scratchpad from', self.app.scratchpad_filename
+            logger.info('Loaded scratchpad from %r',
+                        self.app.scratchpad_filename)
             self.app.scratchpad_doc.reset_view(True, True, True)
 
     @drawwindow.with_wait_cursor
@@ -302,12 +305,13 @@ class FileHandler(object):
             self.app.message_dialog(str(e),type=gtk.MESSAGE_ERROR)
         else:
             file_location = os.path.abspath(filename)
+            multifile_info = ''
             if "multifile" in options:
-                file_location += " (basis; used multiple .XXX.ext names)"
+                multifile_info = " (basis; used multiple .XXX.ext names)"
             if not export:
-                print 'Saved to', file_location
+                logger.info('Saved to %r%s', file_location, multifile_info)
             else:
-                print 'Exported to', file_location
+                logger.info('Exported to %r%s', file_location, multifile_info)
 
         return thumbnail_pixbuf
 
@@ -699,14 +703,14 @@ class FileHandler(object):
         for filename in filenames:
             if os.path.isfile(filename) and os.path.abspath(filename).startswith(prefix):
                 os.remove(filename)
-                print "Removed %s" % filename
+                logger.info("Removed %s", filename)
 
     def delete_default_scratchpad(self):
         if os.path.isfile(self.get_scratchpad_default()):
             os.remove(self.get_scratchpad_default())
-            print "Removed the scratchpad default file"
+            logger.info("Removed the scratchpad default file")
 
     def delete_autosave_scratchpad(self):
         if os.path.isfile(self.get_scratchpad_autosave()):
             os.remove(self.get_scratchpad_autosave())
-            print "Removed the scratchpad autosave file"
+            logger.info("Removed the scratchpad autosave file")

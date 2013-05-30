@@ -8,17 +8,21 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-"""
-This is the main drawing window, containing menu actions.
+"""Main drawing window.
+
 Painting is done in tileddrawwidget.py.
 """
+
+## Imports
 
 import os
 import time
 import webbrowser
 from warnings import warn
-from gettext import gettext as _
+import logging
+logger = logging.getLogger(__name__)
 
+from gettext import gettext as _
 import gtk
 import gobject
 from gtk import gdk
@@ -48,10 +52,16 @@ from overlays import LastPaintPosOverlay, ScaleOverlay
 from symmetry import SymmetryOverlay
 
 
+## Module constants
 
-# TODO: put in a helper file?
+BRUSHPACK_URI = 'http://wiki.mypaint.info/index.php?title=Brush_Packages/redirect_mypaint_1.1_gui'
+
+
+## Helpers
+
 def with_wait_cursor(func):
     """python decorator that adds a wait cursor around a function"""
+    # TODO: put in a helper file?
     def wrapper(self, *args, **kwargs):
         toplevels = gtk.Window.list_toplevels()
         toplevels = [t for t in toplevels if t.get_window() is not None]
@@ -73,6 +83,9 @@ def with_wait_cursor(func):
                     toplevel_win.set_cursor(None)
             self.app.doc.tdw.grab_remove()
     return wrapper
+
+
+## Class definitions
 
 
 class DrawWindow (gtk.Window):
@@ -292,15 +305,15 @@ class DrawWindow (gtk.Window):
             profile = cProfile.Profile()
 
             self.profiler_active = True
-            print '--- GUI Profiling starts ---'
+            logger.info('--- GUI Profiling starts ---')
             while self.profiler_active:
                 profile.runcall(gtk.main_iteration_do, False)
                 if not gtk.events_pending():
                     time.sleep(0.050) # ugly trick to remove "user does nothing" from profile
-            print '--- GUI Profiling ends ---'
+            logger.info('--- GUI Profiling ends ---')
 
             profile.dump_stats('profile_fromgui.pstats')
-            #print 'profile written to mypaint_profile.pstats'
+            logger.debug('profile written to mypaint_profile.pstats')
             os.system('gprof2dot.py -f pstats profile_fromgui.pstats | dot -Tpng -o profile_fromgui.png && feh profile_fromgui.png &')
 
         gobject.idle_add(doit)
@@ -360,7 +373,7 @@ class DrawWindow (gtk.Window):
                 if window.get_visible():
                     window.hide()
         else:
-            print "warning: unknown window or tool \"%s\"" % action_name
+            logger.warning("unknown window or tool %r" % (action_name,))
 
 
     def app_workspace_tool_widget_added_cb(self, workspace, page, gtype_name):
@@ -561,11 +574,12 @@ class DrawWindow (gtk.Window):
         self.app.filehandler.save_scratchpad_as_dialog()
 
     def revert_current_scratchpad_cb(self, action):
-        if os.path.isfile(self.app.scratchpad_filename):
-            self.app.filehandler.open_scratchpad(self.app.scratchpad_filename)
-            print "Reverted to %s" % self.app.scratchpad_filename
+        filename = self.app.scratchpad_filename
+        if os.path.isfile(filename):
+            self.app.filehandler.open_scratchpad(filename)
+            logger.info("Reverted scratchpad to %s" % (filename,))
         else:
-            print "No file to revert to yet."
+            logger.warning("No file to revert to yet.")
 
     def save_current_scratchpad_cb(self, action):
         self.app.filehandler.save_scratchpad(self.app.scratchpad_filename)
@@ -629,8 +643,8 @@ class DrawWindow (gtk.Window):
         action.in_callback = False
 
     def download_brush_pack_cb(self, *junk):
-        url = 'http://wiki.mypaint.info/index.php?title=Brush_Packages/redirect_mypaint_1.1_gui'
-        print 'URL:', url
+        url = BRUSHPACK_URI
+        logger.info('Opening URL %r in web browser' % (url,))
         webbrowser.open(url)
 
     def import_brush_pack_cb(self, *junk):
