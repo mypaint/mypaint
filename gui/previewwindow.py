@@ -154,7 +154,7 @@ class VisibleOverlay (overlays.Overlay):
             self.paint_topleft = topleft
 
 
-class ToolWidget (gtk.VBox):
+class PreviewTool (gtk.VBox):
     """Tool widget for previewing the whole canvas.
 
     We overlay a preview rectangle showing where the main document view is
@@ -164,10 +164,16 @@ class ToolWidget (gtk.VBox):
 
     """
 
-    stock_id = "mypaint-tool-preview-window"
+    tool_widget_icon_name = "mypaint-tool-preview-window"
 
-    #TRANSLATORS: title of subwindow showing an overview of the whole canvas
+    #TRANSLATORS: title of dockable widget showing an overview of the whole canvas
     tool_widget_title = _("Preview")
+
+    tool_widget_description = _("Show preview of the whole drawing area")
+
+
+    __gtype_name__ = 'MyPaintPreviewTool'
+
 
     #: Zoom the preview only to a limited number of zoom levels - reduces
     #: the frequency of zooming, at the expence of a close match.
@@ -182,8 +188,10 @@ class ToolWidget (gtk.VBox):
     SHOW_VIEWFINDER_PREFS_KEY = "preview.show_viewfinder"
 
 
-    def __init__(self, app):
+    def __init__(self):
         gtk.VBox.__init__(self)
+        from application import get_app
+        app = get_app()
         self.app = app
         self.set_size_request(250, 250)
         self.main_tdw = app.doc.tdw

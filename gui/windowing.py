@@ -7,49 +7,6 @@ import gtk
 import gtk.gdk as gdk
 import gobject
 
-def on_tool_widget_map(widget, app, role, connids):
-    # Ensure that tool widgets' floating windows are added to the kbm when
-    # mapped for the first time.
-    while connids:
-        connid = connids.pop()
-        widget.disconnect(connid)
-    tool = app.layout_manager.get_tool_by_role(role)
-    window = tool.floating_window
-    app.kbm.add_window(window)
-
-def window_factory(role, layout_manager, app):
-    """Window factory method, for use by app.layout_manager.
-
-    Modules are located by lowercasing `role` and importing that. Modules may
-    provide either `ToolWidget` or `Window` classes, but not both. The first
-    listed will be initialised and used for the returned widget. Both
-    ToolWidgets and Windows are instantiated as Constructor(app).
-
-    ToolWidget classes must provide a tool_widget_title variable accessible via
-    the instance, which contains the title used in the titlebar. """
-
-    if role in ['main-toolbar','main-widget','main-statusbar','main-menubar']:
-        # These slots are either unused, or are populated internally right now.
-        return None
-    # Layout will build of these at startup; we load it through the same
-    # mechanismas below, but with a specific rather than a generic name.
-    if role == 'main-window':
-        role = "drawWindow"
-    else:
-        if role not in app.window_names:
-            raise ValueError, 'Window %r is missing in DEFAULT_CONFIG (application.py)' % role
-    # Load module, and initialize tool widget or subwindow from it
-    module = __import__(role.lower(), globals(), locals(), [])
-    if hasattr(module, "ToolWidget"):
-        widget = module.ToolWidget(app)
-        connids = []
-        connid = widget.connect("map", on_tool_widget_map, app, role, connids)
-        connids.append(connid)
-        return (widget, widget.stock_id, widget.tool_widget_title)
-    else:
-        window = module.Window(app)
-        return (window, )
-
 
 class Dialog (gtk.Dialog):
     """Base dialog accepting all keyboard input.
@@ -189,17 +146,6 @@ class ChooserDialog (Dialog):
         self._entered = True
 
 
-class MainWindow (gtk.Window):
-    """The main window in the GUI.
-
-    Not much code to see here yet, go look at drawwindow.DrawWindow.
-    """
-    def __init__(self, app):
-        gtk.Window.__init__(self, type=gtk.WINDOW_TOPLEVEL)
-        self.app = app
-        self.app.kbm.add_window(self)
-
-
 class SubWindow (gtk.Window):
     """A subwindow in the GUI.
 
@@ -210,7 +156,6 @@ class SubWindow (gtk.Window):
 
     def __init__(self, app, key_input=False):
         gtk.Window.__init__(self, type=gtk.WINDOW_TOPLEVEL)
-        self.layout_manager = app.layout_manager
         self.app = app
         if not key_input:
             self.app.kbm.add_window(self)

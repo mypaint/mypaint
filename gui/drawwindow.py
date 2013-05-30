@@ -29,13 +29,14 @@ import historypopup
 import stategroup
 import colorpicker
 import windowing
-import layout
 import toolbar
 import previewwindow
 import dialogs
 from lib import helpers
 import canvasevent
 from colors import RGBColor
+
+import brushselectionwindow
 
 import gtk2compat
 import xml.etree.ElementTree as ET
@@ -74,21 +75,25 @@ def with_wait_cursor(func):
     return wrapper
 
 
-class Window (windowing.MainWindow, layout.MainWindow):
+class DrawWindow (gtk.Window):
     """Main drawing window.
     """
 
     __gtype_name__ = 'MyPaintDrawWindow'
 
 
-    def __init__(self, app):
-        windowing.MainWindow.__init__(self, app)
+    def __init__(self):
+        super(DrawWindow, self).__init__()
+
+        import application
+        app = application.get_app()
         self.app = app
+        self.app.kbm.add_window(self)
 
         # Window handling
         self._updating_toggled_item = False
-        self._show_subwindows = True
         self.is_fullscreen = False
+        self._window_map = {}
 
         # Enable drag & drop
         if not gtk2compat.USE_GTK3:
@@ -106,66 +111,56 @@ class Window (windowing.MainWindow, layout.MainWindow):
         self.connect("drag-data-received", self.drag_data_received)
         self.connect("window-state-event", self.window_state_event_cb)
 
-        self.update_overlays()
+        # Deferred setup
+        self._done_realize = False
+        self.connect("realize", self._realize_cb)
 
         self.app.filehandler.current_file_observers.append(self.update_title)
 
-        self.init_actions()
+        ## Park the focus on the main tdw rather than on the toolbar. Default
+        ## activation doesn't really mean much for MyPaint's main window, so
+        ## it's safe to do this and it looks better.
+        #self.main_widget.set_can_default(True)
+        #self.main_widget.set_can_focus(True)
+        #self.main_widget.grab_focus()
 
-        lm = app.layout_manager
-        layout.MainWindow.__init__(self, lm)
 
-        # Park the focus on the main tdw rather than on the toolbar. Default
-        # activation doesn't really mean much for MyPaint's main window, so
-        # it's safe to do this and it looks better.
-        self.main_widget.set_can_default(True)
-        self.main_widget.set_can_focus(True)
-        self.main_widget.grab_focus()
+    def _realize_cb(self, drawwindow):
+        # Deferred setup: anything that needs to be done when self.app is fully
+        # initialized.
+        if self._done_realize:
+            return
+        self._done_realize = True
 
+        self.update_overlays()
+        self._init_actions()
         kbm = self.app.kbm
         kbm.add_extra_key('Menu', 'ShowPopupMenu')
-        kbm.add_extra_key('Tab', 'ToggleSubwindows')
+        kbm.add_extra_key('Tab', 'FullscreenAutohide')
+        self._init_stategroups()
 
-        self.init_stategroups()
+        self._init_menubar()
+        self._init_toolbar()
+        topbar = self.app.builder.get_object("app_topbar")
+        topbar.menubar = self.menubar
+        topbar.toolbar = self.toolbar
 
-    def get_doc(self):
-        print "DeprecationWarning: Use app.doc instead"
-        return self.app.doc
+        # Workspace setup
+        # One day maybe Glade will support custom signals and hook these up
+        # automatically. For now, connect them here, since toggle_window_cb
+        # is connected to this object.
+        self.app.workspace.connect("tool-widget-added",
+                                   self.app_workspace_tool_widget_added_cb)
+        self.app.workspace.connect("tool-widget-removed",
+                                   self.app_workspace_tool_widget_removed_cb)
 
-    def get_tdw(self):
-        print "DeprecationWarning: Use app.doc.tdw instead"
-        return self.app.doc.tdw
 
-    tdw, doc = property(get_tdw), property(get_doc)
-
-
-    def init_actions(self):
+    def _init_actions(self):
         # Actions are defined in mypaint.xml: all we need to do here is connect
         # some extra state management.
 
         ag = self.action_group = self.app.builder.get_object("WindowActions")
         self.update_fullscreen_action()
-
-        # Reflect changes from other places (like tools' close buttons) into
-        # the proxys' visible states.
-        lm = self.app.layout_manager
-        lm.tool_visibility_observers.append(self.update_toggled_item_visibility)
-        lm.subwindow_visibility_observers.append(self.update_subwindow_visibility)
-
-        # Initial toggle state
-        for action in ag.list_actions():
-            name = action.get_property("name")
-            if isinstance(action, gtk.ToggleAction):
-                if name.endswith("Window"):
-                    role = name[0].lower() + name[1:]
-                    visible = not lm.get_window_hidden_by_role(role)
-                    # The sidebar machinery won't be up yet, so reveal windows
-                    # that should be initially visible only in an idle handler
-                    gobject.idle_add(action.set_active, visible)
-
-        # Initial state defined in the XML file
-        self._show_subwindows = bool(ag.get_action("ToggleSubwindows")
-                                                  .get_active())
 
         # Set initial state from user prefs
         ag.get_action("ToggleScaleFeedback").set_active(
@@ -185,7 +180,8 @@ class Window (windowing.MainWindow, layout.MainWindow):
         # Brush chooser
         self._brush_chooser_dialog = None
 
-    def init_stategroups(self):
+
+    def _init_stategroups(self):
         sg = stategroup.StateGroup()
         p2s = sg.create_popup_state
         changer_crossed_bowl = p2s(colorselectionwindow.ColorChangerCrossedBowlPopup(self.app))
@@ -216,10 +212,8 @@ class Window (windowing.MainWindow, layout.MainWindow):
             label = self.app.find_action(action_name).get_label()
             popup_state.label = label
 
-    def init_main_widget(self):  # override
-        self.main_widget = self.app.doc.tdw
 
-    def init_menubar(self):   # override
+    def _init_menubar(self):
         # Load Menubar, duplicate into self.popupmenu
         menupath = os.path.join(self.app.datapath, 'gui/menu.xml')
         menubar_xml = open(menupath).read()
@@ -227,12 +221,14 @@ class Window (windowing.MainWindow, layout.MainWindow):
         self.popupmenu = self._clone_menu(menubar_xml, 'PopupMenu', self.app.doc.tdw)
         self.menubar = self.app.ui_manager.get_widget('/Menubar')
 
-    def init_toolbar(self):
+
+    def _init_toolbar(self):
         self.toolbar_manager = toolbar.ToolbarManager(self)
         self.toolbar = self.toolbar_manager.toolbar1
 
     def _clone_menu(self, xml, name, owner=None):
-        """
+        """Menu duplicator
+
         Hopefully temporary hack for converting UIManager XML describing the
         main menubar into a rebindable popup menu. UIManager by itself doesn't
         let you do this, by design, but we need a bigger menu than the little
@@ -342,51 +338,45 @@ class Window (windowing.MainWindow, layout.MainWindow):
         return target_doc.modes.top.key_release_cb(win, target_tdw, event)
 
 
-    # WINDOW HANDLING
+    # Window handling
     def toggle_window_cb(self, action):
-        if self._updating_toggled_item:
-            return
-        s = action.get_name()
-        active = action.get_active()
-        window_name = s[0].lower() + s[1:] # WindowName -> windowName
-        # If it's a tool, get it to hide/show itself
-        t = self.app.layout_manager.get_tool_by_role(window_name)
-        if t is not None:
-            t.set_hidden(not active)
-            return
-        # Otherwise, if it's a regular subwindow hide/show+present it.
-        w = self.app.layout_manager.get_subwindow_by_role(window_name)
-        if w is None:
-            return
-        gdk_window = w.get_window()
-        onscreen = gdk_window is not None and gdk_window.is_visible()
-        if active:
-            if onscreen:
-                return
-            w.show_all()
-            w.present()
+        action_name = action.get_name()
+        if action_name.endswith("Tool"):
+            gtype_name = "MyPaint%s" % (action.get_name(),)
+            workspace = self.app.workspace
+            if action.get_active():
+                if not workspace.has_tool_widget(gtype_name):
+                    widget = workspace.add_tool_widget(gtype_name)
+            else:
+                while workspace.has_tool_widget(gtype_name):
+                    widget = workspace.remove_tool_widget(gtype_name)
+        elif self.app.has_subwindow(action_name):
+            window = self.app.get_subwindow(action_name)
+            if action.get_active():
+                if not window.get_visible():
+                    window.show_all()
+                window.present()
+            else:
+                if window.get_visible():
+                    window.hide()
         else:
-            if not onscreen:
-                return
-            w.hide()
+            print "warning: unknown window or tool \"%s\"" % action_name
 
-    def update_subwindow_visibility(self, window, active):
-        # Responds to non-tool subwindows being hidden and shown
-        role = window.get_role()
-        self.update_toggled_item_visibility(role, active)
 
-    def update_toggled_item_visibility(self, role, active, *a, **kw):
-        # Responds to any item with a role being hidden or shown by
-        # silently updating its ToggleAction to match.
-        action_name = role[0].upper() + role[1:]
-        action = self.action_group.get_action(action_name)
-        if action is None:
-            warn("Unable to find action %s" % action_name, RuntimeWarning, 1)
-            return
-        if action.get_active() != active:
-            self._updating_toggled_item = True
-            action.set_active(active)
-            self._updating_toggled_item = False
+    def app_workspace_tool_widget_added_cb(self, workspace, page, gtype_name):
+        assert gtype_name.startswith("MyPaint")
+        action_name = gtype_name.replace("MyPaint", "", 1)
+        action = self.app.builder.get_object(action_name)
+        if not action.get_active():
+            action.set_active(True)
+
+
+    def app_workspace_tool_widget_removed_cb(self, workspace, page, gtype_name):
+        assert gtype_name.startswith("MyPaint")
+        action_name = gtype_name.replace("MyPaint", "", 1)
+        action = self.app.builder.get_object(action_name)
+        if action.get_active():
+            action.set_active(False)
 
 
     # Feedback and overlays
@@ -464,46 +454,11 @@ class Window (windowing.MainWindow, layout.MainWindow):
             mgr.set_color(new_col)
 
 
-
-    def update_menu_button(self):
-        """Updates the menu button to match toolbar and menubar visibility.
-
-        The menu button is visible when the menu bar is hidden. Since the user
-        must have either a toolbar or a menu or both, this ensures that a menu
-        is on-screen at all times in non-fullscreen mode.
-        """
-        toolbar_visible = self.toolbar.get_property("visible")
-        menubar_visible = self.menubar.get_property("visible")
-        if toolbar_visible and menubar_visible:
-            self.toolbar_manager.menu_button.hide()
-        else:
-            self.toolbar_manager.menu_button.show_all()
-
     # Show Subwindows
-    # Not saved between sessions, defaults to on.
-    # Controlled via its ToggleAction, and entering or leaving fullscreen mode
-    # according to the setting of ui.hide_in_fullscreen in prefs.
 
-    def set_show_subwindows(self, show_subwindows):
-        """Programatically set the Show Subwindows option.
-        """
-        action = self.action_group.get_action("ToggleSubwindows")
-        currently_showing = action.get_active()
-        if bool(show_subwindows) != bool(currently_showing):
-            action.set_active(show_subwindows)
-        self._show_subwindows = action.get_active()
-
-    def get_show_subwindows(self):
-        return self._show_subwindows
-
-    def toggle_subwindows_cb(self, action):
-        active = action.get_active()
-        lm = self.app.layout_manager
-        if active:
-            lm.toggle_user_tools(on=True)
-        else:
-            lm.toggle_user_tools(on=False)
-        self._show_subwindows = active
+    def fullscreen_autohide_toggled_cb(self, action):
+        workspace = self.app.workspace
+        workspace.autohide_enabled = action.get_active()
 
 
     # Fullscreen mode
@@ -521,36 +476,7 @@ class Window (windowing.MainWindow, layout.MainWindow):
         # Respond to changes of the fullscreen state only
         if not event.changed_mask & gdk.WINDOW_STATE_FULLSCREEN:
             return
-        lm = self.app.layout_manager
         self.is_fullscreen = event.new_window_state & gdk.WINDOW_STATE_FULLSCREEN
-        if self.is_fullscreen:
-            # Subwindow hiding 
-            if self.app.preferences.get("ui.hide_subwindows_in_fullscreen", True):
-                self.set_show_subwindows(False)
-                self._restore_subwindows_on_unfullscreen = True
-            if self.app.preferences.get("ui.hide_menubar_in_fullscreen", True):
-                self.menubar.hide()
-                self._restore_menubar_on_unfullscreen = True
-            if self.app.preferences.get("ui.hide_toolbar_in_fullscreen", True):
-                self.toolbar.hide()
-                self._restore_toolbar_on_unfullscreen = True
-            # fix for fullscreen problem on Windows, https://gna.org/bugs/?15175
-            # on X11/Metacity it also helps a bit against flickering during the switch
-            while gtk.events_pending():
-                gtk.main_iteration()
-        else:
-            while gtk.events_pending():
-                gtk.main_iteration()
-            if getattr(self, "_restore_menubar_on_unfullscreen", False):
-                self.menubar.show()
-                del self._restore_menubar_on_unfullscreen
-            if getattr(self, "_restore_toolbar_on_unfullscreen", False):
-                self.toolbar.show()
-                del self._restore_toolbar_on_unfullscreen
-            if getattr(self, "_restore_subwindows_on_unfullscreen", False):
-                self.set_show_subwindows(True)
-                del self._restore_subwindows_on_unfullscreen
-        self.update_menu_button()
         self.update_fullscreen_action()
 
     def update_fullscreen_action(self):
@@ -558,7 +484,7 @@ class Window (windowing.MainWindow, layout.MainWindow):
         if self.is_fullscreen:
             action.set_stock_id(gtk.STOCK_LEAVE_FULLSCREEN)
             action.set_tooltip(_("Leave Fullscreen Mode"))
-            action.set_label(_("UnFullscreen"))
+            action.set_label(_("Leave Fullscreen"))
         else:
             action.set_stock_id(gtk.STOCK_FULLSCREEN)
             action.set_tooltip(_("Enter Fullscreen Mode"))
@@ -569,7 +495,6 @@ class Window (windowing.MainWindow, layout.MainWindow):
 
     def show_popupmenu(self, event=None):
         self.menubar.set_sensitive(False)   # excessive feedback?
-        self.toolbar_manager.menu_button.set_sensitive(False)
         button = 1
         time = 0
         if event is not None:
@@ -595,7 +520,6 @@ class Window (windowing.MainWindow, layout.MainWindow):
         # the other. Makes it clear that the popups are the same thing as
         # the full menu, maybe.
         self.menubar.set_sensitive(True)
-        self.toolbar_manager.menu_button.set_sensitive(True)
         self.popupmenu_last_active = self.popupmenu.get_active()
 
     # BEGIN -- Scratchpad menu options

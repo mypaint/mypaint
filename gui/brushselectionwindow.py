@@ -33,14 +33,20 @@ from lib.helpers import escape
 from colors import RGBColor
 
 
-class ToolWidget (gtk.VBox):
+class BrushSelectionTool (gtk.VBox):
 
     EXPANDER_PREFS_KEY = "brushmanager.common_settings_expanded"
 
-    stock_id = "mypaint-tool-brush"
+    tool_widget_icon_name = "mypaint-tool-brush"
     tool_widget_title = _("Brushes")
+    tool_widget_description = _("Choose a brush, or edit brush groups")
 
-    def __init__(self, app):
+    __gtype_name__ = 'MyPaintBrushSelectionTool'
+
+
+    def __init__(self):
+        from application import get_app
+        app = get_app()
         self.app = app
         gtk.VBox.__init__(self)
 

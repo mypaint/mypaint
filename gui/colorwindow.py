@@ -18,17 +18,22 @@ import colors
 
 
 
-class ToolWidget (colors.CombinedColorAdjuster):
-    """Combined colour adjuster ToolWidget.
+class CombinedColorTool (colors.CombinedColorAdjuster):
+    """Combined colour adjuster tool widget.
     """
 
-    stock_id = 'mypaint-tool-color'
-    tool_widget_title = _("Colors")
+    __gtype_name__ = 'MyPaintCombinedColorTool'
 
-    def __init__(self, app):
-        self.__app = app
+    tool_widget_icon_name = 'mypaint-tool-paint-color'
+    tool_widget_title = _("Colors")
+    tool_widget_description = _("Set the color used for painting")
+
+    def __init__(self):
         colors.CombinedColorAdjuster.__init__(self)
-        self.set_color_manager(app.brush_color_manager)
+        from application import get_app
+        app = get_app()
+        self._app = app
+        self.set_color_manager(self._app.brush_color_manager)
 
 
 class BrushColorManager (colors.ColorManager):

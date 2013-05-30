@@ -35,10 +35,19 @@ import keyboard
 import brushmanager
 import windowing
 import document
-import layout
 import tileddrawwidget
+import workspace
+import topbar
+import drawwindow
 import backgroundwindow
+import preferenceswindow
+import brushsettingswindow
+import layerswindow
+import previewwindow
+import framewindow
+import scratchwindow
 import brushmodifier
+import toolbar
 import linemode
 import colors
 from colorwindow import BrushColorManager
@@ -157,10 +166,31 @@ class Application (object):
         self.preferences = {}
         self.load_settings()
 
+        # Keyboard manager
         self.kbm = keyboard.KeyboardManager(self)
 
+        # File I/O
+        self.filehandler = filehandling.FileHandler(self)
+
+        # Load the main interface
+        mypaint_main_xml = join(self.datapath, "gui", "mypaint.glade")
+        self.builder.add_from_file(mypaint_main_xml)
+
+        # Main drawing window
+        self.drawWindow = self.builder.get_object("drawwindow")
+        signal_callback_objs.append(self.drawWindow)
+
+        # Workspace widget. Manages layout of toolwindows, and autohide in
+        # fullscreen.
+        self.workspace = self.builder.get_object("app_workspace")
+        self.workspace.build_from_layout(self.preferences["workspace.layout"])
+        self.workspace.connect("floating-window-created",
+                               self._floating_window_created_cb)
+        fs_autohide_action = self.builder.get_object("FullscreenAutohide")
+        fs_autohide_action.set_active(self.workspace.autohide_enabled)
+
         # Working document: viewer widget
-        app_canvas = tileddrawwidget.TiledDrawWidget()
+        app_canvas = self.builder.get_object("app_canvas")
 
         # Working document: model and controller
         model = lib.document.Document(self.brush)
@@ -181,7 +211,6 @@ class Application (object):
                 join(app_datapath, 'brushes'),
                 join(user_datapath, 'brushes'),
                 self)
-        self.filehandler = filehandling.FileHandler(self)
         signal_callback_objs.append(self.filehandler)
         self.brushmodifier = brushmodifier.BrushModifier(self)
         self.line_mode_settings = linemode.LineModeSettings(self)
@@ -201,15 +230,6 @@ class Application (object):
         self.brush_color_manager.set_data_path(self.datapath)
 
         self.init_brush_adjustments()
-
-        self.layout_manager = layout.LayoutManager(
-            prefs=self.preferences["layout.window_positions"],
-            factory=windowing.window_factory,
-            factory_opts=[self]  )
-        self.drawWindow = self.layout_manager.get_widget_by_role("main-window")
-        self.layout_manager.show_all()
-
-        signal_callback_objs.append(self.drawWindow)
 
         # Connect signals defined in mypaint.xml
         callback_finder = CallbackFinder(signal_callback_objs)
@@ -237,10 +257,19 @@ class Application (object):
                     for error in errors:
                         print u"warning: %s" % (error,)
 
-        # And the brush settings window, or things like eraser mode will break.
-        # FIXME: brush_adjustments should not be dependent on this
-        self.layout_manager.get_subwindow_by_role("brushSettingsWindow")
+        # Non-dockable subwindows
+        # Loading is deferred as late as possible
+        self._subwindow_classes = {
+            # action-name: action-class
+            "BackgroundWindow": backgroundwindow.BackgroundWindow,
+            "BrushSettingsWindow": brushsettingswindow.BrushSettingsWindow,
+            "PreferencesWindow": preferenceswindow.PreferencesWindow,
+            "FrameEditWindow": framewindow.FrameEditWindow,
+            }
+        self._subwindows = {}
 
+        # Show main UI.
+        self.drawWindow.show_all()
         gobject.idle_add(self._at_application_start, filenames, fullscreen)
 
 
@@ -281,6 +310,10 @@ class Application (object):
         if fullscreen:
             self.drawWindow.fullscreen_cb()
 
+        # Load the brush settings window, or things like eraser mode will break.
+        # FIXME: brush_adjustments should not be dependent on this
+        self.get_subwindow("BrushSettingsWindow")
+
 
     def save_settings(self):
         """Saves the current settings to persistent storage."""
@@ -295,12 +328,13 @@ class Application (object):
 
 
     def apply_settings(self):
-        """Applies the current settings."""
+        """Applies the current settings.
+        """
         self.update_input_mapping()
         self.update_input_devices()
         self.update_button_mapping()
-        prefs_win = self.layout_manager.get_widget_by_role('preferencesWindow')
-        prefs_win.update_ui()
+        self.preferences_window.update_ui()
+
 
     def load_settings(self):
         """Loads the settings from persistent storage.
@@ -354,42 +388,12 @@ class Application (object):
 
             "scratchpad.last_opened_scratchpad": "",
 
-            # Default window positions.
-            # See gui.layout.set_window_initial_position for the meanings
-            # of the common x, y, w, and h settings
-            "layout.window_positions": {
-
-                # Main window default size. Sidebar width is saved here
-                'main-window': dict(sbwidth=250, x=50, y=32, w=-50, h=-100),
-
-                # Tool windows. These can be undocked (floating=True) or set
-                # initially hidden (hidden=True), or be given an initial sidebar
-                # index (sbindex=<int>) or height in the sidebar (sbheight=<int>)
-                # Non-hidden entries determine the default set of tools.
-                'brushSelectionWindow': dict(
-                        sbindex=2, floating=True, hidden=True,
-                        x=-100, y=-150, w=250, h=350, sbheight=350),
-                'layersWindow': dict(
-                        sbindex=3, floating=True, hidden=True,
-                        x=-460, y=-150, w=200, h=200, sbheight=200),
-                'scratchWindow': dict(
-                        sbindex=4, floating=True, hidden=True,
-                        x=-555, y=125, w=300, h=250, sbheight=250),
-                'colorWindow': dict(
-                        sbindex=0, floating=True, hidden=True,
-                        x=-100, y=125, w=250, h=300, sbheight=300),
-                'previewWindow': dict(
-                        sbindex=5, floating=True, hidden=True,
-                        x=-600, y=150, w=250, h=250, sbheight=250),
-
-                # Non-tool subwindows. These cannot be docked, and are all
-                # intially hidden.
-                'brushSettingsWindow': dict(x=-460, y=-128, w=300, h=300),
-                'backgroundWindow': dict(),
-                'inputTestWindow': dict(),
-                'frameWindow': dict(),
-                'preferencesWindow': dict(),
+            # Initial main window positions
+            "workspace.layout": {
+                "position": dict(x=50, y=32, w=-50, h=-100),
+                "autohide": True,
             },
+
             # Linux defaults.
             # Alt is the normal window resizing/moving key these days,
             # so provide a Ctrl-based equivalent for all alt actions.
@@ -421,23 +425,12 @@ class Application (object):
                 bp = bp.replace("ButtonTMP", "Button3")
                 DEFAULT_CONFIG["input.button_mapping"][bp] = actname
 
-
-        window_pos = DEFAULT_CONFIG["layout.window_positions"]
-        self.window_names = window_pos.keys()
         self.preferences = DEFAULT_CONFIG.copy()
         try:
             user_config = get_json_config()
         except IOError:
             user_config = {}
-        user_window_pos = user_config.get("layout.window_positions", {})
-        # note: .update() replaces the window position dict, but we want to update it
         self.preferences.update(user_config)
-        # update window_pos, and drop window names that don't exist any more
-        # (we need to drop them because otherwise we will try to show a non-existing window)
-        for role in self.window_names:
-            if role in user_window_pos:
-                window_pos[role] = user_window_pos[role]
-        self.preferences["layout.window_positions"] = window_pos
         if 'ColorPickerPopup' in self.preferences["input.button_mapping"].values():
             # old config file; users who never assigned any buttons would
             # end up with Ctrl-Click color picker broken after upgrade
@@ -614,6 +607,8 @@ class Application (object):
 
     def save_gui_config(self):
         gtk2compat.gtk.accel_map_save(join(self.user_confpath, 'accelmap.conf'))
+        workspace = self.workspace
+        self.preferences["workspace.layout"] = workspace.get_layout()
         self.save_settings()
 
 
@@ -663,6 +658,67 @@ class Application (object):
             self.brush_color_manager.set_color(color)
 
         self.delayed_color_pick_id = gobject.idle_add(delayed_color_pick)
+
+
+    ## Subwindows
+
+    @property
+    def background_window(self):
+        """The background switcher subwindow."""
+        return self.get_subwindow("BackgroundWindow")
+
+
+    @property
+    def brush_settings_window(self):
+        """The brush settings editor subwindow."""
+        return self.get_subwindow("BrushSettingsWindow")
+
+
+    @property
+    def preferences_window(self):
+        """The preferences subwindow."""
+        return self.get_subwindow("PreferencesWindow")
+
+
+    @property
+    def frame_edit_window(self):
+        """The frame editor subwindow."""
+        return self.get_subwindow("FrameEditWindow")
+
+
+    def get_subwindow(self, name):
+        """Get a subwindow by its name."""
+        if name in self._subwindows:
+            window = self._subwindows[name]
+        elif name in self._subwindow_classes:
+            window_class = self._subwindow_classes[name]
+            window = window_class()
+            window.__toggle_action = self.find_action(name)
+            window.connect("hide", self._subwindow_hide_cb)
+            self._subwindows[name] = window
+        else:
+            raise ValueError, "Unkown subwindow %r" % (name,)
+        return window
+
+
+    def has_subwindow(self, name):
+        """True if the named subwindow is known."""
+        return name in self._subwindow_classes
+
+
+    def _subwindow_hide_cb(self, subwindow):
+        """Toggles off a subwindow's related action when it's hidden."""
+        action = subwindow.__toggle_action
+        if action and action.get_active():
+            action.set_active(False)
+
+
+    ## Workspace callbacks
+
+    def _floating_window_created_cb(self, workspace, floatwin):
+        """Adds newly created `workspace.ToolStackWindow`s to the kbm."""
+        self.kbm.add_window(floatwin)
+
 
 
 class DeviceUseMonitor (object):

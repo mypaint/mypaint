@@ -92,7 +92,7 @@ class CanvasController (object):
         """
         result = self.modes.top.motion_notify_cb(tdw, event)
         self.__update_last_event_info(tdw, event)
-        return result
+        return False   #XXX don't consume motions to allow workspace autohide
 
 
     def scroll_cb(self, tdw, event):

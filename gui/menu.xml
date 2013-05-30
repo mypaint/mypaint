@@ -58,9 +58,9 @@
       Perhaps the less-important "show/toggle bits of the UI" settings
       should be merged into one submenu.
       -->
+      <menuitem action='FullscreenAutohide'/>
       <menuitem action='ShowPopupMenu'/>
-      <menuitem action='ToggleSubwindows'/>
-      <menuitem action='PreviewWindow'/>
+      <menuitem action='PreviewTool'/>
       <separator/>
       <!-- ResetView is on its own because it also recentres the canvas, -->
       <menuitem action='ResetView'/>
@@ -92,7 +92,7 @@
     <menu action='BrushMenu'>
       <!-- Brush choice from the user's collection -->
       <menuitem action='BrushChooserPopup'/>
-      <menuitem action='BrushSelectionWindow'/>
+      <menuitem action='BrushSelectionTool'/>
       <!-- Basic brush settings -->
       <separator/>
       <menuitem action='Bigger'/>
@@ -145,7 +145,7 @@
     </menu>
     <menu action='ColorMenu'>
       <!-- Color choice using fancy dialogs -->
-      <menuitem action='ColorWindow'/>
+      <menuitem action='CombinedColorTool'/>
       <!-- Picking and reusing -->
       <separator/>
       <menuitem action='FlipColorPickMode'/>
@@ -173,7 +173,7 @@
     <menu action='LayerMenu'>
       <!-- All layers: general -->
       <separator/>
-      <menuitem action='LayersWindow'/>
+      <menuitem action='LayersTool'/>
       <menuitem action='BackgroundWindow'/>
       <!-- Switching layers -->
       <menu action="LayerGoMenu">
@@ -214,7 +214,7 @@
       <menuitem action='RemoveLayer'/>
     </menu>
     <menu action="ScratchMenu">
-      <menuitem action='ScratchWindow'/>
+      <menuitem action='ScratchpadTool'/>
       <separator/>
       <menuitem action='ScratchNew'/>
       <menuitem action='ScratchLoad'/>

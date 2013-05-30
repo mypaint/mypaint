@@ -94,9 +94,7 @@ class FrameEditMode (canvasevent.SwitchableModeMixin,
         """
         super(FrameEditMode, self).enter(**kwds)
         if not self.initial_modifiers:
-            lm = self.doc.app.layout_manager
-            dialog = lm.get_subwindow_by_role("frameWindow")
-            dialog.show_all()
+            self.doc.app.frame_edit_window.show_all()
         self.cursor_move_w_e = self.doc.app.cursors.get_action_cursor(
             self.__action_name__, "cursor_move_w_e")
         self.cursor_move_n_s = self.doc.app.cursors.get_action_cursor(
@@ -115,10 +113,8 @@ class FrameEditMode (canvasevent.SwitchableModeMixin,
     def leave(self, **kwds):
         """Exit the mode, hiding any dialogs.
         """
-        if not self.initial_modifiers:
-            lm = self.doc.app.layout_manager
-            dialog = lm.get_subwindow_by_role("frameWindow")
-            dialog.hide()
+        if self.initial_modifiers:
+            self.doc.app.frame_edit_window.hide()
         super(FrameEditMode, self).leave(**kwds)
 
 
@@ -251,11 +247,13 @@ class FrameEditMode (canvasevent.SwitchableModeMixin,
         return super(FrameEditMode, self).drag_update_cb(tdw, event, dx, dy)
 
 
-class Window (windowing.Dialog):
+class FrameEditWindow (windowing.Dialog):
     """A dialog window for directly editing frame values.
     """
 
-    def __init__(self, app):
+    def __init__(self):
+        from application import get_app
+        app = get_app()
         buttons = (gtk.STOCK_OK, gtk.RESPONSE_ACCEPT)
         windowing.Dialog.__init__(self, app, _("Frame"), app.drawWindow,
                                   buttons=buttons)

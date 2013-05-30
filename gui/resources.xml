@@ -7,17 +7,6 @@ Perhaps an increasing amount.
 <object class="GtkIconFactory" id="stock_icon_factory">
   <!-- Custom stock icon mapping -->
   <sources>
-    <!-- Tool subwindows -->
-    <source stock-id="mypaint-tool-brush"
-           icon-name="mypaint-tool-brush"/>
-    <source stock-id="mypaint-tool-color"
-           icon-name="mypaint-tool-paint-color"/>
-    <source stock-id="mypaint-tool-scratchpad"
-           icon-name="mypaint-tool-scratchpad"/>
-    <source stock-id="mypaint-tool-layers"
-           icon-name="mypaint-tool-layers"/>
-    <source stock-id="mypaint-tool-preview-window"
-           icon-name="mypaint-tool-preview-window"/>
     <!-- View manipulation -->
     <source stock-id="mypaint-view-rotate-left"
            icon-name="mypaint-view-rotate-anticlockwise"/>
@@ -1104,11 +1093,11 @@ Perhaps an increasing amount.
         </object>
       </child>
       <child>
-        <object class="GtkToggleAction" id="LayersWindow">
-          <property name="stock_id">mypaint-tool-layers</property>
+        <object class="GtkToggleAction" id="LayersTool">
+          <property name="icon-name">mypaint-tool-layers</property>
           <property name="label" translatable="yes">Layers Window</property>
           <property name="tooltip"
-            translatable="yes">Edit and rearrange layers</property>
+            translatable="yes">Arrange layers, or assign layer effects</property>
           <signal name="activate" handler="toggle_window_cb"/>
         </object>
         <accelerator key="l"/>
@@ -1124,8 +1113,8 @@ Perhaps an increasing amount.
         </object>
       </child>
       <child>
-        <object class="GtkToggleAction" id="BrushSelectionWindow">
-          <property name="stock_id">mypaint-tool-brush</property>
+        <object class="GtkToggleAction" id="BrushSelectionTool">
+          <property name="icon-name">mypaint-tool-brush</property>
           <property name="label" translatable="yes"
             context="Menu|Brush|">Brushes Window</property>
           <property name="tooltip" translatable="yes"
@@ -1146,8 +1135,8 @@ Perhaps an increasing amount.
         <accelerator key="b" modifiers="GDK_CONTROL_MASK"/>
       </child>
       <child>
-        <object class="GtkToggleAction" id="ColorWindow">
-          <property name="stock_id">mypaint-tool-color</property>
+        <object class="GtkToggleAction" id="CombinedColorTool">
+          <property name="icon-name">mypaint-tool-paint-color</property>
           <property name="label" translatable="yes"
             context="Menu|Color|">Colors Window</property>
           <property name="tooltip" translatable="yes"
@@ -1157,8 +1146,8 @@ Perhaps an increasing amount.
         <accelerator key="c" modifiers="GDK_SHIFT_MASK"/>
       </child>
       <child>
-        <object class="GtkToggleAction" id="ScratchWindow">
-          <property name="stock_id">mypaint-tool-scratchpad</property>
+        <object class="GtkToggleAction" id="ScratchpadTool">
+          <property name="icon-name">mypaint-tool-scratchpad</property>
           <property name="label" translatable="yes"
             context="Menu|Scratchpad|">Scratchpad Window</property>
           <property name="tooltip" translatable="yes"
@@ -1168,8 +1157,8 @@ Perhaps an increasing amount.
         <accelerator key="s" modifiers="GDK_SHIFT_MASK"/>
       </child>
       <child>
-        <object class="GtkToggleAction" id="PreviewWindow">
-          <property name="stock_id">mypaint-tool-preview-window</property>
+        <object class="GtkToggleAction" id="PreviewTool">
+          <property name="icon-name">mypaint-tool-preview-window</property>
           <property name="label" translatable="yes">Preview</property>
           <property name="tooltip" translatable="yes"
             >Show preview of the whole drawing area</property>
@@ -1179,13 +1168,12 @@ Perhaps an increasing amount.
       </child>
 
       <child>
-        <object class="GtkToggleAction" id="ToggleSubwindows">
+        <object class="GtkToggleAction" id="FullscreenAutohide">
           <property name="label" translatable="yes"
-            context="Menu|View|">Subwindows</property>
+            context="Menu|View|">Hide Controls in Fullscreen</property>
           <property name="tooltip" translatable="yes"
-            >Show subwindows</property>
-          <property name="active">1</property>
-          <signal name="activate" handler="toggle_subwindows_cb"/>
+            >Automatically hide the user interface in fullscreen.</property>
+          <signal name="toggled" handler="fullscreen_autohide_toggled_cb"/>
         </object>
         <accelerator key="Tab"/>
       </child>

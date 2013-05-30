@@ -43,16 +43,22 @@ def make_composite_op_model():
     return model
 
 
-class ToolWidget (gtk.VBox):
+class LayersTool (gtk.VBox):
 
-    stock_id = "mypaint-tool-layers"
+    tool_widget_icon_name = "mypaint-tool-layers"
     tool_widget_title = _("Layers")
+    tool_widget_description = _("Arrange layers, or assign layer effects")
+
     tooltip_format = _("<b>{blendingmode_name}</b>\n{blendingmode_description}")
 
-    def __init__(self, app):
+    __gtype_name__ = 'MyPaintLayersTool'
+
+
+    def __init__(self):
         gtk.VBox.__init__(self)
+        from application import get_app
+        app = get_app()
         self.app = app
-        #self.set_size_request(200, 250)
         self.set_spacing(SPACING_CRAMPED)
         self.set_border_width(SPACING_CRAMPED)
 
@@ -67,8 +73,9 @@ class ToolWidget (gtk.VBox):
         view.connect("button-press-event", self.treeview_button_press_cb)
         view_scroll = gtk.ScrolledWindow()
         view_scroll.set_shadow_type(gtk.SHADOW_ETCHED_IN)
-        view_scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
+        view_scroll.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
         view_scroll.add(view)
+        view_scroll.set_size_request(200, 150)
 
         renderer = gtk.CellRendererPixbuf()
         col = self.visible_col = gtk.TreeViewColumn(_("Visible"))

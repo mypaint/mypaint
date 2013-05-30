@@ -23,14 +23,19 @@ def stock_button(stock_id):
     return stock_button_generic(stock_id, b)
 
 
-class ToolWidget (gtk.VBox):
+class ScratchpadTool (gtk.VBox):
+
+    __gtype_name__ = 'MyPaintScratchpadTool'
 
     tool_widget_title = _("Scratchpad")
+    tool_widget_description = _("Mix colors and make sketches on separate scrap pages")
+    tool_widget_icon_name = 'mypaint-tool-scratchpad'
 
-    stock_id = 'mypaint-tool-scratchpad'
 
-    def __init__(self, app):
+    def __init__(self):
         gtk.VBox.__init__(self)
+        from application import get_app
+        app = get_app()
         self.app = app
         #self.set_size_request(200, 250)
 

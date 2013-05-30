@@ -11,11 +11,11 @@ the Free Software Foundation; either version 2 of the License, or
   <toolbar name="toolbar1">
 
     <placeholder name="subwindows-toolitems">
-      <toolitem action="ColorWindow"/>
-      <toolitem action="BrushSelectionWindow"/>
-      <toolitem action="LayersWindow"/>
-      <toolitem action="ScratchWindow"/>
-      <toolitem action="PreviewWindow"/>
+      <toolitem action="CombinedColorTool"/>
+      <toolitem action="BrushSelectionTool"/>
+      <toolitem action="LayersTool"/>
+      <toolitem action="ScratchpadTool"/>
+      <toolitem action="PreviewTool"/>
     </placeholder>
 
   </toolbar>

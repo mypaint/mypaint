@@ -13,13 +13,17 @@ import functionwindow, brushcreationwidget
 import windowing
 from brushlib import brushsettings
 
-class Window(windowing.SubWindow):
+
+class BrushSettingsWindow (windowing.SubWindow):
 
     PAGE_BRUSHSETTINGS = 0
     PAGE_BRUSHINPUTS = 1
     PAGE_BRUSHPROPERTIES = 2
 
-    def __init__(self, app):
+    def __init__(self):
+        import application
+        app = application.get_app()
+        assert app is not None
         windowing.SubWindow.__init__(self, app, key_input=True)
 
         self.adj = {}

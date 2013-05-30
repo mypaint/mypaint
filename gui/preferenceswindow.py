@@ -22,11 +22,14 @@ import canvasevent
 RESPONSE_REVERT = 1
 
 
-class Window (windowing.Dialog):
+class PreferencesWindow (windowing.Dialog):
     """Window for manipulating preferences.
     """
 
-    def __init__(self, app):
+    def __init__(self):
+        import application
+        app = application.get_app()
+        assert app is not None
         flags = gtk.DIALOG_DESTROY_WITH_PARENT
         buttons = (gtk.STOCK_REVERT_TO_SAVED, RESPONSE_REVERT,
                    gtk.STOCK_OK, gtk.RESPONSE_ACCEPT)

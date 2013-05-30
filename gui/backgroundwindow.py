@@ -24,8 +24,14 @@ DEFAULT_BACKGROUND = 'default.png'
 BACKGROUNDS_SUBDIR = 'backgrounds'
 RESPONSE_SAVE_AS_DEFAULT = 1
 
-class Window(windowing.Dialog):
-    def __init__(self, app):
+
+class BackgroundWindow(windowing.Dialog):
+
+    def __init__(self):
+        import application
+        app = application.get_app()
+        assert app is not None
+
         flags = gtk.DIALOG_DESTROY_WITH_PARENT
         buttons = (_('Save as Default'), RESPONSE_SAVE_AS_DEFAULT,
                    gtk.STOCK_OK, gtk.RESPONSE_ACCEPT)

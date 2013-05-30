@@ -322,7 +322,7 @@ class ColorDropdownToolItem (gtk.ToolItem):
         side_vbox.pack_end(preview_hbox, False, False)
 
         side_vbox.pack_end(gtk.Alignment(), True, True)
-        button = init_proxy(gtk.ToggleButton(), "ColorWindow")
+        button = init_proxy(gtk.ToggleButton(), "CombinedColorTool")
         button.set_label(_("Color Window"))
         side_vbox.pack_end(button, False, False)
 
@@ -406,7 +406,7 @@ class BrushDropdownToolItem (gtk.ToolItem):
 
         # List editor button
         list_editor_button = gtk.ToggleButton()
-        list_editor_action = self.app.find_action("BrushSelectionWindow")
+        list_editor_action = self.app.find_action("BrushSelectionTool")
         list_editor_button.set_related_action(list_editor_action)
         close_panel_cb = lambda *a: self.dropdown_button.panel_hide()
         list_editor_button.connect("clicked", close_panel_cb)
