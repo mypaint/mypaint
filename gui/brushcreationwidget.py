@@ -39,7 +39,7 @@ class BrushManipulationWidget(gtk.VBox):
 
         self.init_widgets()
 
-        self.bm.selected_brush_observers.append(self.brush_selected_cb)
+        self.bm.brush_selected += self.brush_selected_cb
 
     def init_widgets(self):
         l = self.brush_name_label = gtk.Label()
@@ -63,7 +63,7 @@ class BrushManipulationWidget(gtk.VBox):
             b.connect('clicked', clicked_cb)
             hbox.pack_start(b, expand=False)
 
-    def brush_selected_cb(self, managed_brush, brushinfo):
+    def brush_selected_cb(self, bm, managed_brush, brushinfo):
         name = managed_brush.name
         if name is None:
             name = _('(unnamed brush)')
@@ -90,7 +90,7 @@ class BrushManipulationWidget(gtk.VBox):
         brushes = self.bm.get_group_brushes(group, make_active=True)
         brushes.insert(0, b)
         b.persistent = True   # Brush was saved
-        self.bm.notify_brushes_observers(brushes)
+        self.bm.brushes_changed(brushes)
 
         self.bm.select_brush(b)
 
@@ -123,7 +123,7 @@ class BrushManipulationWidget(gtk.VBox):
         if dst_deleted:
             deleted_brushes = self.bm.get_group_brushes(brushmanager.DELETED_BRUSH_GROUP)
             deleted_brushes.remove(dst_deleted)
-            self.bm.notify_brush_observers(deleted_brushes)
+            self.bm.brushes_changed(deleted_brushes)
 
         # save src as dst
         src_name = src_brush.name
@@ -165,14 +165,15 @@ class BrushManipulationWidget(gtk.VBox):
                     brushes[idx] = replacement
                 else:
                     del brushes[idx]
-                self.bm.notify_brush_observers(brushes)
-                assert b not in brushes, 'Brush exists multiple times in the same group!'
+                self.bm.brushes_changed(brushes)
+                assert b not in brushes, \
+                        'Brush exists multiple times in the same group!'
 
         if not b.delete_from_disk():
             # stock brush can't be deleted
             deleted_brushes = self.bm.get_group_brushes(brushmanager.DELETED_BRUSH_GROUP)
             deleted_brushes.insert(0, b)
-            self.bm.notify_brush_observers(deleted_brushes)
+            self.bm.brushes_changed(deleted_brushes)
 
 
 class BrushIconEditorWidget(gtk.VBox):
@@ -186,7 +187,7 @@ class BrushIconEditorWidget(gtk.VBox):
 
         self.init_widgets()
 
-        self.bm.selected_brush_observers.append(self.brush_selected_cb)
+        self.bm.brush_selected += self.brush_selected_cb
 
         self.set_brush_preview_edit_mode(False)
 
@@ -257,9 +258,9 @@ class BrushIconEditorWidget(gtk.VBox):
         b.save()
         for brushes in self.bm.groups.itervalues():
             if b in brushes:
-                self.bm.notify_brush_observers(brushes)
+                self.bm.brushes_changed(brushes)
 
-    def brush_selected_cb(self, managed_brush, brushinfo):
+    def brush_selected_cb(self, bm, managed_brush, brushinfo):
         # Update brush icon preview if it is not in edit mode
         if not self.brush_preview_edit_mode:
             self.set_preview_pixbuf(managed_brush.preview)

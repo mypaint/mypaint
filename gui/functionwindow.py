@@ -93,7 +93,7 @@ class ByInputWidget(gtk.VBox):
         self.setting = None
 
         self.app.brush.observers.append(self.brush_modified_cb)
-        self.app.brushmanager.selected_brush_observers.append(self.brush_selected_cb)
+        self.app.brushmanager.brush_selected += self.brush_selected_cb
 
         self.points = None
         self.disable_scale_changes_cb = True
@@ -168,7 +168,7 @@ class ByInputWidget(gtk.VBox):
         self.setting = setting
         self.reset_gui()
 
-    def brush_selected_cb(self, *junk):
+    def brush_selected_cb(self, bm, managed_brush, brushinfo):
         if not self.setting:
             return
         self.reset_gui()

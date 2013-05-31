@@ -24,6 +24,7 @@ from gtk import gdk # only for gdk.pixbuf
 
 import dialogs
 from lib.brush import BrushInfo
+from lib.observable import event
 
 
 ## Public module constants
@@ -158,20 +159,6 @@ class BrushManager (object):
         #: the most recently saved or restored "context", a.k.a. brush key.
         self.selected_context = None
 
-        #: List of observer callbacks, invoked with the set ManagedBrush and
-        #: the corresponding BrushInfo when the selected brush is changed
-        #: using self.select_brush().
-        self.selected_brush_observers = []
-
-        #: List of observer callbacks, invoked with no args when self.group
-        #: OR self.active_groups change.
-        self.groups_observers = []
-
-        #: List of observer callbacks, invoked with a list of affected brushes
-        #: whenever brush ordering changes, or when brushes are moved between
-        #: groups.
-        self.brushes_observers = []
-
         if not os.path.isdir(self.user_brushpath):
             os.mkdir(self.user_brushpath)
         self._load_groups()
@@ -192,7 +179,7 @@ class BrushManager (object):
                 brushes = self.get_group_brushes(group, make_active=True)
 
         # Brush order saving when that changes.
-        self.brushes_observers.append(self._brushes_modified_cb)
+        self.brushes_changed += self._brushes_modified_cb
 
         # Update the history at the end of each definite input stroke.
         stroke_end_cb = self._input_stroke_ended_cb
@@ -351,27 +338,42 @@ class BrushManager (object):
         if os.path.exists(fn):
             os.remove(fn)
 
-    ## Observer interfaces (REFACTOR: some notifications are external)
+    ## Observable events
 
-    def notify_brushes_observers(self, brushes):
-        """Notify watchers about brushes in groups changing.
 
+    @event
+    def brushes_changed(self, brushes):
+        """Event: brushes changed (within their groups).
+
+        Each observer is called with the following args:
+
+        :param self: this BrushManager object
         :param brushes: Affected brushes
         :type brushes: list of ManagedBrushes
 
-        Invokes each function registered in self.brushes_observers with the
-        list of affected brushes. Use this whenever brush ordering changes or
-        when brushes are moved between groups.
-
+        This event is used to notify about brush ordering changes or brushes
+        being moved between groups.
         """
-        for func in self.brushes_observers:
-            func(affected_brushes)
 
 
-    def _notify_groups_observers(self):
-        """Notifies about the brush groups having changed."""
-        for func in self.groups_observers:
-            func()
+    @event
+    def groups_changed(self):
+        """Event: brush groups changed (deleted, renamed, created)
+
+        Observer callbacks are invoked with no args (other than a ref to the
+        brushgroup).  This is used when the "set" of groups change, e.g. when a
+        group is renamed, deleted, or created.  It's invoked when EITHER
+        self.group OR self.active_groups change.
+        """
+
+
+    @event
+    def brush_selected(self, brush, info):
+        """Event: a different brush was selected.
+
+        Observer callbacks are invoked with the newly selected ManagedBrush and
+        its corresponding BrushInfo.
+        """
 
 
     ## Initial and default brushes
@@ -581,7 +583,7 @@ class BrushManager (object):
                 # finally, add it to the group
                 if b not in managed_brushes:
                     managed_brushes.append(b)
-                self.notify_brushes_observers(managed_brushes)
+                self.brushes_changed(managed_brushes)
 
         if DELETED_BRUSH_GROUP in self.groups:
             # remove deleted brushes that are in some group again
@@ -641,9 +643,11 @@ class BrushManager (object):
                 return None
             return parent_brush
 
+
     ## Brush order within groups, order.conf
 
-    def _brushes_modified_cb(self, brushes):
+
+    def _brushes_modified_cb(self, bm, brushes):
         """Saves the brush order when it changes."""
         self.save_brushorder()
 
@@ -683,9 +687,9 @@ class BrushManager (object):
 
         self.selected_brush = brush
         self.app.preferences['brushmanager.selected_brush'] = brush.name
-        # Take care of updating the live brush, amongst other things
-        for callback in self.selected_brush_observers:
-            callback(brush, brushinfo)
+        # Notify subscribers. Takes care of updating the live
+        # brush, amongst other things
+        self.brush_selected(brush, brushinfo)
 
 
     def clone_selected_brush(self, name):
@@ -778,7 +782,7 @@ class BrushManager (object):
         """
         self.active_groups = groups
         self.app.preferences['brushmanager.selected_groups'] = groups
-        self._notify_groups_observers()
+        self.groups_changed()
 
 
     def get_group_brushes(self, group, make_active=False):
@@ -796,7 +800,7 @@ class BrushManager (object):
         if group not in self.groups:
             brushes = []
             self.groups[group] = brushes
-            self._notify_groups_observers()
+            self.groups_changed()
             self.save_brushorder()
         if make_active and group not in self.active_groups:
             self.set_active_groups([group] + self.active_groups)
@@ -858,9 +862,9 @@ class BrushManager (object):
             deleted_brushes = self.get_group_brushes(DELETED_BRUSH_GROUP)
             for b in homeless_brushes:
                 deleted_brushes.insert(0, b)
-            self.notify_brushes_observers(deleted_brushes)
-        self.notify_brushes_observers(homeless_brushes)
-        self._notify_groups_observers()
+            self.brushes_changed(deleted_brushes)
+        self.brushes_changed(homeless_brushes)
+        self.groups_changed()
         self.save_brushorder()
 
 

@@ -377,7 +377,7 @@ class BrushDropdownToolItem (gtk.ToolItem):
         app = get_app()
         self.app = app
         bm = self.app.brushmanager
-        bm.selected_brush_observers.append(self.on_selected_brush)
+        bm.brush_selected += self.on_brush_selected
         self.app.doc.input_stroke_ended_observers\
             .append(self.doc_input_stroke_ended_cb)
         self.update_history_images()
@@ -455,7 +455,7 @@ class BrushDropdownToolItem (gtk.ToolItem):
         self.main_image.set_size_request(iw, ih)
 
 
-    def on_selected_brush(self, brush, brushinfo):
+    def on_brush_selected(self, bm, brush, brushinfo):
         self.main_image.set_from_managed_brush(brush)
 
 

@@ -31,7 +31,7 @@ class BrushModifier:
 
     def __init__(self, app):
         self.app = app
-        app.brushmanager.selected_brush_observers.append(self.brush_selected_cb)
+        app.brushmanager.brush_selected += self.brush_selected_cb
         app.brush.observers.append(self.brush_modified_cb)
         self.unmodified_brushinfo = None
         self._in_brush_selected_cb = False
@@ -246,7 +246,7 @@ class BrushModifier:
         self.app.brush.set_color_hsv(c)
 
 
-    def brush_selected_cb(self, managed_brush, brushinfo):
+    def brush_selected_cb(self, bm, managed_brush, brushinfo):
         """Responds to the user changing their brush.
 
         This observer callback is responsible for allocating the current brush

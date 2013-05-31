@@ -142,8 +142,8 @@ class BrushList(pixbuflist.PixbufList):
             self.set_extension_events(gdk.EXTENSION_EVENTS_ALL)
 
         self.set_selected(self.bm.selected_brush)
-        self.bm.brushes_observers.append(self.brushes_modified_cb)
-        self.bm.selected_brush_observers.append(self.brush_selected_cb)
+        self.bm.brushes_changed += self.brushes_modified_cb
+        self.bm.brush_selected += self.brush_selected_cb
 
 
     def do_get_request_mode(self):
@@ -166,20 +166,20 @@ class BrushList(pixbuflist.PixbufList):
                 icons_tall * self.ICON_SIZE)
 
 
-    def brushes_modified_cb(self, brushes):
+    def brushes_modified_cb(self, bm, brushes):
         if brushes is self.brushes:
             self.update()
 
-    def brush_selected_cb(self, managed_brush, brushinfo):
+    def brush_selected_cb(self, bm, managed_brush, brushinfo):
         self.set_selected(managed_brush)
 
     def remove_brush(self, brush):
         self.brushes.remove(brush)
-        self.bm.notify_brushes_observers(self.brushes)
+        self.bm.brushes_changed(self.brushes)
 
     def insert_brush(self, idx, brush):
         self.brushes.insert(idx, brush)
-        self.bm.notify_brushes_observers(self.brushes)
+        self.bm.brushes_changed(self.brushes)
 
     def button_press_cb(self, widget, event):
         if gtk2compat.USE_GTK3:
@@ -218,7 +218,7 @@ class BrushList(pixbuflist.PixbufList):
         # brush changed on harddisk?
         if brush.reload_if_changed():
             for brushes in self.bm.groups.itervalues():
-                self.bm.notify_brushes_observers(brushes)
+                self.bm.brushes_changed(brushes)
         self.bm.select_brush(brush)
 
 
@@ -235,9 +235,9 @@ class BrushGroupsList(gtk.VBox):
         self.bm = app.brushmanager
         self.group_widgets = {}
         self.update()
-        self.bm.groups_observers.append(self.groups_modified_cb)
+        self.bm.groups_changed += self.groups_modified_cb
 
-    def groups_modified_cb(self):
+    def groups_modified_cb(self, bm):
         self.update()
 
     def update(self):
@@ -281,7 +281,7 @@ class GroupSelector (gtk.DrawingArea):
         app = get_app()
         self.app = app
         self.bm = app.brushmanager
-        self.bm.groups_observers.append(self.active_groups_changed_cb)
+        self.bm.groups_changed += self.active_groups_changed_cb
 
         if not gtk2compat.USE_GTK3:
             self.drag_dest_set(gtk.DEST_DEFAULT_MOTION | gtk.DEST_DEFAULT_DROP,
@@ -338,7 +338,7 @@ class GroupSelector (gtk.DrawingArea):
             pass
 
 
-    def active_groups_changed_cb(self):
+    def active_groups_changed_cb(self, bm):
         self.queue_draw()
 
 
@@ -644,7 +644,7 @@ class GroupSelector (gtk.DrawingArea):
                 changed = target
         else:
             context.finish(False, False, time)
-        self.bm.notify_brushes_observers(changed)
+        self.bm.brushes_changed(changed)
         context.finish(True, False, time)
 
 
