@@ -359,7 +359,7 @@ class DrawWindow (gtk.Window):
             workspace = self.app.workspace
             if action.get_active():
                 if not workspace.has_tool_widget(gtype_name):
-                    widget = workspace.add_tool_widget(gtype_name)
+                    widget = workspace.add_tool_widget(gtype_name, [])
             else:
                 while workspace.has_tool_widget(gtype_name):
                     widget = workspace.remove_tool_widget(gtype_name)

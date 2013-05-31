@@ -423,13 +423,17 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
     ## Tool widgets
 
 
-    def add_tool_widget(self, gtype_name):
+    def add_tool_widget(self, gtype_name, tool_args):
         """Adds a new tool widget by GType name
 
-        The widget will be instantiated with no args, and added to the first
-        stack available. Existing floating windows will be favoured over the
-        sidebars; if there are no stacks visible, a sidebar will be made
-        visible to receive the new widget.
+        :param gtype_name: GType name for the new widget's class
+        :param tool_args: parameters for the class's Python constructor
+        :return: the newly-constructed widget
+
+        The widget will be instantiated with the args provided, and added to
+        the first stack available. Existing floating windows will be favoured
+        over the sidebars; if there are no stacks visible, a sidebar will be
+        made visible to receive the new widget.
 
         """
         logger.debug("Adding a %r to the most favorable stack", gtype_name)
@@ -441,7 +445,8 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         while not widget:
             for stack in stacks:
                 try:
-                    widget = stack.add_tool_widget(gtype_name, maxnotebooks=3,
+                    widget = stack.add_tool_widget(gtype_name, tool_args,
+                                                   maxnotebooks=3,
                                                    maxpages=maxpages)
                 except ToolWidgetConstructError as ex:
                     warn("add_tool_widget: %s" % (ex.message,),
@@ -1268,10 +1273,11 @@ class ToolStack (Gtk.EventBox):
             next_nb = self._append_new_placeholder(nb)
             for tool_desc in tool_descs:
                 gtype_name = tool_desc[0]
+                tool_args = tool_desc[1:]
                 try:
-                    tool_widget = self._tool_widget_new(gtype_name)
+                    tool_widget = self._tool_widget_new(gtype_name, tool_args)
                 except ToolWidgetConstructError as ex:
-                    warn("build_from_layout: %s" % (ex.message),
+                    warn("build_from_layout: %s" % (ex.message,),
                          RuntimeWarning)
                     continue
                 assert tool_widget is not None
@@ -1302,8 +1308,9 @@ class ToolStack (Gtk.EventBox):
             for page in nb:
                 tool_widget = page.get_child()
                 gtype_name = tool_widget.__gtype_name__
-                tool_desc = (gtype_name, )
-                tool_descs.append(tool_desc)
+                tool_args = tool_widget.__construct_args
+                tool_desc = [gtype_name] + list(tool_args)
+                tool_descs.append(tuple(tool_desc))
             group_desc = {"tools": tool_descs}
             if tool_descs:
                 width = nb.get_allocated_width()
@@ -1343,11 +1350,15 @@ class ToolStack (Gtk.EventBox):
     ## Tool widgets
 
 
-    def add_tool_widget(self, gtype_name, maxnotebooks=None, maxpages=3):
+    def add_tool_widget(self, gtype_name, tool_args,
+                        maxnotebooks=None,
+                        maxpages=3):
         """Tries to find space for, and create, a tool widget via GType name.
 
         :param gtype_name: the GType name of the class to load.
         :type gtype_name: str
+        :param tool_args: parameters for the class's Python constructor
+        :type tool_args: sequence
         :param maxnotebooks: never make more than this many groups
         :type maxnotebooks: int
         :param maxpages: never make more than this many pages in a group
@@ -1368,7 +1379,7 @@ class ToolStack (Gtk.EventBox):
             num_populated = len(notebooks) - 1
             if maxnotebooks is not None and num_populated >= maxnotebooks:
                 return None
-        tool_widget = self._tool_widget_new(gtype_name)
+        tool_widget = self._tool_widget_new(gtype_name, tool_args)
         if not tool_widget:
             raise ToolWidgetConstructError, \
                   "Cannot construct a '%s': unknown reason" % (gtype_name,)
@@ -1527,9 +1538,11 @@ class ToolStack (Gtk.EventBox):
         return paned.get_child2()
 
 
-    def _tool_widget_new(self, gtype_name):
+    def _tool_widget_new(self, gtype_name, tool_args):
         """Constructs a new tool widget based on its GType name.
         """
+        logger.debug("Creating tool widget %r (params: %r)",
+                     gtype_name, tool_args)
         try:
             gtype = GObject.type_from_name(gtype_name)
         except RuntimeError:
@@ -1539,7 +1552,8 @@ class ToolStack (Gtk.EventBox):
             raise ToolWidgetConstructError, \
                   "%s is not a Gtk.Widget subclass" % (gtype_name,)
         tool_widget_class = gtype.pytype
-        tool_widget = tool_widget_class()
+        tool_widget = tool_widget_class(*tool_args)
+        tool_widget.__construct_args = tool_args
         return tool_widget
 
 
@@ -1932,8 +1946,8 @@ def _test():
         __gtype_name__ = 'TestLabel'
         tool_widget_icon_name = 'gtk-ok'
         tool_widget_description = "Just a test widget"
-        def __init__(self):
-            Gtk.Label.__init__(self, "Hello, World")
+        def __init__(self, text="Hello, World!"):
+            Gtk.Label.__init__(self, text)
             self.set_size_request(200, 150)
     class _TestSpinner (Gtk.Spinner):
         __gtype_name__ = "TestSpinner"
@@ -1969,7 +1983,7 @@ def _test():
             }}],
         'right_sidebar': {
             'w': 400,
-            'groups': [{'tools': [('TestSpinner',)]}],
+            'groups': [{'tools': [('TestSpinner',), ("TestLabel", "Hi")]}],
         },
         'left_sidebar': {
             'w': 250,
