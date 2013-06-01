@@ -27,7 +27,7 @@ if not gtk2compat.USE_GTK3:
 
 from gui import application
 from optparse import OptionParser
-import sys, time
+import sys
 
 
 #: Base version.
@@ -76,7 +76,7 @@ def main(datapath, extradata, oldstyle_confpath=None, version=MYPAINT_VERSION):
       help='use old-style merged config directory DIR, e.g. ~/.mypaint')
     parser.add_option('-l', '--logfile', metavar='FILE',
       default=default_logfile,
-      help='append Python stdout and stderr to FILE (rel. to config location)')
+      help='log console messages to FILE (rel. to config location)')
     parser.add_option('-t', '--trace', action="store_true",
       help='print all executed Python statements')
     parser.add_option('-f', '--fullscreen', action="store_true",
@@ -104,11 +104,21 @@ def main(datapath, extradata, oldstyle_confpath=None, version=MYPAINT_VERSION):
         logdirpath, logfilebasename = os.path.split(logfilepath)
         if not os.path.isdir(logdirpath):
             os.makedirs(logdirpath)
-        logger.info('Python prints are redirected to %r after this one.'
-                     % (logfilepath,))
-        sys.stdout = sys.stderr = open(logfilepath, 'a', 1)
-        logger.info('--- mypaint log %s ---'
-                     % time.strftime('%Y-%m-%d %H:%M:%S'))
+        logger.info("Copying log messages to %r", logfilepath)
+        logfile_fp = open(logfilepath, 'a', 1)
+        logfile_handler = logging.StreamHandler(logfile_fp)
+        logfile_format = "%(asctime)s;%(levelname)s;%(name)s;%(message)s"
+        logfile_handler.setFormatter(logging.Formatter(logfile_format))
+        root_logger = logging.getLogger(None)
+        root_logger.addHandler(logfile_handler)
+        # Classify this as a warning, since this is fairly evil.
+        # Note: this hack doesn't catch every type of GTK3 error message.
+        logger.warning("Redirecting stdout and stderr to %r", logfilepath)
+        sys.stdout = sys.stderr = logfile_fp
+        logger.info("Started logging to %r", logfilepath)
+
+    if os.environ.get("MYPAINT_DEBUG", False):
+        logger.critical("Test critical message, please ignore")
 
     if options.version:
         # Output (rather than log) the version

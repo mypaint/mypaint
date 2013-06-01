@@ -11,10 +11,66 @@ This script does all the platform dependent stuff. Its main task is
 to figure out where the python modules are.
 """
 import sys, os
+import re
 import logging
+logger = logging.getLogger('mypaint')
 
-# Standard logging module.
-logger = logging.getLogger("MyPaint")
+
+class ColorFormatter (logging.Formatter):
+    """Minimal ANSI formatter, for use with non-Windows console logging."""
+
+    # ANSI control sequences for various things
+    BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE = range(8)
+    FG = 30
+    BG = 40
+    LEVELCOL = {
+            "DEBUG": "\033[%02dm" % (FG+BLUE,),
+            "INFO": "\033[%02dm" % (FG+GREEN,),
+            "WARNING": "\033[%02dm" % (FG+YELLOW,),
+            "ERROR": "\033[%02dm" % (FG+RED,),
+            "CRITICAL": "\033[%02d;%02dm" % (FG+RED, BG+BLACK),
+        }
+    BOLD = "\033[01m"
+    BOLDOFF = "\033[22m"
+    ITALIC = "\033[03m"
+    ITALICOFF = "\033[23m"
+    UNDERLINE = "\033[04m"
+    UNDERLINEOFF = "\033[24m"
+    RESET = "\033[0m"
+
+    # Replace tokens in message format strings to highlight interpolations
+    REPLACE_BOLD = lambda m: ( ColorFormatter.BOLD +
+                               m.group(0) +
+                               ColorFormatter.BOLDOFF )
+    REPLACE_UNDERLINE = lambda m: ( ColorFormatter.UNDERLINE +
+                                    m.group(0) +
+                                    ColorFormatter.UNDERLINEOFF )
+    TOKEN_FORMATTING = [
+            (re.compile(r'%r'), REPLACE_BOLD),
+            (re.compile(r'%s'), REPLACE_BOLD),
+            (re.compile(r'%\+?[0-9.]*d'), REPLACE_BOLD),
+            (re.compile(r'%\+?[0-9.]*f'), REPLACE_BOLD),
+        ]
+
+
+    def format(self, record):
+        record = logging.makeLogRecord(record.__dict__)
+        msg = record.msg
+        for token_re, repl in self.TOKEN_FORMATTING:
+            msg = token_re.sub(repl, msg)
+        record.msg = msg
+        record.reset = self.RESET
+        record.bold = self.BOLD
+        record.boldOff = self.BOLDOFF
+        record.italic = self.ITALIC
+        record.italicOff = self.ITALICOFF
+        record.underline = self.UNDERLINE
+        record.underlineOff = self.UNDERLINEOFF
+        record.levelCol = ""
+        if record.levelname in self.LEVELCOL:
+            record.levelCol = self.LEVELCOL[record.levelname]
+        return super(ColorFormatter, self).format(record)
+
 
 def win32_unicode_argv():
     # fix for https://gna.org/bugs/?17739
@@ -165,12 +221,42 @@ def psyco_opt():
 
 
 if __name__ == '__main__':
-    if os.environ.get("MYPAINT_DEBUG", False):
-        logging.basicConfig(level=logging.DEBUG)
+    # Console logging
+    log_format = "%(levelname)s: %(name)s: %(message)s"
+    if sys.platform == 'win32':
+        # Windows doesn't understand ANSI by default.
+        console_handler = logging.StreamHandler(stream=sys.stderr)
+        console_formatter = logging.formatter(log_format)
     else:
-        logging.basicConfig(level=logging.INFO)
+        # Assume POSIX.
+        # Clone stderr so that later reassignment of sys.stderr won't affect
+        # logger if --logfile is used.
+        stderr_fd = os.dup(sys.stderr.fileno())
+        stderr_fp = os.fdopen(stderr_fd, 'ab', 0)
+        # Pretty colours.
+        console_handler = logging.StreamHandler(stream=stderr_fp)
+        if stderr_fp.isatty():
+            log_format = (
+                "%(levelCol)s%(levelname)s: "
+                "%(bold)s%(name)s%(reset)s%(levelCol)s: "
+                "%(message)s%(reset)s" )
+            console_formatter = ColorFormatter(log_format)
+        else:
+            console_formatter = logging.Formatter(log_format)
+    console_handler.setFormatter(console_formatter)
+    logging_level = logging.INFO
+    if os.environ.get("MYPAINT_DEBUG", False):
+        logging_level = logging.DEBUG
+    root_logger = logging.getLogger(None)
+    root_logger.addHandler(console_handler)
+    root_logger.setLevel(logging_level)
+    if logging_level == logging.DEBUG:
+        logger.info("Debugging output enabled via MYPAINT_DEBUG")
+
+    # Psyco setup
     psyco_opt()
 
+    # Path determination
     datapath, extradata, old_confpath, localepath, localepath_brushlib \
         = get_paths()
 
