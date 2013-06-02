@@ -102,7 +102,7 @@ class Palette (object):
                     key, value = match.groups()
                     key = key.lower()
                     if key == 'name':
-                        self.__name = value
+                        self.__name = value.strip()
                     elif key == 'columns':
                         self.__columns = int(value)
                     else:
@@ -115,6 +115,7 @@ class Palette (object):
                 logger.warning("Expected 'R G B [Name]', not %r", line)
                 continue
             r, g, b, col_name = match.groups()
+            col_name = col_name.strip()
             r = float(clamp(int(r), 0, 0xff))/0xff
             g = float(clamp(int(g), 0, 0xff))/0xff
             b = float(clamp(int(b), 0, 0xff))/0xff
