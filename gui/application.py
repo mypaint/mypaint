@@ -46,6 +46,7 @@ import layerswindow
 import previewwindow
 import framewindow
 import scratchwindow
+import inputtestwindow
 import brushmodifier
 import toolbar
 import linemode
@@ -265,6 +266,7 @@ class Application (object):
             "BrushSettingsWindow": brushsettingswindow.BrushSettingsWindow,
             "PreferencesWindow": preferenceswindow.PreferencesWindow,
             "FrameEditWindow": framewindow.FrameEditWindow,
+            "InputTestWindow": inputtestwindow.InputTestWindow,
             }
         self._subwindows = {}
 
@@ -684,6 +686,11 @@ class Application (object):
     def frame_edit_window(self):
         """The frame editor subwindow."""
         return self.get_subwindow("FrameEditWindow")
+
+    @property
+    def input_test_window(self):
+        """The input test window."""
+        return self.get_subwindow("InputTestWindow")
 
 
     def get_subwindow(self, name):

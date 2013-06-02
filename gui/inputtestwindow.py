@@ -16,8 +16,11 @@ import gtk2compat
 import windowing
 
 
-class Window(windowing.SubWindow):
-    def __init__(self, app):
+class InputTestWindow (windowing.SubWindow):
+
+    def __init__(self):
+        from application import get_app
+        app = get_app()
         windowing.SubWindow.__init__(self, app)
         self.last_selected_brush = None
 
