@@ -85,7 +85,7 @@ class ComponentSlidersAdjusterPage (CombinedAdjusterPage, IconRenderable):
 
     @classmethod
     def get_page_title(self):
-        return _('Component sliders')
+        return _('Component Sliders')
 
     @classmethod
     def get_page_description(self):

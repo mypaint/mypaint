@@ -1192,11 +1192,6 @@ class HCYAdjusterPage (CombinedAdjusterPage):
     """Combined HCY adjuster.
     """
 
-    __mask_dialog = None
-    __hc_adj = None
-    __y_adj = None
-    __table = None
-
     def __init__(self):
         y_adj = HCYLumaSlider()
         y_adj.vertical = True
@@ -1211,6 +1206,8 @@ class HCYAdjusterPage (CombinedAdjusterPage):
         self.__y_adj = y_adj
         self.__hc_adj = hc_adj
         self.__table = table
+        self.__mask_dialog = None
+
 
     @classmethod
     def get_properties_description(cls):

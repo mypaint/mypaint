@@ -89,7 +89,7 @@ class HSVAdjusterPage (CombinedAdjusterPage):
 
     @classmethod
     def get_page_title(self):
-        return _('HSV wheel')
+        return _('HSV Wheel')
 
     @classmethod
     def get_page_description(self):
