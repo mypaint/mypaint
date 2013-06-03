@@ -12,6 +12,12 @@ the Free Software Foundation; either version 2 of the License, or
 
     <placeholder name="subwindows-toolitems">
       <toolitem action="CombinedColorTool"/>
+      <toolitem action="HCYWheelTool"/>
+      <toolitem action="HSVWheelTool"/>
+      <toolitem action="PaletteTool"/>
+      <toolitem action="HSVTriangleTool"/>
+      <toolitem action="HSVCubeTool"/>
+      <toolitem action="ComponentSlidersTool"/>
       <toolitem action="BrushSelectionTool"/>
       <toolitem action="LayersTool"/>
       <toolitem action="ScratchpadTool"/>

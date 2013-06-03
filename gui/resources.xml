@@ -1146,6 +1146,67 @@ Perhaps an increasing amount.
         <accelerator key="c" modifiers="GDK_SHIFT_MASK"/>
       </child>
       <child>
+        <object class="GtkToggleAction" id="HCYWheelTool">
+          <property name="icon-name">mypaint-tool-hcywheel</property>
+          <property name="label" translatable="yes"
+            context="Menu|Color|">HCY Wheel</property>
+          <property name="tooltip" translatable="yes"
+            >Set the color using cylindrical hue/chroma/luma space.
+The circular slices are equiluminant.</property>
+          <signal name="activate" handler="toggle_window_cb"/>
+        </object>
+      </child>
+      <child>
+        <object class="GtkToggleAction" id="PaletteTool">
+          <property name="icon-name">gtk-select-color</property>
+          <property name="label" translatable="yes"
+            context="Menu|Color|">Palette</property>
+          <property name="tooltip" translatable="yes"
+            >Set the color from a loadable, editable palette.</property>
+          <signal name="activate" handler="toggle_window_cb"/>
+        </object>
+      </child>
+      <child>
+        <object class="GtkToggleAction" id="HSVWheelTool">
+          <property name="icon-name">mypaint-tool-hsvwheel</property>
+          <property name="label" translatable="yes"
+            context="Menu|Color|">HSV Wheel</property>
+          <property name="tooltip" translatable="yes"
+            >Saturation and Value colour changer.</property>
+          <signal name="activate" handler="toggle_window_cb"/>
+        </object>
+      </child>
+      <child>
+        <object class="GtkToggleAction" id="HSVTriangleTool">
+          <property name="icon-name">mypaint-tool-color-triangle</property>
+          <property name="label" translatable="yes"
+            context="Menu|Color|">HSV Triangle</property>
+          <property name="tooltip" translatable="yes"
+            >The standard GTK color selector.</property>
+          <signal name="activate" handler="toggle_window_cb"/>
+        </object>
+      </child>
+      <child>
+        <object class="GtkToggleAction" id="HSVCubeTool">
+          <property name="icon-name">mypaint-tool-hsvcube</property>
+          <property name="label" translatable="yes"
+            context="Menu|Color|">HSV Cube</property>
+          <property name="tooltip" translatable="yes"
+            >An HSV cube which can be rotated to show different planar slices.</property>
+          <signal name="activate" handler="toggle_window_cb"/>
+        </object>
+      </child>
+      <child>
+        <object class="GtkToggleAction" id="ComponentSlidersTool">
+          <property name="icon-name">mypaint-tool-component-sliders</property>
+          <property name="label" translatable="yes"
+            context="Menu|Color|">Component Sliders</property>
+          <property name="tooltip" translatable="yes"
+            >Adjust individual components of the colour.</property>
+          <signal name="activate" handler="toggle_window_cb"/>
+        </object>
+      </child>
+      <child>
         <object class="GtkToggleAction" id="ScratchpadTool">
           <property name="icon-name">mypaint-tool-scratchpad</property>
           <property name="label" translatable="yes"

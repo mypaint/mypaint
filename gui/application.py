@@ -49,6 +49,7 @@ import previewwindow
 import framewindow
 import scratchwindow
 import inputtestwindow
+import colortools
 import brushmodifier
 import toolbar
 import linemode
