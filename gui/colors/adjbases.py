@@ -16,6 +16,7 @@ import gui.gtk2compat as gtk2compat
 import math
 from copy import deepcopy, copy
 from warnings import warn
+import weakref
 
 import gtk
 from gtk import gdk
@@ -76,7 +77,6 @@ def deprecated(replacement=None):
 
 
 class ColorManager (gobject.GObject):
-    ## Class docs
     """Manages the data common to several attached `ColorAdjuster`s.
 
     This data is basically everything that one or more adjusters might want to
@@ -130,7 +130,7 @@ class ColorManager (gobject.GObject):
         # Defaults
         self._color = None  #: Currently edited color, a UIColor object
         self._hist = []  #: List of previous colors, most recent last
-        self._adjusters = [] #: The list of registered adjusters
+        self._adjusters = weakref.WeakSet() #: The set of registered adjusters
         self._picker_cursor = gdk.Cursor(gdk.CROSSHAIR) #: Cursor for pickers
         self._datapath = datapath #: Base path for saving palettes and masks
         self._hue_distorts = None #: Hue-remapping table for color wheels
@@ -202,9 +202,8 @@ class ColorManager (gobject.GObject):
 
     
     def add_adjuster(self, adjuster):
-        if adjuster in self._adjusters:
-            return
-        self._adjusters.append(adjuster)
+        """Adds an adjuster to the internal set of adjusters."""
+        self._adjusters.add(adjuster)
 
 
     @deprecated(add_adjuster)
@@ -213,6 +212,7 @@ class ColorManager (gobject.GObject):
 
 
     def remove_adjuster(self, adjuster):
+        """Removes an adjuster."""
         self._adjusters.remove(adjuster)
 
 
@@ -222,8 +222,7 @@ class ColorManager (gobject.GObject):
 
 
     def get_adjusters(self):
-        """Returns an iterator over the set of registered adjusters.
-        """
+        """Returns an iterator over the set of registered adjusters."""
         return iter(self._adjusters)
 
 
