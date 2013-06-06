@@ -106,7 +106,6 @@ class DrawWindow (gtk.Window):
         # Window handling
         self._updating_toggled_item = False
         self.is_fullscreen = False
-        self._window_map = {}
 
         # Enable drag & drop
         if not gtk2compat.USE_GTK3:
@@ -130,9 +129,9 @@ class DrawWindow (gtk.Window):
 
         self.app.filehandler.current_file_observers.append(self.update_title)
 
-        ## Park the focus on the main tdw rather than on the toolbar. Default
-        ## activation doesn't really mean much for MyPaint's main window, so
-        ## it's safe to do this and it looks better.
+        # Park the focus on the main tdw rather than on the toolbar. Default
+        # activation doesn't really mean much for MyPaint's main window, so
+        # it's safe to do this and it looks better.
         #self.main_widget.set_can_default(True)
         #self.main_widget.set_can_focus(True)
         #self.main_widget.grab_focus()
