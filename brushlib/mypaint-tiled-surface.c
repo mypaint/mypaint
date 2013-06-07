@@ -17,6 +17,7 @@
 #endif
 
 #include "mypaint-tiled-surface.h"
+#include "tiled-surface-private.h"
 #include "helpers.h"
 #include "brushmodes.h"
 #include "operationqueue.h"
