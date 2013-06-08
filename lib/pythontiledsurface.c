@@ -56,35 +56,34 @@ tile_request_start(MyPaintTiledSurface *tiled_surface, MyPaintTiledSurfaceTileRe
     const gboolean readonly = request->readonly;
     const int tx = request->tx;
     const int ty = request->ty;
-
     PyArrayObject* rgba = NULL;
 
-    if (PyErr_Occurred()) {
-      PyErr_Print();
-      return;
-    }
+#pragma omp critical
+{
     rgba = (PyArrayObject*)PyObject_CallMethod(self->py_obj, "_get_tile_numpy", "(iii)", tx, ty, readonly);
     if (rgba == NULL) {
-      request->buffer = NULL;
-      printf("Python exception during get_tile_numpy()!\n");
-      if (PyErr_Occurred())
-        PyErr_Print();
-      return;
-    }
+        request->buffer = NULL;
+        printf("Python exception during get_tile_numpy()!\n");
+        if (PyErr_Occurred()) {
+            PyErr_Print();
+        }
+    } else {
 
 #ifdef HEAVY_DEBUG
-    assert(PyArray_NDIM(rgba) == 3);
-    assert(PyArray_DIM(rgba, 0) == tiled_surface->tile_size);
-    assert(PyArray_DIM(rgba, 1) == tiled_surface->tile_size);
-    assert(PyArray_DIM(rgba, 2) == 4);
-    assert(PyArray_ISCARRAY(rgba));
-    assert(PyArray_TYPE(rgba) == NPY_UINT16);
+        assert(PyArray_NDIM(rgba) == 3);
+        assert(PyArray_DIM(rgba, 0) == tiled_surface->tile_size);
+        assert(PyArray_DIM(rgba, 1) == tiled_surface->tile_size);
+        assert(PyArray_DIM(rgba, 2) == 4);
+        assert(PyArray_ISCARRAY(rgba));
+        assert(PyArray_TYPE(rgba) == NPY_UINT16);
 #endif
-    // tiledsurface.py will keep a reference in its tiledict, at least until the final end_atomic()
-    Py_DECREF((PyObject *)rgba);
+        // tiledsurface.py will keep a reference in its tiledict, at least until the final end_atomic()
+        Py_DECREF((PyObject *)rgba);
+        request->buffer = (uint16_t*)PyArray_DATA(rgba);
+    }
+} // #end pragma opt critical
 
-    uint16_t * rgba_p = (uint16_t*)PyArray_DATA(rgba);
-    request->buffer = rgba_p;
+
 }
 
 static void
@@ -99,6 +98,7 @@ mypaint_python_tiled_surface_new(PyObject *py_object)
     MyPaintPythonTiledSurface *self = (MyPaintPythonTiledSurface *)malloc(sizeof(MyPaintPythonTiledSurface));
 
     mypaint_tiled_surface_init(&self->parent, tile_request_start, tile_request_end);
+    self->parent.threadsafe_tile_requests = TRUE;
 
     // MyPaintSurface vfuncs
     self->parent.parent.destroy = free_tiledsurf;
