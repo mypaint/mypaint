@@ -31,8 +31,11 @@ main(int argc, char argv[]) {
     stroke_to(brush, (MyPaintSurface *)surface, 0.0, 0.0);
     mypaint_surface_end_atomic((MyPaintSurface *)surface);
 
+#if 0
+    // FIXME: write_ppm is currently broken
     fprintf(stdout, "Writing output\n");
     write_ppm(surface, "output.ppm");
+#endif
 
     mypaint_brush_unref(brush);
     mypaint_surface_unref((MyPaintSurface *)surface);
