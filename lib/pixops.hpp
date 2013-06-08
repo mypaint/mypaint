@@ -34,8 +34,8 @@ void tile_downscale_rgba16(PyObject *src, PyObject *dst, int dst_x, int dst_y) {
 #endif
 
   for (int y=0; y<MYPAINT_TILE_SIZE/2; y++) {
-    uint16_t * src_p = (uint16_t*)(PyArray_DATA(src_arr) + (2*y)*PyArray_STRIDES(src_arr)[0]);
-    uint16_t * dst_p = (uint16_t*)(PyArray_DATA(dst_arr) + (y+dst_y)*PyArray_STRIDES(dst_arr)[0]);
+    uint16_t * src_p = (uint16_t*)((char *)PyArray_DATA(src_arr) + (2*y)*PyArray_STRIDES(src_arr)[0]);
+    uint16_t * dst_p = (uint16_t*)((char *)PyArray_DATA(dst_arr) + (y+dst_y)*PyArray_STRIDES(dst_arr)[0]);
     dst_p += 4*dst_x;
     for(int x=0; x<MYPAINT_TILE_SIZE/2; x++) {
       dst_p[0] = src_p[0]/4 + (src_p+4)[0]/4 + (src_p+4*MYPAINT_TILE_SIZE)[0]/4 + (src_p+4*MYPAINT_TILE_SIZE+4)[0]/4;
@@ -326,7 +326,7 @@ void tile_clear(PyObject * dst) {
 #endif
 
   for (int y=0; y<MYPAINT_TILE_SIZE; y++) {
-    uint8_t  * dst_p = (uint8_t*)(PyArray_DATA(dst_arr) + y*PyArray_STRIDES(dst_arr)[0]);
+    uint8_t  * dst_p = (uint8_t*)((char *)PyArray_DATA(dst_arr) + y*PyArray_STRIDES(dst_arr)[0]);
     memset(dst_p, 0, MYPAINT_TILE_SIZE*PyArray_STRIDES(dst_arr)[1]);
     dst_p += PyArray_STRIDES(dst_arr)[0];
   }
@@ -380,8 +380,8 @@ void tile_convert_rgba16_to_rgba8(PyObject * src, PyObject * dst) {
   int noise_idx = 0;
 
   for (int y=0; y<MYPAINT_TILE_SIZE; y++) {
-    uint16_t * src_p = (uint16_t*)(PyArray_DATA(src_arr) + y*PyArray_STRIDES(src_arr)[0]);
-    uint8_t  * dst_p = (uint8_t*)(PyArray_DATA(dst_arr) + y*PyArray_STRIDES(dst_arr)[0]);
+    uint16_t * src_p = (uint16_t*)((char *)PyArray_DATA(src_arr) + y*PyArray_STRIDES(src_arr)[0]);
+    uint8_t  * dst_p = (uint8_t*)((char *)PyArray_DATA(dst_arr) + y*PyArray_STRIDES(dst_arr)[0]);
     for (int x=0; x<MYPAINT_TILE_SIZE; x++) {
       uint32_t r, g, b, a;
       r = *src_p++;
@@ -490,8 +490,8 @@ void tile_convert_rgbu16_to_rgbu8(PyObject * src, PyObject * dst) {
   int noise_idx = 0;
 
   for (int y=0; y<MYPAINT_TILE_SIZE; y++) {
-    uint16_t * src_p = (uint16_t*)(PyArray_DATA(src_arr) + y*PyArray_STRIDES(src_arr)[0]);
-    uint8_t  * dst_p = (uint8_t*)(PyArray_DATA(dst_arr) + y*PyArray_STRIDES(dst_arr)[0]);
+    uint16_t * src_p = (uint16_t*)((char *)PyArray_DATA(src_arr) + y*PyArray_STRIDES(src_arr)[0]);
+    uint8_t  * dst_p = (uint8_t*)((char *)PyArray_DATA(dst_arr) + y*PyArray_STRIDES(dst_arr)[0]);
     for (int x=0; x<MYPAINT_TILE_SIZE; x++) {
       uint32_t r, g, b;
       r = *src_p++;
@@ -548,8 +548,8 @@ void tile_convert_rgba8_to_rgba16(PyObject * src, PyObject * dst) {
 #endif
 
   for (int y=0; y<MYPAINT_TILE_SIZE; y++) {
-    uint8_t  * src_p = (uint8_t*)(PyArray_DATA(src_arr) + y*PyArray_STRIDES(src_arr)[0]);
-    uint16_t * dst_p = (uint16_t*)(PyArray_DATA(dst_arr) + y*PyArray_STRIDES(dst_arr)[0]);
+    uint8_t  * src_p = (uint8_t*)((char *)PyArray_DATA(src_arr) + y*PyArray_STRIDES(src_arr)[0]);
+    uint16_t * dst_p = (uint16_t*)((char *)PyArray_DATA(dst_arr) + y*PyArray_STRIDES(dst_arr)[0]);
     for (int x=0; x<MYPAINT_TILE_SIZE; x++) {
       uint32_t r, g, b, a;
       r = *src_p++;
