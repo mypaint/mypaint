@@ -321,17 +321,17 @@ void render_dab_mask (uint16_t * mask,
     // +-----------*> rr = (distance_from_center/radius)^2
     // 0           1
     //
-    float segment1_offset = 1.0;
-    float segment1_slope  = -(1.0/hardness - 1.0);
-    float segment2_offset = hardness/(1.0-hardness);
-    float segment2_slope  = -hardness/(1.0-hardness);
+    float segment1_offset = 1.0f;
+    float segment1_slope  = -(1.0f/hardness - 1.0f);
+    float segment2_offset = hardness/(1.0f-hardness);
+    float segment2_slope  = -hardness/(1.0f-hardness);
     // for hardness == 1.0, segment2 will never be used
 
     float angle_rad=angle/360*2*M_PI;
     float cs=cos(angle_rad);
     float sn=sin(angle_rad);
 
-    const float r_fringe = radius + 1.0; // +1.0 should not be required, only to be sure
+    const float r_fringe = radius + 1.0f; // +1.0 should not be required, only to be sure
     int x0 = floor (x - r_fringe);
     int y0 = floor (y - r_fringe);
     int x1 = floor (x + r_fringe);
@@ -340,14 +340,14 @@ void render_dab_mask (uint16_t * mask,
     if (y0 < 0) y0 = 0;
     if (x1 > MYPAINT_TILE_SIZE-1) x1 = MYPAINT_TILE_SIZE-1;
     if (y1 > MYPAINT_TILE_SIZE-1) y1 = MYPAINT_TILE_SIZE-1;
-    const float one_over_radius2 = 1.0/(radius*radius);
+    const float one_over_radius2 = 1.0f/(radius*radius);
 
     // Pre-calculate rr and put it in the mask.
     // This an optimization that makes use of auto-vectorization
     // OPTIMIZE: if using floats for the brush engine, store these directly in the mask
     float rr_mask[MYPAINT_TILE_SIZE*MYPAINT_TILE_SIZE+2*MYPAINT_TILE_SIZE];
 
-    if (radius < 3.0)
+    if (radius < 3.0f)
     {
       const float aa_border = 1.0f;
       float r_aa_start = ((radius>aa_border) ? (radius-aa_border) : 0);
@@ -484,7 +484,7 @@ void
 update_dirty_bbox(MyPaintTiledSurface *self, OperationDataDrawDab *op)
 {
     int bb_x, bb_y, bb_w, bb_h;
-    float r_fringe = op->radius + 1.0; // +1.0 should not be required, only to be sure
+    float r_fringe = op->radius + 1.0f; // +1.0 should not be required, only to be sure
     bb_x = floor (op->x - r_fringe);
     bb_y = floor (op->y - r_fringe);
     bb_w = floor (op->x + r_fringe) - bb_x + 1;
@@ -514,18 +514,18 @@ gboolean draw_dab_internal (MyPaintTiledSurface *self, float x, float y,
     op->radius = radius;
     op->aspect_ratio = aspect_ratio;
     op->angle = angle;
-    op->opaque = CLAMP(opaque, 0.0, 1.0);
-    op->hardness = CLAMP(hardness, 0.0, 1.0);
-    op->lock_alpha = CLAMP(lock_alpha, 0.0, 1.0);
-    op->colorize = CLAMP(colorize, 0.0, 1.0);
-    if (op->radius < 0.1) return FALSE; // don't bother with dabs smaller than 0.1 pixel
-    if (op->hardness == 0.0) return FALSE; // infintly small center point, fully transparent outside
-    if (op->opaque == 0.0) return FALSE;
+    op->opaque = CLAMP(opaque, 0.0f, 1.0f);
+    op->hardness = CLAMP(hardness, 0.0f, 1.0f);
+    op->lock_alpha = CLAMP(lock_alpha, 0.0f, 1.0f);
+    op->colorize = CLAMP(colorize, 0.0f, 1.0f);
+    if (op->radius < 0.1f) return FALSE; // don't bother with dabs smaller than 0.1 pixel
+    if (op->hardness == 0.0f) return FALSE; // infintly small center point, fully transparent outside
+    if (op->opaque == 0.0f) return FALSE;
 
-    color_r = CLAMP(color_r, 0.0, 1.0);
-    color_g = CLAMP(color_g, 0.0, 1.0);
-    color_b = CLAMP(color_b, 0.0, 1.0);
-    color_a = CLAMP(color_a, 0.0, 1.0);
+    color_r = CLAMP(color_r, 0.0f, 1.0f);
+    color_g = CLAMP(color_g, 0.0f, 1.0f);
+    color_b = CLAMP(color_b, 0.0f, 1.0f);
+    color_a = CLAMP(color_a, 0.0f, 1.0f);
 
     op->color_r = color_r * (1<<15);
     op->color_g = color_g * (1<<15);
@@ -533,15 +533,15 @@ gboolean draw_dab_internal (MyPaintTiledSurface *self, float x, float y,
     op->color_a = color_a;
 
     // blending mode preparation
-    op->normal = 1.0;
+    op->normal = 1.0f;
 
-    op->normal *= 1.0-op->lock_alpha;
-    op->normal *= 1.0-op->colorize;
+    op->normal *= 1.0f-op->lock_alpha;
+    op->normal *= 1.0f-op->colorize;
 
-    if (op->aspect_ratio<1.0) op->aspect_ratio=1.0;
+    if (op->aspect_ratio<1.0f) op->aspect_ratio=1.0f;
 
     // Determine the tiles influenced by operation, and queue it for processing for each tile
-    float r_fringe = radius + 1.0; // +1.0 should not be required, only to be sure
+    float r_fringe = radius + 1.0f; // +1.0 should not be required, only to be sure
       
     int tx1 = floor(floor(x - r_fringe) / MYPAINT_TILE_SIZE);
     int tx2 = floor(floor(x + r_fringe) / MYPAINT_TILE_SIZE);
@@ -606,22 +606,22 @@ void get_color (MyPaintSurface *surface, float x, float y,
 {
     MyPaintTiledSurface *self = (MyPaintTiledSurface *)surface;
 
-    if (radius < 1.0) radius = 1.0;
-    const float hardness = 0.5;
-    const float aspect_ratio = 1.0;
-    const float angle = 0.0;
+    if (radius < 1.0f) radius = 1.0f;
+    const float hardness = 0.5f;
+    const float aspect_ratio = 1.0f;
+    const float angle = 0.0f;
 
     float sum_weight, sum_r, sum_g, sum_b, sum_a;
-    sum_weight = sum_r = sum_g = sum_b = sum_a = 0.0;
+    sum_weight = sum_r = sum_g = sum_b = sum_a = 0.0f;
 
     // in case we return with an error
-    *color_r = 0.0;
-    *color_g = 1.0;
-    *color_b = 0.0;
+    *color_r = 0.0f;
+    *color_g = 1.0f;
+    *color_b = 0.0f;
 
     // WARNING: some code duplication with draw_dab
 
-    float r_fringe = radius + 1.0; // +1 should not be required, only to be sure
+    float r_fringe = radius + 1.0f; // +1 should not be required, only to be sure
 
     int tx1 = floor(floor(x - r_fringe) / MYPAINT_TILE_SIZE);
     int tx2 = floor(floor(x + r_fringe) / MYPAINT_TILE_SIZE);
@@ -668,7 +668,7 @@ void get_color (MyPaintSurface *surface, float x, float y,
       }
     }
 
-    assert(sum_weight > 0.0);
+    assert(sum_weight > 0.0f);
     sum_a /= sum_weight;
     sum_r /= sum_weight;
     sum_g /= sum_weight;
@@ -676,23 +676,23 @@ void get_color (MyPaintSurface *surface, float x, float y,
 
     *color_a = sum_a;
     // now un-premultiply the alpha
-    if (sum_a > 0.0) {
+    if (sum_a > 0.0f) {
       *color_r = sum_r / sum_a;
       *color_g = sum_g / sum_a;
       *color_b = sum_b / sum_a;
     } else {
       // it is all transparent, so don't care about the colors
       // (let's make them ugly so bugs will be visible)
-      *color_r = 0.0;
-      *color_g = 1.0;
-      *color_b = 0.0;
+      *color_r = 0.0f;
+      *color_g = 1.0f;
+      *color_b = 0.0f;
     }
 
     // fix rounding problems that do happen due to floating point math
-    *color_r = CLAMP(*color_r, 0.0, 1.0);
-    *color_g = CLAMP(*color_g, 0.0, 1.0);
-    *color_b = CLAMP(*color_b, 0.0, 1.0);
-    *color_a = CLAMP(*color_a, 0.0, 1.0);
+    *color_r = CLAMP(*color_r, 0.0f, 1.0f);
+    *color_g = CLAMP(*color_g, 0.0f, 1.0f);
+    *color_b = CLAMP(*color_b, 0.0f, 1.0f);
+    *color_a = CLAMP(*color_a, 0.0f, 1.0f);
 }
 
 /**
@@ -723,7 +723,7 @@ mypaint_tiled_surface_init(MyPaintTiledSurface *self,
     self->dirty_bbox.width = 0;
     self->dirty_bbox.height = 0;
     self->surface_do_symmetry = FALSE;
-    self->surface_center_x = 0.0;
+    self->surface_center_x = 0.0f;
     self->operation_queue = operation_queue_new();
 }
 
