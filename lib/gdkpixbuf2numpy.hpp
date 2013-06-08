@@ -50,6 +50,12 @@ gdkpixbuf_get_pixels_array(PyObject *pixbuf_pyobject)
     PyArray_STRIDES(array)[0] = gdk_pixbuf_get_rowstride(pixbuf);
     /* the array holds a ref to the pixbuf pixels through this wrapper*/
     Py_INCREF(pixbuf_pyobject);
+
+#if NPY_API_VERSION >= NPY_1_7_API_VERSION
+    PyArray_SetBaseObject(array, (PyObject *)pixbuf_pyobject);
+#else
     array->base = (PyObject *)pixbuf_pyobject;
+#endif
+
     return PyArray_Return(array);
 }
