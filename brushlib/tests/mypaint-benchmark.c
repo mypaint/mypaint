@@ -66,7 +66,7 @@ void mypaint_benchmark_start(const char *name)
 #ifdef HAVE_GPERFTOOLS
         ProfilerStart(name);
 #else
-        fprintf(stderr, "Warning: Not built with gperftools support.");
+        fprintf(stderr, "Warning: Not built with gperftools support.\n");
 #endif
     }
 
@@ -85,7 +85,7 @@ int mypaint_benchmark_end()
 #ifdef HAVE_GPERFTOOLS
         ProfilerStop();
 #else
-        fprintf(stderr, "Warning: Not built with gperftools support.");
+        fprintf(stderr, "Warning: Not built with gperftools support.\n");
 #endif
     }
 

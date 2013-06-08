@@ -43,6 +43,10 @@ if gegl_tests_env['enable_gegl']:
     gegl_tests_env.Append(LIBPATH=['../..'])
     gegl_tests_env['LIBS'].remove('mypaint') # Workaround: ordering wrong when using Prepend on some systems
     gegl_tests_env.Prepend(LIBS=['mypaint-gegl', 'mypaint-tests', 'mypaint'])
+
+    if gegl_tests_env['enable_gperftools']:
+        gegl_tests_env.ParseConfig('pkg-config --cflags --libs libprofiler')
+
     for source in gegl_tests_sources:
         target = os.path.splitext(source)[0]
         target = os.path.basename(target)
