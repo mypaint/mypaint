@@ -146,9 +146,9 @@ static inline float
 calculate_r_sample(float x, float y, float aspect_ratio,
                       float sn, float cs)
 {
-    float yyr=(y*cs-x*sn)*aspect_ratio;
-    float xxr=y*sn+x*cs;
-    float r = (yyr*yyr + xxr*xxr);
+    const float yyr=(y*cs-x*sn)*aspect_ratio;
+    const float xxr=y*sn+x*cs;
+    const float r = (yyr*yyr + xxr*xxr);
     return r;
 }
 
@@ -157,11 +157,11 @@ calculate_rr(int xp, int yp, float x, float y, float aspect_ratio,
                       float sn, float cs, float one_over_radius2)
 {
     // code duplication, see brush::count_dabs_to()
-    float yy = (yp + 0.5 - y);
-    float xx = (xp + 0.5 - x);
-    float yyr=(yy*cs-xx*sn)*aspect_ratio;
-    float xxr=yy*sn+xx*cs;
-    float rr = (yyr*yyr + xxr*xxr) * one_over_radius2;
+    const float yy = (yp + 0.5 - y);
+    const float xx = (xp + 0.5 - x);
+    const float yyr=(yy*cs-xx*sn)*aspect_ratio;
+    const float xxr=yy*sn+xx*cs;
+    const float rr = (yyr*yyr + xxr*xxr) * one_over_radius2;
     // rr is in range 0.0..1.0*sqrt(2)
     return rr;
 }
@@ -175,9 +175,9 @@ sign_point_in_line( float px, float py, float vx, float vy )
 static inline void
 closest_point_to_line( float lx, float ly, float px, float py, float *ox, float *oy )
 {
-    float l2 = lx*lx + ly*ly;
-    float ltp_dot = px*lx + py*ly;
-    float t = ltp_dot / l2;
+    const float l2 = lx*lx + ly*ly;
+    const float ltp_dot = px*lx + py*ly;
+    const float t = ltp_dot / l2;
     *ox = lx * t;
     *oy = ly * t;
 }
@@ -276,7 +276,7 @@ calculate_opa(float rr, float hardness,
               float segment1_offset, float segment1_slope,
               float segment2_offset, float segment2_slope) {
 
-    float fac = rr <= hardness ? segment1_slope : segment2_slope;
+    const float fac = rr <= hardness ? segment1_slope : segment2_slope;
     float opa = rr <= hardness ? segment1_offset : segment2_offset;
     opa += rr*fac;
 
@@ -331,7 +331,7 @@ void render_dab_mask (uint16_t * mask,
     float cs=cos(angle_rad);
     float sn=sin(angle_rad);
 
-    float r_fringe = radius + 1.0; // +1.0 should not be required, only to be sure
+    const float r_fringe = radius + 1.0; // +1.0 should not be required, only to be sure
     int x0 = floor (x - r_fringe);
     int y0 = floor (y - r_fringe);
     int x1 = floor (x + r_fringe);
@@ -340,7 +340,7 @@ void render_dab_mask (uint16_t * mask,
     if (y0 < 0) y0 = 0;
     if (x1 > MYPAINT_TILE_SIZE-1) x1 = MYPAINT_TILE_SIZE-1;
     if (y1 > MYPAINT_TILE_SIZE-1) y1 = MYPAINT_TILE_SIZE-1;
-    float one_over_radius2 = 1.0/(radius*radius);
+    const float one_over_radius2 = 1.0/(radius*radius);
 
     // Pre-calculate rr and put it in the mask.
     // This an optimization that makes use of auto-vectorization
@@ -355,7 +355,7 @@ void render_dab_mask (uint16_t * mask,
 
       for (int yp = y0; yp <= y1; yp++) {
         for (int xp = x0; xp <= x1; xp++) {
-          float rr = calculate_rr_antialiased(xp, yp,
+          const float rr = calculate_rr_antialiased(xp, yp,
                                   x, y, aspect_ratio,
                                   sn, cs, one_over_radius2,
                                   r_aa_start);
@@ -367,7 +367,7 @@ void render_dab_mask (uint16_t * mask,
     {
       for (int yp = y0; yp <= y1; yp++) {
         for (int xp = x0; xp <= x1; xp++) {
-          float rr = calculate_rr(xp, yp,
+          const float rr = calculate_rr(xp, yp,
                                   x, y, aspect_ratio,
                                   sn, cs, one_over_radius2);
           rr_mask[(yp*MYPAINT_TILE_SIZE)+xp] = rr;
@@ -386,11 +386,11 @@ void render_dab_mask (uint16_t * mask,
 
       int xp;
       for (xp = x0; xp <= x1; xp++) {
-        float rr = rr_mask[(yp*MYPAINT_TILE_SIZE)+xp];
-        float opa = calculate_opa(rr, hardness,
+        const float rr = rr_mask[(yp*MYPAINT_TILE_SIZE)+xp];
+        const float opa = calculate_opa(rr, hardness,
                                   segment1_offset, segment1_slope,
                                   segment2_offset, segment2_slope);
-        uint16_t opa_ = opa * (1<<15);
+        const uint16_t opa_ = opa * (1<<15);
         if (!opa_) {
           skip++;
         } else {
