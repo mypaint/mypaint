@@ -129,14 +129,16 @@ public:
     return Py_BuildValue("fff",h,s,v);
   }
 
-  void render(PyObject * arr)
+  void render(PyObject * obj)
   {
+    PyArrayObject* arr = (PyArrayObject*)obj;
+
     assert(PyArray_ISCARRAY(arr));
     assert(PyArray_NDIM(arr) == 3);
     assert(PyArray_DIM(arr, 0) == colorring_size);
     assert(PyArray_DIM(arr, 1) == colorring_size);
     assert(PyArray_DIM(arr, 2) == 4);  // memory width of pixel data ( 3 = RGB, 4 = RGBA )
-    guchar* pixels = (guchar*)((PyArrayObject*)arr)->data;
+    guchar* pixels = (guchar*)PyArray_DATA(arr);
   
     const int pixels_inc = PyArray_DIM(arr, 2);
   

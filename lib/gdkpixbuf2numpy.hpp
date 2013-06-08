@@ -42,12 +42,12 @@ gdkpixbuf_get_pixels_array(PyObject *pixbuf_pyobject)
     dims[1] = gdk_pixbuf_get_width(pixbuf);
     if (gdk_pixbuf_get_has_alpha(pixbuf))
         dims[2] = 4;
-    array = (PyArrayObject *)PyArray_FromDimsAndData(3, dims, PyArray_UBYTE,
+    array = (PyArrayObject *)PyArray_FromDimsAndData(3, dims, NPY_UBYTE,
                                         (char *)gdk_pixbuf_get_pixels(pixbuf));
     if (array == NULL)
         return NULL;
 
-    array->strides[0] = gdk_pixbuf_get_rowstride(pixbuf);
+    PyArray_STRIDES(array)[0] = gdk_pixbuf_get_rowstride(pixbuf);
     /* the array holds a ref to the pixbuf pixels through this wrapper*/
     Py_INCREF(pixbuf_pyobject);
     array->base = (PyObject *)pixbuf_pyobject;

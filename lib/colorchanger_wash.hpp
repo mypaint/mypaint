@@ -229,18 +229,19 @@ public:
 
 #endif /* #ifndef SWIG */
 
-  void render(PyObject * arr)
+  void render(PyObject * obj)
   {
     uint8_t * pixels;
     int x, y;
     float h, s, v;
+    PyArrayObject* arr = (PyArrayObject*)obj;
 
     assert(PyArray_ISCARRAY(arr));
     assert(PyArray_NDIM(arr) == 3);
     assert(PyArray_DIM(arr, 0) == ccw_size);
     assert(PyArray_DIM(arr, 1) == ccw_size);
     assert(PyArray_DIM(arr, 2) == 4);
-    pixels = (uint8_t*)((PyArrayObject*)arr)->data;
+    pixels = (uint8_t*)(PyArray_DATA(arr));
     
     precalcDataIndex++;
     precalcDataIndex %= 4;

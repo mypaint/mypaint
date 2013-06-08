@@ -24,7 +24,7 @@ public:
   {
     npy_intp dims = {MYPAINT_BRUSH_STATES_COUNT};
     PyObject * data = PyArray_SimpleNew(1, &dims, NPY_FLOAT32);
-    npy_float32 * data_p = (npy_float32*)PyArray_DATA(data);
+    npy_float32 * data_p = (npy_float32*)PyArray_DATA((PyArrayObject*)data);
     for (int i=0; i<MYPAINT_BRUSH_STATES_COUNT; i++) {
       data_p[i] = get_state((MyPaintBrushState)i);
     }
@@ -32,8 +32,9 @@ public:
   }
 
   // set state from numpy array
-  void python_set_state (PyObject * data)
+  void python_set_state (PyObject * obj)
   {
+    PyArrayObject* data = (PyArrayObject*)obj;
     assert(PyArray_NDIM(data) == 1);
     assert(PyArray_DIM(data, 0) == MYPAINT_BRUSH_STATES_COUNT);
     assert(PyArray_ISCARRAY(data));

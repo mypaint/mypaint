@@ -106,8 +106,9 @@ save_png_fast_progressive (char *filename,
     int y = 0;
     while (y < h) {
       int rows;
-      PyObject * arr = PyIter_Next(iterator);
+      PyObject * obj = PyIter_Next(iterator);
       if (PyErr_Occurred()) goto cleanup;
+      PyArrayObject* arr = (PyArrayObject*)obj;
       assert(arr); // iterator should have data
       assert(PyArray_ISALIGNED(arr));
       assert(PyArray_NDIM(arr) == 3);
@@ -439,7 +440,7 @@ load_png_fast_progressive (char *filename,
   rows_left = height;
 
   while (rows_left) {
-    PyObject *pyarr = NULL;
+    PyObject *obj = NULL;
     uint32_t rows = 0;
     uint32_t row = 0;
     const uint8_t input_buf_bytes_per_pixel = (bit_depth==8) ? 4 : 8;
@@ -448,11 +449,12 @@ load_png_fast_progressive (char *filename,
     png_byte *input_buffer = NULL;
     png_bytep *input_buf_row_pointers = NULL;
 
-    pyarr = PyObject_CallFunction(get_buffer_callback, "ii", width, height);
-    if (! pyarr) {
+    obj = PyObject_CallFunction(get_buffer_callback, "ii", width, height);
+    if (!obj) {
       PyErr_Format(PyExc_RuntimeError, "Get-buffer callback failed");
       goto cleanup;
     }
+    PyArrayObject* pyarr = (PyArrayObject*)obj;
 #ifdef HEAVY_DEBUG
     //assert(PyArray_ISCARRAY(arr));
     assert(PyArray_NDIM(pyarr) == 3);
@@ -502,7 +504,7 @@ load_png_fast_progressive (char *filename,
     free(input_buf_row_pointers);
     free(input_buffer);
 
-    Py_DECREF(pyarr);
+    Py_DECREF(obj);
   }
 
   png_read_end(png_ptr, NULL);
