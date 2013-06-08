@@ -157,8 +157,8 @@ calculate_rr(int xp, int yp, float x, float y, float aspect_ratio,
                       float sn, float cs, float one_over_radius2)
 {
     // code duplication, see brush::count_dabs_to()
-    const float yy = (yp + 0.5 - y);
-    const float xx = (xp + 0.5 - x);
+    const float yy = (yp + 0.5f - y);
+    const float xx = (xp + 0.5f - x);
     const float yyr=(yy*cs-xx*sn)*aspect_ratio;
     const float xxr=yy*sn+xx*cs;
     const float rr = (yyr*yyr + xxr*xxr) * one_over_radius2;
@@ -201,10 +201,10 @@ calculate_rr_antialiased(int xp, int yp, float x, float y, float aspect_ratio,
     // that the dab's center is always at zero
     float pixel_right = x - (float)xp;
     float pixel_bottom = y - (float)yp;
-    float pixel_center_x = pixel_right - 0.5;
-    float pixel_center_y = pixel_bottom - 0.5;
-    float pixel_left = pixel_right - 1.0;
-    float pixel_top = pixel_bottom - 1.0;
+    float pixel_center_x = pixel_right - 0.5f;
+    float pixel_center_y = pixel_bottom - 0.5f;
+    float pixel_left = pixel_right - 1.0f;
+    float pixel_top = pixel_bottom - 1.0f;
 
     float nearest_x, nearest_y; // nearest to origin, but still inside pixel
     float farthest_x, farthest_y; // farthest from origin, but still inside pixel
@@ -260,15 +260,15 @@ calculate_rr_antialiased(int xp, int yp, float x, float y, float aspect_ratio,
 
     // check if we can skip heavier AA
     if( r_far < r_aa_start )
-        return (rr_far+rr_near) * 0.5;
+        return (rr_far+rr_near) * 0.5f;
 
     // calculate AA approximate
-    float visibilityNear = 1.0 - rr_near;
+    float visibilityNear = 1.0f - rr_near;
     float delta = rr_far - rr_near;
-    float delta2 = 1.0 + delta;
+    float delta2 = 1.0f + delta;
     visibilityNear /= delta2;
 
-    return 1.0 - visibilityNear;
+    return 1.0f - visibilityNear;
 }
 
 static inline float
@@ -280,12 +280,12 @@ calculate_opa(float rr, float hardness,
     float opa = rr <= hardness ? segment1_offset : segment2_offset;
     opa += rr*fac;
 
-    if (rr > 1.0) {
-        opa = 0.0;
+    if (rr > 1.0f) {
+        opa = 0.0f;
     }
     #ifdef HEAVY_DEBUG
     assert(isfinite(opa));
-    assert(opa >= 0.0 && opa <= 1.0);
+    assert(opa >= 0.0f && opa <= 1.0f);
     #endif
     return opa;
 }
