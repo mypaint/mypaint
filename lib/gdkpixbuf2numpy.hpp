@@ -51,7 +51,7 @@ gdkpixbuf_get_pixels_array(PyObject *pixbuf_pyobject)
     /* the array holds a ref to the pixbuf pixels through this wrapper*/
     Py_INCREF(pixbuf_pyobject);
 
-#if NPY_API_VERSION >= NPY_1_7_API_VERSION
+#ifdef NPY_1_7_API_VERSION
     PyArray_SetBaseObject(array, (PyObject *)pixbuf_pyobject);
 #else
     array->base = (PyObject *)pixbuf_pyobject;
