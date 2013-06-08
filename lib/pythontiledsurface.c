@@ -57,13 +57,13 @@ tile_request_start(MyPaintTiledSurface *tiled_surface, MyPaintTiledSurfaceTileRe
     const int tx = request->tx;
     const int ty = request->ty;
 
-    PyObject* rgba = NULL;
+    PyArrayObject* rgba = NULL;
 
     if (PyErr_Occurred()) {
       PyErr_Print();
       return;
     }
-    rgba = PyObject_CallMethod(self->py_obj, "_get_tile_numpy", "(iii)", tx, ty, readonly);
+    rgba = (PyArrayObject*)PyObject_CallMethod(self->py_obj, "_get_tile_numpy", "(iii)", tx, ty, readonly);
     if (rgba == NULL) {
       request->buffer = NULL;
       printf("Python exception during get_tile_numpy()!\n");
@@ -81,9 +81,9 @@ tile_request_start(MyPaintTiledSurface *tiled_surface, MyPaintTiledSurfaceTileRe
     assert(PyArray_TYPE(rgba) == NPY_UINT16);
 #endif
     // tiledsurface.py will keep a reference in its tiledict, at least until the final end_atomic()
-    Py_DECREF(rgba);
+    Py_DECREF((PyObject *)rgba);
 
-    uint16_t * rgba_p = (uint16_t*)PyArray_DATA((PyArrayObject*)rgba);
+    uint16_t * rgba_p = (uint16_t*)PyArray_DATA(rgba);
     request->buffer = rgba_p;
 }
 
