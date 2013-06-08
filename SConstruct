@@ -74,6 +74,8 @@ env.Append(CXXFLAGS=' -Wall -Wno-sign-compare -Wno-write-strings')
 env.Append(CCFLAGS='-Wall')
 env.Append(CFLAGS='-std=c99')
 
+env['GEGL_VERSION'] = 0.3
+
 # Define strdup() in string.h under glibc >= 2.10 (POSIX.1-2008)
 env.Append(CFLAGS='-D_POSIX_C_SOURCE=200809L')
 

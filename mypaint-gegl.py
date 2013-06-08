@@ -201,7 +201,7 @@ class MyPaintGeglApplication(object):
 
 if __name__ == '__main__':
 
-    Gegl.init(0, "")
+    Gegl.init([])
     Gtk.init([])
 
     app = MyPaintGeglApplication()

@@ -15,18 +15,31 @@
 
 #include <mypaint-gegl-surface.h>
 
+static bool backend_initialized = FALSE;
+
+void gegl_backend_init() {
+    if (!backend_initialized) {
+      gegl_init(0, NULL);
+      pygobject_init(2, 18, 0);
+      backend_initialized = true;
+    }
+}
+
+void gegl_backend_exit() {
+    if (backend_initialized) {
+        gegl_exit();
+    }
+}
+
 class GeglBackedSurface : public Surface {
 
 public:
   GeglBackedSurface(PyObject * self_) {
       py_obj = self_; // no need to incref
 
-      // TODO: move somewhere else
-      babl_init();
-      gegl_init(0, NULL);
-      pygobject_init(2, 18, 0);
-
       c_surface = mypaint_gegl_tiled_surface_new();
+
+      gegl_backend_init();
 
       node = gegl_node("gegl:buffer-source",
                        "buffer", mypaint_gegl_tiled_surface_get_buffer(c_surface), NULL);

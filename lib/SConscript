@@ -57,7 +57,7 @@ env.Append(CPPDEFINES=['HAVE_GTK3']) # possibly useful while we're porting
 pygobject = 'pygobject-3.0'   # keep in step?
 
 if env['enable_gegl']:
-    env.ParseConfig('pkg-config --cflags --libs gegl-0.2')
+    env.ParseConfig('pkg-config --cflags --libs gegl-0.3')
     env.Append(CPPDEFINES=['HAVE_GEGL'])
 
 env.ParseConfig('pkg-config --cflags --libs ' + pygobject)

@@ -155,7 +155,7 @@ if env['enable_brushlib_i18n']:
 # Optional: GEGL library
 gegl_env = env.Clone()
 if env['enable_gegl']:
-    deps = ['gegl-0.2']
+    deps = ['gegl-%s' % env['GEGL_VERSION']]
     gegl_env.ParseConfig('pkg-config --cflags --libs %s' % ' '.join(deps))
     gegl_env.Append(LIBPATH=['..'], LIBS=['mypaint'])
 
@@ -174,8 +174,8 @@ if env['enable_gegl']:
                                   Glob("gegl/*.c") + Glob("gegl/mypaint-gegl-*.h") +
                                   Glob("glib/mypaint-gegl*"),
                                   ['brushlib/', './brushlib/gegl'], brushlib_gegl,
-                                  ['glib-2.0', 'gegl-0.2'],
-                                  ['Gegl-0.2', 'MyPaint-%s' % brushlib_version])
+                                  ['glib-2.0', 'gegl-%s' % env['GEGL_VERSION']],
+                                  ['Gegl-%s' % env['GEGL_VERSION'], 'MyPaint-%s' % brushlib_version])
 
         install_perms(env, '$prefix/share/gir-1.0', gir)
         install_perms(env, '$prefix/lib/girepository-1.0', typelib)
