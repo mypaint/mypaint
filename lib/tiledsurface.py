@@ -14,6 +14,7 @@ import time
 import sys
 import os
 import contextlib
+import functools
 
 import mypaintlib
 import helpers
@@ -44,24 +45,29 @@ class Tile:
         return Tile(copy_from=self)
 
 
-svg2composite_func = {
-    'svg:src-over': mypaintlib.tile_composite_normal,
-    'svg:multiply': mypaintlib.tile_composite_multiply,
-    'svg:screen': mypaintlib.tile_composite_screen,
-    'svg:overlay': mypaintlib.tile_composite_overlay,
-    'svg:darken': mypaintlib.tile_composite_darken,
-    'svg:lighten': mypaintlib.tile_composite_lighten,
-    'svg:hard-light': mypaintlib.tile_composite_hard_light,
-    'svg:soft-light': mypaintlib.tile_composite_soft_light,
-    'svg:color-burn': mypaintlib.tile_composite_color_burn,
-    'svg:color-dodge': mypaintlib.tile_composite_color_dodge,
-    'svg:difference': mypaintlib.tile_composite_difference,
-    'svg:exclusion': mypaintlib.tile_composite_exclusion,
-    'svg:hue': mypaintlib.tile_composite_hue,
-    'svg:saturation': mypaintlib.tile_composite_saturation,
-    'svg:color': mypaintlib.tile_composite_color,
-    'svg:luminosity': mypaintlib.tile_composite_luminosity,
+
+svg2mypaintlibmode = {
+    'svg:src-over': mypaintlib.BlendingModeNormal,
+    'svg:multiply': mypaintlib.BlendingModeMultiply,
+    'svg:screen': mypaintlib.BlendingModeScreen,
+    'svg:overlay': mypaintlib.BlendingModeOverlay,
+    'svg:darken': mypaintlib.BlendingModeDarken,
+    'svg:lighten': mypaintlib.BlendingModeLighten,
+    'svg:hard-light': mypaintlib.BlendingModeHardLight,
+    'svg:soft-light': mypaintlib.BlendingModeSoftLight,
+    'svg:color-burn': mypaintlib.BlendingModeColorBurn,
+    'svg:color-dodge': mypaintlib.BlendingModeColorDodge,
+    'svg:difference': mypaintlib.BlendingModeDifference,
+    'svg:exclusion': mypaintlib.BlendingModeExclusion,
+    'svg:hue': mypaintlib.BlendingModeHue,
+    'svg:saturation': mypaintlib.BlendingModeSaturation,
+    'svg:color': mypaintlib.BlendingModeColor,
+    'svg:luminosity': mypaintlib.BlendingModeLuminosity,
     }
+
+svg2composite_func = {}
+for svg_id, mode_enum in svg2mypaintlibmode.iteritems():
+    svg2composite_func[svg_id] = functools.partial(mypaintlib.tile_composite, mode_enum)
 
 # tile for read-only operations on empty spots
 transparent_tile = Tile()
