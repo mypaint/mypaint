@@ -76,176 +76,6 @@ tile_composite_data (const fix15_short_t *src_p,
   }
 }
 
-void
-tile_composite_normal (const fix15_short_t *src,
-                       fix15_short_t *dst,
-                       const bool dst_has_alpha,
-                       const float src_opacity)
-{
-    tile_composite_data<NormalBlendMode>(src, dst, dst_has_alpha, src_opacity);
-}
-
-
-void
-tile_composite_multiply (const fix15_short_t *src,
-                         fix15_short_t *dst,
-                         const bool dst_has_alpha,
-                         const float src_opacity)
-{
-    tile_composite_data<MultiplyBlendMode>(src,dst,dst_has_alpha,src_opacity);
-}
-
-
-void
-tile_composite_screen (const fix15_short_t *src,
-                       fix15_short_t *dst,
-                       const bool dst_has_alpha,
-                       const float src_opacity)
-{
-    tile_composite_data<ScreenBlendMode>(src,dst,dst_has_alpha,src_opacity);
-}
-
-
-void
-tile_composite_overlay (const fix15_short_t *src,
-                        fix15_short_t *dst,
-                        const bool dst_has_alpha,
-                        const float src_opacity)
-{
-    tile_composite_data<OverlayBlendMode>(src,dst,dst_has_alpha,src_opacity);
-}
-
-
-void
-tile_composite_hard_light (const fix15_short_t *src,
-                           fix15_short_t *dst,
-                           const bool dst_has_alpha,
-                           const float src_opacity)
-{
-    tile_composite_data<HardLightBlendMode>(src,dst,dst_has_alpha,src_opacity);
-}
-
-
-void
-tile_composite_lighten (const fix15_short_t *src,
-                        fix15_short_t *dst,
-                        const bool dst_has_alpha,
-                        const float src_opacity)
-{
-    tile_composite_data<LightenBlendMode>
-        (src, dst, dst_has_alpha, src_opacity);
-}
-
-
-void
-tile_composite_darken (const fix15_short_t *src,
-                       fix15_short_t *dst,
-                       const bool dst_has_alpha,
-                       const float src_opacity)
-{
-    tile_composite_data<DarkenBlendMode>
-        (src, dst, dst_has_alpha, src_opacity);
-}
-
-
-void
-tile_composite_soft_light (const fix15_short_t *src,
-                           fix15_short_t *dst,
-                           const bool dst_has_alpha,
-                           const float src_opacity)
-{
-    tile_composite_data<SoftLightBlendMode>
-        (src, dst, dst_has_alpha, src_opacity);
-}
-
-
-void
-tile_composite_color_dodge (const fix15_short_t *src,
-                            fix15_short_t *dst,
-                            const bool dst_has_alpha,
-                            const float src_opacity)
-{
-    tile_composite_data<ColorDodgeBlendMode>
-        (src, dst, dst_has_alpha, src_opacity);
-}
-
-
-void
-tile_composite_color_burn (const fix15_short_t *src,
-                           fix15_short_t *dst,
-                           const bool dst_has_alpha,
-                           const float src_opacity)
-{
-    tile_composite_data<ColorBurnBlendMode>
-        (src, dst, dst_has_alpha, src_opacity);
-}
-
-
-void
-tile_composite_difference (const fix15_short_t *src,
-                           fix15_short_t *dst,
-                           const bool dst_has_alpha,
-                           const float src_opacity)
-{
-    tile_composite_data<DifferenceBlendMode>
-        (src, dst, dst_has_alpha, src_opacity);
-}
-
-
-void
-tile_composite_exclusion (const fix15_short_t *src,
-                          fix15_short_t *dst,
-                          const bool dst_has_alpha,
-                          const float src_opacity)
-{
-    tile_composite_data<ExclusionBlendMode>
-        (src, dst, dst_has_alpha, src_opacity);
-}
-
-void
-tile_composite_hue (const fix15_short_t *src,
-                    fix15_short_t *dst,
-                    const bool dst_has_alpha,
-                    const float src_opacity)
-{
-    tile_composite_data<HueBlendMode>
-        (src, dst, dst_has_alpha, src_opacity);
-}
-
-
-void
-tile_composite_saturation (const fix15_short_t *src,
-                           fix15_short_t *dst,
-                           const bool dst_has_alpha,
-                           const float src_opacity)
-{
-    tile_composite_data<SaturationBlendMode>
-        (src, dst, dst_has_alpha, src_opacity);
-}
-
-
-void
-tile_composite_color (const fix15_short_t *src,
-                      fix15_short_t *dst,
-                      const bool dst_has_alpha,
-                      const float src_opacity)
-{
-    tile_composite_data<ColorBlendMode>
-        (src, dst, dst_has_alpha, src_opacity);
-}
-
-
-void
-tile_composite_luminosity (const fix15_short_t *src,
-                           fix15_short_t *dst,
-                           const bool dst_has_alpha,
-                           const float src_opacity)
-{
-    tile_composite_data<LuminosityBlendMode>
-        (src, dst, dst_has_alpha, src_opacity);
-}
-
-
 // used to e.g. copy the background before starting to composite over it
 //
 // simply array copying (numpy assignment operator) is about 13 times slower, sadly
@@ -737,11 +567,6 @@ void tile_perceptual_change_strokemap(PyObject * a_obj, PyObject * b_obj, PyObje
   }
 }
 
-typedef void (*TileCompositeFunction) (const fix15_short_t *src,
-                           fix15_short_t *dst,
-                           const bool dst_has_alpha,
-                           const float src_opacity);
-
 enum BlendingMode {
     BlendingModeInvalid,
     BlendingModeNormal,
@@ -763,25 +588,30 @@ enum BlendingMode {
     BlendingModes
 };
 
+typedef void (*TileCompositeFunction) (const fix15_short_t *src,
+                           fix15_short_t *dst,
+                           const bool dst_has_alpha,
+                           const float src_opacity);
+
 static TileCompositeFunction
 blendingmode_functions[BlendingModes] = {
     NULL,
-    tile_composite_normal,
-    tile_composite_multiply,
-    tile_composite_screen,
-    tile_composite_overlay,
-    tile_composite_darken,
-    tile_composite_lighten,
-    tile_composite_hard_light,
-    tile_composite_soft_light,
-    tile_composite_color_burn,
-    tile_composite_color_dodge,
-    tile_composite_difference,
-    tile_composite_exclusion,
-    tile_composite_hue,
-    tile_composite_saturation,
-    tile_composite_color,
-    tile_composite_luminosity
+    tile_composite_data<NormalBlendMode>,
+    tile_composite_data<MultiplyBlendMode>,
+    tile_composite_data<ScreenBlendMode>,
+    tile_composite_data<OverlayBlendMode>,
+    tile_composite_data<DarkenBlendMode>,
+    tile_composite_data<LightenBlendMode>,
+    tile_composite_data<HardLightBlendMode>,
+    tile_composite_data<SoftLightBlendMode>,
+    tile_composite_data<ColorBurnBlendMode>,
+    tile_composite_data<ColorDodgeBlendMode>,
+    tile_composite_data<DifferenceBlendMode>,
+    tile_composite_data<ExclusionBlendMode>,
+    tile_composite_data<HueBlendMode>,
+    tile_composite_data<SaturationBlendMode>,
+    tile_composite_data<ColorBlendMode>,
+    tile_composite_data<LuminosityBlendMode>
 };
 
 void
