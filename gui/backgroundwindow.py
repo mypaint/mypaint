@@ -43,12 +43,12 @@ class Window(windowing.Dialog):
         patterns_scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
         notebook.append_page(patterns_scroll, gtk.Label(_('Pattern')))
 
-        self.bgl = None
+        self.bgl = BackgroundList(self)
+        patterns_scroll.add_with_viewport(self.bgl)
+
         def lazy_init(*ignored):
-            if self.bgl is None:
-                self.bgl = BackgroundList(self)
-                patterns_scroll.add_with_viewport(self.bgl)
-                patterns_scroll.show_all()
+            if not self.bgl.initialized:
+                self.bgl.initialize()
         self.connect("realize", lazy_init)
 
         #set up colors tab
@@ -108,24 +108,50 @@ class Window(windowing.Dialog):
 
 class BackgroundList(pixbuflist.PixbufList):
     def __init__(self, win):
+        pixbuflist.PixbufList.__init__(self, None, N, N, pixbuffunc=self.pixbuf_scaler)
         self.app = win.app
         self.win = win
+
+        self.dragging_allowed = False
 
         stock_path = os.path.join(self.app.datapath, 'backgrounds')
         user_path  = os.path.join(self.app.user_datapath, 'backgrounds')
         if not os.path.isdir(user_path):
             os.mkdir(user_path)
-        self.backgrounds = []
 
         def listdir(path):
             l = glob(os.path.join(path, '*.png')) + glob(os.path.join(path, '*/*.png'))
             l.sort(key=os.path.getmtime)
             return l
 
-        files = listdir(stock_path)
-        files.sort()
-        files += listdir(user_path)
+        self.background_files = listdir(stock_path)
+        self.background_files.sort()
+        self.background_files += listdir(user_path)
 
+        # Load default background
+        defaults = []
+        for filename in reversed(self.background_files):
+            if os.path.basename(filename).lower() == 'default.png':
+                defaults.append(filename)
+                self.background_files.remove(filename)
+        pixbuf = self.load_pixbufs(defaults)[0]
+        self.win.set_background(pixbuf)
+
+        self.pixbufs_scaled = {}
+        # Lazily loaded by self.initialize()
+        self.backgrounds = []
+
+    @property
+    def initialized(self):
+        return len(self.backgrounds) != 0
+
+    def initialize(self):
+        self.backgrounds = self.load_pixbufs(self.background_files)
+        self.set_itemlist(self.backgrounds)
+
+    def load_pixbufs(self, files):
+
+        pixbufs = []
         load_errors = []
         for filename in files:
             if not filename.lower().endswith('.png'):
@@ -155,11 +181,7 @@ class BackgroundList(pixbuflist.PixbufList):
             if not supported:
                 continue
 
-            if os.path.basename(filename).lower() == 'default.png':
-                self.win.set_background(pixbuf)
-                continue
-
-            self.backgrounds.append(pixbuf)
+            pixbufs.append(pixbuf)
 
         if load_errors:
             msg = "\n\n".join(load_errors)
@@ -172,10 +194,7 @@ class BackgroundList(pixbuflist.PixbufList):
                 type=gtk.MESSAGE_WARNING,
                 flags=gtk.DIALOG_MODAL)
 
-        pixbuflist.PixbufList.__init__(self, self.backgrounds, N, N, pixbuffunc=self.pixbuf_scaler)
-        self.dragging_allowed = False
-
-        self.pixbufs_scaled = {}
+        return pixbufs
 
     def pixbuf_scaler(self, pixbuf):
         w, h = pixbuf.get_width(), pixbuf.get_height()

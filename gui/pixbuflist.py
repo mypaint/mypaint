@@ -45,7 +45,6 @@ class PixbufList(gtk.DrawingArea):
         if itemlist is not None:
             self.itemlist = itemlist
         else:
-            warn("Creating standalone, empty itemlist for testing", RuntimeWarning, 2)
             self.itemlist = []
         self.pixbuffunc = pixbuffunc
         self.namefunc = namefunc
@@ -110,6 +109,10 @@ class PixbufList(gtk.DrawingArea):
                                gdk.ACTION_MOVE | gdk.ACTION_COPY)
             # Dragging *from* a list can only happen over a pixbuf: see motion_notify_cb
             self.drag_source_sensitive = False
+
+    def set_itemlist(self, items):
+        self.itemlist = items
+        self.update()
 
     def set_size(self, item_w, item_h):
         self.item_w = item_w
