@@ -43,8 +43,13 @@ class Window(windowing.Dialog):
         patterns_scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
         notebook.append_page(patterns_scroll, gtk.Label(_('Pattern')))
 
-        self.bgl = BackgroundList(self)
-        patterns_scroll.add_with_viewport(self.bgl)
+        self.bgl = None
+        def lazy_init(*ignored):
+            if self.bgl is None:
+                self.bgl = BackgroundList(self)
+                patterns_scroll.add_with_viewport(self.bgl)
+                patterns_scroll.show_all()
+        self.connect("realize", lazy_init)
 
         #set up colors tab
         color_vbox = gtk.VBox()
