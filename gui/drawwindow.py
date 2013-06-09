@@ -158,13 +158,9 @@ class DrawWindow (gtk.Window):
         topbar.toolbar = self.toolbar
 
         # Workspace setup
-        # One day maybe Glade will support custom signals and hook these up
-        # automatically. For now, connect them here, since toggle_window_cb
-        # is connected to this object.
-        self.app.workspace.connect("tool-widget-added",
-                                   self.app_workspace_tool_widget_added_cb)
-        self.app.workspace.connect("tool-widget-removed",
-                                   self.app_workspace_tool_widget_removed_cb)
+        ws = self.app.workspace
+        ws.tool_widget_shown += self.app_workspace_tool_widget_shown_cb
+        ws.tool_widget_hidden += self.app_workspace_tool_widget_hidden_cb
 
 
     def _init_actions(self):
@@ -352,16 +348,24 @@ class DrawWindow (gtk.Window):
 
     # Window handling
     def toggle_window_cb(self, action):
+        """Handles a variety of window-toggling GtkActions.
+
+        Handled here:
+
+        * Workspace-managed tool widgets which require no constructor args.
+        * Regular app subwindows, exposed via its get_subwindow() method.
+
+        """
         action_name = action.get_name()
         if action_name.endswith("Tool"):
             gtype_name = "MyPaint%s" % (action.get_name(),)
             workspace = self.app.workspace
             if action.get_active():
-                if not workspace.has_tool_widget(gtype_name):
-                    widget = workspace.add_tool_widget(gtype_name, [])
+                if not workspace.get_tool_widget_shown(gtype_name, []):
+                    workspace.show_tool_widget(gtype_name, [])
             else:
-                while workspace.has_tool_widget(gtype_name):
-                    widget = workspace.remove_tool_widget(gtype_name)
+                if workspace.get_tool_widget_shown(gtype_name, []):
+                    workspace.hide_tool_widget(gtype_name, [])
         elif self.app.has_subwindow(action_name):
             window = self.app.get_subwindow(action_name)
             if action.get_active():
@@ -375,7 +379,8 @@ class DrawWindow (gtk.Window):
             logger.warning("unknown window or tool %r" % (action_name,))
 
 
-    def app_workspace_tool_widget_added_cb(self, workspace, page, gtype_name):
+    def app_workspace_tool_widget_shown_cb(self, ws, widget):
+        gtype_name = widget.__gtype_name__
         assert gtype_name.startswith("MyPaint")
         action_name = gtype_name.replace("MyPaint", "", 1)
         action = self.app.builder.get_object(action_name)
@@ -383,7 +388,8 @@ class DrawWindow (gtk.Window):
             action.set_active(True)
 
 
-    def app_workspace_tool_widget_removed_cb(self, workspace, page, gtype_name):
+    def app_workspace_tool_widget_hidden_cb(self, ws, widget):
+        gtype_name = widget.__gtype_name__
         assert gtype_name.startswith("MyPaint")
         action_name = gtype_name.replace("MyPaint", "", 1)
         action = self.app.builder.get_object(action_name)

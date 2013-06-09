@@ -22,13 +22,8 @@ from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import Gdk
 
-
-## Exceptions
-
-class ToolWidgetConstructError (Exception):
-    """Errors raised during tool-widget construction.
-    """
-    pass
+from lib.observable import event
+import objfactory
 
 
 ## Class defs
@@ -39,11 +34,11 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
     Workspaces also manage zero or more floating ToolStacks, and can set the
     initial size and position of their own toplevel window.
 
-    Instances of tool widget classes can be added and removed from the
-    workspace programatically via their GType name.  They must support zero
-    argument construction for this to work, and should support the following
-    Python properties.  Defaults will be used if these properties aren't
-    defined, but the defaults are unlikely to be useful.
+    Instances of tool widget classes can be constructed in, and shown and hdden
+    in the workspace programatically using their GType name and an optional
+    sequence of construction parameters as a key.  They should support the
+    following Python properties.  Defaults will be used if these properties
+    aren't defined, but the defaults are unlikely to be useful.
 
     * ``tool_widget_icon_name``: the name of the icon to use.
     * ``tool_widget_title``: the title to display in the tooltip, and in
@@ -53,10 +48,9 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
 
     The entire layout of a Workspace, including the toplevel window of the
     Workspace itself, can be dumped to and built from structures containing
-    only simple Python types.  Widgets can be removed from the workspace by the
-    user by clicking on a tab group close button within a ToolStack widget,
-    moved around between stacks, or snapped out of stacks into new floating
-    windows.
+    only simple Python types.  Widgets can be hidden by the user by clicking on
+    a tab group close button within a ToolStack widget, moved around between
+    stacks, or snapped out of stacks into new floating windows.
 
     Workspaces observe their toplevel window, and automatically hide their
     sidebars and floating windows in fullscreen. Auto-hidden elements are
@@ -96,34 +90,10 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
     _EDGE_TOP = 0x04
     _EDGE_BOTTOM = 0x08
 
-    # GObject integration (type name, signals, properties)
+
+    ## GObject integration (type name, properties)
 
     __gtype_name__ = 'MyPaintWorkspace'
-    __gsignals__ = {
-        "tool-widget-added": (GObject.SIGNAL_RUN_FIRST, None,
-                              (Gtk.Widget, str)),
-        "tool-widget-removed": (GObject.SIGNAL_RUN_FIRST, None,
-                                (Gtk.Widget, str)),
-        "floating-window-created": (GObject.SIGNAL_RUN_FIRST, None,
-                                    (Gtk.Window,)),
-        "floating-window-destroy": (GObject.SIGNAL_RUN_FIRST, None,
-                                    (Gtk.Window,)),
-        }
-    """
-    Signals
-    -------
-
-    * ``tool-widget-added``, called after a tool widget is added.
-      Signature: ``callback(widget, gtype_name)``.
-    * ``tool-widget-removed``, called after a tool widget is removed.
-      Signature: ``callback(widget, gtype_name)``.
-    * ``floating-window-created``, called after a new floating window is
-      created either by the user snapping out a tool tab, or at startup.
-      Signature: ``callback(widget)``.
-    * ``floating-window-destroy``, called before a floating window is
-      destroyed. Signature: ``callback(widget)``.
-
-    """
 
     #: Title suffix property for floating windows.
     floating_window_title_suffix = GObject.property(
@@ -206,6 +176,9 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         self._initial_layout = None
         self._complete_initial_layout_cb_id = None
         self.connect("realize", self._realize_cb)
+        # Tool widget cache and factory
+        self._tool_widgets = objfactory.ObjFactory(gtype=Gtk.Widget)
+
 
     ## GtkBuildable implementation (pre-realize)
 
@@ -313,11 +286,11 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         # Floating windows
         for flayout in layout.get("floating", []):
             win = ToolStackWindow()
-            self.emit("floating-window-created", win)
+            self.floating_window_created(win)
             win.stack.workspace = self
             win.build_from_layout(flayout)
             self._floating.add(win)
-        # Reveal floating windows only after floating-window-created handlers
+        # Reveal floating windows only after floating_window_created handlers
         # have had a chance to run.
         for win in self._floating:
             GObject.idle_add(win.show_all)
@@ -423,104 +396,119 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
     ## Tool widgets
 
 
-    def add_tool_widget(self, gtype_name, tool_args):
-        """Adds a new tool widget by GType name
+    def show_tool_widget(self, tool_gtypename, tool_params):
+        """Shows a tool widget identified by GType name and construct params
 
-        :param gtype_name: GType name for the new widget's class
-        :param tool_args: parameters for the class's Python constructor
-        :return: the newly-constructed widget
+        :param tool_gtypename: GType system name for the new widget's class
+        :param tool_params: parameters for the class's Python constructor
 
-        The widget will be instantiated with the args provided, and added to
-        the first stack available. Existing floating windows will be favoured
-        over the sidebars; if there are no stacks visible, a sidebar will be
-        made visible to receive the new widget.
+        The widget will be created if it doesn't already exist. It will be
+        added to the first stack available. Existing floating windows will be
+        favoured over the sidebars; if there are no stacks visible, a sidebar
+        will be made visible to receive the new widget.
 
         """
-        logger.debug("Adding a %r to the most favorable stack", gtype_name)
-        stacks = list(self._get_tool_stacks())
-        assert stacks
+        # Attempt to get the widget, potentially creating it here.
+        try:
+            widget = self._tool_widgets.get(tool_gtypename, *tool_params)
+        except objfactory.ConstructError as ex:
+            warn("show_tool_widget: %s" % (ex.message,),
+                 RuntimeWarning)
+            return
+        # Inject it into a suitable ToolStack
         stack = None
-        widget = None
-        maxpages = 1
-        while not widget:
-            for stack in stacks:
-                try:
-                    widget = stack.add_tool_widget(gtype_name, tool_args,
-                                                   maxnotebooks=3,
-                                                   maxpages=maxpages)
-                except ToolWidgetConstructError as ex:
-                    warn("add_tool_widget: %s" % (ex.message,),
-                         RuntimeWarning)
-                    return None
-                if widget:
-                    break
-            maxpages += 1
-            if maxpages > 99:
-                logger.warning("All stacks appear to have 100+ pages. "
-                               "Probably untrue, but giving up anyway.")
-                break
-        if not widget:
-            logger.error("Cant find space for a %r in any stack", gtype_name)
-            return None
-        assert stack.has_tool_widget(gtype_name)
+        if widget.get_parent() is not None:
+            logger.debug("Existing %r is already visible", widget)
+            stack = widget.get_parent()
+            while stack and not isinstance(stack, ToolStack):
+                stack = stack.get_parent()
+        else:
+            assert widget.get_parent() is None
+            logger.debug("Showing %r, which is currently hidden", widget)
+            maxpages = 1
+            added = False
+            stack = None
+            while maxpages < 100 and not added:
+                for stack in self._get_tool_stacks():
+                    if stack.add_tool_widget(widget, maxnotebooks=3,
+                                             maxpages=maxpages):
+                        added = True
+                        break
+                maxpages += 1
+            if not added:
+                logger.error("Cant find space for %r in any stack", widget)
+                return
+        # Reveal the widget's ToolStack
+        assert stack and isinstance(stack, ToolStack)
         stack_toplevel = stack.get_toplevel()
         if stack_toplevel not in self._floating:
+            logger.debug("Showing %r (ancestor of freshly shown tool %r)",
+                         stack, widget)
             scrolls = stack.get_parent().get_parent()
             scrolls.show_all()
-        else:
-            if self._is_fullscreen and self.autohide_enabled:
-                for floating in self._floating:
-                    floating.show_all()
-        assert self.has_tool_widget(gtype_name)
-        logger.debug("Added %r successfully", gtype_name)
-        return widget
 
 
-    def tool_widget_added(self, page, gtype_name):
-        """Emits the "tool-widget-added" signal
-        """
-        # The signal is emitted in an idle callback to give the initial setup a
-        # chance to complete.
-        GObject.idle_add(self.emit, "tool-widget-added", page, gtype_name)
+    def hide_tool_widget(self, tool_gtypename, tool_params):
+        """Hides a tool widget by typename+params.
 
+        This hide the widget and orphans it from the widget hierarchy, but a
+        reference to it is kept in the Workspace's internal cache. Further
+        calls to show_tool_widget() will use the cached object.
 
-    def remove_tool_widget(self, gtype_name):
-        """Removes a new tool widget by GType name
-
-        If there is more than one instance of the named widget in the
-        hierarchy, only the first one will be removed.
+        :param tool_gtypename: GType system name for the widget's class
+        :param tool_params: construct params further identifying the widget
+        :returns: whether the widget was found and hidden
+        :rtype: bool
 
         """
+        # First, does it even exist?
+        if not self._tool_widgets.cache_has(tool_gtypename, *tool_params):
+            return False
+        # Can't hide anything that's already hidden
+        widget = self._tool_widgets.get(tool_gtypename, *tool_params)
+        if widget.get_parent() is None:
+            return False
+        # The widget should exist in a known stack; find and remove
         for stack in self._get_tool_stacks():
-            removed = stack.remove_tool_widget(gtype_name)
-            if removed:
-                return removed
-        return None
-
-
-    def tool_widget_removed(self, page, gtype_name):
-        """Emits the "tool-widget-removed" signal.
-        """
-        self.emit("tool-widget-removed", page, gtype_name)
-
-
-    def has_tool_widget(self, gtype_name):
-        """Tests whether a tool widget is in the workspace.
-        """
-        widget = self.get_tool_widget(gtype_name)
-        if widget:
-            return True
+            if stack.remove_tool_widget(widget):
+                return True
+        # Should never haappen...
+        warn("Asked to hide a visible widget, but it wasn't in any stack",
+             RuntimeWarning)
         return False
 
 
-    def get_tool_widget(self, gtype_name):
-        """Finds the first matching tool widget.
+    def get_tool_widget_shown(self, gtype_name, params):
+        """Returns whether a tool widget is currently parented and showing.
         """
-        for stack in self._get_tool_stacks():
-            widget = stack.get_tool_widget(gtype_name)
-            if widget:
-                return widget
-        return None
+        if not self._tool_widgets.cache_has(gtype_name, *params):
+            return False
+        widget = self._tool_widgets.get(gtype_name, *params)
+        return widget.get_parent() is not None
+
+
+    ## Tool widget events
+
+
+    @event
+    def tool_widget_shown(self, widget):
+        """Event: tool widget shown."""
+
+
+    @event
+    def tool_widget_hidden(self, widget):
+        """Event: tool widget hidden, either by the user or programatically."""
+
+
+    @event
+    def floating_window_created(self, toplevel):
+        """Event: a floating window was created to house a toolstack."""
+
+
+    @event
+    def floating_window_destroyed(self, toplevel):
+        """Event: a floating window was just `destroy()`ed."""
+
 
 
     ## Sidebar toolstack width
@@ -993,6 +981,9 @@ class ToolStack (Gtk.EventBox):
 
         def __init__(self, toolstack):
             """Initialise, with an ancestor ToolStack.
+
+            :param toolstack: the ancestor ToolStack
+
             """
             super(ToolStack._Notebook, self).__init__()
             self._toolstack = toolstack
@@ -1094,13 +1085,15 @@ class ToolStack (Gtk.EventBox):
 
         def _close_button_clicked_cb(self, button):
             """Remove the current page (close button "clicked" event callback)
+
+            Ultimately fires the ``tool_widget_hidden()`` @event of the owning
+            workspace.
+
             """
             page_num = self.get_current_page()
             page = self.get_nth_page(page_num)
             tool_widget = page.get_child()
-            gtype_name = tool_widget.__gtype_name__
-            self.remove_page(page_num)
-            self._toolstack.workspace.tool_widget_removed(page, gtype_name)
+            self._toolstack.remove_tool_widget(tool_widget)
 
 
         ## Dragging tabs
@@ -1128,7 +1121,7 @@ class ToolStack (Gtk.EventBox):
             # Dragging into empty space creates a new stack in a new window,
             # and stashes the page there.
             win = ToolStackWindow()
-            self._toolstack.workspace.emit('floating-window-created', win)
+            self._toolstack.workspace.floating_window_created(win)
             win.stack.workspace = self._toolstack.workspace
             self.remove(page)
             w, h = page.__prev_size
@@ -1225,7 +1218,7 @@ class ToolStack (Gtk.EventBox):
         """Constructs a new stack with a single placeholder group.
         """
         Gtk.EventBox.__init__(self)
-        self.add(self._make_notebook())
+        self.add(ToolStack._Notebook(self))
         self.connect("size-allocate", self._size_alloc_cb)
         self.__initial_paned_positions = []
 
@@ -1264,34 +1257,47 @@ class ToolStack (Gtk.EventBox):
         """
         next_nb = self._get_first_notebook()
         self._initial_paned_positions = []
+        factory = self.workspace._tool_widgets
         for group_desc in desc.get("groups", []):
-            next_nb.get_n_pages() == 0
-            tool_descs = group_desc.get("tools", [])
-            if not tool_descs:
-                continue
-            nb = next_nb
-            next_nb = self._append_new_placeholder(nb)
-            for tool_desc in tool_descs:
-                gtype_name = tool_desc[0]
-                tool_args = tool_desc[1:]
+            assert next_nb.get_n_pages() == 0
+            # Only add unique tool widgets. Assume this is being called on
+            # startup, with an initially empty factory cache.
+            tool_widgets = []
+            for tool_desc in group_desc.get("tools", []):
+                if factory.cache_has(*tool_desc):
+                    logger.warning("Duplicate entry %r ignored", tool_desc)
+                    continue
+                logger.debug("build_from_layout: building tool %r",
+                             tool_desc)
                 try:
-                    tool_widget = self._tool_widget_new(gtype_name, tool_args)
-                except ToolWidgetConstructError as ex:
+                    tool_widget = factory.get(*tool_desc)
+                except objfactory.ConstructError as ex:
                     warn("build_from_layout: %s" % (ex.message,),
                          RuntimeWarning)
-                    continue
-                assert tool_widget is not None
+                else:
+                    tool_widgets.append(tool_widget)
+            # Group might be empty if construction fails or if everything's a
+            # duplicate.
+            if not tool_widgets:
+                logger.warning("Empty tab group in workspace, not added")
+                continue
+            # We have something to add, so create a new Notebook with the
+            # pages, and move the insert ref
+            nb = next_nb
+            next_nb = self._append_new_placeholder(nb)
+            for tool_widget in tool_widgets:
                 nb.append_tool_widget_page(tool_widget)
                 if self.workspace:
-                    self.workspace.tool_widget_added(tool_widget, gtype_name)
-            group_h = group_desc.get("h", None)
-            if group_h is not None:
-                group_h = max(100, int(group_h))
-                nb_parent = nb.get_parent()
-                assert isinstance(nb_parent, ToolStack._Paned)
-                nb_parent.set_position(group_h)
-                self._initial_paned_positions.append((nb_parent, group_h))
-
+                    GObject.idle_add(self.workspace.tool_widget_shown,
+                                     tool_widget)
+            # Position the divider between the new notebook and the next.
+            group_min_h = 100
+            group_h = int(group_desc.get("h", group_min_h))
+            group_h = max(group_min_h, group_h)
+            nb_parent = nb.get_parent()
+            assert isinstance(nb_parent, ToolStack._Paned)
+            nb_parent.set_position(group_h)
+            self._initial_paned_positions.append((nb_parent, group_h))
 
 
     def get_layout(self):
@@ -1303,14 +1309,14 @@ class ToolStack (Gtk.EventBox):
 
         """
         group_descs = []
+        factory = self.workspace._tool_widgets
         for nb in self._get_notebooks():
             tool_descs = []
             for page in nb:
                 tool_widget = page.get_child()
-                gtype_name = tool_widget.__gtype_name__
-                tool_args = tool_widget.__construct_args
-                tool_desc = [gtype_name] + list(tool_args)
-                tool_descs.append(tuple(tool_desc))
+                tool_desc = factory.identify(tool_widget)
+                if tool_desc:
+                    tool_descs.append(tool_desc)
             group_desc = {"tools": tool_descs}
             if tool_descs:
                 width = nb.get_allocated_width()
@@ -1350,20 +1356,24 @@ class ToolStack (Gtk.EventBox):
     ## Tool widgets
 
 
-    def add_tool_widget(self, gtype_name, tool_args,
-                        maxnotebooks=None,
-                        maxpages=3):
-        """Tries to find space for, and create, a tool widget via GType name.
+    def add_tool_widget(self, widget, maxnotebooks=None, maxpages=3):
+        """Tries to find space for, then add and show a tool widget.
 
-        :param gtype_name: the GType name of the class to load.
-        :type gtype_name: str
-        :param tool_args: parameters for the class's Python constructor
-        :type tool_args: sequence
-        :param maxnotebooks: never make more than this many groups
+        Finding space is based on constraints, adjustable via the parameters.
+        The process is driven by `Workspace.show_tool_widget()`.
+
+        :param widget: the widget that needs adoption.
+        :type widget: Gtk.Widget created by the Workspace's factory.
+        :param maxnotebooks: never make more than this many groups in the stack
         :type maxnotebooks: int
         :param maxpages: never make more than this many pages in a group
         :type maxpages: int
-        :rtype: Gtk.Widget or None
+        :return: whether space was found for the widget
+        :rtype: bool
+
+        The idea is to try repeatedly with gradually relaxing contraint
+        parameters across all stacks in the system until space is found
+        somewhere.
 
         """
         target_notebook = None
@@ -1378,59 +1388,35 @@ class ToolStack (Gtk.EventBox):
         if target_notebook.get_n_pages() == 0:
             num_populated = len(notebooks) - 1
             if maxnotebooks is not None and num_populated >= maxnotebooks:
-                return None
-        tool_widget = self._tool_widget_new(gtype_name, tool_args)
-        if not tool_widget:
-            raise ToolWidgetConstructError, \
-                  "Cannot construct a '%s': unknown reason" % (gtype_name,)
-        target_notebook.append_tool_widget_page(tool_widget)
+                return False
+        target_notebook.append_tool_widget_page(widget)
         if self.workspace:
-            self.workspace.tool_widget_added(tool_widget, gtype_name)
-        return tool_widget
+            GObject.idle_add(self.workspace.tool_widget_shown, widget)
+        return True
 
 
-    def remove_tool_widget(self, gtype_name):
-        """Removes a tool widget by its GType name from the stack.
+    def remove_tool_widget(self, widget):
+        """Removes a tool widget from the stack, hiding it.
 
-        If the stack contains multiple instances of the named class, then only
-        the first such tool widget will be removed.
-
-        :param gtype_name: the GType name of the tab to be removed.
-        :type gtype_name: str.
-        :rtype: the removed tool widget, or None.
+        :param widget: the GType name of the tab to be removed.
+        :type widget: Gtk.Widget created by the Workspace's factory
+        :rtype: bool
+        :returns: whether the widget was removed
 
         """
         for notebook in self._get_notebooks():
             for index in xrange(notebook.get_n_pages()):
                 page = notebook.get_nth_page(index)
                 tool_widget = page.get_child()
-                if tool_widget.__gtype_name__ != gtype_name:
-                    continue
-                notebook.remove_page(index)
-                if self.workspace:
-                    self.workspace.tool_widget_removed(page, gtype_name)
-                return tool_widget
-        return None
-
-
-    def has_tool_widget(self, gtype_name):
-        """Tests if a tool widget instance exists in this stack.
-        """
-        if self.get_tool_widget(gtype_name):
-            return True
+                if tool_widget is widget:
+                    widget.hide()
+                    notebook.remove_page(index)
+                    page.remove(widget)
+                    page.destroy()
+                    if self.workspace:
+                        self.workspace.tool_widget_hidden(widget)
+                    return True
         return False
-
-
-    def get_tool_widget(self, gtype_name):
-        """Returns the first matching tool widget.
-        """
-        for notebook in self._get_notebooks():
-            for index in xrange(notebook.get_n_pages()):
-                page = notebook.get_nth_page(index)
-                tool_widget = page.get_child()
-                if tool_widget.__gtype_name__ == gtype_name:
-                    return tool_widget
-        return None
 
 
     def is_empty(self):
@@ -1522,13 +1508,7 @@ class ToolStack (Gtk.EventBox):
             paned.__filled = False
 
 
-    ## Paned/Notebook tree structure: node and leaf creation
-
-
-    def _make_notebook(self):
-        """Creates a new notebook widget in the right way.
-        """
-        return ToolStack._Notebook(self)
+    ## Paned/Notebook tree structure
 
 
     def _append_new_placeholder(self, old_placeholder):
@@ -1536,26 +1516,6 @@ class ToolStack (Gtk.EventBox):
         """
         paned = ToolStack._Paned(self, old_placeholder)
         return paned.get_child2()
-
-
-    def _tool_widget_new(self, gtype_name, tool_args):
-        """Constructs a new tool widget based on its GType name.
-        """
-        logger.debug("Creating tool widget %r (params: %r)",
-                     gtype_name, tool_args)
-        try:
-            gtype = GObject.type_from_name(gtype_name)
-        except RuntimeError:
-            raise ToolWidgetConstructError, \
-                  "Cannot construct a '%s': not loaded?" % (gtype_name,)
-        if not gtype.is_a(Gtk.Widget):
-            raise ToolWidgetConstructError, \
-                  "%s is not a Gtk.Widget subclass" % (gtype_name,)
-        tool_widget_class = gtype.pytype
-        tool_widget = tool_widget_class(*tool_args)
-        tool_widget.__construct_args = tool_args
-        return tool_widget
-
 
 
     ## Paned/Notebook tree structure: maintenance
@@ -1622,8 +1582,8 @@ class ToolStack (Gtk.EventBox):
         parent = self.get_parent()
         if n_tabs_total == 0:
             if isinstance(parent, ToolStackWindow):
-                self.workspace.emit("floating-window-destroy", parent)
                 parent.destroy()
+                self.workspace.floating_window_destroyed(parent)
             else:
                 self.hide()
             return
@@ -1946,7 +1906,7 @@ def _test():
         __gtype_name__ = 'TestLabel'
         tool_widget_icon_name = 'gtk-ok'
         tool_widget_description = "Just a test widget"
-        def __init__(self, text="Hello, World!"):
+        def __init__(self, text):
             Gtk.Label.__init__(self, text)
             self.set_size_request(200, 150)
     class _TestSpinner (Gtk.Spinner):
@@ -1957,10 +1917,12 @@ def _test():
             Gtk.Spinner.__init__(self)
             self.set_size_request(150, 150)
             self.set_property("active", True)
-    def _tool_added_cb(*a):
-        logger.debug("TOOL-ADDED %r", a)
-    def _tool_removed_cb(*a):
-        logger.debug("TOOL-REMOVED %r", a)
+    def _tool_shown_cb(*a):
+        logger.debug("TOOL-SHOWN %r", a)
+    def _tool_hidden_cb(*a):
+        logger.debug("TOOL-HIDDEN %r", a)
+    def _floating_window_created(*a):
+        logger.debug("FLOATING-WINDOW-CREATED %r", a)
     workspace = Workspace()
     workspace.floating_window_title_suffix = u" - Test"
     canvas = Gtk.Label("<Placeholder>")
@@ -1972,22 +1934,23 @@ def _test():
     window.add(workspace)
     window.set_title(os.path.basename(sys.argv[0]))
     workspace.set_size_request(600, 400)
-    workspace.connect("tool-widget-added", _tool_added_cb)
-    workspace.connect("tool-widget-removed", _tool_removed_cb)
+    workspace.tool_widget_shown += _tool_shown_cb
+    workspace.tool_widget_hidden += _tool_hidden_cb
+    workspace.floating_window_created += _floating_window_created
     workspace.build_from_layout({
         'position': {'x': 100, 'y': 75, 'h': -100, 'w': -100},
         'floating': [{
             'position': {'y': -100, 'h': 189, 'w': 152, 'x': -200},
             'contents': {
-                'groups': [{'tools': [('TestSpinner',), ('TestLabel',)]}],
+                'groups': [{'tools': [('TestLabel', "1"), ('TestLabel', "2")]}],
             }}],
         'right_sidebar': {
             'w': 400,
-            'groups': [{'tools': [('TestSpinner',), ("TestLabel", "Hi")]}],
+            'groups': [{'tools': [('TestSpinner',), ("TestLabel", "3")]}],
         },
         'left_sidebar': {
             'w': 250,
-            'groups': [{'tools': [('TestSpinner',), ('TestLabel',)]}],
+            'groups': [{'tools': [('TestLabel', "4"), ('TestLabel', "5")]}],
         },
         'maximized': False,
     })
