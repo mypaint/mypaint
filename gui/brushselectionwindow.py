@@ -74,7 +74,8 @@ class BrushSelectionTool (gtk.VBox):
 
 
     def show_cb(self, widget):
-        assert not self.expander_prefs_loaded
+        if self.expander_prefs_loaded:
+            return
         is_expanded = bool(self.app.preferences.get(self.EXPANDER_PREFS_KEY, False))
         self.expander.set_expanded(is_expanded)
         self.expander_prefs_loaded = True
