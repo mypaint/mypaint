@@ -387,6 +387,13 @@ class PaletteView (ColorAdjuster, gtk.ScrolledWindow):
 
     """
 
+    ## Sizing contraint constants
+    _MIN_HEIGHT = 32
+    _MIN_WIDTH = 150
+    _MAX_NATURAL_HEIGHT = 300
+    _MAX_NATURAL_WIDTH = 300
+
+
     def __init__(self):
         gtk.ScrolledWindow.__init__(self)
         self.grid = _PaletteGridLayout()
@@ -413,6 +420,38 @@ class PaletteView (ColorAdjuster, gtk.ScrolledWindow):
         # TODO: scroll the vertical adjuster to show i if necessary:
         # use self.grid.get_allocation() & calculate using the
         # adjuster's properties.
+
+
+    ## Sizing boilerplate
+    # Reflect what the embedded grid widget tells us, but limit its natural
+    # size to something sensible. Huge palettes make huge grids...
+
+    def do_get_request_mode(self):
+        return self.grid.get_request_mode()
+
+    def do_get_preferred_width(self):
+        gminw, gnatw = self.grid.get_preferred_width()
+        minw = self._MIN_WIDTH
+        natw = min(gnatw, self._MAX_NATURAL_WIDTH)
+        return minw, max(minw, natw)
+
+    def do_get_preferred_height(self):
+        gminh, gnath = self.grid.get_preferred_height()
+        minh = self._MIN_HEIGHT
+        nath = min(gnath, self._MAX_NATURAL_HEIGHT)
+        return minh, max(minh, nath)
+
+    def do_get_preferred_width_for_height(self, height):
+        gminw, gnatw = self.grid.get_preferred_width_for_height(height)
+        minw = self._MIN_WIDTH
+        natw = min(gnatw, self._MAX_NATURAL_WIDTH)
+        return minw, max(minw, natw)
+
+    def do_get_preferred_height_for_width(self, width):
+        gminh, gnath = self.grid.get_preferred_height_for_width(width)
+        minh = self._MIN_HEIGHT
+        nath = min(gnath, self._MAX_NATURAL_HEIGHT)
+        return minh, max(minh, nath)
 
 
 def outwards_from(n, i):
@@ -520,11 +559,6 @@ class _PaletteGridLayout (ColorAdjusterWidget):
     _SWATCH_SIZE_NOMINAL = 20
     _PREFERRED_COLUMNS = 5 #: Preferred width in cells for free-flow mode.
 
-    ## Member variables & defaults
-    show_current_index = False #: Highlight the current index (last click)
-    manage_current_index = False  #: Index follows the managed colour
-    can_select_empty = False #: User can click on empty slots
-
 
     def __init__(self):
         ColorAdjusterWidget.__init__(self)
@@ -532,6 +566,12 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         s = self._SWATCH_SIZE_NOMINAL
         self.set_size_request(s, s)
         self.connect("size-allocate", self._size_alloc_cb)
+        #: Highlight the current index (last click)
+        self.show_current_index = False
+        #: Index follows the managed colour
+        self.manage_current_index = False
+        #: User can click on empty slots
+        self.can_select_empty = False
         # Current index
         self._current_index = None
         self._current_index_approx = False
@@ -765,7 +805,7 @@ class _PaletteGridLayout (ColorAdjusterWidget):
             ncolumns = max(1, min(self._PREFERRED_COLUMNS, ncolors))
             min_w = self._SWATCH_SIZE_MIN
             nat_w = self._SWATCH_SIZE_NOMINAL * ncolumns
-        return min_w, nat_w
+        return min_w, max(min_w, nat_w)
 
 
     def do_get_preferred_height_for_width(self, width):
@@ -782,7 +822,7 @@ class _PaletteGridLayout (ColorAdjusterWidget):
             # Since s = sqrt((w*h)/n),
             min_h = int((((self._SWATCH_SIZE_MIN)**2)*ncolors) / width)
             nat_h = int((((self._SWATCH_SIZE_NOMINAL)**2)*ncolors) / width)
-        return min_h, nat_h
+        return min_h, max(min_h, nat_h)
 
 
     def do_get_preferred_height(self):
@@ -797,7 +837,7 @@ class _PaletteGridLayout (ColorAdjusterWidget):
             # Height required for our own minimum width (note do_())
             min_w, nat_w = self.do_get_preferred_width()
             min_h, nat_h = self.do_get_preferred_height_for_width(min_w)
-        return min_h, nat_h
+        return min_h, max(min_h, nat_h)
 
 
     def do_get_preferred_width_for_height(self, height):
@@ -812,7 +852,7 @@ class _PaletteGridLayout (ColorAdjusterWidget):
         else:
             # Just the minimum and natural width (note do_())
             min_w, nat_w = self.do_get_preferred_width()
-        return min_w, nat_w
+        return min_w, max(min_w, nat_w)
 
 
     def color_updated(self):
