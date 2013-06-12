@@ -16,10 +16,14 @@ from copy import copy
 import logging
 logger = logging.getLogger(__name__)
 
-import gtk
-from gtk import gdk
+import gi
+from gi.repository import Gtk
 from gettext import gettext as _
 import cairo
+
+if __name__ == '__main__':
+    from gui import gtk2compat
+    # for the sake of the modules below which aren't ported yet
 
 from uicolor import RGBColor, HCYColor
 from adjbases import ColorAdjusterWidget
@@ -41,14 +45,12 @@ class Palette (object):
 
     """
 
-    # Class-level constants
+    ## Class-level constants
     __EMPTY_SLOT_ITEM = RGBColor(-1, -1, -1)
     __EMPTY_SLOT_NAME = "__NONE__"
 
-    # Instance vars
-    __columns = 0   #: Number of columns. 0 means "natural flow".
-    __colors = None  #: List of named colours.
-    __name = None   #: Name of the palette, as a Unicode string.
+
+    ## Construction, loading and saving
 
 
     def __init__(self, filehandle=None, filename=None):
@@ -58,6 +60,9 @@ class Palette (object):
           <Palette colors=0, columns=0, name=None>
         """
         super(Palette, self).__init__()
+        self.__columns = 0   #: Number of columns. 0 means "natural flow".
+        self.__colors = None  #: List of named colours.
+        self.__name = None   #: Name of the palette, as a Unicode string.
         self.clear()
         if filehandle:
             self.load(filehandle)
@@ -126,6 +131,18 @@ class Palette (object):
                 self.append(col, col_name)
 
 
+    def save(self, filehandle):
+        """Saves the palette to an open file handle.
+
+        The file handle is not flushed, and is left open after the write.
+
+        """
+        filehandle.write(unicode(self))
+
+
+    ## Palette metadata
+
+
     def get_columns(self):
         """Get the number of columns (0 means unspecified)."""
         return self.__columns
@@ -148,6 +165,13 @@ class Palette (object):
         """Gets the palette's name.
         """
         return self.__name
+
+
+    def __len__(self):
+        return len(self.__colors)
+
+
+    ## Color access
 
 
     def __copy_color_out(self, col):
@@ -285,17 +309,20 @@ class Palette (object):
                 return RGBColor(color=col)
 
 
-    def save(self, filehandle):
-        """Saves the palette to an open file handle.
-
-        The file handle is not flushed, and is left open after the write.
-
-        """
-        filehandle.write(unicode(self))
+    def __iter__(self):
+        return self.iter_colors()
 
 
-    def __len__(self):
-        return len(self.__colors)
+    def iter_colors(self):
+        """Iterates across the colours, ignoring empty slots."""
+        for col in self.__colors:
+            if col is self.__EMPTY_SLOT_ITEM:
+                yield None
+            else:
+                yield col
+
+
+    ## Dumping and cloning
 
 
     def __unicode__(self):
@@ -314,18 +341,6 @@ class Palette (object):
                 r, g, b = [clamp(int(c*0xff), 0, 0xff) for c in col.get_rgb()]
             result += u"%d %d %d    %s\n" % (r, g, b, col_name)
         return result
-
-
-    def __iter__(self):
-        return self.iter_colors()
-
-
-    def iter_colors(self):
-        for col in self.__colors:
-            if col is self.__EMPTY_SLOT_ITEM:
-                yield None
-            else:
-                yield col
 
 
     def __copy__(self):
@@ -348,6 +363,8 @@ class Palette (object):
         return u"<Palette colors=%d, columns=%d, name=%s>" \
           % (len(self.__colors), self.__columns, repr(self.__name))
 
+
+    ## Conversion to/from simple dict representation
 
     def to_simple_dict(self):
         """Converts the palette to a simple dict form used in the prefs.
@@ -383,6 +400,8 @@ class Palette (object):
         return pal
 
 
+    ## Loading and saving via dialog
+
     @classmethod
     def load_via_dialog(class_, title, parent=None, preview=None,
                         shortcuts=None):
@@ -399,12 +418,12 @@ class Palette (object):
          - `shortcuts`: optional list of shortcut folders
 
         """
-        dialog = gtk.FileChooserDialog(
+        dialog = Gtk.FileChooserDialog(
           title=title,
           parent=parent,
-          action=gtk.FILE_CHOOSER_ACTION_OPEN,
-          buttons=(gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT,
-                   gtk.STOCK_OPEN, gtk.RESPONSE_ACCEPT),
+          action=Gtk.FileChooserAction.OPEN,
+          buttons=(Gtk.STOCK_CANCEL, Gtk.ResponseType.REJECT,
+                   Gtk.STOCK_OPEN, Gtk.ResponseType.ACCEPT),
           )
         if preview is not None:
             dialog.set_preview_widget(preview)
@@ -414,18 +433,19 @@ class Palette (object):
             for shortcut in shortcuts:
                 dialog.add_shortcut_folder(shortcut)
         dialog.set_do_overwrite_confirmation(True)
-        filter = gtk.FileFilter()
+        filter = Gtk.FileFilter()
         filter.add_pattern("*.gpl")
         filter.set_name(_("GIMP palette file (*.gpl)"))
         dialog.add_filter(filter)
-        filter = gtk.FileFilter()
+        filter = Gtk.FileFilter()
         filter.add_pattern("*")
         filter.set_name(_("All files (*)"))
         dialog.add_filter(filter)
         response_id = dialog.run()
         palette = None
-        if response_id == gtk.RESPONSE_ACCEPT:
+        if response_id == Gtk.ResponseType.ACCEPT:
             filename = dialog.get_filename()
+            logger.info("Loading palette from %r", filename)
             palette = Palette(filename=filename)
         dialog.destroy()
         return palette
@@ -462,33 +482,37 @@ class Palette (object):
          - `preview`: any preview widget with a ``set_palette()`` method
 
         """
-        dialog = gtk.FileChooserDialog(
+        dialog = Gtk.FileChooserDialog(
           title=title,
           parent=parent,
-          action=gtk.FILE_CHOOSER_ACTION_SAVE,
-          buttons=(gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT,
-                   gtk.STOCK_SAVE, gtk.RESPONSE_ACCEPT),
+          action=Gtk.FileChooserAction.SAVE,
+          buttons=(Gtk.STOCK_CANCEL, Gtk.ResponseType.REJECT,
+                   Gtk.STOCK_SAVE, Gtk.ResponseType.ACCEPT),
           )
         if preview is not None:
             dialog.set_preview_widget(preview)
             dialog.connect("update-preview",
                            self.__dialog_update_preview_cb, preview)
         dialog.set_do_overwrite_confirmation(True)
-        filter = gtk.FileFilter()
+        filter = Gtk.FileFilter()
         filter.add_pattern("*.gpl")
         filter.set_name(_("GIMP palette file (*.gpl)"))
         dialog.add_filter(filter)
-        filter = gtk.FileFilter()
+        filter = Gtk.FileFilter()
         filter.add_pattern("*")
         filter.set_name(_("All files (*)"))
         dialog.add_filter(filter)
         response_id = dialog.run()
         result = False
-        if response_id == gtk.RESPONSE_ACCEPT:
+        if response_id == Gtk.ResponseType.ACCEPT:
             filename = dialog.get_filename()
             filename = re.sub(r'[.]?(?:[Gg][Pp][Ll])?$', "", filename)
             palette_name = os.path.basename(filename)
             filename += ".gpl"
+            logger.info("Saving palette to %r", filename)
+            # FIXME: this can overwrite files without prompting the user, if
+            # the name hacking above changed the filename.  Should do the name
+            # tweak within the dialog somehow and get that to confirm.
             fp = open(filename, 'w')
             self.save(fp)
             fp.flush()
@@ -497,6 +521,8 @@ class Palette (object):
         dialog.destroy()
         return result
 
+
+    ## Cairo rendering
 
     def render(self, cr, rows, columns, swatch_size,
                bg_color, offset_x=0, offset_y=0,
