@@ -13,6 +13,7 @@
 
 import os
 from warnings import warn
+import math
 import logging
 logger = logging.getLogger(__name__)
 
@@ -24,6 +25,32 @@ from gi.repository import Gdk
 
 from lib.observable import event
 import objfactory
+
+
+## Tool widget size constants
+
+# Tool widgets should use GTK3-style sizing, and the lollowing layout
+# constants.
+
+#: Minimum width for a "sidebar-dockable" tool widget.
+TOOL_WIDGET_MIN_WIDTH = 220
+
+#: Minimum height for a "sidebar-dockable" tool widget.
+TOOL_WIDGET_MIN_HEIGHT = 25
+
+# Tool widgets should declare natural heights that result in nice ratios: not
+# too short and not too tall. The GNOME HIG recommends that the longer
+# dimension of a window not be more than 50% longer than the shorter dimension.
+# The layout code will respect widgets' natural sizes vertically. For the look
+# of the UI as a whole, it's best to use one of the sizing constants below for
+# the natural height in most cases.
+
+#: Natural height for shorter tool widgets
+TOOL_WIDGET_NATURAL_HEIGHT_SHORT = TOOL_WIDGET_MIN_WIDTH
+
+#: Natural height for taller tool widget
+TOOL_WIDGET_NATURAL_HEIGHT_TALL = 1.25 * TOOL_WIDGET_MIN_WIDTH
+
 
 
 ## Class defs
@@ -1738,6 +1765,34 @@ class ToolStackWindow (Gtk.Window):
             self.set_title(title)
 
 
+## Convenience base classes for implementing tool widgets
+
+class SizedVBoxToolWidget (Gtk.VBox):
+    """Base class for VBox tool widgets, with convenient natural height setting.
+
+    This mixin can be used for tool widgets implemented as `GtkVBox`es to give
+    them a default natural height which might be greater than the sum of their
+    consituent widgets' minimum heights.
+
+    """
+
+    #: Suggested natural height for the widget.
+    SIZED_VBOX_NATURAL_HEIGHT = TOOL_WIDGET_NATURAL_HEIGHT_TALL
+
+    def do_get_request_mode(self):
+        return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH
+
+    def do_get_preferred_width(self):
+        minw, natw = Gtk.VBox.do_get_preferred_width(self)
+        minw = max(minw, TOOL_WIDGET_MIN_WIDTH)
+        natw = max(natw, TOOL_WIDGET_MIN_WIDTH)
+        return minw, max(minw, natw)
+
+    def do_get_preferred_height_for_width(self, width):
+        minh, nath = Gtk.VBox.do_get_preferred_height_for_width(self, width)
+        nath = max(nath, self.SIZED_VBOX_NATURAL_HEIGHT)
+        minh = max(minh, TOOL_WIDGET_MIN_HEIGHT)
+        return minh, max(minh, nath)
 
 ## Utility functions
 
