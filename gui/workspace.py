@@ -964,6 +964,10 @@ class ToolStack (Gtk.EventBox):
                 self.show_all()
                 self.queue_resize()
 
+            # Initial sizing and allocation
+            self._first_alloc_id = self.connect("size-allocate",
+                                                self._first_alloc_cb)
+
 
         ## Custom widget packing
 
@@ -988,6 +992,53 @@ class ToolStack (Gtk.EventBox):
             assert isinstance(paned, ToolStack._Paned)
             self.pack2(paned, True, False)
 
+        def _first_alloc_cb(self, widget, alloc):
+            """Try to allocate child widgets their natural size when alloced.
+            """
+            # Normally, if child widgets declare a real minimum size then in a
+            # structure like this they'll be allocated their minimum size even
+            # when there's enough space to give them their natural size. As a
+            # workaround, set the bar position on the very first size-allocate
+            # event to the best compromise we can calculate.
+
+            # Child natural and minimum heights.
+            c1 = self.get_child1()
+            c2 = self.get_child2()
+            if not (c1 and c2):
+                return
+            c1min, c1nat = c1.get_preferred_height_for_width(alloc.width)
+            c2min, c2nat = c2.get_preferred_height_for_width(alloc.width)
+
+            # Disconnect the handler; only run the 1st time.
+            self.disconnect(self._first_alloc_id)
+            self._first_alloc_id = None
+
+            # If ToolStack.build_from_layout set an initial position, then
+            # code elsewhere handles this.
+            if hasattr(self, "_initial_divider_position"):
+                return
+
+            # Get handle size
+            handle_size = GObject.Value()
+            handle_size.init(int)
+            handle_size.set_int(12) # conservative initial guess
+            self.style_get_property("handle-size", handle_size)
+            bar_height = handle_size.get_int()
+            # Strategy here is to try and give one child widget its natural
+            # size first, slightly favouring the first (top) child.  We
+            # could be more egalitarian by inspecting the deep structure.
+            pos = -1
+            if c1nat + c2min <= alloc.height - bar_height:
+                pos = c1nat
+            elif c1min + c2nat <= alloc.height - bar_height:
+                pos = alloc.height - c2nat - bar_height
+            elif c1min + c2min <= alloc.height - bar_height:
+                pos = alloc.height - c2min - bar_height
+
+            # The position setting must be done outside this handler
+            # or it'll look weird.
+            GObject.idle_add(self.set_position, pos)
+
     ## Notebook
 
     class _Notebook (Gtk.Notebook):
@@ -1000,7 +1051,7 @@ class ToolStack (Gtk.EventBox):
         PLACEHOLDER_HEIGHT = 8
         PLACEHOLDER_WIDTH = 16
         CLOSE_BUTTON_ICON_SIZE = Gtk.IconSize.MENU
-        TAB_ICON_SIZE = Gtk.IconSize.LARGE_TOOLBAR
+        TAB_ICON_SIZE = Gtk.IconSize.SMALL_TOOLBAR
         TAB_TOOLTIP_ICON_SIZE = Gtk.IconSize.DIALOG
 
 
@@ -1073,11 +1124,12 @@ class ToolStack (Gtk.EventBox):
         def split_former_placeholder(self):
             """Splits the space used by a placeholder after a tab drag into it.
 
-            After the placeholder has a tab dragged into it, it can no longer fill
-            the placeholder's role. This method creates a new empty placeholder
-            after it in the stack, and updates the hierarchy appropriately. It
-            also tries to retain the dragged-in tab's page's size as much as
-            possible by setting paned divider positions appropriately.
+            After the placeholder has a tab dragged into it, it can no longer
+            fill the placeholder's role. This method creates a new empty
+            placeholder after it in the stack, and updates the hierarchy
+            appropriately. It also tries to retain the dragged-in tab's page's
+            size as much as possible by setting paned divider positions
+            appropriately.
 
             """
             # Bail if not a former placeholder
@@ -1202,42 +1254,6 @@ class ToolStack (Gtk.EventBox):
             tooltip.set_markup(markup)
             return True
 
-        ## XXX Dead code? XXX
-
-
-        def _first_alloc_cb(self, widget, alloc):
-            # Normally, if child widgets declare a real minimum size then in a
-            # structure like this they'll be allocated their minimum size even when
-            # there's enough space to give them their natural size. As a
-            # workaround, set the bar position on the very first size-allocate
-            # event to the best compromise we can calculate.
-            self.disconnect(self._first_alloc_id)
-            self._first_alloc_id = None
-
-            # Child natural and minimum heights.
-            c1 = self.get_child1()
-            c2 = self.get_child2()
-            if not (c1 and c2):
-                return
-            c1min, c1nat = c1.get_preferred_height_for_width(alloc.width)
-            c2min, c2nat = c2.get_preferred_height_for_width(alloc.width)
-
-            # We don't have a real bar height yet, so fudge it.
-            # Not too bad really: in effect this becomes slack in the system.
-            bar_height = 25
-
-            # Strategy here is to try and give one child widget its natural size
-            # first, slightly favouring the first (top) child.
-            # We could be more egalitarian by inspecting the deep structure.
-            if c1nat + c2min <= alloc.height - bar_height:
-                self.set_position(c1nat)
-            elif c1min + c2nat <= alloc.height - bar_height:
-                self.set_position(alloc.height - c2nat - bar_height)
-            elif c1min + c2min <= alloc.height - bar_height:
-                self.set_position(alloc.height - c2min - bar_height)
-            else:
-                self.set_position(-1)
-
     ## Construction
 
 
@@ -1283,7 +1299,6 @@ class ToolStack (Gtk.EventBox):
  
         """
         next_nb = self._get_first_notebook()
-        self._initial_paned_positions = []
         factory = self.workspace._tool_widgets
         for group_desc in desc.get("groups", []):
             assert next_nb.get_n_pages() == 0
@@ -1318,13 +1333,12 @@ class ToolStack (Gtk.EventBox):
                     GObject.idle_add(self.workspace.tool_widget_shown,
                                      tool_widget)
             # Position the divider between the new notebook and the next.
-            group_min_h = 100
+            group_min_h = 1
             group_h = int(group_desc.get("h", group_min_h))
             group_h = max(group_min_h, group_h)
             nb_parent = nb.get_parent()
             assert isinstance(nb_parent, ToolStack._Paned)
-            nb_parent.set_position(group_h)
-            self._initial_paned_positions.append((nb_parent, group_h))
+            nb_parent._initial_divider_position = group_h
 
 
     def get_layout(self):
@@ -1375,9 +1389,12 @@ class ToolStack (Gtk.EventBox):
         """Finish initial layout; called after toplevel win is positioned.
         """
         # Init tool group sizes by setting vpaned positions
-        for paned, pos in self._initial_paned_positions:
-            paned.set_position(pos)
-        self._initial_paned_positions = None
+        for paned in self._get_paneds():
+            if hasattr(paned, "_initial_divider_position"):
+                pos = paned._initial_divider_position
+                GObject.idle_add(paned.set_position, pos)
+                del paned._initial_divider_position
+
 
 
     ## Tool widgets
@@ -1486,53 +1503,53 @@ class ToolStack (Gtk.EventBox):
         return notebooks
 
 
-    def _get_final_paned(self):
+    ## Group size management (somewhat dubious)
+
+
+    def _get_paneds(self):
         child = self.get_child()
         if child is None:
-            return None
+            return []
         queue = [child]
-        result = None
+        result = []
         while len(queue) > 0:
             widget = queue.pop(0)
             if isinstance(widget, Gtk.Paned):
-                result = widget
+                result.append(widget)
                 queue.append(widget.get_child1())
                 queue.append(widget.get_child2())
         return result
 
 
-    ## Group size management (somewhat dubious)
-
-
     def _size_alloc_cb(self, widget, alloc):
         # When the size changes, manage the divider position of the final
         # paned, shrinking or growing the final set of tabs.
-        paned = self._get_final_paned()
-        if paned is None:
+        paneds = self._get_paneds()
+        if not paneds:
             return
+        final_paned = paneds[-1]
         # Did the bottom set of tabs fill the available space the last time
         # this was called?
         try:
-            paned_was_filled = paned.__filled
+            final_paned_was_filled = final_paned.__filled
         except AttributeError:
-            paned_was_filled = False
-        pos = paned.get_position()
-        max_pos = paned.get_property("max-position")
-        min_pos = paned.get_property("min-position")
+            final_paned_was_filled = False
+        pos = final_paned.get_position()
+        max_pos = final_paned.get_property("max-position")
+        min_pos = final_paned.get_property("min-position")
         stickiness = self.RESIZE_STICKINESS
-        # Reset the flag if it's now near the top of its range. This allows
-        # the user to reset the stickiness by moving the divider to the
-        # top.
-        if paned_was_filled and pos - min_pos < stickiness:
-            paned_was_filled = False
-        # However, keep the flag set and move the bar if it's now near the
+        # Reset the flag if the divider bar is no longer near the bottom
+        # of its range.
+        if final_paned_was_filled and max_pos - pos > 2*stickiness:
+            final_paned_was_filled = False
+        # However, keep the flag set and move the bar if it's close to the 
         # bottom of its range. Lets the user set stickiness by moving the
         # divider to the bottom.
-        if paned_was_filled or max_pos - pos < stickiness:
-            paned.set_position(max_pos)
-            paned.__filled = True
+        if final_paned_was_filled or max_pos - pos < stickiness:
+            final_paned.set_position(max_pos)
+            final_paned.__filled = True
         else:
-            paned.__filled = False
+            final_paned.__filled = False
 
 
     ## Paned/Notebook tree structure
