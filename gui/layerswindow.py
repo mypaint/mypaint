@@ -18,6 +18,9 @@ import dialogs
 from lib.layer import COMPOSITE_OPS
 from lib.helpers import escape
 from widgets import SPACING_CRAMPED
+from workspace import SizedVBoxToolWidget
+
+
 
 def stock_button(stock_id):
     b = gtk.Button()
@@ -43,7 +46,7 @@ def make_composite_op_model():
     return model
 
 
-class LayersTool (gtk.VBox):
+class LayersTool (SizedVBoxToolWidget):
 
     tool_widget_icon_name = "mypaint-tool-layers"
     tool_widget_title = _("Layers")
@@ -75,7 +78,7 @@ class LayersTool (gtk.VBox):
         view_scroll.set_shadow_type(gtk.SHADOW_ETCHED_IN)
         view_scroll.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
         view_scroll.add(view)
-        view_scroll.set_size_request(200, 150)
+        view_scroll.set_size_request(-1, 100)
 
         renderer = gtk.CellRendererPixbuf()
         col = self.visible_col = gtk.TreeViewColumn(_("Visible"))

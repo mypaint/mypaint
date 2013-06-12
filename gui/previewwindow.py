@@ -21,6 +21,7 @@ import document
 import dialogs
 import overlays
 import tileddrawwidget
+from workspace import SizedVBoxToolWidget, TOOL_WIDGET_NATURAL_HEIGHT_SHORT
 
 from gui.colors import geom   # XXX refactoring needed! But from here for now.
 
@@ -154,7 +155,7 @@ class VisibleOverlay (overlays.Overlay):
             self.paint_topleft = topleft
 
 
-class PreviewTool (gtk.VBox):
+class PreviewTool (SizedVBoxToolWidget):
     """Tool widget for previewing the whole canvas.
 
     We overlay a preview rectangle showing where the main document view is
@@ -163,6 +164,8 @@ class PreviewTool (gtk.VBox):
     TODO: and also the viewing rectangle.
 
     """
+
+    SIZED_VBOX_NATURAL_HEIGHT = TOOL_WIDGET_NATURAL_HEIGHT_SHORT
 
     tool_widget_icon_name = "mypaint-tool-preview-window"
 
@@ -193,14 +196,13 @@ class PreviewTool (gtk.VBox):
         from application import get_app
         app = get_app()
         self.app = app
-        self.set_size_request(250, 250)
         self.main_tdw = app.doc.tdw
 
         self.model = app.doc.model
         self.tdw = tileddrawwidget.TiledDrawWidget()
         self.tdw.set_model(self.model)
         self.tdw.zoom_min = 1/50.0
-        self.tdw.set_size_request(250, 250)
+        self.tdw.set_size_request(64, 64)
         self.pack_start(self.tdw, True, True)
 
         # Cursor property

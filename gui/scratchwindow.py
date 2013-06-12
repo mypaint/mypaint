@@ -14,6 +14,8 @@ import gtk
 from gtk import gdk
 from gettext import gettext as _
 
+from workspace import SizedVBoxToolWidget, TOOL_WIDGET_NATURAL_HEIGHT_SHORT
+
 def stock_button_generic(stock_id, b):
     img = gtk.Image()
     img.set_from_stock(stock_id, gtk.ICON_SIZE_MENU)
@@ -25,9 +27,11 @@ def stock_button(stock_id):
     return stock_button_generic(stock_id, b)
 
 
-class ScratchpadTool (gtk.VBox):
+class ScratchpadTool (SizedVBoxToolWidget):
 
     __gtype_name__ = 'MyPaintScratchpadTool'
+
+    SIZED_VBOX_NATURAL_HEIGHT = TOOL_WIDGET_NATURAL_HEIGHT_SHORT
 
     tool_widget_title = _("Scratchpad")
     tool_widget_description = _("Mix colors and make sketches on separate scrap pages")
@@ -65,6 +69,7 @@ class ScratchpadTool (gtk.VBox):
         buttons_hbox.pack_start(revert_button)
 
         scratchpad_view = app.scratchpad_doc.tdw
+        scratchpad_view.set_size_request(64, 64)
 
         self.connect("destroy-event", self.save_cb)
         self.connect("delete-event", self.save_cb)

@@ -31,9 +31,10 @@ import brushmanager
 from brushlib import brushsettings
 from lib.helpers import escape
 from colors import RGBColor
+from workspace import SizedVBoxToolWidget
 
 
-class BrushSelectionTool (gtk.VBox):
+class BrushSelectionTool (SizedVBoxToolWidget):
 
     EXPANDER_PREFS_KEY = "brushmanager.common_settings_expanded"
 
