@@ -349,6 +349,11 @@ class UIColor (object):
         return RGBColor(r/255, g/255, b/255)
 
 
+    def interpolate(self, other, steps):
+        """Generator: interpolate between this color and another."""
+        raise NotImplementedError
+
+
 class RGBColor (UIColor):
     """Additive Red/Green/Blue representation of a colour.
     """
@@ -381,6 +386,27 @@ class RGBColor (UIColor):
     def __repr__(self):
         return "<RGBColor r=%0.4f, g=%0.4f, b=%0.4f>" \
             % (self.r, self.g, self.b)
+
+
+    def interpolate(self, other, steps):
+        """RGB interpolation.
+
+        >>> white = RGBColor(r=1, g=1, b=1)
+        >>> black = RGBColor(r=0, g=0, b=0)
+        >>> [c.to_hex_str() for c in white.interpolate(black, 3)]
+        ['#ffffff', '#7f7f7f', '#000000']
+        >>> [c.to_hex_str() for c in black.interpolate(white, 3)]
+        ['#000000', '#7f7f7f', '#ffffff']
+
+        """
+        assert steps >= 3
+        other = RGBColor(color=other)
+        for step in xrange(steps):
+            p = float(step) / (steps - 1)
+            r = self.r + (other.r - self.r) * p
+            g = self.g + (other.g - self.g) * p
+            b = self.b + (other.b - self.b) * p
+            yield RGBColor(r=r, g=g, b=b)
 
 
 class HSVColor (UIColor):
@@ -427,6 +453,45 @@ class HSVColor (UIColor):
     def __repr__(self):
         return "<HSVColor h=%0.4f, s=%0.4f, v=%0.4f>" \
             % (self.h, self.s, self.v)
+
+
+    def interpolate(self, other, steps):
+        """HSV interpolation, sometimes nicer looking than RGB.
+
+        >>> red_hsv = HSVColor(h=0, s=1, v=1)
+        >>> green_hsv = HSVColor(h=1./3, s=1, v=1)
+        >>> [c.to_hex_str() for c in green_hsv.interpolate(red_hsv, 3)]
+        ['#00ff00', '#ffff00', '#ff0000']
+        >>> [c.to_hex_str() for c in red_hsv.interpolate(green_hsv, 3)]
+        ['#ff0000', '#ffff00', '#00ff00']
+
+        Note the pure yellow. Interpolations in RGB space are duller looking:
+
+        >>> red_rgb = RGBColor(color=red_hsv)
+        >>> [c.to_hex_str() for c in red_rgb.interpolate(green_hsv, 3)]
+        ['#ff0000', '#7f7f00', '#00ff00']
+
+        """
+        assert steps >= 3
+        other = HSVColor(color=other)
+        # Calculate the shortest angular distance
+        # Normalize first
+        ha = self.h % 1.0
+        hb = other.h % 1.0
+        # If the shortest distance doesn't pass through zero, then
+        hdelta = hb - ha
+        # But the shortest distance might pass through zero either antilockwise
+        # or clockwise. Smallest magnitude wins.
+        for hdx0 in -(ha+1-hb), (hb+1-ha):
+            if abs(hdx0) < abs(hdelta):
+                hdelta = hdx0
+        # Interpolate, using shortest angular dist for hue
+        for step in xrange(steps):
+            p = float(step) / (steps - 1)
+            h = (self.h + hdelta * p) % 1.0
+            s = self.s + (other.s - self.s) * p
+            v = self.v + (other.v - self.v) * p
+            yield HSVColor(h=h, s=s, v=v)
 
 
 class HCYColor (UIColor):
@@ -488,6 +553,47 @@ class HCYColor (UIColor):
     def __repr__(self):
         return "<HCYColor h=%0.4f, c=%0.4f, y=%0.4f>" \
             % (self.h, self.c, self.y)
+
+
+    def interpolate(self, other, steps):
+        """HCY interpolation.
+
+        >>> red = HCYColor(0, 0.8, 0.5)
+        >>> green = HCYColor(1./3, 0.8, 0.5)
+        >>> [c.to_hex_str() for c in green.interpolate(red, 5)]
+        ['#19c619', '#5ea319', '#8c8c19', '#c46f19', '#e55353']
+        >>> [c.to_hex_str() for c in red.interpolate(green, 5)]
+        ['#e55353', '#c46f19', '#8c8c19', '#5ea319', '#19c619']
+
+        HCY is a cylindrical space, so interpolations between two endpoints of
+        the same chroma will preserve that chroma. RGB interpoloation tends to
+        diminish because the interpolation will pass near the diagonal of zero
+        chroma.
+
+        >>> [i.c for i in red.interpolate(green, 5)]
+        [0.8, 0.8, 0.8, 0.8, 0.8]
+        >>> red_rgb = RGBColor(color=red)
+        >>> [round(HCYColor(color=i).c, 3)
+        ...       for i in red_rgb.interpolate(green, 5)]
+        [0.8, 0.457, 0.571, 0.686, 0.8]
+
+        """
+        assert steps >= 3
+        other = HCYColor(color=other)
+        # Like HSV, interpolate using the shortest angular distance.
+        ha = self.h % 1.0
+        hb = other.h % 1.0
+        hdelta = hb - ha
+        for hdx0 in -(ha+1-hb), (hb+1-ha):
+            if abs(hdx0) < abs(hdelta):
+                hdelta = hdx0
+        for step in xrange(steps):
+            p = float(step) / (steps - 1)
+            h = (self.h + hdelta * p) % 1.0
+            c = self.c + (other.c - self.c) * p
+            y = self.y + (other.y - self.y) * p
+            yield HCYColor(h=h, c=c, y=y)
+
 
 
 class YCbCrColor (UIColor):
@@ -584,6 +690,34 @@ class YCbCrColor (UIColor):
         return "<YCbCrColor Y=%0.4f, Cb=%0.4f, Cr=%0.4f>" \
             % (self.Y, self.Cb, self.Cr)
 
+
+    def interpolate(self, other, steps):
+        """YCbCr interpolation.
+
+        >>> yellow = YCbCrColor(color=RGBColor(1,1,0))
+        >>> red = YCbCrColor(color=RGBColor(1,0,0))
+        >>> [c.to_hex_str() for c in yellow.interpolate(red, 3)]
+        ['#feff00', '#ff7f00', '#ff0000']
+
+        This colorspace is a simple transformation of the RGB cube, so to
+        within a small margin of error, the results of this interpolation are
+        identical to an interpolation in RGB space.
+
+        >>> y_rgb = RGBColor(1,1,0)
+        >>> r_rgb = RGBColor(1,0,0)
+        >>> [c.to_hex_str() for c in y_rgb.interpolate(r_rgb, 3)]
+        ['#ffff00', '#ff7f00', '#ff0000']
+
+        """
+        assert steps >= 3
+        other = YCbCrColor(color=other)
+        # Like HSV, interpolate using the shortest angular distance.
+        for step in xrange(steps):
+            p = float(step) / (steps - 1)
+            Y = self.Y + (other.Y - self.Y) * p
+            Cb = self.Cb + (other.Cb - self.Cb) * p
+            Cr = self.Cr + (other.Cr - self.Cr) * p
+            yield YCbCrColor(Y=Y, Cb=Cb, Cr=Cr)
 
 ## 
 ## Linear/sRGB transformations.
