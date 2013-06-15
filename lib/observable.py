@@ -134,7 +134,7 @@ class observable (object):
         """
         # Return the decorator callable when accessed via the class: normal
         # descriptor protocol behaviour for instance things.
-        if not instance:
+        if instance is None:
             return self
         # For second and subsequent calls, use a cache stored in the observable
         # object using this class's name mangling.
