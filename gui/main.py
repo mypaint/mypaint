@@ -131,6 +131,12 @@ def main(datapath, extradata, oldstyle_confpath=None, version=MYPAINT_VERSION):
         import gtkexcepthook
         func = app.filehandler.confirm_destructive_action
         gtkexcepthook.quit_confirmation_func = func
+
+        # temporary workaround for gtk3 Ctrl-C bug:
+        # https://bugzilla.gnome.org/show_bug.cgi?id=622084
+        import signal
+        signal.signal(signal.SIGINT, signal.SIG_DFL)
+
         gtk.main()
 
     if options.trace:
