@@ -47,7 +47,7 @@ test_surface_drawing(void *user_data)
 {
     SurfaceTestData *data = (SurfaceTestData *)user_data;
 
-    char * event_data = read_file("tests/painting30sec.dat");
+    char * event_data = read_file("events/painting30sec.dat");
     char * brush_data = read_file(data->brush_file);
 
     assert(event_data);
@@ -122,42 +122,42 @@ mypaint_test_surface_run(int argc, char **argv,
     gpointer d = user_data;
 
     SurfaceTestData data[] = {
-        {"1", f, d, 2.0, 1.0, 1, "brushes/classic/modelling.myb", SurfaceTransactionPerStrokeTo},
-        {"2", f, d, 4.0, 1.0, 1, "brushes/classic/modelling.myb", SurfaceTransactionPerStrokeTo},
-        {"3", f, d, 8.0, 1.0, 1, "brushes/classic/modelling.myb", SurfaceTransactionPerStrokeTo},
-        {"4", f, d, 16.0, 2.0, 1, "brushes/classic/modelling.myb", SurfaceTransactionPerStrokeTo},
-        {"5", f, d, 32.0, 2.0, 1, "brushes/classic/modelling.myb", SurfaceTransactionPerStrokeTo},
-        {"6", f, d, 64.0, 2.0, 1, "brushes/classic/modelling.myb", SurfaceTransactionPerStrokeTo},
-        {"7", f, d, 128.0, 4.0, 1, "brushes/classic/modelling.myb", SurfaceTransactionPerStrokeTo},
-        {"8", f, d, 256.0, 4.0, 1, "brushes/classic/modelling.myb", SurfaceTransactionPerStrokeTo},
-        {"9", f, d, 512.0, 4.0, 1, "brushes/classic/modelling.myb", SurfaceTransactionPerStrokeTo},
-        {"10", f, d, 2.0, 1.0, 1, "brushes/classic/charcoal.myb", SurfaceTransactionPerStrokeTo},
-        {"11", f, d, 4.0, 1.0, 1, "brushes/classic/charcoal.myb", SurfaceTransactionPerStrokeTo},
-        {"12", f, d, 8.0, 1.0, 1, "brushes/classic/charcoal.myb", SurfaceTransactionPerStrokeTo},
-        {"13", f, d, 16.0, 2.0, 1, "brushes/classic/charcoal.myb", SurfaceTransactionPerStrokeTo},
-        {"14", f, d, 32.0, 2.0, 1, "brushes/classic/charcoal.myb", SurfaceTransactionPerStrokeTo},
-        {"15", f, d, 64.0, 2.0, 1, "brushes/classic/charcoal.myb", SurfaceTransactionPerStrokeTo},
-        {"16", f, d, 128.0, 4.0, 1, "brushes/classic/charcoal.myb", SurfaceTransactionPerStrokeTo},
-        {"17", f, d, 256.0, 4.0, 1, "brushes/classic/charcoal.myb", SurfaceTransactionPerStrokeTo},
-        {"18", f, d, 512.0, 4.0, 1, "brushes/classic/charcoal.myb", SurfaceTransactionPerStrokeTo},
-        {"19", f, d, 2.0, 1.0, 1, "brushes/classic/coarse_bulk_2.myb", SurfaceTransactionPerStrokeTo},
-        {"20", f, d, 4.0, 1.0, 1, "brushes/classic/coarse_bulk_2.myb", SurfaceTransactionPerStrokeTo},
-        {"21", f, d, 8.0, 1.0, 1, "brushes/classic/coarse_bulk_2.myb", SurfaceTransactionPerStrokeTo},
-        {"22", f, d, 16.0, 2.0, 1, "brushes/classic/coarse_bulk_2.myb", SurfaceTransactionPerStrokeTo},
-        {"23", f, d, 32.0, 2.0, 1, "brushes/classic/coarse_bulk_2.myb", SurfaceTransactionPerStrokeTo},
-        {"24", f, d, 64.0, 2.0, 1, "brushes/classic/coarse_bulk_2.myb", SurfaceTransactionPerStrokeTo},
-        {"25", f, d, 128.0, 2.0, 1, "brushes/classic/coarse_bulk_2.myb", SurfaceTransactionPerStrokeTo},
-        {"26", f, d, 256.0, 2.0, 1, "brushes/classic/coarse_bulk_2.myb", SurfaceTransactionPerStrokeTo},
-//        {"27", f, d, 512.0, 2.0, 1, "brushes/classic/coarse_bulk_2.myb", SurfaceTransactionPerStrokeTo}, // uses to much memory on most machines
-        {"28", f, d, 2.0, 1.0, 1, "brushes/classic/bulk.myb", SurfaceTransactionPerStrokeTo},
-        {"29", f, d, 4.0, 1.0, 1, "brushes/classic/bulk.myb", SurfaceTransactionPerStrokeTo},
-        {"30", f, d, 8.0, 1.0, 1, "brushes/classic/bulk.myb", SurfaceTransactionPerStrokeTo},
-        {"31", f, d, 16.0, 2.0, 1, "brushes/classic/bulk.myb", SurfaceTransactionPerStrokeTo},
-        {"32", f, d, 32.0, 2.0, 1, "brushes/classic/bulk.myb", SurfaceTransactionPerStrokeTo},
-        {"33", f, d, 64.0, 2.0, 1, "brushes/classic/bulk.myb", SurfaceTransactionPerStrokeTo},
-        {"34", f, d, 128.0, 4.0, 1, "brushes/classic/bulk.myb", SurfaceTransactionPerStrokeTo},
-        {"35", f, d, 256.0, 4.0, 1, "brushes/classic/bulk.myb", SurfaceTransactionPerStrokeTo},
-        {"36", f, d, 512.0, 4.0, 1, "brushes/classic/bulk.myb", SurfaceTransactionPerStrokeTo}
+        {"1", f, d, 2.0, 1.0, 1, "brushes/modelling.myb", SurfaceTransactionPerStrokeTo},
+        {"2", f, d, 4.0, 1.0, 1, "brushes/modelling.myb", SurfaceTransactionPerStrokeTo},
+        {"3", f, d, 8.0, 1.0, 1, "brushes/modelling.myb", SurfaceTransactionPerStrokeTo},
+        {"4", f, d, 16.0, 2.0, 1, "brushes/modelling.myb", SurfaceTransactionPerStrokeTo},
+        {"5", f, d, 32.0, 2.0, 1, "brushes/modelling.myb", SurfaceTransactionPerStrokeTo},
+        {"6", f, d, 64.0, 2.0, 1, "brushes/modelling.myb", SurfaceTransactionPerStrokeTo},
+        {"7", f, d, 128.0, 4.0, 1, "brushes/modelling.myb", SurfaceTransactionPerStrokeTo},
+        {"8", f, d, 256.0, 4.0, 1, "brushes/modelling.myb", SurfaceTransactionPerStrokeTo},
+        {"9", f, d, 512.0, 4.0, 1, "brushes/modelling.myb", SurfaceTransactionPerStrokeTo},
+        {"10", f, d, 2.0, 1.0, 1, "brushes/charcoal.myb", SurfaceTransactionPerStrokeTo},
+        {"11", f, d, 4.0, 1.0, 1, "brushes/charcoal.myb", SurfaceTransactionPerStrokeTo},
+        {"12", f, d, 8.0, 1.0, 1, "brushes/charcoal.myb", SurfaceTransactionPerStrokeTo},
+        {"13", f, d, 16.0, 2.0, 1, "brushes/charcoal.myb", SurfaceTransactionPerStrokeTo},
+        {"14", f, d, 32.0, 2.0, 1, "brushes/charcoal.myb", SurfaceTransactionPerStrokeTo},
+        {"15", f, d, 64.0, 2.0, 1, "brushes/charcoal.myb", SurfaceTransactionPerStrokeTo},
+        {"16", f, d, 128.0, 4.0, 1, "brushes/charcoal.myb", SurfaceTransactionPerStrokeTo},
+        {"17", f, d, 256.0, 4.0, 1, "brushes/charcoal.myb", SurfaceTransactionPerStrokeTo},
+        {"18", f, d, 512.0, 4.0, 1, "brushes/charcoal.myb", SurfaceTransactionPerStrokeTo},
+        {"19", f, d, 2.0, 1.0, 1, "brushes/coarse_bulk_2.myb", SurfaceTransactionPerStrokeTo},
+        {"20", f, d, 4.0, 1.0, 1, "brushes/coarse_bulk_2.myb", SurfaceTransactionPerStrokeTo},
+        {"21", f, d, 8.0, 1.0, 1, "brushes/coarse_bulk_2.myb", SurfaceTransactionPerStrokeTo},
+        {"22", f, d, 16.0, 2.0, 1, "brushes/coarse_bulk_2.myb", SurfaceTransactionPerStrokeTo},
+        {"23", f, d, 32.0, 2.0, 1, "brushes/coarse_bulk_2.myb", SurfaceTransactionPerStrokeTo},
+        {"24", f, d, 64.0, 2.0, 1, "brushes/coarse_bulk_2.myb", SurfaceTransactionPerStrokeTo},
+        {"25", f, d, 128.0, 2.0, 1, "brushes/coarse_bulk_2.myb", SurfaceTransactionPerStrokeTo},
+        {"26", f, d, 256.0, 2.0, 1, "brushes/coarse_bulk_2.myb", SurfaceTransactionPerStrokeTo},
+//        {"27", f, d, 512.0, 2.0, 1, "brushes/coarse_bulk_2.myb", SurfaceTransactionPerStrokeTo}, // uses to much memory on most machines
+        {"28", f, d, 2.0, 1.0, 1, "brushes/bulk.myb", SurfaceTransactionPerStrokeTo},
+        {"29", f, d, 4.0, 1.0, 1, "brushes/bulk.myb", SurfaceTransactionPerStrokeTo},
+        {"30", f, d, 8.0, 1.0, 1, "brushes/bulk.myb", SurfaceTransactionPerStrokeTo},
+        {"31", f, d, 16.0, 2.0, 1, "brushes/bulk.myb", SurfaceTransactionPerStrokeTo},
+        {"32", f, d, 32.0, 2.0, 1, "brushes/bulk.myb", SurfaceTransactionPerStrokeTo},
+        {"33", f, d, 64.0, 2.0, 1, "brushes/bulk.myb", SurfaceTransactionPerStrokeTo},
+        {"34", f, d, 128.0, 4.0, 1, "brushes/bulk.myb", SurfaceTransactionPerStrokeTo},
+        {"35", f, d, 256.0, 4.0, 1, "brushes/bulk.myb", SurfaceTransactionPerStrokeTo},
+        {"36", f, d, 512.0, 4.0, 1, "brushes/bulk.myb", SurfaceTransactionPerStrokeTo}
     };
 
     TestCase test_cases[TEST_CASES_NUMBER(data)];

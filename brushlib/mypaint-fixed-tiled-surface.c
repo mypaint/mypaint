@@ -2,15 +2,16 @@
 #include <assert.h>
 #include <math.h>
 #include <stdio.h>
+#include <string.h>
 
 #include <mypaint-fixed-tiled-surface.h>
 
 
-struct _MyPaintGeglTiledSurface {
+struct _MyPaintFixedTiledSurface {
     MyPaintTiledSurface parent;
 
     size_t tile_size; // Size (in bytes) of single tile
-    uint16_t *tile_buffer; // Stores tiles in a linear chunk of memory
+    uint16_t *tile_buffer; // Stores tiles in a linear chunk of memory (16bpc RGBA)
     uint16_t *null_tile; // Single tile that we hand out and ignore writes to
     int tiles_width; // width in tiles
     int tiles_height; // height in tiles
@@ -23,9 +24,7 @@ void free_simple_tiledsurf(MyPaintSurface *surface);
 
 void reset_null_tile(MyPaintFixedTiledSurface *self)
 {
-    for (int i=0; i < self->tiles_width * self->tiles_height; i++) {
-        self->null_tile[i] = 0;
-    }
+    memset(self->null_tile, 0, self->tile_size);
 }
 
 static void
@@ -38,7 +37,7 @@ tile_request_start(MyPaintTiledSurface *tiled_surface, MyPaintTiledSurfaceTileRe
 
     uint16_t *tile_pointer = NULL;
 
-    if (tx > self->tiles_width || ty > self->tiles_height) {
+    if (tx >= self->tiles_width || ty >= self->tiles_height || tx < 0 || ty < 0) {
         // Give it a tile which we will ignore writes to
         tile_pointer = self->null_tile;
 
@@ -48,7 +47,7 @@ tile_request_start(MyPaintTiledSurface *tiled_surface, MyPaintTiledSurfaceTileRe
         size_t x_offset = tx * self->tile_size;
         size_t tile_offset = (rowstride * ty) + x_offset;
 
-        tile_pointer = self->tile_buffer + tile_offset;
+        tile_pointer = self->tile_buffer + tile_offset/sizeof(uint16_t);
     }
 
     request->buffer = tile_pointer;
@@ -62,7 +61,7 @@ tile_request_end(MyPaintTiledSurface *tiled_surface, MyPaintTiledSurfaceTileRequ
     const int tx = request->tx;
     const int ty = request->ty;
 
-    if (tx > self->tiles_width || ty > self->tiles_height) {
+    if (tx >= self->tiles_width || ty >= self->tiles_height || tx < 0 || ty < 0) {
         // Wipe any changed done to the null tile
         reset_null_tile(self);
     } else {
@@ -103,16 +102,21 @@ mypaint_fixed_tiled_surface_new(int width, int height)
     // MyPaintSurface vfuncs
     self->parent.parent.destroy = free_simple_tiledsurf;
 
-    const int tiles_width = ceil(width % tile_size_pixels);
-    const int tiles_height = ceil(height % tile_size_pixels);
-    const size_t tile_size = tile_size_pixels * tile_size_pixels * sizeof(uint16_t);
+    const int tiles_width = ceil((float)width / tile_size_pixels);
+    const int tiles_height = ceil((float)height / tile_size_pixels);
+    const size_t tile_size = tile_size_pixels * tile_size_pixels * 4 * sizeof(uint16_t);
     const size_t buffer_size = tiles_width * tiles_height * tile_size;
+
+    assert(tile_size_pixels*tiles_width >= width);
+    assert(tile_size_pixels*tiles_height >= height);
+    assert(buffer_size >= width*height*4*sizeof(uint16_t));
 
     uint16_t * buffer = (uint16_t *)malloc(buffer_size);
     if (!buffer) {
         fprintf(stderr, "CRITICAL: unable to allocate enough memory: %Zu bytes", buffer_size);
         return NULL;
     }
+    memset(buffer, 255, buffer_size);
 
     self->tile_buffer = buffer;
     self->tile_size = tile_size;

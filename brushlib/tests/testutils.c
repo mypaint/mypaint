@@ -14,6 +14,12 @@ read_file(const char *path)
     long file_size = -1L;
     FILE *file = fopen(path, "r");
 
+    if (!file) {
+      printf("could not open '%s'\n", path);
+      perror("fopen");
+      exit(1);
+    }
+
     fseek(file , 0 , SEEK_END);
     file_size = ftell(file);
     rewind(file);

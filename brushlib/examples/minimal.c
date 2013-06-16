@@ -35,6 +35,25 @@ main(int argc, char argv[]) {
     // FIXME: write_ppm is currently broken
     fprintf(stdout, "Writing output\n");
     write_ppm(surface, "output.ppm");
+#else
+    FILE * fp = fopen("output_raw.ppm", "w");
+    if (!fp) {
+        perror("fopen 'output_raw.ppm'");
+        exit(1);
+    }
+    int w = surface->tiles_width * surface->parent.tile_size;
+    int h = surface->tiles_height * surface->parent.tile_size;
+    fprintf(fp, "P3\n#Handwritten\n%d %d\n255\n", w, h);
+    uint16_t * data = surface->tile_buffer;
+    for (int y=0; y<h; y++) {
+        for (int x=0; x<w; x++) {
+            for (int c=0; c<4; c++) {
+                if (c<3) fprintf(fp, "%d ", (int)(*data)/256);
+                data++;
+            }
+        }
+        fprintf(fp, "\n");
+    }
 #endif
 
     mypaint_brush_unref(brush);
