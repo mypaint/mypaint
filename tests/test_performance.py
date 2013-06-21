@@ -191,7 +191,7 @@ def brushengine_paint_hires():
     for t, x, y, pressure in events:
         dtime = t - t_old
         t_old = t
-        b.stroke_to (s, x*5, y*5, pressure, 0.0, 0.0, dtime)
+        b.stroke_to(s.backend, x*5, y*5, pressure, 0.0, 0.0, dtime)
 
         trans_time += dtime
         if trans_time > 0.05:

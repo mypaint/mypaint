@@ -88,11 +88,24 @@ class SurfaceSnapshot:
 
 if use_gegl:
 
-    class GeglSurface(mypaintlib.GeglBackedSurface):
+    class GeglSurface():
 
-        def __init__(self, mipmap_level=0):
-            mypaintlib.GeglBackedSurface.__init__(self, self)
+        def __init__(self, mipmap_level=0, looped=False, looped_size=(0,0)):
             self.observers = []
+            self._backend = mypaintlib.GeglBackedSurface(self)
+
+            # Forwarding API
+            self.begin_atomic = self._backend.begin_atomic
+            self.end_atomic = self._backend.end_atomic
+            self.get_color = self._backend.get_color
+            self.get_alpha = self._backend.get_alpha
+            self.draw_dab = self._backend.draw_dab
+#            self.set_symmetry_state = self._backend.set_symmetry_state
+            self.get_node = self._backend.get_node
+
+        @property
+        def backend(self):
+            return self._backend
 
         def notify_observers(self, *args):
             for f in self.observers:
@@ -141,10 +154,14 @@ if use_gegl:
         def set_symmetry_state(self, enabled, center_axis):
             pass
 
-class MyPaintSurface(mypaintlib.TiledSurface):
+# TODO:
+# - move the tile storage from MyPaintSurface to a separate class
+class MyPaintSurface():
     # the C++ half of this class is in tiledsurface.hpp
     def __init__(self, mipmap_level=0, looped=False, looped_size=(0,0)):
-        mypaintlib.TiledSurface.__init__(self, self)
+
+        # TODO: pass just what it needs access to, not all of self
+        self._backend = mypaintlib.TiledSurface(self)
         self.tiledict = {}
         self.observers = []
 
@@ -161,6 +178,18 @@ class MyPaintSurface(mypaintlib.TiledSurface):
         if mipmap_level < MAX_MIPMAP_LEVEL:
             self.mipmap = Surface(mipmap_level+1)
             self.mipmap.parent = self
+
+        # Forwarding API
+        self.set_symmetry_state = self._backend.set_symmetry_state
+        self.begin_atomic = self._backend.begin_atomic
+        self.end_atomic = self._backend.end_atomic
+        self.get_color = self._backend.get_color
+        self.get_alpha = self._backend.get_alpha
+        self.draw_dab = self._backend.draw_dab
+
+    @property
+    def backend(self):
+        return self._backend
 
     def notify_observers(self, *args):
         for f in self.observers:

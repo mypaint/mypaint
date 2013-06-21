@@ -22,7 +22,7 @@ def draw_test_data(surface, brush):
         for t, x, y, pressure in events:
             dtime = t - t_old
             t_old = t
-            b.stroke_to (s, x, y, pressure, 0.0, 0.0, dtime)
+            b.stroke_to (s.backend, x, y, pressure, 0.0, 0.0, dtime)
         s.end_atomic()
 
 def find_widgets(widget, predicate):
@@ -128,7 +128,7 @@ class MyPaintGeglApplication(object):
         dtime = (time - self.last_event[2])/1000.0
         if self.button_pressed:
             self.surface.begin_atomic()
-            self.brush.stroke_to(self.surface, x, y, pressure, 0.0, 0.0, dtime)
+            self.brush.stroke_to(self.surface.backend, x, y, pressure, 0.0, 0.0, dtime)
             self.surface.end_atomic()
 
         self.last_event = (x, y, time)

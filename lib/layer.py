@@ -115,7 +115,7 @@ class Layer:
     def stroke_to(self, brush, x, y, pressure, xtilt, ytilt, dtime):
         """Render a part of a stroke."""
         self._surface.begin_atomic()
-        split = brush.stroke_to(self._surface, x, y,
+        split = brush.stroke_to(self._surface.backend, x, y,
                                     pressure, xtilt, ytilt, dtime)
         self._surface.end_atomic()
         return split
