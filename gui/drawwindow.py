@@ -607,19 +607,28 @@ class DrawWindow (gtk.Window):
 
 
     def palette_next_cb(self, action):
-        lm = self.app.layout_manager
-        combined = lm.get_tool_by_role('colorWindow').widget
-        pal_view = combined.get_palette_view()
-        pal_view.grid.select_next()
-        combined.show_palette_view()
+        mgr = self.app.brush_color_manager
+        color = mgr.get_color()
+        newcolor = mgr.palette.move_match_position(1, mgr.get_color())
+        if newcolor:
+            mgr.set_color(newcolor)
+        # TODO: show the palette panel if hidden
 
 
     def palette_prev_cb(self, action):
-        lm = self.app.layout_manager
-        combined = lm.get_tool_by_role('colorWindow').widget
-        pal_view = combined.get_palette_view()
-        pal_view.grid.select_previous()
-        combined.show_palette_view()
+        mgr = self.app.brush_color_manager
+        color = mgr.get_color()
+        newcolor = mgr.palette.move_match_position(-1, mgr.get_color())
+        if newcolor:
+            mgr.set_color(newcolor)
+        # TODO: show the palette panel if hidden
+
+
+    def palette_add_current_color_cb(self, action):
+        """Action callback: append the current color to the palette"""
+        mgr = self.app.brush_color_manager
+        color = mgr.get_color()
+        mgr.palette.append(color, name=None, unique=True, match=True)
 
 
     def quit_cb(self, *junk):

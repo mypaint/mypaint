@@ -1,5 +1,5 @@
 # This file is part of MyPaint.
-# Copyright (C) 2012 by Andrew Chadwick <andrewc-git@piffle.org>
+# Copyright (C) 2013 by Andrew Chadwick <a.t.chadwick@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -7,8 +7,14 @@
 # (at your option) any later version.
 
 
-"""Palette: a list of swatch colours.
-"""
+"""Palette: user-defined lists of color swatches"""
+
+# TODO: Make palettes part of the model, save as part of ORA documents.
+# TODO: Move this module to lib.palette
+# TODO:  - this will require uicolor stuff to be moved too.
+
+
+## Imports
 
 import re
 import os
@@ -16,27 +22,32 @@ from copy import copy
 import logging
 logger = logging.getLogger(__name__)
 
-import gi
-from gi.repository import Gtk
-from gettext import gettext as _
-import cairo
+from util import clamp
+from lib.observable import event
+
+
+## Imports requiring gtk2compat
 
 if __name__ == '__main__':
     from gui import gtk2compat
     # for the sake of the modules below which aren't ported yet
 
-from uicolor import RGBColor, HCYColor
-from adjbases import ColorAdjusterWidget
-from util import clamp
+from uicolor import RGBColor, YCbCrColor
 
+
+## Class and function defs
 
 
 class Palette (object):
-    """A flat list of colour swatches.
+    """A flat list of colour swatches, compatible with the GIMP
 
     As a (sideways-compatible) extension to the GIMP's format, MyPaint supports
     empty slots in the palette. These slots are represented by pure black
     swatches with the name ``__NONE__``.
+
+    Palette objects expose the position within the palette of a current color
+    match, which can be declared to be approximate or exact. This is used for
+    highlighting the user concept of the "current color" in the GUI.
 
     Palette objects can be serialized in the GIMP's file format (the regular
     `unicode()` function on a Palette will do this too), or converted to and
@@ -46,40 +57,89 @@ class Palette (object):
     """
 
     ## Class-level constants
-    __EMPTY_SLOT_ITEM = RGBColor(-1, -1, -1)
-    __EMPTY_SLOT_NAME = "__NONE__"
+    _EMPTY_SLOT_ITEM = RGBColor(-1, -1, -1)
+    _EMPTY_SLOT_NAME = "__NONE__"
 
 
     ## Construction, loading and saving
 
 
-    def __init__(self, filehandle=None, filename=None):
-        """Instantiate, possibly from a file.
+    def __init__(self, filehandle=None, filename=None, colors=None):
+        """Instantiate, from a file or a sequence of colors
+
+        :param filehandle: Filehandle to load.
+        :param filename: Name of a file to load.
+        :param colors: Iterable sequence of colors (uicolor.UIColor).
+
+        The constructor arguments are mutually exclusive.  With no args
+        specified, you get an empty palette.
 
           >>> Palette()
           <Palette colors=0, columns=0, name=None>
+
+        Palettes can be generated from interpolations, which is handy for
+        testing, at least.
+
+          >>> cols = RGBColor(1,1,0).interpolate(RGBColor(1,0,1), 10)
+          >>> Palette(colors=cols)
+          <Palette colors=10, columns=0, name=None>
+
         """
         super(Palette, self).__init__()
-        self.__columns = 0   #: Number of columns. 0 means "natural flow".
-        self.__colors = None  #: List of named colours.
-        self.__name = None   #: Name of the palette, as a Unicode string.
-        self.clear()
-        if filehandle:
-            self.load(filehandle)
+
+        #: Number of columns. 0 means "natural flow"
+        self._columns = 0
+        #: List of named colors
+        self._colors = []
+        #: Name of the palette as a Unicode string, or None
+        self._name = None
+        #: Current position in the palette. None=no match; integer=index.
+        self._match_position = None
+        #: True if the current match is approximate
+        self._match_is_approx = False
+
+        # Clear and initialize
+        self.clear(silent=True)
+        if colors:
+            for col in colors:
+                col = self._copy_color_in(col)
+                self._colors.append(col)
+        elif filehandle:
+            self.load(filehandle, silent=True)
         elif filename:
             fp = open(filename, "r")
-            self.load(fp)
+            self.load(fp, silent=True)
             fp.close()
 
 
-    def clear(self):
-        """Resets the palette to its initial state."""
-        self.__colors = []
-        self.__columns = 0
-        self.__name = None
+    def clear(self, silent=False):
+        """Resets the palette to its initial state.
+
+          >>> grey16 = RGBColor(1,1,1).interpolate(RGBColor(0,0,0), 16)
+          >>> p = Palette(colors=grey16)
+          >>> p.name = "Greyscale"
+          >>> p.columns = 3
+          >>> p
+          <Palette colors=16, columns=3, name=u'Greyscale'>
+          >>> p.clear()
+          >>> p
+          <Palette colors=0, columns=0, name=None>
+
+        Fires the `info_changed()`, `sequence_changed()`, and `match_changed()`
+        events, unless the `silent` parameter tests true.
+        """
+        self._colors = []
+        self._columns = 0
+        self._name = None
+        self._match_position = None
+        self._match_is_approx = False
+        if not silent:
+            self.info_changed()
+            self.sequence_changed()
+            self.match_changed()
 
 
-    def load(self, filehandle):
+    def load(self, filehandle, silent=False):
         """Load contents from a file handle containing a GIMP palette.
 
         If the format is incorrect, a `RuntimeError` will be raised.
@@ -88,7 +148,7 @@ class Palette (object):
         field_line_re = re.compile(r'^(\w+)\s*:\s*(.*)$')
         color_line_re = re.compile(r'^(\d+)\s+(\d+)\s+(\d+)\s*(?:\b(.*))$')
         fp = filehandle
-        self.clear()
+        self.clear(silent=True)   # method fires events itself
         line = fp.readline()
         if line.strip() != "GIMP Palette":
             raise RuntimeError, "Not a valid GIMP Palette"
@@ -107,9 +167,9 @@ class Palette (object):
                     key, value = match.groups()
                     key = key.lower()
                     if key == 'name':
-                        self.__name = value.strip()
+                        self._name = value.strip()
                     elif key == 'columns':
-                        self.__columns = int(value)
+                        self._columns = int(value)
                     else:
                         logger.warning("Unknown 'key:value' pair %r", line)
                     continue
@@ -124,11 +184,16 @@ class Palette (object):
             r = float(clamp(int(r), 0, 0xff))/0xff
             g = float(clamp(int(g), 0, 0xff))/0xff
             b = float(clamp(int(b), 0, 0xff))/0xff
-            if r == g == b == 0 and col_name == self.__EMPTY_SLOT_NAME:
+            if r == g == b == 0 and col_name == self._EMPTY_SLOT_NAME:
                 self.append(None)
             else:
                 col = RGBColor(r, g, b)
-                self.append(col, col_name)
+                col.__name = col_name
+                self._colors.append(col)
+        if not silent:
+            self.info_changed()
+            self.sequence_changed()
+            self.match_changed()
 
 
     def save(self, filehandle):
@@ -140,31 +205,48 @@ class Palette (object):
         filehandle.write(unicode(self))
 
 
-    ## Palette metadata
+    def update(self, other):
+        """Updates all details of this palette from another palette.
+
+        Fires the `info_changed()`, `sequence_changed()`, and `match_changed()`
+        events.
+        """
+        self.clear(silent=True)
+        for col in other._colors:
+            col = self._copy_color_in(col)
+            self._colors.append(col)
+        self._name = other._name
+        self._columns = other._columns
+        self.info_changed()
+        self.sequence_changed()
+        self.match_changed()
+
+
+    ## Palette size and metadata
 
 
     def get_columns(self):
         """Get the number of columns (0 means unspecified)."""
-        return self.__columns
+        return self._columns
 
 
     def set_columns(self, n):
         """Set the number of columns (0 means unspecified)."""
-        self.__columns = int(n)
-
-
-    def set_name(self, name):
-        """Sets the palette's name.
-        """
-        if name is not None:
-            name = unicode(name)
-        self.__name = name
+        self._columns = int(n)
+        self.info_changed()
 
 
     def get_name(self):
-        """Gets the palette's name.
-        """
-        return self.__name
+        """Gets the palette's name."""
+        return self._name
+
+
+    def set_name(self, name):
+        """Sets the palette's name."""
+        if name is not None:
+            name = unicode(name)
+        self._name = name
+        self.info_changed()
 
 
     def __nonzero__(self):
@@ -179,23 +261,251 @@ class Palette (object):
 
 
     def __len__(self):
-        return len(self.__colors)
+        """Palette length is the number of color slots within it."""
+        return len(self._colors)
+
+
+
+    ## Match position marker
+
+
+    def get_match_position(self):
+        """Return the position of the current match (int ot None)"""
+        return self._match_position
+
+
+    def set_match_position(self, i):
+        """Sets the position of the current match (int or None)
+
+        Fires `match_changed()` if the value is changed."""
+        if i is not None:
+            i = int(i)
+            if i < 0 or i >= len(self):
+                i = None
+        if i != self._match_position:
+            self._match_position = i
+            self.match_changed()
+
+
+    def get_match_is_approx(self):
+        """Returns whether the current match is approximate."""
+        return self._match_is_approx
+
+
+    def set_match_is_approx(self, approx):
+        """Sets whether the current match is approximate
+
+        Fires match_changed() if the boolean value changes."""
+        approx = bool(approx)
+        if approx != self._match_is_approx:
+            self._match_is_approx = approx
+            self.match_changed()
+
+
+    def match_color(self, col, exact=False, order=None):
+        """Moves the match position to the color closest to the argument.
+
+        :param col: The color to match.
+        :type col: UIColor
+        :param exact: Only consider exact matches, and not near-exact or
+                approximate matches.
+        :type exact: bool
+        :param order: a search order to use. Default is outwards from the
+                match position, or in order if the match is unset.
+        :type order: sequence or iterator of integer color indices.
+        :returns: Whether the match succeeded.
+        :rtype: bool
+
+        By default, the matching algorithm favours exact or near-exact matches
+        which are close to the current position. If the current position is
+        unset, this search starts at 0. If there are no exact or near-exact
+        matches, a looser approximate match will be used, again favouring
+        matches with nearby positions.
+
+          >>> red2blue = RGBColor(1, 0, 0).interpolate(RGBColor(0, 1, 1), 5)
+          >>> p = Palette(colors=red2blue)
+          >>> p.match_color(RGBColor(0.45, 0.45, 0.45))
+          True
+          >>> p.match_position
+          2
+          >>> p.match_is_approx
+          True
+          >>> p[p.match_position]
+          <RGBColor r=0.5000, g=0.5000, b=0.5000>
+          >>> p.match_color(RGBColor(0.5, 0.5, 0.5))
+          True
+          >>> p.match_is_approx
+          False
+          >>> p.match_color(RGBColor(0.45, 0.45, 0.45), exact=True)
+          False
+          >>> p.match_color(RGBColor(0.5, 0.5, 0.5), exact=True)
+          True
+
+        Fires the ``match_changed()`` event when changes happen.
+        """
+        if order is not None:
+            search_order = order
+        elif self.match_position is not None:
+            search_order = _outwards_from(len(self), self.match_position)
+        else:
+            search_order = xrange(len(self))
+        bestmatch_i = None
+        bestmatch_d = None
+        is_approx = True
+        for i in search_order:
+            c = self._colors[i]
+            if c is self._EMPTY_SLOT_ITEM:
+                continue
+            # Closest exact or near-exact match by index distance (according to
+            # the search_order). Considering near-exact matches as equivalent
+            # to exact matches improves the feel of PaletteNext and
+            # PalettePrev.
+            if exact:
+                if c == col:
+                    bestmatch_i = i
+                    is_approx = False
+                    break
+            else:
+                d = _color_distance(col, c)
+                if c == col or d < 0.06:
+                    bestmatch_i = i
+                    is_approx = False
+                    break
+                if bestmatch_d is None or d < bestmatch_d:
+                    bestmatch_i = i
+                    bestmatch_d = d
+            # Measuring over a blend into solid equiluminant 0-chroma
+            # grey for the orange #DA5D2E with an opaque but feathered
+            # brush made huge, and picking just inside the point where the
+            # palette widget begins to call it approximate:
+            #
+            # 0.05 is a difference only discernible (to me) by tilting LCD
+            # 0.066 to 0.075 appears slightly greyer for large areas
+            # 0.1 and above is very clearly distinct
+
+        # If there are no exact or near-exact matches, choose the most similar
+        # colour anywhere in the palette.
+        if bestmatch_i is not None:
+            self._match_position = bestmatch_i
+            self._match_is_approx = is_approx
+            self.match_changed()
+            return True
+        return False
+
+
+    def move_match_position(self, direction, refcol):
+        """Move the match position in steps, matching first if neeeded.
+
+        :param direction: Direction for moving, positive or negative
+        :type direction: int:, ``1`` or ``-1``
+        :param refcol: Reference color, used for initial mathing when needed.
+        :type refcol: UIColor
+        :returns: the color newly matched, if the match position has changed
+        :rtype: UIColor, or None
+
+        Invoking this method when there's no current match position will select
+        the color that's closest to the reference color, just like
+        `match_color()`
+
+        >>> greys = RGBColor(1,1,1).interpolate(RGBColor(0,0,0), 16)
+        >>> pal = Palette(colors=greys)
+        >>> refcol = RGBColor(0.5, 0.55, 0.45)
+        >>> pal.move_match_position(-1, refcol)
+        >>> pal.match_position
+        7
+        >>> pal.match_is_approx
+        True
+
+        When the current match is defined, but only an approximate match, this
+        method converts it to an exact match but does not change its position.
+
+          >>> pal.move_match_position(-1, refcol) is None
+          False
+          >>> pal.match_position
+          7
+          >>> pal.match_is_approx
+          False
+
+        When the match is initially exact, its position is stepped in the
+        direction indicated, either by +1 or -1. Blank palette entries are
+        skipped.
+
+          >>> pal.move_match_position(-1, refcol) is None
+          False
+          >>> pal.match_position
+          6
+          >>> pal.match_is_approx
+          False
+
+        Fires ``match_position_changed()`` and ``match_is_approx_changed()`` as
+        appropriate.  The return value is the newly matched color whenever this
+        method produces a new exact match.
+
+        """
+        # Normalize direction
+        direction = int(direction)
+        if direction < 0:
+            direction = -1
+        elif direction > 0:
+            direction = 1
+        else:
+            return None
+        # If nothing is selected, pick the closest match without changing
+        # the managed color.
+        old_pos = self._match_position
+        if old_pos is None:
+            self.match_color(refcol)
+            return None
+        # Otherwise, refine the match, or step it in the requested direction.
+        new_pos = None
+        if self._match_is_approx:
+            # Make an existing approximate match concrete.
+            new_pos = old_pos
+        else:
+            # Index reflects a close or identical match.
+            # Seek in the requested direction, skipping empty entries.
+            pos = old_pos
+            assert direction != 0
+            pos += direction
+            while pos < len(self._colors) and pos >= 0:
+                if self._colors[pos] is not self._EMPTY_SLOT_ITEM:
+                    new_pos = pos
+                    break
+                pos += direction
+        # Update the palette index and the managed color.
+        result = None
+        if new_pos is not None:
+            col = self._colors[new_pos]
+            if col is not self._EMPTY_SLOT_ITEM:
+                result = self._copy_color_out(col)
+            self.set_match_position(new_pos)
+            self.set_match_is_approx(False)
+        return result
+
+
+    ## Property-style access for setters and getters
+
+
+    columns = property(get_columns, set_columns)
+    name = property(get_name, set_name)
+    match_position = property(get_match_position, set_match_position)
+    match_is_approx = property(get_match_is_approx, set_match_is_approx)
 
 
     ## Color access
 
 
-    def __copy_color_out(self, col):
-        if col is self.__EMPTY_SLOT_ITEM:
+    def _copy_color_out(self, col):
+        if col is self._EMPTY_SLOT_ITEM:
             return None
         result = RGBColor(color=col)
         result.__name = col.__name
         return result
 
 
-    def __copy_color_in(self, col, name=None):
-        if col is None:
-            result = self.__EMPTY_SLOT_ITEM
+    def _copy_color_in(self, col, name=None):
+        if col is self._EMPTY_SLOT_ITEM or col is None:
+            result = self._EMPTY_SLOT_ITEM
         else:
             if name is None:
                 try:
@@ -209,67 +519,188 @@ class Palette (object):
         return result
 
 
-    def append(self, col, name=None):
-        """Appends a colour, setting an optional name for it.
-        """
-        col = self.__copy_color_in(col, name)
-        self.__colors.append(col)
+    def append(self, col, name=None, unique=False, match=False):
+        """Appends a color, optionally setting a name for it.
 
+        :param col: The color to append.
+        :param name: Name of the color to insert.
+        :param unique: If true, don't append if the color already exists
+                in the palette. Only exact matches count.
+        :param match: If true, set the match position to the
+                appropriate palette entry.
+        """
+        col = self._copy_color_in(col, name)
+        if unique:
+            # Find the final exact match, if one is present
+            for i in xrange(len(self._colors)-1, -1, -1):
+                if col == self._colors[i]:
+                    if match:
+                        self._match_position = i
+                        self._match_is_approx = False
+                        self.match_changed()
+                    return
+        # Append new colour, and select it if requested
+        end_i = len(self._colors)
+        self._colors.append(col)
+        if match:
+            self._match_position = end_i
+            self._match_is_approx = False
+            self.match_changed()
+        self.sequence_changed()
 
 
     def insert(self, i, col, name=None):
         """Inserts a colour, setting an optional name for it.
 
-        Empty slots can be inserted by setting `col` to `None`.
+        :param i: Target index. `None` indicates appending a colour.
+        :param col: Color to insert. `None` indicates an empty slot.
+        :param name: Name of the color to insert.
+
+          >>> grey16 = RGBColor(1, 1, 1).interpolate(RGBColor(0, 0, 0), 16)
+          >>> p = Palette(colors=grey16)
+          >>> p.insert(5, RGBColor(1, 0, 0), name="red")
+          >>> p
+          <Palette colors=17, columns=0, name=None>
+          >>> p[5]
+          <RGBColor r=1.0000, g=0.0000, b=0.0000>
+
+        Fires the `sequence_changed()` event. If the match position changes as
+        a result, `match_changed()` is fired too.
 
         """
-        col = self.__copy_color_in(col, name)
+        col = self._copy_color_in(col, name)
         if i is None:
-            self.__colors.append(col)
+            self._colors.append(col)
         else:
-            self.__colors.insert(i, col)
+            self._colors.insert(i, col)
+            if self.match_position is not None:
+                if self.match_position >= i:
+                    self.match_position += 1
+        self.sequence_changed()
 
 
-    def move(self, src_i, targ_i):
+    def reposition(self, src_i, targ_i):
+        """Moves a color, or copies it to empty slots, or moves it the end.
+
+        :param src_i: Source color index.
+        :param targ_i: Source color index, or None to indicate the end.
+
+        This operation performs a copy if the target is an empty slot, and a
+        remove followed by an insert if the target slot contains a color.
+
+          >>> grey16 = RGBColor(1, 1, 1).interpolate(RGBColor(0, 0, 0), 16)
+          >>> p = Palette(colors=grey16)
+          >>> p[5] = None           # creates an empty slot
+          >>> p.match_position = 8
+          >>> p[5] == p[0]
+          False
+          >>> p.reposition(0, 5)
+          >>> p[5] == p[0]
+          True
+          >>> p.match_position
+          8
+          >>> p[5] = RGBColor(1, 0, 0)
+          >>> p.reposition(14, 5)
+          >>> p.match_position     # continues pointing to the same colour
+          9
+          >>> len(p)       # repositioning doesn't change the length
+          16
+
+        Fires the `color_changed()` event for copies to empty slots, or
+        `sequence_changed()` for moves. If the match position changes as a
+        result, `match_changed()` is fired too.
+
+        """
+        assert src_i is not None
         if src_i == targ_i:
             return
         try:
-            col = self.__colors[src_i]
+            col = self._colors[src_i]
             assert col is not None  # just in case we change the internal repr
         except IndexError:
             return
 
+        # Special case: just copy if the target is an empty slot
+        match_pos = self.match_position
         if targ_i is not None:
-            targ = self.__colors[targ_i]
-            if targ is self.__EMPTY_SLOT_ITEM:
-                self.__colors[targ_i] = self.__copy_color_in(col)
+            targ = self._colors[targ_i]
+            if targ is self._EMPTY_SLOT_ITEM:
+                self._colors[targ_i] = self._copy_color_in(col)
+                self.color_changed(targ_i)
+                # Copying from the matched color moves the match postion.
+                # Copying to the match position clears the match.
+                if match_pos == src_i:
+                    self.match_position = targ_i
+                elif match_pos == targ_i:
+                    self.match_position = None
                 return
 
-        self.__colors.pop(src_i)
+        # Normal case. Remove...
+        self._colors.pop(src_i)
+        moving_match = False
+        updated_match = False
+        if match_pos is not None:
+            # Moving rightwards. Adjust for the pop().
+            if targ_i is not None and targ_i > src_i:
+                targ_i -= 1
+            # Similar logic for the match position, but allow it to follow
+            # the move if it started at the src position.
+            if match_pos == src_i:
+                match_pos = None
+                moving_match = True
+                updated_match = True
+            elif match_pos > src_i:
+                match_pos -= 1
+                updated_match = True
+        # ... then append or insert.
         if targ_i is None:
-            self.__colors.append(col)
+            self._colors.append(col)
+            if moving_match:
+                match_pos = len(self._colors) - 1
+                updated_match = True
         else:
-            self.__colors.insert(targ_i, col)
+            self._colors.insert(targ_i, col)
+            if match_pos is not None:
+                if moving_match:
+                    match_pos = targ_i
+                    updated_match = True
+                elif match_pos >= targ_i:
+                    match_pos += 1
+                    updated_match = True
+        # Announce changes
+        self.sequence_changed()
+        if updated_match:
+            self.match_position = match_pos
+            self.match_changed()
 
 
     def pop(self, i):
-        """Removes a colour, returning it
+        """Removes a colour, returning it.
+
+        Fires the `match_changed()` event if the match index changes as a
+        result of the removal, and `sequence_changed()` if a color was removed,
+        prior to its return.
         """
+        i = int(i)
         try:
-            col = self.__colors.pop(i)
-            return self.__copy_color_out(col)
+            col = self._colors.pop(i)
         except IndexError:
-            return None
+            return
+        if self.match_position == i:
+            self.match_position = None
+        elif self.match_position > i:
+            self.match_position -= 1
+        self.sequence_changed()
+        return self._copy_color_out(col)
 
 
     def get_color(self, i):
-        """Looks up a colour by its list index.
-        """
+        """Looks up a colour by its list index."""
         if i is None:
             return None
         try:
-            col = self.__colors[i]
-            return self.__copy_color_out(col)
+            col = self._colors[i]
+            return self._copy_color_out(col)
         except IndexError:
             return None
 
@@ -279,31 +710,34 @@ class Palette (object):
 
 
     def __setitem__(self, i, col):
-        self.__colors[i] = self.__copy_color_in(col, None)
+        self._colors[i] = self._copy_color_in(col, None)
+        self.color_changed(i)
+
+
+    ## Color name access
 
 
     def get_color_name(self, i):
-        """Looks up a colour's name by its list index.
-        """
+        """Looks up a colour's name by its list index."""
         try:
-            col = self.__colors[i]
-            if col is self.__EMPTY_SLOT_ITEM:
-                return None
-            return col.__name
+            col = self._colors[i]
         except IndexError:
-            return None
+            return
+        if col is self._EMPTY_SLOT_ITEM:
+            return
+        return col.__name
 
 
     def set_color_name(self, i, name):
-        """Sets a colour's name by its list index.
-        """
+        """Sets a color's name by its list index."""
         try:
-            col = self.__colors[i]
-            if col is self.__EMPTY_SLOT_ITEM:
-                return
-            col.__name = name
+            col = self._colors[i]
         except IndexError:
-            pass
+            return
+        if col is self._EMPTY_SLOT_ITEM:
+            return
+        col.__name = name
+        self.color_changed(i)
 
 
     def get_color_by_name(self, name):
@@ -325,12 +759,34 @@ class Palette (object):
 
 
     def iter_colors(self):
-        """Iterates across the colours, ignoring empty slots."""
-        for col in self.__colors:
-            if col is self.__EMPTY_SLOT_ITEM:
+        """Iterates across the palette's colors."""
+        for col in self._colors:
+            if col is self._EMPTY_SLOT_ITEM:
                 yield None
             else:
                 yield col
+
+
+    ## Observable events
+
+    @event
+    def info_changed(self):
+        """Event: palette name, or number of columns was changed."""
+
+
+    @event
+    def match_changed(self):
+        """Event: either match position or match_is_approx was updated."""
+
+
+    @event
+    def sequence_changed(self):
+        """Event: the color ordering or palette length was changed."""
+
+
+    @event
+    def color_changed(self, i):
+        """Event: the color in the given slot, or its name, was modified."""
 
 
     ## Dumping and cloning
@@ -338,14 +794,14 @@ class Palette (object):
 
     def __unicode__(self):
         result = u"GIMP Palette\n"
-        if self.__name is not None:
-            result += u"Name: %s\n" % self.__name
-        if self.__columns > 0:
-            result += u"Columns: %d\n" % self.__columns
+        if self._name is not None:
+            result += u"Name: %s\n" % self._name
+        if self._columns > 0:
+            result += u"Columns: %d\n" % self._columns
         result += u"#\n"
-        for col in self.__colors:
-            if col is self.__EMPTY_SLOT_ITEM:
-                col_name = self.__EMPTY_SLOT_NAME
+        for col in self._colors:
+            if col is self._EMPTY_SLOT_ITEM:
+                col_name = self._EMPTY_SLOT_NAME
                 r = g = b = 0
             else:
                 col_name = col.__name
@@ -358,8 +814,8 @@ class Palette (object):
         clone = Palette()
         clone.set_name(self.get_name())
         clone.set_columns(self.get_columns())
-        for col in self.__colors:
-            if col is self.__EMPTY_SLOT_ITEM:
+        for col in self._colors:
+            if col is self._EMPTY_SLOT_ITEM:
                 clone.append(None)
             else:
                 clone.append(copy(col), col.__name)
@@ -372,14 +828,13 @@ class Palette (object):
 
     def __repr__(self):
         return u"<Palette colors=%d, columns=%d, name=%s>" \
-          % (len(self.__colors), self.__columns, repr(self.__name))
+          % (len(self._colors), self._columns, repr(self._name))
 
 
     ## Conversion to/from simple dict representation
 
     def to_simple_dict(self):
-        """Converts the palette to a simple dict form used in the prefs.
-        """
+        """Converts the palette to a simple dict form used in the prefs."""
         simple = {}
         simple["name"] = self.get_name()
         simple["columns"] = self.get_columns()
@@ -396,8 +851,7 @@ class Palette (object):
 
     @classmethod
     def new_from_simple_dict(class_, simple):
-        """Constructs and returns a palette from the simple dict form.
-        """
+        """Constructs and returns a palette from the simple dict form."""
         pal = class_()
         pal.set_name(simple.get("name", None))
         pal.set_columns(simple.get("columns", None))
@@ -411,241 +865,47 @@ class Palette (object):
         return pal
 
 
-    ## Loading and saving via dialog
+## Helper functions
 
-    @classmethod
-    def load_via_dialog(class_, title, parent=None, preview=None,
-                        shortcuts=None):
-        """Runs a file chooser dialog, returning a palette or `None`.
+def _outwards_from(n, i):
+    """Search order within the palette, outwards from a given index.
 
-        The dialog is both modal and blocking. A new `Palette` object is
-        returned if the load was successful. The value `None` is returned
-        otherwise.
-
-        :Parameters:
-         - `parent`: specify the parent window
-         - `title`: dialog title
-         - `preview`: any preview widget with a ``set_palette()`` method
-         - `shortcuts`: optional list of shortcut folders
-
-        """
-        dialog = Gtk.FileChooserDialog(
-          title=title,
-          parent=parent,
-          action=Gtk.FileChooserAction.OPEN,
-          buttons=(Gtk.STOCK_CANCEL, Gtk.ResponseType.REJECT,
-                   Gtk.STOCK_OPEN, Gtk.ResponseType.ACCEPT),
-          )
-        if preview is not None:
-            dialog.set_preview_widget(preview)
-            dialog.connect("update-preview",
-                           class_.__dialog_update_preview_cb, preview)
-        if shortcuts is not None:
-            for shortcut in shortcuts:
-                dialog.add_shortcut_folder(shortcut)
-        dialog.set_do_overwrite_confirmation(True)
-        filter = Gtk.FileFilter()
-        filter.add_pattern("*.gpl")
-        filter.set_name(_("GIMP palette file (*.gpl)"))
-        dialog.add_filter(filter)
-        filter = Gtk.FileFilter()
-        filter.add_pattern("*")
-        filter.set_name(_("All files (*)"))
-        dialog.add_filter(filter)
-        response_id = dialog.run()
-        palette = None
-        if response_id == Gtk.ResponseType.ACCEPT:
-            filename = dialog.get_filename()
-            logger.info("Loading palette from %r", filename)
-            palette = Palette(filename=filename)
-        dialog.destroy()
-        return palette
+    Defined for a sequence of len() `n`, outwards from index `i`.
+    """
+    assert i < n and i >= 0
+    yield i
+    for j in xrange(n):
+        exhausted = True
+        if i - j >= 0:
+            yield i - j
+            exhausted = False
+        if i + j < n:
+            yield i + j
+            exhausted = False
+        if exhausted:
+            break
 
 
-    @classmethod
-    def __dialog_update_preview_cb(self_or_class, dialog, preview):
-        filename = dialog.get_preview_filename()
-        palette = None
-        if filename is not None and os.path.isfile(filename):
-            try:
-                palette = Palette(filename=filename)
-            except Exception, ex:
-                logger.warning("Couldn't update preview widget: %s",
-                               str(ex))
-                return
-        if palette:
-            dialog.set_preview_widget_active(True)
-            preview.set_palette(palette)
-            preview.queue_draw()
-        else:
-            dialog.set_preview_widget_active(False)
+def _color_distance(c1, c2):
+    """Distance metric for color matching in the palette.
+
+    Use a geometric YCbCr distance, as recommended by Graphics Programming with
+    Perl, chapter 1, Martien Verbruggen. If we want to give the chrominance
+    dimensions a different weighting to luma, we can.
+    """
+    c1 = YCbCrColor(color=c1)
+    c2 = YCbCrColor(color=c2)
+    d_Cb = c1.Cb - c2.Cb
+    d_Cr = c1.Cr - c2.Cr
+    d_Y = c1.Y - c2.Y
+    return ((d_Cb**2) + (d_Cr**2) + (d_Y)**2) ** (1.0/3)
 
 
-    def save_via_dialog(self, title, parent=None, preview=None):
-        """Runs a file chooser dialog for saving.
-
-        The dialog is both modal and blocking. Returns True if the file was
-        saved successfully.
-
-        :Parameters:
-         - `parent`: specify the parent window
-         - `title`: dialog title
-         - `preview`: any preview widget with a ``set_palette()`` method
-
-        """
-        dialog = Gtk.FileChooserDialog(
-          title=title,
-          parent=parent,
-          action=Gtk.FileChooserAction.SAVE,
-          buttons=(Gtk.STOCK_CANCEL, Gtk.ResponseType.REJECT,
-                   Gtk.STOCK_SAVE, Gtk.ResponseType.ACCEPT),
-          )
-        if preview is not None:
-            dialog.set_preview_widget(preview)
-            dialog.connect("update-preview",
-                           self.__dialog_update_preview_cb, preview)
-        dialog.set_do_overwrite_confirmation(True)
-        filter = Gtk.FileFilter()
-        filter.add_pattern("*.gpl")
-        filter.set_name(_("GIMP palette file (*.gpl)"))
-        dialog.add_filter(filter)
-        filter = Gtk.FileFilter()
-        filter.add_pattern("*")
-        filter.set_name(_("All files (*)"))
-        dialog.add_filter(filter)
-        response_id = dialog.run()
-        result = False
-        if response_id == Gtk.ResponseType.ACCEPT:
-            filename = dialog.get_filename()
-            filename = re.sub(r'[.]?(?:[Gg][Pp][Ll])?$', "", filename)
-            palette_name = os.path.basename(filename)
-            filename += ".gpl"
-            logger.info("Saving palette to %r", filename)
-            # FIXME: this can overwrite files without prompting the user, if
-            # the name hacking above changed the filename.  Should do the name
-            # tweak within the dialog somehow and get that to confirm.
-            fp = open(filename, 'w')
-            self.save(fp)
-            fp.flush()
-            fp.close()
-            result = True
-        dialog.destroy()
-        return result
-
-
-    ## Cairo rendering
-
-    def render(self, cr, rows, columns, swatch_size,
-               bg_color, offset_x=0, offset_y=0,
-               rtl=False):
-        """Renders the palette according to a precalculated grid.
-
-        :Parameters:
-         - `cr`: a Cairo context
-         - `rows`: number of rows in the layout
-         - `columns`: number of columns in the layout
-         - `swatch_size`: size of each swatch, in pixels
-         - `bg_color`: a `uicolor.UIColor` used when rendering the patterned
-           placeholder for an empty palette slot.
-         - `rtl`: layout direction: set to True to render right to left,
-           instead of left to right. Currently ignored.
-
-        """
-
-        HIGHLIGHT_DLUMA = 0.05
-
-        if len(self.__colors) == 0:
-            return
-        if rows is None or columns is None:
-            return
-
-        cr.save()
-        cr.translate(offset_x, offset_y)
-
-        # Sizes and colours
-        swatch_w = swatch_h = swatch_size
-        light_col = HCYColor(color=bg_color)
-        dark_col = HCYColor(color=bg_color)
-        light_col.y = clamp(light_col.y + HIGHLIGHT_DLUMA, 0, 1)
-        dark_col.y = clamp(dark_col.y - HIGHLIGHT_DLUMA, 0, 1)
-
-        # Upper left outline (bottom right is covered below by the
-        # individual chips' shadows)
-        ul_col = HCYColor(color=bg_color)
-        ul_col.y *= 0.75
-        ul_col.c *= 0.5
-        cr.set_line_join(cairo.LINE_JOIN_ROUND)
-        cr.set_line_cap(cairo.LINE_CAP_ROUND)
-        cr.set_source_rgb(*ul_col.get_rgb())
-        cr.move_to(0.5, rows*swatch_h - 1)
-        cr.line_to(0.5, 0.5)
-        row1cells = min(columns, len(self.__colors)) # needed?
-        cr.line_to(row1cells*swatch_w - 1, 0.5)
-        cr.set_line_width(2)
-        cr.stroke()
-
-        # Draw into the predefined grid
-        r = c = 0
-        cr.set_line_width(1.0)
-        cr.set_line_cap(cairo.LINE_CAP_SQUARE)
-        for col in self.iter_colors():
-            s_x = c*swatch_w
-            s_y = r*swatch_h
-            s_w = swatch_w
-            s_h = swatch_h
-
-            # Select fill bg and pattern fg colours, Tango-style edge highlight
-            # and lower-right shadow.
-            if col is None:
-                # Empty slot, fill with a pattern
-                hi_rgb = light_col.get_rgb()
-                fill_bg_rgb = dark_col.get_rgb()
-                fill_fg_rgb = light_col.get_rgb()
-                sh_col = HCYColor(color=bg_color)
-                sh_col.y *= 0.75
-                sh_col.c *= 0.5
-                sh_rgb = sh_col.get_rgb()
-            else:
-                # Colour swatch
-                hi_col = HCYColor(color=col)
-                hi_col.y = min(hi_col.y * 1.1, 1)
-                hi_col.c = min(hi_col.c * 1.1, 1)
-                sh_col = HCYColor(color=col)
-                sh_col.y *= 0.666
-                sh_col.c *= 0.5
-                hi_rgb = hi_col.get_rgb()
-                fill_bg_rgb = col.get_rgb()
-                fill_fg_rgb = None
-                sh_rgb = sh_col.get_rgb()
-
-            # Draw the swatch / colour chip
-            cr.set_source_rgb(*sh_rgb)
-            cr.rectangle(s_x, s_y, s_w, s_h)
-            cr.fill()
-            cr.set_source_rgb(*fill_bg_rgb)
-            cr.rectangle(s_x, s_y, s_w-1, s_h-1)
-            cr.fill()
-            if fill_fg_rgb is not None:
-                s_w2 = int((s_w-1) / 2)
-                s_h2 = int((s_h-1) / 2)
-                cr.set_source_rgb(*fill_fg_rgb)
-                cr.rectangle(s_x, s_y, s_w2, s_h2)
-                cr.fill()
-                cr.rectangle(s_x+s_w2, s_y+s_h2, s_w2, s_h2)
-                cr.fill()
-            cr.set_source_rgb(*hi_rgb)
-            cr.rectangle(s_x+0.5, s_y+0.5, s_w-2, s_h-2)
-            cr.stroke()
-
-            c += 1
-            if c >= columns:
-                c = 0
-                r += 1
-
-        cr.restore()
+## Module testing
 
 
 if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG)
     import doctest
     doctest.testmod()
 

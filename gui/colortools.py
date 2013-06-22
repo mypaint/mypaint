@@ -94,9 +94,10 @@ class _PageToolAdapter (Gtk.VBox, ColorAdjuster):
 
 
     def _bookmark_button_clicked_cb(self, button):
-        col = self.get_managed_color()
-        print "TODO: add %r to \"the\" palette" % (col,)
-        print "TODO: get workspace to show palette page"
+        # Same as the PaletteAddCurrentColor
+        mgr = self.get_color_manager()
+        col = mgr.get_color()
+        mgr.palette.append(col, name=None, unique=True, match=True)
 
 
     def _properties_button_clicked_cb(self, widget, page):

@@ -833,6 +833,15 @@ Perhaps an increasing amount.
           <signal name="activate" handler="palette_prev_cb"/>
         </object>
       </child>
+      <child>
+        <object class="GtkAction" id="PaletteAddCurrentColor">
+          <property name="label" translatable="yes"
+            context="Menu|Color|">Add Color to Palette</property>
+          <property name="tooltip" translatable="yes"
+            >Append the current color to the palette</property>
+          <signal name="activate" handler="palette_add_current_color_cb"/>
+        </object>
+      </child>
       <!-- Layer and Scratchpad menus -->
       <child>
         <object class="GtkAction" id="LayerMenu">

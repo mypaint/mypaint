@@ -175,6 +175,7 @@
       <separator/>
       <menuitem action='PalettePrev'/>
       <menuitem action='PaletteNext'/>
+      <menuitem action='PaletteAddCurrentColor'/>
     </menu>
     <menu action='LayerMenu'>
       <!-- All layers: general -->

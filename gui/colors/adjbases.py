@@ -17,6 +17,9 @@ import math
 from copy import deepcopy, copy
 from warnings import warn
 import weakref
+import os
+import logging
+logger = logging.getLogger(__name__)
 
 import gtk
 from gtk import gdk
@@ -29,6 +32,8 @@ from uicolor import *
 from bases import CachedBgDrawingArea
 from bases import IconRenderable
 from uimisc import *
+from palette import Palette
+from lib.observable import event
 
 
 ## Module constants
@@ -37,13 +42,9 @@ from uimisc import *
 PREFS_KEY_CURRENT_COLOR = 'colors.current'
 PREFS_KEY_COLOR_HISTORY = 'colors.history'
 PREFS_KEY_WHEEL_TYPE = 'colors.wheels.type'
-
-
-
-## To-do list :)
-
-# TODO: move palette & its management to the central ColorManager
-# TODO: update palette_next_cb/palette_prev_cb (DrawWindow) to point here
+PREFS_PALETTE_DICT_KEY = "colors.palette"
+DATAPATH_PALETTES_SUBDIR = 'palettes'
+DEFAULT_PALETTE_FILE = 'MyPaint_Default.gpl'
 
 
 ## API deprecation support
@@ -130,6 +131,7 @@ class ColorManager (gobject.GObject):
         # Defaults
         self._color = None  #: Currently edited color, a UIColor object
         self._hist = []  #: List of previous colors, most recent last
+        self._palette = None  #: Current working palette
         self._adjusters = weakref.WeakSet() #: The set of registered adjusters
         self._picker_cursor = gdk.Cursor(gdk.CROSSHAIR) #: Cursor for pickers
         self._datapath = datapath #: Base path for saving palettes and masks
@@ -152,6 +154,23 @@ class ColorManager (gobject.GObject):
         wheel_type = prefs.get(PREFS_KEY_WHEEL_TYPE, self._DEFAULT_WHEEL_TYPE)
         distorts_table = self._HUE_DISTORTION_TABLES[wheel_type]
         self._hue_distorts = distorts_table
+
+        # Initialize working palette
+        palette_dict = prefs.get(PREFS_PALETTE_DICT_KEY, None)
+        if palette_dict is not None:
+            palette = Palette.new_from_simple_dict(palette_dict)
+        else:
+            datapath = self.get_data_path()
+            palettes_dir = os.path.join(datapath, DATAPATH_PALETTES_SUBDIR)
+            default = os.path.join(palettes_dir, DEFAULT_PALETTE_FILE)
+            palette = Palette(filename=default)
+        self._palette = palette
+
+        # Capture updates to the working palette
+        palette.info_changed += self._palette_changed_cb
+        palette.match_changed += self._palette_changed_cb
+        palette.sequence_changed += self._palette_changed_cb
+        palette.color_changed += self._palette_changed_cb
 
 
     ## Picker cursor
@@ -194,8 +213,8 @@ class ColorManager (gobject.GObject):
         """
         return self._datapath
 
-
-    datapath = property(get_data_path, set_data_path)
+    ## REMOVING. Is this property used anywhere?
+    #datapath = property(get_data_path, set_data_path)
 
 
     ## Attached ColorAdjusters
@@ -242,6 +261,7 @@ class ColorManager (gobject.GObject):
         self._prefs[PREFS_KEY_CURRENT_COLOR] = color.to_hex_str()
         for adj in self._adjusters:
             adj.color_updated()
+        self._palette.match_color(color)
 
 
     def get_color(self):
@@ -373,6 +393,21 @@ class ColorManager (gobject.GObject):
         return h
 
 
+    ## Palette access
+
+
+    @property
+    def palette(self):
+        """Gets the shared Palette instance."""
+        return self._palette
+
+
+    def _palette_changed_cb(self, palette, *args, **kwargs):
+        """Stores changes made to the palette to the prefs"""
+        prefs = self.get_prefs()
+        prefs[PREFS_PALETTE_DICT_KEY] = palette.to_simple_dict()
+
+
 
 class ColorAdjuster:
     """Base class for any object which can manipulate a shared `UIColor`.
@@ -492,6 +527,7 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
     IS_DRAG_SOURCE = False  #: Set to True to make press+move do a select+drag
     DRAG_THRESHOLD = 10  #: Drag threshold, in pixels
     _DRAG_COLOR_ID = 1
+    _DRAG_TARGETS = [("application/x-color", 0, _DRAG_COLOR_ID)]
     HAS_DETAILS_DIALOG = False  #: Set true for a double-click details dialog
     BORDER_WIDTH = 2    #: Size of the border around the widget.
     STATIC_TOOLTIP_TEXT = None #: Static tooltip, used during constructor
@@ -558,7 +594,7 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
         self.connect("button-release-event", self.__button_release_cb)
         self.add_events(gdk.BUTTON_PRESS_MASK|gdk.BUTTON_RELEASE_MASK)
         self.add_events(gdk.BUTTON_MOTION_MASK)
-        self.connect("realize", self._init_color_drag)
+        self._init_color_drag()
         if self.STATIC_TOOLTIP_TEXT is not None:
             self.set_tooltip_text(self.STATIC_TOOLTIP_TEXT)
 
@@ -567,15 +603,8 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
 
 
     def _init_color_drag(self, *_junk):
-        # Drag init, postponed to realize time to allow subclasses to
-        # configure behaviour during construction.
-        targets_list = [("application/x-color", 0, self._DRAG_COLOR_ID)]
-        if gtk2compat.USE_GTK3:
-            targets_list = [gtk.TargetEntry.new(*e) for e in targets_list]
-        self.drag_dest_set(
-          gtk.DEST_DEFAULT_MOTION | gtk.DEST_DEFAULT_DROP,
-          targets_list,
-          gdk.ACTION_DEFAULT | gdk.ACTION_COPY)
+        # Drag init
+        self._drag_dest_set()
         self.connect("drag-motion", self.drag_motion_cb)
         self.connect('drag-leave', self.drag_leave_cb)
         self.connect('drag-begin', self.drag_begin_cb)
@@ -586,14 +615,23 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
         settings = self.get_settings()
         settings.set_property("gtk-dnd-drag-threshold", self.DRAG_THRESHOLD)
 
+    def _drag_source_set(self):
+        targets = [gtk.TargetEntry.new(*e) for e in self._DRAG_TARGETS]
+        start_button_mask = gdk.BUTTON1_MASK
+        actions = gdk.ACTION_MOVE | gdk.ACTION_COPY
+        self.drag_source_set(start_button_mask, targets, actions)
+
+    def _drag_dest_set(self):
+        targets = [gtk.TargetEntry.new(*e) for e in self._DRAG_TARGETS]
+        flags = gtk.DEST_DEFAULT_MOTION | gtk.DEST_DEFAULT_DROP
+        actions = gdk.ACTION_MOVE | gdk.ACTION_COPY
+        self.drag_dest_set(flags, targets, actions)
 
     def drag_motion_cb(self, widget, context, x, y, t):
         pass
 
-
     def drag_leave_cb(self, widget, context, time):
         pass
-
 
     def drag_begin_cb(self, widget, context):
         color = self.get_managed_color()
@@ -604,28 +642,36 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
         preview.fill(pixel)
         self.drag_source_set_icon_pixbuf(preview)
 
-
     def drag_end_cb(self, widget, context):
-        self._drag_start_pos = None
-
+        pass
 
     def drag_data_get_cb(self, widget, context, selection, target_type,
                          time):
-        """Gets the current colour when a successful drop happens somewhere.
-        """
-        if "application/x-color" not in context.targets:
+        """Gets the current color when a drop happens somewhere"""
+        if "application/x-color" not in map(str, context.list_targets()):
             return False
         color = self.get_managed_color()
         data = color.to_drag_data()
-        selection.set(selection.target, 8, data)
+        selection.set(gdk.atom_intern("application/x-color", False),
+                      16, data)
+        logger.debug("drag-data-get: sending type=%r", selection.get_data_type())
+        logger.debug("drag-data-get: sending fmt=%r", selection.get_format())
+        logger.debug("drag-data-get: sending data=%r len=%r",
+                     selection.get_data(), len(selection.get_data()))
         return True
 
-
     def drag_data_received_cb(self, widget, context, x, y, selection,
-                               info, time):
-        if "application/x-color" not in context.targets:
+                              info, time):
+        """Gets the current color when a drop happens on the widget"""
+        if "application/x-color" not in map(str, context.list_targets()):
             return False
-        color = RGBColor.new_from_drag_data(selection.data)
+        data = selection.get_data()
+        data_type = selection.get_data_type()
+        fmt = selection.get_format()
+        logger.debug("drag-data-received: got type=%r", data_type)
+        logger.debug("drag-data-received: got fmt=%r", fmt)
+        logger.debug("drag-data-received: got data=%r len=%r", data, len(data))
+        color = RGBColor.new_from_drag_data(data)
         context.finish(True, True, time)
         self.set_managed_color(color)
         return True
@@ -724,12 +770,7 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
             if color is None:
                 self.drag_source_unset()
             else:
-                targets = [("application/x-color", 0, self._DRAG_COLOR_ID)]
-                if gtk2compat.USE_GTK3:
-                    targets = [gtk.TargetEntry.new(*e) for e in targets]
-                self.drag_source_set(gdk.BUTTON1_MASK,
-                  targets, gdk.ACTION_COPY | gdk.ACTION_MOVE)
-            return
+                self._drag_source_set()
 
 
     def __motion_notify_cb(self, widget, event):

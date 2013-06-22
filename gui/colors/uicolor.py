@@ -20,6 +20,15 @@ with an adjuster does its type change to match the control's colour space.
 
 """
 
+# TODO: Convert code to GTK3.
+# TODO: Simplify the HCY implementation. KDE's is nice (see kcolorspaces.cpp).
+# TODO: Move all GTK code elsewhere, strip down to GUI-free code.
+# TODO: Move this module to lib/ (keep the name, since it'll be UI-agnostic)
+# TODO:   - required to support moving palette.py.
+
+
+## Imports
+
 import re
 from colorsys import *
 import struct
