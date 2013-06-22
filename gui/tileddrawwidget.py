@@ -439,6 +439,37 @@ class DrawCursorMixin:
             self.update_cursor()
 
 
+def calculate_transformation_matrix(scale, rotation, translation_x, translation_y, mirrored):
+
+    scale = scale
+    # check if scale is almost a power of two
+    scale_log2 = log(scale, 2)
+    scale_log2_rounded = round(scale_log2)
+    if abs(scale_log2-scale_log2_rounded) < 0.01:
+        scale = 2.0**scale_log2_rounded
+
+    # maybe we should check if rotation is almost a multiple of 90 degrees?
+
+    matrix = cairo.Matrix()
+    matrix.translate(translation_x, translation_y)
+    matrix.rotate(rotation)
+    matrix.scale(scale, scale)
+
+    # Align the translation such that (0,0) maps to an integer
+    # screen pixel, to keep image rendering fast and sharp.
+    x, y = matrix.transform_point(0, 0)
+    inverse = cairo.Matrix(*list(matrix))
+    assert not inverse.invert()
+    x, y = inverse.transform_point(round(x), round(y))
+    matrix.translate(x, y)
+
+    if mirrored:
+        m = list(matrix)
+        m[0] = -m[0]
+        m[2] = -m[2]
+        matrix = cairo.Matrix(*m)
+
+    return matrix
 
 class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
     """Render the document model to screen.
@@ -464,6 +495,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         self.scale = 1.0
         self.rotation = 0.0
         self.mirrored = False
+        self.cached_transformation_matrix = None
 
         self.current_layer_solo = False
         self.show_layers_above = True
@@ -485,6 +517,46 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         # Overlays
         self.model_overlays = []
         self.display_overlays = []
+
+
+    def _invalidate_cached_transform_matrix(self):
+        self.cached_transformation_matrix = None
+
+    def _get_x(self):
+        return self._translation_x
+    def _set_x(self, val):
+        self._translation_x = val
+        self._invalidate_cached_transform_matrix()
+    translation_x = property(_get_x, _set_x)
+
+    def _get_y(self):
+        return self._translation_y
+    def _set_y(self, val):
+        self._translation_y = val
+        self._invalidate_cached_transform_matrix()
+    translation_y = property(_get_y, _set_y)
+
+    def _get_scale(self):
+        return self._scale
+    def _set_scale(self, val):
+        self._scale = val
+        self._invalidate_cached_transform_matrix()
+    scale = property(_get_scale, _set_scale)
+
+    def _get_rotation(self):
+        return self._rotation
+    def _set_rotation(self, val):
+        self._rotation = val
+        self._invalidate_cached_transform_matrix()
+    rotation = property(_get_rotation, _set_rotation)
+
+    def _get_mirrored(self):
+        return self._mirrored
+    def _set_mirrored(self, val):
+        self._mirrored = val
+        self._invalidate_cached_transform_matrix()
+    mirrored = property(_get_mirrored, _set_mirrored)
+
 
     def state_changed_cb(self, widget, oldstate):
         # Keeps track of the sensitivity state, and regenerates
@@ -542,7 +614,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
     def display_to_model(self, disp_x, disp_y):
         """Converts display coordinates to model coordinates.
         """
-        matrix = self._get_model_view_transformation()
+        matrix = cairo.Matrix(*self._get_model_view_transformation())
         assert not matrix.invert()
         view_model = matrix
         return view_model.transform_point(disp_x, disp_y)
@@ -556,38 +628,12 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
 
 
     def _get_model_view_transformation(self):
-        # OPTIMIZE: called for each tile, is it worth to cache it?
-        scale = self.scale
-        # check if scale is almost a power of two
-        scale_log2 = log(scale, 2)
-        scale_log2_rounded = round(scale_log2)
-        if abs(scale_log2-scale_log2_rounded) < 0.01:
-            scale = 2.0**scale_log2_rounded
-
-        rotation = self.rotation
-        # maybe we should check if rotation is almost a multiple of 90 degrees?
-
-        matrix = cairo.Matrix()
-        matrix.translate(self.translation_x, self.translation_y)
-        matrix.rotate(rotation)
-        matrix.scale(scale, scale)
-
-        # Align the translation such that (0,0) maps to an integer
-        # screen pixel, to keep image rendering fast and sharp.
-        x, y = matrix.transform_point(0, 0)
-        inverse = cairo.Matrix(*list(matrix))
-        assert not inverse.invert()
-        x, y = inverse.transform_point(round(x), round(y))
-        matrix.translate(x, y)
-
-        if self.mirrored:
-            m = list(matrix)
-            m[0] = -m[0]
-            m[2] = -m[2]
-            matrix = cairo.Matrix(*m)
-
-        #assert not matrix.invert()
-        return matrix
+        if self.cached_transformation_matrix is None:
+            matrix = calculate_transformation_matrix(self.scale, self.rotation,
+                                                     self.translation_x, self.translation_y, self.mirrored)
+            self.cached_transformation_matrix = matrix
+        
+        return self.cached_transformation_matrix
 
     def is_translation_only(self):
         return self.rotation == 0.0 and self.scale == 1.0 and not self.mirrored
@@ -704,7 +750,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
             cr.set_source_rgb(tmp, tmp, tmp)
             cr.paint()
 
-        transformation = self._get_model_view_transformation()
+        transformation = cairo.Matrix(*self._get_model_view_transformation())
 
         # choose best mipmap
         hq_zoom = False
