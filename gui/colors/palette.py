@@ -167,6 +167,17 @@ class Palette (object):
         return self.__name
 
 
+    def __nonzero__(self):
+        """Palettes never test false, regardless of their length.
+
+        >>> p = Palette()
+        >>> bool(p)
+        True
+
+        """
+        return True
+
+
     def __len__(self):
         return len(self.__colors)
 
