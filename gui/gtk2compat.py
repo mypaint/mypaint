@@ -1,7 +1,7 @@
 """PyGTK compatibility layer.
 
 To be removed as we migrate to Python-GObject's normal syntax. Do not write new
-code in the PyGTK style now, and feel free to simplify "if pygtkcompat.USE_GTK3"
+code in the PyGTK style now, and feel free to simplify "if gtk2compat.USE_GTK3"
 clauses in code elsewhere.
 
 """
@@ -74,10 +74,15 @@ def get_gobject():
 
 def original_gtk():
     print "Using GTK3"
-    import gi
-    import gi.pygtkcompat
-    gi.pygtkcompat.enable()
-    gi.pygtkcompat.enable_gtk(version='3.0')
+    try:
+        import pygtkcompat
+        pygtkcompat.enable()
+        pygtkcompat.enable_gtk(version='3.0')
+    except ImportError:
+        print '"import pygtkcompat" did not work, trying old depreciated way'
+        import gi.pygtkcompat
+        gi.pygtkcompat.enable()
+        gi.pygtkcompat.enable_gtk(version='3.0')
     import gtk
     return gtk
 
