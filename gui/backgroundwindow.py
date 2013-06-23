@@ -9,7 +9,7 @@
 import os
 from glob import glob
 
-import gui.pygtkcompat
+import gui.gtk2compat
 from gettext import gettext as _
 import gtk
 from gtk import gdk
@@ -73,7 +73,7 @@ class Window(windowing.Dialog):
         rgb = self.cs.get_current_color()
         rgb = rgb.red, rgb.green, rgb.blue
         rgb = [int(x / 65535.0 * 255.0) for x in rgb]
-        pixbuf = gui.pygtkcompat.gdk.pixbuf.new(gdk.COLORSPACE_RGB, False,
+        pixbuf = gui.gtk2compat.gdk.pixbuf.new(gdk.COLORSPACE_RGB, False,
                                                 8, N, N)
         arr = helpers.gdkpixbuf2numpy(pixbuf)
         arr[:,:] = rgb
@@ -83,7 +83,7 @@ class Window(windowing.Dialog):
         pixbuf = self.current_background_pixbuf
         path = os.path.join(self.app.user_datapath,
                             'backgrounds', 'default.png')
-        gui.pygtkcompat.gdk.pixbuf.save(pixbuf, path, 'png')
+        gui.gtk2compat.gdk.pixbuf.save(pixbuf, path, 'png')
         self.hide()
 
     def set_background(self, pixbuf):

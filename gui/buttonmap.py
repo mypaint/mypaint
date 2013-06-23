@@ -9,7 +9,7 @@
 """Button press mapping.
 """
 
-import pygtkcompat
+import gtk2compat
 
 import gtk
 from gtk import gdk
@@ -429,7 +429,7 @@ class ButtonMappingEditor (gtk.EventBox):
         bp_name = self.liststore.get_value(iter, self.bp_column)
         if bp_name is None:
             focus_col = self.treeview.get_column(self.bp_column)
-            if pygtkcompat.USE_GTK3:
+            if gtk2compat.USE_GTK3:
                 tree_path = gtk.TreePath(path_string)
             else:
                 tree_path = path_string
@@ -449,7 +449,7 @@ class ButtonMappingEditor (gtk.EventBox):
 
         editable.set_sensitive(False)
         dialog = gtk.Dialog()
-        if not pygtkcompat.USE_GTK3:
+        if not gtk2compat.USE_GTK3:
             dialog.set_extension_events(gdk.EXTENSION_EVENTS_ALL)
         dialog.set_modal(True)
         dialog.set_title(_("Edit binding for '%s'") % action_name)

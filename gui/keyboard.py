@@ -8,7 +8,7 @@
 
 import gtk
 from gtk import gdk
-import pygtkcompat
+import gtk2compat
 
 
 class KeyboardManager:
@@ -49,7 +49,7 @@ class KeyboardManager:
     def start_listening(self):
         """Begin listening for changes to the keymap.
         """
-        accel_map = pygtkcompat.gtk.accel_map_get()
+        accel_map = gtk2compat.gtk.accel_map_get()
         accel_map.connect('changed', self.accel_map_changed_cb)
 
 
@@ -64,7 +64,7 @@ class KeyboardManager:
             if v.get_accel_path() == accel_path:
                 del self.keymap[k]
 
-        shortcut = pygtkcompat.gtk.accel_map_lookup_entry(accel_path)
+        shortcut = gtk2compat.gtk.accel_map_lookup_entry(accel_path)
         if shortcut:
             for action in self.actions:
                 if action.get_accel_path() == accel_path:
@@ -80,12 +80,12 @@ class KeyboardManager:
             return
         # See gtk sourcecode in gtkmenu.c function gtk_menu_key_press,
         # which uses the same code as below when changing an accelerator.
-        keymap = pygtkcompat.gdk.keymap_get_default()
+        keymap = gtk2compat.gdk.keymap_get_default()
 
         # Instead of using event.keyval, we do it the lowlevel way.
         # Reason: ignoring CAPSLOCK and checking if SHIFT was pressed
         state = event.state & ~gdk.LOCK_MASK
-        if pygtkcompat.USE_GTK3:
+        if gtk2compat.USE_GTK3:
             state = gdk.ModifierType(state)
         res = keymap.translate_keyboard_state(event.hardware_keycode, state,
                                               event.group)
@@ -98,7 +98,7 @@ class KeyboardManager:
                   'Strange key pressed?'
             return
 
-        keyval_offset = 1 if pygtkcompat.USE_GTK3 else 0
+        keyval_offset = 1 if gtk2compat.USE_GTK3 else 0
         keyval = res[keyval_offset]
         consumed_modifiers = res[keyval_offset+3]
 

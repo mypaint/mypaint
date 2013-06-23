@@ -109,7 +109,7 @@ def get_paths():
         raise
 
     # Ensure that pyGTK compatibility is setup before anything else
-    from gui import pygtkcompat
+    from gui import gtk2compat
 
     datapath = libpath
     if not os.path.isdir(join(datapath, 'brushes')):

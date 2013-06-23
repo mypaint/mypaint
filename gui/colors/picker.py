@@ -10,7 +10,7 @@
 """Color picker functions.
 """
 
-import gui.pygtkcompat
+import gui.gtk2compat
 
 import gtk
 from gtk import gdk

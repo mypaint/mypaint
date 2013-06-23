@@ -6,7 +6,7 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-import pygtkcompat
+import gtk2compat
 import gobject
 import gtk
 from gtk import gdk
@@ -236,7 +236,7 @@ class State:
                           | gdk.PROXIMITY_OUT_MASK
                           | gdk.PROXIMITY_IN_MASK
                           )
-        if pygtkcompat.USE_GTK3:
+        if gtk2compat.USE_GTK3:
             pass
         else:
             widget.set_extension_events (gdk.EXTENSION_EVENTS_ALL)

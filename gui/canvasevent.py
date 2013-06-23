@@ -8,7 +8,7 @@
 """Canvas input event handling.
 """
 
-import pygtkcompat
+import gtk2compat
 from buttonmap import get_handler_object
 
 import math
@@ -267,7 +267,7 @@ class InteractionMode (object):
         use ``event.state & gtk.accelerator_get_default_mod_mask()``.
 
         """
-        if pygtkcompat.USE_GTK3:
+        if gtk2compat.USE_GTK3:
             display = gdk.Display.get_default()
         else:
             display = gdk.display_get_default()
@@ -406,7 +406,7 @@ class FreehandOnlyMode (InteractionMode):
         same_device = True
         device = None
         if app is not None:
-            if pygtkcompat.USE_GTK3:
+            if gtk2compat.USE_GTK3:
                 device = event.get_source_device()
             else:
                 device = event.device

@@ -28,7 +28,7 @@ from lib import helpers
 import canvasevent
 from colors import RGBColor
 
-import pygtkcompat
+import gtk2compat
 import xml.etree.ElementTree as ET
 
 # palette support
@@ -43,7 +43,7 @@ from symmetry import SymmetryOverlay
 def with_wait_cursor(func):
     """python decorator that adds a wait cursor around a function"""
     def wrapper(self, *args, **kwargs):
-        if pygtkcompat.USE_GTK3:
+        if gtk2compat.USE_GTK3:
             toplevels = gtk.Window.list_toplevels()
         else:
             toplevels = gtk.window_list_toplevels()
@@ -86,7 +86,7 @@ class Window (windowing.MainWindow, layout.MainWindow):
         self.is_fullscreen = False
 
         # Enable drag & drop
-        if not pygtkcompat.USE_GTK3:
+        if not gtk2compat.USE_GTK3:
             self.drag_dest_set(gtk.DEST_DEFAULT_MOTION |
                             gtk.DEST_DEFAULT_HIGHLIGHT |
                             gtk.DEST_DEFAULT_DROP,

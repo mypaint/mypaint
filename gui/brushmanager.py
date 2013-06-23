@@ -10,7 +10,7 @@
 This module does file management for brushes and brush groups.
 """
 
-import pygtkcompat
+import gtk2compat
 import dialogs
 import gtk
 from gtk import gdk # only for gdk.pixbuf
@@ -693,7 +693,7 @@ class ManagedBrush(object):
             self._load_preview()
         if self._preview is None:
             # When does this happen?
-            self.preview = pygtkcompat.gdk.pixbuf.new(gdk.COLORSPACE_RGB,
+            self.preview = gtk2compat.gdk.pixbuf.new(gdk.COLORSPACE_RGB,
                             False, 8, preview_w, preview_h)
             self.preview.fill(0xffffffff) # white
         return self._preview
@@ -798,13 +798,13 @@ class ManagedBrush(object):
         if self.preview.get_has_alpha():
             # remove it (previous mypaint versions would display an empty image)
             w, h = preview_w, preview_h
-            tmp = pygtkcompat.gdk.pixbuf.new(gdk.COLORSPACE_RGB, False,
+            tmp = gtk2compat.gdk.pixbuf.new(gdk.COLORSPACE_RGB, False,
                                              8, w, h)
             tmp.fill(0xffffffff)
             self.preview.composite(tmp, 0, 0, w, h, 0, 0, 1, 1, gdk.INTERP_BILINEAR, 255)
             self.preview = tmp
 
-        pygtkcompat.gdk.pixbuf.save(self.preview, prefix + '_prev.png', 'png')
+        gtk2compat.gdk.pixbuf.save(self.preview, prefix + '_prev.png', 'png')
         brushinfo = self.brushinfo.clone()
         open(prefix + '.myb', 'w').write(brushinfo.save_to_string())
         self.remember_mtimes()

@@ -9,7 +9,7 @@
 """Various popup colour selectors.
 """
 
-import pygtkcompat
+import gtk2compat
 import gtk
 from gtk import gdk
 
@@ -56,12 +56,12 @@ class ColorSelectorPopup(windowing.PopupWindow):
 
     def update_image(self):
         size = self.backend.get_size()
-        pixbuf = pygtkcompat.gdk.pixbuf.new(gdk.COLORSPACE_RGB, True, 8,
+        pixbuf = gtk2compat.gdk.pixbuf.new(gdk.COLORSPACE_RGB, True, 8,
                                             size, size)
         arr = gdkpixbuf2numpy(pixbuf)
         self.backend.set_brush_color(*self.app.brush.get_color_hsv())
         self.backend.render(arr)
-        if pygtkcompat.USE_GTK3:
+        if gtk2compat.USE_GTK3:
             # This seems to work, but is pointless until we can get shaped
             # windows working. Might need a NumPy RGBA => ARGB oneliner.
             #

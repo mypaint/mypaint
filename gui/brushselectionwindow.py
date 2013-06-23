@@ -15,10 +15,10 @@ Responsible for ordering, loading and saving brush lists.
 
 import platform
 
-import pygtkcompat
+import gtk2compat
 
 from gettext import gettext as _
-if pygtkcompat.USE_GTK3:
+if gtk2compat.USE_GTK3:
     import gi
     from gi.repository import PangoCairo
 import pango
@@ -127,7 +127,7 @@ class BrushList(pixbuflist.PixbufList):
                                        pixbuffunc = lambda x: x.preview)
         # Support device changing with the same event as that used
         # for brush choice:
-        if not pygtkcompat.USE_GTK3:
+        if not gtk2compat.USE_GTK3:
             self.set_extension_events(gdk.EXTENSION_EVENTS_ALL)
 
         self.set_selected(self.bm.selected_brush)
@@ -150,7 +150,7 @@ class BrushList(pixbuflist.PixbufList):
         for f in self.bm.brushes_observers: f(self.brushes)
 
     def button_press_cb(self, widget, event):
-        if pygtkcompat.USE_GTK3:
+        if gtk2compat.USE_GTK3:
             device = event.get_source_device()
         else:
             device = event.device
@@ -251,7 +251,7 @@ class GroupSelector (gtk.DrawingArea):
         self.bm = app.brushmanager
         self.bm.groups_observers.append(self.active_groups_changed_cb)
 
-        if not pygtkcompat.USE_GTK3:
+        if not gtk2compat.USE_GTK3:
             self.drag_dest_set(gtk.DEST_DEFAULT_MOTION | gtk.DEST_DEFAULT_DROP,
                 [('LIST_ITEM', gtk.TARGET_SAME_APP, pixbuflist.DRAG_ITEM_NAME)],
                 gdk.ACTION_COPY|gdk.ACTION_MOVE)
@@ -262,7 +262,7 @@ class GroupSelector (gtk.DrawingArea):
         self.connect('drag-begin', self.drag_clear_cb)
         self.connect('drag-end', self.drag_clear_cb)
 
-        if pygtkcompat.USE_GTK3:
+        if gtk2compat.USE_GTK3:
             self.connect("draw", self.draw_cb)
         else:
             self.connect("expose-event", self.expose_cb)
@@ -285,7 +285,7 @@ class GroupSelector (gtk.DrawingArea):
                                 'Middle-click: toggle group\n'
                                 'Right-click: groups menu'))
 
-        if not pygtkcompat.USE_GTK3:
+        if not gtk2compat.USE_GTK3:
             self.connect("size-request", self.on_size_request)
 
         # Style change detection, and default styles.
@@ -299,7 +299,7 @@ class GroupSelector (gtk.DrawingArea):
             "active_pre":   (RGBColor(.9, .9, .9), RGBColor(0., 0., 0.)),
             }
         self._leading = 2 * pango.SCALE
-        if pygtkcompat.USE_GTK3:
+        if gtk2compat.USE_GTK3:
             self.connect("style-updated", self._style_updated_cb)
             # Fake a style
             style_context = self.get_style_context()
@@ -470,7 +470,7 @@ class GroupSelector (gtk.DrawingArea):
         layout.set_spacing(self._leading)
 
         cr.move_to(0, self.VERTICAL_MARGIN)
-        if pygtkcompat.USE_GTK3:
+        if gtk2compat.USE_GTK3:
             PangoCairo.show_layout(cr, layout)
         else:
             cr.show_layout(layout)
@@ -487,7 +487,7 @@ class GroupSelector (gtk.DrawingArea):
         if self.layout is None:
             return None
         index_tup = self.layout.xy_to_index(x*pango.SCALE, y*pango.SCALE)
-        if pygtkcompat.USE_GTK3:
+        if gtk2compat.USE_GTK3:
             inside, i, trailing = index_tup
         else:
             i, trailing = index_tup

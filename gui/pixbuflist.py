@@ -9,7 +9,7 @@
 from warnings import warn
 from math import ceil
 
-import pygtkcompat
+import gtk2compat
 import gobject
 import gtk
 from gtk import gdk
@@ -231,7 +231,7 @@ class PixbufList(gtk.DrawingArea):
         #self.set_size_request(-1, -1)
         gobject.idle_add(self.set_size_request, self.total_w, height)
 
-        self.pixbuf = pygtkcompat.gdk.pixbuf.new(gdk.COLORSPACE_RGB, True,
+        self.pixbuf = gtk2compat.gdk.pixbuf.new(gdk.COLORSPACE_RGB, True,
                                                  8, width, height)
         self.pixbuf.fill(0xffffff00) # transparent
         for i, item in enumerate(self.itemlist):

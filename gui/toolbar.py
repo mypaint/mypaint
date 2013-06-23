@@ -11,7 +11,7 @@
 
 import os
 
-import pygtkcompat
+import gtk2compat
 import gtk
 from gtk import gdk
 import gobject
@@ -358,7 +358,7 @@ class ColorDropdownToolItem (gtk.ToolItem):
     def on_toolbar_reconf(self, toolitem):
         toolbar = self.get_parent()
         lookup_ret = gtk.icon_size_lookup(self.get_icon_size())
-        if pygtkcompat.USE_GTK3:
+        if gtk2compat.USE_GTK3:
             lookup_succeeded, iw, ih = lookup_ret
             assert lookup_succeeded
         else:
@@ -464,7 +464,7 @@ class BrushDropdownToolItem (gtk.ToolItem):
     def on_toolbar_reconf(self, toolitem):
         toolbar = self.get_parent()
         lookup_ret = gtk.icon_size_lookup(self.get_icon_size())
-        if pygtkcompat.USE_GTK3:
+        if gtk2compat.USE_GTK3:
             lookup_succeeded, iw, ih = lookup_ret
             assert lookup_succeeded
         else:
@@ -825,7 +825,7 @@ class ColorBlob (gtk.AspectFrame):
             color = RGBColor(0, 0, 0)
         self._color = color
         self.drawingarea.set_size_request(1, 1)
-        if pygtkcompat.USE_GTK3:
+        if gtk2compat.USE_GTK3:
             self.drawingarea.connect("draw", self.on_draw)
         else:
             self.drawingarea.connect("expose-event", self.on_expose)

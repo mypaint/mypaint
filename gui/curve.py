@@ -8,7 +8,7 @@
 
 from warnings import warn
 
-import pygtkcompat
+import gtk2compat
 import gtk
 from gtk import gdk
 
@@ -38,7 +38,7 @@ class CurveWidget(gtk.DrawingArea):
             self.changed_cb = changed_cb
         self.magnetic = magnetic
 
-        if pygtkcompat.USE_GTK3:
+        if gtk2compat.USE_GTK3:
             self.connect("draw", self.draw_cb)
         else:
             self.connect("expose-event", self.expose_cb)
@@ -203,7 +203,7 @@ class CurveWidget(gtk.DrawingArea):
 
     def draw_cb(self, widget, cr):
 
-        if pygtkcompat.USE_GTK3:
+        if gtk2compat.USE_GTK3:
             def gdk2rgb(c):
                 return (c.red, c.green, c.blue)
             style = widget.get_style_context()

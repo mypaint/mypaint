@@ -10,7 +10,7 @@
 
 import math
 
-import pygtkcompat
+import gtk2compat
 import gtk
 from gtk import gdk
 from gettext import gettext as _
@@ -315,7 +315,7 @@ class Window (windowing.Dialog):
         xopts = yopts = gtk.FILL|gtk.EXPAND
         xpad = ypad = 3
 
-        if pygtkcompat.USE_GTK3:
+        if gtk2compat.USE_GTK3:
             unit_combobox = gtk.ComboBoxText()
         else:
             unit_combobox = gtk.combo_box_new_text()

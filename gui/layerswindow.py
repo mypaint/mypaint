@@ -6,7 +6,7 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-import pygtkcompat
+import gtk2compat
 
 import gtk
 from gtk import gdk
@@ -212,7 +212,7 @@ class ToolWidget (gtk.VBox):
 
         # Move selection line to the model's current layer and scroll to it
         model_sel_path = (len(doc.layers) - (doc.layer_idx + 1), )
-        if pygtkcompat.USE_GTK3:
+        if gtk2compat.USE_GTK3:
             model_sel_path = ":".join([str(s) for s in model_sel_path])
             model_sel_path = gtk.TreePath.new_from_string(model_sel_path)
         selection = self.treeview.get_selection()
@@ -271,7 +271,7 @@ class ToolWidget (gtk.VBox):
         if path_info is None:
             return False
         clicked_path, clicked_col, cell_x, cell_y = path_info
-        if pygtkcompat.USE_GTK3:
+        if gtk2compat.USE_GTK3:
             clicked_path = clicked_path.get_indices()
         layer, = self.liststore[clicked_path[0]]
         doc = self.app.doc.model
@@ -337,7 +337,7 @@ class ToolWidget (gtk.VBox):
             layer_num = self.app.doc.get_number_for_nameless_layer(layer)
             name = _(u"Untitled layer #%d") % layer_num
             markup = "<small><i>%s</i></small> " % (escape(name),)
-            if pygtkcompat.USE_GTK3:
+            if gtk2compat.USE_GTK3:
                 parse_result = pango.parse_markup(markup, -1, '\000')
                 parse_ok, attrs, name, accel_char = parse_result
                 assert parse_ok

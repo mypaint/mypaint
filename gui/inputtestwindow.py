@@ -12,7 +12,7 @@ from gtk import gdk
 import gobject
 import pango
 
-import pygtkcompat
+import gtk2compat
 import windowing
 
 
@@ -99,7 +99,7 @@ class Window(windowing.SubWindow):
         if hasattr(event, 'x') and hasattr(event, 'y'):
             msg += ' x=% 7.2f y=% 7.2f' % (event.x, event.y)
 
-        if pygtkcompat.USE_GTK3:
+        if gtk2compat.USE_GTK3:
             axis_found, pressure = event.get_axis(gdk.AXIS_PRESSURE)
             if not axis_found:
                 pressure = None
@@ -113,7 +113,7 @@ class Window(windowing.SubWindow):
             msg += ' state=0x%04x' % event.state
 
         if hasattr(event, 'button'):
-            if pygtkcompat.USE_GTK3:
+            if gtk2compat.USE_GTK3:
                 has_button, button = event.get_button()
                 if not has_button:
                     button = None
@@ -131,7 +131,7 @@ class Window(windowing.SubWindow):
 
         device = getattr(event, 'device', None)
         if device:
-            if pygtkcompat.USE_GTK3:
+            if gtk2compat.USE_GTK3:
                 device = event.get_source_device()
                 device = device.get_name()
             else: # PyGTK
@@ -140,7 +140,7 @@ class Window(windowing.SubWindow):
                 self.last_device = device
                 self.device_label.set_text(device)
 
-        if pygtkcompat.USE_GTK3:
+        if gtk2compat.USE_GTK3:
             has_xtilt, xtilt = event.get_axis(gdk.AXIS_XTILT)
             has_ytilt, ytilt = event.get_axis(gdk.AXIS_YTILT)
             have_tilts = has_xtilt and has_ytilt

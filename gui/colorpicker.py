@@ -7,7 +7,7 @@
 # (at your option) any later version.
 
 import math
-import pygtkcompat
+import gtk2compat
 import gobject
 import gtk
 from gtk import gdk

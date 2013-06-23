@@ -10,7 +10,7 @@
 """Viewer and editor widgets for palettes.
 """
 
-import gui.pygtkcompat as pygtkcompat
+import gui.gtk2compat as gtk2compat
 
 import gtk
 from gtk import gdk

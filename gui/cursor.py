@@ -6,7 +6,7 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-import pygtkcompat
+import gtk2compat
 
 import gtk
 from gtk import gdk
@@ -34,7 +34,7 @@ def get_brush_cursor(radius, style, prefs={}):
     """
     global last_cursor, last_cursor_info, max_cursor_size
 
-    display = pygtkcompat.gdk.display_get_default()
+    display = gtk2compat.gdk.display_get_default()
     if not max_cursor_size:
         max_cursor_size = max(display.get_maximal_cursor_size())
     d = int(radius*2)
@@ -64,7 +64,7 @@ def get_brush_cursor(radius, style, prefs={}):
         hot_x = hot_y = int(d/2)
 
         pixbuf = image_surface_to_pixbuf(surf)
-        if pygtkcompat.USE_GTK3:
+        if gtk2compat.USE_GTK3:
             last_cursor = gdk.Cursor.new_from_pixbuf(display, pixbuf,
                                                      hot_x, hot_y)
         else:
@@ -74,7 +74,7 @@ def get_brush_cursor(radius, style, prefs={}):
 
 
 def image_surface_to_pixbuf(surf):
-    if pygtkcompat.USE_GTK3:
+    if gtk2compat.USE_GTK3:
         w = surf.get_width()
         h = surf.get_height()
         return gdk.pixbuf_get_from_surface(surf, 0, 0, w, h)
@@ -201,7 +201,7 @@ if __name__ == '__main__':
     image.set_from_pixbuf(pixbuf)
     image.set_size_request(w, h)
 
-    display = pygtkcompat.gdk.display_get_default()
+    display = gtk2compat.gdk.display_get_default()
     max_size = max(display.get_maximal_cursor_size())
     num_styles = 4
     style = 0

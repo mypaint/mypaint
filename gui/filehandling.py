@@ -17,7 +17,7 @@ from gettext import ngettext
 
 from lib import document, helpers, tiledsurface
 import drawwindow
-import pygtkcompat
+import gtk2compat
 
 SAVE_FORMAT_ANY = 0
 SAVE_FORMAT_ORA = 1
@@ -110,7 +110,7 @@ class FileHandler(object):
         # with utf-8 characters into this list, I assume this is a
         # gtk bug.  So we use our own test instead of i.exists().
         self.recent_items = [
-                i for i in pygtkcompat.gtk.recent_manager_get_default().get_items()
+                i for i in gtk2compat.gtk.recent_manager_get_default().get_items()
                 if "mypaint" in i.get_applications() and os.path.exists(helpers.uri2filename(i.get_uri()))
         ]
         self.recent_items.reverse()
@@ -220,7 +220,7 @@ class FileHandler(object):
 
     @staticmethod
     def gtk_main_tick():
-        if pygtkcompat.USE_GTK3:
+        if gtk2compat.USE_GTK3:
             # FIXME: use something better
             return
         while gtk.events_pending():
@@ -265,13 +265,13 @@ class FileHandler(object):
             return
         if not export:
             self.filename = os.path.abspath(filename)
-            recent_mgr = pygtkcompat.gtk.recent_manager_get_default()
+            recent_mgr = gtk2compat.gtk.recent_manager_get_default()
             uri = helpers.filename2uri(self.filename)
             recent_data = dict(app_name='mypaint',
                                app_exec=sys.argv_unicode[0].encode('utf-8'),
                                # todo: get mime_type
                                mime_type='application/octet-stream')
-            if pygtkcompat.USE_GTK3:
+            if gtk2compat.USE_GTK3:
                 # No Gtk.RecentData.new() as of 3.4.2-0ubuntu0.3,
                 # nor can we set the fields of an empty one :(
                 recent_mgr.add_item(uri)

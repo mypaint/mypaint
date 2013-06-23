@@ -6,7 +6,7 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-import pygtkcompat
+import gtk2compat
 import gobject
 import cairo
 import gtk
@@ -133,7 +133,7 @@ class TiledDrawWidget (gtk.EventBox):
             # handled in drawwindow.py:
             | gdk.BUTTON_PRESS_MASK
             | gdk.BUTTON_RELEASE_MASK)
-        if not pygtkcompat.USE_GTK3:
+        if not gtk2compat.USE_GTK3:
             self.set_extension_events (gdk.EXTENSION_EVENTS_ALL)
         self.last_painting_pos = None
 
@@ -458,7 +458,7 @@ def tile_is_visible(cr, tx, ty, clip_region, sparse, translation_only):
         corners = [cr.user_to_device(x_, y_) for (x_, y_) in corners]
         bbox = helpers.rotated_rectangle_bbox(corners)
 
-    if pygtkcompat.USE_GTK3:
+    if gtk2compat.USE_GTK3:
         c_r = gdk.Rectangle()
         c_r.x, c_r.y, c_r.width, c_r.height = clip_region
         bb_r = gdk.Rectangle()
@@ -481,7 +481,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
     def __init__(self, app=None, document=None):
         gtk.DrawingArea.__init__(self)
 
-        if pygtkcompat.USE_GTK3:
+        if gtk2compat.USE_GTK3:
             self.connect("draw", self.draw_cb)
         else:
             self.connect("expose-event", self.expose_cb)
@@ -529,7 +529,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
             self.snapshot_pixmap = None
         else:
             if self.snapshot_pixmap is None:
-                if not pygtkcompat.USE_GTK3:
+                if not gtk2compat.USE_GTK3:
                     # FIXME: we'll have to come up with a better way of doing this.
                     self.snapshot_pixmap = self.get_snapshot()
         self.is_sensitive = sensitive
@@ -678,7 +678,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         # means]
         x, y, w, h = device_bbox
         cx, cy = x+w/2, y+h/2
-        if pygtkcompat.USE_GTK3:
+        if gtk2compat.USE_GTK3:
             # As of 2012-07-08, Ubuntu Precise (LTS, unfortunately) and Debian
             # unstable(!) use python-cairo 1.8.8, which is too old to support
             # the cairo.Region return from Gdk.Window.get_clip_region() we
@@ -801,14 +801,14 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         tiles = [(tx, ty) for tx, ty in surface.get_tiles() if tile_is_visible(cr, tx, ty, clip_region, sparse, translation_only)]
         self.doc.render_into(surface, tiles, mipmap_level, layers, background)
 
-        if translation_only and not pygtkcompat.USE_GTK3:
+        if translation_only and not gtk2compat.USE_GTK3:
             # not sure why, but using gdk directly is notably faster than the same via cairo
             x, y = cr.user_to_device(surface.x, surface.y)
             self.window.draw_pixbuf(None, surface.pixbuf, 0, 0, int(x), int(y),
                                     dither=gdk.RGB_DITHER_MAX)
         else:
             #print 'Position (screen coordinates):', cr.user_to_device(surface.x, surface.y)
-            if pygtkcompat.USE_GTK3:
+            if gtk2compat.USE_GTK3:
                 gdk.cairo_set_source_pixbuf(cr, surface.pixbuf,
                                             round(surface.x), round(surface.y))
             else:

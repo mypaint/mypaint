@@ -1,5 +1,5 @@
 #import gtk, glib, gobject
-import gui.pygtkcompat # for the rest of MyPaint
+import gui.gtk2compat # for the rest of MyPaint
 from gi.repository import Gtk, GObject
 import traceback, tempfile, os, sys
 from numpy import *

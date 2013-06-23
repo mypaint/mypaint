@@ -21,7 +21,7 @@ import inspect, linecache, pydoc, sys, traceback
 from cStringIO import StringIO
 from gettext import gettext as _
 
-import pygtkcompat
+import gtk2compat
 import gtk
 import pango
 

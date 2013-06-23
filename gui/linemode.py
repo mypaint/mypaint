@@ -8,7 +8,7 @@
 
 import math
 
-import pygtkcompat
+import gtk2compat
 import gtk
 from gtk import gdk
 from gettext import gettext as _
@@ -325,7 +325,7 @@ class LineModeBase (canvasevent.SwitchableModeMixin,
 
     def local_mouse_state(self, last_update=False):
         tdw_win = self.tdw.renderer.get_window()
-        if pygtkcompat.USE_GTK3:
+        if gtk2compat.USE_GTK3:
             ptr_win, x, y, kbmods = tdw_win.get_pointer()
         else:
             x, y, kbmods = tdw_win.get_pointer()

@@ -11,7 +11,7 @@
 import os, math
 from warnings import warn
 
-import pygtkcompat
+import gtk2compat
 import gobject
 import gtk
 from gtk import gdk
@@ -356,7 +356,7 @@ class Document (CanvasController):
 
     def _get_clipboard(self):
         display = self.tdw.get_display()
-        if pygtkcompat.USE_GTK3:
+        if gtk2compat.USE_GTK3:
             cb = gtk.Clipboard.get_for_display(display, gdk.SELECTION_CLIPBOARD)
         else:
             cb = gtk.Clipboard(display, "CLIPBOARD")

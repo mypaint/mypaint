@@ -6,7 +6,7 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-import pygtkcompat
+import gtk2compat
 import gtk
 from gtk import gdk
 
@@ -57,7 +57,7 @@ class HistoryPopup(windowing.PopupWindow):
         self.connect("button-release-event", self.button_release_cb)
         self.connect("button-press-event", self.button_press_cb)
 
-        if pygtkcompat.USE_GTK3:
+        if gtk2compat.USE_GTK3:
             self.connect("draw", self.draw_cb)
         else:
             self.connect("expose-event", self.expose_cb)

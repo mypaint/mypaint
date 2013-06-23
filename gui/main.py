@@ -8,12 +8,12 @@
 
 import os
 
-from gui import pygtkcompat
-gobject = pygtkcompat.gobject
+from gui import gtk2compat
+gobject = gtk2compat.gobject
 import gtk
 import glib
 
-if not pygtkcompat.USE_GTK3:
+if not gtk2compat.USE_GTK3:
     required_pygtk = (2, 18, 0)
     required_glib = (2, 28, 0)
     assert glib.glib_version >= required_glib, (
@@ -125,7 +125,7 @@ def main(datapath, extradata, oldstyle_confpath=None, version=MYPAINT_VERSION):
         # assigning a keyboard shortcut without a complicated dialog
         # clicking marathon must have totally upset the people coming from
         # windows.</rant>
-        gtksettings = pygtkcompat.gtk.settings_get_default()
+        gtksettings = gtk2compat.gtk.settings_get_default()
         gtksettings.set_property('gtk-can-change-accels', True)
 
         import gtkexcepthook

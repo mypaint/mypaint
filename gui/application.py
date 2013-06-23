@@ -29,7 +29,7 @@ def get_app():
     return Application._INSTANCE
 
 
-import pygtkcompat
+import gtk2compat
 import filehandling
 import keyboard
 import brushmanager
@@ -122,7 +122,7 @@ class Application (object):
             print 'see https://gna.org/bugs/?18460 for possible solutions'
             sys.exit(1)
 
-        if pygtkcompat.USE_GTK3:
+        if gtk2compat.USE_GTK3:
             gtk.Window.set_default_icon_name('mypaint')
         else:
             gtk.window_set_default_icon_name('mypaint')
@@ -142,7 +142,7 @@ class Application (object):
 
         self.pixmaps = PixbufDirectory(join(self.datapath, 'pixmaps'))
         self.cursor_color_picker = gdk.Cursor(
-                  pygtkcompat.gdk.display_get_default(),
+                  gtk2compat.gdk.display_get_default(),
                   self.pixmaps.cursor_color_picker,
                   1, 30)
         self.cursors = CursorCache(self)
@@ -205,7 +205,7 @@ class Application (object):
         self.kbm.start_listening()
         self.filehandler.doc = self.doc
         self.filehandler.filename = None
-        pygtkcompat.gtk.accel_map_load(join(self.user_confpath,
+        gtk2compat.gtk.accel_map_load(join(self.user_confpath,
                                             'accelmap.conf'))
 
         # Load the background settings window.
@@ -474,8 +474,8 @@ class Application (object):
         # init extended input devices
         self.pressure_devices = []
 
-        if pygtkcompat.USE_GTK3:
-            display = pygtkcompat.gdk.display_get_default()
+        if gtk2compat.USE_GTK3:
+            display = gtk2compat.gdk.display_get_default()
             device_mgr = display.get_device_manager()
             for device in device_mgr.list_devices(gdk.DeviceType.SLAVE):
                 if device.get_source() == gdk.InputSource.KEYBOARD:
@@ -592,7 +592,7 @@ class Application (object):
         print ''
 
     def save_gui_config(self):
-        pygtkcompat.gtk.accel_map_save(join(self.user_confpath, 'accelmap.conf'))
+        gtk2compat.gtk.accel_map_save(join(self.user_confpath, 'accelmap.conf'))
         self.save_settings()
 
     def message_dialog(self, text, type=gtk.MESSAGE_INFO, flags=0,
@@ -693,7 +693,7 @@ class DeviceUseMonitor (object):
         # small problem with this code: it doesn't work well with brushes that
         # have (eraser not in [1.0, 0.0])
 
-        if pygtkcompat.USE_GTK3:
+        if gtk2compat.USE_GTK3:
             new_device.name = new_device.props.name
             new_device.source = new_device.props.input_source
 
@@ -799,7 +799,7 @@ class CursorCache (object):
             hot_x = 1
             hot_y = 1
 
-        cursor_pixbuf = pygtkcompat.GdkPixbufCompat.new(gdk.COLORSPACE_RGB,
+        cursor_pixbuf = gtk2compat.GdkPixbufCompat.new(gdk.COLORSPACE_RGB,
                                                         True, 8, 32, 32)
         cursor_pixbuf.fill(0x00000000)
 

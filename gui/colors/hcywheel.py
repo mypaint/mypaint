@@ -16,7 +16,7 @@ from random import random
 import re
 import os.path
 
-import gui.pygtkcompat as pygtkcompat
+import gui.gtk2compat as gtk2compat
 import gtk
 from gtk import gdk
 import cairo
@@ -271,7 +271,7 @@ class MaskableWheelMixin:
     def _get_mask_fg(self):
         """Returns the mask edge drawing colour as an rgb triple.
         """
-        if pygtkcompat.USE_GTK3:
+        if gtk2compat.USE_GTK3:
             state = self.get_state_flags()
             style = self.get_style_context()
             c = style.get_color(state)
@@ -286,7 +286,7 @@ class MaskableWheelMixin:
     def _get_mask_bg(self):
         """Returns the mask area drawing colour as an rgb triple.
         """
-        if pygtkcompat.USE_GTK3:
+        if gtk2compat.USE_GTK3:
             state = self.get_state_flags()
             style = self.get_style_context()
             c = style.get_background_color(state)

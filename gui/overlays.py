@@ -9,8 +9,8 @@
 """Overlays for TDWs showing information about the TDW state.
 """
 
-import pygtkcompat
-if pygtkcompat.USE_GTK3:
+import gtk2compat
+if gtk2compat.USE_GTK3:
     from gi.repository import PangoCairo
 
 import gtk
@@ -148,7 +148,7 @@ class ScaleOverlay (FadingOverlay):
         layout = self.tdw.create_pango_layout(text)
 
         # Set a bold font
-        if pygtkcompat.USE_GTK3:
+        if gtk2compat.USE_GTK3:
             font = layout.get_font_description()
             if font is None: # inherited from context
                 font = layout.get_context().get_font_description()
@@ -183,7 +183,7 @@ class ScaleOverlay (FadingOverlay):
         rgba = self.text_rgba[:]
         rgba[3] *= self.alpha
         cr.set_source_rgba(*rgba)
-        if pygtkcompat.USE_GTK3:
+        if gtk2compat.USE_GTK3:
             PangoCairo.show_layout(cr, layout)
         else:
             cr.show_layout(layout)

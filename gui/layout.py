@@ -13,12 +13,12 @@ Window sizes and sidebar positions are stored to user preferences.
 
 import os
 
-import pygtkcompat
+import gtk2compat
 import gtk
 from gtk import gdk
 import pango
 import cairo
-gobject = pygtkcompat.gobject
+gobject = gtk2compat.gobject
 
 import math
 from warnings import warn
@@ -482,7 +482,7 @@ class SmallImageButton (gtk.Button):
         size_info = gtk.icon_size_lookup_for_settings(settings,
                                                       gtk.ICON_SIZE_MENU)
         if size_info:
-            if pygtkcompat.USE_GTK3:
+            if gtk2compat.USE_GTK3:
                 valid, w, h = size_info
             else:
                 w, h = size_info
@@ -519,7 +519,7 @@ class ToolResizeGrip (gtk.DrawingArea):
         self.set_size_request(4*self.corner_width, self.handle_size)
         self.connect("configure-event", self.on_configure_event)
 
-        if pygtkcompat.USE_GTK3:
+        if gtk2compat.USE_GTK3:
             self.connect("draw", self.on_draw)
             style_context = self.get_style_context()
             style_context.add_class(gtk.STYLE_CLASS_PANE_SEPARATOR)
@@ -1182,7 +1182,7 @@ class Tool (gtk.VBox):
 
     def on_snap_button_pressed(self, window):
         # Mouse position
-        display = pygtkcompat.gdk.display_get_default()
+        display = gtk2compat.gdk.display_get_default()
         screen, ptr_x, ptr_y, _modmask = display.get_pointer()
         if self.rolled_up:
             self.set_rolled_up(False)    # pending events will be processed
@@ -1232,7 +1232,7 @@ class ToolDragPreviewWindow (gtk.Window):
         self.set_position(gtk.WIN_POS_MOUSE)
         self.connect("map-event", self.on_map_event)
 
-        if pygtkcompat.USE_GTK3:
+        if gtk2compat.USE_GTK3:
             pass #FIXME: implement
         else:
             self.connect("expose-event", self.on_expose_event)
@@ -1253,7 +1253,7 @@ class ToolDragPreviewWindow (gtk.Window):
         # Background pixmap, a checkerboard
         gdk_window = self.get_window()
         if self.bg is None:
-            if pygtkcompat.USE_GTK3:
+            if gtk2compat.USE_GTK3:
                 # Until we have a non-Pixmap workaround.
                 return
             self.bg = gdk.Pixmap(drawable=gdk_window, width=2, height=2)
@@ -1596,7 +1596,7 @@ def set_initial_window_position(win, pos):
     h = pos.get("h", None)
 
     # Where the mouse is right now
-    display = pygtkcompat.gdk.display_get_default()
+    display = gtk2compat.gdk.display_get_default()
     screen, ptr_x, ptr_y, _modmask = display.get_pointer()
     if screen is None:
         raise RuntimeError, "No cursor on the default screen. Eek."

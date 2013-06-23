@@ -10,7 +10,7 @@
 """Manager+adjuster bases for tweaking a single colour via many widgets.
 """
 
-import gui.pygtkcompat as pygtkcompat
+import gui.gtk2compat as gtk2compat
 
 import math
 from copy import deepcopy, copy
@@ -416,7 +416,7 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
 
     def __init_drag(self):
         targets_list = [("application/x-color", 0, self._drag_color_id)]
-        if pygtkcompat.USE_GTK3:
+        if gtk2compat.USE_GTK3:
             targets_list = [gtk.TargetEntry.new(*e) for e in targets_list]
         self.drag_dest_set(
           gtk.DEST_DEFAULT_MOTION | gtk.DEST_DEFAULT_DROP,
@@ -443,7 +443,7 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
 
     def _drag_begin_cb(self, widget, context):
         color = self.get_managed_color()
-        preview = pygtkcompat.gdk.pixbuf.new(gdk.COLORSPACE_RGB,
+        preview = gtk2compat.gdk.pixbuf.new(gdk.COLORSPACE_RGB,
                                              has_alpha=False, bps=8,
                                              width=32, height=32)
         pixel = color.to_fill_pixel()
@@ -547,7 +547,7 @@ class ColorAdjusterWidget (CachedBgDrawingArea, ColorAdjuster):
                 self.drag_source_unset()
             else:
                 targets = [("application/x-color", 0, self._drag_color_id)]
-                if pygtkcompat.USE_GTK3:
+                if gtk2compat.USE_GTK3:
                     targets = [gtk.TargetEntry.new(*e) for e in targets]
                 self.drag_source_set(gdk.BUTTON1_MASK,
                   targets, gdk.ACTION_COPY | gdk.ACTION_MOVE)
