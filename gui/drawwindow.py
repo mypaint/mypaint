@@ -43,10 +43,7 @@ from symmetry import SymmetryOverlay
 def with_wait_cursor(func):
     """python decorator that adds a wait cursor around a function"""
     def wrapper(self, *args, **kwargs):
-        if gtk2compat.USE_GTK3:
-            toplevels = gtk.Window.list_toplevels()
-        else:
-            toplevels = gtk.window_list_toplevels()
+        toplevels = gtk.Window.list_toplevels()
         toplevels = [t for t in toplevels if t.get_window() is not None]
         for toplevel in toplevels:
             toplevel_win = toplevel.get_window()

@@ -133,8 +133,6 @@ class TiledDrawWidget (gtk.EventBox):
             # handled in drawwindow.py:
             | gdk.BUTTON_PRESS_MASK
             | gdk.BUTTON_RELEASE_MASK)
-        if not gtk2compat.USE_GTK3:
-            self.set_extension_events (gdk.EXTENSION_EVENTS_ALL)
         self.last_painting_pos = None
 
 
@@ -481,10 +479,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
     def __init__(self, app=None, document=None):
         gtk.DrawingArea.__init__(self)
 
-        if gtk2compat.USE_GTK3:
-            self.connect("draw", self.draw_cb)
-        else:
-            self.connect("expose-event", self.expose_cb)
+        self.connect("draw", self.draw_cb)
 
         self.connect("size-allocate", self.size_allocate_cb)
         self.connect("state-changed", self.state_changed_cb)
@@ -571,6 +566,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         return True
 
     def expose_cb(self, widget, event):
+        TODO # unused, remove this function - but add back the optimization?
 
         if self.snapshot_pixmap:
             gc = self.get_style().fg_gc[self.get_state()]
@@ -808,11 +804,8 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
                                     dither=gdk.RGB_DITHER_MAX)
         else:
             #print 'Position (screen coordinates):', cr.user_to_device(surface.x, surface.y)
-            if gtk2compat.USE_GTK3:
-                gdk.cairo_set_source_pixbuf(cr, surface.pixbuf,
-                                            round(surface.x), round(surface.y))
-            else:
-                cr.set_source_pixbuf(surface.pixbuf, round(surface.x), round(surface.y))
+            gdk.cairo_set_source_pixbuf(cr, surface.pixbuf,
+                                        round(surface.x), round(surface.y))
             pattern = cr.get_source()
 
             # We could set interpolation mode here (eg nearest neighbour)

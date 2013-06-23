@@ -122,10 +122,7 @@ class Application (object):
             print 'see https://gna.org/bugs/?18460 for possible solutions'
             sys.exit(1)
 
-        if gtk2compat.USE_GTK3:
-            gtk.Window.set_default_icon_name('mypaint')
-        else:
-            gtk.window_set_default_icon_name('mypaint')
+        gtk.Window.set_default_icon_name('mypaint')
 
         # Stock items, core actions, and menu structure
         builder_xml = join(self.datapath, "gui", "mypaint.xml")
