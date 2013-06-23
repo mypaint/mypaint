@@ -8,14 +8,12 @@
 
 from warnings import warn
 
-import gtk2compat
-import gtk
-from gtk import gdk
+from gi.repository import Gtk, Gdk
 
 RADIUS = 4
 
 
-class CurveWidget(gtk.DrawingArea):
+class CurveWidget(Gtk.DrawingArea):
     """Widget for modifying a (restricted) nonlinear curve.
     """
     __gtype_name__ = 'CurveWidget'
@@ -23,7 +21,7 @@ class CurveWidget(gtk.DrawingArea):
 
     def __init__(self, changed_cb=None, magnetic=True, npoints=None,
                  ylockgroups=()):
-        gtk.DrawingArea.__init__(self)
+        Gtk.DrawingArea.__init__(self)
         self.points = [(0.0, 0.2), (.25, .5), (.75, .75), (1.0, 1.0)] # doesn't matter
         self._ylock = {}
         self.ylockgroups = ylockgroups
@@ -38,18 +36,15 @@ class CurveWidget(gtk.DrawingArea):
             self.changed_cb = changed_cb
         self.magnetic = magnetic
 
-        if gtk2compat.USE_GTK3:
-            self.connect("draw", self.draw_cb)
-        else:
-            self.connect("expose-event", self.expose_cb)
+        self.connect("draw", self.draw_cb)
 
         self.connect("button-press-event", self.button_press_cb)
         self.connect("button-release-event", self.button_release_cb)
         self.connect("motion-notify-event", self.motion_notify_cb)
-        self.set_events(gdk.EXPOSURE_MASK |
-                        gdk.BUTTON_PRESS_MASK |
-                        gdk.BUTTON_RELEASE_MASK |
-                        gdk.POINTER_MOTION_MASK
+        self.set_events(Gdk.EventMask.EXPOSURE_MASK |
+                        Gdk.EventMask.BUTTON_PRESS_MASK |
+                        Gdk.EventMask.BUTTON_RELEASE_MASK |
+                        Gdk.EventMask.POINTER_MOTION_MASK
                         )
         self.set_size_request(300, 200)
 
@@ -196,37 +191,22 @@ class CurveWidget(gtk.DrawingArea):
             self.set_point(i, (x, y))
         self.queue_draw()
 
-    def expose_cb(self, widget, event):
-        gdk_win = widget.get_window()
-        cr = gdk_win.cairo_create()
-        self.draw_cb(widget, cr)
-
     def draw_cb(self, widget, cr):
 
-        if gtk2compat.USE_GTK3:
-            def gdk2rgb(c):
-                return (c.red, c.green, c.blue)
-            style = widget.get_style_context()
-            state = widget.get_state_flags()
-            bg = gdk2rgb(style.get_background_color(state))
-            fg = gdk2rgb(style.get_color(state))
-            lines = [(bg_c*3 + fg_c)/4. for (bg_c, fg_c) in zip(bg, fg)]
-        else:
-            def gtk2rgb(c):
-                return [float(c)/65535 for c in (c.red, c.green, c.blue)]
-            style = widget.get_style() # get_style_context now used for GTK3
-            state = widget.get_state()
-            bg = gtk2rgb(style.bg[state])
-            fg = gtk2rgb(style.fg[state])
-            lines = gtk2rgb(style.dark[state])
+        def gdk2rgb(c):
+            if c.alpha == 0.0:
+                print 'WARNING: The GTK3 style (in curve.py) is reporting a background color with alpha=0.'
+                print '         Try switching to a different GTK3 theme, e.g. Adwaita seems to work.'
+            return (c.red, c.green, c.blue)
+        style = widget.get_style_context()
+        state = widget.get_state_flags()
+        bg = gdk2rgb(style.get_background_color(state))
+        fg = gdk2rgb(style.get_color(state))
+        lines = [(bg_c*3 + fg_c)/4. for (bg_c, fg_c) in zip(bg, fg)]
 
         width, height = self.get_display_area()
         if width <= 0 or height <= 0:
             return
-
-        # background
-        cr.set_source_rgb(*bg)
-        cr.paint()
 
         # 1-pixel width, align lines with pixels
         # (but filled rectangles are off by 0.5px now)
@@ -268,15 +248,15 @@ class CurveWidget(gtk.DrawingArea):
 
 
 if __name__ == '__main__':
-    win = gtk.Window()
+    win = Gtk.Window()
     curve = CurveWidget()
     curve.ylockgroups = [(1,2), (3,4)]
     curve.npoints = 6
     curve.points = [(0., 0.), (.2, .5), (.4, .75), (.6, .5), (.8, .3), (1., 1.)]
     win.add(curve)
     win.set_title("curve test")
-    win.connect("destroy", lambda *a: gtk.main_quit())
+    win.connect("destroy", lambda *a: Gtk.main_quit())
     win.show_all()
-    gtk.main()
+    Gtk.main()
 
 
