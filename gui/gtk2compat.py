@@ -6,6 +6,7 @@ clauses in code elsewhere.
 
 """
 
+from __future__ import absolute_import
 import gi
 from gi.repository import GObject
 from gi.repository import Gdk
@@ -79,7 +80,7 @@ def original_gtk():
         pygtkcompat.enable()
         pygtkcompat.enable_gtk(version='3.0')
     except ImportError:
-        print '"import pygtkcompat" did not work, trying old depreciated way'
+        print '"import pygtkcompat" did not work, trying old deprecated way'
         import gi.pygtkcompat
         gi.pygtkcompat.enable()
         gi.pygtkcompat.enable_gtk(version='3.0')
