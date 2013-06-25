@@ -40,7 +40,6 @@ class DropdownPanelButton (gtk.ToggleButton):
         self._panel.connect("hide", lambda *a: self.set_active(False))
         self._panel.connect("show", lambda *a: self.set_active(True))
         # Common L&F for buttons. Should probably leave to Glade.
-        self.set_name(widgets.BORDERLESS_BUTTON_NAME)
         self.set_relief(gtk.RELIEF_NONE)
         self.set_can_default(False)
         self.set_can_focus(False)
