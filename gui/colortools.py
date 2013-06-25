@@ -67,19 +67,13 @@ class _PageToolAdapter (Gtk.VBox, ColorAdjuster):
             bookmark_btn.connect("clicked", self._bookmark_button_clicked_cb)
             properties_desc = self.PAGE_CLASS.get_properties_description()
             if properties_desc is not None:
-                properties_btn = borderless_button(stock_id=Gtk.STOCK_PROPERTIES,
-                                                   tooltip=properties_desc)
-                properties_btn.connect("clicked",
-                                       self._properties_button_clicked_cb, page)
-            else:
-                properties_btn = borderless_button(stock_id=Gtk.STOCK_PROPERTIES)
-                properties_btn.set_sensitive(False)
+                show_props = lambda *a: page.show_properties()
+                self.tool_widget_properties = show_props
             footer = Gtk.HBox()
             footer.set_spacing(3)
             footer.pack_start(picker, False, False)
             footer.pack_start(comparator, True, True)
             footer.pack_start(bookmark_btn, False, False)
-            footer.pack_start(properties_btn, False, False)
             self.pack_start(footer, False, False)
         # Adjuster setup
         from application import get_app
@@ -98,10 +92,6 @@ class _PageToolAdapter (Gtk.VBox, ColorAdjuster):
         mgr = self.get_color_manager()
         col = mgr.get_color()
         mgr.palette.append(col, name=None, unique=True, match=True)
-
-
-    def _properties_button_clicked_cb(self, widget, page):
-        page.show_properties()
 
 
     def set_color_manager(self, manager):

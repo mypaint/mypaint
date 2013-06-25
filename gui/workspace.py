@@ -25,6 +25,7 @@ from gi.repository import Gdk
 
 from lib.observable import event
 import objfactory
+from widgets import borderless_button
 
 
 ## Tool widget size constants
@@ -1050,8 +1051,8 @@ class ToolStack (Gtk.EventBox):
         NOTEBOOK_GROUP_NAME = 'mypaint-workspace-layout-group'
         PLACEHOLDER_HEIGHT = 8
         PLACEHOLDER_WIDTH = 16
-        CLOSE_BUTTON_ICON_SIZE = Gtk.IconSize.MENU
         TAB_ICON_SIZE = Gtk.IconSize.SMALL_TOOLBAR
+        ACTION_BUTTON_ICON_SIZE = TAB_ICON_SIZE
         TAB_TOOLTIP_ICON_SIZE = Gtk.IconSize.DIALOG
 
 
@@ -1070,21 +1071,27 @@ class ToolStack (Gtk.EventBox):
             self.connect("create-window", self._create_window_cb)
             self.connect("page-added", self._page_added_cb)
             self.connect("page-removed", self._page_removed_cb)
-
+            self.connect("switch-page", self._switch_page_cb)
             self.connect_after("drag-begin", self._drag_begin_cb)
             self.connect_after("drag-end", self._drag_end_cb)
             self.set_scrollable(True)
-
-            btn = Gtk.Button()
-            self._close_button = btn
-            btn.set_tooltip_text(_("Close current tab"))
-            img = Gtk.Image()
-            img.set_from_stock(Gtk.STOCK_CLOSE, self.CLOSE_BUTTON_ICON_SIZE)
-            btn.add(img)
-            btn.set_relief(Gtk.ReliefStyle.NONE)
-            self.set_action_widget(btn, Gtk.PackType.END)
-            self.connect("show", lambda *a: self._close_button.show_all())
+            # Action buttons
+            action_hbox = Gtk.HBox()
+            self.set_action_widget(action_hbox, Gtk.PackType.END)
+            self.connect("show", lambda *a: action_hbox.show_all())
+            # Properties button
+            btn = borderless_button(stock_id=Gtk.STOCK_PROPERTIES,
+                                    size=self.ACTION_BUTTON_ICON_SIZE)
+            btn.connect("clicked", self._properties_button_clicked_cb)
+            action_hbox.pack_start(btn, False, False, 0)
+            self._properties_button = btn
+            btn.set_sensitive(False)
+            # Close tab button
+            btn = borderless_button(stock_id=Gtk.STOCK_CLOSE,
+                                    size=self.ACTION_BUTTON_ICON_SIZE)
             btn.connect("clicked", self._close_button_clicked_cb)
+            action_hbox.pack_start(btn, False, False, 0)
+            self._close_button = btn
 
 
         ## Tool widget pages
@@ -1159,7 +1166,20 @@ class ToolStack (Gtk.EventBox):
             return new_placeholder
 
 
-        ## Close-current-tab button
+        ## Action buttons
+
+        def _switch_page_cb(self, notebook, page, page_num):
+            tool_widget = page.get_child()
+            has_properties = hasattr(tool_widget, "tool_widget_properties")
+            self._properties_button.set_sensitive(has_properties)
+            title = _tool_widget_get_title(tool_widget)
+            if has_properties:
+                self._properties_button \
+                    .set_tooltip_text(_("%s: edit properties") % title)
+            else:
+                self._properties_button.set_tooltip_text("")
+            self._close_button \
+                .set_tooltip_text(_("%s: close tab") % title)
 
 
         def _close_button_clicked_cb(self, button):
@@ -1173,6 +1193,15 @@ class ToolStack (Gtk.EventBox):
             page = self.get_nth_page(page_num)
             tool_widget = page.get_child()
             self._toolstack.remove_tool_widget(tool_widget)
+
+
+        def _properties_button_clicked_cb(self, button):
+            """Invoke the current page's properties callback."""
+            page_num = self.get_current_page()
+            page = self.get_nth_page(page_num)
+            tool_widget = page.get_child()
+            if hasattr(tool_widget, "tool_widget_properties"):
+                tool_widget.tool_widget_properties()
 
 
         ## Dragging tabs
