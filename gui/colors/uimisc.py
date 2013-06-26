@@ -15,8 +15,9 @@ import gtk
 
 ## Layout constants ##
 
-# Most pages in the combined adjuster are split into a primary area containing
-# two of the channels, and a secondary area to its left containing the third.
+# Most pages in the old combined adjuster widget were split into a primary area
+# containing two of the channels, and a secondary area to its left containing
+# the third.
 PRIMARY_ADJUSTERS_MIN_WIDTH = 100
 PRIMARY_ADJUSTERS_MIN_HEIGHT = 100
 

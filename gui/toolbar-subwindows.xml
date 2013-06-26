@@ -11,7 +11,6 @@ the Free Software Foundation; either version 2 of the License, or
   <toolbar name="toolbar1">
 
     <placeholder name="subwindows-toolitems">
-      <toolitem action="CombinedColorTool"/>
       <toolitem action="HCYWheelTool"/>
       <toolitem action="HSVWheelTool"/>
       <toolitem action="PaletteTool"/>

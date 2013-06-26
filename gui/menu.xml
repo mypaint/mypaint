@@ -145,7 +145,6 @@
     </menu>
     <menu action='ColorMenu'>
       <!-- Color choice using fancy dialogs -->
-      <menuitem action='CombinedColorTool'/>
       <menuitem action='HCYWheelTool'/>
       <menuitem action='HSVWheelTool'/>
       <menuitem action='PaletteTool'/>

@@ -17,25 +17,6 @@ from gettext import gettext as _
 import colors
 
 
-
-class CombinedColorTool (colors.CombinedColorAdjuster):
-    """Combined colour adjuster tool widget.
-    """
-
-    __gtype_name__ = 'MyPaintCombinedColorTool'
-
-    tool_widget_icon_name = 'mypaint-tool-paint-color'
-    tool_widget_title = _("Colors")
-    tool_widget_description = _("Set the color used for painting")
-
-    def __init__(self):
-        colors.CombinedColorAdjuster.__init__(self)
-        from application import get_app
-        app = get_app()
-        self._app = app
-        self.set_color_manager(self._app.brush_color_manager)
-
-
 class BrushColorManager (colors.ColorManager):
     """Color manager mediating between brush settings and the color adjusters.
     """

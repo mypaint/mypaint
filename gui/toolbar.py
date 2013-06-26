@@ -322,8 +322,11 @@ class ColorDropdownToolItem (gtk.ToolItem):
         side_vbox.pack_end(preview_hbox, False, False)
 
         side_vbox.pack_end(gtk.Alignment(), True, True)
-        button = init_proxy(gtk.ToggleButton(), "CombinedColorTool")
-        button.set_label(_("Color Window"))
+        button = init_proxy(gtk.ToggleButton(), "HCYWheelTool")
+        button.set_label(_("HCY Wheel"))
+        side_vbox.pack_end(button, False, False)
+        button = init_proxy(gtk.ToggleButton(), "PaletteTool")
+        button.set_label(_("Color Palette"))
         side_vbox.pack_end(button, False, False)
 
         # History

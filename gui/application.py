@@ -54,7 +54,7 @@ import brushmodifier
 import toolbar
 import linemode
 import colors
-from colorwindow import BrushColorManager
+from brushcolor import BrushColorManager
 from overlays import LastPaintPosOverlay
 from overlays import ScaleOverlay
 from buttonmap import ButtonMapping
