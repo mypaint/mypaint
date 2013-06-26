@@ -180,27 +180,27 @@ Perhaps an increasing amount.
       <!-- Actions affecting the current document -->
       <!-- Dropdown ToolActions: defined in gui.toolbar -->
       <child>
-        <object class="MyPaintCustomToolAction" id="ColorDropdown">
+        <object class="MyPaintFactoryAction" id="ColorDropdown">
           <property name="tooltip" translatable="yes" context="toolbar|"
-            >Current Color</property>
+            >Current color</property>
         </object>
       </child>
       <child>
-        <object class="MyPaintCustomToolAction" id="BrushDropdown">
+        <object class="MyPaintFactoryAction" id="BrushDropdown">
           <property name="tooltip" translatable="yes" context="toolbar|"
-            >Current Brush</property>
+            >Current brush</property>
         </object>
       </child>
       <child>
-        <object class="MyPaintCustomToolAction" id="BrushSettingsDropdown">
+        <object class="MyPaintFactoryAction" id="BrushSettingsDropdown">
           <property name="tooltip" translatable="yes" context="toolbar|"
             >Brush settings</property>
         </object>
       </child>
       <child>
-        <object class="MyPaintCustomToolAction" id="LineDropdown">
+        <object class="MyPaintFactoryAction" id="LineDropdown">
           <property name="tooltip" translatable="yes" context="toolbar|"
-            >Line Mode</property>
+            >Line mode</property>
         </object>
       </child>
       <!-- Undo stack -->

@@ -18,6 +18,7 @@ import gobject
 from gettext import gettext as _
 import pango
 
+import factoryaction
 import dialogs
 from brushlib import brushsettings
 import dropdownpanel
@@ -675,53 +676,6 @@ class BrushSettingsDropdownToolItem (gtk.ToolItem):
         if parent_b is None:
             return True
         return not parent_b.brushinfo.matches(current_bi)
-
-
-class CustomToolAction (gtk.Action):
-    """Instantiates a custom ToolItem named after the action's own name.
-    """
-
-    __gtype_name__ = "MyPaintCustomToolAction"
-
-    #: The pattern to use when instantiating.
-    NAME_PATTERN = "MyPaint%sToolItem"
-
-
-    def __init__(self, *a):
-        # GtkAction's own constructor requires params which are all set up
-        # by Builder. It warns noisily, so bypass it and do its parents.
-        super(gtk.Action, self).__init__()
-
-
-    def do_create_tool_item(self):
-        """Returns a new ToolItem
-
-        A widget named after the action's own name is instantiated via GObject,
-        and returned. See `NAME_PATTERN`.
-
-        """
-        gtype_name = self.NAME_PATTERN % (self.get_name(),)
-        try:
-            gtype = gobject.type_from_name(gtype_name)
-        except RuntimeError:
-            warn("Cannot construct a new %s: not loaded?" % (gtype_name,),
-                 RuntimeWarning)
-            return None
-        if not gtype.is_a(gtk.Widget):
-            warn("%s is not a Gtk.Widget subclass" % (gtype_name,),
-                 RuntimeWarning)
-            return None
-        tool_item_class = gtype.pytype
-        self._tool_item = tool_item_class()
-        self._tool_item.connect("parent-set", self._tool_item_parent_set)
-        return self._tool_item
-
-
-    def _tool_item_parent_set(self, widget, old_parent):
-        parent = widget.get_parent()
-        if parent and parent.get_visible():
-            widget.show_all()
-
 
 
 class ManagedBrushPreview (gtk.Image):
