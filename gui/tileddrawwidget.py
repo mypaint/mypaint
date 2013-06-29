@@ -726,7 +726,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
 
         # bye bye device coordinates
         cr.save()   # >>>CONTEXT1
-        cr.set_matrix(self._get_model_view_transformation())
+        cr.transform(self._get_model_view_transformation())
         cr.save()   # >>>CONTEXT2
 
         # choose best mipmap
