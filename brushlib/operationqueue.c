@@ -22,38 +22,29 @@
 #include "operationqueue.h"
 #include "fifo.h"
 
+typedef void (*TileMapItemFreeFunc) (void *item_data);
+
 // A size of 10 means the map spans x=[-10,9], y=[-10,9]
 // The tile with TileIndex (x,y) is stored in the map at offset
 // offset=((self->size + y) * rowstride) + (self->size + index.x)
 typedef struct {
-    Fifo **map;
+    void **map;
     int size;
+    size_t item_size;
+    TileMapItemFreeFunc item_free_func;
 } TileMap;
-
-struct _OperationQueue {
-    TileMap *tile_map;
-
-    TileIndex *dirty_tiles;
-    int dirty_tiles_n;
-};
-
-/* For use with queue_delete */
-void
-operation_delete_func(void *user_data) {
-    if (user_data) {
-        free(user_data);
-    }
-}
 
 
 TileMap *
-tile_map_new(int size)
+tile_map_new(int size, size_t item_size, TileMapItemFreeFunc item_free_func)
 {
     TileMap *self = (TileMap *)malloc(sizeof(TileMap));
 
     self->size = size;
+    self->item_size = item_size;
+    self->item_free_func = item_free_func;
     const int map_size = 2*self->size*2*self->size;
-    self->map = (Fifo **)malloc(map_size*sizeof(Fifo *));
+    self->map = malloc(map_size*self->item_size);
     for(int i = 0; i < map_size; i++) {
         self->map[i] = NULL;
     }
@@ -67,10 +58,7 @@ tile_map_free(TileMap *self, gboolean free_items)
     const int map_size = 2*self->size*2*self->size;
     if (free_items) {
         for(int i = 0; i < map_size; i++) {
-            Fifo *op_queue = self->map[i];
-            if (op_queue) {
-                fifo_free(op_queue, operation_delete_func);
-            }
+            self->item_free_func(self->map[i]);
         }
     }
     free(self->map);
@@ -80,7 +68,7 @@ tile_map_free(TileMap *self, gboolean free_items)
 
 /* Get the data in the tile map for a given tile @index.
  * Must be reentrant and lock-free on different @index */
-Fifo **
+void **
 tile_map_get(TileMap *self, TileIndex index)
 {
     const int rowstride = self->size*2;
@@ -113,6 +101,30 @@ tile_map_contains(TileMap *self, TileIndex index)
             && index.y >= -self->size && index.y < self->size);
 }
 
+struct _OperationQueue {
+    TileMap *tile_map;
+
+    TileIndex *dirty_tiles;
+    int dirty_tiles_n;
+};
+
+/* For use with queue_delete */
+void
+operation_delete_func(void *user_data) {
+    if (user_data) {
+        free(user_data);
+    }
+}
+
+
+void
+free_fifo(void *item) {
+    Fifo *op_queue = item;
+    if (op_queue) {
+        fifo_free(op_queue, operation_delete_func);
+    }
+}
+
 gboolean
 operation_queue_resize(OperationQueue *self, int new_size)
 {
@@ -128,7 +140,7 @@ operation_queue_resize(OperationQueue *self, int new_size)
         }
         return TRUE;
     } else {
-        TileMap *new_tile_map = tile_map_new(new_size);
+        TileMap *new_tile_map = tile_map_new(new_size, sizeof(Fifo *), free_fifo);
         const int new_map_size = new_size*2*new_size*2;
         TileIndex *new_dirty_tiles = (TileIndex *)malloc(new_map_size*sizeof(TileIndex));
 
@@ -245,7 +257,7 @@ operation_queue_add(OperationQueue *self, TileIndex index, OperationDataDrawDab 
 #endif
     }
 
-    Fifo **queue_pointer = tile_map_get(self->tile_map, index);
+    Fifo **queue_pointer = (Fifo **)tile_map_get(self->tile_map, index);
     Fifo *op_queue = *queue_pointer;
 
     if (op_queue == NULL) {
@@ -279,7 +291,7 @@ operation_queue_pop(OperationQueue *self, TileIndex index)
         return NULL;
     }
 
-    Fifo **queue_pointer = tile_map_get(self->tile_map, index);
+    Fifo **queue_pointer = (Fifo **)tile_map_get(self->tile_map, index);
     Fifo *op_queue = *queue_pointer;
 
     if (!op_queue) {
