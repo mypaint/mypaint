@@ -257,7 +257,37 @@
             optional-default="True"/>
       </properties>
     </glade-widget-class>
+
+    <!-- gui/colorpicker.py -->
+    <glade-widget-class name="MyPaintBrushColorPickerButton"
+        title="Brush Color Picker Button" parent="GtkSpinner"
+        generic-name="brushcolorpickerbutton">
+      <properties>
+        <!-- Hide GtkSpinner properties -->
+        <property id="active" visible="False" save="False" />
+        <!-- Representative size for preview -->
+        <property id="width-request" default="24" optional="True"
+            optional-default="True" save="False"/>
+        <property id="height-request" default="24" optional="True"
+            optional-default="True" save="False"/>
+      </properties>
+    </glade-widget-class>
+
+    <!-- gui/colorpreview.py -->
+    <glade-widget-class name="MyPaintBrushColorIndicator"
+        title="Brush Color Indicator" parent="GtkDrawingArea"
+        generic-name="brushcolorindicator">
+      <properties>
+        <!-- Representative size for preview -->
+        <property id="width-request" default="64" optional="True"
+            optional-default="True" />
+        <property id="height-request" default="24" optional="True"
+            optional-default="True" />
+      </properties>
+    </glade-widget-class>
+
   </glade-widget-classes>
+
 
   <glade-widget-group name="MyPaint" title="MyPaint Widgets">
     <glade-widget-class-ref name="MyPaintDrawWindow"/>
@@ -269,6 +299,8 @@
     <glade-widget-class-ref name="ItemSpinBox"/>
     <glade-widget-class-ref name="DropdownPanelButton"/>
     <glade-widget-class-ref name="ButtonMappingEditor"/>
+    <glade-widget-class-ref name="MyPaintBrushColorPickerButton"/>
+    <glade-widget-class-ref name="MyPaintBrushColorIndicator"/>
   </glade-widget-group>
 
 </glade-catalog>
