@@ -79,17 +79,14 @@ class LineModeSettings:
         return False
 
 
-class LineModeBase (canvasevent.SwitchableModeMixin,
-                    canvasevent.SpringLoadedDragMode,
+class LineModeBase (canvasevent.SpringLoadedDragMode,
                     canvasevent.ScrollableModeMixin,
                     canvasevent.OneshotDragModeMixin):
     """Draws geometric lines.
 
     """
 
-    ##
     ## Class configuration.
-    ##
 
 
     @property
@@ -99,6 +96,16 @@ class LineModeBase (canvasevent.SwitchableModeMixin,
             cursor_name = "cursor_forbidden_everywhere"
         return self.doc.app.cursors.get_action_cursor(
                 self.__action_name__, cursor_name)
+
+    @classmethod
+    def get_name(cls):
+        return _(u"Lines and Curves")
+
+
+    def get_usage(self):
+        #TRANSLATORS: users should never see this message
+        return _(u"Generic line/curve mode")
+
 
     @property
     def inactive_cursor(self):
@@ -135,9 +142,7 @@ class LineModeBase (canvasevent.SwitchableModeMixin,
         self._line_possible = False
 
 
-    ##
     ## InteractionMode/DragMode implementation
-    ##
 
     def enter(self, **kwds):
         """Enter the mode.
@@ -200,9 +205,7 @@ class LineModeBase (canvasevent.SwitchableModeMixin,
             self.process_line()
 
 
-    ###
     ### Draw dynamic Line, Curve, or Ellipse
-    ###
 
     def start_command(self, modifier):
         # :param modifier: the keyboard modifiers which ere in place
@@ -385,9 +388,7 @@ class LineModeBase (canvasevent.SwitchableModeMixin,
             angle = constraint_angle(angle)
         self.angle = angle
 
-    ###
     ### Line Functions
-    ###
 
     # Straight Line
     def dynamic_straight_line(self, x, y, sx, sy):
@@ -541,9 +542,7 @@ class LineModeBase (canvasevent.SwitchableModeMixin,
         self.model.layer.load_snapshot(self.snapshot)
 
 
-    ##
     ## Line mode settings
-    ##
 
     @property
     def entry_pressure(self):
@@ -630,16 +629,39 @@ class StraightMode (LineModeBase):
     __action_name__ = "StraightMode"
     line_mode = "StraightMode"
 
+    @classmethod
+    def get_name(cls):
+        return _(u"Lines and Curves")
+
+    def get_usage(self):
+        return _(u"Click, drag, and release to draw a straight line; "
+                  "shift-drag curves the last line")
+
 
 class SequenceMode (LineModeBase):
     __action_name__ = "SequenceMode"
     line_mode = "SequenceMode"
+
+    @classmethod
+    def get_name(cls):
+        return _(u"Connected Lines")
+
+    def get_usage(cls):
+        return _("Click to continue drawing a sequence of lines; "
+                 "shift-drag curves the last line")
 
 
 class EllipseMode (LineModeBase):
     __action_name__ = "EllipseMode"
     line_mode = "EllipseMode"
 
+    @classmethod
+    def get_name(cls):
+        return _(u"Elipses and Circles")
+
+    def get_usage(self):
+        return _(u"Click and drag to add ellipes; when dragging, Shift "
+                  "adjusts angle, and Ctrl locks the ratio")
 
 
 ### Curve Math

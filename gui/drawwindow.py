@@ -38,7 +38,7 @@ import previewwindow
 import dialogs
 from lib import helpers
 import canvasevent
-from colors import RGBColor
+from colors import RGBColor, HSVColor
 
 import brushselectionwindow
 
@@ -162,6 +162,8 @@ class DrawWindow (gtk.Window):
         ws.tool_widget_shown += self.app_workspace_tool_widget_shown_cb
         ws.tool_widget_hidden += self.app_workspace_tool_widget_hidden_cb
 
+        # Footer bar updates
+        self.app.brush.observers.append(self._update_footer_color_widgets)
 
     def _init_actions(self):
         # Actions are defined in mypaint.xml: all we need to do here is connect
@@ -399,7 +401,7 @@ class DrawWindow (gtk.Window):
 
     # Feedback and overlays
     # It's not intended that all categories of feedback will use overlays, but
-    # they currently all do. This may change if/when we add a conventional
+    # they currently all do. This may change now we have a conventional
     # statusbar for textual types of feedback.
 
     def toggle_scale_feedback_cb(self, action):
@@ -624,11 +626,12 @@ class DrawWindow (gtk.Window):
         # TODO: show the palette panel if hidden
 
 
-    def palette_add_current_color_cb(self, action):
-        """Action callback: append the current color to the palette"""
+    def palette_add_current_color_cb(self, *args, **kwargs):
+        """Append the current color to the palette (action or clicked cb)"""
         mgr = self.app.brush_color_manager
         color = mgr.get_color()
         mgr.palette.append(color, name=None, unique=True, match=True)
+        # TODO: show the palette panel if hidden
 
 
     def quit_cb(self, *junk):
@@ -749,4 +752,14 @@ class DrawWindow (gtk.Window):
         }
         self.app.message_dialog(text[action.get_name()])
 
+
+    def _update_footer_color_widgets(self, settings):
+        """Updates the footer bar color info when the brush color changes."""
+        if not settings.intersection(('color_h', 'color_s', 'color_v')):
+            return
+        bm_btn_name = "footer_bookmark_current_color_button"
+        bm_btn = self.app.builder.get_object(bm_btn_name)
+        brush_color = HSVColor(*self.app.brush.get_color_hsv())
+        palette = self.app.brush_color_manager.palette
+        bm_btn.set_sensitive(brush_color not in palette)
 

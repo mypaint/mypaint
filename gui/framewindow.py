@@ -70,6 +70,16 @@ class FrameEditMode (canvasevent.SwitchableModeMixin,
         }
 
 
+    @classmethod
+    def get_name(cls):
+        return _(u"Edit Frame")
+
+
+    def get_usage(cls):
+        return _(u"Click and drag to adjust the document frame, or use "
+                  "the dialog")
+
+
     def stackable_on(self, mode):
         # Any drawing mode
         return isinstance(mode, linemode.LineModeBase) \

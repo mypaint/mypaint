@@ -39,6 +39,19 @@ def button_press_name(button, mods):
     return modif_name + "Button%d" % (button,)
 
 
+def button_press_displayname(button, mods):
+    """Converts a button number & modifier mask to a localized unicode string.
+    """
+    button = int(button)
+    mods = int(mods)
+    if button <= 0:
+        return None
+    mods = gdk.ModifierType(mods)
+    modif_label = gtk.accelerator_get_label(0, mods)
+    #TRANSLATORS: abbreviated "Button <number>" for forms like "Ctrl+Alt+Btn1"
+    return unicode(modif_label) + (_(u"Btn%d") % (button,))
+
+
 def button_press_parse(name):
     """Converts button press names to a button number & modifier mask.
 
@@ -122,7 +135,7 @@ class ButtonMapping (object):
             if not self._mapping.has_key(modifiers):
                 self._mapping[modifiers] = {}
             self._mapping[modifiers][button] = action_name
-        self._modifiers.append((modifiers, button, action_name))
+            self._modifiers.append((modifiers, button, action_name))
 
 
     def get_unique_action_for_modifiers(self, modifiers, button=1):
@@ -179,11 +192,11 @@ class ButtonMapping (object):
         # only a single possibility is returned, the hander should just
         # enter the mode as a springload (and display what just happened!)
         possibilities = []
-        for possible, btn, act in self._modifiers:
-            # Exclude bindings whose modifiers do not overlap
-            if not modifiers & possible:
+        for possible, btn, action in self._modifiers:
+            # Exclude possible bindings whose modifiers do not overlap
+            if (modifiers & possible) != modifiers:
                 continue
-            # Include only exact mathes, and those possibilies which can be
+            # Include only exact matches, and those possibilies which can be
             # reached by pressing more modifier keys.
             if modifiers == possible or ~modifiers & possible:
                 possibilities.append((possible, btn, action))

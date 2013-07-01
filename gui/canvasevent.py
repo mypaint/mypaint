@@ -1,18 +1,24 @@
 # This file is part of MyPaint.
-# Copyright (C) 2008-2012 by Martin Renold <martinxyz@gmx.ch>
+# Copyright (C) 2008-2013 by Martin Renold <martinxyz@gmx.ch>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 
-"""Canvas input event handling.
-"""
+"""Canvas input event handling."""
+
+
+# TODO list:
+# * Rename __action_name__ to ACTION_NAME
+
+
+## Imports
 
 import logging
 logger = logging.getLogger(__name__)
 
 import gtk2compat
-from buttonmap import get_handler_object
+import buttonmap
 
 import math
 from numpy import isfinite
@@ -21,7 +27,10 @@ import gobject
 import gtk
 from gtk import gdk
 from gtk import keysyms
+from gettext import gettext as _
 
+
+## Module constants
 
 # Actions it makes sense to bind to a button.
 # Notably, tablet pads tend to offer many more buttons than the usual 3...
@@ -42,6 +51,9 @@ extra_actions = ["ShowPopupMenu",
                  "PalettePrev",
                  "PaletteNext",
                  ]
+
+
+## Class definitions
 
 
 class ModeRegistry (type):
@@ -145,6 +157,82 @@ class InteractionMode (object):
     doc = None
 
 
+    ## Status message info
+
+    @classmethod
+    def get_name(cls):
+        """Returns a short human-readable description of the mode.
+
+        :rtype: unicode
+
+        This is used for status bar messages, and potentially elsewhere before
+        the mode has been instantiated.  All concrete subclasses should
+        override this.  By default the (non-localized) class name is returned.
+
+        When capitalizing, use whatever style the GNOME HIG specifies for menu
+        items.  In English, this is currently "header", or title case (first
+        word capitalized, all other words capitalized except closed-class
+        words).  Do not use trailing punctuation.
+
+        """
+        return unicode(cls.__name__)
+
+
+    def get_usage(self):
+        """Returns a medium-length usage message for the mode.
+
+        :rtype: unicode
+
+        This is used for status bar messages.  All concrete subclasses should
+        override this.  The default return value is an empty string.
+
+        The usage message should be a short, natural-sounding explanation to
+        the user detailing how to do the specific task they chose.  Note that
+        the usage message is typically displayed after the mode's name, so
+        there is no need to repeat that.  Brevity is important because space is
+        limited.
+
+        When capitalizing, use whatever style the GNOME HIG specifies for
+        tooltips.  In English, this is currently sentence case.  Use one
+        complete sentence, and always omit the the trailing period.
+
+        """
+        return u""
+
+
+    def __unicode__(self):
+        return self.get_name()
+
+
+    ## Associated action
+
+    def get_action(self):
+        """Returns any app action associated with the mode."""
+        if self.doc and hasattr(self.doc, "app"):
+            if self.__action_name__:
+                return self.doc.app.find_action(self.__action_name__)
+
+
+    ## Mode icon
+
+    def get_icon_name(self):
+        """Returns the icon to use when representing the mode.
+
+        If there's an associated action, this method returns the icon
+        associated with the action.
+        """
+        icon_name = None
+        action = self.get_action()
+        if action:
+            icon_name = action.get_icon_name()
+        if not icon_name:
+            return 'missing-icon'
+        return icon_name
+
+
+    ## Mode stacking interface
+
+
     def stackable_on(self, mode):
         """Tests whether the mode can usefully stack onto an active mode.
 
@@ -184,6 +272,8 @@ class InteractionMode (object):
         self.doc = None
         assert not hasattr(super(InteractionMode, self), "leave")
 
+
+    ## Event handler defaults (no-ops)
 
     def button_press_cb(self, tdw, event):
         """Handler for ``button-press-event``s."""
@@ -325,6 +415,16 @@ class FreehandOnlyMode (InteractionMode):
     """
 
     is_live_updateable = True
+
+
+    @classmethod
+    def get_name(cls):
+        return _(u"Freehand Drawing")
+
+
+    def get_usage(self):
+        return _(u"Draw or paint on the canvas to add free-form brush strokes "
+                  "with the current settings")
 
 
     def enter(self, **kwds):
@@ -598,11 +698,11 @@ class SwitchableModeMixin (InteractionMode):
         # Naively pick an action based on the button map
         btn_map = self.doc.app.button_mapping
         action_name = None
-        if event.is_modifier:
+        mods = self.current_modifiers()
+        if event.is_modifier or mods != 0:
             # If the keypress is a modifier only, determine the modifier mask a
             # subsequent Button1 press event would get. This is used for early
             # spring-loaded mode switching.
-            mods = self.current_modifiers()
             action_name = btn_map.get_unique_action_for_modifiers(mods)
             # Only mode-based immediate dispatch is allowed, however.
             # Might relax this later.
@@ -620,12 +720,75 @@ class SwitchableModeMixin (InteractionMode):
             if action_name not in self.permitted_switch_actions:
                 action_name = None
 
-        # If we found something to do, dispatch
+        # If we found something to do, dispatch;
         if action_name is not None:
             return self._dispatch_named_action(win, tdw, event, action_name)
+        else:
+            # Otherwise, say what's possible from here with some extra
+            # modifiers and keypresses.
+            self.__update_status_message()
 
         # Otherwise, fall through to the next behaviour
         return super(SwitchableModeMixin, self).key_press_cb(win, tdw, event)
+
+
+    def key_release_cb(self, win, tdw, event):
+        self.__update_status_message()
+        return super(SwitchableModeMixin, self).key_release_cb(win, tdw, event)
+
+
+    def __update_status_message(self):
+        statusbar = self.doc.app.statusbar
+        btn_map = self.doc.app.button_mapping
+        context_id = self.__get_context_id()
+        statusbar.remove_all(context_id)
+        mods = self.current_modifiers()
+        if mods == 0:
+            return
+        poss_list = btn_map.lookup_possibilities(mods)
+        if not poss_list:
+            return
+        poss_list.sort()
+        poss_msgs = []
+        for pmods, button, action_name in poss_list:
+            # Don't repeat what's currently held
+            pmods = pmods & ~mods
+            label = buttonmap.button_press_displayname(button, pmods)
+            mode_class = ModeRegistry.get_mode_class(action_name)
+            mode_desc = None
+            if mode_class:
+                mode_desc = mode_class.get_name()
+            else:
+                action = self.doc.app.find_action(action_name)
+                if action:
+                    mode_desc = action.get_label()
+            if mode_desc:
+                #TRANSLATORS: mode transition by modifier+pointer button
+                msg_tmpl = _(u"%(label)s: %(mode)s")
+                poss_msgs.append(msg_tmpl % { "label": label,
+                                              "mode": mode_desc, })
+        poss_msg = u"; ".join(poss_msgs)
+        mods_msg = unicode(gtk.accelerator_get_label(0, mods))
+        mods_msg = mods_msg.rstrip("+")
+        msg_template = _(u"%(mode)s (+%(modifiers)s): %(possible)s")
+        msg = msg_template % {"mode": self.get_name(),
+                              "modifiers": mods_msg,
+                              "possible": poss_msg }
+        cid = self.__get_context_id()
+        self.doc.app.statusbar.push(cid, msg)
+
+
+    def leave(self):
+        if self.doc:
+            statusbar = self.doc.app.statusbar
+            context_id = self.__get_context_id()
+            statusbar.remove_all(context_id)
+        return super(SwitchableModeMixin, self).leave()
+
+
+    def __get_context_id(self):
+        bar = self.doc.app.statusbar
+        return bar.get_context_id("switchable-mode-mods")
 
 
     def _dispatch_named_action(self, win, tdw, event, action_name):
@@ -640,7 +803,7 @@ class SwitchableModeMixin (InteractionMode):
             # Name it after the action however, in case we find a fix.
             drawwindow.show_popupmenu(event=event)
             return True
-        handler_type, handler = get_handler_object(app, action_name)
+        handler_type, handler = buttonmap.get_handler_object(app, action_name)
         if handler_type == 'mode_class':
             # Transfer control to another mode temporarily.
             assert issubclass(handler, SpringLoadedModeMixin)
@@ -808,8 +971,11 @@ class ModeStack (object):
 
 
     def _check(self, replacement=None):
-        # Ensures that the stack is non-empty.
-        # Returns the new top mode if one was pushed.
+        """Ensures that the stack is non-empty, with an optional replacement.
+
+        Returns the new top mode if one was pushed.
+
+        """
         if len(self._stack) > 0:
             return None
         if replacement is not None:
@@ -822,6 +988,7 @@ class ModeStack (object):
 
 
     def __repr__(self):
+        """Plain-text representation."""
         s = '<ModeStack ['
         s += ", ".join([m.__class__.__name__ for m in self._stack])
         s += ']>'
@@ -829,7 +996,13 @@ class ModeStack (object):
 
 
     def __len__(self):
+        """Returns the number of modes on the stack."""
         return len(self._stack)
+
+
+    def __nonzero__(self):
+        """Mode stacks never test false, regardless of length."""
+        return True
 
 
 class SpringLoadedModeMixin (InteractionMode):
@@ -1240,6 +1413,15 @@ class PanViewMode (SpringLoadedDragMode, OneshotDragModeMixin):
 
     __action_name__ = 'PanViewMode'
 
+    @classmethod
+    def get_name(cls):
+        return _(u"Scroll View")
+
+
+    def get_usage(self):
+        return _(u"Click and drag to move the view of the canvas")
+
+
     @property
     def inactive_cursor(self):
         return self.doc.app.cursors.get_action_cursor(
@@ -1262,6 +1444,15 @@ class ZoomViewMode (SpringLoadedDragMode, OneshotDragModeMixin):
     """A oneshot mode for zooming the viewport by dragging."""
 
     __action_name__ = 'ZoomViewMode'
+
+    @classmethod
+    def get_name(cls):
+        return _(u"Zoom View")
+
+
+    def get_usage(self):
+        return _(u"Click, drag up and down, and release to zoom in or out")
+
 
     @property
     def active_cursor(self):
@@ -1288,6 +1479,15 @@ class RotateViewMode (SpringLoadedDragMode, OneshotDragModeMixin):
     """A oneshot mode for rotating the viewport by dragging."""
 
     __action_name__ = 'RotateViewMode'
+
+    @classmethod
+    def get_name(cls):
+        return _(u"Rotate View")
+
+
+    def get_usage(cls):
+        return _(u"Click, drag and release to rotate the view of the canvas")
+
 
     @property
     def active_cursor(self):
@@ -1330,6 +1530,14 @@ class LayerMoveMode (SwitchableModeMixin,
     """
 
     __action_name__ = 'LayerMoveMode'
+
+    @classmethod
+    def get_name(cls):
+        return _(u"Move Layer")
+
+
+    def get_usage(self):
+        return _(u"Click, drag and release to move the current layer")
 
 
     @property

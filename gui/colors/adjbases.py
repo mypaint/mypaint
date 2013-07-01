@@ -897,6 +897,8 @@ class PreviousCurrentColorAdjuster (ColorAdjusterWidget):
 
     def render_background_cb(self, cr, wd, ht):
         mgr = self.get_color_manager()
+        if mgr is None:
+            return
         curr = mgr.get_color()
         prev = mgr.get_previous_color()
         b = self.BORDER_WIDTH
@@ -925,6 +927,8 @@ class PreviousCurrentColorAdjuster (ColorAdjusterWidget):
 
     def get_background_validity(self):
         mgr = self.get_color_manager()
+        if mgr is None:
+            return
         curr = mgr.get_color()
         prev = mgr.get_previous_color()
         return (curr.get_rgb(), prev.get_rgb())

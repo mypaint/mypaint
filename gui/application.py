@@ -54,6 +54,7 @@ import brushmodifier
 import toolbar
 import linemode
 import colors
+import colorpreview
 from brushcolor import BrushColorManager
 from overlays import LastPaintPosOverlay
 from overlays import ScaleOverlay
@@ -722,6 +723,14 @@ class Application (object):
         action = subwindow.__toggle_action
         if action and action.get_active():
             action.set_active(False)
+
+
+    ## Special UI areas
+
+    @property
+    def statusbar(self):
+        """Returns the application statusbar."""
+        return self.builder.get_object("app_statusbar")
 
 
     ## Workspace callbacks
