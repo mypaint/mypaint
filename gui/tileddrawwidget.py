@@ -336,19 +336,24 @@ class DrawCursorMixin:
         window = self.get_window()
         app = self.app
         if window is None:
+            logger.debug("update_cursor: no window")
             return
         override_cursor = getattr(self, '_override_cursor', None)
         if override_cursor is not None:
             c = self._override_cursor
+            logger.debug("update_cursor: using override cursor")
         elif self.get_state() == gtk.STATE_INSENSITIVE:
+            logger.debug("update_cursor: insensitive drawing widget")
             c = None
         elif self.doc is None:
+            logger.debug("update_cursor: no document")
             return
         elif self.doc.layer.locked or not self.doc.layer.visible:
             # Cursor to represent that one cannot draw.
             # Often a red circle with a diagonal bar through it.
             c = gdk.Cursor(gdk.CIRCLE)
         elif app is None:
+            logger.debug("update_cursor: no app")
             return
         # Last two cases only pertain to FreehandOnlyMode cursors.
         # XXX refactor: bad for separation of responsibilities, put the
@@ -358,6 +363,7 @@ class DrawCursorMixin:
         else:
             radius, style = self._get_cursor_info()
             c = cursor.get_brush_cursor(radius, style, self.app.preferences)
+        logger.debug("update_cursor: setting cursor to %r", c)
         window.set_cursor(c)
 
 
