@@ -16,6 +16,7 @@ typedef struct {
     gboolean readonly;
     guint16 *buffer;
     gpointer context; /* Only to be used by the surface implemenations. */
+    int thread_id;
 } MyPaintTiledSurfaceTileRequestData;
 
 void

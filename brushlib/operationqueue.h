@@ -2,6 +2,7 @@
 #define OPERATIONQUEUE_H
 
 #include <stdint.h>
+#include "tilemap.h"
 
 typedef struct {
     float x;
@@ -19,11 +20,6 @@ typedef struct {
     float lock_alpha;
     float colorize;
 } OperationDataDrawDab;
-
-typedef struct {
-    int x;
-    int y;
-} TileIndex;
 
 typedef struct _OperationQueue OperationQueue;
 
