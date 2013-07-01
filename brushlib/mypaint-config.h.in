@@ -5,6 +5,10 @@
 #define MYPAINT_TILE_SIZE 64
 #endif
 
+#ifndef MYPAINT_MAX_THREADS
+#define MYPAINT_MAX_THREADS 16
+#endif
+
 // Start generated config
 @DEFINES@
 // End generated config

@@ -139,6 +139,11 @@ mypaint_tiled_surface_tile_request_init(MyPaintTiledSurfaceTileRequestData *data
     data->readonly = readonly;
     data->buffer = NULL;
     data->context = NULL;
+#ifdef _OPENMP
+    data->thread_id = omp_get_thread_num();
+#else
+    data->thread_id = -1;
+#endif
 }
 
 // Must be threadsafe
