@@ -34,7 +34,8 @@ from uicolor import *
 from util import *
 from palette import Palette
 import geom
-from uimisc import borderless_button
+from paletteview import palette_load_via_dialog
+from paletteview import palette_save_via_dialog
 
 
 PREFS_MASK_KEY = "colors.hcywheel.mask.gamuts"
@@ -866,7 +867,7 @@ class HCYMaskPreview (MaskableWheelMixin,
                       HueSaturationWheelAdjuster):
     """Mask preview widget; not scrollable.
 
-    These widgets can be used with `palette.Palette.load_via_dialog()` as
+    These widgets can be used with `paletteview.palette_load_via_dialog()` as
     preview widgets during mask selection.
 
     """
@@ -892,7 +893,7 @@ class HCYMaskPreview (MaskableWheelMixin,
         return deepcopy(self.get_mask())
 
     def set_palette(self, palette):
-        # Compatibility with Palette.load_via_dialog()
+        # Compatibility with palette_load_via_dialog()
         self.set_mask_from_palette(palette)
 
 
@@ -1116,10 +1117,8 @@ class HCYMaskPropertiesDialog (gtk.Dialog):
         mgr = ColorManager()
         preview.set_color_manager(mgr)
         preview.set_managed_color(self.editor.get_managed_color())
-        pal.save_via_dialog(
-          title=_("Save mask as a Gimp palette"),
-          parent=self,
-          preview=preview)
+        palette_save_via_dialog(pal, title=_("Save mask as a Gimp palette"),
+                                parent=self, preview=preview)
 
 
     def __load_clicked(self, button):
@@ -1128,10 +1127,9 @@ class HCYMaskPropertiesDialog (gtk.Dialog):
         mgr = ColorManager()
         preview.set_color_manager(mgr)
         preview.set_managed_color(self.editor.get_managed_color())
-        pal = Palette.load_via_dialog(
-          title=_("Load mask from a Gimp palette"),
-          parent=self,
-          preview=preview)
+        dialog_title = _("Load mask from a Gimp palette")
+        pal = palette_load_via_dialog(title=dialog_title, parent=self,
+                                      preview=preview)
         if pal is None:
             return
         self.editor.set_mask_from_palette(pal)
