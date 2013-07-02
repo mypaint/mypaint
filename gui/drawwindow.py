@@ -614,7 +614,9 @@ class DrawWindow (gtk.Window):
         newcolor = mgr.palette.move_match_position(1, mgr.get_color())
         if newcolor:
             mgr.set_color(newcolor)
-        # TODO: show the palette panel if hidden
+        # Show the palette panel if hidden
+        workspace = self.app.workspace
+        workspace.show_tool_widget("MyPaintPaletteTool", [])
 
 
     def palette_prev_cb(self, action):
@@ -623,7 +625,9 @@ class DrawWindow (gtk.Window):
         newcolor = mgr.palette.move_match_position(-1, mgr.get_color())
         if newcolor:
             mgr.set_color(newcolor)
-        # TODO: show the palette panel if hidden
+        # Show the palette panel if hidden
+        workspace = self.app.workspace
+        workspace.show_tool_widget("MyPaintPaletteTool", [])
 
 
     def palette_add_current_color_cb(self, *args, **kwargs):
@@ -631,7 +635,9 @@ class DrawWindow (gtk.Window):
         mgr = self.app.brush_color_manager
         color = mgr.get_color()
         mgr.palette.append(color, name=None, unique=True, match=True)
-        # TODO: show the palette panel if hidden
+        # Show the palette panel if hidden
+        workspace = self.app.workspace
+        workspace.show_tool_widget("MyPaintPaletteTool", [])
 
 
     def quit_cb(self, *junk):
