@@ -97,6 +97,32 @@ class TiledDrawWidget (gtk.EventBox):
         self.connect("enter-notify-event", self.enter_notify_cb)
         self.__tdw_refs.insert(0, weakref.ref(self))
 
+        self._last_alloc_pos = (0, 0)
+        self.connect("size-allocate", self._size_allocate_cb)
+
+
+    def _size_allocate_cb(self, widget, alloc):
+        """Allow for allocation changes under certain circumstances
+
+        We need to allow for changes like toolbars or sidebars appearing or
+        disappearing on the top or the left.  The canvas position should remain
+        stationary on the screen in these cases.  This size-allocate handler
+        deals with that by issuing appropriate scroll() events.
+
+        """
+        # Capture the last allocated position in toplevel coords
+        toplevel = self.get_toplevel()
+        new_pos = self.translate_coordinates(toplevel, alloc.x, alloc.y)
+        old_pos = self._last_alloc_pos
+        self._last_alloc_pos = new_pos
+        # When things change measurably, scroll to make up the difference
+        if None in (old_pos, new_pos):
+            return
+        if old_pos != new_pos:
+            dx = new_pos[0] - old_pos[0]
+            dy = new_pos[1] - old_pos[1]
+            self.renderer.scroll(dx, dy)
+
 
     def set_model(self, model):
         assert self.doc is None
@@ -450,7 +476,6 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
 
         self.connect("draw", self.draw_cb)
 
-        self.connect("size-allocate", self.size_allocate_cb)
         self.connect("state-changed", self.state_changed_cb)
 
         self._tdw = tdw
@@ -545,17 +570,6 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
             if self.snapshot_pixmap is None:
                 logger.debug("TODO: generate a static snapshot pixmap")
         self.is_sensitive = sensitive
-
-    def size_allocate_cb(self, widget, alloc):
-        # Allowance for changes like toolbars or other UI elements appearing
-        # or disappearing on the left (within the same gdk window)
-        new_pos = alloc.x, alloc.y
-        old_pos = getattr(self, '_stored_pos', new_pos)
-        if old_pos != new_pos:
-            dx = new_pos[0] - old_pos[0]
-            dy = new_pos[1] - old_pos[1]
-            self.scroll(dx, dy)
-        self._stored_pos = new_pos
 
 
     def canvas_modified_cb(self, x, y, w, h):
