@@ -1,7 +1,7 @@
 # coding=utf-8
 
 # This file is part of MyPaint.
-# Copyright (C) 2012 by Andrew Chadwick <andrewc-git@piffle.org>
+# Copyright (C) 2012-2013 by Andrew Chadwick <andrewc-git@piffle.org>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,7 +20,6 @@ with an adjuster does its type change to match the control's colour space.
 
 """
 
-# TODO: Convert code to GTK3.
 # TODO: Simplify the HCY implementation. KDE's is nice (see kcolorspaces.cpp).
 # TODO: Move all GTK code elsewhere, strip down to GUI-free code.
 # TODO: Move this module to lib/ (keep the name, since it'll be UI-agnostic)
@@ -33,15 +32,17 @@ import re
 from colorsys import *
 import struct
 
-import gtk
-from gtk import gdk
+import gi
+from gi.repository import Gtk
+from gi.repository import Gdk
+from gi.repository import GdkPixbuf
 
 from util import clamp
 
 
-##
+
 ## Lightweight colour objects
-##
+
 
 class UIColor (object):
     """Base class for colour objects which can be manipulated via the UI.
@@ -94,22 +95,16 @@ class UIColor (object):
     def r(self):
         """Read-only RGB red value."""
         return self.get_rgb()[0]
-    @r.setter
-    def r(self, n): raise NotImplementedError
 
     @property
     def g(self):
         """Read-only RGB green value."""
         return self.get_rgb()[1]
-    @g.setter
-    def g(self, n): raise NotImplementedError
 
     @property
     def b(self):
         """Read-only RGB blue value."""
         return self.get_rgb()[2]
-    @b.setter
-    def b(self, n): raise NotImplementedError
 
 
     # HSV read-only
@@ -117,22 +112,16 @@ class UIColor (object):
     def h(self):
         """Read-only hue angle."""
         return self.get_hsv()[0]
-    @h.setter
-    def h(self, n): raise NotImplementedError
 
     @property
     def s(self):
         """Read-only HSV saturation."""
         return self.get_hsv()[1]
-    @s.setter
-    def s(self, n): raise NotImplementedError
 
     @property
     def v(self):
         """Read-only HSV value."""
         return self.get_hsv()[2]
-    @v.setter
-    def v(self, n): raise NotImplementedError
 
 
     # Utility methods
@@ -215,21 +204,34 @@ class UIColor (object):
 
     @staticmethod
     def new_from_gdk_color(gdk_color):
-        """Construct a new `UIColor` from a `gdk.Color`.
+        """Construct a new `UIColor` from a ``Gdk.Color``.
+
+          >>> UIColor.new_from_gdk_color(Gdk.Color(0.0000, 0x8000, 0xffff))
+          <RGBColor r=0.0000, g=0.5000, b=1.0000>
+
         """
         rgb16 = (gdk_color.red, gdk_color.green, gdk_color.blue)
         return RGBColor(*[float(c)/65535 for c in rgb16])
 
 
     def to_gdk_color(self):
-        """Convert to a `gdk.Color`.
+        """Convert to a ``Gdk.Color``.
+
+          >>> gcol = RGBColor(1,1,1).to_gdk_color()
+          >>> gcol.to_string()
+          '#ffffffffffff'
+
         """
-        return gdk.Color(*[int(c*65535) for c in self.get_rgb()])
+        return Gdk.Color(*[int(c*65535) for c in self.get_rgb()])
 
 
     @staticmethod
     def new_from_gdk_rgba(gdk_rgba):
-        """Construct a new `UIColor` from a ``GdkRGBA`` (omitting alpha)
+        """Construct a new `UIColor` from a `Gdk.RGBA` (omitting alpha)
+
+          >>> UIColor.new_from_gdk_rgba(Gdk.RGBA(0.5, 0.8, 0.2, 1))
+          <RGBColor r=0.5000, g=0.8000, b=0.2000>
+
         """
         rgbflt = (gdk_rgba.red, gdk_rgba.green, gdk_rgba.blue)
         return RGBColor(*[clamp(c, 0., 1.) for c in rgbflt])
@@ -237,10 +239,16 @@ class UIColor (object):
 
     def to_gdk_rgba(self):
         """Convert to a `GdkRGBA` (with alpha=1.0).
+
+          >>> col = RGBColor(1,1,1)
+          >>> rgba = col.to_gdk_rgba()
+          >>> rgba.to_string()
+          'rgb(255,255,255)'
+
         """
         rgba = list(self.get_rgb())
         rgba.append(1.0)
-        return gdk.RGBA(*rgba)
+        return Gdk.RGBA(*rgba)
 
 
     __HEX_PARSE_TABLE = [
@@ -290,7 +298,12 @@ class UIColor (object):
 
 
     def to_fill_pixel(self):
-        """Converts to a pixel value for `gdk.Pixbuf.fill()`.
+        """Converts to a pixel value for `Gdk.Pixbuf.fill()`.
+
+          >>> col = RGBColor(1,1,1)
+          >>> "%08x" % (col.to_fill_pixel(),)
+          'ffffffff'
+
         """
         r, g, b = [int(c * 0xff) for c in self.get_rgb()]
         pixel = (r<<24) | (g<<16) | (b<<8) | 0xff
@@ -303,7 +316,7 @@ class UIColor (object):
                         parent=None):
         """Returns a colour chosen by the user via a modal dialog.
 
-        The dialog is a standard `gtk.ColorSelectionDialog`. The returned value
+        The dialog is a standard `Gtk.ColorSelectionDialog`. The returned value
         may be `None`, reflecting the user pressing Cancel in the dialog.
 
         """
@@ -311,19 +324,19 @@ class UIColor (object):
             color = RGBColor(0.5, 0.5, 0.5)
         if previous_color is None:
             previous_color = RGBColor(0.5, 0.5, 0.5)
-        dialog = gtk.ColorSelectionDialog(title)
+        dialog = Gtk.ColorSelectionDialog(title)
         sel = dialog.get_color_selection()
         sel.set_current_color(color.to_gdk_color())
         sel.set_previous_color(previous_color.to_gdk_color())
-        dialog.set_position(gtk.WIN_POS_MOUSE)
+        dialog.set_position(Gtk.WindowPosition.MOUSE)
         dialog.set_modal(True)
         dialog.set_resizable(False)
         if parent is not None:
             dialog.set_transient_for(parent)
-        dialog.set_default_response(gtk.RESPONSE_OK)
+        dialog.set_default_response(Gtk.ResponseType.OK)
         response_id = dialog.run()
         result = None
-        if response_id == gtk.RESPONSE_OK:
+        if response_id == Gtk.ResponseType.OK:
             col_gdk = sel.get_current_color()
             result = class_.new_from_gdk_color(col_gdk)
         dialog.destroy()
@@ -333,7 +346,7 @@ class UIColor (object):
     @classmethod
     def new_from_pixbuf_average(class_, pixbuf):
         """Returns the the average of all colours in a pixbuf."""
-        assert pixbuf.get_colorspace() == gdk.COLORSPACE_RGB
+        assert pixbuf.get_colorspace() == GdkPixbuf.Colorspace.RGB
         assert pixbuf.get_bits_per_sample() == 8
         n_channels = pixbuf.get_n_channels()
         assert n_channels in (3, 4)
@@ -364,11 +377,12 @@ class UIColor (object):
 
 
 class RGBColor (UIColor):
-    """Additive Red/Green/Blue representation of a colour.
-    """
-    r = None  #: Read/write red channel, range 0.0 to 1.0
-    g = None  #: Read/write green channel, range 0.0 to 1.0
-    b = None  #: Read/write blue channel, range 0.0 to 1.0
+    """Additive Red/Green/Blue representation of a colour."""
+
+    # Base class overrides: make r,g,b attributes read/write
+    r = None
+    g = None
+    b = None
 
     def __init__(self, r=None, g=None, b=None, rgb=None, color=None):
         """Initializes from individual values, or another UIColor
@@ -385,9 +399,12 @@ class RGBColor (UIColor):
             r, g, b = color.get_rgb()
         if rgb is not None:
             r, g, b = rgb
-        self.r = r; assert self.r is not None
-        self.g = g; assert self.g is not None
-        self.b = b; assert self.b is not None
+        self.r = r  #: Read/write red channel, range 0.0 to 1.0
+        self.g = g  #: Read/write green channel, range 0.0 to 1.0
+        self.b = b  #: Read/write blue channel, range 0.0 to 1.0
+        assert self.r is not None
+        assert self.g is not None
+        assert self.b is not None
 
     def get_rgb(self):
         return self.r, self.g, self.b
@@ -430,9 +447,11 @@ class HSVColor (UIColor):
 
     """
 
-    h = None  #: Read/write hue angle, scaled to the range 0.0 to 1.0
-    s = None  #: Read/write HSV saturation, 0.0 to 1.0
-    v = None  #: Read/write HSV value, 0.0 to 1.0
+    # Base class overrides: make h,s,v attributes read/write
+    h = None
+    s = None
+    v = None
+
 
     def __init__(self, h=None, s=None, v=None, hsv=None, color=None):
         """Initializes from individual values, or another UIColor
@@ -449,9 +468,12 @@ class HSVColor (UIColor):
             h, s, v = color.get_hsv()
         if hsv is not None:
             h, s, v = hsv
-        self.h = h; assert self.h is not None
-        self.s = s; assert self.s is not None
-        self.v = v; assert self.v is not None
+        self.h = h  #: Read/write hue angle, scaled to the range 0.0 to 1.0
+        self.s = s  #: Read/write HSV saturation, 0.0 to 1.0
+        self.v = v  #: Read/write HSV value, 0.0 to 1.0
+        assert self.h is not None
+        assert self.s is not None
+        assert self.v is not None
 
     def get_hsv(self):
         return self.h, self.s, self.v
@@ -518,9 +540,9 @@ class HCYColor (UIColor):
 
     """
 
-    h = None  #: Read/write hue angle, scaled to the range 0.0 to 1.0
-    c = None  #: Read/write HCY chroma, 0.0 to 1.0
-    y = None  #: Read/write HCY luma, 0.0 to 1.0
+    # Base class override: make h attribute read/write
+    h = None
+
 
     def __init__(self, h=None, c=None, y=None, hcy=None, color=None):
         """Initializes from individual values, or another UIColor
@@ -544,9 +566,12 @@ class HCYColor (UIColor):
                 h_, c, y = RGB_to_HCY(hsv_to_rgb(h, s, v))
         if hcy is not None:
             h, c, y = hcy
-        self.h = h; assert self.h is not None
-        self.c = c; assert self.c is not None
-        self.y = y; assert self.y is not None
+        self.h = h  #: Read/write hue angle, scaled to the range 0.0 to 1.0
+        self.c = c  #: Read/write HCY chroma, 0.0 to 1.0
+        self.y = y  #: Read/write HCY luma, 0.0 to 1.0
+        assert self.h is not None
+        assert self.c is not None
+        assert self.y is not None
 
     def get_hsv(self):
         rgb = self.get_rgb()
@@ -616,21 +641,12 @@ class YCbCrColor (UIColor):
     This colour space is derived from the displayable RGB space. The luma or
     chroma components may be manipluated, but because the envelope of the RGB
     cube does not align with this space's axes it's quite easy to go out of
-    the displayable gamut. Two methods are provided for clipping or scaling
-    out of gamut values back to RGB.
+    the displayable gamut.
 
     """
 
-    Y = None  #: Read/write BT601 luma, 0.0 to 1.0
-    Cb = None  #: Read/write BT601 blue-difference chroma, -0.5 to 0.5.
-    Cr = None  #: Read/write BT601 red-difference chroma, -0.5 to 0.5.
-    __Y0 = None
-    __Cb0 = None
-    __Cr0 = None
-
     def __init__(self, Y=None, Cb=None, Cr=None, YCbCr=None, color=None):
-        """Initializes from individual values, or another UIColor
-        """
+        """Initializes from individual values, or another UIColor"""
         UIColor.__init__(self)
         if color is not None:
             if isinstance(color, YCbCrColor):
@@ -642,15 +658,12 @@ class YCbCrColor (UIColor):
                 Y, Cb, Cr = RGB_to_YCbCr_BT601(rgb)
         if YCbCr is not None:
             Y, Cb, Cr = YCbCr
-        self.Y = Y
+        self.Y = Y  #: Read/write BT601 luma, 0.0 to 1.0
+        self.Cb = Cb  #: Read/write BT601 blue-difference chroma, -0.5 to 0.5.
+        self.Cr = Cr  #: Read/write BT601 red-difference chroma, -0.5 to 0.5.
         assert self.Y is not None
-        self.Cb = Cb
         assert self.Cb is not None
-        self.Cr = Cr
         assert self.Cr is not None
-        self.__Y0 = Y
-        self.__Cb0 = Cb
-        self.__Cr0 = Cr
 
     def get_luma(self):
         return self.Y
@@ -659,40 +672,6 @@ class YCbCrColor (UIColor):
         """Gets a raw RGB triple, possibly out of gamut.
         """
         return YCbCr_to_RGB_BT601((self.Y, self.Cb, self.Cr))
-
-
-    def in_gamut(self):
-        """Returns whether the colur is within the RGB gamut.
-        """
-        rgb = self.get_rgb()
-        return min(rgb) >= 0 and max(rgb) <= 1
-
-
-    def gamut_clip(self):
-        """Clip to the RGB gamut; for use after altering luma.
-        """
-        assert self.Cb == self.__Cb0
-        assert self.Cr == self.__Cr0
-        if self.Y == self.__Y0:
-            return
-        tau_c = gamut_adaptive_tau_c(self.Y, self.get_rgb())
-        self.Cb *= tau_c
-        self.Cr *= tau_c
-        self.__Cb0 = self.Cb
-        self.__Cr0 = self.Cr
-
-
-    def gamut_scale(self):
-        """Scale to the RGB gamut; for use after altering chroma.
-        """
-        assert self.Y == self.__Y0
-        if self.Cb == self.__Cb0 and self.Cr == self.__Cr0:
-            return
-        rgb0 = YCbCr_to_RGB_BT601((self.__Y0, self.__Cb0, self.__Cr0))
-        rgb = YCbCr_to_RGB_BT601((self.Y, self.Cb, self.Cr))
-        tau_s = gamut_adaptive_tau_s(self.__Y0, rgb0, self.Y, rgb)
-        self.Cb = self.__Cb0 = self.Cb * tau_s
-        self.Cr = self.__Cr0 = self.Cr * tau_s
 
 
     def __repr__(self):
@@ -728,112 +707,11 @@ class YCbCrColor (UIColor):
             Cr = self.Cr + (other.Cr - self.Cr) * p
             yield YCbCrColor(Y=Y, Cb=Cb, Cr=Cr)
 
-## 
-## Linear/sRGB transformations.
-## Here for completeness, but unused.
-## 
-
-def _apow(v, p):
-    return (v >= 0) and (v**p) or -((-v)**p)
-
-def sRGB_component_to_linearRGB(c):
-    if abs(c) <= 0.04045:
-        return c / 12.92
-    else:
-        return _apow(((c+0.055) / 1.055), 2.4)
-
-def linearRGB_component_to_sRGB(c):
-    if abs(c) <= 0.0031308:
-        return 12.92 * c
-    else:
-        return 1.055 * _apow(c, 1/2.4) - 0.055
-
-def sRGB_to_linearRGB(rgb):
-    return tuple([sRGB_component_to_linearRGB(c) for c in rgb])
-
-def linearRGB_to_sRGB(rgb):
-    return tuple([linearRGB_component_to_sRGB(c) for c in rgb])
 
 
 
-##
-## Clipping and scaling manipulated and potentially out-gamut RGB triples
-## based on target luma. Useful after transforms in YCC (YUV, YIQ, YCbCr)
-## spaces.
-##
 
 
-def __gamut_adaptive_gamfunc(c, Y):
-    if c == Y:
-        return 1.0
-    return max((1-Y)/(c-Y), (-Y)/(c-Y))
-
-
-def gamut_adaptive_tau_c(Y, rgb):
-    r, g, b = rgb
-    if Y < 0: return 0.0
-    if Y > 1: return 0.0
-    grY = __gamut_adaptive_gamfunc(r, Y)
-    ggY = __gamut_adaptive_gamfunc(g, Y)
-    gbY = __gamut_adaptive_gamfunc(b, Y)
-    return min(1.0, grY, ggY, gbY)
-
-
-def gamut_adaptive_clip(Y, rgb):
-    """Gamut-adaptive clipping, for use after chrominance processing.
-
-    Returns a clipped ``(r,g,b)`` triple, in the RGB gamut. `Y` is the
-    processed YCbCr luminance component, and `rgb` is the processed RGB triple,
-    potentially out of gamut.
-
-    ref: http://dx.doi.org/10.1109/ICIP.2010.5652000
-    """
-    if Y < 0: return (0.0, 0.0, 0.0)
-    elif Y > 1: return (1.0, 1.0, 1.0)
-    tau_c = gamut_adaptive_tau_c(Y, rgb)
-    return tuple(tau_c*c + (1-tau_c)*Y for c in rgb)
-
-
-def gamut_adaptive_tau_s(Y_old, rgb_old, Y_new, rgb_new):
-    if Y_new < 0: return 0.0
-    elif Y_new > 1: return 0.0
-    if rgb_new[0] == rgb_new[1] == rgb_new[2]:
-        return 0.0
-    else:
-        min_newgam = min(__gamut_adaptive_gamfunc(c, Y_new) for c in rgb_new)
-        min_oldgam = min(__gamut_adaptive_gamfunc(c, Y_old) for c in rgb_old)
-        return min_newgam / min_oldgam
-
-
-def gamut_adaptive_scale(Y_old, rgb_old, Y_new, rgb_new):
-    """Gamut-adaptive scaling, for use after luminance processing.
-
-    Returns a scaled ``(r,g,b)`` triple within the RGB gamut. `rgb_old` is the
-    colour before luminance processing was applied, and `Y_old` is the
-    corresponding luminance component. The ``*_new`` values are the values
-    after the change of luminance, where `rgb_new` may be out of gamut. The
-    returned value is scaled so as to retain the old value's saturation, i.e.
-    its relative position between grey and the gamut envelope along an
-    equilumiant plane.
-
-    ref: http://dx.doi.org/10.1109/ICIP.2010.5652000
-    """
-    if Y_new < 0: return (0.0, 0.0, 0.0)
-    elif Y_new > 1: return (1.0, 1.0, 1.0)
-    tau_s = gamut_adaptive_tau_s(Y_old, rgb_old, Y_new, rgb_new)
-    return tuple(tau_s*c + (1-tau_s)*Y_new for c in rgb_new)
-
-
-
-##############################################################################
-###
-###  Non-OO colour transforms
-###
-
-
-##
-## YCC spaces
-##
 
 ## ITU.BT-601 Y'CbCr renormalized values (Cb, Cr between -0.5 and 0.5).
 
@@ -850,6 +728,7 @@ def gamut_adaptive_scale(Y_old, rgb_old, Y_new, rgb_new):
 
 
 def RGB_to_YCbCr_BT601(rgb):
+    """RGB → BT601 YCbCr: R,G,B,Y ∈ [0, 1]; Cb,Cr ∈ [-0.5, 0.5]"""
     R, G, B = rgb
     Y = 0.299 * R + 0.587 * G + 0.114 * B
     Cb = -0.169 * R - 0.331 * G + 0.500 * B
@@ -857,80 +736,13 @@ def RGB_to_YCbCr_BT601(rgb):
     return Y, Cb, Cr
 
 def YCbCr_to_RGB_BT601(YCbCr):
+    """BT601 YCbCr → RGB: R,G,B,Y ∈ [0, 1]; Cb,Cr ∈ [-0.5, 0.5]"""
     Y, U, V = YCbCr
     R = Y             + 1.403 * V
     G = Y - 0.344 * U - 0.714 * V
     B = Y + 1.773 * U
     return R, G, B
 
-
-
-## ITU.BT.709 Y'CbCr renormalized values (Cb, Cr between -0.5 and 0.5).
-
-# The one used for HDTV. The projection is a skewed hexagon.
-# ref http://www.itu.int/rec/R-REC-BT.709/en
-
-
-def RGB_to_YCbCr_BT709(rgb):  # ITU.BT-709 Y'CbCr
-    R, G, B = rgb
-    Y = 0.2215 * R + 0.7154 * G + 0.0721 * B
-    Cb = -0.1145 * R - 0.3855 * G + 0.5000 * B
-    Cr = 0.5016 * R - 0.4556 * G - 0.0459 * B
-    return Y, Cb, Cr
-
-def YCbCr_to_RGB_BT709(YCbCr):
-    Y, Cb, Cr = YCbCr
-    R = Y               + 1.5701 * Cr
-    G = Y - 0.1870 * Cb - 0.4664 * Cr
-    B = Y + 1.8556 * Cb
-    return R, G, B
-
-
-## Generic, nonmatrix YUV
-
-def RGB_to_YUV_generic(rgb, Wr=0.299, Wb=0.0114, Umax=0.436, Vmax=0.615):
-    Wg = 1 - Wr - Wb
-    r, g, b = rgb
-    Y = Wr*r + Wb*b + Wg*g
-    U = Umax * (b - Y) / (1 - Wb)
-    V = Vmax * (r - Y) / (1 - Wr)
-    return Y, U, V
-
-def YUV_to_RGB_generic(YUV, Wr=0.299, Wb=0.0114, Umax=0.436, Vmax=0.615):
-    Wg = 1 - Wr - Wb
-    Y, U, V = YUV
-    R = Y + V*(1-Wr)/Vmax
-    G = Y - U*Wb*(1-Wb)/(Umax*Wg) - V*Wr*(1-Wr)/(Vmax*Wg)
-    B = Y + U*(1-Wb)/Umax
-    return R, G, B
-
-
-
-## YDbDr colour space.
-
-# A YCC space very similar to the Rec. 601 YCbCr one. Definitions
-# from Wikipedia.
-
-
-def RGB_to_YDbDr(rgb):
-    R, G, B = rgb
-    Y  = +0.299*R + 0.587*G + 0.114*B
-    Db = -0.450*R - 0.883*G + 1.333*B
-    Dr = -1.333*R + 1.116*G + 0.217*B
-    return Y, Db, Dr
-
-def YDbDr_to_RGB(ydbdr):
-    Y, Db, Dr = ydbdr
-    R = Y            - 0.526*Dr
-    G = Y - 0.129*Db + 0.269*Dr
-    B = Y + 0.665*Db
-    return R, G, B
-
-
-
-##
-## Cylindrical colour spaces
-##
 
 ## HCY colour space.
 
@@ -953,6 +765,7 @@ _SVGFX_GREEN_WEIGHT = 0.59
 _SVGFX_BLUE_WEIGHT = 0.11
 
 def RGB_to_HCY(rgb):
+    """RGB → HCY: R,G,B,H,C,Y ∈ [0, 1]"""
     _r, _g, _b = rgb
     r_weight = _SVGFX_RED_WEIGHT
     g_weight = _SVGFX_GREEN_WEIGHT
@@ -1007,8 +820,9 @@ def RGB_to_HCY(rgb):
     return h_, c_, y_
 
 
-
+ 
 def HCY_to_RGB(hcy):
+    """HCY → RGB: R,G,B,H,C,Y ∈ [0, 1]"""
     _h, _c, _y = hcy
     r_weight = _SVGFX_RED_WEIGHT
     g_weight = _SVGFX_GREEN_WEIGHT
@@ -1068,90 +882,7 @@ def HCY_to_RGB(hcy):
     return r_, g_, b_
 
 
-## Improved HLS colour space.
-
-# Pretty much HCY without the cylindrical expansion.
-# 
-# ref: Hanbury, The Taming of the Hue, Saturation and Brightness Colour Space
-# ref: Hanbury, Circular Statistics Applied to Colour Images
-
-from math import pi, sin, cos, acos, sqrt
-
-def RGB_to_IHLS(rgb):
-    r, g, b = [float(c) for c in rgb]
-    root3 = sqrt(3)
-    root32 = 0.5 * root3
-    Y  = 0.2126*r + 0.7154*g + 0.0721*b
-    C1 =        r -    0.5*g -    0.5*b
-    C2 =          - root32*g + root32*b
-    C = sqrt((C1**2) + (C2**2))
-    if C == 0:
-        H = 0
-    elif C2 <= 0:
-        H = acos(C1/C)
-    else:
-        H = 2*pi - acos(C1/C)
-    # H* = H - k * 60deg where k in {0, 1, 2, 3, 4, 5} so that 0 <= H* <= 60deg
-    Hstar = None
-    for k in range(6):
-        Hstar = H - k*pi/3
-        if Hstar >= 0 and Hstar <= pi/3:
-            break
-    assert Hstar is not None
-    S = 2 * C * sin(2*pi/3 - Hstar) / root3
-    return H, S, Y
-
-
-def IHLS_to_RGB(IHLS):
-    H, S, Y = IHLS
-    root3 = sqrt(3)
-    root32 = 0.5 * root3
-
-    Hstar = None
-    for k in range(6):
-        Hstar = H - k*pi/3
-        if Hstar >= 0 and Hstar <= pi/3:
-            break
-    assert Hstar is not None
-
-    C = S * root3 / 2 * sin(2*pi/3 - Hstar)
-    if C == 0:
-        C1 = 0
-        C2 = 0
-    else:
-        C1 = C * cos(H)
-        C2 = -C * cos(H)
-    R = Y + 0.7875*C1 + 0.3714*C2
-    G = Y - 0.2125*C1 - 0.2059*C2
-    B = Y - 0.2125*C1 + 0.9488*C2
-    return R, G, B
-
-## 
-## Other colour spaces
-##
-
-
-## I₁I₂I₃ colour space.
-
-# Somewhat YUV-like but with a more regular colour solid. Horizontal planes
-# of constant I₁ are not equiluminant.
-# ref http://www.couleur.org/index.php?page=transformations#I1I2I3
-
-
-def RGB_to_I1I2I3(RGB):
-    R, G, B = RGB
-    I1 = (R + G + B)/3.0
-    I2 = (R - B)/2.0
-    I3 = (2.0*G - R - B)/4.0
-    return I1, I2, I3
-
-def I1I2I3_to_RGB(III):
-    I1, I2, I3 = III
-    b = I1 - I2 - 2.0 * I3 / 3.0
-    r = 2.0 * I2 + b
-    g = 3.0 * I1 - r - b
-    return r, g, b
-
+## Module testing
 
 if __name__ == '__main__':
     import doctest

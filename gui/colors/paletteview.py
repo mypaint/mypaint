@@ -34,14 +34,16 @@ from gettext import gettext as _
 from lib.observable import event
 from util import clamp
 
-## Imports requiring gtk2compat
+from palette import Palette
+from uicolor import RGBColor
+from uicolor import HCYColor
+
+
+## Imports still requiring gtk2compat
 
 if __name__ == '__main__':
     import gui.gtk2compat
 from uimisc import borderless_button
-from palette import Palette
-from uicolor import RGBColor
-from uicolor import HCYColor
 from adjbases import ColorAdjuster
 from adjbases import ColorAdjusterWidget
 from adjbases import ColorManager
@@ -49,6 +51,7 @@ from adjbases import DATAPATH_PALETTES_SUBDIR
 from combined import CombinedAdjusterPage
 
 
+## Class defs
 
 
 class PalettePage (CombinedAdjusterPage):
