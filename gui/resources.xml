@@ -1156,7 +1156,7 @@ The circular slices are equiluminant.</property>
       </child>
       <child>
         <object class="GtkToggleAction" id="PaletteTool">
-          <property name="icon-name">gtk-select-color</property>
+          <property name="icon-name">mypaint-tool-color-palette</property>
           <property name="label" translatable="yes"
             context="Menu|Color|">Palette</property>
           <property name="tooltip" translatable="yes"

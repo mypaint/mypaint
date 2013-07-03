@@ -74,7 +74,7 @@ class PalettePage (CombinedAdjusterPage):
 
     @classmethod
     def get_page_icon_name(self):
-        return "gtk-select-color"
+        return "mypaint-tool-color-palette"
 
 
     @classmethod
