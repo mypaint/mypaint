@@ -1673,12 +1673,12 @@ class ToolStack (Gtk.EventBox):
 
 
 class ToolStackWindow (Gtk.Window):
-    """A floating utility window containing a single `ToolStack`.
-    """
+    """A floating utility window containing a single `ToolStack`"""
 
-    ## GObject integration (type name)
+    ## Class constants
 
     __gtype_name__ = "MyPaintToolStackWindow"
+    _AGGRESSIVE_POSITIONING_HACK = False
 
 
     ## Construction
@@ -1688,17 +1688,20 @@ class ToolStackWindow (Gtk.Window):
         Gtk.Window.__init__(self)
         self.set_type_hint(Gdk.WindowTypeHint.UTILITY)
         self.set_accept_focus(False)
+        self.connect("realize", self._realize_cb)
         self.connect("destroy", self._destroy_cb)
         self.stack = ToolStack() #: The ToolStack child of the window
         self.add(self.stack)
-        self.connect("realize", self._realize_cb)
-        self.connect("map", self._map_cb)
-        self.connect("configure-event", self._configure_cb)
         self.update_title([])
-        self._pos = None
-        self._initial_xy = None
-        self._frame_size = None
+        # Position tracking
+        self._layout_position = None  # last cfg'd position and content size
+        self._frame_size = None  # used for rollover accuracy, not saved
+        self.connect("configure-event", self._configure_cb)
+        # On-map hacks
+        self._onmap_position = None  # position to be forced on window map
         self._mapped_once = False
+        self.connect("map", self._map_cb)
+        self.connect("hide", self._hide_cb)
 
 
     ## Setup from layout definitions (pre-realize)
@@ -1711,13 +1714,13 @@ class ToolStackWindow (Gtk.Window):
         self.stack.build_from_layout(layout.get("contents", {}))
         pos = layout.get("position", None)
         if pos:
-            self._pos = pos.copy()
+            self._layout_position = pos.copy()
 
 
     def get_layout(self):
         """Get the window's position and contents in simple dict form.
         """
-        return { "position": self._pos,
+        return { "position": self._layout_position,
                  "contents": self.stack.get_layout(), }
 
 
@@ -1725,47 +1728,90 @@ class ToolStackWindow (Gtk.Window):
 
 
     def _realize_cb(self, widget):
-        logger.debug("Realize %r", self)
-        if not self._pos:
+        """Set the initial position (with lots of sanity checks)"""
+        # logger.debug("Realize %r", self)
+        lpos = self._layout_position
+        if lpos is None:
             return
-        xy = set_initial_window_position(self, self._pos)
-        self._initial_xy = xy
+        self._onmap_position = set_initial_window_position(self, lpos)
 
 
     def _map_cb(self, widget):
-        logger.debug("map %r", self)
+        """Window map event actions"""
+        #logger.debug("map id=%d", id(self))
+        toplevel = None
         workspace = self.stack.workspace
         if workspace:
-            # Prevent subwindows from taking keyboard focus from the main
-            # window (in Metacity) by presenting it again.
-            # https://gna.org/bugs/?17899
             toplevel = workspace.get_toplevel()
+        # Things we only need to do on the first window map
+        if not self._mapped_once:
+            self._mapped_once = True
+            if toplevel:
+                self.set_transient_for(toplevel)
+            if workspace:
+                workspace._floating.add(self)
+            win = widget.get_window()
+            decor = Gdk.WMDecoration.BORDER|Gdk.WMDecoration.RESIZEH
+            win.set_decorations(decor)
+            wmfuncs = Gdk.WMFunction.RESIZE|Gdk.WMFunction.MOVE
+            win.set_functions(wmfuncs)
+        # Hack to force an initial x,y position to be what was saved, used
+        # as a workaround for WM bugs and misfeatures.
+        # Forcing the position up front rather than in an idle handler
+        # avoids flickering in Xfce 4.8, when this is necessary.
+        # Xfce 4.8 requires position forcing for second and subsequent
+        # map events too, if a window has been resized due its content growing.
+        # Hopefully we never have to do this twice. Once is too much really.
+        if self._onmap_position is not None:
+            if self._AGGRESSIVE_POSITIONING_HACK:
+                self._set_onmap_position(False)
+                GObject.idle_add(self._set_onmap_position, True)
+            else:
+                self._set_onmap_position(True)
+        # Prevent subwindows from taking keyboard focus from the main window
+        # in Metacity by presenting it again. https://gna.org/bugs/?17899
+        if toplevel:
             GObject.idle_add(lambda *a: toplevel.present())
-        if self._mapped_once:
-            return
-        # First map stuff
-        if workspace:
-            self.set_transient_for(toplevel)
-            workspace._floating.add(self)
-        win = widget.get_window()
-        decor = Gdk.WMDecoration.BORDER|Gdk.WMDecoration.RESIZEH
-        win.set_decorations(decor)
-        wmfuncs = Gdk.WMFunction.RESIZE|Gdk.WMFunction.MOVE
-        win.set_functions(wmfuncs)
-        self._mapped_once = True
-        if self._initial_xy:
-            # Hack to force the initial x,y position
-            GObject.idle_add(lambda *a: self.move(*self._initial_xy))
+
+
+    def _set_onmap_position(self, reset):
+        """Hack to set the requested position, as much as one can
+
+        Window managers don't always get it right when the window is initially
+        positioned, and some don't keep window positions always when a window
+        is hidden and later re-shown. Doing a move() in a map hander improves
+        the user experience vastly in these WMs.
+
+        """
+        if self._onmap_position:
+            #logger.debug("FORCEPOS id=%d xy=%r reset=%r",
+            #             id(self), self._onmap_position, reset)
+            self.move(*self._onmap_position)
+            if reset:
+                self._onmap_position = None
+        return False
 
 
     def _configure_cb(self, widget, event):
-        """Track the window size and position when it changes.
-        """
+        """Track the window size and position when it changes"""
         frame = self.get_window().get_frame_extents()
         x = max(0, frame.x)
         y = max(0, frame.y)
-        self._pos = dict(x=x, y=y, w=event.width, h=event.height)
+        # The content size, and upper-left frame position; will be saved
+        self._layout_position = dict(x=x, y=y, w=event.width, h=event.height)
+        #logger.debug("configure %d %r", id(self), self._layout_position)
+        # Frame extents, used internally for rollover accuracy; not saved
         self._frame_size = frame.width, frame.height
+
+
+    def _hide_cb(self, widget):
+        """Ensure a correct position after the next window map"""
+        if self._layout_position is None:
+            return
+        pos = (self._layout_position.get("x", None),
+               self._layout_position.get("y", None))
+        if None not in pos:
+            self._onmap_position = pos
 
 
     def _destroy_cb(self, widget):
@@ -1789,10 +1835,13 @@ class ToolStackWindow (Gtk.Window):
         Used for revealing floating windows after they have been auto-hidden.
 
         """
-        if not (self._pos and self._frame_size):
+        if not (self._layout_position and self._frame_size):
             return False
-        fx, fy = self._pos["x"], self._pos["y"]
+        fx = self._layout_position.get("x", None)
+        fy = self._layout_position.get("y", None)
         fw, fh = self._frame_size
+        if None in (fx, fy, fw, fh):
+            return False
         return x >= fx-b and x <= fx+fw+b and y >= fy-b and y <= fy+fh+b
 
 
@@ -1800,6 +1849,7 @@ class ToolStackWindow (Gtk.Window):
 
 
     def update_title(self, tool_widget_titles):
+        """Update the title from a list of strings"""
         titles = [unicode(s) for s in tool_widget_titles]
         workspace = self.stack.workspace
         if workspace is not None:
