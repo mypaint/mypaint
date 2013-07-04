@@ -6,8 +6,7 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-"""Workspaces with a central canvas, sidebars and saved layouts.
-"""
+"""Workspaces with a central canvas, sidebars and saved layouts"""
 
 ## Imports
 
@@ -57,7 +56,7 @@ TOOL_WIDGET_NATURAL_HEIGHT_TALL = 1.25 * TOOL_WIDGET_MIN_WIDTH
 ## Class defs
 
 class Workspace (Gtk.VBox, Gtk.Buildable):
-    """Widget housing a central canvas flanked by two sidebar toolstacks.
+    """Widget housing a central canvas flanked by two sidebar toolstacks
 
     Workspaces also manage zero or more floating ToolStacks, and can set the
     initial size and position of their own toplevel window.
@@ -164,8 +163,7 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
 
 
     def __init__(self):
-        """Initializes, with a placeholder canvas widget and no tool widgets.
-        """
+        """Initializes, with a placeholder canvas widget and no tool widgets"""
         Gtk.VBox.__init__(self)
         # Sidebar stacks
         self._lstack = lstack = ToolStack()
@@ -212,8 +210,7 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
 
 
     def do_add_child(self, builder, child, type_):
-        """Adds a child as the canvas: gtk_buildable_add_child() implementation
-        """
+        """Adds a child as the canvas: gtk_buildable_add_child() impl."""
         self.set_canvas(child)
 
 
@@ -264,7 +261,7 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
 
 
     def get_layout(self):
-        """Returns a layout definition dict for the workspace.
+        """Returns a layout definition dict for the workspace
 
         This should be called before the toplevel window is fully destroyed,
         or the dicts representing the tool stacks will be empty.
@@ -284,14 +281,12 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
 
 
     def _realize_cb(self, widget):
-        """Kick off the deferred layout code when the widget is realized.
-        """
+        """Kick off the deferred layout code when the widget is realized"""
         self._start_initial_layout()
 
 
     def _start_initial_layout(self):
-        """Layout: all that can be done before the toplevel is positioned.
-        """
+        """Layout: all that can be done before the toplevel is positioned"""
 
         # Set up monitoring of the toplevel's size changes.
         toplevel = self.get_toplevel()
@@ -377,8 +372,7 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
 
 
     def _complete_initial_layout(self):
-        """Finish initial layout; called after toplevel win is positioned.
-        """
+        """Finish initial layout; called after toplevel win is positioned"""
         assert self.get_realized()
         # Restore saved widths for the sidebar
         layout = self._initial_layout
@@ -409,15 +403,13 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
 
 
     def set_canvas(self, widget):
-        """Canvas widget (setter)
-        """
+        """Canvas widget (setter)"""
         assert self.get_canvas() is None
         self._rpaned.pack1(widget, resize=True, shrink=False)
 
 
     def get_canvas(self):
-        """Canvas widget (getter)
-        """
+        """Canvas widget (getter)"""
         return self._rpaned.get_child1()
 
 
@@ -477,9 +469,9 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
 
 
     def hide_tool_widget(self, tool_gtypename, tool_params):
-        """Hides a tool widget by typename+params.
+        """Hides a tool widget by typename+params
 
-        This hide the widget and orphans it from the widget hierarchy, but a
+        This hides the widget and orphans it from the widget hierarchy, but a
         reference to it is kept in the Workspace's internal cache. Further
         calls to show_tool_widget() will use the cached object.
 
@@ -519,12 +511,12 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
 
     @event
     def tool_widget_shown(self, widget):
-        """Event: tool widget shown."""
+        """Event: tool widget shown"""
 
 
     @event
     def tool_widget_hidden(self, widget):
-        """Event: tool widget hidden, either by the user or programatically."""
+        """Event: tool widget hidden, either by the user or programatically"""
 
 
     @event
@@ -676,7 +668,7 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
 
 
     def _toplevel_window_state_event_cb(self, widget, event):
-        # Handle transitions between fullscreen and windowed.
+        """Handle transitions between fullscreen and windowed."""
         if event.changed_mask & Gdk.WindowState.FULLSCREEN:
             fullscreen = event.new_window_state & Gdk.WindowState.FULLSCREEN
             if fullscreen:
@@ -700,14 +692,12 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
 
 
     def get_autohide_enabled(self):
-        """Auto-hide is enabled in fullscreen (getter)
-        """
+        """Auto-hide is enabled in fullscreen (getter)"""
         return self._autohide_enabled
 
 
     def set_autohide_enabled(self, autohide_enabled):
-        """Auto-hide is enabled in fullscreen (setter)
-        """
+        """Auto-hide is enabled in fullscreen (setter)"""
         if self._is_fullscreen:
             if autohide_enabled:
                 self._connect_autohide_events()
@@ -722,8 +712,7 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
 
 
     def _hide_autohide_widgets(self):
-        """Hides all auto-hiding widgets immediately.
-        """
+        """Hides all auto-hiding widgets immediately"""
         if not self._is_fullscreen:
             return
         self._cancel_autohide_timeout()
@@ -733,8 +722,7 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
 
 
     def _show_autohide_widgets(self):
-        """Shows all auto-hiding widgets immediately.
-        """
+        """Shows all auto-hiding widgets immediately"""
         self._cancel_autohide_timeout()
         for w in self._get_autohide_widgets():
             w.show_all()
@@ -763,7 +751,7 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
 
 
     def _start_autohide_timeout(self):
-        # Hide the UI after a brief period of inactivity.
+        """Start a timer to hide the UI after a brief period of inactivity"""
         self._cancel_autohide_timeout()
         srcid = GObject.timeout_add(self.AUTOHIDE_TIMEOUT,
                                     self._autohide_timeout_cb)
@@ -771,15 +759,15 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
 
 
     def _cancel_autohide_timeout(self):
-        # Cancel any pending hide.
+        """Cancels any pending auto-hide"""
         if not self._autohide_timeout:
             return
         GObject.source_remove(self._autohide_timeout)
         self._autohide_timeout = None
 
 
-
     def _autohide_timeout_cb(self):
+        """Hide auto-hide widgets when the auto-hide timer finishes"""
         self._hide_autohide_widgets()
         return False
 
@@ -788,7 +776,7 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
 
 
     def _connect_autohide_events(self):
-        # Start listening for autohide events.
+        """Start listening for autohide events"""
         if self._fs_event_handlers:
             return
         evwidget = self.get_canvas()
@@ -808,21 +796,21 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
 
 
     def _disconnect_autohide_events(self):
-        # Stop listening for autohide events.
+        """Stop listening for autohide events"""
         for evwidget, handler_id in self._fs_event_handlers:
             evwidget.disconnect(handler_id)
         self._fs_event_handlers = []
 
 
     def _fs_leave_cb(self, widget, event):
-        # Handles leaving the canvas in fullscreen.
+        """Handles leaving the canvas in fullscreen"""
         # Perhaps the user is using a sidebar. Leave it open so they can.
         self._cancel_autohide_timeout()
         return False
 
 
     def _fs_enter_cb(self, widget, event):
-        # Handles entering the canvas in fullscreen.
+        """Handles entering the canvas in fullscreen"""
         # If we're safely in the middle, the autohide timer can begin now.
         edges = self._get_bumped_edges(widget, event)
         if not edges:
@@ -831,7 +819,7 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
 
 
     def _fs_motion_cb(self, widget, event):
-        # Handles edge bumping and other rollovers in fullscreen mode.
+        """Handles edge bumping and other rollovers in fullscreen mode"""
         assert self._is_fullscreen
         # Firstly, if the user appears to be drawing, be as stable as we can.
         if event.state & self._ALL_BUTTONS_MASK:
@@ -890,7 +878,7 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
 
 
 class ToolStack (Gtk.EventBox):
-    """Vertical stack of tool widget groups.
+    """Vertical stack of tool widget groups
     
     The layout has movable dividers between groups of tool widgets, and an
     empty group on the end which accepts tabs dragged to it. The groups are
@@ -921,8 +909,7 @@ class ToolStack (Gtk.EventBox):
     ## Internal classes: Paned/Notebook tree elements
 
     class _Paned (Gtk.VPaned):
-        """GtkVPaned specialization acting as an intermediate note in a tree.
-        """
+        """GtkVPaned specialization acting as an intermediate node in a tree"""
 
         ## Construction
 
@@ -1042,8 +1029,7 @@ class ToolStack (Gtk.EventBox):
     ## Notebook
 
     class _Notebook (Gtk.Notebook):
-        """Tabbed notebook containng a tool widget group.
-        """
+        """Tabbed notebook containng a tool widget group"""
 
         ## Behavioural constants
 
@@ -1286,8 +1272,7 @@ class ToolStack (Gtk.EventBox):
 
 
     def __init__(self):
-        """Constructs a new stack with a single placeholder group.
-        """
+        """Constructs a new stack with a single placeholder group"""
         Gtk.EventBox.__init__(self)
         self.add(ToolStack._Notebook(self))
         self.connect("size-allocate", self._size_alloc_cb)
@@ -1298,7 +1283,7 @@ class ToolStack (Gtk.EventBox):
 
 
     def build_from_layout(self, desc, init_sizes_state=None):
-        """Loads groups and pages from a layout description.
+        """Loads groups and pages from a layout description
 
         :param desc: stack definition
         :type desc: dict
@@ -1370,7 +1355,7 @@ class ToolStack (Gtk.EventBox):
 
 
     def get_layout(self):
-        """Returns a description of the current layout using simple types.
+        """Returns a description of the current layout using simple types
 
         :rtype: dict
 
@@ -1408,14 +1393,12 @@ class ToolStack (Gtk.EventBox):
 
 
     def _start_initial_layout(self):
-        """Layout: all that can be done before the toplevel is positioned.
-        """
+        """Layout: all that can be done before the toplevel is positioned"""
         pass
 
 
     def _complete_initial_layout(self):
-        """Finish initial layout; called after toplevel win is positioned.
-        """
+        """Finish initial layout; called after toplevel win is positioned"""
         # Init tool group sizes by setting vpaned positions
         for paned in self._get_paneds():
             if hasattr(paned, "_initial_divider_position"):
@@ -1429,7 +1412,7 @@ class ToolStack (Gtk.EventBox):
 
 
     def add_tool_widget(self, widget, maxnotebooks=None, maxpages=3):
-        """Tries to find space for, then add and show a tool widget.
+        """Tries to find space for, then add and show a tool widget
 
         Finding space is based on constraints, adjustable via the parameters.
         The process is driven by `Workspace.show_tool_widget()`.
@@ -1468,7 +1451,7 @@ class ToolStack (Gtk.EventBox):
 
 
     def remove_tool_widget(self, widget):
-        """Removes a tool widget from the stack, hiding it.
+        """Removes a tool widget from the stack, hiding it
 
         :param widget: the GType name of the tab to be removed.
         :type widget: Gtk.Widget created by the Workspace's factory
@@ -1492,8 +1475,7 @@ class ToolStack (Gtk.EventBox):
 
 
     def is_empty(self):
-        """Returns true if this stack contains only a tab drop placeholder.
-        """
+        """Returns true if this stack contains only a tab drop placeholder"""
         widget = self.get_child()
         if isinstance(widget, Gtk.Paned):
             return False
