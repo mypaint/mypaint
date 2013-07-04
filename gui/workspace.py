@@ -506,9 +506,8 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         return False
 
 
-    def get_tool_widget_shown(self, gtype_name, params):
-        """Returns whether a tool widget is currently parented and showing.
-        """
+    def get_tool_widget_showing(self, gtype_name, params):
+        """Returns whether a tool widget is currently parented and showing"""
         if not self._tool_widgets.cache_has(gtype_name, *params):
             return False
         widget = self._tool_widgets.get(gtype_name, *params)

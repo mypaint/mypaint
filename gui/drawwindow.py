@@ -362,20 +362,22 @@ class DrawWindow (gtk.Window):
         if action_name.endswith("Tool"):
             gtype_name = "MyPaint%s" % (action.get_name(),)
             workspace = self.app.workspace
-            if action.get_active():
-                if not workspace.get_tool_widget_shown(gtype_name, []):
-                    workspace.show_tool_widget(gtype_name, [])
-            else:
-                if workspace.get_tool_widget_shown(gtype_name, []):
-                    workspace.hide_tool_widget(gtype_name, [])
+            showing = workspace.get_tool_widget_showing(gtype_name, [])
+            active = action.get_active()
+            if active and not showing:
+                workspace.show_tool_widget(gtype_name, [])
+            elif showing and not active:
+                workspace.hide_tool_widget(gtype_name, [])
         elif self.app.has_subwindow(action_name):
             window = self.app.get_subwindow(action_name)
-            if action.get_active():
-                if not window.get_visible():
+            active = action.get_active()
+            visible = window.get_visible()
+            if active:
+                if not visible:
                     window.show_all()
                 window.present()
-            else:
-                if window.get_visible():
+            elif visible:
+                if not active:
                     window.hide()
         else:
             logger.warning("unknown window or tool %r" % (action_name,))
