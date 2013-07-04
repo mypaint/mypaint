@@ -117,6 +117,10 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
     _EDGE_TOP = 0x04
     _EDGE_BOTTOM = 0x08
 
+    #: Set keep-above in fullscreen mode.
+    #: Experimental hack to work around some annoying WM issues (Unity, Xfce)
+    _FULLSCREEN_KEEP_ABOVE_HACK = True
+
 
     ## GObject integration (type name, properties)
 
@@ -667,11 +671,17 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
     ## Fullscreen (event callbacks)
 
 
-    def _toplevel_window_state_event_cb(self, widget, event):
+    def _toplevel_window_state_event_cb(self, toplevel, event):
         """Handle transitions between fullscreen and windowed."""
         if event.changed_mask & Gdk.WindowState.FULLSCREEN:
             fullscreen = event.new_window_state & Gdk.WindowState.FULLSCREEN
             if fullscreen:
+                if self._FULLSCREEN_KEEP_ABOVE_HACK:
+                    toplevel.set_keep_above(True)
+                    # Setting keep-above in fullscreen mode results in fewer
+                    # interruptions from the DE (in Xfce4.10, anyway). Floating
+                    # windows and dialogs all use set_transient_for(), and will
+                    # hopefully work.
                 if self.autohide_enabled:
                     self._connect_autohide_events()
                     self._start_autohide_timeout()
@@ -680,6 +690,8 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
                 for floating in self._floating:
                     floating.show_all()
             else:
+                if self._FULLSCREEN_KEEP_ABOVE_HACK:
+                    toplevel.set_keep_above(False)
                 self._disconnect_autohide_events()
                 self._show_autohide_widgets()
             self._is_fullscreen = bool(fullscreen)
@@ -719,6 +731,11 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         for widget in self._get_autohide_widgets():
             if widget.get_visible():
                 widget.hide()
+        if self._FULLSCREEN_KEEP_ABOVE_HACK:
+            toplevel = self.get_toplevel()
+            toplevel.set_keep_above(False)
+            GObject.idle_add(toplevel.present)
+            GObject.idle_add(toplevel.set_keep_above, True)
 
 
     def _show_autohide_widgets(self):
