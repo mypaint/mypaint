@@ -447,7 +447,6 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
             while stack and not isinstance(stack, ToolStack):
                 stack = stack.get_parent()
         else:
-            assert widget.get_parent() is None
             logger.debug("Showing %r, which is currently hidden", widget)
             maxpages = 1
             added = False
@@ -723,7 +722,13 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         if not self._is_fullscreen:
             return
         self._cancel_autohide_timeout()
-        for widget in self._get_autohide_widgets():
+        display = self.get_display()
+        if display.pointer_is_grabbed():
+            logger.warning("Pointer grabbed: not auto-hiding")
+            return
+        ah_widgets = self._get_autohide_widgets()
+        logger.debug("Hiding %d autohide widget(s)", len(ah_widgets))
+        for widget in ah_widgets:
             if widget.get_visible():
                 widget.hide()
         if self._FULLSCREEN_KEEP_ABOVE_HACK:
@@ -736,8 +741,10 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
     def _show_autohide_widgets(self):
         """Shows all auto-hiding widgets immediately"""
         self._cancel_autohide_timeout()
-        for w in self._get_autohide_widgets():
-            w.show_all()
+        ah_widgets = self._get_autohide_widgets()
+        logger.debug("Hiding %d autohide widget(s)", len(ah_widgets))
+        for widget in ah_widgets:
+            widget.show_all()
 
 
     def _get_autohide_widgets(self):
@@ -764,7 +771,11 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
 
     def _start_autohide_timeout(self):
         """Start a timer to hide the UI after a brief period of inactivity"""
-        self._cancel_autohide_timeout()
+        if not self._autohide_timeout:
+            logger.debug("Starting autohide timeout (%d milliseconds)",
+                         self.AUTOHIDE_TIMEOUT)
+        else:
+            self._cancel_autohide_timeout()
         srcid = GObject.timeout_add(self.AUTOHIDE_TIMEOUT,
                                     self._autohide_timeout_cb)
         self._autohide_timeout = srcid
@@ -816,16 +827,30 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
 
     def _fs_leave_cb(self, widget, event):
         """Handles leaving the canvas in fullscreen"""
-        # Perhaps the user is using a sidebar. Leave it open so they can.
-        self._cancel_autohide_timeout()
+        assert self._is_fullscreen
+        # if event.state & self._ALL_BUTTONS_MASK:
+        #    # "Starting painting", except not quite.
+        #    # Can't use this: there's no way of distinguishing it from
+        #    # resizing a floating window. Hiding the window being resized
+        #    # breaks window management badly! (Xfce 4.10)
+        #    self._cancel_autohide_timeout()
+        #    self._hide_autohide_widgets()
+        if event.mode == Gdk.CrossingMode.UNGRAB:
+            # Finished painting. To appear more consistent with a mouse,
+            # restart the hide timer now rather than waiting for a motion
+            # event.
+            self._start_autohide_timeout()
+        elif event.mode == Gdk.CrossingMode.NORMAL:
+            # User may be using a sidebar. Leave it open.
+            self._cancel_autohide_timeout()
         return False
 
 
     def _fs_enter_cb(self, widget, event):
         """Handles entering the canvas in fullscreen"""
+        assert self._is_fullscreen
         # If we're safely in the middle, the autohide timer can begin now.
-        edges = self._get_bumped_edges(widget, event)
-        if not edges:
+        if not self._get_bumped_edges(widget, event):
             self._start_autohide_timeout()
         return False
 
@@ -846,10 +871,11 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
             b = self.AUTOHIDE_REVEAL_BORDER
             if win.contains_point(x, y, b=b):
                 show_floating = True
-                break
         if show_floating:
             for win in self._floating:
                 win.show_all()
+            self._cancel_autohide_timeout()
+            return False
         # Edge bumping
         # Bump the mouse into the edge of the screen to get back the stuff
         # that was hidden there, similar to media players etc.
