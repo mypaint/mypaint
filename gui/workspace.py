@@ -464,12 +464,7 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
                 return
         # Reveal the widget's ToolStack
         assert stack and isinstance(stack, ToolStack)
-        stack_toplevel = stack.get_toplevel()
-        if stack_toplevel not in self._floating:
-            logger.debug("Showing %r (ancestor of freshly shown tool %r)",
-                         stack, widget)
-            scrolls = stack.get_parent().get_parent()
-            scrolls.show_all()
+        stack.reveal_tool_widget(widget)
 
 
     def hide_tool_widget(self, tool_gtypename, tool_params):
@@ -1498,6 +1493,27 @@ class ToolStack (Gtk.EventBox):
             return False
         assert isinstance(widget, Gtk.Notebook)
         return widget.get_n_pages() == 0
+
+
+    def reveal_tool_widget(self, widget):
+        """Reveals a widget in this tool stack"""
+        toplevel = self.get_toplevel()
+        if widget is None or (widget.get_toplevel() is not toplevel):
+            logger.warning("Can't reveal %r: not in this toolstack", widget)
+            return
+        # Show the stack's toplevel, or unfold sidebars
+        if toplevel is self.workspace.get_toplevel():
+            logger.debug("Showing %r (ancestor of freshly shown tool %r)",
+                         self, widget)
+            scrolls = self.get_parent().get_parent()
+            scrolls.show_all()
+        else:
+            toplevel.present()
+        # Swicth to the widget's tab
+        page = widget.get_parent()
+        nb = page.get_parent()
+        page_num = nb.page_num(page)
+        nb.set_current_page(page_num)
 
 
     ## Internal structure helpers
