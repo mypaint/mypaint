@@ -46,25 +46,8 @@ public:
       return bbox;
   }
 
-  uint16_t * get_tile_memory(int tx, int ty, bool readonly) {
-
-      // Finish previous request
-      if (tile_request_in_progress) {
-          mypaint_tiled_surface_tile_request_end((MyPaintTiledSurface *)c_surface, &tile_request);
-          tile_request_in_progress = false;
-      }
-
-      // Start current request
-      mypaint_tiled_surface_tile_request_init(&tile_request,
-                                              tx, ty, readonly);
-
-      mypaint_tiled_surface_tile_request_start((MyPaintTiledSurface *)c_surface, &tile_request);
-      tile_request_in_progress = true;
-
-      return tile_request.buffer;
-  }
-
   // returns true if the surface was modified
+  // Note: Used only in test_mypaintlib.py
   bool draw_dab (float x, float y, 
                  float radius, 
                  float color_r, float color_g, float color_b,
@@ -72,8 +55,7 @@ public:
                  float color_a = 1.0,
                  float aspect_ratio = 1.0, float angle = 0.0,
                  float lock_alpha = 0.0,
-                 float colorize = 0.0,
-                 int recursing = 0 // used for symmetry, internal use only
+                 float colorize = 0.0
                  ) {
 
     return mypaint_surface_draw_dab((MyPaintSurface *)c_surface, x, y, radius, color_r, color_g, color_b,

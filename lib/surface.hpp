@@ -19,28 +19,12 @@
 
 typedef struct _MyPaintSurface MyPaintSurface;
 
-// surface interface required by brush.hpp
+// Surface interface required to map between the Python surface 
+// classes used by MyPaint, and the C classes used by libmypaint
 class Surface {
 public:
 
   virtual ~Surface() {}
-
-  virtual bool draw_dab (float x, float y, 
-                         float radius, 
-                         float color_r, float color_g, float color_b,
-                         float opaque, float hardness = 0.5,
-                         float alpha_eraser = 1.0,
-                         float aspect_ratio = 1.0, float angle = 0.0,
-                         float lock_alpha = 0.0,
-                         float colorize = 0.0,
-                         int recursing = 0 // used for symmetry, internal use only
-                         ) = 0;
-
-  virtual void get_color (float x, float y, 
-                          float radius, 
-                          float * color_r, float * color_g, float * color_b, float * color_a
-                          ) = 0;
-
   virtual MyPaintSurface *get_surface_interface() = 0;
 };
 
