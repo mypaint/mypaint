@@ -1,0 +1,71 @@
+See also brushlib/PERFORMANCE for notes about performance there.
+
+
+INPROGRESS: Multithreaded compositing
+=====================================
+https://gitorious.org/mypaint/jonnors-clone/commits/compositing-mt
+
+Replaces the manual iteration over tiles in Python and calling functions to compose document,
+with an entrypoint to C++ which takes a set of tiles and layers and does the compositing
+in a multi-threaded way. Allows to scale with number of processors.
+
+FIXME/TODO
+------------
+* The paint_rotated test is currently failing
+* During the gui tests, there is some corruption in the display
+* PNG saving has major performance regression. Move most of it to C++
+* Check and ideally remove the last places where tiles are accessed individually.
+Grep for "blit_tile_into", "get_tiles", "get_tile_numpy", "tile_request"
+
+INPROGRESS: C/C++ tile store
+============================
+https://gitorious.org/mypaint/jonnors-clone/commits/tilestore-cpp
+
+Benchmarks show that the major hotspot is now tiledsurface.py _get_tile_numpy()
+In order to fully eliminate that, need to stop calling up into Python and do everything needed for
+brush rendering in C/C++.
+However, a Python API like what we have now should still exist for compatibility and things which
+are not worth, performance wise, doing in C/C++.
+
+Results so far show that this combined with multithreaded compositing gives very good speedup
+on dual-core system (175%).
+
+FIXME/TODO
+-----------
+* Does not work for non-zero mipmap levels (zoom!=100%)
+* Fix several failing gui tests
+* Move the store into MyPaintTiledSurface, as a default impl. of a tile backend,
+and let it keep the buffers in the same map which is used to keep the OperationQueues
+
+
+IDEA: Fully on-demand rendering
+==========================
+Instead of rendring stroke down to surface in response to stroke_to() and document compositing
+in response to draw_cb(), trigger it all from draw_cb()
+Isolates all intense graphical computations into one area, giving a clearer target for optimization.
+
+* Make mypaint_surface_end_atomic() just return invalidated area, not actually compute it
+* Introduce a surf_process_bla() or similar for processing. Should it take/return rectangles? tiles?
+* Call this on each layer/surface when rendering the document to compute the tiles for requested region
+* Probably need API to reset/clear invalidations on the surface
+
+Ideally there will only be one OpenMP paralell for section.
+ So maybe there should be a mypaint_tiled_surface_compute_tile() ?
+Ideally the runtime of one process_region() invokation would be bounded. How to ensure a suitable time?
+ Limiting how many tiles are done in one go will probably go a long way.
+ Could also have a limit on number of ops popped from queue.
+
+Problem: how to make dabs/strokes show up ordered by the input time when brush engine is overloaded?
+Maybe operation queue should have a sequence number per op, so that one can process the queues on
+all the tiles until a given "time", and use that as a syncronization point. From user POV we don't
+need dab-level granularity though, just stroke_to level.
+
+TODO: Improved tests
+====================
+* Implement a GUI benchmark/mode that tracks total processing pipeline time/latency.
+Parameterize on brush+settings, ability to calculate average and max latencies,
+maybe also plot the distribution or measure according to deadlines
+* Implement a test which determines the throughput in Megapixels/second
+Use this to do ballpark estimates of how much more performance potential there is left with CPU, and
+how much we could gain by alternative technology like GPU.
+
