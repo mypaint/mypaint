@@ -10,6 +10,7 @@
 #include "operationqueue.c"
 #include "rng-double.c"
 #include "utils.c"
+#include "tilemap.c"
 
 #include "mypaint.c"
 #include "mypaint-brush.c"
