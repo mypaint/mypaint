@@ -158,7 +158,7 @@ if use_gegl:
 # - move the tile storage from MyPaintSurface to a separate class
 class MyPaintSurface():
     # the C++ half of this class is in tiledsurface.hpp
-    def __init__(self, mipmap_level=0, looped=False, looped_size=(0,0)):
+    def __init__(self, mipmap_level=0, mipmap_surfaces=None, looped=False, looped_size=(0,0)):
 
         # TODO: pass just what it needs access to, not all of self
         self._backend = mypaintlib.TiledSurface(self)
@@ -172,12 +172,25 @@ class MyPaintSurface():
         self.looped_size = looped_size
 
         self.mipmap_level = mipmap_level
-        self.mipmap = None
-        self.parent = None
+        self.mipmaps = mipmap_surfaces
 
-        if mipmap_level < MAX_MIPMAP_LEVEL:
-            self.mipmap = Surface(mipmap_level+1)
-            self.mipmap.parent = self
+        if mipmap_level == 0:
+            mipmaps = [self]
+            for level in range(1, MAX_MIPMAP_LEVEL+1):
+                s = MyPaintSurface(mipmap_level=level, mipmap_surfaces=mipmaps)
+                mipmaps.append(s)
+            self.mipmaps = mipmaps
+
+            # for quick lookup
+            for level, s in enumerate(mipmaps):
+                try:
+                    s.parent = mipmaps[level-1]
+                except IndexError:
+                    s.parent = None
+                try:
+                    s.mipmap = mipmaps[level+1]
+                except IndexError:
+                    s.mipmap = None
 
         # Forwarding API
         self.set_symmetry_state = self._backend.set_symmetry_state
@@ -186,6 +199,7 @@ class MyPaintSurface():
         self.get_color = self._backend.get_color
         self.get_alpha = self._backend.get_alpha
         self.draw_dab = self._backend.draw_dab
+
 
     @property
     def backend(self):
@@ -256,12 +270,14 @@ class MyPaintSurface():
         pass # Data can be modified directly, no action needed
 
     def _mark_mipmap_dirty(self, tx, ty):
-        if self.mipmap_level > 0:
-            if self.tiledict.get((tx, ty), None) == mipmap_dirty_tile:
-                return
-            self.tiledict[(tx, ty)] = mipmap_dirty_tile
-        if self.mipmap:
-            self.mipmap._mark_mipmap_dirty(tx/2, ty/2)
+        #assert self.mipmap_level == 0
+        for level, mipmap in enumerate(self.mipmaps):
+            if level == 0:
+                continue
+            fac = 2**(level)
+            if mipmap.tiledict.get((tx/fac, ty/fac), None) == mipmap_dirty_tile:
+                break
+            mipmap.tiledict[(tx/fac, ty/fac)] = mipmap_dirty_tile
 
     def blit_tile_into(self, dst, dst_has_alpha, tx, ty, mipmap_level=0):
         # used mainly for saving (transparent PNG)
