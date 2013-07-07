@@ -22,12 +22,14 @@ void tile_downscale_rgba16(PyObject *src, PyObject *dst, int dst_x, int dst_y) {
   PyArrayObject* dst_arr = ((PyArrayObject*)dst);
 
 #ifdef HEAVY_DEBUG
+  assert(PyArray_Check(src));
   assert(PyArray_DIM(src_arr, 0) == MYPAINT_TILE_SIZE);
   assert(PyArray_DIM(src_arr, 1) == MYPAINT_TILE_SIZE);
   assert(PyArray_DIM(src_arr, 2) == 4);
   assert(PyArray_TYPE(src_arr) == NPY_UINT16);
   assert(PyArray_ISCARRAY(src_arr));
 
+  assert(PyArray_Check(dst));
   assert(PyArray_DIM(dst_arr, 2) == 4);
   assert(PyArray_TYPE(dst_arr) == NPY_UINT16);
   assert(PyArray_ISCARRAY(dst_arr));
@@ -90,6 +92,7 @@ void tile_copy_rgba16_into_rgba16(PyObject * src, PyObject * dst) {
   PyArrayObject* dst_arr = ((PyArrayObject*)dst);
 
 #ifdef HEAVY_DEBUG
+  assert(PyArray_Check(dst));
   assert(PyArray_DIM(dst_arr, 0) == MYPAINT_TILE_SIZE);
   assert(PyArray_DIM(dst_arr, 1) == MYPAINT_TILE_SIZE);
   assert(PyArray_DIM(dst_arr, 2) == 4);
@@ -98,6 +101,7 @@ void tile_copy_rgba16_into_rgba16(PyObject * src, PyObject * dst) {
   assert(PyArray_STRIDES(dst_arr)[1] == 4*sizeof(uint16_t));
   assert(PyArray_STRIDES(dst_arr)[2] ==   sizeof(uint16_t));
 
+  assert(PyArray_Check(src));
   assert(PyArray_DIM(src_arr, 0) == MYPAINT_TILE_SIZE);
   assert(PyArray_DIM(src_arr, 1) == MYPAINT_TILE_SIZE);
   assert(PyArray_DIM(src_arr, 2) == 4);
@@ -125,6 +129,7 @@ void tile_clear(PyObject * dst) {
   PyArrayObject* dst_arr = ((PyArrayObject*)dst);
 
 #ifdef HEAVY_DEBUG
+  assert(PyArray_Check(dst));
   assert(PyArray_DIM(dst_arr, 0) == MYPAINT_TILE_SIZE);
   assert(PyArray_DIM(dst_arr, 1) == MYPAINT_TILE_SIZE);
   assert(PyArray_TYPE(dst_arr) == NPY_UINT8);
@@ -166,6 +171,7 @@ void tile_convert_rgba16_to_rgba8(PyObject * src, PyObject * dst) {
   PyArrayObject* dst_arr = ((PyArrayObject*)dst);
 
 #ifdef HEAVY_DEBUG
+  assert(PyArray_Check(dst));
   assert(PyArray_DIM(dst_arr, 0) == MYPAINT_TILE_SIZE);
   assert(PyArray_DIM(dst_arr, 1) == MYPAINT_TILE_SIZE);
   assert(PyArray_DIM(dst_arr, 2) == 4);
@@ -174,6 +180,7 @@ void tile_convert_rgba16_to_rgba8(PyObject * src, PyObject * dst) {
   assert(PyArray_STRIDES(dst_arr)[1] == 4*sizeof(uint8_t));
   assert(PyArray_STRIDES(dst_arr)[2] ==   sizeof(uint8_t));
 
+  assert(PyArray_Check(src));
   assert(PyArray_DIM(src_arr, 0) == MYPAINT_TILE_SIZE);
   assert(PyArray_DIM(src_arr, 1) == MYPAINT_TILE_SIZE);
   assert(PyArray_DIM(src_arr, 2) == 4);
@@ -276,6 +283,7 @@ void tile_convert_rgbu16_to_rgbu8(PyObject * src, PyObject * dst) {
   PyArrayObject* dst_arr = ((PyArrayObject*)dst);
 
 #ifdef HEAVY_DEBUG
+  assert(PyArray_Check(dst));
   assert(PyArray_DIM(dst_arr, 0) == MYPAINT_TILE_SIZE);
   assert(PyArray_DIM(dst_arr, 1) == MYPAINT_TILE_SIZE);
   assert(PyArray_DIM(dst_arr, 2) == 4);
@@ -284,6 +292,7 @@ void tile_convert_rgbu16_to_rgbu8(PyObject * src, PyObject * dst) {
   assert(PyArray_STRIDE(dst_arr, 1) == 4*sizeof(uint8_t));
   assert(PyArray_STRIDE(dst_arr, 2) == sizeof(uint8_t));
 
+  assert(PyArray_Check(src));
   assert(PyArray_DIM(src_arr, 0) == MYPAINT_TILE_SIZE);
   assert(PyArray_DIM(src_arr, 1) == MYPAINT_TILE_SIZE);
   assert(PyArray_DIM(src_arr, 2) == 4);
@@ -337,6 +346,7 @@ void tile_convert_rgba8_to_rgba16(PyObject * src, PyObject * dst) {
   PyArrayObject* dst_arr = ((PyArrayObject*)dst);
 
 #ifdef HEAVY_DEBUG
+  assert(PyArray_Check(dst));
   assert(PyArray_DIM(dst_arr, 0) == MYPAINT_TILE_SIZE);
   assert(PyArray_DIM(dst_arr, 1) == MYPAINT_TILE_SIZE);
   assert(PyArray_DIM(dst_arr, 2) == 4);
@@ -345,6 +355,7 @@ void tile_convert_rgba8_to_rgba16(PyObject * src, PyObject * dst) {
   assert(PyArray_STRIDES(dst_arr)[1] == 4*sizeof(uint16_t));
   assert(PyArray_STRIDES(dst_arr)[2] ==   sizeof(uint16_t));
 
+  assert(PyArray_Check(src));
   assert(PyArray_DIM(src_arr, 0) == MYPAINT_TILE_SIZE);
   assert(PyArray_DIM(src_arr, 1) == MYPAINT_TILE_SIZE);
   assert(PyArray_DIM(src_arr, 2) == 4);
@@ -390,12 +401,14 @@ void tile_rgba2flat(PyObject * dst_obj, PyObject * bg_obj) {
   PyArrayObject* dst = ((PyArrayObject*)dst_obj);
 
 #ifdef HEAVY_DEBUG
+  assert(PyArray_Check(dst_obj));
   assert(PyArray_DIM(dst, 0) == MYPAINT_TILE_SIZE);
   assert(PyArray_DIM(dst, 1) == MYPAINT_TILE_SIZE);
   assert(PyArray_DIM(dst, 2) == 4);
   assert(PyArray_TYPE(dst) == NPY_UINT16);
   assert(PyArray_ISCARRAY(dst));
 
+  assert(PyArray_Check(bg_obj));
   assert(PyArray_DIM(bg, 0) == MYPAINT_TILE_SIZE);
   assert(PyArray_DIM(bg, 1) == MYPAINT_TILE_SIZE);
   assert(PyArray_DIM(bg, 2) == 4);
@@ -429,12 +442,14 @@ void tile_flat2rgba(PyObject * dst_obj, PyObject * bg_obj) {
   PyArrayObject *dst = (PyArrayObject *)dst_obj;
   PyArrayObject *bg = (PyArrayObject *)bg_obj;
 #ifdef HEAVY_DEBUG
+  assert(PyArray_Check(dst_obj));
   assert(PyArray_DIM(dst, 0) == MYPAINT_TILE_SIZE);
   assert(PyArray_DIM(dst, 1) == MYPAINT_TILE_SIZE);
   assert(PyArray_DIM(dst, 2) == 4);
   assert(PyArray_TYPE(dst) == NPY_UINT16);
   assert(PyArray_ISCARRAY(dst));
 
+  assert(PyArray_Check(bg_obj));
   assert(PyArray_DIM(bg, 0) == MYPAINT_TILE_SIZE);
   assert(PyArray_DIM(bg, 1) == MYPAINT_TILE_SIZE);
   assert(PyArray_DIM(bg, 2) == 4);
@@ -623,12 +638,14 @@ tile_composite (enum BlendingMode mode, PyObject *src_obj,
   PyArrayObject* src = ((PyArrayObject*)src_obj);
   PyArrayObject* dst = ((PyArrayObject*)dst_obj);
 #ifdef HEAVY_DEBUG
+  assert(PyArray_Check(src_obj));
   assert(PyArray_DIM(src, 0) == MYPAINT_TILE_SIZE);
   assert(PyArray_DIM(src, 1) == MYPAINT_TILE_SIZE);
   assert(PyArray_DIM(src, 2) == 4);
   assert(PyArray_TYPE(src) == NPY_UINT16);
   assert(PyArray_ISCARRAY(src));
 
+  assert(PyArray_Check(dst_obj));
   assert(PyArray_DIM(dst, 0) == MYPAINT_TILE_SIZE);
   assert(PyArray_DIM(dst, 1) == MYPAINT_TILE_SIZE);
   assert(PyArray_DIM(dst, 2) == 4);
