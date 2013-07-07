@@ -225,6 +225,25 @@ class MyPaintSurface():
         yield numpy_tile
         self._set_tile_numpy(tx, ty, numpy_tile, readonly)
 
+    def _regenerate_mipmap(self, t, tx, ty):
+        t = Tile()
+        self.tiledict[(tx, ty)] = t
+        empty = True
+
+        for x in xrange(2):
+            for y in xrange(2):
+                src = self.parent.tiledict.get((tx*2 + x, ty*2 + y), transparent_tile)
+                if src is mipmap_dirty_tile:
+                    src = self.parent._regenerate_mipmap(src, tx*2 + x, ty*2 + y)
+                mypaintlib.tile_downscale_rgba16(src.rgba, t.rgba, x*N/2, y*N/2)
+                if src.rgba is not transparent_tile.rgba:
+                    empty = False
+        if empty:
+            # rare case, no need to speed it up
+            del self.tiledict[(tx, ty)]
+            t = transparent_tile
+        return t
+
     def _get_tile_numpy(self, tx, ty, readonly):
         # OPTIMIZE: do some profiling to check if this function is a bottleneck
         #           yes it is
@@ -243,20 +262,7 @@ class MyPaintSurface():
                 t = Tile()
                 self.tiledict[(tx, ty)] = t
         if t is mipmap_dirty_tile:
-            # regenerate mipmap
-            t = Tile()
-            self.tiledict[(tx, ty)] = t
-            empty = True
-            for x in xrange(2):
-                for y in xrange(2):
-                    with self.parent.tile_request(tx*2 + x, ty*2 + y, True) as src:
-                        mypaintlib.tile_downscale_rgba16(src, t.rgba, x*N/2, y*N/2)
-                        if src is not transparent_tile.rgba:
-                            empty = False
-            if empty:
-                # rare case, no need to speed it up
-                del self.tiledict[(tx, ty)]
-                t = transparent_tile
+            t = self._regenerate_mipmap(t, tx, ty)
         if t.readonly and not readonly:
             # shared memory, get a private copy for writing
             t = t.copy()
