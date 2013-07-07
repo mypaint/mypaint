@@ -257,6 +257,8 @@ class MyPaintSurface():
 
     def _mark_mipmap_dirty(self, tx, ty):
         if self.mipmap_level > 0:
+            if self.tiledict.get((tx, ty), None) == mipmap_dirty_tile:
+                return
             self.tiledict[(tx, ty)] = mipmap_dirty_tile
         if self.mipmap:
             self.mipmap._mark_mipmap_dirty(tx/2, ty/2)
