@@ -45,7 +45,7 @@ Debian users can fetch these dependencies by running:
 
     # apt-get install g++ python-dev python-numpy \ 
         libgtk-3-dev python-gi-dev gir1.2-gtk-3.0 python-gi-cairo \ 
-        swig scons gettext libpng12-dev liblcms2-dev 
+        swig scons gettext libpng12-dev liblcms2-dev libjson0-dev
 
 Recommended: a pressure sensitive input device (graphic tablet)
 
