@@ -19,6 +19,8 @@
 
 #include <mypaint-glib-compat.h>
 
+G_BEGIN_DECLS
+
 typedef struct {
     int x;
     int y;
@@ -50,5 +52,7 @@ tile_map_get(TileMap *self, TileIndex index);
 
 void
 tile_map_copy_to(TileMap *self, TileMap *other);
+
+G_END_DECLS
 
 #endif // TILEMAP_H
