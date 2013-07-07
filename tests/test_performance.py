@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import sys, os, tempfile, subprocess, gc, cProfile
 from time import time, sleep
+import distutils.spawn
 
 from gi.repository import Gtk, Gdk
 from numpy import math, linspace, loadtxt
@@ -335,13 +336,13 @@ if __name__ == '__main__':
             print 'running test "%s" (run %d of %d)' % (t, i+1, options.count)
             print '---'
             # spawn a new process for each test, to ensure proper cleanup
-            args = ['./test_performance.py', 'SINGLE_TEST_RUN', t, 'NONE']
+            args = [sys.executable, './test_performance.py', 'SINGLE_TEST_RUN', t, 'NONE']
             if options.profile or options.show_profile:
                 if options.show_profile:
                     fname = 'tmp.pstats'
                 else:
                     fname = '%s_%s_%d.pstats' % (options.profile, t, i)
-                args[3] = fname
+                args[4] = fname
             child = subprocess.Popen(args, stdout=subprocess.PIPE)
             output, junk = child.communicate()
             if child.returncode != 0:
@@ -379,4 +380,6 @@ if __name__ == '__main__':
         sys.exit(1)
 
     if options.show_profile:
-        os.system('gprof2dot.py -f pstats tmp.pstats | dot -Tpng -o tmp.png && feh tmp.png')
+        gprof2dot = "gprof2dot.py" if distutils.spawn.find_executable("gprof2dot.py") else "gprof2dot"
+        viewer = "feh" if distutils.spawn.find_executable("feh") else "eog"
+        os.system('%s -f pstats tmp.pstats | dot -Tpng -o tmp.png && %s tmp.png' % (gprof2dot, viewer))
