@@ -13,7 +13,7 @@
 static const int TILE_SIZE = MYPAINT_TILE_SIZE;
 
 // Implementation of tiled surface backend
-#include "pythontiledsurface.c"
+#include "pythontiledsurface.cpp"
 
 #include <vector>
 
