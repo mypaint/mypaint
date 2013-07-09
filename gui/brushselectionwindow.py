@@ -122,7 +122,9 @@ def get_common_settings_widget(app):
 
     return settings_box
 
-class BrushList(pixbuflist.PixbufList):
+class BrushList (pixbuflist.PixbufList):
+    """Flowed grid of brush icons showing a group, click to set the brush"""
+
 
     ICON_SIZE = 48
     MIN_WIDTH_NICONS = 1

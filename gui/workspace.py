@@ -61,17 +61,23 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
     Workspaces also manage zero or more floating ToolStacks, and can set the
     initial size and position of their own toplevel window.
 
-    Instances of tool widget classes can be constructed in, and shown and hdden
-    in the workspace programatically using their GType name and an optional
+    Instances of tool widget classes can be constructed, then shown and hdden
+    by the workspace programatically using their GType name and an optional
     sequence of construction parameters as a key.  They should support the
-    following Python properties.  Defaults will be used if these properties
-    aren't defined, but the defaults are unlikely to be useful.
+    following Python properties:
 
     * ``tool_widget_icon_name``: the name of the icon to use.
     * ``tool_widget_title``: the title to display in the tooltip, and in
       floating window titles.
     * ``tool_widget_description``: the description string to show in the
       tooltip.
+
+    and the following method:
+
+    * ``tool_widget_properties()``: show the properties dialog.
+
+    Defaults will be used if these properties and methods aren't defined, but
+    the defaults are unlikely to be useful.
 
     The entire layout of a Workspace, including the toplevel window of the
     Workspace itself, can be dumped to and built from structures containing
@@ -83,7 +89,7 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
     sidebars and floating windows in fullscreen. Auto-hidden elements are
     revealed temporarily when the pointer moves near them. Autohide can be
     toggled off or on, and the setting is retained in the layout definition.
-    
+
     Workspaces can also manage the visibility of a header and a footer bar
     widget in the same manner: these bars are assumed to be packed above or
     below the Workspace respectively.
@@ -296,7 +302,7 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         toplevel = self.get_toplevel()
         toplevel.connect("configure-event", self._toplevel_configure_cb)
 
-        # Do the initial layout 
+        # Do the initial layout
         layout = self._initial_layout
         if layout is None:
             return
@@ -432,7 +438,7 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         will be made visible to receive the new widget.
 
         """
-        # Attempt to get the widget, potentially creating it here.
+        # Attempt to get the widget, potentially creating it here
         try:
             widget = self._tool_widgets.get(tool_gtypename, *tool_params)
         except objfactory.ConstructError as ex:
@@ -498,8 +504,10 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
 
     def get_tool_widget_showing(self, gtype_name, params):
         """Returns whether a tool widget is currently parented and showing"""
+        # Nonexistent objects are not parented or showing
         if not self._tool_widgets.cache_has(gtype_name, *params):
             return False
+        # Otherwise, just test whether it's in a widget tree
         widget = self._tool_widgets.get(gtype_name, *params)
         return widget.get_parent() is not None
 
@@ -575,7 +583,7 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
 
     def _save_toplevel_pos_timeout_cb(self, w, h):
         """Toplevel window position recording (post-"configure-event" oneshot)
-        
+
         Saves the (x,y) from the frame and the (w,h) from the configure event:
         the combination can be used as an initial size and position next time.
 
@@ -917,7 +925,7 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
 
 class ToolStack (Gtk.EventBox):
     """Vertical stack of tool widget groups
-    
+
     The layout has movable dividers between groups of tool widgets, and an
     empty group on the end which accepts tabs dragged to it. The groups are
     implmented as `Gtk.Notebook`s, but that interface is not exposed.
@@ -1274,15 +1282,13 @@ class ToolStack (Gtk.EventBox):
 
         @classmethod
         def _make_tab_label(cls, tool_widget):
-            """Creates and returns a tab label for a tool widget.
-            """
+            """Creates and returns a tab label widget for a tool widget"""
             try:
                 icon_name = tool_widget.tool_widget_icon_name
             except AttributeError:
                 icon_name = 'missing-image'
 
             title = _tool_widget_get_title(tool_widget)
-
             try:
                 desc = tool_widget.tool_widget_description
             except AttributeError:
@@ -1329,7 +1335,7 @@ class ToolStack (Gtk.EventBox):
             which to set the group dividers' initial positions. If left
             unset, set the sizes immediately.
         :type init_sizes_state: Gdk.WindowState
-        
+
         The `desc` parameter has the following keys and values:
 
         * w: integer width (ignored here)
@@ -1347,7 +1353,7 @@ class ToolStack (Gtk.EventBox):
         Each tool definition is a tuple of the form (GTYPENAME,*CONSTRUCTARGS).
         GTYPENAME is a string containing a GType name which is used for finding
         and constructing the tool instance. CONSTRUCTARGS is currently ignored.
- 
+
         """
         next_nb = self._get_first_notebook()
         factory = self.workspace._tool_widgets
@@ -1611,7 +1617,7 @@ class ToolStack (Gtk.EventBox):
         # of its range.
         if final_paned_was_filled and max_pos - pos > 2*stickiness:
             final_paned_was_filled = False
-        # However, keep the flag set and move the bar if it's close to the 
+        # However, keep the flag set and move the bar if it's close to the
         # bottom of its range. Lets the user set stickiness by moving the
         # divider to the bottom.
         if final_paned_was_filled or max_pos - pos < stickiness:
@@ -1867,8 +1873,8 @@ class ToolStackWindow (Gtk.Window):
     def contains_point(self, x, y, b=0):
         """True if a screen point is over this window's last known position.
 
-        :param x: Root window X-coordinate 
-        :param y: Root window Y-coordinate 
+        :param x: Root window X-coordinate
+        :param y: Root window Y-coordinate
         :param b: Additional sensitive border around the window, in pixels
         :rtype: bool
 

@@ -6,6 +6,10 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
+
+"""Factory for creating custom toolbar and manu items via UIManager"""
+
+
 from warnings import warn
 
 import gi
@@ -46,8 +50,12 @@ class FactoryAction (Gtk.Action):
     def do_create_tool_item(self):
         """Returns a new ToolItem
 
-        A widget named after the factory action's name is instantiated via
-        GObject, and returned. See `TOOL_ITEM_NAME_PATTERN`.
+        Invoked by UIManager when it needs a GtkToolItem proxy for a toolbar.
+
+        This method instantiates and returns a new widget from a class named
+        after the factory action's own name.  Class lookup is done via GObject:
+        see `TOOL_ITEM_NAME_PATTERN` for the ``__gtype_name__`` this method
+        will expect.
 
         """
         gtype_name = self.TOOL_ITEM_NAME_PATTERN % (self.get_name(),)

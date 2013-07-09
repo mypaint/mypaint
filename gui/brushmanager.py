@@ -153,7 +153,7 @@ class BrushManager (object):
         self.groups = {} #: Lists of ManagedBrushes, keyed by group name
         self.contexts = [] #: Brush keys, indexed by keycap digit number
         self.active_groups = [] #: Active groups: a list of group names
-        self.brush_by_device = {} #: Device name to brish mapping.
+        self.brush_by_device = {} #: Device name to brush mapping.
 
         #: Slot used elsewhere for storing the ManagedBrush corresponding to
         #: the most recently saved or restored "context", a.k.a. brush key.
@@ -363,7 +363,7 @@ class BrushManager (object):
         Observer callbacks are invoked with no args (other than a ref to the
         brushgroup).  This is used when the "set" of groups change, e.g. when a
         group is renamed, deleted, or created.  It's invoked when EITHER
-        self.group OR self.active_groups change.
+        self.groups OR self.active_groups change.
         """
 
 
