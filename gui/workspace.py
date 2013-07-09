@@ -23,6 +23,7 @@ from gi.repository import Gtk
 from gi.repository import Gdk
 
 from lib.observable import event
+from lib.helpers import escape
 import objfactory
 from widgets import borderless_button
 
@@ -72,9 +73,11 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
     * ``tool_widget_description``: the description string to show in the
       tooltip.
 
-    and the following method:
+    and the following methods:
 
     * ``tool_widget_properties()``: show the properties dialog.
+    * ``tool_widget_get_icon_pixbuf(size)``: returns a pixbuf icon for a
+      particular pixel size. This is used in preference to the icon name.
 
     Defaults will be used if these properties and methods aren't defined, but
     the defaults are unlikely to be useful.
@@ -214,6 +217,7 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         self.connect("realize", self._realize_cb)
         # Tool widget cache and factory
         self._tool_widgets = objfactory.ObjFactory(gtype=Gtk.Widget)
+        self._tool_widgets.object_rebadged += self._tool_widget_rebadged
 
 
     ## GtkBuildable implementation (pre-realize)
@@ -442,8 +446,7 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         try:
             widget = self._tool_widgets.get(tool_gtypename, *tool_params)
         except objfactory.ConstructError as ex:
-            warn("show_tool_widget: %s" % (ex.message,),
-                 RuntimeWarning)
+            logger.error("show_tool_widget: %s", ex.message)
             return
         # Inject it into a suitable ToolStack
         stack = None
@@ -510,6 +513,52 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         # Otherwise, just test whether it's in a widget tree
         widget = self._tool_widgets.get(gtype_name, *params)
         return widget.get_parent() is not None
+
+
+    def update_tool_widget_params(self, tool_gtypename,
+                                  old_params, new_params):
+        """Update the construction params of a tool widget
+
+        :param tool_gtypename: GType system name for the widget's class
+        :param old_params: old parameters for the class's Python constructor
+        :param new_params: new parameters for the class's Python constructor
+
+        If an object has changed so that its construction parameters must be
+        update, this method should be called to keep track of its identity
+        within the workspace.  This method will not show or hide it: its
+        current state remains the same.
+
+        See also `update_tool_widget_ui()`.
+
+        """
+        # If it doesn't exist yet, updating what is effectively a cache key used
+        # for accesing it makes no sense.
+        if not self._tool_widgets.cache_has(tool_gtypename, *old_params):
+            return
+        # Update the params of an existing object.
+        widget = self._tool_widgets.get(tool_gtypename, *old_params)
+        if old_params == new_params:
+            logger.devug("No construct params update needed for %r", widget)
+        else:
+            logger.debug("Updating construct params for %r", widget)
+            self._tool_widgets.rebadge(widget, new_params)
+
+
+    def update_tool_widget_ui(self, gtype_name, params):
+        """Updates tooltips and tab labels for a specified tool widget
+
+        Calling this method causes the workspace to re-read the tool widget's
+        tab label, window title, and tooltip properties, and update the
+        display.  Use it when things like the icon pixbuf have changed.  It's
+        not necessary to call this after `update_tool_widget_params()` has been
+        used: that's handled with an event.
+
+        """
+        if not self.get_tool_widget_showing(gtype_name, params):
+            return
+        widget = self._tool_widgets.get(gtype_name, *params)
+        logger.debug("Updating workspace UI widgets for %r", widget)
+        self._update_tool_widget_ui(widget)
 
 
     ## Tool widget events
@@ -922,6 +971,26 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         return edges
 
 
+    ## Tool widget tab & title updates
+
+    def _tool_widget_rebadged(self, factory, product, old_params, new_params):
+        """Internal: update UI elements when the ID of a tool widget changes
+
+        For parameterized ones like the brush group tool widget, the tooltip
+        and titlebar are dependent on the identity strings and must be update
+        when the tab is renamed.
+
+        """
+        self._update_tool_widget_ui(product)
+
+
+    def _update_tool_widget_ui(self, widget):
+        """Internal: update UI elements for a known descendent tool widget"""
+        page = widget.get_parent()
+        notebook = page.get_parent()
+        notebook.update_tool_widget_ui(widget)
+
+
 
 class ToolStack (Gtk.EventBox):
     """Vertical stack of tool widget groups
@@ -1204,13 +1273,13 @@ class ToolStack (Gtk.EventBox):
             has_properties = hasattr(tool_widget, "tool_widget_properties")
             self._properties_button.set_sensitive(has_properties)
             title = _tool_widget_get_title(tool_widget)
+            close_tooltip = _("%s: close tab") % (title,)
             if has_properties:
-                self._properties_button \
-                    .set_tooltip_text(_("%s: edit properties") % title)
+                props_tooltip =  _(u"%s: edit properties") % (title,)
             else:
-                self._properties_button.set_tooltip_text("")
-            self._close_button \
-                .set_tooltip_text(_("%s: close tab") % title)
+                props_tooltip = u""
+            self._properties_button.set_tooltip_text(props_tooltip)
+            self._close_button.set_tooltip_text(close_tooltip)
 
 
         def _close_button_clicked_cb(self, button):
@@ -1283,34 +1352,55 @@ class ToolStack (Gtk.EventBox):
         @classmethod
         def _make_tab_label(cls, tool_widget):
             """Creates and returns a tab label widget for a tool widget"""
-            try:
-                icon_name = tool_widget.tool_widget_icon_name
-            except AttributeError:
-                icon_name = 'missing-image'
-
+            label = Gtk.Image()
+            lsize = cls.TAB_ICON_SIZE
+            icon_pixbuf, icon_name = _tool_widget_get_icon(tool_widget, lsize)
+            if icon_pixbuf:
+                label.set_from_pixbuf(icon_pixbuf)
+            else:
+                label.set_from_icon_name(icon_name, lsize)
             title = _tool_widget_get_title(tool_widget)
             try:
                 desc = tool_widget.tool_widget_description
             except AttributeError:
-                desc = '(no description)'
-
-            label = Gtk.Image()
-            label.set_from_icon_name(icon_name, cls.TAB_ICON_SIZE)
+                desc = None
+            ttsize = cls.TAB_TOOLTIP_ICON_SIZE
+            tooltip_icon_pixbuf, tooltip_icon_name = _tool_widget_get_icon(
+                                                        tool_widget, ttsize)
             label.connect("query-tooltip", cls._tab_label_tooltip_query_cb,
-                          title, desc, icon_name)
+                          title, desc, tooltip_icon_pixbuf, tooltip_icon_name)
             label.set_property("has-tooltip", True)
             return label
 
 
         @classmethod
         def _tab_label_tooltip_query_cb(cls, widget, x, y, kbd, tooltip,
-                                        title, desc, icon_name):
-            """The query-tooltip routine for tool widgets.
-            """
-            tooltip.set_icon_from_icon_name(icon_name, cls.TAB_TOOLTIP_ICON_SIZE)
-            markup = "<b>%s</b>\n%s" % (title, desc)
+                                        title, desc, icon_pixbuf, icon_name):
+            """The query-tooltip routine for tool widgets"""
+            if icon_pixbuf is not None:
+                tooltip.set_icon(icon_pixbuf)
+            else:
+                ttsize = cls.TAB_TOOLTIP_ICON_SIZE
+                tooltip.set_icon_from_icon_name(icon_name, ttsize)
+            if desc is not None:
+                markup = "<b>%s</b>\n%s" % (escape(title), escape(desc))
+            else:
+                markup = "<b>%s</b>" % (escape(title),)
             tooltip.set_markup(markup)
             return True
+
+        ## Updates
+
+        def update_tool_widget_ui(self, tool_widget):
+            # Update the tab label
+            logger.debug("notebook: updating UI parts for %r", tool_widget)
+            label = self._make_tab_label(tool_widget)
+            page = tool_widget.get_parent()
+            self.set_tab_label(page, label)
+            label.show_all()
+            # Window title too, if that's appropriate
+            self._toolstack._update_window_title()
+
 
     ## Construction
 
@@ -1370,11 +1460,9 @@ class ToolStack (Gtk.EventBox):
                              tool_desc)
                 try:
                     tool_widget = factory.get(*tool_desc)
-                except objfactory.ConstructError as ex:
-                    warn("build_from_layout: %s" % (ex.message,),
-                         RuntimeWarning)
-                else:
                     tool_widgets.append(tool_widget)
+                except objfactory.ConstructError as ex:
+                    logger.error("build_from_layout: %s", ex.message)
             # Group might be empty if construction fails or if everything's a
             # duplicate.
             if not tool_widgets:
@@ -1707,15 +1795,23 @@ class ToolStack (Gtk.EventBox):
                 self.hide()
             return
 
-        # Update title of parent ToolStackWindows
-        if isinstance(parent, ToolStackWindow):
-            page_titles = []
-            for nb in self._get_notebooks():
-                for page in nb:
-                    tool_widget = page.get_child()
-                    title = _tool_widget_get_title(tool_widget)
-                    page_titles.append(title)
-            parent.update_title(page_titles)
+        # Floating window title too, if appropriate
+        self._update_window_title()
+
+
+    def _update_window_title(self):
+        """Updates the title of parent ToolStackWindows"""
+        toplevel = self.get_toplevel()
+        if not isinstance(toplevel, ToolStackWindow):
+            return
+        logger.debug("toolstack: updating title of %r", toplevel)
+        page_titles = []
+        for nb in self._get_notebooks():
+            for page in nb:
+                tool_widget = page.get_child()
+                title = _tool_widget_get_title(tool_widget)
+                page_titles.append(title)
+        toplevel.update_title(page_titles)
 
 
 class ToolStackWindow (Gtk.Window):
@@ -1904,6 +2000,7 @@ class ToolStackWindow (Gtk.Window):
             title_suffix = unicode(workspace.floating_window_title_suffix)
             if title_suffix:
                 title += unicode(title_suffix)
+            logger.debug(u"Renamed floating window title to \"%s\"", title)
             self.set_title(title)
 
 
@@ -1953,6 +2050,43 @@ def _tool_widget_get_title(widget):
         except AttributeError:
             pass
     return unicode(widget.__class__.__name__)
+
+
+def _tool_widget_get_icon(widget, icon_size):
+    """Returns the pixbuf or icon name to use for a tool widget
+
+    :param widget: a tool widget
+    :param icon_size: a registered Gtk.IconSize
+    :returns: a pixbuf or an icon name: as a pair, one of which is None
+    :rtype: (GdkPixbuf.Pixbuf, str)
+
+    Use whichever of the return values is not None. To get the pixbuf or icon
+    name, one or both of
+
+    * ``widget.tool_widget_get_icon_pixbuf(pixel_size)``
+    * ``widget.tool_widget_icon_name``
+
+    are tried, in that order. The former should create and return a new pixbuf,
+    the latter should be an icon name string.
+    """
+    # Try the pixbuf method first.
+    # Only brush group tool widgets will define this, typically.
+    size_valid, width_px, height_px = Gtk.icon_size_lookup(icon_size)
+    if not size_valid:
+        return None
+    size_px = min(width_px, height_px)
+    try:
+        pixbuf = widget.tool_widget_get_icon_pixbuf(size_px)
+        if pixbuf:
+            return (pixbuf, None)
+    except AttributeError:
+        pass
+    # Try the icon name property. Fallback is a name we know will work.
+    try:
+        icon_name = widget.tool_widget_icon_name
+    except AttributeError:
+        icon_name = 'missing-image'
+    return (None, icon_name)
 
 
 def set_initial_window_position(win, pos):
