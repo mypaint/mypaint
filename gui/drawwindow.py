@@ -388,7 +388,7 @@ class DrawWindow (gtk.Window):
         assert gtype_name.startswith("MyPaint")
         action_name = gtype_name.replace("MyPaint", "", 1)
         action = self.app.builder.get_object(action_name)
-        if not action.get_active():
+        if action and not action.get_active():
             action.set_active(True)
 
 
@@ -397,7 +397,7 @@ class DrawWindow (gtk.Window):
         assert gtype_name.startswith("MyPaint")
         action_name = gtype_name.replace("MyPaint", "", 1)
         action = self.app.builder.get_object(action_name)
-        if action.get_active():
+        if action and action.get_active():
             action.set_active(False)
 
 
