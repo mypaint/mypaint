@@ -39,6 +39,8 @@ class FactoryAction (Gtk.Action):
     #: The pattern to use when instantiating a tool item
     TOOL_ITEM_NAME_PATTERN = "MyPaint%sToolItem"
 
+    #: The pattern to use when instantiating a menu item
+    MENU_ITEM_NAME_PATTERN = "MyPaint%sMenuItem"
 
     def __init__(self, *a):
         # GtkAction's own constructor requires params which are all set up by
@@ -62,6 +64,23 @@ class FactoryAction (Gtk.Action):
         tool_item = self._construct(gtype_name)
         tool_item.connect("parent-set", self._tool_item_parent_set)
         return tool_item
+
+
+    def do_create_menu_item(self):
+        """Returns a new MenuItem
+
+        Invoked by UIManager when it needs a MenuItem proxy for a menu.
+
+        This method instantiates and returns a new widget from a class named
+        after the factory action's own name.  Class lookup is done via GObject:
+        see `TOOL_ITEM_NAME_PATTERN` for the ``__gtype_name__`` this method
+        will expect.
+
+        """
+        gtype_name = self.MENU_ITEM_NAME_PATTERN % (self.get_name(),)
+        menu_item = self._construct(gtype_name)
+        #menu_item.connect("parent-set", self._tool_item_parent_set)
+        return menu_item
 
 
     def _construct(self, gtype_name):
