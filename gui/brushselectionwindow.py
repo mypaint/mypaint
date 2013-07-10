@@ -14,6 +14,8 @@ Responsible for ordering, loading and saving brush lists.
 """
 
 import platform
+import logging
+logger = logging.getLogger(__name__)
 
 import gtk2compat
 
@@ -205,18 +207,25 @@ class BrushList (pixbuflist.PixbufList):
 
     def on_drag_data(self, copy, source_widget, brush_name, target_idx):
         assert source_widget, 'cannot handle drag data from another app'
-        b, = [b for b in source_widget.brushes if b.name == brush_name]
+        brush = None
+        for b in source_widget.brushes:
+            if b.name == brush_name:
+                brush = b
+                break
+        if brush is None:
+            logger.error("No brush named %r in drag source widget", brush_name)
+            return False
         if source_widget is self:
             copy = False
         else:
-            if b in self.brushes:
-                source_widget.remove_brush(b)
-                self.remove_brush(b)
-                self.insert_brush(target_idx, b)
+            if brush in self.brushes:
+                source_widget.remove_brush(brush)
+                self.remove_brush(brush)
+                self.insert_brush(target_idx, brush)
                 return True
         if not copy:
-            source_widget.remove_brush(b)
-        self.insert_brush(target_idx, b)
+            source_widget.remove_brush(brush)
+        self.insert_brush(target_idx, brush)
         return True
 
     def on_select(self, brush):

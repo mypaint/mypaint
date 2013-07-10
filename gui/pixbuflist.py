@@ -8,6 +8,8 @@
 
 from warnings import warn
 from math import ceil
+import logging
+logger = logging.getLogger(__name__)
 
 import gtk2compat
 import gobject
@@ -18,7 +20,9 @@ from lib import helpers
 from colors import RGBColor
 
 
-DRAG_ITEM_NAME = 103
+DRAG_ITEM_NAME = 'text/plain'
+DRAG_ITEM_ID = 103
+DRAG_TARGETS = [(DRAG_ITEM_NAME, gtk.TARGET_SAME_APP, DRAG_ITEM_ID)]
 ITEM_SIZE_DEFAULT = 48
 
 
@@ -103,8 +107,7 @@ class PixbufList(gtk.DrawingArea):
             self.connect('drag-end', self.drag_end_cb)
             self.connect('drag-data-received', self.drag_data_received_cb)
             # Users can drag pixbufs *to* anywhere on a pixbuflist at all times.
-            targets_list = [('LIST_ITEM', gtk.TARGET_SAME_APP, DRAG_ITEM_NAME)]
-            targets_list = [gtk.TargetEntry.new(*e) for e in targets_list]
+            targets_list = [gtk.TargetEntry.new(*e) for e in DRAG_TARGETS]
             self.drag_dest_set(gtk.DEST_DEFAULT_ALL, targets_list,
                                gdk.ACTION_MOVE | gdk.ACTION_COPY)
             # Dragging *from* a list can only happen over a pixbuf: see motion_notify_cb
@@ -140,10 +143,8 @@ class PixbufList(gtk.DrawingArea):
                     # pop up on the 2nd
             if self.dragging_allowed:
                 if not self.drag_source_sensitive:
-                    targets_list = [ ('LIST_ITEM', gtk.TARGET_SAME_APP,
-                                      DRAG_ITEM_NAME) ]
-                    targets_list = [ gtk.TargetEntry.new(*e)
-                                     for e in targets_list  ]
+                    targets_list = [gtk.TargetEntry.new(*e) for e in
+                                    DRAG_TARGETS]
                     self.drag_source_set(gtk.gdk.BUTTON1_MASK, targets_list,
                                          gdk.ACTION_COPY|gdk.ACTION_MOVE)
                     self.drag_source_sensitive = True
@@ -162,7 +163,7 @@ class PixbufList(gtk.DrawingArea):
         if not self.dragging_allowed:
             return False
         action = None
-        source_widget = context.get_source_widget()
+        source_widget = gtk.drag_get_source_widget(context)
         if self is source_widget:
             # Only moves are possible
             action = gdk.ACTION_MOVE
@@ -175,10 +176,11 @@ class PixbufList(gtk.DrawingArea):
                 action = gdk.ACTION_MOVE
             else:
                 # the user can force a move by pressing shift
-                px, py, kbmods = self.get_window().get_pointer()
+                tup = self.get_window().get_pointer()
+                kbmods = tup[-1]
                 if kbmods & gdk.SHIFT_MASK:
                     action = gdk.ACTION_MOVE
-        context.drag_status(action, time)
+        gdk.drag_status(context, action, time)
         if not self.drag_highlighted:
             #self.drag_highlight()   # XXX nonfunctional
             self.drag_highlighted = True
@@ -196,20 +198,40 @@ class PixbufList(gtk.DrawingArea):
             widget.drag_insertion_index = None
             widget.queue_draw()
 
-    def drag_data_get_cb(self, widget, context, selection, targetType, time):
+
+    def drag_data_get_cb(self, widget, context, selection, info, time):
+        """Gets the selected brush's name into `selection` when requested"""
+        if info != DRAG_ITEM_ID:
+            return False
         item = self.selected
         assert item in self.itemlist
-        assert targetType == DRAG_ITEM_NAME
         name = self.namefunc(item)
-        selection.set(selection.target, 8, name)
+        selection.set_text(name, -1)
+        logger.debug("drag-data-get: sending type=%r", selection.get_data_type())
+        logger.debug("drag-data-get: sending fmt=%r", selection.get_format())
+        logger.debug("drag-data-get: sending data=%r len=%r",
+                     selection.get_data(), len(selection.get_data()))
+        return True
 
-    def drag_data_received_cb(self, widget, context, x,y, selection, targetType, time):
-        item_name = selection.data
-        target_item_idx = self.index(x, y) # idx always valid, we reject drops at invalid idx
-        w = context.get_source_widget()
-        copy = context.action==gdk.ACTION_COPY
-        success = self.on_drag_data(copy, w, item_name, target_item_idx)
+
+    def drag_data_received_cb(self, widget, context, x, y, selection,
+                              info, time):
+        if info != DRAG_ITEM_ID:
+            return False
+        data = selection.get_text()
+        data_type = selection.get_data_type()
+        fmt = selection.get_format()
+        logger.debug("drag-data-received: got type=%r", data_type)
+        logger.debug("drag-data-received: got fmt=%r", fmt)
+        logger.debug("drag-data-received: got data=%r len=%r", data, len(data))
+        target_item_idx = self.index(x, y) # idx always valid, we reject
+                                           # drops at invalid idx
+        src_widget = gtk.drag_get_source_widget(context)
+        is_copy = context.get_selected_action() == gdk.ACTION_COPY
+        success = self.on_drag_data(is_copy, src_widget, data, target_item_idx)
         context.finish(success, False, time)
+        return True
+
 
     def update(self, width = None, height = None):
         """
@@ -341,6 +363,7 @@ class PixbufList(gtk.DrawingArea):
 
 
 if __name__ == '__main__':
+    logging.basicConfig()
     win = gtk.Window()
     win.set_title("pixbuflist test")
     test_list = PixbufList()
