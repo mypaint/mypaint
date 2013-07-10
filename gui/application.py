@@ -606,7 +606,7 @@ class Application (object):
         if long_text is not None:
             buf = gtk.TextBuffer()
             buf.set_text(long_text)
-            tv = gtk.TextView(buf)
+            tv = gtk.TextView.new_with_buffer(buf)
             tv.show()
             tv.set_editable(False)
             tv.set_wrap_mode(gtk.WRAP_WORD_CHAR)
