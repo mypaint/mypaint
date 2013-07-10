@@ -145,7 +145,7 @@ void tile_clear(PyObject * dst) {
 }
 
 // noise used for dithering (the same for each tile)
-static const int dithering_noise_size = 64*64*2;
+static const int dithering_noise_size = MYPAINT_TILE_SIZE*MYPAINT_TILE_SIZE*sizeof(uint16_t);
 static uint16_t dithering_noise[dithering_noise_size];
 static void precalculate_dithering_noise_if_required()
 {
