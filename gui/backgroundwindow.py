@@ -163,15 +163,16 @@ class BackgroundList(pixbuflist.PixbufList):
         self.app = win.app
         self.win = win
 
-        stock_path = os.path.join(self.app.datapath, 'backgrounds')
-        user_path  = os.path.join(self.app.user_datapath, 'backgrounds')
+        stock_path = os.path.join(self.app.datapath, BACKGROUNDS_SUBDIR)
+        user_path  = os.path.join(self.app.user_datapath, BACKGROUNDS_SUBDIR)
         if not os.path.isdir(user_path):
             os.mkdir(user_path)
 
         def listdir(path):
-            l = glob(os.path.join(path, '*.png')) + glob(os.path.join(path, '*/*.png'))
-            l.sort(key=os.path.getmtime)
-            return l
+            contents = list(glob(os.path.join(path, '*.png')))
+            contents += list(glob(os.path.join(path, '*/*.png')))
+            contents.sort(key=os.path.getmtime)
+            return contents
 
         self.background_files = listdir(stock_path)
         self.background_files.sort()
@@ -180,11 +181,17 @@ class BackgroundList(pixbuflist.PixbufList):
         # Load default background
         defaults = []
         for filename in reversed(self.background_files):
-            if os.path.basename(filename).lower() == 'default.png':
+            file_basename = os.path.basename(filename)
+            if file_basename.lower() == DEFAULT_BACKGROUND:
                 defaults.append(filename)
                 self.background_files.remove(filename)
-        pixbuf = self.load_pixbufs(defaults)[0]
-        self.win.set_background(pixbuf)
+        if not defaults:
+            logger.error("Unable to load any default background %r",
+                         DEFAULT_BACKGROUND)
+        else:
+            default_pixbufs = self.load_pixbufs(defaults, allow_default=True)
+            assert len(default_pixbufs) > 0
+            self.win.set_background(default_pixbufs[0])
 
         self.pixbufs_scaled = {}
         # Lazily loaded by self.initialize()
@@ -198,19 +205,25 @@ class BackgroundList(pixbuflist.PixbufList):
         self.backgrounds = self.load_pixbufs(self.background_files)
         self.set_itemlist(self.backgrounds)
 
-    def load_pixbufs(self, files):
-
+    def load_pixbufs(self, files, allow_default=False):
         pixbufs = []
         load_errors = []
         for filename in files:
+            #logger.debug("Loading background %r", filename)
             if not filename.lower().endswith('.png'):
+                logger.warning("Excluding %r: not *.png", filename)
                 continue
             pixbuf, errors = load_background(filename)
             if errors:
-                load_errors.extend(errors)
+                for err in errors:
+                    logger.error("Error loading %r: %r", filename, err)
+                    load_errors.append(err)
                 continue
             if os.path.basename(filename).lower() == DEFAULT_BACKGROUND:
-                continue
+                if not allow_default:
+                    logger.warning("Excluding %r: is default background (%r)",
+                                   filename, DEFAULT_BACKGROUND)
+                    continue
             pixbufs.append(pixbuf)
 
         if load_errors:
@@ -224,6 +237,8 @@ class BackgroundList(pixbuflist.PixbufList):
                 type=gtk.MESSAGE_WARNING,
                 flags=gtk.DIALOG_MODAL)
 
+        logger.info("Loaded %d of %d background(s), with %d error(s)",
+                    len(pixbufs), len(files), len(errors))
         return pixbufs
 
     def pixbuf_scaler(self, pixbuf):
