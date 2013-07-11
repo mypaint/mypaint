@@ -210,7 +210,9 @@ Perhaps an increasing amount.
           <property name="tooltip" translatable="yes" context="Menu|Brush|"
             >List of brush groups</property>
           <property name="label" translatable="yes" context="Menu|Brush|"
-            >Brush groups</property>
+            >Brush Groups</property>
+          <property name="short-label" translatable="yes"
+            context="Toolbar|">Brushes</property>
           <property name="icon-name">mypaint-tool-brush</property>
         </object>
       </child>

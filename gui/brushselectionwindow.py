@@ -386,7 +386,8 @@ class BrushGroupsMenu (gtk.Menu):
                 item = self._items[name]
             else:
                 item = gtk.ImageMenuItem()
-                item.set_label(name)
+                label = brushmanager.translate_group_name(name)
+                item.set_label(label)
                 item.connect("activate", activate_cb, name)
                 self._items[name] = item
             self.prepend(item)
