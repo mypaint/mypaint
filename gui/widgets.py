@@ -62,3 +62,28 @@ def find_widgets(widget, predicate):
             for w2 in w.get_children():
                 queue.append(w2)
     return found
+
+
+class MenuOnlyToolButton (Gtk.MenuToolButton):
+    """GtkMenuToolButton with a button action that shows the menu
+
+    Clicking the main button reveals the menu just as if the arrow button was
+    clicked.
+    """
+
+    def __init__(self):
+        Gtk.MenuToolButton.__init__(self)
+        self.connect("clicked", self._clicked_cb)
+
+    def _clicked_cb(self, widget):
+        child_box = widget.get_child()
+        assert child_box is not None
+        menu_widget = None
+        for button in reversed(child_box.get_children()):
+            if isinstance(button, Gtk.ToggleButton):
+                menu_widget = button
+                break
+        assert menu_widget is not None
+        menu_widget.set_active(True)
+
+

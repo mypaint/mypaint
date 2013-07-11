@@ -37,6 +37,7 @@ from brushlib import brushsettings
 from lib.helpers import escape
 from colors import RGBColor
 from workspace import SizedVBoxToolWidget
+import widgets
 
 
 ## FIXME: unused widgets
@@ -404,7 +405,7 @@ class BrushGroupsMenu (gtk.Menu):
         workspace.show_tool_widget(gtype_name, params)
 
 
-class BrushGroupsToolItem (gtk.MenuToolButton):
+class BrushGroupsToolItem (widgets.MenuOnlyToolButton):
     """Toolbar item showing a dynamic dropdown BrushGroupsMenu
 
     This is instantiated by the app's UIManager using a FactoryAction which
@@ -414,30 +415,10 @@ class BrushGroupsToolItem (gtk.MenuToolButton):
     __gtype_name__ = "MyPaintBrushGroupsToolItem"
 
     def __init__(self):
-        gtk.MenuToolButton.__init__(self)
+        widgets.MenuOnlyToolButton.__init__(self)
         self._menu = BrushGroupsMenu()
         self.set_menu(self._menu)
-        self._menu.show_all()
-        from application import get_app
-        self.app = get_app()
-        # For now, show the menu as if the arrow were clicked
-        self.connect("clicked", self._clicked_cb)
-
-
-    def _clicked_cb(self, widget):
-        arrow_toggle = self._get_menu_widget()
-        arrow_toggle.set_active(True)
-
-
-    def _get_menu_widget(self):
-        child_box = self.get_child()
-        menu_widget = None
-        for button in reversed(child_box.get_children()):
-            if isinstance(button, gtk.ToggleButton):
-                menu_widget = button
-                break
-        assert menu_widget is not None
-        return menu_widget
+        #self._menu.show_all()
 
 
 class BrushGroupsMenuItem (gtk.MenuItem):

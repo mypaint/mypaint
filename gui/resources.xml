@@ -217,6 +217,19 @@ Perhaps an increasing amount.
         </object>
       </child>
 
+      <!-- List of available color adjusters -->
+      <child>
+        <object class="MyPaintFactoryAction" id="ColorAdjusters">
+          <property name="tooltip" translatable="yes" context="Toolbar|"
+            >Available color adjusters</property>
+          <property name="label" translatable="yes" context="Toolbar|"
+            >Color Adjusters</property>
+          <property name="short-label" translatable="yes"
+            context="Toolbar|">Colors</property>
+          <property name="icon-name">mypaint-tool-paint-color</property>
+        </object>
+      </child>
+
       <!-- Undo stack -->
       <child>
         <object class="GtkAction" id="Undo">
