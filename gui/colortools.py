@@ -66,14 +66,6 @@ class _PageToolAdapter (Gtk.VBox, ColorAdjuster):
         size = workspace.TOOL_WIDGET_MIN_WIDTH
         self.set_size_request(size, size*0.9)
 
-
-    def _bookmark_button_clicked_cb(self, button):
-        # Same as the PaletteAddCurrentColor
-        mgr = self.get_color_manager()
-        col = mgr.get_color()
-        mgr.palette.append(col, name=None, unique=True, match=True)
-
-
     def set_color_manager(self, manager):
         ColorAdjuster.set_color_manager(self, manager)
         for adj in self._adjusters:
