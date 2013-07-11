@@ -92,8 +92,6 @@
     <menu action='BrushMenu'>
       <!-- Brush choice from the user's collection -->
       <menuitem action='BrushChooserPopup'/>
-      <menuitem action='BrushSelectionTool'/>
-      <!-- Groups -->
       <menuitem action='BrushGroups'/>
       <!-- Basic brush settings -->
       <separator/>

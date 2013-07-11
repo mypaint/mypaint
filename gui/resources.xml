@@ -211,6 +211,7 @@ Perhaps an increasing amount.
             >List of brush groups</property>
           <property name="label" translatable="yes" context="Menu|Brush|"
             >Brush groups</property>
+          <property name="icon-name">mypaint-tool-brush</property>
         </object>
       </child>
 
@@ -1131,17 +1132,6 @@ Perhaps an increasing amount.
             >Choose a background image</property>
           <signal name="activate" handler="toggle_window_cb"/>
         </object>
-      </child>
-      <child>
-        <object class="GtkToggleAction" id="BrushSelectionTool">
-          <property name="icon-name">mypaint-tool-brush</property>
-          <property name="label" translatable="yes"
-            context="Menu|Brush|">Brushes Window</property>
-          <property name="tooltip" translatable="yes"
-            >Select brushes, and edit brush sets</property>
-          <signal name="activate" handler="toggle_window_cb"/>
-        </object>
-        <accelerator key="b" modifiers="GDK_SHIFT_MASK"/>
       </child>
       <child>
         <object class="GtkToggleAction" id="BrushSettingsWindow">
