@@ -675,8 +675,13 @@ class DrawWindow (gtk.Window):
     def import_brush_pack_cb(self, *junk):
         format_id, filename = dialogs.open_dialog(_("Import brush package..."), self,
                                  [(_("MyPaint brush package (*.zip)"), "*.zip")])
-        if filename:
-            self.app.brushmanager.import_brushpack(filename,  self)
+        if not filename:
+            return
+        imported = self.app.brushmanager.import_brushpack(filename,  self)
+        logger.info("Imported brush groups %r", imported)
+        workspace = self.app.workspace
+        for groupname in imported:
+            workspace.show_tool_widget("MyPaintBrushGroupTool", (groupname,))
 
     # INFORMATION
     # TODO: Move into dialogs.py?

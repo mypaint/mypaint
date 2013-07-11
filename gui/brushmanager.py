@@ -29,12 +29,13 @@ from lib.observable import event
 
 ## Public module constants
 
-PREVIEW_W = 128
-PREVIEW_H = 128
-FOUND_BRUSHES_GROUP = 'lost&found'
-DELETED_BRUSH_GROUP = 'deleted'
-FAVORITES_BRUSH_GROUP = 'favorites'
+PREVIEW_W = 128   #: Width of brush preview images
+PREVIEW_H = 128   #: Height of brush preview images
 
+FOUND_BRUSHES_GROUP = 'lost&found'   #: Orphaned brushes found at startup
+DELETED_BRUSH_GROUP = 'deleted'   #: Orphaned brushes go here after group del
+FAVORITES_BRUSH_GROUP = 'favorites'  #: User's favourites
+NEW_BRUSH_GROUP = 'new'  #: Home for newly created brushes
 
 ## Internal module constants
 
@@ -99,6 +100,7 @@ def translate_group_name(name):
          'set#4': _('Set#4'),
          'set#5': _('Set#5'),
          'experimental': _('Experimental'),
+         'new': _('New'),
          }
     return d.get(name, name)
 
@@ -152,7 +154,6 @@ class BrushManager (object):
 
         self.groups = {} #: Lists of ManagedBrushes, keyed by group name
         self.contexts = [] #: Brush keys, indexed by keycap digit number
-        self.active_groups = [] #: Active groups: a list of group names
         self.brush_by_device = {} #: Device name to brush mapping.
 
         #: Slot used elsewhere for storing the ManagedBrush corresponding to
@@ -162,21 +163,6 @@ class BrushManager (object):
         if not os.path.isdir(self.user_brushpath):
             os.mkdir(self.user_brushpath)
         self._load_groups()
-
-        # Retrieve which groups were last open, or default to a nice/sane set.
-        last_active_groups = app.preferences['brushmanager.selected_groups']
-        if not last_active_groups:
-            if _DEFAULT_STARTUP_GROUP in self.groups:
-                last_active_groups = [_DEFAULT_STARTUP_GROUP]
-            elif self.groups:
-                group_names = self.groups.keys()
-                group_names.sort()
-                last_active_groups = [group_names[0]]
-            else:
-                last_active_groups = []
-        for group in reversed(last_active_groups):
-            if group in self.groups:
-                brushes = self.get_group_brushes(group, make_active=True)
 
         # Brush order saving when that changes.
         self.brushes_changed += self._brushes_modified_cb
@@ -362,8 +348,8 @@ class BrushManager (object):
 
         Observer callbacks are invoked with no args (other than a ref to the
         brushgroup).  This is used when the "set" of groups change, e.g. when a
-        group is renamed, deleted, or created.  It's invoked when EITHER
-        self.groups OR self.active_groups change.
+        group is renamed, deleted, or created.  It's invoked when self.groups
+        changes.
         """
 
 
@@ -377,7 +363,6 @@ class BrushManager (object):
 
 
     ## Initial and default brushes
-
 
 
     def select_initial_brush(self):
@@ -458,6 +443,8 @@ class BrushManager (object):
         :type path: str
         :param window: Parent window, for dialogs to set.
         :type window: GtkWindow
+        :returns: Set of imported group names
+        :rtype: set
 
         """
 
@@ -484,7 +471,7 @@ class BrushManager (object):
 
         # Validate file content. The names in order.conf and the
         # brushes found in the zip must match. This should catch
-        # encoding screwups, everything should be an unicode object.
+        # encoding screwups, everything should be a unicode object.
         for brush in new_brushes:
             assert brush + '.myb' in names, 'invalid brushpack: brush %r in order.conf does not exist in zip' % brush
         for name in names:
@@ -495,20 +482,20 @@ class BrushManager (object):
         if readme:
             answer = dialogs.confirm_brushpack_import(basename(path), window, readme)
             if answer == gtk.RESPONSE_REJECT:
-                return
+                return set()
 
         do_overwrite = False
         do_ask = True
         renamed_brushes = {}
-        final_groups = []
+        imported_groups = set()
         for groupname, brushes in groups.iteritems():
             managed_brushes = self.get_group_brushes(groupname)
-            self.set_active_groups([groupname])
             if managed_brushes:
                 answer = dialogs.confirm_rewrite_group(
-                    window, translate_group_name(groupname), translate_group_name(DELETED_BRUSH_GROUP))
+                    window, translate_group_name(groupname),
+                    translate_group_name(DELETED_BRUSH_GROUP))
                 if answer == dialogs.CANCEL:
-                    return
+                    return set()
                 elif answer == dialogs.OVERWRITE_THIS:
                     self.delete_group(groupname)
                 elif answer == dialogs.DONT_OVERWRITE_THIS:
@@ -517,9 +504,8 @@ class BrushManager (object):
                     while groupname in self.groups:
                         i += 1
                         groupname = old_groupname + '#%d' % i
-                managed_brushes = self.get_group_brushes(groupname, make_active=True)
-
-            final_groups.append(groupname)
+                managed_brushes = self.get_group_brushes(groupname)
+            imported_groups.add(groupname)
 
             for brushname in brushes:
                 # extract the brush from the zip
@@ -588,7 +574,7 @@ class BrushManager (object):
         if DELETED_BRUSH_GROUP in self.groups:
             # remove deleted brushes that are in some group again
             self.delete_group(DELETED_BRUSH_GROUP)
-        self.set_active_groups(final_groups)
+        return imported_groups
 
 
     def export_group(self, group, filename):
@@ -773,27 +759,13 @@ class BrushManager (object):
 
     ## Brush groups
 
-    def set_active_groups(self, groups):
-        """Set active groups.
-
-        :param groups: List of group names.
-        :type group: list of str
-
-        """
-        self.active_groups = groups
-        self.app.preferences['brushmanager.selected_groups'] = groups
-        self.groups_changed()
-
-
-    def get_group_brushes(self, group, make_active=False):
-        """Get a group's brushes, optionally making the group active.
+    def get_group_brushes(self, group):
+        """Get a group's brushes
 
         If the group does not exist, it will be created.
 
         :param group: Name of the group to fetch
         :type group: str
-        :param make_active: If true, add the group to the active groups list.
-        :type make_active: bool
         :rtype: list of `ManagedBrush`es, owned by the BrushManager
 
         """
@@ -802,24 +774,20 @@ class BrushManager (object):
             self.groups[group] = brushes
             self.groups_changed()
             self.save_brushorder()
-        if make_active and group not in self.active_groups:
-            self.set_active_groups([group] + self.active_groups)
         return self.groups[group]
 
 
-    def create_group(self, new_group, make_active=True):
-        """Creates a new brush group, optionally making it active.
+    def create_group(self, new_group):
+        """Creates a new brush group
 
         :param group: Name of the group to create
         :type group: str
-        :param make_active: If true, add the group to the active groups list.
-        :type make_active: bool
         :rtype: empty list, owned by the BrushManager
 
         Returns the newly created group as a(n empty) list.
 
         """
-        return self.get_group_brushes(new_group, make_active)
+        return self.get_group_brushes(new_group)
 
 
     def rename_group(self, old_group, new_group):
@@ -831,8 +799,7 @@ class BrushManager (object):
         :type new_group: str
 
         """
-        was_active = (old_group in self.active_groups)
-        brushes = self.create_group(new_group, make_active=was_active)
+        brushes = self.create_group(new_group)
         brushes += self.groups[old_group]
         self.delete_group(old_group)
 
@@ -850,8 +817,6 @@ class BrushManager (object):
 
         homeless_brushes = self.groups[group]
         del self.groups[group]
-        if group in self.active_groups:
-            self.active_groups.remove(group)
 
         for brushes in self.groups.itervalues():
             for b2 in brushes:

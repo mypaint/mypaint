@@ -29,8 +29,9 @@ def startfile(path):
         os.system("xdg-open " + path)
 
 
-class BrushManipulationWidget(gtk.VBox):
-    """ """
+class BrushManipulationWidget (gtk.VBox):
+    """Widget for manipulating a brush"""
+
     def __init__(self, app, brushicon_editor):
         gtk.VBox.__init__(self)
         self.app = app
@@ -82,12 +83,8 @@ class BrushManipulationWidget(gtk.VBox):
         b.preview = self.brushicon_editor.get_preview_pixbuf()
         b.save()
 
-        if self.bm.active_groups:
-            group = self.bm.active_groups[0]
-        else:
-            group = brushmanager.DEFAULT_BRUSH_GROUP
-
-        brushes = self.bm.get_group_brushes(group, make_active=True)
+        group = self._get_new_brush_group()
+        brushes = self.bm.get_group_brushes(group)
         brushes.insert(0, b)
         b.persistent = True   # Brush was saved
         self.bm.brushes_changed(brushes)
@@ -97,6 +94,28 @@ class BrushManipulationWidget(gtk.VBox):
         # Pretend that the active app.brush is a child of the new one, for the
         # sake of the strokemap and strokes drawn immediately after.
         self.app.brush.set_string_property("parent_brush_name", b.name)
+
+        # Reveal the added group if it's hidden
+        ws = self.app.workspace
+        ws.show_tool_widget("MyPaintBrushGroupTool", (group,))
+
+
+    def _get_new_brush_group(self):
+        """Return the group for adding new brushes"""
+        # TODO: Perhaps favour the first group with the current brush?
+        # TODO:   problem there is that the brush may exist in >1 group.
+        active_groups = []
+        # For now, let's not try to be too smart and just reveal group "New";
+        # the user can always drag the brush to the place they want.
+        #ws = self.app.workspace
+        #for g in self.bm.groups.iterkeys():
+        #    if ws.get_tool_widget_showing("MyPaintBrushGroupTool", (g,)):
+        #        active_groups.append(g)
+        if active_groups:
+            return active_groups[0]
+        else:
+            return brushmanager.NEW_BRUSH_GROUP
+
 
     def rename_brush_cb(self, window):
         src_brush = self.bm.selected_brush
