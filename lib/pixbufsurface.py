@@ -15,8 +15,7 @@ from gi.repository import GdkPixbuf
 import mypaintlib
 import helpers
 
-from tiledsurface import N
-
+TILE_SIZE = N = mypaintlib.TILE_SIZE
 
 class Surface (object):
     """Wrapper for a GdkPixbuf, with memory accessible by tile.

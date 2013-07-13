@@ -21,15 +21,14 @@ logger = logging.getLogger(__name__)
 import mypaintlib
 import helpers
 import math
+import pixbufsurface
+from layer import DEFAULT_COMPOSITE_OP
 
 TILE_SIZE = N = mypaintlib.TILE_SIZE
 MAX_MIPMAP_LEVEL = mypaintlib.MAX_MIPMAP_LEVEL
 
 use_gegl = True if os.environ.get('MYPAINT_ENABLE_GEGL', 0) else False
 
-from layer import DEFAULT_COMPOSITE_OP
-
-import pixbufsurface
 
 
 class Tile (object):

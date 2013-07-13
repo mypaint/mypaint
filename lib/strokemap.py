@@ -18,8 +18,7 @@ import mypaintlib
 import tiledsurface
 import idletask
 
-N = tiledsurface.N
-
+TILE_SIZE = N = mypaintlib.TILE_SIZE
 
 class StrokeShape (object):
     """The shape of a single brushstroke.
