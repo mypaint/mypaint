@@ -61,7 +61,7 @@ public:
       mypaint_surface_end_atomic((MyPaintSurface *)c_surface);
   }
 
-  uint16_t * get_tile_memory(int tx, int ty, bool readonly) {
+  uint16_t * get_tile_memory(int level, int tx, int ty, bool readonly) {
       // Finish previous request
       if (tile_request_in_progress) {
           mypaint_tiled_surface_tile_request_end((MyPaintTiledSurface *)c_surface, &tile_request);
@@ -69,8 +69,7 @@ public:
       }
 
       // Start current request
-      mypaint_tiled_surface_tile_request_init(&tile_request,
-                                              tx, ty, readonly);
+      mypaint_tile_request_init(&tile_request, level, tx, ty, readonly);
 
       mypaint_tiled_surface_tile_request_start((MyPaintTiledSurface *)c_surface, &tile_request);
       tile_request_in_progress = true;
@@ -152,6 +151,6 @@ private:
     PyObject * py_obj;
     GeglNode *node;
     PyObject *py_node;
-    MyPaintTiledSurfaceTileRequestData tile_request;
+    MyPaintTileRequest tile_request;
     bool tile_request_in_progress;
 };

@@ -49,7 +49,7 @@ MyPaintRectangle *end_atomic(MyPaintSurface *surface)
 }
 
 static void
-tile_request_start(MyPaintTiledSurface *tiled_surface, MyPaintTiledSurfaceTileRequestData *request)
+tile_request_start(MyPaintTiledSurface *tiled_surface, MyPaintTileRequest *request)
 {
     MyPaintPythonTiledSurface *self = (MyPaintPythonTiledSurface *)tiled_surface;
 
@@ -87,7 +87,7 @@ tile_request_start(MyPaintTiledSurface *tiled_surface, MyPaintTiledSurfaceTileRe
 }
 
 static void
-tile_request_end(MyPaintTiledSurface *tiled_surface, MyPaintTiledSurfaceTileRequestData *request)
+tile_request_end(MyPaintTiledSurface *tiled_surface, MyPaintTileRequest *request)
 {
     // We modify tiles directly, so don't need to do anything here
 }

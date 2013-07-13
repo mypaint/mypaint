@@ -88,7 +88,7 @@ mypaint_tiled_surface_end_atomic(MyPaintTiledSurface *self)
  * Consumers must *always* call mypaint_tiled_surface_tile_request_end() with the same
  * request to complete the transaction.
  */
-void mypaint_tiled_surface_tile_request_start(MyPaintTiledSurface *self, MyPaintTiledSurfaceTileRequestData *request)
+void mypaint_tiled_surface_tile_request_start(MyPaintTiledSurface *self, MyPaintTileRequest *request)
 {
     assert(self->tile_request_start);
     self->tile_request_start(self, request);
@@ -102,7 +102,7 @@ void mypaint_tiled_surface_tile_request_start(MyPaintTiledSurface *self, MyPaint
  * Consumers must *always* call mypaint_tiled_surface_tile_request_start() with the same
  * request to start the transaction before calling this function.
  */
-void mypaint_tiled_surface_tile_request_end(MyPaintTiledSurface *self, MyPaintTiledSurfaceTileRequestData *request)
+void mypaint_tiled_surface_tile_request_end(MyPaintTiledSurface *self, MyPaintTileRequest *request)
 {
     assert(self->tile_request_end);
     self->tile_request_end(self, request);
@@ -125,14 +125,14 @@ mypaint_tiled_surface_set_symmetry_state(MyPaintTiledSurface *self, gboolean act
 }
 
 /**
- * mypaint_tiled_surface_tile_request_init:
+ * mypaint_tile_request_init:
  *
  * Initialize a request for use with mypaint_tiled_surface_tile_request_start()
  * and mypaint_tiled_surface_tile_request_end()
  */
 void
-mypaint_tiled_surface_tile_request_init(MyPaintTiledSurfaceTileRequestData *data,
-                                        int tx, int ty, gboolean readonly)
+mypaint_tile_request_init(MyPaintTileRequest *data, int level,
+                          int tx, int ty, gboolean readonly)
 {
     data->tx = tx;
     data->ty = ty;
@@ -144,6 +144,7 @@ mypaint_tiled_surface_tile_request_init(MyPaintTiledSurfaceTileRequestData *data
 #else
     data->thread_id = -1;
 #endif
+    data->mipmap_level = level;
 }
 
 // Must be threadsafe
@@ -462,8 +463,9 @@ process_tile(MyPaintTiledSurface *self, int tx, int ty)
         return;
     }
 
-    MyPaintTiledSurfaceTileRequestData request_data;
-    mypaint_tiled_surface_tile_request_init(&request_data, tx, ty, FALSE);
+    MyPaintTileRequest request_data;
+    const int mipmap_level = 0;
+    mypaint_tile_request_init(&request_data, mipmap_level, tx, ty, FALSE);
 
     mypaint_tiled_surface_tile_request_start(self, &request_data);
     uint16_t * rgba_p = request_data.buffer;
@@ -641,8 +643,9 @@ void get_color (MyPaintSurface *surface, float x, float y,
         // Flush queued draw_dab operations
         process_tile(self, tx, ty);
 
-        MyPaintTiledSurfaceTileRequestData request_data;
-        mypaint_tiled_surface_tile_request_init(&request_data, tx, ty, TRUE);
+        MyPaintTileRequest request_data;
+        const int mipmap_level = 0;
+        mypaint_tile_request_init(&request_data, mipmap_level, tx, ty, TRUE);
 
         mypaint_tiled_surface_tile_request_start(self, &request_data);
         uint16_t * rgba_p = request_data.buffer;
@@ -708,8 +711,8 @@ void get_color (MyPaintSurface *surface, float x, float y,
  **/
 void
 mypaint_tiled_surface_init(MyPaintTiledSurface *self,
-                           MyPaintTiledSurfaceTileRequestStartFunction tile_request_start,
-                           MyPaintTiledSurfaceTileRequestEndFunction tile_request_end)
+                           MyPaintTileRequestStartFunction tile_request_start,
+                           MyPaintTileRequestEndFunction tile_request_end)
 {
     mypaint_surface_init(&self->parent);
     self->parent.draw_dab = draw_dab;

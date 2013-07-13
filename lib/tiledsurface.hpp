@@ -11,6 +11,7 @@
 #include <mypaint-test-surface.h>
 
 static const int TILE_SIZE = MYPAINT_TILE_SIZE;
+static const int MAX_MIPMAP_LEVEL = MYPAINT_MAX_MIPMAP_LEVEL;
 
 // Implementation of tiled surface backend
 #include "pythontiledsurface.cpp"
@@ -82,7 +83,7 @@ public:
 
 private:
     MyPaintPythonTiledSurface *c_surface;
-    MyPaintTiledSurfaceTileRequestData tile_request;
+    MyPaintTileRequest tile_request;
     bool tile_request_in_progress;
 };
 

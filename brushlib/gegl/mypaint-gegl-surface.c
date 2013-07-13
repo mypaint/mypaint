@@ -33,7 +33,7 @@ typedef struct _MyPaintGeglTiledSurface {
 void free_gegl_tiledsurf(MyPaintSurface *surface);
 
 static void
-tile_request_start(MyPaintTiledSurface *tiled_surface, MyPaintTiledSurfaceTileRequestData *request)
+tile_request_start(MyPaintTiledSurface *tiled_surface, MyPaintTileRequest *request)
 {
     MyPaintGeglTiledSurface *self = (MyPaintGeglTiledSurface *)tiled_surface;
 
@@ -73,7 +73,7 @@ tile_request_start(MyPaintTiledSurface *tiled_surface, MyPaintTiledSurfaceTileRe
 }
 
 static void
-tile_request_end(MyPaintTiledSurface *tiled_surface, MyPaintTiledSurfaceTileRequestData *request)
+tile_request_end(MyPaintTiledSurface *tiled_surface, MyPaintTileRequest *request)
 {
     MyPaintGeglTiledSurface *self = (MyPaintGeglTiledSurface *)tiled_surface;
     GeglBufferIterator *iterator = (GeglBufferIterator *)request->context;

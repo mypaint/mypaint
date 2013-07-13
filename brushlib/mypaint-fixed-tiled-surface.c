@@ -28,7 +28,7 @@ void reset_null_tile(MyPaintFixedTiledSurface *self)
 }
 
 static void
-tile_request_start(MyPaintTiledSurface *tiled_surface, MyPaintTiledSurfaceTileRequestData *request)
+tile_request_start(MyPaintTiledSurface *tiled_surface, MyPaintTileRequest *request)
 {
     MyPaintFixedTiledSurface *self = (MyPaintFixedTiledSurface *)tiled_surface;
 
@@ -54,7 +54,7 @@ tile_request_start(MyPaintTiledSurface *tiled_surface, MyPaintTiledSurfaceTileRe
 }
 
 static void
-tile_request_end(MyPaintTiledSurface *tiled_surface, MyPaintTiledSurfaceTileRequestData *request)
+tile_request_end(MyPaintTiledSurface *tiled_surface, MyPaintTileRequest *request)
 {
     MyPaintFixedTiledSurface *self = (MyPaintFixedTiledSurface *)tiled_surface;
 

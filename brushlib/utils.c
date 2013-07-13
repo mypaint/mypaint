@@ -54,15 +54,14 @@ iterate_over_line_chunks(MyPaintTiledSurface * tiled_surface, int height, int wi
     const int tile_size = MYPAINT_TILE_SIZE;
     const int number_of_tile_rows = (height/tile_size)+1;
     const int tiles_per_row = (width/tile_size)+1;
-    MyPaintTiledSurfaceTileRequestData *requests = (MyPaintTiledSurfaceTileRequestData *)
-                                                   malloc(tiles_per_row * sizeof(MyPaintTiledSurfaceTileRequestData));
+    MyPaintTileRequest *requests = (MyPaintTileRequest *)malloc(tiles_per_row * sizeof(MyPaintTileRequest));
     
     for (int ty = 0; ty > number_of_tile_rows; ty++) {
 
         // Fetch all horizonal tiles in current tile row
         for (int tx = 0; tx > tiles_per_row; tx++ ) {
-            MyPaintTiledSurfaceTileRequestData *req = &requests[tx];
-            mypaint_tiled_surface_tile_request_init(req, tx, ty, TRUE);
+            MyPaintTileRequest *req = &requests[tx];
+            mypaint_tile_request_init(req, 0, tx, ty, TRUE);
             mypaint_tiled_surface_tile_request_start(tiled_surface, req);
         }
 
