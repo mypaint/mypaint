@@ -184,6 +184,17 @@ class TiledDrawWidget (gtk.EventBox):
     def mirrored(self):
         return self.renderer.mirrored
 
+
+    @property
+    def pixelize_threshold(self):
+        return self.renderer.pixelize_threshold
+
+
+    @pixelize_threshold.setter
+    def pixelize_threshold(self, n):
+        self.renderer.pixelize_threshold = n
+
+
     @property
     def display_overlays(self):
         return self.renderer.display_overlays
@@ -517,6 +528,9 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         self.model_overlays = []
         self.display_overlays = []
 
+        # Pizelize at high zoom-ins.
+        # The icon editor needs to be able to adjust this.
+        self.pixelize_threshold = 2.8
 
     @property
     def app(self):
@@ -846,8 +860,8 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         #pattern.set_filter(cairo.FILTER_BEST)     # 3.1s
         #pattern.set_filter(cairo.FILTER_BILINEAR) # 3.1s
 
-        if self.scale > 2.8:
-            # pixelize at high zoom-in levels
+        # Pixelize at high zoom-in levels
+        if self.scale > self.pixelize_threshold:
             pattern.set_filter(cairo.FILTER_NEAREST)
 
         cr.paint()
