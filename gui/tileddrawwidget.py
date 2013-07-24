@@ -100,6 +100,9 @@ class TiledDrawWidget (gtk.EventBox):
         self._last_alloc_pos = (0, 0)
         self.connect("size-allocate", self._size_allocate_cb)
 
+        #: Scroll to match appearing/disappearing sidebars and toolbars.
+        self.scroll_on_allocate = True
+
 
     def _size_allocate_cb(self, widget, alloc):
         """Allow for allocation changes under certain circumstances
@@ -109,6 +112,8 @@ class TiledDrawWidget (gtk.EventBox):
         stationary on the screen in these cases.  This size-allocate handler
         deals with that by issuing appropriate scroll() events.
 
+        See also `scroll_on_allocate`.
+
         """
         # Capture the last allocated position in toplevel coords
         toplevel = self.get_toplevel()
@@ -116,6 +121,8 @@ class TiledDrawWidget (gtk.EventBox):
         old_pos = self._last_alloc_pos
         self._last_alloc_pos = new_pos
         # When things change measurably, scroll to make up the difference
+        if not self.scroll_on_allocate:
+            return
         if None in (old_pos, new_pos):
             return
         if old_pos != new_pos:
