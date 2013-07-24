@@ -375,29 +375,44 @@ class DrawCursorMixin:
 
     """
 
+
+    def init_draw_cursor(self):
+        """Initialize internal fields for DrawCursorMixin"""
+        self._override_cursor = None
+        self._first_map_cb_id = self.connect("map", self._first_map_cb)
+
+    def _first_map_cb(self, widget, *a):
+        """Updates the cursor on the first map"""
+        assert self.get_window() is not None
+        assert self.get_mapped()
+        self.disconnect(self._first_map_cb_id)
+        self._first_map_cb_id = None
+        self.update_cursor()
+
+
     def update_cursor(self):
         # Callback for updating the cursor
+        if not self.get_mapped():
+            return
         window = self.get_window()
         app = self.app
         if window is None:
-            logger.debug("update_cursor: no window")
+            logger.error("update_cursor: no window")
             return
-        override_cursor = getattr(self, '_override_cursor', None)
+        override_cursor = self._override_cursor
         if override_cursor is not None:
-            c = self._override_cursor
-            logger.debug("update_cursor: using override cursor")
+            c = override_cursor
         elif self.get_state() == gtk.STATE_INSENSITIVE:
-            logger.debug("update_cursor: insensitive drawing widget")
             c = None
         elif self.doc is None:
-            logger.debug("update_cursor: no document")
+            logger.error("update_cursor: no document")
             return
         elif self.doc.layer.locked or not self.doc.layer.visible:
             # Cursor to represent that one cannot draw.
             # Often a red circle with a diagonal bar through it.
             c = gdk.Cursor(gdk.CIRCLE)
         elif app is None:
-            logger.debug("update_cursor: no app")
+            logger.error("update_cursor: no app")
             return
         # Last two cases only pertain to FreehandOnlyMode cursors.
         # XXX refactor: bad for separation of responsibilities, put the
@@ -407,7 +422,6 @@ class DrawCursorMixin:
         else:
             radius, style = self._get_cursor_info()
             c = cursor.get_brush_cursor(radius, style, self.app.preferences)
-        logger.debug("update_cursor: setting cursor to %r", c)
         window.set_cursor(c)
 
 
@@ -419,7 +433,7 @@ class DrawCursorMixin:
         choose normally again.
         """
         self._override_cursor = cursor
-        self.update_cursor()
+        gobject.idle_add(self.update_cursor)
 
 
     def _get_cursor_info(self):
@@ -491,6 +505,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
 
     def __init__(self, tdw):
         gtk.DrawingArea.__init__(self)
+        self.init_draw_cursor()
 
         self.connect("draw", self.draw_cb)
 
