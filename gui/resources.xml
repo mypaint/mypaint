@@ -1160,6 +1160,16 @@ Perhaps an increasing amount.
         <accelerator key="b" modifiers="GDK_CONTROL_MASK"/>
       </child>
       <child>
+        <object class="GtkToggleAction" id="BrushIconEditorWindow">
+          <property name="stock_id">image-x-generic</property>
+          <property name="label" translatable="yes"
+            context="Menu|Brush|">Edit Icon</property>
+          <property name="tooltip" translatable="yes"
+            >Edit brush icons</property>
+          <signal name="activate" handler="toggle_window_cb"/>
+        </object>
+      </child>
+      <child>
         <object class="GtkToggleAction" id="HCYWheelTool">
           <property name="icon-name">mypaint-tool-hcywheel</property>
           <property name="label" translatable="yes"

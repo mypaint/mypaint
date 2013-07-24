@@ -22,13 +22,12 @@ class BrushSettingsWindow (windowing.SubWindow):
 
     PAGE_BRUSHSETTINGS = 0
     PAGE_BRUSHINPUTS = 1
-    PAGE_BRUSHPROPERTIES = 2
 
     def __init__(self):
         import application
         app = application.get_app()
         assert app is not None
-        windowing.SubWindow.__init__(self, app, key_input=True)
+        windowing.SubWindow.__init__(self, app, key_input=False)
 
         self.adj = {}
         self.functionWindows = {}
@@ -48,11 +47,10 @@ class BrushSettingsWindow (windowing.SubWindow):
         self.add(vbox)
         self.set_border_width(5)
 
-        brushicon_editor = brushcreationwidget.BrushIconEditorWidget(self.app)
         self.brushinputs_widget = functionwindow.BrushInputsWidget(self.app)
 
         # Header with brush name and actions
-        brush_actions = brushcreationwidget.BrushManipulationWidget(self.app, brushicon_editor)
+        brush_actions = brushcreationwidget.BrushManipulationWidget(self.app)
         vbox.pack_start(brush_actions, expand=False, padding=8)
 
         # Header with current page name
@@ -82,7 +80,6 @@ class BrushSettingsWindow (windowing.SubWindow):
         nb.set_show_tabs(False)
         nb.insert_page(self.brushsettings_widget, None, self.PAGE_BRUSHSETTINGS)
         nb.insert_page(self.brushinputs_widget, None, self.PAGE_BRUSHINPUTS)
-        nb.insert_page(brushicon_editor, None, self.PAGE_BRUSHPROPERTIES)
 
         vbox.pack_start(nb, expand=True, fill=True)
 
@@ -91,15 +88,9 @@ class BrushSettingsWindow (windowing.SubWindow):
             self.header_label.set_markup('<b><span size="large">%s</span></b>' % ('Brush Settings',))
             self.header_button.hide()
             self.live_update.show()
-        def activate_brushproperties_page(*ignore):
-            nb.set_current_page(self.PAGE_BRUSHPROPERTIES)
-            self.header_label.set_markup('<b><span size="large">%s</span></b>' % ('Brush Icon',))
-            self.header_button.show()
-            self.live_update.hide()
 
         activate_brushsettings_page() # Default page
 
-        brush_actions.edit_brush_properties_cb = activate_brushproperties_page
         self.header_button.connect('clicked', activate_brushsettings_page)
 
         brushsetting_vbox = gtk.VBox()

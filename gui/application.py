@@ -49,6 +49,7 @@ import previewwindow
 import framewindow
 import scratchwindow
 import inputtestwindow
+import brushiconeditor
 import colortools
 import brushmodifier
 import toolbar
@@ -273,6 +274,7 @@ class Application (object):
             "PreferencesWindow": preferenceswindow.PreferencesWindow,
             "FrameEditWindow": framewindow.FrameEditWindow,
             "InputTestWindow": inputtestwindow.InputTestWindow,
+            "BrushIconEditorWindow": brushiconeditor.BrushIconEditorWindow,
             }
         self._subwindows = {}
 
@@ -679,6 +681,12 @@ class Application (object):
     def brush_settings_window(self):
         """The brush settings editor subwindow."""
         return self.get_subwindow("BrushSettingsWindow")
+
+
+    @property
+    def brush_icon_editor_window(self):
+        """The brush icon editor subwindow."""
+        return self.get_subwindow("BrushIconEditorWindow")
 
 
     @property

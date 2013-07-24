@@ -162,6 +162,7 @@ class SubWindow (gtk.Window):
             # TODO: do we need a separate class for keyboard-input-friendly
             # windows? Do they share anything in common with dialogs (could
             # they all be implmented as dialogs?)
+        self.set_accept_focus(key_input)
         self.pre_hide_pos = None
         self.connect('delete-event', lambda w,e: self.hide_on_delete())
         # Mark subwindows as utility windows: many X11 WMs handle this sanely

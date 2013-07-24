@@ -996,10 +996,12 @@ class ManagedBrush(object):
     ## Saving and deleting
 
     def save(self):
+        """Saves the brush's settings and its preview"""
         prefix = self._get_fileprefix(saving=True)
-
+        # Save preview:
         if self.preview.get_has_alpha():
-            # remove it (previous mypaint versions would display an empty image)
+            # Remove alpha:
+            # Previous mypaint versions would display an empty image
             w, h = PREVIEW_W, PREVIEW_H
             tmp = gtk2compat.gdk.pixbuf.new(gdk.COLORSPACE_RGB, False,
                                             8, w, h)
@@ -1007,10 +1009,17 @@ class ManagedBrush(object):
             self.preview.composite(tmp, 0, 0, w, h, 0, 0, 1, 1,
                                    gdk.INTERP_BILINEAR, 255)
             self.preview = tmp
-
-        gtk2compat.gdk.pixbuf.save(self.preview, prefix + '_prev.png', 'png')
+        preview_filename = prefix + '_prev.png'
+        logger.debug("Saving brush preview to %r", preview_filename)
+        gtk2compat.gdk.pixbuf.save(self.preview, preview_filename, 'png')
+        # Save brush settings
         brushinfo = self.brushinfo.clone()
-        open(prefix + '.myb', 'w').write(brushinfo.save_to_string())
+        settings_filename = prefix + '.myb'
+        logger.debug("Saving brush settings to %r", settings_filename)
+        settings_fp = open(settings_filename, 'w')
+        settings_fp.write(brushinfo.save_to_string())
+        settings_fp.close()
+        # Record metadata
         self._remember_mtimes()
 
 

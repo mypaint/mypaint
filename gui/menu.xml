@@ -102,6 +102,7 @@
       <!-- Detailed brush settings -->
       <separator/>
       <menuitem action='BrushSettingsWindow'/>
+      <menuitem action='BrushIconEditorWindow'/>
       <separator/>
       <menu action='BlendMode'>
         <menuitem action='BlendModeNormal'/>
