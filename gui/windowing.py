@@ -1,14 +1,27 @@
-# Base classes for window types
+# This file is part of MyPaint.
+# Copyright (C) 2010-2013 by Andrew Chadwick <a.t.chadwick@gmail.com>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+
+"""Base classes for window types"""
+
+
+## Imports
 
 import sys
 import os.path
 
-import gtk
-import gtk.gdk as gdk
-import gobject
+import gi
+from gi.repository import Gtk
+from gi.repository import Gdk
 
 
-class Dialog (gtk.Dialog):
+## Base class definitions
+
+class Dialog (Gtk.Dialog):
     """Base dialog accepting all keyboard input.
 
     Dialogs hide when closed. By default, they accept all keyboard input and
@@ -17,7 +30,7 @@ class Dialog (gtk.Dialog):
 
     """
     def __init__(self, app, *args, **kwargs):
-        gtk.Dialog.__init__(self, *args, **kwargs)
+        Gtk.Dialog.__init__(self, *args, **kwargs)
         self.app = app
         self.connect('delete-event', lambda w,e: self.hide_on_delete())
 
@@ -32,9 +45,9 @@ class ChooserDialog (Dialog):
 
     Chooser dialogs save their size to the app preferences, and appear under
     the mouse. They operate within a grab as well as being modal and issue a
-    gtk.RESPONSE_REJECT response when the pointer leaves the window. There is
-    some slack in the leave behaviour to allow the window to be resized under
-    fancy modern window managers.
+    Gtk.ResponseType.REJECT response when the pointer leaves the window. There
+    is some slack in the leave behaviour to allow the window to be resized
+    under fancy modern window managers.
 
     """
 
@@ -50,7 +63,7 @@ class ChooserDialog (Dialog):
 
 
     def __init__(self, app, title, actions, config_name,
-                 buttons=(gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT)):
+                 buttons=(Gtk.STOCK_CANCEL, Gtk.ResponseType.REJECT)):
         """Initialize.
 
         :param app: the main Application object.
@@ -59,7 +72,7 @@ class ChooserDialog (Dialog):
            rejected. See `gui.keyboard.KeyboardManager.add_window()`.
         :param config_name: config string base-name for saving window size;
            use a simple "lowercase_with_underscores" name.
-        :param buttons: Button list for `gtk.Dialog` construction.
+        :param buttons: Button list for `Gtk.Dialog` construction.
 
         """
 
@@ -72,16 +85,16 @@ class ChooserDialog (Dialog):
         # Superclass construction; default size
         default_size = (self.MIN_WIDTH, self.MIN_HEIGHT)
         w, h = app.preferences.get(self._prefs_size_key, default_size)
-        flags = gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT
+        flags = Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT
         parent = app.drawWindow
         Dialog.__init__(self, app, title=title, parent=parent,
                         flags=flags, buttons=buttons)
         self.set_default_size(w, h)
-        self.set_position(gtk.WIN_POS_MOUSE)
+        self.set_position(Gtk.WindowPosition.MOUSE)
 
         # Cosmetic/behavioural hints
         if not sys.platform == 'darwin':
-            self.set_type_hint(gdk.WINDOW_TYPE_HINT_UTILITY)
+            self.set_type_hint(Gdk.WindowTypeHint.UTILITY)
 
         # Register with the keyboard manager, but only let certain actions be
         # driven from the keyboard.
@@ -137,16 +150,16 @@ class ChooserDialog (Dialog):
         s = self.LEAVE_SLACK
         moved_outside = px < x-s or py < y-s or px > x+w+s or py > y+h+s
         if moved_outside:
-            self.response(gtk.RESPONSE_REJECT)
+            self.response(Gtk.ResponseType.REJECT)
 
 
     def _enter_cb(self, widget, event):
-        if event.mode != gdk.CROSSING_NORMAL:
+        if event.mode != Gdk.CrossingMode.NORMAL:
             return
         self._entered = True
 
 
-class SubWindow (gtk.Window):
+class SubWindow (Gtk.Window):
     """A subwindow in the GUI.
 
     SubWindows don't accept keyboard input by default, but if your subclass
@@ -155,9 +168,15 @@ class SubWindow (gtk.Window):
     """
 
     def __init__(self, app, key_input=False):
-        gtk.Window.__init__(self, type=gtk.WINDOW_TOPLEVEL)
+        """Initialize, as an application subwindow.
+
+        :param app: The main application instance. May be None for testing.
+        :param key_input: set to True to accept keyboard input.
+
+        """
+        Gtk.Window.__init__(self)
         self.app = app
-        if not key_input:
+        if app and not key_input:
             self.app.kbm.add_window(self)
             # TODO: do we need a separate class for keyboard-input-friendly
             # windows? Do they share anything in common with dialogs (could
@@ -170,14 +189,15 @@ class SubWindow (gtk.Window):
         # past. OSX builds no longer use X11.app, so this should no longer
         # need special-casing. Testers: use if not sys.platform == 'darwin':
         # if needed, and please submit a patch. https://gna.org/bugs/?15838
-        self.set_type_hint(gdk.WINDOW_TYPE_HINT_UTILITY)
+        self.set_type_hint(Gdk.WindowTypeHint.UTILITY)
         # Win32 and some Linux DEs are responsive to the following: keeps the
         # window above the main window in fullscreen.
-        self.set_transient_for(app.drawWindow)
+        if app:
+            self.set_transient_for(app.drawWindow)
 
     def show_all(self):
         pos = self.pre_hide_pos
-        gtk.Window.show_all(self)
+        Gtk.Window.show_all(self)
         if pos:
             self.move(*pos)
         # To keep Compiz happy, move() must be called in the very same
@@ -187,18 +207,18 @@ class SubWindow (gtk.Window):
 
     def hide(self):
         self.pre_hide_pos = self.get_position()
-        gtk.Window.hide(self)
+        Gtk.Window.hide(self)
 
 
-class PopupWindow (gtk.Window):
+class PopupWindow (Gtk.Window):
     """
     A popup window, with no decoration. Popups always appear centred under the
     mouse, and don't accept keyboard input.
     """
     def __init__(self, app):
-        gtk.Window.__init__(self, type=gtk.WINDOW_POPUP)
-        self.set_gravity(gdk.GRAVITY_CENTER)
-        self.set_position(gtk.WIN_POS_MOUSE)
+        Gtk.Window.__init__(self, type=Gtk.WindowType.POPUP)
+        self.set_gravity(Gdk.Gravity.CENTER)
+        self.set_position(Gtk.WindowPosition.MOUSE)
         self.app = app
         self.app.kbm.add_window(self)
 
