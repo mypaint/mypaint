@@ -7,6 +7,8 @@
 # (at your option) any later version.
 
 from warnings import warn
+import logging
+logger = logging.getLogger(__name__)
 
 from gi.repository import Gtk, Gdk
 
@@ -17,7 +19,9 @@ class CurveWidget(Gtk.DrawingArea):
     """Widget for modifying a (restricted) nonlinear curve.
     """
     __gtype_name__ = 'CurveWidget'
-    snapto = (0.0, 0.25, 0.5, 0.75, 1.0)
+    _SNAP_TO = (0.0, 0.25, 0.5, 0.75, 1.0)
+    _WHINED_ABOUT_ALPHA = False
+
 
     def __init__(self, changed_cb=None, magnetic=True, npoints=None,
                  ylockgroups=()):
@@ -181,11 +185,11 @@ class CurveWidget(Gtk.DrawingArea):
             if y > 1.0: y = 1.0
             if y < 0.0: y = 0.0
             if self.magnetic:
-                xdiff = [abs(x - v) for v in self.snapto]
-                ydiff = [abs(y - v) for v in self.snapto]
+                xdiff = [abs(x - v) for v in self._SNAP_TO]
+                ydiff = [abs(y - v) for v in self._SNAP_TO]
                 if min (xdiff) < 0.015 and min (ydiff) < 0.015:
-                    y = self.snapto[ydiff.index (min (ydiff))]
-                    x = self.snapto[xdiff.index (min (xdiff))]
+                    y = self._SNAP_TO[ydiff.index (min (ydiff))]
+                    x = self._SNAP_TO[xdiff.index (min (xdiff))]
             if x < leftbound: x = leftbound
             if x > rightbound: x = rightbound
             self.set_point(i, (x, y))
@@ -194,15 +198,17 @@ class CurveWidget(Gtk.DrawingArea):
     def draw_cb(self, widget, cr):
 
         def gdk2rgb(c):
-            if c.alpha == 0.0:
-                print 'WARNING: The GTK3 style (in curve.py) is reporting a background color with alpha=0.'
-                print '         Try switching to a different GTK3 theme, e.g. Adwaita seems to work.'
+            if c.alpha < 1 and not self.__class__._WHINED_ABOUT_ALPHA:
+                logger.warning('The GTK3 style is reporting a color with '
+                               'alpha less than 1. This should be harmless, '
+                               'but please report any glitches with the curve '
+                               'widget. Adwaita is thought not to suffer from '
+                               'this problem.')
+                self.__class__._WHINED_ABOUT_ALPHA = True
             return (c.red, c.green, c.blue)
         style = widget.get_style_context()
         state = widget.get_state_flags()
-        bg = gdk2rgb(style.get_background_color(state))
         fg = gdk2rgb(style.get_color(state))
-        lines = [(bg_c*3 + fg_c)/4. for (bg_c, fg_c) in zip(bg, fg)]
 
         width, height = self.get_display_area()
         if width <= 0 or height <= 0:
@@ -210,17 +216,20 @@ class CurveWidget(Gtk.DrawingArea):
 
         # 1-pixel width, align lines with pixels
         # (but filled rectangles are off by 0.5px now)
-        cr.set_line_width(1.0)
         cr.translate(0.5, 0.5)
 
-        # draw grid lines
-        cr.set_source_rgb(*lines)
+        # draw feint grid lines
+        cr.set_line_width(0.333)
+        cr.set_source_rgb(*fg)
         for i in range(5):
             cr.move_to(RADIUS, i*height/4 + RADIUS)
             cr.line_to(width + RADIUS, i*height/4 + RADIUS)
             cr.move_to(i*width/4 + RADIUS, RADIUS)
             cr.line_to(i*width/4 + RADIUS, height + RADIUS)
             cr.stroke()
+
+        # back to regular weight
+        cr.set_line_width(1.0)
 
         if self.graypoint:
             x1, y1 = self.graypoint
@@ -248,6 +257,7 @@ class CurveWidget(Gtk.DrawingArea):
 
 
 if __name__ == '__main__':
+    logging.basicConfig()
     win = Gtk.Window()
     curve = CurveWidget()
     curve.ylockgroups = [(1,2), (3,4)]
