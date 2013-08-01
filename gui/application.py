@@ -44,6 +44,7 @@ import drawwindow
 import backgroundwindow
 import preferenceswindow
 import brushsettingswindow
+import brusheditor
 import layerswindow
 import previewwindow
 import framewindow
@@ -271,6 +272,7 @@ class Application (object):
             # action-name: action-class
             "BackgroundWindow": backgroundwindow.BackgroundWindow,
             "BrushSettingsWindow": brushsettingswindow.BrushSettingsWindow,
+            "BrushEditorWindow": brusheditor.BrushEditorWindow,
             "PreferencesWindow": preferenceswindow.PreferencesWindow,
             "FrameEditWindow": framewindow.FrameEditWindow,
             "InputTestWindow": inputtestwindow.InputTestWindow,
@@ -687,6 +689,11 @@ class Application (object):
     def brush_icon_editor_window(self):
         """The brush icon editor subwindow."""
         return self.get_subwindow("BrushIconEditorWindow")
+
+    @property
+    def brush_icon_editor_window(self):
+        """The brush editor subwindow."""
+        return self.get_subwindow("BrushEditorWindow")
 
 
     @property

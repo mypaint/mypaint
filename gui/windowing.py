@@ -172,6 +172,7 @@ class SubWindow (Gtk.Window):
 
         :param app: The main application instance. May be None for testing.
         :param key_input: set to True to accept keyboard input.
+        :param hide_on_delete: set False to turn off hide-on-delete behavior.
 
         """
         Gtk.Window.__init__(self)
@@ -183,7 +184,9 @@ class SubWindow (Gtk.Window):
             # they all be implmented as dialogs?)
         self.set_accept_focus(key_input)
         self.pre_hide_pos = None
-        self.connect('delete-event', lambda w,e: self.hide_on_delete())
+        # Only hide when the close button is pressed if running as a subwindow
+        if app:
+            self.connect('delete-event', lambda w,e: self.hide_on_delete())
         # Mark subwindows as utility windows: many X11 WMs handle this sanely
         # This has caused issues with OSX and X11.app under GTK2/PyGTK in the
         # past. OSX builds no longer use X11.app, so this should no longer
