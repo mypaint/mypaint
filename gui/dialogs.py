@@ -6,8 +6,10 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-import gtk
-from gtk import gdk
+import gi
+from gi.repository import Gtk
+from gi.repository import Gdk
+from gi.repository import GdkPixbuf
 from gettext import gettext as _
 from fnmatch import fnmatch
 import brushmanager
@@ -26,46 +28,46 @@ CANCEL = 5
 
 def confirm(widget, question):
     window = widget.get_toplevel()
-    d = gtk.MessageDialog(
+    d = Gtk.MessageDialog(
         window,
-        gtk.DIALOG_MODAL,
-        gtk.MESSAGE_QUESTION,
-        gtk.BUTTONS_NONE,
+        Gtk.DialogFlags.MODAL,
+        Gtk.MessageType.QUESTION,
+        Gtk.ButtonsType.NONE,
         question)
-    d.add_button(gtk.STOCK_NO, gtk.RESPONSE_REJECT)
-    d.add_button(gtk.STOCK_YES, gtk.RESPONSE_ACCEPT)
-    d.set_default_response(gtk.RESPONSE_ACCEPT)
+    d.add_button(Gtk.STOCK_NO, Gtk.ResponseType.REJECT)
+    d.add_button(Gtk.STOCK_YES, Gtk.ResponseType.ACCEPT)
+    d.set_default_response(Gtk.ResponseType.ACCEPT)
     response = d.run()
     d.destroy()
-    return response == gtk.RESPONSE_ACCEPT
+    return response == Gtk.ResponseType.ACCEPT
 
 def ask_for_name(widget, title, default):
     window = widget.get_toplevel()
-    d = gtk.Dialog(title,
+    d = Gtk.Dialog(title,
                    window,
-                   gtk.DIALOG_MODAL,
-                   (gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT,
-                    gtk.STOCK_OK, gtk.RESPONSE_ACCEPT))
-    d.set_position(gtk.WIN_POS_MOUSE)
+                   Gtk.DialogFlags.MODAL,
+                   (Gtk.STOCK_CANCEL, Gtk.ResponseType.REJECT,
+                    Gtk.STOCK_OK, Gtk.ResponseType.ACCEPT))
+    d.set_position(Gtk.WindowPosition.MOUSE)
 
-    hbox = gtk.HBox()
+    hbox = Gtk.HBox()
     hbox.set_property("spacing", widgets.SPACING)
     hbox.set_border_width(widgets.SPACING)
 
-    d.vbox.pack_start(hbox)
-    hbox.pack_start(gtk.Label(_('Name')), False, False)
+    d.vbox.pack_start(hbox, True, True, 0)
+    hbox.pack_start(Gtk.Label(_('Name')), False, False, 0)
 
-    d.e = e = gtk.Entry()
+    d.e = e = Gtk.Entry()
     e.set_size_request(250, -1)
     e.set_text(default)
     e.select_region(0, len(default))
     def responseToDialog(entry, dialog, response):  
         dialog.response(response)  
-    e.connect("activate", responseToDialog, d, gtk.RESPONSE_ACCEPT)  
+    e.connect("activate", responseToDialog, d, Gtk.ResponseType.ACCEPT)  
 
     hbox.pack_start(e, True, True)
     d.vbox.show_all()
-    if d.run() == gtk.RESPONSE_ACCEPT:
+    if d.run() == Gtk.ResponseType.ACCEPT:
         result = d.e.get_text().decode('utf-8')
     else:
         result = None
@@ -74,38 +76,38 @@ def ask_for_name(widget, title, default):
 
 def error(widget, message):
     window = widget.get_toplevel()
-    d = gtk.MessageDialog(window, gtk.DIALOG_MODAL, gtk.MESSAGE_ERROR, gtk.BUTTONS_OK, message)
+    d = Gtk.MessageDialog(window, Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK, message)
     d.run()
     d.destroy()
 
 def image_new_from_png_data(data):
-    loader = gtk.gdk.PixbufLoader("png")
+    loader = GdkPixbuf.PixbufLoader.new_with_type("png")
     loader.write(data)
     loader.close()
     pixbuf = loader.get_pixbuf()
-    image = gtk.Image()
+    image = Gtk.Image()
     image.set_from_pixbuf(pixbuf)
     return image
 
 def confirm_rewrite_brush(window, brushname, existing_preview_pixbuf, imported_preview_data):
-    dialog = gtk.Dialog(_("Overwrite brush?"),
-                        window, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT)
+    dialog = Gtk.Dialog(_("Overwrite brush?"),
+                        window, Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT)
 
-    cancel         = gtk.Button(stock=gtk.STOCK_CANCEL)
+    cancel         = Gtk.Button(stock=Gtk.STOCK_CANCEL)
     cancel.show_all()
-    img_yes        = gtk.Image()
-    img_yes.set_from_stock(gtk.STOCK_YES, gtk.ICON_SIZE_BUTTON)
-    img_no         = gtk.Image()
-    img_no.set_from_stock(gtk.STOCK_NO, gtk.ICON_SIZE_BUTTON)
-    overwrite_this = gtk.Button(_("Replace"))
+    img_yes        = Gtk.Image()
+    img_yes.set_from_stock(Gtk.STOCK_YES, Gtk.IconSize.BUTTON)
+    img_no         = Gtk.Image()
+    img_no.set_from_stock(Gtk.STOCK_NO, Gtk.IconSize.BUTTON)
+    overwrite_this = Gtk.Button(_("Replace"))
     overwrite_this.set_image(img_yes)
     overwrite_this.show_all()
-    skip_this      = gtk.Button(_("Rename"))
+    skip_this      = Gtk.Button(_("Rename"))
     skip_this.set_image(img_no)
     skip_this.show_all()
-    overwrite_all  = gtk.Button(_("Replace all"))
+    overwrite_all  = Gtk.Button(_("Replace all"))
     overwrite_all.show_all()
-    skip_all       = gtk.Button(_("Rename all"))
+    skip_all       = Gtk.Button(_("Rename all"))
     skip_all.show_all()
 
     buttons = [(cancel,         CANCEL),
@@ -116,49 +118,49 @@ def confirm_rewrite_brush(window, brushname, existing_preview_pixbuf, imported_p
     for button, code in buttons:
         dialog.add_action_widget(button, code)
 
-    hbox   = gtk.HBox()
-    vbox_l = gtk.VBox()
-    vbox_r = gtk.VBox()
-    preview_r = gtk.image_new_from_pixbuf(existing_preview_pixbuf)
-    label_l = gtk.Label(_("Imported brush"))
-    label_r = gtk.Label(_("Existing brush"))
+    hbox   = Gtk.HBox()
+    vbox_l = Gtk.VBox()
+    vbox_r = Gtk.VBox()
+    preview_r = Gtk.image_new_from_pixbuf(existing_preview_pixbuf)
+    label_l = Gtk.Label(label=_("Imported brush"))
+    label_r = Gtk.Label(label=_("Existing brush"))
 
-    question = gtk.Label(_("<b>A brush named `%s' already exists.</b>\nDo you want to replace it, or should the new brush be renamed?") % brushname)
+    question = Gtk.Label(_("<b>A brush named `%s' already exists.</b>\nDo you want to replace it, or should the new brush be renamed?") % brushname)
     question.set_use_markup(True)
 
     preview_l = image_new_from_png_data(imported_preview_data)
 
-    vbox_l.pack_start(preview_l, expand=True)
-    vbox_l.pack_start(label_l, expand=False)
+    vbox_l.pack_start(preview_l, True, True, 0)
+    vbox_l.pack_start(label_l, False, True, 0)
 
-    vbox_r.pack_start(preview_r, expand=True)
-    vbox_r.pack_start(label_r, expand=False)
+    vbox_r.pack_start(preview_r, True, True, 0)
+    vbox_r.pack_start(label_r, False, True, 0)
 
-    hbox.pack_start(vbox_l, expand=False)
-    hbox.pack_start(question, expand=True)
-    hbox.pack_start(vbox_r, expand=False)
+    hbox.pack_start(vbox_l, False, True, 0)
+    hbox.pack_start(question, True, True, 0)
+    hbox.pack_start(vbox_r, False, True, 0)
     hbox.show_all()
 
-    dialog.vbox.pack_start(hbox)
+    dialog.vbox.pack_start(hbox, True, True, 0)
 
     answer = dialog.run()
     dialog.destroy()
     return answer
 
 def confirm_rewrite_group(window, groupname, deleted_groupname):
-    dialog = gtk.Dialog(_("Overwrite brush group?"),
-                        window, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT)
+    dialog = Gtk.Dialog(_("Overwrite brush group?"),
+                        window, Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT)
 
-    cancel         = gtk.Button(stock=gtk.STOCK_CANCEL)
+    cancel         = Gtk.Button(stock=Gtk.STOCK_CANCEL)
     cancel.show_all()
-    img_yes        = gtk.Image()
-    img_yes.set_from_stock(gtk.STOCK_YES, gtk.ICON_SIZE_BUTTON)
-    img_no         = gtk.Image()
-    img_no.set_from_stock(gtk.STOCK_NO, gtk.ICON_SIZE_BUTTON)
-    overwrite_this = gtk.Button(_("Replace"))
+    img_yes        = Gtk.Image()
+    img_yes.set_from_stock(Gtk.STOCK_YES, Gtk.IconSize.BUTTON)
+    img_no         = Gtk.Image()
+    img_no.set_from_stock(Gtk.STOCK_NO, Gtk.IconSize.BUTTON)
+    overwrite_this = Gtk.Button(_("Replace"))
     overwrite_this.set_image(img_yes)
     overwrite_this.show_all()
-    skip_this      = gtk.Button(_("Rename"))
+    skip_this      = Gtk.Button(_("Rename"))
     skip_this.set_image(img_no)
     skip_this.show_all()
 
@@ -168,10 +170,10 @@ def confirm_rewrite_group(window, groupname, deleted_groupname):
     for button, code in buttons:
         dialog.add_action_widget(button, code)
 
-    question = gtk.Label(_("<b>A group named `{groupname}' already exists.</b>\nDo you want to replace it, or should the new group be renamed?\nIf you replace it, the brushes may be moved to a group called `{deleted_groupname}'.").format(groupname=groupname, deleted_groupname=deleted_groupname))
+    question = Gtk.Label(_("<b>A group named `{groupname}' already exists.</b>\nDo you want to replace it, or should the new group be renamed?\nIf you replace it, the brushes may be moved to a group called `{deleted_groupname}'.").format(groupname=groupname, deleted_groupname=deleted_groupname))
     question.set_use_markup(True)
 
-    dialog.vbox.pack_start(question)
+    dialog.vbox.pack_start(question, True, True, 0)
     dialog.vbox.show_all()
 
     answer = dialog.run()
@@ -185,19 +187,19 @@ def open_dialog(title, window, filters):
     Here "file format" is index of filter that matches filename (None if no matches).
     filename is None if no file was selected.
     """
-    dialog = gtk.FileChooserDialog(title, window,
-                                   gtk.FILE_CHOOSER_ACTION_OPEN,
-                                   (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
-                                    gtk.STOCK_OPEN, gtk.RESPONSE_OK))
-    dialog.set_default_response(gtk.RESPONSE_OK)
+    dialog = Gtk.FileChooserDialog(title, window,
+                                   Gtk.FileChooserAction.OPEN,
+                                   (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
+                                    Gtk.STOCK_OPEN, Gtk.ResponseType.OK))
+    dialog.set_default_response(Gtk.ResponseType.OK)
     for filter_title, pattern in filters:
-        f = gtk.FileFilter()
+        f = Gtk.FileFilter()
         f.set_name(filter_title)
         f.add_pattern(pattern)
         dialog.add_filter(f)
 
     result = (None, None)
-    if dialog.run() == gtk.RESPONSE_OK:
+    if dialog.run() == Gtk.ResponseType.OK:
         filename = dialog.get_filename().decode('utf-8')
         file_format = None
         for i, (_, pattern) in enumerate(filters):
@@ -217,21 +219,21 @@ def save_dialog(title, window, filters, default_format=None):
     Here "file format" is index of filter that matches filename (None if no matches).
     filename is None if no file was selected.
     """
-    dialog = gtk.FileChooserDialog(title, window,
-                                   gtk.FILE_CHOOSER_ACTION_SAVE,
-                                   (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
-                                    gtk.STOCK_SAVE, gtk.RESPONSE_OK))
-    dialog.set_default_response(gtk.RESPONSE_OK)
+    dialog = Gtk.FileChooserDialog(title, window,
+                                   Gtk.FileChooserAction.SAVE,
+                                   (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
+                                    Gtk.STOCK_SAVE, Gtk.ResponseType.OK))
+    dialog.set_default_response(Gtk.ResponseType.OK)
     dialog.set_do_overwrite_confirmation(True)
 
     for filter_title, pattern in filters:
-        f = gtk.FileFilter()
+        f = Gtk.FileFilter()
         f.set_name(filter_title)
         f.add_pattern(pattern)
         dialog.add_filter(f)
 
     result = (None, None)
-    while dialog.run() == gtk.RESPONSE_OK:
+    while dialog.run() == Gtk.ResponseType.OK:
         filename = dialog.get_filename().decode('utf-8')
         file_format = None
         for i, (_, pattern) in enumerate(filters):
@@ -242,7 +244,7 @@ def save_dialog(title, window, filters, default_format=None):
             file_format, suffix = default_format
             filename += suffix
             dialog.set_current_name(filename)
-            dialog.response(gtk.RESPONSE_OK)
+            dialog.response(Gtk.ResponseType.OK)
         else:
             result = (file_format, filename)
             break
@@ -251,33 +253,33 @@ def save_dialog(title, window, filters, default_format=None):
 
 def confirm_brushpack_import(packname, window=None, readme=None):
     def show_text(text):
-        tv = gtk.TextView()
-        tv.set_wrap_mode(gtk.WRAP_WORD)
+        tv = Gtk.TextView()
+        tv.set_wrap_mode(Gtk.WrapMode.WORD)
         tv.get_buffer().set_text(text)
         return tv
 
-    dialog = gtk.Dialog(_("Import brush package?"),
+    dialog = Gtk.Dialog(_("Import brush package?"),
                        window,
-                       gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                       (gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT,
-                        gtk.STOCK_OK, gtk.RESPONSE_ACCEPT))
+                       Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                       (Gtk.STOCK_CANCEL, Gtk.ResponseType.REJECT,
+                        Gtk.STOCK_OK, Gtk.ResponseType.ACCEPT))
 
     if readme:
-        #readme_label = gtk.Label(_("readme.txt") % packname)
-        #dialog.vbox.pack_start(readme_label)
+        #readme_label = Gtk.Label(label=_("readme.txt") % packname)
+        #dialog.vbox.pack_start(readme_label, True, True, 0)
         readme_tv = show_text(readme)
-        dialog.vbox.pack_start(readme_tv)
+        dialog.vbox.pack_start(readme_tv, True, True, 0)
 
-    question = gtk.Label(_("<b>Do you really want to import package `%s'?</b>") % packname)
+    question = Gtk.Label(label=_("<b>Do you really want to import package `%s'?</b>") % packname)
     question.set_use_markup(True)
-    dialog.vbox.pack_start(question)
+    dialog.vbox.pack_start(question, True, True, 0)
     dialog.vbox.show_all()
     answer = dialog.run()
     dialog.destroy()
     return answer
 
 
-class QuickBrushChooser (gtk.VBox):
+class QuickBrushChooser (Gtk.VBox):
     PREFS_KEY = 'widgets.brush_chooser.selected_group'
     ICON_SIZE = 48
 
@@ -293,7 +295,7 @@ class QuickBrushChooser (gtk.VBox):
             self.chooser.on_select(brush)
 
     def __init__(self, app, on_select):
-        gtk.VBox.__init__(self)
+        Gtk.VBox.__init__(self)
         self.app = app
         self.on_select = on_select
         self.bm = app.brushmanager
@@ -309,8 +311,8 @@ class QuickBrushChooser (gtk.VBox):
         self.brushlist = self._BrushList(self, brushes)
         self.brushlist.dragging_allowed = False
 
-        scrolledwin = gtk.ScrolledWindow()
-        scrolledwin.set_policy(gtk.POLICY_NEVER, gtk.POLICY_ALWAYS)
+        scrolledwin = Gtk.ScrolledWindow()
+        scrolledwin.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.ALWAYS)
         scrolledwin.add_with_viewport(self.brushlist)
         icon_size = self.ICON_SIZE
         w = icon_size * 4
@@ -371,11 +373,11 @@ class BrushChooserDialog (windowing.ChooserDialog):
 
     def _brushlist_button_release_cb(self, *junk):
         if self._response_brush is not None:
-            self.response(gtk.RESPONSE_ACCEPT)
+            self.response(Gtk.ResponseType.ACCEPT)
 
 
     def _response_cb(self, dialog, response_id):
-        if response_id == gtk.RESPONSE_ACCEPT:
+        if response_id == Gtk.ResponseType.ACCEPT:
             bm = self.app.brushmanager
             bm.select_brush(dialog._response_brush)
 
