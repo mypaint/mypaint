@@ -1149,20 +1149,10 @@ Perhaps an increasing amount.
         </object>
       </child>
       <child>
-        <object class="GtkToggleAction" id="BrushSettingsWindow">
-          <property name="stock_id">gtk-properties</property>
-          <property name="label" translatable="yes"
-            context="Menu|Brush|">Settings Window</property>
-          <property name="tooltip" translatable="yes"
-            >Edit the active brush's settings</property>
-          <signal name="activate" handler="toggle_window_cb"/>
-        </object>
-      </child>
-      <child>
         <object class="GtkToggleAction" id="BrushEditorWindow">
           <property name="stock_id">gtk-properties</property>
           <property name="label" translatable="yes"
-            context="Menu|Brush|">Edit Settings (NEW)</property>
+            context="Menu|Brush|">Edit Brush Settings</property>
           <property name="tooltip" translatable="yes"
             >Edit the active brush's settings</property>
           <signal name="activate" handler="toggle_window_cb"/>

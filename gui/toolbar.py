@@ -566,9 +566,17 @@ class BrushSettingsDropdownToolItem (gtk.ToolItem):
         self.vbox.pack_start(frame, True, True)
 
         widget = gtk.ToggleButton()
-        action = self.app.find_action("BrushSettingsWindow")
+        action = self.app.find_action("BrushEditorWindow")
         widget.set_related_action(action)
         #widget.set_label(_("Edit All Settings"))
+        hbox.pack_start(widget, True, True)
+        widget.connect("toggled", lambda a: self.button.panel_hide())
+        sg_slider_width.add_widget(widget)
+
+        widget = gtk.ToggleButton()
+        action = self.app.find_action("BrushIconEditorWindow")
+        widget.set_related_action(action)
+        #widget.set_label(_("Edit Icon"))
         hbox.pack_start(widget, True, True)
         widget.connect("toggled", lambda a: self.button.panel_hide())
         sg_slider_width.add_widget(widget)

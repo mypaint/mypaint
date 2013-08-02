@@ -101,7 +101,7 @@
       <menuitem action='LessOpaque'/>
       <!-- Detailed brush settings -->
       <separator/>
-      <menuitem action='BrushSettingsWindow'/>
+      <menuitem action='BrushEditorWindow'/>
       <menuitem action='BrushIconEditorWindow'/>
       <separator/>
       <menu action='BlendMode'>

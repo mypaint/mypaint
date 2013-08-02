@@ -43,7 +43,6 @@ import topbar
 import drawwindow
 import backgroundwindow
 import preferenceswindow
-import brushsettingswindow
 import brusheditor
 import layerswindow
 import previewwindow
@@ -271,7 +270,6 @@ class Application (object):
         self._subwindow_classes = {
             # action-name: action-class
             "BackgroundWindow": backgroundwindow.BackgroundWindow,
-            "BrushSettingsWindow": brushsettingswindow.BrushSettingsWindow,
             "BrushEditorWindow": brusheditor.BrushEditorWindow,
             "PreferencesWindow": preferenceswindow.PreferencesWindow,
             "FrameEditWindow": framewindow.FrameEditWindow,
@@ -321,10 +319,6 @@ class Application (object):
         # Handle fullscreen command line option
         if fullscreen:
             self.drawWindow.fullscreen_cb()
-
-        # Load the brush settings window, or things like eraser mode will break.
-        # FIXME: brush_adjustments should not be dependent on this
-        self.get_subwindow("BrushSettingsWindow")
 
 
     def save_settings(self):
