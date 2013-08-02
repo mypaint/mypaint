@@ -82,7 +82,7 @@ class Stroke:
 
         surface.begin_atomic()
         for dtime, x, y, pressure, xtilt,ytilt in data:
-            b.stroke_to (surface, x, y, pressure, xtilt,ytilt, dtime)
+            b.stroke_to(surface.backend, x, y, pressure, xtilt,ytilt, dtime)
         surface.end_atomic()
 
     def copy_using_different_brush(self, brush):
