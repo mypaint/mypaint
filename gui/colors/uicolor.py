@@ -20,7 +20,6 @@ with an adjuster does its type change to match the control's colour space.
 
 """
 
-# TODO: Simplify the HCY implementation. KDE's is nice (see kcolorspaces.cpp).
 # TODO: Move all GTK code elsewhere, strip down to GUI-free code.
 # TODO: Move this module to lib/ (keep the name, since it'll be UI-agnostic)
 # TODO:   - required to support moving palette.py.
@@ -538,6 +537,13 @@ class HCYColor (UIColor):
     permissible saturation at the given `h` and `y`: this scaling to within the
     legal RGB gamut causes the resultant colour space to be a regular cylinder.
 
+    In practical terms, adjusting luma alone moves the colour along a shading
+    series of uniform relative saturation towards either white or black. This
+    feature is useful for gamut masking especially, and when working in
+    painting styles where value is drawn first and colour applied later.
+    However the pure "digital" colours appear at different heights in the
+    colour solid of this model, which can be confusing.
+
     """
 
     # Base class override: make h attribute read/write
@@ -722,7 +728,7 @@ class YCbCrColor (UIColor):
 # Of marginal interest, the projection of the pure-tone {R,Y,G,C,B,M} onto the
 # Y=0 plane is very close to exactly hexagonal. Shame that cross-sections of
 # the colour solid are irregular triangles, rectangles and pentagons following
-# a parallelepiped standing on a point.
+# a rectangular cuboid standing on a point.
 #
 # ref http://www.itu.int/rec/R-REC-BT.601/en
 
@@ -746,140 +752,137 @@ def YCbCr_to_RGB_BT601(YCbCr):
 
 ## HCY colour space.
 
-# Frequently referred to as HSY, Hue/Chroma/Luma, HsY, HSI etc.  It's
-# equivalent to a cylindrical remapping of the YCbCr solid: the "C" term is the
+# Frequently referred to as HSY, Hue/Chroma/Luma, HsY, HSI etc.  It can be
+# thought of as a cylindrical remapping of the YCbCr solid: the "C" term is the
 # proportion of the maximum permissible chroma within the RGB gamut at a given
 # hue and luma. Planes of constant Y are equiluminant.
 # 
 # ref https://code.google.com/p/colour-space-viewer/
+# ref git://anongit.kde.org/kdelibs in kdeui/colors/kcolorspaces.cpp
+# ref http://blog.publicfields.net/2011/12/rgb-hue-saturation-luma.html
 # ref Joblove G.H., Greenberg D., Color spaces for computer graphics.
-
+# ref http://www.cs.rit.edu/~ncs/color/t_convert.html
+# ref http://en.literateprograms.org/RGB_to_HSV_color_space_conversion_(C)
+# ref http://lodev.org/cgtutor/color.html
+# ref Levkowitz H., German G.T., "GLHS: a generalized lightness, hue, and
+#     saturation color model"
 
 # For consistency, use the same weights that the Color and Luminosity layer
-# blend modes use, as also used by brushlib's Colorize brush blend mode. All
-# following http://dvcs.w3.org/hg/FXTF/rawfile/tip/compositing/index.html
-# here. BT.601 YCbCr has a nearly identical definition of luma.
+# blend modes use, as also used by brushlib's Colorize brush blend mode. We
+# follow http://www.w3.org/TR/compositing/ here. BT.601 YCbCr has a nearly
+# identical definition of luma.
 
-_SVGFX_RED_WEIGHT = 0.3
-_SVGFX_GREEN_WEIGHT = 0.59
-_SVGFX_BLUE_WEIGHT = 0.11
+_HCY_RED_LUMA = 0.3
+_HCY_GREEN_LUMA = 0.59
+_HCY_BLUE_LUMA = 0.11
 
 def RGB_to_HCY(rgb):
-    """RGB → HCY: R,G,B,H,C,Y ∈ [0, 1]"""
-    _r, _g, _b = rgb
-    r_weight = _SVGFX_RED_WEIGHT
-    g_weight = _SVGFX_GREEN_WEIGHT
-    b_weight = _SVGFX_BLUE_WEIGHT
-    M = max(_r, _g, _b)
-    m = min(_r, _g, _b)
-    y_ = r_weight*_r + g_weight*_g + b_weight*_b
-    H_sec = 0
-    H_insec = 0.0
-    Y_peak = 0.0
-    c_ = M - m
-    if c_ != 0:
-        if M == _r:
-            if m == _g:
-                H_sec = 5
-                X = _b - m
-                H_insec = 1.0 - X/c_
-                Y_peak = (1.0-g_weight) + H_insec*(r_weight - (1.-g_weight))
-            else:
-                H_sec = 0
-                X = _g - m
-                H_insec = X/c_
-                Y_peak = r_weight + H_insec*((1.0-b_weight) - r_weight)
-        elif M == _g:
-            if m == _b:
-                H_sec = 1
-                X = _r - m
-                H_insec = 1.0 - X/c_
-                Y_peak = (1.0 - b_weight) + H_insec*(g_weight - (1.0-b_weight))
-            else:
-                H_sec = 2
-                X = _b - m
-                H_insec = X/c_
-                Y_peak = g_weight + H_insec*((1.0-r_weight) - g_weight)
-        else:
-            if m == _r:
-                H_sec = 3
-                X = _g - m
-                H_insec = 1.0 - X/c_
-                Y_peak = (1.0-r_weight) + H_insec * (b_weight - (1.-r_weight))
-            else:
-                H_sec = 4
-                X = _r - m
-                H_insec = X/c_
-                Y_peak = b_weight + H_insec * ((1.-g_weight) - b_weight)
-    if y_ > 0.0 and y_ < 1.0:
-        if y_ < Y_peak:
-            c_ /= y_ / Y_peak
-        else:
-            c_ /= (1.0 - y_) / (1.0 - Y_peak)
-    h_ = (H_sec + H_insec) / 6.0
-    return h_, c_, y_
+    """RGB → HCY: R,G,B,H,C,Y ∈ [0, 1]
+
+    :param rgb: Color expressed as an additive RGB triple.
+    :type rgb: tuple (r, g, b) where 0≤r≤1, 0≤g≤1, 0≤b≤1.
+    :rtype: tuple (h, c, y) where 0≤h<1, but 0≤c≤2 and 0≤y≤1.
+
+    """
+    r, g, b = rgb
+
+    # Luma is just a weighted sum of the three components.
+    y = _HCY_RED_LUMA*r + _HCY_GREEN_LUMA*g + _HCY_BLUE_LUMA*b
+
+    # Hue. First pick a sector based on the greatest RGB component, then add
+    # the scaled difference of the other two RGB components.
+    p = max(r, g, b)
+    n = min(r, g, b)
+    d = p - n   # An absolute measure of chroma: only used for scaling.
+    if n == p:
+        h = 0.0
+    elif p == r:
+        h = (g - b)/d
+        if h < 0:
+            h += 6.0
+    elif p == g:
+        h = ((b - r)/d) + 2.0
+    else: # p==b
+        h = ((r - g)/d) + 4.0
+    h /= 6.0
+
+    # Chroma, relative to the RGB gamu envelope.
+    if r == g == b:
+        # Avoid a division by zero for the achromatic case.
+        c = 0.0
+    else:
+        # For the derivation, see the GLHS paper.
+        c = max((y-n)/y, (p-y)/(1-y))
+    return h, c, y
 
 
- 
 def HCY_to_RGB(hcy):
-    """HCY → RGB: R,G,B,H,C,Y ∈ [0, 1]"""
-    _h, _c, _y = hcy
-    r_weight = _SVGFX_RED_WEIGHT
-    g_weight = _SVGFX_GREEN_WEIGHT
-    b_weight = _SVGFX_BLUE_WEIGHT
+    """HCY → RGB: R,G,B,H,C,Y ∈ [0, 1]
 
-    # wtf
-    if _h >= 1.0:
-        _h -= int(_h)
-    _h *= 6.0
-    H_sec = int(_h)
-    H1 = (H_sec // 2) * 2
-    H2 = _h - H1
+    :param hcy: Color expressed as a Hue/relative-Chroma/Luma triple.
+    :type hcy: tuple (h, c, y) where 0≤h<1, but 0≤c≤2 and 0≤y≤1.
+    :rtype: tuple (r, g, b) where 0≤r≤1, 0≤g≤1, 0≤b≤1.
 
-    Y_peak = 0
-    H_insec = _h - H_sec
+    >>> n = 32
+    >>> diffs = [sum( [abs(c1-c2) for c1, c2 in
+    ...                zip( HCY_to_RGB(RGB_to_HCY([r/n, g/n, b/n])),
+    ...                     [r/n, g/n, b/n] ) ] )
+    ...          for r in range(int(n+1))
+    ...            for g in range(int(n+1))
+    ...              for b in range(int(n+1))]
+    >>> sum(diffs) < n*1e-6
+    True
 
-    if H_sec == 0:
-        Y_peak =    r_weight  + H_insec * ((1-b_weight) -    r_weight )
-    elif H_sec == 1:
-        Y_peak = (1-b_weight) + H_insec * (    g_weight - (1-b_weight))
-    elif H_sec == 2:
-        Y_peak =    g_weight  + H_insec * ((1-r_weight) -    g_weight )
-    elif H_sec == 3:
-        Y_peak = (1-r_weight) + H_insec * (    b_weight - (1-r_weight))
-    elif H_sec == 4:
-        Y_peak =    b_weight  + H_insec * ((1-g_weight) -    b_weight )
+    """
+    h, c, y = hcy
+
+    if c == 0:
+        return y, y, y
+
+    h %= 1.0
+    h *= 6.0
+    if h < 1:
+        #implies (p==r and h==(g-b)/d and g>=b)
+        th = h
+        tm = _HCY_RED_LUMA + _HCY_GREEN_LUMA * th
+    elif h < 2:
+        #implies (p==g and h==((b-r)/d)+2.0 and b<r)
+        th = 2.0 - h
+        tm = _HCY_GREEN_LUMA + _HCY_RED_LUMA * th
+    elif h < 3:
+        #implies (p==g and h==((b-r)/d)+2.0 and b>=g)
+        th = h - 2.0
+        tm = _HCY_GREEN_LUMA + _HCY_BLUE_LUMA * th
+    elif h < 4:
+        #implies (p==b and h==((r-g)/d)+4.0 and r<g)
+        th = 4.0 - h
+        tm = _HCY_BLUE_LUMA + _HCY_GREEN_LUMA * th
+    elif h < 5:
+        #implies (p==b and h==((r-g)/d)+4.0 and r>=g)
+        th = h - 4.0
+        tm = _HCY_BLUE_LUMA + _HCY_RED_LUMA * th
     else:
-        Y_peak = (1-g_weight) + H_insec * (    r_weight - (1-g_weight))
+        #implies (p==r and h==(g-b)/d and g<b)
+        th = 6.0 - h
+        tm = _HCY_RED_LUMA + _HCY_BLUE_LUMA * th
 
-
-    if _y < Y_peak:
-        _c *= _y / Y_peak
+    # Calculate the RGB components in sorted order
+    if tm >= y:
+        p = y + y*c*(1-tm)/tm
+        o = y + y*c*(th-tm)/tm
+        n = y - (y*c)
     else:
-        _c *= (1.0 - _y) / (1.0 - Y_peak)
+        p = y + (1-y)*c
+        o = y + (1-y)*c*(th-tm)/(1-tm)
+        n = y - (1-y)*c*tm/(1-tm)
 
-    X = _c * (1.0 - abs(H2 - 1.0))
-
-    r_ = g_ = b_ = 0.0
-    if H_sec == 0:
-        r_ = _c; g_ = X
-    elif H_sec == 1:
-        r_ = X;  g_ = _c
-    elif H_sec == 2:
-        g_ = _c; b_ = X
-    elif H_sec == 3:
-        g_ = X;  b_ = _c
-    elif H_sec == 4:
-        r_ = X; b_ = _c
-    else:
-        r_ = _c; b_ = X
-
-    m = _y - (r_weight * r_ + g_weight * g_ + b_weight * b_)
-
-    r_ += m
-    g_ += m
-    b_ += m
-    return r_, g_, b_
+    # Back to RGB order
+    if h < 1:   return (p, o, n)
+    elif h < 2: return (o, p, n)
+    elif h < 3: return (n, p, o)
+    elif h < 4: return (n, o, p)
+    elif h < 5: return (o, n, p)
+    else:       return (p, n, o)
 
 
 ## Module testing
