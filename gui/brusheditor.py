@@ -453,7 +453,8 @@ class BrushEditorWindow (SubWindow):
         bm = self.app.brushmanager
         # First, clone and save to disk. Set a null name to avoid a
         # mis-highlight in brush selectors.
-        b = bm.selected_brush.clone(name=None)
+        b = bm.selected_brush.clone(name=None)    # ManagedBrush with preview
+        b.brushinfo = self._brush.clone()  # current unsaved settings
         b.brushinfo.set_string_property("parent_brush_name", None)
         b.save()
         # Put in the "New" group, and notify that the group has changed
@@ -548,6 +549,7 @@ class BrushEditorWindow (SubWindow):
     def brush_selected_cb(self, bm, managed_brush, brushinfo):
         """Update GUI when a new brush is selected via the brush manager"""
         self._update_brush_header()
+        self._update_setting_ui(expanders=True)
 
 
     def _update_brush_header(self):
@@ -583,10 +585,25 @@ class BrushEditorWindow (SubWindow):
         """Update gui when the brush has been modified"""
         if self._setting is None or self._setting.cname not in settings:
             return
+        self._update_setting_ui(expanders=expanders)
+        # Live update
+        self._queue_live_update()
+
+
+    ## GUI updating from the brush
+
+
+    def _update_setting_ui(self, expanders=False):
+        """Updates all the UI elements for the current setting"""
         # Update base value slider
+        if self._setting is None:
+            return
         scale = self._builder.get_object("base_value_scale")
-        scale.set_adjustment(self._base_adj[self._setting.cname])
-        # Update brush dynamics
+        base_adj = self._base_adj[self._setting.cname]
+        if scale.get_adjustment() is not base_adj:
+            scale.set_adjustment(base_adj)
+        base_adj.set_value(self._brush.get_base_value(self._setting.cname))
+        # Update brush dynamics curves and sliders
         for inp in brushsettings.inputs:
             # check whether we really need to update anything
             #points_old = self._get_brushpoints_from_curvewidget(inp)
@@ -596,12 +613,6 @@ class BrushEditorWindow (SubWindow):
             #if not self._points_equal(points_old, points_new):
             self._update_input_curve(inp, expander=expanders)
             self._update_graypoint(inp)
-        # Live update
-        self._queue_live_update()
-
-
-
-    ## GUI updating
 
 
     def _update_input_curve(self, inp, expander=False):

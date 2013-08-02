@@ -5,7 +5,7 @@
   <object class="GtkImage" id="clone_button_image">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="stock">gtk-new</property>
+    <property name="stock">gtk-copy</property>
   </object>
   <object class="GtkImage" id="delete_button_image">
     <property name="visible">True</property>
@@ -22,13 +22,11 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">gtk-edit</property>
-    <property name="icon-size">3</property>
   </object>
   <object class="GtkImage" id="save_button_image">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">gtk-save</property>
-    <property name="icon-size">3</property>
   </object>
   <object class="GtkGrid" id="brush_editor">
     <property name="visible">True</property>
@@ -44,13 +42,13 @@
         <property name="layout_style">start</property>
         <child>
           <object class="GtkButton" id="clone_button">
-            <property name="label" translatable="yes"> Add as New</property>
+            <property name="label" translatable="yes">Copy to New</property>
             <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="has_tooltip">True</property>
-            <property name="tooltip_text" translatable="yes">Copy this brush's settings and icon to a new brush</property>
+            <property name="tooltip_text" translatable="yes">Copy these settings and the current brush's icon to a new brush</property>
             <property name="use_action_appearance">False</property>
             <property name="image">clone_button_image</property>
             <property name="image_position">top</property>
@@ -153,7 +151,7 @@
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="has_tooltip">True</property>
-            <property name="tooltip_text" translatable="yes">Save the current settings</property>
+            <property name="tooltip_text" translatable="yes">Save these settings to the brush</property>
             <property name="use_action_appearance">False</property>
             <property name="image">save_button_image</property>
             <property name="image_position">top</property>
@@ -181,8 +179,8 @@
         <property name="hexpand">True</property>
         <property name="vexpand">True</property>
         <property name="shadow_type">in</property>
-        <property name="min_content_width">200</property>
-        <property name="min_content_height">500</property>
+        <property name="min_content_width">185</property>
+        <property name="min_content_height">450</property>
         <child>
           <object class="GtkTreeView" id="settings_treeview">
             <property name="visible">True</property>
@@ -270,8 +268,8 @@
         <property name="can_focus">True</property>
         <property name="hexpand">True</property>
         <property name="vexpand">True</property>
-        <property name="min_content_width">500</property>
-        <property name="min_content_height">500</property>
+        <property name="min_content_width">450</property>
+        <property name="min_content_height">450</property>
         <child>
           <object class="GtkViewport" id="setting_editor_viewport">
             <property name="visible">True</property>
@@ -523,7 +521,7 @@ This can be set using the main slider for {dname}.</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
-                            <property name="tooltip_text" translatable="yes">Adjusts the maximum value.</property>
+                            <property name="tooltip_text" translatable="yes">Adjusts the maximum value</property>
                             <property name="halign">end</property>
                             <property name="use_action_appearance">False</property>
                             <property name="relief">none</property>
@@ -545,7 +543,7 @@ This can be set using the main slider for {dname}.</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
-                            <property name="tooltip_text" translatable="yes">Adjusts the minimum value.</property>
+                            <property name="tooltip_text" translatable="yes">Adjusts the minimum value</property>
                             <property name="halign">start</property>
                             <property name="use_action_appearance">False</property>
                             <property name="relief">none</property>
