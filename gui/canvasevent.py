@@ -412,9 +412,33 @@ class FreehandOnlyMode (InteractionMode):
     This mode can be used with the basic CanvasController, and in the absence
     of the main application.
 
+    To improve application responsiveness, this mode uses a couple of internal
+    queues for all that internal stroke data. First the raw motion data from
+    the stylus are queued; an idle routine then tidies up this data and feeds
+    it into a queue describing stroke fragments. We do some linear
+    interpolation at this point to chunk the stroke data smaller, which allows
+    for speedier rendering turnaround, meaning rendering gets in the way of
+    input data capture less. It also improves the effect of the Slow Tracking
+    brush setting.
+
+    This chopped-up stroke data is passed on to the background processing using
+    another idle routine.
+
+    Both queues and their associated idle routines exit neatly when the mode
+    exits, meaning long queued strokes can be terminated by entering a new
+    mode, or by pressing Escape.
+
     """
 
     is_live_updateable = True
+
+    # Motion queue processing
+    MOTION_QUEUE_PRIORITY = gobject.PRIORITY_DEFAULT_IDLE
+
+    # Stroke queue processing
+    STROKE_QUEUE_TIMESLICE = 0.0025
+    MAX_QUEUED_STROKES = 1000
+    STROKE_QUEUE_PRIORITY = gobject.PRIORITY_LOW
 
 
     @classmethod
@@ -433,14 +457,34 @@ class FreehandOnlyMode (InteractionMode):
 
 
     def leave(self, **kwds):
-        self.reset_drawing_state()
         super(FreehandOnlyMode, self).leave(**kwds)
+        self.reset_drawing_state()
 
 
     def reset_drawing_state(self):
         self.last_event_had_pressure_info = False
-        # Windows stuff
-        self.motions = []
+
+        # 1st queue: raw motion data -> clean-up
+        # This allows us to handle incoming events fast, hopefully under 5ms
+        self._motion_queue = []
+        self._motion_processing_cbid = None
+
+        # 1.5th queue: raw data which was delivered with an identical timestamp
+        # to the previous one.  Happens on Windows due to differing clock
+        # granularities.
+        self._zero_dtime_motions = []
+
+        # 2nd queue: cleaned-up data -> stroke processing
+        # Output-side queue of finely-grained stroke data which is processed
+        # in an idle callback.
+        self._stroke_queue = []
+        if not hasattr(self, "_stroke_queue_idle_cbid"):
+            self._stroke_queue_idle_cbid = None
+
+        # Split any pending stroke over in the model: exiting with Escape
+        # requires this to avoid strangeness.
+        if self.doc and self.doc.tdw.doc:
+            self.doc.tdw.doc.split_stroke()
 
 
     def button_press_cb(self, tdw, event):
@@ -489,40 +533,73 @@ class FreehandOnlyMode (InteractionMode):
 
 
     def motion_notify_cb(self, tdw, event, button1_pressed=None):
+        """Motion event handler: queues raw input and returns"""
         # Purely responsible for drawing.
         if not tdw.is_sensitive:
-            return super(FreehandOnlyMode, self).motion_notify_cb(tdw, event)
+            return False
+        # Extract the raw readings
+        last_event_time, last_x, last_y = self.doc.get_last_event_info(tdw)
+        pressure = event.get_axis(gdk.AXIS_PRESSURE)
+        xtilt = event.get_axis(gdk.AXIS_XTILT)
+        ytilt = event.get_axis(gdk.AXIS_YTILT)
+        time = event.time
+        device = event.get_source_device()
+        state = event.state 
+        x = event.x
+        y = event.y
+        # Queue it and fire off background processing if needed
+        event_data = (tdw, last_event_time, last_x, last_y,
+                      time, device, state, x, y, pressure, xtilt, ytilt,
+                      button1_pressed)
+        self._motion_queue.append(event_data)
+        if not self._motion_processing_cbid:
+            cbid = gobject.idle_add(self._motion_queue_idle_cb,
+                                    priority=self.MOTION_QUEUE_PRIORITY)
+            self._motion_processing_cbid = cbid
 
+
+    def _motion_queue_idle_cb(self):
+        """Idle callback, calls _handle_motion_event() for each queued event"""
+        if len(self._motion_queue) > 0:
+            event_data = self._motion_queue.pop(0)
+            # DEBUGGING: we should be able to collect ~100 to ~200 events
+            # per second during a long stroke of a simple brush.
+            if len(self._motion_queue) > 3:
+                dtime = (event_data[4] - event_data[1]) / 1000.0
+                dtime_avg = (sum([m[4] - m[1] for m in self._motion_queue])
+                             / (len(self._motion_queue)*1000.0))
+                qlen = len(self._motion_queue)
+                logger.warning("Long motion queue: len=%d (last dtime=%.3f, "
+                               "avg=%.3f)", qlen, dtime, dtime_avg)
+            self._handle_motion_event(*event_data)
+        if len(self._motion_queue) == 0:
+            self._motion_processing_cbid = None
+            return False
+        else:
+            return True
+
+
+    def _handle_motion_event(self, tdw, last_event_time, last_x, last_y, time,
+                             device, state, x, y, pressure, xtilt, ytilt,
+                             button1_pressed):
+        """Process one motion event from the motion queue"""
         model = tdw.doc
         app = tdw.app
 
-        last_event_time, last_x, last_y = self.doc.get_last_event_info(tdw)
         if last_event_time:
-            dtime = (event.time - last_event_time)/1000.0
-            dx = event.x - last_x
-            dy = event.y - last_y
+            dtime = (time - last_event_time)/1000.0
         else:
-            dtime = None
-        if dtime is None:
-            return super(FreehandOnlyMode, self).motion_notify_cb(tdw, event)
+            return False
 
         same_device = True
-        device = None
         if app is not None:
-            if gtk2compat.USE_GTK3:
-                device = event.get_source_device()
-            else:
-                device = event.device
             same_device = app.device_monitor.device_used(device)
 
         # Refuse drawing if the layer is locked or hidden
         if model.layer.locked or not model.layer.visible:
-            return super(FreehandOnlyMode, self).motion_notify_cb(tdw, event)
-            # TODO: some feedback, maybe
+            return False
 
-        x, y = tdw.display_to_model(event.x, event.y)
-
-        pressure = event.get_axis(gdk.AXIS_PRESSURE)
+        x, y = tdw.display_to_model(x, y)
 
         if pressure is not None and (   pressure > 1.0
                                      or pressure < 0.0
@@ -530,7 +607,7 @@ class FreehandOnlyMode (InteractionMode):
             if not hasattr(self, 'bad_devices'):
                 self.bad_devices = []
             if device.name not in self.bad_devices:
-                logger.warning('device %r is reporting bad pressure %+f',
+                logger.warning('device %r is reporting bad pressure %r',
                                device.name, pressure)
                 self.bad_devices.append(device.name)
             if not isfinite(pressure):
@@ -543,7 +620,7 @@ class FreehandOnlyMode (InteractionMode):
         if pressure is None:
             self.last_event_had_pressure_info = False
             if button1_pressed is None:
-                button1_pressed = event.state & gdk.BUTTON1_MASK
+                button1_pressed = state & gdk.BUTTON1_MASK
             if button1_pressed:
                 pressure = 0.5
             else:
@@ -551,8 +628,6 @@ class FreehandOnlyMode (InteractionMode):
         else:
             self.last_event_had_pressure_info = True
 
-        xtilt = event.get_axis(gdk.AXIS_XTILT)
-        ytilt = event.get_axis(gdk.AXIS_YTILT)
         # Check whether tilt is present.  For some tablets without
         # tilt support GTK reports a tilt axis with value nan, instead
         # of None.  https://gna.org/bugs/?17084
@@ -572,7 +647,7 @@ class FreehandOnlyMode (InteractionMode):
                 xtilt = tilt_magnitude * math.cos(tilt_angle)
                 ytilt = tilt_magnitude * math.sin(tilt_angle)
 
-        if event.state & gdk.CONTROL_MASK or event.state & gdk.MOD1_MASK:
+        if state & gdk.CONTROL_MASK or state & gdk.MOD1_MASK:
             # HACK: color picking, do not paint
             # Don't simply return; this is a workaround for unwanted lines
             # in https://gna.org/bugs/?16169
@@ -581,7 +656,7 @@ class FreehandOnlyMode (InteractionMode):
         if app is not None and app.pressure_mapping:
             pressure = app.pressure_mapping(pressure)
 
-        if event.state & gdk.SHIFT_MASK:
+        if state & gdk.SHIFT_MASK:
             pressure = 0.0
 
         if pressure:
@@ -600,31 +675,91 @@ class FreehandOnlyMode (InteractionMode):
         # On Windows, GTK timestamps have a resolution around
         # 15ms, but tablet events arrive every 8ms.
         # https://gna.org/bugs/index.php?16569
-        # TODO: proper fix in the brush engine, using only smooth,
-        #       filtered speed inputs, will make this unneccessary
         if dtime < 0.0:
             logger.warning('Time is running backwards, dtime=%f', dtime)
             dtime = 0.0
-        data = (x, y, pressure, xtilt, ytilt)
         if dtime == 0.0:
-            self.motions.append(data)
+            zdata = (model, x, y, pressure, xtilt, ytilt)
+            self._zero_dtime_motions.append(zdata)
         elif dtime > 0.0:
-            if self.motions:
+            if self._zero_dtime_motions:
                 # replay previous events that had identical timestamp
                 if dtime > 0.1:
                     # really old events, don't associate them with the new one
                     step = 0.1
                 else:
                     step = dtime
-                step /= len(self.motions)+1
-                for data_old in self.motions:
-                    model.stroke_to(step, *data_old)
+                step /= len(self._zero_dtime_motions)+1
+                for zdata in self._zero_dtime_motions:
+                    zmodel, zx, zy, zpressure, zxtilt, zytilt = zdata
+                    self._queue_stroke(zmodel, dtime, zx, zy,
+                                       zpressure, zxtilt, zytilt)
                     dtime -= step
-                self.motions = []
-            model.stroke_to(dtime, *data)
+                self._zero_dtime_motions = []
+            self._queue_stroke(model, dtime, x, y, pressure, xtilt, ytilt)
+        return False
 
-        super(FreehandOnlyMode, self).motion_notify_cb(tdw, event)
+
+    def _queue_stroke(self, model, dtime, x, y, pressure, xtilt, ytilt):
+        """Adds cleaned-up stroke data to a forwarding queue"""
+        if ( len(self._stroke_queue) >= 1
+             and len(self._stroke_queue) < self.MAX_QUEUED_STROKES
+             and dtime < 0.2 ):
+
+            # To make smaller chunks of work for the renderer, interpolate
+            # between the last queued stroke data point and the new one, if the
+            # last point is not too old (where too old means >= 0.2s)
+            pdata = self._stroke_queue[-1]
+            pmodel, pdtime, px, py, ppressure, pxtilt, pytilt = pdata
+            f = min(self.MAX_QUEUED_STROKES,
+                    max(1,int(dtime/self.STROKE_QUEUE_TIMESLICE)))
+            for i in xrange(1, f):
+                mx = px + i*(x-px)/f
+                my = py + i*(y-py)/f
+                mpressure = ppressure + i*(pressure-ppressure)/f
+                mxtilt = pxtilt + i*(xtilt-pxtilt)/f
+                mytilt = pytilt + i*(ytilt-pytilt)/f
+                mdata = (model, dtime/f, mx, my, mpressure, mxtilt, mytilt)
+                self._stroke_queue.append(mdata)
+            data = (model, dtime/f, x, y, pressure, xtilt, ytilt)
+            self._stroke_queue.append(data)
+        else:
+            # Queue the stroke as one big grain of work instead
+            data = (model, dtime, x, y, pressure, xtilt, ytilt)
+            self._stroke_queue.append(data)
+        # Start the processing idler if it isn't currently running
+        if self._stroke_queue_idle_cbid is None:
+            cbid = gobject.idle_add(self._stroke_queue_idle_cb,
+                                    priority=self.STROKE_QUEUE_PRIORITY)
+            self._stroke_queue_idle_cbid = cbid
+
+
+    def _stroke_queue_idle_cb(self):
+        """Idle routine for passing stroke data on to the target doc(s)"""
+        qlen = len(self._stroke_queue)
+        if qlen <= 1:
+            self._stroke_queue_idle_cbid = None
+            return False
+        model, dtime, x, y, pressure, xtilt, ytilt = self._stroke_queue.pop(0)
+        model.stroke_to(dtime, x, y, pressure, xtilt, ytilt)
+        qlen = len(self._stroke_queue)
+        if qlen > self.MAX_QUEUED_STROKES * 0.9:
+            logger.warning("Long stroke queue: size=%d", qlen)
+        if qlen <= 1:
+            if qlen == 1:
+                pressure = self._stroke_queue[0][4]
+                # Tail off at the end of processing if the pressure is zero,
+                # for a greater appearance of responsiveness. This can be
+                # seen best using the mouse.
+                if pressure <= 0.0:
+                    model, dtime, x, y, pressure, xtilt, ytilt \
+                            = self._stroke_queue.pop(0)
+                    model.stroke_to(dtime, x, y, pressure, xtilt, ytilt)
+                    self._stroke_queue = []
+            self._stroke_queue_idle_cbid = None
+            return False
         return True
+
 
 
 class SwitchableModeMixin (InteractionMode):
