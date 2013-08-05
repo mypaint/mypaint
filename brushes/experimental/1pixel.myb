@@ -214,6 +214,10 @@
         "smudge_radius_log": {
             "base_value": 0.0, 
             "inputs": {}
+        },
+        "snap_to_pixel": {
+            "base_value": 1.0, 
+            "inputs": {} 
         }, 
         "speed1_gamma": {
             "base_value": -8.0, 
