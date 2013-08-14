@@ -32,8 +32,9 @@ from layer import DEFAULT_COMPOSITE_OP
 import pixbufsurface
 
 
-class Tile:
+class Tile (object):
     def __init__(self, copy_from=None):
+        object.__init__(self)
         # note: pixels are stored with premultiplied alpha
         #       15bits are used, but fully opaque or white is stored as 2**15 (requiring 16 bits)
         #       This is to allow many calcuations to divide by 2**15 instead of (2**16-1)
@@ -85,7 +86,7 @@ def get_tiles_bbox(tiles):
         res.expandToIncludeRect(helpers.Rect(N*tx, N*ty, N, N))
     return res
 
-class SurfaceSnapshot:
+class SurfaceSnapshot (object):
     pass
 
 if use_gegl:
@@ -158,9 +159,11 @@ if use_gegl:
 
 # TODO:
 # - move the tile storage from MyPaintSurface to a separate class
-class MyPaintSurface():
+class MyPaintSurface (object):
     # the C++ half of this class is in tiledsurface.hpp
-    def __init__(self, mipmap_level=0, mipmap_surfaces=None, looped=False, looped_size=(0,0)):
+    def __init__(self, mipmap_level=0, mipmap_surfaces=None,
+                 looped=False, looped_size=(0,0)):
+        object.__init__(self)
 
         # TODO: pass just what it needs access to, not all of self
         self._backend = mypaintlib.TiledSurface(self)
@@ -330,17 +333,25 @@ class MyPaintSurface():
             func = svg2composite_func[mode]
             func(src, dst, dst_has_alpha, opacity)
 
+
+    ## Snapshotting
+
     def save_snapshot(self):
+        """Creates and returns a snapshot of the surface"""
         sshot = SurfaceSnapshot()
         for t in self.tiledict.itervalues():
             t.readonly = True
         sshot.tiledict = self.tiledict.copy()
         return sshot
 
+
     def load_snapshot(self, sshot):
+        """Loads a saved snapshot, replacing the internal tiledict"""
         self._load_tiledict(sshot.tiledict)
 
+
     def _load_tiledict(self, d):
+        """Efficiently loads a tiledict, and notifies the observers"""
         if d == self.tiledict:
             # common case optimization, called from split_stroke() via stroke.redo()
             # testcase: comparison above (if equal) takes 0.6ms, code below 30ms
@@ -355,8 +366,14 @@ class MyPaintSurface():
         if not bbox.empty():
             self.notify_observers(*bbox)
 
+
+    ## Loading tile data
+
+
     def load_from_surface(self, other):
+        """Loads tile data from another surface, via a snapshot"""
         self.load_snapshot(other.save_snapshot())
+
 
     def _load_from_pixbufsurface(self, s):
         dirty_tiles = set(self.tiledict.keys())
@@ -370,7 +387,17 @@ class MyPaintSurface():
         bbox = get_tiles_bbox(dirty_tiles)
         self.notify_observers(*bbox)
 
+
     def load_from_numpy(self, arr, x, y):
+        """Loads tile data from a numpy array
+
+        :param arr: Array containing the pixel data
+        :type arr: numpy.ndarray of uint8, dimensions HxWx3 or HxWx4
+        :param x: X coordinate for the array
+        :param y: Y coordinate for the array
+        :returns: the dimensions of the loaded surface, as (x,y,w,h)
+
+        """
         h, w, channels = arr.shape
         if h <= 0 or w <= 0:
             return (x, y, w, h)
@@ -378,16 +405,8 @@ class MyPaintSurface():
         if arr.dtype == 'uint8':
             s = pixbufsurface.Surface(x, y, w, h, data=arr)
             self._load_from_pixbufsurface(s)
-        elif arr.dtype == 'uint16':
-            # We only support this for backgrounds, which are tile-aligned
-            assert w % N == 0 and h % N == 0
-            assert x == 0 and y == 0
-            for ty in range(h/N):
-                for tx in range(w/N):
-                    with self.tile_request(tx, ty, readonly=False) as dst:
-                        dst[:,:,:] = arr[ty*N:(ty+1)*N, tx*N:(tx+1)*N, :]
         else:
-            raise ValueError
+            raise ValueError, "Only uint8 data is supported by MyPaintSurface"
 
         return (x, y, w, h)
 
@@ -480,18 +499,47 @@ class MyPaintSurface():
         return not self.tiledict
 
     def remove_empty_tiles(self):
-        # Only used in tests
+        """Removes tiles from the tiledict which contain no data"""
         for pos, data in self.tiledict.items():
             if not data.rgba.any():
                 self.tiledict.pop(pos)
 
     def get_move(self, x, y):
-        return _InteractiveMove(self, x, y)
+        """Returns a move object for this surface
+
+        :param x: Start position for the move, X coord
+        :param y: Start position for the move, X coord
+        :rtype: TiledSurfaceMove
+
+        It's up to the caller to ensure that only one move is active at a
+        any single instant in time.
+        """
+        return TiledSurfaceMove(self, x, y)
 
 
-class _InteractiveMove:
+class TiledSurfaceMove (object):
+    """Ongoing move state for a tiled surface, processed in chunks
+
+    Tile move processing involves slicing and copying data from a snapshot of
+    the surface's original tile arrays into an active surface within the model
+    document. It's therefore potentially very slow for huge layers: doing this
+    interactively requires the move to be processed in chunks in idle routines.
+
+    Moves are created by a surface's get_move() method starting at a particular
+    point in model coordinates. During an interactive move, they are then
+    updated in response to the user moving the pointer, and get processed in
+    chunks of a few hundred tiles in an idle routine. They can also be
+    processed non-interactively by calling all the different phases together.
+
+    """
 
     def __init__(self, surface, x, y):
+        """Starts the move, recording state in the Move object
+
+        :param x: Where to start, X coordinate
+        :param y: Where to start, Y coordinate
+        """
+        object.__init__(self)
         self.surface = surface
         self.snapshot = surface.save_snapshot()
         self.chunks = self.snapshot.tiledict.keys()
@@ -579,20 +627,31 @@ def calc_translation_slices(dc):
         return [ ((0, N-dcr), (tdc, dcr, N)) ,
                  ((N-dcr, N), (tdc+1, 0, dcr)) ]
 
+
 # Set which surface backend to use
 Surface = GeglSurface if use_gegl else MyPaintSurface
 
+
 def new_surface():
+    """Creates a new Surface object. Used by mypaintlib internals."""
     return Surface()
 
 
 class BackgroundError(Exception):
+    """Errors raised by Background during failed initiailizations"""
     pass
 
-class Background(Surface):
-    """ """
+
+class Background (Surface):
+    """A background layer surface, with a repeating image"""
 
     def __init__(self, obj, mipmap_level=0):
+        """Construct from a color or from a NumPy array
+
+        :param obj: RGB triple (uint8), or a HxWx4 or HxWx3 numpy array which
+           can be either uint8 or uint16.
+        :param mipmap_level: mipmap level, used internally. Root is zero.
+        """
 
         if not isinstance(obj, numpy.ndarray):
             r, g, b = obj
@@ -603,8 +662,8 @@ class Background(Surface):
         if height % N or width % N:
             raise BackgroundError, 'unsupported background tile size: %dx%d' % (width, height)
 
-        Surface.__init__(self, mipmap_level=0,
-                                      looped=True, looped_size=(width, height))
+        super(Background, self).__init__(mipmap_level=0, looped=True,
+                                         looped_size=(width, height))
         self.load_from_numpy(obj, 0, 0)
 
         # Generate mipmap
@@ -618,3 +677,25 @@ class Background(Surface):
             self.mipmap = Background(mipmap_obj, mipmap_level+1)
             self.mipmap.parent = self
             self.mipmap_level = mipmap_level
+
+
+    def load_from_numpy(self, arr, x, y):
+        """Loads tile data from a numpy array
+
+        This extends the base class's implementation with additional support
+        for tile-aligned uint16 data.
+
+        """
+        h, w, channels = arr.shape
+        if h <= 0 or w <= 0:
+            return (x, y, w, h)
+        if arr.dtype == 'uint16':
+            assert w % N == 0 and h % N == 0
+            assert x == 0 and y == 0
+            for ty in range(h/N):
+                for tx in range(w/N):
+                    with self.tile_request(tx, ty, readonly=False) as dst:
+                        dst[:,:,:] = arr[ty*N:(ty+1)*N, tx*N:(tx+1)*N, :]
+            return (x, y, w, h)
+        else:
+            return super(Background, self).load_from_numpy(arr, x, y)

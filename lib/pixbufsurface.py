@@ -18,7 +18,7 @@ import helpers
 from tiledsurface import N
 
 
-class Surface:
+class Surface (object):
     """Wrapper for a GdkPixbuf, with memory accessible by tile.
 
     Wraps a GdkPixbuf.Pixbuf (8 bit RGBU or RGBA data) with memory also
@@ -30,6 +30,7 @@ class Surface:
     """
 
     def __init__(self, x, y, w, h, data=None):
+        object.__init__(self)
         assert w>0 and h>0
         # We create and use a pixbuf enlarged to the tile boundaries internally.
         # Variables ex, ey, ew, eh and epixbuf store the enlarged version.

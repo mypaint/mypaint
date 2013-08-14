@@ -65,13 +65,14 @@ COMPOSITE_OPS = [
 DEFAULT_COMPOSITE_OP = COMPOSITE_OPS[0][0]
 VALID_COMPOSITE_OPS = set([n for n,d,s in COMPOSITE_OPS])
 
-class Layer:
+class Layer (object):
     """Representation of a layer in the document model.
 
     The actual content of the layer is held by the surface implementation.
     This is an internal detail that very few consumers should care about."""
 
     def __init__(self, name="", compositeop=DEFAULT_COMPOSITE_OP):
+        object.__init__(self)
         self._surface = tiledsurface.Surface()
         self.opacity = 1.0
         self.name = name
