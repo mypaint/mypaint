@@ -504,17 +504,18 @@ class MyPaintSurface (object):
             if not data.rgba.any():
                 self.tiledict.pop(pos)
 
-    def get_move(self, x, y):
+    def get_move(self, x, y, sort=True):
         """Returns a move object for this surface
 
         :param x: Start position for the move, X coord
         :param y: Start position for the move, X coord
+        :param sort: If true, sort tiles to move by distance from (x,y)
         :rtype: TiledSurfaceMove
 
         It's up to the caller to ensure that only one move is active at a
         any single instant in time.
         """
-        return TiledSurfaceMove(self, x, y)
+        return TiledSurfaceMove(self, x, y, sort=sort)
 
 
 class TiledSurfaceMove (object):
@@ -533,79 +534,156 @@ class TiledSurfaceMove (object):
 
     """
 
-    def __init__(self, surface, x, y):
+    def __init__(self, surface, x, y, sort=True):
         """Starts the move, recording state in the Move object
 
-        :param x: Where to start, X coordinate
-        :param y: Where to start, Y coordinate
+        :param x: Where to start, model X coordinate
+        :param y: Where to start, model Y coordinate
+        :param sort: If true, sort tiles to move by distance from (x,y)
+
+        Sorting tiles by distance makes the move look nicer when moving
+        interactively, but it's pointless for non-interactive moves.
+
         """
         object.__init__(self)
         self.surface = surface
         self.snapshot = surface.save_snapshot()
         self.chunks = self.snapshot.tiledict.keys()
-        # logger.debug("Number of Tiledict_keys: %r", len(self.chunks))
+        self.sort = sort
         tx = x // N
         ty = y // N
-        chebyshev = lambda p: max(abs(tx - p[0]), abs(ty - p[1]))
-        manhattan = lambda p: abs(tx - p[0]) + abs(ty - p[1])
-        euclidean = lambda p: math.sqrt((tx - p[0])**2 + (ty - p[1])**2)
-        self.chunks.sort(key=manhattan)
+        self.start_pos = (x, y)
+        if self.sort:
+            manhattan_dist = lambda p: abs(tx - p[0]) + abs(ty - p[1])
+            self.chunks.sort(key=manhattan_dist)
         self.chunks_i = 0
+        # Tile state tracking for individual update cycles
+        self.written = set()
+        self.blank_queue = []
+
 
     def update(self, dx, dy):
-        # Tiles to be blanked at the end of processing
-        self.blanked = set(self.surface.tiledict.keys())
+        """Updates the offset during a move
+
+        :param dx: New move offset: relative to the constructor x.
+        :param dy: New move offset: relative to the constructor y.
+
+        This causes all the move's work to be re-queued.
+        """
+        # Nothing has been written in this pass yet
+        self.written = set()
+        # Tile indices to be cleared during processing, unless written
+        self.blank_queue = self.surface.tiledict.keys()
+        if self.sort:
+            x, y = self.start_pos
+            tx = (x + dx) // N
+            ty = (y + dy) // N
+            manhattan_dist = lambda p: abs(tx - p[0]) + abs(ty - p[1])
+            self.blank_queue.sort(key=manhattan_dist)
         # Calculate offsets
         self.slices_x = calc_translation_slices(int(dx))
         self.slices_y = calc_translation_slices(int(dy))
+        # Need to process every source chunk
         self.chunks_i = 0
 
+
     def cleanup(self):
-        # called at the end of each set of processing batches
-        for b in self.blanked:
-            self.surface.tiledict.pop(b, None)
-            self.surface._mark_mipmap_dirty(*b)
-        bbox = get_tiles_bbox(self.blanked)
-        self.surface.notify_observers(*bbox)
-        # Remove empty tile created by Layer Move
+        """Cleans up after processing all tile moves in one update cycle
+
+        This should be called after `process()` indicates that all tiles have
+        been sliced and moved. It should always happen at the end of a move,
+        but for an iteractive move, this can happen in the middle of
+        proceedings too if the user pauses their drag for long enough. The move
+        can still be updated and processed after this method has been called.
+        """
+        # Process any remaining work. Caller should have done this already.
+        if self.chunks_i < len(self.chunks) or len(self.blank_queue) > 0:
+            logger.warning("Stuff left to do at end of move cleanup(). May "
+                           "result in poor interactive appearance. "
+                           "chunks=%d/%d, blanks=%d", self.chunks_i,
+                           len(self.chunks), len(self.blank_queue))
+            logger.warning("Doing cleanup now...")
+            self.process(n=-1)
+        assert self.chunks_i >= len(self.chunks)
+        assert len(self.blank_queue) == 0
+        # Remove empty tiles created by Layer Move
         self.surface.remove_empty_tiles()
 
+
     def process(self, n=200):
+        """Process a number of pending tile moves
+
+        :param n: The number of source tiles to process in this call.
+                  Specify a negative `n` to process all remaining tiles.
+        :returns: whether there are any more tiles to process
+        :type: bool
+
+        """
+        updated = set()
+        moves_remaining = self._process_moves(n, updated)
+        blanks_remaining = self._process_blanks(n, updated)
+        for pos in updated:
+            self.surface._mark_mipmap_dirty(*pos)
+        bbox = get_tiles_bbox(updated)
+        self.surface.notify_observers(*bbox)
+        return blanks_remaining or moves_remaining
+
+
+    def _process_moves(self, n, updated):
+        """Process the tile movement queue"""
         if self.chunks_i > len(self.chunks):
             return False
-        written = set()
         if n <= 0:
             n = len(self.chunks)  # process all remaining
-        for tile_pos in self.chunks[self.chunks_i : self.chunks_i + n]:
-            src_tx, src_ty = tile_pos
-            src_tile = self.snapshot.tiledict[(src_tx, src_ty)]
-            is_integral = len(self.slices_x) == 1 and len(self.slices_y) == 1
+        is_integral = len(self.slices_x) == 1 and len(self.slices_y) == 1
+        for src_t in self.chunks[self.chunks_i : self.chunks_i + n]:
+            src_tx, src_ty = src_t
+            src_tile = self.snapshot.tiledict[src_t]
             for (src_x0, src_x1), (targ_tdx, targ_x0, targ_x1) in self.slices_x:
                 for (src_y0, src_y1), (targ_tdy, targ_y0, targ_y1) in self.slices_y:
                     targ_tx = src_tx + targ_tdx
                     targ_ty = src_ty + targ_tdy
+                    targ_t = targ_tx, targ_ty
                     if is_integral:
-                        self.surface.tiledict[(targ_tx, targ_ty)] = src_tile.copy()
-                    else:
-                        targ_tile = None
-                        if (targ_tx, targ_ty) in self.blanked:
-                            targ_tile = Tile()
-                            self.surface.tiledict[(targ_tx, targ_ty)] = targ_tile
-                            self.blanked.remove( (targ_tx, targ_ty) )
-                        else:
-                            targ_tile = self.surface.tiledict.get((targ_tx, targ_ty), None)
-                        if targ_tile is None:
-                            targ_tile = Tile()
-                            self.surface.tiledict[(targ_tx, targ_ty)] = targ_tile
-                        targ_tile.rgba[targ_y0:targ_y1, targ_x0:targ_x1] = src_tile.rgba[src_y0:src_y1, src_x0:src_x1]
-                    written.add((targ_tx, targ_ty))
-        self.blanked -= written
-        for pos in written:
-            self.surface._mark_mipmap_dirty(*pos)
-        bbox = get_tiles_bbox(written) # hopefully relatively contiguous
-        self.surface.notify_observers(*bbox)
+                        # We're lucky. Perform a straight data copy.
+                        self.surface.tiledict[targ_t] = src_tile.copy()
+                        continue
+                    # Get a tile to write
+                    targ_tile = None
+                    if targ_t in self.written:
+                        # Reuse a blank tile made earlier in this update cycle
+                        targ_tile = self.surface.tiledict.get(targ_t, None)
+                    if targ_tile is None:
+                        # Create and store a new blank tile to avoid corruption
+                        targ_tile = Tile()
+                        self.surface.tiledict[targ_t] = targ_tile
+                        self.written.add(targ_t)
+                    # Copy this source slice to the desination
+                    targ_tile.rgba[targ_y0:targ_y1, targ_x0:targ_x1] \
+                                = src_tile.rgba[src_y0:src_y1, src_x0:src_x1]
+                    updated.add(targ_t)
+            # The source tile has been fully processed at this point, and can be blanked
+            # if it's safe to do so
+            if src_t in self.surface.tiledict:
+                if src_t not in self.written:
+                    self.surface.tiledict.pop(src_t, None)
+                    updated.add(src_t)
+        # Move on, and return whether we're complete
         self.chunks_i += n
         return self.chunks_i < len(self.chunks)
+
+
+    def _process_blanks(self, n, updated):
+        """Internal: process blanking-out queue"""
+        if n <= 0:
+            n = len(self.blank_queue)
+        while len(self.blank_queue) > 0 and n > 0:
+            t = self.blank_queue.pop(0)
+            if t not in self.written:
+                self.surface.tiledict.pop(t, None)
+                updated.add(t)
+                n -= 1
+        return len(self.blank_queue) > 0
 
 
 def calc_translation_slices(dc):

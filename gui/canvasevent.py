@@ -1655,9 +1655,8 @@ class LayerMoveMode (SwitchableModeMixin,
             # Might have exited, in which case leave() will have cleaned up
             self._drag_update_idler_srcid = None
             return False
-        # Terminate if asked
+        # Terminate if asked. Assume the asker will clean up.
         if self._drag_update_idler_srcid is None:
-            self.move.cleanup()
             return False
         # Process some tile moves, and carry on if there's more to do
         if self.move.process():
@@ -1669,7 +1668,10 @@ class LayerMoveMode (SwitchableModeMixin,
 
 
     def drag_stop_cb(self):
-        self._drag_update_idler_srcid = None   # ask it to finish
+        # Stop the update idler running on its next scheduling
+        self._drag_update_idler_srcid = None
+        # This will leave a non-cleaned-up move if one is still active,
+        # so finalize it in its own idle routine.
         if self.move is not None:
             # Arrange for the background work to be done, and look busy
             tdw = self.drag_start_tdw
