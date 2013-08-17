@@ -564,7 +564,7 @@ class FreehandOnlyMode (InteractionMode):
             event_data = self._motion_queue.pop(0)
             # DEBUGGING: we should be able to collect ~100 to ~200 events
             # per second during a long stroke of a simple brush.
-            if len(self._motion_queue) > 3:
+            if len(self._motion_queue) > 10:
                 dtime = (event_data[4] - event_data[1]) / 1000.0
                 dtime_avg = (sum([m[4] - m[1] for m in self._motion_queue])
                              / (len(self._motion_queue)*1000.0))

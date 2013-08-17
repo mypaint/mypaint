@@ -9,51 +9,34 @@
 from gi.repository import GObject
 
 
-class Processor:
+class Processor (object):
     """Queue of low priority tasks for background processing
 
     Queued tasks are automatically processed when gtk is idle, or on demand.
 
     """
 
-    def __init__(self, max_pending):
-        """Initialize, specifying maximum overhead.
-
-        :param max_pending: maximum queue weight before `add_work()` starts
-            doing immediate work.
-        """
+    def __init__(self, priority=GObject.PRIORITY_LOW):
+        """Initialize, specifying a priority"""
+        object.__init__(self)
         self._queue = []
-        self.max_pending = float(max_pending)
 
 
-    def add_work(self, func, weight=1.0):
-        """Adds work, possibly doing some of it if there's too much overhead.
+    def add_work(self, func, *args, **kwargs):
+        """Adds work
 
-        :param func: a callable of no arguments; return is ignored.
-        :param weight: weight estimate for `func`.
-
-        The queue will be processed until the sum of its functions' weight
-        estimates is smaller than the processor's ``max_pending`` setting.
-        Further processing happens automatically in the background.
-
+        :param func: a callable. The return value is ignored
+        :param *args: passed to ``func``
+        :param **kwargs: passed to ``func``
         """
         if not self._queue:
-            GObject.idle_add(self._idle_cb)
-        func.__weight = float(weight)
-        self._queue.append(func)
-        self._finish_downto(self.max_pending)
+            GObject.idle_add(self._idle_cb, priority=GObject.PRIORITY_LOW)
+        self._queue.append((func, args, kwargs))
 
 
     def _finish_one(self):
-        func = self._queue.pop(0)
-        func()
-        return func.__weight
-
-
-    def _finish_downto(self, max_pending):
-        pending = sum([func.__weight for func in self._queue])
-        while self._queue and pending > float(max_pending):
-            pending -= self._finish_one()
+        func, args, kwargs = self._queue.pop(0)
+        func(*args, **kwargs)
 
 
     def finish_all(self):
