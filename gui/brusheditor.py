@@ -596,14 +596,19 @@ class BrushEditorWindow (SubWindow):
 
     def _update_setting_ui(self, expanders=False):
         """Updates all the UI elements for the current setting"""
-        # Update base value slider
+        # Update base value adjuster and slider
         if self._setting is None:
             return
-        scale = self._builder.get_object("base_value_scale")
         base_adj = self._base_adj[self._setting.cname]
+        # Update its value if running in test mode
+        # Normally the app will do this itself
+        if not self.app:
+            newvalue = self._brush.get_base_value(self._setting.cname)
+            base_adj.set_value(newvalue)
+        # Associate the base value scale with the right adjustment
+        scale = self._builder.get_object("base_value_scale")
         if scale.get_adjustment() is not base_adj:
             scale.set_adjustment(base_adj)
-        base_adj.set_value(self._brush.get_base_value(self._setting.cname))
         # Update brush dynamics curves and sliders
         for inp in brushsettings.inputs:
             # check whether we really need to update anything

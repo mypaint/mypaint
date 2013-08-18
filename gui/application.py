@@ -467,11 +467,24 @@ class Application (object):
                                  step_incr=0.01, page_incr=0.1)
             self.brush_adjustment[s.cname] = adj
             adj.connect("value-changed", changed_cb, s.cname)
+        self.brush.observers.append(self._brush_modified_cb)
 
 
     def _brush_adjustment_value_changed_cb(self, adj, cname):
         """Updates a brush setting when the user tweaks it using a scale"""
-        self.brush.set_base_value(cname, adj.get_value())
+        newvalue = adj.get_value()
+        if self.brush.get_base_value(cname) != newvalue:
+            self.brush.set_base_value(cname, newvalue)
+
+
+    def _brush_modified_cb(self, settings):
+        """Updates the brush's base setting adjustments on brush changes"""
+        for cname in settings:
+            adj = self.brush_adjustment.get(cname, None)
+            if adj is None:
+                continue
+            value = self.brush.get_base_value(cname)
+            adj.set_value(value)
 
 
     ## Button mappings, global pressure curve, input devices...
