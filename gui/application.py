@@ -22,6 +22,7 @@ import lib.document
 from lib import brush
 from lib import helpers
 from lib import mypaintlib
+from brushlib import brushsettings
 
 
 def get_app():
@@ -236,6 +237,9 @@ class Application (object):
         self.brush_color_manager.set_picker_cursor(self.cursor_color_picker)
         self.brush_color_manager.set_data_path(self.datapath)
 
+        #: Mapping of setting cname to a GtkAdjustment which controls the base
+        #: value of that setting for the app's current brush.
+        self.brush_adjustment = {}
         self.init_brush_adjustments()
 
         # Connect signals defined in mypaint.xml
@@ -451,14 +455,26 @@ class Application (object):
             if result is not None:
                 return result
 
-    def init_brush_adjustments(self):
-        """Initializes all the brush adjustments for the current brush"""
-        self.brush_adjustment = {}
-        from brushlib import brushsettings
-        for i, s in enumerate(brushsettings.settings_visible):
-            adj = gtk.Adjustment(value=s.default, lower=s.min, upper=s.max, step_incr=0.01, page_incr=0.1)
-            self.brush_adjustment[s.cname] = adj
 
+    ## Brush settings: GtkAdjustments for base values
+
+    def init_brush_adjustments(self):
+        """Initializes the base value adjustments for all brush settings"""
+        assert not self.brush_adjustment
+        changed_cb = self._brush_adjustment_value_changed_cb
+        for s in brushsettings.settings_visible:
+            adj = gtk.Adjustment(value=s.default, lower=s.min, upper=s.max,
+                                 step_incr=0.01, page_incr=0.1)
+            self.brush_adjustment[s.cname] = adj
+            adj.connect("value-changed", changed_cb, s.cname)
+
+
+    def _brush_adjustment_value_changed_cb(self, adj, cname):
+        """Updates a brush setting when the user tweaks it using a scale"""
+        self.brush.set_base_value(cname, adj.get_value())
+
+
+    ## Button mappings, global pressure curve, input devices...
 
     def update_button_mapping(self):
         self.button_mapping.update(self.preferences["input.button_mapping"])

@@ -103,15 +103,16 @@ class BrushEditorWindow (SubWindow):
             for s in brushsettings.settings_visible:
                 adj = self.app.brush_adjustment[s.cname]
                 self._base_adj[s.cname] = adj
+            # The application instance manages value-changed callbacks itself.
         else:
             for s in brushsettings.settings_visible:
                 adj = Gtk.Adjustment(value=s.default,
                                      lower=s.min, upper=s.max,
                                      step_incr=0.01, page_incr=0.1)
                 self._base_adj[s.cname] = adj
-        for cname, adj in self._base_adj.iteritems():
-            adj.connect('value-changed', self.base_value_adj_changed_cb,
-                        cname)
+            changed_cb = self._testmode_base_value_adj_changed_cb
+            for cname, adj in self._base_adj.iteritems():
+                adj.connect('value-changed', changed_cb, cname)
         # Per-input scale maxima and minima
         for inp in brushsettings.inputs:
             name = inp.name
@@ -767,8 +768,9 @@ class BrushEditorWindow (SubWindow):
 
     ## Adjuster change callbacks
 
-    def base_value_adj_changed_cb(self, adj, cname):
-        """User adjusted the setting's base value using the scale"""
+    def _testmode_base_value_adj_changed_cb(self, adj, cname):
+        """User adjusted the setting's base value using the scale (test only)
+        """
         value = adj.get_value()
         self._brush.set_base_value(cname, value)
 
@@ -936,7 +938,7 @@ def _test():
     win.connect("delete-event", lambda *a: Gtk.main_quit())
     win.show_all()
     Gtk.main()
-    
+
 
 
 if __name__ == '__main__':
