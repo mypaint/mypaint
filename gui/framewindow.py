@@ -327,7 +327,8 @@ class FrameEditWindow (windowing.Dialog):
 
         size_table = gtk.Table(6, 3)
         size_table.set_border_width(9)
-        xopts = yopts = gtk.FILL|gtk.EXPAND
+        xopts = gtk.FILL|gtk.EXPAND
+        yopts = gtk.FILL
         xpad = ypad = 3
 
         if gtk2compat.USE_GTK3:
@@ -372,20 +373,29 @@ class FrameEditWindow (windowing.Dialog):
                           xopts, yopts, xpad, ypad)
 
 
-        crop_layer_button = gtk.Button(_('Crop to Current Layer'))
-        crop_layer_button.set_tooltip_text(_("Crop frame to the currently "
-                                             "active layer"))
-        crop_document_button = gtk.Button(_('Crop to Document'))
-        crop_document_button.set_tooltip_text(_("Crop frame to the combination "
+        crop_layer_button = gtk.Button(_('Set Frame to Layer'))
+        crop_layer_button.set_tooltip_text(_("Set frame to the extents of "
+                                             "the current layer"))
+        crop_document_button = gtk.Button(_('Set Frame to Document'))
+        crop_document_button.set_tooltip_text(_("Set frame to the combination "
                                                 "of all layers"))
         crop_layer_button.connect('clicked', self.crop_frame_cb,
                                   'CropFrameToLayer')
         crop_document_button.connect('clicked', self.crop_frame_cb,
                                      'CropFrameToDocument')
 
-        hint_label = gtk.Label(_('While the frame is enabled, it \n'
+        trim_button = gtk.Button()
+        trim_action = self.app.find_action("TrimLayer")
+        trim_button.set_related_action(trim_action)
+        trim_button.set_label(_('Trim Layer to Frame'))
+        trim_button.set_tooltip_text(_("Trim parts of the current layer "
+                                       "which lie outside the frame"))
+
+        hint_label = gtk.Label(_('While the frame is enabled, it '
                                  'can be adjusted on the canvas'))
+        hint_label.set_line_wrap(True)
         hint_label.set_padding(0, 6)
+        hint_label.set_size_request(200, -1)
 
         self.enable_button = gtk.CheckButton()
         frame_toggle_action = self.app.find_action("FrameToggle")
@@ -406,6 +416,10 @@ class FrameEditWindow (windowing.Dialog):
 
         row += 1
         size_table.attach(crop_document_button, 0, 3, row, row+1,
+                          xopts, yopts, xpad, ypad)
+
+        row += 1
+        size_table.attach(trim_button, 0, 3, row, row+1,
                           xopts, yopts, xpad, ypad)
 
         content_area = self.get_content_area()

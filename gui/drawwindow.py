@@ -652,6 +652,12 @@ class DrawWindow (gtk.Window):
         gtk.main_quit()
         return False
 
+
+    def trim_layer_cb(self, action):
+        """Trim the current layer to the frame"""
+        self.app.doc.model.trim_layer()
+
+
     def toggle_frame_cb(self, action):
         enabled = bool(self.app.doc.model.frame_enabled)
         desired = bool(action.get_active())

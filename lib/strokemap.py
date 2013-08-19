@@ -10,6 +10,9 @@ import time
 import struct
 import zlib
 from numpy import *
+from logging import getLogger
+logger = getLogger(__name__)
+
 import mypaintlib
 
 import tiledsurface
@@ -142,3 +145,22 @@ class StrokeShape:
                     self.strokemap[tx, ty] = data_compressed
                 self.tasks.add_work(__recompress_tile, weight=0.1/len(tmp_strokemap))
         self.tasks.add_work(__start_tile_recompression, weight=0)
+
+
+    def trim(self, rect):
+        """Trim the shape to a rectangle, discarding data outside it
+
+        :param rect: A trimming rectangle in model coordinates
+        :type rect: tuple (x, y, w, h)
+        :returns: Whether anything remains after the trim
+        :rtype: bool
+
+        Only complete tiles are discarded by this method.
+        """
+        self.tasks.finish_all()
+        x, y, w, h = rect
+        logger.debug("Trimming stroke to %dx%d%+d%+d", w, h, x, y)
+        for tx, ty in list(self.strokemap.keys()):
+            if tx*N+N < x or ty*N+N < y or tx*N > x+w or ty*N > y+h:
+                self.strokemap.pop((tx, ty))
+        return bool(self.strokemap)

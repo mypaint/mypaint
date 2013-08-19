@@ -220,6 +220,26 @@ class MyPaintSurface (object):
         self.notify_observers(*get_tiles_bbox(tiles))
         if self.mipmap: self.mipmap.clear()
 
+
+    def trim(self, rect):
+        """Trim the layer to a rectangle, discarding data outside it
+
+        :param rect: A trimming rectangle in model coordinates
+        :type rect: tuple (x, y, w, h)
+
+        Only complete tiles are discarded by this method.
+        """
+        x, y, w, h = rect
+        logger.info("Trim %dx%d%+d%+d", w, h, x, y)
+        trimmed = []
+        for tx, ty in list(self.tiledict.keys()):
+            if tx*N+N < x or ty*N+N < y or tx*N > x+w or ty*N > y+h:
+                trimmed.append((tx, ty))
+                self.tiledict.pop((tx, ty))
+                self._mark_mipmap_dirty(tx, ty)
+        self.notify_observers(*get_tiles_bbox(trimmed))
+
+
     @contextlib.contextmanager
     def tile_request(self, tx, ty, readonly):
         """Context manager that fetches a tile as a NumPy array,

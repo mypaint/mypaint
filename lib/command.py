@@ -165,6 +165,25 @@ class Stroke(Action):
     def redo(self):
         self.doc.layer.load_snapshot(self.after)
 
+
+class TrimLayer (Action):
+    """Trim the current layer to the extent of the document frame"""
+
+    display_name = _("Trim Layer")
+
+    def __init__(self, doc):
+        self.doc = doc
+        self.before = None
+
+    def redo(self):
+        self.before = self.doc.layer.save_snapshot()
+        frame = self.doc.get_frame()
+        self.doc.layer.trim(frame)
+
+    def undo(self):
+        self.doc.layer.load_snapshot(self.before)
+
+
 class ClearLayer(Action):
     display_name = _("Clear Layer")
     def __init__(self, doc):

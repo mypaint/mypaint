@@ -392,6 +392,15 @@ Perhaps an increasing amount.
         <accelerator key="Delete"/>
       </child>
       <child>
+        <object class="GtkAction" id="TrimLayer">
+          <property name="label" translatable="yes"
+            context="Menu|Layer|">Trim to Frame</property>
+          <property name="tooltip" translatable="yes"
+            >Trim parts of the current layer outside the frame</property>
+          <signal name="activate" handler="trim_layer_cb"/>
+        </object>
+      </child>
+      <child>
         <object class="GtkAction" id="CopyLayer">
           <property name="stock_id">gtk-copy</property>
           <property name="label" translatable="yes"

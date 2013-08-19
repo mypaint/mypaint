@@ -114,6 +114,17 @@ class Document():
     frame_enabled = property(get_frame_enabled)
 
 
+    def trim_layer(self):
+        """Trim the current layer to the extent of the document frame
+
+        This has no effect if the frame is not currently enabled.
+
+        """
+        if not self._frame_enabled:
+            return
+        self.do(command.TrimLayer(self))
+
+
     def call_doc_observers(self):
         """Announce major structural changes via `doc_observers`.
 

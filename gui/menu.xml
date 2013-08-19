@@ -219,6 +219,8 @@
       <separator/>
       <menuitem action='ClearLayer'/>
       <menuitem action='RemoveLayer'/>
+      <separator/>
+      <menuitem action='TrimLayer'/>
     </menu>
     <menu action="ScratchMenu">
       <menuitem action='ScratchpadTool'/>

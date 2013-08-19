@@ -9,6 +9,9 @@
 import struct
 import zlib
 from numpy import *
+import logging
+logger = logging.getLogger(__name__)
+
 from gettext import gettext as _
 
 import tiledsurface
@@ -124,6 +127,25 @@ class Layer (object):
     def clear(self):
         self.strokes = [] # contains StrokeShape instances (not stroke.Stroke)
         self._surface.clear()
+
+
+    def trim(self, rect):
+        """Trim the layer to a rectangle, discarding data outside it
+
+        :param rect: A trimming rectangle in model coordinates
+        :type rect: tuple (x, y, w, h)
+
+        Only complete tiles are discarded by this method.
+        """
+        self._surface.trim(rect)
+        empty_strokes = []
+        for stroke in self.strokes:
+            if not stroke.trim(rect):
+                empty_strokes.append(stroke)
+        for stroke in empty_strokes:
+            logger.debug("Removing emptied stroke %r", stroke)
+            self.strokes.remove(stroke)
+
 
     def load_from_surface(self, surface):
         self.strokes = []
