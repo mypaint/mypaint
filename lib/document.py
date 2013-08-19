@@ -856,8 +856,8 @@ class Document():
         image = ET.fromstring(xml)
         stack = image.find('stack')
 
-        w = int(image.attrib['w'])
-        h = int(image.attrib['h'])
+        image_w = int(image.attrib['w'])
+        image_h = int(image.attrib['h'])
 
         def get_pixbuf(filename):
             t1 = time.time()
@@ -895,7 +895,6 @@ class Document():
 
         self.clear() # this leaves one empty layer
         no_background = True
-        self.set_frame(width=w, height=h)
 
         selected_layer = None
         for layer in get_layers_list(stack):
@@ -971,6 +970,17 @@ class Document():
                 if layer is selected_layer:
                     self.select_layer(i)
                     break
+
+        # Set the frame size to that saved in the image.
+        self.update_frame(width=image_w, height=image_h, user_initiated=False)
+
+        # Enable frame if the saved image size is something other than the
+        # calculated bounding box. Goal: if the user saves an "infinite
+        # canvas", it loads as an infinite canvas.
+        bbox_c = helpers.Rect(x=0, y=0, w=image_w, h=image_h)
+        bbox = self.get_bbox()
+        frame_enab = not (bbox_c==bbox or bbox.empty() or bbox_c.empty())
+        self.set_frame_enabled(frame_enab, user_initiated=False)
 
         z.close()
 
