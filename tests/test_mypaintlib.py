@@ -291,7 +291,7 @@ def saveFrame():
                     x, y, w, h = x1, y1, x2-x1, y2-y1
                     #print x, y, w, h
                     s.save_as_png('test_saveFrame_s.png', x, y, w, h)
-                    doc.set_frame(x=x, y=y, width=w, height=h)
+                    doc.update_frame(x=x, y=y, width=w, height=h)
                     #doc.save('test_saveFrame_doc_%dx%d.png' % (w,h))
                     doc.save('test_saveFrame_doc.png')
                     doc.save('test_saveFrame_doc.jpg')

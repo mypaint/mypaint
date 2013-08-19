@@ -659,10 +659,11 @@ class DrawWindow (gtk.Window):
 
 
     def toggle_frame_cb(self, action):
-        enabled = bool(self.app.doc.model.frame_enabled)
+        model = self.app.doc.model
+        enabled = bool(model.frame_enabled)
         desired = bool(action.get_active())
         if enabled != desired:
-            self.app.doc.model.set_frame_enabled(desired)
+            model.set_frame_enabled(desired, user_initiated=True)
 
     def frame_changed_cb(self):
         action = self.action_group.get_action("FrameToggle")

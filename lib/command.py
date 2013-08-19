@@ -545,3 +545,51 @@ class SetLayerCompositeOp(Action):
         self._notify_canvas_observers([l])
         self._notify_document_observers()
 
+
+class SetFrameEnabled (Action):
+    """Enable or disable the document frame"""
+
+    @property
+    def display_name(self):
+        if self.after:
+            return _("Enable Frame")
+        else:
+            return _("Disable Frame")
+
+    def __init__(self, doc, enable):
+        self.doc = doc
+        self.before = None
+        self.after = enable
+
+    def redo(self):
+        self.before = self.doc.frame_enabled
+        self.doc.set_frame_enabled(self.after, user_initiated=False)
+
+    def undo(self):
+        self.doc.set_frame_enabled(self.before, user_initiated=False)
+
+
+class UpdateFrame (Action):
+    """Update frame dimensions"""
+
+    display_name = _("Update Frame")
+
+    def __init__(self, doc, frame):
+        self.doc = doc
+        self.new_frame = frame
+        self.old_frame = None
+
+    def redo(self):
+        if self.old_frame is None:
+            self.old_frame = self.doc.frame[:]
+        self.doc.update_frame(*self.new_frame, user_initiated=False)
+
+    def update(self, frame):
+        assert self.old_frame is not None
+        self.new_frame = frame
+        self.doc.update_frame(*self.new_frame, user_initiated=False)
+
+    def undo(self):
+        assert self.old_frame is not None
+        self.doc.update_frame(*self.old_frame, user_initiated=False)
+

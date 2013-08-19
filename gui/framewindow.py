@@ -253,7 +253,7 @@ class FrameEditMode (canvasevent.SwitchableModeMixin,
             new_frame = (x, y, w, h)
             if new_frame != frame:
                 if w > 0 and h > 0:
-                    model.set_frame(*new_frame)
+                    model.set_frame(new_frame, user_initiated=True)
         return super(FrameEditMode, self).drag_update_cb(tdw, event, dx, dy)
 
 
@@ -281,16 +281,15 @@ class FrameEditWindow (windowing.Dialog):
         self.unit_label = gtk.Label(_('px'))
         self.unit_label.set_alignment(0, 0.5)
 
+        self.app.doc.model.frame_observers.append(self.on_frame_changed)
+
+        self._init_ui()
         self.width_adj.connect('value-changed',
                                self.on_size_adjustment_changed)
         self.height_adj.connect('value-changed',
                                 self.on_size_adjustment_changed)
         self.dpi_adj.connect('value-changed',
                              self.on_dpi_adjustment_changed)
-
-        self.app.doc.model.frame_observers.append(self.on_frame_changed)
-
-        self._init_ui()
 
     def _init_ui(self):
         unit = _('px')
@@ -451,9 +450,7 @@ class FrameEditWindow (windowing.Dialog):
             bbox = self.app.doc.model.get_current_layer().get_bbox()
         elif command == 'CropFrameToDocument':
             bbox = self.app.doc.model.get_bbox()
-        else: assert 0
-        self.app.doc.model.set_frame_enabled(True)
-        self.app.doc.model.set_frame(*bbox)
+        self.app.doc.model.set_frame(bbox, user_initiated=True)
         self.width_adj.set_px_value(bbox.w)
         self.height_adj.set_px_value(bbox.h)
 
@@ -478,7 +475,8 @@ class FrameEditWindow (windowing.Dialog):
         self.height_adj.update_px_value()
         width = int(self.width_adj.get_px_value())
         height = int(self.height_adj.get_px_value())
-        self.app.doc.model.set_frame(width=width, height=height)
+        self.app.doc.model.update_frame(width=width, height=height,
+                                        user_initiated=True)
 
     def on_dpi_adjustment_changed(self, adjustment):
         """Update the resolution used to calculate framesize in px."""
@@ -547,7 +545,8 @@ class UnitAdjustment(gtk.Adjustment):
 
     def set_px_value(self, value):
         self.px_value = value
-        self.set_value(self.convert_to_unit(value, self.active_unit))
+        self.unit_value = self.convert_to_unit(value, self.active_unit)
+        self.set_value(self.unit_value)
 
     def get_px_value(self):
         self.px_value = self.convert_to_px(self.get_value(), self.active_unit)

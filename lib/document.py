@@ -89,28 +89,65 @@ class Document():
         self._frame = [0, 0, 0, 0]
         self._frame_enabled = False
 
+
+    ## Layer (x, y) position
+
+
     def move_current_layer(self, dx, dy):
         layer = self.layers[self.layer_idx]
         layer.translate(dx, dy)
 
+
+    ## Document frame
+
+
     def get_frame(self):
         return self._frame
 
-    def set_frame(self, x=None, y=None, width=None, height=None):
-        """Set the size of the frame. Pass None to indicate no-change."""
 
-        for i, var in enumerate([x, y, width, height]):
-            if not var is None:
-                self._frame[i] = int(var)
+    def set_frame(self, frame, user_initiated=False):
+        x, y, w, h = frame
+        self.update_frame(x=x, y=y, width=w, height=h,
+                          user_initiated=user_initiated)
 
-        for f in self.frame_observers: f()
+
+    frame = property(get_frame, set_frame)
+
+
+    def update_frame(self, x=None, y=None, width=None, height=None,
+                     user_initiated=False):
+        """Update parts of the frame"""
+        frame = [x, y, width, height]
+        if frame == self._frame:
+            return
+        if user_initiated:
+            if not self._frame_enabled:
+                self.set_frame_enabled(True, user_initiated=True)
+            if isinstance(self.get_last_command(), command.UpdateFrame):
+                self.update_last_command(frame=frame)
+            else:
+                self.do(command.UpdateFrame(self, frame))
+        else:
+            for i, var in enumerate([x, y, width, height]):
+                if var is not None:
+                    self._frame[i] = int(var)
+            self.call_frame_observers()
+
 
     def get_frame_enabled(self):
         return self._frame_enabled
 
-    def set_frame_enabled(self, enabled):
-        self._frame_enabled = enabled
-        for f in self.frame_observers: f()
+
+    def set_frame_enabled(self, enabled, user_initiated=False):
+        if self._frame_enabled == bool(enabled):
+            return
+        if user_initiated:
+            self.do(command.SetFrameEnabled(self, enabled))
+        else:
+            self._frame_enabled = bool(enabled)
+            self.call_frame_observers()
+
+
     frame_enabled = property(get_frame_enabled)
 
 
@@ -125,6 +162,14 @@ class Document():
         self.do(command.TrimLayer(self))
 
 
+    ## Observer convenience methods
+
+
+    def call_frame_observers(self):
+        for func in self.frame_observers:
+            func()
+
+
     def call_doc_observers(self):
         """Announce major structural changes via `doc_observers`.
 
@@ -136,6 +181,9 @@ class Document():
         for f in self.doc_observers:
             f(self)
         return True
+
+
+    ## Symmetry axis
 
 
     def get_symmetry_axis(self):
@@ -508,7 +556,7 @@ class Document():
         """Load a document from a pixbuf."""
         self.clear()
         bbox = self.load_layer_from_pixbuf(pixbuf)
-        self.set_frame(*bbox)
+        self.set_frame(bbox, user_initiated=False)
 
 
     def is_layered(self):
@@ -639,7 +687,7 @@ class Document():
     def load_png(self, filename, feedback_cb=None):
         self.clear()
         bbox = self.load_layer_from_png(filename, 0, 0, feedback_cb)
-        self.set_frame(*bbox)
+        self.set_frame(bbox, user_initiated=False)
 
     @staticmethod
     def _pixbuf_from_stream(fp, feedback_cb=None):
