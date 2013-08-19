@@ -303,14 +303,17 @@ class FrameEditWindow (windowing.Dialog):
         color_label = gtk.Label(_('Color:'))
         color_label.set_alignment(0.0, 0.5)
 
-        height_entry = gtk.SpinButton()
-        height_entry.set_adjustment(self.height_adj)
+        height_entry = gtk.SpinButton( adjustment=self.height_adj,
+                                       climb_rate=0.25,
+                                       digits=0 )
         self.height_adj.set_spin_button(height_entry)
-        width_entry = gtk.SpinButton()
-        width_entry.set_adjustment(self.width_adj)
+        width_entry = gtk.SpinButton( adjustment=self.width_adj,
+                                      climb_rate=0.25,
+                                      digits=0 )
         self.width_adj.set_spin_button(width_entry)
-        dpi_entry = gtk.SpinButton()
-        dpi_entry.set_adjustment(self.dpi_adj)
+        dpi_entry = gtk.SpinButton( adjustment=self.dpi_adj,
+                                    climb_rate=0.0,
+                                    digits=0 )
 
         color_button = gtk.ColorButton()
         color_rgba = self.app.preferences.get("frame.color_rgba")
