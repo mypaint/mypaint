@@ -969,7 +969,8 @@ class Document():
                     break
 
         # Set the frame size to that saved in the image.
-        self.update_frame(width=image_w, height=image_h, user_initiated=False)
+        self.update_frame(x=0, y=0, width=image_w, height=image_h,
+                          user_initiated=False)
 
         # Enable frame if the saved image size is something other than the
         # calculated bounding box. Goal: if the user saves an "infinite
