@@ -948,12 +948,9 @@ class Document():
             # strokemap
             fname = a.get('mypaint_strokemap_v2', None)
             if fname:
-                if x % N or y % N:
-                    logger.warning('Dropping non-aligned strokemap')
-                else:
-                    sio = StringIO(z.read(fname))
-                    layer.load_strokemap_from_file(sio, x, y)
-                    sio.close()
+                sio = StringIO(z.read(fname))
+                layer.load_strokemap_from_file(sio, x, y)
+                sio.close()
 
         if len(self.layers) == 1:
             # no assertion (allow empty documents)

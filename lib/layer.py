@@ -213,6 +213,11 @@ class Layer (object):
     def load_strokemap_from_file(self, f, translate_x, translate_y):
         assert not self.strokes
         brushes = []
+        N = tiledsurface.N
+        x = int(translate_x//N) * N
+        y = int(translate_y//N) * N
+        dx = translate_x % N
+        dy = translate_y % N
         while True:
             t = f.read(1)
             if t == 'b':
@@ -223,8 +228,11 @@ class Layer (object):
                 brush_id, length = struct.unpack('>II', f.read(2*4))
                 stroke = strokemap.StrokeShape()
                 tmp = f.read(length)
-                stroke.init_from_string(tmp, translate_x, translate_y)
+                stroke.init_from_string(tmp, x, y)
                 stroke.brush_string = brushes[brush_id]
+                # Translate non-aligned strokes
+                if (dx, dy) != (0, 0):
+                    stroke.translate(dx, dy)
                 self.strokes.append(stroke)
             elif t == '}':
                 break
