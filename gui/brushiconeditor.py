@@ -146,6 +146,7 @@ class BrushIconEditor (Gtk.Grid):
         button_box = Gtk.VButtonBox()
         button_box.set_homogeneous(False)
         button_box.set_layout(Gtk.ButtonBoxStyle.START)
+        button_box.set_spacing(4)
 
         # TRANSLATORS: begin editing a brush's preview icon
         b = self._make_image_button(_('Edit'), Gtk.STOCK_EDIT,
@@ -153,6 +154,14 @@ class BrushIconEditor (Gtk.Grid):
         b.set_tooltip_text(_("Begin editing this preview icon"))
         button_box.pack_start(b, expand=False)
         self._edit_button = b
+
+        # TRANSLATORS: revert edits to a brush icon
+        b = self._make_image_button(_('Revert'), Gtk.STOCK_REVERT_TO_SAVED,
+                                    self._revert_cb)
+        b.set_tooltip_text(_("Discard changes, and cancel editing"))
+        button_box.pack_start(b, expand=False)
+        button_box.set_child_secondary(b, False)
+        self._revert_button = b
 
         # TRANSLATORS: clear the brush preview icon being edited
         b = self._make_image_button(_('Clear'), Gtk.STOCK_CLEAR,
@@ -164,14 +173,6 @@ class BrushIconEditor (Gtk.Grid):
         #lbl = Gtk.Label(_("Use any brush and color when editing"))
         #lbl.set_line_wrap(Pango.WrapMode.WORD_CHAR)
         #button_box.pack_start(lbl, expand=False)
-
-        # TRANSLATORS: revert edits to a brush icon
-        b = self._make_image_button(_('Revert'), Gtk.STOCK_REVERT_TO_SAVED,
-                                    self._revert_cb)
-        b.set_tooltip_text(_("Discard changes, and cancel editing"))
-        button_box.pack_start(b, expand=False)
-        button_box.set_child_secondary(b, True)
-        self._revert_button = b
 
         # TRANSLATORS: save edits to a brush icon
         b = self._make_image_button(_('Save'), Gtk.STOCK_SAVE,
