@@ -482,7 +482,7 @@ Perhaps an increasing amount.
           <property name="tooltip" translatable="yes"
             >Raise the current layer one step in the layers stack</property>
           <property name="icon-name">mypaint-layer-raise-symbolic</property>
-          <signal name="activate" handler="move_layer_in_stack_cb"/>
+          <signal name="activate" handler="reorder_layer_cb"/>
         </object>
       </child>
       <child>
@@ -492,7 +492,7 @@ Perhaps an increasing amount.
           <property name="tooltip" translatable="yes"
             >Lower the current layer one step in the layers stack</property>
           <property name="icon-name">mypaint-layer-lower-symbolic</property>
-          <signal name="activate" handler="move_layer_in_stack_cb"/>
+          <signal name="activate" handler="reorder_layer_cb"/>
         </object>
       </child>
       <child>

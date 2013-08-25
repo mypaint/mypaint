@@ -513,12 +513,11 @@ class Document (CanvasController):
         self.layerblink_state.activate(action)
 
 
-    def move_layer_in_stack_cb(self, action):
-        """Moves the current layer up or down one slot (action callback)
+    def reorder_layer_cb(self, action):
+        """Changes the z-order of a layer (action callback)
 
         The direction the layer moves depends on the action name:
         "RaiseLayerInStack" or "LowerLayerInStack".
-
         """
         current_layer_pos = self.model.layer_idx
         if action.get_name() == 'RaiseLayerInStack':
@@ -528,8 +527,8 @@ class Document (CanvasController):
         else:
             return
         if new_layer_pos < len(self.model.layers) and new_layer_pos >= 0:
-            self.model.move_layer(current_layer_pos, new_layer_pos,
-                                  select_new=True)
+            self.model.reorder_layer(current_layer_pos, new_layer_pos,
+                                     select_new=True)
 
 
     def duplicate_layer_cb(self, action):

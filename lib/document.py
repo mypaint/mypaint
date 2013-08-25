@@ -295,7 +295,11 @@ class Document (object):
         layer_idx = self.layers.index(layer)
         self.do(command.MoveLayer(self, layer_idx, dx, dy, True))
 
-    def move_layer(self, was_idx, new_idx, select_new=False):
+
+    ## Layer stack (z) position
+
+
+    def reorder_layer(self, was_idx, new_idx, select_new=False):
         self.do(command.ReorderSingleLayer(self, was_idx, new_idx, select_new))
 
     def duplicate_layer(self, insert_idx=None, name=''):
