@@ -47,7 +47,6 @@ LOAD_CHUNK_SIZE = 64*1024
 from layer import DEFAULT_COMPOSITE_OP
 from layer import VALID_COMPOSITE_OPS
 
-## Class defs
 
 ## Class defs
 
@@ -101,13 +100,6 @@ class Document (object):
         self._frame_enabled = False
 
 
-
-    ## Layer (x, y) position
-
-
-    def move_current_layer(self, dx, dy):
-        layer = self.layers[self.layer_idx]
-        layer.translate(dx, dy)
 
 
     ## Document frame
@@ -291,7 +283,12 @@ class Document (object):
     def select_layer(self, idx):
         self.do(command.SelectLayer(self, idx))
 
+
+    ## Layer (x, y) position
+
+
     def record_layer_move(self, layer, dx, dy):
+        """Records that a layer has moved"""
         layer_idx = self.layers.index(layer)
         self.do(command.MoveLayer(self, layer_idx, dx, dy, True))
 
@@ -302,6 +299,10 @@ class Document (object):
     def reorder_layer(self, was_idx, new_idx, select_new=False):
         self.do(command.ReorderSingleLayer(self, was_idx, new_idx, select_new))
 
+
+    ## Misc layer command frontends
+
+
     def duplicate_layer(self, insert_idx=None, name=''):
         self.do(command.DuplicateLayer(self, insert_idx, name))
 
@@ -311,6 +312,9 @@ class Document (object):
     def clear_layer(self):
         if not self.layer.is_empty():
             self.do(command.ClearLayer(self))
+
+
+    ## Drawing strokes
 
 
     def stroke_to(self, dtime, x, y, pressure, xtilt, ytilt):
@@ -400,6 +404,9 @@ class Document (object):
         self.do(cmd)
 
 
+    ## Graphical refresh
+
+
     def layer_modified_cb(self, *args):
         """Forwards region modify notifications (area invalidations)
 
@@ -425,6 +432,9 @@ class Document (object):
         """
         for f in self.canvas_observers:
             f(0, 0, 0, 0)
+
+
+    ## Undo/redo command stack
 
 
     def undo(self):
@@ -455,6 +465,8 @@ class Document (object):
         self.split_stroke()
         return self.command_stack.get_last_command()
 
+
+    ## Utility methods
 
     def get_bbox(self):
         """Returns the dynamic bounding box of the document.
@@ -520,6 +532,9 @@ class Document (object):
         return dst
 
 
+    ## More layer stack commands
+
+
     def add_layer(self, insert_idx=None, after=None, name=''):
         self.do(command.AddLayer(self, insert_idx, after, name))
 
@@ -542,6 +557,9 @@ class Document (object):
         return True
 
 
+    ## Layer import/export
+
+
     def load_layer_from_pixbuf(self, pixbuf, x=0, y=0):
         arr = helpers.gdkpixbuf2numpy(pixbuf)
         s = tiledsurface.Surface()
@@ -555,6 +573,9 @@ class Document (object):
         bbox = s.load_from_png(filename, x, y, feedback_cb)
         self.do(command.LoadLayer(self, s))
         return bbox
+
+
+    ## Even more layer command frontends
 
 
     def set_layer_visibility(self, visible, layer):
@@ -601,6 +622,9 @@ class Document (object):
         self.do(command.SetLayerCompositeOp(self, compositeop, layer))
 
 
+    ## The background layer
+
+
     @property
     def background_layer(self):
         """The background layer (accessor)"""
@@ -638,17 +662,8 @@ class Document (object):
         self.set_frame(bbox, user_initiated=False)
 
 
-    def is_layered(self):
-        """True if there are more than one nonempty layers."""
-        count = 0
-        for l in self.layers:
-            if not l.is_empty():
-                count += 1
-        return count > 1
+    ## Saving and loading
 
-    def is_empty(self):
-        """True if there is only one layer and it is empty."""
-        return len(self.layers) == 1 and self.layer.is_empty()
 
     def save(self, filename, **kwargs):
         """Save the document to a file.
