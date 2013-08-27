@@ -8,6 +8,9 @@
 
 ## Imports
 
+import gi
+from gi.repository import GdkPixbuf
+
 import struct
 import zlib
 from numpy import *
@@ -79,6 +82,8 @@ COMPOSITE_OPS = [
 DEFAULT_COMPOSITE_OP = COMPOSITE_OPS[0][0]
 VALID_COMPOSITE_OPS = set([n for n,d,s in COMPOSITE_OPS])
 
+LOAD_CHUNK_SIZE = 64*1024
+
 
 ## Class defs
 
@@ -130,8 +135,39 @@ class Layer (object):
 
 
     def load_from_surface(self, surface):
+        """Load the surface image's tiles from another surface"""
         self._surface.load_from_surface(surface)
 
+
+    ## Generic pixbuf loader methods
+
+    @staticmethod
+    def _pixbuf_from_stream(fp, feedback_cb=None):
+        loader = GdkPixbuf.PixbufLoader()
+        while True:
+            if feedback_cb is not None:
+                feedback_cb()
+            buf = fp.read(LOAD_CHUNK_SIZE)
+            if buf == '':
+                break
+            loader.write(buf)
+        loader.close()
+        return loader.get_pixbuf()
+
+    def load_from_pixbuf_file(self, filename, x=0, y=0, feedback_cb=None):
+        """Loads the layer's surface from any file which GdkPixbuf can open"""
+        fp = open(filename, 'rb')
+        pixbuf = self._pixbuf_from_stream(fp, feedback_cb)
+        fp.close()
+        return self.load_from_pixbuf(pixbuf, x, y)
+
+    def load_from_pixbuf(self, pixbuf, x=0, y=0):
+        """Loads the layer's surface from a GdkPixbuf"""
+        arr = helpers.gdkpixbuf2numpy(pixbuf)
+        surface = tiledsurface.Surface()
+        bbox = surface.load_from_numpy(arr, x, y)
+        self.load_from_surface(surface)
+        return bbox
 
     def load_from_openraster(self, orazip, attrs, tempdir, feedback_cb):
         """Loads layer flags from XML attrs. Derived classes handle data.
@@ -447,7 +483,7 @@ class Layer (object):
 
 
 class BackgroundLayer (Layer):
-    """Background layer"""
+    """Background layer, with a repeating tiled image"""
 
     # NOTE: this could be generalized as a repeating tile for general use in
     # the layers stack, extending the ExternalLayer concept. Think textures!
@@ -517,6 +553,15 @@ class ExternalLayer (Layer):
         self._tempdir = None
         self._x = None
         self._y = None
+        self.locked = True
+
+
+    def load_from_pixbuf_file(self, filename, x, y, feedback_cb):
+        """Load from a file GdkPixbuf can handle, and record its name"""
+        Layer.load_from_pixbuf_file(self, filename, x, y, feedback_cb)
+        self._filename = filename
+        self._x = x
+        self._y = y
         self.locked = True
 
 
