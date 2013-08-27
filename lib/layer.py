@@ -458,16 +458,46 @@ class ExternalLayer (Layer):
     SVG files are the canonical example.
     """
 
-    def __init__(self, filename, x, y, name="",
-                 compositeop=DEFAULT_COMPOSITE_OP):
+    def __init__(self, name="", compositeop=DEFAULT_COMPOSITE_OP):
         """Construct, recording the filename, and its position"""
         Layer.__init__(self, name=name, compositeop=compositeop)
-        self.filename = filename
+        self._filename = None
+        self._tempdir = None
+        self._x = None
+        self._y = None
+        self.locked = True
 
-    @property
-    def locked(self):
-        """ExternalLayers are always locked for edits"""
-        return True
+
+    ## Moving
+
+
+    def get_move(self, x, y):
+        """Start a new move for the external layer"""
+        surface_move = Layer.get_move(self, x, y)
+        return ExternalLayerMove(self, surface_move)
+
+
+class ExternalLayerMove (object):
+    """Move object wrapper for external layers"""
+
+    def __init__(self, layer, surface_move):
+        object.__init__(self)
+        self._wrapped = surface_move
+        self._layer = layer
+        self._start_x = layer._x
+        self._start_y = layer._y
+
+    def update(self, dx, dy):
+        self._layer._x = int(round(self._start_x + dx))
+        self._layer._y = int(round(self._start_y + dy))
+        return self._wrapped.update(dx, dy)
+
+    def cleanup(self):
+        return self._wrapped.cleanup()
+
+    def process(self, n=200):
+        return self._wrapped.process(n)
+
 
 
 class PaintingLayer (Layer):
@@ -578,21 +608,10 @@ class PaintingLayer (Layer):
 
     ## Translating
 
-
-    def translate(self, dx, dy):
-        """Translate a layer non-interactively"""
-        Layer.translate(self, dx, dy)
-        # FIXME: move this to the final cleanup() or whatever of a custom move object.
-        for shape in self.strokes:
-            shape.translate(dx, dy)
-
-
     def get_move(self, x, y):
-        """Get a translation/move object for this layer"""
-        move = Layer.get_move(self, x, y)
-        return move
-        # FIXME: really should return an object that does the strokemap
-        # translates after the drag is complete.
+        """Get an interactive move object for the surface and its strokemap"""
+        surface_move = Layer.get_move(self, x, y)
+        return PaintingLayerMove(self, surface_move)
 
 
     ## Trimming
@@ -791,4 +810,35 @@ class PaintingLayer (Layer):
         attrs['mypaint_strokemap_v2'] = storepath
         return attrs
 
+class PaintingLayerMove (object):
+    """Move object wrapper for painting layers"""
+
+    def __init__(self, layer, surface_move):
+        object.__init__(self)
+        self._wrapped = surface_move
+        self._layer = layer
+        self._final_dx = 0
+        self._final_dy = 0
+
+    def update(self, dx, dy):
+        self._final_dx = dx
+        self._final_dy = dy
+        return self._wrapped.update(dx, dy)
+
+    def cleanup(self):
+        result = self._wrapped.cleanup()
+        dx = self._final_dx
+        dy = self._final_dy
+        # Arrange for the strokemap to be moved too;
+        # this happens in its own background idler.
+        for stroke in self._layer.strokes:
+            stroke.translate(dx, dy)
+            # Minor problem: huge strokemaps take a long time to move, and the
+            # translate must be forced to completion before drawing or any
+            # further layer moves. This can cause apparent hangs for no
+            # reason later on. Perhaps it would be better to process them
+            # fully in this hourglass-cursor phase after all?
+
+    def process(self, n=200):
+        return self._wrapped.process(n)
 

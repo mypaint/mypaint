@@ -725,13 +725,11 @@ class TiledSurfaceMove (object):
 
 
     def cleanup(self):
-        """Cleans up after processing all tile moves in one update cycle
+        """Cleans up after processing the move.
 
-        This should be called after `process()` indicates that all tiles have
-        been sliced and moved. It should always happen at the end of a move,
-        but for an iteractive move, this can happen in the middle of
-        proceedings too if the user pauses their drag for long enough. The move
-        can still be updated and processed after this method has been called.
+        This must be called after the move has been processed fully, and
+        should only be called after `process()` indicates that all tiles have
+        been sliced and moved.
         """
         # Process any remaining work. Caller should have done this already.
         if self.chunks_i < len(self.chunks) or len(self.blank_queue) > 0:

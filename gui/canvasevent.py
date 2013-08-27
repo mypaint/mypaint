@@ -1555,7 +1555,6 @@ class LayerMoveMode (SwitchableModeMixin,
         if self.move.process():
             return True
         # Nothing more to do for this move
-        self.move.cleanup()
         self._drag_update_idler_srcid = None
         return False
 
@@ -1617,16 +1616,6 @@ class LayerMoveMode (SwitchableModeMixin,
         tdw = self.drag_start_tdw
         dx = self.final_model_dx
         dy = self.final_model_dy
-
-        # Arrange for the strokemap to be moved too;
-        # this happens in its own background idler.
-        for stroke in self.layer.strokes:
-            stroke.translate(dx, dy)
-            # Minor problem: huge strokemaps take a long time to move, and the
-            # translate must be forced to completion before drawing or any
-            # further layer moves. This can cause apparent hangs for no
-            # reason later on. Perhaps it would be better to process them
-            # fully in this hourglass-cursor phase after all?
 
         # Record move so it can be undone
         self.doc.model.record_layer_move(self.layer, dx, dy)
