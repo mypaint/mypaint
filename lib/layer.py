@@ -394,6 +394,26 @@ class Layer (object):
         return attrs
 
 
+    ## Painting symmetry axis
+
+
+    def set_symmetry_axis(self, center_x):
+        """Sets the surface's painting symmetry axis
+
+        :param center_x: Model X coordinate of the axis of symmetry. Set
+               to None to remove the axis of symmetry
+        :type x: `float` or `None`
+
+        This is only useful for paintable layers.  Received strokes are
+        reflected in the symmetry axis when it is set.
+        """
+        if center_x is None:
+            self._surface.set_symmetry_state(False, 0.0)
+        else:
+            self._surface.set_symmetry_state(True, center_x)
+
+
+
 class BackgroundLayer (Layer):
     """Background layer"""
 
@@ -743,14 +763,7 @@ class PaintingLayer (Layer):
                 mypaintlib.tile_flat2rgba(dst, bg)
 
 
-    ## Painting symmetry axis
 
-
-    def set_symmetry_axis(self, center_x):
-        if center_x is None:
-            self._surface.set_symmetry_state(False, 0.0)
-        else:
-            self._surface.set_symmetry_state(True, center_x)
 
 
     ## Saving
