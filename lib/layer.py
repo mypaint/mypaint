@@ -413,6 +413,38 @@ class Layer (object):
             self._surface.set_symmetry_state(True, center_x)
 
 
+    ## Snapshots
+
+
+    def save_snapshot(self):
+        """Snapshots the state of the layer, for undo purposes
+
+        The returned data should be considered opaque, useful only as a
+        memento to be restored with load_snapshot().  The base impementation
+        snapshots only the surface tiles, and the layer's opacity.
+        """
+        return (self._surface.save_snapshot(), self.opacity)
+
+
+    def load_snapshot(self, data):
+        """Restores the layer from snapshot data."""
+        data, self.opacity = data
+        self._surface.load_snapshot(data)
+
+
+    ## Trimming
+
+
+    def trim(self, rect):
+        """Trim the layer to a rectangle, discarding data outside it
+
+        :param rect: A trimming rectangle in model coordinates
+        :type rect: tuple (x, y, w, h)
+
+        Only complete tiles are discarded by this method.
+        """
+        self._surface.trim(rect)
+
 
 class BackgroundLayer (Layer):
     """Background layer"""
@@ -488,6 +520,9 @@ class ExternalLayer (Layer):
         self.locked = True
 
 
+    ## Snapshots (TODO! should do file history)
+
+
     ## Moving
 
 
@@ -495,6 +530,14 @@ class ExternalLayer (Layer):
         """Start a new move for the external layer"""
         surface_move = Layer.get_move(self, x, y)
         return ExternalLayerMove(self, surface_move)
+
+
+    ## Trimming (no-op for external layers)
+
+
+    def trim(self, rect):
+        """Override: external layers have no useful trim(), so do nothing"""
+        pass
 
 
 class ExternalLayerMove (object):
@@ -605,7 +648,7 @@ class PaintingLayer (Layer):
 
     def add_stroke(self, stroke, snapshot_before):
         """Adds a stroke to the strokemap"""
-        before = snapshot_before[1] # extract surface snapshot
+        before = snapshot_before[1][0] # extract surface snapshot
         after  = self._surface.save_snapshot()
         shape = strokemap.StrokeShape()
         shape.init_from_snapshots(before, after)
@@ -617,13 +660,16 @@ class PaintingLayer (Layer):
 
 
     def save_snapshot(self):
-        return (self.strokes[:], self._surface.save_snapshot(), self.opacity)
+        """Snapshots the state of the layer and its strokemap for undo"""
+        base_snapshot = Layer.save_snapshot(self)
+        return (self.strokes[:], base_snapshot)
 
 
     def load_snapshot(self, data):
-        strokes, data, self.opacity = data
+        """Restores the layer and its strokemap from snapshot data"""
+        strokes, base_snapshot = data
         self.strokes = strokes[:]
-        self._surface.load_snapshot(data)
+        Layer.load_snapshot(self, base_snapshot)
 
 
     ## Translating
@@ -638,14 +684,8 @@ class PaintingLayer (Layer):
 
 
     def trim(self, rect):
-        """Trim the layer to a rectangle, discarding data outside it
-
-        :param rect: A trimming rectangle in model coordinates
-        :type rect: tuple (x, y, w, h)
-
-        Only complete tiles are discarded by this method.
-        """
-        self._surface.trim(rect)
+        """Trim the layer and its strokemap"""
+        Layer.trim(self, rect)
         empty_strokes = []
         for stroke in self.strokes:
             if not stroke.trim(rect):
