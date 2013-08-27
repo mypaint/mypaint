@@ -565,6 +565,30 @@ class ExternalLayer (Layer):
         self.locked = True
 
 
+    def load_from_openraster(self, orazip, attrs, tempdir, feedback_cb):
+        """Loads layer data and attrs from an OpenRaster zipfile"""
+        # Load layer flags
+        selected = Layer.load_from_openraster(self, orazip, attrs,
+                                              tempdir, feedback_cb)
+        # Read SVG or whatever content via a tempdir
+        src = attrs.get("src", None)
+        src_basename, src_ext = os.path.splitext(src)
+        src_basename = os.path.basename(src_basename)
+        src_ext = src_ext.lower()
+        x = int(attrs.get('x', 0))
+        y = int(attrs.get('y', 0))
+        t0 = time.time()
+        self._tempdir = tempdir
+        orazip.extract(src, self._tempdir)
+        tmp_filename = os.path.join(self._tempdir, src)
+        self.load_from_pixbuf_file(tmp_filename, x, y, feedback_cb)
+        t1 = time.time()
+        logger.debug('%.3fs loading and converting src %r for %r',
+                     t1 - t0, src_ext, src_basename)
+        # Return
+        return selected
+
+
     ## Snapshots (TODO! should do file history)
 
 
@@ -583,6 +607,37 @@ class ExternalLayer (Layer):
     def trim(self, rect):
         """Override: external layers have no useful trim(), so do nothing"""
         pass
+
+
+    ## Saving
+
+
+    def save_to_openraster(self, orazip, tmpdir, ref, selected,
+                           canvas_bbox, frame_bbox, **kwargs):
+        """Saves the tempfile to an OpenRaster zipfile, & returns attrs"""
+        # No supercall in this override, but the base implementation's
+        # attributes method is useful.
+        attrs = self._get_data_attrs(frame_bbox)
+        # Store the managed layer position rather than one based on the
+        # surface's tiles bbox, however.
+        fx, fy = frame_bbox[0:2]
+        attrs["x"] = self._x - fx
+        attrs["y"] = self._y - fy
+        # Pick a suitable name to store under.
+        src_basename, src_ext = os.path.splitext(self._filename)
+        src_ext = src_ext.lower()
+        if type(ref) == int:
+            storename = "layer%03d%s" % (ref, src_ext)
+        else:
+            storename = "%s%s" % (ref)
+        storepath = "data/%s" % (storename,)
+        # Archive (but do not remove) the managed tempfile
+        t0 = time.time()
+        orazip.write(self._filename, storepath)
+        t1 = time.time()
+        # Return details of what was written.
+        attrs["src"] = storepath
+        return attrs
 
 
 class ExternalLayerMove (object):
