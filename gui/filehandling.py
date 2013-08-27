@@ -237,9 +237,15 @@ class FileHandler(object):
             logger.info('Loaded from %r', self.filename)
             self.app.doc.reset_view(True, True, True)
             # try to restore the last used brush and color
-            si = self.doc.model.layer.get_last_stroke_info()
-            if si:
-                self.doc.restore_brush_from_stroke_info(si)
+            layers = [self.doc.model.layer]
+            layers += list(self.doc.model.layers)
+            for layer in layers:
+                if not hasattr(layer, "get_last_stroke_info"):
+                    continue
+                si = layer.get_last_stroke_info()
+                if si:
+                    self.doc.restore_brush_from_stroke_info(si)
+                break
 
     def open_scratchpad(self, filename):
         try:

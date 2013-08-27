@@ -256,7 +256,8 @@ class Document (object):
         input to allow parts of a long line to be undone.
 
         """
-        if not self.stroke: return
+        if not self.stroke:
+            return
         self.stroke.stop_recording()
         if not self.stroke.empty:
             cmd = command.Stroke(self, self.stroke,
@@ -341,15 +342,17 @@ class Document (object):
             Y-axis tilt, ranging from -1.0 to 1.0.
 
         """
-        if not self.stroke:
-            self.stroke = stroke.Stroke()
-            self.stroke.start_recording(self.brush)
-            self.snapshot_before_stroke = self.layer.save_snapshot()
-        self.stroke.record_event(dtime, x, y, pressure, xtilt, ytilt)
 
-        split = self.layer.stroke_to(self.brush, x, y,
-                                pressure, xtilt, ytilt, dtime)
-
+        if not hasattr(self.layer, "stroke_to"):
+            split = True
+        else:
+            if not self.stroke:
+                self.stroke = stroke.Stroke()
+                self.stroke.start_recording(self.brush)
+                self.snapshot_before_stroke = self.layer.save_snapshot()
+            self.stroke.record_event(dtime, x, y, pressure, xtilt, ytilt)
+            split = self.layer.stroke_to(self.brush, x, y,
+                                         pressure, xtilt, ytilt, dtime)
         if split:
             self.split_stroke()
 
