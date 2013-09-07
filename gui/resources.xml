@@ -1535,6 +1535,25 @@ Ctrl+Shift: constrain angle.</property>
         <accelerator key="r"/>
       </child>
 
+      <child>
+        <object class="GtkRadioAction" id="FloodFillMode">
+          <property name="label" translatable="yes"
+            context="Menu|Edit|Current Mode|">Flood Fill</property>
+          <property name="icon-name">insert-object</property>
+          <property name="tooltip" translatable="yes"
+            >Pick a color from the screen</property>
+          <property name="group">ColorPickMode</property>
+          <property name="value">10</property>
+        </object>
+      </child>
+      <child>
+        <object class="GtkAction" id="FlipFloodFillMode">
+          <property name="label" translatable="yes"
+            context="Menu|Edit|">Flood Fill</property>
+          <property name="icon-name">insert-object</property>
+          <signal name="activate" handler="mode_flip_action_activated_cb"/>
+        </object>
+      </child>
 
     </object><!-- /ModeStackActions -->
   </child>

@@ -124,6 +124,11 @@ class Layer (object):
         self._surface.end_atomic()
         return split
 
+
+    def flood_fill(self, x, y, color, bbox):
+        self._surface.flood_fill(x, y, color, bbox)
+
+
     def clear(self):
         self.strokes = [] # contains StrokeShape instances (not stroke.Stroke)
         self._surface.clear()

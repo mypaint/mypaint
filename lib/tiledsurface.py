@@ -538,6 +538,97 @@ class MyPaintSurface (object):
         return TiledSurfaceMove(self, x, y, sort=sort)
 
 
+    def flood_fill(self, x, y, color, bbox):
+        """Fills a point on the surface with a colour
+
+        :param x: Starting point X coordinate
+        :param y: Starting point Y coordinate
+        :param color: an RGB color
+        :type color: tuple
+        :param bbox: Bounding box: limits the fill
+        :type bbox: object ``tuple()``-able to ``(X, Y, W, H)``
+        """
+        # Colour to fill with
+        fill_r, fill_g, fill_b = color
+
+        # Tile and pixel addressind for the seed point
+        tx, ty = int(x//N), int(y//N)
+        px, py = int(x%N), int(y%N)
+
+        # Sample the pixel colour there to obtain the target colour
+        with self.tile_request(tx, ty, readonly=True) as tile:
+            targ_r, targ_g, targ_b, targ_a = [int(c) for c in tile[py][px]]
+        if targ_a == 0:
+            targ_r = 0
+            targ_g = 0
+            targ_b = 0
+            targ_a = 0
+
+        # Maximum area to fill: tile and in-tile pixel extents
+        bbx, bby, bbw, bbh = bbox
+        min_tx = int(bbx // N)
+        min_ty = int(bby // N)
+        max_tx = int((bbx + bbw) // N)
+        max_ty = int((bby + bbh) // N)
+        min_px = int(bbx % N)
+        min_py = int(bby % N)
+        max_px = int((bbx+bbw) % N)
+        max_py = int((bby+bbh) % N)
+
+        # Flood-fill loop
+        dirty_tiles = set()
+        tileq = [ ((tx, ty), [(px, py)]) ]
+        while len(tileq) > 0:
+            (tx, ty), seeds = tileq.pop(0)
+            # Bbox-derived limits
+            if tx > max_tx or ty > max_ty:
+                continue
+            if tx < min_tx or ty < min_ty:
+                continue
+            # Pixel limits within this tile...
+            min_x = 0
+            min_y = 0
+            max_x = N
+            max_y = N
+            # ... vary at the edges
+            if tx == min_tx:
+                min_x = min_px
+            if ty == min_ty:
+                min_y = min_py
+            if tx == max_tx:
+                max_x = max_px
+            if ty == max_ty:
+                max_y = max_py
+            # Flood-fill one tile
+            with self.tile_request(tx, ty, readonly=False) as tile:
+                overflows = mypaintlib.tile_flood_fill(tile, seeds,
+                               targ_r, targ_g, targ_b, targ_a,
+                               fill_r, fill_g, fill_b,
+                               min_x, min_y, max_x, max_y)
+            # Enqueue overflows in each cardinal direction
+            seeds_n, seeds_e, seeds_s, seeds_w = overflows
+            if seeds_n:
+                tpos = (tx, ty-1)
+                tileq.append((tpos, seeds_n))
+            if seeds_w:
+                tpos = (tx-1, ty)
+                tileq.append((tpos, seeds_w))
+            if seeds_s:
+                tpos = (tx, ty+1)
+                tileq.append((tpos, seeds_s))
+            if seeds_e:
+                tpos = (tx+1, ty)
+                tileq.append((tpos, seeds_e))
+            # Ensure tile will be redrawn
+            dirty_tiles.add((tx, ty))
+
+        # Redraw tiles after filling
+        for pos in dirty_tiles:
+            self._mark_mipmap_dirty(*pos)
+        bbox = get_tiles_bbox(dirty_tiles)
+        self.notify_observers(*bbox)
+
+
 class TiledSurfaceMove (object):
     """Ongoing move state for a tiled surface, processed in chunks
 

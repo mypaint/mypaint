@@ -22,3 +22,4 @@
 #include "colorchanger_crossed_bowl.hpp"
 #include "gdkpixbuf2numpy.hpp"
 #include "fastpng.hpp"
+#include "fill.hpp"

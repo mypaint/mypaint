@@ -26,6 +26,7 @@
       <!-- Modes which affect drawing -->
       <separator/>
       <menuitem action='FlipSwitchableFreehandMode'/>
+      <menuitem action='FlipFloodFillMode'/>
       <menuitem action='FlipStraightMode'/>
       <menuitem action='FlipSequenceMode'/>
       <menuitem action='FlipEllipseMode'/>
@@ -34,6 +35,7 @@
       <separator/>
       <menu action="CurrentModeMenu">
         <menuitem action='SwitchableFreehandMode'/>
+        <menuitem action='FloodFillMode'/>
         <menuitem action='StraightMode'/>
         <menuitem action='SequenceMode'/>
         <menuitem action='EllipseMode'/>

@@ -340,6 +340,18 @@ class Document():
         self.do(command.Stroke(self, new_stroke, snapshot_before))
 
 
+    def flood_fill(self, x, y, color):
+        """Flood-fills a point on the current layer with a colour
+
+        :param x: Starting point X coordinate
+        :param y: Starting point Y coordinate
+        :param color: an RGB color
+        :type color: tuple
+        """
+
+        self.do(command.FloodFill(self, x, y, color, self.get_effective_bbox()))
+
+
     def layer_modified_cb(self, *args):
         """Forwards region modify notifications (area invalidations)
 

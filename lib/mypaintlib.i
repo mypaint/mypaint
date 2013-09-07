@@ -28,6 +28,7 @@ typedef struct { int x, y, w, h; } Rect;
 %include "colorchanger_wash.hpp"
 %include "colorchanger_crossed_bowl.hpp"
 %include "fastpng.hpp"
+%include "fill.hpp"
 
 //from "gdkpixbuf2numpy.hpp"
 PyObject * gdkpixbuf_get_pixels_array(PyObject *pixbuf_pyobject);

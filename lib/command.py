@@ -166,6 +166,27 @@ class Stroke(Action):
         self.doc.layer.load_snapshot(self.after)
 
 
+class FloodFill (Action):
+    """Flood-fill on the current layer"""
+
+    display_name = _("Flood Fill")
+
+    def __init__(self, doc, x, y, color, bbox):
+        self.doc = doc
+        self.x = x
+        self.y = y
+        self.color = color
+        self.before = None
+        self.bbox = bbox
+
+    def redo(self):
+        self.before = self.doc.layer.save_snapshot()
+        self.doc.layer.flood_fill(self.x, self.y, self.color, self.bbox)
+
+    def undo(self):
+        self.doc.layer.load_snapshot(self.before)
+
+
 class TrimLayer (Action):
     """Trim the current layer to the extent of the document frame"""
 

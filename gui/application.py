@@ -57,6 +57,7 @@ import toolbar
 import linemode
 import colors
 import colorpreview
+import fill
 from brushcolor import BrushColorManager
 from overlays import LastPaintPosOverlay
 from overlays import ScaleOverlay

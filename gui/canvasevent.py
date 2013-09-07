@@ -1294,6 +1294,45 @@ class SpringLoadedModeMixin (InteractionMode):
         return super(SpringLoadedModeMixin,self).key_release_cb(win,tdw,event)
 
 
+class SingleClickMode (InteractionMode):
+    """Base class for non-drag (single click) modes"""
+
+    #: The cursor to use when entering the mode
+    cursor = gdk.Cursor(gdk.BOGOSITY)
+
+    def __init__(self, ignore_modifiers=False, **kwds):
+        super(SingleClickMode, self).__init__(**kwds)
+        self._button_pressed = None
+
+    def enter(self, **kwds):
+        super(SingleClickMode, self).enter(**kwds)
+        assert self.doc is not None
+        self.doc.tdw.set_override_cursor(self.cursor)
+
+    def leave(self, **kwds):
+        if self.doc is not None:
+            self.doc.tdw.set_override_cursor(None)
+        super(SingleClickMode, self).leave(**kwds)
+
+    def button_press_cb(self, tdw, event):
+        if event.button == 1 and event.type == gdk.BUTTON_PRESS:
+            self._button_pressed = 1
+            return False
+        else:
+            return super(SingleClickMode, self).button_press_cb(tdw, event)
+
+    def button_release_cb(self, tdw, event):
+        if event.button == self._button_pressed:
+            self._button_pressed = None
+            self.clicked_cb(tdw, event)
+            return False
+        else:
+            return super(SingleClickMode, self).button_press_cb(tdw, event)
+
+    def clicked_cb(self, tdw, event):
+        assert not hasattr(super(SingleClickMode, self), "clicked_cb")
+
+
 class DragMode (InteractionMode):
     """Base class for drag activities.
 
