@@ -63,11 +63,13 @@ public:
                              lock_alpha, colorize);
   }
 
-  void get_color (float x, float y, 
-                  float radius, 
-                  float * color_r, float * color_g, float * color_b, float * color_a
-                  ) {
-    mypaint_surface_get_color((MyPaintSurface *)c_surface, x, y, radius, color_r, color_g, color_b, color_a);
+  std::vector<double> get_color (double x, double y, double radius) {
+    std::vector<double> rgba = std::vector<double>(4, 0.0);
+    float r,g,b,a;
+    mypaint_surface_get_color((MyPaintSurface *)c_surface, x, y, radius,
+                              &r, &g, &b, &a);
+    rgba[0] = r; rgba[1] = g; rgba[2] = b; rgba[3] = a;
+    return rgba;
   }
 
   float get_alpha (float x, float y, float radius) {
