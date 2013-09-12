@@ -347,9 +347,26 @@ class Document():
         :param y: Starting point Y coordinate
         :param color: an RGB color
         :type color: tuple
-        """
 
-        self.do(command.FloodFill(self, x, y, color, self.get_effective_bbox()))
+        Filling an infinite canvas requires limits. If the frame is enabled,
+        this limits the maximum size of the fill, and filling outside the frame
+        is not possible.
+
+        Otherwise, if the entire document is empty, the limits are dynamic.
+        Initially only a single tile will be filled. This can then form one
+        corner for the next fill's limiting rectangle. This is a little quirky,
+        but allows big areas to be filled rapidly as needed on blank layers.
+        """
+        bbox = helpers.Rect(*tuple(self.get_effective_bbox()))
+        if bbox.empty():
+            bbox = helpers.Rect()
+            bbox.x = N*int(x//N)
+            bbox.y = N*int(y//N)
+            bbox.w = N
+            bbox.h = N
+        elif not self.frame_enabled:
+            bbox.expandToIncludePoint(x, y)
+        self.do(command.FloodFill(self, x, y, color, bbox))
 
 
     def layer_modified_cb(self, *args):

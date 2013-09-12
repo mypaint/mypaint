@@ -37,8 +37,9 @@ except ImportError:
             except ImportError:
                 raise ImportError("Could not import json. You either need to use python >= 2.6 or install one of python-cjson, python-json or python-simplejson.")
 
-class Rect:
+class Rect (object):
     def __init__(self, x=0, y=0, w=0, h=0):
+        object.__init__(self)
         self.x = x
         self.y = y
         self.w = w

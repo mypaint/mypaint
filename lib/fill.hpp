@@ -110,10 +110,10 @@ tile_flood_fill (PyObject *tile, /* HxWx4 array of uint16 */
 #endif
     if (min_x < 0) min_x = 0;
     if (min_y < 0) min_y = 0;
-    if (max_x >= MYPAINT_TILE_SIZE) max_x = MYPAINT_TILE_SIZE;
-    if (max_y >= MYPAINT_TILE_SIZE) max_y = MYPAINT_TILE_SIZE;
+    if (max_x > MYPAINT_TILE_SIZE-1) max_x = MYPAINT_TILE_SIZE-1;
+    if (max_y > MYPAINT_TILE_SIZE-1) max_y = MYPAINT_TILE_SIZE-1;
     if (min_x > max_x || min_y > max_y) {
-        return Py_BuildValue("[]");
+        return Py_BuildValue("[()()()()]");
     }
 
     // Populate a working queue with seeds
@@ -123,6 +123,8 @@ tile_flood_fill (PyObject *tile, /* HxWx4 array of uint16 */
         PyObject *seed_tup = PySequence_GetItem(seeds, i);
         x = (int) PyInt_AsLong(PySequence_GetItem(seed_tup, 0));
         y = (int) PyInt_AsLong(PySequence_GetItem(seed_tup, 1));
+        x = MAX(0, MIN(x, MYPAINT_TILE_SIZE-1));
+        y = MAX(0, MIN(y, MYPAINT_TILE_SIZE-1));
         // Skip seed point if we've already been here
         const fix15_short_t *pixel = _floodfill_getpixel(tile_arr, x, y);
         if ( (pixel[0] == fill_r15) &&
@@ -163,7 +165,7 @@ tile_flood_fill (PyObject *tile, /* HxWx4 array of uint16 */
         for (int i=0; i<2; ++i)
         {
             for ( int x = x0 + x_offset[i] ;
-                  x >= min_x && x < max_x ;
+                  x >= min_x && x <= max_x ;
                   x += x_delta[i] )
             {
                 // Halt expansion if we've already filled this pixel
@@ -181,7 +183,7 @@ tile_flood_fill (PyObject *tile, /* HxWx4 array of uint16 */
                     break;
                 }
                 // Also halt if we're outside the bbox range
-                if (x < min_x || y < min_y || x >= max_x || y >= max_y) {
+                if (x < min_x || y < min_y || x > max_x || y > max_y) {
                     break;
                 }
                 // Fill this pixel, and continue iterating in this direction.
@@ -234,8 +236,6 @@ tile_flood_fill (PyObject *tile, /* HxWx4 array of uint16 */
     g_queue_free(queue);
     return Py_BuildValue("[OOOO]", result_n, result_e, result_s, result_w);
 }
-
-
 
 
 #endif //__HAVE_FILL

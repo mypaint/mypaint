@@ -551,7 +551,22 @@ class MyPaintSurface (object):
         # Colour to fill with
         fill_r, fill_g, fill_b = color
 
-        # Tile and pixel addressind for the seed point
+        # Maximum area to fill: tile and in-tile pixel extents
+        bbx, bby, bbw, bbh = bbox
+        if bbh <= 0 or bbw <= 0:
+            return
+        bbbrx = bbx + bbw - 1
+        bbbry = bby + bbh - 1
+        min_tx = int(bbx // N)
+        min_ty = int(bby // N)
+        max_tx = int(bbbrx // N)
+        max_ty = int(bbbry // N)
+        min_px = int(bbx % N)
+        min_py = int(bby % N)
+        max_px = int(bbbrx % N)
+        max_py = int(bbbry % N)
+
+        # Tile and pixel addressing for the seed point
         tx, ty = int(x//N), int(y//N)
         px, py = int(x%N), int(y%N)
 
@@ -563,17 +578,6 @@ class MyPaintSurface (object):
             targ_g = 0
             targ_b = 0
             targ_a = 0
-
-        # Maximum area to fill: tile and in-tile pixel extents
-        bbx, bby, bbw, bbh = bbox
-        min_tx = int(bbx // N)
-        min_ty = int(bby // N)
-        max_tx = int((bbx + bbw) // N)
-        max_ty = int((bby + bbh) // N)
-        min_px = int(bbx % N)
-        min_py = int(bby % N)
-        max_px = int((bbx+bbw) % N)
-        max_py = int((bby+bbh) % N)
 
         # Flood-fill loop
         dirty_tiles = set()
@@ -588,8 +592,8 @@ class MyPaintSurface (object):
             # Pixel limits within this tile...
             min_x = 0
             min_y = 0
-            max_x = N
-            max_y = N
+            max_x = N-1
+            max_y = N-1
             # ... vary at the edges
             if tx == min_tx:
                 min_x = min_px
@@ -600,23 +604,33 @@ class MyPaintSurface (object):
             if ty == max_ty:
                 max_y = max_py
             # Flood-fill one tile
+            existing = (tx, ty) in self.tiledict
+            one = 1<<15
+            col = (int(fill_r*one), int(fill_g*one), int(fill_b*one), one)
             with self.tile_request(tx, ty, readonly=False) as tile:
-                overflows = mypaintlib.tile_flood_fill(tile, seeds,
-                               targ_r, targ_g, targ_b, targ_a,
-                               fill_r, fill_g, fill_b,
-                               min_x, min_y, max_x, max_y)
+                if not existing:
+                    tile[min_y:max_y+1,min_x:max_x+1] = col
+                    seeds_n = zip(range(min_x, max_x+1), [N-1]*N)
+                    seeds_e = zip([0]*N, range(min_y, min_y+1))
+                    seeds_s = zip(range(min_x, max_x+1), [0]*N)
+                    seeds_w = zip([N-1]*N, range(min_y, min_y+1))
+                else:
+                    overflows = mypaintlib.tile_flood_fill(tile, seeds,
+                                   targ_r, targ_g, targ_b, targ_a,
+                                   fill_r, fill_g, fill_b,
+                                   min_x, min_y, max_x, max_y)
+                    seeds_n, seeds_e, seeds_s, seeds_w = overflows
             # Enqueue overflows in each cardinal direction
-            seeds_n, seeds_e, seeds_s, seeds_w = overflows
-            if seeds_n:
+            if seeds_n and ty > min_ty:
                 tpos = (tx, ty-1)
                 tileq.append((tpos, seeds_n))
-            if seeds_w:
+            if seeds_w and tx > min_tx:
                 tpos = (tx-1, ty)
                 tileq.append((tpos, seeds_w))
-            if seeds_s:
+            if seeds_s and ty < max_ty:
                 tpos = (tx, ty+1)
                 tileq.append((tpos, seeds_s))
-            if seeds_e:
+            if seeds_e and tx < max_tx:
                 tpos = (tx+1, ty)
                 tileq.append((tpos, seeds_e))
             # Ensure tile will be redrawn

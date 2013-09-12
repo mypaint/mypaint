@@ -21,6 +21,7 @@ import windowing
 import canvasevent
 from overlays import rounded_box, Overlay
 import colors
+import fill
 
 
 ## Color picking mode, with a preview rectangle overlay
@@ -57,7 +58,8 @@ class ColorPickMode (canvasevent.SpringLoadedDragMode,
         # Any drawing mode
         import linemode
         return isinstance(mode, linemode.LineModeBase) \
-            or isinstance(mode, canvasevent.SwitchableFreehandMode)
+            or isinstance(mode, canvasevent.SwitchableFreehandMode) \
+            or isinstance(mode, fill.FloodFillMode)
 
 
     def __init__(self, **kwds):

@@ -38,6 +38,7 @@ the Free Software Foundation; either version 2 of the License, or
     <placeholder name="blendmodes-toolitems"/>
     <placeholder name="linemodes-toolitems"/>
     <toolitem action="ColorPickMode"/>
+    <toolitem action="FloodFillMode"/>
     <toolitem action="LayerMoveMode"/>
     <toolitem action="FrameEditMode"/>
     <toolitem action="Symmetry"/>

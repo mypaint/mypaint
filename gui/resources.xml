@@ -1539,7 +1539,7 @@ Ctrl+Shift: constrain angle.</property>
         <object class="GtkRadioAction" id="FloodFillMode">
           <property name="label" translatable="yes"
             context="Menu|Edit|Current Mode|">Flood Fill</property>
-          <property name="icon-name">insert-object</property>
+          <property name="icon-name">mypaint-tool-flood-fill</property>
           <property name="tooltip" translatable="yes"
             >Pick a color from the screen</property>
           <property name="group">ColorPickMode</property>
@@ -1550,7 +1550,7 @@ Ctrl+Shift: constrain angle.</property>
         <object class="GtkAction" id="FlipFloodFillMode">
           <property name="label" translatable="yes"
             context="Menu|Edit|">Flood Fill</property>
-          <property name="icon-name">insert-object</property>
+          <property name="icon-name">mypaint-tool-flood-fill</property>
           <signal name="activate" handler="mode_flip_action_activated_cb"/>
         </object>
       </child>
