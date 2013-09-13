@@ -538,7 +538,7 @@ class MyPaintSurface (object):
         return TiledSurfaceMove(self, x, y, sort=sort)
 
 
-    def flood_fill(self, x, y, color, bbox):
+    def flood_fill(self, x, y, color, bbox, tolerance=0.1, tiledict=None):
         """Fills a point on the surface with a colour
 
         :param x: Starting point X coordinate
@@ -546,7 +546,23 @@ class MyPaintSurface (object):
         :param color: an RGB color
         :type color: tuple
         :param bbox: Bounding box: limits the fill
-        :type bbox: object ``tuple()``-able to ``(X, Y, W, H)``
+        :type bbox: lib.helpers.Rect or equivalent 4-tuple
+        :param tolerance: how much filled pixels are permitted to vary
+        :type tolerance: float [0.0, 1.0]
+        :param tiledict: Optional target tiledict
+        :type tiledict: dict or None
+
+        The `tolerance` parameter controls how much pixels are permitted to
+        vary from the starting colour.  We use the 4D Euclidean distance from
+        the starting point to each pixel under consideration as a metric,
+        scaled so that its range lies between 0.0 and 1.0.
+
+        If a target `tiledict` is specified, the fillled area will be written
+        into it, and not directly into the surface.  By default, a temporary
+        tiledict will be created and then composited over the surface when
+        the fill is complete.  Regardless of whether compositing is done by
+        this method, the affected area is invalidated, and a redraw of the
+        affected tiles' area will be queued.
         """
         # Colour to fill with
         fill_r, fill_g, fill_b = color
@@ -571,8 +587,8 @@ class MyPaintSurface (object):
         px, py = int(x%N), int(y%N)
 
         # Sample the pixel colour there to obtain the target colour
-        with self.tile_request(tx, ty, readonly=True) as tile:
-            targ_r, targ_g, targ_b, targ_a = [int(c) for c in tile[py][px]]
+        with self.tile_request(tx, ty, readonly=True) as start:
+            targ_r, targ_g, targ_b, targ_a = [int(c) for c in start[py][px]]
         if targ_a == 0:
             targ_r = 0
             targ_g = 0
@@ -580,7 +596,10 @@ class MyPaintSurface (object):
             targ_a = 0
 
         # Flood-fill loop
-        dirty_tiles = set()
+        if tiledict is None:
+            filled = {}
+        else:
+            filled = tiledict
         tileq = [ ((tx, ty), [(px, py)]) ]
         while len(tileq) > 0:
             (tx, ty), seeds = tileq.pop(0)
@@ -604,22 +623,19 @@ class MyPaintSurface (object):
             if ty == max_ty:
                 max_y = max_py
             # Flood-fill one tile
-            existing = (tx, ty) in self.tiledict
             one = 1<<15
             col = (int(fill_r*one), int(fill_g*one), int(fill_b*one), one)
-            with self.tile_request(tx, ty, readonly=False) as tile:
-                if not existing:
-                    tile[min_y:max_y+1,min_x:max_x+1] = col
-                    seeds_n = zip(range(min_x, max_x+1), [N-1]*N)
-                    seeds_e = zip([0]*N, range(min_y, min_y+1))
-                    seeds_s = zip(range(min_x, max_x+1), [0]*N)
-                    seeds_w = zip([N-1]*N, range(min_y, min_y+1))
-                else:
-                    overflows = mypaintlib.tile_flood_fill(tile, seeds,
-                                   targ_r, targ_g, targ_b, targ_a,
-                                   fill_r, fill_g, fill_b,
-                                   min_x, min_y, max_x, max_y)
-                    seeds_n, seeds_e, seeds_s, seeds_w = overflows
+            with self.tile_request(tx, ty, readonly=True) as src:
+                dst = filled.get((tx, ty), None)
+                if dst is None:
+                    dst = zeros((N, N, 4), 'uint16')
+                    filled[(tx, ty)] = dst
+                overflows = mypaintlib.tile_flood_fill(src, dst, seeds,
+                               targ_r, targ_g, targ_b, targ_a,
+                               fill_r, fill_g, fill_b,
+                               min_x, min_y, max_x, max_y,
+                               tolerance)
+                seeds_n, seeds_e, seeds_s, seeds_w = overflows
             # Enqueue overflows in each cardinal direction
             if seeds_n and ty > min_ty:
                 tpos = (tx, ty-1)
@@ -633,13 +649,16 @@ class MyPaintSurface (object):
             if seeds_e and tx < max_tx:
                 tpos = (tx+1, ty)
                 tileq.append((tpos, seeds_e))
-            # Ensure tile will be redrawn
-            dirty_tiles.add((tx, ty))
 
-        # Redraw tiles after filling
-        for pos in dirty_tiles:
-            self._mark_mipmap_dirty(*pos)
-        bbox = get_tiles_bbox(dirty_tiles)
+        # Composite filled tiles into the destination
+        if filled is not tiledict:
+            comp = functools.partial(mypaintlib.tile_composite,
+                                     mypaintlib.BlendingModeNormal)
+            for (tx, ty), src in filled.iteritems():
+                with self.tile_request(tx, ty, readonly=False) as dst:
+                    comp(src, dst, True, 1.0)
+                self._mark_mipmap_dirty(tx, ty)
+        bbox = get_tiles_bbox(filled)
         self.notify_observers(*bbox)
 
 

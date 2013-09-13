@@ -16,7 +16,10 @@
 /* Flood fill */
 
 
-// Pixel access helper
+/* _floodfill_getpixel:
+
+Pixel access helper for arrays in the tile format.
+*/
 
 static inline fix15_short_t*
 _floodfill_getpixel(PyArrayObject *array,
@@ -31,31 +34,56 @@ _floodfill_getpixel(PyArrayObject *array,
 }
                     
 
-// Color match helper
+/* _floodfill_color_dist:
+
+Distance metric used for flood fill. Euclidean distance between two
+premultiplied RGBA colours. Result is a scaled int in the range [0.0, 1.0].
+*/
+
+static inline fix15_t
+_floodfill_color_dist(const fix15_short_t c1_premult[4],
+                      const fix15_short_t c2_premult[4])
+{
+    const fix15_short_t c1_a = c1_premult[3];
+    fix15_short_t c1[] = {
+        fix15_short_clamp(c1_a <= 0 ? 0 : fix15_div(c1_premult[0], c1_a)),
+        fix15_short_clamp(c1_a <= 0 ? 0 : fix15_div(c1_premult[1], c1_a)),
+        fix15_short_clamp(c1_a <= 0 ? 0 : fix15_div(c1_premult[2], c1_a)),
+        fix15_short_clamp(c1_a),
+    };
+    const fix15_short_t c2_a = c2_premult[3];
+    fix15_short_t c2[] = {
+        fix15_short_clamp(c2_a <= 0 ? 0 : fix15_div(c2_premult[0], c2_a)),
+        fix15_short_clamp(c2_a <= 0 ? 0 : fix15_div(c2_premult[1], c2_a)),
+        fix15_short_clamp(c2_a <= 0 ? 0 : fix15_div(c2_premult[2], c2_a)),
+        fix15_short_clamp(c2_a),
+    };
+    fix15_t sumsqdiffs = 0;
+    for (int i=0; i<4; ++i) {
+        fix15_t n = (c1[i] > c2[i]) ? (c1[i] - c2[i]) : (c2[i] - c1[i]);
+        n >>= 2; // quarter, to avoid a fixed maths sqrt() overflow
+        sumsqdiffs += fix15_mul(n, n);
+    }
+    return fix15_sqrt(sumsqdiffs) << 1;  // [0.0 .. 0.5], doubled
+}
+
+
+/* _floodfill_should_fill:
+
+True if the fill should update the dst pixel of a src/dst pixel pair.
+
+*/
 
 static inline bool
-_floodfill_color_match(const fix15_short_t* const pixel,  // premult RGB, and A
-                       const fix15_t targ_r, // premult
-                       const fix15_t targ_g, // premult
-                       const fix15_t targ_b, // premult
-                       const fix15_t targ_a)
+_floodfill_should_fill(const fix15_short_t src_col[4], // premult RGB+A
+                       const fix15_short_t dst_col[4], // premult RGB+A
+                       const fix15_short_t targ_col[4],  // premult RGB+A
+                       const fix15_t tolerance)  // prescaled to range
 {
-    // The comparison is done using approximately a 7 bit representation
-    // for each colour channel.
-    const unsigned static int imprecision = 8;
-
-    // Like tile_perceptual_change_strokemap() only (P.{r,g,b,a} * P.alpha) is
-    // known for each pixel P, and the same for the target colour. Therefore
-    // multiply each component with the alpha of the other colour so that
-    // they're in the same base and can be compared.
-    const fix15_t a = pixel[3];
-    fix15_t r = targ_a * (fix15_t)pixel[0];
-    fix15_t g = targ_a * (fix15_t)pixel[1];
-    fix15_t b = targ_a * (fix15_t)pixel[2];
-    return (   ((targ_r*a) >> imprecision) == (r >> imprecision)
-            && ((targ_g*a) >> imprecision) == (g >> imprecision)
-            && ((targ_b*a) >> imprecision) == (b >> imprecision)
-            && (targ_a >> imprecision) == (a >> imprecision) );
+    if (dst_col[3] != 0) {
+        return false;   // already filled
+    }
+    return _floodfill_color_dist(src_col, targ_col) <= tolerance;
 }
 
 
@@ -66,45 +94,52 @@ typedef struct {
 } _floodfill_point;
 
 
-/*
- * Flood fill one tile from a sequence of seed positions, and return overflows
- *
- * Returns four lists of overflow coordinates denoting on which pixels of the
- * next tile to the N, E, S, and W the fill has overflowed. These coordinates
- * can be fed back unto tile_flood_fill() for the tile identified.
- */
+/* tile_flood_fill:
+
+Flood fill one tile from a sequence of seed positions, and return overflows
+
+Returns four lists of overflow coordinates denoting on which pixels of the
+next tile to the N, E, S, and W the fill has overflowed. These coordinates
+can be fed back unto tile_flood_fill() for the tile identified.
+
+*/
 
 PyObject *
-tile_flood_fill (PyObject *tile, /* HxWx4 array of uint16 */
+tile_flood_fill (PyObject *src, /* readonly HxWx4 array of uint16 */
+                 PyObject *dst, /* output HxWx4 array of uint16 */
                  PyObject *seeds, /* List of 2-tuples */
                  int targ_r, int targ_g, int targ_b, int targ_a, //premult
                  double fill_r, double fill_g, double fill_b,
-                 int min_x, int min_y, int max_x, int max_y)
+                 int min_x, int min_y, int max_x, int max_y,
+                 double tol) /* [0..1] */
 {
+    // Scale the fractional tolerance arg
+    const fix15_t tolerance = (fix15_t)(  MIN(1.0, MAX(0.0, tol))
+                                        * fix15_one);
+
     // Fill colour args are floats [0.0 .. 1.0], non-premultiplied by alpha.
     // The targ_ colour components are 15-bit scaled ints in the range
     // [0 .. 1<<15], and are premultiplied by targ_a which has the same range.
-    fix15_short_t targ_r15 = fix15_short_clamp(targ_r);
-    fix15_short_t targ_g15 = fix15_short_clamp(targ_g);
-    fix15_short_t targ_b15 = fix15_short_clamp(targ_b);
-    fix15_short_t targ_a15 = fix15_short_clamp(targ_a);
-    fix15_short_t fill_r15 = fix15_short_clamp(fill_r * fix15_one);
-    fix15_short_t fill_g15 = fix15_short_clamp(fill_g * fix15_one);
-    fix15_short_t fill_b15 = fix15_short_clamp(fill_b * fix15_one);
-    PyArrayObject *tile_arr = ((PyArrayObject *)tile);
+    const fix15_short_t targ[4] = {
+            fix15_short_clamp(targ_r), fix15_short_clamp(targ_g),
+            fix15_short_clamp(targ_b), fix15_short_clamp(targ_a)
+        };
+    PyArrayObject *src_arr = ((PyArrayObject *)src);
+    PyArrayObject *dst_arr = ((PyArrayObject *)dst);
     // Dimensions are [y][x][component]
 #ifdef HEAVY_DEBUG
-    assert(PyArray_Check(tile));
-    assert(PyArray_DIM(tile_arr, 0) == MYPAINT_TILE_SIZE);
-    assert(PyArray_DIM(tile_arr, 1) == MYPAINT_TILE_SIZE);
-    assert(PyArray_DIM(tile_arr, 2) == 4);
-    assert(PyArray_TYPE(tile_arr) == NPY_UINT16);
-    assert(PyArray_ISCARRAY(tile_arr));
-    static const unsigned int xstride = PyArray_STRIDES(tile_arr)[1];
-    assert(xstride == 4*sizeof(uint16_t));
-    static const unsigned int ystride = PyArray_STRIDES(tile_arr)[0];
-    assert(ystride == MYPAINT_TILE_SIZE * xstride);
-    assert(PyArray_STRIDES(tile_arr)[2] == sizeof(uint16_t));
+    assert(PyArray_Check(src));
+    assert(PyArray_Check(dst));
+    assert(PyArray_DIM(src_arr, 0) == MYPAINT_TILE_SIZE);
+    assert(PyArray_DIM(dst_arr, 0) == MYPAINT_TILE_SIZE);
+    assert(PyArray_DIM(src_arr, 1) == MYPAINT_TILE_SIZE);
+    assert(PyArray_DIM(dst_arr, 1) == MYPAINT_TILE_SIZE);
+    assert(PyArray_DIM(src_arr, 2) == 4);
+    assert(PyArray_DIM(dst_arr, 2) == 4);
+    assert(PyArray_TYPE(src_arr) == NPY_UINT16);
+    assert(PyArray_TYPE(dst_arr) == NPY_UINT16);
+    assert(PyArray_ISCARRAY(src_arr));
+    assert(PyArray_ISCARRAY(dst_arr));
     assert(PySequence_Check(seeds));
     int num_compared = 1;
 #endif
@@ -125,18 +160,9 @@ tile_flood_fill (PyObject *tile, /* HxWx4 array of uint16 */
         y = (int) PyInt_AsLong(PySequence_GetItem(seed_tup, 1));
         x = MAX(0, MIN(x, MYPAINT_TILE_SIZE-1));
         y = MAX(0, MIN(y, MYPAINT_TILE_SIZE-1));
-        // Skip seed point if we've already been here
-        const fix15_short_t *pixel = _floodfill_getpixel(tile_arr, x, y);
-        if ( (pixel[0] == fill_r15) &&
-             (pixel[1] == fill_g15) &&
-             (pixel[2] == fill_b15) &&
-             (pixel[3] == fix15_one) ) {
-            continue;
-        }
-        // Enqueue the seed point if it matches the target colour
-        if (_floodfill_color_match(pixel, targ_r15, targ_g15, targ_b15,
-                                          targ_a15))
-        {
+        const fix15_short_t *src_pixel = _floodfill_getpixel(src_arr, x, y);
+        const fix15_short_t *dst_pixel = _floodfill_getpixel(dst_arr, x, y);
+        if (_floodfill_should_fill(src_pixel, dst_pixel, targ, tolerance)) {
             _floodfill_point *seed_pt = (_floodfill_point*)
                                           malloc(sizeof(_floodfill_point));
             seed_pt->x = x;
@@ -164,63 +190,114 @@ tile_flood_fill (PyObject *tile, /* HxWx4 array of uint16 */
         static const int x_offset[] = {0, 1};
         for (int i=0; i<2; ++i)
         {
+            bool look_above = true;
+            bool look_below = true;
             for ( int x = x0 + x_offset[i] ;
                   x >= min_x && x <= max_x ;
                   x += x_delta[i] )
             {
-                // Halt expansion if we've already filled this pixel
-                fix15_short_t *pixel = _floodfill_getpixel(tile_arr, x, y);
-                if ( (pixel[0] == fill_r15) &&
-                     (pixel[1] == fill_g15) &&
-                     (pixel[2] == fill_b15) &&
-                     (pixel[3] == fix15_one) ) {
-                    break;
-                }
-                // Halt expansion if the pixel doesn't match the target colour.
-                if (! _floodfill_color_match(pixel, targ_r15, targ_g15, targ_b15,
-                                                    targ_a15))
-                {
-                    break;
+                fix15_short_t *src_pixel = _floodfill_getpixel(src_arr, x, y);
+                fix15_short_t *dst_pixel = _floodfill_getpixel(dst_arr, x, y);
+                if (x != x0) { // Test was already done for queued pixels
+                    if (! _floodfill_should_fill(src_pixel, dst_pixel,
+                                                 targ, tolerance))
+                    {
+                        break;
+                    }
                 }
                 // Also halt if we're outside the bbox range
                 if (x < min_x || y < min_y || x > max_x || y > max_y) {
                     break;
                 }
-                // Fill this pixel, and continue iterating in this direction.
-                // In addition, enqueue the pixels above and below that
-                // matched.
-                pixel[0] = fix15_short_clamp(fill_r * fix15_one);
-                pixel[1] = fix15_short_clamp(fill_g * fix15_one);
-                pixel[2] = fix15_short_clamp(fill_b * fix15_one);
-                pixel[3] = fix15_one;
-                if (y > 0) {
-                    // Enqueue the pixel to the north
-                    _floodfill_point *p = (_floodfill_point *)
-                                            malloc(sizeof(_floodfill_point));
-                    p->x = x;
-                    p->y = y-1;
-                    g_queue_push_tail(queue, p);
+                // Fill this pixel, and continue iterating in this direction
+                fix15_t alpha = 0;
+                if (tolerance > 0) {
+                    fix15_t dist = _floodfill_color_dist(targ, src_pixel);
+                    alpha = fix15_short_clamp(fix15_one -
+                                              fix15_div(dist, tolerance));
                 }
                 else {
-                    // Overflow onto the tile to the North
+                    alpha = fix15_one;
+                }
+                // alpha = fix15_short_clamp(fix15_mul(src_pixel[3], alpha));
+                if (alpha == 0) {
+                    alpha = 0x0001; // can't have zero
+                }
+                dst_pixel[0] = fix15_short_clamp(fill_r * alpha);
+                dst_pixel[1] = fix15_short_clamp(fill_g * alpha);
+                dst_pixel[2] = fix15_short_clamp(fill_b * alpha);
+                dst_pixel[3] = alpha;
+                // In addition, enqueue the pixels above and below.
+                // Scanline algorithm here to avoid some pointless queue faff.
+                if (y > 0) {
+                    fix15_short_t *src_pixel_above = _floodfill_getpixel(
+                                                       src_arr, x, y-1
+                                                     );
+                    fix15_short_t *dst_pixel_above = _floodfill_getpixel(
+                                                       dst_arr, x, y-1
+                                                     );
+                    bool match_above = _floodfill_should_fill(
+                                         src_pixel_above, dst_pixel_above,
+                                         targ, tolerance
+                                       );
+                    if (look_above) {
+                        if (match_above) {
+                            // Enqueue the pixel to the north
+                            _floodfill_point *p = (_floodfill_point *) malloc(
+                                                    sizeof(_floodfill_point)
+                                                  );
+                            p->x = x;
+                            p->y = y-1;
+                            g_queue_push_tail(queue, p);
+                            look_above = false;
+                        }
+                    }
+                    else if (!match_above) {
+                        look_above = true;
+                    }
+                }
+                else {
+                    // Overflow onto the tile to the North.
+                    // Scanlining not possible here: pixel is over the border.
                     PyObject *s = Py_BuildValue("ii", x, MYPAINT_TILE_SIZE-1);
                     PyList_Append(result_n, s);
                 }
                 if (y < MYPAINT_TILE_SIZE - 1) {
-                    // Enqueue the pixel to the South
-                    _floodfill_point *p = (_floodfill_point *)
-                                            malloc(sizeof(_floodfill_point));
-                    p->x = x;
-                    p->y = y+1;
-                    g_queue_push_tail(queue, p);
+                    fix15_short_t *src_pixel_below = _floodfill_getpixel(
+                                                       src_arr, x, y+1
+                                                     );
+                    fix15_short_t *dst_pixel_below = _floodfill_getpixel(
+                                                       dst_arr, x, y+1
+                                                     );
+
+                    bool match_below = _floodfill_should_fill(
+                                         src_pixel_below, dst_pixel_below,
+                                         targ, tolerance
+                                       );
+                    if (look_below) {
+                        if (match_below) {
+                            // Enqueue the pixel to the South
+                            _floodfill_point *p = (_floodfill_point *) malloc(
+                                                    sizeof(_floodfill_point)
+                                                  );
+                            p->x = x;
+                            p->y = y+1;
+                            g_queue_push_tail(queue, p);
+                            look_below = false;
+                        }
+                    }
+                    else if (!match_below) {
+                        look_below = true;
+                    }
                 }
                 else {
                     // Overflow onto the tile to the South
+                    // Scanlining not possible here: pixel is over the border.
                     PyObject *s = Py_BuildValue("ii", x, 0);
                     PyList_Append(result_s, s);
                 }
                 // If the fill is now at the west or east extreme, we have
-                // overflowed.  Seed West and East tiles.
+                // overflowed there too.  Seed West and East tiles.
                 if (x == 0) {
                     PyObject *s = Py_BuildValue("ii", MYPAINT_TILE_SIZE-1, y);
                     PyList_Append(result_w, s);
@@ -232,7 +309,9 @@ tile_flood_fill (PyObject *tile, /* HxWx4 array of uint16 */
             }
         }
     }
-    
+
+    // Clean up working state, and return where the fill has overflowed
+    // into neighbouring tiles.
     g_queue_free(queue);
     return Py_BuildValue("[OOOO]", result_n, result_e, result_s, result_w);
 }

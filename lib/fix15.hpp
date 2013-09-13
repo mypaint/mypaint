@@ -84,7 +84,8 @@ inputs in the range 0 to fix15_one, we guarantee
     * Maximum iterations: 8
     * Inaccuracies: 0
 
-Outside that range, the method should be "good enough".
+Input is limited to the range [0.0, 1.0], unscaled due to internaal rounding
+issues.
 
 If we need it to run faster, we can use a bigger lookup table or the binary
 approximation method used by libfixmath.
@@ -101,6 +102,9 @@ static const uint16_t _int15_sqrt_approx16[] = {
 static inline fix15_t
 fix15_sqrt (const fix15_t x)
 {
+#ifdef HEAVY_DEBUG
+    assert(x <= fix15_one);
+#endif
     if ((x == 0) || (x == fix15_one)) {
         return x;
     }
@@ -108,14 +112,14 @@ fix15_sqrt (const fix15_t x)
     // A scaled value of 1.0 would overflow, so inflate type
     uint32_t s = x << 1;
     const int fracbits = _fix15_fracbits + 1;
+
     // Initial approximation
-    uint32_t n = 0;
-    if (x < fix15_one) {
-        n = _int15_sqrt_approx16[s>>12];  // s/4096 as index 0..15
-    }
-    else {
-        n = x;    // s/2
-    }
+    uint32_t n = _int15_sqrt_approx16[s>>12];  // s/4096 as index 0..15
+    // If we really accurate sqrt() for x >
+    // 1.0, we'll need a 64-bit representation since the (s << fracbits) term
+    // in the iteration below will overflow a uint32_t. This could use n = x as
+    // its approximation for x > 1.0.
+
     uint32_t n_old = 0;
     // Iterate until converged "closely enough" (ugh).
     for (int i = 0; i < 15; ++i) {
