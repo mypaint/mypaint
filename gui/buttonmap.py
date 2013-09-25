@@ -292,9 +292,8 @@ class ButtonMappingEditor (gtk.EventBox):
         list_tools = gtk.Toolbar()
         list_tools.set_style(gtk.TOOLBAR_ICONS)
         list_tools.set_icon_size(gtk.ICON_SIZE_SMALL_TOOLBAR)
-        if False: # TODO: GTK3
-            context = list_tools.get_style_context()
-            context.add_class("inline-toolbar")
+        context = list_tools.get_style_context()
+        context.add_class("inline-toolbar")
         self.vbox.pack_start(list_tools, False, False)
 
         # Add binding
