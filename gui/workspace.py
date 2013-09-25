@@ -1360,10 +1360,7 @@ class ToolStack (Gtk.EventBox):
             else:
                 label.set_from_icon_name(icon_name, lsize)
             title = _tool_widget_get_title(tool_widget)
-            try:
-                desc = tool_widget.tool_widget_description
-            except AttributeError:
-                desc = None
+            desc = getattr(tool_widget, "tool_widget_description", None)
             ttsize = cls.TAB_TOOLTIP_ICON_SIZE
             tooltip_icon_pixbuf, tooltip_icon_name = _tool_widget_get_icon(
                                                         tool_widget, ttsize)
@@ -2045,10 +2042,9 @@ def _tool_widget_get_title(widget):
 
     """
     for attr in ("tool_widget_title", "__gtype_name__"):
-        try:
-            return unicode(getattr(widget, attr))
-        except AttributeError:
-            pass
+        title = getattr(widget, attr, None)
+        if title is not None:
+            return unicode(title)
     return unicode(widget.__class__.__name__)
 
 
@@ -2075,17 +2071,12 @@ def _tool_widget_get_icon(widget, icon_size):
     if not size_valid:
         return None
     size_px = min(width_px, height_px)
-    try:
+    if hasattr(widget, "tool_widget_get_icon_pixbuf"):
         pixbuf = widget.tool_widget_get_icon_pixbuf(size_px)
         if pixbuf:
             return (pixbuf, None)
-    except AttributeError:
-        pass
     # Try the icon name property. Fallback is a name we know will work.
-    try:
-        icon_name = widget.tool_widget_icon_name
-    except AttributeError:
-        icon_name = 'missing-image'
+    icon_name = getattr(widget, "tool_widget_icon_name", 'missing-image')
     return (None, icon_name)
 
 
