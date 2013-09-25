@@ -278,7 +278,6 @@ class Application (object):
             "BackgroundWindow": backgroundwindow.BackgroundWindow,
             "BrushEditorWindow": brusheditor.BrushEditorWindow,
             "PreferencesWindow": preferenceswindow.PreferencesWindow,
-            "FrameEditWindow": framewindow.FrameEditWindow,
             "InputTestWindow": inputtestwindow.InputTestWindow,
             "BrushIconEditorWindow": brushiconeditor.BrushIconEditorWindow,
             }
@@ -726,11 +725,6 @@ class Application (object):
         """The preferences subwindow."""
         return self.get_subwindow("PreferencesWindow")
 
-
-    @property
-    def frame_edit_window(self):
-        """The frame editor subwindow."""
-        return self.get_subwindow("FrameEditWindow")
 
     @property
     def input_test_window(self):

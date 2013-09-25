@@ -19,6 +19,7 @@ logger = logging.getLogger(__name__)
 
 import gtk2compat
 import buttonmap
+from brushlib import brushsettings
 
 import math
 from numpy import isfinite
@@ -1046,13 +1047,101 @@ class SwitchableFreehandMode (SwitchableModeMixin, ScrollableModeMixin,
     """The default mode: freehand drawing, accepting modifiers to switch modes.
     """
 
+    ## Class constants
+
     __action_name__ = 'SwitchableFreehandMode'
     permitted_switch_actions = set()   # Any action is permitted
+
+    _OPTIONS_WIDGET = None
+
+    ## Method defs
 
     def __init__(self, ignore_modifiers=True, **args):
         # Ignore the additional arg that flip actions feed us
         super(SwitchableFreehandMode, self).__init__(**args)
 
+    @property
+    def options_widget(self):
+        """Get the (class singleton) options widget"""
+        cls = self.__class__
+        if cls._OPTIONS_WIDGET is None:
+            widget = SwitchableFreehandModeOptionsWidget()
+            cls._OPTIONS_WIDGET = widget
+        return cls._OPTIONS_WIDGET
+
+
+class PaintingModeOptionsWidgetBase (gtk.Grid):
+    """Base class for the `options_widget`s of a generic painting mode"""
+
+    _COMMON_SETTINGS = [
+        ('radius_logarithmic', _("Size:")),
+        ('opaque', _("Opaque:")),
+        ('hardness', _("Hard:"))
+    ]
+
+    def __init__(self):
+        gtk.Grid.__init__(self)
+        self.set_row_spacing(6)
+        self.set_column_spacing(6)
+        from application import get_app
+        self.app = get_app()
+        row = self.init_common_widgets(0)
+        row = self.init_specialized_widgets(row)
+        row = self.init_reset_widgets(row)
+
+    def init_common_widgets(self, row):
+        for cname, text in self._COMMON_SETTINGS:
+            label = gtk.Label()
+            label.set_text(text)
+            label.set_alignment(1.0, 0.5)
+            label.set_hexpand(False)
+            adj = self.app.brush_adjustment[cname]
+            scale = gtk.HScale(adj)
+            scale.set_draw_value(False)
+            scale.set_hexpand(True)
+            self.attach(label, 0, row, 1, 1)
+            self.attach(scale, 1, row, 1, 1)
+            row += 1
+        return row
+
+    def init_specialized_widgets(self, row):
+        return row
+
+    def init_reset_widgets(self, row):
+        align = gtk.Alignment(0.5, 1.0, 1.0, 0.0)
+        align.set_vexpand(True)
+        self.attach(align, 0, row, 2, 1)
+        button = gtk.Button(_("Reset Brush"))
+        button.connect("clicked", self.reset_button_clicked_cb)
+        align.add(button)
+        row += 1
+        return row
+
+    def reset_button_clicked_cb(self, button):
+        app = self.app
+        bm = app.brushmanager
+        parent_brush = bm.get_parent_brush(brushinfo=app.brush)
+        bm.select_brush(parent_brush)
+        app.brushmodifier.normal_mode.activate()
+
+
+class SwitchableFreehandModeOptionsWidget (PaintingModeOptionsWidgetBase):
+    """Configuration widget for the switchable freehand mode"""
+
+    def init_specialized_widgets(self, row):
+        cname = "slow_tracking"
+        label = gtk.Label()
+        label.set_text(_("Smooth:"))
+        label.set_alignment(1.0, 0.5)
+        label.set_hexpand(False)
+        adj = self.app.brush_adjustment[cname]
+        scale = gtk.HScale(adj)
+        scale.set_draw_value(False)
+        scale.set_hexpand(True)
+        self.attach(label, 0, row, 1, 1)
+        self.attach(scale, 1, row, 1, 1)
+        row += 1
+        return row
 
 
 class ModeStack (object):
@@ -1203,6 +1292,10 @@ class ModeStack (object):
     def __nonzero__(self):
         """Mode stacks never test false, regardless of length."""
         return True
+
+    def __iter__(self):
+        for mode in self._stack:
+            yield mode
 
 
 class SpringLoadedModeMixin (InteractionMode):
@@ -1627,9 +1720,11 @@ class OneshotDragModeMixin (InteractionMode):
 
     """
 
-    unmodified_persist = False
     #: If true, and spring-loaded, stay active if no modifiers held initially.
+    unmodified_persist = False
 
+    #: Don't replace stuff in the options panel by default.
+    options_widget = None
 
     def drag_stop_cb(self):
         if not hasattr(self, "initial_modifiers"):
@@ -1677,7 +1772,6 @@ class PanViewMode (SpringLoadedDragMode, OneshotDragModeMixin):
         tdw.scroll(-dx, -dy)
         self.doc.notify_view_changed()
         super(PanViewMode, self).drag_update_cb(tdw, event, dx, dy)
-
 
 class ZoomViewMode (SpringLoadedDragMode, OneshotDragModeMixin):
     """A oneshot mode for zooming the viewport by dragging."""

@@ -1,25 +1,28 @@
 # This file is part of MyPaint.
-# Copyright (C) 2012 by Martin Renold <martinxyz@gmx.ch>
+# Copyright (C) 2012-2013 by Martin Renold <martinxyz@gmx.ch>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 
-"""Frame manipulation mode and subwindow
-"""
+"""Frame manipulation mode and subwindow"""
+
+## Imports
 
 import math
 
 import gtk2compat
+import glib
 import gtk
 from gtk import gdk
 from gettext import gettext as _
 
+import windowing
 import canvasevent
 import linemode
-import windowing
 from colors.uicolor import RGBColor
 
+## Class defs
 
 class FrameEditMode (canvasevent.SwitchableModeMixin,
                      canvasevent.SpringLoadedDragMode,
@@ -27,9 +30,7 @@ class FrameEditMode (canvasevent.SwitchableModeMixin,
                      canvasevent.OneshotDragModeMixin):
     """Stackable interaction mode for editing the document frame.
 
-    The frame editing mode has an associated details dialog which is open for
-    the length of time the mode is active.
-
+    The frame editing mode has an associated settings panel.
     """
 
     # Class-level configuration
@@ -69,6 +70,9 @@ class FrameEditMode (canvasevent.SwitchableModeMixin,
         OUTSIDE:        ( 0,  0,  0,  0),
         }
 
+    # Options widget singleton
+    _OPTIONS_WIDGET = None
+
 
     @classmethod
     def get_name(cls):
@@ -76,8 +80,8 @@ class FrameEditMode (canvasevent.SwitchableModeMixin,
 
 
     def get_usage(cls):
-        return _(u"Click and drag to adjust the document frame, or use "
-                  "the dialog")
+        return _(u"Click and drag to adjust the document frame, "
+                  "or set a size manually in Tool Options")
 
 
     def stackable_on(self, mode):
@@ -95,16 +99,8 @@ class FrameEditMode (canvasevent.SwitchableModeMixin,
 
 
     def enter(self, **kwds):
-        """Enter the mode, showing the dialog unless modifiers are held.
-
-        If modifiers are held down when the mode is entered, its oneshot
-        behaviour kicks in. Oneshot frame adjustment modes do not show the
-        details dialog.
-
-        """
+        """Enter the mode"""
         super(FrameEditMode, self).enter(**kwds)
-        if not self.initial_modifiers:
-            self.doc.app.frame_edit_window.show_all()
         self.cursor_move_w_e = self.doc.app.cursors.get_action_cursor(
             self.__action_name__, "cursor_move_w_e")
         self.cursor_move_n_s = self.doc.app.cursors.get_action_cursor(
@@ -121,10 +117,10 @@ class FrameEditMode (canvasevent.SwitchableModeMixin,
             self.__action_name__, "cursor_arrow_forbidden")
 
     def leave(self, **kwds):
-        """Exit the mode, hiding any dialogs.
-        """
-        if self.initial_modifiers:
-            self.doc.app.frame_edit_window.hide()
+        """Exit the mode, hiding any dialogs"""
+        dialog = self.options_widget._size_dialog
+        if self not in self.doc.modes:
+            dialog.hide()
         super(FrameEditMode, self).leave(**kwds)
 
 
@@ -256,17 +252,24 @@ class FrameEditMode (canvasevent.SwitchableModeMixin,
                     model.set_frame(new_frame, user_initiated=True)
         return super(FrameEditMode, self).drag_update_cb(tdw, event, dx, dy)
 
+    @property
+    def options_widget(self):
+        """Get the (class singleton) options widget"""
+        cls = self.__class__
+        if cls._OPTIONS_WIDGET is None:
+            widget = FrameEditOptionsWidget()
+            cls._OPTIONS_WIDGET = widget
+        return cls._OPTIONS_WIDGET
 
-class FrameEditWindow (windowing.Dialog):
-    """A dialog window for directly editing frame values.
-    """
+
+class FrameEditOptionsWidget (gtk.Alignment):
+    """An options widget for directly editing frame values"""
 
     def __init__(self):
+        gtk.Alignment.__init__(self, 0.5, 0.5, 1.0, 1.0)
+
         from application import get_app
-        app = get_app()
-        buttons = (gtk.STOCK_OK, gtk.RESPONSE_ACCEPT)
-        windowing.Dialog.__init__(self, app, _("Frame"), app.drawWindow,
-                                  buttons=buttons)
+        self.app = get_app()
 
         self.callbacks_active = False
 
@@ -291,8 +294,18 @@ class FrameEditWindow (windowing.Dialog):
         self.dpi_adj.connect('value-changed',
                              self.on_dpi_adjustment_changed)
 
+        self._update_size_button()
+
     def _init_ui(self):
+        # Dialog for editing dimensions (width, height, DPI)
+        app = self.app
+        buttons = (gtk.STOCK_OK, gtk.RESPONSE_ACCEPT)
+        self._size_dialog = windowing.Dialog(
+                app, _("Frame Size"), app.drawWindow,
+                buttons=buttons)
+        #self._size_dialog.set_position(gtk.WIN_POS_MOUSE)
         unit = _('px')
+
         height_label = gtk.Label(_('Height:'))
         height_label.set_alignment(0.0, 0.5)
         width_label = gtk.Label(_('Width:'))
@@ -306,6 +319,7 @@ class FrameEditWindow (windowing.Dialog):
                                        climb_rate=0.25,
                                        digits=0 )
         self.height_adj.set_spin_button(height_entry)
+
         width_entry = gtk.SpinButton( adjustment=self.width_adj,
                                       climb_rate=0.25,
                                       digits=0 )
@@ -328,23 +342,20 @@ class FrameEditWindow (windowing.Dialog):
         color_align.add(color_button)
 
         size_table = gtk.Table(6, 3)
-        size_table.set_border_width(9)
+        size_table.set_border_width(3)
         xopts = gtk.FILL|gtk.EXPAND
         yopts = gtk.FILL
         xpad = ypad = 3
 
-        if gtk2compat.USE_GTK3:
-            unit_combobox = gtk.ComboBoxText()
-        else:
-            unit_combobox = gtk.combo_box_new_text()
+        unit_combobox = gtk.ComboBoxText()
         for unit in UnitAdjustment.CONVERT_UNITS.keys():
             unit_combobox.append_text(unit)
-
         for i, key in enumerate(UnitAdjustment.CONVERT_UNITS):
             if key == _('px'):
                 unit_combobox.set_active(i)
-
         unit_combobox.connect('changed', self.on_unit_changed)
+        self._unit_combobox = unit_combobox
+
         row = 0
         size_table.attach(width_label, 0, 1, row, row+1,
                           xopts, yopts, xpad, ypad)
@@ -367,13 +378,23 @@ class FrameEditWindow (windowing.Dialog):
         size_table.attach(dpi_entry, 1, 2, row, row+1,
                           xopts, yopts, xpad, ypad)
 
+        # Options panel UI
+        opts_table = gtk.Table(3, 3)
+        opts_table.set_border_width(3)
+
+        row = 0
+        size_button = gtk.Button("<size-summary>")
+        self._size_button = size_button
+        size_button.connect("clicked", self._size_button_clicked_cb)
+        opts_table.attach(size_button, 0, 2, row, row+1,
+                          xopts, yopts, xpad, ypad)
+
 
         row += 1
-        size_table.attach(color_label, 0, 1, row, row+1,
+        opts_table.attach(color_label, 0, 1, row, row+1,
                           xopts, yopts, xpad, ypad)
-        size_table.attach(color_align, 1, 2, row, row+1,
+        opts_table.attach(color_align, 1, 2, row, row+1,
                           xopts, yopts, xpad, ypad)
-
 
         crop_layer_button = gtk.Button(_('Set Frame to Layer'))
         crop_layer_button.set_tooltip_text(_("Set frame to the extents of "
@@ -393,11 +414,11 @@ class FrameEditWindow (windowing.Dialog):
         trim_button.set_tooltip_text(_("Trim parts of the current layer "
                                        "which lie outside the frame"))
 
-        hint_label = gtk.Label(_('While the frame is enabled, it '
-                                 'can be adjusted on the canvas'))
-        hint_label.set_line_wrap(True)
-        hint_label.set_padding(0, 6)
-        hint_label.set_size_request(200, -1)
+        #hint_label = gtk.Label(_('While the frame is enabled, it '
+        #                         'can be adjusted on the canvas'))
+        #hint_label.set_line_wrap(True)
+        #hint_label.set_padding(0, 6)
+        #hint_label.set_size_request(200, -1)
 
         self.enable_button = gtk.CheckButton()
         frame_toggle_action = self.app.find_action("FrameToggle")
@@ -405,39 +426,38 @@ class FrameEditWindow (windowing.Dialog):
         self.enable_button.set_label(_('Enabled'))
 
         row += 1
-        size_table.attach(self.enable_button, 2, 3, row, row+1,
-                          xopts, yopts, xpad, ypad+6)
+        opts_table.attach(self.enable_button, 1, 2, row, row+1,
+                          xopts, yopts, xpad, ypad)
+
+        #row += 1
+        #opts_table.attach(hint_label, 0, 3, row, row+1,
+        #                  xopts, yopts, xpad, ypad)
 
         row += 1
-        size_table.attach(hint_label, 0, 3, row, row+1,
+        opts_table.attach(crop_layer_button, 0, 2, row, row+1,
                           xopts, yopts, xpad, ypad)
 
         row += 1
-        size_table.attach(crop_layer_button, 0, 3, row, row+1,
+        opts_table.attach(crop_document_button, 0, 2, row, row+1,
                           xopts, yopts, xpad, ypad)
 
         row += 1
-        size_table.attach(crop_document_button, 0, 3, row, row+1,
+        opts_table.attach(trim_button, 0, 2, row, row+1,
                           xopts, yopts, xpad, ypad)
 
-        row += 1
-        size_table.attach(trim_button, 0, 3, row, row+1,
-                          xopts, yopts, xpad, ypad)
-
-        content_area = self.get_content_area()
+        content_area = self._size_dialog.get_content_area()
         content_area.pack_start(size_table, True, True)
-        self.connect('response', self.on_response)
 
-    def _leave_mode(self, *a):
-        if isinstance(self.app.doc.modes.top, FrameEditMode):
-            self.app.doc.modes.pop()
+        self._size_dialog.connect('response', self._size_dialog_response_cb)
 
-    def on_response(self, dialog, response_id):
-        self._leave_mode()
+        self.add(opts_table)
+
+    def _size_dialog_response_cb(self, dialog, response_id):
         if response_id == gtk.RESPONSE_ACCEPT:
-            self.hide()
+            dialog.hide()
 
-    def get_active_text(self, combobox):
+    def get_unit_text(self):
+        combobox = self._unit_combobox
         model = combobox.get_model()
         active = combobox.get_active()
         if active < 0:
@@ -462,10 +482,11 @@ class FrameEditWindow (windowing.Dialog):
         self.app.doc.tdw.queue_draw()
 
     def on_unit_changed(self, unit_combobox):
-        active_unit = self.get_active_text(unit_combobox)
+        active_unit = self.get_unit_text()
         self.width_adj.set_unit(active_unit)
         self.height_adj.set_unit(active_unit)
         self.unit_label.set_text(active_unit)
+        self._update_size_button()
 
     def on_size_adjustment_changed(self, adjustment):
         """Update the frame size in the model."""
@@ -494,8 +515,18 @@ class FrameEditWindow (windowing.Dialog):
         x, y, w, h = self.app.doc.model.get_frame()
         self.width_adj.set_px_value(w)
         self.height_adj.set_px_value(h)
+        self._update_size_button()
         self.callbacks_active = False
 
+    def _update_size_button(self):
+        w = self.width_adj.get_px_value()
+        h = self.height_adj.get_px_value()
+        u = self.get_unit_text()
+        text = _(u"%d\u00D7%d %s") % (w, h, u)
+        self._size_button.set_label(text)
+
+    def _size_button_clicked_cb(self, button):
+        self._size_dialog.show_all()
 
 class UnitAdjustment(gtk.Adjustment):
 

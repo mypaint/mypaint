@@ -13,37 +13,41 @@ import gtk
 from gtk import gdk
 from gettext import gettext as _
 import gobject
+from curve import CurveWidget
 
 import canvasevent
 
-# internal name, displayed name, constant, minimum, default, maximum, tooltip
-line_mode_settings_list = [
-    ['entry_pressure', _('Entrance Pressure'), False, 0.0001, 0.3, 1.0, _("Stroke entrance pressure for line tools")],
-    ['midpoint_pressure', _('Midpoint Pressure'), False, 0.0001, 1.0, 1.0, _("Mid-Stroke pressure for line tools")],
-    ['exit_pressure', _('Exit Pressure'), False, 0.0001, 0.3, 1.0, _("Stroke exit pressure for line tools")],
-    ['line_head', _('Head'), False, 0.0001, 0.25, 1.0, _("Stroke lead-in end")],
-    ['line_tail', _('Tail'), False, 0.0001, 0.75, 1.0, _("Stroke trail-off beginning")],
+# internal-name, display-name, constant, minimum, default, maximum, tooltip
+_LINE_MODE_SETTINGS_LIST = [
+    ['entry_pressure', _('Entrance Pressure'), False, 0.0001, 0.3, 1.0,
+     _("Stroke entrance pressure for line tools")],
+    ['midpoint_pressure', _('Midpoint Pressure'), False, 0.0001, 1.0, 1.0,
+     _("Mid-Stroke pressure for line tools")],
+    ['exit_pressure', _('Exit Pressure'), False, 0.0001, 0.3, 1.0,
+     _("Stroke exit pressure for line tools")],
+    ['line_head', _('Head'), False, 0.0001, 0.25, 1.0,
+     _("Stroke lead-in end")],
+    ['line_tail', _('Tail'), False, 0.0001, 0.75, 1.0,
+     _("Stroke trail-off beginning")],
     ]
 
 
-class LineModeSettings:
+class LineModeSettings (object):
     """Manage GtkAdjustments for tweaking LineMode settings.
 
     An instance resides in the main application singleton. Changes to the
     adjustments are reflected into the app preferences.
-
     """
 
     def __init__(self, app):
-        """Initializer; initial settings are loaded from the app prefs.
-        """
-
+        """Initializer; initial settings are loaded from the app prefs"""
+        object.__init__(self)
         self.app = app
         self.adjustments = {}  #: Dictionary of GtkAdjustments
         self.observers = []  #: List of callbacks
         self._idle_srcid = None
         self._changed_settings = set()
-        for line_list in line_mode_settings_list:
+        for line_list in _LINE_MODE_SETTINGS_LIST:
             cname, name, const, min_, default, max_, tooltip = line_list
             prefs_key = "linemode.%s" % cname
             value = float(self.app.preferences.get(prefs_key, default))
@@ -79,12 +83,63 @@ class LineModeSettings:
         return False
 
 
+class LineModeOptionsWidget (canvasevent.PaintingModeOptionsWidgetBase):
+    """Options widget for geometric line modes"""
+
+    _SETTINGS_COORDINATE = [('entry_pressure', (0,1)),
+                            ('midpoint_pressure', (1,1)),
+                            ('exit_pressure', (3,1)),
+                            ('line_head', (1,0)),
+                            ('line_tail', (2,0))]
+
+    def init_specialized_widgets(self, row=0):
+        app = self.app
+        curve = CurveWidget(npoints=4, ylockgroups=((1,2),),
+                            changed_cb=self._curve_changed_cb)
+        curve.set_size_request(175, 125)
+        curve.points = [(0.0,0.2), (0.33,.5),(0.66, .5), (1.0,.33)]
+        for setting, coord_pair in self._SETTINGS_COORDINATE:
+            adj = app.line_mode_settings.adjustments[setting]
+            value = adj.get_value()
+            index, subindex = coord_pair
+            if not setting.startswith('line'):
+                value = 1.0 - value
+            coord = None
+            if subindex == 0:
+                coord = (value, curve.points[index][1])
+            else:
+                coord = (curve.points[index][0], value )
+            curve.set_point(index, coord)
+        exp = gtk.Expander()
+        exp.set_label(_("Pressure by Distance"))
+        exp.set_use_markup(False)
+        exp.add(curve)
+        self.attach(exp, 0, row, 2, 1)
+        self._curve_changed_cb(curve)
+        row += 1
+        return row
+
+    def _curve_changed_cb(self, curve):
+        """Updates the linemode pressure settings when the curve is altered"""
+        for setting, coord_pair in self._SETTINGS_COORDINATE:
+            index, subindex = coord_pair
+            points = curve.points
+            value = curve.points[index][subindex]
+            if not setting.startswith('line'):
+                value = 1.0 - value
+            value = max(0.0001, value)
+            adj = self.app.line_mode_settings.adjustments[setting]
+            adj.set_value(value)
+
+
 class LineModeBase (canvasevent.SpringLoadedDragMode,
                     canvasevent.ScrollableModeMixin,
                     canvasevent.OneshotDragModeMixin):
-    """Draws geometric lines.
+    """Draws geometric lines."""
 
-    """
+    ## Class constants
+
+    _OPTIONS_WIDGET = None
 
     ## Class configuration.
 
@@ -130,11 +185,10 @@ class LineModeBase (canvasevent.SpringLoadedDragMode,
     def stackable_on(self, mode):
         return isinstance(mode, canvasevent.SwitchableFreehandMode)
 
+    ## Initialization
 
     def __init__(self, **kwds):
-        """Initialize.
-
-        """
+        """Initialize"""
         super(LineModeBase, self).__init__(**kwds)
         self.app = None
         self.last_line_data = None
@@ -204,6 +258,16 @@ class LineModeBase (canvasevent.SpringLoadedDragMode,
             self.idle_srcid = None
             self.process_line()
 
+    ## Options panel
+
+    @property
+    def options_widget(self):
+        """Get the (base class singleton) options widget"""
+        cls = LineModeBase
+        if cls._OPTIONS_WIDGET is None:
+            widget = LineModeOptionsWidget()
+            cls._OPTIONS_WIDGET = widget
+        return cls._OPTIONS_WIDGET
 
     ### Draw dynamic Line, Curve, or Ellipse
 
