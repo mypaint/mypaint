@@ -1261,6 +1261,15 @@ The circular slices are equiluminant.</property>
         </object>
         <accelerator key="p" modifiers="GDK_SHIFT_MASK"/>
       </child>
+      <child>
+        <object class="GtkToggleAction" id="ModeOptionsTool">
+          <property name="icon-name">mypaint-brush-mods-active</property>
+          <property name="label" translatable="yes">Options for Current Mode</property>
+          <property name="tooltip" translatable="yes"
+            >Allows options to be set for the current mode</property>
+          <signal name="activate" handler="toggle_window_cb"/>
+        </object>
+      </child>
 
       <child>
         <object class="GtkToggleAction" id="FullscreenAutohide">

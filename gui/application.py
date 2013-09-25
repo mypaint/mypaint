@@ -47,6 +47,7 @@ import preferenceswindow
 import brusheditor
 import layerswindow
 import previewwindow
+import optionspanel
 import framewindow
 import scratchwindow
 import inputtestwindow

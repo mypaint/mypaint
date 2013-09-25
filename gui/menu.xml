@@ -47,6 +47,8 @@
         <menuitem action='RotateViewMode'/>
       </menu>
       <separator/>
+      <menuitem action='ModeOptionsTool'/>
+      <separator/>
       <menuitem action='PreferencesWindow'/>
     </menu>
     <menu action='ViewMenu'>
