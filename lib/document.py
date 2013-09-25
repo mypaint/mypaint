@@ -1,10 +1,12 @@
 # This file is part of MyPaint.
-# Copyright (C) 2007-2008 by Martin Renold <martinxyz@gmx.ch>
+# Copyright (C) 2007-2013 by Martin Renold <martinxyz@gmx.ch>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
+
+## Imports
 
 import os
 import sys
@@ -35,12 +37,17 @@ import layer
 import brush
 
 
+## Module constants
+
+# Sizes
 N = tiledsurface.N
 LOAD_CHUNK_SIZE = 64*1024
 
+# Compositing
 from layer import DEFAULT_COMPOSITE_OP
 from layer import VALID_COMPOSITE_OPS
 
+## Class defs
 
 class SaveLoadError(Exception):
     """Expected errors on loading or saving
@@ -340,13 +347,20 @@ class Document():
         self.do(command.Stroke(self, new_stroke, snapshot_before))
 
 
-    def flood_fill(self, x, y, color):
+    def flood_fill(self, x, y, color, tolerance=0.1,
+                   sample_merged=False, make_new_layer=False):
         """Flood-fills a point on the current layer with a colour
 
         :param x: Starting point X coordinate
         :param y: Starting point Y coordinate
-        :param color: an RGB color
+        :param color: The RGB color to fill connected pixels with
         :type color: tuple
+        :param tolerance: How much filled pixels are permitted to vary
+        :type tolerance: float [0.0, 1.0]
+        :param sample_merged: Use all visible layers instead of just current
+        :type sample_merged: bool
+        :param make_new_layer: Write output to a new layer above the current
+        :type make_new_layer: bool
 
         Filling an infinite canvas requires limits. If the frame is enabled,
         this limits the maximum size of the fill, and filling outside the frame
@@ -366,7 +380,9 @@ class Document():
             bbox.h = N
         elif not self.frame_enabled:
             bbox.expandToIncludePoint(x, y)
-        self.do(command.FloodFill(self, x, y, color, bbox))
+        cmd = command.FloodFill(self, x, y, color, bbox, tolerance,
+                                sample_merged, make_new_layer)
+        self.do(cmd)
 
 
     def layer_modified_cb(self, *args):

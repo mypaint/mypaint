@@ -171,20 +171,62 @@ class FloodFill (Action):
 
     display_name = _("Flood Fill")
 
-    def __init__(self, doc, x, y, color, bbox):
+    def __init__(self, doc, x, y, color, bbox, tolerance,
+                 sample_merged, make_new_layer):
         self.doc = doc
         self.x = x
         self.y = y
         self.color = color
-        self.before = None
         self.bbox = bbox
+        self.tolerance = tolerance
+        self.sample_merged = sample_merged
+        self.make_new_layer = make_new_layer
+        self.new_layer = None
+        self.new_layer_idx = None
+        self.snapshot = None
 
     def redo(self):
-        self.before = self.doc.layer.save_snapshot()
-        self.doc.layer.flood_fill(self.x, self.y, self.color, self.bbox)
+        # Pick a source
+        if self.sample_merged:
+            src_layer = layer.Layer()
+            for l in self.doc.layers:
+                l.merge_into(src_layer, strokemap=False)
+        else:
+            src_layer = self.doc.layer
+        # Choose a target
+        if self.make_new_layer:
+            # Write to a new layer
+            assert self.new_layer is None
+            nl = layer.Layer()
+            nl.content_observers.append(self.doc.layer_modified_cb)
+            nl.set_symmetry_axis(self.doc.get_symmetry_axis())
+            self.new_layer = nl
+            self.new_layer_idx = self.doc.layer_idx + 1
+            self.doc.layers.insert(self.new_layer_idx, nl)
+            self.doc.layer_idx = self.new_layer_idx
+            self._notify_document_observers()
+            dst_layer = nl
+        else:
+            # Overwrite current, but snapshot 1st
+            assert self.snapshot is None
+            self.snapshot = self.doc.layer.save_snapshot()
+            dst_layer = self.doc.layer
+        # Fill connected areas of the source into the destination
+        src_layer.flood_fill(self.x, self.y, self.color, self.bbox,
+                             self.tolerance, dst_layer=dst_layer)
 
     def undo(self):
-        self.doc.layer.load_snapshot(self.before)
+        if self.make_new_layer:
+            assert self.new_layer is not None
+            self.doc.layer_idx = self.new_layer_idx - 1
+            self.doc.layers.remove(self.new_layer)
+            self._notify_document_observers()
+            self.new_layer = None
+            self.new_layer_idx = None
+        else:
+            assert self.snapshot is not None
+            self.doc.layer.load_snapshot(self.snapshot)
+            self.snapshot = None
 
 
 class TrimLayer (Action):

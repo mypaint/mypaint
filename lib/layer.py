@@ -125,8 +125,33 @@ class Layer (object):
         return split
 
 
-    def flood_fill(self, x, y, color, bbox):
-        self._surface.flood_fill(x, y, color, bbox)
+    def flood_fill(self, x, y, color, bbox, tolerance, dst_layer=None):
+        """Fills a point on the surface with a colour
+
+        :param x: Starting point X coordinate
+        :param y: Starting point Y coordinate
+        :param color: an RGB color
+        :type color: tuple
+        :param bbox: Bounding box: limits the fill
+        :type bbox: lib.helpers.Rect or equivalent 4-tuple
+        :param tolerance: how much filled pixels are permitted to vary
+        :type tolerance: float [0.0, 1.0]
+        :param dst_layer: Optional target layer (default is self!)
+        :type dst_surface: Layer
+
+        The `tolerance` parameter controls how much pixels are permitted to
+        vary from the starting colour.  We use the 4D Euclidean distance from
+        the starting point to each pixel under consideration as a metric,
+        scaled so that its range lies between 0.0 and 1.0.
+
+        The default target layer is `self`. This method invalidates the filled
+        area of the target layer's surface, queueing a redraw if it is part of
+        a visible document.
+        """
+        if dst_layer is None:
+            dst_layer = self
+        self._surface.flood_fill(x, y, color, bbox, tolerance,
+                                 dst_surface=dst_layer._surface)
 
 
     def clear(self):
@@ -252,25 +277,36 @@ class Layer (object):
             mode=self.compositeop
             )
 
-    def merge_into(self, dst):
+    def merge_into(self, dst, strokemap=True):
+        """Merge this layer into another, modifying only the target
+
+        :param dst: The target layer
+        :param strokemap: Set to false to ignore the layers' strokemaps.
+
+        The target layer must always have an alpha channel. After this
+        operation, the target layer's opacity is set to 1.0 and it is made
+        visible.
         """
-        Merge this layer into dst, modifying only dst.
-        Dst always has an alpha channel.
-        """
+        # Flood-fill uses this for its newly created and working layers,
+        # but it should not construct a strokemap for what it does.
+        if strokemap:
+            dst.strokes.extend(self.strokes)
+        # Normalize the target layer's effective opacity to 1.0 without
+        # changing its appearance
+        if dst.effective_opacity < 1.0:
+            for tx, ty in dst._surface.get_tiles():
+                with dst._surface.tile_request(tx, ty, readonly=False) as surf:
+                    surf[:,:,:] = dst.effective_opacity * surf[:,:,:]
+            dst.opacity = 1.0
+            dst.visible = True
         # We must respect layer visibility, because saving a
         # transparent PNG just calls this function for each layer.
         src = self
-        dst.strokes.extend(self.strokes)
-        for tx, ty in dst._surface.get_tiles():
-            with dst._surface.tile_request(tx, ty, readonly=False) as surf:
-                surf[:,:,:] = dst.effective_opacity * surf[:,:,:]
-
         for tx, ty in src._surface.get_tiles():
             with dst._surface.tile_request(tx, ty, readonly=False) as surf:
                 src._surface.composite_tile(surf, True, tx, ty,
                     opacity=self.effective_opacity,
                     mode=self.compositeop)
-        dst.opacity = 1.0
 
     def convert_to_normal_mode(self, get_bg):
         """

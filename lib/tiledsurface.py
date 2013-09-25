@@ -538,8 +538,8 @@ class MyPaintSurface (object):
         return TiledSurfaceMove(self, x, y, sort=sort)
 
 
-    def flood_fill(self, x, y, color, bbox, tolerance=0.1, tiledict=None):
-        """Fills a point on the surface with a colour
+    def flood_fill(self, x, y, color, bbox, tolerance, dst_surface):
+        """Fills connected areas of this surface
 
         :param x: Starting point X coordinate
         :param y: Starting point Y coordinate
@@ -549,23 +549,16 @@ class MyPaintSurface (object):
         :type bbox: lib.helpers.Rect or equivalent 4-tuple
         :param tolerance: how much filled pixels are permitted to vary
         :type tolerance: float [0.0, 1.0]
-        :param tiledict: Optional target tiledict
-        :type tiledict: dict or None
+        :param dst_surface: Target surface
+        :type dst_surface: MyPaintSurface
 
-        The `tolerance` parameter controls how much pixels are permitted to
-        vary from the starting colour.  We use the 4D Euclidean distance from
-        the starting point to each pixel under consideration as a metric,
-        scaled so that its range lies between 0.0 and 1.0.
-
-        If a target `tiledict` is specified, the fillled area will be written
-        into it, and not directly into the surface.  By default, a temporary
-        tiledict will be created and then composited over the surface when
-        the fill is complete.  Regardless of whether compositing is done by
-        this method, the affected area is invalidated, and a redraw of the
-        affected tiles' area will be queued.
+        See also `lib.layer.Layer.flood_fill()`.
         """
         # Colour to fill with
         fill_r, fill_g, fill_b = color
+
+        # Limits
+        tolerance = helpers.clamp(tolerance, 0.0, 1.0)
 
         # Maximum area to fill: tile and in-tile pixel extents
         bbx, bby, bbw, bbh = bbox
@@ -596,10 +589,7 @@ class MyPaintSurface (object):
             targ_a = 0
 
         # Flood-fill loop
-        if tiledict is None:
-            filled = {}
-        else:
-            filled = tiledict
+        filled = {}
         tileq = [ ((tx, ty), [(px, py)]) ]
         while len(tileq) > 0:
             (tx, ty), seeds = tileq.pop(0)
@@ -650,16 +640,15 @@ class MyPaintSurface (object):
                 tpos = (tx+1, ty)
                 tileq.append((tpos, seeds_e))
 
-        # Composite filled tiles into the destination
-        if filled is not tiledict:
-            comp = functools.partial(mypaintlib.tile_composite,
-                                     mypaintlib.BlendingModeNormal)
-            for (tx, ty), src in filled.iteritems():
-                with self.tile_request(tx, ty, readonly=False) as dst:
-                    comp(src, dst, True, 1.0)
-                self._mark_mipmap_dirty(tx, ty)
+        # Composite filled tiles into the destination surface
+        comp = functools.partial(mypaintlib.tile_composite,
+                                 mypaintlib.BlendingModeNormal)
+        for (tx, ty), src in filled.iteritems():
+            with dst_surface.tile_request(tx, ty, readonly=False) as dst:
+                comp(src, dst, True, 1.0)
+            dst_surface._mark_mipmap_dirty(tx, ty)
         bbox = get_tiles_bbox(filled)
-        self.notify_observers(*bbox)
+        dst_surface.notify_observers(*bbox)
 
 
 class TiledSurfaceMove (object):
