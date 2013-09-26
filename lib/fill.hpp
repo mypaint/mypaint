@@ -210,18 +210,14 @@ tile_flood_fill (PyObject *src, /* readonly HxWx4 array of uint16 */
                     break;
                 }
                 // Fill this pixel, and continue iterating in this direction
-                fix15_t alpha = 0;
+                fix15_t alpha = fix15_one;
                 if (tolerance > 0) {
                     fix15_t dist = _floodfill_color_dist(targ, src_pixel);
-                    alpha = fix15_short_clamp(fix15_one -
-                                              fix15_div(dist, tolerance));
-                }
-                else {
-                    alpha = fix15_one;
-                }
-                // alpha = fix15_short_clamp(fix15_mul(src_pixel[3], alpha));
-                if (alpha == 0) {
-                    alpha = 0x0001; // can't have zero
+                    dist = fix15_short_clamp(fix15_div(dist, tolerance));
+                    alpha = fix15_short_clamp(fix15_one - dist);
+                    if (alpha == 0) {
+                        alpha = 0x0001; // can't have zero
+                    }
                 }
                 dst_pixel[0] = fix15_short_clamp(fill_r * alpha);
                 dst_pixel[1] = fix15_short_clamp(fill_g * alpha);
@@ -240,8 +236,8 @@ tile_flood_fill (PyObject *src, /* readonly HxWx4 array of uint16 */
                                          src_pixel_above, dst_pixel_above,
                                          targ, tolerance
                                        );
-                    if (look_above) {
-                        if (match_above) {
+                    if (match_above) {
+                        if (look_above) {
                             // Enqueue the pixel to the north
                             _floodfill_point *p = (_floodfill_point *) malloc(
                                                     sizeof(_floodfill_point)
@@ -252,7 +248,7 @@ tile_flood_fill (PyObject *src, /* readonly HxWx4 array of uint16 */
                             look_above = false;
                         }
                     }
-                    else if (!match_above) {
+                    else { // !match_above
                         look_above = true;
                     }
                 }
@@ -274,8 +270,8 @@ tile_flood_fill (PyObject *src, /* readonly HxWx4 array of uint16 */
                                          src_pixel_below, dst_pixel_below,
                                          targ, tolerance
                                        );
-                    if (look_below) {
-                        if (match_below) {
+                    if (match_below) {
+                        if (look_below) {
                             // Enqueue the pixel to the South
                             _floodfill_point *p = (_floodfill_point *) malloc(
                                                     sizeof(_floodfill_point)
@@ -286,7 +282,7 @@ tile_flood_fill (PyObject *src, /* readonly HxWx4 array of uint16 */
                             look_below = false;
                         }
                     }
-                    else if (!match_below) {
+                    else { //!match_below
                         look_below = true;
                     }
                 }

@@ -220,6 +220,7 @@ class FloodFill (Action):
             assert self.new_layer is not None
             self.doc.layer_idx = self.new_layer_idx - 1
             self.doc.layers.remove(self.new_layer)
+            self._notify_canvas_observers([self.doc.layer])
             self._notify_document_observers()
             self.new_layer = None
             self.new_layer_idx = None
