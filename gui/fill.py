@@ -104,7 +104,6 @@ class FloodFillMode (canvasevent.SwitchableModeMixin,
         model = self.doc.model
 
         # Determine which layer will receive the fill based on the options
-        # TODO: read options
         opts = self.options_widget
         target_layer = model.layer
         if opts.make_new_layer:
