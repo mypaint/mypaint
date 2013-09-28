@@ -1383,7 +1383,8 @@ class SpringLoadedModeMixin (InteractionMode):
         # an idle function avoids confusing the derived class's enter() method:
         # a leave() during an enter() would be strange.
         if self.initial_modifiers is not None:
-            self.doc.modes.pop()
+            if self is self.doc.modes.top:
+                self.doc.modes.pop()
         return False
 
 
@@ -1398,7 +1399,8 @@ class SpringLoadedModeMixin (InteractionMode):
         if self.initial_modifiers:
             modifiers = self.current_modifiers()
             if modifiers & self.initial_modifiers == 0:
-                self.doc.modes.pop()
+                if self is self.doc.modes.top:
+                    self.doc.modes.pop()
                 return True
         return super(SpringLoadedModeMixin,self).key_release_cb(win,tdw,event)
 
@@ -1521,8 +1523,9 @@ class DragMode (InteractionMode):
             # This condition should be rare enough for this to be a valid
             # approach: the irritation of having to click again to do something
             # should be far less than that of getting "stuck" in a drag.
-            logger.debug("Exiting mode")
-            self.doc.modes.pop()
+            if self is self.doc.modes.top:
+                logger.debug("Exiting mode")
+                self.doc.modes.pop()
 
             # Sometimes a pointer ungrab is needed even though the grab
             # apparently failed to avoid the UI partially "locking up" with the
@@ -1546,7 +1549,9 @@ class DragMode (InteractionMode):
         if grab_status != gdk.GRAB_SUCCESS:
             logger.warning("Keyboard grab failed: %r", grab_status)
             gdk.pointer_ungrab(event.time)
-            self.doc.modes.pop()
+            if self is self.doc.modes.top:
+                logger.debug("Exiting mode")
+                self.doc.modes.pop()
             return
 
         # GTK too...
@@ -1581,8 +1586,9 @@ class DragMode (InteractionMode):
         logger.debug(" keyboard    : %r", event.keyboard)
         logger.debug(" implicit    : %r", event.implicit)
         logger.debug(" grab_window : %r", event.grab_window)
-        logger.debug("exiting %r", self)
-        self.doc.modes.pop()
+        if self is self.doc.modes.top:
+            logger.debug("exiting %r", self)
+            self.doc.modes.pop()
         return True
 
 
@@ -1745,16 +1751,19 @@ class OneshotDragModeMixin (InteractionMode):
     def drag_stop_cb(self):
         if not hasattr(self, "initial_modifiers"):
             # Always exit at the end of a drag if not spring-loaded.
-            self.doc.modes.pop()
+            if self is self.doc.modes.top:
+                self.doc.modes.pop()
         elif self.initial_modifiers != 0:
             # If started with modifiers, keeping the modifiers held keeps
             # spring-loaded modes active. If not, exit the mode.
             if (self.initial_modifiers & self.current_modifiers()) == 0:
-                self.doc.modes.pop()
+                if self is self.doc.modes.top:
+                    self.doc.modes.pop()
         else:
             # No modifiers were held when this mode was entered.
             if not self.unmodified_persist:
-                self.doc.modes.pop()
+                if self is self.doc.modes.top:
+                    self.doc.modes.pop()
         return super(OneshotDragModeMixin, self).drag_stop_cb()
 
 
@@ -2049,11 +2058,12 @@ class LayerMoveMode (SwitchableModeMixin,
 
         # Leave mode if started with modifiers held and the user had released
         # them all at the end of the drag.
-        if self.initial_modifiers:
-            if (self.final_modifiers & self.initial_modifiers) == 0:
+        if self is self.doc.modes.top:
+            if self.initial_modifiers:
+                if (self.final_modifiers & self.initial_modifiers) == 0:
+                    self.doc.modes.pop()
+            else:
                 self.doc.modes.pop()
-        else:
-            self.doc.modes.pop()
 
     def _finalize_move_idler(self):
         # Finalize everything once the drag's finished.
