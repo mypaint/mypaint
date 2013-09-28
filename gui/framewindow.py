@@ -19,7 +19,6 @@ from gettext import gettext as _
 
 import windowing
 import canvasevent
-import linemode
 from colors.uicolor import RGBColor
 
 ## Class defs
@@ -82,12 +81,6 @@ class FrameEditMode (canvasevent.SwitchableModeMixin,
     def get_usage(cls):
         return _(u"Click and drag to adjust the document frame, "
                   "or set a size manually in Tool Options")
-
-
-    def stackable_on(self, mode):
-        # Any drawing mode
-        return isinstance(mode, linemode.LineModeBase) \
-            or isinstance(mode, canvasevent.SwitchableFreehandMode)
 
 
     def __init__(self, **kwds):

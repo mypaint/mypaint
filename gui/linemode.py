@@ -182,9 +182,6 @@ class LineModeBase (canvasevent.SpringLoadedDragMode,
     line_mode = None
 
 
-    def stackable_on(self, mode):
-        return isinstance(mode, canvasevent.SwitchableFreehandMode)
-
     ## Initialization
 
     def __init__(self, **kwds):

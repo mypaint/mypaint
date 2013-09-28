@@ -1767,7 +1767,19 @@ class OneshotDragModeMixin (InteractionMode):
         return super(OneshotDragModeMixin, self).drag_stop_cb()
 
 
-class PanViewMode (SpringLoadedDragMode, OneshotDragModeMixin):
+class OneshotHelperModeBase (SpringLoadedDragMode, OneshotDragModeMixin):
+    """Base class for temporary helper modes.
+
+    These are utility modes which allow the user to do quick, simple tasks with
+    the canvas like pick a color from it or pan the view.
+    """
+
+    def stackable_on(self, mode):
+        """Helper modes return to the mode the user came from on exit"""
+        return not isinstance(mode, OneshotHelperModeBase)
+
+
+class PanViewMode (OneshotHelperModeBase):
     """A oneshot mode for translating the viewport by dragging."""
 
     __action_name__ = 'PanViewMode'
@@ -1776,29 +1788,26 @@ class PanViewMode (SpringLoadedDragMode, OneshotDragModeMixin):
     def get_name(cls):
         return _(u"Scroll View")
 
-
     def get_usage(self):
         return _(u"Click and drag to move the view of the canvas")
-
 
     @property
     def inactive_cursor(self):
         return self.doc.app.cursors.get_action_cursor(
                 self.__action_name__)
+
     @property
     def active_cursor(self):
         return self.doc.app.cursors.get_action_cursor(
                 self.__action_name__)
-
-    def stackable_on(self, mode):
-        return isinstance(mode, SwitchableModeMixin)
 
     def drag_update_cb(self, tdw, event, dx, dy):
         tdw.scroll(-dx, -dy)
         self.doc.notify_view_changed()
         super(PanViewMode, self).drag_update_cb(tdw, event, dx, dy)
 
-class ZoomViewMode (SpringLoadedDragMode, OneshotDragModeMixin):
+
+class ZoomViewMode (OneshotHelperModeBase):
     """A oneshot mode for zooming the viewport by dragging."""
 
     __action_name__ = 'ZoomViewMode'
@@ -1821,9 +1830,6 @@ class ZoomViewMode (SpringLoadedDragMode, OneshotDragModeMixin):
         return self.doc.app.cursors.get_action_cursor(
                 self.__action_name__)
 
-    def stackable_on(self, mode):
-        return isinstance(mode, SwitchableModeMixin)
-
     def drag_update_cb(self, tdw, event, dx, dy):
         tdw.scroll(-dx, -dy)
         tdw.zoom(math.exp(dy/100.0), center=(event.x, event.y))
@@ -1833,7 +1839,7 @@ class ZoomViewMode (SpringLoadedDragMode, OneshotDragModeMixin):
         super(ZoomViewMode, self).drag_update_cb(tdw, event, dx, dy)
 
 
-class RotateViewMode (SpringLoadedDragMode, OneshotDragModeMixin):
+class RotateViewMode (OneshotHelperModeBase):
     """A oneshot mode for rotating the viewport by dragging."""
 
     __action_name__ = 'RotateViewMode'
@@ -1855,9 +1861,6 @@ class RotateViewMode (SpringLoadedDragMode, OneshotDragModeMixin):
     def inactive_cursor(self):
         return self.doc.app.cursors.get_action_cursor(
                 self.__action_name__)
-
-    def stackable_on(self, mode):
-        return isinstance(mode, SwitchableModeMixin)
 
     def drag_update_cb(self, tdw, event, dx, dy):
         # calculate angular velocity from the rotation center
@@ -1918,13 +1921,6 @@ class LayerMoveMode (SwitchableModeMixin,
     permitted_switch_actions = set([
             'RotateViewMode', 'ZoomViewMode', 'PanViewMode',
         ] + extra_actions)
-
-
-    def stackable_on(self, mode):
-        # Any drawing mode
-        import linemode
-        return isinstance(mode, linemode.LineModeBase) \
-            or isinstance(mode, SwitchableFreehandMode)
 
 
     def __init__(self, **kwds):
