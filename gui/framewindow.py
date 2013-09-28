@@ -119,7 +119,7 @@ class FrameEditMode (canvasevent.SwitchableModeMixin,
     def leave(self, **kwds):
         """Exit the mode, hiding any dialogs"""
         dialog = self.options_widget._size_dialog
-        if self not in self.doc.modes:
+        if self.doc and self not in self.doc.modes:
             dialog.hide()
         super(FrameEditMode, self).leave(**kwds)
 
