@@ -132,7 +132,8 @@ class LineModeOptionsWidget (canvasevent.PaintingModeOptionsWidgetBase):
             adj.set_value(value)
 
 
-class LineModeBase (canvasevent.SpringLoadedDragMode,
+class LineModeBase (canvasevent.SwitchableModeMixin,
+                    canvasevent.SpringLoadedDragMode,
                     canvasevent.ScrollableModeMixin,
                     canvasevent.OneshotDragModeMixin):
     """Draws geometric lines."""
@@ -142,6 +143,10 @@ class LineModeBase (canvasevent.SpringLoadedDragMode,
     _OPTIONS_WIDGET = None
 
     ## Class configuration.
+
+    permitted_switch_actions = set([
+            "PanViewMode", "ZoomViewMode", "RotateViewMode",
+        ])
 
 
     @property
