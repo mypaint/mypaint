@@ -360,16 +360,25 @@ class InteractionMode (object):
         itself a modifier, handlers of multiple types of event, and when the
         triggering event isn't available. Pointer button event handling should
         use ``event.state & gtk.accelerator_get_default_mod_mask()``.
-
         """
-        if gtk2compat.USE_GTK3:
-            display = gdk.Display.get_default()
-        else:
-            display = gdk.display_get_default()
+        display = gdk.Display.get_default()
         screen, x, y, modifiers = display.get_pointer()
         modifiers &= gtk.accelerator_get_default_mod_mask()
         return modifiers
 
+    def current_position(self):
+        """Returns the current client pointer position on the main TDW
+
+        For use in enter() methods: since the mode may be being entered by the
+        user pressing a key, no position is available at this point. Normal
+        event handlers should use their argument GdkEvents to determing position.
+        """
+        disp = self.doc.tdw.get_display()
+        mgr = disp.get_device_manager()
+        dev = mgr.get_client_pointer()
+        win = self.doc.tdw.get_window()
+        underwin, x, y, mods = win.get_device_position(dev)
+        return x, y
 
 
 class ScrollableModeMixin (InteractionMode):

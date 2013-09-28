@@ -99,6 +99,8 @@ class FloodFillMode (canvasevent.SwitchableModeMixin,
 
     def _update_ui(self):
         x, y = self._x, self._y
+        if None in (x, y):
+            x, y = self.current_position()
         model = self.doc.model
 
         # Determine which layer will receive the fill based on the options
@@ -112,10 +114,10 @@ class FloodFillMode (canvasevent.SwitchableModeMixin,
         permitted = True
         if target_layer is not None:
             permitted = target_layer.visible and not target_layer.locked 
-        elif model.frame_enabled:
+        if model.frame_enabled:
             fx1, fy1, fw, fh = model.get_frame()
             fx2, fy2 = fx1+fw, fy1+fh
-            permitted = x >= fx1 and y >= fy1 and x < fx2 and y < fy2
+            permitted &= x >= fx1 and y >= fy1 and x < fx2 and y < fy2
         self._fill_permitted = permitted
 
         # Update cursor of any TDWs we've crossed
@@ -128,9 +130,6 @@ class FloodFillMode (canvasevent.SwitchableModeMixin,
             self._current_cursor = cursor
             for tdw in self._tdws:
                 tdw.set_override_cursor(self.cursor)
-
-        # Update options widget
-        opts.set_sensitive(self._fill_permitted)
 
 
     ## Mode options
