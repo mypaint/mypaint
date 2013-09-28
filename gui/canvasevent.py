@@ -960,7 +960,12 @@ class SwitchableModeMixin (InteractionMode):
             return
         poss_list.sort()
         poss_msgs = []
+        permitted_action_names = self.permitted_switch_actions
         for pmods, button, action_name in poss_list:
+            # Filter by the class's whitelist, if it's set
+            if permitted_action_names:
+                if action_name not in permitted_action_names:
+                    continue
             # Don't repeat what's currently held
             pmods = pmods & ~mods
             label = buttonmap.button_press_displayname(button, pmods)
@@ -977,15 +982,17 @@ class SwitchableModeMixin (InteractionMode):
                 msg_tmpl = _(u"%(label)s: %(mode)s")
                 poss_msgs.append(msg_tmpl % { "label": label,
                                               "mode": mode_desc, })
+        if not poss_msgs:
+            return
         poss_msg = u"; ".join(poss_msgs)
         mods_msg = unicode(gtk.accelerator_get_label(0, mods))
         mods_msg = mods_msg.rstrip("+")
+
         msg_template = _(u"%(mode)s (+%(modifiers)s): %(possible)s")
         msg = msg_template % {"mode": self.get_name(),
                               "modifiers": mods_msg,
                               "possible": poss_msg }
-        cid = self.__get_context_id()
-        self.doc.app.statusbar.push(cid, msg)
+        self.doc.app.statusbar.push(context_id, msg)
 
 
     def leave(self):
