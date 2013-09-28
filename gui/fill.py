@@ -30,7 +30,7 @@ class FloodFillMode (canvasevent.SwitchableModeMixin,
     __action_name__ = "FloodFillMode"
     permitted_switch_actions = set([
         'RotateViewMode', 'ZoomViewMode', 'PanViewMode',
-        'ColorPickMode',
+        'ColorPickMode', 'ShowPopupMenu',
         ])
 
     _OPTIONS_WIDGET = None
