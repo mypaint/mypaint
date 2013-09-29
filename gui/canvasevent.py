@@ -1076,8 +1076,7 @@ class SwitchableFreehandMode (SwitchableModeMixin, ScrollableModeMixin,
         # Ignore the additional arg that flip actions feed us
         super(SwitchableFreehandMode, self).__init__(**args)
 
-    @property
-    def options_widget(self):
+    def get_options_widget(self):
         """Get the (class singleton) options widget"""
         cls = self.__class__
         if cls._OPTIONS_WIDGET is None:
@@ -1087,7 +1086,7 @@ class SwitchableFreehandMode (SwitchableModeMixin, ScrollableModeMixin,
 
 
 class PaintingModeOptionsWidgetBase (gtk.Grid):
-    """Base class for the `options_widget`s of a generic painting mode"""
+    """Base class for the options widget of a generic painting mode"""
 
     _COMMON_SETTINGS = [
         ('radius_logarithmic', _("Size:")),
@@ -1745,8 +1744,9 @@ class OneshotDragModeMixin (InteractionMode):
     #: If true, and spring-loaded, stay active if no modifiers held initially.
     unmodified_persist = False
 
-    #: Don't replace stuff in the options panel by default.
-    options_widget = None
+    def get_options_widget(self):
+        """Don't replace stuff in the options panel by default"""
+        return None
 
     def drag_stop_cb(self):
         if not hasattr(self, "initial_modifiers"):

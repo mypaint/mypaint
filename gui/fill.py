@@ -76,7 +76,7 @@ class FloodFillMode (canvasevent.SwitchableModeMixin,
         self._tdws.add(tdw)
         self._update_ui()
         color = self.doc.app.brush_color_manager.get_color()
-        opts = self.options_widget
+        opts = self.get_options_widget()
         self.doc.model.flood_fill(x, y, color.get_rgb(),
                                   tolerance=opts.tolerance,
                                   sample_merged=opts.sample_merged,
@@ -104,7 +104,7 @@ class FloodFillMode (canvasevent.SwitchableModeMixin,
         model = self.doc.model
 
         # Determine which layer will receive the fill based on the options
-        opts = self.options_widget
+        opts = self.get_options_widget()
         target_layer = model.layer
         if opts.make_new_layer:
             target_layer = None
@@ -133,8 +133,7 @@ class FloodFillMode (canvasevent.SwitchableModeMixin,
 
     ## Mode options
 
-    @property
-    def options_widget(self):
+    def get_options_widget(self):
         """Get the (class singleton) options widget"""
         cls = self.__class__
         if cls._OPTIONS_WIDGET is None:

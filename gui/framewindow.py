@@ -111,7 +111,7 @@ class FrameEditMode (canvasevent.SwitchableModeMixin,
 
     def leave(self, **kwds):
         """Exit the mode, hiding any dialogs"""
-        dialog = self.options_widget._size_dialog
+        dialog = self.get_options_widget()._size_dialog
         if self.doc and self not in self.doc.modes:
             dialog.hide()
         super(FrameEditMode, self).leave(**kwds)
@@ -245,8 +245,7 @@ class FrameEditMode (canvasevent.SwitchableModeMixin,
                     model.set_frame(new_frame, user_initiated=True)
         return super(FrameEditMode, self).drag_update_cb(tdw, event, dx, dy)
 
-    @property
-    def options_widget(self):
+    def get_options_widget(self):
         """Get the (class singleton) options widget"""
         cls = self.__class__
         if cls._OPTIONS_WIDGET is None:

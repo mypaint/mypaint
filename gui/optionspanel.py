@@ -28,13 +28,13 @@ class ModeOptionsTool (workspace.SizedVBoxToolWidget):
     """Dockable panel showing options for the current mode
 
     This panel has a title and an icon reflecting the current mode, and
-    displays its ``options_widget`` member if it has one. This should be a
-    property containing a GTK widget. Singletons work well here, and are
-    encouraged. ``options_widget`` can also be set to `None` if the mode is a
-    temporary mode which has no sensible options. In this case, any widget
-    already displayed will not be replaced, which is particularly appropriate
-    for modes which only persist for the length of time the mouse button is
-    held, and stack on top of other modes.
+    displays its options widget if it has one: define an object method named
+    ``get_options_widget()`` returning an arbitrary GTK widget. Singletons work
+    well here, and are encouraged. ``get_options_widget()`` can also return
+    `None` if the mode is a temporary mode which has no sensible options. In
+    this case, any widget already displayed will not be replaced, which is
+    particularly appropriate for modes which only persist for the length of
+    time the mouse button is held, and stack on top of other modes.
     """
 
     ## Class constants
@@ -89,15 +89,15 @@ class ModeOptionsTool (workspace.SizedVBoxToolWidget):
         self._update_ui()
 
     def _update_ui(self):
-        """Update the UI to show the options_widget of the current mode"""
+        """Update the UI to show the options widget of the current mode"""
         mode = self._app.doc.modes.top
         # Get the new options widget
         old_options = self._options_bin.get_child()
         new_options = self._no_options_label
         try:
-            new_options = getattr(mode, "options_widget", new_options)
+            new_options = mode.get_options_widget()
         except Exception, ex:
-            logger.exception("Failed to construct options widget")
+            logger.exception("Failed to fetch options widget")
         # Only update if there's a change
         if new_options and new_options is not old_options:
             # Label

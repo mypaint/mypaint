@@ -262,8 +262,7 @@ class LineModeBase (canvasevent.SwitchableModeMixin,
 
     ## Options panel
 
-    @property
-    def options_widget(self):
+    def get_options_widget(self):
         """Get the (base class singleton) options widget"""
         cls = LineModeBase
         if cls._OPTIONS_WIDGET is None:
