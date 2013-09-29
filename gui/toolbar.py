@@ -26,6 +26,7 @@ import widgets
 from colors import RGBColor, ColorAdjuster, HSVTriangle
 from colors import PreviousCurrentColorAdjuster, ColorPickerButton
 from lib.helpers import escape
+from linemode import LineModeCurveWidget
 
 FRAMEWORK_XML = 'gui/toolbar.xml'
 MERGEABLE_XML = [
@@ -126,8 +127,6 @@ class ToolbarManager (object):
 
 
 
-from curve import CurveWidget
-
 class LineDropdownToolItem (gtk.ToolItem):
     """Dropdown panel on the toolbar for changing line mode.
     """
@@ -189,29 +188,13 @@ class LineDropdownToolItem (gtk.ToolItem):
         # Pressure settings.
         frame = widgets.section_frame(_("Line Pressure"))
         self.vbox.pack_start(frame, True, True)
-        curve = CurveWidget(npoints=4,
-                            ylockgroups=((1,2),),
-                            changed_cb=self.curve_changed_cb)
+        curve = LineModeCurveWidget()
         curve_align = gtk.Alignment(0, 0, 1, 1)
         curve_align.add(curve)
         curve_align.set_padding(widgets.SPACING, widgets.SPACING,
                                 widgets.SPACING, widgets.SPACING)
         frame.add(curve_align)
         curve_align.show()
-        curve.points = [(0.0,0.2), (0.33,.5),(0.66, .5), (1.0,.33)]
-        for setting, coord_pair in self.settings_coordinate:
-            adj = app.line_mode_settings.adjustments[setting]
-            value = adj.get_value()
-            index, subindex = coord_pair
-            if not setting.startswith ('line'):
-                value = 1.0 - value
-            coord = None
-            if subindex == 0:
-                coord = (value, curve.points[index][1])
-            else:
-                coord = (curve.points[index][0], value )
-            curve.set_point(index, coord)
-        self.curve_changed_cb (curve)
 
 
     def update_icon_from_action(self, action):
@@ -231,20 +214,6 @@ class LineDropdownToolItem (gtk.ToolItem):
         """Dismisses the dropdown panel when a linemode button is clicked.
         """
         gobject.idle_add(self.line_mode_panel.panel_hide)
-
-
-    def curve_changed_cb(self, curve):
-        """Updates the linemode pressure settings when the curve is altered.
-        """
-        for setting, coord_pair in self.settings_coordinate:
-            index, subindex = coord_pair
-            points = curve.points
-            value = curve.points[index][subindex]
-            if not setting.startswith('line'):
-                value = 1.0 - value
-            value = max(0.0001, value)
-            adj = self.app.line_mode_settings.adjustments[setting]
-            adj.set_value(value)
 
 
 class ColorDropdownToolItem (gtk.ToolItem):

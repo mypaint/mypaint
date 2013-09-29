@@ -1100,6 +1100,7 @@ class PaintingModeOptionsWidgetBase (gtk.Grid):
         self.set_column_spacing(6)
         from application import get_app
         self.app = get_app()
+        self.adjustable_settings = set()  #: What the reset button resets
         row = self.init_common_widgets(0)
         row = self.init_specialized_widgets(row)
         row = self.init_reset_widgets(row)
@@ -1110,6 +1111,7 @@ class PaintingModeOptionsWidgetBase (gtk.Grid):
             label.set_text(text)
             label.set_alignment(1.0, 0.5)
             label.set_hexpand(False)
+            self.adjustable_settings.add(cname)
             adj = self.app.brush_adjustment[cname]
             scale = gtk.HScale(adj)
             scale.set_draw_value(False)
@@ -1126,7 +1128,7 @@ class PaintingModeOptionsWidgetBase (gtk.Grid):
         align = gtk.Alignment(0.5, 1.0, 1.0, 0.0)
         align.set_vexpand(True)
         self.attach(align, 0, row, 2, 1)
-        button = gtk.Button(_("Reset Brush"))
+        button = gtk.Button(_("Reset"))
         button.connect("clicked", self.reset_button_clicked_cb)
         align.add(button)
         row += 1
@@ -1136,7 +1138,11 @@ class PaintingModeOptionsWidgetBase (gtk.Grid):
         app = self.app
         bm = app.brushmanager
         parent_brush = bm.get_parent_brush(brushinfo=app.brush)
-        bm.select_brush(parent_brush)
+        parent_binf = parent_brush.get_brushinfo()
+        for cname in self.adjustable_settings:
+            parent_value = parent_binf.get_base_value(cname)
+            adj = self.app.brush_adjustment[cname]
+            adj.set_value(parent_value)
         app.brushmodifier.normal_mode.activate()
 
 
@@ -1149,6 +1155,7 @@ class SwitchableFreehandModeOptionsWidget (PaintingModeOptionsWidgetBase):
         label.set_text(_("Smooth:"))
         label.set_alignment(1.0, 0.5)
         label.set_hexpand(False)
+        self.adjustable_settings.add(cname)
         adj = self.app.brush_adjustment[cname]
         scale = gtk.HScale(adj)
         scale.set_draw_value(False)

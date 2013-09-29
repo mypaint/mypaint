@@ -7,6 +7,8 @@
 # (at your option) any later version.
 
 import math
+import logging
+logger = logging.getLogger(__name__)
 
 import gtk2compat
 import gtk
@@ -56,7 +58,6 @@ class LineModeSettings (object):
             adj.connect("value-changed", self._value_changed_cb, prefs_key)
             self.adjustments[cname] = adj
 
-
     def _value_changed_cb(self, adj, prefs_key):
         # Direct GtkAdjustment callback for a single adjustment being changed.
         value = float(adj.get_value())
@@ -64,7 +65,6 @@ class LineModeSettings (object):
         self._changed_settings.add(prefs_key)
         if self._idle_srcid is None:
             self._idle_srcid = gobject.idle_add(self._values_changed_idle_cb)
-
 
     def _values_changed_idle_cb(self):
         # Aggregate, idle-state callback for multiple adjustments being changed
@@ -83,8 +83,8 @@ class LineModeSettings (object):
         return False
 
 
-class LineModeOptionsWidget (canvasevent.PaintingModeOptionsWidgetBase):
-    """Options widget for geometric line modes"""
+class LineModeCurveWidget (CurveWidget):
+    """Graph of pressure by distance, tied to the central LineModeSettings"""
 
     _SETTINGS_COORDINATE = [('entry_pressure', (0,1)),
                             ('midpoint_pressure', (1,1)),
@@ -92,44 +92,74 @@ class LineModeOptionsWidget (canvasevent.PaintingModeOptionsWidgetBase):
                             ('line_head', (1,0)),
                             ('line_tail', (2,0))]
 
-    def init_specialized_widgets(self, row=0):
-        app = self.app
-        curve = CurveWidget(npoints=4, ylockgroups=((1,2),),
-                            changed_cb=self._curve_changed_cb)
-        curve.set_size_request(175, 125)
-        curve.points = [(0.0,0.2), (0.33,.5),(0.66, .5), (1.0,.33)]
+    def __init__(self):
+        from application import get_app
+        self.app = get_app()
+        CurveWidget.__init__(self, npoints=4, ylockgroups=((1,2),),
+                             changed_cb=self._changed_cb)
+        self.app.line_mode_settings.observers.append(self._adjs_changed_cb)
+        self._update()
+
+    def _adjs_changed_cb(self, changed):
+        logger.debug("Updating curve (changed: %r)", changed)
+        self._update()
+
+    def _update(self, from_defaults=False):
+        if from_defaults:
+            self.points = [(0.0, 0.2), (0.33, 0.5), (0.66, 0.5), (1.0, 0.33)]
         for setting, coord_pair in self._SETTINGS_COORDINATE:
-            adj = app.line_mode_settings.adjustments[setting]
-            value = adj.get_value()
+            if not from_defaults:
+                adj = self.app.line_mode_settings.adjustments[setting]
+                value = adj.get_value()
+            else:
+                # TODO: move this case into the base settings object
+                defaults = [a[4] for a in _LINE_MODE_SETTINGS_LIST
+                            if a[0] == setting]
+                assert len(defaults) == 1
+                value = defaults[0]
             index, subindex = coord_pair
             if not setting.startswith('line'):
                 value = 1.0 - value
-            coord = None
             if subindex == 0:
-                coord = (value, curve.points[index][1])
+                coord = (value, self.points[index][1])
             else:
-                coord = (curve.points[index][0], value )
-            curve.set_point(index, coord)
-        exp = gtk.Expander()
-        exp.set_label(_("Pressure by Distance"))
-        exp.set_use_markup(False)
-        exp.add(curve)
-        self.attach(exp, 0, row, 2, 1)
-        self._curve_changed_cb(curve)
-        row += 1
-        return row
+                coord = (self.points[index][0], value)
+            self.set_point(index, coord)
+        if from_defaults:
+            self._changed_cb(self)
+        self.queue_draw()
 
-    def _curve_changed_cb(self, curve):
+    def _changed_cb(self, curve):
         """Updates the linemode pressure settings when the curve is altered"""
         for setting, coord_pair in self._SETTINGS_COORDINATE:
             index, subindex = coord_pair
-            points = curve.points
-            value = curve.points[index][subindex]
+            value = self.points[index][subindex]
             if not setting.startswith('line'):
                 value = 1.0 - value
             value = max(0.0001, value)
             adj = self.app.line_mode_settings.adjustments[setting]
             adj.set_value(value)
+
+
+class LineModeOptionsWidget (canvasevent.PaintingModeOptionsWidgetBase):
+    """Options widget for geometric line modes"""
+
+    def init_specialized_widgets(self, row=0):
+        app = self.app
+        curve = LineModeCurveWidget()
+        curve.set_size_request(175, 125)
+        self._curve = curve
+        exp = gtk.Expander()
+        exp.set_label(_("Pressure variation..."))
+        exp.set_use_markup(False)
+        exp.add(curve)
+        self.attach(exp, 0, row, 2, 1)
+        row += 1
+        return row
+
+    def reset_button_clicked_cb(self, button):
+        super(LineModeOptionsWidget, self).reset_button_clicked_cb(button)
+        self.curve._update(from_defaults=True)
 
 
 class LineModeBase (canvasevent.SwitchableModeMixin,
