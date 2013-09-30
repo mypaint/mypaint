@@ -94,10 +94,8 @@ class ModeOptionsTool (workspace.SizedVBoxToolWidget):
         # Get the new options widget
         old_options = self._options_bin.get_child()
         new_options = self._no_options_label
-        try:
+        if hasattr(mode, "get_options_widget"):
             new_options = mode.get_options_widget()
-        except Exception, ex:
-            logger.exception("Failed to fetch options widget")
         # Only update if there's a change
         if new_options and new_options is not old_options:
             # Label
