@@ -49,6 +49,7 @@ import xml.etree.ElementTree as ET
 from lib.scratchpad_palette import GimpPalette, draw_palette
 
 from overlays import LastPaintPosOverlay, ScaleOverlay
+from framewindow import FrameOverlay
 from symmetry import SymmetryOverlay
 
 
@@ -144,6 +145,8 @@ class DrawWindow (gtk.Window):
             return
         self._done_realize = True
 
+        doc = self.app.doc
+        doc.tdw.display_overlays.append(FrameOverlay(doc))
         self.update_overlays()
         self._init_actions()
         kbm = self.app.kbm

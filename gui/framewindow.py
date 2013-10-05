@@ -16,12 +16,16 @@ import glib
 import gtk
 from gtk import gdk
 from gettext import gettext as _
+import cairo
 
 import windowing
 import canvasevent
 from colors.uicolor import RGBColor
+from overlays import Overlay
+from lib import helpers
 
 ## Class defs
+
 
 class FrameEditMode (canvasevent.SwitchableModeMixin,
                      canvasevent.SpringLoadedDragMode,
@@ -52,7 +56,7 @@ class FrameEditMode (canvasevent.SwitchableModeMixin,
     BOTTOM  = 0x08
     OUTSIDE = 0x10
 
-    EDGE_WIDTH = 20  # pixels
+    EDGE_SENSITIVITY = 10  # pixels
 
     # Dragging interpretation by hit zone
     DRAG_EFFECTS = {
@@ -108,12 +112,15 @@ class FrameEditMode (canvasevent.SwitchableModeMixin,
             self.__action_name__, "cursor_hand_open")
         self.cursor_forbidden = self.doc.app.cursors.get_action_cursor(
             self.__action_name__, "cursor_arrow_forbidden")
+        self.doc.tdw.queue_draw()
 
     def leave(self, **kwds):
         """Exit the mode, hiding any dialogs"""
         dialog = self.get_options_widget()._size_dialog
-        if self.doc and self not in self.doc.modes:
-            dialog.hide()
+        if self.doc:
+            self.doc.tdw.queue_draw()
+            if self not in self.doc.modes:
+                dialog.hide()
         super(FrameEditMode, self).leave(**kwds)
 
 
@@ -127,22 +134,17 @@ class FrameEditMode (canvasevent.SwitchableModeMixin,
 
         # Calculate the maximum permissible distance
         dx1, dy1 = tdw.display_to_model(0, 0)
-        dx2, dy2 = tdw.display_to_model(0, self.EDGE_WIDTH)
+        dx2, dy2 = tdw.display_to_model(0, self.EDGE_SENSITIVITY)
         max_d = math.sqrt((dx1-dx2)**2 + (dy1-dy2)**2)
 
+        if ( x < fx1 - max_d or x > fx2 + max_d or
+             y < fy1 - max_d or y > fy2 + max_d ):
+            return self.OUTSIDE
         zone = self.INSIDE  # zero
-        if x <= fx1:
-            if abs(fx1 - x) <= max_d: zone |= self.LEFT
-            else: return self.OUTSIDE
-        elif x >= fx2:
-            if abs(fx2 - x) <= max_d: zone |= self.RIGHT
-            else: return self.OUTSIDE
-        if y <= fy1:
-            if abs(fy1 - y) <= max_d: zone |= self.TOP
-            else: return self.OUTSIDE
-        elif y >= fy2:
-            if abs(fy2 - y) <= max_d: zone |= self.BOTTOM
-            else: return self.OUTSIDE
+        if abs(fx2 - x) <= max_d:   zone |= self.RIGHT
+        elif abs(fx1 - x) <= max_d: zone |= self.LEFT
+        if abs(fy2 - y) <= max_d:   zone |= self.BOTTOM
+        elif abs(fy1 - y) <= max_d: zone |= self.TOP
         return zone
 
 
@@ -171,10 +173,10 @@ class FrameEditMode (canvasevent.SwitchableModeMixin,
 
         # A reference point, reflecting the side or edge where the pointer is
         rx, ry = cx, cy
-        if zone & self.LEFT: rx = fx
-        elif zone & self.RIGHT: rx = fx+fw
-        if zone & self.TOP: ry = fy
-        elif zone & self.BOTTOM: ry = fy+fh
+        if zone & self.RIGHT: rx = fx+fw
+        elif zone & self.LEFT: rx = fx
+        if zone & self.BOTTOM: ry = fy+fh
+        elif zone & self.TOP: ry = fy
         rxd, ryd = tdw.model_to_display(rx, ry)
 
         # Angle of the line from (cx, cy) to (rx, ry), in display space
@@ -211,7 +213,10 @@ class FrameEditMode (canvasevent.SwitchableModeMixin,
         if not self.in_drag:
             self._update_cursors(tdw, event.x, event.y)
             tdw.set_override_cursor(self.inactive_cursor)
-            self._zone = self._get_zone(tdw, event.x, event.y)
+            zone = self._get_zone(tdw, event.x, event.y)
+            if zone != self._zone:
+                self._zone = zone
+                tdw.queue_draw()
         return super(FrameEditMode, self).motion_notify_cb(tdw, event)
 
 
@@ -519,6 +524,131 @@ class FrameEditOptionsWidget (gtk.Alignment):
 
     def _size_button_clicked_cb(self, button):
         self._size_dialog.show_all()
+
+
+class FrameOverlay (Overlay):
+    """Overlay showing the frame, and edit boxes if in FrameEditMode
+
+    This is a display-space overlay, since the edit boxes need to be drawn with
+    pixel precision at a consistent weight regardless of zoom.
+
+    Only the main TDW is supported."""
+
+    EDIT_BOX_PRELIGHT_RGB = (1.0, 0.9, 0.6)
+    EDIT_BOX_RGB = (1.0, 0.75, 0)
+    EDIT_BOX_OUTLINE_RGB = [c*0.3 for c in EDIT_BOX_PRELIGHT_RGB]
+    OUTLINE_WIDTH = 1
+    EDIT_BOX_WIDTH = 3
+    EDIT_CORNER_SIZE = 5
+
+
+    def __init__(self, doc):
+        """Initialize overlay"""
+        Overlay.__init__(self)
+        self.doc = doc
+        self.app = doc.app
+
+    def _frame_corners(self):
+        """Calculates the frame's corners, in display space"""
+        tdw = self.doc.tdw
+        x, y, w, h = tuple(self.doc.model.get_frame())
+        points_model = [(x, y), (x+w, y), (x+w, y+h), (x, y+h)]
+        points_disp = [tdw.model_to_display(*p) for p in points_model]
+        return points_disp
+
+    def paint(self, cr):
+        """Paints the frame, and edit boxes if the app is in FrameEditMode"""
+        if not self.doc.model.frame_enabled:
+            return
+
+        tdw = self.doc.tdw
+        allocation = tdw.get_allocation()
+        w, h = allocation.width, allocation.height
+        canvas_bbox = (-1, -1, w+2, h+2)
+
+        cr.rectangle(*canvas_bbox)
+
+        corners = self._frame_corners()
+        p1, p2, p3, p4 = [(int(x)+0.5,int(y)+0.5) for x,y in corners]
+        cr.move_to(*p1)
+        cr.line_to(*p2)
+        cr.line_to(*p3)
+        cr.line_to(*p4)
+        cr.close_path()
+        cr.set_fill_rule(cairo.FILL_RULE_EVEN_ODD)
+
+        frame_rgba = self.app.preferences["frame.color_rgba"]
+        frame_rgba = [helpers.clamp(c, 0, 1) for c in frame_rgba]
+        cr.set_source_rgba(*frame_rgba)
+        editmode = None
+        for m in self.doc.modes:
+            if isinstance(m, FrameEditMode):
+                editmode = m
+                break
+        if not editmode:
+            # Frame mask
+            cr.fill_preserve()
+            # Doublestrike the edge for emphasis, assuming an alpha frame
+            cr.set_line_width(self.OUTLINE_WIDTH)
+            cr.stroke()
+        else:
+            # Frame mask
+            cr.fill()
+            # Editable frame outline
+            cr.set_line_cap(cairo.LINE_CAP_ROUND)
+            cr.set_line_width(self.EDIT_BOX_WIDTH + 2)
+            r, g, b = self.EDIT_BOX_OUTLINE_RGB
+            cr.set_source_rgba(r, g, b, 0.666)
+            cr.move_to(*p1)
+            cr.line_to(*p2)
+            cr.line_to(*p3)
+            cr.line_to(*p4)
+            cr.close_path()
+            cr.stroke()
+            # Line corresponding to editable zones
+            zonelines = [(FrameEditMode.TOP,    p1, p2),
+                         (FrameEditMode.RIGHT,  p2, p3),
+                         (FrameEditMode.BOTTOM, p3, p4),
+                         (FrameEditMode.LEFT,   p4, p1)]
+            cr.set_line_width(self.EDIT_BOX_WIDTH)
+            for zone, p, q in zonelines:
+                if editmode._zone and (editmode._zone == zone):
+                    r, g, b = self.EDIT_BOX_PRELIGHT_RGB
+                else:
+                    r, g, b = self.EDIT_BOX_RGB
+                cr.set_source_rgba(r, g, b, 1)
+                cr.move_to(*p)
+                cr.line_to(*q)
+                cr.stroke()
+            # Corner dot outline
+            radius = self.EDIT_CORNER_SIZE + 1
+            r, g, b = self.EDIT_BOX_OUTLINE_RGB
+            cr.set_source_rgba(r, g, b, 0.666)
+            for p in [p1, p2, p3, p4]:
+                x, y = p
+                cr.arc(x, y, radius, 0, 2*math.pi)
+                cr.fill()
+                cr.stroke()
+            # Dots corresponding to editable corners
+            zonecorners = [(p1, FrameEditMode.TOP|FrameEditMode.LEFT),
+                           (p2, FrameEditMode.TOP|FrameEditMode.RIGHT),
+                           (p3, FrameEditMode.BOTTOM|FrameEditMode.RIGHT),
+                           (p4, FrameEditMode.BOTTOM|FrameEditMode.LEFT),]
+            radius = self.EDIT_CORNER_SIZE
+            for p, zonemask in zonecorners:
+                x, y = p
+                if editmode._zone and (editmode._zone == zonemask):
+                    r, g, b = self.EDIT_BOX_PRELIGHT_RGB
+                else:
+                    r, g, b = self.EDIT_BOX_RGB
+                cr.set_source_rgba(r, g, b, 1)
+                cr.arc(x, y, radius, 0, 2*math.pi)
+                cr.fill()
+
+
+
+
+
 
 class UnitAdjustment(gtk.Adjustment):
 
