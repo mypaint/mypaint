@@ -55,6 +55,7 @@ class VisibleOverlay (overlays.Overlay):
     OUTER_LINE_RGBA = 0.451/2, 0.823/2, 0.086/2, 0.5
 
     def __init__(self, app, preview):
+        overlays.Overlay.__init__(self)
 
         self.app = app
         self.main_model = app.doc.model

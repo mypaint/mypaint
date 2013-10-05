@@ -12,7 +12,7 @@ import cairo
 import overlays
 
 
-class SymmetryOverlay(overlays.Overlay):
+class SymmetryOverlay (overlays.Overlay):
     """Symmetry overlay, operating in display coordinates.
     """
 
@@ -22,6 +22,7 @@ class SymmetryOverlay(overlays.Overlay):
 
 
     def __init__(self, doc):
+        overlays.Overlay.__init__(self)
         self.doc = doc
         self.tdw = self.doc.tdw
         self.axis = doc.model.get_symmetry_axis()

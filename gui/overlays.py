@@ -23,7 +23,7 @@ from lib.helpers import clamp
 from gettext import gettext as _
 
 
-class Overlay:
+class Overlay (object):
     """Base class/interface for objects which paint things over a TDW.
     """
 
@@ -52,6 +52,7 @@ class FadingOverlay (Overlay):
     __anim_srcid = None
 
     def __init__(self, doc):
+        Overlay.__init__(self)
         self.tdw = doc.tdw
 
     def paint(self, cr):

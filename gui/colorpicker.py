@@ -122,6 +122,7 @@ class ColorPickPreviewOverlay (Overlay):
         constructor, so cleanup() must be called when the owning mode leave()s.
 
         """
+        overlay.__init__(self)
         self._doc = doc
         self._tdw = tdw
         self._x = int(x)+0.5
