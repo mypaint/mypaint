@@ -125,11 +125,7 @@ class Document():
                      user_initiated=False):
         """Update parts of the frame"""
         frame = [x, y, width, height]
-        if frame == self._frame:
-            return
         if user_initiated:
-            if not self._frame_enabled:
-                self.set_frame_enabled(True, user_initiated=True)
             if isinstance(self.get_last_command(), command.UpdateFrame):
                 self.update_last_command(frame=frame)
             else:
@@ -156,6 +152,16 @@ class Document():
 
 
     frame_enabled = property(get_frame_enabled)
+
+
+    def set_frame_to_current_layer(self, user_initiated=False):
+        x, y, w, h = self.get_current_layer().get_bbox()
+        self.update_frame(x, y, w, h, user_initiated=user_initiated)
+
+
+    def set_frame_to_document(self, user_initiated=False):
+        x, y, w, h = self.get_bbox()
+        self.update_frame(x, y, w, h, user_initiated=user_initiated)
 
 
     def trim_layer(self):

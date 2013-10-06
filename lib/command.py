@@ -642,18 +642,22 @@ class UpdateFrame (Action):
         self.doc = doc
         self.new_frame = frame
         self.old_frame = None
+        self.old_enabled = doc.get_frame_enabled()
 
     def redo(self):
         if self.old_frame is None:
             self.old_frame = self.doc.frame[:]
         self.doc.update_frame(*self.new_frame, user_initiated=False)
+        self.doc.set_frame_enabled(True, user_initiated=False)
 
     def update(self, frame):
         assert self.old_frame is not None
         self.new_frame = frame
         self.doc.update_frame(*self.new_frame, user_initiated=False)
+        self.doc.set_frame_enabled(True, user_initiated=False)
 
     def undo(self):
         assert self.old_frame is not None
         self.doc.update_frame(*self.old_frame, user_initiated=False)
+        self.doc.set_frame_enabled(self.old_enabled, user_initiated=False)
 

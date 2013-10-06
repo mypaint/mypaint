@@ -451,13 +451,11 @@ class FrameEditOptionsWidget (gtk.Alignment):
         return model[active][0]
 
     def crop_frame_cb(self, button, command):
+        model = self.app.doc.model
         if command == 'CropFrameToLayer':
-            bbox = self.app.doc.model.get_current_layer().get_bbox()
+            model.set_frame_to_current_layer(user_initiated=True)
         elif command == 'CropFrameToDocument':
-            bbox = self.app.doc.model.get_bbox()
-        self.app.doc.model.set_frame(bbox, user_initiated=True)
-        self.width_adj.set_px_value(bbox.w)
-        self.height_adj.set_px_value(bbox.h)
+            model.set_frame_to_document(user_initiated=True)
 
     def _color_set_cb(self, colorbutton):
         color_gdk = colorbutton.get_color()
