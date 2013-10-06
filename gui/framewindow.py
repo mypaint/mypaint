@@ -300,7 +300,6 @@ class FrameEditOptionsWidget (gtk.Alignment):
         self._size_dialog = windowing.Dialog(
                 app, _("Frame Size"), app.drawWindow,
                 buttons=buttons)
-        #self._size_dialog.set_position(gtk.WIN_POS_MOUSE)
         unit = _('px')
 
         height_label = gtk.Label(_('Height:'))
@@ -411,12 +410,6 @@ class FrameEditOptionsWidget (gtk.Alignment):
         trim_button.set_tooltip_text(_("Trim parts of the current layer "
                                        "which lie outside the frame"))
 
-        #hint_label = gtk.Label(_('While the frame is enabled, it '
-        #                         'can be adjusted on the canvas'))
-        #hint_label.set_line_wrap(True)
-        #hint_label.set_padding(0, 6)
-        #hint_label.set_size_request(200, -1)
-
         self.enable_button = gtk.CheckButton()
         frame_toggle_action = self.app.find_action("FrameToggle")
         self.enable_button.set_related_action(frame_toggle_action)
@@ -425,10 +418,6 @@ class FrameEditOptionsWidget (gtk.Alignment):
         row += 1
         opts_table.attach(self.enable_button, 1, 2, row, row+1,
                           xopts, yopts, xpad, ypad)
-
-        #row += 1
-        #opts_table.attach(hint_label, 0, 3, row, row+1,
-        #                  xopts, yopts, xpad, ypad)
 
         row += 1
         opts_table.attach(crop_layer_button, 0, 2, row, row+1,
@@ -461,7 +450,6 @@ class FrameEditOptionsWidget (gtk.Alignment):
             return None
         return model[active][0]
 
-    # FRAME
     def crop_frame_cb(self, button, command):
         if command == 'CropFrameToLayer':
             bbox = self.app.doc.model.get_current_layer().get_bbox()
