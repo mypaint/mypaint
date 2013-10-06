@@ -98,6 +98,7 @@ class FrameEditMode (canvasevent.SwitchableModeMixin,
     def enter(self, **kwds):
         """Enter the mode"""
         super(FrameEditMode, self).enter(**kwds)
+        # Assign cursors
         self.cursor_move_w_e = self.doc.app.cursors.get_action_cursor(
             self.__action_name__, "cursor_move_w_e")
         self.cursor_move_n_s = self.doc.app.cursors.get_action_cursor(
@@ -112,6 +113,28 @@ class FrameEditMode (canvasevent.SwitchableModeMixin,
             self.__action_name__, "cursor_hand_open")
         self.cursor_forbidden = self.doc.app.cursors.get_action_cursor(
             self.__action_name__, "cursor_arrow_forbidden")
+        # If the frame isn't visible, show it. If it doesn't yet have a size,
+        # then assign a sensible one which makes the frame visible on screen.
+        model = self.doc.model
+        if not model.get_frame_enabled():
+            x, y, w, h = model.get_frame()
+            if w > 0 and h > 0:
+                model.set_frame_enabled(True, user_initiated=True)
+            else:
+                x, y, w, h = model.get_bbox()
+                if not (w > 0 and h > 0):
+                    tdw = self.doc.tdw
+                    alloc = tdw.get_allocation()
+                    x1, y1 = tdw.display_to_model(0, 0)
+                    x2, y2 = tdw.display_to_model(alloc.width * 0.5,
+                                                  alloc.height * 0.5)
+                    s = int(math.sqrt((x2-x1)**2 + (y2-y1)**2) * 0.666)
+                    s = max(s, 64)
+                    w = s
+                    h = s
+                    x, y = int(x2-s/2), int(y2-s/2)
+                model.set_frame([x, y, w, h], user_initiated=True)
+        # Overlay needs to be drawn
         self.doc.tdw.queue_draw()
 
     def leave(self, **kwds):
