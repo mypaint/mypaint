@@ -96,16 +96,18 @@ class ModeOptionsTool (workspace.SizedVBoxToolWidget):
         new_options = self._no_options_label
         if hasattr(mode, "get_options_widget"):
             new_options = mode.get_options_widget()
-        # Only update if there's a change
-        if new_options and new_options is not old_options:
-            # Label
-            markup = self.OPTIONS_MARKUP % (escape(mode.get_name()),)
-            self._options_label.set_markup(markup)
-            # Icon
-            icon_name = mode.get_icon_name()
-            self._mode_icon.set_from_icon_name(icon_name,
-                                               Gtk.IconSize.SMALL_TOOLBAR)
-            # Options widget
+        # Only update if the current mode exposes a non-NULL options widget
+        if new_options is None:
+            return
+        # Label
+        markup = self.OPTIONS_MARKUP % (escape(mode.get_name()),)
+        self._options_label.set_markup(markup)
+        # Icon
+        icon_name = mode.get_icon_name()
+        self._mode_icon.set_from_icon_name(icon_name,
+                                           Gtk.IconSize.SMALL_TOOLBAR)
+        # Options widget: only update if there's a change
+        if new_options is not old_options:
             if old_options:
                 old_options.hide()
                 self._options_bin.remove(old_options)
