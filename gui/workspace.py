@@ -187,8 +187,8 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         self._rscrolls = rscrolls
         lscrolls.add_with_viewport(lstack)
         rscrolls.add_with_viewport(rstack)
-        lscrolls.set_shadow_type(Gtk.ShadowType.NONE)
-        rscrolls.set_shadow_type(Gtk.ShadowType.NONE)
+        lscrolls.set_shadow_type(Gtk.ShadowType.IN)
+        rscrolls.set_shadow_type(Gtk.ShadowType.IN)
         lscrolls.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
         rscrolls.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
         self._lpaned = lpaned = Gtk.HPaned()
@@ -196,6 +196,13 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         for stack, paned in [(lstack, lpaned), (rstack, rpaned)]:
             stack.workspace = self
             stack.connect("hide", self._sidebar_stack_hide_cb, paned)
+        # Canvas scrolls. The canvas isn't scrollable yet, but use the same
+        # class as the right and left sidebars so that the shadows match
+        # in all themes.
+        cscrolls = Gtk.ScrolledWindow()
+        cscrolls.set_shadow_type(Gtk.ShadowType.IN)
+        cscrolls.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.NEVER)
+        self._canvas_scrolls = cscrolls
         # Sidebar packing
         lpaned.pack1(lscrolls, resize=False, shrink=False)
         lpaned.pack2(rpaned, resize=True, shrink=False)
@@ -420,11 +427,44 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         """Canvas widget (setter)"""
         assert self.get_canvas() is None
         self._rpaned.pack1(widget, resize=True, shrink=False)
+        self._update_canvas_scrolledwindow()
 
 
     def get_canvas(self):
         """Canvas widget (getter)"""
-        return self._rpaned.get_child1()
+        widget = self._rpaned.get_child1()
+        if widget is self._canvas_scrolls:
+            widget = widget.get_child()
+        return widget
+
+
+    def _update_canvas_scrolledwindow(self):
+        """Update whether the canvas has a surrounding ScrolledWindow
+
+        In fullscreen mode, the ScrolledWindow is removed from the widget
+        hierarchy so that the canvas widget can occupy the full size of the
+        screen. In nonfullscreen mode, the scrollers provide a pretty frame.
+        """
+        canvas = self.get_canvas()
+        parent = canvas.get_parent()
+        if not self._is_fullscreen:
+            if parent is self._canvas_scrolls:
+                return
+            logger.debug("Adding GtkScrolledWindow around canvas")
+            assert parent is self._rpaned
+            self._rpaned.remove(canvas)
+            self._rpaned.pack1(self._canvas_scrolls, resize=True, shrink=False)
+            self._canvas_scrolls.add_with_viewport(canvas)
+            self._canvas_scrolls.show_all()
+        else:
+            if parent is self._rpaned:
+                return
+            logger.debug("Removing GtkScrolledWindow around canvas")
+            assert parent is self._canvas_scrolls
+            self._canvas_scrolls.remove(canvas)
+            self._rpaned.remove(self._canvas_scrolls)
+            self._rpaned.pack1(canvas, resize=True, shrink=False)
+            self._canvas_scrolls.hide()
 
 
     ## Tool widgets
@@ -746,6 +786,7 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
                 self._disconnect_autohide_events()
                 self._show_autohide_widgets()
             self._is_fullscreen = bool(fullscreen)
+            self._update_canvas_scrolledwindow()
         if event.changed_mask & Gdk.WindowState.MAXIMIZED:
             maximized = event.new_window_state & Gdk.WindowState.MAXIMIZED
             self._is_maximized = bool(maximized)
