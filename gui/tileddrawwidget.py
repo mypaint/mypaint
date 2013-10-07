@@ -22,6 +22,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 from lib import helpers, tiledsurface, pixbufsurface
+from lib.observable import event
 import cursor
 
 
@@ -102,6 +103,13 @@ class TiledDrawWidget (gtk.EventBox):
 
         #: Scroll to match appearing/disappearing sidebars and toolbars.
         self.scroll_on_allocate = True
+
+        forwarder = lambda *a: self.transformation_updated()
+        self.renderer.transformation_updated += forwarder
+
+    @event
+    def transformation_updated(self):
+        """Forwarded event: transformation was updated"""
 
 
     def _size_allocate_cb(self, widget, alloc):
@@ -557,6 +565,11 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         return self._tdw.doc
 
 
+    @event
+    def transformation_updated(self):
+        """Event: transformation was updated"""
+
+
     def _invalidate_cached_transform_matrix(self):
         self.cached_transformation_matrix = None
 
@@ -654,10 +667,12 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
 
     def _get_model_view_transformation(self):
         if self.cached_transformation_matrix is None:
-            matrix = calculate_transformation_matrix(self.scale, self.rotation,
-                                                     self.translation_x, self.translation_y, self.mirrored)
+            matrix = calculate_transformation_matrix(
+                        self.scale, self.rotation,
+                        self.translation_x, self.translation_y,
+                        self.mirrored)
             self.cached_transformation_matrix = matrix
-        
+            self.transformation_updated()
         return self.cached_transformation_matrix
 
 
