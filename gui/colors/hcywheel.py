@@ -64,7 +64,7 @@ The New button lets you choose one of several templates as a starting point.
 """)
 
 
-class MaskableWheelMixin:
+class MaskableWheelMixin(object):
     """Provides wheel widgets with maskable areas.
 
     For use with implementations of `HueSaturationWheelAdjusterMixin`.
@@ -361,7 +361,7 @@ class MaskableWheelMixin:
         HueSaturationWheelMixin.paint_foreground_cb(self, cr, wd, ht)
 
 
-class HCYHueChromaWheelMixin:
+class HCYHueChromaWheelMixin(object):
     """Mixin for wheel-style adjusters to display the H+C from the HCY model.
 
     For use with implementations of `HueSaturationWheelAdjusterMixin`; make

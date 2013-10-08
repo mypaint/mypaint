@@ -409,7 +409,7 @@ class ColorManager (gobject.GObject):
 
 
 
-class ColorAdjuster:
+class ColorAdjuster(object):
     """Base class for any object which can manipulate a shared `UIColor`.
 
     Color adjusters are used for changing one or more elements of a colour.
@@ -1121,7 +1121,7 @@ class SliderColorAdjuster (ColorAdjusterWidget):
 
 
 
-class HueSaturationWheelMixin:
+class HueSaturationWheelMixin(object):
     """Mixin for wheel-style hue/saturation adjusters, indep. of colour space
 
     Implementing most of the wheel-drawing machinery as a mixin allows the

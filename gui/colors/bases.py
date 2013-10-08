@@ -18,7 +18,7 @@ from gtk import gdk
 import cairo
 
 
-class CachedBgWidgetMixin:
+class CachedBgWidgetMixin(object):
     """Provides widgets with a cached background and bg/fg drawing callbacks.
 
     The background is invalidated whenever the size changes, or when the
@@ -137,7 +137,7 @@ class CachedBgDrawingArea (CachedBgWidgetMixin, gtk.DrawingArea):
 
 
 
-class IconRenderable:
+class IconRenderable(object):
     """Mixin for anything which can render itself as an XDG icon via Cairo.
 
     Typically a cached icon file from disk will be quicker and more convenient,

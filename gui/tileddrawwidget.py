@@ -368,7 +368,7 @@ class CanvasTransformation (object):
                     (self.mirrored and " mirrored" or ""))
 
 
-class DrawCursorMixin:
+class DrawCursorMixin(object):
     """Mixin for renderer widgets needing a managed drawing cursor.
 
     Required members: self.doc, self.scale, gtk.Widget stuff.
