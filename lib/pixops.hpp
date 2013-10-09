@@ -83,7 +83,7 @@ tile_composite_data (const fix15_short_t *src_p,
 // simply array copying (numpy assignment operator) is about 13 times slower, sadly
 // The above comment is true when the array is sliced; it's only about two
 // times faster now, in the current usecae.
-void tile_copy_rgba16_into_rgba16_c(uint16_t *src, uint16_t *dst) {
+void tile_copy_rgba16_into_rgba16_c(const uint16_t *src, uint16_t *dst) {
   memcpy(dst, src, MYPAINT_TILE_SIZE*MYPAINT_TILE_SIZE*4*sizeof(uint16_t));
 }
 
