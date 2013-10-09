@@ -7,12 +7,31 @@
  * (at your option) any later version.
  */
 
+#ifndef PIXOPS_HPP
+#define PIXOPS_HPP
+
 // make the "heavy_debug" readable from python
 #ifdef HEAVY_DEBUG
 const bool heavy_debug = true;
 #else
 const bool heavy_debug = false;
 #endif
+
+void tile_downscale_rgba16_c(const uint16_t *src, int src_strides, uint16_t *dst, int dst_strides, int dst_x, int dst_y) {
+  for (int y=0; y<MYPAINT_TILE_SIZE/2; y++) {
+    uint16_t * src_p = (uint16_t*)((char *)src + (2*y)*src_strides);
+    uint16_t * dst_p = (uint16_t*)((char *)dst + (y+dst_y)*dst_strides);
+    dst_p += 4*dst_x;
+    for(int x=0; x<MYPAINT_TILE_SIZE/2; x++) {
+      dst_p[0] = src_p[0]/4 + (src_p+4)[0]/4 + (src_p+4*MYPAINT_TILE_SIZE)[0]/4 + (src_p+4*MYPAINT_TILE_SIZE+4)[0]/4;
+      dst_p[1] = src_p[1]/4 + (src_p+4)[1]/4 + (src_p+4*MYPAINT_TILE_SIZE)[1]/4 + (src_p+4*MYPAINT_TILE_SIZE+4)[1]/4;
+      dst_p[2] = src_p[2]/4 + (src_p+4)[2]/4 + (src_p+4*MYPAINT_TILE_SIZE)[2]/4 + (src_p+4*MYPAINT_TILE_SIZE+4)[2]/4;
+      dst_p[3] = src_p[3]/4 + (src_p+4)[3]/4 + (src_p+4*MYPAINT_TILE_SIZE)[3]/4 + (src_p+4*MYPAINT_TILE_SIZE+4)[3]/4;
+      src_p += 8;
+      dst_p += 4;
+    }
+  }
+}
 
 // downscale a tile to half its size using bilinear interpolation
 // used for generating mipmaps for tiledsurface and background
@@ -35,19 +54,10 @@ void tile_downscale_rgba16(PyObject *src, PyObject *dst, int dst_x, int dst_y) {
   assert(PyArray_ISCARRAY(dst_arr));
 #endif
 
-  for (int y=0; y<MYPAINT_TILE_SIZE/2; y++) {
-    uint16_t * src_p = (uint16_t*)((char *)PyArray_DATA(src_arr) + (2*y)*PyArray_STRIDES(src_arr)[0]);
-    uint16_t * dst_p = (uint16_t*)((char *)PyArray_DATA(dst_arr) + (y+dst_y)*PyArray_STRIDES(dst_arr)[0]);
-    dst_p += 4*dst_x;
-    for(int x=0; x<MYPAINT_TILE_SIZE/2; x++) {
-      dst_p[0] = src_p[0]/4 + (src_p+4)[0]/4 + (src_p+4*MYPAINT_TILE_SIZE)[0]/4 + (src_p+4*MYPAINT_TILE_SIZE+4)[0]/4;
-      dst_p[1] = src_p[1]/4 + (src_p+4)[1]/4 + (src_p+4*MYPAINT_TILE_SIZE)[1]/4 + (src_p+4*MYPAINT_TILE_SIZE+4)[1]/4;
-      dst_p[2] = src_p[2]/4 + (src_p+4)[2]/4 + (src_p+4*MYPAINT_TILE_SIZE)[2]/4 + (src_p+4*MYPAINT_TILE_SIZE+4)[2]/4;
-      dst_p[3] = src_p[3]/4 + (src_p+4)[3]/4 + (src_p+4*MYPAINT_TILE_SIZE)[3]/4 + (src_p+4*MYPAINT_TILE_SIZE+4)[3]/4;
-      src_p += 8;
-      dst_p += 4;
-    }
-  }
+  tile_downscale_rgba16_c((uint16_t*)PyArray_DATA(src_arr), PyArray_STRIDES(src_arr)[0],
+                          (uint16_t*)PyArray_DATA(dst_arr), PyArray_STRIDES(dst_arr)[0],
+                          dst_x, dst_y);
+
 }
 
 
@@ -277,37 +287,17 @@ void tile_convert_rgba16_to_rgba8(PyObject * src, PyObject * dst) {
   }
 }
 
-// used after compositing (when displaying, or when saving solid PNG or JPG)
-void tile_convert_rgbu16_to_rgbu8(PyObject * src, PyObject * dst) {
-  PyArrayObject* src_arr = ((PyArrayObject*)src);
-  PyArrayObject* dst_arr = ((PyArrayObject*)dst);
 
-#ifdef HEAVY_DEBUG
-  assert(PyArray_Check(dst));
-  assert(PyArray_DIM(dst_arr, 0) == MYPAINT_TILE_SIZE);
-  assert(PyArray_DIM(dst_arr, 1) == MYPAINT_TILE_SIZE);
-  assert(PyArray_DIM(dst_arr, 2) == 4);
-  assert(PyArray_TYPE(dst_arr) == NPY_UINT8);
-  assert(PyArray_ISBEHAVED(dst_arr));
-  assert(PyArray_STRIDE(dst_arr, 1) == 4*sizeof(uint8_t));
-  assert(PyArray_STRIDE(dst_arr, 2) == sizeof(uint8_t));
-
-  assert(PyArray_Check(src));
-  assert(PyArray_DIM(src_arr, 0) == MYPAINT_TILE_SIZE);
-  assert(PyArray_DIM(src_arr, 1) == MYPAINT_TILE_SIZE);
-  assert(PyArray_DIM(src_arr, 2) == 4);
-  assert(PyArray_TYPE(src_arr) == NPY_UINT16);
-  assert(PyArray_ISBEHAVED(src_arr));
-  assert(PyArray_STRIDE(src_arr, 1) == 4*sizeof(uint16_t));
-  assert(PyArray_STRIDE(src_arr, 2) ==   sizeof(uint16_t));
-#endif
+void tile_convert_rgbu16_to_rgbu8_c(const uint16_t* src, int src_strides,
+                                    uint8_t* dst, int dst_strides)
+{
 
   precalculate_dithering_noise_if_required();
   int noise_idx = 0;
 
   for (int y=0; y<MYPAINT_TILE_SIZE; y++) {
-    uint16_t * src_p = (uint16_t*)((char *)PyArray_DATA(src_arr) + y*PyArray_STRIDES(src_arr)[0]);
-    uint8_t  * dst_p = (uint8_t*)((char *)PyArray_DATA(dst_arr) + y*PyArray_STRIDES(dst_arr)[0]);
+    uint16_t * src_p = (uint16_t*)((char *)src + y*src_strides);
+    uint8_t  * dst_p = (uint8_t*)((char *)dst + y*dst_strides);
     for (int x=0; x<MYPAINT_TILE_SIZE; x++) {
       uint32_t r, g, b;
       r = *src_p++;
@@ -335,10 +325,40 @@ void tile_convert_rgbu16_to_rgbu8(PyObject * src, PyObject * dst) {
 #ifdef HEAVY_DEBUG
     assert(noise_idx <= dithering_noise_size);
 #endif
-    src_p += PyArray_STRIDES(src_arr)[0];
-    dst_p += PyArray_STRIDES(dst_arr)[0];
+    src_p += src_strides;
+    dst_p += dst_strides;
   }
 }
+
+// used after compositing (when displaying, or when saving solid PNG or JPG)
+void tile_convert_rgbu16_to_rgbu8(PyObject * src, PyObject * dst) {
+  PyArrayObject* src_arr = ((PyArrayObject*)src);
+  PyArrayObject* dst_arr = ((PyArrayObject*)dst);
+
+#ifdef HEAVY_DEBUG
+  assert(PyArray_Check(dst));
+  assert(PyArray_DIM(dst_arr, 0) == MYPAINT_TILE_SIZE);
+  assert(PyArray_DIM(dst_arr, 1) == MYPAINT_TILE_SIZE);
+  assert(PyArray_DIM(dst_arr, 2) == 4);
+  assert(PyArray_TYPE(dst_arr) == NPY_UINT8);
+  assert(PyArray_ISBEHAVED(dst_arr));
+  assert(PyArray_STRIDE(dst_arr, 1) == 4*sizeof(uint8_t));
+  assert(PyArray_STRIDE(dst_arr, 2) == sizeof(uint8_t));
+
+  assert(PyArray_Check(src));
+  assert(PyArray_DIM(src_arr, 0) == MYPAINT_TILE_SIZE);
+  assert(PyArray_DIM(src_arr, 1) == MYPAINT_TILE_SIZE);
+  assert(PyArray_DIM(src_arr, 2) == 4);
+  assert(PyArray_TYPE(src_arr) == NPY_UINT16);
+  assert(PyArray_ISBEHAVED(src_arr));
+  assert(PyArray_STRIDE(src_arr, 1) == 4*sizeof(uint16_t));
+  assert(PyArray_STRIDE(src_arr, 2) ==   sizeof(uint16_t));
+#endif
+
+  tile_convert_rgbu16_to_rgbu8_c((uint16_t*)PyArray_DATA(src_arr), PyArray_STRIDES(src_arr)[0],
+                                 (uint8_t*)PyArray_DATA(dst_arr), PyArray_STRIDES(dst_arr)[0]);
+}
+
 
 // used mainly for loading layers (transparent PNG)
 void tile_convert_rgba8_to_rgba16(PyObject * src, PyObject * dst) {
@@ -664,4 +684,4 @@ tile_composite (enum BlendingMode mode, PyObject *src_obj,
   blend_func(src_p, dst_p, dst_has_alpha, src_opacity);
 }
 
-
+#endif // PIXOPS_HPP
