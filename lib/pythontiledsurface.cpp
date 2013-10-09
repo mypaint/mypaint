@@ -27,20 +27,20 @@ void begin_atomic(MyPaintSurface *surface)
     self->atomic++;
 }
 
-MyPaintRectangle *end_atomic(MyPaintSurface *surface)
+MyPaintRectangle end_atomic(MyPaintSurface *surface)
 {
     MyPaintPythonTiledSurface *self = (MyPaintPythonTiledSurface *)surface;
 
-    MyPaintRectangle *bbox = mypaint_tiled_surface_end_atomic((MyPaintTiledSurface *)self);
+    MyPaintRectangle bbox = mypaint_tiled_surface_end_atomic((MyPaintTiledSurface *)self);
 
     assert(self->atomic > 0);
     self->atomic--;
 
     if (self->atomic == 0) {
-        if (bbox->width > 0) {
+        if (bbox.width > 0) {
             PyObject* res;
             res = PyObject_CallMethod(self->py_obj, "notify_observers", "(iiii)",
-                                      bbox->x, bbox->y, bbox->width, bbox->height);
+                                      bbox.x, bbox.y, bbox.width, bbox.height);
             Py_DECREF(res);
         }
     }

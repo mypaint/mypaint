@@ -48,7 +48,7 @@ typedef void (*MyPaintSurfaceSavePngFunction) (struct _MyPaintSurface *self, con
 
 typedef void (*MyPaintSurfaceBeginAtomicFunction) (struct _MyPaintSurface *self);
 
-typedef MyPaintRectangle *(*MyPaintSurfaceEndAtomicFunction) (struct _MyPaintSurface *self);
+typedef MyPaintRectangle (*MyPaintSurfaceEndAtomicFunction) (struct _MyPaintSurface *self);
 
 /**
   * MyPaintSurface:
@@ -99,7 +99,7 @@ mypaint_surface_save_png(MyPaintSurface *self, const char *path, int x, int y, i
 
 void mypaint_surface_begin_atomic(MyPaintSurface *self);
 
-MyPaintRectangle *mypaint_surface_end_atomic(MyPaintSurface *self);
+MyPaintRectangle mypaint_surface_end_atomic(MyPaintSurface *self);
 
 void mypaint_surface_init(MyPaintSurface *self);
 void mypaint_surface_ref(MyPaintSurface *self);

@@ -113,9 +113,9 @@ mypaint_surface_begin_atomic(MyPaintSurface *self)
 /**
  * mypaint_surface_end_atomic:
  *
- * Returns: (transfer none) Invalidated rectangle
+ * Returns: The rectangle that is invalidated by the queued operations
  */
-MyPaintRectangle *
+MyPaintRectangle
 mypaint_surface_end_atomic(MyPaintSurface *self)
 {
     assert(self->end_atomic);
