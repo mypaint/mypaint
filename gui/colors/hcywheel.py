@@ -872,12 +872,12 @@ class HCYMaskPreview (MaskableWheelMixin,
 
     """
 
-    def __init__(self, mask=None):
+    def __init__(self):
         MaskableWheelMixin.__init__(self)
         HueSaturationWheelAdjuster.__init__(self)
         self.set_app_paintable(True)
         self.set_has_window(False)
-        self.set_mask(mask)
+        self.set_mask([])
         self.mask_toggle.set_active(True)
         self.set_size_request(64, 64)
 
@@ -994,8 +994,9 @@ class HCYMaskTemplateDialog (gtk.Dialog):
             label.set_size_request(375, -1)
             label.set_line_wrap(True)
             label.set_alignment(0, 0.5)
-            preview = HCYMaskPreview(mask)
+            preview = HCYMaskPreview()
             preview.set_color_manager(mgr)
+            preview.set_mask(mask)
             preview_frame = gtk.AspectFrame(obey_child=True)
             preview_frame.add(preview)
             preview_frame.set_shadow_type(gtk.SHADOW_NONE)
