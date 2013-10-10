@@ -21,6 +21,7 @@ import webbrowser
 from warnings import warn
 import logging
 logger = logging.getLogger(__name__)
+import math
 
 from gettext import gettext as _
 import gtk
@@ -148,7 +149,9 @@ class DrawWindow (gtk.Window):
         self._done_realize = True
 
         doc = self.app.doc
-        doc.tdw.display_overlays.append(FrameOverlay(doc))
+        tdw = doc.tdw
+        assert tdw is self.app.builder.get_object("app_canvas")
+        tdw.display_overlays.append(FrameOverlay(doc))
         self.update_overlays()
         self._init_actions()
         kbm = self.app.kbm
@@ -169,6 +172,10 @@ class DrawWindow (gtk.Window):
 
         # Footer bar updates
         self.app.brush.observers.append(self._update_footer_color_widgets)
+        btn = self.app.builder.get_object("footer_mode_options_button")
+        action = self.app.find_action("ModeOptionsTool")
+        btn.set_related_action(action)
+        tdw.transformation_updated += self._update_footer_scale_label
         doc.modes.observers.append(self._update_status_bar_mode_widgets)
         context_id = self.app.statusbar.get_context_id("active-mode")
         self._active_mode_context_id = context_id
@@ -797,6 +804,23 @@ class DrawWindow (gtk.Window):
         brush_color = HSVColor(*self.app.brush.get_color_hsv())
         palette = self.app.brush_color_manager.palette
         bm_btn.set_sensitive(brush_color not in palette)
+
+    def _update_footer_scale_label(self, renderer):
+        """Updates the footer's scale label when the transformation changes"""
+        label = self.app.builder.get_object("app_canvas_scale_label")
+        scale = renderer.scale * 100.0
+        rotation = (renderer.rotation / (2*math.pi)) % 1.0
+        if rotation > 0.5:
+            rotation -= 1.0
+        rotation *= 360.0
+        try:
+            template = label.__template
+        except AttributeError:
+            template = label.get_label()
+            label.__template = template
+        params = { "scale": scale,
+                   "rotation": rotation }
+        label.set_text(template.format(**params))
 
     def _update_status_bar_mode_widgets(self, mode):
         """Updates widgets on the status bar that reflect the current mode"""

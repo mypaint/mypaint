@@ -33,8 +33,8 @@
             <property name="footer_bar">footer_box</property>
             <child>
               <object class="TiledDrawWidget" id="app_canvas">
-                <property name="width_request">250</property>
-                <property name="height_request">250</property>
+                <property name="width_request">400</property>
+                <property name="height_request">300</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
               </object>
@@ -115,16 +115,69 @@
               </packing>
             </child>
             <child>
-              <object class="GtkImage" id="app_current_mode_icon">
+              <object class="GtkLabel" id="app_canvas_scale_label">
+                <property name="width_request">48</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="pixel_size">24</property>
-                <property name="icon_name">image-loading</property>
+                <property name="tooltip_text" translatable="yes" context="Footerbar|">Canvas scale and rotation</property>
+                <property name="xalign">0</property>
+                <property name="label" translatable="yes" context="Footerbar|" comments="str.format() template">Z: {scale:.1f}%
+R: {rotation:+.1f}°</property>
+                <attributes>
+                  <attribute name="scale" value="0.66666666666665997"/>
+                </attributes>
               </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
                 <property name="position">4</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkSeparator" id="separator3">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="padding">4</property>
+                <property name="position">5</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="footer_mode_options_button">
+                <property name="use_action_appearance">False</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="tooltip_text" translatable="yes">Options for the current tool</property>
+                <property name="use_action_appearance">False</property>
+                <property name="relief">none</property>
+                <child>
+                  <object class="GtkImage" id="mode_options_icon_image">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="icon_name">mypaint-brush-mods-active</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">6</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkImage" id="app_current_mode_icon">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="icon_name">image-loading</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">7</property>
               </packing>
             </child>
             <child>
@@ -136,7 +189,7 @@
               <packing>
                 <property name="expand">True</property>
                 <property name="fill">True</property>
-                <property name="position">5</property>
+                <property name="position">10</property>
               </packing>
             </child>
           </object>
