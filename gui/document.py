@@ -182,9 +182,6 @@ class Document (CanvasController):
 
         # Current mode observation
         self.modes.observers.append(self.mode_stack_changed_cb)
-        context_id = app.statusbar.get_context_id("active-mode")
-        self._active_mode_context_id = context_id
-        self._active_mode_message_id = None
 
         # Pass on certain actions to other gui.documents.
         self.followers = []
@@ -1250,17 +1247,4 @@ class Document (CanvasController):
             # Not every mode has a corresponding action
             if not action.get_active():
                 action.set_active(True)
-        # Update the status bar
-        statusbar = self.app.statusbar
-        context_id = self._active_mode_context_id
-        statusbar.pop(context_id)
-        statusbar_msg = u"{name!s}: {usage!s}".format(name=mode.get_name(),
-                                                      usage=mode.get_usage())
-        statusbar.push(context_id, statusbar_msg)
-        # Icon
-        mode_img = self.app.builder.get_object("app_current_mode_icon")
-        icon_name = self.modes.top.get_icon_name()
-        icon_size = gtk.ICON_SIZE_MENU
-        mode_img.set_from_icon_name(icon_name, icon_size)
-
 

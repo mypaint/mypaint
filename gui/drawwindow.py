@@ -95,6 +95,8 @@ class DrawWindow (gtk.Window):
 
     __gtype_name__ = 'MyPaintDrawWindow'
 
+    #TRANSLATORS: footer icon tooltip markup for the current mode
+    _MODE_ICON_TEMPLATE = _("<b>{name}</b>\n{description}")
 
     def __init__(self):
         super(DrawWindow, self).__init__()
@@ -167,6 +169,14 @@ class DrawWindow (gtk.Window):
 
         # Footer bar updates
         self.app.brush.observers.append(self._update_footer_color_widgets)
+        doc.modes.observers.append(self._update_status_bar_mode_widgets)
+        context_id = self.app.statusbar.get_context_id("active-mode")
+        self._active_mode_context_id = context_id
+        self._update_status_bar_mode_widgets(doc.modes.top)
+        mode_img = self.app.builder.get_object("app_current_mode_icon")
+        mode_img.connect("query-tooltip", self._mode_icon_query_tooltip_cb)
+        mode_img.set_has_tooltip(True)
+
 
     def _init_actions(self):
         # Actions are defined in mypaint.xml: all we need to do here is connect
@@ -776,6 +786,8 @@ class DrawWindow (gtk.Window):
         self.app.message_dialog(text[action.get_name()])
 
 
+    ## Footer bar stuff
+
     def _update_footer_color_widgets(self, settings):
         """Updates the footer bar color info when the brush color changes."""
         if not settings.intersection(('color_h', 'color_s', 'color_v')):
@@ -786,3 +798,38 @@ class DrawWindow (gtk.Window):
         palette = self.app.brush_color_manager.palette
         bm_btn.set_sensitive(brush_color not in palette)
 
+    def _update_status_bar_mode_widgets(self, mode):
+        """Updates widgets on the status bar that reflect the current mode"""
+        # Update the status bar
+        statusbar = self.app.statusbar
+        context_id = self._active_mode_context_id
+        statusbar.pop(context_id)
+        statusbar_msg = u"{usage!s}".format(name=mode.get_name(),
+                                            usage=mode.get_usage())
+        statusbar.push(context_id, statusbar_msg)
+        # Icon
+        icon_name = mode.get_icon_name()
+        icon_size = gtk.ICON_SIZE_SMALL_TOOLBAR
+        mode_img = self.app.builder.get_object("app_current_mode_icon")
+        if not icon_name:
+            icon_name = "missing-image"
+        mode_img.set_from_icon_name(icon_name, icon_size)
+
+    def _mode_icon_query_tooltip_cb(self, widget, x, y, kbmode, tooltip):
+        mode = self.app.doc.modes.top
+        icon_name = mode.get_icon_name()
+        if not icon_name:
+            icon_name = "missing-image"
+        icon_size = gtk.ICON_SIZE_DIALOG
+        tooltip.set_icon_from_icon_name(icon_name, icon_size)
+        description = None
+        action = mode.get_action()
+        if action:
+            description = action.get_tooltip()
+        if not description:
+            description = mode.get_usage()
+        params = { "name": helpers.escape(mode.get_name()),
+                   "description": helpers.escape(description) }
+        markup = self._MODE_ICON_TEMPLATE.format(**params)
+        tooltip.set_markup(markup)
+        return True
