@@ -11,6 +11,7 @@
 
 from warnings import warn
 
+from gui import gtk2compat
 import gtk
 from gtk import gdk
 from gettext import gettext as _
@@ -113,7 +114,7 @@ class HSVTriangle (gtk.VBox, ColorAdjuster):
 
 if __name__ == '__main__':
     from adjbases import ColorManager
-    mgr = ColorManager()
+    mgr = ColorManager(prefs={}, datapath='.')
     win = gtk.Window()
     win.set_title("hsvtriangle test")
     win.connect("destroy", gtk.main_quit)

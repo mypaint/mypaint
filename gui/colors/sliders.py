@@ -10,6 +10,7 @@
 """Component sliders for power users.
 """
 
+from gui import gtk2compat
 import gtk
 from gtk import gdk
 from gettext import gettext as _
@@ -107,7 +108,7 @@ class ComponentSlidersAdjusterPage (CombinedAdjusterPage, IconRenderable):
         # their primary a bit. Render carefully (might need special handling for
         # the 16px size).
         from adjbases import ColorManager
-        mgr = ColorManager()
+        mgr = ColorManager(prefs={}, datapath=".")
         mgr.set_color(RGBColor(0.3, 0.3, 0.4))
         adjs = [RGBRedSlider(), RGBGreenSlider(), RGBBlueSlider()]
         for adj in adjs:
@@ -253,7 +254,7 @@ class HCYLumaSlider (SliderColorAdjuster):
 if __name__ == '__main__':
     import os, sys
     from adjbases import ColorManager
-    mgr = ColorManager()
+    mgr = ColorManager(prefs={}, datapath=".")
     cs_adj = ComponentSlidersAdjusterPage()
     cs_adj.set_color_manager(mgr)
     cs_adj.set_managed_color(RGBColor(0.3, 0.6, 0.7))

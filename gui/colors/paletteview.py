@@ -1267,7 +1267,7 @@ if __name__ == '__main__':
     win = Gtk.Window()
     win.set_title("palette view")
     win.connect("destroy", lambda *a: Gtk.main_quit())
-    mgr = ColorManager()
+    mgr = ColorManager(prefs={}, datapath=".")
     spv = PaletteView()
     spv.grid.show_matched_color = True
     spv.grid.can_select_empty = True

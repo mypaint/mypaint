@@ -117,7 +117,7 @@ class ColorManager (gobject.GObject):
     ## Construction
 
 
-    def __init__(self, prefs=None, datapath=u'.'):
+    def __init__(self, prefs, datapath):
         """Initialises with default colours and an empty adjuster list.
 
         :param prefs: Prefs dict for saving settings.
@@ -125,8 +125,6 @@ class ColorManager (gobject.GObject):
 
         """
         gobject.GObject.__init__(self)
-        if prefs is None:
-            prefs = {}
 
         # Defaults
         self._color = None  #: Currently edited color, a UIColor object

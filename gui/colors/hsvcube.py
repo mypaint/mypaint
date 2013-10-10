@@ -10,6 +10,7 @@
 """Axis-aligned planar slice of an HSV colour cube, and a depth slider.
 """
 
+from gui import gtk2compat
 import gtk
 from gtk import gdk
 from gettext import gettext as _
@@ -238,7 +239,7 @@ class HSVCubeSlice (IconRenderableColorAdjusterWidget):
 if __name__ == '__main__':
     import os, sys
     from adjbases import ColorManager
-    mgr = ColorManager()
+    mgr = ColorManager(prefs={}, datapath='.')
     cube = HSVCubePage()
     cube.set_color_manager(mgr)
     mgr.set_color(RGBColor(0.3, 0.6, 0.7))

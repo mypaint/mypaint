@@ -975,7 +975,9 @@ class HCYMaskTemplateDialog (gtk.Dialog):
                             (gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT))
         self.set_position(gtk.WIN_POS_MOUSE)
         target_mgr = target.get_color_manager()
-        mgr = ColorManager()
+        prefs_ro = deepcopy(target_mgr.get_prefs())
+        datapath = target_mgr.get_data_path()
+        mgr = ColorManager(prefs=prefs_ro, datapath=datapath)
         mgr.set_wheel_type(target_mgr.get_wheel_type())
         self.target = target
         size = 64
@@ -1041,7 +1043,10 @@ class HCYMaskPropertiesDialog (gtk.Dialog):
         self.set_position(gtk.WIN_POS_MOUSE)
         self.target = target
         ed = HCYMaskEditorWheel()
-        ed_mgr = ColorManager()
+        target_mgr = target.get_color_manager()
+        prefs_ro = deepcopy(target_mgr.get_prefs())
+        datapath = target_mgr.get_data_path()
+        ed_mgr = ColorManager(prefs=prefs_ro, datapath=datapath)
         ed.set_color_manager(ed_mgr)
         self.editor = ed
         ed.set_size_request(300, 300)
@@ -1114,7 +1119,10 @@ class HCYMaskPropertiesDialog (gtk.Dialog):
                 pal.append(col, col_name)
         preview = HCYMaskPreview()
         preview.set_size_request(128, 128)
-        mgr = ColorManager()
+        target_mgr = self.target.get_color_manager()
+        prefs_ro = deepcopy(target_mgr.get_prefs())
+        datapath = target_mgr.get_data_path()
+        mgr = ColorManager(prefs=prefs_ro, datapath=datapath)
         preview.set_color_manager(mgr)
         preview.set_managed_color(self.editor.get_managed_color())
         palette_save_via_dialog(pal, title=_("Save mask as a Gimp palette"),
@@ -1124,7 +1132,10 @@ class HCYMaskPropertiesDialog (gtk.Dialog):
     def __load_clicked(self, button):
         preview = HCYMaskPreview()
         preview.set_size_request(128, 128)
-        mgr = ColorManager()
+        target_mgr = self.target.get_color_manager()
+        prefs_ro = deepcopy(target_mgr.get_prefs())
+        datapath = target_mgr.get_data_path()
+        mgr = ColorManager(prefs=prefs_ro, datapath=datapath)
         preview.set_color_manager(mgr)
         preview.set_managed_color(self.editor.get_managed_color())
         dialog_title = _("Load mask from a Gimp palette")
@@ -1246,7 +1257,7 @@ class HCYAdjusterPage (CombinedAdjusterPage):
 if __name__ == '__main__':
     import os, sys
     from adjbases import ColorManager
-    mgr = ColorManager()
+    mgr = ColorManager(prefs={}, datapath='.')
     mgr.set_color(HSVColor(0.0, 0.0, 0.55))
     if len(sys.argv) > 1:
         # Generate icons

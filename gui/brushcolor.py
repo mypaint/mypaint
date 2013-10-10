@@ -27,7 +27,7 @@ class BrushColorManager (colors.ColorManager):
     def __init__(self, app):
         """Initialize, binding to certain events.
         """
-        colors.ColorManager.__init__(self, app.preferences)
+        colors.ColorManager.__init__(self, app.preferences, app.datapath)
         self.__brush = app.brush
         app.brush.observers.append(self.__settings_changed_cb)
         app.doc.input_stroke_ended_observers.append(self.__input_stroke_ended_cb)

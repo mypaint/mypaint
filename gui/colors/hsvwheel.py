@@ -12,6 +12,7 @@
 
 import math
 
+from gui import gtk2compat
 import gtk
 from gtk import gdk
 import cairo
@@ -110,7 +111,7 @@ class HSVAdjusterPage (CombinedAdjusterPage):
 if __name__ == '__main__':
     import os, sys
     from adjbases import ColorManager
-    mgr = ColorManager()
+    mgr = ColorManager(prefs={}, datapath='.')
     if len(sys.argv) > 1:
         # Generate icons
         mgr.set_color(HSVColor(0.0, 0.0, 0.8))
