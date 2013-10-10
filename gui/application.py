@@ -377,7 +377,7 @@ class Application (object):
             'ui.hide_toolbar_in_fullscreen': True,
             'ui.hide_subwindows_in_fullscreen': True,
             'ui.parts': dict(main_toolbar=True, menubar=True),
-            'ui.feedback.scale': True,
+            'ui.feedback.scale': False,
             'ui.feedback.last_pos': False,
             'ui.feedback.symmetry': True,
             'ui.toolbar_items': dict(
