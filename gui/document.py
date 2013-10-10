@@ -1239,7 +1239,7 @@ class Document (CanvasController):
 
 
     def mode_stack_changed_cb(self, mode):
-        """Callback: mode stack has changed structure"""
+        """Callback: make actions follow changes to the mode stack"""
         # Activate the action corresponding to the current top mode.
         logger.debug("Mode changed: %r", self.modes)
         action_name = getattr(mode, '__action_name__', None)

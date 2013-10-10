@@ -63,7 +63,7 @@ class FloodFillMode (canvasevent.SwitchableModeMixin,
         return _(u'Flood Fill')
 
     def get_usage(self):
-        return _(u"Click to fill with the current color")
+        return _(u"Fill areas with color")
 
     def __init__(self, ignore_modifiers=False, **kwds):
         super(FloodFillMode, self).__init__(**kwds)

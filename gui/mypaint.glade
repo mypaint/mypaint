@@ -84,7 +84,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="tooltip_text" translatable="yes">Add the current color to the palette</property>
+                <property name="tooltip_text" translatable="yes" context="Footerbar|">Add the current color to the palette</property>
                 <property name="use_action_appearance">False</property>
                 <property name="relief">none</property>
                 <signal name="clicked" handler="palette_add_current_color_cb" swapped="no"/>

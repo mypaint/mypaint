@@ -189,10 +189,10 @@ class InteractionMode (object):
         override this.  The default return value is an empty string.
 
         The usage message should be a short, natural-sounding explanation to
-        the user detailing how to do the specific task they chose.  Note that
-        the usage message is typically displayed after the mode's name, so
-        there is no need to repeat that.  Brevity is important because space is
-        limited.
+        the user detailing what the current mode is for.  Note that the usage
+        message is typically displayed after the mode's name or explanatory
+        icon, so there is no need to repeat that.  Brevity is important because
+        space is limited.
 
         When capitalizing, use whatever style the GNOME HIG specifies for
         tooltips.  In English, this is currently sentence case.  Use one
@@ -479,8 +479,7 @@ class FreehandOnlyMode (InteractionMode):
 
 
     def get_usage(self):
-        return _(u"Draw or paint on the canvas to add free-form brush strokes "
-                  "with the current settings")
+        return _(u"Paint free-form brush strokes")
 
 
     ## Mode stack & current mode
@@ -984,15 +983,7 @@ class SwitchableModeMixin (InteractionMode):
                                               "mode": mode_desc, })
         if not poss_msgs:
             return
-        poss_msg = u"; ".join(poss_msgs)
-        mods_msg = unicode(gtk.accelerator_get_label(0, mods))
-        mods_msg = mods_msg.rstrip("+")
-
-        msg_template = _(u"%(mode)s (+%(modifiers)s): %(possible)s")
-        msg = msg_template % {"mode": self.get_name(),
-                              "modifiers": mods_msg,
-                              "possible": poss_msg }
-        self.doc.app.statusbar.push(context_id, msg)
+        self.doc.app.statusbar.push(context_id, u"; ".join(poss_msgs))
 
 
     def leave(self):
@@ -1796,7 +1787,7 @@ class PanViewMode (OneshotHelperModeBase):
         return _(u"Scroll View")
 
     def get_usage(self):
-        return _(u"Click and drag to move the view of the canvas")
+        return _(u"Drag the canvas view")
 
     @property
     def inactive_cursor(self):
@@ -1825,7 +1816,7 @@ class ZoomViewMode (OneshotHelperModeBase):
 
 
     def get_usage(self):
-        return _(u"Click, drag up and down, and release to zoom in or out")
+        return _(u"Zoom the canvas view")
 
 
     @property
@@ -1857,7 +1848,7 @@ class RotateViewMode (OneshotHelperModeBase):
 
 
     def get_usage(cls):
-        return _(u"Click, drag and release to rotate the view of the canvas")
+        return _(u"Rotate the canvas view")
 
 
     @property
@@ -1905,7 +1896,7 @@ class LayerMoveMode (SwitchableModeMixin,
 
 
     def get_usage(self):
-        return _(u"Click, drag and release to move the current layer")
+        return _(u"Move the current layer")
 
 
     @property

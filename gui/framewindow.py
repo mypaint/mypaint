@@ -83,8 +83,7 @@ class FrameEditMode (canvasevent.SwitchableModeMixin,
 
 
     def get_usage(cls):
-        return _(u"Click and drag to adjust the document frame, "
-                  "or set a size manually in Tool Options")
+        return _(u"Adjust the document frame")
 
 
     def __init__(self, **kwds):

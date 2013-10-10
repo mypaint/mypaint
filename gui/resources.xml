@@ -1327,7 +1327,7 @@ The circular slices are equiluminant.</property>
             context="Toolbar|">Freehand</property>
           <property name="icon-name">mypaint-line-mode-freehand</property>
           <property name="tooltip" translatable="yes"
-            >Freehand Drawing: draw and paint freely, without geometric constraints</property>
+            >Draw and paint freely, without geometric constraints</property>
           <property name="value">1</property>
           <property name="current-value">1</property>
           <signal name="changed" handler="mode_radioaction_changed_cb"/>
@@ -1350,7 +1350,7 @@ The circular slices are equiluminant.</property>
             context="Toolbar|">Scroll</property>
           <property name="icon-name">mypaint-view-pan</property>
           <property name="tooltip" translatable="yes"
-            >Scroll View: move around the canvas by clicking and dragging</property>
+            >View the canvas at a different position</property>
           <property name="group">SwitchableFreehandMode</property>
           <property name="value">2</property>
         </object>
@@ -1371,7 +1371,7 @@ The circular slices are equiluminant.</property>
             context="Toolbar|">Rotate</property>
           <property name="icon-name">mypaint-view-rotate</property>
           <property name="tooltip" translatable="yes"
-            >Rotate View: turn the canvas by clicking and dragging</property>
+            >View the canvas at a different angle</property>
           <property name="group">PanViewMode</property>
           <property name="value">3</property>
         </object>
@@ -1392,7 +1392,7 @@ The circular slices are equiluminant.</property>
             context="Toolbar|">Zoom</property>
           <property name="icon-name">mypaint-view-zoom</property>
           <property name="tooltip" translatable="yes"
-            >Zoom View: zoom the canvas by clicking and dragging</property>
+            >View the canvas at a different zoom</property>
           <property name="group">RotateViewMode</property>
           <property name="value">3</property>
         </object>
@@ -1413,9 +1413,7 @@ The circular slices are equiluminant.</property>
             context="Toolbar|">Lines</property>
           <property name="icon-name">mypaint-line-mode-straight</property>
           <property name="tooltip" translatable="yes"
-              >Lines and Curves: draw straight or curved lines.
-Ctrl: constrain angle.
-Shift: add curves to the last line.</property>
+              >Draw straight or curved lines</property>
           <property name="group">ZoomViewMode</property>
           <property name="value">4</property>
         </object>
@@ -1437,9 +1435,7 @@ Shift: add curves to the last line.</property>
             context="Toolbar|">Line Seq.</property>
           <property name="icon-name">mypaint-line-mode-sequence</property>
           <property name="tooltip" translatable="yes"
-            >Connected Lines: draw sequences of straight or curved lines.
-Ctrl: constrain angle.
-Shift: add curves to the last line.</property>
+            >Draw sequences of straight or curved lines</property>
           <property name="group">StraightMode</property>
           <property name="value">5</property>
         </object>
@@ -1461,10 +1457,7 @@ Shift: add curves to the last line.</property>
             context="Toolbar|">Ellipse</property>
           <property name="icon-name">mypaint-line-mode-ellipse</property>
           <property name="tooltip" translatable="yes"
-            >Ellipses and Circles: draw whole circles and ellipses.
-Shift: rotate.
-Ctrl: constrain ratio.
-Ctrl+Shift: constrain angle.</property>
+            >Draw whole circles and ellipses</property>
           <property name="group">SequenceMode</property>
           <property name="value">6</property>
         </object>
@@ -1484,7 +1477,7 @@ Ctrl+Shift: constrain angle.</property>
             context="Menu|Edit|Current Mode|">Move Layer</property>
           <property name="icon-name">mypaint-tool-move-layer</property>
           <property name="tooltip" translatable="yes"
-            >Move Layer: reposition the current layer on the canvas</property>
+            >Reposition the current layer on the canvas</property>
           <property name="group">EllipseMode</property>
           <property name="value">7</property>
         </object>
@@ -1505,7 +1498,7 @@ Ctrl+Shift: constrain angle.</property>
             context="Toolbar|">Frame</property>
           <property name="icon-name">mypaint-frame</property>
           <property name="tooltip" translatable="yes"
-            >Edit Frame: define a frame around the document to give it a finite size. The frame is used when exporting.</property>
+            >Define a frame around the document to give it a finite size</property>
           <property name="group">LayerMoveMode</property>
           <property name="value">8</property>
         </object>
@@ -1522,14 +1515,10 @@ Ctrl+Shift: constrain angle.</property>
       <child>
         <object class="GtkRadioAction" id="ColorPickMode">
           <property name="label" translatable="yes"
-            context="Menu|Color|">Pick Color</property>
-             <!--
-              FIXME: faked context due to string freeze
-                     should be set to "Menu|Edit|Current Mode|"
-              -->
+            context="Menu|Edit|Current Mode|">Pick Color</property>
           <property name="icon-name">gtk-color-picker</property>
           <property name="tooltip" translatable="yes"
-            >Pick a color from the screen</property>
+            >Set the color from the screen</property>
           <property name="group">FrameEditMode</property>
           <property name="value">9</property>
         </object>
@@ -1550,7 +1539,7 @@ Ctrl+Shift: constrain angle.</property>
             context="Menu|Edit|Current Mode|">Flood Fill</property>
           <property name="icon-name">mypaint-tool-flood-fill</property>
           <property name="tooltip" translatable="yes"
-            >Pick a color from the screen</property>
+            >Fill an area with color</property>
           <property name="group">ColorPickMode</property>
           <property name="value">10</property>
         </object>

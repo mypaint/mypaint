@@ -166,7 +166,7 @@ class LineModeBase (canvasevent.SwitchableModeMixin,
                     canvasevent.SpringLoadedDragMode,
                     canvasevent.ScrollableModeMixin,
                     canvasevent.OneshotDragModeMixin):
-    """Draws geometric lines."""
+    """Draws geometric lines (base class)"""
 
     ## Class constants
 
@@ -729,8 +729,7 @@ class StraightMode (LineModeBase):
         return _(u"Lines and Curves")
 
     def get_usage(self):
-        return _(u"Click, drag, and release to draw a straight line; "
-                  "shift-drag curves the last line")
+        return _(u"Draw straight lines; Shift adds curves, Ctrl constrains angle")
 
 
 class SequenceMode (LineModeBase):
@@ -742,8 +741,7 @@ class SequenceMode (LineModeBase):
         return _(u"Connected Lines")
 
     def get_usage(cls):
-        return _("Click to continue drawing a sequence of lines; "
-                 "shift-drag curves the last line")
+        return _("Draw a sequence of lines; Shift adds curves, Ctrl constrains angle")
 
 
 class EllipseMode (LineModeBase):
@@ -755,8 +753,7 @@ class EllipseMode (LineModeBase):
         return _(u"Elipses and Circles")
 
     def get_usage(self):
-        return _(u"Click and drag to add ellipes; when dragging, Shift "
-                  "adjusts angle, and Ctrl locks the ratio")
+        return _(u"Draw ellipes; Shift rotates, Ctrl constrains ratio/angle")
 
 
 ### Curve Math
