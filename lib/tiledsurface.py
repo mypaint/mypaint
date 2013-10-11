@@ -199,11 +199,16 @@ class MyPaintSurface (object):
         # Forwarding API
         self.set_symmetry_state = self._backend.set_symmetry_state
         self.begin_atomic = self._backend.begin_atomic
-        self.end_atomic = self._backend.end_atomic
+
         self.get_color = self._backend.get_color
         self.get_alpha = self._backend.get_alpha
         self.draw_dab = self._backend.draw_dab
 
+
+    def end_atomic(self):
+	bbox = self._backend.end_atomic()
+	if (bbox[2] > 0 and bbox[3] > 3):
+	    self.notify_observers(*bbox)
 
     @property
     def backend(self):
