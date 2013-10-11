@@ -32,4 +32,7 @@ void operation_queue_clear_dirty_tiles(OperationQueue *self);
 void operation_queue_add(OperationQueue *self, TileIndex index, OperationDataDrawDab *op);
 OperationDataDrawDab *operation_queue_pop(OperationQueue *self, TileIndex index);
 
+OperationDataDrawDab *operation_queue_peek_first(OperationQueue *self, TileIndex index);
+OperationDataDrawDab *operation_queue_peek_last(OperationQueue *self, TileIndex index);
+
 #endif // OPERATIONQUEUE_H

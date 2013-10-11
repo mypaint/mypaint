@@ -102,3 +102,11 @@ void* fifo_pop(struct fifo* queue)
     queue->item_count--;
     return data;
 }
+
+void* fifo_peek_first(struct fifo *queue) {
+    return (!queue->first) ? NULL : queue->first->payload;
+}
+
+void* fifo_peek_last(struct fifo *queue) {
+    return (!queue->last) ? NULL : queue->last->payload;
+}

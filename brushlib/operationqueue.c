@@ -227,3 +227,23 @@ operation_queue_pop(OperationQueue *self, TileIndex index)
     }
     return op;
 }
+
+OperationDataDrawDab *
+operation_queue_peek_first(OperationQueue *self, TileIndex index) {
+    if (!tile_map_contains(self->tile_map, index)) {
+        return NULL;
+    }
+
+    Fifo *op_queue = (Fifo *)*tile_map_get(self->tile_map, index);
+    return (!op_queue) ? NULL : (OperationDataDrawDab *)fifo_peek_first(op_queue);
+}
+
+OperationDataDrawDab *
+operation_queue_peek_last(OperationQueue *self, TileIndex index) {
+    if (!tile_map_contains(self->tile_map, index)) {
+        return NULL;
+    }
+
+    Fifo *op_queue = (Fifo *)*tile_map_get(self->tile_map, index);
+    return (!op_queue) ? NULL : (OperationDataDrawDab *)fifo_peek_last(op_queue);
+}
