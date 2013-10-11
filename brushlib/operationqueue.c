@@ -184,19 +184,19 @@ operation_queue_add(OperationQueue *self, TileIndex index, OperationDataDrawDab 
     if (op_queue == NULL) {
         // Lazy initialization
         op_queue = fifo_new();
-
-         // Critical section, not thread-safe
-        if (!(self->dirty_tiles_n < self->tile_map->size*2*self->tile_map->size*2)) {
-            // Prune duplicate tiles that cause us to almost exceed max
-            self->dirty_tiles_n = remove_duplicate_tiles(self->dirty_tiles, self->dirty_tiles_n);
-        }
-        assert(self->dirty_tiles_n < self->tile_map->size*2*self->tile_map->size*2);
-        self->dirty_tiles[self->dirty_tiles_n++] = index;
+        *queue_pointer = op_queue;
     }
 
+    if (fifo_peek_first(op_queue) == NULL) {
+        // Critical section, not thread-safe
+       if (!(self->dirty_tiles_n < self->tile_map->size*2*self->tile_map->size*2)) {
+           // Prune duplicate tiles that cause us to almost exceed max
+           self->dirty_tiles_n = remove_duplicate_tiles(self->dirty_tiles, self->dirty_tiles_n);
+       }
+       assert(self->dirty_tiles_n < self->tile_map->size*2*self->tile_map->size*2);
+       self->dirty_tiles[self->dirty_tiles_n++] = index;
+    }
     fifo_push(op_queue, (void *)op);
-
-    *queue_pointer = op_queue;
 }
 
 /* Pop an operation off the queue for tile @index
@@ -224,9 +224,6 @@ operation_queue_pop(OperationQueue *self, TileIndex index)
         // Queue empty
         fifo_free(op_queue, operation_delete_func);
         *queue_pointer = NULL;
-        return NULL;
-    } else {
-        assert(op != NULL);
-        return op;
     }
+    return op;
 }
