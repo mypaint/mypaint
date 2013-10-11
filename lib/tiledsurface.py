@@ -207,7 +207,7 @@ class MyPaintSurface (object):
 
     def end_atomic(self):
 	bbox = self._backend.end_atomic()
-	if (bbox[2] > 0 and bbox[3] > 3):
+	if (bbox[2] > 0 and bbox[3] > 0):
 	    self.notify_observers(*bbox)
 
     @property
