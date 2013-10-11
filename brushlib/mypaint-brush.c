@@ -379,7 +379,7 @@ smallest_angular_difference(float a, float b)
       return 0.0;
     }
 
-    float arg = -t / T_const;
+    const float arg = -t / T_const;
     return expf(arg);
   }
 
@@ -892,7 +892,7 @@ smallest_angular_difference(float a, float b)
       } else {
         e = sqrt(1+xtilt*xtilt);
       }
-      float rad = hypot(xtilt, ytilt);
+      const float rad = hypot(xtilt, ytilt);
       float cos_alpha = rad/e;
       if (cos_alpha >= 1.0) cos_alpha = 1.0; // fix numerical inaccuracy
       tilt_declination = 180.0*acos(cos_alpha)/M_PI;
@@ -935,13 +935,13 @@ smallest_angular_difference(float a, float b)
       // noise first
       if (mapping_get_base_value(self->settings[MYPAINT_BRUSH_SETTING_TRACKING_NOISE])) {
         // OPTIMIZE: expf() called too often
-        float base_radius = expf(mapping_get_base_value(self->settings[MYPAINT_BRUSH_SETTING_RADIUS_LOGARITHMIC]));
+        const float base_radius = expf(mapping_get_base_value(self->settings[MYPAINT_BRUSH_SETTING_RADIUS_LOGARITHMIC]));
 
         x += rand_gauss (self->rng) * mapping_get_base_value(self->settings[MYPAINT_BRUSH_SETTING_TRACKING_NOISE]) * base_radius;
         y += rand_gauss (self->rng) * mapping_get_base_value(self->settings[MYPAINT_BRUSH_SETTING_TRACKING_NOISE]) * base_radius;
       }
 
-      float fac = 1.0 - exp_decay (mapping_get_base_value(self->settings[MYPAINT_BRUSH_SETTING_SLOW_TRACKING]), 100.0*dtime);
+      const float fac = 1.0 - exp_decay (mapping_get_base_value(self->settings[MYPAINT_BRUSH_SETTING_SLOW_TRACKING]), 100.0*dtime);
       x = self->states[MYPAINT_BRUSH_STATE_X] + (x - self->states[MYPAINT_BRUSH_STATE_X]) * fac;
       y = self->states[MYPAINT_BRUSH_STATE_Y] + (y - self->states[MYPAINT_BRUSH_STATE_Y]) * fac;
     }
@@ -1092,7 +1092,7 @@ update_settings_from_json_object(MyPaintBrush *self)
 {
     // Check version
     json_object *version_object = json_object_object_get(self->brush_json, "version");
-    int version = json_object_get_int(version_object);
+    const int version = json_object_get_int(version_object);
     if (version != 3) {
         fprintf(stderr, "Error: Unsupported brush setting version: %d\n", version);
         return FALSE;
@@ -1112,7 +1112,7 @@ update_settings_from_json_object(MyPaintBrush *self)
 
         // Base value
         json_object *base_value_obj = json_object_object_get(setting_obj, "base_value");
-        double base_value = json_object_get_double(base_value_obj);
+        const double base_value = json_object_get_double(base_value_obj);
         mypaint_brush_set_base_value(self, setting_id, base_value);
 
         // Inputs
@@ -1133,9 +1133,9 @@ update_settings_from_json_object(MyPaintBrush *self)
                 json_object *mapping_point = json_object_array_get_idx(input_obj, i);
 
                 json_object *x_obj = json_object_array_get_idx(mapping_point, 0);
-                float x = json_object_get_double(x_obj);
+                const float x = json_object_get_double(x_obj);
                 json_object *y_obj = json_object_array_get_idx(mapping_point, 1);
-                float y = json_object_get_double(y_obj);
+                const float y = json_object_get_double(y_obj);
 
                 mypaint_brush_set_mapping_point(self, setting_id, input_id, i, x, y);
             }
