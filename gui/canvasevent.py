@@ -20,6 +20,7 @@ logger = logging.getLogger(__name__)
 import gtk2compat
 import buttonmap
 from brushlib import brushsettings
+from lib import mypaintlib
 
 import math
 from numpy import isfinite
@@ -447,14 +448,24 @@ class FreehandOnlyMode (InteractionMode):
     # from event processing buys the user the ability to quit out of a
     # slowly/laggily rendering stroke if desired.
 
-    # Unhelpful, but related: later versions of GTK3 (3.8+) discard successive
-    # motion events received in the same frame. This may be ameliorated by
-    # this code too.
-    #
+    # Due to later versions of GTK3 (3.8+) discarding successive motion events
+    # received in the same frame (so-called "motion compression"), we employ a
+    # GDK event filter (on platforms using Xi2) to capture coordinates faster
+    # than GDK deigns to pass them on to us. Reason: we want the fidelity that
+    # GDK refuses to give us currently for a fancy Wacom device delivering
+    # motion events at ~200Hz: frame clock speeds are only 50 or 60 Hz.
+
     # https://gna.org/bugs/?21003
     # https://gna.org/bugs/?20822
     # https://bugzilla.gnome.org/show_bug.cgi?id=702392
 
+    # It's hard to capture and translate tilt and pressure info in a manner
+    # that's compatible with GDK without using GDK's own private internals.
+    # Implementing our own valuator translations would be likely to break, so
+    # for these pices of info we could linearly interpolate the values received
+    # on the clock tick-synchronized motion events GDK gives us, but position
+    # them at the x and y that Xi2 gave us. Pressure and tilt fidelities matter
+    # less than positional accuracy.
 
     ## Metadata
 
@@ -477,6 +488,9 @@ class FreehandOnlyMode (InteractionMode):
         self._reset_drawing_state()
         self._last_stroketo_info = None   # The last model.stroke_to issued,
                                           # used for clean mode exits.
+        # Active event filters: {tdw: (tdw, self)}
+        # Tuple identity matters to the evhack stuff.
+        self._evhack_tdws = {}
         # Debugging: show number of events procesed each second
         self._avgtimes = {}
         self._debug = (logger.getEffectiveLevel() == logging.DEBUG)
@@ -508,6 +522,8 @@ class FreehandOnlyMode (InteractionMode):
             # undo history break here.
             model.split_stroke()
 
+        self._remove_evhacks()
+
 
     def _reset_drawing_state(self):
         # Boolean indicating that the last-processed had pressure; keyed by TDW
@@ -515,6 +531,10 @@ class FreehandOnlyMode (InteractionMode):
 
         # Times of the last-processed event; keyed by TDW
         self._last_event_times = {}
+
+        # 0th queue: position and time info captured by the eventhack.hpp
+        # filter prior to delivery of potentially motion-compressed events.
+        self._evhack_positions = {}
 
         # 1st queue: raw motion data -> clean-up
         # This allows us to handle incoming events fast, hopefully under 5ms
@@ -527,9 +547,35 @@ class FreehandOnlyMode (InteractionMode):
         self._zero_dtime_motions = []
 
 
+    ## Eventhack event filter
 
-    ## Input handling
 
+    def _add_evhack(self, tdw):
+        assert tdw not in self._evhack_tdws
+        win = tdw.get_window()
+        data = (tdw, self)
+        logger.debug("Adding evhack filter %r", data)
+        mypaintlib.evhack_gdk_window_add_filter(win, data)
+        self._evhack_tdws[tdw] = data
+        self._evhack_positions[tdw] = []
+
+
+    def _remove_evhacks(self):
+        for tdw in self._evhack_tdws:
+            win = tdw.get_window()
+            data = self._evhack_tdws[tdw]
+            logger.debug("Removing evhack filter %r", data)
+            mypaintlib.evhack_gdk_window_remove_filter(win, data)
+        self._evhack_tdws = {}
+        self._evhack_positions[tdw] = []
+
+
+    def queue_evhack_position(self, tdw, x, y, t):
+        """Queues a noncompressed motion position. Called by eventhack.hpp."""
+        self._evhack_positions[tdw].append((x, y, t))
+
+
+    ## Input handlers
 
     def button_press_cb(self, tdw, event):
         result = False
@@ -583,11 +629,22 @@ class FreehandOnlyMode (InteractionMode):
         :param event: the MotionNotify event being handled
         :param button1_pressed: If a boolean value, this is a faked
           event from the button press (True) or release (False) handler.
+
+        This is invoked even for compressed motion events in Gtk 3.8 and
+        above, for which we capture and dispatch with the evhack stuff. It
+        still can usefully do device tracking and other bookkeeping.
         """
 
         # Do nothing if painting is inactivated
         if not tdw.is_sensitive:
             return False
+
+        # Try and initialize an event filter, used to circumvent the unhelpful
+        # motion event compression of newer GDKs. This filter passes through
+        # all events, but motion events are translated and passed to
+        # queue_motion_event separately.
+        if tdw not in self._evhack_tdws:
+            self._add_evhack(tdw)
 
         # If the device has changed and the last pressure value from the
         # previous device is not equal to 0.0, this can leave a visible stroke
@@ -610,6 +667,24 @@ class FreehandOnlyMode (InteractionMode):
         xtilt = event.get_axis(gdk.AXIS_XTILT)
         ytilt = event.get_axis(gdk.AXIS_YTILT)
         state = event.state 
+
+        # If the eventhack filter extracted more than one event, push them onto
+        # the motion event queue. Pressure and tilt are those of the current
+        # event, which is translated for us by GDK.
+        evhack_positions = self._evhack_positions.get(tdw, None)
+        if evhack_positions is not None:
+            # If we have more than just the current event, push those
+            # details. We should also interpolate pressure and tilt info,
+            # but for now, this'll do.
+            if len(evhack_positions) > 1:
+                evhack_positions.pop(-1)  # that's this event
+                for x, y, t in evhack_positions:
+                    event_data = (tdw, t, state, x, y, pressure, xtilt, ytilt,
+                                  button1_pressed)
+                    self._motion_queue.append(event_data)
+            # Reset the eventhack queue
+            self._evhack_positions[tdw] = []
+
         # Queue this event
         event_data = (tdw, time, state, x, y, pressure, xtilt, ytilt,
                       button1_pressed)
