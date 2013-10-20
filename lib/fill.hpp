@@ -179,7 +179,6 @@ tile_flood_fill (PyObject *src, /* readonly HxWx4 array of uint16 */
     assert(PyArray_ISCARRAY(src_arr));
     assert(PyArray_ISCARRAY(dst_arr));
     assert(PySequence_Check(seeds));
-    int num_compared = 1;
 #endif
     if (min_x < 0) min_x = 0;
     if (min_y < 0) min_y = 0;
@@ -190,12 +189,18 @@ tile_flood_fill (PyObject *src, /* readonly HxWx4 array of uint16 */
     }
 
     // Populate a working queue with seeds
-    int x, y;
+    int x = 0;
+    int y = 0;
     GQueue *queue = g_queue_new();   /* Of tuples, to be exhausted */
     for (int i=0; i<PySequence_Size(seeds); ++i) {
         PyObject *seed_tup = PySequence_GetItem(seeds, i);
-        x = (int) PyInt_AsLong(PySequence_GetItem(seed_tup, 0));
-        y = (int) PyInt_AsLong(PySequence_GetItem(seed_tup, 1));
+#ifdef HEAVY_DEBUG
+        assert(PySequence_Size(seed_tup) == 2);
+#endif
+        if (! PyArg_ParseTuple(seed_tup, "ii", &x, &y)) {
+            continue;
+        }
+        Py_DECREF(seed_tup);
         x = MAX(0, MIN(x, MYPAINT_TILE_SIZE-1));
         y = MAX(0, MIN(y, MYPAINT_TILE_SIZE-1));
         const fix15_short_t *src_pixel = _floodfill_getpixel(src_arr, x, y);
@@ -219,9 +224,6 @@ tile_flood_fill (PyObject *src, /* readonly HxWx4 array of uint16 */
         int x0 = pos->x;
         int y = pos->y;
         free(pos);
-#ifdef HEAVY_DEBUG
-        ++num_compared;
-#endif
         // Find easternmost and westernmost points of the same colour
         // Westwards loop includes (x,y), eastwards ignores it.
         static const int x_delta[] = {-1, 1};
@@ -296,6 +298,10 @@ tile_flood_fill (PyObject *src, /* readonly HxWx4 array of uint16 */
                     // Scanlining not possible here: pixel is over the border.
                     PyObject *s = Py_BuildValue("ii", x, MYPAINT_TILE_SIZE-1);
                     PyList_Append(result_n, s);
+                    Py_DECREF(s);
+#ifdef HEAVY_DEBUG
+                    assert(s->ob_refcnt == 1);
+#endif
                 }
                 if (y < MYPAINT_TILE_SIZE - 1) {
                     fix15_short_t *src_pixel_below = _floodfill_getpixel(
@@ -330,16 +336,28 @@ tile_flood_fill (PyObject *src, /* readonly HxWx4 array of uint16 */
                     // Scanlining not possible here: pixel is over the border.
                     PyObject *s = Py_BuildValue("ii", x, 0);
                     PyList_Append(result_s, s);
+                    Py_DECREF(s);
+#ifdef HEAVY_DEBUG
+                    assert(s->ob_refcnt == 1);
+#endif
                 }
                 // If the fill is now at the west or east extreme, we have
                 // overflowed there too.  Seed West and East tiles.
                 if (x == 0) {
                     PyObject *s = Py_BuildValue("ii", MYPAINT_TILE_SIZE-1, y);
                     PyList_Append(result_w, s);
+                    Py_DECREF(s);
+#ifdef HEAVY_DEBUG
+                    assert(s->ob_refcnt == 1);
+#endif
                 }
                 else if (x == MYPAINT_TILE_SIZE-1) {
                     PyObject *s = Py_BuildValue("ii", 0, y);
                     PyList_Append(result_e, s);
+                    Py_DECREF(s);
+#ifdef HEAVY_DEBUG
+                    assert(s->ob_refcnt == 1);
+#endif
                 }
             }
         }
@@ -348,7 +366,20 @@ tile_flood_fill (PyObject *src, /* readonly HxWx4 array of uint16 */
     // Clean up working state, and return where the fill has overflowed
     // into neighbouring tiles.
     g_queue_free(queue);
-    return Py_BuildValue("[OOOO]", result_n, result_e, result_s, result_w);
+    PyObject *result = Py_BuildValue("[OOOO]", result_n, result_e,
+                                               result_s, result_w);
+    Py_DECREF(result_n);
+    Py_DECREF(result_e);
+    Py_DECREF(result_s);
+    Py_DECREF(result_w);
+#ifdef HEAVY_DEBUG
+    assert(result_n->ob_refcnt == 1);
+    assert(result_e->ob_refcnt == 1);
+    assert(result_s->ob_refcnt == 1);
+    assert(result_w->ob_refcnt == 1);
+    assert(result->ob_refcnt == 1);
+#endif
+    return result;
 }
 
 
