@@ -477,6 +477,9 @@ class FreehandOnlyMode (InteractionMode):
         self._reset_drawing_state()
         self._last_stroketo_info = None   # The last model.stroke_to issued,
                                           # used for clean mode exits.
+        # Debugging: show number of events procesed each second
+        self._avgtimes = {}
+        self._debug = (logger.getEffectiveLevel() == logging.DEBUG)
 
 
     def leave(self, **kwds):
@@ -628,6 +631,21 @@ class FreehandOnlyMode (InteractionMode):
 
         if last_event_time:
             dtime = (time - last_event_time)/1000.0
+            if self._debug:
+                cavg = self._avgtimes.get(tdw, None)
+                if cavg:
+                    tavg, nevents = cavg
+                    nevents += 1
+                    tavg += (dtime - tavg)/nevents
+                else:
+                    tavg = dtime
+                    nevents = 1
+                if nevents*tavg > 1.0 and nevents > 20:
+                    logger.debug("Processing at %d events/s (t_avg=%0.3fs)",
+                                 nevents, tavg)
+                    self._avgtimes[tdw] = None
+                else:
+                    self._avgtimes[tdw] = (tavg, nevents)
         else:
             return False
 
