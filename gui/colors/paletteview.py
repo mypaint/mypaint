@@ -132,8 +132,8 @@ class PaletteEditorDialog (Gtk.Dialog):
 
         #: The working ColorManager, holding a working copy of the palette
         #: to be edited.
-        self._mgr = ColorManager(prefs=None,
-                        datapath=target_color_manager.get_data_path())
+        self._mgr = ColorManager(prefs={},
+                                 datapath=target_color_manager.get_data_path())
         self._mgr.set_color(RGBColor(1,1,1))
         view.set_color_manager(self._mgr)
 
