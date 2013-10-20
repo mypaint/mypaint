@@ -510,7 +510,11 @@ class FreehandOnlyMode (InteractionMode):
 
 
     def _reset_drawing_state(self):
-        self.last_event_had_pressure_info = False
+        # Boolean indicating that the last-processed had pressure; keyed by TDW
+        self._last_event_had_pressure_info = {}
+
+        # Times of the last-processed event; keyed by TDW
+        self._last_event_times = {}
 
         # 1st queue: raw motion data -> clean-up
         # This allows us to handle incoming events fast, hopefully under 5ms
@@ -541,7 +545,7 @@ class FreehandOnlyMode (InteractionMode):
                     func(event)
             # Mouse button pressed (while painting without pressure
             # information)
-            if not self.last_event_had_pressure_info:
+            if not self._last_event_had_pressure_info.get(tdw, False):
                 # For the mouse we don't get a motion event for "pressure"
                 # changes, so we simulate it. (Note: we can't use the
                 # event's button state because it carries the old state.)
@@ -557,7 +561,7 @@ class FreehandOnlyMode (InteractionMode):
         # (see comment above in button_press_cb)
         result = False
         if event.button == 1:
-            if not self.last_event_had_pressure_info:
+            if not self._last_event_had_pressure_info.get(tdw, False):
                 self.motion_notify_cb(tdw, event, button1_pressed=False)
             # Notify observers after processing the event
             try:
@@ -573,25 +577,45 @@ class FreehandOnlyMode (InteractionMode):
 
 
     def motion_notify_cb(self, tdw, event, button1_pressed=None):
-        """Motion event handler: queues raw input and returns"""
-        # Purely responsible for drawing.
+        """Motion event handler: queues raw input and returns
+
+        :param tdw: The TiledDrawWidget receiving the event
+        :param event: the MotionNotify event being handled
+        :param button1_pressed: If a boolean value, this is a faked
+          event from the button press (True) or release (False) handler.
+        """
+
+        # Do nothing if painting is inactivated
         if not tdw.is_sensitive:
             return False
-        # Extract the raw readings
+
+        # If the device has changed and the last pressure value from the
+        # previous device is not equal to 0.0, this can leave a visible stroke
+        # on the layer even if the 'new' device is not pressed on the tablet
+        # and has a pressure axis == 0.0.  Reseting the brush when the device
+        # changes fixes this issue, but there may be a much more elegant
+        # solution that only resets the brush on this edge-case.
+        same_device = True
+        if self.doc.app is not None:
+            device = event.get_source_device()
+            same_device = self.doc.app.device_monitor.device_used(device)
+            if not same_device:
+                tdw.doc.brush.reset()
+
+        # Extract the raw readings for this event
         x = event.x
         y = event.y
         time = event.time
         pressure = event.get_axis(gdk.AXIS_PRESSURE)
         xtilt = event.get_axis(gdk.AXIS_XTILT)
         ytilt = event.get_axis(gdk.AXIS_YTILT)
-        device = event.get_source_device()
         state = event.state 
-        last_event_time, last_x, last_y = self.doc.get_last_event_info(tdw)
-        # Queue it and fire off background processing if needed
-        event_data = (tdw, last_event_time, last_x, last_y,
-                      time, device, state, x, y, pressure, xtilt, ytilt,
+        # Queue this event
+        event_data = (tdw, time, state, x, y, pressure, xtilt, ytilt,
                       button1_pressed)
         self._motion_queue.append(event_data)
+
+        # Start the motion event processor, if it isn't already running
         if not self._motion_processing_cbid:
             cbid = gobject.idle_add(self._motion_queue_idle_cb,
                                     priority=self.MOTION_QUEUE_PRIORITY)
@@ -622,13 +646,15 @@ class FreehandOnlyMode (InteractionMode):
             return True
 
 
-    def _handle_motion_event(self, tdw, last_event_time, last_x, last_y, time,
-                             device, state, x, y, pressure, xtilt, ytilt,
+    def _handle_motion_event(self, tdw, time, state,
+                             x, y, pressure, xtilt, ytilt,
                              button1_pressed):
         """Process one motion event from the motion queue"""
         model = tdw.doc
         app = tdw.app
 
+        last_event_time = self._last_event_times.get(tdw, 0)
+        self._last_event_times[tdw] = time
         if last_event_time:
             dtime = (time - last_event_time)/1000.0
             if self._debug:
@@ -649,34 +675,27 @@ class FreehandOnlyMode (InteractionMode):
         else:
             return False
 
-        same_device = True
-        if app is not None:
-            same_device = app.device_monitor.device_used(device)
-
         # Refuse drawing if the layer is locked or hidden
         if model.layer.locked or not model.layer.visible:
             return False
 
         x, y = tdw.display_to_model(x, y)
 
-        if pressure is not None and (   pressure > 1.0
-                                     or pressure < 0.0
-                                     or not isfinite(pressure)):
-            if not hasattr(self, 'bad_devices'):
-                self.bad_devices = []
-            if device.name not in self.bad_devices:
-                logger.warning('device %r is reporting bad pressure %r',
-                               device.name, pressure)
-                self.bad_devices.append(device.name)
+        # Some sanity checks for the reported pressure
+        if pressure is not None:
             if not isfinite(pressure):
                 # infinity/nan: use button state (instead of clamping in
                 # brush.hpp) https://gna.org/bugs/?14709
                 pressure = None
+            elif pressure > 1.0:
+                pressure = 1.0
+            elif pressure < 0.0:
+                pressure = 0.0
 
         # Fake pressure if we have none based on the extra argument passed if
         # this is a fake.
         if pressure is None:
-            self.last_event_had_pressure_info = False
+            self._last_event_had_pressure_info[tdw] = False
             if button1_pressed is None:
                 button1_pressed = state & gdk.BUTTON1_MASK
             if button1_pressed:
@@ -684,7 +703,7 @@ class FreehandOnlyMode (InteractionMode):
             else:
                 pressure = 0.0
         else:
-            self.last_event_had_pressure_info = True
+            self._last_event_had_pressure_info[tdw] = True
 
         # Check whether tilt is present.  For some tablets without
         # tilt support GTK reports a tilt axis with value nan, instead
@@ -719,16 +738,6 @@ class FreehandOnlyMode (InteractionMode):
 
         if pressure:
             tdw.set_last_painting_pos((x, y))
-
-        # If the device has changed and the last pressure value from the
-        # previous device is not equal to 0.0, this can leave a visible stroke
-        # on the layer even if the 'new' device is not pressed on the tablet
-        # and has a pressure axis == 0.0.  Reseting the brush when the device
-        # changes fixes this issue, but there may be a much more elegant
-        # solution that only resets the brush on this edge-case.
-
-        if not same_device:
-            model.brush.reset()
 
         # On Windows, GTK timestamps have a resolution around
         # 15ms, but tablet events arrive every 8ms.
