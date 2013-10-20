@@ -424,10 +424,10 @@ class FreehandOnlyMode (InteractionMode):
     of the main application.
 
     To improve application responsiveness, this mode uses an internal queue for
-    capturing input data. First the raw motion data from the stylus are queued;
-    an idle routine then tidies up this data and feeds it onward. The presence
-    of an input capture queue means that long queued strokes can be terminated
-    by entering a new mode, or by pressing Escape.
+    capturing input data. The raw motion data from the stylus is queued; an
+    idle routine then tidies up this data and feeds it onward. The presence of
+    an input capture queue means that long queued strokes can be terminated by
+    entering a new mode, or by pressing Escape.
     """
 
     ## Class constants
@@ -435,25 +435,18 @@ class FreehandOnlyMode (InteractionMode):
     is_live_updateable = True
 
     # Motion queue processing (raw data capture)
-    #
-    # This first queue is an initial attempt at a workaround to the first
-    # problem described below in PyGI+GTK3 environments. The Right Thing To Do
-    # generally is to spend as little time as possible directly handling each
-    # event received, so this should be relatively uncontroversial.
-    # Disconnecting stroke rendering from event processing also buys the user
-    # the ability to quit out of a slowly/laggily rendering stroke if desired.
+
+    # This controls processing of an internal queue of event data such as the
+    # x and y coords, pressure and tilt prior to the strokes rendering.
 
     MOTION_QUEUE_PRIORITY = gobject.PRIORITY_DEFAULT_IDLE
-    MAX_QUEUED_MOTION_EVENTS = 200
+    MAX_QUEUED_MOTION_EVENTS = 20000
 
-    # Stroke queue processing (EXPERIMENTAL)
-    #
-    # This second queue interpolates strokes into very short timeslices as an
-    # attempted workaround for what seems to be generally slower processing of
-    # strokes under PyGI+GTK3 than under PyGTK2 (don't. ask. me. why.)
-    # Essentially make chunks of work for the renderer smaller so that control
-    # can return more quickly to capturing pen data.
-    #
+    # The Right Thing To Do generally is to spend as little time as possible
+    # directly handling each event received. Disconnecting stroke rendering
+    # from event processing buys the user the ability to quit out of a
+    # slowly/laggily rendering stroke if desired.
+
     # Unhelpful, but related: later versions of GTK3 (3.8+) discard successive
     # motion events received in the same frame. This may be ameliorated by
     # this code too.
@@ -461,13 +454,6 @@ class FreehandOnlyMode (InteractionMode):
     # https://gna.org/bugs/?21003
     # https://gna.org/bugs/?20822
     # https://bugzilla.gnome.org/show_bug.cgi?id=702392
-    #
-    # It's proving controversial though, so make it optional:
-    # https://mail.gna.org/public/mypaint-discuss/2013-09/msg00000.html
-    STROKE_QUEUE_ENABLED = False
-    STROKE_QUEUE_TIMESLICE = 0.0025
-    MAX_QUEUED_STROKES = 1000
-    STROKE_QUEUE_PRIORITY = gobject.PRIORITY_LOW
 
 
     ## Metadata
@@ -530,15 +516,9 @@ class FreehandOnlyMode (InteractionMode):
 
         # 1.5th queue: raw data which was delivered with an identical timestamp
         # to the previous one.  Happens on Windows due to differing clock
-        # granularities.
+        # granularities (at least, under GTK2)
         self._zero_dtime_motions = []
 
-        # 2nd queue: cleaned-up data -> stroke processing
-        # Output-side queue of finely-grained stroke data which is processed
-        # in an idle callback.
-        self._stroke_queue = deque()
-        if not hasattr(self, "_stroke_queue_idle_cbid"):
-            self._stroke_queue_idle_cbid = None
 
 
     ## Input handling
@@ -761,79 +741,9 @@ class FreehandOnlyMode (InteractionMode):
 
 
     def _model_stroke_to(self, model, dtime, x, y, pressure, xtilt, ytilt):
-        """Sent stroke data to the model, either directly or via a queue"""
-        if self.STROKE_QUEUE_ENABLED:
-            self._queue_stroke(model, dtime, x, y, pressure, xtilt, ytilt)
-        else:
-            model.stroke_to(dtime, x, y, pressure, xtilt, ytilt)
-            self._last_stroketo_info = model,dtime,x,y,pressure,xtilt,ytilt
-
-
-    ## Stroke queueing (EXPERIMENTAL)
-
-    def _queue_stroke(self, model, dtime, x, y, pressure, xtilt, ytilt):
-        """Adds cleaned-up stroke data to a forwarding queue"""
-        if ( len(self._stroke_queue) >= 1
-             and len(self._stroke_queue) < self.MAX_QUEUED_STROKES
-             and dtime < 0.2 ):
-
-            # To make smaller chunks of work for the renderer, interpolate
-            # between the last queued stroke data point and the new one, if the
-            # last point is not too old (where too old means >= 0.2s)
-            pdata = self._stroke_queue[-1]
-            pmodel, pdtime, px, py, ppressure, pxtilt, pytilt = pdata
-            f = min(self.MAX_QUEUED_STROKES,
-                    max(1,int(dtime/self.STROKE_QUEUE_TIMESLICE)))
-            for i in xrange(1, f):
-                mx = px + i*(x-px)/f
-                my = py + i*(y-py)/f
-                mpressure = ppressure + i*(pressure-ppressure)/f
-                mxtilt = pxtilt + i*(xtilt-pxtilt)/f
-                mytilt = pytilt + i*(ytilt-pytilt)/f
-                mdata = (model, dtime/f, mx, my, mpressure, mxtilt, mytilt)
-                self._stroke_queue.append(mdata)
-            data = (model, dtime/f, x, y, pressure, xtilt, ytilt)
-            self._stroke_queue.append(data)
-        else:
-            # Queue the stroke as one big grain of work instead
-            data = (model, dtime, x, y, pressure, xtilt, ytilt)
-            self._stroke_queue.append(data)
-        # Start the processing idler if it isn't currently running
-        if self._stroke_queue_idle_cbid is None:
-            cbid = gobject.idle_add(self._stroke_queue_idle_cb,
-                                    priority=self.STROKE_QUEUE_PRIORITY)
-            self._stroke_queue_idle_cbid = cbid
-
-
-    def _stroke_queue_idle_cb(self):
-        """Idle routine for passing stroke data on to the target doc(s)"""
-        qlen = len(self._stroke_queue)
-        if qlen <= 1:
-            self._stroke_queue_idle_cbid = None
-            return False
-        model,dtime,x,y,pressure,xtilt,ytilt = self._stroke_queue.popleft()
+        """Send stroke data to the model"""
         model.stroke_to(dtime, x, y, pressure, xtilt, ytilt)
-        self._last_stroketo_info = model, dtime, x, y, pressure, xtilt, ytilt
-        qlen = len(self._stroke_queue)
-        if qlen > self.MAX_QUEUED_STROKES * 0.9:
-            logger.warning("Long stroke queue: size=%d", qlen)
-        if qlen <= 1:
-            if qlen == 1:
-                pressure = self._stroke_queue[0][4]
-                # Tail off at the end of processing if the pressure is zero,
-                # for a greater appearance of responsiveness. This can be
-                # seen best using the mouse.
-                if pressure <= 0.0:
-                    model, dtime, x, y, pressure, xtilt, ytilt \
-                            = self._stroke_queue.popleft()
-                    model.stroke_to(dtime, x, y, pressure, xtilt, ytilt)
-                    self._last_stroketo_info = (model, dtime, x, y, pressure,
-                                                xtilt, ytilt)
-                    self._stroke_queue.clear()
-            self._stroke_queue_idle_cbid = None
-            return False
-        return True
-
+        self._last_stroketo_info = model,dtime,x,y,pressure,xtilt,ytilt
 
 
 class SwitchableModeMixin (InteractionMode):
