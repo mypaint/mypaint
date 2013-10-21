@@ -32,13 +32,14 @@ _evhack_x11_event_filter (GdkXEvent *xevent_gdk,
                           GdkEvent *event_gdk,   // out, unused
                           gpointer data_ptr)
 {
+    PyGILState_STATE gstate = PyGILState_Ensure();
 #ifdef HEAVY_DEBUG
     assert(PySequence_Check((PyObject *)data_ptr));
 #endif
     PyObject *tdw = NULL;
     PyObject *mode = NULL;
-    if (! PyArg_ParseTuple((PyObject *)data_ptr, "OO", &tdw, &mode))
-    {
+    if (! PyArg_ParseTuple((PyObject *)data_ptr, "OO", &tdw, &mode)) {
+        PyGILState_Release(gstate);
         return GDK_FILTER_CONTINUE;
     }
     XEvent *xevent = (XEvent *) xevent_gdk;
@@ -75,6 +76,7 @@ _evhack_x11_event_filter (GdkXEvent *xevent_gdk,
             Py_DECREF(result);
         }
     }
+    PyGILState_Release(gstate);
     return GDK_FILTER_CONTINUE;
 }
 
@@ -111,8 +113,10 @@ evhack_gdk_window_add_filter (PyObject *window, PyObject *data)
     GdkWindow *win_gdk = GDK_WINDOW(((PyGObject *)window)->obj);
     GdkDisplay *display = gdk_window_get_display(win_gdk);
 #ifdef GDK_WINDOWING_X11
-    if (GDK_IS_X11_DISPLAY(display))
+    if (GDK_IS_X11_DISPLAY(display)) {
+        Py_INCREF(data);
         gdk_window_add_filter(win_gdk, _evhack_x11_event_filter, data);
+    }
 #endif
 }
 
@@ -132,8 +136,10 @@ evhack_gdk_window_remove_filter (PyObject *window, PyObject *data)
     GdkWindow *win_gdk = GDK_WINDOW(((PyGObject *)window)->obj);
     GdkDisplay *display = gdk_window_get_display(win_gdk);
 #ifdef GDK_WINDOWING_X11
-    if (GDK_IS_X11_DISPLAY(display))
+    if (GDK_IS_X11_DISPLAY(display)) {
         gdk_window_remove_filter(win_gdk, _evhack_x11_event_filter, data);
+        Py_DECREF(data);
+    }
 #endif
 }
 
