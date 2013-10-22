@@ -462,10 +462,10 @@ class FreehandOnlyMode (InteractionMode):
     # It's hard to capture and translate tilt and pressure info in a manner
     # that's compatible with GDK without using GDK's own private internals.
     # Implementing our own valuator translations would be likely to break, so
-    # for these pices of info we could linearly interpolate the values received
-    # on the clock tick-synchronized motion events GDK gives us, but position
-    # them at the x and y that Xi2 gave us. Pressure and tilt fidelities matter
-    # less than positional accuracy.
+    # for these pices of info we interpolate the values received on the clock
+    # tick-synchronized motion events GDK gives us, but position them at the x
+    # and y that Xi2 gave us. Pressure and tilt fidelities matter less than
+    # positional accuracy.
 
     ## Metadata
 
@@ -532,11 +532,14 @@ class FreehandOnlyMode (InteractionMode):
         # Times of the last-processed event; keyed by TDW
         self._last_event_times = {}
 
-        # 0th queue: position and time info captured by the eventhack.hpp
+        # 1st queue: position and time info captured by the eventhack.hpp
         # filter prior to delivery of potentially motion-compressed events.
         self._evhack_positions = {}
 
-        # 1st queue: raw motion data -> clean-up
+        # Processing the evhack queue also does interpolation on certain axes.
+        self._evhack_axes = {}   # {tdw: (pressure, xtilt, ytilt)}
+
+        # 2nd queue: (evhack+real) motion data -> surface
         # This allows us to handle incoming events fast, hopefully under 5ms
         self._motion_queue = deque([], self.MAX_QUEUED_MOTION_EVENTS)
         self._motion_processing_cbid = None
@@ -668,27 +671,68 @@ class FreehandOnlyMode (InteractionMode):
         ytilt = event.get_axis(gdk.AXIS_YTILT)
         state = event.state 
 
+        # Some sanity checks for the reported pressure
+        if pressure is not None:
+            if not isfinite(pressure):
+                # infinity/nan: use button state (instead of clamping in
+                # brush.hpp) https://gna.org/bugs/?14709
+                pressure = None
+            elif pressure > 1.0:
+                pressure = 1.0
+            elif pressure < 0.0:
+                pressure = 0.0
+
+        # Fake pressure if we have none based on the extra argument passed
+        if pressure is None:
+            self._last_event_had_pressure_info[tdw] = False
+            if button1_pressed is None:
+                button1_pressed = state & gdk.BUTTON1_MASK
+            if button1_pressed:
+                pressure = 0.5
+            else:
+                pressure = 0.0
+        else:
+            self._last_event_had_pressure_info[tdw] = True
+
+        # Check whether tilt is present.  For some tablets without
+        # tilt support GTK reports a tilt axis with value nan, instead
+        # of None.  https://gna.org/bugs/?17084
+        if xtilt is None or ytilt is None or not isfinite(xtilt+ytilt):
+            xtilt = 0.0
+            ytilt = 0.0
+
         # If the eventhack filter extracted more than one event, push them onto
         # the motion event queue. Pressure and tilt are those of the current
         # event, which is translated for us by GDK.
         evhack_positions = self._evhack_positions.get(tdw, None)
         if evhack_positions is not None:
             # If we have more than just the current event, push those
-            # details. We should also interpolate pressure and tilt info,
-            # but for now, this'll do.
-            if len(evhack_positions) > 1:
+            # details, with time-based interpolation for pressure and tilt.
+            npositions = len(evhack_positions)
+            if npositions > 1:
                 evhack_positions.pop(-1)  # that's this event
-                for x, y, t in evhack_positions:
-                    event_data = (tdw, t, state, x, y, pressure, xtilt, ytilt,
-                                  button1_pressed)
-                    self._motion_queue.append(event_data)
+                npositions -= 1
+                t0 = evhack_positions[0][2]
+                dt = time - t0
+                if dt > 0:
+                    p0, xt0, yt0 = self._evhack_axes.get(tdw, (0., 0., 0.))
+                    dp = pressure - p0
+                    dxt = xtilt - xt0
+                    dyt = ytilt - yt0
+                    for x, y, t in evhack_positions:
+                        tau = float(t-t0) / dt
+                        p = p0 + dp*tau
+                        xt = xt0 + dxt*tau
+                        yt = yt0 + dyt*tau
+                        event_data = (tdw, t, state, x, y, p, xt, yt)
+                        self._motion_queue.append(event_data)
             # Reset the eventhack queue
             self._evhack_positions[tdw] = []
 
         # Queue this event
-        event_data = (tdw, time, state, x, y, pressure, xtilt, ytilt,
-                      button1_pressed)
+        event_data = (tdw, time, state, x, y, pressure, xtilt, ytilt)
         self._motion_queue.append(event_data)
+        self._evhack_axes[tdw] = (pressure, xtilt, ytilt)
 
         # Start the motion event processor, if it isn't already running
         if not self._motion_processing_cbid:
@@ -722,12 +766,12 @@ class FreehandOnlyMode (InteractionMode):
 
 
     def _handle_motion_event(self, tdw, time, state,
-                             x, y, pressure, xtilt, ytilt,
-                             button1_pressed):
+                             x, y, pressure, xtilt, ytilt):
         """Process one motion event from the motion queue"""
         model = tdw.doc
         app = tdw.app
 
+        # Calculate time delta for the brush engine
         last_event_time = self._last_event_times.get(tdw, 0)
         self._last_event_times[tdw] = time
         if last_event_time:
@@ -754,38 +798,8 @@ class FreehandOnlyMode (InteractionMode):
         if model.layer.locked or not model.layer.visible:
             return False
 
+        # Transform to model coords
         x, y = tdw.display_to_model(x, y)
-
-        # Some sanity checks for the reported pressure
-        if pressure is not None:
-            if not isfinite(pressure):
-                # infinity/nan: use button state (instead of clamping in
-                # brush.hpp) https://gna.org/bugs/?14709
-                pressure = None
-            elif pressure > 1.0:
-                pressure = 1.0
-            elif pressure < 0.0:
-                pressure = 0.0
-
-        # Fake pressure if we have none based on the extra argument passed if
-        # this is a fake.
-        if pressure is None:
-            self._last_event_had_pressure_info[tdw] = False
-            if button1_pressed is None:
-                button1_pressed = state & gdk.BUTTON1_MASK
-            if button1_pressed:
-                pressure = 0.5
-            else:
-                pressure = 0.0
-        else:
-            self._last_event_had_pressure_info[tdw] = True
-
-        # Check whether tilt is present.  For some tablets without
-        # tilt support GTK reports a tilt axis with value nan, instead
-        # of None.  https://gna.org/bugs/?17084
-        if xtilt is None or ytilt is None or not isfinite(xtilt+ytilt):
-            xtilt = 0.0
-            ytilt = 0.0
 
         # Tilt inputs are assumed to be relative to the viewport, but the
         # canvas may be rotated or mirrored, or both. Compensate before
