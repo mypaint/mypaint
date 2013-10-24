@@ -441,7 +441,6 @@ class FreehandOnlyMode (InteractionMode):
     # x and y coords, pressure and tilt prior to the strokes rendering.
 
     MOTION_QUEUE_PRIORITY = gobject.PRIORITY_DEFAULT_IDLE
-    MAX_QUEUED_MOTION_EVENTS = 20000
 
     # The Right Thing To Do generally is to spend as little time as possible
     # directly handling each event received. Disconnecting stroke rendering
@@ -479,30 +478,74 @@ class FreehandOnlyMode (InteractionMode):
         return _(u"Paint free-form brush strokes")
 
 
+    ## Per-TDW drawing state
+
+    class _DrawingState (object):
+        """Per-canvas drawing state
+
+        Right now this is just a glorified struct.
+        """
+
+        def __init__(self):
+            object.__init__(self)
+            # Active event filters: (tdw, self). Tuple identity matters to the
+            # evhack code.
+            self.evhack_data = None
+            # Position and time info captured by the eventhack.hpp filter prior
+            # to delivery of a potentially motion-compressed event.
+            self.evhack_positions = []
+            # Processing the evhack capture queue also does interpolation on
+            # certain axes.
+            self.evhack_axes = (0.0, 0.0, 0.0)
+            # Boolean indicating that the last-processed had pressure
+            self.last_event_had_pressure = False
+            # Time of the last-processed event
+            self.last_event_time = 0
+            # Combined, cleaned-up motion data queued for rendering.
+            # This allows us to handle incoming events fast, hopefully under 5ms
+            self.motion_queue = deque()
+            self.motion_processing_cbid = None
+            # Raw data which was delivered with an identical timestamp
+            # to the previous one.  Happens on Windows due to differing clock
+            # granularities (at least, under GTK2)
+            self.zero_dtime_motions = []
+            # Debugging: number of events procesed each second, average times.
+            self.avgtime = None
+
+
+    def _reset_drawing_state(self):
+        """Resets all per-TDW drawing state"""
+        self._remove_evhacks()
+        self._drawing_state = {}
+
+
+    def _get_drawing_state(self, tdw):
+        drawstate = self._drawing_state.get(tdw, None)
+        if drawstate is None:
+            drawstate = self._DrawingState()
+            self._drawing_state[tdw] = drawstate
+        return drawstate
+
+
     ## Mode stack & current mode
 
 
     def enter(self, **kwds):
         """Enter freehand mode"""
         super(FreehandOnlyMode, self).enter(**kwds)
+        self._drawing_state = {}
         self._reset_drawing_state()
-        self._last_stroketo_info = None   # The last model.stroke_to issued,
-                                          # used for clean mode exits.
-        # Active event filters: {tdw: (tdw, self)}
-        # Tuple identity matters to the evhack stuff.
-        self._evhack_tdws = {}
-        # Debugging: show number of events procesed each second
-        self._avgtimes = {}
         self._debug = (logger.getEffectiveLevel() == logging.DEBUG)
-
+        # The last model.stroke_to()s issued, used for clean mode exits.
+        self._last_stroketo_info = {}
 
     def leave(self, **kwds):
         """Leave freehand mode"""
         super(FreehandOnlyMode, self).leave(**kwds)
-        # Clear queue(s)
+        # Reset per-tdw state
         self._reset_drawing_state()
-        # Cleanly tail off if this mode ever sent stroke data to the model.
-        if self._last_stroketo_info:
+        # Cleanly tail off if this mode ever sent stroke data to any models.
+        for model, last_stroketo in self._last_stroketo_info.iteritems():
             # Tail off cleanly if the user interrupts a still-queued stroke.
             # Rationale: if there's lots of input queued up, Escape still exits
             # the mode (this is a feature, not a bug). However, if we don't
@@ -511,8 +554,7 @@ class FreehandOnlyMode (InteractionMode):
             # cursor is right now. This would be counterproductive for the very
             # case where users would most want to bail out: accidental huge
             # strokes with a big complex brush.
-            model,dtime,x,y,pressure,xtilt,ytilt = self._last_stroketo_info
-            self._last_stroketo_info = None
+            dtime, x, y, pressure, xtilt, ytilt = last_stroketo
             pressure = 0.0
             dtime = 0.0
             model.stroke_to(dtime, x, y, pressure, xtilt, ytilt)
@@ -521,61 +563,40 @@ class FreehandOnlyMode (InteractionMode):
             # have finished drawing and now want to do something else. Put an
             # undo history break here.
             model.split_stroke()
-
-        self._remove_evhacks()
-
-
-    def _reset_drawing_state(self):
-        # Boolean indicating that the last-processed had pressure; keyed by TDW
-        self._last_event_had_pressure_info = {}
-
-        # Times of the last-processed event; keyed by TDW
-        self._last_event_times = {}
-
-        # 1st queue: position and time info captured by the eventhack.hpp
-        # filter prior to delivery of potentially motion-compressed events.
-        self._evhack_positions = {}
-
-        # Processing the evhack queue also does interpolation on certain axes.
-        self._evhack_axes = {}   # {tdw: (pressure, xtilt, ytilt)}
-
-        # 2nd queue: (evhack+real) motion data -> surface
-        # This allows us to handle incoming events fast, hopefully under 5ms
-        self._motion_queue = deque([], self.MAX_QUEUED_MOTION_EVENTS)
-        self._motion_processing_cbid = None
-
-        # 1.5th queue: raw data which was delivered with an identical timestamp
-        # to the previous one.  Happens on Windows due to differing clock
-        # granularities (at least, under GTK2)
-        self._zero_dtime_motions = []
+        self._last_stroketo_info = {}
 
 
     ## Eventhack event filter
 
 
     def _add_evhack(self, tdw):
-        assert tdw not in self._evhack_tdws
+        drawstate = self._get_drawing_state(tdw)
+        assert drawstate.evhack_data is None
         win = tdw.get_window()
         data = (tdw, self)
         logger.debug("Adding evhack filter %r", data)
         mypaintlib.evhack_gdk_window_add_filter(win, data)
-        self._evhack_tdws[tdw] = data
-        self._evhack_positions[tdw] = []
+        drawstate.evhack_data = data
+        drawstate.evhack_positions = []
 
 
     def _remove_evhacks(self):
-        for tdw in self._evhack_tdws:
+        for tdw, drawstate in self._drawing_state.iteritems():
             win = tdw.get_window()
-            data = self._evhack_tdws[tdw]
+            drawstate = self._get_drawing_state(tdw)
+            data = drawstate.evhack_data
+            if data is None:
+                continue
             logger.debug("Removing evhack filter %r", data)
             mypaintlib.evhack_gdk_window_remove_filter(win, data)
-        self._evhack_tdws = {}
-        self._evhack_positions[tdw] = []
+            drawstate.evhack_data = None
+            drawstate.evhack_positions = []
 
 
     def queue_evhack_position(self, tdw, x, y, t):
         """Queues a noncompressed motion position. Called by eventhack.hpp."""
-        self._evhack_positions[tdw].append((x, y, t))
+        drawstate = self._get_drawing_state(tdw)
+        drawstate.evhack_positions.append((x, y, t))
 
 
     ## Input handlers
@@ -594,23 +615,23 @@ class FreehandOnlyMode (InteractionMode):
                     func(event)
             # Mouse button pressed (while painting without pressure
             # information)
-            if not self._last_event_had_pressure_info.get(tdw, False):
+            drawstate = self._get_drawing_state(tdw)
+            if not drawstate.last_event_had_pressure:
                 # For the mouse we don't get a motion event for "pressure"
                 # changes, so we simulate it. (Note: we can't use the
                 # event's button state because it carries the old state.)
                 self.motion_notify_cb(tdw, event, button1_pressed=True)
             result = True
-
-        # Collaborate, but likely with nothing
         result |= bool(super(FreehandOnlyMode, self).button_press_cb(tdw, event))
         return result
 
 
     def button_release_cb(self, tdw, event):
-        # (see comment above in button_press_cb)
         result = False
         if event.button == 1:
-            if not self._last_event_had_pressure_info.get(tdw, False):
+            # See comment above in button_press_cb.
+            drawstate = self._get_drawing_state(tdw)
+            if not drawstate.last_event_had_pressure:
                 self.motion_notify_cb(tdw, event, button1_pressed=False)
             # Notify observers after processing the event
             try:
@@ -646,7 +667,8 @@ class FreehandOnlyMode (InteractionMode):
         # motion event compression of newer GDKs. This filter passes through
         # all events, but motion events are translated and passed to
         # queue_motion_event separately.
-        if tdw not in self._evhack_tdws:
+        drawstate = self._get_drawing_state(tdw)
+        if drawstate.evhack_data is None:
             self._add_evhack(tdw)
 
         # If the device has changed and the last pressure value from the
@@ -656,9 +678,9 @@ class FreehandOnlyMode (InteractionMode):
         # changes fixes this issue, but there may be a much more elegant
         # solution that only resets the brush on this edge-case.
         same_device = True
-        if self.doc.app is not None:
+        if tdw.app is not None:
             device = event.get_source_device()
-            same_device = self.doc.app.device_monitor.device_used(device)
+            same_device = tdw.app.device_monitor.device_used(device)
             if not same_device:
                 tdw.doc.brush.reset()
 
@@ -684,7 +706,7 @@ class FreehandOnlyMode (InteractionMode):
 
         # Fake pressure if we have none based on the extra argument passed
         if pressure is None:
-            self._last_event_had_pressure_info[tdw] = False
+            drawstate.last_event_had_pressure = False
             if button1_pressed is None:
                 button1_pressed = state & gdk.BUTTON1_MASK
             if button1_pressed:
@@ -692,7 +714,7 @@ class FreehandOnlyMode (InteractionMode):
             else:
                 pressure = 0.0
         else:
-            self._last_event_had_pressure_info[tdw] = True
+            drawstate.last_event_had_pressure = True
 
         # Check whether tilt is present.  For some tablets without
         # tilt support GTK reports a tilt axis with value nan, instead
@@ -704,81 +726,76 @@ class FreehandOnlyMode (InteractionMode):
         # If the eventhack filter extracted more than one event, push them onto
         # the motion event queue. Pressure and tilt are those of the current
         # event, which is translated for us by GDK.
-        evhack_positions = self._evhack_positions.get(tdw, None)
-        if evhack_positions is not None:
+        if len(drawstate.evhack_positions) > 0:
             # If we have more than just the current event, push those
             # details, with time-based interpolation for pressure and tilt.
-            npositions = len(evhack_positions)
-            if npositions > 1:
-                evhack_positions.pop(-1)  # that's this event
-                npositions -= 1
-                t0 = evhack_positions[0][2]
+            if len(drawstate.evhack_positions) > 1:
+                drawstate.evhack_positions.pop(-1)  # that's this event
+                t0 = drawstate.evhack_positions[0][2]
                 dt = time - t0
                 if dt > 0:
-                    p0, xt0, yt0 = self._evhack_axes.get(tdw, (0., 0., 0.))
+                    p0, xt0, yt0 = drawstate.evhack_axes
                     dp = pressure - p0
                     dxt = xtilt - xt0
                     dyt = ytilt - yt0
-                    for x, y, t in evhack_positions:
+                    for x, y, t in drawstate.evhack_positions:
                         tau = float(t-t0) / dt
                         p = p0 + dp*tau
                         xt = xt0 + dxt*tau
                         yt = yt0 + dyt*tau
-                        event_data = (tdw, t, state, x, y, p, xt, yt)
-                        self._motion_queue.append(event_data)
+                        event_data = (t, state, x, y, p, xt, yt)
+                        drawstate.motion_queue.append(event_data)
             # Reset the eventhack queue
-            self._evhack_positions[tdw] = []
+            drawstate.evhack_positions = []
 
         # Queue this event
-        event_data = (tdw, time, state, x, y, pressure, xtilt, ytilt)
-        self._motion_queue.append(event_data)
-        self._evhack_axes[tdw] = (pressure, xtilt, ytilt)
+        event_data = (time, state, x, y, pressure, xtilt, ytilt)
+        drawstate.motion_queue.append(event_data)
+        drawstate.evhack_axes = (pressure, xtilt, ytilt)
 
         # Start the motion event processor, if it isn't already running
-        if not self._motion_processing_cbid:
-            cbid = gobject.idle_add(self._motion_queue_idle_cb,
+        if not drawstate.motion_processing_cbid:
+            cbid = gobject.idle_add(self._motion_queue_idle_cb, tdw,
                                     priority=self.MOTION_QUEUE_PRIORITY)
-            self._motion_processing_cbid = cbid
+            drawstate.motion_processing_cbid = cbid
 
 
     ## Motion queue processing
 
-    def _motion_queue_idle_cb(self):
+    def _motion_queue_idle_cb(self, tdw):
         """Idle callback, calls _handle_motion_event() for each queued event"""
-        qlen = len(self._motion_queue)
-        if qlen > 0:
-            event_data = self._motion_queue.popleft()
-            # DEBUGGING: we should be able to collect ~100 to ~200 events
-            # per second during a long stroke of a simple brush.
-            if qlen > self.MAX_QUEUED_MOTION_EVENTS * 0.9:
-                dtime = (event_data[4] - event_data[1]) / 1000.0
-                dtime_avg = (sum([m[4] - m[1] for m in self._motion_queue])
-                             / (len(self._motion_queue)*1000.0))
-                qlen = len(self._motion_queue)
-                logger.warning("Long motion queue: len=%d (last dtime=%.3f, "
-                               "avg=%.3f)", qlen, dtime, dtime_avg)
-            self._handle_motion_event(*event_data)
-        if qlen == 0:
-            self._motion_processing_cbid = None
+        drawstate = self._get_drawing_state(tdw)
+        # Stop if asked to stop
+        if drawstate.motion_processing_cbid is None:
+            drawstate.motion_queue = deque()
             return False
-        else:
-            return True
+        # Forward a motion event to the canvas
+        if len(drawstate.motion_queue) > 0:
+            event_data = drawstate.motion_queue.popleft()
+            self._handle_motion_event(tdw, event_data)
+        # Stop if the queue is now empty
+        if len(drawstate.motion_queue) == 0:
+            drawstate.motion_processing_cbid = None
+            return False
+        # Otherwise, continue being invoked
+        return True
 
 
-    def _handle_motion_event(self, tdw, time, state,
-                             x, y, pressure, xtilt, ytilt):
+    def _handle_motion_event(self, tdw, event_data):
         """Process one motion event from the motion queue"""
+        drawstate = self._get_drawing_state(tdw)
+        time, state, x, y, pressure, xtilt, ytilt = event_data
         model = tdw.doc
         app = tdw.app
 
         # Calculate time delta for the brush engine
-        last_event_time = self._last_event_times.get(tdw, 0)
-        self._last_event_times[tdw] = time
+        last_event_time = drawstate.last_event_time
+        drawstate.last_event_time = time
         if last_event_time:
             dtime = (time - last_event_time)/1000.0
             if self._debug:
-                cavg = self._avgtimes.get(tdw, None)
-                if cavg:
+                cavg = drawstate.avgtime
+                if cavg is not None:
                     tavg, nevents = cavg
                     nevents += 1
                     tavg += (dtime - tavg)/nevents
@@ -788,9 +805,9 @@ class FreehandOnlyMode (InteractionMode):
                 if nevents*tavg > 1.0 and nevents > 20:
                     logger.debug("Processing at %d events/s (t_avg=%0.3fs)",
                                  nevents, tavg)
-                    self._avgtimes[tdw] = None
+                    drawstate.avgtime = None
                 else:
-                    self._avgtimes[tdw] = (tavg, nevents)
+                    drawstate.avgtime = (tavg, nevents)
         else:
             return False
 
@@ -836,22 +853,22 @@ class FreehandOnlyMode (InteractionMode):
             dtime = 0.0
         if dtime == 0.0:
             zdata = (model, x, y, pressure, xtilt, ytilt)
-            self._zero_dtime_motions.append(zdata)
+            drawstate.zero_dtime_motions.append(zdata)
         elif dtime > 0.0:
-            if self._zero_dtime_motions:
+            if drawstate.zero_dtime_motions:
                 # replay previous events that had identical timestamp
                 if dtime > 0.1:
                     # really old events, don't associate them with the new one
                     step = 0.1
                 else:
                     step = dtime
-                step /= len(self._zero_dtime_motions)+1
-                for zdata in self._zero_dtime_motions:
+                step /= len(drawstate.zero_dtime_motions)+1
+                for zdata in drawstate.zero_dtime_motions:
                     zmodel, zx, zy, zpressure, zxtilt, zytilt = zdata
                     self._model_stroke_to(zmodel, dtime, zx, zy,
                                           zpressure, zxtilt, zytilt)
                     dtime -= step
-                self._zero_dtime_motions = []
+                drawstate.zero_dtime_motions = []
             self._model_stroke_to(model, dtime, x, y, pressure, xtilt, ytilt)
         return False
 
@@ -859,7 +876,7 @@ class FreehandOnlyMode (InteractionMode):
     def _model_stroke_to(self, model, dtime, x, y, pressure, xtilt, ytilt):
         """Send stroke data to the model"""
         model.stroke_to(dtime, x, y, pressure, xtilt, ytilt)
-        self._last_stroketo_info = model,dtime,x,y,pressure,xtilt,ytilt
+        self._last_stroketo_info[model] = dtime,x,y,pressure,xtilt,ytilt
 
 
 class SwitchableModeMixin (InteractionMode):
