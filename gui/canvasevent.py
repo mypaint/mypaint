@@ -500,24 +500,66 @@ class FreehandOnlyMode (InteractionMode):
             # Boolean indicating that the last-processed had pressure
             self.last_event_had_pressure = False
             # Time of the last-processed event
-            self.last_event_time = 0
+            self.last_handled_event_time = 0
             # Combined, cleaned-up motion data queued for rendering.
             # This allows us to handle incoming events fast, hopefully under 5ms
             self.motion_queue = deque()
             self.motion_processing_cbid = None
+            self._last_queued_event_time = 0
             # Raw data which was delivered with an identical timestamp
             # to the previous one.  Happens on Windows due to differing clock
             # granularities (at least, under GTK2)
-            self.zero_dtime_motions = []
+            self._zero_dtime_motions = []
             # Debugging: number of events procesed each second, average times.
             self.avgtime = None
+
+        def queue_motion(self, event_data):
+            """Append one raw motion event to the queue
+
+            Zero-dtime events are detected and cleaned up here. Times are ints,
+            expressed in milliseconds.
+            """
+            time, x, y, pressure, xtilt, ytilt = event_data
+            if time < self._last_queued_event_time:
+                logger.warning('Time is running backwards! Corrected.')
+                time = self._last_queued_event_time
+            elif time == self._last_queued_event_time:
+                # On Windows, GTK timestamps have a resolution around
+                # 15ms, but tablet events arrive every 8ms.
+                # https://gna.org/bugs/index.php?16569
+                zdata = (x, y, pressure, xtilt, ytilt)
+                self._zero_dtime_motions.append(zdata)
+            else:
+                # Queue any previous events that had identical timestamps,
+                # linearly interpolating their times.
+                if self._zero_dtime_motions:
+                    dtime = time - self._last_queued_event_time
+                    if dtime > 100:
+                        # Really old events; don't associate them with
+                        # the new one.
+                        zt = time - 100.0
+                        interval = 100.0
+                    else:
+                        zt = self._last_queued_event_time
+                        interval = float(dtime)
+                    step = interval / (len(self._zero_dtime_motions) + 1)
+                    for zx, zy, zp, zxt, zyt in self._zero_dtime_motions:
+                        zt += step
+                        zevent_data = (zt, zx, zy, zp, zxt, zyt)
+                        self.motion_queue.append(zevent_data)
+                    # Reset the backlog buffer
+                    self._zero_dtime_motions = []
+                # Queue this event too
+                event_data = event_data
+                self.motion_queue.append(event_data)
+                # Update the timestamp used above
+                self._last_queued_event_time = time
 
 
     def _reset_drawing_state(self):
         """Resets all per-TDW drawing state"""
         self._remove_evhacks()
         self._drawing_state = {}
-
 
     def _get_drawing_state(self, tdw):
         drawstate = self._drawing_state.get(tdw, None)
@@ -722,6 +764,34 @@ class FreehandOnlyMode (InteractionMode):
         if xtilt is None or ytilt is None or not isfinite(xtilt+ytilt):
             xtilt = 0.0
             ytilt = 0.0
+        else:
+            # Tilt inputs are assumed to be relative to the viewport, but the
+            # canvas may be rotated or mirrored, or both. Compensate before
+            # passing them to the brush engine. https://gna.org/bugs/?19988
+            if tdw.mirrored:
+                xtilt *= -1.0
+            if tdw.rotation != 0:
+                tilt_angle = math.atan2(ytilt, xtilt) - tdw.rotation
+                tilt_magnitude = math.sqrt((xtilt**2) + (ytilt**2))
+                xtilt = tilt_magnitude * math.cos(tilt_angle)
+                ytilt = tilt_magnitude * math.sin(tilt_angle)
+
+        # HACK: color picking, do not paint
+        # TEST: Does this ever happen now?
+        if state & gdk.CONTROL_MASK or state & gdk.MOD1_MASK:
+            # Don't simply return; this is a workaround for unwanted lines
+            # in https://gna.org/bugs/?16169
+            pressure = 0.0
+
+        # Apply pressure mapping if we're running as part of a full MyPaint
+        # application (and if there's one defined).
+        if tdw.app is not None and tdw.app.pressure_mapping:
+            pressure = tdw.app.pressure_mapping(pressure)
+
+        # HACK: straight line mode?
+        # TEST: Does this ever happen?
+        if state & gdk.SHIFT_MASK:
+            pressure = 0.0
 
         # If the eventhack filter extracted more than one event, push them onto
         # the motion event queue. Pressure and tilt are those of the current
@@ -743,14 +813,14 @@ class FreehandOnlyMode (InteractionMode):
                         p = p0 + dp*tau
                         xt = xt0 + dxt*tau
                         yt = yt0 + dyt*tau
-                        event_data = (t, state, x, y, p, xt, yt)
-                        drawstate.motion_queue.append(event_data)
+                        event_data = (t, x, y, p, xt, yt)
+                        drawstate.queue_motion(event_data)
             # Reset the eventhack queue
             drawstate.evhack_positions = []
 
         # Queue this event
-        event_data = (time, state, x, y, pressure, xtilt, ytilt)
-        drawstate.motion_queue.append(event_data)
+        event_data = (time, x, y, pressure, xtilt, ytilt)
+        drawstate.queue_motion(event_data)
         drawstate.evhack_axes = (pressure, xtilt, ytilt)
 
         # Start the motion event processor, if it isn't already running
@@ -784,99 +854,48 @@ class FreehandOnlyMode (InteractionMode):
     def _handle_motion_event(self, tdw, event_data):
         """Process one motion event from the motion queue"""
         drawstate = self._get_drawing_state(tdw)
-        time, state, x, y, pressure, xtilt, ytilt = event_data
+        time, x, y, pressure, xtilt, ytilt = event_data
         model = tdw.doc
-        app = tdw.app
 
         # Calculate time delta for the brush engine
-        last_event_time = drawstate.last_event_time
-        drawstate.last_event_time = time
-        if last_event_time:
-            dtime = (time - last_event_time)/1000.0
-            if self._debug:
-                cavg = drawstate.avgtime
-                if cavg is not None:
-                    tavg, nevents = cavg
-                    nevents += 1
-                    tavg += (dtime - tavg)/nevents
-                else:
-                    tavg = dtime
-                    nevents = 1
-                if nevents*tavg > 1.0 and nevents > 20:
-                    logger.debug("Processing at %d events/s (t_avg=%0.3fs)",
-                                 nevents, tavg)
-                    drawstate.avgtime = None
-                else:
-                    drawstate.avgtime = (tavg, nevents)
-        else:
-            return False
+        last_event_time = drawstate.last_handled_event_time
+        drawstate.last_handled_event_time = time
+        if not last_event_time:
+            return
+        dtime = (time - last_event_time)/1000.0
+        if self._debug:
+            cavg = drawstate.avgtime
+            if cavg is not None:
+                tavg, nevents = cavg
+                nevents += 1
+                tavg += (dtime - tavg)/nevents
+            else:
+                tavg = dtime
+                nevents = 1
+            if nevents*tavg > 1.0 and nevents > 20:
+                logger.debug("Processing at %d events/s (t_avg=%0.3fs)",
+                             nevents, tavg)
+                drawstate.avgtime = None
+            else:
+                drawstate.avgtime = (tavg, nevents)
 
         # Refuse drawing if the layer is locked or hidden
         if model.layer.locked or not model.layer.visible:
-            return False
+            return
 
-        # Transform to model coords
+        # Transform to model coords (TODO: move earlier in the chain)
         x, y = tdw.display_to_model(x, y)
 
-        # Tilt inputs are assumed to be relative to the viewport, but the
-        # canvas may be rotated or mirrored, or both. Compensate before
-        # passing them to the brush engine. https://gna.org/bugs/?19988
-        if not (xtilt == 0 and ytilt == 0):
-            if tdw.mirrored:
-                xtilt *= -1.0
-            if tdw.rotation != 0:
-                tilt_angle = math.atan2(ytilt, xtilt) - tdw.rotation
-                tilt_magnitude = math.sqrt((xtilt**2) + (ytilt**2))
-                xtilt = tilt_magnitude * math.cos(tilt_angle)
-                ytilt = tilt_magnitude * math.sin(tilt_angle)
+        # Feed data to the brush engine
+        model.stroke_to(dtime, x, y, pressure, xtilt, ytilt)
 
-        if state & gdk.CONTROL_MASK or state & gdk.MOD1_MASK:
-            # HACK: color picking, do not paint
-            # Don't simply return; this is a workaround for unwanted lines
-            # in https://gna.org/bugs/?16169
-            pressure = 0.0
+        # Update tailoff info
+        self._last_stroketo_info[model] = dtime,x,y,pressure,xtilt,ytilt
 
-        if app is not None and app.pressure_mapping:
-            pressure = app.pressure_mapping(pressure)
-
-        if state & gdk.SHIFT_MASK:
-            pressure = 0.0
-
+        # Update the TDW's idea of where we last painted
+        # FIXME: this should live in the model, not the view
         if pressure:
             tdw.set_last_painting_pos((x, y))
-
-        # On Windows, GTK timestamps have a resolution around
-        # 15ms, but tablet events arrive every 8ms.
-        # https://gna.org/bugs/index.php?16569
-        if dtime < 0.0:
-            logger.warning('Time is running backwards, dtime=%f', dtime)
-            dtime = 0.0
-        if dtime == 0.0:
-            zdata = (model, x, y, pressure, xtilt, ytilt)
-            drawstate.zero_dtime_motions.append(zdata)
-        elif dtime > 0.0:
-            if drawstate.zero_dtime_motions:
-                # replay previous events that had identical timestamp
-                if dtime > 0.1:
-                    # really old events, don't associate them with the new one
-                    step = 0.1
-                else:
-                    step = dtime
-                step /= len(drawstate.zero_dtime_motions)+1
-                for zdata in drawstate.zero_dtime_motions:
-                    zmodel, zx, zy, zpressure, zxtilt, zytilt = zdata
-                    self._model_stroke_to(zmodel, dtime, zx, zy,
-                                          zpressure, zxtilt, zytilt)
-                    dtime -= step
-                drawstate.zero_dtime_motions = []
-            self._model_stroke_to(model, dtime, x, y, pressure, xtilt, ytilt)
-        return False
-
-
-    def _model_stroke_to(self, model, dtime, x, y, pressure, xtilt, ytilt):
-        """Send stroke data to the model"""
-        model.stroke_to(dtime, x, y, pressure, xtilt, ytilt)
-        self._last_stroketo_info[model] = dtime,x,y,pressure,xtilt,ytilt
 
 
 class SwitchableModeMixin (InteractionMode):
