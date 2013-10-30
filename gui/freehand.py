@@ -196,7 +196,7 @@ class FreehandOnlyMode (InteractionMode):
 
         def next_processing_events(self):
             """Fetches zero or more events to process from the queue"""
-            if len(self.motion_queue) >= 0:
+            if len(self.motion_queue) > 0:
                 event = self.motion_queue.popleft()
                 for ievent in self.interp.feed(*event):
                     yield ievent
