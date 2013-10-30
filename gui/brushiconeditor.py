@@ -21,7 +21,7 @@ import tileddrawwidget
 import windowing
 import lib.document
 from document import CanvasController
-from canvasevent import FreehandOnlyMode
+from freehand import FreehandOnlyMode
 import brushmanager
 from lib.helpers import escape
 from lib.observable import event

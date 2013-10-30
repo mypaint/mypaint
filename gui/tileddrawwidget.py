@@ -971,7 +971,7 @@ def _make_testbed_model():
 
 def _test():
     from document import CanvasController
-    from canvasevent import FreehandOnlyMode
+    from freehand import FreehandOnlyMode
     model = _make_testbed_model()
     tdw = TiledDrawWidget()
     tdw.set_model(model)
