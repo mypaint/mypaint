@@ -331,7 +331,11 @@ class DrawWindow (gtk.Window):
 
             profile.dump_stats('profile_fromgui.pstats')
             logger.debug('profile written to mypaint_profile.pstats')
-            os.system('gprof2dot.py -f pstats profile_fromgui.pstats | dot -Tpng -o profile_fromgui.png && feh profile_fromgui.png &')
+            if os.path.exists("profile_fromgui.png"):
+                os.unlink("profile_fromgui.png")
+            os.system('gprof2dot.py -f pstats profile_fromgui.pstats | dot -Tpng -o profile_fromgui.png')
+            if os.path.exists("profile_fromgui.png"):
+                os.system('xdg-open profile_fromgui.png &')
 
         gobject.idle_add(doit)
 
