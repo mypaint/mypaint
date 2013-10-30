@@ -439,17 +439,24 @@ class FreehandOnlyMode (InteractionMode):
         if state & gdk.SHIFT_MASK:
             pressure = 0.0
 
-        # If the eventhack filter extracted more than one event, push them onto
-        # the motion event queue. Pressure and tilt are those of the current
-        # event, which is translated for us by GDK.
+        # If the eventhack filter caught more than one event, push them onto
+        # the motion event queue. Pressures and tilts will be interpolated from
+        # surrounding motion-notify events.
         if len(drawstate.evhack_positions) > 1:
+            # Remove the last item: it should be the one corresponding to the
+            # current motion-notify-event.
             hx0, hy0, ht0 = drawstate.evhack_positions.pop(-1)
-            assert hx0 == x
-            assert hy0 == y
-            for hx, hy, ht in drawstate.evhack_positions:
-                hx, hy = tdw.display_to_model(hx, hy)
-                event_data = (ht, hx, hy, None, None, None)
-                drawstate.queue_motion(event_data)
+            # Check that we can use the eventhack data uncorrected
+            if (hx0, hy0, ht0) == (x, y, time):
+                for hx, hy, ht in drawstate.evhack_positions:
+                    hx, hy = tdw.display_to_model(hx, hy)
+                    event_data = (ht, hx, hy, None, None, None)
+                    drawstate.queue_motion(event_data)
+            else:
+                logger.warning("Final evhack event (%0.2f, %0.2f, %d) doesn't "
+                  "match its corresponding motion-notify-event (%0.2f, %0.2f, "
+                  "%d). This can be ignored if it's just a one-off.",
+                  hx0, hy0, ht0, x, y, time )
         # Reset the eventhack queue
         if len(drawstate.evhack_positions) > 0:
             drawstate.evhack_positions = []
