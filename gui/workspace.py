@@ -220,8 +220,8 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         self._fs_event_handlers = []
         # Initial layout happens in several phases
         self._initial_layout = None
-        self._complete_initial_layout_cb_id = None
         self.connect("realize", self._realize_cb)
+        self.connect("map", self._map_cb)
         # Tool widget cache and factory
         self._tool_widgets = objfactory.ObjFactory(gtype=Gtk.Widget)
         self._tool_widgets.object_rebadged += self._tool_widget_rebadged
@@ -272,8 +272,10 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         if toplevel_pos:
             set_initial_window_position(toplevel_win, toplevel_pos)
         if layout.get("fullscreen", False):
+            toplevel_win.fullscreen()
             GObject.idle_add(lambda *a: toplevel_win.fullscreen())
-        if layout.get("maximized", False):
+        elif layout.get("maximized", False):
+            toplevel_win.maximize()
             GObject.idle_add(lambda *a: toplevel_win.maximize())
         toplevel_win.connect("window-state-event",
                              self._toplevel_window_state_event_cb)
@@ -303,11 +305,6 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
 
     def _realize_cb(self, widget):
         """Kick off the deferred layout code when the widget is realized"""
-        self._start_initial_layout()
-
-
-    def _start_initial_layout(self):
-        """Layout: all that can be done before the toplevel is positioned"""
 
         # Set up monitoring of the toplevel's size changes.
         toplevel = self.get_toplevel()
@@ -317,12 +314,6 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         layout = self._initial_layout
         if layout is None:
             return
-        if layout.get("fullscreen", False):
-            complete_state = Gdk.WindowState.FULLSCREEN
-        elif layout.get("mazimize", False):
-            complete_state = Gdk.WindowState.MAXIMIZE
-        else:
-            complete_state = None
         llayout = layout.get("left_sidebar", {})
         rlayout = layout.get("right_sidebar", {})
         self._lstack.build_from_layout(llayout)
@@ -338,63 +329,16 @@ class Workspace (Gtk.VBox, Gtk.Buildable):
         # have had a chance to run.
         for win in self._floating:
             GObject.idle_add(win.show_all)
-        # Arrange for part 2 to be run
-        toplevel = self.get_toplevel()
-        if not complete_state:
-            # Nothing too fancy; we're hopefully going to be mapped with
-            # the right initial size for the sidebars etc.
-            assert not self.get_mapped()
-            cb = self._complete_initial_layout_map_cb
-            cb_id = self.connect("map", cb)
-        else:
-            # If we're about to fullscreen or maximize, wait for that state.
-            # Otherwise the paned positions won't be right for the window.
-            cb = self._complete_layout_toplevel_window_state_cb
-            cb_id = toplevel.connect("window-state-event", cb, complete_state)
-            # But time out just case the state is never reached. Window
-            # managers can be fickle.
-            timeout = self._complete_layout_toplevel_window_state_timeout_cb
-            GObject.timeout_add_seconds(3, timeout)
-        self._complete_initial_layout_cb_id = cb_id
-        # Give the toolstacks a chance to do something here too.
-        for stack in self._get_tool_stacks():
-            stack._start_initial_layout()
 
 
-    def _complete_initial_layout_map_cb(self, widget):
+    def _map_cb(self, widget):
+        assert self.get_realized()
         logger.debug("Completing layout (mapped)")
         GObject.idle_add(self._complete_initial_layout)
-        widget.disconnect(self._complete_initial_layout_cb_id)
-        self._complete_initial_layout_cb_id = None
-
-
-    def _complete_layout_toplevel_window_state_cb(self, toplevel, event,
-                                                  expected_state):
-        # Wait for the window to transition to the right initial state
-        if event.changed_mask & expected_state:
-            if event.new_window_state & expected_state:
-                logger.debug("Completing layout (toplevel state-transition)")
-                GObject.idle_add(self._complete_initial_layout)
-                toplevel.disconnect(self._complete_initial_layout_cb_id)
-                self._complete_initial_layout_cb_id = None
-
-
-    def _complete_layout_toplevel_window_state_timeout_cb(self):
-        # Too long waiting for the expected state transition...
-        if self._complete_initial_layout_cb_id is None:
-            return False
-        toplevel = self.get_toplevel()
-        toplevel.disconnect(self._complete_initial_layout_cb_id)
-        self._complete_initial_layout_cb_id = None
-        logger.debug("Completing layout (expected toplevel state-transition "
-                     "didn't happen within the timeout)")
-        GObject.idle_add(self._complete_initial_layout)
-        return False
 
 
     def _complete_initial_layout(self):
         """Finish initial layout; called after toplevel win is positioned"""
-        assert self.get_realized()
         # Restore saved widths for the sidebar
         layout = self._initial_layout
         if layout is not None:
@@ -1559,12 +1503,7 @@ class ToolStack (Gtk.EventBox):
         return stack_desc
 
 
-    ## Initial layout (pre/post-realize)
-
-
-    def _start_initial_layout(self):
-        """Layout: all that can be done before the toplevel is positioned"""
-        pass
+    ## Initial layout (post-realize)
 
 
     def _complete_initial_layout(self):
@@ -2288,9 +2227,9 @@ def _test():
         logger.debug("FLOATING-WINDOW-CREATED %r", a)
     workspace = Workspace()
     workspace.floating_window_title_suffix = u" - Test"
-    canvas = Gtk.Label("<Placeholder>")
+    button = Gtk.Button("Click to close this demo")
     frame = Gtk.Frame()
-    frame.add(canvas)
+    frame.add(button)
     frame.set_shadow_type(Gtk.ShadowType.IN)
     workspace.set_canvas(frame)
     window = Gtk.Window()
@@ -2316,6 +2255,7 @@ def _test():
             'groups': [{'tools': [('TestLabel', "4"), ('TestLabel', "5")]}],
         },
         'maximized': False,
+        'fullscreen': True,
     })
     window.show_all()
     def _quit_cb(*a):
@@ -2323,6 +2263,7 @@ def _test():
         print workspace.get_layout()
         Gtk.main_quit()
     window.connect("destroy", _quit_cb)
+    button.connect("clicked", _quit_cb)
     Gtk.main()
 
 
