@@ -177,7 +177,7 @@ class LineModeOptionsWidget (canvasevent.PaintingModeOptionsWidgetBase):
 
     def reset_button_clicked_cb(self, button):
         super(LineModeOptionsWidget, self).reset_button_clicked_cb(button)
-        self.curve._update(from_defaults=True)
+        self._curve._update(from_defaults=True)
 
 
 ## Interaction modes for making lines
