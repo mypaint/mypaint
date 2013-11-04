@@ -96,7 +96,7 @@ class ColorPickerButton (gtk.EventBox, ColorAdjuster):
         gtk.EventBox.__init__(self)
         self.connect("button-release-event", self.__button_release_cb)
         self.connect("motion-notify-event", self.__motion_cb)
-        button = borderless_button(stock_id=gtk.STOCK_COLOR_PICKER,
+        button = borderless_button(icon_name="mypaint-pick-color-symbolic",
                                    tooltip=_("Pick a color from the screen"))
         button.connect("clicked", self.__clicked_cb)
         self.add(button)

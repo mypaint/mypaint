@@ -92,7 +92,7 @@
                   <object class="GtkImage" id="image1">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="icon_name">bookmark-new</property>
+                    <property name="icon_name">mypaint-bookmark-new-symbolic</property>
                   </object>
                 </child>
               </object>
@@ -158,7 +158,7 @@ R: {rotation:+.1f}°</property>
                   <object class="GtkImage" id="mode_options_icon_image">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="icon_name">mypaint-brush-mods-active</property>
+                    <property name="icon_name">mypaint-options-symbolic</property>
                   </object>
                 </child>
               </object>
