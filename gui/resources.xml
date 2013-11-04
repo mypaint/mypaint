@@ -233,14 +233,16 @@ Perhaps an increasing amount.
       <!-- Undo stack -->
       <child>
         <object class="GtkAction" id="Undo">
-          <property name="stock_id">gtk-undo</property>
+          <property name="icon_name">mypaint-undo-ltr-symbolic</property>
+          <!-- Code in document.py takes care of ltr/rtl details -->
           <signal name="activate" handler="undo_cb"/>
         </object>
         <accelerator key="z"/>
       </child>
       <child>
         <object class="GtkAction" id="Redo">
-          <property name="stock_id">gtk-redo</property>
+          <property name="icon_name">mypaint-redo-ltr-symbolic</property>
+          <!-- Code in document.py takes care of ltr/rtl details -->
           <signal name="activate" handler="redo_cb"/>
         </object>
         <accelerator key="y"/>

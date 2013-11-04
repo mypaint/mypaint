@@ -1046,11 +1046,30 @@ class Document (CanvasController):
     # MODEL STATE REFLECTION
 
     def update_command_stack_toolitems(self, stack):
-        # Undo and Redo are shown and hidden, and have their labels updated
-        # in response to user commands.
+        """Update the undo and redo actions"""
+        draw_window = self.app.drawWindow
         ag = self.action_group
+
+        # Icon names
+        style_state = draw_window.get_style_context().get_state()
+        try: # GTK 3.8+
+            if style_state & gtk.StateFlags.DIR_LTR:
+                direction = 'ltr'
+            else:
+                direction = 'rtl'
+        except AttributeError:
+            # Deprecated in 3.8
+            if draw_window.get_direction() == gtk.TextDirection.LTR:
+                direction = 'ltr'
+            else:
+                direction = 'rtl'
+        undo_icon_name = "mypaint-undo-%s-symbolic" % (direction,)
+        redo_icon_name = "mypaint-redo-%s-symbolic" % (direction,)
+
+        # Undo
         undo_action = ag.get_action("Undo")
         undo_action.set_sensitive(len(stack.undo_stack) > 0)
+        undo_action.set_icon_name(undo_icon_name)
         if len(stack.undo_stack) > 0:
             cmd = stack.undo_stack[-1]
             desc = _("Undo %s") % cmd.display_name
@@ -1058,8 +1077,11 @@ class Document (CanvasController):
             desc = _("Undo")  # Used when initializing the prefs dialog
         undo_action.set_label(desc)
         undo_action.set_tooltip(desc)
+
+        # Redo
         redo_action = ag.get_action("Redo")
         redo_action.set_sensitive(len(stack.redo_stack) > 0)
+        redo_action.set_icon_name(redo_icon_name)
         if len(stack.redo_stack) > 0:
             cmd = stack.redo_stack[-1]
             desc = _("Redo %s") % cmd.display_name
