@@ -33,16 +33,7 @@ Perhaps an increasing amount.
     <source stock-id="mypaint-brush-mods-inactive"
            icon-name="mypaint-brush-mods-inactive"/>
     <!-- Editing modes -->
-    <source stock-id="mypaint-symmetry-mode" icon-name="mypaint-symmetry"/>
     <source stock-id="mypaint-line-mode" icon-name="mypaint-line-mode"/>
-    <source stock-id="mypaint-line-mode-freehand"
-           icon-name="mypaint-line-mode-freehand"/>
-    <source stock-id="mypaint-line-mode-straight"
-           icon-name="mypaint-line-mode-straight"/>
-    <source stock-id="mypaint-line-mode-sequence"
-           icon-name="mypaint-line-mode-sequence"/>
-    <source stock-id="mypaint-line-mode-ellipse"
-           icon-name="mypaint-line-mode-ellipse"/>
   </sources>
 </object><!-- /stock_iconfactory -->
 
@@ -213,7 +204,7 @@ Perhaps an increasing amount.
             >Brush Groups</property>
           <property name="short-label" translatable="yes"
             context="Toolbar|">Brushes</property>
-          <property name="icon-name">mypaint-tool-brush</property>
+          <property name="icon-name">mypaint-brush-symbolic</property>
         </object>
       </child>
 
@@ -226,7 +217,7 @@ Perhaps an increasing amount.
             >Color Adjusters</property>
           <property name="short-label" translatable="yes"
             context="Toolbar|">Colors</property>
-          <property name="icon-name">mypaint-tool-paint-color</property>
+          <property name="icon-name">mypaint-colors-symbolic</property>
         </object>
       </child>
 
@@ -719,7 +710,7 @@ Perhaps an increasing amount.
       <!-- Other editing modes -->
       <child>
         <object class="GtkToggleAction" id="Symmetry">
-          <property name="stock_id">mypaint-symmetry-mode</property>
+          <property name="icon-name">mypaint-symmetry-symbolic</property>
           <property name="label" translatable="yes"
             context="Menu|Edit|">Symmetrical Painting</property>
           <property name="tooltip" translatable="yes"
@@ -835,7 +826,7 @@ Perhaps an increasing amount.
         <object class="GtkToggleAction" id="FrameToggle">
           <property name="label" translatable="yes"
             context="Menu|File|">Frame Enabled</property>
-          <property name="icon-name">mypaint-frame</property>
+          <property name="icon-name">mypaint-frame-symbolic</property>
           <signal name="activate" handler="toggle_frame_cb"/>
         </object>
       </child>
@@ -1192,7 +1183,7 @@ Perhaps an increasing amount.
       </child>
       <child>
         <object class="GtkToggleAction" id="LayersTool">
-          <property name="icon-name">mypaint-tool-layers</property>
+          <property name="icon-name">mypaint-layers-symbolic</property>
           <property name="label" translatable="yes">Layers Window</property>
           <property name="tooltip"
             translatable="yes">Arrange layers, or assign layer effects</property>
@@ -1388,7 +1379,7 @@ The circular slices are equiluminant.</property>
             context="Menu|Edit|Current Mode|">Freehand Drawing</property>
           <property name="short-label" translatable="yes"
             context="Toolbar|">Freehand</property>
-          <property name="icon-name">mypaint-line-mode-freehand</property>
+          <property name="icon-name">mypaint-freehand-symbolic</property>
           <property name="tooltip" translatable="yes"
             >Draw and paint freely, without geometric constraints</property>
           <property name="value">1</property>
@@ -1400,7 +1391,7 @@ The circular slices are equiluminant.</property>
         <object class="GtkAction" id="FlipSwitchableFreehandMode">
           <property name="label" translatable="yes"
             context="Menu|Edit|">Freehand Drawing</property>
-          <property name="icon-name">mypaint-line-mode-freehand</property>
+          <property name="icon-name">mypaint-freehand-symbolic</property>
           <signal name="activate" handler="mode_flip_action_activated_cb"/>
         </object>
         <accelerator key="p"/><!-- "pencil", or "paint" -->
@@ -1474,7 +1465,7 @@ The circular slices are equiluminant.</property>
             context="Menu|Edit|Current Mode|">Lines and Curves</property>
           <property name="short-label" translatable="yes"
             context="Toolbar|">Lines</property>
-          <property name="icon-name">mypaint-line-mode-straight</property>
+          <property name="icon-name">mypaint-lines-and-curves-symbolic</property>
           <property name="tooltip" translatable="yes"
               >Draw straight or curved lines</property>
           <property name="group">ZoomViewMode</property>
@@ -1485,7 +1476,7 @@ The circular slices are equiluminant.</property>
         <object class="GtkAction" id="FlipStraightMode">
           <property name="label" translatable="yes"
             context="Menu|Edit|">Lines and Curves</property>
-          <property name="icon-name">mypaint-line-mode-straight</property>
+          <property name="icon-name">mypaint-lines-and-curves-symbolic</property>
           <signal name="activate" handler="mode_flip_action_activated_cb"/>
         </object>
         <accelerator key="k"/> <!-- Lines and, um, Kurves. -->
@@ -1496,7 +1487,7 @@ The circular slices are equiluminant.</property>
             context="Menu|Edit|Current Mode|">Connected Lines</property>
           <property name="short-label" translatable="yes"
             context="Toolbar|">Line Seq.</property>
-          <property name="icon-name">mypaint-line-mode-sequence</property>
+          <property name="icon-name">mypaint-line-sequence-symbolic</property>
           <property name="tooltip" translatable="yes"
             >Draw sequences of straight or curved lines</property>
           <property name="group">StraightMode</property>
@@ -1507,7 +1498,7 @@ The circular slices are equiluminant.</property>
         <object class="GtkAction" id="FlipSequenceMode">
           <property name="label" translatable="yes"
             context="Menu|Edit|">Connected Lines</property>
-          <property name="icon-name">mypaint-line-mode-sequence</property>
+          <property name="icon-name">mypaint-line-sequence-symbolic</property>
           <signal name="activate" handler="mode_flip_action_activated_cb"/>
         </object>
         <accelerator key="j"/> <!-- next to k, on my keyboard -->
@@ -1518,7 +1509,7 @@ The circular slices are equiluminant.</property>
             context="Menu|Edit|Current Mode|">Ellipses and Circles</property>
           <property name="short-label" translatable="yes"
             context="Toolbar|">Ellipse</property>
-          <property name="icon-name">mypaint-line-mode-ellipse</property>
+          <property name="icon-name">mypaint-ellipse-symbolic</property>
           <property name="tooltip" translatable="yes"
             >Draw whole circles and ellipses</property>
           <property name="group">SequenceMode</property>
@@ -1529,7 +1520,7 @@ The circular slices are equiluminant.</property>
         <object class="GtkAction" id="FlipEllipseMode">
           <property name="label" translatable="yes"
             context="Menu|Edit|">Ellipses and Circles</property>
-          <property name="icon-name">mypaint-line-mode-ellipse</property>
+          <property name="icon-name">mypaint-ellipse-symbolic</property>
           <signal name="activate" handler="mode_flip_action_activated_cb"/>
         </object>
         <accelerator key="o"/> <!-- *looks* like a circle -->
@@ -1538,7 +1529,7 @@ The circular slices are equiluminant.</property>
         <object class="GtkRadioAction" id="LayerMoveMode">
           <property name="label" translatable="yes"
             context="Menu|Edit|Current Mode|">Move Layer</property>
-          <property name="icon-name">mypaint-tool-move-layer</property>
+          <property name="icon-name">mypaint-move-symbolic</property>
           <property name="tooltip" translatable="yes"
             >Reposition the current layer on the canvas</property>
           <property name="group">EllipseMode</property>
@@ -1559,7 +1550,7 @@ The circular slices are equiluminant.</property>
             context="Menu|Edit|Current Mode|">Edit Frame</property>
           <property name="short-label" translatable="yes"
             context="Toolbar|">Frame</property>
-          <property name="icon-name">mypaint-frame</property>
+          <property name="icon-name">mypaint-frame-symbolic</property>
           <property name="tooltip" translatable="yes"
             >Define a frame around the document to give it a finite size</property>
           <property name="group">LayerMoveMode</property>
@@ -1579,7 +1570,7 @@ The circular slices are equiluminant.</property>
         <object class="GtkRadioAction" id="ColorPickMode">
           <property name="label" translatable="yes"
             context="Menu|Edit|Current Mode|">Pick Color</property>
-          <property name="icon-name">gtk-color-picker</property>
+          <property name="icon-name">mypaint-pick-color-symbolic</property>
           <property name="tooltip" translatable="yes"
             >Set the color from the screen</property>
           <property name="group">FrameEditMode</property>
@@ -1590,7 +1581,7 @@ The circular slices are equiluminant.</property>
         <object class="GtkAction" id="FlipColorPickMode">
           <property name="label" translatable="yes"
             context="Menu|Color|">Pick Color</property>
-          <property name="icon-name">gtk-color-picker</property>
+          <property name="icon-name">mypaint-pick-color-symbolic</property>
           <signal name="activate" handler="mode_flip_action_activated_cb"/>
         </object>
         <accelerator key="r"/>
@@ -1600,7 +1591,7 @@ The circular slices are equiluminant.</property>
         <object class="GtkRadioAction" id="FloodFillMode">
           <property name="label" translatable="yes"
             context="Menu|Edit|Current Mode|">Flood Fill</property>
-          <property name="icon-name">mypaint-tool-flood-fill</property>
+          <property name="icon-name">mypaint-fill-symbolic</property>
           <property name="tooltip" translatable="yes"
             >Fill an area with color</property>
           <property name="group">ColorPickMode</property>
@@ -1611,7 +1602,7 @@ The circular slices are equiluminant.</property>
         <object class="GtkAction" id="FlipFloodFillMode">
           <property name="label" translatable="yes"
             context="Menu|Edit|">Flood Fill</property>
-          <property name="icon-name">mypaint-tool-flood-fill</property>
+          <property name="icon-name">mypaint-fill-symbolic</property>
           <signal name="activate" handler="mode_flip_action_activated_cb"/>
         </object>
       </child>
