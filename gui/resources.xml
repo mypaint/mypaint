@@ -1161,7 +1161,7 @@ Perhaps an increasing amount.
       </child>
       <child>
         <object class="GtkAction" id="Fullscreen">
-          <property name="stock_id">gtk-fullscreen</property>
+          <property name="icon-name">mypaint-fullscreen</property>
           <signal name="activate" handler="fullscreen_cb"/>
         </object>
         <accelerator key="F11"/>

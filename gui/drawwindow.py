@@ -527,11 +527,11 @@ class DrawWindow (gtk.Window):
     def update_fullscreen_action(self):
         action = self.action_group.get_action("Fullscreen")
         if self.is_fullscreen:
-            action.set_stock_id(gtk.STOCK_LEAVE_FULLSCREEN)
+            action.set_icon_name("mypaint-unfullscreen-symbolic")
             action.set_tooltip(_("Leave Fullscreen Mode"))
             action.set_label(_("Leave Fullscreen"))
         else:
-            action.set_stock_id(gtk.STOCK_FULLSCREEN)
+            action.set_icon_name("mypaint-fullscreen-symbolic")
             action.set_tooltip(_("Enter Fullscreen Mode"))
             action.set_label(_("Fullscreen"))
 
