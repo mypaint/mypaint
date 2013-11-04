@@ -9,6 +9,7 @@
 
 ## Imports
 
+import math
 from numpy import array
 from numpy import isfinite
 from lib.helpers import clamp
