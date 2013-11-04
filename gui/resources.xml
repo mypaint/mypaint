@@ -18,11 +18,11 @@ Perhaps an increasing amount.
            icon-name="mypaint-view-mirror-vertical"/>
     <!-- Blend modes -->
     <source stock-id="mypaint-brush-blend-modes"
-           icon-name="mypaint-brush-blend-modes"/>
+           icon-name="mypaint-brush-symbolic"/>
     <source stock-id="mypaint-brush-blend-mode-normal"
-           icon-name="mypaint-brush-blend-mode-normal"/>
+           icon-name="mypaint-normal-paint-symbolic"/>
     <source stock-id="mypaint-brush-blend-mode-eraser"
-           icon-name="mypaint-brush-blend-mode-eraser"/>
+           icon-name="mypaint-eraser-symbolic"/>
     <source stock-id="mypaint-brush-blend-mode-alpha-lock"
            icon-name="mypaint-brush-blend-mode-alpha-lock"/>
     <source stock-id="mypaint-brush-blend-mode-colorize"
@@ -714,14 +714,7 @@ Perhaps an increasing amount.
         </object>
         <accelerator key="End"/>
       </child>
-      <!-- Editing modes -->
-      <child>
-        <object class="GtkAction" id="BlendMode">
-          <property name="stock_id">mypaint-brush-blend-modes</property>
-          <property name="label" translatable="yes"
-            context="Menu|Brush|">Blend Mode</property>
-        </object>
-      </child>
+      <!-- Other editing modes -->
       <child>
         <object class="GtkToggleAction" id="Symmetry">
           <property name="stock_id">mypaint-symmetry-mode</property>
@@ -758,6 +751,64 @@ Perhaps an increasing amount.
         </object>
       </child>
     </object><!-- /DocumentActions -->
+  </child>
+  <child>
+    <object class="GtkActionGroup" id="BrushModifierActions">
+      <!-- Brush blend modes: defined in gui/brushmodifier.py -->
+      <child>
+        <object class="GtkAction" id="BlendMode"><!-- Menu -->
+          <property name="icon_name">mypaint-brush-blend-modes</property>
+          <property name="label" translatable="yes"
+            context="Menu|Brush|">Blend Mode</property>
+        </object>
+      </child>
+      <child>
+        <object class="GtkToggleAction" id="BlendModeNormal">
+          <property name="icon_name">mypaint-normal-paint-symbolic</property>
+          <property name="label" translatable="yes"
+            context="Menu|Brush|Blend Mode|">Normal</property>
+          <property name="tooltip" translatable="yes"
+            >Ordinary painting, no special blend mode</property>
+          <signal name="activate" handler="blend_mode_normal_cb"/>
+        </object>
+        <accelerator key="n"/>
+      </child>
+      <child>
+        <object class="GtkToggleAction" id="BlendModeEraser">
+          <property name="icon_name">mypaint-eraser-symbolic</property>
+          <property name="label" translatable="yes"
+            context="Menu|Brush|Blend Mode|">Eraser</property>
+          <property name="tooltip" translatable="yes"
+            >Erase using the current brush</property>
+          <signal name="activate" handler="blend_mode_eraser_cb"/>
+        </object>
+        <accelerator key="e"/>
+      </child>
+      <child>
+        <object class="GtkToggleAction" id="BlendModeLockAlpha">
+          <property name="icon_name"
+            >mypaint-lock-alpha-symbolic</property>
+          <property name="label" translatable="yes"
+            context="Menu|Brush|Blend Mode|">Lock Alpha Channel</property>
+          <property name="tooltip" translatable="yes"
+            >Alter RGB colors iwithout affecting Alpha</property>
+          <signal name="activate" handler="blend_mode_lock_alpha_cb"/>
+        </object>
+        <accelerator key="l" modifiers="GDK_SHIFT_MASK"/>
+      </child>
+      <child>
+        <object class="GtkToggleAction" id="BlendModeColorize">
+          <property name="icon_name"
+            >mypaint-colorize-symbolic</property>
+          <property name="label" translatable="yes"
+            context="Menu|Brush|Blend Mode|">Colorize</property>
+          <property name="tooltip" translatable="yes"
+            >Alter HCY Hue and Chroma without affecting Luma or Alpha</property>
+          <signal name="activate" handler="blend_mode_colorize_cb"/>
+        </object>
+        <accelerator key="k" modifiers="GDK_SHIFT_MASK"/>
+      </child>
+    </object><!-- /BrushModifierActions -->
   </child>
   <child>
     <object class="GtkActionGroup" id="WindowActions">

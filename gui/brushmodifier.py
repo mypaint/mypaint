@@ -12,7 +12,7 @@ import gtk
 from gettext import gettext as _
 from lib.helpers import rgb_to_hsv, hsv_to_rgb
 
-class BrushModifier:
+class BrushModifier (object):
     """Applies changed brush settings to the active brush, with overrides.
 
     A single instance of this lives within the main `application.Application`
@@ -30,6 +30,7 @@ class BrushModifier:
 
 
     def __init__(self, app):
+        object.__init__(self)
         self.app = app
         app.brushmanager.brush_selected += self.brush_selected_cb
         app.brush.observers.append(self.brush_modified_cb)
@@ -42,36 +43,14 @@ class BrushModifier:
 
 
     def _init_actions(self):
-        self.action_group = gtk.ActionGroup('BrushModifierActions')
+        self.action_group = self.app.builder.get_object("BrushModifierActions")
         ag = self.action_group
-        self.app.add_action_group(ag)
-        toggle_actions = [
-            # name, stock id, label,
-            #   accel, tooltip,
-            #   callback, default state
-            ('BlendModeNormal', 'mypaint-brush-blend-mode-normal',
-                _("Normal"), 'n',
-                _("Paint normally"),
-                self.blend_mode_normal_cb, True),
-            ('BlendModeEraser', 'mypaint-brush-blend-mode-eraser',
-                _("Eraser"), 'e',
-                _("Eraser Mode: remove strokes using the current brush"),
-                self.blend_mode_eraser_cb),
-            ('BlendModeLockAlpha', 'mypaint-brush-blend-mode-alpha-lock',
-                _("Lock Alpha Channel"), '<shift>l',
-                _("Lock Alpha: paint over existing strokes only, using the current brush"),
-                self.blend_mode_lock_alpha_cb),
-            ('BlendModeColorize', 'mypaint-brush-blend-mode-colorize',
-                _("Colorize"), '<shift>k',
-                _("Colorize: alter Hue and Saturation with the current brush"),
-                self.blend_mode_colorize_cb),
-            ]
-            # FIXME: move these to mypaint.xml and give them short names
-        ag.add_toggle_actions(toggle_actions)
-        self.eraser_mode = ag.get_action("BlendModeEraser")
-        self.lock_alpha_mode = ag.get_action("BlendModeLockAlpha")
-        self.normal_mode = ag.get_action("BlendModeNormal")
-        self.colorize_mode = ag.get_action("BlendModeColorize")
+
+        # ToggleActions defined in resources.xml
+        self.eraser_mode = self.app.find_action("BlendModeEraser")
+        self.lock_alpha_mode = self.app.find_action("BlendModeLockAlpha")
+        self.normal_mode = self.app.find_action("BlendModeNormal")
+        self.colorize_mode = self.app.find_action("BlendModeColorize")
 
         # Each mode ToggleAction has a corresponding setting
         self.eraser_mode.setting_name = "eraser"
@@ -79,7 +58,11 @@ class BrushModifier:
         self.colorize_mode.setting_name = "colorize"
         self.normal_mode.setting_name = None
 
-        for action in self.action_group.list_actions():
+        # The set of toggle actions our fakery swicthes between
+        self._toggle_actions = (self.eraser_mode, self.lock_alpha_mode,
+                                self.colorize_mode, self.normal_mode)
+
+        for action in self._toggle_actions:
             action.set_draw_as_radio(True)
             self.app.kbm.takeover_action(action)
 
@@ -95,7 +78,7 @@ class BrushModifier:
 
 
     def _pop_hist(self, justleft):
-        for mode in self.action_group.list_actions():
+        for mode in self._toggle_actions:
             if mode.get_active():
                 return
         while len(self._hist) > 0:
@@ -133,7 +116,7 @@ class BrushModifier:
 
 
     def _cancel_other_modes(self, action):
-        for other_action in self.action_group.list_actions():
+        for other_action in self._toggle_actions:
             if action is other_action:
                 continue
             setting_name = other_action.setting_name
@@ -292,7 +275,7 @@ class BrushModifier:
         # First decide which blend mode is active and which aren't.
         active_blend_mode = self.normal_mode
         blend_modes = []
-        for mode_action in self.action_group.list_actions():
+        for mode_action in self._toggle_actions:
             setting_name = mode_action.setting_name
             if setting_name is not None:
                 if b.has_large_base_value(setting_name):

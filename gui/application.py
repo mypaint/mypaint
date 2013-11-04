@@ -224,6 +224,7 @@ class Application (object):
                 self)
         signal_callback_objs.append(self.filehandler)
         self.brushmodifier = brushmodifier.BrushModifier(self)
+        signal_callback_objs.append(self.brushmodifier)
         self.line_mode_settings = linemode.LineModeSettings(self)
 
         # Button press mapping
