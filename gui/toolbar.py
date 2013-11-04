@@ -54,15 +54,18 @@ MERGEABLE_XML = [
 
 
 
+ICON_SIZE_LARGE = gtk.icon_size_register("MYPAINT_TOOLBAR_ICON_SIZE_LARGE",
+                                         24, 24)
+ICON_SIZE_SMALL = gtk.icon_size_register("MYPAINT_TOOLBAR_ICON_SIZE_SMALL",
+                                         16, 16)
+
+
 class ToolbarManager (object):
     """Manager for toolbars, currently just the main one.
 
     The main toolbar, /toolbar1, contains a menu button and quick
     access to the painting tools.
     """
-
-    # icon_size = gtk.icon_size_register("MYPAINT_TOOLBAR_ICON_SIZE", 32, 32)
-    icon_size = gtk.ICON_SIZE_LARGE_TOOLBAR
 
     def __init__(self, draw_window):
         super(ToolbarManager, self).__init__()
@@ -74,7 +77,7 @@ class ToolbarManager (object):
         self.app.ui_manager.add_ui_from_file(toolbarpath)
         self.toolbar1 = self.app.ui_manager.get_widget('/toolbar1')
         self.toolbar1.set_style(gtk.TOOLBAR_ICONS)
-        self.toolbar1.set_icon_size(self.icon_size)
+        self.toolbar1.set_icon_size(_get_icon_size())
         self.toolbar1.set_border_width(0)
         self.toolbar1.connect("popup-context-menu",
             self.on_toolbar1_popup_context_menu)
@@ -137,6 +140,14 @@ class ToolbarManager (object):
             self.toolbar1_ui_loaded.pop(name)
 
 
+def _get_icon_size():
+    from application import get_app
+    app = get_app()
+    size = str(app.preferences.get("ui.toolbar_icon_size", "large")).lower()
+    if size == 'small':
+        return ICON_SIZE_SMALL
+    else:
+        return ICON_SIZE_LARGE
 
 class LineDropdownToolItem (gtk.ToolItem):
     """Dropdown panel on the toolbar for changing line mode.
@@ -236,7 +247,7 @@ class ColorDropdownToolItem (gtk.ToolItem):
         gtk.ToolItem.__init__(self)
         preview = ColorPreview()
         self.dropdown_button = dropdownpanel.DropdownPanelButton(preview)
-        self.preview_size = ToolbarManager.icon_size
+        self.preview_size = _get_icon_size()
         self.connect("toolbar-reconfigured", self._toolbar_reconf_cb)
         self.connect("create-menu-proxy", lambda *a: True)
         self.set_tooltip_text(_("Color History and other tools"))
@@ -350,7 +361,7 @@ class BrushDropdownToolItem (gtk.ToolItem):
         self.main_image = ManagedBrushPreview()
         self.dropdown_button = dropdownpanel.DropdownPanelButton(self.main_image)
         self.app = None
-        self.image_size = ToolbarManager.icon_size
+        self.image_size = _get_icon_size()
         self.connect("toolbar-reconfigured", self._toolbar_reconf_cb)
         self.connect("create-menu-proxy", lambda *a: True)
         self.set_tooltip_text(_("Brush history etc."))
@@ -434,8 +445,8 @@ class BrushSettingsDropdownToolItem (gtk.ToolItem):
         gtk.ToolItem.__init__(self)
         self.set_homogeneous(False)
         self.button_image = gtk.Image()
-        self.button_image.set_from_stock(self.inactive_stock_id,
-                                         ToolbarManager.icon_size)
+        self.button_image.set_from_icon_name(self.inactive_icon_name,
+                                             _get_icon_size())
         self.button_shows_modified = False
         self.button = dropdownpanel.DropdownPanelButton(self.button_image)
         self.vbox = gtk.VBox()
