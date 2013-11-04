@@ -47,10 +47,6 @@ class GtkCompat(object):
     def recent_manager_get_default():
         return Gtk.RecentManager.get_default()
 
-    @staticmethod
-    def settings_get_default():
-        return Gtk.Settings.get_default()
-
     def accel_map_load(self, file):
         return Gtk.AccelMap.load(file)
 

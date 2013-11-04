@@ -140,8 +140,11 @@ def main(datapath, extradata, oldstyle_confpath=None, version=MYPAINT_VERSION):
         # assigning a keyboard shortcut without a complicated dialog
         # clicking marathon must have totally upset the people coming from
         # windows.</rant>
-        gtksettings = gtk2compat.gtk.settings_get_default()
-        gtksettings.set_property('gtk-can-change-accels', True)
+        settings = gtk.Settings.get_default()
+        settings.set_property('gtk-can-change-accels', True)
+
+        dark = app.preferences.get("ui.dark_theme_variant", True)
+        settings.set_property("gtk-application-prefer-dark-theme", dark)
 
         import gtkexcepthook
         func = app.filehandler.confirm_destructive_action
