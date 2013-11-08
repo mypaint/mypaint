@@ -22,6 +22,7 @@ the Free Software Foundation; either version 2 of the License, or
         </menu>
       </toolitem>
       <toolitem action="BrushGroups"/><!-- installs its own menu -->
+      <toolitem action="ModeOptionsTool"/>
       <toolitem action="LayersTool"/>
       <toolitem action="ScratchpadTool"/>
       <toolitem action="PreviewTool"/>

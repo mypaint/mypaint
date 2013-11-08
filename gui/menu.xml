@@ -108,6 +108,7 @@
       <separator/>
       <menuitem action='BrushEditorWindow'/>
       <menuitem action='BrushIconEditorWindow'/>
+      <menuitem action='BrushReload'/>
       <separator/>
       <menu action='BlendMode'>
         <menuitem action='BlendModeNormal'/>

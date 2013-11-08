@@ -583,6 +583,7 @@ class SwitchableFreehandModeOptionsWidget (PaintingModeOptionsWidgetBase):
     def init_specialized_widgets(self, row):
         cname = "slow_tracking"
         label = gtk.Label()
+        #TRANSLATORS: "Slow position tracking" for the options panel. Short.
         label.set_text(_("Smooth:"))
         label.set_alignment(1.0, 0.5)
         label.set_hexpand(False)

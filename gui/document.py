@@ -263,6 +263,9 @@ class Document (CanvasController):
         do_notify = lambda *a: self.notify_view_changed()
         self.tdw.connect_after("size-allocate", do_notify)
 
+        # Brush settings observers
+        self.app.brush.observers.append(self._brush_settings_changed_cb)
+
 
     def init_actions(self):
         # Actions are defined in mypaint.xml, just grab a ref to the groups
@@ -625,6 +628,51 @@ class Document (CanvasController):
         # stop a little higher than 0.0, to avoid resetting hue to 0
         if s < 0.005: s = 0.005
         self.app.brush.set_color_hsv((h, s, v))
+
+
+    def brush_reload_settings(self, cnames=None):
+        """Reset some or all brush settings to their saved values
+
+        :param cname: Setting names to reset; default is all settings
+        :type cname: Iterable of setting cnames.
+        """
+        app = self.app
+        bm = app.brushmanager
+        parent_brush = bm.get_parent_brush(brushinfo=app.brush)
+        if parent_brush is None:
+            return
+        if cnames is None:
+            bm.select_brush(parent_brush)
+        else:
+            parent_binfo = parent_brush.get_brushinfo()
+            for cname in cnames:
+                parent_value = parent_binfo.get_base_value(cname)
+                adj = app.brush_adjustment[cname]
+                adj.set_value(parent_value)
+        app.brushmodifier.normal_mode.activate()
+
+
+    def brush_reload_cb(self, action):
+        """Reset all brush settings to their saved values (action callback)"""
+        self.brush_reload_settings()
+
+
+    def brush_is_modified(self):
+        current_bi = self.app.brush
+        parent_b = self.app.brushmanager.get_parent_brush(brushinfo=current_bi)
+        if parent_b is None:
+            return True
+        return not parent_b.brushinfo.matches(current_bi)
+
+
+    def _brush_settings_changed_cb(self, *a):
+        reset_action = self.app.find_action("BrushReload")
+        if self.brush_is_modified():
+            if not reset_action.get_sensitive():
+                reset_action.set_sensitive(True)
+        else:
+            if reset_action.get_sensitive():
+                reset_action.set_sensitive(False)
 
 
     def context_cb(self, action):

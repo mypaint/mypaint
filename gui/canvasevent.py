@@ -633,9 +633,14 @@ class PaintingModeOptionsWidgetBase (gtk.Grid):
     """Base class for the options widget of a generic painting mode"""
 
     _COMMON_SETTINGS = [
+        #TRANSLATORS: "Brush radius" for the options panel. Short.
         ('radius_logarithmic', _("Size:")),
+        #TRANSLATORS: "Brush opacity" for the options panel. Short.
         ('opaque', _("Opaque:")),
-        ('hardness', _("Hard:"))
+        #TRANSLATORS: "Brush hardness/sharpness" for the options panel. Short.
+        ('hardness', _("Sharp:")),
+        #TRANSLATORS: "Additional pressure gain" for the options panel. Short.
+        ('pressure_gain_log', _("Gain:")),
     ]
 
     def __init__(self):

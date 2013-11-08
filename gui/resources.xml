@@ -184,12 +184,6 @@ Perhaps an increasing amount.
             >Current brush</property>
         </object>
       </child>
-      <child>
-        <object class="MyPaintFactoryAction" id="BrushSettingsDropdown">
-          <property name="tooltip" translatable="yes" context="toolbar|"
-            >Brush settings</property>
-        </object>
-      </child>
 
       <!-- Brushes and brush groups: defined in gui.brushselectionwindow -->
       <child>
@@ -329,6 +323,17 @@ Perhaps an increasing amount.
           <property name="tooltip" translatable="yes"
             >Decrease color saturation</property>
           <signal name="activate" handler="grayer_cb"/>
+        </object>
+      </child>
+      <!-- Resetting -->
+      <child>
+        <object class="GtkAction" id="BrushReload">
+          <property name="label" translatable="yes"
+            context="Menu|Brush|">Reload Brush Settings</property>
+          <property name="tooltip" translatable="yes"
+            >Restore all brush settings to the current brush's saved values</property>
+          <signal name="activate" handler="brush_reload_cb"/>
+          <property name="icon-name">mypaint-clear-all-symbolic</property>
         </object>
       </child>
       <!-- Context (saving and restoring bushes and colours) -->
