@@ -362,20 +362,20 @@ class LayersTool (SizedVBoxToolWidget):
                                *data_etc):
         layer = model.get_value(tree_iter, 0)
         if layer.visible:
-            pixbuf = self.app.pixmaps.eye_open
+            icon_name = "mypaint-object-visible-symbolic"
         else:
-            pixbuf = self.app.pixmaps.eye_closed
-        renderer.set_property("pixbuf", pixbuf)
+            icon_name = "mypaint-object-hidden-symbolic"
+        renderer.set_property("icon-name", icon_name)
 
 
     def layer_locked_datafunc(self, column, renderer, model, tree_iter,
                               *data_etc):
         layer = model.get_value(tree_iter, 0)
         if layer.locked:
-            pixbuf = self.app.pixmaps.lock_closed
+            icon_name = "mypaint-object-locked-symbolic"
         else:
-            pixbuf = self.app.pixmaps.lock_open
-        renderer.set_property("pixbuf", pixbuf)
+            icon_name = "mypaint-object-unlocked-symbolic"
+        renderer.set_property("icon-name", icon_name)
 
 
     def on_layer_mode_changed(self, *ignored):
