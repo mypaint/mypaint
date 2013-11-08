@@ -33,7 +33,6 @@ the Free Software Foundation; either version 2 of the License, or
       <toolitem action="BrushSettingsDropdown"/>
     </placeholder>
     <separator/>
-    <toolitem action="BlendModeEraser"/>
     <placeholder name="blendmodes-toolitems"/>
     <placeholder name="linemodes-toolitems"/>
     <toolitem action="ColorPickMode"/>
