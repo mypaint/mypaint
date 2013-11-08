@@ -45,14 +45,14 @@ class TopBar (Gtk.Grid):
 
     __gtype_name__ = 'MyPaintTopBar'
     ICON_NAMES = {
-        "FileMenu": "gtk-file",
-        "EditMenu": "gtk-edit",
-        "ViewMenu": "mypaint-view-zoom",
-        "BrushMenu": "mypaint-tool-brush",
-        "ColorMenu": "mypaint-tool-paint-color",
-        "LayerMenu": "mypaint-tool-layers",
-        "ScratchMenu": "mypaint-tool-scratchpad",
-        "HelpMenu": "gtk-help",
+        "FileMenu": "mypaint-file-symbolic",
+        "EditMenu": "mypaint-edit-symbolic",
+        "ViewMenu": "mypaint-view-symbolic",
+        "BrushMenu": "mypaint-brush-symbolic",
+        "ColorMenu": "mypaint-colors-symbolic",
+        "LayerMenu": "mypaint-layers-symbolic",
+        "ScratchMenu": "mypaint-scratchpad-symbolic",
+        "HelpMenu": "mypaint-help-symbolic",
         }
 
 
