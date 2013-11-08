@@ -59,15 +59,10 @@ class FileHandler(object):
 
         ag = app.builder.get_object('FileActions')
 
-        ra = gtk.RecentAction('OpenRecent', _('Open Recent'), _('Open Recent files'), None)
-        ra.set_show_tips(True)
-        ra.set_show_numbers(True)
         rf = gtk.RecentFilter()
         rf.add_application('mypaint')
+        ra = app.find_action("OpenRecent")
         ra.add_filter(rf)
-        ra.set_sort_type(gtk.RECENT_SORT_MRU)
-        ra.connect('item-activated', self.open_recent_cb)
-        ag.add_action(ra)
 
         for action in ag.list_actions():
             self.app.kbm.takeover_action(action)

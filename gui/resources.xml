@@ -89,6 +89,20 @@ Perhaps an increasing amount.
         <accelerator key="F3"/>
       </child>
       <child>
+        <object class="GtkRecentAction" id="OpenRecent">
+          <property name="label" translatable="yes"
+            context="Menu|File|">Open Recent</property>
+          <property name="icon-name">mypaint-document-open-recent-symbolic</property>
+          <property name="tooltip" translatable="yes"
+            >Open Recent files</property>
+          <signal name="item-activated" handler="open_recent_cb"/>
+          <property name="show-numbers">1</property>
+          <property name="show-tips">1</property>
+          <property name="show-tips">1</property>
+          <property name="sort-type">GTK_RECENT_SORT_MRU</property>
+        </object>
+      </child>
+      <child>
         <object class="GtkAction" id="Reload">
           <property name="stock_id">gtk-revert-to-saved</property>
           <property name="label" translatable="yes"
