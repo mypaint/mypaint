@@ -40,25 +40,13 @@ Perhaps an increasing amount.
 
 <object class="GtkUIManager" id="app_ui_manager">
   <!-- Defines GtkActions for commands -->
-  <!--
-
-    NOTE: each stock_id should be used only once, for the application-wide,
-    main-document actions rather than for little things like brushes, palettes
-    etc. This is particularly important when reusing regular GTK stock icons
-    whose stock items define keyboard shortcuts: when the "little" actions are
-    too unimportant to declare their own, the stock accelerators will be used
-    instead, which typically isn't what we want.
-    
-    Use icon-name instead for "little" actions.
-
-  -->
   <ui/><!-- TODO: move menu.xml here? -->
   <child>
     <object class="GtkActionGroup" id="FileActions">
       <!-- Document loading and saving -->
       <child>
         <object class="GtkAction" id="New">
-          <property name="stock_id">gtk-new</property>
+          <property name="icon-name">mypaint-document-new-symbolic</property>
           <property name="label" translatable="yes"
             context="Menu|File|">New</property>
           <property name="tooltip" translatable="yes"
@@ -69,7 +57,7 @@ Perhaps an increasing amount.
       </child>
       <child>
         <object class="GtkAction" id="Open">
-          <property name="stock_id">gtk-open</property>
+          <property name="icon-name">mypaint-document-open-symbolic</property>
           <property name="label" translatable="yes"
             context="Menu|File|">Open...</property>
           <property name="tooltip" translatable="yes"
@@ -115,7 +103,7 @@ Perhaps an increasing amount.
       </child>
       <child>
         <object class="GtkAction" id="Save">
-          <property name="stock_id">gtk-save</property>
+          <property name="icon-name">mypaint-document-save-symbolic</property>
           <property name="label" translatable="yes"
             context="Menu|File|">Save</property>
           <property name="tooltip" translatable="yes"
@@ -126,7 +114,7 @@ Perhaps an increasing amount.
       </child>
       <child>
         <object class="GtkAction" id="SaveAs">
-          <property name="stock_id">gtk-save-as</property>
+          <property name="icon-name">mypaint-document-save-as-symbolic</property>
           <property name="label" translatable="yes"
             context="Menu|File|">Save As...</property>
           <property name="tooltip" translatable="yes"
@@ -137,7 +125,7 @@ Perhaps an increasing amount.
       </child>
       <child>
         <object class="GtkAction" id="Export">
-          <property name="icon-name">gtk-save-as</property>
+          <property name="icon-name">mypaint-document-save-as-symbolic</property>
           <property name="label" translatable="yes"
             context="Menu|File|">Export...</property>
           <property name="tooltip" translatable="yes">Export to a file</property>
@@ -389,7 +377,7 @@ Perhaps an increasing amount.
       -->
       <child>
         <object class="GtkAction" id="ClearLayer">
-          <property name="stock_id">gtk-clear</property>
+          <property name="icon-name">mypaint-clear-all-symbolic</property>
           <property name="label" translatable="yes"
             context="Menu|Layer|">Clear</property>
           <property name="tooltip" translatable="yes"
@@ -409,7 +397,7 @@ Perhaps an increasing amount.
       </child>
       <child>
         <object class="GtkAction" id="CopyLayer">
-          <property name="stock_id">gtk-copy</property>
+          <property name="icon-name">mypaint-copy-symbolic</property>
           <property name="label" translatable="yes"
             context="Menu|Layer|">Copy</property>
           <property name="tooltip" translatable="yes"
@@ -420,7 +408,7 @@ Perhaps an increasing amount.
       </child>
       <child>
         <object class="GtkAction" id="PasteLayer">
-          <property name="stock_id">gtk-paste</property>
+          <property name="icon-name">mypaint-paste-symbolic</property>
           <property name="label" translatable="yes"
             context="Menu|Layer|">Paste</property>
           <property name="tooltip" translatable="yes"
@@ -965,7 +953,7 @@ Perhaps an increasing amount.
         <object class="GtkAction" id="ScratchNew">
           <property name="label" translatable="yes"
             context="Menu|Scratchpad|">New</property>
-          <property name="icon-name">gtk-new</property>
+          <property name="icon-name">mypaint-document-new-symbolic</property>
           <signal name="activate" handler="new_scratchpad_cb"/>
         </object>
       </child>
@@ -973,7 +961,7 @@ Perhaps an increasing amount.
         <object class="GtkAction" id="ScratchLoad">
           <property name="label" translatable="yes"
             context="Menu|Scratchpad|">Open...</property>
-          <property name="icon-name">gtk-open</property>
+          <property name="icon-name">mypaint-document-open-symbolic</property>
           <signal name="activate" handler="load_scratchpad_cb"/>
         </object>
       </child>
@@ -981,7 +969,7 @@ Perhaps an increasing amount.
         <object class="GtkAction" id="ScratchSaveNow">
           <property name="label" translatable="yes"
             context="Menu|Scratchpad|">Save</property>
-          <property name="icon-name">gtk-save</property>
+          <property name="icon-name">mypaint-document-save-symbolic</property>
           <signal name="activate" handler="save_current_scratchpad_cb"/>
         </object>
       </child>
