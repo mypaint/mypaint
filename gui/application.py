@@ -146,13 +146,11 @@ class Application (object):
 
         gtk.Window.set_default_icon_name('mypaint')
 
-        # Stock items, core actions, and menu structure
+        # Core actions and menu structure
         resources_xml = join(self.datapath, "gui", "resources.xml")
         self.builder = gtk.Builder()
         self.builder.set_translation_domain("mypaint")
         self.builder.add_from_file(resources_xml)
-        factory = self.builder.get_object("stock_icon_factory")
-        factory.add_default()
 
         self.ui_manager = self.builder.get_object("app_ui_manager")
         signal_callback_objs = []
@@ -990,11 +988,11 @@ class CursorCache (object):
         """
         # Pick an icon
         if self.app.brush.is_eraser():
-            icon_name = "mypaint-brush-blend-mode-eraser"
+            icon_name = "mypaint-eraser-symbolic"
         elif self.app.brush.is_alpha_locked():
-            icon_name = "mypaint-brush-blend-mode-alpha-lock"
+            icon_name = "mypaint-lock-alpha-symbolic"
         elif self.app.brush.is_colorize():
-            icon_name = "mypaint-brush-blend-mode-colorize"
+            icon_name = "mypaint-colorize-symbolic"
         else:
             icon_name = None
         return self.get_icon_cursor(icon_name, cursor_name)
