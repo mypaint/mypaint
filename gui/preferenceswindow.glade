@@ -600,7 +600,7 @@ This may result in slow scrolling on some platforms.</property>
             <property name="can_focus">False</property>
             <property name="margin_top">18</property>
             <property name="xalign">0</property>
-            <property name="label" translatable="yes" context="Prefs Dialog|View|">&lt;b&gt;Fullscreen&lt;/b&gt;</property>
+            <property name="label" translatable="yes" context="Prefs Dialog|View|">&lt;b&gt;Interface&lt;/b&gt;</property>
             <property name="use_markup">True</property>
           </object>
           <packing>
@@ -616,7 +616,7 @@ This may result in slow scrolling on some platforms.</property>
             <property name="can_focus">False</property>
             <property name="margin_left">12</property>
             <property name="xalign">0</property>
-            <property name="label" translatable="yes" context="Prefs Dialog|View|">In fullscreen mode, hide:</property>
+            <property name="label" translatable="yes" context="Prefs Dialog|View|Interface|">Toolbar icon size:</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
@@ -626,92 +626,16 @@ This may result in slow scrolling on some platforms.</property>
           </packing>
         </child>
         <child>
-          <object class="GtkCheckButton" id="fullscreen_hide_menubar_checkbutton">
-            <property name="label" translatable="yes">Menu bar</property>
-            <property name="use_action_appearance">False</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">False</property>
-            <property name="hexpand">True</property>
-            <property name="use_action_appearance">False</property>
-            <property name="xalign">0</property>
-            <property name="draw_indicator">True</property>
-            <signal name="toggled" handler="fullscreen_hide_menubar_checkbutton_toggled_cb" swapped="no"/>
-          </object>
-          <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">4</property>
-            <property name="width">2</property>
-            <property name="height">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkCheckButton" id="fullscreen_hide_toolbar_checkbutton">
-            <property name="label" translatable="yes">Toolbar</property>
-            <property name="use_action_appearance">False</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">False</property>
-            <property name="hexpand">True</property>
-            <property name="use_action_appearance">False</property>
-            <property name="xalign">0</property>
-            <property name="draw_indicator">True</property>
-            <signal name="toggled" handler="fullscreen_hide_toolbar_checkbutton_toggled_cb" swapped="no"/>
-          </object>
-          <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">5</property>
-            <property name="width">2</property>
-            <property name="height">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkCheckButton" id="fullscreen_hide_subwindows_checkbutton">
-            <property name="label" translatable="yes">Floating tool windows</property>
-            <property name="use_action_appearance">False</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">False</property>
-            <property name="hexpand">True</property>
-            <property name="use_action_appearance">False</property>
-            <property name="xalign">0</property>
-            <property name="draw_indicator">True</property>
-            <signal name="toggled" handler="fullscreen_hide_subwindows_checkbutton_toggled_cb" swapped="no"/>
-          </object>
-          <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">6</property>
-            <property name="width">2</property>
-            <property name="height">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLabel" id="label11">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_top">18</property>
-            <property name="xalign">0</property>
-            <property name="label" translatable="yes" context="Prefs Dialog|View|">&lt;b&gt;Cursors&lt;/b&gt;</property>
-            <property name="use_markup">True</property>
-          </object>
-          <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">7</property>
-            <property name="width">3</property>
-            <property name="height">1</property>
-          </packing>
-        </child>
-        <child>
           <object class="GtkLabel" id="label27">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="margin_left">12</property>
             <property name="xalign">0</property>
-            <property name="label" translatable="yes" context="Prefs Dialog|View|Cursors|">Freehand cursor type:</property>
+            <property name="label" translatable="yes" context="Prefs Dialog|View|Interface|">Freehand cursor type:</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">8</property>
+            <property name="top_attach">6</property>
             <property name="width">1</property>
             <property name="height">1</property>
           </packing>
@@ -734,13 +658,85 @@ This may result in slow scrolling on some platforms.</property>
           </object>
           <packing>
             <property name="left_attach">1</property>
-            <property name="top_attach">8</property>
+            <property name="top_attach">6</property>
             <property name="width">2</property>
             <property name="height">1</property>
           </packing>
         </child>
         <child>
-          <placeholder/>
+          <object class="GtkRadioButton" id="toolbar_icon_size_small_radio">
+            <property name="label" translatable="yes" context="Prefs Dialog|View|Interface|Icon size|">Small</property>
+            <property name="use_action_appearance">False</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">False</property>
+            <property name="use_action_appearance">False</property>
+            <property name="xalign">0</property>
+            <property name="active">True</property>
+            <property name="draw_indicator">True</property>
+            <signal name="toggled" handler="toolbar_icon_size_small_toggled_cb" swapped="no"/>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">4</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkRadioButton" id="toolbar_icon_size_large_radio">
+            <property name="label" translatable="yes" context="Prefs Dialog|View|Interface|Icon size|">Large (requires recent GTK3)</property>
+            <property name="use_action_appearance">False</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">False</property>
+            <property name="use_action_appearance">False</property>
+            <property name="xalign">0</property>
+            <property name="active">True</property>
+            <property name="draw_indicator">True</property>
+            <property name="group">toolbar_icon_size_small_radio</property>
+            <signal name="toggled" handler="toolbar_icon_size_large_toggled_cb" swapped="no"/>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">5</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label11">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_left">12</property>
+            <property name="xalign">0</property>
+            <property name="label" translatable="yes" context="Prefs Dialog|View|Interface|">Dark theme variant:</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">7</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkCheckButton" id="dark_theme_checkbutton">
+            <property name="label" translatable="yes" context="Prefs Dialog|View|Interface|Dark theme variant|">If available in GTK3 theme</property>
+            <property name="use_action_appearance">False</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">False</property>
+            <property name="use_action_appearance">False</property>
+            <property name="xalign">0</property>
+            <property name="draw_indicator">True</property>
+            <signal name="toggled" handler="dark_theme_toggled_cb" swapped="no"/>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">7</property>
+            <property name="width">2</property>
+            <property name="height">1</property>
+          </packing>
         </child>
         <child>
           <placeholder/>
