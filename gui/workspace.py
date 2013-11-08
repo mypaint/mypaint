@@ -1136,7 +1136,7 @@ class ToolStack (Gtk.EventBox):
         NOTEBOOK_GROUP_NAME = 'mypaint-workspace-layout-group'
         PLACEHOLDER_HEIGHT = 8
         PLACEHOLDER_WIDTH = 16
-        TAB_ICON_SIZE = Gtk.IconSize.SMALL_TOOLBAR
+        TAB_ICON_SIZE = Gtk.IconSize.MENU #FIXME: should use a central setting
         ACTION_BUTTON_ICON_SIZE = TAB_ICON_SIZE
         TAB_TOOLTIP_ICON_SIZE = Gtk.IconSize.DIALOG
 
