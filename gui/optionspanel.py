@@ -41,7 +41,7 @@ class ModeOptionsTool (workspace.SizedVBoxToolWidget):
 
     SIZED_VBOX_NATURAL_HEIGHT = workspace.TOOL_WIDGET_NATURAL_HEIGHT_SHORT
 
-    tool_widget_icon_name = "mypaint-brush-mods-active"
+    tool_widget_icon_name = "mypaint-options-symbolic"
     tool_widget_title = _("Tool Options")
     tool_widget_description = _("Specialized settings for the current "
                                 "editing tool")

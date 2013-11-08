@@ -245,7 +245,7 @@ class BrushGroupTool (SizedVBoxToolWidget):
 
     @property
     def tool_widget_icon_name(self):
-        return "mypaint-tool-brush"  # fallback only
+        return "mypaint-brushes-symbolic"  # fallback only
 
     def tool_widget_get_icon_pixbuf(self, size):
         if not self._group in self._app.brushmanager.groups:

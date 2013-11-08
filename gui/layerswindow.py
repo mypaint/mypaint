@@ -36,6 +36,7 @@ def action_button(action):
         b.remove(b.get_child())
     img = action.create_icon(gtk.ICON_SIZE_MENU)
     img.set_tooltip_text(action.get_tooltip())
+    img.set_padding(4, 4)
     b.add(img)
     return b
 
@@ -48,7 +49,7 @@ def make_composite_op_model():
 
 class LayersTool (SizedVBoxToolWidget):
 
-    tool_widget_icon_name = "mypaint-tool-layers"
+    tool_widget_icon_name = "mypaint-layers-symbolic"
     tool_widget_title = _("Layers")
     tool_widget_description = _("Arrange layers, or assign layer effects")
 
