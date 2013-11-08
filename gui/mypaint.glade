@@ -92,6 +92,7 @@
                   <object class="GtkImage" id="image1">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="pixel_size">16</property>
                     <property name="icon_name">mypaint-bookmark-new-symbolic</property>
                   </object>
                 </child>
@@ -158,6 +159,7 @@ R: {rotation:+.1f}°</property>
                   <object class="GtkImage" id="mode_options_icon_image">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="pixel_size">16</property>
                     <property name="icon_name">mypaint-options-symbolic</property>
                   </object>
                 </child>
@@ -172,6 +174,9 @@ R: {rotation:+.1f}°</property>
               <object class="GtkImage" id="app_current_mode_icon">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="margin_left">4</property>
+                <property name="margin_right">4</property>
+                <property name="pixel_size">16</property>
                 <property name="icon_name">image-loading</property>
               </object>
               <packing>
