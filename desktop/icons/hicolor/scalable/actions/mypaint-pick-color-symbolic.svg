@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg id="svg1" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:dc="http://purl.org/dc/elements/1.1/" height="16.044" width="16" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:ns3="http://www.openswatchbook.org/uri/2009/osb" xmlns:ns5="http://creativecommons.org/ns#">
+ <metadata id="metadata7">
+  <rdf:RDF>
+   <ns5:Work rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title/>
+   </ns5:Work>
+  </rdf:RDF>
+ </metadata>
+ <g id="layer1" transform="translate(-112 -596.36)">
+  <path id="path3620" d="m122.61 601.77-4.2202 5.6634-1.694 1.4926-0.69772-0.56071 0.99632-2.0533 4.2202-5.6634 1.3954 1.1214z" fill-rule="evenodd" fill="#bebebe"/>
+  <path id="path4352" d="m116 608.94s-1.4772 0.66848-1.4654 2.0797c0.0147 1.758 2.6601 1.8434 2.7433 0.28446 0.05-0.89-1.28-2.36-1.28-2.36z" fill-rule="evenodd" fill="#bebebe"/>
+  <path id="path3583" d="m118.65 600.79 4.6492 3.5274 0.70445-0.92575-1.3947-1.0582c2.8037-0.79322 4.7199-4.1748 2.8603-5.5858-1.8597-1.4109-4.7057 1.2652-4.7199 4.1749l-1.3948-1.0582-0.70448 0.92571z" fill-rule="evenodd" fill="#bebebe"/>
+  <g id="layer2" opacity=".5" transform="translate(229.28 556.07)" display="none" fill="#859f46">
+   <rect id="48x48" style="color:#000000" height="48" width="48" display="inline" y="4.25" x="-2.25"/>
+   <rect id="32x32" style="color:#000000" height="32" width="32" display="inline" y="20.25" x="53.75"/>
+   <rect id="24x24" style="color:#000000" height="24" width="24" display="inline" y="28.25" x="93.75"/>
+   <rect id="22x22" style="color:#000000" height="22" width="22" display="inline" y="30.25" x="125.75"/>
+  </g>
+ </g>
+</svg>

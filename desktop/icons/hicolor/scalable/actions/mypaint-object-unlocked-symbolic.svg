@@ -1,0 +1,20 @@
+<svg:svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:ns2="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:ns4="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" height="16" id="svg2" version="1.1" width="16" ns2:docname="mypaint-object-unlocked-symbolic.svg" inkscape:version="0.48.4 r9939">
+  <svg:defs id="defs4" />
+  <ns2:namedview bordercolor="#666666" borderlayer="true" borderopacity="1.0" gridtolerance="10000" guidetolerance="20" id="base" objecttolerance="10000" pagecolor="#555753" showborder="false" showgrid="true" inkscape:current-layer="layer1" inkscape:cx="24.514388" inkscape:cy="34.9121" inkscape:document-units="px" inkscape:object-nodes="true" inkscape:pageopacity="1" inkscape:pageshadow="2" inkscape:snap-center="false" inkscape:snap-global="true" inkscape:snap-nodes="true" inkscape:snap-object-midpoints="false" inkscape:window-height="1022" inkscape:window-maximized="1" inkscape:window-width="1920" inkscape:window-x="0" inkscape:window-y="0" inkscape:zoom="22.65622">
+    <inkscape:grid color="#8282ff" dotted="true" empcolor="#8282ff" empopacity="0.1254902" empspacing="8" enabled="true" id="grid2985" opacity="0.1254902" originx="-32px" originy="-488px" snapvisiblegridlinesonly="true" type="xygrid" visible="true" />
+    <inkscape:grid color="#ff01ff" dotted="true" empcolor="#ff01ff" empopacity="0.1254902" empspacing="1" enabled="true" id="grid2987" opacity="0.1254902" originx="-31.5px" originy="-487.5px" snapvisiblegridlinesonly="true" spacingx="1px" type="xygrid" visible="false" />
+  </ns2:namedview>
+  <svg:metadata id="metadata7">
+    <rdf:RDF>
+      <ns4:Work rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </ns4:Work>
+    </rdf:RDF>
+  </svg:metadata>
+  <svg:g id="layer1" transform="translate(-32,-548.36218)" inkscape:groupmode="layer" inkscape:label="actions">
+    <svg:path d="m 34,556.36218 0,8 10,0 0,-8 z" id="rect31375" style="color:#000000;fill:#bebebe;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" ns2:nodetypes="ccccc" inkscape:connector-curvature="0" />
+    <svg:path d="m 41,554.40637 0,2.95581 2,0 0,-2.95581 c 0,-1.108 0.3295,-2 1.4375,-2 1.108,0 1.5625,0.892 1.5625,2 l 0,2 2,0 0,-2 c 0,-2.38075 -1.16499,-4 -3.5625,-4 -2.39751,0 -3.36776,1.69069 -3.4375,4 z" id="path11795" style="color:#000000;fill:#bebebe;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" ns2:nodetypes="cccsssccszc" inkscape:connector-curvature="0" />
+  </svg:g>
+</svg:svg>

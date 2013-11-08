@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg id="svg1" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:dc="http://purl.org/dc/elements/1.1/" height="16" width="16" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:ns3="http://www.openswatchbook.org/uri/2009/osb" xmlns:ns5="http://creativecommons.org/ns#">
+ <metadata id="metadata7">
+  <rdf:RDF>
+   <ns5:Work rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title/>
+   </ns5:Work>
+  </rdf:RDF>
+ </metadata>
+ <g id="layer1" transform="translate(-16 -492.36)">
+  <path id="path11928" style="color:#000000" d="m24 495.36c-4.4183 0-8 6-8 6s3.5817 6 8 6 8-6 8-6-3.5817-6-8-6zm0 2c3.866 0 6 4 6 4s-2.134 4-6 4-6-4-6-4 2.134-4 6-4z" fill="#bebebe"/>
+  <path id="path8543-5" style="block-progression:tb;text-indent:0;color:#000000;text-transform:none" font-family="Sans" d="m17 497.78a0.50005 0.50005 0 0 0 -0.34375 0.875l1 1a0.50005 0.50005 0 1 0 0.6875 -0.71875l-1-1a0.50005 0.50005 0 0 0 -0.344 -0.16z" line-height="normal" fill="#bebebe"/>
+  <path id="path8545-3" style="block-progression:tb;text-indent:0;color:#000000;text-transform:none" font-family="Sans" d="m31 497.78a0.50005 0.50005 0 0 0 -0.34375 0.15625l-1 1a0.50005 0.50005 0 1 0 0.6875 0.71875l1-1a0.50005 0.50005 0 0 0 -0.344 -0.88z" line-height="normal" fill="#bebebe"/>
+  <path id="path8547-1" style="block-progression:tb;text-indent:0;color:#000000;text-transform:none" font-family="Sans" d="m18 495.78a0.50005 0.50005 0 0 0 -0.34375 0.875l2 2a0.50005 0.50005 0 1 0 0.6875 -0.71875l-2-2a0.50005 0.50005 0 0 0 -0.344 -0.16z" line-height="normal" fill="#bebebe"/>
+  <path id="path8572-7" style="block-progression:tb;text-indent:0;color:#000000;text-transform:none" font-family="Sans" d="m19.969 493.97a0.50005 0.50005 0 0 0 -0.407 0.78l1.375 2.375a0.50389 0.50389 0 1 0 0.875 -0.5l-1.375-2.375a0.50005 0.50005 0 0 0 -0.46875 -0.28125z" line-height="normal" fill="#bebebe"/>
+  <path id="path8574-8" style="block-progression:tb;text-indent:0;color:#000000;text-transform:none" font-family="Sans" d="m22.719 492.84a0.50005 0.50005 0 0 0 -0.46875 0.625l0.6875 3a0.51182 0.51182 0 1 0 1 -0.21875l-0.6875-3a0.50005 0.50005 0 0 0 -0.53125 -0.40625z" line-height="normal" fill="#bebebe"/>
+  <path id="path8578-8" style="block-progression:tb;text-indent:0;color:#000000;text-transform:none" font-family="Sans" d="m29.969 495.78a0.50005 0.50005 0 0 0 -0.375 0.22l-1.5625 2a0.50316 0.50316 0 1 0 0.8125 0.59375l1.5625-2a0.50005 0.50005 0 0 0 -0.4375 -0.8125z" line-height="normal" fill="#bebebe"/>
+  <path id="path8580-4" style="block-progression:tb;text-indent:0;color:#000000;text-transform:none" font-family="Sans" d="m28.375 494.19a0.50005 0.50005 0 0 0 -0.40625 0.25l-1.344 2.15a0.51182 0.51182 0 1 0 0.875 0.53l1.3125-2.1562a0.50005 0.50005 0 0 0 -0.437 -0.77z" line-height="normal" fill="#bebebe"/>
+  <path id="path8582-8" style="block-progression:tb;text-indent:0;color:#000000;text-transform:none" font-family="Sans" d="m25.844 492.84a0.50005 0.50005 0 0 0 -0.46875 0.375l-0.84375 3a0.50005 0.50005 0 1 0 0.9375 0.28125l0.875-3a0.50005 0.50005 0 0 0 -0.5 -0.65625z" line-height="normal" fill="#bebebe"/>
+  <path id="path13510" style="color:#000000" d="m24 498.36c-1.6569 0-3 1.3432-3 3s1.3431 3 3 3 3-1.3432 3-3-1.3431-3-3-3zm-0.5 0.75c0.41421 0 0.75 0.33579 0.75 0.75s-0.33579 0.75-0.75 0.75-0.75-0.33579-0.75-0.75 0.33579-0.75 0.75-0.75z" fill="#bebebe"/>
+  <g id="layer2" opacity=".5" transform="translate(229.28 556.07)" display="none" fill="#859f46">
+   <rect id="48x48" style="color:#000000" height="48" width="48" display="inline" y="4.25" x="-2.25"/>
+   <rect id="32x32" style="color:#000000" height="32" width="32" display="inline" y="20.25" x="53.75"/>
+   <rect id="24x24" style="color:#000000" height="24" width="24" display="inline" y="28.25" x="93.75"/>
+   <rect id="22x22" style="color:#000000" height="22" width="22" display="inline" y="30.25" x="125.75"/>
+  </g>
+ </g>
+</svg>

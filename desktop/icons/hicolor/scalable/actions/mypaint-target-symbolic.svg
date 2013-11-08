@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg id="svg1" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:dc="http://purl.org/dc/elements/1.1/" height="16" width="16.026" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:ns3="http://www.openswatchbook.org/uri/2009/osb" xmlns:ns5="http://creativecommons.org/ns#">
+ <metadata id="metadata7">
+  <rdf:RDF>
+   <ns5:Work rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title/>
+   </ns5:Work>
+  </rdf:RDF>
+ </metadata>
+ <g id="layer1" transform="translate(-191.97 -876.36)">
+  <g id="layer2" opacity=".5" transform="translate(229.28 556.07)" display="none" fill="#859f46">
+   <rect id="48x48" style="color:#000000" height="48" width="48" display="inline" y="4.25" x="-2.25"/>
+   <rect id="32x32" style="color:#000000" height="32" width="32" display="inline" y="20.25" x="53.75"/>
+   <rect id="24x24" style="color:#000000" height="24" width="24" display="inline" y="28.25" x="93.75"/>
+   <rect id="22x22" style="color:#000000" height="22" width="22" display="inline" y="30.25" x="125.75"/>
+  </g>
+  <path id="path4640" style="block-progression:tb;text-indent:0;color:#000000;text-transform:none" font-family="Sans" d="m199.48 877.42c-3.5728 0-6.4904 2.9142-6.4904 6.4829s2.9176 6.4829 6.4904 6.4829c3.5729 0 6.4904-2.9142 6.4904-6.4829s-2.9176-6.4829-6.4904-6.4829zm0 1.997c2.4922 0 4.4912 1.9966 4.4912 4.4859 0 2.4894-1.9989 4.4859-4.4912 4.4859-2.4922 0-4.4911-1.9966-4.4911-4.4859 0-2.4894 1.9989-4.4859 4.4911-4.4859z" line-height="normal" fill="#bebebe"/>
+  <path id="path4644" style="enable-background:new;block-progression:tb;text-indent:0;color:#000000;text-transform:none" font-family="Sans" d="m202.41 883.34a0.50306 0.50389 0 1 0 0.12479 1h3.931a0.49923 0.50005 0 1 0 0 -1h-3.931a0.49923 0.50005 0 0 0 -0.12479 0z" line-height="normal" fill="#bebebe"/>
+  <path id="path5416" style="enable-background:new;block-progression:tb;text-indent:0;color:#000000;text-transform:none" font-family="Sans" d="m192.43 883.37a0.50136 0.50219 0 1 0 0.0935 1h3.9622a0.49923 0.50005 0 1 0 0 -1h-3.9622a0.49923 0.50005 0 0 0 -0.0935 0z" line-height="normal" fill="#bebebe"/>
+  <path id="path5420" style="enable-background:new;block-progression:tb;text-indent:0;color:#000000;text-transform:none" font-family="Sans" d="m199.39 876.37a0.49923 0.50005 0 0 0 -0.40558 0.5v4.0312a0.49923 0.50005 0 1 0 0.99835 0v-4.0312a0.49923 0.50005 0 0 0 -0.59277 -0.5z" line-height="normal" fill="#bebebe"/>
+  <path id="path5422" style="enable-background:new;block-progression:tb;text-indent:0;color:#000000;text-transform:none" font-family="Sans" d="m199.42 886.4a0.49923 0.50005 0 0 0 -0.43677 0.53125v3.9375a0.49923 0.50005 0 1 0 0.99835 0v-3.9375a0.49923 0.50005 0 0 0 -0.56158 -0.53125z" line-height="normal" fill="#bebebe"/>
+  <path id="path5428" style="color:#000000;enable-background:new" d="m-91 478a1 1 0 1 1 -2 0 1 1 0 1 1 2 0z" transform="matrix(1.4975 0 0 1.5 337.25 166.87)" fill="#bebebe"/>
+ </g>
+</svg>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg id="svg1" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:dc="http://purl.org/dc/elements/1.1/" height="16" width="16" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:ns3="http://www.openswatchbook.org/uri/2009/osb" xmlns:ns5="http://creativecommons.org/ns#" xmlns:ns7="http://www.w3.org/1999/xlink">
+ <metadata id="metadata7">
+  <rdf:RDF>
+   <ns5:Work rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title/>
+   </ns5:Work>
+  </rdf:RDF>
+ </metadata>
+ <g id="layer1" transform="translate(-136 -540.36)">
+  <g id="layer2" opacity=".5" transform="translate(229.28 556.07)" display="none" fill="#859f46">
+   <rect id="48x48" style="color:#000000" height="48" width="48" display="inline" y="4.25" x="-2.25"/>
+   <rect id="32x32" style="color:#000000" height="32" width="32" display="inline" y="20.25" x="53.75"/>
+   <rect id="24x24" style="color:#000000" height="24" width="24" display="inline" y="28.25" x="93.75"/>
+   <rect id="22x22" style="color:#000000" height="22" width="22" display="inline" y="30.25" x="125.75"/>
+  </g>
+  <path id="path74760" fill="#bebebe" d="m136 548.36 2.5 3 0.49999-0.007 0.00001-5.9932h-0.5z"/>
+  <path id="rect74762" fill="#bebebe" d="m138 547.36v2h12v-2z"/>
+  <use id="use27260" transform="matrix(0 1 -1 0 692.36 404.36)" height="640" width="480" xlink:href="#rect74762" y="0" x="0"/>
+  <use id="use27262" transform="matrix(0 1 -1 0 692.36 404.36)" height="640" width="480" xlink:href="#path74760" y="0" x="0"/>
+  <use id="use27264" transform="matrix(0 -1 1 0 -404.36 692.36)" height="640" width="480" xlink:href="#path74760" y="0" x="0"/>
+  <use id="use27266" transform="matrix(-1 0 0 -1 288 1096.7)" height="640" width="480" xlink:href="#path74760" y="0" x="0"/>
+ </g>
+</svg>

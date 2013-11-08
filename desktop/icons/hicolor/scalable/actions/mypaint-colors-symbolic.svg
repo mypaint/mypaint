@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg id="svg1" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:dc="http://purl.org/dc/elements/1.1/" height="16" width="16" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:ns3="http://www.openswatchbook.org/uri/2009/osb" xmlns:ns5="http://creativecommons.org/ns#">
+ <metadata id="metadata7">
+  <rdf:RDF>
+   <ns5:Work rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title/>
+   </ns5:Work>
+  </rdf:RDF>
+ </metadata>
+ <g id="layer1" transform="translate(-384 -524.36)">
+  <path id="use24343" style="block-progression:tb;text-indent:0;color:#000000;text-transform:none" font-family="Sans" d="m388 532.36c-2.2032 0-4 1.7968-4 4s1.7968 4 4 4 4-1.7968 4-4-1.7968-4-4-4zm0 1c1.6628 0 3 1.3372 3 3s-1.3372 3-3 3-3-1.3372-3-3 1.3372-3 3-3z" line-height="normal" fill="#bebebe"/>
+  <path id="path24341" style="block-progression:tb;text-indent:0;color:#000000;text-transform:none" font-family="Sans" d="m392 525.36c-2.2032 0-4 1.7968-4 4s1.7968 4 4 4 4-1.7968 4-4-1.7968-4-4-4zm0 1c1.6628 0 3 1.3372 3 3s-1.3372 3-3 3-3-1.3372-3-3 1.3372-3 3-3z" line-height="normal" fill="#bebebe"/>
+  <path id="path14496" d="m49.542-7.5a2.7708 2.5 0 1 1 -5.5417 0 2.7708 2.5 0 1 1 5.5417 0z" transform="matrix(.72180 0 0 .8 362.24 542.36)" fill="#bebebe"/>
+  <path id="use24345" style="block-progression:tb;text-indent:0;color:#000000;text-transform:none" font-family="Sans" d="m396 532.36c-2.2032 0-4 1.7968-4 4s1.7968 4 4 4 4-1.7968 4-4-1.7968-4-4-4zm0 1c1.6628 0 3 1.3372 3 3s-1.3372 3-3 3-3-1.3372-3-3 1.3372-3 3-3z" line-height="normal" fill="#bebebe"/>
+  <path id="use24347" opacity=".3" d="m49.542-7.5a2.7708 2.5 0 1 1 -5.5417 0 2.7708 2.5 0 1 1 5.5417 0z" transform="matrix(.72180 0 0 .8 354.24 542.36)" fill="#bebebe"/>
+  <g id="layer2" opacity=".5" transform="translate(229.28 556.07)" display="none" fill="#859f46">
+   <rect id="48x48" style="color:#000000" height="48" width="48" display="inline" y="4.25" x="-2.25"/>
+   <rect id="32x32" style="color:#000000" height="32" width="32" display="inline" y="20.25" x="53.75"/>
+   <rect id="24x24" style="color:#000000" height="24" width="24" display="inline" y="28.25" x="93.75"/>
+   <rect id="22x22" style="color:#000000" height="22" width="22" display="inline" y="30.25" x="125.75"/>
+  </g>
+ </g>
+</svg>

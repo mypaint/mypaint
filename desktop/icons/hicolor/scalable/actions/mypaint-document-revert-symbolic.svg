@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg id="svg1" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:dc="http://purl.org/dc/elements/1.1/" height="16.013" width="16" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:ns3="http://www.openswatchbook.org/uri/2009/osb" xmlns:ns5="http://creativecommons.org/ns#">
+ <metadata id="metadata7">
+  <rdf:RDF>
+   <ns5:Work rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title/>
+   </ns5:Work>
+  </rdf:RDF>
+ </metadata>
+ <g id="layer1" transform="translate(-32 -932.36)">
+  <g id="layer2" opacity=".5" transform="translate(229.28 556.07)" display="none" fill="#859f46">
+   <rect id="48x48" style="color:#000000" height="48" width="48" display="inline" y="4.25" x="-2.25"/>
+   <rect id="32x32" style="color:#000000" height="32" width="32" display="inline" y="20.25" x="53.75"/>
+   <rect id="24x24" style="color:#000000" height="24" width="24" display="inline" y="28.25" x="93.75"/>
+   <rect id="22x22" style="color:#000000" height="22" width="22" display="inline" y="30.25" x="125.75"/>
+  </g>
+  <path id="path13311" style="block-progression:tb;text-indent:0;color:#000000;text-transform:none" font-family="Sans" d="m37.965 946.33-1.9655 0.0312v-11h4.555l3.4006 3.4062v1.5625h1.9967v-2c-0.002-0.26843-0.11737-0.53419-0.31198-0.71875l-3.9622-3.9375c-0.18426-0.19489-0.44958-0.31044-0.71756-0.31245h-5.9589c-0.52271 0.00005-0.9983 0.47642-0.99835 1v12 0.25 0.71875c0.00005 0.52358 0.47563 0.99995 0.99835 1h4.9605z" line-height="normal" fill="#bebebe"/>
+  <path id="path11654" fill="#bebebe" d="m37.002 942.36 4-4v8z"/>
+  <path id="path11656" style="block-progression:tb;text-indent:0;color:#000000;text-transform:none" font-family="Sans" d="m39.188 941.41v1.875h5.6562c0.60831 0 1.2188 0.62735 1.2188 1.5938 0 0.9664-0.61044 1.5938-1.2188 1.5938h-0.4375v1.9062h0.4375c1.7936 0 3.0938-1.6633 3.0938-3.5s-1.3002-3.4688-3.0938-3.4688h-5.6562z" line-height="normal" fill="#bebebe"/>
+ </g>
+</svg>

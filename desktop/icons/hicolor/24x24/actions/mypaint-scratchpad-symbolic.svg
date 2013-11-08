@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg id="svg1" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:dc="http://purl.org/dc/elements/1.1/" height="24.028" width="24" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:ns3="http://www.openswatchbook.org/uri/2009/osb" xmlns:ns5="http://creativecommons.org/ns#">
+ <metadata id="metadata7">
+  <rdf:RDF>
+   <ns5:Work rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title/>
+   </ns5:Work>
+  </rdf:RDF>
+ </metadata>
+ <g id="layer1" transform="translate(-168 -516.33)">
+  <g id="layer2" opacity=".5" transform="translate(229.28 556.07)" display="none" fill="#859f46">
+   <rect id="48x48" style="color:#000000" height="48" width="48" display="inline" y="4.25" x="-2.25"/>
+   <rect id="32x32" style="color:#000000" height="32" width="32" display="inline" y="20.25" x="53.75"/>
+   <rect id="22x22" style="color:#000000" height="22" width="22" display="inline" y="30.25" x="125.75"/>
+   <rect id="16x16" style="color:#000000" height="16" width="16" display="inline" y="36.25" x="155.75"/>
+  </g>
+  <path id="rect10788-3-0" style="enable-background:new;block-progression:tb;text-indent:0;color:#000000;text-transform:none" font-family="Sans" d="m173 517.36c-1.636 0-3 1.364-3 3v17c0 1.636 1.364 3 3 3h13c1.636 0 3-1.364 3-3v-17c0-1.636-1.364-3-3-3v2.375c0.014 0.5881-0.35288 1.1677-0.89045 1.4066-0.53757 0.23892-1.2137 0.12287-1.6408-0.28163-0.54016 0.46971-1.4286 0.46971-1.9688 0-0.54394 0.48642-1.4561 0.48642-2 0-0.54739 0.50355-1.4838 0.50355-2.0312 0-0.54016 0.46971-1.4286 0.46971-1.9688 0-0.85917 0.76814-2.5051 0.0275-2.5-1.125z" line-height="normal" fill="#bebebe"/>
+  <path id="path3601-2-3-3-9-36-8-5-2-0" style="block-progression:tb;text-indent:0;color:#000000;text-transform:none" font-family="Sans" d="m174.44 516.34a0.50005 0.50005 0 0 0 -0.44 0.54v3a0.50005 0.50005 0 1 0 1 0v-3a0.50005 0.50005 0 0 0 -0.5625 -0.53125zm2 0a0.50005 0.50005 0 0 0 -0.44 0.54v3a0.50005 0.50005 0 1 0 1 0v-3a0.50005 0.50005 0 0 0 -0.5625 -0.53125zm2 0a0.50005 0.50005 0 0 0 -0.44 0.54v3a0.50005 0.50005 0 1 0 1 0v-3a0.50005 0.50005 0 0 0 -0.5625 -0.53125zm2 0a0.50005 0.50005 0 0 0 -0.44 0.54v3a0.50005 0.50005 0 1 0 1 0v-3a0.50005 0.50005 0 0 0 -0.5625 -0.53125zm2 0a0.50005 0.50005 0 0 0 -0.44 0.54v3a0.50005 0.50005 0 1 0 1 0v-3a0.50005 0.50005 0 0 0 -0.5625 -0.53125zm2 0a0.50005 0.50005 0 0 0 -0.44 0.54v3a0.50005 0.50005 0 1 0 1 0v-3a0.50005 0.50005 0 0 0 -0.5625 -0.53125z" line-height="normal" fill="#bebebe"/>
+  <path id="path3601-2-3-3-9-36-8-5-2-6" fill="none" d="m186.5 516.86-1 4m-0.99998-4-1 4m-1-4-1 4m-0.99999-4-1 4m-1-4-1 4m-1-4-1 4m-1-4-1 4"/>
+ </g>
+</svg>
