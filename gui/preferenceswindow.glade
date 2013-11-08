@@ -574,11 +574,13 @@ The mouse button has an input pressure of 0.5 when pressed.</property>
         </child>
         <child>
           <object class="GtkCheckButton" id="hq_zoom_checkbutton">
-            <property name="label" translatable="yes" context="Prefs Dialog|View|Zoom|">High quality zoom (may result in slow scrolling)</property>
+            <property name="label" translatable="yes" context="Prefs Dialog|View|Zoom|">High quality zoom</property>
             <property name="use_action_appearance">False</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
+            <property name="tooltip_markup" translatable="yes" context="Prefs Dialog|View|Zoom|">Use a higer-quality method for rendering when zoomed out.
+This may result in slow scrolling on some platforms.</property>
             <property name="hexpand">True</property>
             <property name="use_action_appearance">False</property>
             <property name="xalign">0</property>
