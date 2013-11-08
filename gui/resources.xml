@@ -190,12 +190,6 @@ Perhaps an increasing amount.
             >Brush settings</property>
         </object>
       </child>
-      <child>
-        <object class="MyPaintFactoryAction" id="LineDropdown">
-          <property name="tooltip" translatable="yes" context="toolbar|"
-            >Line mode</property>
-        </object>
-      </child>
 
       <!-- Brushes and brush groups: defined in gui.brushselectionwindow -->
       <child>
