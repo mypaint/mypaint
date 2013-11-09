@@ -25,7 +25,7 @@ import widgets
 
 ## Module constants
 
-HISTORY_PREVIEW_SIZE = 48
+HISTORY_PREVIEW_SIZE = 32
 
 
 ## Class definitions
@@ -40,6 +40,7 @@ class BrushHistoryView (Gtk.HBox):
         bm = app.brushmanager
         self._history_images = []
         s = HISTORY_PREVIEW_SIZE
+        self.set_border_width(widgets.SPACING)
         for i, brush in enumerate(bm.history):
             image = ManagedBrushPreview()
             image.set_size_request(s, s)
@@ -47,7 +48,7 @@ class BrushHistoryView (Gtk.HBox):
             button = widgets.borderless_button()
             button.add(image)
             button.connect("clicked", self._history_button_clicked_cb, i)
-            self.pack_end(button, True, True, 0)
+            self.pack_end(button, True, False, 0)
         app.doc.input_stroke_ended_observers.append(self._stroke_ended_cb)
         self._update_history_images()
 
@@ -149,7 +150,7 @@ class ColorHistoryView (Gtk.HBox, ColorAdjuster):
             preview.set_size_request(s, s)
             button.add(preview)
             button.connect("clicked", self._button_clicked_cb, i)
-            self.pack_end(button, True, True)
+            self.pack_end(button, True, False, 0)
             self._history.append(preview)
         self.set_color_manager(mgr)
 
@@ -200,4 +201,26 @@ class ColorPreview (Gtk.AspectFrame):
     def _draw_cb(self, widget, cr):
         cr.set_source_rgb(*self._color.get_rgb())
         cr.paint()
+
+
+class HistoryPanel (Gtk.VBox):
+
+    __gtype_name__ = "MyPaintHistoryPanel"
+
+    tool_widget_icon_name = "document-open-recent"
+    tool_widget_title = "Recent Brushes & Colors"
+    tool_widget_description = ("The most recently used brush\n"
+                               "presets and painting colors")
+
+    def __init__(self):
+        Gtk.VBox.__init__(self)
+        from application import get_app
+        app = get_app()
+        color_hist_view = ColorHistoryView(app)
+        self.pack_start(color_hist_view, True, False, 0)
+        brush_hist_view = BrushHistoryView(app)
+        self.pack_start(brush_hist_view, True, False, 0)
+
+
+
 

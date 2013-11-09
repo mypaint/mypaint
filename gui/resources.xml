@@ -1270,6 +1270,16 @@ The circular slices are equiluminant.</property>
           <signal name="activate" handler="toggle_window_cb"/>
         </object>
       </child>
+      <child>
+        <object class="GtkToggleAction" id="HistoryPanel">
+          <property name="label" translatable="yes"
+            >Recent Brushes &amp; Colors</property>
+          <property name="icon-name">document-open-recent</property>
+          <property name="tooltip"
+            translatable="yes">Recently used</property>
+          <signal name="activate" handler="toggle_window_cb"/>
+        </object>
+      </child>
 
       <child>
         <object class="GtkToggleAction" id="FullscreenAutohide">

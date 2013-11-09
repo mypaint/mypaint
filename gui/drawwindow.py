@@ -35,7 +35,6 @@ import stategroup
 import colorpicker
 import windowing
 import toolbar
-import previewwindow
 import dialogs
 from lib import helpers
 import canvasevent
@@ -383,7 +382,7 @@ class DrawWindow (gtk.Window):
 
         """
         action_name = action.get_name()
-        if action_name.endswith("Tool"):
+        if action_name.endswith("Tool") or action_name.endswith("Panel"):
             gtype_name = "MyPaint%s" % (action.get_name(),)
             workspace = self.app.workspace
             showing = workspace.get_tool_widget_showing(gtype_name, [])

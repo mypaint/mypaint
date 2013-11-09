@@ -48,6 +48,7 @@
       </menu>
       <separator/>
       <menuitem action='ModeOptionsTool'/>
+      <menuitem action='HistoryPanel'/>
       <separator/>
       <menuitem action='PreferencesWindow'/>
     </menu>
