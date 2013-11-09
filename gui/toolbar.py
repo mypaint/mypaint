@@ -1,13 +1,15 @@
 # This file is part of MyPaint.
-# Copyright (C) 2011 by Andrew Chadwick <andrewc-git@piffle.org>
+# Copyright (C) 2011-2013 by Andrew Chadwick <a.t.chadwick@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-"""The application toolbar, and its specialised widgets.
-"""
+"""The application toolbar, and its specialised widgets"""
+
+
+## Imports
 
 import os
 
@@ -25,8 +27,14 @@ import dropdownpanel
 import widgets
 from colors import RGBColor, ColorAdjuster, HSVTriangle
 from colors import PreviousCurrentColorAdjuster, ColorPickerButton
+from history import ColorHistoryView, BrushHistoryView
+from history import ManagedBrushPreview, ColorPreview
 from lib.helpers import escape
 from linemode import LineModeCurveWidget
+
+
+## Module constants
+
 
 FRAMEWORK_XML = 'gui/toolbar.xml'
 MERGEABLE_XML = [
@@ -40,7 +48,10 @@ MERGEABLE_XML = [
     ("toolbar1_view_resets", 'gui/toolbar-view-resets.xml', _("View (Resetting)")),
     ("toolbar1_subwindows", 'gui/toolbar-subwindows.xml', _("Subwindows")),
     ]
-HISTORY_PREVIEW_SIZE = 48
+
+
+## Class definitions
+
 
 
 class ToolbarManager (object):
@@ -217,27 +228,27 @@ class LineDropdownToolItem (gtk.ToolItem):
 
 
 class ColorDropdownToolItem (gtk.ToolItem):
-    """Toolbar colour indicator, history access, and changer.
-    """
+    """Toolbar colour indicator, history access, and changer"""
 
     __gtype_name__ = "MyPaintColorDropdownToolItem"
 
     def __init__(self):
         gtk.ToolItem.__init__(self)
-        self.main_blob = ColorBlob()
-        self.dropdown_button = dropdownpanel.DropdownPanelButton(self.main_blob)
-        self.app = None
-        self.blob_size = ToolbarManager.icon_size
-        self.connect("toolbar-reconfigured", self.on_toolbar_reconf)
+        preview = ColorPreview()
+        self.dropdown_button = dropdownpanel.DropdownPanelButton(preview)
+        self.preview_size = ToolbarManager.icon_size
+        self.connect("toolbar-reconfigured", self._toolbar_reconf_cb)
         self.connect("create-menu-proxy", lambda *a: True)
         self.set_tooltip_text(_("Color History and other tools"))
         self.add(self.dropdown_button)
 
         from application import get_app
         app = get_app()
-        self.app = app
-        self.app.brush.observers.append(self.on_brush_settings_changed)
-        self.main_blob.color = self.app.brush_color_manager.get_color()
+        app.brush.observers.append(self._brush_settings_changed_cb)
+        preview.color = app.brush_color_manager.get_color()
+
+        self._app = app
+        self._main_preview = preview
 
         panel_frame = gtk.Frame()
         panel_frame.set_shadow_type(gtk.SHADOW_OUT)
@@ -280,7 +291,7 @@ class ColorDropdownToolItem (gtk.ToolItem):
         section_table.attach(side_vbox, 1, 2, 0, 1)
 
         def init_proxy(widget, action_name):
-            action = self.app.find_action(action_name)
+            action = app.find_action(action_name)
             assert action is not None, \
                     "Must be able to find action %s" % (action_name,)
             widget.set_related_action(action)
@@ -303,28 +314,27 @@ class ColorDropdownToolItem (gtk.ToolItem):
         section_frame = widgets.section_frame(_("Recently Used"))
         panel_vbox.pack_start(section_frame, True, True)
 
-        history_view = ColorHistoryView(self)
-        section_frame.add(history_view)
+        history = ColorHistoryView(app)
+        history.button_clicked += self._history_button_clicked
+        section_frame.add(history)
 
-    def on_history_button_clicked(self):
+    def _history_button_clicked(self, view):
         self.dropdown_button.panel_hide()
 
-    def on_toolbar_reconf(self, toolitem):
+    def _toolbar_reconf_cb(self, toolitem):
         toolbar = self.get_parent()
         lookup_ret = gtk.icon_size_lookup(self.get_icon_size())
-        if gtk2compat.USE_GTK3:
-            lookup_succeeded, iw, ih = lookup_ret
-            assert lookup_succeeded
-        else:
-            iw, ih = lookup_ret
-        self.blob_size = max(iw, ih)
-        self.main_blob.set_size_request(iw, ih)
+        lookup_succeeded, iw, ih = lookup_ret
+        assert lookup_succeeded
+        size = max(iw, ih)
+        self._main_preview.set_size_request(size, size)
 
-    def on_brush_settings_changed(self, changes):
+    def _brush_settings_changed_cb(self, changes):
         if not changes.intersection(set(['color_h', 'color_s', 'color_v'])):
             return
-        mgr = self.app.brush_color_manager
-        self.main_blob.color = mgr.get_color()
+        mgr = self._app.brush_color_manager
+        color = mgr.get_color()
+        self._main_preview.set_color(color)
 
 
 
@@ -341,7 +351,7 @@ class BrushDropdownToolItem (gtk.ToolItem):
         self.dropdown_button = dropdownpanel.DropdownPanelButton(self.main_image)
         self.app = None
         self.image_size = ToolbarManager.icon_size
-        self.connect("toolbar-reconfigured", self.on_toolbar_reconf)
+        self.connect("toolbar-reconfigured", self._toolbar_reconf_cb)
         self.connect("create-menu-proxy", lambda *a: True)
         self.set_tooltip_text(_("Brush history etc."))
         self.add(self.dropdown_button)
@@ -350,10 +360,7 @@ class BrushDropdownToolItem (gtk.ToolItem):
         app = get_app()
         self.app = app
         bm = self.app.brushmanager
-        bm.brush_selected += self.on_brush_selected
-        self.app.doc.input_stroke_ended_observers\
-            .append(self.doc_input_stroke_ended_cb)
-        self.update_history_images()
+        bm.brush_selected += self._brush_selected_cb
 
         panel_frame = gtk.Frame()
         panel_frame.set_shadow_type(gtk.SHADOW_OUT)
@@ -372,7 +379,7 @@ class BrushDropdownToolItem (gtk.ToolItem):
         section_vbox.set_spacing(widgets.SPACING_TIGHT)
         section_frame.add(section_vbox)
 
-        quick_changer = dialogs.QuickBrushChooser(app, self.on_quick_change_select)
+        quick_changer = dialogs.QuickBrushChooser(app, self._quick_change_select_cb)
         evbox = gtk.EventBox()
         evbox.add(quick_changer)
         section_vbox.pack_start(evbox, True, True)
@@ -384,60 +391,29 @@ class BrushDropdownToolItem (gtk.ToolItem):
         section_frame = widgets.section_frame(_("Recently Used"))
         panel_vbox.pack_start(section_frame, True, True)
 
-        history_hbox = gtk.HBox()
-        history_hbox.set_border_width(widgets.SPACING)
-        section_frame.add(history_hbox)
-        for i, image in enumerate(self.history_images):
-            button = widgets.borderless_button()
-            button.add(image)
-            button.connect("clicked", self.on_history_button_clicked, i)
-            history_hbox.pack_end(button, True, True)
+        history = BrushHistoryView(app)
+        history.set_border_width(widgets.SPACING)
+        history.button_clicked += self._history_button_clicked_cb
+        section_frame.add(history)
 
 
-    def doc_input_stroke_ended_cb(self, event):
-        gobject.idle_add(self.update_history_images)
-
-
-    def update_history_images(self):
-        bm = self.app.brushmanager
-        if not self.history_images:
-            s = HISTORY_PREVIEW_SIZE
-            for brush in bm.history:
-                image = ManagedBrushPreview()
-                image.set_size_request(s, s)
-                self.history_images.append(image)
-        for i, brush in enumerate(bm.history):
-            image = self.history_images[i]
-            image.set_from_managed_brush(brush)
-
-
-    def on_toolbar_reconf(self, toolitem):
+    def _toolbar_reconf_cb(self, toolitem):
         toolbar = self.get_parent()
         lookup_ret = gtk.icon_size_lookup(self.get_icon_size())
-        if gtk2compat.USE_GTK3:
-            lookup_succeeded, iw, ih = lookup_ret
-            assert lookup_succeeded
-        else:
-            iw, ih = lookup_ret
+        lookup_succeeded, iw, ih = lookup_ret
+        assert lookup_succeeded
         self.image_size = max(iw, ih)
         self.main_image.set_size_request(iw, ih)
 
-
-    def on_brush_selected(self, bm, brush, brushinfo):
+    def _brush_selected_cb(self, bm, brush, brushinfo):
         self.main_image.set_from_managed_brush(brush)
 
-
-    def on_history_button_clicked(self, button, i):
-        bm = self.app.brushmanager
-        brush = bm.history[i]
-        bm.select_brush(brush)
+    def _history_button_clicked_cb(self, view):
         self.dropdown_button.panel_hide()
 
-
-    def on_quick_change_select(self, brush):
+    def _quick_change_select_cb(self, brush):
         self.dropdown_button.panel_hide(immediate=False)
         self.app.brushmanager.select_brush(brush)
-
 
 
 class BrushSettingsDropdownToolItem (gtk.ToolItem):
@@ -648,139 +624,6 @@ class BrushSettingsDropdownToolItem (gtk.ToolItem):
         if parent_b is None:
             return True
         return not parent_b.brushinfo.matches(current_bi)
-
-
-class ManagedBrushPreview (gtk.Image):
-    """Updateable widget displaying a brushmanager.ManagedBrush`'s preview.
-    """
-
-    ICON_SIZE = 32
-    TOOLTIP_ICON_SIZE = 48
-
-    def __init__(self, brush=None):
-        gtk.Image.__init__(self)
-        self.pixbuf = None
-        self.image_size = None
-        self.brush_name = None
-        self.set_from_managed_brush(brush)
-        s = self.ICON_SIZE
-        self.set_size_request(s, s)
-        self.connect("size-allocate", self.on_size_allocate)
-        self.connect("query-tooltip", self.on_query_tooltip)
-        self.set_property("has-tooltip", True)
-
-
-    def set_from_managed_brush(self, brush):
-        if brush is None:
-            return
-        self.pixbuf = brush.preview.copy()
-        self.brush_name = brush.get_display_name()
-        self._update()
-
-
-    def on_size_allocate(self, widget, alloc):
-        new_size = alloc.width, alloc.height
-        # if new_size != self.image_size:
-        if self.image_size is None:
-            # XXX dubious fix: what if the preview receives a new size in the
-            # middle of its lifetime? Under GTK3 however, permitting this makes
-            # the preview keep growing by about 4px each penstroke or brush
-            # selection. Not sure why.
-            self.image_size = alloc.width, alloc.height
-            self._update()
-
-    def _get_scaled_pixbuf(self, size):
-        if self.pixbuf is None:
-            theme = gtk.icon_theme_get_default()
-            return theme.load_icon(gtk.STOCK_MISSING_IMAGE, size, 0)
-        else:
-            return self.pixbuf.scale_simple(size, size, gdk.INTERP_BILINEAR)
-
-    def on_query_tooltip(self, widget, x, y, keyboard_mode, tooltip):
-        s = self.TOOLTIP_ICON_SIZE
-        scaled_pixbuf = self._get_scaled_pixbuf(s)
-        tooltip.set_icon(scaled_pixbuf)
-        tooltip.set_text(self.brush_name)  # TODO: use markup, and summarize changes (i18n fun)
-        return True
-
-    def _update(self):
-        if not self.image_size:
-            return
-        w, h = self.image_size
-        s = min(w, h)
-        scaled_pixbuf = self._get_scaled_pixbuf(s)
-        self.set_from_pixbuf(scaled_pixbuf)
-
-
-class ColorHistoryView (gtk.HBox, ColorAdjuster):
-    """A set of ColorBlobs showing the usage history.
-    """
-
-    def __init__(self, toolitem):
-        gtk.HBox.__init__(self)
-        self.__history_blobs = []
-        self.__app = toolitem.app
-        self.__toolitem = toolitem
-        self.set_border_width(widgets.SPACING)
-        s = HISTORY_PREVIEW_SIZE
-        mgr = self.__app.brush_color_manager
-        for color in mgr.get_history():
-            button = widgets.borderless_button()
-            blob = ColorBlob(color)
-            blob.set_size_request(s, s)
-            button.add(blob)
-            button.connect("clicked", self.__button_clicked_cb)
-            self.pack_end(button, True, True)
-            self.__history_blobs.append(blob)
-        self.set_color_manager(mgr)
-
-    def color_history_updated(self):
-        mgr = self.get_color_manager()
-        for blob, color in zip(self.__history_blobs, mgr.get_history()):
-            blob.color = color
-
-    def __button_clicked_cb(self, button):
-        blob = button.get_child()
-        mgr = self.get_color_manager()
-        mgr.set_color(blob.color)
-        self.__toolitem.on_history_button_clicked()
-
-
-class ColorBlob (gtk.AspectFrame):
-    """Updatable widget displaying a single colour.
-    """
-
-    def __init__(self, color=None):
-        gtk.AspectFrame.__init__(self, xalign=0.5, yalign=0.5, ratio=1.0, obey_child=False)
-        self.set_name("thinborder-color-blob-%d" % id(self))
-        self.set_shadow_type(gtk.SHADOW_IN)
-        self.drawingarea = gtk.DrawingArea()
-        self.add(self.drawingarea)
-        if color is None:
-            color = RGBColor(0, 0, 0)
-        self._color = color
-        self.drawingarea.set_size_request(1, 1)
-        if gtk2compat.USE_GTK3:
-            self.drawingarea.connect("draw", self.on_draw)
-        else:
-            self.drawingarea.connect("expose-event", self.on_expose)
-
-    def set_color(self, color):
-        self._color = color
-        self.drawingarea.queue_draw()
-
-    def get_color(self):
-        return self._color
-
-    color = property(get_color, set_color)
-
-    def on_expose(self, widget, event):
-        cr = widget.get_window().cairo_create()
-        self.on_draw(widget, cr)
-
-    def on_draw(self, widget, cr):
-        cr.set_source_rgb(*self._color.get_rgb())
-        cr.paint()
 
 
 class MainMenuButton (gtk.ToggleButton):
