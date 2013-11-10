@@ -303,13 +303,14 @@ class QuickBrushChooser (Gtk.VBox):
         active_group_name = app.preferences.get(self.PREFS_KEY, None)
 
         model = self._make_groups_sb_model()
-        self.groups_sb = spinbox.ItemSpinBox(model, self.on_groups_sb_changed,
+        self.groups_sb = spinbox.ItemSpinBox(model, self._groups_sb_changed_cb,
                                              active_group_name)
         active_group_name = self.groups_sb.get_value()
 
         brushes = self.bm.groups[active_group_name][:]
         self.brushlist = self._BrushList(self, brushes)
         self.brushlist.dragging_allowed = False
+        self.bm.groups_changed += self._update_groups_sb
 
         scrolledwin = Gtk.ScrolledWindow()
         scrolledwin.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.ALWAYS)
@@ -333,11 +334,11 @@ class QuickBrushChooser (Gtk.VBox):
             model.append((name, label_text))
         return model
 
-    def update_groups_sb(self):
+    def _update_groups_sb(self, bm):
         model = self._make_groups_sb_model()
         self.groups_sb.set_model(model)
 
-    def on_groups_sb_changed(self, group_name):
+    def _groups_sb_changed_cb(self, group_name):
         self.app.preferences[self.PREFS_KEY] = group_name
         self.brushlist.itemlist[:] = self.bm.groups[group_name][:]
         self.brushlist.update()
