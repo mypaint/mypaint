@@ -175,25 +175,26 @@ class InputTestWindow (windowing.SubWindow):
         if event.type == gdk.EXPOSE:
             return False
         msg = self.event2str(widget, event)
+        motion_reports_limit = 5
         if event.type == gdk.MOTION_NOTIFY:
-            # statistics
-            self.motion_event_counter += 1
-            self.motion_dtime_sample.append(event.time - self.last_motion_time)
-            self.motion_dtime_sample = self.motion_dtime_sample[-10:]
-            self.last_motion_time = event.time
+            if widget is self.app.doc.tdw:
+                # statistics
+                self.motion_event_counter += 1
+                self.motion_dtime_sample.append(event.time - self.last_motion_time)
+                self.motion_dtime_sample = self.motion_dtime_sample[-10:]
+                self.last_motion_time = event.time
             # report suppression
-            if not self.motion_reports:
-                self.report(msg) # report first motion event immediately
+            if len(self.motion_reports) < motion_reports_limit:
+                self.report(msg) # report first few motion event immediately
             self.motion_reports.append(msg)
         else:
-            if self.motion_reports:
-                self.motion_reports.pop(0) # already reported the first motion event
-                if self.motion_reports:
-                    last_report = self.motion_reports.pop()
-                    if self.motion_reports:
-                        self.report('...      MOTION_NOTIFY %d events suppressed' % len(self.motion_reports))
-                    self.report(last_report)
-                self.motion_reports = []
+            unreported = self.motion_reports[motion_reports_limit:]
+            if unreported:
+                last_report = unreported.pop()
+                if unreported:
+                    self.report('...      MOTION_NOTIFY %d events suppressed' % len(unreported))
+                self.report(last_report)
+            self.motion_reports = []
             self.report(msg)
         return False
 
