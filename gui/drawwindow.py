@@ -37,6 +37,7 @@ import windowing
 import toolbar
 import dialogs
 import layermodes
+import quickchoice
 from lib import helpers
 from lib import fileutils
 import gui.viewmanip   # registration
@@ -457,7 +458,7 @@ class DrawWindow (Gtk.Window):
     def brush_chooser_popup_cb(self, action):
         dialog = self._brush_chooser_dialog
         if dialog is None:
-            dialog = dialogs.BrushChooserDialog(self.app)
+            dialog = quickchoice.BrushChooserDialog(self.app)
             dialog.connect("response", self._brush_chooser_dialog_response_cb)
             self._brush_chooser_dialog = dialog
         if not dialog.get_visible():

@@ -22,7 +22,7 @@ import pango
 from libmypaint import brushsettings
 
 import factoryaction
-import dialogs
+import quickchoice
 import dropdownpanel
 import widgets
 from colors import ColorAdjuster, HSVTriangle
@@ -300,8 +300,8 @@ class BrushDropdownToolItem (gtk.ToolItem):
         section_vbox.set_spacing(widgets.SPACING_TIGHT)
         section_frame.add(section_vbox)
 
-        chooser = dialogs.QuickBrushChooser(app)
-        chooser.bm.brush_selected += self._brushchooser_brush_selected_cb
+        chooser = quickchoice.QuickBrushChooser(app)
+        chooser.brush_selected += self._brushchooser_brush_selected_cb
         evbox = gtk.EventBox()
         evbox.add(chooser)
         section_vbox.pack_start(evbox, True, True)
