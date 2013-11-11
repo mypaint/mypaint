@@ -262,24 +262,36 @@ class FreehandOnlyMode (InteractionMode):
         drawstate = self._get_drawing_state(tdw)
         assert drawstate.evhack_data is None
         win = tdw.get_window()
-        data = (tdw, self)
-        logger.debug("Adding evhack filter %r", data)
-        mypaintlib.evhack_gdk_window_add_filter(win, data)
-        drawstate.evhack_data = data
-        drawstate.evhack_positions = []
+
+        if hasattr(win, 'set_event_compression'):
+            # GTK+ 3.12 and above
+            logger.info('evhack: using set_event_compression(True) instead of evhack')
+            win.set_event_compression(False);
+            drawstate.evhack_data = True
+        else:
+            logger.info('evhack: set_event_compression() is not available, adding evhack')
+            data = (tdw, self)
+            logger.debug("Adding evhack filter %r", data)
+            mypaintlib.evhack_gdk_window_add_filter(win, data)
+            drawstate.evhack_data = data
+            drawstate.evhack_positions = []
 
 
     def _remove_evhacks(self):
         for tdw, drawstate in self._drawing_state.iteritems():
             win = tdw.get_window()
-            drawstate = self._get_drawing_state(tdw)
-            data = drawstate.evhack_data
-            if data is None:
-                continue
-            logger.debug("Removing evhack filter %r", data)
-            mypaintlib.evhack_gdk_window_remove_filter(win, data)
-            drawstate.evhack_data = None
-            drawstate.evhack_positions = []
+            if hasattr(win, 'set_event_compression'):
+                # GTK+ 3.12 and above
+                drawstate.evhack_data = None
+            else:
+                drawstate = self._get_drawing_state(tdw)
+                data = drawstate.evhack_data
+                if data is None:
+                    continue
+                logger.debug("Removing evhack filter %r", data)
+                mypaintlib.evhack_gdk_window_remove_filter(win, data)
+                drawstate.evhack_data = None
+                drawstate.evhack_positions = []
 
 
     def queue_evhack_position(self, tdw, x, y, t):
