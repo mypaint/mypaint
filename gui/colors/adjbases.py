@@ -806,7 +806,7 @@ class PreviousCurrentColorAdjuster (ColorAdjusterWidget):
     # Class specialisation
     IS_DRAG_SOURCE = True
     HAS_DETAILS_DIALOG = True
-    STATIC_TOOLTIP_TEXT = _("Newly chosen color, and the color "
+    STATIC_TOOLTIP_TEXT = _("Current brush color, and the color "
                             "most recently used for painting")
 
     ## Construction

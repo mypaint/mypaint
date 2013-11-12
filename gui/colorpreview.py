@@ -21,13 +21,33 @@ class BrushColorIndicator (PreviousCurrentColorAdjuster):
 
     __gtype_name__ = "MyPaintBrushColorIndicator"
 
+    HAS_DETAILS_DIALOG = False
+
     def __init__(self):
         PreviousCurrentColorAdjuster.__init__(self)
         self.connect("realize", self._init_color_manager)
+        self.connect("button-press-event", self._button_press_cb)
+        self.connect("button-release-event", self._button_release_cb)
+        self._button = None
+        self._app = None
 
     def _init_color_manager(self, widget):
         from application import get_app
-        app = get_app()
-        mgr = app.brush_color_manager
+        self._app = get_app()
+        mgr = self._app.brush_color_manager
         assert mgr is not None
         self.set_color_manager(mgr)
+
+    def _button_press_cb(self, widget, event):
+        """Clicking on the current color side shows the quick color chooser"""
+        if event.button == 1:
+            width = widget.get_allocated_width()
+            if event.x < width / 2:
+                self._button = 1
+
+    def _button_release_cb(self, widget, event):
+        if event.button == self._button:
+            self._button = None
+            if self._app:
+                chooser = self._app.drawWindow.color_chooser
+                chooser.popup(widget=self, above=True, textwards=True)

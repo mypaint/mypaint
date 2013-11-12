@@ -205,8 +205,9 @@ class DrawWindow (Gtk.Window):
         for action in self.action_group.list_actions():
             self.app.kbm.takeover_action(action)
 
-        # Brush chooser
-        self._brush_chooser_dialog = None
+        # Brush/color choosers
+        self._brush_chooser = None
+        self._color_chooser = None
 
     def _init_stategroups(self):
         sg = stategroup.StateGroup()
@@ -455,20 +456,46 @@ class DrawWindow (Gtk.Window):
         state = self.popup_states[action.get_name()]
         state.activate(action)
 
-    def brush_chooser_popup_cb(self, action):
-        dialog = self._brush_chooser_dialog
-        if dialog is None:
-            dialog = quickchoice.BrushChooserDialog(self.app)
-            dialog.connect("response", self._brush_chooser_dialog_response_cb)
-            self._brush_chooser_dialog = dialog
-        if not dialog.get_visible():
-            dialog.show_all()
-            dialog.present()
-        else:
-            dialog.response(Gtk.ResponseType.CANCEL)
+    @property
+    def brush_chooser(self):
+        """Property: the brush chooser (cached, constructed on demand)"""
+        chooser = self._brush_chooser
+        if chooser is None:
+            chooser = quickchoice.BrushChooserPopup(self.app)
+            self._brush_chooser = chooser
+        return chooser
 
-    def _brush_chooser_dialog_response_cb(self, dialog, response_id):
-        dialog.hide()
+    def brush_chooser_popup_cb(self, action):
+        """Pops up the brush chooser under the pointer"""
+        chooser = self.brush_chooser
+        if not chooser.get_visible():
+            chooser.popup()
+            for other in [self.color_chooser]:
+                if other.get_visible():
+                    other.hide()
+        else:
+            chooser.hide()
+
+    @property
+    def color_chooser(self):
+        """Property: the color chooser (cached, constructed on demand)"""
+        chooser = self._color_chooser
+        if chooser is None:
+            chooser = quickchoice.ColorChooserPopup(self.app)
+            self._color_chooser = chooser
+        return chooser
+
+    def color_chooser_popup_cb(self, action):
+        """Pops up the color chooser under the pointer"""
+        self.color_chooser
+        chooser = self.color_chooser
+        if not chooser.get_visible():
+            chooser.popup()
+            for other in [self.brush_chooser]:
+                if other.get_visible():
+                    other.hide()
+        else:
+            chooser.hide()
 
     def color_details_dialog_cb(self, action):
         mgr = self.app.brush_color_manager

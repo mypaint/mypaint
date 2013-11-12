@@ -921,7 +921,6 @@ Perhaps an increasing amount.
             >Color changer popup (crossed bowl)</property>
           <signal name="activate" handler="popup_cb"/>
         </object>
-        <accelerator key="v"/>
       </child>
       <child>
         <object class="GtkAction" id="ColorChangerWashPopup">
@@ -931,7 +930,6 @@ Perhaps an increasing amount.
             >Color changer popup (wash)</property>
           <signal name="activate" handler="popup_cb"/>
         </object>
-        <accelerator key="c"/>
       </child>
       <child>
         <object class="GtkAction" id="ColorRingPopup">
@@ -1097,11 +1095,20 @@ Perhaps an increasing amount.
       <child>
         <object class="GtkAction" id="BrushChooserPopup">
           <property name="label" translatable="yes"
-            context="Menu|Brush|">Change Brush</property>
+            context="Menu|Brush|">Change Brush...</property>
           <property name="icon-name">mypaint-brushes-symbolic</property>
           <signal name="activate" handler="brush_chooser_popup_cb"/>
         </object>
         <accelerator key="b"/>
+      </child>
+      <child>
+        <object class="GtkAction" id="ColorChooserPopup">
+          <property name="label" translatable="yes"
+            context="Menu|Color|">Change Color...</property>
+          <property name="icon-name">mypaint-color-symbolic</property>
+          <signal name="activate" handler="color_chooser_popup_cb"/>
+        </object>
+        <accelerator key="c"/>
       </child>
       <child>
         <object class="GtkAction" id="DownloadBrushPack">

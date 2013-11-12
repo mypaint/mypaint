@@ -23,6 +23,14 @@ import spinbox
 import windowing
 from lib.observable import event
 
+from colors.hcywheel import HCYAdjusterPage
+from colors.hsvwheel import HSVAdjusterPage
+from colors.paletteview import PalettePage
+from colors.hsvtriangle import HSVTrianglePage
+from colors.hsvcube import HSVCubePage
+from colors.sliders import ComponentSlidersAdjusterPage
+from colors import ColorAdjuster
+
 
 ## Class defs
 
@@ -102,30 +110,26 @@ class QuickBrushChooser (Gtk.VBox):
         self.brushlist.update()
 
 
-class BrushChooserDialog (windowing.ChooserDialog):
-    """Speedy brush chooser dialog"""
+class BrushChooserPopup (windowing.ChooserPopup):
+    """Speedy brush chooser popup"""
 
     def __init__(self, app):
         """Initialize"""
-        windowing.ChooserDialog.__init__(self,
-          app=app, title=_("Change Brush"),
-          actions=['BrushChooserPopup'],
-          config_name="brushchooser")
-        self._response_brush = None
+        windowing.ChooserPopup.__init__(self,
+           app=app, actions=['ColorChooserPopup', 'BrushChooserPopup'],
+           config_name="brushchooser")
+        self._chosen_brush = None
         self._chooser = QuickBrushChooser(app)
         self._chooser.brush_selected += self._brush_selected_cb
 
         bl = self._chooser.brushlist
         bl.connect("button-release-event", self._brushlist_button_release_cb)
 
-        vbox = self.get_content_area()
-        vbox.pack_start(self._chooser, True, True)
-
-        self.connect("response", self._response_cb)
+        self.add(self._chooser)
 
     def _brush_selected_cb(self, chooser, brush):
         """Internal: update the response brush when an icon is clicked"""
-        self._response_brush = brush
+        self._chosen_brush = brush
 
     def _brushlist_button_release_cb(self, *junk):
         """Internal: send an accept response on a button release
@@ -133,12 +137,95 @@ class BrushChooserDialog (windowing.ChooserDialog):
         We only send the response (and close the dialog) on button release to
         avoid accidental dabs with the stylus.
         """
-        if self._response_brush is not None:
-            self.response(Gtk.ResponseType.ACCEPT)
-
-    def _response_cb(self, dialog, response_id):
-        """Internal: update the brush on an accept response"""
-        if response_id == Gtk.ResponseType.ACCEPT:
+        if self._chosen_brush is not None:
             bm = self.app.brushmanager
-            bm.select_brush(dialog._response_brush)
+            bm.select_brush(self._chosen_brush)
+            self.hide()
+            self._chosen_brush = None
+
+
+class QuickColorChooser (Gtk.VBox):
+    """A quick chooser widget for colors"""
+
+    ## Class constants
+    _PREFS_KEY = 'widgets.color_chooser.selected_adjuster'
+    _ADJUSTER_CLASSES = [PalettePage, HCYAdjusterPage, HSVAdjusterPage,
+                        HSVTrianglePage, HSVCubePage,
+                        ComponentSlidersAdjusterPage]
+    _CHOICE_COMPLETABLE_CLASSES = set([PalettePage])
+
+
+    def __init__(self, app):
+        Gtk.VBox.__init__(self)
+        self._app = app
+        self._spinbox_model = []
+        self._adjs = {}
+        self._pages = []
+        mgr = app.brush_color_manager
+        for page_class in self._ADJUSTER_CLASSES:
+            name = page_class.__name__
+            page = page_class()
+            self._pages.append(page)
+            self._spinbox_model.append((name, page.get_page_title()))
+            widget = page.get_page_widget()
+            self._adjs[name] = widget
+            page.set_color_manager(mgr)
+            if page_class in self._CHOICE_COMPLETABLE_CLASSES:
+                widget.connect_after("button-release-event",
+                                     self._ccwidget_btn_release_cb)
+        active_page = app.preferences.get(self._PREFS_KEY, None)
+        sb = spinbox.ItemSpinBox(self._spinbox_model, self._spinbox_changed_cb,
+                                 active_page)
+        active_page = sb.get_value()
+        self._spinbox = sb
+        self._active_adj = self._adjs[active_page]
+        self.pack_start(sb, False, False, 0)
+        self.pack_start(self._active_adj, True, True, 0)
+        self.set_spacing(widgets.SPACING_TIGHT)
+
+    def _spinbox_changed_cb(self, page_name):
+        self._app.preferences[self._PREFS_KEY] = page_name
+        self.remove(self._active_adj)
+        new_adj = self._adjs[page_name]
+        self._active_adj = new_adj
+        self.pack_start(self._active_adj, True, True, 0)
+        self._active_adj.show_all()
+
+    def _ccwidget_btn_release_cb(self, ccwidget, event):
+        """Internal: fire "choice_completed" after clicking certain widgets"""
+        self.choice_completed()
+        return False
+
+    @event
+    def choice_completed(self):
+        """Event: a complete seletion was made
+
+        This is emitted by button-release events on certain kinds of colour
+        chooser page. Not every page in the chooser emits this event, because
+        colour is a three-dimensional quantity: clicking on a two-dimensional
+        popup can't make a complete choice of colour with most pages.
+
+        The palette page does emit this event, and it's the default.
+        """
+
+
+class ColorChooserPopup (windowing.ChooserPopup):
+    """Speedy color chooser dialog"""
+
+    def __init__(self, app):
+        """Initialize"""
+        windowing.ChooserPopup.__init__(self, app=app,
+          actions=['ColorChooserPopup', 'BrushChooserPopup'],
+          config_name="colorchooser")
+        self._chooser = QuickColorChooser(app)
+        self._chooser.choice_completed += self._choice_completed_cb
+        self.add(self._chooser)
+
+    def _choice_completed_cb(self, chooser):
+        """Internal: close when a choice is (fully) made
+
+        Close the dialog on button release only to avoid accidental dabs
+        with the stylus.
+        """
+        self.hide()
 
