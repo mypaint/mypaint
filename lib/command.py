@@ -28,12 +28,18 @@ class CommandStack (object):
                     len(self.redo_stack), self.redo_stack[:3],  )
 
     def clear(self):
-        self.undo_stack = []
-        self.redo_stack = []
+        self._discard_undo()
+        self._discard_redo()
         self.stack_updated()
 
+    def _discard_undo(self):
+        self.undo_stack = []
+
+    def _discard_redo(self):
+        self.redo_stack = []
+
     def do(self, command):
-        self.redo_stack = [] # discard
+        self._discard_redo()
         command.redo()
         self.undo_stack.append(command)
         self.reduce_undo_history()
