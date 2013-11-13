@@ -95,11 +95,11 @@ class Document (object):
         self.stroke_observers = [] #: See `split_stroke()`
         self.doc_observers = [] #: See `call_doc_observers()`
         self.frame_observers = []
-        self.command_stack_observers = []
         self.symmetry_observers = []  #: See `set_symmetry_axis()`
         self._symmetry_axis = None
         self.default_background = (255, 255, 255) #: Default bg for clear().
         self._background_layer = layer.BackgroundLayer(self.default_background)
+        self.command_stack = command.CommandStack()
         self._tempdir = None
         self.clear(True)
 
@@ -286,8 +286,7 @@ class Document (object):
             self._cleanup_tempdir()
         self._create_tempdir()
         # throw everything away, including undo stack
-        self.command_stack = command.CommandStack()
-        self.command_stack.stack_observers = self.command_stack_observers
+        self.command_stack.clear()
         self.set_background(self.default_background)
         self.layers = []
         self.layer_idx = None

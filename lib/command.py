@@ -8,6 +8,7 @@
 
 import layer
 import helpers
+from observable import event
 
 import weakref
 from gettext import gettext as _
@@ -16,8 +17,9 @@ class CommandStack (object):
 
     def __init__(self):
         object.__init__(self)
-        self.stack_observers = []
-        self.clear()
+        self.undo_stack = []
+        self.redo_stack = []
+        self.stack_updated()
 
     def __repr__(self):
         return "<CommandStack\n  <Undo len=%d last3=%r>\n" \
@@ -28,21 +30,21 @@ class CommandStack (object):
     def clear(self):
         self.undo_stack = []
         self.redo_stack = []
-        self.notify_stack_observers()
+        self.stack_updated()
 
     def do(self, command):
         self.redo_stack = [] # discard
         command.redo()
         self.undo_stack.append(command)
         self.reduce_undo_history()
-        self.notify_stack_observers()
+        self.stack_updated()
 
     def undo(self):
         if not self.undo_stack: return
         command = self.undo_stack.pop()
         command.undo()
         self.redo_stack.append(command)
-        self.notify_stack_observers()
+        self.stack_updated()
         return command
 
     def redo(self):
@@ -50,7 +52,7 @@ class CommandStack (object):
         command = self.redo_stack.pop()
         command.redo()
         self.undo_stack.append(command)
-        self.notify_stack_observers()
+        self.stack_updated()
         return command
 
     def reduce_undo_history(self):
@@ -73,12 +75,13 @@ class CommandStack (object):
         if cmd is None:
             return None
         cmd.update(**kwargs)
-        self.notify_stack_observers() # the display_name may have changed
+        self.stack_updated() # the display_name may have changed
         return cmd
 
-    def notify_stack_observers(self):
-        for func in self.stack_observers:
-            func(self)
+    @event
+    def stack_updated(self):
+        """Event: command stack was updated"""
+        pass
 
 class Action (object):
     """An undoable, redoable action.

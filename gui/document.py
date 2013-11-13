@@ -273,8 +273,8 @@ class Document (CanvasController):
         self.modes_action_group = self.app.builder.get_object("ModeStackActions")
 
         # Set up certain actions to reflect model state changes
-        self.model.command_stack_observers.append(
-                self.update_command_stack_toolitems)
+        stack_updated_cb = self.update_command_stack_toolitems
+        self.model.command_stack.stack_updated += stack_updated_cb
         self.update_command_stack_toolitems(self.model.command_stack)
         self.model.doc_observers.append(self.model_structure_changed_cb)
         self.model_structure_changed_cb(self.model)
