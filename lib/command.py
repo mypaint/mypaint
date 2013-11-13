@@ -8,11 +8,14 @@
 
 import layer
 import helpers
+
+import weakref
 from gettext import gettext as _
 
-class CommandStack:
+class CommandStack (object):
+
     def __init__(self):
-        self.call_before_action = []
+        object.__init__(self)
         self.stack_observers = []
         self.clear()
 
@@ -28,7 +31,6 @@ class CommandStack:
         self.notify_stack_observers()
 
     def do(self, command):
-        for f in self.call_before_action: f()
         self.redo_stack = [] # discard
         command.redo()
         self.undo_stack.append(command)
@@ -37,7 +39,6 @@ class CommandStack:
 
     def undo(self):
         if not self.undo_stack: return
-        for f in self.call_before_action: f()
         command = self.undo_stack.pop()
         command.undo()
         self.redo_stack.append(command)
@@ -46,7 +47,6 @@ class CommandStack:
 
     def redo(self):
         if not self.redo_stack: return
-        for f in self.call_before_action: f()
         command = self.redo_stack.pop()
         command.redo()
         self.undo_stack.append(command)
@@ -80,7 +80,7 @@ class CommandStack:
         for func in self.stack_observers:
             func(self)
 
-class Action:
+class Action (object):
     """An undoable, redoable action.
 
     Base class for all undo/redoable actions. Subclasses must implement the
@@ -91,6 +91,9 @@ class Action:
     automatic_undo = False
     display_name = _("Unknown Action")
 
+    def __init__(self, doc):
+        object.__init__(self)
+        self.doc = weakref.proxy(doc)
     def __repr__(self):
         return "<%s>" % (self.display_name,)
 
@@ -150,10 +153,12 @@ class Action:
         self.doc.call_doc_observers()
 
 class Stroke(Action):
+    """Completed stroke, i.e. some seconds of painting"""
     display_name = _("Painting")
     def __init__(self, doc, stroke, snapshot_before):
-        """called only when the stroke was just completed and is now fully rendered"""
-        self.doc = doc
+        # called only when the stroke was just completed and is now
+        # fully rendered
+        Action.__init__(self, doc)
         assert stroke.finished
         self.stroke = stroke # immutable; not used for drawing any more, just for inspection
         self.before = snapshot_before
@@ -236,7 +241,7 @@ class TrimLayer (Action):
     display_name = _("Trim Layer")
 
     def __init__(self, doc):
-        self.doc = doc
+        Action.__init__(self, doc)
         self.before = None
 
     def redo(self):
@@ -251,7 +256,7 @@ class TrimLayer (Action):
 class ClearLayer(Action):
     display_name = _("Clear Layer")
     def __init__(self, doc):
-        self.doc = doc
+        Action.__init__(self, doc)
     def redo(self):
         self.before = self.doc.layer.save_snapshot()
         self.doc.layer.clear()
@@ -264,7 +269,7 @@ class ClearLayer(Action):
 class LoadLayer(Action):
     display_name = _("Load Layer")
     def __init__(self, doc, tiledsurface):
-        self.doc = doc
+        Action.__init__(self, doc)
         self.tiledsurface = tiledsurface
     def redo(self):
         layer = self.doc.layer
@@ -278,7 +283,7 @@ class MergeLayer(Action):
     """merge the current layer into dst"""
     display_name = _("Merge Layers")
     def __init__(self, doc, dst_idx):
-        self.doc = doc
+        Action.__init__(self, doc)
         self.dst_layer = self.doc.layers[dst_idx]
         self.normalize_src = ConvertLayerToNormalMode(doc, doc.layer)
         self.normalize_dst = ConvertLayerToNormalMode(doc, self.dst_layer)
@@ -306,7 +311,7 @@ class MergeLayer(Action):
 class ConvertLayerToNormalMode(Action):
     display_name = _("Convert Layer Mode")
     def __init__(self, doc, layer):
-        self.doc = doc
+        Action.__init__(self, doc)
         self.layer = layer
         self.set_normal_mode = SetLayerCompositeOp(doc, 'svg:src-over', layer)
         self.set_opacity = SetLayerOpacity(doc, 1.0, layer)
@@ -328,7 +333,7 @@ class ConvertLayerToNormalMode(Action):
 class AddLayer(Action):
     display_name = _("Add Layer")
     def __init__(self, doc, insert_idx=None, after=None, name=''):
-        self.doc = doc
+        Action.__init__(self, doc)
         self.insert_idx = insert_idx
         if after:
             l_idx = self.doc.layers.index(after)
@@ -351,7 +356,7 @@ class RemoveLayer(Action):
     """
     display_name = _("Remove Layer")
     def __init__(self, doc,layer=None):
-        self.doc = doc
+        Action.__init__(self, doc)
         self.layer = layer
         self.newlayer0 = None
     def redo(self):
@@ -387,7 +392,7 @@ class SelectLayer(Action):
     display_name = _("Select Layer")
     automatic_undo = True
     def __init__(self, doc, idx):
-        self.doc = doc
+        Action.__init__(self, doc)
         self.idx = idx
     def redo(self):
         assert self.idx >= 0 and self.idx < len(self.doc.layers)
@@ -402,7 +407,7 @@ class MoveLayer(Action):
     display_name = _("Move Layer on Canvas")
     # NOT "Move Layer" for now - old translatable string with different sense
     def __init__(self, doc, layer_idx, dx, dy, ignore_first_redo=True):
-        self.doc = doc
+        Action.__init__(self, doc)
         self.layer_idx = layer_idx
         self.dx = dx
         self.dy = dy
@@ -426,7 +431,7 @@ class MoveLayer(Action):
 class ReorderSingleLayer(Action):
     display_name = _("Reorder Layer in Stack")
     def __init__(self, doc, was_idx, new_idx, select_new=False):
-        self.doc = doc
+        Action.__init__(self, doc)
         self.was_idx = was_idx
         self.new_idx = new_idx
         self.select_new = select_new
@@ -452,13 +457,14 @@ class ReorderSingleLayer(Action):
 class DuplicateLayer(Action):
     display_name = _("Duplicate Layer")
     def __init__(self, doc, insert_idx=None, name=''):
-        self.doc = doc
+        Action.__init__(self, doc)
         self.insert_idx = insert_idx
         snapshot = self.doc.layers[self.insert_idx].save_snapshot()
         self.new_layer = layer.PaintingLayer(name)
         self.new_layer.load_snapshot(snapshot)
         self.new_layer.content_observers.append(self.doc.layer_modified_cb)
         self.new_layer.set_symmetry_axis(doc.get_symmetry_axis())
+        self.duplicate_layer = None
     def redo(self):
         self.doc.layers.insert(self.insert_idx+1, self.new_layer)
         self.duplicate_layer = self.doc.layers[self.insert_idx+1]
@@ -473,10 +479,10 @@ class DuplicateLayer(Action):
 class ReorderLayers(Action):
     display_name = _("Reorder Layer Stack")
     def __init__(self, doc, new_order):
-        self.doc = doc
-        self.old_order = doc.layers[:]
+        Action.__init__(self, doc)
+        self.old_order = list(doc.layers[:])
         self.selection = self.old_order[doc.layer_idx]
-        self.new_order = new_order
+        self.new_order = list(new_order)
         for layer in new_order:
             assert layer in self.old_order
         assert len(self.old_order) == len(new_order)
@@ -494,7 +500,7 @@ class ReorderLayers(Action):
 class RenameLayer(Action):
     display_name = _("Rename Layer")
     def __init__(self, doc, name, layer):
-        self.doc = doc
+        Action.__init__(self, doc)
         self.new_name = name
         self.layer = layer
     def redo(self):
@@ -507,7 +513,7 @@ class RenameLayer(Action):
 
 class SetLayerVisibility(Action):
     def __init__(self, doc, visible, layer):
-        self.doc = doc
+        Action.__init__(self, doc)
         self.new_visibility = visible
         self.layer = layer
     def redo(self):
@@ -533,7 +539,7 @@ class SetLayerVisibility(Action):
 
 class SetLayerLocked (Action):
     def __init__(self, doc, locked, layer):
-        self.doc = doc
+        Action.__init__(self, doc)
         self.new_locked = locked
         self.layer = layer
     def redo(self):
@@ -560,7 +566,7 @@ class SetLayerLocked (Action):
 class SetLayerOpacity(Action):
     display_name = _("Change Layer Visibility")
     def __init__(self, doc, opacity, layer=None):
-        self.doc = doc
+        Action.__init__(self, doc)
         self.new_opacity = opacity
         self.layer = layer
     def redo(self):
@@ -588,7 +594,7 @@ class SetLayerOpacity(Action):
 class SetLayerCompositeOp(Action):
     display_name = _("Change Layer Blending Mode")
     def __init__(self, doc, compositeop, layer=None):
-        self.doc = doc
+        Action.__init__(self, doc)
         self.new_compositeop = compositeop
         self.layer = layer
     def redo(self):
@@ -621,7 +627,7 @@ class SetFrameEnabled (Action):
             return _("Disable Frame")
 
     def __init__(self, doc, enable):
-        self.doc = doc
+        Action.__init__(self, doc)
         self.before = None
         self.after = enable
 
@@ -639,7 +645,7 @@ class UpdateFrame (Action):
     display_name = _("Update Frame")
 
     def __init__(self, doc, frame):
-        self.doc = doc
+        Action.__init__(self, doc)
         self.new_frame = frame
         self.old_frame = None
         self.old_enabled = doc.get_frame_enabled()
