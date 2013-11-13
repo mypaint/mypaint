@@ -134,7 +134,7 @@ class Layer (object):
 
 
     def load_from_openraster(self, orazip, attrs, tempdir, feedback_cb):
-        """Loads layer flags from XML attrs. Derived classes handle src.
+        """Loads layer flags from XML attrs. Derived classes handle data.
 
         :param orazip: An OpenRaster zipfile, opened for extracting
         :param attrs: The XML attributes of the <layer/> tag.

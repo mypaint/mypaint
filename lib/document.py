@@ -965,6 +965,9 @@ class Document (object):
         :param feedback_cb: 0-arg callable used for providing loader feedback.
         :returns: ``(LAYER, SELECTED)``, New layer, and whether it's selected
         :rtype: tuple
+
+        The LAYER return value will be None if data could not be loaded for
+        some reason.
         """
 
         # Switch the class to instantiate bsed on the filename extension.
