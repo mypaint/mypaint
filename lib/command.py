@@ -185,7 +185,7 @@ class FloodFill (Action):
 
     def __init__(self, doc, x, y, color, bbox, tolerance,
                  sample_merged, make_new_layer):
-        self.doc = doc
+        Action.__init__(self, doc)
         self.x = x
         self.y = y
         self.color = color
