@@ -87,9 +87,7 @@ class Action (object):
     """An undoable, redoable action.
 
     Base class for all undo/redoable actions. Subclasses must implement the
-    undo and redo methods. They should have a reference to the document in 
-    self.doc.
-
+    undo and redo methods.
     """
     automatic_undo = False
     display_name = _("Unknown Action")
@@ -97,9 +95,9 @@ class Action (object):
     def __init__(self, doc):
         object.__init__(self)
         self.doc = weakref.proxy(doc)
+
     def __repr__(self):
         return "<%s>" % (self.display_name,)
-
 
     def redo(self):
         """Callback used to perform, or re-perform the Action.

@@ -377,7 +377,7 @@ class Document (object):
             self.do(command.ClearLayer(self))
 
 
-    ## Drawing strokes
+    ## Drawing/painting strokes
 
 
     def stroke_to(self, dtime, x, y, pressure, xtilt, ytilt):
@@ -429,6 +429,9 @@ class Document (object):
         snapshot_before = self.layer.save_snapshot()
         new_stroke.render(self.layer._surface)
         self.do(command.Stroke(self, new_stroke, snapshot_before))
+
+
+    ## Othher painting/drawing
 
 
     def flood_fill(self, x, y, color, tolerance=0.1,
