@@ -76,6 +76,12 @@ class Document (object):
     #   or discarded as empty before any other action is possible.
     #   (split_stroke)
 
+    ## Class constants
+
+    TEMPDIR_STUB_NAME = "mypaint"
+
+    ## Initialization and cleanup
+
     def __init__(self, brushinfo=None):
         object.__init__(self)
         if not brushinfo:
@@ -94,12 +100,58 @@ class Document (object):
         self._symmetry_axis = None
         self.default_background = (255, 255, 255) #: Default bg for clear().
         self._background_layer = layer.BackgroundLayer(self.default_background)
+        self._tempdir = None
         self.clear(True)
 
         self._frame = [0, 0, 0, 0]
         self._frame_enabled = False
 
 
+    def _create_tempdir(self):
+        """Internal: creates the working-document tempdir"""
+        assert self._tempdir is None
+        tempdir = tempfile.mkdtemp(self.TEMPDIR_STUB_NAME)
+        if not isinstance(tempdir, unicode):
+            tempdir = tempdir.decode(sys.getfilesystemencoding())
+        logger.debug("Created working-doc tempdir %r", tempdir)
+        self._tempdir = tempdir
+
+
+    def _cleanup_tempdir(self):
+        """Internal: recursively delete the working-document tempdir"""
+        assert self._tempdir is not None
+        tempdir = self._tempdir
+        self._tempdir = None
+        for root, dirs, files in os.walk(tempdir, topdown=False):
+            for name in files:
+                tempfile = os.path.join(root, name)
+                try:
+                    os.remove(tempfile)
+                except OSError, err:
+                    logger.warning("Cannot remove %r: %r", tempfile, err)
+            for name in dirs:
+                subtemp = os.path.join(root, name)
+                try:
+                    os.rmdir(subtemp)
+                except OSError, err:
+                    logger.warning("Cannot rmdir %r: %r", subtemp, err)
+        try:
+            os.rmdir(tempdir)
+        except OSError, err:
+            logger.warning("Cannot rmdir %r: %r", subtemp, err)
+        if os.path.exists(tempdir):
+            logger.error("Failed to remove working-doc tempdir %r", tempdir)
+        else:
+            logger.debug("Successfully removed working-doc tempdir %r", tempdir)
+
+
+    def cleanup(self):
+        """Cleans up any persistent state belonging to the document.
+
+        Currently this just removes the working-document tempdir. This method
+        is called by the main app's exit routine after confirmation.
+        """
+        self._cleanup_tempdir()
 
 
     ## Document frame
@@ -217,12 +269,23 @@ class Document (object):
 
 
     def clear(self, init=False):
+        """Clears everything, and resets the command stack
+
+        :param init: Set to true to suppress notification of the
+          canvas_observers (used during init).
+
+        This results in an empty layers stack, no undo history, and a new empty
+        working-document temp directory.
+        """
         self.split_stroke()
         self.set_symmetry_axis(None)
         if not init:
             bbox = self.get_bbox()
+        # Clean up any persistent state belonging to the last load
+        if self._tempdir is not None:
+            self._cleanup_tempdir()
+        self._create_tempdir()
         # throw everything away, including undo stack
-
         self.command_stack = command.CommandStack()
         self.command_stack.stack_observers = self.command_stack_observers
         self.set_background(self.default_background)
@@ -893,13 +956,12 @@ class Document (object):
 
         return thumbnail_pixbuf
 
-    @staticmethod
-    def _layer_new_from_openraster(orazip, attrs, tempdir, feedback_cb):
+
+    def _layer_new_from_openraster(self, orazip, attrs, feedback_cb):
         """Create a new layer from an ORA zipfile, and a dict of XML attrs
 
         :param orazip: OpenRaster zipfile, open for extraction.
         :param attrs: Dict of stack XML <layer/> attrs.
-        :param tempdir: Path to a temporary working directory.
         :param feedback_cb: 0-arg callable used for providing loader feedback.
         :returns: ``(LAYER, SELECTED)``, New layer, and whether it's selected
         :rtype: tuple
@@ -915,14 +977,13 @@ class Document (object):
         t0 = time.time()
         if src_ext == '.png':
             new_layer = layer.PaintingLayer()
-            selected = new_layer.load_from_openraster(orazip, attrs, tempdir,
-                                                      feedback_cb)
         elif src_ext == '.svg':
-            raise NotImplementedError, "SVG loading not implemented yet"
-            # TODO: keep the temp file: required for editing and saving
+            new_layer = layer.ExternalLayer()
         else:
-            raise NotImplementedError, "Unhandled extension %r" % src_ext
-            assert False, ""
+            logger.warning("Unknown extension %r for %r", src_ext, src_basename)
+            return (None, False)
+        selected = new_layer.load_from_openraster(orazip, attrs, self._tempdir,
+                                                  feedback_cb)
         t1 = time.time()
         logger.debug('%.3fs loading and converting %r layer %r',
                      t1 - t0, src_ext, src_basename)
@@ -965,9 +1026,7 @@ class Document (object):
         """Loads from an OpenRaster file"""
         logger.info('load_ora: %r', filename)
         t0 = time.time()
-        tempdir = tempfile.mkdtemp('mypaint')
-        if not isinstance(tempdir, unicode):
-            tempdir = tempdir.decode(sys.getfilesystemencoding())
+        tempdir = self._tempdir
         z = zipfile.ZipFile(filename)
         logger.debug('mimetype: %r', z.read('mimetype').strip())
         xml = z.read('stack.xml')
@@ -1012,8 +1071,10 @@ class Document (object):
                 except tiledsurface.BackgroundError, e:
                     logger.warning('ORA background tile not usable: %r', e)
 
-            layer, selected = self._layer_new_from_openraster(z, a, tempdir,
-                                                              feedback_cb)
+            layer, selected = self._layer_new_from_openraster(z, a, feedback_cb)
+            if layer is None:
+                logger.warning("Skipping empty layer")
+                continue
             self.layers.insert(0, layer)
             if selected:
                 selected_layer = layer
@@ -1050,11 +1111,5 @@ class Document (object):
         self.set_frame_enabled(frame_enab, user_initiated=False)
 
         z.close()
-
-        # remove empty directories created by zipfile's extract()
-        for root, dirs, files in os.walk(tempdir, topdown=False):
-            for name in dirs:
-                os.rmdir(os.path.join(root, name))
-        os.rmdir(tempdir)
 
         logger.info('%.3fs load_ora total', time.time() - t0)

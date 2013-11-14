@@ -672,6 +672,7 @@ class DrawWindow (gtk.Window):
         if not self.app.filehandler.confirm_destructive_action(title=_('Quit'), question=_('Really Quit?')):
             return True
 
+        self.app.doc.model.cleanup()
         gtk.main_quit()
         return False
 
