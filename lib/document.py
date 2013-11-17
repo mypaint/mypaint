@@ -82,7 +82,15 @@ class Document (object):
 
     ## Initialization and cleanup
 
-    def __init__(self, brushinfo=None):
+    def __init__(self, brushinfo=None, painting_only=False):
+        """Initialize
+
+        :param brushinfo: the lib.brush.BrushInfo instance to use
+        :param painting_only: only use painting layers
+
+        If painting_only is true, then no tempdir will be created by the
+        document when it is initialized or cleared.
+        """
         object.__init__(self)
         if not brushinfo:
             brushinfo = brush.BrushInfo()
@@ -100,6 +108,7 @@ class Document (object):
         self.default_background = (255, 255, 255) #: Default bg for clear().
         self._background_layer = layer.BackgroundLayer(self.default_background)
         self.command_stack = command.CommandStack()
+        self._painting_only = painting_only
         self._tempdir = None
         self.clear(True)
 
@@ -109,6 +118,8 @@ class Document (object):
 
     def _create_tempdir(self):
         """Internal: creates the working-document tempdir"""
+        if self._painting_only:
+            return
         assert self._tempdir is None
         tempdir = tempfile.mkdtemp(self.TEMPDIR_STUB_NAME)
         if not isinstance(tempdir, unicode):
@@ -119,6 +130,8 @@ class Document (object):
 
     def _cleanup_tempdir(self):
         """Internal: recursively delete the working-document tempdir"""
+        if self._painting_only:
+            return
         assert self._tempdir is not None
         tempdir = self._tempdir
         self._tempdir = None
@@ -431,7 +444,7 @@ class Document (object):
         self.do(command.Stroke(self, new_stroke, snapshot_before))
 
 
-    ## Othher painting/drawing
+    ## Other painting/drawing
 
 
     def flood_fill(self, x, y, color, tolerance=0.1,

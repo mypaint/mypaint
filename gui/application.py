@@ -210,7 +210,7 @@ class Application (object):
         signal_callback_objs.append(self.doc.modes)
 
         self.scratchpad_filename = ""
-        scratchpad_model = lib.document.Document(self.brush)
+        scratchpad_model = lib.document.Document(self.brush, painting_only=True)
         scratchpad_tdw = tileddrawwidget.TiledDrawWidget()
         scratchpad_tdw.set_model(scratchpad_model)
         self.scratchpad_doc = document.Document(self, scratchpad_tdw,

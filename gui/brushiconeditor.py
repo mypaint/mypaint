@@ -97,7 +97,7 @@ class BrushIconEditor (Gtk.Grid):
         self._bm.brush_selected += self._brush_selected_cb
         self._brush_to_edit = None
         self._preview_modified = False
-        self._model = lib.document.Document(self._app.brush)
+        self._model = lib.document.Document(self._app.brush, painting_only=True)
         self._model.canvas_observers.append(self._preview_modified_cb)
         self._init_widgets()
 
