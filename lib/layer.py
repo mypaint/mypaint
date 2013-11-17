@@ -505,7 +505,9 @@ class BackgroundLayer (Layer):
                            canvas_bbox, frame_bbox, **kwargs):
         # Normalize ref
         if type(ref) == int:
-            ref = "background%03d"
+            ref = "background%03d" % (ref,)
+        ref = str(ref)
+
         # Save as a regular layer for other apps.
         # Background surfaces repeat, so this will fit the frame.
         # XXX But we use the canvas bbox and always have. Why?
