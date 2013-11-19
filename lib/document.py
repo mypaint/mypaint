@@ -93,7 +93,8 @@ class Document (object):
         self.command_stack_observers = []
         self.symmetry_observers = []  #: See `set_symmetry_axis()`
         self._symmetry_axis = None
-        self.default_background = (255, 255, 255)
+        self.default_background = (255, 255, 255) #: Default bg for clear().
+        self._background_layer = layer.BackgroundLayer(self.default_background)
         self.clear(True)
 
         self._frame = [0, 0, 0, 0]
@@ -477,6 +478,8 @@ class Document (object):
         return self.get_frame() if self.frame_enabled else self.get_bbox()
 
 
+    ## Rendering tiles
+
     def render_into(self, surface, tiles, mipmap_level=0, layers=None, background=None):
 
         # TODO: move this loop down in C/C++
@@ -489,7 +492,7 @@ class Document (object):
         if layers is None:
             layers = self.layers
         if background is None:
-            background = self.background
+            background = self._background_layer._surface
 
         assert dst.shape[-1] == 4
         if dst.dtype == 'uint8':
@@ -594,14 +597,31 @@ class Document (object):
         self.do(command.SetLayerCompositeOp(self, compositeop, layer))
 
 
+    @property
+    def background_layer(self):
+        """The background layer (accessor)"""
+        return self._background_layer
+
+
     def set_background(self, obj, make_default=False):
+        """Set the background layer's surface from an object
+
+        :param obj: Background layer, or an RGB triple (uint8), or a
+           HxWx4 or HxWx3 numpy array which can be either uint8 or uint16.
+        :type obj: layer.BackgroundLayer or tuple or numpy array
+        :param make_default: Whether to set the default background for
+          clear() too.
+        :type make_default: bool
+        """
         # This is not an undoable action. One reason is that dragging
         # on the color chooser would get tons of undo steps.
+        if isinstance(obj, layer.BackgroundLayer):
+            obj = obj._surface
         if not isinstance(obj, tiledsurface.Background):
             if isinstance(obj, GdkPixbuf.Pixbuf):
                 obj = helpers.gdkpixbuf2numpy(obj)
             obj = tiledsurface.Background(obj)
-        self.background = obj
+        self._background_layer.set_surface(obj)
         if make_default:
             self.default_background = obj
         self.invalidate_all()
@@ -820,18 +840,14 @@ class Document (object):
             for k, v in attrs.iteritems():
                 el.attrib[k] = str(v)
 
-        # save background as layer (solid color or tiled)
-        bg = self.background
-        # save as fully rendered layer
-        x, y, w, h = self.get_bbox()
-        l = add_layer(x-x0, y-y0, 1.0, bg, 'data/background.png', 'background',
-                      locked=True, selected=False,
-                      compositeop=DEFAULT_COMPOSITE_OP,
-                      rect=(x,y,w,h))
-        x, y, w, h = bg.get_bbox()
-        # save as single pattern (with corrected origin)
-        store_surface(bg, 'data/background_tile.png', rect=(x+x0, y+y0, w, h))
-        l.attrib['background_tile'] = 'data/background_tile.png'
+        # Save background
+        bglayer = self._background_layer
+        attrs = bglayer.save_to_openraster(z, tempdir, "background", False,
+                                           canvas_bbox, frame_bbox, **kwargs)
+        el = ET.Element('layer')
+        stack.append(el)
+        for k, v in attrs.iteritems():
+            el.attrib[k] = str(v)
 
         # preview (256x256)
         t2 = time.time()

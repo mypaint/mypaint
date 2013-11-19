@@ -394,6 +394,60 @@ class Layer (object):
         return attrs
 
 
+class BackgroundLayer (Layer):
+    """Background layer"""
+
+    # NOTE: this could be generalized as a repeating tile for general use in
+    # the layers stack, extending the ExternalLayer concept. Think textures!
+    # Might need src-in compositing for that though.
+
+    def __init__(self, bg):
+        surface = tiledsurface.Background(bg)
+        Layer.__init__(self, name="background", surface=surface)
+        self.locked = False
+        self.visible = True
+        self.opacity = 1.0
+
+    def set_surface(self, surface):
+        """Sets the surface from a tiledsurface.Background"""
+        assert isinstance(surface, tiledsurface.Background)
+        self._surface = surface
+
+    def save_to_openraster(self, orazip, tmpdir, ref, selected,
+                           canvas_bbox, frame_bbox, **kwargs):
+        # Normalize ref
+        if type(ref) == int:
+            ref = "background%03d"
+        # Save as a regular layer for other apps.
+        # Background surfaces repeat, so this will fit the frame.
+        # XXX But we use the canvas bbox and always have. Why?
+        # XXX - Presumably it's for origin alignment.
+        # XXX - Inefficient for small frames.
+        # XXX - I suspect rect should be redone with (w,h) granularity
+        # XXX   and be based on the frame_bbox.
+        rect = canvas_bbox
+        attrs = Layer._save_rect_to_ora(self, orazip, tmpdir, ref, selected,
+                                        canvas_bbox, frame_bbox, rect,
+                                        **kwargs)
+        # Also save as single pattern (with corrected origin)
+        fx, fy = frame_bbox[0:2]
+        x, y, w, h = self.get_bbox()
+        rect = (x+fx, y+fy, w, h)
+
+        pngname = '%s_tile.png' % (ref,)
+        tmppath = os.path.join(tmpdir, pngname)
+        t0 = time.time()
+        self._surface.save_as_png(tmppath, *rect, **kwargs)
+        t1 = time.time()
+        storename = 'data/%s' % (pngname,)
+        logger.debug('%.3fs surface saving %s', t1 - t0, storename)
+        orazip.write(tmppath, storename)
+        os.remove(tmppath)
+        attrs['background_tile'] = storename
+        return attrs
+
+
+
 class ExternalLayer (Layer):
     """A layer which is stored as a tempfile in a non-MyPaint format
 
