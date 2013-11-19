@@ -49,6 +49,8 @@ from layer import VALID_COMPOSITE_OPS
 
 ## Class defs
 
+## Class defs
+
 class SaveLoadError(Exception):
     """Expected errors on loading or saving
 
@@ -58,15 +60,15 @@ class SaveLoadError(Exception):
     pass
 
 
-class Document():
-    """
-    This is the "model" in the Model-View-Controller design.
-    (The "view" would be ../gui/tileddrawwidget.py.)
-    It represents everything that the user would want to save.
+class Document (object):
+    """In-memory representation of everything to be worked on & saved
 
+    This is the "model" in the Model-View-Controller design for the drawing
+    canvas. The View mostly resides in `gui.tileddrawwidget`, and the
+    Controller is mostly in `gui.document` and `gui.canvasevent`.
 
-    The "controller" mostly in drawwindow.py.
-    It is possible to use it without any GUI attached (see ../tests/)
+    The model contains everything that the user would want to save. It is
+    possible to use the model without any GUI attached (see ``../tests/``).
     """
     # Please note the following difficulty with the undo stack:
     #
@@ -76,6 +78,7 @@ class Document():
     #   (split_stroke)
 
     def __init__(self, brushinfo=None):
+        object.__init__(self)
         if not brushinfo:
             brushinfo = brush.BrushInfo()
             brushinfo.load_defaults()
@@ -89,12 +92,13 @@ class Document():
         self.frame_observers = []
         self.command_stack_observers = []
         self.symmetry_observers = []  #: See `set_symmetry_axis()`
-        self.__symmetry_axis = None
+        self._symmetry_axis = None
         self.default_background = (255, 255, 255)
         self.clear(True)
 
         self._frame = [0, 0, 0, 0]
         self._frame_enabled = False
+
 
 
     ## Layer (x, y) position
@@ -202,7 +206,7 @@ class Document():
     def get_symmetry_axis(self):
         """Gets the active painting symmetry X axis value.
         """
-        return self.__symmetry_axis
+        return self._symmetry_axis
 
 
     def set_symmetry_axis(self, x):
@@ -214,7 +218,7 @@ class Document():
         # TODO: make this undoable?
         for layer in self.layers:
             layer.set_symmetry_axis(x)
-        self.__symmetry_axis = x
+        self._symmetry_axis = x
         for func in self.symmetry_observers:
             func()
 
@@ -717,7 +721,7 @@ class Document():
             self.save_multifile_png(filename, **kwargs)
         else:
             if alpha:
-                tmp_layer = layer.Layer()
+                tmp_layer = layer.PaintingLayer()
                 for l in self.layers:
                     l.merge_into(tmp_layer)
                 tmp_layer.save_as_png(filename, *doc_bbox)
@@ -788,7 +792,8 @@ class Document():
         write_file_str('mimetype', 'image/openraster') # must be the first file
         image = ET.Element('image')
         stack = ET.SubElement(image, 'stack')
-        x0, y0, w0, h0 = self.get_effective_bbox()
+        effective_bbox = self.get_effective_bbox()
+        x0, y0, w0, h0 = effective_bbox
         a = image.attrib
         a['w'] = str(w0)
         a['h'] = str(h0)
@@ -801,57 +806,19 @@ class Document():
             z.write(tmp, name)
             os.remove(tmp)
 
-        def store_surface(surface, name, rect=[]):
-            tmp = join(tempdir, 'tmp.png')
-            t1 = time.time()
-            surface.save_as_png(tmp, *rect, **kwargs)
-            logger.debug('%.3fs surface saving %s', time.time() - t1, name)
-            z.write(tmp, name)
-            os.remove(tmp)
-
-        def add_layer(x, y, opac, surface, name, layer_name, visible=True,
-                      locked=False, selected=False,
-                      compositeop=DEFAULT_COMPOSITE_OP, rect=[]):
-            layer = ET.Element('layer')
-            stack.append(layer)
-            store_surface(surface, name, rect)
-            a = layer.attrib
-            if layer_name:
-                a['name'] = layer_name
-            a['src'] = name
-            a['x'] = str(x)
-            a['y'] = str(y)
-            a['opacity'] = str(opac)
-            if compositeop not in VALID_COMPOSITE_OPS:
-                compositeop = DEFAULT_COMPOSITE_OP
-            a['composite-op'] = compositeop
-            if visible:
-                a['visibility'] = 'visible'
-            else:
-                a['visibility'] = 'hidden'
-            if locked:
-                a['edit-locked'] = 'true'
-            if selected:
-                a['selected'] = 'true'
-            return layer
-
+        # Save layers
+        canvas_bbox = tuple(self.get_bbox())
+        frame_bbox = tuple(effective_bbox)
         for idx, l in enumerate(reversed(self.layers)):
             if l.is_empty():
                 continue
-            opac = l.opacity
-            x, y, w, h = l.get_bbox()
-            sel = (idx == self.layer_idx)
-            el = add_layer(x-x0, y-y0, opac, l._surface,
-                           'data/layer%03d.png' % idx, l.name, l.visible,
-                           locked=l.locked, selected=sel,
-                           compositeop=l.compositeop, rect=(x, y, w, h))
-            # strokemap
-            sio = StringIO()
-            l.save_strokemap_to_file(sio, -x, -y)
-            data = sio.getvalue(); sio.close()
-            name = 'data/layer%03d_strokemap.dat' % idx
-            el.attrib['mypaint_strokemap_v2'] = name
-            write_file_str(name, data)
+            selected = (idx == self.layer_idx)
+            attrs = l.save_to_openraster(z, tempdir, idx, selected,
+                                         canvas_bbox, frame_bbox, **kwargs)
+            el = ET.Element('layer')
+            stack.append(el)
+            for k, v in attrs.iteritems():
+                el.attrib[k] = str(v)
 
         # save background as layer (solid color or tiled)
         bg = self.background
@@ -889,10 +856,72 @@ class Document():
         return thumbnail_pixbuf
 
     @staticmethod
-    def __xsd2bool(v):
-        v = str(v).lower()
-        if v in ['true', '1']: return True
-        else: return False
+    def _layer_new_from_openraster(orazip, attrs, tempdir, feedback_cb):
+        """Create a new layer from an ORA zipfile, and a dict of XML attrs
+
+        :param orazip: OpenRaster zipfile, open for extraction.
+        :param attrs: Dict of stack XML <layer/> attrs.
+        :param tempdir: Path to a temporary working directory.
+        :param feedback_cb: 0-arg callable used for providing loader feedback.
+        :returns: ``(LAYER, SELECTED)``, New layer, and whether it's selected
+        :rtype: tuple
+        """
+
+        # Switch the class to instantiate bsed on the filename extension.
+        src = attrs.get("src", None)
+        if src is None:
+            logger.warning('Ignoring layer with no src attrib %r', attrs)
+            return None
+        src_basename, src_ext = os.path.splitext(src)
+        src_ext = src_ext.lower()
+        t0 = time.time()
+        if src_ext == '.png':
+            new_layer = layer.PaintingLayer()
+            selected = new_layer.load_from_openraster(orazip, attrs, tempdir,
+                                                      feedback_cb)
+        elif src_ext == '.svg':
+            raise NotImplementedError, "SVG loading not implemented yet"
+            # TODO: keep the temp file: required for editing and saving
+        else:
+            raise NotImplementedError, "Unhandled extension %r" % src_ext
+            assert False, ""
+        t1 = time.time()
+        logger.debug('%.3fs loading and converting %r layer %r',
+                     t1 - t0, src_ext, src_basename)
+        return (new_layer, selected)
+
+
+    @staticmethod
+    def _load_ora_layers_list(root, x=0, y=0):
+        """Builds and returns a layers list based on OpenRaster stack.xml
+
+        :param root: ``<stack/>`` XML node (can be a sub-stack
+        :type root: xml.etree.ElementTree.Element
+        :param x: X offset of the (sub-)stack
+        :param y: Y offset of the (sub-)stack
+        :returns: Normalized list of ``Element``s (see description)
+        :rtype: list
+
+        Members of the returned list are the etree ``Element``s for each
+        source ``<layer/>``, normalized. Returned layer x and y ``attrib``s
+        are all relative to the same origin.
+        """
+        res = []
+        for item in root:
+            if item.tag == 'layer':
+                if 'x' in item.attrib:
+                    item.attrib['x'] = int(item.attrib['x']) + x
+                if 'y' in item.attrib:
+                    item.attrib['y'] = int(item.attrib['y']) + y
+                res.append(item)
+            elif item.tag == 'stack':
+                stack_x = int( item.attrib.get('x', 0) )
+                stack_y = int( item.attrib.get('y', 0) )
+                res += _load_ora_layers_list(item, stack_x, stack_y)
+            else:
+                logger.warning('ignoring unsupported tag %r', item.tag)
+        return res
+
 
     def load_ora(self, filename, feedback_cb=None):
         """Loads from an OpenRaster file"""
@@ -927,29 +956,13 @@ class Document():
             logger.debug('%.3fs loading pixbuf %s', time.time() - t1, filename)
             return res
 
-        def get_layers_list(root, x=0,y=0):
-            res = []
-            for item in root:
-                if item.tag == 'layer':
-                    if 'x' in item.attrib:
-                        item.attrib['x'] = int(item.attrib['x']) + x
-                    if 'y' in item.attrib:
-                        item.attrib['y'] = int(item.attrib['y']) + y
-                    res.append(item)
-                elif item.tag == 'stack':
-                    stack_x = int( item.attrib.get('x', 0) )
-                    stack_y = int( item.attrib.get('y', 0) )
-                    res += get_layers_list(item, stack_x, stack_y)
-                else:
-                    logger.warning('ignoring unsupported tag %r', item.tag)
-            return res
 
         self.clear() # this leaves one empty layer
         no_background = True
 
         selected_layer = None
-        for layer in get_layers_list(stack):
-            a = layer.attrib
+        for el in self._load_ora_layers_list(stack):
+            a = el.attrib
 
             if 'background_tile' in a:
                 assert no_background
@@ -961,47 +974,13 @@ class Document():
                 except tiledsurface.BackgroundError, e:
                     logger.warning('ORA background tile not usable: %r', e)
 
-            src = a.get('src', '')
-            if not src.lower().endswith('.png'):
-                logger.warning('Ignoring non-png layer %r', src)
-                continue
-            name = a.get('name', '')
-            x = int(a.get('x', '0'))
-            y = int(a.get('y', '0'))
-            opac = float(a.get('opacity', '1.0'))
-            compositeop = str(a.get('composite-op', DEFAULT_COMPOSITE_OP))
-            if compositeop not in VALID_COMPOSITE_OPS:
-                compositeop = DEFAULT_COMPOSITE_OP
-            selected = self.__xsd2bool(a.get("selected", 'false'))
-            locked = self.__xsd2bool(a.get("edit-locked", 'false'))
-
-            visible = not 'hidden' in a.get('visibility', 'visible')
-            self.add_layer(insert_idx=0, name=name)
-            t1 = time.time()
-
-            # extract the png form the zip into a file first
-            # the overhead for doing so seems to be neglegible (around 5%)
-            z.extract(src, tempdir)
-            tmp_filename = join(tempdir, src)
-            self.load_layer_from_png(tmp_filename, x, y, feedback_cb)
-            os.remove(tmp_filename)
-
-            layer = self.layers[0]
-
-            self.set_layer_opacity(helpers.clamp(opac, 0.0, 1.0), layer)
-            self.set_layer_compositeop(compositeop, layer)
-            self.set_layer_visibility(visible, layer)
-            self.set_layer_locked(locked, layer)
+            layer, selected = self._layer_new_from_openraster(z, a, tempdir,
+                                                              feedback_cb)
+            self.layers.insert(0, layer)
             if selected:
                 selected_layer = layer
-            logger.debug('%.3fs loading and converting layer png',
-                         time.time() - t1)
-            # strokemap
-            fname = a.get('mypaint_strokemap_v2', None)
-            if fname:
-                sio = StringIO(z.read(fname))
-                layer.load_strokemap_from_file(sio, x, y)
-                sio.close()
+            layer.content_observers.append(self.layer_modified_cb)
+            layer.set_symmetry_axis(self.get_symmetry_axis())
 
         if len(self.layers) == 1:
             # no assertion (allow empty documents)
@@ -1013,6 +992,7 @@ class Document():
             self.remove_layer()
             # this leaves the topmost layer selected
 
+        # Set the selected layer index
         if selected_layer is not None:
             for i, layer in zip(range(len(self.layers)), self.layers):
                 if layer is selected_layer:

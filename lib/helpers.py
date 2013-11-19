@@ -404,6 +404,23 @@ def escape(u, quot=False, apos=False):
     return u.encode("ascii", "xmlcharrefreplace")
 
 
+def xsd2bool(arg):
+    """Converts an XSD boolean datatype string from XML to a Python bool
+
+      >>> xsd2bool("true")
+      True
+      >>> xsd2bool("false")
+      False
+      >>> xsd2bool(1)
+      True
+      >>> xsd2bool(0)
+      False
+
+    Ref: http://www.w3.org/TR/xmlschema-2/#boolean
+    """
+    return str(arg).lower() in ("true", "1")
+
+
 if __name__ == '__main__':
     big = Rect(-3, 2, 180, 222)
     a = Rect(0, 10, 5, 15)

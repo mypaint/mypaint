@@ -333,7 +333,7 @@ class AddLayer(Action):
         if after:
             l_idx = self.doc.layers.index(after)
             self.insert_idx = l_idx + 1
-        self.layer = layer.Layer(name)
+        self.layer = layer.PaintingLayer(name)
         self.layer.content_observers.append(self.doc.layer_modified_cb)
         self.layer.set_symmetry_axis(self.doc.get_symmetry_axis())
     def redo(self):
@@ -363,7 +363,7 @@ class RemoveLayer(Action):
             self.layer = self.doc.layers.pop(self.doc.layer_idx)
         if len(self.doc.layers) == 0:
             if self.newlayer0 is None:
-                ly = layer.Layer("")
+                ly = layer.PaintingLayer("")
                 ly.content_observers.append(self.doc.layer_modified_cb)
                 ly.set_symmetry_axis(self.doc.get_symmetry_axis())
                 self.newlayer0 = ly
@@ -455,7 +455,7 @@ class DuplicateLayer(Action):
         self.doc = doc
         self.insert_idx = insert_idx
         snapshot = self.doc.layers[self.insert_idx].save_snapshot()
-        self.new_layer = layer.Layer(name)
+        self.new_layer = layer.PaintingLayer(name)
         self.new_layer.load_snapshot(snapshot)
         self.new_layer.content_observers.append(self.doc.layer_modified_cb)
         self.new_layer.set_symmetry_axis(doc.get_symmetry_axis())
