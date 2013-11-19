@@ -176,25 +176,12 @@ class MyPaintSurface (object):
         self.looped_size = looped_size
 
         self.mipmap_level = mipmap_level
-        self.mipmaps = mipmap_surfaces
-
         if mipmap_level == 0:
-            mipmaps = [self]
-            for level in range(1, MAX_MIPMAP_LEVEL+1):
-                s = MyPaintSurface(mipmap_level=level, mipmap_surfaces=mipmaps)
-                mipmaps.append(s)
-            self.mipmaps = mipmaps
-
-            # for quick lookup
-            for level, s in enumerate(mipmaps):
-                try:
-                    s.parent = mipmaps[level-1]
-                except IndexError:
-                    s.parent = None
-                try:
-                    s.mipmap = mipmaps[level+1]
-                except IndexError:
-                    s.mipmap = None
+            assert mipmap_surfaces is None
+            self._mipmaps = self._create_mipmap_surfaces()
+        else:
+            assert mipmap_surfaces is not None
+            self._mipmaps = mipmap_surfaces
 
         # Forwarding API
         self.set_symmetry_state = self._backend.set_symmetry_state
@@ -203,6 +190,31 @@ class MyPaintSurface (object):
         self.get_color = self._backend.get_color
         self.get_alpha = self._backend.get_alpha
         self.draw_dab = self._backend.draw_dab
+
+
+    def _create_mipmap_surfaces(self):
+        """Internal: initializes an internal mipmap lookup table
+
+        Overridable to avoid unnecessary work when initializing the background
+        surface subclass.
+        """
+        assert self.mipmap_level == 0
+        mipmaps = [self]
+        for level in range(1, MAX_MIPMAP_LEVEL+1):
+            s = MyPaintSurface(mipmap_level=level, mipmap_surfaces=mipmaps)
+            mipmaps.append(s)
+
+        # for quick lookup
+        for level, s in enumerate(mipmaps):
+            try:
+                s.parent = mipmaps[level-1]
+            except IndexError:
+                s.parent = None
+            try:
+                s.mipmap = mipmaps[level+1]
+            except IndexError:
+                s.mipmap = None
+        return mipmaps
 
 
     def end_atomic(self):
@@ -306,7 +318,9 @@ class MyPaintSurface (object):
 
     def _mark_mipmap_dirty(self, tx, ty):
         #assert self.mipmap_level == 0
-        for level, mipmap in enumerate(self.mipmaps):
+        if not self._mipmaps:
+            return
+        for level, mipmap in enumerate(self._mipmaps):
             if level == 0:
                 continue
             fac = 2**(level)
@@ -890,6 +904,11 @@ class Background (Surface):
             self.mipmap = Background(mipmap_obj, mipmap_level+1)
             self.mipmap.parent = self
             self.mipmap_level = mipmap_level
+
+
+    def _create_mipmap_surfaces(self):
+        """Internal override: Background uses a different mipmap impl."""
+        return None
 
 
     def load_from_numpy(self, arr, x, y):
