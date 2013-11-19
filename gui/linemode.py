@@ -275,7 +275,8 @@ class LineModeBase (canvasevent.SwitchableModeMixin,
 
     def _update_cursors(self):
         layer = self.doc.model.get_current_layer()
-        self._line_possible = layer.visible and not layer.locked
+        self._line_possible = ( layer.get_paintable() and layer.visible and
+                                not layer.locked )
         self.doc.tdw.set_override_cursor(self.inactive_cursor)
 
 

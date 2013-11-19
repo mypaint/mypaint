@@ -418,7 +418,7 @@ class Document (object):
 
         """
 
-        if not hasattr(self.layer, "stroke_to"):
+        if not self.layer.get_paintable():
             split = True
         else:
             if not self.stroke:
@@ -472,6 +472,8 @@ class Document (object):
         but allows big areas to be filled rapidly as needed on blank layers.
         """
         bbox = helpers.Rect(*tuple(self.get_effective_bbox()))
+        if not self.layer.get_fillable():
+            make_new_layer = True
         if bbox.empty():
             bbox = helpers.Rect()
             bbox.x = N*int(x//N)

@@ -97,6 +97,13 @@ class Layer (object):
     care about.
     """
 
+    ## Class constants: class capabilities & other meta-info
+
+    IS_PAINTABLE = False
+    IS_FILLABLE = False
+    ICON_NAME = "mypaint-layer"
+
+
     ## Initialization
 
     def __init__(self, name="", compositeop=DEFAULT_COMPOSITE_OP,
@@ -111,6 +118,7 @@ class Layer (object):
         the layer will not be cleared during construction.
         """
         object.__init__(self)
+
         # Pluggable surface implementation
         # Only connect observers if using the default tiled surface
         if surface is None:
@@ -119,17 +127,24 @@ class Layer (object):
         else:
             self._surface = surface
 
-        # Standard fields
-        self.opacity = 1.0  #: Opacity of the layer (1 - alpha)
-        self.name = name    #: The layer's name, for display
-        self.visible = True #: Whether the layer is visible (forced opacity 0)
-        self.locked = True  #: Whether the layer is locked (True by default)
+        # Layer control properties
+
+        #: Opacity of the layer (1 - alpha)
+        self.opacity = 1.0
+        #: The layer's name, for display purposes.
+        self.name = name
+        #: Whether the layer is visible (forced opacity 0 when invisible)
+        self.visible = True
+        #: Whether the layer is locked (locked layers cannot be changed)
+        self.locked = False
 
         #: The compositing operation to use when displaying the layer
         self.compositeop = compositeop
 
         #: List of content observers (see _notify_content_observers())
         self.content_observers = []
+
+        # Clear if we created our own surface
         if surface is None:
             self.clear()
 
@@ -210,6 +225,8 @@ class Layer (object):
         for func in self.content_observers:
             func(*args)
 
+    ## Info methods
+
     @property
     def effective_opacity(self):
         """The opacity to use for rendering a layer: zero if invisible"""
@@ -237,6 +254,18 @@ class Layer (object):
         """Tests whether the surface is empty"""
         return self._surface.is_empty()
 
+
+    def get_paintable(self):
+        """True if this layer currently accepts painting brushstrokes"""
+        return self.IS_PAINTABLE and not self.locked
+
+
+    def get_fillable(self):
+        """True if this layer currently accepts flood fill"""
+        return self.IS_FILLABLE and not self.locked
+
+
+    ## Flood fill
 
     def flood_fill(self, x, y, color, bbox, tolerance, dst_layer=None):
         """Fills a point on the surface with a colour
@@ -548,6 +577,11 @@ class ExternalLayer (Layer):
     SVG files are the canonical example.
     """
 
+    ## Class constants
+    IS_FILLABLE = False
+    IS_PAINTABLE = False
+
+    ## Construction
     def __init__(self, name="", compositeop=DEFAULT_COMPOSITE_OP):
         """Construct, recording the filename, and its position"""
         Layer.__init__(self, name=name, compositeop=compositeop)
@@ -555,7 +589,6 @@ class ExternalLayer (Layer):
         self._tempdir = None
         self._x = None
         self._y = None
-        self.locked = True
 
 
     def load_from_pixbuf_file(self, filename, x, y, feedback_cb):
@@ -564,7 +597,6 @@ class ExternalLayer (Layer):
         self._filename = filename
         self._x = x
         self._y = y
-        self.locked = True
 
 
     def load_from_openraster(self, orazip, attrs, tempdir, feedback_cb):
@@ -674,13 +706,17 @@ class PaintingLayer (Layer):
     the canvas.
     """
 
+    ## Class constants
 
-    ## Initializing
+    IS_PAINTABLE = True
+    IS_FILLABLE = True
+
+
+    ## Initializing & resetting
 
 
     def __init__(self, name="", compositeop=DEFAULT_COMPOSITE_OP):
         Layer.__init__(self, name=name, compositeop=compositeop)
-        self.locked = False
         #: Stroke map.
         #: List of strokemap.StrokeShape instances (not stroke.Stroke), ordered
         #: by depth.
@@ -735,6 +771,7 @@ class PaintingLayer (Layer):
                      t3 - t2, src_basename)
         # Return (TODO: notify needed here?)
         return selected
+
 
     ## Painting
 

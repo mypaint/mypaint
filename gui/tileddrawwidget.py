@@ -415,7 +415,9 @@ class DrawCursorMixin(object):
         elif self.doc is None:
             logger.error("update_cursor: no document")
             return
-        elif self.doc.layer.locked or not self.doc.layer.visible:
+        elif ( self.doc.layer.locked or
+               not self.doc.layer.visible or
+               not self.doc.layer.get_paintable() ):
             # Cursor to represent that one cannot draw.
             # Often a red circle with a diagonal bar through it.
             c = gdk.Cursor(gdk.CIRCLE)

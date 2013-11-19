@@ -305,11 +305,12 @@ class FreehandOnlyMode (InteractionMode):
 
     def button_press_cb(self, tdw, event):
         result = False
-        if event.button == 1 and event.type == gdk.BUTTON_PRESS:
+        if ( tdw.doc.layer.get_paintable() and event.button == 1
+             and event.type == gdk.BUTTON_PRESS ):
             # Single button press
             # Stroke started, notify observers
             try:
-                observers = self.doc.input_stroke_started_observers
+                observers = tdw.doc.input_stroke_started_observers
             except AttributeError:
                 pass
             else:
@@ -330,14 +331,14 @@ class FreehandOnlyMode (InteractionMode):
 
     def button_release_cb(self, tdw, event):
         result = False
-        if event.button == 1:
+        if tdw.doc.layer.get_paintable() and event.button == 1:
             # See comment above in button_press_cb.
             drawstate = self._get_drawing_state(tdw)
             if not drawstate.last_event_had_pressure:
                 self.motion_notify_cb(tdw, event, fakepressure=0.0)
             # Notify observers after processing the event
             try:
-                observers = self.doc.input_stroke_ended_observers
+                observers = tdw.doc.input_stroke_ended_observers
             except AttributeError:
                 pass
             else:
@@ -365,7 +366,7 @@ class FreehandOnlyMode (InteractionMode):
         """
 
         # Do nothing if painting is inactivated
-        if not tdw.is_sensitive:
+        if not ( tdw.is_sensitive and tdw.doc.layer.get_paintable() ):
             return False
 
         # Try and initialize an event filter, used to circumvent the unhelpful

@@ -69,7 +69,11 @@ class FloodFillMode (canvasevent.SwitchableModeMixin,
         super(FloodFillMode, self).__init__(**kwds)
     
     def clicked_cb(self, tdw, event):
-        """Update cursor and maybe fill with settings"""
+        """Flood-fill with the current settings where clicked
+
+        If the current layer is not fillable, a new layer will always be
+        created for the fill.
+        """
         x, y = tdw.display_to_model(event.x, event.y)
         self._x = x
         self._y = y
@@ -77,10 +81,13 @@ class FloodFillMode (canvasevent.SwitchableModeMixin,
         self._update_ui()
         color = self.doc.app.brush_color_manager.get_color()
         opts = self.get_options_widget()
-        self.doc.model.flood_fill(x, y, color.get_rgb(),
-                                  tolerance=opts.tolerance,
-                                  sample_merged=opts.sample_merged,
-                                  make_new_layer=opts.make_new_layer)
+        make_new_layer = opts.make_new_layer
+        if not tdw.doc.layer.get_fillable():
+            make_new_layer = True
+        tdw.doc.flood_fill(x, y, color.get_rgb(),
+                           tolerance=opts.tolerance,
+                           sample_merged=opts.sample_merged,
+                           make_new_layer=make_new_layer)
         opts.make_new_layer = False
         return False
 
