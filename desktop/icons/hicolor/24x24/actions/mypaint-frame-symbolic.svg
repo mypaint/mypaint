@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg id="svg1" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:dc="http://purl.org/dc/elements/1.1/" height="16" width="16" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:ns3="http://www.openswatchbook.org/uri/2009/osb" xmlns:ns5="http://creativecommons.org/ns#" xmlns:ns7="http://www.w3.org/1999/xlink">
+<svg id="svg1" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:dc="http://purl.org/dc/elements/1.1/" height="24" width="24" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:ns3="http://www.openswatchbook.org/uri/2009/osb" xmlns:ns5="http://creativecommons.org/ns#" xmlns:ns7="http://www.w3.org/1999/xlink">
  <title id="title13694">MyPaint symbolic icons</title>
  <metadata id="metadata7">
   <rdf:RDF>
@@ -21,16 +21,16 @@
    </ns5:Work>
   </rdf:RDF>
  </metadata>
- <g id="layer1" transform="translate(-96 -620.36)">
-  <path id="path3049" fill="#bebebe" d="m97.5 621.36c-1 0-1.5 0.5-1.5 1.5v1c0 1 1 1 1 2s-1 1-1 1.5v1.5h3v-4.5h5.5v-3l-1.5-0.00003c-1 0-1 1-2 1h-0.5c-1 0-1-1-2-1z"/>
-  <use id="use3868" transform="matrix(-1,0,0,1,208,-2.6e-5)" height="600" width="800" xlink:href="#path3049" y="0" x="0"/>
-  <use id="use3870" transform="matrix(-1 0 0 -1 208 1256.7)" height="600" width="800" xlink:href="#path3049" y="0" x="0"/>
-  <use id="use3872" transform="matrix(1,0,0,-1,-1e-6,1256.7244)" height="600" width="800" xlink:href="#path3049" y="0" x="0"/>
+ <g id="layer1" transform="translate(-120 -612.36)">
   <g id="layer2" opacity=".5" transform="translate(229.28 556.07)" display="none" fill="#859f46">
    <rect id="48x48" style="color:#000000" height="48" width="48" display="inline" y="4.25" x="-2.25"/>
    <rect id="32x32" style="color:#000000" height="32" width="32" display="inline" y="20.25" x="53.75"/>
-   <rect id="24x24" style="color:#000000" height="24" width="24" display="inline" y="28.25" x="93.75"/>
    <rect id="22x22" style="color:#000000" height="22" width="22" display="inline" y="30.25" x="125.75"/>
+   <rect id="16x16" style="color:#000000" height="16" width="16" display="inline" y="36.25" x="155.75"/>
   </g>
+  <use id="use3928" transform="matrix(1 0 0 -1 0 1248.7)" height="600" width="800" xlink:href="#path3924" y="0" x="0"/>
+  <path id="path3924" fill="#bebebe" d="m132.5 614.36h-3.5c-1 0-1 1-2 1h-2c-1 0-1-1-2-1h-1c-1 0-2 1-2 2v1c0 1 1 1 1 2v1c0 1-1 1-1 2v2.5h4v-6.5h8.5z"/>
+  <use id="use3926" transform="matrix(-1,0,0,1,264,4e-6)" height="600" width="800" xlink:href="#path3924" y="0" x="0"/>
+  <use id="use3930" transform="matrix(-1 0 0 -1 264 1248.7)" height="600" width="800" xlink:href="#path3924" y="0" x="0"/>
  </g>
 </svg>
