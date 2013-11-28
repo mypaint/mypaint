@@ -169,14 +169,15 @@ class Layer (object):
         loader.close()
         return loader.get_pixbuf()
 
-    def load_from_pixbuf_file(self, filename, x=0, y=0, feedback_cb=None):
+    def _load_surface_from_pixbuf_file(self, filename, x=0, y=0,
+                                       feedback_cb=None):
         """Loads the layer's surface from any file which GdkPixbuf can open"""
         fp = open(filename, 'rb')
         pixbuf = self._pixbuf_from_stream(fp, feedback_cb)
         fp.close()
-        return self.load_from_pixbuf(pixbuf, x, y)
+        return self._load_surface_from_pixbuf(pixbuf, x, y)
 
-    def load_from_pixbuf(self, pixbuf, x=0, y=0):
+    def _load_surface_from_pixbuf(self, pixbuf, x=0, y=0):
         """Loads the layer's surface from a GdkPixbuf"""
         arr = helpers.gdkpixbuf2numpy(pixbuf)
         surface = tiledsurface.Surface()
@@ -593,12 +594,6 @@ class ExternalLayer (Layer):
         self._y = None
 
 
-    def load_from_pixbuf_file(self, filename, x, y, feedback_cb):
-        """Load from a file GdkPixbuf can handle, and record its name"""
-        Layer.load_from_pixbuf_file(self, filename, x, y, feedback_cb)
-        self._filename = filename
-        self._x = x
-        self._y = y
 
 
     def load_from_openraster(self, orazip, attrs, tempdir, feedback_cb):
@@ -617,7 +612,10 @@ class ExternalLayer (Layer):
         self._tempdir = tempdir
         orazip.extract(src, self._tempdir)
         tmp_filename = os.path.join(self._tempdir, src)
-        self.load_from_pixbuf_file(tmp_filename, x, y, feedback_cb)
+        self._load_surface_from_pixbuf_file(tmp_filename, x, y, feedback_cb)
+        self._filename = tmp_filename
+        self._x = x
+        self._y = y
         t1 = time.time()
         logger.debug('%.3fs loading and converting src %r for %r',
                      t1 - t0, src_ext, src_basename)
