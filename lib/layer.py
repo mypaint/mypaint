@@ -101,7 +101,7 @@ class Layer (object):
 
     IS_PAINTABLE = False
     IS_FILLABLE = False
-    ICON_NAME = "mypaint-layer"
+    ICON_NAME = None
 
 
     ## Initialization
@@ -578,10 +578,13 @@ class ExternalLayer (Layer):
     """
 
     ## Class constants
+
     IS_FILLABLE = False
     IS_PAINTABLE = False
+    ICON_NAME = "mypaint-layer-vector-symbolic"
 
     ## Construction
+
     def __init__(self, name="", compositeop=DEFAULT_COMPOSITE_OP):
         """Construct, recording the filename, and its position"""
         Layer.__init__(self, name=name, compositeop=compositeop)

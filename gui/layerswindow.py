@@ -93,6 +93,12 @@ class LayersTool (SizedVBoxToolWidget):
         col.set_cell_data_func(renderer, self.layer_locked_datafunc)
         view.append_column(col)
 
+        renderer = gtk.CellRendererPixbuf()
+        col = self.type_col = gtk.TreeViewColumn(_("Type"))
+        col.pack_start(renderer, expand=False)
+        col.set_cell_data_func(renderer, self.layer_type_datafunc)
+        view.append_column(col)
+
         renderer = gtk.CellRendererText()
         col = self.name_col = gtk.TreeViewColumn(_("Name"))
         col.pack_start(renderer, expand=True)
@@ -376,6 +382,13 @@ class LayersTool (SizedVBoxToolWidget):
             icon_name = "mypaint-object-locked-symbolic"
         else:
             icon_name = "mypaint-object-unlocked-symbolic"
+        renderer.set_property("icon-name", icon_name)
+
+
+    def layer_type_datafunc(self, column, renderer, model, tree_iter,
+                            *data_etc):
+        layer = model.get_value(tree_iter, 0)
+        icon_name = layer.ICON_NAME
         renderer.set_property("icon-name", icon_name)
 
 
