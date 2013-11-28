@@ -20,6 +20,8 @@ from cStringIO import StringIO
 import time
 import zipfile
 logger = logging.getLogger(__name__)
+import tempfile
+import shutil
 
 from gettext import gettext as _
 
@@ -152,6 +154,29 @@ class Layer (object):
     def load_from_surface(self, surface):
         """Load the surface image's tiles from another surface"""
         self._surface.load_from_surface(surface)
+
+
+    def copy(self):
+        """Returns an independent copy of the layer, for Duplicate Layer
+
+        Everything about the returned layer must be a completely independent
+        copy of the original data, with the exception of callback identities
+        in `content_observers`. If the layer can be worked on, working on it
+        must leave the original layer unaffected.
+
+        This base class implementation can be reused/extended by subclasses if
+        they support zero-argument construction. This implementation uses the
+        `save_snapshot()` and `load_snapshot()` methods.
+        """
+        layer = self.__class__()
+        layer.name = self.name
+        layer.compositeop = self.compositeop
+        layer.opacity = self.opacity
+        layer.visible = self.visible
+        layer.locked = self.locked
+        layer.load_snapshot(self.save_snapshot())
+        layer.content_observers = self.content_observers[:]
+        return layer
 
 
     ## Generic pixbuf loader methods
@@ -514,6 +539,10 @@ class Layer (object):
 class BackgroundLayer (Layer):
     """Background layer, with a repeating tiled image"""
 
+    # NOTE: by convention only, there is just a single non-editable background
+    # layer. Background layers cannot be manipulated by the user except through
+    # the background dialog.
+
     # NOTE: this could be generalized as a repeating tile for general use in
     # the layers stack, extending the ExternalLayer concept. Think textures!
     # Might need src-in compositing for that though.
@@ -524,6 +553,9 @@ class BackgroundLayer (Layer):
         self.locked = False
         self.visible = True
         self.opacity = 1.0
+
+    def copy(self):
+        raise RuntimeError, "Background layers cannot be copied yet"
 
     def set_surface(self, surface):
         """Sets the surface from a tiledsurface.Background"""
@@ -586,10 +618,10 @@ class ExternalLayer (Layer):
     ## Construction
 
     def __init__(self, name="", compositeop=DEFAULT_COMPOSITE_OP):
-        """Construct, recording the filename, and its position"""
+        """Construct, with blank internal fields"""
         Layer.__init__(self, name=name, compositeop=compositeop)
-        self._filename = None
-        self._tempdir = None
+        self._basename = None
+        self._workdir = None
         self._x = None
         self._y = None
 
@@ -597,33 +629,66 @@ class ExternalLayer (Layer):
 
 
     def load_from_openraster(self, orazip, attrs, tempdir, feedback_cb):
-        """Loads layer data and attrs from an OpenRaster zipfile"""
+        """Loads layer data and attrs from an OpenRaster zipfile
+
+        Using this method also sets the working directory for the layer to
+        tempdir.
+        """
         # Load layer flags
         selected = Layer.load_from_openraster(self, orazip, attrs,
                                               tempdir, feedback_cb)
         # Read SVG or whatever content via a tempdir
         src = attrs.get("src", None)
-        src_basename, src_ext = os.path.splitext(src)
-        src_basename = os.path.basename(src_basename)
+        src_rootname, src_ext = os.path.splitext(src)
+        src_rootname = os.path.basename(src_rootname)
         src_ext = src_ext.lower()
         x = int(attrs.get('x', 0))
         y = int(attrs.get('y', 0))
         t0 = time.time()
-        self._tempdir = tempdir
-        orazip.extract(src, self._tempdir)
-        tmp_filename = os.path.join(self._tempdir, src)
-        self._load_surface_from_pixbuf_file(tmp_filename, x, y, feedback_cb)
-        self._filename = tmp_filename
+        orazip.extract(src, path=tempdir)
+        tmp_filename = os.path.join(tempdir, src)
+        rev0_fd, rev0_filename = tempfile.mkstemp(suffix=src_ext, dir=tempdir)
+        os.close(rev0_fd)
+        os.rename(tmp_filename, rev0_filename)
+        self._load_surface_from_pixbuf_file(rev0_filename, x, y, feedback_cb)
+        self._basename = os.path.basename(rev0_filename)
+        self._workdir = tempdir
         self._x = x
         self._y = y
         t1 = time.time()
         logger.debug('%.3fs loading and converting src %r for %r',
-                     t1 - t0, src_ext, src_basename)
+                     t1 - t0, src_ext, src_rootname)
         # Return
         return selected
 
 
-    ## Snapshots (TODO! should do file history)
+    ## Snapshots
+
+    def save_snapshot(self):
+        """Snapshots the state of the layer and its strokemap for undo"""
+        base_snapshot = Layer.save_snapshot(self)
+
+        extra = (self._basename, self._workdir, self._x, self._y)
+        return (extra, base_snapshot)
+
+
+    def load_snapshot(self, data):
+        """Restores the layer and its strokemap from snapshot data"""
+        extra, base_snapshot = data
+        Layer.load_snapshot(self, base_snapshot)
+        old_basename, self._workdir, self._x, self._y = extra
+
+        old_filename = os.path.join(self._workdir, old_basename)
+        rootname, ext = os.path.splitext(old_basename)
+        old_fp = open(old_filename, 'rb')
+        new_fp = tempfile.NamedTemporaryFile( dir=self._workdir,
+                                              suffix=ext, mode="w+b",
+                                              delete=False )
+        shutil.copyfileobj(old_fp, new_fp)
+        new_basename = os.path.basename(new_fp.name)
+        self._basename = new_basename
+        new_fp.close()
+        old_fp.close()
 
 
     ## Moving
@@ -658,7 +723,8 @@ class ExternalLayer (Layer):
         attrs["x"] = self._x - fx
         attrs["y"] = self._y - fy
         # Pick a suitable name to store under.
-        src_basename, src_ext = os.path.splitext(self._filename)
+        src_path = os.path.join(self._workdir, self._basename)
+        src_rootname, src_ext = os.path.splitext(src_path)
         src_ext = src_ext.lower()
         if type(ref) == int:
             storename = "layer%03d%s" % (ref, src_ext)
@@ -667,7 +733,7 @@ class ExternalLayer (Layer):
         storepath = "data/%s" % (storename,)
         # Archive (but do not remove) the managed tempfile
         t0 = time.time()
-        orazip.write(self._filename, storepath)
+        orazip.write(src_path, storepath)
         t1 = time.time()
         # Return details of what was written.
         attrs["src"] = storepath
@@ -740,8 +806,8 @@ class PaintingLayer (Layer):
                                               feedback_cb)
         # Read PNG content via tempdir
         src = attrs.get("src", None)
-        src_basename, src_ext = os.path.splitext(src)
-        src_basename = os.path.basename(src_basename)
+        src_rootname, src_ext = os.path.splitext(src)
+        src_rootname = os.path.basename(src_rootname)
         src_ext = src_ext.lower()
         x = int(attrs.get('x', 0))
         y = int(attrs.get('y', 0))
@@ -758,7 +824,7 @@ class PaintingLayer (Layer):
             raise NotImplementedError, "Only *.png is supported"
         t1 = time.time()
         logger.debug('%.3fs loading and converting src %r for %r',
-                     t1 - t0, src_ext, src_basename)
+                     t1 - t0, src_ext, src_rootname)
         # Strokemap
         strokemap_name = attrs.get('mypaint_strokemap_v2', None)
         t2 = time.time()
@@ -768,7 +834,7 @@ class PaintingLayer (Layer):
             sio.close()
         t3 = time.time()
         logger.debug('%.3fs loading strokemap for %r',
-                     t3 - t2, src_basename)
+                     t3 - t2, src_rootname)
         # Return (TODO: notify needed here?)
         return selected
 

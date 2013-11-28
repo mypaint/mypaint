@@ -461,27 +461,30 @@ class ReorderSingleLayer(Action):
         self._notify_canvas_observers([moved_layer])
         self._notify_document_observers()
 
-class DuplicateLayer(Action):
+
+class DuplicateLayer (Action):
+    """Clone the current layer"""
+
     display_name = _("Duplicate Layer")
+
     def __init__(self, doc, insert_idx=None, name=''):
         Action.__init__(self, doc)
         self.insert_idx = insert_idx
-        snapshot = self.doc.layers[self.insert_idx].save_snapshot()
-        self.new_layer = layer.PaintingLayer(name)
-        self.new_layer.load_snapshot(snapshot)
-        self.new_layer.content_observers.append(self.doc.layer_modified_cb)
-        self.new_layer.set_symmetry_axis(doc.get_symmetry_axis())
+        self.new_layer = self.doc.layers[self.insert_idx].copy()
         self.duplicate_layer = None
+
     def redo(self):
         self.doc.layers.insert(self.insert_idx+1, self.new_layer)
         self.duplicate_layer = self.doc.layers[self.insert_idx+1]
         self._notify_canvas_observers([self.duplicate_layer])
         self._notify_document_observers()
+
     def undo(self):
         self.doc.layers.remove(self.duplicate_layer)
         original_layer = self.doc.layers[self.insert_idx]
         self._notify_canvas_observers([original_layer])
         self._notify_document_observers()
+
 
 class ReorderLayers(Action):
     display_name = _("Reorder Layer Stack")
