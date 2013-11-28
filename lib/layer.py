@@ -359,11 +359,10 @@ class Layer (object):
     def __repr__(self):
         x, y, w, h = self.get_bbox()
         l = self.locked and " locked" or ""
-        v = self.visible and "" or " hidden"
+        v = (not self.visible) and " hidden" or ""
         return ("<%s %r (%dx%d%+d%+d)%s%s %s %0.1f>"
                 % (self.__class__.__name__, self.name, x, y, w, h, l, v,
                    self.compositeop, self.opacity))
-
 
     ## Saving
 

@@ -200,7 +200,7 @@ class FloodFill (Action):
     def redo(self):
         # Pick a source
         if self.sample_merged:
-            src_layer = layer.Layer()
+            src_layer = layer.PaintingLayer()
             for l in self.doc.layers:
                 l.merge_into(src_layer, strokemap=False)
         else:
@@ -209,7 +209,7 @@ class FloodFill (Action):
         if self.make_new_layer:
             # Write to a new layer
             assert self.new_layer is None
-            nl = layer.Layer()
+            nl = layer.PaintingLayer()
             nl.content_observers.append(self.doc.layer_modified_cb)
             nl.set_symmetry_axis(self.doc.get_symmetry_axis())
             self.new_layer = nl
