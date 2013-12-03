@@ -390,6 +390,64 @@ class Layer (object):
                 % (self.__class__.__name__, self.name, x, y, w, h, l, v,
                    self.compositeop, self.opacity))
 
+
+    ## Layer merging
+
+    def merge_into(self, dst, **kwargs):
+        """Merge this layer into another, modifying only the destination
+
+        :param dst: The destination layer
+        :param **kwargs: Ignored
+
+        The base implementation only merges surface tiles. The destination
+        layer must always have an alpha channel. After this operation, the
+        destination layer's opacity is set to 1.0 and it is made visible.
+        """
+        # Normalize the target layer's effective opacity to 1.0 without
+        # changing its appearance
+        if dst.effective_opacity < 1.0:
+            for tx, ty in dst._surface.get_tiles():
+                with dst._surface.tile_request(tx, ty, readonly=False) as surf:
+                    surf[:,:,:] = dst.effective_opacity * surf[:,:,:]
+            dst.opacity = 1.0
+            dst.visible = True
+        # We must respect layer visibility, because saving a
+        # transparent PNG just calls this function for each layer.
+        src = self
+        for tx, ty in src._surface.get_tiles():
+            with dst._surface.tile_request(tx, ty, readonly=False) as surf:
+                src._surface.composite_tile(surf, True, tx, ty,
+                    opacity=self.effective_opacity,
+                    mode=self.compositeop)
+
+
+    def convert_to_normal_mode(self, get_bg):
+        """Convert pixels to permit compositing with Normal mode
+
+        :param get_bg: Callable accepting `tx, ty` params.
+
+        Given a background, this layer is updated such that it can be
+        composited over the background in normal blending mode. The result
+        will look as if it were composited with the current blending mode.
+        """
+        if ( self.compositeop == "svg:src-over" and
+             self.effective_opacity == 1.0 ):
+            return # optimization for merging layers
+        N = tiledsurface.N
+        tmp = empty((N, N, 4), dtype='uint16')
+        for tx, ty in self._surface.get_tiles():
+            bg = get_bg(tx, ty)
+            # tmp = bg + layer (composited with its mode)
+            mypaintlib.tile_copy_rgba16_into_rgba16(bg, tmp)
+            self.composite_tile(tmp, False, tx, ty)
+            # overwrite layer data with composited result
+            with self._surface.tile_request(tx, ty, readonly=False) as dst:
+                mypaintlib.tile_copy_rgba16_into_rgba16(tmp, dst)
+                dst[:,:,3] = 0 # minimize alpha (discard original alpha)
+                # recalculate layer in normal mode
+                mypaintlib.tile_flat2rgba(dst, bg)
+
+
     ## Saving
 
 
@@ -513,13 +571,12 @@ class Layer (object):
         memento to be restored with load_snapshot().  The base impementation
         snapshots only the surface tiles, and the layer's opacity.
         """
-        return (self._surface.save_snapshot(), self.opacity)
+        return _LayerSnapshot(self)
 
 
-    def load_snapshot(self, data):
+    def load_snapshot(self, sshot):
         """Restores the layer from snapshot data."""
-        data, self.opacity = data
-        self._surface.load_snapshot(data)
+        sshot.restore_to_layer(self)
 
 
     ## Trimming
@@ -536,6 +593,27 @@ class Layer (object):
         self._surface.trim(rect)
 
 
+class _LayerSnapshot (object):
+    """Base layer snapshot
+
+    Snapshots are stored in commands, and used to implement undo and redo.
+    They must be independent copies of the data, although copy-on-write
+    semantics are fine. Snapshot objects don't have to be _full and exact_
+    clones of the layer's data, but they do need to capture _inherent_
+    qualities of the layer. Mere metadata can be ignored. For the base
+    layer implementation, this means the surface tiles and the layer's
+    opacity.
+    """
+
+    def __init__(self, layer):
+        self.surface_sshot = layer._surface.save_snapshot()
+        self.opacity = layer.opacity
+
+    def restore_to_layer(self, layer):
+        layer.opacity = self.opacity
+        layer._surface.load_snapshot(self.surface_sshot)
+
+
 class BackgroundLayer (Layer):
     """Background layer, with a repeating tiled image"""
 
@@ -548,14 +626,23 @@ class BackgroundLayer (Layer):
     # Might need src-in compositing for that though.
 
     def __init__(self, bg):
-        surface = tiledsurface.Background(bg)
+        if isinstance(bg, tiledsurface.Background):
+            surface = bg
+        else:
+            surface = tiledsurface.Background(bg)
         Layer.__init__(self, name="background", surface=surface)
         self.locked = False
         self.visible = True
         self.opacity = 1.0
 
     def copy(self):
-        raise RuntimeError, "Background layers cannot be copied yet"
+        raise NotImplementedError, "BackgroundLayer cannot be copied yet"
+
+    def save_snapshot(self):
+        raise NotImplementedError, "BackgroundLayer cannot be snapshotted yet"
+
+    def load_snapshot(self):
+        raise NotImplementedError, "BackgroundLayer cannot be snapshotted yet"
 
     def set_surface(self, surface):
         """Sets the surface from a tiledsurface.Background"""
@@ -626,6 +713,12 @@ class ExternalLayer (Layer):
         self._y = None
 
 
+    def set_workdir(self, workdir):
+        """Sets the working directory (i.e. to doc's tempdir)
+
+        This is where working copies are created and cached during operation.
+        """
+        self._workdir = workdir
 
 
     def load_from_openraster(self, orazip, attrs, tempdir, feedback_cb):
@@ -666,30 +759,7 @@ class ExternalLayer (Layer):
 
     def save_snapshot(self):
         """Snapshots the state of the layer and its strokemap for undo"""
-        base_snapshot = Layer.save_snapshot(self)
-
-        extra = (self._basename, self._workdir, self._x, self._y)
-        return (extra, base_snapshot)
-
-
-    def load_snapshot(self, data):
-        """Restores the layer and its strokemap from snapshot data"""
-        extra, base_snapshot = data
-        Layer.load_snapshot(self, base_snapshot)
-        old_basename, self._workdir, self._x, self._y = extra
-
-        old_filename = os.path.join(self._workdir, old_basename)
-        rootname, ext = os.path.splitext(old_basename)
-        old_fp = open(old_filename, 'rb')
-        new_fp = tempfile.NamedTemporaryFile( dir=self._workdir,
-                                              suffix=ext, mode="w+b",
-                                              delete=False )
-        shutil.copyfileobj(old_fp, new_fp)
-        new_basename = os.path.basename(new_fp.name)
-        self._basename = new_basename
-        new_fp.close()
-        old_fp.close()
-
+        return _ExternalLayerSnapshot(self)
 
     ## Moving
 
@@ -738,6 +808,55 @@ class ExternalLayer (Layer):
         # Return details of what was written.
         attrs["src"] = storepath
         return attrs
+
+
+class _ExternalLayerSnapshot (_LayerSnapshot):
+    """Snapshot subclass for external layers"""
+
+    def __init__(self, layer):
+        super(_ExternalLayerSnapshot, self).__init__(layer)
+        self.basename = self._copy_working_file( layer._basename,
+                                                 layer._workdir )
+        self.workdir = layer._workdir
+        self.x = layer._x
+        self.y = layer._y
+
+    def restore_to_layer(self, layer):
+        super(_ExternalLayerSnapshot, self).restore_to_layer(layer)
+        layer._basename = self._copy_working_file( self.basename,
+                                                   self.workdir )
+        layer._workdir = self.workdir
+        layer._x = self.x
+        layer._y = self.y
+
+    @staticmethod
+    def _copy_working_file(old_basename, workdir):
+        old_filename = os.path.join(workdir, old_basename)
+        rootname, ext = os.path.splitext(old_basename)
+        old_fp = open(old_filename, 'rb')
+        new_fp = tempfile.NamedTemporaryFile( dir=workdir,
+                                              suffix=ext, mode="w+b",
+                                              delete=False )
+        shutil.copyfileobj(old_fp, new_fp)
+        new_basename = os.path.basename(new_fp.name)
+        logger.debug( "Copied %r to %r within %r...",
+                      old_basename, new_basename, workdir )
+        new_fp.close()
+        old_fp.close()
+        return new_basename
+
+    def __del__(self):
+        self.cleanup()
+
+    def cleanup(self):
+        sshot_copy = os.path.join(self.workdir, self.basename)
+        if os.path.exists(sshot_copy):
+            logger.debug("Cleanup: removing %r from %r",
+                         self.basename, self.workdir)
+            os.remove(sshot_copy)
+        else:
+            logger.debug("Cleanup: %r was already removed from %r",
+                         self.basename, self.workdir)
 
 
 class ExternalLayerMove (object):
@@ -855,7 +974,7 @@ class PaintingLayer (Layer):
 
     def add_stroke(self, stroke, snapshot_before):
         """Adds a stroke to the strokemap"""
-        before = snapshot_before[1][0] # extract surface snapshot
+        before = snapshot_before.surface_sshot
         after  = self._surface.save_snapshot()
         shape = strokemap.StrokeShape()
         shape.init_from_snapshots(before, after)
@@ -868,15 +987,7 @@ class PaintingLayer (Layer):
 
     def save_snapshot(self):
         """Snapshots the state of the layer and its strokemap for undo"""
-        base_snapshot = Layer.save_snapshot(self)
-        return (self.strokes[:], base_snapshot)
-
-
-    def load_snapshot(self, data):
-        """Restores the layer and its strokemap from snapshot data"""
-        strokes, base_snapshot = data
-        self.strokes = strokes[:]
-        Layer.load_snapshot(self, base_snapshot)
+        return _PaintingLayerSnapshot(self)
 
 
     ## Translating
@@ -950,67 +1061,22 @@ class PaintingLayer (Layer):
     ## Layer merging
 
 
-    def merge_into(self, dst, strokemap=True):
-        """Merge this layer into another, modifying only the target
+    def merge_into(self, dst, strokemap=True, **kwargs):
+        """Merge this layer into another, possibly including its strokemap
 
         :param dst: The target layer
-        :param strokemap: Set to false to ignore the layers' strokemaps.
+        :param strokemap: Try to copy strokemap too
+        :param **kwargs: passed to superclass
 
-        The target layer must always have an alpha channel. After this
-        operation, the target layer's opacity is set to 1.0 and it is made
-        visible.
+        If the destination layer is a PaintingLayer and `strokemap` is true,
+        its strokemap will be extended with the data from this one.
         """
         # Flood-fill uses this for its newly created and working layers,
         # but it should not construct a strokemap for what it does.
-        if strokemap:
+        if strokemap and isinstance(dst, PaintingLayer):
             dst.strokes.extend(self.strokes)
-        # Normalize the target layer's effective opacity to 1.0 without
-        # changing its appearance
-        if dst.effective_opacity < 1.0:
-            for tx, ty in dst._surface.get_tiles():
-                with dst._surface.tile_request(tx, ty, readonly=False) as surf:
-                    surf[:,:,:] = dst.effective_opacity * surf[:,:,:]
-            dst.opacity = 1.0
-            dst.visible = True
-        # We must respect layer visibility, because saving a
-        # transparent PNG just calls this function for each layer.
-        src = self
-        for tx, ty in src._surface.get_tiles():
-            with dst._surface.tile_request(tx, ty, readonly=False) as surf:
-                src._surface.composite_tile(surf, True, tx, ty,
-                    opacity=self.effective_opacity,
-                    mode=self.compositeop)
-
-
-    def convert_to_normal_mode(self, get_bg):
-        """Convert pixels to permit compositing with Normal mode
-
-        Given a background, this layer is updated such that it can be
-        composited over the background in normal blending mode. The
-        result will look as if it were composited with the current
-        blending mode.
-        """
-        if self.compositeop ==  "svg:src-over" and self.effective_opacity == 1.0:
-            return # optimization for merging layers
-
-        N = tiledsurface.N
-        tmp = empty((N, N, 4), dtype='uint16')
-        for tx, ty in self._surface.get_tiles():
-            bg = get_bg(tx, ty)
-            # tmp = bg + layer (composited with its mode)
-            mypaintlib.tile_copy_rgba16_into_rgba16(bg, tmp)
-            self.composite_tile(tmp, False, tx, ty)
-            # overwrite layer data with composited result
-            with self._surface.tile_request(tx, ty, readonly=False) as dst:
-
-                mypaintlib.tile_copy_rgba16_into_rgba16(tmp, dst)
-                dst[:,:,3] = 0 # minimize alpha (throw away the original alpha)
-
-                # recalculate layer in normal mode
-                mypaintlib.tile_flat2rgba(dst, bg)
-
-
-
+        # Merge surface tiles
+        super(PaintingLayer, self).merge_into(dst, **kwargs)
 
 
     ## Saving
@@ -1069,6 +1135,19 @@ class PaintingLayer (Layer):
         # Return details
         attrs['mypaint_strokemap_v2'] = storepath
         return attrs
+
+
+class _PaintingLayerSnapshot (_LayerSnapshot):
+    """Snapshot subclass for painting layers"""
+
+    def __init__(self, layer):
+        super(_PaintingLayerSnapshot, self).__init__(layer)
+        self.strokes = layer.strokes[:]
+
+    def restore_to_layer(self, layer):
+        super(_PaintingLayerSnapshot, self).restore_to_layer(layer)
+        layer.strokes = self.strokes[:]
+
 
 class PaintingLayerMove (object):
     """Move object wrapper for painting layers"""
