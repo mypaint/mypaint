@@ -294,6 +294,7 @@ class MergeLayer(Action):
         self.dst_layer = self.doc.layers[dst_idx]
         self.normalize_src = ConvertLayerToNormalMode(doc, doc.layer)
         self.normalize_dst = ConvertLayerToNormalMode(doc, self.dst_layer)
+        self.select_dst = SelectLayer(doc, dst_idx)
         self.remove_src = RemoveLayer(doc)
     def redo(self):
         self.normalize_src.redo()
@@ -302,12 +303,10 @@ class MergeLayer(Action):
         assert self.doc.layer is not self.dst_layer
         self.doc.layer.merge_into(self.dst_layer)
         self.remove_src.redo()
-        self.select_dst = SelectLayer(self.doc, self.doc.layers.index(self.dst_layer))
         self.select_dst.redo()
         self._notify_document_observers()
     def undo(self):
         self.select_dst.undo()
-        del self.select_dst
         self.remove_src.undo()
         self.dst_layer.load_snapshot(self.dst_before)
         del self.dst_before
