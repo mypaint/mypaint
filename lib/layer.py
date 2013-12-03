@@ -305,7 +305,7 @@ class Layer (object):
         :param tolerance: how much filled pixels are permitted to vary
         :type tolerance: float [0.0, 1.0]
         :param dst_layer: Optional target layer (default is self!)
-        :type dst_surface: Layer
+        :type dst_layer: Layer
 
         The `tolerance` parameter controls how much pixels are permitted to
         vary from the starting colour.  We use the 4D Euclidean distance from
@@ -796,11 +796,13 @@ class PaintingLayer (Layer):
 
 
     def load_from_surface(self, surface):
+        """Load the surface image's tiles from another surface"""
         Layer.load_from_surface(self, surface)
         self.strokes = []
 
 
     def load_from_openraster(self, orazip, attrs, tempdir, feedback_cb):
+        """Loads layer flags, PNG data, amd strokemap from a .ora zipfile"""
         # Load layer flags
         selected = Layer.load_from_openraster(self, orazip, attrs, tempdir,
                                               feedback_cb)

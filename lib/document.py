@@ -738,14 +738,14 @@ class Document (object):
         self.invalidate_all()
 
 
+    ## Saving and loading
+
+
     def load_from_pixbuf(self, pixbuf):
         """Load a document from a pixbuf."""
         self.clear()
         bbox = self.load_layer_from_pixbuf(pixbuf)
         self.set_frame(bbox, user_initiated=False)
-
-
-    ## Saving and loading
 
 
     def save(self, filename, **kwargs):

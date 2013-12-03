@@ -6,6 +6,9 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
+
+## Imports
+
 import gtk2compat
 
 import gtk
@@ -20,6 +23,8 @@ from lib.helpers import escape
 from widgets import SPACING_CRAMPED
 from workspace import SizedVBoxToolWidget
 
+
+## Helper functions
 
 
 def stock_button(stock_id):
@@ -45,6 +50,9 @@ def make_composite_op_model():
     for name, display_name, description in COMPOSITE_OPS:
         model.append([name, display_name, description])
     return model
+
+
+## Class definitions
 
 
 class LayersTool (SizedVBoxToolWidget):

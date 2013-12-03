@@ -556,14 +556,14 @@ class Document (CanvasController):
         if bool(layer.locked) != bool(action.get_active()):
             self.model.set_layer_locked(action.get_active(), layer)
 
-
     def layer_visible_toggle_cb(self, action):
         layer = self.model.layer
         if bool(layer.visible) != bool(action.get_active()):
             self.model.set_layer_visibility(action.get_active(), layer)
 
 
-    # BRUSH
+    ## Brush settings tweak callbacks
+
     def brush_bigger_cb(self, action):
         adj = self.app.brush_adjustment['radius_logarithmic']
         adj.set_value(adj.get_value() + 0.3)

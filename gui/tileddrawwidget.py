@@ -6,6 +6,9 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
+
+## Imports
+
 import gtk2compat
 import gobject
 import cairo
@@ -24,6 +27,9 @@ logger = logging.getLogger(__name__)
 from lib import helpers, tiledsurface, pixbufsurface
 from lib.observable import event
 import cursor
+
+
+## Class definitions
 
 
 class TiledDrawWidget (gtk.EventBox):
@@ -513,6 +519,10 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
     Can render the document in a transformed way, including translation,
     scaling and rotation."""
 
+
+
+    ## Method defs
+
     def __init__(self, tdw):
         gtk.DrawingArea.__init__(self)
         self.init_draw_cursor()
@@ -553,7 +563,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         self.model_overlays = []
         self.display_overlays = []
 
-        # Pizelize at high zoom-ins.
+        # Pixelize at high zoom-ins.
         # The icon editor needs to be able to adjust this.
         self.pixelize_threshold = 2.8
 
@@ -844,8 +854,6 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         translation_only = self.is_translation_only()
         model_bbox = surface.x, surface.y, surface.w, surface.h
 
-        #logger.debug('model bbox: %r', model_bbox)
-
         # not sure if it is a good idea to clip so tightly
         # has no effect right now because device_bbox is always smaller
         cr.rectangle(*model_bbox)
@@ -962,6 +970,9 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
     def toggle_show_layers_above(self):
         self.show_layers_above = not self.show_layers_above
         self.queue_draw()
+
+
+## Testing
 
 
 def _make_testbed_model():
