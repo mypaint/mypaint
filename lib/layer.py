@@ -291,6 +291,27 @@ class Layer (object):
         return self.IS_FILLABLE and not self.locked
 
 
+    def get_stroke_info_at(self, x, y):
+        """Return the brushstroke at a given point
+
+        :param x: X coordinate to pick from, in model space.
+        :param y: Y coordinate to pick from, in model space.
+        :rtype: lib.strokemap.StrokeShape or None
+
+        Returns None for the base class.
+        """
+        return None
+
+    def get_last_stroke_info(self):
+        """Return the most recently painted stroke
+
+        :rtype lib.strokemap.StrokeShape or None
+
+        Returns None for the base class.
+        """
+        return None
+
+
     ## Flood fill
 
     def flood_fill(self, x, y, color, bbox, tolerance, dst_layer=None):
@@ -1046,6 +1067,7 @@ class PaintingLayer (Layer):
 
 
     def get_stroke_info_at(self, x, y):
+        """Get the stroke at the given point"""
         x, y = int(x), int(y)
         for s in reversed(self.strokes):
             if s.touches_pixel(x, y):

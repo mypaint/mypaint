@@ -240,12 +240,10 @@ class FileHandler(object):
             layers = [self.doc.model.layer]
             layers += list(self.doc.model.layers)
             for layer in layers:
-                if not hasattr(layer, "get_last_stroke_info"):
-                    continue
                 si = layer.get_last_stroke_info()
                 if si:
                     self.doc.restore_brush_from_stroke_info(si)
-                break
+                    break
 
     def open_scratchpad(self, filename):
         try:
