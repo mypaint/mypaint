@@ -26,7 +26,15 @@ logger = logging.getLogger(__name__)
 
 from lib import helpers, tiledsurface, pixbufsurface
 from lib.observable import event
+import lib.layer
 import cursor
+
+
+## Module constants
+
+_ALPHA_CHECK_SIZE = 16
+_ALPHA_CHECK_COLOR_1 = (0.45, 0.45, 0.45)
+_ALPHA_CHECK_COLOR_2 = (0.50, 0.50, 0.50)
 
 
 ## Class definitions
@@ -267,25 +275,11 @@ class TiledDrawWidget (gtk.EventBox):
     def recenter_on_model_coords(self):
         return self.renderer.recenter_on_model_coords
 
-    @property
-    def toggle_show_layers_above(self):
-        return self.renderer.toggle_show_layers_above
 
     @property
     def queue_draw_area(self):
         return self.renderer.queue_draw_area
 
-    def get_current_layer_solo(self):
-        return self.renderer.current_layer_solo
-    def set_current_layer_solo(self, enabled):
-        self.renderer.current_layer_solo = enabled
-    current_layer_solo = property(get_current_layer_solo, set_current_layer_solo)
-
-    def get_neutral_background_pixbuf(self):
-        return self.renderer.neutral_background_pixbuf
-    def set_neutral_background_pixbuf(self, pixbuf):
-        self.renderer.neutral_background_pixbuf = pixbuf
-    neutral_background_pixbuf = property(get_neutral_background_pixbuf, set_neutral_background_pixbuf)
 
     # Transform logic
     def rotozoom_with_center(self, function, center=None):
@@ -542,9 +536,6 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         self.mirrored = False
         self.cached_transformation_matrix = None
 
-        self.current_layer_solo = False
-        self.show_layers_above = True
-
         self.overlay_layer = None
 
         # gets overwritten for the main window
@@ -566,6 +557,28 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         # Pixelize at high zoom-ins.
         # The icon editor needs to be able to adjust this.
         self.pixelize_threshold = 2.8
+
+        # Backgroundless rendering
+        self._alpha_check_bg = None
+        self._init_alpha_check_bg()
+
+
+    def _init_alpha_check_bg(self):
+        """Initialize the alpha check surface used for no-bg renderings"""
+        # Checkerboard pattern, rendered via Cairo
+        assert tiledsurface.N % _ALPHA_CHECK_SIZE == 0
+        N = tiledsurface.N
+        size = _ALPHA_CHECK_SIZE
+        nchecks = int(N / size)
+        cairo_surf = cairo.ImageSurface(cairo.FORMAT_ARGB32, N, N)
+        cr = cairo.Context(cairo_surf)
+        _render_checks(cr, size, nchecks)
+        cairo_surf.flush()
+        # MyPaint background surface for layers-but-no-bg rendering
+        pattern = cairo.SurfacePattern(cairo_surf)
+        pattern.set_extend(cairo.EXTEND_REPEAT)
+        self._alpha_check_bg = pattern
+
 
     @property
     def app(self):
@@ -658,7 +671,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         #  (if it's only during loading, we could also just render blank instead?)
         if self.snapshot_pixmap:
             logger.debug("TODO: paint static snapshot pixmap")
-        self.repaint(cr, None)
+        self._repaint(cr, None)
         return True
 
     def display_to_model(self, disp_x, disp_y):
@@ -697,25 +710,17 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         return self.display_to_model(x, y)
 
 
-    def get_visible_layers(self):
-        # FIXME: tileddrawwidget should not need to know whether the
-        # model has layers
-        if not self.doc:
-            return []
-        layers = self.doc.layers
-        if not self.show_layers_above:
-            layers = self.doc.layers[0:self.doc.layer_idx+1]
-        layers = [l for l in layers if l.visible]
-        return layers
-
-
-    def repaint(self, cr, device_bbox=None):
-        if not self.doc:
-            cr.set_source_rgb(0, 0, 0)
+    def _repaint(self, cr, device_bbox=None):
+        # Paint checkerboard if we won't be rendering a background
+        model = self.doc
+        if not model or model.get_render_isolated():
+            cr.set_source(self._alpha_check_bg)
             cr.paint()
+        if not model:
             return
-        transformation, surface, sparse, mipmap_level, clip_region = self.render_prepare(cr, device_bbox)
-        self.render_execute(cr, transformation, surface, sparse, mipmap_level, clip_region)
+        # Render the document
+        render_info = self.render_prepare(cr, device_bbox)
+        self.render_execute(cr, *render_info)
         # Model coordinate space:
         cr.restore()  # CONTEXT2<<<
         for overlay in self.model_overlays:
@@ -859,49 +864,23 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         cr.rectangle(*model_bbox)
         cr.clip()
 
-        layers = self.get_visible_layers()
-
         if self.visualize_rendering:
             surface.pixbuf.fill((int(random.random()*0xff)<<16)+0x00000000)
-
-        background = None
-        if self.current_layer_solo:
-            background = self.neutral_background_pixbuf
-            layers = [self.doc.layer]
-            # this is for hiding instead
-            #layers.pop(self.doc.layer_idx)
-        if self.overlay_layer:
-            idx = layers.index(self.doc.layer)
-            layers.insert(idx+1, self.overlay_layer)
 
         # Composite
         tiles = []
         for tx, ty in surface.get_tiles():
-            if self.tile_is_visible(tx, ty, transformation, clip_region, sparse, translation_only):
+            if self.tile_is_visible( tx, ty, transformation, clip_region,
+                                     sparse, translation_only ):
                 tiles.append((tx, ty))
-        self.doc.render_into(surface, tiles, mipmap_level, layers, background)
+        self.doc.render_into(surface, tiles, mipmap_level, self.overlay_layer)
 
-        # The speedup below worked for GTK2, is there is an equivalent for GTK3?
-        #if translation_only:
-        #    # not sure why, but using gdk directly is notably faster than the same via cairo
-        #    x, y = self.model_to_display(surface.x, surface.y)
-        #    self.window.draw_pixbuf(None, surface.pixbuf, 0, 0, int(x), int(y),
-        #                            dither=gdk.RGB_DITHER_MAX)
-
-        #logger.debug('Position (screen coordinates): %r', cr.model_to_display(surface.x, surface.y))
-        gdk.cairo_set_source_pixbuf(cr, surface.pixbuf,
-                                    round(surface.x), round(surface.y))
-        pattern = cr.get_source()
-
-        # We could set interpolation mode here (eg nearest neighbour)
-        #pattern.set_filter(cairo.FILTER_NEAREST)  # 1.6s
-        #pattern.set_filter(cairo.FILTER_FAST)     # 2.0s
-        #pattern.set_filter(cairo.FILTER_GOOD)     # 3.1s
-        #pattern.set_filter(cairo.FILTER_BEST)     # 3.1s
-        #pattern.set_filter(cairo.FILTER_BILINEAR) # 3.1s
+        gdk.cairo_set_source_pixbuf( cr, surface.pixbuf,
+                                     round(surface.x), round(surface.y) )
 
         # Pixelize at high zoom-in levels
         if self.scale > self.pixelize_threshold:
+            pattern = cr.get_source()
             pattern.set_filter(cairo.FILTER_NEAREST)
 
         cr.paint()
@@ -967,9 +946,20 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
         self.queue_draw()
 
 
-    def toggle_show_layers_above(self):
-        self.show_layers_above = not self.show_layers_above
-        self.queue_draw()
+## Helper functions
+
+
+def _render_checks(cr, size, nchecks):
+    """Renders a checkerboard pattern"""
+    cr.set_source_rgb(*_ALPHA_CHECK_COLOR_1)
+    cr.paint()
+    cr.set_source_rgb(*_ALPHA_CHECK_COLOR_2)
+    for i in xrange(0, nchecks):
+        for j in xrange(0, nchecks):
+            if (i+j) % 2 == 0:
+                continue
+            cr.rectangle(i*size, j*size, size, size)
+            cr.fill()
 
 
 ## Testing

@@ -214,11 +214,6 @@ class Document (CanvasController):
         self.input_stroke_started_observers = []
         """See `self.input_stroke_ended_observers`"""
 
-        # FIXME: hack, to be removed
-        fname = os.path.join(self.app.datapath, 'backgrounds', '03_check1.png')
-        pixbuf = gdk.pixbuf_new_from_file(fname)
-        self.tdw.neutral_background_pixbuf = tiledsurface.Background(helpers.gdkpixbuf2numpy(pixbuf))
-
         self.zoomlevel_values = [1.0/16, 1.0/8, 2.0/11, 0.25, 1.0/3, 0.50, 2.0/3,  # micro
                                  1.0, 1.5, 2.0, 3.0, 4.0, 5.5, 8.0,        # normal
                                  11.0, 16.0, 23.0, 32.0, 45.0, 64.0]       # macro
@@ -301,12 +296,6 @@ class Document (CanvasController):
         self.strokeblink_state = sg.create_state(self.strokeblink_state_enter,
                                                  self.strokeblink_state_leave)
         self.strokeblink_state.autoleave_timeout = 0.3
-
-        # separate stategroup...
-        sg2 = stategroup.StateGroup()
-        self.layersolo_state = sg2.create_state(self.layersolo_state_enter,
-                                                self.layersolo_state_leave)
-        self.layersolo_state.autoleave_timeout = None
 
 
     def init_extra_keys(self):
@@ -476,8 +465,16 @@ class Document (CanvasController):
         self.model.set_layer_opacity(opa)
 
 
-    def solo_layer_cb(self, action):
-        self.layersolo_state.toggle(action)
+    def current_layer_solo_toggled_cb(self, action):
+        """Action callback: Layer Solo was toggled"""
+        active = action.get_active()
+        self.model.set_current_layer_solo(active)
+
+
+    def layers_above_current_toggled_cb(self, action):
+        """Action callback: Hide Layers Above Current was toggled"""
+        active = action.get_active()
+        self.model.set_hide_layers_above_current(active)
 
 
     def new_layer_cb(self, action):
@@ -492,9 +489,6 @@ class Document (CanvasController):
     def merge_layer_cb(self, action):
         if self.model.merge_layer_down():
             self.layerblink_state.activate(action)
-
-    def toggle_layers_above_cb(self, action):
-        self.tdw.toggle_show_layers_above()
 
 
     def pick_layer_cb(self, action):
@@ -561,6 +555,9 @@ class Document (CanvasController):
         if bool(layer.visible) != bool(action.get_active()):
             self.model.set_layer_visibility(action.get_active(), layer)
 
+    def show_background_toggle_cb(self, action):
+        if bool(self.model.get_background_visible()) != bool(action.get_active()):
+            self.model.set_background_visible(action.get_active())
 
     ## Brush settings tweak callbacks
 
@@ -717,27 +714,10 @@ class Document (CanvasController):
 
 
     def layerblink_state_enter(self):
-        self.tdw.current_layer_solo = True
-        self.tdw.queue_draw()
+        self.model.set_current_layer_previewing(True)
 
     def layerblink_state_leave(self, reason):
-        if self.layersolo_state.active:
-            # FIXME: use state machine concept, maybe?
-            return
-        self.tdw.current_layer_solo = False
-        self.tdw.queue_draw()
-
-
-    def layersolo_state_enter(self):
-        s = self.layerblink_state
-        if s.active:
-            s.leave()
-        self.tdw.current_layer_solo = True
-        self.tdw.queue_draw()
-
-    def layersolo_state_leave(self, reason):
-        self.tdw.current_layer_solo = False
-        self.tdw.queue_draw()
+        self.model.set_current_layer_previewing(False)
 
 
     #def blink_layer_cb(self, action):
@@ -1153,16 +1133,20 @@ class Document (CanvasController):
         ag.get_action("MergeLayer").set_sensitive(not sel_is_bottom)
         ag.get_action("PickLayer").set_sensitive(len(doc.layers) > 1)
 
-        # The current layer's status
-        layer = doc.layer
-        action = ag.get_action("LayerLockedToggle")
-        if bool(action.get_active()) != bool(layer.locked):
-            action.set_active(bool(layer.locked))
-        action = ag.get_action("LayerVisibleToggle")
-        if bool(action.get_active()) != bool(layer.visible):
-            action.set_active(bool(layer.visible))
+        # Update various GtkToggleActions
+        action_updates = [
+                ("LayerLockedToggle", doc.layer.locked),
+                ("LayerVisibleToggle", doc.layer.visible),
+                ("ShowBackgroundToggle", doc.get_background_visible()),
+                ("SoloLayer", doc.get_current_layer_solo()),
+                ("HideLayersAbove", doc.get_hide_layers_above_current()),
+            ]
+        for action_name, model_state in action_updates:
+            action = self.app.find_action(action_name)
+            if bool(action.get_active()) != bool(model_state):
+                action.set_active(model_state)
 
-        # Active modes.
+        # Active modes
         self.modes.top.model_structure_changed_cb(doc)
 
 

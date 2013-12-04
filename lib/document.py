@@ -110,10 +110,21 @@ class Document (object):
         self.command_stack = command.CommandStack()
         self._painting_only = painting_only
         self._tempdir = None
-        self.clear(True)
 
         self._frame = [0, 0, 0, 0]
         self._frame_enabled = False
+
+        # Backgrounds for rendering
+        blank_arr = numpy.zeros((N, N, 4), dtype='uint16')
+        self._blank_bg_surface = tiledsurface.Background(blank_arr)
+
+        # Rendering flags
+        self._background_visible = True
+        self._current_layer_solo = False
+        self._current_layer_previewing = False
+        self._hide_layers_above_current = False
+
+        self.clear(True)
 
 
     def _create_tempdir(self):
@@ -579,17 +590,65 @@ class Document (object):
 
     ## Rendering tiles
 
-    def render_into(self, surface, tiles, mipmap_level=0, layers=None, background=None):
+    def get_render_isolated(self):
+        """True if render_into() will render in isolation (backgroundless)
 
-        # TODO: move this loop down in C/C++
+        Isolated rendering mode has the same meaning as in the W3C Compositing
+        and Blending Level 1 spec <URI:http://www.w3.org/TR/compositing/>, for
+        isolated groups. In other words, the effect is that of compositing the
+        doc to a zero-RGBA backsurface instead of to the document's background
+        image.
+        """
+        return not self._background_visible or \
+               self._current_layer_previewing
+
+
+    def get_render_layers(self):
+        """Get a mutable list of layers which will be rendered"""
+        if self._current_layer_previewing or self._current_layer_solo:
+            layers = [self.layer]
+            return layers
+        if self._hide_layers_above_current:
+            layers = self.layers[0:self.layer_idx+1]
+        else:
+            layers = self.layers
+        return [l for l in layers if l.visible]
+
+
+    def render_into( self, surface, tiles, mipmap_level, overlay=None ):
+        """Render composited tiles into an 8bpp surface
+
+        :param surface: target rgba8 surface
+        :type surface: lib.pixbufsurface.Surface
+        :param tiles: tile coords, (tx, ty), to render
+        :type tiles: iterable
+        :param mipmap_level: layer and surface mipmap level to use
+        :type mipmap_level: int
+        :param overlay: overlay layer to use
+        :type overlay: lib.layer.Layer
+        """
+        # Decide a rendering mode
+        background = None
+        dst_has_alpha = False
+        if self.get_render_isolated():
+            background = self._blank_bg_surface
+            dst_has_alpha = True
+        # Inject the overlay layer if we have one
+        layers = self.get_render_layers()
+        if overlay is not None:
+            idx = self.layers.index(self.layer)
+            layers.insert(idx+1, overlay)
+        # Blit loop. Could this be done in C++?
         for tx, ty in tiles:
             with surface.tile_request(tx, ty, readonly=False) as dst:
-                self.blit_tile_into(dst, False, tx, ty, mipmap_level, layers, background)
+                self.blit_tile_into( dst, dst_has_alpha, tx, ty, mipmap_level,
+                                     layers, background, ignore_visible=True )
 
-    def blit_tile_into(self, dst, dst_has_alpha, tx, ty, mipmap_level=0, layers=None, background=None):
-        assert dst_has_alpha is False
+    def blit_tile_into( self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
+                        layers=None, background=None, ignore_visible=False ):
+        """Blit composited tiles into a destination surface"""
         if layers is None:
-            layers = self.layers
+            layers = self.get_render_layers()
         if background is None:
             background = self._background_layer._surface
 
@@ -603,10 +662,15 @@ class Document (object):
         background.blit_tile_into(dst, dst_has_alpha, tx, ty, mipmap_level)
 
         for layer in layers:
-            layer.composite_tile(dst, dst_has_alpha, tx, ty, mipmap_level)
+            layer.composite_tile(dst, dst_has_alpha, tx, ty, mipmap_level,
+                                 ignore_visible=ignore_visible)
 
         if dst_8bit is not None:
-            mypaintlib.tile_convert_rgbu16_to_rgbu8(dst, dst_8bit)
+            if dst_has_alpha:
+                mypaintlib.tile_convert_rgba16_to_rgba8(dst, dst_8bit)
+            else:
+                mypaintlib.tile_convert_rgbu16_to_rgbu8(dst, dst_8bit)
+
 
     def get_rendered_image_behind_current_layer(self, tx, ty):
         dst = numpy.empty((N, N, 4), dtype='uint16')
@@ -638,6 +702,54 @@ class Document (object):
             return False
         self.do(command.MergeLayer(self, dst_idx))
         return True
+
+
+    ## Layer Solo / Layers Above toggles (not saved)
+
+    def get_current_layer_solo(self):
+        """Layer-solo state for the document"""
+        return self._current_layer_solo
+
+    def set_current_layer_solo(self, value):
+        """Layer-solo state for the document"""
+        # TODO: use the user_initiated hack to make this undoable
+        value = bool(value)
+        old_value = self._current_layer_solo
+        self._current_layer_solo = value
+        if value != old_value:
+            self.call_doc_observers()
+            self.invalidate_all()
+
+    def get_hide_layers_above_current(self):
+        """Hide-layers-above state for the document"""
+        return self._hide_layers_above_current
+
+    def set_hide_layers_above_current(self, value):
+        """Hide-layers-above state for the document"""
+        # TODO: use the user_initiated hack to make this undoable
+        value = bool(value)
+        old_value = self._hide_layers_above_current
+        self._hide_layers_above_current = value
+        if value != old_value:
+            self.call_doc_observers()
+            self.invalidate_all()
+
+
+    ## Current layer temporary previewing state (not saved, used for blinking)
+
+    def get_current_layer_previewing(self):
+        """Layer-previewing state, as used when blinking a layer"""
+        return self._current_layer_previewing
+
+
+    def set_current_layer_previewing(self, value):
+        """Layer-previewing state, as used when blinking a layer"""
+        value = bool(value)
+        old_value = self._current_layer_previewing
+        self._current_layer_previewing = value
+        if value != old_value:
+            self.call_doc_observers()
+            self.invalidate_all()
 
 
     ## Layer import/export
@@ -735,7 +847,26 @@ class Document (object):
         self._background_layer.set_surface(obj)
         if make_default:
             self.default_background = obj
+        if not self._background_visible:
+            self._background_visible = True
+            self.call_doc_observers()
         self.invalidate_all()
+
+
+    def set_background_visible(self, value):
+        """Sets whether the background is visible"""
+        # TODO: use the user_initiated hack to make this undoable
+        value = bool(value)
+        old_value = self._background_visible
+        self._background_visible = value
+        if value != old_value:
+            self.call_doc_observers()
+            self.invalidate_all()
+
+
+    def get_background_visible(self):
+        """Gets whether the background is visible"""
+        return bool(self._background_visible)
 
 
     ## Saving and loading

@@ -146,6 +146,17 @@ class LayersTool (SizedVBoxToolWidget):
         layer_ctrls_table.attach(opacity_lbl, 0, 1, row, row+1, gtk.FILL)
         layer_ctrls_table.attach(self.opacity_scale, 1, 2, row, row+1, gtk.FILL|gtk.EXPAND)
 
+        # Background layer controls
+
+        show_bg_btn = gtk.CheckButton()
+        change_bg_action = self.app.find_action("BackgroundWindow")
+        change_bg_btn = action_button(change_bg_action)
+        show_bg_action = self.app.find_action("ShowBackgroundToggle")
+        show_bg_btn.set_related_action(show_bg_action)
+        bg_hbox = gtk.HBox()
+        bg_hbox.pack_start(show_bg_btn, expand=True)
+        bg_hbox.pack_start(change_bg_btn, expand=False)
+
         # Layer list action buttons
 
         add_action = self.app.find_action("NewLayerFG")
@@ -174,6 +185,7 @@ class LayersTool (SizedVBoxToolWidget):
         self.pack_start(layer_ctrls_table, expand=False)
         self.pack_start(view_scroll)
         self.pack_start(buttons_hbox, expand=False)
+        self.pack_start(bg_hbox, expand=False)
 
         # Names for anonymous layers
         # app.filehandler.file_opened_observers.append(self.init_anon_layer_names)
@@ -300,9 +312,23 @@ class LayersTool (SizedVBoxToolWidget):
             clicked_path = clicked_path.get_indices()
         layer, = self.liststore[clicked_path[0]]
         doc = self.app.doc.model
+        layer_idx = doc.layers.index(layer)
         if clicked_col is self.visible_col:
-            doc.set_layer_visibility(not layer.visible, layer)
-            self.treeview.queue_draw()
+            select_layer = False
+            if event.state & gdk.CONTROL_MASK:
+                current = doc.get_hide_layers_above_current()
+                doc.set_hide_layers_above_current(not current)
+                select_layer = True
+            if event.state & gdk.SHIFT_MASK:
+                current = doc.get_current_layer_solo()
+                doc.set_current_layer_solo(not current)
+                select_layer = True
+            if select_layer:
+                if layer_idx != doc.layer_idx:
+                    doc.select_layer(layer_idx)
+            else:
+                doc.set_layer_visibility(not layer.visible, layer)
+                self.treeview.queue_draw()
             return True
         elif clicked_col is self.locked_col:
             doc.set_layer_locked(not layer.locked, layer)
@@ -376,7 +402,8 @@ class LayersTool (SizedVBoxToolWidget):
     def layer_visible_datafunc(self, column, renderer, model, tree_iter,
                                *data_etc):
         layer = model.get_value(tree_iter, 0)
-        if layer.visible:
+        visible = (layer in doc.get_render_layers())
+        if visible:
             icon_name = "mypaint-object-visible-symbolic"
         else:
             icon_name = "mypaint-object-hidden-symbolic"

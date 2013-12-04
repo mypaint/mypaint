@@ -92,7 +92,8 @@
       </menu>
       <separator/>
       <menuitem action='SoloLayer'/>
-      <menuitem action='ToggleAbove'/>
+      <menuitem action='HideLayersAbove'/>
+      <menuitem action='ShowBackgroundToggle'/>
     </menu>
     <menu action='BrushMenu'>
       <!-- Brush choice from the user's collection -->

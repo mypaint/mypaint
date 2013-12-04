@@ -532,8 +532,15 @@ Perhaps an increasing amount.
           <signal name="activate" handler="layer_visible_toggle_cb"/>
         </object>
       </child>
-
-
+      <child>
+        <object class="GtkToggleAction" id="ShowBackgroundToggle">
+          <property name="label" translatable="yes"
+            context="Menu|View|">Background</property>
+          <property name="tooltip" translatable="yes"
+            >Show the background layer</property>
+          <signal name="activate" handler="show_background_toggle_cb"/>
+        </object>
+      </child>
 
       <!-- View manipulation -->
       <child>
@@ -661,18 +668,18 @@ Perhaps an increasing amount.
         <accelerator key="u"/>
       </child>
       <child>
-        <object class="GtkAction" id="SoloLayer">
+        <object class="GtkToggleAction" id="SoloLayer">
           <property name="label" translatable="yes"
             context="Menu|View|">Layer Solo</property>
-          <signal name="activate" handler="solo_layer_cb"/>
+          <signal name="toggled" handler="current_layer_solo_toggled_cb"/>
         </object>
         <accelerator key="Home"/>
       </child>
       <child>
-        <object class="GtkAction" id="ToggleAbove">
+        <object class="GtkToggleAction" id="HideLayersAbove">
           <property name="label" translatable="yes"
             context="Menu|View|">Hide Layers Above Current</property>
-          <signal name="activate" handler="toggle_layers_above_cb"/>
+          <signal name="toggled" handler="layers_above_current_toggled_cb"/>
         </object>
         <accelerator key="End"/>
       </child>

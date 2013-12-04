@@ -346,18 +346,21 @@ class Layer (object):
     ## Rendering
 
 
-    def composite_tile(self, dst, dst_has_alpha, tx, ty, mipmap_level=0):
+    def composite_tile(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
+                       ignore_visible=False):
         """Composite one tile of the layer over a target array
 
-        Composite one tile of the backing surface over the array dst, modifying
-        only dst.
+        Composite one tile of the backing surface over the array dst,
+        modifying only dst.
         """
-        self._surface.composite_tile(
-            dst, dst_has_alpha, tx, ty,
-            mipmap_level=mipmap_level,
-            opacity=self.effective_opacity,
-            mode=self.compositeop
-            )
+        if ignore_visible:
+            opacity = self.opacity
+        else:
+            opacity = self.effective_opacity
+        self._surface.composite_tile( dst, dst_has_alpha, tx, ty,
+                                      mipmap_level=mipmap_level,
+                                      opacity=opacity,
+                                      mode=self.compositeop )
 
 
     def render_as_pixbuf(self, *rect, **kwargs):
