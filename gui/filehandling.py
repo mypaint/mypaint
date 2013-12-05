@@ -145,7 +145,7 @@ class FileHandler(object):
         box = gtk.HBox()
         label = gtk.Label(_('Format to save as:'))
         label.set_alignment(0.0, 0.0)
-        combo = self.saveformat_combo = gtk.combo_box_new_text()
+        combo = self.saveformat_combo = gtk.ComboBoxText()
         for name, ext, opt in self.saveformats:
             combo.append_text(name)
         combo.set_active(0)
