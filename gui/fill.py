@@ -16,8 +16,6 @@ from gettext import gettext as _
 
 import canvasevent
 
-from application import get_app
-
 ## Class defs
 
 class FloodFillMode (canvasevent.SwitchableModeMixin,
@@ -48,6 +46,7 @@ class FloodFillMode (canvasevent.SwitchableModeMixin,
     @property
     def cursor(self):
         name = self._current_cursor
+        from application import get_app
         app = get_app()
         return app.cursors.get_action_cursor(self.__action_name__, name)
 
