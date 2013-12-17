@@ -703,9 +703,8 @@ class Document (CanvasController):
         self.app.preferences['misc.context_restores_color'] = bool(action.get_active())
 
     def strokeblink_state_enter(self):
-        l = layer.Layer()
-        self.si.render_overlay(l)
-        self.tdw.overlay_layer = l
+        self.tdw.overlay_layer = layer.Layer()
+        self.tdw.overlay_layer.load_from_strokeshape(self.si)
         self.tdw.queue_draw() # OPTIMIZE: excess
 
     def strokeblink_state_leave(self, reason):

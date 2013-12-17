@@ -155,6 +155,9 @@ class Layer (object):
         """Load the surface image's tiles from another surface"""
         self._surface.load_from_surface(surface)
 
+    def load_from_strokeshape(self, strokeshape):
+        """Load image tiles from a strokemap.StrokeShape"""
+        strokeshape.render_to_surface(self._surface)
 
     def copy(self):
         """Returns an independent copy of the layer, for Duplicate Layer

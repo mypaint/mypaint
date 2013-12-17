@@ -97,19 +97,17 @@ class StrokeShape (object):
             data.shape = (N, N)
             return data[y%N, x%N]
 
-    def render_overlay(self, layer):
-        surf = layer._surface # FIXME: Don't touch inner details of layer
+    def render_to_surface(self, surf):
         self.tasks.finish_all()
         for (tx, ty), data in self.strokemap.iteritems():
             data = fromstring(zlib.decompress(data), dtype='uint8')
             data.shape = (N, N)
-
-            with surf.tile_request(tx, ty, readonly=False) as rgba:
+            with surf.tile_request(tx, ty, readonly=False) as tile:
                 # neutral gray, 50% opaque
-                rgba[:,:,3] = data.astype('uint16') * (1<<15)/2
-                rgba[:,:,0] = rgba[:,:,3]/2
-                rgba[:,:,1] = rgba[:,:,3]/2
-                rgba[:,:,2] = rgba[:,:,3]/2
+                tile[:,:,3] = data.astype('uint16') * (1<<15)/2
+                tile[:,:,0] = tile[:,:,3]/2
+                tile[:,:,1] = tile[:,:,3]/2
+                tile[:,:,2] = tile[:,:,3]/2
 
 
     @staticmethod
