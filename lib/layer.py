@@ -1206,3 +1206,32 @@ class PaintingLayerMove (object):
     def process(self, n=200):
         return self._wrapped.process(n)
 
+
+## Module testing
+
+
+def _test():
+    """Run doctest strings"""
+    import doctest
+    doctest.testmod(optionflags=doctest.ELLIPSIS)
+
+
+def _make_test_stack():
+    """Makes a simple test RootLayerStack with 2 branches of 2 leaves each
+
+    :return: The root stack, and a list of its leaves.
+    :rtype: tuple
+    """
+    layer = RootLayerStack(doc=None)
+    layer0 = LayerStack('0'); layer.append(layer0)
+    layer00 = PaintingLayer('00'); layer0.append(layer00)
+    layer01 = PaintingLayer('01'); layer0.append(layer01)
+    layer1 = LayerStack('1'); layer.append(layer1)
+    layer10 = PaintingLayer('10'); layer1.append(layer10)
+    layer11 = PaintingLayer('11'); layer1.append(layer11)
+    return (layer, [layer00, layer01, layer10, layer11])
+
+
+if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG)
+    _test()
