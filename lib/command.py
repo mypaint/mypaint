@@ -12,8 +12,12 @@ from observable import event
 
 import weakref
 from gettext import gettext as _
+from logging import getLogger
+logger = getLogger(__name__)
+
 
 class CommandStack (object):
+    """Undo/redo stack"""
 
     def __init__(self):
         object.__init__(self)
@@ -106,14 +110,12 @@ class Action (object):
         return "<%s>" % (self.display_name,)
 
     def redo(self):
-        """Callback used to perform, or re-perform the Action.
-        """
+        """Callback used to perform, or re-perform the Action"""
         raise NotImplementedError
 
 
     def undo(self):
-        """Callback used to un-perform an already performed Action.
-        """
+        """Callback used to un-perform an already performed Action"""
         raise NotImplementedError
 
 
@@ -159,23 +161,34 @@ class Action (object):
     def _notify_document_observers(self):
         self.doc.call_doc_observers()
 
-class Stroke(Action):
-    """Completed stroke, i.e. some seconds of painting"""
+class Stroke (Action):
+    """Completed stroke, i.e. some seconds of painting
+
+    Stroke actions are only initialized (and performed) after the stroke is
+    just completed and fully rendered.
+    """
+
     display_name = _("Painting")
+
     def __init__(self, doc, stroke, snapshot_before):
-        # called only when the stroke was just completed and is now
-        # fully rendered
         Action.__init__(self, doc)
         assert stroke.finished
-        self.stroke = stroke # immutable; not used for drawing any more, just for inspection
+        self.stroke = stroke
+        # immutable; not used for drawing any more, just for inspection
         self.before = snapshot_before
-        self.doc.layer.add_stroke(stroke, snapshot_before)
-        # this snapshot will include the updated stroke list (modified by the line above)
-        self.after = self.doc.layer.save_snapshot()
-    def undo(self):
-        self.doc.layer.load_snapshot(self.before)
+        layer = self.doc.layer_stack.current
+        layer.add_stroke(stroke, snapshot_before)
+        # this snapshot will include the updated stroke list (modified by the
+        # line above)
+        self.after = layer.save_snapshot()
+
     def redo(self):
-        self.doc.layer.load_snapshot(self.after)
+        layer = self.doc.layer_stack.current
+        layer.load_snapshot(self.after)
+
+    def undo(self):
+        layer = self.doc.layer_stack.current
+        layer.load_snapshot(self.before)
 
 
 class FloodFill (Action):
@@ -194,17 +207,18 @@ class FloodFill (Action):
         self.sample_merged = sample_merged
         self.make_new_layer = make_new_layer
         self.new_layer = None
-        self.new_layer_idx = None
+        self.new_layer_path = None
         self.snapshot = None
 
     def redo(self):
         # Pick a source
+        layers = self.doc.layer_stack
         if self.sample_merged:
             src_layer = layer.PaintingLayer()
-            for l in self.doc.layers:
+            for l in layers:
                 l.merge_into(src_layer, strokemap=False)
         else:
-            src_layer = self.doc.layer
+            src_layer = layers.current
         # Choose a target
         if self.make_new_layer:
             # Write to a new layer
@@ -213,32 +227,37 @@ class FloodFill (Action):
             nl.content_observers.append(self.doc.layer_modified_cb)
             nl.set_symmetry_axis(self.doc.get_symmetry_axis())
             self.new_layer = nl
-            self.new_layer_idx = self.doc.layer_idx + 1
-            self.doc.layers.insert(self.new_layer_idx, nl)
-            self.doc.layer_idx = self.new_layer_idx
+            insert_path = list(layers.get_current_path())
+            insert_path[-1] += 1
+            layers.deepinsert(insert_path, nl)
+            path = layers.deepindex(nl)
+            self.new_layer_path = path
+            layers.set_current_path(path)
             self._notify_document_observers()
             dst_layer = nl
         else:
             # Overwrite current, but snapshot 1st
             assert self.snapshot is None
-            self.snapshot = self.doc.layer.save_snapshot()
-            dst_layer = self.doc.layer
+            self.snapshot = layers.current.save_snapshot()
+            dst_layer = layers.current
         # Fill connected areas of the source into the destination
         src_layer.flood_fill(self.x, self.y, self.color, self.bbox,
                              self.tolerance, dst_layer=dst_layer)
 
     def undo(self):
+        layers = self.doc.layer_stack
         if self.make_new_layer:
             assert self.new_layer is not None
-            self.doc.layer_idx = self.new_layer_idx - 1
-            self.doc.layers.remove(self.new_layer)
-            self._notify_canvas_observers([self.doc.layer])
+            path = layers.path_below(layers.get_current_path())
+            layers.set_current_path(path)
+            layers.deepremove(self.new_layer)
+            self._notify_canvas_observers([self.new_layer])
             self._notify_document_observers()
             self.new_layer = None
-            self.new_layer_idx = None
+            self.new_layer_path = None
         else:
             assert self.snapshot is not None
-            self.doc.layer.load_snapshot(self.snapshot)
+            layers.current.load_snapshot(self.snapshot)
             self.snapshot = None
 
 
@@ -336,77 +355,105 @@ class ConvertLayerToNormalMode(Action):
         self.layer.load_snapshot(self.before)
         del self.before
 
-class AddLayer(Action):
+class AddLayer (Action):
+    """Creates a new layer, and inserts it into the layer stack"""
+
     display_name = _("Add Layer")
-    def __init__(self, doc, insert_idx=None, after=None, name=''):
+
+    def __init__(self, doc, insert_path, name=''):
         Action.__init__(self, doc)
-        self.insert_idx = insert_idx
-        if after:
-            l_idx = self.doc.layers.index(after)
-            self.insert_idx = l_idx + 1
+        layers = doc.layer_stack
+        self.insert_path = insert_path
+        self.prev_currentlayer_path = None
         self.layer = layer.PaintingLayer(name)
         self.layer.content_observers.append(self.doc.layer_modified_cb)
         self.layer.set_symmetry_axis(self.doc.get_symmetry_axis())
+
     def redo(self):
-        self.doc.layers.insert(self.insert_idx, self.layer)
-        self.prev_idx = self.doc.layer_idx
-        self.doc.layer_idx = self.insert_idx
-        self._notify_document_observers()
-    def undo(self):
-        self.doc.layers.remove(self.layer)
-        self.doc.layer_idx = self.prev_idx
+        layers = self.doc.layer_stack
+        self.prev_currentlayer_path = layers.get_current_path()
+        layers.deepinsert(self.insert_path, self.layer)
+        inserted_path = layers.deepindex(self.layer)
+        assert inserted_path is not None
+        layers.set_current_path(inserted_path)
         self._notify_document_observers()
 
-class RemoveLayer(Action):
-    """Removes a layer, replacing it with a new one if it was the last.
-    """
+    def undo(self):
+        layers = self.doc.layer_stack
+        layers.deepremove(self.layer)
+        layers.set_current_path(self.prev_currentlayer_path)
+        self._notify_document_observers()
+
+
+class RemoveLayer (Action):
+    """Removes a layer, replacing it with a new one if it was the last"""
+
     display_name = _("Remove Layer")
-    def __init__(self, doc,layer=None):
+
+    def __init__(self, doc, layer=None):
         Action.__init__(self, doc)
-        self.layer = layer
-        self.newlayer0 = None
+        layers = self.doc.layer_stack
+        self.unwanted_path = layers.canonpath(layer=layer, usecurrent=True)
+        self.removed_layer = None
+        self.replacement_layer = None
+
     def redo(self):
-        if self.layer:
-            self.idx = self.doc.layers.index(self.layer)
-            self.doc.layers.remove(self.layer)
+        assert self.removed_layer is None, "double redo()?"
+        layers = self.doc.layer_stack
+        path = layers.get_current_path()
+        path_below = layers.path_below(path)
+        self.removed_layer = layers.deeppop(self.unwanted_path)
+        if len(layers) == 0:
+            logger.debug("Removed last layer, replacing it")
+            repl = self.replacement_layer
+            if repl is None:
+                repl = layer.PaintingLayer("")
+                repl.content_observers.append(self.doc.layer_modified_cb)
+                repl.set_symmetry_axis(self.doc.get_symmetry_axis())
+                self.replacement_layer = repl
+            layers.append(repl)
+            layers.set_current_path((0,))
+            assert self.unwanted_path == (0,)
         else:
-            self.idx = self.doc.layer_idx
-            self.layer = self.doc.layers.pop(self.doc.layer_idx)
-        if len(self.doc.layers) == 0:
-            if self.newlayer0 is None:
-                ly = layer.PaintingLayer("")
-                ly.content_observers.append(self.doc.layer_modified_cb)
-                ly.set_symmetry_axis(self.doc.get_symmetry_axis())
-                self.newlayer0 = ly
-            self.doc.layers.append(self.newlayer0)
-            self.doc.layer_idx = 0
-            assert self.idx == 0
-        else:
-            if self.doc.layer_idx == len(self.doc.layers):
-                self.doc.layer_idx -= 1
-        self._notify_canvas_observers([self.layer])
-        self._notify_document_observers()
-    def undo(self):
-        if self.newlayer0 is not None:
-            self.doc.layers.remove(self.newlayer0)
-        self.doc.layers.insert(self.idx, self.layer)
-        self.doc.layer_idx = self.idx
-        self._notify_canvas_observers([self.layer])
+            if not layers.deepget(path):
+                if layers.deepget(path_below):
+                    layers.set_current_path(path_below)
+                else:
+                    layers.set_current_path((0,))
+        self._notify_canvas_observers([self.removed_layer])
         self._notify_document_observers()
 
-class SelectLayer(Action):
+    def undo(self):
+        layers = self.doc.layer_stack
+        if self.replacement_layer is not None:
+            layers.deepremove(self.replacement_layer)
+        layers.deepinsert(self.unwanted_path, self.removed_layer)
+        layers.set_current_path(self.unwanted_path)
+        self._notify_canvas_observers([self.removed_layer])
+        self._notify_document_observers()
+        self.removed_layer = None
+
+
+class SelectLayer (Action):
+    """Select a layer"""
+
     display_name = _("Select Layer")
     automatic_undo = True
-    def __init__(self, doc, idx):
+
+    def __init__(self, doc, index=None, path=None, layer=None):
         Action.__init__(self, doc)
-        self.idx = idx
+        layers = self.doc.layer_stack
+        self.path = layers.canonpath(index=index, path=path, layer=layer)
+        self.prev_path = layers.canonpath(path=layers.get_current_path())
+
     def redo(self):
-        assert self.idx >= 0 and self.idx < len(self.doc.layers)
-        self.prev_idx = self.doc.layer_idx
-        self.doc.layer_idx = self.idx
+        layers = self.doc.layer_stack
+        layers.set_current_path(self.path)
         self._notify_document_observers()
+
     def undo(self):
-        self.doc.layer_idx = self.prev_idx
+        layers = self.doc.layer_stack
+        layers.set_current_path(self.prev_path)
         self._notify_document_observers()
 
 class MoveLayer(Action):

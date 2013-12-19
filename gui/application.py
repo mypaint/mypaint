@@ -262,7 +262,7 @@ class Application (object):
                 continue
             bg, errors = backgroundwindow.load_background(bg_path)
             if bg:
-                self.doc.model.set_background(bg, make_default=True)
+                self.doc.model.layer_stack.set_background(bg, make_default=True)
                 break
             else:
                 logger.warning("Failed to load default background image %r",

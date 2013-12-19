@@ -13,6 +13,7 @@ from gi.repository import GdkPixbuf
 
 import struct
 import zlib
+import numpy
 from numpy import *
 import logging
 import os
@@ -93,7 +94,18 @@ LOAD_CHUNK_SIZE = 64*1024
 
 
 class LayerBase (object):
-    """Base class defining the layer API"""
+    """Base class defining the layer API
+
+    Layers support two similar tile-based methods which are used for two
+    distinct rendering cases: _blitting_ (unconditional copying without flags)
+    and _compositing_ (conditional alpha-compositing which respects flags like
+    opacity and layer mode). Rendering for the display is supported using the
+    compositing pathway and is coordinated via the `RootLayerStack`. Exporting
+    layers is handled via the blitting pathway, which for layer stacks
+    involves compositing the stacks' contents together to render an effective
+    image.
+
+    """
 
     ICON_NAME = None
 
@@ -245,9 +257,51 @@ class LayerBase (object):
     ## Rendering
 
 
+    def blit_tile_into(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
+                       **kwargs):
+        """Unconditionally copy one tile's data into an array without options
+
+        The visibility, opacity, and compositing mode flags of this layer must
+        be ignored, or take default values. If the layer has sub-layers, they
+        must be composited together as an isolated group (i.e. over an empty
+        backdrop) using their `composite_tile()` method. It is the result of
+        this compositing which is blitted, ignoring this layer's visibility,
+        opacity, and compositing mode flags.
+
+        :param dst: Target tile array (uint16, NxNx4, 15-bit scaled ints)
+        :type dst: numpy.ndarray
+        :param dst_has_alpha: the alpha channel in dst should be preserved
+        :type dst_has_alpha: bool
+        :param tx: Tile X coordinate, in model tile space
+        :type tx: int
+        :param ty: Tile Y coordinate, in model tile space
+        :type ty: int
+        :param mipmap_level: layer mipmap level to use
+        :type mipmap_level: int
+        :param **kwargs: extensibility...
+
+        The base implementation does nothing.
+        """
+        pass
+
+
     def composite_tile( self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
-                        ignore_visible=False ):
-        """Composite a tile's data into an array
+                        layers=None, **kwargs ):
+        """Composite a tile's data into an array, respecting flags/layers list
+
+        Unlike `blit_tile_into()`, the visibility, opacity, and compositing
+        mode flags of this layer must be respected.  It otherwise works just
+        like `blit_tile_into()`, but may make a local decision about whether
+        to render as an isolated group.  This method uses the same parameters
+        as `blit_tile_into()`, with one addition:
+
+        :param layers: the set of layers to render
+        :type layers: set of layers, or None
+
+        If `layers` is defined, it identifies the layers which are to be
+        rendered: certain special rendering modes require this. For layers
+        other then the root stack, layers should not render themselves if
+        omitted from a defined `layers`.
 
         The base implementation does nothing.
         """
@@ -443,6 +497,813 @@ class _LayerBaseSnapshot (object):
         layer.opacity = self.opacity
 
 
+## Stacks of layers
+
+
+class LayerStack (LayerBase):
+    """Reorderable stack of editable layers"""
+
+
+    ## Construction and other lifecycle stuff
+
+
+    def __init__(self, name='', compositeop=DEFAULT_COMPOSITE_OP):
+        super(LayerStack, self).__init__(name=name, compositeop=compositeop)
+        self._layers = []
+        #: Explicit isolation flag
+        self.isolated = False
+        # Blank background, for use in rendering
+        N = tiledsurface.N
+        blank_arr = numpy.zeros((N, N, 4), dtype='uint16')
+        self._blank_bg_surface = tiledsurface.Background(blank_arr)
+
+
+    def copy(self):
+        raise NotImplementedError
+
+
+    def load_from_openraster(self, orazip, attrs, tempdir, feedback_cb):
+        raise NotImplementedError
+
+
+    def clear(self):
+        super(LayerStack, self).clear()
+        self._layers = []
+
+
+    def __repr__(self):
+        """String representation of a stack
+
+        >>> repr(LayerStack(name='test'))
+        "<LayerStack 'test' []>"
+        """
+        if self.name:
+            return '<%s %r %r>' % (self.__class__.__name__, self.name,
+                                   self._layers)
+        else:
+            return '<%s %r>' % (self.__class__.__name__, self._layers)
+
+
+    ## Basic list-of-layers access
+
+    def __len__(self):
+        """Return the number of layers in the stack
+
+        >>> stack = LayerStack()
+        >>> len(stack)
+        0
+        >>> stack.append(LayerBase())
+        >>> len(stack)
+        1
+        """
+        return len(self._layers)
+
+
+    def __iter__(self):
+        return iter(self._layers)
+
+
+    def append(self, layer):
+        self._layers.append(layer)
+
+    def remove(self, layer):
+        return self._layers.remove(layer)
+
+    def pop(self, index=None):
+        if index is None:
+            return self._layers.pop()
+        else:
+            return self._layers.pop(index)
+
+    def insert(self, index, layer):
+        self._layers.insert(index, layer)
+
+
+    ## Info methods
+
+
+    def get_effective_isolation(self):
+        """True if the layer should be rendered as isolated"""
+        return (self.isolated or self.opacity != 1.0 or
+                self.compositeop != DEFAULT_COMPOSITE_OP)
+
+    def get_bbox(self):
+        result = helpers.Rect()
+        for layer in self._layers:
+            result.expandToIncludeRect(layer.get_bbox())
+        return result
+
+    def is_empty(self):
+        return len(self._layers) == 0
+
+
+    ## Rendering
+
+    def blit_tile_into( self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
+                        **kwargs ):
+        raise NotImplementedError
+
+
+    def composite_tile( self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
+                        layers=None, **kwargs):
+        raise NotImplementedError
+
+
+    def get_move(self, x, y):
+        """Get a translation/move object for this layer"""
+        return LayerStackMove(self, self._layers, x, y)
+
+
+    ## Saving
+
+
+    def save_as_png(self, filename, *rect, **kwargs):
+        """Save to a named PNG file"""
+        raise NotImplementedError
+
+
+    def save_to_openraster(self, orazip, tmpdir, ref, selected,
+                           canvas_bbox, frame_bbox, **kwargs):
+        """Saves the layer's data into an open OpenRaster ZipFile"""
+        raise NotImplementedError
+
+
+    ## Snapshotting
+
+    def save_snapshot(self):
+        """Snapshots the state of the layer, for undo purposes"""
+        return _LayerBaseSnapshot(self, self._layers)
+
+
+    ## Trimming
+
+    def trim(self, rect):
+        """Trim the layer to a rectangle, discarding data outside it"""
+        for layer in self._layers:
+            layer.trim(rect)
+
+
+
+class _LayerStackSnapshot (_LayerBaseSnapshot):
+
+    def __init__(self, layer, layers):
+        super(_LayerStackSnapshot, self).__init__(layer)
+        raise NotImplementedError
+
+    def restore_to_layer(self, layer):
+        super(_LayerStackSnapshot, self).restore_to_layer(layer)
+        raise NotImplementedError
+
+
+class LayerStackMove (object):
+    """Move object wrapper for layer stacks"""
+
+    def __init__(self, layers, x, y):
+        super(LayerStackMove, self).__init__(x, y)
+        self._moves = []
+        for layer in layers:
+            self._moves.append(layer.get_move(x, y))
+
+    def update(self, dx, dy):
+        for move in self._moves:
+            move.update(dx, dy)
+
+    def cleanup(self):
+        for move in self._moves:
+            move.cleanup(dx, dy)
+
+    def process(self, n=200):
+        n = max(20, int(n / len(self._moves)))
+        incomplete = False
+        for move in self._moves:
+            incomplete = move.process(n=n) or incomplete
+        return incomplete
+
+
+class RootLayerStack (LayerStack):
+    """Layer stack with background, rendering loop, selection, & view modes"""
+
+    ## Initialization
+
+
+    def __init__(self, doc):
+        """Construct, as part of a model
+
+        :param doc: The model document. May be None for testing.
+        :param doc: lib.document.Document
+        """
+        super(RootLayerStack, self).__init__(compositeop=DEFAULT_COMPOSITE_OP)
+        self._doc = doc
+        # Background
+        self._default_background = (255, 255, 255)
+        self._background_layer = BackgroundLayer(self._default_background)
+        self._background_visible = True
+        # Special rendering state
+        self._current_layer_solo = False
+        self._current_layer_previewing = False
+        # Current layer
+        self._current_path = ()
+
+
+    def clear(self):
+        super(RootLayerStack, self).clear()
+        self.set_background(self._default_background)
+
+
+    ## Rendering: root stack API
+
+
+    def get_render_background(self):
+        """True if the internal background will be rendered by render_into()
+
+        The UI should draw its own checquered background if the background is
+        not going to be rendered by the root stack, and expect `render_into()`
+        to write RGBA data with lots of transparent areas.
+        """
+
+        # Layer-solo mode should probably *not* render without the background.
+        # While it's intended to be used for showing what a layer contains by
+        # itself, part of that involves showing what effect the the layer's
+        # mode has. Layer-solo over real alpha checks doesn't permit that.
+        # Users can always turn background visibility on or off with the UI if
+        # they wish to preview it both ways, however.
+
+        return self._background_visible and not self._current_layer_previewing
+
+        # Conversely, current-layer-preview is intended to *blink* very
+        # visibly to notify the user, so always turn off the background for
+        # that.
+
+
+    def get_render_layers(self, implicit=False):
+        """Get the set of layers to be rendered as used by render_into()
+
+        :param implicit: if true, return None if visible flags should be used
+        :type implicit: bool
+        :return: The set of layers which render_into() would use
+        :rtype: set or None
+
+        Implicit mode is used internally by render_into(). If it is enabled,
+        this method returns ``None`` if each descendent layer's ``visible``
+        flag is to be used to determine this.  When disabled, the flag is
+        tested here, which requires an extra iteration.
+        """
+        if self._current_layer_previewing or self._current_layer_solo:
+            return set([self.get_current()])
+        elif implicit:
+            return None
+        else:
+            return set((d for d in self.deepiter() if d.visible))
+
+
+    def render_into(self, surface, tiles, mipmap_level, overlay=None):
+        """Tiled rendering: used for display only
+
+        :param surface: target rgba8 surface
+        :type surface: lib.pixbufsurface.Surface
+        :param tiles: tile coords, (tx, ty), to render
+        :type tiles: list
+        :param mipmap_level: layer and surface mipmap level to use
+        :type mipmap_level: int
+        :param overlay: overlay layer to render (stroke highlighting)
+        :type overlay: SurfaceBackedLayer
+
+        """
+        # Decide a rendering mode
+        background = None
+        dst_has_alpha = False
+        if not self.get_render_background():
+            background = self._blank_bg_surface
+            dst_has_alpha = True
+        # TODO: Inject the overlay layer if we have one
+        layers = self.get_render_layers(implicit=True)
+        # Blit loop. Could this be done in C++?
+        for tx, ty in tiles:
+            with surface.tile_request(tx, ty, readonly=False) as dst:
+                self.composite_tile( dst, dst_has_alpha, tx, ty, mipmap_level,
+                                     layers=layers, background=background,
+                                     overlay=overlay )
+
+    ## Rendering
+
+
+    def blit_tile_into( self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
+                        **kwargs ):
+        """Unconditionally copy one tile's data into an array
+
+        The root layer stack implementation just uses `composite_tile()` due
+        to its lack of conditionality.
+        """
+        # NOTE: The background is always on when blitting;
+        # NOTE:   - does this matter?
+        # NOTE:   - should it be always-off?
+        self.composite_tile( dst, dst_has_alpha, tx, ty,
+                             mipmap_level=mipmap_level, **kwargs )
+
+
+    def composite_tile( self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
+                        layers=None, background=None, overlay=None,
+                        **kwargs ):
+        """Composite a tile's data into an array, respecting flags/layers list
+
+        The root layer stack implementation accepts the parameters documented
+        in `BaseLayer.composite_tile()`, and also consumes:
+
+        :param background: Surface supporting 15-bit scaled-int tile blits
+        :param overlay: Layer supporting 15-bit scaled-int tile composition
+        :type overlay: BaseLayer
+
+        The root layer has flags which ensure it is always visible, so the
+        result is generally indistinguishable from `blit_tile_into()`. However
+        the rendering loop, `render_into()`, calls this method and sometimes
+        passes in a zero-alpha `background` for special rendering modes which
+        need isolated rendering.
+
+        As a further extension to the base API, `dst` may be an 8bpp array. A
+        temporary 15-bit scaled int array is used for compositing in this
+        case, and the output is converted to 8bpp.
+        """
+        if background is None:
+            background = self._background_layer._surface
+
+        assert dst.shape[-1] == 4
+        if dst.dtype == 'uint8':
+            dst_8bit = dst
+            N = tiledsurface.N
+            dst = numpy.empty((N, N, 4), dtype='uint16')
+        else:
+            dst_8bit = None
+
+        background.blit_tile_into(dst, dst_has_alpha, tx, ty, mipmap_level)
+
+        for layer in self._layers:
+            layer.composite_tile(dst, dst_has_alpha, tx, ty, mipmap_level,
+                                 layers=layers, **kwargs)
+        if overlay:
+            overlay.composite_tile(dst, dst_has_alpha, tx, ty, mipmap_level,
+                                   layers=set([overlay]), **kwargs)
+
+
+        if dst_8bit is not None:
+            if dst_has_alpha:
+                mypaintlib.tile_convert_rgba16_to_rgba8(dst, dst_8bit)
+            else:
+                mypaintlib.tile_convert_rgbu16_to_rgbu8(dst, dst_8bit)
+
+
+
+
+    ## Current layer
+
+    def get_current_path(self):
+        return self._current_path
+
+    def set_current_path(self, path):
+        p = tuple(path)
+        while len(p) > 0:
+            layer = self.deepget(p)
+            if layer is not None:
+                self._current_path = p
+                return
+            p = p[:-1]
+        if len(self._layers) > 0:
+            self._current_path = (0,)
+        else:
+            raise ValueError, 'Invalid path %r' % (path,)
+
+    current_path = property(get_current_path, set_current_path)
+
+    def get_current(self):
+        layer = self.deepget(self._current_path)
+        assert layer is not self
+        assert layer is not None
+        return layer
+
+    current = property(get_current)
+
+
+    ## The background layer
+
+    @property
+    def background_layer(self):
+        """The background layer (accessor)"""
+        return self._background_layer
+
+    def set_background(self, obj, make_default=False):
+        """Set the background layer's surface from an object
+
+        :param obj: Background layer, or an RGB triple (uint8), or a
+           HxWx4 or HxWx3 numpy array which can be either uint8 or uint16.
+        :type obj: layer.BackgroundLayer or tuple or numpy array
+        :param make_default: Whether to set the default background for
+          clear() too.
+        :type make_default: bool
+        """
+        if isinstance(obj, BackgroundLayer):
+            obj = obj._surface
+        if not isinstance(obj, tiledsurface.Background):
+            if isinstance(obj, GdkPixbuf.Pixbuf):
+                obj = helpers.gdkpixbuf2numpy(obj)
+            obj = tiledsurface.Background(obj)
+        self._background_layer.set_surface(obj)
+        if make_default:
+            self._default_background = obj
+        if not self._background_visible:
+            self._background_visible = True
+            if self._doc:
+                self._doc.call_doc_observers()
+        if self._doc:
+            self._doc.invalidate_all()
+
+
+    def set_background_visible(self, value):
+        """Sets whether the background is visible"""
+        value = bool(value)
+        old_value = self._background_visible
+        self._background_visible = value
+        if value != old_value and self._doc:
+            self._doc.call_doc_observers()
+            self._doc.invalidate_all()
+
+
+    def get_background_visible(self):
+        """Gets whether the background is visible"""
+        return bool(self._background_visible)
+
+    ## Layer Solo toggle (not saved)
+
+    def get_current_layer_solo(self):
+        """Layer-solo state for the document"""
+        return self._current_layer_solo
+
+    def set_current_layer_solo(self, value):
+        """Layer-solo state for the document"""
+        # TODO: use the user_initiated hack to make this undoable
+        value = bool(value)
+        old_value = self._current_layer_solo
+        self._current_layer_solo = value
+        if value != old_value:
+            self._doc.call_doc_observers()
+            self._doc.invalidate_all()
+
+
+    ## Current layer temporary previewing state (not saved, used for blinking)
+
+
+    def get_current_layer_previewing(self):
+        """Layer-previewing state, as used when blinking a layer"""
+        return self._current_layer_previewing
+
+
+    def set_current_layer_previewing(self, value):
+        """Layer-previewing state, as used when blinking a layer"""
+        value = bool(value)
+        old_value = self._current_layer_previewing
+        self._current_layer_previewing = value
+        if value != old_value:
+            self._doc.call_doc_observers()
+            self._doc.invalidate_all()
+
+
+    ## Layer path manipulation
+
+
+    def path_above(self, path): #FIXME: support walking.
+        """Return the path for the layer stacked above a given path
+
+        :param path: a layer path
+        :type path: list or tuple
+        :return: the layer above `path` in stacking order
+        :rtype: tuple
+
+        >>> root, leaves = _make_test_stack()
+        >>> root.path_above([0, 0])
+        (0, 1)
+        >>> root.path_above([0, 1])
+        >>> root.path_above([0])
+        (1,)
+        >>> root.path_above([1])
+
+        """
+        if len(path) == 0:
+            return None
+        layer = self.deepget(path)
+        if layer is None:
+            return None
+        parent = self
+        parent_path = ()
+        if len(path) > 1:
+            parent_path = path[:-1]
+            parent = self.deepget(parent_path)
+        idx = path[-1] + 1
+        if idx >= len(parent._layers):
+            return None
+        return tuple(list(parent_path) + [idx])
+
+
+    def path_below(self, path): #FIXME: support walking.
+        """Return the path for the layer stacked below a given path
+
+        :param path: a layer path
+        :type path: list or tuple
+        :return: the layer above `path` in stacking order
+        :rtype: tuple or None
+
+        >>> root, leaves = _make_test_stack()
+        >>> root.path_below([0, 1])
+        (0, 0)
+        >>> root.path_below([0, 0])
+        >>> root.path_below([1])
+        (0,)
+        >>> root.path_below((0,))
+        """
+        if len(path) == 0:
+            return None
+        layer = self.deepget(path)
+        if layer is None:
+            return None
+        parent = self
+        parent_path = ()
+        if len(path) > 1:
+            parent_path = path[:-1]
+            parent = self.deepget(parent_path)
+        idx = path[-1] - 1
+        if idx < 0:
+            return None
+        return tuple(list(parent_path) + [idx])
+
+    ## Simplified tree storage and access
+
+    # We use a path concept that's similar to GtkTreePath's, but almost like a
+    # key/value store if this is the root layer stack.
+
+    def deepiter(self):
+        """Iterates across all descendents of the stack
+
+        >>> stack, leaves = _make_test_stack()
+        >>> len(list(stack.deepiter()))
+        6
+        >>> len(set(stack.deepiter())) == len(list(stack.deepiter())) # no dups
+        True
+        >>> stack not in stack.deepiter()
+        True
+        >>> [] not in stack.deepiter()
+        True
+        >>> leaves[0] in stack.deepiter()
+        True
+        """
+        queue = [self]
+        while len(queue) > 0:
+            layer = queue.pop(0)
+            if layer is not self:
+                yield layer
+            if isinstance(layer, LayerStack):
+                for child in reversed(layer._layers):
+                    queue.insert(0, child)
+
+
+    def deepenumerate(self):
+        """Enumerates the structure of a stack in depth
+
+        >>> stack, leaves = _make_test_stack()
+        >>> [a[0] for a in stack.deepenumerate()]
+        [(0,), (0, 0), (0, 1), (1,), (1, 0), (1, 1)]
+        >>> set(leaves) - set([a[1] for a in stack.deepenumerate()])
+        set([])
+        """
+        queue = [([], self)]
+        while len(queue) > 0:
+            path, layer = queue.pop(0)
+            if layer is not self:
+                yield (tuple(path), layer)
+            if isinstance(layer, LayerStack):
+                for i, child in enumerate(layer._layers):
+                    queue.insert(i, (path + [i], child))
+
+
+    def deepget(self, path, default=None):
+        """Gets a layer based on its path
+
+        >>> stack, leaves = _make_test_stack()
+        >>> stack.deepget(()) is stack
+        True
+        >>> stack.deepget((0,1))
+        <PaintingLayer '01'>
+        >>> stack.deepget((0,))
+        <LayerStack '0' [<PaintingLayer '00'>, ...]>
+        >>> stack.deepget((0,11), "missing")
+        'missing'
+
+        """
+        if len(path) == 0:
+            return self
+        unused_path = list(path)
+        layer = self
+        while len(unused_path) > 0:
+            idx = unused_path.pop(0)
+            if abs(idx) > len(layer._layers)-1:
+                return default
+            layer = layer._layers[idx]
+            if unused_path:
+                if not isinstance(layer, LayerStack):
+                    return default
+            else:
+                return layer
+        return default
+
+
+    def deepinsert(self, path, layer):
+        """Inserts a layer before the final index in path
+
+        :param path: an insertion path: see below
+        :type path: iterable of integers
+        :param layer: the layer to insert
+        :type layer: LayerBase
+
+        Deepinsert cannot create sub-stacks. Every element of `path` before
+        the final element must be a valid `list`-style ``[]`` index into an
+        existing stack along the chain being addressed, starting with the
+        root.  The final element may be any index which `list.insert()`
+        accepts.  Negative final indices, and final indices greater than the
+        number of layers in the addressed stack are quite valid in `path`.
+
+        >>> stack, leaves = _make_test_stack()
+        >>> layer = PaintingLayer('foo')
+        >>> stack.deepinsert((0,2), layer)
+        >>> stack.deepget((0,-1)) is layer
+        True
+        >>> stack = RootLayerStack(doc=None)
+        >>> layer = PaintingLayer('bar')
+        >>> stack.deepinsert([0], layer)
+        >>> stack.deepget([0]) is layer
+        True
+        """
+        if len(path) == 0:
+            raise IndexError, 'Cannot insert after the root'
+        unused_path = list(path)
+        stack = self
+        while len(unused_path) > 0:
+            idx = unused_path.pop(0)
+            if not isinstance(stack, LayerStack):
+                raise IndexError, ("All nonfinal elements of %r must "
+                                   "identify a stack" % (path,))
+            if unused_path:
+                stack = stack._layers[idx]
+            else:
+                stack.insert(idx, layer)
+                return
+        assert (len(unused_path) > 0), ("deepinsert() should never exhaust "
+                                        "the path")
+
+
+    def deeppop(self, path):
+        """Removes a layer by its path
+
+        >>> stack, leaves = _make_test_stack()
+        >>> stack.deeppop(())
+        Traceback (most recent call last):
+        ...
+        IndexError: Cannot pop the root stack
+        >>> stack.deeppop([0])
+        <LayerStack '0' [<PaintingLayer '00'>, <PaintingLayer '01'>]>
+        >>> stack.deeppop((0,1))
+        <PaintingLayer '11'>
+        >>> stack.deeppop((0,2))
+        Traceback (most recent call last):
+        ...
+        IndexError: ...
+        """
+        if len(path) == 0:
+            raise IndexError, "Cannot pop the root stack"
+        parent_path = path[:-1]
+        child_index = path[-1]
+        if len(parent_path) == 0:
+            parent = self
+        else:
+            parent = self.deepget(parent_path)
+        return parent.pop(child_index)
+
+
+    def deepremove(self, layer):
+        """Removes a layer from any of the root's descendents
+
+        >>> stack, leaves = _make_test_stack()
+        >>> stack.deepremove(leaves[3])
+        >>> stack.deepremove(leaves[2])
+        >>> stack.deepremove(stack.deepget([0]))
+        >>> stack
+        <RootLayerStack [<LayerStack '1' []>]>
+        >>> stack.deepremove(leaves[3])
+        Traceback (most recent call last):
+        ...
+        ValueError: Layer is not in the root stack or any descendent
+        """
+        if layer is self:
+            raise ValueError, "Cannot remove the root stack"
+        for path, descendent_layer in self.deepenumerate():
+            assert len(path) > 0
+            if descendent_layer is not layer:
+                continue
+            parent_path = path[:-1]
+            if len(parent_path) == 0:
+                parent = self
+            else:
+                parent = self.deepget(parent_path)
+            return parent.remove(layer)
+        raise ValueError, "Layer is not in the root stack or any descendent"
+
+
+    def deepindex(self, layer):
+        """Return a path for a layer by searching the stack tree
+
+        >>> stack, leaves = _make_test_stack()
+        >>> stack.deepindex(stack)
+        []
+        >>> [stack.deepindex(l) for l in leaves]
+        [(0, 0), (0, 1), (1, 0), (1, 1)]
+        """
+        if layer is self:
+            return []
+        for path, ly in self.deepenumerate():
+            if ly is layer:
+                return path
+        return None
+
+
+    ## Convenience methods for commands
+
+
+    def canonpath(self, index=None, layer=None, path=None,
+                  usecurrent=False, uselowest=False):
+        """Verify and return the path for a layer from various criteria
+
+        :param index: index of the layer in deepenumerate() order
+        :param layer: a layer, which must be a descendent of this root
+        :param path: a layer path
+        :param usecurrent: if true, use the current path on failure/fallthru
+        :return: a new, verified path referring to an existing layer
+        :rtype: tuple
+
+        The returned path is guaranteed to refer to an existing layer, and be
+        the path in its most canonical form. If no matching layer exists, a
+        ValueError is raised.
+        """
+        if path is not None:
+            logger.debug("canonpath(path=%r)", path)
+            layer = self.deepget(path)
+            if layer is self:
+                raise ValueError, ("path=%r is root: must be descendent"
+                                   % (path,))
+            if layer is not None:
+                path = self.deepindex(layer)
+                assert self.deepget(path) is layer
+                return path
+            elif not usecurrent:
+                raise ValueError, "layer not found with path=%r"
+        elif index is not None:
+            logger.debug("canonpath(index=%r)", index)
+            if index < 0:
+                raise ValueError, "negative layer index %r" % (index,)
+            for i, (path, layer) in enumerate(self.deepenumerate()):
+                if i == index:
+                    assert self.deepget(path) is layer
+                    return path
+            if not usecurrent:
+                raise ValueError, "layer not found with index=%r" % (index,)
+        elif layer is not None:
+            logger.debug("canonpath(layer=%r)", layer)
+            if layer is self:
+                raise ValueError, "layer is root stack: must be descendent"
+            path = self.deepindex(layer)
+            if path is not None:
+                assert self.deepget(path) is layer
+                return path
+            elif not usecurrent:
+                raise ValueError, "layer=%r not found" % (index,)
+        # Criterion failed. Try fallbacks.
+        if usecurrent:
+            logger.debug("canonpath: trying current layer")
+            path = self.get_current_path()
+            layer = self.deepget(path)
+            if layer is not None:
+                assert layer is not self, ("The current layer path refers to "
+                                           "the root stack.")
+                path = self.deepindex(layer)
+                assert self.deepget(path) is layer
+                return path
+            if not uselowest:
+                raise ValueError, ("Invalid current path; uselowest "
+                                   "might work but not specified")
+        if uselowest:
+            logger.debug("canonpath: trying lowest layer")
+            if len(self) > 0:
+                path = (0,)
+                assert self.deepget(path) is not None
+                return path
+            else:
+                raise ValueError, "Invalid current path; stack is empty"
+        raise TypeError, ("No layer/index/path criterion, and no fallbacks")
+
 
 ## Layers with data
 
@@ -625,30 +1486,35 @@ class SurfaceBackedLayer (LayerBase):
     ## Rendering
 
 
-    def composite_tile(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
-                       ignore_visible=False):
-        """Composite one tile of the layer over a target array
+    def blit_tile_into(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
+                       **kwargs):
+        """Unconditionally copy one tile's data into an array without options
 
-        Composite one tile of the backing surface over the array dst,
-        modifying only dst.
+        The minimal surface-based implementation composites one tile of the
+        backing surface over the array dst, modifying only dst.
         """
-        if ignore_visible:
-            opacity = self.opacity
-        else:
-            opacity = self.effective_opacity
         self._surface.composite_tile( dst, dst_has_alpha, tx, ty,
                                       mipmap_level=mipmap_level,
-                                      opacity=opacity,
+                                      opacity=1, mode=DEFAULT_COMPOSITE_OP )
+
+
+    def composite_tile(self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
+                       layers=None, **kwargs):
+        """Composite a tile's data into an array, respecting flags/layers list
+
+        The minimal surface-based implementation composites one tile of the
+        backing surface over the array dst, modifying only dst.
+        """
+        if layers is not None and self not in layers:
+            return
+        self._surface.composite_tile( dst, dst_has_alpha, tx, ty,
+                                      mipmap_level=mipmap_level,
+                                      opacity=self.effective_opacity,
                                       mode=self.compositeop )
 
 
     def render_as_pixbuf(self, *rect, **kwargs):
-        """Renders this layer as a pixbuf
-
-        :param *rect: rectangle to save, as a 4-tuple
-        :param **kwargs: passed to pixbufsurface.render_as_pixbuf()
-        :rtype: Gdk.Pixbuf
-        """
+        """Renders this layer as a pixbuf"""
         return self._surface.render_as_pixbuf(*rect, **kwargs)
 
 

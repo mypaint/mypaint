@@ -467,8 +467,8 @@ class Document (CanvasController):
 
     def current_layer_solo_toggled_cb(self, action):
         """Action callback: Layer Solo was toggled"""
-        active = action.get_active()
-        self.model.set_current_layer_solo(active)
+        solo = action.get_active()
+        self.model.layer_stack.set_current_layer_solo(solo)
 
 
     def new_layer_cb(self, action):
@@ -533,25 +533,26 @@ class Document (CanvasController):
 
     def rename_layer_cb(self, action):
         """Prompts for a new name for the current layer (action callback)"""
-        layer = self.model.get_current_layer()
+        layer = self.model.layer_stack.get_current()
         new_name = dialogs.ask_for_name(self.app.drawWindow, _("Layer Name"), layer.name)
         if new_name:
             self.model.rename_layer(layer, new_name)
 
 
     def layer_lock_toggle_cb(self, action):
-        layer = self.model.layer
+        layer = self.model.layer_stack.get_current()
         if bool(layer.locked) != bool(action.get_active()):
             self.model.set_layer_locked(action.get_active(), layer)
 
     def layer_visible_toggle_cb(self, action):
-        layer = self.model.layer
+        layer = self.model.layer_stack.get_current()
         if bool(layer.visible) != bool(action.get_active()):
             self.model.set_layer_visibility(action.get_active(), layer)
 
     def show_background_toggle_cb(self, action):
-        if bool(self.model.get_background_visible()) != bool(action.get_active()):
-            self.model.set_background_visible(action.get_active())
+        layers = self.model.layer_stack
+        if bool(layers.get_background_visible()) != bool(action.get_active()):
+            layers.set_background_visible(action.get_active())
 
     ## Brush settings tweak callbacks
 
@@ -707,10 +708,12 @@ class Document (CanvasController):
 
 
     def layerblink_state_enter(self):
-        self.model.set_current_layer_previewing(True)
+        layers = self.model.layer_stack
+        layers.set_current_layer_previewing(True)
 
     def layerblink_state_leave(self, reason):
-        self.model.set_current_layer_previewing(False)
+        layers = self.model.layer_stack
+        layers.set_current_layer_previewing(False)
 
 
     #def blink_layer_cb(self, action):
@@ -1127,11 +1130,13 @@ class Document (CanvasController):
         ag.get_action("PickLayer").set_sensitive(len(doc.layers) > 1)
 
         # Update various GtkToggleActions
+        layers = doc.layer_stack
+        current_layer = layers.current
         action_updates = [
-                ("LayerLockedToggle", doc.layer.locked),
-                ("LayerVisibleToggle", doc.layer.visible),
-                ("ShowBackgroundToggle", doc.get_background_visible()),
-                ("SoloLayer", doc.get_current_layer_solo()),
+                ("LayerLockedToggle", current_layer.locked),
+                ("LayerVisibleToggle", current_layer.visible),
+                ("ShowBackgroundToggle", layers.get_background_visible()),
+                ("SoloLayer", layers.get_current_layer_solo()),
             ]
         for action_name, model_state in action_updates:
             action = self.app.find_action(action_name)

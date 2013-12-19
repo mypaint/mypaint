@@ -305,7 +305,8 @@ class FreehandOnlyMode (InteractionMode):
 
     def button_press_cb(self, tdw, event):
         result = False
-        if ( tdw.doc.layer.get_paintable() and event.button == 1
+        current_layer = tdw.doc.layer_stack.current
+        if ( current_layer.get_paintable() and event.button == 1
              and event.type == gdk.BUTTON_PRESS ):
             # Single button press
             # Stroke started, notify observers
@@ -331,7 +332,8 @@ class FreehandOnlyMode (InteractionMode):
 
     def button_release_cb(self, tdw, event):
         result = False
-        if tdw.doc.layer.get_paintable() and event.button == 1:
+        current_layer = tdw.doc.layer_stack.current
+        if current_layer.get_paintable() and event.button == 1:
             # See comment above in button_press_cb.
             drawstate = self._get_drawing_state(tdw)
             if not drawstate.last_event_had_pressure:
@@ -366,7 +368,8 @@ class FreehandOnlyMode (InteractionMode):
         """
 
         # Do nothing if painting is inactivated
-        if not ( tdw.is_sensitive and tdw.doc.layer.get_paintable() ):
+        current_layer = tdw.doc._layers.current
+        if not ( tdw.is_sensitive and current_layer.get_paintable() ):
             return False
 
         # Try and initialize an event filter, used to circumvent the unhelpful
@@ -536,7 +539,8 @@ class FreehandOnlyMode (InteractionMode):
                 drawstate.avgtime = (tavg, nevents)
 
         # Refuse drawing if the layer is locked or hidden
-        if model.layer.locked or not model.layer.visible:
+        current_layer = model._layers.current
+        if current_layer.locked or not current_layer.visible:
             return
 
         # Feed data to the brush engine

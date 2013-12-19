@@ -408,6 +408,7 @@ class DrawCursorMixin(object):
             logger.error("update_cursor: no window")
             return
         override_cursor = self._override_cursor
+        layer = self.doc._layers.current
         if override_cursor is not None:
             c = override_cursor
         elif self.get_state() == gtk.STATE_INSENSITIVE:
@@ -415,9 +416,7 @@ class DrawCursorMixin(object):
         elif self.doc is None:
             logger.error("update_cursor: no document")
             return
-        elif ( self.doc.layer.locked or
-               not self.doc.layer.visible or
-               not self.doc.layer.get_paintable() ):
+        elif layer.locked or not layer.visible or not layer.get_paintable():
             # Cursor to represent that one cannot draw.
             # Often a red circle with a diagonal bar through it.
             c = gdk.Cursor(gdk.CIRCLE)
@@ -713,7 +712,7 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
     def _repaint(self, cr, device_bbox=None):
         # Paint checkerboard if we won't be rendering a background
         model = self.doc
-        if not model or model.get_render_isolated():
+        if not model or not model.layer_stack.get_render_background():
             cr.set_source(self._alpha_check_bg)
             cr.paint()
         if not model:
@@ -873,7 +872,8 @@ class CanvasRenderer(gtk.DrawingArea, DrawCursorMixin):
             if self.tile_is_visible( tx, ty, transformation, clip_region,
                                      sparse, translation_only ):
                 tiles.append((tx, ty))
-        self.doc.render_into(surface, tiles, mipmap_level, self.overlay_layer)
+        self.doc._layers.render_into(surface, tiles, mipmap_level,
+                                     overlay=self.overlay_layer)
 
         gdk.cairo_set_source_pixbuf( cr, surface.pixbuf,
                                      round(surface.x), round(surface.y) )
@@ -992,4 +992,5 @@ def _test():
 
 
 if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG)
     _test()

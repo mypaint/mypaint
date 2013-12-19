@@ -17,6 +17,7 @@ import traceback
 from os.path import join
 from cStringIO import StringIO
 import xml.etree.ElementTree as ET
+from warnings import warn
 import logging
 logger = logging.getLogger(__name__)
 
@@ -59,6 +60,10 @@ class SaveLoadError(Exception):
     pass
 
 
+class DeprecatedAPIWarning (UserWarning):
+    pass
+
+
 class Document (object):
     """In-memory representation of everything to be worked on & saved
 
@@ -95,7 +100,7 @@ class Document (object):
         if not brushinfo:
             brushinfo = brush.BrushInfo()
             brushinfo.load_defaults()
-        self.layers = []
+        self._layers = layer.RootLayerStack(self)
         self.brush = brush.Brush(brushinfo)
         self.brush.brushinfo.observers.append(self.brushsettings_changed_cb)
         self.stroke = None
@@ -105,8 +110,6 @@ class Document (object):
         self.frame_observers = []
         self.symmetry_observers = []  #: See `set_symmetry_axis()`
         self._symmetry_axis = None
-        self.default_background = (255, 255, 255) #: Default bg for clear().
-        self._background_layer = layer.BackgroundLayer(self.default_background)
         self.command_stack = command.CommandStack()
         self._painting_only = painting_only
         self._tempdir = None
@@ -118,12 +121,54 @@ class Document (object):
         blank_arr = numpy.zeros((N, N, 4), dtype='uint16')
         self._blank_bg_surface = tiledsurface.Background(blank_arr)
 
-        # Rendering flags
-        self._background_visible = True
-        self._current_layer_solo = False
-        self._current_layer_previewing = False
+        # Compatibility
+        self.layers = _LayerStackMapping(self)
 
         self.clear(True)
+
+
+    ## Layer stack access
+
+
+    @property
+    def layer_stack(self):
+        return self._layers
+        # TODO: rename this to just "layers" one day.
+
+
+    ## Backwards API compat
+
+    @property
+    def layer_idx(self):
+        return self.layers.layer_idx
+
+    @layer_idx.setter
+    def layer_idx(self, value):
+        self.layers.layer_idx = value
+
+    def get_current_layer(self):
+        warn("Use doc.layer_stack.get_current() instead",
+             DeprecatedAPIWarning, stacklevel=2)
+        return self._layers.get_current()
+
+    def get_background_visible(self):
+        warn("Use doc.layer_stack.background_visible instead",
+             DeprecatedAPIWarning, stacklevel=2)
+        return self._layers.get_background_visible()
+
+    def set_background(self, *args, **kwargs):
+        warn("Use doc.layer_stack.set_background instead",
+             DeprecatedAPIWarning, stacklevel=2)
+        self._layers.set_background(*args, **kwargs)
+
+    @property
+    def layer(self):
+        """Compatibility hack - access the current layer"""
+        warn("Use doc.layer_stack.current instead",
+             DeprecatedAPIWarning, stacklevel=2)
+        return self._layers.current
+
+    ## Working-doc tempdir
 
 
     def _create_tempdir(self):
@@ -284,7 +329,7 @@ class Document (object):
         registered `symmetry_observers` are called without arguments.
         """
         # TODO: make this undoable?
-        for layer in self.layers:
+        for layer in self._layers.deepiter():
             layer.set_symmetry_axis(x)
         self._symmetry_axis = x
         for func in self.symmetry_observers:
@@ -310,9 +355,7 @@ class Document (object):
         self._create_tempdir()
         # throw everything away, including undo stack
         self.command_stack.clear()
-        self.set_background(self.default_background)
-        self.layers = []
-        self.layer_idx = None
+        self._layers.clear()
         self.add_layer(0)
         # disallow undo of the first layer
         self.command_stack.clear()
@@ -324,9 +367,6 @@ class Document (object):
 
         self.call_doc_observers()
 
-    def get_current_layer(self):
-        return self.layers[self.layer_idx]
-    layer = property(get_current_layer)
 
 
     def split_stroke(self):
@@ -366,8 +406,9 @@ class Document (object):
         if settings - lightweight_settings:
             self.split_stroke()
 
-    def select_layer(self, idx):
-        self.do(command.SelectLayer(self, idx))
+    def select_layer(self, index=None, path=None, layer=None):
+        """Selects a layer (undoable)"""
+        self.do(command.SelectLayer(self, index=index, path=path, layer=layer))
 
 
     ## Layer (x, y) position
@@ -428,16 +469,17 @@ class Document (object):
 
         """
 
-        if not self.layer.get_paintable():
+        current_layer = self._layers.current
+        if not current_layer.get_paintable():
             split = True
         else:
             if not self.stroke:
                 self.stroke = stroke.Stroke()
                 self.stroke.start_recording(self.brush)
-                self.snapshot_before_stroke = self.layer.save_snapshot()
+                self.snapshot_before_stroke = current_layer.save_snapshot()
             self.stroke.record_event(dtime, x, y, pressure, xtilt, ytilt)
-            split = self.layer.stroke_to(self.brush, x, y,
-                                         pressure, xtilt, ytilt, dtime)
+            split = current_layer.stroke_to(self.brush, x, y,
+                                            pressure, xtilt, ytilt, dtime)
         if split:
             self.split_stroke()
 
@@ -569,7 +611,7 @@ class Document (object):
 
         """
         res = helpers.Rect()
-        for layer in self.layers:
+        for layer in self.layer_stack.deepiter():
             # OPTIMIZE: only visible layers...
             # careful: currently saving assumes that all layers are included
             bbox = layer.get_bbox()
@@ -589,85 +631,11 @@ class Document (object):
 
     ## Rendering tiles
 
-    def get_render_isolated(self):
-        """True if render_into() will render in isolation (backgroundless)
-
-        Isolated rendering mode has the same meaning as in the W3C Compositing
-        and Blending Level 1 spec <URI:http://www.w3.org/TR/compositing/>, for
-        isolated groups. In other words, the effect is that of compositing the
-        doc to a zero-RGBA backsurface instead of to the document's background
-        image.
-        """
-        return not self._background_visible or \
-               self._current_layer_previewing
-
-
-    def get_render_layers(self):
-        """Get a mutable list of layers which will be rendered"""
-        if self._current_layer_previewing or self._current_layer_solo:
-            layers = [self.layer]
-            return layers
-        else:
-            layers = self.layers
-        return [l for l in layers if l.visible]
-
-
-    def render_into( self, surface, tiles, mipmap_level, overlay=None ):
-        """Render composited tiles into an 8bpp surface
-
-        :param surface: target rgba8 surface
-        :type surface: lib.pixbufsurface.Surface
-        :param tiles: tile coords, (tx, ty), to render
-        :type tiles: iterable
-        :param mipmap_level: layer and surface mipmap level to use
-        :type mipmap_level: int
-        :param overlay: overlay layer to use
-        :type overlay: lib.layer.SurfaceBackedLayer
-        """
-        # Decide a rendering mode
-        background = None
-        dst_has_alpha = False
-        if self.get_render_isolated():
-            background = self._blank_bg_surface
-            dst_has_alpha = True
-        # Inject the overlay layer if we have one
-        layers = self.get_render_layers()
-        if overlay is not None:
-            idx = self.layers.index(self.layer)
-            layers.insert(idx+1, overlay)
-        # Blit loop. Could this be done in C++?
-        for tx, ty in tiles:
-            with surface.tile_request(tx, ty, readonly=False) as dst:
-                self.blit_tile_into( dst, dst_has_alpha, tx, ty, mipmap_level,
-                                     layers, background, ignore_visible=True )
-
     def blit_tile_into( self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
-                        layers=None, background=None, ignore_visible=False ):
+                        layers=None, background=None ):
         """Blit composited tiles into a destination surface"""
-        if layers is None:
-            layers = self.get_render_layers()
-        if background is None:
-            background = self._background_layer._surface
-
-        assert dst.shape[-1] == 4
-        if dst.dtype == 'uint8':
-            dst_8bit = dst
-            dst = numpy.empty((N, N, 4), dtype='uint16')
-        else:
-            dst_8bit = None
-
-        background.blit_tile_into(dst, dst_has_alpha, tx, ty, mipmap_level)
-
-        for layer in layers:
-            layer.composite_tile(dst, dst_has_alpha, tx, ty, mipmap_level,
-                                 ignore_visible=ignore_visible)
-
-        if dst_8bit is not None:
-            if dst_has_alpha:
-                mypaintlib.tile_convert_rgba16_to_rgba8(dst, dst_8bit)
-            else:
-                mypaintlib.tile_convert_rgbu16_to_rgbu8(dst, dst_8bit)
-
+        self.layer_stack.blit_tile_into( dst, dst_has_alpha, tx, ty,
+                                         mipmap_level, layers=layers )
 
     def get_rendered_image_behind_current_layer(self, tx, ty):
         dst = numpy.empty((N, N, 4), dtype='uint16')
@@ -679,8 +647,9 @@ class Document (object):
     ## More layer stack commands
 
 
-    def add_layer(self, insert_idx=None, after=None, name=''):
-        self.do(command.AddLayer(self, insert_idx, after, name))
+    def add_layer(self, insert_idx, name=''):
+        insert_path = self.layers.get_insert_path(insert_idx)
+        self.do(command.AddLayer(self, insert_path, name=name))
 
 
     def remove_layer(self,layer=None):
@@ -700,39 +669,6 @@ class Document (object):
         self.do(command.MergeLayer(self, dst_idx))
         return True
 
-
-    ## Layer Solo toggle (not saved)
-
-    def get_current_layer_solo(self):
-        """Layer-solo state for the document"""
-        return self._current_layer_solo
-
-    def set_current_layer_solo(self, value):
-        """Layer-solo state for the document"""
-        # TODO: use the user_initiated hack to make this undoable
-        value = bool(value)
-        old_value = self._current_layer_solo
-        self._current_layer_solo = value
-        if value != old_value:
-            self.call_doc_observers()
-            self.invalidate_all()
-
-
-    ## Current layer temporary previewing state (not saved, used for blinking)
-
-    def get_current_layer_previewing(self):
-        """Layer-previewing state, as used when blinking a layer"""
-        return self._current_layer_previewing
-
-
-    def set_current_layer_previewing(self, value):
-        """Layer-previewing state, as used when blinking a layer"""
-        value = bool(value)
-        old_value = self._current_layer_previewing
-        self._current_layer_previewing = value
-        if value != old_value:
-            self.call_doc_observers()
-            self.invalidate_all()
 
 
     ## Layer import/export
@@ -798,58 +734,6 @@ class Document (object):
         if isinstance(cmd, command.SetLayerCompositeOp):
             self.undo()
         self.do(command.SetLayerCompositeOp(self, compositeop, layer))
-
-
-    ## The background layer
-
-
-    @property
-    def background_layer(self):
-        """The background layer (accessor)"""
-        return self._background_layer
-
-
-    def set_background(self, obj, make_default=False):
-        """Set the background layer's surface from an object
-
-        :param obj: Background layer, or an RGB triple (uint8), or a
-           HxWx4 or HxWx3 numpy array which can be either uint8 or uint16.
-        :type obj: layer.BackgroundLayer or tuple or numpy array
-        :param make_default: Whether to set the default background for
-          clear() too.
-        :type make_default: bool
-        """
-        # This is not an undoable action. One reason is that dragging
-        # on the color chooser would get tons of undo steps.
-        if isinstance(obj, layer.BackgroundLayer):
-            obj = obj._surface
-        if not isinstance(obj, tiledsurface.Background):
-            if isinstance(obj, GdkPixbuf.Pixbuf):
-                obj = helpers.gdkpixbuf2numpy(obj)
-            obj = tiledsurface.Background(obj)
-        self._background_layer.set_surface(obj)
-        if make_default:
-            self.default_background = obj
-        if not self._background_visible:
-            self._background_visible = True
-            self.call_doc_observers()
-        self.invalidate_all()
-
-
-    def set_background_visible(self, value):
-        """Sets whether the background is visible"""
-        # TODO: use the user_initiated hack to make this undoable
-        value = bool(value)
-        old_value = self._background_visible
-        self._background_visible = value
-        if value != old_value:
-            self.call_doc_observers()
-            self.invalidate_all()
-
-
-    def get_background_visible(self):
-        """Gets whether the background is visible"""
-        return bool(self._background_visible)
 
 
     ## Saving and loading
@@ -1057,7 +941,7 @@ class Document (object):
                 el.attrib[k] = str(v)
 
         # Save background
-        bglayer = self._background_layer
+        bglayer = self.layer_stack.background_layer
         attrs = bglayer.save_to_openraster(z, tempdir, "background", False,
                                            canvas_bbox, frame_bbox, **kwargs)
         el = ET.Element('layer')
@@ -1158,6 +1042,7 @@ class Document (object):
 
     def load_ora(self, filename, feedback_cb=None):
         """Loads from an OpenRaster file"""
+        # TODO: move the guts of this to RootLayerStack
         logger.info('load_ora: %r', filename)
         t0 = time.time()
         tempdir = self._tempdir
@@ -1188,10 +1073,11 @@ class Document (object):
             return res
 
 
-        self.clear() # this leaves one empty layer
+        self.layer_stack.clear()
         no_background = True
 
         selected_layer = None
+        nloaded = 0
         for el in self._load_ora_layers_list(stack):
             a = el.attrib
 
@@ -1199,37 +1085,42 @@ class Document (object):
                 assert no_background
                 try:
                     logger.debug("background tile: %r", a['background_tile'])
-                    self.set_background(get_pixbuf(a['background_tile']))
+                    self.layer_stack.set_background(get_pixbuf(a['background_tile']))
                     no_background = False
                     continue
                 except tiledsurface.BackgroundError, e:
                     logger.warning('ORA background tile not usable: %r', e)
 
-            layer, selected = self._layer_new_from_openraster(z, a, feedback_cb)
-            if layer is None:
+            llayer, selected = self._layer_new_from_openraster(z, a, feedback_cb)
+            if llayer is None:
                 logger.warning("Skipping empty layer")
                 continue
-            self.layers.insert(0, layer)
+            self.layer_stack.deepinsert([0], llayer)
             if selected:
-                selected_layer = layer
-            layer.content_observers.append(self.layer_modified_cb)
-            layer.set_symmetry_axis(self.get_symmetry_axis())
+                selected_layer = llayer
+            llayer.content_observers.append(self.layer_modified_cb)
+            llayer.set_symmetry_axis(self.get_symmetry_axis())
+            nloaded += 1
 
-        if len(self.layers) == 1:
+        if nloaded == 0:
             # no assertion (allow empty documents)
             logger.error('Could not load any layer, document is empty.')
+            logger.info('Adding an empty painting layer')
+            dlayer = layer.PaintingLayer()
+            dlayer.content_observers.append(self.layer_modified_cb)
+            dlayer.set_symmetry_axis(self.get_symmetry_axis())
+            self.layer_stack.deepinsert([0], dlayer)
 
-        if len(self.layers) > 1:
-            # remove the still present initial empty top layer
-            self.select_layer(len(self.layers)-1)
-            self.remove_layer()
-            # this leaves the topmost layer selected
+        assert len(self.layer_stack) > 0
+
+        # Select the topmost layer
+        self.layer_stack.set_current_path([len(self.layer_stack)-1])
 
         # Set the selected layer index
         if selected_layer is not None:
-            for i, layer in zip(range(len(self.layers)), self.layers):
-                if layer is selected_layer:
-                    self.select_layer(i)
+            for epath, elayer in self.layer_stack.deepenumerate():
+                if elayer is selected_layer:
+                    self.set_current_path(epath)
                     break
 
         # Set the frame size to that saved in the image.
@@ -1247,3 +1138,130 @@ class Document (object):
         z.close()
 
         logger.info('%.3fs load_ora total', time.time() - t0)
+
+
+class _LayerStackMapping (object):
+    """Temporary compatibility hack"""
+
+    ## Construction
+
+    def __init__(self, doc):
+        super(_LayerStackMapping, self).__init__()
+        self._doc = doc
+        self._layer_paths = []
+        self._layer_idx = 0
+        doc.doc_observers.append(self._doc_structure_changed)
+
+    ## Updates
+
+    def _doc_structure_changed(self, doc):
+        current_path = self._doc.layer_stack.get_current_path()
+        self._layer_paths[:] = []
+        self._layer_idx = 0
+        i = 0
+        for path, layer in self._doc.layer_stack.deepenumerate():
+            self._layer_paths.append(path)
+            if path == current_path:
+                self._layer_idx = i
+            i += 1
+
+
+    ## Current-layer index
+
+
+    @property
+    def layer_idx(self):
+        warn("Use doc.layer_stack.current_path instead",
+             DeprecatedAPIWarning, stacklevel=3)
+        return self._layer_idx
+
+    @layer_idx.setter
+    def layer_idx(self, i):
+        warn("Use doc.layer_stack.current_path instead",
+             DeprecatedAPIWarning, stacklevel=3)
+        i = helpers.clamp(int(i), 0, max(0, len(self._layer_paths)-1))
+        path = self._layer_paths[i]
+        self._doc.layer_stack.current_path = path
+        self._layer_idx = i
+
+
+    ## Sequence emulation
+
+    def __iter__(self): # "for l in doc.layers: ..." #
+        warn("Use doc.layer_stack.deepiter() etc. instead",
+             DeprecatedAPIWarning, stacklevel=2)
+        for layer in self._doc.layer_stack.deepiter():
+            yield layer
+
+    def __len__(self): # len(doc.layers) #
+        warn("Use doc.layer_stack.deepiter() etc. instead",
+             DeprecatedAPIWarning, stacklevel=2)
+        return len(self._layer_paths)
+
+    def __getitem__(self, key): # doc.layers[int] #
+        warn("Use doc.layer_stack instead",
+             DeprecatedAPIWarning, stacklevel=2)
+        path = self._getpath(key)
+        layer = self._doc.layer_stack.deepget(path)
+        assert layer is not None
+        return layer
+
+    def __setitem__(self, key, value):
+        raise NotImplementedError
+
+
+    def _getpath(self, key):
+        try: key = int(key)
+        except ValueError: raise TypeError, "keys must be ints"
+        if key < 0:
+            raise IndexError, "key out of range"
+        if key >= len(self._layer_paths):
+            raise IndexError, "key out of range"
+        return self._layer_paths[key]
+
+
+    def index(self, layer):
+        warn("Use doc.layer_stack.deepindex() instead",
+             DeprecatedAPIWarning, stacklevel=2)
+        for i, ly in enumerate(self._doc.layer_stack.deepiter()):
+            if ly is layer:
+                return i
+        raise ValueError, "Layer not found"
+
+
+    def insert(self, index, layer):
+        warn("Use doc.layer_stack.deepinsert() instead",
+             DeprecatedAPIWarning, stacklevel=2)
+        insert_path = self.get_insert_path(index)
+        self._doc.layer_stack.deepinsert(insert_path, layer)
+        self._doc_structure_changed(self._doc)
+
+    def remove(self, layer):
+        self._doc.layer_stack.deepremove(layer)
+        self._doc_structure_changed(self._doc)
+
+    def pop(self, i):
+        warn("Use doc.layer_stack instead",
+             DeprecatedAPIWarning, stacklevel=2)
+        path = self._getpath(i)
+        return self._doc.layer_stack.deeppop(path)
+
+
+    def get_insert_path(self, insert_index):
+        """Normalizes an insertion index to an insert path
+
+        :param insert_index: insert index, as for `list.insert()`
+        :type insert_index: int
+        :return: a root-stack path suitable for deepinsert()
+        :rtype: tuple
+        """
+        # Like list.insert(), indixes > the length always append items.
+        # Let's take that to mean inserting at the top of the root stack.
+        npaths = len(self._layer_paths)
+        if insert_index >= npaths:
+            return (len(self._doc.layer_stack),)
+        # Otherwise, do the lookup thing to find a path for deepinsert().
+        idx = insert_index
+        if idx < 0:
+            idx = max(idx, -npaths) # still negative, but now a valid index
+        return self._layer_paths[idx]
