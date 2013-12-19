@@ -622,7 +622,7 @@ class Document (object):
         :param mipmap_level: layer and surface mipmap level to use
         :type mipmap_level: int
         :param overlay: overlay layer to use
-        :type overlay: lib.layer.Layer
+        :type overlay: lib.layer.SurfaceBackedLayer
         """
         # Decide a rendering mode
         background = None
