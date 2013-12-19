@@ -320,30 +320,10 @@ class Layer (object):
     def flood_fill(self, x, y, color, bbox, tolerance, dst_layer=None):
         """Fills a point on the surface with a colour
 
-        :param x: Starting point X coordinate
-        :param y: Starting point Y coordinate
-        :param color: an RGB color
-        :type color: tuple
-        :param bbox: Bounding box: limits the fill
-        :type bbox: lib.helpers.Rect or equivalent 4-tuple
-        :param tolerance: how much filled pixels are permitted to vary
-        :type tolerance: float [0.0, 1.0]
-        :param dst_layer: Optional target layer (default is self!)
-        :type dst_layer: Layer
-
-        The `tolerance` parameter controls how much pixels are permitted to
-        vary from the starting colour.  We use the 4D Euclidean distance from
-        the starting point to each pixel under consideration as a metric,
-        scaled so that its range lies between 0.0 and 1.0.
-
-        The default target layer is `self`. This method invalidates the filled
-        area of the target layer's surface, queueing a redraw if it is part of
-        a visible document.
+        See `PaintingLayer.flood_fill() for parameters and semantics. This
+        implementation does nothing.
         """
-        if dst_layer is None:
-            dst_layer = self
-        self._surface.flood_fill(x, y, color, bbox, tolerance,
-                                 dst_surface=dst_layer._surface)
+        pass
 
 
     ## Rendering
@@ -985,6 +965,37 @@ class PaintingLayer (Layer):
                      t3 - t2, src_rootname)
         # Return (TODO: notify needed here?)
         return selected
+
+
+    ## Flood fill
+
+    def flood_fill(self, x, y, color, bbox, tolerance, dst_layer=None):
+        """Fills a point on the surface with a colour
+
+        :param x: Starting point X coordinate
+        :param y: Starting point Y coordinate
+        :param color: an RGB color
+        :type color: tuple
+        :param bbox: Bounding box: limits the fill
+        :type bbox: lib.helpers.Rect or equivalent 4-tuple
+        :param tolerance: how much filled pixels are permitted to vary
+        :type tolerance: float [0.0, 1.0]
+        :param dst_layer: Optional target layer (default is self!)
+        :type dst_layer: SurfaceBackedLayer
+
+        The `tolerance` parameter controls how much pixels are permitted to
+        vary from the starting colour.  We use the 4D Euclidean distance from
+        the starting point to each pixel under consideration as a metric,
+        scaled so that its range lies between 0.0 and 1.0.
+
+        The default target layer is `self`. This method invalidates the filled
+        area of the target layer's surface, queueing a redraw if it is part of
+        a visible document.
+        """
+        if dst_layer is None:
+            dst_layer = self
+        self._surface.flood_fill(x, y, color, bbox, tolerance,
+                                 dst_surface=dst_layer._surface)
 
 
     ## Painting
