@@ -173,10 +173,15 @@ class LayerBase (object):
 
     @property
     def effective_opacity(self):
-        """The opacity to use for rendering a layer: zero if invisible
+        """The opacity used when compositing a layer: zero if invisible
 
-        The base implementation's opacity is 1.0"""
-        return 1.0
+        This must match the appearance given by `composite_tile()` when it is
+        called with no `layers` list, even if that method uses other means to
+        determine how or whether to write its output. The base class's
+        effective opacity is zero because the base `composite_tile()` does
+        nothing.
+        """
+        return 0.0
 
     def get_alpha(self, x, y, radius):
         """Gets the average alpha within a certain radius at a point
@@ -1442,7 +1447,8 @@ class SurfaceBackedLayer (LayerBase):
 
     @property
     def effective_opacity(self):
-        """The opacity to use for rendering a layer: zero if invisible"""
+        """The opacity used when compositing a layer: zero if invisible"""
+        # Mirror what composite_tile does.
         if self.visible:
             return self.opacity
         else:
@@ -1505,11 +1511,14 @@ class SurfaceBackedLayer (LayerBase):
         The minimal surface-based implementation composites one tile of the
         backing surface over the array dst, modifying only dst.
         """
-        if layers is not None and self not in layers:
+        if layers is not None:
+            if self not in layers:
+                return
+        elif not self.visible:
             return
         self._surface.composite_tile( dst, dst_has_alpha, tx, ty,
                                       mipmap_level=mipmap_level,
-                                      opacity=self.effective_opacity,
+                                      opacity=self.opacity,
                                       mode=self.compositeop )
 
 
