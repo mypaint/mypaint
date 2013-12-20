@@ -79,7 +79,6 @@ class LayersTool (SizedVBoxToolWidget):
         store = self.liststore = gtk.ListStore(object)
         store.connect("row-deleted", self.liststore_drag_row_deleted_cb)
         view = self.treeview = gtk.TreeView(store)
-        view.connect("cursor-changed", self.treeview_cursor_changed_cb)
         view.set_reorderable(True)
         view.set_headers_visible(False)
         view.connect("button-press-event", self.treeview_button_press_cb)
@@ -284,57 +283,51 @@ class LayersTool (SizedVBoxToolWidget):
             self.treeview.scroll_to_cell(sel_row_path)
 
 
-    def treeview_cursor_changed_cb(self, treeview, *data):
-        if self.is_updating:
-            return
-        selection = treeview.get_selection()
-        if selection is None:
-            return
-        store, t_iter = selection.get_selected()
-        if t_iter is None:
-            return
-        layer = store.get_value(t_iter, 0)
-        doc = self.app.doc
-        if doc.model.get_current_layer() != layer:
-            idx = doc.model.layers.index(layer)
-            doc.model.select_layer(idx)
-            doc.layerblink_state.activate()
-
-
     def treeview_button_press_cb(self, treeview, event):
+        if self.is_updating:
+            return True
+        modifiers_held = (event.state & (gdk.CONTROL_MASK|gdk.SHIFT_MASK))
+        double_click = (event.type == gdk._2BUTTON_PRESS)
         x, y = int(event.x), int(event.y)
         bw_x, bw_y = treeview.convert_widget_to_bin_window_coords(x, y)
         path_info = treeview.get_path_at_pos(bw_x, bw_y)
         if path_info is None:
-            return False
+            return True
         clicked_path, clicked_col, cell_x, cell_y = path_info
-        if gtk2compat.USE_GTK3:
-            clicked_path = clicked_path.get_indices()
+        clicked_path = clicked_path.get_indices()
         layer, = self.liststore[clicked_path[0]]
-        doc = self.app.doc.model
-        layer_idx = doc.layers.index(layer)
+        doc = self.app.doc
+        model = doc.model
+        layer_idx = model.layers.index(layer)
+        # Eye/visibility column toggles kinds of visibility
         if clicked_col is self.visible_col:
-            select_layer = False
-            if event.state & gdk.CONTROL_MASK:
-                current = doc.layer_stack.get_current_layer_solo()
-                doc.layer_stack.set_current_layer_solo(not current)
-                select_layer = True
-            if select_layer:
-                if layer_idx != doc.layer_idx:
-                    doc.select_layer(layer_idx)
+            if modifiers_held:
+                current = model.layer_stack.get_current_layer_solo()
+                model.layer_stack.set_current_layer_solo(not current)
+            elif model.layer_stack.get_current_layer_solo():
+                model.layer_stack.set_current_layer_solo(False)
             else:
-                doc.set_layer_visibility(not layer.visible, layer)
+                model.set_layer_visibility(not layer.visible, layer)
                 self.treeview.queue_draw()
             return True
+        # Layer lock column
         elif clicked_col is self.locked_col:
-            doc.set_layer_locked(not layer.locked, layer)
+            model.set_layer_locked(not layer.locked, layer)
             self.treeview.queue_draw()
             return True
+        # Fancy clicks on names allow the layer to be renamed
         elif clicked_col is self.name_col:
-            if event.type == gdk._2BUTTON_PRESS:
+            if modifiers_held or double_click:
                 rename_action = self.app.find_action("RenameLayer")
                 rename_action.activate()
                 return True
+        # Click an un-selected layer row to select it
+        if layer_idx != model.layer_idx:
+            model.select_layer(layer_idx)
+            doc.layerblink_state.activate()
+            return True
+        # Allow the default drag initiation to happen if the user click+drags
+        # starting with the current layer
         return False
 
 
