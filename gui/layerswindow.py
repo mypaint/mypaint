@@ -9,13 +9,13 @@
 
 ## Imports
 
-import gtk2compat
-
-import gtk
-from gtk import gdk
 from gettext import gettext as _
-import gobject
-import pango
+
+from gi.repository import Gtk
+from gi.repository import Gdk
+from gi.repository import GdkPixbuf
+from gi.repository import GObject
+from gi.repository import Pango
 
 import dialogs
 from lib.layer import COMPOSITE_OPS
@@ -28,25 +28,25 @@ from workspace import SizedVBoxToolWidget
 
 
 def stock_button(stock_id):
-    b = gtk.Button()
-    img = gtk.Image()
-    img.set_from_stock(stock_id, gtk.ICON_SIZE_MENU)
+    b = Gtk.Button()
+    img = Gtk.Image()
+    img.set_from_stock(stock_id, Gtk.IconSize.MENU)
     b.add(img)
     return b
 
 def action_button(action):
-    b = gtk.Button()
+    b = Gtk.Button()
     b.set_related_action(action)
     if b.get_child() is not None:
         b.remove(b.get_child())
-    img = action.create_icon(gtk.ICON_SIZE_MENU)
+    img = action.create_icon(Gtk.IconSize.MENU)
     img.set_tooltip_text(action.get_tooltip())
     img.set_padding(4, 4)
     b.add(img)
     return b
 
 def make_composite_op_model():
-    model = gtk.ListStore(str, str, str)
+    model = Gtk.ListStore(str, str, str)
     for name, display_name, description in COMPOSITE_OPS:
         model.append([name, display_name, description])
     return model
@@ -67,7 +67,7 @@ class LayersTool (SizedVBoxToolWidget):
 
 
     def __init__(self):
-        gtk.VBox.__init__(self)
+        GObject.GObject.__init__(self)
         from application import get_app
         app = get_app()
         self.app = app
@@ -76,85 +76,89 @@ class LayersTool (SizedVBoxToolWidget):
 
         # Layer treeview
         # The 'object' column is a layer. All displayed columns use data from it.
-        store = self.liststore = gtk.ListStore(object)
+        store = self.liststore = Gtk.ListStore(object)
         store.connect("row-deleted", self.liststore_drag_row_deleted_cb)
-        view = self.treeview = gtk.TreeView(store)
+        view = self.treeview = Gtk.TreeView(store)
         view.set_reorderable(True)
         view.set_headers_visible(False)
         view.connect("button-press-event", self.treeview_button_press_cb)
-        view_scroll = gtk.ScrolledWindow()
-        view_scroll.set_shadow_type(gtk.SHADOW_ETCHED_IN)
-        view_scroll.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        view_scroll = Gtk.ScrolledWindow()
+        view_scroll.set_shadow_type(Gtk.ShadowType.ETCHED_IN)
+        view_scroll.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
         view_scroll.add(view)
         view_scroll.set_size_request(-1, 100)
 
-        renderer = gtk.CellRendererPixbuf()
-        col = self.visible_col = gtk.TreeViewColumn(_("Visible"))
+        renderer = Gtk.CellRendererPixbuf()
+        col = self.visible_col = Gtk.TreeViewColumn(_("Visible"))
         col.pack_start(renderer, expand=False)
         col.set_cell_data_func(renderer, self.layer_visible_datafunc)
         view.append_column(col)
 
-        renderer = gtk.CellRendererPixbuf()
-        col = self.locked_col = gtk.TreeViewColumn(_("Locked"))
+        renderer = Gtk.CellRendererPixbuf()
+        col = self.locked_col = Gtk.TreeViewColumn(_("Locked"))
         col.pack_start(renderer, expand=False)
         col.set_cell_data_func(renderer, self.layer_locked_datafunc)
         view.append_column(col)
 
-        renderer = gtk.CellRendererPixbuf()
-        col = self.type_col = gtk.TreeViewColumn(_("Type"))
+        renderer = Gtk.CellRendererPixbuf()
+        col = self.type_col = Gtk.TreeViewColumn(_("Type"))
         col.pack_start(renderer, expand=False)
         col.set_cell_data_func(renderer, self.layer_type_datafunc)
         view.append_column(col)
 
-        renderer = gtk.CellRendererText()
-        col = self.name_col = gtk.TreeViewColumn(_("Name"))
+        renderer = Gtk.CellRendererText()
+        col = self.name_col = Gtk.TreeViewColumn(_("Name"))
         col.pack_start(renderer, expand=True)
         col.set_cell_data_func(renderer, self.layer_name_datafunc)
         view.append_column(col)
 
         # Controls for the current layer
 
-        layer_ctrls_table = gtk.Table()
-        layer_ctrls_table.set_row_spacings(SPACING_CRAMPED)
-        layer_ctrls_table.set_col_spacings(SPACING_CRAMPED)
+        layer_controls = Gtk.Table()
+        layer_controls.set_row_spacings(SPACING_CRAMPED)
+        layer_controls.set_col_spacings(SPACING_CRAMPED)
         row = 0
 
-        layer_mode_lbl = gtk.Label(_('Mode:'))
+        layer_mode_lbl = Gtk.Label(label=_('Mode:'))
         layer_mode_lbl.set_tooltip_text(
           _("Blending mode: how the current layer combines with the "
             "layers underneath it."))
         layer_mode_lbl.set_alignment(0, 0.5)
         self.layer_mode_model = make_composite_op_model()
-        self.layer_mode_combo = gtk.ComboBox()
+        self.layer_mode_combo = Gtk.ComboBox()
         self.layer_mode_combo.set_model(self.layer_mode_model)
-        cell1 = gtk.CellRendererText()
+        cell1 = Gtk.CellRendererText()
         self.layer_mode_combo.pack_start(cell1)
         self.layer_mode_combo.add_attribute(cell1, "text", 1)
-        layer_ctrls_table.attach(layer_mode_lbl, 0, 1, row, row+1, gtk.FILL)
-        layer_ctrls_table.attach(self.layer_mode_combo, 1, 2, row, row+1, gtk.FILL|gtk.EXPAND)
+        layer_controls.attach(layer_mode_lbl, 0, 1, row, row+1,
+                              Gtk.AttachOptions.FILL)
+        layer_controls.attach(self.layer_mode_combo, 1, 2, row, row+1,
+                              Gtk.AttachOptions.FILL|Gtk.AttachOptions.EXPAND)
         row += 1
 
-        opacity_lbl = gtk.Label(_('Opacity:'))
+        opacity_lbl = Gtk.Label(label=_('Opacity:'))
         opacity_lbl.set_tooltip_text(
           _("Layer opacity: how much of the current layer to use. Smaller "
             "values make it more transparent."))
         opacity_lbl.set_alignment(0, 0.5)
-        adj = gtk.Adjustment(lower=0, upper=100, step_incr=1, page_incr=10)
-        self.opacity_scale = gtk.HScale(adj)
+        adj = Gtk.Adjustment(lower=0, upper=100, step_incr=1, page_incr=10)
+        self.opacity_scale = Gtk.HScale(adj)
         self.opacity_scale.set_draw_value(False)
-        layer_ctrls_table.attach(opacity_lbl, 0, 1, row, row+1, gtk.FILL)
-        layer_ctrls_table.attach(self.opacity_scale, 1, 2, row, row+1, gtk.FILL|gtk.EXPAND)
+        layer_controls.attach(opacity_lbl, 0, 1, row, row+1,
+                              Gtk.AttachOptions.FILL)
+        layer_controls.attach(self.opacity_scale, 1, 2, row, row+1,
+                              Gtk.AttachOptions.FILL|Gtk.AttachOptions.EXPAND)
 
         # Background layer controls
 
-        show_bg_btn = gtk.CheckButton()
+        show_bg_btn = Gtk.CheckButton()
         change_bg_action = self.app.find_action("BackgroundWindow")
         change_bg_btn = action_button(change_bg_action)
         show_bg_action = self.app.find_action("ShowBackgroundToggle")
         show_bg_btn.set_related_action(show_bg_action)
-        bg_hbox = gtk.HBox()
-        bg_hbox.pack_start(show_bg_btn, expand=True)
-        bg_hbox.pack_start(change_bg_btn, expand=False)
+        bg_hbox = Gtk.HBox()
+        bg_hbox.pack_start(show_bg_btn, True, True, 0)
+        bg_hbox.pack_start(change_bg_btn, False, True, 0)
 
         # Layer list action buttons
 
@@ -165,26 +169,26 @@ class LayersTool (SizedVBoxToolWidget):
         del_action = self.app.find_action("RemoveLayer")
         duplicate_action = self.app.find_action("DuplicateLayer")
 
-        add_button = self.add_button = action_button(add_action)
-        move_up_button = self.move_up_button = action_button(move_up_action)
-        move_down_button = self.move_down_button = action_button(move_down_action)
-        merge_down_button = self.merge_down_button = action_button(merge_down_action)
-        del_button = self.del_button = action_button(del_action)
-        duplicate_button = self.duplicate_button = action_button(duplicate_action)
+        self.add_button = action_button(add_action)
+        self.move_up_button = action_button(move_up_action)
+        self.move_down_button = action_button(move_down_action)
+        self.merge_down_button = action_button(merge_down_action)
+        self.del_button = action_button(del_action)
+        self.duplicate_button = action_button(duplicate_action)
 
-        buttons_hbox = gtk.HBox()
-        buttons_hbox.pack_start(add_button)
-        buttons_hbox.pack_start(move_up_button)
-        buttons_hbox.pack_start(move_down_button)
-        buttons_hbox.pack_start(duplicate_button)
-        buttons_hbox.pack_start(merge_down_button)
-        buttons_hbox.pack_start(del_button)
+        buttons_hbox = Gtk.HBox()
+        buttons_hbox.pack_start(self.add_button, True, True, 0)
+        buttons_hbox.pack_start(self.move_up_button, True, True, 0)
+        buttons_hbox.pack_start(self.move_down_button, True, True, 0)
+        buttons_hbox.pack_start(self.duplicate_button, True, True, 0)
+        buttons_hbox.pack_start(self.merge_down_button, True, True, 0)
+        buttons_hbox.pack_start(self.del_button, True, True, 0)
 
         # Pack and add to toplevel
-        self.pack_start(layer_ctrls_table, expand=False)
-        self.pack_start(view_scroll)
-        self.pack_start(buttons_hbox, expand=False)
-        self.pack_start(bg_hbox, expand=False)
+        self.pack_start(layer_controls, False, True, 0)
+        self.pack_start(view_scroll, True, True, 0)
+        self.pack_start(buttons_hbox, False, True, 0)
+        self.pack_start(bg_hbox, False, True, 0)
 
         # Names for anonymous layers
         # app.filehandler.file_opened_observers.append(self.init_anon_layer_names)
@@ -219,9 +223,9 @@ class LayersTool (SizedVBoxToolWidget):
                 self.liststore.prepend([layer])
 
         # Queue a selection update
-        # This must be queued with gobject.idle_add to avoid glitches in the
+        # This must be queued with GObject.idle_add to avoid glitches in the
         # update after dragging the current row downwards.
-        gobject.idle_add(self.update_selection)
+        GObject.idle_add(self.update_selection)
 
         # Update the common widgets
         self.opacity_scale.set_value(current_layer.opacity*100)
@@ -248,9 +252,8 @@ class LayersTool (SizedVBoxToolWidget):
 
         # Move selection line to the model's current layer and scroll to it
         model_sel_path = (len(doc.layers) - (doc.layer_idx + 1), )
-        if gtk2compat.USE_GTK3:
-            model_sel_path = ":".join([str(s) for s in model_sel_path])
-            model_sel_path = gtk.TreePath.new_from_string(model_sel_path)
+        model_sel_path = ":".join([str(s) for s in model_sel_path])
+        model_sel_path = Gtk.TreePath.new_from_string(model_sel_path)
         selection = self.treeview.get_selection()
         if not selection.path_is_selected(model_sel_path):
             # Only do this if the required layer is not already highlighted to
@@ -286,8 +289,8 @@ class LayersTool (SizedVBoxToolWidget):
     def treeview_button_press_cb(self, treeview, event):
         if self.is_updating:
             return True
-        modifiers_held = (event.state & (gdk.CONTROL_MASK|gdk.SHIFT_MASK))
-        double_click = (event.type == gdk._2BUTTON_PRESS)
+        modifiers_held = (event.get_state() & (Gdk.ModifierType.CONTROL_MASK|Gdk.ModifierType.SHIFT_MASK))
+        double_click = (event.type == Gdk._2BUTTON_PRESS)
         x, y = int(event.x), int(event.y)
         bw_x, bw_y = treeview.convert_widget_to_bin_window_coords(x, y)
         path_info = treeview.get_path_at_pos(bw_x, bw_y)
@@ -372,18 +375,14 @@ class LayersTool (SizedVBoxToolWidget):
         layer = model.get_value(tree_iter, 0)
         path = model.get_path(tree_iter)
         name = layer.name
-        attrs = pango.AttrList()
+        attrs = Pango.AttrList()
         if not name:
             layer_num = self.app.doc.get_number_for_nameless_layer(layer)
             name = _(u"Untitled layer #%d") % layer_num
             markup = "<small><i>%s</i></small> " % (escape(name),)
-            if gtk2compat.USE_GTK3:
-                parse_result = pango.parse_markup(markup, -1, '\000')
-                parse_ok, attrs, name, accel_char = parse_result
-                assert parse_ok
-            else:
-                parse_result = pango.parse_markup(markup)
-                attrs, name, accel_char = parse_result
+            parse_result = Pango.parse_markup(markup, -1, '\000')
+            parse_ok, attrs, name, accel_char = parse_result
+            assert parse_ok
         renderer.set_property("attributes", attrs)
         renderer.set_property("text", name)
 
