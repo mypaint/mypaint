@@ -532,26 +532,75 @@ class DuplicateLayer (Action):
         self._notify_document_observers()
 
 
-class ReorderLayers(Action):
-    display_name = _("Reorder Layer Stack")
-    def __init__(self, doc, new_order):
+class ReorderLayerInStack (Action):
+    """Move a layer from one path in the layer stack to another"""
+
+    display_name = _("Move Layer in Stack")
+
+    def __init__(self, doc, old_path, new_path):
         Action.__init__(self, doc)
-        self.old_order = list(doc.layers[:])
-        self.selection = self.old_order[doc.layer_idx]
-        self.new_order = list(new_order)
-        for layer in new_order:
-            assert layer in self.old_order
-        assert len(self.old_order) == len(new_order)
+        self._old_path = old_path
+        self._new_path = new_path
+        self._new_parent = None
+
     def redo(self):
-        self.doc.layers[:] = self.new_order
-        self.doc.layer_idx = self.doc.layers.index(self.selection)
-        self._notify_canvas_observers(self.doc.layers)
-        self._notify_document_observers()
+        layers = self.doc.layer_stack
+        affected_layers = []
+        current_layer = layers.current
+        moved_layer = layers.deeppop(self._old_path)
+        # There's a special case when reparenting into a target layer
+        # which is not a sub-stack. The UI allows it, but we must make
+        # a LayerStack to house both layers.
+        if self._old_path[:-1] != self._new_path[:-1]:
+            # Moving from one parent to another
+            parent_path = self._new_path[:-1]
+            parent = layers.deepget(parent_path)
+            assert parent is not None
+            if not isinstance(parent, layer.LayerStack):
+                # Make a new parent
+                assert self._new_path[-1] == 0
+                sibling = parent
+                parent = layer.LayerStack()
+                layers.deepinsert(parent_path, parent)
+                layers.deepremove(sibling)
+                parent.append(sibling)
+                parent.append(moved_layer)
+                affected_layers = [parent, sibling, moved_layer]
+                self._new_parent = parent
+        # Otherwise, we're either reparenting into an existing LayerStack
+        # or moving within the same layer.
+        if not affected_layers:
+            layers.deepinsert(self._new_path, moved_layer)
+            affected_layers = [moved_layer]
+        # Select the previously selected layer, and notify
+        self.doc.select_layer(layer=current_layer, user_initiated=False)
+        self._notify_canvas_observers(affected_layers)
+
     def undo(self):
-        self.doc.layers[:] = self.old_order
-        self.doc.layer_idx = self.doc.layers.index(self.selection)
-        self._notify_canvas_observers(self.doc.layers)
-        self._notify_document_observers()
+        layers = self.doc.layer_stack
+        affected_layers = []
+        current_layer = self.doc.layer_stack.current
+        if self._new_parent is not None:
+            parent_path = layers.deepindex(self._new_parent)
+            sibling, moved_layer = tuple(self._new_parent)
+            self._new_parent.remove(sibling)
+            self._new_parent.remove(moved_layer)
+            layers.deepinsert(parent_path, sibling)
+            layers.deepremove(self._new_parent)
+            layers.deepinsert(self._old_path, moved_layer)
+            if current_layer is self._new_parent:
+                current_layer = moved_layer
+            affected_layers = [sibling, moved_layer]
+            assert self._new_parent not in affected_layers
+            self._new_parent = None
+        else:
+            moved_layer = self.doc.layer_stack.deeppop(self._new_path)
+            layers.deepinsert(self._old_path, moved_layer)
+            affected_layers = [moved_layer]
+        assert current_layer is not None
+        self.doc.select_layer(layer=current_layer, user_initiated=False)
+        self._notify_canvas_observers(affected_layers)
+
 
 class RenameLayer(Action):
     display_name = _("Rename Layer")

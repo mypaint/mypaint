@@ -513,6 +513,7 @@ class _LayerBaseSnapshot (object):
 class LayerStack (LayerBase):
     """Reorderable stack of editable layers"""
 
+    ICON_NAME = "mypaint-tool-layers"
 
     ## Construction and other lifecycle stuff
 
@@ -611,12 +612,26 @@ class LayerStack (LayerBase):
 
     def blit_tile_into( self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
                         **kwargs ):
+        """Unconditionally copy one tile's data into an array"""
         raise NotImplementedError
 
 
     def composite_tile( self, dst, dst_has_alpha, tx, ty, mipmap_level=0,
                         layers=None, **kwargs):
-        raise NotImplementedError
+        """Composite a tile's data into an array, respecting flags/layers list"""
+        if layers and self in layers:
+            layers.update(self._layers)   # blink all child layers too
+            # But carry on when this layer is not in `layers`. Not doing that
+            # would prevent child layers being blinked.
+        elif not self.visible:
+            return
+        N = tiledsurface.N
+        tmp = numpy.zeros((N, N, 4), dtype='uint16')
+        for layer in self._layers:
+            layer.composite_tile(tmp, True, tx, ty, mipmap_level,
+                                 layers=layers, **kwargs)
+        func = tiledsurface.SVG2COMPOSITE_FUNC[self.compositeop]
+        func(tmp, dst, dst_has_alpha, self.opacity)
 
 
     def get_move(self, x, y):

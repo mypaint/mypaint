@@ -406,9 +406,32 @@ class Document (object):
         if settings - lightweight_settings:
             self.split_stroke()
 
-    def select_layer(self, index=None, path=None, layer=None):
-        """Selects a layer (undoable)"""
-        self.do(command.SelectLayer(self, index=index, path=path, layer=layer))
+    def select_layer(self, index=None, path=None, layer=None,
+                     user_initiated=True):
+        """Selects a layer, and notifies about it
+
+        If user_initiated is false, selection and notification is handled here.
+        This form is used for preserving the selection in the GUI by certain
+        internal mechanisms which permute the layer stacking order. To keep
+        the GUI layer view's selection happy in this case, noninteractive calls
+        queue the selection and notification so that it doesn't process in the
+        same event as the GUI's internal selection manipulation.
+
+        If user_initiated is true, the selection and notification is performed
+        wrapped as an undoable command.
+        """
+        if user_initiated:
+            self.do(command.SelectLayer(self, index=index, path=path, layer=layer))
+        else:
+            layers = self.layer_stack
+            sel_path = layers.canonpath(index=index, path=path, layer=layer)
+            GObject.idle_add(self.__select_layer_path_and_notify, sel_path)
+
+
+    def __select_layer_path_and_notify(self, path):
+        layers = self.layer_stack
+        layers.set_current_path(path)
+        self.call_doc_observers()
 
 
     ## Layer (x, y) position
@@ -424,7 +447,14 @@ class Document (object):
 
 
     def reorder_layer(self, was_idx, new_idx, select_new=False):
+        """Reorder a layer by index (deprecated)"""
+        # Use move_layer_in_stack() instead...
         self.do(command.ReorderSingleLayer(self, was_idx, new_idx, select_new))
+
+    def move_layer_in_stack(self, old_path, new_path):
+        """Moves a layer in the stack by path (undoable)"""
+        logger.debug("move %r to %r", old_path, new_path)
+        self.do(command.ReorderLayerInStack(self, old_path, new_path))
 
 
     ## Misc layer command frontends
@@ -432,9 +462,6 @@ class Document (object):
 
     def duplicate_layer(self, insert_idx=None, name=''):
         self.do(command.DuplicateLayer(self, insert_idx, name))
-
-    def reorder_layers(self, new_layers):
-        self.do(command.ReorderLayers(self, new_layers))
 
     def clear_layer(self):
         if not self.layer.is_empty():

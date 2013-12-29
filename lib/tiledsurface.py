@@ -67,9 +67,11 @@ svg2mypaintlibmode = {
     'svg:luminosity': mypaintlib.BlendingModeLuminosity,
     }
 
-svg2composite_func = {}
+SVG2COMPOSITE_FUNC = {}
+
 for svg_id, mode_enum in svg2mypaintlibmode.iteritems():
-    svg2composite_func[svg_id] = functools.partial(mypaintlib.tile_composite, mode_enum)
+    SVG2COMPOSITE_FUNC[svg_id] = functools.partial(mypaintlib.tile_composite,
+                                                   mode_enum)
 
 # tile for read-only operations on empty spots
 transparent_tile = Tile()
@@ -367,8 +369,8 @@ class MyPaintSurface (object):
         if not (tx,ty) in self.tiledict:
             return
 
+        func = SVG2COMPOSITE_FUNC[mode]
         with self.tile_request(tx, ty, readonly=True) as src:
-            func = svg2composite_func[mode]
             func(src, dst, dst_has_alpha, opacity)
 
 
