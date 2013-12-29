@@ -349,14 +349,19 @@ class LayerBase (object):
         move.cleanup()
 
 
-    ## Pretty-printing
-
+    ## Standard stuff
 
     def __repr__(self):
         if self.name:
             return "<%s %r>" % (self.__class__.__name__, self.name)
         else:
             return "<%s>" % (self.__class__.__name__)
+
+    def __nonzero__(self):
+        return True
+
+    def __eq__(self, layer):
+        return self is layer
 
 
     ## Layer merging
@@ -1254,7 +1259,6 @@ class RootLayerStack (LayerStack):
         ValueError is raised.
         """
         if path is not None:
-            logger.debug("canonpath(path=%r)", path)
             layer = self.deepget(path)
             if layer is self:
                 raise ValueError, ("path=%r is root: must be descendent"
@@ -1266,7 +1270,6 @@ class RootLayerStack (LayerStack):
             elif not usecurrent:
                 raise ValueError, "layer not found with path=%r"
         elif index is not None:
-            logger.debug("canonpath(index=%r)", index)
             if index < 0:
                 raise ValueError, "negative layer index %r" % (index,)
             for i, (path, layer) in enumerate(self.deepenumerate()):
@@ -1276,7 +1279,6 @@ class RootLayerStack (LayerStack):
             if not usecurrent:
                 raise ValueError, "layer not found with index=%r" % (index,)
         elif layer is not None:
-            logger.debug("canonpath(layer=%r)", layer)
             if layer is self:
                 raise ValueError, "layer is root stack: must be descendent"
             path = self.deepindex(layer)
@@ -1287,7 +1289,6 @@ class RootLayerStack (LayerStack):
                 raise ValueError, "layer=%r not found" % (index,)
         # Criterion failed. Try fallbacks.
         if usecurrent:
-            logger.debug("canonpath: trying current layer")
             path = self.get_current_path()
             layer = self.deepget(path)
             if layer is not None:
@@ -1300,7 +1301,6 @@ class RootLayerStack (LayerStack):
                 raise ValueError, ("Invalid current path; uselowest "
                                    "might work but not specified")
         if uselowest:
-            logger.debug("canonpath: trying lowest layer")
             if len(self) > 0:
                 path = (0,)
                 assert self.deepget(path) is not None
