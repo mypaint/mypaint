@@ -1283,7 +1283,7 @@ class RootLayerStack (LayerStack):
                 assert self.deepget(path) is layer
                 return path
             elif not usecurrent:
-                raise ValueError, "layer not found with path=%r"
+                raise ValueError, "layer not found with path=%r" % (path,)
         elif index is not None:
             if index < 0:
                 raise ValueError, "negative layer index %r" % (index,)
@@ -1301,7 +1301,7 @@ class RootLayerStack (LayerStack):
                 assert self.deepget(path) is layer
                 return path
             elif not usecurrent:
-                raise ValueError, "layer=%r not found" % (index,)
+                raise ValueError, "layer=%r not found" % (layer,)
         # Criterion failed. Try fallbacks.
         if usecurrent:
             path = self.get_current_path()
