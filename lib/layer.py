@@ -636,7 +636,7 @@ class LayerStack (LayerBase):
 
     def get_move(self, x, y):
         """Get a translation/move object for this layer"""
-        return LayerStackMove(self, self._layers, x, y)
+        return LayerStackMove(self._layers, x, y)
 
 
     ## Saving
@@ -684,7 +684,7 @@ class LayerStackMove (object):
     """Move object wrapper for layer stacks"""
 
     def __init__(self, layers, x, y):
-        super(LayerStackMove, self).__init__(x, y)
+        super(LayerStackMove, self).__init__()
         self._moves = []
         for layer in layers:
             self._moves.append(layer.get_move(x, y))
@@ -695,7 +695,7 @@ class LayerStackMove (object):
 
     def cleanup(self):
         for move in self._moves:
-            move.cleanup(dx, dy)
+            move.cleanup()
 
     def process(self, n=200):
         n = max(20, int(n / len(self._moves)))
