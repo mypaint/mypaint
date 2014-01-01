@@ -107,8 +107,6 @@ class LayerBase (object):
 
     """
 
-    ICON_NAME = None
-
     ## Construction, loading, other lifecycle stuff
 
     def __init__(self, name="", compositeop=DEFAULT_COMPOSITE_OP):
@@ -170,6 +168,14 @@ class LayerBase (object):
 
 
     ## Info methods
+
+    def get_icon_name(self):
+        """The name of the icon to display for the layer
+
+        Ideally symbolic. A value of `None` means that no icon should be
+        displayed.
+        """
+        return None
 
     @property
     def effective_opacity(self):
@@ -488,6 +494,18 @@ class LayerBase (object):
         pass
 
 
+    ## Type-specific actions
+
+    def activate_layertype_action(self):
+        """Perform the special action associated with this layer type
+
+        This corresponds to the user clicking on the layer's type icon, as
+        returned by `self.get_icon_name()`. The default action does nothing.
+        """
+        pass
+
+
+
 class _LayerBaseSnapshot (object):
     """Base snapshot implementation
 
@@ -513,8 +531,6 @@ class _LayerBaseSnapshot (object):
 class LayerStack (LayerBase):
     """Reorderable stack of editable layers"""
 
-    ICON_NAME = "mypaint-tool-layers"
-
     ## Construction and other lifecycle stuff
 
 
@@ -523,6 +539,8 @@ class LayerStack (LayerBase):
         self._layers = []
         #: Explicit isolation flag
         self.isolated = False
+        #: Whether the layer is expanded or collapsed
+        self.expanded = True
         # Blank background, for use in rendering
         N = tiledsurface.N
         blank_arr = numpy.zeros((N, N, 4), dtype='uint16')
@@ -666,6 +684,18 @@ class LayerStack (LayerBase):
         """Trim the layer to a rectangle, discarding data outside it"""
         for layer in self._layers:
             layer.trim(rect)
+
+
+    ## Type-specific action
+
+    def activate_layertype_action(self):
+        self.expanded = not self.expanded
+
+    def get_icon_name(self):
+        if self.expanded:
+            return "mypaint-expander-expanded-symbolic"
+        else:
+            return "mypaint-expander-collapsed-symbolic"
 
 
 
@@ -1337,11 +1367,10 @@ class SurfaceBackedLayer (LayerBase):
     something else with the surface being just a preview.
     """
 
-    ## Class constants: class capabilities & other meta-info
+    ## Class constants: capabilities
 
     IS_PAINTABLE = False
     IS_FILLABLE = False
-    ICON_NAME = None
 
 
     ## Initialization
@@ -1823,7 +1852,6 @@ class ExternalLayer (SurfaceBackedLayer):
 
     IS_FILLABLE = False
     IS_PAINTABLE = False
-    ICON_NAME = "mypaint-layer-vector-symbolic"
 
     ## Construction
 
@@ -1836,6 +1864,8 @@ class ExternalLayer (SurfaceBackedLayer):
         self._x = None
         self._y = None
 
+    def get_icon_name(self):
+        return "mypaint-layer-vector-symbolic"
 
     def set_workdir(self, workdir):
         """Sets the working directory (i.e. to doc's tempdir)

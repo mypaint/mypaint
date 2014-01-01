@@ -101,35 +101,45 @@ class LayersTool (SizedVBoxToolWidget):
         sel = view.get_selection()
         sel.set_mode(Gtk.SelectionMode.SINGLE)
 
+        # Type and name
         renderer = Gtk.CellRendererPixbuf()
+        renderer.set_fixed_size(-1, 24)
+        col = self.type_col = Gtk.TreeViewColumn(_("Type"))
+        col.pack_start(renderer, expand=False)
+        col.set_cell_data_func(renderer, self._layer_type_datafunc)
+        col.set_max_width(24)
+        col.set_sizing(Gtk.TreeViewColumnSizing.AUTOSIZE)
+        view.append_column(col)
+
+        renderer = Gtk.CellRendererText()
+        renderer.set_property("ellipsize", Pango.EllipsizeMode.END)
+        col = self.name_col = Gtk.TreeViewColumn(_("Name"))
+        col.pack_start(renderer, expand=True)
+        col.set_cell_data_func(renderer, self._layer_name_datafunc)
+        col.set_expand(True)
+        col.set_min_width(48)
+        col.set_sizing(Gtk.TreeViewColumnSizing.AUTOSIZE)
+        view.append_column(col)
+
+        # State icons
+        renderer = Gtk.CellRendererPixbuf()
+        renderer.set_fixed_size(24, 24)
         col = self.visible_col = Gtk.TreeViewColumn(_("Visible"))
         col.pack_start(renderer, expand=False)
         col.set_cell_data_func(renderer, self._layer_visible_datafunc)
         view.append_column(col)
 
         renderer = Gtk.CellRendererPixbuf()
+        renderer.set_fixed_size(24, 24)
         col = self.locked_col = Gtk.TreeViewColumn(_("Locked"))
         col.pack_start(renderer, expand=False)
         col.set_cell_data_func(renderer, self._layer_locked_datafunc)
         view.append_column(col)
 
-        renderer = Gtk.CellRendererPixbuf()
-        col = self.type_col = Gtk.TreeViewColumn(_("Type"))
-        col.pack_start(renderer, expand=False)
-        col.set_cell_data_func(renderer, self._layer_type_datafunc)
-        view.append_column(col)
-
-        renderer = Gtk.CellRendererText()
-        col = self.name_col = Gtk.TreeViewColumn(_("Name"))
-        col.pack_start(renderer, expand=True)
-        col.set_cell_data_func(renderer, self._layer_name_datafunc)
-        view.append_column(col)
-
-        # View look
-
-        view.set_show_expanders(True)
+        # View appearance
+        view.set_show_expanders(False)
         view.set_expander_column(self.name_col)
-        view.set_level_indentation(16)
+        view.set_level_indentation(24)
 
         # Controls for the current layer
 
@@ -298,7 +308,8 @@ class LayersTool (SizedVBoxToolWidget):
         self.treeview.collapse_all()
         for row in self._layers_treestore_deeprows():
             layer = self.treestore.get_value(row.iter, TREESTORE_LAYER_COL)
-            if layer.visible:
+            expanded = getattr(layer, "expanded", True)
+            if expanded:
                 self.treeview.expand_row(row.path, False)
 
 
@@ -422,6 +433,12 @@ class LayersTool (SizedVBoxToolWidget):
         if layer_path != model.layer_stack.current_path:
             model.select_layer(path=layer_path)
             doc.layerblink_state.activate()
+            return True
+        # The type icon column allows a layer-type-specific action to be
+        # invoked with a single click.
+        if clicked_col is self.type_col:
+            layer.activate_layertype_action()
+            self._update(model)  # the action may require it
             return True
         # Allow the default drag initiation to happen if the user click+drags
         # starting with the current layer
@@ -568,7 +585,7 @@ class LayersTool (SizedVBoxToolWidget):
         if not name:
             layer_num = self.app.doc.get_number_for_nameless_layer(layer)
             name = _(u"Untitled layer #%d") % layer_num
-            markup = "<small><i>%s</i></small> " % (escape(name),)
+            markup = "<i>%s</i>" % (escape(name),)
             parse_result = Pango.parse_markup(markup, -1, '\000')
             parse_ok, attrs, name, accel_char = parse_result
             assert parse_ok
@@ -608,8 +625,7 @@ class LayersTool (SizedVBoxToolWidget):
     def _layer_type_datafunc(self, column, renderer, model, tree_iter,
                              *data_etc):
         layer = model.get_value(tree_iter, TREESTORE_LAYER_COL)
-        icon_name = layer.ICON_NAME
-        renderer.set_property("icon-name", icon_name)
+        renderer.set_property("icon-name", layer.get_icon_name())
 
 
     def _compositeop_combo_changed_cb(self, *ignored):
