@@ -449,6 +449,7 @@ class SelectLayer (Action):
     def redo(self):
         layers = self.doc.layer_stack
         layers.set_current_path(self.path)
+        logger.debug("select %r", self.path)
         self._notify_document_observers()
 
     def undo(self):

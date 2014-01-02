@@ -440,18 +440,20 @@ class Document (CanvasController):
         self.model.convert_layer_to_normal_mode()
 
     def layer_bg_cb(self, action):
-        idx = self.model.layer_idx - 1
-        if idx < 0:
-            return
-        self.model.select_layer(idx)
+        layers = self.model.layer_stack
+        path = layers.get_current_path()
+        path = layers.path_below(path)
+        if path:
+            self.model.select_layer(path=path)
         self.layerblink_state.activate(action)
 
 
     def layer_fg_cb(self, action):
-        idx = self.model.layer_idx + 1
-        if idx >= len(self.model.layers):
-            return
-        self.model.select_layer(idx)
+        layers = self.model.layer_stack
+        path = layers.get_current_path()
+        path = layers.path_above(path)
+        if path:
+            self.model.select_layer(path=path)
         self.layerblink_state.activate(action)
 
 

@@ -1106,40 +1106,33 @@ class RootLayerStack (LayerStack):
     ## Layer path manipulation
 
 
-    def path_above(self, path): #FIXME: support walking.
+    def path_above(self, path):
         """Return the path for the layer stacked above a given path
 
         :param path: a layer path
         :type path: list or tuple
-        :return: the layer above `path` in stacking order
+        :return: the layer above `path` in walk order
         :rtype: tuple
 
         >>> root, leaves = _make_test_stack()
         >>> root.path_above([0, 0])
         (0, 1)
         >>> root.path_above([0, 1])
+        (0,)
         >>> root.path_above([0])
         (1,)
         >>> root.path_above([1])
 
         """
-        if len(path) == 0:
+        paths = [tuple(p) for p,l in self.deepenumerate(postorder=True)]
+        idx = paths.index(tuple(path))
+        idx += 1
+        if idx >= len(paths):
             return None
-        layer = self.deepget(path)
-        if layer is None:
-            return None
-        parent = self
-        parent_path = ()
-        if len(path) > 1:
-            parent_path = path[:-1]
-            parent = self.deepget(parent_path)
-        idx = path[-1] + 1
-        if idx >= len(parent._layers):
-            return None
-        return tuple(list(parent_path) + [idx])
+        return paths[idx]
 
 
-    def path_below(self, path): #FIXME: support walking.
+    def path_below(self, path):
         """Return the path for the layer stacked below a given path
 
         :param path: a layer path
@@ -1151,24 +1144,18 @@ class RootLayerStack (LayerStack):
         >>> root.path_below([0, 1])
         (0, 0)
         >>> root.path_below([0, 0])
+        (1,)
         >>> root.path_below([1])
         (0,)
         >>> root.path_below((0,))
         """
-        if len(path) == 0:
-            return None
-        layer = self.deepget(path)
-        if layer is None:
-            return None
-        parent = self
-        parent_path = ()
-        if len(path) > 1:
-            parent_path = path[:-1]
-            parent = self.deepget(parent_path)
-        idx = path[-1] - 1
+        paths = [tuple(p) for p,l in self.deepenumerate(postorder=True)]
+        idx = paths.index(tuple(path))
+        idx -= 1
         if idx < 0:
             return None
-        return tuple(list(parent_path) + [idx])
+        return paths[idx]
+
 
     ## Simplified tree storage and access
 
@@ -1200,23 +1187,34 @@ class RootLayerStack (LayerStack):
                     queue.insert(0, child)
 
 
-    def deepenumerate(self):
+    def deepenumerate(self, postorder=False):
         """Enumerates the structure of a stack in depth
+
+        :param postorder: If true, use a post-order traversal.
 
         >>> stack, leaves = _make_test_stack()
         >>> [a[0] for a in stack.deepenumerate()]
         [(0,), (0, 0), (0, 1), (1,), (1, 0), (1, 1)]
+        >>> [a[0] for a in stack.deepenumerate(postorder=True)]
+        [(0, 0), (0, 1), (0,), (1, 0), (1, 1), (1,)]
         >>> set(leaves) - set([a[1] for a in stack.deepenumerate()])
         set([])
         """
         queue = [([], self)]
+        walked = set()
         while len(queue) > 0:
             path, layer = queue.pop(0)
-            if layer is not self:
-                yield (tuple(path), layer)
-            if isinstance(layer, LayerStack):
-                for i, child in enumerate(layer._layers):
-                    queue.insert(i, (path + [i], child))
+            is_stack = isinstance(layer, LayerStack)
+            if (not is_stack) or (not postorder) or (layer in walked):
+                if layer is not self:
+                    yield (tuple(path), layer)
+            if is_stack:
+                if (not postorder) or layer not in walked:
+                    for i, child in enumerate(layer._layers):
+                        queue.insert(i, (path + [i], child))
+                    if postorder:
+                        walked.add(layer)
+                        queue.insert(len(layer._layers), (path, layer))
 
 
     def deepget(self, path, default=None):
