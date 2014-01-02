@@ -127,7 +127,68 @@ class LayerBase (object):
         self.locked = False
         #: The compositing operation to use when displaying the layer
         self.compositeop = compositeop
+        #: True if the layer was marked as selected when loaded.
+        self.initially_selected = False
+        #: List of content observers (see _notify_content_observers())
+        self.content_observers = []
 
+
+    def _notify_content_observers(self, *args):
+        """Notifies registered content observers
+
+        Observer callbacks in `self.content_observers` are invoked via this
+        method when the contents of the layer change, with the bounding box of
+        the changed region (x, y, w, h).
+        """
+        for func in self.content_observers:
+            func(*args)
+
+
+    @classmethod
+    def new_from_openraster(cls, orazip, elem, tempdir, feedback_cb,
+                            x=0, y=0, **kwargs):
+        """Constructs and returns a layer from an open OpenRaster zipfile
+
+        This implementation just creates a new instance of its class and calls
+        `load_from_openraster()` on it. This should suffice for all subclasses
+        which support parameterless construction.
+        """
+        layer = cls()
+        layer.load_from_openraster(orazip, elem, tempdir, feedback_cb,
+                                   x=x, y=y, **kwargs)
+        return layer
+
+
+    def load_from_openraster(self, orazip, elem, tempdir, feedback_cb,
+                             x=0, y=0, **kwargs):
+        """Loads layer data from an open OpenRaster zipfile
+
+        :param orazip: An OpenRaster zipfile, opened for extracting
+        :type orazip: zipfile.ZipFile
+        :param elem: <layer/> or <stack/> element to load (stack.xml)
+        :type elem: xml.etree.ElementTree.Element
+        :param tempdir: A temporary working directory
+        :param feedback_cb: Callback invoked to provide feedback to the user
+        :param x: X offset of the top-left point for image data
+        :param y: Y offset of the top-left point for image data
+        :param **kwargs: Extensibility
+
+        The base implementation loads the common layer flags from a `<layer/>`
+        or `<stack/>` element, but does nothing more than that. Loading layer
+        data from the zipfile or recursing into stack contents is deferred to
+        subclasses.
+        """
+        attrs = elem.attrib
+        self.name = unicode(attrs.get('name', ''))
+        self.opacity = helpers.clamp(float(attrs.get('opacity', '1.0')),
+                                      0.0, 1.0)
+        self.compositeop = str(attrs.get('composite-op', DEFAULT_COMPOSITE_OP))
+        if self.compositeop not in VALID_COMPOSITE_OPS:
+            self.compositeop = DEFAULT_COMPOSITE_OP
+        self.locked = helpers.xsd2bool(attrs.get("edit-locked", 'false'))
+        self.visible = ('hidden' not in attrs.get('visibility', 'visible'))
+        self.initially_selected = helpers.xsd2bool(attrs.get("selected",
+                                                             'false'))
 
     def copy(self):
         """Returns an independent copy of the layer, for Duplicate Layer
@@ -147,19 +208,8 @@ class LayerBase (object):
         layer.visible = self.visible
         layer.locked = self.locked
         layer.load_snapshot(self.save_snapshot())
+        layer.content_observers = self.content_observers[:]
         return layer
-
-
-    def load_from_openraster(self, orazip, attrs, tempdir, feedback_cb):
-        """Loads layer flags from XML attrs.
-
-        :param orazip: An OpenRaster zipfile, opened for extracting
-        :param attrs: The XML attributes of the <layer/> tag.
-        :param tempdir: A temporary working directory.
-        :returns: True if the layer is marked as selected.
-        :rtype: bool
-        """
-        return False
 
 
     def clear(self):
@@ -525,6 +575,11 @@ class _LayerBaseSnapshot (object):
         layer.opacity = self.opacity
 
 
+class LoadError (Exception):
+    """Raised when loading to indicate that a layer cannot be loaded"""
+    pass
+
+
 ## Stacks of layers
 
 
@@ -551,8 +606,36 @@ class LayerStack (LayerBase):
         raise NotImplementedError
 
 
-    def load_from_openraster(self, orazip, attrs, tempdir, feedback_cb):
-        raise NotImplementedError
+    def load_from_openraster(self, orazip, elem, tempdir, feedback_cb,
+                             x=0, y=0, **kwargs):
+        """Load this layer from an open .ora file"""
+        if elem.tag != "stack":
+            raise LoadError, "<stack/> expected"
+        super(LayerStack, self) \
+            .load_from_openraster(orazip, elem, tempdir, feedback_cb,
+                                  x=x, y=y, **kwargs)
+        self.clear()
+        x += int(elem.attrib.get("x", 0))
+        y += int(elem.attrib.get("y", 0))
+        for child_elem in reversed(elem.findall("./*")):
+            assert child_elem is not elem
+            self.load_child_layer_from_openraster(orazip, child_elem, tempdir,
+                                                  feedback_cb, x=x, y=y,
+                                                  **kwargs)
+
+
+    def load_child_layer_from_openraster(self, orazip, elem, tempdir,
+                                         feedback_cb, x=0, y=0, **kwargs):
+        """Loads and appends a single child layer from an open .ora file"""
+        try:
+            child = layer_new_from_openraster(orazip, elem, tempdir,
+                                              feedback_cb, x=x, y=y, **kwargs)
+        except LoadError:
+            logger.warning("Skipping non-loadable layer")
+        if child is None:
+            logger.warning("Skipping empty layer")
+            return
+        self._layers.append(child)
 
 
     def clear(self):
@@ -1355,6 +1438,55 @@ class RootLayerStack (LayerStack):
         raise TypeError, ("No layer/index/path criterion, and no fallbacks")
 
 
+    def load_from_openraster(self, orazip, elem, tempdir, feedback_cb,
+                             x=0, y=0, **kwargs):
+        """Load this layer from an open .ora file"""
+        self._no_background = True
+        super(RootLayerStack, self) \
+            .load_from_openraster(orazip, elem, tempdir, feedback_cb,
+                                  x=x, y=y, **kwargs)
+        del self._no_background
+        # Select a suitable working layer
+        num_loaded = 0
+        selected_path = None
+        for path, loaded_layer in self.deepenumerate():
+            if loaded_layer.initially_selected:
+                selected_path = path
+            num_loaded += 1
+        logger.debug("Loaded %d layer(s)" % num_loaded)
+        if num_loaded == 0:
+            logger.error('Could not load any layer, document is empty.')
+            logger.info('Adding an empty painting layer')
+            empty_layer = PaintingLayer()
+            self.append(empty_layer)
+            selected_path = [0]
+        assert len(self._layers) > 0
+        if not selected_path:
+            selected_path = [max(0, len(self._layers)-1)]
+        self.set_current_path(selected_path)
+
+
+    def load_child_layer_from_openraster(self, orazip, elem, tempdir,
+                                         feedback_cb, x=0, y=0, **kwargs):
+        """Loads and appends a single child layer from an open .ora file"""
+        attrs = elem.attrib
+        # Handle MyPaint's special background tile notation
+        bg_src = attrs.get('background_tile', None)
+        if bg_src:
+            assert self._no_background, "Only one background is permitted"
+            try:
+                logger.debug("background tile: %r", bg_src)
+                bg_pixbuf = pixbuf_from_zipfile(orazip, bg_src, feedback_cb)
+                self.set_background(bg_pixbuf)
+                self._no_background = False
+                return
+            except tiledsurface.BackgroundError, e:
+                logger.warning('ORA background tile not usable: %r', e)
+        super(RootLayerStack, self) \
+            .load_child_layer_from_openraster(orazip, elem, tempdir,
+                                              feedback_cb, x=x, y=y, **kwargs)
+
+
 ## Layers with data
 
 
@@ -1397,9 +1529,6 @@ class SurfaceBackedLayer (LayerBase):
         else:
             self._surface = surface
 
-        #: List of content observers (see _notify_content_observers())
-        self.content_observers = []
-
         # Clear if we created our own surface
         if surface is None:
             self.clear()
@@ -1414,37 +1543,63 @@ class SurfaceBackedLayer (LayerBase):
         strokeshape.render_to_surface(self._surface)
 
 
-    def copy(self):
-        """Returns an independent copy of the layer, for Duplicate Layer"""
-        layer = super(SurfaceBackedLayer, self).copy()
-        layer.content_observers = self.content_observers[:]
-        return layer
+    ## Loading
+
+    def load_from_openraster(self, orazip, elem, tempdir, feedback_cb,
+                             x=0, y=0, allowed_suffixes=None,
+                             extract_and_keep=False, **kwargs):
+        """Loads layer flags and bitmap/surface data from a .ora zipfile
+
+        :param allowed_suffixes: An iterable of allowed lowercase suffixes
+        :param extract_and_keep: Set to true to extract and keep a copy
+
+        The normal behaviour is to load the data file directly from `orazip`
+        without using a temporary file.  If `extract_and_keep` is set, an
+        alternative method is used which extracts
+
+            os.path.join(tempdir, elem.attrib["src"])
+
+        and reads from that. The caller is then free to do what it likes with
+        this file.
+        """
+        # Load layer flags
+        super(SurfaceBackedLayer, self) \
+            .load_from_openraster(orazip, elem, tempdir, feedback_cb,
+                                  x=x, y=y, **kwargs)
+        # Read bitmap content into the surface
+        attrs = elem.attrib
+        src = attrs.get("src", None)
+        src_rootname, src_ext = os.path.splitext(src)
+        src_rootname = os.path.basename(src_rootname)
+        src_ext = src_ext.lower()
+        x += int(attrs.get('x', 0))
+        y += int(attrs.get('y', 0))
+        t0 = time.time()
+        if allowed_suffixes and src_ext not in allowed_suffixes:
+            logger.error("Cannot load PaintingLayers from a %r", src_ext)
+            raise LoadError, "Only %r is supported" % (src_ext,)
+        if extract_and_keep:
+            orazip.extract(src, path=tempdir)
+            tmp_filename = os.path.join(tempdir, src)
+            self.load_surface_from_pixbuf_file(tmp_filename, x, y, feedback_cb)
+        else:
+            pixbuf = pixbuf_from_zipfile(orazip, src, feedback_cb=feedback_cb)
+            self.load_surface_from_pixbuf(pixbuf, x=x, y=y)
+        t1 = time.time()
+        logger.debug('%.3fs loading and converting src %r for %r',
+                     t1 - t0, src_ext, src_rootname)
 
 
-    ## Generic pixbuf loader methods
-
-    @staticmethod
-    def _pixbuf_from_stream(fp, feedback_cb=None):
-        loader = GdkPixbuf.PixbufLoader()
-        while True:
-            if feedback_cb is not None:
-                feedback_cb()
-            buf = fp.read(LOAD_CHUNK_SIZE)
-            if buf == '':
-                break
-            loader.write(buf)
-        loader.close()
-        return loader.get_pixbuf()
-
-    def _load_surface_from_pixbuf_file(self, filename, x=0, y=0,
-                                       feedback_cb=None):
+    def load_surface_from_pixbuf_file(self, filename, x=0, y=0,
+                                      feedback_cb=None):
         """Loads the layer's surface from any file which GdkPixbuf can open"""
         fp = open(filename, 'rb')
-        pixbuf = self._pixbuf_from_stream(fp, feedback_cb)
+        pixbuf = pixbuf_from_stream(fp, feedback_cb)
         fp.close()
-        return self._load_surface_from_pixbuf(pixbuf, x, y)
+        return self.load_surface_from_pixbuf(pixbuf, x, y)
 
-    def _load_surface_from_pixbuf(self, pixbuf, x=0, y=0):
+
+    def load_surface_from_pixbuf(self, pixbuf, x=0, y=0):
         """Loads the layer's surface from a GdkPixbuf"""
         arr = helpers.gdkpixbuf2numpy(pixbuf)
         surface = tiledsurface.Surface()
@@ -1452,40 +1607,11 @@ class SurfaceBackedLayer (LayerBase):
         self.load_from_surface(surface)
         return bbox
 
-    def load_from_openraster(self, orazip, attrs, tempdir, feedback_cb):
-        """Loads layer flags from XML attrs. Derived classes handle data.
-
-        The minimal implementation does not attempt to load any surface image at
-        all. That detail is left to the subclasses for now.
-        """
-        self.name = attrs.get('name', '')
-        self.opacity = helpers.clamp(float(attrs.get('opacity', '1.0')),
-                                     0.0, 1.0)
-        self.compositeop = str(attrs.get('composite-op', DEFAULT_COMPOSITE_OP))
-        if self.compositeop not in VALID_COMPOSITE_OPS:
-            self.compositeop = DEFAULT_COMPOSITE_OP
-        self.locked = helpers.xsd2bool(attrs.get("edit-locked", 'false'))
-        self.visible = ('hidden' not in attrs.get('visibility', 'visible'))
-        selected = helpers.xsd2bool(attrs.get("selected", 'false'))
-        return selected
-
 
     def clear(self):
         """Clears the layer"""
         self._surface.clear()
 
-
-    def _notify_content_observers(self, *args):
-        """Notifies registered content observers
-
-        Observer callbacks in `self.content_observers` are invoked via this
-        method when the contents of the layer change, with the bounding box of
-        the changed region (x, y, w, h).
-
-        Only used for the default surface implmentation.
-        """
-        for func in self.content_observers:
-            func(*args)
 
     ## Info methods
 
@@ -1875,38 +2001,35 @@ class ExternalLayer (SurfaceBackedLayer):
         self._workdir = workdir
 
 
-    def load_from_openraster(self, orazip, attrs, tempdir, feedback_cb):
+    def load_from_openraster(self, orazip, elem, tempdir, feedback_cb,
+                             x=0, y=0, **kwargs):
         """Loads layer data and attrs from an OpenRaster zipfile
 
         Using this method also sets the working directory for the layer to
         tempdir.
         """
-        # Load layer flags
-        selected = super(ExternalLayer, self)\
-                    .load_from_openraster(orazip, attrs, tempdir, feedback_cb)
-        # Read SVG or whatever content via a tempdir
+        # Load layer flags and raster data
+        super(ExternalLayer, self) \
+            .load_from_openraster(orazip, elem, tempdir, feedback_cb,
+                                  x=x, y=y, allowed_suffixes=[".svg"],
+                                  extract_and_keep=True, **kwargs)
+        # Use the extracted file as the zero revision, and record layer
+        # working parameters.
+        attrs = elem.attrib
         src = attrs.get("src", None)
         src_rootname, src_ext = os.path.splitext(src)
-        src_rootname = os.path.basename(src_rootname)
         src_ext = src_ext.lower()
-        x = int(attrs.get('x', 0))
-        y = int(attrs.get('y', 0))
-        t0 = time.time()
-        orazip.extract(src, path=tempdir)
         tmp_filename = os.path.join(tempdir, src)
+        if not os.path.exists(tmp_filename):
+            raise LoadError, ("tmpfile missing after extract_and_keep: %r" %
+                              (tmp_filename,))
         rev0_fd, rev0_filename = tempfile.mkstemp(suffix=src_ext, dir=tempdir)
         os.close(rev0_fd)
         os.rename(tmp_filename, rev0_filename)
-        self._load_surface_from_pixbuf_file(rev0_filename, x, y, feedback_cb)
         self._basename = os.path.basename(rev0_filename)
         self._workdir = tempdir
-        self._x = x
-        self._y = y
-        t1 = time.time()
-        logger.debug('%.3fs loading and converting src %r for %r',
-                     t1 - t0, src_ext, src_rootname)
-        # Return
-        return selected
+        self._x = x + int(attrs.get('x', 0))
+        self._y = y + int(attrs.get('y', 0))
 
 
     ## Snapshots
@@ -2075,44 +2198,27 @@ class PaintingLayer (SurfaceBackedLayer):
         self.strokes = []
 
 
-    def load_from_openraster(self, orazip, attrs, tempdir, feedback_cb):
-        """Loads layer flags, PNG data, amd strokemap from a .ora zipfile"""
+    def load_from_openraster(self, orazip, elem, tempdir, feedback_cb,
+                             x=0, y=0, **kwargs):
+        """Loads layer flags, PNG data, and strokemap from a .ora zipfile"""
         # Load layer flags
-        selected = super(PaintingLayer, self)\
-            .load_from_openraster(orazip, attrs, tempdir, feedback_cb)
-        # Read PNG content via tempdir
-        src = attrs.get("src", None)
-        src_rootname, src_ext = os.path.splitext(src)
-        src_rootname = os.path.basename(src_rootname)
-        src_ext = src_ext.lower()
-        x = int(attrs.get('x', 0))
-        y = int(attrs.get('y', 0))
-        t0 = time.time()
-        if src_ext == '.png':
-            orazip.extract(src, tempdir)
-            tmp_filename = os.path.join(tempdir, src)
-            surface = tiledsurface.Surface()
-            surface.load_from_png(tmp_filename, x, y, feedback_cb)
-            self.load_from_surface(surface)
-            os.remove(tmp_filename)
-        else:
-            logger.error("Cannot load PaintingLayers from a %r", src_ext)
-            raise NotImplementedError, "Only *.png is supported"
-        t1 = time.time()
-        logger.debug('%.3fs loading and converting src %r for %r',
-                     t1 - t0, src_ext, src_rootname)
-        # Strokemap
+        super(PaintingLayer, self) \
+            .load_from_openraster(orazip, elem, tempdir, feedback_cb,
+                                  x=y, y=y, allowed_suffixes=[".png"],
+                                  **kwargs)
+        # Strokemap too
+        attrs = elem.attrib
+        x += int(attrs.get('x', 0))
+        y += int(attrs.get('y', 0))
         strokemap_name = attrs.get('mypaint_strokemap_v2', None)
-        t2 = time.time()
         if strokemap_name is not None:
+            t2 = time.time()
             sio = StringIO(orazip.read(strokemap_name))
             self.load_strokemap_from_file(sio, x, y)
             sio.close()
-        t3 = time.time()
-        logger.debug('%.3fs loading strokemap for %r',
-                     t3 - t2, src_rootname)
-        # Return (TODO: notify needed here?)
-        return selected
+            t3 = time.time()
+            logger.debug('%.3fs loading strokemap %r',
+                         t3 - t2, strokemap_name)
 
 
     ## Flood fill
@@ -2369,6 +2475,55 @@ class PaintingLayerMove (object):
 
     def process(self, n=200):
         return self._wrapped.process(n)
+
+
+## Helper functions
+
+
+_LAYER_NEW_CLASSES = [LayerStack, PaintingLayer, ExternalLayer]
+
+
+def layer_new_from_openraster(orazip, elem, tempdir, feedback_cb,
+                              x=0, y=0, **kwargs):
+    """Construct and return a new layer from a .ora file (factory)"""
+    for layer_class in _LAYER_NEW_CLASSES:
+        try:
+            return layer_class.new_from_openraster(orazip, elem, tempdir,
+                                                   feedback_cb, x=x, y=y,
+                                                   **kwargs)
+        except LoadError:
+            pass
+    raise LoadError, "No delegate class willing to load %r" % (elem,)
+
+
+def pixbuf_from_stream(fp, feedback_cb=None):
+    """Extract and return a GdkPixbuf from file-like object"""
+    loader = GdkPixbuf.PixbufLoader()
+    while True:
+        if feedback_cb is not None:
+            feedback_cb()
+        buf = fp.read(LOAD_CHUNK_SIZE)
+        if buf == '':
+            break
+        loader.write(buf)
+    loader.close()
+    return loader.get_pixbuf()
+
+
+def pixbuf_from_zipfile(datazip, filename, feedback_cb=None):
+    """Extract and return a GdkPixbuf from a zipfile entry"""
+    try:
+        datafp = datazip.open(filename, mode='r')
+    except KeyError:
+        # Support for bad zip files (saved by old versions of the
+        # GIMP ORA plugin)
+        datafp = datazip.open(filename.encode('utf-8'), mode='r')
+        logger.warning('Bad ZIP file. There is an utf-8 encoded '
+                       'filename that does not have the utf-8 '
+                       'flag set: %r', filename)
+    pixbuf = pixbuf_from_stream(datafp, feedback_cb=feedback_cb)
+    datafp.close()
+    return pixbuf
 
 
 ## Module testing

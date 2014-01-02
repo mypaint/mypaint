@@ -999,170 +999,43 @@ class Document (object):
         return thumbnail_pixbuf
 
 
-    def _layer_new_from_openraster(self, orazip, attrs, feedback_cb):
-        """Create a new layer from an ORA zipfile, and a dict of XML attrs
-
-        :param orazip: OpenRaster zipfile, open for extraction.
-        :param attrs: Dict of stack XML <layer/> attrs.
-        :param feedback_cb: 0-arg callable used for providing loader feedback.
-        :returns: ``(LAYER, SELECTED)``, New layer, and whether it's selected
-        :rtype: tuple
-
-        The LAYER return value will be None if data could not be loaded for
-        some reason.
-        """
-
-        # Switch the class to instantiate bsed on the filename extension.
-        src = attrs.get("src", None)
-        if src is None:
-            logger.warning('Ignoring layer with no src attrib %r', attrs)
-            return None
-        src_basename, src_ext = os.path.splitext(src)
-        src_ext = src_ext.lower()
-        t0 = time.time()
-        if src_ext == '.png':
-            new_layer = layer.PaintingLayer()
-        elif src_ext == '.svg':
-            new_layer = layer.ExternalLayer()
-        else:
-            logger.warning("Unknown extension %r for %r", src_ext, src_basename)
-            return (None, False)
-        selected = new_layer.load_from_openraster(orazip, attrs, self._tempdir,
-                                                  feedback_cb)
-        t1 = time.time()
-        logger.debug('%.3fs loading and converting %r layer %r',
-                     t1 - t0, src_ext, src_basename)
-        return (new_layer, selected)
-
-
-    @staticmethod
-    def _load_ora_layers_list(root, x=0, y=0):
-        """Builds and returns a layers list based on OpenRaster stack.xml
-
-        :param root: ``<stack/>`` XML node (can be a sub-stack
-        :type root: xml.etree.ElementTree.Element
-        :param x: X offset of the (sub-)stack
-        :param y: Y offset of the (sub-)stack
-        :returns: Normalized list of ``Element``s (see description)
-        :rtype: list
-
-        Members of the returned list are the etree ``Element``s for each
-        source ``<layer/>``, normalized. Returned layer x and y ``attrib``s
-        are all relative to the same origin.
-        """
-        res = []
-        for item in root:
-            if item.tag == 'layer':
-                if 'x' in item.attrib:
-                    item.attrib['x'] = int(item.attrib['x']) + x
-                if 'y' in item.attrib:
-                    item.attrib['y'] = int(item.attrib['y']) + y
-                res.append(item)
-            elif item.tag == 'stack':
-                stack_x = int( item.attrib.get('x', 0) )
-                stack_y = int( item.attrib.get('y', 0) )
-                res += _load_ora_layers_list(item, stack_x, stack_y)
-            else:
-                logger.warning('ignoring unsupported tag %r', item.tag)
-        return res
-
-
     def load_ora(self, filename, feedback_cb=None):
         """Loads from an OpenRaster file"""
-        # TODO: move the guts of this to RootLayerStack
         logger.info('load_ora: %r', filename)
         t0 = time.time()
         tempdir = self._tempdir
-        z = zipfile.ZipFile(filename)
-        logger.debug('mimetype: %r', z.read('mimetype').strip())
-        xml = z.read('stack.xml')
-        image = ET.fromstring(xml)
-        stack = image.find('stack')
+        orazip = zipfile.ZipFile(filename)
+        logger.debug('mimetype: %r', orazip.read('mimetype').strip())
+        xml = orazip.read('stack.xml')
+        image_elem = ET.fromstring(xml)
+        root_stack_elem = image_elem.find('stack')
+        image_width = int(image_elem.attrib['w'])
+        image_height = int(image_elem.attrib['h'])
 
-        image_w = int(image.attrib['w'])
-        image_h = int(image.attrib['h'])
-
-        def get_pixbuf(filename):
-            t1 = time.time()
-
-            try:
-                fp = z.open(filename, mode='r')
-            except KeyError:
-                # support for bad zip files (saved by old versions of the GIMP ORA plugin)
-                fp = z.open(filename.encode('utf-8'), mode='r')
-                logger.warning('Bad OpenRaster ZIP file. There is an utf-8 '
-                               'encoded filename that does not have the '
-                               'utf-8 flag set: %r', filename)
-
-            res = self._pixbuf_from_stream(fp, feedback_cb)
-            fp.close()
-            logger.debug('%.3fs loading pixbuf %s', time.time() - t1, filename)
-            return res
-
-
+        # Delegate loading of image data to the layers tree itself
         self.layer_stack.clear()
-        no_background = True
-
-        selected_layer = None
-        nloaded = 0
-        for el in self._load_ora_layers_list(stack):
-            a = el.attrib
-
-            if 'background_tile' in a:
-                assert no_background
-                try:
-                    logger.debug("background tile: %r", a['background_tile'])
-                    self.layer_stack.set_background(get_pixbuf(a['background_tile']))
-                    no_background = False
-                    continue
-                except tiledsurface.BackgroundError, e:
-                    logger.warning('ORA background tile not usable: %r', e)
-
-            llayer, selected = self._layer_new_from_openraster(z, a, feedback_cb)
-            if llayer is None:
-                logger.warning("Skipping empty layer")
-                continue
-            self.layer_stack.deepinsert([0], llayer)
-            if selected:
-                selected_layer = llayer
-            llayer.content_observers.append(self.layer_modified_cb)
-            llayer.set_symmetry_axis(self.get_symmetry_axis())
-            nloaded += 1
-
-        if nloaded == 0:
-            # no assertion (allow empty documents)
-            logger.error('Could not load any layer, document is empty.')
-            logger.info('Adding an empty painting layer')
-            dlayer = layer.PaintingLayer()
-            dlayer.content_observers.append(self.layer_modified_cb)
-            dlayer.set_symmetry_axis(self.get_symmetry_axis())
-            self.layer_stack.deepinsert([0], dlayer)
-
+        self.layer_stack.load_from_openraster(orazip, root_stack_elem,
+                                              tempdir, feedback_cb, x=0, y=0)
         assert len(self.layer_stack) > 0
 
-        # Select the topmost layer
-        self.layer_stack.set_current_path([len(self.layer_stack)-1])
-
-        # Set the selected layer index
-        if selected_layer is not None:
-            for epath, elayer in self.layer_stack.deepenumerate():
-                if elayer is selected_layer:
-                    self.set_current_path(epath)
-                    break
+        # Attach observers
+        for path, descendent in self.layer_stack.deepenumerate():
+            descendent.content_observers.append(self.layer_modified_cb)
+            descendent.set_symmetry_axis(self.get_symmetry_axis())
 
         # Set the frame size to that saved in the image.
-        self.update_frame(x=0, y=0, width=image_w, height=image_h,
+        self.update_frame(x=0, y=0, width=image_width, height=image_height,
                           user_initiated=False)
 
         # Enable frame if the saved image size is something other than the
         # calculated bounding box. Goal: if the user saves an "infinite
         # canvas", it loads as an infinite canvas.
-        bbox_c = helpers.Rect(x=0, y=0, w=image_w, h=image_h)
+        bbox_c = helpers.Rect(x=0, y=0, w=image_width, h=image_height)
         bbox = self.get_bbox()
         frame_enab = not (bbox_c==bbox or bbox.empty() or bbox_c.empty())
         self.set_frame_enabled(frame_enab, user_initiated=False)
 
-        z.close()
+        orazip.close()
 
         logger.info('%.3fs load_ora total', time.time() - t0)
 
