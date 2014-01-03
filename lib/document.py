@@ -410,28 +410,25 @@ class Document (object):
                      user_initiated=True):
         """Selects a layer, and notifies about it
 
-        If user_initiated is false, selection and notification is handled here.
-        This form is used for preserving the selection in the GUI by certain
-        internal mechanisms which permute the layer stacking order. To keep
-        the GUI layer view's selection happy in this case, noninteractive calls
-        queue the selection and notification so that it doesn't process in the
-        same event as the GUI's internal selection manipulation.
+        If user_initiated is false, selection and notification is handled
+        here. This form is used for preserving the selection in the GUI by
+        certain internal mechanisms which permute the layer stacking order. To
+        keep the GUI layer view's selection happy in this case, noninteractive
+        calls queue the notification so that it doesn't process in the same
+        event as the GUI's internal selection manipulation.
 
         If user_initiated is true, the selection and notification is performed
         wrapped as an undoable command.
         """
-        if user_initiated:
-            self.do(command.SelectLayer(self, index=index, path=path, layer=layer))
-        else:
-            layers = self.layer_stack
-            sel_path = layers.canonpath(index=index, path=path, layer=layer)
-            GObject.idle_add(self.__select_layer_path_and_notify, sel_path)
-
-
-    def __select_layer_path_and_notify(self, path):
         layers = self.layer_stack
-        layers.set_current_path(path)
-        self.call_doc_observers()
+        sel_path = layers.canonpath(index=index, path=path, layer=layer,
+                                    usecurrent=False, uselowest=True)
+        if user_initiated:
+            self.do(command.SelectLayer(self, path=sel_path))
+        else:
+            layers.set_current_path(sel_path)
+            cb = lambda *a: self.call_doc_observers() and False
+            GObject.idle_add(cb)
 
 
     ## Layer (x, y) position
