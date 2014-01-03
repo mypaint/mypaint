@@ -509,16 +509,11 @@ class Document (CanvasController):
         The direction the layer moves depends on the action name:
         "RaiseLayerInStack" or "LowerLayerInStack".
         """
-        current_layer_pos = self.model.layer_idx
+        layers = self.model.layer_stack
         if action.get_name() == 'RaiseLayerInStack':
-            new_layer_pos = current_layer_pos + 1
+            self.model.bubble_current_layer_up()
         elif action.get_name() == 'LowerLayerInStack':
-            new_layer_pos = current_layer_pos - 1
-        else:
-            return
-        if new_layer_pos < len(self.model.layers) and new_layer_pos >= 0:
-            self.model.reorder_layer(current_layer_pos, new_layer_pos,
-                                     select_new=True)
+            self.model.bubble_current_layer_down()
 
 
     def duplicate_layer_cb(self, action):
@@ -1121,18 +1116,22 @@ class Document (CanvasController):
         ag = self.action_group
 
         # Reflect position of current layer in the list.
-        sel_is_top = sel_is_bottom = False
-        sel_is_bottom = doc.layer_idx == 0
-        sel_is_top = doc.layer_idx == len(doc.layers)-1
-        ag.get_action("RaiseLayerInStack").set_sensitive(not sel_is_top)
-        ag.get_action("LowerLayerInStack").set_sensitive(not sel_is_bottom)
+        layers = doc.layer_stack
+        current_path = layers.current_path
+        sel_is_bottom = layers.path_below(current_path) is None
+        sel_is_top = layers.path_above(current_path) is None
+        can_bubble_up = (len(current_path) > 1 or
+                         current_path[0] < len(layers)-1)
+        can_bubble_down = (len(current_path) > 1 or
+                           current_path[0] > 0)
+        ag.get_action("RaiseLayerInStack").set_sensitive(can_bubble_up)
+        ag.get_action("LowerLayerInStack").set_sensitive(can_bubble_down)
         ag.get_action("LayerFG").set_sensitive(not sel_is_top)
         ag.get_action("LayerBG").set_sensitive(not sel_is_bottom)
         ag.get_action("MergeLayer").set_sensitive(not sel_is_bottom)
-        ag.get_action("PickLayer").set_sensitive(len(doc.layers) > 1)
+        ag.get_action("PickLayer").set_sensitive(len(layers) > 1)
 
         # Update various GtkToggleActions
-        layers = doc.layer_stack
         current_layer = layers.current
         action_updates = [
                 ("LayerLockedToggle", current_layer.locked),

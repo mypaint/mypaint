@@ -449,7 +449,6 @@ class SelectLayer (Action):
     def redo(self):
         layers = self.doc.layer_stack
         layers.set_current_path(self.path)
-        logger.debug("select %r", self.path)
         self._notify_document_observers()
 
     def undo(self):
@@ -533,8 +532,49 @@ class DuplicateLayer (Action):
         self._notify_document_observers()
 
 
+
+class BubbleLayerUp (Action):
+    """Move a layer up through the stack, preserving its tree structure"""
+
+    display_name = _("Move Layer Up")
+
+    def redo(self):
+        layers = self.doc.layer_stack
+        current_layer = layers.current
+        if layers.bubble_layer_up(layers.current_path):
+            self.doc.select_layer(layer=current_layer, user_initiated=False)
+            self._notify_canvas_observers([current_layer])
+
+    def undo(self):
+        layers = self.doc.layer_stack
+        current_layer = layers.current
+        if layers.bubble_layer_down(layers.current_path):
+            self.doc.select_layer(layer=current_layer, user_initiated=False)
+            self._notify_canvas_observers([current_layer])
+
+
+class BubbleLayerDown (Action):
+    """Move a layer down through the stack, preserving its tree structure"""
+
+    display_name = _("Move Layer Down")
+
+    def redo(self):
+        layers = self.doc.layer_stack
+        current_layer = layers.current
+        if layers.bubble_layer_down(layers.current_path):
+            self.doc.select_layer(layer=current_layer, user_initiated=False)
+            self._notify_canvas_observers([current_layer])
+
+    def undo(self):
+        layers = self.doc.layer_stack
+        current_layer = layers.current
+        if layers.bubble_layer_up(layers.current_path):
+            self.doc.select_layer(layer=current_layer, user_initiated=False)
+            self._notify_canvas_observers([current_layer])
+
+
 class ReorderLayerInStack (Action):
-    """Move a layer from one path in the layer stack to another"""
+    """Move a layer from one position in the layer stack to another"""
 
     display_name = _("Move Layer in Stack")
 
@@ -556,7 +596,8 @@ class ReorderLayerInStack (Action):
             # Moving from one parent to another
             parent_path = self._new_path[:-1]
             parent = layers.deepget(parent_path)
-            assert parent is not None
+            assert parent is not None, \
+                    "parent path %r identifies nothing" % (parent_path,)
             if not isinstance(parent, layer.LayerStack):
                 # Make a new parent
                 assert self._new_path[-1] == 0

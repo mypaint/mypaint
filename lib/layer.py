@@ -690,6 +690,16 @@ class LayerStack (LayerBase):
     def insert(self, index, layer):
         self._layers.insert(index, layer)
 
+    def __setitem__(self, index, layer):
+        self._layers[index] = layer
+
+    def __getitem__(self, index):
+        return self._layers[index]
+
+
+    def index(self, layer):
+        return self._layers.index(layer)
+
 
     ## Info methods
 
@@ -775,11 +785,7 @@ class LayerStack (LayerBase):
         self.expanded = not self.expanded
 
     def get_icon_name(self):
-        if self.expanded:
-            return "mypaint-expander-expanded-symbolic"
-        else:
-            return "mypaint-expander-collapsed-symbolic"
-
+        return "mypaint-tool-layers"
 
 
 class _LayerStackSnapshot (_LayerBaseSnapshot):
@@ -820,6 +826,12 @@ class LayerStackMove (object):
 
 class RootLayerStack (LayerStack):
     """Layer stack with background, rendering loop, selection, & view modes"""
+
+    ## Class constants
+
+    BUBBLE_DEFAULT_COLLAPSE = False   #: Collapse a bubbling stack by default
+    BUBBLE_DEFAULT_EXPAND = True    #: Expand stacks bubbled into by default
+
 
     ## Initialization
 
@@ -1157,6 +1169,114 @@ class RootLayerStack (LayerStack):
         return paths[idx]
 
 
+    ## Layer bubbling
+
+    def _bubble_layer(self, path, collapse, expand, upstack):
+        """Move a layer through the stack, preserving its tree structure
+
+        Parameters and returns are the same as for `bubble_layer_up()` (and
+        down), with the following addition:
+
+        :param upstack: Direction: true to bubble up, false to bubble down
+
+        """
+        path = list(path)
+        if len(path) == 0:
+            raise ValueError, "Cannot reposition the root of the stack"
+        parent_path, index = path[:-1], path[-1]
+        parent = self.deepget(parent_path, self)
+        assert index < len(parent)
+        assert index > -1
+
+        # Collapse sub-stacks when bubbling them.
+        # Seems to make the UI a little easier to understand.
+        if collapse:
+            layer = self.deepget(path)
+            assert layer is not None
+            if isinstance(layer, LayerStack):
+                layer.expanded = False
+
+        # The layer to be moved may already be at the end of its stack
+        # in the direction we want; if so, remove it then insert it
+        # one place beyond its parent in the bubble direction.
+        end_index = (len(parent) - 1) if upstack else 0
+        if index == end_index:
+            if parent is self:
+                return False
+            grandparent_path = parent_path[:-1]
+            grandparent = self.deepget(grandparent_path, self)
+            parent_index = grandparent.index(parent)
+            layer = parent.pop(index)
+            beyond_parent_index = parent_index
+            if upstack:
+                beyond_parent_index += 1
+            grandparent.insert(beyond_parent_index, layer)
+            if expand:
+                grandparent.expanded = True
+            return True
+
+        # Move the layer within its current parent
+        new_index = index + (1 if upstack else -1)
+        if new_index < len(parent) and new_index > -1:
+            # A sibling layer is already at the intended position
+            sibling = parent[new_index]
+            if isinstance(sibling, LayerStack):
+                # Ascend: remove & put at the near end of the sibling stack
+                layer = parent.pop(index)
+                if upstack:
+                    sibling.insert(0, layer)
+                else:
+                    sibling.append(layer)
+                if expand:
+                    sibling.expanded = True
+                return True
+            else:
+                # Swap positions with the sibling layer
+                layer = parent[index]
+                parent[new_index] = layer
+                parent[index] = sibling
+                return True
+        else:
+            # Nothing there, move to the end of this branch
+            layer = parent.pop(index)
+            if upstack:
+                parent.append(layer)
+            else:
+                parent.insert(0, layer)
+            return True
+
+
+    def bubble_layer_up(self, path, collapse=BUBBLE_DEFAULT_COLLAPSE,
+                        expand=BUBBLE_DEFAULT_EXPAND):
+        """Move a layer up through the stack, preserving its tree structure
+
+        :param path: Layer path identifying the layer to move
+        :param collapse: If true, collapse the moved layer if it's a stack
+        :param expand: If true, expand sub-stacks moved into
+        :returns: True if the stack structure was modified
+
+        Bubbling follows the layout of the tree and preserves its structure
+        apart from the layers touched by the move, so it can be driven by the
+        keyboard usefully. `bubble_layer_down()` is the exact inverse of this
+        operation.
+
+        These methods assume the existence of a UI which lays out layers from
+        bottom to top with a postorder traversal.  If the path identifies a
+        substack, the substack is moved as a whole.
+        """
+        return self._bubble_layer(path, collapse, expand, True)
+
+
+    def bubble_layer_down(self, path, collapse=BUBBLE_DEFAULT_COLLAPSE,
+                          expand=BUBBLE_DEFAULT_EXPAND):
+        """Move a layer down through the stack, preserving its tree structure
+
+        This is the inverse operation to bubbling a layer up. Parameters and
+        return values are the same as those for `bubble_layer_up()`.
+        """
+        return self._bubble_layer(path, collapse, expand, False)
+
+
     ## Simplified tree storage and access
 
     # We use a path concept that's similar to GtkTreePath's, but almost like a
@@ -1435,6 +1555,8 @@ class RootLayerStack (LayerStack):
                 raise ValueError, "Invalid current path; stack is empty"
         raise TypeError, ("No layer/index/path criterion, and no fallbacks")
 
+
+    ## Loading
 
     def load_from_openraster(self, orazip, elem, tempdir, feedback_cb,
                              x=0, y=0, **kwargs):

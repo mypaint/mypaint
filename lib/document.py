@@ -443,15 +443,30 @@ class Document (object):
     ## Layer stack (z) position
 
 
-    def reorder_layer(self, was_idx, new_idx, select_new=False):
-        """Reorder a layer by index (deprecated)"""
-        # Use move_layer_in_stack() instead...
-        self.do(command.ReorderSingleLayer(self, was_idx, new_idx, select_new))
-
     def move_layer_in_stack(self, old_path, new_path):
-        """Moves a layer in the stack by path (undoable)"""
+        """Moves a layer in the stack by path (undoable)
+
+        :param old_path: Source path for the move
+        :param new_path: Target path for the move
+
+        The move is calculated as a removal followed by an insertion, so the
+        target path may be any insertion index which is valid at this point.
+        If the target path exists and is not a LayerStack, a new LayerStack is
+        constructed to house both layers.
+        """
         logger.debug("move %r to %r", old_path, new_path)
-        self.do(command.ReorderLayerInStack(self, old_path, new_path))
+        cmd = command.ReorderLayerInStack(self, old_path, new_path)
+        self.do(cmd)
+
+
+    def bubble_current_layer_up(self):
+        cmd = command.BubbleLayerUp(self)
+        self.do(cmd)
+
+    def bubble_current_layer_down(self):
+        cmd = command.BubbleLayerDown(self)
+        self.do(cmd)
+
 
 
     ## Misc layer command frontends
@@ -879,7 +894,7 @@ class Document (object):
         if l[-1].isdigit():
             prefix = l[0]
         doc_bbox = self.get_effective_bbox()
-        for i, l in enumerate(self.layers):
+        for i, l in enumerate(self.layer_stack.deepiter()):
             filename = '%s.%03d%s' % (prefix, i+1, ext)
             l.save_as_png(filename, *doc_bbox, **kwargs)
 

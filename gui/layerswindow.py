@@ -56,6 +56,9 @@ def make_composite_op_model():
     return model
 
 
+## Module constants
+
+
 TREESTORE_PATH_COL = 0
 TREESTORE_LAYER_COL = 1
 
@@ -100,10 +103,11 @@ class LayersTool (SizedVBoxToolWidget):
         view_scroll.set_size_request(-1, 100)
         sel = view.get_selection()
         sel.set_mode(Gtk.SelectionMode.SINGLE)
+        view.connect("row-expanded", self._row_expanded_collapsed_cb, True)
+        view.connect("row-collapsed", self._row_expanded_collapsed_cb, False)
 
         # Type and name
         renderer = Gtk.CellRendererPixbuf()
-        renderer.set_fixed_size(-1, 24)
         col = self.type_col = Gtk.TreeViewColumn(_("Type"))
         col.pack_start(renderer, expand=False)
         col.set_cell_data_func(renderer, self._layer_type_datafunc)
@@ -123,23 +127,23 @@ class LayersTool (SizedVBoxToolWidget):
 
         # State icons
         renderer = Gtk.CellRendererPixbuf()
-        renderer.set_fixed_size(24, 24)
         col = self.visible_col = Gtk.TreeViewColumn(_("Visible"))
         col.pack_start(renderer, expand=False)
         col.set_cell_data_func(renderer, self._layer_visible_datafunc)
+        col.set_max_width(24)
         view.append_column(col)
 
         renderer = Gtk.CellRendererPixbuf()
-        renderer.set_fixed_size(24, 24)
         col = self.locked_col = Gtk.TreeViewColumn(_("Locked"))
         col.pack_start(renderer, expand=False)
         col.set_cell_data_func(renderer, self._layer_locked_datafunc)
+        col.set_max_width(24)
         view.append_column(col)
 
         # View appearance
-        view.set_show_expanders(False)
+        view.set_show_expanders(True)
+        view.set_enable_tree_lines(True)
         view.set_expander_column(self.name_col)
-        view.set_level_indentation(24)
 
         # Controls for the current layer
 
@@ -523,8 +527,7 @@ class LayersTool (SizedVBoxToolWidget):
         for layer in layers:
             if old_parent[layer] is not new_parent[layer]:
                 logger.debug("layer reparented: %r", layer)
-                doc.move_layer_in_stack(old_path[layer],
-                                        new_path[layer])
+                doc.move_layer_in_stack(old_path[layer], new_path[layer])
                 return
 
         # Detect changes of position within the same parent
@@ -563,6 +566,12 @@ class LayersTool (SizedVBoxToolWidget):
         # Otherwise, just ensure the selection is not lost.
         doc.select_layer(path=doc.layer_stack.current_path,
                          user_initiated=False)
+
+
+    def _row_expanded_collapsed_cb(self, view, rowiter, rowpath, expanded):
+        """Track expanded and collapsed state"""
+        rowlayer = self.treestore.get_value(rowiter, TREESTORE_LAYER_COL)
+        rowlayer.expanded = bool(expanded)
 
 
     def _opacity_scale_changed_cb(self, *ignore):
