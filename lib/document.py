@@ -471,9 +471,10 @@ class Document (object):
 
     ## Misc layer command frontends
 
+    def duplicate_current_layer(self):
+        """Makes an exact copy of the current layer (undoable)"""
+        self.do(command.DuplicateLayer(self))
 
-    def duplicate_layer(self, insert_idx=None, name=''):
-        self.do(command.DuplicateLayer(self, insert_idx, name))
 
     def clear_layer(self):
         if not self.layer.is_empty():

@@ -518,14 +518,7 @@ class Document (CanvasController):
 
     def duplicate_layer_cb(self, action):
         """Duplicates the current layer (action callback)"""
-        layer = self.model.get_current_layer()
-        name = layer.name
-        if name:
-            name = _("Copy of %s") % name
-        else:
-            layer_num = self.get_number_for_nameless_layer(layer)
-            name = _("Copy of Untitled layer #%d") % layer_num
-        self.model.duplicate_layer(self.model.layer_idx, name)
+        self.model.duplicate_current_layer()
 
 
     def rename_layer_cb(self, action):

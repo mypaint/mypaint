@@ -509,28 +509,29 @@ class ReorderSingleLayer(Action):
 
 
 class DuplicateLayer (Action):
-    """Clone the current layer"""
+    """Make an exact copy of the current layer"""
 
     display_name = _("Duplicate Layer")
 
-    def __init__(self, doc, insert_idx=None, name=''):
+    def __init__(self, doc):
         Action.__init__(self, doc)
-        self.insert_idx = insert_idx
-        self.new_layer = self.doc.layers[self.insert_idx].copy()
-        self.duplicate_layer = None
+        self._path = self.doc.layer_stack.current_path
 
     def redo(self):
-        self.doc.layers.insert(self.insert_idx+1, self.new_layer)
-        self.duplicate_layer = self.doc.layers[self.insert_idx+1]
-        self._notify_canvas_observers([self.duplicate_layer])
+        layers = self.doc.layer_stack
+        layer_copy = layers.current.copy()
+        layer_copy.assign_unique_name(layers.get_names())
+        layers.deepinsert(self._path, layer_copy)
+        assert layers.deepindex(layer_copy) == self._path
+        self._notify_canvas_observers([layer_copy])
         self._notify_document_observers()
 
     def undo(self):
-        self.doc.layers.remove(self.duplicate_layer)
-        original_layer = self.doc.layers[self.insert_idx]
+        layers = self.doc.layer_stack
+        layer_copy = layers.deeppop(self._path)
+        original_layer = layers.deepget(self._path)
         self._notify_canvas_observers([original_layer])
         self._notify_document_observers()
-
 
 
 class BubbleLayerUp (Action):

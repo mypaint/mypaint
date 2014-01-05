@@ -11,6 +11,7 @@
 import gi
 from gi.repository import GdkPixbuf
 
+import re
 import struct
 import zlib
 import numpy
@@ -107,6 +108,11 @@ class LayerBase (object):
 
     """
 
+    ## Class constants
+
+    #TRANSLATORS: the name used for new untitled layers
+    UNTITLED_NAME = _(u"Layer")
+
     ## Construction, loading, other lifecycle stuff
 
     def __init__(self, name="", compositeop=DEFAULT_COMPOSITE_OP):
@@ -115,6 +121,8 @@ class LayerBase (object):
         :param name: The name for the new layer.
         :param compositeop: Compositing operation to use.
         :param **kwargs: Ignored.
+
+        All layer subclasses must permit construction without parameters.
         """
         super(LayerBase, self).__init__()
         #: Opacity of the layer (1 - alpha)
@@ -202,14 +210,37 @@ class LayerBase (object):
         `save_snapshot()` and `load_snapshot()` methods.
         """
         layer = self.__class__()
-        layer.name = self.name
-        layer.compositeop = self.compositeop
-        layer.opacity = self.opacity
-        layer.visible = self.visible
-        layer.locked = self.locked
         layer.load_snapshot(self.save_snapshot())
-        layer.content_observers = self.content_observers[:]
         return layer
+
+
+    def assign_unique_name(self, existing):
+        """(Re)assigns a unique name to the layer, for use when copying
+
+        :param existing: If present, existing names used for uniquification
+        :param existing: writable set
+        """
+        blank = re.compile(r'^\s*$')
+        if self.name is None or blank.match(self.name):
+            self.name = self.UNTITLED_NAME
+        if self.name not in existing:
+            existing.add(self.name)
+        trailing_number = re.compile(r'^(.*?)\s*#(\d+)$')
+        match = trailing_number.match(self.name)
+        if match is not None:
+            start_num = int(match.group(2))
+            name_base = unicode(match.group(1))
+        else:
+            start_num = 1
+            name_base = self.name
+        name = self.name
+        num = start_num
+        while name in existing and num < start_num+1000:
+            name = u"%s #%d" % (name_base, num)
+            num += 1
+        if num < start_num+1000:
+            self.name = name
+            existing.add(name)
 
 
     def clear(self):
@@ -561,18 +592,28 @@ class _LayerBaseSnapshot (object):
 
     Snapshots are stored in commands, and used to implement undo and redo.
     They must be independent copies of the data, although copy-on-write
-    semantics are fine. Snapshot objects don't have to be _full and exact_
-    clones of the layer's data, but they do need to capture _inherent_
-    qualities of the layer. Mere metadata can be ignored. For the base
-    layer implementation, this means only the layer's opacity.
+    semantics are fine. Snapshot objects must be complete enough clones of the
+    layer's data for duplication to work.
     """
 
     def __init__(self, layer):
         super(_LayerBaseSnapshot, self).__init__()
         self.opacity = layer.opacity
+        self.name = layer.name
+        self.compositeop = layer.compositeop
+        self.opacity = layer.opacity
+        self.visible = layer.visible
+        self.locked = layer.locked
+        self.content_observers = layer.content_observers[:]
 
     def restore_to_layer(self, layer):
         layer.opacity = self.opacity
+        layer.name = self.name
+        layer.compositeop = self.compositeop
+        layer.opacity = self.opacity
+        layer.visible = self.visible
+        layer.locked = self.locked
+        layer.content_observers = self.content_observers[:]
 
 
 class LoadError (Exception):
@@ -600,10 +641,6 @@ class LayerStack (LayerBase):
         N = tiledsurface.N
         blank_arr = numpy.zeros((N, N, 4), dtype='uint16')
         self._blank_bg_surface = tiledsurface.Background(blank_arr)
-
-
-    def copy(self):
-        raise NotImplementedError
 
 
     def load_from_openraster(self, orazip, elem, tempdir, feedback_cb,
@@ -641,6 +678,11 @@ class LayerStack (LayerBase):
     def clear(self):
         super(LayerStack, self).clear()
         self._layers = []
+
+    def assign_unique_name(self, existing):
+        super(LayerStack, self).assign_unique_name(existing)
+        for layer in self._layers:
+            layer.assign_unique_name(existing)
 
 
     def __repr__(self):
@@ -768,7 +810,7 @@ class LayerStack (LayerBase):
 
     def save_snapshot(self):
         """Snapshots the state of the layer, for undo purposes"""
-        return _LayerBaseSnapshot(self, self._layers)
+        return _LayerStackSnapshot(self)
 
 
     ## Trimming
@@ -790,13 +832,22 @@ class LayerStack (LayerBase):
 
 class _LayerStackSnapshot (_LayerBaseSnapshot):
 
-    def __init__(self, layer, layers):
+    def __init__(self, layer):
         super(_LayerStackSnapshot, self).__init__(layer)
-        raise NotImplementedError
+        self.isolated = layer.isolated
+        self.expanded = layer.expanded
+        self.layer_snaps = [l.save_snapshot() for l in layer._layers]
+        self.layer_classes = [l.__class__ for l in layer._layers]
 
     def restore_to_layer(self, layer):
         super(_LayerStackSnapshot, self).restore_to_layer(layer)
-        raise NotImplementedError
+        layer.isolated = self.isolated
+        layer.expanded = self.expanded
+        layer._layers = []
+        for layer_class, snap in zip(self.layer_classes, self.layer_snaps):
+            child = layer_class()
+            child.load_snapshot(snap)
+            layer._layers.append(child)
 
 
 class LayerStackMove (object):
@@ -858,6 +909,10 @@ class RootLayerStack (LayerStack):
     def clear(self):
         super(RootLayerStack, self).clear()
         self.set_background(self._default_background)
+
+
+    def get_names(self):
+        return set((l.name for l in self.deepiter()))
 
 
     ## Rendering: root stack API
@@ -1967,12 +2022,7 @@ class SurfaceBackedLayer (LayerBase):
 
 
     def save_snapshot(self):
-        """Snapshots the state of the layer, for undo purposes
-
-        The returned data should be considered opaque, useful only as a
-        memento to be restored with load_snapshot().  The base impementation
-        snapshots only the surface tiles, and the layer's opacity.
-        """
+        """Snapshots the state of the layer, for undo purposes"""
         return _SurfaceBackedLayerSnapshot(self)
 
 
@@ -2003,11 +2053,11 @@ class _SurfaceBackedLayerSnapshot (_LayerBaseSnapshot):
     """
 
     def __init__(self, layer):
-        _LayerBaseSnapshot.__init__(self, layer)
+        super(_SurfaceBackedLayerSnapshot, self).__init__(layer)
         self.surface_sshot = layer._surface.save_snapshot()
 
     def restore_to_layer(self, layer):
-        _LayerBaseSnapshot.restore_to_layer(self, layer)
+        super(_SurfaceBackedLayerSnapshot, self).restore_to_layer(layer)
         layer._surface.load_snapshot(self.surface_sshot)
 
 
