@@ -11,7 +11,6 @@ the Free Software Foundation; either version 2 of the License, or
   <toolbar name="toolbar1">
 
     <placeholder name="linemodes-toolitems">
-      <toolitem action="SwitchableFreehandMode"/>
       <toolitem action="StraightMode"/>
       <toolitem action="SequenceMode"/>
       <toolitem action="EllipseMode"/>

@@ -11,8 +11,11 @@ the Free Software Foundation; either version 2 of the License, or
   <toolbar name="toolbar1">
 
     <placeholder name="blendmodes-toolitems">
-      <toolitem action="BlendModeNormal"/>
-      <toolitem action="BlendModeEraser"/>
+      <!-- Alongside BlendModeEraser -->
+      <!--
+        Not listing BlendModeNormal, since these buttons'
+        toggle-off action enables normal mode.
+      -->
       <toolitem action="BlendModeLockAlpha"/>
       <toolitem action="BlendModeColorize"/>
     </placeholder>

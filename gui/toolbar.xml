@@ -32,8 +32,13 @@ the Free Software Foundation; either version 2 of the License, or
       <toolitem action="BrushDropdown"/>
     </placeholder>
     <separator/>
-    <placeholder name="blendmodes-toolitems"/>
-    <placeholder name="linemodes-toolitems"/>
+    <placeholder name="blendmodes-toolitems">
+      <toolitem action="BlendModeEraser"/>
+    </placeholder>
+    <separator/>
+    <placeholder name="linemodes-toolitems">
+      <toolitem action="SwitchableFreehandMode"/>
+    </placeholder>
     <toolitem action="ColorPickMode"/>
     <toolitem action="FloodFillMode"/>
     <toolitem action="LayerMoveMode"/>
