@@ -9,6 +9,8 @@
 import sys
 import contextlib
 import numpy
+from logging import getLogger
+logger = getLogger(__name__)
 
 from gi.repository import GdkPixbuf
 
@@ -168,8 +170,13 @@ def save_as_png(surface, filename, *rect, **kwargs):
                 # render one tile
                 dst = arr[:,tx_rel*N:(tx_rel+1)*N,:]
                 if not skip_rendering:
-                    surface.blit_tile_into(dst, alpha, render_tx+tx_rel, ty)
-
+                    tx = render_tx + tx_rel
+                    try:
+                        surface.blit_tile_into( dst, alpha, tx, ty )
+                    except Exception, ex:
+                        logger.exception("Failed to blit tile %r of %r",
+                                         (tx, ty), surface)
+                        mypaintlib.tile_clear(dst)
                 if feedback_cb and feedback_counter % TILES_PER_CALLBACK == 0:
                     feedback_cb()
                 feedback_counter += 1
