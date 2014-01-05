@@ -460,13 +460,14 @@ class Document (object):
 
 
     def bubble_current_layer_up(self):
+        """Moves the current layer up in the stack (undoable)"""
         cmd = command.BubbleLayerUp(self)
         self.do(cmd)
 
     def bubble_current_layer_down(self):
+        """Moves the current layer down in the stack (undoable)"""
         cmd = command.BubbleLayerDown(self)
         self.do(cmd)
-
 
 
     ## Misc layer command frontends
@@ -477,6 +478,7 @@ class Document (object):
 
 
     def clear_layer(self):
+        """Clears the current layer (undoable)"""
         if not self.layer.is_empty():
             self.do(command.ClearLayer(self))
 
@@ -934,9 +936,12 @@ class Document (object):
         options = {"quality": str(quality)}
         pixbuf.savev(filename, 'jpeg', options.keys(), options.values())
 
+
     save_jpeg = save_jpg
 
+
     def save_ora(self, filename, options=None, **kwargs):
+        """Saves OpenRaster data to a file"""
         logger.info('save_ora: %r (%r, %r)', filename, options, kwargs)
         t0 = time.time()
         tempdir = tempfile.mkdtemp('mypaint')

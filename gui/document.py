@@ -1035,8 +1035,6 @@ class Document (CanvasController):
         self.tdw.renderer.set_double_buffered(not action.get_active())
 
 
-    # LAST-USED BRUSH STATE
-
     def input_stroke_ended_cb(self, event):
         # Store device-specific brush settings at the end of the stroke, not
         # when the device changes because the user can change brush radii etc.

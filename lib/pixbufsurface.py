@@ -159,7 +159,8 @@ def save_as_png(surface, filename, *rect, **kwargs):
         for ty in range(render_ty, render_ty+render_th):
             skip_rendering = False
             if kwargs.get('single_tile_pattern', False):
-                # optimization for simple background patterns (e.g. solid color)
+                # optimization for simple background patterns
+                # e.g. solid color
                 if ty != first_row:
                     skip_rendering = True
 

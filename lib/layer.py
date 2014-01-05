@@ -341,9 +341,10 @@ class LayerBase (object):
     def flood_fill(self, x, y, color, bbox, tolerance, dst_layer=None):
         """Fills a point on the surface with a colour
 
-        See `PaintingLayer.flood_fill() for parameters and semantics.
+        See `PaintingLayer.flood_fill() for parameters and semantics. The base
+        implementation does nothing.
         """
-        raise NotImplementedError
+        pass
 
 
     ## Rendering
@@ -1061,16 +1062,33 @@ class RootLayerStack (LayerStack):
     ## Current layer
 
     def get_current_path(self):
+        """Get the current layer's path
+
+        :rtype: tuple
+        """
         return self._current_path
 
     def set_current_path(self, path):
+        """Set the current layer path
+
+        :param path: The path to use; will be trimmed until it fits
+        :type path: tuple
+        """
+        # Try to use as much of the specified path as possible
         p = tuple(path)
         while len(p) > 0:
             layer = self.deepget(p)
             if layer is not None:
                 self._current_path = p
+                # Expand the tree up to the point chosen
+                while len(p) > 0:
+                    p = p[:-1]
+                    parent = self.deepget(p)
+                    assert isinstance(parent, LayerStack)
+                    parent.expanded = True
                 return
             p = p[:-1]
+        # Fallback cases
         if len(self._layers) > 0:
             self._current_path = (0,)
         else:
@@ -1078,7 +1096,9 @@ class RootLayerStack (LayerStack):
 
     current_path = property(get_current_path, set_current_path)
 
+
     def get_current(self):
+        """Get the current layer (also exposed as a read-only property)"""
         layer = self.deepget(self._current_path)
         assert layer is not self
         assert layer is not None
