@@ -10,6 +10,8 @@
 """
 
 import os.path
+from logging import getLogger
+logger = getLogger(__name__)
 
 from gettext import gettext as _
 import gtk
@@ -110,13 +112,15 @@ class PreferencesWindow (windowing.Dialog):
         zoom_combo.set_active_id(zoom_idcolstr)
 
         # Toolbar icon size radios
-        size = str(p.get("ui.toolbar_icon_size", "small")).lower()
+        size = str(p.get("ui.toolbar_icon_size", "large")).lower()
         for size_name in ["small", "large"]:
+            if size_name != size:
+                continue
             radio_name = "toolbar_icon_size_%s_radio" % (size,)
             radio = self._builder.get_object(radio_name)
-            if size_name == size:
-                radio.set_active(True)
-                break
+            radio.set_active(True)
+            logger.debug("Set %r active", radio_name)
+            break
 
         # Dark theme
         dark = bool(p.get("ui.dark_theme_variant", True))

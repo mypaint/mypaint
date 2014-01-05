@@ -391,6 +391,8 @@ class Application (object):
                 toolbar1_view_resets=True,
                 toolbar1_subwindows=True,
             ),
+            'ui.toolbar_icon_size': 'large',
+            'ui.dark_theme_variant': True,
             'saving.default_format': 'openraster',
             'brushmanager.selected_brush' : None,
             'brushmanager.selected_groups' : [],
